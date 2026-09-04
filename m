@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62F9C51FCA5;
-	Fri,  4 Sep 2026 22:25:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1F6F51A75C;
+	Fri,  4 Sep 2026 22:25:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788560725; cv=none; b=IugNmGqb0zCZ0EKKGwaV28D6iL+IA4rw0tD4csxmf7wkZPq0b5BR4HOAfzC4GG0/mzx1DYAM10U3Q3Lc7p3d6+Hji9McikK2QPT2P1K2vjaGEjx52CqrBCIwswp1NvxxHyMVUI83t94Rm+XmQfOLiuaqxOGjQ2ncVjaR6+XjsDQ=
+	t=1788560725; cv=none; b=PEyPlWZbEAXkLNg8c0vxYaKX2HKpLe+7lcj/Rre1Y9PX6CrT6LFu8+any3GGsuNSqy8Eo0PmPPueeTy3vNt3deInVnLd4Kcw1PSmUbk8OahxA3fjlKp/2RulZp7AO1YXRduyPw31Fg4cwSH8wYRbaQieaQGeM/pWOP9uXOdpFLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1788560725; c=relaxed/simple;
-	bh=ezWQ0yzRqeGLmloEsAks2XHUl0OR91UaAnmJ4MRwB10=;
+	bh=1gtFDsfZOL28vqkGNIlbITfcZCQrSZ9D/Mqinp0lt/g=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=LXKzNXu6tndYs5EqV3ZNFFjjGcFfpeUbiKj/F5ysnP1LBBOAj/NXxmpd751eDlcV+5YbUqWPzPA5bA3guDHBu2yfbv8oaFPveuB3Vk8KdCN3AzwCAsPYOCD7ry5HiD/bhJ1zwckAyDbTsMZd3Piop4ddnv+NH3jLV6hYqT1z4h4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Lw8zB6zw; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=JTFRwdO4UdZN21dJAl9EhBCJZ0P4cZtr0n3YCad6nIGn4SHQ5UFLcaIoHphaVGBqbjkgrlVZfxtH62bSTk7Q6WvUx890DyOQ14j40gQkIxQWctdjplsjrLTcoai9wSGTlvoKsWbDB9NBq4kauSKYFJwweEXeECCgnfhd4LedKtM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EMV/k8/N; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Lw8zB6zw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5AF01F00A3D;
-	Fri,  4 Sep 2026 22:25:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EMV/k8/N"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1941B1F00AC4;
+	Fri,  4 Sep 2026 22:25:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788560716;
-	bh=5SnnQCQ7yDdLHAiFM1uq+omxM8NKPbzf/DSxftTkKac=;
+	s=k20260515; t=1788560720;
+	bh=gw3pyDblcvU1iWnEtqT0CZwCFEW69AxvEJRcwLn5SY4=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Lw8zB6zwW1OfhF9Vj55x6YIxth4LdzxeuLw0ggRIV4PayxMIP/w9xSz4sElNlScfN
-	 kaFOUtwNDEsqClnHHedRgAMYcAvFAYW3J1xEDiMNdlyERH1MMS98U5WlnMur4cmMss
-	 YQ+O8f50QUKAflbbAi6QbwXlGqOavj/o0+CkfxiehqXMKDMt0Rexzy9oYtv0iAsxc2
-	 HwCE1oKOqbt2pYDfykRhfhHS4izmQzJ2eExmCFUSydigLNMN+/s49UVBQp2YUAwF5j
-	 ySO5EYodoOEQevAz8FOTgFEvoJiIs81uHiJkWxNkZ7fEIpg9yacpbrdfUqm1BIS0t/
-	 Vk99DFwEt/8Jg==
-Subject: Re: [PATCH net-next v9 1/7] r8169: add speed in private struct
+	b=EMV/k8/NNXyZpdOQJRB+KZmfIutoqgkoVVK+RiUSjqqhObu/fVCH4Jz+IVCJe541q
+	 vXfvbLR6czgQjim6q01DVpL0bKBgwGkk6OJnQil367BPusRaMxJZd1tEgf6eVo8Q6h
+	 +ZjjfsPbRR2l+YIYF439hOWDHjJx7NxC7CbByg/qII69Cto4P05cJgcz9qTIE2HyKh
+	 Vrm+23l5w3vaHRYo3UzKeOpUyhvJ72h4ac13etjbU1UTKKOaCxAEf6baXuZ82uXGxe
+	 lN9KzWsHq0ijk4kEAtEHIDU7ICTEJTT7QEv37Sobtozok2OwOUh+NW7+bBjWnueup1
+	 n/3Po6pefXeQA==
+Subject: Re: [PATCH net-next v9 4/7] r8169: add support for RTL8116af
 From: netdev-bot+sashiko@kernel.org
 To: javen_xu@realsil.com.cn
 Cc: hkallweit1@gmail.com, nic_swsd@realtek.com, andrew+netdev@lunn.ch,
@@ -34,11 +34,11 @@ Cc: hkallweit1@gmail.com, nic_swsd@realtek.com, andrew+netdev@lunn.ch,
  maxime.chevallier@bootlin.com, horms@kernel.org, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org, daniel@makrotopia.org, linux@armlinux.org.uk,
  enelsonmoore@gmail.com, daniel@thingy.jp
-Date: Fri, 04 Sep 2026 22:25:15 +0000
-Message-ID: <178856071535.219967.13765117065982749067@kernel.org>
-In-Reply-To: <20260831053745.1197-2-javen_xu@realsil.com.cn>
-References: <20260831053745.1197-2-javen_xu@realsil.com.cn>
-X-sashiko-severity: Low
+Date: Fri, 04 Sep 2026 22:25:19 +0000
+Message-ID: <178856071965.219967.14695801109001005732@kernel.org>
+In-Reply-To: <20260831053745.1197-5-javen_xu@realsil.com.cn>
+References: <20260831053745.1197-5-javen_xu@realsil.com.cn>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -48,130 +48,271 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
+Thank you for your contribution! Sashiko AI review found 4 potential
 issue(s) to consider:
 
-Critical: 0 · High: 0 · Medium: 0 · Low: 1
+Critical: 0 · High: 0 · Medium: 3 · Low: 1
 
-- [Low] Claimed stale-cache regression: the patch converts
-  rtl_coalesce_info() (r8169_main.c:2076,2080) and…
+- [Medium] For RTL_SFP_8168_AF the driver registers a phylink PCS and
+  declares in-band 1000BASE-X autonegotiation (tp->pcs.ops =…
+- [Medium] The phylink conversion in this series removed phy_stop() from
+  rtl8169_down() and phy_start() from rtl8169_up() (both present at…
+- [Medium] The newly added PCS callback rtl8169_pcs_get_state() (via
+  rtl8169_sds_read()) performs indirect OCP/SerDes MMIO accesses with no…
+- [Low] For the new no-PHY 1000BASEX mode the driver still advertises
+  EEE/LPI capabilities derived from the copper-PHY version check:…
 
 --
 
-r8169: add speed in private struct
+r8169: add support for RTL8116af
 
-This adds an int speed field to struct rtl8169_private, initializes it to
-SPEED_UNKNOWN in rtl_init_one() and updates it from r8169_phylink_handler().
-The consumers rtl_link_chg_patch(), rtl_coalesce_info() and
-r8169_get_tx_lpi_timer_us() are switched from tp->phydev->speed to the new
-cached value.
-
-No Link: tags in the commit header.
+This adds detection of the RTL8116af SFP variant of RTL_GIGA_MAC_VER_52,
+registers a phylink PCS that reads link state from the SerDes registers,
+and guards the existing internal-PHY code paths against a NULL
+tp->phydev.  A few review questions below.
 
 > diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-> index ec4fc21fa21f..c60710f9bd21 100644
+> index 823763e4f4456..a04acb42e995d 100644
 > --- a/drivers/net/ethernet/realtek/r8169_main.c
 > +++ b/drivers/net/ethernet/realtek/r8169_main.c
-> @@ -750,6 +750,7 @@ struct rtl8169_private {
->  	u32 irq_mask;
->  	int irq;
->  	struct clk *clk;
-> +	int speed;
->  
->  	struct {
->  		DECLARE_BITMAP(flags, RTL_FLAG_MAX);
 
 [ ... ]
 
-> @@ -2074,11 +2073,11 @@ rtl_coalesce_info(struct rtl8169_private *tp)
->  		ci = rtl_coalesce_info_8168_8136;
->  
->  	/* if speed is unknown assume highest one */
-> -	if (tp->phydev->speed == SPEED_UNKNOWN)
-> +	if (tp->speed == SPEED_UNKNOWN)
->  		return ci;
->  
->  	for (; ci->speed; ci++) {
-> -		if (tp->phydev->speed == ci->speed)
-> +		if (tp->speed == ci->speed)
->  			return ci;
+> @@ -4891,8 +4939,13 @@ static irqreturn_t rtl8169_interrupt(int irq, void *dev_instance)
+>  		goto out;
 >  	}
 >  
-> @@ -2236,7 +2235,7 @@ static void rtl_set_eee_txidle_timer(struct rtl8169_private *tp)
+> -	if (status & LinkChg)
+> -		phy_mac_interrupt(tp->phydev);
+> +	if (status & LinkChg) {
+> +		if (tp->phydev)
+> +			phy_mac_interrupt(tp->phydev);
+> +		else if (tp->sfp_mode == RTL_SFP_8168_AF)
+> +			phylink_mac_change(tp->phylink,
+> +					   !!(RTL_R8(tp, PHYstatus) & LinkStatus));
+> +	}
 >  
->  static unsigned int r8169_get_tx_lpi_timer_us(struct rtl8169_private *tp)
+>  	rtl_irq_disable(tp);
+>  	napi_schedule(&tp->napi);
+
+[ ... ]
+
+> @@ -5002,7 +5055,7 @@ static void rtl8169_down(struct rtl8169_private *tp)
+>  	bitmap_zero(tp->wk.flags, RTL_FLAG_MAX);
+>  
+>  	/* Reset SerDes PHY to bring down fiber link */
+> -	if (tp->sfp_mode)
+> +	if (tp->sfp_mode == RTL_SFP_8127_ATF)
+>  		rtl_sfp_reset(tp);
+>  
+>  	rtl8169_update_counters(tp);
+
+[Severity: Medium]
+Should the PM paths also quiesce phylink here?
+
+rtl8169_down() masks interrupts, runs rtl8169_cleanup(), pci_clear_master()
+and rtl_prepare_power_down(), but nothing calls phylink_stop() or
+phylink_suspend() on this path.  phylink_stop() is only reached from
+rtl8169_close(), while rtl8169_suspend(), rtl8169_runtime_suspend() and
+rtl_shutdown() all reach rtl8169_down() through rtl8169_net_suspend():
+
+rtl8169_net_suspend()
+    netif_device_detach(tp->dev);
+    if (netif_running(tp->dev))
+        rtl8169_down(tp);
+
+Since pl->phylink_disable_state is only set by phylink_stop() and
+phylink_suspend(), phylink_run_resolve() is still free to queue
+phylink_resolve() on system_power_efficient_wq, including a resolve queued
+from the rtl8169_interrupt() -> phylink_mac_change() call added above.  The
+suspend callbacks drop rtnl_lock before the PCI core moves the device to
+D3hot, so RTNL does not exclude it.
+
+Can that resolve then run rtl8169_pcs_get_state() -> rtl8169_sds_read()
+MMIO/OCP reads, or rtl_mac_link_up() -> rtl_link_chg_patch() ERI/MMIO
+writes, against a device that is already powered down?
+
+> @@ -5024,9 +5077,9 @@ static void rtl8169_up(struct rtl8169_private *tp)
+>  		rtl8168_driver_start(tp);
+>  
+>  	pci_set_master(tp->pci_dev);
+> -	phy_init_hw(tp->phydev);
+> -	phy_resume(tp->phydev);
+> -	rtl8169_init_phy(tp);
+> +	if (tp->phydev)
+> +		rtl8169_init_phy(tp);
+> +
+>  	napi_enable(&tp->napi);
+>  	enable_work(&tp->wk.work);
+>  	rtl_reset_work(tp);
+
+[Severity: Medium]
+Same question from the resume side: rtl8169_up() is the counterpart of
+rtl8169_down(), and neither phylink_resume() nor phylink_start() is called
+from rtl8169_resume() or rtl8169_runtime_resume().  Is the start/stop
+pairing intentionally asymmetric, with phylink_start()/phylink_stop() only
+in rtl_open()/rtl8169_close()?  For the copper case, phy_init_hw() and
+phy_resume() are also re-run from rtl8169_init_phy() without phylink
+knowing about it.
+
+[ ... ]
+
+> @@ -5628,6 +5692,53 @@ static void rtl_mac_config(struct phylink_config *config, unsigned int mode,
 >  {
-> -	unsigned int speed = tp->phydev->speed;
-> +	unsigned int speed = tp->speed;
->  	unsigned int timer = tp->tx_lpi_timer;
+>  }
 >  
->  	if (!timer || speed == SPEED_UNKNOWN)
-> @@ -4968,8 +4967,9 @@ static void r8169_phylink_handler(struct net_device *ndev)
->  	struct rtl8169_private *tp = netdev_priv(ndev);
->  	struct device *d = tp_to_dev(tp);
+> +static u16 rtl8169_sds_read(struct rtl8169_private *tp, u16 sds_reg)
+> +{
+> +	unsigned long flags;
+> +	u16 val = 0;
+> +
+> +	raw_spin_lock_irqsave(&tp->mac_ocp_lock, flags);
+> +	__r8168_mac_ocp_write(tp, OCP_SDS_ADDR_REG, sds_reg);
+> +	__r8168_mac_ocp_write(tp, OCP_SDS_CMD_REG, SDS_CMD_READ);
+> +	val = __r8168_mac_ocp_read(tp, OCP_SDS_DATA_REG);
+> +	raw_spin_unlock_irqrestore(&tp->mac_ocp_lock, flags);
+> +
+> +	return val;
+> +}
+> +
+> +static void rtl8169_pcs_get_state(struct phylink_pcs *pcs,
+> +				  unsigned int neg_mode,
+> +				  struct phylink_link_state *state)
+> +{
+> +	struct rtl8169_private *tp = container_of(pcs, struct rtl8169_private,
+> +						  pcs);
+> +	u16 bmsr, lpa;
+> +
+> +	bmsr = rtl8169_sds_read(tp, RTL_SDS_C22_BASE + MII_BMSR);
+> +	lpa = rtl8169_sds_read(tp, RTL_SDS_C22_BASE + MII_LPA);
+> +
+> +	phylink_mii_c22_pcs_decode_state(state, neg_mode, bmsr, lpa);
+> +}
+
+[Severity: Medium]
+Does this need a runtime PM guard before touching the SerDes registers?
+
+For RTL_SFP_8168_AF there is no phydev, so phylink's mode is MLO_AN_INBAND
+with pl->phydev == NULL, and phylink_ethtool_ksettings_get() takes the
+unconditional PCS read path in that case:
+
+	case MLO_AN_INBAND:
+		if (pl->phydev)
+			break;
+
+		phylink_mac_pcs_get_state(pl, &link_state);
+
+rtl8169_get_link_ksettings() is a bare wrapper around
+phylink_ethtool_ksettings_get() with no pm_runtime_get*/pm_runtime_active()
+check, unlike rtl8169_get_stats64() which brackets its hardware access.
+phylink_mii_ioctl() with SIOCGMIIREG reaches the same code.
+
+If a plain "ethtool ethX" runs while the device is runtime suspended (after
+rtl8169_close(), or after rtl_mac_link_down() -> pm_runtime_idle() and
+rtl8169_runtime_idle() -> pm_schedule_suspend()), the reads return 0xffff,
+so bmsr has BMSR_LSTATUS and BMSR_ANEGCOMPLETE set and
+phylink_mii_c22_pcs_decode_state() reports a bogus 1000/Full link.  On
+platforms that do not decode MMIO in D3hot the access can raise an
+unsupported-request instead.  Should this path take a runtime PM reference,
+or bail out when the device is not active?
+
+> +
+> +static int rtl8169_pcs_config(struct phylink_pcs *pcs, unsigned int mode,
+> +			      phy_interface_t interface,
+> +			      const unsigned long *advertising,
+> +			      bool permit_pause_to_mac)
+> +{
+> +	return 0;
+> +}
+> +
+> +static int rtl8169_pcs_validate(struct phylink_pcs *pcs,
+> +				unsigned long *supported,
+> +				const struct phylink_link_state *state)
+> +{
+> +	return 0;
+> +}
+> +
+> +static void rtl8169_pcs_an_restart(struct phylink_pcs *pcs)
+> +{
+> +}
+
+[Severity: Medium]
+These two callbacks are registered for a mode that declares in-band
+1000BASE-X autonegotiation, but neither of them touches the hardware.
+
+include/linux/phylink.h documents the contract:
+
+ * For 1000BASE-X, the advertisement should be programmed into the PCS.
+ ...
+ * When an autonegotiation restart is required for 802.3z modes,
+ * .pcs_config() should return a positive non-zero integer (e.g. 1)
+
+rtl8169_pcs_config() discards neg_mode, interface, advertising and
+permit_pause_to_mac and returns 0, rtl8169_pcs_an_restart() is empty, and
+rtl8169_sds_read() is the only SerDes accessor added, so there is no write
+path at all.
+
+Does this mean ethtool -s advertise=..., rtl8169_set_pauseparam() ->
+phylink_ethtool_set_pauseparam() and rtl8169_nway_reset() ->
+phylink_ethtool_nway_reset() all return success while the SerDes keeps
+advertising whatever reset or firmware left there?  Since
+phylink_resolve_an_pause() uses phylink's software advertisement, the
+resolved pause can also differ from what the peer actually sees.
+
+If autonegotiation really is fixed or firmware-managed on this part, would
+it be clearer to express that through pcs_inband_caps or by rejecting the
+unsupported configuration, rather than acknowledging the request?
+
+> +
+>  static void rtl_mac_disable_tx_lpi(struct phylink_config *config)
+>  {
+>  	struct rtl8169_private *tp = container_of(config,
+
+[ ... ]
+
+> @@ -5692,10 +5810,18 @@ static int rtl_init_phylink(struct rtl8169_private *tp)
+>  	tp->phylink_config.lpi_capabilities = rtl8169_get_lpi_caps(tp);
+>  	tp->phylink_config.mac_capabilities |= MAC_ASYM_PAUSE | MAC_SYM_PAUSE;
 >  
-> +	tp->speed = tp->phydev->speed;
+> -	if (tp->sfp_mode) {
+> +	switch (tp->sfp_mode) {
+> +	case RTL_SFP_8168_AF:
+> +		tp->pcs.ops = &r8169_pcs_ops;
+> +		tp->phylink_config.default_an_inband = true;
+> +		phy_mode = PHY_INTERFACE_MODE_1000BASEX;
+> +		tp->phylink_config.mac_capabilities |= MAC_1000FD;
+> +		break;
 
 [Severity: Low]
-This isn't a bug, but the v3 entry in the changelog below the --- line says:
+This isn't a functional bug, but should RTL_SFP_8168_AF be excluded from
+rtl8169_get_lpi_caps() as well?
 
-  Changes in v3:
-   - update tp->speed in rtl8169_set_link_ksettings()
+rtl8169_get_lpi_caps() only gates on rtl_supports_eee() and
+tp->sfp_mode == RTL_SFP_8127_ATF:
 
-That hunk does not appear in this diff. After this patch the only runtime
-writer of tp->speed is r8169_phylink_handler(), while the SFP branch of
-rtl8169_set_link_ksettings() still writes phydev->speed directly and
-reprograms the SerDes without touching tp->speed:
+	if (!rtl_supports_eee(tp) || tp->sfp_mode == RTL_SFP_8127_ATF)
+		return 0;
 
-	if (!phy_check_valid(speed, duplex, phydev->supported))
-		return -EINVAL;
+	caps |= MAC_100FD | MAC_1000FD;
 
-	mutex_lock(&phydev->lock);
+RTL_GIGA_MAC_VER_52 passes rtl_supports_eee(), so lpi_capabilities ends up
+as MAC_100FD | MAC_1000FD and PHY_INTERFACE_MODE_1000BASEX is added to
+lpi_interfaces further down, even though mac_capabilities for this mode is
+only MAC_1000FD and there is no phydev.  Nothing can act on it, since
+phylink_activate_lpi() is only reached when pl->phy_enable_tx_lpi is set
+from a connected PHY and phylink_ethtool_get_eee()/set_eee() return
+-EOPNOTSUPP without pl->phydev, but the advertised mask still lists a speed
+this interface cannot run at.
 
-	phydev->autoneg = AUTONEG_DISABLE;
-	phydev->speed = speed;
-	phydev->duplex = duplex;
-
-	rtl_sfp_init(tp);
-
-	mutex_unlock(&phydev->lock);
-
-Should the changelog entry be dropped, or was the intended
-rtl8169_set_link_ksettings() update accidentally lost in a rebase?
-
-Following the two converted consumers, the divergence does not look
-observable today. tp->sfp_mode is only assigned inside
-if (rtl_is_8125(tp)) in rtl_init_one(), and both rtl_get_coalesce() and
-rtl_set_coalesce() start with:
-
-	if (rtl_is_8125(tp))
-		return -EOPNOTSUPP;
-
-so rtl_coalesce_info() cannot be reached on the chips that take the SFP
-write path. The SFP branch is also gated by phy_check_valid() against
-phydev->supported, and rtlgen_sfp_get_features() in
-drivers/net/phy/realtek/realtek_main.c only sets
-ETHTOOL_LINK_MODE_10000baseT_Full_BIT, so no other speed can be forced
-there, and r8169_get_tx_lpi_timer_us() keeps seeing the real link rate that
-rtlgen_sfp_read_status() decodes from RTL_PHYSR.
-
-The construct is also replaced later in this series by "r8169: add support
-for phylink", where rtl8169_set_link_ksettings() only calls
-phylink_ethtool_ksettings_set() and tp->speed is written from
-rtl_mac_link_up() and rtl_mac_link_down(), so only the changelog/diff
-mismatch remains.
-
->  	if (netif_carrier_ok(ndev)) {
-> -		rtl_link_chg_patch(tp);
-> +		rtl_link_chg_patch(tp, tp->speed);
->  		rtl_enable_tx_lpi(tp, tp->phydev->enable_tx_lpi);
->  		pm_request_resume(d);
->  	} else {
-> @@ -5667,6 +5667,7 @@ static int rtl_init_one(struct pci_dev *pdev, const struct pci_device_id *ent)
->  				     ext_xid_str, xid);
->  	tp->mac_version = chip->mac_version;
->  	tp->fw_name = chip->fw_name;
-> +	tp->speed = SPEED_UNKNOWN;
+> +	case RTL_SFP_8127_ATF:
+>  		phy_mode = PHY_INTERFACE_MODE_INTERNAL;
+>  		tp->phylink_config.mac_capabilities |= MAC_10000FD;
+> -	} else {
+> +		break;
+> +	default:
+>  		tp->phylink_config.mac_capabilities |= MAC_10 | MAC_100;
+>  
+>  		if (tp->mac_version == RTL_GIGA_MAC_VER_80)
 
 [ ... ]
 
