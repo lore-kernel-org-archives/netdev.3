@@ -1,207 +1,386 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11011070.outbound.protection.outlook.com [52.101.65.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1558370AC0;
-	Fri,  4 Sep 2026 07:52:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788508371; cv=none; b=g7iuoNfOxkq6NlS+iA4uKxSKyY9cSgyksaOzUWdcP+Ld+hc5OCzz2Rs6X8E04Wk/PNHyFINq0PHfGunfXFdjHp4LGn2S1xLiypovAd+Pe7d+kOfAUj/RV6H4Cpa+bLVFW7C8q+ohMewqepChzrY5ecdueIsiRZJ0Ov+tpdZKiW0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788508371; c=relaxed/simple;
-	bh=4U0pdawU5K3EkvrtwAnu4RwK8qBPFQcU8RRQHJlDR5s=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=dOYhV8Do9DmGLaef8bQNTBPAQZzZmRVrA8/2vugA1BljQccOJy9z7iaT7uJPaAHW9AoTX2Gud6lJepOY1sf6yAgno8veiM7QrK1USDEeatwLvuAk3LWmkV4hqumqoyqAfaGdiTQf79Eugt1vIQKAzrgzOaxhgd5sG+0La8Pyyxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MzrAqYlD; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA4903DA5C5;
+	Fri,  4 Sep 2026 07:52:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.65.70
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788508375; cv=fail; b=EfEEaaZUkBcnCEo7K7KPHCE8HDhxoh725LwbBoT6XbeIvrWMKSYQJCSL7XL9AunsQoEr6xwA4nNw4wLRjYjLWzlkH6/YUCLTFO4BHYmMe/Pwq0AdNTUU+VE7iHeU+sFPmb3vdXJGRL1egBlHTkhg6SALEjXoA+ArhB7ZJ+oqYdM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788508375; c=relaxed/simple;
+	bh=owuFfi6C8xcvXOhNNmeOGKTOVYLuKaxYvOykfMvAGgM=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=axSfNEkW6WKnkD1N9XviZn4rDxivnfJX1aAnHWFTnCurlt/YtOZpOxqIBNahPBf1iP3tOItB/fta0etAvKjpnUutFn6xsw6cbS5gVJuWAX60p5yFxYt7WEwr3c8K9tf5k6gRICiogBPhCPiBw5U95nRiCqHnHDUyMvS/jO5+uRs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=KOLGQ1tQ; arc=fail smtp.client-ip=52.101.65.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MzrAqYlD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C72CB1F00A3D;
-	Fri,  4 Sep 2026 07:52:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788508369;
-	bh=pbzq0XTwmls3FFV3AU7UuO/jHL5zotZMGdor4Ck16xY=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=MzrAqYlDG5vvnHOsnBaCXUEUny5H9UN9B8o7QBLvnOGJTsZnAN58VWm85Rbr7tblX
-	 q/azTy/O11BMBufl8vKV5IhSIquoumtBId5xLLP1AMPFqSVG6P/5b52s/OBj/sSVg3
-	 smazt1hMbO1+tLDF6PTsyP7skgWBikigpPicZ+lQ8L479Zi2drj+yyqNtc1ehyieuP
-	 0p7hAAMptC1pnTZAimvo/n3ZI/GYj17wnWJAN4jzc0ONeJqcyR8pe2+EmGgc/RBZNM
-	 cREkmoMHJ4komEMQkLPgUYaP7ex9fpH9FH7mglTFFJchppTw2WBntxVFH3BC9cc5sa
-	 +TPLlsOe48Ayg==
-Subject: Re: [PATCH net-next] octeontx2-af: fix PF/CGX debugfs PCI bus lookup
-From: netdev-bot+sashiko@kernel.org
-To: rkannoth@marvell.com
-Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, sgoutham@marvell.com, sbhatta@marvell.com
-Date: Fri, 04 Sep 2026 07:52:48 +0000
-Message-ID: <178850836833.4131868.13905270816601203708@kernel.org>
-In-Reply-To: <20260901044939.2772845-1-rkannoth@marvell.com>
-References: <20260901044939.2772845-1-rkannoth@marvell.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="KOLGQ1tQ"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Wah344f5PItfQPY+upxhDZBdCnNJjHzAvtaXjV3sl3CWR3Or68AdCFYoSQmCQrwfuxGUlvybS/9+KqEBEAtF/0XAQbbeI8aW3o31LgCcPKVmcEi/SWrBIuCx57lweckQ9o6s4sXDP9Fo0Nd1vLjY5f/7FvqoK92Z842P4nBxwqZMrTJBJ0ixPqz11H7QqjNIdgQ5C0S4t29axAZ/7TJ0vsH0ZAxCjM/ytqXDPX9lAY4h91dvyJjsMzFOOzBlgr3UiyH150FG82eSFiBXE73bKu7LQYo2XAYPLSLc2OL5p3MB2TnSJiMyWoecQBUyVN2EtF27TUfrVzkIO6Puh4y6mA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Qp4NL4aWJADVd8FxHqUZhUjzPLecTE9Td/j1Jgjr93c=;
+ b=PjLiDv/VYdOLrXTD4PByR0pks6MW/UrV9wRnlSFCPCWXHnvNWBhigCtm9A0YZZLOIVe2HdnxTjNidkdV8xmAb2/GEoSNzmtj72tD3c4EXP0xaxSrg7dwetzOg9Z2PiXdwXx6rtB1TW4bPlgaqVcWGd0G8/MJzilyfPTmNjmTrrl2C1W2X4eUplCCjzAFp9ewiCKhTMXrm7+Mhmv8auNaT51GASbvEjA5bcWZg74ce/KDWyu20zKI6CI7BvOdtoCcX44qWZ1zFWvGPJFUmSupfPBOdM7sswM8SUMOgWVL1Tu4WSI4EFJVALIZghTt69j5m8P6RN+y0OczSeuDrfYwiQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Qp4NL4aWJADVd8FxHqUZhUjzPLecTE9Td/j1Jgjr93c=;
+ b=KOLGQ1tQbuf/xUm17fkxcXdWK1+Yj64fpQdNLxaCwbUkSKjtfZ06P6sEBdcJcDDOzCF+w+arvU8Nc3ZndO2IanOPn1bLnrtkgPTnFkl1IDfDKKI10rMlFRIKqE9M2kr5ghVlDpwcxX6Axw3Q083NtZHs8PFJ5QXONNswREeEcGFWmFGk7MqVxkHTk8c0wZrOBEf38udmcLDqvJmUUcefrFBO1a+/xvkqVpezeQu2v9JcNh2Ks2/ldJ4I8D2yiWzXyhUR/JEPz1ZxP+6rSUxUTIGRjdtNRmEbEmy+axbRGDwhDJLcQL31FBD9sAUW2Op3Qf184vMmh058U9sMOWLOWA==
+Received: from GV2PR04MB11739.eurprd04.prod.outlook.com
+ (2603:10a6:150:2fc::18) by VI1PR04MB6973.eurprd04.prod.outlook.com
+ (2603:10a6:803:13d::9) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Fri, 4 Sep
+ 2026 07:52:47 +0000
+Received: from GV2PR04MB11739.eurprd04.prod.outlook.com
+ ([fe80::71c2:937b:d466:174a]) by GV2PR04MB11739.eurprd04.prod.outlook.com
+ ([fe80::71c2:937b:d466:174a%6]) with mapi id 15.21.0360.008; Fri, 4 Sep 2026
+ 07:52:47 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: "netdev-bot+sashiko@kernel.org" <netdev-bot+sashiko@kernel.org>, "Wei Fang
+ (OSS)" <wei.fang@oss.nxp.com>
+CC: Claudiu Manoil <claudiu.manoil@nxp.com>, Vladimir Oltean
+	<vladimir.oltean@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
+	"andrew@lunn.ch" <andrew@lunn.ch>, "olteanv@gmail.com" <olteanv@gmail.com>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
+	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"linux@armlinux.org.uk" <linux@armlinux.org.uk>, "imx@lists.linux.dev"
+	<imx@lists.linux.dev>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH v3 net-next 04/15] net: enetc: add link speed message
+ support to PF driver
+Thread-Topic: [PATCH v3 net-next 04/15] net: enetc: add link speed message
+ support to PF driver
+Thread-Index: AQHdOPf8zvCP2zR37UmwwM82nYY157a9ilwAgACBLWA=
+Date: Fri, 4 Sep 2026 07:52:47 +0000
+Message-ID:
+ <GV2PR04MB117399C0557AA16C12279AB0588B52@GV2PR04MB11739.eurprd04.prod.outlook.com>
+References: <20260831025441.635045-5-wei.fang@oss.nxp.com>
+ <178847906490.4131868.13521334026222207494@kernel.org>
+In-Reply-To: <178847906490.4131868.13521334026222207494@kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: GV2PR04MB11739:EE_|VI1PR04MB6973:EE_
+x-ms-office365-filtering-correlation-id: c7970a74-4fb8-4d29-71cb-08df0a5982b7
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|19092799006|376014|7416014|23010399003|1800799024|366016|38070700021|11063799006|6133799003|10067099003|5023799004|4143699003|22082099003|18002099003|56012099006;
+x-microsoft-antispam-message-info:
+ 2LV1vUCOS3MJXJc3SsuNqapmKz/0KuGwvMq41QjztnEAwN9kW65/UiKqFYVoRIdKdiB4FTXmGvdECGDiaXgHgybD2ftmt66YLFkFmNNu7j8crwVckNg6G2UtJqa1tRMDAXk/Wb80KfAWGN4QfsobWdnoo+va8oZXr+qhM/qtCIi8/usH9whY0q55rCcw+ZSUxC5j2Q35T0BdO4qv1naH+eq+aVqR7nEnlKXfJIyuUKTB6ljci7HXMCWzW05zhBu4qjTHjgDkEds3q1oG/xpxyZa7FFSo180MYN5ggJ77yy/8vNEdzVJI33xlB3EfqOveQONFn/7NuzpO18nGrr+EnieLaGmO8aUO46xxl9bB67kmgH1HTy5ddC9KbeuJqLDrloiOHAGKcXLdzDay/5h0yKe2N4RQg+YlkcJLn2L3imzaNf+yHsQrx+jhKpPVYo8BRuLmhrg4Hv/AMZ6dvqzNuAtQqO/0UyTAYzuRmiSTm+WG1Ri+P3oMI/M8YUpBFGhGPW2IyULzkmTc6FQnlvmmrJTkBCq+/UH1P2v+2qSF9Fktj/d82FzS+hez1rQBqWuN1PgRN0qf1BAJJxte0+TrsAiCuT655eRtV3skXaGIoLGk9/TaV9MYn/PBDZ39eEW9RFgi3OlVe9x1EmZ4iQWlBct2NREvKnDdvRcNAy/w/ABG0DTVoLtK7mDGsv4WlnnnlvvoSmlf/qiJkKejnV0GzKK7+r9B2YWg9IUx+6izzp4=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11739.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(19092799006)(376014)(7416014)(23010399003)(1800799024)(366016)(38070700021)(11063799006)(6133799003)(10067099003)(5023799004)(4143699003)(22082099003)(18002099003)(56012099006);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?MfnKJ1kocFM6bCCbp2tSw1iPkiVUhIKv8itsZ5hC65ocqxXoeWbqemsVRCWQ?=
+ =?us-ascii?Q?4d0e6OeKS+hp+xvFvPNUNjnflDmvzpPHlu3Iq5q4BkMt42XVQuWf1CD1qRf1?=
+ =?us-ascii?Q?P0ryFGBiQ6pG0H6qA4NK287NCCXwQ+Tzrhh6Rq3vj7PfvBq9W5v5jYuF/Wnt?=
+ =?us-ascii?Q?/AAOB3y37oUYcXIxByfEfqtT54XI/T1TlooLfWrW1vpz+kvacGgUpOidvFhW?=
+ =?us-ascii?Q?MWN6+XJuzamWM0AnVR64zIHEYOtl38GK429ta5Bl6HoT8Uun+ojOcqR2gDf7?=
+ =?us-ascii?Q?r/FVtBi1uL5pGOaucnQ+8/IAgkI8kkz4wkWbS9qYPw2CWusMmpFFrcBdDhZd?=
+ =?us-ascii?Q?X12RdrFG7oov9JU5YUDqz8i0FdAAuOte7zVXklOKyC9wc1HIzUjqSGe+i/eP?=
+ =?us-ascii?Q?oDUUxKeJBCspklMm+NIDGUDYAh8wDOpW9pP4CYnrebI1TstXQXP0RChBfZlO?=
+ =?us-ascii?Q?OtDNWLOenU4th90resIHbFfrosAJEbLpYqadNuEnQZTJJe7Mk95ZF3Ht/zw8?=
+ =?us-ascii?Q?SAA9Qzvyz33cqo+VH922cV2IhzjkIHRvZU3fBrq43pyCxTVQwqqPaYNdgToU?=
+ =?us-ascii?Q?2p9m87pTV8ZFENTv81heQbdgxjHZbPjohfJDXltjl7+7dLQdybRrgvTxI6v+?=
+ =?us-ascii?Q?3dA+JOu7xE0jdjfcBDJEYk4pw3+3frp/7V5SeFgX9EoSy4VsCi3FLigfVKtE?=
+ =?us-ascii?Q?JwD3aHxrQm/9ETXmlVOQzLJ44bzfRxZQeCWUCSApflmh3BNEZmeVW4v1Fj9t?=
+ =?us-ascii?Q?mBL6/PQ9OKArJvfD5R7Al1K50mnSyJIuPok11xfmJxVpcZaSsUWwKpkX3u4Q?=
+ =?us-ascii?Q?LcoCp5tsjcN4WnyKXod4yyIHJijunO1M/i2S7rW+PilwSy1hWFnX1kPG9+5Z?=
+ =?us-ascii?Q?AoSs6CFbBoNsRouPoLJ+WtMN9CB70MI68VpS9IbxVvodfsTKR28yuay2R4KX?=
+ =?us-ascii?Q?I32bhS7D2qcM+8tE+1NKVTfcq5vgOaGx5n3b6R7pfEKBX+Qk2yeHZQeIcneO?=
+ =?us-ascii?Q?5dC1a48gmfMyFEG+wccLSqCil623XT2GMDQ8AOAk2qUNdB78pFIvoTM8yAct?=
+ =?us-ascii?Q?3S0IEW3x0P3TjykThtC9wNG+Wdcu6NMAbukJKxsshtCvMjEwm1Rco2XLgwOF?=
+ =?us-ascii?Q?IgRSSKShl4hvga6dPkhQrqHJVWjQbSS7j7LjoJy/8LtePxpYeisicnBJgT9M?=
+ =?us-ascii?Q?3SfoMsZ8lNdlvVUPlKPgaPOsOJYzX03CcCcHW9GP77w0CjG0ObqmTb8ZYQPP?=
+ =?us-ascii?Q?Lrw8z1zsgg5L+3pNuGgIJNUBvnwbqaMsK7ZLYMdTUIHXmqNOKLgZZ22DOgNq?=
+ =?us-ascii?Q?72aWdOHLQkjjgEArwP4Ckc5bbP+BVjBvj3MgzHeMmFC25Pgr1aRz6WbRW31v?=
+ =?us-ascii?Q?qZQdctd0SYaAwoFVgs1Xc8CKPIttwXJIVunmDa8Y0XOaiGMKvqwKgc3nKOk/?=
+ =?us-ascii?Q?uJjCu88w5HDeQdScLWaAaZZsuQJ++sSLtwK+PJd7XPNswPUY2P8GbwIGzIcZ?=
+ =?us-ascii?Q?gg6YWSQfhqsAjnETgYQuD3JXx6z6IcNGoEtLheHSIrKHIxh1E6AEhnoEYGXg?=
+ =?us-ascii?Q?08X86IuNqJOi1F+4a3zX9iXJJBBNRfyG9dsdpODR9ccXVI0+q9hrIHCuV86f?=
+ =?us-ascii?Q?fadlR7AFGpcppHPycBEmniV6GCFLzmbvIWbBtTiK61tL0IajeOL8apqVx3AA?=
+ =?us-ascii?Q?sOlkuQUl1fozRA8OAXXXKn9XirYO+Hc0L+NU1MvqiHXdQ6Po?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11739.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c7970a74-4fb8-4d29-71cb-08df0a5982b7
+X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Sep 2026 07:52:47.0894
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: eQFOtLJcm8Wh3Jo71NK+zb8mjygp8ptQmeKkDvKQm0LvfWMX/4jrHFkqk/K1PmyqKgEPjvCSyp/QC8ZF/MQhgw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB6973
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider:
+> > @@ -181,6 +212,11 @@ struct enetc_msg_mac_exact_filter {
+> >   * cmd_id 0x0: get the current link status
+> >   * cmd_id 0x1: register link status change notification
+> >   * cmd_id 0x2: unregister link status change notification
+> > + *
+> > + * Link speed message, class_id 0x81.
+> > + * cmd_id 0x0: get the current link speed.
+> > + * cmd_id 0x1: register link speed change notification, not supported =
+yet
+> > + * cmd_id 0x2: unregister link speed change notification, not supporte=
+d yet
+> >   */
+>=20
+> [Severity: Medium]
+>=20
+> This documents cmd_id 0x0 as returning the current link speed, but can th=
+e
+> reply describe a speed the port is not running at?
+>=20
+> enetc_msg_get_link_speed() takes the value straight from
+> phylink_ethtool_ksettings_get() with no link-state gating.  For a fixed
+> link, phylink copies the configured speed/duplex unconditionally:
+>=20
+> drivers/net/phy/phylink.c:phylink_ethtool_ksettings_get() {
+> 	...
+> 	case MLO_AN_FIXED:
+> 		phylink_get_fixed_state(pl, &link_state);
+> 		phylink_get_ksettings(&link_state, kset);
+> 		break;
+> 	...
+> }
+>=20
+> So with the carrier down, or before the PF netdev has ever been opened,
+> enetc_build_link_speed_msg() still encodes a valid speed class code rathe=
+r
+> than ENETC_MSG_SPEED_UNKNOWN.  The MLO_AN_INBAND case reads the
+> PCS live,
+> which also need not match what the MAC was last programmed with.
+>=20
+> Would it be more consistent to derive the answer from the state the PF
+> already tracks, the way the sibling link-status message does?
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 1
+No fix is needed here. Message class 0x81 (link speed) and class 0x80 (link
+status) are intentionally separate, and each returns the correct thing.
+>=20
+> drivers/net/ethernet/freescale/enetc/enetc_msg.c:enetc_msg_get_link_statu=
+s()
+> {
+> 	...
+> 	pf_msg =3D enetc_build_link_status_msg(priv, pf->link_up);
+> 	...
+> }
+>=20
+> priv->speed is written next to PCR_PSPEED in enetc4_set_port_speed()
+> (including the 10Mbps fallback on SPEED_UNKNOWN), so the programmed rate
+> is
+> already recorded.  As written, a VF can be told 1G/2.5G while the same PF
+> reports the link as down over class 0x80.
 
-- [Medium] rvu_dbg_rvu_pf_cgx_map_display()
-  (drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c) now derives…
-- [Medium] The patch fixes only one of the driver's PF→PCI-device
-  conversions, leaving the same 'RVU PF n is on bus n + 1' assumption in…
-- [Low] The commit fixes a user-visible debugfs defect (the
-  rvu_pf_cgx_map file silently omitted every mapped PF when the AF was…
+GET_CURRENT_LINK_SPEED is meant to expose the same value userspace
+would see via ethtool - the port's configured/negotiated speed/duplex. That
+is a property that remains meaningful even when the carrier is down (for a
+fixed link, ethtool likewise reports the configured speed regardless of lin=
+k state).
+This message never claims the link is currently up; whether the link is up =
+is
+answered by class 0x80, which the DPDK VF is expected to query separately
 
---
+>=20
+> > diff --git a/drivers/net/ethernet/freescale/enetc/enetc_msg.c
+> b/drivers/net/ethernet/freescale/enetc/enetc_msg.c
+> > index e21414acdc0d..c3ae4c024f34 100644
+> > --- a/drivers/net/ethernet/freescale/enetc/enetc_msg.c
+> > +++ b/drivers/net/ethernet/freescale/enetc/enetc_msg.c
+> > @@ -280,6 +280,93 @@ static u16 enetc_msg_handle_link_status(struct
+> enetc_pf *pf, int vf_id,
+> >  	return 0;
+> >  }
+> >
+> > +static u16 enetc_build_link_speed_msg(int speed, int duplex)
+> > +{
+> > +	u32 speed_code =3D ENETC_MSG_SPEED_UNKNOWN;
+> > +
+> > +	switch (speed) {
+>=20
+> [ ... ]
+>=20
+> > +	return FIELD_PREP(ENETC_PF_MSG_CLASS_ID,
+> > +			  ENETC_MSG_CLASS_ID_LINK_SPEED) |
+> > +	       FIELD_PREP(ENETC_PF_MSG_CLASS_CODE_U8, speed_code);
+> > +}
+> > +
+> > +static u16 enetc_msg_get_link_speed(struct enetc_pf *pf, int vf_id)
+> > +{
+> > +	struct enetc_ndev_priv *priv =3D netdev_priv(pf->si->ndev);
+> > +	struct enetc_vf_state *vf_state =3D &pf->vf_state[vf_id];
+> > +	struct ethtool_link_ksettings link_info =3D {};
+> > +
+> > +	/* A malicious or malfunctioning VM could potentially spam these
+> > +	 * messages in a tight loop causing global rtnl_lock contention,
+> > +	 * which may severely starve other processes on the host that
+> > +	 * require rtnl_lock for routine network configuration, resulting
+> > +	 * in a system-wide control-plane denial of service. Therefore,
+> > +	 * we expect the VF query for link speed to be trusted. There's no
+> > +	 * need to consider the transition from trusted to untrusted here,
+> > +	 * as this won't cause rtnl_lock() to be called frequently.
+> > +	 */
+> > +	mutex_lock(&vf_state->lock);
+> > +	if (!(vf_state->flags & ENETC_VF_FLAG_TRUSTED)) {
+> > +		mutex_unlock(&vf_state->lock);
+> > +
+> > +		return ENETC_PF_MSG_PERM_DENY;
+> > +	}
+> > +	mutex_unlock(&vf_state->lock);
+>=20
+> [Severity: Medium]
+>=20
+> Should the trusted-VF requirement be described in the changelog and in th=
+e
+> mailbox ABI comment in enetc_mailbox.h?
+>=20
+> ENETC_VF_FLAG_TRUSTED is only ever set from enetc_pf_set_vf_trust()
+> (ndo_set_vf_trust, i.e. "ip link set <pf> vf N trust on"), and pf->vf_sta=
+te
+> is allocated with devm_kcalloc() in enetc_init_sriov_resources(), so flag=
+s
+> is zero by default.  A default setup therefore gets
+> ENETC_PF_MSG_PERM_DENY / -EACCES back from enetc_msg_vsi_send().
+>=20
+> The commit message says without qualification:
+>=20
+>   "The PF will reply the current link speed when it receives the get link
+>    speed message from VF."
+>=20
+>   "VFs controlled by DPDK can obtain real-time link speed information fro=
+m
+>    the PF"
+>=20
+> The ABI comment added to struct enetc_msg_generic also describes class 0x=
+81
+> cmd 0x0 with the same wording as the 0x80 status query, and
+> enetc_msg_get_link_status() answers any VF with no trust check.  Two pair=
+ed
+> link-info queries with different permission models is surprising for a
+> DPDK VF implementer reading only the header.
 
-octeontx2-af: fix PF/CGX debugfs PCI bus lookup
+The asymmetry is intentional and technically justified, but you're right th=
+at it
+should be documented. I'll update the changelog to state that the get-link-=
+speed
+query requires the VF to be trusted, and annotate the class 0x81 cmd 0x0 en=
+try
+in enetc_mailbox.h to note the trusted-VF requirement, distinguishing it fr=
+om the
+ungated 0x80 status query.
 
-The rvu_pf_cgx_map debugfs file looked up each RVU PF PCI device assuming
-PF0 always lives on PCI bus 1. This commit takes the base bus number from
-rvu->pdev->bus->number instead, so the per-PF lookup uses pf + start.
+>=20
+> > +
+> > +	rtnl_lock();
+> > +	phylink_ethtool_ksettings_get(priv->phylink, &link_info);
+> > +	rtnl_unlock();
+>=20
+> [Severity: High]
+>=20
+> Can blocking on rtnl here stall mailbox service for the other VFs?
+>=20
+> This runs from the single work item that services every VF with the PSIIE=
+R
+> MR interrupts masked:
+>=20
+> drivers/net/ethernet/freescale/enetc/enetc_msg.c:enetc_msg_task() {
+> 	...
+> 	for (i =3D 0; i < pf->num_vfs; i++) {
+> 		...
+> 		enetc_msg_handle_rxmsg(pf, i, &msg_code);
+> 		...
+> 	}
+> out:
+> 	enetc_enable_psiier_interrupts(pf);
+> }
+>=20
+> rtnl hold times elsewhere (ndo_open with PCS/PHY negotiation, netdev
+> unregistration, another driver probing, netlink dumps) are unbounded, whi=
+le
+> the VF side has a hard 200ms budget:
+>=20
+> drivers/net/ethernet/freescale/enetc/enetc_vf.c:enetc_msg_vsi_send() {
+> 	...
+> 	err =3D read_poll_timeout(enetc_rd, vsimsgsr,
+> 				!(vsimsgsr & ENETC_VSIMSGSR_MB),
+> 				1000, 200000, false, &si->hw, ENETC_VSIMSGSR);
+> 	if (err) {
+> 		dev_err(dev, "VSI mailbox timeout\n");
+> 	...
+> }
+>=20
+> So one iteration waiting on rtnl can push unrelated requests from other V=
+Fs
+> past that timeout, with a hardware mailbox transaction left outstanding.
+> For a host-assigned VF, enetc_msg_vsi_set_primary_mac_addr() is issued fr=
+om
+> ndo_set_mac_address with rtnl already held, i.e. the VF waits for a PF re=
+ply
+> that needs the very lock the VF holds.
+>=20
+> There is a second effect on teardown: enetc_msg_psi_free() does
+> cancel_work_sync(&si->msg_task), and it is called from
+> enetc_sriov_configure() (pci_driver::sriov_configure, invoked from
+> sriov_numvfs_store() under the PCI device_lock) and from
+> enetc_pf_remove()/enetc4_pf_remove().  Does SR-IOV disable/removal now
+> wait
+> for rtnl while holding device_lock, for a time a busy VF can extend?
+>=20
+> Every other handler in this file avoids rtnl.  enetc_msg_get_link_status(=
+)
+> answers from the cached pf->link_up under pf->msg_lock, and speed/duplex =
+are
+> already handed to enetc4_pl_mac_link_up() where they could be cached the
+> same way.  Would caching the speed there and replying from the cache work
+> instead?
 
-> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c
-> index 22ee996768796..bf0302c0c1fc9 100644
-> --- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c
-> +++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c
-> @@ -829,6 +829,7 @@ static int rvu_dbg_rvu_pf_cgx_map_display(struct seq_file *filp, void *unused)
->  	int pf, domain, blkid;
->  	u8 cgx_id, lmac_id;
->  	u16 pcifunc;
-> +	u8 start;
->  
->  	domain = 2;
+this does not need a fix. Using phylink_ethtool_ksettings_get() here is del=
+iberate
+rather than an oversight, and the practical impact is negligible.
 
-[Severity: Medium]
-The bus half of the lookup is now taken from the real device, but the
-segment stays a literal in rvu_dbg_rvu_pf_cgx_map_display().  Should the
-domain come from the same PCI hierarchy?
+The speed passed into enetc4_pl_mac_link_up() is not always the actual link=
+ speed.
+When there is a PCS after the MAC and rate matching is in effect, the speed=
+ given
+to the callback is the PCS/interface rate, not the external PHY link speed.=
+ Only
+phylink_ethtool_ksettings_get() reflects the real media/PHY link speed. So =
+caching
+the callback speed and replying from it could hand the VF the PCS rate inst=
+ead of
+the actual PHY link speed - exactly what DPDK needs to get right. Querying =
+phylink
+guarantees the VF sees the same link speed that ethtool reports on the PF.
 
-The driver already has an idiom for this in get_cpt_pf_num():
+In real usage a DPDK VF does not poll link speed in a tight loop - it queri=
+es it
+occasionally (typically around link-change events), not on a hot path. Comb=
+ined
+with the existing trusted-VF gate, the chance of this rtnl_lock() acquisiti=
+on
+meaningfully contending with host control-plane operations is negligible.
+There is no measurable stall in practice.
 
-  drivers/net/ethernet/marvell/octeontx2/af/rvu_cpt.c:get_cpt_pf_num() {
-	...
-	domain_nr = pci_domain_nr(rvu->pdev->bus);
-	for (i = 0; i < rvu->hw->total_pfs; i++) {
-		pdev = pci_get_domain_bus_and_slot(domain_nr, i + 1, 0);
-	...
-  }
+Given that the cached value can be semantically wrong for PCS/rate-matching
+setups, and the rtnl acquisition is rare and already restricted to trusted =
+VFs,
+keeping the phylink query is the correct trade-off. No change is needed.
 
-On a system whose RVU AF is not enumerated in segment 2 - the same class
-of non-default enumeration this commit describes - would every iteration
-hit the "if (!pdev) continue;" path, leaving rvu_pf_cgx_map with only its
-header line?
-
-And if some unrelated device happens to sit at segment 2 / bus
-(start + pf) / devfn 0, is there anything after the lookup that validates
-vendor/device ID before dev_name(&pdev->dev) is printed next to real
-CGX/LMAC/channel state?
-
->  	mac_ops = get_mac_ops(rvu_first_cgx_pdata(rvu));
-> @@ -837,11 +838,16 @@ static int rvu_dbg_rvu_pf_cgx_map_display(struct seq_file *filp, void *unused)
->  		return 0;
->  	seq_printf(filp, "PCI dev\t\tRVU PF Func\tNIX block\t%s\tLMAC\tCHAN\n",
->  		   mac_ops->name);
-> +
-> +	/* All the PF devices are on contiguous PCI bus numbers, but the PF0(AF)
-> +	 * may not start from 1 always. Hence get bus number from PCI device.
-> +	 */
-> +	start = rvu->pdev->bus->number;
-
-[Severity: Medium]
-This new comment states an invariant that several peer sites in the same
-driver contradict, and there is no shared helper keeping them in sync.
-
-The closest one is in the same file, cgx_print_dmac_flt(), which does the
-identical PF-to-PCI-device conversion with the old base:
-
-  drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c:cgx_print_dmac_flt() {
-	...
-	pf = cgxlmac_to_pf(rvu, cgx_get_cgxid(cgxd), lmac_id);
-	domain = 2;
-
-	pdev = pci_get_domain_bus_and_slot(domain, pf + 1, 0);
-	if (!pdev)
-		return 0;
-	...
-	seq_printf(s, "%s  PF%d  %9s  %9s",
-		   dev_name(&pdev->dev), pf, bcast, mcast);
-	...
-  }
-
-On the topologies this commit targets, does the CGX dmac_filter debugfs
-file end up empty, or print real CGX DMAC control/CAM values next to an
-unrelated device's name?
-
-The following two are pre-existing and not introduced by this patch, but
-they carry the same assumption in non-debug paths.
-
-get_cpt_pf_num() scans buses i + 1:
-
-  drivers/net/ethernet/marvell/octeontx2/af/rvu_cpt.c:get_cpt_pf_num() {
-	...
-		pdev = pci_get_domain_bus_and_slot(domain_nr, i + 1, 0);
-	...
-  }
-
-With a shifted bus base, would rvu->cpt_pf_num stay at -1, so that
-is_cpt_pf()/is_cpt_vf() never recognize the real CPT PF/VF mailbox
-requests?
-
-  drivers/net/ethernet/marvell/octeontx2/af/rvu_cpt.c:is_cpt_pf() {
-	int cpt_pf_num = rvu->cpt_pf_num;
-
-	if (rvu_get_pf(rvu->pdev, pcifunc) != cpt_pf_num)
-		return false;
-  }
-
-rvu_sdp_init() encodes the exact inverse of the new comment and derives an
-rvu->pf[] index from it:
-
-  drivers/net/ethernet/marvell/octeontx2/af/rvu_sdp.c:rvu_sdp_init() {
-	...
-		/* The RVU PF number is one less than bus number */
-		sdp_pf_num[i] = pdev->bus->number - 1;
-		pfvf = &rvu->pf[sdp_pf_num[i]];
-	...
-  }
-
-rvu->pf is only devm_kcalloc(rvu->dev, hw->total_pfs, ...) in
-rvu_setup_hw_resources().  Can this index exceed total_pfs when the
-discovered SDP PF bus number is shifted, and can that write out of bounds
-through pfvf->sdp_info?
-
-That same sdp_pf_num feeds is_sdp_pf() -> is_pf_cgxmapped(), which is the
-only per-PF filter in the loop this patch fixes, so the stale assumption
-still reaches the corrected listing.
-
->  	for (pf = 0; pf < rvu->hw->total_pfs; pf++) {
->  		if (!is_pf_cgxmapped(rvu, pf))
->  			continue;
->  
-> -		pdev =  pci_get_domain_bus_and_slot(domain, pf + 1, 0);
-> +		pdev =  pci_get_domain_bus_and_slot(domain, pf + start, 0);
->  		if (!pdev)
->  			continue;
->  
-
-[Severity: Low]
-This isn't a bug, but the commit has no Fixes: tag even though it repairs a
-user-visible debugfs defect (rvu_pf_cgx_map silently omitting every mapped
-PF when the AF is not on bus 1).
-
-git blame on the pre-patch tree attributes both the "domain = 2;"
-assignment and the "pci_get_domain_bus_and_slot(domain, pf + 1, 0)" lookup
-in rvu_dbg_rvu_pf_cgx_map_display() to commit e2fb3730386541
-("octeontx2-af: Add debug messages for failures").  Could
-"Fixes: e2fb3730386541" be added so stable tooling can determine the
-affected history?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260901044939.2772845-1-rkannoth%40marvell.com
