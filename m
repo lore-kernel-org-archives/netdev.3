@@ -1,281 +1,136 @@
-Received: from pdx-out-002.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-002.esa.us-west-2.outbound.mail-perimeter.amazon.com [44.246.1.125])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f180.google.com (mail-oi1-f180.google.com [209.85.167.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BC69377566;
-	Fri,  4 Sep 2026 01:31:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.246.1.125
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BC6B375F65
+	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 01:34:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788485470; cv=none; b=GxARmoNBMIORIw7KA/74J3QrSoiSsgfHQ3dUFZ6XiUQZpcn12cSfnGIguZKbjfsjB2NtyT/fc+2GSiftFkzPKghDUzuGyE2QxdFKOUVVngirp5Wqwl/jNwwM0DVBEsq+0dZo9cdx92v4+p0HJHQL0sZnznPt1K5nBF0fOsmq6tk=
+	t=1788485658; cv=none; b=Ks53jcOaHkzyaAWB46SHYrI0WgVZQgTvv1m5buR93CRX2pe/+NRYRc65O314B/IGMa4Xy8loQWGdj4SqwlNgJNz06E/BiyDc7gdk58f7Nq/AnH3fI1EJL5HfJ+BTvoxAaKUQ8QL7AVvJV0oAszNrrixUqSjchh0l2YJfjd7r0dA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788485470; c=relaxed/simple;
-	bh=RLYIBihWFAZe8Pd+AhyecYDThJcw4PROecgrkLzIoCE=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Z1w7xuRJXW76sY1z/SMTGC2oM6wdxUT7azkR3CHLf6+Tup8ZNLzSRS1pUfYV8jYMxbYMsT7a58s8uR6xxSdRhHhhDSdJ848ZU5M82ID91bFbN3i+OqW2XzuXms6PfEuRWaorl+5salROMCVD1ouUmPzkzDUUw75EZGPxsfLxLpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=rcPpKyR4; arc=none smtp.client-ip=44.246.1.125
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+	s=arc-20240116; t=1788485658; c=relaxed/simple;
+	bh=o78dihvCR4QZ4C3mta/CvUdV7mYAuNVF1FtlYFhOjm4=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=KNUgPw/YXitqcIv1hvO1RorsdMLrWm5uZZJqmbqyxhbneBztlc329GDH2dYo+DB1V+j8eO9EcrSW1xMZ2xSp6AIEhouafps88R7H0zqmsdouxr6pU5IP9cDKV6/jhEH56V7pWPLVQXfb5OmeP16YbMUS7w0SEWWY5xXKxBUEcF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FPT86kYB; arc=none smtp.client-ip=209.85.167.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="rcPpKyR4"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FPT86kYB"
+Received: by mail-oi1-f180.google.com with SMTP id 5614622812f47-4b333de9451so491694b6e.3
+        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 18:34:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1788485469; x=1820021469;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=bahJnU9qsHIbxRAQzoBVDDsLsFedAZHhW5MPInxWE84=;
-  b=rcPpKyR4FxrCKeFkuB/BWSC+B/SoQE1NOLgBSyb4Llw2tz+pNMfPeerd
-   JSbEk3MaxQmEvsVM8v+Wq4J/HXjEo2TPE/F06XjR4Y8Ji2memrRGhqK+H
-   lU/mQI0ISh3PCN59di+Qs4MI3gdIYF3wcldR4Dooa9Nf/GCdlB18c0OCY
-   iZjB/Kt7WlGxIGbPEex+QQ8h+gM74jeGcvB+JTMD+COzgs+o6QTQg5Xkd
-   0Es6xs9jRaz1jtncYv6jGWdMvGPCeJ2I1AuJ02BOFls4BU1mdxhcj2IXt
-   /aBf6TDtv8I0llm687IZgq2pdwj750s+feg9hWmyj1fFumrsy7AOhuI6n
-   w==;
-X-CSE-ConnectionGUID: 6eqHi8/dTJao1iW7qe1bqg==
-X-CSE-MsgGUID: KyDRdKszQcyRYRAyaKWXIA==
-X-IronPort-AV: E=Sophos;i="6.25,260,1779148800"; 
-   d="scan'208";a="27782135"
-Received: from ip-10-5-12-219.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.12.219])
-  by internal-pdx-out-002.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2026 01:31:05 +0000
-Received: from EX19MTAUWB001.ant.amazon.com [205.251.233.104:14188]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.47.243:2525] with esmtp (Farcaster)
- id 836b5b7c-d03b-4cc0-bcc0-1335b995bfd2; Fri, 4 Sep 2026 01:31:05 +0000 (UTC)
-X-Farcaster-Flow-ID: 836b5b7c-d03b-4cc0-bcc0-1335b995bfd2
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.45;
- Fri, 4 Sep 2026 01:31:05 +0000
-Received: from dev-dsk-surajjs-2c-afd24e6d.us-west-2.amazon.com
- (10.189.247.117) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.46; Fri, 4 Sep 2026
- 01:31:05 +0000
-From: Suraj Jitindar Singh <surajjs@amazon.com>
-To: <stable@vger.kernel.org>
-CC: Pablo Neira Ayuso <pablo@netfilter.org>, Jozsef Kadlecsik
-	<kadlec@netfilter.org>, Florian Westphal <fw@strlen.de>,
-	<netfilter-devel@vger.kernel.org>, <netdev@vger.kernel.org>
-Subject: [PATCH 6.1.y] netfilter: nf_tables: make nft_object rhltable per table
-Date: Fri, 4 Sep 2026 01:31:02 +0000
-Message-ID: <20260904013102.22326-1-surajjs@amazon.com>
-X-Mailer: git-send-email 2.47.3
+        d=gmail.com; s=20251104; t=1788485656; x=1789090456; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=gmQ5igFexm4sUQOCZXQ5PKCRuhBD2HGUSJLv3v9h5RA=;
+        b=FPT86kYBCtfQWn/n/uWSGsQtw3LHcblK3tdzd6+pUE3fvneQmjrKXZAAaXvJJQjJXP
+         rmR1G6kOWJnOFywJVfZArxCC1K/wyVUpMJrcZrk/rsVPYhTUNHiB6VKtaHQCa57/UF34
+         vvLdX2JH2BfSc6qM/HuZkKc1KTzbYikqg2YgoE9c616Lu9GlXE8qSfKYGx5SYKQqjexj
+         ks8qQPZTExcIuVpHtB2Pu4PpN951LJLiDuASEObpNSBFVgaAV8ee2QYqjVLuw+2RuWyO
+         eh/Mv3OeQn5JYB9Sq3Eek1RltOviOdfCvWTRptrpOCx89Ps0K+4txdhLsNanak2jsepX
+         ItEA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788485656; x=1789090456;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=gmQ5igFexm4sUQOCZXQ5PKCRuhBD2HGUSJLv3v9h5RA=;
+        b=j7/uq1ue5vWpQjWYcH/0R0p4LJ/kVqvm1nOe3/xjBwBoxitC6QXAOGidt5IrexZnvz
+         FXBa13w7uvOGmLy1BKrhlMwsFZ7gIzhv3IHvv8AWLKVm4AGHgAJQWL1vXEywy6mywt4W
+         5sXNvIZ2YtiTgdYOGs/+AN7SbKy4V6AVQp4ZiPQ4nlfR8psOrH3MjH6w3dLeq+xTB6Bo
+         aUqbTbeyg4IJGPViMYI8il248Wac/YtMNs5W++U1H1CdnvP0ES8lOahdzFC/s7Wt2YdX
+         S2fke4CGUKHNKWYzjKONaGp15aRfAgIMrKXN/0xobemfUNbNSuc+9IHnxK7iJ1gQEQr7
+         gOvQ==
+X-Gm-Message-State: AFuF++ng4c6wKGYjqvqEH7dJJHOiCa50zwO0IDFsfAb1lu86sfbnodKc
+	5BHQw8/k6iaNdHIvQAYMUMYjbbcvqf3pGEX5n+sL+e78ZvUJb8PbNfC7Ynle5sDg
+X-Gm-Gg: AYBFou1BZy3HsmGW0wy7e9zUf6H/Qsth4ZS6KqYCOB/B/dOlz5fgZH1NtrjaquZUl3m
+	8M8eU7kMpDObu3Wt9F/Mr3gXMY49ZuifkPZHwLfh9nEq1bjRuUHDs0Emx0l56VPS9nS2oFfd5JU
+	z2LkcAl12DBcNS6zCefKh55nygG9JkSvNmLh1lKS26l6gadhCMuBOg4U4GtfI9It3S2A4xYh/S2
+	sVwavCxjih5fSnCj+OXDYqVTD1YkBHDGhwIxKMI1wrAbqQ0vSiLHSAnSzsM/HObMxVYbg6iX36Z
+	ngG8iR7q+K8KBY6sxVcrK0VWNsdCgUQAX3gOMhUuhckJeF/QIkvSRaj/MM4sXPuI0mlpKrFerPN
+	sK1P4rp3dTz10Qt1nHZlQ1zdNV92OBWnHlYvKoX0BVg4k3V2wLQZMOMubFEzkgeFW/CTtDyA9Cr
+	dYlI8r8WV5o6gXrOS8MIsRz9X+0DPweI3XmyYBVH+VfcnKsqQ0L3JoZWvg
+X-Received: by 2002:a05:6808:1404:b0:4b3:7fa3:890b with SMTP id 5614622812f47-4b95fb4f409mr2553182b6e.2.1788485656136;
+        Thu, 03 Sep 2026 18:34:16 -0700 (PDT)
+Received: from localhost ([2a03:2880:30ff:8::])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-4b971b97c72sm1056170b6e.15.2026.09.03.18.34.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 03 Sep 2026 18:34:15 -0700 (PDT)
+From: Daniel Zahka <daniel.zahka@gmail.com>
+Subject: [PATCH net-next 0/4] psp: make tx key ops optional for drivers
+Date: Thu, 03 Sep 2026 18:33:58 -0700
+Message-Id: <20260903-psp-prep-v1-0-d47e9c4c375d@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D032UWB002.ant.amazon.com (10.13.139.190) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAYgmmoC/x2MSwqAMBDFriKzdmD8INWriAs/T51NLa1IQXp3i
+ 8uEkJcCvCLQULzk8WjQy2aoyoLWc7YHWLfMVEvdSS8Nu+DYeTg2a7cI2koMesp5lrvGfzWSxc0
+ W8aYppQ/Ee41NZAAAAA==
+To: Jakub Kicinski <kuba@kernel.org>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+X-Mailer: b4 0.13.0
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+This is the first of two series which together implement rekeying PSP
+protected tcp connections. Here are both series together on github:
+https://github.com/danieldzahka/linux/commits/psp-rekey-split/
 
-commit f4f699790590bd0896c48a71e9232a65198f92f0 upstream.
+This first series is mostly non-functional changes, except for the minor
+difference that netdevsim driver implements tx key ops. Its tx key ops
+were basically NOPs, and in the future PSP core can subsume the assoc
+counting that it was doing.
 
-The nft_object rhltable is global, this allows for accessing objects
-that are being dismangled from lookup path by other existing netns.
-Given the nft_obj_destroy() releases the object inmediately, this might
-lead to use-after-free of these objects that are being released.
-Make the existing rhltable per table to address this issue to deal with
-with the nft_rcv_nl_event() path too.
+The purpose of the refactors is to make code reusable from paths that
+will be added to the code in the rekeying series.
 
-Update nft_obj_lookup() to take the table as non-const, otherwise,
-compiler complains when passing the objname_ht to rhltable_lookup().
+Patch 1 exists to setup two paths for tx key deletion, one where keys
+are deleted as they are now in psp_assoc_free() when the assoc refcount
+drops to 0, and a different path in series two, where the keys will get
+put onto a queue for deferred deletion.
 
-Fixes: 4d44175aa5bb ("netfilter: nf_tables: handle nft_object lookups via rhltable")
-Suggested-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-[ 6.1: Conflicts in nf_tables_api.c because 6.1 lacks three mainline
-  refactors: 0be908750162 ("netfilter: nf_tables: pass nft_table to
-  destroy function", v6.11), e169285f8c56 ("netfilter: nf_tables: do
-  not store nft_ctx in transaction objects", v6.11) and f80a612dd77c
-  ("netfilter: nf_tables: add support to destroy operation", v6.3).
-  As a result 6.1's nf_tables_table_destroy() still takes an nft_ctx;
-  struct nft_trans still embeds an nft_ctx (so the owning table is
-  trans->ctx.table, not a per-transaction table local); and the commit
-  path has no NFT_MSG_DESTROYOBJ case. Resolved by destroying the
-  per-table objname_ht via ctx->table in nf_tables_table_destroy(), and
-  by passing the owning table trans->ctx.table to nft_obj_del() in the
-  commit and abort paths; 6.1's single NFT_MSG_DELOBJ case is retained.
-  The header and all other hunks applied cleanly. ]
-Signed-off-by: Suraj Jitindar Singh <surajjs@amazon.com>
+Patch 2 exists to allow tx assoc state to be set either from the
+connection setup path, or in series two, from a tx rekeying path.
+
+Patch 3 makes implementing tx_key_add and tx_key_del optional for
+drivers. These callbacks only make sense for devices that utilize a tx
+SADB. This distinction is important once rekeying is involved, because
+an SADB implies a race between in flight tx packets and key deletion,
+that does not exist for non-SADB implementations.
+
+Patch 4 removes the unnecessary tx key ops in netdevsim.
+
+No new tests are added to this series. There is no real user visible
+change of behavior.
+
+Signed-off-by: Daniel Zahka <daniel.zahka@gmail.com>
 ---
- include/net/netfilter/nf_tables.h |  4 +++-
- net/netfilter/nf_tables_api.c     | 34 +++++++++++++++----------------
- 2 files changed, 19 insertions(+), 19 deletions(-)
+Daniel Zahka (4):
+      psp: refactor psp_dev_tx_key_del()
+      psp: move code from psp_sock_assoc_set_tx() into helper functions
+      psp: allow drivers to omit tx key add/del ops
+      netdevsim: psp: drop tx key ops
 
-diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
-index 4e8cf4e13f8f..6c82feab2ad5 100644
---- a/include/net/netfilter/nf_tables.h
-+++ b/include/net/netfilter/nf_tables.h
-@@ -1211,6 +1211,7 @@ static inline void nft_use_inc_restore(u32 *use)
-  *	@sets: sets in the table
-  *	@objects: stateful objects in the table
-  *	@flowtables: flow tables in the table
-+ *	@objname_ht: hashtable for objects lookup by name
-  *	@hgenerator: handle generator state
-  *	@handle: table handle
-  *	@use: number of chain references to this table
-@@ -1226,6 +1227,7 @@ struct nft_table {
- 	struct list_head		sets;
- 	struct list_head		objects;
- 	struct list_head		flowtables;
-+	struct rhltable			objname_ht;
- 	u64				hgenerator;
- 	u64				handle;
- 	u32				use;
-@@ -1304,7 +1306,7 @@ static inline void *nft_obj_data(const struct nft_object *obj)
- #define nft_expr_obj(expr)	*((struct nft_object **)nft_expr_priv(expr))
- 
- struct nft_object *nft_obj_lookup(const struct net *net,
--				  const struct nft_table *table,
-+				  struct nft_table *table,
- 				  const struct nlattr *nla, u32 objtype,
- 				  u8 genmask);
- 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 7240f494d83b..71ada0af4c85 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -42,8 +42,6 @@ enum {
- 	NFT_VALIDATE_DO,
- };
- 
--static struct rhltable nft_objname_ht;
--
- static u32 nft_chain_hash(const void *data, u32 len, u32 seed);
- static u32 nft_chain_hash_obj(const void *data, u32 len, u32 seed);
- static int nft_chain_hash_cmp(struct rhashtable_compare_arg *, const void *);
-@@ -1419,6 +1417,10 @@ static int nf_tables_newtable(struct sk_buff *skb, const struct nfnl_info *info,
- 	if (err)
- 		goto err_chain_ht;
- 
-+	err = rhltable_init(&table->objname_ht, &nft_objname_ht_params);
-+	if (err < 0)
-+		goto err_obj_ht;
-+
- 	INIT_LIST_HEAD(&table->chains);
- 	INIT_LIST_HEAD(&table->sets);
- 	INIT_LIST_HEAD(&table->objects);
-@@ -1437,6 +1439,8 @@ static int nf_tables_newtable(struct sk_buff *skb, const struct nfnl_info *info,
- 	list_add_tail_rcu(&table->list, &nft_net->tables);
- 	return 0;
- err_trans:
-+	rhltable_destroy(&table->objname_ht);
-+err_obj_ht:
- 	rhltable_destroy(&table->chains_ht);
- err_chain_ht:
- 	kfree(table->udata);
-@@ -1599,6 +1603,7 @@ static void nf_tables_table_destroy(struct nft_ctx *ctx)
- 		return;
- 
- 	rhltable_destroy(&ctx->table->chains_ht);
-+	rhltable_destroy(&ctx->table->objname_ht);
- 	kfree(ctx->table->name);
- 	kfree(ctx->table->udata);
- 	kfree(ctx->table);
-@@ -7151,7 +7156,7 @@ void nft_unregister_obj(struct nft_object_type *obj_type)
- EXPORT_SYMBOL_GPL(nft_unregister_obj);
- 
- struct nft_object *nft_obj_lookup(const struct net *net,
--				  const struct nft_table *table,
-+				  struct nft_table *table,
- 				  const struct nlattr *nla, u32 objtype,
- 				  u8 genmask)
- {
-@@ -7167,7 +7172,7 @@ struct nft_object *nft_obj_lookup(const struct net *net,
- 		     !lockdep_commit_lock_is_held(net));
- 
- 	rcu_read_lock();
--	list = rhltable_lookup(&nft_objname_ht, &k, nft_objname_ht_params);
-+	list = rhltable_lookup(&table->objname_ht, &k, nft_objname_ht_params);
- 	if (!list)
- 		goto out;
- 
-@@ -7446,7 +7451,7 @@ static int nf_tables_newobj(struct sk_buff *skb, const struct nfnl_info *info,
- 	if (err < 0)
- 		goto err_trans;
- 
--	err = rhltable_insert(&nft_objname_ht, &obj->rhlhead,
-+	err = rhltable_insert(&table->objname_ht, &obj->rhlhead,
- 			      nft_objname_ht_params);
- 	if (err < 0)
- 		goto err_obj_ht;
-@@ -7642,8 +7647,8 @@ nf_tables_getobj_single(u32 portid, const struct nfnl_info *info,
- 	struct netlink_ext_ack *extack = info->extack;
- 	u8 genmask = nft_genmask_cur(info->net);
- 	u8 family = info->nfmsg->nfgen_family;
--	const struct nft_table *table;
- 	struct net *net = info->net;
-+	struct nft_table *table;
- 	struct nft_object *obj;
- 	struct sk_buff *skb2;
- 	u32 objtype;
-@@ -9310,9 +9315,9 @@ static void nf_tables_commit_chain(struct net *net, struct nft_chain *chain)
- 		nf_tables_commit_chain_free_rules_old(g0);
- }
- 
--static void nft_obj_del(struct nft_object *obj)
-+static void nft_obj_del(struct nft_table *table, struct nft_object *obj)
- {
--	rhltable_remove(&nft_objname_ht, &obj->rhlhead, nft_objname_ht_params);
-+	rhltable_remove(&table->objname_ht, &obj->rhlhead, nft_objname_ht_params);
- 	list_del_rcu(&obj->list);
- }
- 
-@@ -9963,7 +9968,7 @@ static int nf_tables_commit(struct net *net, struct sk_buff *skb)
- 			}
- 			break;
- 		case NFT_MSG_DELOBJ:
--			nft_obj_del(nft_trans_obj(trans));
-+			nft_obj_del(trans->ctx.table, nft_trans_obj(trans));
- 			nf_tables_obj_notify(&trans->ctx, nft_trans_obj(trans),
- 					     NFT_MSG_DELOBJ);
- 			break;
-@@ -10222,7 +10227,7 @@ static int __nf_tables_abort(struct net *net, enum nfnl_abort_action action)
- 				nft_trans_destroy(trans);
- 			} else {
- 				nft_use_dec_restore(&trans->ctx.table->use);
--				nft_obj_del(nft_trans_obj(trans));
-+				nft_obj_del(trans->ctx.table, nft_trans_obj(trans));
- 			}
- 			break;
- 		case NFT_MSG_DELOBJ:
-@@ -10860,7 +10865,7 @@ static void __nft_release_table(struct net *net, struct nft_table *table)
- 		nft_set_destroy(&ctx, set);
- 	}
- 	list_for_each_entry_safe(obj, ne, &table->objects, list) {
--		nft_obj_del(obj);
-+		nft_obj_del(table, obj);
- 		nft_use_dec(&table->use);
- 		nft_obj_destroy(&ctx, obj);
- 	}
-@@ -11023,10 +11028,6 @@ static int __init nf_tables_module_init(void)
- 	if (err < 0)
- 		goto err_netdev_notifier;
- 
--	err = rhltable_init(&nft_objname_ht, &nft_objname_ht_params);
--	if (err < 0)
--		goto err_rht_objname;
--
- 	err = nft_offload_init();
- 	if (err < 0)
- 		goto err_offload;
-@@ -11049,8 +11050,6 @@ static int __init nf_tables_module_init(void)
- err_netlink_notifier:
- 	nft_offload_exit();
- err_offload:
--	rhltable_destroy(&nft_objname_ht);
--err_rht_objname:
- 	unregister_netdevice_notifier(&nf_tables_flowtable_notifier);
- err_netdev_notifier:
- 	nf_tables_core_module_exit();
-@@ -11074,7 +11073,6 @@ static void __exit nf_tables_module_exit(void)
- 	cancel_work_sync(&trans_gc_work);
- 	cancel_work_sync(&trans_destroy_work);
- 	rcu_barrier();
--	rhltable_destroy(&nft_objname_ht);
- 	nf_tables_core_module_exit();
- }
- 
+ drivers/net/netdevsim/netdevsim.h |   1 -
+ drivers/net/netdevsim/psp.c       |  33 -----------
+ include/net/psp/functions.h       |   5 --
+ include/net/psp/types.h           |   4 ++
+ net/psp/psp.h                     |  12 ++++
+ net/psp/psp_main.c                |  13 +++--
+ net/psp/psp_sock.c                | 115 ++++++++++++++++++++++++--------------
+ 7 files changed, 97 insertions(+), 86 deletions(-)
+---
+base-commit: 6ebcf5074cff0402730c6981d2397139fee6322d
+change-id: 20260903-psp-prep-8c6b0e4108e9
+
+Best regards,
 -- 
-2.47.3
+Daniel Zahka <daniel.zahka@gmail.com>
+
