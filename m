@@ -1,117 +1,179 @@
-Received: from mta0.migadu.com (out-62.mta0.migadu.com [91.218.175.62])
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E62FC415F22
-	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 06:12:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.62
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788502328; cv=none; b=sNtnFWtD3AMKqYTa2jZQk6OI16nNg4+TtsLyNaPd/al0YF4uWxmjtOTByeQxPBFD8Z6YXElfFI2TeOiO8pgXI7hFhokqapIwnqWtYspNF9ztFNCFl3SF8Kk4fxHu1oXc7FpfnJXwqie3lgYg2zQhElg0WlRM+UdtxyBcA94mKaA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788502328; c=relaxed/simple;
-	bh=eJJBMjs+18V7g33OiX+ub6t4LMHZY2pve7uURsandAs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QgBe8anqKaQntBjgSlnRoOykPSFKGa3zzged65wA5++bBxWR6J+resTLrSB6g13xckrv7gx6K6dKgHPtkDN+slnjACGdLfVwKdnxyC3Abw/eXVPPCjIG3OjJg8bthzZ5wyfbjb3h59pwmIcyyTcj5M0ksHg/H4UhAVCieeKhNCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=uAhn3jr4; arc=none smtp.client-ip=91.218.175.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C716400DE8
+	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 06:13:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.170
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788502402; cv=pass; b=NFyGBh7nKpOoK30fFHh3c7QrHDIe7lNfs6IqhKTDDUNE74ZGBEgXs5+FrIJLHreTZL0wUnvy2shTEy9rEykJfS1gnK6M2xsbbWN/VrWx9sbyjjNqsoiqTgZVUCZ7XsznI0ohU2mvEk8Bg4uPFM56GbYCGbVBZBrdTAxxDnTsNfU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788502402; c=relaxed/simple;
+	bh=6G07JSMGOPcEquM7UUyfzZPoJCyj32cyY6Lw03jClXo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=h1XRaTTRoWVr1U7FQqu7IiPibcjh4h5uJrR4UOJSaZeoVt9whmW2vAECDqPBrQw2Sf/xsgFdToSynJLJBNGFXtKpVQc3y9LOkq6L46Z5uYa/waM9mvOJO/K9qprHVsADGTBchrXjRQqI5g+0JOudHtmQWPTf/CRLihx1KZVofFk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bUl5OUml; arc=pass smtp.client-ip=209.85.160.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="uAhn3jr4"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=eJJBMjs+18V7g33OiX+ub6t4LMHZY2pve7uURsandAs=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788502323; v=1; x=1789107123;
- b=uAhn3jr4rDsoFitmwH8z5VvZyV4aoJalWQIXlFu4BXjROT68mR/Wjl+9ngyqGdQxMR8706Of
- jog2pv/U+nsL6JW+cGExq5Jul/gGALsu+HpE5ssk0T8mP6XiaJPUHsrp7CXeyO33X693QEXpCya
- ABVv9JuFx5xmNrc3p52XdMyw=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 429cc04ee579e250;
-	Fri, 04 Sep 2026 06:12:03 +0000
-X-Mizu-Trace-ID: 429cc04ee579e250
-X-Migadu-Flow: FLOW_OUT
-Date: Fri, 4 Sep 2026 14:11:57 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: David Dai <zdai@linux.ibm.com>
-Cc: jv@jvosburgh.net, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	pradeeps@linux.ibm.com
-Subject: Re: [PATCH 1/1] bonding: crypto offload enabled, non-offload slave
- failover, rekey failed
-Message-ID: <apphLbjfmRYknVNh@fedora>
-References: <20260903220123.475685-1-zdai@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bUl5OUml"
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-52f83889a93so10000721cf.2
+        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 23:13:20 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788502399; cv=none;
+        d=google.com; s=arc-20260327;
+        b=gUFisg5PCHRUZT1IhNVwWn7OpNBkCIOxkd5mG8UTYk0ChfgxtLAaYv+V/d4qbcSIHf
+         ZakfzAOY/lGyBy3kUFarOPB0hbjjYyKEQUAGwv8X3Vqeh+PKm1I6T3xxgVdQZMsmAgbD
+         0vNWwGNkzCkCAqwqSuRSV2ushBUTZ44VQYjdmkjE0rxsERk04Sa5pA+JEbrcHSwLTqz0
+         mN1x6Mj1HOQpZj+uxc4Rzt4MOCOlZMXk8aEQptjLADWlOlTh9M7CUkqeljqDv0fpFcdP
+         pf7/Bm1gYNi13GxGzARKKP5riubojN3ZAJ/+0DSEkkb8zgz26iP2QA5wryDfFxmKGVmI
+         jw6w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ylNRNTS7hxBes9Q2CsbYzfi2pUy/kowzYnX1kwPqjPU=;
+        fh=1t8/jTSGfxj/W8ykfFXLVNgI/mSjZoFcHXy3Wq281oo=;
+        b=O5mFlm4proSUKuvg37n0Rk7CNmeeqx3fe6H49kQ4PeZSLxZfJsS8gtpKmzjJXXK/dT
+         T7yKPSCYS9whGVtKwNlQGpCLuwvhOAcYOoeOucF+S6yiUZT4PwnZG+NqeKyn+rSD0Ctz
+         9M4X5uQ+V3VpszPrzKHLo82nSfpmc25wdjMsIzsuJkSA6wazjNcTDV4RFGxieCg/H4f3
+         pn7TqcQ7Ne1aAxsnXxj2MkNywTHBihOzT/jPWdq65j24V1WEp+SWtJlaTcsnFRqxBecv
+         LRVEUEVOV73aMSCRspmAbcK3oht1PGlqm3p7aIO4ftlLnCVJ4mLmYAKre6iXeURF1i/8
+         xPcQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1788502399; x=1789107199; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ylNRNTS7hxBes9Q2CsbYzfi2pUy/kowzYnX1kwPqjPU=;
+        b=bUl5OUmlfAStg2KheI9HgHjH7YIHDS5MJIvuvvUv22bQzggkGGj2hR/jTBO62BG+kf
+         HBRvhCzeq2iTTVEgVoL12YdauEslJ9TCM6gvV3IPzrR2BAfSHQ3ouJqYIOf61Im8gkZr
+         pdVPkG+hq9sUkACZn5CVJkAoSj1aWlGiL12xcqEmJNZJ1uadJR+pKGHzv7yMiCISdX1H
+         AqibKG57GY7W0cOJ+/xOh6Y1LWlbOy0guV3y0w18wEL3F9VW5cgJFnZQMCbuogud4VpP
+         Wuv5VqkSza9D7SxC1mFld17TNkCmvBASd6H1mzxn2Za9yT2kiaeYeq8UHTg0po4RSHgS
+         37+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788502399; x=1789107199;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ylNRNTS7hxBes9Q2CsbYzfi2pUy/kowzYnX1kwPqjPU=;
+        b=sroXm5Lyl5bURRuK6/avBBic947A2htDlpEos/nTaN2XzjjaOslDwXzg3g+VL/huSj
+         aN2k9tsjVNElKbB9n3Hp9rqJmm7+H8e0cBtdZ44WntuN10ilanmllq+5DbyoqC+hyDwb
+         i5NCo9F6geNXgNOCNzfTOw994pbFOM6kOoeCh2lGmxh0DWNR7tdNZFDQAQB53cyleTBM
+         KFOv2yKMupLBWtCBo95Xjr/SEEaV/Je1og/5nSU5KMZ9kUGrNpajDC5ZPRGh/QiT81Pg
+         a6Wj/oTlYFPnBfmryrEjSPfMcZmeEr+gjCTpfbPxVbY7dHEiAsmcaYW2EpAcQA7gSoQS
+         pIZg==
+X-Forwarded-Encrypted: i=1; AKwUvBwF2xoOZ762R4jfkE88oy2zlx6yw6iklnhoUCFHx1PMUZVYpTNu/O0KoQyx9DTyViI70P/ERtA=@vger.kernel.org
+X-Gm-Message-State: AFuF++kPn7fsuoNOlqDfR+sBTp/UFme5uV4yFz30r09z2IAF1I8WBDN6
+	1xItWngHJy/0fpZXiuFvuTCn1k0p7XZwCnEVWAaQtOOS8k+Cqfuxq3FozVVvPeBQ6NFUPMQ1MHK
+	Cbay92IuIUgj1W9xsPumyZHp+eXOgHtp5RSE/NTdS
+X-Gm-Gg: AYBFou3LO+AhYcTn81pzITpry0ITp9kN5CJJwgsrAxGnhF/ICw5XLhyBCLrYvF2bI9J
+	KAtMrvDAOXycxw0/JGzymA5U3wmeZ2a4m9B4kv5S+4xGTERlS3ky7tiZlHoJ6YDGxQlZiFCX9YD
+	JJDEkV0oeoCjP6SHIstlVTk7vL/y9w6N9Ig0c6G1GoSTbJfr2o2BFTFZTIZySfmF49z9hKRMzZn
+	7QOgnzcxgG9dX4E1pTaNaBPx2pNWheSiyKb9fFeIXEIw4cOSLy36XIZsQXB/I4Yw+YRk3gMc+KA
+	NSZJawmEYvaSNbPn8NG4eZvwYdmCf2RMuV67+XfebcbSsDQsgl+bb8OGu3c5vKZTv4jeHa0V8SI
+	EG5wNr9pdQfGIvh8bSakRDGeKKQ8QIIcNMF8na90MTORNQ36JyoziT4LIbg==
+X-Received: by 2002:ac8:5891:0:b0:530:1b1:72be with SMTP id
+ d75a77b69052e-530549ea946mr41621781cf.40.1788502398746; Thu, 03 Sep 2026
+ 23:13:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260903220123.475685-1-zdai@linux.ibm.com>
+References: <20260904004428.1933068-1-edumazet@google.com> <f0ee0862-4e1e-4488-aa38-5f1dd5c08abc@blackwall.org>
+In-Reply-To: <f0ee0862-4e1e-4488-aa38-5f1dd5c08abc@blackwall.org>
+From: Eric Dumazet <edumazet@google.com>
+Date: Fri, 4 Sep 2026 08:13:06 +0200
+X-Gm-Features: AcwNN1UzYjL7dWIJhyNSvsFDyCS8BNGT6JSbp7o-bAC6KwBabuHVGAXJwIvIMCw
+Message-ID: <CANn89i+1PtnyBas8i788tR+p5uCR5tQgzh4WmMym0hAeNg1Nng@mail.gmail.com>
+Subject: Re: [PATCH net] net: bridge: dynamically allocate frame_type
+ instances for CFM and MRP
+To: Nikolay Aleksandrov <razor@blackwall.org>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	syzbot+1df7473ef265fe8ba6e1@syzkaller.appspotmail.com, 
+	Ido Schimmel <idosch@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Sep 03, 2026 at 05:01:23PM -0500, David Dai wrote:
-> Create a bonding device (i.e. bond0) in active-backup mode, 2 slaves.
-> Active slave: offload capable interface (i.e. eth1), primary interface.
-> Backup slave: non-offload capable interface(i.e. eth2).
-> Configure strongswan service swantl.conf child SA "hw_offload = crypto"
-> Start strongswan service
-> IPSec Crytpo Offload is enabled on top of bond0. i.e. 
-> ip xfrm state |grep offload
->         crypto offload parameters: dev bond0 dir out mode crypto
-> 	crypto offload parameters: dev bond0 dir in mode crypto
-> 
-> Active slave eth1 takes adavantage of IPSec Crypto Offload capability. 
-> 
-> If active slave eth1 is down for any reason (i.e. eth1 link down):
-> ip link set down dev eth1
-> non-offload capable interface eth2 failover to becomes active slave. 
-> The existing SAs can continue use software IPsec after failover.
-> Traffic still keeps going properly.
-> 
-> However if eth1 link had not recovered yet, strongswan service does
-> new child SA rekey, or uses swanctl command to do new child SA rekey, 
-> it will fail because active slave eth2 doesn't support crypto offload.
-> In bond_ipsec_add_sa routine, it returns -EINVAL now, which is 
-> treated as fatal error by xfrm_dev_state_add routine in kernel xfrm.
-> 
-> To make the non-offload active slave survive the child SA rekey, need 
-> to make bond_ipsec_add_sa routine returns -EOPNOTSUPP instead when 
-> active slave doesn't support IPsec Crypto offload, the xfrm will 
-> gracefully fallback to create new SA using Software IPsec. 
-> Network traffic can keep going.
-> 
-> After offload capable interface eth1 link is up, becomes active slave,
-> next time strongswan child SA rekey will create a new SA which enables
-> crypto offload again.
-> 
-> This way, network traffic is never interrupted, always keeps going.
-> 
-> Signed-off-by: David Dai <zdai@linux.ibm.com>
-> Tested-by: David Dai <zdai@linux.ibm.com>
-> ---
->  drivers/net/bonding/bond_main.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-> index ef9eb0c53c66..79fc892dab07 100644
-> --- a/drivers/net/bonding/bond_main.c
-> +++ b/drivers/net/bonding/bond_main.c
-> @@ -490,7 +490,7 @@ static int bond_ipsec_add_sa(struct net_device *bond_dev,
->  	    !real_dev->xfrmdev_ops->xdo_dev_state_add ||
->  	    netif_is_bond_master(real_dev)) {
->  		NL_SET_ERR_MSG_MOD(extack, "Slave does not support ipsec offload");
-> -		err = -EINVAL;
-> +		err = -EOPNOTSUPP;
->  		goto out;
->  	}
->  
-> -- 
-> 2.55.0
-> 
+On Fri, Sep 4, 2026 at 8:02=E2=80=AFAM Nikolay Aleksandrov <razor@blackwall=
+.org> wrote:
+>
+> On 04/09/2026 03:44, Eric Dumazet wrote:
+> > struct br_frame_type contains an embedded struct hlist_node list, which
+> > is linked into a bridge's per-instance br->frame_type_list via
+> > br_add_frame(br, ft).
+> >
+> > Both cfm_frame_type and mrp_frame_type were declared as static global
+> > variables. When multiple bridge devices enable CFM MEPs or MRP instance=
+s
+> > concurrently (e.g. across different network namespaces), they share
+> > the same static global br_frame_type node.
+> >
+> > Calling br_add_frame() on a second bridge links the same hlist_node int=
+o
+> > the second bridge's frame_type_list, corrupting the first bridge's list=
+.
+> > Later, when br_del_frame() deletes the node from one bridge and poisons
+> > its list pointers, a subsequent teardown on another bridge walks its
+> > frame_type_list and dereferences the poisoned pointer in hlist_del_rcu(=
+),
+> > triggering a general protection fault.
+> >
+> > Furthermore, sharing or embedding fixed br_frame_type instances leads t=
+o
+> > RCU node reuse violations: if MEPs or MRP instances are repeatedly adde=
+d
+> > and deleted, hlist_del_rcu() unlinks the node without waiting for an RC=
+U
+> > grace period, and a subsequent addition immediately re-inserts and modi=
+fies
+> > the node while concurrent lockless readers in br_handle_frame() /
+> > br_process_frame_type() may still be traversing it.
+> >
+> > Fix this by dynamically allocating struct br_frame_type upon registrati=
+on
+> > in br_add_frame() and freeing it with kfree_rcu() in br_del_frame(). Al=
+so
+> > ensure all registered frame types are cleaned up during bridge deletion=
+ via
+> > br_del_frame_all().
+> >
+> > Fixes: 90c628dd47ff ("net: bridge: extend the process of special frames=
+")
+> > Fixes: dc32cbb3dbd7 ("bridge: cfm: Kernel space implementation of CFM. =
+CCM frame RX added.")
+> > Reported-by: syzbot+1df7473ef265fe8ba6e1@syzkaller.appspotmail.com
+> > Closes: https://lore.kernel.org/netdev/6a9a137f.9266084e.bf0d7.02e3.GAE=
+@google.com/
+> > Signed-off-by: Eric Dumazet <edumazet@google.com>
+> > --
+> > Cc: Nikolay Aleksandrov <razor@blackwall.org>
+> > Cc: Ido Schimmel <idosch@nvidia.com>
+> > ---
+> >   net/bridge/br_cfm.c     | 17 +++++++++--------
+> >   net/bridge/br_if.c      |  2 ++
+> >   net/bridge/br_input.c   | 40 +++++++++++++++++++++++++++++++++++-----
+> >   net/bridge/br_mrp.c     | 16 +++++++---------
+> >   net/bridge/br_private.h |  8 ++++++--
+> >   5 files changed, 59 insertions(+), 24 deletions(-)
+> >
+>
+> Thanks Eric, but there is already a patch that should take care of this.
+> A week ago I pinged the previous reporter of these issues and he posted
+> an updated patch yesterday:
+> https://lore.kernel.org/netdev/0345b9d5aa60ba416f6738ff1b87140f0a749cb8.1=
+788417901.git.zhilinz@nebusec.ai/
+>
 
-The patch looks good to me. I am just not sure whether we should shorten
-the description. Let's wait for others' opinions.
+Oh nice, their patch seems better indeed.
 
-Thanks
-Hangbin
+It's interesting that syzbot found the issue around the same time...
+
+Thanks.
+
+pw-bot: rejected
