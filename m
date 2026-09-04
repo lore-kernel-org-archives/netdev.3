@@ -1,190 +1,243 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C463F3B0583;
-	Fri,  4 Sep 2026 03:01:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B1383B28D;
+	Fri,  4 Sep 2026 03:03:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788490887; cv=none; b=kW8wWQC6uTjROJrqGcIuDLCk96tly0LlwB93V3WM23ZHsaCfOdnQ/D/KYXuD0Jf5YL0Akp4OjfJla9igOLWtnFzECXjSdCow3gyfFL+jeqNfMhq31Jz3mmcb9sHq+LBLkQqC/ESDdv0HV+RIgJdYwFzpxSYoACfTDFlk6xe19Rk=
+	t=1788491004; cv=none; b=jT9I96w9f6EBGoEvEaHO+vdN8z3RHCM3ke82xxYg5qx0nt1srGH7uhpGUKqZc9dliZA5uwoSUxaocDAuWypR8CI9Ur182Y3lL+V+zXYJ6Phf8Pkc1BxHjay5dp5TBcFucce2qxH9CrtR1pfLM4BEtFAV3hEmwAPjdsVVKpxKT74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788490887; c=relaxed/simple;
-	bh=iB/LIVT+7LyebkjdctEfNIn73Fdepn/Ybg7PtZxfME0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Y6NfYIQanpBqzbCor5UlMlO9qSxYWj9BvVTt4m85/6ztZxEkQyFknvY0YirU2wMTqutOf0rZyzmy/Cybt4teJGdqIAd7N+9BLJUN4QjTL6H7uWoyBTieGFM8CbwU+o4Yzh+qoNB8GnK+IHnXwWSq89tkvImi7iQCIAaW/tcJM5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=emXn/IZE; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1788491004; c=relaxed/simple;
+	bh=pwiRQbyfMqVUFWm9PMMbAl+Xw5LrijKWVhj3KDC9z9M=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=I9XneeK96P+VJWsrtRfSJV154Yp0p7i3odBqQni+rF31VqHgjqAk89JlcGvTzXTY0A1eqWiOVLt6DUunjfgSa3jffw5TotyTeZ58dWKbSCgr2LS6swjtBhg1Lz5sy+9BOl2RcZnSxy+NCC4bKdyfGAovcnqDMBdptyIFIKnAZ+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RrNHg5o0; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="emXn/IZE"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788490885; x=1820026885;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=iB/LIVT+7LyebkjdctEfNIn73Fdepn/Ybg7PtZxfME0=;
-  b=emXn/IZESH4eJ1eWYw4vgw+Ainlgk1L0K5LKMZHySipejxfuQvkO3df9
-   OKVKzwCr9598oodsuKpF/R2wkS4xXoDQjptv4QRVX9H0bw62nXUJ9HePF
-   mvQ+PozkiSbw8m1MXFVsAsmpBiGBh6y3lrKABPcdemgnHy9DTXAJ5ii4I
-   ZZSc/7sGhMhJ74yWrzL9oUaGsN4Q0efAVFzRsvhx0iJctveKFfVfmtSfu
-   RniTJd5sgd+l/y/ID+7ujfxc7y3WZ9vi4RWLq2HZE+oilgPk1pwfkHkSF
-   T0ONWc9o2QCVDrLRmoNEf3g3b54zc9sH3xpMC7Yw3bUJgdtlaNj5P0IYf
-   w==;
-X-CSE-ConnectionGUID: bFBUFqcCTImPOsH1mjBNAQ==
-X-CSE-MsgGUID: cjTrBNjmSImj+1MTQ1sP4A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11895"; a="92807015"
-X-IronPort-AV: E=Sophos;i="6.25,260,1779174000"; 
-   d="scan'208";a="92807015"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2026 20:01:21 -0700
-X-CSE-ConnectionGUID: 2bXcDhOST/66VzQF8sIYHg==
-X-CSE-MsgGUID: B2qQoxbpTc2i1TZIwZHUJw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,260,1779174000"; 
-   d="scan'208";a="273690264"
-Received: from junjie-desk-dev.bj.intel.com ([10.238.152.71])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2026 20:01:18 -0700
-From: Junjie Cao <junjie.cao@intel.com>
-To: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: David Ahern <dsahern@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v3] net: dropreason: add SKB_DROP_REASON_IP_TTL_EXCEEDED
-Date: Fri,  4 Sep 2026 11:01:12 +0800
-Message-ID: <20260904030112.450920-1-junjie.cao@intel.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RrNHg5o0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50D241F00A3D;
+	Fri,  4 Sep 2026 03:03:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788491003;
+	bh=tYn532goAvj6zjhWikeVegY2fGNjSiT+sKqhWolhvQk=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=RrNHg5o0zeGn4I1pylAbl4AYgwJpcPRDFhAFi9GEQOEK+eUiXw88YF+vw7eSDV+E7
+	 d1+QapM2/AZlBORWEaOj6E++MGxSWEnLVxV4qcB7/YEVup1I+70lG1uY0vTgTT3geE
+	 I8XI5fH0/Sv73igMhbB/YVi3dHFuutkcBJWYN4vRwrlQqgGTqY6V/xZGGWFwzuGbnv
+	 TTDUqG6vxSRe8ed1CaZ+5EknDuMU4IsEV3UJeNWfGephaaTKTiA0cL+TNOg6AB34+h
+	 DkqygT56Spv3vIwNCPcvmLIfB/40yqDteRPEcId2UvRlICECM/W2B75j3JRDTDGxbp
+	 AgI6bbKNWAbkw==
+Subject:
+ Re: [PATCH] bpf, sockmap: Fix self-redirect copied_seq double-counting
+From: netdev-bot+sashiko@kernel.org
+To: geliang@kernel.org
+Cc: john.fastabend@gmail.com, jakub@cloudflare.com, jiayuan.chen@linux.dev,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, daniel@iogearbox.net, tanggeliang@kylinos.cn,
+ netdev@vger.kernel.org, bpf@vger.kernel.org
+Date: Fri, 04 Sep 2026 03:03:21 +0000
+Message-ID: <178849100183.4131868.10982082287561858713@kernel.org>
+In-Reply-To: =?utf-8?q?=3Cb840c35fdfdf36e9fddedfa645b12699bc51aa34=2E1787968?=
+ =?utf-8?q?065=2Egit=2Etanggeliang=40kylinos=2Ecn=3E?=
+References: =?utf-8?q?=3Cb840c35fdfdf36e9fddedfa645b12699bc51aa34=2E17879680?=
+ =?utf-8?q?65=2Egit=2Etanggeliang=40kylinos=2Ecn=3E?=
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-The forwarding paths report an expired TTL or hop limit as
-SKB_DROP_REASON_IP_INHDR, the reason otherwise used for a header that is
-malformed (ip_input.c, exthdrs.c, br_netfilter). Nothing else in the drop
-path separates the two: IPSTATS_MIB_INHDRERRORS covers both, and the TTL
-check runs before NF_INET_FORWARD, so netfilter tracing stops at
-PREROUTING and never sees the drop.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider:
 
-The Fedora bug linked below shows how that reads in practice. The
-reporter took kfree_skb(reason=IP_INHDR, loc=ip_forward) to mean the
-software header checksum check had failed, and worked through RX checksum
-offload, tc csum actions and both libvirt firewall backends before the
-drops turned out to be replies arriving with TTL 1. ip_forward() never
-verifies the header checksum; that runs earlier, in ip_rcv_core(), and
-reports IP_CSUM.
+Critical: 0 · High: 2 · Medium: 0 · Low: 0
 
-TTL expiry is not a corner case -- every traceroute through a Linux
-router goes through too_many_hops.
+- [High] net/core/skmsg.c:1042-1047 (sk_psock_verdict_apply(),
+  __SK_REDIRECT arm): the new self-redirect test compares only the…
+- [High] net/core/skmsg.c:1042-1047 (sk_psock_verdict_apply()): for a
+  self-redirect the patch drops the up-front tcp_eat_skb() and relies on…
 
-The three loopback hop limit checks in exthdrs.c drop with no reason at
-all; give them the new one.
+--
 
-IPSTATS_MIB_INHDRERRORS stays as it is: RFC 1213 counts time-to-live
-exceeded under ipInHdrErrors. The drop reason has no such constraint.
+bpf, sockmap: Fix self-redirect copied_seq double-counting
 
-Link: https://bugzilla.redhat.com/show_bug.cgi?id=2517131
-Signed-off-by: Junjie Cao <junjie.cao@intel.com>
----
-v3: drop the "on a packet being forwarded" qualifier from the kernel-doc;
-    the reason also covers the loopback hop-limit checks in exthdrs.c
-    (David Ahern)
-v2: https://lore.kernel.org/netdev/20260901020613.417495-1-junjie.cao@intel.com/
-v1: https://lore.kernel.org/netdev/20260825073906.336072-1-junjie.cao@intel.com/
+This changes the __SK_REDIRECT arm of sk_psock_verdict_apply() so that
+tcp_eat_skb() is only called when the redirect destination differs from
+psock->sk.  The intent is to avoid advancing tcp_sk->copied_seq twice when
+a stream_verdict program redirects an skb back into the same socket's
+ingress queue.
 
- include/net/dropreason-core.h | 6 ++++++
- net/ipv4/ip_forward.c         | 2 +-
- net/ipv6/exthdrs.c            | 6 +++---
- net/ipv6/ip6_output.c         | 2 +-
- 4 files changed, 11 insertions(+), 5 deletions(-)
+> diff --git a/net/core/skmsg.c b/net/core/skmsg.c
+> index 2521b643fa05..5fa7b9639eef 100644
+> --- a/net/core/skmsg.c
+> +++ b/net/core/skmsg.c
+> @@ -1039,10 +1039,14 @@ static int sk_psock_verdict_apply(struct sk_psock *psock, struct sk_buff *skb,
+>  				goto out_free;
+>  		}
+>  		break;
+> -	case __SK_REDIRECT:
+> -		tcp_eat_skb(psock->sk, skb);
+> +	case __SK_REDIRECT: {
+> +		struct sock *dst = skb_bpf_redirect_fetch(skb);
+> +
+> +		if (dst != psock->sk)
+> +			tcp_eat_skb(psock->sk, skb);
 
-diff --git a/include/net/dropreason-core.h b/include/net/dropreason-core.h
-index 2f312d1f67d6..ed2c02884b68 100644
---- a/include/net/dropreason-core.h
-+++ b/include/net/dropreason-core.h
-@@ -128,6 +128,7 @@
- 	FN(PSP_INPUT)			\
- 	FN(PSP_OUTPUT)			\
- 	FN(RECURSION_LIMIT)		\
-+	FN(IP_TTL_EXCEEDED)		\
- 	FNe(MAX)
- 
- /**
-@@ -606,6 +607,11 @@ enum skb_drop_reason {
- 	SKB_DROP_REASON_PSP_OUTPUT,
- 	/** @SKB_DROP_REASON_RECURSION_LIMIT: Dead loop on virtual device. */
- 	SKB_DROP_REASON_RECURSION_LIMIT,
-+	/**
-+	 * @SKB_DROP_REASON_IP_TTL_EXCEEDED: IPv4 TTL or IPv6 hop limit hit
-+	 * zero (see IPSTATS_MIB_INHDRERRORS)
-+	 */
-+	SKB_DROP_REASON_IP_TTL_EXCEEDED,
- 	/**
- 	 * @SKB_DROP_REASON_MAX: the maximum of core drop reasons, which
- 	 * shouldn't be used as a real 'reason' - only for tracing code gen
-diff --git a/net/ipv4/ip_forward.c b/net/ipv4/ip_forward.c
-index 8b65f12583eb..b242561d37e7 100644
---- a/net/ipv4/ip_forward.c
-+++ b/net/ipv4/ip_forward.c
-@@ -174,7 +174,7 @@ int ip_forward(struct sk_buff *skb)
- 	/* Tell the sender its packet died... */
- 	__IP_INC_STATS(net, IPSTATS_MIB_INHDRERRORS);
- 	icmp_send(skb, ICMP_TIME_EXCEEDED, ICMP_EXC_TTL, 0);
--	SKB_DR_SET(reason, IP_INHDR);
-+	SKB_DR_SET(reason, IP_TTL_EXCEEDED);
- drop:
- 	kfree_skb_reason(skb, reason);
- 	return NET_RX_DROP;
-diff --git a/net/ipv6/exthdrs.c b/net/ipv6/exthdrs.c
-index 51941ad656a3..74caaf8746ff 100644
---- a/net/ipv6/exthdrs.c
-+++ b/net/ipv6/exthdrs.c
-@@ -464,7 +464,7 @@ static int ipv6_srh_rcv(struct sk_buff *skb, struct inet6_dev *idev)
- 			__IP6_INC_STATS(net, idev, IPSTATS_MIB_INHDRERRORS);
- 			icmpv6_send(skb, ICMPV6_TIME_EXCEED,
- 				    ICMPV6_EXC_HOPLIMIT, 0);
--			kfree_skb(skb);
-+			kfree_skb_reason(skb, SKB_DROP_REASON_IP_TTL_EXCEEDED);
- 			return -1;
- 		}
- 		ipv6_hdr(skb)->hop_limit--;
-@@ -623,7 +623,7 @@ static int ipv6_rpl_srh_rcv(struct sk_buff *skb, struct inet6_dev *idev)
- 			__IP6_INC_STATS(net, idev, IPSTATS_MIB_INHDRERRORS);
- 			icmpv6_send(skb, ICMPV6_TIME_EXCEED,
- 				    ICMPV6_EXC_HOPLIMIT, 0);
--			kfree_skb(skb);
-+			kfree_skb_reason(skb, SKB_DROP_REASON_IP_TTL_EXCEEDED);
- 			return -1;
- 		}
- 		ipv6_hdr(skb)->hop_limit--;
-@@ -815,7 +815,7 @@ static int ipv6_rthdr_rcv(struct sk_buff *skb)
- 			__IP6_INC_STATS(net, idev, IPSTATS_MIB_INHDRERRORS);
- 			icmpv6_send(skb, ICMPV6_TIME_EXCEED, ICMPV6_EXC_HOPLIMIT,
- 				    0);
--			kfree_skb(skb);
-+			kfree_skb_reason(skb, SKB_DROP_REASON_IP_TTL_EXCEEDED);
- 			return -1;
- 		}
- 		ipv6_hdr(skb)->hop_limit--;
-diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
-index 8fc4766c8da9..0b6d78c8b6be 100644
---- a/net/ipv6/ip6_output.c
-+++ b/net/ipv6/ip6_output.c
-@@ -577,7 +577,7 @@ int ip6_forward(struct sk_buff *skb)
- 		icmpv6_send(skb, ICMPV6_TIME_EXCEED, ICMPV6_EXC_HOPLIMIT, 0);
- 		__IP6_INC_STATS(net, idev, IPSTATS_MIB_INHDRERRORS);
- 
--		kfree_skb_reason(skb, SKB_DROP_REASON_IP_INHDR);
-+		kfree_skb_reason(skb, SKB_DROP_REASON_IP_TTL_EXCEEDED);
- 		return -ETIMEDOUT;
- 	}
- 
+[Severity: High]
+The commit message describes the problem as "self-redirect with
+BPF_F_INGRESS", but this test only compares the destination socket and
+never looks at the direction.  Does the same-socket *egress* case end up
+here too?
+
+skb_bpf_redirect_fetch() in include/linux/skmsg.h masks the flag bits off:
+
+  static inline struct sock *skb_bpf_redirect_fetch(struct sk_buff *skb)
+  {
+	unsigned long sk_redir = skb->_sk_redir;
+
+	return (struct sock *)(sk_redir & BPF_F_PTR_MASK);
+  }
+
+and bpf_sk_redirect_map() in net/core/sock_map.c stores the direction
+separately, allowing flags == 0:
+
+	if (unlikely(flags & ~(BPF_F_INGRESS)))
+		return SK_DROP;
+	...
+	skb_bpf_set_redir(skb, sk, flags & BPF_F_INGRESS);
+
+So a program doing bpf_sk_redirect_map(skb, &sock_map, idx, 0) where
+sock_map[idx] resolves to the source socket satisfies dst == psock->sk and
+skips tcp_eat_skb().
+
+For that egress case nothing later advances copied_seq.  sk_psock_backlog()
+computes:
+
+		ingress = skb_bpf_ingress(skb);
+
+which is false, so sk_psock_handle_skb() takes the transmit path:
+
+		return skb_send_sock(psock->sk, skb, off, len);
+
+and the skb is freed.  It never becomes an sk_msg with msg->sk == sk, so
+the from_self accounting in __sk_msg_recvmsg():
+
+		from_self = msg_rx->sk == sk;
+
+never runs, and neither does the copied_from_self path in
+tcp_bpf_recvmsg_parser() that the commit message relies on.
+
+Meanwhile tcp_read_skb() already removed the bytes from the receive queue
+without touching tp->copied_seq:
+
+		__skb_unlink(skb, &sk->sk_receive_queue);
+
+Can this leave tp->copied_seq permanently behind tp->rcv_nxt, so that
+SIOCINQ reports data that no longer exists, __tcp_cleanup_rbuf() and
+tcp_rcv_space_adjust() never run for those bytes, tcp_close() sees
+data_was_unread != 0 and sends an RST instead of a FIN, and a later plain
+tcp_recvmsg_locked() (after the psock is dropped) trips
+
+	WARN(before(*seq, TCP_SKB_CB(skb)->seq), "TCP recvmsg seq # bug...
+
+that is, the same copied_seq desync in the opposite direction?
+
+Worth noting that the program cited as validation,
+tools/testing/selftests/bpf/progs/mptcp_sockmap.c, uses exactly the egress
+form:
+
+	return bpf_sk_redirect_map(skb, &sock_map, redirect_idx, 0);
+
+Would adding the direction to the condition cover this, e.g.
+
+	if (dst != psock->sk || !skb_bpf_ingress(skb))
+		tcp_eat_skb(psock->sk, skb);
+
+[Severity: High]
+A second question about the same condition: the accounting is now skipped
+before the outcome of the redirect is known.  Is it guaranteed that the skb
+really reaches ingress_msg and is read by tcp_bpf_recvmsg_parser()?
+
+sk_psock_skb_redirect() has drop paths that free the skb and return -EIO
+without any copied_seq update, and for a self-redirect psock_other is this
+very same psock:
+
+  net/core/skmsg.c:sk_psock_skb_redirect() {
+	...
+	if (!psock_other || sock_flag(sk_other, SOCK_DEAD)) {
+		skb_bpf_redirect_clear(skb);
+		sock_drop(from->sk, skb);
+		return -EIO;
+	}
+	spin_lock_bh(&psock_other->ingress_lock);
+	if (!sk_psock_test_state(psock_other, SK_PSOCK_TX_ENABLED)) {
+		spin_unlock_bh(&psock_other->ingress_lock);
+		skb_bpf_redirect_clear(skb);
+		sock_drop(from->sk, skb);
+		return -EIO;
+	}
+	...
+  }
+
+SK_PSOCK_TX_ENABLED can already be clear while sk->sk_data_ready is still
+sk_psock_verdict_data_ready, because sk_psock_backlog() clears it on a hard
+transmit/ingress error:
+
+			if (ret == -EAGAIN) {
+				...
+			} else {
+				sk_psock_clear_state(psock, SK_PSOCK_TX_ENABLED);
+				...
+			}
+
+and sk_psock_stop() clears it during close/map-delete before the socket
+backlog is drained.  The __SK_PASS arm just above tests the same two states
+(SOCK_DEAD and !SK_PSOCK_TX_ENABLED), so they appear reachable at this
+point.
+
+Even after a successful skb_queue_tail(), skbs still on ingress_skb are
+purged without accounting:
+
+  net/core/skmsg.c:__sk_psock_zap_ingress() {
+	while ((skb = skb_dequeue(&psock->ingress_skb)) != NULL) {
+		skb_bpf_redirect_clear(skb);
+		sock_drop(psock->sk, skb);
+	}
+	...
+  }
+
+and __sk_psock_purge_ingress_msg() frees queued sk_msgs the same way.
+
+In all of these cases tcp_read_skb() has already unlinked the bytes from
+sk->sk_receive_queue, and tcp_eat_skb() is the only place that catches up:
+
+  net/ipv4/tcp_bpf.c:tcp_eat_skb() {
+	copied = tcp->copied_seq + skb->len;
+	WRITE_ONCE(tcp->copied_seq, copied);
+	tcp_rcv_space_adjust(sk);
+	__tcp_cleanup_rbuf(sk, skb->len);
+  }
+
+Note the sibling drop arm in this same switch keeps that contract:
+
+  out_free:
+		skb_bpf_redirect_clear(skb);
+		tcp_eat_skb(psock->sk, skb);
+		sock_drop(psock->sk, skb);
+
+Should the skipped accounting be performed on the redirect-failure and
+purge paths as well, or should tcp_eat_skb() only be skipped once the skb
+is known to have been retained for same-socket ingress consumption?
+
+>  		err = sk_psock_skb_redirect(psock, skb);
+>  		break;
+> +	}
+>  	case __SK_DROP:
+>  	default:
+>  out_free:
+
 -- 
-2.43.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/b840c35fdfdf36e9fddedfa645b12699bc51aa34.1787968065.git.tanggeliang%40kylinos.cn
