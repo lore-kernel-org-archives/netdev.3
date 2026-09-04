@@ -1,89 +1,129 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35D6251E44C
-	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 22:36:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3694F3A6B8F;
+	Fri,  4 Sep 2026 22:44:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788561406; cv=none; b=NFUdjUY+n0na0n0x2YdZ6LHEfILagRHYM7wgLm/g5MHStyEARBw0exSxuEheFtvKVUoKhxPm6l1JkiWfRX0j+Ucu5fKr67IsAjLf51lliPiPz+m/l34dGo+JrYD6NQWk4RKX5Ym9I14Xnz30T//Vaf7L1dN63lHMytq5D7CGZGo=
+	t=1788561841; cv=none; b=FzW6fqD+dCsvNolKDNCp8WhEI7KWDw6Lf/vUvPMlMTfDQaU8HWo0GlOfEz7YAwfIDs8RkuqmtIX3EhfTtayMet1qL6h/JfKUuWvELrWD1kylV2Nfeld+nqgE1NBkZZOuixSuDMhP+8LCuI4V+gKK3vi8AnUT+oOSihg5M8dguDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788561406; c=relaxed/simple;
-	bh=dft8jIKZLyvDmq/LPRhVyMm6r8WW3Y1LCnA91drhmyY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SAJWbRGgXgAwcK8AtBmA+qiqbw0ck73yWfC1Ja4KMHKuDbXDMK1m3QnK58mwFajX/zb+Gvzn1Hsu9//+5fvuGTpV0RRRG77YUOe18mfpvmvBEnJ3/dcfCkJtyU3tKJk2QCoVGSSfm5+vaudTbNA2dbGbXYC7J9G1c32mrcY5M5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qh0OQ7L0; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788561841; c=relaxed/simple;
+	bh=HfVH5EMzz9zcj2NHRsaCia2CtO9Ns0wpkZxpGiGQyWU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=gN+kXuzbWl0fhasKYRJfHRtQvyW5i1Y7egsP6bB3snUf5uxNQdGNuYCx4ykZ2SIv74oZBr48zTrD21hu5nKncTcdLw8jz8sMx7Eq047haa4n5H9/YQqrrYm7meYOR1YDn1RQRJnAatxXOBO3ifTn3pUsDqb7o3WB/Xag5awhBYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KH+vGmAy; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qh0OQ7L0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D777E1F0155F
-	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 22:36:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KH+vGmAy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CED71F00A3D;
+	Fri,  4 Sep 2026 22:43:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788561402;
-	bh=dft8jIKZLyvDmq/LPRhVyMm6r8WW3Y1LCnA91drhmyY=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=Qh0OQ7L0D7X+117p1PpoMp1i31lJRFbYVHzLlgQ4q8VSEX3EzfUTlRAxt+8Y50ypa
-	 smazqPkGF4OAGm6Y/1rlNxf036E8E+iKcc6MHDS+XKUEEpdtK92j4dW5riWf6ddzjH
-	 kRW1+JWQ9oTyKRdu8qKPGNNTnQrIE9gNC4GqpvG6ZE2m2R5+TYYL142JjHLBOrO1tm
-	 M/VrsIzJuP1CRiXquq2Bwkk0mUehJxblPhi5OdXWqMMx9irt6NKca04+5fOEkccVTN
-	 hT5YXTqlleSDkWaQmsScB0gxtEpHBJT+8yLu3jvdO2W74lTMJlNBGCGu6reDQ0KoR9
-	 BWWALoQQKspQw==
-Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-39c8ee87f7eso13831821fa.3
-        for <netdev@vger.kernel.org>; Fri, 04 Sep 2026 15:36:42 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBzNIyy2quNTe1byIV517wZ+Jv43tvnWmRij4ANramyAIcY4ITydS18znRHHRyerYA/b0qd/xAc=@vger.kernel.org
-X-Gm-Message-State: AFuF++m1q5YgjqxPGgYfSsHD/jUUXdh99bLtZnPoWrZXnQwsjITGYEAI
-	upo6VSJcAE/zUw4KODGFaCA3kVewBP09dhOHdzp7OR/JGXfmHTKIOnV9lncqvw0iyzyJO8Ynz5z
-	CzTjYuL8+l1M7hYu0UYr44+ZlyFa/W+g=
-X-Received: by 2002:a05:6512:250e:b0:5b1:5a2d:55f9 with SMTP id
- 2adb3069b0e04-5b616f3215dmr1620442e87.21.1788561401588; Fri, 04 Sep 2026
- 15:36:41 -0700 (PDT)
+	s=k20260515; t=1788561840;
+	bh=yIBEs8YvYOUCU6TvDhVSB8/Kdd+pjsmMutlDKBRYBV4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=KH+vGmAy8blbtGE5K+Li+x8WNh6h3UNfJ6M3MRudX8a2ucHrFk0ChPc4O4uhTCsYg
+	 7wp/6ZwddAvuwqKLCcezqxpPNrgmsn5JE4ErSsX9fqskxkclO5jrLDSVtYKqGgXior
+	 KO6NrigTkjkxFU4wQ7/osFXLbuYITgrzTVR8+Y/ocIY828zTYsugCntiA/pHfCL2Il
+	 4szNZsawV/CjkW1Jjkio93x+Fh+Z7NHiNkXoc9cEoVdovurOGIkufMhqYo7j6qEqyP
+	 QcmLhz0ozj+ceQ3xkqF2a5gb4G/02GeY095lpDZVRpYvR5MZYjFVVcQDog7v23kQt4
+	 yijDwdivJT7uw==
+From: Jakub Kicinski <kuba@kernel.org>
+To: raoxu@uniontech.com
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	maciej.fijalkowski@intel.com,
+	kuniyu@google.com,
+	linux-usb@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net v2] net: usb: ipheth: stop RX URB on ndo_stop
+Date: Fri,  4 Sep 2026 15:43:57 -0700
+Message-ID: <20260904224357.4041665-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <351B4C70CB12AE0F+20260901050604.2523039-1-raoxu@uniontech.com>
+References: <351B4C70CB12AE0F+20260901050604.2523039-1-raoxu@uniontech.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260904043724.2955444-1-s-vadapalli@ti.com> <20260904043724.2955444-22-s-vadapalli@ti.com>
-In-Reply-To: <20260904043724.2955444-22-s-vadapalli@ti.com>
-From: Linus Walleij <linusw@kernel.org>
-Date: Sat, 5 Sep 2026 00:36:29 +0200
-X-Gmail-Original-Message-ID: <CAD++jL=c7Hbfwbngr2HQ_RTUizL=hwQbTa=C-oZNu2BAjLh0yQ@mail.gmail.com>
-X-Gm-Features: AcwNN1U9I_dDB3NJSseFrC3_GFY1Eb30_yQ91aHRnm5hTr_W3IoNAFdaYoLTgAE
-Message-ID: <CAD++jL=c7Hbfwbngr2HQ_RTUizL=hwQbTa=C-oZNu2BAjLh0yQ@mail.gmail.com>
-Subject: Re: [PATCH net-next 21/33] net: dsa: realtek: rtl8366rb: Remove comma
- after sentinel-entry in match-table
-To: Siddharth Vadapalli <s-vadapalli@ti.com>
-Cc: dario.binacchi@amarulasolutions.com, mkl@pengutronix.de, 
-	mailhol@kernel.org, msp@baylibre.com, florian.fainelli@broadcom.com, 
-	jonas.gorski@gmail.com, andrew@lunn.ch, olteanv@gmail.com, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	kurt@linutronix.de, hauke@hauke-m.de, chester.a.unal@arinc9.com, 
-	daniel@makrotopia.org, matthias.bgg@gmail.com, 
-	angelogioacchino.delregno@collabora.com, ansuelsmth@gmail.com, 
-	luizluca@gmail.com, alvin.sipraga@analog.com, clement.leger@bootlin.com, 
-	justin.chen@broadcom.com, dlan@kernel.org, rogerq@kernel.org, 
-	hkallweit1@gmail.com, linux@armlinux.org.uk, rjui@broadcom.com, 
-	sbranden@broadcom.com, bcm-kernel-feedback-list@broadcom.com, 
-	opendmb@gmail.com, andrei.botila@oss.nxp.com, wangruikang@iscas.ac.cn, 
-	amadeus@jmu.edu.cn, kees@kernel.org, tmshlvck@gmail.com, c-vankar@ti.com, 
-	horms@kernel.org, vadim.fedorenko@linux.dev, daniel.zahka@gmail.com, 
-	nora.schiffer@ew.tq-group.com, v-singh1@ti.com, oss@vassilevski.com, 
-	haokexin@gmail.com, alex@sverdlin.org, aleksandr.loktionov@intel.com, 
-	lgs201920130244@gmail.com, linux-can@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-mediatek@lists.infradead.org, linux-renesas-soc@vger.kernel.org, 
-	linux-riscv@lists.infradead.org, spacemit@lists.linux.dev, 
-	linux-omap@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Fri, Sep 4, 2026 at 6:39=E2=80=AFAM Siddharth Vadapalli <s-vadapalli@ti.=
-com> wrote:
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+---
+net: usb: ipheth: stop RX URB on ndo_stop
 
-> Since sentinel is the last entry and we do not expect further entries
-> following it, remove the comma.
->
-> Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+ipheth_close() previously stopped the netdev queue and disabled the carrier
+work but left the RX URB submitted, so an in-flight RX could still deliver
+packets and re-arm itself after an administrative link down.  This commit
+adds a usb_kill_urb() on the RX URB in ndo_stop, deliberately leaving an
+in-flight TX URB to complete on its own.
 
-Reviewed-by: Linus Walleij <linusw@kernel.org>
+> diff --git a/drivers/net/usb/ipheth.c b/drivers/net/usb/ipheth.c
+> index 2b490114d2327..6b90fe1e0e382 100644
+> --- a/drivers/net/usb/ipheth.c
+> +++ b/drivers/net/usb/ipheth.c
+> @@ -505,6 +505,7 @@ static int ipheth_close(struct net_device *net)
+>  	 * it, so that such a schedule_delayed_work() is a no-op.
+>  	 */
+>  	disable_delayed_work_sync(&dev->carrier_work);
+> +	usb_kill_urb(dev->rx_urb);
+>  	return 0;
+>  }
 
-Yours,
-Linus Walleij
+[Severity: Low]
+Can this make a plain "ip link set ethN down" print a KERN_ERR line while
+RX traffic is flowing?
+
+usb_kill_urb() does atomic_inc(&urb->reject) before it unlinks and waits,
+so a giveback that is already in progress can run ipheth_rcvbulk_callback()
+with status 0 and fall through to the resubmit:
+
+drivers/net/usb/ipheth.c:ipheth_rcvbulk_callback() {
+	...
+rx_submit:
+	dev->confirmed_pairing = true;
+	ipheth_rx_submit(dev, GFP_ATOMIC);
+}
+
+That resubmit then hits the reject check in usb_hcd_submit_urb():
+
+drivers/usb/core/hcd.c:usb_hcd_submit_urb() {
+	...
+	/* Check that the URB isn't being killed */
+	if (unlikely(atomic_read(&urb->reject))) {
+		rc = -EPERM;
+		goto done;
+	}
+
+and ipheth_rx_submit() logs that unconditionally:
+
+drivers/net/usb/ipheth.c:ipheth_rx_submit() {
+	...
+	retval = usb_submit_urb(dev->rx_urb, mem_flags);
+	if (retval)
+		dev_err(&dev->intf->dev, "%s: usb_submit_urb: %d\n",
+			__func__, retval);
+
+Before this change urb->reject was never raised on the close path, so this
+-EPERM branch was not reachable from ndo_stop.
+
+The two sites also seem to disagree about what -EPERM means: ipheth_close()
+treats the blocked resubmit as the intended outcome, while
+ipheth_rx_submit() reports it as a device error.  Would it be worth teaching
+ipheth_rx_submit() (or the rx_submit path in ipheth_rcvbulk_callback()) to
+skip the dev_err() for -EPERM?
+
+Related to that, ipheth_rcvbulk_callback() discards the return value of
+ipheth_rx_submit(), so the now-expected -EPERM and a genuine failure such
+as -ENOMEM, which leaves RX dead until the next ipheth_open(), are treated
+identically.  Should the callback distinguish them?
+
+Should the commit message also mention the new log output on the close path?
+-- 
+pw-bot: cr
