@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88C55249EB
-	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 19:14:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 452F2248F64
+	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 19:14:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788549283; cv=none; b=jWFVN1bKUqX8HYav2BGxx2Beqvs2FYc7pzWrUkHl8SE+vYzFRh9bV2Bm8zVNs/0VKUyZPxR/rNnF7QLPRvcqjTntAPbHXD17hqCBjGreEPw7j1gVjTdT6Gf2zJk5KjQnlXarBvBF/SHuBuCEZ3un4sOuiP5onN+jxsEGAW98Q2s=
+	t=1788549285; cv=none; b=mig4qNtnJRtSHeUXk59bRXHwt28WNGpqhncQBFIQCIH7JSVrm1d27lkooHY27FeBugT6wW9AcnFd/ExFwyJLkSIOe9YC9t5NLBCwSfy3A/cDUSSlJqbkpWtDazBWd6tK8f4H8xRFlLQ0Yqo9LC52ZhUeQ2hAojUUOQPU7pyDxVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788549283; c=relaxed/simple;
-	bh=GeVp1Mz+axot10gKV3Dg9Mk3fC7EFPoush7Hwz68ocQ=;
+	s=arc-20240116; t=1788549285; c=relaxed/simple;
+	bh=EXkg6E3ql7iRNmgARh0B4/skP6yEs+ajHYM7VvGebkc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jMROd3ZbjQA55NY+Mehi2vW1JoEH9coZiwi4QztlYxy4BU5HHZsT2JLB/9a8f7ZFx3FmNv3YTGpWrZOY5WVdxSNw8fhCXEwm0fMye+GQqA11YuYQnIcEJgE6okUGI6kU7ilaiTumnTDp3UzohfaBS8hZSJhSwIGeJABNsxQOGXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NzQfgGmr; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=fjs21/1uqx8WX95PUTzZz7A7z92HAD2oz3ElQ3i9CnBULJrmgLmxlLlxw4P8azvukt5W4fzGc1yfju3ZecpF0aOwNFVfBMrGrtfwaBYykqWLdpepTMlrUNcwL4nDjZucakVoSLtxvFsqN90rqFUtgkxTbvWHX+1DcmIWvWKPaJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CmnVwFEW; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NzQfgGmr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A99E01F00A3E;
-	Fri,  4 Sep 2026 19:14:38 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CmnVwFEW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76E3A1F00A3F;
+	Fri,  4 Sep 2026 19:14:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788549278;
-	bh=xLx8IUu4uAeQCGJD/jiZY0sqeMRa7BgUMlvYlw+pMiE=;
+	s=k20260515; t=1788549279;
+	bh=CLaiAQyVXkEUeLrjPv6X/u5tFBvLAxlTZsoD1WIyTdQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NzQfgGmrqvICQiB8RRtXHacQytH2ifHFU0F+M8M9m2E6IMtGtY+jHXQhUcUQHfZK0
-	 CLegSIABEHntl1/vNZWNd2amPGw738r4QrUcOhKcDe0QfWoKQAHN0gg028Ky1XR4Ze
-	 9PHvvoQCBT8nnYTnF631JYQP+DGh4M0K2UkJHYT9MqBbb/8a20i5WGBd7jTzqUdwD1
-	 co2tXMHfxqnNUpw61Kuvk8vlZ5BJ5peUe4OCujkxsIVen5JMBr41QJh/TY0GG6q3+U
-	 V3s6iE7vMdMjjMZYvum5yOFcNq1Uz6Kej2f5OC5qO1AlGRo2N15RGkMiJhQWbIs1LG
-	 c0TCLHQ41+18Q==
+	b=CmnVwFEW9SnQAmzFkiGtR1r+HyN6aGcvJOop0/FunKNUnts9eUZmZO4YDEg9VdwPC
+	 NcU6FT3KWtMDMhqLRBIwMNzvRtzeBKlK5kBG1Vfig0Iob1tGFvF2/VWkHO3exwclan
+	 NiFAk271RSn144GfxjQy5+5N0YBttqpRP2It27yROQrFj9I08NpWye7TEfV9mnK8Wg
+	 LgTlpfn+O/uIEaveyznywe32I369zXYTxe7zvUm8VvZhGpYiwGO0r4dtBcvcFsF5KM
+	 5BSGWgEEN4Ufyx10lUxTBQptk0IAyiWD1QUBmATR4cFOo2/+8y26/HaodNJAo9j4/e
+	 fHVHx+F7zhGug==
 From: Jakub Kicinski <kuba@kernel.org>
 To: davem@davemloft.net
 Cc: netdev@vger.kernel.org,
@@ -36,9 +36,9 @@ Cc: netdev@vger.kernel.org,
 	donald.hunter@gmail.com,
 	kuniyu@google.com,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net-next 2/3] netlink: specs: fou: local-v4 and peer-v4 are big endian
-Date: Fri,  4 Sep 2026 12:14:11 -0700
-Message-ID: <20260904191412.3872344-3-kuba@kernel.org>
+Subject: [PATCH net-next 3/3] netlink: specs: fou: link the type attribute to the encap-type enum
+Date: Fri,  4 Sep 2026 12:14:12 -0700
+Message-ID: <20260904191412.3872344-4-kuba@kernel.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260904191412.3872344-1-kuba@kernel.org>
 References: <20260904191412.3872344-1-kuba@kernel.org>
@@ -50,56 +50,49 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-fou_core.c uses nla_get_in_addr() / nla_put_in_addr() on both, i.e.
-they are __be32, and port / peer-port in the same spec are already
-annotated. Without byte-order YNL swaps them on little endian hosts.
+The spec defines encap-type (unspec / direct / gue), but no attribute
+references it, so the definition exists only to emit FOU_ENCAP_* into
+the uAPI header - while FOU_ATTR_TYPE is exactly that value space:
+fou_create() switches on FOU_ENCAP_DIRECT / FOU_ENCAP_GUE and returns
+-EINVAL for anything else. Python YNL could not accept or display the
+names and the generated C exposed a raw __u8 setter.
 
-The generated policy goes from NLA_U32 to NLA_BE32, which changes
-nothing: lib/nlattr.c gives the two the same length in nla_attr_len[]
-and the same range handling, and neither attribute has a range check.
+The global policy entry becomes NLA_POLICY_MAX(NLA_U8, 2). For add
+that only moves the existing fou_create() rejection earlier; del and
+get ignore FOU_ATTR_TYPE altogether, so a bogus type there now fails
+validation instead of being dropped on the floor.
 
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
- Documentation/netlink/specs/fou.yaml | 2 ++
- net/ipv4/fou_nl.c                    | 4 ++--
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ Documentation/netlink/specs/fou.yaml | 1 +
+ net/ipv4/fou_nl.c                    | 2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/Documentation/netlink/specs/fou.yaml b/Documentation/netlink/specs/fou.yaml
-index 32d34be1dc63..1d0db6ba7e52 100644
+index 1d0db6ba7e52..3e6a38e31202 100644
 --- a/Documentation/netlink/specs/fou.yaml
 +++ b/Documentation/netlink/specs/fou.yaml
-@@ -50,6 +50,7 @@ kernel-policy: global
+@@ -44,6 +44,7 @@ kernel-policy: global
        -
-         name: local-v4
-         type: u32
-+        byte-order: big-endian
+         name: type
+         type: u8
++        enum: encap-type
        -
-         name: local-v6
-         type: binary
-@@ -58,6 +59,7 @@ kernel-policy: global
-       -
-         name: peer-v4
-         type: u32
-+        byte-order: big-endian
-       -
-         name: peer-v6
-         type: binary
+         name: remcsum-nopartial
+         type: flag
 diff --git a/net/ipv4/fou_nl.c b/net/ipv4/fou_nl.c
-index 309d5ba983d0..cdb174b92cdd 100644
+index cdb174b92cdd..ccd134ba352d 100644
 --- a/net/ipv4/fou_nl.c
 +++ b/net/ipv4/fou_nl.c
-@@ -18,9 +18,9 @@ const struct nla_policy fou_nl_policy[FOU_ATTR_IFINDEX + 1] = {
+@@ -16,7 +16,7 @@ const struct nla_policy fou_nl_policy[FOU_ATTR_IFINDEX + 1] = {
+ 	[FOU_ATTR_PORT] = { .type = NLA_BE16, },
+ 	[FOU_ATTR_AF] = { .type = NLA_U8, },
  	[FOU_ATTR_IPPROTO] = NLA_POLICY_MIN(NLA_U8, 1),
- 	[FOU_ATTR_TYPE] = { .type = NLA_U8, },
+-	[FOU_ATTR_TYPE] = { .type = NLA_U8, },
++	[FOU_ATTR_TYPE] = NLA_POLICY_MAX(NLA_U8, 2),
  	[FOU_ATTR_REMCSUM_NOPARTIAL] = { .type = NLA_FLAG, },
--	[FOU_ATTR_LOCAL_V4] = { .type = NLA_U32, },
-+	[FOU_ATTR_LOCAL_V4] = { .type = NLA_BE32, },
+ 	[FOU_ATTR_LOCAL_V4] = { .type = NLA_BE32, },
  	[FOU_ATTR_LOCAL_V6] = NLA_POLICY_EXACT_LEN(16),
--	[FOU_ATTR_PEER_V4] = { .type = NLA_U32, },
-+	[FOU_ATTR_PEER_V4] = { .type = NLA_BE32, },
- 	[FOU_ATTR_PEER_V6] = NLA_POLICY_EXACT_LEN(16),
- 	[FOU_ATTR_PEER_PORT] = { .type = NLA_BE16, },
- 	[FOU_ATTR_IFINDEX] = { .type = NLA_S32, },
 -- 
 2.55.0
 
