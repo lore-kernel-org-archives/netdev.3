@@ -1,306 +1,184 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8174B3A873D;
-	Fri,  4 Sep 2026 10:31:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEE433EC69D
+	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 10:33:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788517909; cv=none; b=DQhvQhwYPiNq+8xTMK4sIc/F2FTDiyqh35WzjPwS5HFggtRsaqUGj4bm+9K9aZKPokOuttJWY/ChSdjy93WfUCiXAFGsaOcUYHTBR1Lnvk7P/bO2feIKP+mvg4l9jJC4/ejjpqISPPP4VfQ/Kn2MGDzxdmdiGhUMIOO/61CXSA4=
+	t=1788518003; cv=none; b=sQgGAqyGIXah98hp7ZA1iCK45NmdTuAR7U8bAIsYYoHtZqg59v2CX4ufDV26PF9nmun++QeO6QlpUlVSNAnKdcpNuVc1NYTI1kegFJTkq0yOIu02NEQsj2UvgDvtUHZNII/icMV4oPXClAxe7Z5c0ma7GFcvn/DBmZLRuYea5xM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788517909; c=relaxed/simple;
-	bh=rRXCCalqfFNsIVKRQX7ydoNgK5N95LEqS2NZPDAjp6U=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=lo+r4Px6nGsjO2SUL3kNvKdmOZJiLu1aVCn7y49E3dL4EmjYch7g1ukjXU/kc5FKwD5HU6VHp/R4fc232XGZeCVXXx2VUIFIGlTU8HQ0ACftWNSlI9nX8t0qTyoFW1r0IQtOtYWHPTbWP/TgT0pnxMH/t9LC95umXFJmQZ4i6SE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TtMilclr; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788518003; c=relaxed/simple;
+	bh=FXPIz7ji7N6/mA4z4TaDO6EsnAACx3p8Zbpsie5y3hE=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=pGjBdP01lOGtklnTxkBpqN350210+yPc8/EXWGSbLVluQacx5UCgLlfnZbp23GPOAzzEbhZEqxudQngtiwzIXngX1IgP0wnWmd6MAi7RlT+J+66h/twI3nipLNEo+nsmteVhij6v6KzHKW/h4HN7ICVkl8TMxua3QCM2TGKWICI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=LNrNi32y; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=ElJPPPSd; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TtMilclr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 875D01F00A3F;
-	Fri,  4 Sep 2026 10:31:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788517907;
-	bh=BQXlgGbF0S49ekM6YtK1+M8FqSOqwV5jHC1jvFtp6UU=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=TtMilclrxwyUz8Lq9mklFrBQi4pHSiTln2oF5MtV6+bN1ky1aNr3UOAvZbDT61HYu
-	 oqMQZX0q3EMoKsAu4qnUm+2qxTsDaQV1w5xR+pyoFwSmxZG5Rxa1aN1HNbIJIX5iCV
-	 1Lqk9foaxNXSHzl0O7YWrOEB6CB+lEAvzgYG4OLKeAIaBdBKTwnDz+vhGnVHnK7U23
-	 57xtc16w6EjgFpDwKoGpH+j1tUfHRNE0+oYbWreS3utkyBTU3IFxTuF57mUz1l44lM
-	 GtK6KUIlL87b3pRaDyGfD9SiOylVkQkekGEiMoyGSgLp+mq+TBD+wPhT3u5jB/WMeE
-	 Qk0xGJ0obAB6Q==
-Subject: Re: [PATCH v4 net-next] octeontx2-af: add NPC TEID matching for GTP-U
- and GTP-C flows
-From: netdev-bot+sashiko@kernel.org
-To: rkannoth@marvell.com
-Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, sgoutham@marvell.com, sumang@marvell.com,
- gakula@marvell.com
-Date: Fri, 04 Sep 2026 10:31:46 +0000
-Message-ID: <178851790608.4131868.10164736795399223191@kernel.org>
-In-Reply-To: <20260901043027.2765502-1-rkannoth@marvell.com>
-References: <20260901043027.2765502-1-rkannoth@marvell.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="LNrNi32y";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="ElJPPPSd"
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 684AIFM13442537
+	for <netdev@vger.kernel.org>; Fri, 4 Sep 2026 10:33:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=+Wco/kXMn0u9im/xM9AEVe
+	sGiGf2KmU+6WXQANShwKs=; b=LNrNi32yS4j73C57+h6LNMvcxwU30EDl8g7Zr5
+	eS+IvLjmirfKDHYJQdKmWX+s09duLT+vvLqhLFP97Vgs/9rUZZ71zZKL3LMUjvKj
+	5DIlz59d4mzdYUhHr6w0t01fl6/78H/2DBG9kXvZggXrJN5yt+4xsQJCdwGh+Ch3
+	vEzUewmIxRvp3u3XdU+3YJS7/6g0UPbDSk9D04EkZDP299ehdHjSG/eAndnK7hic
+	3lg80R4sxoPdqGF0+HWzyEwwrro5EW5aL0muqintLv/SloYh/ekFBOlJaR9EYXkT
+	9Al+wa9eXs+IG/M8i4irB9h6KLsi+5wTuAXeq4oM4/3grb+A==
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gfp7818b9-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Fri, 04 Sep 2026 10:33:20 +0000 (GMT)
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-92e820609d9so166905585a.2
+        for <netdev@vger.kernel.org>; Fri, 04 Sep 2026 03:33:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1788518000; x=1789122800; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=+Wco/kXMn0u9im/xM9AEVesGiGf2KmU+6WXQANShwKs=;
+        b=ElJPPPSdNCGkykWbkGobIID891z+KE2lOBD78Gm5XksQRX3KchyzPWd2IqrEOwP/RC
+         I2Ygn2vO+LS4M9wfv+FDta6Fhx/LzzJZ8Opnf0PwKchrfislnjjeiAMV6i6HYP0YQgvL
+         FnoRNX5/25ZTFyNoAewBjw1+6Z6go75PuV8MdeXno1KSB1SrNwWRvjJRj80ROq0tGPmc
+         HBVoY4uRrJJtBZYc5n3WVeolG0dEDi/8DExGnysOZL0Gn/WegSqFtocHlvmTDefDrrmH
+         rlKet/7ubJeIotwQ0rNBvl+HP4HI4wTy53dpONSDVxbdCsNeiV7m5zHSO9t0OY565ja3
+         CDsw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788518000; x=1789122800;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=+Wco/kXMn0u9im/xM9AEVesGiGf2KmU+6WXQANShwKs=;
+        b=KdarZHP+nYscfZuTw0tfh3JKl9oNtNcep7XrFVGiItfxc2qWK/ErFID9mB9paIX/Jg
+         i1CzSua2U9AGOYuHWvwO39R6BUotEbRzz1PVPb97TD3UPwVhXffjUl5a1euBh3AsIDv+
+         ErdYMZsY2+qOgBB1Hvx+BEYGQMg5Sn45rFE2A0tauEvz3zUcb61O1tEM4xnLpV8EA+M4
+         yOzbmR2hbbR9d09pSjEe/7Uc51bYY0yEP/Fdle6MNaYM/0q7knhXhNQv9TUyjsMljU5U
+         lvJGEvZOWEG98tXdcOQSTkCU33tc+AundF+6nEnq1Ur6LuHSXPaf+CMrKAEV7ZqNjCIc
+         Y8Yg==
+X-Gm-Message-State: AFuF++lEiMLfvGivHapxZ4j5bOZYYRger87x1TvhGo0n8nJ0IRClaPVN
+	qWN9LLSxN9XNzmTPoU4LFdgSf9sAXJAZY+FXrVHwShLmHlwOxo/Zt11s5oaOetflorOG39Zf1T7
+	wrN/7LHHvaqyKTjgVzK9rNt8yptd1CCwRjvKqNoxnbnh4L+ime4/7okMF0+U=
+X-Gm-Gg: AYBFou1xzessSyEUagVYygkfUBBbahKQnf9DJNKfn1CU5nupDSMHfRChAlwFbxksq4a
+	3gzWt6pNyhsB97rnxtqqMWLc7+BGOMSLLp7CQTUTls+PhjGg3ESkyA/aApIccg0x1X8dVIGvwgr
+	ub9HXPLTajrZ1ZZ7tt0l9dBKPUwqDe7pVrN+sHz0kDti1oLCili/8GEPGeSv2450YciYcdkWeQF
+	RauhuILxc8JgRUar6WX+TbUIsE86nVO+2iGSVRPafHBldALidasgM860rUgGKZI/rYCDtQhqUg+
+	4zu1hkxKhZFSEpj/jCIBdM7vQodAw7FIaeP/eBLnzRAfYifOA0geN8S0E/WE+YJIP5x7uYwDhHl
+	DETo0yLatKmTSog==
+X-Received: by 2002:a05:620a:4105:b0:92e:4927:2002 with SMTP id af79cd13be357-9398045f7a9mr460779885a.39.1788517999925;
+        Fri, 04 Sep 2026 03:33:19 -0700 (PDT)
+X-Received: by 2002:a05:620a:4105:b0:92e:4927:2002 with SMTP id af79cd13be357-9398045f7a9mr460774485a.39.1788517999460;
+        Fri, 04 Sep 2026 03:33:19 -0700 (PDT)
+Received: from localhost ([188.216.77.92])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cee7fec25sm159708415e9.13.2026.09.04.03.33.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 04 Sep 2026 03:33:18 -0700 (PDT)
+From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+Date: Fri, 04 Sep 2026 12:32:55 +0200
+Subject: [PATCH net] net: stmmac: initialize ptp_lock at probe time
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260904-stmmac-fix-ptp-clock-init-v1-1-df70eb1eb04d@oss.qualcomm.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2MQQqAIBAAvxJ7bsFUovpKdDDbaqlMVCKI/p50H
+ JiZByIFpghd8UCgiyOfLkNVFmBX4xZCnjKDFLIWrdAY03EYizPf6JNHu592Q3accGxoNFrJRmo
+ FufeBsvW/e3CUYHjfD7r6RGhwAAAA
+X-Change-ID: 20260904-stmmac-fix-ptp-clock-init-b8eba4328243
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Richard Cochran <richardcochran@gmail.com>,
+        Jose Abreu <Jose.Abreu@synopsys.com>
+Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org,
+        Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+X-Mailer: b4 0.14.3
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTA0MDA5NSBTYWx0ZWRfX0apcFa7Je7jw
+ aAp/N4E13wExuaPO75smvvWdf5UisJSA6G9vsxnv+Rfb0s53DP2jH7d9HiOaMahf7DHFSUBUemz
+ 2FzS6D6+k1F8RsO9tADFWG5F7mCBiy0=
+X-Proofpoint-ORIG-GUID: lt3hp6e6LmMG2T4_nRVVMDxzzdev43Ky
+X-Authority-Analysis: v=2.4 cv=ab5RWxot c=1 sm=1 tr=0 ts=6a9a9e70 cx=c_pps
+ a=HLyN3IcIa5EE8TELMZ618Q==:117 a=WpTaRW6qxYHRGzLzQsVYzg==:17
+ a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=gowsoOTTUOVcmtlkKump:22
+ a=EUspDBNiAAAA:8 a=-llX2YphXL_7R2jwOlwA:9 a=QEXdDO2ut3YA:10
+ a=bTQJ7kPSJx9SKPbeHEYW:22
+X-Proofpoint-GUID: lt3hp6e6LmMG2T4_nRVVMDxzzdev43Ky
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA0MDA5NSBTYWx0ZWRfX6KlaEteSVwog
+ xXvx8YAeJ7spu7PjI51cIPIOMqHUbnjs+bV+fZxFm52GZ5wdhuYgL314vEGXU3goisGE7kcP7rh
+ 3BwJV8WRCxR77SJt+sBiLY5Kon5EyxE2i8hRn/rjAoZqb0KZbPvfBRdcJt0N/ntDlst4TnBXtyz
+ GQlrL8VkW+PNLNY4g44Fh+nftEw1tM9NCoXbEMKXog33ydH7nCmvMmbgeXeN1UvBnrOW1ujAFep
+ pRU0oEXyAlpi4grUrSu1TNr6PQ6TwUhCgTCVnfjccxyhJTEXwjBsiDSC3B3xE5EwvQY90SDuheg
+ gJckbeuZpx8hIlGZH6snaSnxL6KJXhCvEZwnvAPHKewZimwJjtfwvuK/V9ZbXpf+UqZWMxxOH9V
+ l98hAAb1yxmEtKWqc2TrvloQ2BMi1khdKST5gunwXYU7Kgcs3cKLMBQMDpN2u7JFXdvbUz48Sqe
+ eyKyt7Br97W5/cul+bA==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-04_03,2026-09-03_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 phishscore=0 clxscore=1015 impostorscore=0 suspectscore=0
+ lowpriorityscore=0 adultscore=0 bulkscore=0 priorityscore=1501 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2609040095
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider:
+priv->ptp_lock is only initialized in stmmac_ptp_register(), which runs
+during __stmmac_open(). However, the lock is also used while the
+interface is down and has never been opened: tc_taprio_configure()
+invokes the PTP gettime64() callback to compute the EST base time when
+offloading a TAPRIO schedule, and stmmac_get_time() takes
+priv->ptp_lock. Using an uninitialized rwlock is undefined behaviour.
+Move the rwlock_init() to __stmmac_dvr_probe(), together with the other
+private locks, so that ptp_lock is always valid regardless of the
+interface state.
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 1
+Fixes: b60189e0392f ("net: stmmac: Integrate EST with TAPRIO scheduler API")
+Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+---
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 1 +
+ drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c  | 1 -
+ 2 files changed, 1 insertion(+), 1 deletion(-)
 
-- [Medium] uAPI field overload: the new GTP TEID handling in
-  otx2_prepare_flow_request()…
-- [Medium] Missing NPC_LE (LE LTYPE) gate for the new GTP TEID features.
-- [Low] Wire-format assumption: NPC_SCAN_HDR(NPC_GTPC_TEID, NPC_LID_LE,
-  NPC_LT_LE_GTPC, 4, 4) in npc_scan_ldata() (rvu_npc_fs.c:667)…
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 24656b35350b..5fe7e95fdd34 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -8025,6 +8025,7 @@ static int __stmmac_dvr_probe(struct device *device,
+ 	stmmac_napi_add(ndev);
+ 
+ 	mutex_init(&priv->lock);
++	rwlock_init(&priv->ptp_lock);
+ 
+ 	stmmac_fpe_init(priv);
+ 
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c
+index 960249960004..3bfcc9760dce 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c
+@@ -365,7 +365,6 @@ void stmmac_ptp_register(struct stmmac_priv *priv)
+ 	if (priv->plat->crosststamp)
+ 		priv->ptp_clock_ops.getcrosststamp = stmmac_getcrosststamp;
+ 
+-	rwlock_init(&priv->ptp_lock);
+ 	mutex_init(&priv->aux_ts_lock);
+ 
+ 	priv->ptp_clock = ptp_clock_register(&priv->ptp_clock_ops,
 
---
+---
+base-commit: 641d03105cc0d2437e32fdeec164f91a4ccef6c4
+change-id: 20260904-stmmac-fix-ptp-clock-init-b8eba4328243
 
-octeontx2-af: add NPC TEID matching for GTP-U and GTP-C flows
-
-This adds NPC_GTPU_TEID and NPC_GTPC_TEID key fields and wires them through
-the AF MCAM path, so ethtool ntuple rules on UDP port 2152/2123 can match
-the GTP TEID taken from h_ext.data[1].  The new fields are also printed in
-the debugfs MCAM dumps.
-
-A few questions about the new key fields and the reuse of the ethtool
-user-def field below.
-
-> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
-> index d422bdd5e8f80..84be78ab73516 100644
-> --- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
-> +++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
-
-[ ... ]
-
-> @@ -661,6 +663,8 @@ do {									       \
->  	NPC_SCAN_HDR(NPC_VLAN_TAG1, NPC_LID_LB, NPC_LT_LB_CTAG, 2, 2);
->  	NPC_SCAN_HDR(NPC_VLAN_TAG2, NPC_LID_LB, NPC_LT_LB_STAG_QINQ, 2, 2);
->  	NPC_SCAN_HDR(NPC_VLAN_TAG3, NPC_LID_LB, NPC_LT_LB_STAG_QINQ, 6, 2);
-> +	NPC_SCAN_HDR(NPC_GTPU_TEID, NPC_LID_LE, NPC_LT_LE_GTPU, 4, 4);
-> +	NPC_SCAN_HDR(NPC_GTPC_TEID, NPC_LID_LE, NPC_LT_LE_GTPC, 4, 4);
-
-[Severity: Low]
-Is bytes 4..7 always the TEID for NPC_LT_LE_GTPC?
-
-For GTPv2-C (3GPP TS 29.274), which is what runs on UDP/2123 in EPC/5GC,
-the TEID field is only present when the T flag in octet 0 is set.  For T=0
-messages (Echo Request/Response, Version Not Supported Indication) octets
-4..6 hold the sequence number and octet 7 is spare.
-
-The KPU labels the packet as GTP-C purely from the UDP destination port,
-kpu8_action_entries() in npc_profile.h:
-
-		NPC_S_KPU9_GTPC, 8, 1,
-		NPC_LID_LD, NPC_LT_LD_UDP,
-
-and the kpu9 GTPC CAM entry matches with all-zero data and mask, so the
-kpu9 action emits NPC_LID_LE/NPC_LT_LE_GTPC without any version or T flag
-check.
-
-Can a rule asking for GTP-C TEID X therefore also match a T=0 GTPv2-C
-control message whose sequence number bytes happen to equal the upper
-three bytes of X, and conversely never match T=0 messages that the user
-expected to be covered?
-
-> @@ -720,7 +724,7 @@ static void npc_set_features(struct rvu *rvu, int blkaddr, u8 intf)
->  		*features |= BIT_ULL(NPC_IPPROTO_ICMP6);
->  	}
->  
-> -	/* for ESP, check if corresponding layer type is present in the key */
-> +	/* for ESP check if corresponding layer type is present in the key */
->  	if (npc_check_field(rvu, blkaddr, NPC_LE, intf))
->  		*features |= BIT_ULL(NPC_IPPROTO_ESP);
-
-[Severity: Medium]
-Should the two new TEID features get the same NPC_LE gate that ESP has
-here?
-
-NPC_GTPU_TEID and NPC_GTPC_TEID were added inside the [NPC_DMAC,
-NPC_HEADER_FIELDS_MAX) range, so npc_set_features() advertises them from
-the generic loop alone:
-
-	for (hdr = NPC_DMAC; hdr < NPC_HEADER_FIELDS_MAX; hdr++) {
-		if (npc_check_field(rvu, blkaddr, hdr, intf))
-			*features |= BIT_ULL(hdr);
-	}
-
-That only requires the MKEX profile to extract the four TEID bytes of
-layer LE, not that the LE LTYPE nibble is part of the search key.  The
-ESP check right below exists precisely because an LE match is meaningless
-without the LE LTYPE in the key.
-
-Also, this comment change drops a comma that was there before, which
-looks unintentional in a patch that is otherwise adding a feature.
-
-[ ... ]
-
-> @@ -1113,6 +1117,14 @@ void npc_update_flow(struct rvu *rvu, struct mcam_entry_mdata *mdata,
->  		npc_update_entry(rvu, NPC_LE, mdata, NPC_LT_LE_ESP,
->  				 0, ~0ULL, 0, intf);
->  
-> +	if (features & BIT_ULL(NPC_GTPU_TEID))
-> +		npc_update_entry(rvu, NPC_LE, mdata, NPC_LT_LE_GTPU,
-> +				 0, ~0ULL, 0, intf);
-> +
-> +	if (features & BIT_ULL(NPC_GTPC_TEID))
-> +		npc_update_entry(rvu, NPC_LE, mdata, NPC_LT_LE_GTPC,
-> +				 0, ~0ULL, 0, intf);
-> +
-
-[Severity: Medium]
-Continuing the question above: when the LE LTYPE is not in the generated
-key, do these two calls silently do nothing?
-
-npc_update_entry() bails out early in that case:
-
-	if (!field->nr_kws)
-		return;
-
-So the LTYPE qualifier is dropped and only the TEID bytes end up in the
-MCAM entry, with no warning and no error.
-
-npc_check_overlap_fields() deliberately allows same-LID/different-LTYPE
-fields to share key bits:
-
-	/* Fields with same layer id and different ltypes are mutually
-	 * exclusive hence they can be overlapped
-	 */
-	if (input1->layer_mdata.lid == input2->layer_mdata.lid &&
-	    input1->layer_mdata.ltype != input2->layer_mdata.ltype)
-		return false;
-
-which means NPC_LT_LE_ESP, NPC_LT_LE_GTPU and NPC_LT_LE_GTPC can occupy
-the same key bytes and the LTYPE is the only discriminator.
-
-With such a profile, can a rule installed as "GTP-U TEID == X" also match
-ESP packets whose SPI equals X, or GTP-C packets with TEID X?
-
-[ ... ]
-
-> @@ -1769,6 +1785,28 @@ int rvu_mbox_handler_npc_install_flow(struct rvu *rvu,
->  
->  	req->entry = npc_cn20k_vidx2idx(req->entry);
->  
-> +	if ((req->features & BIT_ULL(NPC_GTPU_TEID)) &&
-> +	    !npc_check_field(rvu, blkaddr, NPC_GTPU_TEID, req->intf)) {
-> +		if (is_pffunc_af(req->hdr.pcifunc))
-> +			dev_warn(rvu->dev,
-> +				 "%s: mkex profile does not extract GTP-U TEID\n",
-> +				 __func__);
-> +		rvu_npc_free_entry_for_flow_install(rvu, req->hdr.pcifunc,
-> +						    allocated, req->entry);
-> +		return NPC_FLOW_NOT_SUPPORTED;
-> +	}
-> +
-> +	if ((req->features & BIT_ULL(NPC_GTPC_TEID)) &&
-> +	    !npc_check_field(rvu, blkaddr, NPC_GTPC_TEID, req->intf)) {
-> +		if (is_pffunc_af(req->hdr.pcifunc))
-> +			dev_warn(rvu->dev,
-> +				 "%s: mkex profile does not extract GTP-C TEID\n",
-> +				 __func__);
-> +		rvu_npc_free_entry_for_flow_install(rvu, req->hdr.pcifunc,
-> +						    allocated, req->entry);
-> +		return NPC_FLOW_NOT_SUPPORTED;
-> +	}
-> +
-
-[Severity: Medium]
-This validation only checks that the TEID bytes are extracted.  Would it
-be worth also rejecting the request when npc_check_field(rvu, blkaddr,
-NPC_LE, req->intf) is false, so that an under-qualified rule (TEID bytes
-without the LE LTYPE) is not accepted and programmed?
-
-> diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_flows.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_flows.c
-> index 99d78fc5a2c4a..73401e7ec68d6 100644
-> --- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_flows.c
-> +++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_flows.c
-> @@ -11,6 +11,8 @@
->  #include "otx2_common.h"
->  
->  #define OTX2_DEFAULT_ACTION	0x1
-> +#define GTPU_PORT		2152
-> +#define GTPC_PORT		2123
-
-[ ... ]
-
-> @@ -1076,7 +1079,30 @@ static int otx2_prepare_flow_request(struct ethtool_rx_flow_spec *fsp,
->  			req->features |= BIT_ULL(NPC_OUTER_VID);
->  		}
->  
-> +		/* GTP TEID uses FLOW_EXT data[1]; VLAN/MAC use other fields. */
->  		if (fsp->m_ext.data[1]) {
-> +			switch (flow_type) {
-> +			case UDP_V4_FLOW:
-> +			case UDP_V6_FLOW:
-> +				if (ntohs(pmask->dport) == 0xFFFF &&
-> +				    ntohs(pkt->dport) == GTPU_PORT) {
-> +					/* Check for GTP-U packets */
-> +					skip_user_def = true;
-> +					pkt->gtpu_teid = fsp->h_ext.data[1];
-> +					pmask->gtpu_teid = fsp->m_ext.data[1];
-> +					req->features |= BIT_ULL(NPC_GTPU_TEID);
-> +				} else if (ntohs(pmask->dport) == 0xFFFF &&
-> +					   ntohs(pkt->dport) == GTPC_PORT) {
-> +					/* Check for GTP-C packets */
-> +					skip_user_def = true;
-> +					pkt->gtpc_teid = fsp->h_ext.data[1];
-> +					pmask->gtpc_teid = fsp->m_ext.data[1];
-> +					req->features |= BIT_ULL(NPC_GTPC_TEID);
-> +				}
-> +			}
-> +		}
-> +
-> +		if (fsp->m_ext.data[1] && !skip_user_def) {
->  			if (flow_type == IP_USER_FLOW) {
->  				if (be32_to_cpu(fsp->h_ext.data[1]) != IPV4_FLAG_MORE)
->  					return -EINVAL;
-
-[Severity: Medium]
-Does this change the meaning of rules that already work today?
-
-h_ext.data[1] already has an interpretation in this same function, in the
-block that is now guarded by !skip_user_def:
-
-			} else if (fsp->h_ext.data[1] ==
-					cpu_to_be32(OTX2_DEFAULT_ACTION)) {
-				/* Not Drop/Direct to queue but use action
-				 * in default entry
-				 */
-				req->op = NIX_RX_ACTION_DEFAULT;
-			}
-
-otx2_prepare_ipv4_flow()/otx2_prepare_ipv6_flow() copy pdst and its mask
-verbatim into pkt->dport/pmask->dport, so for
-
-	ethtool -N ethX flow-type udp4 dst-port 2152 user-def 0x1 action N
-
-the new block sets skip_user_def and the OTX2_DEFAULT_ACTION branch is no
-longer reached.  The rule installs a GTP-U TEID == 1 match with the
-ring_cookie-derived action instead of deferring to the default entry
-action, and no error is returned.
-
-Conversely, is the default-action encoding now inexpressible for UDP
-ports 2152 and 2123, and is a TEID value of 0x1 indistinguishable from
-the legacy encoding?
-
-The commit message says only:
-
-    take the TEID value and mask from h_ext.data[1] and install the
-    corresponding LE layer match in NPC.
-
-Could it mention that data[1] already carries the default-action encoding,
-and how the two are meant to be told apart?
-
-Also, skip_user_def is declared as int but assigned true/false; bool looks
-like the intended type here.  The switch has only UDP_V4_FLOW/UDP_V6_FLOW
-cases with no break statement before the closing brace, which builds fine
-but reads oddly for a switch that gates two cases.
-
+Best regards,
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260901043027.2765502-1-rkannoth%40marvell.com
+Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+
