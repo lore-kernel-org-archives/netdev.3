@@ -1,230 +1,196 @@
-Received: from smtpbgbr1.qq.com (smtpbgbr1.qq.com [54.207.19.206])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C9803CCFB8
-	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 08:53:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.19.206
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1966F3EB81E
+	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 08:55:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788512027; cv=none; b=AHVXrIlyC6weoJJpgJpnQ3GGwAqAIe3gJuFx0tXIF+n+h1SlXWSnAgKgdh+6EABF1mKj48L0Jm++sCAWZoriBv5h5dlrwW459ZYK0+m+cHRWlkXmUVWCHXMFS5b+gEJz32egnH+FBY0CahV3Dom47u299sBi21Lf1n4alJQmK90=
+	t=1788512131; cv=none; b=EizSeU3aUB97BLXKocQ5XcsBzYc8X0J76xBG51k3Crjaxek0sJkO00XZXCESVIB74wf0GqnLEzzE9rDrON9LRAqiYLqgbyHKw4huOAJCaguUHPwNRBGNCVof2EIGeaPy8/xlquiHdozO5ND2dIXj8mAty3FySpr+M77UDwYHb14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788512027; c=relaxed/simple;
-	bh=q6gs+4p5OOEL1aHTcmS1UAG2nLh2IuldBSGfVk8HslY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=D+eIPdDIsUbXl9V3xaqnkN9pP2HJk+Uvs9LxmaYmJPdRrI2bYHptfnx2U3CJMadVdONq6vK9ioiGb1xNe0/SfeWFgr1UQBXeFq8JqM4mCALEFIGLGbpYiT49LnC6tNdOUn++B9n99nxfKjWdAXRwn7FqGJ2+uZ45mjtQfcvAj7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com; spf=pass smtp.mailfrom=net-swift.com; arc=none smtp.client-ip=54.207.19.206
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=net-swift.com
-X-QQ-mid: esmtpsz10t1788511941tfddf8cff
-X-QQ-Originating-IP: PXztDdzEbgeJGKRuQUveenhDIQ0lpJvYHDAkLD1dHZE=
-Received: from localhost.localdomain ( [36.24.189.66])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Fri, 04 Sep 2026 16:52:19 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 4855568335180887314
-EX-QQ-RecipientCnt: 11
-From: Mengyuan Lou <mengyuanlou@net-swift.com>
-To: netdev@vger.kernel.org
-Cc: jiawenwu@trustnetic.com,
-	duanqiangwen@net-swift.com,
-	linglingzhang@net-swift.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	hramamurthy@google.com,
-	Mengyuan Lou <mengyuanlou@net-swift.com>
-Subject: [PATCH net v3] net: libwx: fix PM suspend/resume flow for VF drivers
-Date: Fri,  4 Sep 2026 16:52:16 +0800
-Message-Id: <20260904085216.43469-1-mengyuanlou@net-swift.com>
-X-Mailer: git-send-email 2.30.1
+	s=arc-20240116; t=1788512131; c=relaxed/simple;
+	bh=4IIv9yG4m7qxm3IqrT9DQAomNx8kM3TWRYVx0cDnJRE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MvjwRxu1T2RIgsp/I8dBjjdbpoRkRNeDPJVWzJWa9JIYROEu1a+VMLUxf9ZYCMeBLrqHNwWCng3ZtwACHBF+eb4q23afT6Z+aAg2gBkiByLzVhcTk9Xs42/epgeH7HENP6gtjJSENCOutUKxvwsnXubP3y2EhNUHz9tBMdrQofU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LD88kmsY; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=GHSRva5s; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LD88kmsY";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="GHSRva5s"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1788512127;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=JKkhm4P3owmRu88ixnc//OXNGkRZebTXD50nAJpfW/8=;
+	b=LD88kmsYbCnbK9xEC8DoWeKi4Hd/N547tbI1yVQDjqMcQTgkyBVioWs+KRNcDqBK6zyM49
+	BkvBVjeC3aU/KzH8dj/HNC8kA72VAwKtfElezDzFroFxA//75hP+XAMRCZ/6ICPc/BEZwo
+	tftBY4YPQ9zKfw5GbVahcNkPDcFuHT8=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-668-BDe32PMnMJimkvIACzED_Q-1; Fri, 04 Sep 2026 04:55:25 -0400
+X-MC-Unique: BDe32PMnMJimkvIACzED_Q-1
+X-Mimecast-MFC-AGG-ID: BDe32PMnMJimkvIACzED_Q_1788512125
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-49953abe51fso5402525e9.1
+        for <netdev@vger.kernel.org>; Fri, 04 Sep 2026 01:55:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1788512125; x=1789116925; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=JKkhm4P3owmRu88ixnc//OXNGkRZebTXD50nAJpfW/8=;
+        b=GHSRva5sMEryUDA+/igHn9JZyq/Ve7JP5ZnPCnu6cuz3I8o5mit2MG5KusK5KcWkBp
+         Ap1txZYb9A+KXqzb4u+2ZHiD9EF7Pl0lven+DH3EM6dS24QbUJcRp1wzA/fUHPQdK100
+         6Rx569cSI21p2Z/19KergekHvDRPygtC3FUSyasvQrnPEELV4tJrx3BDLI28CZ9hCL2h
+         MbJVibU+45X5b0J6D3SepvT4Q5u9xeop7m7QGO1N5xETnikFp/xHTfeTAliqDNTUaDr9
+         oVFWs9/mDdKP7v6WX0SObfBCHD1DQWFU2pl0x3cl/lMsHbnxLR5JZ0APMOv8y+eR41IH
+         WbBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788512125; x=1789116925;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=JKkhm4P3owmRu88ixnc//OXNGkRZebTXD50nAJpfW/8=;
+        b=APwU4YuTtQQlnSMxFFEKQBzxHwbCKxEe6mI/WcZldcv8nYm6yF6inMwK+w3yK6IICt
+         4FnC0dkYNyRwKcNo4U1qSPoPwkrut2rULYMrH3jEWhsIIRAKQpyw89TfP1zNZF/oEmTr
+         +MOoPQJqicyCcURWg94n9sQqo4MoaURZ5RzPxj0bw6M6NGbfwlcDg4K25H53wG1xxj3y
+         3ML9y4TylguDMGFlwI9SmB+2kwZBACuiC0fxEfNnN75YJKqWjWMsBtUxp2pWwZVLlVCQ
+         jph1AEy8EO7eKWALfisQ4F90feVAPjPkK5aeJAVJHXg7Yiq+wJ0eIXTl4wpdBCm94K03
+         ppQw==
+X-Forwarded-Encrypted: i=1; AKwUvBxgesC0tqw9uzxMXz8SYsh9kvUqg8YYpIUb2ayQGIoI90NnjvYd3iaRWobsz6Aw6dNGzreC0EM=@vger.kernel.org
+X-Gm-Message-State: AFuF++nM/lyuTEuoNJI/yLa5b+5BeXRv7bzbn1BOvxXGTDhkwcfLUkLQ
+	n4ftu9213Dpi5gpZ80dPVo7IJhtTP95Q4dXS2ZOVn9dM2oNSAu2RX5cLIImmY8v+aRLp0ulnM3K
+	ezpdIzNyqJV8TT5auD65Of+37+RCqidxMWOc00UQi15f4hfvosC5vfmIGZw==
+X-Gm-Gg: AYBFou1LJA7RkVTIbrTD+s8+CgBpcDBOqvQ+FIdZJFZXl+Rvagx4uEloW6W/AMcnKQZ
+	6bv0etIBGYouNxoQ+dYgxmCKCczqwboApjMRdh/0CKzR8zamjmSUKHbYoOiatfWKX6JjqgSl50R
+	OKIX3InF2ThnETYFa/V0Cz+n3pYTfz5DyuvkpNgQDjS1q6ZUZsuHIFV+FzynP1RXV+ZQgFJ4Csk
+	eT4l0VHUc9okjN+2n3VmJQEXRO4VrWgz66774A4oSJX6lhQaxA99kpW+bZ1qnxPXLhfpYJGXSZj
+	zx95szGp+ovKAeOvabRlvDdqCdVYgxP7EIkywgI2RCsjgFEDT3/jPIlQIjutmHQOyl+eu8Osa89
+	KNx1Jyg6hFBCL2dstzeW+4edCZgCiEgqU+JtcbHPH18VDTw==
+X-Received: by 2002:a05:600c:1c29:b0:49c:fc6c:be03 with SMTP id 5b1f17b1804b1-49cfc6cc06cmr18966755e9.26.1788512124611;
+        Fri, 04 Sep 2026 01:55:24 -0700 (PDT)
+X-Received: by 2002:a05:600c:1c29:b0:49c:fc6c:be03 with SMTP id 5b1f17b1804b1-49cfc6cc06cmr18966125e9.26.1788512123997;
+        Fri, 04 Sep 2026 01:55:23 -0700 (PDT)
+Received: from sgarzare-redhat (host-79-53-30-11.retail.telecomitalia.it. [79.53.30.11])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49ce46696e8sm128248985e9.0.2026.09.04.01.55.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 04 Sep 2026 01:55:23 -0700 (PDT)
+Date: Fri, 4 Sep 2026 10:55:17 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Bobby Eshleman <bobbyeshleman@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Stefan Hajnoczi <stefanha@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
+	Jason Wang <jasowangio@gmail.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
+	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, Shuah Khan <shuah@kernel.org>, 
+	Randy Dunlap <rdunlap@infradead.org>, virtualization@lists.linux.dev, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, kvm@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, sargun@sargun.me, jlinbox@meta.com, 
+	Bobby Eshleman <bobbyeshleman@meta.com>
+Subject: Re: [PATCH net-next 0/6] vsock: assign the guest vsock device to a
+ network namespace
+Message-ID: <apqGcFDFm9_Wtw4q@sgarzare-redhat>
+References: <20260902-vsock-guest-ns-v1-0-9995383e9a8b@meta.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpsz:net-swift.com:qybglogicsvrgz:qybglogicsvrgz5b-1
-X-QQ-XMAILINFO: NbvVYYrLqtwLcnJUd3u0Vepff1JhOT/hAjeQHGmfb8eZlAZsDew/oOeR
-	79m8em+vcDsHUQRpe6Goq60JaJuW9jWL9/phRG4kfK3iw1qoB9s5y7reRK6ktOxk4Zmv5Hl
-	QOGuhCdVDmPPENbkY4sgmEr6/3tmiDZq5aFlRI+y+0LGWCZosXo2a98ulsJFjZ8+ezZIVrO
-	c2qFq2abmwfuEv9vj5u5Y7oTTBKZyJ1zGfyNIFi7RdwNiXN4t4E79Bu0guXTBWWO28WQmUO
-	oaMiFGfAEf33XqUnbL0ywRG+Q/YMpWAuGHVMT0pbk3WUuHP+rP8RSuj8XyjGWj86qAo3Nr/
-	YAypV4fIifqnsu5aBVeWNZFDZdvt8oHajo/4geBqJSoFPM85dOfKqNGPuwF0Czeeh/1UUOd
-	AV2LFM8O1w4YBk7TgKz2zqVYJw26sB4lkzLZFzWy/gllG8EIQrf+E1vGEP+30ims8/yJ0m7
-	Ki5u0+Jo0mGhZhhhJT9XHybtVRIIZRMgyVVzKBNfUwbWCiEwHFyU70G6ZQ2vuc0Es0qvKHg
-	jlCESiQPkqJlr1LSp/ViFzgP5Q4sDl68P6C06AR5kRt4+J8x6NHfkpSnp5jX7OvJbtG6Jmu
-	svbO1b/Is44LD36ZR6aDqK71oNtUX1UaYqD89Z4TF4Os3uysY+gadmzUNQUzflSngiZBj8U
-	GmvUU0IMQc8nkaytLdc+vqhmxmT+3njYXBMfoNVX/xC8ZdFNwzstUoGNJ3Lkk0b8oBqse2R
-	QiMNy66X6FlrJygTSZOSRTKMFOJ8ji5FZggAGJ0pEDhTkqbuWZE8+yJzqR4RJbrzU+ecJYJ
-	Kkb7JMfMa9AS5Xoadc4phiuBbOrCjJH1IYQJOEiP2rHsCh26MHwkfqUiTkVIx0VTyJsKfbL
-	+xs6X1gV21gjdL3XyrOcHhbjFqEQGHoWiZv6b3VzZnCTARRco0t8ML6BK+G5bgzLfGlv9q1
-	Pew/Y9Mt8TuFIiGtypZrWDtm2DFMhm1GdxhNvXCVLLTT++jQKK3l9SLqHRQcXw71DxD2izx
-	tWitZkllLyEmjOWtljVSJTVXqyrP3EuwEfw9GVlVcv6dD5tlMgKuY36UiQCU1Uw0ZdKaQoE
-	5sGpHEjcyGkhgu/e4cyNtVgK4DKEOZ8hCuE2eMhvD0h
-X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
-X-QQ-RECHKSPAM: 0
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20260902-vsock-guest-ns-v1-0-9995383e9a8b@meta.com>
 
-Rework wxvf_suspend() and wxvf_resume() to handle interface lifecycle
-transitions safely under rtnl_lock() and eliminate resource races.
+On Wed, Sep 02, 2026 at 04:00:46PM -0700, Bobby Eshleman wrote:
+>vsock network namespaces let a host put each VM in a namespace of its
+>own. A guest has no equivalent yet. It has a single G2H device that
+>cannot be assigned to a network namespace.
 
-In wxvf_suspend(), if the netdevice is running, invoke wxvf_close() to
-quiesce DMA engines, disable NAPI, and release IRQs/rings cleanly prior
-to clearing PCI bus mastering and disabling the device.
+Thanks for this, I'll do a proper review next week, in the mean time 
+some comments below:
 
-In wxvf_resume(), avoid partial hardware re-initialization on active
-queues. If the device was running before suspend, defer complete queue
-and interrupt setup to a new reset subtask flag WX_FLAG_NEED_REOPEN,
-which safely invokes wxvf_open() under rtnl_lock(). Provide error
-unwinding inside wxvf_reopen_subtask() if re-opening fails.
+>
+>This series lets a guest move that device into a network namespace. A
+>new ioctl on /dev/vsock, IOCTL_VM_SOCKETS_ASSIGN_G2H_NETNS, assigns the
+>device to the namespace of the calling process. The namespace's existing
 
-Fixes: 377d180bd71c ("net: wangxun: add txgbevf build")
-Signed-off-by: Mengyuan Lou <mengyuanlou@net-swift.com>
----
-Changelogs:
-v3:
-- Fix DMA-after-free and UAF races in wxvf_suspend() by invoking
-  wxvf_close() when running, ensuring DMA engines are stopped and
-  NAPI/IRQs/rings are cleanly freed before clearing PCI state.
-- Replace manual resource allocation in wxvf_resume() with deferred
-  reopening via WX_FLAG_NEED_REOPEN, scheduling wxvf_reopen_subtask() to
-  run full wxvf_open() sequence under rtnl_lock().
-- Move timer/work synchronization after rtnl_lock() release in
-  wxvf_suspend() to prevent service tasks from re-arming the timer.
-- Add error unwinding in wxvf_reopen_subtask() to set WX_STATE_DOWN,
-  clear bus mastering, and log errors if reopen fails.
-- Skip wxvf_link_config_subtask() when WX_STATE_DOWN is set to prevent
-  link updates on downed interfaces.
-v2: https://lore.kernel.org/netdev/20260829091423.83097-1-mengyuanlou@net-swift.com/
-- Refactored the suspend and resume logic to eliminate full netdevice close/open
-  cycles in favor of lightweight interrupt and queue manipulation:
-  * In wxvf_suspend(), replaced wxvf_close() with explicit queue stopping
-    (netif_tx_disable), carrier drop, NAPI disabling (wx_napi_disable_all), IRQ
-    releasing (wx_free_irq), and resource freeing (wx_free_resources).
-  * In wxvf_resume(), replaced wxvf_open() with granular resource allocation
-    (wx_setup_resources), MSI-X IRQ requesting (wx_request_msix_irqs_vf), and deferred
-    hardware reconfiguration via WX_FLAG_NEED_DO_RESET flag.
-- Dropped the addition of device_link_add() to parent PF in ngbevf and txgbevf probe()
-  paths to keep the patch focused strictly on libwx PM suspend/resume flow.
-v1: https://lore.kernel.org/netdev/20260826095243.16939-1-mengyuanlou@net-swift.com/
----
- drivers/net/ethernet/wangxun/libwx/wx_type.h  |  1 +
- .../net/ethernet/wangxun/libwx/wx_vf_common.c | 57 ++++++++++++++++++-
- 2 files changed, 55 insertions(+), 3 deletions(-)
+Why an ioctl?
 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_type.h b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-index 2eba5ab59925..1b18b069decc 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_type.h
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_type.h
-@@ -1288,6 +1288,7 @@ enum wx_pf_flags {
- 	WX_FLAG_NEED_MODULE_RESET,
- 	WX_FLAG_NEED_UPDATE_LINK,
- 	WX_FLAG_NEED_DO_RESET,
-+	WX_FLAG_NEED_REOPEN,
- 	WX_FLAG_RX_MERGE_ENABLED,
- 	WX_FLAG_TXHEAD_WB_ENABLED,
- 	WX_FLAG_NEED_PCIE_RECOVERY,
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c b/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c
-index 26de78e9a69e..3e55738e2096 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c
-@@ -16,9 +16,16 @@ int wxvf_suspend(struct device *dev_d)
- 	struct pci_dev *pdev = to_pci_dev(dev_d);
- 	struct wx *wx = pci_get_drvdata(pdev);
- 
-+	rtnl_lock();
- 	netif_device_detach(wx->netdev);
-+	if (netif_running(wx->netdev))
-+		wxvf_close(wx->netdev);
- 	wx_clear_interrupt_scheme(wx);
-+	pci_clear_master(pdev);
- 	pci_disable_device(pdev);
-+	rtnl_unlock();
-+	timer_delete_sync(&wx->service_timer);
-+	cancel_work_sync(&wx->service_task);
- 
- 	return 0;
- }
-@@ -34,11 +41,25 @@ int wxvf_resume(struct device *dev_d)
- {
- 	struct pci_dev *pdev = to_pci_dev(dev_d);
- 	struct wx *wx = pci_get_drvdata(pdev);
-+	int err;
- 
--	pci_set_master(pdev);
--	wx_init_interrupt_scheme(wx);
--	netif_device_attach(wx->netdev);
-+	err = pci_enable_device_mem(pdev);
-+	if (err) {
-+		dev_err(&pdev->dev, "Cannot enable PCI device from suspend\n");
-+		return err;
-+	}
- 
-+	rtnl_lock();
-+	if (netif_running(wx->netdev)) {
-+		clear_bit(WX_STATE_DOWN, wx->state);
-+		clear_bit(WX_STATE_SERVICE_SCHED, wx->state);
-+		mod_timer(&wx->service_timer, jiffies + HZ);
-+		set_bit(WX_FLAG_NEED_REOPEN, wx->flags);
-+	} else {
-+		pci_set_master(pdev);
-+		netif_device_attach(wx->netdev);
-+	}
-+	rtnl_unlock();
- 	return 0;
- }
- EXPORT_SYMBOL(wxvf_resume);
-@@ -388,6 +409,9 @@ static void wxvf_link_config_subtask(struct wx *wx)
- {
- 	struct net_device *netdev = wx->netdev;
- 
-+	if (test_bit(WX_STATE_DOWN, wx->state))
-+		return;
-+
- 	wxvf_watchdog_update_link(wx);
- 	if (wx->link) {
- 		if (netif_carrier_ok(netdev))
-@@ -403,10 +427,37 @@ static void wxvf_link_config_subtask(struct wx *wx)
- 	}
- }
- 
-+static void wxvf_reopen_subtask(struct wx *wx)
-+{
-+	if (!test_bit(WX_FLAG_NEED_REOPEN, wx->flags))
-+		return;
-+
-+	rtnl_lock();
-+	pci_set_master(wx->pdev);
-+	if (wx_init_interrupt_scheme(wx))
-+		goto out;
-+	if (wxvf_open(wx->netdev))
-+		goto out_clear_scheme;
-+	clear_bit(WX_FLAG_NEED_REOPEN, wx->flags);
-+	netif_device_attach(wx->netdev);
-+	rtnl_unlock();
-+	return;
-+
-+out_clear_scheme:
-+	wx_clear_interrupt_scheme(wx);
-+out:
-+	pci_clear_master(wx->pdev);
-+	clear_bit(WX_FLAG_NEED_REOPEN, wx->flags);
-+	set_bit(WX_STATE_DOWN, wx->state);
-+	rtnl_unlock();
-+	dev_err(&wx->pdev->dev, "Failed to reopen device\n");
-+}
-+
- static void wxvf_service_task(struct work_struct *work)
- {
- 	struct wx *wx = container_of(work, struct wx, service_task);
- 
-+	wxvf_reopen_subtask(wx);
- 	wxvf_link_config_subtask(wx);
- 	wxvf_reset_subtask(wx);
- 	wx_service_event_complete(wx);
--- 
-2.30.1
+I'm asking because I'd like to know if you've already considered any 
+alternatives (sysfs, netlink, etc.)
+
+How do you think the ioctl should be used? Should we provide an 
+userspace tool, or extending some existing tools?
+
+Thanks,
+Stefano
+
+>ns_mode then decides who may use it: a "global" namespace shares the
+>device with every other global namespace, and a "local" namespace keeps
+>the host connection to itself. The device starts out in the initial
+>namespace, so until the ioctl is issued nothing has moved and no mode
+>has changed. There is no explicit unassign as assigning the device back
+>to the initial namespace is equivalent.
+>
+>The ioctl requires CAP_NET_ADMIN in the initial user namespace.
+>
+>Connections that can no longer reach the device after a move are reset,
+>so that a namespace which has lost access cannot keep using a socket it
+>opened while it still had access. Following netdevs, the device returns
+>to the initial namespace when the namespace it was moved to is deleted.
+>
+>Transports opt in through a new netns_assign_allow callback. Only
+>virtio-vsock implements it here.
+
+Why? (Not asking to support all the others, asking to explain the reason 
+or ask helps from others to extend it)
+
+Thanks,
+Stefano
+
+>
+>Patch 1 is just a const cleanup that patch 2 needs. The remaining
+>patches are actual implementation and tests.
+>
+>Based off of Stefano's original series:
+>https://lore.kernel.org/all/20200116172428.311437-1-sgarzare@redhat.com/
+>
+>Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
+>Link: https://lore.kernel.org/all/20200427142518.uwssa6dtasrp3bfc@steredhat/
+>
+>Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
+>---
+>Bobby Eshleman (6):
+>      vsock: constify the transport in vsock_for_each_connected_socket()
+>      vsock: add IOCTL_VM_SOCKETS_ASSIGN_G2H_NETNS
+>      vsock/virtio: support guest device network namespace
+>      selftests/vsock: add a helper to assign the g2h device to a netns
+>      selftests/vsock: test the guest vsock device network namespace
+>      selftests/vsock: test the assign ioctl privilege checks
+>
+> Documentation/admin-guide/sysctl/net.rst           |  18 +
+> include/linux/virtio_vsock.h                       |   2 +
+> include/net/af_vsock.h                             |   9 +-
+> include/uapi/linux/vm_sockets.h                    |   6 +
+> net/vmw_vsock/af_vsock.c                           | 200 ++++++++-
+> net/vmw_vsock/virtio_transport.c                   |  28 +-
+> net/vmw_vsock/virtio_transport_common.c            |  28 +-
+> tools/testing/selftests/vsock/.gitignore           |   1 +
+> tools/testing/selftests/vsock/Makefile             |   3 +-
+> tools/testing/selftests/vsock/config               |   1 +
+> tools/testing/selftests/vsock/vmtest.sh            | 461 ++++++++++++++++++++-
+> .../selftests/vsock/vsock_assign_g2h_netns.c       |  45 ++
+> 12 files changed, 774 insertions(+), 28 deletions(-)
+>---
+>base-commit: d0ec95a8a4e79f2fd6063fc8932415db8c227689
+>change-id: 20260831-vsock-guest-ns-d06af451da67
+>
+>Best regards,
+>-- 
+>Bobby Eshleman <bobbyeshleman@meta.com>
+>
 
