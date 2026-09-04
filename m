@@ -1,87 +1,88 @@
-Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta1.migadu.com (out-240.mta1.migadu.com [95.215.58.240])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA6B144BCB4;
-	Fri,  4 Sep 2026 10:00:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2124244685D
+	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 10:08:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.240
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788516013; cv=none; b=loid03LXloZkRuYa/26C4Al7uHntQsq5SvB/vcQIy/bnpYj2hbi+jT5ExCE9xkPBhlJFBkIFjMT0e2IUMsYLhoXOPludsxuSjDtUoV70TYRIxVXbZIUz1zFVAgRkzSxFpZsIbqVSWncoGmvRCeccXE+YIMqZAqK9pauFtjors90=
+	t=1788516525; cv=none; b=VfUMhJUICvTHyPu4k/hvrbLYygdCzqfOZiPC2xUTI96jkdZ7a9FR4KH88NdvW7hm5ENdQZ/dBYqlyWJy+gZKAHGhjDaS+h3UuliOZfNPJLdZAYT5Vp+w+c+He0KbkPkv1EY9F+sEaTl6O9M8yBUcEEojCQZTli5AJwpWQV7bTCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788516013; c=relaxed/simple;
-	bh=4vIUmkA6Pe9QUAFpPsHhWTe8LIuufy8nVnd/oha/RPU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=prZdHStyGeHbcxofOeDNkc/cM3uax73nIu8FNBGzYVkzXjyEeT8WuNnmabJu4/bNOIU3+k+a8hMFmzl6CoCVl5H5ZGuYHEYRQyCpFjLugZJO9tzZtTYa0PrKIB1TKBfWUJMtJQFt/uosO80WZ6JFAZeFr2Yq6NmpeuGJb6uUsUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
-Received: from local
-	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256:X25519MLKEM768)
-	 (Exim 4.100)
-	(envelope-from <daniel@makrotopia.org>)
-	id 1x2Qi8-000000001t9-2vtc;
-	Fri, 04 Sep 2026 09:59:52 +0000
-Date: Fri, 4 Sep 2026 10:59:47 +0100
-From: Daniel Golle <daniel@makrotopia.org>
-To: Siddharth Vadapalli <s-vadapalli@ti.com>
-Cc: dario.binacchi@amarulasolutions.com, mkl@pengutronix.de,
-	mailhol@kernel.org, msp@baylibre.com, florian.fainelli@broadcom.com,
-	jonas.gorski@gmail.com, andrew@lunn.ch, olteanv@gmail.com,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, kurt@linutronix.de, hauke@hauke-m.de,
-	chester.a.unal@arinc9.com, matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com, ansuelsmth@gmail.com,
-	linusw@kernel.org, luizluca@gmail.com, alvin.sipraga@analog.com,
-	clement.leger@bootlin.com, justin.chen@broadcom.com,
-	dlan@kernel.org, rogerq@kernel.org, hkallweit1@gmail.com,
-	linux@armlinux.org.uk, rjui@broadcom.com, sbranden@broadcom.com,
-	bcm-kernel-feedback-list@broadcom.com, opendmb@gmail.com,
-	andrei.botila@oss.nxp.com, wangruikang@iscas.ac.cn,
-	amadeus@jmu.edu.cn, kees@kernel.org, tmshlvck@gmail.com,
-	c-vankar@ti.com, horms@kernel.org, vadim.fedorenko@linux.dev,
-	daniel.zahka@gmail.com, nora.schiffer@ew.tq-group.com,
-	v-singh1@ti.com, oss@vassilevski.com, haokexin@gmail.com,
-	alex@sverdlin.org, aleksandr.loktionov@intel.com,
-	lgs201920130244@gmail.com, linux-can@vger.kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	linux-renesas-soc@vger.kernel.org, linux-riscv@lists.infradead.org,
-	spacemit@lists.linux.dev, linux-omap@vger.kernel.org
-Subject: Re: [PATCH net-next 16/33] net: dsa: mt7530: mmio: Remove comma
- after sentinel-entry in match-table
-Message-ID: <apqWk8Fh3WhEjzuI@makrotopia.org>
-References: <20260904043724.2955444-1-s-vadapalli@ti.com>
- <20260904043724.2955444-17-s-vadapalli@ti.com>
+	s=arc-20240116; t=1788516525; c=relaxed/simple;
+	bh=i1Y0VjW9BWwPMAg7mYJjxBDW5inPM6uPrRZpBnIMpe8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eZjj7zkB4vsMNEkmsNioEUEnW+fPOROf5bx8qtLDlXC0R7Z1hJ04XAUr0klIhNzioCskijGR0f8vbPSL/PXWl8Bgn3oiLypU0grwvIGWaxIwCiScbHKoybEiWrCOqIv67iJvYpPSq6IY86ncvc6a/CijduKAJWSpKU00OGtg15Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=tmYTvYS4; arc=none smtp.client-ip=95.215.58.240
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="tmYTvYS4"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=i1Y0VjW9BWwPMAg7mYJjxBDW5inPM6uPrRZpBnIMpe8=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788516521; v=1; x=1789121321;
+ b=tmYTvYS4navZS5aFJLWEb6aQ5oXUXWP8ck1mcUQZnNvi6kETcbFogzsHa58tdYiLJx3qG86T
+ 6xtjBUQCQNdWFuHfdTsAV93X442a4Vb2upuL/FS1oSyegMa4yMEOTAzpj3TH54YW5/e3aeaHG4r
+ UhOCh9h15CK+tk33Lqzevcr4=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id e463b848106c95a2;
+	Fri, 04 Sep 2026 10:08:31 +0000
+X-Mizu-Trace-ID: e463b848106c95a2
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <783cc6a6-78ff-4bbd-ae64-7cadfdead560@linux.dev>
+Date: Fri, 4 Sep 2026 11:08:24 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260904043724.2955444-17-s-vadapalli@ti.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] ptp: ocp: prevent watchdog rearming during detach
+To: Runyu Xiao <runyu.xiao@seu.edu.cn>,
+ Richard Cochran <richardcochran@gmail.com>,
+ Jonathan Lemon <jonathan.lemon@gmail.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, Jianhao Xu <jianhao.xu@seu.edu.cn>
+References: <20260904064308.4044677-1-runyu.xiao@seu.edu.cn>
+Content-Language: en-US
+From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+In-Reply-To: <20260904064308.4044677-1-runyu.xiao@seu.edu.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, Sep 04, 2026 at 10:06:22AM +0530, Siddharth Vadapalli wrote:
-> Since sentinel is the last entry and we do not expect further entries
-> following it, remove the comma.
+On 04/09/2026 07:43, Runyu Xiao wrote:
+> ptp_ocp_detach() uses timer_delete_sync() to stop the watchdog before
+> freeing the ptp_ocp state. timer_delete_sync() waits for a callback that is
+> already running but does not prevent the callback from rearming the timer.
 > 
-> Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+> Since ptp_ocp_watchdog() unconditionally calls mod_timer(), detach can
+> return with the watchdog pending. A later callback can access freed state.
+> 
+> Use timer_shutdown_sync() for the final watchdog teardown. This ensures the
+> callback is complete and cannot rearm the timer before the state is freed.
+> 
+> Fixes: 773bda964921 ("ptp: ocp: Expose various resources on the timecard.")
+> Cc: stable@vger.kernel.org
+> Assisted-by: Codex:GPT-5
+> Signed-off-by: Runyu Xiao <runyu.xiao@seu.edu.cn>
 > ---
->  drivers/net/dsa/mt7530-mmio.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>   drivers/ptp/ptp_ocp.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/drivers/net/dsa/mt7530-mmio.c b/drivers/net/dsa/mt7530-mmio.c
-> index fd68b1cd0630..cf3bdb23a2d5 100644
-> --- a/drivers/net/dsa/mt7530-mmio.c
-> +++ b/drivers/net/dsa/mt7530-mmio.c
-> @@ -14,7 +14,7 @@ static const struct of_device_id mt7988_of_match[] = {
->  	{ .compatible = "airoha,en7581-switch", .data = &mt753x_table[ID_EN7581], },
->  	{ .compatible = "econet,en7528-switch", .data = &mt753x_table[ID_EN7528], },
->  	{ .compatible = "mediatek,mt7988-switch", .data = &mt753x_table[ID_MT7988], },
-> -	{ /* sentinel */ },
-> +	{ /* sentinel */ }
->  };
->  MODULE_DEVICE_TABLE(of, mt7988_of_match);
+> diff --git a/drivers/ptp/ptp_ocp.c b/drivers/ptp/ptp_ocp.c
+> index 3d26ec1f7..6b5f615a2 100644
+> --- a/drivers/ptp/ptp_ocp.c
+> +++ b/drivers/ptp/ptp_ocp.c
+> @@ -4870,7 +4870,7 @@ ptp_ocp_detach(struct ptp_ocp *bp)
+>   	ptp_ocp_debugfs_remove_device(bp);
+>   	ptp_ocp_detach_sysfs(bp);
+>   	ptp_ocp_attr_group_del(bp);
+> -	timer_delete_sync(&bp->watchdog);
+> +	timer_shutdown_sync(&bp->watchdog);
+>   	/* Disable interrupts on all timestampers */
+>   	if (bp->ts0)
+>   		ptp_ocp_ts_enable(bp->ts0, 0, false);
 
-Reviewed-by: Daniel Golle <daniel@makrotopia.org>
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
