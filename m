@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61C794EA380
-	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 19:10:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A68451474A
+	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 19:10:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788549034; cv=none; b=Xn0RquD7vLR4CObY50KSWVh0ptdLDt+HuCS5KY4DJIv3vUymY4XqpjQAsSEboW1x0GvFCdW7eu1IQFjQL5mXzZPxf5cfhcPWgSi/K/MXUKN/CuV3qz1Bu+4FYG+0Au/MT7hKYnjkViWX07PxBt+G2c1RBuq44AIuRMMr4N5Wzy0=
+	t=1788549035; cv=none; b=a1xFr5h2f4BNqjpB+vAp6uyztgoW41hQaP7QB0ZxXnfA2OHa4CGQEmUgBPnfH9IAKHmJfZzdfMmTGnylPEKSuk+pxzUSDm6OGZeWpT1WJDzkir67lPPZqJqnbK4kHcZL1YfQ3xvd+odgTw760J3TmTU3KYPSLjIxGcG7wwwJM7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788549034; c=relaxed/simple;
-	bh=1kiyKjWMOKHwUiDyCQ0peG+zuatDNI7KoHDkGDQst+c=;
+	s=arc-20240116; t=1788549035; c=relaxed/simple;
+	bh=Bm2stx0ck/BZAqE0yN36go0o9sNHpWQ5jGE3N5q5gLg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ecatncCXDjedQ9ELYxE/hM1BGUicGXsSh4w39no4PGO/QhkY5dCpwFMdKqsUUj8w6+MTAGYel6TxKt1l4QKv+RlOPr52Fj3W1Db96xr+lp2dq6Yp0/JUklf2yT7QrTOOdm4HpEooOBpZ5LD3aRAyvdvmZRqB6KPTJhQxFKbh8mE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zgxdg9eR; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=XmUbs/EimzZt45Qhqt1wsmKvIQ8KUQctGA6+Szvi0SE9W8edGa39IMTwtlA5S/TmhHg+vmsCVNNPjZF375v63hIk8z87KJ49QDfQU9FqRJ9hLsU5asZ53KkR+N95wt7rj10GNsop1O1wt4BYfqPEB6wnvxN4xfNBXuh8Dx/GVGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W7f5Jzgb; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zgxdg9eR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D65851F00AC4;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W7f5Jzgb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 614CF1F00A3E;
 	Fri,  4 Sep 2026 19:10:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788549029;
-	bh=5B5r1D993WtsojtgP8+2pJ1HbCvdAeY+GvTsy57zuh8=;
+	s=k20260515; t=1788549028;
+	bh=XlRVNy9jehvZQokTjRNw4c/+BIInOjdRWqYeHzxoxjw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Zgxdg9eRZ7AqQFVkefuFxxzFFmm2ekk4nIQ49QaZwtd+bH6rFTrr3fjjodKA4o2is
-	 SQ1cWI8eOL5WwNPdFwr12Mg2hk0AyC7c2cg7SFrsZISUR/95JsF5AAL8EHuH9ZMzvA
-	 AG1LnIDy3vuCCQavhWJb+u7Al8cZzg/TR3wagt10gIpLzx5rmf6gPix/K1F+ZhbH8v
-	 ztm/1lvj7AvDMLhCpwpTR7yi1KxWwlpwi7d2Y7hlV1spX2j2nuVQcXRv1BokZyqMgZ
-	 knsnDDZb4NuHf2yogyqVvs7bSu0X8a8Cnx0ZQgPPB8ngY9JsrvwVfbo92zNC6iUtR9
-	 48nv+F04U0PiA==
+	b=W7f5Jzgb0wnUYzsrivUQIROeNWC3GzEhOJa64O16AyS7zd4boUqUXZpwTTrkd3C+o
+	 uAiSorcAG4LTcyb7AlGvlgVhBiKjhXymyjvK1oPmzH6gVym85AcI69FAjyb3V8u7/U
+	 2o2+sqZlsUu7K5N7fsGTM9UyEf18SxQefto0Z51u/P0nfTEZ8IAndhkl/4T+rspVZG
+	 5y5VFq9ihk1xy8wrp6fdvrFAa0BrM3EYS+QOb53rWyX9T93c75pl1BOVPH9FKoRJ6Q
+	 DQBgzc5s04746f1zOwc56ChGUI3rGWp2iL43oVsES1G1FbITIQhoRN+Xs9R45bkHKf
+	 YQBW0t1ZYbnMw==
 From: Jakub Kicinski <kuba@kernel.org>
 To: davem@davemloft.net
 Cc: netdev@vger.kernel.org,
@@ -39,9 +39,9 @@ Cc: netdev@vger.kernel.org,
 	jiri@resnulli.us,
 	donald.hunter@gmail.com,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net-next 3/4] netlink: specs: dpll: pin-get has no dump filter
-Date: Fri,  4 Sep 2026 12:10:22 -0700
-Message-ID: <20260904191023.3869690-4-kuba@kernel.org>
+Subject: [PATCH net-next 2/4] netlink: specs: dpll: drop the pin-set attributes nothing implements
+Date: Fri,  4 Sep 2026 12:10:21 -0700
+Message-ID: <20260904191023.3869690-3-kuba@kernel.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260904191023.3869690-1-kuba@kernel.org>
 References: <20260904191023.3869690-1-kuba@kernel.org>
@@ -53,99 +53,57 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The op doc promises "dump request with target dpll - list all the pins
-registered with a given dpll device" and "do request with target dpll
-and target pin". Neither exists. pin-get uses attribute-set: pin, so
-the id in both requests is DPLL_A_PIN_ID, not a device id; there is no
-reachable "target dpll" attribute at all (DPLL_A_PIN_PARENT_ID is in
-neither list). dpll_nl_pin_get_dumpit() does not look at the request,
-it walks dpll_pin_xa from ctx->idx and emits every registered,
-available pin, and there is no dump start callback to consume an id
-either.
+pin-set advertises top level direction, prio and state, so the
+generated policy accepts them and the generated user space API grows
+setters for them. dpll_pin_set_from_nlattr() has cases only for
+FREQUENCY, PHASE_ADJUST, PARENT_DEVICE, PARENT_PIN, ESYNC_FREQUENCY and
+REFERENCE_SYNC - the request succeeds, does nothing and produces no
+extack. The three values are only actionable inside the parent-device
+nest, where dpll_pin_parent_device_set() handles them next to
+DPLL_A_PIN_PARENT_ID, which is what makes them meaningful: a pin can be
+registered with more than one device.
 
-So the generated dpll_pin_get_dump() sends an id, gets the full list
-back and reports no error. Drop the id from the dump request and the
-two targeting claims from the doc.
+Never implemented - "git log -S 'case DPLL_A_PIN_PRIO'" on
+dpll_netlink.c comes up empty - the spec has advertised them since
+commit 3badff3a25d8 ("dpll: spec: Add Netlink spec in YAML").
 
-Present since commit 3badff3a25d8 ("dpll: spec: Add Netlink spec in
-YAML").
-Same caveat as for pin-set: sending DPLL_A_PIN_ID in a pin-get dump now
-fails validation instead of being ignored.
+Note that this does change what the kernel accepts: sending one of the
+three now fails validation instead of being ignored.
 
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
- Documentation/netlink/specs/dpll.yaml | 11 +++--------
- drivers/dpll/dpll_nl.c                | 17 +++++------------
- 2 files changed, 8 insertions(+), 20 deletions(-)
+ Documentation/netlink/specs/dpll.yaml | 3 ---
+ drivers/dpll/dpll_nl.c                | 3 ---
+ 2 files changed, 6 deletions(-)
 
 diff --git a/Documentation/netlink/specs/dpll.yaml b/Documentation/netlink/specs/dpll.yaml
-index 93e546ba1f56..e2ca4df5699a 100644
+index 64a45088c027..93e546ba1f56 100644
 --- a/Documentation/netlink/specs/dpll.yaml
 +++ b/Documentation/netlink/specs/dpll.yaml
-@@ -701,11 +701,9 @@ doc: DPLL subsystem.
-       doc: |
-         Get list of pins and its attributes.
- 
--        - dump request without any attributes given - list all the pins in the
--          system
--        - dump request with target dpll - list all the pins registered with
--          a given dpll device
--        - do request with target dpll and target pin - single pin attributes
-+        - dump request - list all the registered, available pins in the
-+          system, the request takes no attributes
-+        - do request with target pin - single pin attributes
-       attribute-set: pin
-       flags: [admin-perm]
- 
-@@ -742,9 +740,6 @@ doc: DPLL subsystem.
-             - measured-frequency
- 
-       dump:
--        request:
--          attributes:
--            - id
-         reply: *pin-attrs
- 
-     -
+@@ -760,9 +760,6 @@ doc: DPLL subsystem.
+           attributes:
+             - id
+             - frequency
+-            - direction
+-            - prio
+-            - state
+             - parent-device
+             - parent-pin
+             - phase-adjust
 diff --git a/drivers/dpll/dpll_nl.c b/drivers/dpll/dpll_nl.c
-index 3bdabbf2b931..fa09b524a4a0 100644
+index b1ba490e72b0..3bdabbf2b931 100644
 --- a/drivers/dpll/dpll_nl.c
 +++ b/drivers/dpll/dpll_nl.c
-@@ -65,12 +65,7 @@ static const struct nla_policy dpll_pin_id_get_nl_policy[DPLL_A_PIN_TYPE + 1] =
- };
- 
- /* DPLL_CMD_PIN_GET - do */
--static const struct nla_policy dpll_pin_get_do_nl_policy[DPLL_A_PIN_ID + 1] = {
--	[DPLL_A_PIN_ID] = { .type = NLA_U32, },
--};
--
--/* DPLL_CMD_PIN_GET - dump */
--static const struct nla_policy dpll_pin_get_dump_nl_policy[DPLL_A_PIN_ID + 1] = {
-+static const struct nla_policy dpll_pin_get_nl_policy[DPLL_A_PIN_ID + 1] = {
+@@ -78,9 +78,6 @@ static const struct nla_policy dpll_pin_get_dump_nl_policy[DPLL_A_PIN_ID + 1] =
+ static const struct nla_policy dpll_pin_set_nl_policy[DPLL_A_PIN_REFERENCE_SYNC + 1] = {
  	[DPLL_A_PIN_ID] = { .type = NLA_U32, },
- };
- 
-@@ -133,16 +128,14 @@ static const struct genl_split_ops dpll_nl_ops[] = {
- 		.pre_doit	= dpll_pin_pre_doit,
- 		.doit		= dpll_nl_pin_get_doit,
- 		.post_doit	= dpll_pin_post_doit,
--		.policy		= dpll_pin_get_do_nl_policy,
-+		.policy		= dpll_pin_get_nl_policy,
- 		.maxattr	= DPLL_A_PIN_ID,
- 		.flags		= GENL_ADMIN_PERM | GENL_CMD_CAP_DO,
- 	},
- 	{
--		.cmd		= DPLL_CMD_PIN_GET,
--		.dumpit		= dpll_nl_pin_get_dumpit,
--		.policy		= dpll_pin_get_dump_nl_policy,
--		.maxattr	= DPLL_A_PIN_ID,
--		.flags		= GENL_ADMIN_PERM | GENL_CMD_CAP_DUMP,
-+		.cmd	= DPLL_CMD_PIN_GET,
-+		.dumpit	= dpll_nl_pin_get_dumpit,
-+		.flags	= GENL_ADMIN_PERM | GENL_CMD_CAP_DUMP,
- 	},
- 	{
- 		.cmd		= DPLL_CMD_PIN_SET,
+ 	[DPLL_A_PIN_FREQUENCY] = { .type = NLA_U64, },
+-	[DPLL_A_PIN_DIRECTION] = NLA_POLICY_RANGE(NLA_U32, 1, 2),
+-	[DPLL_A_PIN_PRIO] = { .type = NLA_U32, },
+-	[DPLL_A_PIN_STATE] = NLA_POLICY_RANGE(NLA_U32, 1, 3),
+ 	[DPLL_A_PIN_PARENT_DEVICE] = NLA_POLICY_NESTED(dpll_pin_parent_device_nl_policy),
+ 	[DPLL_A_PIN_PARENT_PIN] = NLA_POLICY_NESTED(dpll_pin_parent_pin_nl_policy),
+ 	[DPLL_A_PIN_PHASE_ADJUST] = { .type = NLA_S32, },
 -- 
 2.55.0
 
