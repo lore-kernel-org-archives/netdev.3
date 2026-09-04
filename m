@@ -1,106 +1,152 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A87AF3806CE
-	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 22:52:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 915513BB40
+	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 23:01:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788562321; cv=none; b=ZELPJZEt73CYmqvwpFadBpYzPS2x5dxBYwpPl0JUTio0uoF+S/JehifonP9DlJyeUMZTbabNuuH99sPpd60GC8Q//RkUITLhRrK8ciLuWs6UZdNgh6oP8Jj4KlNdyLqXJAvif8XMo66qItLyPKdpKTsvubOwEekfeuXtayBvkaY=
+	t=1788562869; cv=none; b=uZrOi/sqSUOJIsQ+nJkdCVBxsGBhYaSSDobQxmhC3LC3pCjNRVKXeEA5oalLReel8Y0MQZZC1vcczuCEP3ro27i94gjYI6xJ8zRuYIVvLZr8ZK1GRYULbCWoCZTPCh/vd1Pd0LSo288vk7pFUseC4oXXf37aJ5djFtr2QF94TD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788562321; c=relaxed/simple;
-	bh=fLjxkB2eFWRTS+t6UoiaF5tKU1ktdoS850RX3yz9CXs=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Qe+u31r5RfqtPWLfQ7jH/C9TH2OzvmBrNfuJncE9oZd1tIPs0m+1rcyePUrytNczpOUiMmuL1VAc0VD3w60Ezi4QX7UquIC2Nv6KpULYA+G7B8o95OqYrPPjv1DSNzUOYPZ6Rd2s9CSYfyI3xwfV8pk2xOQhSckKa4hy+LHDV5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E7+x96nX; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788562869; c=relaxed/simple;
+	bh=e2U5ud0mkMnQRgIXafS8d7Vpi76p3vb1xtXcY4b5eFQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=dHvLG9YsZnjuFRg4XnnzcYVX53gJ7mCn4D0ld2PgCw+n4NuNW4l9IQ6ToPeHa+A24FhlHw4q7MSbVh949KDVb5fjrkTdE0k1oW4OBc7YGdEoIpdBDZFUKMLcvOnCbyG5D43BBba196xYATTDMO9ixIcbUK4XqWXYbIcNP1BDcjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RCAtlWRC; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E7+x96nX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CD551F00A3D;
-	Fri,  4 Sep 2026 22:52:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RCAtlWRC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 735F81F00A3D;
+	Fri,  4 Sep 2026 23:01:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788562320;
-	bh=48YAXpM6+cY7H6sQpzfemiGImqwpsxdBm2ZoqTJCilU=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=E7+x96nXuQ3GmMhoezOtH7UmPwejXhIQaJ2A0mD44WOZbbCpDBJmyifeqHmrtqada
-	 N2vo5hXbyHvbhXq5XDyp1RaeKSBVyTjSG/OqF5k4N9PVPnrLDu00dyNsPos+co4ujV
-	 319ZYpoQq8BFfIHtHx7WHZrK6/NP4v+kDz243O1t59mwXxx9gTvJ9nT0H6cDDNncEM
-	 vRbaY1O87MAAHrT+BT8RNISpKQOcngh4EcV1LmIir9gUzvCv9aOytJ4/bQJiNAiWPg
-	 /YHtEQyx6qoLGGP36FtxJi/nDxB4X7DF4HeJJ6wGTOAXcSTyEUECxmrUjJMUnvhzdl
-	 mflos4VPtbxLQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 199393924A7F;
-	Fri,  4 Sep 2026 22:51:02 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1788562868;
+	bh=KSI0e/lEtQcZ8qkH34rDYDnw9Jdey6r2iU99XTGuYtY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=RCAtlWRCjcGq5ycCEz/1UKHe78rLP/ZtGepesRQyPXUSGV/CuGB6xK0HmgAusWlrL
+	 VQe9iBIgW//6peGrmozoQ7Ubv90i6AnkmDY8GFGAOcPoT5JkhvtR0MO25Z6nMgQNFf
+	 PMV6xkTlcW5KzWrDx7GGqwKrBHIXQLCRJTi9TD/mY2n1cmRteEUF/KxMqTFZDRhjdd
+	 dE1RvvivMuWrNu3KXNc+rxQ+MJxRCztTRDGx2HXMfoDhviglxi6e07hz2ZuBtQaBNg
+	 cq7QJEdfxZ96eU+92R55SAM+wCDb2X12aLeHdCysIXfMg5rq2jjT1DoQbUZ08owKmO
+	 avleUW7l6WVBA==
+Date: Fri, 4 Sep 2026 16:01:06 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, horms@kernel.org, andrew+netdev@lunn.ch, Willem de
+ Bruijn <willemb@google.com>
+Subject: Re: [PATCH net-next v8 1/6] net: rtnetlink: add
+ pacing_offload_horizon attribute to net_device
+Message-ID: <20260904160106.08acccb5@kernel.org>
+In-Reply-To: <20260902181747.2483351-2-willemdebruijn.kernel@gmail.com>
+References: <20260902181747.2483351-1-willemdebruijn.kernel@gmail.com>
+	<20260902181747.2483351-2-willemdebruijn.kernel@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next 01/15] batman-adv: dat: fix printing of unknown
- 4addr
- subtype
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178856226064.1003513.4882624192828119251.git-patchwork-notify@kernel.org>
-Date: Fri, 04 Sep 2026 22:51:00 +0000
-References: <20260831135117.574836-2-sw@simonwunderlich.de>
-In-Reply-To: <20260831135117.574836-2-sw@simonwunderlich.de>
-To: Simon Wunderlich <sw@simonwunderlich.de>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- b.a.t.m.a.n@lists.open-mesh.org, sven@narfation.org, sashiko-bot@kernel.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
+Swapping in the conversation from v6, sorry, not sure why I missed your
+reply..
 
-This series was applied to netdev/net-next.git (main)
-by Sven Eckelmann <sven@narfation.org>:
-
-On Mon, 31 Aug 2026 15:51:03 +0200 you wrote:
-> From: Sven Eckelmann <sven@narfation.org>
+On Mon, 17 Aug 2026 22:44:30 -0400 Willem de Bruijn wrote:
+> Jakub Kicinski wrote:
+> > On Wed, 12 Aug 2026 22:03:56 -0400 Willem de Bruijn wrote:  
+> > > The 'max_pacing_offload_horizon' field of 'struct net_device' represents
+> > > the maximum pacing offload horizon supported by the device.
+> > > 
+> > > Add a new field 'pacing_offload_horizon' to store the active pacing
+> > > offload horizon.
+> > > 
+> > > The new attribute is initialized to 0 (disabled) and can be set from
+> > > userspace via RTM_SETLINK up to dev->max_pacing_offload_horizon. This
+> > > new default off behavior does not cause regressions, as no driver yet
+> > > advertises max_pacing_offload_horizon.
+> > > 
+> > > The attribute is omitted from the newlink request spec, because the
+> > > value may need to be bound by a device maximum that first needs to be
+> > > negotiated with firmware, as is the case for the idpf driver in this
+> > > series.
+> > > 
+> > > Make both fields u32, to maintain net_device cacheline layout. This
+> > > expresses up to 4s of pacing offload, which is sufficient.
+> > > 
+> > > Update the YNL specification ('rt-link.yaml') to add the
+> > > 'pacing-offload-horizon' attribute and include it in link-all-attrs.  
+> > 
+> > Forgive my slowness but I don't get how the new param squares against
+> > TCA_FQ_OFFLOAD_HORIZON. IIRC in v5 review I asked something like "should 
+> > this new option be a boolean" because the exact time horizon already
+> > exists in the qdisc uAPI. As AI points out (among other things),
+> > the two params are not synced in anyway. User can configure qdisc
+> > offload higher than the device level one.  
 > 
-> If an unknown subtype of an unicast 4addr packets was detected in
-> batadv_dbg_arp(), it is printing the (known) packet_type instead of the
-> subtype. This must be switched to the subtype to have any kind of use for
-> the reader of the debug message.
+> They cannot. Or at least that sure is the intent.
 > 
-> [...]
+> After this patch fq tests against active limit
+> dev->pacing_offload_horizon:
+> 
+> -               if (offload_horizon <= qdisc_dev(sch)->max_pacing_offload_horizon) {
+> +               if (offload_horizon <=
+> +                   READ_ONCE(qdisc_dev(sch)->pacing_offload_horizon)) {
+>                         WRITE_ONCE(q->offload_horizon, offload_horizon);
+> 
+> A manual test to replace the root qdisc with fq offload_horizon 50ms
+> seems to verify this: the command fails unless a device limit of >= 50ms
+> is configured.
 
-Here is the summary with links:
-  - [net-next,01/15] batman-adv: dat: fix printing of unknown 4addr subtype
-    https://git.kernel.org/netdev/net-next/c/c6c8f1d693ac
-  - [net-next,02/15] batman-adv: drop direction in _batadv_is_ap_isolated kernel-doc
-    https://git.kernel.org/netdev/net-next/c/b963ee1dc32c
-  - [net-next,03/15] batman-adv: bat_v: fix bonding candidate selection
-    https://git.kernel.org/netdev/net-next/c/77f653e6f722
-  - [net-next,04/15] batman-adv: clarify cut-off in batadv_v_neigh_is_sob kernel-doc
-    https://git.kernel.org/netdev/net-next/c/7356a9232d9c
-  - [net-next,05/15] batman-adv: use more descriptive var names for is_similar_or_better
-    https://git.kernel.org/netdev/net-next/c/776c26254d24
-  - [net-next,06/15] batman-adv: ensure u16 aligned mac address arrays on stack
-    https://git.kernel.org/netdev/net-next/c/a5f7058bee1e
-  - [net-next,07/15] batman-adv: ensure u16 aligned mac address in structs
-    https://git.kernel.org/netdev/net-next/c/d9304a90eca5
-  - [net-next,08/15] batman-adv: tt: remove only the entry which was looked up from the hash
-    https://git.kernel.org/netdev/net-next/c/bbfb0d2cf035
-  - [net-next,09/15] batman-adv: tt: extract code handling a roam on add
-    https://git.kernel.org/netdev/net-next/c/fd8d892c685a
-  - [net-next,10/15] batman-adv: tt: simplify NEW flag transition code
-    https://git.kernel.org/netdev/net-next/c/e103fbefa049
-  - [net-next,11/15] batman-adv: tt: drop unnecessary cleanup goto in helpers
-    https://git.kernel.org/netdev/net-next/c/52d8c713f464
-  - [net-next,12/15] batman-adv: tt: use protected flag modifications
-    https://git.kernel.org/netdev/net-next/c/976b159b3c12
-  - [net-next,13/15] batman-adv: tt: transition NEW local entries only under lock
-    https://git.kernel.org/netdev/net-next/c/f59c4c59df10
-  - [net-next,14/15] batman-adv: tt: don't uncount never committed clients on pending purge
-    https://git.kernel.org/netdev/net-next/c/01ae63ecd1c0
-  - [net-next,15/15] batman-adv: tt: decrement count for committed client on local_remove
-    https://git.kernel.org/netdev/net-next/c/799152bcf6cb
+The other way around. Configure the Qdisc and device to horizon of 100ms
+Then lower the device horizon to 50ms. Now the qdisc has a longer horizon
+than the device.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+> Perhaps I don't understand how dev->pacing_offload_horizon
+> would function as a boolean.
 
+The only uses of the new value are:
+ - as the qdisc bound, replacing the max_ value
+   -> Leave the qdisc as is, let qdisc config define the active horizon
+ - in the driver
+
++static void idpf_tx_splitq_set_txtime(const struct sk_buff *skb,
++				      const struct idpf_tx_queue *tx_q,
++				      struct idpf_tx_splitq_params *tx_params)
++{
++	const int offload_slack_ns = 400;
++	u64 ts, now, horizon;
++
++	horizon = READ_ONCE(skb->dev->pacing_offload_horizon);
++	if (!horizon)
++		return;
+
+   -> which already functions as a boolean, hence my suggestion of boolean
+
+> > In fact any non-zero value of
+> > the device one acts the same - hence the bool question.
+> >
+> >
+> > Why do we need both? How are you going to use this new knob?
+> > The commit msg explains the what not the why.
+> > 
+> > My naive understanding is that the main missing piece is a handshake
+> > between the driver and qdisc to tell the driver that the qdisc is
+> > indeed offloading pacing on queue X. And therefore the driver should
+> > pay attention to the timestamps. This does not require uAPI changes.
+> >   
+> > >  python3 tools/net/ynl/pyynl/cli.py \  
+> > 
+> > uber-nit: python3 tools/net/ynl/pyynl/cli.py -> ynl
+> > (the CLI is named ynl when packaged for end users)  
+> 
+> Should this also then point to the (default) installed spec path:
+> 
+>        ynl --spec /usr/local/share/ynl/specs/rt-link.yaml 
+
+Use:
+
+  ynl --family rt-link
+
+The expectation is that the person copy/pasting from the commit message
+already has the kernel and user space updated to include your changes.
+Also it's easier to read the shorter format..
 
