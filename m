@@ -1,65 +1,117 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f48.google.com (mail-oo1-f48.google.com [209.85.161.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA1A43AEB35;
-	Fri,  4 Sep 2026 02:53:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788490409; cv=none; b=SfozfnoxFXGYSFkvgHQUMZGIW9D1oHJnXeRLQwoTR+X/7R5TXZYC7+gzJ66NgWBsiPjqQ1Hj254rvbiuez2VXm0Xr7DL2P+kv3pfRRtUzmMxL5aoWDP4mToC1MH7hlquNAALRdxgHJav7ucCYvWwQEf5sYyQHrfCnB/YEMFHpqw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788490409; c=relaxed/simple;
-	bh=EikTUJUHdxyIwacE8DRfLaVQJUhkD9g52077MweOpZU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lNlpIYtKIN1CiHttMSSKtIS40TCU8GyQ7L/KCNjd4iIjzXz5iiZRHd8b1qH1dXYXBKNGcMN8VHkShjxGnidiP3yMm4Fv+H/bpqEvEng9TGTbBdNyhqCJz2NAF53UXG+mGrOnST8nO8aSiLi9KFhAiQiwrwpDSnVK+zH7izKoUaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bpabTSB0; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCDE33AA19B
+	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 02:58:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.161.48
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788490726; cv=pass; b=lcQksbEjo+9ozXPcZ21fv84i1syV0vj0LqpEmebDAkIz8Nx4O8VA3oc9NS+cU/0F2c97fysmqcUM5LNn/C7b3Flt/4KwmUlEteNM/MKmVp3rGKC+OQLpsFtsnIwfUGPxlMDizEAxwcCAKXuxre5031SgE7YKvTATP3pBBZ9FZRU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788490726; c=relaxed/simple;
+	bh=ohcAoa2FqlAFpZfcLm/C+18VPqWSAZUo72wqSUYvF/U=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=lHIWK06PPS66oYXtfdfSrnJdRLockTHPjfNcBgJbJgHix8w8GNFJ06lxawPSIPCkzce9oxMDUKQzgtq1b56p4Q4CJakqsmftR2KUB6K/WraAS1+prE5xx5UQL9tyWjltYTwf1V/MpPWO4svCnEc0tdob/p/8AgYKEdPJNHy2Exk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gGbR5e1s; arc=pass smtp.client-ip=209.85.161.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bpabTSB0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76BE61F00ACA;
-	Fri,  4 Sep 2026 02:53:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788490407;
-	bh=1q0bmQISm09UgwvoqemBnCbtpVp9VO/Fl15gqCq6VAo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bpabTSB0ezP5YwM6U+xnOnHAsIWzQ93TlgxZNhcJtUC8ogP7g/K/BP1jaVydh56R8
-	 mkaA571Xi9ajsJ7k2hlo7JrREZeWcVfuDCSxYzD5rsThL+5UY77xFq9c08w8+KRFbH
-	 eBESl6TKXzfpik3zxA5RyMiFBvUuYVA7U1k5+tQjxRln5wjrIrskeFbiLh76ZcFM9t
-	 OP/XIehRRK/EuC3tni581CcfppDvg60734tX+idJVJfen8NhLYFpFOmHcwBD7L731m
-	 gj1CQpmVF03r6TTJO/ywBKJBDzF08BDTFmmS4SlCJLoVgqPEAQmy+Vhg0PvSGD1wDJ
-	 S3Xesp99hbtYw==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Sasha Levin <sashal@kernel.org>,
-	Karl Mehltretter <kmehltretter@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Matthieu Baerts <matttbe@kernel.org>,
-	Mat Martineau <martineau@kernel.org>,
-	Geliang Tang <geliang@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	netdev@vger.kernel.org,
-	mptcp@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 5.10.y 0/2] mptcp: fix ADD_ADDR retransmission socket leaks
-Date: Thu,  3 Sep 2026 22:53:00 -0400
-Message-ID: <20260903-daily-reply-0010-re-mptcp-add-addr-rtx-leaks-5.10@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260903083512.99864-1-kmehltretter@gmail.com>
-References: <20260903083512.99864-1-kmehltretter@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gGbR5e1s"
+Received: by mail-oo1-f48.google.com with SMTP id 006d021491bc7-6aaf3f54dbeso458209eaf.2
+        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 19:58:44 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788490724; cv=none;
+        d=google.com; s=arc-20260327;
+        b=DDbn3zdH+F0PrQxCnbQDr4Pd4ZGftcPrb97JQpOj1UXbnaN5NGa6pqYmLhDkqn1lwG
+         a0CP7LcsaaU8vZd6XFWeCkTPX5kWP41t5PzEyvX/C9Ye2lZSa4IlybiWATYzdaAEjtqH
+         FOP9divqA9brB0UH3K7xtsUeLax9FeXly8drgFI3oaU5T9wvVLHbsmcfq01qkRzIfB0w
+         letHuLTzXKXukSUSFHF6STSjEbksgaMq2Y+c0x/eOQ4q5k41rmc0YQbRaQcwZLqj/imG
+         nCvBkfc5kb8i+bEmNphNhsoHtJLYGS4D1oLLi5zMzOh21/B8a5R5PO+YalJRVdg+senp
+         gSFg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=C/Pg1OYVasvFa7HwTUQsQp/KKEQyF3FXJpBXL7jnOXg=;
+        fh=artBnBkVzPwm9iO1NNiH5QZwOcPl5xPqydNWWenpW/8=;
+        b=WvgRe9bieQGQKFM0hO6wA3sw4YzdNKZbyM0RKkFmuS41fmCWNGXv1oJkjVOCkHQGJz
+         vqjiW3f56BX910ZY0Gesqp5J3+tcmQkljoXXAjFgqq1fqTc0qWKiiDgP43rfp5uEoA/+
+         +Zmx0NoMdjJTpoeFTvS8mfCxJQ+dEv74is25/393qGNePxnlNI4XtUWKrbd9hOUvb9bY
+         BJjMJci0RzCqAtDHvPt+iuTe4bAW/y08PMJedCLEQAjD/PYIm2pBVeOKeFr2mAzBK9NC
+         Sd8GXakBNZP3FtH0YkwTQbXcTMlS4n7k0FW1a240b9q61UWXgq2Sz37kAjd2kExye8a+
+         OL7w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788490724; x=1789095524; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=C/Pg1OYVasvFa7HwTUQsQp/KKEQyF3FXJpBXL7jnOXg=;
+        b=gGbR5e1sYpUAkBwjJzIGRAmjvl7nyjq8fKrhAsYeoGI+GLxx/sXleY5QkArJToArhn
+         WsGVpfIDg8R+kmj2jrPwNbq14WWULLP+TyOTlvUGNjQgIUH3JC9qwP4+RCWKjYnRebcJ
+         bqonujEjs77o/lHSqzOvN8zZQBgINTZkJo53mk8tyLvEyjxNrVME34MaqtvjYVRNAf91
+         soiBlEvt9YZVqBTaNavekSNsms8kGgUsasC233HO0v+76X5Wve44xNU6u0/ds/BdEEES
+         /vi2bd/cYB7DQCkHJY+YlBhZ/i2qGXip+UHBaoGJf/Ho7e2zQMSVx/koKGt9aT5l0FTa
+         MNNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788490724; x=1789095524;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=C/Pg1OYVasvFa7HwTUQsQp/KKEQyF3FXJpBXL7jnOXg=;
+        b=HDjvT0QCRl9UXTIrVWOJIArUpjdAcvIqAM3ARNN6NujHzo2eV0WLb4R8Yqvf9A62ff
+         JuxTn6QXRpfct1esyYoii9JcuncK1CqPnRCO60KbN4MRDdUqfi42Q9hTyf/8E0GbI91T
+         TqPnWIsOxEh9ffguFCQiyfYY5AgHxpk0Qo/ng1TnPVa9GBJ+G25eL3VxTn0J0WYpdxve
+         8Si7SOQFSayrGi+tt6FSUO7gOf+ne4han3y7erBjOLxKBScYhEl+MAEWewkke/mHnCoo
+         xByO1ZqjYxWXfksIF4+dqCQ2vZ0EH/BC9XLJQOEytZYK5GvSCLezfpA/4Xr4ver4rNs2
+         kHPA==
+X-Gm-Message-State: AFuF++keAQ6H77EFBCOvCWebESjd2wsFsIvh+CtnvfE+/jD8sXDNmRB+
+	Dk9YTeDHeixAds0BebWGvgo3Us2vtK0N76yzE/PcJ2h1y0DgV1FjqIroXAAsOh8weqIyGg/lXWo
+	GrOcTLmboLnVH2r41IOAF2WdHunPO1tQ=
+X-Gm-Gg: AYBFou1TSMSK05XUCNYEjJkKCDd798qXAOE2JvXrVTMsqa12Uj23d3dKFadQBUrNXvm
+	pBGeJ46GVcRcGvcGOisZ5qjfRymYMN5RpJdHGrRuyALTuv99LIBGvQ+lusx6F1JaQzgKnHt7Pt0
+	DMoMVsw11DFo77nvX+myWlxmmZTrcsd/lKxfEqqbp4E/NdC/wDK+dUpy/OH1I7A44R6NmuzLEAj
+	YWP5DVx+SDsDYB3S6QJlmJqv6kF4rt6pzUn06jmufE/N4aBAQZoD4bY2TMYM4S9ElMgB4qmYro6
+	jPi6ALXr2AuxrHQNLMZECDFV6CFkpJ1X7EzFSORv4aQ+uLGdgVdkyK71fOLBIzzeQkHuJDNV+ut
+	avA==
+X-Received: by 2002:a05:6820:4d09:b0:6b1:a667:f0f5 with SMTP id
+ 006d021491bc7-6b6fcedc374mr2662257eaf.20.1788490723613; Thu, 03 Sep 2026
+ 19:58:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260903143514.532023-1-mmyangfl@gmail.com> <20260903143514.532023-4-mmyangfl@gmail.com>
+ <ff900ceb-82eb-4356-97f2-4af75480a8c4@lunn.ch>
+In-Reply-To: <ff900ceb-82eb-4356-97f2-4af75480a8c4@lunn.ch>
+From: David Yang <mmyangfl@gmail.com>
+Date: Fri, 4 Sep 2026 10:58:06 +0800
+X-Gm-Features: AcwNN1Vpfq1P5xyA5NbGbzAdYSjcZdkfGeFIvs9EXqucGAsB1VfYDEYnrSQoIgA
+Message-ID: <CAAXyoMNd1mR_EvCLhjvmKjCzDDXCqWdka-Gn1e8_atnnvGvw1w@mail.gmail.com>
+Subject: Re: [PATCH net-next 3/4] net: dsa: motorcomm: Use u64_stats_t for MIB stats
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: netdev@vger.kernel.org, Vladimir Oltean <olteanv@gmail.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Russell King <linux@armlinux.org.uk>, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> Backport the two ordered ADD_ADDR retransmission timer fixes missing
-> from 5.10.y. Patch 1 makes every terminal path release the socket
-> reference held by the timer. Patch 2 uses sock_put() so the last
-> reference frees the socket, while avoiding a timer self-deadlock during
-> destruction.
+On Fri, Sep 4, 2026 at 12:25=E2=80=AFAM Andrew Lunn <andrew@lunn.ch> wrote:
+>
+> On Thu, Sep 03, 2026 at 10:35:08PM +0800, David Yang wrote:
+> > 64-bit variables might not be atomic on 32-bit architectures, and could
+> > lead to load/store tearing. Use u64_stats_t to ensure consistency.
+>
+> Can this patch also be broken up. It should be possible to use
+> u64_stats_read() without changing the locking? So one patch which only
+> does u64_stats_read(). You should then be able to add the syncp
+> code. And lastly the mutex changes. That then allows you to explain
+> why the mutex changes are safe in the commit message.
+>
+>     Andrew
 
-Queued the series for 5.10, thanks.
-
--- 
-Thanks,
-Sasha
+u64_stats_read are meant to be used with syncp. This sounds like an
+incorrect partial patch, works only because of the internal
+implementation of u64_stats_t.
