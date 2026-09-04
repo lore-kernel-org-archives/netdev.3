@@ -1,86 +1,98 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f72.google.com (mail-ot1-f72.google.com [209.85.210.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28EEF486E43;
-	Fri,  4 Sep 2026 12:30:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83B6E483BC7
+	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 12:33:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788525034; cv=none; b=JSZXmnN1gmiKujkSPORqYdmcn3k752uz1/WsZWSE1oipiVC7KBln4JbsOGbHKPq7VRSdq28KjEPTqXC1JCNlK461lBS6oyRpX0jQus3NmoQED9V2WES8i514x9nIyd4l6d+5KBT+gzL/eKrdU4ErupkUwS8QCjBprWcJ7KyWOnc=
+	t=1788525212; cv=none; b=FFsSj2asFkAMC4eA2rG40ZFeZON7gd8KEr/IltaA7gfXxudw/ixqDfnbi93/RmIdrR6ZQ2jemueomrDef333l2pQGGAudy7KtFjEsUE9JwaBCuKXuYJQ3UfLrr2AqD9rkRrcTGRR79GhzfhLDaj8X838KeUUs1vpn+g9dMjdojc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788525034; c=relaxed/simple;
-	bh=Ftvi78d/TOyUxq02juunRhd/tg4Kdt7sUmX5AhoObsM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BB5H3EqVkCSyNnCdbP0cLOB9XiHlQ7FE9Y+0GRClQSIjkaC4MdrvUErnY1eTa4le8nc6oItd9utkoxF/0OJPyRzRwOwqejwdcyTwbBV2KlpTjT+SzRQNYEyu/ZpxEAO/IPaWz6coS6YypyOSvgVtplyBlt6/uaeKUJGfBYEq5aY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mx5ZD8fm; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mx5ZD8fm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D000A1F00A3D;
-	Fri,  4 Sep 2026 12:30:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788525032;
-	bh=W3fzxYTB1fVI64LoCquVTflEJEBt81oZvvYr8HpEXdw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Mx5ZD8fmt1QKRZeaqDIlWZodb32XQUSGNHvACAYII2HSsLsSQcvG5aLJp5eyjMhov
-	 YJMqB3uB0fGCr46zEHga6l2BKUJBs+d0callvP6UizuBl2Dx5K69azeB6YxnavFqRy
-	 s85a6ULcNkaBTltSBTCWgxnJtx8DZExofLAeung875HwbadAoE+vsAOsrstjCyjCGf
-	 orBbp0K3CgaTGpbcx8vyT3xYLcqcjEDm6y+RQSsMzLcFEECMe4z0fuIE3WiBg6t3cK
-	 tSChf2cSOvoDWkmFKINebefm1AXoN+UJYGdW5+Z+yW8a/JmwQBoQCxc5kotUtSItRl
-	 xEvRfI7UW2x2Q==
-Date: Fri, 4 Sep 2026 13:30:28 +0100
-From: Simon Horman <horms@kernel.org>
-To: Ratheesh Kannoth <rkannoth@marvell.com>
-Cc: netdev-bot+sashiko@kernel.org, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	sgoutham@marvell.com, hkelam@marvell.com
-Subject: Re: [PATCH net-next] octeontx2-pf: report port connector type in
- ethtool link ksettings
-Message-ID: <20260904123028.GN396647@horms.kernel.org>
-References: <20260901045857.2779326-1-rkannoth@marvell.com>
- <178850876430.4131868.17635457333077226877@kernel.org>
- <apqI44Y5ooLOPeij@rkannoth-OptiPlex-7090>
+	s=arc-20240116; t=1788525212; c=relaxed/simple;
+	bh=6cA1R47l+Ut13D53OwKl+8LCdv93Kf20QST4XLhE0hY=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=ec69dHpLKcGZErU0ZoGkMTj69kgsG54Qe242ogXmYjV96MlN3jAWK7xlbM4rFYZXybgHdSUbj0oSp2MjJoPC5cksXx1wBSxsxLrWB6u/bRX5a//bsuPOwCFIObhEiIYhhzQ+CNRFm9Um2f236w2OsiQVkyme8abgs0eUNczojKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.210.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-ot1-f72.google.com with SMTP id 46e09a7af769-7f8931a803cso860063a34.0
+        for <netdev@vger.kernel.org>; Fri, 04 Sep 2026 05:33:30 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788525209; x=1789130009;
+        h=content-type:to:from:subject:message-id:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=3T8K8b+Fm5nAYe7BSndD85TDCM1WtUxVuFoRmZ9hwlo=;
+        b=qj/aeA3LttLnjjw9E52VuPQvK2ZHY5LcgHHoWVnaN8M+O+6mOKtNAgxqezE9i3ztiv
+         +7ADco4vLmC74RM9hRQxPTxIZTuo6BYnptryK4ja51h7d7ejv2plWoDgw6iSeYX/gQTY
+         /xhdJOD19VEXLWv/I0OOevPD5rdkxkW9o3s9OLl6WiTY+X6cl8ygt2lZSp/RlbUM0Sjn
+         dF4cf+d0wAish/+STm61J43wA+zFQQvb1ZEaidNaBqqd1CSeiksB7ftQ57WLXHkEcCej
+         CV0fpNgV7A0kZF93hwywX0UqMYjIi+M8H8K1fdT6mlbH5IoTskpuEfB9bsN80fS1brEO
+         SvfQ==
+X-Forwarded-Encrypted: i=1; AKwUvBykYfHkrdXCaPT8cK9IxlX0HQnAFaUWm3MCfCZgd2LaHXUPGTtB7YeltgwJXMG079UHxhtpLkQ=@vger.kernel.org
+X-Gm-Message-State: AFuF++kkyGujk1jMr3kVWXBU2OuncPdHPQZbUbivZcHviqJn3S+IyQ9p
+	DF1TWY4ANTnV0dAvb2mxdROBxCkcRSeoWZPM2+xT0MOJ37e31/Av/52Aiz5lEiobRSPIotk6+f+
+	tu5HMW06KYtpeNcc4EmUuJog9FMZzYahnmFyFrV491didDb+hfho1yeENcBY=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <apqI44Y5ooLOPeij@rkannoth-OptiPlex-7090>
+X-Received: by 2002:a05:6820:810a:b0:6b7:46e9:96fc with SMTP id
+ 006d021491bc7-6b746e9a31cmr2346901eaf.44.1788525209411; Fri, 04 Sep 2026
+ 05:33:29 -0700 (PDT)
+Date: Fri, 04 Sep 2026 05:33:29 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a9aba99.efa90033.8a9e.0004.GAE@google.com>
+Subject: [syzbot] Monthly wireless report (Sep 2026)
+From: syzbot <syzbot+list297c04812c0701bce1d8@syzkaller.appspotmail.com>
+To: linux-kernel@vger.kernel.org, linux-wireless@vger.kernel.org, 
+	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, Sep 04, 2026 at 02:31:23PM +0530, Ratheesh Kannoth wrote:
-> On 2026-09-04 at 13:29:24, netdev-bot+sashiko@kernel.org (netdev-bot+sashiko@kernel.org) wrote:
-> > Thank you for your contribution! Sashiko AI review found 1 potential
-> > issue(s) to consider:
-> >
-> > Critical: 0 · High: 0 · Medium: 1 · Low: 0
-> >
-> > - [Medium] otx2_get_link_ksettings()
-> >   (drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c:1235)…
-> >
-> > --
-> >
-> > octeontx2-pf: report port connector type in ethtool link ksettings
-> 
-> > Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260901045857.2779326-1-rkannoth%40marvell.com
-> 
-> i think, below sole issue can be ignored.
+Hello wireless maintainers/developers,
 
-I'm assuming this is because the firmware always returns valid ethtool values.
-If so, it might be worth spelling that out in the commit message.
-But I'm not going to get hung up on that.
+This is a 31-day syzbot report for the wireless subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/wireless
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+During the period, 1 new issues were detected and 0 were fixed.
+In total, 28 issues are still open and 183 have already been fixed.
+There are also 22 low-priority issues.
 
-> 
-> +---+----------+--------+----------------------+---------------------------------------------------+
-> | # | Severity | Status | Location             | Issue                                             |
-> +===+==========+========+======================+===================================================+
-> | 1 | Medium   | New    | otx2_get_link_ksettin| Raw rsp->fwdata.port (u64 firmware field) is      |
-> |   |          |        | s()                  | assigned directly to cmd->base.port (__u8 ethtool |
-> |   |          |        | drivers/net/ethernet/| PORT_* field) with no translation, bounds check, o|
-> |   |          |        | arvell/octeontx2/nic/| validity gate.                                    |
-> |   |          |        | tx2_ethtool.c:1235   |                                                   |
-> +---+----------+--------+----------------------+---------------------------------------------------+
+Some of the still happening issues:
+
+Ref  Crashes Repro Title
+<1>  6988    Yes   WARNING in __cfg80211_ibss_joined (2)
+                   https://syzkaller.appspot.com/bug?extid=7f064ba1704c2466e36d
+<2>  1394    Yes   INFO: task hung in reg_process_self_managed_hints
+                   https://syzkaller.appspot.com/bug?extid=1f16507d9ec05f64210a
+<3>  732     Yes   INFO: task hung in crda_timeout_work (8)
+                   https://syzkaller.appspot.com/bug?extid=d41f74db64598e0b5016
+<4>  355     Yes   INFO: task hung in ath9k_hif_usb_firmware_cb (3)
+                   https://syzkaller.appspot.com/bug?extid=e9b1ff41aa6a7ebf9640
+<5>  102     Yes   WARNING in cfg80211_scan_done
+                   https://syzkaller.appspot.com/bug?extid=189dcafc06865d38178d
+<6>  51      Yes   WARNING: ODEBUG bug in ieee80211_led_exit (2)
+                   https://syzkaller.appspot.com/bug?extid=e84ecca6d1fa09a9b3d9
+<7>  44      Yes   INFO: task hung in nl80211_pre_doit (3)
+                   https://syzkaller.appspot.com/bug?extid=da14e8c0ada830335981
+<8>  20      Yes   WARNING in __cfg80211_bss_update (2)
+                   https://syzkaller.appspot.com/bug?extid=1a797e1c81be78a2ace7
+<9>  16      Yes   INFO: task hung in cfg80211_event_work (4)
+                   https://syzkaller.appspot.com/bug?extid=5506b2556159a1ab6923
+<10> 6       Yes   WARNING in __carl9170_tx_process_status
+                   https://syzkaller.appspot.com/bug?extid=381102a7292a374fe8a7
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
+
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
+
+You may send multiple commands in a single email message.
