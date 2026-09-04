@@ -1,215 +1,176 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from TYVP286CU001.outbound.protection.outlook.com (mail-japaneastazon11021079.outbound.protection.outlook.com [52.101.125.79])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 100E1412C04;
-	Fri,  4 Sep 2026 05:00:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788498053; cv=none; b=FYz3yXOuj6IBTa2hPdxByG5+qAf4CrIPRFZGM1YoPSyXOP2eDWokYRFkZEvM+db/w6rqkbruv2xaIEgbH35qLJzBqMXVrABziruQbIDmx1gO9Wimbli7X6A01A4g81MLRkHD/Qx2Uoj8AZOl8NJHT+sk4B801MoXMkrHa6xccas=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788498053; c=relaxed/simple;
-	bh=fuf94LVnuIEcErX5CphqLH8QqMz5ieftZj9IAIZNZ+w=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=LVl/RySDUJf2AA01MX6u7+6kDJaqUXuMis3OkbugK94fVn6/2YiLgqBxK9nkq1u7xS7TOcZpvJq/JTD8ft8irK2WGeKinUiLGuZUfSlw6mWRdmVYi/low5CjV4IJcbrjM7Ok/wFRj57bwCI4NZG9pIxQdiLimEPZq8Kq2r/dKZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Oo+sjLpL; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71A4F416878;
+	Fri,  4 Sep 2026 05:21:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.125.79
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788499302; cv=fail; b=XydnJ9l9rdlHG1ZyunebJBR+6SPc4t3daAPKCHCt5Zx5OactplAtjiL1xdkke9dTtHV8NoBJFLIhLX32Ep5ylPbWLCJff47QuL0KXvNHb26iORmRITOqbTKJWStkePWia+vzu2aOVsdphgJA+d1k4BMUD6NMLbRhaloaVgHeQyI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788499302; c=relaxed/simple;
+	bh=CAnnx0gQ8p1CCBqYR2VvnMJa1Qn4qOYRL6mvuiEbTX0=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=mbIqO8OtmWRYkSVCcrzXe95H5UzoldSD/gtrYYgVLsmjYtatH76Qei+nv+jObjxRYaPfTvTT67bALFL+/tTCeeyFLADeu0ha9iaazFg/0HQPFCvpjROsa1tu/pLd9fMaiogDUv76gGCxrploR/CE8hZij+/M7q3CKPIH/BIX8ZU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp; spf=pass smtp.mailfrom=valinux.co.jp; dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b=NbmYvYau; arc=fail smtp.client-ip=52.101.125.79
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valinux.co.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Oo+sjLpL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26DD81F00A3D;
-	Fri,  4 Sep 2026 05:00:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788498051;
-	bh=d1BzP2ibFwO6IwLrhlA20AGZDFwLvNEbw/qhJ+5IjN4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=Oo+sjLpLTsV8hVOhmWCSnKVuXg9u6cjotWkfRMZ+IXR0ONQC7k+AlBVmF5hurxyfT
-	 Jl9xXbSuykHOyzdMaln0fJyqfyY0UHZtVZwavKQbYPSfSZa4RMs7FlVexvvR1LSnxK
-	 8sPLTbh+K6YDVmqybr9KzYdaUiZFV7z9qTUPneM4L13nuQKUctFqByWr6UBG40vbD9
-	 mHX9ONcRyiQ/hopE7bHydVspgGDJ+8rIjO5Sasb8mJs5StYcOJ6flO8w4Sg5RtIbwt
-	 hNCUkeMYwz0ZOzVClHItCHGKi6A3ANd+uqqg6ag2lf6vklbP87xrbDjcWK/RUjLlyS
-	 c7D8RjSOyRrGA==
-From: Thomas Gleixner <tglx@kernel.org>
-To: syzbot <syzbot+6d991f16f4bcc8eeea24@syzkaller.appspotmail.com>,
- anna-maria@linutronix.de, frederic@kernel.org,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- syzkaller-bugs@googlegroups.com
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Mark Rutland
- <mark.rutland@arm.com>, Will Deacon <will@kernel.org>
-Subject: Re: [syzbot] [kernel?] INFO: rcu detected stall in
- __hrtimer_run_queues (3)
-In-Reply-To: <6a95a3f2.99925153.16bd3d.0004.GAE@google.com>
-References: <6a95a3f2.99925153.16bd3d.0004.GAE@google.com>
-Date: Fri, 04 Sep 2026 07:00:48 +0200
-Message-ID: <87o6eda9vj.ffs@fw13>
+	dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b="NbmYvYau"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=NlQMGODTjtDTvtu7MzYtf0jWWBOD5Gi4ngwtTGq2dXxEiDU6pmBGw8ieNhFzaYszewoYroVhRNlXqRorA/sT6DUR9UHdRyLMeLMtXwramJEsbOi5jQPpOoJhYZ7G4Qgb+s2dghlMBsJUhPa/XOCwM0gMSCCauEBhrH8tRMChaOVy1mtQCYGjD7FKfG1UekRkhmUiPx/o78t0kw3taQCwpDzN9QWIippAJxSAKZgXupYzc+u4wiMR0m3BN5PAyrR6UtbjalJ3dmDpudFm1eKW1vYvyl91NH1eINa7quEtEOoGqVfbleYUh6P6Z82ucs7MownDouF00EFtjdwZ9P4KpA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=DEOHyM7cwyH5okfUE8Ymyiwe1chmMDYnSNWil/EBg3A=;
+ b=HOiwXDvAmyJsu/CLkG3qYlbI0JROKuHnJVJJuDHvoQykjezleYIILsQfSx5kvsNRJOkpBviNVSR/1Rm5ypUG0JI3cNz5UimTVbqIXHPK+2g7uxEb3EAzhQh3XfBk25nLnRpeYjsgXQxEczwd0z7cPNbF/9vullGn5N0OOe7oHXyIT+AX79tPU6J1umnGFOilJfLI87g9mqlICOp9JDlj6v5g85GJvzsuhnu8oE4dxEWfJC0AfpSqNpzOIk7ERvjkyjZwu+/zhHSYofN061Gf/vKdqCnDvgS79Yw4d+luAbQCamaRgn3Ph5s6XWwxEBAoyb7lklGew96n9LXPAgycOA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=valinux.co.jp; dmarc=pass action=none
+ header.from=valinux.co.jp; dkim=pass header.d=valinux.co.jp; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=valinux.co.jp;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=DEOHyM7cwyH5okfUE8Ymyiwe1chmMDYnSNWil/EBg3A=;
+ b=NbmYvYauywe0Lrk09/wwM4eAGIe3+jIqsFqcdYUSeZLasls/xUd40XJXuU9b7pyF1YgyIiRSLnstilMqaYhTRLyJV9O46nFMNRKWnMROAToDS/iKjW/WKhgVOeArteNoe7JxEhwYaVQru+G3iUepwUMJdutQFOl5XbqjNSyeus0=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=valinux.co.jp;
+Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM (2603:1096:405:38f::10)
+ by TY4P286MB6378.JPNP286.PROD.OUTLOOK.COM (2603:1096:405:339::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Fri, 4 Sep
+ 2026 05:21:36 +0000
+Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::2305:327c:28ec:9b32]) by TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::2305:327c:28ec:9b32%4]) with mapi id 15.21.0360.008; Fri, 4 Sep 2026
+ 05:21:36 +0000
+From: Koichiro Den <den@valinux.co.jp>
+To: Jakub Kicinski <kuba@kernel.org>,
+	Jon Mason <jdmason@kudzu.us>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Allen Hubbe <allenbh@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: ntb@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v3 0/4] net: ntb_netdev: Preserve checksum offload across NTB
+Date: Fri,  4 Sep 2026 14:21:30 +0900
+Message-ID: <20260904052134.2970111-1-den@valinux.co.jp>
+X-Mailer: git-send-email 2.51.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: TYCP286CA0110.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:400:29c::17) To TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:405:38f::10)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: TY7P286MB7722:EE_|TY4P286MB6378:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3be03561-0668-4779-1ba4-08df0a4463e7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|23010399003|10070799003|7416014|376014|10067099003|56012099006|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	y/Y1KubKH1xEbE62/H+SHYoR9sHhtAqtOuG+D21rXwpTEH0nDTySzaXn5I4RaYcgjJMDI1BjwY6xH85tsN/6yD7b6JRv9jYuVwvlefRpwnc8x9WlESGtqjlLOZMQBcMmbeA2zqJIhsvuQmnVUgvJ6WweOZM3iIZInACR7zuFaVV139HKOT84ZapvoyFEkGe95xZkaha3XQdlnRvTBxqK2byKRGRz36+Rh0R6mtjyDAemJ/EHowtKRT3wQ5tXwu8gzbe1u/jRFxlikpinv1nawPAucNTXWd3X67UAGpnaT/TBNbdcmDM9jMskca6Qdhnsglo0YK227TY6bi+e0e6+vZmboUWEoC2v4P2XDxBEd4mODqtBUVspge0q0tFa1T88hC1lMMUls6NNzxy1YadtG+OSa733uKshgzMiEFHiakvHOgUEnz4H22p7PuPmqw7jWX/F3Rol8hvcNBJXlg8WuYmPNF8gR0PuoNrDqJq96Jit27UxCsOVjd56OHebjNI2Fbdn2NlBBrmEgBWxF2vMRy6YdKwzMxK5KHqzT01uJhGnnNzvutVAfVKG+rPhs2olP7vMd10wUAxpFiEgGgHm7uZQGnnSrJP83B1gX1+2AkC3IeD3ztUJNVvDgZNJtDcx
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(10070799003)(7416014)(376014)(10067099003)(56012099006)(18002099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?rq/4iM/xcSyrKfSaYPfELwI6dNM85bg3w7tLJHYUL6Og2UoYaLfecWerHKpM?=
+ =?us-ascii?Q?Sg/HewK2ho/0/C6Crv+mBKY0Yy6XyOvosdm90tJ8BYaM+rPsA352ajVtBFjZ?=
+ =?us-ascii?Q?RdKt/xNAbpwFeSXg6xJV565Qp4NyBaKn2v/uV5mke44HhSDkmFsjM21uyR00?=
+ =?us-ascii?Q?NDuAYGFFc1LwZTP/XOhO2lmQ4EJS1au+R3V4B7VGaVbJpUv6WqH9PlyNN9fX?=
+ =?us-ascii?Q?mBaB5yg00nBKAbB/PjqeqELQHMJdugcm0ELZRnH2dIsyD2DXPpdN8lDNvpUz?=
+ =?us-ascii?Q?unzBo6hRt5mhGDNrqgFyOFdSBA+jCIhiTUupCrf3NPbF+ihnOvrpbNGb2Ao7?=
+ =?us-ascii?Q?7eRkzkqBDWojU3r4pf42m6++cLWJD4hc87+KF6bGQkJ+abBWnQzrrydqVxv1?=
+ =?us-ascii?Q?EwodA1XRstKc3XhoZcPGI264aGjEWKkWdXTuDlZxxC5Aolg2c/zYAnYO/a0P?=
+ =?us-ascii?Q?4fN7AX9BFFrlMZ81VW412E6SmxY/XzPqsicyWh9TnfUnKSMB2RW7+Tp0DZ72?=
+ =?us-ascii?Q?YH1kRET8qmmyv4h08zUFiUf/sem8yzFVHiSARpKLg/G7/uZhce8sSagI9YVo?=
+ =?us-ascii?Q?t5dHo6WHn/h9xvo0ELl53bf/DQi+3tiLRYpJGM71xR536hkxietcA8bGZqqs?=
+ =?us-ascii?Q?bJt4xkpJgKaP62lzHIrW0Vrug0/tU4AKxhl/AAb/yIpALxSsH6MVvo3ttnI7?=
+ =?us-ascii?Q?4zVTKBA/6yBurTrKCWuexTZZVPZGdZV81geLgRgTWxQRWb4fwNpxQGhIEGBM?=
+ =?us-ascii?Q?64+5C4wEgV/e9k75qPagM6lszrIS7jhQn/rJtXVenFlHVqSQAC5Of/AkhIdZ?=
+ =?us-ascii?Q?xRNgalf3xvYKbSSdR/JcuzD9oc7Lapg/KuBCv5zyoRfDIN8c/1SZacz8qHcM?=
+ =?us-ascii?Q?nPTdhbhhwj0eeVPJXLxvfmCb91SL9t69JdFYSonG6KTMZ0iw9mXe8HJQsnf8?=
+ =?us-ascii?Q?ibfFTsrMFDOHEdDjuXRch8r1Yl9e9n0JW+KiYtHnpZdO2qSrhNk7wWJWGulq?=
+ =?us-ascii?Q?1o7i0TBXXjMQ0chjeuCEOu1FWyDUfxKtoTiYpsS04rWh/LaGVjd5Dv5QAPso?=
+ =?us-ascii?Q?tYKZPvKwiuWAw2UD1sigJR3Jrk/Y0/uI/k1GLIqjT4ZNzLSXDPps1+Ulm1PX?=
+ =?us-ascii?Q?SkBlQqrcp9sDVeWeWG3EF9SDNtjDJAOJy+eTYl2RgUaHQ03PukVSTZASGP+D?=
+ =?us-ascii?Q?r9Wfufvw06gIuUiIgUORURhTX7IP+3F5ksb8Ql+sQZYLfaUMpvgPUOr30p5E?=
+ =?us-ascii?Q?nSpsykt/zHGW7tpko/+BawQUydBZDL7wIrfAIouY3e3PEH/dyWOlhdExDVIN?=
+ =?us-ascii?Q?8yEnC5FF5qMNiN6s9gkSwBJLEe+Tdt5AyuLsGfaNcfLMNm6/izXmdILL0az1?=
+ =?us-ascii?Q?k5IlyhTeDgzL2xsCU+Y1tC6CR6lnu1G2/kCr8za1MnBlrPyndK3gmxMKbOPZ?=
+ =?us-ascii?Q?H71BDRyOyTGVN/+ZM0uHCQ+DF0/gaHZRS7SdYjS/9qoELIH/qJv3HVaou95A?=
+ =?us-ascii?Q?D4U4A+AuEpCq14T/IAQPCqMatmFD+tezVb+oIGlsDbbA0NShMvID+KQLV9xl?=
+ =?us-ascii?Q?Sf5xuswqE5WztbWXgsAkpu7hr2uFootnQF8DJeSzPvFsp35lo9s52S883Pgg?=
+ =?us-ascii?Q?/t6B4RzpEvD3J3KNd4YPkHNa+vFf+KNXRCh0YFtk871SDqRBDmD5Jfm6A8nE?=
+ =?us-ascii?Q?gHdOv0poIr0j5K2Pp7go5HWgfisYBDhYpnaoTE+EwhzHH7WJrMem0qFpApPK?=
+ =?us-ascii?Q?WW83mIFRm8KGd/eLvkAfdJ22m03X23B1cumuvhcFsSha1UIw/YqL?=
+X-OriginatorOrg: valinux.co.jp
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3be03561-0668-4779-1ba4-08df0a4463e7
+X-MS-Exchange-CrossTenant-AuthSource: TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Sep 2026 05:21:36.1075
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 7a57bee8-f73d-4c5f-a4f7-d72c91c8c111
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: K3FSoEFh66lRx4XSpd7mWlRV4CNMyFKIU8wlFQR3jqaPDqpUPUseIoNj6g8UTJvjznUyCqQMxeg/XEvjSZLfTg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TY4P286MB6378
 
-On Mon, Aug 31 2026 at 08:55, syzbot wrote:
+Hi,
 
-CC+: ARM64 folks. It's their magic git tree ....
+ntb_netdev may be used on embedded systems, where CPU resources are
+often limited. L4 checksum calculation can therefore become a bottleneck
+even when traffic stays within a trusted PCIe fabric.
 
-Maybe some day syzbot people get their act together and actually figure
-out who should be CC'ed. Hope dies last...
+This series carries CHECKSUM_PARTIAL across the NTB link using opaque
+per-payload metadata in ntb_transport. Peers without metadata support
+continue to use software checksumming. The feature remains disabled by
+default and must be enabled explicitly on trusted links.
 
-> syzbot has found a reproducer for the following issue on:
->
-> HEAD commit:    f1b8fa82cab7 Merge branch 'for-next/core' into for-kernelci
-> git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-kernelci
-> console output: https://syzkaller.appspot.com/x/log.txt?x=15aee379580000
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=d1128bc53f2ef7f3
-> dashboard link: https://syzkaller.appspot.com/bug?extid=6d991f16f4bcc8eeea24
-> compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
-> userspace arch: arm64
-> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=15632d9e580000
-> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=15dd1c15580000
->
-> Downloadable assets:
-> disk image: https://storage.googleapis.com/syzbot-assets/932d85a2bda2/disk-f1b8fa82.raw.xz
-> vmlinux: https://storage.googleapis.com/syzbot-assets/5b6b8fb76e8d/vmlinux-f1b8fa82.xz
-> kernel image: https://storage.googleapis.com/syzbot-assets/c246b61ee396/Image-f1b8fa82.gz.xz
->
-> IMPORTANT: if you fix the issue, please add the following tag to the commit:
-> Reported-by: syzbot+6d991f16f4bcc8eeea24@syzkaller.appspotmail.com
->
-> watchdog: BUG: soft lockup - CPU#0 stuck for 22s! [syz-executor:4831]
-> Modules linked in:
-> irq event stamp: 38640849
-> hardirqs last  enabled at (38640848): [<ffff800080557cd8>] seqcount_lockdep_reader_access+0x7c/0xf8 include/linux/seqlock.h:75
-> hardirqs last disabled at (38640849): [<ffff80008690cd0c>] __el1_irq arch/arm64/kernel/entry-common.c:527 [inline]
-> hardirqs last disabled at (38640849): [<ffff80008690cd0c>] el1_interrupt+0x28/0x60 arch/arm64/kernel/entry-common.c:543
-> softirqs last  enabled at (147672): [<ffff80008013891c>] local_bh_enable include/linux/bottom_half.h:33 [inline]
-> softirqs last  enabled at (147672): [<ffff80008013891c>] put_cpu_fpsimd_context arch/arm64/kernel/fpsimd.c:251 [inline]
-> softirqs last  enabled at (147672): [<ffff80008013891c>] do_sve_acc+0x32c/0x4b8 arch/arm64/kernel/fpsimd.c:1349
-> softirqs last disabled at (148217): [<ffff8000800204c0>] __do_softirq+0x14/0x20 kernel/softirq.c:656
-> CPU: 0 UID: 0 PID: 4831 Comm: syz-executor Not tainted syzkaller #0 PREEMPT 
-> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/07/2026
-> pstate: 43400005 (nZcv daif +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
-> pc : trace_hrtimer_expire_exit include/trace/events/timer.h:321 [inline]
-> pc : __run_hrtimer kernel/time/hrtimer.c:2035 [inline]
-> pc : __hrtimer_run_queues+0x32c/0xbe0 kernel/time/hrtimer.c:2096
-> lr : arch_static_branch arch/arm64/include/asm/jump_label.h:36 [inline]
-> lr : trace_hrtimer_expire_exit include/trace/events/timer.h:321 [inline]
-> lr : __run_hrtimer kernel/time/hrtimer.c:2035 [inline]
-> lr : __hrtimer_run_queues+0x32c/0xbe0 kernel/time/hrtimer.c:2096
-> sp : ffff80008eb67de0
-> x29: ffff80008eb67e40 x28: 1fffe00034bb7c3a x27: ffff0001a5dbe1c0
-> x26: ffff0000c6453a90 x25: ffff0000d1a50d38 x24: dfff800000000000
-> x23: 0000000000000001 x22: ffff800084ec6bd4 x21: 1fffe00018c8a752
-> x20: ffff0000c64545a8 x19: ffff0000c6453a80 x18: 0000000000000000
-> x17: ffff80011d2d8000 x16: ffff80008eb60000 x15: 0000000000000000
-> x14: 00000000ffff8000 x13: 0000000000000001 x12: 0000000000000000
-> x11: 0000000000000000 x10: 0000000000000102 x9 : 0000000000000101
-> x8 : 0000000000000000 x7 : 0000000000000000 x6 : 0000000000000000
-> x5 : 0000000000000001 x4 : 0000000000000008 x3 : ffff80008046a634
-> x2 : 0000000000000001 x1 : ffff0000c6453a80 x0 : 0000000000000000
-> Call trace:
->  arch_static_branch arch/arm64/include/asm/jump_label.h:36 [inline] (P)
->  trace_hrtimer_expire_exit include/trace/events/timer.h:321 [inline] (P)
->  __run_hrtimer kernel/time/hrtimer.c:2035 [inline] (P)
->  __hrtimer_run_queues+0x32c/0xbe0 kernel/time/hrtimer.c:2096 (P)
->  hrtimer_run_softirq+0x15c/0x21c kernel/time/hrtimer.c:2113
->  handle_softirqs+0x2ec/0xd98 kernel/softirq.c:622
->  __do_softirq+0x14/0x20 kernel/softirq.c:656
->  ____do_softirq+0x14/0x20 arch/arm64/kernel/irq.c:78
->  call_on_irq_stack+0x30/0x48 arch/arm64/kernel/entry.S:885
->  do_softirq_own_stack+0x20/0x2c arch/arm64/kernel/irq.c:83
->  invoke_softirq kernel/softirq.c:503 [inline]
->  __irq_exit_rcu+0x1ac/0x428 kernel/softirq.c:735
->  irq_exit_rcu+0x14/0x84 kernel/softirq.c:752
->  __el1_irq arch/arm64/kernel/entry-common.c:531 [inline]
->  el1_interrupt+0x40/0x60 arch/arm64/kernel/entry-common.c:543
->  el1h_64_irq_handler+0x18/0x24 arch/arm64/kernel/entry-common.c:548
->  el1h_64_irq+0x6c/0x70 arch/arm64/kernel/entry.S:586
->  __daif_local_irq_restore arch/arm64/include/asm/irqflags.h:175 [inline] (P)
->  arch_local_irq_restore arch/arm64/include/asm/irqflags.h:195 [inline] (P)
->  __raw_spin_unlock_irqrestore include/linux/spinlock_api_smp.h:178 [inline] (P)
->  _raw_spin_unlock_irqrestore+0x44/0x98 kernel/locking/spinlock.c:198 (P)
->  __debug_check_no_obj_freed lib/debugobjects.c:1180 [inline]
->  debug_check_no_obj_freed+0x2c8/0x3a4 lib/debugobjects.c:1201
->  slab_free_hook mm/slub.c:2608 [inline]
->  slab_free mm/slub.c:6377 [inline]
->  kmem_cache_free+0x120/0x6b8 mm/slub.c:6504
->  file_free+0x128/0x1dc fs/file_table.c:104
->  __fput+0x538/0x74c fs/file_table.c:525
->  fput_close_sync+0x10c/0x278 fs/file_table.c:617
->  __do_sys_close fs/open.c:1511 [inline]
->  __se_sys_close fs/open.c:1496 [inline]
->  __arm64_sys_close+0x80/0x110 fs/open.c:1496
->  __invoke_syscall arch/arm64/kernel/syscall.c:35 [inline]
->  invoke_syscall+0x98/0x244 arch/arm64/kernel/syscall.c:49
->  el0_svc_common+0xec/0x23c arch/arm64/kernel/syscall.c:121
->  do_el0_svc+0x4c/0x5c arch/arm64/kernel/syscall.c:140
->  el0_svc+0x64/0x260 arch/arm64/kernel/entry-common.c:758
->  el0t_64_sync_handler+0x44/0x104 arch/arm64/kernel/entry-common.c:777
->  el0t_64_sync+0x198/0x19c arch/arm64/kernel/entry.S:590
-> Sending NMI from CPU 0 to CPUs 1:
-> NMI backtrace for cpu 1
-> CPU: 1 UID: 0 PID: 4802 Comm: kworker/1:3 Not tainted syzkaller #0 PREEMPT 
-> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/07/2026
-> Workqueue: rcu_gp process_srcu
-> pstate: 83400005 (Nzcv daif +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
-> pc : __raw_spin_unlock_irqrestore include/linux/spinlock_api_smp.h:179 [inline]
-> pc : _raw_spin_unlock_irqrestore+0x44/0x98 kernel/locking/spinlock.c:198
-> lr : __raw_spin_unlock_irqrestore include/linux/spinlock_api_smp.h:178 [inline]
-> lr : _raw_spin_unlock_irqrestore+0x38/0x98 kernel/locking/spinlock.c:198
-> sp : ffff80008eb77dc0
-> x29: ffff80008eb77dc0 x28: 1fffe00034bbc63a x27: ffff0001a5de31c0
-> x26: ffff0001a5de31d0 x25: ffff0000d2a4a538 x24: dfff800000000000
-> x23: 0000000000000001 x22: ffff800084ec6bd4 x21: ffff0001a5de2d80
-> x20: ffff0001a5de2d80 x19: 0000000000000000 x18: 00000000ffffffff
-> x17: ffff80008a7d6000 x16: 0000000000000002 x15: ffff80008a35fda0
-> x14: ffff80008a5d5e28 x13: 0000000000000001 x12: 0000000000000000
-> x11: ffff80008a5d5e28 x10: 0000000000000003 x9 : 0000000000000000
-> x8 : 00000000000000c0 x7 : 0000000000000000 x6 : 0000000000000000
-> x5 : 0000000000000001 x4 : 0000000000000008 x3 : ffff80008015611c
-> x2 : 0000000000000002 x1 : ffff0000d32c9d40 x0 : ffff80011d2fd000
-> Call trace:
->  __daif_local_irq_restore arch/arm64/include/asm/irqflags.h:175 [inline] (P)
->  arch_local_irq_restore arch/arm64/include/asm/irqflags.h:195 [inline] (P)
->  __raw_spin_unlock_irqrestore include/linux/spinlock_api_smp.h:178 [inline] (P)
->  _raw_spin_unlock_irqrestore+0x44/0x98 kernel/locking/spinlock.c:198 (P)
->  __run_hrtimer kernel/time/hrtimer.c:2028 [inline]
->  __hrtimer_run_queues+0x22c/0xbe0 kernel/time/hrtimer.c:2096
->  hrtimer_run_softirq+0x15c/0x21c kernel/time/hrtimer.c:2113
->  handle_softirqs+0x2ec/0xd98 kernel/softirq.c:622
->  __do_softirq+0x14/0x20 kernel/softirq.c:656
->  ____do_softirq+0x14/0x20 arch/arm64/kernel/irq.c:78
->  call_on_irq_stack+0x30/0x48 arch/arm64/kernel/entry.S:885
->  do_softirq_own_stack+0x20/0x2c arch/arm64/kernel/irq.c:83
->  invoke_softirq kernel/softirq.c:503 [inline]
->  __irq_exit_rcu+0x1ac/0x428 kernel/softirq.c:735
->  irq_exit_rcu+0x14/0x84 kernel/softirq.c:752
->  __el1_irq arch/arm64/kernel/entry-common.c:531 [inline]
->  el1_interrupt+0x40/0x60 arch/arm64/kernel/entry-common.c:543
->  el1h_64_irq_handler+0x18/0x24 arch/arm64/kernel/entry-common.c:548
->  el1h_64_irq+0x6c/0x70 arch/arm64/kernel/entry.S:586
->  __daif_local_irq_restore arch/arm64/include/asm/irqflags.h:175 [inline] (P)
->  arch_local_irq_restore arch/arm64/include/asm/irqflags.h:195 [inline] (P)
->  queue_delayed_work_on+0xf4/0x140 kernel/workqueue.c:2624 (P)
->  queue_delayed_work include/linux/workqueue.h:714 [inline]
->  srcu_reschedule+0x240/0x338 kernel/rcu/srcutree.c:1957
->  process_srcu+0xd04/0x1eb8 kernel/rcu/srcutree.c:1991
->  process_one_work kernel/workqueue.c:3322 [inline]
->  process_scheduled_works+0x788/0x10b8 kernel/workqueue.c:3405
->  worker_thread+0x798/0xbd0 kernel/workqueue.c:3486
->  kthread+0x304/0x3d4 kernel/kthread.c:436
->  ret_from_fork+0x10/0x20 arch/arm64/kernel/entry.S:838
-> watchdog: BUG: soft lockup - CPU#1 stuck for 26s! [kworker/1:3:4802]
-> Modules linked in:
-> irq event stamp: 44430735
-> hardirqs last  enabled at (44430734): [<ffff800086932074>] __raw_spin_unlock_irqrestore include/linux/spinlock_api_smp.h:178 [inline]
-> hardirqs last  enabled at (44430734): [<ffff800086932074>] _raw_spin_unlock_irqrestore+0x38/0x98 kernel/locking/spinlock.c:198
-> hardirqs last disabled at (44430735): [<ffff80008690cd0c>] __el1_irq arch/arm64/kernel/entry-common.c:527 [inline]
-> hardirqs last disabled at (44430735): [<ffff80008690cd0c>] el1_interrupt+0x28/0x60 arch/arm64/kernel/entry-common.c:543
-> softirqs last  enabled at (6136): [<ffff80008030e6e4>] softirq_handle_end kernel/softirq.c:468 [inline]
-> softirqs last  enabled at (6136): [<ffff80008030e6e4>] handle_softirqs+0xc28/0xd98 kernel/softirq.c:650
-> softirqs last disabled at (7461): [<ffff8000800204c0>] __do_softirq+0x14/0x20 kernel/softirq.c:656
->
->
-> ---
-> If you want syzbot to run the reproducer, reply with:
-> #syz test: git://repo/address.git branch-or-commit-hash
-> If you attach or paste a git patch, syzbot will apply it before testing.
+Note: the first two fixes came from Sashiko's review of v1. They touch
+the same ntb_transport path as the metadata patch, so keeping them here
+avoids a cross-tree dependency. With review from the NTB side, I hope
+the whole series can go through net-next.
+
+Best regards,
+Koichiro
+---
+Changes in v3:
+  - Rebase after the related ntb_netdev/ntb_transport fixes landed in
+    net-next
+  - Avoid counting RX checksum failures as both errors and drops (Jakub)
+  - Reject csum_start below ETH_HLEN on RX and fall back to software on
+    TX (Jakub)
+  - Use READ_ONCE() for hdr->ver and hdr->len (Sashiko)
+
+Changes in v2:
+  - Reset peer checksum capability on every link event (Sashiko)
+  - Add prerequisite fixes for RX ordering and shared field endianness
+    (Sashiko)
+
+v2: https://lore.kernel.org/r/20260817064916.13278-1-den@valinux.co.jp/
+v1: https://lore.kernel.org/r/20260814032913.3558500-1-den@valinux.co.jp/
+
+
+Koichiro Den (4):
+  NTB: ntb_transport: Order RX descriptor reads after completion
+  NTB: ntb_transport: Use little-endian shared fields
+  NTB: ntb_transport: Add per-payload client metadata
+  net: ntb_netdev: Preserve CHECKSUM_PARTIAL across NTB
+
+ drivers/net/ntb_netdev.c      | 95 ++++++++++++++++++++++++++++++-----
+ drivers/ntb/ntb_transport.c   | 73 +++++++++++++++++----------
+ include/linux/ntb_transport.h |  6 ++-
+ 3 files changed, 133 insertions(+), 41 deletions(-)
+
+base-commit: 6ebcf5074cff0402730c6981d2397139fee6322d
+-- 
+2.51.0
+
