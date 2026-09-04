@@ -1,126 +1,301 @@
-Received: from smtpbgau1.qq.com (smtpbgau1.qq.com [54.206.16.166])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3DB33A9629;
-	Fri,  4 Sep 2026 06:50:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.206.16.166
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F5E721CA13
+	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 06:51:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788504632; cv=none; b=hzQ6OB6F13f98VYtoA/VhQXsxAcKkekfz2+tX93wXWWIrDbU4JLiLpX2PLmyfRwn7I4mQPIF8KDbM+SlkI3+2vs7hXl/2s3kkbyfwLe0fPnlfenOrzbz77MqXPwIhleTaToe9t4fjj8sARWnhxZJJY+hE06++r780Y2XT1pFtmU=
+	t=1788504707; cv=none; b=kQzfuDQbKJKwQjxoR7lg9ZEXuE3tX9A0PxKForaz0t3DE80Z9aLjJvo8P3TV7ZlkJ1FP29qgZ62IZ3BPUV0tM5yTokNo1gw4Wegex2q65X5q/4YUDYGv2RAL9RjgfRl353v1g6Ch5mEIA7KEQHwJiAoPrYpFoOHhgn9f+unG4nI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788504632; c=relaxed/simple;
-	bh=XE0b1jMumFjCw4MO58spXsKMUeami60eTHec0DfvEV8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=tOxXNjfG49w8rwzQ4f/dcEVGzfaQpfTt+ihNCFoQevfjITS4DihA0J/j7SL+WzYzhPo6PyL9acqzvjqJ14m/4iOjdm8XULjGBVtcpZHtxbtZ2ftLGQDLeqFmEcjqd1oQsuIqgbW69izXur+05Bs9iNKmpWkybs9dYcai7lF7zH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=AK2oxHvL; arc=none smtp.client-ip=54.206.16.166
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+	s=arc-20240116; t=1788504707; c=relaxed/simple;
+	bh=oyqJZbXNlDevLR8Z5mJBsgSPmH6VQ+/8O5cMCu096tM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=K99i11sHM3a1RV9ecE0ypEAtQCcorbKQ/pmKoq8lRrLerEbeTC1BbnbmTTYNWJAwHvEBJNTtAPravBOG0xteFPdgJh/6ETYm/jfw4xFkAdGR6WlUuT/XPRMQe6AKssAlIuvqWZPjJmkkyB4yjURgmjhqJDDTqA09PFCVKMtNXRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=qFoDmZpV; arc=none smtp.client-ip=209.85.215.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="AK2oxHvL"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1788504598;
-	bh=3dL0egSy8DTtUr4CXWNJ8GM6xKBAt9Bp1+ugQV01Cuo=;
-	h=From:Date:Subject:MIME-Version:Message-Id:To;
-	b=AK2oxHvLTY/WLCGEIEsNhajRz2sefDvnS3RBWQHcXbbIT5as/5o7U/xJtpDGwZmmw
-	 rqvmF6AzT98RZgpFs/Wxbnn3jehv1hV6bt6OOndr4kDYGGccPNSVevNmw47Yto0CDs
-	 ldMHwq64V2BO06kzrlI+sVKaLLlt09zJCQHbtK3c=
-X-QQ-mid: zesmtpsz5t1788504593t513aa32f
-X-QQ-Originating-IP: UNpvxRAsxKVk7llXKdCGwbk8TiOVZQ9U6jSAqsxXAe0=
-Received: from [10.10.7.69] ( [1.202.39.170])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Fri, 04 Sep 2026 14:49:40 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 400259316749825110
-EX-QQ-RecipientCnt: 16
-From: ZhaoJinming <zhaojinming@uniontech.com>
-Date: Fri, 04 Sep 2026 14:49:35 +0800
-Subject: [PATCH v2] net: stmmac: clear dma_conf in __stmmac_open error path
+	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="qFoDmZpV"
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-cbb8b54fcf8so995236a12.0
+        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 23:51:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=nebusec.ai; s=google; t=1788504705; x=1789109505; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=b6hpLljP9SdtNHrhq7gNNxoYeFIHd2MdFkQZBmDruA8=;
+        b=qFoDmZpVRIazDnJ+s+E0E40r8w0wLYbMO6UR0K+4Gq/DdIRyDIzqFl6gtSTWJF/Jzr
+         ijSTyIU9G5qwfxZjvU0PlTm++Rl006wOoTpG6bHZ0zwlNVqoso3I4W5vVS4T5OFcC0nW
+         C64U+hjqjoYSFtRWJZr3Cp3zNBNW6dttCWsmr7hdLOp6iJfoPZLlPA9Q55j1Kcvkxm4g
+         MamO4VVkdSsIvafS5d8nU1wc5ZN4gviYrrAdhsRey3h/YjiGdcjXREAl3ag6x+TyJ7FT
+         IhmQdBHOONFqtuNTA+B4wllcITyInUt5ImoNiuOC7IXQt9n0kzB20AVCwQAjaIl4/bWQ
+         BMdw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788504705; x=1789109505;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=b6hpLljP9SdtNHrhq7gNNxoYeFIHd2MdFkQZBmDruA8=;
+        b=K3Q3oS2D2tYoXbVHGMBD8N6ieSfDB6UWC9gOg+2HDjKlN01pfubQ8IYZMaXeKwPPbw
+         8fi+FfCi5i2vdRd0l1VtQGZoASLboZJoRWDlXm6sTKuDOwb0+Q0KDcUfR4KUnPOIBUVM
+         8SAZG2O2H6rXNEhIcpzSWPuc32OVUgGNmil6eTpNeXFadUe8oSKeEBeisW4MM1px3GQQ
+         KcglQiMts7m8pqBkckY2+bNbfZEWmMa9TB5/eeWXTmCLo6dFHv9c127MKqoHh0sh7ewk
+         JmYNszxmOP81munGgRzx93sGZLzaCKXVEeed63P8ZehaN5+YuROrMVg7RNrI1gNGa4mI
+         wNqQ==
+X-Gm-Message-State: AFuF++k4/h/461ck3Mz0/OJEhjnhAH7vgU9W66tDpog5si37/fl8FWXT
+	Y+PNic2HI4yBzLRLO7YEItQ2CRuBT3DvaEtnZiRCVGzRbUneHMqDoDBEKvz4IfB7Ed8rmOS6Ou7
+	6jf67njBg
+X-Gm-Gg: AYBFou17tpEsu2OTS5bP05VsO+IP7CAy5oC/xhd6Yhp9V0gIjBkEYvhBMDxDBb37d8s
+	ZZxWNE6YN35SvsEM4nN89FfbRxFzjA3sp0pnYwnEYcb2I9rbAwsN8SF7naycJDlF2XOLqiTdWcp
+	zwqT3A3Av/md6kyveUs/ZbrpcAblDaQMiLkmWIh1i9jI/+jO+ZVhCsoDgVxMRxEUpTSJi62h+ad
+	twlWE640vSAX2VISAe/2jy2yjUi1T5svW+y95BDR2kth3Qx3Ieq5G6Jhao/MDTjyzwUj0b6ZAYm
+	/tqMdxKbO1EENMpT+dBjVOKMhpPzyCUpZKSAJL9t55A5QwzUlTaHlqmAXq4vtkNpAQJVJKmd3qh
+	aN+pCPpwRg8O0K0i30O9dMfI1z7FDbABmpWtP6nkXICJTHfjEhwFSjG/3UbnuU4AJyftvYarMh+
+	FW3TXVV/OqpDREIEDM009byFGbboAn9O6/GoTY+0pvN+Y24NhwQ3WEuXbajM1NqBrIivcM+VhTm
+	6S/XFpySamooymPz+eYgDOuxtNTxUWHjQz3RGmgcA==
+X-Received: by 2002:a05:6a20:158d:b0:3da:34a7:6444 with SMTP id adf61e73a8af0-3da3a15ac1cmr5550804637.26.1788504705322;
+        Thu, 03 Sep 2026 23:51:45 -0700 (PDT)
+Received: from [192.168.4.59] (c-73-93-246-205.hsd1.ca.comcast.net. [73.93.246.205])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3339aa37dbdsm3862921eec.11.2026.09.03.23.51.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 03 Sep 2026 23:51:44 -0700 (PDT)
+Message-ID: <2a994f26-1eb8-40c4-84ca-c48a52c065d5@nebusec.ai>
+Date: Thu, 3 Sep 2026 23:51:42 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260904-fix-stmmac-mtu-change-use-after-free-v2-1-91e680476921@uniontech.com>
-X-B4-Tracking: v=1; b=H4sIAP5pmmoC/5WPQQ6CMBBFr0K6dkwLpoIr72FYDO1gu2gxbSEaw
- t0diBdw+ZL3/59ZRabkKYtbtYpEi89+igz1qRLGYXwSeMssallr2ckGRv+GXEJAA6HM8JPmTIB
- joQRjIgLdNRY1DRdspOCqVyLOHTOPnnlA9oeE0bi9PGDm6C46n8uUPsc5i9r1P5cXBQpMq6y5W
- m1Vi/c58kuFjDubKYh+27YvhyEdT/UAAAA=
-X-Change-ID: 20260903-fix-stmmac-mtu-change-use-after-free-693da6eb4a30
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Simon Horman <horms@kernel.org>, Christian Marangi <ansuelsmth@gmail.com>, 
- Jose Abreu <Jose.Abreu@synopsys.com>
-Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- ZhaoJinming <zhaojinming@uniontech.com>
-X-Mailer: b4 0.14.2
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpsz:uniontech.com:qybglogicsvrsz:qybglogicsvrsz4b-0
-X-QQ-XMAILINFO: MRPQukou9wBmBZPRtGRnVeDeK1Fx3kFgQ5ii3Gggb2FQrbOzVNwUknth
-	S4lyawE8GG8/RJKPSDmTgr+1eMiTRB2Zk1U7bZqu+nwUMoqm2wh+fb72Ll0dtx8FdPYGOfd
-	b8nAQKPXrHsiyrGm4wZBu18ACLXWMYoMtr7BE0gC46/QQWUptUPzy1UhtK8SxXMWhcej6Nd
-	8Mf5eCfu9n86PV+dRkvi4ld76YWMvgevIjCEWAIEfh3vsXrmXAMqJMPRJtMBGVRtFpEXA7y
-	fqtT9k6yKBuY7g69v5zMkWTXID3851NuLYWcJYLWiVGxWqjEa/z7sxyAMiwP9/+F1L0qRW6
-	cUuKJZnNCgzb7pqWwyXrriKW8mUPxZlnyH/1eZhQ4/JOUflbX4DJwFnyRrjhFaMxUdXXf3w
-	GcgLezbh/9UNNMEWt+2ZfS7aY7rGoCXc4/yYfmGabQZa27LCIKOQ09dXqMYj3OHGfxmpH/g
-	v/k5ourW90FyMeB0HuwwxXVU23uDS9O1VIIjoEKqKPFvn8XCxCp+nXqnUId66Ia60dQJsO8
-	GuZ7y96tDj6avbSLse2u8/Zymb6VeSRAnhNHlwoEzSH6D0r4ptAeNRMWRsBEXFHm1owlURX
-	/8JbxLtm7Tn5Oq3SkZALO8QWGaYPL9zokR5dAGls/2mwN0WpSBECebxy3f/vBtjsLCD1y7U
-	pGgGqH7b1s1V/d0KkSoV5Ddbgglf/tT4/uN52/Rxb0mT1ADYPI/Hw/0qOS+45yWV2nFBJaV
-	qyi5Dq0ZmjVNS6GEBR16wym7E5LRW5d7s1thgpBObyN+8LZuUKWIH5K3nYxOVZMxD34i3/G
-	vhMKbFwXYXZRkyfdDgkSjXAMAqE6QRKVbaTOIpJ5o875dUibWNPGcGAw5ck0yBLGXuBaMag
-	SzO+LMemzUg5TAbJpnLksJjnItuPZFx4LgHdp5R2q7HMUDZC8emoQG4ujUHv6AlDmA5DvdM
-	vG7fJP/VsthjA914IHA8E8QBrj3lAY73m38P+GV8f+Vrs2sTYGS8vLUINgC4Hi2FueDQTzu
-	sgaBZbkacKBZ+7lR0/j3t3Y4PAt6x+ebhp9E2WyyXuKnznLq69M6O32Wgrh+Q=
-X-QQ-XMRINFO: NI4Ajvh11aEjEMj13RCX7UuhPEoou2bs1g==
-X-QQ-RECHKSPAM: 0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [ANNOUNCE] A Syzbot-style Platform for Verifying and Fixing
+ LLM-reported Bugs
+To: netdev@vger.kernel.org, netfilter-devel@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, workflows@vger.kernel.org,
+ frankw@nebusec.ai, jhs@mojatatu.com, ksummit@lists.linux.dev,
+ kuba@kernel.org, pabeni@redhat.com, kerneljasonxing@gmail.com,
+ roman.gushchin@linux.dev, jgg@nvidia.com, mchehab+huawei@kernel.org,
+ torvalds@linux-foundation.org, ben.copeland@linaro.org,
+ gregkh@linuxfoundation.org, yuantan098@gmail.com
+References: <20260830115546.3942129-1-yuantan098@gmail.com>
+Content-Language: en-US
+From: Yuan Tan <yuant@nebusec.ai>
+In-Reply-To: <20260830115546.3942129-1-yuantan098@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-__stmmac_open() copies the freshly allocated dma_conf into priv->dma_conf
-via memcpy() before it can fail, e.g. in stmmac_request_irq().  When it
-does fail, the callers free the dma_conf descriptor resources and the
-struct itself, but priv->dma_conf still holds pointers to those freed
-resources, a use-after-free that triggers when a subsequent
-stmmac_release() or another MTU change releases the resources again.
 
-Undo the memcpy in the error path by zeroing priv->dma_conf, leaving the
-state consistent regardless of the caller.
+On 8/30/26 04:55, Yuan Tan wrote:
+> Hi all,
+>
+> A month ago, I posted an RFC[1] to the mailing list proposing an automated
+> platform that validates AI-reported bugs and prepares draft fixes, and
+> later discussed the idea at the Netdev conference. After further
+> development, it is finally ready.
+>
+> While preparing to send this email, I noticed that Roman has since started
+> a related discussion:
+> [MAINTAINERS SUMMIT] The place of AI code review in the Linux Kernel process
+>
+> It turns out this platform already addresses several of the needs raised
+> there.
+>
+> The platform is available at:
+> https://bugtracker.nebusec.ai
+>
+> It is currently hosted under my company's domain for convenience. I would
+> prefer to move it to a neutral, community-oriented domain once the project
+> name is settled.
+> Access is currently restricted to maintainers whose email addresses are
+> listed in the Linux kernel MAINTAINERS file.
+> For now, only bug reports from the net subsystem have been fully imported
+> and processed.
+>
+> -------------------------------------------------------------------------
+>
+> LLM-powered tools such as Sashiko and Claskiko produce a significant number
+> of false positives. Pre-existing bugs uncovered by these tools are also not
+> collected in one place and they remain scattered across individual review
+> reports.
+>
+> To address this, like syzbot for fuzzer-found bugs, this platform provides
+> an **automated** tracking layer for AI-reported bugs, but goes further by
+> generating PoCs, running them in QEMU to produce crash logs, triaging
+> severity, and drafting patches. This requires no extra effort from
+> maintainers; instead, it may helps them understand and fix these bugs more
+> efficiently.
+>
+>
+> The platform offers the following capabilities:
+>
+> 1. Collect and Deduplicate
+>
+> The platform ingests bug reports from multiple sources, including Sashiko,
+> Claskiko, and others. It deduplicates them and monitors mailing lists and
+> git history to track whether they have been fixed.
+>
+> It also provides visibility into the Sashiko/Claskiko ingestion queue, so
+> users can see which reports are waiting to be collected and processed.
+>
+>
+> 2. Verify by generating PoC and running it in QEMU
+>
+> An agent attempts to generate a proof-of-concept for each bug to determine
+> whether it is a false positive. According to paper Patch-to-PoC[2] and
+> follow-up research, GPT-5.4 achieves up to a 95% success rate in generating
+> PoCs for genuinely exploitable bugs.
+>
+> This makes PoC generation a strong signal: if a bug has no PoC, it is very
+> likely a false positive. And even in cases where a real bug is missed, the
+> difficulty of generating a PoC suggests it is unlikely to be practically
+> exploitable.
+>
+>
+> 3. Draft Patch
+>
+> The platform produces a draft patch to give maintainers a starting point
+> and suggested fix direction. These still require human review. Patches can
+> be downloaded via b4 am.
+>
+> These patches are not sent to mailing lists to avoid adding AI-generated
+> noise.
+>
+>
+> 4. Triage
+>
+> Based on the PoC, the agent evaluates the conditions required to trigger
+> the bug, for example, whether it requires a namespace, root privileges, or
+> can be triggered by an unprivileged user.
+>
+> Bugs that require root are generally less important, while those reachable
+> by unprivileged users are more likely to have real security impact.
+>
+> If a bug can be triggered from namespace, it is still worth
+> paying attention to.
+> In particular, a bug should not be considered root-only merely because
+> triggering it requires CAP_NET_ADMIN in a network namespace. On systems
+> that allow unprivileged user namespaces, an ordinary user may be able to
+> create a user namespace, create a network namespace owned by it, and obtain
+> capabilities such as CAP_NET_ADMIN with respect to that namespace. Such
+> bugs may therefore still be reachable by an otherwise unprivileged local
+> user.
+>
+> For example, this configuration has historically been available by default
+> on distributions such as Ubuntu 22.04 LTS and earlier.
+>
+> Jamal previously offered some suggestions on this severity classification
+> scheme which I have not yet had time to implement; that will come in a
+> future update.
+>
+>
+> 5. Chat with agent
+>
+> Each bug page includes a chat interface for discussing the bug and its fix
+> with the agent.
+>
+>
+>
+> Based on earlier feedback, the system is not fully public. Only email
+> addresses listed in the MAINTAINERS file are eligible to register, to
+> prevent bugs with potential security impact from being exposed publicly.
+>
+> Jason’s idea of delegating fixes could also be implemented on this
+> platform. This is essentially what my volunteer bug-fixing team and I have
+> been doing over the past six months: anyone interested can pick up an issue
+> and try to fix it. 
+> Each subsystem’s maintainers could choose whether to make its issues
+> public. Making them public would also let potential reporters check whether
+> an issue is already known before submitting a new report.
+>
+> Bugs are also categorized by subsystem, so after logging in, maintainers
+> see only the bugs relevant to the modules they maintain.
+>
+>
+> Welcome any suggestions:)  I will continue maintaining this system and
+> adding more features, not only out of personal interest, but also our
+> bug-fixing volunteer team is using it too.
+>
+> We periodically burn tokens and run state-of-the-art models against the
+> full kernel source code, with the goal of finding security vulnerabilities
+> before attackers do. While I am not an expert in the net subsystem and
+> cannot review patches myself at this time, I still hope this platform can
+> be of help to the community.
+>
+> If this system proves genuinely useful, I am happy to transfer project
+> ownership to the Linux Foundation or another neutral host.
+>
+> Going forward, the platform will expose a public API so that other bug
+> finding research teams can submit their findings here for centralized
+> processing. We also plan to ingest syzbot-found bugs to provide them with
+> the same triage workflow.
+>
+> P.S. I have been struggling to come up with a good name for this platform. A
+> few candidates I am considering are Palomar, Tengu, FixArc, and Ephemeris.
+> If anyone has a preference or a better suggestion, I would love to hear it.
+>
+>
+> Current Limitations
+>
+> - For a tracked bug, the system currently only knows that a fix exists; it
+> does not yet distinguish between a patch that has been posted to the
+> mailing list and one that has already been merged.
+>
+> - PoC generation and false-positive verification are not yet supported for
+> driver-related bugs.
+>
+> - Unable to scrape Sashiko/Clashiko review reports that are still under embargo.
+>
+> - Only net subsystem bugs from Sashiko and Claskiko have been imported with
+> a fully automated fix-detection pipeline so far. Bugs from other subsystems
+> are shown but may already be fixed. If other subsystem maintainers are
+> interested, I will prioritize adding support.
+>
+>
+> [1] https://lore.kernel.org/all/20260708092247.4188498-1-yuantan098@gmail.com/
+> [2] Juefei Pu, Xingyu Li, Zhengchuan Liang, et al. "Patch-to-PoC: A
+> Systematic Study of Agentic LLM Systems for Linux Kernel N-Day
+> Reproduction." arXiv:2602.07287, 2026. https://arxiv.org/abs/2602.07287
+>
+>
+> Thanks,
+> Yuan
+>
 
-Fixes: 30134b7c47bd2 ("net: ethernet: stmicro: stmmac: fix possible memory leak in __stmmac_open")
-Signed-off-by: ZhaoJinming <zhaojinming@uniontech.com>
----
-Changes in v2:
-- Move the clearing of priv->dma_conf from stmmac_change_mtu() into
-  __stmmac_open() error path, undoing the memcpy() at the point where it
-  was made and covering both callers.
-- Link to v1: https://lore.kernel.org/r/20260903-fix-stmmac-mtu-change-use-after-free-v1-1-c81dc7d6d18a@uniontech.com
----
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 1 +
- 1 file changed, 1 insertion(+)
+A couple of updates since my last email:
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 24656b35350b14454fb10deced6516eb89e2c0c9..4369e64faf9f878aa20ac5075705044f55c5f8bf 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -4190,6 +4190,7 @@ static int __stmmac_open(struct net_device *dev,
- 
- 	stmmac_release_ptp(priv);
- init_error:
-+	memset(&priv->dma_conf, 0, sizeof(priv->dma_conf));
- 	return ret;
- }
- 
+Previously, the bug list was not automatically filtered based on the
+maintainer’s subsystems in the MAINTAINERS file after login. This has
+now been fixed.
 
----
-base-commit: a500db7819c50db59e55f1b4fa1c3baa5a2616f3
-change-id: 20260903-fix-stmmac-mtu-change-use-after-free-693da6eb4a30
+Also, a quick update for netdev:
 
-Best regards,
--- 
-ZhaoJinming <zhaojinming@uniontech.com>
+We recently ran exploitability analysis on several hundred bugs and
+imported the results into the tracker, so you can now directly see which
+bugs appear to have higher security impact.
+
+We identified 55 bugs that can be used for local privilege escalation.
+The good news is that 46 of them have already been fixed, while 9 are
+still unfixed. Fortunately, 8 of those 9 require |CONFIG_USER_NS=y| to
+be exploitable.
+
+I’m especially proud that students on my team contributed 34 of the
+patches for those fixes, and I’m very grateful to the maintainers for
+all the reviews and guidance. Once we finish the patches we’re currently
+looking at, we’ll start working on these newly identified
+privilege-escalation bugs.
+
+The exploitability analysis still has to be run manually and is not yet
+integrated into the system. Once the full pipeline is integrated, it
+should make it much easier to see which bugs pose a greater security risk.
+
+So although the LLM has found a large number of bugs, only a very small
+fraction of them appear to be usable for local privilege escalation.
+
+If any maintainers outside netdev are interested in using the tracker,
+just let me know. I can prioritize importing the fixed bugs and Sashiko
+findings for those subsystems first. Cleaning and importing the data
+takes some time.
+
 
