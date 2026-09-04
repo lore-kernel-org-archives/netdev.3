@@ -1,32 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDAA652ED31;
-	Fri,  4 Sep 2026 22:25:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFBD85221FE;
+	Fri,  4 Sep 2026 22:25:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788560728; cv=none; b=sxIVN4t64Je5HgFxc06bifwe96KP93qwZIi6vAYYzmGpdR2ismkDpFJdITCED5DnRURENzVLvh2BiZAyLAuJ6RyErM3Yrw/YgFt3+FuysXJm42EtjM20dlCjKEm9Bwc9Myo15LoCeFLWKpy8w3AyMYXnEJe0+vCfVWfBnlgiQM4=
+	t=1788560730; cv=none; b=pEP20dFHeM4HXqkIz8UA9PhnC1F/8novhpL7edt9Jac5DzrJcVJtiNgCX5IINt7bpsd8BBGn+ZYthZKPejuxGsI8b33QXTwKhMOOCfLwcZCjb1NOKQLGBEPC+yWjQPLhmRyJ1rtTAkskc3JUTwIuCpSwFF+CpucaUaqFr00fa5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788560728; c=relaxed/simple;
-	bh=3ZF5lGBK+ZkbpO8m7vIYHWZ7uZ9raHHThvTOliwCyBU=;
+	s=arc-20240116; t=1788560730; c=relaxed/simple;
+	bh=OrqWsalKoggloer6fIe43v9WfqO9URoBDYfl+kBLy5I=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=NsQn2M52mzqc24+DC6GCnXYHCsLtIJXEtqx82hTLwF64FQkxAkiY0ZCtM5zTAHspcvlrWl1l3sSji6nUXAQ4OQcAnK82vFqSSgxMeQD11I5jsVcVPPpazZZqDbrl3HV5AsR3E442ZJCkEJgjdiAK+VPLjnkrW+t5tqcc2geRTjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FrPqXue7; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=f5scDfN3RsAYwIacguPal+GbMcNhRuA34vMJPNk+ImtoGXWMPq6YhdmbWrOBm0ZRA8X//a6NE4H/G7w5VWKzsMvQjmr9ktHkX/wAIVOCzmBJGFST46X8C7O4Y4y7xpm7UVAl+Rrr2uTli/ELoCWxjamlt2pMcADqR1o+pLIXDQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h7wJyVRs; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FrPqXue7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FF581F00ACA;
-	Fri,  4 Sep 2026 22:25:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h7wJyVRs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6727A1F00ACF;
+	Fri,  4 Sep 2026 22:25:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788560722;
-	bh=WMxTN8N4fJu9KnJ2ByfZtaau8Dq/5Aq2DnK9W4MuT8Y=;
+	s=k20260515; t=1788560725;
+	bh=2tT7CmfqaApBjs+ekyMIteouyeWGCx8GzaJC1TaVJU0=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=FrPqXue7aURcpiXIy2tAtAsUdQBZsgZR8ZwXIfIAxbIpgm5jjDnh0sJ9yo1gCJ8Qz
-	 oxkkaCYdthpphe/llVIvsjbASPsZzzqYPIrJikjzWZQBTER4qSPqPVuNbj13GpiAjS
-	 CBYsRX4qGmn7c6DCczHubZ0CurW8FiRNeEzGmEqd5wbtKhQ3uie/PqJ2Xj+aFaMEa1
-	 My2AON1/yJhiFUqobGJhAUgVOxQNlKC8OnhkzhQWnrVOFPRYAzccQycnsq6arDNpYA
-	 7CpOadX+Te9yNwBu5EyjyhfrFBT8/UZaUdjRocwZaIR7fdxPCwPLiytcggv//UN/FP
-	 +uL2GsEubdReg==
-Subject: Re: [PATCH net-next v9 5/7] r8169: add support for RTL8127atf
+	b=h7wJyVRs8+U6ZeCTukUT78iEhpig61X/T97p81FjBIiSmzv6CuocvF5hNy5ucrlip
+	 Bd2T/n6D1Z+zR0MtDqqfo2p0yaO8iHObE5GFqxz5pk1IjgFq49zmgINeZFBg1IoPv7
+	 nHny00llOgwbITxSKWDpYrollLmpcz0mUL3Q8A3emV4JMzeXd00BKvRydC5ron2tUP
+	 jldaXWpf9IhhmoX8ZHL74Mw6GE2kxVCfSvTu4eOmaFSjxby9BDCBEvhDd3PNfTv8s6
+	 yhGlDjYY5sYs0iVFNe1DM3kNzLvUbyaTp1txzDqWxl4oYy0AAMYDNduZUkUsm/Zy6/
+	 L2ZW+OizvmE7g==
+Subject:
+ Re: [PATCH net-next v9 7/7] r8169: fix RTL8116af can not enter s0idle and c10
 From: netdev-bot+sashiko@kernel.org
 To: javen_xu@realsil.com.cn
 Cc: hkallweit1@gmail.com, nic_swsd@realtek.com, andrew+netdev@lunn.ch,
@@ -34,10 +35,10 @@ Cc: hkallweit1@gmail.com, nic_swsd@realtek.com, andrew+netdev@lunn.ch,
  maxime.chevallier@bootlin.com, horms@kernel.org, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org, daniel@makrotopia.org, linux@armlinux.org.uk,
  enelsonmoore@gmail.com, daniel@thingy.jp
-Date: Fri, 04 Sep 2026 22:25:21 +0000
-Message-ID: <178856072110.219967.12213252573988149432@kernel.org>
-In-Reply-To: <20260831053745.1197-6-javen_xu@realsil.com.cn>
-References: <20260831053745.1197-6-javen_xu@realsil.com.cn>
+Date: Fri, 04 Sep 2026 22:25:23 +0000
+Message-ID: <178856072395.219967.5123094668587461591@kernel.org>
+In-Reply-To: <20260831053745.1197-8-javen_xu@realsil.com.cn>
+References: <20260831053745.1197-8-javen_xu@realsil.com.cn>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -48,376 +49,229 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 8 potential
+Thank you for your contribution! Sashiko AI review found 4 potential
 issue(s) to consider:
 
-Critical: 0 · High: 2 · Medium: 5 · Low: 1
+Critical: 0 · High: 1 · Medium: 2 · Low: 1
 
-- [High] The 1 Gb/s support the commit claims to add is dead code.
-- [High] RTL8127atf loses its SerDes/PCS re-initialization across
-  suspend/resume, so the fiber link cannot come back up.
-- [Medium] The commit message ("RTL8127atf is also a fiber mode card, but
-  its sds reg base addr is 0x0080 ... Add 10g and 1g support") does not…
-- [Medium] In the newly added r8127_sfp_init_1g() the return value of
-  r8168_phy_ocp_read(tp, 0xc804) is stored in `int val` and immediately…
-- [Medium] r8127_sds_modify() silently swallows both failure modes of the
-  new 0x2348 SDS command interface: it returns void, aborts without any…
-- [Medium] The phylink resolve worker is never quiesced in the
-  suspend/runtime-suspend/shutdown paths, yet this patch makes those…
-- [Medium] rtl8169_pcs_config() unconditionally performs a full SerDes
-  PHY hardware reset (r8127_sfp_sds_phy_reset(): 0x2350 bit0…
-- [Low] Concern (validated as a FALSE POSITIVE): "RTL8127ATF is
-  registered as an in-band 1000BASE-X PCS but its PCS callbacks do not…
+- [High] The hidden-function power/ASPM programming is never re-applied
+  on the runtime-PM resume path, so the bug class the patch claims to…
+- [Medium] rtl_lowpower_hidden_functions() unconditionally ORs
+  PCI_EXP_LNKCTL_ASPMC (both L0s and L1) and PCI_EXP_LNKCTL_CLKREQ_EN…
+- [Medium] rtl_lowpower_hidden_functions() writes PCI_EXP_LNKCTL (force
+  ASPM L0s/L1 + CLKREQ_EN) and PCI_PM_CTRL (D3hot + RW1C PME_STATUS) to…
+- [Low] Commit message names the wrong config-space accessors.
 
 --
 
-r8169: add support for RTL8127atf
+r8169: fix RTL8116af can not enter s0idle and c10
 
-The patch wires RTL8127atf into phylink as a 10GBASE-R/1000BASE-X PCS,
-adds a new SerDes command window (0x2348..0x234e) with read/write/modify
-helpers, and adds a 1G SerDes init sequence. It also removes the dummy
-SFP PHY driver entry from the realtek phylib driver and deletes
-include/net/phy/realtek_phy.h.
+This adds rtl_lowpower_hidden_functions(), which walks functions 2 to 7 of
+the NIC's slot and programs their PCIe Link Control and PM Control
+registers to enable ASPM and put them into D3hot.  It is called from
+rtl_init_one() and rtl8169_resume() when rtl_is_8116af() is true.
 
-The commit message says:
+A few questions below.
 
-  "RTL8127atf is also a fiber mode card, but its sds reg base addr is
-   0x0080, which is different from RTL8116af. Add 10g and 1g support for
-   RTL8127atf in this patch."
+>     Put functions 2 to 7 into D3hot and enable ASPM on their PCIe link control
+>     register. Since these functions are hidden, access their configuration
+>     space through pci_bus_read_config_dword() / pci_bus_write_config_dword()
+>     using the same slot and the target function numbers.
 
-[Severity: Medium]
-Could the message describe the rest of what the patch does?  Beyond the
-SerDes base address and the 10g/1g init sequences it also:
+[Severity: Low]
+This isn't a bug, but the changelog names accessors that the patch never
+calls.  All four config accesses in rtl_lowpower_hidden_functions() are
+16-bit:
 
- - removes the "Realtek SFP PHY Mode" phy_driver entry together with
-   rtlgen_sfp_get_features(), rtlgen_sfp_read_status() and
-   rtlgen_sfp_config_aneg() from drivers/net/phy/realtek/realtek_main.c
+	pci_bus_read_config_word(bus, devfn, pos + PCI_EXP_LNKCTL, &val);
+	pci_bus_write_config_word(bus, devfn, pos + PCI_EXP_LNKCTL, val);
+	pci_bus_read_config_word(bus, devfn, pos + PCI_PM_CTRL, &val);
+	pci_bus_write_config_word(bus, devfn, pos + PCI_PM_CTRL, val);
 
- - deletes the global header include/net/phy/realtek_phy.h and the dummy
-   MII_PHYSID2 hack in r8168_phy_ocp_read()
-
- - stops registering an MDIO bus and a phydev for every SFP mode, by
-   changing rtl_init_one() from "if (tp->sfp_mode != RTL_SFP_8168_AF)" to
-   "if (tp->sfp_mode == RTL_SFP_NONE)"
-
- - drops the RTL8127atf specific forced-speed path in
-   rtl8169_set_link_ksettings()
-
- - introduces a second SerDes access mechanism (the MMIO window
-   R8127_SDS_CMD/ADDR/DATA_IN/DATA_OUT with index/page/reg encoding),
-   which is unrelated to the "base addr 0x0080" explanation
-
-The phylib change in particular gives the phylib maintainers no notice
-that their subsystem is touched.  Would it make sense to split the
-phylib removal into its own patch, or at least mention it?
+Could the description say pci_bus_read_config_word() /
+pci_bus_write_config_word() instead?  It may also be worth mentioning that
+whether a function is touched at all is decided by
+pci_bus_find_capability(), i.e. by walking the capability list of an
+un-enumerated function.
 
 > diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-> index a04acb42e995d..eecde26d9de2c 100644
+> index 5dbbc3a48c09a..5415ff62a2869 100644
 > --- a/drivers/net/ethernet/realtek/r8169_main.c
 > +++ b/drivers/net/ethernet/realtek/r8169_main.c
 
 [ ... ]
 
-> @@ -1223,6 +1224,75 @@ static void r8127_sfp_sds_phy_reset(struct rtl8169_private *tp)
->  	usleep_range(10, 20);
+> @@ -3773,6 +3774,41 @@ static void rtl_hw_start_8168ep_3(struct rtl8169_private *tp)
+>  	r8168_mac_ocp_modify(tp, 0xe860, 0x0000, 0x0080);
 >  }
 >  
-> +DECLARE_RTL_COND(r8127_sds_cmd_cond)
+> +static void rtl_lowpower_hidden_functions(struct pci_dev *pdev)
 > +{
-> +	return RTL_R16(tp, R8127_SDS_CMD) & R8127_SDS_CMD_EXEC;
-> +}
+> +	unsigned int slot = PCI_SLOT(pdev->devfn);
+> +	struct pci_bus *bus = pdev->bus;
+> +	int func, pos;
+> +	u16 val;
 > +
-> +static int r8127_sds_read(struct rtl8169_private *tp, u16 index,
-> +			  u16 page, u16 reg)
-> +{
-> +	u16 addr = (index << 11) | (page << 5) | reg;
+> +	for (func = 2; func < 8; func++) {
+> +		unsigned int devfn = PCI_DEVFN(slot, func);
 > +
-> +	RTL_W16(tp, R8127_SDS_ADDR, addr);
-> +	RTL_W16(tp, R8127_SDS_CMD, R8127_SDS_CMD_EXEC);
+> +		pos = pci_bus_find_capability(bus, devfn, PCI_CAP_ID_EXP);
+> +		if (pos) {
+> +			pci_bus_read_config_word(bus, devfn, pos + PCI_EXP_LNKCTL, &val);
 > +
-> +	if (rtl_loop_wait_low(tp, &r8127_sds_cmd_cond, 10, 100))
-> +		return RTL_R16(tp, R8127_SDS_DATA_OUT);
+> +			if (PCI_POSSIBLE_ERROR(val))
+> +				continue;
 > +
-> +	return -ETIMEDOUT;
-> +}
-> +
-> +static int r8127_sds_write(struct rtl8169_private *tp, u16 index, u16 page,
-> +			   u16 reg, u16 val)
-> +{
-> +	u16 addr = (index << 11) | (page << 5) | reg;
-> +
-> +	RTL_W16(tp, R8127_SDS_DATA_IN, val);
-> +	RTL_W16(tp, R8127_SDS_ADDR, addr);
-> +	RTL_W16(tp, R8127_SDS_CMD, R8127_SDS_CMD_EXEC | R8127_SDS_CMD_WE);
-> +
-> +	if (rtl_loop_wait_low(tp, &r8127_sds_cmd_cond, 10, 100))
-> +		return 0;
-> +
-> +	return -ETIMEDOUT;
-> +}
-> +
-> +static void r8127_sds_modify(struct rtl8169_private *tp, u16 index, u16 page,
-> +			     u16 reg, u16 clearmask, u16 setmask)
-> +{
-> +	int val = r8127_sds_read(tp, index, page, reg);
-> +
-> +	if (val < 0)
-> +		return;
-> +
-> +	val = (val & ~clearmask) | setmask;
-> +	r8127_sds_write(tp, index, page, reg, val);
-> +}
-
-[Severity: Medium]
-The -ETIMEDOUT returns were added to r8127_sds_read()/r8127_sds_write()
-on purpose, but r8127_sds_modify() is the only consumer and it drops
-both: the read error returns silently and the write return value is
-discarded.
-
-Should the failure be propagated up instead?  As written, if one of the
-three r8127_sds_modify() calls in r8127_sfp_init_1g() never reaches the
-hardware, the following mode select writes still execute:
-
-	r8127_sds_modify(tp, 0, 1, 31, 0, BIT(3));
-	r8127_sds_modify(tp, 0, 2,  0, ...);
-	r8127_sds_modify(tp, 0, 0,  4, 0, BIT(2));
-
-	RTL_W16(tp, 0x233a, 0x8004);
-	RTL_W16(tp, 0x233e, (RTL_R16(tp, 0x233e) & ~0x3003) | 0x0002);
-
-so the SerDes lane keeps its post-reset settings while the mode select
-says 1G.  r8127_sfp_init_1g() is void and rtl8169_pcs_config() returns 0
-unconditionally, so phylink records the PCS as configured and will report
-SPEED_1000/DUPLEX_FULL once MDIO_STAT1 reads link up.  rtl8169_pcs_config()
-already returns -EOPNOTSUPP for an unsupported interface, so a real error
-could be reported here.
-
-> +
-> +static void r8127_sfp_init_1g(struct rtl8169_private *tp)
-> +{
-> +	int val;
-> +
-> +	r8127_sfp_sds_phy_reset(tp);
-> +
-> +	r8127_sds_modify(tp, 0, 1, 31, 0, BIT(3));
-> +	r8127_sds_modify(tp, 0, 2,  0, BIT(13) | BIT(12) | BIT(6),
-> +			 BIT(12) | BIT(6));
-> +	r8127_sds_modify(tp, 0, 0,  4, 0, BIT(2));
-> +
-> +	RTL_W16(tp, 0x233a, 0x8004);
-> +	RTL_W16(tp, 0x233e, (RTL_R16(tp, 0x233e) & ~0x3003) | 0x0002);
-> +
-> +	r8168_phy_ocp_write(tp, 0xc40a, 0x0000);
-> +	r8168_phy_ocp_write(tp, 0xc466, 0x0000);
-> +	r8168_phy_ocp_write(tp, 0xc808, 0x0000);
-> +	r8168_phy_ocp_write(tp, 0xc80a, 0x0000);
-> +
-> +	val = r8168_phy_ocp_read(tp, 0xc804);
-> +	r8168_phy_ocp_write(tp, 0xc804, (val & ~0x000f) | 0x000c);
-> +}
-
-[Severity: Medium]
-Can the unchecked r8168_phy_ocp_read() result corrupt the following
-write?  r8168_phy_ocp_read() can return a negative value:
-
-	return rtl_loop_wait_high(tp, &rtl_ocp_gphy_cond, 25, 10) ?
-		(RTL_R32(tp, GPHY_OCP) & 0xffff) : -ETIMEDOUT;
-
-With val == -ETIMEDOUT, (val & ~0x000f) | 0x000c is 0xffffff9c, and
-r8168_phy_ocp_write() ORs data into the command word without masking it:
-
-	RTL_W32(tp, GPHY_OCP, OCPAR_FLAG | (reg << 15) | data);
-
-rtl_ocp_reg_failure() only validates reg, so every bit of the encoded
-address field ends up set and the write lands somewhere other than
-0xc804.  Would checking val < 0 and aborting the init be better here?
-Note r8127_sfp_init_10g() has the same shape today; this adds a second
-instance of it.
-
-[ ... ]
-
-> @@ -2608,9 +2650,6 @@ static void rtl8169_init_phy(struct rtl8169_private *tp)
->  	    tp->pci_dev->subsystem_device == 0xe000)
->  		phy_write_paged(tp->phydev, 0x0001, 0x10, 0xf01b);
->  
-> -	if (tp->sfp_mode == RTL_SFP_8127_ATF)
-> -		rtl_sfp_init(tp);
-> -
->  	/* We may have called phy_speed_down before */
->  	phy_speed_up(tp->phydev);
-
-[Severity: High]
-Does RTL8127atf still come back after suspend/resume with this call
-removed?
-
-rtl8169_down() puts the SerDes PHY into reset and programs mode select
-0x233a = 0x801f for this chip:
-
-	if (tp->sfp_mode == RTL_SFP_8127_ATF)
-		rtl_sfp_reset(tp);
-
-and it is reached from rtl8169_close(), rtl8169_suspend(),
-rtl8169_runtime_suspend() and rtl_shutdown() via rtl8169_net_suspend().
-A runtime suspend also drops the device to D3hot.
-
-Previously the re-programming happened on every bring-up through
-rtl8169_up() -> rtl8169_init_phy() -> rtl_sfp_init().  After this patch
-rtl8169_up() only does that under "if (tp->phydev)", and tp->phydev is
-NULL for RTL8127atf because rtl_init_one() now registers the MDIO bus
-only for "tp->sfp_mode == RTL_SFP_NONE".
-
-The only remaining caller of r8127_sfp_init_10g()/r8127_sfp_init_1g() is
-rtl8169_pcs_config(), which phylink invokes from a major config, i.e.
-from phylink_start() in rtl_open() or on an interface change.  r8169
-never calls phylink_suspend()/phylink_resume().  So after a resume the
-SerDes appears to stay in the 0x801f reset mode while phylink believes
-10GBASE-R is configured, and the link stays down until the interface is
-taken down and up again.  Note rtl8169_runtime_idle() schedules a runtime
-suspend 10s after the carrier drops, which is the normal state of a fiber
-port with no module or no link.
-
-[ ... ]
-
-> @@ -4942,7 +4981,7 @@ static irqreturn_t rtl8169_interrupt(int irq, void *dev_instance)
->  	if (status & LinkChg) {
->  		if (tp->phydev)
->  			phy_mac_interrupt(tp->phydev);
-> -		else if (tp->sfp_mode == RTL_SFP_8168_AF)
-> +		else if (tp->sfp_mode)
->  			phylink_mac_change(tp->phylink,
->  					   !!(RTL_R8(tp, PHYstatus) & LinkStatus));
->  	}
-
-[Severity: Medium]
-Can the phylink resolve worker now run against a device that is being
-powered down?
-
-This call queues the phylink resolve work from hardirq for RTL8127atf,
-including for the LinkChg caused by rtl_sfp_reset() itself.  Meanwhile
-rtl8169_suspend(), rtl8169_runtime_suspend() and rtl_shutdown() take only
-rtnl_lock() and go through rtl8169_net_suspend() -> rtl8169_down() ->
-rtl_sfp_reset() -> rtl8169_cleanup(); a grep of phylink_ in this file
-shows phylink_stop() only in rtl8169_close() and phylink_start() only in
-rtl_open(), so nothing flushes pl->resolve on the PM paths.
-
-The resolve worker holds only pl->state_mutex, and the suspend path holds
-only RTNL, so the two lock sets are disjoint:
-
-	rtl8169_down()				phylink resolve worker
-	  rtl_sfp_reset()			  rtl8169_pcs_get_state()
-	    r8127_sfp_sds_phy_reset()		    rtl8169_sds_read()
-	  rtl_prepare_power_down()		  rtl_mac_link_up()/down()
-
-Once the device is in D3, MMIO reads return all ones, so MDIO_STAT1 looks
-like LSTATUS is set and phylink reports a 10 Gb/s link on a powered-down
-device.  Should the PM paths call phylink_suspend()/phylink_resume(), or
-at least phylink_stop()?
-
-[ ... ]
-
-> @@ -5725,6 +5785,24 @@ static int rtl8169_pcs_config(struct phylink_pcs *pcs, unsigned int mode,
->  			      const unsigned long *advertising,
->  			      bool permit_pause_to_mac)
->  {
-> +	struct rtl8169_private *tp = container_of(pcs, struct rtl8169_private,
-> +						  pcs);
-> +
-> +	if (tp->sfp_mode == RTL_SFP_8127_ATF) {
-> +		switch (interface) {
-> +		case PHY_INTERFACE_MODE_10GBASER:
-> +			r8127_sfp_init_10g(tp);
-> +			break;
-> +		case PHY_INTERFACE_MODE_1000BASEX:
-> +			r8127_sfp_init_1g(tp);
-> +			break;
-> +		default:
-> +			netdev_err(tp->dev, "Unsupported SFP interface mode: %s\n",
-> +				   phy_modes(interface));
-> +			return -EOPNOTSUPP;
+> +			val |= (PCI_EXP_LNKCTL_ASPMC | PCI_EXP_LNKCTL_CLKREQ_EN);
+> +			pci_bus_write_config_word(bus, devfn, pos + PCI_EXP_LNKCTL, val);
 > +		}
-> +	}
-> +
->  	return 0;
->  }
 
 [Severity: Medium]
-Does this bounce the fiber link on an advertisement-only change?  Both
-init helpers start with r8127_sfp_sds_phy_reset(), which toggles 0x2350
-bit 0 and rewrites 0x233a:
+Should this check PCI_EXP_LNKCAP before setting these bits?  Both ASPM
+states plus Clock Power Management are enabled unconditionally, without
+reading LNKCAP to see which of L0s/L1 and PCI_EXP_LNKCAP_CLKPM are
+advertised.  The ASPM core encodes that rule explicitly:
 
-	RTL_W8(tp, 0x2350, RTL_R8(tp, 0x2350) & ~BIT(0));
-	udelay(1);
-	RTL_W16(tp, 0x233a, 0x801f);
-	RTL_W8(tp, 0x2350, RTL_R8(tp, 0x2350) | BIT(0));
-
-phylink calls pcs_config() from phylink_change_inband_advert() as well as
-from a major config, and phylink_update_pause_state() does that
-unconditionally when there is no PHY attached:
-
-	if (!pl->phydev)
-		phylink_change_inband_advert(pl);
-
-tp->phydev is NULL for RTL8127atf after this patch, so an
-"ethtool -A <dev> rx off tx off" would reach rtl8169_pcs_config() with an
-unchanged interface and hard-reset the SerDes.  Should the helpers only
-run when the interface actually changes?
-
-[ ... ]
-
-> @@ -5818,8 +5896,14 @@ static int rtl_init_phylink(struct rtl8169_private *tp)
->  		tp->phylink_config.mac_capabilities |= MAC_1000FD;
->  		break;
->  	case RTL_SFP_8127_ATF:
-> -		phy_mode = PHY_INTERFACE_MODE_INTERNAL;
-> -		tp->phylink_config.mac_capabilities |= MAC_10000FD;
-> +		tp->pcs.ops = &r8169_pcs_ops;
-> +		phy_mode = PHY_INTERFACE_MODE_10GBASER;
-> +		tp->phylink_config.default_an_inband = true;
-> +		tp->phylink_config.mac_capabilities |= MAC_1000FD | MAC_10000FD;
-> +		__set_bit(PHY_INTERFACE_MODE_10GBASER,
-> +			  tp->phylink_config.supported_interfaces);
-> +		__set_bit(PHY_INTERFACE_MODE_1000BASEX,
-> +			  tp->phylink_config.supported_interfaces);
->  		break;
-
-[Severity: High]
-How does the 1 Gb/s support announced in the commit message get selected?
-
-phy_mode is fixed at PHY_INTERFACE_MODE_10GBASER here, so
-phylink_create() -> phylink_parse_mode() derives pl->supported from
-phy_caps_from_interface(10GBASER), i.e. 10 Gb/s link modes only, and
-pl->link_config.interface stays 10GBASER.
-
-There is no PHY (this patch stops registering an MDIO bus for SFP modes)
-and no SFP bus (phylink_register_sfp() finds no "sfp" fwnode on a PCI
-device), so the only PHY-less code that can re-select an interface never
-runs:
-
-drivers/net/phy/phylink.c:phylink_ethtool_ksettings_set() {
-	...
-	if (pl->sfp_bus) {
-		if (kset->base.autoneg == AUTONEG_ENABLE)
-			config.interface = phylink_sfp_select_interface(...);
-		else
-			config.interface = phylink_sfp_select_interface_speed(...);
-	...
+drivers/pci/pcie/aspm.c:pcie_set_clkpm() {
+	if (!link->clkpm_capable || link->clkpm_disable)
+		enable = 0;
 }
 
-With link_config.interface pinned to 10GBASER, is any of the following
-reachable?
+There is also a policy conflict on the same physical link.  rtl_init_one()
+does:
 
- - the PHY_INTERFACE_MODE_1000BASEX case of rtl8169_pcs_config(), and
-   therefore r8127_sfp_init_1g() in its entirety
- - the "state->interface == PHY_INTERFACE_MODE_1000BASEX" branch of
-   rtl8169_pcs_get_state(), which otherwise always reports SPEED_10000
- - MAC_1000FD and the 1000BASEX supported_interfaces bit
+	if (rtl_aspm_is_safe(tp)) {
+		dev_info(&pdev->dev, "System vendor flags ASPM as safe\n");
+		rc = 0;
+	} else {
+		rc = pci_disable_link_state(pdev, PCIE_LINK_STATE_L1);
+	}
+	tp->aspm_manageable = !rc;
 
-"ethtool -s <dev> autoneg off speed 1000 duplex full" also looks like it
-returns -EINVAL from phy_caps_lookup() because pl->supported only holds
-10 Gb/s modes.  The patch removes the previous mechanism for forcing a
-mode on this part (the RTL_SFP_8127_ATF case in
-rtl8169_set_link_ksettings() calling rtl_sfp_init()) without adding a
-replacement.
+and rtl8169_tx_timeout() can later call
+pci_disable_link_state(tp->pci_dev, PCIE_LINK_STATE_L1 |
+PCIE_LINK_STATE_L0S).  Neither of those can reach functions 2 to 7, since
+pcie_config_aspm_link() and pcie_set_clkpm_nocheck() only walk
+linkbus->devices, which contains enumerated pci_devs only.
+
+So can functions 2 to 7 end up with L0s, L1 and CLKREQ# enabled on a link
+where the administrator or a blacklist (pcie_aspm=off, sysfs link_state) or
+the driver's own workaround asked for ASPM to be off?  aspm.c also notes
+that spec sec 7.5.3.7 recommends the same ASPM Control value for all
+functions of a multi-function device, which this diverges from.
+
+> +
+> +		pos = pci_bus_find_capability(bus, devfn, PCI_CAP_ID_PM);
+> +		if (pos) {
+> +			pci_bus_read_config_word(bus, devfn, pos + PCI_PM_CTRL, &val);
+> +
+> +			if (PCI_POSSIBLE_ERROR(val))
+> +				continue;
+> +
+> +			val &= ~PCI_PM_CTRL_STATE_MASK;
+> +			val |= (RTL_PM_CTRL_D3HOT | PCI_PM_CTRL_PME_STATUS);
+> +			pci_bus_write_config_word(bus, devfn, pos + PCI_PM_CTRL, val);
+> +		}
+> +	}
+> +}
+
+[Severity: Medium]
+What guarantees the devfn being written here is really one of the hidden
+functions?  The loop derives devfn purely from PCI_SLOT(pdev->devfn), and
+never reads PCI_VENDOR_ID, never looks for an existing struct pci_dev (for
+example via pci_get_slot()), and never excludes PCI_FUNC(pdev->devfn).
+
+The two guards present do not separate "hidden" from "present and owned by
+another driver".  A non-zero pos only says the function answers config
+reads, and PCI_POSSIBLE_ERROR(val) looks unreachable, because a
+non-responding function already fails the capability walk with hdr_type
+0xff:
+
+drivers/pci/pci.c:__pci_bus_find_cap_start() {
+	switch (hdr_type) {
+	case PCI_HEADER_TYPE_NORMAL:
+	case PCI_HEADER_TYPE_BRIDGE:
+		return PCI_CAPABILITY_LIST;
+	...
+	return 0;
+}
+
+If some devfn in 2..7 of that slot is an enumerated device bound to another
+driver (composed multi-function slots in a guest, for instance), does this
+put it into D3hot while the PCI core still believes it is in PCI_D0, so
+pci_set_power_state() will not repair the state?  And does the
+unconditional PCI_PM_CTRL_PME_STATUS write discard a pending wake event of
+a function nobody is tracking?
+
+Related question: if the NIC itself were ever at function 2..7, the call
+from rtl8169_resume() would put it into D3hot right before
+rtl8169_runtime_resume() touches its registers.  Is that ruled out
+somewhere?  The rtl_is_8116af() gate only checks the MAC version and the
+MAC-OCP package/hardware IDs, not which PCI function the NIC occupies.
+
+[ ... ]
+
+> @@ -5326,6 +5362,9 @@ static int rtl8169_resume(struct device *device)
+>  	/* Some chip versions may truncate packets without this initialization */
+>  	rtl_init_rxcfg(tp);
+>  
+> +	if (rtl_is_8116af(tp))
+> +		rtl_lowpower_hidden_functions(tp->pci_dev);
+> +
+>  	return rtl8169_runtime_resume(device);
+>  }
+
+[Severity: High]
+Does the runtime-PM resume path need this too?  The only two call sites are
+rtl_init_one() and rtl8169_resume(), but rtl8169_runtime_resume() is
+registered as a peer callback:
+
+static const struct dev_pm_ops rtl8169_pm_ops = {
+	SYSTEM_SLEEP_PM_OPS(rtl8169_suspend, rtl8169_resume)
+	RUNTIME_PM_OPS(rtl8169_runtime_suspend, rtl8169_runtime_resume,
+		       rtl8169_runtime_idle)
+};
+
+and it does not re-apply the hidden-function programming:
+
+static int rtl8169_runtime_resume(struct device *dev)
+{
+	struct rtl8169_private *tp = dev_get_drvdata(dev);
+
+	rtl_rar_set(tp, tp->dev->dev_addr);
+	__rtl8169_set_wol(tp, tp->saved_wolopts);
+
+	if (tp->TxDescArray)
+		rtl8169_up(tp);
+
+	netif_device_attach(tp->dev);
+
+	return 0;
+}
+
+Runtime suspend is a normal event for this driver: rtl_init_one() arms it
+with
+
+	if (pci_dev_run_wake(pdev))
+		pm_runtime_put_sync(&pdev->dev);
+
+and rtl_mac_link_down() -> pm_runtime_idle() plus rtl8169_runtime_idle()
+schedule it on link down.  If the PCI core places the endpoint in D3cold
+(parent bridge powered down), the hidden functions' PMCSR and Link Control
+registers return to power-on defaults, D0 with ASPM disabled, and the core
+only restores saved config space for enumerated pci_devs.  After that, is
+there any path that re-programs functions 2..7?
+
+The same gap seems to apply when the device stays runtime-suspended across
+a system sleep (PCI direct_complete), where the core skips
+rtl8169_resume() entirely and the device comes back through the runtime
+callback.
+
+Since rtl8169_resume() already tail-calls rtl8169_runtime_resume(), would
+moving the rtl_is_8116af() call into rtl8169_runtime_resume() cover both
+wake paths from a single site?
+
+[ ... ]
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260831053745.1197-1-javen_xu%40realsil.com.cn
