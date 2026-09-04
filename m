@@ -1,331 +1,150 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A7B63F12E3;
-	Fri,  4 Sep 2026 10:18:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 409D03F8257;
+	Fri,  4 Sep 2026 10:22:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788517139; cv=none; b=MmMSYMFJnDQLi9LqNcltG8B1t9udnSRZfvwhnOX3qTZ6bUBYtOOGvGtDhxyNQ3+IcVmKmxMSMHTYqa1uYjwd4SV6ln3fMmgdqFBYWnTRCKnDIpwjdZgo5L2ZSNuNXeQcWM5MmbN35QrGr/ADXl16l5+tpaQWO9CdzmC4RlvKbn0=
+	t=1788517333; cv=none; b=djjaBvCU+RGHxBvEDmkRDIU0Le3SU9OoRq2ZPT0b6Of1ht5Nd0F5IOodmNXE7DKvUDOluk1e6akorEZXWFEEx/jLImsydj9Ge784x93rjwiHJWuMxnddhcj7/ip9Z4n/LNW6JwH0pA0+u+3lxmA3Br60NJVOr9PpIEZnlr2FJKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788517139; c=relaxed/simple;
-	bh=N70d4OTM4MbzPzRrc3jCGl3C7gCaldrIYREq5tRQNgE=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ARI8dSgecuXgWpb8i3/CKUQUQcFgQhavxZUulUZl83Nd+nKOkasbk6f6IM1KWcmEwRXqQ2Izvfv8kQrctQDFv0womcHnv1elcJw7OBrDhtOd52zN2dH6jx4kJXFmFHzE6bzYgqgzn35d1aahJzQxppdwa3J50f249YqOapSnHhI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mq171NIO; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788517333; c=relaxed/simple;
+	bh=BmOz+dUmMCLlNCERmSKkkwGqOWCoQ4fU1Camdms7s9U=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Tfne1wZf4vCPfoOGultwtHa1CUEwYIlzkZ08ZdcVx1HeRAbgi8sibwG01vjkYjr/lqiNDYZSotUvk/E1E8crs3pUziJSZR0BfV65khB3bghafWUp1i9wNcPPauk2ELAMEqE405AFr+rxG2Hl7CvUCRNdE8wECOOdbDclLDp6qRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lNwSA7Dm; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mq171NIO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A42771F00A3E;
-	Fri,  4 Sep 2026 10:18:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lNwSA7Dm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11FC31F00A3D;
+	Fri,  4 Sep 2026 10:21:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788517134;
-	bh=DRVdbCXXZKSxF9egZrKuVdyCyDlkeGtPVnc0hMTAlAg=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Mq171NIO6+sMOsjfgT1J4mGRk2dQf6z5Wyhmqrmnom3+ioe7Dp5q6TSov/oc7pCYl
-	 Y9VpAjseKu7MSqcB3J1arRwTO3zNN8KBXdBiz6i5ffNjoW7/3pNrFrfCLtWVoj0rbn
-	 6g/qhnzWEZVJJezZlqTPtD5WyFxy6iP6KQwP5f2j145/oUociyb44ZNXiHmK/6XRFK
-	 SeUasO1p2pxsbhOZEl9QTCsOtdICP6g1Ygzd4u8zom37KDHaypUvTmw5k7ob/i0ei8
-	 yDsyTMwkFfDCfi+BH6MLW2M/c/Z6WAvk08s+ErC1axsWlTBHUv5o0IjjmE9TrIhm+d
-	 BPBgmWfgO2ZKQ==
-Subject: Re: [PATCH net-next 7/7] bnge: Process async events while
- administratively down
-From: netdev-bot+sashiko@kernel.org
-To: bhargava.marreddy@broadcom.com
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- michael.chan@broadcom.com, pavan.chebbi@broadcom.com,
- vsrama-krishna.nemani@broadcom.com, vikas.gupta@broadcom.com,
- rajashekar.hudumula@broadcom.com, dharmender.garg@broadcom.com
-Date: Fri, 04 Sep 2026 10:18:53 +0000
-Message-ID: <178851713320.4131868.3669657834636275060@kernel.org>
-In-Reply-To: <20260901191728.643212-8-bhargava.marreddy@broadcom.com>
-References: <20260901191728.643212-8-bhargava.marreddy@broadcom.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20260515; t=1788517322;
+	bh=oG2Mwepo6HLYoctiN80CCoKCdLGynO4Z+fuELH+22yY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=lNwSA7Dmcia+2TGdAqlh4p1GG9/WLwayfT8CdfOKZKOwTnTvPZqaxkL/lRnbSAOuY
+	 xU1HLQP9RHnm9+b5Ern0pVO0mqUOJxh+4ELJHN+uZz/00U7ldde6KN45hXp6tadzUl
+	 rpbaGkJMRpqAd2bmkn+aDFsnruUa51sKxq/EUfEPItTtJ1xEvGkRzsEP1ccJ6UD4uN
+	 0/SEJluzUIPRtAx1hO1cgI/2gtTuJiIsPr+PyVxlQSYD5bRoi4BG2U6WTZ1Wf1XeCC
+	 zD7DxSfL+KFgo7rd50SnA9hoIyc5hOFP5VPlsjxfd2qGwWY+KSOSV0fjS72q4qsF9h
+	 jLJ8TM/ZV70eg==
+Message-ID: <2946842d-09bb-454d-9eae-4c343c3bb0d8@kernel.org>
+Date: Fri, 4 Sep 2026 12:21:50 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH net v2] net/ipv6: don't route packets with unknown source
+ address
+Content-Language: fr
+To: =?UTF-8?B?w43DsWlnbyBIdWd1ZXQ=?= <ihuguet@riseup.net>
+Cc: Jakub Kicinski <kuba@kernel.org>, David Ahern <dsahern@kernel.org>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Paolo Abeni <pabeni@redhat.com>, Neal Cardwell <ncardwell@google.com>,
+ Ido Schimmel <idosch@nvidia.com>, Pablo Neira Ayuso <pablo@netfilter.org>,
+ Florian Westphal <fw@strlen.de>,
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>, dcaratti@redhat.com,
+ ihuguet@redhat.com, Simon Horman <horms@kernel.org>,
+ Kuniyuki Iwashima <kuniyu@google.com>, Phil Sutter <phil@nwl.cc>,
+ Daniel Borkmann <daniel@iogearbox.net>, Junseo Lim <zirajs7@gmail.com>,
+ Martin KaFai Lau <martin.lau@kernel.org>,
+ Xuanqiang Luo <luoxuanqiang@kylinos.cn>,
+ Fernando Fernandez Mancera <fmancera@suse.de>,
+ Leon Hwang <leon.hwang@linux.dev>, Willem de Bruijn <willemb@google.com>,
+ Kees Cook <kees@kernel.org>, Jeff Layton <jlayton@kernel.org>,
+ Christian Brauner <brauner@kernel.org>, Qi Tang <tpluszz77@gmail.com>,
+ Joe Damato <joe@dama.to>, Breno Leitao <leitao@debian.org>,
+ Li RongQing <lirongqing@baidu.com>, "open list:VRF"
+ <netdev@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>,
+ "open list:NETFILTER" <netfilter-devel@vger.kernel.org>,
+ "open list:NETFILTER" <coreteam@netfilter.org>,
+ "open list:BPF [MISC] :Keyword:(?:b|_)bpf(?:b|_)" <bpf@vger.kernel.org>
+References: <20260903121057.80006-1-ihuguet@riseup.net>
+ <20260903153848.20b90f77@kernel.org>
+From: Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <20260903153848.20b90f77@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 5 potential
-issue(s) to consider:
+Hi Íñigo,
 
-Critical: 0 · High: 2 · Medium: 3 (1) · Low: 0
+On 04/09/2026 00:38, Jakub Kicinski wrote:
+> On Thu,  3 Sep 2026 14:10:40 +0200 Íñigo Huguet wrote:
+>> Don't allow routing packets with a source address that is not configured
+>> in the host. Allow it only in certain cases like when using a
+>> transparent socket, by setting the ANYSRC flag in flowi_flags.
+> 
+> breaks a bunch of selftests, too, FWIW
+> Please make sure to mend those if you want to forge ahead as a non-fix
+> 
+>   - selftests/net/xfrm_state.sh:
+>       "IPv6 unreachable from IPsec gateway s2" [FAIL]
+>       "IPv6 MTU exceeded from IPsec gateway s2" [FAIL]
+>     (the equivalent IPv4 cases still pass)
+> 
+>   - selftests/net/vrf_route_leaking.sh:
+>       "VRF ICMP local IPv6" [FAIL]
+>       "VRF tcp local connection IPv6" [FAIL]
+>       "VRF udp local connection IPv6" [FAIL]
+> 
+>   - selftests/net/srv6_encap_lookup_l3vpn_test.sh:
+>       "IPv6 connectivity: rt-1 -> rt-2 (tenant 100/200)" [FAIL]
+>       "IPv6 connectivity: rt-2 -> rt-1 (tenant 100/200)" [FAIL]
+>     (again, the IPv4 variants of the same tests pass)
+> ...
 
-- [High] bnge_sp_task(): replacing the early return with `goto async_evt`
-  lets the entire link/PHY event block execute while BNGE_STATE_OPEN is…
-- [High] Processing PHY events while administratively down inadvertently
-  turns the hardware link back on.
-- [Medium] The new `if (!netif_running(bd->netdev)) return;` in
-  bnge_report_link() (bnge_link.c:405) silently drops a report that its…
-- [Medium] bnge_close() ends with the plain, non-atomic store
-  `bn->sp_event = 0;` (bnge_netdev.c:3307) while NQ0's NAPI and IRQ are…
-- [Medium] A speed/PHY-configuration async event processed while the
-  interface is closed silently overwrites the link and pause settings…
+Just in case, do not hesitate to look at the new countainers that might
+help you running those tests locally:
 
-Pre-existing issues:
-- [Medium] bnge_free_nq0() (bnge_netdev.c:3523-3583) sends HWRM_RING_FREE
-  for NQ0 and invalidates ring->fw_ring_id before it disables the NAPI…
+ https://lore.kernel.org/9c66a2b4-2787-4421-bc9b-627de2f708bd@kernel.org
 
---
+ https://github.com/linux-netdev/nipa/wiki/Running-Netdev-CI-tests-locally
 
-bnge: Process async events while administratively down
-
-bnge_sp_task() now jumps over the periodic-stats block with a goto instead
-of returning early when BNGE_STATE_OPEN is clear, so async link/PHY events
-are handled while the interface is down.  bnge_report_link() gains an early
-return when the netdev is not running.
-
-A few questions about the new behaviour below.
-
-> diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_link.c b/drivers/net/ethernet/broadcom/bnge/bnge_link.c
-> index 3b0dfcf273762..31e2ede2e537a 100644
-> --- a/drivers/net/ethernet/broadcom/bnge/bnge_link.c
-> +++ b/drivers/net/ethernet/broadcom/bnge/bnge_link.c
-> @@ -402,6 +402,9 @@ static char *bnge_report_fec(struct bnge_link_info *link_info)
->  
->  void bnge_report_link(struct bnge_dev *bd)
->  {
-> +	if (!netif_running(bd->netdev))
-> +		return;
-> +
-
-[Severity: Medium]
-Can this early return make a link transition disappear entirely instead of
-just deferring the message?
-
-The only caller is edge-triggered.  bnge_update_link() commits the new
-state and reports only when it changed:
-
-	if (chng_link_state) {
-		if (link_info->phy_link_status == BNGE_LINK_LINK)
-			link_info->link_state = BNGE_LINK_STATE_UP;
-		else
-			link_info->link_state = BNGE_LINK_STATE_DOWN;
-		if (link_state != link_info->link_state)
-			bnge_report_link(bd);
-
-bnge_hwrm_shutdown_link() relies on that, leaving a sentinel behind on
-close:
-
-	if (!rc) {
-		/* Device is not obliged to link down in certain scenarios,
-		 * even when forced. Setting the state unknown is consistent
-		 * with driver startup and will force link state to be
-		 * reported during subsequent open based on PORT_PHY_QCFG.
-		 */
-		bd->link_info.link_state = BNGE_LINK_STATE_UNKNOWN;
-	}
-
-With this patch, an async link event handled while down calls
-bnge_update_link(bn, true), which replaces BNGE_LINK_STATE_UNKNOWN with
-UP/DOWN and consumes the transition, while bnge_report_link() returns
-immediately.  At the next open, bnge_open_core() ->
-bnge_update_phy_setting() -> bnge_update_link() reads the same value, sees
-no change, and never calls bnge_report_link().
-
-Does that permanently lose the "NIC Link is Up, N Mbps ..." / "NIC Link is
-Down" message and the FEC line for that transition, so whether link state
-gets reported at all depends on whether an async event happened to arrive
-while the port was down?  Carrier itself still gets fixed up by
-bnge_tx_enable() via "if (BNGE_LINK_IS_UP(bn->bd)) netif_carrier_on()",
-which means carrier and the log output are now driven by two different
-paths.
-
->  	if (BNGE_LINK_IS_UP(bd)) {
->  		const char *signal = "";
->  		const char *flow_ctrl;
-> diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c b/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c
-> index d11c404acd4e2..49e27cbc63946 100644
-> --- a/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c
-> +++ b/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c
-> @@ -394,10 +394,8 @@ static void bnge_sp_task(struct work_struct *work)
->  	struct bnge_dev *bd = bn->bd;
->  
->  	netdev_lock(bn->netdev);
-> -	if (!test_bit(BNGE_STATE_OPEN, &bd->state)) {
-> -		netdev_unlock(bn->netdev);
-> -		return;
-> -	}
-> +	if (!test_bit(BNGE_STATE_OPEN, &bd->state))
-> +		goto async_evt;
-
-[Severity: High]
-Is the block below the async_evt label read-only with respect to the PHY?
-
-For a speed-change event, bnge_sp_task() first calls
-bnge_hwrm_phy_qcaps(bd), which refreshes the supported-speed mask:
-
-	if (resp->supported_speeds2_auto_mode)
-		link_info->support_auto_speeds2 =
-			le16_to_cpu(resp->supported_speeds2_auto_mode);
-
-and then calls bnge_update_link(bn, true), whose tail is:
-
-	support_changed = bnge_support_speed_dropped(bn);
-	if (support_changed && (bn->eth_link_info.autoneg & BNGE_AUTONEG_SPEED))
-		rc = bnge_hwrm_set_link_setting(bn, true);
-
-bnge_support_speed_dropped() returns true whenever the advertised mask
-contains speeds that are no longer in support_auto_speeds2, which is what
-happens when a transceiver is swapped for one supporting fewer speeds while
-the port is administratively down.
-
-bnge_hwrm_set_link_setting() -> bnge_hwrm_set_link_common() then builds an
-HWRM_PORT_PHY_CFG with:
-
-		req->flags |= cpu_to_le32(BNGE_PHY_FLAGS_RESTART_AUTO);
-	...
-	/* tell FW that the setting takes effect immediately */
-	req->flags |= cpu_to_le32(PORT_PHY_CFG_REQ_FLAGS_RESET_PHY);
-
-Does this undo the PORT_PHY_CFG_REQ_FLAGS_FORCE_LINK_DWN that bnge_close()
-issued through bnge_hwrm_shutdown_link()?  Nothing re-asserts the force-down
-afterwards, and since bnge_report_link() now returns early while not
-running, the carrier stays off, so the link partner would see an active link
-on a closed interface.
-
-BNGE_PHY_CFG_ABLE(bd) is link_info.phy_enabled, a firmware capability set in
-bnge_hwrm_phy_qcaps() and not cleared on close, so it does not block this.
-Every other PHY-programming path is gated on netif_running() -
-bnge_set_link_ksettings() and bnge_set_pauseparam() both do
-"if (netif_running(dev))" before touching hardware.  Would it be better to
-narrow the BNGE_STATE_OPEN gate to the read-only link-info refresh rather
-than remove it for the whole block?
-
-[Severity: Medium]
-Related question about the same fall-through: further down, sp_task ends
-with
-
-	if (speed_chng || cfg_chng)
-		bnge_init_ethtool_link_settings(bn);
-
-bnge_init_ethtool_link_settings() rewrites elink_info->autoneg,
-->advertising, ->req_duplex and ->req_flow_ctrl from the current hardware
-auto_mode / duplex_setting / pause settings.
-
-While the interface is down, bn->eth_link_info is the pending userspace
-request: bnge_set_link_ksettings() and bnge_set_pauseparam() store into it
-and only program hardware "if (netif_running(dev))", and
-bnge_update_phy_setting() applies it at the next open.
-
-If an async speed/config event arrives after "ethtool -s" or "ethtool -A"
-was issued on a down interface, does this overwrite the queued request with
-the hardware-derived values, so the next open sees nothing to change and the
-user's setting is silently dropped?
-
-[Severity: Medium]
-One more on whether the events the fall-through wants actually survive
-close.  bnge_close() ends with a plain store:
-
-	bnge_close_core(bn);
-	bnge_hwrm_shutdown_link(bn->bd);
-	bnge_hwrm_if_change(bn->bd, false);
-	bn->sp_event = 0;
-
-At that point NQ0 is live again: bnge_close_core() -> bnge_free_core() ends
-with bnge_resume_nq0(), which re-enables NQ0 NAPI and re-arms the doorbell,
-and bnge_free_irq() skips the NQ0 vector.  bnge_hwrm_shutdown_link() forces
-the port down, which itself generates a LINK_STATUS_CHANGE async event, and
-the NAPI side records it with atomic bitops:
-
-static void bnge_queue_sp_work(struct bnge_net *bn, unsigned int event)
-{
-	set_bit(event, &bn->sp_event);
-	__bnge_queue_sp_work(bn);
-}
-
-Two questions here.  Is the plain word store racing with set_bit() from
-softirq context on the same word, and can it clobber a bit set
-concurrently?
-
-And since bnge is ops-locked and bnge_sp_task() takes netdev_lock, the
-queued worker cannot run until bnge_close() returns, i.e. after the wipe.
-Does that mean the event the new async_evt path is meant to handle is
-discarded before it can be observed, with nothing re-polling while down
-because the periodic timer is stopped?  Would clearing only the bits that
-are meaningless while down, using atomic bitops, be more consistent with
-the goal of this patch?
-
->  
->  	if (test_and_clear_bit(BNGE_PERIODIC_STATS_SP_EVENT, &bn->sp_event)) {
->  		bnge_hwrm_port_qstats(bd, 0);
-> @@ -405,6 +403,7 @@ static void bnge_sp_task(struct work_struct *work)
->  		bnge_accumulate_all_stats(bd);
->  	}
->  
-> +async_evt:
->  	if (test_and_clear_bit(BNGE_UPDATE_PHY_SP_EVENT, &bn->sp_event)) {
->  		int rc;
->  
-
-[Severity: High]
-The first block that the new label falls into is the PHY retry, and
-that one does not just read state - it programs the PHY.
-bnge_sp_task() calls bnge_update_phy_setting(bn), whose tail is:
-
-	if (!BNGE_LINK_IS_UP(bd))
-		update_link = true;
-
-	if (update_link)
-		rc = bnge_hwrm_set_link_setting(bn, update_pause);
-
-So the "link is currently down" case is precisely the case that sends
-an HWRM_PORT_PHY_CFG to bring the link back up.  Running that while
-BNGE_STATE_OPEN is clear looks like it undoes the
-PORT_PHY_CFG_REQ_FLAGS_FORCE_LINK_DWN that bnge_close() issued via
-bnge_hwrm_shutdown_link(), and nothing on this path re-asserts it
-afterwards.  Combined with the other half of this patch -
-bnge_report_link() returning early when !netif_running() - the carrier
-stays off while the port is actually being brought up, so the link
-partner sees an active link on an administratively down interface and
-the driver logs nothing about it.
-
-How does the submitter expect BNGE_UPDATE_PHY_SP_EVENT to be reachable
-while down?  bd->link_info.phy_retry is only cleared on success here,
-and BNGE_PHY_CFG_ABLE(bd)/link_info.phy_enabled is a firmware
-capability that close does not clear, so a retry queued before the
-state bit went away (for example a partially failed open, or a reset
-that clears BNGE_STATE_OPEN without wiping bn->sp_event) would be
-serviced here.  If that is possible at all, this block needs to stay
-gated: every other PHY-programming path in the driver checks
-netif_running() first (bnge_set_link_ksettings(),
-bnge_set_pauseparam()).  Would it be cleaner to keep the
-BNGE_STATE_OPEN check for the PHY retry and only let the read-only
-link-info refresh run while down?
-
-[Severity: Medium]
-This isn't a bug introduced by this patch, but while looking at the NQ0
-persistence machinery this patch builds on: in bnge_free_nq0(), the
-firmware ring is freed before the poller is disabled.
-
-	bnge_db_nq(bn, &nqr->nq_db, nqr->nq_raw_cons);
-	synchronize_irq(irq->vector);
-
-	hwrm_ring_free_send_msg(bn, ring,
-				RING_FREE_REQ_RING_TYPE_NQ,
-				INVALID_HW_RING_ID);
-	ring->fw_ring_id = INVALID_HW_RING_ID;
-
-and only later, inside the irq->requested block:
-
-		free_irq(irq->vector, bnapi);
-		irq->requested = 0;
-
-		netdev_lock(bn->netdev);
-		napi_disable_locked(&bnapi->napi);
-
-synchronize_irq() waits for an in-flight handler but not for a NAPI
-instance that handler already scheduled, so can bnge_napi_poll() still
-write BNGE_DB_NQ()/BNGE_DB_NQ_ARM() using the doorbell key of a ring
-firmware has already released?  The ring memory itself is freed after
-napi_disable_locked() and synchronize_net(), so this looks limited to
-doorbell writes against a freed firmware ring id on the removal and probe
-error paths.  Would disabling and draining NAPI before sending
-HWRM_RING_FREE be the right ordering?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260901191728.643212-1-bhargava.marreddy%40broadcom.com
+Cheers,
+Matt
