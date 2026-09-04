@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5B1C51C342;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5A0A3EAC61;
 	Fri,  4 Sep 2026 22:25:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788560713; cv=none; b=H9q5ESwuSpzb4FZKKOKylpDLU0XZbi5YssBE5MqLwffIKX6+6FhHPBepomUlyg0JYSp1r8P3zDWHwjw/HWlpEWJcLiMfWok67ESkG+7mTpDk+RbyQOfwbcTYnCvu9nsVapYD7ddMG9m812LPs+oSJayLSr+hTpt67XljbLtzwpA=
+	t=1788560716; cv=none; b=fhBoJ1imW7RymRcGWBppgqBXGC/HwOpc469+PInwBD+hqPK79LeaLqtGPs+ZslWrROYAM92QcgpN9d5gWkSbVoaixdyyDPVWRO93Y/x33WdynhaL/WPqGkpeHc5PvewmNm+Q9hspuJPcVMcNU91aBSAiuXYRo32LW94DoH0Lmas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788560713; c=relaxed/simple;
-	bh=n51WMUswqS1dvVnQyqGZVkmWBCqZz4y47yiVAeH2gsI=;
+	s=arc-20240116; t=1788560716; c=relaxed/simple;
+	bh=x3gaPD3IjylyNSX8QKDlEHLGeWTbwlWsTi8HOEUA+GU=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=tytbANaHfju/FVAFIqASMUtoPR1TPu6f8x9t5ztyfQRKrOcqBzntqP7eyN3P2kfNLKMDaZgynA6NnU4ZdJWaMCGyB+Dt+wyQ6mHLGMtB4GIau+FV0Ri6cDfVoRkZc9HLfr1tqbrP9YtrcccM+2z4gX2lSWVmJ2/NsWe6T+VHNBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VX98fD1k; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=LQgO1RuIW2xEXKOgVZvmnfOeiz3qZpi7uj3maixLvMz3zrW7DjfY8KG5PZaLkM0h/9aLo10KG01q/5qGXLhxGpE3X0sEMYEW4JUNjAI4cbN8tMUj62x04KNSZmOudmJ5p4H3bAdqgKkTsvcS42AoI2TCnerbqGqV/JwwcNb+DRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lzqjwGe0; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VX98fD1k"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64D641F00A3D;
-	Fri,  4 Sep 2026 22:25:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lzqjwGe0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9868A1F00A3E;
+	Fri,  4 Sep 2026 22:25:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788560709;
-	bh=Yco6b9Rwzq2wZPMB8ZaAYLqNPo6ejyfR6tQ2L8KXp0c=;
+	s=k20260515; t=1788560710;
+	bh=oOzMiPOnMDaVVhnATr2bEe1DD3Ex7YWNhDPtG41yTxo=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=VX98fD1kfUz1cckp0snEJk2BrC3sWjV+FUy+2VgqPhNawfJep6bnjWR9IDQironhX
-	 RNo/cxAyNVGM4XM7U2USPKRZkj2zBXqv8QCrGwEq6EeZH5i/+Qfr6ljLIf53E6UjEn
-	 W+mS3vnnowLZmeiiz5vXuWJf6qUjf8uqgGTvNYPNHdL8F1AVkFr/y3vzXyRRpsar5L
-	 gU+s1MMRnprp851wpKPC2i15ywisy0E32Scp+OeocZ+CJzceWFg8g2oypHpCtQ4F+s
-	 QujhgMnApRo/z4zAP3Wu1RuuuVYC84QL5NTzNAFWw1BVBsWEtK4KUBSGDrgXJ1IU07
-	 4eSgR7dZ9A2tA==
-Subject: Re: [PATCH net v3 1/2] net: dsa: let drivers offload 8021q uppers on
+	b=lzqjwGe0FL+OUpUxwKLKRn07UZOXT1r9gF7r+94TNr1PrCxlNOm5ENsv/wHSUdcQj
+	 n57tnq/0D1sTpOW/ESfb9lkWAtTVpPSIY9Sv0bGJ6tjYtWFVp4b2ICU0lKqDhvWyTH
+	 hDF0ygnyEIr49A3o1BeCqkQYCnsOuf8dU+RGCEg3UNEFUy23OkJPiLFL+2MPGpROqk
+	 HtNaUcsBOEzcDoYG7GAySBJiCRx55Ql7RlEPKPttRfgThfsW8cqH76aEQ30zHwHnxU
+	 puJ8JJRTrwFMArvpM+kcMt3Gqtqs9bCcu+MnAGXT9PQPrXPOWLzODDrHYGeiubIO7U
+	 n7HxN3AETf6hA==
+Subject: Re: [PATCH net v3 2/2] net: dsa: b53: offload 8021q uppers on
  standalone ports
 From: netdev-bot+sashiko@kernel.org
 To: strst.gs@gmail.com
@@ -34,10 +34,10 @@ Cc: florian.fainelli@broadcom.com, jonas.gorski@gmail.com, andrew@lunn.ch,
  olteanv@gmail.com, davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
  pabeni@redhat.com, vladimir.oltean@nxp.com, horms@kernel.org,
  netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Fri, 04 Sep 2026 22:25:07 +0000
-Message-ID: <178856070799.219967.1932535721927933166@kernel.org>
-In-Reply-To: <20260831085217.391-2-strst.gs@gmail.com>
-References: <20260831085217.391-2-strst.gs@gmail.com>
+Date: Fri, 04 Sep 2026 22:25:09 +0000
+Message-ID: <178856070920.219967.188999912636170238@kernel.org>
+In-Reply-To: <20260831085217.391-3-strst.gs@gmail.com>
+References: <20260831085217.391-3-strst.gs@gmail.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -51,249 +51,354 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 5 potential
 issue(s) to consider:
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 3
+Critical: 0 · High: 0 · Medium: 5 · Low: 0
 
-- [Medium] Making NETIF_F_HW_VLAN_CTAG_FILTER permanent
-  (net/dsa/user.c:2721-2723) and skipping…
-- [Medium] The patch introduces an invariant -
-  NETIF_F_HW_VLAN_CTAG_FILTER is a permanent property of user ports on a…
-- [Low] DISCARDED (baseline false): claim that the new
-  ds->needs_standalone_vlan_offload opt-in is dead code and that b53…
-- [Low] Comment vs implementation mismatch about the scope of the new
-  flag.
-- [Low] Documentation/networking/dsa/dsa.rst lists the optional struct
-  dsa_switch flags a driver may set ('their behavior when set is…
+- [Medium] b53_vlan_hw_entry() (drivers/net/dsa/b53/b53_common.c:901)
+  classifies every non-CPU member port whose dp->bridge is NULL as a…
+- [Medium] b53_standalone_vlan_resync() at the end of b53_br_leave()
+  (drivers/net/dsa/b53/b53_common.c:2458) derives the leaving port's…
+- [Medium] The new opt-in `dev->ds->needs_standalone_vlan_offload =
+  !is5325(dev) && !is5365(dev);` (drivers/net/dsa/b53/b53_common.c:3256)…
+- [Medium] When a port that already has a working 8021q upper joins a
+  VLAN-unaware offloaded bridge, b53_br_join() ->…
+- [Medium] b53 records both a bridge VLAN and an 8021q upper VLAN for the
+  same port/VID in the single bit dev->vlans[vid].members & BIT(port),…
 
 --
 
-net: dsa: let drivers offload 8021q uppers on standalone ports
+net: dsa: b53: offload 8021q uppers on standalone ports
 
-Adds ds->needs_standalone_vlan_offload so a driver can have the VIDs of
-8021q uppers delivered to .port_vlan_add on standalone ports without
-forcing the vlan_filtering state on. The feature bit
-NETIF_F_HW_VLAN_CTAG_FILTER becomes permanent for user ports of such a
-switch, and dsa_port_vlan_filtering() therefore skips
-dsa_user_manage_vlan_filtering(), while dsa_port_change_conduit() keeps
-its explicit teardown and restore.
+The patch takes the new needs_standalone_vlan_offload opt-in in b53 and
+programs VLAN table entries for VIDs that carry a standalone port even while
+dev->vlan_filtering is false, masking the entry down to the standalone
+members plus the CPU port.  Bridge join/leave and b53_configure_vlan() now
+rewrite those entries, and the opt-in is skipped for BCM5325/BCM5365.
 
-A few questions below.
+No Link: tags present in the commit header.
 
-> diff --git a/include/net/dsa.h b/include/net/dsa.h
-> index 7507d632e7c6..67a01fc5f81e 100644
-> --- a/include/net/dsa.h
-> +++ b/include/net/dsa.h
-> @@ -405,6 +405,9 @@ struct dsa_switch {
->  	/* Keep VLAN filtering enabled on ports not offloading any upper */
->  	u32			needs_standalone_vlan_filtering:1;
+> diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+> index 0880310c9ce3..b57c0bdacb27 100644
+> --- a/drivers/net/dsa/b53/b53_common.c
+> +++ b/drivers/net/dsa/b53/b53_common.c
+> @@ -898,10 +898,52 @@ static bool b53_vlan_port_may_join_untagged(struct dsa_switch *ds, int port)
+>  	return dp->bridge == NULL;
+>  }
 >  
-> +	/* Offload 8021q uppers of standalone ports even when not filtering */
-> +	u32			needs_standalone_vlan_offload:1;
+> +static bool b53_vlan_hw_entry(struct dsa_switch *ds, const struct b53_vlan *vl,
+> +			      struct b53_vlan *hw)
+> +{
+> +	struct b53_device *dev = ds->priv;
+> +	bool standalone = false;
+> +	struct dsa_port *dp;
+> +	unsigned int port;
 > +
-
-[Severity: Low]
-Documentation/networking/dsa/dsa.rst has a list of the optional
-dsa_switch flags a driver may set, introduced by "In addition, the
-following flags in the dsa_switch structure may optionally be configured
-to obtain driver-specific behavior from the DSA core."
-
-That list currently names ds->vlan_filtering_is_global,
-ds->needs_standalone_vlan_filtering, ds->configure_vlan_while_not_filtering,
-ds->untag_bridge_pvid, ds->assisted_learning_on_cpu_port,
-ds->mtu_enforcement_ingress and ds->fdb_isolation.
-
-Should ds->needs_standalone_vlan_offload be added there too, given the
-changelog spends several paragraphs on the choice between it and
-ds->needs_standalone_vlan_filtering?
-
->  	/* Pass .port_vlan_add and .port_vlan_del to drivers even for bridges
->  	 * that have vlan_filtering=0. All drivers should ideally set this (and
->  	 * then the option would get removed), but it is unknown whether this
-> diff --git a/net/dsa/port.c b/net/dsa/port.c
-> index 1f5536c0dffc..e61abc7c74f7 100644
-> --- a/net/dsa/port.c
-> +++ b/net/dsa/port.c
-> @@ -831,6 +831,9 @@ int dsa_port_vlan_filtering(struct dsa_port *dp, bool vlan_filtering,
->  			if (!user)
->  				continue;
->  
-> +			if (ds->needs_standalone_vlan_offload)
+> +	*hw = *vl;
+> +
+> +	if (dev->vlan_filtering)
+> +		return true;
+> +
+> +	hw->members = 0;
+> +	hw->untag = 0;
+> +
+> +	b53_for_each_port(dev, port) {
+> +		if (!(vl->members & BIT(port)))
+> +			continue;
+> +
+> +		dp = dsa_to_port(ds, port);
+> +
+> +		if (!dsa_port_is_cpu(dp)) {
+> +			if (dp->bridge)
 > +				continue;
 > +
->  			err = dsa_user_manage_vlan_filtering(user,
->  							     vlan_filtering);
->  			if (err)
-> @@ -839,10 +842,12 @@ int dsa_port_vlan_filtering(struct dsa_port *dp, bool vlan_filtering,
->  	} else {
->  		dp->vlan_filtering = vlan_filtering;
->  
-> -		err = dsa_user_manage_vlan_filtering(dp->user,
-> -						     vlan_filtering);
-> -		if (err)
-> -			goto restore;
-> +		if (!ds->needs_standalone_vlan_offload) {
-> +			err = dsa_user_manage_vlan_filtering(dp->user,
-> +							     vlan_filtering);
-> +			if (err)
-> +				goto restore;
+> +			standalone = true;
 > +		}
->  	}
 
 [Severity: Medium]
-With the feature bit permanent and this skip in place, the 8021q upper
-VIDs of such a switch stay offloaded while the port is enslaved to a
-VLAN-unaware bridge.  In exactly that state, are both duplicate-VID
-guards bypassed?
+Should a DSA link port be able to set standalone here?  A port of type
+DSA_PORT_TYPE_DSA never has dp->bridge set, so it passes the
+!dsa_port_is_cpu(dp) test and sets standalone = true.
 
-dsa_user_vlan_add() only checks for colliding uppers when the bridge is
-VLAN-aware:
+The DSA core does issue VLAN objects for those ports, so their bits do end
+up in dev->vlans[vid].members:
 
-	if (br_vlan_enabled(dsa_port_bridge_dev_get(dp))) {
-		rcu_read_lock();
-		err = dsa_user_vlan_check_for_8021q_uppers(dev, vlan);
-		rcu_read_unlock();
+net/dsa/switch.c:
+    /* Port VLANs match on the targeted port and on all DSA ports */
+    static bool dsa_port_vlan_match(struct dsa_port *dp,
+                                    struct dsa_notifier_vlan_info *info)
+    {
+            return dsa_port_is_dsa(dp) || dp == info->dp;
+    }
 
-and the symmetric check in dsa_user_check_8021q_upper() bails out early:
+On a cascaded b53 tree, does that mean b53_vlan_hw_entry() returns true for
+a VID whose only user-port members are bridge ports, and b53_vlan_add() /
+b53_vlan_del() / b53_configure_vlan() then write an entry containing only
+the DSA links and the CPU port?  Since b53 keeps VC0_VLAN_EN|VC0_VID_CHK_EN
+set at all times, the programmed member mask governs egress for that VID,
+so the bridged ports would be removed from that VID's forwarding domain
+while filtering is off.
 
-	if (!br || !br_vlan_enabled(br))
-		return NOTIFY_DONE;
+There is also no corrective path afterwards: b53_standalone_vlan_resync()
+is only reached from b53_br_join()/b53_br_leave(), which a DSA link never
+traverses, so the entry stays as written.
 
-Meanwhile the bridge VLAN is still committed to hardware, because
-ds->configure_vlan_while_not_filtering defaults to true so
-dsa_port_skip_vlan_configuration() returns false.
+Would including DSA link ports as members without letting them set
+standalone match the intent stated in the commit message ("Only the
+standalone members and the CPU port are written to such an entry")?
 
-dsa_port_vlan_add()/dsa_port_vlan_del() do no refcounting for user
-ports, so can this sequence revoke a VID that the upper still owns?
+> +
+> +		hw->members |= BIT(port);
+> +		hw->untag |= vl->untag & BIT(port);
+> +	}
+> +
+> +	if (!standalone) {
+> +		hw->members = 0;
+> +		hw->untag = 0;
+> +	}
+> +
+> +	return standalone;
+> +}
+> +
 
-	ip link add link swp0 name swp0.100 type vlan id 100
-	bridge vlan add dev swp0 vid 100
-	bridge vlan del dev swp0 vid 100
+[ ... ]
 
-That is two .port_vlan_add calls and one .port_vlan_del.  On b53 at the
-end of the series, the delete clears dev->vlans[100].members & BIT(port),
-and b53_standalone_vlan_resync() only iterates VIDs with
+> @@ -1772,7 +1819,9 @@ int b53_vlan_del(struct dsa_switch *ds, int port,
+>  {
+>  	struct b53_device *dev = ds->priv;
+>  	bool untagged = vlan->flags & BRIDGE_VLAN_INFO_UNTAGGED;
+> +	struct b53_vlan hw;
+>  	struct b53_vlan *vl;
+> +	bool needs_hw;
+>  	u16 pvid;
+>  
+>  	if (vlan->vid == 0)
+> @@ -1782,6 +1831,8 @@ int b53_vlan_del(struct dsa_switch *ds, int port,
+>  
+>  	vl = &dev->vlans[vlan->vid];
+>  
+> +	needs_hw = b53_vlan_hw_entry(ds, vl, &hw);
+> +
+>  	vl->members &= ~BIT(port);
 
-	if (!(vl->members & BIT(port)))
-		continue;
+[Severity: Medium]
+Can a bridge VLAN deletion here destroy the record of an 8021q upper on the
+same port and VID?  dev->vlans[vid].members has one bit per port with no
+per-owner accounting, and the core does not refcount VLANs on user ports:
 
-so when the port later leaves the bridge, VID 100 is not restored and
-the always-on VID lookup keeps dropping the upper's tagged traffic until
-the upper is destroyed and re-created.  Should the collision guards or
-the VID accounting be extended for the new flag?
+net/dsa/switch.c:dsa_port_do_vlan_add() {
+        /* No need to bother with refcounting for user ports. */
+        if (!(dsa_port_is_cpu(dp) || dsa_port_is_dsa(dp))) {
+                err = ds->ops->port_vlan_add(ds, port, vlan, extack);
 
+The colliding pair is only rejected while bridge VLAN filtering is on:
+
+net/dsa/user.c:dsa_user_vlan_add() {
+        if (br_vlan_enabled(dsa_port_bridge_dev_get(dp))) {
+                rcu_read_lock();
+                err = dsa_user_vlan_check_for_8021q_uppers(dev, vlan);
+
+so with vlan_filtering 0 the sequence
+
+  ip link add link ethX name ethX.100 type vlan id 100
+  ip link set dev ethX master br0        (br0 with vlan_filtering 0)
+  bridge vlan add dev ethX vid 100
+  bridge vlan del dev ethX vid 100
+
+leaves vl->members without BIT(port) although ethX.100 still exists.  After
+that, does anything rewrite the entry again?  b53_standalone_vlan_resync()
+skips the VID because of
+
+        if (!(vl->members & BIT(port)))
+                continue;
+
+and b53_configure_vlan()'s restore loop keys off v->members as well, so
+tagged reception on ethX.100 would stay dead until the upper is re-created.
+
+>  
+>  	if (pvid == vlan->vid)
+> @@ -1791,14 +1842,18 @@ int b53_vlan_del(struct dsa_switch *ds, int port,
+>  	if (untagged && !b53_vlan_port_needs_forced_tagged(ds, port))
+>  		vl->untag &= ~(BIT(port));
+>  
+> -	if (!dev->vlan_filtering)
+> +	if (!needs_hw)
+>  		return 0;
+>  
+> -	b53_set_vlan_entry(dev, vlan->vid, vl);
+> +	b53_vlan_hw_entry(ds, vl, &hw);
+> +	b53_set_vlan_entry(dev, vlan->vid, &hw);
+>  	b53_fast_age_vlan(dev, vlan->vid);
+>  
+> -	b53_write16(dev, B53_VLAN_PAGE, B53_VLAN_PORT_DEF_TAG(port), pvid);
+> -	b53_fast_age_vlan(dev, pvid);
+> +	if (dev->vlan_filtering) {
+> +		b53_write16(dev, B53_VLAN_PAGE, B53_VLAN_PORT_DEF_TAG(port),
+> +			    pvid);
+> +		b53_fast_age_vlan(dev, pvid);
+> +	}
 >  
 >  	return 0;
-> @@ -1445,10 +1450,13 @@ int dsa_port_change_conduit(struct dsa_port *dp, struct net_device *conduit,
+>  }
+
+[ ... ]
+
+> @@ -2261,6 +2316,28 @@ int b53_mdb_del(struct dsa_switch *ds, int port,
+>  }
+>  EXPORT_SYMBOL(b53_mdb_del);
 >  
->  	/* The port might still be VLAN filtering even if it's no longer
->  	 * under a bridge, either due to ds->vlan_filtering_is_global or
-> -	 * ds->needs_standalone_vlan_filtering. In turn this means VLANs
-> -	 * on the CPU port.
-> +	 * ds->needs_standalone_vlan_filtering, and every port of a
-> +	 * ds->needs_standalone_vlan_offload switch keeps its 8021q upper
-> +	 * VLANs whether bridged or not. In turn this means VLANs on the
-> +	 * CPU port.
->  	 */
-> -	vlan_filtering = dsa_port_is_vlan_filtering(dp);
-> +	vlan_filtering = dsa_port_is_vlan_filtering(dp) ||
-> +			 ds->needs_standalone_vlan_offload;
->  	if (vlan_filtering) {
->  		err = dsa_user_manage_vlan_filtering(dev, false);
->  		if (err) {
+> +static void b53_standalone_vlan_resync(struct dsa_switch *ds, int port)
+> +{
+> +	struct b53_device *dev = ds->priv;
+> +	struct b53_vlan hw;
+> +	struct b53_vlan *vl;
+> +	u16 vid;
+> +
+> +	if (dev->vlan_filtering)
+> +		return;
+> +
+> +	for (vid = b53_default_pvid(dev) + 1; vid < dev->num_vlans; vid++) {
+> +		vl = &dev->vlans[vid];
+> +
+> +		if (!(vl->members & BIT(port)))
+> +			continue;
+> +
+> +		b53_vlan_hw_entry(ds, vl, &hw);
+> +		b53_set_vlan_entry(dev, vid, &hw);
+> +		b53_fast_age_vlan(dev, vid);
+> +	}
+> +}
+> +
+>  int b53_br_join(struct dsa_switch *ds, int port, struct dsa_bridge bridge,
+>  		bool *tx_fwd_offload, struct netlink_ext_ack *extack)
+>  {
+> @@ -2324,6 +2401,8 @@ int b53_br_join(struct dsa_switch *ds, int port, struct dsa_bridge bridge,
+>  	b53_write16(dev, B53_PVLAN_PAGE, B53_PVLAN_PORT_MASK(port), pvlan);
+>  	dev->ports[port].vlan_ctl_mask = pvlan;
+>  
+> +	b53_standalone_vlan_resync(ds, port);
+> +
 
 [Severity: Medium]
-This patch establishes NETIF_F_HW_VLAN_CTAG_FILTER as a permanent
-property of user ports on such a switch, set once in
-dsa_user_setup_tagger().  But dsa_port_change_conduit() still tears the
-bit down and rebuilds it through dsa_user_manage_vlan_filtering(), and
-with the new condition it now does so for every port of such a switch.
+When a port that already has a working 8021q upper joins a VLAN-unaware
+bridge, this call recomputes that upper's VID with dp->bridge now set, so
+b53_vlan_hw_entry() hits
 
-Can the error paths leave that invariant broken for good?
+        if (dp->bridge)
+                continue;
 
-The teardown side of dsa_user_manage_vlan_filtering() returns on the
-first failure with no rollback of the VIDs it already removed:
+standalone stays false, and the entry is written back empty.  On bcm5301x,
+where a table miss is only forwarded toward the disabled IMP0 port, does
+that silently stop the upper from receiving tagged frames?
 
-	} else {
-		err = vlan_for_each(user, dsa_user_clear_vlan, user);
-		if (err)
-			return err;
+Nothing reports the loss either: b53_vlan_add() returns 0 when
+b53_vlan_hw_entry() finds no standalone member, so DSA continues to track
+the VID as offloaded.
 
-		user->features &= ~NETIF_F_HW_VLAN_CTAG_FILTER;
-	}
+Documentation/networking/switchdev.rst says:
 
-and dsa_port_change_conduit() then jumps to rewind_old_bridge, which
-only rejoins the bridge.
+    When there is a VLAN device (e.g: sw0p1.100) configured on top of a
+    switchdev network device which is a bridge port member, the behavior of
+    the software network stack must be preserved, or the configuration must
+    be refused if that is not possible.
 
-The restore side strips the bit on failure:
+and the DSA-side comment added by this series states:
 
-		err = vlan_for_each(user, dsa_user_restore_vlan, user);
-		if (err) {
-			vlan_for_each(user, dsa_user_clear_vlan, user);
-			user->features &= ~NETIF_F_HW_VLAN_CTAG_FILTER;
-			return err;
-		}
+    net/dsa/port.c:
+         * ds->needs_standalone_vlan_offload switch keeps its 8021q upper
+         * VLANs whether bridged or not.
 
-and the retry in the rewind_old_addrs path of dsa_port_change_conduit()
-only logs "failed to restore standalone VLANs".
+Should this case be refused with an extack instead of dropping the offload
+silently?  The commit message's argument that "bridge VLANs keep having no
+effect while filtering is off" covers bridge VLANs, but the VID here comes
+from an 8021q upper.
 
-Once the bit is lost, what re-arms it?  dsa_port_vlan_filtering() now
-skips dsa_user_manage_vlan_filtering() unconditionally for such a
-switch, dsa_port_assign_conduit() does not call
-dsa_user_setup_tagger(), and dsa_port_reset_vlan_filtering() does
-nothing when leaving a VLAN-unaware bridge with
-needs_standalone_vlan_filtering=0.
+>  	return 0;
+>  }
+>  EXPORT_SYMBOL(b53_br_join);
+> @@ -2376,6 +2455,8 @@ void b53_br_leave(struct dsa_switch *ds, int port, struct dsa_bridge bridge)
+>  		vl->members |= BIT(port);
+>  		b53_set_vlan_entry(dev, pvid, vl);
+>  	}
+> +
+> +	b53_standalone_vlan_resync(ds, port);
+>  }
+>  EXPORT_SYMBOL(b53_br_leave);
 
-That looks like the failure mode the changelog describes as "its uppers
-then stay dead even after it leaves the bridge, because nothing
-re-offloads them once the feature bit is gone".  Would gating the
-clearing of the bit on the new flag, so no error path can drop it, be a
-better fit for the intended invariant?
+[Severity: Medium]
+Is dp->bridge always already cleared when this runs?  On the normal leave
+path dsa_port_bridge_leave() calls dsa_port_bridge_destroy() before
+broadcasting DSA_NOTIFIER_BRIDGE_LEAVE, but the join rollback does the
+opposite order:
 
-> diff --git a/net/dsa/user.c b/net/dsa/user.c
-> index 041f9060c8ef..fda6ba4fdd13 100644
-> --- a/net/dsa/user.c
-> +++ b/net/dsa/user.c
-> @@ -1946,6 +1946,7 @@ static int dsa_user_clear_vlan(struct net_device *vdev, int vid, void *arg)
->   *
->   * - If standalone (this includes software bridge, software LAG):
->   *     - if ds->needs_standalone_vlan_filtering = true, OR if
-> + *       ds->needs_standalone_vlan_offload = true, OR if
->   *       (ds->vlan_filtering_is_global = true AND there are bridges spanning
->   *       this switch chip which have vlan_filtering=1)
->   *         - the 8021q upper VLANs
+net/dsa/port.c:dsa_port_bridge_join() {
+        ...
+out_rollback_unbridge:
+        dsa_broadcast(DSA_NOTIFIER_BRIDGE_LEAVE, &info);
+out_rollback:
+        dsa_port_bridge_destroy(dp, br);
+        return err;
+}
 
-[Severity: Low]
-Only the "If standalone" bullet of this summary comment is amended, yet
-the next bullet still says that a port "under a vlan_filtering=0 bridge
-which it offload" offloads only "the bridge VLANs".  The comment on the
-new field in include/net/dsa.h says the same thing in shorter form,
-"Offload 8021q uppers of standalone ports even when not filtering".
+So when switchdev_bridge_port_offload() or dsa_port_switchdev_sync_attrs()
+fails, b53_br_leave() -> b53_standalone_vlan_resync() runs with dp->bridge
+still set, b53_vlan_hw_entry() skips the port, and the entry is written
+empty even though the port becomes standalone again a moment later.
 
-Is the implementation actually standalone-scoped?
-dsa_user_setup_tagger() sets NETIF_F_HW_VLAN_CTAG_FILTER for every user
-port of such a switch at port setup, and dsa_port_vlan_filtering() never
-clears it again, so a port enslaved to a VLAN-unaware bridge keeps
-offloading its 8021q upper VLANs.
+Does anything restore it afterwards?  b53_vlan_add()/b53_vlan_del() are not
+called because the upper still exists, and b53_configure_vlan() only runs
+from b53_apply_config() on setup, resume, or a vlan_filtering change, so
+tagged reception on the port's uppers would stay off after a failed bridge
+join.
 
-The new comment in dsa_port_change_conduit() states the opposite of the
-two comments above:
-
-	 * ds->needs_standalone_vlan_filtering, and every port of a
-	 * ds->needs_standalone_vlan_offload switch keeps its 8021q upper
-	 * VLANs whether bridged or not.
-
-Could the vlan_filtering=0 bridge bullet and the include/net/dsa.h field
-comment be updated to match?
-
-> @@ -2717,7 +2718,8 @@ void dsa_user_setup_tagger(struct net_device *user)
->  	user->hw_features |= NETIF_F_HW_TC;
->  	if (user->needed_tailroom)
->  		user->features &= ~(NETIF_F_SG | NETIF_F_FRAGLIST);
-> -	if (ds->needs_standalone_vlan_filtering)
-> +	if (ds->needs_standalone_vlan_filtering ||
-> +	    ds->needs_standalone_vlan_offload)
->  		user->features |= NETIF_F_HW_VLAN_CTAG_FILTER;
 >  
->  	user->lltx = true;
+> @@ -3172,6 +3253,8 @@ static int b53_switch_init(struct b53_device *dev)
+>  	if (!dev->vlans)
+>  		return -ENOMEM;
+>  
+> +	dev->ds->needs_standalone_vlan_offload = !is5325(dev) && !is5365(dev);
+
+[Severity: Medium]
+Does this condition exclude BCM5365 on kernels built without
+CONFIG_BCM47XX?
+
+drivers/net/dsa/b53/b53_priv.h:
+    static inline int is5365(struct b53_device *dev)
+    {
+    #ifdef CONFIG_BCM47XX
+            return dev->chip_id == BCM5365_DEVICE_ID;
+    #else
+            return 0;
+    #endif
+    }
+
+while b53_switch_detect() sets the chip id with no config guard:
+
+        } else {
+                dev->chip_id = BCM5365_DEVICE_ID;
+        }
+
+and both b53_mdio.c and b53_spi.c carry a "brcm,bcm5365" match.  On such a
+build the flag would be set for a chip with .vlans = 256, so
+NETIF_F_HW_VLAN_CTAG_FILTER gets advertised and every upper VID reaches
+b53_vlan_prepare():
+
+        if (vlan->vid >= dev->num_vlans)
+                return -ERANGE;
+
+Would ip link add link ethX name ethX.300 type vlan id 300 then fail where
+it previously created a working software VLAN?  That is the case the commit
+message says is preserved:
+
+    BCM5325 and BCM5365 stay out of the opt-in, ... b53_vlan_prepare() would
+    refuse any upper whose VID lies beyond the table, an interface that works
+    today.
+
+Would testing dev->chip_id (or dev->num_vlans) directly rather than the
+CONFIG_BCM47XX-conditional helper keep that policy in every build?
+
+>  
+>  	dev->reset_gpio = b53_switch_get_reset_gpio(dev);
+>  
+>  	if (PTR_ERR(dev->reset_gpio) == -EPROBE_DEFER)
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260831085217.391-1-strst.gs%40gmail.com
