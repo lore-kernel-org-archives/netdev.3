@@ -1,227 +1,215 @@
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C33CC470426
-	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 10:55:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F38847ACE3
+	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 10:57:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788519362; cv=none; b=ovf5OieM4oA/dCNfS6RGNcpTpb+E1x3VgtPW8jYoMVvZAwElm01RqJJWOz6UFTbKdKZkEAZHX+BfJjmus1mBoG5Q8YlPBethNwHYHO3hiUHRCXrvyvivIba1st97sePFVCJg8KSV8WEPIEoA2l91f22E0ZVunVZvqDC6MLQXfV0=
+	t=1788519437; cv=none; b=PcnMAjvrCInTVrRLNsGzTFMUaO4GHkPfUyOOhPdbLEBvM5uVIFA9fPbdG2/gV3tFmH2m2O0vMB6vinOYGWy/r8V5XZ52ug6gyWA4A4Pm0SCKvwRYI+FFNf3Ke4fCNvvd1eVt2Eq/D4YS2axZKOK0ay9NeyrBtMZ8TWhL8naALmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788519362; c=relaxed/simple;
-	bh=v/kjOdY5Lu1zx1XvZRZFRlrggOLQEbcgXqmMq7HMqbM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uawznGlmXX9DrtXVAttCia3v7ckqirPIb6Q6mJhgOls4HsgSoDkox5r2Fk4YpN4L5NdqK3jPlLSsEArFi1L4LZ426NbKuzKBQxDAleO9tOasC6u1LuSIB1v5YrvO3KUO0zbSUWKWN1M8MitUjop+W+qt4d00232MqsKxauCQ21I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RvtWzbst; arc=none smtp.client-ip=209.85.216.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788519437; c=relaxed/simple;
+	bh=QgYuvOmY6qUDa5+A2/Nknmr3Ed4l68Xjr5A2n/C1lNc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rpK9MEa85Fc6ctwVnaLgEWsmDFwII7gBz5hBl+l8O19+9nA178OBh7Jx6dMfFB8oXwgs9uv3Ti1bSjJARL9F3fF7OcKmgopjteNDdcVufYKjykmCPxgodvGjSkRlbSTB+0cGrS87ULTuJq0S5HyFaEaXOLvaySxJhgSIDSRdpP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=HvIvCLqp; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=KmEe/ntk; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RvtWzbst"
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-395cf2535acso951632a91.1
-        for <netdev@vger.kernel.org>; Fri, 04 Sep 2026 03:55:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="HvIvCLqp";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="KmEe/ntk"
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 684AIYBT3565638
+	for <netdev@vger.kernel.org>; Fri, 4 Sep 2026 10:57:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=08F2XPDmp3MN/acIJE0scEdK
+	BWxNouhbbHVqjQV+qoU=; b=HvIvCLqpJ20kUDEiM0nhgKqDP0MIZkstiBk8ScTg
+	IQvnKmse7P8c2pE8j3ctW09mxIyczAYT1qg6JtC4fw7lRekqro1hAwLRaXCO0V9T
+	m5S1qIoy7N3ftyl4s0ChrgQ8oj8geuZxrdBLDI3U5R9DXw0HbZrn0LUOzmq6AjDN
+	1DHfhAZWjtTZsP5Eag55WItNORwYTgUSkpKvL79QfwSMZq7J1bOFwaGFU/erHLff
+	bieNvnTk7sY/dzeQigKpTh/qoarZ/TK5J0tQLxi1vmJAoqog/SlfsWAFsZT6sYjH
+	vS6h4vwfXlGR7EAt88UecpVKxCLWH7Jq5y7qx5xrjNs2fg==
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gfp0r1amg-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Fri, 04 Sep 2026 10:57:15 +0000 (GMT)
+Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-93975d63ffcso109640885a.3
+        for <netdev@vger.kernel.org>; Fri, 04 Sep 2026 03:57:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788519359; x=1789124159; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=VKYmUlTOqIu/1cBSCueueKVNw/xbCQqglwL7pQcSE8g=;
-        b=RvtWzbstjTqLvkEiFx0fZfqyw50Y/66L5Ph72ANnoag967aBk+QGAGV0lODjMniCSU
-         GRIzyDsG2Qg1Hh9WwdG4ccB2Ijmt3DWJo+zOytJJaeT7NCrsiJ8bis84rAMU+o/V49/3
-         Vk1QaPxx2JWufg/voxftEFitFXopdVB2NNXzIg8kpwFlNqMXvIbLdIU2qAECOAT4fSa7
-         jSx9L1K9xHUAIhl2lKTkW2tZmgAgbPx+JVdteg5PPIDtr3Qd7QgqO6c+aPSLos9awxHj
-         k3u46LQj3gyscvq/7fiR/SqkZ+2+A2/FFq3yixcXrQKrxvBgCVfTtY9kwb2SIFOv+NYb
-         fh5Q==
+        d=oss.qualcomm.com; s=google; t=1788519434; x=1789124234; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=08F2XPDmp3MN/acIJE0scEdKBWxNouhbbHVqjQV+qoU=;
+        b=KmEe/ntkiSvRIGivcS8jAT68dxDyLPvSTzHQW2ioz38y0DDRllUUdxWVQBCgyxwelX
+         QNLnLgiFn49TA31SwtpO90/ooXW4TXKK2VAureXllrhOjwBpjCt1YSglOF9adZyBt5jx
+         tvd3jhVmCr/hmuAl37uPOQtT8Tebd4XmGE8t3gvl2OMlAYezYPzq9MgfLSkZAH3THtes
+         egETNXwJIWmcHbLfs1S1YP86E7nIeq0nWx3tQfNu+e7jGj1GLMpr5jG8Q4gcrY4GLBZS
+         x1fYnQ+BXkxWFTJn1fgjdIZaYJQJkkNH/5ltuD7ZeNc46whExTec7L3lBNh5++ZFmyUI
+         hS3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788519359; x=1789124159;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=VKYmUlTOqIu/1cBSCueueKVNw/xbCQqglwL7pQcSE8g=;
-        b=pPtj5UKUIGHYEWqiCXGmbCIpWKYbQ/hwgQg6ouSIa78fb9VO0+iD8tqr10ytgcWfv8
-         qceuWPQK5rPyQjpurUVAHcR35ZV1yi/+cBBC68CtUgWRgf2APLeYazI/UBO9G3OOQPUD
-         Jk1C1ZfH2/si5ss3NXsa+K6Dg8NvrYRhuEvYzIut1xwVSGPKUlHx+i76TqDMi0jUVmBX
-         N3o5ALrrP5AquWmIvjrEX4qVqMlVpocy3UZIQz8YIJcA016N6Bli0Rqw9dVoxi4+LjjZ
-         +qSwPoJNvHvA+X3Pz3uaF7lXdIZJfGzxfXhyQVaVBhLJWmF9IP2b5oWCt0ulLDYterxB
-         gmLw==
-X-Forwarded-Encrypted: i=1; AKwUvBzJloe4gWFlmXR3licqU1Wzbo2eEduH+wysQ3rO/n/w5mRfTQGKlY/Xe0IkCHTUi+Yamnc1eOo=@vger.kernel.org
-X-Gm-Message-State: AFuF++l52aEAGEGq+xx4Ad3WF4C6Ac3r+pVKT7X29UBQvr+2Ug6qZhEa
-	LXsSnWOXOVj4osZI1PDAvpjj/HMF7TVAs2uGNMqbeaMCNanxjSyWQKTf
-X-Gm-Gg: AYBFou3QOR733ZWRauc0V13lFaEkHsE4DtOBy24lIv3r7hbcMWwMjRb1GGQNtFFTKN5
-	1hz8/r8Fy7Q39A1ANK8dXwnSJ0RQh4pmIQPeOXcgqvqYgWRavyznpnlteLDfHI3yY+5NESg4gJ5
-	mdoXbLDShv7K+3r3/8gBVF4XEKj2m6ziaZJ28WCe62obnuu+jL6/dv/sUqTAXE9LrUSMSE+tib/
-	VPXCQdAZkJkrYVfu1jdyz5OizwC1ywVei6CVbUwN+LWzCHlkMgLqLYW7OWY9lZ3n9Yf48u3voDQ
-	dcCvJRijDdmpYJwDa5VIy0/Y/B3ZKkqBzCafBEN33G3+EZe4sentOLoOmkBst0UF2p57P29FySl
-	4yMnjepDYqM8CpWpkutnxhYb7iQFj/myvow6k2tjMWUG/0UCD9ChGS4/HiuZNS9cMmdsjLzvM9k
-	IfYlit3HW/YIXhe/Jzlh6Uy3MMcUFjncqxPwE1+x0nrbeED3vbJHDDrE1VE8ro4SyKfoNcawnZU
-	rGvuINU8jVpIm1nFBnxkB2s496oezbBYnxiMU3teUwuJp5pO0YZcdxoD1C78nG2JElDhJlNlW/5
-	q42YJvIUSl7Bllr3
-X-Received: by 2002:a17:90b:3b41:b0:398:9bd3:d6d2 with SMTP id 98e67ed59e1d1-39b27ea25b9mr3194454a91.12.1788519358927;
-        Fri, 04 Sep 2026 03:55:58 -0700 (PDT)
-Received: from phuc-desktop.. ([183.91.15.56])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b2612ba2bsm3842279a91.14.2026.09.04.03.55.54
+        d=1e100.net; s=20251104; t=1788519434; x=1789124234;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=08F2XPDmp3MN/acIJE0scEdKBWxNouhbbHVqjQV+qoU=;
+        b=j5smmZYpXB5kEHXrkcvcH/6h4Sjs2SqKL6m9gNzjp6+zB/tMfNRdae8hpEVBbKPHrA
+         mbNzgO6/HPDGQYNtclwNW+3LRpa+pCgYp7l+rIv58Z4AZ8mIcz+m3npqyT6VKnwWbLk9
+         d8jupT0AIDzj+/vb5C9Ie2l61W7jXLI/AlAzy2WHdll7Fgn84jpyPGfMlGypkE5m5ks9
+         D0S9e7BQVYFHpa5qm4PucfjACEKU9g/ervLJu9zrSBCgRIOBPzAz6r5zCRIbNS6O84k+
+         aAXvBmSjVF9eC3e26c3++ufaSLcY8ivsan2CrPHSGxdcUj5s/zEY3/UCfZsti1dQZOlJ
+         cCYA==
+X-Forwarded-Encrypted: i=1; AKwUvBw4wxUcU8bbVf4pAVr0H44jApCoDbh4nXI3PVkWxTFuIhHHu7L8SiUSS4aS22i3BQxspU4xCFg=@vger.kernel.org
+X-Gm-Message-State: AFuF++n0qcCiD6wtr7z4ucBusuzyMaTs+VRTGwcPsNlzKM9Jj98o8cj5
+	Nd8rnBn6ZNHnWdvtfnSBdVywdKuEAf1JcYihq4Wu55iwwBEyCl7bAc3KArMUpcXmdtnQCEbCUhf
+	r95SKlaqXqH+KIBgsdnpW6HJ65xL3c6iKyIFNq03VncGmfaOsuqewNokITQE=
+X-Gm-Gg: AYBFou1ZFFj5yi5p9/oYa56zK2vyafcasCCnYG8Ba+N+sxI7EmPsvYPyV0oSUU79Juf
+	rcvaRqDfZEa8Tv/T8thayqGZzXDjPeCcfo4n/uqm2YC/1FB28VygFR41kN07d3tGNOL50MWLsXq
+	6XX+LO6FHrsiBDiqmHK7ErO04hN36aBYDyXPwLmLNFdJliFa8EkaLXEBVR5pa3D6L1/FcrUApYR
+	FQDYpJ3w2RJHdbF0/EySVzAPhqzDEHJANVQ8FAFcapAHYVWU04CZY6ZjMo0rFZmFJ2tmys+wLPE
+	w8JrJGcK+l/CJ2QtvUGK6yhkmrqKPvki8BA9Q6jsgQxMd1gWuIGKg/LIp7L3K+v2HRMBciW2LZu
+	rAU//mSODRhR7OQ==
+X-Received: by 2002:a05:620a:404c:b0:939:3cb9:553d with SMTP id af79cd13be357-9398048b9f8mr469253585a.38.1788519434442;
+        Fri, 04 Sep 2026 03:57:14 -0700 (PDT)
+X-Received: by 2002:a05:620a:404c:b0:939:3cb9:553d with SMTP id af79cd13be357-9398048b9f8mr469227285a.38.1788519431160;
+        Fri, 04 Sep 2026 03:57:11 -0700 (PDT)
+Received: from localhost ([188.216.77.92])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48588392b3esm6543474f8f.12.2026.09.04.03.57.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Sep 2026 03:55:58 -0700 (PDT)
-From: phucduc.bui@gmail.com
-To: Wei Fang <wei.fang@nxp.com>,
-	Frank Li <frank.li@nxp.com>,
-	Shenwei Wang <shenwei.wang@nxp.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	davem@davemloft.net,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Stephen Boyd <swboyd@chromium.org>,
-	imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	bui duc phuc <phucduc.bui@gmail.com>
-Subject: [PATCH net v3] net: fec: Propagate PTP initialization errors
-Date: Fri,  4 Sep 2026 17:55:42 +0700
-Message-ID: <20260904105542.70540-1-phucduc.bui@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        Fri, 04 Sep 2026 03:57:10 -0700 (PDT)
+Date: Fri, 4 Sep 2026 12:57:09 +0200
+From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+To: ZhaoJinming <zhaojinming@uniontech.com>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Simon Horman <horms@kernel.org>,
+        Christian Marangi <ansuelsmth@gmail.com>,
+        Jose Abreu <Jose.Abreu@synopsys.com>, netdev@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] net: stmmac: clear dma_conf in __stmmac_open error
+ path
+Message-ID: <apqkBQJMqHKTUxEp@lore-desk>
+References: <20260904-fix-stmmac-mtu-change-use-after-free-v2-1-91e680476921@uniontech.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="E1MazB2LUUx/XJQ2"
+Content-Disposition: inline
+In-Reply-To: <20260904-fix-stmmac-mtu-change-use-after-free-v2-1-91e680476921@uniontech.com>
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTA0MDA5OCBTYWx0ZWRfX09VosEj2T3/s
+ 1al+vEhatFeBEcMmrwa3mmf1Knz518ArA/eTTU/B9gdSubLM6dlR83HTlvG1aKt6OcL3IBFmAwZ
+ CESr1Y8cp0XJtzz4ej5+GvyoANS+K7g=
+X-Proofpoint-ORIG-GUID: BrW7lOZOSwFztAjIBPv93XL7C-stO4y4
+X-Proofpoint-GUID: BrW7lOZOSwFztAjIBPv93XL7C-stO4y4
+X-Authority-Analysis: v=2.4 cv=T/S8ifKQ c=1 sm=1 tr=0 ts=6a9aa40b cx=c_pps
+ a=hnmNkyzTK/kJ09Xio7VxxA==:117 a=WpTaRW6qxYHRGzLzQsVYzg==:17
+ a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=_glEPmIy2e8OvE2BGh3C:22 a=VwQbUJbxAAAA:8
+ a=iHwBjlyiAAAA:8 a=SaV9t1am_M5Vh_LyuNUA:9 a=CjuIK1q_8ugA:10
+ a=sX82_v1_a9lhBkuKYFsA:9 a=PEH46H7Ffwr30OY-TuGO:22 a=uNSKXYNwxGiU6LD0JREI:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA0MDA5OCBTYWx0ZWRfX1sYddCX8m/7N
+ YAdHr7yC2umy5r9CZyvuivr9cmhJlSxtu4KDhUaH9CVLdsIvUdeBbbPZR57RIzeyVCMqJ8TD8Yw
+ eGP1Q0bSoQOf5XyY4Ulp/1h9/BDglWLE2fs2BNwrgJdy55mfhkVgP+FQj8We+1oi9SYRaR9Jnri
+ 3xIAEKVmjL5UkQ4zFNn3Ay9T4bZ+geEp00kG5X3tynnQFbsQ4+h8E4xfSMaoW5+aWvZDEYCCL2R
+ gWTnJRP5zfokiJSNWQcb4XHh8L7acXI9F1+aJEopI1STcUkTVV1UUNQvzui6vRJ6Lib7zv4pzFa
+ 8BKt6PPm8Km2aMUkjETQiU5mB11Qx3PyDtnqQi8JBCZaQaw54o0dLwS7inbsZDFZubwUgvCzJqQ
+ eu1ISVFjwdLBGTcDFNJHZzR4pY5LE2zCGUd9EW0trgrid2xK6i6AES/9Uw5S+sJF/xlIvKv7zys
+ JLPUq4scptrTXUcVBLQ==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-04_03,2026-09-03_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 phishscore=0 lowpriorityscore=0 impostorscore=0
+ priorityscore=1501 malwarescore=0 clxscore=1015 spamscore=0 suspectscore=0
+ adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2609040098
 
-From: bui duc phuc <phucduc.bui@gmail.com>
+--E1MazB2LUUx/XJQ2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Change fec_ptp_init() to return an error code instead of silently
-ignoring failures during PTP initialization.
+> __stmmac_open() copies the freshly allocated dma_conf into priv->dma_conf
+> via memcpy() before it can fail, e.g. in stmmac_request_irq().  When it
+> does fail, the callers free the dma_conf descriptor resources and the
+> struct itself, but priv->dma_conf still holds pointers to those freed
+> resources, a use-after-free that triggers when a subsequent
+> stmmac_release() or another MTU change releases the resources again.
+>=20
+> Undo the memcpy in the error path by zeroing priv->dma_conf, leaving the
+> state consistent regardless of the caller.
+>=20
+> Fixes: 30134b7c47bd2 ("net: ethernet: stmicro: stmmac: fix possible memor=
+y leak in __stmmac_open")
+> Signed-off-by: ZhaoJinming <zhaojinming@uniontech.com>
 
-The PPS IRQ is not required for the FEC/PTP functionality, so its
-absence should not make the probe fail. However, an unavailable
-optional IRQ should be distinguished from an actual error returned
-during the IRQ lookup.
+Hi ZhaoJinming,
 
-If a platform does not support the PPS IRQ, it can omit the IRQ from
-its device tree and the optional lookup will return -ENXIO. Propagate
-other errors from the IRQ lookup instead of silently ignoring them.
+I agree the issue is real, but assuming free_dma_desc_resources() always
+tolerates a fully zeroed dma_conf struct seems a bit fragile to me.
+Is it better to use a pointer for priv->dma_conf that we can set to NULL in
+case of error? What do you think?
 
-Also propagate failures from devm_request_irq() and ptp_clock_register().
+Regards,
+Lorenzo
 
-Update the function declaration in fec.h accordingly.
+> ---
+> Changes in v2:
+> - Move the clearing of priv->dma_conf from stmmac_change_mtu() into
+>   __stmmac_open() error path, undoing the memcpy() at the point where it
+>   was made and covering both callers.
+> - Link to v1: https://lore.kernel.org/r/20260903-fix-stmmac-mtu-change-us=
+e-after-free-v1-1-c81dc7d6d18a@uniontech.com
+> ---
+>  drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 1 +
+>  1 file changed, 1 insertion(+)
+>=20
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/=
+net/ethernet/stmicro/stmmac/stmmac_main.c
+> index 24656b35350b14454fb10deced6516eb89e2c0c9..4369e64faf9f878aa20ac5075=
+705044f55c5f8bf 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> @@ -4190,6 +4190,7 @@ static int __stmmac_open(struct net_device *dev,
+> =20
+>  	stmmac_release_ptp(priv);
+>  init_error:
+> +	memset(&priv->dma_conf, 0, sizeof(priv->dma_conf));
+>  	return ret;
+>  }
+> =20
+>=20
+> ---
+> base-commit: a500db7819c50db59e55f1b4fa1c3baa5a2616f3
+> change-id: 20260903-fix-stmmac-mtu-change-use-after-free-693da6eb4a30
+>=20
+> Best regards,
+> --=20
+> ZhaoJinming <zhaojinming@uniontech.com>
+>=20
+>=20
 
-Found by manual code inspection.
+--E1MazB2LUUx/XJQ2
+Content-Type: application/pgp-signature; name=signature.asc
 
-Fixes: b86bcb299092 ("net: fec_ptp: Use platform_get_irq_xxx_optional() to avoid error message")
-Signed-off-by: bui duc phuc <phucduc.bui@gmail.com>
----
+-----BEGIN PGP SIGNATURE-----
 
-Link v1: 
-https://lore.kernel.org/all/20260820111416.97917-1-phucduc.bui@gmail.com/
-Link v2:
-https://lore.kernel.org/all/20260903092430.354186-1-phucduc.bui@gmail.com/
-Changes in v2:
- - Squash the two patches into one.
- - Add error handling for platform_get_irq_byname_optional().
- - Fix error handling for ptp_clock_register().
-Changes in v3:
- - Retarget the patch to the net tree instead of net-next.
- - Add error handling for platform_get_irq_byname_optional() 
-   in fec_probe() for the fec_enet_interrupt IRQ.
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCapqkBQAKCRA6cBh0uS2t
+rM/dAQDZOoJDs5HeJVYmNfdj9lanQiEx9EXr1USvD3sf/UejtAD+KxxYvB/7Bsu/
+1P09VTIKMhSBbGLdyJNvqrrQNHSSOQc=
+=8C6m
+-----END PGP SIGNATURE-----
 
- drivers/net/ethernet/freescale/fec.h      |  2 +-
- drivers/net/ethernet/freescale/fec_main.c | 11 ++++++++---
- drivers/net/ethernet/freescale/fec_ptp.c  | 22 ++++++++++++++--------
- 3 files changed, 23 insertions(+), 12 deletions(-)
-
-diff --git a/drivers/net/ethernet/freescale/fec.h b/drivers/net/ethernet/freescale/fec.h
-index 7176803146f3..8831da37326b 100644
---- a/drivers/net/ethernet/freescale/fec.h
-+++ b/drivers/net/ethernet/freescale/fec.h
-@@ -692,7 +692,7 @@ struct fec_enet_private {
- 	u64 ethtool_stats[];
- };
- 
--void fec_ptp_init(struct platform_device *pdev, int irq_idx);
-+int fec_ptp_init(struct platform_device *pdev, int irq_idx);
- void fec_ptp_restore_state(struct fec_enet_private *fep);
- void fec_ptp_save_state(struct fec_enet_private *fep);
- void fec_ptp_stop(struct platform_device *pdev);
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index 794ec427b0ee..a9a458703547 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -5384,8 +5384,11 @@ fec_probe(struct platform_device *pdev)
- 		goto failed_reset;
- 
- 	irq_cnt = fec_enet_get_irq_cnt(pdev);
--	if (fep->bufdesc_ex)
--		fec_ptp_init(pdev, irq_cnt);
-+	if (fep->bufdesc_ex) {
-+		ret = fec_ptp_init(pdev, irq_cnt);
-+		if (ret)
-+			goto failed_reset;
-+	}
- 
- 	ret = fec_enet_init(ndev);
- 	if (ret)
-@@ -5394,7 +5397,9 @@ fec_probe(struct platform_device *pdev)
- 	for (i = 0; i < irq_cnt; i++) {
- 		snprintf(irq_name, sizeof(irq_name), "int%d", i);
- 		irq = platform_get_irq_byname_optional(pdev, irq_name);
--		if (irq < 0)
-+		if (irq < 0 && irq != -ENXIO)
-+			return irq;
-+		if (irq == -ENXIO)
- 			irq = platform_get_irq(pdev, i);
- 		if (irq < 0) {
- 			ret = irq;
-diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
-index 56801c2009d5..557a76797eba 100644
---- a/drivers/net/ethernet/freescale/fec_ptp.c
-+++ b/drivers/net/ethernet/freescale/fec_ptp.c
-@@ -736,7 +736,7 @@ static irqreturn_t fec_pps_interrupt(int irq, void *dev_id)
-  * cyclecounter init routine and exits.
-  */
- 
--void fec_ptp_init(struct platform_device *pdev, int irq_idx)
-+int fec_ptp_init(struct platform_device *pdev, int irq_idx)
- {
- 	struct net_device *ndev = platform_get_drvdata(pdev);
- 	struct fec_enet_private *fep = netdev_priv(ndev);
-@@ -779,26 +779,32 @@ void fec_ptp_init(struct platform_device *pdev, int irq_idx)
- 		      HRTIMER_MODE_REL);
- 
- 	irq = platform_get_irq_byname_optional(pdev, "pps");
--	if (irq < 0)
-+	if (irq < 0 && irq != -ENXIO)
-+		return irq;
-+	if (irq == -ENXIO) {
- 		irq = platform_get_irq_optional(pdev, irq_idx);
--	/* Failure to get an irq is not fatal,
--	 * only the PTP_CLOCK_PPS clock events should stop
--	 */
--	if (irq >= 0) {
-+		if (irq < 0 && irq != -ENXIO)
-+			return irq;
-+	}
-+
-+	if (irq > 0) {
- 		ret = devm_request_irq(&pdev->dev, irq, fec_pps_interrupt,
- 				       0, pdev->name, ndev);
- 		if (ret < 0)
--			dev_warn(&pdev->dev, "request for pps irq failed(%d)\n",
--				 ret);
-+			return ret;
- 	}
- 
- 	fep->ptp_clock = ptp_clock_register(&fep->ptp_caps, &pdev->dev);
- 	if (IS_ERR(fep->ptp_clock)) {
-+		ret = PTR_ERR(fep->ptp_clock);
- 		fep->ptp_clock = NULL;
- 		dev_err(&pdev->dev, "ptp_clock_register failed\n");
-+		return ret;
- 	}
- 
- 	schedule_delayed_work(&fep->time_keep, HZ);
-+
-+	return 0;
- }
- 
- void fec_ptp_save_state(struct fec_enet_private *fep)
--- 
-2.43.0
-
+--E1MazB2LUUx/XJQ2--
