@@ -1,149 +1,116 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95FFE378838;
-	Fri,  4 Sep 2026 06:05:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8950035AC03
+	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 06:06:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788501949; cv=none; b=hLzE8ZTY4J5zhKR0GfrB7pcbkM8yL3Vj9fcRcfRG46nzNQH0XqaEG2J8RtG72LOoGta4ZJDmWyuNT5aUHl1FfpTcTb4MBfAMitMzcvn1cKCGiJ4WYTeoI06XX5xPQHFNN65ERYTAn1Y1wG5jsJan4x0v5PBP9LQk3liD7Kg7+Io=
+	t=1788502019; cv=none; b=lCykxkVTr8jSzMpAPtLLiL9f9jcFYIblgfwgqOQMyXuuNdUrc9xeofVN4eUb4yoiW/epivnYXGm2tdk7ay3bWXKtu8A0kPxmzERZUfnpCqkm/Xx9kSJ/vkdk2gxeflFvYSCZhxz4iJdGGL4bsQL3M1khMIpXNvteiM9w26UvX0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788501949; c=relaxed/simple;
-	bh=pRLUxm9WhfxBSGvT32fKsSjS59ea8stQa5vwLn/FUq8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=PNqhaDZ6yqXG4BHHYv8ktD84zaE1Ryagn431Uh3kQ5i7uLVLZ/dTZ7+ln/pHfHJz3+YJ4pDBzpxwHC9CLS1a3OITvulA2mbRIFow7YXHRmq7ZfnknSkzWIOkknKIhYGPhhDNsS29/UjigCzfg9CeAxHWV1LPrLfZ4mOgAGFUNLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=iGBwGfCp; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1788502019; c=relaxed/simple;
+	bh=uVHA3MxowH6wVae4z71QtAz1vyhRdboIPrZLDAJ4r58=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=flyF9llC80Gy3FV+afswd8DhShPpeDMden60YoRS53fPjn7h5pI4b5nMzIKxy8qa7bO7ob/JRXF9fnOQgewHDe8fezM6KVbJp/lBiPHB6ngrt5ee56vsvI5K2TRBJf5XEfrWqoAr8YMkPi1aqnOVeuSBXSlWaDbGaeeY0FKTyUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=NStZKT6i; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="iGBwGfCp"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1788501947; x=1820037947;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=pRLUxm9WhfxBSGvT32fKsSjS59ea8stQa5vwLn/FUq8=;
-  b=iGBwGfCp+v8PnI2CfshKY2nHZPAikJwWeftYTxNuPW0QQTzOpmu4kVin
-   mHKOO+e4wJiS0cwZ0l3HS5fcqVLa8t8kMGMzNyxfh+yRz6BmUS+OpRiuD
-   VFVMRP2orhz4Y7a5SEiFiH1rpuxRruLeg2ReVG7resaEoOS/ay6Phn6BQ
-   UW8qwEAlhnFMbuGDLPjQ+kfBEBci6p8IsFJZu5/YoOSJ6dgSLYDfZseZo
-   Hd9gk9OfUqWDEtvgB8kZfvrTA1DrWzBnlLZlWoOw9nlV2gte9YtfctdGF
-   IqeXiUx64XL6EKEJ5F2/oMVU5hzlGBm0pYtCfLZDLUm/Peb00ZXe2hCAU
-   w==;
-X-CSE-ConnectionGUID: 0H+Mr+euQ+eD33vhoggmKA==
-X-CSE-MsgGUID: o9y2ZRPwRaWo7vSRq8NU4Q==
-X-IronPort-AV: E=Sophos;i="6.25,260,1779174000"; 
-   d="scan'208";a="62241439"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa4.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 03 Sep 2026 23:05:46 -0700
-Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Thu, 3 Sep 2026 23:05:46 -0700
-Received: from [10.40.24.197] (10.10.85.11) by chn-vm-ex04.mchp-main.com
- (10.10.85.152) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
- Transport; Thu, 3 Sep 2026 23:05:42 -0700
-Message-ID: <a01b3780-b36d-4544-a372-9daa3be20a9f@microchip.com>
-Date: Fri, 4 Sep 2026 11:35:41 +0530
+	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="NStZKT6i"
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4921eed3fa2so5870505e9.0
+        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 23:06:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=blackwall.org; s=google; t=1788502015; x=1789106815; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=2wyUxE2TBml8FNoZA0yLvtlhvWKAzzFnIf+bKtrZuQQ=;
+        b=NStZKT6islY212FSUsIHkpkH0J2EemWQ9CsN3X5NyTu9krNxeaRm3nD9JuZe4KaUow
+         1mafRCjSnB97YBbbptoodzBvFTwy9XL73Nor4kJx3pHChrerEXLJPrtO+3j5++vfvemG
+         Z595dG7DgwRpsleZMZB+QbyHsqh9nmMPVd0MANwX4wPNGoDTjsu7TJoIjw9betXD3hCu
+         iDL1IlHNmjJT5Cu8nn4PKJEHvQczlqZSsuSYMMbZX7P1SW1+j97ZY0+qHjoL80pk+RAi
+         EDGwI63UmC2vj6Kk9cdQ5kAsXpXXnLGQ/R9+VgtUIUeXUlxwngXwKVwItCTbaOCB76LL
+         nPow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788502015; x=1789106815;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=2wyUxE2TBml8FNoZA0yLvtlhvWKAzzFnIf+bKtrZuQQ=;
+        b=KwzHFuICy4n+SahMimIoGFYOCNL18LU/H/iKBAsXOoLgzJGrXq6xccTQk62bqV+xPp
+         80s3OCly4VUHSZzwnJ6IFqlf26RG6gx51T/xtIX0E5zQEbBzUD9mGYeLGRTLQYDcAX4I
+         bWZeekJUPbr9aC+MIE1sFaKA2NptEAdgZHDIxQMF8DzBXbh8a0XlHnv2FMpk45qaeKjj
+         zNXvEJnPB5f0zgMCk7n74oIvtLqCGdp2arncnvtmI/fMy83XIGN53JHtI0iatm4na4V2
+         vt8sikbkbvQuKqcAoyUUDvZkKOBKwE8B1dZRO+asV8dnfA7gA97x1guTUJN5xUinCOFh
+         zUYw==
+X-Forwarded-Encrypted: i=1; AKwUvBw6j1+x2yVdq0t0c6d3wGKwTz+rqPp8iRhxW4gF5we40XcbTGwqBcQpO5dMfX+WszhbN1/ghGk=@vger.kernel.org
+X-Gm-Message-State: AFuF++mSJ2Mj5c1I0etH8qLWHr9ZrD09sXUzQ6HSlPV2Ltl9i7PuIHBw
+	EgIzK9hW34DWoAuFZp7+c8G0DPbb9WiSn75PzjLFdWQIfcIPhrGcc7CZKNoU8bbaeY8=
+X-Gm-Gg: AYBFou1S53tXivDh3eNh2s/1xjSVl8BYdbWzvcWCBBeV9uS8ww0oqawRd2B3XbJtYEJ
+	EbUkwJ9jwOCwpkIwn/mxhOkYv9uOn9O5GjkYROzZIL4OTss412vbBnWRoeCcijZRYqtiFlvbkRM
+	349GlNcIWj3wIFbipLesaL69eEqq81LqeGgk42arM0cl6O5T/VZ27wtlEjc4dcvzPSvR4KKDdPT
+	L7+8ypiN/upaH9ncSANmpERCzNp5chnbSz+NbppLiXyZL5u19jbD6rZNGHTxU1XptcfTA+/RZip
+	yRuImkejXOPczkY+9BQWW6evgyy/vus3PgJyfY0bp+iWmrrKRQADz8hPkcRJXNlbAD7M07GcjzJ
+	ixMl3HHwZT9tEilXgT8ZY2nPn5bqG2t4y041DWwrcZYPo7dKXuIV2HlLojWpsNBELcbc4q221B7
+	Uz3Y3XAH05QAsa46BItnJYn9JV7SCp81Dgz0hY48KhKznz848sMedreIGXvmXNCcgN8lknM90q+
+	GOIz0dHNlWAoreePSGwiXd5Of4Bqw==
+X-Received: by 2002:a05:600c:3e0a:b0:495:6e68:5df2 with SMTP id 5b1f17b1804b1-49cf8267a36mr37870635e9.12.1788502015295;
+        Thu, 03 Sep 2026 23:06:55 -0700 (PDT)
+Received: from [192.168.0.161] (78-154-15-182.ip.btc-net.bg. [78.154.15.182])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49ce47b9817sm161309645e9.1.2026.09.03.23.06.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 03 Sep 2026 23:06:54 -0700 (PDT)
+Message-ID: <7a3f1c73-ff68-4369-a81c-bc66db003bde@blackwall.org>
+Date: Fri, 4 Sep 2026 09:06:53 +0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH net-next 2/3] net: ethernet: oa_tc6: deliver the PHY
- interrupt to phylib
-To: Andrew Lunn <andrew@lunn.ch>
-CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-	<kuba@kernel.org>, <pabeni@redhat.com>, <hkallweit1@gmail.com>,
-	<linux@armlinux.org.uk>, <netdev@vger.kernel.org>,
-	<UNGLinuxDriver@microchip.com>, <linux-kernel@vger.kernel.org>
-References: <20260901130948.212914-1-parthiban.veerasooran@microchip.com>
- <20260901130948.212914-3-parthiban.veerasooran@microchip.com>
- <713d8963-6aa6-460e-83dc-157d37d66662@lunn.ch>
- <624254b3-2aa3-47e9-aae1-d62b2dc3f5f7@microchip.com>
- <2d313e42-3fbe-4fc9-bd57-23a951d997b9@lunn.ch>
-Content-Language: en-US
-From: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>
-In-Reply-To: <2d313e42-3fbe-4fc9-bd57-23a951d997b9@lunn.ch>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 net] bonding: use skb_cow_head() in bond_do_alb_xmit()
+ and rlb_arp_xmit()
+Content-Language: en-US, bg
+To: Eric Dumazet <edumazet@google.com>, "David S . Miller"
+ <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ netdev@vger.kernel.org, eric.dumazet@gmail.com,
+ Hangbin Liu <liuhangbin@kylinos.cn>, Jay Vosburgh <jv@jvosburgh.net>
+References: <20260903143940.1180513-1-edumazet@google.com>
+From: Nikolay Aleksandrov <razor@blackwall.org>
+In-Reply-To: <20260903143940.1180513-1-edumazet@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 03/09/26 7:44 pm, Andrew Lunn wrote:
-> EXTERNAL EMAIL: Do not click links or open attachments unless you know the content is safe
+On 03/09/2026 17:39, Eric Dumazet wrote:
+> In bond_do_alb_xmit() and rlb_arp_xmit(), make sure to unclone
+> skb head via skb_cow_head() before modifying the source MAC address
+> (Ethernet header and ARP payload) to avoid silent corruption if
+> the skb is shared or cloned. Avoid caching the header pointers
+> across skb_cow_head().
 > 
-> On Thu, Sep 03, 2026 at 06:53:40PM +0530, Parthiban Veerasooran wrote:
->> Hi Andrew,
->>
->> On 02/09/26 6:00 am, Andrew Lunn wrote:
->>> EXTERNAL EMAIL: Do not click links or open attachments unless you know the content is safe
->>>
->>>> @@ -600,6 +642,16 @@ static int oa_tc6_phy_init(struct oa_tc6 *tc6)
->>>>                 return -ENODEV;
->>>>         }
->>>>
->>>> +     ret = oa_tc6_phy_irq_setup(tc6);
->>>> +     if (ret) {
->>>> +             oa_tc6_mdiobus_unregister(tc6);
->>>> +             return ret;
->>>> +     }
->>>> +
->>>> +     /* Deliver the PHY interrupt through the nested virtual IRQ. Set before
->>>> +      * phy_connect_direct() so phylib enters interrupt mode.
->>>> +      */
->>>> +     tc6->phydev->irq = tc6->phy_virq;
->>>
->>> I don't know how messy it will be, but it is better to set
->>> mii_bus->irq[] to the interrupt number. phy_device_create() will then
->>> copy it into phydev->irq.
+> In rlb_arp_xmit(), only modify arp->mac_src if it differs from
+> tx_slave->dev->dev_addr to avoid an unnecessary copy and head
+> reallocation.
 > 
->> Thanks for the suggestion. To use mii_bus->irq[] so that phy_device_create()
->> picks it up, we would need to set mii_bus->irq[addr] with created virtual
->> irq number before mdiobus_register(). However, the PHY MDIO address is not
->> known until phy_find_first() returns, so we cannot pre-populate
->> mii_bus->irq[addr] before the bus scan runs.
+> Also, we should not assume mac header is set in output path.
 > 
-> This is why i made the comment, i did not know how messy it would be.
+> Use skb_eth_hdr() instead of eth_hdr() to fix the issue,
+> and remove now redundant skb_reset_mac_header() calls.
 > 
-> Where it becomes interesting is the recent patch:
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Signed-off-by: Eric Dumazet <edumazet@google.com>
+> Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
+> Cc: Jay Vosburgh <jv@jvosburgh.net>
+> ---
+> v2: Use ether_addr_equal_64bits() per Sashiko AI agent feedback
+> v1: https://lore.kernel.org/netdev/20260902125809.2910366-1-edumazet@google.com/
 > 
-> https://patchwork.kernel.org/project/netdevbpf/patch/20260902080511.2211261-3-f@lex.la/
+>   drivers/net/bonding/bond_alb.c | 19 ++++++++++++-------
+>   1 file changed, 12 insertions(+), 7 deletions(-)
 > 
-> It just seems a bit brittle, phydev->irq says one thing, mii_bus->irq[]
-> says something else.
-> 
-> Maybe set all member of mii_bus->irq[]?
-Thanks for pointing to that patch. Now the concern is clear: 
-mdiobus_alloc() initialises all bus->irq[] entries to PHY_POLL, so if 
-phydev->irq is set directly without updating mii_bus->irq[], 
-phy_restore_genphy_irq() would restore phydev->irq back to PHY_POLL if 
-the generic driver ever binds.
 
-So the fix would be to move oa_tc6_phy_irq_setup() before 
-mdiobus_register(), populate all mii_bus->irq[] entries with the virtual 
-IRQ, and drop the direct phydev->irq assignment. phy_device_create() 
-then copies the correct value from bus->irq[addr] during the bus scan, 
-keeping both tables consistent.
-
-+     /* Populate all irq[] entries before registration so
-+      * phy_device_create() picks up the virtual IRQ regardless of
-+      * the PHY's MDIO address.
-+      */
-+     for (i = 0; i < PHY_MAX_ADDR; i++)
-+             tc6->mdiobus->irq[i] = tc6->phy_virq;
-
-       ret = mdiobus_register(tc6->mdiobus);
-       if (ret) {
-               netdev_err(tc6->netdev, "Could not register MDIO bus\n");
-               mdiobus_free(tc6->mdiobus);
-               return ret;
-       }
-
-Hope this is what expected?
-
-Best regards,
-Parthiban V
-> 
->        Andrew
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
 
