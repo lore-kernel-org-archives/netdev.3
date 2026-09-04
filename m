@@ -1,40 +1,40 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 629E73AEB35;
-	Fri,  4 Sep 2026 07:33:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06FFB358378
+	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 07:37:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788507201; cv=none; b=URR5QOg6MMqxBpwktD9RtjXXoM+MhOzD/XWBdU0fH0PK8bUYhP3E7Uy0aTW6DdmDUFaJJbVB32rZpnEsbXST3ORNQdGvKdfpKmjtd9YOXekptppI8SceCECC3Xq351WsWcpS3F2Oq50Munopz6KOECSQYtPT95P/dNnkG+M2B1g=
+	t=1788507429; cv=none; b=tUz9+g2C8KIP5d3nQI5fPOdOHp7zdrjbJHhzonXcqK7N9dIyMsof1q0hGgoQiAbMvVkUbUZYUPw+swA1hnkwLqvssJ22SYfU3qmsM6KYB4FjP7bqqPsqMpB6hd8b16Y9U0w9Cu/Z54yftwEnDsRn2j0KLAtsg4sRtMDFIkWfZt8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788507201; c=relaxed/simple;
-	bh=j+veEnncaPLV3eClRn0sAfiAZpzT7ILM7RNfRgJMKmE=;
+	s=arc-20240116; t=1788507429; c=relaxed/simple;
+	bh=ZPJNGwI8ZV6TkCkxjJdncHVVOp0xKFRXBgBZmjPUfj4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BvDg5TijgNLjZjd04qT1rSnZI/KxtMFxqqsxhTBeeAp3YDD+a9NnvHSeX73w8ZNS7h64QzlLHGPoYsaU/3cBqaVqpcBLHOBiH1/+ZNzN0ukB7rjKGf1TJDl9nbJCI68yXqTEtjPhsiSC67F643btfutKpdDRe8nL0jbLplEek4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=i/Fj8PRV; arc=none smtp.client-ip=185.246.84.56
+	 In-Reply-To:Content-Type; b=CSfeqikjD2GpLBGC5m9uWugjRGRawgA3gTM9An3rSKpT/hjxC+45TYb30j+JYe/aBETBxE8TVnJjiC+StufjxzNGU/dyz59Zcldhox5K1AXUCF83UXuoQK7ATFqRe0ozSn7343E0xK1jvzO5o7Znz/Fyf/gzfZu2xgDP8EisEMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=mdsDHjJX; arc=none smtp.client-ip=185.246.85.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="i/Fj8PRV"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="mdsDHjJX"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 7B9771A199B;
-	Fri,  4 Sep 2026 07:33:15 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id A55C14E41507;
+	Fri,  4 Sep 2026 07:36:58 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 3E3E66057F;
-	Fri,  4 Sep 2026 07:33:15 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1835B11C7A463;
-	Fri,  4 Sep 2026 09:33:01 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 76E346057F;
+	Fri,  4 Sep 2026 07:36:58 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id ACB3411C7A463;
+	Fri,  4 Sep 2026 09:36:49 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1788507194; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1788507413; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=w7ahfJ6Vb5Xp0Pi/9OQdn/7dRAiZpZZ2JFkAmtvnbdw=;
-	b=i/Fj8PRVMkcLoaeSRbp2JL/sWG9GbMAhEiMIPIRV2ULTpp4HgQHyd3V+wYMe+DtFYhHcOz
-	F1cE0n0q+BK1QQCvgKfZkvkTFA5rzPKMVgfISY8KnYW8fKFasvAUc1l2p3/kWGzJHOkf8s
-	xfKnwOy6zTrhTTaeUwzI06+4ANJKAm+WvTORF67cpSWlj/q3v3FA/GUlTuk5kE1+FWWhqI
-	9nxhQNrfE7fx6YcXQqKk+xjth/tByGpCRV5Dy3hJczl9ZZuAeMkst38muocoGOJtbCyWOb
-	UiCVtZgYQ2fRHKNwrGUaybzIVUK41kC1pWVVY0t3T1umBrf5Mp26fLZA0iHgCg==
-Message-ID: <b7fb71f8-ba1b-4d6b-b5bf-b1afab32a66b@bootlin.com>
-Date: Fri, 4 Sep 2026 09:33:01 +0200
+	bh=wigr90SVwv4gtrJvgS38fzvdsCXdestHuhH3Gmpm1CM=;
+	b=mdsDHjJXRtSP/7yKCFmpYkDbxNRioq8AT2qpYIdZKwPNCSLnXxep6r+tHIXGs6TKzcc7vd
+	fuDvoVxrCyTXqyPGk5RAfL0DYMKVjUc87RLIupUOmmWklkpJfhRthRawHoIvTF0ePpB14F
+	UYNB9lsO68MEdzpTIN32pxLgCdgGVRiZGr2XkfE1VaAvdU7QCBexiFksO0+cctX/dM2Zfs
+	RF6cDugGhCTmfY70e+NFCegpUBvxri3B0AQAMc6LAxf4PcLZY2a6IsD+xg3etFAQ4yerF9
+	nAE6ssygRfvF30q8VV47RSP09C732XXdGDn5MDoUGhdf6TCmJLy6myq8Zf402w==
+Message-ID: <a5c85a6e-918d-49a3-9a29-c0ce429fc9fd@bootlin.com>
+Date: Fri, 4 Sep 2026 09:36:49 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -42,77 +42,69 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v5] net: stmmac: remove software VLAN tag stripping
-To: he.peilin@zte.com.cn, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
- vbridgers2013@gmail.com, netdev@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org
-Cc: xu.xin16@zte.com.cn, jiang.kun2@zte.com.cn
-References: <202609040845307827XHaxAT2PmgJc9jjPqfAP@zte.com.cn>
+Subject: Re: [RFC PATCH net-next 0/2] ethtool: add interface capabilities and
+ PHY test
+To: Shubham Das <shubham.das@intel.com>, netdev@vger.kernel.org,
+ andrew@lunn.ch, alexander.duyck@gmail.com, lee@trager.us,
+ =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
+Cc: siddaraju.dh@intel.com, balaji.chintalapalle@intel.com,
+ dasshubhamk@gmail.com, magnus.k.lindberg@ericsson.com,
+ jonas.wirandi@ericsson.com
+References: <20260825043708.1512634-1-shubham.das@intel.com>
 Content-Language: en-US
 From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-In-Reply-To: <202609040845307827XHaxAT2PmgJc9jjPqfAP@zte.com.cn>
+In-Reply-To: <20260825043708.1512634-1-shubham.das@intel.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
 Hi,
 
-On 9/4/26 02:45, he.peilin@zte.com.cn wrote:
-> The software VLAN stripping logic in stmmac_rx_vlan() was originally
-> introduced in 2014 by commit b93819854d6e ("stmmac: Add vlan rx for
-> better GRO performance.") as a workaround to improve GRO performance,
-> since at that time GRO could not handle frames with VLAN tags. However,
-> this limitation was resolved in 2015 by commit 66e5133f19e9 ("vlan: Add
-> GRO support for non hardware accelerated vlan"), which added GRO support
-> for non-hardware-accelerated VLAN frames. Keeping a software fallback
-> path for VLAN stripping is no longer necessary and only adds complexity.
+On 8/25/26 06:37, Shubham Das wrote:
+> This series adds two new ethtool netlink commands:
 > 
-> Fixes: b93819854d6e ("stmmac: Add vlan rx for better GRO performance.")
-> Signed-off-by: Peilin He <he.peilin@zte.com.cn>
-> Reviewed-by: xu xin <xu.xin16@zte.com.cn>
-> Reviewed-by: Jiang Kun <jiang.kun2@zte.com.cn>
-> ---
-> ../net/ethernet/stmicro/stmmac/stmmac_main.c | 28 ++-----------------
-> 1 file changed, 2 insertions(+), 26 deletions(-)
+> 1. intf-caps-get: Discovers the functional block layout of a network
+>    interface. Each block represents a hardware point (MAC/PHY/MODULE)
+>    at a specific 802.3 sublayer (RS/PCS/FEC/PMA/PMD) with its
+>    supported capabilities (loopback, test patterns, BERT, error
+>    injection).
 > 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> index b2b7d0242dd3..2e3b0cf10d66 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> @@ -5021,24 +5021,6 @@ static netdev_features_t stmmac_features_check(struct sk_buff *skb,
-> return vlan_features_check(skb, features);
-> }
+> 2. phy-test-get / phy-test-act: Per-block, per-lane PHY testing using
+>    test patterns, BERT (Bit Error Ratio Test), and error injection.
+>    The block_id from intf-caps-get identifies which hardware point
+>    to test.
 > 
-> -static void stmmac_rx_vlan(struct net_device *dev, struct sk_buff *skb)
-> -{
-> -   struct vlan_ethhdr *veth = skb_vlan_eth_hdr(skb);
-> -   __be16 vlan_proto = veth->h_vlan_proto;
-> -   u16 vlanid;
-> -
-> -   if ((vlan_proto == htons(ETH_P_8021Q) &&
-> -        dev->features & NETIF_F_HW_VLAN_CTAG_RX) ||
-> -       (vlan_proto == htons(ETH_P_8021AD) &&
-> -        dev->features & NETIF_F_HW_VLAN_STAG_RX)) {
-> -       /* pop the vlan tag */
-> -       vlanid = ntohs(veth->h_vlan_TCI);
-> -       memmove(skb->data + VLAN_HLEN, veth, ETH_ALEN * 2);
-> -       skb_pull(skb, VLAN_HLEN);
-> -       __vlan_hwaccel_put_tag(skb, vlan_proto, vlanid);
-> -   }
-> -}
+> The block model uses:
+>   - component: which hardware entity (MAC, PHY, MODULE)
+>   - sublayer: which 802.3 layer (RS, PCS, FEC, PMA, PMD)
+>   - instance: identifies multiple instances of the same component
+>     (e.g., internal vs external PHY)
+>   - depth: host-side vs line-side within the same sublayer
 
-This is still not looking right, make sure you use the correct tools to
-send your patches, either "git format-patch + git send-email" or "b4" :
++Björn,
 
-https://docs.kernel.org/process/submitting-patches.html#submittingpatches
-
-For b4 :
-
-https://b4.docs.kernel.org/en/latest/contributor/overview.html
-
-Thanks,
+I'll try to give this a read/test in the next days, 
 
 Maxime
+
+> 
+> Prior discussion on this proposal:
+> Link: https://lore.kernel.org/netdev/SN7PR11MB810923BBDEC398E860099150FF1B2@SN7PR11MB8109.namprd11.prod.outlook.com/
+> 
+> Shubham Das (2):
+>   ethtool: add interface capabilities query (intf-caps-get)
+>   ethtool: add PHY test framework (phy-test-get, phy-test-act)
+> 
+>  Documentation/netlink/specs/ethtool.yaml      | 206 ++++++++++++++++++
+>  include/linux/ethtool.h                       |  92 ++++++++
+>  .../uapi/linux/ethtool_netlink_generated.h    | 104 +++++++++
+>  net/ethtool/Makefile                          |   2 +-
+>  net/ethtool/intf_caps.c                       | 130 +++++++++++
+>  net/ethtool/netlink.c                         |  24 ++
+>  net/ethtool/netlink.h                         |   7 +
+>  net/ethtool/phytest.c                         | 171 +++++++++++++++
+>  8 files changed, 735 insertions(+), 1 deletion(-)
+>  create mode 100644 net/ethtool/intf_caps.c
+>  create mode 100644 net/ethtool/phytest.c
+> 
+
