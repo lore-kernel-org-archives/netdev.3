@@ -1,135 +1,128 @@
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54761390223
-	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 08:31:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.169
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788510698; cv=pass; b=rbfrzy0r0cXDKNybVwAJ7q09D9oBzeLhQrv0CT6DF82BAFJIt3ftC7wc56fGB+JeLYRzVIHUZqqktK5iifVhMkDFk2edR+leKskD50G9nXSP4DnuS6PGQ2E4OnnPSTAhAUIrGB3zt76mlSXbiEWQ0M5FRwyKRKoD4BDCy1t60bo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788510698; c=relaxed/simple;
-	bh=Zct3tA1vd0s2hqzChN6hFnwvudPWbiHeihh3PxhVjYw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Y2fbVJhKlgWRMOxHyYYyd6Q3PTA/34iz5lIGUZVnBQxYg7wsftX6knEFa8OUYEjma0D/sOtUefnX2wr0wIyDQ3ZCMaWtwljdjkXedXKJDt5W23MivuwQiHWG01QI5AK/vj4jLEBaSRSOgq76RvSsM9RywYO4fslWop0pUM1D5hs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=G/mQasY0; arc=pass smtp.client-ip=209.85.210.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83C043ED3C9;
+	Fri,  4 Sep 2026 08:31:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788510705; cv=none; b=mkqETevcsoPhqOEkiCGJJbQFgAUzBLdQDHjnI/fEM1etvfCXz/6AXcdphsum3t/77e7a2PdybVvP6DDegQCUCeZOhK5tWbPhlCsIV1xyvDNepZql14a4rLtKwpdlYt78iC/37tEG8EYoqyB9D6NMokCdgBHBKlNI42JY/4P/NR0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788510705; c=relaxed/simple;
+	bh=kYzwPiwPQTG6He/fbSD8ZKgTybgLrz0oClvGcTTaxEY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=WwAZd/4/xk+tTyEnh4ZvxjLCxXgOOG8MyyHl+cM7nIy515cTH0M28f2BBVf2aHosDlhXnBwhCbV/i8ltCA+KAO03xEG3t96uISkDF3NesWKRDS3MbYoHM7CsYq6igV8X1++yx5dJhMYKt8hLeStFU5VLSTHyrpyZ6IUK2Koin5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=gttbMfVV; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=zstC7P9h; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="G/mQasY0"
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-853f8c34ba4so1028810b3a.0
-        for <netdev@vger.kernel.org>; Fri, 04 Sep 2026 01:31:37 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788510697; cv=none;
-        d=google.com; s=arc-20260327;
-        b=d4CzOsekdUXui5Tf2vzoAgQpBOkiLpFIVXtHMMzGTGIjV1zGAfMx75KmSJCORoqHmf
-         ZBGY5GHgAHJewFpo3suTiXdRUOGZ/r62zMjZJyCtvSFaUZTXYrnPaxSbps6GIw5ffb6z
-         bpD0LNYN+C/dnclva3OxkkbUq0Uo6V6WGESexLzaDfLICN8sxV0VJvz6YFBzBowdf8Mv
-         FTqMUF9QpodXzfWOqER9BCSyYs63kdaZUUJWSh4jT4RB49maXQ8Ae37iAFC1wx/PbhiF
-         shraJxLfJwRl0gVxmspo9w6rXx1qRg91LMB4fBvTNIA6ohyYYzLbH8tCvOO90kTRnZBF
-         n/kA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=707kDHdR/FNIPTJBC69xcl2naZm5MV0ZXXSBtfd5zfg=;
-        fh=/qS7pDVx1PdVvAFUzdBqbRDUaeOTJaWGdiQkx73LwTg=;
-        b=dydDskNBTgXmcITKEQejnwmmOG1yH7a3mPzfPgxwml0pQf+c6IEpeLqiECOaT6uMB/
-         cnxAVpT/Lgf2hYKK0JYzJq4GMvoKmRb9qpbYcbSdK2G3URJXfKjgbhiZf8Mk8pTj/nIr
-         U0eaD/LQNK84RDL3UmA/k3R8krfG6t6VQOJ7YK8xYtHpFX7sX/PFOVSKqo8Ls6j1qi+9
-         hkfzMrHy7HERyMn8sFyGjstnB54hhHbwnvKXPZKmiuvATzTCRlTwVNK6fif9DwV1Hk83
-         BPtnA3PRf8mzYQkv96uiLp6eaWUjIJNw+4Ncz2LGL+7HwAtVxVU3078AuuhEkqf+Fua9
-         QhBA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1788510697; x=1789115497; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=707kDHdR/FNIPTJBC69xcl2naZm5MV0ZXXSBtfd5zfg=;
-        b=G/mQasY0lkxTaqkd/jFbKxrubAv1G0XGsGNvlMCmBi+0qacc/qrMIsQ6VEi7jZuh1w
-         4kWfb1df+/30bthZDhJ2o1ADVPTXE0Le/enfrV24hlCXRqI7rsGLJKGEPMdnDuSffuz7
-         qZ9O/Hc/9HvRACOoCOgLAZaAZo+tLxwbJaBpQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788510697; x=1789115497;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=707kDHdR/FNIPTJBC69xcl2naZm5MV0ZXXSBtfd5zfg=;
-        b=li2DV68pNlFJKcb8rr/8lXFLho/rPUr5mFAXLfmmyqP4WHX3ru3gxD/H6ykM4kq/gY
-         tEc16Hz55YFjed4J1E8Jm4X9L8c2mA/FCxFdEpLtySOKAhcmRfz4ZWfXeIUNru9thc3d
-         e3ZPju8ncmPKHSjoZrp6xzuZOxnnXtLJOUxCAJ5w7cHIaBq2nRCK2GT9cvRrb3tC2Dua
-         RBfEOX2CZn0bYAXNg4BDHqaGTsZQmp1WlW7rNA1mEGDFfVxRVaUm+P6/WPEtEOWxHPq5
-         iDBklcx5HxWo+hTjR/tKMSsFOFvOzBepmXX6X+awT2HWXg14dG1x3XrDvao/BFeuUAs+
-         r5sQ==
-X-Gm-Message-State: AFuF++kmA/0TrH63DopHj9QZDqt54Fiohud14vwPtPCywslRHCIBi95d
-	EbQedRMYxMHp6Ep9484wnI7CsmUUElMvs826IdvjZdL+/tAYEmt1u2pc/VJUTQ3q2mzyvgx0IFe
-	oGE5Ki1CGrJbWycExnO0hUryFBBMoTZQTwt15GQcJ
-X-Gm-Gg: AYBFou3Wa7l9CiT+JxZoym8HIpYMnp2DwZk9KEsE/ItXeRb6GNCEqf+9ue47SkdWk6f
-	Cr1epOxUCiotiIyGz9ELmr/BhdaFcrVGwsjqqrEoI/M/gQZb+5NB4jLXacN5MsIZdLGO45Ycy/b
-	OUt8s3GoDqJ94wYOwifYzlEEN/HUs1Sjf6/ni9WCpxYyirjEm0dM/GhU2d7IRO3M5vwuemiCxtW
-	qO7lBNVupARKdQZAWWzYLGFhB/NS26WWqqgc4oTY52kw3FBgpXvSvaz6OZNn7hTHU6UWIhI/nwJ
-	ayiI+eJBrtvtsTLWUlkJPlVdHJLckCr/NEyyDFU7lF/22HLoBu2fce6a7Ah0TG//7laphSv5NmN
-	A+NC/GoMaSix7ggBdxiM/3ssnB3InLpAZbA==
-X-Received: by 2002:a05:6a00:178f:b0:847:8b11:5966 with SMTP id
- d2e1a72fcca58-8616967ccfdmr5757402b3a.1.1788510696674; Fri, 04 Sep 2026
- 01:31:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="gttbMfVV";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="zstC7P9h"
+From: Kurt Kanzenbach <kurt@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1788510701;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ni8LvFSJr+XgYvhSP5Cdjh+BAaWLohkeApHNkr1D8gg=;
+	b=gttbMfVVlEFz0vwmhyl2UM7QFWXHhN7dt7R+1bsEHeKIgAH8sOFUAljmU5Slq8DnBldN/L
+	PbBgAYX5a4HSVVnDtM1YppRAxGVoaGu2rK+qxoXKDYgIWDjMJFj8SHeRufakemijRthssk
+	9l17gITZVrV9eaKKbjNnqO0FkoVBfV2VfrZhGYRZO4l4N+QEwy3MdwUU5w4Uhay1ZfNj53
+	S5jhuW5tSItcx99d9W6hLYaZfQr/KfrQqA30hw5bZhNcTEc4wqfy5upmo5hCqEWiJwX5rF
+	KdRHrK1OWEoXK5hEXJXutHiubCFb8QCfynLbPmFhrPYEdbaiZjmazFu1KNmKRA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1788510701;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ni8LvFSJr+XgYvhSP5Cdjh+BAaWLohkeApHNkr1D8gg=;
+	b=zstC7P9hAO4OqH4XqbNAIJmdq79e8/C2mtXgbCCc+HkMZ99jOLLbrwhGA5OlrpZ5Mt4Mew
+	XxHSfG2uSXSQ5+BQ==
+To: Siddharth Vadapalli <s-vadapalli@ti.com>,
+ dario.binacchi@amarulasolutions.com, mkl@pengutronix.de,
+ mailhol@kernel.org, msp@baylibre.com, florian.fainelli@broadcom.com,
+ jonas.gorski@gmail.com, andrew@lunn.ch, olteanv@gmail.com,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, hauke@hauke-m.de, chester.a.unal@arinc9.com,
+ daniel@makrotopia.org, matthias.bgg@gmail.com,
+ angelogioacchino.delregno@collabora.com, ansuelsmth@gmail.com,
+ linusw@kernel.org, luizluca@gmail.com, alvin.sipraga@analog.com,
+ clement.leger@bootlin.com, justin.chen@broadcom.com, dlan@kernel.org,
+ rogerq@kernel.org, hkallweit1@gmail.com, linux@armlinux.org.uk,
+ rjui@broadcom.com, sbranden@broadcom.com,
+ bcm-kernel-feedback-list@broadcom.com, opendmb@gmail.com,
+ andrei.botila@oss.nxp.com, wangruikang@iscas.ac.cn, amadeus@jmu.edu.cn,
+ kees@kernel.org, tmshlvck@gmail.com, c-vankar@ti.com, horms@kernel.org,
+ vadim.fedorenko@linux.dev, daniel.zahka@gmail.com,
+ nora.schiffer@ew.tq-group.com, v-singh1@ti.com, oss@vassilevski.com,
+ haokexin@gmail.com, alex@sverdlin.org, aleksandr.loktionov@intel.com,
+ lgs201920130244@gmail.com
+Cc: linux-can@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-mediatek@lists.infradead.org, linux-renesas-soc@vger.kernel.org,
+ linux-riscv@lists.infradead.org, spacemit@lists.linux.dev,
+ linux-omap@vger.kernel.org, s-vadapalli@ti.com
+Subject: Re: [PATCH net-next 11/33] net: dsa: hellcreek: Remove comma after
+ sentinel-entry in match-table
+In-Reply-To: <20260904043724.2955444-12-s-vadapalli@ti.com>
+References: <20260904043724.2955444-1-s-vadapalli@ti.com>
+ <20260904043724.2955444-12-s-vadapalli@ti.com>
+Date: Fri, 04 Sep 2026 10:31:38 +0200
+Message-ID: <877bl14dud.fsf@jax.kurt.home>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <QDISC-1L5H.v1.20260903184552@mojatatu.com> <CANn89iKFVvFaNcZyGOxmyPbpc6ax49ZqwMWDeBAsH5dav-y-SA@mail.gmail.com>
-In-Reply-To: <CANn89iKFVvFaNcZyGOxmyPbpc6ax49ZqwMWDeBAsH5dav-y-SA@mail.gmail.com>
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Fri, 4 Sep 2026 04:31:24 -0400
-X-Gm-Features: AcwNN1UO-DsxSwJBEw1u402haO7sGBSEBLy3v4Unf6zC228XqPGtU0z0wn8jRpg
-Message-ID: <CAM0EoMn5M__WHkniZLw8GNtHpTresTC2dQuL6brmAzUXH1YUKw@mail.gmail.com>
-Subject: Re: [PATCH net 1/2] net/sched: codel: bound the dropping loop per
- dequeue call
-To: Eric Dumazet <edumazet@google.com>
-Cc: netdev@vger.kernel.org, stable@vger.kernel.org, 
-	Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Victor Nogueira <victor@mojatatu.com>, Johannes Berg <johannes@sipsolutions.net>, 
-	linux-wireless@vger.kernel.org, Vega <vega@nebusec.ai>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/signed; boundary="=-=-=";
+	micalg=pgp-sha512; protocol="application/pgp-signature"
 
-On Thu, Sep 3, 2026 at 8:35=E2=80=AFPM Eric Dumazet <edumazet@google.com> w=
-rote:
->
-> On Thu, Sep 3, 2026 at 10:56=E2=80=AFPM Jamal Hadi Salim <jhs@mojatatu.co=
-m> wrote:
-> >
-> > The CoDel control law schedules the next drop one interval/sqrt(count)
-> > after the previous drop, using the configured interval
-> > (codel_params.interval). For very small intervals the scheduled step
-> > rounds down to zero, so the dropping loop in codel_dequeue() never
-> > advances and drains the entire backlog under the qdisc lock in one
-> > call - an unprivileged user can trigger a soft lockup this way.
-> >
->
-> ...
->
-> >  static bool codel_should_drop(const struct sk_buff *skb,
-> > @@ -156,6 +161,7 @@ static struct sk_buff *codel_dequeue(void *ctx,
-> >         struct sk_buff *skb =3D dequeue_func(vars, ctx);
-> >         codel_time_t now;
-> >         bool drop;
-> > +       unsigned int drops =3D 0;
->
-> SGTM, note that this line breaks RCT.
->
+--=-=-=
+Content-Type: text/plain
 
-Grrr.. it was in my brain to fix it, but my fingers didnt get the command ;=
-->
-If needed, I will send a v2.
+On Fri Sep 04 2026, Siddharth Vadapalli wrote:
+> Since sentinel is the last entry and we do not expect further entries
+> following it, remove the comma.
+>
+> Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
 
-> Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kurt Kanzenbach <kurt@linutronix.de>
 
-Thanks for the review - struggled a bit with this one and wasnt 100%
-sure it was the right approach.
+> ---
+>  drivers/net/dsa/hirschmann/hellcreek.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/net/dsa/hirschmann/hellcreek.c b/drivers/net/dsa/hirschmann/hellcreek.c
+> index 2c6cabf61143..aec50414986e 100644
+> --- a/drivers/net/dsa/hirschmann/hellcreek.c
+> +++ b/drivers/net/dsa/hirschmann/hellcreek.c
+> @@ -2093,7 +2093,7 @@ static const struct of_device_id hellcreek_of_match[] = {
+>  		.compatible = "hirschmann,hellcreek-de1soc-r1",
+>  		.data	    = &de1soc_r1_pdata,
+>  	},
+> -	{ /* sentinel */ },
+> +	{ /* sentinel */ }
+>  };
+>  MODULE_DEVICE_TABLE(of, hellcreek_of_match);
 
-cheers,
-jamal
+--=-=-=
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQJHBAEBCgAxFiEEvLm/ssjDfdPf21mSwZPR8qpGc4IFAmqageoTHGt1cnRAbGlu
+dXRyb25peC5kZQAKCRDBk9HyqkZzgmpcD/0ZDNE5OcjIaORENBAJWFAfQ8t8cbUh
+WxjiC8fuzfyKdtApGPQhshKlZofeGLdoAehqDcWBUJDl0J3RcQ9Ctr0P8l3MZdsd
+y9/sT1oyBhsd95NPT96hkZILmwnEvQaSsCZSKbGVgNRbbZt/xNkpYuOjIPX8S2hl
+r27yN9gFoVJsLAHISO8qhZo7t5BDC0qS/Qzyz9qht0XQIfv3SFiw4NO8orcRg0KA
+T2fwrgVYmo7Qof2xOvtJ6feG6VrptC8hESQlQlFZJ6n6ceeWwy9lzGE6XsYqIFaN
+23gkwiMHTfhrmFSGbGCZS5XL8xVWhmi52cNCUPfnUIQesxmVjUCiQbccli6qUJac
+HDXlcN61mtTozJ36MTplagiLTRd6E7VemrUOCS8zL102tpoWBBjK/B0q/A7lHP3Q
+eGlbD2OX6pdggFhilV6Ig6w+aggtjQ2aUhY2tQj9uQ/RXRUJcjd+6JVV+ESi4Gw8
+oK6+a1yTbPAccgeRsKfKH33xOOyRLlaLStYp7TsNSTa2tLu5mOv0K+YC1uchFd82
+a3xDgTDaT6l35FoPZZawkcShojIkr1doEiQfbKeg7AbOjUvUI+OYoYnRdpIR81pc
+BhVu/HDfLVb3r8MXb6z8f0pulfgjpvxVAJJatZgmEJxPSkzOeBZvSY8cm+PN5H6k
+WTJGMjW9Vm8MMg==
+=3DPy
+-----END PGP SIGNATURE-----
+--=-=-=--
