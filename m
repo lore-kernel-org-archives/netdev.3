@@ -1,126 +1,165 @@
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+Received: from mail-oo2-f8.google.com (mail-oo2-f8.google.com [74.125.231.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 915A04A99D7
-	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 14:12:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788531163; cv=pass; b=PZzXeQ3TKwI4p/N1TCpfRiNLtQhgvidWzGw/vQwO1cvCWhxfH52gdjgy+3JfZL4ScxHsotHD3N8P/oSZw7iK0eWzCdjO9dlyjPvo3FZS/OOdzrMySvZR0j0kfwJ/p8XEyOkfrAlSgpzVS8inA1NOtnyIPZZSF+vL3fDRxNIOj3w=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788531163; c=relaxed/simple;
-	bh=tJiXGDNLyxuN396q5CUOQROK9/agExeMPwA8K6/acLA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bKosARPeidOADQ7bmss1J+Em5H3w6bVvVZTRrBBgoPMZApYJsS3b/EW6hV+Y/9EgtToZAsAKIAsYqLBLxKzm1V+W1GKud1YnxpwiPpsQyLo7rvh+Bu9fY+TAQ15gR1ITAwGo7sKB4WC0OXBNhj69MUzqW4r/WOWfkDEdb06D1ro=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fzVe/MIv; arc=pass smtp.client-ip=209.85.218.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fzVe/MIv"
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-c253425b253so152709766b.1
-        for <netdev@vger.kernel.org>; Fri, 04 Sep 2026 07:12:40 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788531158; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Vs7J2zrMruL8nIf/dAx3T3lKX23NmRM/87GKxqverxhFzdpjd3OOLoEMC8A87+5Cih
-         dsbJJIYwmaXn7zTSMo7TQUetuq0uEe7TfzLx8MDqRxzBbo/Qr3wzPk7PMKKtgpFSTyN1
-         k8NZFWJAmCUGaV4ON1mLeZis5KPNaifUc8cbjKT5hxBnn4ApwZ/l+2oXNGWVD2Ctjc6J
-         LrxytTnsedJ1O/AupP+Fg1TzvE1I++gIdPbXF/SmCOMOJMoBwKmNWFEU441ghSKU51kx
-         N+TYTfVH9R+6DS+bi+z7ixocfYSmtebzm/a4+9aY6L0t3o0ksv10ulvywl4wBbiYTsXS
-         u1pA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=yNlBRwCMNMD3QTbLrkFdaLqTwN+WPCN5l1kXt+BpUQY=;
-        fh=zLky42nQ0cEc2RzDN91ZqlL6+SoXNBxbXJgik5tjfzg=;
-        b=KVeeEdv0QH0moq5+wjEHu+Luoxwndulx2eAsMbXokqpgYW0PtD4yVF+X/A55MMJvjz
-         bZhXL/jRUr6ZtsR07ktt6AzJe7ikIwf0DKoFrTvSH0rJZXG+YnK4x/Hok4OhBKl5rG8T
-         ePg7syw8pnQM63O1+l2pJb4ulylIgIRIGV160La0uDjfFUADJauZdQNdTBfbtF0izYGZ
-         9gB4I4dQ8c3uFTkiB1Wx+nc+ZOMT4ROPScoLP0s5D8pDZERJDqpjiLMV9SGbsP40WrDm
-         7X3D3i9sD236b1SzLG2qtuz6sWv5v0gB/3l990x5/tiW2jFGckpIAgKp+hQmVnrVmIFC
-         fCPg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788531158; x=1789135958; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=yNlBRwCMNMD3QTbLrkFdaLqTwN+WPCN5l1kXt+BpUQY=;
-        b=fzVe/MIvOn8dgctNVo5pmFSVoN8JTAaJ0WO1g/DQU4QI+/6kmz4oJ46sS2EHTUnDfP
-         ghe2cifp62WrIBlWqVKndwYFETtGR0yusJ7J1I7nKzTspfc3t0CvnBqGwdQzF89P5a9P
-         RDrzDNfI2Nc8UrcN+67VLp2G695dq/2OlCxO1aVjeoMquOovexI+CsS2rXJTcEgeZT2e
-         8l0lnRcP7+VI0z4rT6i7lIhHdG7f4lrl+sWQFl1UE9VarRsnIujuMr4xpEFA+5VYVDQ+
-         k/H2tPutE4/A2bfJVZBa08pbQuvBQOeQyK3A7G39MZbc25y2Op/pQp6D+TtyZfpl0LoJ
-         hirQ==
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E91934AFE2A
+	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 14:14:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.136
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788531279; cv=none; b=Ty5jzCXk0U3QwHKQ3s7Fr9UXm1RQUKvkvDKkEgT5/dTZNuwt+xXqGLdAXR4XunJ6BNkAjo2IMHh00dPZ+MyekF9v1xr0ErJFw5sC2Xk/6/TuCl42sDyJmiASoc9ToW3Vih5glmCz1uPdYQPmKz67cum8xLjFdeutVpyaJyr9eJ4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788531279; c=relaxed/simple;
+	bh=5cOsq/Q3S9J60MxF0T7IjniXMOMBOWSojeVSUpw78wQ=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=cB/L0DB2hXU7ndHRn16l+fVVwAJFKMiUoRzcq9Vkgg7O/JPD3OWzb/kUNsK7kk4xef0uqRj3qBYtbtsorw5u0L7zXhA/RF9HY3jXuXktMw9p3jXJVc3jqVBRtVKGN/ahyxrLeaQm4OKy17NuU/mnV+4sbRdP8JTpftiwkeSZPcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=74.125.231.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oo2-f8.google.com with SMTP id 006d021491bc7-6b1ca037684so58039eaf.0
+        for <netdev@vger.kernel.org>; Fri, 04 Sep 2026 07:14:37 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788531158; x=1789135958;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=yNlBRwCMNMD3QTbLrkFdaLqTwN+WPCN5l1kXt+BpUQY=;
-        b=XtP0pRfr9H07nP21R6fjoHRCxWe4qKffv3EPTbjkKekl2ulUWRIns5AkM61m9mgz4+
-         EBgbRMYXCzuQaOQwwqNXaPxUbyJ5d01QCm938C2QLbxUuiwQrhEAMtF/YWHmSXxtMWPJ
-         Ok0LcaHK+ecetyp8hR8CRNbQ/dRmOJkQ5+q6VBBvU/OhAoTANXMj/P2V77chFcbso+xN
-         FwXDtzsINdFH8G0LzlN3hMy/k1qxtzXH1gGY8A5dXXXNe4KYg53DCh0e7LKCAD+WcvK/
-         5Dy4UBufw0pGRWiTYagQ3o7jMgbVqKckeJgN7ooIObmd6QxyMC7/nU0ekRCyhcTC7zxK
-         GqiA==
-X-Forwarded-Encrypted: i=1; AKwUvBzkyV+2Ty2WulbI8wavYRmduOs2rXHbHoc6XByog5SwJKv8T0NMSlr4fLSVrIxTHKYHd5CvS+A=@vger.kernel.org
-X-Gm-Message-State: AFuF++noFIhrI0OraaH0/v73MYb2jNFMLV9vFC+16PDR/Hmc2CDKml70
-	UF58shtgQRbPLuHfZ9YIkJfxuUJ9W68bzPPcxgEJv2xfLNFyE6ReuqCXh9y62kBDT3t5jt3IWdg
-	jk5Cs53J6+lA+q45caGo1rODi1YqA4ZY=
-X-Gm-Gg: AYBFou1tgRwvgVeipQnw9VTPyz9adVrkAvWKPtLpHIIqfU7H/cKVL4AZjqL/SwzhamT
-	kXRZ0UXotgni79AMFNUSozoah7jMIa5c+8wb8Na0LHH2yomhsdQClablQC13dHWUHAbO/qXTGL/
-	B6+FJniST29pnfKh0N/86Eop/3cWG5EYrTieEKla4Lcd9y/XZOq9cN0LP92pn6Q9V1L86rIaTZx
-	kAjwMxfL2Ku40lTDLsOBfAO6sN34ozyJwBswJE2odFV7KyUEhZsUupHR+NG8SVMraFkoa6YJa/6
-	i9yfM5yHKYEnv+qceB7sUSQycgQ38Thqz0z47SNH2CUPO7g=
-X-Received: by 2002:a17:906:2099:b0:c26:207d:8a8f with SMTP id
- a640c23a62f3a-c26207d8bbfmr50356566b.27.1788531158400; Fri, 04 Sep 2026
- 07:12:38 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1788531277; x=1789136077;
+        h=content-type:to:from:subject:message-id:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=BrmQXxq+VMZilUy3MnBpTbj9a1HxAA2ccanctw/k1pk=;
+        b=XfmzIfQ68mnAu47KXahmeVStg9W72r2UNEUZ0Y9w6ed4tKbIOFR/l43mONkxNsttzG
+         8tKJ4IrPRBhKI4lSdNB8nyGEhplXcjyigwQiRQjR12W9XYO+/kl+T9V/kXFf6LqQqt2K
+         bOeTZYUu6d8ivDNZrBHLZzjmDLhlBSUEkXf8oJ2+mogE3LV5alqVxldN6cFEQUxGmnQ0
+         J6MJfOggGZdpbXwjbDTMHk+jVmIIiDOWbfDShdrY+QYOkD6+2pRV7sBXuZKOcxHe3dAj
+         JlY9lvUJmXCFj9WPVBNwVFVK03WAopERkRZGvxIIyCT9pAccZPyBFRpGBOn90jrj7aZn
+         6xYw==
+X-Forwarded-Encrypted: i=1; AKwUvBxERyU35nGRjaKLINEDnVNgsznX+9OoQ5VwYdCl/dnKL7ykmi7eUXUjyCwU1Ry5n1tReQIgUYk=@vger.kernel.org
+X-Gm-Message-State: AFuF++nuz4Crw6veA4uVBnyPbRzj6Jq7KQeh04UMfWXHSYJwz69CiMtk
+	jouAX/CiVTe7j3tYKShEUkr66txULgtvPqpdx8TLLWWDfHJ5wKAHz80AVOovJVYNUK3sDJRtEf7
+	1BSTaVLIFlaoRZO0ghsOAIKFrhE+VRNIbc1nbklR1vmLoPE3eEa3RDWdCGZ4=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260903092211.2922058-1-o.rempel@pengutronix.de> <20260903092211.2922058-2-o.rempel@pengutronix.de>
-In-Reply-To: <20260903092211.2922058-2-o.rempel@pengutronix.de>
-From: Luiz Angelo Daros de Luca <luizluca@gmail.com>
-Date: Fri, 4 Sep 2026 11:12:24 -0300
-X-Gm-Features: AcwNN1WbPDaaw00DsU5oy1rq55aIUcZnNRKdD71hzUNdp_uim09LPhoaHN9ApEE
-Message-ID: <CAJq09z6w6DQsh4o+9nXinfi=WAUxW4ShmxJspBkXeakCf283tw@mail.gmail.com>
-Subject: Re: [PATCH net-next v2 1/2] net: phy: realtek: use C45 for
- RTL8365MB-VC internal PHY MMD access
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: Linus Walleij <linusw@kernel.org>, Andrew Lunn <andrew@lunn.ch>, 
-	Vladimir Oltean <olteanv@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	kernel@pengutronix.de, linux-kernel@vger.kernel.org, 
-	Ahmad Fatoum <a.fatoum@pengutronix.de>, =?UTF-8?Q?Alvin_=C5=A0ipraga?= <alvin.sipraga@analog.com>, 
-	netdev@vger.kernel.org
+X-Received: by 2002:a05:6820:214:b0:6b3:61fa:102 with SMTP id
+ 006d021491bc7-6b6fdfc2b9bmr4233842eaf.34.1788531276739; Fri, 04 Sep 2026
+ 07:14:36 -0700 (PDT)
+Date: Fri, 04 Sep 2026 07:14:36 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a9ad24c.b5d4176b.238c3e.0001.GAE@google.com>
+Subject: [syzbot] [bpf?] WARNING in bpf_mark_chain_precision
+From: syzbot <syzbot+7b47f87674e9a1569110@syzkaller.appspotmail.com>
+To: andrii@kernel.org, ast@kernel.org, bpf@vger.kernel.org, 
+	daniel@iogearbox.net, eddyz87@gmail.com, emil@etsalapatis.com, 
+	ihor.solodrai@linux.dev, jolsa@kernel.org, linux-kernel@vger.kernel.org, 
+	martin.lau@linux.dev, memxor@gmail.com, netdev@vger.kernel.org, 
+	song@kernel.org, syzkaller-bugs@googlegroups.com, yonghong.song@linux.dev
 Content-Type: text/plain; charset="UTF-8"
 
-> The RTL8365MB-VC PHYs are integrated into the switch and have no MMD
-> registers of their own. What phylib accesses as MMD registers (EEE)
-> actually lives in the switch's OCP registers; the realtek DSA driver maps
-> those MMD requests onto OCP and exposes them over C45.
->
-> For a C22 PHY, phy_read_mmd()/phy_write_mmd() would use C22 indirect-MMD,
-> which this hardware does not implement. Point .read_mmd/.write_mmd at
-> genphy_{read,write}_mmd_c45() so phylib's MMD accesses go over C45 to the
-> DSA driver's mapping instead.
->
-> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-> ---
-> Anticipated reviewer questions:
->
-> Q: .read_mmd/.write_mmd now use the C45 helpers, but the DSA user MDIO bus
->    only gains .read_c45/.write_c45 in the next patch -- is this bisect-broken?
-> A: No. Until then an MMD access returns -EOPNOTSUPP, but the only one that runs
->    is the EEE-ability read in phy_probe(), which phylib ignores; probe, link and
->    traffic are unaffected. ethtool --show-eee reports EEE unsupported here -- the
->    same as before this series, since these ports gain EEE only in the next patch
->    -- so it is not a regression. Verified on an RTL8365MB-VC.
+Hello,
 
-I was going to do exactly that test but you saved me some time. Thanks.
+syzbot found the following issue on:
 
-Reviewed-by: Luiz Angelo Daros de Luca <luizluca@gmail.com>
+HEAD commit:    e044668419b9 Merge branch 'misc-bug-fixes-part-1'
+git tree:       bpf
+console+strace: https://syzkaller.appspot.com/x/log.txt?x=162038f9580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=13dd96f4206498c4
+dashboard link: https://syzkaller.appspot.com/bug?extid=7b47f87674e9a1569110
+compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=165fcb49580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=112038f9580000
+
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/2c0c9fa35baf/disk-e0446684.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/1ed2d74549a1/vmlinux-e0446684.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/479e5164ed3b/bzImage-e0446684.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+7b47f87674e9a1569110@syzkaller.appspotmail.com
+
+------------[ cut here ]------------
+verifier bug: backtracking misuse
+WARNING: kernel/bpf/backtrack.c:829 at bpf_mark_chain_precision+0x571b/0x76b0 kernel/bpf/backtrack.c:829, CPU#1: syz-executor403/5624
+Modules linked in:
+CPU: 1 UID: 0 PID: 5624 Comm: syz-executor403 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/24/2026
+RIP: 0010:bpf_mark_chain_precision+0x571b/0x76b0 kernel/bpf/backtrack.c:829
+Code: ff 89 d9 80 e1 07 80 c1 03 38 c1 0f 8c 16 ff ff ff 48 89 df e8 76 17 44 00 e9 09 ff ff ff e8 0c d0 d4 ff 48 8d 3d b5 50 6a 0e <67> 48 0f b9 3a 48 8b 3c 24 48 81 c7 88 08 00 00 48 c7 c6 a0 c6 f6
+RSP: 0018:ffffc90003957228 EFLAGS: 00010293
+RAX: ffffffff81f23d54 RBX: 0000000000000001 RCX: ffff88807f7b9f40
+RDX: 0000000000000000 RSI: 0000000000000003 RDI: ffffffff905c8e10
+RBP: 0000000000000003 R08: ffff88807f7b9f40 R09: 0000000000000003
+R10: 0000000000000007 R11: 0000000000000000 R12: ffff88807f4f3050
+R13: dffffc0000000000 R14: 0000000000000001 R15: 0000000000000000
+FS:  00005555805e0400(0000) GS:ffff888125024000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00000000006a9ee0 CR3: 000000007133a000 CR4: 00000000003526f0
+Call Trace:
+ <TASK>
+ mark_chain_precision kernel/bpf/verifier.c:3373 [inline]
+ check_helper_call kernel/bpf/verifier.c:10894 [inline]
+ do_check_insn+0x12a74/0x17c20 kernel/bpf/verifier.c:18177
+ do_check kernel/bpf/verifier.c:18363 [inline]
+ do_check_common+0x3c19/0x5d30 kernel/bpf/verifier.c:19444
+ do_check_main kernel/bpf/verifier.c:19540 [inline]
+ bpf_check+0x2639/0x2e10 kernel/bpf/verifier.c:21195
+ bpf_prog_load+0x14d6/0x1c20 kernel/bpf/syscall.c:3133
+ __sys_bpf+0xd0d/0xd90 kernel/bpf/syscall.c:6367
+ __do_sys_bpf kernel/bpf/syscall.c:6486 [inline]
+ __se_sys_bpf kernel/bpf/syscall.c:6483 [inline]
+ __x64_sys_bpf+0xba/0xd0 kernel/bpf/syscall.c:6483
+ do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+ do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f4f25cf1749
+Code: c0 79 93 eb d5 48 8d 7c 1d 00 eb 99 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 d8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fff991a6f18 EFLAGS: 00000246 ORIG_RAX: 0000000000000141
+RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f4f25cf1749
+RDX: 0000000000000080 RSI: 0000200000000300 RDI: 0000000000000005
+RBP: 0000000000000000 R08: 0000000000000006 R09: 0000000000000006
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 0000000000000000 R14: 00007f4f25d84c40 R15: 0000000000000002
+ </TASK>
+----------------
+Code disassembly (best guess):
+   0:	ff 89 d9 80 e1 07    	decl   0x7e180d9(%rcx)
+   6:	80 c1 03             	add    $0x3,%cl
+   9:	38 c1                	cmp    %al,%cl
+   b:	0f 8c 16 ff ff ff    	jl     0xffffff27
+  11:	48 89 df             	mov    %rbx,%rdi
+  14:	e8 76 17 44 00       	call   0x44178f
+  19:	e9 09 ff ff ff       	jmp    0xffffff27
+  1e:	e8 0c d0 d4 ff       	call   0xffd4d02f
+  23:	48 8d 3d b5 50 6a 0e 	lea    0xe6a50b5(%rip),%rdi        # 0xe6a50df
+* 2a:	67 48 0f b9 3a       	ud1    (%edx),%rdi <-- trapping instruction
+  2f:	48 8b 3c 24          	mov    (%rsp),%rdi
+  33:	48 81 c7 88 08 00 00 	add    $0x888,%rdi
+  3a:	48                   	rex.W
+  3b:	c7                   	.byte 0xc7
+  3c:	c6                   	(bad)
+  3d:	a0                   	.byte 0xa0
+  3e:	c6                   	(bad)
+  3f:	f6                   	.byte 0xf6
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
