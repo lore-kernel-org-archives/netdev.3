@@ -1,79 +1,221 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45C0F78F2F;
-	Fri,  4 Sep 2026 00:11:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6BEC1DE8BF
+	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 00:19:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788480673; cv=none; b=j9O2uavC5KffWJYczLF3KZBF9z+cOEdCzFTpYQegy2HqiAHTfKyzqUelbqocHkEer7FsIumrR446ZoUaU+w5ZdUQGClOXZH9W/qNk5jI1qrjFj2KN4vrI/jAIgiGtvyYZi/Hnf3nRSDGFciNcRPshWDuLCM37bc7z2ti3rasuQc=
+	t=1788481185; cv=none; b=t/1ZhdY9KtWHTkdX8XEQBEn0vCt0w1avcTob89Myrm6b/QBan/XzVvgt4rEAXVY5YYQtBb6+T5Xc5YwLCnvya6YzdwiqFvYqn954JAQ59AeGFnQqekUc7SgEkWHhK4uGZBdLUQsxvmqdNpQVefFpLf9oahNHtXtIpCH4k6WWWng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788480673; c=relaxed/simple;
-	bh=EiTcvI4B6l0ePJkFefHi0zPw+R3AbkT2yuq2RDEK/xA=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=do9NmoRjvybY+b6sCnoyGLCjuByJ/N4FYU4XMzIWh4LPy6lCf6pBVSRDA7QC0ampd4byJKuw74oSeY6+oE0zXfjHBYtqOYcFwwe6HIxWgrQIj1/tBT/zA6d2YiJGwcNZe2tCTNifx3a55f6znpbdp6ym9ec7vtkxA6nLpvc92kU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OlkZ7jbp; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788481185; c=relaxed/simple;
+	bh=FTt0lZcPKwqk3Cllosljk/aypfqQR5H/SeoRjYVKg3Q=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=dUBj5IUXG4/JCvMMM18Wi450qCn2Q/2f8Q3qwO78e6p9sDRhhlDrtye+fZ3In6nCB3n1EamPekaMtk9QUezUfl7Mbl3/8ipviS5ElesSNYSaBsMiS1RKAPRIetggOYR2YJZkmHPZRfpZy7Yb5JEhfVH8xE4u+Oojo6oiOdqe0eY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fvwlTDyj; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OlkZ7jbp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F18DD1F000E9;
-	Fri,  4 Sep 2026 00:11:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fvwlTDyj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25D751F000E9;
+	Fri,  4 Sep 2026 00:19:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788480672;
-	bh=6igfylbiPVH55AzQH8lmo4FGKJAEbNaVtc7IkHl15UQ=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=OlkZ7jbpGyCOa/V6KcYnKC196+ll9RLBQC+xTTSpYy0y/yX3PDpLToLaGfZnRgqIG
-	 gyWuVFHy+6Y4l+AK0flugcPqdyz8aS98vwtAwmKn2NU2Qy5W8IcRnmGeAgpQNWhZLG
-	 oAwUPfo9+32Vp6HubM+XzkSHj9kcTcNm7q2xcT77arKF9Zh0kbc6jAIJbO/c5NguvY
-	 +A7wdn/uaH2EwirSEzBJb8R5JVCTyVh/Pn+SitrKllj7jjbJbetvRy1u8u5LQLNu9c
-	 vkNM/lnvY/ogLEmodQSax5z2LK745YQi1+tpyziB8lAcTDxCM75bpt26XCy9lmxkss
-	 Vi+QJ/fBbSzUw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 569D338119E3;
-	Fri,  4 Sep 2026 00:10:14 +0000 (UTC)
+	s=k20260515; t=1788481183;
+	bh=Bh+1NPoLu0pnqMdZgGwsosjC2UXe57eZHjXYRQPBDhw=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=fvwlTDyjk0aCfv0MSGZXRcjtsmOHsHdebeZJ9Ieb3rR6oGeJZ8iozemDwtFTQZ0F7
+	 DmZ8brHU7EHIqQffk8pB3LZIAIBXLcsJxQri7pugeX8s+BRQHT6Z+UMgBeKXKAzjXa
+	 v6U2hZI9BdpBxh9KWBVMkvQEfFw/+a/gO5X+AbaeW9Mbv4EUMlKMTWJCYn5/2atKno
+	 Zc/w7G12pLEcDdIqo2rw/am8QlUt4T8/mmX5L85RAgMU7tlTJqnoGZkY3eN1/UgCrd
+	 vNBwq98Rijec0zFxm0Duf3tK8fOMEp5joig4bC2tNrRMJka9GJeQ3Nz5KNpZEiLDr9
+	 6lu/raTPAK58Q==
+Subject: Re: [PATCH net-next v8 1/6] net: rtnetlink: add
+ pacing_offload_horizon attribute to net_device
+From: netdev-bot+sashiko@kernel.org
+To: willemdebruijn.kernel@gmail.com
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
+ edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
+ andrew+netdev@lunn.ch, willemb@google.com
+Date: Fri, 04 Sep 2026 00:19:42 +0000
+Message-ID: <178848118269.4131868.5248717808244298920@kernel.org>
+In-Reply-To: <20260902181747.2483351-2-willemdebruijn.kernel@gmail.com>
+References: <20260902181747.2483351-2-willemdebruijn.kernel@gmail.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] netdevsim: take bus device refcount before
- registering
- device
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178848061288.4080441.9633200438937067830.git-patchwork-notify@kernel.org>
-Date: Fri, 04 Sep 2026 00:10:12 +0000
-References: <20260902025704.34606-1-adrianox@gmail.com>
-In-Reply-To: <20260902025704.34606-1-adrianox@gmail.com>
-To: Adriano Cordova <adrianox@gmail.com>
-Cc: kuba@kernel.org, netdev@vger.kernel.org, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
- linux-kernel@vger.kernel.org,
- syzbot+989ff6506f5c6d1ff56b@syzkaller.appspot.com
 
-Hello:
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider:
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
-On Tue,  1 Sep 2026 22:57:04 -0400 you wrote:
-> nsim_bus_dev_release() drops nsim_bus_devs when a device is freed, but
-> the matching increment was done in new_device_store() after
-> nsim_bus_dev_new() returned.  When device_register() failed inside
-> nsim_bus_dev_new(), put_device() invoked the release callback and
-> decremented without an increment, driving the refcount to zero; a later
-> creation then incremented from zero (refcount_t: addition on 0).
-> 
-> [...]
+- [Medium] Stale cached bound: sch_fq latches its offload horizon in
+  q->offload_horizon at configuration time, validated once against the…
+- [Low] uAPI spec vs kernel policy mismatch: rt-link.yaml adds 'max-
+  pacing-offload-horizon' to the '&link-all-attrs' anchor, and that same…
 
-Here is the summary with links:
-  - [net,v2] netdevsim: take bus device refcount before registering device
-    https://git.kernel.org/netdev/net-next/c/d5f5853f167f
+--
 
-You are awesome, thank you!
+net: rtnetlink: add pacing_offload_horizon attribute to net_device
+
+Adds a new writable net_device field pacing_offload_horizon, exposed as
+IFLA_PACING_OFFLOAD_HORIZON and settable via RTM_SETLINK up to
+dev->max_pacing_offload_horizon.  Both fields become u32, and sch_fq now
+validates TCA_FQ_OFFLOAD_HORIZON against the new active horizon instead of
+the device maximum.
+
+> diff --git a/Documentation/netlink/specs/rt-link.yaml b/Documentation/netlink/specs/rt-link.yaml
+> index 61ebb9a2bad5..2a2aad9a29c4 100644
+> --- a/Documentation/netlink/specs/rt-link.yaml
+> +++ b/Documentation/netlink/specs/rt-link.yaml
+
+[ ... ]
+
+> @@ -2557,6 +2561,8 @@ operations:
+>              - devlink-port
+>              - gso-ipv4-max-size
+>              - gro-ipv4-max-size
+> +            - max-pacing-offload-horizon
+> +            - pacing-offload-horizon
+>        dump:
+>          request:
+>            value: 18
+
+[Severity: Low]
+Should max-pacing-offload-horizon be added to this list?  The list this hunk
+extends is the anchor definition in the getlink do-reply:
+
+  Documentation/netlink/specs/rt-link.yaml
+        reply:
+          value: 16
+          attributes: &link-all-attrs
+
+and the same anchor is dereferenced as the setlink request list:
+
+    -
+      name: setlink
+      doc: Set information about a link.
+      attribute-set: link-attrs
+      fixed-header: ifinfomsg
+      do:
+        request:
+          value: 19
+          attributes: *link-all-attrs
+
+So the spec now declares the read-only maximum as settable, while the same
+patch adds [IFLA_MAX_PACING_OFFLOAD_HORIZON] = { .type = NLA_REJECT } to
+ifla_policy, which makes a ynl-generated setlink carrying that attribute fail
+the whole message with -EINVAL.
+
+The same mismatch already exists in this shared list for perm-address,
+tso-max-size, tso-max-segs and allmulti, but the more recent read-only
+additions (netns-immutable, headroom, tailroom) were deliberately left out of
+it.  Would listing max-pacing-offload-horizon only in the read-only/reply set
+be closer to the intent here?  pacing-offload-horizon itself is genuinely
+settable, so only the max- attribute is affected.
+
+> diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+> index 81c5a6104dea..eeaf953b397f 100644
+> --- a/net/core/rtnetlink.c
+> +++ b/net/core/rtnetlink.c
+
+[ ... ]
+
+> @@ -2344,9 +2347,11 @@ static const struct nla_policy ifla_policy[IFLA_MAX+1] = {
+>  	[IFLA_ALLMULTI]		= { .type = NLA_REJECT },
+>  	[IFLA_GSO_IPV4_MAX_SIZE]	= NLA_POLICY_MIN(NLA_U32, MAX_TCP_HEADER + 1),
+>  	[IFLA_GRO_IPV4_MAX_SIZE]	= { .type = NLA_U32 },
+> +	[IFLA_MAX_PACING_OFFLOAD_HORIZON] = { .type = NLA_REJECT },
+>  	[IFLA_NETNS_IMMUTABLE]	= { .type = NLA_REJECT },
+>  	[IFLA_HEADROOM]		= { .type = NLA_REJECT },
+>  	[IFLA_TAILROOM]		= { .type = NLA_REJECT },
+> +	[IFLA_PACING_OFFLOAD_HORIZON] = { .type = NLA_UINT },
+>  };
+
+[ ... ]
+
+> @@ -3337,6 +3349,15 @@ static int do_setlink(const struct sk_buff *skb, struct net_device *dev,
+>  		}
+>  	}
+>  
+> +	if (tb[IFLA_PACING_OFFLOAD_HORIZON]) {
+> +		u64 horizon = nla_get_uint(tb[IFLA_PACING_OFFLOAD_HORIZON]);
+> +
+> +		if (dev->pacing_offload_horizon ^ horizon) {
+> +			WRITE_ONCE(dev->pacing_offload_horizon, horizon);
+> +			status |= DO_SETLINK_MODIFIED;
+> +		}
+> +	}
+> +
+>  	if (tb[IFLA_OPERSTATE])
+>  		set_operstate(dev, nla_get_u8(tb[IFLA_OPERSTATE]));
+
+[Severity: Medium]
+What happens to an already configured fq qdisc when this write lowers the
+device horizon, including back to 0?
+
+sch_fq latches its horizon once in fq_change() (see the sch_fq.c hunk quoted
+below) and then uses the cached copy in the datapath:
+
+net/sched/sch_fq.c:fq_fastpath_check() {
+	if (fq_skb_cb(skb)->time_to_send > now + q->offload_horizon)
+		return false;
+	...
+}
+
+net/sched/sch_fq.c:fq_dequeue() {
+	...
+	if (now + q->offload_horizon < time_next_packet) {
+	...
+}
+
+do_setlink() does not walk the device's qdiscs and does not clamp
+q->offload_horizon, and sch_fq registers no netdevice notifier (only
+act_mirred, sch_cbs and sch_taprio do), so nothing re-validates the cached
+value.
+
+Does fq then keep releasing packets up to the old horizon ahead of their EDT
+while the device no longer paces them?  With the idpf patch from this series
+applied:
+
+drivers/net/ethernet/intel/idpf/idpf_txrx.c:idpf_tx_splitq_set_txtime() {
+	horizon = READ_ONCE(skb->dev->pacing_offload_horizon);
+	if (!horizon)
+		return;
+	...
+}
+
+no EDT is programmed once the horizon is 0, so packets handed over early
+appear to be sent immediately until userspace also reconfigures the qdisc.
+
+For comparison, netif_set_tso_max_size() clamps dev->gso_max_size when the
+device maximum shrinks.  Would something similar, or a notifier, be
+appropriate here?
+
+Both knobs require CAP_NET_ADMIN, so this is a configuration-ordering issue
+rather than something an unprivileged user can trigger.
+
+> diff --git a/net/sched/sch_fq.c b/net/sched/sch_fq.c
+> index 6144b5686f13..7cf7afda699f 100644
+> --- a/net/sched/sch_fq.c
+> +++ b/net/sched/sch_fq.c
+> @@ -1183,7 +1183,8 @@ static int fq_change(struct Qdisc *sch, struct nlattr *opt,
+>  		u64 offload_horizon = (u64)NSEC_PER_USEC *
+>  				      nla_get_u32(tb[TCA_FQ_OFFLOAD_HORIZON]);
+>  
+> -		if (offload_horizon <= qdisc_dev(sch)->max_pacing_offload_horizon) {
+> +		if (offload_horizon <=
+> +		    READ_ONCE(qdisc_dev(sch)->pacing_offload_horizon)) {
+>  			WRITE_ONCE(q->offload_horizon, offload_horizon);
+>  		} else {
+>  			NL_SET_ERR_MSG_MOD(extack, "invalid offload_horizon");
+
+Before this patch the bound compared here had no in-tree writer, so an
+accepted value could never become invalid afterwards.  Is the "invalid
+offload_horizon" invariant still enforced once the bound is user-mutable?
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260902181747.2483351-1-willemdebruijn.kernel%40gmail.com
