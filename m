@@ -1,148 +1,141 @@
-Received: from ultrarisc.com (unknown [218.76.62.146])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84C29346FC3;
-	Fri,  4 Sep 2026 06:01:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=218.76.62.146
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 333EF3ECBDA
+	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 06:02:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788501718; cv=none; b=br7dV/Ipx6kvg9LuWWxP+P2h5z3D8NchLVV1/ugO5gnySYbne9PQxXcVl9Cm2PUJegNYhohPPugXbzOBPAzR82o50pxBE738mGAA8PMYbhirTxRVRG62AsG7e16ZHoKE7KoohFxf3bNgBEimz7qbYOHmsfi357hLOF7vZezxfgI=
+	t=1788501731; cv=none; b=VFZmKaYV4VsVW7lZzLUqQzYQbfLdYJSANGDr63z1uoMybCKlzx4bn5zDU1imGM5lyglKjcquswe0zSDV6z9KzNLZMG/TEyaJ2vsMyI8EFwHQZ2tEfVs/eDbyjj/NWzTScLaQdL9Ktm9STbCT6G2OshK51wjUXfbkQd7lNWUtbWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788501718; c=relaxed/simple;
-	bh=6w6Si8JgjupbPLn9IvLmhgJhBOpM0WXa7jWCi1Z6cbI=;
-	h=MIME-Version:Content-Type:Subject:From:To:Cc:In-Reply-To:
-	 References:Date:Message-Id; b=ZEGHJSz/FT5oeZlgoBnE2GgF74ghLoKekzVqRObJAQOWjXri2y+tJlYIo8j9DkylnqDaf/Ufadrr9MM9ta4e5pAzLnbGOyHt4c58ZiyjNHLLkuqWMTj4Ft/BKZCbbxHyuIDf5YV4CYLVSC1ifa0LwVhEts/I1IodTn4xZiWQRMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ultrarisc.com; spf=none smtp.mailfrom=ultrarisc.com; dkim=pass (1024-bit key) header.d=ultrarisc.com header.i=@ultrarisc.com header.b=m1w6G2Js; arc=none smtp.client-ip=218.76.62.146
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ultrarisc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ultrarisc.com
+	s=arc-20240116; t=1788501731; c=relaxed/simple;
+	bh=ryqQGJnz3UPmWqdNc1zJz5MbrqbK+oT+RMj60B6kw6c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HlUPc2z5ohzP68wgmKqduM3pYk/BqEEXuEf4SWw1Mx1BxjGfYatoXE7JQi/FrJYBQSOKvyiYr3Ol1KPQB2OY9FsydB/rfcyQg7qullIiMoTBdBCN+oa8nocY2jCe3gq2uG80Gd0H0YmphMpzjMzSjjgBj/q8Rrz/aE/gF/Ouj8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=jsdC6YYF; arc=none smtp.client-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ultrarisc.com header.i=@ultrarisc.com header.b="m1w6G2Js"
+	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="jsdC6YYF"
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-485850cbac3so358095f8f.3
+        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 23:02:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=ultrarisc.com; s=dkim; h=Received:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Subject:From:To:Cc:In-Reply-To:
-	References:Date:Message-Id; bh=qxvFYtSORWPE4XH4lAVRbloEchSO4ipPm
-	XwG39eL3XA=; b=m1w6G2Js1KYV5PzPjNvkVsERZSadMo4n0gnT0LOumG/HhbOVD
-	H777NkBxN0d4mZzjTTr51BSNrjMYWtHUCyLN5ykLoUm+ID6nTVNjni7apYj1MhsO
-	N8l4lrodW2TL3rLmgH3lnJPScLkoGU0RK5R6a4UEnWGh9BmSDIaA2wqzkY=
-Received: from [127.0.0.1] (unknown [192.168.100.1])
-	by localhost.localdomain (Coremail) with SMTP id AQAAfwDHQAesXppqTT0AAA--.254S2;
-	Fri, 04 Sep 2026 14:01:17 +0800 (CST)
+        d=blackwall.org; s=google; t=1788501727; x=1789106527; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=th+FTEiS258DjNC2ZujdbM6mdKYhOZP2oalry0Zz2Ik=;
+        b=jsdC6YYFe2eQa8XvibVYMX/Uvk14Ckc+Pyc6W+RmT+rUt71z3JXCVD+ecUVVcTPIfh
+         wAUQTb97j8D+itEvXoWM+SDgYerKnB4knBtqnD3vDQGdZUjWM/5NARpDJB3p9exDU80K
+         VC3tB0CfE11mmRLIOAH19xPPSuWFXxpU5/pKxw6vfKQ9XNsrMG1rEhhEVnDaqfxMB1Uy
+         NS4jSi6J+Eqkn8e2NeZYefhN2OcJHjM5VldW3164PSvPhVXOCsoyFz7/ZF4s7hQ6RZP+
+         2Y4KjnoHcjYsWEb+dBxamt3+MKnH2YCMCJ9avKFjEq1offiEkasRnU0d8OI4y/F1EQtz
+         kXvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788501727; x=1789106527;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=th+FTEiS258DjNC2ZujdbM6mdKYhOZP2oalry0Zz2Ik=;
+        b=gHIzyezz2zHYZlvyTHGzVHx4EXqZlHspHnmWkUNi5GvSxyy77El8S+51Iq8J3iueTJ
+         P9Wncoj6+DH0kBkSf2UDTh4QkvyiZmUPTi398Sm6boxC7P9Q7mPEigfHX3w9nUep3vzJ
+         YZIJTkdlz6rxtS+/lCFkeiq+JHv6RDSC7QX8+Ldz7hGDi3fvnD8dRKFFxONjoCJKq2rH
+         cioRHPeiRfJ6kVoyoICAsVp2RidmzHN0Cgh+6rffuU/HpaZCbidlHN4Ak7ms7UeYSrMQ
+         nIk1FJYAECHMh3uc2S2ZtaLjjoDKj31D2ccG5iF7QPVdPbfESN4Kw/GIuIAAhw0nWs2S
+         SDqw==
+X-Forwarded-Encrypted: i=1; AKwUvBwmpozo7gBx4SztnZutKUbVWOl3oLLyr7zDhf26y3ay+Cku2wkaIWopFtHOSx4hdrnfDW3KE40=@vger.kernel.org
+X-Gm-Message-State: AFuF++kk7c7z0eQ6QZV8PA4h5J+LcaLac8lZfTeZI0llFkI6woUqZe08
+	JN2MIMz38CHQP9oVR36rlp+kXk/cUMRGfPOUBRSZIBLX21uDJgJZfNk+VmUzjGB+n7s=
+X-Gm-Gg: AYBFou2ODjuD3U0SZCg8Udwg6fWGslqdCgAfBwcJf4alkfCqaboo275aWraKkIdGopT
+	lMpWFHAozlyW+TDZLzV8ZGzWbVm5OcGjIk2K1bR6fQHynm1BHKqZshNL9j6tfo/TDJyGxN/pOVb
+	eEoSwJ0Hv6uRb1SBVvmKx10p3c2M7CNBklUEz3fWmTo/sLeLHh2AHrZXvn9TLI79iqtcsS3aMT3
+	p7aZBMrBRUlR+TQ7EwXkRWhKQNPaeWiPouLj+6Fa91Ma95NSsiNB8xDZ0ZgEoskBl9wn5+TW6xs
+	GNpKe383hbW/VShx40D4tNpgux/kV8LBn4eeEW2VTlJo60xPZhQKPhEWnJIG2qDdAIkYQZrLfNj
+	O5ftRzE1XOHWk1flhGiNMLsGgXJjTUXAe+YOe8yE0ZNqJtOj4TcX896XXO/TUDumSlLf2VGt4oy
+	jnaiSfQHBZSuC2YnI+o7fM3R+jUP76zE1+YPpn1OepP087+3r6PUPPi7QvtNzs+p1u7ND2OvzL4
+	TmEUkoKP3f10Rv6lhQnD+OSAHunlQ==
+X-Received: by 2002:a5d:64cc:0:b0:485:8c16:a34e with SMTP id ffacd0b85a97d-4858c16a6dbmr797433f8f.38.1788501726885;
+        Thu, 03 Sep 2026 23:02:06 -0700 (PDT)
+Received: from [192.168.0.161] (78-154-15-182.ip.btc-net.bg. [78.154.15.182])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48588134c0csm4538998f8f.3.2026.09.03.23.02.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 03 Sep 2026 23:02:06 -0700 (PDT)
+Message-ID: <f0ee0862-4e1e-4488-aa38-5f1dd5c08abc@blackwall.org>
+Date: Fri, 4 Sep 2026 09:02:04 +0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net: bridge: dynamically allocate frame_type
+ instances for CFM and MRP
+Content-Language: en-US, bg
+To: Eric Dumazet <edumazet@google.com>, "David S . Miller"
+ <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ netdev@vger.kernel.org, eric.dumazet@gmail.com,
+ syzbot+1df7473ef265fe8ba6e1@syzkaller.appspotmail.com,
+ Ido Schimmel <idosch@nvidia.com>
+References: <20260904004428.1933068-1-edumazet@google.com>
+From: Nikolay Aleksandrov <razor@blackwall.org>
+In-Reply-To: <20260904004428.1933068-1-edumazet@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH net-next 3/3] net: stmmac: Add UltraRISC DP1000 GMAC
- support
-From: Jia Wang <wangjia@ultrarisc.com>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Jia Wang <wangjia@ultrarisc.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Giuseppe Cavallaro <peppe.cavallaro@st.com>, 
- Jose Abreu <joabreu@synopsys.com>, netdev@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-stm32@st-md-mailman.stormreply.com, 
- linux-arm-kernel@lists.infradead.org
-In-Reply-To: <8611dff3-56ea-4798-8303-b0a8af84580e@bootlin.com>
-References: <20260901-dwmac-ultrarisc-v1-0-f19454814bcf@ultrarisc.com>
- <20260901-dwmac-ultrarisc-v1-3-f19454814bcf@ultrarisc.com>
- <910be156-b631-4b62-972a-79d9a9e38697@lunn.ch>
- <178842162417.2701756.3296149694160507506.b4-reply@b4>
- <1622b0a7-5516-4e72-b5e1-60c12b65b52e@lunn.ch>
- <8611dff3-56ea-4798-8303-b0a8af84580e@bootlin.com>
-Date: Fri, 04 Sep 2026 14:01:05 +0800
-Message-Id: <178850166577.1486454.10728134844652956076.b4-reply@b4>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1788501666; l=2449;
- i=wangjia@ultrarisc.com; s=20260515; h=from:subject:message-id;
- bh=6w6Si8JgjupbPLn9IvLmhgJhBOpM0WXa7jWCi1Z6cbI=;
- b=o6bJEJIl2iIflheKi8feHmKqG99WDoqDO9RKKIEE7kBxcrr7p85xxGUeXA9HIOj71A3EkuwpB
- mtI33Oi3JQrAOwXck6meyteCpyEbOLmUo4jP3AB5fIHPUzIcOKVZ5HW
-X-Developer-Key: i=wangjia@ultrarisc.com; a=ed25519;
- pk=wGVm18siRScehKOkOz0WKxgxDy7IezHEszhnN4/TUCY=
-X-CM-TRANSID:AQAAfwDHQAesXppqTT0AAA--.254S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7uFy8GrW3trWUGF1fXrWxtFb_yoW8KF13pF
-	W293Wayw4DGF4I9w1Dt3W0vFWYgF18XFWjqw18K34ava90yF13Z3WrK3y5WasxWrZ7u3W2
-	vF18tF9rua98ZaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9l14x267AKxVW5JVWrJwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Jr0_Gr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4j6r
-	4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
-	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
-	n2kIc2xKxwCY1x0262kKe7AKxVW8ZVWrXwCY02Avz4vE-syl42xK82IYc2Ij64vIr41l4I
-	8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AK
-	xVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcV
-	AFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8I
-	cIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r
-	4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjTRNJ5oDUUUU
-X-CM-SenderInfo: pzdqwylld63zxwud2x1vfou0bp/1tbiAQAAEWqZGSQAUAAAsO
 
-On 2026-09-03 14:30 +0200, Maxime Chevallier wrote:
+On 04/09/2026 03:44, Eric Dumazet wrote:
+> struct br_frame_type contains an embedded struct hlist_node list, which
+> is linked into a bridge's per-instance br->frame_type_list via
+> br_add_frame(br, ft).
 > 
+> Both cfm_frame_type and mrp_frame_type were declared as static global
+> variables. When multiple bridge devices enable CFM MEPs or MRP instances
+> concurrently (e.g. across different network namespaces), they share
+> the same static global br_frame_type node.
 > 
-> On 9/3/26 14:10, Andrew Lunn wrote:
-> >>> This looks to be 90% identical to dwmac-sophgo.c.
-> >>>
-> >>> Do you expect any further changes to this driver? Is everything
-> >>> supported? Are there more clocks? A GPIO for WoL?
-> >>>
-> >>> I'm just wondering if the common code should be pulled out, or even
-> >>> dwmac-sophgo.c made generic so it can handle all plain boring devices
-> >>> which have RGMII delays and not a lot else.
-> >>>
-> >>
-> >> The probe boilerplate is indeed largely similar because both drivers
-> >> use the common stmmac platform helpers. However, their platform-specific
-> >> requirements differ: Sophgo requires additional TX clock handling and
-> >> other configuration, while DP1000 requires fixed TX and RX delay
-> >> handling. ACPI support under development is also intended to use the
-> >> UltraRISC glue driver.
-> > 
-> > ACPI is going to be fun, since nobody does ACPI networking.
-> > 
-> > But how big is the change to the glue driver? I expect the change will
-> > be minor, a call to devm_stmmac_probe_config_acpi(), in addition to
-> > devm_stmmac_probe_config_dt(). Anything else?
+> Calling br_add_frame() on a second bridge links the same hlist_node into
+> the second bridge's frame_type_list, corrupting the first bridge's list.
+> Later, when br_del_frame() deletes the node from one bridge and poisons
+> its list pointers, a subsequent teardown on another bridge walks its
+> frame_type_list and dereferences the poisoned pointer in hlist_del_rcu(),
+> triggering a general protection fault.
 > 
-> I agree that if ACPI support is added, let's try to make it part of the
-> core.
+> Furthermore, sharing or embedding fixed br_frame_type instances leads to
+> RCU node reuse violations: if MEPs or MRP instances are repeatedly added
+> and deleted, hlist_del_rcu() unlinks the node without waiting for an RCU
+> grace period, and a subsequent addition immediately re-inserts and modifies
+> the node while concurrent lockless readers in br_handle_frame() /
+> br_process_frame_type() may still be traversing it.
+> 
+> Fix this by dynamically allocating struct br_frame_type upon registration
+> in br_add_frame() and freeing it with kfree_rcu() in br_del_frame(). Also
+> ensure all registered frame types are cleaned up during bridge deletion via
+> br_del_frame_all().
+> 
+> Fixes: 90c628dd47ff ("net: bridge: extend the process of special frames")
+> Fixes: dc32cbb3dbd7 ("bridge: cfm: Kernel space implementation of CFM. CCM frame RX added.")
+> Reported-by: syzbot+1df7473ef265fe8ba6e1@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/netdev/6a9a137f.9266084e.bf0d7.02e3.GAE@google.com/
+> Signed-off-by: Eric Dumazet <edumazet@google.com>
+> --
+> Cc: Nikolay Aleksandrov <razor@blackwall.org>
+> Cc: Ido Schimmel <idosch@nvidia.com>
+> ---
+>   net/bridge/br_cfm.c     | 17 +++++++++--------
+>   net/bridge/br_if.c      |  2 ++
+>   net/bridge/br_input.c   | 40 +++++++++++++++++++++++++++++++++++-----
+>   net/bridge/br_mrp.c     | 16 +++++++---------
+>   net/bridge/br_private.h |  8 ++++++--
+>   5 files changed, 59 insertions(+), 24 deletions(-)
 > 
 
-The ACPI support is still under development, but the current prototype
-adds ACPI device matching and ACPI-specific platform-data setup. Some
-common stmmac changes are also needed for ACPI-described platform
-resources and MDIO.
+Thanks Eric, but there is already a patch that should take care of this.
+A week ago I pinged the previous reporter of these issues and he posted
+an updated patch yesterday:
+https://lore.kernel.org/netdev/0345b9d5aa60ba416f6738ff1b87140f0a749cb8.1788417901.git.zhilinz@nebusec.ai/
 
-> > 
-> > One problem the stmmac driver has is cut/paste glue driver
-> > development. The same code is repeated again and again. Russell King
-> > spent a lot of time and effort trying to reduce the duplication. So we
-> > should not be adding more duplicated code unless it is actually
-> > required.
-> 
-> It seems to me that all the RGMII handling could be made much more generic,
-> as this is commong pattern in glue drivers :
-> 
-> dwmac-sophgo has the "has_internal_rx_delay" field, and dwmac-eic7700 has
-> both has_internal_[r|t]x_delay.
-> 
-> With this third one, it makes sense to start sharing that logic across
-> glues.
-> 
-
-I agree. DP1000 is another user of this pattern, with fixed internal
-delays on both the TX and RX paths. I will look at moving this handling
-into the common stmmac platform code, leaving each glue driver to
-describe its internal delay capabilities.
-
-Best regards,
-Jia Wang
+Cheers,
+  Nik
 
