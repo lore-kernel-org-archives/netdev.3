@@ -1,86 +1,50 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4BB85221CB
-	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 19:03:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A947E51A72F;
+	Fri,  4 Sep 2026 19:04:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788548612; cv=none; b=O/SzfVwqx1FvtBt1oQdqp+u1aWBbARLhyYCqA3+k1/4LGzI6uJzKRNnNYStGKx8VA3pLYKzQbXVbSVUHbc9dpmx7dW49UXAKFs/03uXDyTNRNAaoKs2AGop0Po9RonTQP2ElfhXYXRPPSbnjLGTEQPpj7ikCmy7VXKsqu9RJoOg=
+	t=1788548664; cv=none; b=AxCEY2/72lMt4+V+PT5VeGEohtZO8fibMndEPlOODDL45zYKEQXIm1BqsrQ0KH5yr7mpQ1BWxUBGDkW4e2BiF/1t8twbApXgRfybJ2Ef6q030vrZlpoVSqS59UAcRFlCVzF60QPNkztluqdsZM6kEBjj6qMm6J8pqFSYhE2wnwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788548612; c=relaxed/simple;
-	bh=yfXfFA1c3vQG1+Ye7UxWHbvarQ+1G95ouDiPWPxXcDY=;
+	s=arc-20240116; t=1788548664; c=relaxed/simple;
+	bh=yfgnJgH1ZxB+8KCXYP7eRutA9mZjCJKMQbKhRzpiROg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ClVIWoJFz2j0vg6VQW0nCg6FnZJV5UrwAOlJnLekbjXmuh463vU2KquPVxdPPqu/BJzWNsSG6ASh4qDPAe5a1NvG8sHZHzPb5f34OXIAOQri0chZ8hyF2CHy8g+FRSB7YKFPnZQgq+s7560MDcjBVlX6boMrVUAWpn5htjLOpRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la; spf=pass smtp.mailfrom=lex.la; dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b=ImrIV0QB; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lex.la
+	 MIME-Version; b=GRtB+N55DzbByK4xqQWgIu0kGLCzj2uSZ6Y0pvxU2iauAwH6nl7niGV29Y8tXokYWUx2PKZH3BMhVvHok7Y3A4GAsAq8OVKWVx3w4QKqcer9a1lgv19zpdctPJJEfxtMgUBpCUm25BhE8mIoyA60Cj5nw4KQRUF7tRozl0FFenQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L0PUEZB+; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b="ImrIV0QB"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-49b965570d7so15621265e9.0
-        for <netdev@vger.kernel.org>; Fri, 04 Sep 2026 12:03:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=lex.la; s=google; t=1788548602; x=1789153402; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=CMh5lYeH3aGg59+QPJC3P1Oz0qgidcMVPi+b3gENV5I=;
-        b=ImrIV0QBDWDa+c0k+n6kxLTZHjzwJHDk2j8ufKEhKQDtEuoRIO0wqcRun0gEAmgzZf
-         IuqmFY/Me8AHvL6tynrV1tAF+YzVOPSmc40UPjS4nSxc8Pn9HWcMkPj5q98iL8vTyOq2
-         EzHLx8k/j58sXebjBSR+WPYaylDhEgC5SkiqFOENyDoCYohR3iUUZ7pVBZcHL0/WbC7N
-         Kj5G8bkt09IM5uQwLKGX0ZZUPG/uS1rBQ+hrjFzUBqLdQGNc9pTAAqadjqzolhCgF+5p
-         sgiN25OuQHt1WcieE1fQjdZrd3UkFIGtWt1CeEkqhYFh9JsF+ktA2iaTJBcoQM8LzpeF
-         6Ndw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788548602; x=1789153402;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=CMh5lYeH3aGg59+QPJC3P1Oz0qgidcMVPi+b3gENV5I=;
-        b=CUw8SLWvrLLvzwe59p9jP/oJ5c7+fpBj7abfJ9qYYnVpiwuGOprOAsMUnI+G0EIMDo
-         iH1gHypsDYA44NGgNx7jtSmusIaXDq9+CzQKfMvcWOnvmEWxIb7Zt7ZbRE+LU9u1V4qi
-         +It2kFtH0EoxFKVXYb/0mO1yZfIvM6yZglxYxd//E8C2ljNIEB+84spA+jOj/fetwQQz
-         TRbaYydzrsOrBCmfRL0edtkBaGXXv0dEquqFnY1+xY96rvOspN1v5qdCD7ZKZpiSlh2D
-         Lr2X7TMeif432MLZ/yKBX3LlbpC5jGa0Xxw4knwZsLd5S0kDVk9IbGr4gf/kOzGJAenz
-         kGFQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxCnFhyFqP1SjkEndA9Qo4KK5c6XSS1+0ynxFLyLlrnXhoya9pdKgkWoVmg5hSPttKCzWC0+qM=@vger.kernel.org
-X-Gm-Message-State: AFuF++mFOF1EeW0M5CW4SCjeoOaivkRIHx3oisDhQ3kOPzjtl+y+Qwk3
-	yn6zkX9edIOBXlUUxkkc3Mmer1lDx1PokhzsULZ/9apYy1WWOlGdyiqDSwx3qnobQso=
-X-Gm-Gg: AYBFou0rKoGPxGLXe9aaOy7s589UiU/QJzStxV+tvVO29oSQ9P1kLoJCKZHfB8wLkNx
-	Du4/MZbmHTUzCax3ZP8iqVMB4EfcxVTbi/vH7nuUq4YQ645+aiGWCG8NwnitQlgvAmMzegTZtoX
-	JuixWaayhZ4HF62ZtmmDgMNt77ve14d5zW/pP9vuCIY+YnyzyIUIGcjFHpDVCXErgFESX65mLRo
-	G7wLgcZqwdqbPP5udYWZb2ND6yTnQF/Fan/c0fXs72LYhgaZLTUf/m1bY2+jmaN2Zm4BtYyzI3F
-	uIOZO+grbhgj6sMy81oUhRmxb9JW24rDth3XaHrpyK2CuTax920mYc6lWk3kGWgJUN3jDqBCJwg
-	wyj0sRk5RqEKUQVcxZlBYCktf6KxS3R14zabcLxepDnJNRoFfdOKPVnSEw/79UUeqR2zaZmsL/h
-	quG+9MWt1vVmFWZ6MYQgBfLC8MZBSdvTlKE5imQbI=
-X-Received: by 2002:a05:600c:4e11:b0:49c:f2f4:eddd with SMTP id 5b1f17b1804b1-49cf8268795mr95772385e9.16.1788548600659;
-        Fri, 04 Sep 2026 12:03:20 -0700 (PDT)
-Received: from remote-01 ([84.17.55.227])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cee60d8a6sm172195485e9.10.2026.09.04.12.03.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Sep 2026 12:03:20 -0700 (PDT)
-From: Aleksei Sviridkin <f@lex.la>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L0PUEZB+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8E211F00A3F;
+	Fri,  4 Sep 2026 19:04:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788548655;
+	bh=d7+Xke1S3vggW6XCP4Ja4gE16U8Alb+AunnkjdqloCc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=L0PUEZB+GknDSubWU34o+SDV+R8MaAt9/qKRnDgy85bPfr8Qkr5xdSJNjdRDuA1yX
+	 bJgWXv1rYzeoS35QT0XxgnOmxrAca4JIHhXRVwcVwwgTp0xxoo8lKBLEWfk3H4/7V5
+	 mJUS5x/5ifx6D4dEe3dvIp8wpRXRkyYljuBmTBNOpH13sMTjHGdQRR+SkzsoyUxCP5
+	 3lMpbT4eemaNcnaCPl69iAVnGQEn8kf5xTW3GFVvOuVCgcmE4dVOmBJ+r1p37+QwtA
+	 iUsjJAEyz0F4vylXVjk1+KWGCdwsstES1yllGuR90DYRKMNVYx1723ICINxSuqywA5
+	 XcZtk7b6+E7YQ==
+From: Jakub Kicinski <kuba@kernel.org>
+To: davem@davemloft.net
+Cc: netdev@vger.kernel.org,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	horms@kernel.org,
 	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Cc: Eric Woudstra <ericwouds@gmail.com>,
-	netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH net-next v2 10/10] net: phylink: report no link modes while a late PHY is missing
-Date: Fri,  4 Sep 2026 19:03:04 +0000
-Message-ID: <dd73c57289fb07fef0da931709ae4a957b5fdf69.1788548229.git.f@lex.la>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <cover.1788548229.git.f@lex.la>
-References: <cover.1788548229.git.f@lex.la>
+	cel@kernel.org,
+	donald.hunter@gmail.com,
+	ast@fiberby.net,
+	matttbe@kernel.org,
+	kernel-tls-handshake@lists.linux.dev
+Subject: [PATCH net-next 2/2] netlink: specs: handshake: do not accept the handler-class sentinel
+Date: Fri,  4 Sep 2026 12:04:10 -0700
+Message-ID: <20260904190410.3864660-2-kuba@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260904190410.3864660-1-kuba@kernel.org>
+References: <20260904190410.3864660-1-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -89,76 +53,110 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-A port waiting for its PHY reported the MAC's full set of link modes and
-accepted settings for them, which describes a link that cannot come up.
-Report an empty set and refuse to configure until the PHY arrives. Every
-path through net/ethtool/ zeroes the reply before the get op, so the
-pending path only stamps the unknown speed and duplex.
+"max" is the exclusive upper bound of enum handshake_handler_class, not
+a class a handler can ask for, but the spec lists it as a plain entry.
+_init_checks() derives the policy limit from the highest entry, so the
+generated policy came out as NLA_POLICY_MAX(NLA_U32, 2) and
+handshake_nl_accept_doit() takes class 2 all the way into
+handshake_req_next(), which walks hn_requests under hn_lock before
+returning -EAGAIN instead of the -EINVAL a bad class deserves.
 
-Setting pause parameters needs the same guard, because it is gated on
-the same MAC-derived mask; reading them does not, since it reports the
-configured request rather than a capability. The EEE calls need no guard
-either: they already return -EOPNOTSUPP when no PHY is attached.
+render-max is how YNL spells this, and unlike a hand written limit it
+stays correct when a second handler class is added.
 
-Assisted-by: LLM
-Signed-off-by: Aleksei Sviridkin <f@lex.la>
+It does change what HANDSHAKE_HANDLER_CLASS_MAX means - the highest
+valid class rather than one past it, as in every other Netlink/YNL
+family - with the count left as __HANDSHAKE_HANDLER_CLASS_MAX.
+The constant is uAPI, but I could not find any user space user,
+this constant seems to have been added for kernel's benefit.
+
+I think the risk of changing this is worth taking, having MAX
+with different semantics than the rest of Netlink is very confusing.
+
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
- drivers/net/phy/phylink.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+CC: cel@kernel.org
+CC: donald.hunter@gmail.com
+CC: ast@fiberby.net
+CC: matttbe@kernel.org
+CC: kernel-tls-handshake@lists.linux.dev
+---
+ Documentation/netlink/specs/handshake.yaml | 3 ++-
+ include/uapi/linux/handshake.h             | 5 ++++-
+ net/handshake/genl.c                       | 2 +-
+ net/handshake/handshake-test.c             | 2 +-
+ net/handshake/request.c                    | 2 +-
+ 5 files changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
-index bceeac954779..942d5fe943a1 100644
---- a/drivers/net/phy/phylink.c
-+++ b/drivers/net/phy/phylink.c
-@@ -2290,6 +2290,11 @@ EXPORT_SYMBOL_GPL(phylink_connect_phy);
- #define PHYLINK_SLOW_PHY_WARN_MS	60000
- #define PHYLINK_SLOW_PHY_POLL_MAX_MS	30000
- 
-+static bool phylink_slow_phy_pending(struct phylink *pl)
-+{
-+	return pl->slow_phy_fwnode && !pl->phydev;
-+}
+diff --git a/Documentation/netlink/specs/handshake.yaml b/Documentation/netlink/specs/handshake.yaml
+index 9ab46da04c49..0498ada2dd97 100644
+--- a/Documentation/netlink/specs/handshake.yaml
++++ b/Documentation/netlink/specs/handshake.yaml
+@@ -22,7 +22,8 @@ doc: Netlink protocol to request a transport layer security handshake.
+     type: enum
+     name: handler-class
+     value-start: 0
+-    entries: [none, tlshd, max]
++    entries: [none, tlshd]
++    render-max: true
+   -
+     type: enum
+     name: msg-type
+diff --git a/include/uapi/linux/handshake.h b/include/uapi/linux/handshake.h
+index d7e40f594888..f907aa082520 100644
+--- a/include/uapi/linux/handshake.h
++++ b/include/uapi/linux/handshake.h
+@@ -13,7 +13,10 @@
+ enum handshake_handler_class {
+ 	HANDSHAKE_HANDLER_CLASS_NONE,
+ 	HANDSHAKE_HANDLER_CLASS_TLSHD,
+-	HANDSHAKE_HANDLER_CLASS_MAX,
 +
- /* Bound, not drv: drv is published before the driver's probe runs. The
-  * device lock cannot be taken under rtnl, and losing this race costs a
-  * generic-driver attach, not memory safety.
-@@ -3087,6 +3092,14 @@ int phylink_ethtool_ksettings_get(struct phylink *pl,
++	/* private: */
++	__HANDSHAKE_HANDLER_CLASS_MAX,
++	HANDSHAKE_HANDLER_CLASS_MAX = (__HANDSHAKE_HANDLER_CLASS_MAX - 1)
+ };
  
- 	ASSERT_RTNL();
+ enum handshake_msg_type {
+diff --git a/net/handshake/genl.c b/net/handshake/genl.c
+index 58606c2a4600..26e3efec64ca 100644
+--- a/net/handshake/genl.c
++++ b/net/handshake/genl.c
+@@ -14,7 +14,7 @@
  
-+	/* No PHY yet: the port supports nothing, not what the MAC alone can. */
-+	if (phylink_slow_phy_pending(pl)) {
-+		kset->base.port = pl->link_port;
-+		kset->base.speed = SPEED_UNKNOWN;
-+		kset->base.duplex = DUPLEX_UNKNOWN;
-+		return 0;
-+	}
-+
- 	if (pl->phydev)
- 		phy_ethtool_ksettings_get(pl->phydev, kset);
- 	else
-@@ -3159,6 +3172,10 @@ int phylink_ethtool_ksettings_set(struct phylink *pl,
+ /* HANDSHAKE_CMD_ACCEPT - do */
+ static const struct nla_policy handshake_accept_nl_policy[HANDSHAKE_A_ACCEPT_HANDLER_CLASS + 1] = {
+-	[HANDSHAKE_A_ACCEPT_HANDLER_CLASS] = NLA_POLICY_MAX(NLA_U32, 2),
++	[HANDSHAKE_A_ACCEPT_HANDLER_CLASS] = NLA_POLICY_MAX(NLA_U32, 1),
+ };
  
- 	ASSERT_RTNL();
+ /* HANDSHAKE_CMD_DONE - do */
+diff --git a/net/handshake/handshake-test.c b/net/handshake/handshake-test.c
+index 3dd507470d5f..4b99acd9f9c7 100644
+--- a/net/handshake/handshake-test.c
++++ b/net/handshake/handshake-test.c
+@@ -42,7 +42,7 @@ static struct handshake_proto handshake_req_alloc_proto_2 = {
+ };
  
-+	/* Would configure the MAC alone, for a link that cannot come up. */
-+	if (phylink_slow_phy_pending(pl))
-+		return -EOPNOTSUPP;
-+
- 	if (pl->phydev) {
- 		struct ethtool_link_ksettings phy_kset = *kset;
+ static struct handshake_proto handshake_req_alloc_proto_3 = {
+-	.hp_handler_class	= HANDSHAKE_HANDLER_CLASS_MAX,
++	.hp_handler_class	= __HANDSHAKE_HANDLER_CLASS_MAX,
+ };
  
-@@ -3373,6 +3390,10 @@ int phylink_ethtool_set_pauseparam(struct phylink *pl,
- 	if (pl->req_link_an_mode == MLO_AN_FIXED)
- 		return -EOPNOTSUPP;
- 
-+	/* pl->supported still describes the MAC, so the test below passes. */
-+	if (phylink_slow_phy_pending(pl))
-+		return -EOPNOTSUPP;
-+
- 	if (!phylink_test(pl->supported, Pause) &&
- 	    !phylink_test(pl->supported, Asym_Pause))
- 		return -EOPNOTSUPP;
+ static struct handshake_proto handshake_req_alloc_proto_4 = {
+diff --git a/net/handshake/request.c b/net/handshake/request.c
+index cd30d54d0501..ff739ee81cb8 100644
+--- a/net/handshake/request.c
++++ b/net/handshake/request.c
+@@ -115,7 +115,7 @@ struct handshake_req *handshake_req_alloc(const struct handshake_proto *proto,
+ 		return NULL;
+ 	if (proto->hp_handler_class <= HANDSHAKE_HANDLER_CLASS_NONE)
+ 		return NULL;
+-	if (proto->hp_handler_class >= HANDSHAKE_HANDLER_CLASS_MAX)
++	if (proto->hp_handler_class > HANDSHAKE_HANDLER_CLASS_MAX)
+ 		return NULL;
+ 	if (!proto->hp_accept || !proto->hp_done)
+ 		return NULL;
 -- 
-2.53.0
+2.55.0
 
