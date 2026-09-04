@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1942743E488;
-	Fri,  4 Sep 2026 21:57:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC45D4446E9;
+	Fri,  4 Sep 2026 21:57:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788559048; cv=none; b=nCzNwYfQxnEZfSk5GZgUV/foa+3w/XK4vxzwiPW6ZO7VnH4lVF1574DkCoMQWct2TEKvKz4G4HQw/sN8WVul7MbmGI4LYNAfQ3M/DPvY+/xbQbkXt92BS7j+Iypb3qnidpoLrEdYYY8mniZjJtWY593K3Pjoo2oAoN2k3bBUXiQ=
+	t=1788559050; cv=none; b=HEADu46Ol8dNb4ZGZe4FIJMgLik4Ankm2CzrcBNw54tyX/jhUmTzWug9h6dX7gxL6c3Egoijg1GN9/6JbHC7SsUI0bZ0BEkcwsvfJnfXwmcvog0vc5FBPr/m0le16NWMD3Kf+aXTjtiWaeFq2qLGHnd3fN6QKkIhq1hxkv+EuwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788559048; c=relaxed/simple;
-	bh=RKYaqFOGjIf2vBwkCilYc+kFFQKNXJbeFRjseXJTwjc=;
+	s=arc-20240116; t=1788559050; c=relaxed/simple;
+	bh=RZ0zmi+N6BHExwfSW8yAotgaFFVoXs8/oExzAWwzqkM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R0BBZEEbynR3Bs1LCBm96iKTPiDrAuVDvHjjCltAHZOki9yvkAXW/vxIQdN2CwgiD3VHQEx95ZBFtCF+ZyXxS4eo4YlBAyzaz6gRzr+twpQr3QsGNW1FKPhvyaIyxywD9DsDGgrRPzEPPoq7XcWxanSIujosBCm+tVB78RjD6I4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h1DDCmD4; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=HpMsdlkrDi47ipwglpVYbyJiQB06TYENqgI0JtQrOcNwz0bs2FUB+8Sxkjuzd7NvWbKizSPxnxKgWND0mSsequ9PqDssk9X6kWjsWTPnVclVxjZy9xA5B+MMbvWBNlAzvuwInh4jyJ4o4KW2qPF9XUf51Jgp2U8mYn8YDp4s7oU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P4+oOl1V; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h1DDCmD4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C34711F00A3E;
-	Fri,  4 Sep 2026 21:57:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P4+oOl1V"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DA2A1F00A3D;
+	Fri,  4 Sep 2026 21:57:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788559041;
-	bh=uci8gKxk33xF/HENcPwArmuTZLD74jl3MzSlnfbMShY=;
+	s=k20260515; t=1788559039;
+	bh=Q30X28mcvHEYtnnxV3RNSKAw1oZNHF2v7lQTW03IohA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=h1DDCmD49s3DYeql6IZrQ2gAOy4dhwSpCk+rPMF9szt1LO64RpgL75rJlgzIZEPqu
-	 OX0fRV1w0mtBVW/gLFtCIQkwuMujiCGOcYl2YmuaImRKUOJMAZ2FV7A5weW9pCX29E
-	 puW3Fyon5z5O4WqiKJFdjx6WbxuDxSjBOypKhUR0bfNMpjG4PkVIkFghBMD6mtrt7Y
-	 7erPz2yp8+LS/Hpd1VlNpNnjeiswC823qUzM7kw/sMrTaf1P/8UsVvZmTax6rkzuF0
-	 LXsLUF8fKCB/B3b/rAzjdMY6nGK4M4W19mtmEOCFqCbUPRiOkkDmat8zEAnFC6QivM
-	 dncDA9XxJIhpA==
+	b=P4+oOl1V6cOKlMItTAzAIJhF04urYhfhKd10Uj7cKB8hORHjWXM9I9lOI3SBEhJqL
+	 poWttttztxqTJwAxhBa/0Ite81MTNfA74QzXF/QZ5wEBtIFHTjxVXdmqUxGblfY8QJ
+	 N4Xmcm8MI335zLwatefag0ns5VweocYNf4ZE/0FjMrn6qIPApvpgQWhxXvKocSiBk8
+	 WMSBlvya2uVBGEs3OmFJO4jHpKGSP8LqiKLal2Z1FhCTqMQNKtc1rMBZsCW7xXaC8v
+	 IZO6exXZ+m51SfyDJRXYLNaT3UzAbRGk4STusk09UPo/2RRsWuowSXQGsoCUgjv3pL
+	 z27Nd39GJaU9Q==
 From: Jakub Kicinski <kuba@kernel.org>
 To: dong100@mucse.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -38,12 +38,12 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	yaojun@mucse.com
-Subject: Re: [PATCH net-next v10 5/5] net: rnpgbe: Add link status handling support
-Date: Fri,  4 Sep 2026 14:57:19 -0700
-Message-ID: <20260904215719.4000060-1-kuba@kernel.org>
+Subject: Re: [PATCH net-next v10 4/5] net: rnpgbe: Add receive mode support
+Date: Fri,  4 Sep 2026 14:57:17 -0700
+Message-ID: <20260904215717.4000021-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <0DE2629800EC1CD4+20260831073608.401988-6-dong100@mucse.com>
-References: <0DE2629800EC1CD4+20260831073608.401988-6-dong100@mucse.com>
+In-Reply-To: <462BE38B6E2AFC58+20260831073608.401988-5-dong100@mucse.com>
+References: <462BE38B6E2AFC58+20260831073608.401988-5-dong100@mucse.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,278 +55,307 @@ Content-Transfer-Encoding: 8bit
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
-net: rnpgbe: Add link status handling support
+net: rnpgbe: Add receive mode support
 
-This patch adds firmware-driven link status handling to rnpgbe: link
-state is cached from mailbox LINK_CHANGE_EVT events, a delayed service
-task flips the carrier, and the driver notifies firmware of port up/down
-around ndo_open and ndo_stop. A few questions about the new event and
-teardown paths below.
+This adds chip-level receive filtering to rnpgbe along with the
+ndo_set_rx_mode callback.  Unicast addresses go into the 30 usable RAR
+entries and multicast addresses into the 4096-bit hash table, with
+IFF_PROMISC and IFF_ALLMULTI handled through the filter control register.
+rnpgbe_configure() also calls the new function directly from the open path.
 
-> diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_hw.h b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_hw.h
-> index feb84704d6027..5659e91f34972 100644
-> --- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_hw.h
-> +++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_hw.h
-> @@ -21,6 +21,17 @@
->  #define RNPGBE_DMA_TX_STATUS           GENMASK_U32(23, 22)
->  #define RNPGBE_DMA_RX_STATUS           GENMASK_U32(21, 20)
->  #define RX_AXI_RW_EN                   0x03
-> +/* RNPGBE_LINK_ST is a driver-owned link-state snapshot consumed by firmware.
-> + * Set the driver-state marker; all other driver status fields start clear.
-> + */
-> +#define M_DEFAULT_ST                   0xa0000000
-> +/* Firmware never reports 0xf in the speed field. */
-> +#define M_INVALID_ST                   (M_DEFAULT_ST | GENMASK_U32(11, 8))
-> +/* Driver-reported fields: 25:24 pause, 11:8 speed, 6 LLDP, 4 duplex,
-> + * and 0 link up/down. M_DEFAULT_ST resets these fields so firmware reports
-> + * the current hardware state again.
-> + */
-> +#define RNPGBE_LINK_ST                 0x000c
+Two questions below.
+
+> diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_chip.c b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_chip.c
+> index 291e77d573fe..c7d5b53f6209 100644
+> --- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_chip.c
+> +++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_chip.c
+> @@ -149,3 +149,76 @@ int rnpgbe_init_hw(struct mucse_hw *hw, int board_type)
 
 [ ... ]
 
-> diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.c b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.c
-> index 346e9a1cca8a9..1c649ef7ee3ac 100644
-> --- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.c
-> +++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.c
-> @@ -16,8 +16,23 @@
->  static void rnpgbe_mbx_work(struct work_struct *work)
->  {
->  	struct mucse *mucse = container_of(work, struct mucse, mbx_work);
-> +	int irq_seq;
->  
-> +	irq_seq = atomic_read(&mucse->mbx_irq_seq);
->  	mucse_fw_irq_handler(&mucse->hw);
+> +void rnpgbe_set_rx_mode(struct net_device *netdev)
+> +{
+> +	u32 mcast_hash[RNPGBE_RX_MCAST_HASH_ENTRIES] = {};
+> +	u32 mcast_ctrl = RNPGBE_RX_UCAST_TABLE_EN;
+> +	u32 filter_ctrl = RNPGBE_RX_FILTER_BCAST;
+> +	struct netdev_hw_addr *ha;
+> +	struct mucse_hw *hw;
+> +	struct mucse *mucse;
+> +	int rar = 1;
+> +	u16 hash;
+> +	int i;
 > +
-> +	/*
-> +	 * Only multi-vector MSI-X has a dedicated mailbox interrupt, so its
-> +	 * hard IRQ records a sequence number. With a shared MSI or MSI-X
-> +	 * vector, all interrupts queue this work and it checks the mailbox
-> +	 * request counter. Firmware posts one request at a time and waits for
-> +	 * the PF ACK before posting the next one. A mailbox interrupt while
-> +	 * this work runs queues a later invocation.
-> +	 */
-> +	if ((mucse->flags & M_FLAG_MSIX_EN) &&
-> +	    irq_seq != atomic_read(&mucse->mbx_irq_seq) &&
-> +	    !test_bit(__MUCSE_DOWN, &mucse->state))
-> +		queue_work(system_percpu_wq, &mucse->mbx_work);
+> +	mucse = netdev_priv(netdev);
+> +	hw = &mucse->hw;
+> +
+> +	/* RAR 0 always holds the interface's primary unicast address. */
+> +	rnpgbe_set_rar(hw, 0, netdev->dev_addr);
+> +
+> +	netdev_for_each_uc_addr(ha, netdev) {
+> +		if (rar == RNPGBE_RX_RAR_ENTRIES) {
+> +			filter_ctrl |= RNPGBE_RX_FILTER_UCAST_ALL;
+> +			break;
+> +		}
+> +
+> +		rnpgbe_set_rar(hw, rar, ha->addr);
+> +		rar++;
+> +	}
+> +
+> +	for (; rar < RNPGBE_RX_RAR_ENTRIES; rar++)
+> +		rnpgbe_clear_rar(hw, rar);
+> +
+> +	if (netdev->flags & IFF_PROMISC) {
+> +		filter_ctrl |= RNPGBE_RX_FILTER_UCAST_ALL |
+> +			       RNPGBE_RX_FILTER_MCAST_ALL;
+
+[Severity: High]
+Can this secondary unicast RAR programming ever take effect?  I could not
+find netdev->priv_flags |= IFF_UNICAST_FLT anywhere under
+drivers/net/ethernet/mucse/rnpgbe/, including rnpgbe_add_adapter() where
+netdev_ops and features are set up before register_netdev().
+
+Without that flag, the core forces promiscuous mode as soon as dev->uc is
+non-empty, in netif_uc_promisc_update():
+
+net/core/dev_addr_lists.c:netif_uc_promisc_update() {
+	if (dev->priv_flags & IFF_UNICAST_FLT)
+		return 0;
+
+	if (!netdev_uc_empty(dev) && !dev->uc_promisc) {
+		dev->uc_promisc = true;
+		return 1;
+	}
+}
+
+Both callers (netif_rx_mode_run() and __dev_set_rx_mode()) then call
+__dev_set_promiscuity(dev, +1, false), which sets IFF_PROMISC in dev->flags
+before ops->ndo_set_rx_mode() runs.
+
+So for any configuration that adds a secondary unicast address (macvlan,
+ipvlan, a bridge port with a different MAC, VM MAC passthrough),
+rnpgbe_set_rx_mode() always sees IFF_PROMISC and takes the branch above.
+The RAR entries just written become irrelevant, and since the else branch is
+skipped the mcast_hash[] array stays all zero and RNPGBE_RX_MCAST_HASH_EN is
+never set, so multicast filtering is off as well and the adapter accepts
+everything on the wire.
+
+That also seems to make this part of the changelog unobservable:
+
+    Fall back to accepting all unicast addresses when the RAR
+    table is exhausted
+
+the fallback is pre-empted by the core at the first secondary address, long
+before 30 RAR entries are used.  Should the driver set IFF_UNICAST_FLT in
+rnpgbe_add_adapter(), or is the exact unicast filter logic here not intended
+to be used?
+
+> +	} else if (netdev->flags & IFF_ALLMULTI) {
+> +		filter_ctrl |= RNPGBE_RX_FILTER_MCAST_ALL;
+> +	} else {
+> +		/* The MTA index is the 12 address bits from 36 through 47. */
+> +		netdev_for_each_mc_addr(ha, netdev) {
+> +			hash = ((ha->addr[4] & 0xf) << 8) | ha->addr[5];
+> +			mcast_hash[hash >> 5] |= BIT(hash & 0x1f);
+> +		}
+> +
+> +		if (!netdev_mc_empty(netdev))
+> +			mcast_ctrl |= RNPGBE_RX_MCAST_HASH_EN;
+> +	}
+
+[Severity: High]
+The comment directly above this line says the MTA index is the 12
+address bits from 36 through 47, but the expression does not extract
+those bits.  With the usual MAC bit numbering (bit 0 is the LSB of
+addr[0], so ha->addr[4] carries bits 32-39 and ha->addr[5] bits
+40-47), ha->addr[4] & 0xf is bits 32-35.  Bits 36-39 are the upper
+nibble, i.e. ha->addr[4] >> 4.  Compare ixgbe_mta_vector() in
+drivers/net/ethernet/intel/ixgbe/ixgbe_common.c, which spells the
+same field for "bits [47:36]" as
+((mc_addr[4] >> 4) | (((u16)mc_addr[5]) << 4)).
+
+The placement of the pieces differs too: here ha->addr[5] ends up in
+the low 8 bits of hash and the nibble in bits 11:8, while the Intel
+layout puts addr[5] in the high bits.  The driver has to reproduce
+exactly the index the hardware derives, so both the nibble that is
+selected and where it lands matter.
+
+If the index is wrong, mcast_hash[hash >> 5] |= BIT(hash & 0x1f) sets
+the wrong bit and RNPGBE_RX_MCAST_HASH() ends up programmed for
+groups nobody joined while the joined ones are filtered out.  IPv6
+neighbour discovery is the obvious casualty: solicited-node addresses
+33:33:ff:xx:xx:xx differ only in the trailing bytes, so picking the
+wrong nibble of ha->addr[4] mis-indexes essentially every entry, and
+the failure is silent - traffic simply disappears unless something
+puts the interface into IFF_ALLMULTI or IFF_PROMISC.
+
+Could you confirm against the hardware documentation which address
+bits the MTA index is built from, and then either fix the extraction
+or correct the comment so the two agree?
+
+[ ... ]
+
+> diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c
+> index e62366291b2a..817081e24bb5 100644
+> --- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c
+> +++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_main.c
+> @@ -43,7 +43,12 @@ static int rnpgbe_configure(struct mucse *mucse)
+>  	if (err)
+>  		return err;
+>  
+> -	return rnpgbe_configure_rx(mucse);
+> +	err = rnpgbe_configure_rx(mucse);
+> +	if (err)
+> +		return err;
+> +
+> +	rnpgbe_set_rx_mode(mucse->netdev);
+> +	return 0;
 >  }
 
-[Severity: Medium]
-The requeue here is conditioned on a new mailbox interrupt arriving during
-this invocation, not on the read having failed.  Can a pending link event be
-dropped when mucse_check_and_read_mbx() fails?
+[Severity: High]
+Is this direct call missing the address list lock?  rnpgbe_configure() runs
+from the ndo_open path with only RTNL held, while every core invocation of
+ndo_set_rx_mode wraps the callback in netif_addr_lock_bh() /
+netif_addr_unlock_bh() (netif_rx_mode_run() and dev_set_rx_mode() in
+net/core/dev_addr_lists.c).
 
-mucse_fw_handle_event() returns false on failure and mucse_fw_irq_handler()
-discards that result:
+rnpgbe_set_rx_mode() walks dev->uc and dev->mc with the plain, non-RCU
+iterators:
 
-	mutex_lock(&hw->mbx.lock);
-	err = mucse_check_and_read_mbx(hw, msg.dwords, sizeof(msg));
-	mutex_unlock(&hw->mbx.lock);
-	if (err)
-		return false;
-
-mucse_check_and_read_mbx() -> mucse_read_mbx_pf() can fail early in
-mucse_obtain_mbx_lock_pf() (read_poll_timeout with mbx->timeout_us of four
-seconds), and in that case neither hw->mbx.fw_req nor the PF ACK is updated:
-
-	err = mucse_obtain_mbx_lock_pf(hw);
-	if (err)
-		return err;
+	netdev_for_each_uc_addr(ha, netdev) {
+		...
+		rnpgbe_set_rar(hw, rar, ha->addr);
 	...
-	hw->mbx.fw_req = mucse_mbx_get_fwreq(mbx);
-	mucse_mbx_inc_pf_ack(hw);
+		netdev_for_each_mc_addr(ha, netdev) {
+			hash = ((ha->addr[4] & 0xf) << 8) | ha->addr[5];
 
-With the dedicated MSI-X mailbox vector, rnpgbe_msix_other() is the only
-source that queues mbx_work, and irq_seq is unchanged for the interrupt that
-scheduled this very invocation, so no requeue happens.  Per the comment above
-("Firmware posts one request at a time and waits for the PF ACK before posting
-the next one"), firmware would then also post nothing new.
+Writers only take netif_addr_lock_bh(), not RTNL, and free entries with RCU:
 
-rnpgbe_service_task() only consumes already-published events and never polls
-the mailbox, so is there any path that retries the read?  Would the carrier
-stay off while the link is actually up until an administrative ifdown/ifup?
+net/core/dev_addr_lists.c:__hw_addr_del_entry() {
+	list_del_rcu(&ha->list);
+	kfree_rcu(ha, rcu_head);
+}
+
+Such a writer is reachable without RTNL from an ordinary socket:
+
+  setsockopt(IPV6_JOIN_GROUP) -> ipv6_sock_mc_join() ->
+  __ipv6_sock_mc_join() -> __ipv6_dev_mc_inc() -> igmp6_group_added() ->
+  dev_mc_add()
+
+Can the walk above then dereference freed memory?  The open path is
+preemptible and holds no rcu_read_lock(), so if it is preempted while
+holding ha, a concurrent list_del_rcu() + kfree_rcu() can complete its grace
+period and the next ha->list.next dereference reads freed memory, possibly
+programming a RAR from it.
+
+Is the call needed at all?  __dev_open() calls dev_set_rx_mode() right after
+ndo_open returns, which invokes rnpgbe_set_rx_mode() with the address lock
+held.  If it is needed here, would netif_addr_lock_bh() around it be
+appropriate?
 
 [ ... ]
 
-> @@ -1430,15 +1447,42 @@ static void rnpgbe_cancel_rx_retry_timers(struct mucse *mucse)
->  bool rnpgbe_down(struct mucse *mucse)
->  {
->  	struct net_device *netdev = mucse->netdev;
-> +	struct mucse_hw *hw = &mucse->hw;
-> +	unsigned long flags;
-> +	int err;
+> @@ -149,3 +149,76 @@ int rnpgbe_init_hw(struct mucse_hw *hw, int board_type)
 >  
->  	if (test_and_set_bit(__MUCSE_DOWN, &mucse->state))
->  		return false;
->  
-> +	spin_lock_irqsave(&mucse->link_lock, flags);
-> +	WRITE_ONCE(hw->link, false);
-> +	WRITE_ONCE(hw->speed, 0);
-> +	WRITE_ONCE(hw->duplex, 0);
-> +	atomic_set(&mucse->link_pending, 0);
-> +	spin_unlock_irqrestore(&mucse->link_lock, flags);
-> +	cancel_delayed_work_sync(&mucse->serv_task);
-> +	rnpgbe_set_link(hw, false);
+>  	return 0;
+>  }
 > +
-> +	netif_carrier_off(netdev);
->  	netif_tx_disable(netdev);
->  	rnpgbe_napi_disable_all(mucse);
->  	rnpgbe_irq_disable(mucse);
->  	rnpgbe_stop_all_rx_rings(mucse);
->  	rnpgbe_cancel_rx_retry_timers(mucse);
-> +
-> +	err = rnpgbe_send_notify(hw, false, mucse_fw_link_report_en);
-> +	if (err) {
-> +		dev_warn(&hw->pdev->dev, "Send link report to hw failed %d\n",
-> +			 err);
-> +		dev_warn(&hw->pdev->dev, "Fw will still report link event\n");
-> +	}
-> +
-> +	err = rnpgbe_send_notify(hw, false, mucse_fw_portup);
-> +	if (err) {
-> +		dev_warn(&hw->pdev->dev, "Send port down to hw failed %d\n",
-> +			 err);
-> +		dev_warn(&hw->pdev->dev, "Port is not truly down\n");
-> +	}
->  	rnpgbe_clean_all_tx_rings(mucse);
->  	rnpgbe_clean_all_rx_rings(mucse);
-
-[Severity: Medium]
-The commit message says the port-down notification is sent "after the data
-path is quiesced during teardown".  Is the TX side actually quiesced at this
-point?
-
-RX is stopped before the notification (rnpgbe_stop_all_rx_rings()), but
-netif_tx_disable() only stops new software submissions.  The TX hardware is
-shut down afterwards, in rnpgbe_clean_all_tx_rings() ->
-rnpgbe_stop_all_tx_rings(), which clears each ring's TX_START, waits for
-RNPGBE_DMA_TX_STATUS to go idle and only then clears TX_AXI_RW_EN:
-
-	for (int i = 0; i < mucse->num_tx_queues; i++)
-		rnpgbe_stop_tx_ring(mucse->tx_ring[i]);
-	if (mucse->num_tx_queues && !test_bit(__MUCSE_AXI_FAULT, &mucse->state))
-		err = rnpgbe_wait_tx_dma_idle(mucse);
-	... dma_axi_ctl &= ~TX_AXI_RW_EN;
-
-So firmware can take the PHY/port down while descriptors submitted earlier are
-still being fetched and transmitted.  If the MAC then stops draining, the
-100 ms poll in rnpgbe_wait_tx_dma_idle() times out and sets a bit that nothing
-ever clears:
-
-	if (err) {
-		set_bit(__MUCSE_AXI_FAULT, &mucse->state);
-		dev_err(&mucse->pdev->dev, "TX DMA failed to quiesce, status %#x\n", dma_status);
-	}
-
-__MUCSE_AXI_FAULT is only ever set and tested, never cleared, and
-rnpgbe_open() returns -EIO while it is set, so the interface would stay
-unusable until the driver is unbound.  Would it be safer to issue the
-port-down mailbox command after rnpgbe_clean_all_tx_rings(), matching the RX
-ordering?
-
-[ ... ]
-
-> diff --git a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.c b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.c
-> index e28f3193aa854..01bab789473cf 100644
-> --- a/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.c
-> +++ b/drivers/net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.c
-> @@ -199,12 +200,233 @@ int mucse_mbx_get_macaddr(struct mucse_hw *hw, int pfvfnum,
-
-[ ... ]
-
-> +static void mucse_mbx_fw_req_handler(struct mucse_hw *hw,
-> +				     struct mbx_fw_cmd_req *req)
+> +static void rnpgbe_set_rar(struct mucse_hw *hw, u32 index, const u8 *addr)
 > +{
-> +	struct mucse *mucse = container_of(hw, struct mucse, hw);
-> +	u32 magic = le32_to_cpu(req->link_stat.port_magic);
-> +	unsigned long flags;
+> +	u32 rar_low, rar_high;
 > +
-> +	if (le16_to_cpu(req->opcode) == LINK_CHANGE_EVT) {
-> +		spin_lock_irqsave(&mucse->link_lock, flags);
-> +		if (magic != ST_VALID_MAGIC) {
-> +			/* Do not change the cached state for an invalid event.
-> +			 * Use an invalid speed encoding to make firmware report
-> +			 * again.
-> +			 */
-> +			mucse_hw_wr32(hw, RNPGBE_LINK_ST, M_INVALID_ST);
-> +			spin_unlock_irqrestore(&mucse->link_lock, flags);
-> +			return;
-> +		}
-> +
-> +		if (mucse_link_is_up(hw, req) &&
-> +		    !mucse_link_speed_valid(req)) {
-> +			/* Report link down so the snapshot differs from actual
-> +			 * link-up state and firmware sends a new link event.
-> +			 */
-> +			mucse_hw_wr32(hw, RNPGBE_LINK_ST, M_DEFAULT_ST);
-> +			spin_unlock_irqrestore(&mucse->link_lock, flags);
-> +			dev_warn_ratelimited(&hw->pdev->dev,
-> +					     "unsupported link speed %u Mbps\n",
-> +					     le16_to_cpu(req->link_stat.st.speed));
-> +			return;
-> +		}
-
-[Severity: Medium]
-Both rejection paths write a snapshot that is deliberately guaranteed not to
-match the real link state.  Can this turn a rejected event into a
-self-sustaining event source?
-
-The documented contract in rnpgbe_hw.h and repeated in rnpgbe_up_complete()
-is that firmware "only asserts LINK_CHANGE_EVT when it differs from the actual
-link state AND link_report_en is true":
-
-	M_INVALID_ST is M_DEFAULT_ST plus a speed field of 0xf, described as
-	a value firmware never reports.
-
-	M_DEFAULT_ST is a link-down snapshot, written here while the link is
-	reported up.
-
-Neither branch changes any cached driver state, keeps a retry count, applies a
-backoff, or turns link_report_en off, so the same event looks like it can be
-re-posted and re-rejected indefinitely.  dev_warn_ratelimited() throttles the
-log line but not the event churn.
-
-Each iteration also takes hw->mbx.lock in mucse_fw_handle_event(), which is
-the same mutex used by the port up/down and link-report commands issued from
-rnpgbe_up_complete() and rnpgbe_down(), and those helpers poll with
-mbx->timeout_us of four seconds.  Would an older firmware revision reporting a
-different port_magic, or a link up with a speed outside {10, 100, 1000}, keep
-this loop running for as long as the link stays in that state?
-
-[ ... ]
-
-> +static bool mucse_fw_handle_event(struct mucse_hw *hw)
-> +{
-> +	union mbx_fw_cmd_req_u msg = {};
-> +	int err;
-> +
-> +	/* try to check and read fw req */
-> +	mutex_lock(&hw->mbx.lock);
-> +	err = mucse_check_and_read_mbx(hw, msg.dwords, sizeof(msg));
-> +	mutex_unlock(&hw->mbx.lock);
-> +	if (err)
-> +		return false;
-> +
-> +	mucse_mbx_fw_req_handler(hw, &msg.r);
-> +
-> +	return true;
+> +	/* The RAR stores the Ethernet address in reverse byte order. */
+> +	rar_low = (u32)addr[5] | ((u32)addr[4] << 8) |
+> +		  ((u32)addr[3] << 16) | ((u32)addr[2] << 24);
+> +	rar_high = (u32)addr[1] | ((u32)addr[0] << 8) |
+> +		   RNPGBE_RX_RAR_VALID;
+> +	mucse_hw_wr32(hw, RNPGBE_RX_RAR_LOW(index), rar_low);
+> +	mucse_hw_wr32(hw, RNPGBE_RX_RAR_HIGH(index), rar_high);
 > +}
 > +
-> +/**
-> + * mucse_fw_irq_handler - Handle one pending firmware mailbox event
-> + * @hw: pointer to the HW structure
-> + *
-> + * Process at most one event per work-item invocation. The caller requeues
-> + * mailbox work when a dedicated mailbox interrupt arrives during handling.
->   **/
->  void mucse_fw_irq_handler(struct mucse_hw *hw)
->  {
-> +	mucse_fw_handle_event(hw);
->  }
+> +static void rnpgbe_clear_rar(struct mucse_hw *hw, u32 index)
+> +{
+> +	mucse_hw_wr32(hw, RNPGBE_RX_RAR_LOW(index), 0);
+> +	mucse_hw_wr32(hw, RNPGBE_RX_RAR_HIGH(index), 0);
+> +}
+> +
+> +void rnpgbe_set_rx_mode(struct net_device *netdev)
+> +{
+> +	u32 mcast_hash[RNPGBE_RX_MCAST_HASH_ENTRIES] = {};
+> +	u32 mcast_ctrl = RNPGBE_RX_UCAST_TABLE_EN;
+> +	u32 filter_ctrl = RNPGBE_RX_FILTER_BCAST;
+> +	struct netdev_hw_addr *ha;
+> +	struct mucse_hw *hw;
+> +	struct mucse *mucse;
+> +	int rar = 1;
+> +	u16 hash;
+> +	int i;
+> +
+> +	mucse = netdev_priv(netdev);
+> +	hw = &mucse->hw;
+> +
+> +	/* RAR 0 always holds the interface's primary unicast address. */
+> +	rnpgbe_set_rar(hw, 0, netdev->dev_addr);
+> +
+> +	netdev_for_each_uc_addr(ha, netdev) {
+> +		if (rar == RNPGBE_RX_RAR_ENTRIES) {
+> +			filter_ctrl |= RNPGBE_RX_FILTER_UCAST_ALL;
+> +			break;
+> +		}
+> +
+> +		rnpgbe_set_rar(hw, rar, ha->addr);
+> +		rar++;
+> +	}
+> +
+> +	for (; rar < RNPGBE_RX_RAR_ENTRIES; rar++)
+> +		rnpgbe_clear_rar(hw, rar);
+> +
+> +	if (netdev->flags & IFF_PROMISC) {
+> +		filter_ctrl |= RNPGBE_RX_FILTER_UCAST_ALL |
+> +			       RNPGBE_RX_FILTER_MCAST_ALL;
+> +	} else if (netdev->flags & IFF_ALLMULTI) {
+> +		filter_ctrl |= RNPGBE_RX_FILTER_MCAST_ALL;
+> +	} else {
+> +		/* The MTA index is the 12 address bits from 36 through 47. */
+> +		netdev_for_each_mc_addr(ha, netdev) {
+> +			hash = ((ha->addr[4] & 0xf) << 8) | ha->addr[5];
+> +			mcast_hash[hash >> 5] |= BIT(hash & 0x1f);
+> +		}
+> +
+> +		if (!netdev_mc_empty(netdev))
+> +			mcast_ctrl |= RNPGBE_RX_MCAST_HASH_EN;
+> +	}
+> +
+> +	for (i = 0; i < RNPGBE_RX_MCAST_HASH_ENTRIES; i++)
+> +		mucse_hw_wr32(hw, RNPGBE_RX_MCAST_HASH(i), mcast_hash[i]);
+> +
+> +	mucse_hw_wr32(hw, RNPGBE_RX_MCAST_CTRL, mcast_ctrl);
+> +	mucse_hw_wr32(hw, RNPGBE_RX_FILTER_CTRL, filter_ctrl);
+> +}
 
-The discarded return value here is the same concern raised on
-rnpgbe_mbx_work() above: a failed mailbox read is indistinguishable from "no
-event pending".
+[Severity: Medium]
+RNPGBE_RX_RAR_VALID lives in the HIGH register, and both helpers
+touch that register last.  rnpgbe_clear_rar() zeroes
+RNPGBE_RX_RAR_LOW(index) while the entry is still marked valid, so
+between the two writes the filter matches the old addr[0], addr[1]
+followed by four zero bytes.  rnpgbe_set_rar() has the mirror image
+of the same problem when it overwrites an entry that is already
+valid: rar_low is programmed first, so for that window the entry
+matches the new addr[2..5] against the stale addr[0..1] - an address
+that was never configured on this interface.
 
-Thanks for considering these.
+This is not confined to teardown.  rnpgbe_set_rx_mode() reprograms
+the whole table from scratch on every invocation, walking RAR 0
+through RNPGBE_RX_RAR_ENTRIES - 1 with rnpgbe_set_rar() and
+rnpgbe_clear_rar(), and it is called on every unicast/multicast list
+change as well as from rnpgbe_configure() after RX has been started,
+so the window is hit routinely while the MAC is receiving.
+
+The conventional ordering is to drop the valid bit before touching
+the address bytes: see ixgbe_clear_rar(), which writes
+IXGBE_RAH(index) with IXGBE_RAH_AV cleared first and only then sets
+IXGBE_RAL(index) to 0.
+
+Does this hardware latch the RAR pair on the HIGH write, so that the
+LOW value has no effect until HIGH is written?  If it does, a short
+comment saying so would settle the question; if it does not, clearing
+RNPGBE_RX_RAR_VALID first in both helpers looks like the right fix.
