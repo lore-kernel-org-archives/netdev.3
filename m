@@ -1,172 +1,402 @@
-Received: from mx4.wp.pl (mx4.wp.pl [212.77.101.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 607393BB40
-	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 23:17:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.77.101.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14E7D37FF7A;
+	Fri,  4 Sep 2026 23:17:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788563838; cv=none; b=XPjPR/pMPaXKlonfRQg+rmWh+W9Gq9mWq5HOSOl+SOC0MDSEvKvSTf8i3m6oAbAmYoRDSg8ghjiRwI3PI+y2vO6gHiBQtxZNir4jdlggHMI7XAjfy6P4qmUu8c9JSilnIoCkkhwwyIijmWmZJJp03Qpiu8xXLhaZFabxt6tVWh0=
+	t=1788563879; cv=none; b=XWN91Tk5fN5EiOsAtZRT+9A9X6UFv5FoYif2UQhuG8lQQKCW4bbsG10OI63woYpvtGkkGZz15O+Cm6BwNjk/o7bis6aXAnMt6Fhh580E015Sw5nlqRGU/3kbBpEjWZtp13GW+o1qdXX26jskbC5iW7dZOTgJKqSEgeCirwDKgHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788563838; c=relaxed/simple;
-	bh=25q0fX/cwcrc0WXgbIgM4pppqpfuwl+mbbM/0edXnY0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=T5O2w9R/sQpH66udMReQ0+ESLY1OxUkiLVkC7NwTmL0zy003Rpk9F96h8U9wRMwyzm4ZEVgg1hQpduGR+Tdja9o3Wj9g/V2QUh6/t1ZGSyXuR8bxVR9IVocrlTpCcnlIoMxdnGRL3ep5d0fTewUe9l/z8Z36LahYQiKiCW8wlmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl; spf=pass smtp.mailfrom=wp.pl; dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b=StFo6qBC; arc=none smtp.client-ip=212.77.101.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=wp.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wp.pl
+	s=arc-20240116; t=1788563879; c=relaxed/simple;
+	bh=DOD9nKVPJGtP+zC+U/9sgVJAG4iDWj8ZhzvGK1KdYT8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=agH41cXGiYJ1UeYNsGoxiRFxHFC6BvcYiSfLBdPH9Edirob9Y5e3wT+tY0K/nznkbN8/V1l+nYDcsIJbmArHEuggZBIWPa0F/Pl+8xP/acJaSYeoSYgAXhahOAZqDBaG+bKQn5H5ulj/3TtCMGcL1oVYgFPiWqzAvSl70xGzFXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P2mXTX7b; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wp.pl header.i=@wp.pl header.b="StFo6qBC"
-Received: (wp-smtpd smtp.wp.pl 34823 invoked from network); 5 Sep 2026 01:10:32 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wp.pl; s=20241105;
-          t=1788563432; bh=lRxt5bNcq0KFIUWWDk++WfM7/w774UvMYZBKcqgvy0I=;
-          h=Subject:To:Cc:From;
-          b=StFo6qBCk9liGPIDwPPaCtirR2jKHG17SjZxdPCWETy2h5Hpueb6BCkagSTAxIcaK
-           OCiXAXBEaDa/TYHbQxj8WGmdircS+zhgGg1VaG6/RN0h6FzwhRUrCcF72WRrBG6OXu
-           tO96MOkgrG5SMO6TUzXxuyVWFX5HSjFM/FoNNZOa7mlk1owpqNqee6pjBinYRJSnYU
-           ebg+su43J6t5qRg1JFjFY/itkIAMT6gMk0cxSyUEH4r3BXtbeENHJoIJcyNGR+Lsbz
-           OTNQvslzo1v8WlhuUpT9pCb93YXOZAQXjTE4hXVcS92J7uP9YR2OsIA3BMNqt6MzmC
-           11mblWPVRzDSQ==
-Received: from [192.168.3.224] (83.5.244.153.ipv4.supernova.orange.pl [83.5.244.153])
-          (envelope-sender <olek2@wp.pl>)
-          by smtp.wp.pl (WP-SMTPD) with TLS_AES_256_GCM_SHA384 encrypted SMTP
-          for <f@lex.la>; 5 Sep 2026 01:10:32 +0200
-Message-ID: <780c9e93-ca6d-4481-8709-c8e5058f0073@wp.pl>
-Date: Sat, 5 Sep 2026 01:10:33 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P2mXTX7b"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E01351F00A3D;
+	Fri,  4 Sep 2026 23:17:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788563877;
+	bh=5+Ee0hUWWTMq68Jf92FClpr6IOWRhmXIoLHXGdvda5s=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=P2mXTX7bB9plOgRbxzrB1/iEFoo3VL5Cko68CExn811Fe8+UAxFJ5K3o4S0itI8Jv
+	 iCe6R1d7/BBX9uuK6mGnd0ABpgzLA+lcUT/lpQ5qwVx/OPJiG3dwibpAPZ71kIGroi
+	 K/ln1Vgwd/FMe56ckb6A58eWb2gg7UIoD6PmjKrIT4MqLQpsGlp8GLoGibsnMIli3a
+	 G5mV6wt6AcBUdOERMIHSp+hjUtph5+RJmIoHVQhmd9bQphAlp0lKnRcvBmcgeUMt+K
+	 oNuHz/1ll2IgjX0FZQXkx4pgL2ScJajwu3ADl03SlrkPTPOm3ze+/xF3V4kRXQZp5g
+	 lRyxSRLUNU43Q==
+From: Jakub Kicinski <kuba@kernel.org>
+To: hemendranaik@gmail.com
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	netdev@vger.kernel.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	jiri@resnulli.us,
+	jhs@mojatatu.com,
+	shuah@kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	vishy0777@gmail.com,
+	tahiliani@nitk.edu.in
+Subject: Re: [PATCH net-next v5 1/3] net/sched: sch_fq_pie: add per-flow statistics via class ops
+Date: Fri,  4 Sep 2026 16:17:56 -0700
+Message-ID: <20260904231756.4082402-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260902035231.81866-2-hemendranaik@gmail.com>
+References: <20260902035231.81866-2-hemendranaik@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v5 1/2] net: dsa: mt7530: populate lpi_interfaces to
- fix EEE support
-To: Aleksei Sviridkin <f@lex.la>, chester.a.unal@arinc9.com,
- daniel@makrotopia.org, andrew@lunn.ch, olteanv@gmail.com, nbd@nbd.name,
- lorenzo@kernel.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
- vladislav.karmanov.dev@gmail.com
-Cc: linux@armlinux.org.uk, dqfext@gmail.com, matthias.bgg@gmail.com,
- angelogioacchino.delregno@collabora.com, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org
-References: <20260903123644.23800-1-f@lex.la>
- <20260903123644.23800-2-f@lex.la>
-Content-Language: pl
-From: Aleksander Jan Bajkowski <olek2@wp.pl>
-In-Reply-To: <20260903123644.23800-2-f@lex.la>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-WP-MailID: d74ba4342b350b5adcc9cf718c4b901b
-X-WP-AV: skaner antywirusowy Poczty Wirtualnej Polski
-X-WP-SPAM: NO 0000001 [MeKM]                               
+Content-Transfer-Encoding: 8bit
 
-Hi Aleksei,
-I'm a little confused by this patch. At the same time, there are patches
-floating around mailing list to disable EEE on the MT7530 PHY[1]. Does
-the EEE work, or is it broken?
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+---
+net/sched: sch_fq_pie: add per-flow statistics via class ops
 
-1. 
-https://patchwork.kernel.org/project/netdevbpf/patch/20260904202800.3410838-1-vladislav.karmanov.dev@gmail.com/
+This adds a Qdisc_class_ops table to sch_fq_pie with walk, dump and
+dump_stats so that per-flow PIE state can be reported via 'tc -s class
+show'.  struct tc_fq_pie_xstats gains a type discriminator plus an
+embedded struct tc_fq_pie_cl_stats, and the accepted flow count is
+narrowed to [1..65535].
 
-Best regards,
-Aleksander
-
-On 03/09/2026 14:36, Aleksei Sviridkin wrote:
-> phylink_create() decides once and for all that a MAC supports managed
-> EEE, and it requires the tx_lpi ops plus non-empty lpi_capabilities and
-> lpi_interfaces. mt753x_phylink_get_caps() leaves lpi_interfaces empty.
->
-> So ever since the conversion to phylink managed EEE, ethtool has
-> answered "Not supported" on every mt753x port, and phy_disable_eee()
-> has locked userspace out of turning EEE on. That undoes what
-> commit 06dfcd4098cf ("net: dsa: mt7530: fix enabling EEE on MT7531
-> switch on all boards") arranged: EEE off by default, but reachable
-> with ethtool.
->
-> Leave the speeds above 1 Gbps out of both bitmaps. PMCR folds
-> SPEED_2500 and SPEED_10000 onto PMCR_FORCE_SPEED_1000, so
-> PMCR_FORCE_EEE1G would govern LPI on such a link, and that is
-> unvalidated rather than known unsupported: MediaTek's SDK driver sets
-> the EEE force bits for 100 Mbps and 1 Gbps only, and the unit of the
-> wakeup timers is undocumented with the port clock at 2.5 times the
-> rate.
->
-> LPI stays off until userspace enables it, but the EEE advertisement of
-> a PHY that advertises it out of reset comes back, since phylink stops
-> force-clearing it.
->
-> Fixes: 9cf21773f535 ("net: dsa: mt7530: convert to phylink managed EEE")
-> Signed-off-by: Aleksei Sviridkin <f@lex.la>
-> ---
-> Ports that support neither 100 Mbps nor 1 Gbps are skipped because on
-> MT7988, EN7581 and AN7583 port 6 is 10 Gbps only and shares
-> PHY_INTERFACE_MODE_INTERNAL with the user ports, so the interface mask
-> alone cannot tell them apart. MT7531's internal PHYs keep the
-> advertisement mt7531_setup() zeroed and EN7528 keeps both bitmaps
-> empty, so EEE stays fully off there.
->
-> Two pre-existing things this patch makes live, neither addressed here:
->
-> - The unit of LPI_THRESH is still unspecified, as the comment above
->    lpi_timer_default says. Before the phylink conversion
->    mt753x_set_mac_eee() wrote tx_lpi_timer into the field directly, so
->    the raw unit has always been what ethtool showed on these ports.
->
-> - mt753x_phylink_mac_enable_tx_lpi() sets the PMCR force-EEE bits
->    without checking the resolved speed or interface, relying entirely on
->    phylink never calling it above 1 Gbps. A check there would make the
->    driver robust independently of lpi_interfaces being right.
->
-> v2, with the full argument for leaving the higher speeds out:
-> https://lore.kernel.org/netdev/20260824024117.46154-2-f@lex.la/
->
-> v4: lpi_capabilities is mac_capabilities masked to the two speeds
-> instead of both asserted. Every port that reaches the guard today has
-> both speeds, so nothing changes; it only stops the bitmap from claiming
-> a speed a port cannot link at.
->
-> v5: comments cut to one line (Maxime Chevallier); no code change.
->
->   drivers/net/dsa/mt7530.c | 16 ++++++++++++----
->   1 file changed, 12 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/net/dsa/mt7530.c b/drivers/net/dsa/mt7530.c
-> index 2b7be091c056..3e61eb3c2b1e 100644
-> --- a/drivers/net/dsa/mt7530.c
-> +++ b/drivers/net/dsa/mt7530.c
-> @@ -3172,23 +3172,31 @@ static void mt753x_phylink_get_caps(struct dsa_switch *ds, int port,
->   
->   	config->mac_capabilities = MAC_ASYM_PAUSE | MAC_SYM_PAUSE;
->   
-> +	priv->info->mac_port_get_caps(ds, port, config);
+> diff --git a/include/uapi/linux/pkt_sched.h b/include/uapi/linux/pkt_sched.h
+> index 490efd2885267..89d825bac4bee 100644
+> --- a/include/uapi/linux/pkt_sched.h
+> +++ b/include/uapi/linux/pkt_sched.h
+> @@ -953,6 +953,21 @@ enum {
+>  };
+>  #define TCA_FQ_PIE_MAX   (__TCA_FQ_PIE_MAX - 1)
+>  
+> +enum {
+> +	TCA_FQ_PIE_XSTATS_QDISC,
+> +	TCA_FQ_PIE_XSTATS_CLASS,
+> +};
 > +
->   	/* The EN7528 GPHYs report EEE capability, but negotiating EEE with
->   	 * common link partners (e.g. Realtek GbE NICs) results in an unstable
->   	 * link with dropped frames. Leave the LPI capabilities empty so that
->   	 * phylink disables EEE on these PHYs and refuses to enable it from
->   	 * userspace.
->   	 */
-> -	if (priv->id != ID_EN7528) {
-> +	if (priv->id != ID_EN7528 &&
-> +	    config->mac_capabilities & (MAC_100FD | MAC_1000FD)) {
->   		u32 eeecr = mt7530_read(priv, MT753X_PMEEECR_P(port));
->   
-> -		config->lpi_capabilities = MAC_100FD | MAC_1000FD | MAC_2500FD;
-> +		/* LPI above 1 Gbps is not supported */
-> +		config->lpi_capabilities = config->mac_capabilities &
-> +					   (MAC_100FD | MAC_1000FD);
-> +		phy_interface_copy(config->lpi_interfaces,
-> +				   config->supported_interfaces);
-> +		__clear_bit(PHY_INTERFACE_MODE_2500BASEX,
-> +			    config->lpi_interfaces);
+> +struct tc_fq_pie_cl_stats {
+> +	__u64 prob;			/* current probability */
+> +	__u32 delay;			/* current delay in microseconds */
+> +	__s32 deficit;			/* number of remaining byte credits */
+> +	__u32 avg_dq_rate;		/* current average dq_rate in
+> +					 * bytes/second
+> +					 */
+> +	__u32 dq_rate_estimating;	/* is avg_dq_rate being calculated? */
+> +};
 > +
->   		/* tx_lpi_timer should be in microseconds. The time units for
->   		 * LPI threshold are unspecified.
->   		 */
->   		config->lpi_timer_default = FIELD_GET(LPI_THRESH_MASK, eeecr);
->   	}
-> -
-> -	priv->info->mac_port_get_caps(ds, port, config);
->   }
->   
->   static int mt753x_pcs_validate(struct phylink_pcs *pcs,
+>  struct tc_fq_pie_xstats {
+>  	__u32 packets_in;	/* total number of packets enqueued */
+>  	__u32 dropped;		/* packets dropped due to fq_pie_action */
+> @@ -963,6 +978,9 @@ struct tc_fq_pie_xstats {
+>  	__u32 new_flows_len;	/* count of flows in new list */
+>  	__u32 old_flows_len;	/* count of flows in old list */
+>  	__u32 memory_usage;	/* total memory across all queues */
+> +	__u32 type;
+> +	struct tc_fq_pie_cl_stats class_stats;
+> +
+>  };
+
+[Severity: Medium]
+The changelog says the new members are appended so that "qdisc xstats
+offsets stay compatible with the flat struct fq_pie already shipped".
+That is true for the offsets, but does it also change the size of an
+already shipped struct?
+
+  nine __u32 counters          = 36 bytes
+  + __u32 type                 = 40 bytes
+  + struct tc_fq_pie_cl_stats  = 64 bytes
+
+A consumer that validates the TCA_STATS_APP payload with the usual
+iproute2 idiom:
+
+  if (RTA_PAYLOAD(xstats) < sizeof(*st))
+	  return -1;
+
+would stop printing fq_pie xstats altogether once rebuilt against this
+header and run on an older kernel that still emits 36 bytes.  sch_fq
+handled this by having userspace copy min(payload, sizeof(*st)).  Should
+the changelog mention the size change so this is a conscious decision?
+
+Related: since fq_pie_dump_class_stats() reuses the same struct, an
+iproute2 that does not know about the new type field will decode the
+per-class blob using the qdisc layout and print nine all-zero qdisc
+counters per flow.  Does that mean the stated goal ("'tc -s class show'
+reports per-flow state") depends on an iproute2 change that the changelog
+does not mention?  The selftest added later in the series matches
+"class fq_pie 2:[0-9]+ .*prob .*delay .*deficit", which only a patched
+iproute2 can produce.
+
+[Severity: Low]
+Documentation/netlink/specs/tc.yaml still describes tc-fq-pie-xstats as a
+struct with only the nine original u32 members, and it is referenced as
+the fixed-header for the fq_pie entry of tca-stats-app-msg:
+
+  Documentation/netlink/specs/tc.yaml
+      value: fq_pie
+      fixed-header: tc-fq-pie-xstats
+
+Should the spec be extended in the same patch so ynl-based decoders can
+see the new type discriminator and the per-flow fields?  Note YAML structs
+are implicitly packed, so the nested tc_fq_pie_cl_stats members would need
+to be spelled out explicitly.
+
+> diff --git a/net/sched/sch_fq_pie.c b/net/sched/sch_fq_pie.c
+> index b27d95418707a..32c76d2bb74bf 100644
+> --- a/net/sched/sch_fq_pie.c
+> +++ b/net/sched/sch_fq_pie.c
+> @@ -310,9 +310,9 @@ static int fq_pie_change(struct Qdisc *sch, struct nlattr *opt,
+>  			goto flow_error;
+>  		}
+>  		q->flows_cnt = nla_get_u32(tb[TCA_FQ_PIE_FLOWS]);
+> -		if (!q->flows_cnt || q->flows_cnt > 65536) {
+> +		if (!q->flows_cnt || q->flows_cnt > 65535) {
+>  			NL_SET_ERR_MSG_MOD(extack,
+> -					   "Number of flows must range in [1..65536]");
+> +					   "Number of flows must range in [1..65535]");
+>  			goto flow_error;
+>  		}
+>  	}
+
+[Severity: High]
+Is this a uAPI regression?  fq_pie_change() has accepted flows == 65536
+since sch_fq_pie was merged, and after this change the same netlink
+request fails with -EINVAL:
+
+  tc qdisc add dev dummy0 handle 1: root fq_pie flows 65536
+
+There is an in-tree consumer of exactly that command:
+
+  tools/testing/selftests/tc-testing/tc-tests/qdiscs/fq_pie.json, id 83be
+      "cmdUnderTest": "$TC qdisc add dev $DUMMY handle 1: root fq_pie flows 65536",
+      "expExitCode": "0",
+
+and the later selftest patch in this series flips that case to expect exit
+code 2 with matchCount 0.  Does that mean the series records the behaviour
+change rather than avoiding it?
+
+The stated reason is that TC_H_MIN(65536) == 0 would give the 65536th flow
+a class handle of major:0 in fq_pie_dump_class():
+
+  tcm->tcm_handle |= TC_H_MIN(cl);
+
+Nothing kernel-side truncates - fq_pie_walk() passes i + 1 as an unsigned
+long straight into fq_pie_dump_class_stats().  Could the class enumeration
+simply stop at 65535 flows (or the handle be computed differently) so that
+existing configurations using 65536 flows keep working?  The changelog
+does not mention that a previously valid configuration is now refused.
+
+> @@ -510,7 +510,9 @@ static int fq_pie_dump(struct Qdisc *sch, struct sk_buff *skb)
+>  static int fq_pie_dump_stats(struct Qdisc *sch, struct gnet_dump *d)
+>  {
+>  	struct fq_pie_sched_data *q = qdisc_priv(sch);
+> -	struct tc_fq_pie_xstats st = { 0 };
+> +	struct tc_fq_pie_xstats st = {
+> +		.type	= TCA_FQ_PIE_XSTATS_QDISC,
+> +	};
+>  	struct list_head *pos;
+>  
+>  	sch_tree_lock(sch);
+
+[ ... ]
+
+> @@ -562,7 +564,89 @@ static void fq_pie_destroy(struct Qdisc *sch)
+>  	kvfree(q->flows);
+>  }
+>  
+> +static struct Qdisc *fq_pie_leaf(struct Qdisc *sch, unsigned long arg)
+> +{
+> +	return NULL;
+> +}
+> +
+> +static unsigned long fq_pie_find(struct Qdisc *sch, u32 classid)
+> +{
+> +	return 0;
+> +}
+> +
+> +static int fq_pie_dump_class(struct Qdisc *sch, unsigned long cl,
+> +			     struct sk_buff *skb, struct tcmsg *tcm)
+> +{
+> +	tcm->tcm_handle |= TC_H_MIN(cl);
+> +	return 0;
+> +}
+> +
+> +static int fq_pie_dump_class_stats(struct Qdisc *sch, unsigned long cl,
+> +				   struct gnet_dump *d)
+> +{
+> +	struct fq_pie_sched_data *q = qdisc_priv(sch);
+> +	struct gnet_stats_queue qs = { 0 };
+> +	struct tc_fq_pie_xstats xstats;
+> +	u32 idx = cl - 1;
+> +
+> +	if (idx < q->flows_cnt) {
+> +		const struct fq_pie_flow *flow = &q->flows[idx];
+> +
+> +		memset(&xstats, 0, sizeof(xstats));
+> +		xstats.type = TCA_FQ_PIE_XSTATS_CLASS;
+> +		xstats.class_stats.prob =
+> +			READ_ONCE(flow->vars.prob) << BITS_PER_BYTE;
+> +		xstats.class_stats.delay =
+> +			((u32)PSCHED_TICKS2NS(READ_ONCE(flow->vars.qdelay))) /
+> +			NSEC_PER_USEC;
+
+[Severity: Medium]
+Does the exported delay wrap here?  PSCHED_TICKS2NS() yields an s64
+nanosecond value, but the cast to u32 happens before the division by
+NSEC_PER_USEC, so anything above 2^32 ns (about 4.295 s) folds over - a
+5 s sojourn time is reported as roughly 705032 us, while the __u32 field
+could carry about 4295 s.
+
+With dq_rate_estimator off (the default) flow->vars.qdelay is the packet
+sojourn time, and multi-second sojourn times are easy to produce behind a
+slow shaper; the selftest added later in this series stacks fq_pie under
+'tbf rate 8bit'.  Would keeping the value 64-bit until after the division
+be preferable?
+
+  delay = div_u64(PSCHED_TICKS2NS(READ_ONCE(flow->vars.qdelay)),
+		  NSEC_PER_USEC);
+
+The same expressions already exist in pie_dump_stats() in
+net/sched/sch_pie.c, so the pattern is inherited, but this adds new
+instances per flow.
+
+> +		xstats.class_stats.deficit = READ_ONCE(flow->deficit);
+> +		xstats.class_stats.dq_rate_estimating =
+> +			READ_ONCE(q->p_params.dq_rate_estimator);
+> +
+> +		if (xstats.class_stats.dq_rate_estimating) {
+> +			xstats.class_stats.avg_dq_rate =
+> +				READ_ONCE(flow->vars.avg_dq_rate) *
+> +				(PSCHED_TICKS_PER_SEC) >> PIE_SCALE;
+> +		}
+
+[Severity: Medium]
+Can this multiplication overflow on 32-bit builds?  PSCHED_TICKS_PER_SEC
+derives from the long constant NSEC_PER_SEC:
+
+  include/net/pkt_sched.h
+  #define PSCHED_TICKS_PER_SEC	(NSEC_PER_SEC >> PSCHED_SHIFT)
+
+so on ILP32 the product stays 32-bit and wraps once avg_dq_rate exceeds
+about 4396, i.e. rates above roughly 16.7 MB/s, even though the final
+bytes/second result would still fit in the __u32 field.  Would a u64
+intermediate (or an explicit saturation) be better here?
+
+> +
+> +		qs.qlen    = READ_ONCE(flow->qlen);
+> +		qs.backlog = READ_ONCE(flow->backlog);
+> +	}
+
+[Severity: Medium]
+Are these READ_ONCE()s paired with anything on the writer side?
+
+All six fields read here are updated with plain stores under the qdisc
+root lock:
+
+  fq_pie_qdisc_enqueue()
+	sel_flow->deficit = q->quantum;
+	sel_flow->qlen = 0;
+	sel_flow->backlog = 0;
+	...
+	sel_flow->qlen++;
+	sel_flow->backlog += pkt_len;
+
+  fq_pie_qdisc_dequeue()
+	flow->qlen--;
+	flow->deficit -= pkt_len;
+	flow->backlog -= pkt_len;
+	pie_process_dequeue(skb, &q->p_params, &flow->vars, flow->backlog);
+
+  fq_pie_timer()
+	spin_lock(root_lock);
+	...
+	pie_calculate_probability(&q->p_params,
+				  &q->flows[q->flows_cursor].vars,
+				  q->flows[q->flows_cursor].backlog);
+
+and this new reader takes no lock at all.  vars.prob is u64 and
+vars.qdelay is psched_time_t (u64), so on 32-bit builds can a concurrent
+read return a torn value?  On all builds, can userspace observe an
+inconsistent snapshot, for example qlen == 0 together with a non-zero
+backlog while enqueue is in its reset window, or prob and delay from two
+different tupdate rounds?
+
+Taking the lock appears to be allowed here - tc_fill_tclass() passes NULL
+as the lock to gnet_stats_start_copy_compat() before calling
+cl_ops->dump_stats, and fq_pie_dump_stats() in this same file already
+brackets its counters with sch_tree_lock()/sch_tree_unlock().
+
+Note sch_fq_codel, whose class-stats reader this mirrors, converted its
+writers to WRITE_ONCE() (flow->deficit, flow->head, flow->cvars.count)
+precisely to pair with the lockless reader.  Should fq_pie either do the
+same or hold sch_tree_lock() over the snapshot?
+
+> +	if (gnet_stats_copy_queue(d, NULL, &qs, qs.qlen) < 0)
+> +		return -1;
+> +	if (idx < q->flows_cnt)
+> +		return gnet_stats_copy_app(d, &xstats, sizeof(xstats));
+> +	return 0;
+> +}
+> +
+> +static void fq_pie_walk(struct Qdisc *sch, struct qdisc_walker *arg)
+> +{
+> +	struct fq_pie_sched_data *q = qdisc_priv(sch);
+> +	unsigned int i;
+> +
+> +	if (arg->stop)
+> +		return;
+> +
+> +	for (i = 0; i < q->flows_cnt; i++) {
+> +		if (list_empty(&q->flows[i].flowchain)) {
+> +			arg->count++;
+> +			continue;
+> +		}
+> +		if (!tc_qdisc_stats_dump(sch, i + 1, arg))
+> +			break;
+> +	}
+> +}
+> +
+> +static const struct Qdisc_class_ops fq_pie_class_ops = {
+> +	.leaf		=	fq_pie_leaf,
+> +	.find		=	fq_pie_find,
+> +	.dump		=	fq_pie_dump_class,
+> +	.dump_stats	=	fq_pie_dump_class_stats,
+> +	.walk		=	fq_pie_walk,
+> +};
+
+[Severity: Low]
+This isn't a bug introduced by this patch, but with cl_ops now present the
+missing .tcf_block becomes more visible.  sch_fq_pie already carries the
+full external classifier plumbing:
+
+  fq_pie_init()    -> tcf_block_get(&q->block, &q->filter_list, sch, extack)
+  fq_pie_classify() -> filter = rcu_dereference_bh(q->filter_list);
+  fq_pie_destroy() -> tcf_block_put(q->block)
+
+but __tcf_qdisc_find() in net/sched/cls_api.c rejects every filter
+operation when the class ops table has no .tcf_block:
+
+	if (!cops->tcf_block) {
+		NL_SET_ERR_MSG(extack, "Class doesn't support blocks");
+		err = -EOPNOTSUPP;
+
+so q->filter_list can never become non-NULL and the classifier path in
+fq_pie_classify() stays unreachable, as it was before this patch.  The
+changelog states the omission is deliberate; would adding the trivial
+.tcf_block that sch_fq_codel provides be cheap enough to make that dead
+code live?
+
+>  static struct Qdisc_ops fq_pie_qdisc_ops __read_mostly = {
+> +	.cl_ops		= &fq_pie_class_ops,
+>  	.id		= "fq_pie",
+
+[ ... ]
+
+Also, minor: there is a stray blank line before the closing brace of
+struct tc_fq_pie_xstats in include/uapi/linux/pkt_sched.h.
+-- 
+pw-bot: cr
