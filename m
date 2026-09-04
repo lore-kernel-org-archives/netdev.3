@@ -1,76 +1,76 @@
-Received: from mail-pg1-f228.google.com (mail-pg1-f228.google.com [209.85.215.228])
+Received: from mail-pl1-f225.google.com (mail-pl1-f225.google.com [209.85.214.225])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C14B47F774
-	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 10:52:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.228
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42F0B47DD69
+	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 10:52:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.225
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788519179; cv=none; b=tY8+PWIqwOEDEm3cL2pAs/L0eQU4cHfHWSoy1Z56igkr+wccjSnbGHiFyb0YL/YVnFTa8fbCt5PiH1kwvdb85DHoukSuEXG6qHL9plRCqEDG7wCtub5q/zkC1NqBzvlzGEOXo3dnYmXe7xFQiZA2RuPPIFAzF4Hn182gpGzQymg=
+	t=1788519185; cv=none; b=GTGdfj1SB+/ADn2lvZmOzSoZ93uGDorSZfKvpVNmQH3Ha5o4fLky3sP/MZhI0LPiZ6P5oxVul8xPwjz3GirjwQSoN4XgGsyLDe/XSksLc7ltGqoXwmhkjDPNnNRuXW9TIBn18dQM1gmmRF6VKP4unuzMRdVBdFB0r1z0VTl7L2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788519179; c=relaxed/simple;
-	bh=tTgtgyFIKd3q9DiaMOuxIhyUZuqzafNqO++JxmVf1hY=;
+	s=arc-20240116; t=1788519185; c=relaxed/simple;
+	bh=c6oYnEfFM0MWFee9Fp07J6hOp+zyvekq7hitaGWhijw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L1eeAUV+yYxi7D+SlFAhMM8QRT9ZPm7H59AszC5mR0IaKgsAhbndkYFkriuxUMKpyO9SzUqQaiqu/TRg1pJQe+dS8ReE9/e98sVVIHvoiThNq0PtyveYyVKDvK6kWFfNzuP6rTpzgo7PwKzUXDhidh3xaagklvAtS2BHIcB0kuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=BByScYKP; arc=none smtp.client-ip=209.85.215.228
+	 MIME-Version; b=JNfatp4Vu7U84rlWQJXETfwxXx2wijx2GrjpxAUV+lPagBbVq8vrZgX0FM+7Kje4+YRfrCIQwtt4UNxQOJLFGpsMmZaU1bb0JWGTTgcRmvdYhDXctme/EG9QnYLyeDnWn6TBjLRdHzgHBYw4Z0FAVqVzQVVBHnI+EnpSHjsNp2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=gkd0Bku9; arc=none smtp.client-ip=209.85.214.225
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="BByScYKP"
-Received: by mail-pg1-f228.google.com with SMTP id 41be03b00d2f7-cc1c9879395so752793a12.1
-        for <netdev@vger.kernel.org>; Fri, 04 Sep 2026 03:52:47 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="gkd0Bku9"
+Received: by mail-pl1-f225.google.com with SMTP id d9443c01a7336-2ce98cb8165so9543755ad.1
+        for <netdev@vger.kernel.org>; Fri, 04 Sep 2026 03:52:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788519167; x=1789123967;
+        d=1e100.net; s=20251104; t=1788519169; x=1789123969;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=SHKvq6U9+uHkmjRYJnuNGHeZf+WZK0TeIRdc8ogSsSA=;
-        b=q2pcB6mtwufiZIrc4qNP8oMDeg4U4KHnPNfZiscLbUa5jSoO7RNbdrGvKBfEZkNN/u
-         E7zVWiOWasKrFl8wzhCciFN0/XOQwG2vJ8kIq0EEeI9OhkEDfZL3GvWCQBq3RT9aDpc2
-         zVCUBdBoD3+N++ZsNRlOqQd+TThboW7sU2mIQz1se5KOuUOvY8v0h/wFmIKooXa44Qpb
-         iXjhIShXxwDQNx8JFGtTM3PQ4a+uUxRkw5Mie5QEKVYUMJhQiqJrNM9tS6YxIuW6G+ah
-         /CElIkfr3/prgFsIMbGQz1nfjcVTjfxcOHxtca+KkH3zBUNkYpkKvtRe4cLgytZjeFEr
-         zQ6w==
-X-Gm-Message-State: AFuF++npLQ2cZ8IzYS9sAWjTFTogmSuhx+TiO2hNiSqaIsXJyJ3B73qh
-	RYU/sAZDKw+luxP7+/efZRRgdu7KQdU5L2WaBQ1W2CGqLm8t/A2P2WeegPzm6r3jSvJr/7/5KHy
-	M/2foY85SHTwiJq4eVAOdukOkIk8aL/fwwz4lbpggMdwhz4M1LRerGij/2/lS0kJl4ok6HsPXGF
-	PmXFisZsCdygzEohLR4aY8dTWPKEwEW3KUg9tmqy6ClE0AKa3wd/rkZDCh20IG+pFMEK+io/pUl
-	W/qUIgGGqxQ
-X-Gm-Gg: AYBFou27HVXK2D80TPa/yPuHdTD3R8VCBBwWoCSU9iRYllMG2miUOUxsfvbuUqzElnM
-	d8yLEvsotbcr2MHaDQqd7Ls7yH9ZpEfmXK+5gOjeWG4R/dEMVIq8cM3VkhHR1HqEt7uhp57pL6N
-	HhFhzEpxLW56WMCi6lTiSKWHGHnH0zbhmDQ9DCxO2PHbQbh3ODQQ/aHUBbnsbYNUDdohtxqtStJ
-	8ciri/GcLNRaxAQ6hdtRM7r6xRh6haNoeuCNQUm2ACoot8QZVH425mxqq+jI8ZZ5qldAomuMZ+6
-	hg9WHJgAY5jZtxIAUupBMAsPmclMeSK/+QHbWUfOxIPst4Db3rctf2ZKnQpUcbuMtoTOKA5WkVu
-	PKnY5iCj/oQyYiEQHoSFconzMX/gsrxk+cZinuk0yitbPwxr7PYN996y7cyMi+Gdgd9LUzU8fe5
-	LDmorxF7Gkz/3rnn9JKzalWOSZgIG2QPLSz5oI
-X-Received: by 2002:a17:90b:1c0a:b0:398:d132:ba76 with SMTP id 98e67ed59e1d1-39b2623abfemr7427763a91.21.1788519166431;
-        Fri, 04 Sep 2026 03:52:46 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-125.dlp.protect.broadcom.com. [144.49.247.125])
-        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-39b1600a8fbsm2544392a91.3.2026.09.04.03.52.45
+        bh=0Ie/+ne82/k/5wtZX1JIYtWTA4vnoi50qIFmR+/v6VQ=;
+        b=KpMdh4g6ijYqcRDwjyjP37hfgCivvEg7bxtHex33sFnGg1JukmGWVSGB+ymIEaKnlZ
+         BO7M3iUwxIywFS8RQngMrSLOh1esDfvNJ4Zcrb4XEqPcdMM4J2PrPaofhG+KhBZd8OBM
+         QF+OGMK8uxCUA6RPFaALhlg8h9TNszyxCg3FRvTUxQyVfNSVvZZxB/CnkJg+9kpQ14zG
+         kCvfnFNtU7+WI/1XBpGHIZg6CcyU2qBkklBOco2xysuXeIQaOsCDpvb6p+//IbvcolkB
+         3vgPgiqgfBAb73kYuZ2pQAyeTL/ME2RdnSkBP+GrifUknnP/hb9GzN2xxpKr0kEgONB1
+         KV7g==
+X-Gm-Message-State: AFuF++lVLqyXBjWBBwuat/mNsnLXHeLRHvbUyQiPG8e/UD3nmd608OZ6
+	T2kUEQzQdKpzEQuggG2TNV+9fSnJLFtJBJRBZJ+Eihi5GTN3tNPj1HanGR6PnKjriJUjt5YBVB/
+	Uej+TOdXDHmifqweIgXSqvAOH8DC3KRE9VLIrhdmdIz/PRMNUPgduA7P36sjo5fgbUF6FYnHh4p
+	1uRGumw66xD7diQnfX3/KwsSMWhFWSMeIrYuJL1TYkCoUzO9le5jI7ubG6YCdFpeyq3I0H7AXhm
+	Dg71cz48Xbi
+X-Gm-Gg: AYBFou0d+OxQfGN697A1Ki2yam6ZsT1SS7veQV/zWlLn+sQ8U2Ah7L1dGbkoOHIKoT2
+	U+4oATCVHUMEKJDv79YWvMt28xGr3rjJNKIAKPzUD95ThqCEX3cnktIKaGbUPcO4wTLJe6u/1K7
+	gJqJzkNyxYqcP07J1IZkajZW2HB6QzusyuRS8Bi6VSOrVRDESPwLL29vFrGR2bIPl+YMCWd0rUW
+	NoaMtk3E83EZ3/sLJaIlsd7Ldt2W5RLgWmnBDt8yfxVdDneAmAyqMjcSVuMSdio9VhDizMiuUUW
+	0HbleofOMTvxuvwfqPWqpQGT4py7zClvy0v7QQ3iq+DyDLUmxANTijSk5wGp7A5uW/FY6rLI1dJ
+	IR2P0BHy3VyV0Q5omHVEYqiICsUlm7V40zPYsMz7DDbVcXhLsj6Je5Uzz6hAaxm+70NSC9kG8sb
+	s43wN4ptGODEkqo9jYc/VBvA3YKg4Wpcnz2w==
+X-Received: by 2002:a17:903:380e:b0:2d9:80b:1674 with SMTP id d9443c01a7336-2dafaf6070amr113856165ad.8.1788519169395;
+        Fri, 04 Sep 2026 03:52:49 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-27.dlp.protect.broadcom.com. [144.49.247.27])
+        by smtp-relay.gmail.com with ESMTPS id 5a478bee46e88-3339c9d7f72sm57456eec.26.2026.09.04.03.52.48
         for <netdev@vger.kernel.org>
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 04 Sep 2026 03:52:46 -0700 (PDT)
+        Fri, 04 Sep 2026 03:52:49 -0700 (PDT)
 X-Relaying-Domain: broadcom.com
 X-CFilter-Loop: Reflected
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2d63bad3d09so16175655ad.3
-        for <netdev@vger.kernel.org>; Fri, 04 Sep 2026 03:52:45 -0700 (PDT)
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cb48f41343aso2029794a12.1
+        for <netdev@vger.kernel.org>; Fri, 04 Sep 2026 03:52:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1788519164; x=1789123964; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1788519167; x=1789123967; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=SHKvq6U9+uHkmjRYJnuNGHeZf+WZK0TeIRdc8ogSsSA=;
-        b=BByScYKPY2T4f+0e3BU/AGWwnbybutXs3OL1R3LoIBWgpTFyDAzqIIBJJHW6292ru4
-         4XvtkI1KmzRCeTa7W0AJyhqxwv+bRoKrxNkA1HO4DXmAlwn3MxjxXQK2wtGqpimWRKU+
-         NcJzO36uTgfCujPytDQqdeYGRs6oH3CNGxRKU=
-X-Received: by 2002:a17:902:f1d3:b0:2da:f3f6:7cb1 with SMTP id d9443c01a7336-2db12666affmr45712535ad.19.1788519164094;
-        Fri, 04 Sep 2026 03:52:44 -0700 (PDT)
-X-Received: by 2002:a17:902:f1d3:b0:2da:f3f6:7cb1 with SMTP id d9443c01a7336-2db12666affmr45712155ad.19.1788519163535;
-        Fri, 04 Sep 2026 03:52:43 -0700 (PDT)
+        bh=0Ie/+ne82/k/5wtZX1JIYtWTA4vnoi50qIFmR+/v6VQ=;
+        b=gkd0Bku9XO9NDPr/fY+fcxKp2UCwL6JOTrnvFkDCaP3RzsK5eV3cPyNwRSjIT3F9XF
+         dC/syyAhZ81tB8JMe+4ecK5B8Eo2hQCVjM3nos6qsGGKA98gWDfUw12lcdq0DI4pryEb
+         QuVzv6jd8g0Tk1tC26jg++W92JCM3abSBXz5g=
+X-Received: by 2002:a17:90b:4988:b0:398:ceed:b903 with SMTP id 98e67ed59e1d1-39b080364famr14317896a91.11.1788519166858;
+        Fri, 04 Sep 2026 03:52:46 -0700 (PDT)
+X-Received: by 2002:a17:90b:4988:b0:398:ceed:b903 with SMTP id 98e67ed59e1d1-39b080364famr14317844a91.11.1788519166209;
+        Fri, 04 Sep 2026 03:52:46 -0700 (PDT)
 Received: from mgmt5.dhcp.broadcom.net ([192.19.222.250])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3339a534d0asm6171170eec.8.2026.09.04.03.52.42
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3339a534d0asm6171170eec.8.2026.09.04.03.52.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Sep 2026 03:52:42 -0700 (PDT)
+        Fri, 04 Sep 2026 03:52:45 -0700 (PDT)
 From: Siva Reddy Kallam <siva.kallam@broadcom.com>
 To: leonro@nvidia.com,
 	jgg@nvidia.com,
@@ -83,11 +83,11 @@ To: leonro@nvidia.com,
 Cc: netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-rdma@vger.kernel.org,
-	Suresh Rupanagudi <suresh.rupanagudi@broadcom.com>,
+	Usman Ansari <usman.ansari@broadcom.com>,
 	Siva Reddy Kallam <siva.kallam@broadcom.com>
-Subject: [PATCH 11/15] RDMA/bng_re: Add SRQ verbs
-Date: Fri,  4 Sep 2026 03:43:19 -0700
-Message-ID: <20260904104328.763768-12-siva.kallam@broadcom.com>
+Subject: [PATCH 12/15] RDMA/bng_re: Add Stats verbs
+Date: Fri,  4 Sep 2026 03:43:20 -0700
+Message-ID: <20260904104328.763768-13-siva.kallam@broadcom.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20260904104328.763768-1-siva.kallam@broadcom.com>
 References: <20260904104328.763768-1-siva.kallam@broadcom.com>
@@ -100,589 +100,856 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-From: Suresh Rupanagudi <suresh.rupanagudi@broadcom.com>
+From: Usman Ansari <usman.ansari@broadcom.com>
 
 This patch adds below verbs.
-- bng_re_create_srq
-- bng_re_modify_srq
-- bng_re_query_srq
-- bng_re_destroy_srq
+- bng_re_alloc_hw_port_stats
+- bng_re_ib_get_hw_stats
 
-Signed-off-by: Suresh Rupanagudi <suresh.rupanagudi@broadcom.com>
+Signed-off-by: Usman Ansari <usman.ansari@broadcom.com>
 Signed-off-by: Siva Reddy Kallam <siva.kallam@broadcom.com>
 ---
- drivers/infiniband/hw/bng_re/bng_dev.c   |   5 +
- drivers/infiniband/hw/bng_re/bng_re.h    |   1 +
- drivers/infiniband/hw/bng_re/bng_res.c   |   1 +
- drivers/infiniband/hw/bng_re/bng_res.h   |   9 +
- drivers/infiniband/hw/bng_re/bng_sp.c    | 144 +++++++++++++++
- drivers/infiniband/hw/bng_re/bng_sp.h    |  28 +++
- drivers/infiniband/hw/bng_re/bng_verbs.c | 216 +++++++++++++++++++++++
- drivers/infiniband/hw/bng_re/bng_verbs.h |  25 +++
- include/uapi/rdma/bng_re-abi.h           |  14 ++
- 9 files changed, 443 insertions(+)
+ drivers/infiniband/hw/bng_re/Makefile         |   1 +
+ drivers/infiniband/hw/bng_re/bng_dev.c        |   3 +
+ drivers/infiniband/hw/bng_re/bng_fw.h         |  12 +
+ .../infiniband/hw/bng_re/bng_hw_counters.c    | 304 ++++++++++++++++++
+ .../infiniband/hw/bng_re/bng_hw_counters.h    | 118 +++++++
+ drivers/infiniband/hw/bng_re/bng_re.h         |   4 +
+ drivers/infiniband/hw/bng_re/bng_res.h        |  21 ++
+ drivers/infiniband/hw/bng_re/bng_sp.c         | 144 +++++++++
+ drivers/infiniband/hw/bng_re/bng_sp.h         |  84 +++++
+ 9 files changed, 691 insertions(+)
+ create mode 100644 drivers/infiniband/hw/bng_re/bng_hw_counters.c
+ create mode 100644 drivers/infiniband/hw/bng_re/bng_hw_counters.h
 
+diff --git a/drivers/infiniband/hw/bng_re/Makefile b/drivers/infiniband/hw/bng_re/Makefile
+index 5e650a35b185..a9a851cc2fa6 100644
+--- a/drivers/infiniband/hw/bng_re/Makefile
++++ b/drivers/infiniband/hw/bng_re/Makefile
+@@ -14,4 +14,5 @@ bng_re-y := \
+ 	bng_dev.o \
+ 	bng_sp.o \
+ 	bng_fp.o \
++	bng_hw_counters.o \
+ 	bng_verbs.o
 diff --git a/drivers/infiniband/hw/bng_re/bng_dev.c b/drivers/infiniband/hw/bng_re/bng_dev.c
-index 9c35c56ae583..a42e24691cad 100644
+index a42e24691cad..978b7efab03e 100644
 --- a/drivers/infiniband/hw/bng_re/bng_dev.c
 +++ b/drivers/infiniband/hw/bng_re/bng_dev.c
-@@ -57,6 +57,11 @@ static const struct ib_device_ops bng_re_dev_ops = {
- 	.resize_user_cq		= bng_re_resize_cq,
- 	.req_notify_cq		= bng_re_req_notify_cq,
- 	.destroy_cq		= bng_re_destroy_cq,
-+	.create_srq		= bng_re_create_srq,
-+	.modify_srq		= bng_re_modify_srq,
-+	.query_srq		= bng_re_query_srq,
-+	.destroy_srq		= bng_re_destroy_srq,
-+	INIT_RDMA_OBJ_SIZE(ib_srq, bng_re_srq, ib_srq),
+@@ -19,6 +19,7 @@
+ #include "bng_re_mpc_roce.h"
+ #include "bng_xid.h"
+ #include "bng_verbs.h"
++#include "bng_hw_counters.h"
+ 
+ MODULE_AUTHOR("Siva Reddy Kallam <siva.kallam@broadcom.com>");
+ MODULE_DESCRIPTION(BNG_RE_DESC);
+@@ -61,6 +62,8 @@ static const struct ib_device_ops bng_re_dev_ops = {
+ 	.modify_srq		= bng_re_modify_srq,
+ 	.query_srq		= bng_re_query_srq,
+ 	.destroy_srq		= bng_re_destroy_srq,
++	.alloc_hw_port_stats	= bng_re_alloc_hw_port_stats,
++	.get_hw_stats		= bng_re_ib_get_hw_stats,
+ 	INIT_RDMA_OBJ_SIZE(ib_srq, bng_re_srq, ib_srq),
  	INIT_RDMA_OBJ_SIZE(ib_cq, bng_re_cq, ib_cq),
  	INIT_RDMA_OBJ_SIZE(ib_pd, bng_re_pd, ib_pd),
- 	INIT_RDMA_OBJ_SIZE(ib_ucontext, bng_re_ucontext, ib_uctx),
+diff --git a/drivers/infiniband/hw/bng_re/bng_fw.h b/drivers/infiniband/hw/bng_re/bng_fw.h
+index f89e4aeb2469..011dc18592d0 100644
+--- a/drivers/infiniband/hw/bng_re/bng_fw.h
++++ b/drivers/infiniband/hw/bng_re/bng_fw.h
+@@ -28,11 +28,15 @@
+ 	   !((pass) & BNG_RE_FLAG_EPOCH_CONS_MASK))
+ #define BNG_FW_CREQ_ENTRY_POLL_BUDGET	0x100
+ 
++#define BNG_RE_OOS_COUNT_MASK	0xFFFFFFFF
++
+ /* CMDQ */
+ struct bng_fw_cmdqe {
+ 	u8	data[16];
+ };
+ 
++#define BNG_RE_CMDQE_UNITS		sizeof(struct bng_fw_cmdqe)
++
+ #define BNG_FW_CMDQE_MAX_CNT		8192
+ #define BNG_FW_CMDQE_UNITS		sizeof(struct bng_fw_cmdqe)
+ #define BNG_FW_CMDQE_BYTES(depth)	((depth) * BNG_FW_CMDQE_UNITS)
+@@ -40,6 +44,12 @@ struct bng_fw_cmdqe {
+ #define BNG_FW_MAX_COOKIE_VALUE		(BNG_FW_CMDQE_MAX_CNT - 1)
+ #define BNG_FW_CMD_IS_BLOCKING		0x8000
+ 
++struct bng_rcfw_sbuf {
++	void		*sb;
++	dma_addr_t	dma_addr;
++	u32		size;
++};
++
+ /* Crsq buf is 1024-Byte */
+ struct bng_re_crsbe {
+ 	u8			data[1024];
+@@ -128,6 +138,8 @@ struct bng_re_rcfw {
+ 	/* cached from chip cctx for quick reference in slow path */
+ 	u16			max_timeout;
+ 	atomic_t		rcfw_intr_enabled;
++	u64			oos_prev;
++	u32			init_oos_stats;
+ };
+ 
+ struct bng_re_cmdqmsg {
+diff --git a/drivers/infiniband/hw/bng_re/bng_hw_counters.c b/drivers/infiniband/hw/bng_re/bng_hw_counters.c
+new file mode 100644
+index 000000000000..cb9a00fed621
+--- /dev/null
++++ b/drivers/infiniband/hw/bng_re/bng_hw_counters.c
+@@ -0,0 +1,304 @@
++// SPDX-License-Identifier: GPL-2.0
++// Copyright (c) 2026 Broadcom.
++
++#include <linux/types.h>
++#include <linux/pci.h>
++#include <rdma/ib_mad.h>
++#include <rdma/ib_pma.h>
++#include <rdma/bng_re-abi.h>
++
++#include "bng_res.h"
++#include "bng_sp.h"
++#include "bng_fw.h"
++#include "bnge.h"
++#include "bnge_auxr.h"
++#include "bng_fp.h"
++#include "bng_re.h"
++#include "bng_hw_counters.h"
++
++static const struct rdma_stat_desc bng_re_stat_descs[] = {
++	[BNG_RE_RX_PKTS].name		=  "rx_pkts",
++	[BNG_RE_RX_BYTES].name		=  "rx_bytes",
++	[BNG_RE_TX_PKTS].name		=  "tx_pkts",
++	[BNG_RE_TX_BYTES].name		=  "tx_bytes",
++	[BNG_RE_RECOVERABLE_ERRORS].name	=  "recoverable_errors",
++	[BNG_RE_TX_ERRORS].name                =  "tx_roce_errors",
++	[BNG_RE_TX_DISCARDS].name              =  "tx_roce_discards",
++	[BNG_RE_RX_ERRORS].name		=  "rx_roce_errors",
++	[BNG_RE_RX_DISCARDS].name		=  "rx_roce_discards",
++	[BNG_RE_TO_RETRANSMITS].name           =  "local_ack_timeout_err",
++	[BNG_RE_SEQ_ERR_NAKS_RCVD].name        =  "packet_seq_err",
++	[BNG_RE_MAX_RETRY_EXCEEDED].name	=  "max_retry_exceeded",
++	[BNG_RE_RNR_NAKS_RCVD].name            =  "rnr_nak_retry_err",
++	[BNG_RE_MISSING_RESP].name             =  "implied_nak_seq_err",
++	[BNG_RE_UNRECOVERABLE_ERR].name     = "unrecoverable_err",
++	[BNG_RE_BAD_RESP_ERR].name          = "bad_resp_err",
++	[BNG_RE_LOCAL_QP_OP_ERR].name       = "local_qp_op_err",
++	[BNG_RE_LOCAL_PROTECTION_ERR].name  = "local_protection_err",
++	[BNG_RE_MEM_MGMT_OP_ERR].name       = "mem_mgmt_op_err",
++	[BNG_RE_REMOTE_INVALID_REQ_ERR].name   = "req_remote_invalid_request",
++	[BNG_RE_REMOTE_ACCESS_ERR].name        = "req_remote_access_errors",
++	[BNG_RE_REMOTE_OP_ERR].name         = "remote_op_err",
++	[BNG_RE_DUP_REQ].name               = "duplicate_request",
++	[BNG_RE_RES_EXCEED_MAX].name        = "res_exceed_max",
++	[BNG_RE_RES_LENGTH_MISMATCH].name   = "resp_local_length_error",
++	[BNG_RE_RES_EXCEEDS_WQE].name       = "res_exceeds_wqe",
++	[BNG_RE_RES_OPCODE_ERR].name        = "res_opcode_err",
++	[BNG_RE_RES_RX_INVALID_RKEY].name   = "res_rx_invalid_rkey",
++	[BNG_RE_RES_RX_DOMAIN_ERR].name     = "res_rx_domain_err",
++	[BNG_RE_RES_RX_NO_PERM].name        = "res_rx_no_perm",
++	[BNG_RE_RES_RX_RANGE_ERR].name      = "res_rx_range_err",
++	[BNG_RE_RES_TX_INVALID_RKEY].name   = "res_tx_invalid_rkey",
++	[BNG_RE_RES_TX_DOMAIN_ERR].name     = "res_tx_domain_err",
++	[BNG_RE_RES_TX_NO_PERM].name        = "res_tx_no_perm",
++	[BNG_RE_RES_TX_RANGE_ERR].name      = "res_tx_range_err",
++	[BNG_RE_RES_IRRQ_OFLOW].name        = "res_irrq_oflow",
++	[BNG_RE_RES_UNSUP_OPCODE].name      = "res_unsup_opcode",
++	[BNG_RE_RES_UNALIGNED_ATOMIC].name  = "res_unaligned_atomic",
++	[BNG_RE_RES_REM_INV_ERR].name       = "res_rem_inv_err",
++	[BNG_RE_RES_MEM_ERROR].name         = "res_mem_err",
++	[BNG_RE_RES_SRQ_ERR].name           = "res_srq_err",
++	[BNG_RE_RES_CMP_ERR].name           = "res_cmp_err",
++	[BNG_RE_RES_INVALID_DUP_RKEY].name  = "res_invalid_dup_rkey",
++	[BNG_RE_RES_WQE_FORMAT_ERR].name    = "res_wqe_format_err",
++	[BNG_RE_RES_CQ_LOAD_ERR].name       = "res_cq_load_err",
++	[BNG_RE_RES_SRQ_LOAD_ERR].name      = "res_srq_load_err",
++	[BNG_RE_RES_TX_PCI_ERR].name        = "res_tx_pci_err",
++	[BNG_RE_RES_RX_PCI_ERR].name        = "res_rx_pci_err",
++	[BNG_RE_OUT_OF_SEQ_ERR].name        = "out_of_sequence",
++	[BNG_RE_TX_ATOMIC_REQ].name	     = "tx_atomic_req",
++	[BNG_RE_TX_READ_REQ].name	     = "tx_read_req",
++	[BNG_RE_TX_READ_RES].name	     = "tx_read_resp",
++	[BNG_RE_TX_WRITE_REQ].name	     = "tx_write_req",
++	[BNG_RE_TX_SEND_REQ].name	     = "tx_send_req",
++	[BNG_RE_TX_ROCE_PKTS].name          = "tx_roce_only_pkts",
++	[BNG_RE_TX_ROCE_BYTES].name         = "tx_roce_only_bytes",
++	[BNG_RE_RX_ATOMIC_REQ].name	     = "rx_atomic_requests",
++	[BNG_RE_RX_READ_REQ].name	     = "rx_read_requests",
++	[BNG_RE_RX_READ_RESP].name	     = "rx_read_resp",
++	[BNG_RE_RX_WRITE_REQ].name	     = "rx_write_requests",
++	[BNG_RE_RX_SEND_REQ].name	     = "rx_send_req",
++	[BNG_RE_RX_ROCE_PKTS].name          = "rx_roce_only_pkts",
++	[BNG_RE_RX_ROCE_BYTES].name         = "rx_roce_only_bytes",
++	[BNG_RE_RX_ROCE_GOOD_PKTS].name     = "rx_roce_good_pkts",
++	[BNG_RE_RX_ROCE_GOOD_BYTES].name    = "rx_roce_good_bytes",
++	[BNG_RE_OOB].name		     = "out_of_buffer",
++	[BNG_RE_TX_CNP].name                = "np_cnp_pkts",
++	[BNG_RE_RX_CNP].name                = "rp_cnp_handled",
++	[BNG_RE_RX_ECN].name                = "np_ecn_marked_roce_packets",
++	[BNG_RE_REQ_CQE_ERROR].name            = "req_cqe_error",
++	[BNG_RE_RESP_CQE_ERROR].name           = "resp_cqe_error",
++	[BNG_RE_RESP_REMOTE_ACCESS_ERRS].name  = "resp_remote_access_errors",
++};
++
++struct rdma_hw_stats *bng_re_alloc_hw_port_stats(struct ib_device *ibdev,
++						    u32 port_num)
++{
++	int num_counters = 0;
++
++	num_counters = BNG_RE_NUM_EXT_COUNTERS;
++
++	return rdma_alloc_hw_stats_struct(bng_re_stat_descs, num_counters,
++					  RDMA_HW_STATS_DEFAULT_LIFESPAN);
++}
++
++static void bng_re_copy_err_stats(struct bng_re_dev *rdev,
++				  struct rdma_hw_stats *stats,
++				  struct bng_roce_stats *err_s)
++{
++	stats->value[BNG_RE_TO_RETRANSMITS] =
++				err_s->to_retransmits;
++	stats->value[BNG_RE_SEQ_ERR_NAKS_RCVD] =
++				err_s->seq_err_naks_rcvd;
++	stats->value[BNG_RE_MAX_RETRY_EXCEEDED] =
++				err_s->max_retry_exceeded;
++	stats->value[BNG_RE_RNR_NAKS_RCVD] =
++				err_s->rnr_naks_rcvd;
++	stats->value[BNG_RE_MISSING_RESP] =
++				err_s->missing_resp;
++	stats->value[BNG_RE_UNRECOVERABLE_ERR] =
++				err_s->unrecoverable_err;
++	stats->value[BNG_RE_BAD_RESP_ERR] =
++				err_s->bad_resp_err;
++	stats->value[BNG_RE_LOCAL_QP_OP_ERR]	=
++			err_s->local_qp_op_err;
++	stats->value[BNG_RE_LOCAL_PROTECTION_ERR] =
++			err_s->local_protection_err;
++	stats->value[BNG_RE_MEM_MGMT_OP_ERR] =
++			err_s->mem_mgmt_op_err;
++	stats->value[BNG_RE_REMOTE_INVALID_REQ_ERR] =
++			err_s->remote_invalid_req_err;
++	stats->value[BNG_RE_REMOTE_ACCESS_ERR] =
++			err_s->remote_access_err;
++	stats->value[BNG_RE_REMOTE_OP_ERR] =
++			err_s->remote_op_err;
++	stats->value[BNG_RE_DUP_REQ] =
++			err_s->dup_req;
++	stats->value[BNG_RE_RES_EXCEED_MAX] =
++			err_s->res_exceed_max;
++	stats->value[BNG_RE_RES_LENGTH_MISMATCH] =
++			err_s->res_length_mismatch;
++	stats->value[BNG_RE_RES_EXCEEDS_WQE] =
++			err_s->res_exceeds_wqe;
++	stats->value[BNG_RE_RES_OPCODE_ERR] =
++			err_s->res_opcode_err;
++	stats->value[BNG_RE_RES_RX_INVALID_RKEY] =
++			err_s->res_rx_invalid_rkey;
++	stats->value[BNG_RE_RES_RX_DOMAIN_ERR] =
++			err_s->res_rx_domain_err;
++	stats->value[BNG_RE_RES_RX_NO_PERM] =
++			err_s->res_rx_no_perm;
++	stats->value[BNG_RE_RES_RX_RANGE_ERR]  =
++			err_s->res_rx_range_err;
++	stats->value[BNG_RE_RES_TX_INVALID_RKEY] =
++			err_s->res_tx_invalid_rkey;
++	stats->value[BNG_RE_RES_TX_DOMAIN_ERR] =
++			err_s->res_tx_domain_err;
++	stats->value[BNG_RE_RES_TX_NO_PERM] =
++			err_s->res_tx_no_perm;
++	stats->value[BNG_RE_RES_TX_RANGE_ERR]  =
++			err_s->res_tx_range_err;
++	stats->value[BNG_RE_RES_IRRQ_OFLOW] =
++			err_s->res_irrq_oflow;
++	stats->value[BNG_RE_RES_UNSUP_OPCODE]  =
++			err_s->res_unsup_opcode;
++	stats->value[BNG_RE_RES_UNALIGNED_ATOMIC] =
++			err_s->res_unaligned_atomic;
++	stats->value[BNG_RE_RES_REM_INV_ERR]   =
++			err_s->res_rem_inv_err;
++	stats->value[BNG_RE_RES_MEM_ERROR] =
++			err_s->res_mem_error;
++	stats->value[BNG_RE_RES_SRQ_ERR] =
++			err_s->res_srq_err;
++	stats->value[BNG_RE_RES_CMP_ERR] =
++			err_s->res_cmp_err;
++	stats->value[BNG_RE_RES_INVALID_DUP_RKEY] =
++			err_s->res_invalid_dup_rkey;
++	stats->value[BNG_RE_RES_WQE_FORMAT_ERR] =
++			err_s->res_wqe_format_err;
++	stats->value[BNG_RE_RES_CQ_LOAD_ERR]   =
++			err_s->res_cq_load_err;
++	stats->value[BNG_RE_RES_SRQ_LOAD_ERR]  =
++			err_s->res_srq_load_err;
++	stats->value[BNG_RE_RES_TX_PCI_ERR]    =
++			err_s->res_tx_pci_err;
++	stats->value[BNG_RE_RES_RX_PCI_ERR]    =
++			err_s->res_rx_pci_err;
++	stats->value[BNG_RE_OUT_OF_SEQ_ERR]    =
++			err_s->res_oos_drop_count;
++	stats->value[BNG_RE_REQ_CQE_ERROR]     =
++			err_s->bad_resp_err +
++			err_s->local_qp_op_err +
++			err_s->local_protection_err +
++			err_s->mem_mgmt_op_err +
++			err_s->remote_invalid_req_err +
++			err_s->remote_access_err +
++			err_s->remote_op_err;
++	stats->value[BNG_RE_RESP_CQE_ERROR] =
++			err_s->res_cmp_err +
++			err_s->res_cq_load_err;
++	stats->value[BNG_RE_RESP_REMOTE_ACCESS_ERRS] =
++			err_s->res_rx_no_perm +
++			err_s->res_tx_no_perm;
++}
++
++static void bng_re_copy_ext_stats(struct bng_re_dev *rdev,
++				  struct rdma_hw_stats *stats,
++				  struct bng_re_ext_stat *s)
++{
++	stats->value[BNG_RE_TX_ATOMIC_REQ] = s->tx_atomic_req;
++	stats->value[BNG_RE_TX_READ_REQ]   = s->tx_read_req;
++	stats->value[BNG_RE_TX_READ_RES]   = s->tx_read_res;
++	stats->value[BNG_RE_TX_WRITE_REQ]  = s->tx_write_req;
++	stats->value[BNG_RE_TX_SEND_REQ]   = s->tx_send_req;
++	stats->value[BNG_RE_TX_ROCE_PKTS]  = s->tx_roce_pkts;
++	stats->value[BNG_RE_TX_ROCE_BYTES] = s->tx_roce_bytes;
++	stats->value[BNG_RE_RX_ATOMIC_REQ] = s->rx_atomic_req;
++	stats->value[BNG_RE_RX_READ_REQ]   = s->rx_read_req;
++	stats->value[BNG_RE_RX_READ_RESP]  = s->rx_read_res;
++	stats->value[BNG_RE_RX_WRITE_REQ]  = s->rx_write_req;
++	stats->value[BNG_RE_RX_SEND_REQ]   = s->rx_send_req;
++	stats->value[BNG_RE_RX_ROCE_PKTS]  = s->rx_roce_pkts;
++	stats->value[BNG_RE_RX_ROCE_BYTES] = s->rx_roce_bytes;
++	stats->value[BNG_RE_RX_ROCE_GOOD_PKTS] = s->rx_roce_good_pkts;
++	stats->value[BNG_RE_RX_ROCE_GOOD_BYTES] = s->rx_roce_good_bytes;
++	stats->value[BNG_RE_OOB] = s->rx_out_of_buffer;
++	stats->value[BNG_RE_TX_CNP] = s->tx_cnp;
++	stats->value[BNG_RE_RX_CNP] = s->rx_cnp;
++	stats->value[BNG_RE_RX_ECN] = s->rx_ecn_marked;
++	stats->value[BNG_RE_OUT_OF_SEQ_ERR] = s->rx_out_of_sequence;
++}
++
++static int bng_re_get_ext_stat(struct bng_re_dev *rdev,
++			       struct rdma_hw_stats *stats)
++{
++	struct bng_re_ext_stat *estat = &rdev->stats.rstat.ext_stat;
++	u32 fid;
++	int rc;
++
++	fid = PCI_FUNC(rdev->aux_dev->pdev->devfn);
++	rc = bng_re_qext_stat(&rdev->rcfw, fid, estat);
++	if (rc)
++		goto done;
++	bng_re_copy_ext_stats(rdev, stats, estat);
++
++done:
++	return rc;
++}
++
++int bng_re_ib_get_hw_stats(struct ib_device *ibdev,
++			   struct rdma_hw_stats *stats,
++			   u32 port, int index)
++{
++	struct bng_re_dev *rdev = to_bng_re_dev(ibdev, ibdev);
++	struct bng_roce_stats *err_s = NULL;
++	struct ctx_hw_stats *hw_stats = NULL;
++	int rc  = 0;
++
++	hw_stats = rdev->ctx.stats.dma;
++	if (!port || !stats)
++		return -EINVAL;
++
++	if (hw_stats) {
++		stats->value[BNG_RE_RECOVERABLE_ERRORS] =
++			le64_to_cpu(hw_stats->tx_bcast_pkts);
++		stats->value[BNG_RE_TX_DISCARDS] =
++			le64_to_cpu(hw_stats->tx_discard_pkts);
++		stats->value[BNG_RE_TX_ERRORS] =
++			le64_to_cpu(hw_stats->tx_error_pkts);
++		stats->value[BNG_RE_RX_ERRORS] =
++			le64_to_cpu(hw_stats->rx_error_pkts);
++		stats->value[BNG_RE_RX_DISCARDS] =
++			le64_to_cpu(hw_stats->rx_discard_pkts);
++		stats->value[BNG_RE_RX_PKTS] =
++			le64_to_cpu(hw_stats->rx_ucast_pkts);
++		stats->value[BNG_RE_RX_BYTES] =
++			le64_to_cpu(hw_stats->rx_ucast_bytes);
++		stats->value[BNG_RE_TX_PKTS] =
++			le64_to_cpu(hw_stats->tx_ucast_pkts);
++		stats->value[BNG_RE_TX_BYTES] =
++			le64_to_cpu(hw_stats->tx_ucast_bytes);
++	}
++	err_s = &rdev->stats.rstat.errs;
++	if (test_bit(BNG_RE_FLAG_ISSUE_ROCE_STATS, &rdev->flags)) {
++		rc = bng_re_get_roce_stats(&rdev->rcfw, err_s);
++		if (rc) {
++			clear_bit(BNG_RE_FLAG_ISSUE_ROCE_STATS,
++				  &rdev->flags);
++			goto done;
++		}
++		bng_re_copy_err_stats(rdev, stats, err_s);
++		if (bng_ext_stats_supported(rdev->chip_ctx, rdev->dev_attr->dev_cap_flags,
++					     rdev->bng_res.is_vf)) {
++			rc = bng_re_get_ext_stat(rdev, stats);
++			if (rc) {
++				clear_bit(BNG_RE_FLAG_ISSUE_ROCE_STATS,
++					  &rdev->flags);
++				goto done;
++			}
++		}
++	}
++
++done:
++	return BNG_RE_NUM_EXT_COUNTERS;
++}
+diff --git a/drivers/infiniband/hw/bng_re/bng_hw_counters.h b/drivers/infiniband/hw/bng_re/bng_hw_counters.h
+new file mode 100644
+index 000000000000..792dbb655f7e
+--- /dev/null
++++ b/drivers/infiniband/hw/bng_re/bng_hw_counters.h
+@@ -0,0 +1,118 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++// Copyright (c) 2026 Broadcom
++//
++#ifndef __HW_COUNTERS_H__
++#define __HW_COUNTERS_H__
++
++struct bng_roce_stats;
++struct bng_re_ext_stat;
++
++enum bng_re_hw_enum_stats {
++	BNG_RE_RX_PKTS,
++	BNG_RE_RX_BYTES,
++	BNG_RE_TX_PKTS,
++	BNG_RE_TX_BYTES,
++	BNG_RE_RECOVERABLE_ERRORS,
++	BNG_RE_TX_ERRORS,
++	BNG_RE_TX_DISCARDS,
++	BNG_RE_RX_ERRORS,
++	BNG_RE_RX_DISCARDS,
++	BNG_RE_TO_RETRANSMITS,
++	BNG_RE_SEQ_ERR_NAKS_RCVD,
++	BNG_RE_MAX_RETRY_EXCEEDED,
++	BNG_RE_RNR_NAKS_RCVD,
++	BNG_RE_MISSING_RESP,
++	BNG_RE_UNRECOVERABLE_ERR,
++	BNG_RE_BAD_RESP_ERR,
++	BNG_RE_LOCAL_QP_OP_ERR,
++	BNG_RE_LOCAL_PROTECTION_ERR,
++	BNG_RE_MEM_MGMT_OP_ERR,
++	BNG_RE_REMOTE_INVALID_REQ_ERR,
++	BNG_RE_REMOTE_ACCESS_ERR,
++	BNG_RE_REMOTE_OP_ERR,
++	BNG_RE_DUP_REQ,
++	BNG_RE_RES_EXCEED_MAX,
++	BNG_RE_RES_LENGTH_MISMATCH,
++	BNG_RE_RES_EXCEEDS_WQE,
++	BNG_RE_RES_OPCODE_ERR,
++	BNG_RE_RES_RX_INVALID_RKEY,
++	BNG_RE_RES_RX_DOMAIN_ERR,
++	BNG_RE_RES_RX_NO_PERM,
++	BNG_RE_RES_RX_RANGE_ERR,
++	BNG_RE_RES_TX_INVALID_RKEY,
++	BNG_RE_RES_TX_DOMAIN_ERR,
++	BNG_RE_RES_TX_NO_PERM,
++	BNG_RE_RES_TX_RANGE_ERR,
++	BNG_RE_RES_IRRQ_OFLOW,
++	BNG_RE_RES_UNSUP_OPCODE,
++	BNG_RE_RES_UNALIGNED_ATOMIC,
++	BNG_RE_RES_REM_INV_ERR,
++	BNG_RE_RES_MEM_ERROR,
++	BNG_RE_RES_SRQ_ERR,
++	BNG_RE_RES_CMP_ERR,
++	BNG_RE_RES_INVALID_DUP_RKEY,
++	BNG_RE_RES_WQE_FORMAT_ERR,
++	BNG_RE_RES_CQ_LOAD_ERR,
++	BNG_RE_RES_SRQ_LOAD_ERR,
++	BNG_RE_RES_TX_PCI_ERR,
++	BNG_RE_RES_RX_PCI_ERR,
++	BNG_RE_OUT_OF_SEQ_ERR,
++	BNG_RE_TX_ATOMIC_REQ,
++	BNG_RE_TX_READ_REQ,
++	BNG_RE_TX_READ_RES,
++	BNG_RE_TX_WRITE_REQ,
++	BNG_RE_TX_SEND_REQ,
++	BNG_RE_TX_ROCE_PKTS,
++	BNG_RE_TX_ROCE_BYTES,
++	BNG_RE_RX_ATOMIC_REQ,
++	BNG_RE_RX_READ_REQ,
++	BNG_RE_RX_READ_RESP,
++	BNG_RE_RX_WRITE_REQ,
++	BNG_RE_RX_SEND_REQ,
++	BNG_RE_RX_ROCE_PKTS,
++	BNG_RE_RX_ROCE_BYTES,
++	BNG_RE_RX_ROCE_GOOD_PKTS,
++	BNG_RE_RX_ROCE_GOOD_BYTES,
++	BNG_RE_OOB,
++	BNG_RE_TX_CNP,
++	BNG_RE_RX_CNP,
++	BNG_RE_RX_ECN,
++	BNG_RE_REQ_CQE_ERROR,
++	BNG_RE_RESP_CQE_ERROR,
++	BNG_RE_RESP_REMOTE_ACCESS_ERRS,
++	BNG_RE_NUM_EXT_COUNTERS
++};
++
++struct bng_re_res_cntrs {
++	atomic_t qp_count;
++	atomic_t rc_qp_count;
++	atomic_t ud_qp_count;
++	atomic_t cq_count;
++	atomic_t srq_count;
++	atomic_t mr_count;
++	atomic_t mr_dmabuf_count;
++	atomic_t peer_mem_mr_count;
++	atomic_t mw_count;
++	atomic_t ah_count;
++	atomic_t ah_hw_count;
++	atomic_t pd_count;
++	atomic_t resize_count;
++	atomic_t max_qp_count;
++	atomic_t max_rc_qp_count;
++	atomic_t max_ud_qp_count;
++	atomic_t max_cq_count;
++	atomic_t max_srq_count;
++	atomic_t max_mr_count;
++	atomic_t max_mr_dmabuf_count;
++	atomic_t max_peer_mem_mr_count;
++	atomic_t max_mw_count;
++	atomic_t max_ah_count;
++	atomic_t max_ah_hw_count;
++	atomic_t max_pd_count;
++};
++
++struct rdma_hw_stats *bng_re_alloc_hw_port_stats(struct ib_device *ibdev,
++					    u32 port_num);
++int bng_re_ib_get_hw_stats(struct ib_device *ibdev, struct rdma_hw_stats *stats,
++			u32 port, int index);
++#endif /* __HW_COUNTERS_H__ */
 diff --git a/drivers/infiniband/hw/bng_re/bng_re.h b/drivers/infiniband/hw/bng_re/bng_re.h
-index 47b4037e124e..70851f1180d0 100644
+index 70851f1180d0..414768585e67 100644
 --- a/drivers/infiniband/hw/bng_re/bng_re.h
 +++ b/drivers/infiniband/hw/bng_re/bng_re.h
-@@ -296,6 +296,7 @@ struct bng_re_dev {
- 	struct bng_re_dpi		dpi_privileged;
+@@ -9,6 +9,7 @@
+ #include "bng_res.h"
+ #include "bng_fw.h"
+ #include "bng_sp.h"
++#include "bng_hw_counters.h"
+ #include <rdma/ib_verbs.h>
+ 
+ #define BNG_RE_XID_AVOID_REUSE		false
+@@ -273,6 +274,7 @@ struct bng_re_dev {
+ #define BNG_RE_FLAG_NETDEV_REGISTERED		0
+ #define BNG_RE_FLAG_RCFW_CHANNEL_EN		1
+ #define BNG_RE_FLAG_TBLS_ALLOC_INITED		2
++#define BNG_RE_FLAG_ISSUE_ROCE_STATS		29
+ #define BNG_RE_FLAG_MPC_FW_CHANNEL_EN		31
+ #define BNG_RE_FLAG_MPC_FW_THREAD_EN		32
+ #define BNG_RE_FLAG_MPC_DB_PAGE_EN		34
+@@ -297,6 +299,8 @@ struct bng_re_dev {
  	struct bng_sp_cq_coal_param	cq_coalescing;
  	DECLARE_HASHTABLE(cq_hash, MAX_CQ_HASH_BITS);
-+	DECLARE_HASHTABLE(srq_hash, 8);  /* SRQ hash table */
+ 	DECLARE_HASHTABLE(srq_hash, 8);  /* SRQ hash table */
++	struct bng_re_hw_stats		stats;
++	struct bng_re_ctx		ctx;
  };
  
  #define to_bng_re_dev(ptr, member)	\
-diff --git a/drivers/infiniband/hw/bng_re/bng_res.c b/drivers/infiniband/hw/bng_re/bng_res.c
-index 8bf6e8efa182..024d49f68b09 100644
---- a/drivers/infiniband/hw/bng_re/bng_res.c
-+++ b/drivers/infiniband/hw/bng_re/bng_res.c
-@@ -265,6 +265,7 @@ int bng_re_alloc_init_hwq(struct bng_re_hwq *hwq,
- 	hwq->max_elements = hwq->depth;
- 	hwq->element_size = stride;
- 	hwq->qe_ppg = pg_size / stride;
-+	hwq->is_user = !!hwq_attr->sginfo->umem;
- 	/* For direct access to the elements */
- 	lvl = hwq->level;
- 	if (hwq_attr->sginfo->nopte && hwq->level)
 diff --git a/drivers/infiniband/hw/bng_re/bng_res.h b/drivers/infiniband/hw/bng_re/bng_res.h
-index 0f832f9bae20..00429b4a7d30 100644
+index 00429b4a7d30..5a6db1786886 100644
 --- a/drivers/infiniband/hw/bng_re/bng_res.h
 +++ b/drivers/infiniband/hw/bng_re/bng_res.h
-@@ -170,6 +170,7 @@ struct bng_re_hwq {
- 	u32				cons;
- 	/* queue entry per page */
- 	u16				qe_ppg;
-+	u8				is_user;
+@@ -227,6 +227,15 @@ struct bng_re_res {
+ 	/* Serialize access to PD table */
+ 	struct mutex			pd_tbl_lock;
+ 	struct bng_re_rcfw		*rcfw;
++	bool   is_vf;
++};
++
++struct bng_re_ctx {
++	u32				qpc_count;
++	u32				mrw_count;
++	u32				srqc_count;
++	u32				cq_count;
++	struct bng_re_stats		stats;
  };
  
- struct bng_re_stats {
-@@ -288,6 +289,14 @@ static inline void bng_re_ring_nq_db(struct bng_re_db_info *info,
- 	bng_re_ring_db(info, type);
+ #define to_bng_re_res(ptr, member)	container_of(ptr, struct bng_re_res, member)
+@@ -394,6 +403,18 @@ static inline u8 bng_re_base_pg_size(struct bng_re_hwq *hwq)
+ 	return pg_size;
  }
  
-+static inline void bng_re_srq_arm_db(struct bng_re_db_info *info, u32 th)
++static inline bool _is_ext_stats_supported(u16 dev_cap_flags)
 +{
-+	u64 key = 0;
-+
-+	key = BNG_RE_INIT_DBHDR(info->xid, DBC_DBC_TYPE_SRQ_ARM, th, info->toggle);
-+	writeq(key, info->priv_db);
++	return dev_cap_flags & CREQ_QUERY_FUNC_RESP_SB_EXT_STATS;
 +}
 +
- static inline void bng_re_hwq_incr_cons(u32 max_elements, u32 *cons, u32 cnt,
- 					u32 *dbinfo_flags)
- {
++static inline int bng_ext_stats_supported(struct bng_re_chip_ctx *ctx,
++				      u16 flags, bool virtfn)
++{
++	return (_is_ext_stats_supported(flags) && ((virtfn) || (!virtfn)));
++}
++
++
+ void bng_re_free_hwq(struct bng_re_res *res,
+ 		     struct bng_re_hwq *hwq);
+ 
 diff --git a/drivers/infiniband/hw/bng_re/bng_sp.c b/drivers/infiniband/hw/bng_re/bng_sp.c
-index 04488db6d016..78e2bb9ad859 100644
+index 78e2bb9ad859..26435fe4e892 100644
 --- a/drivers/infiniband/hw/bng_re/bng_sp.c
 +++ b/drivers/infiniband/hw/bng_re/bng_sp.c
-@@ -816,3 +816,147 @@ int bng_sp_destroy_cq(struct bng_re_res *res, struct bng_sp_cq *cq)
+@@ -960,3 +960,147 @@ int bng_sp_destroy_srq(struct bng_re_res *res, struct bng_sp_srq *srq)
+ 
  	return 0;
  }
- 
-+int bng_sp_create_srq(struct bng_re_res *res, struct bng_sp_srq *srq)
++
++int bng_re_get_roce_stats(struct bng_re_rcfw *rcfw, struct bng_roce_stats *stats)
 +{
-+	struct bng_re_rcfw *rcfw = res->rcfw;
-+	struct bng_re_hwq_attr hwq_attr = {};
-+	struct creq_create_srq_resp resp = {};
++	struct creq_query_roce_stats_resp resp = {};
++	struct creq_query_roce_stats_resp_sb *sb;
++	struct cmdq_query_roce_stats req = {};
 +	struct bng_re_cmdqmsg msg = {};
-+	struct cmdq_create_srq req = {};
-+	struct bng_re_pbl *pbl;
-+	u16 pg_sz_lvl;
-+	int rc, idx;
-+
-+	hwq_attr.res = res;
-+	hwq_attr.sginfo = &srq->sginfo;
-+	hwq_attr.depth = srq->max_wqe;
-+	hwq_attr.stride = srq->wqe_size;
-+	hwq_attr.type = BNG_HWQ_TYPE_QUEUE;
-+	rc = bng_re_alloc_init_hwq(&srq->hwq, &hwq_attr);
-+	if (rc)
-+		return rc;
-+
-+	srq->dbinfo.flags = 0;
-+	bng_re_rcfw_cmd_prep((struct cmdq_base *)&req,
-+			     CMDQ_BASE_OPCODE_CREATE_SRQ,
-+			     sizeof(req));
-+
-+	/* Configure the request */
-+	req.dpi = cpu_to_le32(srq->dpi->dpi);
-+	req.srq_handle = cpu_to_le64((uintptr_t)srq);
-+
-+	req.srq_size = cpu_to_le16((u16)srq->hwq.max_elements);
-+	pbl = &srq->hwq.pbl[BNG_PBL_LVL_0];
-+	pg_sz_lvl = ((u16)bng_re_base_pg_size(&srq->hwq) <<
-+		     CMDQ_CREATE_SRQ_PG_SIZE_SFT);
-+	pg_sz_lvl |= (srq->hwq.level & CMDQ_CREATE_SRQ_LVL_MASK) <<
-+		      CMDQ_CREATE_SRQ_LVL_SFT;
-+	req.pg_size_lvl = cpu_to_le16(pg_sz_lvl);
-+	req.pbl = cpu_to_le64(pbl->pg_map_arr[0]);
-+	req.pd_id = cpu_to_le32(srq->pd->id);
-+	req.eventq_id = cpu_to_le16(srq->eventq_hw_ring_id);
-+
-+	bng_re_fill_cmdqmsg(&msg, &req, &resp, NULL, sizeof(req), sizeof(resp), 0);
-+	rc = bng_re_rcfw_send_message(rcfw, &msg);
-+	if (rc)
-+		goto fail;
-+
-+	srq->id = le32_to_cpu(resp.xid);
-+	srq->start_idx = 0;
-+	srq->last_idx = srq->hwq.max_elements - 1;
-+
-+	/* Allocate shadow queue for kernel SRQs */
-+	if (!srq->hwq.is_user) {
-+		srq->swq = kcalloc(srq->hwq.max_elements, sizeof(*srq->swq),
-+				   GFP_KERNEL);
-+		if (!srq->swq) {
-+			rc = -ENOMEM;
-+			goto fail_swq;
-+		}
-+		for (idx = 0; idx < srq->hwq.max_elements; idx++)
-+			srq->swq[idx].next_idx = idx + 1;
-+		srq->swq[srq->last_idx].next_idx = -1;
-+	}
-+
-+	srq->dbinfo.hwq = &srq->hwq;
-+	srq->dbinfo.xid = srq->id;
-+	srq->dbinfo.db = srq->dpi->dbr;
-+	srq->dbinfo.max_slot = 1;
-+	srq->dbinfo.priv_db = res->dpi_tbl.priv_db;
-+
-+	/* Arm the SRQ */
-+	bng_re_armen_db(&srq->dbinfo, DBC_DBC_TYPE_SRQ_ARMENA);
-+
-+	return 0;
-+
-+fail_swq:
-+	bng_sp_destroy_srq(res, srq);
-+	return rc;
-+
-+fail:
-+	bng_re_free_hwq(res, &srq->hwq);
-+	kfree(srq->swq);
-+	srq->swq = NULL;
-+
-+	return rc;
-+}
-+
-+int bng_sp_query_srq(struct bng_re_res *res, struct bng_sp_srq *srq)
-+{
-+	struct bng_re_rcfw *rcfw = res->rcfw;
-+	struct creq_query_srq_resp resp = {};
-+	struct bng_re_cmdqmsg msg = {};
-+	struct bng_re_rcfw_sbuf sbuf;
-+	struct creq_query_srq_resp_sb *sb;
-+	struct cmdq_query_srq req = {};
++	struct bng_rcfw_sbuf sbuf;
 +	int rc;
 +
 +	bng_re_rcfw_cmd_prep((struct cmdq_base *)&req,
-+			     CMDQ_BASE_OPCODE_QUERY_SRQ,
-+			     sizeof(req));
++			      CMDQ_BASE_OPCODE_QUERY_ROCE_STATS, sizeof(req));
 +
-+	/* Configure the request */
-+	sbuf.size = ALIGN(sizeof(*sb), BNG_FW_CMDQE_UNITS);
++	sbuf.size = ALIGN(sizeof(*sb), BNG_RE_CMDQE_UNITS);
 +	sbuf.sb = dma_alloc_coherent(&rcfw->pdev->dev, sbuf.size,
 +				     &sbuf.dma_addr, GFP_KERNEL);
 +	if (!sbuf.sb)
 +		return -ENOMEM;
-+	req.resp_size = sbuf.size / BNG_FW_CMDQE_UNITS;
-+	req.srq_cid = cpu_to_le32(srq->id);
 +	sb = sbuf.sb;
-+
++	req.resp_size = sbuf.size / BNG_RE_CMDQE_UNITS;
 +	bng_re_fill_cmdqmsg(&msg, &req, &resp, &sbuf, sizeof(req),
 +			    sizeof(resp), 0);
 +	rc = bng_re_rcfw_send_message(rcfw, &msg);
-+	if (!rc)
-+		srq->threshold = le16_to_cpu(sb->srq_limit);
++	if (rc)
++		goto bail;
++	stats->to_retransmits = le64_to_cpu(sb->to_retransmits);
++	stats->seq_err_naks_rcvd = le64_to_cpu(sb->seq_err_naks_rcvd);
++	stats->max_retry_exceeded = le64_to_cpu(sb->max_retry_exceeded);
++	stats->rnr_naks_rcvd = le64_to_cpu(sb->rnr_naks_rcvd);
++	stats->missing_resp = le64_to_cpu(sb->missing_resp);
++	stats->unrecoverable_err = le64_to_cpu(sb->unrecoverable_err);
++	stats->bad_resp_err = le64_to_cpu(sb->bad_resp_err);
++	stats->local_qp_op_err = le64_to_cpu(sb->local_qp_op_err);
++	stats->local_protection_err = le64_to_cpu(sb->local_protection_err);
++	stats->mem_mgmt_op_err = le64_to_cpu(sb->mem_mgmt_op_err);
++	stats->remote_invalid_req_err = le64_to_cpu(sb->remote_invalid_req_err);
++	stats->remote_access_err = le64_to_cpu(sb->remote_access_err);
++	stats->remote_op_err = le64_to_cpu(sb->remote_op_err);
++	stats->dup_req = le64_to_cpu(sb->dup_req);
++	stats->res_exceed_max = le64_to_cpu(sb->res_exceed_max);
++	stats->res_length_mismatch = le64_to_cpu(sb->res_length_mismatch);
++	stats->res_exceeds_wqe = le64_to_cpu(sb->res_exceeds_wqe);
++	stats->res_opcode_err = le64_to_cpu(sb->res_opcode_err);
++	stats->res_rx_invalid_rkey = le64_to_cpu(sb->res_rx_invalid_rkey);
++	stats->res_rx_domain_err = le64_to_cpu(sb->res_rx_domain_err);
++	stats->res_rx_no_perm = le64_to_cpu(sb->res_rx_no_perm);
++	stats->res_rx_range_err = le64_to_cpu(sb->res_rx_range_err);
++	stats->res_tx_invalid_rkey = le64_to_cpu(sb->res_tx_invalid_rkey);
++	stats->res_tx_domain_err = le64_to_cpu(sb->res_tx_domain_err);
++	stats->res_tx_no_perm = le64_to_cpu(sb->res_tx_no_perm);
++	stats->res_tx_range_err = le64_to_cpu(sb->res_tx_range_err);
++	stats->res_irrq_oflow = le64_to_cpu(sb->res_irrq_oflow);
++	stats->res_unsup_opcode = le64_to_cpu(sb->res_unsup_opcode);
++	stats->res_unaligned_atomic = le64_to_cpu(sb->res_unaligned_atomic);
++	stats->res_rem_inv_err = le64_to_cpu(sb->res_rem_inv_err);
++	stats->res_mem_error = le64_to_cpu(sb->res_mem_error);
++	stats->res_srq_err = le64_to_cpu(sb->res_srq_err);
++	stats->res_cmp_err = le64_to_cpu(sb->res_cmp_err);
++	stats->res_invalid_dup_rkey = le64_to_cpu(sb->res_invalid_dup_rkey);
++	stats->res_wqe_format_err = le64_to_cpu(sb->res_wqe_format_err);
++	stats->res_cq_load_err = le64_to_cpu(sb->res_cq_load_err);
++	stats->res_srq_load_err = le64_to_cpu(sb->res_srq_load_err);
++	stats->res_tx_pci_err = le64_to_cpu(sb->res_tx_pci_err);
++	stats->res_rx_pci_err = le64_to_cpu(sb->res_rx_pci_err);
++	if (!rcfw->init_oos_stats) {
++		rcfw->oos_prev = le64_to_cpu(sb->res_oos_drop_count);
++		rcfw->init_oos_stats = 1;
++	} else {
++		stats->res_oos_drop_count +=
++				(le64_to_cpu(sb->res_oos_drop_count) -
++				 rcfw->oos_prev) & BNG_RE_OOS_COUNT_MASK;
++		rcfw->oos_prev = le64_to_cpu(sb->res_oos_drop_count);
++	}
++
++bail:
 +	dma_free_coherent(&rcfw->pdev->dev, sbuf.size,
 +			  sbuf.sb, sbuf.dma_addr);
-+
 +	return rc;
 +}
 +
-+int bng_sp_destroy_srq(struct bng_re_res *res, struct bng_sp_srq *srq)
++int bng_re_qext_stat(struct bng_re_rcfw *rcfw, u32 fid,
++		     struct bng_re_ext_stat *estat)
 +{
-+	struct bng_re_rcfw *rcfw = res->rcfw;
-+	struct creq_destroy_srq_resp resp = {};
++	struct creq_query_roce_stats_ext_resp resp = {};
++	struct creq_query_roce_stats_ext_resp_sb *sb;
++	struct cmdq_query_roce_stats_ext req = {};
 +	struct bng_re_cmdqmsg msg = {};
-+	struct cmdq_destroy_srq req = {};
++	struct bng_rcfw_sbuf sbuf;
 +	int rc;
 +
++	sbuf.size = ALIGN(sizeof(*sb), BNG_RE_CMDQE_UNITS);
++	sbuf.sb = dma_alloc_coherent(&rcfw->pdev->dev, sbuf.size,
++				     &sbuf.dma_addr, GFP_KERNEL);
++	if (!sbuf.sb)
++		return -ENOMEM;
++
++	sb = sbuf.sb;
 +	bng_re_rcfw_cmd_prep((struct cmdq_base *)&req,
-+			     CMDQ_BASE_OPCODE_DESTROY_SRQ,
-+			     sizeof(req));
++			      CMDQ_QUERY_ROCE_STATS_EXT_OPCODE_QUERY_ROCE_STATS,
++			      sizeof(req));
 +
-+	/* Configure the request */
-+	req.srq_cid = cpu_to_le32(srq->id);
++	req.resp_size = sbuf.size / BNG_RE_CMDQE_UNITS;
++	req.resp_addr = cpu_to_le64(sbuf.dma_addr);
++	if (rcfw->res->is_vf)
++		req.function_id =
++			cpu_to_le32(CMDQ_QUERY_ROCE_STATS_EXT_VF_VALID |
++				    (fid << CMDQ_QUERY_ROCE_STATS_EXT_VF_NUM_SFT));
++	else
++		req.function_id = cpu_to_le32(fid);
++	req.flags = cpu_to_le16(CMDQ_QUERY_ROCE_STATS_EXT_FLAGS_FUNCTION_ID);
 +
-+	bng_re_fill_cmdqmsg(&msg, &req, &resp, NULL, sizeof(req), sizeof(resp), 0);
++	bng_re_fill_cmdqmsg(&msg, &req, &resp, &sbuf, sizeof(req),
++				sizeof(resp), 0);
 +	rc = bng_re_rcfw_send_message(rcfw, &msg);
 +	if (rc)
-+		return rc;
-+	bng_re_free_hwq(res, &srq->hwq);
-+	kfree(srq->swq);
++		goto bail;
 +
-+	return 0;
++	estat->tx_atomic_req = le64_to_cpu(sb->tx_atomic_req_pkts);
++	estat->tx_read_req = le64_to_cpu(sb->tx_read_req_pkts);
++	estat->tx_read_res = le64_to_cpu(sb->tx_read_res_pkts);
++	estat->tx_write_req = le64_to_cpu(sb->tx_write_req_pkts);
++	estat->tx_send_req = le64_to_cpu(sb->tx_send_req_pkts);
++	estat->tx_roce_pkts = le64_to_cpu(sb->tx_roce_pkts);
++	estat->tx_roce_bytes = le64_to_cpu(sb->tx_roce_bytes);
++	estat->rx_atomic_req = le64_to_cpu(sb->rx_atomic_req_pkts);
++	estat->rx_read_req = le64_to_cpu(sb->rx_read_req_pkts);
++	estat->rx_read_res = le64_to_cpu(sb->rx_read_res_pkts);
++	estat->rx_write_req = le64_to_cpu(sb->rx_write_req_pkts);
++	estat->rx_send_req = le64_to_cpu(sb->rx_send_req_pkts);
++	estat->rx_roce_pkts = le64_to_cpu(sb->rx_roce_pkts);
++	estat->rx_roce_bytes = le64_to_cpu(sb->rx_roce_bytes);
++	estat->rx_roce_good_pkts = le64_to_cpu(sb->rx_roce_good_pkts);
++	estat->rx_roce_good_bytes = le64_to_cpu(sb->rx_roce_good_bytes);
++	estat->rx_out_of_buffer = le64_to_cpu(sb->rx_out_of_buffer_pkts);
++	estat->rx_out_of_sequence = le64_to_cpu(sb->rx_out_of_sequence_pkts);
++	estat->tx_cnp = le64_to_cpu(sb->tx_cnp_pkts);
++	estat->rx_cnp = le64_to_cpu(sb->rx_cnp_pkts);
++	estat->rx_ecn_marked = le64_to_cpu(sb->rx_ecn_marked_pkts);
++
++bail:
++	dma_free_coherent(&rcfw->pdev->dev, sbuf.size,
++			  sbuf.sb, sbuf.dma_addr);
++	return rc;
 +}
 diff --git a/drivers/infiniband/hw/bng_re/bng_sp.h b/drivers/infiniband/hw/bng_re/bng_sp.h
-index d05151123f98..da4dceba4f46 100644
+index da4dceba4f46..d69d97e1940b 100644
 --- a/drivers/infiniband/hw/bng_re/bng_sp.h
 +++ b/drivers/infiniband/hw/bng_re/bng_sp.h
-@@ -166,6 +166,31 @@ struct bng_sp_cq {
- 	u16				cnq_events;
+@@ -191,6 +191,86 @@ struct bng_sp_srq {
+ 	u16				eventq_hw_ring_id;
  };
  
-+/* SRQ shadow work queue entry */
-+struct bng_sp_swq {
-+	u64		wr_id;
-+	int		next_idx;
++struct bng_roce_stats {
++	u64	to_retransmits;
++	u64	seq_err_naks_rcvd;
++	u64	max_retry_exceeded;
++	u64	rnr_naks_rcvd;
++	u64	missing_resp;
++	u64	unrecoverable_err;
++	u64	bad_resp_err;
++	u64	local_qp_op_err;
++	u64	local_protection_err;
++	u64	mem_mgmt_op_err;
++	u64	remote_invalid_req_err;
++	u64	remote_access_err;
++	u64	remote_op_err;
++	u64	dup_req;
++	u64	res_exceed_max;
++	u64	res_length_mismatch;
++	u64	res_exceeds_wqe;
++	u64	res_opcode_err;
++	u64	res_rx_invalid_rkey;
++	u64	res_rx_domain_err;
++	u64	res_rx_no_perm;
++	u64	res_rx_range_err;
++	u64	res_tx_invalid_rkey;
++	u64	res_tx_domain_err;
++	u64	res_tx_no_perm;
++	u64	res_tx_range_err;
++	u64	res_irrq_oflow;
++	u64	res_unsup_opcode;
++	u64	res_unaligned_atomic;
++	u64	res_rem_inv_err;
++	u64	res_mem_error;
++	u64	res_srq_err;
++	u64	res_cmp_err;
++	u64	res_invalid_dup_rkey;
++	u64	res_wqe_format_err;
++	u64	res_cq_load_err;
++	u64	res_srq_load_err;
++	u64	res_tx_pci_err;
++	u64	res_rx_pci_err;
++	u64	res_oos_drop_count;
++	u64	active_qp_count_p0;
++	u64	active_qp_count_p1;
++	u64	active_qp_count_p2;
++	u64	active_qp_count_p3;
 +};
 +
-+/* SRQ SP layer structure */
-+struct bng_sp_srq {
-+	struct bng_sp_pd		*pd;
-+	struct bng_re_dpi		*dpi;
-+	struct bng_re_hwq		hwq;
-+	struct bng_re_db_info		dbinfo;
-+	struct bng_re_sg_info		sginfo;
-+	struct bng_sp_swq		*swq;
-+	u32				start_idx;
-+	u32				last_idx;
-+	u64				srq_handle;
-+	u32				id;
-+	u16				wqe_size;
-+	u32				max_wqe;
-+	u32				max_sge;
-+	u32				threshold;
-+	u16				eventq_hw_ring_id;
++struct bng_re_ext_stat {
++	u64	tx_atomic_req;
++	u64	tx_read_req;
++	u64	tx_read_res;
++	u64	tx_write_req;
++	u64	tx_send_req;
++	u64	tx_roce_pkts;
++	u64	tx_roce_bytes;
++	u64	rx_atomic_req;
++	u64	rx_read_req;
++	u64	rx_read_res;
++	u64	rx_write_req;
++	u64	rx_send_req;
++	u64	rx_roce_pkts;
++	u64	rx_roce_bytes;
++	u64	rx_roce_good_pkts;
++	u64	rx_roce_good_bytes;
++	u64	rx_out_of_buffer;
++	u64	rx_out_of_sequence;
++	u64	tx_cnp;
++	u64	rx_cnp;
++	u64	rx_ecn_marked;
++};
++
++struct bng_re_rstat {
++	struct bng_roce_stats	errs;
++	struct bng_re_ext_stat	ext_stat;
++};
++
++struct bng_re_hw_stats {
++	struct bng_re_rstat            rstat;
 +};
 +
  int bng_re_get_dev_attr(struct bng_re_rcfw *rcfw);
  int bng_sp_alloc_sgid_tbl(struct bng_re_sgid_tbl *sgid_tbl, u16 size);
  
-@@ -200,5 +225,8 @@ void bng_sp_resize_cq_complete(struct bng_re_res *res, struct bng_sp_cq *cq);
- int bng_sp_resize_cq(struct bng_re_res *res, struct bng_sp_cq *cq,
- 		     int new_cqes);
- int bng_sp_destroy_cq(struct bng_re_res *res, struct bng_sp_cq *cq);
-+int bng_sp_create_srq(struct bng_re_res *res, struct bng_sp_srq *srq);
-+int bng_sp_query_srq(struct bng_re_res *res, struct bng_sp_srq *srq);
-+int bng_sp_destroy_srq(struct bng_re_res *res, struct bng_sp_srq *srq);
+@@ -228,5 +308,9 @@ int bng_sp_destroy_cq(struct bng_re_res *res, struct bng_sp_cq *cq);
+ int bng_sp_create_srq(struct bng_re_res *res, struct bng_sp_srq *srq);
+ int bng_sp_query_srq(struct bng_re_res *res, struct bng_sp_srq *srq);
+ int bng_sp_destroy_srq(struct bng_re_res *res, struct bng_sp_srq *srq);
++int bng_re_qext_stat(struct bng_re_rcfw *rcfw, u32 fid,
++		     struct bng_re_ext_stat *estat);
++int bng_re_get_roce_stats(struct bng_re_rcfw *rcfw,
++		     struct bng_roce_stats *stats);
  
  #endif
-diff --git a/drivers/infiniband/hw/bng_re/bng_verbs.c b/drivers/infiniband/hw/bng_re/bng_verbs.c
-index b08ac20d788d..e48caefa64ee 100644
---- a/drivers/infiniband/hw/bng_re/bng_verbs.c
-+++ b/drivers/infiniband/hw/bng_re/bng_verbs.c
-@@ -1196,3 +1196,219 @@ int bng_re_destroy_cq(struct ib_cq *ib_cq, struct ib_udata *udata)
- 	kfree(cq->cql);
- 	return 0;
- }
-+
-+/* SRQ helper function */
-+static int bng_re_init_user_srq(struct bng_re_dev *rdev,
-+				struct bng_re_pd *pd,
-+				struct bng_re_srq *srq,
-+				struct ib_udata *udata)
-+{
-+	struct bng_re_ucontext *cntx =
-+		rdma_udata_to_drv_context(udata, struct bng_re_ucontext,
-+					  ib_uctx);
-+	struct bng_sp_srq *sp_srq = &srq->sp_srq;
-+	struct bng_re_srq_req ureq;
-+	struct ib_umem *umem;
-+	int bytes = 0;
-+
-+	if (ib_copy_from_udata(&ureq, udata, sizeof(ureq)))
-+		return -EFAULT;
-+
-+	bytes = (sp_srq->max_wqe * sp_srq->wqe_size);
-+	bytes = PAGE_ALIGN(bytes);
-+	umem = ib_umem_get_va(&rdev->ibdev, ureq.srqva, bytes,
-+			      IB_ACCESS_LOCAL_WRITE);
-+	if (IS_ERR(umem))
-+		return PTR_ERR(umem);
-+
-+	srq->umem = umem;
-+	sp_srq->sginfo.umem = umem;
-+	sp_srq->sginfo.pgsize = PAGE_SIZE;
-+	sp_srq->sginfo.pgshft = PAGE_SHIFT;
-+	sp_srq->srq_handle = ureq.srq_handle;
-+	sp_srq->dpi = &cntx->dpi;
-+
-+	return 0;
-+}
-+
-+/* SRQ operations */
-+int bng_re_create_srq(struct ib_srq *ib_srq,
-+		      struct ib_srq_init_attr *srq_init_attr,
-+		      struct ib_udata *udata)
-+{
-+	struct bng_re_dev_attr *dev_attr;
-+	struct bng_re_ucontext *uctx;
-+	struct bng_re_dev *rdev;
-+	struct bng_re_srq *srq;
-+	struct bng_re_pd *pd;
-+	struct ib_pd *ib_pd;
-+	int rc, entries;
-+
-+	ib_pd = ib_srq->pd;
-+	pd = container_of(ib_pd, struct bng_re_pd, ib_pd);
-+	rdev = pd->rdev;
-+	dev_attr = rdev->dev_attr;
-+	srq = container_of(ib_srq, struct bng_re_srq, ib_srq);
-+
-+	if (srq_init_attr->attr.max_wr > dev_attr->max_srq_wqes) {
-+		ibdev_err(&rdev->ibdev, "Create SRQ failed - max exceeded\n");
-+		rc = -EINVAL;
-+		goto exit;
-+	}
-+
-+	if (srq_init_attr->srq_type != IB_SRQT_BASIC) {
-+		rc = -EOPNOTSUPP;
-+		goto exit;
-+	}
-+
-+	uctx = rdma_udata_to_drv_context(udata, struct bng_re_ucontext, ib_uctx);
-+	srq->rdev = rdev;
-+	srq->sp_srq.pd = &pd->sp_pd;
-+	srq->sp_srq.dpi = &rdev->dpi_privileged;
-+	/* Allocate 1 more than what's provided so posting max doesn't
-+	 * mean empty
-+	 */
-+	entries = bng_re_init_depth(srq_init_attr->attr.max_wr + 1, uctx);
-+	if (entries > dev_attr->max_srq_wqes + 1)
-+		entries = dev_attr->max_srq_wqes + 1;
-+	srq->sp_srq.max_wqe = entries;
-+
-+	srq->sp_srq.max_sge = srq_init_attr->attr.max_sge;
-+	/* 128 byte wqe size for SRQ. So use max sges */
-+	srq->sp_srq.wqe_size = bng_re_get_rwqe_size(dev_attr->max_srq_sges);
-+	srq->sp_srq.threshold = srq_init_attr->attr.srq_limit;
-+	srq->srq_limit = srq_init_attr->attr.srq_limit;
-+	srq->sp_srq.eventq_hw_ring_id = rdev->nqr->nq[0].ring_id;
-+	srq->sp_srq.sginfo.pgsize = PAGE_SIZE;
-+	srq->sp_srq.sginfo.pgshft = PAGE_SHIFT;
-+
-+	if (udata) {
-+		rc = bng_re_init_user_srq(rdev, pd, srq, udata);
-+		if (rc)
-+			goto fail;
-+	}
-+
-+	rc = bng_sp_create_srq(&rdev->bng_res, &srq->sp_srq);
-+	if (rc) {
-+		ibdev_err(&rdev->ibdev, "Create HW SRQ failed!\n");
-+		goto fail;
-+	}
-+
-+	if (udata) {
-+		struct bng_re_srq_resp resp = {};
-+
-+		resp.srqid = srq->sp_srq.id;
-+		if (rdev->chip_ctx->modes.toggle_bits & BNG_RE_SRQ_TOGGLE_BIT) {
-+			srq->uctx_srq_page = (void *)get_zeroed_page(GFP_KERNEL);
-+			if (!srq->uctx_srq_page) {
-+				rc = -ENOMEM;
-+				bng_sp_destroy_srq(&rdev->bng_res, &srq->sp_srq);
-+				goto fail;
-+			}
-+			hash_add(rdev->srq_hash, &srq->hash_entry, srq->sp_srq.id);
-+			resp.comp_mask |= BNG_RE_SRQ_TOGGLE_PAGE_SUPPORT;
-+		}
-+		rc = ib_copy_to_udata(udata, &resp, sizeof(resp));
-+		if (rc) {
-+			ibdev_err(&rdev->ibdev, "SRQ copy to udata failed!\n");
-+			if (srq->uctx_srq_page) {
-+				free_page((unsigned long)srq->uctx_srq_page);
-+				hash_del(&srq->hash_entry);
-+			}
-+			bng_sp_destroy_srq(&rdev->bng_res,
-+					   &srq->sp_srq);
-+			goto fail;
-+		}
-+	}
-+	spin_lock_init(&srq->lock);
-+
-+	return 0;
-+
-+fail:
-+	ib_umem_release(srq->umem);
-+exit:
-+	return rc;
-+}
-+
-+int bng_re_modify_srq(struct ib_srq *ib_srq, struct ib_srq_attr *srq_attr,
-+		      enum ib_srq_attr_mask srq_attr_mask,
-+		      struct ib_udata *udata)
-+{
-+	struct bng_re_srq *srq = container_of(ib_srq, struct bng_re_srq, ib_srq);
-+	struct bng_re_dev *rdev = srq->rdev;
-+
-+	switch (srq_attr_mask) {
-+	case IB_SRQ_MAX_WR:
-+		/* SRQ resize is not supported */
-+		return -EINVAL;
-+	case IB_SRQ_LIMIT:
-+	{
-+		unsigned long flags;
-+
-+		/* Change the SRQ threshold */
-+		if (srq_attr->srq_limit > srq->sp_srq.max_wqe)
-+			return -EINVAL;
-+
-+		spin_lock_irqsave(&srq->lock, flags);
-+		srq->sp_srq.threshold = srq_attr->srq_limit;
-+		bng_re_srq_arm_db(&srq->sp_srq.dbinfo, srq->sp_srq.threshold);
-+
-+		/* On success, update the shadow */
-+		srq->srq_limit = srq_attr->srq_limit;
-+		spin_unlock_irqrestore(&srq->lock, flags);
-+		return 0;
-+	}
-+	default:
-+		ibdev_err(&rdev->ibdev,
-+			  "Unsupported srq_attr_mask 0x%x\n", srq_attr_mask);
-+		return -EINVAL;
-+	}
-+}
-+
-+int bng_re_query_srq(struct ib_srq *ib_srq, struct ib_srq_attr *srq_attr)
-+{
-+	struct bng_re_srq *srq = container_of(ib_srq, struct bng_re_srq, ib_srq);
-+	struct bng_re_dev *rdev = srq->rdev;
-+	struct bng_sp_srq sp_srq = {};
-+	int rc;
-+
-+	/* Get live SRQ attr */
-+	sp_srq.id = srq->sp_srq.id;
-+	rc = bng_sp_query_srq(&rdev->bng_res, &sp_srq);
-+	if (rc) {
-+		ibdev_err(&rdev->ibdev, "Query HW SRQ failed!\n");
-+		return rc;
-+	}
-+
-+	srq_attr->max_wr = srq->sp_srq.max_wqe;
-+	srq_attr->max_sge = srq->sp_srq.max_sge;
-+	srq_attr->srq_limit = sp_srq.threshold;
-+
-+	return 0;
-+}
-+
-+int bng_re_destroy_srq(struct ib_srq *ib_srq, struct ib_udata *udata)
-+{
-+	struct bng_re_dev *rdev;
-+	struct bng_re_srq *srq;
-+	int rc;
-+
-+	srq = container_of(ib_srq, struct bng_re_srq, ib_srq);
-+	rdev = srq->rdev;
-+
-+	rc = bng_sp_destroy_srq(&rdev->bng_res, &srq->sp_srq);
-+	if (rc) {
-+		ibdev_err(&rdev->ibdev, "Destroy SRQ failed: %d\n", rc);
-+		return rc;
-+	}
-+
-+	if (srq->uctx_srq_page) {
-+		free_page((unsigned long)srq->uctx_srq_page);
-+		srq->uctx_srq_page = NULL;
-+		hash_del(&srq->hash_entry);
-+	}
-+
-+	ib_umem_release(srq->umem);
-+
-+	return 0;
-+}
-diff --git a/drivers/infiniband/hw/bng_re/bng_verbs.h b/drivers/infiniband/hw/bng_re/bng_verbs.h
-index 839967c73f08..dd9fac0f33c0 100644
---- a/drivers/infiniband/hw/bng_re/bng_verbs.h
-+++ b/drivers/infiniband/hw/bng_re/bng_verbs.h
-@@ -64,6 +64,17 @@ struct bng_re_cq {
- 	struct hlist_node		hash_entry;
- };
- 
-+struct bng_re_srq {
-+	struct ib_srq		ib_srq;
-+	struct bng_re_dev	*rdev;
-+	u32			srq_limit;
-+	struct bng_sp_srq	sp_srq;
-+	struct ib_umem		*umem;
-+	spinlock_t		lock;		/* protect srq */
-+	void			*uctx_srq_page;
-+	struct hlist_node	hash_entry;
-+};
-+
- static inline u32 bng_re_init_depth(u32 ent, struct bng_re_ucontext *uctx)
- {
- 	/* roundup_pow_of_two(0) is undefined (UBSAN: shift by 64 on 64-bit). */
-@@ -71,6 +82,12 @@ static inline u32 bng_re_init_depth(u32 ent, struct bng_re_ucontext *uctx)
- 				   ent : roundup_pow_of_two(ent) : ent;
- }
- 
-+static inline u16 bng_re_get_rwqe_size(int nsge)
-+{
-+	/* RQ WQE header + SGEs */
-+	return 16 + (nsge * 16); /* header=16, each sge=16 bytes */
-+}
-+
- int bng_re_query_device(struct ib_device *ibdev, struct ib_device_attr *ib_attr,
- 			struct ib_udata *udata);
- int bng_re_modify_device(struct ib_device *ibdev, int device_modify_mask,
-@@ -122,6 +139,14 @@ int bng_re_resize_cq(struct ib_cq *ibcq, unsigned int cqe, struct ib_udata *udat
- int bng_re_req_notify_cq(struct ib_cq *ib_cq,
- 			 enum ib_cq_notify_flags ib_cqn_flags);
- int bng_re_destroy_cq(struct ib_cq *cq, struct ib_udata *udata);
-+int bng_re_create_srq(struct ib_srq *ib_srq,
-+		      struct ib_srq_init_attr *srq_init_attr,
-+		      struct ib_udata *udata);
-+int bng_re_modify_srq(struct ib_srq *ib_srq, struct ib_srq_attr *srq_attr,
-+		      enum ib_srq_attr_mask srq_attr_mask,
-+		      struct ib_udata *udata);
-+int bng_re_query_srq(struct ib_srq *ib_srq, struct ib_srq_attr *srq_attr);
-+int bng_re_destroy_srq(struct ib_srq *ib_srq, struct ib_udata *udata);
- 
- #endif /* __BNG_RE_VERBS_H__ */
- 
-diff --git a/include/uapi/rdma/bng_re-abi.h b/include/uapi/rdma/bng_re-abi.h
-index 2a88f36bcacd..49931b7c1344 100644
---- a/include/uapi/rdma/bng_re-abi.h
-+++ b/include/uapi/rdma/bng_re-abi.h
-@@ -61,4 +61,18 @@ struct bng_re_resize_cq_req {
- 	__aligned_u64 cq_va;
- };
- 
-+struct bng_re_srq_req {
-+	__aligned_u64 srqva;
-+	__aligned_u64 srq_handle;
-+};
-+
-+enum bng_re_srq_mask {
-+	BNG_RE_SRQ_TOGGLE_PAGE_SUPPORT = 0x1,
-+};
-+
-+struct bng_re_srq_resp {
-+	__u32 srqid;
-+	__aligned_u64 comp_mask;
-+};
-+
- #endif /* __BNG_RE_UVERBS_ABI_H__*/
 -- 
 2.43.5
 
