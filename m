@@ -1,42 +1,41 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6BEC1DE8BF
-	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 00:19:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E10271B7910
+	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 00:19:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788481185; cv=none; b=t/1ZhdY9KtWHTkdX8XEQBEn0vCt0w1avcTob89Myrm6b/QBan/XzVvgt4rEAXVY5YYQtBb6+T5Xc5YwLCnvya6YzdwiqFvYqn954JAQ59AeGFnQqekUc7SgEkWHhK4uGZBdLUQsxvmqdNpQVefFpLf9oahNHtXtIpCH4k6WWWng=
+	t=1788481186; cv=none; b=tpH2ti23vTJYjNDN8mcQuaW5mqpg0uxeg/CkkU6ss6F8d19pzSrwVvwvbigqXGhBrJCWVegp0gmA1hpgmwCxBHLcmHZiaURLe7cOm0wUNP8x5ByE4U8MkQKuzo2lz0NSLO20A/w3Vu/yJzHZwSr3aMStZU2tB4O+KmKftP0m2gU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788481185; c=relaxed/simple;
-	bh=FTt0lZcPKwqk3Cllosljk/aypfqQR5H/SeoRjYVKg3Q=;
+	s=arc-20240116; t=1788481186; c=relaxed/simple;
+	bh=DIn0xecdp1HnqW6H1I/OxyrV97B7r5eWPJEoiDO+tdQ=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=dUBj5IUXG4/JCvMMM18Wi450qCn2Q/2f8Q3qwO78e6p9sDRhhlDrtye+fZ3In6nCB3n1EamPekaMtk9QUezUfl7Mbl3/8ipviS5ElesSNYSaBsMiS1RKAPRIetggOYR2YJZkmHPZRfpZy7Yb5JEhfVH8xE4u+Oojo6oiOdqe0eY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fvwlTDyj; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=KGovHqor3E14fBa/ARqxC72WKkHOtVt50iM/shJ+9PC9VfE/rRWzTVr1TbkAUAqHdwQzLET70Doydh5h2fyZZCpL058cBMJBU/qnBTN3wVM8gi8ZP7ku9vzft0XzlKPXXv05pf5xF2M3z3c98jix6awOkwGW2p1AplEuhbx871U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KC2qL6gg; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fvwlTDyj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25D751F000E9;
-	Fri,  4 Sep 2026 00:19:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KC2qL6gg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 346701F00A3D;
+	Fri,  4 Sep 2026 00:19:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788481183;
-	bh=Bh+1NPoLu0pnqMdZgGwsosjC2UXe57eZHjXYRQPBDhw=;
+	s=k20260515; t=1788481184;
+	bh=C2VL3gZkwmadkCsMaaE8KHlPspMhSV9asmSBXRRJl00=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=fvwlTDyjk0aCfv0MSGZXRcjtsmOHsHdebeZJ9Ieb3rR6oGeJZ8iozemDwtFTQZ0F7
-	 DmZ8brHU7EHIqQffk8pB3LZIAIBXLcsJxQri7pugeX8s+BRQHT6Z+UMgBeKXKAzjXa
-	 v6U2hZI9BdpBxh9KWBVMkvQEfFw/+a/gO5X+AbaeW9Mbv4EUMlKMTWJCYn5/2atKno
-	 Zc/w7G12pLEcDdIqo2rw/am8QlUt4T8/mmX5L85RAgMU7tlTJqnoGZkY3eN1/UgCrd
-	 vNBwq98Rijec0zFxm0Duf3tK8fOMEp5joig4bC2tNrRMJka9GJeQ3Nz5KNpZEiLDr9
-	 6lu/raTPAK58Q==
-Subject: Re: [PATCH net-next v8 1/6] net: rtnetlink: add
- pacing_offload_horizon attribute to net_device
+	b=KC2qL6ggtWbEyS/V8GdSi5XTCBa1nVATznuInO+ecA4PtY4hQeRhZ6EZbY59mxxSZ
+	 ZVtac5nSiH1UQ7gsYITd3eV5zh8LbEgWWDCzG18Xf7zA8hPMIS0i+MR0BGEZsjLnqb
+	 qCdiewyDY6HyDrnmrmEC2qH/KNpS6IaOxE6/ztbcpkEIFzkeWC9UnxuVMZa1Ot8Rns
+	 q1/Ht3vgDhxggcMJqwYLdQvC5PnC06diYPctCO+GO8WSFcRxu5lNUDyKdgTT9d8GvF
+	 Npqm3NR+Z5g4urchCEwg8VsmHYGLQB0dgRPNe30beSQF8Ugq49HgLVJGf34ZR0cbF1
+	 0fqXnhLduvjiA==
+Subject: Re: [PATCH net-next v8 3/6] idpf: support pacing offload
 From: netdev-bot+sashiko@kernel.org
 To: willemdebruijn.kernel@gmail.com
 Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
  edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
  andrew+netdev@lunn.ch, willemb@google.com
-Date: Fri, 04 Sep 2026 00:19:42 +0000
-Message-ID: <178848118269.4131868.5248717808244298920@kernel.org>
-In-Reply-To: <20260902181747.2483351-2-willemdebruijn.kernel@gmail.com>
-References: <20260902181747.2483351-2-willemdebruijn.kernel@gmail.com>
+Date: Fri, 04 Sep 2026 00:19:43 +0000
+Message-ID: <178848118375.4131868.13506511829846201867@kernel.org>
+In-Reply-To: <20260902181747.2483351-4-willemdebruijn.kernel@gmail.com>
+References: <20260902181747.2483351-4-willemdebruijn.kernel@gmail.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -47,175 +46,205 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
+Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider:
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-- [Medium] Stale cached bound: sch_fq latches its offload horizon in
-  q->offload_horizon at configuration time, validated once against the…
-- [Low] uAPI spec vs kernel policy mismatch: rt-link.yaml adds 'max-
-  pacing-offload-horizon' to the '&link-all-attrs' anchor, and that same…
+- [Medium] Divergent EDT state across a hard reset: the netdev-side
+  pacing horizon survives while the adapter-side timestamp granularity…
 
 --
 
-net: rtnetlink: add pacing_offload_horizon attribute to net_device
+idpf: support pacing offload
 
-Adds a new writable net_device field pacing_offload_horizon, exposed as
-IFLA_PACING_OFFLOAD_HORIZON and settable via RTM_SETLINK up to
-dev->max_pacing_offload_horizon.  Both fields become u32, and sch_fq now
-validates TCA_FQ_OFFLOAD_HORIZON against the new active horizon instead of
-the device maximum.
+Adds EDT (earliest departure time) support to idpf: the txtime from
+skb->tstamp is bounds checked and programmed into the flow scheduling Tx
+descriptor. The feature is negotiated with the device through a new
+VIRTCHNL2_OP_GET_EDT_CAPS exchange, and the resulting horizon is exposed
+as netdev->max_pacing_offload_horizon.
 
-> diff --git a/Documentation/netlink/specs/rt-link.yaml b/Documentation/netlink/specs/rt-link.yaml
-> index 61ebb9a2bad5..2a2aad9a29c4 100644
-> --- a/Documentation/netlink/specs/rt-link.yaml
-> +++ b/Documentation/netlink/specs/rt-link.yaml
-
-[ ... ]
-
-> @@ -2557,6 +2561,8 @@ operations:
->              - devlink-port
->              - gso-ipv4-max-size
->              - gro-ipv4-max-size
-> +            - max-pacing-offload-horizon
-> +            - pacing-offload-horizon
->        dump:
->          request:
->            value: 18
-
-[Severity: Low]
-Should max-pacing-offload-horizon be added to this list?  The list this hunk
-extends is the anchor definition in the getlink do-reply:
-
-  Documentation/netlink/specs/rt-link.yaml
-        reply:
-          value: 16
-          attributes: &link-all-attrs
-
-and the same anchor is dereferenced as the setlink request list:
-
-    -
-      name: setlink
-      doc: Set information about a link.
-      attribute-set: link-attrs
-      fixed-header: ifinfomsg
-      do:
-        request:
-          value: 19
-          attributes: *link-all-attrs
-
-So the spec now declares the read-only maximum as settable, while the same
-patch adds [IFLA_MAX_PACING_OFFLOAD_HORIZON] = { .type = NLA_REJECT } to
-ifla_policy, which makes a ynl-generated setlink carrying that attribute fail
-the whole message with -EINVAL.
-
-The same mismatch already exists in this shared list for perm-address,
-tso-max-size, tso-max-segs and allmulti, but the more recent read-only
-additions (netns-immutable, headroom, tailroom) were deliberately left out of
-it.  Would listing max-pacing-offload-horizon only in the read-only/reply set
-be closer to the intent here?  pacing-offload-horizon itself is genuinely
-settable, so only the max- attribute is affected.
-
-> diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
-> index 81c5a6104dea..eeaf953b397f 100644
-> --- a/net/core/rtnetlink.c
-> +++ b/net/core/rtnetlink.c
+> diff --git a/drivers/net/ethernet/intel/idpf/idpf_lib.c b/drivers/net/ethernet/intel/idpf/idpf_lib.c
+> index 827c795afcb6..c2ad3fdf72aa 100644
+> --- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
+> +++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
+> @@ -890,6 +890,12 @@ static int idpf_cfg_netdev(struct idpf_vport *vport)
+>  	netdev->min_mtu = ETH_MIN_MTU;
+>  	netdev->max_mtu = vport->max_mtu;
+>  
+> +	if (adapter->edt_caps.time_horizon_ns &&
+> +	    idpf_is_queue_model_split(vport->dflt_qv_rsrc.txq_model) &&
+> +	    !idpf_is_cap_ena(adapter, IDPF_OTHER_CAPS,
+> +			     VIRTCHNL2_CAP_SPLITQ_QSCHED))
+> +		netdev->max_pacing_offload_horizon = adapter->edt_caps.time_horizon_ns;
+> +
+>  	dflt_features = NETIF_F_SG	|
+>  			NETIF_F_HIGHDMA;
+>  
+> diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+> index 24b91be25676..d80b6f5a0fde 100644
+> --- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+> +++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+> @@ -1742,6 +1742,7 @@ static int idpf_txq_group_alloc(struct idpf_vport *vport,
+>  			q->desc_count = rsrc->txq_desc_count;
+>  			q->tx_max_bufs = idpf_get_max_tx_bufs(adapter);
+>  			q->tx_min_pkt_len = idpf_get_min_tx_pkt_len(adapter);
+> +			q->ts_gran_pow2 = adapter->edt_caps.tstamp_granularity_pow2;
+>  			q->netdev = vport->netdev;
+>  			q->txq_grp = tx_qgrp;
+>  			q->rel_q_id = j;
 
 [ ... ]
 
-> @@ -2344,9 +2347,11 @@ static const struct nla_policy ifla_policy[IFLA_MAX+1] = {
->  	[IFLA_ALLMULTI]		= { .type = NLA_REJECT },
->  	[IFLA_GSO_IPV4_MAX_SIZE]	= NLA_POLICY_MIN(NLA_U32, MAX_TCP_HEADER + 1),
->  	[IFLA_GRO_IPV4_MAX_SIZE]	= { .type = NLA_U32 },
-> +	[IFLA_MAX_PACING_OFFLOAD_HORIZON] = { .type = NLA_REJECT },
->  	[IFLA_NETNS_IMMUTABLE]	= { .type = NLA_REJECT },
->  	[IFLA_HEADROOM]		= { .type = NLA_REJECT },
->  	[IFLA_TAILROOM]		= { .type = NLA_REJECT },
-> +	[IFLA_PACING_OFFLOAD_HORIZON] = { .type = NLA_UINT },
->  };
+> @@ -3011,6 +3017,60 @@ static bool idpf_tx_splitq_need_re(struct idpf_tx_queue *tx_q)
+>  	return gap >= IDPF_TX_SPLITQ_RE_MIN_GAP;
+>  }
+>  
+> +static void idpf_tx_splitq_set_txtime(const struct sk_buff *skb,
+> +				      const struct idpf_tx_queue *tx_q,
+> +				      struct idpf_tx_splitq_params *tx_params)
+> +{
+> +	const int offload_slack_ns = 400;
+> +	u64 ts, now, horizon;
+> +
+> +	horizon = READ_ONCE(skb->dev->pacing_offload_horizon);
+> +	if (!horizon)
+> +		return;
+> +
+[ ... ]
+> +	ts >>= tx_q->ts_gran_pow2;
+> +
+> +	/* 0 is valid 23b timestamp, but also means field unset.
+> +	 * Increase by one to avoid this case
+> +	 */
+> +	if ((ts & 0x7fffff) == 0) {
+> +		tx_params->offload.desc_ts[0] = 1;
+> +		return;
+> +	}
+> +
+> +	tx_params->offload.desc_ts[0] = ts & 0xff;
+> +	tx_params->offload.desc_ts[1] = (ts >> 8) & 0xff;
+> +	tx_params->offload.desc_ts[2] = ((ts >> 16) & 0x7f);
+> +}
+> +
 
 [ ... ]
 
-> @@ -3337,6 +3349,15 @@ static int do_setlink(const struct sk_buff *skb, struct net_device *dev,
+> diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+> index 1caf52706973..030ecd9b6c41 100644
+> --- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+> +++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+> @@ -573,6 +575,54 @@ static int idpf_send_get_caps_msg(struct idpf_adapter *adapter)
+>  	return err;
+>  }
+>  
+[ ... ]
+> +	if (xn_params.recv_mem.iov_len < sizeof(caps)) {
+> +		err = -EIO;
+> +		goto free_rx_buf;
+> +	}
+> +
+> +	memcpy(&caps, xn_params.recv_mem.iov_base, sizeof(caps));
+> +	horizon_ns = le64_to_cpu(caps.time_horizon_ns);
+> +	gran_ns = le64_to_cpu(caps.tstamp_granularity_ns);
+> +	if (horizon_ns > U32_MAX) {
+> +		dev_warn(&adapter->pdev->dev, "EDT horizon exceeds U32\n");
+> +		err = -EINVAL;
+> +		goto free_rx_buf;
+> +	}
+> +	if (!gran_ns) {
+> +		dev_warn(&adapter->pdev->dev, "EDT granularity undefined\n");
+> +		err = -EINVAL;
+> +		goto free_rx_buf;
+> +	}
+> +
+> +	adapter->edt_caps.time_horizon_ns = horizon_ns;
+> +	adapter->edt_caps.tstamp_granularity_pow2 = ilog2(gran_ns);
+> +
+> +free_rx_buf:
+> +	libie_ctlq_release_rx_buf(&xn_params.recv_mem);
+> +
+> +	return err;
+> +}
+> +
+[ ... ]
+> @@ -3085,6 +3135,14 @@ int idpf_vc_core_init(struct idpf_adapter *adapter)
 >  		}
 >  	}
 >  
-> +	if (tb[IFLA_PACING_OFFLOAD_HORIZON]) {
-> +		u64 horizon = nla_get_uint(tb[IFLA_PACING_OFFLOAD_HORIZON]);
-> +
-> +		if (dev->pacing_offload_horizon ^ horizon) {
-> +			WRITE_ONCE(dev->pacing_offload_horizon, horizon);
-> +			status |= DO_SETLINK_MODIFIED;
+> +	if (idpf_is_cap_ena(adapter, IDPF_OTHER_CAPS, VIRTCHNL2_CAP_EDT)) {
+> +		err = idpf_send_get_edt_caps_msg(adapter);
+> +		if (err) {
+> +			dev_err(&adapter->pdev->dev, "EDT init failed, err=%d\n", err);
+> +			memset(&adapter->edt_caps, 0, sizeof(adapter->edt_caps));
 > +		}
 > +	}
 > +
->  	if (tb[IFLA_OPERSTATE])
->  		set_operstate(dev, nla_get_u8(tb[IFLA_OPERSTATE]));
 
 [Severity: Medium]
-What happens to an already configured fq qdisc when this write lowers the
-device horizon, including back to 0?
+When this re-negotiation fails on a reset, edt_caps is zeroed and init
+continues, but nothing revokes the pacing horizon already published on the
+netdev.  Can that leave the two halves of the EDT state inconsistent?
 
-sch_fq latches its horizon once in fq_change() (see the sch_fq.c hunk quoted
-below) and then uses the cached copy in the datapath:
+idpf_init_hard_reset() calls idpf_vc_core_init() again on the same adapter
+while the netdevs stay registered (IDPF_VPORT_REG_NETDEV is only cleared in
+idpf_decfg_netdev(), on driver remove), so idpf_cfg_netdev() takes its early
+return:
 
-net/sched/sch_fq.c:fq_fastpath_check() {
-	if (fq_skb_cb(skb)->time_to_send > now + q->offload_horizon)
-		return false;
-	...
-}
+	if (test_bit(IDPF_VPORT_REG_NETDEV, vport_config->flags)) {
+		netdev = adapter->netdevs[idx];
+		...
+		return idpf_init_mac_addr(vport, netdev);
+	}
 
-net/sched/sch_fq.c:fq_dequeue() {
-	...
-	if (now + q->offload_horizon < time_next_packet) {
-	...
-}
+and never re-evaluates the new assignment:
 
-do_setlink() does not walk the device's qdiscs and does not clamp
-q->offload_horizon, and sch_fq registers no netdevice notifier (only
-act_mirred, sch_cbs and sch_taprio do), so nothing re-validates the cached
-value.
+	if (adapter->edt_caps.time_horizon_ns && ...)
+		netdev->max_pacing_offload_horizon = adapter->edt_caps.time_horizon_ns;
 
-Does fq then keep releasing packets up to the old horizon ahead of their EDT
-while the device no longer paces them?  With the idpf patch from this series
-applied:
+The dev->pacing_offload_horizon value the admin set earlier through
+RTM_SETLINK also survives, since it is only validated at set time.
 
-drivers/net/ethernet/intel/idpf/idpf_txrx.c:idpf_tx_splitq_set_txtime() {
+The re-created Tx queues do pick up the zeroed granularity in
+idpf_txq_group_alloc():
+
+	q->ts_gran_pow2 = adapter->edt_caps.tstamp_granularity_pow2;
+
+and idpf_tx_splitq_set_txtime() gates only on the netdev horizon:
+
 	horizon = READ_ONCE(skb->dev->pacing_offload_horizon);
 	if (!horizon)
 		return;
 	...
-}
+	ts >>= tx_q->ts_gran_pow2;
 
-no EDT is programmed once the horizon is 0, so packets handed over early
-appear to be sent immediately until userspace also reconfigures the qdisc.
+With ts_gran_pow2 of 0 the shift is a no-op, so the low 23 bits of a raw
+CLOCK_TAI nanosecond value end up in the descriptor ts[] field while the
+device still interprets that field in its own unchanged granularity.  Would
+departure times then land on effectively arbitrary points inside the hardware
+window (up to roughly 4.29 s), holding a descriptor and buf_id each, after
+only the single dev_err above?
 
-For comparison, netif_set_tso_max_size() clamps dev->gso_max_size when the
-device maximum shrinks.  Would something similar, or a notifier, be
-appropriate here?
+Note that granularity 0 is a value the driver itself rejects from firmware
+("EDT granularity undefined"), so it is being used as an invalid state here.
 
-Both knobs require CAP_NET_ADMIN, so this is a configuration-ordering issue
-rather than something an unprivileged user can trigger.
+Would it be reasonable to clear dev->pacing_offload_horizon and
+max_pacing_offload_horizon on this failure path, or to have
+idpf_tx_splitq_set_txtime() also check that tx_q->ts_gran_pow2 is valid?
 
-> diff --git a/net/sched/sch_fq.c b/net/sched/sch_fq.c
-> index 6144b5686f13..7cf7afda699f 100644
-> --- a/net/sched/sch_fq.c
-> +++ b/net/sched/sch_fq.c
-> @@ -1183,7 +1183,8 @@ static int fq_change(struct Qdisc *sch, struct nlattr *opt,
->  		u64 offload_horizon = (u64)NSEC_PER_USEC *
->  				      nla_get_u32(tb[TCA_FQ_OFFLOAD_HORIZON]);
->  
-> -		if (offload_horizon <= qdisc_dev(sch)->max_pacing_offload_horizon) {
-> +		if (offload_horizon <=
-> +		    READ_ONCE(qdisc_dev(sch)->pacing_offload_horizon)) {
->  			WRITE_ONCE(q->offload_horizon, offload_horizon);
->  		} else {
->  			NL_SET_ERR_MSG_MOD(extack, "invalid offload_horizon");
+One more thing on this part of the commit message:
 
-Before this patch the bound compared here had no in-tree writer, so an
-accepted value could never become invalid afterwards.  Is the "invalid
-offload_horizon" invariant still enforced once the bound is user-mutable?
+    On device reset, dev->pacing_offload_horizon, fq offload_horizon and
+    granularity are not re-negotiated. It is safe to assume that firmware
+    does not change these EDT capabilities across resets.
+
+idpf_vc_core_init() runs again on every hard reset and does re-issue
+VIRTCHNL2_OP_GET_EDT_CAPS, so granularity is re-negotiated.  Could the
+wording be adjusted to match what the code does?
+
+>  	pci_sriov_set_totalvfs(adapter->pdev, idpf_get_max_vfs(adapter));
+>  	num_max_vports = idpf_get_max_vports(adapter);
+>  	adapter->vports = kzalloc_objs(*adapter->vports, num_max_vports);
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260902181747.2483351-1-willemdebruijn.kernel%40gmail.com
