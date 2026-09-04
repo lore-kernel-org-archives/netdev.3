@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 178F94CC272
-	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 14:54:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECB044D2EDE;
+	Fri,  4 Sep 2026 14:59:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788533669; cv=none; b=OiYhweOWzBlwu8kMOkCnBa2Wze4UTPgho4xeiIPAIcsFCY1qbjyIbWVYz/bgXgSP06ne/YHyd8LqPMVjSbf/UR46V0O76hguY/OstfOFjDgdPxnjleDX5HX7gfg3k4Y1DempqlR/ey/ABeNhENkqnFsWuP1N955CvpW5730Qa/Q=
+	t=1788533976; cv=none; b=VouZ50a+JqgVmTpy5WSluCnWWvMvexJwgjvDaayq6xBcS0+9VABi8sR7FZCnOeTIRg+LdgnNeF5z1Nc9uVwh5oO7ZNlEAxnFU4a+usrj9rnGqKgCAWOO4fto8dnyC2m+Vdgn1KoHJNB9QPmKh68OJgQ7tidi773vInkQoBM68/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788533669; c=relaxed/simple;
-	bh=WITSlxx171TpJ2umw3EDl1yKAvT7BZ4268uyQXszAd0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:Cc:
-	 In-Reply-To:Content-Type; b=Id5ccZAd0cwvHoR34VuH01eLaKmix5jak6vFcHjDZAIPutLGbEh0hpTO6U+FVxaIaBZ4Oe6W/32VEXYHScBEJvdgs4SFq6A0SowpOESpZU96P96mvFELOWEl0miLk/fL2EGr5Ut+E/nWHEhuKjfxOOpA7geLZwu4qK6NkaqKNw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jeVsf0HA; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788533976; c=relaxed/simple;
+	bh=tg+beaFvFWyQqkBNHBB7oc6UW88l9wEu/T1qzRYhjfs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=A4O7HEbbmupjbAmk0sx8RQipe1nVsteS0EZXWHBRegxLyUpgQNHGWx7qQON/d0gC+//CbPdmox91dxsZwAyBflCrJVLvfJ4QwX8JHWeQzS1dTet5hZcAFgz0bD31UIeEv1eQJHJIITCGjHF9NeNaX6dqelLOvm0AfyZhNBnnxic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=akKvh57a; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jeVsf0HA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30FA31F00A3D;
-	Fri,  4 Sep 2026 14:54:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="akKvh57a"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 624A11F00A3D;
+	Fri,  4 Sep 2026 14:59:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788533667;
-	bh=yi9/axqm6i3UeGr7m/v/Qr8R0Y+FK5okS/oATO7fYcQ=;
-	h=Date:Subject:To:References:From:Cc:In-Reply-To;
-	b=jeVsf0HAhi/5piREET6fPVzUhDB5rFVJTCxO5EwfQl/bRQg0qBZjc0FNPG/1UHWfD
-	 3ngsSpL1Qw3iZa3SLP6WpY2PVAxkUMiVC0ZY6gyt/oa25PQCdzDFO39x02L6Su6vX4
-	 Rw/WfR3ELla2SlqbgoENZr+MNcW+8shdNsNkeejDykWazQj/zmuaBb91SvgahscQpi
-	 rEEPfeSclLTOfcGxhk7Rw7sSML63xrq7O2iiAEIF/WgZ6vk2hShBhBkCQoo/Wf8sZS
-	 z45xJXPlhRP20HSp8ggabXt2KsLWU97XtHzWxl33boz/8daRC0Mvh62msRIUBf3DZa
-	 1S00Tzx8Ml99Q==
-Message-ID: <e6d815d3-ed9b-4904-8cbe-8e5ee226661b@kernel.org>
-Date: Fri, 4 Sep 2026 16:54:25 +0200
+	s=k20260515; t=1788533974;
+	bh=Mtmh+EbQEolZ0B+Cu+N77fkNfs3wVAfEnrHoZtaub+4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=akKvh57agkJAqnqARbiOesO0F3Co6J3xZW04uqfzOIDRqxFZnS/WAs4jLeWdy18dA
+	 asedTgctivCw0JSn15eNH1acIGeFsC1GbtOnJ5giNQGUfdJubfvG6Izb/8g2D9QNtb
+	 YSNZhSIqlfZEMZH7J9/WWd+Y/cSSrkB3WwUaF6MXteZmF30yKb3uAdxp5uLb0WSQoq
+	 9sBIS3ms5v9BDNzzHpaN1zaf0QEE8+JiSAZz+hCfCKJ5Nch+rgCMqru1j5wZpViyku
+	 rTI2mxXQHcdKUTn0US3bpM6bo6Lxumu1LjP81cTWu1HVfykZM2dzAhwaHchB64rsI/
+	 5zgI12L0kJppQ==
+Message-ID: <64106236-9d0d-4f64-b6dd-b1e609fb8c5a@kernel.org>
+Date: Fri, 4 Sep 2026 16:59:28 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -35,13 +35,19 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [ANN] Containers to run Netdev CI tests locally
+Subject: Re: [PATCH mptcp-next v2 0/2] selftests: mptcp: convert iptables to
+ nftables
 Content-Language: fr
-To: Ilya Maximets <i.maximets@ovn.org>
-References: <9c66a2b4-2787-4421-bc9b-627de2f708bd@kernel.org>
- <dc460046-82bc-4c20-870e-716dee54a6cb@ovn.org>
+To: Hangbin Liu <hangbin.liu@linux.dev>, MPTCP Linux <mptcp@lists.linux.dev>,
+ Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+ Hangbin Liu <liuhangbin@kylinos.cn>
+References: <20260903-mptcp_nft-v2-0-66283e4b9c3b@kylinos.cn>
 From: Matthieu Baerts <matttbe@kernel.org>
-Cc: Netdev <netdev@vger.kernel.org>
 Autocrypt: addr=matttbe@kernel.org; keydata=
  xsFNBFXj+ekBEADxVr99p2guPcqHFeI/JcFxls6KibzyZD5TQTyfuYlzEp7C7A9swoK5iCvf
  YBNdx5Xl74NLSgx6y/1NiMQGuKeu+2BmtnkiGxBNanfXcnl4L4Lzz+iXBvvbtCbynnnqDDqU
@@ -86,79 +92,37 @@ Autocrypt: addr=matttbe@kernel.org; keydata=
  JY6dglzGKnCi/zsmp2+1w559frz4+IC7j/igvJGX4KDDKUs0mlld8J2u2sBXv7CGxdzQoHaz
  lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
 Organization: NGI0 Core
-In-Reply-To: <dc460046-82bc-4c20-870e-716dee54a6cb@ovn.org>
+In-Reply-To: <20260903-mptcp_nft-v2-0-66283e4b9c3b@kylinos.cn>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Hi Ilya,
+Hello,
 
-Thank you for your reply!
+On 03/09/2026 03:12, Hangbin Liu wrote:
+> iptables has been deprecated for years. The Linux kernel has included
+> nftables as the successor to iptables since 2014, and every major
+> distribution uses nftables as the default packet filtering framework.
+> The iptables command we run on modern systems is actually iptables‑nft,
+> a compatibility layer that translates iptables syntax to nftables rules
+> behind the scenes.
+> 
+> There are also some features that can be set easily with nft, while we need
+> to convert to BPF code under iptables, such as MPTCP add‑addr and
+> remove‑addr suboptions. To make future work easier, convert iptables usage
+> in mptcp to nftables.
+> 
+> Tested with iptables-translate to make sure each nft conversion is the same
+> with previous one. e.g. for mptcp_sockopt.sh, the ip6tables shows
+FYI, Hangbin is working on a new version addressing my comments from v1.
+The new version(s) will be sent to the MPTCP list only, and I will sent
+these patches to Netdev when ready.
 
-On 04/09/2026 16:01, Ilya Maximets wrote:
-> On 9/3/26 6:19 PM, Matthieu Baerts wrote:
->>
->> A wiki page has been added to cover this and explain how to validate the
->> different tests:
->>
->>   https://github.com/linux-netdev/nipa/wiki/Running-Netdev-CI-tests-locally
->>
->> To help developers, containers are now built, packing all the required
->> dependencies to run these tests in order to run the tests in an
->> environment that would be as close as possible to the CI one. The goal
->> is to have an environment that is easy to maintain -- no heavy
->> optimisations to reduce the images size -- but also easy to use. In
->> short, people (and non-humans) can continue to use the different tools
->> as before, but add a prefix to the different commands to execute them
->> from a container, e.g.
->>
->>   alias run="${nipa}/docker/selftests/run.sh"
->>   run vng --build
->>   run make headers
->>   (...)
-> The headers are not used unless the USERCFLAGS="-I$(pwd)/usr/include" is
-> passed into the actual make command for the selftests.  So, uAPI changes
-> will not be picked up.  Would be good to fix that in the wiki.
+Updating here the PW status:
 
-I think setting USERCFLAGS is not supposed to be required for this
-purpose: KHDR_INCLUDES is there for that. According to the doc [1], each
-target building binaries should have "CFLAGS = $(KHDR_INCLUDES)" in
-their Makefile. If KHDR_INCLUDES is not set by the user, then lib.mk
-will set it to "-I$(top_srcdir)/usr/include", so the default directory
-when "make headers" is used. It needs to be adapted with building in a
-different directory.
-
-At least, when validating all net and drv-net selftests on my side, I
-didn't need to specify extra CFLAGS. (I think the netfilter target is
-missing KHDR_INCLUDES, I will fix that.)
-
-Or did you have to do that for a specific target?
-
-
-Just in case, here are the recommended commands to execute to run the
-selftests per target:
-
-    alias run="${nipa}/docker/selftests/run.sh"
-
-    rm -f .config
-    config="tools/testing/selftests/${target}/config"
-    run vng --build -v --force --config "${config}"  ## + debug
-
-    run make headers
-    run make -C tools/testing/selftests TARGETS="${target}"
-
-    run sudo vng -v --run . --user root -a mitigations=off --cpus 4 \
-        --rw  --network loop -- \
-        make -C tools/testing/selftests TARGETS="${target}" run_tests
-
-
-> The $(pwd) part is a little tricky since it will be resolved outside of
-> the container.  I didn't try if that works.
-
-Note that in the container, the current directory is mounted at the same
-place. So $(pwd) can be used.
-
-[1]
-https://docs.kernel.org/dev-tools/kselftest.html#contributing-new-tests-details
+pw-bot: cr
 
 Cheers,
 Matt
+-- 
+Sponsored by the NGI0 Core fund.
+
