@@ -1,376 +1,101 @@
-Received: from mta0.migadu.com (out-64.mta0.migadu.com [91.218.175.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAEB8265623
-	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 03:12:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF0D6248F64;
+	Fri,  4 Sep 2026 03:13:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788491528; cv=none; b=AEuayjt46JLiANMXvEE5KPIfBBkofS0bjV5x9fTR3oLmqYkWcHV+BNyVqVGw7RycJy2rQ8U8QAqlWo3SUCJibs56Yx1F6K+DF2qN9zF8WgU7Ze8FetxEPdP0gi5UpfGFkzv725s7l+nOtO6GELn/hky3F1AHLYrc5jkdBsDbjE4=
+	t=1788491582; cv=none; b=bWK2WAw7vbMmx6NmnRd/I0tnxYIeDKWWJ/ArSbtHkC849nTrAPfQDQui0YF257NYV7M2jEKeEoOaeLx0TgBWUKvQOlFKtvDoEO9QIOqWnBH6tNZvjXpXSlSS2emevT0hItJDgx/yqGdipqcrdrqIia/z6h7DJOlMapL0f0GCfFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788491528; c=relaxed/simple;
-	bh=TRSI57ZXmdXSks+6IaYGJFhIqlTFRUIhrcHMelJl930=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version; b=jj4TPy31OXSyj96p8d1iNHLXsyLTbHTey0bHwszOSxGD4Xp54u4NAhp8TwfviXjdDZywiKeed0LeLLmSrTreze2FFAHd/ZxSprJDUXtQCQXsgS+kxY70b6oGEub34uwhu2Nx+iRRC9zkncaw2w47XdU1O7nt8HLyn96vySgTovg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=eFGcFYJS; arc=none smtp.client-ip=91.218.175.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1788491582; c=relaxed/simple;
+	bh=dVCosq1tcEgjE/dFQV0G11RaG8J/41FPXOJOzWXwlg0=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=S9VYEjkRF8KUAWREUFF5Kbnn2kc8YpYN/QKBqWFQf7WkJ+SHfiUBYsTInufHMcMEYR0GPbngrkgr9ZSXuiQW4DoiUaCWltuNbUriQoNxa83+P7IRj/eSplAYMG8Gpoed1681pMSYHbz3owWyxFuekH84ITkjlpcDQ2B2zc7BIDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=VAoxUHOJ; arc=none smtp.client-ip=67.231.156.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="eFGcFYJS"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=TRSI57ZXmdXSks+6IaYGJFhIqlTFRUIhrcHMelJl930=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788491524; v=1; x=1789096324;
- b=eFGcFYJSMumw9fh4tXQXrKiFkz9H4DUci5QCy5bL2F1J5W8mkqtOYWLTQsQ7/5HdbhUBeyYI
- NJO9uRLkjp1IWNQcqynrFRI78GTbXcT+VrCX+kjZ+y5HriEH7Tw30gNXVKlKh3WSiV59W7CyxCw
- BFwBpMaVJiYihnrqBkRedDmY=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id c2659f6d9c71e7ea;
-	Fri, 04 Sep 2026 03:12:04 +0000
-X-Mizu-Trace-ID: c2659f6d9c71e7ea
-X-Migadu-Flow: FLOW_OUT
-From: Qingfang Deng <qingfang.deng@linux.dev>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Mitchell Blank Jr <mitch@sfgoth.com>,
-	Chas Williams <3chas3@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	James Chapman <jchapman@katalix.com>,
-	Qingfang Deng <qingfang.deng@linux.dev>,
-	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	Breno Leitao <leitao@debian.org>,
-	Felix Fietkau <nbd@nbd.name>,
-	Asim Viladi Oglu Manizada <manizada@pm.me>,
-	Eric Woudstra <ericwouds@gmail.com>,
-	linux-ppp@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-atm-general@lists.sourceforge.net
-Subject: [PATCH net-next] ppp: pass private data to channel callbacks
-Date: Fri,  4 Sep 2026 11:11:39 +0800
-Message-ID: <20260904031153.30304-1-qingfang.deng@linux.dev>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="VAoxUHOJ"
+Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6842poZ62476467;
+	Thu, 3 Sep 2026 20:12:20 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pfpt0220; bh=dVCosq1tcEgjE/dFQV0G11RaG
+	8J/41FPXOJOzWXwlg0=; b=VAoxUHOJ8MQl5/Rp5OD1tAW26KcBXFYp8QJKuJ9WW
+	vlbG3zL8cPQ1cAm67FuHux59QlFNPR55c53Gk5ydAFrJox6Uqv36CFOPGqcJbQ1x
+	jIZnj7HVGz7Cz1+DFs2e69c2mvXE1Xst1P7hJgd4gUgw/5b5ZMLiFxIcDAkYqUiI
+	ckt0x460oX038AnbiKZTqjvZuj/D9dphXZJ17H3pMEi42/XJb/juz3UxiOEP/xvg
+	hGnKepMX1eOIBQT7+6aXC2wd0Is4AbuJjZZUS+KrD4HsaKkh1744R/qNLZsNxMxB
+	L6EfotVmn8fTDmub8jJSFqYJgWhVA15gTZq7S7/WCZ1eQ==
+Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4gfdwn1gsx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 03 Sep 2026 20:12:20 -0700 (PDT)
+Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
+ DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Thu, 3 Sep 2026 20:12:20 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
+ (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Thu, 3 Sep 2026 20:12:20 -0700
+Received: from rkannoth-OptiPlex-7090 (unknown [10.28.36.165])
+	by maili.marvell.com (Postfix) with SMTP id DC00E3F70AA;
+	Thu,  3 Sep 2026 20:12:15 -0700 (PDT)
+Date: Fri, 4 Sep 2026 08:42:09 +0530
+From: Ratheesh Kannoth <rkannoth@marvell.com>
+To: <bpf@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <netdev@vger.kernel.org>
+CC: <andrew+netdev@lunn.ch>, <ast@kernel.org>, <daniel@iogearbox.net>,
+        <davem@davemloft.net>, <edumazet@google.com>, <hawk@kernel.org>,
+        <john.fastabend@gmail.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
+        <sdf@fomichev.me>, <sgoutham@marvell.com>
+Subject: Re: [PATCH v12 net-next] octeontx2-pf: add mqprio bandwidth offload
+ for NIX TX schedulers
+Message-ID: <apo3CVfUw2-aXF8F@rkannoth-OptiPlex-7090>
+References: <20260903023324.3078284-1-rkannoth@marvell.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260903023324.3078284-1-rkannoth@marvell.com>
+X-Proofpoint-ORIG-GUID: Qf-bO91l1soTFeIK7IMrwtXUEMoDajc-
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTA0MDAyNyBTYWx0ZWRfXy1MfE+QOZijj
+ 0hEqzoiStWwKg6uOJBM/U0+0ZDghOuzd38oaAu8PUMOljI2CN4a2kaWUfQHM2MWvYbtxerjoj3L
+ FJc6zc3cvBXxCyun4u1vfPMB83WlNgE=
+X-Proofpoint-GUID: Qf-bO91l1soTFeIK7IMrwtXUEMoDajc-
+X-Authority-Analysis: v=2.4 cv=ZIrnX37b c=1 sm=1 tr=0 ts=6a9a3714 cx=c_pps
+ a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
+ a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=l0iWHRpgs5sLHlkKQ1IR:22 a=QXcCYyLzdtTjyudCfB6f:22 a=M5GUcnROAAAA:8
+ a=LVN581Q_2Dy9vVtsR9IA:9 a=CjuIK1q_8ugA:10 a=ZXulRonScM0A:10
+ a=OBjm3rFKGHvpk9ecZwUJ:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA0MDAyNyBTYWx0ZWRfX2slmeiWm/gzs
+ 9H8VxRLOkEoV8pNVIhyO7hvwCwm6YM1m6H4FV559u4K7D0DK4blM7iRRjNVFNYVIxhbyjzDWOYV
+ LjSKn9Mf/8ikIguBxqwUwbp+mtXxpwws1MQqkuac4IQeTmtPazoFdIitxz0H5d+kHVW2qAfwc4f
+ lmjAbvgb4PMaL3FncsRCqIzR0JoIEWuOtMEt8ODHznLNF7wFwrrqGpIV4h0CG9UFfBtapXoahnK
+ DU8MM9jCkXaP0Z1N88Yvj2v6DViComr4sTYdLOgoV51KSJmU4NfaFrSbr+8pcfJM0DJCg3h3O0y
+ JRVZOafuhvSu7RDWKdb/ztr9QPTk1PTDOfiygyE1geO3GjSJJEBOW1U9hYM6rplQYKlgNMr2LjC
+ 75bv6Ow3KlCPaR98MERFzYRHUHa8bwOLzjpM0WeAZBEar371DZ3frVifExhmYJoKcIpd+B2MW41
+ UIZyEbnkzrTsZ6WU4Zw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-04_01,2026-09-03_01,2025-10-01_01
 
-PPP channel callbacks receive struct ppp_channel only to retrieve the
-driver's private pointer. Pass that pointer directly instead.
+On 2026-09-03 at 08:03:24, Ratheesh Kannoth (rkannoth@marvell.com) wrote:
+> Add TC_SETUP_QDISC_MQPRIO offload for channel-mode mqprio with
+> TC_MQPRIO_SHAPER_BW_RATE. Program per-queue MDQ CIR/PIR through the
+> NIX TX scheduler mailbox for each non-QoS transmit queue. When offload
+> is active, allocate one SMQ per such queue, parent every MDQ under
+> TL4[0], and map each traffic class min/max rate to the queue(s) in that
+> class.
 
-Signed-off-by: Qingfang Deng <qingfang.deng@linux.dev>
----
- drivers/net/ppp/ppp_async.c   | 13 ++++++-------
- drivers/net/ppp/ppp_generic.c | 12 ++++++------
- drivers/net/ppp/ppp_synctty.c | 13 ++++++-------
- drivers/net/ppp/pppoe.c       |  8 ++++----
- drivers/net/ppp/pptp.c        |  9 ++++-----
- include/linux/ppp_channel.h   |  6 +++---
- net/atm/pppoatm.c             | 21 ++++++++-------------
- net/l2tp/l2tp_ppp.c           |  6 +++---
- 8 files changed, 40 insertions(+), 48 deletions(-)
+will address sashiko comments in v13
 
-diff --git a/drivers/net/ppp/ppp_async.c b/drivers/net/ppp/ppp_async.c
-index ea7fe9608ffd..e73b0fce86b9 100644
---- a/drivers/net/ppp/ppp_async.c
-+++ b/drivers/net/ppp/ppp_async.c
-@@ -91,13 +91,12 @@ MODULE_ALIAS_LDISC(N_PPP);
-  * Prototypes.
-  */
- static int ppp_async_encode(struct asyncppp *ap);
--static int ppp_async_send(struct ppp_channel *chan, struct sk_buff *skb);
-+static int ppp_async_send(void *private, struct sk_buff *skb);
- static int ppp_async_push(struct asyncppp *ap);
- static void ppp_async_flush_output(struct asyncppp *ap);
- static void ppp_async_input(struct asyncppp *ap, const unsigned char *buf,
- 			    const u8 *flags, int count);
--static int ppp_async_ioctl(struct ppp_channel *chan, unsigned int cmd,
--			   unsigned long arg);
-+static int ppp_async_ioctl(void *private, unsigned int cmd, unsigned long arg);
- static void ppp_async_process(struct tasklet_struct *t);
- 
- static void async_lcp_peek(struct asyncppp *ap, unsigned char *data,
-@@ -321,9 +320,9 @@ ppp_async_init(void)
-  * The following routines provide the PPP channel interface.
-  */
- static int
--ppp_async_ioctl(struct ppp_channel *chan, unsigned int cmd, unsigned long arg)
-+ppp_async_ioctl(void *private, unsigned int cmd, unsigned long arg)
- {
--	struct asyncppp *ap = chan->private;
-+	struct asyncppp *ap = private;
- 	void __user *argp = (void __user *)arg;
- 	int __user *p = argp;
- 	int err, val;
-@@ -550,9 +549,9 @@ ppp_async_encode(struct asyncppp *ap)
-  * at some later time.
-  */
- static int
--ppp_async_send(struct ppp_channel *chan, struct sk_buff *skb)
-+ppp_async_send(void *private, struct sk_buff *skb)
- {
--	struct asyncppp *ap = chan->private;
-+	struct asyncppp *ap = private;
- 
- 	ppp_async_push(ap);
- 
-diff --git a/drivers/net/ppp/ppp_generic.c b/drivers/net/ppp/ppp_generic.c
-index 1a610a18893b..3b83ff8cf589 100644
---- a/drivers/net/ppp/ppp_generic.c
-+++ b/drivers/net/ppp/ppp_generic.c
-@@ -790,7 +790,7 @@ static long ppp_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
- 			chan = pch->chan;
- 			err = -ENOTTY;
- 			if (chan && chan->ops->ioctl)
--				err = chan->ops->ioctl(chan, cmd, arg);
-+				err = chan->ops->ioctl(chan->private, cmd, arg);
- 			mutex_unlock(&pch->chan_sem);
- 		}
- 		goto out;
-@@ -1603,7 +1603,7 @@ static int ppp_fill_forward_path(struct net_device_path_ctx *ctx,
- 	if (!chan->ops->fill_forward_path)
- 		return -EOPNOTSUPP;
- 
--	return chan->ops->fill_forward_path(ctx, path, chan);
-+	return chan->ops->fill_forward_path(ctx, path, chan->private);
- }
- 
- static const struct net_device_ops ppp_netdev_ops = {
-@@ -1932,7 +1932,7 @@ ppp_push(struct ppp *ppp, struct sk_buff *skb)
- 			goto out;
- 		}
- 
--		ret = chan->ops->start_xmit(chan, skb);
-+		ret = chan->ops->start_xmit(chan->private, skb);
- 
- out:
- 		spin_unlock(&pch->downl);
-@@ -2142,7 +2142,7 @@ static int ppp_mp_explode(struct ppp *ppp, struct sk_buff *skb)
- 		/* try to send it down the channel */
- 		chan = pch->chan;
- 		if (!skb_queue_empty(&pch->file.xq) ||
--			!chan->ops->start_xmit(chan, frag))
-+			!chan->ops->start_xmit(chan->private, frag))
- 			skb_queue_tail(&pch->file.xq, frag);
- 		pch->had_frag = 1;
- 		p += flen;
-@@ -2175,7 +2175,7 @@ static void __ppp_channel_push(struct channel *pch, struct ppp *ppp)
- 	if (pch->chan) {
- 		while (!skb_queue_empty(&pch->file.xq)) {
- 			skb = skb_dequeue(&pch->file.xq);
--			if (!pch->chan->ops->start_xmit(pch->chan, skb)) {
-+			if (!pch->chan->ops->start_xmit(pch->chan->private, skb)) {
- 				/* put the packet back and try again later */
- 				skb_queue_head(&pch->file.xq, skb);
- 				break;
-@@ -2300,7 +2300,7 @@ static bool ppp_channel_bridge_input(struct channel *pch, struct sk_buff *skb)
- 	}
- 
- 	skb_scrub_packet(skb, !net_eq(pch->chan_net, pchb->chan_net));
--	if (!pchb->chan->ops->start_xmit(pchb->chan, skb))
-+	if (!pchb->chan->ops->start_xmit(pchb->chan->private, skb))
- 		kfree_skb(skb);
- 
- outl:
-diff --git a/drivers/net/ppp/ppp_synctty.c b/drivers/net/ppp/ppp_synctty.c
-index f87d43faeeab..54d8402e18c4 100644
---- a/drivers/net/ppp/ppp_synctty.c
-+++ b/drivers/net/ppp/ppp_synctty.c
-@@ -81,9 +81,8 @@ struct syncppp {
-  * Prototypes.
-  */
- static struct sk_buff* ppp_sync_txmunge(struct syncppp *ap, struct sk_buff *);
--static int ppp_sync_send(struct ppp_channel *chan, struct sk_buff *skb);
--static int ppp_sync_ioctl(struct ppp_channel *chan, unsigned int cmd,
--			  unsigned long arg);
-+static int ppp_sync_send(void *private, struct sk_buff *skb);
-+static int ppp_sync_ioctl(void *private, unsigned int cmd, unsigned long arg);
- static void ppp_sync_process(struct tasklet_struct *t);
- static int ppp_sync_push(struct syncppp *ap);
- static void ppp_sync_flush_output(struct syncppp *ap);
-@@ -312,9 +311,9 @@ ppp_sync_init(void)
-  * The following routines provide the PPP channel interface.
-  */
- static int
--ppp_sync_ioctl(struct ppp_channel *chan, unsigned int cmd, unsigned long arg)
-+ppp_sync_ioctl(void *private, unsigned int cmd, unsigned long arg)
- {
--	struct syncppp *ap = chan->private;
-+	struct syncppp *ap = private;
- 	int err, val;
- 	u32 accm[8];
- 	void __user *argp = (void __user *)arg;
-@@ -491,9 +490,9 @@ ppp_sync_txmunge(struct syncppp *ap, struct sk_buff *skb)
-  * at some later time.
-  */
- static int
--ppp_sync_send(struct ppp_channel *chan, struct sk_buff *skb)
-+ppp_sync_send(void *private, struct sk_buff *skb)
- {
--	struct syncppp *ap = chan->private;
-+	struct syncppp *ap = private;
- 
- 	ppp_sync_push(ap);
- 
-diff --git a/drivers/net/ppp/pppoe.c b/drivers/net/ppp/pppoe.c
-index bf7414b46a26..758453503525 100644
---- a/drivers/net/ppp/pppoe.c
-+++ b/drivers/net/ppp/pppoe.c
-@@ -841,9 +841,9 @@ static int pppoe_sendmsg(struct socket *sock, struct msghdr *m,
-  * sends PPP frame over PPPoE socket
-  *
-  ***********************************************************************/
--static int pppoe_xmit(struct ppp_channel *chan, struct sk_buff *skb)
-+static int pppoe_xmit(void *private, struct sk_buff *skb)
- {
--	struct sock *sk = chan->private;
-+	struct sock *sk = private;
- 	struct pppox_sock *po = pppox_sk(sk);
- 	struct net_device *dev = po->pppoe_dev;
- 	struct pppoe_hdr *ph;
-@@ -895,9 +895,9 @@ static int pppoe_xmit(struct ppp_channel *chan, struct sk_buff *skb)
- 
- static int pppoe_fill_forward_path(struct net_device_path_ctx *ctx,
- 				   struct net_device_path *path,
--				   const struct ppp_channel *chan)
-+				   void *private)
- {
--	struct sock *sk = chan->private;
-+	struct sock *sk = private;
- 	struct pppox_sock *po = pppox_sk(sk);
- 	struct net_device *dev = po->pppoe_dev;
- 
-diff --git a/drivers/net/ppp/pptp.c b/drivers/net/ppp/pptp.c
-index a797a0606f6b..8f7190d7067e 100644
---- a/drivers/net/ppp/pptp.c
-+++ b/drivers/net/ppp/pptp.c
-@@ -146,9 +146,9 @@ static struct rtable *pptp_route_output(const struct pppox_sock *po,
- 	return ip_route_output_flow(net, fl4, sk);
- }
- 
--static int pptp_xmit(struct ppp_channel *chan, struct sk_buff *skb)
-+static int pptp_xmit(void *private, struct sk_buff *skb)
- {
--	struct sock *sk = chan->private;
-+	struct sock *sk = private;
- 	struct pppox_sock *po = pppox_sk(sk);
- 	struct net *net = sock_net(sk);
- 	struct pptp_opt *opt = &po->proto.pptp;
-@@ -573,10 +573,9 @@ static int pptp_create(struct net *net, struct socket *sock, int kern)
- 	return error;
- }
- 
--static int pptp_ppp_ioctl(struct ppp_channel *chan, unsigned int cmd,
--	unsigned long arg)
-+static int pptp_ppp_ioctl(void *private, unsigned int cmd, unsigned long arg)
- {
--	struct sock *sk = chan->private;
-+	struct sock *sk = private;
- 	struct pppox_sock *po = pppox_sk(sk);
- 	struct pptp_opt *opt = &po->proto.pptp;
- 	void __user *argp = (void __user *)arg;
-diff --git a/include/linux/ppp_channel.h b/include/linux/ppp_channel.h
-index 2f63e9a6cc88..d9cfb8ef0ffa 100644
---- a/include/linux/ppp_channel.h
-+++ b/include/linux/ppp_channel.h
-@@ -27,12 +27,12 @@ struct ppp_channel;
- struct ppp_channel_ops {
- 	/* Send a packet (or multilink fragment) on this channel.
- 	   Returns 1 if it was accepted, 0 if not. */
--	int	(*start_xmit)(struct ppp_channel *, struct sk_buff *);
-+	int	(*start_xmit)(void *, struct sk_buff *);
- 	/* Handle an ioctl call that has come in via /dev/ppp. */
--	int	(*ioctl)(struct ppp_channel *, unsigned int, unsigned long);
-+	int	(*ioctl)(void *, unsigned int, unsigned long);
- 	int	(*fill_forward_path)(struct net_device_path_ctx *,
- 				     struct net_device_path *,
--				     const struct ppp_channel *);
-+				     void *);
- };
- 
- struct ppp_channel {
-diff --git a/net/atm/pppoatm.c b/net/atm/pppoatm.c
-index 6da52d12df68..913324f9685f 100644
---- a/net/atm/pppoatm.c
-+++ b/net/atm/pppoatm.c
-@@ -91,11 +91,6 @@ static inline struct pppoatm_vcc *atmvcc_to_pvcc(const struct atm_vcc *atmvcc)
- 	return (struct pppoatm_vcc *) (atmvcc->user_back);
- }
- 
--static inline struct pppoatm_vcc *chan_to_pvcc(const struct ppp_channel *chan)
--{
--	return (struct pppoatm_vcc *) (chan->private);
--}
--
- /*
-  * We can't do this directly from our _pop handler, since the ppp code
-  * doesn't want to be called in interrupt context, so we do it from
-@@ -286,9 +281,9 @@ static int pppoatm_may_send(struct pppoatm_vcc *pvcc, int size)
-  * as success, just to be clear what we're really doing.
-  */
- #define DROP_PACKET 1
--static int pppoatm_send(struct ppp_channel *chan, struct sk_buff *skb)
-+static int pppoatm_send(void *private, struct sk_buff *skb)
- {
--	struct pppoatm_vcc *pvcc = chan_to_pvcc(chan);
-+	struct pppoatm_vcc *pvcc = private;
- 	struct atm_vcc *vcc;
- 	int ret;
- 
-@@ -366,16 +361,16 @@ static int pppoatm_send(struct ppp_channel *chan, struct sk_buff *skb)
- }
- 
- /* This handles ioctls sent to the /dev/ppp interface */
--static int pppoatm_devppp_ioctl(struct ppp_channel *chan, unsigned int cmd,
--	unsigned long arg)
-+static int pppoatm_devppp_ioctl(void *private, unsigned int cmd,
-+				unsigned long arg)
- {
-+	struct pppoatm_vcc *pvcc = private;
-+
- 	switch (cmd) {
- 	case PPPIOCGFLAGS:
--		return put_user(chan_to_pvcc(chan)->flags, (int __user *) arg)
--		    ? -EFAULT : 0;
-+		return put_user(pvcc->flags, (int __user *)arg) ? -EFAULT : 0;
- 	case PPPIOCSFLAGS:
--		return get_user(chan_to_pvcc(chan)->flags, (int __user *) arg)
--		    ? -EFAULT : 0;
-+		return get_user(pvcc->flags, (int __user *)arg) ? -EFAULT : 0;
- 	}
- 	return -ENOTTY;
- }
-diff --git a/net/l2tp/l2tp_ppp.c b/net/l2tp/l2tp_ppp.c
-index ef8fdfaf051d..c1cda1d7fbf6 100644
---- a/net/l2tp/l2tp_ppp.c
-+++ b/net/l2tp/l2tp_ppp.c
-@@ -122,7 +122,7 @@ struct pppol2tp_session {
- 	struct sock		*__sk;		/* Copy of .sk, for cleanup */
- };
- 
--static int pppol2tp_xmit(struct ppp_channel *chan, struct sk_buff *skb);
-+static int pppol2tp_xmit(void *private, struct sk_buff *skb);
- 
- static const struct ppp_channel_ops pppol2tp_chan_ops = {
- 	.start_xmit =  pppol2tp_xmit,
-@@ -327,9 +327,9 @@ static int pppol2tp_sendmsg(struct socket *sock, struct msghdr *m,
-  * the skb it supplied, not our cloned skb. So we take care to always
-  * leave the original skb unfreed if we return an error.
-  */
--static int pppol2tp_xmit(struct ppp_channel *chan, struct sk_buff *skb)
-+static int pppol2tp_xmit(void *private, struct sk_buff *skb)
- {
--	struct sock *sk = (struct sock *)chan->private;
-+	struct sock *sk = private;
- 	struct l2tp_session *session;
- 	struct l2tp_tunnel *tunnel;
- 	int uhlen, headroom;
--- 
-2.43.0
+pw-bot: changes-requested
 
+>
