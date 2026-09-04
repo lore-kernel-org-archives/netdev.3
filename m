@@ -1,187 +1,251 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA8AB430CDD;
-	Fri,  4 Sep 2026 09:43:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02C8E446058;
+	Fri,  4 Sep 2026 09:45:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788515022; cv=none; b=cr/q8sDF0IdoUHqVj+/OC6C60c1baN3a3Oyx6LVNrMFJlfZt6GtHZfQqRAKK7KVdhhm18eOfo5MWksG2VjMpMXNCRnYn7NigCRQW3fq3TVybyvojt8jz669LlVWvJO5cU9oep4TVrme0WPwJonpc1kwO7b2PsZSKd1H0fx1/yDs=
+	t=1788515105; cv=none; b=iYZh9vKWH8MGIjRItLPVhpMzZY3QZXeAwyTiczzvV7OvjwjHWUjQdgl5YZrd/bx+axFJS8sRPJSPIOMK5kypJ9l8Ig8AhUYrVDSRPnVIKoe5v3In4M2kjNvCqsS1An/3dTHH8fQcbJmzFFdB9dMEik9PZjPVrlG/SonTMQM2BMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788515022; c=relaxed/simple;
-	bh=yCTNwS7UFRxybe9uQRfgPyHocPuIwp0UPDgnXfCPy9M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=t6TmSS55IUC4pBfIJcWiY3on//ciZRxkwLHtola8UGE23Elx5pDSJujPfALnqviMEhZJi2uevhauI+oD9eaxKoURUbhcmBatTmEjALWy+5Xx7zjNwbEGqzomUoJAuMkc0mCb9KW2/yPJJ23hOcubzDurOgfTbIQM9dVi3xWQpww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TRt9S1r1; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788515105; c=relaxed/simple;
+	bh=dOlZgo6ftjlbfiT07KB/jipdctXPJlYiw672b5Hinrw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bvy6IRDjewvlTB1DnbbxJWhyLJ018DI4AINxpGmDbpEukbQKPAYojZUJ3n9K8uVK+TNu2oRF0BQBgkZ3UrYpiB47UvW3jAFx2v/uohgLxiDVrIYerzOIBCjf3l31rmsN5kpA+M0KZtsxglINEjk0y6lxBxhKs7Mgv4E3VRzUP+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=delAv2oa; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TRt9S1r1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E74B1F00A3D;
-	Fri,  4 Sep 2026 09:43:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788515020;
-	bh=pKFZjegbFv6VWzQM+YrWXe421xLh8UtIBDWyGvwvUCg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=TRt9S1r1rImf8Zwenz+eaA/E84pKLoNbIVkcZb3HfU6UrGdZvZZIQ/6Wf/8XFJVQm
-	 JS/FaI3tOAhwu0hQEOsIW7fZ92ItK/cN/ASp22a3bsRT0nOjP94vCFUV31aTPBg4ie
-	 ILgMeLWdpFjy4LNkkx84avMpf0c8gGGwT9ah3ZWHh36hCr5xXS3G5GNB31YUPmChmi
-	 78Gid/9XYeCsPjTkDVtrdnDlxNbGPWTyCfK8OsWrAn9LOu2EQ7olTRlbVSZiTjWaVu
-	 el4nfqmuyBEsO1y7kkRMA+kiviyp2dSzQ3hiQ0bA+HdJqZKpSNKZxWI230PD7q7kl3
-	 eBfdalis4s+9g==
-Message-ID: <38e86509-53fb-4a27-8753-9c3cb0c4a048@kernel.org>
-Date: Fri, 4 Sep 2026 11:43:33 +0200
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="delAv2oa"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68464OBI3254246;
+	Fri, 4 Sep 2026 09:44:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=Ot8lMqVKrK2MCXCFN1U+MH81eZoDspSkXBAXCul8v
+	Hw=; b=delAv2oayo7o7uv4xZSWJZhx7oOIc5VxxqRHVcqAYSQgXgCo9LJqvudTr
+	ntaKKOIWmieT5wDeebr9NP6dIsbLMhu0xg8p1Ec5JAEdyOn7TULikwyBwxP/qLZX
+	g19NDuWNA/R1ZIladA8dt7MqPqZXXfp4jcJV1R+r0M3FIStM9fCnMFJQBCL+dgC8
+	ExTPsbZHZACAEPd5ifse5oOsozdAe68ndqdudUEWptthFjgr0+TRNHb+K4f/EpOy
+	qMzGzWysJ6KbSNkL08Iom54RfegO5bL0qxnDDDO8kSp1B6wBXgdY1zuLrEA1CqDl
+	zCCUFHqfFsUzs2AQm54lt0sukPK6Q==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gbq3rsxq3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 04 Sep 2026 09:44:51 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6849fHUn023256;
+	Fri, 4 Sep 2026 09:44:50 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gc9rqvfve-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 04 Sep 2026 09:44:50 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6849ikIa17629518
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 4 Sep 2026 09:44:46 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8E8F32004B;
+	Fri,  4 Sep 2026 09:44:46 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 48CC120043;
+	Fri,  4 Sep 2026 09:44:46 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Fri,  4 Sep 2026 09:44:46 +0000 (GMT)
+Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 55271)
+	id 2BD5D160E20; Fri, 04 Sep 2026 11:44:46 +0200 (CEST)
+From: Alexandra Winter <wintera@linux.ibm.com>
+To: "D. Wythe" <alibuda@linux.alibaba.com>,
+        Dust Li <dust.li@linux.alibaba.com>,
+        Sidraya Jayagond <sidraya@linux.ibm.com>,
+        Mahanta Jambigi <mjambigi@linux.ibm.com>,
+        David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: Tony Lu <tonylu@linux.alibaba.com>, Wen Gu <guwen@linux.alibaba.com>,
+        netdev@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>, Simon Horman <horms@kernel.org>
+Subject: [PATCH net-next] dibs: Avoid inconsistent lockstate warning in dibs_lo_move_data()
+Date: Fri,  4 Sep 2026 11:44:46 +0200
+Message-ID: <20260904094446.1342654-1-wintera@linux.ibm.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH net-next v2 0/2] selftests: drv-net: Allow cross-compiling
- the hardware tests
-Content-Language: fr
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: "Maxime Chevallier (Netdev Foundation)" <maxime.chevallier@bootlin.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Donald Hunter <donald.hunter@gmail.com>,
- Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>,
- Stanislav Fomichev <sdf@fomichev.me>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, thomas.petazzoni@bootlin.com,
- linux-kselftest@vger.kernel.org
-References: <20260903155524.2241065-1-maxime.chevallier@bootlin.com>
- <c45453d8-72ae-450b-be9a-565df1cf0287@lunn.ch>
- <c3f649fa-24b6-41d3-b6a1-7f37edec87ff@kernel.org>
- <24d07be4-79e9-4541-b97b-a6735baf5fed@lunn.ch>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- xsFNBFXj+ekBEADxVr99p2guPcqHFeI/JcFxls6KibzyZD5TQTyfuYlzEp7C7A9swoK5iCvf
- YBNdx5Xl74NLSgx6y/1NiMQGuKeu+2BmtnkiGxBNanfXcnl4L4Lzz+iXBvvbtCbynnnqDDqU
- c7SPFMpMesgpcu1xFt0F6bcxE+0ojRtSCZ5HDElKlHJNYtD1uwY4UYVGWUGCF/+cY1YLmtfb
- WdNb/SFo+Mp0HItfBC12qtDIXYvbfNUGVnA5jXeWMEyYhSNktLnpDL2gBUCsdbkov5VjiOX7
- CRTkX0UgNWRjyFZwThaZADEvAOo12M5uSBk7h07yJ97gqvBtcx45IsJwfUJE4hy8qZqsA62A
- nTRflBvp647IXAiCcwWsEgE5AXKwA3aL6dcpVR17JXJ6nwHHnslVi8WesiqzUI9sbO/hXeXw
- TDSB+YhErbNOxvHqCzZEnGAAFf6ges26fRVyuU119AzO40sjdLV0l6LE7GshddyazWZf0iac
- nEhX9NKxGnuhMu5SXmo2poIQttJuYAvTVUNwQVEx/0yY5xmiuyqvXa+XT7NKJkOZSiAPlNt6
- VffjgOP62S7M9wDShUghN3F7CPOrrRsOHWO/l6I/qJdUMW+MHSFYPfYiFXoLUZyPvNVCYSgs
- 3oQaFhHapq1f345XBtfG3fOYp1K2wTXd4ThFraTLl8PHxCn4ywARAQABzSRNYXR0aGlldSBC
- YWVydHMgPG1hdHR0YmVAa2VybmVsLm9yZz7CwZEEEwEIADsCGwMFCwkIBwIGFQoJCAsCBBYC
- AwECHgECF4AWIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZUDpDAIZAQAKCRD2t4JPQmmgcz33
- EACjROM3nj9FGclR5AlyPUbAq/txEX7E0EFQCDtdLPrjBcLAoaYJIQUV8IDCcPjZMJy2ADp7
- /zSwYba2rE2C9vRgjXZJNt21mySvKnnkPbNQGkNRl3TZAinO1Ddq3fp2c/GmYaW1NWFSfOmw
- MvB5CJaN0UK5l0/drnaA6Hxsu62V5UnpvxWgexqDuo0wfpEeP1PEqMNzyiVPvJ8bJxgM8qoC
- cpXLp1Rq/jq7pbUycY8GeYw2j+FVZJHlhL0w0Zm9CFHThHxRAm1tsIPc+oTorx7haXP+nN0J
- iqBXVAxLK2KxrHtMygim50xk2QpUotWYfZpRRv8dMygEPIB3f1Vi5JMwP4M47NZNdpqVkHrm
- jvcNuLfDgf/vqUvuXs2eA2/BkIHcOuAAbsvreX1WX1rTHmx5ud3OhsWQQRVL2rt+0p1DpROI
- 3Ob8F78W5rKr4HYvjX2Inpy3WahAm7FzUY184OyfPO/2zadKCqg8n01mWA9PXxs84bFEV2mP
- VzC5j6K8U3RNA6cb9bpE5bzXut6T2gxj6j+7TsgMQFhbyH/tZgpDjWvAiPZHb3sV29t8XaOF
- BwzqiI2AEkiWMySiHwCCMsIH9WUH7r7vpwROko89Tk+InpEbiphPjd7qAkyJ+tNIEWd1+MlX
- ZPtOaFLVHhLQ3PLFLkrU3+Yi3tXqpvLE3gO3LM7BTQRV4/npARAA5+u/Sx1n9anIqcgHpA7l
- 5SUCP1e/qF7n5DK8LiM10gYglgY0XHOBi0S7vHppH8hrtpizx+7t5DBdPJgVtR6SilyK0/mp
- 9nWHDhc9rwU3KmHYgFFsnX58eEmZxz2qsIY8juFor5r7kpcM5dRR9aB+HjlOOJJgyDxcJTwM
- 1ey4L/79P72wuXRhMibN14SX6TZzf+/XIOrM6TsULVJEIv1+NdczQbs6pBTpEK/G2apME7vf
- mjTsZU26Ezn+LDMX16lHTmIJi7Hlh7eifCGGM+g/AlDV6aWKFS+sBbwy+YoS0Zc3Yz8zrdbi
- Kzn3kbKd+99//mysSVsHaekQYyVvO0KD2KPKBs1S/ImrBb6XecqxGy/y/3HWHdngGEY2v2IP
- Qox7mAPznyKyXEfG+0rrVseZSEssKmY01IsgwwbmN9ZcqUKYNhjv67WMX7tNwiVbSrGLZoqf
- Xlgw4aAdnIMQyTW8nE6hH/Iwqay4S2str4HZtWwyWLitk7N+e+vxuK5qto4AxtB7VdimvKUs
- x6kQO5F3YWcC3vCXCgPwyV8133+fIR2L81R1L1q3swaEuh95vWj6iskxeNWSTyFAVKYYVskG
- V+OTtB71P1XCnb6AJCW9cKpC25+zxQqD2Zy0dK3u2RuKErajKBa/YWzuSaKAOkneFxG3LJIv
- Hl7iqPF+JDCjB5sAEQEAAcLBXwQYAQIACQUCVeP56QIbDAAKCRD2t4JPQmmgc5VnD/9YgbCr
- HR1FbMbm7td54UrYvZV/i7m3dIQNXK2e+Cbv5PXf19ce3XluaE+wA8D+vnIW5mbAAiojt3Mb
- 6p0WJS3QzbObzHNgAp3zy/L4lXwc6WW5vnpWAzqXFHP8D9PTpqvBALbXqL06smP47JqbyQxj
- Xf7D2rrPeIqbYmVY9da1KzMOVf3gReazYa89zZSdVkMojfWsbq05zwYU+SCWS3NiyF6QghbW
- voxbFwX1i/0xRwJiX9NNbRj1huVKQuS4W7rbWA87TrVQPXUAdkyd7FRYICNW+0gddysIwPoa
- KrLfx3Ba6Rpx0JznbrVOtXlihjl4KV8mtOPjYDY9u+8x412xXnlGl6AC4HLu2F3ECkamY4G6
- UxejX+E6vW6Xe4n7H+rEX5UFgPRdYkS1TA/X3nMen9bouxNsvIJv7C6adZmMHqu/2azX7S7I
- vrxxySzOw9GxjoVTuzWMKWpDGP8n71IFeOot8JuPZtJ8omz+DZel+WCNZMVdVNLPOd5frqOv
- mpz0VhFAlNTjU1Vy0CnuxX3AM51J8dpdNyG0S8rADh6C8AKCDOfUstpq28/6oTaQv7QZdge0
- JY6dglzGKnCi/zsmp2+1w559frz4+IC7j/igvJGX4KDDKUs0mlld8J2u2sBXv7CGxdzQoHaz
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <24d07be4-79e9-4541-b97b-a6735baf5fed@lunn.ch>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=EIc2FVZC c=1 sm=1 tr=0 ts=6a9a9314 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8 a=_GMgnms4JJcc9UvDeZwA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA0MDA4NiBTYWx0ZWRfX2al4fzN2YsZg
+ wgfTOjjIhoWKGJfIcb1L3OQPftFRa+2jWk0vmSw6Ufw8E+5+2m59dYSlfndj6k2Rf0tEva4KMk0
+ TzwEd4qfwsr6How5QVo9FPw95FurpMVs2rc2eKcnUf93EvVqtw/XpZOFUpdMLVErGmQBZRR2rz9
+ Cxo0U1yRr8aLg35MqicsRbbbgrSLAsGDEEDQRjBwfqSEZTNZJ2OPhhXSvJb9FFtWfoalP134xKP
+ XI7qqZkkbiA6brT/HsU96KDp6VWFFiW7VN9Ztg7dbxmQCP720/MA159xxzMZnHaiG6pyekX35IF
+ w7NNk9CBAVqL21xCIUTEQeaBUmavE0+qEiABpTHlppOw3FN3ArTGiVfJdvWB+eeUu+ALjDPF6IR
+ eoqiHiaxS+cW6qn8UjC90jV6hAEPeinntQgUTXc4p3g2JINzYUKUQLF441CykDOEmlW349HR+nD
+ vRzjjO6ICcaLvPei+tQ==
+X-Proofpoint-GUID: EIWQ9tpHHz2IsiTjxBevSKHGrt_uaVHN
+X-Proofpoint-ORIG-GUID: mynprZMyK13b6b1VOzhnBykBPs6ykw7n
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTA0MDA4NiBTYWx0ZWRfXwcezzeGo45kY
+ Ao/Hl79IVh6yRKP0C+cwtaPFJDYldQvdURUKZWBI3/bLVGr7F7M+DY2qfL91UN9WTen2P27N4h2
+ rdATKzGB1J6qB4C82rPDfZ192G3jfN4=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-04_02,2026-09-03_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 impostorscore=0 suspectscore=0 priorityscore=1501 clxscore=1015
+ phishscore=0 spamscore=0 adultscore=0 lowpriorityscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2609040086
 
-Hi Andrew,
+dibs->lock is acquired in process context and interrupt context
+(ism_handle_irq()). So always use spin_lock_irqsave() in process context.
 
-On 03/09/2026 22:55, Andrew Lunn wrote:
-> On Thu, Sep 03, 2026 at 07:25:22PM +0200, Matthieu Baerts wrote:
->> Hi Andrew,
->>
->> On 03/09/2026 19:11, Andrew Lunn wrote:
->>>> Tested on an aarch64 target, built on x86_64.
->>>
->>> Probably a question for Jakub or Matthieu.
->>>
->>> As part of the CI system which is feeding into patchworks, I don't
->>> think we build the selftests? Do we have the CPU resources to build
->>> them?
->>
->> We do: the "build_tools" script [1] checks that. And they are also built
->> before launching the selftests.
->>
->>> We currently do x86 64 and 32 bit builds. Do we have the CPU resources
->>> to do an arm64 cross build?
->>
->> I think we do, but I don't know if we need to (see below)
->>
->>> I assume a cross build the self tests needs something like buildroot
->>> to be sensible? Or Debians multi-arch stuff where you can install .deb
->>> packages for libraries for other architectures? So maybe that is going
->>> too far?
->>
->> >From what I understood, the goal is to execute the selftests on embedded
->> systems as well, which will require building new image including the
->> kernel and the drivers/net selftests. Do we need to build the whole
->> kernel for arm64? :)
-> 
-> I see a few different goals.
-> 
-> Picking a patch at random:
-> 
-> https://patchwork.kernel.org/project/netdevbpf/patch/20260903-netcons_ipv6-v4-2-bdd183c844d3@gmail.com/
-> 
-> We see 32bit, allmodconfig, clang, and clang_rust. These are all
-> native builds, which given are servers are AMD64, these are AMD64
-> builds.
-> 
-> However, many of the network drivers are used on ARM platforms. Most
-> probably do compile on AMD64, but i expect there are a few which
-> don't. So we could do an ARM64 cross compile, to make sure the patches
-> are clean on ARM64 as well as AMD64.
-> 
-> We are encouraging developers to write self tests. Ideally we want
-> self test patches to be held to the same standard as driver
-> patches. So if a patch touches the self tests, it would be good to
-> build the self tests in order to show the number of warnings & errors
-> has not gone up. I expect such a build will be native.
-> 
-> But if we have gone to the time/effort to cross compile the kernel,
-> can we also cross compile the self tests? Can we ensure with cross
-> compile self tests don't have more warnings/errors, because the self
-> test write has AMD64 blinkers on?
-> 
-> And sometime down the road, we would like to get ARM servers, with
-> NICs in them, to run the self tests on. At that point, we either need
-> to cross compile the kernel to run all the self tests, or we need
-> another build server which is ARM64, so it can do native ARM64 builds
-> of the kernel to run on the ARM64 runners.
-I agree that the Netdev CI currently doesn't build anything for the
-ARM64 target. But what I meant is that the goal of Maxime's work (if I
-understood correctly) is to execute the net selftests (or just the
-drv-net ones?) on embedded systems, with different targets. From your
-reply, I guess you meant that it might not be enough to have a good
-coverage.
+Note that this is not a real deadlock, as dibs_lo devices don't have
+any interrupt context.
 
-I don't think I can properly judge if this is required or not. My
-feeling is that it might not be worth it: I don't recall having seen
-many fixes specific to other architectures, plus the Intel's bot is
-still building the kernel for many architectures. What is currently
-missing is compiling the net selftests for different arch. But if ARM64
-is added, which other ones should be added too? Plus maybe adding this
-would no longer be needed thanks to Maxime's work where selftests will
-be built for many architectures and issues reported to NIPA's dashboard?
+Example warning:
+[  153.760872] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+[  153.760878] WARNING: inconsistent lock state
+[  153.760885] 7.2.0-15871-g544d85de4dc2 #16 Not tainted
+[  153.760891] --------------------------------
+[  153.760896] inconsistent {IN-HARDIRQ-W} -> {HARDIRQ-ON-W} usage.
+[  153.760901] python3/5134 [HC0[0]:SC0[2]:HE1:SE0] takes:
+[  153.760909] 0001222c0fe72428 (&dibs->lock){?...}-{2:2}, at: dibs_lo_mo=
+ve_data+0x1ce/0x380
+[  153.760932] {IN-HARDIRQ-W} state was registered at:
+[  153.760937]   __lock_acquire+0x59c/0x15d0
+[  153.760947]   lock_acquire.part.0+0x11c/0x290
+[  153.760953]   lock_acquire+0xb4/0x1e0
+[  153.760959]   _raw_spin_lock+0x58/0xb0
+[  153.760966]   ism_handle_irq+0x80/0x3f0 [ism]
+[  153.760974]   __handle_irq_event_percpu+0x282/0x920
+[  153.760983]   handle_irq_event_percpu+0x26/0xe0
+[  153.760989]   handle_percpu_irq+0x10e/0x1a0
+[  153.760997]   handle_irq_desc+0xa6/0x100
+[  153.761003]   zpci_floating_irq_handler+0x3ca/0x610
+[  153.761011]   do_airq_interrupt+0x206/0x500
+[  153.761018]   __handle_irq_event_percpu+0x282/0x920
+[  153.761025]   handle_irq_event_percpu+0x26/0xe0
+[  153.761031]   handle_percpu_irq+0x10e/0x1a0
+[  153.761039]   handle_irq_desc+0xa6/0x100
+[  153.761045]   do_irq_async+0xec/0x150
+[  153.761052]   do_io_irq+0x150/0x2e0
+[  153.761060]   io_int_handler+0xec/0x118
+[  153.761066]   arch_cpu_idle+0x120/0x130
+[  153.761118]   arch_cpu_idle+0xbe/0x130
+[  153.761124]   s390_enter_idle+0x20/0x30
+[  153.761131]   cpuidle_enter_state+0xb6/0x440
+[  153.761138]   cpuidle_enter+0x64/0xb0
+[  153.761144]   cpuidle_idle_call+0x174/0x380
+[  153.761151]   do_idle+0x16e/0x250
+[  153.761157]   cpu_startup_entry+0x70/0x80
+[  153.761163]   smp_start_secondary+0x36e/0x440
+[  153.761171]   restart_int_handler+0x72/0x88
+[  153.761178] irq event stamp: 46536
+[  153.761182] hardirqs last  enabled at (46536): [<000127b697450a90>] __=
+local_bh_enable_ip+0x140/0x270
+[  153.761193] hardirqs last disabled at (46535): [<000127b697450b20>] __=
+local_bh_enable_ip+0x1d0/0x270
+[  153.761202] softirqs last  enabled at (46532): [<000127b6185f82c8>] sm=
+c_close_active+0x438/0xba0 [smc]
+[  153.761232] softirqs last disabled at (46534): [<000127b6185ee998>] sm=
+c_cdc_get_slot_and_msg_send+0x218/0x370 [smc]
+[  153.761257]
+               other info that might help us debug this:
+[  153.761262]  Possible unsafe locking scenario:
 
-But I'm aware I have probably missed something, and ARM64 builds might
-be worth it. Should we discuss that at the next Netdev bi-weekly call?
+[  153.761267]        CPU0
+[  153.761271]        ----
+[  153.761274]   lock(&dibs->lock);
+[  153.761282]   <Interrupt>
+[  153.761286]     lock(&dibs->lock);
+[  153.761294]
+                *** DEADLOCK ***
 
-Cheers,
-Matt
+[  153.761299] locks held by python3/5134: 3, last CPU#1:
+[  153.761305]  #0: 0001222bab975f50 (&sb->s_type->i_mutex_key#11){+.+.}-=
+{3:3}, at: __sock_release+0x7e/0x230
+[  153.761329]  #1: 0001222ba5450378 (sk_lock-AF_SMC){+.+.}-{0:0}, at: sm=
+c_close_active+0x438/0xba0 [smc]
+[  153.761360]  #2: 0001222ba54508a0 (&smc->conn.send_lock){+...}-{2:2}, =
+at: smc_cdc_get_slot_and_msg_send+0x218/0x370 [smc]
+[  153.761394]
+               stack backtrace:
+[  153.761400] CPU: 1 UID: 0 PID: 5134 Comm: python3 Not tainted 7.2.0-15=
+871-g544d85de4dc2 #16 PREEMPT
+[  153.761406] Hardware name: IBM 3931 A01 703 (LPAR)
+[  153.761408] Call Trace:
+[  153.761409]  [<000127b697366190>] dump_stack_lvl+0xe8/0x140
+[  153.761415]  [<000127b6975ccc8c>] print_usage_bug.part.0+0x2ec/0x3a0
+[  153.761419]  [<000127b6975cd454>] mark_lock_irq+0x714/0xa20
+[  153.761422]  [<000127b6975cda52>] mark_lock+0x2f2/0x790
+[  153.761426]  [<000127b6975ce2e6>] mark_usage+0x136/0x1c0
+[  153.761430]  [<000127b6975ce90c>] __lock_acquire+0x59c/0x15d0
+[  153.761433]  [<000127b6975cfa5c>] lock_acquire.part.0+0x11c/0x290
+[  153.761437]  [<000127b6975cfc84>] lock_acquire+0xb4/0x1e0
+[  153.761441]  [<000127b699d02a98>] _raw_spin_lock+0x58/0xb0
+[  153.761444]  [<000127b6992ca4fe>] dibs_lo_move_data+0x1ce/0x380
+[  153.761449]  [<000127b6185f0912>] smcd_tx_ism_write+0x182/0x250 [smc]
+[  153.761469]  [<000127b6185ee4c6>] smcd_cdc_msg_send+0x156/0x410 [smc]
+[  153.761487]  [<000127b6185ee9a2>] smc_cdc_get_slot_and_msg_send+0x222/=
+0x370 [smc]
+[  153.761507]  [<000127b6185f8370>] smc_close_active+0x4e0/0xba0 [smc]
+[  153.761526]  [<000127b6185a293c>] __smc_release+0x4ac/0x6a0 [smc]
+[  153.761546]  [<000127b6185a2c6e>] smc_release+0x13e/0x480 [smc]
+[  153.761565]  [<000127b6994544d4>] __sock_release+0xa4/0x230
+[  153.761569]  [<000127b69945468c>] sock_close+0x2c/0x40
+[  153.761573]  [<000127b697e57180>] __fput+0x2f0/0x880
+[  153.761579]  [<000127b697e58440>] fput_close_sync+0xd0/0x1c0
+[  153.761583]  [<000127b697e4b3f0>] __s390x_sys_close+0x90/0xf0
+[  153.761586]  [<000127b699cdc19e>] __do_syscall+0x1be/0x5a0
+[  153.761590]  [<000127b699d04c7a>] system_call+0x72/0x90
+[  153.761594] INFO: lockdep is turned off.
+
+Signed-off-by: Alexandra Winter <wintera@linux.ibm.com>
+---
+ drivers/dibs/dibs_loopback.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/dibs/dibs_loopback.c b/drivers/dibs/dibs_loopback.c
+index 649e4e375be3..44a2e74c2efc 100644
+--- a/drivers/dibs/dibs_loopback.c
++++ b/drivers/dibs/dibs_loopback.c
+@@ -238,6 +238,7 @@ static int dibs_lo_move_data(struct dibs_dev *dibs, u=
+64 dmb_tok,
+ {
+ 	struct dibs_lo_dmb_node *rmb_node =3D NULL, *tmp_node;
+ 	struct dibs_lo_dev *ldev;
++	unsigned long flags;
+ 	u16 s_mask;
+ 	u8 client_id;
+ 	u32 sba_idx;
+@@ -267,12 +268,12 @@ static int dibs_lo_move_data(struct dibs_dev *dibs,=
+ u64 dmb_tok,
+ 	if (!sf)
+ 		return 0;
+=20
+-	spin_lock(&dibs->lock);
++	spin_lock_irqsave(&dibs->lock, flags);
+ 	client_id =3D dibs->dmb_clientid_arr[sba_idx];
+ 	s_mask =3D ror16(0x1000, idx);
+ 	if (likely(client_id !=3D NO_DIBS_CLIENT && dibs->subs[client_id]))
+ 		dibs->subs[client_id]->ops->handle_irq(dibs, sba_idx, s_mask);
+-	spin_unlock(&dibs->lock);
++	spin_unlock_irqrestore(&dibs->lock, flags);
+=20
+ 	return 0;
+ }
+--=20
+2.53.0
+
