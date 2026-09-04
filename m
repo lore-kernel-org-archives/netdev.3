@@ -1,183 +1,154 @@
-Received: from GVXPR05CU001.outbound.protection.outlook.com (mail-swedencentralazon11023096.outbound.protection.outlook.com [52.101.83.96])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm2-f10.google.com (mail-wm2-f10.google.com [74.125.225.138])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A3EA4FDE4A;
-	Fri,  4 Sep 2026 16:43:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.83.96
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788540184; cv=fail; b=my38Z/+UXb92qwlal3xYQZrbmsWADgP04yyyO/NUJSu+UZBkCB/0LjZ9xhJKx/6IwqI2HQPc8ptER71bcxS43Q969BCV+9LoPuTphGQJIbg80RtH/qK16FOlHE84Um3f2CtRLhXHADkScRguoH+SNZawZTqq3sOJ6/FsBoIb+Ng=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788540184; c=relaxed/simple;
-	bh=JXfA3tGiRCAt3BhKxZqnqTqf0NwH6C13PzLmgFFDVq4=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=Oth/fPnHhkSoOp3d00dUxcMecKpZwVloje39/BpGaP3JsFZeDlpXDCJmhYwr+uRB+QmwzARJ9VKne6ZNqTSSLsi6eXfobD89jlwsEIrQPSecPssvc3GQXFOjS1KHgLdzhCIPF8D1aj23n3Pv1AIAp5W8Qt2/Sge3fBJqb6aZdD8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=codasip.com; spf=pass smtp.mailfrom=codasip.com; dkim=pass (2048-bit key) header.d=codasip.com header.i=@codasip.com header.b=IkL/bWjR; arc=fail smtp.client-ip=52.101.83.96
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=codasip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codasip.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=codasip.com header.i=@codasip.com header.b="IkL/bWjR"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Maiftpwgtgy5zlkjvbfPy7ekuZBTuOMXjhZcw9opqAt+tTBV+mTAOkoNsmqV+PrrBiGqGqU96zTyNr64+RNx0D6wxkG8Sy4H+cR3shNcFwhkmxwwx0IvndhNt1x5G9uy3DDm0JVc6aLF6W+tF2Gub4fPVrt87A7I5FUvw+c6FfTy+TuhMAzw8v5zbuQBGqoSjoTrP8IRXet65WvWmcdqANFmR2FRKYCQ8zUTiaRf2iYVrPdZ+qVZp/JAVtQhPW/33GgjAHIVKolk/Ta99FM/eMY+yjJvxlNN3QN9M3oyDHmH8fitTOpOcbyh82/Voa0IWQnqV/F85XzgXdwc9LWSgg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dCJ5UZ08r7XMHW0VajbGt7Hebr0OEmLz15PKF5kqu0M=;
- b=TPws879/dDiDvFGSLTU0NiQT/1sHOfH2/z1+rLEaEtnJ4x8Fs5ZTbBDexesIsvYt/0HnsfVv27hfTlW7Bzu0RdJfvZnMtGvfHQ37tl7JCqFuWSg5CnRp8HaRTE3zkidedrz2f9+n10BFTV8L0DObC9QOwQzP3gZro4DOSNLApvyV/4P+SK6JKm94hR9B2Vxsc8ajDUjmJIgmatbLNFwU9+ydO1PRehf5cSlA/l/MufJhX56OeWi+rweqWjuzp4zFgqusZ0BllC+D6E5xfBuDunvfnpdZcQEnI4QBFNZ6dqcxyktMmzqWWAzlocWaozxejl1YeC38+4V7wHx91Brqzg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=codasip.com; dmarc=pass action=none header.from=codasip.com;
- dkim=pass header.d=codasip.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codasip.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dCJ5UZ08r7XMHW0VajbGt7Hebr0OEmLz15PKF5kqu0M=;
- b=IkL/bWjRxhtfyfkf2fMGb/AOA5gTnfEx8c5WZnqClwjyq0mPZSM0PoOQR+iMwhESP66StP0xG4uazo46JbxZgf05FrGKbhEqYxGJ7PU1lFdC5Z6wgQ9GIxHjGsSFlv4FN28CYcjutY8f9JRUS8uSYepw/9JYl9gyTXiyKXWOnAB+MfIUo4m6JJsvBhPwWPQJOWX+aKKaHgC0iiK/tjGzpqwL2/2HA41kJpsAAEn7gKk+w8rMrrfWIOWKAstz2GEJgXJ1MWDl0T6sL9ENBZ2qRdppMJvyM1BAea07c9giQvbu0e7tl4HgeKiWSyDGBxET8eQGF1r85iJCw4RDaPIUBQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=codasip.com;
-Received: from PR3P192MB0796.EURP192.PROD.OUTLOOK.COM (2603:10a6:102:46::8) by
- GV4P192MB3117.EURP192.PROD.OUTLOOK.COM (2603:10a6:150:2bc::5) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.360.13; Fri, 4 Sep 2026 16:42:56 +0000
-Received: from PR3P192MB0796.EURP192.PROD.OUTLOOK.COM
- ([fe80::8209:40a:b436:bb07]) by PR3P192MB0796.EURP192.PROD.OUTLOOK.COM
- ([fe80::8209:40a:b436:bb07%6]) with mapi id 15.21.0360.008; Fri, 4 Sep 2026
- 16:42:55 +0000
-From: Chris Gellermann <christian.gellermann@codasip.com>
-To: bongsu.jeon@samsung.com,
-	david@ixit.cz,
-	netdev@vger.kernel.org
-Cc: oe-linux-nfc@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Chris Gellermann <christian.gellermann@codasip.com>
-Subject: [PATCH] nfc: virtual_ncidev: Add missing ioctl compat handler
-Date: Fri,  4 Sep 2026 18:42:52 +0200
-Message-ID: <20260904164252.18351-1-christian.gellermann@codasip.com>
-X-Mailer: git-send-email 2.47.3
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: BE1P281CA0130.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:b10:7a::11) To PR3P192MB0796.EURP192.PROD.OUTLOOK.COM
- (2603:10a6:102:46::8)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B180503BFD
+	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 16:44:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.138
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788540266; cv=none; b=aQJrkQFZjlAeieVFAANotceavkDyiTmwt1f2UTAkq4/9Cq7Pprs4rLHd1kopOPfOJmxx0/1h8S1qWHrZTAPJjwb8X9ZtNbHYscbM9vOSaajdMlQJSrZ9BFUjUkyWpPqsDah33Y9v/rLirVknH4Lbqrq2JLMo3ZNZaM5QkhYvGBU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788540266; c=relaxed/simple;
+	bh=+T8uCAV9OTwG6wpyBUuRwrNrLb3w9G4dozxeqmZKwYk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DTj3IGVdfvmiJLb15My2JBjBXqIFl0gcd4jHPGvddqt7BuOnNDraaBuZJEs22wZSO9fXCgndqZIaXGLThKKNbn7wKjzyuxg5o0LBNvNpZvskM+psXVDdYsSriUYpyRseQamPFclzg+3qBtFJbMWyXdcA7lZKCBE3+ILGH08NGa0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.225.138
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm2-f10.google.com with SMTP id 5b1f17b1804b1-49b92ccb8e0so3710105e9.1
+        for <netdev@vger.kernel.org>; Fri, 04 Sep 2026 09:44:24 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788540262; x=1789145062;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=MkwLEvNPno1uKGbPkCGLW8m9xq+mdFjkf26jMfmqkHM=;
+        b=i4No6Isvz/oNRAq3cng6W4086czlI91x/LN4sh//4mXQ/U4ZEp0rlnjI9MOZGo9wj8
+         ksiTBJ9G2+8sxF8V8HqHjR+WtRFiy36bOQpiSXjDft+7WMRNiTSNd4Ti/iVLtEefAVHp
+         jjX77Kg21w+EwUFldHjHI00zSmOtcAH6MuZiaRxJ+dYuhp6fRRgqXcTb9AJegvYppTNH
+         NVGyPvWWu6UgIlXaynN8CayYQvcXVg9lEh+RDKIf1Y5YdJ5s8w6STJ+Ug4O1CuSyX/8o
+         nl9Wpv+2WD2AlUEXOStVLqSckJvWPRpG2MtFv/V6rKMU1hUwN2CyF7uum52ef+MktKwI
+         9IzQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzWmjaG7EU5lqB4hYnjbyjxKvkORsw1cvZN4/H5oxcPH89Nfii4JJTvW7vDtov5su7R4duSl3I=@vger.kernel.org
+X-Gm-Message-State: AFuF++ndlIrAYdMO2TlhUYeUZRM9OD2hCi8tfIVLgUPNeSwi7Uc28KR6
+	rwpehUore+eG4vWhgl/E5KLrw9xQXx2tzwwG3xnbm+hUeQ/6ilHMGfSz
+X-Gm-Gg: AYBFou1mZ9JeT90A760I6GIDatO2YddvzPnY9N42L3085VCZqFENU+fzavSsGvskJO+
+	t2IlJW8JxvOFGU8+bXlV/eRBByCyrAtcy6i1CtnauTfr8JjOP6vCnDGptYZj/Kc06yYwI7pSVSS
+	SeH5mU/aVC95WHA9B64NLPZ3vrP32EMdXuQOWGDrB5mprExarXJ7sxcdqkq5BenI7BxSmO449oz
+	1T1MvGJX4FbupJjZr18XAzniv7lmOFeaDy1Fk7byCnLBQmEbBoZCvU/N43ZEky2uiQj6vLKgCZG
+	4sLElpZwJEPl1NDT4JohGs0jXhRvGQNqUFgNGCuqqxXG3//u4YX4p1tTJo+Xd5TmoAsXFYaEoKB
+	BKUI6nGZUJ82GbLrXlye5oVwhotFQOPLgVmLR+1ROGY+C1p2mPuUbWVka0HU7Q8zP1tm0w8UEME
+	x3rjYlDPUiQPHlJEIabCY5bPVzB6GuQYk2sY3HeYT7q8EJi412o8MFJgiHorcQuE/J2e6CjXp6s
+	VXZZdVvbl2vTQ==
+X-Received: by 2002:a05:600c:34d0:b0:49c:fc6e:a3d3 with SMTP id 5b1f17b1804b1-49cfc6ea71amr44437245e9.18.1788540262467;
+        Fri, 04 Sep 2026 09:44:22 -0700 (PDT)
+Received: from [192.168.88.241] (37-48-53-4.nat.epc.tmcz.cz. [37.48.53.4])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cfd3f8192sm42737055e9.3.2026.09.04.09.44.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 04 Sep 2026 09:44:22 -0700 (PDT)
+Message-ID: <4c350065-7efa-4301-b287-95c1c554d427@ovn.org>
+Date: Fri, 4 Sep 2026 18:44:20 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PR3P192MB0796:EE_|GV4P192MB3117:EE_
-X-MS-Office365-Filtering-Correlation-Id: fc644baa-644e-46af-40f8-08df0aa39208
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|376014|1800799024|10070799003|366016|10067099003|56012099006|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	3/RgtgmXNBJP4ekFLGsrdoYpvfnXYb/doYi9V/nQcI88GlWpgEfk3Ovyrx+L5Ii5e0K5sdq7SHqydryq4DEexvDziy3eqgNrd8Qv7w4klTAtbnEk0Yt2B6uQ8ZHnybgndpe+CshhqQFSyU50LTF17sEmey1Buvm5fDzoOIooWz1tQEffcK4arDh1vSi7ofTea8VE+7MKnfFzJwArHoUCcaRjXV9jvReK2xbofMYmoVevz0Tg5ZioB+XmyuUp63S6eYu9iSQVH7e9hUTbU1Ied6Nl7hHOBnh/aCTqkz8PNeGBIKot1Ma0CcaxhQrxwn/kIs+WJHopDPzZXyhtJuIX2I21JZf/J6mRAUj0CPTy1haycQQSVbZXlGhS5Xs6vtmEiJn0CtkkkLiud4bunmbF7iHgcDkQLQ9WWCl2K/utigqX37o696+bQb3Sx8F7OfezPpjrtz6z16D9QVjScwOJNIhShf1umAInoje0XgLHuIdFJQsWEUhKJwyhNTTh6i+qpFagTAgEl+003Pr83SlqEqLN3cs5rL83G77bEZYU7Vb1sCWnPUIqH2Ra9MTLR8cEDY2vGs8leKB3TUqJQNSxgVd9UtU0yuC9CCM8H2CKwoc5uqC3wvlVZ6C3lddc/7SqZ0FcJV3Kq9bfBAwegYqyRNjyRoEfG0iFI4NrxcrZubk=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PR3P192MB0796.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(1800799024)(10070799003)(366016)(10067099003)(56012099006)(18002099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?okMbjHWkMzmuNiUONvUcFEYyV7SJwfC1YlaBm0aLthIq3gUk76zMQ5FXg1dh?=
- =?us-ascii?Q?VGTUbO57JNTjuvtJEr9/SPY4Ffgi9a5BwIASyWCS05eKiKh1O3u1QsD5FBoR?=
- =?us-ascii?Q?eVZA456z7aGaVkA2YgvsBQ/tHZpBX2QeuYuRccG6cODQnC+LW+CXzE05fGfh?=
- =?us-ascii?Q?/o1kwyKQfCDQ9bajF1k89eyb12U1B+zDdjNacso7b/PLdZjBUVKLueCDHGVk?=
- =?us-ascii?Q?0BD0OUzpvX3Etu6w/WjVUEtyaPUY61FRJgZmePBChAAEKJe3Vh3iOBd542ie?=
- =?us-ascii?Q?muuiBNW+O1c8G2NX21SCjeg3UrkttmG+CcGgGUZaSrevUdcCCWq6e8o9KEqq?=
- =?us-ascii?Q?AbmOvAEde+Qka801nzhslL1mkUxACWOo0sWNFH3qKtb0Cf8xfpMreTbNXGgM?=
- =?us-ascii?Q?V5g8IS6qVG7iUpR3cukMiq56SNX+Q3ls4wZkpmvXr0yFRIiBsG/KcUdYx8Oq?=
- =?us-ascii?Q?qlzyJ1BJYCJAU9C7Dto6NylGeH4tKxN68X8OhVFng1oSXfBidYkQg8haCRX5?=
- =?us-ascii?Q?xFrnwXfQjd59vCEZQzO5xdkEgBnmOccGgPrK2YQVZiSogeqnkkGKFpo4O/E0?=
- =?us-ascii?Q?f4/BciIrMMoiRiFYVIeCU21txHkr0sy50naFVBtABR9mP9c8rWNIz/HssiHa?=
- =?us-ascii?Q?TZXG+vXDLux4KYK/ZuiwAvx42nE+BhmGeDdt+DX706E/AUe7Qs7ezC+DY95o?=
- =?us-ascii?Q?Gj0Rkvx5bdyG2Y9bPVaP8A/SlxLe6RyG4i95KCK6PV22veaxU/CCc2I9P9Iy?=
- =?us-ascii?Q?uM0MFUWB4w2TPL4sNfYTUlxIRaOQeVsDP/k+FpbJH18v3iEo8krS8EzqneSc?=
- =?us-ascii?Q?Pf9OPBQqCzb1PhT437oOTo2idPY5WBnIlcSxErFjUqT4/jyXdKTcXIb5W2Xj?=
- =?us-ascii?Q?HJCir945g48XQo6izfFrYCjwmAeiDlVwObtqDo4wwwPA2q+Z+d0sQROoE1C7?=
- =?us-ascii?Q?vmDt30DdyRpMtvvmCdN3ny7vZWABl1xYuppm/djxRFTsAS0go30aCvErqPLf?=
- =?us-ascii?Q?Gmz9H5KB3JuL/4pDEO6emO/NwY59tgE6qnJi9VnnxGYtVCg3dOFv8SeMDMHt?=
- =?us-ascii?Q?ki6Zs5fc7cZSi3s+xATqM2LmvN0xCEiUodzlVCyTU8VXISJcd+o9Qvscc/JB?=
- =?us-ascii?Q?s0kAnWQ1PrXLsVbzrmpdgBVDY7sm9FQP0Oi1yxZFxKxJOxdD80EUdmWIZ8pG?=
- =?us-ascii?Q?uqup1exd0o0ETijyZqZgfKknm9+I2RIRstji8vI5CFO/oIo+c05xzQHwSKGI?=
- =?us-ascii?Q?wPCkxUdDFFuvSO+aG75ZLcrwxFw1CxksHRzacmYOHY2n8Sigs/cMu0UzraB+?=
- =?us-ascii?Q?Z5HqrFqlNRFmCMyIoOnnVWrZN0DT5faBgZ1PZKM3QwYh29Dc1Xh1CUaygfyw?=
- =?us-ascii?Q?YG9fnRwbux2oikStLYqaWXlpl5beXOwBlfKxeb76zPn7A5xvjn9klFsWqn4i?=
- =?us-ascii?Q?PDntee+3twCpDuOBMOMWWQyQu380SZL801lUOHB9MSm8t9DGI9MV9p8tPP3d?=
- =?us-ascii?Q?TGsx8Lvl70CN+3KdpxPCA4CGE+ALsu4a3/ElQyS/8O5x8pQaWG7Z3l/czV+D?=
- =?us-ascii?Q?EYbNpvRK4E8segGoD/cyMuq6gzGvfmuIgXz5YwRCFJKs47x07oSCpegVWZWD?=
- =?us-ascii?Q?oLY2vYMs750Tg/GQoCxL1NRRGN/YZZ8j7H8EwyY7093AAoK3/1nk4w7ubgW8?=
- =?us-ascii?Q?i5ZkObTSpwIpjcrvZoaUh4uMgQYT+HeVtCm2RY0X4q5cA+JvohHZEGKgy/J9?=
- =?us-ascii?Q?u3uo05QqdcY+L5u6gZmIyX2q0J6uVP8yWzQFy6oHpzAg8mws3di+WgnVXNX5?=
-X-MS-Exchange-AntiSpam-MessageData-1:
-	xe/4T8Y2Pq8iIzPnmDPT5bFWj1k9bOdEJv4aUQ26FsiviqHxOm0K/kO1
-X-OriginatorOrg: codasip.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fc644baa-644e-46af-40f8-08df0aa39208
-X-MS-Exchange-CrossTenant-AuthSource: PR3P192MB0796.EURP192.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Sep 2026 16:42:55.8144
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 0d91ffef-bb81-4cbd-b9b8-552583685f20
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: GexBjZSLqt4OOV6e5xQg0+iIMVRnEDxfwvfDR/6wir/OKlLG/e6LPmDNy2D59+IgtkI2ESkS2X81eTYrWe7L+PAVLZnIF4eTn1Cn0cJMvMxYwYQe3o4tsZioMhFPVCgX
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV4P192MB3117
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 2/2] selftests: forwarding: use KHDR_INCLUDES in
+ CFLAGS
+To: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+ Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>,
+ Phil Sutter <phil@nwl.cc>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Shuah Khan <shuah@kernel.org>, David Ahern <dsahern@kernel.org>,
+ Ido Schimmel <idosch@nvidia.com>
+Cc: Ilya Maximets <i.maximets@ovn.org>, netfilter-devel@vger.kernel.org,
+ coreteam@netfilter.org, netdev@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260904-net-sft-nf-khdr_includes-v1-0-92455af428e9@kernel.org>
+ <20260904-net-sft-nf-khdr_includes-v1-2-92455af428e9@kernel.org>
+Content-Language: en-US
+From: Ilya Maximets <i.maximets@ovn.org>
+Autocrypt: addr=i.maximets@ovn.org; keydata=
+ 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
+In-Reply-To: <20260904-net-sft-nf-khdr_includes-v1-2-92455af428e9@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-The compat handler for ioctls to the virtual nci device is missing. So,
-nci-specific ioctls of a compat task return with -1 and errno set to
-ENOTTY. Add a handler.
+On 9/4/26 6:13 PM, Matthieu Baerts (NGI0) wrote:
+> KHDR_INCLUDES is typically used to include headers from the kernel
+> source directory instead of only relying on the ones from the host: they
+> can be missing or outdated.
+> 
+> The kselftest doc recommends assigning KHDR_INCLUDES to CFLAGS in a
+> target Makefile. lib.mk will set KHDR_INCLUDES to "-isystem
+> $(top_srcdir)/usr/include" if the user didn't set it, e.g. if the kernel
+> was built in a different build directory.
+> 
+> Other net targets have KHDR_INCLUDES added to their CFLAGS.
+> 
+> Fixes: 05068eaa67b2 ("selftest: net: Add basic functionality tests for ipmr.")
+> Link: https://docs.kernel.org/dev-tools/kselftest.html#contributing-new-tests-details
+> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+> ---
+>  tools/testing/selftests/net/forwarding/Makefile | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/tools/testing/selftests/net/forwarding/Makefile b/tools/testing/selftests/net/forwarding/Makefile
+> index bbaf4d937dd8..1bdfd141c0fb 100644
+> --- a/tools/testing/selftests/net/forwarding/Makefile
+> +++ b/tools/testing/selftests/net/forwarding/Makefile
+> @@ -1,5 +1,7 @@
+>  # SPDX-License-Identifier: GPL-2.0+ OR MIT
+>  
+> +CFLAGS += $(KHDR_INCLUDES)
+> +
+>  TEST_PROGS := \
+>  	bridge_activity_notify.sh \
+>  	bridge_fdb_learning_limit.sh \
+> 
 
-The handling of an ioctl() call of a compat task to get the index of
-virtual nci device (IOCTL_GET_NCIDEV_IDX) lands in the default case of
-the ioctl compat handler (see fs/ioctl.c):
-
-COMPAT_SYSCALL_DEFINE3(ioctl, ...)
-{
-	...
-	default:
-       		error = do_vfs_ioctl(fd_file(f), fd, cmd, ...);
-		if (error != -ENOIOCTLCMD)
-			break;
-
-		if (fd_file(f)->f_op->compat_ioctl)
-			error = fd_file(f)->f_op->compat_ioctl(fd_file(f), cmd, arg);
-		if (error == -ENOIOCTLCMD)
-			error = -ENOTTY;
-	...
-}
-
-There, do_vfs_ioctl() returns -ENOIOCTLCMD and compat_ioctl is not
-set for virtual_ncidev_fops, i.e. f_op->compat_ioctl == NULL. So, the
-ioctl() syscall returns with -1 and errno set to ENOTTY to the compat
-task.
-
-To fix this, use the compat_ptr_ioctl helper for compat handling here.
-It shall be used for ioctls that "either ignore the argument or pass a
-pointer to a compatible data type". The driver's sole ioctl takes a user
-void pointer and copies nfc_dev->idx to it, a 4-byte integer across all
-ABIs.
-
-This issue has been found by running the nci_dev kernel selftest as
-rv64 binary on top of a CHERI kernel, where the ioctl() ends up in
-the ioctl compat handler, similar to a 32-bit application on top of a
-64-bit kernel.
-
-Fixes: e624e6c3e777 ("nfc: Add a virtual nci device driver")
-Signed-off-by: Chris Gellermann <christian.gellermann@codasip.com>
----
- drivers/nfc/virtual_ncidev.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/nfc/virtual_ncidev.c b/drivers/nfc/virtual_ncidev.c
-index 8eeb447ac96e..e51c647b27eb 100644
---- a/drivers/nfc/virtual_ncidev.c
-+++ b/drivers/nfc/virtual_ncidev.c
-@@ -195,7 +195,8 @@ static const struct file_operations virtual_ncidev_fops = {
- 	.write = virtual_ncidev_write,
- 	.open = virtual_ncidev_open,
- 	.release = virtual_ncidev_close,
--	.unlocked_ioctl = virtual_ncidev_ioctl
-+	.unlocked_ioctl = virtual_ncidev_ioctl,
-+	.compat_ioctl = compat_ptr_ioctl,
- };
- 
- static struct miscdevice miscdev = {
--- 
-2.47.3
-
+Reviewed-by: Ilya Maximets <i.maximets@ovn.org>
