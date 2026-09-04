@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B5FB3B841D
-	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 22:21:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B71244E652;
+	Fri,  4 Sep 2026 22:21:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788560481; cv=none; b=SWRE110zNF+1qJy/8mLHfupFIP+CsD/U/uPNjwuImc7bzIf1WgmKawG4ScLXITVLVVGmA7DHK7U8kiO46umGo/b6NULHm+k2H0epvXFiUHqcQ4K2A8R8xfJAjt0Vf4RoKXRzSKmpfdvnGuqKvTOyPdRhbTlvwYA1USS7vYxzvuM=
+	t=1788560483; cv=none; b=hLgMl/YuZ2T9pdFvsb9XGt0DXTJIxd1E3q+vE3Vj4NJh1N4ltzmu8pzculDzGWtCAiZB9dejHyMeTje6i4Z0HhgZoXIjm5i+oMG2w8vqyIaB051IWqibtatJ67/qxxeBkwa+re4kbX/nvRQMNX46FQyAkkwqFoMZc3yVCcufn2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788560481; c=relaxed/simple;
-	bh=wZMcFHF46J97UCHI8NoO0bigJPyaY5WXU/C0vvBhJ3o=;
+	s=arc-20240116; t=1788560483; c=relaxed/simple;
+	bh=FlrbfR3jV/MNfhkdzPdnZiAgX3jk1Jwfds82HMGKsDk=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=cWrg6omgg9kvF47/uSr8mx4FTkAfsLFX4o9FL1Jh/51PUY5X36qflxJtpWL37/d2iBBRY+JktkG6Hfy+v+mI1je3Ripz/o9QJGc/ECtR8L72RAsCfEHYOqIHrKfEHbQmeX1sDldRVZpFF9fqO27Moc8nUEOonWgu7uB0822S0YM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SNeTYEAO; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=lr1BfjXvTE1abGzTppUxIXAPEhNdA5FzrieSsW2Fmpurp43Bd0/PVQ1BAxUUwAnBjjb0BYQ7QjwGWzw/LJSOf4f7aImr27PyD4y3lNaYsUHLCitXHDzS+QTKvrtCUhnZB/GYpHCRcKRwet162YevmVUWgLErLMP+0LT6rbPu3u4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DxnnVqzU; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SNeTYEAO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2B791F00A3E;
-	Fri,  4 Sep 2026 22:21:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DxnnVqzU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A32C1F00A3D;
+	Fri,  4 Sep 2026 22:21:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788560474;
-	bh=Svd5DblrtjkzEhJaLdl9wxQATbFa35FES2priIoto1s=;
+	s=k20260515; t=1788560473;
+	bh=nTpNVlI/Ot0nNaTi08bgbwLjehduYjfYTbIjvyWfr74=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=SNeTYEAO9ZVjhHtmpAPiYk0TZPoRRP/e0wu/IfrRXiwzJ5zQVCV8WrZ20+lSHBihi
-	 mBxy1O3cXBPMYmV7OTP2zKkmfTTNRtfrNsFUq/UR70YhwfkEdt92XaKf+B9u1Z5uJV
-	 ICp7qzf/9V15ZxP7t6tVkCqUZZV0aVrBH/imswqkB5SaEW/Ts4i3emOz4Pmt4k7682
-	 EsUmh2ojaFbEjX3Cr0Avvlw97klooXCIshc2fzo3kLWg+W6lVSlevovGguAMOsfxpB
-	 AvDuo8CLRVRRK0dW/XFI7wCjizvMItBKt1scksv9UI1ZaDXf0quZbdr/azg2+8qu8/
-	 7BoUsEm8259vg==
+	b=DxnnVqzUAiMSmgwv4ExHgyopZSwneks62rh+vpESIly9QqqUPbtWCgqxCY/LeEGRE
+	 AbjOcA+nt0MLsUTHUsLNO5XCbRNtIQ9wvOJ8Oaqm7IdOw7DtIQaa5mHwHD4r7t5Z8Z
+	 5LVWWMfnHwrczi4j8F5KvYpCHVB7jIebbdETAH2t4TX71GZpnGlirM9wcar1mkTxx2
+	 GgSf6fPJq2I7YZ3GFO/OusBZEvQ3I7YXw8nvekStC/Fm+oIGKh4EKE4HlMWFwqJWC/
+	 iCh5IjESLJjFsx74mUT7B/xSWmtsKUGTsDIDq2j5JOTaAJN8lUlSqszp2Yhp4n6vmF
+	 uK6XRMqztHgSg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93AF73924A7E;
-	Fri,  4 Sep 2026 22:20:16 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 19ADD3924A7E;
+	Fri,  4 Sep 2026 22:20:15 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,41 +37,37 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2 net] bonding: use skb_cow_head() in bond_do_alb_xmit()
- and
- rlb_arp_xmit()
+Subject: Re: pull-request: ieee802154 for net 2026-09-03
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178856041514.992241.12057937084609376909.git-patchwork-notify@kernel.org>
-Date: Fri, 04 Sep 2026 22:20:15 +0000
-References: <20260903143940.1180513-1-edumazet@google.com>
-In-Reply-To: <20260903143940.1180513-1-edumazet@google.com>
-To: Eric Dumazet <edumazet@google.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- andrew+netdev@lunn.ch, netdev@vger.kernel.org, eric.dumazet@gmail.com,
- liuhangbin@kylinos.cn, jv@jvosburgh.net
+ <178856041367.992241.4070153041479622832.git-patchwork-notify@kernel.org>
+Date: Fri, 04 Sep 2026 22:20:13 +0000
+References: <20260903093012.4032586-1-stefan@datenfreihafen.org>
+In-Reply-To: <20260903093012.4032586-1-stefan@datenfreihafen.org>
+To: Stefan Schmidt <stefan@datenfreihafen.org>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ linux-wpan@vger.kernel.org, alex.aring@gmail.com, miquel.raynal@bootlin.com,
+ netdev@vger.kernel.org
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This pull request was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Thu,  3 Sep 2026 14:39:40 +0000 you wrote:
-> In bond_do_alb_xmit() and rlb_arp_xmit(), make sure to unclone
-> skb head via skb_cow_head() before modifying the source MAC address
-> (Ethernet header and ARP payload) to avoid silent corruption if
-> the skb is shared or cloned. Avoid caching the header pointers
-> across skb_cow_head().
+On Thu,  3 Sep 2026 11:30:12 +0200 you wrote:
+> Hello Dave, Jakub, Paolo.
 > 
-> In rlb_arp_xmit(), only modify arp->mac_src if it differs from
-> tx_slave->dev->dev_addr to avoid an unnecessary copy and head
-> reallocation.
+> An update from ieee802154 for your *net* tree:
+> 
+> Zhiling Zou fixed a NULL deref when coming from a TUN device.
+> 
+> Fan Wu fixed a UAF in the cc2520 driver.
 > 
 > [...]
 
 Here is the summary with links:
-  - [v2,net] bonding: use skb_cow_head() in bond_do_alb_xmit() and rlb_arp_xmit()
-    https://git.kernel.org/netdev/net/c/1746ef2e2df2
+  - pull-request: ieee802154 for net 2026-09-03
+    https://git.kernel.org/netdev/net/c/fb3088dc5811
 
 You are awesome, thank you!
 -- 
