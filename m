@@ -1,107 +1,143 @@
-Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.mainlining.org (mail.mainlining.org [5.75.144.95])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71EFB47143B
-	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 10:41:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB41746F482;
+	Fri,  4 Sep 2026 10:44:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.75.144.95
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788518480; cv=none; b=Bpvc7mfJIZfYYiNA0cThtCiWBt6TonyRWu/zR/bRXq/r0rpWZdv1lxfWNiX/vos+W0NL5RW945Oh+guFirZnjNj+/Ix85kT+zynLtxZpY21udHpLPhsJUUuhBezJUBPgufgnnBCNh9tG2R9O8AO7g6/WPUprklBAeUALkm77RqA=
+	t=1788518667; cv=none; b=V3SZRolSX1BZI4WmKeUV/vxKGJnyqJyASv1RI85Q989ag5P49thlqXZLgKTIvDN7kbcvZXbP+mInS+ha4xa1OIf8Cx1WgqGJTF+uTQcY5R4DILn5ZtjmIw0+KNkPWJxlUL5cHSGjYrjy/wZ3KjXuNUQYRwPSlBvsBWeiI+/1Hn4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788518480; c=relaxed/simple;
-	bh=C0egVGKZ0zFbzyKiNRp6bfje1hZj8RkZyWrinLyZmcs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AGz42a80/Xj5LwmXFA8Oq0HbFovd5cgRCexmk5f0d4laOYs1PkW/FqTfgTZDthGJveAw3JFDOEM8hGuD51PN3rvQ6jh09fWyImCxhBTXv5cPp5260lfDyUT+d0pmHNaPcB+br1287fBFWRH+pAihkZhZWHYrZf80nXhxV7KPJgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EUafhj7s; arc=none smtp.client-ip=209.85.210.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788518667; c=relaxed/simple;
+	bh=G14Lzq9Qi4XCUCFm9XXWnTnB0IkpsPFg4lGADGENDdg=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=tvXG/ZVmmyl17Dk0NnJBUcWIyDmrSSi49daSxtFXzoDs+Yn3DKReUPLR4jBB1XKNoV9KjFF4r3FXS1/daPVIVjmk4V1sI+vYaCUZDpTIUZo/iOzIX2qv1VyoNo/Ju4ymaXvpskXCOhfxpB96W3PTjzIA+KSvTjam2YswC+Nsoz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org; spf=pass smtp.mailfrom=mainlining.org; dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=ECozwkZQ; dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b=IwlJtkKb; arc=none smtp.client-ip=5.75.144.95
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mainlining.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mainlining.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EUafhj7s"
-Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-7f0167e59a3so581496a34.0
-        for <netdev@vger.kernel.org>; Fri, 04 Sep 2026 03:41:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788518477; x=1789123277; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=0Y4lvfl8K7dMiWCUbzntkn6PCAhAT9IPKbAAb6EOT0Q=;
-        b=EUafhj7s/UC/qhSfQTAEf9o0CeXsy6g4Z43oRbYJe3YV2yA3ADF11M8UVSP7xSCaSw
-         XU395VnOJuajfbv/Ldw2a2aqNw3X+R7bDoJ/0r3m8cmL3Yo0h21yWGX63KRW684HZr5O
-         S2+MuoSi1hoLGyzeLZ80ysoiIVkEkMBK1O+N4/RryE+XAPC6xD+KjFijhxOyMZ9pjtJd
-         KyB6hv7PCGmIYpepru5YQZKkSyN4FFIHPes7uju2qtTq8on3T9su1ThiL4K7nsGrHB8J
-         YUg6T/Bwtoo4mMIQbZ/WuaHC1h0hsBIfo68/rxxZaKSc0qq4N72w8qe24ILfOuEbVJ4B
-         voXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788518477; x=1789123277;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=0Y4lvfl8K7dMiWCUbzntkn6PCAhAT9IPKbAAb6EOT0Q=;
-        b=C0ceqBS0L5XAvnmImb47c1H7MFoKTTz0QPdqHYhnQ6hFqvHuAPMJWb773+9X0SP30i
-         kT1+XBEwyjCfM87si0cp0xL40eDRx+ktcbzCxeiweozGJU09qWO32T/Pcj66PC4yxoV0
-         NbBCO4xLl8RJucSvXUkhjRd8uD4cqUZDkCjBVUUvBGZgSqbWdCp6ZF5hnUYyTutBe7EO
-         ZFHSv4cOrhvGN+RJ2cdZXck51E2dBIswA5sgROtNM9XSDoOJQ9QTDBiOrM41KVQyIbGx
-         CBxk3yIRoj1JHQ8iLXKnOfaVcTVz+vJJ1vOEZOa+AJsOsBWRji3WMALqK+h+mODg2V9k
-         vG8w==
-X-Forwarded-Encrypted: i=1; AKwUvBz0fo0LEsyIHxRpBtFkmn714mu6yeGchHHpM9dETRSkww7RhwoGGl8aWpeS3uH9Gbn46UIXA18=@vger.kernel.org
-X-Gm-Message-State: AFuF++nXT68Ium1LgtmHXI+ZiGPLj0u78NNNgk9QSdpFQBFrOayVUrma
-	Q45tCK/G/1aZk4wEn9MuLusSHc3+OfBVksOlBicHsjTBr4qjy3BD1NxjLxA/EUcStlA=
-X-Gm-Gg: AYBFou3m5U/NJtmE8SOgxg6XYb3xg81RpYloEjvqYJ62XrcgDlRVyeJb/ryrJYCJSkn
-	zJPCi1bXxCZtibSuUpH2zBfldoicgB+2AvPjlIcsMj2nPOv5S/Pq9iebZgh6FJnjjiNuq+P63Kr
-	TGMCpgPN4KJttpFGzz0tOJem8bRprbLu/8k/RkEmv/TgQYzHypom21ir0ReaEg4KopuLhf/cz3q
-	qES/BCoH3bIZwQD8oZW4JAXjr5KU86ns3ljh1p33vRd3WCUHBARcgy+9a5vfbrIoK3rPDRSxII6
-	iXbZWj6TqLANunAcNKJYJ10ha8lcOK9nr4qMG0VYYVJpAMrCkBMgUdxSxtWz0HCe+uiEQd607uF
-	OkoYbfH2EBU/6UtGbfFXYf4EI9doKpJF83lWKg3gEcGdw/OsjC4lrHIniEkJ/iEAwk41D5yv8xN
-	ROwNRfD58fMTExb/QvNSDyPvQkf2IYMDmP1PRcoLG+9xQZQWhgnnXRiG+A6cxSdHlEH7UpWdb6c
-	rssZjEJJeR4sgY=
-X-Received: by 2002:a05:6820:f023:b0:6b7:8396:f3c5 with SMTP id 006d021491bc7-6b78396f7f7mr1047288eaf.39.1788518477028;
-        Fri, 04 Sep 2026 03:41:17 -0700 (PDT)
-Received: from volcano9f6e-hostos.amd.com ([165.204.217.251])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1432435ec2bsm5319267c88.3.2026.09.04.03.41.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Sep 2026 03:41:16 -0700 (PDT)
-From: Hemanth Selam <hemanth.selam@gmail.com>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>
-Cc: linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH 2/2] mii: fix typo "asymetric" in comment
-Date: Fri,  4 Sep 2026 16:11:05 +0530
-Message-ID: <20260904104107.12832-3-hemanth.selam@gmail.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20260904104107.12832-1-hemanth.selam@gmail.com>
-References: <20260904104107.12832-1-hemanth.selam@gmail.com>
+	dkim=pass (2048-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="ECozwkZQ";
+	dkim=permerror (0-bit key) header.d=mainlining.org header.i=@mainlining.org header.b="IwlJtkKb"
+DKIM-Signature: v=1; a=rsa-sha256; s=202507r; d=mainlining.org; c=relaxed/relaxed;
+	h=Message-ID:Subject:To:From:Date; t=1788518657; bh=EWZuWsUgu2bHHcuM8B3QShe
+	KsetrSgEqm+sSAvJNm0k=; b=ECozwkZQlQGujmRR9gTwe66RlxGYaiBpnvIiKQroyYcntppArZ
+	3cgx9vb2d3P4ZPd79Ss5FKZHRt1uak84voQUmzg5dkm7KCopByzDA+E4wttEVlCIekaAmcz2sl1
+	6Qo6hL0czxoahiIzvt4Wse1t7BlXlFKYYxpU5iwWRq47hXZxMt7qydzpQGGWHTHomJTzUSXXfjI
+	HyPrJ13oujlrpXMNUTrAq8aqpTHpC/mRivyGUzCrbh6E5ELtUEkf85M4r5rbQtlXFtnVQhxP0zv
+	hEBEauQXd7pmsAIQaV9iWpgEsN0dpAIhax4vHsuoyS+09zmkJ8TMZuBsE7Lv03qIEJA==;
+DKIM-Signature: v=1; a=ed25519-sha256; s=202507e; d=mainlining.org; c=relaxed/relaxed;
+	h=Message-ID:Subject:To:From:Date; t=1788518657; bh=EWZuWsUgu2bHHcuM8B3QShe
+	KsetrSgEqm+sSAvJNm0k=; b=IwlJtkKbGBYqsKfo6D+oT2L5+G+JOE+2uHj6JoD+/VJ5af1Uyx
+	ra8GeqJ9Ne3pM6jcAnZM7qednjLK3ObpZYCA==;
+Date: Fri, 04 Sep 2026 11:44:17 +0100
+From: Bradley Morgan <brads@mainlining.org>
+To: linux-kernel@vger.kernel.org
+CC: Tejun Heo <tj@kernel.org>, Frederic Weisbecker <frederic@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, Waiman Long <longman@redhat.com>,
+ Christian Brauner <brauner@kernel.org>, Kees Cook <kees@kernel.org>,
+ Andy Walls <awalls@md.metrocast.net>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Jiri Slaby <jirislaby@kernel.org>, "Rafael J . Wysocki" <rafael@kernel.org>,
+ Viresh Kumar <viresh.kumar@linaro.org>, Ingo Molnar <mingo@redhat.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>,
+ Steven Rostedt <rostedt@goodmis.org>, linux-media@vger.kernel.org,
+ netdev@vger.kernel.org, linux-serial@vger.kernel.org,
+ linux-pm@vger.kernel.org
+Subject: Re: [PATCH v2 1/5] media: ivtv: convert to kthread_run_worker
+In-Reply-To: <c38e2e3575040b0a7e580e1d78d8202fe1b8cf06.1788513591.git.brads@mainlining.org>
+References: <cover.1788513591.git.brads@mainlining.org> <c38e2e3575040b0a7e580e1d78d8202fe1b8cf06.1788513591.git.brads@mainlining.org>
+Message-ID: <6D89FAFC-72C0-4838-A086-C9C9CB46D264@mainlining.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: 8bit
 
-Correct "asymetric" to "asymmetric", reported by scripts/checkpatch.pl
-using the misspelling list in scripts/spelling.txt.  Only touches comments,
-no code changes.
+On 4 September 2026 10:37:53 BST, Bradley Morgan <brads@mainlining.org>
+wrote:
+>Convert ivtv to use kthread_run_worker() instead of the deprecated
+>kthread_run(kthread_worker_fn) pattern. The new API sets worker->task
+>before the worker starts.
 
-Assisted-by: Cursor:claude-opus-5
-Signed-off-by: Hemanth Selam <hemanth.selam@gmail.com>
----
- include/uapi/linux/mii.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+This doesn't compile, I'm aware. Fixing in V3, everything else should
+compile.
 
-diff --git a/include/uapi/linux/mii.h b/include/uapi/linux/mii.h
-index 61d6edad4b94..d662c10ee282 100644
---- a/include/uapi/linux/mii.h
-+++ b/include/uapi/linux/mii.h
-@@ -81,7 +81,7 @@
- #define ADVERTISE_1000XPSE_ASYM	0x0100	/* Try for 1000BASE-X asym pause */
- #define ADVERTISE_100BASE4	0x0200	/* Try for 100mbps 4k packets  */
- #define ADVERTISE_PAUSE_CAP	0x0400	/* Try for pause               */
--#define ADVERTISE_PAUSE_ASYM	0x0800	/* Try for asymetric pause     */
-+#define ADVERTISE_PAUSE_ASYM	0x0800	/* Try for asymmetric pause     */
- #define ADVERTISE_XNP		0x1000  /* Extended Next Page */
- #define ADVERTISE_RESV		ADVERTISE_XNP /* Used to be reserved */
- #define ADVERTISE_RFAULT	0x2000	/* Say we can detect faults    */
--- 
-2.48.1
+Received a off list mail from the CI.
 
+
+>
+>Signed-off-by: Bradley Morgan <brads@mainlining.org>
+>---
+> drivers/media/pci/ivtv/ivtv-driver.c | 14 ++++++--------
+> drivers/media/pci/ivtv/ivtv-driver.h |  3 +--
+> 2 files changed, 7 insertions(+), 10 deletions(-)
+>
+>diff --git a/drivers/media/pci/ivtv/ivtv-driver.c b/drivers/media/pci/ivtv/ivtv-driver.c
+>index b9ea56ec9593..6f0e0e46deb5 100644
+>--- a/drivers/media/pci/ivtv/ivtv-driver.c
+>+++ b/drivers/media/pci/ivtv/ivtv-driver.c
+>@@ -703,15 +703,13 @@ static int ivtv_init_struct1(struct ivtv *itv)
+> 	spin_lock_init(&itv->lock);
+> 	spin_lock_init(&itv->dma_reg_lock);
+> 
+>-	kthread_init_worker(&itv->irq_worker);
+>-	itv->irq_worker_task = kthread_run(kthread_worker_fn, &itv->irq_worker,
+>-					   "%s", itv->v4l2_dev.name);
+>-	if (IS_ERR(itv->irq_worker_task)) {
+>+	itv->irq_worker = kthread_run_worker(0, "%s", itv->v4l2_dev.name);
+>+	if (IS_ERR(itv->irq_worker)) {
+> 		IVTV_ERR("Could not create ivtv task\n");
+> 		return -1;
+> 	}
+> 	/* must use the FIFO scheduler as it is realtime sensitive */
+>-	sched_set_fifo(itv->irq_worker_task);
+>+	sched_set_fifo(itv->irq_worker->task);
+> 
+> 	kthread_init_work(&itv->irq_work, ivtv_irq_work_handler);
+> 
+>@@ -1232,7 +1230,7 @@ static int ivtv_probe(struct pci_dev *pdev, const struct pci_device_id *pci_id)
+> 	v4l2_ctrl_handler_free(&itv->cxhdl.hdl);
+> 	exit_ivtv_i2c(itv);
+> free_worker:
+>-	kthread_stop(itv->irq_worker_task);
+>+	kthread_destroy_worker(itv->irq_worker);
+> err:
+> 	if (retval == 0)
+> 		retval = -ENODEV;
+>@@ -1372,8 +1370,8 @@ static void ivtv_remove(struct pci_dev *pdev)
+> 	timer_shutdown_sync(&itv->dma_timer);
+> 
+> 	/* Kill irq worker */
+>-	kthread_flush_worker(&itv->irq_worker);
+>-	kthread_stop(itv->irq_worker_task);
+>+	kthread_flush_worker(itv->irq_worker);
+>+	kthread_destroy_worker(itv->irq_worker);
+> 
+> 	ivtv_streams_cleanup(itv);
+> 	ivtv_udma_free(itv);
+>diff --git a/drivers/media/pci/ivtv/ivtv-driver.h b/drivers/media/pci/ivtv/ivtv-driver.h
+>index 000e8beecc7c..091bc44f13bc 100644
+>--- a/drivers/media/pci/ivtv/ivtv-driver.h
+>+++ b/drivers/media/pci/ivtv/ivtv-driver.h
+>@@ -668,8 +668,7 @@ struct ivtv {
+> 	/* Interrupts & DMA */
+> 	u32 irqmask;                    /* active interrupts */
+> 	u32 irq_rr_idx;                 /* round-robin stream index */
+>-	struct kthread_worker irq_worker;		/* kthread worker for PIO/YUV/VBI actions */
+>-	struct task_struct *irq_worker_task;		/* task for irq_worker */
+>+	struct kthread_worker *irq_worker;		/* kthread worker for PIO/YUV/VBI actions */
+> 	struct kthread_work irq_work;	/* kthread work entry */
+> 	spinlock_t dma_reg_lock;        /* lock access to DMA engine registers */
+> 	int cur_dma_stream;		/* index of current stream doing DMA (-1 if none) */
+>
+
+--- Thanks!
+https://lore.kernel.org/all/EE579805-42F2-4C58-B752-F28779EEB717@grrlz.net/
