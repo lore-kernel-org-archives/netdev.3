@@ -1,68 +1,152 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta1.migadu.com (out-125.mta1.migadu.com [95.215.58.125])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 015F529B781;
-	Fri,  4 Sep 2026 02:22:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FD1E3A9D9B
+	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 02:42:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.125
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788488537; cv=none; b=n2bmi1rY/GnRuHc53+F2mdQ4ZMRZ6tBxgWSTKXHvpFOYx92awzWzSDhtL+wPRcmALch04SaVuYhZueVry6G57EzOrYIa/YR13B0CM16pHsB0zknybLgJINmvlz29HwrYESc2Hds5d33Po/Woq4YmYfgkTZzwDE9Z7KnZX16EDNY=
+	t=1788489765; cv=none; b=Qnwrf4Jy1phEp221UEkO6SxvFgIGuFWp5uDsa/TMx9KCbe0wCISYGVSDiTlORe0NEqju8xFxsPSVw7jeq51b9rf8iDEJvhem4mXlGv9wCxRFFc7bD5TQ5pa7H6oeeSzaNzcU0Et5aRPSY+DN3olzImgub35LdsbbzMo+dgC+pzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788488537; c=relaxed/simple;
-	bh=0DWG2eCUW3sueuerg1t5CUu9lIQ6B0lP3SjGmdrkKqQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=USllKg55KpsZvbz+/Sir3XU6nHqrOjaVaHyRO8JVs61lE2UPZzWnvD60JDRxgFuvoKE1SSLLdlWOKcWmsLR/In2A8WlZAu5EPK/9DMAtdiRP8r+4B+Ixcr2AY89yuwxv5CiWFuCFf159Cr6UxYpFmoHqMuGXfPEhTEIopUhaKKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BqVG7S59; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788489765; c=relaxed/simple;
+	bh=lDr50yiDvYV5VZ9MgxKYG1BSJ1Fz54tjH96Y89/BBrE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nfWAvr5CeMJKtDGVzFxwxX6uxhfzR8iUT+T63F9buQc8vG45KyMTP4oTB3iPkLiiQGc0JpCsMbPGhPfzENVIOauVLGwJskpx9ve4rk1eP1BJjlxM83oVDnZafHEiB8Ztxn/cgheD0dPgW5ysS6ThL5oAzy5oYpo3fGeLAe4HqHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=FEBysljO; arc=none smtp.client-ip=95.215.58.125
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BqVG7S59"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E3C61F00A3D;
-	Fri,  4 Sep 2026 02:22:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788488535;
-	bh=bcwp5IXXvkf/u+IT74sYYSTFbfezc49q1HAn4c9s5so=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=BqVG7S59T2kmOHB2S8dzSOrnyDyp/+fVEkiqOSPbFOsEov5dEiNs9SD7GRsR8rt/h
-	 qu2RIYJsugnoasN34fx/0IhfCelDBPNl9GzYFbQqCMWpeiM/hPH5y+HNAkHJMrjQgN
-	 AONbYv1dy2nMstj4f3Z5vvx8Z5SnRCcrIK3fFMbWm+f4V/XO07G825DqlmZDIvQs6p
-	 PZ9nto8NJFYQCz7rK5MtMZ6wEediI/l+ugVoE4OLQt9aJASfrqA3KNiSnkgB8abWPq
-	 TGZOEZ+5WOmEE12+Mot/CqEc7IZddonEoiIMqH7riyUryR2mz4CYgxZaQmIQU6FJu6
-	 SWkBqeuzF85Xw==
-Date: Thu, 3 Sep 2026 19:22:14 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Stanislav Fomichev <sdf.kernel@gmail.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, horms@kernel.org, sdf@fomichev.me,
- bobbyeshleman@meta.com, almasrymina@google.com,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next 1/2] net: devmem: replace gen_pool with
- freelist
-Message-ID: <20260903192214.3db2fef0@kernel.org>
-In-Reply-To: <20260831183529.2517322-2-sdf@fomichev.me>
-References: <20260831183529.2517322-1-sdf@fomichev.me>
-	<20260831183529.2517322-2-sdf@fomichev.me>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="FEBysljO"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=lDr50yiDvYV5VZ9MgxKYG1BSJ1Fz54tjH96Y89/BBrE=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788489761; v=1; x=1789094561;
+ b=FEBysljO5HLlQrmuwk/wj26ui0SiVMNc3JBZ8AdtET0D0UjFIvNEp15h9Ur4jz6FdBanfAmq
+ WxCm/cow5b0lGtAK8s8zGFMRV2HQDu347OIzQCU+Sxo50s+5Sm9o2iHPM677OJK01s1EBobNrAY
+ vgriDaUrBEhFtYJYLosjjimE=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 3a4ee7a862d7483b;
+	Fri, 04 Sep 2026 02:42:30 +0000
+X-Mizu-Trace-ID: 3a4ee7a862d7483b
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <2e302fc8-b3ed-4441-bb62-9e509baa3868@linux.dev>
+Date: Fri, 4 Sep 2026 10:42:05 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net/tcp-ao: transfer tcp_ao_info to the TIME_WAIT
+ socket
+To: Xiang Mei <xmei5@asu.edu>, Eric Dumazet <edumazet@google.com>,
+ Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>,
+ "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Dmitry Safonov <0x7f454c46@gmail.com>,
+ Salam Noureddine <noureddine@arista.com>,
+ Francesco Ruggeri <fruggeri@arista.com>, David Ahern <dsahern@kernel.org>,
+ co+2c72469dbbec34af@bugs.sh, stable@vger.kernel.org
+References: <20260904005851.149071-1-xmei5@asu.edu>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+In-Reply-To: <20260904005851.149071-1-xmei5@asu.edu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Mon, 31 Aug 2026 11:35:28 -0700 Stanislav Fomichev wrote:
->  	struct dma_buf *dmabuf;
-> -	unsigned int sg_idx, i;
-> -	unsigned long virtual;
-> +	struct dmabuf_genpool_chunk_owner *owner;
-> +	unsigned int sg_idx;
 
-reverse xmas tree
+on 9/4/26 8:58 AM, Xiang Mei wrote:
+> tcp_ao_time_wait() gives the TIME_WAIT socket a reference to the full
+> socket's tcp_ao_info but leaves tp->ao_info pointing at the same object.
+> That is only safe if the full socket is going away. On the tcp_fin()
+> FIN_WAIT2 path (and TCP_CLOSING in tcp_rcv_state_process()) tcp_done()
+> skips inet_csk_destroy_sock(), so the socket lives on in TCP_CLOSE with
+> its fd open while the hashed TIME_WAIT socket reads the same tcp_ao_info
+> from softirq, serialised against nothing.
+>
+> An unprivileged user can turn that into a NULL deref: tcp_disconnect()
+> does not clear ao_info, so connect(AF_UNSPEC) + listen() reaches
+> TCP_LISTEN where TCP_AO_DEL_KEY accepts del_async=1 and NULLs
+> ao_info->rnext_key, which tcp_v4_timewait_ack() then dereferences
+> unchecked. The triggering segment need not be authenticated, as
+> tcp_v4_rcv()'s do_time_wait: path skips tcp_inbound_hash().
+>
+> The refcount keeps the object allocated for both sockets, but nothing
+> keeps its contents coherent: the setsockopt writers hold the full
+> socket's lock while the TIME_WAIT reader runs in softirq, and no lock
+> spans the two. Make the transition a handover, as the sk_omem_alloc
+> charge moved here already implies: clear tp->ao_info instead of taking a
+> second reference, leaving the TIME_WAIT socket as sole owner. Such a
+> socket no longer exposes TCP-AO state (TCP_AO_INFO and TCP_AO_DEL_KEY
+> return -ENOENT); that state describes the finished connection and
+> belongs to the TIME_WAIT socket that keeps updating it.
+>
+>    Oops: general protection fault, probably for non-canonical address
+>      0xdffffc0000000010: 0000 [#1] SMP KASAN NOPTI
+>    KASAN: null-ptr-deref in range [0x0000000000000080-0x0000000000000087]
+>    RIP: 0010:tcp_v4_rcv (net/ipv4/tcp_ipv4.c:1055 net/ipv4/tcp_ipv4.c:2333)
+>    Call Trace:
+>     <IRQ>
+>     ip_protocol_deliver_rcu (net/ipv4/ip_input.c:207)
+>     ip_local_deliver_finish (net/ipv4/ip_input.c:241)
+>     ip_local_deliver (net/ipv4/ip_input.c:262)
+>     ip_rcv (net/ipv4/ip_input.c:612)
+>     __netif_receive_skb_one_core (net/core/dev.c:6264)
+>     process_backlog (net/core/dev.c:6728)
+>     __napi_poll (net/core/dev.c:7787)
+>     net_rx_action (net/core/dev.c:8007)
+>     handle_softirqs (kernel/softirq.c:645)
+>     do_softirq.part.0 (kernel/softirq.c:546)
+>     </IRQ>
+>     <TASK>
+>     __local_bh_enable_ip (kernel/softirq.c:473)
+>     __dev_queue_xmit (net/core/dev.c:4961)
+>     ip_finish_output2 (net/ipv4/ip_output.c:236)
+>     ip_output (net/ipv4/ip_output.c:437)
+>     __ip_queue_xmit (net/ipv4/ip_output.c:533)
+>     __tcp_transmit_skb (net/ipv4/tcp_output.c:1716)
+>     tcp_connect (net/ipv4/tcp_output.c:4383)
+>     tcp_v4_connect (net/ipv4/tcp_ipv4.c:345)
+>     __inet_stream_connect (net/ipv4/af_inet.c:684)
+>     inet_stream_connect (net/ipv4/af_inet.c:755)
+>     __sys_connect (net/socket.c:2183)
+>     __x64_sys_connect (net/socket.c:2189)
+>     do_syscall_64 (arch/x86/entry/syscall_64.c:84)
+>     entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:121)
+>     </TASK>
+>    Kernel panic - not syncing: Fatal exception in interrupt
+>
+> Fixes: decde2586b34 ("net/tcp: Add TCP-AO sign to twsk")
+> Cc: stable@vger.kernel.org
+> Reported-by: co+2c72469dbbec34af@bugs.sh
+> Closes: https://lore.kernel.org/all/YG9s0PiBKJZcXAKld3MToa1IVRJOUoKiaA57%40bugs.sh/
+> Assisted-by: Claude:claude-opus-4-8
+> Signed-off-by: Xiang Mei <xmei5@asu.edu>
+> ---
+>   net/ipv4/tcp_ao.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/net/ipv4/tcp_ao.c b/net/ipv4/tcp_ao.c
+> index bb7bbc20ba3f..27525f90398b 100644
+> --- a/net/ipv4/tcp_ao.c
+> +++ b/net/ipv4/tcp_ao.c
+> @@ -428,7 +428,7 @@ void tcp_ao_time_wait(struct tcp_timewait_sock *tcptw, struct tcp_sock *tp)
+>   			omem += tcp_ao_sizeof_key(key);
+>   		}
+>   
+> -		refcount_inc(&ao_info->refcnt);
+> +		rcu_assign_pointer(tp->ao_info, NULL);
+>   		atomic_sub(omem, &(((struct sock *)tp)->sk_omem_alloc));
+>   		rcu_assign_pointer(tcptw->ao_info, ao_info);
+>   	} else {
 
-The idea makes sense, but indeed hard to merge this without any perf
-data to support..
 
-I'll mark this as deferred since it's reaching the top of the queue 
-for us, please repost when ready.
+This looks like the simplest fix.
 
-(BTW for some reason NIPA started showing flakes in qlease around the
-time this got into testing branch, but it can't be the reason. Maybe
-my split of the GRO test reordered something.)
+But this fix moves ownership of ao_info. Before, when a socket reconnects,
+we didn't need to add new ao_key info — we could just reuse it. Now 
+after this
+fix, we have to re-add it on reconnect. I'm not sure if that case really 
+exists.
+
