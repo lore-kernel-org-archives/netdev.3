@@ -1,99 +1,207 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 684613B5837;
-	Fri,  4 Sep 2026 07:48:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1558370AC0;
+	Fri,  4 Sep 2026 07:52:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788508094; cv=none; b=QxFoGmzi+7nQRYTnFoBPQdJIt314D796q0EncRnDo7olW85mMP2xNRVyNRSOKJ65pAXLOiyc8Mnc46D7tjCUUhva8aCXX0WPMf7H6g7/8DESN03hvDDgF/gF61nMKYMa7b1IPZlT/iCE0geqgGz4Psf8jYKmlBaTIzoIha8Lfzo=
+	t=1788508371; cv=none; b=g7iuoNfOxkq6NlS+iA4uKxSKyY9cSgyksaOzUWdcP+Ld+hc5OCzz2Rs6X8E04Wk/PNHyFINq0PHfGunfXFdjHp4LGn2S1xLiypovAd+Pe7d+kOfAUj/RV6H4Cpa+bLVFW7C8q+ohMewqepChzrY5ecdueIsiRZJ0Ov+tpdZKiW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788508094; c=relaxed/simple;
-	bh=cXicb+6WFbyg0nQa6eIWsi3x59U76GSl9xN4Nx8RUAs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aBKQ8Y2vuWZGZzOcSNMZMTwfuRl3BF71DIwXFZ2Ubw3EcKh4d2tz0Ie6PqyqaL0L2KSzVWbfE3a4X1UahFXDneDfCDiwazBWmMYVpugu8GT3y/q/8TxyZ/G2K0s/JM9kA90pAwE4/MRUDrWIK+2jLhJ9nL2KrtHuD9oSTaxvstk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=DiAwu5J3; arc=none smtp.client-ip=220.197.31.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1788508371; c=relaxed/simple;
+	bh=4U0pdawU5K3EkvrtwAnu4RwK8qBPFQcU8RRQHJlDR5s=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=dOYhV8Do9DmGLaef8bQNTBPAQZzZmRVrA8/2vugA1BljQccOJy9z7iaT7uJPaAHW9AoTX2Gud6lJepOY1sf6yAgno8veiM7QrK1USDEeatwLvuAk3LWmkV4hqumqoyqAfaGdiTQf79Eugt1vIQKAzrgzOaxhgd5sG+0La8Pyyxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MzrAqYlD; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="DiAwu5J3"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=cX
-	icb+6WFbyg0nQa6eIWsi3x59U76GSl9xN4Nx8RUAs=; b=DiAwu5J3FeDobR2m7l
-	Bl2ou0xl16EBGqE1MFmHgyfyYuWh1P+UOTI3/7zbFwnEzriHcen47hNhen2IPdTu
-	bQp+YnabXtqGufXxchCD6rpsveahqY3eGYMvSsa4x0NL9E6LSKYgKAN7U6q3ThSe
-	K0E0cfpL0WTTSXdI9MKfJnk8w=
-Received: from sky.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-0 (Coremail) with SMTP id _____wBXPyWUd5pqPaRUAg--.32109S2;
-	Fri, 04 Sep 2026 15:47:33 +0800 (CST)
-From: Junnan Zhang <zhangjn_dev@163.com>
-To: netdev-bot+sashiko@kernel.org
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	horms@kernel.org,
-	kuba@kernel.org,
-	linux-kernel@vger.kernel.org,
-	liuhangbin@gmail.com,
-	mst@redhat.com,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	sunshx@chinatelecom.cn,
-	willemdebruijn.kernel@gmail.com,
-	zhangjn11@chinatelecom.cn,
-	zhangjn_dev@163.com
-Subject: Re: [PATCH net v3] net/packet: fix network header offset for non-VLAN raw packets on VLAN subinterfaces
-Date: Fri,  4 Sep 2026 15:47:31 +0800
-Message-ID: <20260904074731.42652-1-zhangjn_dev@163.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <178842152801.3394541.15512936705284584859@kernel.org>
-References: <178842152801.3394541.15512936705284584859@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MzrAqYlD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C72CB1F00A3D;
+	Fri,  4 Sep 2026 07:52:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788508369;
+	bh=pbzq0XTwmls3FFV3AU7UuO/jHL5zotZMGdor4Ck16xY=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=MzrAqYlDG5vvnHOsnBaCXUEUny5H9UN9B8o7QBLvnOGJTsZnAN58VWm85Rbr7tblX
+	 q/azTy/O11BMBufl8vKV5IhSIquoumtBId5xLLP1AMPFqSVG6P/5b52s/OBj/sSVg3
+	 smazt1hMbO1+tLDF6PTsyP7skgWBikigpPicZ+lQ8L479Zi2drj+yyqNtc1ehyieuP
+	 0p7hAAMptC1pnTZAimvo/n3ZI/GYj17wnWJAN4jzc0ONeJqcyR8pe2+EmGgc/RBZNM
+	 cREkmoMHJ4komEMQkLPgUYaP7ex9fpH9FH7mglTFFJchppTw2WBntxVFH3BC9cc5sa
+	 +TPLlsOe48Ayg==
+Subject: Re: [PATCH net-next] octeontx2-af: fix PF/CGX debugfs PCI bus lookup
+From: netdev-bot+sashiko@kernel.org
+To: rkannoth@marvell.com
+Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, sgoutham@marvell.com, sbhatta@marvell.com
+Date: Fri, 04 Sep 2026 07:52:48 +0000
+Message-ID: <178850836833.4131868.13905270816601203708@kernel.org>
+In-Reply-To: <20260901044939.2772845-1-rkannoth@marvell.com>
+References: <20260901044939.2772845-1-rkannoth@marvell.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wBXPyWUd5pqPaRUAg--.32109S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7ZF4DGrWftF4DGr4kur1rJFb_yoW8WrW5pa
-	y5Jas3Jr4DJ3Zxtrn7tw18Xa1j9r4xC3W3WFWfGrWj9a15uFyFyryfKFW29FyUJ34xXrWj
-	qr12qayYkF48Kw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0JUsID7UUUUU=
-X-CM-SenderInfo: x2kd0wxmqbvvry6rljoofrz/xtbC7hVE2Wqad5XJFAAA3p
 
-Hi,
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider:
 
-The High finding from the Sashiko review is correct.
+Critical: 0 · High: 0 · Medium: 2 · Low: 1
 
-Commit 447cbe95ebb953 ("vlan: fix skb_under_panic and races when
-toggling HW VLAN offload") is now in mainline (v7.3-rc1). It makes
-vlan_dev_init() keep hard_header_len == real_dev->hard_header_len
-unconditionally and accounts VLAN tag space in needed_headroom
-instead.
+- [Medium] rvu_dbg_rvu_pf_cgx_map_display()
+  (drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c) now derives…
+- [Medium] The patch fixes only one of the driver's PF→PCI-device
+  conversions, leaving the same 'RVU PF n is on bus n + 1' assumption in…
+- [Low] The commit fixes a user-visible debugfs defect (the
+  rvu_pf_cgx_map file silently omitted every mapped PF when the AF was…
 
-With that change, a VLAN subinterface on a plain Ethernet NIC has
-hard_header_len == min_header_len == ETH_HLEN, so packet_snd() already
-places network_header at the L2/L3 boundary of the user-supplied
-frame. The branch added by this patch writes back the identical value
-and is a no-op. I applied 447cbe95ebb953 on my baseline and re-ran my
-reproducer (virtio_net without NETIF_F_HW_VLAN_CTAG_TX, AF_PACKET
-SOCK_RAW + PACKET_VNET_HDR over a VLAN subinterface): the failure is
-gone.
+--
 
-On the Medium finding: the concern is valid. For a VLAN subinterface
-over a with hard_header_len < min_header_len (e.g.
-cx82310_eth, which sets hard_header_len = 0), the new branch would
-point network_header at min_header_len even for frames shorter than
-that, recreating the mac_len > skb->len state that 993675a3100b1
-(": reset network header if packet shorter than ll reserved
-space") was written to avoid. Had the patch survived, it would need a
-frame-length guard (e.g. skb->len >= skb->dev->min_header_len).
+octeontx2-af: fix PF/CGX debugfs PCI bus lookup
 
-My v1-v3 baseline predated 447cbe95ebb953, which is why the issue
-reproduced back then. The patch is now superseded; please drop it if
-it is still queued.
+The rvu_pf_cgx_map debugfs file looked up each RVU PF PCI device assuming
+PF0 always lives on PCI bus 1. This commit takes the base bus number from
+rvu->pdev->bus->number instead, so the per-PF lookup uses pf + start.
 
-Willem, thank you for the thorough reviews on all three versions.
+> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c
+> index 22ee996768796..bf0302c0c1fc9 100644
+> --- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c
+> +++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c
+> @@ -829,6 +829,7 @@ static int rvu_dbg_rvu_pf_cgx_map_display(struct seq_file *filp, void *unused)
+>  	int pf, domain, blkid;
+>  	u8 cgx_id, lmac_id;
+>  	u16 pcifunc;
+> +	u8 start;
+>  
+>  	domain = 2;
 
-Thanks,
-Junnan
+[Severity: Medium]
+The bus half of the lookup is now taken from the real device, but the
+segment stays a literal in rvu_dbg_rvu_pf_cgx_map_display().  Should the
+domain come from the same PCI hierarchy?
 
+The driver already has an idiom for this in get_cpt_pf_num():
+
+  drivers/net/ethernet/marvell/octeontx2/af/rvu_cpt.c:get_cpt_pf_num() {
+	...
+	domain_nr = pci_domain_nr(rvu->pdev->bus);
+	for (i = 0; i < rvu->hw->total_pfs; i++) {
+		pdev = pci_get_domain_bus_and_slot(domain_nr, i + 1, 0);
+	...
+  }
+
+On a system whose RVU AF is not enumerated in segment 2 - the same class
+of non-default enumeration this commit describes - would every iteration
+hit the "if (!pdev) continue;" path, leaving rvu_pf_cgx_map with only its
+header line?
+
+And if some unrelated device happens to sit at segment 2 / bus
+(start + pf) / devfn 0, is there anything after the lookup that validates
+vendor/device ID before dev_name(&pdev->dev) is printed next to real
+CGX/LMAC/channel state?
+
+>  	mac_ops = get_mac_ops(rvu_first_cgx_pdata(rvu));
+> @@ -837,11 +838,16 @@ static int rvu_dbg_rvu_pf_cgx_map_display(struct seq_file *filp, void *unused)
+>  		return 0;
+>  	seq_printf(filp, "PCI dev\t\tRVU PF Func\tNIX block\t%s\tLMAC\tCHAN\n",
+>  		   mac_ops->name);
+> +
+> +	/* All the PF devices are on contiguous PCI bus numbers, but the PF0(AF)
+> +	 * may not start from 1 always. Hence get bus number from PCI device.
+> +	 */
+> +	start = rvu->pdev->bus->number;
+
+[Severity: Medium]
+This new comment states an invariant that several peer sites in the same
+driver contradict, and there is no shared helper keeping them in sync.
+
+The closest one is in the same file, cgx_print_dmac_flt(), which does the
+identical PF-to-PCI-device conversion with the old base:
+
+  drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c:cgx_print_dmac_flt() {
+	...
+	pf = cgxlmac_to_pf(rvu, cgx_get_cgxid(cgxd), lmac_id);
+	domain = 2;
+
+	pdev = pci_get_domain_bus_and_slot(domain, pf + 1, 0);
+	if (!pdev)
+		return 0;
+	...
+	seq_printf(s, "%s  PF%d  %9s  %9s",
+		   dev_name(&pdev->dev), pf, bcast, mcast);
+	...
+  }
+
+On the topologies this commit targets, does the CGX dmac_filter debugfs
+file end up empty, or print real CGX DMAC control/CAM values next to an
+unrelated device's name?
+
+The following two are pre-existing and not introduced by this patch, but
+they carry the same assumption in non-debug paths.
+
+get_cpt_pf_num() scans buses i + 1:
+
+  drivers/net/ethernet/marvell/octeontx2/af/rvu_cpt.c:get_cpt_pf_num() {
+	...
+		pdev = pci_get_domain_bus_and_slot(domain_nr, i + 1, 0);
+	...
+  }
+
+With a shifted bus base, would rvu->cpt_pf_num stay at -1, so that
+is_cpt_pf()/is_cpt_vf() never recognize the real CPT PF/VF mailbox
+requests?
+
+  drivers/net/ethernet/marvell/octeontx2/af/rvu_cpt.c:is_cpt_pf() {
+	int cpt_pf_num = rvu->cpt_pf_num;
+
+	if (rvu_get_pf(rvu->pdev, pcifunc) != cpt_pf_num)
+		return false;
+  }
+
+rvu_sdp_init() encodes the exact inverse of the new comment and derives an
+rvu->pf[] index from it:
+
+  drivers/net/ethernet/marvell/octeontx2/af/rvu_sdp.c:rvu_sdp_init() {
+	...
+		/* The RVU PF number is one less than bus number */
+		sdp_pf_num[i] = pdev->bus->number - 1;
+		pfvf = &rvu->pf[sdp_pf_num[i]];
+	...
+  }
+
+rvu->pf is only devm_kcalloc(rvu->dev, hw->total_pfs, ...) in
+rvu_setup_hw_resources().  Can this index exceed total_pfs when the
+discovered SDP PF bus number is shifted, and can that write out of bounds
+through pfvf->sdp_info?
+
+That same sdp_pf_num feeds is_sdp_pf() -> is_pf_cgxmapped(), which is the
+only per-PF filter in the loop this patch fixes, so the stale assumption
+still reaches the corrected listing.
+
+>  	for (pf = 0; pf < rvu->hw->total_pfs; pf++) {
+>  		if (!is_pf_cgxmapped(rvu, pf))
+>  			continue;
+>  
+> -		pdev =  pci_get_domain_bus_and_slot(domain, pf + 1, 0);
+> +		pdev =  pci_get_domain_bus_and_slot(domain, pf + start, 0);
+>  		if (!pdev)
+>  			continue;
+>  
+
+[Severity: Low]
+This isn't a bug, but the commit has no Fixes: tag even though it repairs a
+user-visible debugfs defect (rvu_pf_cgx_map silently omitting every mapped
+PF when the AF is not on bus 1).
+
+git blame on the pre-patch tree attributes both the "domain = 2;"
+assignment and the "pci_get_domain_bus_and_slot(domain, pf + 1, 0)" lookup
+in rvu_dbg_rvu_pf_cgx_map_display() to commit e2fb3730386541
+("octeontx2-af: Add debug messages for failures").  Could
+"Fixes: e2fb3730386541" be added so stable tooling can determine the
+affected history?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260901044939.2772845-1-rkannoth%40marvell.com
