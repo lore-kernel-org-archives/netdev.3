@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E8D03F8EB3;
-	Fri,  4 Sep 2026 10:18:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 460C63E5595;
+	Fri,  4 Sep 2026 10:18:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788517132; cv=none; b=Dqua8Lnb2hEK+glCaaX4nYCUfxXdPJc9pAtO4K4pwl+oPv1cwvlsHfF6f/Es05mlmxEmKA72hF1B65ECgRQdlxchxUogAKFqT5DIhfUK5CD/Q4wsCi/keVYO7nX01m5bDHlkcMBlniuvd2dcJuvhUTFiQkUxDUm5glj+JGb2vrw=
+	t=1788517133; cv=none; b=ffhxqN2ItoF7mfIKdNcMkM+gaf468LsrJoKyH1xTP+y4GdiXt1Ut0bG3wFrWaFceEoVyb2SU51CxycqWsoTSgBnETdgP8H4/tKoP32B7zEWSRrE02bd/IoL3U2Vy6pb4mTLlAwZLWsDULC6CLoGANN6ENktRzReNVmHLFTCLFGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788517132; c=relaxed/simple;
-	bh=8mYikl6kiVArrb/teISjbXJxIklnUi4M8/Rj2mHxvcg=;
+	s=arc-20240116; t=1788517133; c=relaxed/simple;
+	bh=zSj8+4tWcZqtl0X0Y45XwQFoIXQD5y9dXdwxBzgJhNM=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=O2ewJbaOwQfmxqTiy0mbVdfLOHSTIexkfdycne6W9MEiDo9q0cyifB5Db2xbgDMKTVlOYidSNrBPDlkLoIUlSNNiZwSglv8o0/eBzFesjBwmgsdTdKnq3OW8xCOavS5i1YV6H46zj/+inUvw5+LuKS13UEzDQwkD4UqvSr6tSPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VrehZVKK; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=CaJ0Bms4xZMTYbtuc4Eoa7EfOvwRmg+itQFw+U4a2R+miFSoVj/v2tr0XMBzeVv6HkC/fb+LjPtw2yrcjfIkhA/dM4qqItjY4UXqO0H+0Vtg0pIlNYcuEMw8TabLbnI08fsSQu9h9jCMykO58GHZyV9rNLekea7iFmCirnGnQ0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zoew1ht1; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VrehZVKK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC0EA1F00A3F;
-	Fri,  4 Sep 2026 10:18:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zoew1ht1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 556E61F00A3E;
+	Fri,  4 Sep 2026 10:18:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788517128;
-	bh=JH8/TocAbumlqPZ6S+kQ16DGPI71YfmXPZ0E/Jzf+ho=;
+	s=k20260515; t=1788517130;
+	bh=9q0qzKem9V1dKpSDFNIMd3r1Q7X+9irqM+EqdTqiRJw=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=VrehZVKKmli3ZiLLhHffzHmI2wLP+WlGx8DWQEJ5aCK/HW6ur6fRmlNejGwMD03tG
-	 DcewqR+flu6uqBpqTMYtNfnDBvt2GgdbSZWOJmdC2NRBnsuyn4uTQmoF2dzIp6bl85
-	 7Un8DpfjscOWHmyBD9lzNBqSpbFhXh6Th8BY5NeCQu0Xuj2GIbbheV/wMgWmkY1lfT
-	 laU60rMSHvhYJ6nyGdZYBubawcjSx2ps4GwGl9vDaKYsrN6qBuEiWDDP36KzQ3Lz/x
-	 EZFasJRFa+Gf3ITAOT44Nn7+6l5l7Y9OHqF7Bc6OAVMX4cuJ3gr1bkBL+o4dqXLojk
-	 9hM4/aqw+k7CQ==
-Subject: Re: [PATCH net-next 3/7] bnge: Move bnapi and ring_grp allocation to
- probe/remove
+	b=Zoew1ht1l3CBhCFsbmS90y9U9a0LWitJXYgT4XvTJoKw1bgRPX+Kkfy0ptzNKrOG9
+	 60L4giuiuOM57ymdL+eXKW7Cpiuwe5edSinj5ryqcxfdR7NoPkT7Vxv8kDmCG/iUUn
+	 FBjw4Ro5sMBDOIUcqxYltRY4op8z2r0Ih6uQHfBj9Cl9S/DYTEe3j6kf4TuHIvTG50
+	 ivYZGUreYyy3SSEetU2YiG97lZ9dCAcRCeuUHyI5fUuhUGnXvbO/A43I+Ep/Rmd4wk
+	 lVMp/ySB/JlSvQ/3rumwwb/u1a2oPCwthjM0AnUf/BqS6q6n0C8ORQsSMcVL3YPPPR
+	 n98ArYqbPGmgA==
+Subject: Re: [PATCH net-next 4/7] bnge: Drop obsolete bn->bnapi NULL checks in
+ open/close paths
 From: netdev-bot+sashiko@kernel.org
 To: bhargava.marreddy@broadcom.com
 Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
@@ -36,10 +36,10 @@ Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
  michael.chan@broadcom.com, pavan.chebbi@broadcom.com,
  vsrama-krishna.nemani@broadcom.com, vikas.gupta@broadcom.com,
  rajashekar.hudumula@broadcom.com, dharmender.garg@broadcom.com
-Date: Fri, 04 Sep 2026 10:18:47 +0000
-Message-ID: <178851712739.4131868.90269602624228034@kernel.org>
-In-Reply-To: <20260901191728.643212-4-bhargava.marreddy@broadcom.com>
-References: <20260901191728.643212-4-bhargava.marreddy@broadcom.com>
+Date: Fri, 04 Sep 2026 10:18:48 +0000
+Message-ID: <178851712888.4131868.14842103781611157090@kernel.org>
+In-Reply-To: <20260901191728.643212-5-bhargava.marreddy@broadcom.com>
+References: <20260901191728.643212-5-bhargava.marreddy@broadcom.com>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -55,192 +55,100 @@ issue(s) to consider:
 
 Critical: 0 · High: 1 · Medium: 0 · Low: 0
 
-- [High] bnge_init_nic()'s error path frees probe-owned memory,
-  permanently NULLing bn->grp_info and causing a NULL-pointer write on…
+- [High] NULL pointer dereference on a retried interface open after a
+  failed open: bn->grp_info is now allocated once during probe…
 
 --
 
-bnge: Move bnapi and ring_grp allocation to probe/remove
+bnge: Drop obsolete bn->bnapi NULL checks in open/close paths
 
-This moves the bn->bnapi and bn->grp_info allocations from the open path
-into bnge_netdev_alloc(), frees them in bnge_netdev_free(), and adds an
-irq_re_init flag to bnge_init_ring_grps() so that open only resets the
-per-group state.  bnge_free_core() now clears the bnapi queue
-back-pointers instead of freeing bn->bnapi.
+This removes the "if (!bn->bnapi)" guards from bnge_free_ring_stats(),
+bnge_clear_bnapi_queues(), bnge_disable_int() and bnge_hwrm_ring_free(),
+on the grounds that bn->bnapi now lives from bnge_netdev_alloc() until
+bnge_netdev_free().
+
+One question below about the sibling allocation, bn->grp_info, which was
+moved to probe lifetime by the same series but is still freed by the open
+error path.
 
 > diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c b/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c
-> index 6c1cb3aab5a8c..dcf04d391570b 100644
+> index dcf04d391570b..dc3d51f31e5ef 100644
 > --- a/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c
 > +++ b/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c
-> @@ -1176,20 +1176,26 @@ static void bnge_free_ring_grps(struct bnge_net *bn)
->  	bn->grp_info = NULL;
->  }
->  
-> -static int bnge_init_ring_grps(struct bnge_net *bn)
-> +static int bnge_init_ring_grps(struct bnge_net *bn, bool irq_re_init)
->  {
+> @@ -85,9 +85,6 @@ static void bnge_free_ring_stats(struct bnge_net *bn)
 >  	struct bnge_dev *bd = bn->bd;
 >  	int i;
 >  
-> -	bn->grp_info = kzalloc_objs(struct bnge_ring_grp_info, bd->nq_nr_rings);
-> -	if (!bn->grp_info)
-> -		return -ENOMEM;
-> +	if (irq_re_init) {
-> +		bn->grp_info = kzalloc_objs(struct bnge_ring_grp_info,
-> +					    bd->nq_nr_rings);
-> +		if (!bn->grp_info)
-> +			return -ENOMEM;
-> +	}
-> +
->  	for (i = 0; i < bd->nq_nr_rings; i++) {
-> -		bn->grp_info[i].fw_stats_ctx = INVALID_HW_RING_ID;
->  		bn->grp_info[i].fw_grp_id = INVALID_HW_RING_ID;
-
-[Severity: High]
-With irq_re_init == false, which is the only value the open path passes,
-the allocation branch is skipped and this loop writes bn->grp_info[i]
-unconditionally.  Can bn->grp_info be NULL when we get here?
-
-See the error path left behind in bnge_init_nic() below.
-
->  		bn->grp_info[i].rx_fw_ring_id = INVALID_HW_RING_ID;
->  		bn->grp_info[i].agg_fw_ring_id = INVALID_HW_RING_ID;
->  		bn->grp_info[i].nq_fw_ring_id = INVALID_HW_RING_ID;
-> +
-> +		if (irq_re_init)
-> +			bn->grp_info[i].fw_stats_ctx = INVALID_HW_RING_ID;
->  	}
->  
->  	return 0;
-> @@ -1201,25 +1207,6 @@ static void bnge_free_bnapi_mem(struct bnge_net *bn)
->  	bn->bnapi = NULL;
->  }
->  
-> -static void bnge_free_core(struct bnge_net *bn)
-> -{
-> -	bnge_free_vnic_attributes(bn);
-> -	bnge_free_tx_rings(bn);
-> -	bnge_free_rx_rings(bn);
-> -	bnge_free_nq_tree(bn);
-> -	bnge_free_nq_arrays(bn);
-> -	bnge_free_ring_stats(bn);
-> -	bnge_free_ring_grps(bn);
-> -	bnge_free_vnics(bn);
-> -	kfree(bn->tx_ring_map);
-> -	bn->tx_ring_map = NULL;
-> -	kfree(bn->tx_ring);
-> -	bn->tx_ring = NULL;
-> -	kfree(bn->rx_ring);
-> -	bn->rx_ring = NULL;
-> -	bnge_free_bnapi_mem(bn);
-> -}
+> -	if (!bn->bnapi)
+> -		return;
 > -
->  static int bnge_alloc_bnapi_mem(struct bnge_net *bn)
->  {
->  	struct bnge_dev *bd = bn->bd;
-
-[ ... ]
-
-> @@ -2834,9 +2858,7 @@ static int bnge_init_nic(struct bnge_net *bn)
->  
->  	bnge_init_tx_rings(bn);
->  
-> -	rc = bnge_init_ring_grps(bn);
-> -	if (rc)
-> -		goto err_free_rx_ring_pair_bufs;
-> +	bnge_init_ring_grps(bn, false);
->  
->  	bnge_init_vnics(bn);
->  
-> @@ -2847,7 +2869,6 @@ static int bnge_init_nic(struct bnge_net *bn)
->  
->  err_free_ring_grps:
->  	bnge_free_ring_grps(bn);
-> -err_free_rx_ring_pair_bufs:
->  	bnge_free_rx_ring_pair_bufs(bn);
->  	return rc;
->  }
+>  	for (i = 0; i < bd->nq_nr_rings; i++) {
+>  		struct bnge_napi *bnapi = bn->bnapi[i];
+>  		struct bnge_nq_ring_info *nqr = &bnapi->nq_ring;
 
 [Severity: High]
-Now that bn->grp_info belongs to probe/remove, should this
-bnge_free_ring_grps() call still be here?
+The reasoning here applies equally to bn->grp_info, which the same series
+moved to probe lifetime via bnge_init_ring_grps(bn, true) in
+bnge_netdev_alloc(), with the matching free in bnge_netdev_free().  But the
+open path still frees it on error.  Can a retried open dereference a NULL
+bn->grp_info?
 
-bnge_init_nic() reaches this label when bnge_init_chip() fails, which is
-reachable through bnge_hwrm_stat_ctx_alloc(), bnge_hwrm_ring_alloc(),
-bnge_hwrm_vnic_alloc() or bnge_setup_vnic() returning an error, and
-bnge_free_ring_grps() does:
+bnge_init_nic():
 
+	bnge_init_ring_grps(bn, false);
+
+	bnge_init_vnics(bn);
+
+	rc = bnge_init_chip(bn);
+	if (rc)
+		goto err_free_ring_grps;
+	return rc;
+
+err_free_ring_grps:
+	bnge_free_ring_grps(bn);
+	bnge_free_rx_ring_pair_bufs(bn);
+	return rc;
+
+and bnge_free_ring_grps() drops the probe-time allocation entirely:
+
+static void bnge_free_ring_grps(struct bnge_net *bn)
+{
 	kfree(bn->grp_info);
 	bn->grp_info = NULL;
+}
 
-The unwind in bnge_open_core() (err_free_irq -> bnge_free_irq ->
-bnge_del_napi -> bnge_free_core -> err_if_change) does not reallocate it,
-and bnge_free_core() no longer touches grp_info at all after this patch,
-so the netdev stays registered with bn->grp_info == NULL.
+bnge_init_chip() can fail on any of its firmware calls
+(bnge_hwrm_stat_ctx_alloc(), bnge_hwrm_ring_alloc(),
+bnge_hwrm_vnic_alloc(), bnge_hwrm_set_vnic_filter(), ...), for example on a
+busy or timing-out firmware.  bnge_open_core() then unwinds through
+err_free_irq -> bnge_free_irq() -> bnge_del_napi() -> bnge_free_core() ->
+bnge_hwrm_if_change(bd, false) and returns, with the netdev still
+registered and bn->grp_info left NULL.
 
-A second "ip link set <dev> up" then goes:
+Is there anything that reallocates it before the next open?  The only
+allocation site is bnge_init_ring_grps() under irq_re_init, and the open
+path calls it with irq_re_init == false, so the loop writes through the
+NULL pointer:
 
-bnge_open_core()
-  bnge_alloc_core()		/* does not touch grp_info */
-  bnge_init_nic()
-    bnge_init_ring_grps(bn, false)
-      /* irq_re_init == false, allocation skipped */
-      bn->grp_info[i].fw_grp_id = INVALID_HW_RING_ID;   /* NULL deref */
+	if (irq_re_init) {
+		bn->grp_info = kzalloc_objs(struct bnge_ring_grp_info,
+					    bd->nq_nr_rings);
+		if (!bn->grp_info)
+			return -ENOMEM;
+	}
 
-Does that write oops?  Even if it were guarded, both
-bnge_hwrm_stat_ctx_alloc() and hwrm_ring_alloc_send_msg() in
-bnge_hwrm_lib.c dereference bn->grp_info:
+	for (i = 0; i < bd->nq_nr_rings; i++) {
+		bn->grp_info[i].fw_grp_id = INVALID_HW_RING_ID;
 
-		grp_info = &bn->grp_info[ring->grp_idx];
-		req->stat_ctx_id = cpu_to_le32(grp_info->fw_stats_ctx);
+bd->nq_nr_rings is at least 1, so a second "ip link set <dev> up" after a
+failed open looks like it oopses on bn->grp_info[0].fw_grp_id.
 
-so the driver would also lose its mirror of the programmed firmware
-stat_ctx_id / rx_ring_id / nq_ring_id associations.
+Should the err_free_ring_grps label in bnge_init_nic() simply stop freeing
+grp_info now that its lifetime is probe to remove?
 
-Would dropping the bnge_free_ring_grps() call from this error path, so
-only bnge_free_rx_ring_pair_bufs() remains, match the new ownership
-model?
-
-For reference, this is not fixed later in the series: at c51d67eb
-bnge_init_nic() still has the err_free_ring_grps label calling
-bnge_free_ring_grps(), bnge_init_ring_grps() still dereferences
-bn->grp_info unguarded, and "bnge: Create NQ0 during probe and keep
-active across open/close" adds another use of the same pointer in
-bnge_free_nq0():
-
-	bn->grp_info[0].nq_fw_ring_id = INVALID_HW_RING_ID;
-
-[ ... ]
-
-> @@ -3544,14 +3565,27 @@ int bnge_netdev_alloc(struct bnge_dev *bd, int max_irqs)
->  	spin_lock_init(&bn->stats_lock);
->  
->  	netdev->request_ops_lock = true;
-> +
-> +	rc = bnge_alloc_bnapi_mem(bn);
-> +	if (rc)
-> +		goto err_free_port_stats;
-> +
-> +	rc = bnge_init_ring_grps(bn, true);
-> +	if (rc)
-> +		goto err_free_bnapi_mem;
-> +
->  	rc = register_netdev(netdev);
->  	if (rc) {
->  		dev_err(bd->dev, "Register netdev failed rc: %d\n", rc);
-> -		goto err_free_port_stats;
-> +		goto err_free_ring_grps;
->  	}
->  
->  	return 0;
->  
-> +err_free_ring_grps:
-> +	bnge_free_ring_grps(bn);
-> +err_free_bnapi_mem:
-> +	bnge_free_bnapi_mem(bn);
->  err_free_port_stats:
->  	bnge_free_port_stats(bn);
->  err_free_workq:
+This also appears to still be the case at the end of the series (commit
+c51d67eb0c2d), where bnge_free_nq0() dereferences bn->grp_info[0] during
+teardown and would add a second crash path after such a failed open.
 
 [ ... ]
 
