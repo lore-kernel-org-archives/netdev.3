@@ -1,175 +1,188 @@
-Received: from mail-oo2-f8.google.com (mail-oo2-f8.google.com [74.125.231.136])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81A8D3F4DC7
-	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 17:46:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 656BA3F39E4;
+	Fri,  4 Sep 2026 18:01:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788543996; cv=none; b=Uxttq4Cn1h9uMe1OPjDqEgED+ZhoIhkhP+NQbcnDh1JZA99gVIuIRXdYVKsyQyGkYPKa2r5V/bQUE4BsThGqmJQ4ApTh/ca2o0vq8EyJ3lH+miqm24akSzX//62ZuDdu9pf/lqQKLV/IrV02+z1/8x5GB46jPl1+OqmON7pTR8I=
+	t=1788544865; cv=none; b=e7OWCIAftqnRB8s5CmrX4fvWGCuPBSRpnkfHQPEBfEvzlFX+fsd6Q8LBVvpUDxUwTx7NK5pn7duOS0/WL8lgabCQGUYS5bFijSjrOS6404jRZKTriu9xpDfY17Yr6DQ5/B3yf6ZYnEPz5R0exQYzy1hPF5Uo/hCL9NOtOKyws7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788543996; c=relaxed/simple;
-	bh=Aq9Bhjqqep6oHAYLdXZcoyCDB0SBpjxzeBIB4qvz0nM=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=Cv763Nj8RnoTx+RkZBVopwrQl/O7zR0SKsMMXPfYug0pQNNTD2ZQW0LeLf7cf3+boX1NWIku6voLcH0ivM89/4phKfzF5utaopO8SxJzM/ZPWQ+seFVdogpfQxVxPtGgmU1besGgybTTtnZil8+w0HGgndFkpxdEN9Wp7bEqE3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=74.125.231.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oo2-f8.google.com with SMTP id 006d021491bc7-6b128c3af4bso135431eaf.0
-        for <netdev@vger.kernel.org>; Fri, 04 Sep 2026 10:46:34 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788543993; x=1789148793;
-        h=content-type:to:from:subject:message-id:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=5VUHBlO0z49QR7LIDwdKlWg3VDkFrVJvHBXEnS8+cPw=;
-        b=Rgrq0LaT+NAZXieSOvBL/3RO264oqcZEjmuMklCGvLQ4haXQcsXL1FW8joAZNfIHdA
-         dxFOS5hMGlWByNxI61GBzEYjNol5i/0O9Zzu/h17hgpm5bw25qW5CUuteLO4i/brlI1c
-         I7nCcl4WxyZ7NQcJCpNzDcsJuC3JRb0NxOYe53OwcbjMiSWTBxBlyvmU2S8BKxN1zX3G
-         2KTZH0b6xj2aEe1YMdLsJMYY0B6JY0MB6+o8d8hzZzRYD8FgyByYPV3aeIeFTGp7bLlJ
-         vBR+MFpG4RN/RNBX06EancDSTgmDkQCYuPhbMFeYSuNERR2n7c507f08TwDeUFcBjMnt
-         GRFg==
-X-Forwarded-Encrypted: i=1; AKwUvByHcPypacwBL/rLL1twW+q1vWqhaP6mwydJSy+evn1yaQeCbo6dv81EiaGQfG7i0tOk9UPaXzQ=@vger.kernel.org
-X-Gm-Message-State: AFuF++kkIFovi1TYkujv+6hyulfE5pWkcI4P/WXIpK8Pu2W46Cc/AQfY
-	7Kz/3FCPaZ7jGWKYkLTRH7u/yQ25YSlDHOEhweX5JVsA8/BNHS/W7NCI8dmo/4H7QCp4QFmBPiD
-	O8zc1bKqqxcr0K29UbBI711El27KKsS7230+UBgxiV9C+1Aa665eOgQ0FCeU=
+	s=arc-20240116; t=1788544865; c=relaxed/simple;
+	bh=IyV4SeHzlGQh/XTrkjNBkEM1WrROfiZ2BH4a1VtThAc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ni9kDUgTCjqfNIiI/+mDr8FzTvdQRuvgZw73gTobqkfE8q5Z/FL+MZ1A2avsVZ/EkXx5O/QSlkpPi7QCQaSKZIUkwJSSY6DGTh/fFVy6DewRIInUeXyNeuoQOV39iS25D6WX1o1ntF2yMVe5e/gg9q5v73I0wdH9sROGwnkrFiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iOQms9UY; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iOQms9UY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB7971F00A3D;
+	Fri,  4 Sep 2026 18:01:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788544862;
+	bh=Sh4pM9P10ktTurWhj1Ao4Irjykp6UovFXYEZeKiGJ3c=;
+	h=From:To:Cc:Subject:Date;
+	b=iOQms9UYSodcECCBoYxOpngCu1awd0x7Oca9IG4wmg4vlpxDKIlE/DhgQAID8ZNcK
+	 tQ8Jj44QRdzJUDcx/WPQlBdU7DPYYLt80jKNwSf5FwLUL+LZnMXCXvnxB2x7F8EHDj
+	 tSNMOldqDe5aMI/mr3KubNV8mDjWwjUAqWy/+9HvHYBx9SFpXwlmiJ0HB81CuzZN+/
+	 HHjTYqsgCk30ZIh3UMHVZdqu27vG6qwnd3iwT85WjNVYeggG6vuyY3GKaphXkjZlV3
+	 Gdky5JulPZ6VCYJ2xw4N33aoU6OeRW/Rn1NNiIr4G7vNvpPcyqIeRKDwl4hdk0+hM/
+	 0eNEglWxFjZiw==
+From: Jakub Kicinski <kuba@kernel.org>
+To: davem@davemloft.net
+Cc: netdev@vger.kernel.org,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	horms@kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	corbet@lwn.net,
+	skhan@linuxfoundation.org,
+	rdunlap@infradead.org,
+	sdf@fomichev.me,
+	kuniyu@google.com,
+	linux-doc@vger.kernel.org
+Subject: [PATCH net-next] net: run netdev work under the ops-compat lock
+Date: Fri,  4 Sep 2026 11:00:58 -0700
+Message-ID: <20260904180058.3803849-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:179b:b0:6b4:c316:6fdd with SMTP id
- 006d021491bc7-6b6fd2ce829mr5897354eaf.19.1788543993352; Fri, 04 Sep 2026
- 10:46:33 -0700 (PDT)
-Date: Fri, 04 Sep 2026 10:46:33 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a9b03f9.04649fcc.10325f.0003.GAE@google.com>
-Subject: [syzbot] [net?] general protection fault in __ip6_del_rt_siblings
-From: syzbot <syzbot+a73e5ee0fd534fed75bd@syzkaller.appspotmail.com>
-To: davem@davemloft.net, dsahern@kernel.org, edumazet@google.com, 
-	horms@kernel.org, idosch@nvidia.com, kuba@kernel.org, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Hello,
+netdev_work_proc() took rtnl_lock() for the whole batch, forcing
+even ops-locked drivers onto rtnl just to run their rx_mode / ndo_work
+callbacks. Take the per-device ops-compat lock instead: the instance
+lock for ops-locked drivers, rtnl_lock for the rest. That's what the
+callbacks already assert (e.g. netif_rx_mode_run() asserts
+netdev_assert_locked_ops_compat()), and non-ops-locked work
+such as vlan ndo_work keeps rtnl, since its compat lock resolves
+to rtnl anyway.
 
-syzbot found the following issue on:
+Without this adding more uses of ndo_work, for cases which don't
+need rtnl_lock feels like a step back.
 
-HEAD commit:    89a312991dc6 Merge tag 'cifs-fixes-7.3-rc2' of https://git..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=14096f79580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=b454dc6b1b7acd30
-dashboard link: https://syzkaller.appspot.com/bug?extid=a73e5ee0fd534fed75bd
-compiler:       Debian clang version 22.1.8 (++20260613092233+e80beda6e255-1~exp1~20260613092250.77), Debian LLD 22.1.8
+We can drop the comment about the extra ref now, with the relocking
+it's a necessity.
 
-Unfortunately, I don't have any reproducer for this issue yet.
-
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/120fc5c06ced/disk-89a31299.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/accc50a0c85b/vmlinux-89a31299.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/0aec83a14f94/bzImage-89a31299.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+a73e5ee0fd534fed75bd@syzkaller.appspotmail.com
-
-Oops: general protection fault, probably for non-canonical address 0xdffffc0000000004: 0000 [#1] SMP KASAN PTI
-KASAN: null-ptr-deref in range [0x0000000000000020-0x0000000000000027]
-CPU: 0 UID: 0 PID: 15348 Comm: syz.1.2507 Tainted: G             L      syzkaller #0 PREEMPT_{RT,(full)} 
-Tainted: [L]=SOFTLOCKUP
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/24/2026
-RIP: 0010:__ip6_del_rt_siblings+0x31e/0x7c0 net/ipv6/route.c:4056
-Code: f7 4d 8d 74 24 10 4c 89 f0 48 c1 e8 03 42 80 3c 28 00 74 08 4c 89 f7 e8 80 fb 2d f8 4d 8b 36 49 83 c6 20 4c 89 f0 48 c1 e8 03 <42> 80 3c 28 00 74 08 4c 89 f7 e8 63 fb 2d f8 49 8b 06 4c 39 e0 74
-RSP: 0018:ffffc9000564f120 EFLAGS: 00010202
-RAX: 0000000000000004 RBX: ffffc9000564f430 RCX: 0000000000080000
-RDX: ffffc90005222000 RSI: 0000000000000307 RDI: 0000000000000308
-RBP: 1ffff110069ec605 R08: 0000000000000000 R09: 0000000000000000
-R10: dffffc0000000000 R11: ffffed100c66d413 R12: ffff888034f63000
-R13: dffffc0000000000 R14: 0000000000000020 R15: ffffc9000564f4b8
-FS:  00007fd3d4c866c0(0000) GS:ffff888125bd5000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007fb3e2f95ff8 CR3: 0000000060a36000 CR4: 00000000003526f0
-Call Trace:
- <TASK>
- ip6_route_del+0x1054/0x1110 net/ipv6/route.c:4232
- inet6_rtm_delroute+0x5d7/0x6d0 net/ipv6/route.c:5669
- rtnetlink_rcv_msg+0x802/0xc00 net/core/rtnetlink.c:7132
- netlink_rcv_skb+0x226/0x4a0 net/netlink/af_netlink.c:2556
- netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline]
- netlink_unicast+0x7f5/0x990 net/netlink/af_netlink.c:1345
- netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1900
- sock_sendmsg_nosec+0x13a/0x180 net/socket.c:800
- __sock_sendmsg net/socket.c:815 [inline]
- ____sys_sendmsg+0x565/0x870 net/socket.c:2713
- ___sys_sendmsg+0x2a5/0x360 net/socket.c:2767
- __sys_sendmsg net/socket.c:2799 [inline]
- __do_sys_sendmsg net/socket.c:2804 [inline]
- __se_sys_sendmsg net/socket.c:2802 [inline]
- __x64_sys_sendmsg+0x1b7/0x290 net/socket.c:2802
- do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
- do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fd3d6a2e159
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fd3d4c86028 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 00007fd3d6cb5fa0 RCX: 00007fd3d6a2e159
-RDX: 0000000000000000 RSI: 0000200000000280 RDI: 0000000000000004
-RBP: 00007fd3d6ac5024 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007fd3d6cb6038 R14: 00007fd3d6cb5fa0 R15: 00007fff66fa0ad8
- </TASK>
-Modules linked in:
----[ end trace 0000000000000000 ]---
-RIP: 0010:__ip6_del_rt_siblings+0x31e/0x7c0 net/ipv6/route.c:4056
-Code: f7 4d 8d 74 24 10 4c 89 f0 48 c1 e8 03 42 80 3c 28 00 74 08 4c 89 f7 e8 80 fb 2d f8 4d 8b 36 49 83 c6 20 4c 89 f0 48 c1 e8 03 <42> 80 3c 28 00 74 08 4c 89 f7 e8 63 fb 2d f8 49 8b 06 4c 39 e0 74
-RSP: 0018:ffffc9000564f120 EFLAGS: 00010202
-RAX: 0000000000000004 RBX: ffffc9000564f430 RCX: 0000000000080000
-RDX: ffffc90005222000 RSI: 0000000000000307 RDI: 0000000000000308
-RBP: 1ffff110069ec605 R08: 0000000000000000 R09: 0000000000000000
-R10: dffffc0000000000 R11: ffffed100c66d413 R12: ffff888034f63000
-R13: dffffc0000000000 R14: 0000000000000020 R15: ffffc9000564f4b8
-FS:  00007fd3d4c866c0(0000) GS:ffff888125bd5000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007fa5bde16d58 CR3: 0000000060a36000 CR4: 00000000003526f0
-----------------
-Code disassembly (best guess):
-   0:	f7 4d 8d 74 24 10 4c 	testl  $0x4c102474,-0x73(%rbp)
-   7:	89 f0                	mov    %esi,%eax
-   9:	48 c1 e8 03          	shr    $0x3,%rax
-   d:	42 80 3c 28 00       	cmpb   $0x0,(%rax,%r13,1)
-  12:	74 08                	je     0x1c
-  14:	4c 89 f7             	mov    %r14,%rdi
-  17:	e8 80 fb 2d f8       	call   0xf82dfb9c
-  1c:	4d 8b 36             	mov    (%r14),%r14
-  1f:	49 83 c6 20          	add    $0x20,%r14
-  23:	4c 89 f0             	mov    %r14,%rax
-  26:	48 c1 e8 03          	shr    $0x3,%rax
-* 2a:	42 80 3c 28 00       	cmpb   $0x0,(%rax,%r13,1) <-- trapping instruction
-  2f:	74 08                	je     0x39
-  31:	4c 89 f7             	mov    %r14,%rdi
-  34:	e8 63 fb 2d f8       	call   0xf82dfb9c
-  39:	49 8b 06             	mov    (%r14),%rax
-  3c:	4c 39 e0             	cmp    %r12,%rax
-  3f:	74                   	.byte 0x74
-
-
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+CC: corbet@lwn.net
+CC: skhan@linuxfoundation.org
+CC: rdunlap@infradead.org
+CC: sdf@fomichev.me
+CC: kuniyu@google.com
+CC: linux-doc@vger.kernel.org
+---
+ Documentation/networking/netdevices.rst | 14 ++++++++++----
+ include/linux/netdevice.h               |  5 ++++-
+ net/core/netdev_work.c                  | 15 ++-------------
+ 3 files changed, 16 insertions(+), 18 deletions(-)
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+diff --git a/Documentation/networking/netdevices.rst b/Documentation/networking/netdevices.rst
+index db71d4283032..aac33497813f 100644
+--- a/Documentation/networking/netdevices.rst
++++ b/Documentation/networking/netdevices.rst
+@@ -292,15 +292,21 @@ struct net_device synchronization rules
+ 	in process context.
+ 
+ ndo_set_rx_mode_async:
+-	Synchronization: rtnl_lock() semaphore. In addition, netdev instance
+-	lock if the driver implements queue management or shaper API.
++	Synchronization: netdev instance lock for "ops locked" drivers,
++	rtnl_lock() semaphore for all other drivers.
+ 	Context: process (from a work queue)
+ 	Notes: Async version of ndo_set_rx_mode which runs in process
+ 	context. Receives snapshots of the unicast and multicast address lists.
+ 
+ ndo_change_rx_flags:
+-	Synchronization: rtnl_lock() semaphore. In addition, netdev instance
+-	lock if the driver implements queue management or shaper API.
++	Synchronization: netdev instance lock for "ops locked" drivers,
++	rtnl_lock() semaphore for all other drivers.
++
++ndo_work:
++	Synchronization: netdev instance lock for "ops locked" drivers,
++	rtnl_lock() semaphore for all other drivers.
++	Context: process (from a work queue)
++	Notes: Runs deferred work scheduled with netdev_work_sched().
+ 
+ ndo_setup_tc:
+ 	Locking depends on ``tc_setup_type``. For most types the callback
+diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+index 8454646d6a45..17b8fb8e94fe 100644
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
+@@ -1135,13 +1135,16 @@ struct netdev_net_notifier {
+  *				struct netdev_hw_addr_list *uc,
+  *				struct netdev_hw_addr_list *mc);
+  *	Async version of ndo_set_rx_mode which runs in process context
+- *	with rtnl_lock and netdev_lock_ops(dev) held. The uc/mc parameters
++ *	under the netdev instance lock for "ops locked" drivers, or
++ *	rtnl_lock for all other drivers. The uc/mc parameters
+  *	are snapshots of the address lists - iterate with
+  *	netdev_hw_addr_list_for_each(ha, uc). Return 0 on success or a
+  *	negative errno to request a retry via the core backoff.
+  *
+  * void (*ndo_work)(struct net_device *dev, unsigned long events);
+  *	Run deferred work scheduled with netdev_work_sched(@events).
++ *	Runs in process context under the netdev instance lock for "ops
++ *	locked" drivers, or rtnl_lock for all other drivers.
+  *
+  * int (*ndo_set_mac_address)(struct net_device *dev, void *addr);
+  *	This function  is called when the Media Access Control address
+diff --git a/net/core/netdev_work.c b/net/core/netdev_work.c
+index e721a06d58df..c99967907e18 100644
+--- a/net/core/netdev_work.c
++++ b/net/core/netdev_work.c
+@@ -3,7 +3,6 @@
+ #include <linux/export.h>
+ #include <linux/list.h>
+ #include <linux/netdevice.h>
+-#include <linux/rtnetlink.h>
+ #include <linux/spinlock.h>
+ #include <linux/workqueue.h>
+ #include <net/netdev_lock.h>
+@@ -129,8 +128,6 @@ static void netdev_work_run(struct net_device *dev, unsigned long events,
+ 
+ static void netdev_work_proc(struct work_struct *work)
+ {
+-	rtnl_lock();
+-
+ 	while (true) {
+ 		unsigned long events = 0, core = 0;
+ 		netdevice_tracker tracker;
+@@ -143,16 +140,10 @@ static void netdev_work_proc(struct work_struct *work)
+ 		}
+ 		dev = list_first_entry(&netdev_work_list, struct net_device,
+ 				       work_node);
+-		/* Take a temporary reference so @dev can't be freed while we
+-		 * drop the lock to grab its ops lock; the work reference is
+-		 * only released once we claim the work below.
+-		 * The re-locking dance is to ensure that ops lock is enough
+-		 * to ensure canceling work is not racy with dequeue.
+-		 */
+ 		netdev_hold(dev, &tracker, GFP_ATOMIC);
+ 		spin_unlock_bh(&netdev_work_lock);
+ 
+-		netdev_lock_ops(dev);
++		netdev_lock_ops_compat(dev);
+ 		spin_lock_bh(&netdev_work_lock);
+ 		if (!list_empty(&dev->work_node)) {
+ 			list_del_init(&dev->work_node);
+@@ -169,10 +160,8 @@ static void netdev_work_proc(struct work_struct *work)
+ 		spin_unlock_bh(&netdev_work_lock);
+ 
+ 		netdev_work_run(dev, events, core);
+-		netdev_unlock_ops(dev);
++		netdev_unlock_ops_compat(dev);
+ 
+ 		netdev_put(dev, &tracker);
+ 	}
+-
+-	rtnl_unlock();
+ }
+-- 
+2.55.0
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
