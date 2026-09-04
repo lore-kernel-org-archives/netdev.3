@@ -1,137 +1,117 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FCF43F660F
-	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 09:10:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788513038; cv=none; b=h4gNZ/sXEZAsMRbQpQfkHDxsbsGpk0rW1/orT/Ovmn4Oijp7ey2R9adNgQ2zMuQr6huuZYabMincC/Xkt11+xB+Ney30kMlogjV4V01GPkHx47x5QjaU4Fvozd6n/BiOcPrY5pSBkfeeUqHUmTULeIuizaHhHBC/xMHQmUy1CpA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788513038; c=relaxed/simple;
-	bh=hMJnU327dFEX6opK/KQDKX48iTu/x/A0Ul7gIsQxjis=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Wbli/bEXLq8pHPjJTQehM6KjPhySAxwD1FhUyPKj+MS5z0x9BaqtpaJcfW9qy5KHqINhYdOSshQmEA2Mzz6++J6IvZJZ61YIQIdeWBWKVkZk+ggAqjdMZ9y9RP/tgJIhB4FCkheSnv/1VD5cEviTUrAlaUiNoflvU5EfHa8SO2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WPv3QNId; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=mndY7mUX; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1812F3FBEA5
+	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 09:16:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.182
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788513415; cv=pass; b=f4my29+Ksl77kpSVIzcji5GogMVrkk9IbkrCJqouxadnoncbOADaR/KO8WyWRKYMAjujoRUnddMtL3tvcnFLG4U9r1XREVlx0SonHh7wM57mCLT1tNSdMG7h0nXaHWB50Z4NFFcQO6jusPKpjCvbCnTFJi5zsS3Ba6nT+mjhn70=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788513415; c=relaxed/simple;
+	bh=U13rcRq5LNpQ6vBXGnXyY3FhirpLd2dEbsFMBIDdyT0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kF2PC0SP87RYj6owG1opXqfB6fGvs2RuMV/EC4eKn5Uyydgp6hbwIxR8/0ZhoGYR/eLmP65PG82KTllsfW8DprcX6Vw8csnC/G8OsKacKDI45hE+o9KPkcWJBFAFj6UnMVeCuivZtP+Jjb4v76nCqyJaxd/RpHst4iXNvxLZnz0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d5aNv+MM; arc=pass smtp.client-ip=209.85.210.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WPv3QNId";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="mndY7mUX"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1788513035;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Vt81cwcsCfPywy+zBr+7O4ImxWrnQ6O2o5d5GOC5dKs=;
-	b=WPv3QNIdhxM/4tSKF7YiCBgNiPYppeJpWDVA7HNhKihPJFJ+W2occ2LHSsKvYTu2CZUjKw
-	A+vWD+00FqZD2cr/dKuVmrKyDAfkn93vuClDf6xRDaUs4wL25yd00X5h7MYGwJ9BoKRK9y
-	J0anFVAfUPyNcr/6D+gB6jGHTsYIBx4=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-121-6cTiF4yCMtiuGd8-dMWBzg-1; Fri, 04 Sep 2026 05:10:32 -0400
-X-MC-Unique: 6cTiF4yCMtiuGd8-dMWBzg-1
-X-Mimecast-MFC-AGG-ID: 6cTiF4yCMtiuGd8-dMWBzg_1788513031
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-485835753caso644726f8f.3
-        for <netdev@vger.kernel.org>; Fri, 04 Sep 2026 02:10:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d5aNv+MM"
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-85c9a79590aso837334b3a.1
+        for <netdev@vger.kernel.org>; Fri, 04 Sep 2026 02:16:53 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788513413; cv=none;
+        d=google.com; s=arc-20260327;
+        b=jhHcIvggmn9dBGxgoJMBGVRsWIYg8j1KAEe35dlF/w5LAobKx2IY3xzVMazDfKX+86
+         ir55tbuEhXC3d8PdYfpx2vgPxrvbEpq6gfzTjzHPVQke/IL2LyNitIYi2wKMEiSyqBZo
+         df6mg+kvK4qAOxLrhQW20X3dZh12CnhBRZoJB/51i1/YymAw0wcIHdmNPbgMZBdZx9bh
+         KTrDs453yDua9D/O3reIwpgA8kjYY/7A7cqaGF8bfx4b8kMKa3YsJppUhV3tBqcIabUS
+         q+BHfl91LjrxxJMMXK9wqOlwmDQYqBF5PrU3IqORGQVPdtwfn9Zfkb2fX0h6TBCp80fF
+         wbPw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=U13rcRq5LNpQ6vBXGnXyY3FhirpLd2dEbsFMBIDdyT0=;
+        fh=AIbK4IG8GnQKEMVyk0UBGt+pbkZfwXXz2OaxELMe2JM=;
+        b=mWSSVigwGlRi1H+fOCYC6xEHfXcRmEUwdOmxizU8iUQO7tTKHLFPD//9vuPknEeh7J
+         z6SrSanhqDlVPGBZknnc2kiZ+P3mONwnl2fdnnC+8A+NkqsYe6sHpYxizNaoFm3kyICw
+         QdLMTdCfIgq9u/flBwUkDDeUuFLDdkzsYCh9fbT1Y/1h0cPshZWA4CMTbej3/ZObXz0W
+         yMxKSwpH4MZE9nMDtRkcrsU1qd/8rXbAa/kVMAgCgD2gVM+e88Jf6HtqfZInJ/AOYGw2
+         s2It4ffRG5IjmKRkZZRgcOtFmuLMis/YkUMBd6P0U9cPJQEansMahBAAk2J+AsMVkirE
+         PFzQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1788513031; x=1789117831; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+        d=gmail.com; s=20251104; t=1788513413; x=1789118213; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Vt81cwcsCfPywy+zBr+7O4ImxWrnQ6O2o5d5GOC5dKs=;
-        b=mndY7mUX8RqvUZf55hguKs9ehzP4ixit5qIRcAFIEW0kx+fiLYEJkAEPgAJN1gFIea
-         sNRNH7Ya3pd/BOYB08RkMbfwtjHhIIoH/qrwrg6m776dYmL18WPHHP0KTDvurpBWoCdQ
-         gboVlv97EL5KcelXwWh/rcDhEi+uZK/4eJW+IdtWGre5Az+3j2giPyqZ6hC9fICO3TWb
-         9Nm64h+k1qwG2Qp6l/WKBHHj22GaYDbg0mzRwtUwdLPdwMmy9oWlt6fSS0TTjhjEQDy4
-         ZIiXaooF4T4NpCL6C0x01D4S76aPXU5JYGTuSDYxlwkwP4Du9SQBMJ/UhmXPAKTVSpQx
-         IwHg==
+        bh=U13rcRq5LNpQ6vBXGnXyY3FhirpLd2dEbsFMBIDdyT0=;
+        b=d5aNv+MMj6WJx+K5xCoriHMX5Yz0Vmiwo7OOyL/GTP0Mqx+RKxBhDy/8UbqSKeZ48D
+         08WfOVOqW8C9c96LpO3x2u7VUy4imfnuhzFYhUz1q/Qxk+pXY2ypkDYoVYGV5VZzCmAh
+         MVAJbPrqbYWLLlrFCFUlTYX7nwC7NR6MZWqLl7L1S2PcJbr75NxECcGUlKROsosz5DQ4
+         bWDYsTjSQnQoi0zN0YQ/B3invtckJL5XXge07DArMdEBRY6P91CZvrmYcPMZ/zZuMqV7
+         I9vJEAJ/cIOVgX01YgVe/7AWIMsfOKVQujGVWrXMPuuoXRjSK/HQy6yG/Oc4/g7IA1pv
+         XFNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788513031; x=1789117831;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Vt81cwcsCfPywy+zBr+7O4ImxWrnQ6O2o5d5GOC5dKs=;
-        b=FJB5uYzeBfWvAUE/pCTbMsl69hl7g1zh87M7kzeZ1i4X7ml2c6zsE2CXKK/1Cxqm40
-         mwrCyhBfsV3sFuS5SnGgDWxaptNa35cR7vxeo3REUJx//jbfZlpaaLke8gA9cVWIS1UU
-         ihQl1pJdOW7Z9dyePbMQ5VjokZPKaFJB4pLrKsIgYWEe4cUGvMIuZw0oyVmcXvbMINFD
-         vuEjpMw46RMMa8o9VbDoCJQo5FGhL4p6lrSS+RGREQO2HSNUoAFLTvWlaugxEU8RqDUg
-         qtYaCCzfZsayyNtYMRHCbRMg6LqzSrNLWsM473L3yCpKb/BA12Tav1temPLo9vhX74gn
-         qhiQ==
-X-Forwarded-Encrypted: i=1; AKwUvByBZtHTvs3yphG1I8jFKDLXn43/Ir2pmfro/YDnPOdM/bhG9xfz6FNotMFdcgvH4FIVJrPRgJ0=@vger.kernel.org
-X-Gm-Message-State: AFuF++nmkwvNYECg577hgLudr/tE+ZTqIPuPK/ZvdlPkRKIu0nHAvSEv
-	GrrgEqJFZpN1cBRiME0rHnUnpiW9hTvUSkboFbk1rVRt7MwikXKU6jVwB6n7OHBj8MQkfB2UVPI
-	5mAVg4msNIcvEBL4GGOUgNNNRmtLq68CQUgepap86trPPf6JdoVa+05moug==
-X-Gm-Gg: AYBFou28hDHWsUoK8ovNrwwT55imw6bpb23ISrN1kotGurpxwToQRrBXR4OBgJI0DwD
-	7Q4xvAD3Ma68BLNUAQQCRxJysgQtunvxYz7TbxazDn0371JeES46tJw8g4TiOeQ9T0R07rqlUuv
-	9Rb10xHB00/U8Ndiq3I2enBS13nvZg63PsNiuDvRCsTk2RfsMTSmVkrLyWiM3RrV/EaR5gFu8q/
-	Yds0YyotEGruQmdkCDrYkA2AA/9fHROVLoLY4uzveoyaMPsqiL0cYPVDjUaU1VgpPn4hwya0PpT
-	B302h8fdVNpaP7bfboot8tK/IH6wOcgtq5mcUJj+2bnMNQckUITt639sznZ5VOfJxeefs1tMvNN
-	b3gY+uKCONQe+eAMjLWgb38hiHWMIZB3RnbyNmIiHcRYGOCFsQtn2pDd/4rtPZ18drz2V+UFEfw
-	==
-X-Received: by 2002:a05:600c:3511:b0:49c:fa21:1c86 with SMTP id 5b1f17b1804b1-49cfa211cd7mr27409525e9.27.1788513030010;
-        Fri, 04 Sep 2026 02:10:30 -0700 (PDT)
-X-Received: by 2002:a05:600c:3511:b0:49c:fa21:1c86 with SMTP id 5b1f17b1804b1-49cfa211cd7mr27408995e9.27.1788513029603;
-        Fri, 04 Sep 2026 02:10:29 -0700 (PDT)
-Received: from [192.168.188.218] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cee6024a8sm143075225e9.6.2026.09.04.02.10.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 04 Sep 2026 02:10:28 -0700 (PDT)
-Message-ID: <a1c9d9ae-68cd-4153-9bf3-38be1cd8970d@redhat.com>
-Date: Fri, 4 Sep 2026 11:10:27 +0200
+        d=1e100.net; s=20251104; t=1788513413; x=1789118213;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=U13rcRq5LNpQ6vBXGnXyY3FhirpLd2dEbsFMBIDdyT0=;
+        b=PxQXS/RI0rzRGuvZy0C5JcfHtkGF9QZA8Z0F21XznKIu1kGQUZMU1J/4RiRvwTjgdW
+         GMlGbnR+Rb5JInGCG89eBU2/mjaVw5OhRJy8TuYRzm1Nb2Mt7LbfHxKTTkg5ArBTDU7I
+         DHLiyTmJkDCCNL1j+7JN6AggWaMoDu9oEj+ZpvybRNeJkJBeeRVW51QwIpasilRLiytW
+         KXavDjmBdkqLwcD4aSz0ya+W2Nf+p3CZ84UEoFdJ2B3feuSJkP2nlVRSR0F6Fevw/KL1
+         AXHXtGu3bMuZCr2XvfLsArdyty6T37vVylTgwRDR2ZKOzcCXTjbi+FSOLQpe2IdpHSn3
+         qm8A==
+X-Forwarded-Encrypted: i=1; AKwUvBzDUhr/Tt92z2GXa6DE49SWV15XxB7b8uQzoaXaag7XfdPAcO7H6ZYK14NRSEpQvsHlV7bb0K8=@vger.kernel.org
+X-Gm-Message-State: AFuF++mZ8YM+d1t/S0VVUJcMSEHuFBwN/g6W4AEnUsb5cxps+G6FBXIp
+	VkFmQGuh90AsHxrSVo4OTupBXgNGa0TeX1acy9GtAAqoNSjgAHcSBd8UMwce6sV28mloBZbI/zd
+	PILPFMhlzk/qJhxQyHfmz27SDsLG85ns=
+X-Gm-Gg: AYBFou0PEP62FMT/c2EC3+abmSJuCP8IZ7Ol7a1hAyYtTkXisFlmkvZ3wWHMtGlE6U2
+	3ThKu8b3HAgmjrRMLTyvHSM+mGHLdbH0LbLQo54HsG83KKszFf0sgn7+UrqjaCQ4YffS+wPc2/S
+	FjEPLaFeDsl5L+3BWMuOZ9ukkZCeciyOmHWyVpWsYX1vipVdY0FfnqYMZd1xnVpSdqwe8MCPRCg
+	lO2LdqiC160cWnLZVRS1zG06zsGbNcWtqceBSFv7Jn9aYf1lwLZf7BlhIe8VlMD+Z2itA94NgQR
+	Brm1JunIZI9qrUCAPxFkOKlbX7S5w6USTF1l/15uFatXkgV7BBGIXIOUmnTehsR9510P97EDTZI
+	RBZB3sCYg08Fm+g1HKaAGkSi/Sj1U12KmTtwX7y4o7ET97xaO6IMRpK2H
+X-Received: by 2002:a05:6a00:1910:b0:853:5152:a3e9 with SMTP id
+ d2e1a72fcca58-861692844b3mr6680817b3a.11.1788513413233; Fri, 04 Sep 2026
+ 02:16:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 net-next 2/2] ipv6: Remove IPV6_ADDRFORM.
-To: Kuniyuki Iwashima <kuniyu@google.com>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Neal Cardwell <ncardwell@google.com>, Willem de Bruijn <willemb@google.com>,
- David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>
-Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuni1840@gmail.com>,
- netdev@vger.kernel.org, Daehyeon Ko <4ncienth@gmail.com>,
- Hyunwoo Kim <imv4bel@gmail.com>
-References: <20260904033543.2635540-1-kuniyu@google.com>
- <20260904033543.2635540-3-kuniyu@google.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20260904033543.2635540-3-kuniyu@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20260903092430.354186-1-phucduc.bui@gmail.com>
+ <GV2PR04MB117394049F412AAAC59FE93FE88B62@GV2PR04MB11739.eurprd04.prod.outlook.com>
+ <CAABR9nFD1+GJiWdyxiuGVRzKjpCUfu3TQHYOLnOym3hHzOM2tg@mail.gmail.com>
+ <GV2PR04MB1173931CA07AEAB48339FF71588B52@GV2PR04MB11739.eurprd04.prod.outlook.com>
+ <CAABR9nFi06-7=uHmOBFGZv1eUYCskv8WspOdUxbDuQ6vMk68Dg@mail.gmail.com> <GV2PR04MB117399ABD55B1D65AAB8EA42E88B52@GV2PR04MB11739.eurprd04.prod.outlook.com>
+In-Reply-To: <GV2PR04MB117399ABD55B1D65AAB8EA42E88B52@GV2PR04MB11739.eurprd04.prod.outlook.com>
+From: Bui Duc Phuc <phucduc.bui@gmail.com>
+Date: Fri, 4 Sep 2026 16:16:41 +0700
+X-Gm-Features: AcwNN1UyZz0SrSd2LGz8BgfAH26qtAAWc51dgQLrq8UzEPhnn0559XUUTa1qyZ0
+Message-ID: <CAABR9nGSi5mty-4AQv_vYz0yqCKE5ALh8ZC7bcFnY99VBfq_CA@mail.gmail.com>
+Subject: Re: [PATCH net-next v2] net: fec: Propagate PTP initialization errors
+To: Wei Fang <wei.fang@nxp.com>
+Cc: Frank Li <frank.li@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Richard Cochran <richardcochran@gmail.com>, Anson Huang <Anson.Huang@nxp.com>, 
+	Stephen Boyd <swboyd@chromium.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On 9/4/26 5:35 AM, Kuniyuki Iwashima wrote:
-> Recently, IPV6_ADDRFORM has received many AI-driven bug reports.
-> Fixing them properly would needlessly churn the fast paths in TCP
-> and UDP.
-> 
-> IPV6_ADDRFORM was initially introduced in RFC 2133 in 1997,
-> but only two years later, it was removed from RFC 2553 in 1999.
-> 
-> In 2026, modern applications natively support dual-stack sockets;
-> notably, systemd's socket activation does not use IPV6_ADDRFORM.
-> 
-> Also, getsockopt(IPV6_ADDRFORM) can be replaced with SO_DOMAIN.
-> 
-> Let's remove IPV6_ADDRFORM.
+Hi Wei,
 
-Yes please!
+Thanks for the clarification.
 
-Acked-by: Paolo Abeni <pabeni@redhat.com>
+>
+> It is a potential issue, so the target tree should be net.
+>
 
-> Later, we can remove sk->sk_prot_creator and revert commit
-> c26c192c3d48 ("udp: properly deal with xfrm encap and ADDRFORM").
+I will retarget the patch to the net tree and resend it.
 
-I'm not 110% sure syzkaller or others will find a way to still trigger
-the race addressed there, but I guess we will see.
-
-Also I guess we can get rid of several READ_ONCE(sk->sk_family).
-
-/P
-
+Best regards,
+Phuc
