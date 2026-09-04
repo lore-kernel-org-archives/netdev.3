@@ -1,189 +1,121 @@
-Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from forward501a.mail.yandex.net (forward501a.mail.yandex.net [178.154.239.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E5C35237B3
-	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 20:28:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8B4C4EE84F;
+	Fri,  4 Sep 2026 20:34:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788553715; cv=none; b=TsZO3807nNMF3q/ywwdwHjVt1rnEgFWmsdW7/wAATJluxxuDyZJykJxb85NjbCEphG8JPpbNqrPYyb1/2hDUcAlQuAqk+nNI8RI8oE/cDq8N21flGf7cz1p1vzaZL8SIRVgqZPqrpbP/piLvzatLu5EpfzXJUiiYEt4KVf8Xdn4=
+	t=1788554074; cv=none; b=LcroRpcDC8S/nVx6zfAaPK6/Zfc2VN1Wkry3iU61TauZq6wjgmXHu/iga1MaPhP44jycdPElgTsAdD7+Y0vTwK5qsK40JlyEUtGZejiBTRTTqLaJNOdipg73YhhnWS/06NjWDLooqB6TeK2RydoviSDPJzvgh91xv6nwCGtQTOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788553715; c=relaxed/simple;
-	bh=zSDuYRz2m3SJMlrT8Lw4ThkmL4/X3hYMhkQwUJ2m4zw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WkarO0mXeVAsY9PymCCTjCDA4tZPKrsPARZ/4ghYZLq6rCrOhmDhyIPBjO/zeMMxy21/32RLc0mVqCvQBOJKdDJaOstz0fSjmPMK+46NT869mPqTl/1LJL9UVh/CPGWq8id/gi2SurRP1wEGaBfU1dIp5pdWy0EYtnjuXh5AirY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DFGJDDPn; arc=none smtp.client-ip=209.85.208.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788554074; c=relaxed/simple;
+	bh=sR+0WNfssNxtim3D/P9pfgpNA/3kSbSSJjWH6uIexUs=;
+	h=From:To:Cc:In-Reply-To:References:Subject:MIME-Version:Date:
+	 Message-Id:Content-Type; b=hoJu96Xasr78EvHEgv6x3G+ik6gqS4rLX3LJpoymFHIvbXqDy8vXJ1Xb/xtx++6zM7QFW2fF5wMo4/8eR1yDFxmTRAXu7sJ4nvNlT0oCzLyOlGaVWYSSj271Hw9jpwq1a0FF3peFt9G+X+50D7Crb/fqh+/6Aj1kEdPMnC9jPig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=0upti.me; spf=pass smtp.mailfrom=0upti.me; dkim=pass (1024-bit key) header.d=0upti.me header.i=@0upti.me header.b=EZrj/uT/; arc=none smtp.client-ip=178.154.239.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=0upti.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=0upti.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DFGJDDPn"
-Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-39c8ee87f7eso13107771fa.3
-        for <netdev@vger.kernel.org>; Fri, 04 Sep 2026 13:28:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788553686; x=1789158486; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ZVdNxRn8VX1xv7coC4B1x70wb/kGKPtSJ0jnUzAdilQ=;
-        b=DFGJDDPnzUra4FzYC4wYRoZu1UNVBG0vty9uc9ASFCZDLIpPD78IU/DRVV3jsoSB9X
-         e+fZXZoxHoTO8Yfd0QsWF4eaQPeF50S3bEM2lUiK153ecW99USOfVZPtBHAs5X3pAOMH
-         61Qe1XMhW60dyf2GclNV/DMcXwR+1l7Qbr0AWI/gdHmAsotFWT4+HJ61rfAnv2gDoojz
-         d3fHe921SPfrweVl9xZPTY9sY70MZEpaUaPaOiZVi0SP6GMQIFU/lxBRbg6+Mt5w282j
-         qeZCiTOZ500RP6RqO4c3NBHjhiC3m7bekss9Hmsik2aKMiOdeZOPGNzkC8ick+MlrFpa
-         4aIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788553686; x=1789158486;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ZVdNxRn8VX1xv7coC4B1x70wb/kGKPtSJ0jnUzAdilQ=;
-        b=NJrpw1nCHuIBCdPYL+yVYEN8fLaWkgwJiPX7nJ9GGULW3bA8d5TIIvKxi2gFp9KLVC
-         o+oLV7DowFTdTjsc5/mdNmnoaNbIm/qPzV14QL1LdOwKA6nVEEBjrCwzVtCUsD+5Jl70
-         J0qBh7UX/qoV2N4WzveFlzCKxZ61RiFqUhTbX6AFNikshb9c9JyMrvfarKwO4T5sUTYd
-         GGGUtYP6VUSddDpied5hVe2JU1hBBUmkvKJfcLJbkZ0QE0RhZVLz3H5t93DnaRDpqOj4
-         yKS1hCI8Jda9UB58gix5baEB/vVFHoGHwUr2kpYM9lj0QCKUAeGgnMfiETRXVfwG80WY
-         O2yA==
-X-Gm-Message-State: AFuF++kLCCJWLs/4CV/RuM55rbL9BTUXH16agiNB6V2EYO1Pe/OJjrp6
-	eKHyAQd+ADAUuWqqB4hyl4UO1/B/Za+CKH2MYQPQQcCM470QWhcaWWts9ReJ0+l5BTPI
-X-Gm-Gg: AYBFou3hvlcREUapRMWUlxGroU3zRnu+Kyc4tUtTKDQgnfOuMHkIU85UkYafv3lyU9T
-	QI0fN5QH/OkG2GTvZ2x0od9VmwXk1PyeCHpouSQjCmaHFP1IuPiTJex5c44Nfsgepb1pSTlsE9o
-	/8pvKvhehmJPa5AeRFxH+7adloO9jcpnEUvij+hzZje3E5OICGqNkTnbxy5kQ+jP02llx4P/pIO
-	FQh2zzarNp247L1eWhtUGJPKByErpsmR7Iyn/B1gPgEqFllh/34xJ2HsbethYtlGrLIFGG1Zpdt
-	+nCIStcJbvc+sg1cpbSbLYbY+uexrh81mgatR266TEyVNU6XQ3FDayHVBas2gOxprPaTMaECQaQ
-	AYvh2hYwtUi8ixGzhuIOSdavGbk+eU4N+lA/wx+PTyOo+HF5hWEYQi+yN90CeaJFl/cSJSGh49o
-	51MMi5WdoQC9ZEnxcPHby1ao3yURYZHIsTo46/qdQrRDu0epTmtEVxp6H1rGlAM97VhLfWxmu1R
-	HQ070xiDFOg
-X-Received: by 2002:a05:651c:a185:b0:3a3:7680:67fa with SMTP id 38308e7fff4ca-3a376806991mr6184891fa.25.1788553685465;
-        Fri, 04 Sep 2026 13:28:05 -0700 (PDT)
-Received: from i-UX410UAR.lan ([2a02:2168:87cb:3900:a1e5:6a90:4021:407d])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3a370549917sm9910451fa.11.2026.09.04.13.28.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Sep 2026 13:28:03 -0700 (PDT)
-From: Vladislav Karmanov <vladislav.karmanov.dev@gmail.com>
-To: netdev@vger.kernel.org
-Cc: andrew@lunn.ch,
-	daniel@makrotopia.org,
-	dqfext@gmail.com,
-	SkyLake.Huang@mediatek.com,
-	hkallweit1@gmail.com,
-	linux@armlinux.org.uk,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	chester.a.unal@arinc9.com,
-	sean.wang@mediatek.com,
-	olteanv@gmail.com,
-	yangshiji66@outlook.com,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	Vladislav Karmanov <vladislav.karmanov.dev@gmail.com>
-Subject: [PATCH net v3] net: phy: mediatek-ge: disable EEE on the MT7530 PHY
-Date: Fri,  4 Sep 2026 23:28:00 +0300
-Message-ID: <20260904202800.3410838-1-vladislav.karmanov.dev@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (1024-bit key) header.d=0upti.me header.i=@0upti.me header.b="EZrj/uT/"
+Received: from mail-nwsmtp-mxback-production-main-78.vla.yp-c.yandex.net (mail-nwsmtp-mxback-production-main-78.vla.yp-c.yandex.net [IPv6:2a02:6b8:c15:271d:0:640:8641:0])
+	by forward501a.mail.yandex.net (postfix) with ESMTPS id 047DE81EE9;
+	Fri, 04 Sep 2026 23:26:11 +0300 (MSK)
+Received: from mail.yandex.ru (2a02:6b8:c17:113:0:640:1378:0 [2a02:6b8:c17:113:0:640:1378:0])
+	by mail-nwsmtp-mxback-production-main-78.vla.yp-c.yandex.net (mxback) with HTTPS id 3QQO6pGvl8c0-r6OUKqYf;
+	Fri, 04 Sep 2026 23:26:10 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=0upti.me; s=mail;
+	t=1788553570; bh=5tgwyDUIfpZVa1/3xlDMO4/b3eL1WpVfvtjoXWCT41s=;
+	h=Message-Id:References:Date:Cc:Subject:In-Reply-To:To:From;
+	b=EZrj/uT/5346TglerQz1Jsa8Xp/i2Os+iRs+UbhsUPxAq80pLPIx9IR0HtfbQd9hL
+	 3kiXv+fsmWzpZCA+6T9G6ogcMznI25Vz+U8oqY8rmxmce4ko8RWv2vYa0IJ+YV4TCY
+	 oI7P837Fwa3qetV2RgjesUi58Euiprex5xmpI0oE=
+Authentication-Results: mail-nwsmtp-mxback-production-main-78.vla.yp-c.yandex.net; dkim=pass header.i=@0upti.me
+Received: by yl7572a6ptr6ppfv.vla.yp-c.yandex.net (sendbernar) with HTTPS id 8423d0dad5cd213045de646daeeb8739;
+	Fri, 04 Sep 2026 23:26:09 +0300
+From: Ilya K <me@0upti.me>
+To: Ben Greear <greearb@candelatech.com>
+Cc: linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-mediatek@lists.infradead.org
+In-Reply-To: <3acf531c-bcc7-412b-b3bb-665069260e46@candelatech.com>
+References: <1767631788532094@64c4e675-cd08-4a74-816f-886742f9bfcd> <529a79bc-dab7-aa41-00bd-c47ecbefaa00@candelatech.com> <471221788538289@323ca970-5bd2-4c6b-b52d-2b863a718615> <3acf531c-bcc7-412b-b3bb-665069260e46@candelatech.com>
+Subject: Re:[bug] Triple whammy of mt7996e bugs on 7.2+
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Mailer: Yamail [ http://yandex.ru ] 5.0
+Date: Fri, 04 Sep 2026 23:26:09 +0300
+Message-Id: <2028561788553569@f088f4ec-f441-47a1-b7e4-75a1052aa4df>
+Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
-The MT7530 internal GE PHY advertises EEE by hardware default, but its
-EEE support is defective: with EEE advertised, some link partners fail
-to establish a stable link. On a 2-pair (4-wire) cable where both ends
-advertise gigabit, 1000BASE-T training cannot succeed, and instead of
-falling back to 100 Mbps the port loops, so no link or DHCP lease is
-ever obtained. MediaTek confirms the hardware is the root cause (Landen
-Chao, 2021): "EEE of the 10-year-old MT7530 internal gephy has many IOT
-problems, so it is recommended to disable its EEE."
+> If you can get it to compile for your system by adding any needed patches on top, that is likely best
+approach, and if that actually solves the problem, we'd be happy to consider adding any bpi4 patches
+to our tree.
 
-mtk_gephy_config_init() used to clear the EEE advertisement early, but
-commit af3b4b0e59de ("net: phy: mediatek-ge: do not disable EEE
-advertisement") removed that on the rationale that the DSA subdriver
-already performs an early disable. That holds for MT7531, whose
-mt7531_setup() clears MDIO_AN_EEE_ADV on each switch PHY, but not for
-the MT7530 PHY: neither the MT7621 integrated switch nor the dedicated
-MT7530 IC ever had such a loop, so removing it left those boards
-without any working early EEE disable and the link flapping came back.
+OK, so curiosity got the better of me, and I ended up with https://github.com/K900/linux/tree/bpi-r4-72-ct, which is kind of a horrible frankentree of my changes rebased on (your tree rebased on 7.2.3 minus bpi-r4 changes).
 
-Since the broken hardware is the PHY, fix it in the PHY driver so it
-covers all users of this PHY, integrated in a switch or standalone:
+More specifically, here's the commits from your side that got dropped (courtesy of git range-diff):
 
-  - clear MDIO_AN_EEE_ADV in probe(), before anything can negotiate
-    EEE with the link partner;
-  - call phy_disable_eee() so phylib does not write the advertisement
-    back on later renegotiations and userspace cannot re-enable EEE.
+ 234:  846c09f2d40e <    -:  ------------ arm: dts: mt7623: swap mmc and put uart2 first
+ 235:  0c7af9986c06 <    -:  ------------ utils: firmware: add r3mini phy firmware
+ 236:  e977a0c57579 <    -:  ------------ net: sfp: Fixup for OEM SFP-2.5G-T(-R-RM) module
+ 238:  2510cb2b3cf1 <    -:  ------------ dt-bindings: phy: mediatek,xfi-tphy: add new bindings
+ 239:  3ae8358d3a61 <    -:  ------------ dt-bindings: mt76: support setting per-band MAC address
+ 240:  654e6eeb87d9 <    -:  ------------ hwrng: add driver for MediaTek TRNG SMC
+ 244:  c5a3d787c53f <    -:  ------------ dt-bindings: net: mediatek: remove wrongly added clocks and SerDes
+ 245:  8387ae94bbd7 <    -:  ------------ dt-bindings: net: mediatek,net: fix and complete mt7988-eth binding
+ 247:  5ddb838fc0b1 <    -:  ------------ Add some build scripts for combining Adtran SDG-8734v and SDG-8733v in a single fit-multi.itb file
+ 249:  e34f830292ad <    -:  ------------ net: ethernet: mtk_eth_soc: Enable legacy SRAM behavior for v3 devices
+ 250:  3a1f3125a1cd <    -:  ------------ arm64: dts: mt7622: add pstore reserved memory
+ 251:  8e9dd16ebaae <    -:  ------------ arm64: dts: mediatek: add symbols to dtb
+ 252:  8585e7d77269 <    -:  ------------ Example files to copy the boot and modules.
+ 253:  64a808bc3c0c <    -:  ------------ Scripts to make the .itb boot file. Place the bpi-r4.itb in the /boot directory of the BPI-R4. The .itb file contains the Linux kernel and Device tree files.
+ 254:  3f4e69730a4f <    -:  ------------ Some example .config files to use when building the kernel.
+ 255:  5bd6a36c14b1 <    -:  ------------ build: add the .its files that are used to make the .itb boot file for the bpi-r4
+ 256:  3a252445e488 <    -:  ------------ build: Add a README.BPI file with instructions on how to build the Linux kernel for the BPI-R4.
+ 257:  9538b07c0635 <    -:  ------------ CT: Add BPI4 kernel .config file.
+ 258:  c6a7e4315557 <    -:  ------------ BPI4: Update readme with a few pkgs needed for building on Fedora.
+ 259:  b13df740e737 <    -:  ------------ BPI4: Add packaging script for bpi4 kernel and modules.
+ 260:  4c9c807e3d41 <    -:  ------------ BPI: Package mtk and intel firmware in kernel pkg.
+ 264:  92df0e28ed0b <    -:  ------------ arch: arm64: boot: dts: mediatek: Add .dts files for adtran wifi router.
+ 265:  d6d28e6f0a3d <    -:  ------------ arch: arm64: boot: dts: mediatek: Add .dts file for Adtran SDG-8734v wifi router.
+ 266:  7956efe1b195 <    -:  ------------ Add "config-sdg-8734v" and "make-itb-adtran.sh"
+ 267:  7a0b10a1a8cb <    -:  ------------ Add "adtran.its"
+ 268:  0abd83c3500e <    -:  ------------ arch: arm64: boot: dts: mediatek: Add some more items to the .dts file for Adtran SDG-8734v wifi router.
+ 269:  35e22fd5a813 <    -:  ------------ arch: arm64: boot: dts: mediatek: Add some more items around the fxs fon ports to the .dts file for Adtran SDG-8734v wifi router.
+ 270:  9a308285aee4 <    -:  ------------ Adtran kernel pkg script.
+ 271:  11894e8c8b42 <    -:  ------------ pkg: Fix up adtran AP pkg script.
+ 272:  1c98cd76a009 <    -:  ------------ Add some build scripts for Adtran SDG-8734v and SDG-8733v
+ 273:  d1433e1eb59a <    -:  ------------ arch: arm64: boot: dts: mediatek: Add some ethernet port labels and add file for Adtran SDG-8733v wifi router.
+ 274:  eb8730a4900e <    -:  ------------ Build multi-target adtran itb, and check for build failures.
+ 275:  09624f3c3c3b <    -:  ------------ adtran: Add dts file for 8733 (no v) platform.
+ 276:  e8b33db1b68b <    -:  ------------ mediatek: dts: Hack in mt7988a from our 6.11 kernel.
+ 905:  95d57af187cf <    -:  ------------ cfg: Update bpi4 cfg for 6.10 kernel.
+ 906:  140e2059ed2b <    -:  ------------ bpi4 kernel config: Enable piles of USB device support.
+ 924:  6377fb541899 <    -:  ------------ bpi: Added environment setup instructions for Debian/Ubuntu users.
+ 935:  c7424426111a <    -:  ------------ Adtran sdg 8733 readme.
+ 942:  43e9a3e2f391 <    -:  ------------ adtran: Disable usb3 to work around RF interference.
+ 943:  068d8f8543e9 <    -:  ------------ adtran: force usb to 2.0 properly
+ 944:  493b2cab2a8b <    -:  ------------ adtran: Force usb2 for other variants
+1013:  46f9ae768fc3 <    -:  ------------ net: ethernet: mtk_wed: add ppe drop
+1014:  0b8db8e83a54 <    -:  ------------ mtk7996: Fix pppe drop build issue.
+1077:  93d44e506bc3 <    -:  ------------ Revert "net: ethernet: mtk_eth_soc: Enable legacy SRAM behavior for v3 devices"
+1078:  4a591d110b55 <    -:  ------------ Revert "net: ethernet: mtk_eth_soc: use generic allocator for SRAM"
+1165:  1113c075457f <    -:  ------------ pkg:  Ensure adtran image shows current build date.
 
-Auto-negotiation then falls back to a stable 100 Mbps link instead of
-looping at gigabit. Tested on ASUS RT-AX53U (MT7621): with a 2-pair
-cable on the WAN port, a single clean 100 Mbps link comes up and a
-DHCP lease is obtained, where the unpatched driver loops.
+The adtran stuff didn't want to compile so I just deleted as much of it as I could find and crossed my fingers, that was probably unnecessary.
 
-Fixes: af3b4b0e59de ("net: phy: mediatek-ge: do not disable EEE advertisement")
-Suggested-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Vladislav Karmanov <vladislav.karmanov.dev@gmail.com>
----
-Changes in v3:
-- Move the fix from the DSA driver to the MT7530 PHY driver: the
-  broken hardware is the PHY, so the workaround belongs there and
-  covers all users of the PHY, switch-integrated or standalone
-  (Andrew Lunn).
-- Clear MDIO_AN_EEE_ADV from probe() rather than config_init() so the
-  advertisement is off before anything can negotiate EEE, and call
-  phy_disable_eee() so neither phylib nor userspace can re-enable it
-  (Andrew Lunn).
-- Remove the eee-broken-* device tree properties discussion from the
-  commit message; the properties are not needed once the PHY driver
-  disables broken EEE itself (Andrew Lunn).
+The dropping of mtk_eth_soc stuff _was_ necessary to get Ethernet to probe at all.
 
-v1: https://lore.kernel.org/netdev/20260818182829.1580811-1-vladislav.karmanov.dev@gmail.com/
-v2: https://lore.kernel.org/netdev/20260820202844.1821687-1-vladislav.karmanov.dev@gmail.com/
+I also had to enable CONFIG_ATH10K_DEBUGFS, CONFIG_IWLWIFI_DEBUGFS and CONFIG_NL80211_TESTMODE in the kernel config
+to get some bits to build (I'm building this with a distro defconfig that enables way too many things and I have yet to find time to trim it down;
+maybe one day).
 
- drivers/net/phy/mediatek/mtk-ge.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+This abomination is now booted on my hardware and I'll get back to you if it explodes again, which I'd expect to happen at some point
+during the weekend at worst (and if it survives longer, that's already an improvement).
 
-diff --git a/drivers/net/phy/mediatek/mtk-ge.c b/drivers/net/phy/mediatek/mtk-ge.c
-index 73d9b72..35600c7 100644
---- a/drivers/net/phy/mediatek/mtk-ge.c
-+++ b/drivers/net/phy/mediatek/mtk-ge.c
-@@ -62,6 +62,27 @@ static void mtk_gephy_config_init(struct phy_device *phydev)
- 		       FIELD_PREP(MTK_MCC_NEARECHO_OFFSET_MASK, 0x3));
- }
- 
-+static int mt7530_phy_probe(struct phy_device *phydev)
-+{
-+	int ret;
-+
-+	/* The MT7530 internal GE PHY has broken EEE: with EEE advertised,
-+	 * some link partners fail to establish a stable link (on a 2-pair
-+	 * cable, 1000BASE-T training fails and the port loops instead of
-+	 * falling back). MediaTek recommends disabling EEE on this PHY.
-+	 * Clear the EEE advertisement early and mark EEE disabled, so
-+	 * that neither phylib nor userspace can re-enable it.
-+	 */
-+
-+	ret = phy_write_mmd(phydev, MDIO_MMD_AN, MDIO_AN_EEE_ADV, 0);
-+	if (ret)
-+		return ret;
-+
-+	phy_disable_eee(phydev);
-+
-+	return 0;
-+}
-+
- static int mt7530_phy_config_init(struct phy_device *phydev)
- {
- 	mtk_gephy_config_init(phydev);
-@@ -100,6 +121,7 @@ static struct phy_driver mtk_gephy_driver[] = {
- 	{
- 		PHY_ID_MATCH_EXACT(MTK_GPHY_ID_MT7530),
- 		.name		= "MediaTek MT7530 PHY",
-+		.probe		= mt7530_phy_probe,
- 		.config_init	= mt7530_phy_config_init,
- 		/* Interrupts are handled by the switch, not the PHY
- 		 * itself.
-
--- 
-2.43.0
+Also, I _just_ realized that the logs from the original message did not make it to the list, so here they are in gist form instead: https://gist.github.com/K900/a0a27551d5955fefe2976bda3816f021
