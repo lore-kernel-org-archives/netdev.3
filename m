@@ -1,101 +1,109 @@
-Received: from kylie.crudebyte.com (kylie.crudebyte.com [5.189.157.229])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-51.mta0.migadu.com [91.218.175.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12FB744999F;
-	Fri,  4 Sep 2026 13:37:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.189.157.229
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E50C549EC65
+	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 13:39:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788529065; cv=none; b=WcPeoc6/mvCfOImvPcoW2aR5bsCL99u9Z/CjgZ5PjvyuEmG4iPVb8ub3Zhb8P6h3y+Nurn5imIAaYVEnCThowwS4NbVTYls2l8QjbkzYYPXLFrFbWsh/kjaoPLcYs4269S571rGphI6Vj/my6oq7ObAwlN5HFrqWiDAHGGU8lzU=
+	t=1788529189; cv=none; b=dhFVL+yhrO103Ekhx7QUT68m5CZjiQdU5+y4GdRhy8ZPRW5d1JGDjnYn+ymvGG7PksQOmzmFrn3XsbBeLpHq0smzCttE+VXLSE65n2Gg5arpVcFjC+tdN3QBKlHNQXbb7p8xAJEoY2JjXKf4S8j5GLb2HckKIS2tlruG9FctsFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788529065; c=relaxed/simple;
-	bh=Njjasc3IX0xlY9+6WXjjzKL0xM4yf+35381p8OsefCw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oi6F/yNJIFf0HKSa1J1m156maDT3HDyU6X8am4JKw5CKuHJeUrXV43Dw16SwQiHUX8pediq+ioTd7dXwCiNPmfCIz0u6eXi5C5en/DYShjL/zT7QvQ3dBt+We8H4WB/bps1u+Vu14bQJ5HfyCp9++FvPMRbfwbYe9p01B79olPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com; spf=pass smtp.mailfrom=crudebyte.com; dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b=XHknQjvt; arc=none smtp.client-ip=5.189.157.229
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crudebyte.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crudebyte.com
+	s=arc-20240116; t=1788529189; c=relaxed/simple;
+	bh=JzSIGCnXkUnsi3bCYP4ZwoF0IaKCQBGqBC1R9+m4ROA=;
+	h=MIME-Version:Date:Content-Type:From:Message-ID:Subject:To:Cc; b=aI/C3BwPzOqajvVr60sF7fDk4ZRJc6jYfYG5nCw6W2vFmFoCs9eZ4a1iYpCoc2K53XflonLWpAeydnOKXTfxn1jUZXKp7WlFgRBb4y/mcBX+U3SE7sVRC8R/bnqaka7yPFaVKalptsPbKEqlaTxEjC+nIFf2NWD1yFi1O20lUOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=v1KyDkda; arc=none smtp.client-ip=91.218.175.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=crudebyte.com header.i=@crudebyte.com header.b="XHknQjvt"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crudebyte.com; s=kylie; h=Content-Type:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Content-ID:Content-Description;
-	bh=oSirYoF2RY8du2LiY0yBrNRVUm+QqIhfZ6Fhn2chzu8=; b=XHknQjvt0NgxRsBupg7P2PhkNT
-	D+1Ta/5ErjnUtCVk4uZKvSILseCTv9YqGiog8X/com2Sf5bCdgFMPj7tlZEAFwE8eMkajTZ6FLYtS
-	fn4E36B6a4C7qSifjje8LcAbZ2EtzfhW3s4ipyrO25meFYlu74ZIdzNvbUKO3czv/YCBWn9Q17AuC
-	VmZn2eTDDGEPuG5t+/wl1uOmQnuSw0MCnjrIqx5gQM71qkmY1tnI4oZtKUCc6XRp8WklST0QfaAE3
-	7TTzzbBV6tqQK8gn8g2GPTNXzSNeJhuRYHcm1k6vQJTDoWEt14Zlgjo1JY7JvSMje+CJH2S/82BcI
-	XC/XafggGOz8rQGGivKdDZLdezOa/zocJx3ZH9QzQyPMskYhBHAUorVTezU5gzSC1F/4fcNE3uZAI
-	CPjNa/6hPOehcMKztjodixp142mgKal9Rt+rZN/MzOYKYC006c+1aEeALKEVr2Aoee1ifNu63gBlx
-	fw8JdE3giIyDE+VPv5yc8YJJmHdfmKsGdBmn3ko9HLM6GZ6ygi4YkHL2dOH9ESgBHNayeLIMmuHYD
-	BOSBwryYimjxUeGvmZmk+zlize6xNWGXJXEm3SKwpk72HOClCsybA+46jlMbqlj8PRMhGwBTjbchY
-	Xej7eMLBAZpw7kSESRXL71JYm2C0jICTxiPiHgnio=;
-From: Christian Schoenebeck <linux_oss@crudebyte.com>
-To: Eric Van Hensbergen <ericvh@kernel.org>,
- Latchesar Ionkov <lucho@ionkov.net>,
- Dominique Martinet <asmadeus@codewreck.org>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Hemanth Selam <hemanth.selam@gmail.com>
-Cc: linux-kernel@vger.kernel.org, v9fs@lists.linux.dev, netdev@vger.kernel.org
-Subject: Re: [PATCH] net: fix typos in comments
-Date: Fri, 04 Sep 2026 15:10:18 +0200
-Message-ID: <12963525.O9o76ZdvQC@weasel>
-In-Reply-To: <20260904112100.34541-1-hemanth.selam@gmail.com>
-References: <20260904112100.34541-1-hemanth.selam@gmail.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="v1KyDkda"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=JzSIGCnXkUnsi3bCYP4ZwoF0IaKCQBGqBC1R9+m4ROA=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788529184; v=1; x=1789133984;
+ b=v1KyDkdakWsakKyOeRxx3Dq08bH5+YeORpeoPk+krlt8ZJvQvlk9+u9kWHC/viiD2c7U8NAD
+ A3WEkhbfmgMmgjtPfmO2hxpWkIOgjwnM8qd3DVHqvUS1qOuNn98NIibIe07LT5+3Nh8Feyj1GzZ
+ srftZ0Yar4GGCBXMh2/K1FOk=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 4f8e3b1482d32937;
+	Fri, 04 Sep 2026 13:39:34 +0000
+X-Mizu-Trace-ID: 4f8e3b1482d32937
+X-Migadu-Flow: FLOW_OUT
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
+Date: Fri, 04 Sep 2026 13:39:34 +0000
 Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+From: "Tianchu Chen" <tianchu.chen@linux.dev>
+Message-ID: <7c971924c6bdccf6c2f75704a5a746e9303aaf64@linux.dev>
+TLS-Required: No
+Subject: [PATCH] wifi: wilc1000: fix RX buffer OOB-write in
+ wilc_wlan_handle_isr_ext()
+To: ajay.kathat@microchip.com, claudiu.beznea@tuxon.dev
+Cc: linux-wireless@vger.kernel.org, netdev@vger.kernel.org
 
-On Friday, 4 September 2026 13:20:59 CEST Hemanth Selam wrote:
-> Fix typos in comments, reported by scripts/checkpatch.pl using the
-> misspelling list in scripts/spelling.txt.  Only touches comments, no code
-> changes.
-> 
-> Assisted-by: Cursor:claude-opus-5
-> Signed-off-by: Hemanth Selam <hemanth.selam@gmail.com>
+From: Tianchu Chen <flynnnchen@tencent.com>
 
-But didn't catch the double spaces in the commit log. ;-)
+wilc_wlan_handle_isr_ext() takes the RX transfer size from the
+device-reported interrupt status register (a 15-bit field shifted left by=
+ 2,
+up to 131068 bytes) and reads that many bytes from the device into
+rx_buffer, which is only WILC_RX_BUFF_SIZE (96K) large. The wrap
+check only handles the current offset; the size itself is never
+compared against the buffer, so a bogus SDIO device can make the driver
+OOB-write rx_buffer by up to ~32K with data it controls.
 
-Reviewed-by: Christian Schoenebeck <linux_oss@crudebyte.com>
+The oversized transfer also leaves rx_buffer_offset past the end of
+the buffer, after which the unsigned wrap check stops working and
+the overflow can repeat.
 
-> ---
->  include/net/9p/9p.h     | 2 +-
->  include/net/9p/client.h | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/include/net/9p/9p.h b/include/net/9p/9p.h
-> index fd7a034b8278..22ab7486795d 100644
-> --- a/include/net/9p/9p.h
-> +++ b/include/net/9p/9p.h
-> @@ -120,7 +120,7 @@ void _p9_debug(enum p9_debug_flags level, const char
-> *func, * @P9_RCREATE: response with file access information
->   * @P9_TREAD: request to transfer data from a file or directory
->   * @P9_RREAD: response with data requested
-> - * @P9_TWRITE: reuqest to transfer data to a file
-> + * @P9_TWRITE: request to transfer data to a file
->   * @P9_RWRITE: response with out much data was transferred to file
->   * @P9_TCLUNK: forget about a handle to an entity within the file system
->   * @P9_RCLUNK: response when server has forgotten about the handle
-> diff --git a/include/net/9p/client.h b/include/net/9p/client.h
-> index 55c6cb54bd25..f3aead8939ef 100644
-> --- a/include/net/9p/client.h
-> +++ b/include/net/9p/client.h
-> @@ -97,7 +97,7 @@ struct p9_req_t {
->   * @proto_version: 9P protocol version to use
->   * @trans_mod: module API instantiated with this client
->   * @status: connection state
-> - * @trans: tranport instance state and API
-> + * @trans: transport instance state and API
->   * @fids: All active FID handles
->   * @reqs: All active requests.
->   * @name: node name used as client id
+Drop any transfer whose size exceeds the RX buffer, acknowledging
+the data interrupt and re-arming the RX engine so the bogus frame is
+discarded and reception can continue. This also restores the
+rx_buffer_offset <=3D WILC_RX_BUFF_SIZE invariant the wrap check
+relies on.
 
+This is not expected to change driver behavior in most cases:=20
+without=20this check, an oversized transfer would most likely
+corrupt neighboring kernel memory instead of completing anyway, and
+the drop path performs the same interrupt acknowledgment and RX
+engine re-arming as the normal path, so subsequent transfers are
+received unaffected.
 
+Discovered by Atuin - Automated Vulnerability Discovery Engine.
 
+Fixes: c5c77ba18ea6 ("staging: wilc1000: Add SDIO/SPI 802.11 driver")
+Cc: stable@vger.kernel.org
+Assisted-by: LLM
+Signed-off-by: Tianchu Chen <flynnnchen@tencent.com>
+---
+ drivers/net/wireless/microchip/wilc1000/wlan.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
+diff --git a/drivers/net/wireless/microchip/wilc1000/wlan.c b/drivers/net=
+/wireless/microchip/wilc1000/wlan.c
+index 4b116fe6f9ea9..55a77a2e32887 100644
+--- a/drivers/net/wireless/microchip/wilc1000/wlan.c
++++ b/drivers/net/wireless/microchip/wilc1000/wlan.c
+@@ -1197,6 +1197,15 @@ static void wilc_wlan_handle_isr_ext(struct wilc *=
+wilc, u32 int_status)
+ 	if (size <=3D 0)
+ 		return;
+=20
++=09/* A size exceeding the RX buffer is bogus; drop the transfer
++	 * instead of overflowing the buffer.
++	 */
++	if (size > WILC_RX_BUFF_SIZE) {
++		wilc->hif_func->hif_clear_int_ext(wilc,
++						  DATA_INT_CLR | ENABLE_RX_VMM);
++		return;
++	}
++
+ 	if (WILC_RX_BUFF_SIZE - offset < size)
+ 		offset =3D 0;
+=20
+--=20
+2.51.0
