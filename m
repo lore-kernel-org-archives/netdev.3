@@ -1,67 +1,40 @@
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8950035AC03
-	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 06:06:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B523400DE8;
+	Fri,  4 Sep 2026 06:11:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788502019; cv=none; b=lCykxkVTr8jSzMpAPtLLiL9f9jcFYIblgfwgqOQMyXuuNdUrc9xeofVN4eUb4yoiW/epivnYXGm2tdk7ay3bWXKtu8A0kPxmzERZUfnpCqkm/Xx9kSJ/vkdk2gxeflFvYSCZhxz4iJdGGL4bsQL3M1khMIpXNvteiM9w26UvX0E=
+	t=1788502295; cv=none; b=MmtLXAl+m33B1tJ8uxWlCsvJGM8LIfOBAsqxgl+ahMU3Bev5mDEtZUyH4OYsQ391r+1dVqMSjBboaBOdfuoJ0G9muzfR3CrE0qj4z3DCtG0WA6KjZv7zxna+jNUMPegRF2GrjtWr93ydAnwKp1M9bexsFj1qJ8S6EkZ4uJ3XgVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788502019; c=relaxed/simple;
-	bh=uVHA3MxowH6wVae4z71QtAz1vyhRdboIPrZLDAJ4r58=;
+	s=arc-20240116; t=1788502295; c=relaxed/simple;
+	bh=JHkbB1JfRxNI1CsXHCi50vbXHL74mLGXT94u8wHDfJ8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=flyF9llC80Gy3FV+afswd8DhShPpeDMden60YoRS53fPjn7h5pI4b5nMzIKxy8qa7bO7ob/JRXF9fnOQgewHDe8fezM6KVbJp/lBiPHB6ngrt5ee56vsvI5K2TRBJf5XEfrWqoAr8YMkPi1aqnOVeuSBXSlWaDbGaeeY0FKTyUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=NStZKT6i; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
+	 In-Reply-To:Content-Type; b=k3HMyPW9vtB1VjoJFmitJtvCgrzHvcMHHZxrXKLik2lpcoIfqyu+joHgTvFXUVGkphmGfriP1pa0XGX3ewVYmyWbKV6TIoRJP8nfC0ZBM0psudc9ebM8qRufs+Od+1U0ok+Xi0XJr/+N8N2Fl6grjnfToa3l27/2m4elfXls2II=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=0NwTAcz0; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="NStZKT6i"
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4921eed3fa2so5870505e9.0
-        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 23:06:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blackwall.org; s=google; t=1788502015; x=1789106815; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=2wyUxE2TBml8FNoZA0yLvtlhvWKAzzFnIf+bKtrZuQQ=;
-        b=NStZKT6islY212FSUsIHkpkH0J2EemWQ9CsN3X5NyTu9krNxeaRm3nD9JuZe4KaUow
-         1mafRCjSnB97YBbbptoodzBvFTwy9XL73Nor4kJx3pHChrerEXLJPrtO+3j5++vfvemG
-         Z595dG7DgwRpsleZMZB+QbyHsqh9nmMPVd0MANwX4wPNGoDTjsu7TJoIjw9betXD3hCu
-         iDL1IlHNmjJT5Cu8nn4PKJEHvQczlqZSsuSYMMbZX7P1SW1+j97ZY0+qHjoL80pk+RAi
-         EDGwI63UmC2vj6Kk9cdQ5kAsXpXXnLGQ/R9+VgtUIUeXUlxwngXwKVwItCTbaOCB76LL
-         nPow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788502015; x=1789106815;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=2wyUxE2TBml8FNoZA0yLvtlhvWKAzzFnIf+bKtrZuQQ=;
-        b=KwzHFuICy4n+SahMimIoGFYOCNL18LU/H/iKBAsXOoLgzJGrXq6xccTQk62bqV+xPp
-         80s3OCly4VUHSZzwnJ6IFqlf26RG6gx51T/xtIX0E5zQEbBzUD9mGYeLGRTLQYDcAX4I
-         bWZeekJUPbr9aC+MIE1sFaKA2NptEAdgZHDIxQMF8DzBXbh8a0XlHnv2FMpk45qaeKjj
-         zNXvEJnPB5f0zgMCk7n74oIvtLqCGdp2arncnvtmI/fMy83XIGN53JHtI0iatm4na4V2
-         vt8sikbkbvQuKqcAoyUUDvZkKOBKwE8B1dZRO+asV8dnfA7gA97x1guTUJN5xUinCOFh
-         zUYw==
-X-Forwarded-Encrypted: i=1; AKwUvBw6j1+x2yVdq0t0c6d3wGKwTz+rqPp8iRhxW4gF5we40XcbTGwqBcQpO5dMfX+WszhbN1/ghGk=@vger.kernel.org
-X-Gm-Message-State: AFuF++mSJ2Mj5c1I0etH8qLWHr9ZrD09sXUzQ6HSlPV2Ltl9i7PuIHBw
-	EgIzK9hW34DWoAuFZp7+c8G0DPbb9WiSn75PzjLFdWQIfcIPhrGcc7CZKNoU8bbaeY8=
-X-Gm-Gg: AYBFou1S53tXivDh3eNh2s/1xjSVl8BYdbWzvcWCBBeV9uS8ww0oqawRd2B3XbJtYEJ
-	EbUkwJ9jwOCwpkIwn/mxhOkYv9uOn9O5GjkYROzZIL4OTss412vbBnWRoeCcijZRYqtiFlvbkRM
-	349GlNcIWj3wIFbipLesaL69eEqq81LqeGgk42arM0cl6O5T/VZ27wtlEjc4dcvzPSvR4KKDdPT
-	L7+8ypiN/upaH9ncSANmpERCzNp5chnbSz+NbppLiXyZL5u19jbD6rZNGHTxU1XptcfTA+/RZip
-	yRuImkejXOPczkY+9BQWW6evgyy/vus3PgJyfY0bp+iWmrrKRQADz8hPkcRJXNlbAD7M07GcjzJ
-	ixMl3HHwZT9tEilXgT8ZY2nPn5bqG2t4y041DWwrcZYPo7dKXuIV2HlLojWpsNBELcbc4q221B7
-	Uz3Y3XAH05QAsa46BItnJYn9JV7SCp81Dgz0hY48KhKznz848sMedreIGXvmXNCcgN8lknM90q+
-	GOIz0dHNlWAoreePSGwiXd5Of4Bqw==
-X-Received: by 2002:a05:600c:3e0a:b0:495:6e68:5df2 with SMTP id 5b1f17b1804b1-49cf8267a36mr37870635e9.12.1788502015295;
-        Thu, 03 Sep 2026 23:06:55 -0700 (PDT)
-Received: from [192.168.0.161] (78-154-15-182.ip.btc-net.bg. [78.154.15.182])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49ce47b9817sm161309645e9.1.2026.09.03.23.06.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 03 Sep 2026 23:06:54 -0700 (PDT)
-Message-ID: <7a3f1c73-ff68-4369-a81c-bc66db003bde@blackwall.org>
-Date: Fri, 4 Sep 2026 09:06:53 +0300
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="0NwTAcz0"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 4DA831A199A;
+	Fri,  4 Sep 2026 06:11:29 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 1BDEF6057F;
+	Fri,  4 Sep 2026 06:11:29 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id EC85711C79F76;
+	Fri,  4 Sep 2026 08:11:23 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1788502288; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=RjzcsyivNlPTUwhkXm3AdIxL5Bh4sKOmVQSxjRl8PGI=;
+	b=0NwTAcz0MdpOoqji7q2xKnNJsmjSu7eAV4DCPTkxjm2bz6sY218UF5hr5I1U2fiLxVcZK/
+	PKl6aLGBwKKLyAq3fgos0WtRv8PBkzjTurWfdK6FQ/JcUcUhmmuRQdnYAZ8F9XvemMKVTh
+	QdH3ZPOG+pskVTVF8f3x6HkslNdT0ovkmuPhGFLTVpnML3R6dRkW4H059ji5nfGVs22eEb
+	Sk7Zv5OiCMCsZoL9X3WuUQrNPclPlXqm4DgNz0GsNILau1nLMJd4EngNvu0NGwDhGncwji
+	G7LNbQk9jginQ8/55C+hynixCrjw89yeW7ZLj1wlZThmdoBSIPbTDhc+EwdXwA==
+Message-ID: <de57fcda-30b8-4afc-8711-0f0d06840fa2@bootlin.com>
+Date: Fri, 4 Sep 2026 08:11:22 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -69,48 +42,68 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 net] bonding: use skb_cow_head() in bond_do_alb_xmit()
- and rlb_arp_xmit()
-Content-Language: en-US, bg
-To: Eric Dumazet <edumazet@google.com>, "David S . Miller"
- <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
- netdev@vger.kernel.org, eric.dumazet@gmail.com,
- Hangbin Liu <liuhangbin@kylinos.cn>, Jay Vosburgh <jv@jvosburgh.net>
-References: <20260903143940.1180513-1-edumazet@google.com>
-From: Nikolay Aleksandrov <razor@blackwall.org>
-In-Reply-To: <20260903143940.1180513-1-edumazet@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH net-next v2 0/2] selftests: drv-net: Allow cross-compiling
+ the hardware tests
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Donald Hunter <donald.hunter@gmail.com>,
+ Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>,
+ matttbe@kernel.org, Stanislav Fomichev <sdf@fomichev.me>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ thomas.petazzoni@bootlin.com, linux-kselftest@vger.kernel.org
+References: <20260903155524.2241065-1-maxime.chevallier@bootlin.com>
+ <2a595cf6-d208-4a0a-a96f-738235236aa1@lunn.ch>
+ <b2f7d07b-5c14-4767-9fbf-47a72a6c22cd@bootlin.com>
+ <a0ced283-7eac-451c-b22b-cb88a302995f@lunn.ch>
+Content-Language: en-US
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <a0ced283-7eac-451c-b22b-cb88a302995f@lunn.ch>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 03/09/2026 17:39, Eric Dumazet wrote:
-> In bond_do_alb_xmit() and rlb_arp_xmit(), make sure to unclone
-> skb head via skb_cow_head() before modifying the source MAC address
-> (Ethernet header and ARP payload) to avoid silent corruption if
-> the skb is shared or cloned. Avoid caching the header pointers
-> across skb_cow_head().
-> 
-> In rlb_arp_xmit(), only modify arp->mac_src if it differs from
-> tx_slave->dev->dev_addr to avoid an unnecessary copy and head
-> reallocation.
-> 
-> Also, we should not assume mac header is set in output path.
-> 
-> Use skb_eth_hdr() instead of eth_hdr() to fix the issue,
-> and remove now redundant skb_reset_mac_header() calls.
-> 
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Signed-off-by: Eric Dumazet <edumazet@google.com>
-> Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
-> Cc: Jay Vosburgh <jv@jvosburgh.net>
-> ---
-> v2: Use ether_addr_equal_64bits() per Sashiko AI agent feedback
-> v1: https://lore.kernel.org/netdev/20260902125809.2910366-1-edumazet@google.com/
-> 
->   drivers/net/bonding/bond_alb.c | 19 ++++++++++++-------
->   1 file changed, 12 insertions(+), 7 deletions(-)
-> 
 
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+
+On 9/3/26 23:59, Andrew Lunn wrote:
+>> But then there's the kselftests that require a peer, and here it's another story.
+>> Some tests, when using the SSH remote type, will scp a small binary on the peer
+>> and use that binary for testing (sending specially crafted frames, etc.)
+>>
+>> Just in the drivers/net/hw tests, we have :
+>>
+>> drivers/net/hw/csum.py
+>> drivers/net/hw/devmem_lib.py
+>> drivers/net/hw/gro_hw.py
+>> drivers/net/hw/iou-zcrx.py
+>> drivers/net/hw/nk_qlease.py
+> 
+> But none of these are binary, so long as you run the .py file, not a
+> pyc file.
+> 
+> iou-zcrx.c ncdevmem.c nk_forward.bpf.c nk_primary_rx_redirect.bpf.c
+> toeplitz.c would be a problem.
+
+What I meant is that all the .py files above are selftests that are copying
+actual biniares (generated from the c files you mention)
+
+e.g.
+
+drivers/net/hw/csum.py sends the binary generated from net/lib/csum.c to the peer
+
+
+> 
+>> We could expand the remote_ssh logic to probe the peer, and raise a skip if it's
+>> a different arch than the dut. Or better, have the DUT check if the peer doesn't
+>> already have the tool in question, i.e. the kselftest "package" is also installed
+>> there.
+> 
+> https://github.com/torvalds/linux/blob/master/Documentation/dev-tools/kselftest.rst#install-selftests
+> 
+> does talk about installing the self tests. Maybe somewhere in
+> /usr/local/libexec or /usr/local/bin. 
+
+Yep that's what I meant, this is what buildroot uses to populate the rootfs on the target
+
+Maxime
 
