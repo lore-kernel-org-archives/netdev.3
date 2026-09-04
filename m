@@ -1,235 +1,257 @@
-Received: from sender6-op-o15.zoho.com (sender6-op-o15.zoho.com [165.173.180.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f44.google.com (mail-oo1-f44.google.com [209.85.161.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D98CE3346BE;
-	Fri,  4 Sep 2026 16:48:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=165.173.180.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02DF13EA949
+	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 16:48:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.161.44
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788540500; cv=pass; b=JENG4FF5lEyJ2HD9dKXKySGNQvt67DjmylvnjE/jRve4rAtvz6LdrlEt9t6UbauckcM6VovR8MBHWNwXxyF8INA7ngzNK8GXLGf7oopkE2bXnSx1oYBnNz/jqG/a+hOKU1wviJApF9q32+n3U+8HHdTfy9s3CQ60WOrc1+5Agpc=
+	t=1788540508; cv=pass; b=m4z3wnM1pJJ/QW8U5fXW5Mb6Dn5AULsg1Vm4j6XT9Dw/NZWdYmIclH4a6sq/2JSXE/sTQs4xx701YMGg8b0I/c0cokrMGyT08jyf0wI/cKQ08wecVKEB+tLvANcCuVMFNKAn+awKeY0sZyOP/huj9+8hqbbWrQIvPrk+ZgMJvUA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788540500; c=relaxed/simple;
-	bh=KmUZH4oUV351SQ4q/erHygPZFRXiLS0OXAE1BPP3dRk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=HHOKW45YBv4NgfQmSNpwP6aTMm3X5izcfgZOK6z3jqJG94gcgFfAqNrhBo6qdJvVFOOVZYn3mHUtDxWpNcmXU526GvyINXUQuzCMal/R0tKEBST82w4kKXxhbsm0yxhG/W36XFhe2CLyCKcTIcTmD9FsNwD6lBk/ub7iccbpWMc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pigmoral.tech; spf=pass smtp.mailfrom=pigmoral.tech; dkim=pass (1024-bit key) header.d=pigmoral.tech header.i=junhui.liu@pigmoral.tech header.b=FPYSkFD8; arc=pass smtp.client-ip=165.173.180.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pigmoral.tech
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pigmoral.tech
+	s=arc-20240116; t=1788540508; c=relaxed/simple;
+	bh=D6nwsWGdFA1OuaW5ROuErQQ1sqUo/IxOMeGlP5QiK+U=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ry6YTyXZvZs5UtzyNcXYtTxbdTHFxo1x32AM0i7M1Ro2lQ2RnVzpYaZ/z8/hNo0Zae6/QvPvltgTKvkGD1yqNSN3XeZTS/KJXSybEv7eM/uLuY55zRcZyfMbRx1UEiEcaCAvRxYuA44jv3bOwg7z7mnPfUh1oVzGpCWqIIQqqNk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=S7wGLqFc; arc=pass smtp.client-ip=209.85.161.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=pigmoral.tech header.i=junhui.liu@pigmoral.tech header.b="FPYSkFD8"
-ARC-Seal: i=1; a=rsa-sha256; t=1788540470; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=Q7zMF6tU76XFbKfmDd83j/YprT37JnFxJn8hWUcQFR+LT64kl5n9qQ/ynJNaxE6gDv2yIyEFbS9hIsbqBfjMU6hAmOkMPc7d/U5EWCseyC+IRIKW2zVzGxcD0dy+X6z1CQ/IByVTXUSqmdTnCh2NNTQbtT/kEZczkabUdBMwIGY=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1788540470; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=S6nkLCFHb4iZgJB2QxxuEXLgVf0ukEtQlCfSX/H4f80=; 
-	b=H+7q0rrl3F3X6bbaZiQbqgeqgXQmpa6h0jj3THGSCECFkrc1N+DEZ2YBpZnXkx2ZD9aoZN+Uk+LQGTJdLYsoomr/ReQoYpJPZho1aIV503rylVzwVGVAvQYJvp2kT7v943lSG5fpDlXP5umnEbCfwdrRxcWYrCNkQufohrLGx1g=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=pigmoral.tech;
-	spf=pass  smtp.mailfrom=junhui.liu@pigmoral.tech;
-	dmarc=pass header.from=<junhui.liu@pigmoral.tech>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1788540470;
-	s=zmail; d=pigmoral.tech; i=junhui.liu@pigmoral.tech;
-	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:In-Reply-To:To:To:Cc:Cc:Reply-To;
-	bh=S6nkLCFHb4iZgJB2QxxuEXLgVf0ukEtQlCfSX/H4f80=;
-	b=FPYSkFD81ASSjlTF3n/xEM5+3an8HxijN3gwG3NLmUK9lQ8fGqDXtpgwdrlHv2Py
-	b4Slre+ZO6N9jgpALcVg8eZ26wr6Q4el5w/RdTvgnTDqNoGxyq7ZzTSDBFtx1xfv2Rq
-	Cc6SIPQozki7TZdvjngMtMQ9urRU+psm1dR3dJyk=
-Received: by mx.zohomail.com with SMTPS id 1788540467420828.3975615370953;
-	Fri, 4 Sep 2026 09:47:47 -0700 (PDT)
-From: Junhui Liu <junhui.liu@pigmoral.tech>
-Date: Sat, 05 Sep 2026 00:45:34 +0800
-Subject: [PATCH v3 5/8] clk: sunxi-ng: a733: Add bus clocks support
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="S7wGLqFc"
+Received: by mail-oo1-f44.google.com with SMTP id 006d021491bc7-6b1b9c3af5cso1084611eaf.2
+        for <netdev@vger.kernel.org>; Fri, 04 Sep 2026 09:48:26 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788540506; cv=none;
+        d=google.com; s=arc-20260327;
+        b=sQ+4jwvu0SoOMTNhUJGduvs7++sdIQhMIqua1v/PKXZNqN1/j6QHkCkKTFBcxCUf+N
+         tsObPe1gOhd1Iv9xdrgIziw3m22xzklIS2etM9u6k1ECF3zkPm47HURkM1knMppMEsHN
+         h1VrOj7CIylBkIwfreTHIzpCVgWepvODxqyCYW0bOvk0AfTzhbWGl0OSRIGOXXEFT3FN
+         JuEz+vhfAttY8T8HjmjXHd3AI8MxIr35w8IkaMQPuee8aaIVZCJ4rxna3N++pzz8lCAn
+         8g7p+v3UR+AhKERSuaqT70hbKhEPd+1GEjKjSMeqXBHBJWc+I1ypqd4YrdprgWP9NtM/
+         xAtA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=1yO9gNcJdShU19SgDYcoKpCdtQiYT1HITKSi6xtYTTA=;
+        fh=882E6rM2dRLgCQZMz03t7OMXMMCU3cbUZFgajII9YdQ=;
+        b=TEjZXwU5IKgcAlN5oekTijIY1zHS6sMjHZDEDIh4GruSpPUy8iZtHGDiVhfKxid6cT
+         j+dRg8WnrcsSMxOyq6raNwbVt17fJSVD8mNAP1Ukh8/2f/DEkQmmBl0FTQUEpPbWHwZ0
+         uz/qyGrBadwJxSKGpoIo4iWRTHtUh59EmlnmInpDQJti/5fACDnSHRoUnXAGjgD+hG8q
+         3aHL6QvVnUraQh6T/IPsNxl74JKmMEEK6vPde2abOH3BhcQ044penA/E2/LJv+vemkBe
+         PpAO5IX1ypZp6v3sQ92oJn4y+kWcCmy29nTjNNbpgqbQIyS965wmK1wDCEAhDEM5WDWY
+         EQYQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1788540506; x=1789145306; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=1yO9gNcJdShU19SgDYcoKpCdtQiYT1HITKSi6xtYTTA=;
+        b=S7wGLqFcTbGLBhXTQIsAVc6ObD5V3AnGJeRfgJm5bKHEQo0dbkdDmije9DF548Mu7Z
+         JPwrKh+4iUYxtUm7hx51Q3S5U90yaO8ELX/hdS9lTJtMmrWZxds+yjvwEESqmbab8XzA
+         aUiFsY1/gMAcvscGP6s5BUGwRyX0HpP27Csk9IY+ZraAtK2s6Zn/TSNgt6AdYuBzifGA
+         N3AIkWIGcXM5fDCLxINZJZceVr1noa2ng455e1dDC3x4cT0FfbPyrKMPxWdbb4Z0gvUM
+         VnqXHvFXlPpIPr7Vp07uhZnt8tsbx1KhsDHDrmdc21JIt9koDbJfwF8qIGdDZTkmmEPe
+         jAPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788540506; x=1789145306;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=1yO9gNcJdShU19SgDYcoKpCdtQiYT1HITKSi6xtYTTA=;
+        b=LG64mRDE9fyaNp2xBy9MMmbBXE9bD8y/PYjaFAfF1g4EzPp/EIzpeh8DjvJ9z3uzRm
+         ZlM8K6hEIZs3btc616g1Nehvf89b49AQkm3ZsOZp9ifJXWzal24hGwkXA1tqVPP1T+UD
+         ZDnr9fAKamNDl7P+hzL14DT4TKKlMW+gRBb7uj3PPONqxebhD90aL+QwCdRuKWYz9zIs
+         xtlhKD/FLkNfPxCaJM9xfgewxoofpPrLA5PxJq6Kne+O8qR82vjyxhj7TGx19Gf4Bkkv
+         Gm68kGQNnhCPUACK/O9BbNjG/1S70ZeZy4m97EqU8m5K98FdeSwf1hxH6+UjujD6v82U
+         8Z/Q==
+X-Forwarded-Encrypted: i=1; AKwUvBxCbuqDTjTRK+SlDKkhE9s9jedbqmBWGtrcof3DqE5xq4gvr80Fmz7DAK/8r7f1EsJZERZZ+cs=@vger.kernel.org
+X-Gm-Message-State: AFuF++kQNO0iAMjk0VnAdsLpVUuuts1Mg9Ezc4aszHxC7nD4wpe/f5eb
+	fy0Lo9tjqxlgtvyD+f2FgYmLUDhcrw9IULpqsCa0aVjScZRIh19Jd+7rpezO/rbTafvdKyq+vf4
+	+RwIO6DwQLddjHaT3B+k3PuOwtDS4ZZdm2Gyhs0Zi
+X-Gm-Gg: AYBFou1/vw4r7gSh60hBJPKUmVW6ppedrXGB7tkYDQNyX/jSg13MFkuTHn7hGsjPWW0
+	ozYJo3VzGSRJ+QwusNyPtVFAv0fJncYdVGWbXKRLA2RHNl0FHqLh00vQDvLr2aKAmnR74lAdF8Z
+	QtbmJbz5KiCz3W4VsxuAbL3QCN395vxJp0BMnolugWPV7uSAQXf3UbkbghUj3PlhqB8+41YJvX6
+	d/nXlGB0PM/m/FAXxhsP6sXKvMCH7mSANvmRikn/v3slMayQsyOMrN8ONutjbtEzZs1Aj7JfrZT
+	eLxUWiOD1e3RnWS9+FvgOvaQ2YFahbkF+wNTtLNf7lvgpKeRBoA3yrvEmbgccvePwccRvRFGgnE
+	VMQonR/Fp5KY68ZUCIHrJpgMWJKLD5vhuwSnP50CpgUFW1aEnzhKs/9YK1coaAYCEAK74iFbxxf
+	ULBSgT77jI87uP
+X-Received: by 2002:a05:6820:f034:b0:6b7:46fc:1ce with SMTP id
+ 006d021491bc7-6b746fc039amr3565703eaf.45.1788540430659; Fri, 04 Sep 2026
+ 09:47:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260905-a733-clk-v3-5-50f238f39c78@pigmoral.tech>
-References: <20260905-a733-clk-v3-0-50f238f39c78@pigmoral.tech>
-In-Reply-To: <20260905-a733-clk-v3-0-50f238f39c78@pigmoral.tech>
-To: Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney+clk@redhat.com>, 
- Jerome Brunet <jbrunet+clk@baylibre.com>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@kernel.org>, 
- Jernej Skrabec <jernej.skrabec@gmail.com>, 
- Samuel Holland <samuel@sholland.org>, 
- Philipp Zabel <p.zabel@pengutronix.de>, 
- Junhui Liu <junhui.liu@pigmoral.tech>, Paul Walmsley <pjw@kernel.org>, 
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
- Alexandre Ghiti <alex@ghiti.fr>, Richard Cochran <richardcochran@gmail.com>
-Cc: linux-clk@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev, 
- linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, 
- netdev@vger.kernel.org, Jerome Brunet <jbrunet@baylibre.com>, 
- Enzo Adriano <enzo.adriano.code@gmail.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5508;
- i=junhui.liu@pigmoral.tech; h=from:subject:message-id;
- bh=KmUZH4oUV351SQ4q/erHygPZFRXiLS0OXAE1BPP3dRk=;
- b=owGbwMvMwCWWvDb1VEXc8j+Mp9WSGLJmfb1oltbLsln/4lWBuapOSoutVsUVGDitu2gpMNlbo
- N1nateKjlIWBjEuBlkxRRYuf/F/1jo8344ItN6HmcPKBDKEgYtTACbC8I6RYeXXelvZYo/eqEV/
- 7j68bjV12mMTda59MaeFjFsuSJwwzWT4n7v3WUJgTiqH+zf1XRFV0SWPIvJcz4a5bKz8obeFbeN
- jfgA=
-X-Developer-Key: i=junhui.liu@pigmoral.tech; a=openpgp;
- fpr=15B30CC69C4BF0CC3C08F85A2A90CDC122DF37BF
-X-ZohoMailClient: External
+References: <20260902203722.926528-16-kuniyu@google.com> <178849140464.4131868.14135881617308602846@kernel.org>
+In-Reply-To: <178849140464.4131868.14135881617308602846@kernel.org>
+From: Kuniyuki Iwashima <kuniyu@google.com>
+Date: Fri, 4 Sep 2026 09:46:58 -0700
+X-Gm-Features: AcwNN1V72lAOUDeARDTYAGuZcQR8eJ_VHhPQCSnzLoJkE05imcEtPoo2ZDP3a_I
+Message-ID: <CAAVpQUCcvuRSbieQBX-+NDp+1=g7Ebn0zpUb=gtDOg=r7A=uJQ@mail.gmail.com>
+Subject: Re: [PATCH v6 net-next 15/15] selftest: net: Specify netns for ip
+ ntable in test_neigh.sh.
+To: netdev-bot+sashiko@kernel.org
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, dsahern@kernel.org, idosch@nvidia.com, 
+	horms@kernel.org, kuni1840@gmail.com, netdev@vger.kernel.org, 
+	razor@blackwall.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add the essential bus clocks in the Allwinner A733 CCU, including AHB,
-APB0, APB1, APB_UART, and MBUS. These buses are necessary for many other
-functional modules. An additional trace clock is also added as it falls
-within the register address range of the bus clocks, even though it is
-not strictly a bus clock.
+On Thu, Sep 3, 2026 at 8:10=E2=80=AFPM <netdev-bot+sashiko@kernel.org> wrot=
+e:
+>
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider:
+>
+> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 1 =C2=B7 Low: 0
+>
+> - [Medium] The series namespacifies the neighbour tables (commit
+>   "neighbour: Namespacify neigh_tables."), and this patch is the=E2=80=A6
 
-The MBUS clock is marked as critical to ensure the memory bus remains
-operational at all times. And the hardware requires an update bit
-(bit 27) to be set so that the configuration takes effect and the
-updated parameters can be correctly read back for the MBUS clock.
+I'll follow up on nft_nat_zones.sh, the series already has 15 patches.
 
-Tested-by: Jerome Brunet <jbrunet@baylibre.com>
-Signed-off-by: Junhui Liu <junhui.liu@pigmoral.tech>
----
- drivers/clk/sunxi-ng/ccu-sun60i-a733.c | 91 ++++++++++++++++++++++++++++++++++
- 1 file changed, 91 insertions(+)
 
-diff --git a/drivers/clk/sunxi-ng/ccu-sun60i-a733.c b/drivers/clk/sunxi-ng/ccu-sun60i-a733.c
-index 430a535919c6..3a25c349f11b 100644
---- a/drivers/clk/sunxi-ng/ccu-sun60i-a733.c
-+++ b/drivers/clk/sunxi-ng/ccu-sun60i-a733.c
-@@ -18,6 +18,7 @@
- 
- #include "ccu_div.h"
- #include "ccu_gate.h"
-+#include "ccu_mp.h"
- #include "ccu_mult.h"
- #include "ccu_nkmp.h"
- #include "ccu_nm.h"
-@@ -68,6 +69,16 @@ static const struct clk_hw *pll_ref_hws[] = {
- 	&pll_ref_clk.common.hw
- };
- 
-+/*
-+ * There is a non-software-configurable mux selecting between the DCXO and the
-+ * PLL_REF in hardware, whose output is fed to the sys-24M clock. Although both
-+ * sys-24M and pll-ref are fixed at 24 MHz, define a 1:1 fixed factor clock to
-+ * provide logical separation:
-+ * - pll-ref is dedicated to feeding other PLLs
-+ * - sys-24M serves as reference clock for downstream functional modules
-+ */
-+static CLK_FIXED_FACTOR_HWS(sys_24M_clk, "sys-24M", pll_ref_hws, 1, 1, 0);
-+
- #define SUN60I_A733_PLL_DDR_REG		0x020
- static struct ccu_nkmp pll_ddr_clk = {
- 	.enable		= BIT(27),
-@@ -414,6 +425,73 @@ static SUNXI_CCU_M_HWS_WITH_GATE(pll_de_3x_clk, "pll-de-3x", pll_de_hws,
- 				 SUN60I_A733_PLL_DE_REG,
- 				 16, 3, BIT(26), 0);
- 
-+/**************************************************************************
-+ *                           bus clocks                                   *
-+ **************************************************************************/
-+
-+static const struct clk_parent_data ahb_apb_parents[] = {
-+	{ .hw = &sys_24M_clk.hw },
-+	{ .fw_name = "losc" },
-+	{ .fw_name = "iosc" },
-+	{ .hw = &pll_periph0_600M_clk.hw },
-+};
-+
-+static SUNXI_CCU_M_DATA_WITH_MUX(ahb_clk, "ahb", ahb_apb_parents, 0x500,
-+				 0, 5,		/* M */
-+				 24, 2,		/* mux */
-+				 0);
-+
-+static SUNXI_CCU_M_DATA_WITH_MUX(apb0_clk, "apb0", ahb_apb_parents, 0x510,
-+				 0, 5,		/* M */
-+				 24, 2,		/* mux */
-+				 0);
-+
-+static SUNXI_CCU_M_DATA_WITH_MUX(apb1_clk, "apb1", ahb_apb_parents, 0x518,
-+				 0, 5,		/* M */
-+				 24, 2,		/* mux */
-+				 0);
-+
-+static const struct clk_parent_data apb_uart_parents[] = {
-+	{ .hw = &sys_24M_clk.hw },
-+	{ .fw_name = "losc" },
-+	{ .fw_name = "iosc" },
-+	{ .hw = &pll_periph0_600M_clk.hw },
-+	{ .hw = &pll_periph0_480M_clk.common.hw },
-+};
-+static SUNXI_CCU_M_DATA_WITH_MUX(apb_uart_clk, "apb-uart", apb_uart_parents, 0x538,
-+				 0, 5,		/* M */
-+				 24, 3,		/* mux */
-+				 0);
-+
-+static const struct clk_parent_data trace_parents[] = {
-+	{ .hw = &sys_24M_clk.hw },
-+	{ .fw_name = "losc" },
-+	{ .fw_name = "iosc" },
-+	{ .hw = &pll_periph0_300M_clk.hw },
-+	{ .hw = &pll_periph0_400M_clk.hw },
-+};
-+static SUNXI_CCU_M_DATA_WITH_MUX_GATE(trace_clk, "trace", trace_parents, 0x540,
-+				 0, 5,		/* M */
-+				 24, 3,		/* mux */
-+				 BIT(31),	/* gate */
-+				 0);
-+
-+static const struct clk_parent_data mbus_parents[] = {
-+	{ .hw = &sys_24M_clk.hw },
-+	{ .hw = &pll_periph1_600M_clk.hw },
-+	{ .hw = &pll_ddr_clk.common.hw },
-+	{ .hw = &pll_periph1_480M_clk.common.hw },
-+	{ .hw = &pll_periph1_400M_clk.hw },
-+	{ .hw = &pll_npu_clk.common.hw },
-+};
-+static SUNXI_CCU_MP_DATA_WITH_MUX_GATE_FEAT(mbus_clk, "mbus", mbus_parents, 0x588,
-+					    0, 5,	/* M */
-+					    0, 0,	/* no P */
-+					    24, 3,	/* mux */
-+					    BIT(31),	/* gate */
-+					    CLK_IS_CRITICAL,
-+					    CCU_FEATURE_UPDATE_BIT);
-+
- /*
-  * Contains all clocks that are controlled by a hardware register. They
-  * have a (sunxi) .common member, which needs to be initialised by the common
-@@ -448,11 +526,18 @@ static struct ccu_common *sun60i_a733_ccu_clks[] = {
- 	&pll_de_clk.common,
- 	&pll_de_4x_clk.common,
- 	&pll_de_3x_clk.common,
-+	&ahb_clk.common,
-+	&apb0_clk.common,
-+	&apb1_clk.common,
-+	&apb_uart_clk.common,
-+	&trace_clk.common,
-+	&mbus_clk.common,
- };
- 
- static struct clk_hw_onecell_data sun60i_a733_hw_clks = {
- 	.hws	= {
- 		[CLK_PLL_REF]		= &pll_ref_clk.common.hw,
-+		[CLK_SYS_24M]		= &sys_24M_clk.hw,
- 		[CLK_PLL_DDR]		= &pll_ddr_clk.common.hw,
- 		[CLK_PLL_PERIPH0_4X]	= &pll_periph0_4x_clk.common.hw,
- 		[CLK_PLL_PERIPH0_2X]	= &pll_periph0_2x_clk.common.hw,
-@@ -494,6 +579,12 @@ static struct clk_hw_onecell_data sun60i_a733_hw_clks = {
- 		[CLK_PLL_DE]		= &pll_de_clk.common.hw,
- 		[CLK_PLL_DE_4X]		= &pll_de_4x_clk.common.hw,
- 		[CLK_PLL_DE_3X]		= &pll_de_3x_clk.common.hw,
-+		[CLK_AHB]		= &ahb_clk.common.hw,
-+		[CLK_APB0]		= &apb0_clk.common.hw,
-+		[CLK_APB1]		= &apb1_clk.common.hw,
-+		[CLK_APB_UART]		= &apb_uart_clk.common.hw,
-+		[CLK_TRACE]		= &trace_clk.common.hw,
-+		[CLK_MBUS]		= &mbus_clk.common.hw,
- 	},
- 	.num	= CLK_FANOUT3 + 1,
- };
-
--- 
-2.55.0
-
+>
+> --
+>
+> selftest: net: Specify netns for ip ntable in test_neigh.sh.
+>
+> Now that the neighbour tables are per netns, this patch converts the
+> "ip ntable" invocations in test_neigh.sh to "ip -n $ns1 ntable" so the
+> thresholds and base_reachable_time are set in the namespace the test
+> actually uses, and drops the comments that described those knobs as
+> global resources.
+>
+> > diff --git a/tools/testing/selftests/net/test_neigh.sh b/tools/testing/=
+selftests/net/test_neigh.sh
+> > index 447423713266..e70e31edf633 100755
+> > --- a/tools/testing/selftests/net/test_neigh.sh
+> > +++ b/tools/testing/selftests/net/test_neigh.sh
+> > @@ -240,9 +240,6 @@ extern_valid_common()
+> >       # Check that an "extern_valid" entry survives a forced garbage
+> >       # collection. Add an entry, wait 5 seconds and add more entries t=
+han
+> >       # "thresh3" so that forced garbage collection will run.
+> > -     #
+> > -     # Note that the garbage collection thresholds are global resource=
+s and
+> > -     # that changes in the initial namespace affect all the namespaces=
+.
+> >       local forced_gc_runs_t0
+> >       local forced_gc_runs_t1
+> >       local orig_thresh1
+> > @@ -250,18 +247,23 @@ extern_valid_common()
+> >       local orig_thresh3
+> >
+> >       run_cmd "ip -n $ns1 neigh flush dev veth0"
+> > -     orig_thresh1=3D$(ip -j ntable show name "$tbl_name" | jq '.[] | s=
+elect(has("thresh1")) | .["thresh1"]')
+> > -     orig_thresh2=3D$(ip -j ntable show name "$tbl_name" | jq '.[] | s=
+elect(has("thresh2")) | .["thresh2"]')
+> > -     orig_thresh3=3D$(ip -j ntable show name "$tbl_name" | jq '.[] | s=
+elect(has("thresh3")) | .["thresh3"]')
+> > -     run_cmd "ip ntable change name $tbl_name thresh3 10 thresh2 9 thr=
+esh1 8"
+> > +     orig_thresh1=3D$(ip -n "$ns1" -j ntable show name "$tbl_name" | \
+> > +                     jq '.[] | select(has("thresh1")) | .["thresh1"]')
+> > +     orig_thresh2=3D$(ip -n "$ns1" -j ntable show name "$tbl_name" | \
+> > +                     jq '.[] | select(has("thresh2")) | .["thresh2"]')
+> > +     orig_thresh3=3D$(ip -n "$ns1" -j ntable show name "$tbl_name" | \
+> > +                     jq '.[] | select(has("thresh3")) | .["thresh3"]')
+> > +     run_cmd "ip -n $ns1 ntable change name $tbl_name thresh3 10 thres=
+h2 9 thresh1 8"
+>
+> [Severity: Medium]
+> This hunk moves test_neigh.sh over to the per-netns form, but should
+> tools/testing/selftests/net/netfilter/nft_nat_zones.sh get the same
+> treatment in this series?  That script tunes the same knobs from the root
+> netns:
+>
+> tools/testing/selftests/net/netfilter/nft_nat_zones.sh {
+>         ...
+>         setup_ns gw srv
+>         ...
+>         sysctl -q net.ipv6.neigh.default.gc_thresh1=3D512  2>/dev/null
+>         sysctl -q net.ipv6.neigh.default.gc_thresh2=3D1024 2>/dev/null
+>         sysctl -q net.ipv6.neigh.default.gc_thresh3=3D4096 2>/dev/null
+>         sysctl -q net.ipv4.neigh.default.gc_thresh1=3D512  2>/dev/null
+>         sysctl -q net.ipv4.neigh.default.gc_thresh2=3D1024 2>/dev/null
+>         sysctl -q net.ipv4.neigh.default.gc_thresh3=3D4096 2>/dev/null
+>         ...
+> }
+>
+> With the namespacified tables, neigh_sysctl_register() points those ctl
+> entries at the per-netns table and registers them in that netns:
+>
+> net/core/neighbour.c:neigh_sysctl_register() {
+>         ...
+>                 t->neigh_vars[NEIGH_VAR_GC_THRESH1].data =3D &tbl->gc_thr=
+esh1;
+>                 t->neigh_vars[NEIGH_VAR_GC_THRESH2].data =3D &tbl->gc_thr=
+esh2;
+>                 t->neigh_vars[NEIGH_VAR_GC_THRESH3].data =3D &tbl->gc_thr=
+esh3;
+>         ...
+> }
+>
+> and the only inheritance from init_net is a one-time snapshot taken when
+> the namespace's table is registered:
+>
+> net/core/neighbour.c:neigh_table_inherit() {
+>         ...
+>         tbl->gc_thresh1 =3D READ_ONCE(init_tbl->gc_thresh1);
+>         tbl->gc_thresh2 =3D READ_ONCE(init_tbl->gc_thresh2);
+>         tbl->gc_thresh3 =3D READ_ONCE(init_tbl->gc_thresh3);
+>         ...
+> }
+>
+> Since nft_nat_zones.sh runs "setup_ns gw srv" before writing the raised
+> values, do the gw and srv namespaces still end up with the compiled-in
+> defaults instead of 512/1024/4096?  If so, the raised thresholds are a
+> no-op for the gw namespace that actually holds the per-veth neighbour
+> entries, and the gate in neigh_periodic_work():
+>
+> net/core/neighbour.c:neigh_periodic_work() {
+>         ...
+>         if (neigh_table_entries(tbl) < READ_ONCE(tbl->gc_thresh1))
+>                 goto out;
+>         ...
+> }
+>
+> applies with the unraised limit, which can make the nft counter checks
+> come up short once the entry count grows (the script's own comment
+> suggests raising maxclients to 2000).
+>
+> The cleanup() function in the same script restores only the root-netns
+> values, which would likewise no longer affect the namespaces that ran the
+> test.
+>
+> Would moving the sysctl writes above "setup_ns gw srv", or issuing them
+> with "ip netns exec \"$gw\" sysctl ...", be the intended conversion here?
+>
+> [ ... ]
+>
+> > @@ -284,10 +287,6 @@ extern_valid_common()
+> >       # collection. Add an "extern_valid" entry, add more than "thresh1=
+"
+> >       # regular entries, wait "base_reachable" (longer than "gc_stale")
+> >       # seconds and check that the "extern_valid" entry was not deleted=
+.
+> > -     #
+> > -     # Note that the garbage collection thresholds and "base_reachable=
+" are
+> > -     # global resources and that changes in the initial namespace affe=
+ct all
+> > -     # the namespaces.
+> >       local periodic_gc_runs_t0
+> >       local periodic_gc_runs_t1
+> >       local orig_base_reachable
+>
+> [ ... ]
+>
+> --
+> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
+set/20260902203722.926528-1-kuniyu%40google.com
