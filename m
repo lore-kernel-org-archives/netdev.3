@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42667175A68;
-	Fri,  4 Sep 2026 01:17:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83B5C254AFF;
+	Fri,  4 Sep 2026 01:17:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788484639; cv=none; b=BeUpVsDALzxIyyn0Fwxfc3+KmsWO24o4cuSke2IyYfwgjBCGT0/Yfh+FQQhzGoMDpzOBRG1aGpGV5NUnKTW1n3950JTEJvyQXyLEhmZyk5/UrH0/E9SBPv/23Vm6KdWQ7QjKSVTMBZjwJYdxKxYmhKG+HSbFGKFeXSd+efH3d5Q=
+	t=1788484641; cv=none; b=OnXix+i1aeAUIBzjJU9vEX6QNww22M3su7hbVdfFjvqzOgO7OBCRTDkBKZnn6RomT3oD/s94vdRO83fFskGfbSE+Ll/8GXiBMseVMCEdChXGNryQkVox2W8OUpEpGaVZClAII8eTTEkC2VUjwO94k66eeF4sNPO0dCvEq8LOlHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788484639; c=relaxed/simple;
-	bh=2YrBFFMdbIcTssT0wiC7ajMFg52XeoV+T2BcG4sSQWw=;
+	s=arc-20240116; t=1788484641; c=relaxed/simple;
+	bh=Za9YOpn5USIQZTS6tZB+AkLZginFf1c5OKbIGGhDcs4=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=tmnLussTRa3E7eypuSo0tWd3y+gL1l3xibirUbzC6AvUHtmETbfnfjO5qoVD5ZQxziUKj2MPilG5Wd4ybrQjNyCCsE4GPJ9w2NP5ul3wKgFeYf6dbvUYLu9/4R97CTMh0+I0x+GVD9sW1CcCEPQOtAC9YZGUWnlSKFYDrOi5U9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UNJNWShu; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=OPDG+/Qv4v1W7Cv9Db8WYRhvI7wuf5aPXtQkFSekc3+8+wqtztLARl5IDIQKAZUfbZL5H6KM82ZfBC/cNyLhHoh21UBTSn+CZ2ugYcCGPRD+qt9fOSswcrG5tQWsQ3qC5ktUsIzeE6NpGygNixtTDIoZu5y39+qX1AHj6u3+uLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DYBuoSnL; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UNJNWShu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28D6E1F000E9;
-	Fri,  4 Sep 2026 01:17:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DYBuoSnL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E0EE1F00A3D;
+	Fri,  4 Sep 2026 01:17:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788484638;
-	bh=d/o/kXfq5hsapgPLqaE+akwK/Xo70wQ7OE8BbPjIqKE=;
+	s=k20260515; t=1788484639;
+	bh=iMGAqUaafWVSEvBLWUQ9JIuS3x4p9XcAnPtwqq453a8=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=UNJNWShu5iTDsgOXHm/imKBntT0iAgos6mXfVGijDqkxsPMhi00Rct+65kRJGk7pr
-	 h6gDwC57BfMDatxYIxBuuyWppFfvRupNYvY1DUoPEBwmfC/O4MkAO527sA/b5/oGuY
-	 HE/pnDCq7G4Zo0q8l2UUjQJRaKkhLxYknoHHEM8/IOs72DXFtGjfvp4d/+eyYtQMAN
-	 4PwwNCTf4hwl/mVOX8PKZOGcPJPeyBsXJrH04K1Yb+1WjGkPPmSQmYcgfEqJ1EdaQC
-	 WRBNEs1S4uNak0yHo1JR8tm7PoieDBdQff5jQ8miSv//6Yd4iM+QGyEqjjn1cXntbV
-	 qwAfIG2W9OVRQ==
-Subject: Re: [PATCH net-next v4 1/2] net: stmmac: dwxgmac2: add XGMAC
- timestamp interrupt support
+	b=DYBuoSnLeDL3ms98FhSmOWxhXgkfGzDaFnIMaT7eA7DJQDk7oMpVrCwij2nU5XIpl
+	 PH0Cyz/1WpjZXg4T/dUsh9lsdd0dcNbj+tYCMsYU4QvXf1Rrg4TVCsPe4zM/nWDw+s
+	 +ZeNZlb0PSRrNxJqIqyUnsdSoZrYCa5r5oPOQ+jsEocGIVXo7J54s9gLjH6LeVFalO
+	 3+/j7+jDcv7djU1fEAXpnUY5FIRbPuc/tXDU5U03tx0Jzywyw+5QBGKRytQSgPFUeo
+	 T415aoBssmXzlquiGSbIy+qgu21aGvcAUtt4vhpak7BCWTQk5ozYqeBzGl9N108OKc
+	 r7F9LHaV5X8/g==
+Subject: Re: [PATCH net-next v4 2/2] net: stmmac: dwmac-socfpga: mask
+ XGMAC_TSIE during cross-timestamp
 From: netdev-bot+sashiko@kernel.org
 To: zxyan0222@gmail.com
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
@@ -37,10 +37,10 @@ Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
  rohan.g.thomas@altera.com, netdev@vger.kernel.org,
  linux-stm32@st-md-mailman.stormreply.com,
  linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Date: Fri, 04 Sep 2026 01:17:16 +0000
-Message-ID: <178848463667.4131868.2082471736382241698@kernel.org>
-In-Reply-To: <20260902131441.322167-2-zxyan0222@gmail.com>
-References: <20260902131441.322167-2-zxyan0222@gmail.com>
+Date: Fri, 04 Sep 2026 01:17:18 +0000
+Message-ID: <178848463816.4131868.6619682657776561531@kernel.org>
+In-Reply-To: <20260902131441.322167-3-zxyan0222@gmail.com>
+References: <20260902131441.322167-3-zxyan0222@gmail.com>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -54,210 +54,287 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider:
 
-Critical: 0 · High: 1 · Medium: 1 · Low: 1
+Critical: 0 · High: 1 (1) · Medium: 2 · Low: 0
 
-- [High] dwxgmac2_timestamp_interrupt()
-  (drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c:1157) performs an…
-- [Medium] dwxgmac2_timestamp_interrupt() samples the pending snapshot
-  count from XGMAC_TIMESTAMP_STATUS (dwxgmac2_core.c:1178), reads…
-- [Low] The commit message asserts a concrete pre-existing user-visible
-  defect ("the generic stmmac PTP handler reads the dwmac4 offset…
+- [High] The fix does not close the race it claims to close: masking
+  XGMAC_INT_EN.TSIE does not prevent the destructive read of…
+- [Medium] Series ordering leaves a knowingly broken intermediate commit
+  and an undocumented backport dependency.
+- [Medium] The new mask/unmask pair in smtg_crosststamp() is neither
+  state-preserving nor nestable.
+
+Pre-existing issues:
+- [High] smtg_crosststamp() uses the aggregate TSIS bit as its completion
+  condition without ever clearing it before arming the snapshot, and…
 
 --
 
-net: stmmac: dwxgmac2: add XGMAC timestamp interrupt support
+net: stmmac: dwmac-socfpga: mask XGMAC_TSIE during cross-timestamp
 
-This adds a DWXGMAC2 specific timestamp interrupt handler that reads
-XGMAC_TIMESTAMP_STATUS (0xd20), derives the pending auxiliary snapshot
-count from ATSNS and emits PTP_CLOCK_EXTTS events.  It also adds
-XGMAC_TSIE to XGMAC_INT_DEFAULT_EN and points the DWXGMAC2 and DWXLGMAC2
-hwif entries at the new dwxgmac2_ptp ops instead of &stmmac_ptp.
+This masks the XGMAC timestamp interrupt enable bit (XGMAC_TSIE) around the
+auxiliary snapshot trigger and FIFO read in smtg_crosststamp(), and restores
+it on the -EINVAL, timeout and success return paths.  The stated goal is to
+keep the DWXGMAC2 timestamp interrupt handler from clearing TSIS while the
+poll loop in smtg_crosststamp() is waiting for it.
 
-A couple of questions below, starting with the changelog.
+No Link: tags are present in the commit header.
 
-> DWXGMAC2 uses XGMAC_TIMESTAMP_STATUS at offset 0xd20, while the
-> generic stmmac PTP handler reads the dwmac4 offset GMAC_TIMESTAMP_STATUS
-> (0xb20).
-[ ... ]
-> As a result, auxiliary snapshot events were never reported on XGMAC
-> platforms.
-
-[Severity: Low]
-The description here is of previously broken functionality (wrong register
-offset, timestamp interrupt never unmasked), but the patch is titled "add
-... support" and carries no Fixes: tag.  Should one be added so that PTP
-EXTTS breakage on DWXGMAC2/DWXLGMAC2 is bisectable and stable selection is
-unambiguous?
-
-Two candidates that exist in the tree:
-
-  f4da56529da6 ("net: stmmac: Add support for external trigger timestamping")
-  bd7f77dae695 ("net: stmmac: fix incorrect flag check in timestamp interrupt")
-
-Is this intended for net or net-next?
-
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h
-> index f8ab347f7b5b..03cbae326995 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h
-> +++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h
-> @@ -87,7 +87,7 @@
->  #define XGMAC_TSIE			BIT(12)
->  #define XGMAC_LPIIE			BIT(5)
->  #define XGMAC_PMTIE			BIT(4)
-> -#define XGMAC_INT_DEFAULT_EN		(XGMAC_LPIIE | XGMAC_PMTIE)
-> +#define XGMAC_INT_DEFAULT_EN		(XGMAC_LPIIE | XGMAC_PMTIE | XGMAC_TSIE)
->  #define XGMAC_Qx_TX_FLOW_CTRL(x)	(0x00000070 + (x) * 4)
->  #define XGMAC_PT			GENMASK(31, 16)
->  #define XGMAC_TFE			BIT(1)
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-> index 1a88cbaed70c..891b7ceea2d4 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-> @@ -1154,6 +1154,49 @@ static int dwxgmac2_get_mac_tx_timestamp(struct mac_device_info *hw, u64 *ts)
->  	return 0;
->  }
->  
-> +void dwxgmac2_timestamp_interrupt(struct stmmac_priv *priv)
-> +{
-> +	u32 ts_status, pending_snapshots, acr_value, channel;
-> +	struct ptp_clock_event event;
-> +	unsigned long flags;
-> +	u64 ptp_time;
-> +	int i;
-> +
-> +	/* Read XGMAC_TIMESTAMP_STATUS to get the AUX snapshot
-> +	 * count.  This read also clears the TSIS bit in
-> +	 * XGMAC_INT_STATUS.
-> +	 * TX timestamp polling may have already cleared TSIS
-> +	 * and AUXTSTRIG, so rely on ATSNS instead.
-> +	 * TXTSC is cleared by XGMAC_TXTIMESTAMP_SEC, not by
-> +	 * this register, so there is no conflict.
-> +	 */
-> +	ts_status = readl(priv->ioaddr + XGMAC_TIMESTAMP_STATUS);
-
-[Severity: High]
-This read of the clear-on-read status register is unconditional, unlike the
-generic handler in stmmac_hwtstamp.c which first checks whether a timestamp
-interrupt is actually pending:
-
-	tsync_int = readl(priv->ioaddr + GMAC_INT_STATUS) & GMAC_INT_TSIE;
-	if (!tsync_int)
-		return;
-
-stmmac_common_interrupt() invokes stmmac_timestamp_interrupt(priv, priv) for
-every xmac core interrupt, and on platforms that do not set
-STMMAC_FLAG_MULTI_MSI_EN the single shared handler runs it ahead of DMA
-processing:
-
-stmmac_interrupt()
-	stmmac_common_interrupt();   /* -> readl(0xd20), clears TSIS */
-
-	/* To handle DMA interrupts */
-	stmmac_dma_interrupt(priv);
-
-The Agilex5 XGMAC is such a platform: socfpga_agilex5_setup_plat_dat() sets
-
-	plat_dat->core_type = DWMAC_CORE_XGMAC;
-
-and never sets STMMAC_FLAG_MULTI_MSI_EN, so it uses the single-IRQ path and
-is one of the two hwif entries switched to &dwxgmac2_ptp here.  Its
-cross-timestamp path detects snapshot completion by polling the very bit
-that this read clears:
-
-drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c:smtg_crosststamp() {
-	...
-	ret = readl_poll_timeout(priv->ioaddr + XGMAC_INT_STATUS, v,
-				 (v & XGMAC_INT_TSIS), 100, 10000);
-	...
-}
-
-Can this handler consume TSIS behind smtg_crosststamp(), so that
-PTP_SYS_OFFSET_PRECISE fails with -ETIMEDOUT and a netdev_err, or reads
-ATSNS == 0 and returns a zero device timestamp?  With the TSIE unmasking in
-XGMAC_INT_DEFAULT_EN above, plus one handler run per RX/TX interrupt on the
-shared IRQ, this looks like it would happen under ordinary traffic.
-
-The later patch in the series ("net: stmmac: dwmac-socfpga: mask XGMAC_TSIE
-during cross-timestamp") masks XGMAC_TSIE around the snapshot, but at the
-end of the series dwxgmac2_timestamp_interrupt() still reads 0xd20
-unconditionally, so any other MAC or DMA interrupt during the up-to-10 ms
-poll window still clears TSIS.
-
-Would gating this read on XGMAC_INT_STATUS & XGMAC_INT_TSIS, as the dwmac4
-handler does, close that window instead?
-
-> +
-> +	if (!(priv->plat->flags & STMMAC_FLAG_EXT_SNAPSHOT_EN))
-> +		return;
-> +
-> +	pending_snapshots = FIELD_GET(XGMAC_TIMESTAMP_ATSNS_MASK, ts_status);
-> +	if (!pending_snapshots)
-> +		return;
-> +
-> +	acr_value = readl(priv->ptpaddr + PTP_ACR);
-> +	channel = FIELD_GET(PTP_ACR_MASK, acr_value);
-> +	if (!channel)
-> +		return;
-> +	channel = ilog2(channel);
-> +
-> +	for (i = 0; i < pending_snapshots; i++) {
-> +		read_lock_irqsave(&priv->ptp_lock, flags);
-> +		stmmac_get_ptptime(priv, priv->ptpaddr, &ptp_time);
-> +		read_unlock_irqrestore(&priv->ptp_lock, flags);
+Before the diff, a couple of notes about the commit message and the series
+ordering.
 
 [Severity: Medium]
-The ATSNS count and the PTP_ACR channel mask are sampled once, and the
-auxiliary snapshot FIFO is then popped pending_snapshots times while holding
-only a read lock on priv->ptp_lock, which protects the systime/addend
-registers and does not exclude other readers.
 
-struct stmmac_priv documents a different lock for these registers:
+The commit message says:
 
-	/* Protects auxiliary snapshot registers from concurrent access. */
-	struct mutex aux_ts_lock;
+  "Once XGMAC_TSIE is unmasked (done by a companion change that enables it
+  in XGMAC_INT_DEFAULT_EN)"
 
-The process-context writer publishes the enable flag and issues the FIFO
-clear under that mutex, then waits for completion after dropping it:
+Could that companion change be named explicitly?  The preceding commit in
+this series, f4fbb4b15db4 ("net: stmmac: dwxgmac2: add XGMAC timestamp
+interrupt support"), is the one that adds XGMAC_TSIE to
+XGMAC_INT_DEFAULT_EN (at the baseline the macro is only
+(XGMAC_LPIIE | XGMAC_PMTIE)).
 
-drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.c:stmmac_enable() {
+That ordering means a bisect that lands on f4fbb4b15db4 alone has Agilex5
+PTP_SYS_OFFSET_PRECISE failing with the exact message quoted here.  Since
+f4fbb4b15db4 fixes a user-visible problem on its own, it looks like a
+plausible stable backport candidate, and neither commit carries a Fixes: or
+dependency tag.
+
+Reversing the order does not help either, because the exit paths added here
+unconditionally set XGMAC_TSIE, which would enable it on trees where the
+default mask deliberately omits it.  Would folding this masking into
+f4fbb4b15db4 (or at minimum adding "Fixes: f4fbb4b15db4" and naming the
+dependency) be preferable?
+
+Separately, the driver already has a generic mechanism for this exact
+problem: STMMAC_FLAG_INT_SNAPSHOT_EN together with priv->tstamp_busy_wait,
+as used by intel_crosststamp() in dwmac-intel.c.  Could the commit message
+explain why a second, platform-private mechanism is added instead of reusing
+that one?
+
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
+> index 1d7f0a57d288..a4d00bf81423 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
+> @@ -310,6 +310,13 @@ static int smtg_crosststamp(ktime_t *device, struct system_counterval_t *system,
+>  	if (priv->plat->flags & STMMAC_FLAG_EXT_SNAPSHOT_EN)
+>  		return -EBUSY;
+>  
+> +	/* The XGMAC timestamp interrupt handler clears TSIS by reading
+> +	 * XGMAC_TIMESTAMP_STATUS, which would race with the TSIS poll
+> +	 * below.  Mask XGMAC_TSIE for the duration of the cross-timestamp
+> +	 * so the handler does not run while we own the snapshot FIFO.
+> +	 */
+> +	stmmac_mac_irq_modify(priv, XGMAC_TSIE, 0);
+> +
+
+[Severity: High]
+
+Does masking XGMAC_TSIE actually stop the read that clears TSIS?
+
+dwmac-socfpga does not set STMMAC_FLAG_MULTI_MSI_EN, so Agilex5 runs the
+legacy shared handler, and the dispatch to the timestamp callback is not
+gated on TSIS or on XGMAC_INT_EN:
+
+drivers/net/ethernet/stmicro/stmmac/stmmac_main.c:stmmac_interrupt() {
 	...
-			priv->plat->flags |= STMMAC_FLAG_EXT_SNAPSHOT_EN;
-
-			/* Enable External snapshot trigger */
-			acr_value |= PTP_ACR_ATSEN(rq->extts.index);
-			acr_value |= PTP_ACR_ATSFC;
-	...
-		mutex_unlock(&priv->aux_ts_lock);
-		/* wait for auxts fifo clear to finish */
-		ret = readl_poll_timeout(ptpaddr + PTP_ACR, acr_value,
-					 !(acr_value & PTP_ACR_ATSFC),
-					 10, 10000);
+	stmmac_common_interrupt(priv);
 	...
 }
 
-Since aux_ts_lock is a mutex and this handler runs in hardirq, the two paths
-share no lock at all.  If a timestamp interrupt lands in that window, can it
-see the already-published STMMAC_FLAG_EXT_SNAPSHOT_EN together with a stale
-ATSNS count or channel mask and drain a FIFO that is being flushed or
-re-channelled, reporting stale or mis-indexed PTP_CLOCK_EXTTS events?
+drivers/net/ethernet/stmicro/stmmac/stmmac_main.c:stmmac_common_interrupt() {
+	...
+	stmmac_timestamp_interrupt(priv, priv);
+	...
+}
 
-PTP_ACR is also read only once outside the loop, so a channel change part
-way through the loop would be reported under the old index.
+drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c:dwxgmac2_timestamp_interrupt() {
+	ts_status = readl(priv->ioaddr + XGMAC_TIMESTAMP_STATUS);
+	...
+}
 
-The same unlocked pattern exists in the dwmac4 and dwmac1000 handlers, but
-this patch creates the new code and makes the path reachable on DWXGMAC2 and
-DWXLGMAC2 by unmasking XGMAC_TSIE and wiring the handler in.
+The clear-on-read of XGMAC_TIMESTAMP_STATUS is the first statement of
+dwxgmac2_timestamp_interrupt(), before the STMMAC_FLAG_EXT_SNAPSHOT_EN early
+return.  Since stmmac_common_interrupt() is reached on every device
+interrupt, including ordinary RX/TX DMA completions, wouldn't any interrupt
+during the up-to-10 ms readl_poll_timeout() window still clear TSIS and make
+the poll return -ETIMEDOUT with the same "Wait for time sync operation
+timeout" message?
 
+There is a second consumer of the same clear-on-read register that no
+interrupt mask can affect:
+
+drivers/net/ethernet/stmicro/stmmac/stmmac_main.c:stmmac_get_tx_hwtstamp() {
+	...
+	} else if (!stmmac_get_mac_tx_timestamp(priv, priv->hw, &ns)) {
+	...
+}
+
+drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c:dwxgmac2_get_mac_tx_timestamp() {
+	if (readl_poll_timeout_atomic(ioaddr + XGMAC_TIMESTAMP_STATUS,
+				      value, value & XGMAC_TXTSC, 100, 10000))
+	...
+}
+
+That runs from the TX completion path whenever TX hardware timestamping is
+enabled, which is the configuration in which cross-timestamping is used.
+
+Two smaller points on the same mechanism.  There is no synchronize_irq()
+after the mask, so a handler already in flight on another CPU still performs
+the destructive read.  And dwxgmac2_core_init() writes the whole enable mask
+directly:
+
+drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c:dwxgmac2_core_init() {
+	...
+	writel(XGMAC_INT_DEFAULT_EN, ioaddr + XGMAC_INT_EN);
+	...
+}
+
+which now includes XGMAC_TSIE and bypasses hw->irq_ctrl_lock, so it can
+re-enable TSIE inside the masked window.
+
+Would gating the destructive read in software (an ownership flag, as the
+Intel path does with STMMAC_FLAG_INT_SNAPSHOT_EN), or keying completion off
+the persistent ATSNS count rather than the transient TSIS bit, replace this
+approach rather than extend it?
+
+>  	mutex_lock(&priv->aux_ts_lock);
+>  	/* Enable Internal snapshot trigger */
+>  	acr_value = readl(ptpaddr + PTP_ACR);
+> @@ -329,6 +336,7 @@ static int smtg_crosststamp(ktime_t *device, struct system_counterval_t *system,
+>  		break;
+>  	default:
+>  		mutex_unlock(&priv->aux_ts_lock);
+> +		stmmac_mac_irq_modify(priv, 0, XGMAC_TSIE);
+>  		return -EINVAL;
+>  	}
+>  	writel(acr_value, ptpaddr + PTP_ACR);
+
+[Severity: Medium]
+
+Is the restore actually a restore?  The acquire in smtg_crosststamp() does
+not sample XGMAC_INT_EN, and dwxgmac2_irq_modify() in dwxgmac2_core.c is a
+plain read-modify-write with no notion of a previous value or of nested
+owners:
+
+drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c:dwxgmac2_irq_modify() {
+	...
+	value = readl(int_mask) & ~disable;
+	value |= enable;
+	...
+}
+
+All three release sites here (this -EINVAL path, the timeout path and the
+success path) unconditionally set XGMAC_TSIE.  If TSIE was deliberately
+masked when smtg_crosststamp() was entered, does this callback silently
+force it back on, so dwxgmac2_timestamp_interrupt() starts running and
+consuming XGMAC_TIMESTAMP_STATUS on a configuration that never asked for it?
+
+>  	/* Clear FIFO */
+>  	acr_value = readl(ptpaddr + PTP_ACR);
+>  	acr_value |= PTP_ACR_ATSFC;
+>  	writel(acr_value, ptpaddr + PTP_ACR);
+>  	/* Release the mutex */
+>  	mutex_unlock(&priv->aux_ts_lock);
+> @@ -353,6 +361,7 @@ static int smtg_crosststamp(ktime_t *device, struct system_counterval_t *system,
+>  	ret = readl_poll_timeout(priv->ioaddr + XGMAC_INT_STATUS, v,
+>  				 (v & XGMAC_INT_TSIS), 100, 10000);
+>  	if (ret) {
+> +		stmmac_mac_irq_modify(priv, 0, XGMAC_TSIE);
+>  		netdev_err(priv->dev, "%s: Wait for time sync operation timeout\n",
+>  			   __func__);
+>  		return ret;
+
+[Severity: Medium]
+
+Related to the point above: can a second concurrent caller end the first
+caller's masked window here?
+
+priv->aux_ts_lock is dropped right after the FIFO clear, well before this
+poll, and the PTP chardev does not serialize the callback:
+
+drivers/ptp/ptp_chardev.c:ptp_ioctl() {
+	...
+	case PTP_SYS_OFFSET_PRECISE:
+	case PTP_SYS_OFFSET_PRECISE2:
+		return ptp_sys_offset_precise(ptp, argptr,
+					      ptp->info->getcrosststamp);
+	...
+}
+
+ptp_sys_offset_precise() -> stmmac_getcrosststamp() ->
+get_device_system_crosststamp() -> smtg_crosststamp(), and no FMODE_WRITE is
+required.  If two threads issue PTP_SYS_OFFSET_PRECISE at the same time,
+thread B's unconditional stmmac_mac_irq_modify(priv, 0, XGMAC_TSIE) on its
+timeout or success path re-arms the interrupt while thread A is still inside
+this poll.  Would sampling XGMAC_INT_EN and restoring exactly that value, or
+serializing the whole cross-timestamp sequence, address both this and the
+force-enable case?
+
+>  	}
+> @@ -375,6 +384,8 @@ static int smtg_crosststamp(ktime_t *device, struct system_counterval_t *system,
+>  		read_unlock_irqrestore(&priv->ptp_lock, flags);
+>  	}
+>  
+> +	stmmac_mac_irq_modify(priv, 0, XGMAC_TSIE);
 > +
-> +		event.type = PTP_CLOCK_EXTTS;
-> +		event.index = channel;
-> +		event.timestamp = ptp_time;
-> +		ptp_clock_event(priv->ptp_clock, &event);
-> +	}
-> +}
-> +
+>  	get_smtgtime(priv->mii, SMTG_MDIO_ADDR, &smtg_time);
+>  	system->cycles = smtg_time;
+>  
 
-[ ... ]
+[Severity: High]
+
+This isn't a bug introduced by this patch, but while looking at the TSIS
+poll: can smtg_crosststamp() return 0 without ever writing *device?
+
+TSIS is set by any MAC timestamp-module event, as the new handler from the
+preceding commit itself documents:
+
+drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c:dwxgmac2_timestamp_interrupt() {
+	/* ... TX timestamp polling may have already cleared TSIS
+	 * and AUXTSTRIG, so rely on ATSNS instead. */
+	...
+}
+
+smtg_crosststamp() flushes only the aux snapshot FIFO via PTP_ACR_ATSFC and
+never reads XGMAC_TIMESTAMP_STATUS to drain a stale or foreign TSIS.
+readl_poll_timeout() evaluates its condition on the first read, so a TSIS
+latched by an unrelated event satisfies the poll immediately, possibly
+before the auxiliary snapshot is latched.  Then:
+
+	num_snapshot = FIELD_GET(XGMAC_TIMESTAMP_ATSNS_MASK,
+				 readl(ioaddr + XGMAC_TIMESTAMP_STATUS));
+
+	for (i = 0; i < num_snapshot; i++) {
+		read_lock_irqsave(&priv->ptp_lock, flags);
+		stmmac_get_ptptime(priv, ptpaddr, &ptp_time);
+		*device = ns_to_ktime(ptp_time);
+		read_unlock_irqrestore(&priv->ptp_lock, flags);
+	}
+	...
+	return 0;
+
+With num_snapshot == 0 the loop body, which is the only writer of *device,
+never runs, yet the function returns 0.  ptp_sys_offset_precise() zeroes its
+crosststamp struct:
+
+drivers/ptp/ptp_chardev.c:ptp_sys_offset_precise() {
+	struct system_device_crosststamp xtstamp = { .clock_id = CLOCK_REALTIME };
+	...
+	ts = ktime_to_timespec64(xtstamp.device);
+	...
+}
+
+so userspace gets a device timestamp of 0 paired with a real system time and
+a success return.  The latched snapshot also stays in the FIFO with ATSEN
+still set until the next invocation's FIFO clear.
+
+Would reading XGMAC_TIMESTAMP_STATUS once before arming to clear a stale
+TSIS, and treating num_snapshot == 0 as an error rather than success, be the
+right shape here?  Note that the masking added by this patch removes one of
+the consumers that would otherwise have drained a stale TSIS, and it keeps
+TSIS rather than the persistent ATSNS count as the completion condition.
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260902131441.322167-1-zxyan0222%40gmail.com
