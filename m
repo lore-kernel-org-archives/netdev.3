@@ -1,284 +1,158 @@
-Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35E4C514753;
-	Fri,  4 Sep 2026 17:29:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.97.239
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D5523A3E97
+	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 17:29:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788542956; cv=none; b=Z0BsQDGLSECUcep4HkZVP9GPEi/4+6F2gZ20PrfjMi6B0ffqy/bJgzhqQPjFC0LUdBy/QZvSujAxyMB53XmFyD4tsJCSt4Yr4cv14uvHMs/ex7qn+YaBFSAGdB0/6SVw92TR1vqBUAMWr37qxc1mN0Nng50G//gEHcRVpjHivJg=
+	t=1788542978; cv=none; b=mgPNpwS0Vdw1blsUylDc/GSS0rAIXl01dTRVSkdK0lSejTSlvOsB+V4DBnxt05YNo+v0p/F3cltUqYrD8n98gyoMO7p7t8zohKCQqCU/Lda9WQodgmFtgDkUAvJhkbK98db433YOxy0v/Phq8QCWjbWEHvQQ/xQjbe7bh9dmNSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788542956; c=relaxed/simple;
-	bh=th9j8IMz7cxt9OCRiUZdYPhFqg5LPYWjI6IEu1Zq3NM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=LBeOMi0ov29c7XZc+DXiIvG8t9iU8gZQ6tkso71gTlvTuHWw19DnXOAXKJ14B2FJkPCanex3gteiQb3LCuJs6rdudmnJSqxeik8GL/cUpzHFOOb4ziCTUgjuI1mB//6vgNKCEmV0Ptew673L6bmfgTmf84hvsGhN+wZOI8mCphg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=Pw+96mBn; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=cA2i1sMQ; arc=none smtp.client-ip=23.88.97.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
+	s=arc-20240116; t=1788542978; c=relaxed/simple;
+	bh=fxqKP5mD6jyMxS9EIijNNzxiP9Djv0Rpi1zOOlnylF4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BGr310OlgecVCiE1wHNfIAC0Qsi6tvFV2tlEJz/TQ1v0wGLaGmMqWMjkf/ihS36MQotilZ/Clz88zvLdgawdHCnE+GjjCzWKSyyxqfr9h6JpK5vspeG57187zR757lLj0xJc1OB7UxRW5QhtkrJw0eFg6P9faOUiSgpBBe8FAMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TTHxbqPX; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="Pw+96mBn";
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="cA2i1sMQ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1788542932;
-	bh=th9j8IMz7cxt9OCRiUZdYPhFqg5LPYWjI6IEu1Zq3NM=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=Pw+96mBnSe1zAtdzq7Lw8aJP4GdoVxVuzGbtebrbxyKI9RggBYNKYJolFCnWKa7vN
-	 yTWQucCwQiddpvdfTDpqOhbNNML0hytZAi9pQAvbQPPDCN53OmPO0JtO3tHjuAgSqH
-	 VofBD4GN4GyztRd+xnYU15QjuKYTBUtzeiDdQ67U7lZumb2iinK87tbf1dfXGmzr3T
-	 H7WGxYGMcFxGC1Bu8De3P7UKHDTcMSngK0+W1BQdOJdM43r2eUtnqy4f+R0C2e0INO
-	 GVp2x7szRf3/T/ji4U0Zp3pE7/2r030UlGxO0cliMYlDKZCEL+HHIhKg8KeekBhMyh
-	 fXqZOt4RA2GyA==
-Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
-	id 20C1B3F0ED; Fri,  4 Sep 2026 17:28:52 +0000 (UTC)
-X-Spam-Level: 
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1788542918;
-	bh=th9j8IMz7cxt9OCRiUZdYPhFqg5LPYWjI6IEu1Zq3NM=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=cA2i1sMQ2wqmcnmkNMmaDL3IYYFWllKaHBCeUKJZWwlOLY2zhvFaencecPC9cX/2j
-	 rb5jdqqRoa4DVDrDXj9O4BcP6c3/BYSW18QcerEsZQTy25ICT+CPajWxWKio/w5m5S
-	 SblbCyrLPqnLxm/3wZcK26GkDUumtOVmQIMOi5zfFyfEMokCW+LxtersKwjnAW0PeH
-	 S5Du8RT8DJjsbsTlwdvX0Hb3lr49k3RjQm3vBgRd9V1HACCfzuO/mLv4tCRGS1ueWv
-	 N8REP6rJ3v+sxGxS8V3RRYziUX2GzjvU0G1g3iCcZDsDyLJYqBgUAJCDN+TTDf2s4m
-	 4SpqnTXenuajg==
-Received: from AMDDesktop.lan (unknown [IPv6:2a00:6020:47a3:e800:271c:c6c5:9fde:77cb])
-	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id 9A5903F0F6;
-	Fri,  4 Sep 2026 17:28:38 +0000 (UTC)
-From: Birger Koblitz <mail@birger-koblitz.de>
-Date: Fri, 04 Sep 2026 19:28:40 +0200
-Subject: [PATCH net-next v10 15/15] ax88796b: Add support for AX88772D,
- AX88179A and AX88279
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TTHxbqPX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0B5A1F00A3F;
+	Fri,  4 Sep 2026 17:29:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788542969;
+	bh=3zxhunDzD83Nu2icpqKCQzMCeOeK90tXTynHVK3ibkA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=TTHxbqPXHHsZfaVH1+fb7MRA9kp7XNHuMdnyTxKwrwqMglZQw+/HOHL/ivdK4+V4E
+	 X2bqWxR1ONBrUhoKEZRf/ZIcGTlR6FaZhekJrtyoRwzB5W7dT42NruJbLuxyRs8ip6
+	 wboStkxKelOWM0Uu2ybuunT2ePPruIU0e0EH/yO/AE0WNKAqAQItHCi8V6bt0uAC5d
+	 l0hXr8zxDMlfl19bVCNFM/JNpXxOOtYZMOZdV6VMHr4v/1OTEgwuxwifqV/4Uht28K
+	 tqBuOKCLQtiVghzobrISrNUJ0pmjgTs46cdP9dFNwTGk2SqcMAKWwUWi0B2VUvqYeO
+	 natVQxqw7RlyA==
+Message-ID: <0ca86f9d-4ff2-49de-b5e7-c022de8b65bc@kernel.org>
+Date: Fri, 4 Sep 2026 19:29:26 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260904-ax88179a-v10-15-b5e60eca7690@birger-koblitz.de>
-References: <20260904-ax88179a-v10-0-b5e60eca7690@birger-koblitz.de>
-In-Reply-To: <20260904-ax88179a-v10-0-b5e60eca7690@birger-koblitz.de>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Russell King <linux@armlinux.org.uk>, Andrew Lunn <andrew@lunn.ch>, 
- Heiner Kallweit <hkallweit1@gmail.com>
-Cc: linux-usb@vger.kernel.org, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Birger Koblitz <mail@birger-koblitz.de>, 
- Jianhui Xu <neuromoments@gmail.com>
-X-Mailer: b4 0.14.2
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [ANN] Containers to run Netdev CI tests locally
+Content-Language: fr
+To: Hangbin Liu <hangbin.liu@linux.dev>
+Cc: Netdev <netdev@vger.kernel.org>
+References: <9c66a2b4-2787-4421-bc9b-627de2f708bd@kernel.org>
+ <appsQWUIC9-5Nze7@fedora> <bf2cd349-7d1f-4ace-acb7-948dbeada200@kernel.org>
+ <apqvJmgi9ZKmDDrW@fedora>
+From: Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <apqvJmgi9ZKmDDrW@fedora>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-The AX88772D, AX88179A and AX88279 are 100MBit, 1GBit and respectively
-2.5 GBit PHYs that are found in ASIX USB-Ethernet controllers of the
-same name.
+Hi Hangbin,
 
-Signed-off-by: Birger Koblitz <mail@birger-koblitz.de>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
----
- drivers/net/phy/ax88796b.c | 161 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 161 insertions(+)
+On 04/09/2026 13:44, Hangbin Liu wrote:
+> On Fri, Sep 04, 2026 at 10:33:18AM +0200, Matthieu Baerts wrote:
+>> Hi Hangbin,
+>>
+>> On 04/09/2026 08:59, Hangbin Liu wrote:
+>>> Hi Matthieu,
+>>>
+>>> On Thu, Sep 03, 2026 at 06:19:25PM +0200, Matthieu Baerts wrote:
+>>>> Hello,
+>>>>
+>>>> TL;DR: containers are now available with all dependencies to easily
+>>>> execute all static, unit, and functional tests in an environment closed
+>>>> to the Netdev CI one:
+>>>>
+>>>> - https://github.com/orgs/linux-netdev/packages
+>>>>
+>>>> - https://github.com/linux-netdev/nipa/wiki/Running-Netdev-CI-tests-locally
+>>>
+>>> Great! I've been struggling to set up the local NIPA docker. I'm following
+>>> the steps from your git commit description. Now this article saved me.
+>>
+>> I'm glad it helped!
+>>
+> 
+> From a user‑experience perspective, I think the static tests work well.
+> They display the check results clearly and save outputs to the result directory.
+> 
+> However, for selftests, I do not see any difference compared to running vng
+> directly on my local machine, i.e.
+> 
+>   vng -v --run . --user root -a mitigations=off --cpus 4 -- \
+>   	make -C tools/testing/selftests TARGETS=net run_tests
+> 
+> Do you know how to make the result looks like the CI shows[1], that each test
+> has a separate log dir and shows stdout/stderr.
 
-diff --git a/drivers/net/phy/ax88796b.c b/drivers/net/phy/ax88796b.c
-index f20ddf64914993f7097070d1f56c1103ec1e40e8..62f6beb25f41e703dc02add7358917d59ac8f2ac 100644
---- a/drivers/net/phy/ax88796b.c
-+++ b/drivers/net/phy/ax88796b.c
-@@ -13,6 +13,19 @@
- #define PHY_ID_ASIX_AX88772A		0x003b1861
- #define PHY_ID_ASIX_AX88772C		0x003b1881
- #define PHY_ID_ASIX_AX88796B		0x003b1841
-+#define PHY_ID_ASIX_AX88772D		0x003b772d
-+#define PHY_ID_ASIX_AX88179A		0x003b179a
-+#define PHY_ID_ASIX_AX88279		0x003b2790
-+
-+#define AX_ADVERTISE_2500		0x1000
-+
-+/* MII Vendor registers */
-+#define AX_CTRL_STATUS			0x1d
-+#define AX_CTRL_STATUS_SPEED_MASK	0x0c
-+#define   AX_CTRL_STATUS_SPEED_10	0x0
-+#define   AX_CTRL_STATUS_SPEED_100	0x4
-+#define   AX_CTRL_STATUS_SPEED_1000	0x8
-+#define   AX_CTRL_STATUS_SPEED_2500	0xc
- 
- MODULE_DESCRIPTION("Asix PHY driver");
- MODULE_AUTHOR("Michael Schmitz <schmitzmic@gmail.com>");
-@@ -83,6 +96,103 @@ static int asix_ax88772a_read_status(struct phy_device *phydev)
- 	return 0;
- }
- 
-+static int asix_ax88279_read_status(struct phy_device *phydev)
-+{
-+	int ret, val;
-+
-+	ret = genphy_read_status(phydev);
-+	if (ret)
-+		return ret;
-+
-+	/* Read actual speed from vendor register */
-+	val = phy_read(phydev, AX_CTRL_STATUS);
-+	switch (val & AX_CTRL_STATUS_SPEED_MASK) {
-+	case AX_CTRL_STATUS_SPEED_2500:
-+		phydev->speed = SPEED_2500;
-+		break;
-+	case AX_CTRL_STATUS_SPEED_1000:
-+		phydev->speed = SPEED_1000;
-+		break;
-+	case AX_CTRL_STATUS_SPEED_100:
-+		phydev->speed = SPEED_100;
-+		break;
-+	case AX_CTRL_STATUS_SPEED_10:
-+		phydev->speed = SPEED_10;
-+	}
-+
-+	/* MDIO_AN_10GBT_STAT_LP2_5G is broken, but we can deduce that
-+	 * the link-partner advertised 2500M if remotely AN succceded
-+	 * for link speed > 1000M and we locally have a link speed of
-+	 * 2500M
-+	 */
-+	val = phy_read_mmd(phydev, MDIO_MMD_AN, MDIO_AN_10GBT_STAT);
-+	if (val >= 0 && val & MDIO_AN_10GBT_STAT_REMOK) {
-+		linkmode_mod_bit(ETHTOOL_LINK_MODE_2500baseT_Full_BIT,
-+				 phydev->lp_advertising,
-+				 phydev->speed == SPEED_2500);
-+	}
-+	/* Only supports full duplex */
-+	phydev->duplex = DUPLEX_FULL;
-+
-+	/* PHY switches interface between 2.5GBit and slower modes */
-+	if (phydev->speed == SPEED_2500)
-+		phydev->interface = PHY_INTERFACE_MODE_2500BASEX;
-+	else
-+		phydev->interface = PHY_INTERFACE_MODE_SGMII;
-+
-+	return 0;
-+}
-+
-+static int asix_ax88279_config_aneg(struct phy_device *phydev)
-+{
-+	bool adv_2500;
-+	int ret;
-+
-+	if (phydev->autoneg == AUTONEG_DISABLE) {
-+		phydev_warn(phydev, "Disabling autoneg is not supported\n");
-+		return -EOPNOTSUPP;
-+	}
-+
-+	ret = genphy_config_aneg(phydev);
-+
-+	if (ret < 0)
-+		return ret;
-+
-+	adv_2500 = linkmode_test_bit(ETHTOOL_LINK_MODE_2500baseT_Full_BIT, phydev->advertising);
-+	ret = phy_modify(phydev, MII_ADVERTISE, AX_ADVERTISE_2500,
-+			 adv_2500 ? AX_ADVERTISE_2500 : 0);
-+
-+	return ret;
-+}
-+
-+static int asix_ax88279_get_features(struct phy_device *phydev)
-+{
-+	int ret;
-+
-+	/* MDIO_DEVS1/2 empty, so set mmds_present bits to allow reading abilities */
-+	phydev->c45_ids.mmds_present |= MDIO_DEVS_PMAPMD | MDIO_DEVS_AN;
-+
-+	linkmode_set_bit_array(phy_basic_ports_array, ARRAY_SIZE(phy_basic_ports_array),
-+			       phydev->supported);
-+
-+	ret = genphy_c45_pma_read_abilities(phydev);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* AX88279 does not support reported 100baseT-half duplex mode */
-+	linkmode_clear_bit(ETHTOOL_LINK_MODE_100baseT_Half_BIT, phydev->supported);
-+
-+	return 0;
-+}
-+
-+static int asix_ax88279_config_init(struct phy_device *phydev)
-+{
-+	__set_bit(PHY_INTERFACE_MODE_2500BASEX, phydev->possible_interfaces);
-+	__set_bit(PHY_INTERFACE_MODE_SGMII, phydev->possible_interfaces);
-+
-+	return 0;
-+}
-+
- static void asix_ax88772a_link_change_notify(struct phy_device *phydev)
- {
- 	/* Reset PHY, otherwise MII_LPA will provide outdated information.
-@@ -94,6 +204,25 @@ static void asix_ax88772a_link_change_notify(struct phy_device *phydev)
- 	}
- }
- 
-+static int asix_ax88772D_get_features(struct phy_device *phydev)
-+{
-+	int ret;
-+	__ETHTOOL_DECLARE_LINK_MODE_MASK(mask) = {};
-+
-+	/* MDIO_DEVS1/2 empty, so set mmds_present bits to allow reading abilities */
-+	phydev->c45_ids.mmds_present |= MDIO_DEVS_PMAPMD | MDIO_DEVS_AN;
-+
-+	ret = genphy_read_abilities(phydev);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* AX88772D does not support reported 1000baseT mode */
-+	linkmode_set_bit(ETHTOOL_LINK_MODE_1000baseT_Full_BIT, mask);
-+	linkmode_andnot(phydev->supported, phydev->supported, mask);
-+
-+	return 0;
-+}
-+
- static struct phy_driver asix_driver[] = {
- {
- 	PHY_ID_MATCH_EXACT(PHY_ID_ASIX_AX88772A),
-@@ -111,6 +240,35 @@ static struct phy_driver asix_driver[] = {
- 	.suspend	= genphy_suspend,
- 	.resume		= genphy_resume,
- 	.soft_reset	= asix_soft_reset,
-+}, {
-+	PHY_ID_MATCH_EXACT(PHY_ID_ASIX_AX88772D),
-+	.name		= "Asix Electronics AX88772D",
-+	.flags		= PHY_IS_INTERNAL,
-+	.get_features	= asix_ax88772D_get_features,
-+	.read_mmd	= genphy_read_mmd_c45,
-+	.write_mmd	= genphy_write_mmd_c45,
-+	.suspend	= genphy_suspend,
-+	.resume		= genphy_resume,
-+}, {
-+	PHY_ID_MATCH_EXACT(PHY_ID_ASIX_AX88179A),
-+	.name		= "Asix Electronics AX88179A",
-+	.flags		= PHY_IS_INTERNAL,
-+	.suspend	= genphy_suspend,
-+	.resume		= genphy_resume,
-+	.read_mmd	= genphy_read_mmd_c45,
-+	.write_mmd	= genphy_write_mmd_c45,
-+}, {
-+	PHY_ID_MATCH_EXACT(PHY_ID_ASIX_AX88279),
-+	.name		= "Asix Electronics AX88279",
-+	.flags		= PHY_IS_INTERNAL | PHY_BROKEN_FORCED,
-+	.get_features	= asix_ax88279_get_features,
-+	.read_status	= asix_ax88279_read_status,
-+	.config_aneg	= asix_ax88279_config_aneg,
-+	.config_init	= asix_ax88279_config_init,
-+	.read_mmd	= genphy_read_mmd_c45,
-+	.write_mmd	= genphy_write_mmd_c45,
-+	.suspend	= genphy_suspend,
-+	.resume		= genphy_resume,
- }, {
- 	PHY_ID_MATCH_MODEL(PHY_ID_ASIX_AX88796B),
- 	.name		= "Asix Electronics AX88796B",
-@@ -124,6 +282,9 @@ static const struct mdio_device_id __maybe_unused asix_tbl[] = {
- 	{ PHY_ID_MATCH_EXACT(PHY_ID_ASIX_AX88772A) },
- 	{ PHY_ID_MATCH_EXACT(PHY_ID_ASIX_AX88772C) },
- 	{ PHY_ID_MATCH_MODEL(PHY_ID_ASIX_AX88796B) },
-+	{ PHY_ID_MATCH_EXACT(PHY_ID_ASIX_AX88772D) },
-+	{ PHY_ID_MATCH_EXACT(PHY_ID_ASIX_AX88179A) },
-+	{ PHY_ID_MATCH_EXACT(PHY_ID_ASIX_AX88279) },
- 	{ }
- };
- 
+Mmh, I understand the issue, but that's mainly kselftests related I think.
 
--- 
-2.47.3
+We could reuse python scripts from the NIPA repo to generate .json files
+that will need to be processed to be presented in a local HTML page. But
+that seems overcomplicated to put in place. At the end, the 'run_tests'
+command will output a TAP format, which can be parsed with different
+consumers [1] (e.g. tappy) or a simple "grep" command, e.g.
 
+  grep -e "^not ok" -e "ok .* # SKIP"
+
+An alternative I suggested a few months ago [2], is to print a summary
+at the end of the "run_tests" command, e.g.
+
+  # Totals: pass:1 fail:1 xfail:0 xpass:0 skip:1 error:0
+
+Can you try it on your side to see if it improves your user experience?
+
+Maybe this simple patch should be taken in the net-next tree. Often,
+patches modifying the kselftest framework have to be taken via a
+different tree I think...
+
+[1] https://testanything.org/consumers.html
+[2]
+https://lore.kernel.org/20260625-sft-run-tests-print-totals-v1-1-bfe588266249@kernel.org
+
+Cheers,
+Matt
