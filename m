@@ -1,45 +1,44 @@
-Received: from sender5-op-o15.zoho.com (sender5-op-o15.zoho.com [165.173.182.15])
+Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CEE650EC13;
-	Fri,  4 Sep 2026 16:48:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=165.173.182.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6645511188;
+	Fri,  4 Sep 2026 16:49:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.15
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788540543; cv=pass; b=WS40D5VXMplt3gCabBkz2vfBCfWX8gvZCthr8sSZSbfvajR9vvXO41Jr4qUhcgTgUaA0rrNpRLdIgy7Cl+v1m8/SYAvwEuHLIpoNzB3T/Opv9G2PwrN33aFTqLVZkHBJDuMRAGSF+PTria16L2ILpdzOLBNuZSsj1RWcdMZM0Kk=
+	t=1788540548; cv=pass; b=OdcdCOvG6VDqA+Lkj2/HTSxjOmOrhzW/wBlnoWmuftBDFtrSJDAvNT1tQk+f2ZddRuzhScc/Pn9z4sR5OqV7G+IzEIRsAAYJI+HScA6NaBa3EVXT04BhdU05Jr06uYIl74iyJE5pghhikxiMfVM8GDuR8WLBvo6qOAEbTMgMYK0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788540543; c=relaxed/simple;
-	bh=7j+XOiVNeAXo5dW/o6jKu0RjKNSTkVKZi5xJIKX6znI=;
+	s=arc-20240116; t=1788540548; c=relaxed/simple;
+	bh=yd6GWaVDPMIe/o6TIDlz+K0N/98nvL5ILtZcOOjErcI=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Q9EAD8uFw1u8fqqFdllQjgyj46RPp4n7wEFvWyct534d2PcMjsoJfJPfmPBewWKHkUEM11toJLQUF+rqReGiZAU20v1syaj/4gTn8aOQfCUus0MV+c9eIkCwBmcVd5kCL0tnrc9fwaC9pIuhsNdb25Ur5G+IZgd7E/4m9llHRmw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pigmoral.tech; spf=pass smtp.mailfrom=pigmoral.tech; dkim=pass (1024-bit key) header.d=pigmoral.tech header.i=junhui.liu@pigmoral.tech header.b=Ap1DOiZ0; arc=pass smtp.client-ip=165.173.182.15
+	 In-Reply-To:To:Cc; b=jukxHXkiMyDpt6K/FGwT9mZ9GcjVl+3rX3VxSMLU0WoM/IDoKipFnSBfPElM2jhdzQUdkTeTlN+vVvPNEQZ79eiotlSaww0SrgcIlRaM59f0Kp0SttKZftFD40XSkzHux+uQdtW0Q/thr3fehx8A/GRjwCcTWQf0mF+ucwBt5jg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pigmoral.tech; spf=pass smtp.mailfrom=pigmoral.tech; dkim=pass (1024-bit key) header.d=pigmoral.tech header.i=junhui.liu@pigmoral.tech header.b=RNjlnp70; arc=pass smtp.client-ip=136.143.188.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pigmoral.tech
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pigmoral.tech
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=pigmoral.tech header.i=junhui.liu@pigmoral.tech header.b="Ap1DOiZ0"
-ARC-Seal: i=1; a=rsa-sha256; t=1788540420; cv=none; 
+	dkim=pass (1024-bit key) header.d=pigmoral.tech header.i=junhui.liu@pigmoral.tech header.b="RNjlnp70"
+ARC-Seal: i=1; a=rsa-sha256; t=1788540517; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=K5eK8MWz++8OwQFMfgOjTS4CGxxAPv+X4KSio+PtTJmHCulB+dhFlepLg+IqO3v8NGG7lxSZue7xbyrYGrzbap97TOgiFHtCFRD3OJyYTiIZo7wXJuSPcKMRNpNXecSQQIHWppP4nbmkgEYHJARII/4b3R8KvgRVWncNq+fjBw8=
+	b=KKXe0rl46KxOiyymqgOXGGXDz08jU5LzyGuG/cnJY2hnq2O4MwIEPQ7vQ/fXbmAK53vye4BG+wFUQWXmZETp3p9yKNwFR1a3zd/O7KJehWnbvGds2ZSHTyC7xCwFA5Abxes37nUhZiYuivvHnOV+m2Avt7jra7yrHuyLimgUo8o=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1788540420; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=OT2z+L/aaB854BOyPvNt7W3xovuevCgjLvec57roJRE=; 
-	b=ODkfOhr0vtJbV9E42d9bTJOmmXuzlrIw3lrT2bGp9fxwxjMo78Mz+Y8usVJoWnkEk0laOD4t23tsXe8dvvNIHbOCgAa5if0AVDe7ltV0/bftwuzCPFYv6ddVJ1XDgCuCEGzmp8gGBVoSMwSxJRcx+8tKGPOmXsQBt7hNzFCXvzU=
+	t=1788540517; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=/nqSTI4M+1pDbQcVOP14IODgeb4p0RYKm7UPKJAD8ZI=; 
+	b=WMMqOUICJBFiPVvYOAGVVgb79usdzvK0BavoEH8phKZRhH5rjrGTMRuB5KaoXLOesUyrIFPqc6MtqcrrtcpIrYHllzahzlAxtrYuzQk5VBKNOGRzygIiqLXvN0mV7XAtOv6sq5U9/fVi65yFcLZm6PCXLrfryjzSTEJGwugDOHs=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=pigmoral.tech;
 	spf=pass  smtp.mailfrom=junhui.liu@pigmoral.tech;
 	dmarc=pass header.from=<junhui.liu@pigmoral.tech>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1788540420;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1788540517;
 	s=zmail; d=pigmoral.tech; i=junhui.liu@pigmoral.tech;
 	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:In-Reply-To:To:To:Cc:Cc:Reply-To;
-	bh=OT2z+L/aaB854BOyPvNt7W3xovuevCgjLvec57roJRE=;
-	b=Ap1DOiZ0qzO83LrZVSCED1Y6ixu6d9uRgEhFqqtN4yGdRSmwXswoNxv22VbOdIVL
-	Upx7xY7FREBvqL69RC76JkH+LeWIEaKfpFK6IcBoLrtWmWSpWMLnVyIULkzTXe0Ji27
-	GU1YGV5/wi5mYP5/PR4qChp6cCCU+lnrvsEfpxmk=
-Received: by mx.zohomail.com with SMTPS id 178854041685969.18485338866617;
-	Fri, 4 Sep 2026 09:46:56 -0700 (PDT)
+	bh=/nqSTI4M+1pDbQcVOP14IODgeb4p0RYKm7UPKJAD8ZI=;
+	b=RNjlnp70af3QRp0IXvZLWv9BZzsBdPYLh9FsVaM/pKwoskzUq4Ym+YbCcUREzMt5
+	sP75Dc27LQ1muyNkHripMT5/ztqEUcKN3y/BXHM+w0PEiN7atK/7UNbdtaTgBKz4uzJ
+	oqrahnLriUVuPomMQ3epPGLIkrMx+E4cAEK4XMRY=
+Received: by mx.zohomail.com with SMTPS id 1788540508375129.33683735137345;
+	Fri, 4 Sep 2026 09:48:28 -0700 (PDT)
 From: Junhui Liu <junhui.liu@pigmoral.tech>
-Date: Sat, 05 Sep 2026 00:45:30 +0800
-Subject: [PATCH v3 1/8] dt-bindings: clk: sun60i-a733-ccu: Add Allwinner
- A733 support
+Date: Sat, 05 Sep 2026 00:45:37 +0800
+Subject: [PATCH v3 8/8] clk: sunxi-ng: a733: Add reset lines
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,7 +47,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260905-a733-clk-v3-1-50f238f39c78@pigmoral.tech>
+Message-Id: <20260905-a733-clk-v3-8-50f238f39c78@pigmoral.tech>
 References: <20260905-a733-clk-v3-0-50f238f39c78@pigmoral.tech>
 In-Reply-To: <20260905-a733-clk-v3-0-50f238f39c78@pigmoral.tech>
 To: Stephen Boyd <sboyd@kernel.org>, Brian Masney <bmasney+clk@redhat.com>, 
@@ -67,656 +66,179 @@ Cc: linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
  netdev@vger.kernel.org, Jerome Brunet <jbrunet@baylibre.com>, 
  Enzo Adriano <enzo.adriano.code@gmail.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=19171;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6960;
  i=junhui.liu@pigmoral.tech; h=from:subject:message-id;
- bh=7j+XOiVNeAXo5dW/o6jKu0RjKNSTkVKZi5xJIKX6znI=;
- b=owGbwMvMwCWWvDb1VEXc8j+Mp9WSGLJmfT14P/tQ8TVO9rN/GFbPPPmxa3d5hsxsh49MjiXxD
- +2+NsYu6ihlYRDjYpAVU2Th8hf/Z63D8+2IQOt9mDmsTCBDGLg4BWAiW6YwMiz4K9mZcMv+C+f8
- HLmeFIHnNU96Qk5KmXn+2eTofr1l3lJGhh9ueiw3Hr/aarHOXLz3kZKHls/i8tYF6QxTlr1maNp
- ayQAA
+ bh=yd6GWaVDPMIe/o6TIDlz+K0N/98nvL5ILtZcOOjErcI=;
+ b=owGbwMvMwCWWvDb1VEXc8j+Mp9WSGLJmfb178cF35+82KQyL2J6UyDeeXDxv+tbwtN3rgkreG
+ nz12tI0p6OUhUGMi0FWTJGFy1/8n7UOz7cjAq33YeawMoEMYeDiFICJrJrOyNAYdPYX8z7O76e5
+ mue062t/aXP/2NZwPCjs7YVnLDInQpYw/DO7kMa/31Sw9+C6msDDR77kiHzd2NEfz9HTHbZ1E9t
+ 8CyYA
 X-Developer-Key: i=junhui.liu@pigmoral.tech; a=openpgp;
  fpr=15B30CC69C4BF0CC3C08F85A2A90CDC122DF37BF
 X-ZohoMailClient: External
 
-The CCU and R-CCU (PRCM) modules provide clocks and reset functions for
-the Allwinner A733 SoC. The clock architecture of the A733 is evolved
-from the A523, though the root clocking strategy transitions from a
-static oscillator frequency in the Devicetree to the "hosc" clock, which
-is determined by choosing from three possible frequencies (19.2MHz,
-24MHz, or 26MHz) by the RTC hardware, and finally feeds the CCU and
-R-CCU.
+Add the reset lines for the Allwinner A733 SoC. These reset control bits
+are integrated into the Bus Gate Reset (BGR) registers, typically
+sharing the same register address with their corresponding bus clock
+gates. Integrate them into the main CCU driver using the existing
+sunxi-ng ccu_reset framework, allowing the CCU to also function as a
+reset controller for the SoC.
 
-Additionally, the MCU_CCU module found in previous designs is removed
-from the A733, and the clock tree is expanded with more clock outputs
-to support new functional modules.
-
+Tested-by: Jerome Brunet <jbrunet@baylibre.com>
 Signed-off-by: Junhui Liu <junhui.liu@pigmoral.tech>
 ---
- .../bindings/clock/allwinner,sun60i-a733-ccu.yaml  | 107 ++++++++
- .../dt-bindings/clock/allwinner,sun60i-a733-ccu.h  | 290 +++++++++++++++++++++
- .../clock/allwinner,sun60i-a733-r-ccu.h            |  39 +++
- .../dt-bindings/reset/allwinner,sun60i-a733-ccu.h  | 129 +++++++++
- .../reset/allwinner,sun60i-a733-r-ccu.h            |  23 ++
- 5 files changed, 588 insertions(+)
+ drivers/clk/sunxi-ng/ccu-sun60i-a733.c | 126 +++++++++++++++++++++++++++++++++
+ 1 file changed, 126 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/clock/allwinner,sun60i-a733-ccu.yaml b/Documentation/devicetree/bindings/clock/allwinner,sun60i-a733-ccu.yaml
-new file mode 100644
-index 000000000000..7c9068d3bbb0
---- /dev/null
-+++ b/Documentation/devicetree/bindings/clock/allwinner,sun60i-a733-ccu.yaml
-@@ -0,0 +1,107 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/clock/allwinner,sun60i-a733-ccu.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
+diff --git a/drivers/clk/sunxi-ng/ccu-sun60i-a733.c b/drivers/clk/sunxi-ng/ccu-sun60i-a733.c
+index c124b09855c0..b7fc2cfc626c 100644
+--- a/drivers/clk/sunxi-ng/ccu-sun60i-a733.c
++++ b/drivers/clk/sunxi-ng/ccu-sun60i-a733.c
+@@ -19,6 +19,7 @@
+ #include <dt-bindings/reset/allwinner,sun60i-a733-ccu.h>
+ 
+ #include "ccu_common.h"
++#include "ccu_reset.h"
+ 
+ #include "ccu_div.h"
+ #include "ccu_gate.h"
+@@ -2183,11 +2184,136 @@ static struct clk_hw_onecell_data sun60i_a733_hw_clks = {
+ 	.num	= CLK_FANOUT3 + 1,
+ };
+ 
++static const struct ccu_reset_map sun60i_a733_ccu_resets[] = {
++	[RST_BUS_ITS_PCIE0]		= { 0x574, BIT(16) },
++	[RST_BUS_IOMMU0_SYS]		= { 0x58c, BIT(16) },
++	[RST_BUS_MSI_LITE0_AHB]		= { 0x594, BIT(16) },
++	[RST_BUS_MSI_LITE0_MBUS]	= { 0x594, BIT(17) },
++	[RST_BUS_MSI_LITE1_AHB]		= { 0x59c, BIT(16) },
++	[RST_BUS_MSI_LITE1_MBUS]	= { 0x59c, BIT(17) },
++	[RST_BUS_MSI_LITE2_AHB]		= { 0x5a4, BIT(16) },
++	[RST_BUS_MSI_LITE2_MBUS]	= { 0x5a4, BIT(17) },
++	[RST_BUS_IOMMU1_SYS]		= { 0x5b4, BIT(16) },
++	[RST_BUS_DMA0]			= { 0x704, BIT(16) },
++	[RST_BUS_DMA1]			= { 0x70c, BIT(16) },
++	[RST_BUS_SPINLOCK]		= { 0x724, BIT(16) },
++	[RST_BUS_MSGBOX]		= { 0x744, BIT(16) },
++	[RST_BUS_PWM0]			= { 0x784, BIT(16) },
++	[RST_BUS_PWM1]			= { 0x78c, BIT(16) },
++	[RST_BUS_DBG]			= { 0x7a4, BIT(16) },
++	[RST_BUS_SYSDAP]		= { 0x7ac, BIT(16) },
++	[RST_BUS_TIMER0]		= { 0x850, BIT(16) },
++	[RST_BUS_DE0]			= { 0xa04, BIT(16) },
++	[RST_BUS_DI]			= { 0xa24, BIT(16) },
++	[RST_BUS_G2D]			= { 0xa44, BIT(16) },
++	[RST_BUS_EINK]			= { 0xa6c, BIT(16) },
++	[RST_BUS_DE_SYS]		= { 0xa74, BIT(16) },
++	[RST_BUS_VE_ENC0]		= { 0xa8c, BIT(16) },
++	[RST_BUS_VE_DEC0]		= { 0xa8c, BIT(18) },
++	[RST_BUS_CE]			= { 0xac4, BIT(16) },
++	[RST_BUS_CE_SYS]		= { 0xac4, BIT(17) },
++	[RST_BUS_NPU_CORE]		= { 0xb04, BIT(16) },
++	[RST_BUS_NPU_AXI]		= { 0xb04, BIT(17) },
++	[RST_BUS_NPU_AHB]		= { 0xb04, BIT(18) },
++	[RST_BUS_NPU_SRAM]		= { 0xb04, BIT(19) },
++	[RST_BUS_GPU0]			= { 0xb24, BIT(16) },
++	[RST_BUS_DRAM0]			= { 0xc0c, BIT(16) },
++	[RST_BUS_NAND0]			= { 0xc8c, BIT(16) },
++	[RST_BUS_MMC0]			= { 0xd0c, BIT(16) },
++	[RST_BUS_MMC1]			= { 0xd1c, BIT(16) },
++	[RST_BUS_MMC2]			= { 0xd2c, BIT(16) },
++	[RST_BUS_MMC3]			= { 0xd3c, BIT(16) },
++	[RST_BUS_UFS_AHB]		= { 0xd8c, BIT(16) },
++	[RST_BUS_UFS_AXI]		= { 0xd8c, BIT(17) },
++	[RST_BUS_UFS_PHY]		= { 0xd8c, BIT(18) },
++	[RST_BUS_UFS_CORE]		= { 0xd8c, BIT(19) },
++	[RST_BUS_UART0]			= { 0xe00, BIT(16) },
++	[RST_BUS_UART1]			= { 0xe04, BIT(16) },
++	[RST_BUS_UART2]			= { 0xe08, BIT(16) },
++	[RST_BUS_UART3]			= { 0xe0c, BIT(16) },
++	[RST_BUS_UART4]			= { 0xe10, BIT(16) },
++	[RST_BUS_UART5]			= { 0xe14, BIT(16) },
++	[RST_BUS_UART6]			= { 0xe18, BIT(16) },
++	[RST_BUS_I2C0]			= { 0xe80, BIT(16) },
++	[RST_BUS_I2C1]			= { 0xe84, BIT(16) },
++	[RST_BUS_I2C2]			= { 0xe88, BIT(16) },
++	[RST_BUS_I2C3]			= { 0xe8c, BIT(16) },
++	[RST_BUS_I2C4]			= { 0xe90, BIT(16) },
++	[RST_BUS_I2C5]			= { 0xe94, BIT(16) },
++	[RST_BUS_I2C6]			= { 0xe98, BIT(16) },
++	[RST_BUS_I2C7]			= { 0xe9c, BIT(16) },
++	[RST_BUS_I2C8]			= { 0xea0, BIT(16) },
++	[RST_BUS_I2C9]			= { 0xea4, BIT(16) },
++	[RST_BUS_I2C10]			= { 0xea8, BIT(16) },
++	[RST_BUS_I2C11]			= { 0xeac, BIT(16) },
++	[RST_BUS_I2C12]			= { 0xeb0, BIT(16) },
++	[RST_BUS_SPI0]			= { 0xf04, BIT(16) },
++	[RST_BUS_SPI1]			= { 0xf0c, BIT(16) },
++	[RST_BUS_SPI2]			= { 0xf14, BIT(16) },
++	[RST_BUS_SPIF]			= { 0xf1c, BIT(16) },
++	[RST_BUS_SPI3]			= { 0xf24, BIT(16) },
++	[RST_BUS_SPI4]			= { 0xf2c, BIT(16) }, /* From the vendor kernel. */
++	[RST_BUS_GPADC0]		= { 0xfc4, BIT(16) },
++	[RST_BUS_THS0]			= { 0xfe4, BIT(16) },
++	[RST_BUS_IRRX]			= { 0x1004, BIT(16) },
++	[RST_BUS_IRTX]			= { 0x100c, BIT(16) },
++	[RST_BUS_LRADC]			= { 0x1024, BIT(16) },
++	[RST_BUS_SGPIO]			= { 0x1064, BIT(16) }, /* From the vendor kernel. */
++	[RST_BUS_LPC]			= { 0x1084, BIT(16) }, /* From the vendor kernel. */
++	[RST_BUS_I2SPCM0]		= { 0x120c, BIT(16) },
++	[RST_BUS_I2SPCM1]		= { 0x121c, BIT(16) },
++	[RST_BUS_I2SPCM2]		= { 0x122c, BIT(16) },
++	[RST_BUS_I2SPCM3]		= { 0x123c, BIT(16) },
++	[RST_BUS_I2SPCM4]		= { 0x124c, BIT(16) },
++	[RST_BUS_SPDIF]			= { 0x128c, BIT(16) },
++	[RST_BUS_DMIC]			= { 0x12cc, BIT(16) },
++	[RST_USB_PHY0]			= { 0x1300, BIT(30) },
++	[RST_BUS_OHCI0]			= { 0x1304, BIT(16) },
++	[RST_BUS_EHCI0]			= { 0x1304, BIT(20) },
++	[RST_BUS_OTG]			= { 0x1304, BIT(24) },
++	[RST_USB_PHY1]			= { 0x1308, BIT(30) },
++	[RST_BUS_OHCI1]			= { 0x130c, BIT(16) },
++	[RST_BUS_EHCI1]			= { 0x130c, BIT(20) },
++	[RST_BUS_USB2]			= { 0x135c, BIT(16) },
++	[RST_BUS_PCIE_PWRUP]		= { 0x138c, BIT(16) },
++	[RST_BUS_PCIE]			= { 0x138c, BIT(17) },
++	[RST_BUS_SERDES]		= { 0x13c4, BIT(16) },
++	[RST_BUS_GMAC0]			= { 0x141c, BIT(16) },
++	[RST_BUS_GMAC0_AXI]		= { 0x141c, BIT(17) },
++	[RST_BUS_GMAC1]			= { 0x142c, BIT(16) }, /* From the vendor kernel. */
++	[RST_BUS_GMAC1_AXI]		= { 0x142c, BIT(17) }, /* From the vendor kernel. */
++	[RST_BUS_TCON_LCD0]		= { 0x1504, BIT(16) },
++	[RST_BUS_TCON_LCD1]		= { 0x150c, BIT(16) },
++	[RST_BUS_TCON_LCD2]		= { 0x1514, BIT(16) }, /* From the vendor kernel. */
++	[RST_BUS_LVDS0]			= { 0x1544, BIT(16) },
++	[RST_BUS_LVDS1]			= { 0x154c, BIT(16) },
++	[RST_BUS_DSI0]			= { 0x1584, BIT(16) },
++	[RST_BUS_DSI1]			= { 0x158c, BIT(16) },
++	[RST_BUS_TCON_TV0]		= { 0x1604, BIT(16) },
++	[RST_BUS_TCON_TV1]		= { 0x160c, BIT(16) },
++	[RST_BUS_EDP]			= { 0x164c, BIT(16) },
++	[RST_BUS_HDMI_MAIN]		= { 0x168c, BIT(16) },
++	[RST_BUS_HDMI_SUB]		= { 0x168c, BIT(17) },
++	[RST_BUS_HDMI_HDCP]		= { 0x168c, BIT(18) },
++	[RST_BUS_DPSS_TOP0]		= { 0x16c4, BIT(16) },
++	[RST_BUS_DPSS_TOP1]		= { 0x16cc, BIT(16) },
++	[RST_BUS_VIDEO_OUT0]		= { 0x16e4, BIT(16) },
++	[RST_BUS_VIDEO_OUT1]		= { 0x16ec, BIT(16) },
++	[RST_BUS_LEDC]			= { 0x1704, BIT(16) },
++	[RST_BUS_DSC]			= { 0x1744, BIT(16) },
++	[RST_BUS_CSI]			= { 0x1844, BIT(16) },
++	[RST_BUS_VIDEO_IN]		= { 0x1884, BIT(16) },
++	[RST_BUS_APB2JTAG]		= { 0x1c04, BIT(16) },
++};
 +
-+title: Allwinner A733 Clock Control Unit
+ static const struct sunxi_ccu_desc sun60i_a733_ccu_desc = {
+ 	.ccu_clks	= sun60i_a733_ccu_clks,
+ 	.num_ccu_clks	= ARRAY_SIZE(sun60i_a733_ccu_clks),
+ 
+ 	.hw_clks	= &sun60i_a733_hw_clks,
 +
-+maintainers:
-+  - Junhui Liu <junhui.liu@pigmoral.tech>
-+
-+properties:
-+  compatible:
-+    enum:
-+      - allwinner,sun60i-a733-ccu
-+      - allwinner,sun60i-a733-r-ccu
-+
-+  reg:
-+    maxItems: 1
-+
-+  clocks:
-+    minItems: 4
-+    maxItems: 7
-+
-+  clock-names:
-+    minItems: 4
-+    maxItems: 7
-+
-+  "#clock-cells":
-+    const: 1
-+
-+  "#reset-cells":
-+    const: 1
-+
-+required:
-+  - compatible
-+  - reg
-+  - clocks
-+  - clock-names
-+  - "#clock-cells"
-+  - "#reset-cells"
-+
-+allOf:
-+  - if:
-+      properties:
-+        compatible:
-+          enum:
-+            - allwinner,sun60i-a733-ccu
-+
-+    then:
-+      properties:
-+        clocks:
-+          items:
-+            - description: High Frequency Oscillator (19.2MHz, 24MHz, or 26MHz)
-+            - description: Low Frequency Oscillator (usually at 32kHz)
-+            - description: Internal Oscillator
-+            - description: Low Frequency Oscillator fanout
-+
-+        clock-names:
-+          items:
-+            - const: hosc
-+            - const: losc
-+            - const: iosc
-+            - const: losc-fanout
-+
-+  - if:
-+      properties:
-+        compatible:
-+          enum:
-+            - allwinner,sun60i-a733-r-ccu
-+
-+    then:
-+      properties:
-+        clocks:
-+          items:
-+            - description: High Frequency Oscillator (19.2MHz, 24MHz, or 26MHz)
-+            - description: Low Frequency Oscillator (usually at 32kHz)
-+            - description: Internal Oscillator
-+            - description: System 24MHz Clock
-+            - description: Peripherals PLL 0 (200 MHz output)
-+            - description: Peripherals PLL 0 (300 MHz output)
-+            - description: Peripherals PLL 1 (300 MHz output)
-+
-+        clock-names:
-+          items:
-+            - const: hosc
-+            - const: losc
-+            - const: iosc
-+            - const: sys-24m
-+            - const: pll-periph0-200m
-+            - const: pll-periph0-300m
-+            - const: pll-periph1-300m
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    clock-controller@2002000 {
-+      compatible = "allwinner,sun60i-a733-ccu";
-+      reg = <0x02002000 0x2000>;
-+      clocks = <&osc>, <&rtc 0>, <&rtc 2>, <&rtc 1>;
-+      clock-names = "hosc", "losc", "iosc", "losc-fanout";
-+      #clock-cells = <1>;
-+      #reset-cells = <1>;
-+    };
-+
-+...
-diff --git a/include/dt-bindings/clock/allwinner,sun60i-a733-ccu.h b/include/dt-bindings/clock/allwinner,sun60i-a733-ccu.h
-new file mode 100644
-index 000000000000..08f507e48f69
---- /dev/null
-+++ b/include/dt-bindings/clock/allwinner,sun60i-a733-ccu.h
-@@ -0,0 +1,290 @@
-+/* SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause) */
-+/*
-+ * Copyright (C) 2026 Junhui Liu <junhui.liu@pigmoral.tech>
-+ *
-+ * The user manual uses PCLK, HCLK, and MCLK suffixes for some bus clocks.
-+ * These are represented here as APB, AHB, and MBUS prefixes respectively,
-+ * with the bus type moved to the front of the clock name.
-+ */
-+
-+#ifndef _DT_BINDINGS_CLK_ALLWINNER_SUN60I_A733_CCU_H_
-+#define _DT_BINDINGS_CLK_ALLWINNER_SUN60I_A733_CCU_H_
-+
-+#define CLK_PLL_REF		0
-+#define CLK_SYS_24M		1
-+#define CLK_PLL_DDR		2
-+#define CLK_PLL_PERIPH0_4X	3
-+#define CLK_PLL_PERIPH0_2X	4
-+#define CLK_PLL_PERIPH0_800M	5
-+#define CLK_PLL_PERIPH0_480M	6
-+#define CLK_PLL_PERIPH0_600M	7
-+#define CLK_PLL_PERIPH0_400M	8
-+#define CLK_PLL_PERIPH0_300M	9
-+#define CLK_PLL_PERIPH0_200M	10
-+#define CLK_PLL_PERIPH0_160M	11
-+#define CLK_PLL_PERIPH0_150M	12
-+#define CLK_PLL_PERIPH1_4X	13
-+#define CLK_PLL_PERIPH1_2X	14
-+#define CLK_PLL_PERIPH1_800M	15
-+#define CLK_PLL_PERIPH1_480M	16
-+#define CLK_PLL_PERIPH1_600M	17
-+#define CLK_PLL_PERIPH1_400M	18
-+#define CLK_PLL_PERIPH1_300M	19
-+#define CLK_PLL_PERIPH1_200M	20
-+#define CLK_PLL_PERIPH1_160M	21
-+#define CLK_PLL_PERIPH1_150M	22
-+#define CLK_PLL_GPU0		23
-+#define CLK_PLL_VIDEO0		24
-+#define CLK_PLL_VIDEO0_4X	25
-+#define CLK_PLL_VIDEO0_3X	26
-+#define CLK_PLL_VIDEO1		27
-+#define CLK_PLL_VIDEO1_4X	28
-+#define CLK_PLL_VIDEO1_3X	29
-+#define CLK_PLL_VIDEO2		30
-+#define CLK_PLL_VIDEO2_4X	31
-+#define CLK_PLL_VIDEO2_3X	32
-+#define CLK_PLL_VE0		33
-+#define CLK_PLL_VE1		34
-+#define CLK_PLL_AUDIO0_4X	35
-+#define CLK_PLL_AUDIO1		36
-+#define CLK_PLL_AUDIO1_DIV2	37
-+#define CLK_PLL_AUDIO1_DIV5	38
-+#define CLK_PLL_NPU		39
-+#define CLK_PLL_DE		40
-+#define CLK_PLL_DE_4X		41
-+#define CLK_PLL_DE_3X		42
-+#define CLK_AHB			43
-+#define CLK_APB0		44
-+#define CLK_APB1		45
-+#define CLK_APB_UART		46
-+#define CLK_TRACE		47
-+#define CLK_BUS_ITS_PCIE0_ACLK	48
-+#define CLK_MBUS		49
-+#define CLK_MBUS_IOMMU0_SYS	50
-+#define CLK_APB_IOMMU0_SYS	51
-+#define CLK_AHB_IOMMU0_SYS	52
-+#define CLK_BUS_MSI_LITE0	53
-+#define CLK_BUS_MSI_LITE1	54
-+#define CLK_BUS_MSI_LITE2	55
-+#define CLK_MBUS_IOMMU1_SYS	56
-+#define CLK_APB_IOMMU1_SYS	57
-+#define CLK_AHB_IOMMU1_SYS	58
-+#define CLK_AHB_VE_DEC		59
-+#define CLK_AHB_VE_ENC		60
-+#define CLK_AHB_VID_IN		61
-+#define CLK_AHB_VID_COUT0	62
-+#define CLK_AHB_VID_COUT1	63
-+#define CLK_AHB_DE		64
-+#define CLK_AHB_NPU		65
-+#define CLK_AHB_GPU0		66
-+#define CLK_AHB_SERDES		67
-+#define CLK_AHB_USB_SYS		68
-+#define CLK_AHB_MSI_LITE0	69
-+#define CLK_AHB_STORE		70
-+#define CLK_AHB_CPUS		71
-+#define CLK_MBUS_IOMMU0		72
-+#define CLK_MBUS_IOMMU1		73
-+#define CLK_MBUS_DESYS		74
-+#define CLK_MBUS_VE_ENC0_GATE	75
-+#define CLK_MBUS_VE_DEC0_GATE	76
-+#define CLK_MBUS_GPU0		77
-+#define CLK_MBUS_NPU		78
-+#define CLK_MBUS_VID_IN		79
-+#define CLK_MBUS_SERDES		80
-+#define CLK_MBUS_MSI_LITE0	81
-+#define CLK_MBUS_STORE		82
-+#define CLK_MBUS_MSI_LITE2	83
-+#define CLK_MBUS_DMA0		84
-+#define CLK_MBUS_VE_ENC0	85
-+#define CLK_MBUS_CE		86
-+#define CLK_MBUS_DMA1		87
-+#define CLK_MBUS_NAND		88
-+#define CLK_MBUS_CSI		89
-+#define CLK_MBUS_ISP		90
-+#define CLK_MBUS_GMAC0		91
-+#define CLK_MBUS_GMAC1		92
-+#define CLK_MBUS_VE_DEC0	93
-+#define CLK_BUS_DMA0		94
-+#define CLK_BUS_DMA1		95
-+#define CLK_BUS_SPINLOCK	96
-+#define CLK_BUS_MSGBOX0		97
-+#define CLK_BUS_PWM0		98
-+#define CLK_BUS_PWM1		99
-+#define CLK_BUS_DBG		100
-+#define CLK_BUS_SYSDAP		101
-+#define CLK_TIMER0		102
-+#define CLK_TIMER1		103
-+#define CLK_TIMER2		104
-+#define CLK_TIMER3		105
-+#define CLK_TIMER4		106
-+#define CLK_TIMER5		107
-+#define CLK_TIMER6		108
-+#define CLK_TIMER7		109
-+#define CLK_TIMER8		110
-+#define CLK_TIMER9		111
-+#define CLK_BUS_TIMER		112
-+#define CLK_AVS			113
-+#define CLK_DE0			114
-+#define CLK_BUS_DE0		115
-+#define CLK_DI			116
-+#define CLK_BUS_DI		117
-+#define CLK_G2D			118
-+#define CLK_BUS_G2D		119
-+#define CLK_EINK		120
-+#define CLK_EINK_PANEL		121
-+#define CLK_BUS_EINK		122
-+#define CLK_VE_ENC0		123
-+#define CLK_VE_DEC0		124
-+#define CLK_BUS_VE_ENC0		125
-+#define CLK_BUS_VE_DEC0		126
-+#define CLK_CE			127
-+#define CLK_BUS_CE		128
-+#define CLK_BUS_CE_SYS		129
-+#define CLK_NPU			130
-+#define CLK_BUS_NPU		131
-+#define CLK_GPU0		132
-+#define CLK_BUS_GPU0		133
-+#define CLK_DRAM0		134
-+#define CLK_BUS_DRAM0		135
-+#define CLK_NAND0_CLK0		136
-+#define CLK_NAND0_CLK1		137
-+#define CLK_BUS_NAND0		138
-+#define CLK_MMC0		139
-+#define CLK_BUS_MMC0		140
-+#define CLK_MMC1		141
-+#define CLK_BUS_MMC1		142
-+#define CLK_MMC2		143
-+#define CLK_BUS_MMC2		144
-+#define CLK_MMC3		145
-+#define CLK_BUS_MMC3		146
-+#define CLK_UFS_AXI		147
-+#define CLK_UFS_CFG		148
-+#define CLK_BUS_UFS		149
-+#define CLK_BUS_UART0		150
-+#define CLK_BUS_UART1		151
-+#define CLK_BUS_UART2		152
-+#define CLK_BUS_UART3		153
-+#define CLK_BUS_UART4		154
-+#define CLK_BUS_UART5		155
-+#define CLK_BUS_UART6		156
-+#define CLK_BUS_I2C0		157
-+#define CLK_BUS_I2C1		158
-+#define CLK_BUS_I2C2		159
-+#define CLK_BUS_I2C3		160
-+#define CLK_BUS_I2C4		161
-+#define CLK_BUS_I2C5		162
-+#define CLK_BUS_I2C6		163
-+#define CLK_BUS_I2C7		164
-+#define CLK_BUS_I2C8		165
-+#define CLK_BUS_I2C9		166
-+#define CLK_BUS_I2C10		167
-+#define CLK_BUS_I2C11		168
-+#define CLK_BUS_I2C12		169
-+#define CLK_SPI0		170
-+#define CLK_BUS_SPI0		171
-+#define CLK_SPI1		172
-+#define CLK_BUS_SPI1		173
-+#define CLK_SPI2		174
-+#define CLK_BUS_SPI2		175
-+#define CLK_SPIF		176
-+#define CLK_BUS_SPIF		177
-+#define CLK_SPI3		178
-+#define CLK_BUS_SPI3		179
-+#define CLK_SPI4		180
-+#define CLK_BUS_SPI4		181
-+#define CLK_GPADC0_24M		182
-+#define CLK_BUS_GPADC0		183
-+#define CLK_BUS_THS0		184
-+#define CLK_IRRX		185
-+#define CLK_BUS_IRRX		186
-+#define CLK_IRTX		187
-+#define CLK_BUS_IRTX		188
-+#define CLK_BUS_LRADC		189
-+#define CLK_SGPIO		190
-+#define CLK_BUS_SGPIO		191
-+#define CLK_LPC			192
-+#define CLK_BUS_LPC		193
-+#define CLK_I2SPCM0		194
-+#define CLK_BUS_I2SPCM0		195
-+#define CLK_I2SPCM1		196
-+#define CLK_BUS_I2SPCM1		197
-+#define CLK_I2SPCM2		198
-+#define CLK_I2SPCM2_ASRC	199
-+#define CLK_BUS_I2SPCM2		200
-+#define CLK_I2SPCM3		201
-+#define CLK_BUS_I2SPCM3		202
-+#define CLK_I2SPCM4		203
-+#define CLK_BUS_I2SPCM4		204
-+#define CLK_SPDIF_TX		205
-+#define CLK_SPDIF_RX		206
-+#define CLK_BUS_SPDIF		207
-+#define CLK_DMIC		208
-+#define CLK_BUS_DMIC		209
-+#define CLK_USB_OHCI0		210
-+#define CLK_BUS_OHCI0		211
-+#define CLK_BUS_EHCI0		212
-+#define CLK_BUS_OTG		213
-+#define CLK_USB_OHCI1		214
-+#define CLK_BUS_OHCI1		215
-+#define CLK_BUS_EHCI1		216
-+#define CLK_USB01_REF		217
-+#define CLK_USB2_U2_REF		218
-+#define CLK_USB2_SUSPEND	219
-+#define CLK_USB2_MF		220
-+#define CLK_USB2_U3_UTMI	221
-+#define CLK_USB2_U2_PIPE	222
-+#define CLK_PCIE_AUX		223
-+#define CLK_PCIE_AXI_SLV	224
-+#define CLK_SERDES_PHY		225
-+#define CLK_GMAC_PTP		226
-+#define CLK_GMAC0_PHY		227
-+#define CLK_BUS_GMAC0		228
-+#define CLK_GMAC1_PHY		229
-+#define CLK_BUS_GMAC1		230
-+#define CLK_TCON_LCD0		231
-+#define CLK_BUS_TCON_LCD0	232
-+#define CLK_TCON_LCD1		233
-+#define CLK_BUS_TCON_LCD1	234
-+#define CLK_TCON_LCD2		235
-+#define CLK_BUS_TCON_LCD2	236
-+#define CLK_DSI0		237
-+#define CLK_BUS_DSI0		238
-+#define CLK_DSI1		239
-+#define CLK_BUS_DSI1		240
-+#define CLK_COMBPHY0		241
-+#define CLK_COMBPHY1		242
-+#define CLK_BUS_TCON_TV0	243
-+#define CLK_BUS_TCON_TV1	244
-+#define CLK_EDP_TV		245
-+#define CLK_BUS_EDP_TV		246
-+#define CLK_HDMI_CEC_32K	247
-+#define CLK_HDMI_CEC		248
-+#define CLK_HDMI_TV		249
-+#define CLK_BUS_HDMI_TV		250
-+#define CLK_HDMI_SFR		251
-+#define CLK_HDCP_ESM		252
-+#define CLK_BUS_DPSS_TOP0	253
-+#define CLK_BUS_DPSS_TOP1	254
-+#define CLK_LEDC		255
-+#define CLK_BUS_LEDC		256
-+#define CLK_BUS_DSC		257
-+#define CLK_CSI_MASTER0		258
-+#define CLK_CSI_MASTER1		259
-+#define CLK_CSI_MASTER2		260
-+#define CLK_CSI			261
-+#define CLK_BUS_CSI		262
-+#define CLK_ISP			263
-+#define CLK_RES_DCAP_24M	264
-+#define CLK_APB2JTAG		265
-+#define CLK_FANOUT_24M		266
-+#define CLK_FANOUT_12M		267
-+#define CLK_FANOUT_16M		268
-+#define CLK_FANOUT_25M		269
-+#define CLK_FANOUT_27M		270
-+#define CLK_FANOUT_PCLK		271
-+#define CLK_FANOUT0		272
-+#define CLK_FANOUT1		273
-+#define CLK_FANOUT2		274
-+#define CLK_FANOUT3		275
-+
-+#endif /* _DT_BINDINGS_CLK_ALLWINNER_SUN60I_A733_CCU_H_ */
-diff --git a/include/dt-bindings/clock/allwinner,sun60i-a733-r-ccu.h b/include/dt-bindings/clock/allwinner,sun60i-a733-r-ccu.h
-new file mode 100644
-index 000000000000..d620c6882c50
---- /dev/null
-+++ b/include/dt-bindings/clock/allwinner,sun60i-a733-r-ccu.h
-@@ -0,0 +1,39 @@
-+/* SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause) */
-+/*
-+ * Copyright (C) 2026 Junhui Liu <junhui.liu@pigmoral.tech>
-+ */
-+
-+#ifndef _DT_BINDINGS_CLK_ALLWINNER_SUN60I_A733_R_CCU_H_
-+#define _DT_BINDINGS_CLK_ALLWINNER_SUN60I_A733_R_CCU_H_
-+
-+#define CLK_R_AHB		0
-+#define CLK_R_APB0		1
-+#define CLK_R_APB1		2
-+#define CLK_R_TIMER0		3
-+#define CLK_R_TIMER1		4
-+#define CLK_R_TIMER2		5
-+#define CLK_R_TIMER3		6
-+#define CLK_BUS_R_TIMER		7
-+#define CLK_BUS_R_TWD		8
-+#define CLK_R_PWM		9
-+#define CLK_BUS_R_PWM		10
-+#define CLK_R_SPI		11
-+#define CLK_BUS_R_SPI		12
-+#define CLK_BUS_R_MSGBOX	13
-+#define CLK_BUS_R_UART0		14
-+#define CLK_BUS_R_UART1		15
-+#define CLK_BUS_R_I2C0		16
-+#define CLK_BUS_R_I2C1		17
-+#define CLK_BUS_R_I2C2		18
-+#define CLK_BUS_R_PPU		19
-+#define CLK_BUS_R_TZMA		20
-+#define CLK_BUS_R_CPU_BIST	21
-+#define CLK_R_IR_RX		22
-+#define CLK_BUS_R_IR_RX		23
-+#define CLK_BUS_R_RTC		24
-+#define CLK_R_RISCV		25
-+#define CLK_BUS_R_RISCV		26
-+#define CLK_BUS_R_RISCV_CFG	27
-+#define CLK_BUS_R_CPUCFG	28
-+
-+#endif /* _DT_BINDINGS_CLK_ALLWINNER_SUN60I_A733_R_CCU_H_ */
-diff --git a/include/dt-bindings/reset/allwinner,sun60i-a733-ccu.h b/include/dt-bindings/reset/allwinner,sun60i-a733-ccu.h
-new file mode 100644
-index 000000000000..a4db2f673bd0
---- /dev/null
-+++ b/include/dt-bindings/reset/allwinner,sun60i-a733-ccu.h
-@@ -0,0 +1,129 @@
-+/* SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause) */
-+/*
-+ * Copyright (C) 2026 Junhui Liu <junhui.liu@pigmoral.tech>
-+ */
-+
-+#ifndef _DT_BINDINGS_RST_ALLWINNER_SUN60I_A733_CCU_H_
-+#define _DT_BINDINGS_RST_ALLWINNER_SUN60I_A733_CCU_H_
-+
-+#define RST_BUS_ITS_PCIE0	0
-+#define RST_BUS_IOMMU0_SYS	1
-+#define RST_BUS_MSI_LITE0_AHB	2
-+#define RST_BUS_MSI_LITE0_MBUS	3
-+#define RST_BUS_MSI_LITE1_AHB	4
-+#define RST_BUS_MSI_LITE1_MBUS	5
-+#define RST_BUS_MSI_LITE2_AHB	6
-+#define RST_BUS_MSI_LITE2_MBUS	7
-+#define RST_BUS_IOMMU1_SYS	8
-+#define RST_BUS_DMA0		9
-+#define RST_BUS_DMA1		10
-+#define RST_BUS_SPINLOCK	11
-+#define RST_BUS_MSGBOX		12
-+#define RST_BUS_PWM0		13
-+#define RST_BUS_PWM1		14
-+#define RST_BUS_DBG		15
-+#define RST_BUS_SYSDAP		16
-+#define RST_BUS_TIMER0		17
-+#define RST_BUS_DE0		18
-+#define RST_BUS_DI		19
-+#define RST_BUS_G2D		20
-+#define RST_BUS_EINK		21
-+#define RST_BUS_DE_SYS		22
-+#define RST_BUS_VE_ENC0		23
-+#define RST_BUS_VE_DEC0		24
-+#define RST_BUS_CE		25
-+#define RST_BUS_CE_SYS		26
-+#define RST_BUS_NPU_CORE	27
-+#define RST_BUS_NPU_AXI		28
-+#define RST_BUS_NPU_AHB		29
-+#define RST_BUS_NPU_SRAM	30
-+#define RST_BUS_GPU0		31
-+#define RST_BUS_DRAM0		32
-+#define RST_BUS_NAND0		33
-+#define RST_BUS_MMC0		34
-+#define RST_BUS_MMC1		35
-+#define RST_BUS_MMC2		36
-+#define RST_BUS_MMC3		37
-+#define RST_BUS_UFS_AHB		38
-+#define RST_BUS_UFS_AXI		39
-+#define RST_BUS_UFS_PHY		40
-+#define RST_BUS_UFS_CORE	41
-+#define RST_BUS_UART0		42
-+#define RST_BUS_UART1		43
-+#define RST_BUS_UART2		44
-+#define RST_BUS_UART3		45
-+#define RST_BUS_UART4		46
-+#define RST_BUS_UART5		47
-+#define RST_BUS_UART6		48
-+#define RST_BUS_I2C0		49
-+#define RST_BUS_I2C1		50
-+#define RST_BUS_I2C2		51
-+#define RST_BUS_I2C3		52
-+#define RST_BUS_I2C4		53
-+#define RST_BUS_I2C5		54
-+#define RST_BUS_I2C6		55
-+#define RST_BUS_I2C7		56
-+#define RST_BUS_I2C8		57
-+#define RST_BUS_I2C9		58
-+#define RST_BUS_I2C10		59
-+#define RST_BUS_I2C11		60
-+#define RST_BUS_I2C12		61
-+#define RST_BUS_SPI0		62
-+#define RST_BUS_SPI1		63
-+#define RST_BUS_SPI2		64
-+#define RST_BUS_SPIF		65
-+#define RST_BUS_SPI3		66
-+#define RST_BUS_SPI4		67
-+#define RST_BUS_GPADC0		68
-+#define RST_BUS_THS0		69
-+#define RST_BUS_IRRX		70
-+#define RST_BUS_IRTX		71
-+#define RST_BUS_LRADC		72
-+#define RST_BUS_SGPIO		73
-+#define RST_BUS_LPC		74
-+#define RST_BUS_I2SPCM0		75
-+#define RST_BUS_I2SPCM1		76
-+#define RST_BUS_I2SPCM2		77
-+#define RST_BUS_I2SPCM3		78
-+#define RST_BUS_I2SPCM4		79
-+#define RST_BUS_SPDIF		80
-+#define RST_BUS_DMIC		81
-+#define RST_USB_PHY0		82
-+#define RST_BUS_OHCI0		83
-+#define RST_BUS_EHCI0		84
-+#define RST_BUS_OTG		85
-+#define RST_USB_PHY1		86
-+#define RST_BUS_OHCI1		87
-+#define RST_BUS_EHCI1		88
-+#define RST_BUS_USB2		89
-+#define RST_BUS_PCIE_PWRUP	90
-+#define RST_BUS_PCIE		91
-+#define RST_BUS_SERDES		92
-+#define RST_BUS_GMAC0		93
-+#define RST_BUS_GMAC0_AXI	94
-+#define RST_BUS_GMAC1		95
-+#define RST_BUS_GMAC1_AXI	96
-+#define RST_BUS_TCON_LCD0	97
-+#define RST_BUS_TCON_LCD1	98
-+#define RST_BUS_TCON_LCD2	99
-+#define RST_BUS_LVDS0		100
-+#define RST_BUS_LVDS1		101
-+#define RST_BUS_DSI0		102
-+#define RST_BUS_DSI1		103
-+#define RST_BUS_TCON_TV0	104
-+#define RST_BUS_TCON_TV1	105
-+#define RST_BUS_EDP		106
-+#define RST_BUS_HDMI_MAIN	107
-+#define RST_BUS_HDMI_SUB	108
-+#define RST_BUS_HDMI_HDCP	109
-+#define RST_BUS_DPSS_TOP0	110
-+#define RST_BUS_DPSS_TOP1	111
-+#define RST_BUS_VIDEO_OUT0	112
-+#define RST_BUS_VIDEO_OUT1	113
-+#define RST_BUS_LEDC		114
-+#define RST_BUS_DSC		115
-+#define RST_BUS_CSI		116
-+#define RST_BUS_VIDEO_IN	117
-+#define RST_BUS_APB2JTAG	118
-+
-+#endif /* _DT_BINDINGS_RST_ALLWINNER_SUN60I_A733_CCU_H_ */
-diff --git a/include/dt-bindings/reset/allwinner,sun60i-a733-r-ccu.h b/include/dt-bindings/reset/allwinner,sun60i-a733-r-ccu.h
-new file mode 100644
-index 000000000000..69fc7d405e1d
---- /dev/null
-+++ b/include/dt-bindings/reset/allwinner,sun60i-a733-r-ccu.h
-@@ -0,0 +1,23 @@
-+/* SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause) */
-+/*
-+ * Copyright (C) 2026 Junhui Liu <junhui.liu@pigmoral.tech>
-+ */
-+
-+#ifndef _DT_BINDINGS_RST_ALLWINNER_SUN60I_A733_R_CCU_H_
-+#define _DT_BINDINGS_RST_ALLWINNER_SUN60I_A733_R_CCU_H_
-+
-+#define RST_BUS_R_TIMER		0
-+#define RST_BUS_R_PWM		1
-+#define RST_BUS_R_SPI		2
-+#define RST_BUS_R_MSGBOX	3
-+#define RST_BUS_R_UART0		4
-+#define RST_BUS_R_UART1		5
-+#define RST_BUS_R_I2C0		6
-+#define RST_BUS_R_I2C1		7
-+#define RST_BUS_R_I2C2		8
-+#define RST_BUS_R_IR_RX		9
-+#define RST_BUS_R_RTC		10
-+#define RST_BUS_R_RISCV_CFG	11
-+#define RST_BUS_R_CPUCFG	12
-+
-+#endif /* _DT_BINDINGS_RST_ALLWINNER_SUN60I_A733_R_CCU_H_ */
++	.resets		= sun60i_a733_ccu_resets,
++	.num_resets	= ARRAY_SIZE(sun60i_a733_ccu_resets),
+ };
+ 
+ static const u32 pll_regs[] = {
 
 -- 
 2.55.0
