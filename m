@@ -1,64 +1,81 @@
-Received: from relay.smtp-ext.broadcom.com (relay.smtp-ext.broadcom.com [192.19.144.207])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B73DE51C350;
-	Fri,  4 Sep 2026 18:35:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.19.144.207
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 434C33E51F9
+	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 18:37:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788546931; cv=none; b=karQauUXIJsHBemAkUukYdzM1FBOCEfElNfWHaB822wIW4oNsg+rK1OUjZXac1H/Oe75aUilD8G8kxYsfdEBG5lGQBJhZlH/OUdZobZuSjj/NbePr1GSHsjW3AIAXfdrpWBusZnbtWL+yk+rEbahsI5Rn48Pikl4arHWnBff4fc=
+	t=1788547063; cv=none; b=B6QN7ZrDyx+USjtA63NqiAQsXqxoaBlhhueaKkBpeokp4uCFCMM+/TD0OW8isSfqC6UXYS43rU22s3LhhltK84bDCBtIW4qdeJ/Ci+PeGErfpFQw1ho791ljUD8ADG+vuPWENSHLvsF5x8zajdS1hp16xhhXdjG8sKdjOJU8JZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788546931; c=relaxed/simple;
-	bh=EEQ/XRzpLNN8CeEbRz2UnUboXwCh3qCz++2yBbmvEzY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=tdivM7bFFzNonEXt0d+NrD14U9evMuTngc7L3tYfCVW4J2UPO9VjkZ91jNSHlkuZxtpKo0nJIom3azHsAYzR1Q3vicfFPaKNvkMb3Er7els84951j8FOxr/5izE0qUOeA+NafN73JaugsaPZvx0Mg4n0YkjCQoAOQxdulmahagA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=uQ8DbnDj; arc=none smtp.client-ip=192.19.144.207
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	s=arc-20240116; t=1788547063; c=relaxed/simple;
+	bh=dbrsGx7Z1JZFuEt3GzNTe3o3ow+LgppRDQf4cQvzgm4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DgyXyca9s/wJpF6MlWBxEeSbsuzJ53ojxQcz8lgNTXrDloXF3qedxDAI22IkWTkdvNIkwiyeLi9EHLnXcHIwsAog54bwNegh+uHkKj3rWiKYzNo5+snsh4Y1nxZysc1gd/Zhr/N9g5CTvSX2gQXoF/A7KNkQcWHbBld6b8cRA8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ngVn+J/W; arc=none smtp.client-ip=209.85.218.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="uQ8DbnDj"
-Received: from mail-lvn-it-01.broadcom.com (mail-lvn-it-01.lvn.broadcom.net [10.36.132.253])
-	by relay.smtp-ext.broadcom.com (Postfix) with ESMTP id 02583C0003D4;
-	Fri,  4 Sep 2026 11:35:08 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 relay.smtp-ext.broadcom.com 02583C0003D4
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=broadcom.com;
-	s=dkimrelay; t=1788546908;
-	bh=EEQ/XRzpLNN8CeEbRz2UnUboXwCh3qCz++2yBbmvEzY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uQ8DbnDjIYJ3YaAYd3MnVCvVHu4UM24wvp399np96kY22JOKti6XLow/TjgPWGfB1
-	 TtpensXpTeh3t3yjtySV6cNCyibOwVVBjlCClPNDiPrYWMcixcNZqg9Po2C2oiJCjE
-	 n5VCb7sX8LyqBFTcrfIi9VsA7Ua5sX0h5c68TPO8=
-Received: from stbirv-lnx-1.igp.broadcom.net (stbirv-lnx-1.igp.broadcom.net [10.67.48.32])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail-lvn-it-01.broadcom.com (Postfix) with ESMTPSA id 8FF29A9F;
-	Fri,  4 Sep 2026 11:35:07 -0700 (PDT)
-From: Florian Fainelli <florian.fainelli@broadcom.com>
-To: stable@vger.kernel.org
-Cc: Eric Dumazet <edumazet@google.com>,
-	syzbot+937b5bbb6a815b3e5d0b@syzkaller.appspotmail.com,
-	Kuniyuki Iwashima <kuniyu@google.com>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ngVn+J/W"
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-c1670dad7a8so206761566b.3
+        for <netdev@vger.kernel.org>; Fri, 04 Sep 2026 11:37:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788547059; x=1789151859; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=2DA3mdpg9p97zW+otya7y9pg3R+tiPiEPhqbCYleRUY=;
+        b=ngVn+J/WdeF6VDEL+Hk3AX9f4+yRfZ/htisr60xn0TPkAZ/ysZHWlC2ubVp4uXBsiG
+         R05GJasX5XUeH3uiXJQ1AGmzrOMulTbY7+XoT+zINgTmIiGlrg0X54Pmg99DtxjyejO5
+         yoyLLv+ehDPdmakBjkNj+x6HAzG9VLjdUlpgPjhXW2XOAjqNZagiwKC9w96vOkm6ZhcX
+         dxguN3aSaIHR6qH7A7vLkFhIu+q0NQTSQw8MXEzT4Gw7YCoeFuMWiuxSRGpLH/G1zqJ5
+         wp2Z7RULO6SGSlxI2hyDvz+/WMx+XyclLZ7Db88HVNoSUtpj7DS6Wr6cFvjeZEVDMsFh
+         me0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788547059; x=1789151859;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=2DA3mdpg9p97zW+otya7y9pg3R+tiPiEPhqbCYleRUY=;
+        b=Zia3avErFpi0AlfOXQU6qHTWI8ApzSqTJ+q/+WWKpis8nEUWgGEoz7jCrJOKIyiS+2
+         qKMIe81q2A3v+fi6JypzdP9vHCuF2WbxL/YvwyFtbcKd+eXChsCwizWvVxxMbYb7uFqB
+         qqUJhah7t1G2f+dP2C4+/jWha4WE9Q82qJ2RWCwtd09I/V9hu5zGaIcde+8vGCE/QsoM
+         c36kcKzzFC81EYmQDRSH2UO5amIvW/WqJXvdUgMmb8zDAtR0gmqa3xfyWzWhugE+7Wnz
+         Fe7wvuz7lpSA9D7F7JodlOO+eE1CVBRrW8mbJo1qhMrKNNeeq5x4jbjSgslfXSKoWtab
+         QeZQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxAtr7kiYj1ETqB39VAHVApZEIwCFtbEtquHMXTfsfp5UanpbFNM2C6BuUOp0BWcqkAhVkQdGg=@vger.kernel.org
+X-Gm-Message-State: AFuF++nS4EE5zqPArUiBMia8/LqVGnzPScvfAYpamZBCFunyNxDdl/RJ
+	5Xg9crSb3NUWo3KewlKs73HcAdTrtzIJcgyXvfcVg09uKGsjYyMCpseC
+X-Gm-Gg: AYBFou37vIeXcc7cYc0MIh7TvRikcF427Nkcxz2qErixgNCeCMS72KvAqPRyQp2WD8Q
+	WzpL6PdEZ8PBokkEfAcvHE5Na2wfQA5NCVDj21qJgFkDtaJURhqQMfqmO4qI9yW0d72Wa2zQJIc
+	TCyFc7B63zAMO4Ok942ksZAMwmm6X5zp9Qhyat/RwjasVI6NCDNEirUHH+CUFqDDlQXY3EgV2Xn
+	VHSUWKwWawJ3JeniqC8Q+8VwoCt1L9rOP1nh4hyj0OCIkwxXlLbg/KaCQdUG/9GnGfWvSdHTfVD
+	EBeWbD4WwiFBOhYwYFREgaurnmXCwgnwaJ7segovit4v5Vnd2fnMsthJ8TI/s9zR47zDeZfTuCW
+	2uSj0xgtwrXazi8YWPmFbl5r3OI5X0NzqZP54MSHS3JpMc4Z/mNdL6IoHsq0GSD+J/3wuXoJZdV
+	G+WxHJIN4oWHrIsSh5qXk0BAY3S1h4JUaVpS7DliKAL74qPsWh8ksv4RODxe18LSDpAK/j7360x
+	ZAWq20aqTiGdskchKCtTg==
+X-Received: by 2002:a17:907:7b88:b0:c26:19de:9131 with SMTP id a640c23a62f3a-c2619dea19emr210144366b.36.1788547059113;
+        Fri, 04 Sep 2026 11:37:39 -0700 (PDT)
+Received: from localhost (78-2-18-104.adsl.net.t-com.hr. [78.2.18.104])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c260d52dbc7sm142564066b.29.2026.09.04.11.37.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 04 Sep 2026 11:37:38 -0700 (PDT)
+From: Dmitry Sinyavin <sinyavin@gmail.com>
+To: Stephan Gerhold <stephan@gerhold.net>
+Cc: Dmitry Sinyavin <sinyavin@gmail.com>,
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Loic Poulain <loic.poulain@oss.qualcomm.com>,
+	Sergey Ryazanov <ryazanov.s.a@gmail.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	"David S. Miller" <davem@davemloft.net>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Neal Cardwell <ncardwell@google.com>,
-	Matthieu Baerts <matttbe@kernel.org>,
-	Mat Martineau <martineau@kernel.org>,
-	Geliang Tang <geliang@kernel.org>,
-	netdev@vger.kernel.org (open list:NETWORKING [GENERAL]),
-	linux-kernel@vger.kernel.org (open list),
-	mptcp@lists.linux.dev (open list:NETWORKING [MPTCP]),
-	bcm-kernel-feedback-list@broadcom.com,
-	atul.joshi@nokia.com,
-	joakim.tjernlund@nokia.com
-Subject: [PATCH stable 6.6 v2] tcp: fix potential race in tcp_v6_syn_recv_sock()
-Date: Fri,  4 Sep 2026 11:35:00 -0700
-Message-Id: <20260904183500.3841094-5-florian.fainelli@broadcom.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260904183500.3841094-1-florian.fainelli@broadcom.com>
-References: <20260904183500.3841094-1-florian.fainelli@broadcom.com>
+	linux-arm-msm@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net v4] net: wwan: qcom_bam_dmux: account network packets
+Date: Fri,  4 Sep 2026 20:37:37 +0200
+Message-ID: <20260904183737.2994139-1-sinyavin@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -67,396 +84,106 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Eric Dumazet <edumazet@google.com>
+The BAM-DMUX data path does not update the network device packet and byte
+counters. As a result, userspace sees zero traffic even while packets are
+being transferred.
 
-Code in tcp_v6_syn_recv_sock() after the call to tcp_v4_syn_recv_sock()
-is done too late.
+Use the standard per-CPU software statistics helpers. Account transmitted
+packets after the driver has prepared and accepted them, before returning
+NETDEV_TX_OK. The asynchronous DMA completion may run after the network
+device has been unregistered. Account received packets after removing the
+BAM-DMUX header and padding.
 
-After tcp_v4_syn_recv_sock(), the child socket is already visible
-from TCP ehash table and other cpus might use it.
-
-Since newinet->pinet6 is still pointing to the listener ipv6_pinfo
-bad things can happen as syzbot found.
-
-Move the problematic code in tcp_v6_mapped_child_init()
-and call this new helper from tcp_v4_syn_recv_sock() before
-the ehash insertion.
-
-This allows the removal of one tcp_sync_mss(), since
-tcp_v4_syn_recv_sock() will call it with the correct
-context.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot+937b5bbb6a815b3e5d0b@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/69949275.050a0220.2eeac1.0145.GAE@google.com/
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20260217161205.2079883-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-(cherry picked from commit 858d2a4f67ff69e645a43487ef7ea7f28f06deae)
-[florian:
- - net/ipv6/tcp_ipv6.c:
-   - Set `newnp->ipv6_fl_list = NULL` instead of `newinet->ipv6_fl_list = NULL`,
-     as `ipv6_fl_list` is in `struct ipv6_pinfo`.
-   - Guarded `af_specific` assignment with `#ifdef CONFIG_TCP_MD5SIG` instead
-     of checking `CONFIG_TCP_AO`.
-   - Used `if (tcp_inet6_sk(sk)->repflow)` instead of `inet6_test_bit(REPFLOW, sk)`.
- - net/dccp/:
-   - Updated `syn_recv_sock` implementations and call sites for DCCP, which was
-     removed in upstream kernels prior to this commit.]
-Assisted-by: Cursor:gemini-3.7-flash
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Fixes: 21a0ffd9b38c ("net: wwan: Add Qualcomm BAM-DMUX WWAN network driver")
+Signed-off-by: Dmitry Sinyavin <sinyavin@gmail.com>
 ---
-Changes in v2:
-- Updated the DCCP subsystem (net/dccp/) to handle the additional
-  opt_child_init argument in syn_recv_sock callback, fixing build
-  failures when CONFIG_IP_DCCP is enabled.
+v4:
+- Move TX accounting from the asynchronous DMA completion to the transmit
+  path, avoiding access to statistics after netdev unregistration.
 
- include/net/inet_connection_sock.h |  4 +-
- include/net/tcp.h                  |  4 +-
- net/dccp/dccp.h                    |  4 +-
- net/dccp/ipv4.c                    |  4 +-
- net/dccp/ipv6.c                    |  7 ++-
- net/dccp/minisocks.c               |  2 +-
- net/ipv4/syncookies.c              |  2 +-
- net/ipv4/tcp_fastopen.c            |  2 +-
- net/ipv4/tcp_ipv4.c                |  8 ++-
- net/ipv4/tcp_minisocks.c           |  2 +-
- net/ipv6/tcp_ipv6.c                | 97 +++++++++++++-----------------
- net/mptcp/subflow.c                |  6 +-
- net/smc/af_smc.c                   |  6 +-
- 13 files changed, 78 insertions(+), 70 deletions(-)
+v3:
+- Count packets discarded by the transmit error path.
 
-diff --git a/include/net/inet_connection_sock.h b/include/net/inet_connection_sock.h
-index 3eb715f66cbf..b7935e293757 100644
---- a/include/net/inet_connection_sock.h
-+++ b/include/net/inet_connection_sock.h
-@@ -42,7 +42,9 @@ struct inet_connection_sock_af_ops {
- 				      struct request_sock *req,
- 				      struct dst_entry *dst,
- 				      struct request_sock *req_unhash,
--				      bool *own_req);
-+				      bool *own_req,
-+				      void (*opt_child_init)(struct sock *newsk,
-+							     const struct sock *sk));
- 	u16	    net_header_len;
- 	u16	    net_frag_header_len;
- 	u16	    sockaddr_len;
-diff --git a/include/net/tcp.h b/include/net/tcp.h
-index 23d830a7a6c8..7392f51a3479 100644
---- a/include/net/tcp.h
-+++ b/include/net/tcp.h
-@@ -461,7 +461,9 @@ struct sock *tcp_v4_syn_recv_sock(const struct sock *sk, struct sk_buff *skb,
- 				  struct request_sock *req,
- 				  struct dst_entry *dst,
- 				  struct request_sock *req_unhash,
--				  bool *own_req);
-+				  bool *own_req,
-+				  void (*opt_child_init)(struct sock *newsk,
-+							 const struct sock *sk));
- int tcp_v4_do_rcv(struct sock *sk, struct sk_buff *skb);
- int tcp_v4_connect(struct sock *sk, struct sockaddr *uaddr, int addr_len);
- int tcp_connect(struct sock *sk);
-diff --git a/net/dccp/dccp.h b/net/dccp/dccp.h
-index 1f748ed1279d..e4e055493203 100644
---- a/net/dccp/dccp.h
-+++ b/net/dccp/dccp.h
-@@ -267,7 +267,9 @@ struct sock *dccp_v4_request_recv_sock(const struct sock *sk, struct sk_buff *sk
- 				       struct request_sock *req,
- 				       struct dst_entry *dst,
- 				       struct request_sock *req_unhash,
--				       bool *own_req);
-+				       bool *own_req,
-+				       void (*opt_child_init)(struct sock *newsk,
-+							      const struct sock *sk));
- struct sock *dccp_check_req(struct sock *sk, struct sk_buff *skb,
- 			    struct request_sock *req);
+v2:
+- Read the TX payload length after unmapping the DMA buffer and combine the
+  network-device checks.
+
+v3: https://lore.kernel.org/netdev/20260902124506.363174-1-sinyavin@gmail.com/
+v2: https://lore.kernel.org/netdev/20260831181006.1382372-1-sinyavin@gmail.com/
+v1: https://lore.kernel.org/netdev/20260830085400.2542956-1-sinyavin@gmail.com/
+
+Build-tested for ARM with Clang and W=1 using allmodconfig and allyesconfig.
+
+Tested on a ZTE MF283V with an MDM9607. The modem registered on LTE and
+three 32-byte ICMP echo requests increased both wwan0 RX and TX counters by
+three packets and 180 bytes. Bringing the interface down afterwards produced
+no DMA, BAM-DMUX, or kernel fault messages.
+
+ drivers/net/wwan/qcom_bam_dmux.c | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/net/wwan/qcom_bam_dmux.c b/drivers/net/wwan/qcom_bam_dmux.c
+index cc6ace8d6437..03360301c8ee 100644
+--- a/drivers/net/wwan/qcom_bam_dmux.c
++++ b/drivers/net/wwan/qcom_bam_dmux.c
+@@ -335,6 +335,7 @@ static netdev_tx_t bam_dmux_netdev_start_xmit(struct sk_buff *skb,
+ 	struct bam_dmux_netdev *bndev = netdev_priv(netdev);
+ 	struct bam_dmux *dmux = bndev->dmux;
+ 	struct bam_dmux_skb_dma *skb_dma;
++	unsigned int len = skb->len;
+ 	int active, ret;
  
-diff --git a/net/dccp/ipv4.c b/net/dccp/ipv4.c
-index ca31c3b096bb..41667dcb6602 100644
---- a/net/dccp/ipv4.c
-+++ b/net/dccp/ipv4.c
-@@ -409,7 +409,9 @@ struct sock *dccp_v4_request_recv_sock(const struct sock *sk,
- 				       struct request_sock *req,
- 				       struct dst_entry *dst,
- 				       struct request_sock *req_unhash,
--				       bool *own_req)
-+				       bool *own_req,
-+				       void (*opt_child_init)(struct sock *newsk,
-+							      const struct sock *sk))
- {
- 	struct inet_request_sock *ireq;
- 	struct inet_sock *newinet;
-diff --git a/net/dccp/ipv6.c b/net/dccp/ipv6.c
-index 2839ca8053ba..ae617bd8afab 100644
---- a/net/dccp/ipv6.c
-+++ b/net/dccp/ipv6.c
-@@ -417,7 +417,9 @@ static struct sock *dccp_v6_request_recv_sock(const struct sock *sk,
- 					      struct request_sock *req,
- 					      struct dst_entry *dst,
- 					      struct request_sock *req_unhash,
--					      bool *own_req)
-+					      bool *own_req,
-+					      void (*opt_child_init)(struct sock *newsk,
-+								     const struct sock *sk))
- {
- 	struct inet_request_sock *ireq = inet_rsk(req);
- 	struct ipv6_pinfo *newnp;
-@@ -432,7 +434,8 @@ static struct sock *dccp_v6_request_recv_sock(const struct sock *sk,
- 		 *	v6 mapped
- 		 */
- 		newsk = dccp_v4_request_recv_sock(sk, skb, req, dst,
--						  req_unhash, own_req);
-+						  req_unhash, own_req,
-+						  opt_child_init);
- 		if (newsk == NULL)
- 			return NULL;
+ 	skb_dma = bam_dmux_tx_queue(dmux, skb);
+@@ -357,17 +358,19 @@ static netdev_tx_t bam_dmux_netdev_start_xmit(struct sk_buff *skb,
+ 		if (!atomic_long_fetch_or(BIT(skb_dma - dmux->tx_skbs),
+ 					  &dmux->tx_deferred_skb))
+ 			queue_pm_work(&dmux->tx_wakeup_work);
+-		return NETDEV_TX_OK;
+-	}
++	} else {
++		if (!bam_dmux_skb_dma_submit_tx(skb_dma))
++			goto drop;
  
-diff --git a/net/dccp/minisocks.c b/net/dccp/minisocks.c
-index 64d805b27add..0210d38442ec 100644
---- a/net/dccp/minisocks.c
-+++ b/net/dccp/minisocks.c
-@@ -193,7 +193,7 @@ struct sock *dccp_check_req(struct sock *sk, struct sk_buff *skb,
- 		 goto drop;
+-	if (!bam_dmux_skb_dma_submit_tx(skb_dma))
+-		goto drop;
++		dma_async_issue_pending(dmux->tx);
++	}
  
- 	child = inet_csk(sk)->icsk_af_ops->syn_recv_sock(sk, skb, req, NULL,
--							 req, &own_req);
-+							 req, &own_req, NULL);
- 	if (child) {
- 		child = inet_csk_complete_hashdance(sk, child, req, own_req);
- 		goto out;
-diff --git a/net/ipv4/syncookies.c b/net/ipv4/syncookies.c
-index e14356207795..9deeb3f8215e 100644
---- a/net/ipv4/syncookies.c
-+++ b/net/ipv4/syncookies.c
-@@ -199,7 +199,7 @@ struct sock *tcp_get_cookie_sock(struct sock *sk, struct sk_buff *skb,
- 	bool own_req;
+-	dma_async_issue_pending(dmux->tx);
++	dev_sw_netstats_tx_add(netdev, 1, len);
+ 	return NETDEV_TX_OK;
  
- 	child = icsk->icsk_af_ops->syn_recv_sock(sk, skb, req, dst,
--						 NULL, &own_req);
-+						 NULL, &own_req, NULL);
- 	if (child) {
- 		refcount_set(&req->rsk_refcnt, 1);
- 		tcp_sk(child)->tsoffset = tsoff;
-diff --git a/net/ipv4/tcp_fastopen.c b/net/ipv4/tcp_fastopen.c
-index 408985eb74ee..51bd11588d6d 100644
---- a/net/ipv4/tcp_fastopen.c
-+++ b/net/ipv4/tcp_fastopen.c
-@@ -247,7 +247,7 @@ static struct sock *tcp_fastopen_create_child(struct sock *sk,
- 	bool own_req;
+ drop:
+ 	bam_dmux_tx_done(skb_dma);
++	dev_core_stats_tx_dropped_inc(netdev);
+ 	dev_kfree_skb_any(skb);
+ 	return NETDEV_TX_OK;
+ }
+@@ -402,6 +405,7 @@ static const struct net_device_ops bam_dmux_ops = {
+ 	.ndo_open	= bam_dmux_netdev_open,
+ 	.ndo_stop	= bam_dmux_netdev_stop,
+ 	.ndo_start_xmit	= bam_dmux_netdev_start_xmit,
++	.ndo_get_stats64	= dev_get_tstats64,
+ };
  
- 	child = inet_csk(sk)->icsk_af_ops->syn_recv_sock(sk, skb, req, NULL,
--							 NULL, &own_req);
-+							 NULL, &own_req, NULL);
- 	if (!child)
- 		return NULL;
+ static const struct device_type wwan_type = {
+@@ -421,6 +425,7 @@ static void bam_dmux_netdev_setup(struct net_device *dev)
+ 	dev->needed_headroom = sizeof(struct bam_dmux_hdr);
+ 	dev->needed_tailroom = sizeof(u32); /* word-aligned */
+ 	dev->tx_queue_len = DEFAULT_TX_QUEUE_LEN;
++	dev->pcpu_stat_type = NETDEV_PCPU_STAT_TSTATS;
  
-diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
-index 3f9e1cfde008..163c8726a17d 100644
---- a/net/ipv4/tcp_ipv4.c
-+++ b/net/ipv4/tcp_ipv4.c
-@@ -1566,7 +1566,9 @@ struct sock *tcp_v4_syn_recv_sock(const struct sock *sk, struct sk_buff *skb,
- 				  struct request_sock *req,
- 				  struct dst_entry *dst,
- 				  struct request_sock *req_unhash,
--				  bool *own_req)
-+				  bool *own_req,
-+				  void (*opt_child_init)(struct sock *newsk,
-+							 const struct sock *sk))
- {
- 	struct inet_request_sock *ireq;
- 	bool found_dup_sk = false;
-@@ -1622,6 +1624,10 @@ struct sock *tcp_v4_syn_recv_sock(const struct sock *sk, struct sk_buff *skb,
+ 	/* This perm addr will be used as interface identifier by IPv6 */
+ 	dev->addr_assign_type = NET_ADDR_RANDOM;
+@@ -533,6 +538,7 @@ static void bam_dmux_cmd_data(struct bam_dmux_skb_dma *skb_dma)
+ 		break;
  	}
- 	sk_setup_caps(newsk, dst);
  
-+#if IS_ENABLED(CONFIG_IPV6)
-+	if (opt_child_init)
-+		opt_child_init(newsk, sk);
-+#endif
- 	tcp_ca_openreq_child(newsk, dst);
- 
- 	tcp_sync_mss(newsk, dst_mtu(dst));
-diff --git a/net/ipv4/tcp_minisocks.c b/net/ipv4/tcp_minisocks.c
-index 86f0feb2497f..d6d64697ce89 100644
---- a/net/ipv4/tcp_minisocks.c
-+++ b/net/ipv4/tcp_minisocks.c
-@@ -817,7 +817,7 @@ struct sock *tcp_check_req(struct sock *sk, struct sk_buff *skb,
- 	 * socket is created, wait for troubles.
- 	 */
- 	child = inet_csk(sk)->icsk_af_ops->syn_recv_sock(sk, skb, req, NULL,
--							 req, &own_req);
-+							 req, &own_req, NULL);
- 	if (!child)
- 		goto listen_overflow;
- 
-diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
-index 689c0b383ebf..f13fdd1214aa 100644
---- a/net/ipv6/tcp_ipv6.c
-+++ b/net/ipv6/tcp_ipv6.c
-@@ -1180,11 +1180,48 @@ static void tcp_v6_restore_cb(struct sk_buff *skb)
- 		sizeof(struct inet6_skb_parm));
++	dev_sw_netstats_rx_add(netdev, skb->len);
+ 	netif_receive_skb(skb);
  }
  
-+/* Called from tcp_v4_syn_recv_sock() for v6_mapped children. */
-+static void tcp_v6_mapped_child_init(struct sock *newsk, const struct sock *sk)
-+{
-+	struct inet_sock *newinet = inet_sk(newsk);
-+	struct ipv6_pinfo *newnp;
-+
-+	newinet->pinet6 = newnp = tcp_inet6_sk(newsk);
-+
-+	memcpy(newnp, tcp_inet6_sk(sk), sizeof(struct ipv6_pinfo));
-+
-+	newnp->saddr = newsk->sk_v6_rcv_saddr;
-+
-+	inet_csk(newsk)->icsk_af_ops = &ipv6_mapped;
-+	if (sk_is_mptcp(newsk))
-+		mptcpv6_handle_mapped(newsk, true);
-+	newsk->sk_backlog_rcv = tcp_v4_do_rcv;
-+#ifdef CONFIG_TCP_MD5SIG
-+	tcp_sk(newsk)->af_specific = &tcp_sock_ipv6_mapped_specific;
-+#endif
-+
-+	newnp->ipv6_mc_list = NULL;
-+	newnp->ipv6_ac_list = NULL;
-+	newnp->ipv6_fl_list = NULL;
-+	newnp->pktoptions  = NULL;
-+	newnp->opt	   = NULL;
-+
-+	/* tcp_v4_syn_recv_sock() has initialized newinet->mc_{index,ttl} */
-+	newnp->mcast_oif   = newinet->mc_index;
-+	newnp->mcast_hops  = newinet->mc_ttl;
-+
-+	newnp->rcv_flowinfo = 0;
-+	if (tcp_inet6_sk(sk)->repflow)
-+		newnp->flow_label = 0;
-+}
-+
- static struct sock *tcp_v6_syn_recv_sock(const struct sock *sk, struct sk_buff *skb,
- 					 struct request_sock *req,
- 					 struct dst_entry *dst,
- 					 struct request_sock *req_unhash,
--					 bool *own_req)
-+					 bool *own_req,
-+					 void (*opt_child_init)(struct sock *newsk,
-+								const struct sock *sk))
- {
- 	struct inet_request_sock *ireq;
- 	struct ipv6_pinfo *newnp;
-@@ -1200,60 +1237,10 @@ static struct sock *tcp_v6_syn_recv_sock(const struct sock *sk, struct sk_buff *
- #endif
- 	struct flowi6 fl6;
- 
--	if (skb->protocol == htons(ETH_P_IP)) {
--		/*
--		 *	v6 mapped
--		 */
--
--		newsk = tcp_v4_syn_recv_sock(sk, skb, req, dst,
--					     req_unhash, own_req);
--
--		if (!newsk)
--			return NULL;
--
--		inet_sk(newsk)->pinet6 = tcp_inet6_sk(newsk);
--
--		newnp = tcp_inet6_sk(newsk);
--		newtp = tcp_sk(newsk);
--
--		memcpy(newnp, np, sizeof(struct ipv6_pinfo));
--
--		newnp->saddr = newsk->sk_v6_rcv_saddr;
--
--		inet_csk(newsk)->icsk_af_ops = &ipv6_mapped;
--		if (sk_is_mptcp(newsk))
--			mptcpv6_handle_mapped(newsk, true);
--		newsk->sk_backlog_rcv = tcp_v4_do_rcv;
--#ifdef CONFIG_TCP_MD5SIG
--		newtp->af_specific = &tcp_sock_ipv6_mapped_specific;
--#endif
--
--		newnp->ipv6_mc_list = NULL;
--		newnp->ipv6_ac_list = NULL;
--		newnp->ipv6_fl_list = NULL;
--		newnp->pktoptions  = NULL;
--		newnp->opt	   = NULL;
--		newnp->mcast_oif   = inet_iif(skb);
--		newnp->mcast_hops  = ip_hdr(skb)->ttl;
--		newnp->rcv_flowinfo = 0;
--		if (np->repflow)
--			newnp->flow_label = 0;
--
--		/*
--		 * No need to charge this sock to the relevant IPv6 refcnt debug socks count
--		 * here, tcp_create_openreq_child now does this for us, see the comment in
--		 * that function for the gory details. -acme
--		 */
--
--		/* It is tricky place. Until this moment IPv4 tcp
--		   worked with IPv6 icsk.icsk_af_ops.
--		   Sync it now.
--		 */
--		tcp_sync_mss(newsk, inet_csk(newsk)->icsk_pmtu_cookie);
--
--		return newsk;
--	}
--
-+	if (skb->protocol == htons(ETH_P_IP))
-+		return tcp_v4_syn_recv_sock(sk, skb, req, dst,
-+					    req_unhash, own_req,
-+					    tcp_v6_mapped_child_init);
- 	ireq = inet_rsk(req);
- 
- 	if (sk_acceptq_is_full(sk))
-diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
-index d3b5c2d48b53..db2e3a1ebb6e 100644
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -788,7 +788,9 @@ static struct sock *subflow_syn_recv_sock(const struct sock *sk,
- 					  struct request_sock *req,
- 					  struct dst_entry *dst,
- 					  struct request_sock *req_unhash,
--					  bool *own_req)
-+					  bool *own_req,
-+					  void (*opt_child_init)(struct sock *newsk,
-+								 const struct sock *sk))
- {
- 	struct mptcp_subflow_context *listener = mptcp_subflow_ctx(sk);
- 	struct mptcp_subflow_request_sock *subflow_req;
-@@ -834,7 +836,7 @@ static struct sock *subflow_syn_recv_sock(const struct sock *sk,
- 
- create_child:
- 	child = listener->icsk_af_ops->syn_recv_sock(sk, skb, req, dst,
--						     req_unhash, own_req);
-+						     req_unhash, own_req, opt_child_init);
- 
- 	if (child && *own_req) {
- 		struct mptcp_subflow_context *ctx = mptcp_subflow_ctx(child);
-diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
-index 087102ff3c64..dba856528890 100644
---- a/net/smc/af_smc.c
-+++ b/net/smc/af_smc.c
-@@ -119,7 +119,9 @@ static struct sock *smc_tcp_syn_recv_sock(const struct sock *sk,
- 					  struct request_sock *req,
- 					  struct dst_entry *dst,
- 					  struct request_sock *req_unhash,
--					  bool *own_req)
-+					  bool *own_req,
-+					  void (*opt_child_init)(struct sock *newsk,
-+								 const struct sock *sk))
- {
- 	struct smc_sock *smc;
- 	struct sock *child;
-@@ -144,7 +146,7 @@ static struct sock *smc_tcp_syn_recv_sock(const struct sock *sk,
- 
- 	/* passthrough to original syn recv sock fct */
- 	child = smc->ori_af_ops->syn_recv_sock(sk, skb, req, dst, req_unhash,
--					       own_req);
-+					       own_req, opt_child_init);
- 	/* child must not inherit smc or its ops */
- 	if (child) {
- 		rcu_assign_sk_user_data(child, NULL);
--- 
-2.34.1
 
+base-commit: 2188569e7e1b0bc3f3b557dc97ab7a02befc11c8
+-- 
+2.53.0
