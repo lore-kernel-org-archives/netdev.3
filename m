@@ -1,92 +1,94 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C70E4FB9D4
-	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 17:08:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C22A503BEB
+	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 17:09:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788541705; cv=none; b=pSCnkgrPzbo7WgOyBpJ5wT2/8v8STOJoNl0NyyJy5HWCbrAlY60N1Y/vokiftgzfzxEMllaDCfFvRjevW8hi/dQFqxelmlA+33cAbX3Ex02GZ7v49lqDM9pOfeXB4vxwyLQQe23Swh4Y4d5QwpPXRxF2h1yvN7j6tuAldcZO8n4=
+	t=1788541784; cv=none; b=Dtbxq40z41FB7uN2qsGTThB3AyfI1Yrj5BDFtWsCd7ieuO64wBZco4gonwVUs1wwfKK1Z67DI5NOhWFb+2cyC40aQ5fv3KY13Sj2CL5TBOYlC1ttCtxKqNTW0XrgbJkuHrJlFHp279n4jgQB62Onxxiuibfc+qKr/MtdWoepTA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788541705; c=relaxed/simple;
-	bh=u+8hEW8o95gatEdW7w0sDtYr+KU9S8UxpvGfwq8aJE4=;
+	s=arc-20240116; t=1788541784; c=relaxed/simple;
+	bh=VpUBv6NqPuaxAaa2PFMzt142Sfp50UkMNvLa8BRM+cE=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=OV8i6zhgfxvUp7i1WXHxeyHh2B+TK90huaPm0hjWsVvDlguQrP/cthrgErRqwOVJZit0I8zpGyy8dvT6Zd8Dzz2B7Y+ISp2u23DIgf79fEYpOToxD82mfhNYvzWf10zbGj37DVyn4i0LF6S3UDKKBZZF6cVbZguG+WpyNz4WUH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QMKw53tE; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=BBGDoE7v; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:Content-Type; b=Tl9xSuTqpjLMEXgmpt+bMmDIjttX7beVNlVhisltIO9gRczXCF/bBgRoL6yIQPQV9BVfPnZK35F2NVTLdywQ/Ds0/oosyiqLiZqMxNaqFbQP310z9PqkOeNPdABMiTzIEfFDOvUfrExmmhQmp4k3cJk6aarD6cPLr1VmfZLQ/8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WLFCC+z+; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=YEWMdtcY; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QMKw53tE";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="BBGDoE7v"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WLFCC+z+";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="YEWMdtcY"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1788541702;
+	s=mimecast20190719; t=1788541781;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=u+8hEW8o95gatEdW7w0sDtYr+KU9S8UxpvGfwq8aJE4=;
-	b=QMKw53tEDkv02GuePt3fxmEbvwNfowkqqvxXXfw+4CYE6yXVmeNq2mkBSK0H+agoYva8E3
-	W2T8VVf2P3rNKl7N0MwFb7+7hANsT2MId6mXdAWk15ALfA4pHXOYTfAyJZNIbEds7exQPq
-	i5TYRubYyDma8rP7swGZu1unL8GH6+0=
-Received: from mail-yx1-f72.google.com (mail-yx1-f72.google.com
- [74.125.224.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=M0mhCecfkd0CiyLlUKZRl2yAWss2xveqdG1CcOWYKi8=;
+	b=WLFCC+z+/TXGgfu3CZ7neMNwMxryE1iDC6S/E5l3RRzRWvsi1kWdXFl+E4rWagidAZojx6
+	CpV18BY0ZVupxgL8qWQ+5TsnenI4cRnmM04Aup32iZ2mRKCeytDcOluy7cDd+WbyYQ5Qe/
+	5cQWJJZsZGMWPFHhwZNv81koEykfYU8=
+Received: from mail-yw1-f199.google.com (mail-yw1-f199.google.com
+ [209.85.128.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-100-7-DIVDicNHikJLV7e6JGhg-1; Fri, 04 Sep 2026 13:08:21 -0400
-X-MC-Unique: 7-DIVDicNHikJLV7e6JGhg-1
-X-Mimecast-MFC-AGG-ID: 7-DIVDicNHikJLV7e6JGhg_1788541701
-Received: by mail-yx1-f72.google.com with SMTP id 956f58d0204a3-66f8a19cf9cso1413082d50.3
-        for <netdev@vger.kernel.org>; Fri, 04 Sep 2026 10:08:21 -0700 (PDT)
+ us-mta-135-VdrL1nZXONKxeAS22JppWQ-1; Fri, 04 Sep 2026 13:09:39 -0400
+X-MC-Unique: VdrL1nZXONKxeAS22JppWQ-1
+X-Mimecast-MFC-AGG-ID: VdrL1nZXONKxeAS22JppWQ_1788541779
+Received: by mail-yw1-f199.google.com with SMTP id 00721157ae682-836c416b236so23193877b3.0
+        for <netdev@vger.kernel.org>; Fri, 04 Sep 2026 10:09:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1788541701; x=1789146501; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1788541779; x=1789146579; darn=vger.kernel.org;
         h=content-type:mime-version:user-agent:message-id:date:references
          :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=u+8hEW8o95gatEdW7w0sDtYr+KU9S8UxpvGfwq8aJE4=;
-        b=BBGDoE7vfBY1kMftyQZr+Q/3C+I0c5LsDgA8ccJww0k7AHk4N8PJINKidBQtNGHsIv
-         76MiiBbFwsqQIls9D5ZJJ3nehWi4JWWc8BtGhBRMh9nv7uunUwierdtSsgTdpWsq15W5
-         OKw5HbooSssbuQ9AuZnDvd5zgm80dWifFCgNoABblf0QtH6H0I67cVlw8AmTiadjSVGn
-         xXuSzwwgrd2TC+5etvS+II7kdNnw5FsoGErGFau209jn+NZTnr0gV0RS0Y3MnxKz63oP
-         hzqjBOrj3kxqcctBmG95QqDzWg2DoVbSY3Aze0cKpn/r3D9kbGNA7LeHk1Yocr4+AIy6
-         XFbw==
+        bh=M0mhCecfkd0CiyLlUKZRl2yAWss2xveqdG1CcOWYKi8=;
+        b=YEWMdtcYFH4MVuuG8uSCfCiR/OvP8ctUdjaaTOvbgqlxfax0cj9EU5jiCRQSKJ8bio
+         hU8wgkTng+iG4HpGCw53On98YWHBbf8inJ4XedQtIFnW2+Aay9i7DrEij4OO3NBXHWeX
+         3NHwA7huifSjic4hM+LkhZD4gII9btOBCvTGUeI5oxSc6nJbQMr42nN6kR1+v7dEzYs5
+         TbW9Eq2o9mRDKsHbjcyhOIA/4PbDlaAD1OMQlTeCPmnps22pCuAMsGiyfG6IrGRUfuiY
+         JsQzmA78mUYlkxy3j89vuwOvOWfJud5t5xtxYYSkhGK0j4MKSC7vwqR+tUsZ+VQHv3gq
+         fpKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788541701; x=1789146501;
+        d=1e100.net; s=20251104; t=1788541779; x=1789146579;
         h=content-type:mime-version:user-agent:message-id:date:references
          :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to:content-type;
-        bh=u+8hEW8o95gatEdW7w0sDtYr+KU9S8UxpvGfwq8aJE4=;
-        b=Dar+a577VCmgwTfp6mqv118Es2bcMaQK6D63odCH3tS8cOzjqQWEEDo/acsywxFhIF
-         RF1pJ1Ae+vlYhl/bxxt730XkBYgqLyV3T58Y9oAn7oJBIflhknbIRLySH2y1SDnvAN89
-         suLviAquBFi6aU2Os91PdypTEP1x0TvxbbmKA70MZDrxBgHiQxHP2wvg5fifI4YJ0Kz+
-         kBPdbkNtrgENekgSaW/IVFaab4MZ+7bfE4YliKC1aNnL633C8dRLJcEBlhsjVXoGHtMa
-         VHrlYRnpyvSpMtocqJyjfqC37Tkj/nQPmOwKYdvQ0ar4EEQsWrmmPw3XWbCmM0HT0afc
-         8+Hw==
-X-Gm-Message-State: AFuF++k8oAF/K2hsD6g4neX4hds9etwTagnCKrd/vN8Cf3lCxOQG65ax
-	TtOgiBSb1/88U/fPF1T7UGetZFeaZH9TyRJXVarWLp/6zEritSThyOTrmuP1XxxDjxNIoZuG3eO
-	oN9Ykk1Cx6S6Q8LInYwWOSUPfrWRNO8ZXXUMdybUfXG0aAat6VDDfBJrcag==
-X-Gm-Gg: AYBFou2Z5FS6iO3pMgj6BowlopCBRLOZmc1q4IX0FTUMamPyk8hd6TFFsqW6Dz+BzyX
-	6pec4GlsUonZcFAuqhw9DyDgHwBhN5KebqGc68rbwl5LzWbnujjWDvKgsLGRK7TLYpVdRCzJIIR
-	FCmlBv9U5glReWRjRuZb5iM7AqwDYsgQSR4dtyjq887VH1biNsKQWf5pGSKxSZbMZJczQOEh2JL
-	FAB6G2bjAG6dJAu7rB9zSi/ziuqvx9OH11YrMdKJjbEE6Vz4PRb+KoOMzcRC5l7PiPyRPSrTH3o
-	oHxqxz4M/MmXSzQ/M+vUOO63RK1ixeLm4nTYSnJBWMnjB4FuQIj1/bnT0fD8Uu9P4dRVv59NVVJ
-	VrBsZ3gYWz592ZUjL8UwI+L0DPth0
-X-Received: by 2002:a05:690e:d0f:b0:66f:89d0:fb24 with SMTP id 956f58d0204a3-66fb5a2adedmr2847611d50.30.1788541700464;
-        Fri, 04 Sep 2026 10:08:20 -0700 (PDT)
-X-Received: by 2002:a05:690e:d0f:b0:66f:89d0:fb24 with SMTP id 956f58d0204a3-66fb5a2adedmr2847575d50.30.1788541699939;
-        Fri, 04 Sep 2026 10:08:19 -0700 (PDT)
+        bh=M0mhCecfkd0CiyLlUKZRl2yAWss2xveqdG1CcOWYKi8=;
+        b=ae28Qj7ackSxTy11LXr8cFzSyKJMYuRT/yS7FRpyw5a/DNZgWGDtC0r3TkiRomTp+c
+         K8n3QE+DpdblfieJWxfk85Aqe1mLToDwC2OmmmheU8W3p1XHwjRP5FMAXoSOkQEOLdyp
+         RTkuc0Q1wr+m5aSsacpEjXCjhitSUqzYozYBoUmIcWgZh804p/Z5X+OaTUUXZPmKOcRP
+         PXq4YRVRwyYjlU7/ivjF6T2W9ygNXsQOZbUX1L/G+33fo9MqhZwU9SqoPfRJmcnxXxyS
+         p3k2Wuf8rC6kze12NOIWecg9Qz8ZfRMeMCr4Kh8INdQDiZEAvLgqmaZNWla2Pke6Azww
+         Tkpw==
+X-Gm-Message-State: AFuF++m1K6fTHGRdx8v72lg2U5eQ1+7LNMslAc+nFu5WeGlwfqAri0ri
+	aeeB91yyT3cQ25xfwvJUe+KLdAuhpYQoXDRtKP4L9FJIOJkWjOwX5yCu90RDdywtUSmO/l3SNmk
+	qZqaCVJA2IEH1hJ6d6t9o6sOpIlmCSXwXFoDNtG10gzgXRJENLSpXIIC1OA==
+X-Gm-Gg: AYBFou24Wrt6wTwOIGseSM4EDgyvJXTGOJ87G1lBgfPc+EM2AZBtabIRxjV9aqGnT0I
+	1WetsaHl/vrLjTpfk7nls9uI1KQ9DhTAk0PipHLs5vUprFdv6xS/c2aJYUX8/AG97CKR7Y90bB/
+	ZuOkU8fNooI8tHxAVlzZLJpe2t9RhE2ZoUjXESu+G4N8gAC3luNz28anKqaxKV8+uHlCWqa9YQu
+	uzIacRduOWARuFHLiXm9Uc0QONkRIHkR65RIAyhboMCgiRu7O7C+kzMobllCMGMAND9vD8FCjy4
+	mhupkbVd6OifhWlyZuN5FXxlhZ4iegQWPk6CMTHKpt3JDbOkMPQjLkwR9+e5R9OjT1xgzQyVmTx
+	rnAfypXTuXnOEzPcUdXqCVKzxlBd9
+X-Received: by 2002:a05:690c:c501:b0:873:5c6b:a2fc with SMTP id 00721157ae682-8735c6ba821mr10953797b3.42.1788541774072;
+        Fri, 04 Sep 2026 10:09:34 -0700 (PDT)
+X-Received: by 2002:a05:690c:c501:b0:873:5c6b:a2fc with SMTP id 00721157ae682-8735c6ba821mr10953157b3.42.1788541773402;
+        Fri, 04 Sep 2026 10:09:33 -0700 (PDT)
 Received: from aconole-thinkpadt14gen4.rmtusnh.csb ([216.212.25.12])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-910406b3965sm24616506d6.46.2026.09.04.10.08.19
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-93988e9f80dsm122480885a.24.2026.09.04.10.09.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Sep 2026 10:08:19 -0700 (PDT)
+        Fri, 04 Sep 2026 10:09:32 -0700 (PDT)
 From: Aaron Conole <aconole@redhat.com>
-To: Eelco Chaudron <echaudro@redhat.com>
-Cc: netdev@vger.kernel.org,  dev@openvswitch.org,  i.maximets@ovn.org,
-  davem@davemloft.net,  edumazet@google.com,  kuba@kernel.org,
-  pabeni@redhat.com,  horms@kernel.org,  cpp.code.lv@gmail.com
-Subject: Re: [PATCH net] openvswitch: fix wrong flag value in
- get_ipv6_ext_hdrs()
-In-Reply-To: <d42d6f04596dacab6cabfb1f06aaf4bd53394d3d.1788423539.git.echaudro@redhat.com>
-	(Eelco Chaudron's message of "Thu, 3 Sep 2026 10:18:59 +0200")
-References: <d42d6f04596dacab6cabfb1f06aaf4bd53394d3d.1788423539.git.echaudro@redhat.com>
-Date: Fri, 04 Sep 2026 13:08:18 -0400
-Message-ID: <f7t5x0lj665.fsf@aconole-thinkpadt14gen4.rmtusnh.csb>
+To: Ido Schimmel <idosch@nvidia.com>
+Cc: netdev@vger.kernel.org,  davem@davemloft.net,  kuba@kernel.org,
+  pabeni@redhat.com,  edumazet@google.com,  dsahern@kernel.org,
+  horms@kernel.org,  sbrivio@redhat.com,  gnault@redhat.com,
+  laikabcprice@gmail.com,  aroslavdudkov622@gmail.com,
+  rough.rock3059@datachamp.fr,  stable@vger.kernel.org
+Subject: Re: [PATCH net] tunnels: Drop stale dst when building an ICMP error
+ for PMTUD
+In-Reply-To: <20260902190112.4126199-1-idosch@nvidia.com> (Ido Schimmel's
+	message of "Wed, 2 Sep 2026 22:01:12 +0300")
+References: <20260902190112.4126199-1-idosch@nvidia.com>
+Date: Fri, 04 Sep 2026 13:09:31 -0400
+Message-ID: <f7t1pb9j644.fsf@aconole-thinkpadt14gen4.rmtusnh.csb>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -96,17 +98,51 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-Eelco Chaudron <echaudro@redhat.com> writes:
+Ido Schimmel <idosch@nvidia.com> writes:
 
-> The ESP and AH cases in get_ipv6_ext_hdrs() used IPPROTO_FRAGMENT
-> instead of OFPIEH12_FRAG when checking for out-of-order extension
-> headers, causing the fragment header to not be recognised as a valid
-> predecessor.
+> Bridged UDP tunnels such as VXLAN and GENEVE build an ICMP error packet
+> around an overlay packet if the packet is going to exceed the underlay
+> path MTU. The ICMP error packet is then injected back into the Rx path
+> with the source and destination addresses swapped, so that it will be
+> delivered to the overlay source.
 >
-> Fixes: 28a3f0601727 ("net: openvswitch: IPv6: Add IPv6 extension header support")
-> Reported-by: Paolo Abeni <pabeni@redhat.com>
-> Signed-off-by: Eelco Chaudron <echaudro@redhat.com>
+> If the overlay packet was routed to the UDP tunnel or locally generated,
+> then it is already carrying a valid dst entry and this entry is not
+> dropped when transforming the packet to an ICMP error packet. This
+> causes the IP layer to reuse the dst entry, leading to the ICMP error
+> packet being dropped or routed out of the UDP tunnel interface in case
+> of forwarding.
+>
+> Prior to the blamed commit this could not happen, as
+> skb_tunnel_check_pmtu() did not build ICMP errors for PACKET_HOST
+> packets. Such packets were instead encapsulated and, unless the DF bit
+> was set in the outer header, fragmented by the underlay.
+>
+> Fix this by making sure that the ICMP error packet does not have a valid
+> dst entry, thereby forcing the IP layer to perform a route lookup.
+>
+> Adjust the bridged PMTU exception selftests accordingly. When the
+> local sender in ns_a pings the overlay destination with a deadline
+> (-w), ping exits on the first socket error before any reply is
+> received and returns a non-zero exit code. The test therefore only
+> passed because the ICMP error was never delivered. Use a packet count
+> (-c) like the ns_c line above it, so that the ICMP error counts
+> against the packet budget and the exit code depends on whether echo
+> replies were received. This passes with and without the fix.
+>
+> Fixes: 8930424777e4 ("tunnels: Accept PACKET_HOST in skb_tunnel_check_pmtu().")
+> Cc: stable@vger.kernel.org
+> Reported-by: Laika Price <laikabcprice@gmail.com>
+> Closes: https://lore.kernel.org/netdev/20260614-master-v3-1-9f5060ba1ed1@gmail.com/
+> Reported-by: Yaroslav Dudkov <aroslavdudkov622@gmail.com>
+> Closes: https://lore.kernel.org/netdev/20260901081825.287173-1-aroslavdudkov622@gmail.com/
+> Reported-by: Charles Bordet <rough.rock3059@datachamp.fr>
+> Closes: https://lore.kernel.org/netdev/aHVhQLPJIhq-SYPM@eldamar.lan/
+> Signed-off-by: Ido Schimmel <idosch@nvidia.com>
 > ---
+
+Thanks for the detailed analysis.  As noted, it was a very obscure and
+subtle issue.
 
 Reviewed-by: Aaron Conole <aconole@redhat.com>
 
