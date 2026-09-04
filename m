@@ -1,139 +1,97 @@
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28E90485CE7
-	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 12:34:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6B401FC0EA;
+	Fri,  4 Sep 2026 12:36:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788525298; cv=none; b=IkuRFts0SKhVxQZHFIGFxIUbch0mPLjUCdiBDBOJBp58BKcX+qfnmIlLQnDIH1I9pVNzL15LJjrAB22gfXXLR2FZ/8Jnzb4XN7CeI/c+yBPfqrAeRAQq0sKJ27zAHAzBR66YLyKczmnCV4YwV1hXV9cUWg9Z+PkrvMxLPaZxMbA=
+	t=1788525384; cv=none; b=XxZMJ1WVb8Ap5/w9MROQFM9zQb8Zmialo3GVSkKgOEDwW7xz/BaSArNzmMooH/PXbGcYubCXgeQnmoSalqR01K48I9OMwY9CoqaAI1RVQzJzWuWN70PGGtkP8WCGSJb26CiNLR06nCuAHSSQoKSDDbAXX3Nb/tvQFaWAfAz3lBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788525298; c=relaxed/simple;
-	bh=xioRLTaKtQKL260SUtxj34bS0YbzGsBJwB6PF9pf6rY=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=Q7cN2Q9/g1X2pLaLix4LR+OBiBqBSrHR54Jr55oxhTLog5P/xW8QjTsL/st7v+mGDVdOqQMOJbdRo6xpmtdLY1xu4XMk0+RDgvTroTWg1n2NMHnZKRirYri0cHXg5QmVxeqzIwmBP8VAmL6DiyGVEYKxjY2u2Qmkh3P+JY0RIx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VHXMPxtq; arc=none smtp.client-ip=209.85.160.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788525384; c=relaxed/simple;
+	bh=ou540b36wgxIFFDshUYa45c0uA1r7r5PaqF8iDjBaEQ=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=YBf9b+ubIEqyaFWcvK7yN8CxqF+bZ51sT9BcWOyaufVxp9/WCALoPycJ63yCMWrkhoMQ2nAGNJS/vyDIZEQm9LKadToAyYMAOFqayda/00CRVDF8WJ5WKnW/2tgTg/8KzG2iqQdy2vbjh7+HdPDXr4Oy6UU5Yi0FhojEa9jWAE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marmottus.net; spf=pass smtp.mailfrom=marmottus.net; dkim=pass (2048-bit key) header.d=marmottus.net header.i=@marmottus.net header.b=TNLIOOHt; arc=none smtp.client-ip=217.70.183.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marmottus.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marmottus.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VHXMPxtq"
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-52ff0b7c98aso10782301cf.0
-        for <netdev@vger.kernel.org>; Fri, 04 Sep 2026 05:34:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788525295; x=1789130095; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=paqRFyHFvX+txrKAZySjILGu4egNb8auPfRKWSQjZAM=;
-        b=VHXMPxtqBCDRzTjtUe6mD5PCszf6l5ot3oTcufOcoijf0K2UHvyVD86IN5YRDej8Y5
-         y4m5DPxSr4fylCwFVPCSegEm+tboEM8iZdjx/7GGNCtaV8mskIktZf200nIB7FHhGdj+
-         dFV2FQKLekWZ0ieXUc/ornS7EoJ2Xwne+9FZNBcaGDtUPDJNKJF0qk8Q2/usj2BI++6u
-         6pNeawZ0+EwpIZRizNyDEJzk2Dg5X31pCavkF8CMTrNbkswdK7kwZzR7LC/1gfc3UfHk
-         3uDCUvLfwyZ++0gB4rcO9jvXeSawxugywlkJBwnmudhtXr8Qi+PyfHraMilU38Oq+Wsp
-         g0Nw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788525295; x=1789130095;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=paqRFyHFvX+txrKAZySjILGu4egNb8auPfRKWSQjZAM=;
-        b=ViRU9wfMsNNdl5OYwijD0+/HRbVsngrLFz4XQK6daT7t6zvUPtuE4rdHBd5FMTKArH
-         ynw84tynNILwHljKmYNIVa/zSpUjPlQ8Bz/lTnFQmM28X3YJ2iFruIDDj4gWnm7Vu2ZT
-         N2NWK63NeQAiwqwji2JRS541CKLKs5pw3l057fE0YZruYGr8lidOHdeD2BGeoSRSf0cC
-         sbZ/Weh8R6joxHYkjk267bRH6J9iq6IdWxubKQ9OkB9kvmYkLIzPKnIu9SN9E85Kbr5L
-         FXWKgm1ScO2XwYiIXPFC/NUEl/n7U6qJHMbT399ZLQ26Kn0ez7W+B/ku0hWez7mUEWjI
-         10+Q==
-X-Forwarded-Encrypted: i=1; AKwUvByDFzzF9apkMtT/K6/4osfdCQOYrQaiyRmbeAqoMNcfD8yG2xIG2oncCnbdWN1rBJuBvO8SZRE=@vger.kernel.org
-X-Gm-Message-State: AFuF++nXX0VgNPkCtmXTBRMwlLd4Tq/rhr2ymWGWoMiEKV/BwxeTTjvJ
-	lva1HvhKSwNUComYSxCwifkipbMBfBjJrZ0FYKh4KLe1rdB8xgXTenIPnMk3SH62
-X-Gm-Gg: AYBFou1AoLyY5dtkzsdupKXOcIebfOxpxQEbTg/81yXgpfAeUOj001gTmb+Y4y14oMm
-	B7olMFcOCrmWQvYj3yIKFsJxsl+3fFdzelzDtVh9EUvtyoG7e+pLBltAu6klMn51ooAwSyTu9Pp
-	m+azlYVctVXaQnvd2H9AeV9tF3zF7lBUZNAvepjUZ6mMLB8aR+cnk8ctrgZjKi55mXGiPWjhRh4
-	plwoCVzPxXzAOPWs69lDGjsk0o7eJlBa+8E5Prd8IqILb/ZmdJCEjIwjeqdF6kTg43Dud1tl0ub
-	N874mEInaulP2+qXAqTPcdjQynUDpufrAKxU3GKiMNXOHAm0mFILpc73pdASpLe6+yhjaxPTAst
-	AVrmMM5gDl/bl9/sR/EWB63FNipXCvhUl9voFGftRjXs+J8e+g7s/YryZk2JzUQOQTNOf0Slv5T
-	JwhMrVSWoUDBH5XMV9VXVtKXKnrIAdi+BXzs9h/TQZSqY8e63B3mnTTwPp4aYWoEAy1A==
-X-Received: by 2002:a05:622a:50d:b0:530:42e5:f3a4 with SMTP id d75a77b69052e-53054a0db44mr57968521cf.45.1788525294879;
-        Fri, 04 Sep 2026 05:34:54 -0700 (PDT)
-Received: from localhost ([2600:4040:9399:4000:e553:72e5:7d37:c7ef])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-910406976a5sm19170816d6.39.2026.09.04.05.34.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 04 Sep 2026 05:34:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=marmottus.net header.i=@marmottus.net header.b="TNLIOOHt"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 067693E95D;
+	Fri,  4 Sep 2026 12:36:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marmottus.net;
+	s=gm1; t=1788525374;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=K1EjrFVu4O9teuB6km71Nkaxnc0sngk2FX4oBosuhN4=;
+	b=TNLIOOHt5gM9ZmCwCPS9QoNYo8GMZ+NFQwxa+aMOy+3gCeHb6jy9uAusKONsIg6G1r787Z
+	c4nIg8UdvaemCHYn9d2upda1RAe82m13yKHjE2IwYvXT5ycGYHlN1z67FpChBnhmyvTKrO
+	5VbFfP5XHSwR3ohhmaQsE9zdIyoRzR8cEMfQn4n7l2BPXXuyanU53LhX0uxjv8gRV3ZR7C
+	jag47iWhSQF16hM+EOYleA91V84VepTo5+/rhjooRqJg/kq4ZaIVyXlG5ewU0rdOhAKmBN
+	9jY5DqWSlveABQx/qgzvPDNRXjlOaVyp17TIGjkgE6hnMy5DS7GlV2gGpSwLwQ==
+From: Arthur Crepin Leblond <arthur@marmottus.net>
+Subject: [PATCH net-next v7 0/3] w5100: restore GPIO-based link detection
+Date: Fri, 04 Sep 2026 14:35:57 +0200
+Message-Id: <20260904-wiznet-link-gpio-v7-0-69f01b70c96f@marmottus.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 04 Sep 2026 08:34:52 -0400
-Message-Id: <DL6JAWKEPFAP.3P0KFDGLBO3CX@gmail.com>
-Cc: "Aleksandr Loktionov" <aleksandr.loktionov@intel.com>, "Alexei Lazar"
- <alazar@nvidia.com>, "Alexei Starovoitov" <ast@kernel.org>, "Allison
- Henderson" <allison.henderson@oracle.com>, "Antonio Quartulli"
- <antonio@openvpn.net>, "Anubhav Singh" <anubhavsinggh@google.com>, "Bobby
- Eshleman" <bobbyeshleman@meta.com>, "Boris Pismenny" <borisp@nvidia.com>,
- <bpf@vger.kernel.org>, "Carolina Jubran" <cjubran@nvidia.com>, "Chris Mi"
- <cmi@nvidia.com>, "Cosmin Ratiu" <cratiu@nvidia.com>, "Daniel Borkmann"
- <daniel@iogearbox.net>, "Daniel Zahka" <daniel.zahka@gmail.com>, "David
- Wei" <dw@davidwei.uk>, "Doruk Tan Ozturk" <doruk@0sec.ai>, "Dragos Tatulea"
- <dtatulea@nvidia.com>, "Gal Pressman" <gal@nvidia.com>, "Jacob Keller"
- <Jacob.e.keller@intel.com>, "Jesper Dangaard Brouer" <hawk@kernel.org>,
- "Jianbo Liu" <jianbol@nvidia.com>, "John Fastabend"
- <john.fastabend@gmail.com>, "Kees Cook" <kees@kernel.org>, "Lama Kayal"
- <lkayal@nvidia.com>, "Leon Romanovsky" <leon@kernel.org>, "open list"
- <linux-kernel@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
- <linux-rdma@vger.kernel.org>, "Mark Bloch" <mbloch@nvidia.com>, "Matthieu
- Baerts (NGI0)" <matttbe@kernel.org>, "Patrisious Haddad"
- <phaddad@nvidia.com>, "Petr Machata" <petrm@nvidia.com>, "Raed Salem"
- <raeds@nvidia.com>, "Rahul Rameshbabu" <rrameshbabu@nvidia.com>, "Richard
- Gobert" <richardbgobert@gmail.com>, "Saeed Mahameed" <saeedm@nvidia.com>,
- "Shuah Khan" <shuah@kernel.org>, "Shuah Khan" <skhan@linuxfoundation.org>,
- "Simon Horman" <horms@kernel.org>, "Stanislav Fomichev" <sdf@fomichev.me>,
- "Stanislav Fomichev" <sdf.kernel@gmail.com>, "Willem de Bruijn"
- <willemb@google.com>, "Willem de Bruijn" <willemdebruijn.kernel@gmail.com>
-Subject: Re: [PATCH net-next V3 13/15] selftests: drv-net: gro: Extract
- shared helpers into gro_lib.py
-From: "Daniel Zahka" <daniel.zahka@gmail.com>
-To: "Tariq Toukan" <tariqt@nvidia.com>, "Andrew Lunn"
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
- Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>,
- <netdev@vger.kernel.org>, "Paolo Abeni" <pabeni@redhat.com>, "Sabrina
- Dubroca" <sd@queasysnail.net>
-X-Mailer: aerc 0.21.0-threadmapfix
-References: <20260903085215.3691657-1-tariqt@nvidia.com>
- <20260903085215.3691657-14-tariqt@nvidia.com>
-In-Reply-To: <20260903085215.3691657-14-tariqt@nvidia.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAC27mmoC/4XPTW7DIBAF4KtErEvF7xhn1XtUWWAYEtrGjgxx0
+ ka+e7G7sSqqLke8+R7zIAnHiInsdw8y4hRTHPoyNE874k62PyKNvsxEMAHMMEVv8avHTD9i/06
+ PlzjQpoUgwXmuQkvK2mXEEO8r+UqWaI/3TA4/L+navaHLi7hkTzHlYfxc2ye+bvxdNHHKaQcCg
+ lehca57OdvxPOR8Tc8luVZM4j9EUEZlxz1zpmFB6hoitwhUEFkQLYVXlitpWBVRG4TzCqIKorw
+ OjbfGaGtqiN4isoLoglhXToUglOKyhsAGkbWfwIJ0iOC0awHwNzLP8zerI6DRKQIAAA==
+X-Change-ID: 20260804-wiznet-link-gpio-796f36cd14f9
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>, netdev@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Arthur Crepin Leblond <arthur@marmottus.net>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+X-Mailer: b4 0.15.2
+X-GND-Sasl: arthur@marmottus.net
+X-GND-Score: -100
+X-GND-Cause: dmFkZTE8MBYIzNAxnKVvFgMYG2KBNhoWuvYqKJThqd6hsZY6WnnuLzIjxGcmr5ZvQOh48Nod6E27xEKBpH7J00WVujmZwxs+M444dcG1CDAUvaIfcBitSA/P1aJ/f4kPnoxMH54iektaoErTOyxEAqEquj+IBsjJnbnPZTX1fapSxkPZTVRvflDiZm5gEcWGAuG8ZRHh+JXGrBbojgHAsUC4g10DbjrClqdzarloWIZp6ZXQFpOWxKYbge9MLTiJ3TVUgavAdcUQ0eoHlgVHlhPwVRl7+TXzcomFrC34vo5ELnv7lPZ6qwJg/wdqeWwoeElaLe5RyUZPrLpuAoKUl0UjWDcbtHcHG87YAOuXYFuA86REamu3/qUdRDmN/Row5XvYYJCiG6o0DFA62LZyOwVr0WbXFex0N4B4mCZEeMmu72NPewmQ0EpFq+IXsRaPybsjVJy0DxHYB+n0CLOiFtv1s3yhxtzSZO2mgKAxCcOPPaYSBahwKiDwqGBkqS88F7y4SWJgI3EfXU6r8D7OenewvvocLFN/SsU3SvVPihlmRjTOu9Pj2CrZkvh3j8XNfjbxEYFwex44CuIAR3GsUtPrxQyEtkVBy3mAIPbp9EatvAvoEIYRzQTEATTZwJrP1/IxkzBLYwksmKGN5vygCqTgbIFc7ludrEH3dLpo2+CfjxpA7w
+X-GND-State: clean
 
-On Thu Sep 3, 2026 at 4:52 AM EDT, Tariq Toukan wrote:
-> From: Cosmin Ratiu <cratiu@nvidia.com>
->
-> Bits and pieces of gro.py are needed by a second test file:
-> - dmac resolution
-> - the ethtool/sysfs feature dance
-> - the HW GRO setup logic
-> - the gro binary invocation
-> - the retry loop
->
-> Move them to gro_lib.py, installed via TEST_FILES (like psp_lib.py).
->
-> hw/gro_hw.py keeps its own copies for now since they diverged.
->
-> Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
-> Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-> Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-> ---
->  tools/testing/selftests/drivers/net/Makefile  |   1 +
->  tools/testing/selftests/drivers/net/gro.py    | 200 ++----------------
->  .../testing/selftests/drivers/net/gro_lib.py  | 194 +++++++++++++++++
->  3 files changed, 217 insertions(+), 178 deletions(-)
->  create mode 100644 tools/testing/selftests/drivers/net/gro_lib.py
->
+Hi,
 
-Conflicts with:
-f225a7317c18 ("selftests: drv-net: split gro.py into one test per coalescin=
-g mode")
+In the previous version of the w5100 driver, the LINKLED pin could be
+wired to a GPIO to detect the link status changes via an interrupt.
+This only works on w5500 as it is the only one documenting its LINKLED
+pin to hold the link status (on w5100 the LINKLED pin is changing with
+RX/TX activity).
 
-I will take a look at the other patches now in case I can provide any
-feedback before reposting.
+This series of patches is bringing back the link status detection on
+w5500 using the Link Status bit of the PHY Configuration Register.
+Additionally, the LINKLED pin can also be wired to detect link status
+changes and read the register in the interrupt handler.
+
+Arthur Crepin Leblond
+
+Signed-off-by: Arthur Crepin Leblond <arthur@marmottus.net>
+---
+- Link to v6: https://patch.msgid.link/20260831-wiznet-link-gpio-v6-0-abee6c5c966e@marmottus.net
+- Link to v5: https://patch.msgid.link/20260813-wiznet-link-gpio-v5-0-ac8046f24413@marmottus.net
+- Link to v4: https://patch.msgid.link/20260811-wiznet-link-gpio-v4-0-4d5f7da885a8@marmottus.net
+- Link to v3: https://patch.msgid.link/20260806-wiznet-link-gpio-v3-0-532d4a143805@marmottus.net
+- Link to v2: https://patch.msgid.link/20260804-wiznet-link-gpio-v2-0-3b1d0c870f35@marmottus.net
+- Link to v1: https://patch.msgid.link/20260804-wiznet-link-gpio-v1-1-b626fd4f7ccb@marmottus.net
+---
+Arthur Crepin Leblond (3):
+      dt-bindings: net: wiznet,w5100: convert to DT schema
+      dt-bindings: net: wiznet,w5100: add link status interrupt
+      w5100: detect carrier state using link status bit and optional interrupt
+
+ .../devicetree/bindings/net/wiznet,w5100.yaml      |  71 ++++++++++++
+ .../devicetree/bindings/net/wiznet,w5x00.txt       |  50 ---------
+ drivers/net/ethernet/wiznet/w5100.c                | 123 +++++++++++++++++++--
+ 3 files changed, 183 insertions(+), 61 deletions(-)
+
