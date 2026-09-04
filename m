@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11D093AFD12
-	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 03:10:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 617633ACA7E
+	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 03:10:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788491403; cv=none; b=O3Lqs4gT7k+t+OGQ84RYkwp0msnPblRSERZwNFaDOGYmBW/8rXTPUgTByVdYsTMHVppJvNBnkDH9at7FTU3oEXlt4AV3xSEKgFaJTAWAtZ+dORUxUGQgh89/MVtpQT9siADOQj2QPjSAvT9oAUP5VMNywChp1jhJpJ3J4EBdDKE=
+	t=1788491404; cv=none; b=eVtfpsdstFS4x4ASg+dSwIQAbfbVSNshxRgq/ETqgnHisngMX+6aLZVzGVbRPvNa9hD5rlh+5/WU01xB6F0no2p6zOdRTM05lSn/pPlfKdPrVUZ4biapO0IfH/T8L7R6/Kw9rb5cFOw5MpIDubaJqBmPLCyz/dZiytWCwaJXi3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788491403; c=relaxed/simple;
-	bh=Mhxxn44zEeCngs6u2N5tEYGJnTb+L53W9h2yYCwsQys=;
+	s=arc-20240116; t=1788491404; c=relaxed/simple;
+	bh=P2jZzOfMqLNC5m71wGxXRrkSsSGMJGGDPFXUh/MEnqk=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Xkz6lGFD9y5iciWZZxRxZLA1SGTfh6jTweTg+b+8dDH0n7ZiXx/mDg25E+cfDT6oMwqDZ7O/GpcTFMn+gUgO/E4ia8lQT8D2MgN5UDi98kQZC9CELvcYR0wm7AdAjOu7CHukdn/JerKUiQ6n3zUpk5/oncXd9WkuuVYav3ElFHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HlDu9y+N; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=ZWQEiO6vxxdeBLdTrloEqqDXRBQKC87OVl4Ssn/3l/5AAUDcy1Lu970zSSeAZ7lzvCtBrRgfI2IJNp9scsHAoQKacz37PnMbIkfRLtc96LadBJWDDwOm6sDFq6451zk9YRzX85iW1FOWLq7ppnlIYme7ueCE9KqpxSWzdROnR98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B3rA+2i4; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HlDu9y+N"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B45C1F00A3E;
-	Fri,  4 Sep 2026 03:10:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B3rA+2i4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D3611F00A3D;
+	Fri,  4 Sep 2026 03:10:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788491402;
-	bh=MY70Qssg3YUA6rTWVbOQHy/m6qZc9hUzY6XprGYfPJA=;
+	s=k20260515; t=1788491403;
+	bh=DXu3PS/6iiovko6NXnrgbe1w1DFAhiX6HDfJ9kcHNQQ=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=HlDu9y+Nmig3POecGzShsRFfCGl+MEXQBWG0bwhB+CUCJRv+3tptBTd/ZcGakOdfj
-	 GJir+L3sP7yRzK5GDG82jBs3HhI9ZEo0xG1V2ccECCRV/5SXwSi4YoLcb0SzdNOGgo
-	 3RqQppHDE0eKZRHASzUx+Toqw1WOZ+XjOJ72MFK9dIQHDWNEa5tZtni0CRHJY4Geua
-	 o32TVhz2p/vuzdeIB8TksVjxgQmg7NJ8WtCVaWitq97YIhQoaLGCE28+6iRIqPbJ7T
-	 g8ZTRGkVvijYK9w7wCmri+Q3wcq9NC1ThD7/fUwXKMgXiMgDozC58nFkfMvS4b363D
-	 XPmZvSrjuyeJQ==
-Subject: Re: [PATCH v6 net-next 10/15] neighbour: Clean up neigh_table_init()
- and neigh_table_clear().
+	b=B3rA+2i49gRe0AX3gXa0h/XyWNAQqRG4E8wFqiWg6noiJE2bY5kz7IhgN9uZ+m428
+	 NNzf122RE+i6Sq1+dAnmjqN/P5v1UZ+H9HGU2VJ0toZPQeAH4Zid7RA6fBDpHVBt1w
+	 LaldniEmMcuKZ1s/HzLo4/TiT7ptqJk+Jm2Cf1hU8OH5sJkzB7eDu86Fx/aTWJnvMM
+	 v9AMshfRa5NJsk/0+fKi8hs8W3rAdhj3BgcD0rBmRWUbHWDMXgIuW4TlYVxEes3mwP
+	 1dKlD67+Rt0tKQUgHghYCq/fl4VOVIe8hw+Dlf2oQgiqW9QxQRX4LjWqTJXF8Xsujf
+	 hXSah0ZD6fLyA==
+Subject: Re: [PATCH v6 net-next 11/15] neighbour: Convert neigh_table.entries
+ to refcount_t.
 From: netdev-bot+sashiko@kernel.org
 To: kuniyu@google.com
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
  kuba@kernel.org, pabeni@redhat.com, dsahern@kernel.org, idosch@nvidia.com,
  horms@kernel.org, kuni1840@gmail.com, netdev@vger.kernel.org,
  razor@blackwall.org
-Date: Fri, 04 Sep 2026 03:10:00 +0000
-Message-ID: <178849140082.4131868.5096987849252659627@kernel.org>
-In-Reply-To: <20260902203722.926528-11-kuniyu@google.com>
-References: <20260902203722.926528-11-kuniyu@google.com>
-X-sashiko-severity: High
+Date: Fri, 04 Sep 2026 03:10:02 +0000
+Message-ID: <178849140215.4131868.10205662438617953828@kernel.org>
+In-Reply-To: <20260902203722.926528-12-kuniyu@google.com>
+References: <20260902203722.926528-12-kuniyu@google.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -48,168 +48,227 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
+Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider:
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 0 (1)
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
-- [High] net/core/neighbour.c:neigh_table_clear() now reclaims the RCU-
-  published neighbour hash table synchronously: `nht =…
-
-Pre-existing issues:
-- [Low] neigh_table_clear() (net/core/neighbour.c:1881-1906) frees table-
-  wide resources (free_percpu(tbl->stats) at 1895,…
+- [Medium] neigh_table_free() frees RCU-published, table-owned resources
+  with no grace period, while the objects that point at the table are…
+- [Low] Teardown ordering concern: neigh_table_clear() ends with
+  neigh_table_put(), dropping the base reference installed by…
 
 --
 
-neighbour: Clean up neigh_table_init() and neigh_table_clear().
+neighbour: Convert neigh_table.entries to refcount_t.
 
-This reworks neigh_table_init() to allocate everything up front and unwind
-on failure, and reorders neigh_table_clear() to mirror it. The teardown
-side also switches to timer_shutdown_sync(), drops the explicit
-pneigh_queue_purge(), replaces pr_crit() with DEBUG_NET_WARN_ON_ONCE(), and
-calls neigh_hash_free_rcu() directly instead of via call_rcu().
+This converts neigh_table.entries from atomic_t to refcount_t and adds
+neigh_table_get()/neigh_table_put() helpers plus a new neigh_table_free()
+so that the table resources are released only when the last neighbour is
+gone.  neigh_table_clear() now just drops the base reference taken in
+neigh_table_init().
+
+A couple of questions about the new teardown path below.
 
 > diff --git a/net/core/neighbour.c b/net/core/neighbour.c
-> index 34da4cdc813d..36488dbd1512 100644
+> index 36488dbd1512..7dc8f0cdbb45 100644
 > --- a/net/core/neighbour.c
 > +++ b/net/core/neighbour.c
-
-[ ... neigh_table_init() hunk snipped ... ]
-
-> @@ -1869,26 +1880,27 @@ void neigh_table_init(struct neigh_table *tbl)
->   */
->  int neigh_table_clear(struct neigh_table *tbl)
->  {
-> -	/* It is not clean... Fix it to unload IPv6 module safely */
-> +	struct net *net __maybe_unused = &init_net;
-> +	struct neigh_hash_table *nht;
+> @@ -55,6 +55,23 @@ static void neigh_notify(struct neighbour *n, int type, int flags, u32 pid);
+>  static void __neigh_notify(struct neighbour *n, int type, int flags, u32 pid);
+>  static void pneigh_ifdown(struct neigh_table *tbl, struct net_device *dev,
+>  			  bool skip_perm);
+> +static void neigh_table_free(struct neigh_table *tbl);
 > +
->  	cancel_delayed_work_sync(&tbl->managed_work);
->  	cancel_delayed_work_sync(&tbl->gc_work);
-> -	timer_delete_sync(&tbl->proxy_timer);
-> -	pneigh_queue_purge(&tbl->proxy_queue, NULL, tbl->family);
-> +	timer_shutdown_sync(&tbl->proxy_timer);
+> +static void neigh_table_get(struct neigh_table *tbl)
+> +{
+> +	refcount_inc(&tbl->entries);
+> +}
 > +
->  	neigh_ifdown(tbl, NULL);
-> -	if (atomic_read(&tbl->entries))
-> -		pr_crit("neighbour leakage\n");
-> +	DEBUG_NET_WARN_ON_ONCE(atomic_read(&tbl->entries));
-
-[Severity: Low]
-
-This isn't a bug introduced by this patch, but the diagnostic swap makes a
-pre-existing lifecycle problem invisible on production kernels: with
-CONFIG_DEBUG_NET=n, DEBUG_NET_WARN_ON_ONCE() compiles to nothing, so the
-"still have entries" condition that previously always printed is no longer
-reported.
-
-The table-owned resources are still freed unconditionally just below, and a
-neighbour destroyed afterwards touches them:
-
-net/core/neighbour.c:neigh_destroy() {
-	NEIGH_CACHE_STAT_INC(neigh->tbl, destroys);
-	...
-	atomic_dec(&neigh->tbl->entries);
-}
-
-The unconditional freeing itself is unchanged from the baseline, and the
-next patch in the series, "neighbour: Convert neigh_table.entries to
-refcount_t", defers freeing of tbl->stats, tbl->phash_buckets and tbl->nht
-into neigh_table_free() once the last reference is dropped.
-
-Is dropping the production-visible message intentional for this
-intermediate commit?
-
+> +static void neigh_table_put(struct neigh_table *tbl)
+> +{
+> +	if (refcount_dec_and_test(&tbl->entries))
+> +		neigh_table_free(tbl);
+> +}
+> +
+> +static int neigh_table_entries(struct neigh_table *tbl)
+> +{
+> +	return refcount_read(&tbl->entries) - 1;
+> +}
 >  
-> -	call_rcu(&rcu_dereference_protected(tbl->nht, 1)->rcu,
-> -		 neigh_hash_free_rcu);
-> -	tbl->nht = NULL;
-> +	remove_proc_entry(tbl->id, net->proc_net_stat);
+>  #ifdef CONFIG_PROC_FS
+>  static const struct seq_operations neigh_stat_seq_ops;
+
+[ ... ]
+
+> @@ -1845,6 +1862,7 @@ void neigh_table_init(struct neigh_table *tbl)
+>  	tbl->last_flush = now;
+>  	tbl->last_rand	= now + tbl->parms.reachable_time * 20;
+>  
+> +	refcount_set(&tbl->entries, 1);
+>  	spin_lock_init(&tbl->lock);
+>  	mutex_init(&tbl->phash_lock);
+>  	skb_queue_head_init_class(&tbl->proxy_queue,
+
+[ ... ]
+
+> @@ -924,7 +941,7 @@ void neigh_destroy(struct neighbour *neigh)
+>  
+>  	neigh_dbg(2, "neigh %p is destroyed\n", neigh);
+>  
+> -	atomic_dec(&neigh->tbl->entries);
+> +	neigh_table_put(neigh->tbl);
+>  	kfree_rcu(neigh, rcu);
+>  }
+>  EXPORT_SYMBOL(neigh_destroy);
+
+[ ... ]
+
+> @@ -1874,6 +1892,21 @@ void neigh_table_init(struct neigh_table *tbl)
+>  	panic("cannot allocate memory");
+>  }
+>  
+> +static void neigh_table_free(struct neigh_table *tbl)
+> +{
+> +	struct neigh_hash_table *nht;
 > +
 > +	free_percpu(tbl->stats);
 > +	tbl->stats = NULL;
->  
->  	kfree(tbl->phash_buckets);
->  	tbl->phash_buckets = NULL;
->  
-> -	remove_proc_entry(tbl->id, init_net.proc_net_stat);
-> -
-> -	free_percpu(tbl->stats);
-> -	tbl->stats = NULL;
+> +
+> +	kfree(tbl->phash_buckets);
+> +	tbl->phash_buckets = NULL;
+> +
 > +	nht = rcu_dereference_protected(tbl->nht, 1);
 > +	tbl->nht = NULL;
 > +	neigh_hash_free_rcu(&nht->rcu);
+> +}
 
-[Severity: High]
+[Severity: Medium]
+Is it safe to free these RCU-published members synchronously here?
+neigh_table_free() calls free_percpu(tbl->stats), kfree(tbl->phash_buckets)
+and invokes the RCU callback neigh_hash_free_rcu() directly, with no
+grace period in between.
 
-Can this free the neighbour hash table while lockless readers still hold a
-pointer to it?
+At the same time neigh_destroy() drops the table reference before the
+neighbour body is retired:
 
-neigh_hash_free_rcu() is an RCU callback body, so calling it directly
-releases both the bucket array and the table object immediately:
+	neigh_table_put(neigh->tbl);
+	kfree_rcu(neigh, rcu);
 
-net/core/neighbour.c:neigh_hash_free_rcu() {
-	...
-	kfree(nht->hash_heads);
-	kfree(nht);
-}
+If that put is the last one, the table (the pointee) is reclaimed
+immediately while the neighbour holding neigh->tbl survives a full grace
+period.
 
-Nothing in the new teardown sequence waits for a grace period:
-cancel_delayed_work_sync() twice, timer_shutdown_sync(), neigh_ifdown()
-and remove_proc_entry(). neigh_ifdown() only takes tbl->lock, which the
-readers never take.
+Lockless readers hold no-ref neighbour pointers under rcu_read_lock() and
+dereference the table through them, for example in __neigh_event_send():
 
-The readers dereference tbl->nht under RCU with no NULL check:
+	NEIGH_CACHE_STAT_INC(neigh->tbl, unres_discards);
 
-include/net/neighbour.h:___neigh_lookup_noref() {
-	struct neigh_hash_table *nht = rcu_dereference(tbl->nht);
-	...
-	hash_val = hash(pkey, dev, nht->hash_rnd) >> (32 - nht->hash_shift);
-	neigh_for_each_in_bucket_rcu(n, &nht->hash_heads[hash_val])
-}
+which is reached from the transmit path
+ip_finish_output2()/ip6_finish_output2() -> neigh_output() ->
+neigh_event_send().  tbl->nht is read via rcu_dereference() in
+___neigh_lookup_noref(), and tbl->phash_buckets is declared __rcu and
+walked by pneigh_lookup().
 
-so a reader that already loaded nht reads hash_shift, hash_rnd and
-hash_heads out of freed slab memory and then follows whatever hlist
-contents are left there. neigh_lookup(), neigh_dump_table(),
-neigh_seq_start() and neightbl_fill_info() have the same shape.
-
-Is the table still published while this runs? ndisc_cleanup() calls
-neigh_table_clear(&nd_tbl) before unregister_pernet_subsys(&ndisc_net_ops),
-and the pernet exit path is what clears net->neigh_tables[NEIGH_ND_TABLE],
-so nd_tbl remains installed in every netns during the free. An
-unprivileged RTM_GETNEIGH dump reaches it holding only rcu_read_lock():
-
-net/core/neighbour.c:neigh_dump_info() {
-	rcu_read_lock();
-	for (t = 0; t < NEIGH_NR_TABLES; t++) {
-		tbl = net->neigh_tables[t];
-
-and ndisc_cleanup() is live today from the module-init error unwind:
-
-net/ipv6/af_inet6.c:inet6_init() {
-igmp_fail:
-	ndisc_cleanup();
-
-The peer site retiring the same object type still uses a grace period:
+The same file retires nht only after a grace period:
 
 net/core/neighbour.c:neigh_hash_grow() {
+	...
 	rcu_assign_pointer(tbl->nht, new_nht);
 	call_rcu(&old_nht->rcu, neigh_hash_free_rcu);
+	...
 }
 
-Would keeping call_rcu()/kfree_rcu(), or inserting a synchronize_net()
-before the free, be preferable here? The plain NULL store into the __rcu
-pointer tbl->nht predates this patch; what is new is the access to freed
-memory. This also does not appear to be addressed later in the series: at
-the end of the range the same unsynchronised free lives in
-neigh_table_free(), now additionally doing kfree(tbl), while
-neigh_table_unregister() clears net->neigh_tables[index] and calls
-neigh_table_clear()/neigh_table_put() with no grace period in between.
+Note also that neigh_table_put() can now reach this free from softirq
+context, since neigh_timer_handler() -> neigh_release() -> neigh_destroy()
+runs long after neigh_table_clear() returned, and neigh_destroy() releases
+the netdev reference before the table reference, so netdev_wait_allrefs()
+does not order it either.
 
+Most reader windows do look drained in practice (cleanup_net() runs
+synchronize_rcu_expedited() before the pernet exit ops, and
+unregister_netdevice_many_notify() runs synchronize_net() before the
+neighbour flush), so I could not show a reader that is still in flight at
+that instant.  Still, would it be better to defer this free with
+call_rcu()/kfree_rcu(), or to drop the table reference from the
+neighbour's own RCU callback, especially since the follow-up patch adds
+kfree(tbl) to this function?
+
+>  /*
+>   * Only called from ndisc_cleanup(), which means this is dead code
+>   * because we no longer can unload IPv6 module.
+> @@ -1881,26 +1914,15 @@ void neigh_table_init(struct neigh_table *tbl)
+>  int neigh_table_clear(struct neigh_table *tbl)
+>  {
+>  	struct net *net __maybe_unused = &init_net;
+> -	struct neigh_hash_table *nht;
+>  
+>  	cancel_delayed_work_sync(&tbl->managed_work);
+>  	cancel_delayed_work_sync(&tbl->gc_work);
+>  	timer_shutdown_sync(&tbl->proxy_timer);
+>  
+>  	neigh_ifdown(tbl, NULL);
+> -	DEBUG_NET_WARN_ON_ONCE(atomic_read(&tbl->entries));
+> -
+>  	remove_proc_entry(tbl->id, net->proc_net_stat);
+>  
+> -	free_percpu(tbl->stats);
+> -	tbl->stats = NULL;
+> -
+> -	kfree(tbl->phash_buckets);
+> -	tbl->phash_buckets = NULL;
+> -
+> -	nht = rcu_dereference_protected(tbl->nht, 1);
+> -	tbl->nht = NULL;
+> -	neigh_hash_free_rcu(&nht->rcu);
+> +	neigh_table_put(tbl);
 >  
 >  	return 0;
 >  }
+
+[Severity: Low]
+This is more of an ordering question.  neigh_table_clear() drops the base
+reference installed by refcount_set(&tbl->entries, 1) in
+neigh_table_init(), but at this commit the table is still published: in
+ndisc_cleanup() the call order is neigh_table_clear(&nd_tbl) followed by
+unregister_pernet_subsys(&ndisc_net_ops).
+
+Once the base reference is gone, neigh_table_entries() returns
+refcount_read() - 1, which is entries - 1 in general and -1 when the last
+neighbour is gone.  That value feeds the __u32 uAPI field:
+
+	.ndtc_entries		= neigh_table_entries(tbl),
+
+and the %08x in neigh_stat_seq_show(), where it would print as ffffffff.
+
+Checking the rest of the series, this looks unreachable in the final
+state: neigh_table_unregister() sets net->neigh_tables[index] = NULL
+before calling neigh_table_clear(), the proc entry is removed and drained
+before the put, and ndisc_cleanup() no longer calls neigh_table_clear()
+at all.  At this commit the only caller is the inet6_init() error path
+that the comment above already describes as dead code.
+
+Would it still be worth dropping the base reference only after the table
+is unpublished, so the biased accessor is never read without it?
+
+> @@ -2275,7 +2297,7 @@ static int neightbl_fill_info(struct sk_buff *skb, struct neigh_table *tbl,
+>  		struct ndt_config ndc = {
+>  			.ndtc_key_len		= tbl->key_len,
+>  			.ndtc_entry_size	= tbl->entry_size,
+> -			.ndtc_entries		= atomic_read(&tbl->entries),
+> +			.ndtc_entries		= neigh_table_entries(tbl),
+>  			.ndtc_last_flush	= jiffies_to_msecs(flush_delta),
+>  			.ndtc_last_rand		= jiffies_to_msecs(rand_delta),
+>  			.ndtc_proxy_qlen	= READ_ONCE(tbl->proxy_queue.qlen),
+> @@ -3495,7 +3517,7 @@ static int neigh_stat_seq_show(struct seq_file *seq, void *v)
+>  	seq_printf(seq, "%08x %08lx %08lx %08lx   %08lx %08lx %08lx   "
+>  			"%08lx         %08lx         %08lx         "
+>  			"%08lx       %08lx            %08lx\n",
+> -		   atomic_read(&tbl->entries),
+> +		   neigh_table_entries(tbl),
+>  
+>  		   st->allocs,
+>  		   st->destroys,
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260902203722.926528-1-kuniyu%40google.com
