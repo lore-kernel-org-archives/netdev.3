@@ -1,88 +1,83 @@
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [67.231.154.184])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 239D63783AF;
-	Fri,  4 Sep 2026 16:21:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.154.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99DC53859D3;
+	Fri,  4 Sep 2026 16:27:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788538866; cv=none; b=DYE/x/9KynxFyYIZu4j8PkEjzb0brK6sxjFggE1AmspAVL79AYen3QI1ImuwrLPtudXtBa3zxVAEH7/NXEXtXVckEc3W7MvVyRZF9ungHVftkGvs05QuzICzIKL6WA8n061lc9C7yvMvdUNqQlDpXmokvQ08NVchFacM1Gr1aYQ=
+	t=1788539241; cv=none; b=JLyId6892Z2Kh5Jlyz9/Ug5uTTb7iZO9TfkLzwv0/6qKah+jA8We2ES8xRSicAYSBjK4LgCzRr5JXXNR6RL65noSTwrevl+abjQH2BFWkXEHjkwJHT5KPVmIW3PFwRoqyFADh9sEbQhp3s0wrBVGrbxv1SObbxPtvZX6JaFSLo8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788538866; c=relaxed/simple;
-	bh=CZ4bX4F6PSEhTLlZpD0mtDFxKqPvIwiS/pvOwbtl71Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mX8HlnY2i1NRsmxejhiCkgF4vBi0H92ovVNKHTsSXsRw5y/t5AzPP5bshOyRIbvbffn7Zq9b+Bh27Thy4QfrjYz20SVhVbjmz91EGP4wmq5ngVCbHCDHL+6dehqMtnkQLJbLe6kBarDraMaaAzUb00osPfDUfqSOYKSkCbvnuqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=ZbDLmJ+o; arc=none smtp.client-ip=67.231.154.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
+	s=arc-20240116; t=1788539241; c=relaxed/simple;
+	bh=tcK1Sx3A/CgqQXi7lMc9CzKjjKqQl5lJcjHTne3CQ5M=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=F8t6YWF49wRvUJRd2Q48ikP1f2n3U9WFWclTVGQCxF7rPKij3GlWS305+ULQqarkoyUy6Il+WD0kfu1ww3exMk7ejnjg1H/GjAd9VLfXSeRU0F/izYPNoS7vAA5x/5GPBLPZ7NB4/4AMjDPQ7XnkX/ut2/WmxBkZbkJKgl2dxQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=a4fbSzMt; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="ZbDLmJ+o"
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 0DDB634006E;
-	Fri,  4 Sep 2026 16:20:56 +0000 (UTC)
-Received: from [192.168.100.159] (firewall.candelatech.com [50.251.239.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by mail3.candelatech.com (Postfix) with ESMTPSA id 09E7313C2B0;
-	Fri,  4 Sep 2026 09:20:56 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 09E7313C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-	s=default; t=1788538856;
-	bh=CZ4bX4F6PSEhTLlZpD0mtDFxKqPvIwiS/pvOwbtl71Q=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ZbDLmJ+omTBJC9EX1VXfLQB5O+L1AkFUCyKevIW6t7d9BrvjpZcQih0pQSaTwqbrv
-	 06ymwTEmMIRJr4FrAsrZ3k1AlmZ3FjcfM7NaOJqGKeu180Nr928wupIck06/64MQ39
-	 McBN4oYK37AXz1t9zWSm8VhR6zi1G6HZ5+wpib1A=
-Message-ID: <3acf531c-bcc7-412b-b3bb-665069260e46@candelatech.com>
-Date: Fri, 4 Sep 2026 09:20:55 -0700
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="a4fbSzMt"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id C9DBF4E41512;
+	Fri,  4 Sep 2026 16:27:17 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 846846057F;
+	Fri,  4 Sep 2026 16:27:17 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1F9C911C79C69;
+	Fri,  4 Sep 2026 18:27:10 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1788539236; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=tcK1Sx3A/CgqQXi7lMc9CzKjjKqQl5lJcjHTne3CQ5M=;
+	b=a4fbSzMtovlKZk0i83+sjZqERhs3qxLjjLyPZ3ODm2FW3X1jlllTrIODuwL6uFJAbFLbtA
+	mQkVU+ZwsrPJVJNI5YGQuWa3hAEMwnt/kT9Qtgx7H76gXMrbHRlgH8l7f3eVHpmvW9Plj2
+	TcfCY0g5RBUB0abNTohhJ2sp3/86qbFR3LpxBVUBvqzVnCN0gpFMJg8bIqCtkHitqOpaA4
+	d+ldqyNvkBV3lfhnVt+KWl8xMHcq5J0Wb+XS3GX4p+yIV2BzJXCAkUopPC8yZG+BnfbYg3
+	YpTYjPTwk+iiz9agYIHOTu2iYSI0iiJ98i7e9XneTiVJ4UpYI5dnbx/6eZk3Bw==
+From: Miquel Raynal <miquel.raynal@bootlin.com>
+To: Xuanqiang Luo <xuanqiang.luo@linux.dev>
+Cc: linux-wpan@vger.kernel.org,  netdev@vger.kernel.org,
+  linux-kernel@vger.kernel.org,  alex.aring@gmail.com,
+  stefan@datenfreihafen.org,  david.girault@qorvo.com,
+  davem@davemloft.net,  edumazet@google.com,  kuba@kernel.org,
+  pabeni@redhat.com,  horms@kernel.org,  stable@vger.kernel.org,  Xuanqiang
+ Luo <luoxuanqiang@kylinos.cn>
+Subject: Re: [PATCH net v2 1/2] mac802154: serialize and drain queued RX
+ descriptors
+In-Reply-To: <20260903123202.60152-2-xuanqiang.luo@linux.dev> (Xuanqiang Luo's
+	message of "Thu, 3 Sep 2026 20:32:01 +0800")
+References: <20260903123202.60152-1-xuanqiang.luo@linux.dev>
+	<20260903123202.60152-2-xuanqiang.luo@linux.dev>
+User-Agent: mu4e 1.12.12; emacs 30.2
+Date: Fri, 04 Sep 2026 18:27:10 +0200
+Message-ID: <87qzj9yobl.fsf@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [bug] Triple whammy of mt7996e bugs on 7.2+
-Content-Language: en-US
-To: Ilya K <me@0upti.me>
-Cc: linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
- linux-mediatek@lists.infradead.org
-References: <1767631788532094@64c4e675-cd08-4a74-816f-886742f9bfcd>
- <529a79bc-dab7-aa41-00bd-c47ecbefaa00@candelatech.com>
- <471221788538289@323ca970-5bd2-4c6b-b52d-2b863a718615>
-From: Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-In-Reply-To: <471221788538289@323ca970-5bd2-4c6b-b52d-2b863a718615>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-MDID: 1788538858-B9LB1mY0FrGP
-X-PPE-STACK: {"stack":"us5"}
-X-MDID-O:
- us5;at1;1788538858;B9LB1mY0FrGP;<greearb@candelatech.com>;6f76c88c2c731de9ad886e575864f8cc
-X-PPE-TRUSTED: V=1;DIR=OUT;
+Content-Type: text/plain
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 9/4/26 09:11, Ilya K wrote:
->> https://github.com/greearb/linux-ct-7.2
-> Hoo boy that's a lot of patches. Anything specific in there, or do you want me to just rebase my changes on that entire branch? I can try, I guess, but probably not today...
-> 
+On 03/09/2026 at 20:32:01 +08, Xuanqiang Luo <xuanqiang.luo@linux.dev> wrote:
 
-I don't have a good answer for you...it *is* a lot of patches, and I'm not sure if any of it
-would actually help your system.  We do have this kernel working for an ARM based AP that uses
-mtk7996 radio, and at one time it compiled for bpi4, but I'm not sure bpi4 still
-works as we do not test it.
+> From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+>
+> queue_work() coalesces attempts to queue an already pending work item.
+> The RX workers, however, consume only one descriptor per invocation. A
+> burst can therefore leave later descriptors queued until another frame
+> arrives, while the final descriptor may remain queued indefinitely.
+>
+> The RX tasklet, workers, and scan cleanup also access the descriptor
+> lists without synchronization.
+>
+> Protect both lists with a spinlock. Publish each descriptor and queue its
+> work while holding the lock. Remove each descriptor from the list before
+> processing it and, if another descriptor remains, queue the work again so
+> it runs after the current invocation.
+>
+> Fixes: 57588c71177f ("mac802154: Handle passive scanning")
+> Fixes: d021d218f6d9 ("mac802154: Handle received BEACON_REQ")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
 
-If you can get it to compile for your system by adding any needed patches on top, that is likely best
-approach, and if that actually solves the problem, we'd be happy to consider adding any bpi4 patches
-to our tree.
-
-./build_bpi4.bash may be of some interest...that is how we built it back when we did try to support bpi4.
-
-Thanks,
-Ben
-
--- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
-
-
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
