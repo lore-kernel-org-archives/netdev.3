@@ -1,21 +1,21 @@
-Received: from out28-121.mail.aliyun.com (out28-121.mail.aliyun.com [115.124.28.121])
+Received: from out28-100.mail.aliyun.com (out28-100.mail.aliyun.com [115.124.28.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D8DB3E3169;
-	Fri,  4 Sep 2026 09:54:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.121
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46A98445AF6;
+	Fri,  4 Sep 2026 09:54:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788515682; cv=none; b=GV2dMm4a1AnGTo3sWG4QwRv8u5SnsEMpFqdaAeLXj/eWweFLMyX3Yd8i5gSW1QZkMhY7AEVCQPhclx4C82wSkZmg5eTNbev3lHJp8xU2dXCXdwdkOWiooVGzUgUspibxv68Hl5LjeSu4eNSoQxbLl+Q6Uz1ToS01+FY0ZJ/Tx9Y=
+	t=1788515684; cv=none; b=mJ2vfzzb/dx50KwlBB7trfxWIHFomOjxdznDgTcAw4KEMrsTF1zVibzPLDzTfu9Ci5vnw0OpSO348owLhg9ZFa9ptXZdBoAcTXKeSzKo8IyQ48GgsA1Tckn9i9+pev4wgMCHTm14vlRFmJdEIQ7JwEqijhNg0AliXK0HGd8ObFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788515682; c=relaxed/simple;
-	bh=4dBlCwGqJ641ux6Xw+LiNiNidcwzfczUEJ5ltuBeByI=;
+	s=arc-20240116; t=1788515684; c=relaxed/simple;
+	bh=vEeYSsNcN2Lvw37nitJT4BkThkCD4BFWr/LGOpbLdK8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=QkXhWut2VmDoQ0Q6MzQ6Fm7AbsMe3K8ujNXSIrFwWnkqkLeKO/5uniFyYPgaPQazlYZZgb3AJjF+ebFZ73FvOKfhKkYqSNr5FaDQKPg9oPXlMw+u3j5HJ/srU1nDC1UXBiCzo5v01MYcx8S+r5bOtf+kNZZpcGcb4vR/WhslCsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com; spf=pass smtp.mailfrom=motor-comm.com; arc=none smtp.client-ip=115.124.28.121
+	 MIME-Version; b=B2P82W4a9oxbfTHIAQIDT7PsMB+g+bBANHd6sMAgz41dVls13uXMEvYfscU+W1NRqw7Au6R2fRqvv+MKTa14AhFJWK5Xo67M6xWigKRH4PavoqZvcsCHM2ySgsn3zYsPlibH0Rkm9thd7GG+5jtzlpEL4UgLeCmSy3PS6QGb3k8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com; spf=pass smtp.mailfrom=motor-comm.com; arc=none smtp.client-ip=115.124.28.100
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=motor-comm.com
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.08430664|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.0110873-0.000117148-0.988796;FP=16318571532961603222|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033022149254;MF=kyle.switch@motor-comm.com;NM=1;PH=DS;RN=16;RT=16;SR=0;TI=SMTPD_---.j5Qgq4B_1788515675;
-Received: from motor-comm.com(mailfrom:kyle.switch@motor-comm.com fp:SMTPD_---.j5Qgq4B_1788515675 cluster:ay29)
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.1124942|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.0199316-0.000303438-0.979765;FP=2483233239762241188|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033045220102;MF=kyle.switch@motor-comm.com;NM=1;PH=DS;RN=16;RT=16;SR=0;TI=SMTPD_---.j5Qgq54_1788515676;
+Received: from motor-comm.com(mailfrom:kyle.switch@motor-comm.com fp:SMTPD_---.j5Qgq54_1788515676 cluster:ay29)
           by smtp.aliyun-inc.com;
           Fri, 04 Sep 2026 17:54:36 +0800
 From: Kyle Switch <kyle.switch@motor-comm.com>
@@ -35,9 +35,9 @@ Cc: ming.xu@motor-comm.com,
 	jianmin.wang@motor-comm.com,
 	wei.zhang@gl-inet.com,
 	sijia.huang@gl-inet.com
-Subject: [PATCH net-next v5 2/6] net: dsa: motorcomm: use max_ports from series_info for port bounds checking
-Date: Fri,  4 Sep 2026 17:54:12 +0800
-Message-Id: <20260904095416.1692962-2-kyle.switch@motor-comm.com>
+Subject: [PATCH net-next v5 3/6] net: dsa: motorcomm: relocate MIB polling initialization to dsa_setup()
+Date: Fri,  4 Sep 2026 17:54:13 +0800
+Message-Id: <20260904095416.1692962-3-kyle.switch@motor-comm.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260904095416.1692962-1-kyle.switch@motor-comm.com>
 References: <20260904095416.1692962-1-kyle.switch@motor-comm.com>
@@ -49,58 +49,48 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Replace the hardcoded YT921X_PORT_NUM macro with the per-series
-max_ports field in port validation. This removes family-specific
-constants from the common code path and simplifies adding new
-switch families with different port counts.
-
-No functional change for existing YT921X devices.
+Move MIB polling start from probe() to dsa_setup() so that it can
+be conditionally enabled based on the actual switch family support,
+avoiding attempts to enable it on unsupported switch families.
 
 Signed-off-by: Kyle Switch <kyle.switch@motor-comm.com>
 ---
- drivers/net/dsa/motorcomm/chip.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/net/dsa/motorcomm/chip.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/net/dsa/motorcomm/chip.c b/drivers/net/dsa/motorcomm/chip.c
-index 557a0e07d8d7..7ae48e6636a0 100644
+index 7ae48e6636a0..f74a44048fb1 100644
 --- a/drivers/net/dsa/motorcomm/chip.c
 +++ b/drivers/net/dsa/motorcomm/chip.c
-@@ -357,7 +357,7 @@ static int yt921x_mbus_int_read(struct mii_bus *mbus, int port, int reg)
- 	u16 val;
+@@ -4553,6 +4553,14 @@ static int yt921x_dsa_setup(struct dsa_switch *ds)
+ 	struct device_node *child;
  	int res;
  
--	if (port >= YT921X_PORT_NUM)
-+	if (port >= priv->series_info->max_ports)
- 		return U16_MAX;
- 
++	/* mib polling init */
++	for (size_t i = 0; i < ARRAY_SIZE(priv->ports); i++) {
++		struct yt921x_port *pp = &priv->ports[i];
++
++		pp->index = i;
++		INIT_DELAYED_WORK(&pp->mib_read, yt921x_poll_mib);
++	}
++
  	mutex_lock(&priv->reg_lock);
-@@ -375,7 +375,7 @@ yt921x_mbus_int_write(struct mii_bus *mbus, int port, int reg, u16 data)
- 	struct yt921x_priv *priv = mbus->priv;
- 	int res;
+ 	res = yt921x_chip_reset(priv);
+ 	mutex_unlock(&priv->reg_lock);
+@@ -4810,13 +4818,6 @@ static int yt921x_mdio_probe(struct mdio_device *mdiodev)
+ 	priv->reg_ops = &yt921x_reg_ops_mdio;
+ 	priv->reg_ctx = mdio;
  
--	if (port >= YT921X_PORT_NUM)
-+	if (port >= priv->series_info->max_ports)
- 		return -ENODEV;
- 
- 	mutex_lock(&priv->reg_lock);
-@@ -390,6 +390,7 @@ yt921x_mbus_int_init(struct yt921x_priv *priv, struct device_node *mnp)
- {
- 	struct device *dev = to_device(priv);
- 	struct mii_bus *mbus;
-+	u32 max_ports;
- 	int res;
- 
- 	mbus = devm_mdiobus_alloc(dev);
-@@ -402,7 +403,8 @@ yt921x_mbus_int_init(struct yt921x_priv *priv, struct device_node *mnp)
- 	mbus->read = yt921x_mbus_int_read;
- 	mbus->write = yt921x_mbus_int_write;
- 	mbus->parent = dev;
--	mbus->phy_mask = (u32)~GENMASK(YT921X_PORT_NUM - 1, 0);
-+	max_ports = priv->series_info->max_ports;
-+	mbus->phy_mask = (u32)~GENMASK(max_ports - 1, 0);
- 
- 	res = devm_of_mdiobus_register(dev, mbus, mnp);
- 	if (res)
+-	for (size_t i = 0; i < ARRAY_SIZE(priv->ports); i++) {
+-		struct yt921x_port *pp = &priv->ports[i];
+-
+-		pp->index = i;
+-		INIT_DELAYED_WORK(&pp->mib_read, yt921x_poll_mib);
+-	}
+-
+ 	ds = &priv->ds;
+ 	ds->dev = dev;
+ 	res = yt92xx_register_switch(ds);
 -- 
 2.25.1
 
