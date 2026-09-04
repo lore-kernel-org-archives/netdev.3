@@ -1,71 +1,77 @@
-Received: from mail-oo1-f48.google.com (mail-oo1-f48.google.com [209.85.161.48])
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4B2D48B397
-	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 12:36:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A75B148095A
+	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 12:42:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788525406; cv=none; b=nGhZxUKUqz2QJYfqdf0CJQ4Y3LxAqoAUXZpdOb9u4RIvh+oGUhyNZ2VFXwDYlj58hpaOxhNjK19/UMaI2bvm15L0nLgEzQzWqpoacB9u9w5jBvk8Zb37JcRsOkt9QsG6dcC/aVOvQ+LmPB3Ao3Z0lJoIBryKpw4yXtZZF3XJOKk=
+	t=1788525733; cv=none; b=Vu+51Gk2foyNdNnAbu6UPF3d+Ns5PS/ETl5jxn1l6YIbruPEHSdHKGUH29ksiB/lR1NcRZENMt4LVKiuGwOPc7OL1ls7f7zyZR6avLXJ2y11LSuAKGKGoJTPS/TIOgpsx5v6Fue8tuOfDpSI2zCGeetENKtDTDIlF5qBnTBWGg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788525406; c=relaxed/simple;
-	bh=khisnwFFvN/2OJ2FVddAOC2MAXCpJGTfJKAU4o+fUSU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZtYoOLQCJq8fz6IRsI4s8BR0/aXvyDCxruyYynTeKKVUAY4H3nM4qVq0VhcqPRUOL+axR6/xZ9m+l76sr/7xnDCKFUEOuXa3/3pfjULDWnwgiIBsSOR6vnNkTt3oB1od6SLRd6AjEDyDj0OYInCfrppZK7b8LZiVToNICdxADjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FWv/XYCD; arc=none smtp.client-ip=209.85.161.48
+	s=arc-20240116; t=1788525733; c=relaxed/simple;
+	bh=v0JD9QnS+O1C1mIX70Krfgrobq49KVwuNtB8eJuqwKk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rfBQdMpK8mGdSBNDqD5HBHkGpJMMjdf7zLmm9U6CzgY2Iy8fGcVBGCtNnij9TZPhvlccUTF92/3u2xf6fD3gBkDUSYXssax65WoLDVy+dEMiZxMzr/Qk8qvqI2PAFYP+mY6FYjKpzKCaIKCe1bPCP8Ues4gDIjPwdFWwy9PLQMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jQCuXQ1b; arc=none smtp.client-ip=209.85.218.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FWv/XYCD"
-Received: by mail-oo1-f48.google.com with SMTP id 006d021491bc7-6aa9606ddadso685994eaf.0
-        for <netdev@vger.kernel.org>; Fri, 04 Sep 2026 05:36:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jQCuXQ1b"
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-c197e7e4e94so156940966b.2
+        for <netdev@vger.kernel.org>; Fri, 04 Sep 2026 05:42:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788525403; x=1789130203; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1788525729; x=1789130529; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=KDcVHRiCcWITb5IJ0zmLWKIunogWiUsp5pyOEBRgLns=;
-        b=FWv/XYCDTi2pJO23fuwwwUHKAafFGTh7KjHSoeeLXZN5ky06zxvfC1E6HFNDp5hRT4
-         LvP4Duea1HH//tR1Ya/dHiEArbc+tja03zLW32uCjg7Wlt7OEMUBE7vDTFT4aHIIeU5U
-         jq+bkSmcdloEaWjweU5xnzPI6DKbNwrtG7dv1MtKrD1UIB+TTdvNYf/VX67K3WxnGYaG
-         usT1nVk8yW77gUlBamHXkO8UKvM5E1yciU9ecx1syBBfCRnbjGdwXf9TdSr+vSS4dE/M
-         RwmPz9J7pR6rejCOV2KiMHWI0SGEoZ/E3lFVNgsRqFRSQegI7aA5uCxtbkl4odbT155Z
-         775A==
+        bh=+GfpIcZOfBSRWB0S64d7KBcs9ltI3HwY4NYL2qubRE0=;
+        b=jQCuXQ1bdK+exN+TNnnnaxp4ocrP3EXGSQhrMn5gmYDtmqoeNJHxQdiWKTseoeKhxL
+         MYBHn08olZf1vxOU2N1eGw0ofvtclD6/9ZRrnmSiYI8iZZm+342VynfjkuI7RSZZQ8HZ
+         Fk/vPF+glKmh67vv5u9Y5p3KBx+CN0ZaQbJ04X8jJ2NIE4DyvfMHpq220gIQv+V3PbTY
+         XF4wjm3lgwZ4N9/mAnHjNO2fV5WxDw7QgPyPIlDeS23RZlz34Ge0YRtXP+z3W/AEAsB1
+         8/95w2RjBmJaOup1muaaOLLPtFaolNvYzovEKuw8DWr5nZLYlhzY1Q3WhRZI2M0bXDS/
+         HH4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788525403; x=1789130203;
+        d=1e100.net; s=20251104; t=1788525729; x=1789130529;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=KDcVHRiCcWITb5IJ0zmLWKIunogWiUsp5pyOEBRgLns=;
-        b=Kg7OQ155pcR+zyPEGyUHigEVVAbn1Phr9seT3r9JrCUh16VOyuTyBfjPEr0gPDxLrC
-         a1fd68CdahI85gZbts4sVpFCuZfbFKnysu/eHk0wDin1XsaKugE5nGR8qvIXFPSMytE6
-         Ne+pTrNYHqF5MYQqWbMG9ZYwj1qJK6VXDUp3O0GbkdkzxwgFK91L5Z07LwO+G9uf3Rp3
-         2vc0IWfOf3wl+VJQOo++aeMV/IMKnreLX4YpVqnGi/7Gvkz47c5UlHVs6i8rv4s3G1kp
-         YnseArMKrKS9Trqxlp6yNJf0suhbROGeXZ8RrBZisMSlVYBbD3tKezAhDdL2t5EnfOcj
-         qigQ==
-X-Forwarded-Encrypted: i=1; AKwUvByxQ3rHxsmrx1vWTCNRuBWAHUZn3AHeem3jT5Q1UGda3vEizk7lE2+2p+PD1lCVmZ50wknSZuo=@vger.kernel.org
-X-Gm-Message-State: AFuF++lvJtqgYgpkNFoL5W2fra1GlssZ45edA19UWYkSJd+YcPwHGurR
-	wjHeuJo77dPGPdiru7lxpAI1XuavJ66R0ENavwHnoBISZMftmZveLhtF
-X-Gm-Gg: AYBFou06FEkkTS2h3y/dHh316+jwPvU4qqd7Y8INBon6QtK8D2Awg0NgIz+qKD/jLqn
-	mUJKrlS02FqHnwaVMdm5nkU4eY5CSkV9sEtS6DQlPZXJCklAk9oorYgts44OlbbhGmgYycjpAq9
-	W290vSWOWdAOP2Eze2QyHLnkB+9EUpjgYyhiP2cfFXOvT+mY+mdFlB2mSEGzSLribBASPwupx59
-	OY3+cCfCZNQytBBSp/g1uYVOOr1QSkkHnqrQENZyz1QHdNxt2s3yR5p0jzXci7hz9XRA51CH74M
-	1WtkDgq5KWtLaBwMM3/Li/Uo6QN1yoCgUokOLX0PQKrSOCXjiAXylbCeEnuNgrBYe+PoYvywGR6
-	EADYIA2ExKPSO275yCXtpCJWBDnmybBXC1qI5OwQs2AErwbuk51zCnraQPhwqdWUGMxA25588PF
-	+ei2DTOWZjLJDj5RQnnHX9Kts02QR8CvuYNSSUP2MBe7QJjUz3NV1fEW8XUoI8aKGbO2/GVqks0
-	1fmtq3YecRYCCU=
-X-Received: by 2002:a05:6820:340c:20b0:6b7:8415:d79a with SMTP id 006d021491bc7-6b78415d92bmr1050204eaf.69.1788525403582;
-        Fri, 04 Sep 2026 05:36:43 -0700 (PDT)
-Received: from volcano9f6e-hostos.amd.com ([165.204.217.251])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-143243a9388sm6480730c88.10.2026.09.04.05.36.41
+        bh=+GfpIcZOfBSRWB0S64d7KBcs9ltI3HwY4NYL2qubRE0=;
+        b=KeUFC6ql9TaH5lcqWN/kLEp9C5oVopB4SAkRowWKpuxHtRSLH2GvzBzyXYgCWTcU/q
+         lkLeHCMgE45Y3HS1jjl8vr5+g40i8xwcJJDCtu/w4PBrrUnRRwfPBdO9l5iKifn8FvSN
+         9c0RB2XZ4ighclZ2gAFIYII3p4HJ+m4smRURizignOYqK5JGm7QA9udAa7Hi56WjB1aP
+         taavYbevKnvwdVfjzlHglYeYbO/XJ0KRR7DMNNggX45ZekndLK8s9JGrgKwrd/BnlcS0
+         nMMNwsNrlxmlaw0FRJQmB8t2VG6eBSPpBZSIbllBegutJzbIQSMP2nQd28kKRRrTU59l
+         +Jxw==
+X-Gm-Message-State: AFuF++nX7d5FpDRLcGsek+2cNUHvLyK2DjkPAmfJqy0B/FfIwUaTpZMo
+	lKPlMYUO443HNEpATpogRs1hh1eEjd7X47JwI8mjVYmJgVqjcTjGwxlE
+X-Gm-Gg: AYBFou0j1aBeG1FrqW7U5OlRRuoIQzyaUkIGHf7wpH/hvlBpnRGIHTGmK0l0CEylrfG
+	ufQ0H8yzkdS4f+PBtSboLXx+4R8ShfXj8wiHEEyiG4gFl4GiSfcyPl+0xTq6sJCaJ8iP/s2er05
+	wWT74vi6PdCJNUpQjR6ICshmJwFL4uNJhXZWNN4xNdHZSrn0wvr5Us+ebiXLvi1IzSopZ6ksEGw
+	igVjxHlzJtcpHCccyCfEX2/u8HjdjOf3HBCY6dMdVWoUARm8rZDlZGf2wTjQQrnaszy19VIEHzr
+	wu8vLdls2CPMbbBJikep55zO1Fd6GgNOO5Kk/KV4MvZQZWfscdiHETrSrdCenVckp4wDItzV0qZ
+	MyC7CazgBGHXgtxIv0cjA0gFXJKDuyt8wniPAUzp95Soce0awlY+YLguLpze9tRDa3HGN+ckoyl
+	D51VqRLI3dfP2TP6OT3omsnDqB6mzaoGmaLFEYMbi6PEFjupv1dL/ops//Kt1zlAqtXkaGYdA1v
+	pDBPzUdQX2dUresZCXe3A+Ua808Vds=
+X-Received: by 2002:a17:907:d206:b0:c26:19de:9ac6 with SMTP id a640c23a62f3a-c2619dea68emr107601266b.30.1788525728401;
+        Fri, 04 Sep 2026 05:42:08 -0700 (PDT)
+Received: from buildhost.darklands.se ([2001:9b1:ff:d701:51eb:176f:63d9:53f8])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c260d582304sm102558466b.43.2026.09.04.05.42.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Sep 2026 05:36:42 -0700 (PDT)
-From: Hemanth Selam <hemanth.selam@gmail.com>
-To: Chas Williams <3chas3@gmail.com>
-Cc: linux-kernel@vger.kernel.org,
-	linux-atm-general@lists.sourceforge.net,
-	netdev@vger.kernel.org
-Subject: [PATCH] atm: fix typo "protcol" in comment
-Date: Fri,  4 Sep 2026 18:06:37 +0530
-Message-ID: <20260904123638.39273-1-hemanth.selam@gmail.com>
-X-Mailer: git-send-email 2.48.1
+        Fri, 04 Sep 2026 05:42:07 -0700 (PDT)
+From: Magnus Lindholm <linmag7@gmail.com>
+To: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: netdev@vger.kernel.org,
+	linux-parisc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-alpha@vger.kernel.org,
+	Magnus Lindholm <linmag7@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] net: tulip: use mod_timer() in t21142_lnk_change()
+Date: Fri,  4 Sep 2026 14:36:11 +0200
+Message-ID: <20260904123843.375633-1-linmag7@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -74,29 +80,95 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Correct "protcol" to "protocol", reported by scripts/checkpatch.pl using
-the misspelling list in scripts/spelling.txt.  Only touches comments, no
-code changes.
+t21142_lnk_change() is called from tulip_interrupt(), i.e. in hardirq
+context. On a link-fail or NWay renegotiation event it calls
+timer_delete_sync(&tp->timer) before rescheduling the timer, which is
+exactly what
 
-Assisted-by: Cursor:claude-opus-5
-Signed-off-by: Hemanth Selam <hemanth.selam@gmail.com>
+  WARN_ON(in_hardirq() && !(timer->flags & TIMER_IRQSAFE));
+
+in __timer_delete_sync() exists to catch, since tp->timer is not
+TIMER_IRQSAFE:
+
+  WARNING: kernel/time/timer.c:1611 at __timer_delete_sync+0x13c/0x150
+  ...
+  [<...>] t21142_lnk_change+...
+  [<...>] tulip_interrupt+...
+
+This isn't teardown, it's just rescheduling the media timer, which is
+exactly what mod_timer() is for. mod_timer(timer, expires) is
+documented as equivalent to timer_delete(); timer->expires = expires;
+add_timer(), and as the only safe way to change the timeout when a
+timer has multiple unserialized concurrent users. That is the case
+here: t21142_media_task(), scheduled by this same timer's callback,
+already ends with its own mod_timer() call on tp->timer, with a
+comment noting it synchronizes against add_timer() calls from
+interrupts. Using mod_timer() in t21142_lnk_change() as well, instead
+of an unprotected timer_delete()+add_timer() pair, matches that
+existing concurrency model instead of racing against it.
+
+Update the comment in tulip_interrupt() accordingly. pnic2_lnk_change()
+still calls timer_delete_sync() from the same hardirq path, but its timer
+callback re-arms the timer directly with mod_timer(), so fixing that path
+requires separate consideration of the callback/reschedule race.
+
+The warning was reproduced during a link-state change at boot on an
+Alpha UP2000+ running v7.3-rc1 with:
+
+  0001:02:08.0 Ethernet controller: Digital Equipment Corporation
+  DECchip 21142/43 (rev 30)
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Magnus Lindholm <linmag7@gmail.com>
 ---
- include/uapi/linux/atm.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/dec/tulip/21142.c     | 8 ++------
+ drivers/net/ethernet/dec/tulip/interrupt.c | 5 ++---
+ 2 files changed, 4 insertions(+), 9 deletions(-)
 
-diff --git a/include/uapi/linux/atm.h b/include/uapi/linux/atm.h
-index 95ebdcf4fe88..7a3789f39f52 100644
---- a/include/uapi/linux/atm.h
-+++ b/include/uapi/linux/atm.h
-@@ -39,7 +39,7 @@
- #define ATM_MAX_VCI		 65535	/* maximum VCI */
- 
- 
--/* "protcol" values for the socket system call */
-+/* "protocol" values for the socket system call */
- #define ATM_NO_AAL	0		/* AAL not specified */
- #define ATM_AAL0	13		/* "raw" ATM cells */
- #define ATM_AAL1	1		/* AAL1 (CBR) */
+diff --git a/drivers/net/ethernet/dec/tulip/21142.c b/drivers/net/ethernet/dec/tulip/21142.c
+index 76767dec216d..da701f325783 100644
+--- a/drivers/net/ethernet/dec/tulip/21142.c
++++ b/drivers/net/ethernet/dec/tulip/21142.c
+@@ -216,20 +216,16 @@ void t21142_lnk_change(struct net_device *dev, int csr5)
+ 		    (csr12 & 2) == 2) ||
+ 		   (tp->nway && (csr5 & (TPLnkFail)))) {
+ 		/* Link blew? Maybe restart NWay. */
+-		timer_delete_sync(&tp->timer);
+ 		t21142_start_nway(dev);
+-		tp->timer.expires = RUN_AT(3*HZ);
+-		add_timer(&tp->timer);
++		mod_timer(&tp->timer, RUN_AT(3 * HZ));
+ 	} else if (dev->if_port == 3  ||  dev->if_port == 5) {
+ 		if (tulip_debug > 1)
+ 			dev_info(&dev->dev, "21143 %s link beat %s\n",
+ 				 medianame[dev->if_port],
+ 				 (csr12 & 2) ? "failed" : "good");
+ 		if ((csr12 & 2)  &&  ! tp->medialock) {
+-			timer_delete_sync(&tp->timer);
+ 			t21142_start_nway(dev);
+-			tp->timer.expires = RUN_AT(3*HZ);
+-			add_timer(&tp->timer);
++			mod_timer(&tp->timer, RUN_AT(3 * HZ));
+ 		} else if (dev->if_port == 5)
+ 			iowrite32(csr14 & ~0x080, ioaddr + CSR14);
+ 	} else if (dev->if_port == 0  ||  dev->if_port == 4) {
+diff --git a/drivers/net/ethernet/dec/tulip/interrupt.c b/drivers/net/ethernet/dec/tulip/interrupt.c
+index 0a12cb9b3ba7..6ed4b68ad86c 100644
+--- a/drivers/net/ethernet/dec/tulip/interrupt.c
++++ b/drivers/net/ethernet/dec/tulip/interrupt.c
+@@ -698,9 +698,8 @@ irqreturn_t tulip_interrupt(int irq, void *dev_instance)
+ 				dev->stats.rx_errors++;
+ 				tulip_start_rxtx(tp);
+ 			}
+-			/*
+-			 * NB: t21142_lnk_change() does a timer_delete_sync(), so be careful
+-			 * if this call is ever done under the spinlock
++			/* NB: pnic2_lnk_change() does a timer_delete_sync(), so be careful
++			 * if this call is ever done under the spinlock.
+ 			 */
+ 			if (csr5 & (TPLnkPass | TPLnkFail | 0x08000000)) {
+ 				if (tp->link_change)
 -- 
-2.48.1
+2.53.0
 
