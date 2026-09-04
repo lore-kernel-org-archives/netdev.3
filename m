@@ -1,307 +1,136 @@
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1FFE5221E9
-	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 18:53:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.174
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788548035; cv=pass; b=iXbp5Grt9vhxrpmfE4K5R8GKSzaU2F6T6pmM/Aa3h4aR91K7GlaZ1TBB9SVR5v5CtGHReTIN7n3Y5ErZs3AVCVA+JETurZVFpWEQfNUPiw6SR1jyeyXkR/r9+O8MFDzrScxrXDTpBEOuMOEZK1IfcX8NB0htO5w+SRavdDts3K4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788548035; c=relaxed/simple;
-	bh=r70Qg3i5VU6dy9PGSmwM7EqGtUgiFHn9KGhctdur50U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FVxllXpJQUtrx+ixBXsh5rzV/TCvEOtmkEr/qZKPp44kECbdJEQp1XMufMvH6dVjQKAnVLQt37BUnFX9zELzHt4kNU5Nqy0k8dDHksgCI0Jomk9HODaJc2Mq0qjvIIEL6r6R2mcmGdZdDtYrwuuNLfacTEQF+mnWyxoaopBFhpk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=PZuPwEmQ; arc=pass smtp.client-ip=209.85.210.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A912A517BD7
+	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 18:55:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788548149; cv=none; b=aC2PjvrluOS4TmsXBHKste8UDJShIJSPSWjGUt20FXxXhF4B8mcn/Z8PouPlMSo2vlriPflwaHJSeC9wPPjDAkB/UjKxvrOeMGvNE3qpRAviAfUwp4pWhUW0S2PxuwSE/tEY55EsvS/R8v1+g2syIBanTaODk7MAK53L5crMm7Q=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788548149; c=relaxed/simple;
+	bh=0NORGIkug1vpAvzWXIzBHkSvbxPib6PIHpFRP5Q7Op0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TlvoQvBN3TNIjGtOOgBhHupGP3O4ogGzvndQnzLvKZknKz/ThXOoWZ/js11yNTme/KXWi7cNyrapgBR7N/+Fx5otxPJ5PpoNpP1QLdEUSt3jWUl/Fw9AuohzhDIt7F4sPmEHiNvrrivZ4XggSg6s1SG+YuFbZXHyPsdDMkmD2t4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la; spf=pass smtp.mailfrom=lex.la; dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b=kyzONtvo; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lex.la
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="PZuPwEmQ"
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-85339ed040aso1146788b3a.1
-        for <netdev@vger.kernel.org>; Fri, 04 Sep 2026 11:53:53 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788548033; cv=none;
-        d=google.com; s=arc-20260327;
-        b=G4XsAG8KqTay3P2+FQv+yv9Wu04ugjpQzQ/pJvLZdnt+4dPVvZJ+vBV23hXIQ6HV9W
-         7id8jK7cvlIFY/4YESE5LWA6lP3/t4WggYC22vMqgVX1XMdiwPaLgAkwNAWdv6F9w+PP
-         Lf6HcpgNpcnJGE2b2EF1GmGJBwg+imbz0vzrE9axcJlPTyqO2CCFE9MPBHH6f9q7wTi/
-         +rm9GpS72OjODqHP74uJSfRPgvq2ZU/mY/iUyjQ44QSTNoUH9d3jnbMV10SbfkMhkDyD
-         dp33lWdyf8qNbjJxRUWx/UsRft//bkQAy+KE6JIJg7utjHPngIIGe5Th0HTyB4zmB9Wn
-         PzoQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=g6EIejMjsRzHM+TB86H1qZbJ/8YKOMSwHJVrFpERbI8=;
-        fh=aH7unqQfjsgTIXSweCBi0reLtRrkOGHxIK9w+YdQl7g=;
-        b=NkgKEZM0vgcFRuV1Wc8UpcERV9SM4J1EhA0HySoIyrnede9AqWCmZNIolkbaDp6lSR
-         fGvJNL5hPglAAqT+TJyj3xoOwb3tsCEnfOcl7dRqRblBr/iD6os9+EBbkV/7m22Y0ImV
-         hHJVwwV1EtBY7XE/CVdIZBrrjj/nHDLNbJ9iNHz2vq5OCmnWqRyELNTkMe/mdEr+wnsl
-         FYNKl14iq+3FrnBA+9l2ge4bbZH681zOamNzieCPcNaOA/G65KNFQ4JkZZHDsLF4NuRr
-         M33a5onJrh8VjQ/uuL7UUea+Pt71606LZahxTBFTKMs1rFKN0DrCYp4E8NFlzjtRlT+j
-         TDGQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b="kyzONtvo"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-490cf322ed0so14297765e9.1
+        for <netdev@vger.kernel.org>; Fri, 04 Sep 2026 11:55:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu.com; s=google; t=1788548033; x=1789152833; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=g6EIejMjsRzHM+TB86H1qZbJ/8YKOMSwHJVrFpERbI8=;
-        b=PZuPwEmQRhGhkcWF/A7B86qAUVxQG+Ttem5JM5F4Aghu/4T5VC6k+SitfLO82P3u5X
-         xgwJArtmK9g3CLL0JNVgGbZ1JuGyxeIWPx51MSI5Z9i1nIQ+ekB0nTrjYJeYPeEdnkhD
-         YYIXmSYon4C8UgrVbBISDa78iTEpowMha/cQk=
+        d=lex.la; s=google; t=1788548146; x=1789152946; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=770Nkcotd4mXRhWdRLFuBCumpZlPw+psjVw7wcTW4Fg=;
+        b=kyzONtvohE/icR0rf2joY+yH7xsM2DrOWvSliBbQFPg4ouzaO8qGCL9/ws3c0Yoocf
+         wn3SMAG08vIgtoQzi58Pnnx1pxmw7KA5dal/jfaRL3+euwh8KqAqa7rUgeFP0FX7S3ih
+         e+m+VTWoXbWgvgpwPrTg4L1DA1bOw4P3ey+j7u45H0CrgSSMFZG/Q6DD1QyhWAkiJHCU
+         EIgd7Hr2wSPfi6TPLDztLOhQ9ytiyHkzjp/DMN46qQs3+11Bo9xWEHCbcAQ0BId8e+3t
+         0s8JzBfAvx7knC8BztjEKLgxsK0N3x4QNd8Bjs18tI0d0x8e+EsBE+SBkrEnnTgRPTMP
+         ckxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788548033; x=1789152833;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=g6EIejMjsRzHM+TB86H1qZbJ/8YKOMSwHJVrFpERbI8=;
-        b=P/xh3HwIDG9Hn7U/1REsc0J8CZi0GCrdimgHA68rxWWxcerq7fKGqey7obkUxjYTxb
-         wmYNksiccsOREBMxGnJ5NacOV3t29OFN+TsirrTpcP4/27mvkJsplaIKO3KLsvthhTx1
-         JgxSJulczDDrBZ84WKNckpueoFdPEpRCRG0RAGnBg71yYWUTu9T6Ah707IuvHyjAxRDv
-         h93D0SYOwgpX+7Ppw5NEpbyHDFr+yugTUhyGxG5Vo/kZeeYV4a6R4+wKHhkDKt0j0JQ5
-         o7hO4x6UVuxpUG+KQ+zlBLQygfhlDVz114PNL1h0swWnYmsCAqkpXbj0S4xMWXnEc8fA
-         y1Ug==
-X-Gm-Message-State: AFuF++m4Jiu8DculAXY6lFADMxnYi39VWNLvq7wwvygauZW7xzWW8VeW
-	MEAhG2rOUG7AaIEmQZ29SxuOA980QwGBVmUVz0dUwaie35xt7wdvOfh1OEV8Uex03Q723hp+TM/
-	tNU7Gyrz8huvPUDZN/mhxrhZV6C6tPNTCavJkiuEk
-X-Gm-Gg: AYBFou2FO+33PM6Huz7Jwq7WV0J6TODwKOGC0rCuPKuaTnf/UfkhBinHvUtkA5YMvx0
-	uaAzQ2rpmZ0Y1u0WX7G3UrGVzVd1AuaJno0qe7qCZCMp3wwLFvJ5H/38fTPLhBUEQr2sGmHnDzc
-	Xij1xgJ+ow+pnSwtM4PQ1xdiJ2j8CiVyUgK0218HuNKb9zXmMUkeX9TUxNCKPVKhHtr2Y65PY4W
-	JmHb7F2qdIg6EGVMYzPxabDuL2lQZ4/QhjWuFgBAJ2qBkuhETZvtYsrJ0HPIz9YfvtcGjTm6Yj2
-	7oFnUt4Xv9GF+iah52gTqmiwYkJHusTu9CG+72Beg47b1Q+NsBFYGu6M9b/ZUancDbC0Dltso3s
-	rQ0y0LR2V9hF/uHH9j5RiVSs=
-X-Received: by 2002:a05:6a00:278e:b0:848:42d0:bc91 with SMTP id
- d2e1a72fcca58-86168595f04mr13515961b3a.12.1788548033030; Fri, 04 Sep 2026
- 11:53:53 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1788548146; x=1789152946;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=770Nkcotd4mXRhWdRLFuBCumpZlPw+psjVw7wcTW4Fg=;
+        b=hIS8bucAku7LYu3NOwZnzj3yUqFntwPeR1VXzws7nFaufIhym7/mW2OREmxej2H9J9
+         Fx+ybwsBY3V0dng0WTIOix0NGpTp7i/D2n3BFx3Ugk8vIyohnDB/hlUM91MEeDTrkJm0
+         hNHEAkPncY9YS8gYL7lSEjcK7d4sw5knoMoL29adowrKuMjuVWbOZoZQupgqjH8Rihi5
+         ts6+/sxDIsPoFOMTNu/PV8yopckjd4Swpz0g+T5forWNq3fyL1HsUfT5AkeP1iMFx0tL
+         rqNhNdwurFjY0lfOa+MF809vybQxhTuo187Hb3jwksAuubI8mnvNKGDHLwH2l5oyOv50
+         BT4g==
+X-Forwarded-Encrypted: i=1; AKwUvBwvUu+qbWHAv+R8ckjmokoBQVC+CL52XvS2CKY+btoJ9hy2BXiFMD5lcDx8Tgrg4rT5tCxIkUk=@vger.kernel.org
+X-Gm-Message-State: AFuF++mTXL0hKbghXr7y0yCuM8HvBm0pRyf0M5UXpNQ8irbzmInJ38Rz
+	jDUHpaoAsXxvg//qelgcNODlpaxOW+w/GpKe7OQ2vE+/lPgVPEOpik3VzsQhruSUJX4=
+X-Gm-Gg: AYBFou2z6bcSi+k52dCOwrFOWs44ftlseI81W4sFrC6UvYSVEhTjmXk8v1pMJgXPDiJ
+	GIvuqAdeNrHYOhaBfbMyIN5zjjNX79GZ4TRy1/o2kCPg+9JvwyYT1zjHsgzFYg9zujvhN23INZJ
+	vo8L5No0jNF/NH8lLfIuAwSlOfborA/TAGJhMJtEBvy5rNgXapEg+gru+xmiTPBx8kIJBiPuTnj
+	sqXt7s8WeawxWjGqEkdgDi/Wjm9nk0irI699Hvrc0acaVwhswbAMVH8v/oiBlOKFxtfZuXEeCPz
+	z4vRrf1zP+W+EldE7hFSmfKmm3GINcLAJ/bVlwX/FcbxPwl4lPGar8ZldaSeiMS7VTYB4odQ+cF
+	GWMf9v/0/UjlPM7BjSg+gdeOJzBb2sWXvwAsGVw7JB61bjKraqJ+Dx8SkkJA1MiBMqZN1OPkHhQ
+	EmLfaD55ccjhXWqcfGJOP1VfR9qeTeqZcsqImsZow=
+X-Received: by 2002:a05:600c:19cf:b0:499:726a:a017 with SMTP id 5b1f17b1804b1-49cf7fe601bmr74931135e9.1.1788548145720;
+        Fri, 04 Sep 2026 11:55:45 -0700 (PDT)
+Received: from remote-01 ([84.17.55.227])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cfd3f815bsm40176455e9.4.2026.09.04.11.55.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 04 Sep 2026 11:55:45 -0700 (PDT)
+From: Aleksei Sviridkin <f@lex.la>
+To: Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Vladimir Oltean <vladimir.oltean@nxp.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net] net: phylink: initialise link_state before a forced major config
+Date: Fri,  4 Sep 2026 18:55:40 +0000
+Message-ID: <20260904185540.2844261-1-f@lex.la>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <QDISC-0CFC.v3.20260901204856@mojatatu.com.4> <178851496374.4131868.18330067911540291337@kernel.org>
-In-Reply-To: <178851496374.4131868.18330067911540291337@kernel.org>
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Fri, 4 Sep 2026 14:53:40 -0400
-X-Gm-Features: AcwNN1V76DftAkz9jopx6Xr0LA6PxfVLwujwmR67howR4pkvTvRG1V7HvfjWCRE
-Message-ID: <CAM0EoM=5htV5yfiDP2zX3SZ4cUFaT3JZ5aMYMcxBMnUpoiifzg@mail.gmail.com>
-Subject: Re: [PATCH net v3 3/9] net/sched: sfq: clamp quantum in change path
-To: netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org, jiri@resnulli.us, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	victor@mojatatu.com, vega@nebusec.ai, shuah@kernel.org, 
-	linux-kselftest@vger.kernel.org, toke@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Fri, Sep 4, 2026 at 5:42=E2=80=AFAM <netdev-bot+sashiko@kernel.org> wrot=
-e:
->
-> Thank you for your contribution! Sashiko AI review found 3 potential
-> issue(s) to consider:
->
-> Critical: 0 =C2=B7 High: 1 =C2=B7 Medium: 2 =C2=B7 Low: 0 (1)
->
-> - [High] Incomplete fix: raising the quantum floor to 256 in sfq_change()
->   does not bound the deficit-refill loop in sfq_dequeue()=E2=80=A6
-> - [Medium] The reproducer in the commit message cannot reach
->   sfq_change().
-> - [Medium] The commit message's justification contradicts the tree the
->   patch is applied to.
->
-> Pre-existing issues:
-> - [Low] Code/comment mismatch: struct sfq_sched_data documents `unsigned
->   int quantum; /* Allotment per round: MUST BE >=3D MTU */`=E2=80=A6
->
->
+phylink_resolve() leaves link_state on the stack unpopulated on its
+disable and link-failed branches, which set only link_state.link.
+phylink_apply_manual_flow() then reads the struct's advertising on
+every mode but MLO_AN_FIXED, and has done so since long before
+force_major_config existed.
 
+force_major_config turns that into a write to the hardware. It is the
+only trigger for the major-config block that does not require
+mac_config, so phylink_major_config() programs the MAC for whatever
+the stack held, a zeroed interface is PHY_INTERFACE_MODE_NA, and the
+write-back stores it in pl->link_config.interface.
 
-Ok, so 4 issues:
-1. [High] "256 floor does not bound the deficit-refill walk"
-This is valid but NOT introduced by this patch.
-This is a pre-existing residual of the same family (the guard belongs
-at the refill site in sfq_dequeue(), exactly like the fq_codel case);
-Again, it is NOT introduced by this patch and does not invalidate the clamp=
-.
-Filed as a separate follow-up patch; will reference whatever this
-commit is when it gets merged on that followup.
+phylink_replay_link_end() is the only in-tree setter, and
+sja1105_static_config_reload() calls it for every port that has a
+phylink instance, regardless of admin state. On a stopped port
+phylink_run_resolve() no-ops, so the flag outlives the call. The next
+resolve consumes it whatever branch it takes; an unpopulated branch is
+where that does damage.
 
-2. [Medium] "reproducer cannot reach sfq_change()"
-Valid. sfq_change() is only wired to sfq_init()/add-replace, not
-change. Changelog wording issue only. Only if i have to repost.
+Found while developing a series that attaches a late PHY from a
+delayed work item and sets this flag there, so the PHY attached after
+its port was already up. The link stayed down until the port was
+cycled 29 minutes later. With this patch on the same board the same
+attach programs the MAC for 2500base-x rather than unknown, and the
+PHY's interrupt fires without a port bounce where it had stayed at
+zero throughout the failure.
 
-3. [Medium] "justification contradicts the tree"
-QDISC_PKT_LEN_MAX caps pkt_len at 1 MiB on the tree. So i wont do
-anything with this.
+Fixes: 96969b132bf1 ("net: phylink: introduce helpers for replaying link callbacks")
+Assisted-by: LLM
+Signed-off-by: Aleksei Sviridkin <f@lex.la>
+---
+ drivers/net/phy/phylink.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-4. [Low] "comment says MUST BE >=3D MTU"
-noted; the 256 floor supersedes the comment's assumption; comment
-refresh belongs with any future sfq patch.
+diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
+index 3ec3bb439109..a1458da8111b 100644
+--- a/drivers/net/phy/phylink.c
++++ b/drivers/net/phy/phylink.c
+@@ -1630,8 +1630,10 @@ static void phylink_resolve(struct work_struct *w)
+ 
+ 	if (pl->phylink_disable_state) {
+ 		pl->link_failed = false;
++		link_state = pl->link_config;
+ 		link_state.link = false;
+ 	} else if (pl->link_failed) {
++		link_state = pl->link_config;
+ 		link_state.link = false;
+ 		retrigger = true;
+ 	} else if (pl->act_link_an_mode == MLO_AN_FIXED) {
 
-Summary:  i dont see anything here either that requires a resend.
+base-commit: 641d03105cc0d2437e32fdeec164f91a4ccef6c4
+-- 
+2.53.0
 
-cheers,
-jamal
->
-> net/sched: sfq: clamp quantum in change path
->
-> This adds two new checks to sfq_change(): quantum values above 1<<20 are
-> rejected with -EINVAL, and accepted quantum values are raised to a floor
-> of 256 bytes.  The stated goal is to stop the deficit-refill loop in
-> sfq_dequeue() from spinning for a very long time under the qdisc lock.
->
-> A few questions on the changelog and on how much of the loop is actually
-> bounded afterwards.
->
-> >     sfq_change() accepts any non-negative quantum (only rejects
-> >     (int)ctl->quantum < 0). With a crafted size table qdisc_pkt_len rea=
-ches
-> >     ~2 GiB, so quantum=3D1 makes the deficit-refill loop spin ~2^31 tim=
-es
-> >     under the qdisc lock (a soft lockup / denial of service).
->
-> [Severity: Medium]
-> Is the "~2 GiB" figure still accurate for this tree?  The tail of
-> __qdisc_calculate_pkt_len() in net/sched/sch_api.c already ends with:
->
->         /* A size table can inflate qdisc_pkt_len() beyond any real packe=
-t
->          * (via overhead, the data table, or size_log); cap it so deficit
->          * schedulers such as DRR/ETS terminate their refill loops.
->          */
->         pkt_len =3D clamp_t(int, pkt_len, 1, QDISC_PKT_LEN_MAX);
->
-> with QDISC_PKT_LEN_MAX defined as (1 << 20) in include/net/pkt_sched.h.
-> git blame puts that clamp at commit 8f735d64382dcf, which is already in
-> the baseline this patch applies to, so qdisc_pkt_len() appears to top out
-> at 1 MiB rather than ~2 GiB, making the "~2^31 times" number roughly
-> 2048x too large.
->
-> Given the Fixes: tag will drive stable triage, would it be worth saying
-> that the generic pkt_len clamp already bounds the loop in current trees,
-> and that the 2^31 figure only applies to kernels predating that clamp?
->
-> >       tc qdisc add dev dummy0 root sfq
-> >       tc qdisc change dev dummy0 root sfq quantum 1 stab data 32768 siz=
-e_log 15 cell_log 0
->
-> [Severity: Medium]
-> Can this second command actually reach sfq_change()?  sfq_qdisc_ops sets:
->
->         .change         =3D       NULL,
->
-> and qdisc_change() in net/sched/sch_api.c rejects the request before
-> either the options or the size table are applied:
->
->         if (tca[TCA_OPTIONS]) {
->                 if (!sch->ops->change) {
->                         NL_SET_ERR_MSG(extack, "Change operation not supp=
-orted by specified qdisc");
->                         return -EINVAL;
->                 }
->
-> For "tc qdisc change dev dummy0 root sfq quantum 1 ..." iproute2 always
-> emits TCA_OPTIONS, and __tc_modify_qdisc() falls through to
-> qdisc_change() for an existing root qdisc of matching kind, so the
-> command should return -EINVAL.
->
-> The only live caller of sfq_change() looks to be sfq_init(), i.e. tc
-> qdisc add / replace.  Should the subject ("clamp quantum in change
-> path"), the narrative and the reproducer be reworded around
-> add/replace instead?
->
-> > diff --git a/net/sched/sch_sfq.c b/net/sched/sch_sfq.c
-> > index 187d3ed578f26..8bbcfc9e85d94 100644
-> > --- a/net/sched/sch_sfq.c
-> > +++ b/net/sched/sch_sfq.c
-> > @@ -660,6 +660,11 @@ static int sfq_change(struct Qdisc *sch, struct nl=
-attr *opt,
-> >               return -EINVAL;
-> >       }
-> >
-> > +     if (ctl->quantum > 1 << 20) {
-> > +             NL_SET_ERR_MSG_MOD(extack, "quantum too large");
-> > +             return -EINVAL;
-> > +     }
-> > +
-> >       if (ctl->perturb_period < 0 ||
-> >           ctl->perturb_period > INT_MAX / HZ) {
-> >               NL_SET_ERR_MSG_MOD(extack, "invalid perturb period");
-> > @@ -688,7 +693,7 @@ static int sfq_change(struct Qdisc *sch, struct nla=
-ttr *opt,
-> >
-> >       /* update and validate configuration */
-> >       if (ctl->quantum)
-> > -             quantum =3D ctl->quantum;
-> > +             quantum =3D max(256U, ctl->quantum);
->
-> [Severity: High]
-> Does a 256-byte quantum floor actually bound the refill loop, or only
-> divide its trip count?  The loop in sfq_dequeue() credits one quantum to
-> one slot per iteration and stops at the first visited slot with a
-> positive allot:
->
-> net/sched/sch_sfq.c:sfq_dequeue() {
->         ...
-> next_slot:
->         a =3D q->tail->next;
->         slot =3D &q->slots[a];
->         if (slot->allot <=3D 0) {
->                 q->tail =3D slot;
->                 WRITE_ONCE(slot->allot, slot->allot + q->quantum);
->                 goto next_slot;
->         }
->         ...
-> }
->
-> q->tail is not advanced past the slot that was just served; the served
-> slot is only debited:
->
->         } else {
->                 WRITE_ONCE(slot->allot, slot->allot - qdisc_pkt_len(skb))=
-;
->         }
->
-> So with a size table pushing qdisc_pkt_len() to QDISC_PKT_LEN_MAX, each
-> slot served in one round-robin sweep is left at about -1 MiB, and a slot
-> needs (1 << 20) / 256 =3D 4096 visits to become positive again.  New flow=
-s
-> start positive in sfq_enqueue():
->
->                 /* We could use a bigger initial quantum for new flows */
->                 WRITE_ONCE(slot->allot, q->quantum);
->
-> so N flows can each be driven deeply negative by one dequeue before the
-> ring wraps.  With flows 65408 (SFQ_MAX_FLOWS) that is on the order of
-> 4096 * 65408 iterations inside a single sfq_dequeue() call, with the root
-> qdisc spinlock held and BH disabled.
->
-> The same arithmetic seems to hold without any small quantum at all: a
-> default quantum derived from a 1500-byte MTU still gives roughly
-> (1 << 20) / 1500 * 65408 iterations under the same setup.
->
-> Would bounding the deficit itself work better here, for example clamping
-> or resetting slot->allot when it goes below -q->quantum, or computing the
-> number of quanta arithmetically rather than looping one quantum at a
-> time?
->
-> [Severity: Low]
-> This is a pre-existing mismatch and not introduced by this patch, but
-> while this validation is being touched: struct sfq_sched_data documents
->
->         unsigned int    quantum;        /* Allotment per round: MUST BE >=
-=3D MTU */
->
-> and sfq_init() derives its default from the device MTU:
->
->         q->quantum =3D clamp_t(u32, psched_mtu(qdisc_dev(sch)),
->                              256, 1 << 20);
->
-> whereas sfq_change() now stores max(256U, ctl->quantum) without looking
-> at psched_mtu(), so on a 1500-MTU device a requested quantum of 300 is
-> stored verbatim.  Should the clamp use psched_mtu() as its lower bound,
-> or should the "MUST BE >=3D MTU" comment be updated?
->
-> --
-> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
-set/QDISC-0CFC.v3.20260901204856%40mojatatu.com
