@@ -1,248 +1,138 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECC793EA973
-	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 08:25:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B54DE3EDAA0
+	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 08:28:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788510317; cv=none; b=j+vyKK8tKPRtiv76GFoSXJ0X3qej79a7gpsddd1Q5hJ6VKYyF4lLfGvkPdg5VJhJ1A4HX3YRYwYvZnPbrqjSXVwA6vIuXspSAN3C49u3rO1mQ6JrQCyZQ3cxlacS1GRdslQTNI3mpwiuErZDM7VqIeu+4Io8pUPBqPcnH3NkG6Q=
+	t=1788510493; cv=none; b=cWDxLh84L2Wlp1PyTvR3yQBqghnQLAEccq/QewAq4x+kSk43zaTnmW2jLZ+NghVhhqB5N/1+i706Xi9u+2u87jvvK9Is3DWvu+wTpP9zsLgMYQbYyfjdxCL9K24+kIUIkoafrzX4zp3bwNQOw6pjmfnxWIVuqv8aP9nC370dteE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788510317; c=relaxed/simple;
-	bh=UfKACdaL7C5inou1iF8mgvBRh2CdgvPEK5Ww10sGXcI=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=kYy+vvs9gM8n09SrXOwuaC3UPSDIqBAWpb7ILPUWaAympAq9zfI3P40nivc0pDJ4s+/zHCmsjV/d1hRwLALiUv4XrtBIFuUqCItyHN2GEHhLYkHqvdf0xu9QcDeEjNFuU47SAbtcdwC7M5Up1BCwaZ4abm7LFR16bLSUU88Lxbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M0o7115f; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788510493; c=relaxed/simple;
+	bh=vAduMceZ5WykF9AxLntA2mjBC+eC1Z+b3m9MMdygFJA=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=EXzEPtb6jFSwQXQ7Y7S98jvW5iGsVJXfI/DXVXMj6ayvcW4EpPgOizom1B25jZfdU1pgDYGfm6yLKKaxok8GpGQdKKKh2sg7WbCMsfBPNBsj12JjCKtlz1bj11nFOCPhqYpCkMyfegzXItLOzKXh0dSmQxjU21ExA5rOIqR6txs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=RiaQwOXB; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M0o7115f"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1271F1F00AC4;
-	Fri,  4 Sep 2026 08:25:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788510315;
-	bh=WNVNCxCDOzoDfqB1CAl/4N9CcrRK25SXILKwDd0JzvY=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=M0o7115frkDsUhvBtdSzANzWGC4OmsxbQrwogIRaEMf0Kl5xoqRlsgmt0OcJW84ji
-	 Y/sqt1OVTJv9OtTfoIcxyGNE9QEgR+mlRGYZR0IhSbIfHJfLLcze3BKNi1P+sl331U
-	 BpP5pPSbGAg0L0uy7sIbxIHks9nXnkylMFKc7rq+1+ROCyWADgiIAhO3kIyXh2/a6q
-	 o9aHR3Pk9mD8O8LIl8sgL9SSi3sb8rZG56brQ6vNMsWOrUxI2C5CTjlnBrDeaF5OCS
-	 GJGfPoBKoyy0Tm7HurJUWAyOAE3zhDnoMKb2zlLQkyM9Rd8JNesOUKHJToTc7UVwQe
-	 Fjn83OxUPNFig==
-Subject:
- Re: [PATCH v1 net 3/3] selftest: af_unix: Add zero-buffer test for msg_oob.c
-From: netdev-bot+sashiko@kernel.org
-To: kuniyu@google.com
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, fahad@codepure.com, kuni1840@gmail.com,
- netdev@vger.kernel.org
-Date: Fri, 04 Sep 2026 08:25:14 +0000
-Message-ID: <178851031460.4131868.15000425596101479252@kernel.org>
-In-Reply-To: <20260902202202.892676-4-kuniyu@google.com>
-References: <20260902202202.892676-4-kuniyu@google.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="RiaQwOXB"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-49ccfbe062eso5960615e9.3
+        for <netdev@vger.kernel.org>; Fri, 04 Sep 2026 01:28:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre.com; s=google; t=1788510486; x=1789115286; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:mime-version:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=vAduMceZ5WykF9AxLntA2mjBC+eC1Z+b3m9MMdygFJA=;
+        b=RiaQwOXBOn0YzZFijm1RpCHRJ6mSahw/bPpElMP5GJkOHm8JqWCflj9TE/WMO28aZi
+         eIlnm2nMZ7As9Wb0rrvdYwAGVWKQuBq2K5u89uD0JAuqEFQJJUHFofCeKLkYUiRIeKcI
+         05vwddqEQUKkS8KNpu8ZrtLK4fSvbO51CBuMSRnrdWPaCrDq6LD+UHpi6Z8UAQ8YwK8H
+         Z62V1ZojujRMo1Zg8V9NCVmjRMIk3jOW9HM9uDauoxXTBeIlbYsww4z2q15ahlxqt9oi
+         tUBvWRQu9kOhGLecsOqFRlDq5kn4tWxpJmCYTUtITkz1aIRyf/B9o/9qJl9W8lC+bgfT
+         7cCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788510486; x=1789115286;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=vAduMceZ5WykF9AxLntA2mjBC+eC1Z+b3m9MMdygFJA=;
+        b=MhyZkK7nNwwhj6fuz/s2llbdQxu1AVLJIxa2V8MlionnPhr77YnCjnXsS4YNIe/CZy
+         0zxuwbLHgaJDMO4qYzOtybKmyPOn7NXrE/JErgCXerJnukrOovfKiJvGBPJhdJkN/tJ1
+         z4DE5Y6wYIueSTvYUsgNarw5UyhIQXDk/r3eVNqB9yp1bEi06dF4XgvLeqTbeQRLrDuC
+         XuMXUcrTX8pmtX1z+5vSn2H4ogRu0uhwldAwhqpDdA8IuV1dMTRuvk2eNfcyVDIc3cPc
+         ooKzv/0MUKLYbAsK1TZGdPlojAzeMPAnOdRJxMLHxp8eFlux6DNuztgnm1+4LM4fli3x
+         hYtA==
+X-Forwarded-Encrypted: i=1; AKwUvBzRK9NwWb8Tcg9SQQfPAmx4u9yXjcAK+rVSNjlUzJGZNdbJHK1CUJ/XNSVaABPWXBf/8MyzyMI=@vger.kernel.org
+X-Gm-Message-State: AFuF++keczDwrqlYY/lZK2rQ5fLzkI1H0MArD2i5674iabwuNbz1G6fB
+	NSkBgARYTeA8ptWB2VlQSt4SPJQWvMqyKjhwE7xtBLTCrg0HPsDkXRMaphXehJbB4XY=
+X-Gm-Gg: AYBFou0fXqGSKnp7sbR/m1Z7Bc81EtSwZraCyQAl/nFh3LzgMci9h6zK645c2bp+R/r
+	QasKcL2Cqi8d1+RwWDaCWhLuRT53gLm47vNqSedInlZEwv95hGPOKSqXyVF77wOsugJ3H+ny32x
+	DE743RCyIe56838LFoRR2oJJAle+UNkP7eH0k8b+sPq754CHWZgAIPGkU9r0jnpiC/l47243Pne
+	ne/90A5lTH/bTOcMUHIH+x8cQpY7JLAok+RQQfAqb9nAAUg7vM98swg/KLbYRpL8tyJ88lvZcM1
+	vRTsDOZKxknsFp6FZ6AKHg2ACXmmaziqxUO99rfmmgnXpjlsDexe131xQOCwd8UKCUVifn/cV/s
+	PIaZkZLevgY7HOdMpiFjn/sePgvqhF4XcJcjaZwJYl2LfLRWjKI7l9mzDUM/iS7g9arCXfO38bw
+	XkzBGmh2rgl1/VlB1/R9gaZh6scnCZZF2K6xIjJKyLpWrxFJNP6o+mT+1N
+X-Received: by 2002:a05:600c:3511:b0:49c:fa20:cc01 with SMTP id 5b1f17b1804b1-49cfa20ccddmr25588125e9.24.1788510485753;
+        Fri, 04 Sep 2026 01:28:05 -0700 (PDT)
+Received: from localhost ([2001:4090:a244:80d4:489b:7642:1b32:84d6])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cf5135353sm68845625e9.2.2026.09.04.01.28.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 04 Sep 2026 01:28:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
+Content-Type: multipart/signed;
+ boundary=aceffad199f989fc0e7a2bade7854fe91c95aab0591a0938aa91a92fdd3c;
+ micalg=pgp-sha512; protocol="application/pgp-signature"
+Date: Fri, 04 Sep 2026 10:27:58 +0200
+Message-Id: <DL6E1V8AMI2X.EQQ009BX5AZ6@baylibre.com>
+Cc: <linux-can@vger.kernel.org>, <netdev@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+ <linux-mediatek@lists.infradead.org>, <linux-renesas-soc@vger.kernel.org>,
+ <linux-riscv@lists.infradead.org>, <spacemit@lists.linux.dev>,
+ <linux-omap@vger.kernel.org>
+Subject: Re: [PATCH net-next 05/33] can: m_can: Remove comma after
+ sentinel-entry in match-table
+From: "Markus Schneider-Pargmann" <msp@baylibre.com>
+To: "Siddharth Vadapalli" <s-vadapalli@ti.com>,
+ <dario.binacchi@amarulasolutions.com>, <mkl@pengutronix.de>,
+ <mailhol@kernel.org>, <msp@baylibre.com>, <florian.fainelli@broadcom.com>,
+ <jonas.gorski@gmail.com>, <andrew@lunn.ch>, <olteanv@gmail.com>,
+ <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+ <pabeni@redhat.com>, <kurt@linutronix.de>, <hauke@hauke-m.de>,
+ <chester.a.unal@arinc9.com>, <daniel@makrotopia.org>,
+ <matthias.bgg@gmail.com>, <angelogioacchino.delregno@collabora.com>,
+ <ansuelsmth@gmail.com>, <linusw@kernel.org>, <luizluca@gmail.com>,
+ <alvin.sipraga@analog.com>, <clement.leger@bootlin.com>,
+ <justin.chen@broadcom.com>, <dlan@kernel.org>, <rogerq@kernel.org>,
+ <hkallweit1@gmail.com>, <linux@armlinux.org.uk>, <rjui@broadcom.com>,
+ <sbranden@broadcom.com>, <bcm-kernel-feedback-list@broadcom.com>,
+ <opendmb@gmail.com>, <andrei.botila@oss.nxp.com>,
+ <wangruikang@iscas.ac.cn>, <amadeus@jmu.edu.cn>, <kees@kernel.org>,
+ <tmshlvck@gmail.com>, <c-vankar@ti.com>, <horms@kernel.org>,
+ <vadim.fedorenko@linux.dev>, <daniel.zahka@gmail.com>,
+ <nora.schiffer@ew.tq-group.com>, <v-singh1@ti.com>, <oss@vassilevski.com>,
+ <haokexin@gmail.com>, <alex@sverdlin.org>, <aleksandr.loktionov@intel.com>,
+ <lgs201920130244@gmail.com>, "Kendall Willis" <k-willis@ti.com>
+X-Mailer: aerc 0.21.0-146-gb5c16ebe1835
+References: <20260904043724.2955444-1-s-vadapalli@ti.com>
+ <20260904043724.2955444-6-s-vadapalli@ti.com>
+In-Reply-To: <20260904043724.2955444-6-s-vadapalli@ti.com>
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider:
+--aceffad199f989fc0e7a2bade7854fe91c95aab0591a0938aa91a92fdd3c
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
 
-Critical: 0 · High: 0 · Medium: 3 · Low: 0
+On Fri Sep 4, 2026 at 6:36 AM CEST, Siddharth Vadapalli wrote:
+> Since sentinel is the last entry and we do not expect further entries
+> following it, remove the comma.
+>
+> Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
 
-- [Medium] The six new zero-buffer tests
-  (tools/testing/selftests/net/af_unix/msg_oob.c:913-955) assert only…
-- [Medium] The new tests do not exercise the last-skb marker updates
-  added by the companion commit "af_unix: Update last skb marker in…
-- [Medium] Incomplete test matrix: Missing coverage for Case 2 enumerated
-  in the corresponding core patch.
+Acked-by: Markus Schneider-Pargmann <msp@baylibre.com>
 
---
++Kendall
 
-selftest: af_unix: Add zero-buffer test for msg_oob.c
+Note that this and another series by Kendall will probably have a
+conflict as both change the compatibles:
+https://lore.kernel.org/all/20260902-temp-v4-0-3896f7d16ce8@ti.com/
 
-This adds a __setblockingpair() helper plus six new tests that send an
-MSG_OOB byte and then perform a zero-length receive, in both non-blocking
-and blocking mode.  The tests are meant to cover the two zero-length
-buffer / MSG_PEEK fixes from the earlier patches in the series.
+Best
+Markus
 
-No Link: tags in the commit header.
+--aceffad199f989fc0e7a2bade7854fe91c95aab0591a0938aa91a92fdd3c
+Content-Type: application/pgp-signature; name="signature.asc"
 
-> diff --git a/tools/testing/selftests/net/af_unix/msg_oob.c b/tools/testing/selftests/net/af_unix/msg_oob.c
-> index 1b499d56656c..f051d79f7a8e 100644
-> --- a/tools/testing/selftests/net/af_unix/msg_oob.c
-> +++ b/tools/testing/selftests/net/af_unix/msg_oob.c
+-----BEGIN PGP SIGNATURE-----
 
-[ ... ]
+iKMEABYKAEsWIQSJYVVm/x+5xmOiprOFwVZpkBVKUwUCapqBDhsUgAAAAAAEAA5t
+YW51MiwyLjUrMS4xMiwyLDIRHG1zcEBiYXlsaWJyZS5jb20ACgkQhcFWaZAVSlNU
+DgD+NDmEsw57cLpzBEOHVv/Nk1EkJHkfkEl6somoL6FeZhQA/igsPy7rmcarz6Ym
+lEV7ixhaA3JU6LQo0KOc3yMdNwIE
+=DaCZ
+-----END PGP SIGNATURE-----
 
-> @@ -888,4 +910,49 @@ TEST_F(msg_oob, inline_ex_oob_siocatmark)
->  	resetpair(true);
->  }
->  
-> +TEST_F(msg_oob, zero_buf_oob)
-> +{
-> +	sendpair("a", 1, MSG_OOB);
-> +	recvpair("", 0, 0, 0);
-> +}
-
-[Severity: Medium]
-
-Should these new tests also check the OOB state with epollpair() and
-siocatmarkpair() the way the rest of the file does?  Every other test in
-msg_oob.c (for example oob() and inline_ex_oob_siocatmark()) brackets each
-send/recv with epollpair()/siocatmarkpair() and ends with resetpair(), while
-zero_buf_oob() through zero_buf_ex_oob_oob_blocking() assert only the recv()
-return value.
-
-Because of that, do these tests pass whether or not the zero-length read
-consumed the OOB byte?  For the non-peek pass of recvpair("", 0, 0, 0),
-unix_stream_read_generic() calls manage_oob() with copied == 0 and no
-MSG_PEEK, which takes:
-
-net/unix/af_unix.c:manage_oob() {
-	...
-	} else if (!(flags & MSG_PEEK)) {
-		WRITE_ONCE(u->oob_skb, NULL);
-
-		if (!sock_flag(sk, SOCK_URGINLINE)) {
-			__skb_unlink(skb, &sk->sk_receive_queue);
-			unread_skb = skb;
-			skb = skb_peek(&sk->sk_receive_queue);
-			*last = skb;
-		}
-	...
-}
-
-and the unlinked skb is then dropped with
-kfree_skb_reason(unread_skb, SKB_DROP_REASON_UNIX_SKIP_OOB), so EPOLLPRI and
-SIOCATMARK are cleared even though recv() reported 0 bytes.
-
-Since these tests run with self->tcp_compliant == true and are not wrapped in
-tcp_incompliant, do they implicitly claim TCP behaves the same here?  On the
-TCP side a len == 0 receive leaves the urgent state alone:
-
-net/ipv4/tcp.c:tcp_recvmsg_locked() {
-	...
-		if (unlikely(tp->urg_data)) {
-			u32 urg_offset = tp->urg_seq - *seq;
-			if (urg_offset < used) {
-	...
-}
-
-with used == 0 the condition is false, so tp->urg_data and copied_seq stay
-untouched and SIOCATMARK still returns 1 with EPOLLPRI set.  Adding
-epollpair()/siocatmarkpair() after the new recvpair() calls would show
-answ[0] == 0 versus answ[1] == 1, which looks like exactly the case the
-tcp_incompliant idiom exists for.
-
-For the peek fixture variant, recvpair() issues the MSG_PEEK receive first and
-then the normal one, but with an expectation of 0 bytes is there anything left
-that would catch a regression where the MSG_PEEK pass itself dropped or
-consumed the queued OOB skb?
-
-> +
-> +TEST_F(msg_oob, zero_buf_oob_blocking)
-> +{
-> +	sendpair("a", 1, MSG_OOB);
-> +	setblockingpair();
-> +	recvpair("", 0, 0, 0);
-> +}
-> +
-> +TEST_F(msg_oob, zero_buf_non_oob_oob)
-> +{
-> +	sendpair("ab", 2, MSG_OOB);
-> +	recvpair("", 0, 0, 0);
-> +}
-> +
-> +TEST_F(msg_oob, zero_buf_non_oob_oob_blocking)
-> +{
-> +	sendpair("ab", 2, MSG_OOB);
-> +	setblockingpair();
-> +	recvpair("", 0, 0, 0);
-> +}
-> +
-> +TEST_F(msg_oob, zero_buf_ex_oob_oob)
-> +{
-> +	sendpair("a", 1, MSG_OOB);
-> +	recvpair("a", 1, 1, MSG_OOB);
-> +
-> +	sendpair("b", 1, MSG_OOB);
-> +	recvpair("", 0, 0, 0);
-> +}
-> +
-> +TEST_F(msg_oob, zero_buf_ex_oob_oob_blocking)
-> +{
-> +	sendpair("a", 1, MSG_OOB);
-> +	recvpair("a", 1, 1, MSG_OOB);
-> +
-> +	sendpair("b", 1, MSG_OOB);
-> +	setblockingpair();
-> +	recvpair("", 0, 0, 0);
-> +}
-
-[Severity: Medium]
-The core patch in this series enumerated three distinct cases that
-manage_oob() gets wrong for a zero-length receive, but the new tests
-only seem to cover two of them.  zero_buf_non_oob_oob() and
-zero_buf_non_oob_oob_blocking() send "ab" with MSG_OOB and then do a
-0-byte recv, which is case 1 (a normal skb followed by a live OOB skb,
-u->oob_skb still set).  zero_buf_ex_oob_oob() and its _blocking twin
-cover case 3 (an already consumed OOB skb followed by a new OOB skb).
-I cannot find a test for case 2, where the queue head is a plain skb
-followed by an OOB skb whose OOB byte has already been consumed, so
-u->oob_skb no longer points at it and manage_oob() has to take the
-skip-consumed-OOB path instead of the unlink path.
-
-Would it be worth adding something like sendpair("ab", 2, MSG_OOB) then
-recvpair("b", 1, 1, MSG_OOB) to consume the OOB byte while leaving "a"
-and the consumed OOB skb queued, followed by recvpair("", 0, 0, 0)?
-Without it, the commit message's claim that this patch adds tests
-"corresponding" to the previous fixes does not quite match what is
-here, and the case that led to the busy-wait/CPU hog in the consumed
-skb path stays uncovered.  Or is case 2 already exercised indirectly by
-one of the existing tests in a way I am missing?
-
-[Severity: Medium]
-
-The commit message says "The previous patches fixed two issues related to
-zero-length buffer with MSG_PEEK for MSG_OOB skb.  Let's add corresponding
-tests in msg_oob.c."  Do the new tests actually cover the second fix, the
-last-skb marker updates from "af_unix: Update last skb marker in
-manage_oob()"?
-
-All six tests call recvpair() with buf_len == 0, including the three blocking
-ones, so state->size == 0 and unix_stream_read_generic() leaves as soon as
-manage_oob() returns NULL:
-
-net/unix/af_unix.c:unix_stream_read_generic() {
-	...
-			skb = manage_oob(skb, &last, sk, flags, copied);
-			if (!skb && (copied || !state->size)) {
-				unix_state_unlock(sk);
-				break;
-			}
-	...
-}
-
-With size == 0 the loop cannot iterate and copied never becomes non-zero, so
-unix_stream_data_wait(sk, timeo, last, freezable) is never reached and the
-*last assignments in manage_oob() are never observed.
-
-Would all 12 new cases (6 tests x 2 fixture variants) still pass if those
-*last updates were reverted?  Case 3 in that commit message uses a non-zero
-length blocking MSG_PEEK:
-
-	send "a" MSG_OOB
-	recv(buf, 1, MSG_OOB)
-	send "b" MSG_OOB
-	recv(buf, 1, MSG_PEEK)
-
-zero_buf_ex_oob_oob_blocking() uses recvpair("", 0, 0, 0) instead of a 1-byte
-MSG_PEEK, so the busy-wait that fix addresses appears to be left without
-coverage.  Would adding a blocking test with buf_len == 1 and MSG_PEEK close
-that gap?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260902202202.892676-1-kuniyu%40google.com
+--aceffad199f989fc0e7a2bade7854fe91c95aab0591a0938aa91a92fdd3c--
