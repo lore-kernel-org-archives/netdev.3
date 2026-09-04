@@ -1,222 +1,82 @@
-Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA6B63B7B76
-	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 23:34:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 330F631716D;
+	Fri,  4 Sep 2026 23:41:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788564888; cv=none; b=jQjjRNbF7p/g+gguzTZw1meAs8P/Vx95d9C7kIlOKEaBKsQBeDdqEFEZ3eZbSpH2J7a2G6BbPhbw8VqyH7+Qhh8btiedyJlIkJ07aUufU6EpH+G1ihaxEmdWaVAPmQRxEJCPsu0gBh+2r2ueuY+DL3WrKxmg6fD3BgG81fdeOqo=
+	t=1788565271; cv=none; b=nc8qdaWzFN8hD3+KG61ZfFwja+ib9uoAQLW5lB1hfJ7FfVyHc3oJACtmrn5Hx2gjNJPy2Jv4wNAJ4fdVGVtGcVTJ7vv/f8d9LQF25Pkd51XhV+eI6FJO29vHZfflQ0fWsl645lEPp3YKc9E56kEIssb1DTXtUCHJSilLrb4eyso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788564888; c=relaxed/simple;
-	bh=r0x4jtoyOirev9HbRKuirTBymyiPd//aXlUsHHUnCTE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ul2FeS7/lV83Ljy2VqLKL5eTb6mB9R9YSdFByG+J/Wc2Pa/VMMIrTqhNxy262K5ZB0ylm5Yw3USGhxsB42IWbfWbGwpFinwsinuwLsrhxfRKNC1nAr++BMic05FdoNstDNCe3dfgxueeTepHBZxFXenkVaeiNjok4v9bxSKQdWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iSbXQZ5v; arc=none smtp.client-ip=209.85.210.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788565271; c=relaxed/simple;
+	bh=n7BBZpH23tbPgcnxHkNC7x6fjYr5MNyTcsQX0mbZL34=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=day4qfpu8g3DSGNJqdCI5A9BoQCNoj0qYrda+lr3UbGzS1VmphtA7Cwl343L0T/VMPsHAAL2lk60LpwLxInl8mYSoteH4zzq0EuNPfOc8aoYSmKqcw8t5hy8ID+wdIUx6GgBOqWjGhPzPBI42sjt7jUNp9HalJzeMB5QR4RnuAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m1illChG; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iSbXQZ5v"
-Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-7e9fc3de7ceso1127928a34.1
-        for <netdev@vger.kernel.org>; Fri, 04 Sep 2026 16:34:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788564886; x=1789169686; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=8B4nzzUWRN6o9d6GsYuC/J9UneHD//bbKjLvbzC8OEk=;
-        b=iSbXQZ5vJ2BGLE1yQE0n4ZSODQUMgj64IEtq2JDwKMOQ/mBmA0QkSaY6wGJDCh7fcp
-         j72E9yzCTsBirDRdK2tPbyLRC6aDm3AnhYKr0lpBTcmoQ7YajiBn/7ThSfR5ZQTtuLFl
-         kURN472c/wn1FuqpcRC1+xT59FUaWUQ1tYGmNGqFaK9Spx7QAHCekqVF/LOH1fq2tY2H
-         l3j1WQXOKZBgEkUgTR66t9CurWPO6fWuCNfjj/+O3rDZn2eZIWilDGL0oYRlmweXL9py
-         L4gECkvNyGoePk4Cm4l5kXyJtRgiQ8FO31H/Bm/ANpKlu9iJ2zax6NQlQEba8kvIIWqz
-         JI5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788564886; x=1789169686;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=8B4nzzUWRN6o9d6GsYuC/J9UneHD//bbKjLvbzC8OEk=;
-        b=MY0oXg6JJrDc9JlvByeeqZ6xIAFNZjivhb1k1YMWU6l243cqfKB/NXHO6KoZ14a0Vx
-         /z0+Y8YkVcDsUusFhtYhd/GV9QjcgdbFxVmViGM6paD49nvdFS5rYep9milIrtL2KboH
-         T+yjG+Hh+3Uc8twK/bVKIWLmXKyEBR0AO9EVoNjAY/wlMj7ORylwva3PrZXFs7QJrhlB
-         b88qicQgjKp4ITwL/flgGdVofCpRfNKiTrtcMCNsrZS5zum/Gin7ACZGaC+EicCmwTx7
-         TK/Mb4MS9TKk1tRXTcx/acDHEHQOKqFUgVDLQ81mCdk9xRg8U44i/+050j3GiBuW6aRQ
-         zFZQ==
-X-Forwarded-Encrypted: i=1; AKwUvByVAHaSQ+Z2naO1QUQ5o64hyTGZoZP5AER1ei/OhegC5kLpcKxomtt/Zn7AB5vhT6XoFWl4a60=@vger.kernel.org
-X-Gm-Message-State: AFuF++kZoediz3Cd/l5CIJDClD+5CmCvvySFJeGGtaDYp7hyqMu6uDJ2
-	XEKJH0GGaUMP7NvHi5ADwyVenxh8oeX+cWBzKltV2iMqM7RZroCHh02b
-X-Gm-Gg: AYBFou0+uR74dtS4SwAQgMrtpIgNKK1K9xvip2utgZofDJYV3VJIGGIenukwzaNvILD
-	16IDyZXkKscRM3gJma67tdFKnkTUVHlVyxQESCxb9nW7y3PuId/kNidEAzwnXB4qgYi/8T99HjN
-	HpV+ndBfrXTZhf1ra/06oGHf2AVs1tTXzTskCaAUCyZxD74o+jYaTzgZPWgf9v+xTeQPUgkHnq6
-	mWQt/KXh/Hn5NGVNMFy+9dURrR/ILNjDjz6Q3MpvfWsZPiSS/OtnFiUiNvoHdoVIxr1e80qKirt
-	pSh8mOiUTya3+UedfeVCU5/ulTtyPIfusJNvl8SpJyK+ZHGp12cFSQOgws4Fj368JxeqV5oUQDW
-	0X6oxo1sTjAfw7QB9/JOF+awAOKHIkfX1Gt9RSvEsFHEyvBAjCKbm4FOFHUDKCN3RBP57f1x6mI
-	M+oXwu4FspTUr1mNrb4/5w5OLvcFFVVXEBUP53oGKUR7eeMCCR4s8FYcMF0s4CmBYguUG69BK5o
-	+fZrZwqfA==
-X-Received: by 2002:a05:6820:160b:b0:6b3:f762:4d95 with SMTP id 006d021491bc7-6b6faee2821mr6395663eaf.7.1788564885608;
-        Fri, 04 Sep 2026 16:34:45 -0700 (PDT)
-Received: from devvm29614.prn0.facebook.com ([2a03:2880:ff:70::])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-47554935751sm3537590fac.11.2026.09.04.16.34.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Sep 2026 16:34:44 -0700 (PDT)
-Date: Fri, 4 Sep 2026 16:34:40 -0700
-From: Bobby Eshleman <bobbyeshleman@gmail.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
-	pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
-	shuah@kernel.org, cjubran@nvidia.com, cratiu@nvidia.com,
-	noren@nvidia.com, willemb@google.com, petrm@nvidia.com,
-	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH net-next] selftests: net: add ctl_file_write() helper
-Message-ID: <aptVkE6fRuj7f3bl@devvm29614.prn0.facebook.com>
-References: <20260904174134.3789400-1-kuba@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m1illChG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA8591F00A3D;
+	Fri,  4 Sep 2026 23:41:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788565269;
+	bh=qaHgXpfnp/h4GXHHgLdFYBamein3Xy6trVzat+Kixy8=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=m1illChGEwdolJMwiaSsq3/BYuxG0rvUL/DuHD9hiq7/uainQXZZAmcR5Fw0+h4JG
+	 gpO+5LxIrj9b0+vylTBYO5eA+rI2IY4pCgzVR/hJ/xnNva/g92Sgj5bcmqdmhKz4mU
+	 QM+iG/FgK8BoZ0Nve5KnUQ8ATDqPWyLRchwvHtHrmLdxzsERqPlhxdPW8XoGLu7UiL
+	 1XYFUarW+m/BvjBdWkaaIuJn8uGlBwRocFv/jh/uIpC9Q34EieOMJGohtiBZA5/nv/
+	 xUQnMdscdVPrRaU1X92jnLjn9hF7rpcM5WvgUCPYy5BDv/k7fwfaaYddlx7xdv3Wkm
+	 t5ZiX68L7C+1A==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93AAF3924FC0;
+	Fri,  4 Sep 2026 23:40:11 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260904174134.3789400-1-kuba@kernel.org>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v2 0/3] net: cap tx_queue_len at S16_MAX to prevent
+ oversized ring allocations
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178856521039.1019727.11940822267177362056.git-patchwork-notify@kernel.org>
+Date: Fri, 04 Sep 2026 23:40:10 +0000
+References: <QDISC-2899.v2.20260901233641@mojatatu.com>
+In-Reply-To: <QDISC-2899.v2.20260901233641@mojatatu.com>
+To: Jamal Hadi Salim <jhs@mojatatu.com>
+Cc: netdev@vger.kernel.org, stable@vger.kernel.org, jiri@resnulli.us,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, donald.hunter@gmail.com, vega@nebusec.ai,
+ victor@mojatatu.com
 
-On Fri, Sep 04, 2026 at 10:41:34AM -0700, Jakub Kicinski wrote:
-> Setting a sysctl or a sysfs attribute for the duration of a test and
-> putting the old value back has been open coded multiple times.
-> 
-> We generally avoid creating library helpers but this one is very
-> common, and the defer is a little tricky as using the same function
-> for defer as the initial write leads to an infinite loop (not that
-> I would ever make such mistake!)
-> 
-> Some of the conversions are not identical, but arguably ctl_file_write()
-> semantics are more correct.
-> 
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> ---
-> CC: shuah@kernel.org
-> CC: cjubran@nvidia.com
-> CC: cratiu@nvidia.com
-> CC: noren@nvidia.com
-> CC: willemb@google.com
-> CC: petrm@nvidia.com
-> CC: linux-kselftest@vger.kernel.org
-> ---
->  tools/testing/selftests/drivers/net/gro.py    | 17 +++---------
->  .../drivers/net/hw/devlink_rate_tc_bw.py      |  5 ++--
->  tools/testing/selftests/drivers/net/hw/irq.py | 11 ++------
->  .../drivers/net/hw/lib/py/__init__.py         |  4 +--
->  .../selftests/drivers/net/hw/toeplitz.py      | 10 +++----
->  .../selftests/drivers/net/lib/py/__init__.py  |  4 +--
->  .../selftests/drivers/net/ring_reconfig.py    | 26 ++++---------------
->  .../testing/selftests/net/lib/py/__init__.py  |  4 +--
->  tools/testing/selftests/net/lib/py/utils.py   | 22 ++++++++++++++++
->  9 files changed, 44 insertions(+), 59 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/drivers/net/gro.py b/tools/testing/selftests/drivers/net/gro.py
-> index 6ab8c97880d1..e0b21703cc3c 100755
-> --- a/tools/testing/selftests/drivers/net/gro.py
-> +++ b/tools/testing/selftests/drivers/net/gro.py
-> @@ -42,7 +42,7 @@ import re
->  from lib.py import ksft_run, ksft_exit, ksft_pr
->  from lib.py import NetDrvEpEnv, KsftFailEx, KsftXfailEx
->  from lib.py import NetdevFamily, EthtoolFamily
-> -from lib.py import bkg, cmd, defer, ethtool, ip
-> +from lib.py import bkg, cmd, ctl_file_write, defer, ethtool, ip
->  from lib.py import ksft_variants, KsftNamedVariant
->  
->  
-> @@ -79,17 +79,6 @@ GRO_DPORT = 8000
->      return getattr(cfg, attr)
->  
->  
-> -def _write_defer_restore(cfg, path, val, defer_undo=False):
-> -    with open(path, "r", encoding="utf-8") as fp:
-> -        orig_val = fp.read().strip()
-> -        if str(val) == orig_val:
-> -            return
-> -    with open(path, "w", encoding="utf-8") as fp:
-> -        fp.write(val)
-> -    if defer_undo:
-> -        defer(_write_defer_restore, cfg, path, orig_val)
-> -
-> -
->  def _set_mtu_restore(dev, mtu, host):
->      if dev['mtu'] < mtu:
->          ip(f"link set dev {dev['ifname']} mtu {mtu}", host=host)
-> @@ -244,8 +233,8 @@ def _run_gro_bin(cfg, test_name, protocol=None, num_flows=None,
->          flush_path = f"/sys/class/net/{cfg.ifname}/gro_flush_timeout"
->          irq_path = f"/sys/class/net/{cfg.ifname}/napi_defer_hard_irqs"
->  
-> -        _write_defer_restore(cfg, flush_path, "200000", defer_undo=True)
-> -        _write_defer_restore(cfg, irq_path, "10", defer_undo=True)
-> +        ctl_file_write(flush_path, "200000")
-> +        ctl_file_write(irq_path, "10")
->  
->          _set_ethtool_feat(cfg.ifname, cfg.feat,
->                            {"generic-receive-offload": True,
-> diff --git a/tools/testing/selftests/drivers/net/hw/devlink_rate_tc_bw.py b/tools/testing/selftests/drivers/net/hw/devlink_rate_tc_bw.py
-> index 4e4faa9275bb..38d712755257 100755
-> --- a/tools/testing/selftests/drivers/net/hw/devlink_rate_tc_bw.py
-> +++ b/tools/testing/selftests/drivers/net/hw/devlink_rate_tc_bw.py
-> @@ -63,7 +63,7 @@ from lib.py import ksft_pr, ksft_run, ksft_exit
->  from lib.py import KsftSkipEx, KsftFailEx, KsftXfailEx
->  from lib.py import NetDrvEpEnv, DevlinkFamily
->  from lib.py import NlError
-> -from lib.py import cmd, defer, ethtool, ip
-> +from lib.py import cmd, ctl_file_write, defer, ethtool, ip
->  from lib.py import Iperf3Runner
->  
->  
-> @@ -113,8 +113,7 @@ from lib.py import Iperf3Runner
->      except Exception as exc:
->          raise KsftSkipEx(f"Failed to enable switchdev mode on {cfg.pci}") from exc
->      try:
-> -        cmd(f"echo 1 > /sys/class/net/{cfg.ifname}/device/sriov_numvfs", shell=True)
-> -        defer(cmd, f"echo 0 > /sys/class/net/{cfg.ifname}/device/sriov_numvfs", shell=True)
-> +        ctl_file_write(f"/sys/class/net/{cfg.ifname}/device/sriov_numvfs", 1)
->      except Exception as exc:
->          raise KsftSkipEx(f"Failed to enable SR-IOV on {cfg.ifname}") from exc
->  
-> diff --git a/tools/testing/selftests/drivers/net/hw/irq.py b/tools/testing/selftests/drivers/net/hw/irq.py
-> index 0699d6a8b4e2..3d1c56b51054 100755
-> --- a/tools/testing/selftests/drivers/net/hw/irq.py
-> +++ b/tools/testing/selftests/drivers/net/hw/irq.py
-> @@ -7,7 +7,7 @@ from lib.py import KsftSkipEx
->  from lib.py import ksft_disruptive
->  from lib.py import EthtoolFamily, NetdevFamily
->  from lib.py import NetDrvEnv
-> -from lib.py import cmd, ip, defer
-> +from lib.py import cmd, ctl_file_write, ip
->  
->  
->  def read_affinity(irq) -> str:
-> @@ -15,12 +15,6 @@ from lib.py import cmd, ip, defer
->          return fp.read().lstrip("0,").strip()
->  
->  
-> -def write_affinity(irq, what) -> str:
-> -    if what != read_affinity(irq):
-> -        with open(f'/proc/irq/{irq}/smp_affinity', 'w') as fp:
-> -            fp.write(what)
-> -
-> -
->  def check_irqs_reported(cfg) -> None:
->      """ Check that device reports IRQs for NAPI instances """
->      napis = cfg.netnl.napi_get({"ifindex": cfg.ifindex}, dump=True)
-> @@ -41,8 +35,7 @@ from lib.py import cmd, ip, defer
->      old = read_affinity(n['irq'])
->      # pick an affinity that's not the current one
->      new = "3" if old != "3" else "5"
-> -    write_affinity(n['irq'], new)
-> -    defer(write_affinity, n['irq'], old)
-> +    ctl_file_write(f"/proc/irq/{n['irq']}/smp_affinity", new)
+Hello:
 
-This one might miss the ctl_file_write's "old == str(val)" case, where
-old is still prepended with zeroes (e.g., 0000,0000,0003)?
+This series was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-The rest LGTM.
+On Wed,  2 Sep 2026 17:29:07 -0400 you wrote:
+> An unprivileged user (via unshare -Urn) can set a huge tx_queue_len
+> and exhaust global memory through ring allocations sized from it
+> (pfifo_fast skb_arrays, tun/tap ptr_rings).
+> The reproducer from vega@nebusec.ai set the following params for
+> illustration: txqlen of 500000 -> ~32 GiB/ring attempts, 1.6 GB tun,
+> ~960 MB tap. Gets worse when you consider qdiscs like mq.
+> 
+> [...]
 
-Best,
-Bobby
+Here is the summary with links:
+  - [net,v2,1/3] net: cap tx_queue_len at S16_MAX to prevent oversized ring allocations
+    https://git.kernel.org/netdev/net/c/66ab4c59b74d
+  - [net,v2,2/3] net: reject oversized tx_queue_len at netlink parse time
+    https://git.kernel.org/netdev/net/c/1aa9e143bf51
+  - [net,v2,3/3] selftests: tc-testing: add tx_queue_len cap regression tests
+    https://git.kernel.org/netdev/net/c/0a7252d7f854
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
