@@ -1,166 +1,255 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4E9050C2B7;
-	Fri,  4 Sep 2026 16:55:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32E1850C2BF
+	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 16:55:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788540953; cv=none; b=esv+En1jVWAWbbfRjb7x4nGAsHqN8tT9epg+s+XYrEMvjx7q3qe6CKSAfStfIkZcwvYTlIfx55FYQvyuL49DltzEC4eUROM/oQkUC+evwS95gboGOJrYYjwfBUaCj7026BEaFnHOb7gVXjlSLIaYqhj86sVgueScG5TyCrU90SQ=
+	t=1788540958; cv=none; b=UuClUTMxS5I2X9ZGqsplsR0nEBZUgR9BRXaI/ixyUKgo32LcoImLNbKEJDNbK3hKABTgW+xVtJL8ENgveU2s1Tt2fwdDjL/Dd9VdPOpeCX/6GKxsGl7QhDIR40SeXsxLpJf9NE1wRNklGN+8QZJuAgeBU8SDkcD4LVjh5XkWwnY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788540953; c=relaxed/simple;
-	bh=PMKRteyqCXyoT9j2cQ6OndqOm2Znk0k8aZ/GwApvEKA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FccFe2N4YnUxdE07uUxoTxMuIiat2NKzP7/HgGuVpvWLxcLVr0VmcILFishWP3w+iRV1atrSFm8YbTdsGHqLqkcmuKoDPehJWeJupGVULBWA7unA2zHmGqRGEtU08vf9vE2Te5iPwOqlyZcn40pwxukULQixu8fgHxJ3IlVnXxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=elx3YIa1; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788540958; c=relaxed/simple;
+	bh=7Ib8IcvKeHtblIcGzQNVS6oUxOoSw6QIGv40Sk/T8uQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ojPtm6MFUD9KJqNB5Xd7laH0bN0f5MX/lDUUA2pgbidJmYmiZRWMN5Q0+TSvNIfbtYKzwBAQmYiug0qmEsfgQ0C5JoF47379VqGyAJ8AbgWiEIBRVNuz/hlrVnRfbF2dMdHjGtYzFG8B+mas8TcG4cS+wsBUIQQvlhARG2+n3kM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KVGNI0cV; arc=none smtp.client-ip=74.125.227.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="elx3YIa1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF8631F00A3D;
-	Fri,  4 Sep 2026 16:55:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788540950;
-	bh=1caeJ4CBjFZSEixrsLbgrXs0FWOuP0V+WtvS5rQmTwk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=elx3YIa1UmECc6XcWgUzuUoENTeFEaSvXhXKx5/wy+KO8TgsJhIwSii3mQTTESX7v
-	 e5VB6xj6d1RBPVaOpUJQVczODEWvU26SNw1FgCUl3dgfIbzg+7KWrg76RdLCl1LsWz
-	 g9sxWWich6b55LjLx2WjhAVG2HirNEB7mvhwI3Bu4QgZq8piomOpcy1MP00M89RFF0
-	 U1dYp/3r4bdIuOqTrn/GS0VwRfCmg2Cv053z9fyu7dxBlQO2X8mXeiubzSz5VouaQQ
-	 eUcC/DVzrAhgWkomBTpg1p8tuV1jp9ZtqRs3HskBSeMy9Ipitgo7YpSI82z2R/gQh2
-	 NhRCmFXfY/B6w==
-Message-ID: <3ce5323e-18a5-41d0-860b-588b79074589@kernel.org>
-Date: Fri, 4 Sep 2026 18:55:43 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KVGNI0cV"
+Received: by mail-pj2-f12.google.com with SMTP id d9443c01a7336-2d6ff2f2c4dso67725ad.0
+        for <netdev@vger.kernel.org>; Fri, 04 Sep 2026 09:55:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788540956; x=1789145756; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=8Pugumtiy8a7ud4fT7dQUu5IP2KC8hqTj50eSk7DgzY=;
+        b=KVGNI0cVQiXO3Ys1406hyAujbA0cwj4dT2YHfOubzYCLBOt2tZUFkt6nHSI+zZoKXA
+         4mGlpSfVGXpQfrAhqidx/2V5RNft2gT+JehUrMv2DOaErHk434nlY3hQnvhVStpO6ipN
+         X9HUDx19sWKQds4dLRmRWg7w0RY9M68yl66k4+495iYO7BQtyUNiZ6JM9i1Q2D3YDOiQ
+         ujLaMFBIbqagqC/6TJDawckDSvJnRdG4H8/Ekr3brP6f7rQPlSirfaXEibwAyQ5b+b8b
+         PmICa7gpzeZ5btpb4I3Buf816Pq6B97JFwBMRQC3+xMr56hRYUXm2cYJ0KeE5cLC5/+d
+         C2pg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788540956; x=1789145756;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=8Pugumtiy8a7ud4fT7dQUu5IP2KC8hqTj50eSk7DgzY=;
+        b=NI8tkrrhX6PusPXyxBAT/ig4Rmv8RFxGIL+5MjOhCi5/l+VSv7dZSjeMpiKX4r2d/p
+         xa1PD2u9+aN9FajwepM8U0kRb0Adir6609xNNgihGe+JVuEMy39mlZGg6cJOLAX8QZ4m
+         vUIQI0t9qky58YPbkOarNDWhaztma30bBYU/z7yx8s8dpw+xn08H1wOFLe5SHp0+NEy4
+         SIrlEZKF/00sivUnszbkHSaRPgdv+QC4KEI50/rcV7T1PCdw8v0OY6N2H6Ul9xAibukt
+         /pYU9onbb8GCLULY0HKo0YoTaMhwOIUnvUA7YlBDHktFpYzjRyfLpP18CjrD25sylkaA
+         UMWg==
+X-Forwarded-Encrypted: i=1; AKwUvBwgX7s203p9o5t7boYwa9KngqwfOOHiDjuaA1oJXtstgYnDuBBIKEd/f7If51a8OUhZOaW350Q=@vger.kernel.org
+X-Gm-Message-State: AFuF++n9okLJqO7RQAtiKkxz6Fgz+rE/bf6ZaRSz+qJ4SvMRUVnFR7qu
+	zqdK9ba5dfasIOAMmM9sxITDEmA9pq1aiohrYNgshYaz5EUzCmgmGD4i
+X-Gm-Gg: AYBFou1M7nthQfxkcF+LCWsys1asn5oU2OMKOqZSDMz2oeciM4hnfOFB1TlO89ezSwG
+	oEUIxmBWM+aYVHGIACgtWfnjhfuAvzyZXlizMNneR/rj1KxgAX102nDF4ivHev5taQb5vXD4KBB
+	bi0rna/zcSwz6NABmP+Uy7uzoXU9ccLx7Jk9WFaxXYY8Wi/4Hemi8CDSgQrNN0YLaFLpd30SaWh
+	DIMp7NG36NYxi5RHl6veBOB2xDE63UVDz4NQHXTxeKMMy7Hh1Y8kZxjfxeY6yIh32D9ZSvvKuSo
+	iiWjyTsREDVjm2a6hlRN6cpTxkF/e3vEu+UN8UlaqDd7QF1j+kZtk/oSqXygFQXJXYlSSsrqT3l
+	3/S3R0VZ13pAjUt3dWLvvYT3nZo5SlI+JjHnzADaKcI9vASTv2StoDJJEAAjK1tnqfNX0FwnVtP
+	KNmtfe7GLkxMwtWYYfZb5NBlTodNhWm8hXX1R2H0nK7YSGIwuOkyK2Ivkiz1aBQ2pC3GdcoP16O
+	21JDtrt1qcpBzmvtleoiDwcUTdHL8UUs7To50b81SVwFkNazHYd2EFMfA==
+X-Received: by 2002:a17:90b:562b:b0:396:d27b:86a4 with SMTP id 98e67ed59e1d1-39b3d5f2c09mr392878a91.2.1788540956155;
+        Fri, 04 Sep 2026 09:55:56 -0700 (PDT)
+Received: from localhost.localdomain (45.78.64.189.16clouds.com. [45.78.64.189])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3339befe870sm8685464eec.30.2026.09.04.09.55.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 04 Sep 2026 09:55:55 -0700 (PDT)
+From: Chengfeng Ye <nicoyip.dev@gmail.com>
+To: David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	netdev@vger.kernel.org
+Cc: "David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Xin Long <lucien.xin@gmail.com>,
+	William Tu <u9012063@gmail.com>,
+	linux-kernel@vger.kernel.org,
+	Chengfeng Ye <nicoyip.dev@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net v4] ip_tunnel: reserve FOU/GUE headroom before encapsulation
+Date: Sat,  5 Sep 2026 00:55:44 +0800
+Message-ID: <20260904165544.1362052-1-nicoyip.dev@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH net 1/2] selftests: netfilter: use KHDR_INCLUDES in CFLAGS
-Content-Language: fr
-To: Ilya Maximets <i.maximets@ovn.org>,
- Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>,
- Phil Sutter <phil@nwl.cc>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Shuah Khan <shuah@kernel.org>, David Ahern <dsahern@kernel.org>,
- Ido Schimmel <idosch@nvidia.com>
-Cc: netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
- netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260904-net-sft-nf-khdr_includes-v1-0-92455af428e9@kernel.org>
- <20260904-net-sft-nf-khdr_includes-v1-1-92455af428e9@kernel.org>
- <5d871ca2-1db4-47b8-bd48-34b3fa42961e@ovn.org>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- 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
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <5d871ca2-1db4-47b8-bd48-34b3fa42961e@ovn.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Hi Ilya,
+ip_tunnel_encap() expects its callers to reserve headroom based on
+ip_encap_hlen(). ip_tunnel_xmit() currently pushes FOU and GUE headers
+before it grows the skb headroom.
 
-On 04/09/2026 18:41, Ilya Maximets wrote:
-> On 9/4/26 6:13 PM, Matthieu Baerts (NGI0) wrote:
->> KHDR_INCLUDES is typically used to include headers from the kernel
->> source directory instead of only relying on the ones from the host: they
->> can be missing or outdated.
->>
->> The kselftest doc recommends assigning KHDR_INCLUDES to CFLAGS in a
->> target Makefile. lib.mk will set KHDR_INCLUDES to "-isystem
->> $(top_srcdir)/usr/include" if the user didn't set it, e.g. if the kernel
->> was built in a different build directory.
->>
->> Other net targets have KHDR_INCLUDES added to their CFLAGS.
->>
->> Fixes: 3f189349e52a ("selftests: netfilter: move to net subdir")
-> 
-> I think, this should point to a commit that added the first C test:
-> 
-> Fixes: a64d558d8cf9 ("selftests: netfilter: add nfqueue test case")
+That becomes visible when ipgre_changelink() publishes UDP
+encapsulation before it updates the device headroom. The transmit path
+does not serialize with RTNL, so it can interleave as follows:
 
-Good catch! I saw that CFLAGS was set before, but indeed, KHDR_INCLUDES
-wasn't.
+  CPU 0 (ipgre_changelink)        CPU 1 (ipgre_xmit)
+  install GUE encapsulation
+                                  reserve the old needed_headroom
+  publish larger GRE flags
+  update tunnel->tun_hlen
+                                  push the larger GRE header
+                                  push the GUE and UDP headers
+  update dev->needed_headroom
 
-If we want to change the Fixes tag, we will also need to add:
+With REMCSUM, the new layout can push 16 bytes of GRE and 20 bytes of
+GUE/UDP headers into an skb with only 32 bytes of actual headroom. The
+final UDP push writes four bytes before skb->head.
 
-Fixes: a52540522c95 ("selftests/landlock: Fix out-of-tree builds")
+With the update window widened, the kernel reported:
 
-Which is when KHDR_INCLUDES got introduced. (Or it is enough with the
-current Fixes tag, as long as it is included in the last stable version:
-that's probably enough for CIs using kselftests from the last stable
-version on older ones.)
+  skbuff: skb_under_panic: ... len:128 put:8 ... dev:gre0poc
+  kernel BUG at net/core/skbuff.c:214!
+  Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+  Call Trace:
+   skb_push
+   fou_build_udp
+   gue_build_header
+   ip_tunnel_xmit
+   __gre_xmit
+   ipgre_xmit
 
-@Net maintainers: please tell me if I need to change the Fixes tag in a v2.
+Snapshot tunnel->encap, route and perform PMTU handling first, then
+reserve the final headroom before ip_tunnel_encap() builds the UDP
+tunnel headers. Because encapsulation is now delayed, pass the
+snapshotted encap length into tnl_update_pmtu() so the inner packet
+size stays skb->len + encap_hlen - tunnel_hlen.
 
->> Link: https://docs.kernel.org/dev-tools/kselftest.html#contributing-new-tests-details
->> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
->> ---
->>  tools/testing/selftests/net/netfilter/Makefile | 2 ++
->>  1 file changed, 2 insertions(+)
->>
->> diff --git a/tools/testing/selftests/net/netfilter/Makefile b/tools/testing/selftests/net/netfilter/Makefile
->> index f88dd4ef8d26..df3c20c90f5d 100644
->> --- a/tools/testing/selftests/net/netfilter/Makefile
->> +++ b/tools/testing/selftests/net/netfilter/Makefile
->> @@ -2,6 +2,8 @@
->>  
->>  top_srcdir = ../../../../..
->>  
->> +CFLAGS += $(KHDR_INCLUDES)
->> +
->>  HOSTPKG_CONFIG := pkg-config
->>  MNL_CFLAGS := $(shell $(HOSTPKG_CONFIG) --cflags libmnl 2>/dev/null)
->>  MNL_LDLIBS := $(shell $(HOSTPKG_CONFIG) --libs libmnl 2>/dev/null || echo -lmnl)
->>
-> 
-> This solves my problem with building netfilter tests locally with uAPI
-> modifications.  Beside the Fixes tag, LGTM.
-Thank you for having checked!
+ip_md_tunnel_xmit() is left unchanged. It takes FOU/GUE parameters
+from the skb metadata dst, not from the device configuration, so it
+is not exposed to this race. tnl_update_pmtu() still runs after
+encapsulation there, so that path passes 0 for the extra length.
 
-Cheers,
-Matt
+The IPv6 analogue of this headroom reservation is still work in
+progress.
+
+Link: https://lore.kernel.org/netdev/b58876297f7d45de008f2e94b6ecab8b2ed84d21.1786088695.git.petalzu987@gmail.com/
+Fixes: dd9d598c6657 ("ip_gre: add the support for i/o_flags update via netlink")
+Cc: stable@vger.kernel.org
+Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
+---
+Changes in v4:
+- Not restructure ip_md_tunnel_xmit(); only pass 0 into the new
+  tnl_update_pmtu() argument.
+- Snapshot tunnel->encap with data_race() and reuse the copy for both
+  ip_encap_hlen() and ip_tunnel_encap().
+- Fix tnl_update_pmtu() inner packet size after delaying the encap
+  push: pkt_size = skb->len + encap_hlen - tunnel_hlen.
+- Keep reverse xmas tree for the new locals.
+- Note that the IPv6 FOU/GUE headroom fix is still WIP.
+
+Changes in v3:
+- Move the headroom reservation into ip_tunnel_xmit() instead of
+  growing the skb inside the FOU/GUE builders.
+- Use ip_encap_hlen() to reserve the final caller-side headroom before
+  ip_tunnel_encap().
+- Drop the IPv4 raw-pointer refreshes that were only needed when
+  skb_cow_head() could run inside the encapsulation builders.
+
+Link: https://lore.kernel.org/netdev/20260824111944.187200-1-nicoyip.dev@gmail.com/ [v3]
+Link: https://lore.kernel.org/netdev/20260808005956.3761487-1-nicoyip.dev@gmail.com/ [v2]
+Link: https://lore.kernel.org/netdev/20260801060115.3538849-1-nicoyip.dev@gmail.com/ [v1]
+---
+ net/ipv4/ip_tunnel.c | 24 ++++++++++++++++++------
+ 1 file changed, 18 insertions(+), 6 deletions(-)
+
+diff --git a/net/ipv4/ip_tunnel.c b/net/ipv4/ip_tunnel.c
+index 9d114bd575f9..447b435b10cc 100644
+--- a/net/ipv4/ip_tunnel.c
++++ b/net/ipv4/ip_tunnel.c
+@@ -512,14 +512,15 @@ EXPORT_SYMBOL_GPL(ip_tunnel_encap_setup);
+ static int tnl_update_pmtu(struct net_device *dev, struct sk_buff *skb,
+ 			    struct rtable *rt, __be16 df,
+ 			    const struct iphdr *inner_iph,
+-			    int tunnel_hlen, __be32 dst, bool md)
++			    int tunnel_hlen, __be32 dst, bool md,
++			    int encap_hlen)
+ {
+ 	struct ip_tunnel *tunnel = netdev_priv(dev);
+ 	int pkt_size;
+ 	int mtu;
+ 
+ 	tunnel_hlen = md ? tunnel_hlen : tunnel->hlen;
+-	pkt_size = skb->len - tunnel_hlen;
++	pkt_size = skb->len + encap_hlen - tunnel_hlen;
+ 	pkt_size -= dev->type == ARPHRD_ETHER ? dev->hard_header_len : 0;
+ 
+ 	if (df) {
+@@ -629,7 +630,7 @@ void ip_md_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
+ 	if (test_bit(IP_TUNNEL_DONT_FRAGMENT_BIT, key->tun_flags))
+ 		df = htons(IP_DF);
+ 	if (tnl_update_pmtu(dev, skb, rt, df, inner_iph, tunnel_hlen,
+-			    key->u.ipv4.dst, true)) {
++			    key->u.ipv4.dst, true, 0)) {
+ 		ip_rt_put(rt);
+ 		goto tx_error;
+ 	}
+@@ -671,6 +672,7 @@ void ip_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
+ {
+ 	struct ip_tunnel *tunnel = netdev_priv(dev);
+ 	struct ip_tunnel_info *tun_info = NULL;
++	struct ip_tunnel_encap ipencap;
+ 	const struct iphdr *inner_iph;
+ 	unsigned int max_headroom;	/* The extra header space needed */
+ 	struct rtable *rt = NULL;		/* Route to the other host */
+@@ -680,6 +682,7 @@ void ip_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
+ 	bool md = false;
+ 	bool connected;
+ 	int err_count;
++	int encap_hlen;
+ 	u8 tos, ttl;
+ 	__be32 dst;
+ 	__be16 df;
+@@ -765,7 +768,10 @@ void ip_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
+ 			    tunnel->net, READ_ONCE(tunnel->parms.link),
+ 			    tunnel->fwmark, skb_get_hash(skb), 0);
+ 
+-	if (ip_tunnel_encap(skb, &tunnel->encap, &protocol, &fl4) < 0)
++	/* Snapshot encap; ipgre_changelink() can update it concurrently. */
++	ipencap = data_race(tunnel->encap);
++	encap_hlen = ip_encap_hlen(&ipencap);
++	if (encap_hlen < 0)
+ 		goto tx_error;
+ 
+ 	if (connected && md) {
+@@ -803,7 +809,8 @@ void ip_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
+ 	if (payload_protocol == htons(ETH_P_IP) && !tunnel->ignore_df)
+ 		df |= (inner_iph->frag_off & htons(IP_DF));
+ 
+-	if (tnl_update_pmtu(dev, skb, rt, df, inner_iph, 0, 0, false)) {
++	if (tnl_update_pmtu(dev, skb, rt, df, inner_iph, 0, 0, false,
++			    encap_hlen)) {
+ 		ip_rt_put(rt);
+ 		goto tx_error;
+ 	}
+@@ -834,7 +841,7 @@ void ip_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
+ 	}
+ 
+ 	max_headroom = LL_RESERVED_SPACE(rt->dst.dev) + sizeof(struct iphdr)
+-			+ rt->dst.header_len + ip_encap_hlen(&tunnel->encap);
++			+ rt->dst.header_len + encap_hlen;
+ 
+ 	if (skb_cow_head(skb, max_headroom)) {
+ 		ip_rt_put(rt);
+@@ -845,6 +852,11 @@ void ip_tunnel_xmit(struct sk_buff *skb, struct net_device *dev,
+ 
+ 	ip_tunnel_adj_headroom(dev, max_headroom);
+ 
++	if (ip_tunnel_encap(skb, &ipencap, &protocol, &fl4) < 0) {
++		ip_rt_put(rt);
++		goto tx_error;
++	}
++
+ 	iptunnel_xmit(NULL, rt, skb, fl4.saddr, fl4.daddr, protocol, tos, ttl,
+ 		      df, !net_eq(tunnel->net, dev_net(dev)), 0);
+ 	return;
 -- 
-Sponsored by the NGI0 Core fund.
-
+2.43.0
