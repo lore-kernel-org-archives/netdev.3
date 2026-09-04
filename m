@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6654678F2F
-	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 00:11:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D881B16A395;
+	Fri,  4 Sep 2026 00:11:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788480667; cv=none; b=RwqBA06zr9Bi/WBnyDbmP+O7gQ7c5TagXxRPS/ygs85kxmuxJjmSski25i2cCNu4ElR9nYRsO2YNha/uaI45PRD3VdYCR0xQ8ITayeiwywrFaid8Ge2CAauxQ3dWQdI/fBCLnB0TO6s/81749IiZK3+sKXa3hRy0mfw2OEqOWXQ=
+	t=1788480668; cv=none; b=fg4xpvBlyne8QHgcBFICvPNuXq+xLTslwwULTweXJ6XDDqq3rOeOMlhhVFOIxdxATEoryq6E3yR9KBUOH1UMBTbCu2DJyoSJAS8aqomwBgIV8OXj2WfwV0WnOFb2/AFDbC63K7dtklEkaV804U2afmxP5hVJCrOzbDK7wWqhZws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788480667; c=relaxed/simple;
-	bh=scjXLcQvcaVTWdkWn0NDO5A+YMnWWXGE9A9Jy69Kts0=;
+	s=arc-20240116; t=1788480668; c=relaxed/simple;
+	bh=Zy4Pe/31sCmar74qhSVi+J/sWWHLBlupWQq6NW7Q6yE=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=OOhi71+a4pEH7nu7q0VZ9yGEx5GcsnFV+h+fjPlc54dMdfOvJcIWi2aXIdB912Ck4thObdKSr9ZteGBb+7j1wPiDJpaXT1o6z0zhgRRUUln+mB/LqeSkjCsaX26tnROEiWBTdmzx1Hwmczdgk19rX51Fw8QDb7MJhrfJaGWomhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zsvuij/K; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=mErQUAdufgZJFNMLSP67SYMlLcXapP0l2wZ/u0hkIUxdzpSyrYQwgAZccR+eFIJhPR5/6iyKfgA732P5OrTmZ+ZlbaH3CJ9bOeSb3zsni1dfgQ803rK8rBbVena6Ok6LsstGMISHAHZ+u3ICP6FLFbCjXV9suaRR01MtLDXjTQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YLbfX8BN; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zsvuij/K"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F18D31F000E9;
-	Fri,  4 Sep 2026 00:11:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YLbfX8BN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78A321F00A3D;
+	Fri,  4 Sep 2026 00:11:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788480666;
-	bh=z5WonLJhfzUtyqt16SdlaLa08/NrIGbbcKN3BkQy7eE=;
+	s=k20260515; t=1788480667;
+	bh=UmKCDy4rbTq5qHNHOxJVlHn3AKbwyfzyTAi+5rJBWek=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=Zsvuij/KR6c5aw8xWc0LOsDXSt/fN7dOFuopHk5+r56VT2DetzEz0bGDIDjb5ADII
-	 M9T8iMDIgqGCuPeGnY1t0IBuTCENouzsoVUd3ZhPVznThMvml96mqMsMdCQv808Wkt
-	 3JB1qT3V/X79+yox/fx+DO8ddauVTLUlf2SIFDAoW4xYucw5OS1tGnLCdpYDOTAUSa
-	 COq16qYBWnL11iOnWMs/dU42TixY2zDpZ2sfFuBOXTrD764QEFEmNBL2fAUTi4OOY6
-	 2ZoxxiXM0r2UupDa2xERHqkK8VaPU1rm1ieS6jH61ZfxqpB4i7K/Y4/QPpwqTELWLd
-	 JZTGTJ0gt1hwQ==
+	b=YLbfX8BN3V+/hfOAD5100V8m0xSsytyIAtxGcQjsz5AkZJKqLiRUdEn0u6qBLXm5v
+	 prhoB0kLkYhGVRP7lbJIRYoMPX+mxK95I7DdL+GFMaFPOyUdiXHVJ+qHfu2yHIuoCW
+	 Jt918u3In2rHDKia9ddAGVcEtVuzmproTHDk8/VwAS9BtszAJofVc/Ob/1NBeEFmm6
+	 akLayqrMspX0BFPPV1zj25TTCkfQZXdAiKzizkdoyxgpymZsqvV+TEJfxbKSH5JT3D
+	 YJ5ktPvFKZ/yl8r7vLxAhUpV7P/Umq40Ubjw7zEE5D2Bq3pCMXszdPf6fXQDvdBJ16
+	 E6h2NE5aKAcVQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 5690838119E3;
-	Fri,  4 Sep 2026 00:10:08 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D08AE38119E3;
+	Fri,  4 Sep 2026 00:10:09 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,38 +37,37 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] mlxsw: spectrum_ptp: Fix napi_gro_receive() call from
- GC
- workqueue context
+Subject: Re: [PATCH net v3 0/1] ipv4: fib: bound automatic table ID allocation
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178848060690.4080441.7467727339140621500.git-patchwork-notify@kernel.org>
-Date: Fri, 04 Sep 2026 00:10:06 +0000
-References: <20260902024949.2273997-1-tmbates12@gmail.com>
-In-Reply-To: <20260902024949.2273997-1-tmbates12@gmail.com>
-To: Taylor Bates <tmbates12@gmail.com>
-Cc: idosch@nvidia.com, petrm@nvidia.com, andrew+netdev@lunn.ch,
+ <178848060839.4080441.2295691911091405845.git-patchwork-notify@kernel.org>
+Date: Fri, 04 Sep 2026 00:10:08 +0000
+References: <cover.1788258884.git.zihanx@nebusec.ai>
+In-Reply-To: <cover.1788258884.git.zihanx@nebusec.ai>
+To: Zihan Xi <zihanx@nebusec.ai>
+Cc: netdev@vger.kernel.org, dsahern@kernel.org, idosch@nvidia.com,
  davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- amcohen@nvidia.com, netdev@vger.kernel.org
+ horms@kernel.org, kaber@trash.net, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue,  1 Sep 2026 22:49:46 -0400 you wrote:
-> Currently mlxsw_sp1_ptp_ht_gc_collect() is run from the PTP
-> garbage-collection workqueue, rather than the NAPI poll context. For any
-> unmatched PTP entries carrying an SKB, it calls
-> mlxsw_sp1_ptp_unmatched_finish() -> mlxsw_sp1_ptp_packet_finish(). For
-> ingress packets, this calls mlxsw_sp_rx_listener_no_mark_func(). The end
-> of that function is the following:
+On Tue,  1 Sep 2026 10:59:03 +0000 you wrote:
+> Hi,
+> 
+> fib_empty_table() scans table IDs from 1 while holding RTNL. IPv4 tables
+> live in a 256-bucket hash, so a dense set of IDs makes each probe walk a
+> growing chain. A table-0 IPv4 rule add can therefore stall unrelated
+> netlink operations.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] mlxsw: spectrum_ptp: Fix napi_gro_receive() call from GC workqueue context
-    https://git.kernel.org/netdev/net/c/2ac174dfcdde
+  - [net,v3,1/1] ipv4: fib: bound automatic table ID allocation
+    https://git.kernel.org/netdev/net/c/efdfb1e27a33
 
 You are awesome, thank you!
 -- 
