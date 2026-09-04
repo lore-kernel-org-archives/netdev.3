@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 950C2DF59;
-	Fri,  4 Sep 2026 00:01:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6654678F2F
+	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 00:11:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788480069; cv=none; b=IAT9nsvXltI2V2zBQOnaL0fPatkffmn6JTw8+a+OSWeErMSAw4P8TGn189G9XLUXsVBmFV1CsP6j+0IH0HdDJiEdi6JcFcXSR+TS67O7EsTM78qRJeofyrtOjbN0t3DyxuzYzESiEuxyO9v4FIKYHPjMaFx4de39vAJKNAVPn0o=
+	t=1788480667; cv=none; b=RwqBA06zr9Bi/WBnyDbmP+O7gQ7c5TagXxRPS/ygs85kxmuxJjmSski25i2cCNu4ElR9nYRsO2YNha/uaI45PRD3VdYCR0xQ8ITayeiwywrFaid8Ge2CAauxQ3dWQdI/fBCLnB0TO6s/81749IiZK3+sKXa3hRy0mfw2OEqOWXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788480069; c=relaxed/simple;
-	bh=shCxixmMLbuhiBwD5fPr/xohNEQ0Ny7ofQDfzYK5u04=;
+	s=arc-20240116; t=1788480667; c=relaxed/simple;
+	bh=scjXLcQvcaVTWdkWn0NDO5A+YMnWWXGE9A9Jy69Kts0=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=UQD9PnBgth57T3XFwANfkD5TR3PFZnTAY/IFlvzxvaJfUT5vfaXeB4hg4yIZJ2E9TlQKUuurpIPFY80BXzyUD3qV2y3hvmhSOkVNDQOh+Ttl2CizzK8WG+yXVTYXexOp7I0b+4V+VOdRUPJradYnKytpCdahqH3RWPOpgt0VYgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ii0SRMfN; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=OOhi71+a4pEH7nu7q0VZ9yGEx5GcsnFV+h+fjPlc54dMdfOvJcIWi2aXIdB912Ck4thObdKSr9ZteGBb+7j1wPiDJpaXT1o6z0zhgRRUUln+mB/LqeSkjCsaX26tnROEiWBTdmzx1Hwmczdgk19rX51Fw8QDb7MJhrfJaGWomhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zsvuij/K; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ii0SRMfN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BE5E1F000E9;
-	Fri,  4 Sep 2026 00:01:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zsvuij/K"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F18D31F000E9;
+	Fri,  4 Sep 2026 00:11:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788480068;
-	bh=qMNpia4hA42mXFQdFh9lzgSKloGeeTRNn35TAl3B0Cw=;
+	s=k20260515; t=1788480666;
+	bh=z5WonLJhfzUtyqt16SdlaLa08/NrIGbbcKN3BkQy7eE=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=Ii0SRMfNNva76uhs3o8/p+e0ajvfoEgnenH6L5lGrw/oUwWfaBnkMI6fFn5qmCAeJ
-	 xkLiQNrOPDL1qg3gEQx3s8y3xipNMm9D7RITJwwX+rlbJNWmVGUyL2m0+NyW3K0iN9
-	 J9cNlDNbSSQTDVy1QFPaSjgKK9ezCUPUDqhjgDooTwux1YLQ/MAnVhX/Z4kzp8Izwv
-	 u7t0ffpbOwfLQeibY5fqDAUUibFtzdpT6c7oYRHnysXiggKGBT66BZGFjow3JyvhPz
-	 2MMdGgAAKLpepdiiPPPsf8uPN8zBODr12WjjuY2AB8YDiRgpDXQGiB/Lw6zZ52O+NP
-	 wPv8rEnrH2Rdg==
+	b=Zsvuij/KR6c5aw8xWc0LOsDXSt/fN7dOFuopHk5+r56VT2DetzEz0bGDIDjb5ADII
+	 M9T8iMDIgqGCuPeGnY1t0IBuTCENouzsoVUd3ZhPVznThMvml96mqMsMdCQv808Wkt
+	 3JB1qT3V/X79+yox/fx+DO8ddauVTLUlf2SIFDAoW4xYucw5OS1tGnLCdpYDOTAUSa
+	 COq16qYBWnL11iOnWMs/dU42TixY2zDpZ2sfFuBOXTrD764QEFEmNBL2fAUTi4OOY6
+	 2ZoxxiXM0r2UupDa2xERHqkK8VaPU1rm1ieS6jH61ZfxqpB4i7K/Y4/QPpwqTELWLd
+	 JZTGTJ0gt1hwQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 9399338119E3;
-	Fri,  4 Sep 2026 00:00:10 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 5690838119E3;
+	Fri,  4 Sep 2026 00:10:08 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,41 +37,38 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 0/2] net: bcmasp: fix TX ring accounting bugs
+Subject: Re: [PATCH net] mlxsw: spectrum_ptp: Fix napi_gro_receive() call from
+ GC
+ workqueue context
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178848000914.4077563.14627683271472464588.git-patchwork-notify@kernel.org>
-Date: Fri, 04 Sep 2026 00:00:09 +0000
-References: <20260831184235.4133351-1-danesh.petigara@broadcom.com>
-In-Reply-To: <20260831184235.4133351-1-danesh.petigara@broadcom.com>
-To: Danesh Petigara <danesh.petigara@broadcom.com>
-Cc: justin.chen@broadcom.com, florian.fainelli@broadcom.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- bcm-kernel-feedback-list@broadcom.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
+ <178848060690.4080441.7467727339140621500.git-patchwork-notify@kernel.org>
+Date: Fri, 04 Sep 2026 00:10:06 +0000
+References: <20260902024949.2273997-1-tmbates12@gmail.com>
+In-Reply-To: <20260902024949.2273997-1-tmbates12@gmail.com>
+To: Taylor Bates <tmbates12@gmail.com>
+Cc: idosch@nvidia.com, petrm@nvidia.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ amcohen@nvidia.com, netdev@vger.kernel.org
 
 Hello:
 
-This series was applied to netdev/net.git (main)
+This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Mon, 31 Aug 2026 11:42:33 -0700 you wrote:
-> Two fixes for TX descriptor ring handling in the bcmasp driver:
-> 
->   - tx_spb_ring_full() re-initialized next_index from
->     intf->tx_spb_index on every loop iteration instead of advancing
->     it, so it only ever checked a single descriptor slot regardless
->     of cnt. This let bcmasp_xmit() proceed even when the ring didn't
->     actually have enough free slots for the SKB's fragments.
+On Tue,  1 Sep 2026 22:49:46 -0400 you wrote:
+> Currently mlxsw_sp1_ptp_ht_gc_collect() is run from the PTP
+> garbage-collection workqueue, rather than the NAPI poll context. For any
+> unmatched PTP entries carrying an SKB, it calls
+> mlxsw_sp1_ptp_unmatched_finish() -> mlxsw_sp1_ptp_packet_finish(). For
+> ingress packets, this calls mlxsw_sp_rx_listener_no_mark_func(). The end
+> of that function is the following:
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,1/2] net: bcmasp: clear txcb->last before writing each descriptor
-    https://git.kernel.org/netdev/net/c/18e5e0ec0e92
-  - [net,2/2] net: bcmasp: fix tx_spb_ring_full() checking same slot cnt times
-    https://git.kernel.org/netdev/net/c/0c5cf62e72d7
+  - [net] mlxsw: spectrum_ptp: Fix napi_gro_receive() call from GC workqueue context
+    https://git.kernel.org/netdev/net/c/2ac174dfcdde
 
 You are awesome, thank you!
 -- 
