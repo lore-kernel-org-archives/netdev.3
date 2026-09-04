@@ -1,76 +1,108 @@
-Received: from sg-2-2.ptr.blmpb.com (sg-2-2.ptr.blmpb.com [71.18.227.2])
+Received: from mta1.migadu.com (out-160.mta1.migadu.com [95.215.58.160])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D055F3242BD
-	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 04:02:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=71.18.227.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B95F53B5E10
+	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 04:05:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.160
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788494574; cv=none; b=qDg44Ch3IwDDGARIeHXr8Rx5ocI4fjHejKhFQnfCeRfoqpxvt81TcJlahCtB/scATOEAmrfxjf/xuK8SkHynHuB6uEWvuht8N+NGvOqxdATTlkEsbr85yo3Z8aRsiTV4YfomUufCjj9hNLFAErdeqrpLaj1sKdmYvHkOzHE/AW0=
+	t=1788494703; cv=none; b=Y4t6AxKjner3YTq+crl7PynhG+bhaxd9IeB/DJ131LlvHn6OX7DHFfpH/yLIfFVXAM6hESUWQULsE6dmCdqkHJeG5v2IbfT5J6XpEKm9TZmZIJkftfUUQY7QOp0a4MsCai25ta/KGD3QN3ngPHONBDzkLcYtnpuTvGAy4BWUtro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788494574; c=relaxed/simple;
-	bh=l7qxdyLthksN7viBx28FTROc2LOAvoR67yaOuXpXh6c=;
-	h=Message-Id:Content-Type:Cc:Date:References:Subject:Mime-Version:
-	 Content-Disposition:To:From:In-Reply-To; b=GE+hYJ6bStbVMRzV4EMRmvsIyBxSlM2gkM9XDFYMp875XpscmcWwTv3pwEq5C9GAmmS1UQOf+liA3iLFHQRP7EZDXkGdpIjhaQqIfzd4/IG4ns/UzsfK9oIQqDmpV0WURzsS7RlcJvzpslXlxCntiRvGERkB2pJt522fnyTKy7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cherr.cc; spf=pass smtp.mailfrom=cherr.cc; dkim=pass (2048-bit key) header.d=cherr.cc header.i=@cherr.cc header.b=jxV2cSsU; arc=none smtp.client-ip=71.18.227.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cherr.cc
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cherr.cc
+	s=arc-20240116; t=1788494703; c=relaxed/simple;
+	bh=ue4PnbHN0fEUQJXyiYl3vf1PZO/9AqEUw5hB1Q/aDAE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JsGyau6a1cvi7MUJT7Cjxjr2fK4r4AZYiyvtQOTY7dNADenHyla40j42rUapCpmkvycUCG3hRh97DTNCisFm4hKgUvhAZkt+QSjutMAIgk5vXfbRfmmV+7zFknDtd6T7UYx13cnfNQfVM68chngHOfJys0F7i4ZQ5Mcf8jO/3bc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=dmty5GUl; arc=none smtp.client-ip=95.215.58.160
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cherr.cc header.i=@cherr.cc header.b="jxV2cSsU"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=feishu2604220257; d=cherr.cc; t=1788494566; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=l7qxdyLthksN7viBx28FTROc2LOAvoR67yaOuXpXh6c=;
- b=jxV2cSsU2wFZ2YfYPkHpwGMs6vAoKiOQCyxS9trvVJkiUf9FKaApBFCuhYJ3AF073+I1tg
- cZ/jysPbiG+8omxFiqzt0oEuwxzv5DlTkl9gctvwlYi+KtfplFWoETVOO3JuOwPgfc4jHE
- Bsv9veyip7lpx3E0Kr75Xe7yTE3d6z5hiZqlIH8pWL46oH2HsortJ/IpIl1JKVDz2Rdm+U
- g+KrgiypLuF3UxyJOU26gIqlO63oZujzEASqpgAsCwOUYqvYU9b1FI7Vt/8EJ3Y55LPrRj
- Gem2NWHYWuUHM9TLj11hcEQ5NShxOdSIBLMTVvkNU+bxaUJxTtl18Ckg7dGEOg==
-Message-Id: <appC4LJ4B4NKtoRw@pve>
-X-Lms-Return-Path: <lba+26a9a42e5+862d8f+vger.kernel.org+me@cherr.cc>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-Cc: "Shengzhuo Wei" <me@cherr.cc>, "Frank Li" <frank.li@nxp.com>, 
-	"Shenwei Wang" <shenwei.wang@nxp.com>, 
-	"Andrew Lunn" <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, 
-	"Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>, 
-	"Paolo Abeni" <pabeni@redhat.com>, 
-	"Richard Cochran" <richardcochran@gmail.com>, 
-	"Troy Kisky" <troy.kisky@boundarydevices.com>, 
-	"Fugang Duan" <fugang.duan@nxp.com>, 
-	"Lucas Stach" <l.stach@pengutronix.de>, 
-	"Fugang Duan" <B38611@freescale.com>, 
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, 
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Date: Fri, 4 Sep 2026 12:02:40 +0800
-References: <20260904-fec-ptp-pps-event-uaf-v1-0-9af446be4a11@cherr.cc> <20260904-fec-ptp-pps-event-uaf-v1-1-9af446be4a11@cherr.cc> <GV2PR04MB11739E67E12529585010DEB7488B52@GV2PR04MB11739.eurprd04.prod.outlook.com>
-Subject: Re: [PATCH net 1/2] net: fec: don't leave a stale PTP clock pointer after unregister
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="dmty5GUl"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=ue4PnbHN0fEUQJXyiYl3vf1PZO/9AqEUw5hB1Q/aDAE=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788494698; v=1; x=1789099498;
+ b=dmty5GUlyTM8F0cq/2ZtMOktWX8q+ne4Z4BKY2PNi4ICKi1evb1vxtpuw5vwftNj3SOK2AjZ
+ QAgy4In3cBoAN6Q6TYAuQOwK2crXBnULbtsZ48dEsJ6Ylz+eyFmcfYDA/KyHLK5xgr1IICziCX/
+ Aklc5qoZyXIBwq65lztHFk1Q=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 84c074122f8b22ba;
+	Fri, 04 Sep 2026 04:04:58 +0000
+X-Mizu-Trace-ID: 84c074122f8b22ba
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <4ca21d05-87cd-4f76-ab39-0656ef372fa1@linux.dev>
+Date: Fri, 4 Sep 2026 12:04:49 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Received: from pve ([111.42.148.74]) by smtp.feishu.cn with ESMTPS; Fri, 04 Sep 2026 12:02:44 +0800
-Content-Disposition: inline
-X-Original-From: Shengzhuo Wei <me@cherr.cc>
-To: "Wei Fang" <wei.fang@nxp.com>
-From: "Shengzhuo Wei" <me@cherr.cc>
-In-Reply-To: <GV2PR04MB11739E67E12529585010DEB7488B52@GV2PR04MB11739.eurprd04.prod.outlook.com>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v3] net: dropreason: add
+ SKB_DROP_REASON_IP_TTL_EXCEEDED
+To: Junjie Cao <junjie.cao@intel.com>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: David Ahern <dsahern@kernel.org>, Simon Horman <horms@kernel.org>,
+ Ido Schimmel <idosch@nvidia.com>,
+ Fernando Fernandez Mancera <fmancera@suse.de>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260904030112.450920-1-junjie.cao@intel.com>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+In-Reply-To: <20260904030112.450920-1-junjie.cao@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 2026-09-04 03:15, Wei Fang wrote:
-> Why not move fec_ptp_stop() after unregister_netdev()?
 
-Good point. I was focused on making the PHC index lookup safe
-independently of the teardown ordering and followed the approach used by
-similar fixes, so I overlooked the simpler solution here.
+on 9/4/26 11:01 AM, Junjie Cao wrote:
+> The forwarding paths report an expired TTL or hop limit as
+> SKB_DROP_REASON_IP_INHDR, the reason otherwise used for a header that is
+> malformed (ip_input.c, exthdrs.c, br_netfilter). Nothing else in the drop
+> path separates the two: IPSTATS_MIB_INHDRERRORS covers both, and the TTL
+> check runs before NF_INET_FORWARD, so netfilter tracing stops at
+> PREROUTING and never sees the drop.
+>
+> The Fedora bug linked below shows how that reads in practice. The
+> reporter took kfree_skb(reason=IP_INHDR, loc=ip_forward) to mean the
+> software header checksum check had failed, and worked through RX checksum
+> offload, tc csum actions and both libvirt firewall backends before the
+> drops turned out to be replies arriving with TTL 1. ip_forward() never
+> verifies the header checksum; that runs earlier, in ip_rcv_core(), and
+> reports IP_CSUM.
+>
+> TTL expiry is not a corner case -- every traceroute through a Linux
+> router goes through too_many_hops.
+>
+> The three loopback hop limit checks in exthdrs.c drop with no reason at
+> all; give them the new one.
+>
+> IPSTATS_MIB_INHDRERRORS stays as it is: RFC 1213 counts time-to-live
+> exceeded under ipInHdrErrors. The drop reason has no such constraint.
+>
+> Link: https://bugzilla.redhat.com/show_bug.cgi?id=2517131
+> Signed-off-by: Junjie Cao <junjie.cao@intel.com>
 
-Moving fec_ptp_stop() after unregister_netdev() is cleaner and restores
-the proper lifetime ordering. I will rework patch 1 accordingly and drop
-the ptp_clock_index_by_dev() change in v2.
 
-Thanks,
-Shengzhuo
+Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+
+[...]
+
+>   /**
+> @@ -606,6 +607,11 @@ enum skb_drop_reason {
+>   	SKB_DROP_REASON_PSP_OUTPUT,
+>   	/** @SKB_DROP_REASON_RECURSION_LIMIT: Dead loop on virtual device. */
+>   	SKB_DROP_REASON_RECURSION_LIMIT,
+> +	/**
+> +	 * @SKB_DROP_REASON_IP_TTL_EXCEEDED: IPv4 TTL or IPv6 hop limit hit
+> +	 * zero (see IPSTATS_MIB_INHDRERRORS)
+
+
+nit: "<= 1" would be more accurate than "hit zero".
+
+
+> +	 */
+> +	SKB_DROP_REASON_IP_TTL_EXCEEDED,
+>   	/**
+>   	 * @SKB_DROP_REASON_MAX: the maximum of core drop reasons, which
+>   	 * shouldn't be used as a real 'reason' - only for tracing code gen
+>
