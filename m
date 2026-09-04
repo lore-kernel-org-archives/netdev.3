@@ -1,227 +1,291 @@
-Received: from mx.ssi.bg (mx.ssi.bg [193.238.174.39])
+Received: from mx0a-0002e601.pphosted.com (mx0a-0002e601.pphosted.com [148.163.150.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98C943B42C7;
-	Fri,  4 Sep 2026 04:28:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.238.174.39
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788496107; cv=none; b=UyuAfsKHazcDBSSdg/UciIJpuSy5GAiqZnrGlGpvgC/0+f4KgmpgRJyG0xY4rSspOuF3Q328OsZoUH9JcQdjVNCMjof776n18xRVO34l7+ix+0hYyvch3osOSaxjf/EMmXHLGfDWWj96v0KVpVDeeFPQtfkBv7ad9OgeCgRabOc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788496107; c=relaxed/simple;
-	bh=fUkMzxr5cvb9Yhx4tSc8tYYbmu8KznfA5Vz5qpftacM=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=blMflmEYZB2ZhMg2KPcV481hpP7mRRfhgD/OSTkMFyAWvphIMsANIULqxrq/OtkRBGAbo3Dyzxn5L30hxYui2K7FqP0jaXqE9273ZCtrVnC1opk4aa8YTPYOb13+wWGrGVuflF2AKpstWbKhV0KVfYkoFbQij5ntEUqPgglxPYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg; spf=pass smtp.mailfrom=ssi.bg; dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b=fQFM0rJR; arc=none smtp.client-ip=193.238.174.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ssi.bg
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B849F37F00F;
+	Fri,  4 Sep 2026 04:34:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.150.75
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788496450; cv=fail; b=Amr+g0blJHqC7udJKR958ls4y/8nPbjXxkxZBe72rGnmOGajxi2M7r/6YUJwrJ8ckBeTvGCxEhRatUlBRi5Uik5+TPjYu5GmNP3ef+O3rR6uaLigZbZFDF5OkE1dGHdearaM6IRLr40Nwa7x82hSQmPt4KFeRESsH84BoMqRM+o=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788496450; c=relaxed/simple;
+	bh=5zaltnXr9kUr0nM4chsdfXVwtGh+SzXknGjlcJ0YprE=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=VVwWlLoluEm9WuWCcYSr/XJg4asG19L3Jc6FUxB+F+EIiCuWt27mgdOsdKkV320eHT6YK0a+y5nOFLuPqB2L3xzoB4PaNqcMA+/Z85gGfbatMTg7IE9CZUpzMyw/ElIo01yf20v+HvYVmYieAormWJFUPv4focodHfpN0jvx28U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (2048-bit key) header.d=ti.com header.i=@ti.com header.b=f84JNZRP; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=OWEzgFOv; arc=fail smtp.client-ip=148.163.150.75
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b="fQFM0rJR"
-Received: from mx.ssi.bg (localhost [127.0.0.1])
-	by mx.ssi.bg (Potsfix) with ESMTP id A211D21CCB;
-	Fri, 04 Sep 2026 07:20:33 +0300 (EEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ssi.bg; h=cc:cc
-	:content-type:content-type:date:from:from:in-reply-to:message-id
-	:mime-version:references:reply-to:subject:subject:to:to; s=ssi;
-	 bh=TP/MZEULkbRg9iK8Y1OIo3Ouhxoe2b1CK2DMF3NgQHY=; b=fQFM0rJRWO7a
-	KGW+PzhsXHTQBnmRcAyueQOXrNAx+KUak2dj0TwV0hFhTsEWMwu6PGpQJbJJ13Fj
-	v6u7KHzxzH0QO5w/LK2q4no1yr5f7wUIONNK0RnxadGMgYrwINexJmVp5a8vQuQj
-	WJ+LpjPKJrXdvbohRG5OhzY5TC10AFol/qq0fthuUJfKg0mIOW4h3Q3i9OmJH1OQ
-	+nHIk7MZoQHw8uEs4iMp+WcaClePCvSuuU79iJjaUnrx5jRDG3l8mbkV/wX491b5
-	jnsx8IkPvJ7A9Qty/2tJheLCJ6cuA3NPPEYCN7DXjk3+TrfIXnOnC7jo7m9z/Ikm
-	qqHzW3ZW2UqJNOSPm1sxkBX1USO892qsTWJ/aUX9fUg9v+8ihxK9dVwH9Y+MMRfA
-	VNSBUFMe6uu9Z+u5X/U1xVY2iJNgdHhURm3n83xL0kPEqb7Z7mlORt62ocnKOMvg
-	bxLiGV88vT9m86MBkclXSECf8P4//tYoQd5xx6vSsKBt2O7oMfhkFM2jYdl8pevZ
-	epufD/pIadO04Bdg7fQKYT9vUAF41aKLC0KhqiNlGNrBKZecSJhDtr18hBbp7uCt
-	VIylm9SmVRDayh/89yQlQKF64QJb+vLeTtOEKw4oRJY9j/+aTyT6H2epk53G2x00
-	T8r4Tmd1BOzRa/AwVoML/ZlmLhyFqWw=
-Received: from box.ssi.bg (box.ssi.bg [193.238.174.46])
-	by mx.ssi.bg (Potsfix) with ESMTPS;
-	Fri, 04 Sep 2026 07:20:33 +0300 (EEST)
-Received: from ja.ssi.bg (unknown [213.16.62.126])
-	by box.ssi.bg (Potsfix) with ESMTPSA id 833A361D2B;
-	Fri,  4 Sep 2026 07:20:34 +0300 (EEST)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by ja.ssi.bg (8.18.2/8.18.2) with ESMTP id 6844KVH4009235;
-	Fri, 4 Sep 2026 07:20:31 +0300
-Date: Fri, 4 Sep 2026 07:20:31 +0300 (EEST)
-From: Julian Anastasov <ja@ssi.bg>
-To: Jakub Kicinski <kuba@kernel.org>
-cc: pablo@netfilter.org, netfilter-devel@vger.kernel.org, davem@davemloft.net,
-        netdev@vger.kernel.org, pabeni@redhat.com, edumazet@google.com,
-        horms@kernel.org, fw@strlen.de
-Subject: Re: [PATCH net 06/12] ipvs: bound LBLCR and LBLC cache growth
-In-Reply-To: <20260904020140.3549818-1-kuba@kernel.org>
-Message-ID: <0afb3b53-f4b5-7cb8-0f06-7582a50ef83b@ssi.bg>
-References: <20260903004149.1037028-7-pablo@netfilter.org> <20260904020140.3549818-1-kuba@kernel.org>
+	dkim=pass (2048-bit key) header.d=ti.com header.i=@ti.com header.b="f84JNZRP";
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="OWEzgFOv"
+Received: from pps.filterd (m0384305.ppops.net [127.0.0.1])
+	by m0384305.ppops.net (8.18.1.11/8.18.1.11) with ESMTP id 6842t6a01101474;
+	Thu, 3 Sep 2026 23:34:04 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=proofpoint-05-2026; bh=RT3UH0kQJ0P/e
+	JCVcoXFU5wF/HzNhyvZpDkx9m30zSw=; b=f84JNZRPd5UL80McEEEvBBT1zKLLR
+	8mWZxVnzrjxurlNgiE0+UgIm9fg+ACY4h4RCK+vyQUaMHXsUhwdgY5f4mejtctXd
+	Wo25+ta2tqQ+WDDSUD/yi1tZRN2FqIfk4i2KP9Y0IdehDhYUjh/EiCziP7+SccCi
+	5iHL2nFQjTcHKXHRUQF2U0xYJt05JFxs/n+Cl890RDMwm4QHP6cF5WdLU3Z4uM6h
+	jVcEWj/vF5HFERYj3/bepCcvHtdE2K4To7xxISNVlz1DkT8JL8gVShKCbT9R6ptI
+	6u3r3F6G2bI0TvOdARz/HNhymjcF5lA0w3iQednXvTltT/xGRK9cLJWng==
+Received: from ch5pr02cu005.outbound.protection.outlook.com (mail-northcentralusazon11012037.outbound.protection.outlook.com [40.107.200.37])
+	by m0384305.ppops.net (PPS) with ESMTPS id 4gf0jv8n3t-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Thu, 03 Sep 2026 23:34:03 -0500 (CDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=bq5hQ/x3nWEwD7TKCV65lAiirPyQBpLBQ3cW41s6aDLnaF4UIKbwixQQok7k/4YMPVDztPi0Ra8I3RDCnOsqhWXKGOxQJLSuRP7SpUKegquRdOltLmOVeoxsei0eOmnSgpQIJ/jtJ7ZXJFdoe0rQrVsqA77Vq7DnLROEo9I82kyyokBxryH0695u3up97kt8gkhIaKuIRsxTcs/I1oSN0a0c8pzBnd9wo2K/apf2zNN7MYQzlTSW8sRoBYEi29ntTzcekahmHaRv0eLwcP/kWM3N+gGaAbx3nGg6qVst4g6sLoCpnxvGFcRjzCzE1UXk0Y8Bz/fpGMKIe91n+CDjvQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=RT3UH0kQJ0P/eJCVcoXFU5wF/HzNhyvZpDkx9m30zSw=;
+ b=F44jol/bEd6QEgsbcJ+oK1TfNaSGAaYFewc6YcZKccP2TRS4MLolT3JcDqhLKTk9GNA811FIHhtd5hHUMi16I3gstng/ULp3bMfwYUbHjqCG/pZuIir5UQyZRi4Ki7wSeZB/z9eQwAcdETbmgHQbcp9ryHDEfRCDyo70/7c7oUvc44yj2nXtGyKCcCp87rZ/8VbWm//ioeeZ1RBc41D7QAS5fzQdBqBZSca2z8WjTSsHx+zO/EoUwLIoCyKXCkkGYtt5RKdi9jNMVe45ZwXPTTHOuTWV8yj8h19mqFH8sxONt4Vq4LB+Le2lP8NI2bEd4XDKyEjbEYhXitgQ00PK9A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 198.47.23.194) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=ti.com;
+ dmarc=pass (p=quarantine sp=none pct=100) action=none header.from=ti.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=RT3UH0kQJ0P/eJCVcoXFU5wF/HzNhyvZpDkx9m30zSw=;
+ b=OWEzgFOv0zmisydXQ9Ba1K7WwsIE9ZGXhL4WoXHWwVJf9QbPf7tB/cJIPD24NyJJsS8I9VsF3ZQZJbbu/itDKSyeA1CKsIi7EQYpSETeM9dDDns3BSgx1x1bNJ0/UtVvsdgTMDVPT5U10Mb1kH1CiOPXHXLTp6/GRJ2aI39Ui/I=
+Received: from PH7P220CA0117.NAMP220.PROD.OUTLOOK.COM (2603:10b6:510:32d::34)
+ by BN0PR10MB4949.namprd10.prod.outlook.com (2603:10b6:408:12b::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.382.10; Fri, 4 Sep
+ 2026 04:34:00 +0000
+Received: from SJ1PEPF000023D9.namprd21.prod.outlook.com
+ (2603:10b6:510:32d:cafe::a2) by PH7P220CA0117.outlook.office365.com
+ (2603:10b6:510:32d::34) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.382.12 via Frontend Transport; Fri, 4
+ Sep 2026 04:34:00 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 198.47.23.194) smtp.mailfrom=ti.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=ti.com;
+Received-SPF: Pass (protection.outlook.com: domain of ti.com designates
+ 198.47.23.194 as permitted sender) receiver=protection.outlook.com;
+ client-ip=198.47.23.194; helo=lewvzet200.ext.ti.com; pr=C
+Received: from lewvzet200.ext.ti.com (198.47.23.194) by
+ SJ1PEPF000023D9.mail.protection.outlook.com (10.167.244.74) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.406.1 via Frontend Transport; Fri, 4 Sep 2026 04:34:00 +0000
+Received: from DLEE207.ent.ti.com (157.170.170.95) by lewvzet200.ext.ti.com
+ (10.4.14.103) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Thu, 3 Sep
+ 2026 23:33:58 -0500
+Received: from DLEE210.ent.ti.com (157.170.170.112) by DLEE207.ent.ti.com
+ (157.170.170.95) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Thu, 3 Sep
+ 2026 23:33:58 -0500
+Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DLEE210.ent.ti.com
+ (157.170.170.112) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45 via Frontend
+ Transport; Thu, 3 Sep 2026 23:33:58 -0500
+Received: from toolbox.dhcp.ti.com (uda0492258.dhcp.ti.com [10.24.68.110])
+	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 6844Xh1G3831572;
+	Thu, 3 Sep 2026 23:33:43 -0500
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
+To: <dario.binacchi@amarulasolutions.com>, <mkl@pengutronix.de>,
+        <mailhol@kernel.org>, <msp@baylibre.com>,
+        <florian.fainelli@broadcom.com>, <jonas.gorski@gmail.com>,
+        <andrew@lunn.ch>, <olteanv@gmail.com>, <davem@davemloft.net>,
+        <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
+        <kurt@linutronix.de>, <hauke@hauke-m.de>, <chester.a.unal@arinc9.com>,
+        <daniel@makrotopia.org>, <matthias.bgg@gmail.com>,
+        <angelogioacchino.delregno@collabora.com>, <ansuelsmth@gmail.com>,
+        <linusw@kernel.org>, <luizluca@gmail.com>, <alvin.sipraga@analog.com>,
+        <clement.leger@bootlin.com>, <justin.chen@broadcom.com>,
+        <dlan@kernel.org>, <rogerq@kernel.org>, <hkallweit1@gmail.com>,
+        <linux@armlinux.org.uk>, <rjui@broadcom.com>, <sbranden@broadcom.com>,
+        <bcm-kernel-feedback-list@broadcom.com>, <opendmb@gmail.com>,
+        <andrei.botila@oss.nxp.com>, <wangruikang@iscas.ac.cn>,
+        <amadeus@jmu.edu.cn>, <kees@kernel.org>, <tmshlvck@gmail.com>,
+        <c-vankar@ti.com>, <horms@kernel.org>, <vadim.fedorenko@linux.dev>,
+        <daniel.zahka@gmail.com>, <nora.schiffer@ew.tq-group.com>,
+        <v-singh1@ti.com>, <oss@vassilevski.com>, <haokexin@gmail.com>,
+        <alex@sverdlin.org>, <aleksandr.loktionov@intel.com>,
+        <lgs201920130244@gmail.com>
+CC: <linux-can@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+        <linux-mediatek@lists.infradead.org>,
+        <linux-renesas-soc@vger.kernel.org>, <linux-riscv@lists.infradead.org>,
+        <spacemit@lists.linux.dev>, <linux-omap@vger.kernel.org>,
+        <s-vadapalli@ti.com>
+Subject: [PATCH net-next 00/33] Remove comma after sentinel entries in match table
+Date: Fri, 4 Sep 2026 10:06:06 +0530
+Message-ID: <20260904043724.2955444-1-s-vadapalli@ti.com>
+X-Mailer: git-send-email 2.51.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ1PEPF000023D9:EE_|BN0PR10MB4949:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4ec6af4b-8091-445f-d0f2-08df0a3dbdbf
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|82310400026|23010399003|7416014|376014|36860700016|921020|13003099007|6133799003|10067099003|56012099006|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	dSxkknKsltO8PRbd0alMZM3b/Wioe1DDb50EgD8FRTp+M1VNwWdP9m6NRRF4yLomxDt/EAuv3DgOlWJimNJbNoRjNXhCzwCR5VRNc5QIue7gy34AdQrOpzMi8nSa8jYIqOr49V5UrZh4oXyo/fBFhsPSk6FElcVg9mlh3CWdKUxgV9+a6DJphBIJpU/DZbSDPmbTyTYrwBzngUa2sqlawhgNcfm5OObqR1yvdoPLeqZVZLbrIKV3WqoNkd97El+Zl6TErCKWYdwCsc6kRZ9vdseq0adQ33ox2512W3/XqwpcgMWuzgkyK6Tf/6XcS6akfeR6WJk+Y3srf8Q/jyVmL+lw//nnbhzEtKV7/B55Gl0y3dhLBgJHTWJ+2NEK6luOFDjAQSfssFYjnIjjuxzTWK0OLj96YdfI26OTlxmzKShWli53uONdElha6jF68zxgKLWcdKNUhW8wCUGk67N9s8en8grdpwWiktiFd7F4HRwo7mUciWKhDwDcRlOsE9OlI6hlSbNkecIaY/7Zs9r8c4g99lB9T9Q12M0EHhu42Tbp+eMBq9+MJb9eXe/iharxq46gt0QvLX5rQpKXV8f5738fZrNmLC5gIiT5DPdAQwMFrKNChnfCq6BkcyGXnigW/V2fMR76bMUCIJd5gfuX3YYbBBMhNXUgq3t2Ce/NDsyZmyTgdx0F9rjLJwKEISLhzoWkziXps4Wu7rvFsEDmRw==
+X-Forefront-Antispam-Report:
+	CIP:198.47.23.194;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:lewvzet200.ext.ti.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(23010399003)(7416014)(376014)(36860700016)(921020)(13003099007)(6133799003)(10067099003)(56012099006)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	SfsW+l6Ufjq4sz3XQ1Bvvrfrb6vA6AvIKLrBlqQDA1K5Uu8Vd6XHJiiklm9DRWB3AdTByHH+zBu95xFgZmPYHxn5lY3UvduCsV8jD0AgQWUTejq5v+/F9n4+0SDE1ebjbeOtwRK9BcPrb3+iypifhPxD69Enr9d5/l52TzhU+4+EaUmIA2wea+FLCKaPla+Nrk2MyWNdi94kE5uZIMG8K71FPQoW5vXtKDAzivM5foDkzLYGlB+UHA/U/V9/2JRim2C5dejNKJx1RlvmK/DxfmhiMl+M7+UPMM+nzWk9QGKoa9PmEkUauF6RD1IvrGgsc8703/d743tqL7zrgpzwfYwPsdmgIrGVSSlbL26bNTncn03RRZKqXPrV1BuabPMwapyuvrDti8aakG063YWa0I4CrlfWDgaOTy1VWqUJ881iRBn1NO+Ou3LFJE2Vjt3Y
+X-Exchange-RoutingPolicyChecked:
+	CAbb3Bl+XY/byuRqWhvqBrkhj2dc7MmGV6l4jLypw/J8V+1kP47t0JA8m05kjTm5W+o0vYeh/hEvFjS8e02woUR7BdA/NPmBU5hPvvFwP6o8AnJ3iFJeTkrEZDShGO2Z+4RTI6Zz3RqbUOytkr4zW4k3UCskA1UkIAB9ddGkBXspfRLpu7t0LMdeJO0NdCorEgZBwIJHp1qob3nuwZk+aThdmdcq2CaaP1L+UkWUoZm713pxc9TVHatEtePjU6buTXcNq7LavykEvVVS5R/vK956EEOUNgaJh3342PxvdE8mMfDhLouoTolDgs8oeX4wRb5m1K5lgm6P7flx4AI9vA==
+X-OriginatorOrg: ti.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Sep 2026 04:34:00.1724
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4ec6af4b-8091-445f-d0f2-08df0a3dbdbf
+X-MS-Exchange-CrossTenant-Id: e5b49634-450b-4709-8abb-1e2b19b982b7
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e5b49634-450b-4709-8abb-1e2b19b982b7;Ip=[198.47.23.194];Helo=[lewvzet200.ext.ti.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ1PEPF000023D9.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN0PR10MB4949
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTA0MDAzOSBTYWx0ZWRfXyGyDNPgy5mLk
+ 8IoJqSwEwZUIWUogxSB3Vf5BjzRCqCBQow9xcrg8ai+Ow7JwmnvnvaV3FEQlexRHnsmEpKqz0mq
+ UnSEc20AQRF4G1dl0ECsgBVSy/uVDCU=
+X-Authority-Analysis: v=2.4 cv=J6eaKgnS c=1 sm=1 tr=0 ts=6a9a4a3b cx=c_pps
+ a=TuEuCTxUJaX1tclN0RLokw==:117 a=WotqVVQAdb04rnGuttW3Kw==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=VdqzKS8jKosA:10 a=s63m1ICgrNkA:10
+ a=V5UXEbMT0ywA:10 a=VkNPw1HP01LnGYTKEx00:22 a=Z8NIEmU8O1QQgoT56wFK:22
+ a=taLDd7a_hP9WKsMzeGRc:22 a=VwQbUJbxAAAA:8 a=sozttTNsAAAA:8
+ a=Bt1NjzTRiCgrIjd4xQkA:9
+X-Proofpoint-GUID: wLs0pMu7OUr3Q82zq8rN0zh1Ul4Wq8yg
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA0MDAzOSBTYWx0ZWRfX82fOd8DBmr9o
+ j2syTGn877FLMLCiX9ccgFrrpLxHOj6INjVLYkM082IW7zE8FhMtWWHXJuID1Jwkybq8hgF0yLI
+ vhn81y/h1mvoAHGvlImQFvo+m/c5NK++D3nS4s/a+wZEeoffqrVe/uAH3p2IcqIc5DQ+f0AMsvq
+ YeACsRkHVzRfwo7b3YU7WdzFCjhnByCI8rIBBh+KHyig+zVVrSTna9wD4FAudorQdnOz0aFUagx
+ +j+mWV1eCGqnnC+TM5AMvRIHKvX+spMzgwZTcBKparKN8z5qOZu59I37fFe6Osjjy8qoo5MGWmF
+ 8UpEbI2NQ2Oc5Mb2VLBRLulREn5YZyCHlarHdNnYAgbJZ2MFvS2LRt6wAuec7aG9ahyFaQKvjlk
+ cqVxGYkls0CCf5ytJjivTZAWsDTWIbLaSBFkWJb5BJk9NuULqUb6vOn2c31o0MKN8JVLddu3h+v
+ FV4Uy928E0oQG1uDuRQ==
+X-Proofpoint-ORIG-GUID: wLs0pMu7OUr3Q82zq8rN0zh1Ul4Wq8yg
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-04_01,2026-09-03_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 spamscore=0 clxscore=1011 adultscore=0 bulkscore=0
+ impostorscore=0 lowpriorityscore=0 suspectscore=0 phishscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2609040039
 
+Hello,
 
-	Hello,
+This series removes the comma present after sentinel entries in the match
+tables across all networking subsystem drivers, with the exception of the
+davinci_mdio.c driver, for which, the patch posted by Geert at:
+https://lore.kernel.org/r/e481b6de46cecc6ea604ae165272c667274cc621.1788437140.git.geert+renesas@glider.be/
+does the same.
 
-On Thu, 3 Sep 2026, Jakub Kicinski wrote:
+Since I inquired about a cleanup across the entire networking subsystem but
+didn't get a response:
+https://lore.kernel.org/r/b3d19098-eccd-4619-b667-ad3b7e0a4422@ti.com/
+I decided to post this series. Given that Andrew Lunn acknowledged the
+cleanup of the davinci_mdio driver:
+https://lore.kernel.org/r/abec6831-d344-489d-b70c-1e5dd4d43c2d@lunn.ch/
+and I don't see why the cleanup is specific to davinci_mdio driver alone,
+I am hoping that this series is treated identically to the patch that
+Geert had posted for the davinci_mdio driver.
 
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
-> ---
-> ipvs: bound LBLCR and LBLC cache growth
-> 
-> This adds a hard admission limit to ip_vs_lblc_new() and
-> ip_vs_lblcr_new(), rejecting new cache entries once atomic_read(&tbl->entries)
-> reaches max_size * 3 / 2.  The stated intent is to leave headroom so the
-> periodic collector can catch up while the scheduler fallback keeps serving
-> traffic.
-> 
-> > diff --git a/net/netfilter/ipvs/ip_vs_lblc.c b/net/netfilter/ipvs/ip_vs_lblc.c
-> > index 693bcc82ccb7..8180a7ba9f53 100644
-> > --- a/net/netfilter/ipvs/ip_vs_lblc.c
-> > +++ b/net/netfilter/ipvs/ip_vs_lblc.c
-> > @@ -204,6 +204,9 @@ ip_vs_lblc_new(struct ip_vs_lblc_table *tbl, const union nf_inet_addr *daddr,
-> >  			return en;
-> >  		ip_vs_lblc_del(en);
-> >  	}
-> > +	if (atomic_read(&tbl->entries) >= tbl->max_size * 3 / 2)
-> > +		return NULL;
-> > +
-> >  	en = kmalloc_obj(*en, GFP_ATOMIC);
-> >  	if (!en)
-> >  		return NULL;
-> 
-> [Severity: High]
-> Can tbl->entries be trusted as a bound on the number of live entries in
-> ip_vs_lblc_new()?  The replacement path just above the new test is the only
-> ip_vs_lblc_del() call site that does not decrement the counter:
-> 
-> net/netfilter/ipvs/ip_vs_lblc.c:ip_vs_lblc_new() {
-> 	en = ip_vs_lblc_get(af, tbl, daddr);
-> 	if (en) {
-> 		if (en->dest == dest)
-> 			return en;
-> 		ip_vs_lblc_del(en);	/* no atomic_dec(&tbl->entries) */
+Series is based on commit
+6ebcf5074cff net: openvswitch: don't schedule rebalancing if there are no datapaths
+of the 'main' branch of the net-next tree.
 
-	Yes, we remember this place from the previous Sashiko
-review but the new change depends on the current patch to
-apply gracefully.
+Regards,
+Siddharth.
 
-> 	}
-> 	...
-> }
-> 
-> The helper itself does not touch the counter:
-> 
-> static inline void ip_vs_lblc_del(struct ip_vs_lblc_entry *en)
-> {
-> 	hlist_del_rcu(&en->list);
-> 	call_rcu(&en->rcu_head, ip_vs_lblc_rcu_free);
-> }
-> 
-> while every other caller pairs it with an explicit decrement, e.g. in
-> ip_vs_lblc_flush(), ip_vs_lblc_full_check() and ip_vs_lblc_check_expire():
-> 
-> 			ip_vs_lblc_del(en);
-> 			atomic_dec(&tbl->entries);
-> 
-> Does that mean each dest change for an already cached daddr adds +1 to
-> tbl->entries while the live entry count stays the same, since
-> ip_vs_lblc_hash() is the only place that increments?
-> 
-> 	hlist_add_head_rcu(&en->list, &tbl->bucket[hash]);
-> 	atomic_inc(&tbl->entries);
-> 
-> If so, does the drift ever get corrected?  The collector decrements only when
-> it removes a real entry, so it lowers both the counter and the live count
-> equally, and tbl->entries otherwise seems to be reset only in
-> ip_vs_lblc_init_svc().
-> 
-> There also looks to be a second effect from the placement of the new test
-> after ip_vs_lblc_del(): when the limit fires, the old entry has already been
-> unlinked and NULL is returned without a decrement and without a replacement,
-> so the table shrinks while the counter stays where it is.
-> 
-> The replacement path appears to be driven by remote packets, since
-> ip_vs_lblc_schedule() calls __ip_vs_lblc_schedule() and then
-> ip_vs_lblc_new() with a different dest whenever the cached dest is not
-> available, has zero weight, or is_overloaded():
-> 
-> 	dest = __ip_vs_lblc_schedule(svc);
-> 	...
-> 	spin_lock_bh(&svc->sched_lock);
-> 	if (!tbl->dead)
-> 		ip_vs_lblc_new(tbl, &iph->daddr, svc->af, dest);
-> 
-> Once the accumulated drift alone reaches max_size * 3 / 2 (24576 with the
-> default 16384), does ip_vs_lblc_new() return NULL permanently for that
-> service, even with an empty table?  That would leave LBLC locality caching
-> disabled for the lifetime of the service, with every packet taking the full
-> __ip_vs_lblc_schedule() dest walk and ip_vs_lblc_check_expire() still
-> scanning all 1024 buckets under svc->sched_lock looking for entries that are
-> no longer there.
-> 
-> That also seems to conflict with the commit message text:
-> 
->     The extra headroom lets the periodic collector catch up while the
->     existing scheduler fallback continues to use the selected destination
->     when cache creation fails.
-> 
-> Would adding the missing atomic_dec(&tbl->entries) next to the
-> ip_vs_lblc_del(en) in ip_vs_lblc_new(), or moving the new test ahead of the
-> lookup and delete, make the limit match the live entry count?
-> 
-> Note that ip_vs_lblcr_new() below places the identical test inside
-> if (!en), before any removal, and has no unbalanced delete, so the two
-> schedulers' counters do not appear to satisfy the same invariant even though
-> the same expression is applied to both.
-> 
-> > diff --git a/net/netfilter/ipvs/ip_vs_lblcr.c b/net/netfilter/ipvs/ip_vs_lblcr.c
-> > index f53f05ceea36..858393b1d2d1 100644
-> > --- a/net/netfilter/ipvs/ip_vs_lblcr.c
-> > +++ b/net/netfilter/ipvs/ip_vs_lblcr.c
-> > @@ -363,6 +363,9 @@ ip_vs_lblcr_new(struct ip_vs_lblcr_table *tbl, const union nf_inet_addr *daddr,
-> >  
-> >  	en = ip_vs_lblcr_get(af, tbl, daddr);
-> >  	if (!en) {
-> > +		if (atomic_read(&tbl->entries) >= tbl->max_size * 3 / 2)
-> > +			return NULL;
-> > +
-> >  		en = kmalloc_obj(*en, GFP_ATOMIC);
-> >  		if (!en)
-> >  			return NULL;
-> 
-> [Severity: Medium]
-> This isn't a bug introduced by this patch, but does the new limit still leave
-> the per-bucket chain length unbounded?  ip_vs_lblc_hashkey() and
-> ip_vs_lblcr_hashkey() hash the destination address with no per-table random
-> seed:
-> 
-> 	return hash_32(ntohl(addr_fold), IP_VS_LBLC_TAB_BITS);
-> 
-> so bucket selection for a chosen address is predictable offline, and
-> ip_vs_lblc_get() / ip_vs_lblcr_get() walk the chain linearly on every
-> scheduled packet:
-> 
-> 	hlist_for_each_entry_rcu(en, &tbl->bucket[hash], list)
-> 		if (ip_vs_addr_equal(af, &en->addr, addr))
-> 			return en;
-> 
-> Since the new test caps only the total entry count and not the chain length,
-> can all 24576 permitted entries be steered into a single one of the 1024
-> buckets, leaving the lookup in softirq context (and again under
-> spin_lock_bh(&svc->sched_lock) from ip_vs_lblc_new()) walking a ~24k element
-> list per packet?  The patch does reduce the worst case compared to the
-> unbounded chain before it, so this is a pre-existing exposure rather than
-> something the patch adds, but would seeding the hash or bounding chain length
-> be worth doing on top?
+Siddharth Vadapalli (33):
+  can: bxcan: Remove comma after sentinel-entry in match-table
+  can: c_can: Remove comma after sentinel-entry in match-table
+  can: flexcan: Remove comma after sentinel-entry in match-table
+  can: ifi_canfd: Remove comma after sentinel-entry in match-table
+  can: m_can: Remove comma after sentinel-entry in match-table
+  can: sja1000: f81601: Remove comma after sentinel-entry in match-table
+  can: sja1000_platform: Remove comma after sentinel-entry in
+    match-table
+  net: dsa: b53: mdio: Remove comma after sentinel-entry in match-table
+  net: dsa: b53: srab: Remove comma after sentinel-entry in match-table
+  net: dsa: bcm_sf2: Remove comma after sentinel-entry in match-table
+  net: dsa: hellcreek: Remove comma after sentinel-entry in match-table
+  net: dsa: lan9303: i2c: Remove comma after sentinel-entry in
+    match-table
+  net: dsa: lan9303: mdio: Remove comma after sentinel-entry in
+    match-table
+  net: dsa: mxl-gsw1xx: Remove comma after sentinel-entry in match-table
+  net: dsa: mt7530: mdio: Remove comma after sentinel-entry in
+    match-table
+  net: dsa: mt7530: mmio: Remove comma after sentinel-entry in
+    match-table
+  net: dsa: mv88e6060: Remove comma after sentinel-entry in match-table
+  net: dsa: mv88e6xxx: Remove comma after sentinel-entry in match-table
+  net: dsa: qca8k: Remove comma after sentinel-entry in match-table
+  net: dsa: realtek: rtl8365mb: Remove comma after sentinel-entry in
+    match-table
+  net: dsa: realtek: rtl8366rb: Remove comma after sentinel-entry in
+    match-table
+  net: dsa: rzn1_a5psw: Remove comma after sentinel-entry in match-table
+  net: dsa: sja1105: Remove comma after sentinel-entry in match-table
+  net: bcmasp: Remove comma after sentinel-entry in match-table
+  net: spacemit: k1_emac: Remove comma after sentinel-entry in
+    match-table
+  net: ti: am65-cpsw-nuss: Remove comma after sentinel-entry in
+    match-table
+  net: ethernet: ti: cpsw: Remove comma after sentinel-entry in
+    match-table
+  net: ethernet: ti: cpsw_new: Remove comma after sentinel-entry in
+    match-table
+  net: mdio: bcm-iproc: Remove comma after sentinel-entry in match-table
+  net: mdio: bcm-unimac: Remove comma after sentinel-entry in
+    match-table
+  net: pcs: xpcs-plat: Remove comma after sentinel-entry in match-table
+  net: phy: nxp-c45-tja11xx: Remove comma after sentinel-entry in
+    match-table
+  net: wan: slic_ds26522: Remove comma after sentinel-entry in
+    match-table
 
-	Yes, adding random seed and changing the hash function
-can be useful improvement. Added to TODO.
+ drivers/net/can/bxcan.c                     | 2 +-
+ drivers/net/can/c_can/c_can_platform.c      | 4 ++--
+ drivers/net/can/flexcan/flexcan-core.c      | 2 +-
+ drivers/net/can/ifi_canfd/ifi_canfd.c       | 2 +-
+ drivers/net/can/m_can/m_can_platform.c      | 2 +-
+ drivers/net/can/sja1000/f81601.c            | 2 +-
+ drivers/net/can/sja1000/sja1000_platform.c  | 2 +-
+ drivers/net/dsa/b53/b53_mdio.c              | 2 +-
+ drivers/net/dsa/b53/b53_srab.c              | 2 +-
+ drivers/net/dsa/bcm_sf2.c                   | 2 +-
+ drivers/net/dsa/hirschmann/hellcreek.c      | 2 +-
+ drivers/net/dsa/lan9303_i2c.c               | 2 +-
+ drivers/net/dsa/lan9303_mdio.c              | 2 +-
+ drivers/net/dsa/lantiq/mxl-gsw1xx.c         | 2 +-
+ drivers/net/dsa/mt7530-mdio.c               | 2 +-
+ drivers/net/dsa/mt7530-mmio.c               | 2 +-
+ drivers/net/dsa/mv88e6060.c                 | 2 +-
+ drivers/net/dsa/mv88e6xxx/chip.c            | 2 +-
+ drivers/net/dsa/qca/qca8k-8xxx.c            | 2 +-
+ drivers/net/dsa/realtek/rtl8365mb_main.c    | 2 +-
+ drivers/net/dsa/realtek/rtl8366rb.c         | 2 +-
+ drivers/net/dsa/rzn1_a5psw.c                | 2 +-
+ drivers/net/dsa/sja1105/sja1105_main.c      | 2 +-
+ drivers/net/ethernet/broadcom/asp2/bcmasp.c | 4 ++--
+ drivers/net/ethernet/spacemit/k1_emac.c     | 4 ++--
+ drivers/net/ethernet/ti/am65-cpsw-nuss.c    | 2 +-
+ drivers/net/ethernet/ti/cpsw.c              | 2 +-
+ drivers/net/ethernet/ti/cpsw_new.c          | 2 +-
+ drivers/net/mdio/mdio-bcm-iproc.c           | 2 +-
+ drivers/net/mdio/mdio-bcm-unimac.c          | 2 +-
+ drivers/net/pcs/pcs-xpcs-plat.c             | 2 +-
+ drivers/net/phy/nxp-c45-tja11xx.c           | 2 +-
+ drivers/net/wan/slic_ds26522.c              | 2 +-
+ 33 files changed, 36 insertions(+), 36 deletions(-)
 
-Regards
-
---
-Julian Anastasov <ja@ssi.bg>
+-- 
+2.51.1
 
