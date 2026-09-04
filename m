@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4313B52E077;
-	Fri,  4 Sep 2026 22:24:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5B1C51C342;
+	Fri,  4 Sep 2026 22:25:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788560688; cv=none; b=JbFUKWTthrY3KsVW4+bEzD+z0Vw/C4baQMSNa/GGog1mnI5Wl8CeBii6FPCoYD4gDXnL/U/rVSwBlCPwUXmhgxoeAgRApLhf+1uXPxr24NiYDjTgzlo2MkcNYLUdh7TjdKJh/la8o83ynRmHDc+RjLvX5P9SLqOj2icQh+ooLwY=
+	t=1788560713; cv=none; b=H9q5ESwuSpzb4FZKKOKylpDLU0XZbi5YssBE5MqLwffIKX6+6FhHPBepomUlyg0JYSp1r8P3zDWHwjw/HWlpEWJcLiMfWok67ESkG+7mTpDk+RbyQOfwbcTYnCvu9nsVapYD7ddMG9m812LPs+oSJayLSr+hTpt67XljbLtzwpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788560688; c=relaxed/simple;
-	bh=BgX5cqZ0bslRChkmzM3+wVHqLdprMk6Ak7II2HkFAp8=;
+	s=arc-20240116; t=1788560713; c=relaxed/simple;
+	bh=n51WMUswqS1dvVnQyqGZVkmWBCqZz4y47yiVAeH2gsI=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=UevEcaeCN94BzoRyOKvtwFzaTYPP2zE4jwoKyExJcK34xBkf5G5hQwQw0kr2tiFuy1ciU85GST6Q8Gm7r3ly7mL3VqjqJn0HKfPfHgeQU+wIH71aXMzVRDNBTPMVxJnhuBOz/XFbh2c30wPCSddM0lUqPPxQtlh4kAlH+2Mf9A4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EekLT6Ta; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=tytbANaHfju/FVAFIqASMUtoPR1TPu6f8x9t5ztyfQRKrOcqBzntqP7eyN3P2kfNLKMDaZgynA6NnU4ZdJWaMCGyB+Dt+wyQ6mHLGMtB4GIau+FV0Ri6cDfVoRkZc9HLfr1tqbrP9YtrcccM+2z4gX2lSWVmJ2/NsWe6T+VHNBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VX98fD1k; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EekLT6Ta"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BF6D1F00A3D;
-	Fri,  4 Sep 2026 22:24:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VX98fD1k"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64D641F00A3D;
+	Fri,  4 Sep 2026 22:25:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788560683;
-	bh=s6nq/sYtvdRzwOuOQYFworKtPDwTnU11dzRl3rHs4Bg=;
+	s=k20260515; t=1788560709;
+	bh=Yco6b9Rwzq2wZPMB8ZaAYLqNPo6ejyfR6tQ2L8KXp0c=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=EekLT6TawyR+Ys6PtViPvveCCI8H7tx0S+wf8+in3gxLLuEHRNlXaWCm3PtQ7XSqg
-	 Xrme1dC23i2961sspWKEHmxX5IObnS1jS5YFZmo79pXRLyol5/cEXpflIxur+PgTOP
-	 yMx7L7G+ShprEHf3PPqbwqROngDAPKshjsOpKTwGgJvbPJsqx94A2QLWod9DDfPoEc
-	 PG+T3Iv24abSvpYn9RtOb61kjgLniar4xEw2XM4m/N5mS2r4Nf0t8cLNelk+48rjom
-	 CHu8Lt/iv/m0x91zDv6xkSWCCpFwiRqu5JiPB0b52vDtw6vTGkA9CGer1VhrQ0zXZf
-	 DTgQK0w4crMvw==
-Subject: Re: [PATCH net v2] net/packet: fix network header offset for non-VLAN
- raw packets
+	b=VX98fD1kfUz1cckp0snEJk2BrC3sWjV+FUy+2VgqPhNawfJep6bnjWR9IDQironhX
+	 RNo/cxAyNVGM4XM7U2USPKRZkj2zBXqv8QCrGwEq6EeZH5i/+Qfr6ljLIf53E6UjEn
+	 W+mS3vnnowLZmeiiz5vXuWJf6qUjf8uqgGTvNYPNHdL8F1AVkFr/y3vzXyRRpsar5L
+	 gU+s1MMRnprp851wpKPC2i15ywisy0E32Scp+OeocZ+CJzceWFg8g2oypHpCtQ4F+s
+	 QujhgMnApRo/z4zAP3Wu1RuuuVYC84QL5NTzNAFWw1BVBsWEtK4KUBSGDrgXJ1IU07
+	 4eSgR7dZ9A2tA==
+Subject: Re: [PATCH net v3 1/2] net: dsa: let drivers offload 8021q uppers on
+ standalone ports
 From: netdev-bot+sashiko@kernel.org
-To: zhangjn_dev@163.com
-Cc: willemdebruijn.kernel@gmail.com, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, mst@redhat.com,
- liuhangbin@gmail.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- zhangjn11@chinatelecom.cn, sunshx@chinatelecom.cn
-Date: Fri, 04 Sep 2026 22:24:42 +0000
-Message-ID: <178856068266.219967.8739522272038197328@kernel.org>
-In-Reply-To: <20260831072034.40044-1-zhangjn_dev@163.com>
-References: <20260831072034.40044-1-zhangjn_dev@163.com>
-X-sashiko-severity: High
+To: strst.gs@gmail.com
+Cc: florian.fainelli@broadcom.com, jonas.gorski@gmail.com, andrew@lunn.ch,
+ olteanv@gmail.com, davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, vladimir.oltean@nxp.com, horms@kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Fri, 04 Sep 2026 22:25:07 +0000
+Message-ID: <178856070799.219967.1932535721927933166@kernel.org>
+In-Reply-To: <20260831085217.391-2-strst.gs@gmail.com>
+References: <20260831085217.391-2-strst.gs@gmail.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -48,197 +48,252 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 3 potential
+Thank you for your contribution! Sashiko AI review found 5 potential
 issue(s) to consider:
 
-Critical: 0 · High: 1 · Medium: 2 · Low: 0
+Critical: 0 · High: 0 · Medium: 2 · Low: 3
 
-- [High] The new guard in packet_parse_headers()
-  (`skb->dev->min_header_len < skb->dev->hard_header_len`) can never be…
-- [Medium] packet_parse_headers() decides the L2/L3 boundary from
-  `is_vlan = eth_type_vlan(skb->protocol)`, i.e. from the socket-…
-- [Medium] packet_parse_headers() re-reads the live
-  `skb->dev->hard_header_len` and `skb->dev->min_header_len` to decide…
+- [Medium] Making NETIF_F_HW_VLAN_CTAG_FILTER permanent
+  (net/dsa/user.c:2721-2723) and skipping…
+- [Medium] The patch introduces an invariant -
+  NETIF_F_HW_VLAN_CTAG_FILTER is a permanent property of user ports on a…
+- [Low] DISCARDED (baseline false): claim that the new
+  ds->needs_standalone_vlan_offload opt-in is dead code and that b53…
+- [Low] Comment vs implementation mismatch about the scope of the new
+  flag.
+- [Low] Documentation/networking/dsa/dsa.rst lists the optional struct
+  dsa_switch flags a driver may set ('their behavior when set is…
 
 --
 
-net/packet: fix network header offset for non-VLAN raw packets
+net: dsa: let drivers offload 8021q uppers on standalone ports
 
-This changes packet_parse_headers() so that non-VLAN AF_PACKET SOCK_RAW
-frames on Ethernet devices whose hard_header_len is larger than
-min_header_len get network_header moved to min_header_len before
-skb_probe_transport_header() runs.  The existing VLAN correction is
-reorganized to reuse a new is_vlan boolean.
+Adds ds->needs_standalone_vlan_offload so a driver can have the VIDs of
+8021q uppers delivered to .port_vlan_add on standalone ports without
+forcing the vlan_filtering state on. The feature bit
+NETIF_F_HW_VLAN_CTAG_FILTER becomes permanent for user ports of such a
+switch, and dsa_port_vlan_filtering() therefore skips
+dsa_user_manage_vlan_filtering(), while dsa_port_change_conduit() keeps
+its explicit teardown and restore.
 
-> diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-> index b22cda322136..9a4c70b659d4 100644
-> --- a/net/packet/af_packet.c
-> +++ b/net/packet/af_packet.c
-> @@ -1938,6 +1938,7 @@ static int packet_rcv_spkt(struct sk_buff *skb, struct net_device *dev,
->  static void packet_parse_headers(struct sk_buff *skb, struct socket *sock)
->  {
->  	int depth;
-> +	bool is_vlan = false;
+A few questions below.
+
+> diff --git a/include/net/dsa.h b/include/net/dsa.h
+> index 7507d632e7c6..67a01fc5f81e 100644
+> --- a/include/net/dsa.h
+> +++ b/include/net/dsa.h
+> @@ -405,6 +405,9 @@ struct dsa_switch {
+>  	/* Keep VLAN filtering enabled on ports not offloading any upper */
+>  	u32			needs_standalone_vlan_filtering:1;
 >  
->  	/* On TX skb->data is the L2 header; anchor it for all socket types. */
->  	skb_reset_mac_header(skb);
-> @@ -1946,11 +1947,28 @@ static void packet_parse_headers(struct sk_buff *skb, struct socket *sock)
->  	    sock->type == SOCK_RAW)
->  		skb->protocol = dev_parse_header_protocol(skb);
->  
-> +	if (likely(skb->dev->type == ARPHRD_ETHER)) {
-> +		is_vlan = eth_type_vlan(skb->protocol);
-
-[Severity: Medium]
-Is is_vlan a reliable statement about the frame layout here?  For SOCK_RAW
-the protocol is only re-derived from the frame when it is zero or
-ETH_P_ALL, just above:
-
-	if ((!skb->protocol || skb->protocol == htons(ETH_P_ALL)) &&
-	    sock->type == SOCK_RAW)
-		skb->protocol = dev_parse_header_protocol(skb);
-
-Otherwise skb->protocol comes from the bind protocol or the user supplied
-sll_protocol, assigned in packet_snd() as skb->protocol = proto shortly
-before this call (and similarly in tpacket_fill_skb()).
-
-So a socket opened as socket(AF_PACKET, SOCK_RAW, htons(ETH_P_IP)) that
-sends a frame which does carry an inline 802.1Q tag keeps
-skb->protocol == ETH_P_IP, is_vlan stays false, and the new branch below
-forces network_header to min_header_len, i.e. onto the VLAN TPID rather
-than the IP header.  The frame-inspecting correction at the end is gated on
-the same is_vlan, so it does not repair that.
-
-For the devices where the new branch actually fires with
-hard_header_len - min_header_len == VLAN_HLEN (for example the usbnet
-gl620a and ps3_gelic_net, both 18), the pre-patch offset of 18 was the
-correct L3 offset for such a single-tagged frame.  Does this turn a correct
-offset into an incorrect one for that case, and would parsing the frame be
-preferable to trusting the socket-declared protocol?
-
+> +	/* Offload 8021q uppers of standalone ports even when not filtering */
+> +	u32			needs_standalone_vlan_offload:1;
 > +
-> +		/* For non-VLAN SOCK_RAW frames on Ethernet devices whose
-> +		 * hard_header_len exceeds the on-wire L2 header length
-> +		 * (min_header_len) -- e.g. software-offload VLAN subinterfaces,
-> +		 * or Ethernet drivers that reserve extra space in
-> +		 * hard_header_len for driver-internal wrapping -- the SOCK_RAW
-> +		 * send paths leave network_header at hard_header_len, while the
-> +		 * user frame's L3 sits at min_header_len. Move network_header
-> +		 * to the actual L2/L3 boundary so the transport header probe
-> +		 * below and subsequent GSO see the right L3.
-> +		 */
-> +		if (!is_vlan && sock->type == SOCK_RAW &&
-> +		    skb->dev->min_header_len < skb->dev->hard_header_len)
-> +			skb_set_network_header(skb, skb->dev->min_header_len);
-> +	}
 
-[Severity: High]
-Can this condition ever be true for the reproducer described in the commit
-message?  The message says:
+[Severity: Low]
+Documentation/networking/dsa/dsa.rst has a list of the optional
+dsa_switch flags a driver may set, introduced by "In addition, the
+following flags in the dsa_switch structure may optionally be configured
+to obtain driver-specific behavior from the DSA core."
 
-    "e.g. software-offload VLAN subinterfaces, where hard_header_len =
-    ETH_HLEN + VLAN_HLEN = 18"
+That list currently names ds->vlan_filtering_is_global,
+ds->needs_standalone_vlan_filtering, ds->configure_vlan_while_not_filtering,
+ds->untag_bridge_pvid, ds->assisted_learning_on_cpu_port,
+ds->mtu_enforcement_ingress and ds->fdb_isolation.
 
-and
+Should ds->needs_standalone_vlan_offload be added there too, given the
+changelog spends several paragraphs on the choice between it and
+ds->needs_standalone_vlan_filtering?
 
-    "Observed on a virtio_net NIC (KVM guest) that advertises
-    NETIF_F_HW_VLAN_CTAG_FILTER but not NETIF_F_HW_VLAN_CTAG_TX, so VLAN
-    subinterfaces use software tag insertion (hard_header_len = 18)."
-
-In this tree vlan_dev_init() no longer inflates hard_header_len; the tag
-space went to needed_headroom:
-
-net/8021q/vlan_dev.c:vlan_dev_init() {
-	...
-	dev->needed_headroom = real_dev->needed_headroom + VLAN_HLEN;
-	dev->needed_tailroom = real_dev->needed_tailroom;
-	dev->header_ops      = &vlan_header_ops;
-	dev->hard_header_len = real_dev->hard_header_len;
-	...
-}
-
-vlan_transfer_features() repeats the same unconditional assignment, so
-toggling NETIF_F_HW_VLAN_CTAG_TX does not change hard_header_len either.
-This came in with commit 447cbe95ebb9 ("vlan: fix skb_under_panic and
-races when toggling HW VLAN offload").
-
-min_header_len for ARPHRD_ETHER is only ever set by ether_setup():
-
-net/ethernet/eth.c:ether_setup() {
-	...
-	dev->hard_header_len 	= ETH_HLEN;
-	dev->min_header_len	= ETH_HLEN;
-	...
-}
-
-and VLAN devices reach it through vlan_setup() -> ether_setup().
-virtio_net does not touch hard_header_len at all.
-
-That leaves min_header_len == hard_header_len == 14 for both the VLAN
-subinterface and the real device in the described setup, so the branch is
-skipped and the -EINVAL from inet_gso_segment() would still happen.  Is
-the fix a no-op for the configuration it was written for?
-
-The devices that can satisfy the test are unrelated ARPHRD_ETHER drivers
-that enlarge hard_header_len after ether_setup(), such as the usbnet
-gl620a, dm9601, rndis_host, smsc95xx and cdc_eem drivers, thunderbolt,
-cxgb2, ps3_gelic_net and br2684.  Should the changelog and the comment be
-reworded around that device class instead of software-tagging VLAN
-subinterfaces, and could the reproducer be re-checked against the current
-vlan_dev_init()?
+>  	/* Pass .port_vlan_add and .port_vlan_del to drivers even for bridges
+>  	 * that have vlan_filtering=0. All drivers should ideally set this (and
+>  	 * then the option would get removed), but it is unknown whether this
+> diff --git a/net/dsa/port.c b/net/dsa/port.c
+> index 1f5536c0dffc..e61abc7c74f7 100644
+> --- a/net/dsa/port.c
+> +++ b/net/dsa/port.c
+> @@ -831,6 +831,9 @@ int dsa_port_vlan_filtering(struct dsa_port *dp, bool vlan_filtering,
+>  			if (!user)
+>  				continue;
+>  
+> +			if (ds->needs_standalone_vlan_offload)
+> +				continue;
+> +
+>  			err = dsa_user_manage_vlan_filtering(user,
+>  							     vlan_filtering);
+>  			if (err)
+> @@ -839,10 +842,12 @@ int dsa_port_vlan_filtering(struct dsa_port *dp, bool vlan_filtering,
+>  	} else {
+>  		dp->vlan_filtering = vlan_filtering;
+>  
+> -		err = dsa_user_manage_vlan_filtering(dp->user,
+> -						     vlan_filtering);
+> -		if (err)
+> -			goto restore;
+> +		if (!ds->needs_standalone_vlan_offload) {
+> +			err = dsa_user_manage_vlan_filtering(dp->user,
+> +							     vlan_filtering);
+> +			if (err)
+> +				goto restore;
+> +		}
+>  	}
 
 [Severity: Medium]
-Should these two reads use the caller's snapshot rather than the live
-fields?  packet_snd() takes one:
+With the feature bit permanent and this skip in place, the 8021q upper
+VIDs of such a switch stay offloaded while the port is enslaved to a
+VLAN-unaware bridge.  In exactly that state, are both duplicate-VID
+guards bypassed?
 
-net/packet/af_packet.c:packet_snd() {
-	...
-	hard_header_len = READ_ONCE(dev->hard_header_len);
-	if (sock->type == SOCK_RAW)
-		reserve = hard_header_len;
-	...
-	} else if (reserve) {
-		skb_reserve(skb, -reserve);
-		if (len < reserve + sizeof(struct ipv6hdr) &&
-		    dev->min_header_len != hard_header_len)
-			skb_reset_network_header(skb);
+dsa_user_vlan_add() only checks for colliding uppers when the bridge is
+VLAN-aware:
+
+	if (br_vlan_enabled(dsa_port_bridge_dev_get(dp))) {
+		rcu_read_lock();
+		err = dsa_user_vlan_check_for_8021q_uppers(dev, vlan);
+		rcu_read_unlock();
+
+and the symmetric check in dsa_user_check_8021q_upper() bails out early:
+
+	if (!br || !br_vlan_enabled(br))
+		return NOTIFY_DONE;
+
+Meanwhile the bridge VLAN is still committed to hardware, because
+ds->configure_vlan_while_not_filtering defaults to true so
+dsa_port_skip_vlan_configuration() returns false.
+
+dsa_port_vlan_add()/dsa_port_vlan_del() do no refcounting for user
+ports, so can this sequence revoke a VID that the upper still owns?
+
+	ip link add link swp0 name swp0.100 type vlan id 100
+	bridge vlan add dev swp0 vid 100
+	bridge vlan del dev swp0 vid 100
+
+That is two .port_vlan_add calls and one .port_vlan_del.  On b53 at the
+end of the series, the delete clears dev->vlans[100].members & BIT(port),
+and b53_standalone_vlan_resync() only iterates VIDs with
+
+	if (!(vl->members & BIT(port)))
+		continue;
+
+so when the port later leaves the bridge, VID 100 is not restored and
+the always-on VID lookup keeps dropping the upper's tagged traffic until
+the upper is destroyed and re-created.  Should the collision guards or
+the VID accounting be extended for the new flag?
+
+>  
+>  	return 0;
+> @@ -1445,10 +1450,13 @@ int dsa_port_change_conduit(struct dsa_port *dp, struct net_device *conduit,
+>  
+>  	/* The port might still be VLAN filtering even if it's no longer
+>  	 * under a bridge, either due to ds->vlan_filtering_is_global or
+> -	 * ds->needs_standalone_vlan_filtering. In turn this means VLANs
+> -	 * on the CPU port.
+> +	 * ds->needs_standalone_vlan_filtering, and every port of a
+> +	 * ds->needs_standalone_vlan_offload switch keeps its 8021q upper
+> +	 * VLANs whether bridged or not. In turn this means VLANs on the
+> +	 * CPU port.
+>  	 */
+> -	vlan_filtering = dsa_port_is_vlan_filtering(dp);
+> +	vlan_filtering = dsa_port_is_vlan_filtering(dp) ||
+> +			 ds->needs_standalone_vlan_offload;
+>  	if (vlan_filtering) {
+>  		err = dsa_user_manage_vlan_filtering(dev, false);
+>  		if (err) {
+
+[Severity: Medium]
+This patch establishes NETIF_F_HW_VLAN_CTAG_FILTER as a permanent
+property of user ports on such a switch, set once in
+dsa_user_setup_tagger().  But dsa_port_change_conduit() still tears the
+bit down and rebuilds it through dsa_user_manage_vlan_filtering(), and
+with the new condition it now does so for every port of such a switch.
+
+Can the error paths leave that invariant broken for good?
+
+The teardown side of dsa_user_manage_vlan_filtering() returns on the
+first failure with no rollback of the VIDs it already removed:
+
+	} else {
+		err = vlan_for_each(user, dsa_user_clear_vlan, user);
+		if (err)
+			return err;
+
+		user->features &= ~NETIF_F_HW_VLAN_CTAG_FILTER;
 	}
-	...
-	packet_parse_headers(skb, sock);
-	...
-}
 
-That snapshot arrived in commit 03390aa32e669 ("packet: use consistent
-hard_header_len in non-ring send paths") because dev->hard_header_len can
-change under a sender, for example from bond_setup_by_slave():
+and dsa_port_change_conduit() then jumps to rewind_old_bridge, which
+only rejoins the bridge.
 
-drivers/net/bonding/bond_main.c:bond_setup_by_slave() {
-	...
-	bond_dev->hard_header_len   = slave_dev->hard_header_len;
-	...
-}
+The restore side strips the bit on failure:
 
-tpacket_fill_skb() is even passed hard_header_len as a parameter for the
-same reason.  If hard_header_len shrinks to min_header_len between skb
-construction (which reserved the larger value) and this point, the branch
-does not fire and network_header stays where the commit message says it is
-wrong; if it grows after the skb was built with reserve == min_header_len,
-the branch fires on a length that was never used to lay out the skb.
+		err = vlan_for_each(user, dsa_user_restore_vlan, user);
+		if (err) {
+			vlan_for_each(user, dsa_user_clear_vlan, user);
+			user->features &= ~NETIF_F_HW_VLAN_CTAG_FILTER;
+			return err;
+		}
 
-Would passing the already snapshotted length into packet_parse_headers(),
-or at least a single READ_ONCE() here, keep the offset decision consistent
-with the layout that was used, and avoid the plain concurrent read?
+and the retry in the rewind_old_addrs path of dsa_port_change_conduit()
+only logs "failed to restore standalone VLANs".
 
+Once the bit is lost, what re-arms it?  dsa_port_vlan_filtering() now
+skips dsa_user_manage_vlan_filtering() unconditionally for such a
+switch, dsa_port_assign_conduit() does not call
+dsa_user_setup_tagger(), and dsa_port_reset_vlan_filtering() does
+nothing when leaving a VLAN-unaware bridge with
+needs_standalone_vlan_filtering=0.
+
+That looks like the failure mode the changelog describes as "its uppers
+then stay dead even after it leaves the bridge, because nothing
+re-offloads them once the feature bit is gone".  Would gating the
+clearing of the bit on the new flag, so no error path can drop it, be a
+better fit for the intended invariant?
+
+> diff --git a/net/dsa/user.c b/net/dsa/user.c
+> index 041f9060c8ef..fda6ba4fdd13 100644
+> --- a/net/dsa/user.c
+> +++ b/net/dsa/user.c
+> @@ -1946,6 +1946,7 @@ static int dsa_user_clear_vlan(struct net_device *vdev, int vid, void *arg)
+>   *
+>   * - If standalone (this includes software bridge, software LAG):
+>   *     - if ds->needs_standalone_vlan_filtering = true, OR if
+> + *       ds->needs_standalone_vlan_offload = true, OR if
+>   *       (ds->vlan_filtering_is_global = true AND there are bridges spanning
+>   *       this switch chip which have vlan_filtering=1)
+>   *         - the 8021q upper VLANs
+
+[Severity: Low]
+Only the "If standalone" bullet of this summary comment is amended, yet
+the next bullet still says that a port "under a vlan_filtering=0 bridge
+which it offload" offloads only "the bridge VLANs".  The comment on the
+new field in include/net/dsa.h says the same thing in shorter form,
+"Offload 8021q uppers of standalone ports even when not filtering".
+
+Is the implementation actually standalone-scoped?
+dsa_user_setup_tagger() sets NETIF_F_HW_VLAN_CTAG_FILTER for every user
+port of such a switch at port setup, and dsa_port_vlan_filtering() never
+clears it again, so a port enslaved to a VLAN-unaware bridge keeps
+offloading its 8021q upper VLANs.
+
+The new comment in dsa_port_change_conduit() states the opposite of the
+two comments above:
+
+	 * ds->needs_standalone_vlan_filtering, and every port of a
+	 * ds->needs_standalone_vlan_offload switch keeps its 8021q upper
+	 * VLANs whether bridged or not.
+
+Could the vlan_filtering=0 bridge bullet and the include/net/dsa.h field
+comment be updated to match?
+
+> @@ -2717,7 +2718,8 @@ void dsa_user_setup_tagger(struct net_device *user)
+>  	user->hw_features |= NETIF_F_HW_TC;
+>  	if (user->needed_tailroom)
+>  		user->features &= ~(NETIF_F_SG | NETIF_F_FRAGLIST);
+> -	if (ds->needs_standalone_vlan_filtering)
+> +	if (ds->needs_standalone_vlan_filtering ||
+> +	    ds->needs_standalone_vlan_offload)
+>  		user->features |= NETIF_F_HW_VLAN_CTAG_FILTER;
 >  
->  	skb_probe_transport_header(skb);
->  
->  	/* Move network header to the right position for VLAN tagged packets */
-> -	if (likely(skb->dev->type == ARPHRD_ETHER) &&
-> -	    eth_type_vlan(skb->protocol) &&
-> +	if (is_vlan &&
->  	    vlan_get_protocol_and_depth(skb, skb->protocol, &depth) != 0)
->  		skb_set_network_header(skb, depth);
->  }
+>  	user->lltx = true;
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260831072034.40044-1-zhangjn_dev%40163.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260831085217.391-1-strst.gs%40gmail.com
