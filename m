@@ -1,117 +1,86 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 888A835AC24;
-	Fri,  4 Sep 2026 00:48:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE2EA19F121;
+	Fri,  4 Sep 2026 00:51:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788482940; cv=none; b=WgKvzDKqtCoZyeL50X1nowVNZabVJywLnxrfbwDa/CpHg6dl1vYYhChQr3riS2jTooSqLvzMdoQ74gcu7vYEOqQConzwwldrN/5zrLIiH/rX3EPjHSaPKZ4xMSATDyJ9HJ05m6YIBjCbdhQ9PawmFyl06wQTMY2p/1rp+7m7920=
+	t=1788483067; cv=none; b=uvaI3CmwwNIndVqehdRi9J1JQdB+GXOk1DDqWLEyYm+eDBEjcedElbi97z3fOogEU373igfpo7SEQuTDEJk4NDd5F47lfFgox4PwiiHkb3rSXYFUHzSCkJbBnmxasd9QXZ/oi7dwuI5E1cXjEBVQxNs/13fuXoRZT1faANxdp4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788482940; c=relaxed/simple;
-	bh=0NfL1FBn5PRUp3I7PHFGrui/+g0BRt71Xm1Aj63k5yk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lusS+Ta30/7X9YC78Gw3HEAoFv8hU6IjvZIGT8rope7uMxpkT/bzNcchdF149Qd6IQargE4qfhd23ZMFCJI8pkdpSb/pXmWzg/jiXAr0bylpe8sBPf1CQG3RSFnSsOFP7wIblq7w9PstLE9EV09yZbL0fXpiRbIzr6kP8NSa3k8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=MT73j7U1; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1788483067; c=relaxed/simple;
+	bh=ckwJPsucUqT+zhFydqh6KKuVu6WFZbLd0D6CbTlpOGg=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=hq1cFMwzf270oBPYmI2bRELtSK6WZWsYCS3Zlz/+LXfVX+tCx9xIbWB/I4uHiJE/RLKVlIWZdinHBFIOlI/ASNqnoJJhDVsteekYjeYj6RIU0Zc+oPDxsZmMxmw5FgFxJ0keBES5xF581kyu3NFxqg5chTLZb8yehZ7kA+EIVWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m/0UbV/l; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="MT73j7U1"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=MX0fU1qaIXjuWZjxnNPM585nVmSPQH32gHlipzrnk7A=; b=MT73j7U1n6pkOAi1i/uxe/9gSH
-	Dc8r27Fh0Pkl7NtfWQFFEuMIoTLEPkYADD0OV2GhEGF6+CpGUyr2uR/CSGHoVpDk1NfI1LzHrUpD+
-	31QxNyCP05uKiAyJxDLHskO64TcZVehS8NddaslxMMn9ozEPSx80pjcKwsoi4MusYaQE=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1x2I6s-002pHJ-Fb; Fri, 04 Sep 2026 02:48:50 +0200
-Date: Fri, 4 Sep 2026 02:48:50 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Aleksei Sviridkin <f@lex.la>
-Cc: netdev@vger.kernel.org, hkallweit1@gmail.com, linux@armlinux.org.uk,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
-	conor+dt@kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH net-next 3/9] net: phy: air: type the buckpbus core
- on the bus and address
-Message-ID: <31659b56-3dd5-4942-a921-4fee9cea73fd@lunn.ch>
-References: <20260829052546.1152446-1-f@lex.la>
- <20260829052546.1152446-4-f@lex.la>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m/0UbV/l"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AEDF1F000E9;
+	Fri,  4 Sep 2026 00:51:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788483066;
+	bh=r6eF0OFcFwV4YwtUVxvfEo8CvnRBDfkdLeuuZjej+mo=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=m/0UbV/lCSzfwVimf3j+JU4BSoKPcgOVDxfbbFTmb7EFuzvl1o+mNcTTprlY1cPvW
+	 0CEDJn2OH90+McmlMgJrd48vlFNVjV+aXHScKLI8S1XGONUr/+jQuwgwjNPrJSPH1w
+	 o6EUoHoWGKv1MEQGdUYHzDfOPmBZw7aOOU8FZt8UoTjw1lxUKoqD3OQtStRN94YYPq
+	 7COxvIIq8KIq7YfbqVRxpidHrxwsEmwMtFcvC8v545zHMIf78FkeEJr1FSWXCimmG2
+	 Wt2paBx65jPB2fCnRgpPwuXhDlt7h5cXZ4HXYn1vX0ZJFj5UUHyjfzLThTb6YZvrGd
+	 10u5cyTCKsYlA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0A0C38119E3;
+	Fri,  4 Sep 2026 00:50:08 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260829052546.1152446-4-f@lex.la>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] tunnels: Drop stale dst when building an ICMP error
+ for
+ PMTUD
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178848300740.4094353.3141970410159062442.git-patchwork-notify@kernel.org>
+Date: Fri, 04 Sep 2026 00:50:07 +0000
+References: <20260902190112.4126199-1-idosch@nvidia.com>
+In-Reply-To: <20260902190112.4126199-1-idosch@nvidia.com>
+To: Ido Schimmel <idosch@nvidia.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
+ pabeni@redhat.com, edumazet@google.com, dsahern@kernel.org, horms@kernel.org,
+ aconole@redhat.com, sbrivio@redhat.com, gnault@redhat.com,
+ laikabcprice@gmail.com, aroslavdudkov622@gmail.com,
+ rough.rock3059@datachamp.fr, stable@vger.kernel.org
 
-On Sat, Aug 29, 2026 at 05:25:40AM +0000, Aleksei Sviridkin wrote:
-> The buckpbus accessors only need an MDIO bus and an address, but they
-> take a phy_device, which ties them to a probed PHY. An upcoming MDIO
-> device driver needs the same register access before any phy_device
-> exists, since it runs precisely to make the PHY presentable.
+Hello:
+
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Wed,  2 Sep 2026 22:01:12 +0300 you wrote:
+> Bridged UDP tunnels such as VXLAN and GENEVE build an ICMP error packet
+> around an overlay packet if the packet is going to exceed the underlay
+> path MTU. The ICMP error packet is then injected back into the Rx path
+> with the source and destination addresses swapped, so that it will be
+> delivered to the overlay source.
 > 
-> Retype the internal helpers onto (mii_bus, addr) and keep the exported
-> phy_device API as page-selecting wrappers around them. The file
-> already carries an mdio_device-typed accessor for the AN8811HB pbus,
-> so this follows an existing direction rather than opening a new one.
+> If the overlay packet was routed to the UDP tunnel or locally generated,
+> then it is already carrying a valid dst entry and this entry is not
+> dropped when transforming the packet to an ICMP error packet. This
+> causes the IP layer to reuse the dst entry, leading to the ICMP error
+> packet being dropped or routed out of the UDP tunnel interface in case
+> of forwarding.
 > 
-> No functional change.
-> 
-> Assisted-by: LLM
-> Signed-off-by: Aleksei Sviridkin <f@lex.la>
-> ---
->  drivers/net/phy/air_phy_lib.c | 85 +++++++++++++++++++----------------
->  1 file changed, 46 insertions(+), 39 deletions(-)
-> 
-> diff --git a/drivers/net/phy/air_phy_lib.c b/drivers/net/phy/air_phy_lib.c
-> index 5141db19fa5e..e0fca5f285d2 100644
-> --- a/drivers/net/phy/air_phy_lib.c
-> +++ b/drivers/net/phy/air_phy_lib.c
-> @@ -14,31 +14,32 @@
->  
->  #include "air_phy_lib.h"
->  
-> -static int __air_buckpbus_reg_read(struct phy_device *phydev,
-> +static int __air_buckpbus_reg_read(struct mii_bus *bus, int addr,
->  				   u32 pbus_address, u32 *pbus_data)
->  {
->  	int pbus_data_low, pbus_data_high;
->  	int ret;
->  
-> -	ret = __phy_write(phydev, AIR_BPBUS_MODE, AIR_BPBUS_MODE_ADDR_FIXED);
-> +	ret = __mdiobus_write(bus, addr, AIR_BPBUS_MODE,
-> +			      AIR_BPBUS_MODE_ADDR_FIXED);
+> [...]
 
-We have mdiodev_read() and mdiodev_write:
+Here is the summary with links:
+  - [net] tunnels: Drop stale dst when building an ICMP error for PMTUD
+    https://git.kernel.org/netdev/net/c/b58d74963320
 
-static inline int mdiodev_read(struct mdio_device *mdiodev, u32 regnum)
-{
-	return mdiobus_read(mdiodev->bus, mdiodev->addr, regnum);
-}
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-static inline int mdiodev_write(struct mdio_device *mdiodev, u32 regnum,
-				u16 val)
-{
-	return mdiobus_write(mdiodev->bus, mdiodev->addr, regnum, val);
-}
 
-A PHY is a superset of an mdiodev....
-
-struct phy_device {
-	struct mdio_device mdio;
-
-	/* Information about the PHY type */
-	/* And management functions */
-	const struct phy_driver *drv;
-
-So it might look better to add __mdiodev_read()/__mdiodev_write(), and
-have the PHY driver pass &phydev->mdio, and the firmware download
-driver can directly use its mdiodev.
-
-	Andrew
