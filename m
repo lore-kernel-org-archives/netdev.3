@@ -1,76 +1,76 @@
-Received: from mail-pj1-f99.google.com (mail-pj1-f99.google.com [209.85.216.99])
+Received: from mail-pj1-f98.google.com (mail-pj1-f98.google.com [209.85.216.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2479147DD54
-	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 10:52:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8783E44163B
+	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 10:52:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788519156; cv=none; b=q2cv9mQ8ALohxSowww+bb+vqh9+WwAMNrVj39v+vWkjC8IrZbGRMK//JzVRep7OELaP68sXQ1njRLXZEivE//QDZdBc1cjBGcV++8WfZ06/tlqRuRCW2KbOd4Wmfski2ND0c4gzF8XwcVP/FsucjzgagN6jhO2PvWPPnbtyHOKc=
+	t=1788519163; cv=none; b=sf0+brjeKiGThe1DUW2w1sBSH6EndPgo2zLovs7WRD32mOwzUIsyhE568YSQLesvDiB65Jh0QQhGkZ6Uu7VzKv8Ny4xFgPY5liAeEgUgg8V7NrJStjf4NfAWeHF3pvTzBs2XBqQGh17mDzePkLR+39bNCXjhR+DzZPVP5ubrACs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788519156; c=relaxed/simple;
-	bh=31EO+obuyVyJy7sDrrORj0J7yrJ18PO1XejkzTuAIG4=;
+	s=arc-20240116; t=1788519163; c=relaxed/simple;
+	bh=2dAVE2WXxdp3tSOy4jTPwVNOPawnbbsPYUBg0SPl3rc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pKio0/YqXUW/U3kQXwH/LwMjzgPpNjCGfjsw6FD/shzN3PlEvKrMYWcScCmg9V3LpPiWZzB4SDBeeQ4gkYbv1Nn97NXza+hBwfb/RMvaqg7Wg9Uv/z4sV3vWbJZLp+zKWjf1OS2jjLsz+wA6A7EVyTekVCC7RxYFuxjAeTSq66Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=GPdrJZIt; arc=none smtp.client-ip=209.85.216.99
+	 MIME-Version; b=oFDX77xor2JDnNrRAM20NiUnO/E//5NLCyA/UMP5S/CNBBISntk/C8YuJyf/buSv9zdkBDQydIIpRP2TF0ZwKmEDbPi28e1eHj4Sl514SfVirTEuTh6dmd3fZBD2TwFI/xEznQ2EkBmKYOfQJsW4tSZOQVw43NP22Jyz8ZLOdtI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=hi8OTwB1; arc=none smtp.client-ip=209.85.216.98
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="GPdrJZIt"
-Received: by mail-pj1-f99.google.com with SMTP id 98e67ed59e1d1-38ea87caafeso679008a91.3
-        for <netdev@vger.kernel.org>; Fri, 04 Sep 2026 03:52:32 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="hi8OTwB1"
+Received: by mail-pj1-f98.google.com with SMTP id 98e67ed59e1d1-38511175ad3so734144a91.2
+        for <netdev@vger.kernel.org>; Fri, 04 Sep 2026 03:52:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788519150; x=1789123950;
+        d=1e100.net; s=20251104; t=1788519153; x=1789123953;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=6Vh9JXE6CrP53vg0mGaWkyinhC/KwcpsssZ0zP5EyaQ=;
-        b=idwmADNJyCLb3LOJ3cY1BQyDMqxWG3XU/Q3gTgJDR2bzPym3Wb6s4C7oiO/I1AN8+6
-         5XAk8FR8wi4/uqBf2LuMJvrOEJE1XIDT6bLTnb0LTKd2ENrEk6vsPSxcnUbme00vRBHZ
-         AgqQBARsJryw7VLX/blrhgvFVeQod+Mfw3gvZ6bDATEsjWywUN5aYqsLEdaJT8UVerUl
-         btphxXD067tnGn0NWaeshm4wOTMiuNtPXKkjeOW3FfBaPTZZtJfs3MVNED6suo8KcJPY
-         vT7fgk4Lxfn3VKgbxaBxCWWF84qu3GEYg0ESelgfeDOcqMHxP0VwHa1nxvW0nlFW2ZbQ
-         r0/g==
-X-Gm-Message-State: AFuF++mPrA7GZqqrjuKa5OxUynaExZ1UNLH8VDnllhw4nekTacbkNbLO
-	jFSjlFp5t3Q57f44k4DDBdUvLANQBMR1WUb60TICk+zSOzi91jTGx69MLELyIYbHs9YrSTuKS8h
-	FChKgcPaPIw5DAw4vZvcncj+ZaK9X/vbRSicpveqNj7w/PfADVlk4/DADsELLMMrsM0l9vaAsZZ
-	W08mmu8+1NdroeiuBltPA4bAZS2jcSOHsrET7T34aCAbQZexEFiIavB9f7oh8h4xXe4mP1RHkH2
-	LvU87gmaiS3
-X-Gm-Gg: AYBFou1Ri3D6XNX74Xbj3D9V1w5MeF2l6pIY46sI4+l0oc/uzlYuVv2gy5dHg1Ejy/7
-	iNSg6k75cUqHgpsDHuLjKWGHd5dXSnX69QCPiSxPxCgOkhCKJYYKKtjGxhahTbkLtWLo5YggKAQ
-	kJQETZ1nRcspTUTb6wJ1hRWMMY2vladTuSWzLcv0fRj6eXJPqZLy1gfetSz/Tpen6ARhnPxn3/U
-	pF1Oo/rCgXRwsG27NuE7uHm537vtDLcbFkq/szcyypD/FIR+48vVC76uQ/GRU0MGsbpDDZpQOeg
-	iOLwb99hPTSxYGeY50DNUuAbQHHGLuere1F2jqXwF3wTgZR4KKO0dP7MEaaVxGv1ToyQPz4PbmR
-	3w2z7mLIiOVkzRUSBq/Eb428oOq2WaCGilNMzfHhfaTplPVe8rbLK6ShzaFKOGRCrbkKkBYm5hc
-	Dyl0GhjY9PVB1wIcyABEENY1QFJxWlLduNpQ==
-X-Received: by 2002:a17:90a:ec88:b0:398:d286:344d with SMTP id 98e67ed59e1d1-39b2627396cmr8121254a91.22.1788519150133;
-        Fri, 04 Sep 2026 03:52:30 -0700 (PDT)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-27.dlp.protect.broadcom.com. [144.49.247.27])
-        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-39b260deb5esm1229040a91.3.2026.09.04.03.52.29
+        bh=V/Zg63IszZY5r+Rmhw5XRHAGIcwwHdwISEBxawedkp4=;
+        b=iPtcFjWYdfq2/ZXSX01/lslO7lnSDT9w8AB3RAPn3AWlWlSbZEuDuXxh6S7L185PGe
+         KHsRhsmbdYvzP9M2E7aXDEKonK6IaQxV92G4akt5UV9rI41QOTpaUBUpUXzGmwgD1Coy
+         KG2zB+5NmZXaupThqfVwbQKegIKvN3iN+uG9LMwVoKGetSZ6yu/oisY3215xBY11V6qd
+         61HZbe9gim+gqB2yMFrUssH0Yhgp1IMEM77FyIO8Tylc+o7IUkcSkqR/xjUjUzmDnG/l
+         sPDec3w6/Pu0IyuJxJ9pt2fGXW0014osriXX/DSB6kdDjjwUrNTgYBJcd19/f0m6SJt+
+         G4uA==
+X-Gm-Message-State: AFuF++lRVSgralDqVOJTL48eDdg/YCnSrNLe3mUXT7jL2bWMn4z4J4DN
+	ZdOT6KHpvkoWDfdIuVKWpMGFJ+lRA6Zz0OwDHeK3Iyg0DkN6KcyJy7bXhk+T2J94EzYuj+hastG
+	xofuTM4eAUd7fpMeZDV/fyLeRUx0UNuaUAz71P45TxaF5ARMuwBFXtQE/vCrXbqFt6chuTNcnEa
+	B2HaZv9m8PfqqNHyrdXm9s51amhtM/2PkvSN439hNcLzL/rImp3nnqhyEjgmoFsKPXqs+gzzQdw
+	s05MM3CCKKy
+X-Gm-Gg: AYBFou04nJHxrvMTfkeGOkAg52XOex0b4zrnzvGfdMEZZgG+xi7v0VL3VtTdTnQc7YG
+	mcM5YIcofapGn+0WWCySzzYbDe0B4Dy+VopxP6c40JOms8IZK0NxjfsYZiwW8aIzqr8vRQv/nhM
+	hbbZ0QOw5AlTZcMFS+dWuuPI1Phzylh4es38f105i/aXoZkgqJLUWKYO8Imz8naUz3SarojWBpW
+	VHNUfLj2N/no8R2xbDYN2BEhC4QPjwguaXjCztITF+LS5f6J0CtI2BOq87piRLiIOuKeKOgWyQZ
+	t3u6lByu7VZcrhNKjYVxZMBrQ93nd90MNi2Pmt7R1fTWOxS2uGmO6BGR+35Y0tn2EXYBQO7DoxE
+	6kIv8s1CZ56f2+rCyk6dKtZfl3pyDDi+cQIljZQtov7UgQPkZII1CEd4gzGzmJ7f04RRwVl6QhR
+	Q5vzSv3e9JNatEYUqNGMU/pA8PEWeIV9Yj0Q==
+X-Received: by 2002:a17:90b:1b44:b0:398:ba96:1afd with SMTP id 98e67ed59e1d1-39b2613249fmr6855298a91.8.1788519152932;
+        Fri, 04 Sep 2026 03:52:32 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-25.dlp.protect.broadcom.com. [144.49.247.25])
+        by smtp-relay.gmail.com with ESMTPS id 98e67ed59e1d1-39aec95d327sm612178a91.3.2026.09.04.03.52.32
         for <netdev@vger.kernel.org>
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 04 Sep 2026 03:52:30 -0700 (PDT)
+        Fri, 04 Sep 2026 03:52:32 -0700 (PDT)
 X-Relaying-Domain: broadcom.com
 X-CFilter-Loop: Reflected
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-38e7ff7b375so1156168a91.1
-        for <netdev@vger.kernel.org>; Fri, 04 Sep 2026 03:52:28 -0700 (PDT)
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-398fe469aa0so1408241a91.2
+        for <netdev@vger.kernel.org>; Fri, 04 Sep 2026 03:52:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1788519148; x=1789123948; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1788519151; x=1789123951; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=6Vh9JXE6CrP53vg0mGaWkyinhC/KwcpsssZ0zP5EyaQ=;
-        b=GPdrJZItQQd5588sj+MKp7ikI2nVB95dbvue01wtXKVn9DS5t8KwzWk3rAZX06uteP
-         iRYk40SpMwgk4tMqZuUGi5abwTTRS3SxR6CvlSiJRkYCZyQKVJ2Osa1T9xXLh5LcyTsV
-         E2FF5xq8zt5VsrQrNjcjMVwinSik2v0abatLc=
-X-Received: by 2002:a17:90b:4cce:b0:38f:240d:b857 with SMTP id 98e67ed59e1d1-39b260dd4e9mr8763706a91.2.1788519147569;
-        Fri, 04 Sep 2026 03:52:27 -0700 (PDT)
-X-Received: by 2002:a17:90b:4cce:b0:38f:240d:b857 with SMTP id 98e67ed59e1d1-39b260dd4e9mr8763623a91.2.1788519147004;
-        Fri, 04 Sep 2026 03:52:27 -0700 (PDT)
+        bh=V/Zg63IszZY5r+Rmhw5XRHAGIcwwHdwISEBxawedkp4=;
+        b=hi8OTwB12RrJu3fDGHQsdCOiumk07dIeo1n4hVmlv/NsQuSdXRtM//8ANefIEZnw2B
+         gX/zSVVw3Ib5tqvETShYdugLnhdGo6U5SZdNVfYsC/cTFKpsj5kyLFqHSsyfboWux6RX
+         Kv8pLjzcpFWTlvj9Dp1GCFRG9OaApePay9hwI=
+X-Received: by 2002:a17:90b:5866:b0:398:e73e:5a13 with SMTP id 98e67ed59e1d1-39b2613272amr7691617a91.9.1788519150492;
+        Fri, 04 Sep 2026 03:52:30 -0700 (PDT)
+X-Received: by 2002:a17:90b:5866:b0:398:e73e:5a13 with SMTP id 98e67ed59e1d1-39b2613272amr7691538a91.9.1788519149926;
+        Fri, 04 Sep 2026 03:52:29 -0700 (PDT)
 Received: from mgmt5.dhcp.broadcom.net ([192.19.222.250])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3339a534d0asm6171170eec.8.2026.09.04.03.52.25
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3339a534d0asm6171170eec.8.2026.09.04.03.52.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Sep 2026 03:52:25 -0700 (PDT)
+        Fri, 04 Sep 2026 03:52:29 -0700 (PDT)
 From: Siva Reddy Kallam <siva.kallam@broadcom.com>
 To: leonro@nvidia.com,
 	jgg@nvidia.com,
@@ -83,11 +83,10 @@ To: leonro@nvidia.com,
 Cc: netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-rdma@vger.kernel.org,
-	Usman Ansari <usman.ansari@broadcom.com>,
 	Siva Reddy Kallam <siva.kallam@broadcom.com>
-Subject: [PATCH 05/15] RDMA/bng_re: Add support verbs
-Date: Fri,  4 Sep 2026 03:43:13 -0700
-Message-ID: <20260904104328.763768-6-siva.kallam@broadcom.com>
+Subject: [PATCH 06/15] RDMA/bng_re: Add ucontext/mmap verbs
+Date: Fri,  4 Sep 2026 03:43:14 -0700
+Message-ID: <20260904104328.763768-7-siva.kallam@broadcom.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20260904104328.763768-1-siva.kallam@broadcom.com>
 References: <20260904104328.763768-1-siva.kallam@broadcom.com>
@@ -100,397 +99,564 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-From: Usman Ansari <usman.ansari@broadcom.com>
-
 This patch adds below verbs.
-- bng_re_query_device
-- bng_re_modify_device
-- bng_re_query_fw_str
-- bng_re_query_port
-- bng_re_get_link_layer
-- bng_re_get_port_immutable
-- bng_re_process_mad
-- bng_re_query_pkey
+- bng_re_alloc_ucontext
+- bng_re_dealloc_ucontext
+- bng_re_disassociate_ucontext
+- bng_re_mmap
+- bng_re_mmap_free
 
-Signed-off-by: Usman Ansari <usman.ansari@broadcom.com>
 Signed-off-by: Siva Reddy Kallam <siva.kallam@broadcom.com>
 ---
- drivers/infiniband/hw/bng_re/Makefile    |   3 +-
- drivers/infiniband/hw/bng_re/bng_dev.c   |  16 ++
- drivers/infiniband/hw/bng_re/bng_re.h    |  11 ++
- drivers/infiniband/hw/bng_re/bng_sp.h    |   1 +
- drivers/infiniband/hw/bng_re/bng_verbs.c | 200 +++++++++++++++++++++++
- drivers/infiniband/hw/bng_re/bng_verbs.h |  30 ++++
- include/uapi/rdma/bng_re-abi.h           |  12 ++
- include/uapi/rdma/ib_user_ioctl_verbs.h  |   1 +
- 8 files changed, 273 insertions(+), 1 deletion(-)
- create mode 100644 drivers/infiniband/hw/bng_re/bng_verbs.c
- create mode 100644 drivers/infiniband/hw/bng_re/bng_verbs.h
- create mode 100644 include/uapi/rdma/bng_re-abi.h
+ drivers/infiniband/hw/bng_re/bng_dev.c   |   9 +
+ drivers/infiniband/hw/bng_re/bng_re.h    |  32 ++++
+ drivers/infiniband/hw/bng_re/bng_res.c   |  94 ++++++++++
+ drivers/infiniband/hw/bng_re/bng_res.h   |  25 +++
+ drivers/infiniband/hw/bng_re/bng_verbs.c | 219 +++++++++++++++++++++++
+ drivers/infiniband/hw/bng_re/bng_verbs.h |  22 +++
+ include/uapi/rdma/bng_re-abi.h           |  31 ++++
+ 7 files changed, 432 insertions(+)
 
-diff --git a/drivers/infiniband/hw/bng_re/Makefile b/drivers/infiniband/hw/bng_re/Makefile
-index ea0c6951728f..1b954a35993b 100644
---- a/drivers/infiniband/hw/bng_re/Makefile
-+++ b/drivers/infiniband/hw/bng_re/Makefile
-@@ -12,4 +12,5 @@ bng_re-y := \
- 	bng_debugfs.o \
- 	bng_fw.o \
- 	bng_dev.o \
--	bng_sp.o
-+	bng_sp.o \
-+	bng_verbs.o
 diff --git a/drivers/infiniband/hw/bng_re/bng_dev.c b/drivers/infiniband/hw/bng_re/bng_dev.c
-index ea6528e80ce3..05665c82b4e1 100644
+index 05665c82b4e1..401c7a0ddb85 100644
 --- a/drivers/infiniband/hw/bng_re/bng_dev.c
 +++ b/drivers/infiniband/hw/bng_re/bng_dev.c
-@@ -6,6 +6,7 @@
- #include <linux/auxiliary_bus.h>
- 
- #include <rdma/ib_verbs.h>
-+#include <rdma/bng_re-abi.h>
- 
- #include "bng_res.h"
- #include "bng_sp.h"
-@@ -17,11 +18,26 @@
- #include "bng_debugfs.h"
- #include "bng_re_mpc_roce.h"
- #include "bng_xid.h"
-+#include "bng_verbs.h"
- 
- MODULE_AUTHOR("Siva Reddy Kallam <siva.kallam@broadcom.com>");
- MODULE_DESCRIPTION(BNG_RE_DESC);
- MODULE_LICENSE("Dual BSD/GPL");
- 
-+static const struct ib_device_ops bng_re_dev_ops = {
-+	.owner			= THIS_MODULE,
-+	.driver_id              = RDMA_DRIVER_BNG_RE,
-+	.uverbs_abi_ver         = BNG_RE_ABI_VERSION,
-+	.query_device		= bng_re_query_device,
-+	.modify_device		= bng_re_modify_device,
-+	.get_dev_fw_str		= bng_re_query_fw_str,
-+	.query_port		= bng_re_query_port,
-+	.get_link_layer		= bng_re_get_link_layer,
-+	.get_port_immutable	= bng_re_get_port_immutable,
-+	.process_mad		= bng_re_process_mad,
-+	.query_pkey		= bng_re_query_pkey,
-+};
-+
- static struct bng_re_dev *bng_re_dev_add(struct auxiliary_device *adev,
- 					 struct bnge_auxr_dev *aux_dev)
- {
-diff --git a/drivers/infiniband/hw/bng_re/bng_re.h b/drivers/infiniband/hw/bng_re/bng_re.h
-index d6fb205d9f12..4fa5db15625f 100644
---- a/drivers/infiniband/hw/bng_re/bng_re.h
-+++ b/drivers/infiniband/hw/bng_re/bng_re.h
-@@ -21,6 +21,14 @@
- #define BNG_RE_MIN_MSIX		2
- #define BNG_RE_MAX_MSIX		BNGE_MAX_ROCE_MSIX
- 
-+#define BNG_RE_PAGE_SHIFT_1G	(30)
-+#define BNG_RE_MAX_MR_SIZE_LOW	BIT_ULL(BNG_RE_PAGE_SHIFT_1G)
-+#define BNG_RE_MAX_MR_SIZE_HIGH	BIT_ULL(39)
-+#define BNG_RE_MAX_MR_SIZE		BNG_RE_MAX_MR_SIZE_HIGH
-+
-+#define BNG_RE_DEFAULT_ACK_DELAY	16
-+#define BNG_RE_PAGE_SIZE_SUPPORTED	0x7FFFF000 /* 4kb - 1G */
-+
- #define BNG_RE_CREQ_NQ_IDX	0
- 
- #define BNGE_INVALID_STATS_CTX_ID	-1
-@@ -250,6 +258,9 @@ struct bng_re_dev {
- 	struct bng_mpc_ctx	*mpc;
+@@ -36,6 +36,12 @@ static const struct ib_device_ops bng_re_dev_ops = {
+ 	.get_port_immutable	= bng_re_get_port_immutable,
+ 	.process_mad		= bng_re_process_mad,
+ 	.query_pkey		= bng_re_query_pkey,
++	.alloc_ucontext		= bng_re_alloc_ucontext,
++	.dealloc_ucontext	= bng_re_dealloc_ucontext,
++	.disassociate_ucontext	= bng_re_disassociate_ucontext,
++	.mmap			= bng_re_mmap,
++	.mmap_free		= bng_re_mmap_free,
++	INIT_RDMA_OBJ_SIZE(ib_ucontext, bng_re_ucontext, ib_uctx),
  };
  
-+#define to_bng_re_dev(ptr, member)	\
-+	container_of((ptr), struct bng_re_dev, member)
+ static struct bng_re_dev *bng_re_dev_add(struct auxiliary_device *adev,
+@@ -284,6 +290,9 @@ static int bng_re_query_hwrm_version(struct bng_re_dev *rdev)
+ 	if (!cctx->hwrm_cmd_max_timeout)
+ 		cctx->hwrm_cmd_max_timeout = BNG_ROCE_FW_MAX_TIMEOUT;
+ 
++	cctx->chip_rev = ver_get_resp.chip_rev;
++	cctx->chip_metal = ver_get_resp.chip_metal;
 +
- int bng_re_net_ring_alloc(struct bng_re_dev *rdev,
- 			  struct bng_re_ring_attr *ring_attr,
- 			  u16 *fw_ring_id);
-diff --git a/drivers/infiniband/hw/bng_re/bng_sp.h b/drivers/infiniband/hw/bng_re/bng_sp.h
-index 91faa5ac7464..4dac43540f54 100644
---- a/drivers/infiniband/hw/bng_re/bng_sp.h
-+++ b/drivers/infiniband/hw/bng_re/bng_sp.h
-@@ -24,6 +24,7 @@ struct bng_re_dev_attr {
- 	u32				max_qp_rd_atom;
- 	u32				max_qp_init_rd_atom;
- 	u32				max_qp_wqes;
-+	u32				max_sq_wqes;
- 	u32				max_qp_sges;
- 	u32				max_cq;
- 	u32				max_cq_wqes;
-diff --git a/drivers/infiniband/hw/bng_re/bng_verbs.c b/drivers/infiniband/hw/bng_re/bng_verbs.c
-new file mode 100644
-index 000000000000..25996133c83d
---- /dev/null
-+++ b/drivers/infiniband/hw/bng_re/bng_verbs.c
-@@ -0,0 +1,200 @@
-+// SPDX-License-Identifier: GPL-2.0
-+// Copyright (c) 2026 Broadcom.
+ 	return 0;
+ }
+ 
+diff --git a/drivers/infiniband/hw/bng_re/bng_re.h b/drivers/infiniband/hw/bng_re/bng_re.h
+index 4fa5db15625f..19b1e69dfb1e 100644
+--- a/drivers/infiniband/hw/bng_re/bng_re.h
++++ b/drivers/infiniband/hw/bng_re/bng_re.h
+@@ -172,6 +172,38 @@ struct bng_mpc_db {
+ 	struct bng_re_db_info	dbinfo;
+ };
+ 
++enum bng_re_mmap_flag {
++	BNG_RE_MMAP_WC_DB,
++	BNG_RE_MMAP_DBR_PAGE,
++	BNG_RE_MMAP_DB_RECOVERY_PAGE,
++	BNG_RE_MMAP_DBR_PACING_BAR,
++	BNG_RE_MMAP_UC_DB,
++	BNG_RE_MMAP_TOGGLE_PAGE,
++	BNG_RE_MMAP_HDBR_BASE,
++};
 +
-+#include <linux/interrupt.h>
-+#include <linux/types.h>
-+#include <linux/pci.h>
-+#include <linux/io.h>
-+#include <net/addrconf.h>
-+#include <rdma/ib_cache.h>
-+#include <rdma/ib_verbs.h>
-+#include <rdma/ib_umem.h>
-+#include <rdma/ib_pack.h>
-+#include <rdma/ib_addr.h>
-+#include <rdma/ib_mad.h>
-+#include <rdma/uverbs_ioctl.h>
-+#include <rdma/bng_re-abi.h>
-+
-+#include "bng_res.h"
-+#include "bng_fw.h"
-+#include "bnge.h"
-+#include "bnge_auxr.h"
-+#include "bng_re.h"
-+#include "bng_verbs.h"
-+
-+int bng_re_query_device(struct ib_device *ibdev,
-+			struct ib_device_attr *ib_attr,
-+			struct ib_udata *udata)
++static inline char *bng_re_mmap_str(enum bng_re_mmap_flag mmap_flag)
 +{
-+	struct bng_re_dev *rdev = to_bng_re_dev(ibdev, ibdev);
-+	struct bng_re_dev_attr *dev_attr = rdev->dev_attr;
-+
-+	memset(ib_attr, 0, sizeof(*ib_attr));
-+	memcpy(&ib_attr->fw_ver, dev_attr->fw_ver,
-+	       min(sizeof(dev_attr->fw_ver),
-+		   sizeof(ib_attr->fw_ver)));
-+	addrconf_addr_eui48((u8 *)&ib_attr->sys_image_guid,
-+			    rdev->netdev->dev_addr);
-+	ib_attr->max_mr_size = BNG_RE_MAX_MR_SIZE;
-+	ib_attr->page_size_cap = BNG_RE_PAGE_SIZE_SUPPORTED;
-+	ib_attr->vendor_id = rdev->aux_dev->pdev->vendor;
-+	ib_attr->vendor_part_id = rdev->aux_dev->pdev->device;
-+	ib_attr->hw_ver = rdev->aux_dev->pdev->revision;
-+	ib_attr->max_qp = dev_attr->max_qp;
-+	ib_attr->max_qp_wr = dev_attr->max_sq_wqes;
-+	ib_attr->device_cap_flags = IB_DEVICE_CURR_QP_STATE_MOD
-+				    | IB_DEVICE_RC_RNR_NAK_GEN
-+				    | IB_DEVICE_SHUTDOWN_PORT
-+				    | IB_DEVICE_SYS_IMAGE_GUID
-+				    | IB_DEVICE_RESIZE_MAX_WR
-+				    | IB_DEVICE_PORT_ACTIVE_EVENT
-+				    | IB_DEVICE_N_NOTIFY_CQ
-+				    | IB_DEVICE_MEM_WINDOW
-+				    | IB_DEVICE_MEM_WINDOW_TYPE_2B
-+				    | IB_DEVICE_MEM_MGT_EXTENSIONS;
-+	ib_attr->kernel_cap_flags = IBK_LOCAL_DMA_LKEY;
-+	ib_attr->max_send_sge = dev_attr->max_qp_sges;
-+	ib_attr->max_recv_sge = dev_attr->max_qp_sges;
-+	ib_attr->max_sge_rd = dev_attr->max_qp_sges;
-+	ib_attr->max_cq = dev_attr->max_cq;
-+	ib_attr->max_cqe = dev_attr->max_cq_wqes;
-+	ib_attr->max_mr = dev_attr->max_mr;
-+	ib_attr->max_pd = dev_attr->max_pd;
-+	ib_attr->max_qp_rd_atom = dev_attr->max_qp_rd_atom;
-+	ib_attr->max_qp_init_rd_atom = dev_attr->max_qp_init_rd_atom;
-+	ib_attr->atomic_cap = IB_ATOMIC_NONE;
-+	ib_attr->masked_atomic_cap = IB_ATOMIC_NONE;
-+	if (dev_attr->is_atomic) {
-+		ib_attr->atomic_cap = IB_ATOMIC_GLOB;
-+		ib_attr->masked_atomic_cap = IB_ATOMIC_GLOB;
++	switch (mmap_flag) {
++	case BNG_RE_MMAP_WC_DB:
++		return "BNG_RE_MMAP_WC_DB";
++	case BNG_RE_MMAP_DBR_PAGE:
++		return "BNG_RE_MMAP_DBR_PAGE";
++	case BNG_RE_MMAP_DB_RECOVERY_PAGE:
++		return "BNG_RE_MMAP_DB_RECOVERY_PAGE";
++	case BNG_RE_MMAP_DBR_PACING_BAR:
++		return "BNG_RE_MMAP_DBR_PACING_BAR";
++	case BNG_RE_MMAP_UC_DB:
++		return "BNG_RE_MMAP_UC_DB";
++	case BNG_RE_MMAP_HDBR_BASE:
++		return "BNG_RE_MMAP_HDBR_BASE";
++	case BNG_RE_MMAP_TOGGLE_PAGE:
++		return "BNG_RE_MMAP_TOGGLE_PAGE";
++	default:
++		return "Unknown";
 +	}
-+	ib_attr->max_ee_rd_atom = 0;
-+	ib_attr->max_res_rd_atom = 0;
-+	ib_attr->max_ee_init_rd_atom = 0;
-+	ib_attr->max_ee = 0;
-+	ib_attr->max_rdd = 0;
-+	ib_attr->max_mw = dev_attr->max_mw;
-+	ib_attr->max_raw_ipv6_qp = 0;
-+	ib_attr->max_raw_ethy_qp = dev_attr->max_raw_ethy_qp;
-+	ib_attr->max_mcast_grp = 0;
-+	ib_attr->max_mcast_qp_attach = 0;
-+	ib_attr->max_total_mcast_qp_attach = 0;
-+	ib_attr->max_ah = dev_attr->max_ah;
-+	ib_attr->max_srq = dev_attr->max_srq;
-+	ib_attr->max_srq_wr = dev_attr->max_srq_wqes;
-+	ib_attr->max_srq_sge = dev_attr->max_srq_sges;
-+	ib_attr->max_fast_reg_page_list_len = MAX_PBL_LVL_1_PGS;
-+	ib_attr->max_pkeys = 1;
-+	ib_attr->local_ca_ack_delay = BNG_RE_DEFAULT_ACK_DELAY;
-+
-+	return 0;
 +}
 +
-+int bng_re_modify_device(struct ib_device *ibdev,
-+			 int device_modify_mask,
-+			 struct ib_device_modify *device_modify)
+ /* NQ specific structures  */
+ struct bng_re_nq_db {
+ 	struct bng_re_reg_desc	reg;
+diff --git a/drivers/infiniband/hw/bng_re/bng_res.c b/drivers/infiniband/hw/bng_re/bng_res.c
+index be6d5099aa35..fe261354c4cb 100644
+--- a/drivers/infiniband/hw/bng_re/bng_res.c
++++ b/drivers/infiniband/hw/bng_re/bng_res.c
+@@ -360,6 +360,7 @@ static int bng_res_alloc_dpi_tbl(struct bng_re_res *res,
+ 	}
+ 
+ 	memset((u8 *)dpit->tbl, 0xFF, bytes);
++	mutex_init(&res->dpi_tbl_lock);
+ 	dpit->priv_db = dpit->ucreg.bar_reg + dpit->ucreg.offset;
+ 	return 0;
+ }
+@@ -379,3 +380,96 @@ int bng_res_alloc_init_tbls(struct bng_re_res *res)
+ 
+ 	return rc;
+ }
++
++int bng_re_alloc_dpi(struct bng_re_res *res,
++		     struct bng_re_dpi *dpi,
++		     void *app, enum bng_re_dpi_type type)
 +{
-+	ibdev_dbg(ibdev, "Modify device with mask 0x%x", device_modify_mask);
++	struct bng_re_dpi_tbl *dpit = &res->dpi_tbl;
++	struct bng_re_reg_desc *reg;
++	u32 bit_num;
++	u64 umaddr;
++	int rc = 0;
 +
-+	if (device_modify_mask & ~IB_DEVICE_MODIFY_NODE_DESC)
-+		return -EOPNOTSUPP;
-+
-+	if (!(device_modify_mask & IB_DEVICE_MODIFY_NODE_DESC))
-+		return 0;
-+
-+	memcpy(ibdev->node_desc, device_modify->node_desc, IB_DEVICE_NODE_DESC_MAX);
-+
-+	return 0;
-+}
-+
-+void bng_re_query_fw_str(struct ib_device *ibdev, char *str)
-+{
-+	struct bng_re_dev *rdev = to_bng_re_dev(ibdev, ibdev);
-+
-+	sprintf(str, "%d.%d.%d.%d", rdev->dev_attr->fw_ver[0],
-+		rdev->dev_attr->fw_ver[1], rdev->dev_attr->fw_ver[2],
-+		rdev->dev_attr->fw_ver[3]);
-+}
-+
-+int bng_re_query_port(struct ib_device *ibdev, u32 port_num,
-+		      struct ib_port_attr *port_attr)
-+{
-+	struct bng_re_dev *rdev = to_bng_re_dev(ibdev, ibdev);
-+	struct bng_re_dev_attr *dev_attr = rdev->dev_attr;
-+	int rc;
-+
-+	memset(port_attr, 0, sizeof(*port_attr));
-+
-+	if (netif_running(rdev->netdev) && netif_carrier_ok(rdev->netdev)) {
-+		port_attr->state = IB_PORT_ACTIVE;
-+		port_attr->phys_state = IB_PORT_PHYS_STATE_LINK_UP;
-+	} else {
-+		port_attr->state = IB_PORT_DOWN;
-+		port_attr->phys_state = IB_PORT_PHYS_STATE_DISABLED;
++	reg = &dpit->wcreg;
++	mutex_lock(&res->dpi_tbl_lock);
++	if (!dpit->tbl) {
++		rc = -ENOMEM;
++		goto unlock;
 +	}
-+	port_attr->max_mtu = IB_MTU_4096;
-+	port_attr->active_mtu = iboe_get_mtu(rdev->netdev->mtu);
-+	port_attr->gid_tbl_len = dev_attr->max_sgid;
-+	port_attr->port_cap_flags = IB_PORT_CM_SUP | IB_PORT_REINIT_SUP |
-+				    IB_PORT_DEVICE_MGMT_SUP |
-+				    IB_PORT_VENDOR_CLASS_SUP;
-+	port_attr->ip_gids = true;
++	bit_num = find_first_bit(dpit->tbl, dpit->max);
++	if (bit_num >= dpit->max) {
++		rc = -ENOMEM;
++		goto unlock;
++	}
++	clear_bit(bit_num, dpit->tbl);
++	dpit->app_tbl[bit_num] = app;
++	dpi->bit = bit_num;
++	dpi->dpi = bit_num + (reg->offset - dpit->ucreg.offset) / PAGE_SIZE;
++	umaddr = reg->bar_base + reg->offset + bit_num * PAGE_SIZE;
++	dpi->umdbr = umaddr;
++	switch (type) {
++	case BNG_RE_DPI_TYPE_KERNEL:
++		dpi->umdbr = dpit->ucreg.bar_base +
++			     dpit->ucreg.offset + bit_num * PAGE_SIZE;
++		dpi->dbr = dpit->priv_db;
++		dpi->dpi = dpi->bit;
++		break;
++	case BNG_RE_DPI_TYPE_WC:
++		dpi->dbr = ioremap_wc(umaddr, PAGE_SIZE);
++		break;
++	default:
++		dpi->dbr = ioremap(umaddr, PAGE_SIZE);
++		break;
++	}
 +
-+	port_attr->max_msg_sz = (u32)BNG_RE_MAX_MR_SIZE_LOW;
-+	port_attr->bad_pkey_cntr = 0;
-+	port_attr->qkey_viol_cntr = 0;
-+	port_attr->pkey_tbl_len = dev_attr->max_pkey;
-+	port_attr->lid = 0;
-+	port_attr->sm_lid = 0;
-+	port_attr->lmc = 0;
-+	port_attr->max_vl_num = 4;
-+	port_attr->sm_sl = 0;
-+	port_attr->subnet_timeout = 0;
-+	port_attr->init_type_reply = 0;
-+	rc = ib_get_eth_speed(&rdev->ibdev, port_num, &port_attr->active_speed,
-+			      &port_attr->active_width);
-+
++	if (!dpi->dbr) {
++		dev_err(&res->pdev->dev, "DB remap failed, type = %d\n",
++			type);
++		rc = -ENOMEM;
++		set_bit(bit_num, dpit->tbl);
++		dpit->app_tbl[bit_num] = NULL;
++		goto unlock;
++	}
++	dpi->type = type;
++unlock:
++	mutex_unlock(&res->dpi_tbl_lock);
 +	return rc;
 +}
 +
-+enum rdma_link_layer bng_re_get_link_layer(struct ib_device *ibdev, u32 port_num)
++int bng_re_dealloc_dpi(struct bng_re_res *res,
++		       struct bng_re_dpi *dpi)
 +{
-+	return IB_LINK_LAYER_ETHERNET;
++	struct bng_re_dpi_tbl *dpit = &res->dpi_tbl;
++	int rc = 0;
++
++	mutex_lock(&res->dpi_tbl_lock);
++	if (dpi->bit >= dpit->max) {
++		dev_warn(&res->pdev->dev,
++			 "Invalid DPI? dpi = %d, bit = %d\n",
++			 dpi->dpi, dpi->bit);
++		rc = -EINVAL;
++		goto unlock;
++	}
++	if (dpi->dpi && dpi->type != BNG_RE_DPI_TYPE_KERNEL)
++		pci_iounmap(res->pdev, dpi->dbr);
++	if (test_and_set_bit(dpi->bit, dpit->tbl)) {
++		dev_warn(&res->pdev->dev,
++			 "Freeing an unused DPI? dpi = %d, bit = %d\n",
++			 dpi->dpi, dpi->bit);
++		dev_warn(&res->pdev->dev,
++			 "umdbr = %lld, dbr = %p, type = %d\n",
++			 dpi->umdbr, dpi->dbr, dpi->type);
++		dev_warn(&res->pdev->dev,
++			 "dpit max = %d, priv_db = %p\n",
++			 dpit->max, dpit->priv_db);
++		rc = -EINVAL;
++		goto unlock;
++	}
++	if (dpit->app_tbl)
++		dpit->app_tbl[dpi->bit] = NULL;
++	memset(dpi, 0, sizeof(*dpi));
++unlock:
++	mutex_unlock(&res->dpi_tbl_lock);
++	return rc;
 +}
-+
-+int bng_re_get_port_immutable(struct ib_device *ibdev, u32 port_num,
-+			      struct ib_port_immutable *immutable)
-+{
-+	struct ib_port_attr port_attr;
-+
-+	if (bng_re_query_port(ibdev, port_num, &port_attr))
-+		return -EINVAL;
-+
-+	immutable->pkey_tbl_len = port_attr.pkey_tbl_len;
-+	immutable->gid_tbl_len = port_attr.gid_tbl_len;
-+	immutable->core_cap_flags = RDMA_CORE_PORT_IBA_ROCE;
-+	immutable->core_cap_flags |= RDMA_CORE_CAP_PROT_ROCE_UDP_ENCAP;
-+	immutable->max_mad_size = IB_MGMT_MAD_SIZE;
-+
-+	return 0;
-+}
-+
-+int bng_re_query_pkey(struct ib_device *ibdev, u32 port_num,
-+		      u16 index, u16 *pkey)
-+{
-+	if (index > 0)
-+		return -EINVAL;
-+
-+	*pkey = IB_DEFAULT_PKEY_FULL;
-+
-+	return 0;
-+}
-+
-+int bng_re_process_mad(struct ib_device *ibdev, int process_mad_flags,
-+		       u32 port_num, const struct ib_wc *in_wc,
-+		       const struct ib_grh *in_grh,
-+		       const struct ib_mad *in_mad, struct ib_mad *out_mad,
-+		       size_t *out_mad_size, u16 *out_mad_pkey_index)
-+{
-+	return IB_MAD_RESULT_FAILURE;
-+}
-diff --git a/drivers/infiniband/hw/bng_re/bng_verbs.h b/drivers/infiniband/hw/bng_re/bng_verbs.h
-new file mode 100644
-index 000000000000..5875ec565ea4
---- /dev/null
-+++ b/drivers/infiniband/hw/bng_re/bng_verbs.h
-@@ -0,0 +1,30 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+// Copyright (c) 2026 Broadcom.
-+
-+#ifndef __BNG_RE_VERBS_H__
-+#define __BNG_RE_VERBS_H__
-+
-+#include <linux/refcount.h>
-+#include <rdma/ib_verbs.h>
-+
-+#include "bng_sp.h"
-+#include "bng_re.h"
-+
-+int bng_re_query_device(struct ib_device *ibdev, struct ib_device_attr *ib_attr,
-+			struct ib_udata *udata);
-+int bng_re_modify_device(struct ib_device *ibdev, int device_modify_mask,
-+			 struct ib_device_modify *device_modify);
-+void bng_re_query_fw_str(struct ib_device *ibdev, char *str);
-+int bng_re_query_port(struct ib_device *ibdev, u32 port_num,
-+		      struct ib_port_attr *port_attr);
-+int bng_re_get_port_immutable(struct ib_device *ibdev, u32 port_num,
-+			      struct ib_port_immutable *immutable);
-+int bng_re_query_pkey(struct ib_device *ibdev, u32 port_num, u16 index, u16 *pkey);
-+enum rdma_link_layer bng_re_get_link_layer(struct ib_device *ibdev, u32 port_num);
-+int bng_re_process_mad(struct ib_device *ibdev, int mad_flags,
-+		       u32 port_num, const struct ib_wc *in_wc,
-+		       const struct ib_grh *in_grh,
-+		       const struct ib_mad *in_mad, struct ib_mad *out_mad,
-+		       size_t *out_mad_size, u16 *out_mad_pkey_index);
-+#endif /* __BNG_RE_VERBS_H__ */
-+
-diff --git a/include/uapi/rdma/bng_re-abi.h b/include/uapi/rdma/bng_re-abi.h
-new file mode 100644
-index 000000000000..cea056dc8610
---- /dev/null
-+++ b/include/uapi/rdma/bng_re-abi.h
-@@ -0,0 +1,12 @@
-+/* SPDX-License-Identifier: ((GPL-2.0 WITH Linux-syscall-note) OR BSD-2-Clause) */
-+/* Copyright (c) 2025 Broadcom */
-+
-+#ifndef __BNG_RE_UVERBS_ABI_H__
-+#define __BNG_RE_UVERBS_ABI_H__
-+
-+#include <linux/types.h>
-+#include <rdma/ib_user_ioctl_cmds.h>
-+
-+#define BNG_RE_ABI_VERSION	1
-+
-+#endif /* __BNG_RE_UVERBS_ABI_H__*/
-diff --git a/include/uapi/rdma/ib_user_ioctl_verbs.h b/include/uapi/rdma/ib_user_ioctl_verbs.h
-index 21f86cc7bb1f..d8ffeb6fbb4a 100644
---- a/include/uapi/rdma/ib_user_ioctl_verbs.h
-+++ b/include/uapi/rdma/ib_user_ioctl_verbs.h
-@@ -257,6 +257,7 @@ enum rdma_driver_id {
- 	RDMA_DRIVER_ERDMA,
- 	RDMA_DRIVER_MANA,
- 	RDMA_DRIVER_IONIC,
-+	RDMA_DRIVER_BNG_RE,
+diff --git a/drivers/infiniband/hw/bng_re/bng_res.h b/drivers/infiniband/hw/bng_re/bng_res.h
+index 9745609190d9..11e453d4db36 100644
+--- a/drivers/infiniband/hw/bng_re/bng_res.h
++++ b/drivers/infiniband/hw/bng_re/bng_res.h
+@@ -91,6 +91,8 @@ struct bng_re_chip_ctx {
+ 	u64	hwrm_intf_ver;
+ 	u16	hwrm_cmd_max_timeout;
+ 	struct bng_re_drv_modes modes;
++	u8	chip_rev;
++	u8	chip_metal;
  };
  
- enum ib_uverbs_gid_type {
+ struct bng_re_pbl {
+@@ -156,6 +158,22 @@ struct bng_re_stats {
+ 	u32				fw_id;
+ };
+ 
++/* DPI types */
++enum bng_re_dpi_type {
++	BNG_RE_DPI_TYPE_KERNEL	= 0,
++	BNG_RE_DPI_TYPE_UC	= 1,
++	BNG_RE_DPI_TYPE_WC	= 2
++};
++
++/* DPI structure */
++struct bng_re_dpi {
++	u32			dpi;
++	u32			bit;
++	u64			umdbr;
++	void __iomem		*dbr;
++	enum bng_re_dpi_type	type;
++};
++
+ /* DPI table */
+ struct bng_re_dpi_tbl {
+ 	void			**app_tbl;
+@@ -171,6 +189,8 @@ struct bng_re_res {
+ 	struct bng_re_chip_ctx		*cctx;
+ 	struct bng_re_dev_attr		*dattr;
+ 	struct bng_re_dpi_tbl		dpi_tbl;
++	/* Serialize access to DPI table */
++	struct mutex			dpi_tbl_lock;
+ 	struct xid_manager		*qp_xids;
+ 	struct xid_manager		*ah_xids;
+ };
+@@ -282,4 +302,9 @@ void bng_res_unmap_db_bar(struct bng_re_res *res);
+ int bng_res_map_db_bar(struct bng_re_res *res);
+ void bng_res_free_tbls(struct bng_re_res *res);
+ int bng_res_alloc_init_tbls(struct bng_re_res *res);
++int bng_re_alloc_dpi(struct bng_re_res *res,
++		   struct bng_re_dpi *dpi,
++		   void *app, enum bng_re_dpi_type type);
++int bng_re_dealloc_dpi(struct bng_re_res *res,
++		     struct bng_re_dpi *dpi);
+ #endif
+diff --git a/drivers/infiniband/hw/bng_re/bng_verbs.c b/drivers/infiniband/hw/bng_re/bng_verbs.c
+index 25996133c83d..ef2b5bd65e54 100644
+--- a/drivers/infiniband/hw/bng_re/bng_verbs.c
++++ b/drivers/infiniband/hw/bng_re/bng_verbs.c
+@@ -198,3 +198,222 @@ int bng_re_process_mad(struct ib_device *ibdev, int process_mad_flags,
+ {
+ 	return IB_MAD_RESULT_FAILURE;
+ }
++
++static struct bng_re_user_mmap_entry*
++bng_re_mmap_entry_insert(struct bng_re_ucontext *uctx, u64 cpu_addr,
++			 dma_addr_t dma_addr, u8 user_mmap_hint, u64 *offset)
++{
++	struct bng_re_user_mmap_entry *entry;
++	int ret;
++
++	entry = kzalloc_obj(*entry, GFP_KERNEL);
++	if (!entry)
++		return NULL;
++
++	entry->cpu_addr = cpu_addr;
++	entry->dma_addr = dma_addr;
++	entry->uctx	= uctx;
++	entry->mmap_flag = user_mmap_hint;
++
++	switch (user_mmap_hint) {
++	case BNG_RE_MMAP_UC_DB:
++		ret = rdma_user_mmap_entry_insert_range(&uctx->ib_uctx,
++							&entry->rdma_entry,
++							PAGE_SIZE, 0xF, U32_MAX);
++		break;
++	default:
++		ret = -EINVAL;
++		break;
++	}
++
++	if (ret) {
++		kfree(entry);
++		return NULL;
++	}
++
++	dev_dbg(rdev_to_dev(uctx->rdev),
++		"%s %d uctx->ib_uctx 0x%lx cpu 0x%lx dma 0x%lx mmap hint %s offset 0x%lx\n",
++		__func__, __LINE__, (unsigned long)&uctx->ib_uctx,
++		(unsigned long)entry->cpu_addr, (unsigned long)entry->dma_addr,
++		bng_re_mmap_str(user_mmap_hint),
++		(unsigned long)rdma_user_mmap_get_offset(&entry->rdma_entry));
++
++	if (offset)
++		*offset = rdma_user_mmap_get_offset(&entry->rdma_entry);
++
++	return entry;
++}
++
++static int bng_re_get_user_dpi(struct bng_re_dev *rdev,
++			       struct bng_re_ucontext *cntx)
++{
++	int ret = 0;
++	u8 type;
++
++	type = BNG_RE_DPI_TYPE_UC;
++	ret = bng_re_alloc_dpi(&rdev->bng_res, &cntx->dpi, cntx, type);
++	if (ret)
++		dev_err(rdev_to_dev(rdev), "Alloc doorbell page failed!");
++
++	return ret;
++}
++
++int bng_re_alloc_ucontext(struct ib_ucontext *ctx, struct ib_udata *udata)
++{
++	struct ib_device *ibdev = ctx->device;
++	struct bng_re_ucontext *uctx =
++		container_of(ctx, struct bng_re_ucontext, ib_uctx);
++	struct bng_re_dev *rdev = to_bng_re_dev(ibdev, ibdev);
++	struct bng_re_dev_attr *dev_attr = rdev->dev_attr;
++	struct bng_re_user_mmap_entry *is_entry;
++	struct bng_re_uctx_resp resp = {};
++	struct bng_re_uctx_req ureq = {};
++	u32 chip_met_rev_num = 0;
++	int rc;
++
++	ibdev_dbg(ibdev, "ABI version requested %u", ibdev->ops.uverbs_abi_ver);
++
++	if (ibdev->ops.uverbs_abi_ver != BNG_RE_ABI_VERSION) {
++		ibdev_dbg(ibdev, " is different from the device %d ",
++			  BNG_RE_ABI_VERSION);
++		return -EPERM;
++	}
++
++	uctx->rdev = rdev;
++
++	rc = bng_re_get_user_dpi(rdev, uctx);
++	if (rc) {
++		ibdev_dbg(ibdev, "user DPI alloc failed");
++		return rc;
++	}
++
++	resp.dpi = uctx->dpi.dpi;
++	is_entry = bng_re_mmap_entry_insert(uctx,
++					    (u64)uctx->dpi.umdbr, 0,
++					    BNG_RE_MMAP_UC_DB,
++					    &resp.uc_db_mmap_key);
++	if (!is_entry) {
++		rc = -ENOMEM;
++		goto err_entry_insert;
++	}
++	uctx->uc_db_mmap = &is_entry->rdma_entry;
++
++	resp.comp_mask = BNG_RE_UCNTX_CMASK_HAVE_CCTX;
++	chip_met_rev_num = rdev->chip_ctx->chip_num;
++	chip_met_rev_num |= ((u32)rdev->chip_ctx->chip_rev & 0xFF) <<
++			     BNG_RE_CHIP_REV_SFT;
++	chip_met_rev_num |= ((u32)rdev->chip_ctx->chip_metal & 0xFF) <<
++			     BNG_RE_CHIP_MET_SFT;
++	resp.chip_id = chip_met_rev_num;
++	resp.dev_id = rdev->aux_dev->pdev->devfn;
++	resp.max_qp = rdev->dev_attr->max_qp;
++	resp.cqe_sz = sizeof(struct cq_base);
++	resp.max_cqd = dev_attr->max_cq_wqes;
++
++	if (udata->inlen >= sizeof(ureq)) {
++		rc = ib_copy_from_udata(&ureq, udata, min(udata->inlen, sizeof(ureq)));
++		if (rc)
++			goto copy_udata_fail;
++		if (ureq.comp_mask & BNG_RE_COMP_MASK_REQ_UCNTX_POW2_SUPPORT)
++			resp.comp_mask |= BNG_RE_UCNTX_CMASK_POW2_DISABLED;
++
++		if (ureq.comp_mask & BNG_RE_COMP_MASK_REQ_UCNTX_RSVD_WQE)
++			resp.comp_mask |= BNG_RE_UCNTX_CMASK_RSVD_WQE_DISABLED;
++	}
++
++	uctx->cmask = (uint64_t)resp.comp_mask;
++
++	rc = ib_copy_to_udata(udata, &resp, min(udata->outlen, sizeof(resp)));
++	if (rc) {
++		ibdev_err(ibdev, "Failed to copy user context");
++		rc = -EFAULT;
++		goto copy_udata_fail;
++	}
++
++	return 0;
++
++copy_udata_fail:
++	rdma_user_mmap_entry_remove(uctx->uc_db_mmap);
++	uctx->uc_db_mmap = NULL;
++err_entry_insert:
++	bng_re_dealloc_dpi(&rdev->bng_res, &uctx->dpi);
++	return rc;
++}
++
++void bng_re_disassociate_ucontext(struct ib_ucontext *ibcontext)
++{
++}
++
++void bng_re_dealloc_ucontext(struct ib_ucontext *ib_uctx)
++{
++	struct bng_re_ucontext *uctx = container_of(ib_uctx,
++						    struct bng_re_ucontext,
++						    ib_uctx);
++	struct bng_re_dev *rdev = uctx->rdev;
++	int rc;
++
++	rdma_user_mmap_entry_remove(uctx->uc_db_mmap);
++	uctx->uc_db_mmap = NULL;
++	rc = bng_re_dealloc_dpi(&rdev->bng_res, &uctx->dpi);
++	if (rc)
++		dev_err(rdev_to_dev(rdev), "Deallocate DPI failed");
++	uctx->dpi.dbr = NULL;
++}
++
++int bng_re_mmap(struct ib_ucontext *ib_uctx, struct vm_area_struct *vma)
++{
++	struct bng_re_user_mmap_entry *bng_entry;
++	struct rdma_user_mmap_entry *rdma_entry;
++	int ret = 0;
++	u64 pfn;
++
++	if (vma->vm_end - vma->vm_start != PAGE_SIZE)
++		return -EINVAL;
++
++	rdma_entry = rdma_user_mmap_entry_get(ib_uctx, vma);
++	if (!rdma_entry)
++		return -EINVAL;
++
++	bng_entry = container_of(rdma_entry, struct bng_re_user_mmap_entry,
++				  rdma_entry);
++
++	switch (bng_entry->mmap_flag) {
++	case BNG_RE_MMAP_WC_DB:
++		pfn = bng_entry->cpu_addr >> PAGE_SHIFT;
++		ret = rdma_user_mmap_io(ib_uctx, vma, pfn, PAGE_SIZE,
++					pgprot_writecombine(vma->vm_page_prot),
++					rdma_entry);
++		break;
++	case BNG_RE_MMAP_UC_DB:
++		pfn = bng_entry->cpu_addr >> PAGE_SHIFT;
++		ret = rdma_user_mmap_io(ib_uctx, vma, pfn, PAGE_SIZE,
++					pgprot_noncached(vma->vm_page_prot),
++					rdma_entry);
++		break;
++	case BNG_RE_MMAP_DBR_PAGE:
++	case BNG_RE_MMAP_TOGGLE_PAGE:
++		/* Driver doesn't expect write access for user space */
++		if (vma->vm_flags & VM_WRITE)
++			ret = -EFAULT;
++		else
++			ret = vm_insert_page(vma, vma->vm_start,
++					     virt_to_page((void *)bng_entry->cpu_addr));
++		break;
++	default:
++		ret = -EINVAL;
++		break;
++	}
++
++	rdma_user_mmap_entry_put(rdma_entry);
++	return ret;
++}
++
++void bng_re_mmap_free(struct rdma_user_mmap_entry *rdma_entry)
++{
++	struct bng_re_user_mmap_entry *bng_entry;
++
++	bng_entry = container_of(rdma_entry, struct bng_re_user_mmap_entry,
++				  rdma_entry);
++
++	kfree(bng_entry);
++}
+diff --git a/drivers/infiniband/hw/bng_re/bng_verbs.h b/drivers/infiniband/hw/bng_re/bng_verbs.h
+index 5875ec565ea4..565571b2f1fe 100644
+--- a/drivers/infiniband/hw/bng_re/bng_verbs.h
++++ b/drivers/infiniband/hw/bng_re/bng_verbs.h
+@@ -10,6 +10,22 @@
+ #include "bng_sp.h"
+ #include "bng_re.h"
+ 
++struct bng_re_ucontext {
++	struct ib_ucontext      ib_uctx;
++	struct bng_re_dev	*rdev;
++	struct bng_re_dpi	dpi;
++	struct rdma_user_mmap_entry *uc_db_mmap;
++	u64			cmask;
++};
++
++struct bng_re_user_mmap_entry {
++	struct rdma_user_mmap_entry rdma_entry;
++	struct bng_re_ucontext *uctx;
++	dma_addr_t dma_addr;
++	u64 cpu_addr;
++	u8 mmap_flag;
++};
++
+ int bng_re_query_device(struct ib_device *ibdev, struct ib_device_attr *ib_attr,
+ 			struct ib_udata *udata);
+ int bng_re_modify_device(struct ib_device *ibdev, int device_modify_mask,
+@@ -26,5 +42,11 @@ int bng_re_process_mad(struct ib_device *ibdev, int mad_flags,
+ 		       const struct ib_grh *in_grh,
+ 		       const struct ib_mad *in_mad, struct ib_mad *out_mad,
+ 		       size_t *out_mad_size, u16 *out_mad_pkey_index);
++int bng_re_alloc_ucontext(struct ib_ucontext *ctx, struct ib_udata *udata);
++void bng_re_dealloc_ucontext(struct ib_ucontext *context);
++void bng_re_disassociate_ucontext(struct ib_ucontext *ibcontext);
++int bng_re_mmap(struct ib_ucontext *context, struct vm_area_struct *vma);
++void bng_re_mmap_free(struct rdma_user_mmap_entry *rdma_entry);
++
+ #endif /* __BNG_RE_VERBS_H__ */
+ 
+diff --git a/include/uapi/rdma/bng_re-abi.h b/include/uapi/rdma/bng_re-abi.h
+index cea056dc8610..14d56a88def4 100644
+--- a/include/uapi/rdma/bng_re-abi.h
++++ b/include/uapi/rdma/bng_re-abi.h
+@@ -9,4 +9,35 @@
+ 
+ #define BNG_RE_ABI_VERSION	1
+ 
++#define BNG_RE_CHIP_NUM_SFT		0x00
++#define BNG_RE_CHIP_REV_SFT		0x10
++#define BNG_RE_CHIP_MET_SFT		0x18
++
++enum {
++	BNG_RE_UCNTX_CMASK_HAVE_CCTX = 0x1ULL,
++	BNG_RE_UCNTX_CMASK_POW2_DISABLED = 0x02ULL,
++	BNG_RE_UCNTX_CMASK_RSVD_WQE_DISABLED = 0x04ULL,
++	BNG_RE_UCNTX_CMASK_INTERNAL_QUEUE_MEMORY = 0x08ULL,
++};
++
++enum {
++	BNG_RE_COMP_MASK_REQ_UCNTX_POW2_SUPPORT = 0x01,
++	BNG_RE_COMP_MASK_REQ_UCNTX_RSVD_WQE = 0x02,
++};
++
++struct bng_re_uctx_req {
++	__aligned_u64 comp_mask;
++};
++
++struct bng_re_uctx_resp {
++	__u32 dev_id;
++	__u32 max_qp;
++	__u32 cqe_sz;
++	__u32 max_cqd;
++	__aligned_u64 comp_mask;
++	__u32 chip_id;
++	__u32 dpi;
++	__u64 uc_db_mmap_key;
++};
++
+ #endif /* __BNG_RE_UVERBS_ABI_H__*/
 -- 
 2.43.5
 
