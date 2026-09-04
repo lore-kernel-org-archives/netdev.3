@@ -1,63 +1,64 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 588F8427F8A
-	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 19:03:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F3D945041C
+	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 19:03:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788548597; cv=none; b=L7R/ptn97c2E0U5rzhFJQyBrSskCnh0jBf5OUViUgZkE0U5XYyJv/g0Ezj10rRiW9gY2chCkYsJ8Av8ihaJr8Jzf7DZFg8+Icu5vNf956ZHT8tKTbSn4fUz1VlIf9bsozmCJb7XccoM5K3z6+z9VnUSbvMCL4DOctW0Zlu37sFY=
+	t=1788548595; cv=none; b=c6FMPcytyh4ykZH9BxMw5an8gFU1Gh42DydMnG6ym9JG5JzziOwMXsFqidmON1cDxV+zIv1srt2MmTKvIRNO2u0SP4edv07EO2hbA4aYALM5xw5pNRfrOtPF3gAmrw2Rx3G6zGkajMDQwrwMwQ/rd3YjxqyonbAkcpwx2P8+DLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788548597; c=relaxed/simple;
-	bh=g+9YyrCCqwkQj25pBhc80E3Us3WQgU4LquXHfZWmm68=;
+	s=arc-20240116; t=1788548595; c=relaxed/simple;
+	bh=UNJv9lvrdAaMKo4znGMIdBsuP3iVdeueDxYAlJd0x+M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Utt51HiIBLr8CnAOWuTQGCKL2vtbxvkm8gLH375qHveCpmLzElm22UB1C7JPWypKWHNLU80Sz0WxBiAqvj/LReYu1c8EfECkPNHWFDYKJn1I9QfBC6Ba1KyWAYOGoey8ATve/Ller+RHLw/LD+dhwj2we+Mvj7ptDCq4a/H/2Tw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la; spf=pass smtp.mailfrom=lex.la; dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b=SFNrcwsI; arc=none smtp.client-ip=209.85.128.53
+	 MIME-Version; b=aTZanVojjlZo56Pv3rWtbjj9e95k+ZZBb9q77oe/cTDMYmkA9gtjW95lXXZBBhrmqFzuW7/viuOvFDqI45t2a41OC8cl0ARXqXK1yS/wwpszN3jNYIX3dz6wdH4AgUwCzo82wE/VKGzM1UZO10GtMtm51nY/qS5zKpaNuK/DnNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la; spf=pass smtp.mailfrom=lex.la; dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b=I1/+rlfY; arc=none smtp.client-ip=209.85.128.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lex.la
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b="SFNrcwsI"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-49cd77e0f95so12408795e9.3
-        for <netdev@vger.kernel.org>; Fri, 04 Sep 2026 12:03:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b="I1/+rlfY"
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-49ccfbe062eso11997535e9.3
+        for <netdev@vger.kernel.org>; Fri, 04 Sep 2026 12:03:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=lex.la; s=google; t=1788548590; x=1789153390; darn=vger.kernel.org;
+        d=lex.la; s=google; t=1788548589; x=1789153389; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Lj3tsvbtNJDWZnFH5pUKMKwa2zoY5MXACQtNrJLPngI=;
-        b=SFNrcwsIy1g7mN+pUwAi1aZAClIb7TZzx20jZyB6X8DR1SoBcTtGPc9dTBqiGx4N47
-         92/UGLYM4+sEWDBtLzKuJidIcMBBrc2D/e8QHkgxJpJ+z4agD2Rue8alZ8a1j3eKDErc
-         paYRvTzOUIWMAj0Qkvfy7GdhbMeLUPjZFTeMGqKAtS8G2ty7L5tF/VynaEMJI41CzFt9
-         Nfvo+7ma0SEAdYZBtGjZ24ZEAeEMpq3mSht1OocPg52EnZFs4tjgQEmA6ofAMNhW454w
-         btePYf77B0l2OZhJYgUgQVtE3vMJ2SDq5Hl7XqAIjqZCw+wVcWimsY8WZvUkMIL0XgVr
-         qunw==
+        bh=Tu1Vd9Fy3KvBC8Ugis84GLswT2AxZGxIE45TX7gUkfY=;
+        b=I1/+rlfYqhrOBqqk+5AUuj4SRBYZ8fZTB9H/xYRafSXUTtlOcA2pF0CU1oUsscUZ3q
+         kLMO2op20yg+jNd2Ak4R7fA06woK3Fnkjv7AWYIdBJZiN7vNbOzlgK8qEffbixiuPuKd
+         pxxN/2D2ZsNiziPlgy2MzfojhcFX+P/dEcTje556APW9swPeMOaGKKSeKLSSi3fYzWID
+         91Y0IPBwI1t1FaO5RPrKFEb24qX7wQk9qMpuryrkSyLZ3HtNTVMzIl64hKDOb5T1KMGK
+         veTexRm4EkTSPoFD4jkwOojjT88zcepaBE63QfShn6PszNKhWUaCBx6AuNSgh9UTYf6c
+         Nk+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788548590; x=1789153390;
+        d=1e100.net; s=20251104; t=1788548589; x=1789153389;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Lj3tsvbtNJDWZnFH5pUKMKwa2zoY5MXACQtNrJLPngI=;
-        b=Q7TqHjQ14xAJ1VNJUd5Vt8ALFvXDxMv+B68xcguei87c++0NPVs0I522BwFJw4zUTj
-         /hZqOAvWYQMBOieBYGG2HuOzsdWECUtXzTinhvcKqIMnyrEH8v+7SdqhaRo+/qbYSvOT
-         NHFPwPYpryaSMbAjORixpeWj+na5hbjLMdbR7+pXpIl1t0AB9D7aWul+O2DoZxW6k/HV
-         a8CAZuF32dIELNGy0VNSxxKjFxG+RKRa31KG5tnf52CmdevFLwglL37AItb36uud4RAp
-         OAfH9ZNcG3IjbRp3p+/aMd7dX8a6+Eef3de9uckzb+FNeyis46V+XxorXg55YGYegEdE
-         41WA==
-X-Forwarded-Encrypted: i=1; AKwUvBy5tr52AdVs9/T5SsjnpG/0QJXsZdkdDgieM8I2GQ1hLYstn0aKqXDW2tTWzhruonpINc+o7ao=@vger.kernel.org
-X-Gm-Message-State: AFuF++mxXHuAz3pMCkS2lWTJ5MCkxSPB9JrYbKqYHsEb5UgAG6IKScVc
-	LVzCaJFCWOOC1FhnLzWJ5f12ujoAhs9+J2/Yt7QWTKf3qABSuy7DtrpfDkfSGavI9Kg=
-X-Gm-Gg: AYBFou3EsyYM4iI8o7E3R92xVQVqFiHmH+clBNvnG/NPr6mrCVCe13hCn/zzIOcngeM
-	zOhLnGvauifUZfYiF17G4wzAgfKOdup9XEFvKlW0guYuNRPPL8KOOCLCBDu1irsIabe7kr7OvkL
-	3mLwNh9P/yLSj2a2jh1WzSkd7khrCrQfCsz3oa9do9/q/DJlGK/z7SNIKwYEh+uFrCq/zGCUbS2
-	rjpPHvToioWd3ACOlHzBclvVliWvZNK2JR0Kv5HR5dLpnaX8Fubh70wJe1h2ss3E6HX6XRXlCXc
-	JbQFZqBANOmy7w2tByWFR4TUzocOpvcgiZTgWQzwNH+iIlnVR4FV4XDG3ZowwGU1qCGs2frIpKY
-	sVbQK5IIThWPNFO7/f3COMoEbomzTdqq7r8wJH0QzGv7WFb9J9E80Oifz6JmNqOUKDCWwekJcDq
-	zTbC8wjUO7Dljwj/4+uuIfQROH16/H19gC2VA+4qM=
-X-Received: by 2002:a05:600d:864a:10b0:49c:fc89:59cb with SMTP id 5b1f17b1804b1-49cfc8960ccmr41262475e9.5.1788548590621;
-        Fri, 04 Sep 2026 12:03:10 -0700 (PDT)
+        bh=Tu1Vd9Fy3KvBC8Ugis84GLswT2AxZGxIE45TX7gUkfY=;
+        b=bsHxdslfa2X1lXzZhVGZJ1FAi9TaW+raKI2Q9fwhCuMe460AZyZA3+ew2ccxjpX+6h
+         vJZtJWR+Uge0fCYzRfv6WPs6wYzfNWIU05K+fS4QRCNrNZ5rhgOtKfCqIAHISESJ/dWt
+         cgPIV/6Wf5T61qayJhBbZrFLc1vhDlqyOyKTqEcQQ0XBjJmo7LhDmM0o2INqgvZWYTfz
+         EDZHQxrrWCIXSQk96wze6RoOA2ufTqwH9kMesU0YmDlG75WyLCKwOci1zSCC3Qs3V6ZK
+         /4fq9BSPS3ZJTEzpALhWwlZj/dGmEVHxw/jS0hqDR+7yc7ZmbU9X/7ppC6vQhKgPPkgZ
+         d29A==
+X-Forwarded-Encrypted: i=1; AKwUvByefzQl0nA7ylGSm78CA4NLygholKMdnDvQ2iS85mkbYahTZ/F27A2R3trkxKgGvp1rMDEdaGA=@vger.kernel.org
+X-Gm-Message-State: AFuF++k/DRF4o3n/l5CXg8Rg/NXqHQ/JkGbLceQk+1pWKz4fDmsYuil9
+	gsaHinWY+X0RYILt0kPvWrJh1QIv7EPteiI2trXAibYSBa16xYTzZBcMXoRVRaMyc9sfctX5oqI
+	p00wxOXThJA==
+X-Gm-Gg: AYBFou1L7LLyMfNOOX6vWDsWlvTkmwFR5BBPi/1hbliQ48cn0wZIxKBFYF7pvWFs7GE
+	ILehdS4lVs368e6axiZNBbL5Xuk0UaJrK3EaG/k6Z/rGvTyjpMKgSRxO9/eyFQ9Z2MWitSxrvTu
+	1jO5msh7pe08JUv55gOR1cY/MwDr4yYLV1co6tYvnYO/+iTloDcTp+8Yge+N9If16EmvazbP9gC
+	kf9ma5Dw+Dp28YqAUhH9sqfvAXQfpbjx6FdfpDmPo7Gwy3CmTVAr5HgsmedeHHSarhD56s1MxCh
+	dDCY/36t2q2DDpu61T5nKTGidCS11mVg0EBPqVgQ6lWk4I1tZ7tyudHIwc00pU4QJHgq2EbhsNA
+	0ynB3k9ituINYEJw8meKBZKeA04gVVKgUDt+3MWnVC2drbvZvjpQFjFsnJdvhB+aOtcjrRYOLOn
+	Btd/ExRwwkmbexu2HmtZRmL/qox5TaeFETxPDuBsk=
+X-Received: by 2002:a7b:cc91:0:b0:49c:ff9f:f6b6 with SMTP id 5b1f17b1804b1-49cffa00196mr22006655e9.6.1788548589176;
+        Fri, 04 Sep 2026 12:03:09 -0700 (PDT)
 Received: from remote-01 ([84.17.55.227])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cee60d8a6sm172195485e9.10.2026.09.04.12.03.09
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cee60d8a6sm172195485e9.10.2026.09.04.12.03.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Sep 2026 12:03:10 -0700 (PDT)
+        Fri, 04 Sep 2026 12:03:08 -0700 (PDT)
 From: Aleksei Sviridkin <f@lex.la>
 To: Andrew Lunn <andrew@lunn.ch>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
@@ -75,9 +76,9 @@ Cc: Eric Woudstra <ericwouds@gmail.com>,
 	netdev@vger.kernel.org,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH net-next v2 03/10] net: phy: add mdiodev_lock() and mdiodev_unlock()
-Date: Fri,  4 Sep 2026 19:02:57 +0000
-Message-ID: <c634c01d84dae0745027c7264b59efac992f12bf.1788548229.git.f@lex.la>
+Subject: [RFC PATCH net-next v2 02/10] dt-bindings: net: ethernet-controller: add phy-needs-host-firmware
+Date: Fri,  4 Sep 2026 19:02:56 +0000
+Message-ID: <3d0ecd9c0bcc28fbbce6f7df2b6995f2e8c78431.1788548229.git.f@lex.la>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <cover.1788548229.git.f@lex.la>
 References: <cover.1788548229.git.f@lex.la>
@@ -89,42 +90,46 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The __mdiodev_* accessors require the caller to hold the MDIO bus
-lock, but the wrappers that take it, phy_lock_mdio_bus() and
-phy_unlock_mdio_bus(), need a phy_device. A driver bound to a plain
-MDIO device has none, and must reach into mdiodev->bus->mdio_lock
-itself.
+A port can reference a PHY that cannot be identified or driven when
+the controller connects to it, because the firmware the chip needs is
+not in hand yet. Such a port is dropped at setup and stays unusable for
+the whole uptime, even though the PHY works seconds later.
 
-They sit in phy.h beside those wrappers because struct mii_bus is
-defined here, not in mdio.h where the accessors live.
+The flag declares that the PHY behind phy-handle is expected to become
+usable only after this controller has probed. A consumer that sees it
+keeps the port and connects the PHY once its driver binds, instead of
+failing the connect. The prefix names the entity, like the other
+properties here that name what they describe rather than the
+controller; a PCS needing firmware would get pcs-needs-host-firmware
+by the same rule.
+
+It sits on the controller here because that is where the waiting
+happens.
 
 Assisted-by: LLM
 Signed-off-by: Aleksei Sviridkin <f@lex.la>
 ---
- include/linux/phy.h | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ .../devicetree/bindings/net/ethernet-controller.yaml       | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/include/linux/phy.h b/include/linux/phy.h
-index 3d8afe6b7f1c..8c10c8ae21b1 100644
---- a/include/linux/phy.h
-+++ b/include/linux/phy.h
-@@ -2284,6 +2284,16 @@ static inline void phy_unlock_mdio_bus(struct phy_device *phydev)
- 	mutex_unlock(&phydev->mdio.bus->mdio_lock);
- }
+diff --git a/Documentation/devicetree/bindings/net/ethernet-controller.yaml b/Documentation/devicetree/bindings/net/ethernet-controller.yaml
+index 1bafd687dcb1..ce4a7a6f605f 100644
+--- a/Documentation/devicetree/bindings/net/ethernet-controller.yaml
++++ b/Documentation/devicetree/bindings/net/ethernet-controller.yaml
+@@ -108,6 +108,13 @@ properties:
+     $ref: "#/properties/phy-handle"
+     deprecated: true
  
-+static inline void mdiodev_lock(struct mdio_device *mdiodev)
-+{
-+	mutex_lock(&mdiodev->bus->mdio_lock);
-+}
++  phy-needs-host-firmware:
++    $ref: /schemas/types.yaml#/definitions/flag
++    description:
++      The PHY referenced by phy-handle runs firmware that the host must
++      load before the PHY can be driven, and so is not usable for as
++      long as that has not happened.
 +
-+static inline void mdiodev_unlock(struct mdio_device *mdiodev)
-+{
-+	mutex_unlock(&mdiodev->bus->mdio_lock);
-+}
-+
- void phy_attached_print(struct phy_device *phydev, const char *fmt, ...)
- 	__printf(2, 3);
- char *phy_attached_info_irq(struct phy_device *phydev)
+   ptp-timer:
+     $ref: /schemas/types.yaml#/definitions/phandle
+     description:
 -- 
 2.53.0
 
