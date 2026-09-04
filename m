@@ -1,136 +1,262 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A912A517BD7
-	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 18:55:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788548149; cv=none; b=aC2PjvrluOS4TmsXBHKste8UDJShIJSPSWjGUt20FXxXhF4B8mcn/Z8PouPlMSo2vlriPflwaHJSeC9wPPjDAkB/UjKxvrOeMGvNE3qpRAviAfUwp4pWhUW0S2PxuwSE/tEY55EsvS/R8v1+g2syIBanTaODk7MAK53L5crMm7Q=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788548149; c=relaxed/simple;
-	bh=0NORGIkug1vpAvzWXIzBHkSvbxPib6PIHpFRP5Q7Op0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TlvoQvBN3TNIjGtOOgBhHupGP3O4ogGzvndQnzLvKZknKz/ThXOoWZ/js11yNTme/KXWi7cNyrapgBR7N/+Fx5otxPJ5PpoNpP1QLdEUSt3jWUl/Fw9AuohzhDIt7F4sPmEHiNvrrivZ4XggSg6s1SG+YuFbZXHyPsdDMkmD2t4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la; spf=pass smtp.mailfrom=lex.la; dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b=kyzONtvo; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lex.la
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9B6C3ECBCF
+	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 19:00:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.180
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788548472; cv=pass; b=RMoIkhd33OGHEZpUChIY9kSpa8n3oNYfzg8ep8KolAusIcHaa+jtgoQoojaEtNASF8oWzmcdNGaHncdHZRmAoIHo5KYSyGFcDSSdBE6XgUFb0KPhXC6704Ep6pnq4fIcYLAbgfLNPrrx970od+vP+HwJDLpYgFQCTRysCbZGrOA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788548472; c=relaxed/simple;
+	bh=2OV53qj+Ok3sZRi1Cu45I3HwF6So2E+y40itVWLrldU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Exyku85jcwetR+UdgXVWh5PMMMVYFY3EvbDnBGCriVQskx6EJ8zrPwBfNpFZEKS7NSukC/4bFsMMGYR0cAisM8eqyU9wmPEHXFv8FAxVh2jTAZSh88b6mpDZAroxvrZE7fwT9f5QN5c3GxvZ4Lfdgk1L26sSZso/MrXLQZgHTZc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=mQyeiOk5; arc=pass smtp.client-ip=209.85.210.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b="kyzONtvo"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-490cf322ed0so14297765e9.1
-        for <netdev@vger.kernel.org>; Fri, 04 Sep 2026 11:55:47 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="mQyeiOk5"
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-84eb992a881so935837b3a.2
+        for <netdev@vger.kernel.org>; Fri, 04 Sep 2026 12:00:43 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788548443; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Rj8U/vX9i0u+2bbdebAfmzHeBkauTO53DVrl3h3bbo0t5Zfig16kfj2Q5UKad42hTp
+         3xPldsaoX3lu209y337hpHeVsBO01/KF/5HjQChrAc3zLCOQsgHpfmF3MfgHuFVOeO6S
+         SnJofK6yqJus91kYmPMq1bREoiLUFP3f1Ee3dKUJiG3Bv47YbtfZItM9p96sV2R9ipof
+         +ElPMvoCzazRaiJ0zIDtQ5xhZM08Drlrg1+CEzfKh25Pi7L78ryz+FGiUzp5elCQRqcR
+         LHJXB19lnp4YiR9XQR36nPSWQcw8V6LfVlTxqFANOqGeyZXJFNxvi0fVEKZ8uNyhxCtI
+         53XQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=xEH5wC1CsIXf1Wl3c1bH+jg+ggyRXswm+rvfZnXVjBs=;
+        fh=aH7unqQfjsgTIXSweCBi0reLtRrkOGHxIK9w+YdQl7g=;
+        b=KQkIg2pACaipjhqztEJc/mfNk2QEp9zB40Uu1ynybJOd3mfPwSzXocCoUay8GbVyrW
+         vipbEQvYpFyeZpJb8dIVGFicBw+9pi3cPYvdzhJy1IZahrjwJBMOf5wmLvjIZaFreggF
+         Qp9HYOsoY1hyTxfEs8sYnsNpvOnOChodXmyiozY8r6Y252VYO+UV5jPfJILjiiqhC7Ze
+         R2aVHa4q0YdOGrPLlC0xFZIoNvF2a+S1a00/xJ0bU2lwCrx9ltOoUU29LS00HjIU+UbY
+         qf2Y/bjQKGEXLsv0qfupO8AkqEgrWoBgThPRNps0Zax1eIqN0y5LApkVoj8BV3FoQ+Hs
+         LZOA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=lex.la; s=google; t=1788548146; x=1789152946; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=770Nkcotd4mXRhWdRLFuBCumpZlPw+psjVw7wcTW4Fg=;
-        b=kyzONtvohE/icR0rf2joY+yH7xsM2DrOWvSliBbQFPg4ouzaO8qGCL9/ws3c0Yoocf
-         wn3SMAG08vIgtoQzi58Pnnx1pxmw7KA5dal/jfaRL3+euwh8KqAqa7rUgeFP0FX7S3ih
-         e+m+VTWoXbWgvgpwPrTg4L1DA1bOw4P3ey+j7u45H0CrgSSMFZG/Q6DD1QyhWAkiJHCU
-         EIgd7Hr2wSPfi6TPLDztLOhQ9ytiyHkzjp/DMN46qQs3+11Bo9xWEHCbcAQ0BId8e+3t
-         0s8JzBfAvx7knC8BztjEKLgxsK0N3x4QNd8Bjs18tI0d0x8e+EsBE+SBkrEnnTgRPTMP
-         ckxw==
+        d=mojatatu.com; s=google; t=1788548443; x=1789153243; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=xEH5wC1CsIXf1Wl3c1bH+jg+ggyRXswm+rvfZnXVjBs=;
+        b=mQyeiOk5dJSJbhy+c1J3+B/BEKcezVsTv279dr09o8QAGCVCc9fD1yOW+3og2RwHHS
+         MWGmIymyD2bDFyTIp/aVRoKunCcNCurepyamnhDwPGDoKEIfxi6hqSQA2viK/JDdktEQ
+         6pGdI5Suo+G8hSnTngq481dS+c2IiYm8xCYOo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788548146; x=1789152946;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=770Nkcotd4mXRhWdRLFuBCumpZlPw+psjVw7wcTW4Fg=;
-        b=hIS8bucAku7LYu3NOwZnzj3yUqFntwPeR1VXzws7nFaufIhym7/mW2OREmxej2H9J9
-         Fx+ybwsBY3V0dng0WTIOix0NGpTp7i/D2n3BFx3Ugk8vIyohnDB/hlUM91MEeDTrkJm0
-         hNHEAkPncY9YS8gYL7lSEjcK7d4sw5knoMoL29adowrKuMjuVWbOZoZQupgqjH8Rihi5
-         ts6+/sxDIsPoFOMTNu/PV8yopckjd4Swpz0g+T5forWNq3fyL1HsUfT5AkeP1iMFx0tL
-         rqNhNdwurFjY0lfOa+MF809vybQxhTuo187Hb3jwksAuubI8mnvNKGDHLwH2l5oyOv50
-         BT4g==
-X-Forwarded-Encrypted: i=1; AKwUvBwvUu+qbWHAv+R8ckjmokoBQVC+CL52XvS2CKY+btoJ9hy2BXiFMD5lcDx8Tgrg4rT5tCxIkUk=@vger.kernel.org
-X-Gm-Message-State: AFuF++mTXL0hKbghXr7y0yCuM8HvBm0pRyf0M5UXpNQ8irbzmInJ38Rz
-	jDUHpaoAsXxvg//qelgcNODlpaxOW+w/GpKe7OQ2vE+/lPgVPEOpik3VzsQhruSUJX4=
-X-Gm-Gg: AYBFou2z6bcSi+k52dCOwrFOWs44ftlseI81W4sFrC6UvYSVEhTjmXk8v1pMJgXPDiJ
-	GIvuqAdeNrHYOhaBfbMyIN5zjjNX79GZ4TRy1/o2kCPg+9JvwyYT1zjHsgzFYg9zujvhN23INZJ
-	vo8L5No0jNF/NH8lLfIuAwSlOfborA/TAGJhMJtEBvy5rNgXapEg+gru+xmiTPBx8kIJBiPuTnj
-	sqXt7s8WeawxWjGqEkdgDi/Wjm9nk0irI699Hvrc0acaVwhswbAMVH8v/oiBlOKFxtfZuXEeCPz
-	z4vRrf1zP+W+EldE7hFSmfKmm3GINcLAJ/bVlwX/FcbxPwl4lPGar8ZldaSeiMS7VTYB4odQ+cF
-	GWMf9v/0/UjlPM7BjSg+gdeOJzBb2sWXvwAsGVw7JB61bjKraqJ+Dx8SkkJA1MiBMqZN1OPkHhQ
-	EmLfaD55ccjhXWqcfGJOP1VfR9qeTeqZcsqImsZow=
-X-Received: by 2002:a05:600c:19cf:b0:499:726a:a017 with SMTP id 5b1f17b1804b1-49cf7fe601bmr74931135e9.1.1788548145720;
-        Fri, 04 Sep 2026 11:55:45 -0700 (PDT)
-Received: from remote-01 ([84.17.55.227])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cfd3f815bsm40176455e9.4.2026.09.04.11.55.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Sep 2026 11:55:45 -0700 (PDT)
-From: Aleksei Sviridkin <f@lex.la>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Vladimir Oltean <vladimir.oltean@nxp.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net] net: phylink: initialise link_state before a forced major config
-Date: Fri,  4 Sep 2026 18:55:40 +0000
-Message-ID: <20260904185540.2844261-1-f@lex.la>
-X-Mailer: git-send-email 2.53.0
+        d=1e100.net; s=20251104; t=1788548443; x=1789153243;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=xEH5wC1CsIXf1Wl3c1bH+jg+ggyRXswm+rvfZnXVjBs=;
+        b=XItceh9VGXzxZBvFRSy1Uv682c5OFBbQWbJuJgz1OVgi1Rg6bgBUI9EBb+RIbL6CYM
+         EgUjH2GqCmSMi4CgmwRdaN6BcdiomxlOkG4fldxq8MKqE1YVTnBfRIqYvN98TQ3vGpEs
+         8xOhC90G1AFrVlwJ+2cfaWwmH7d8lYKV6oo1yCVuMEQOq2Haz+1Q8eMUkiZabIxwKJ+T
+         /4ExOVyxQvVrj5I+nFPL7dIaqVXQwEOxYiOt5455agv+GdzDnjkaSRN5fzAhXR6zjWJ+
+         EQXYHfyVVAq1J3f0ycRm/agAZ0isVQk7DQEQ42hF1TPuiD9sbS10m6e1Ed0zVMj8slQg
+         Y/iA==
+X-Gm-Message-State: AFuF++ni8Wpnlnq0sQAuBQF9mFWD9vTnf08QP+Ulq5lqsWJ9Wh0AYXq4
+	MXFG0XGy45TgY8QlOG6+W3omoIGvwwaCwi4U22LQrteTBF/8XlM+iy07HsSlCH0UzChXUdo411G
+	gqc3A+KzD/ftkQ6m5xeAipYU4GY6AGiByqEVUkCGc
+X-Gm-Gg: AYBFou0/dpJi8wqCgwCJB/TZipYQjobLbEltVDUVAwFCrSPwiN4NaIY1inBhWZnUxyj
+	EBh99n9oyAw2Q8ayxcXhKOJn02I0jaHtUZ8yPeUnlE9XP72lJ1ElErwpDcdR9or79mnAPxYxIjf
+	qOynw8yafYHQX83Tq0hFgwLNA8mAO886I3O3+oswk69BInBhkjfCAsbQqScKmHI0Oks7DIoLjwt
+	YWXRXZKLrWU2brCNphdhB6ggxTXgz72B1ToNSsM0Hi2LjDxLeuAEJE5++1l+R3MXrYTMxadVC9s
+	QHYsqfskrzykUIn9RzGjIP95Y/xRpWmYJMsAzhdOY4c5DkAFpNjBfj8vvl+1yHH39/QR7roHpYE
+	3zZLuMpAN4bAWVPDBdiB5eTs=
+X-Received: by 2002:a05:6a00:4388:b0:857:7317:cff2 with SMTP id
+ d2e1a72fcca58-8616a266f1bmr11528797b3a.19.1788548442716; Fri, 04 Sep 2026
+ 12:00:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <QDISC-0CFC.v3.20260901204856@mojatatu.com.5> <178851496497.4131868.4506740406009637307@kernel.org>
+In-Reply-To: <178851496497.4131868.4506740406009637307@kernel.org>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Fri, 4 Sep 2026 15:00:31 -0400
+X-Gm-Features: AcwNN1VDa4Ghdswb8Xi7BvlaZaZEQXVw6g3GygKdaBdnklKemsWZICSvEGXwP_Y
+Message-ID: <CAM0EoM=soN+QzH7ZFW5th8ZC-53Kh7f178QK6ooZ-Su7re74rg@mail.gmail.com>
+Subject: Re: [PATCH net v3 4/9] net/sched: hhf: clamp quantum in change and
+ init paths
+To: netdev-bot+sashiko@kernel.org
+Cc: netdev@vger.kernel.org, jiri@resnulli.us, davem@davemloft.net, 
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	victor@mojatatu.com, vega@nebusec.ai, shuah@kernel.org, 
+	linux-kselftest@vger.kernel.org, toke@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-phylink_resolve() leaves link_state on the stack unpopulated on its
-disable and link-failed branches, which set only link_state.link.
-phylink_apply_manual_flow() then reads the struct's advertising on
-every mode but MLO_AN_FIXED, and has done so since long before
-force_major_config existed.
+On Fri, Sep 4, 2026 at 5:42=E2=80=AFAM <netdev-bot+sashiko@kernel.org> wrot=
+e:
+>
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider:
+>
+> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 1 (1) =C2=B7 Low: 0
+>
+> - [Medium] The changelog's justification is stale on the tree this patch
+>   applies to.
+>
+> Pre-existing issues:
+> - [Medium] A TCA_HHF_HH_FLOWS_LIMIT value supplied at qdisc creation time
+>   is silently discarded.
+>
+> --
+>
 
-force_major_config turns that into a write to the hardware. It is the
-only trigger for the major-config block that does not require
-mac_config, so phylink_major_config() programs the MAC for whatever
-the stack held, a zeroed interface is PHY_INTERFACE_MODE_NA, and the
-write-back stores it in pl->link_config.interface.
+1. [Medium] "~2 GiB / 2^31 figure stale"
 
-phylink_replay_link_end() is the only in-tree setter, and
-sja1105_static_config_reload() calls it for every port that has a
-phylink instance, regardless of admin state. On a stopped port
-phylink_run_resolve() no-ops, so the flag outlives the call. The next
-resolve consumes it whatever branch it takes; an unpopulated branch is
-where that does damage.
+Valid. Good catch on the backport angle.
+Post-8f735d64382d the stab-inflated pkt_len is capped at 1 MiB, so the
+hhf_dequeue() refill loop is bounded to ~2^20/quantum iterations,
+_not_ 2^31. The changelog should describe the post-cap bound and note
+8f735d64382d as the commit that closes the soft-lockup case. Stable
+patches are going to include  8f735d64382d so we are good.
+Documentation on the clamp itself is still correct defense-in-depth
+for the mtu=3D0 case it also fixes.
 
-Found while developing a series that attaches a late PHY from a
-delayed work item and sets this flag there, so the PHY attached after
-its port was already up. The link stayed down until the port was
-cycled 29 minutes later. With this patch on the same board the same
-attach programs the MAC for 2500base-x rather than unknown, and the
-PHY's interrupt fires without a port bounce where it had stayed at
-zero throughout the failure.
+2. [Medium, pre-existing] "TCA_HHF_HH_FLOWS_LIMIT at creation is
+silently discarded"
+Already tracked by our internal tracker as  bug QDISC-B855. It covers
+the hhf flows-limit family; this specific create-path discard is noted
+there as part of that fix's scope.
 
-Fixes: 96969b132bf1 ("net: phylink: introduce helpers for replaying link callbacks")
-Assisted-by: LLM
-Signed-off-by: Aleksei Sviridkin <f@lex.la>
----
- drivers/net/phy/phylink.c | 2 ++
- 1 file changed, 2 insertions(+)
+Summary: No code change requested for this patch.
 
-diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
-index 3ec3bb439109..a1458da8111b 100644
---- a/drivers/net/phy/phylink.c
-+++ b/drivers/net/phy/phylink.c
-@@ -1630,8 +1630,10 @@ static void phylink_resolve(struct work_struct *w)
- 
- 	if (pl->phylink_disable_state) {
- 		pl->link_failed = false;
-+		link_state = pl->link_config;
- 		link_state.link = false;
- 	} else if (pl->link_failed) {
-+		link_state = pl->link_config;
- 		link_state.link = false;
- 		retrigger = true;
- 	} else if (pl->act_link_an_mode == MLO_AN_FIXED) {
 
-base-commit: 641d03105cc0d2437e32fdeec164f91a4ccef6c4
--- 
-2.53.0
-
+cheers,
+jamal
+> net/sched: hhf: clamp quantum in change and init paths
+>
+> This adds a 256 byte floor to the quantum accepted from userspace in
+> hhf_change(), clamps the quantum derived from the device MTU in hhf_init(=
+)
+> to [256, 1<<20], and drops the old overflow fallback that set quantum to
+> 256.
+>
+> Two questions below, one about the changelog and one about a pre-existing
+> detail in hhf_init().
+>
+> >     hhf_change() accepts any quantum from userspace, including 1. With =
+a
+> >     crafted size table qdisc_pkt_len reaches ~2 GiB, so quantum=3D1 mak=
+es
+> >     the deficit-refill loop spin ~2^31 times under the qdisc lock
+> >     (a soft lockup / denial of service).
+> >     ...
+> >       tc qdisc add dev dummy0 root hhf
+> >       tc qdisc change dev dummy0 root hhf quantum 1 stab data 32768 siz=
+e_log 15 cell_log 0
+> >
+> >     Fixes: 10239edf86f1 ("net-qdisc-hhf: Heavy-Hitter Filter (HHF) qdis=
+c")
+>
+> [Severity: Medium]
+> Is the ~2 GiB / ~2^31 figure still accurate on this tree?
+>
+> __qdisc_calculate_pkt_len() in net/sched/sch_api.c already ends with:
+>
+>         /* A size table can inflate qdisc_pkt_len() beyond any real packe=
+t
+>          * (via overhead, the data table, or size_log); cap it so deficit
+>          * schedulers such as DRR/ETS terminate their refill loops.
+>          */
+>         pkt_len =3D clamp_t(int, pkt_len, 1, QDISC_PKT_LEN_MAX);
+>
+> with QDISC_PKT_LEN_MAX defined as (1 << 20) in include/net/pkt_sched.h.
+> That cap is present in the baseline, added by 8f735d64382d ("net/sched:
+> bound qdisc_pkt_len to prevent qdisc soft lockup").
+>
+> With that clamp, the quoted reproducer (32768 << 15, i.e. 2^30) yields a
+> pkt_len of 2^20, so the refill loop in hhf_dequeue():
+>
+>                 if (bucket->deficit <=3D 0) {
+>                         int weight =3D (bucket - q->buckets =3D=3D WDRR_B=
+UCKET_FOR_HH) ?
+>                                       1 : q->hhf_non_hh_weight;
+>
+>                         bucket->deficit +=3D weight * q->quantum;
+>
+> is bounded to roughly 2^20 iterations with quantum=3D1, not 2^31. The
+> changelog of 8f735d64382d itself describes 1M iterations as completing in
+> a few milliseconds.
+>
+> Could the changelog be reworded so it describes the bound that actually
+> applies here, and mention 8f735d64382d as the commit that closes the
+> soft-lockup case? Without that dependency noted, a stable backport of thi=
+s
+> patch alone onto a tree lacking the pkt_len cap still leaves roughly
+> 2 GiB / 256 refill iterations under the qdisc lock.
+>
+> > diff --git a/net/sched/sch_hhf.c b/net/sched/sch_hhf.c
+> > index 96acab6a8da03..fc72f825fbd92 100644
+> > --- a/net/sched/sch_hhf.c
+> > +++ b/net/sched/sch_hhf.c
+> > @@ -551,7 +551,7 @@ static int hhf_change(struct Qdisc *sch, struct nla=
+ttr *opt,
+> >               return err;
+> >
+> >       if (tb[TCA_HHF_QUANTUM])
+> > -             new_quantum =3D nla_get_u32(tb[TCA_HHF_QUANTUM]);
+> > +             new_quantum =3D max(256U, nla_get_u32(tb[TCA_HHF_QUANTUM]=
+));
+> >
+> >       if (tb[TCA_HHF_NON_HH_WEIGHT])
+> >               new_hhf_non_hh_weight =3D nla_get_u32(tb[TCA_HHF_NON_HH_W=
+EIGHT]);
+>
+> [ ... ]
+>
+> > @@ -624,10 +624,6 @@ static int hhf_init(struct Qdisc *sch, struct nlat=
+tr *opt,
+> >       q->hhf_evict_timeout =3D HZ;      /* 1  sec */
+> >       q->hhf_non_hh_weight =3D 2;
+> >
+> > -     if ((int)q->quantum <=3D 0 ||
+> > -         (u64)q->quantum * q->hhf_non_hh_weight > INT_MAX)
+> > -             q->quantum =3D 256;
+> > -
+> >       if (opt) {
+> >               int err =3D hhf_change(sch, opt, extack);
+> >
+>
+> [Severity: Medium]
+> This is a pre-existing issue and not something this patch introduces, but
+> while looking at the ordering in hhf_init() around this hhf_change() call=
+:
+> is a TCA_HHF_HH_FLOWS_LIMIT value passed at creation time dropped?
+>
+> hhf_change() stores it:
+>
+>         if (tb[TCA_HHF_HH_FLOWS_LIMIT])
+>                 WRITE_ONCE(q->hh_flows_limit,
+>                            nla_get_u32(tb[TCA_HHF_HH_FLOWS_LIMIT]));
+>
+> but on a fresh qdisc q->hh_flows is NULL, so hhf_init() then enters the
+> allocation branch which overwrites the same field:
+>
+>                 /* Cap max active HHs at twice len of hh_flows table. */
+>                 q->hh_flows_limit =3D 2 * HH_FLOWS_CNT;
+>
+> So tc qdisc add dev X root hhf hh_limit N appears to be ignored, while th=
+e
+> same option via tc qdisc change on an already initialised qdisc takes
+> effect. That field gates admission in hhf_get_flow():
+>
+>         if (q->hh_flows_current_cnt >=3D q->hh_flows_limit) {
+>
+> Would it make sense to only apply the default when the attribute was not
+> supplied?
+>
+> --
+> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
+set/QDISC-0CFC.v3.20260901204856%40mojatatu.com
