@@ -1,214 +1,165 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4A683A872D
-	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 07:01:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.14
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788505282; cv=fail; b=pgn3WLjs1othkHa9vkYQldIMYPBfpMPslINvjf7S5jYpp+rim82XPEWOfA06UIGQv/RVx8e146kCsaVDJZdRaEKhNqFUMtNrKn/ItYBwwXd3LtaWVy43qNtkFd0eWWDjgPymxV9ASJYWFGvdfTTK5OsrnZ414xAh/Qnu2PH19Ss=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788505282; c=relaxed/simple;
-	bh=w99922MFiD+HWXW5Yl51/quSzGGQjnkMQ1tp0B8ifIs=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=H5+v8kW5mEJMXTTZjJIQd8DGYszHIggKQU4SC3JI60SDGf6NU2p7PNG+qlTFJrTiivqBgX8lFkaffxqmms/3/ThyJouL5nWtwIrLjDvxyS0N32FN1Xe8/sDFHDIEYPxVOUTTUIlsVvZ3XB+Nv5MOer8mhn/oUyLTO5IdF0eF7CU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hXVkPYua; arc=fail smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C0533932E1;
+	Fri,  4 Sep 2026 07:02:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788505371; cv=none; b=UgGb6eQumaHwBnC8FIhYJyQuvkDPsCbeMQrN1VjQVl8b6rpzGCC9rfUrMCb7hj0L+PsWG/ObCD0M0t+jp1U+FhS0TIn/2fpgfpj5VIZ/xTdLHsj9V3djzc2L/0QPCM0SkYreWy4ojSSA308FloTBpUmyHWdQUyCYzJISDzsTP98=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788505371; c=relaxed/simple;
+	bh=2x0UUSQzfkPS1nfjFDYK4m0MbvWtWlQ74cxd6TmjI9Y=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=COTnStt0+42jRUcG7fY2+Ea7oD9CrgfwmbOadhi36jqNbks6rf8mbueEwti/tkubUgQzfuuedam+8LcPZxb9TZB5/oyD6VIwb4XI/HBqW5FLAbjiwrPPKIKtcRBGayzamirQnMHXGfecUb4xX0Q1vNBmNG7Wj1Y1ZB+5y93wNz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kUA+CG1q; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hXVkPYua"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788505281; x=1820041281;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=w99922MFiD+HWXW5Yl51/quSzGGQjnkMQ1tp0B8ifIs=;
-  b=hXVkPYuaM3J9b9nypY5yqQ0Rhof1I4zeJuVfyYxZFAHQEftAcUdhBXpz
-   NL2RbNafpTFDowQOUsDMtEtjN1raqyCN5fCpSFjZ/vRzVBTPWrs3breOs
-   2/XsT1GNxe1dVoIJlQxJcEfUmbUxYDInIqfDd6JAOHOEKDwijn/DsU/bn
-   KlqAUa82ZFFP8dCZKp8y2eeWVgrC6+HwAhDYiecNI8YVJkLl9GsT4yEsQ
-   9lBOO+iivxB/FAzM9gb1SLrGVtlr4gGbg+BPmbCSMPL/UaSttOnNHbbgz
-   1E7ease7k9dupJxb2m9+gV8TP9w/bxH5tLehPkGmCmZXZXgYf5nwmbu15
-   A==;
-X-CSE-ConnectionGUID: KWRCJqdNQHKy6BU6TXloiA==
-X-CSE-MsgGUID: IwXK1j5LT5uiJTDUgUFUzQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11895"; a="89023173"
-X-IronPort-AV: E=Sophos;i="6.25,260,1779174000"; 
-   d="scan'208";a="89023173"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2026 00:01:20 -0700
-X-CSE-ConnectionGUID: LkSjzuQYQB232FNEFHr5lA==
-X-CSE-MsgGUID: 1345We84S3a4kCXm4//OBQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,260,1779174000"; 
-   d="scan'208";a="268225748"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
-  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2026 00:01:20 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Fri, 4 Sep 2026 00:01:19 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46 via Frontend Transport; Fri, 4 Sep 2026 00:01:19 -0700
-Received: from CY3PR05CU001.outbound.protection.outlook.com (40.93.201.44) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Fri, 4 Sep 2026 00:01:19 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GaAMayYPCyLT81iKrUyrLGmbwAJqWHKDIWVXec7f4KEpkrg+wHp+2afaJT7h1gUFJWY/6ibsY6tbrFoCHO2rX2HSNH07JAuPkFJozV2C3fCmsAEtaIJhRismaHrCQFY7uexETFd4utS5PSY0MvRdfenejxCqo/+cnVxk1EbSlJi74VQZMunJV0lYviK9iqWtzDPJTkUtsZfLEIF2n8aLCoYsi6bDPQ2h8YiyybfWnEBV+/3PsWeeXnlfG6FirSA/5qujIKJ9D9iaTR2cp/Z730UYKWeA6QdtplYAUBnWCDRJKdg6HXtoXX4Y/PIuSePXVBciJ2yrDRI+zy9tj/pG6A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OSVzlTVSHMFGsIj7jwSiefh49fDkjQaInlYvN0MbJRg=;
- b=zO2+Hu/u7hAF0iE8inCDlgV0oN/M4qy3MFQJCKi24xaI+HoTbb83BHU9Iy25XWSmUZLga5z3osvNWUQWwdGcX4/5QXXzy/GWIV9hrO8F1HXftjZiAh3BCRgRpzAPg3u4gA3JgXO4KZ85nhG9GOoOFuoEXn8rEmMuu+XJbf4sQ0b9gXtcMyIGslht6xbcEg/F0i9rKjEbAQoL/y1R07pUJjVwxKsOZRH+8dQ1ONq29J7fpKTOsfWSh4rDNyh2CG0jO6DsPjhOHLvc/taG9hxRRQM1p+9ZQVhLX3fXdenaoJ7jwFP9QiwtpNZjyWm9p+t7SvU68A4QSfh3N1ETivMgOw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from IA1PR11MB6241.namprd11.prod.outlook.com (2603:10b6:208:3e9::5)
- by IA0PR11MB7355.namprd11.prod.outlook.com (2603:10b6:208:433::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.13; Fri, 4 Sep
- 2026 07:01:16 +0000
-Received: from IA1PR11MB6241.namprd11.prod.outlook.com
- ([fe80::7ac8:884c:5d56:9919]) by IA1PR11MB6241.namprd11.prod.outlook.com
- ([fe80::7ac8:884c:5d56:9919%3]) with mapi id 15.21.0360.008; Fri, 4 Sep 2026
- 07:01:16 +0000
-From: "Rinitha, SX" <sx.rinitha@intel.com>
-To: Marcin Szycik <marcin.szycik@linux.intel.com>,
-	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>
-CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "Penigalapati, Sandeep"
-	<sandeep.penigalapati@intel.com>, "S, Ananth" <ananth.s@intel.com>,
-	"alexander.duyck@gmail.com" <alexander.duyck@gmail.com>, "Nguyen, Anthony L"
-	<anthony.l.nguyen@intel.com>, "Czapnik, Lukasz" <lukasz.czapnik@intel.com>,
-	"Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>
-Subject: RE: [Intel-wired-lan] [PATCH iwl-next v5 12/12] ice: use ACL for
- ntuple rules that conflict with FDir
-Thread-Topic: [Intel-wired-lan] [PATCH iwl-next v5 12/12] ice: use ACL for
- ntuple rules that conflict with FDir
-Thread-Index: AQHdChZJDh7YNnXfEUylNicMNG3eura+WjFw
-Date: Fri, 4 Sep 2026 07:01:16 +0000
-Message-ID: <IA1PR11MB6241EBEF55403E74840E60C38BB52@IA1PR11MB6241.namprd11.prod.outlook.com>
-References: <20260702103007.97020-1-marcin.szycik@linux.intel.com>
- <20260702103007.97020-13-marcin.szycik@linux.intel.com>
-In-Reply-To: <20260702103007.97020-13-marcin.szycik@linux.intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: IA1PR11MB6241:EE_|IA0PR11MB7355:EE_
-x-ms-office365-filtering-correlation-id: d4ec5d87-bdfd-4c05-35a3-08df0a5250a2
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|376014|366016|23010399003|10067099003|56012099006|4143699003|11063799006|6133799003|22082099003|18002099003|38070700021;
-x-microsoft-antispam-message-info: 9KVUqqJA8xxRyHch9fxAZQrdBCqSG4afUiXIhurp5ruljOWPZ0N21c2DmWUJwW+4yrbaAdF3m3N7Vn05e4fFvTGMFni0wn+ShnRd+EiOC/RKiv7mAd5aeSknWStQCIJTLqASLb3EPJgh8t2BHPihRhPFtBrHNpJ1j4jj8CyEncXLAiJtuoq9c9MqJGyZWjXAwCj2tqWoObS7eTJSdpaetnzLfl92SPRXtqKw9A5Z+P8ftTD95p0W0M/EYWMWPIDlfk1Oh+K6e/7669fSKRMUDb/Z4A41JaTeWa/nFLlLeAFVdj8d4/ZvCtjCvJSzQc9ALjTNwSB2Y3F6W6q32xl6wp6QnaqouYBI3CwrtmnoNU0T1DTlRRf+5CBosRvbDfn/skIw2fC1rBbQ6rz5uU0VaiwHUpvqiwYaD4FUSRe0c4IfsDt9XgcUanPKcyI7Tx7Kgck+/YhVKWGSIfHROtk1sMvV7QGzpq4YpW8t2vHZbexGzVJNeG4JmL4xdtimPK9tzyKgmbmKqENJAR69KomUJ+W2BSgUQoapZMn39oEmCEkTqHe3EIDVjSR6lIAUbOVYcjqUNxAkS4ysrm9OZlBFbWjEL9M6EbYD9oyQNMCnsIAJnrkTuL19Wuz4zynAFBp6jp+V2afdnElGzGXBN2z8/gNdg0cCiGIeeJvAcoOZ8/fVe1HyvJUDaLa8/HWvCM5SOYhdZgauflv2qzW5x6Gtvw==
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR11MB6241.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(23010399003)(10067099003)(56012099006)(4143699003)(11063799006)(6133799003)(22082099003)(18002099003)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?prU1ub0ikQtvaaFVxqAHwJBy2jSQ9148a4QwE8Ru4oOFw2Ew7gYntU48gyVJ?=
- =?us-ascii?Q?QxdvBiolY0W8zF70XuFXO70rojMZmXb2gAV4l3LU/lz09927a06GNA5yagYP?=
- =?us-ascii?Q?ysTOJ+zBUz0pyPGDaF5dN6wvKrPdHuPLfOdbv/DUg/hWEq1Q0P7d/G6Kjn7g?=
- =?us-ascii?Q?buMCrrFqibVWhQvGya3CWj0Y6vnWQUvOBbM+Hy+kVCgD9zF8hnQiswIMvPBV?=
- =?us-ascii?Q?himm5sfKyy1pPWmJp49QNb51Ak7fsFQj5sCeTyHQF7IOQ+QDYmOrcKcLDjMl?=
- =?us-ascii?Q?3cZuslkIh4tmZRa8H/aE/5/68Pg4HrI4Zy6O0LsIc0e1ug6MH4CFtP0BhbBP?=
- =?us-ascii?Q?6WdAdEo5CL6ZDPRa+eY2aw2ilwI4Sx4K/2ZE435pqIoQKZ3rW4BsHQ2N4l31?=
- =?us-ascii?Q?gbYItP1VabcTS5aGN3ZuC5r8xzIDM6Z3faKZcVtxaKTWyequ6Q5pL5Qxtpc1?=
- =?us-ascii?Q?LSsJz0+M5dtLTwHhwFeNCND9nIWIx3XJb0amYDWHvHLyIiGp9sBfAh8Y++V7?=
- =?us-ascii?Q?m7ahwra8Ou3Mom4QFiZG/ez23eLrR37WMxOCN8USre0br+Hg45C8vcl1U3FO?=
- =?us-ascii?Q?qtXVizAR/GsXqVu3GUnRuSRIm9RY+dmujEAdXr9lImVErLmJn/FrSZbg67kl?=
- =?us-ascii?Q?rWwQW79jKg3zJhQ5bbUDfnYHPLcguCSj6l0+loFZVqT/uoVbrs0LHFDdHSw8?=
- =?us-ascii?Q?xblfdh7UHHDGLJrzGl0ORmlk5SWt3npRGtFU0oGI/BTPg5YS/hTLIQ8bTg4r?=
- =?us-ascii?Q?mtTICk7o7qtNdC+YhEvu8l1iICVZSXdp+2UVDV81blyzT877nCCslFCXDKhJ?=
- =?us-ascii?Q?ONy+5R+RnJDn7vffsiNBFNEF3x6B55Z3oLmUmDeSSGiug7nMtS9OD1Afjypj?=
- =?us-ascii?Q?PPpBZoSixCt8yAnoDPt1RNLUsgjC71Cr++x4RK5SSYUV41EBLwBz9Fucs7pP?=
- =?us-ascii?Q?D9P0si1YnqS16VpfmJJjAZG1s+2qdSo0KPS5OBpGaLvJbF+7v27pAqVGMVTK?=
- =?us-ascii?Q?SXIElLONZKLJldyRhK+zXkPkhCJPODi8sluaPHwpCqse/C16UjMBsDsVn81O?=
- =?us-ascii?Q?LopOwQuRJq+xuKg/TxPPrDW2ulCTw9CmYipvG6Fsp773lV+NT0i3QPaVAvXl?=
- =?us-ascii?Q?2KUjFTTMi7hkp009ca47oa+6UwZI2wzIf5MFzmDqNaMarLP/qmIilPR0noYL?=
- =?us-ascii?Q?1hMWNcoM0nDRbkPY/2rfB0J+Sc8mcDtwmX+VwX36436WKLzAW01T6zB87lx4?=
- =?us-ascii?Q?Y3ZL83PuLlviHDeSCvDmWV/fvUKe+wQiZOgJPZG3UFwAIMuqVm+YpRhqFBaw?=
- =?us-ascii?Q?5OUwjBQBYWVJziIPBRleSjrITg866WNqcsTpUbxlJgtNLZ+QjsVkmJDgHOWB?=
- =?us-ascii?Q?pIiNm5ZSTj8FHsVZ+ONZuUXaGBmgIROfJoWXrtn7LJjxYmcioZAyyNdA22Wq?=
- =?us-ascii?Q?faim33L9IZi7LBWnRbpSKE4d5Ahp89JXNEGKZubGy5CSZUtYU99GY0vwJ6yp?=
- =?us-ascii?Q?JGKNbtrk4WO40GMdEI5SDA7+XsR3/yKFcl/bpBA3uvkGpR0R6AFN3qNatoVu?=
- =?us-ascii?Q?uepfwoi0CXkRvTntdhc1gQHW8E6oKlSjwdK/6kqQ5q54VEbyYrDoP7Lt4Fvc?=
- =?us-ascii?Q?Ry06wt2mSPDuaUS+b04Nd9+lR3oO1U1KB62bYnuAlyyaArptBPs2j0lvF35z?=
- =?us-ascii?Q?oUZhZMWoI+fzAks+cCdAmwDfA+07JhMxIFA4PsCkjtWFKuID?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kUA+CG1q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 689DC1F00A3D;
+	Fri,  4 Sep 2026 07:02:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788505369;
+	bh=anFcLtO6Ah4HidMYiPOW81QlmYKA4TzQgsqOVmRInhU=;
+	h=From:To:Cc:Subject:Date;
+	b=kUA+CG1qni2ieMxc9NYPQudcbHK8uU/d52L9ElFgbV+0r2VfDqqtJ0+cXRWDz2JuK
+	 VLTuMbU4/rG5DQrzvLZCB4mURzd7sRi+ZY8FfSr9+sPpYMxAh1h1BTLBHWjwk/Qd5P
+	 FReMbCU6l3QiVyK9o3fLTsX7vAeA0d8ZenM3723vDJMahsRi+vRHd8igpeH9xeUNGd
+	 zfx/PYvAfWDyqwJZkR7PdJGn9b/Tf8oQw4S2wr8rQSLE9hAy1lz1dd3eiUVZxFooOE
+	 +SQmnsFSITsSSK1I4iW5quf7C0R0ABTQ69svD+LIEE7DBtSLGRTIHXIKFSkRLkbHU0
+	 EfaJpy+xse9PQ==
+From: Allison Henderson <achender@kernel.org>
+To: netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	kuba@kernel.org,
+	horms@kernel.org
+Cc: achender@kernel.org,
+	nicoyip.dev@gmail.com
+Subject: [PATCH net-next 0/6] net/rds: make connection lifetime reference-counted
+Date: Fri,  4 Sep 2026 00:02:42 -0700
+Message-Id: <20260904070248.160384-1-achender@kernel.org>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: CnPwBK2QNcB1LunSuekAQL5FDR+W4CormoLaQyu0p+sF3qdi8JUA4b0WCm47pxntVJjcLJfUt7g1QBepUg/TKy1g8RmJggnUZhg3YQHiFJ+fYyVGO+6cII3PWsgvYFW4wAtCwgaor3ixN2uKgM9436LK4Hp+WkXcmUGZ26E7POD9eA5uuuEJL/mUu03GsQg3ZWfmlE/DWBrAT2h/NXQu5vta1cLBKBV8UYAs2E0VX0NamRegq12gbAV3bclHG4eLi1xwTDVx6jDQIx2OIJa3WrrWcASZHQn9HejEafZJxlT05DkjUQXqDN6jTPr/dvOyINFcoAZ/4fTAj4EU3IYbdA==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: IA1PR11MB6241.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d4ec5d87-bdfd-4c05-35a3-08df0a5250a2
-X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Sep 2026 07:01:16.6046
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: xePPI+KfXXEjM3rsckD3H4OTlnzh35/ya3ht42walzDEBF0i1cc9ZWBgYNKlteBZ5ON/J1CrHkx+CvArfxzfbg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR11MB7355
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
 
-> -----Original Message-----
-> From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf Of M=
-arcin Szycik
-> Sent: 02 July 2026 16:00
-> To: intel-wired-lan@lists.osuosl.org
-> Cc: netdev@vger.kernel.org; Penigalapati, Sandeep <sandeep.penigalapati@i=
-ntel.com>; S, Ananth <ananth.s@intel.com>; alexander.duyck@gmail.com; Nguye=
-n, Anthony L <anthony.l.nguyen@intel.com>; Marcin Szycik <marcin.szycik@lin=
-ux.intel.com>; Czapnik, Lukasz <lukasz.czapnik@intel.com>; Loktionov, Aleks=
-andr <aleksandr.loktionov@intel.com>
-> Subject: [Intel-wired-lan] [PATCH iwl-next v5 12/12] ice: use ACL for ntu=
-ple rules that conflict with FDir
->
-> From: Lukasz Czapnik <lukasz.czapnik@intel.com>
->
-> Flow Director can keep only one input set per flow type. After ACL suppor=
-t was added for ethtool ntuple rules, the driver still only selected ACL fo=
-r rules with partial masks.
->
-> That leaves a gap for rules with full masks that still require a differen=
-t input set than the one already programmed for Flow Director. Such rules g=
-o through the FDir path, build a different extraction sequence and then fai=
-l because the existing FDir > profile cannot be reused.
->
-> Detect this case before programming the rule. Build the candidate IP flow=
- segment, compare it with the active non-tunneled FDir profile and, when th=
-e input sets differ, offload the rule through ACL if ACL is available.
->
-> Refactor the IP flow segment setup into a helper so the same logic can be=
- used both by the extraction-sequence configuration path and by the conflic=
-t check.
->
-> Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-> Signed-off-by: Lukasz Czapnik <lukasz.czapnik@intel.com>
-> Signed-off-by: Marcin Szycik <marcin.szycik@linux.intel.com>
-> ---
-> v5:
-> * ice_fdir_has_input_set_conflict(): add a check if aRFS is using perfect
->  filters that may cause a conflict
-> * ice_add_ntuple_ethtool(): add a guard that rejects flex-byte (user-def)
->  filters when they would be routed to ACL (since ACL ignores the flex
->  constraint, it would silently offload a broader rule)
-> * ice_add_ntuple_ethtool(): join subsequent conditions that call
->  ice_acl_add_rule_ethtool() for clarity
-> v3:
-> * Include flex fields in test_seg to avoid false conflict detection
-> * Skip conflict check early for ETHER_FLOW
-> v2:
-> * Add this patch
-> ---
-> .../ethernet/intel/ice/ice_ethtool_ntuple.c   | 189 +++++++++++++-----
-> 1 file changed, 140 insertions(+), 49 deletions(-)
->
+Hi all,
 
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+This set is the next stage of the RDS stabilization work, following
+"net/rds: own the fastpath locks across connection teardown", now
+net-next.  This series is targeted to net-next as well. Though the 
+series fixes real use-after-frees (one syzbot report and one report
+from Chengfeng Ye below), it does so by reworking connection lifetime,
+which is a substantial change.
+
+rds_conn_destroy() frees the connection, its paths and its workqueues
+on the spot, relying on the documented assumption that "no one else is
+referencing the connection".  That assumption stopped being true a
+long time ago.  Connections are destroyed not only on rmmod but also
+on IB device removal and on protocol-version mismatch, while pointers
+to them still live in socket rs_conn caches, congestion-map conn
+lists, CM callbacks and workers, and - for as long as an application
+leaves data unread - in every rds_incoming sitting on a receive
+queue.  Each of those is a use-after-free waiting for its trigger, and
+no single Fixes: commit covers the rot, so the series carries
+Reported-by tags where there are concrete reports instead.
+
+  Patch 1 gives the connection itself a destroy-in-progress marker so
+  that rds_destroy_pending() covers single-connection destroy, not
+  just the netns-teardown and module-unload cases.  Without it, the
+  work-requeueing sites can re-arm works on a connection whose
+  workqueues are about to be destroyed.
+  Based on UEK commits:
+     e2f5005adf63 net/rds: Add krefs to struct rds_connection
+     https://github.com/oracle/linux-uek/commit/e2f5005adf63
+
+     6c53ef92f46e net/rds: Merge uses of conn->c_destroy_in_prog & RDS_DESTROY_PENDING
+     https://github.com/oracle/linux-uek/commit/6c53ef92f46e
+
+  Patch 2 splits rds_conn_destroy() into a quiesce phase and a
+  kref-governed free, so a connection with references still
+  outstanding stays allocated (quiesced, unhashed and unusable) until
+  the last reference is dropped.
+  Based on UEK commits:
+     2c8569e4c880 ("net/rds: Add krefs to struct rds_connection").
+     https://github.com/oracle/linux-uek/commit/2c8569e4c880
+
+  Patch 3 hands out real references everywhere a connection pointer
+  previously escaped bare: rds_conn_lookup(), __rds_conn_create()'s
+  return, the rs_conn sendmsg cache, and the parent's c_passive
+  pointer.
+  Based on UEK commits:
+     2c8569e4c880 ("net/rds: Add krefs to struct rds_connection")
+     https://github.com/oracle/linux-uek/commit/2c8569e4c880
+
+     0e9e3a72b7f7 ("net/rds: rds_sendmsg must use rs_conn only when not being destroyed").
+     https://github.com/oracle/linux-uek/commit/0e9e3a72b7f7
+
+  Patch 4 makes each transport's exit path wait for its own
+  connections to actually be freed before the module text goes away,
+  since the free - including the transport's conn_free - is now
+  asynchronous.
+  Based on UEK commits:
+     ece4b4e39afa ("net/rds: wait_event_timeout until zero connections during rmmod")
+     https://github.com/oracle/linux-uek/commit/ece4b4e39afa
+
+     905ec90e6166 ("net/rds: Each RDS transport should keep its own connection count")
+     https://github.com/oracle/linux-uek/commit/905ec90e6166
+
+  Patch 5 is the cleanup fallout of patch 4: the global rds_conn_count
+  has no remaining consumer besides a workqueue-name seed, so switch
+  the seed to the per-transport count and remove it.
+  Based on UEK commits:
+     905ec90e6166 ("net/rds: Each RDS transport should keep its own connection count").
+     https://github.com/oracle/linux-uek/commit/905ec90e6166
+
+  Patch 6 makes struct rds_incoming hold a reference on i_conn, which
+  is the fix for the KASAN use-after-free Chengfeng Ye reported [1],
+  where rds_info_getsockopt() walks a socket receive queue whose incs
+  point at connections rmmod already freed.
+  Based on UEK commits:
+      99b9a3715419 ("net/rds: fix crash by expanding kref coverage to rds_incoming.i_conn").
+      https://github.com/oracle/linux-uek/commit/99b9a3715419
+
+Patches 2, 3, 4 and 6 are ports of the connection kref work Sharath
+Srinivasan did for Oracle UEK, adapted to the upstream code.
+
+The series has been validated with the RDS selftests over both
+loopback-TCP and RXE-RDMA transports, plus targeted churn tests that
+delete network namespaces and unload the modules under live rds-stress
+traffic - the paths this series changes.
+
+[1] https://lore.kernel.org/netdev/20260720184955.3008978-1-nicoyip.dev@gmail.com/
+
+Allison
+
+
+Allison Henderson (2):
+  net/rds: make rds_destroy_pending() cover single-connection destroy
+  net/rds: drop rds_conn_count in favor of t_conn_count
+
+Sharath Srinivasan (4):
+  net/rds: split connection destroy into quiesce and kref-governed free
+  net/rds: hold connection references in lookup, sockets and c_passive
+  net/rds: wait for connections to be freed on transport unload
+  net/rds: hold a connection reference from struct rds_incoming
+
+ net/rds/af_rds.c     |   8 ++
+ net/rds/connection.c | 189 ++++++++++++++++++++++++++++++++++++++-----
+ net/rds/ib.c         |  14 +++-
+ net/rds/ib_cm.c      |   8 +-
+ net/rds/loop.c       |   2 +
+ net/rds/message.c    |  16 +++-
+ net/rds/rds.h        |  25 +++++-
+ net/rds/recv.c       |  21 ++++-
+ net/rds/send.c       |  45 +++++++++--
+ net/rds/tcp.c        |   1 +
+ net/rds/tcp_listen.c |   5 +-
+ 11 files changed, 297 insertions(+), 37 deletions(-)
+
+-- 
+2.25.1
+
