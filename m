@@ -1,135 +1,176 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f78.google.com (mail-oa1-f78.google.com [209.85.160.78])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F3D53126A0;
-	Fri,  4 Sep 2026 00:37:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 569721E7C02
+	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 00:40:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788482235; cv=none; b=aWqZZxELEgU2wUyU45IfNGcygzJB0MF0i75Ba6siv8uLexYTHXO4DUhK6Xz2xQeDqFExXUOrXK/MirNch1zR3dgpT46tDMvcGxeFEHVWbVoBn+oj9UMsnf/jj7U9z4L2HRbEyaTpb4G/rujY2yvdIHzgBTAAzkmHOYzKFAmPlM0=
+	t=1788482433; cv=none; b=MzVVm7mVoQMGuinE0mEnapfCwoffGl1sRLUY9XmGc1JPHV1EyehYpRCEwl3dQ02IG+rOQXjXyTi+RwsPQu8dpc0cvlf7Oi1+PfFprR0ovcBbrZ5qZC5QY1zR65plQ0nPZV4V7YtN81Whg1h/iZBP5YQGmOXOyMfCQskCiLf7QWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788482235; c=relaxed/simple;
-	bh=rxMHPAmCAEvl/uMEbtTwkQ8X0uIgPDvmAoT7QX05Hoc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JyM4IVotX/z//5AbfFJGWxNm0vcp3IiAb7g+B2OtMcQkON7EZ1PN2dgzqc9jlUIm90U135gioD+zwRRmaLGwh3Pt2u0oupfPMOwIze3uQPSnCIPPLmA85W70w9XOnTuIF/1AKU5H2Z0wXibZmEzRQrnIDD9LEPrZKrxgEKI7nPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PqZOHtAW; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PqZOHtAW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C915F1F000E9;
-	Fri,  4 Sep 2026 00:37:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788482234;
-	bh=PCqPYylojdkkJfDDfDSTr5k+f+4kMYWTMYRN76l4tKg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=PqZOHtAW7dxLi3WnxB+E0L5jG84FB0+sgeh2pRn3L//yNKdh/a3JCqXcAU9QDEXu6
-	 XOHZaCfGReAzz17+K//LvRDITXnXTxdG1u0JtAnSQkYljHibuVSElfMlm98RMp7CiC
-	 YJRZ3vRcrwQ6NTqll6cjPB/g5jz2lQ79MMuS6E20GdZ/PVtRsmgm/XmA0JIQ8MeElX
-	 X8Kay161hFsLXw10kWk5+HpwbUJPJbcJk/3FFh01mjPGHyyjgVdy6XFLTxyB+iHqtc
-	 LETCMgFUqGspEcDIz6o905LPCbOrsQDoWBA+nAKQUwQ/Jk8sqfHLS7a5n1RcK5qTEe
-	 IF07H2azGElBg==
-From: Jakub Kicinski <kuba@kernel.org>
-To: marex@nabladev.com
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	netdev@vger.kernel.org,
-	davem@davemloft.net,
-	andrew+netdev@lunn.ch,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	bigeasy@linutronix.de,
-	yiconghui@gmail.com,
-	kernel@dh-electronics.com,
-	linux-kernel@vger.kernel.org
-Subject: Re: [net,PATCH v1] net: ks8851: Fix receiver error in 100BASE-TX mode following software power-down
-Date: Thu,  3 Sep 2026 17:37:12 -0700
-Message-ID: <20260904003712.3484001-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260901173925.96183-1-marex@nabladev.com>
-References: <20260901173925.96183-1-marex@nabladev.com>
+	s=arc-20240116; t=1788482433; c=relaxed/simple;
+	bh=7LQpb0Pa73PlrS8iOd6HJy/L6pdf8Fsn9gXcja5ixfo=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=Gzq6Pp75xMCN+lwRmMngAty0jZBKTSASjqRQqfT6k7T8rPPrQ1OM8cYpHmr+TK6teayRH2xfKl6garOig7d0sbR2qqeoRa+1j+00li3pJZcaUcBs6X4ym5CkMLdqRNsQPd2nhAakPkAZCasj9/xn6JLBuD/LfkrjFBt+6CDt2cE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.160.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oa1-f78.google.com with SMTP id 586e51a60fabf-464e69965b8so2125478fac.0
+        for <netdev@vger.kernel.org>; Thu, 03 Sep 2026 17:40:32 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788482431; x=1789087231;
+        h=content-type:to:from:subject:message-id:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=hNPf08Y7tBx8DkNypiWcYaCaJCCHHn5rIsGOQMKw6+M=;
+        b=Gcb1D/jWQhKYDiwsIR7ecPI0rdLsBj9Pl3p4KsljKKqyUXBVIV81rLjz9kVcGRMP9p
+         E+pkUXNqJ8oi6HZ3s6L2RP+/jCshAtVFxqMdGb9wV26PMXaz1H+8OAz+kA64f/d2t3tn
+         dkxj65a1xjM5944wfWRlmprVB0iMKXlVi24kHRarbv7Ojc8Zz7LxtdHrCYUA2Jrnz29P
+         EG3FCmWC1d/PAbV1cKqu3aHUn2TJbI5oXwi6RvVRa/7sJOVhu1+5hj4I/UNOPjEPtI33
+         KJ1ZBddh1M2Q7D9LAavlV2XDxyhh3St0+rLV7AMPdErE9xm2+AOKcdcR/ZTAOIF96hth
+         ntjg==
+X-Forwarded-Encrypted: i=1; AKwUvBxNVr2zfnJuZugOAJBojHo7+47+wRxunfCs5j0GT2A4jBKNjzztgPhW8lgZrKkl8NrK59FrOVs=@vger.kernel.org
+X-Gm-Message-State: AFuF++nTPhLs1K4kU7IaRgepBB8sBx2U+LEWUQpioQXMZ3Tsl0ODk4bK
+	wT2DmswuapgXfAH5pMUPhiwkJGbWQZrvRyB1LlaN/WF6Yhwtdgm0KoTlbkLty+PBcdaWHDqC8P4
+	mviSBf9hMYMtk7KMVi5lQw97Kj+oPwidK+m6HjctfOsbpUxS3gaFA6YASwGs=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a05:6820:4df8:b0:6b6:1db8:5d1f with SMTP id
+ 006d021491bc7-6b627d58214mr2086763eaf.13.1788482431355; Thu, 03 Sep 2026
+ 17:40:31 -0700 (PDT)
+Date: Thu, 03 Sep 2026 17:40:31 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a9a137f.9266084e.bf0d7.02e3.GAE@google.com>
+Subject: [syzbot] [bridge?] general protection fault in br_del_frame
+From: syzbot <syzbot+1df7473ef265fe8ba6e1@syzkaller.appspotmail.com>
+To: bridge@lists.linux.dev, davem@davemloft.net, edumazet@google.com, 
+	horms@kernel.org, idosch@nvidia.com, kuba@kernel.org, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, 
+	razor@blackwall.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
+Hello,
+
+syzbot found the following issue on:
+
+HEAD commit:    818bebeb63dd drm/xe: Don't hand out the flat CCS storage a..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=1596a979580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=ccca94d2c01b9e78
+dashboard link: https://syzkaller.appspot.com/bug?extid=1df7473ef265fe8ba6e1
+compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1431e625580000
+
+Downloadable assets:
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-818bebeb.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/6e4100526b12/vmlinux-818bebeb.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/723c4783ee96/bzImage-818bebeb.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+1df7473ef265fe8ba6e1@syzkaller.appspotmail.com
+
+bridge0: port 2(bridge_slave_1) entered disabled state
+bridge_slave_0: left allmulticast mode
+bridge_slave_0: left promiscuous mode
+bridge0: port 1(bridge_slave_0) entered disabled state
+Oops: general protection fault, probably for non-canonical address 0xfbd59c0000000024: 0000 [#1] SMP KASAN NOPTI
+KASAN: maybe wild-memory-access in range [0xdead000000000120-0xdead000000000127]
+CPU: 1 UID: 0 PID: 12 Comm: kworker/u32:0 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+Workqueue: netns cleanup_net
+RIP: 0010:__hlist_del include/linux/list.h:1038 [inline]
+RIP: 0010:hlist_del_rcu include/linux/rculist.h:599 [inline]
+RIP: 0010:br_del_frame+0x106/0x1a0 net/bridge/br_input.c:482
+Code: 00 fc ff df 48 89 fa 48 c1 ea 03 80 3c 02 00 0f 85 87 00 00 00 48 b8 00 00 00 00 00 fc ff df 4c 8b 65 18 4c 89 e2 48 c1 ea 03 <80> 3c 02 00 75 76 49 89 1c 24 48 85 db 74 24 e8 c6 45 72 f7 48 8d
+RSP: 0018:ffffc900000f78e8 EFLAGS: 00010a06
+RAX: dffffc0000000000 RBX: 0000000000000000 RCX: 0000000000000000
+RDX: 1bd5a00000000024 RSI: ffffffff8a98bb9f RDI: ffffffff91453338
+RBP: ffffffff91453320 R08: 0000000000000001 R09: 000000000000002c
+R10: 0000000000000200 R11: 0000000000000001 R12: dead000000000122
+R13: ffff88802e200800 R14: 000000000000001c R15: ffff88802e200800
+FS:  0000000000000000(0000) GS:ffff8880d5ca2000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007fdcf9541e9c CR3: 0000000026926000 CR4: 0000000000352ef0
+Call Trace:
+ <TASK>
+ mep_delete_implementation+0x292/0x340 net/bridge/br_cfm.c:591
+ br_cfm_port_del+0x14f/0x1e0 net/bridge/br_cfm.c:872
+ del_nbp+0x168/0xd50 net/bridge/br_if.c:348
+ br_dev_delete+0x96/0x1c0 net/bridge/br_if.c:387
+ br_net_exit_rtnl+0xdb/0x140 net/bridge/br.c:414
+ ops_exit_rtnl_list net/core/net_namespace.c:181 [inline]
+ ops_undo_list+0x896/0xab0 net/core/net_namespace.c:249
+ cleanup_net+0x499/0x920 net/core/net_namespace.c:706
+ process_one_work+0xac7/0x1b10 kernel/workqueue.c:3387
+ process_scheduled_works kernel/workqueue.c:3470 [inline]
+ worker_thread+0x5ef/0xe50 kernel/workqueue.c:3551
+ kthread+0x373/0x450 kernel/kthread.c:436
+ ret_from_fork+0x730/0xd60 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
+Modules linked in:
+---[ end trace 0000000000000000 ]---
+RIP: 0010:__hlist_del include/linux/list.h:1038 [inline]
+RIP: 0010:hlist_del_rcu include/linux/rculist.h:599 [inline]
+RIP: 0010:br_del_frame+0x106/0x1a0 net/bridge/br_input.c:482
+Code: 00 fc ff df 48 89 fa 48 c1 ea 03 80 3c 02 00 0f 85 87 00 00 00 48 b8 00 00 00 00 00 fc ff df 4c 8b 65 18 4c 89 e2 48 c1 ea 03 <80> 3c 02 00 75 76 49 89 1c 24 48 85 db 74 24 e8 c6 45 72 f7 48 8d
+RSP: 0018:ffffc900000f78e8 EFLAGS: 00010a06
+RAX: dffffc0000000000 RBX: 0000000000000000 RCX: 0000000000000000
+RDX: 1bd5a00000000024 RSI: ffffffff8a98bb9f RDI: ffffffff91453338
+RBP: ffffffff91453320 R08: 0000000000000001 R09: 000000000000002c
+R10: 0000000000000200 R11: 0000000000000001 R12: dead000000000122
+R13: ffff88802e200800 R14: 000000000000001c R15: ffff88802e200800
+FS:  0000000000000000(0000) GS:ffff8880d5ca2000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007fdcf9541e9c CR3: 0000000026926000 CR4: 0000000000352ef0
+----------------
+Code disassembly (best guess):
+   0:	00 fc                	add    %bh,%ah
+   2:	ff                   	lcall  (bad)
+   3:	df 48 89             	fisttps -0x77(%rax)
+   6:	fa                   	cli
+   7:	48 c1 ea 03          	shr    $0x3,%rdx
+   b:	80 3c 02 00          	cmpb   $0x0,(%rdx,%rax,1)
+   f:	0f 85 87 00 00 00    	jne    0x9c
+  15:	48 b8 00 00 00 00 00 	movabs $0xdffffc0000000000,%rax
+  1c:	fc ff df
+  1f:	4c 8b 65 18          	mov    0x18(%rbp),%r12
+  23:	4c 89 e2             	mov    %r12,%rdx
+  26:	48 c1 ea 03          	shr    $0x3,%rdx
+* 2a:	80 3c 02 00          	cmpb   $0x0,(%rdx,%rax,1) <-- trapping instruction
+  2e:	75 76                	jne    0xa6
+  30:	49 89 1c 24          	mov    %rbx,(%r12)
+  34:	48 85 db             	test   %rbx,%rbx
+  37:	74 24                	je     0x5d
+  39:	e8 c6 45 72 f7       	call   0xf7724604
+  3e:	48                   	rex.W
+  3f:	8d                   	.byte 0x8d
+
+
 ---
-net: ks8851: Fix receiver error in 100BASE-TX mode following software power-down
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-Per the KSZ8851 errata (DS80000716D, Module 3), a software power-down
-followed by a power-on can leave the receiver circuit non-functional. This
-patch implements the documented workaround by dropping both transitions into
-PMECR_PM_SOFTDOWN, in ks8851_write_mac_addr() and ks8851_net_stop().
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
 
-Link: https://ww1.microchip.com/downloads/en/DeviceDoc/80000716D.pdf
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
 
-> diff --git a/drivers/net/ethernet/micrel/ks8851_common.c b/drivers/net/ethernet/micrel/ks8851_common.c
-> index 4afbb40bc0e4a..cd8dfca22720b 100644
-> --- a/drivers/net/ethernet/micrel/ks8851_common.c
-> +++ b/drivers/net/ethernet/micrel/ks8851_common.c
-> @@ -143,9 +143,6 @@ static int ks8851_write_mac_addr(struct net_device *dev)
->  		ks8851_wrreg16(ks, KS_MAR(i), val);
->  	}
->  
-> -	if (!netif_running(dev))
-> -		ks8851_set_powermode(ks, PMECR_PM_SOFTDOWN);
-> -
->  	ks8851_unlock(ks);
->  
->  	return 0;
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
 
-[Severity: Low]
-This isn't a bug, but should the two comments describing the software
-power-down state be updated in the same patch?
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
 
-After this hunk, ks8851_write_mac_addr() still carries this comment above
-its remaining ks8851_set_powermode() call:
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
 
-	/*
-	 * Wake up chip in case it was powered off when stopped; otherwise,
-	 * the first write to the MAC address does not take effect.
-	 */
-	ks8851_set_powermode(ks, PMECR_PM_NORMAL);
-
-Nothing in the driver can put the chip into software power-down anymore, so
-the "in case it was powered off when stopped" precondition can no longer
-occur. A grep of the tree confirms PMECR_PM_SOFTDOWN has no users left,
-only its definition in ks8851.h, and the two remaining
-ks8851_set_powermode() call sites in ks8851_write_mac_addr() and
-ks8851_net_start() both write PMECR_PM_NORMAL.
-
-Since the commit message uses that very call site as the argument that
-dropping the power-down here is safe, would it help to note in the comment
-that the PM_NORMAL write is kept deliberately (e.g. referencing the errata),
-so a later cleanup does not remove it or reintroduce the SOFTDOWN
-transition?
-
-> @@ -506,8 +503,6 @@ static int ks8851_net_stop(struct net_device *dev)
->  	/* shutdown TX process */
->  	ks8851_wrreg16(ks, KS_TXCR, 0x0000);
->  
-> -	/* set powermode to soft power down to save power */
-> -	ks8851_set_powermode(ks, PMECR_PM_SOFTDOWN);
->  	ks8851_unlock(ks);
-
-[Severity: Low]
-Related to the above: the kernel-doc for ks8851_net_stop() just above this
-function still promises the low power transition that is being removed here:
-
-	/**
-	 * ks8851_net_stop - close network device
-	 * @dev: The device being closed.
-	 *
-	 * Called to close down a network device which has been active. Cancel any
-	 * work, shutdown the RX and TX process and then place the chip into a low
-	 * power state whilst it is not being used.
-	 */
-
-The post-patch body only masks IER/ISR, zeroes RXCR1/TXCR, drains ks->txq
-and calls free_irq(), with no PMECR access left. Should that last sentence
-be dropped or reworded to mention the errata, so readers of
-ks8851_suspend()->ks8851_net_stop() are not told a low power transition
-happens?
--- 
-pw-bot: cr
+If you want to undo deduplication, reply with:
+#syz undup
