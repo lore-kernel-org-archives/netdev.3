@@ -1,188 +1,161 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm2-f0.google.com (mail-wm2-f0.google.com [74.125.225.128])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 656BA3F39E4;
-	Fri,  4 Sep 2026 18:01:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E5AC51A747
+	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 18:06:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.128
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788544865; cv=none; b=e7OWCIAftqnRB8s5CmrX4fvWGCuPBSRpnkfHQPEBfEvzlFX+fsd6Q8LBVvpUDxUwTx7NK5pn7duOS0/WL8lgabCQGUYS5bFijSjrOS6404jRZKTriu9xpDfY17Yr6DQ5/B3yf6ZYnEPz5R0exQYzy1hPF5Uo/hCL9NOtOKyws7s=
+	t=1788545170; cv=none; b=ie5O+BcsO9hD8tMApf5LXQ9AQHZ4tNBX831ghNUexE0Mts32YApVjcV3BohU/Lnm1M6lLpzzzjdiIFKi+GIG4EdRAs01YGzdiMuJ6cwaAJCcBTxnffYn1odtwMEjBKMvvWpSDsl4u+7KPWIpnPDJjAELzu6qF8xRCZzBFDZ5fv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788544865; c=relaxed/simple;
-	bh=IyV4SeHzlGQh/XTrkjNBkEM1WrROfiZ2BH4a1VtThAc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ni9kDUgTCjqfNIiI/+mDr8FzTvdQRuvgZw73gTobqkfE8q5Z/FL+MZ1A2avsVZ/EkXx5O/QSlkpPi7QCQaSKZIUkwJSSY6DGTh/fFVy6DewRIInUeXyNeuoQOV39iS25D6WX1o1ntF2yMVe5e/gg9q5v73I0wdH9sROGwnkrFiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iOQms9UY; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iOQms9UY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB7971F00A3D;
-	Fri,  4 Sep 2026 18:01:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788544862;
-	bh=Sh4pM9P10ktTurWhj1Ao4Irjykp6UovFXYEZeKiGJ3c=;
-	h=From:To:Cc:Subject:Date;
-	b=iOQms9UYSodcECCBoYxOpngCu1awd0x7Oca9IG4wmg4vlpxDKIlE/DhgQAID8ZNcK
-	 tQ8Jj44QRdzJUDcx/WPQlBdU7DPYYLt80jKNwSf5FwLUL+LZnMXCXvnxB2x7F8EHDj
-	 tSNMOldqDe5aMI/mr3KubNV8mDjWwjUAqWy/+9HvHYBx9SFpXwlmiJ0HB81CuzZN+/
-	 HHjTYqsgCk30ZIh3UMHVZdqu27vG6qwnd3iwT85WjNVYeggG6vuyY3GKaphXkjZlV3
-	 Gdky5JulPZ6VCYJ2xw4N33aoU6OeRW/Rn1NNiIr4G7vNvpPcyqIeRKDwl4hdk0+hM/
-	 0eNEglWxFjZiw==
-From: Jakub Kicinski <kuba@kernel.org>
-To: davem@davemloft.net
-Cc: netdev@vger.kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	horms@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>,
-	corbet@lwn.net,
-	skhan@linuxfoundation.org,
-	rdunlap@infradead.org,
-	sdf@fomichev.me,
-	kuniyu@google.com,
-	linux-doc@vger.kernel.org
-Subject: [PATCH net-next] net: run netdev work under the ops-compat lock
-Date: Fri,  4 Sep 2026 11:00:58 -0700
-Message-ID: <20260904180058.3803849-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.55.0
+	s=arc-20240116; t=1788545170; c=relaxed/simple;
+	bh=nvD192iZe8GfQ/+1qju1QKsfcMLglWwZM/JeLmYUs7M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FzPBdTQDOiUWJXUqqnS7Kve8tSUCFyoi890MeMevH1xoKOESuC4Lkb/QSP6GSPRvdNh3n5n3rhWkucuMpyyO1cnXaMnc7dTJJhFq4AsBh+Dz4TFOqJ9yARGT3psovqtiEGo8tKcTx0wQpm5pGzbbFKwUCKcBF8QmjVPPDUsfvq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.225.128
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm2-f0.google.com with SMTP id 5b1f17b1804b1-49ced856e8dso5834505e9.0
+        for <netdev@vger.kernel.org>; Fri, 04 Sep 2026 11:06:07 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788545166; x=1789149966;
+        h=content-transfer-encoding:content-type:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=cVV3G2WGefOofImhtecQzvUhLxVMoksQrLF0cjvq644=;
+        b=atQj5mgxzAQUy6uZSi2IAFKVcBbY9acEz8+LFLapgu4DL9Ez1LsAv7gWGMhnSsk2IP
+         uLQeUl0BjtVklH0PhfQMhate6Xo+wxlShFFe386tMqe2/WRgA7RIaZ1jnr508fuNZdsf
+         H9m8gGpomWadKNbniyWk79GdoDmsb6w2d3UMqI5GZGOUZ8CdHn2EQIepBdbm+UeXDXYd
+         cxiSvsBZmM0N13OWui9srFML0PXPejLxy8gEORgN08xsncVviVo/sA56lgehHKkVf3oC
+         ZgLfuLXaGReJNKcOg/wI0MKIM5kbjB/SlHJ0q8RybnwTEvj24RUIhs+9+URyGkOZ6cdw
+         3LTQ==
+X-Gm-Message-State: AFuF++lpii8enW+7WTVCLpR7vfjXQ7qTIkGsUsvTwdxLjQl7fLDi+KwG
+	vh7notYNog1mfr8LJHAcfdEfd8d9R7MxGPqgIy5uzVN9bo1YIT1jpZAL
+X-Gm-Gg: AYBFou0gLxxH9eU08glq/6jv9BFOPTOLmwKZeawU6XqddJ5IqaZFK/ITiZbKNXwIHJk
+	XEgDBBgbOTXVkiwvZAQOzziMTAOhsD+stu2oqApJW9Mr+vsSfDmj4fnteRHlEuGf011virBpp3z
+	F6AP71p8jjaJfAQjDOvvasYCnOH5VDuhqjJn2Mppr80p9JI5hA8eKDtz+fVE43ScQ+fZqpvIVlV
+	EhGmF9AolHxEFOUArY/wWTBiUj4TI3uoanAJWGlY8kYOlTjhxL57XfK8rnXn0LEjMCq7MLL1Nyo
+	RLvqszDp1eMzUBrTSC6rD7a94fcKRub7OkoILo6ybtDPzft6+o9Clc3eBaMzLCytNvUnmQFLvr1
+	nmp73hs26hi4XkgU92ApT1u3xvCDSSTHQBDlww3jwluCremkPB0pb3l1v0y3KEDjLzH+mQBcmM3
+	HkwDAase3+Y4PGUPxAUQt7vU5orszclVwgTt7WEosia5ygY8RFPmMveBH9Aiqjko82O3qMR6Rf7
+	TW92PqOx+iGe3jDv3qglGDa
+X-Received: by 2002:a05:600c:1990:b0:49c:f512:2361 with SMTP id 5b1f17b1804b1-49cf82524a2mr103087225e9.14.1788545166064;
+        Fri, 04 Sep 2026 11:06:06 -0700 (PDT)
+Received: from [192.168.88.241] (37-48-53-4.nat.epc.tmcz.cz. [37.48.53.4])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cf770fcf5sm84756205e9.6.2026.09.04.11.06.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 04 Sep 2026 11:06:04 -0700 (PDT)
+Message-ID: <35704da5-5a12-4b23-b684-dcadc432a380@ovn.org>
+Date: Fri, 4 Sep 2026 20:06:03 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH nf-next] netfilter: conntrack: make filtering by zone
+ discoverable
+To: Ilya Maximets <i.maximets@ovn.org>, netfilter-devel@vger.kernel.org
+Cc: netdev@vger.kernel.org, Donald Hunter <donald.hunter@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Pablo Neira Ayuso <pablo@netfilter.org>,
+ Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>,
+ Shuah Khan <shuah@kernel.org>, =?UTF-8?Q?Asbj=C3=B8rn_Sloth_T=C3=B8nnesen?=
+ <ast@fiberby.net>, "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+ "Remy D. Farley" <one-d-wide@protonmail.com>, linux-kernel@vger.kernel.org,
+ coreteam@netfilter.org, linux-kselftest@vger.kernel.org
+References: <20260904174452.1913072-1-i.maximets@ovn.org>
+Content-Language: en-US
+From: Ilya Maximets <i.maximets@ovn.org>
+Autocrypt: addr=i.maximets@ovn.org; keydata=
+ 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
+In-Reply-To: <20260904174452.1913072-1-i.maximets@ovn.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-netdev_work_proc() took rtnl_lock() for the whole batch, forcing
-even ops-locked drivers onto rtnl just to run their rx_mode / ndo_work
-callbacks. Take the per-device ops-compat lock instead: the instance
-lock for ops-locked drivers, rtnl_lock for the rest. That's what the
-callbacks already assert (e.g. netif_rx_mode_run() asserts
-netdev_assert_locked_ops_compat()), and non-ops-locked work
-such as vlan ndo_work keeps rtnl, since its compat lock resolves
-to rtnl anyway.
+On 9/4/26 7:44 PM, Ilya Maximets wrote:
+> Conntrack flush supports filtering by zone using CTA_ZONE, but this
+> attribute is really hard to use from user space applications.  The
+> reason is that it is not possible to tell if it's supported or not.
+> 
+> Older kernels silently ignore CTA_ZONE.  And in that case they just
+> happily flush all the entries from all zones breaking all the existing
+> connections.  So, applications have to infer support from the kernel
+> version.  While it works in most cases, it's not a particularly
+> reliable or desired way to check kernel capabilities from applications
+> that aim to be portable.  There should be a better way to probe or
+> discover features in the kernel.
+> 
+> The CTA_FILTER interface on the other hand is simple enough to probe.
+> We can check for NLM_F_DUMP_FILTERED in the dump to see if filtering
+> is supported.  And unknown sub-attributes in CTA_FILTER are rejected
+> explicitly since strict validation is in use there.
+> 
+> Let's add new CTA_FILTER_ZONE that signals that CTA_ZONE should be
+> filtered on.  It is a flag, since everything in the CTA_FILTER is a
+> bit mask, i.e., a form of a flag.  If set, it means that CTA_ZONE must
+> be present and be used for filtering.  If the flag is not set however,
+> the filtering on CTA_ZONE will still take place to ensure backwards
+> compatibility.  So, the flag doesn't really change the filtering
+> behavior, but it allows user space applications to properly discover
+> support for CTA_ZONE filtering without need to rely on kernel version
+> parsing or risk accidental flushes of the entire conntrack table,
+> and also without modifying the kernel state.
+> 
+> A new test variant is added to test with and without the new flag.
+> Since the setup code is moved into a shared function, expectations
+> replaced with assertions to bail early if the base setup fails to
+> avoid the cascade of secondary failures that can be misleading.
+> Error return is only for the SKIP cases.
+> 
+> Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
+> ---
+CI reported a build failure for the selftest.  It is caused by this issue:
+  https://lore.kernel.org/r/20260904-net-sft-nf-khdr_includes-v1-1-92455af428e9@kernel.org
 
-Without this adding more uses of ndo_work, for cases which don't
-need rtnl_lock feels like a step back.
+Not related to the patch itself.
 
-We can drop the comment about the extra ref now, with the relocking
-it's a necessity.
-
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
----
-CC: corbet@lwn.net
-CC: skhan@linuxfoundation.org
-CC: rdunlap@infradead.org
-CC: sdf@fomichev.me
-CC: kuniyu@google.com
-CC: linux-doc@vger.kernel.org
----
- Documentation/networking/netdevices.rst | 14 ++++++++++----
- include/linux/netdevice.h               |  5 ++++-
- net/core/netdev_work.c                  | 15 ++-------------
- 3 files changed, 16 insertions(+), 18 deletions(-)
-
-diff --git a/Documentation/networking/netdevices.rst b/Documentation/networking/netdevices.rst
-index db71d4283032..aac33497813f 100644
---- a/Documentation/networking/netdevices.rst
-+++ b/Documentation/networking/netdevices.rst
-@@ -292,15 +292,21 @@ struct net_device synchronization rules
- 	in process context.
- 
- ndo_set_rx_mode_async:
--	Synchronization: rtnl_lock() semaphore. In addition, netdev instance
--	lock if the driver implements queue management or shaper API.
-+	Synchronization: netdev instance lock for "ops locked" drivers,
-+	rtnl_lock() semaphore for all other drivers.
- 	Context: process (from a work queue)
- 	Notes: Async version of ndo_set_rx_mode which runs in process
- 	context. Receives snapshots of the unicast and multicast address lists.
- 
- ndo_change_rx_flags:
--	Synchronization: rtnl_lock() semaphore. In addition, netdev instance
--	lock if the driver implements queue management or shaper API.
-+	Synchronization: netdev instance lock for "ops locked" drivers,
-+	rtnl_lock() semaphore for all other drivers.
-+
-+ndo_work:
-+	Synchronization: netdev instance lock for "ops locked" drivers,
-+	rtnl_lock() semaphore for all other drivers.
-+	Context: process (from a work queue)
-+	Notes: Runs deferred work scheduled with netdev_work_sched().
- 
- ndo_setup_tc:
- 	Locking depends on ``tc_setup_type``. For most types the callback
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index 8454646d6a45..17b8fb8e94fe 100644
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -1135,13 +1135,16 @@ struct netdev_net_notifier {
-  *				struct netdev_hw_addr_list *uc,
-  *				struct netdev_hw_addr_list *mc);
-  *	Async version of ndo_set_rx_mode which runs in process context
-- *	with rtnl_lock and netdev_lock_ops(dev) held. The uc/mc parameters
-+ *	under the netdev instance lock for "ops locked" drivers, or
-+ *	rtnl_lock for all other drivers. The uc/mc parameters
-  *	are snapshots of the address lists - iterate with
-  *	netdev_hw_addr_list_for_each(ha, uc). Return 0 on success or a
-  *	negative errno to request a retry via the core backoff.
-  *
-  * void (*ndo_work)(struct net_device *dev, unsigned long events);
-  *	Run deferred work scheduled with netdev_work_sched(@events).
-+ *	Runs in process context under the netdev instance lock for "ops
-+ *	locked" drivers, or rtnl_lock for all other drivers.
-  *
-  * int (*ndo_set_mac_address)(struct net_device *dev, void *addr);
-  *	This function  is called when the Media Access Control address
-diff --git a/net/core/netdev_work.c b/net/core/netdev_work.c
-index e721a06d58df..c99967907e18 100644
---- a/net/core/netdev_work.c
-+++ b/net/core/netdev_work.c
-@@ -3,7 +3,6 @@
- #include <linux/export.h>
- #include <linux/list.h>
- #include <linux/netdevice.h>
--#include <linux/rtnetlink.h>
- #include <linux/spinlock.h>
- #include <linux/workqueue.h>
- #include <net/netdev_lock.h>
-@@ -129,8 +128,6 @@ static void netdev_work_run(struct net_device *dev, unsigned long events,
- 
- static void netdev_work_proc(struct work_struct *work)
- {
--	rtnl_lock();
--
- 	while (true) {
- 		unsigned long events = 0, core = 0;
- 		netdevice_tracker tracker;
-@@ -143,16 +140,10 @@ static void netdev_work_proc(struct work_struct *work)
- 		}
- 		dev = list_first_entry(&netdev_work_list, struct net_device,
- 				       work_node);
--		/* Take a temporary reference so @dev can't be freed while we
--		 * drop the lock to grab its ops lock; the work reference is
--		 * only released once we claim the work below.
--		 * The re-locking dance is to ensure that ops lock is enough
--		 * to ensure canceling work is not racy with dequeue.
--		 */
- 		netdev_hold(dev, &tracker, GFP_ATOMIC);
- 		spin_unlock_bh(&netdev_work_lock);
- 
--		netdev_lock_ops(dev);
-+		netdev_lock_ops_compat(dev);
- 		spin_lock_bh(&netdev_work_lock);
- 		if (!list_empty(&dev->work_node)) {
- 			list_del_init(&dev->work_node);
-@@ -169,10 +160,8 @@ static void netdev_work_proc(struct work_struct *work)
- 		spin_unlock_bh(&netdev_work_lock);
- 
- 		netdev_work_run(dev, events, core);
--		netdev_unlock_ops(dev);
-+		netdev_unlock_ops_compat(dev);
- 
- 		netdev_put(dev, &tracker);
- 	}
--
--	rtnl_unlock();
- }
--- 
-2.55.0
-
+Best regards, Ilya Maximets.
