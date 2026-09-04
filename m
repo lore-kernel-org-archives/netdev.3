@@ -1,44 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5A0A3EAC61;
-	Fri,  4 Sep 2026 22:25:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7743A36308E;
+	Fri,  4 Sep 2026 22:25:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788560716; cv=none; b=fhBoJ1imW7RymRcGWBppgqBXGC/HwOpc469+PInwBD+hqPK79LeaLqtGPs+ZslWrROYAM92QcgpN9d5gWkSbVoaixdyyDPVWRO93Y/x33WdynhaL/WPqGkpeHc5PvewmNm+Q9hspuJPcVMcNU91aBSAiuXYRo32LW94DoH0Lmas=
+	t=1788560716; cv=none; b=NxAul3ruL4N0uxS5WtfbvFddKXgtFNEF/eZGWEFosi/4Xq9ytFSwTTXX+PcKpdRtALCmphJhPZhy1b+EK3E827WVD/WQpY+UgdpiPYymXCjC6CwPmySqJWr478m9A95kFP8ToFJFsFQiuusdtfhOVmU9m01B8bsi+fW1AIpl+5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1788560716; c=relaxed/simple;
-	bh=x3gaPD3IjylyNSX8QKDlEHLGeWTbwlWsTi8HOEUA+GU=;
+	bh=7p96NrWBUjUiGqN0M7SNT7B8OM8ZCO/4IrcwKuFVE/4=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=LQgO1RuIW2xEXKOgVZvmnfOeiz3qZpi7uj3maixLvMz3zrW7DjfY8KG5PZaLkM0h/9aLo10KG01q/5qGXLhxGpE3X0sEMYEW4JUNjAI4cbN8tMUj62x04KNSZmOudmJ5p4H3bAdqgKkTsvcS42AoI2TCnerbqGqV/JwwcNb+DRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lzqjwGe0; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=HYj9Yh//pMXIjVqLTnXGzHfBBV8GOZcaVL5iIFORmyafFviyd+E+aPLbwmDyIWF1iEFTCxoVObDVxymyo/4FIhUFlf2BwDmhfFNX8juF7g7gPnfhf+4irlgy+iz10I1LmUdAfk9TpgEoZdxxeJ1jFG0HAgCA0yW9h7kjYSCY2H0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EOVh77Dv; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lzqjwGe0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9868A1F00A3E;
-	Fri,  4 Sep 2026 22:25:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EOVh77Dv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FDCA1F00A3F;
+	Fri,  4 Sep 2026 22:25:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788560710;
-	bh=oOzMiPOnMDaVVhnATr2bEe1DD3Ex7YWNhDPtG41yTxo=;
+	s=k20260515; t=1788560711;
+	bh=i15EN1U5L1+AMGl0F51fl4gLwj313pfdWXT3D8YvNNs=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=lzqjwGe0FL+OUpUxwKLKRn07UZOXT1r9gF7r+94TNr1PrCxlNOm5ENsv/wHSUdcQj
-	 n57tnq/0D1sTpOW/ESfb9lkWAtTVpPSIY9Sv0bGJ6tjYtWFVp4b2ICU0lKqDhvWyTH
-	 hDF0ygnyEIr49A3o1BeCqkQYCnsOuf8dU+RGCEg3UNEFUy23OkJPiLFL+2MPGpROqk
-	 HtNaUcsBOEzcDoYG7GAySBJiCRx55Ql7RlEPKPttRfgThfsW8cqH76aEQ30zHwHnxU
-	 puJ8JJRTrwFMArvpM+kcMt3Gqtqs9bCcu+MnAGXT9PQPrXPOWLzODDrHYGeiubIO7U
-	 n7HxN3AETf6hA==
-Subject: Re: [PATCH net v3 2/2] net: dsa: b53: offload 8021q uppers on
- standalone ports
+	b=EOVh77Dvw1eUwmG6dfo1O3/wNRABoG5JkC3+piATtt0QpO4ISwyddm+BSXVGacz4p
+	 BZ/xthIXTgAtZVgCQOYNGnAl5wNqlMcaFrTXuNPfP19+ywD/CVtUQlTH8pzPE4rblj
+	 q0znXlwbGIRgx3E4fGy8mFVTjdKBPYXMk/BmfGDVN1ALn0k1FmkdXlGaCv/RG054MG
+	 N+5CW2LZRMc3hMLX9JCL5DKg5WqDZrGLb9lLCAHNlb8wqOz63Wbc3Q7+VrjUK4x7GJ
+	 1QXprP3bFRJugHN/1N0tg/7i3A4hp4j81/zL/M7a3ZcyVi5bzzT9hFghKT001rZGuU
+	 oWxgdsnkoXbiQ==
+Subject:
+ Re: [PATCH net] bridge: skip generic XDP on locally re-injected packets
 From: netdev-bot+sashiko@kernel.org
-To: strst.gs@gmail.com
-Cc: florian.fainelli@broadcom.com, jonas.gorski@gmail.com, andrew@lunn.ch,
- olteanv@gmail.com, davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, vladimir.oltean@nxp.com, horms@kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Fri, 04 Sep 2026 22:25:09 +0000
-Message-ID: <178856070920.219967.188999912636170238@kernel.org>
-In-Reply-To: <20260831085217.391-3-strst.gs@gmail.com>
-References: <20260831085217.391-3-strst.gs@gmail.com>
-X-sashiko-severity: Medium
+To: shxzhaosr@163.com
+Cc: netdev@vger.kernel.org, razor@blackwall.org, idosch@nvidia.com,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ bridge@lists.linux.dev, syzbot+128e9f5a0f85a51215b1@syzkaller.appspotmail.com
+Date: Fri, 04 Sep 2026 22:25:10 +0000
+Message-ID: <178856071073.219967.3609952218897637391@kernel.org>
+In-Reply-To: <20260831113051.13072-1-shxzhaosr@163.com>
+References: <20260831113051.13072-1-shxzhaosr@163.com>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -48,357 +47,178 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 5 potential
+Thank you for your contribution! Sashiko AI review found 4 potential
 issue(s) to consider:
 
-Critical: 0 · High: 0 · Medium: 5 · Low: 0
+Critical: 0 · High: 1 · Medium: 1 · Low: 2
 
-- [Medium] b53_vlan_hw_entry() (drivers/net/dsa/b53/b53_common.c:901)
-  classifies every non-CPU member port whose dp->bridge is NULL as a…
-- [Medium] b53_standalone_vlan_resync() at the end of b53_br_leave()
-  (drivers/net/dsa/b53/b53_common.c:2458) derives the leaving port's…
-- [Medium] The new opt-in `dev->ds->needs_standalone_vlan_offload =
-  !is5325(dev) && !is5365(dev);` (drivers/net/dsa/b53/b53_common.c:3256)…
-- [Medium] When a port that already has a working 8021q upper joins a
-  VLAN-unaware offloaded bridge, b53_br_join() ->…
-- [Medium] b53 records both a bridge VLAN and an 8021q upper VLAN for the
-  same port/VID in the single bit dev->vlans[vid].members & BIT(port),…
+- [High] net/bridge/br_input.c:35 — br_netif_receive_skb()
+  unconditionally calls skb_set_redirected_noclear(skb, false) on every…
+- [Medium] The changelog's causal chain is not supported by the code it
+  points at.
+- [Low] The commit fixes a user-visible KASAN slab-use-after-free
+  reported by syzbot (Reported-by:…
+- [Low] The new call abuses the documented meaning of two skb bits.
 
 --
 
-net: dsa: b53: offload 8021q uppers on standalone ports
+bridge: skip generic XDP on locally re-injected packets
 
-The patch takes the new needs_standalone_vlan_offload opt-in in b53 and
-programs VLAN table entries for VIDs that carry a standalone port even while
-dev->vlan_filtering is false, masking the entry down to the standalone
-members plus the CPU port.  Bridge join/leave and b53_configure_vlan() now
-rewrite those entries, and the opt-in is skipped for BCM5325/BCM5365.
+This marks locally delivered bridge frames as redirected in
+br_netif_receive_skb() so that netif_receive_generic_xdp() bails out early
+and does not run generic XDP on the bridge device.  The stated goal is to
+avoid the pskb_expand_head() head reallocation inside
+netif_skb_check_for_xdp() that syzbot reported as a use-after-free in
+br_handle_frame().
 
-No Link: tags present in the commit header.
+Link: https://lore.kernel.org/all/6a6d4406.2d659fcc.1d46f5.01ad.GAE@google.com/T/
 
-> diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-> index 0880310c9ce3..b57c0bdacb27 100644
-> --- a/drivers/net/dsa/b53/b53_common.c
-> +++ b/drivers/net/dsa/b53/b53_common.c
-> @@ -898,10 +898,52 @@ static bool b53_vlan_port_may_join_untagged(struct dsa_switch *ds, int port)
->  	return dp->bridge == NULL;
->  }
->  
-> +static bool b53_vlan_hw_entry(struct dsa_switch *ds, const struct b53_vlan *vl,
-> +			      struct b53_vlan *hw)
-> +{
-> +	struct b53_device *dev = ds->priv;
-> +	bool standalone = false;
-> +	struct dsa_port *dp;
-> +	unsigned int port;
-> +
-> +	*hw = *vl;
-> +
-> +	if (dev->vlan_filtering)
-> +		return true;
-> +
-> +	hw->members = 0;
-> +	hw->untag = 0;
-> +
-> +	b53_for_each_port(dev, port) {
-> +		if (!(vl->members & BIT(port)))
-> +			continue;
-> +
-> +		dp = dsa_to_port(ds, port);
-> +
-> +		if (!dsa_port_is_cpu(dp)) {
-> +			if (dp->bridge)
-> +				continue;
-> +
-> +			standalone = true;
-> +		}
+A few questions about the changelog first.
 
-[Severity: Medium]
-Should a DSA link port be able to set standalone here?  A port of type
-DSA_PORT_TYPE_DSA never has dp->bridge set, so it passes the
-!dsa_port_is_cpu(dp) test and sets standalone = true.
+>     If the
+>     bridge device has an XDP program attached, __netif_receive_skb_core()
+>     runs do_xdp_generic() a second time on such packets.
 
-The DSA core does issue VLAN objects for those ports, so their bits do end
-up in dev->vlans[vid].members:
+[Severity: High]
+Is "a second time" accurate here?  do_xdp_generic() is called with the
+program of the current skb->dev:
 
-net/dsa/switch.c:
-    /* Port VLANs match on the targeted port and on all DSA ports */
-    static bool dsa_port_vlan_match(struct dsa_port *dp,
-                                    struct dsa_notifier_vlan_info *info)
-    {
-            return dsa_port_is_dsa(dp) || dp == info->dp;
-    }
-
-On a cascaded b53 tree, does that mean b53_vlan_hw_entry() returns true for
-a VID whose only user-port members are bridge ports, and b53_vlan_add() /
-b53_vlan_del() / b53_configure_vlan() then write an entry containing only
-the DSA links and the CPU port?  Since b53 keeps VC0_VLAN_EN|VC0_VID_CHK_EN
-set at all times, the programmed member mask governs egress for that VID,
-so the bridged ports would be removed from that VID's forwarding domain
-while filtering is off.
-
-There is also no corrective path afterwards: b53_standalone_vlan_resync()
-is only reached from b53_br_join()/b53_br_leave(), which a DSA link never
-traverses, so the entry stays as written.
-
-Would including DSA link ports as members without letting them set
-standalone match the intent stated in the commit message ("Only the
-standalone members and the CPU port are written to such an entry")?
-
-> +
-> +		hw->members |= BIT(port);
-> +		hw->untag |= vl->untag & BIT(port);
-> +	}
-> +
-> +	if (!standalone) {
-> +		hw->members = 0;
-> +		hw->untag = 0;
-> +	}
-> +
-> +	return standalone;
-> +}
-> +
-
-[ ... ]
-
-> @@ -1772,7 +1819,9 @@ int b53_vlan_del(struct dsa_switch *ds, int port,
->  {
->  	struct b53_device *dev = ds->priv;
->  	bool untagged = vlan->flags & BRIDGE_VLAN_INFO_UNTAGGED;
-> +	struct b53_vlan hw;
->  	struct b53_vlan *vl;
-> +	bool needs_hw;
->  	u16 pvid;
->  
->  	if (vlan->vid == 0)
-> @@ -1782,6 +1831,8 @@ int b53_vlan_del(struct dsa_switch *ds, int port,
->  
->  	vl = &dev->vlans[vlan->vid];
->  
-> +	needs_hw = b53_vlan_hw_entry(ds, vl, &hw);
-> +
->  	vl->members &= ~BIT(port);
-
-[Severity: Medium]
-Can a bridge VLAN deletion here destroy the record of an 8021q upper on the
-same port and VID?  dev->vlans[vid].members has one bit per port with no
-per-owner accounting, and the core does not refcount VLANs on user ports:
-
-net/dsa/switch.c:dsa_port_do_vlan_add() {
-        /* No need to bother with refcounting for user ports. */
-        if (!(dsa_port_is_cpu(dp) || dsa_port_is_dsa(dp))) {
-                err = ds->ops->port_vlan_add(ds, port, vlan, extack);
-
-The colliding pair is only rejected while bridge VLAN filtering is on:
-
-net/dsa/user.c:dsa_user_vlan_add() {
-        if (br_vlan_enabled(dsa_port_bridge_dev_get(dp))) {
-                rcu_read_lock();
-                err = dsa_user_vlan_check_for_8021q_uppers(dev, vlan);
-
-so with vlan_filtering 0 the sequence
-
-  ip link add link ethX name ethX.100 type vlan id 100
-  ip link set dev ethX master br0        (br0 with vlan_filtering 0)
-  bridge vlan add dev ethX vid 100
-  bridge vlan del dev ethX vid 100
-
-leaves vl->members without BIT(port) although ethX.100 still exists.  After
-that, does anything rewrite the entry again?  b53_standalone_vlan_resync()
-skips the VID because of
-
-        if (!(vl->members & BIT(port)))
-                continue;
-
-and b53_configure_vlan()'s restore loop keys off v->members as well, so
-tagged reception on ethX.100 would stay dead until the upper is re-created.
-
->  
->  	if (pvid == vlan->vid)
-> @@ -1791,14 +1842,18 @@ int b53_vlan_del(struct dsa_switch *ds, int port,
->  	if (untagged && !b53_vlan_port_needs_forced_tagged(ds, port))
->  		vl->untag &= ~(BIT(port));
->  
-> -	if (!dev->vlan_filtering)
-> +	if (!needs_hw)
->  		return 0;
->  
-> -	b53_set_vlan_entry(dev, vlan->vid, vl);
-> +	b53_vlan_hw_entry(ds, vl, &hw);
-> +	b53_set_vlan_entry(dev, vlan->vid, &hw);
->  	b53_fast_age_vlan(dev, vlan->vid);
->  
-> -	b53_write16(dev, B53_VLAN_PAGE, B53_VLAN_PORT_DEF_TAG(port), pvid);
-> -	b53_fast_age_vlan(dev, pvid);
-> +	if (dev->vlan_filtering) {
-> +		b53_write16(dev, B53_VLAN_PAGE, B53_VLAN_PORT_DEF_TAG(port),
-> +			    pvid);
-> +		b53_fast_age_vlan(dev, pvid);
-> +	}
->  
->  	return 0;
->  }
-
-[ ... ]
-
-> @@ -2261,6 +2316,28 @@ int b53_mdb_del(struct dsa_switch *ds, int port,
->  }
->  EXPORT_SYMBOL(b53_mdb_del);
->  
-> +static void b53_standalone_vlan_resync(struct dsa_switch *ds, int port)
-> +{
-> +	struct b53_device *dev = ds->priv;
-> +	struct b53_vlan hw;
-> +	struct b53_vlan *vl;
-> +	u16 vid;
-> +
-> +	if (dev->vlan_filtering)
-> +		return;
-> +
-> +	for (vid = b53_default_pvid(dev) + 1; vid < dev->num_vlans; vid++) {
-> +		vl = &dev->vlans[vid];
-> +
-> +		if (!(vl->members & BIT(port)))
-> +			continue;
-> +
-> +		b53_vlan_hw_entry(ds, vl, &hw);
-> +		b53_set_vlan_entry(dev, vid, &hw);
-> +		b53_fast_age_vlan(dev, vid);
-> +	}
-> +}
-> +
->  int b53_br_join(struct dsa_switch *ds, int port, struct dsa_bridge bridge,
->  		bool *tx_fwd_offload, struct netlink_ext_ack *extack)
->  {
-> @@ -2324,6 +2401,8 @@ int b53_br_join(struct dsa_switch *ds, int port, struct dsa_bridge bridge,
->  	b53_write16(dev, B53_PVLAN_PAGE, B53_PVLAN_PORT_MASK(port), pvlan);
->  	dev->ports[port].vlan_ctl_mask = pvlan;
->  
-> +	b53_standalone_vlan_resync(ds, port);
-> +
-
-[Severity: Medium]
-When a port that already has a working 8021q upper joins a VLAN-unaware
-bridge, this call recomputes that upper's VID with dp->bridge now set, so
-b53_vlan_hw_entry() hits
-
-        if (dp->bridge)
-                continue;
-
-standalone stays false, and the entry is written back empty.  On bcm5301x,
-where a table miss is only forwarded toward the disabled IMP0 port, does
-that silently stop the upper from receiving tagged frames?
-
-Nothing reports the loss either: b53_vlan_add() returns 0 when
-b53_vlan_hw_entry() finds no standalone member, so DSA continues to track
-the VID as offloaded.
-
-Documentation/networking/switchdev.rst says:
-
-    When there is a VLAN device (e.g: sw0p1.100) configured on top of a
-    switchdev network device which is a bridge port member, the behavior of
-    the software network stack must be preserved, or the configuration must
-    be refused if that is not possible.
-
-and the DSA-side comment added by this series states:
-
-    net/dsa/port.c:
-         * ds->needs_standalone_vlan_offload switch keeps its 8021q upper
-         * VLANs whether bridged or not.
-
-Should this case be refused with an extack instead of dropping the offload
-silently?  The commit message's argument that "bridge VLANs keep having no
-effect while filtering is off" covers bridge VLANs, but the VID here comes
-from an 8021q upper.
-
->  	return 0;
->  }
->  EXPORT_SYMBOL(b53_br_join);
-> @@ -2376,6 +2455,8 @@ void b53_br_leave(struct dsa_switch *ds, int port, struct dsa_bridge bridge)
->  		vl->members |= BIT(port);
->  		b53_set_vlan_entry(dev, pvid, vl);
->  	}
-> +
-> +	b53_standalone_vlan_resync(ds, port);
->  }
->  EXPORT_SYMBOL(b53_br_leave);
-
-[Severity: Medium]
-Is dp->bridge always already cleared when this runs?  On the normal leave
-path dsa_port_bridge_leave() calls dsa_port_bridge_destroy() before
-broadcasting DSA_NOTIFIER_BRIDGE_LEAVE, but the join rollback does the
-opposite order:
-
-net/dsa/port.c:dsa_port_bridge_join() {
-        ...
-out_rollback_unbridge:
-        dsa_broadcast(DSA_NOTIFIER_BRIDGE_LEAVE, &info);
-out_rollback:
-        dsa_port_bridge_destroy(dp, br);
-        return err;
+net/core/dev.c:__netif_receive_skb_core() {
+	...
+	ret2 = do_xdp_generic(rcu_dereference(skb->dev->xdp_prog),
+			      &skb);
+	...
 }
 
-So when switchdev_bridge_port_offload() or dsa_port_switchdev_sync_attrs()
-fails, b53_br_leave() -> b53_standalone_vlan_resync() runs with dp->bridge
-still set, b53_vlan_hw_entry() skips the port, and the entry is written
-empty even though the port becomes standalone again a moment later.
+br_pass_frame_up() already switched skb->dev to the bridge master:
 
-Does anything restore it afterwards?  b53_vlan_add()/b53_vlan_del() are not
-called because the upper still exists, and b53_configure_vlan() only runs
-from b53_apply_config() on setup, resume, or a vlan_filtering change, so
-tagged reception on the port's uppers would stay off after a failed bridge
-join.
+net/bridge/br_input.c:br_pass_frame_up() {
+	...
+	indev = skb->dev;
+	skb->dev = brdev;
+	...
+}
 
->  
-> @@ -3172,6 +3253,8 @@ static int b53_switch_init(struct b53_device *dev)
->  	if (!dev->vlans)
->  		return -ENOMEM;
->  
-> +	dev->ds->needs_standalone_vlan_offload = !is5325(dev) && !is5365(dev);
+So the program being run in the second round is the one attached to br0,
+not the one that ran on the ingress port.  When no XDP program is attached
+to the port (the common case) this is the first and only invocation of the
+bridge's program.
+
+>     netif_receive_generic_xdp() already refuses to run generic XDP on
+>     reinjected packets by checking skb_is_redirected().  Reuse that marker:
+>     set it right before the bridge re-injects the packet, so generic XDP is
+>     skipped and the head buffer is left intact.
 
 [Severity: Medium]
-Does this condition exclude BCM5365 on kernels built without
-CONFIG_BCM47XX?
+Does the described causal chain hold?  The changelog says the realloc
+"frees the head that the bridge rx path (br_handle_frame() /
+br_handle_frame_finish()) is still using", but in br_input.c every header
+dereference in those functions happens before the handoff.
 
-drivers/net/dsa/b53/b53_priv.h:
-    static inline int is5365(struct b53_device *dev)
-    {
-    #ifdef CONFIG_BCM47XX
-            return dev->chip_id == BCM5365_DEVICE_ID;
-    #else
-            return 0;
-    #endif
-    }
+br_handle_frame() caches the destination up front and last uses it right
+before handing the skb off:
 
-while b53_switch_detect() sets the chip id with no config guard:
+net/bridge/br_input.c:br_handle_frame() {
+	...
+	if (ether_addr_equal(p->br->dev->dev_addr, dest))
+		skb->pkt_type = PACKET_HOST;
 
-        } else {
-                dev->chip_id = BCM5365_DEVICE_ID;
-        }
+	return nf_hook_bridge_pre(skb, pskb);
+	...
+}
 
-and both b53_mdio.c and b53_spi.c carry a "brcm,bcm5365" match.  On such a
-build the flag would be set for a chip with .vlans = 256, so
-NETIF_F_HW_VLAN_CTAG_FILTER gets advertised and every upper VID reaches
-b53_vlan_prepare():
+br_handle_frame_finish() does all its eth_hdr()/br_fdb_find_rcu() work
+before "return br_pass_frame_up(...)", and br_pass_frame_up() only returns
+the NF_HOOK() result without touching the skb again.
 
-        if (vlan->vid >= dev->num_vlans)
-                return -ERANGE;
+The reported fault site is also at the very top of br_handle_frame():
 
-Would ip link add link ethX name ethX.300 type vlan id 300 then fail where
-it previously created a working software VLAN?  That is the case the commit
-message says is preserved:
+	if (!is_valid_ether_addr(eth_hdr(skb)->h_source))
 
-    BCM5325 and BCM5365 stay out of the opt-in, ... b53_vlan_prepare() would
-    refuse any upper whose VID lies beyond the table, an interface that works
-    today.
+which suggests the head was already freed before that invocation started,
+rather than by a realloc happening further down the same call chain.  Could
+the stale reference belong to some other holder, with this patch only
+quieting the reproducer?  Was a "#syz test" run done to confirm?
 
-Would testing dev->chip_id (or dev->num_vlans) directly rather than the
-CONFIG_BCM47XX-conditional helper keep that policy in every build?
+>     Reported-by: syzbot+128e9f5a0f85a51215b1@syzkaller.appspotmail.com
+>     Link: https://lore.kernel.org/all/6a6d4406.2d659fcc.1d46f5.01ad.GAE@google.com/T/
+>     Signed-off-by: Zhao ShiRong <shxzhaosr@163.com>
 
->  
->  	dev->reset_gpio = b53_switch_get_reset_gpio(dev);
->  
->  	if (PTR_ERR(dev->reset_gpio) == -EPROBE_DEFER)
+[Severity: Low]
+Should this carry a Fixes: tag and Cc: stable@vger.kernel.org?  This is a
+memory-safety fix for a syzbot-reported use-after-free, but only
+Reported-by:/Link: are present, so there is no mechanical way for
+backporters to determine the affected range.  A candidate for Fixes: would
+be whichever commit made generic XDP reachable on this reinjection path
+(the generic-XDP-on-virtual-devices support, or the later
+netif_skb_check_for_xdp() head expansion in the receive core).
+
+> diff --git a/net/bridge/br_input.c b/net/bridge/br_input.c
+> index d87a5f9fa92b..0d08c3c2036f 100644
+> --- a/net/bridge/br_input.c
+> +++ b/net/bridge/br_input.c
+> @@ -27,6 +27,12 @@ static int
+>  br_netif_receive_skb(struct net *net, struct sock *sk, struct sk_buff *skb)
+>  {
+>  	br_drop_fake_rtable(skb);
+> +
+> +	/* Re-injected for local delivery: do not let generic XDP run on the
+> +	 * bridge device a second time, it could reallocate the head via
+> +	 * pskb_expand_head() and free a buffer still in use.
+> +	 */
+> +	skb_set_redirected_noclear(skb, false);
+
+[Severity: High]
+Does this disable generic XDP on bridge devices entirely?  The bit is set
+unconditionally for every locally delivered frame, and
+netif_receive_generic_xdp() returns before running the program:
+
+net/core/dev.c:netif_receive_generic_xdp() {
+	/* Reinjected packets coming from act_mirred or similar should
+	 * not get XDP generic processing.
+	 */
+	if (skb_is_redirected(skb))
+		return XDP_PASS;
+	...
+}
+
+Forwarded frames leave the bridge through br_forward()/dev_queue_xmit() and
+never enter netif_receive_skb() on the bridge device, so locally delivered
+frames look like the only traffic a generic XDP program on br0 can see.
+Before this change the bit was 0 at that point, because the outer round's
+skb_reset_redirect() in __netif_receive_skb_core() runs before the bridge
+rx_handler, so the program did run.
+
+Would an XDP_DROP policy attached to br0 stop being enforced after this
+patch, for ordinary remote unicast/broadcast/multicast traffic entering a
+bridge port?  If the underlying problem is missing headroom on TX-allocated
+skbs and a stale head reference, would fixing that (giving the reinjected
+skb the headroom generic XDP requires, or dropping the stale reference) be
+preferable to suppressing the program?
+
+[Severity: Low]
+Separately, do the values written here match the documented meaning of the
+two bits?
+
+include/linux/skbuff.h:
+ *	@redirected: packet was redirected by packet classifier
+ *	@from_ingress: packet was redirected from the ingress path
+
+No packet classifier redirected this frame, and from_ingress is passed as
+false while the frame is being pushed into the ingress path.  Other in-tree
+setters pass skb_at_tc_ingress(skb) (net/core/filter.c) or true for
+MLX5E_TC_INT_PORT_INGRESS (drivers/net/ethernet/mellanox/mlx5/core/en/tc/int_port.c).
+skb_set_redirected_noclear() does store the value under CONFIG_NET_REDIRECT,
+and drivers/net/ifb.c branches on it.
+
+Also, is there a reason to pick the _noclear variant?  The two helpers
+differ only in the "if (skb->from_ingress) skb_clear_tstamp(skb);" step,
+which is skipped anyway when from_ingress is false, so the choice does not
+express anything different from skb_set_redirected().
+
+>  	return netif_receive_skb(skb);
+>  }
+>
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260831085217.391-1-strst.gs%40gmail.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260831113051.13072-1-shxzhaosr%40163.com
