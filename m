@@ -1,98 +1,75 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24D913E9C37;
-	Fri,  4 Sep 2026 21:51:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B461420490;
+	Fri,  4 Sep 2026 21:54:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788558680; cv=none; b=q0DCM4etGDubU8dievVHwPzTd7yq2Z6ZFnPUvWp56T9s7FrANKnhw3x9paWTjaqDYAqYP7iJeyzt9qafzxORC64ytsxwYaP8JFmaqkx8RCcjGrbayk0625luOwMaAAP8+mICffV6fHIatt+Q+oIT1UHMPjHuivlaIqB9oK8HJts=
+	t=1788558853; cv=none; b=ucHbvEwLiTcC23LjjuZDiUZf8BYj+iryXeA/uh5+uiyRF7A5XCl+7Atl8R9m8c1VhGdTRCgcW2FukvjH9O9TsKnGcIuzsurDbMR21uKpQwI/QKQmHzw361XOwzoBq1rWioRyydjDROns5dGtzXsURy0EypZ/IUcHfpl6jXI2f68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788558680; c=relaxed/simple;
-	bh=sXzEZegIR5Md5NortDhNUIBrv4sQE9/YOu71fbW76w4=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=OWSlBiUvngBdmvSi9MI2V2mBZWoa8XkzeB0jryE1va/wWnowd/ep3mWZcr9Naiug2KSkLf1AVnVcc/rmE+QCE0uQ4MtWbUSuxq7WOPJcOkWsd3waidj8Y/4K4r1lW4qBl15Fxshwc1c5DkmDxRKlcK2PhbyhoxVYCe6qdbHuGyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a/sbxcQd; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788558853; c=relaxed/simple;
+	bh=rdl1w6KnQ3zWNEFtA9I/sG3vqG666nShicAXatlafgE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=pm/KKxxN5eT6ht/K+98khpIYh2sCg/x9RiirH2XBDBE6yTPzSfuj0Lx2YCsox5afqK3YCjZj6BhaTvKO44iTR/mNJ+AhZA9GGuPPRMYtSx3ixjoJ4Wv3Q8bIWz4gtGv1hXoalbj17EMRSwQJZQYxbtcCl1PlQUlsQ3dbgt5umYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oZ7ycxtr; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a/sbxcQd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B31E61F00A3D;
-	Fri,  4 Sep 2026 21:51:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oZ7ycxtr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C6C41F00A3D;
+	Fri,  4 Sep 2026 21:54:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788558675;
-	bh=R/Cav9XFZogHfbk3qfyQXktqQTqrSNLZGy7/hGqnHlo=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=a/sbxcQdSpuV+Duwy7dwHKA7wBpO9FiD2mSIcsv+cZ7yh55mrKeUO4Tz623L4dht3
-	 Ep5O6AYRown1MVY3UVkYtp4jH84Ta6RI8rbfxto01LQloWzNPSncubLb4PNi3Exdad
-	 KSaVgL8QH/G74MZAlEY+Z/dBeU4V3s8MrDq/LRpHzbGUudEvnHm5X18UZsRkVEb/ln
-	 T14Pw+ApkRKfJc+sP1p+Jqp4myxC06YvYh5mO//f9PeIuPGz/hd5ZNaWFUgF0XhfvX
-	 CHfrqF8DHPsRJKMTdv5zUAldSeEyGEi7XPt0F4NSzueL/d3qwfvHAGwjZadG5JbQTA
-	 BXxrIUhKXrH5g==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93BA73924A7C;
-	Fri,  4 Sep 2026 21:50:17 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1788558851;
+	bh=XCeNYHWq9Iq7nfe0geCoSMUdz6QXeYSe8PW1enyixEI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=oZ7ycxtr7TnBcDCHDPB591V9koZPvDVmXEyeNiCUMhsrNQprZrg9mqFwo+kapsMio
+	 UE4M+IFmxGF2WJQIQIphSEo+jXY6YjQIH0CzYx0e931bdIc6vQpg5A/EfvzJ6LdTfG
+	 j5NLwHIrIYN2hVkpOFOLm4ioHnaWjp5CxViWY4Mbre4t3KM8H9MXqgdya0k7PzqY7K
+	 j8HMHJV3M4o6PmWJcSQ/Sm/ib1MG+kXT91utggGQbKRUBhNad5qdpAgzfdmtuLnGKO
+	 HoPzlaUn+WzHbd3OO6+j1rQRLA2kU+T+wMhMaUTQfi971+n94tdcOvVjqRrL0lyAuh
+	 GDNss00m8XU+A==
+Date: Fri, 4 Sep 2026 14:54:10 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Dong Yibo <dong100@mucse.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, vadim.fedorenko@linux.dev, u.kleine-koenig@baylibre.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, yaojun@mucse.com
+Subject: Re: [PATCH net-next v10 1/5] net: rnpgbe: Add interrupt handling
+Message-ID: <20260904145410.67b6877f@kernel.org>
+In-Reply-To: <F44E6669E6C9E7C4+20260831073608.401988-2-dong100@mucse.com>
+References: <20260831073608.401988-1-dong100@mucse.com>
+	<F44E6669E6C9E7C4+20260831073608.401988-2-dong100@mucse.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v9 0/7] r8169: add support for phylink
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178855861639.981964.11852847781303360318.git-patchwork-notify@kernel.org>
-Date: Fri, 04 Sep 2026 21:50:16 +0000
-References: <20260831053745.1197-1-javen_xu@realsil.com.cn>
-In-Reply-To: <20260831053745.1197-1-javen_xu@realsil.com.cn>
-To: Javen <javen_xu@realsil.com.cn>
-Cc: hkallweit1@gmail.com, nic_swsd@realtek.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- maxime.chevallier@bootlin.com, horms@kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, daniel@makrotopia.org, linux@armlinux.org.uk,
- enelsonmoore@gmail.com, daniel@thingy.jp
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On Mon, 31 Aug 2026 15:36:04 +0800 Dong Yibo wrote:
+> +/**
+> + * rnpgbe_int_single - MSI-X single-vector/MSI interrupt handler
+> + * @irq: interrupt number
+> + * @data: private data
+> + *
+> + * Return: IRQ_HANDLED
+> + **/
+> +static irqreturn_t rnpgbe_int_single(int irq, void *data)
+> +{
+> +	struct mucse *mucse = (struct mucse *)data;
+> +	struct mucse_q_vector *q_vector;
+> +
+> +	queue_work(system_percpu_wq, &mucse->mbx_work);
+> +
+> +	if (test_bit(__MUCSE_DOWN, &mucse->state))
+> +		return IRQ_HANDLED;
+> +
+> +	q_vector = mucse->q_vector[0];
+> +	rnpgbe_irq_disable_queues(q_vector);
+> +	napi_schedule_irqoff(&q_vector->napi);
+> +
+> +	return IRQ_HANDLED;
+> +}
 
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Mon, 31 Aug 2026 13:37:38 +0800 you wrote:
-> From: Javen Xu <javen_xu@realsil.com.cn>
-> 
-> This series patch adds support for phylink. RTL8116af is a fiber mode
-> card, link status and speed can not be read from standard phy reg. So
-> we read link status and speed from serdes reg by pcs. So as RTL8127atf.
-> 
-> Javen Xu (7):
->   r8169: add speed in private struct
->   net: phy: phylink: add helper to modify pause
->   r8169: add support for phylink
->   r8169: add support for RTL8116af
->   r8169: add support for RTL8127atf
->   r8169: add ltr support for RTL8117 series
->   r8169: fix RTL8116af can not enter s0idle and c10
-> 
-> [...]
-
-Here is the summary with links:
-  - [net-next,v9,1/7] r8169: add speed in private struct
-    https://git.kernel.org/netdev/net-next/c/ddffc67d89c8
-  - [net-next,v9,2/7] net: phy: phylink: add helper to modify pause
-    https://git.kernel.org/netdev/net-next/c/9f8cb9cbcdc8
-  - [net-next,v9,3/7] r8169: add support for phylink
-    https://git.kernel.org/netdev/net-next/c/8a3c76523e44
-  - [net-next,v9,4/7] r8169: add support for RTL8116af
-    https://git.kernel.org/netdev/net-next/c/dab515216def
-  - [net-next,v9,5/7] r8169: add support for RTL8127atf
-    https://git.kernel.org/netdev/net-next/c/97dee72abc37
-  - [net-next,v9,6/7] r8169: add ltr support for RTL8117 series
-    https://git.kernel.org/netdev/net-next/c/6e445f3d9538
-  - [net-next,v9,7/7] r8169: fix RTL8116af can not enter s0idle and c10
-    https://git.kernel.org/netdev/net-next/c/a306cbd79e07
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+It's not reasonable to have a single IRQ handle datapath and also
+unconditionally queue a mbox work item. Just require at least 2 IRQs.
