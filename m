@@ -1,67 +1,46 @@
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F9363AFD1A;
-	Fri,  4 Sep 2026 03:07:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F39D3431E6
+	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 03:09:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788491237; cv=none; b=OeCUhGK/sxMDQ05cIDq7Qajnv6df3TMuv8x+BPw5nWJ6sTERZV6q9nDXh537lkC4/qBJbtJszbUvLSunfnB+ZXkne5N/LM/CXKJPKUq65tOjSg4iIk9Y2tueQLKZlfIUTbnjBLVUGTGILdQnyMECcQ/L4Z4QnxhTdljbgoszJHk=
+	t=1788491398; cv=none; b=WfnHa5y0P/DDGCiQPFrua2lOHnLViUS8p9rwb6r5IbSvWTnMMym+tg1UE9emCQn4ccX935hAo2Ru8FRTg/9P70HU7t/g4S5Vj2J1xWAdiCv+xJS1DOw7J6gaCum5ekX/eQGKuNUBkuDu6gDUbuY0M8vpFpg4O9RcwemasKzGvVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788491237; c=relaxed/simple;
-	bh=T8y3ofTDr/xY9kY7/+Hoqxcl3Ba822iAWe6om6iP3DM=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=NC/mf9aEfHt9EV2VwSaQbHtrAdxepY7MWKjgbPN86lN5t1sUmsGIqDSdI3UNDXOMhjiTRoO7A6YITrFg4boFsnOnNH5FV7aPZsi0g/i7bxGOn0cchqqZmJFSR4VSFJGUpZoySdfdteQOk6HZpdDZDnemY/JkNP1MfryZOMlZI3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn; spf=pass smtp.mailfrom=realsil.com.cn; dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b=Nq6IJfJ1; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realsil.com.cn
+	s=arc-20240116; t=1788491398; c=relaxed/simple;
+	bh=onGMzDqycDsYbkgJ3q3xnelartFMzpxKYH0fu6V8tx4=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=o8jU6p6+3vjiEOjTzk00csPWrTiw386VWKpF/fi9prl1u6ZApDzJdZL8BZ+UPbOpgmCggvjpZ19o4qnznK7+6UY2Lt8qkxVjeUO9da/f5EUOwSsFPJc3RDwy6RbdZaRn4i7sXYJJKzcQtVGArPn2ltZIudjydcBgbKrl5NcEcyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z05PDXEg; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b="Nq6IJfJ1"
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 68436lZiA4111569, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realsil.com.cn;
-	s=dkim; t=1788491208;
-	bh=T8y3ofTDr/xY9kY7/+Hoqxcl3Ba822iAWe6om6iP3DM=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:Content-Transfer-Encoding:MIME-Version;
-	b=Nq6IJfJ156mdqfRBL7xflucxamrnkmZMIVEm2rd44UJX4RZXP6gb9vS8Mraijo2CD
-	 QiXjSRWzAZ7J6439AvazCXdQm61oLKISm1ymin+EjnfdM8p3I+Suel1Dpir1G+2wAb
-	 rL0sxGC+5G8dRxX4fYK4BwXRvJNX8JCIN4GRsK7NdG9oU4Mo9FktQqk8i0wkTbgHop
-	 EfxGePxhIN83O3KEZoPkM6uhdJzgqibrE7gWURdQEEi1cBX5XGHQgRDdpiVeyvLGfq
-	 gkuPpai094lYTuXh0wGlQroLBL5Ho/MzfkiyKR65Q6euD5Zj6+8FdelbhnlJfIA78f
-	 M00Uooq27X6sQ==
-Received: from RS-EX-MBS4.realsil.com.cn ([172.29.17.104])
-	by rtits2.realtek.com.tw (8.15.2/3.29/5.94) with ESMTPS id 68436lZiA4111569
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Fri, 4 Sep 2026 11:06:48 +0800
-Received: from RS-EX-MBS3.realsil.com.cn (172.29.17.103) by
- RS-EX-MBS4.realsil.com.cn (172.29.17.104) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.43; Fri, 4 Sep 2026 11:06:47 +0800
-Received: from RS-EX-MBS3.realsil.com.cn ([172.29.17.103]) by
- RS-EX-MBS3.realsil.com.cn ([172.29.17.103]) with mapi id 15.02.2562.043; Fri,
- 4 Sep 2026 11:06:47 +0800
-From: Javen <javen_xu@realsil.com.cn>
-To: "netdev-bot+sashiko@kernel.org" <netdev-bot+sashiko@kernel.org>
-CC: "hkallweit1@gmail.com" <hkallweit1@gmail.com>, "nic_swsd@realtek.com"
-	<nic_swsd@realtek.com>, "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
-	"davem@davemloft.net" <davem@davemloft.net>, "edumazet@google.com"
-	<edumazet@google.com>, "kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>, "horms@kernel.org"
-	<horms@kernel.org>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [net-next,v12,2/7] r8169: refactor RX path to prepare for
- multi-queue
-Thread-Topic: [net-next,v12,2/7] r8169: refactor RX path to prepare for
- multi-queue
-Thread-Index: AQHdO+Swc9QHW4C00UqNHoexVFoL/ra9vIWw
-Date: Fri, 4 Sep 2026 03:06:47 +0000
-Message-ID: <429c7a6c99df47d7b4e2638ee9df5101@realsil.com.cn>
-References: <20260831053940.620-3-javen_xu@realsil.com.cn>
- <178846812274.3394541.14036248825057917928@kernel.org>
-In-Reply-To: <178846812274.3394541.14036248825057917928@kernel.org>
-Accept-Language: zh-CN, en-US
-Content-Language: zh-CN
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z05PDXEg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CB781F00A3D;
+	Fri,  4 Sep 2026 03:09:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788491396;
+	bh=Cl+usHMoaV2A12r9LgZqZGhwhfpID2apTmXMYxL9d4s=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=Z05PDXEgyyb4E5qTZ1tnr/7DsQtYUmXOZnFjpbAmmmC79b9r6sZSN9HWzdtmUnhiO
+	 b1rGhZNQxsgapoM/2VqGbfu1dy3SOOn+PeX0zhPc4m6DADW7AZPo3x9W6h3O2bHsYT
+	 BsF/heHuqQRLuLoF0oXs0bRynAPEVc3u9KTpQP3aaO5QuAVreqXcW6kqD81pbNI1Yh
+	 8IzqBKrYDwXot7AOORgvp0kERiRr7aw8yQyAp0K/Hy3NWZ0ioglptASteY8LyCka1A
+	 VOxqiX4JEFQgw40vvJiS12RxKyKj5mOv/kgPA1mBdAPa9T0PjwRyYsI5rZ1wWYGC41
+	 4ajKdS1xv3tnQ==
+Subject: Re: [PATCH v6 net-next 01/15] selftest: net: Deflake Periodic GC test
+ in test_neigh.sh.
+From: netdev-bot+sashiko@kernel.org
+To: kuniyu@google.com
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, dsahern@kernel.org, idosch@nvidia.com,
+ horms@kernel.org, kuni1840@gmail.com, netdev@vger.kernel.org,
+ razor@blackwall.org
+Date: Fri, 04 Sep 2026 03:09:55 +0000
+Message-ID: <178849139572.4131868.6040641098132451650@kernel.org>
+In-Reply-To: <20260902203722.926528-2-kuniyu@google.com>
+References: <20260902203722.926528-2-kuniyu@google.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -69,123 +48,221 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-PkNyaXRpY2FsOiAwIMK3IEhpZ2g6IDAgwrcgTWVkaXVtOiAzIMK3IExvdzogMA0KPg0KPi0gW01l
-ZGl1bV0gVW5kaXNjbG9zZWQgZnVuY3Rpb25hbCBjaGFuZ2UgZm9sZGVkIGludG8gYSBwYXRjaCB3
-aG9zZQ0KPiAgY2hhbmdlbG9nIHByb21pc2VzIGEgcHVyZSByZWZhY3RvcjogYFI4MTY5X1JYX1JJ
-TkdfQllURVNgIGlzIGNoYW5nZWTigKYNCj4tIFtNZWRpdW1dIFN0YXRlIGludHJvZHVjZWQgYnkg
-dGhpcyBwYXRjaCB0aGF0IGlzIG5ldmVyIGNvbnN1bWVkLCBhbmQgYQ0KPiAgbmV0ZGV2IHF1ZXVl
-IGNvdW50IGFkdmVydGlzZWQgdG8gdGhlIGNvcmUgdGhhdCBuZXZlciBtYXRjaGVzIHJlYWxpdHku
-DQo+LSBbTWVkaXVtXSBJUlFGX05PX1RIUkVBRCBpcyBzaWxlbnRseSBkcm9wcGVkIGZvciBNU0kv
-TVNJLVggdmVjdG9ycy4NCj4NCj4tLQ0KPg0KPnI4MTY5OiByZWZhY3RvciBSWCBwYXRoIHRvIHBy
-ZXBhcmUgZm9yIG11bHRpLXF1ZXVlDQo+DQo+VGhpcyBwYXRjaCBpbnRyb2R1Y2VzIHN0cnVjdCBy
-dGw4MTY5X3J4X3JpbmcgYW5kIG1vdmVzIHRoZSBSWCByaW5nIHN0YXRlIG91dCBvZg0KPnJ0bDgx
-NjlfcHJpdmF0ZSBpbnRvIGEgcGVyLXF1ZXVlIGFycmF5LCBhbmQgc3dpdGNoZXMgdGhlIG5ldGRl
-diBhbGxvY2F0aW9uIHRvDQo+ZGV2bV9hbGxvY19ldGhlcmRldl9tcXMoKSB3aXRoIHVwIHRvIDgg
-UlggcXVldWVzIHdoaWxlIG51bV9yeF9yaW5ncyBzdGF5cw0KPmF0IDEuDQo+DQo+PiBkaWZmIC0t
-Z2l0IGEvZHJpdmVycy9uZXQvZXRoZXJuZXQvcmVhbHRlay9yODE2OV9tYWluLmMNCj4+IGIvZHJp
-dmVycy9uZXQvZXRoZXJuZXQvcmVhbHRlay9yODE2OV9tYWluLmMNCj4+IGluZGV4IDg3ZWIxMDYx
-NmEwYy4uOTMxMWEwY2FiNGViIDEwMDY0NA0KPj4gLS0tIGEvZHJpdmVycy9uZXQvZXRoZXJuZXQv
-cmVhbHRlay9yODE2OV9tYWluLmMNCj4+ICsrKyBiL2RyaXZlcnMvbmV0L2V0aGVybmV0L3JlYWx0
-ZWsvcjgxNjlfbWFpbi5jDQo+PiBAQCAtNzQsOSArNzQsMTkgQEANCj4+ICAjZGVmaW5lIE5VTV9U
-WF9ERVNDICAyNTYgICAgIC8qIE51bWJlciBvZiBUeCBkZXNjcmlwdG9yIHJlZ2lzdGVycyAqLw0K
-Pj4gICNkZWZpbmUgTlVNX1JYX0RFU0MgIDI1NiAgICAgLyogTnVtYmVyIG9mIFJ4IGRlc2NyaXB0
-b3IgcmVnaXN0ZXJzICovDQo+PiAgI2RlZmluZSBSODE2OV9UWF9SSU5HX0JZVEVTICAoTlVNX1RY
-X0RFU0MgKiBzaXplb2Yoc3RydWN0IFR4RGVzYykpDQo+PiAtI2RlZmluZSBSODE2OV9SWF9SSU5H
-X0JZVEVTICAoTlVNX1JYX0RFU0MgKiBzaXplb2Yoc3RydWN0IFJ4RGVzYykpDQo+PiArDQo+PiAr
-LyoNCj4+ICsgKiBXb3JrYXJvdW5kIGZvciB0aGUgaGFyZHdhcmUgRE1BIHByZWZldGNoZXIuIFRo
-ZSBIL1cgbWlnaHQNCj4+ICthZ2dyZXNzaXZlbHkNCj4+ICsgKiBmZXRjaCBvbmUgbW9yZSBkZXNj
-cmlwdG9yIGV2ZW4gYWZ0ZXIgaGl0dGluZyB0aGUgUmluZ0VuZCBtYXJrLiBXZQ0KPj4gKyAqIGFs
-bG9jYXRlIHRoaXMgZXh0cmEgZHVtbXkgc3BhY2UgYXMgcGFkZGluZyB0byBwcmV2ZW50DQo+PiAr
-b3V0LW9mLWJvdW5kcw0KPj4gKyAqIGFjY2VzcyBhbmQgcG90ZW50aWFsIElPTU1VIGZhdWx0cy4N
-Cj4+ICsgKi8NCj4+ICsjZGVmaW5lIFI4MTY5X1JYX1JJTkdfQllURVMgICgoTlVNX1JYX0RFU0Mg
-KyAxKSAqIHNpemVvZihzdHJ1Y3QNCj4+ICtSeERlc2MpKQ0KPg0KPltTZXZlcml0eTogTWVkaXVt
-XQ0KPlRoZSBjaGFuZ2Vsb2cgZGVzY3JpYmVzIHRoaXMgcGF0Y2ggYXMgImEgcHJlcGFyYXRvcnkg
-cmVmYWN0b3Jpbmcgb2YgdGhlIFJYDQo+cGF0aCIsIGJ1dCB0aGlzIG1hY3JvIGNoYW5nZXMgYmVo
-YXZpb3VyIGZvciBldmVyeSBzdXBwb3J0ZWQgY2hpcC4gIFR3bw0KPnF1ZXN0aW9ucyBhYm91dCBp
-dC4NCj4NCj5GaXJzdCwgaWYgdGhlIGhhcmR3YXJlIHJlYWxseSBkb2VzICJmZXRjaCBvbmUgbW9y
-ZSBkZXNjcmlwdG9yIGV2ZW4gYWZ0ZXIgaGl0dGluZw0KPnRoZSBSaW5nRW5kIG1hcmsiLCB0aGVu
-IHRoZSBkcml2ZXIgYmVmb3JlIHRoaXMgcGF0Y2ggbGV0cyB0aGUgZGV2aWNlIERNQSBwYXN0DQo+
-dGhlIGVuZCBvZiB0aGUgcmluZyBvbiBhbGwgY2hpcCBnZW5lcmF0aW9ucy4gIFdvdWxkIHRoYXQg
-bWFrZSB0aGlzIGFuDQo+aW5kZXBlbmRlbnQgZml4IHRoYXQgd2FudHMgaXRzIG93biBwYXRjaCB3
-aXRoIGEgRml4ZXM6IHRhZywgc28gdGhhdCBzdGFibGUgdHJlZXMNCj5waWNrIGl0IHVwPyAgQXMg
-c3VibWl0dGVkIHRoZSBjaGFuZ2UgaXMgaW52aXNpYmxlIHRvIGJhY2twb3J0ZXJzLg0KPg0KPlNl
-Y29uZCwgc2l6ZW9mKHN0cnVjdCBSeERlc2MpIGlzIDE2IGFuZCBOVU1fUlhfREVTQyBpcyAyNTYs
-IHNvIHRoZSBvbGQNCj5yZXF1ZXN0IHdhcyBleGFjdGx5IDQwOTYgYnl0ZXMgYW5kIHRoZSBuZXcg
-b25lIGlzIDQxMTIgYnl0ZXM6DQo+DQo+ICAgICAgICBydGw4MTY5X2FsbG9jX3J4X2Rlc2MoKQ0K
-PiAgICAgICAgICBkbWFfYWxsb2NfY29oZXJlbnQoJnBkZXYtPmRldiwgUjgxNjlfUlhfUklOR19C
-WVRFUywgLi4uKQ0KPg0KPlNpbmNlIGRtYV9hbGxvY19jb2hlcmVudCgpIHJvdW5kcyB1cCB0byBh
-IHBvd2VyLW9mLXR3byBwYWdlIG9yZGVyLCBkb2VzIHRoaXMNCj50dXJuIHRoZSBwZXItcmluZyBj
-b2hlcmVudCBhbGxvY2F0aW9uIGZyb20gb25lIHBhZ2UgaW50byB0d28sIGRvdWJsaW5nIHRoZQ0K
-PmNvaGVyZW50IERNQSBmb290cHJpbnQgcGVyIFJYIHJpbmcgKGFuZCBlaWdodCB0aW1lcyB0aGF0
-IG9uY2UgdGhlIHJlc3Qgb2YgdGhlDQo+c2VyaWVzIGVuYWJsZXMgbXVsdGlwbGUgcmluZ3MpPyAg
-V291bGQgYWxsb2NhdGluZyBvbmUgcGFnZSBhbmQgcmVzZXJ2aW5nIHRoZQ0KPmxhc3QgZGVzY3Jp
-cHRvciBhcyB0aGUgcGFkLCBvciBkb2N1bWVudGluZyB0aGUgZXh0cmEgcGFnZSwgYmUgcHJlZmVy
-YWJsZT8NCj4NCj4+ICAjZGVmaW5lIFI4MTY5X1RYX1NUT1BfVEhSUyAgIChNQVhfU0tCX0ZSQUdT
-ICsgMSkNCj4+ICAjZGVmaW5lIFI4MTY5X1RYX1NUQVJUX1RIUlMgICgyICogUjgxNjlfVFhfU1RP
-UF9USFJTKQ0KPj4gKyNkZWZpbmUgUjgxNjlfTUFYX1JYX1FVRVVFUyAgOA0KPj4gKyNkZWZpbmUg
-UjgxNjlfREVGQVVMVF9SWF9RVUVVRVMgICAgICAxDQo+PiArI2RlZmluZSBSODE2OV9NQVhfVFhf
-UVVFVUVTICAxDQo+Pg0KPj4gICNkZWZpbmUgT0NQX1NURF9QSFlfQkFTRSAgICAgMHhhNDAwDQo+
-Pg0KPg0KPlsgLi4uIF0NCj4NCj4+IEBAIC03MjgsNiArNzM5LDE1IEBAIGVudW0gcnRsX2Rhc2hf
-dHlwZSB7DQo+PiAgICAgICBSVExfREFTSF8yNV9CUCwNCj4+ICB9Ow0KPj4NCj4+ICtzdHJ1Y3Qg
-cnRsODE2OV9yeF9yaW5nIHsNCj4+ICsgICAgIHUzMiBjdXJfcng7DQo+PiArICAgICB1MzIgZGly
-dHlfcng7DQo+DQo+W1NldmVyaXR5OiBNZWRpdW1dDQo+SXMgZGlydHlfcnggdXNlZCBhbnl3aGVy
-ZT8gIEdyZXBwaW5nIHRoZSB0cmVlIGF0IHRoZSBlbmQgb2YgdGhpcyBzZXJpZXMgcmV0dXJucw0K
-Pm9ubHkgdGhpcyBkZWNsYXJhdGlvbiBhbmQgdGhlIHNpbmdsZSBzdG9yZSBpbg0KPnJ0bDgxNjlf
-aW5pdF9yaW5nX2luZGV4ZXMoKSBiZWxvdyAtIHRoZXJlIGlzIG5vIGNvbXBhcmlzb24gYWdhaW5z
-dCBjdXJfcnggYW5kDQo+bm8gcmVmaWxsIG9yIGRvb3JiZWxsIGxvZ2ljIHJlYWRpbmcgaXQuICBT
-aG91bGQgdGhlIGZpZWxkIGJlIGRyb3BwZWQgdW50aWwgdGhlDQo+cGF0Y2ggdGhhdCBhY3R1YWxs
-eSBuZWVkcyBpdD8NCj4NCj4+ICsgICAgIHN0cnVjdCBSeERlc2MgKnJ4X2Rlc2NfYXJyYXk7DQo+
-PiArICAgICBkbWFfYWRkcl90IHJ4X2Rlc2NfcGh5X2FkZHJbTlVNX1JYX0RFU0NdOw0KPj4gKyAg
-ICAgZG1hX2FkZHJfdCByeF9waHlfYWRkcjsNCj4+ICsgICAgIHN0cnVjdCBwYWdlICpyeF9kYXRh
-YnVmZltOVU1fUlhfREVTQ107IH07DQo+PiArDQo+DQo+WyAuLi4gXQ0KPg0KPj4gQEAgLTI2MjAs
-OSArMjYzOCwyNiBAQCBzdGF0aWMgdm9pZCBydGxfaW5pdF9yeGNmZyhzdHJ1Y3QgcnRsODE2OV9w
-cml2YXRlDQo+KnRwKQ0KPj4gICAgICAgfQ0KPj4gIH0NCj4+DQo+PiArc3RhdGljIHZvaWQgcnRs
-ODE2OV9yeF9kZXNjX2luaXQoc3RydWN0IHJ0bDgxNjlfcHJpdmF0ZSAqdHApIHsNCj4+ICsgICAg
-IGZvciAoaW50IGkgPSAwOyBpIDwgdHAtPm51bV9yeF9yaW5nczsgaSsrKSB7DQo+PiArICAgICAg
-ICAgICAgIHN0cnVjdCBydGw4MTY5X3J4X3JpbmcgKnJpbmcgPSAmdHAtPnJ4X3JpbmdbaV07DQo+
-PiArDQo+PiArICAgICAgICAgICAgIG1lbXNldChyaW5nLT5yeF9kZXNjX2FycmF5LCAweDAsIFI4
-MTY5X1JYX1JJTkdfQllURVMpOw0KPj4gKyAgICAgfQ0KPj4gK30NCj4+ICsNCj4+ICBzdGF0aWMg
-dm9pZCBydGw4MTY5X2luaXRfcmluZ19pbmRleGVzKHN0cnVjdCBydGw4MTY5X3ByaXZhdGUgKnRw
-KSAgew0KPj4gLSAgICAgdHAtPmRpcnR5X3R4ID0gdHAtPmN1cl90eCA9IHRwLT5jdXJfcnggPSAw
-Ow0KPj4gKyAgICAgdHAtPmRpcnR5X3R4ID0gMDsNCj4+ICsgICAgIHRwLT5jdXJfdHggPSAwOw0K
-Pj4gKw0KPj4gKyAgICAgZm9yIChpbnQgaSA9IDA7IGkgPCB0cC0+bnVtX3J4X3JpbmdzOyBpKysp
-IHsNCj4+ICsgICAgICAgICAgICAgc3RydWN0IHJ0bDgxNjlfcnhfcmluZyAqcmluZyA9ICZ0cC0+
-cnhfcmluZ1tpXTsNCj4+ICsNCj4+ICsgICAgICAgICAgICAgcmluZy0+ZGlydHlfcnggPSAwOw0K
-Pj4gKyAgICAgICAgICAgICByaW5nLT5jdXJfcnggPSAwOw0KPj4gKyAgICAgfQ0KPj4gIH0NCj4+
-DQo+DQo+WyAuLi4gXQ0KPg0KPj4gQEAgLTQxODQsNTUgKzQyNDAsMTA3IEBAIHN0YXRpYyB2b2lk
-IHJ0bDgxNjlfcnhfY2xlYXIoc3RydWN0DQo+PiBydGw4MTY5X3ByaXZhdGUgKnRwKQ0KPg0KPlsg
-Li4uIF0NCj4NCj4+ICtzdGF0aWMgaW50IHJ0bDgxNjlfYWxsb2NfcnhfZGVzYyhzdHJ1Y3QgcnRs
-ODE2OV9wcml2YXRlICp0cCkgew0KPj4gKyAgICAgc3RydWN0IHBjaV9kZXYgKnBkZXYgPSB0cC0+
-cGNpX2RldjsNCj4+ICsgICAgIHN0cnVjdCBydGw4MTY5X3J4X3JpbmcgKnJpbmc7DQo+PiArDQo+
-PiArICAgICBmb3IgKGludCBpID0gMDsgaSA8IHRwLT5udW1fcnhfcmluZ3M7IGkrKykgew0KPj4g
-KyAgICAgICAgICAgICByaW5nID0gJnRwLT5yeF9yaW5nW2ldOw0KPj4gKyAgICAgICAgICAgICBy
-aW5nLT5yeF9kZXNjX2FycmF5ID0gZG1hX2FsbG9jX2NvaGVyZW50KCZwZGV2LT5kZXYsDQo+PiAr
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgUjgx
-NjlfUlhfUklOR19CWVRFUywNCj4+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAmcmluZy0+cnhfcGh5X2FkZHIsDQo+PiArICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgR0ZQX0tFUk5FTCk7DQo+
-PiArICAgICAgICAgICAgIGlmICghcmluZy0+cnhfZGVzY19hcnJheSkNCj4+ICsgICAgICAgICAg
-ICAgICAgICAgICByZXR1cm4gLUVOT01FTTsNCj4+ICsgICAgIH0NCj4+ICsgICAgIHJldHVybiAw
-Ow0KPj4gK30NCj4+ICsNCj4NCj5bIC4uLiBdDQo+DQo+PiBAQCAtNTY4OCw3ICs1ODEyLDEwIEBA
-IHN0YXRpYyBpbnQgcnRsX2luaXRfb25lKHN0cnVjdCBwY2lfZGV2ICpwZGV2LCBjb25zdA0KPnN0
-cnVjdCBwY2lfZGV2aWNlX2lkICplbnQpDQo+PiAgICAgICB1MzIgdHhjb25maWc7DQo+PiAgICAg
-ICB1MzIgeGlkOw0KPj4NCj4+IC0gICAgIGRldiA9IGRldm1fYWxsb2NfZXRoZXJkZXYoJnBkZXYt
-PmRldiwgc2l6ZW9mICgqdHApKTsNCj4+ICsgICAgIGRldiA9IGRldm1fYWxsb2NfZXRoZXJkZXZf
-bXFzKCZwZGV2LT5kZXYsIHNpemVvZigqdHApLA0KPj4gKyAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgUjgxNjlfTUFYX1RYX1FVRVVFUywNCj4+ICsgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgIFI4MTY5X01BWF9SWF9RVUVVRVMpOw0KPj4gKw0KPg0KPltTZXZlcml0
-eTogTWVkaXVtXQ0KPlRoaXMgYXNrcyB0aGUgY29yZSBmb3IgOCBSWCBxdWV1ZXMgb24gZXZlcnkg
-Y2hpcCwgYW5kIGFsbG9jX25ldGRldl9tcXMoKSBzZXRzDQo+ZGV2LT5yZWFsX251bV9yeF9xdWV1
-ZXMgPSByeHFzOg0KPg0KPm5ldC9jb3JlL2Rldi5jOmFsbG9jX25ldGRldl9tcXMoKSB7DQo+ICAg
-ICAgICAuLi4NCj4gICAgICAgIGRldi0+cmVhbF9udW1fcnhfcXVldWVzID0gcnhxczsNCj4gICAg
-ICAgIC4uLg0KPn0NCj4NCj5ydGxfc2V0dXBfcnhfcGFyYW1zKCkga2VlcHMgdHAtPm51bV9yeF9y
-aW5ncyBhdCAxLCBhbmQgdGhlcmUgaXMgbm8NCj5uZXRpZl9zZXRfcmVhbF9udW1fcnhfcXVldWVz
-KCkgY2FsbCBpbiB0aGUgZHJpdmVyLCBlaXRoZXIgaGVyZSBvciBhdCB0aGUgZW5kIG9mDQo+dGhl
-IHNlcmllcy4gIERvZXMgdGhhdCBsZWF2ZSBldmVyeSByODE2OSBkZXZpY2UgYWR2ZXJ0aXNpbmcg
-OCBSWCBxdWV1ZXMgdG8NCj51c2Vyc3BhY2UgLSAvc3lzL2NsYXNzL25ldC88ZGV2Pi9xdWV1ZXMv
-cngtMCB0aHJvdWdoIHJ4LTcgd2l0aCB0aGVpciBSUFMvUkZTDQo+a25vYnMsIHBsdXMgdGhlIG5l
-dGRldi1nZW5sIHF1ZXVlIGVudW1lcmF0aW9uIC0gd2hpbGUgb25seSByaW5nIDAgZXZlcg0KPnJl
-Y2VpdmVzIHBhY2tldHM/DQo+DQo+U2hvdWxkIHJ0bF9pbml0X29uZSgpIGNhbGwgbmV0aWZfc2V0
-X3JlYWxfbnVtX3J4X3F1ZXVlcyhkZXYsDQo+dHAtPm51bV9yeF9yaW5ncykgb25jZSB0aGUgcmlu
-ZyBjb3VudCBpcyBrbm93bj8NCg0KVGhpcyBpcyBpbmNvcnJlY3QuIFRoZSBkcml2ZXIgYWN0dWFs
-bHkgRE9FUyBjYWxsIG5ldGlmX3NldF9yZWFsX251bV9xdWV1ZXMoKQ0K
+Thank you for your contribution! Sashiko AI review found 5 potential
+issue(s) to consider:
+
+Critical: 0 · High: 0 · Medium: 1 · Low: 4
+
+- [Medium] The new completion barrier is the wrong signal:
+  neigh_periodic_work() bumps NEIGH_CACHE_STAT_INC(tbl,…
+- [Low] Undisclosed netns switch of the periodic_gc_runs read: the new
+  get_periodic_gc_runs() helper queries the counter inside $ns1 (`ip -n…
+- [Low] The patch fixes a currently reproducible selftest flake
+  (extern_valid_common()'s periodic-GC wait in…
+- [Low] Comment/code drift: the section header comment in
+  extern_valid_common() still describes the removed sleep-based…
+- [Low] The first `slowwait_for_counter` call (line 309) is the setup
+  barrier that guarantees neigh_periodic_work() completed once and re-…
+
+--
+
+selftest: net: Deflake Periodic GC test in test_neigh.sh.
+
+This replaces the two fixed sleeps in the periodic garbage collection test
+case of test_neigh.sh with slowwait_for_counter() polling of the
+periodic_gc_runs table statistic. A new helper, get_periodic_gc_runs(),
+reads the counter, and the timeouts now account for the randomized initial
+tbl->parms.reachable_time set up by neigh_table_init().
+
+No Link: tags are present in the commit header.
+
+[Severity: Low]
+Would a Fixes: tag be appropriate here?  The commit message describes a
+failure that is reproducible on current kernels ("The initial value is
+randomly chosen, so if it is larger than 27s (larger than two "sleep"s),
+the test fails"), and git blame points at the two commits that added the
+sleeps being removed:
+
+  171f2ee31a42f ("selftests: net: add test_neigh.sh") added the
+  "sleep 10" wait
+
+  f8fded7536a93 added the
+  "sleep $(((orig_base_reachable / 1000) / 2 + 2))" wait
+
+Without a tag the deflake will not be routed to trees that still run the
+flaky version of the test.
+
+> diff --git a/tools/testing/selftests/net/test_neigh.sh b/tools/testing/selftests/net/test_neigh.sh
+> index 7c594bf6ead0..447423713266 100755
+> --- a/tools/testing/selftests/net/test_neigh.sh
+> +++ b/tools/testing/selftests/net/test_neigh.sh
+> @@ -63,6 +63,15 @@ exit_cleanup_all()
+>  	exit "${EXIT_STATUS}"
+>  }
+>  
+> +get_periodic_gc_runs()
+> +{
+> +	local ns=$1
+> +	local tbl_name=$2
+> +
+> +	ip -n "$ns" -j -s ntable show name "$tbl_name" | \
+> +		jq '.[] | select(has("periodic_gc_runs")) | .["periodic_gc_runs"]'
+> +}
+> +
+
+[Severity: Low]
+The old code read periodic_gc_runs in the initial namespace:
+
+  periodic_gc_runs_t0=$(ip -j -s ntable show name "$tbl_name" | jq ...)
+
+while get_periodic_gc_runs() is called with "$ns1", so the counter is now
+read inside ns1.  Was the namespace change intentional?  It is not
+mentioned in the commit message.
+
+At this commit it makes no difference, since neightbl_dump_info() in
+net/core/neighbour.c emits neightbl_fill_info() (including NDTA_STATS) for
+every registered table regardless of the requesting netns, and only the
+per-device parms rows are filtered by net_eq().
+
+Inside this series it does matter for a while, though.  After "neighbour:
+Namespacify neigh_tables." the counter read in ns1 belongs to ns1's table
+(default base_reachable 30000, so a 15s GC interval), while
+base_reachable=10000 is still written to init_net's table below, so the
+second wait's 10s budget is shorter than the interval ns1 actually uses.
+The mismatch only disappears with the later "selftest: net: Specify netns
+for ip ntable in test_neigh.sh." patch, which moves the ntable reads and
+writes into ns1.  Would it be simpler to switch the ntable read/write and
+the counter read in the same patch?
+
+>  ################################################################################
+>  # Tests
+>  
+> @@ -282,24 +291,30 @@ extern_valid_common()
+>  	local periodic_gc_runs_t0
+>  	local periodic_gc_runs_t1
+>  	local orig_base_reachable
+> +	local base_reachable=10000
+>  	local orig_gc_stale
+> +	local timeout
+>  
+>  	run_cmd "ip -n $ns1 neigh flush dev veth0"
+>  	orig_thresh1=$(ip -j ntable show name "$tbl_name" | jq '.[] | select(has("thresh1")) | .["thresh1"]')
+>  	orig_base_reachable=$(ip -j ntable show name "$tbl_name" | jq '.[] | select(has("thresh1")) | .["base_reachable"]')
+> -	run_cmd "ip ntable change name $tbl_name thresh1 10 base_reachable 10000"
+> +	run_cmd "ip ntable change name $tbl_name thresh1 10 base_reachable $base_reachable"
+>  	orig_gc_stale=$(ip -n "$ns1" -j ntable show name "$tbl_name" dev veth0 | jq '.[]["gc_stale"]')
+>  	run_cmd "ip -n $ns1 ntable change name $tbl_name dev veth0 gc_stale 1000"
+>  	run_cmd "ip -n $ns1 neigh add $ip_addr lladdr $mac nud stale dev veth0 extern_valid"
+>  	run_cmd "ip -n $ns1 neigh add ${subnet}3 lladdr $mac nud stale dev veth0"
+> -	# Wait orig_base_reachable/2 for the new interval to take effect.
+> -	run_cmd "sleep $(((orig_base_reachable / 1000) / 2 + 2))"
+> +	# Wait up to neigh_set_reach_time(BASE_REACHABLE_TIME) (~45s) + 5s
+> +	# for the new interval to take effect, see neigh_table_init().
+> +	timeout=$(((orig_base_reachable / 1000) * 3 / 2 + 5))
+> +	slowwait_for_counter "$timeout" 1 get_periodic_gc_runs "$ns1" "$tbl_name" >/dev/null
+
+[Severity: Low]
+Should the exit status of this first wait be checked?  Only stdout is
+redirected, the status is never fed to check_err, and the test body runs
+with set +e (set -e is enabled and cleared inside setup()).
+
+slowwait_for_counter() in tools/testing/selftests/net/lib.sh does return
+non-zero on timeout:
+
+  slowwait_for_counter()
+  {
+  	local timeout=$1; shift
+  	local delta=$1; shift
+
+  	local base=$("$@")
+  	slowwait "$timeout" until_counter_is ">= $((base + delta))" "$@"
+  }
+
+If this wait times out (up to ~50s with the default base_reachable=30000),
+the script still adds the 20 entries, samples t0 and then waits only
+base_reachable/1000/2 + 5 = 10s, a bound that assumes the new 5s interval
+is already armed by the requeue at the end of neigh_periodic_work():
+
+  queue_delayed_work(system_power_efficient_wq, &tbl->gc_work,
+                     NEIGH_VAR(&tbl->parms, BASE_REACHABLE_TIME) >> 1);
+
+The resulting failure is then reported as "Periodic garbage collection did
+not run" with no hint that the setup wait was the thing that timed out.
+
+There is also the inverse case: this wait can be satisfied by the initial
+run armed in neigh_table_init() with the randomized reachable_time, so the
+"new interval took effect" precondition is not really established.
+
+>  	for i in {1..20}; do
+>  		run_cmd "ip -n $ns1 neigh add ${subnet}$((i + 4)) nud none dev veth0"
+>  	done
+> -	periodic_gc_runs_t0=$(ip -j -s ntable show name "$tbl_name" | jq '.[] | select(has("periodic_gc_runs")) | .["periodic_gc_runs"]')
+> -	run_cmd "sleep 10"
+> -	periodic_gc_runs_t1=$(ip -j -s ntable show name "$tbl_name" | jq '.[] | select(has("periodic_gc_runs")) | .["periodic_gc_runs"]')
+> +	periodic_gc_runs_t0=$(get_periodic_gc_runs "$ns1" "$tbl_name")
+> +	# Wait up to BASE_REACHABLE_TIME / 2 + 5s, see neigh_periodic_work().
+> +	timeout=$(((base_reachable / 1000) / 2 + 5))
+> +	slowwait_for_counter "$timeout" 1 get_periodic_gc_runs "$ns1" "$tbl_name" >/dev/null
+> +	periodic_gc_runs_t1=$(get_periodic_gc_runs "$ns1" "$tbl_name")
+
+[Severity: Medium]
+Is the periodic_gc_runs increment a strong enough barrier for the checks
+that follow?  neigh_periodic_work() bumps the counter as its first
+statement, before the table lock is taken and before anything is reaped:
+
+  net/core/neighbour.c:neigh_periodic_work() {
+  	NEIGH_CACHE_STAT_INC(tbl, periodic_gc_runs);
+
+  	spin_lock_bh(&tbl->lock);
+  	...
+  }
+
+and the bucket walk drops the lock and reschedules after every bucket:
+
+  		spin_unlock_bh(&tbl->lock);
+  		cond_resched();
+  		spin_lock_bh(&tbl->lock);
+
+slowwait_for_counter() returns as soon as the counter reaches base + 1, so
+the pass may still be in flight when the script proceeds to:
+
+  run_cmd "ip -n $ns1 neigh get ${subnet}3 dev veth0"
+  check_fail $? "Entry without \"extern_valid\" flag survived periodic garbage collection"
+
+Can this fail spuriously if the worker is preempted mid-scan, for instance
+on a single-vCPU or debug kernel, given that only a couple of ip/jq
+invocations separate the wait from the check?  The removed "sleep 10"
+implicitly covered the whole pass.
+
+The positive check just above it looks weakened in the same way: the
+extern_valid entry can be reported as surviving simply because GC has not
+walked its bucket yet.
+
+Would polling the observable effect (the ${subnet}3 entry being gone), or
+waiting for the counter to advance by 2, be more robust?
+
+Related to the second timeout: base_reachable/1000/2 + 5 is measured from
+the moment the increment is observed, but the next run is only armed at the
+end of the pass, which eats into the 5s of slack.
+
+[Severity: Low]
+Does the block comment above this test case still describe what the code
+does?  It reads:
+
+  # Check that an "extern_valid" entry survives a periodic garbage
+  # collection. Add an "extern_valid" entry, add more than "thresh1"
+  # regular entries, wait "base_reachable" (longer than "gc_stale")
+  # seconds and check that the "extern_valid" entry was not deleted.
+
+The code no longer waits base_reachable seconds; it polls periodic_gc_runs
+and returns on the first additional GC run, bounded by
+base_reachable/1000/2 + 5.  The comment also survives unchanged to the end
+of the series.  Could it be updated along with the wait, including the
+"longer than gc_stale" rationale?
+
+>  	[[ $periodic_gc_runs_t1 -ne $periodic_gc_runs_t0 ]]
+>  	check_err $? "Periodic garbage collection did not run"
+>  	run_cmd "ip -n $ns1 neigh get $ip_addr dev veth0 | grep \"extern_valid\""
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260902203722.926528-1-kuniyu%40google.com
