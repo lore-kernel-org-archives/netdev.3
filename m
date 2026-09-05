@@ -1,43 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93AF83FFD;
-	Sat,  5 Sep 2026 19:52:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32C993749F7;
+	Sat,  5 Sep 2026 19:59:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788637970; cv=none; b=OiwfxhPBSY8VCJdApWD+Vj/PXk/3ydIdCGMhDsONfuR5G61CzJZut3zK8UTvzkK+hHqQR9TPkS8XVbIRHrQMCAZQLuq6dzn5i4mCL2AfDC3D1LkbsB6J0VaNTrz3vBKKBzwF5hXBaVKBCe+2gX5g01vniKi6QuY7+mHbc/zhUu8=
+	t=1788638349; cv=none; b=Ue7jGonGLk/Xa907fMnxcjy3mX30CfXR63sXDXg7JvRtiYXolrlSeumk+g0werbJ/gtK40EfeK8uLPSI2T1+VdZyqPPsqTVIsd7G3MEkyTNIb6fOM9njL+fQeetzae5eNj7J/3w2SjXeP0sVhW/oIJ0tUjz/I3PSvyH0luhhBaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788637970; c=relaxed/simple;
-	bh=73g66NrXJZn+H9Gp9gby6kzuMvgNILJeBvPV7DVUt8E=;
+	s=arc-20240116; t=1788638349; c=relaxed/simple;
+	bh=Up2SyTBOKxVVjiQJQUfFXmKSs4AmV82GPZ4keuC02Ho=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=bsPQqvy6/+3dtKzOfhb1knC/DjgnVpfve+dr8QGo/eaP5Xez18IO0UV26hJ8tfCYz3Ry7d6ZBKhxj7OdJ3wnUYFqa/D+ECj/4727o7xwzKDC+ffnwKkdsDvmm1JzE/BkwJ0s/vnLh1W4FosSvSs1ivu0vqNFJm/dtvOa8/OgAZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MH71rYN6; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=F13u2Q2Ywn3PZM2IGrf9PUDfE0RRHlYbCcAhpmm7CuVchOQ/g+d0BAUN4Ds4dU+qjfh1Cg6JeMakOlykIvNfyQ2heWMY/FCGADPC10eYYDAOlUdaosyOp4NHSRy0ydCEnJGAyZGzTms3eZLIT2LLpbDRrXy9gX13G7kFswhERVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nECnwvJk; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MH71rYN6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C18751F00A3A;
-	Sat,  5 Sep 2026 19:52:48 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nECnwvJk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C76211F00A3D;
+	Sat,  5 Sep 2026 19:59:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788637969;
-	bh=m4FJ7KTWJRKMMnfj6UAMEGWcrxUpDtQeWt6pguBYUuI=;
+	s=k20260515; t=1788638347;
+	bh=KNybveUt2cbmJtkR6lO0M2kAXLE5Q/PY5RA8hbJXao0=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=MH71rYN6IoNc7H57jNMsqROR4hNqT9jc1ODxIhVY9tYyZlJvAWiiw2WSGm2iVPV50
-	 wJLcwM4SVyHhjrknVRxOcFwPeOdgi+GUvUJUGoPumj0QQC0L3nlwYRcON54lnXCbGE
-	 4J7G65MzwnmFDPCPixzZAfamYaQPLu+w8CRmPV7ZwaTcE6hKndNO9WwQcdfAN8b8t6
-	 Vwif8Ll750p8kgElN+pX9ZaWb21RUsJkJDEW8ofSBbuL/5MwBHuSDPjrOrDWCv5TpX
-	 owHEWkfJbeqrfFdpN6vNaNS1g/yhKWFHkJiMErpiffII3FTtNmKpelFBlkqA9PQv5u
-	 nu8dTaSOdpKDA==
-Subject: Re: [PATCH net] octeontx2-af: Handle pool context address update in
- aura WRITE operation
+	b=nECnwvJkW9DIUi2MtiqR0u4gybTRriE/l2KIRLKjJM+Zb3n9VLfxz88kj4+KrOh4o
+	 TqPnZoHqdOT/viLMqF9TZZ6IWyIfD/Lxf7FaPLkPFHvi8NJ8Z957IJiv8SyvJ8ZsPl
+	 8tMJP7PHVD0XkC6MuWOPnsidPxcxCBSJF3ynzYPlSmAzaPp/ue/mvzFTyCAfyWdlMk
+	 QLsHoMMbsCznL9wnvaxYjsVHODqQ7nlxkpEbha4lKfnkEI36x643uwPi45mQxZ7j63
+	 I9S3+qdAp3Ph3n+6HWv3wO13fBPg6XM6JAXi+BxkP97lritUwTv4o87DQyihNn4DK2
+	 KHobIvkXEAs/A==
+Subject:
+ Re: [PATCH net] s390/qeth: allow bridgeport queries despite OS_MISMATCH
 From: netdev-bot+sashiko@kernel.org
-To: nshettyj@marvell.com
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, asekhar@marvell.com,
- sgoutham@marvell.com, rkannoth@marvell.com, gakula@marvell.com,
- sbhatta@marvell.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
-Date: Sat, 05 Sep 2026 19:52:48 +0000
-Message-ID: <178863796829.219967.14604401966508125474@kernel.org>
-In-Reply-To: <20260901105029.1667495-1-nshettyj@marvell.com>
-References: <20260901105029.1667495-1-nshettyj@marvell.com>
+To: nagamani@linux.ibm.com
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, wintera@linux.ibm.com,
+ pasic@linux.ibm.com, aswin@linux.ibm.com, hca@linux.ibm.com,
+ gor@linux.ibm.com, agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
+ svens@linux.ibm.com, Eugene.Crosser@ru.ibm.com, ubraun@linux.vnet.ibm.com,
+ netdev@vger.kernel.org, linux-s390@vger.kernel.org, stable@vger.kernel.org
+Date: Sat, 05 Sep 2026 19:59:06 +0000
+Message-ID: <178863834632.219967.10151398782993596479@kernel.org>
+In-Reply-To: <20260901155344.3561483-1-nagamani@linux.ibm.com>
+References: <20260901155344.3561483-1-nagamani@linux.ibm.com>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -48,194 +50,243 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
+Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider:
 
-Critical: 0 · High: 1 (1) · Medium: 1 (1) · Low: 0
+Critical: 0 · High: 1 · Medium: 2 · Low: 0
 
-- [High] In rvu_npa_aq_enq_inst()'s NPA_AQ_INSTOP_WRITE path, the new
-  gate `if (req->aura_mask.pool_addr)` treats a documented bit-granular…
-- [Medium] npa_aura_translate_pool_addr() validates and rewrites
-  req->aura.pool_addr in place, where `req` points directly into the…
-
-Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but it defeats the
-  bounds check the patch adds: rvu_mbox_handler_npa_lf_alloc() validates…
-- [Medium] npa_aura_translate_pool_addr() dereferences
-  pfvf->pool_ctx->qsize/iova/entry_sz after only a NULL test, with no…
+- [High] qeth_bridgeport_query_ports_cb() now returns success on
+  IPA_RC_SBP_IQD_OS_MISMATCH and therefore executes…
+- [Medium] The new OS_MISMATCH exception in
+  qeth_bridgeport_query_ports_cb()…
+- [Medium] qeth_bridge_port_role_state_show() can now emit "none (OS
+  family mismatch)\n" for the read-write attribute bridge_role…
 
 --
 
-octeontx2-af: Handle pool context address update in aura WRITE operation
+s390/qeth: allow bridgeport queries despite OS_MISMATCH
 
-This adds a helper npa_aura_translate_pool_addr() which checks that
-pfvf->pool_ctx exists, bounds checks the pool_id in aura.pool_addr and
-converts it into the pool context IOVA.  The helper is then used from both
-the NPA_AQ_INSTOP_WRITE and NPA_AQ_INSTOP_INIT legs of
-rvu_npa_aq_enq_inst().
+This treats IPA_RC_SBP_IQD_OS_MISMATCH as success for
+QUERY_BRIDGE_PORTS so that bridge_role and bridge_state stay readable
+when another OS family owns the bridge port, and passes a new
+os_mismatch out-parameter up to sysfs so the role can be printed as
+"none (OS family mismatch)".  SET operations keep returning -EPERM.
 
-A few questions below about the translation in the WRITE path and about the
-inputs the new bounds check relies on.
+A few questions about the new code below.
 
-> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npa.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npa.c
-> index e2a33e46b48ad..c8255271f84eb 100644
-> --- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npa.c
-> +++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npa.c
-> @@ -58,6 +58,19 @@ static int npa_aq_enqueue_wait(struct rvu *rvu, struct rvu_block *block,
+> diff --git a/drivers/s390/net/qeth_l2_main.c b/drivers/s390/net/qeth_l2_main.c
+> index a9e7d1d637a20..2935c2ecc314b 100644
+> --- a/drivers/s390/net/qeth_l2_main.c
+> +++ b/drivers/s390/net/qeth_l2_main.c
+> @@ -1158,7 +1158,7 @@ static void qeth_l2_setup_bridgeport_attrs(struct qeth_card *card)
+>  		qeth_bridgeport_setrole(card, card->options.sbp.role);
+>  		/* Let the callback function refresh the stored role value. */
+>  		qeth_bridgeport_query_ports(card, &card->options.sbp.role,
+> -					    NULL);
+> +					    NULL, NULL);
+>  	}
+>  	if (card->options.sbp.hostnotification) {
+>  		if (qeth_bridgeport_an_set(card, 1))
+
+[ ... ]
+
+> @@ -1721,10 +1722,19 @@ static int qeth_bridgeport_query_ports_cb(struct qeth_card *card,
+>  	struct qeth_ipa_cmd *cmd = (struct qeth_ipa_cmd *) data;
+>  	struct _qeth_sbp_cbctl *cbctl = (struct _qeth_sbp_cbctl *)reply->param;
+>  	struct qeth_sbp_port_data *qports;
+> +	u16 sbp_rc;
+>  	int rc;
+>  
+>  	QETH_CARD_TEXT(card, 2, "brqprtcb");
+> -	rc = qeth_bridgeport_makerc(card, cmd);
+> +	sbp_rc = cmd->data.sbp.hdr.return_code;
+> +
+> +	/* on OS family mismatch, query still returns valid port data;
+> +	 * treat as success
+> +	 */
+> +	if (sbp_rc == IPA_RC_SBP_IQD_OS_MISMATCH && !cmd->hdr.return_code)
+> +		rc = 0;
+> +	else
+> +		rc = qeth_bridgeport_makerc(card, cmd);
+>  	if (rc)
+>  		return rc;
+
+[Severity: Medium]
+Should this test also be qualified with IS_IQD(card)?
+
+qeth_bridgeport_makerc() decodes the very same
+cmd->data.sbp.hdr.return_code field in a card-type dependent way:
+
+drivers/s390/net/qeth_l2_main.c:qeth_bridgeport_makerc() {
+	if ((IS_IQD(card) && ipa_rc == IPA_RC_SUCCESS) ||
+	    (!IS_IQD(card) && ipa_rc == sbp_rc)) {
+		switch (sbp_rc) {
+		...
+		case IPA_RC_SBP_OSA_OS_MISMATCH:
+		case IPA_RC_SBP_IQD_OS_MISMATCH:
+			rc = -EPERM;
+	...
+	} else {
+		switch (ipa_rc) {
+		...
+		default:
+			rc = -EIO;
+	}
+}
+
+and the two families use different numbering in qeth_core_mpc.h:
+
+	IPA_RC_SBP_IQD_OS_MISMATCH	= 0x0010,
+	IPA_RC_SBP_OSA_OS_MISMATCH	= 0x2B10,
+
+On an OSA (non-IQD) card, a reply carrying ipa_rc == 0 and sbp_rc ==
+0x0010 is not an OS mismatch in the OSA numbering, yet the new shortcut
+turns it into success, parses port_data as valid role/state and reports
+"none (OS family mismatch)" to userspace, where makerc() would have
+returned -EIO through its else branch.
+
+The opposite direction is a genuine OSA mismatch (ipa_rc == sbp_rc ==
+0x2B10), which is not whitelisted here, so bridge_role and bridge_state
+reads on OSA bridgeports keep failing with -EPERM.
+
+Related, the new kernel-doc for the out-parameter says
+
+ * @os_mismatch: if non-NULL, set to true when firmware reports
+ *		 OS family mismatch.
+
+which reads more generic than an IQD-only implementation.  Would it make
+sense to either extend the check to IPA_RC_SBP_OSA_OS_MISMATCH with the
+OSA ipa_rc == sbp_rc convention, or document it as IQD-only?
+
+> @@ -1740,6 +1750,9 @@ static int qeth_bridgeport_query_ports_cb(struct qeth_card *card,
+>  		if (cbctl->data.qports.state)
+>  			*cbctl->data.qports.state = qports->entry[0].state;
+>  	}
+> +	if (cbctl->data.qports.os_mismatch)
+> +		*cbctl->data.qports.os_mismatch =
+> +			(sbp_rc == IPA_RC_SBP_IQD_OS_MISMATCH);
 >  	return 0;
 >  }
->  
-> +static int npa_aura_translate_pool_addr(struct rvu_pfvf *pfvf, u64 *pool_addr)
-> +{
-> +	if (!pfvf->pool_ctx)
-> +		return NPA_AF_ERR_AQ_ENQUEUE;
-
-[Severity: Medium]
-This is a pre-existing issue and not something this patch introduces, but
-now that the dereference is factored into a helper it is worth asking: what
-keeps pfvf->pool_ctx alive between this NULL test and the field reads just
-below it?
-
-npa_ctx_free() does:
-
-	qmem_free(rvu->dev, pfvf->pool_ctx);
-	pfvf->pool_ctx = NULL;
-
-and it is reached both from rvu_mbox_handler_npa_lf_free() and from the FLR
-work item:
-
-	__rvu_flr_handler() -> rvu_blklf_teardown(BLKADDR_NPA)
-		-> rvu_npa_lf_teardown() -> npa_ctx_free()
-
-The FLR side runs under rvu->flr_lock, while rvu_npa_aq_enq_inst() runs from
-the mailbox worker holding only aq->lock, which is the per-block admin queue
-lock and is unrelated to the pfvf context memory.  With disjoint lock sets,
-can an npa_aq_enq for the same pcifunc read pool_ctx->qsize, iova and
-entry_sz after qmem_free() has released them, and program the resulting
-garbage IOVA into the aura?
-
-The same unsynchronised pattern already exists for pfvf->aura_ctx at the top
-of rvu_npa_aq_enq_inst(), so this looks like it wants serialisation of NPA
-context alloc/free against AQ enqueue rather than more pointer checks.
-
-> +
-> +	if (*pool_addr >= pfvf->pool_ctx->qsize)
-> +		return NPA_AF_ERR_PARAM;
 
 [Severity: High]
-This isn't a bug introduced by this patch, but it does limit what this new
-bounds check can guarantee.  How much can pool_ctx->qsize be trusted here?
+Can this discard the user's configured bridge port role?
 
-rvu_mbox_handler_npa_lf_alloc() only rejects a zero nr_pools:
+Because the callback no longer returns early with -EPERM on OS mismatch,
+it now falls through to the role store just above:
 
-	if (req->aura_sz > NPA_AURA_SZ_MAX ||
-	    req->aura_sz == NPA_AURA_SZ_0 || !req->nr_pools)
-		return NPA_AF_ERR_PARAM;
+drivers/s390/net/qeth_l2_main.c:qeth_bridgeport_query_ports_cb() {
+	if (qports->num_entries > 0) {
+		if (cbctl->data.qports.role)
+			*cbctl->data.qports.role = qports->entry[0].role;
 	...
-	err = qmem_alloc(rvu->dev, &pfvf->pool_ctx, req->nr_pools, hwctx_size);
+}
 
-and qmem_alloc() computes the allocation size in int:
+Both callers pass the persistent configuration field as that
+out-parameter, qeth_l2_setup_bridgeport_attrs() with
+&card->options.sbp.role and qeth_bridge_port_role_state_show() likewise,
+so the firmware placeholder role "none" described in the commit message
+gets written into card->options.sbp.role.
 
-	qmem->alloc_sz = (qsize * entry_sz) + OTX2_ALIGN;
-	qmem->base = dma_alloc_attrs(dev, qmem->alloc_sz, &qmem->iova, ...);
+That has a few follow-on effects.  A read-only sysfs read of bridge_role
+mutates stored configuration.  Re-application of the role is then gated
+off for good:
+
+drivers/s390/net/qeth_l2_main.c:qeth_l2_setup_bridgeport_attrs() {
+	if (!card->options.sbp.reflect_promisc &&
+	    card->options.sbp.role != QETH_SBP_ROLE_NONE) {
+		qeth_bridgeport_setrole(card, card->options.sbp.role);
 	...
-	qmem->qsize = qsize;
+}
 
-Since the pool context size is a power of two, a mailbox request with
-nr_pools = 0x2000000 and entry_sz = 128 makes the product wrap to 0, so only
-the alignment padding is actually allocated while qmem->qsize keeps the full
-0x2000000.  Does this then let npa_aura_translate_pool_addr() accept any
-pool_id below that inflated qsize and return iova + pool_id * entry_sz well
-past the real DMA allocation, which NPA will fetch and update as an
-NPA_POOL_S?
+so once the field has been zeroed, no later set-online or recovery
+retries qeth_bridgeport_setrole(), even after the other OS family
+releases the port.
 
-If so, the bound probably needs to be enforced in
-rvu_mbox_handler_npa_lf_alloc() / qmem_alloc() with checked size arithmetic
-before qsize is recorded.
+The same field also feeds the mutual-exclusion predicate:
 
-> +
-> +	*pool_addr = pfvf->pool_ctx->iova +
-> +		     (*pool_addr * pfvf->pool_ctx->entry_sz);
-> +	return 0;
-> +}
-> +
->  int rvu_npa_aq_enq_inst(struct rvu *rvu, struct npa_aq_enq_req *req,
->  			struct npa_aq_enq_rsp *rsp)
->  {
-> @@ -116,6 +129,12 @@ int rvu_npa_aq_enq_inst(struct rvu *rvu, struct npa_aq_enq_req *req,
->  	case NPA_AQ_INSTOP_WRITE:
->  		/* Copy context and write mask */
->  		if (req->ctype == NPA_AQ_CTYPE_AURA) {
-> +			if (req->aura_mask.pool_addr) {
-> +				rc = npa_aura_translate_pool_addr(pfvf,
-> +								  &req->aura.pool_addr);
-> +				if (rc)
-> +					break;
-> +			}
+drivers/s390/net/qeth_l2.h:qeth_bridgeport_is_in_use() {
+	return card->options.sbp.role ||
+	       card->options.sbp.reflect_promisc ||
+	       card->options.sbp.hostnotification;
+}
 
-[Severity: High]
-Is a nonzero aura_mask.pool_addr the right condition here?  mbox.h documents
-aura_mask as bit granular write enable data:
+Zeroing sbp.role flips that to false and unblocks the VNICC set/get
+paths, qeth_l2_bridge_getlink(), the learning-sync path, and makes
+bridge_reflect_promisc writable while a bridge role is configured.
 
-	/* Mask data when op == WRITE (1=write, 0=don't write) */
+A sequence that reaches this: write "primary" to bridge_role while
+offline (stored without a firmware command), then set the device online;
+qeth_bridgeport_setrole() still fails with -EPERM under mismatch, and the
+following qeth_bridgeport_query_ports(card, &card->options.sbp.role,
+NULL, NULL) now succeeds and overwrites the field with "none".  A single
+read of bridge_role while online reproduces the same clobbering.
 
-and npa_aura_s declares pool_addr as a full 64-bit word:
+Would it work to publish the placeholder role only into the local sysfs
+output and leave card->options.sbp.role untouched in the mismatch case?
 
-	u64 pool_addr;			/* W0 */
+> diff --git a/drivers/s390/net/qeth_l2_sys.c b/drivers/s390/net/qeth_l2_sys.c
+> index 7f592f9125172..7101be62eb1d5 100644
+> --- a/drivers/s390/net/qeth_l2_sys.c
+> +++ b/drivers/s390/net/qeth_l2_sys.c
+> @@ -25,7 +26,7 @@ static ssize_t qeth_bridge_port_role_state_show(struct device *dev,
+>  	if (qeth_card_hw_is_reachable(card) &&
+>  					card->options.sbp.supported_funcs)
+>  		rc = qeth_bridgeport_query_ports(card,
+> -			&card->options.sbp.role, &state);
+> +			&card->options.sbp.role, &state, &os_mismatch);
+>  	if (!rc) {
+>  		if (show_state)
+>  			switch (state) {
 
-so a requester can pass a partial mask, for example BIT_ULL(16).  In-tree
-users do set partial masks on other fields, e.g. aura_mask.ena = 1 in
-otx2_xsk.c and aura_mask.nix0_bpid = GENMASK(8, 0) in otx2_dcbnl.c.
+[ ... ]
 
-With a partial mask, this code translates the whole 64-bit word to
-pool_ctx->iova + pool_id * entry_sz, and then the mask is handed to the
-admin queue unchanged:
-
-> 			memcpy(mask, &req->aura_mask,
-> 			       sizeof(struct npa_aura_s));
-> 			memcpy(ctx, &req->aura, sizeof(struct npa_aura_s));
-
-Hardware commits (old_pool_addr & ~mask) | (translated & mask), so doesn't
-the aura end up with a spliced pointer that is neither the previous value nor
-the requested pool context?  The bounds check in
-npa_aura_translate_pool_addr() only constrains the fully written value, so
-the merged address can fall outside [iova, iova + qsize * entry_sz) and NPA
-will still dereference it as an NPA_POOL_S, whose stack_base and fc_addr
-drive further DMA.  Meanwhile the AF records the aura as programmed in
-pfvf->aura_bmap further down the function.
-
-Repeated single bit masked writes would also let the requester steer
-individual bits of the pool pointer, since each masked bit takes its value
-from a translated address of a pool_id the requester chose.
-
-Would it be better to force the mask for the translated word, for example
-setting req->aura_mask.pool_addr = ~0ULL after translating, or to reject any
-aura_mask.pool_addr other than 0 or ~0ULL, rather than passing the requester
-mask through?
+> @@ -52,6 +53,10 @@ static ssize_t qeth_bridge_port_role_state_show(struct device *dev,
+>  		if (rc)
+>  			QETH_CARD_TEXT_(card, 2, "SBP%02x:%02x",
+>  				card->options.sbp.role, state);
+> +		else if (!show_state &&
+> +			 card->options.sbp.role == QETH_SBP_ROLE_NONE &&
+> +			 os_mismatch)
+> +			rc = sysfs_emit(buf, "%s (OS family mismatch)\n", word);
+>  		else
+>  			rc = sysfs_emit(buf, "%s\n", word);
+>  	}
 
 [Severity: Medium]
-Related question about where req lives.  __rvu_mbox_handler() takes the
-message straight out of the shared mailbox region:
+Can the value emitted here be written back to the same attribute?
 
-	msg = mdev->mbase + offset;
+bridge_role is read/write:
+
+drivers/s390/net/qeth_l2_sys.c:
+static DEVICE_ATTR(bridge_role, 0644, qeth_bridge_port_role_show,
+		   qeth_bridge_port_role_store);
+
+and the store side accepts only the bare tokens:
+
+drivers/s390/net/qeth_l2_sys.c:qeth_bridge_port_role_store() {
+	if (sysfs_streq(buf, "primary"))
+		role = QETH_SBP_ROLE_PRIMARY;
+	else if (sysfs_streq(buf, "secondary"))
+		role = QETH_SBP_ROLE_SECONDARY;
+	else if (sysfs_streq(buf, "none"))
+		role = QETH_SBP_ROLE_NONE;
+	else
+		return -EINVAL;
 	...
-	err = rvu_process_mbox_msg(mbox, devid, msg);
+}
 
-so req points into memory the requesting PF/VF can keep writing.  The gate
-if (req->aura_mask.pool_addr), the *pool_addr >= qsize test inside the
-helper, and the later memcpy() of req->aura and req->aura_mask into the AQ
-context and mask areas are all separate fetches of that memory.
+sysfs_streq() tolerates a trailing newline but not the
+" (OS family mismatch)" suffix, so a read-modify-write or a
+save-and-restore of bridge_role by the zdev tooling named in the commit
+message (chzdev save/restore) would get -EINVAL, and parsers that exact
+match "none" no longer recognize the role string.  This is emitted while
+the card is reachable and sbp is supported, that is exactly when store()
+is otherwise usable.
 
-Can a requester that flips aura_mask.pool_addr from zero to nonzero, or
-rewrites aura.pool_addr, after the check has run get the raw untranslated
-value into the hardware aura?  aq->lock only serialises AF side use of the
-admin queue result buffer, it does not stop the peer from writing the
-message.
-
-The INIT leg has the same validate in place and recopy window, which the two
-paths now share through the helper.  Would snapshotting aura.pool_addr and
-aura_mask.pool_addr into local variables once, validating the snapshot, and
-building the AQ context and mask from it close this?
+There is no Documentation/ABI entry for this attribute, so store() is the
+only in-tree description of the value space.  Should the mismatch
+indication go somewhere other than the value of a writable attribute, or
+should store() learn to accept the decorated form?
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260901105029.1667495-1-nshettyj%40marvell.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260901155344.3561483-1-nagamani%40linux.ibm.com
