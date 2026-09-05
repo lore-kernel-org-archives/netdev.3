@@ -1,88 +1,185 @@
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E843F4CCDF3;
-	Sat,  5 Sep 2026 19:30:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 904043BB40;
+	Sat,  5 Sep 2026 19:36:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788636660; cv=none; b=Xr1ZlNxM71/ilQ43MpSJo1yb1qvLs8fwDOAhyUF+3HwMY6KCnWr7M1v2Vyzofp2gr4yr3T6R9fA+I3VDC8Xr3nyAvaWklHuXMwVMP5C9nVFAVgVLSmLkfPO1Y+OF4MtwtMXnYl0zlY54SEgtCmhbOdTb9HyLCWLRjdOlDl5Ig9Y=
+	t=1788637013; cv=none; b=oyIsUg8j2+722Q85yIyB+DAUxJG6qAqqXuYkxD2/zwFDKrIaXEFZsBB9AQE7oiozHHrpMUCZeDOPNjfjc5+unOjCXzofaufYPgw7v1LV6sYyDbQbMGc5MnNyVw0ratifYM2G7/0lv6wCp31Nt2xBlc0GYJYOl+3GV4G0oHHkheE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788636660; c=relaxed/simple;
-	bh=7oqVkMh0iepzi0wZgu7ndtGyfZ5A0OzVjxfY5Kpa4uY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SabQfWBUM7545OtvSGJyIpohEsLAaCo3ea3OsEGNGZ97vK63lCt9xVgZky26uXJ/+Sm+s2zSc+RJoH7qhS1/meBkH+FRsSTtiPXM3NgQJNACsBmvR2PymDSwFDnFD8oKRigtJ8ld/gsPQATHD+9K7LQyHUJR0MTPR/4IhcWftns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=lRQdOr6n; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1788637013; c=relaxed/simple;
+	bh=M2yKTvP7ENyCDZAyaDXgbDjJruQtDBz86p9V5ubdLmc=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=G8fRMMW5ezRuFURIueWVeO/FL6oyhzAZq98oaBQSJzSAitJhKMUN7Lz8AIARAFd5bKZF7c6YBKhBmcBKX4WaKBiDEKXFe/yaj9wFaKz/EtOYUL4uykRtXKp3YtUmefS2ElGIwDjNqWFOcx3HAxwu02HmMAdUmfodIXVFxM+luUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g5e8aqj3; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="lRQdOr6n"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=b9N7NiMVNx5Y8xSfQTNw7rzupRQ2JjFKSe8iDmIGEHI=; b=lRQdOr6nESlKKoH/BiPYZmUqN+
-	fx60+kZm/C7sIJuCe43iVM+a/b+hN4d3kfaYXKtoN0wsBJgiWQg1i4vuSvMWDFPfuum8bopFDvS1V
-	yGGqfLNiPdTZ1Yu2Wo4kUURXeyN5S/mWeBSaAOTU54MfkwW8OmuT7RJ/N2gfUCKGe2nqn670VM5Ue
-	McCn/McRAfkETGmMCLSleAEO6BzhVmg7fWawLPYMPqVWQu4ltPmGu8eZWxFNc+flha4x1tHGiig2R
-	OjsGy54aBgIfnI1Pey0o+YbPIWu7CL3FE7FzEyvAm2JhEnIfE+ZU0A48cFx7wma3/S5riIlCDNSRW
-	MmmWdKQA==;
-Received: from [50.53.43.113] (helo=[192.168.254.34])
-	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x2w6K-00000004N0B-2emE;
-	Sat, 05 Sep 2026 19:30:56 +0000
-Message-ID: <7826de5b-c3d1-4f09-991a-2943e5dbef15@infradead.org>
-Date: Sat, 5 Sep 2026 12:30:56 -0700
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g5e8aqj3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A89BF1F00A3A;
+	Sat,  5 Sep 2026 19:36:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788637012;
+	bh=XpAbj95BR/+hBgihJ49UPIvDv6ikVG1x1iAZJsGRtO4=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=g5e8aqj3jzdc7EBch7vcpHIW0JyQlY9yeOmMs1VAI0qrocBLwEaZ6SEn0C6O0Z9Ai
+	 Uq8gcfNJdub4iU1fhUX2UwEgVKExw5GYO1JN0iCudp3BGz2jnS4fMIeXy8tHtbynSx
+	 nmt5lVFcLK85F2JsbrPMVeaI2Pv5icsxUVeuIW1/mqqNsDWkj4Xfg7YXiAeLJMn7s2
+	 eCIqJfur+g81l1syfHYumphixjX/mEzt0u1eXE9uFTAD4Wm/jvV9Xn5B2l8Yue39AJ
+	 ANU1NWr21nZU1vvoIUpV8NRgsdUZl8y1dtlweTKRVuUOBtJ8P1250KPJ5FPVy29vbs
+	 t4LHu5EBis8jQ==
+Subject: Re: [PATCH net v2] vxlan: vnifilter: validate the VNI range in
+ vni_filter_entry_policy
+From: netdev-bot+sashiko@kernel.org
+To: alishmery18@gmail.com
+Cc: netdev@vger.kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ davem@davemloft.net, edumazet@google.com, andrew+netdev@lunn.ch,
+ idosch@nvidia.com, razor@blackwall.org, stable@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Date: Sat, 05 Sep 2026 19:36:51 +0000
+Message-ID: <178863701124.219967.14305621519981687842@kernel.org>
+In-Reply-To: <20260902154609.594009-1-alishmery18@gmail.com>
+References: <20260902154609.594009-1-alishmery18@gmail.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] docs: phonet: Fix the struct sockaddr_pn name in
- the example
-To: Karl Mehltretter <kmehltretter@gmail.com>,
- =?UTF-8?Q?R=C3=A9mi_Denis-Courmont?= <courmisch@gmail.com>
-Cc: netdev@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
- linux-doc@vger.kernel.org, Shuah Khan <skhan@linuxfoundation.org>
-References: <20260905104123.43511-1-kmehltretter@gmail.com>
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20260905104123.43511-1-kmehltretter@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider:
 
+Critical: 0 · High: 1 · Medium: 0 · Low: 0
 
-On 9/5/26 3:41 AM, Karl Mehltretter wrote:
-> struct sockaddr_spn does not exist; the name is struct sockaddr_pn.
-> 
-> Use struct sockaddr_pn.
-> 
-> Fixes: 297edb600326 ("Phonet: support active connection without pipe controller on modem")
-> Assisted-by: LLM
-> Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
+- [High] Incomplete fix relative to the impact its own changelog
+  describes: after the range clamp to VXLAN_N_VID-1, a single…
 
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
-thanks.
+--
 
-> ---
->  Documentation/networking/phonet.rst | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/Documentation/networking/phonet.rst b/Documentation/networking/phonet.rst
-> index d705cc5b09fc..e5551fc45c78 100644
-> --- a/Documentation/networking/phonet.rst
-> +++ b/Documentation/networking/phonet.rst
-> @@ -172,7 +172,7 @@ two endpoints directly, using connect() on the active side. This is
->  intended to support the newer Nokia Wireless Modem API, as found in
->  e.g. the Nokia Slim Modem in the ST-Ericsson U8500 platform::
+vxlan: vnifilter: validate the VNI range in vni_filter_entry_policy
+
+This adds an NLA_POLICY_FULL_RANGE constraint with .max = VXLAN_N_VID - 1
+to VXLAN_VNIFILTER_ENTRY_START and VXLAN_VNIFILTER_ENTRY_END, matching
+what vxlan_mdb.c already does for its VNI attributes.  The commit carries
+Fixes: f9c4bb0b245c and Cc: stable@vger.kernel.org.
+
+No Link: tags in the commit header; the v1 posting is referenced in the
+patch notes as
+https://lore.kernel.org/netdev/20260829030041.940594-1-alishmery18@gmail.com/
+
+> diff --git a/drivers/net/vxlan/vxlan_vnifilter.c b/drivers/net/vxlan/vxlan_vnifilter.c
+> index dd94085e0886..9e86ac39cf9d 100644
+> --- a/drivers/net/vxlan/vxlan_vnifilter.c
+> +++ b/drivers/net/vxlan/vxlan_vnifilter.c
+> @@ -459,9 +459,15 @@ static int vxlan_vnifilter_dump(struct sk_buff *skb, struct netlink_callback *cb
+>  	return err;
+>  }
 >  
-> -  struct sockaddr_spn spn;
-> +  struct sockaddr_pn spn;
->    int fd;
->  
->    fd = socket(PF_PHONET, SOCK_SEQPACKET, PN_PROTO_PIPE);
+> +static const struct netlink_range_validation vni_filter_vni_range = {
+> +	.max = VXLAN_N_VID - 1,
+> +};
+> +
+>  static const struct nla_policy vni_filter_entry_policy[VXLAN_VNIFILTER_ENTRY_MAX + 1] = {
+> -	[VXLAN_VNIFILTER_ENTRY_START] = { .type = NLA_U32 },
+> -	[VXLAN_VNIFILTER_ENTRY_END] = { .type = NLA_U32 },
+> +	[VXLAN_VNIFILTER_ENTRY_START] = NLA_POLICY_FULL_RANGE(NLA_U32,
+> +							      &vni_filter_vni_range),
+> +	[VXLAN_VNIFILTER_ENTRY_END] = NLA_POLICY_FULL_RANGE(NLA_U32,
+> +							    &vni_filter_vni_range),
+
+[Severity: High]
+Does this clamp close the problem the changelog describes, or only the
+U32_MAX endpoint?
+
+With the new .max, a single PF_BRIDGE RTM_NEWTUNNEL message carrying only
+VXLAN_VNIFILTER_ENTRY_END = 0xFFFFFF still passes validation, because
+vni_start defaults to 0 in vxlan_process_vni_filter():
+
+	u32 vni_start = 0, vni_end = 0;
+	...
+	if (vattrs[VXLAN_VNIFILTER_ENTRY_START]) {
+		vni_start = nla_get_u32(vattrs[VXLAN_VNIFILTER_ENTRY_START]);
+		vni_end = vni_start;
+	}
+
+	if (vattrs[VXLAN_VNIFILTER_ENTRY_END])
+		vni_end = nla_get_u32(vattrs[VXLAN_VNIFILTER_ENTRY_END]);
+
+	if (!vni_start && !vni_end) {
+		NL_SET_ERR_MSG_ATTR(extack, nlvnifilter,
+				    "vni start nor end found in vni entry");
+		return -EINVAL;
+	}
+
+vni_end is non-zero so the guard does not fire, and vxlan_vni_add_del() is
+entered with the full 0..0xFFFFFF span.
+
+Each of those 2^24 iterations goes through vxlan_vni_add() ->
+vxlan_vni_alloc(), which allocates a node plus a full per-CPU stats block:
+
+	vninode = kzalloc_obj(*vninode);
+	if (!vninode)
+		return NULL;
+	vninode->stats = netdev_alloc_pcpu_stats(struct vxlan_vni_stats_pcpu);
+
+followed by an rhashtable insert, a sorted list insert and a
+vxlan_vnifilter_notify().  Neither allocation uses __GFP_ACCOUNT, so the
+memory is charged globally rather than to the requesting cgroup.
+
+There is also no cond_resched() in vxlan_vni_add_del() (grep finds none in
+the file), no per-request work cap and no ceiling on vg->num_vnis, and
+vxlan_vnifilter_rtnl_msg_handlers registers the handler without
+RTNL_FLAG_DOIT_UNLOCKED, so the whole span runs under the global rtnl_lock.
+
+Given that, is the Fixes: plus Cc: stable framing accurate?  The changelog
+states:
+
+	It runs under rtnl_lock, which is global rather than per-netns, so
+	every network configuration operation on the host blocks for as long
+	as it runs, in every namespace.
+
+	The interface is reachable without privilege: creating the device and
+	adding VNIs only requires CAP_NET_ADMIN in the network namespace's
+	user namespace
+
+and then:
+
+	A request spanning the full in-range space, START=0 END=0xFFFFFF,
+	still exhausts memory on that guest both before and after, as
+	described above.
+
+Would a backporter reading the first part conclude that the rtnl_lock
+starvation and unprivileged memory exhaustion are closed, when the second
+part says they are not?
+
+Separately, is this description of the U32_MAX case right?
+
+	With end_vni == U32_MAX the loop cannot terminate through its own
+	condition: v reaches U32_MAX, wraps to 0, and 0 <= U32_MAX is true
+	again, so the request never returns.
+
+The test result in the same changelog says that request "drives a global OOM
+with the allocating task in vxlan_vnifilter_process()".  Doesn't the loop
+actually leave early once vxlan_vni_alloc() fails?
+
+	err = vxlan_vni_add(vxlan, vg, v, group, extack);
+	...
+	if (err)
+		goto out;
+
+so the observed exit is -ENOMEM rather than a loop that never returns.
+
+One more question on the partial-failure path: when vxlan_vni_add() fails
+part way through a range, nothing unwinds the VNIs already added, and they
+stay in vg->vni_hash and vg->vni_list until vxlan_vnigroup_uninit().  Is a
+partially applied range the intended behaviour here?
+
+Would it make sense to bound the per-request work in the same change, for
+example capping the number of VNIs one message may span, adding a reschedule
+point to the vxlan_vni_add_del() loop, and using __GFP_ACCOUNT for the node
+and stats allocations, so that the tags match what the patch removes?
 
 -- 
-~Randy
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260902154609.594009-1-alishmery18%40gmail.com
