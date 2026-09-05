@@ -1,190 +1,127 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B06C36195E;
-	Sat,  5 Sep 2026 20:27:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC3D31D9A5F;
+	Sat,  5 Sep 2026 20:30:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788640079; cv=none; b=qUpgD8BMmsQpePdRCTYxZAs3I7zdvNyym7j5EQj42xcNx3owz2umVCwNQZvNAohZUAf7tezmzXx6nvLp8C6XPN6AmHU09/gIF7nzVR9kocboycf+KhVbYhWQe03oxAIghDh8pFfdLqfamipZeMC6rtbhJ2XdnlKN/ov2vPoNc+0=
+	t=1788640227; cv=none; b=BMhHXuM5RrlY5bvCfCg7eeUMQTkC8lZ84AjTMFqCfLbBDZZ/XKxxm3Vrq5W42FOvDmPI1VGJNvWu3DZy9RmXkBTxETFXMD5rbPF+rmbo4XtmAm1XHy/VlTzDEPf4E3xOC79rNreTqvXIDQDd0a2WTbzE5uIQLNnEblcAWybFKto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788640079; c=relaxed/simple;
-	bh=tgWG8UhX4ip0w3ei7HeJcEq+KjBsFvn6XYTxXXAwIjU=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=m4DdWpOpX9TGWx8ROqT2iWbg/XyvRX3CvzjfFt2CWI2jJ47u6ZJHs/gAvZDSuSgpvjLrJdrkqA/Adkb03yyD0PVYEldgbqTJAPCpwcYOTk1DsLz93LJ76xTUsUR5vws/dENVRokKu7INLXINq47/n7CPnm5RRAegyIADasCD8kY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NS/EW1r7; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788640227; c=relaxed/simple;
+	bh=h3hA5p6+GQOgQGc4c3qDgrkXTHcUOqGMs+AlHscWUQA=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=OfXK+I+Ms4MgwdumtX4Ev4/+XqRv6KLSvSqTsZZfMlThiqSFx5v6VpK4JKRGRTzpDpqnyw95z3mUni99+TIFuJ82ncAMtVS6acNmnJ/LlphML/RnOMaRRZfx17P/R8pe0Z1PTq+lPbQy8EVU1qqwoL7sXU2vEzj23GXEeG40LBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=skPCZuyW; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=xClnT4gx; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NS/EW1r7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CB5F1F00A3A;
-	Sat,  5 Sep 2026 20:27:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788640077;
-	bh=rS8qy5IifdTy0NzfzNiYDTKrTqX8UKX297CUWxgGGPI=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=NS/EW1r7zIqRGEJMc39AuxPGfNnmZwPxW8eHA8gZfKSJxpcEp++fsnPNsVYeRN/2u
-	 AfYY9bwqu+u1K5rlgsYkIrmsYaerBaKh7IgS7QlVPfcLhR++ZPKoxLXlDCm1tYJp3T
-	 ogZclfo0Sk2Q12Qdaa5aa/WkbwbKMilxLwAA51ZtnlV3/cUcGkL69o3zo2Sno4MTpn
-	 kMwVt6zY+8LoJ/nT2wBteuzTmQ4SVXnVK/c50ENKBgx6w3Hb47GRMmAo0sOsqIL7K+
-	 3lyay68oOLryhLciOA82wIHLueFA8oYx9q9IH0lLBI/94bybxkepZdHrs2Vf5MvNj4
-	 CaOvgSLsl7VDg==
-Subject:
- Re: [PATCH net-next v2 1/9] net: bridge: vlan: drop legacy memory barriers
-From: netdev-bot+sashiko@kernel.org
-To: razor@blackwall.org
-Cc: netdev@vger.kernel.org, idosch@nvidia.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- bridge@lists.linux.dev
-Date: Sat, 05 Sep 2026 20:27:56 +0000
-Message-ID: <178864007675.219967.6069320085194764242@kernel.org>
-In-Reply-To: <20260903143138.1574598-2-razor@blackwall.org>
-References: <20260903143138.1574598-2-razor@blackwall.org>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="skPCZuyW";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="xClnT4gx"
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1788640223;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hwgSr9LF1AaQKstntdYXF4tsMbm8X5Lx15fwX+9hr5k=;
+	b=skPCZuyWro0VW6391LtWlzrr/B1W1w/re6wD9oT3npVcauGo05kkwL78ny2VUxbQ4h4nbp
+	cj5IQ+1A4obQd3tT2NMZcEwGhi0c5VkXgIW/swYV/fKuOcb60G6nAD8BMfDY97pE5EUxdz
+	N+J4pmuFMOZgRS3xtYHK/ZLzjFjp1dz85hlulDsMZKKwBjhzlReZuhzkcRzKmSkLjNUSNz
+	p/+UYHaNiWMKrbJoxMk+kuMyrENVwuJh78/3RcXtrncBlBwN8CAy2nzvj42sWOKRkXJG8U
+	2zmQrWEee/uqKDmY/58HJDUl+wCj1r8M31dMqCCj0QvWtKV3vswOf73AZpTpNA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1788640223;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hwgSr9LF1AaQKstntdYXF4tsMbm8X5Lx15fwX+9hr5k=;
+	b=xClnT4gxHr/HnwlWOjClcB0G5DjEE+jqWtE0d0pRDLr92cUPXaH+71Z+zm3v2cOwKwImZi
+	iqdeo1gS0rmQ50CQ==
+To: changfengnan <changfengnan@bytedance.com>, Luigi Rizzo <lrizzo@google.com>
+Cc: Christoph Hellwig <hch@infradead.org>, Marc Zyngier <maz@kernel.org>,
+ Luigi Rizzo <rizzo.unipi@gmail.com>, Paolo Abeni <pabeni@redhat.com>,
+ linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, Bjorn Helgaas
+ <bhelgaas@google.com>, netdev@vger.kernel.org,
+ linux-nvme@lists.infradead.org
+Subject: Re: [PATCH v5 0/7] Global Software Interrupt Moderation (GSIM)
+In-Reply-To: <d9210bcdf73fbe1ac8b6ec132865609a3ed68688.65629680.37f4.46ab.be84.09ae39446f28@bytedance.com>
+References: <20260819124341.4185621-1-lrizzo@google.com>
+ <aoaoERD5m1MNvMWd@infradead.org>
+ <CAMOZA0JrLia8NU1-4JEJAe+p65C19HsRGU6VK7sLAjNFKm8G3w@mail.gmail.com>
+ <d9210bcdf73fbe1ac8b6ec132865609a3ed68688.65629680.37f4.46ab.be84.09ae39446f28@bytedance.com>
+Date: Sat, 05 Sep 2026 22:30:22 +0200
+Message-ID: <878q5f5tlt.ffs@fw13>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider:
+On Thu, Aug 20 2026 at 19:46, changfengnan@bytedance.com wrote:
+>> From: "Luigi Rizzo"<lrizzo@google.com>
+>> Date:=C2=A0 Thu, Aug 20, 2026, 15:35
+>> Subject:=C2=A0 Re: [PATCH v5 0/7] Global Software Interrupt Moderation (=
+GSIM)
+>> To: "Christoph Hellwig"<hch@infradead.org>
+>> Cc: "Thomas Gleixner"<tglx@linutronix.de>, "Marc Zyngier"<maz@kernel.org=
+>, "Luigi Rizzo"<rizzo.unipi@gmail.com>, "Paolo Abeni"<pabeni@redhat.com>, =
+<linux-kernel@vger.kernel.org>, <linux-pci@vger.kernel.org>, "Bjorn Helgaas=
+"<bhelgaas@google.com>, <netdev@vger.kernel.org>, <linux-nvme@lists.infrade=
+ad.org>, "Fengnan Chang"<changfengnan@bytedance.com>
+>> On Thu, Aug 20, 2026 at 9:09=E2=80=AFAM Christoph Hellwig <hch@infradead=
+.org> wrote:
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0 (1)
+Can you please fix yuur mail client so it does not copy all that
+redundant headers into your reply?
 
-- [Medium] Writer-side publish ordering removed: in `__vlan_add()`
-  (net/bridge/br_vlan.c) a new VLAN is made visible to RCU readers…
+>> > Also how does this interact with adaptive polling code inside drivers
+>> > like NAPI or the upcoming nvme variant?
+>>=C2=A0
+>> GSIM acts at hardirq level (so below NAPI, and above device moderation e=
+.g.
+>> the one in ethtool -C ...) and is completely orthogonal to those other
+>> mechanisms.
+>
+> Hi Luigi:
+> The NVMe variant that Christoph mentioned is this patch of mine.
+> https://lore.kernel.org/linux-nvme/d9210bcdf73fbe1ac8b6ec132865609a3ed686=
+88.99d43a8b.dfff.41d1.b07d.0592a12473d2@bytedance.com/T/#m561d1366119620556=
+41f331e600e719de1e7c573
+> I took a quick look at your implementation, and I wouldn't say our two
+> approaches are completely independent.
+> I=E2=80=99ve run some tests, the test methods, environment, and data are =
+detailed in
+> this document:
+> https://docs.google.com/spreadsheets/d/1p3XqVpKgx18QhqTFb0KlJfEW9giWDGSUu=
+oKqCZzdZLg/edit?gid=3D1100001004#gid=3D1100001004
+>
+> it appears that GSIM is only effective in scenarios where multi disks at =
+very high
+> IOPS; in some cases, there was a noticeable performance regression.=C2=A0
+> If there=E2=80=99s something wrong with my configuration, please correct =
+me.
 
-Pre-existing issues:
-- [Low] Concern (retained for policy combination, but validated as
-  resolved within this series): after this patch `vg->pvid` is read and…
+So we have a NVME specific mechanism to tackle the same problem and a
+more generic version which is subsystem "independent".
 
---
+Can you folks please coordinate and get your act together so that we
+don't end up with two competing mechanisms which make things worse than
+they are now.
 
-net: bridge: vlan: drop legacy memory barriers
+TBH. I despise the NVME is special approach because it's fricking
+obvious that this is _NOT_ a NVME specific issue. But sure NVME is
+special as all other subsystems are special.
 
-This removes the smp_wmb() calls from __vlan_add_pvid() and
-__vlan_delete_pvid() and the smp_rmb() from br_get_pvid(), on the grounds
-that the pvid is written under lock and read under rcu in the fast-path.
-A couple of questions about the write side below.
+Q: When do driver folks actually start to look beyond the brim of their
+   tea cup?
 
-> diff --git a/net/bridge/br_private.h b/net/bridge/br_private.h
-> index d337b1cfb980..5b2c22ad669e 100644
-> --- a/net/bridge/br_private.h
-> +++ b/net/bridge/br_private.h
-> @@ -1687,7 +1687,6 @@ static inline u16 br_get_pvid(const struct net_bridge_vlan_group *vg)
->  	if (!vg)
->  		return 0;
->  
-> -	smp_rmb();
->  	return vg->pvid;
->  }
+A: Probably never ...
 
-[Severity: Low]
-This isn't a bug introduced by this patch, but with the barriers gone
-vg->pvid is left as a plain C access on both sides: br_get_pvid() does
-"return vg->pvid;", and the writers in br_vlan.c do "vg->pvid = v->vid;"
-and "vg->pvid = 0;". There is also a direct read outside the helper in
-br_mst_vlan_set_state():
+Thanks,
 
-net/bridge/br_mst.c:br_mst_vlan_set_state() {
-	...
-	if (v->vid == vg->pvid)
-	...
-}
-
-The sibling field in the same struct is only touched through accessors
-that mark the access:
-
-net/bridge/br_private.h {
-	static inline void br_vlan_set_pvid_state(struct net_bridge_vlan_group *vg,
-						  u8 state)
-	{
-		WRITE_ONCE(vg->pvid_state, state);
-	}
-}
-
-The follow-up patches in this series do address this - "net: bridge: vlan:
-annotate lockless pvid use" converts br_get_pvid() to READ_ONCE() and both
-writers to WRITE_ONCE(), and "net: bridge: mst: use br_get_pvid helper"
-converts the br_mst.c read - so this only applies to the intermediate tree
-state at this commit. Would it be simpler to fold the annotation into this
-patch so no intermediate state has an unmarked pvid access?
-
-> diff --git a/net/bridge/br_vlan.c b/net/bridge/br_vlan.c
-> index 1e0e436629ec..2ae6ffb23399 100644
-> --- a/net/bridge/br_vlan.c
-> +++ b/net/bridge/br_vlan.c
-> @@ -40,7 +40,6 @@ static void __vlan_add_pvid(struct net_bridge_vlan_group *vg,
->  	if (vg->pvid == v->vid)
->  		return;
->  
-> -	smp_wmb();
->  	br_vlan_set_pvid_state(vg, v->state);
->  	vg->pvid = v->vid;
->  }
-
-[Severity: Medium]
-The commit message says "nothing to commit prior to changing it".  Is that
-accurate for the add path?  In __vlan_add() the vlan is published to rcu
-readers first, and the pvid store happens after that:
-
-net/bridge/br_vlan.c:__vlan_add() {
-	...
-	/* set the state before publishing */
-	br_vlan_init_state(v);
-
-	err = rhashtable_lookup_insert_fast(&vg->vlan_hash, &v->vnode,
-					    br_vlan_rht_params);
-	if (err)
-		goto out_fdb_insert;
-
-	__vlan_add_list(v);
-	__vlan_flags_commit(v, flags);	/* -> __vlan_add_pvid() */
-	...
-}
-
-So the removed smp_wmb() sat between the rhashtable insert / list add and
-the vg->pvid store.  On a weakly ordered architecture, can a fast-path
-reader observe the new vg->pvid before the matching net_bridge_vlan is
-visible in vg->vlan_hash?  The rhashtable bucket store has release
-semantics for the insert itself, but nothing orders the later plain pvid
-store after it, and the WRITE_ONCE() added by the next patch in the series
-does not provide store-store ordering either.
-
-If that can happen, the reader in __allowed_ingress() picks up the new pvid
-and then fails the lookup:
-
-net/bridge/br_vlan.c:__allowed_ingress() {
-	...
-	v = br_vlan_find(vg, *vid);
-	if (!v || !br_vlan_should_use(v))
-		goto drop;
-	...
-}
-
-which would drop untagged/priority-tagged frames for the length of the
-window (this lookup is reached when BROPT_MCAST_VLAN_SNOOPING_ENABLED or
-BROPT_VLAN_STATS_ENABLED is set), triggered by something like
-"bridge vlan add dev <port> vid N pvid untagged" for a new vlan while
-untagged traffic is received on that port.
-
-For the read side the analysis looks fine: the smp_rmb() in br_get_pvid()
-preceded the pvid load, so it never ordered the pvid load against the
-following hash lookup - that direction comes from the address dependency
-into the bucket computation.
-
-If the write-side ordering is still wanted without a fence in the
-fast-path, would smp_store_release(&vg->pvid, v->vid) here be the right
-replacement?
-
-> @@ -50,7 +49,6 @@ static void __vlan_delete_pvid(struct net_bridge_vlan_group *vg, u16 vid)
->  	if (vg->pvid != vid)
->  		return;
->  
-> -	smp_wmb();
->  	vg->pvid = 0;
->  }
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260903143138.1574598-1-razor%40blackwall.org
+        tglx
