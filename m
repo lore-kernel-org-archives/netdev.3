@@ -1,109 +1,121 @@
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 046433AAF49
-	for <netdev@vger.kernel.org>; Fri,  4 Sep 2026 23:45:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B21CC1ABEDE
+	for <netdev@vger.kernel.org>; Sat,  5 Sep 2026 00:07:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788565539; cv=none; b=sUAOEu3ISp2CS4E5konDvKSf1ivMyZFFrfKH9PFXD/hh+iZnbAe/tAJ6e4SWzvzIjYK+yT5GGJssrqkrjqaEsLM1p8JMNNrpuG9jQ3ojHRqiNoxF+aV/stl/h1EK/CS+RLORIqHLluAp1XqdPgJzRcNM1GGggewrUTu0J6SqRvA=
+	t=1788566848; cv=none; b=aBpjk1K+TS/9ZCuzJQg3TlKv4lx+lB0ZxZiNV0+JupR17tr8xJq1Ti7J1ptjpLq4rFoQPykjRt66ouzNHQRND/EuVnmhzlK7h8ItAQjzbZrPgyvP0J6tSF8R3+CrtjCW2ldZEN3OhGscYl2lnuQ/l/II9CxqzRTvLmD71aUT7NA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788565539; c=relaxed/simple;
-	bh=fkFTQQNYnQSSSsDD7OGhM57lhbiJ5lJKsqadU032ayE=;
+	s=arc-20240116; t=1788566848; c=relaxed/simple;
+	bh=H4BO10PJj0joa3aauFnjIEEAGKsQ4HeJy1y1Pu6cprI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZygbVHRUFTOmdxui2lHRK6bxB4xZI5X7lvh9Uu7Tohr6z7VNXwIeO+9MPU6+Mhw1yf/mLSCcPxC6Hot2cWPxuowiNN9JaYYNPRYYadFNZQHJiq6mQB7t71D2U+F4ZVz397Yo8I2jsMYFYvma4p3OQw3wuun6OphwndFqVK+wB5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la; spf=pass smtp.mailfrom=lex.la; dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b=OQyiNN63; arc=none smtp.client-ip=209.85.221.54
+	 MIME-Version; b=Tm0CbnFZhSTv5BxLFvfSx+Nu0uwj6qbGP3nfkDHoRosH2QqXylk9BzlUi2EffDeQFqsqK6lAksWK3HecDLTIe0ycqoAouc6xo0gVgeuAs8qZZxmr7iWGl9vhNnqcYlB/CoFJpk58JBY6q8hn/5lEegK8bXqHoULPRTuwitMDwf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la; spf=pass smtp.mailfrom=lex.la; dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b=hEbKSFtp; arc=none smtp.client-ip=209.85.221.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lex.la
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b="OQyiNN63"
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-48436251906so1750760f8f.0
-        for <netdev@vger.kernel.org>; Fri, 04 Sep 2026 16:45:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b="hEbKSFtp"
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-48436251906so1762303f8f.0
+        for <netdev@vger.kernel.org>; Fri, 04 Sep 2026 17:07:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=lex.la; s=google; t=1788565536; x=1789170336; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=RjaW1h7vZKLdHfo56Q43CxCz+PpDYJcHVHSJB9rJaGs=;
-        b=OQyiNN63vU+T9mYDThlN6nY8237tXPzcMLsJtneON3yQ3JEAn5FQGVworkcxBGExTG
-         VTxligFfwnhu4FTy2irZ3VktU2Xl0PsnLdIBIUvXQWuaaAz4vy+lVO/nJYM2USLKPdW1
-         BRDQgGZE2y55Pol45o1xoU9m5OyGKrFPIDF4r3QpLAojqva+jsf4eyHMWHn5PBQOhAUl
-         x6U3WrwwXtYwexxP1A4jD8sbGXfKKBReVJ2EpOdTeo5GqPc3MebaRctRgGHywD707Div
-         /WjMFc9LKVF03IVUHdEkO1CdHD2WM8BuqDXURbii3s1yPpJaql/KK4Hxa5z9L+Z8QBj7
-         e0+g==
+        d=lex.la; s=google; t=1788566845; x=1789171645; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=H4BO10PJj0joa3aauFnjIEEAGKsQ4HeJy1y1Pu6cprI=;
+        b=hEbKSFtpLKhcQTmbzLOVB5mDFCxkFxP2KopbmxrARUjsBMyQUBk64m8gPBZW5SBUWR
+         FTqNiI6MmE79PL2Rm/9KUysBmuDgZo+7amlK5wjpA7pG0YSR6/B1gnqoWo7thnrGfV//
+         7g6n2hkqiZF7EKrJx2IjlqACTe6jLYDRaztjRn+OrnZ4bwf/byK7Xb4z8KJmPbheWcJw
+         JSvTKw/7AOwxUhT3wknmmpuR1nmLUo0kCPtphO+w4ZF57MIPVl50QFcGYjybAWe8dNmn
+         2s+e8Zvfb+CiOUzHzxx20lq/SSWnlz2fvt5qoIsP8tW8ULjxjAV2ow51rHz9O4pd7VQq
+         UB2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788565536; x=1789170336;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=RjaW1h7vZKLdHfo56Q43CxCz+PpDYJcHVHSJB9rJaGs=;
-        b=MR2EpsIvvHWtLnY+5gI3dAaVT8zEZNOuw+Dx1LYRJCp3NnCQ+lWdzXBwZdvabmR1G1
-         LEilmrE15oIyUeTLOx2/2R8jAh2m9G1klo7IaXfHlvFfOHd9IyEeIUJUq4Q7C4CfmgBY
-         mBxp5zIhPXkj3UGa9POgDo8k21cZUJ7uV5ZQQTi6xghr/BlwqYZmjL8SqNXE3N0NLwQz
-         9BUzNpcKgJfK1y2ETANVc/cpnhoauAfHUstTCxUNedo4VSCHkJ9yySLHPXE8TgNKl4zU
-         1AsnTEfRC6Oam50IXy4YD+XKNM8BFfE2eTpFg3AHZ4YCA5XRvsbsOIrcHKhDafbx8Al4
-         9ZDA==
-X-Forwarded-Encrypted: i=1; AKwUvBy91vMraRgr3o4Ov6Wx/cKqacm1y/OTN4fntXKrqXbgzxnyoI1QuNEhJM22eI5x7tZat/4yVdc=@vger.kernel.org
-X-Gm-Message-State: AFuF++nj+saixoIHIRZf7+aFN2TlbvT4chKRXxLwYwgDXyLPbXGO5/f+
-	uWE3bEblnZcz4UazgvPxl8drdo8wV4lQvTkOBFhA8ZJ2+1/Y5putCI8PZ+ZwdjfMAAE=
-X-Gm-Gg: AYBFou3eDzuntAecEgeP8u+X8MbH6kK5MQHHW3oM5gxESnFtzzDJwWvwjgPxOPpmUTu
-	fLJT22FJVo2Xvwoa2+AgZJVXB9l6burluUzkkR3r6PDa1dvWae4/e/NP0Ns/U1/zVsw7EmIhUUO
-	PViy4xCWOb3sWqwFfPGSiRoYDRk+VvgjBS1FmUJN8nI3D7PS3lCjsvAN4aJnsFJzNHEdEYC23cs
-	8iGU/xqFi+LZAzDGEqlIum1aL2XHSzTnO9msm+/QG4REgRLNoY3v2oaMK7cGj7EnmkrJ/k4mTAx
-	ppbmvcbF9kicBA6Jlz9hF0tAOlGNyoULQQCJkhdEcenLiPx76U15r4nCfADqW/wwYzZ2iThG1kS
-	/D7TPpwdaU1fgaFsNKVijWulRo3ZbD/PM14Jz86PSvu//zbkDyELJWqg/0/H0EgV6CBxW0upCYD
-	8CpaTgTNYqSj7K4s54vyrfb/CMQDO5zQ6jJhT4heJ+02WofiNT2A==
-X-Received: by 2002:a05:6000:2388:b0:47f:9283:1fbe with SMTP id ffacd0b85a97d-48586bf25b8mr18225190f8f.0.1788565536106;
-        Fri, 04 Sep 2026 16:45:36 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1788566845; x=1789171645;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=H4BO10PJj0joa3aauFnjIEEAGKsQ4HeJy1y1Pu6cprI=;
+        b=mOoKQtZUEchfKkD3GJMG58GwJ4GNKxC/OyzTwhL3wYF3Yx3TP0QgcR6D1nN2FnZKPP
+         iHuwNUZmKPOre+bV4OYRX58/FyJ/YYmsZy7lUFXrUU17CYAZQ3V82ZqgeIJyb0cVz3dO
+         R4yb3vmf0fZJYhdjlC4ayb6Su1T5bMls4y40+Lc3/GWEhiLkWPVPUvXQU5yzavpKCn5F
+         wIr09eqWz5GS3YcC/UXkSnW711SMDmH425Spi1OhiEnibgAvl2ZuOYMRnNyOnTrSFfct
+         WY0HPCTY/zKBSou+O/GJbdGV1EZwmL6GBkGiVlEzcEinmZqNRwptovS934+rnAQ8XbBK
+         iYIg==
+X-Forwarded-Encrypted: i=1; AKwUvByVl7nXRZ8cpcWhAqIBo0b9JF38V9t+gLW67AIWF/Bwc2o4JrCFnrycv5qkHuF3b1kymaMvuco=@vger.kernel.org
+X-Gm-Message-State: AFuF++lwcbPnP9ybUifbjOogX5dZOe6rB7/7q4SY21XbN4W1WkTV7zsr
+	PdLLzdfmrpj6cSCOTB4l7abTFdEFVyQ/6H0n676UmVzMBiQos/tOBlZT1IQdE2Tmq4g=
+X-Gm-Gg: AYBFou13S9iXBEDq5Zxs7klX55gQGH/Y4BetHNlBTT0OYOvINotSbUW/GxUya5jHbv/
+	HG5A1QldV6Os9q6A8b1udfoYInYxYf5zYcyNkxZE4K7qW4wn05m/VGtMjAST2djElNypyaZHfLR
+	paqK/LyqX6pPHrNIDuaIH1/CCEtd0rgFrHt+bH1Ov6M/UOjOVFj8O4foCJx2ve68SfYpFPJL0Cw
+	JxInKPPl0h2Gqb8PPwejbVhDYbN+4v5lX/xwDDcg0XV+as8w1LpFybb4TtueyHs1MHk1nwz0O3v
+	lP/y9J2q6gFkLr0PtSrDp9BqXZH+/loatE/Tus9UvKYlZPtzkgwcAiibnW2841ZLshdKwPUFydm
+	zTumJYpdtBMhKMeFQHCSgZ7LncSzyMaEXZCCxq5NjuuzWtubsVLb2GYBCv4DqV/KuNREhe2+Atv
+	ZB/2vZtgLBj8rgJ5sffpFdfB9bB2kvme++cXvh6CY=
+X-Received: by 2002:a05:6000:481d:b0:484:36c1:2881 with SMTP id ffacd0b85a97d-48586e4a5c8mr21303352f8f.2.1788566844492;
+        Fri, 04 Sep 2026 17:07:24 -0700 (PDT)
 Received: from remote-01 ([84.17.55.227])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-485883a9a56sm8018342f8f.15.2026.09.04.16.45.34
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-485883be709sm9575928f8f.21.2026.09.04.17.07.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 04 Sep 2026 16:45:35 -0700 (PDT)
+        Fri, 04 Sep 2026 17:07:24 -0700 (PDT)
 From: Aleksei Sviridkin <f@lex.la>
 To: Andrew Lunn <andrew@lunn.ch>
-Cc: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Vineeth Karumanchi <vineeth.karumanchi@amd.com>,
+Cc: hkallweit1@gmail.com,
+	linux@armlinux.org.uk,
+	olteanv@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net 2/2] net: macb: reject an unknown link speed in the taprio setup
-Date: Fri,  4 Sep 2026 23:45:34 +0000
-Message-ID: <20260904234534.407633-1-f@lex.la>
+Subject: Re: [PATCH net v4 2/2] net: phy: restore the interrupt after a generic-driver bind cycle
+Date: Sat,  5 Sep 2026 00:07:22 +0000
+Message-ID: <20260905000722.422652-1-f@lex.la>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <cb6da9c8-aea0-4740-9709-d718462481e9@lunn.ch>
-References: <20260902080528.2211468-1-f@lex.la> <20260902080528.2211468-3-f@lex.la> <cb6da9c8-aea0-4740-9709-d718462481e9@lunn.ch>
+In-Reply-To: <69f2a065-6855-454a-96cf-1ceb9656369b@lunn.ch>
+References: <20260902080511.2211261-1-f@lex.la> <20260902080511.2211261-3-f@lex.la> <69f2a065-6855-454a-96cf-1ceb9656369b@lunn.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On Wed, 2 Sep 2026 18:37, Andrew Lunn wrote:
-> Can ethtool_validate_speed() be used?
+On Wed, 2 Sep 2026 22:53, Andrew Lunn wrote:
+> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-No, it returns true for SPEED_UNKNOWN:
+Thanks, but please hold that one. The Sashiko bot pointed at bus->irq[]
+afterwards and it is right, so v4 does not do what its changelog says on
+a fair number of buses. I would rather tell you before sending a v5 that
+changes the approach.
 
-	static inline int ethtool_validate_speed(__u32 speed)
-	{
-		return speed <= __KERNEL_INT_MAX || speed == (__u32)SPEED_UNKNOWN;
-	}
+mdiobus_alloc_size() fills the whole table with PHY_POLL, and consumers
+that install the interrupt only on the phy_device never touch it.
+smsc95xx does "pdata->phydev->irq = phy_irq" and lan78xx does
+"phydev->irq = dev->domain_data.phyirq", both without a matching write
+to bus->irq[]. There my helper reads PHY_POLL back out and restores
+nothing, while the comment I put next to it claims the table still holds
+the pre-bind value. Only fwnode_mdio, stmmac_mdio and mlxbf_gige mirror
+it, so only they are covered.
 
-It answers "is this a legal encoding of a speed", which is the question
-you want when a speed arrives from userspace, and that is where its
-callers use it: net/ethtool/ioctl.c and otx2_ethtool.c both validate
-what was passed in.
+The same bot made a second point I cannot argue with: the == PHY_POLL
+test cannot tell a bind-installed PHY_POLL from one the caller asked
+for. PHY_F_NO_IRQ in phy_attach_direct(), and ixp4xx_eth, ax88796c and
+emac-mac after connect, all write it deliberately. On a bus that does
+mirror a live interrupt, phy_detach() would hand back a number the board
+took out of service.
 
-Here the speed goes the other way. We read it back and need it usable,
-and SPEED_UNKNOWN is a legal encoding of something unusable, so the
-helper would accept the one value the patch exists to reject.
+So the shape I would like to send instead: save phydev->irq in
+phy_probe() before it is overwritten, and put it back in phy_remove().
+That drops the table as a source, drops the provenance guess, and it is
+the symmetric undo, since phy_remove() already reverts other probe-time
+state and is reachable through a sysfs unbind that never goes near
+phy_detach().
 
-v2 is coming with the commit message Théo asked for.
+The part I would rather agree with you first is where the saved value
+lives. A field in struct phy_device is the obvious answer and also the
+most expensive one. Is that acceptable, or would you rather it went
+somewhere else?
