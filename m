@@ -1,83 +1,76 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62E783A9632;
-	Sat,  5 Sep 2026 20:21:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB97E333439
+	for <netdev@vger.kernel.org>; Sat,  5 Sep 2026 20:23:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788639680; cv=none; b=r+XRCSXhHr5wRKhshuiEM81NJ0oTt5gpA1PFCBVOrACPT1Iif3EEkiYD4DrmwhHM5Yc8jhk+ff7Ycey0Ty5KjQuWCBq8IA/sKGCcV4zHmlfOYwFFM7FJjp/Q7xL7xHPv95qKKJlpcyv9M6ysKimVpay8FM2zX8aTq4qUcbwPQWc=
+	t=1788639793; cv=none; b=fS0n2Q7q2ICXX+3HQ+VVtoVVR7K8t/Bb471BMvaj4dY8lcNWiaoz10Zi+RrfhY0KlSdV6PHofHWTGq+mtgSQI+TO0t7d7ncCGEmDRSzf4LIASTzs4zrOQiYnubuNBC4T22VPE6GWK3lz9JGwZ6VCgfQMjjWo506ALCFqHhA3qak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788639680; c=relaxed/simple;
-	bh=UeXx2CQskLNi31I/Q9pxOcY6Q08XZOFZae+MRQWA+lU=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=i4sMzBdcbef8PzIL6UWTtna+gRpc8yW8+mo6bhKuUg2/z0lHLYZPE/zXWq9Gwg8Vs6gOXELzulRbb+EqfSZPhgZd5d8RoOU9nTGzTbqbls8ciUkRPguhYTzd4p/lHcGjOtYnEYU1Mdq6E6SZ0Eega01uVMAtDbXFLEZMDH+/SvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CESo50uR; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788639793; c=relaxed/simple;
+	bh=DNDbd91qqA1K3hMPzgERbnV6Pn4oinAjsYTPHQlM/n0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=GE25ayPfVxV08t+4VA+FuIzbDFj2EHngUTr56WJK0nu2lT4zrG7WS9uYvAp4LUogmzYC/nWs/85qCNg1o0N9wjqKOrICZ6edCCbA3qYs+Odunkk09rSQnTsAMOwsZhb7f1b4vBLHVOro8ytdEfHWVX+ydRejbKLh4LXyPbOQ8pI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RT7cWf+E; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CESo50uR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE66A1F00A3D;
-	Sat,  5 Sep 2026 20:21:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RT7cWf+E"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 927F01F00AC4
+	for <netdev@vger.kernel.org>; Sat,  5 Sep 2026 20:23:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788639679;
-	bh=GSAPy7aQ1sCPtzFfspGLqF/TrMFWOSJ9H/p/vQrcFs0=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=CESo50uRHX1yDUHhJr6WsA3jwXraynGkxNLJe1meTXaGBBZV4sWBjmi51w03EmIhT
-	 J6dcmzzaCq28ylTpz2jLh0/t8lW61blDRKBL5Zb4PDslDHvoOrTNzQj7DgENhciBWH
-	 /FTCZmCH/Oe0XqqkdGQaF1fFQzrjJr/miRSkEIMj3zHzgVzWrX4jCd0Ld0GQbWOlxB
-	 Ch9XksMluebaB9eGUnQRTMo3fvJbKGLAUuR9ulg7HhPXf/RJCe9N6S/DysNCXdLVGp
-	 SmFzJjJKkY67d2DEHpGO4oOzepM67iSNp7GTY5Dv6Y7hhFCWikTgn+rVsZhnxN4Abb
-	 c7lbH7qTVQRRw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 568D33924FED;
-	Sat,  5 Sep 2026 20:20:20 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1788639791;
+	bh=DNDbd91qqA1K3hMPzgERbnV6Pn4oinAjsYTPHQlM/n0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=RT7cWf+Etk4WgX5HcrynlFoJVU4QhMy6gWOG0NsXFIFILPo8XE4mUqoU4u7SCstO8
+	 uEriXDcHi9v+GZJI9b5zs8yua9F1eMBD4AlZxZe8NxbGQrkO3Xc6H4LOTNGI+Vf5fF
+	 oYW5qqHykTVu5c4pZTcgdsLhirK/5DE1RD0C2pvnVI0TRuicjoBBt4fgKIaQ+jsQcA
+	 T0q5KzaxCaHeOqMW2Gu24gazpfpOQzZ1H1Am1gIv0spMFUR/JSmcspMyBY5OkDxQ7o
+	 fr1GY4imREjYYIo/lBOxZs/kpboVc2D8M1V5W0LaZwzqYJFZHVDGam583xS/S1XMzi
+	 4tpWfzUBcN9EA==
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5b4af730f8aso2398485e87.1
+        for <netdev@vger.kernel.org>; Sat, 05 Sep 2026 13:23:11 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBxVqQ4a5kZ5UP3BJl2CzPj7CuGfiVbro3wGGj80GOF9GH9eNKcZo8knA9az8QlnXIy8ZKY7iRo=@vger.kernel.org
+X-Gm-Message-State: AFuF++mx7kxGwhYRwVSg2bolJTIE0J3I7RpFcKFR/13YwX0dcaO7b9vr
+	Grx86203p91nIapRI0CcmbaWsHlxuX1NBZYBVWcf/93EOnJbm6MSvztVojRJGpKjaC5Aj/dEfks
+	/o34KDN8eMAAQZtRPE5sF+Va3+5ywy/o=
+X-Received: by 2002:a05:6512:39d0:b0:5b6:183c:5c9d with SMTP id
+ 2adb3069b0e04-5b6183c5e63mr2060524e87.59.1788639790281; Sat, 05 Sep 2026
+ 13:23:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 0/3] net/mlx5e: RS FEC variant fixes
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178863961888.1343052.2330784257627019651.git-patchwork-notify@kernel.org>
-Date: Sat, 05 Sep 2026 20:20:18 +0000
-References: <20260902164634.3657606-1-tariqt@nvidia.com>
-In-Reply-To: <20260902164634.3657606-1-tariqt@nvidia.com>
-To: Tariq Toukan <tariqt@nvidia.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com,
- dtatulea@nvidia.com, eranbe@nvidia.com, gal@nvidia.com, jianbol@nvidia.com,
- leon@kernel.org, linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org,
- mbloch@nvidia.com, moshe@nvidia.com, saeedm@nvidia.com, shshitrit@nvidia.com,
- ychemla@nvidia.com
+References: <20260905134131.66680-1-hppiscas@163.com>
+In-Reply-To: <20260905134131.66680-1-hppiscas@163.com>
+From: Linus Walleij <linusw@kernel.org>
+Date: Sat, 5 Sep 2026 22:22:58 +0200
+X-Gmail-Original-Message-ID: <CAD++jLky_xX28S3aw88wvZy2gv77-6AaOzK9vG+5YnmV91ErMg@mail.gmail.com>
+X-Gm-Features: AcwNN1Uu2OyjV_h0PksTSTYNqQxzAZUaF8VKTqiR_G0Mg84ZDEQ0kUOzYT_17OA
+Message-ID: <CAD++jLky_xX28S3aw88wvZy2gv77-6AaOzK9vG+5YnmV91ErMg@mail.gmail.com>
+Subject: Re: [PATCH] net: dsa: mv88e6060: Publish the OF module alias
+To: "hpp.iscas" <hppiscas@163.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello:
+On Sat, Sep 5, 2026 at 3:42=E2=80=AFPM hpp.iscas <hppiscas@163.com> wrote:
 
-This series was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+> The MV88E6060 MDIO driver uses mv88e6060_of_match for OF matching.
+> The MDIO bus emits an OF modalias for such devices, but the module
+> only provides the legacy platform:mv88e6060 alias.
+>
+> Publish the OF match table and retain the legacy alias.
+>
+> Fixes: 277617603c02 ("net: dsa: mv88e6060: Support probing as an mdio dev=
+ice")
+> Signed-off-by: hpp.iscas <hppiscas@163.com>
 
-On Wed, 2 Sep 2026 19:46:31 +0300 you wrote:
-> Hi,
-> 
-> This series by Shahar fixes three related bugs in the RS FEC handling
-> for mlx5e, all stemming from incomplete coverage of the three RS FEC
-> hardware variants: RS_528_514 (bit 2), RS_544_514_INTERLEAVED_QUAD
-> (bit 4), and RS_544_514 (bit 7).
-> 
-> [...]
+Fair enough.
+Reviewed-by: Linus Walleij <linusw@kernel.org>
 
-Here is the summary with links:
-  - [net,1/3] net/mlx5e: Fix missing FEC mode mapping for RS_544_514_INTERLEAVED_QUAD
-    https://git.kernel.org/netdev/net/c/802eedcc0b25
-  - [net,2/3] net/mlx5e: Fix setting RS FEC after remapping
-    https://git.kernel.org/netdev/net/c/b9d755c5a375
-  - [net,3/3] net/mlx5e: Fix reporting support for all RS FEC variants
-    https://git.kernel.org/netdev/net/c/c84ce45a7a3f
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Yours,
+Linus Walleij
