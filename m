@@ -1,98 +1,73 @@
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E922233956;
-	Sat,  5 Sep 2026 19:29:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3AB2391835;
+	Sat,  5 Sep 2026 19:29:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788636558; cv=none; b=pQVBFgca1xgbDAO7h5UfTu0PozHk32rwEqR4nbY3Ba/g6tFwY2uNUHRJhU8WU59T3TXxN0nYy8IcgSmBGmuqZxPPg0szP7IGOUheAW9AGMy3TpsAjdkZLR6LRFl7zTcjd0hRMji45vPxn2BqZpnOZ2+WW8N2E+r1wb1vs2YDQGg=
+	t=1788636572; cv=none; b=FQPue0XB78JP15hAlwfeAMi51zhSlQlZdK0nnOKdm/qBsBWbwN18d1xW8ZHJ47kPBh8BV8Crm9WtVTMS0pM5jWJPo4dSfHqrjB9N5sSNJvyv1ZCW9PxmZ8kkRRhE8knKWpixYo0B/FzA4SL1iu5OGFitRjnXr7jFiFll8nL2OgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788636558; c=relaxed/simple;
-	bh=thnuPuvUw6sctQ7uIDS4vEzexRXGoln4K5XRrrAql1w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IHhX6sGRSBy2/vS1qdscUxRje1Y1s2hfC7CaRFs42a/zRMe6MTYUva/iU8HOK1fFarZRQJHwNRHAO2sqpdqVhLZUeLUihD48PK7fkd2llr/eCzsIYVx748BYli0oxlkLQtbQJj/UK6mn2sICYDE3FWjfqRQHZUO/TpWtDeBGrsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=YV5jN0zB; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1788636572; c=relaxed/simple;
+	bh=B1ppOpPbviRzyBRvzSXjY0WHZU3/VeGa9sEQ843QBNI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=s3VClHZauspzMEgU3ngaCs/WwCRRwnhO4OrsiwSjD0G7kky5GVBex9nnYSJJ9Xq/D4ziu7MOjJPzsY/6EFD+viSAs9sSzB8GlxOFJjc4qSmjVnAuD0eqQs/Quu0iJwgtwavtIB5ewZQYeXyEG6W7foyCd6K8fyBk0gNRecmF2+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gGTfy18A; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="YV5jN0zB"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=4KWu7PzxU4mkanDyWKCYcDPziDlSOLKCu7A19tMVymU=; b=YV5jN0zB6WsXzQbq/QcUf+wZJO
-	W5JdWxkDSrJxlVpQGaCoWEGvAXGfYBhjcj3gDaVyB+jdBcHbSrCJm5e8zvvos38QmLzaopZJUyRLG
-	TvyYhcv38wmp4EpCXCkuNQNo4OxteQj1OsfLAIUXT6Gw7ksSc6A58vfhGOUSyvOOGcAVDXgKRh2HY
-	yI8rnoLRl9nt/wtwG8geedGmhgjGVUcwZ4iu4QF9YU4N6lnTF+Bg2HYowbHsP4ZeZBPZ8Tg+hQOqi
-	YeTb0wgDWCTyI5TcfDoeUDyhEnXRgeT25NIsh//UstGnS0UxkhbiRmuBzdXWjVJnoy7Fgx7uf/XPB
-	PW50TRgg==;
-Received: from [50.53.43.113] (helo=[192.168.254.34])
-	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x2w4e-00000004Msa-03aG;
-	Sat, 05 Sep 2026 19:29:12 +0000
-Message-ID: <4ccf8187-325f-45c6-be1b-ca8cad1f98a4@infradead.org>
-Date: Sat, 5 Sep 2026 12:29:11 -0700
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gGTfy18A"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B43E1F00A3A;
+	Sat,  5 Sep 2026 19:29:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788636570;
+	bh=kIarTBDrMQaXpsAeKpsxpWu81PITLhaO4Nrvi/ktLpA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=gGTfy18A878jp0Qd0kp76iheNgEcPIrBfYVMPTbEUHW5X/Gqol/in8NnkcmiQmhbh
+	 37gVpizpqUtH6o+BxWHpZiolxMjDneZBRA0QRQtGfRyrVC3RFegLDQyWGwTH2CK3MA
+	 G42PFyDRaIvCwI5adpVNjSnnfQ/UEpOqb1QqZqNWRImozeSsXEKUOCUqnCUGZhE0hs
+	 nz3RDJZe+Wf7586dzT3OAUJCi497al7S17Y6pM2/S+Q3TE4WkQK0q5xXyq32dYsbLX
+	 pr47mDz8i15KdA4n67EQVaO7pyIaI2YQJfaycl3ouwWU2GaGZTnEbZOki5zUEHQ6Aq
+	 djXVc3phma0DA==
+Date: Sat, 5 Sep 2026 12:29:29 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: zihan xi <zihanx@nebusec.ai>
+Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ xemul@parallels.com, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ vega@nebusec.ai
+Subject: Re: [PATCH net 1/1] udp: diag: bound bucket lock hold time
+Message-ID: <20260905122929.5bd1bd45@kernel.org>
+In-Reply-To: <CAANe3eRpVGnYpygfiQTsXd2VmBO43P-P1RfREkdDypgXBZB9Uw@mail.gmail.com>
+References: <133b6aee9e2c908c9da37d5585b3d2cd016906cd.1788187473.git.zihanx@nebusec.ai>
+	<20260905151227.75099-1-horms@kernel.org>
+	<CAANe3eRpVGnYpygfiQTsXd2VmBO43P-P1RfREkdDypgXBZB9Uw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH ipsec-next] docs: xfrm: Fix the two aevent sysctl paths
-To: Karl Mehltretter <kmehltretter@gmail.com>,
- Steffen Klassert <steffen.klassert@secunet.com>,
- Herbert Xu <herbert@gondor.apana.org.au>
-Cc: netdev@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
- linux-doc@vger.kernel.org, Shuah Khan <skhan@linuxfoundation.org>
-References: <20260905104625.43722-1-kmehltretter@gmail.com>
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20260905104625.43722-1-kmehltretter@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-
-
-On 9/5/26 3:46 AM, Karl Mehltretter wrote:
-> The sysctls are registered as xfrm_aevent_etime and xfrm_aevent_rseqth
-> under net.core (net/xfrm/xfrm_sysctl.c). The document calls them
-> sysctl_xfrm_aevent_etime and sysctl_xfrm_aevent_rseqth; those names
-> appear nowhere in the code but in a comment in net/xfrm/xfrm_user.c and
-> were never the proc file names.
+On Sat, 5 Sep 2026 23:49:05 +0800 zihan xi wrote:
+> > When an active netlink dump for UDP sockets finishes, inet_diag_dump_done()
+> > invokes udp_diag_dump_done(). This function drops its module reference using
+> > module_put(THIS_MODULE) as its final step.
+> >
+> > If this was the last reference, a concurrent rmmod udp_diag operation can
+> > proceed and unmap the module's text segment before the thread executing
+> > udp_diag_dump_done() executes its return instruction to return to inet_diag.
+> >
+> > Could this result in a kernel panic due to the CPU attempting to execute
+> > unmapped memory?  
 > 
-> Use the proc file names.
+> Yes.  If that module_put() drops the last reference, rmmod can unmap
+> udp_diag while dump_done() is still returning to inet_diag.
 > 
-> Fixes: b8a99520f78e ("[XFRM]: Add documentation for async events.")
-> Assisted-by: LLM
-> Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
-
-Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
-thanks.
-
-> ---
->  Documentation/networking/xfrm/xfrm_sync.rst | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+> I will keep the extra module_get() in udp_diag_dump(), and move the
+> matching module_put() into inet_diag_dump_done() so it runs after the
+> callback has returned.
 > 
-> diff --git a/Documentation/networking/xfrm/xfrm_sync.rst b/Documentation/networking/xfrm/xfrm_sync.rst
-> index dfc2ec0df380..27e3d151b11e 100644
-> --- a/Documentation/networking/xfrm/xfrm_sync.rst
-> +++ b/Documentation/networking/xfrm/xfrm_sync.rst
-> @@ -120,12 +120,12 @@ in case they are not specified.
->  
->  the two sysctls/proc entries are:
->  
-> -a) /proc/sys/net/core/sysctl_xfrm_aevent_etime
-> +a) /proc/sys/net/core/xfrm_aevent_etime
->  
->     Used to provide default values for the XFRMA_ETIMER_THRESH in incremental
->     units of time of 100ms. The default is 10 (1 second)
->  
-> -b) /proc/sys/net/core/sysctl_xfrm_aevent_rseqth
-> +b) /proc/sys/net/core/xfrm_aevent_rseqth
->  
->     Used to provide default values for XFRMA_REPLAY_THRESH parameter
->     in incremental packet count. The default is two packets.
+> v2 incoming.
 
--- 
-~Randy
+FTR your patch also looks atrociously ugly.
+If you send v2 please make it better.
