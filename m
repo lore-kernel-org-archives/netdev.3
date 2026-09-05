@@ -1,95 +1,90 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DED4834165B;
-	Sat,  5 Sep 2026 18:32:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E0D14B2CD3;
+	Sat,  5 Sep 2026 18:41:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788633170; cv=none; b=EkUHVA66BLdG9SEWMHoMAl1GpHrBqPFj0BsMMsEJFK5cpRSisRopUKyNElAzRdd2Ic+pA+qmTvSS3rG9Dm2eNWwlxNkfxAh/Arj+zwA/VG3lSUYawSqPajmZfnBmYbarDIKAmW+PYjDCfb+TpTrA0opWxyJQf68YPuF2lOuUEJE=
+	t=1788633674; cv=none; b=b/2qf0eXvr18WRT2KaV50Bx9/AXP06Izz6+2xhSPtTvaygTDNtbJUX24AjtahEPQzQIG0uqdKTJTkiqiQ76hvhjfInRjtwFXiiAnbdYrZauVY8Zf0JReSXj9eAYJv+ZIHSk6N6cEHwQ4c0XjKQ2rIO6916405igVt1rkisfigN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788633170; c=relaxed/simple;
-	bh=WB42MQlfLM4+RA0myoDDVI5Kw7lVVLcYSh/l7GcuYnw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=f5Yx05M6W2KSH36Vp4KONFUmtT+x3Pv/S18wN6Qm3Xt1oKUNp67+9IJlJRDZT3cBW0xEvIHmyl8XxxDn9gfnJ4OoAQIOVyPnKm/qlAcgOz2RnqZ6qLGEptvbJPXrOXvap5zFb7h9SMdrrf7Xs2eh97+kSXDkV3UEWS6a1a0aTxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ml/3Fl19; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788633674; c=relaxed/simple;
+	bh=ewk5jUFWugtdbZ+RqO3jOlsoysJfgd4ZCb4odm3rda0=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=VRR7TJ7Jn3iFVTE222F8PIkpLcLi3vmSmqHPHiabHnO1NaLl1FN2Xn60WUqwXK8VoocUuWPBmgMbgudn3E2ypznj1vS7vH8gXSxEZJLIVd+1nF5CVC+Mr3dvtmqm7zxIRWZwWgeVcbdmuTsTmC7wR3dQ1cueb4FT/BEgwIivV6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ephk7wDu; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ml/3Fl19"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87D6B1F00A3A;
-	Sat,  5 Sep 2026 18:32:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ephk7wDu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5C5D1F00A3A;
+	Sat,  5 Sep 2026 18:41:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788633169;
-	bh=CRbRvK6UjtwLjpKRLYyhoyHibVjGq4RyyAA88+58iEM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ml/3Fl19d0QsBNvy/AL8dMr3K9xF5JAUNzOBLWScXa4qlLIWoigw8ieHz6cP8Mf3a
-	 eM7YVxzy0qP1CUHWm+Xv1reHtCv/EjAdDTEv8V2j7TJL+vWQqlhApO1+0dUvkhFnGO
-	 j5mz2BxuhH7IZYJAcNxtjblbpmm2/TxhsDBaOucSG+pk08z0nbT9Bp0GFT+Tl47cuT
-	 pmlflB5Dd0p6u9NTwVzAx3b/2eMPtvi+swCr4KhNJNMTWldnNXX5GtGZhfbw2M4wrV
-	 BVZmDfcInLYQi/MR43+MACzy7tt1xKdmOqG0SKGEgVv2vTmbSEW8LDzJZKwF7evFQd
-	 Dr76A/hi6FSCw==
-Date: Sat, 5 Sep 2026 19:32:45 +0100
-From: Simon Horman <horms@kernel.org>
-To: Yury Norov <ynorov@nvidia.com>
-Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 2/2] ice: drop pf == NULL check in
- ice_pf_state_is_nominal()
-Message-ID: <20260905183245.GD40544@horms.kernel.org>
-References: <20260903132037.81346-1-ynorov@nvidia.com>
- <20260903132037.81346-3-ynorov@nvidia.com>
+	s=k20260515; t=1788633669;
+	bh=N9g3nNiuaKLsxniTy4aPz1K40ka5HFK4AVVUy4suEqU=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=ephk7wDuiXgQm5M+WKCKSEkbQj/oX+s5aHMg0UKwHu4c+/PofrkLqIJyBIingjLyb
+	 UTcG9rEDMZwgM5xODwQD9wajDHDzfN26Ov08dAhuzm/u+AhcH1gkDQNkNxyoqGRDct
+	 QfHktzyxT54vm7JvK1r+LMhbEajgO9/AZo2QnWSuf2vrahjtFEez/8EFMw+wdDKVVV
+	 EY/ANuwV+OefwVFkhUn5dYqe2+tFyDOdzYy4lDYSGr0HA7C174j9loc2Xag/DwLIMB
+	 TlTAWujVv29PNsaJqhn7qgnJwod0WmLVhaIK7zPl0JEQDwugejwN8D0zvFntub3J54
+	 5G6tTyPhmJobQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56A3C3924FED;
+	Sat,  5 Sep 2026 18:40:10 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260903132037.81346-3-ynorov@nvidia.com>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next v9 0/2] Explicit TSO segment count
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178863360890.1316297.2694047527811233143.git-patchwork-notify@kernel.org>
+Date: Sat, 05 Sep 2026 18:40:08 +0000
+References: <20260831165230.2696893-1-chia-yu.chang@nokia-bell-labs.com>
+In-Reply-To: <20260831165230.2696893-1-chia-yu.chang@nokia-bell-labs.com>
+To: Chia-Yu Chang (Nokia) <chia-yu.chang@nokia-bell-labs.com>
+Cc: ihor.solodrai@linux.dev, john.fastabend@gmail.com, jakub@cloudflare.com,
+ jiayuan.chen@linux.dev, netdev@vger.kernel.org, bpf@vger.kernel.org,
+ ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, eddyz87@gmail.com,
+ martin.lau@linux.dev, song@kernel.org, yonghong.song@linux.dev,
+ jolsa@kernel.org, emil@etsalapatis.com, linux-kselftest@vger.kernel.org,
+ shuah@kernel.org, horms@kernel.org, dsahern@kernel.org, pabeni@redhat.com,
+ jhs@mojatatu.com, stephen@networkplumber.org, davem@davemloft.net,
+ edumazet@google.com, andrew+netdev@lunn.ch, donald.hunter@gmail.com,
+ kuniyu@google.com, ij@kernel.org, ncardwell@google.com,
+ koen.de_schepper@nokia-bell-labs.com, g.white@cablelabs.com,
+ ingemar.s.johansson@ericsson.com, mirja.kuehlewind@ericsson.com,
+ cheshire@apple.com, rs.ietf@gmx.at, Jason_Livingood@comcast.com,
+ vidhi_goel@apple.com, Mike_Rudolph@comcast.com, Jeff_Howe@comcast.com,
+ srichard@netapp.com
 
-On Thu, Sep 03, 2026 at 09:20:36AM -0400, Yury Norov wrote:
-> The function has 3 callers, all except one explicitly require
-> pf != NULL. Add the corresponding check to the remaining caller,
-> and remove it from the ice_pf_state_is_nominal(). It makse the
-> fun function a one-liner.
-> 
-> Signed-off-by: Yury Norov <ynorov@nvidia.com>
-> ---
->  drivers/net/ethernet/intel/ice/ice_lib.c  | 3 ---
->  drivers/net/ethernet/intel/ice/ice_main.c | 2 +-
->  2 files changed, 1 insertion(+), 4 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
-> index 73996e3022ef..6d5b8acc4764 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_lib.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_lib.c
-> @@ -1705,9 +1705,6 @@ static void ice_vsi_set_rss_flow_fld(struct ice_vsi *vsi)
->   */
->  bool ice_pf_state_is_nominal(struct ice_pf *pf)
->  {
-> -	if (!pf)
-> -		return false;
-> -
->  	return bitmap_empty(pf->state, ICE_STATE_NOMINAL_CHECK_BITS);
->  }
->  
-> diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-> index d88835482d3a..168d85f9477f 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_main.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_main.c
-> @@ -5521,7 +5521,7 @@ static int ice_suspend(struct device *dev)
->  
->  	pf = pci_get_drvdata(pdev);
->  
-> -	if (!ice_pf_state_is_nominal(pf)) {
-> +	if (!pf || !ice_pf_state_is_nominal(pf)) {
->  		dev_err(dev, "Device is not ready, no need to suspend it\n");
->  		return -EBUSY;
->  	}
+Hello:
 
-Is the new condition necessary in ice_suspend?
+This series was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Mon, 31 Aug 2026 18:52:28 +0200 you wrote:
+> From: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
+> 
+> Hello,
+> 
+> This series replaces the existing min_tso_segs() congestion control
+> callback with a new tso_segs() callback that allows congestion control
+> algorithms to provide an explicit TSO segment count for each data burst.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net-next,v9,1/2] tcp: Replace min_tso_segs() with tso_segs() CC callback
+    https://git.kernel.org/netdev/net-next/c/cb145191e9d3
+  - [net-next,v9,2/2] bpf: make tcp_tso_autosize() available to BPF congestion controls
+    https://git.kernel.org/netdev/net-next/c/f69a0944415f
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
