@@ -1,35 +1,40 @@
-Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
+Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD82338238D;
-	Sat,  5 Sep 2026 01:16:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B49E3175A85;
+	Sat,  5 Sep 2026 01:18:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.216
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788570985; cv=none; b=OeP3Sp9zqto0sVWM1JmdtL0nAD2dPomYS1KRyPicDdPGgaJef+6w18uRiwp0tWZYkg9MGtP/D7GiB4Mo20yiPw6DsaTXzIZ3Zl/T7/A2z+O7pJMzRlnJFviEHxe9hXPMQh5qWuN1vYgO1tXAelHF2Ui5jtcN8AkknGSHN6mUHDQ=
+	t=1788571089; cv=none; b=aTPvf+N59XeuyfvRnrN7cg3TcBnvx0hkJParW9rSbZ+m59enB5sJtamRdPxTw+cp1EzCy62dHSaDNQRhtSXEvEtZ7toHiArQ++TxNfdiXBzJbOai7kGLQl8Yr38UKJ9CdGB9y4XQvnGukeTTmSeeRzy1Egj37XIm3b/+fKYX/4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788570985; c=relaxed/simple;
-	bh=tB2IpyX4dXAWMVu51m0Dmozi2sMAndrDPEGVg4go1I8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NYTh3fAYY6TXQ0C3RL5SlyZ1XOdIy+Gimrxu44fIhavHVVn/hWweBjvU8TuMEck4mJVmRJXreC+YMvIDoNwIy01SzO4seiaNlglpZJDeh1r/76L3o51UeGz4z/50Hh3JpNwHu1MO4Exl/+3pE6p6bNQ7qaaIp6PTB70QX+ZBvwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=X+1rLl7X; arc=none smtp.client-ip=178.251.229.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
+	s=arc-20240116; t=1788571089; c=relaxed/simple;
+	bh=Kmhs14Ex3KwBhqEPckVEtc+6ggmthw89SIE3YPmL8NE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=qGVzNJun9PUiu8g9R+gOQo31d1bXtB8g/GrODUejPV8iwkdgpOWhKVZwM+h0PsppH7kyYkJF+YX/szyGbQc247NCWRv+mX092XHhVUigBgM9lauBx8pyQZVLEmA0DQ8i0QfVWJxHEQfz1GXA7nVYP6tPDec6jOdAlFtOpyPYNeg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=h-partners.com; spf=pass smtp.mailfrom=h-partners.com; dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b=OlAQ7gln; arc=none smtp.client-ip=113.46.200.216
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=h-partners.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=h-partners.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="X+1rLl7X"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4018B11D8B6;
-	Sat, 05 Sep 2026 03:16:14 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1788570977;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=KD35Y7PrHp3mXRQ+ctDP9TNjuQocO5bXRaIRALZodXU=;
-	b=X+1rLl7XTMmzY3XtFYWK1QrW7dXdHighihEaOpJrgtgKnFrBdIdXrvvF6MDg8T9atTVSkk
-	mkuh5NBZN2a45nd63yXArxBfln68vPWhMwg9E5SOQRGwaiSAYyQtO1ysERCvhSadkPVpX+
-	+4FQZVFMfudDpNrO/gwHgL6tMqVAdN4zjvf3H0lmN2bChqnLhaMMI9chUmYg9VN4I364p2
-	EJmO1D0Ej9ri+w5ApXA5Odr45/ewvf+jhGwss9IFOibh84qmoXF+YXx0V0Wch1dT9uWgP+
-	v9yi1b46sg0dMLdKORAuTMDh4Ss3i4BYG/Ggc5X0s+ApnjYszLSL5DaPvwgfSg==
-Message-ID: <f7149e71-2c32-4f53-86c9-d1c586218fc2@nabladev.com>
-Date: Sat, 5 Sep 2026 03:16:12 +0200
+	dkim=pass (1024-bit key) header.d=h-partners.com header.i=@h-partners.com header.b="OlAQ7gln"
+dkim-signature: v=1; a=rsa-sha256; d=h-partners.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=Owt6eES0/4DG5wsNzS+RJoogK/Xslxq9s8opMqLveN0=;
+	b=OlAQ7glnke9CZfCZS6tQXzaon+hRNuawG54XwYsbeYSVfsYkn+XZTNdY9fHWhS9ugwtrKYC38
+	rkqwXNtQ5IHwrf/0GZBWE/I4Qe61dGBJIz5ukvjt89DdpjwlVuCdDbjV3OOer9nTGthPrfcQrK/
+	XcR9HJsYvCAVISYLWuXPF/c=
+Received: from mail.maildlp.com (unknown [172.19.162.223])
+	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4hcFXR4PLNz1T4Fq;
+	Sat,  5 Sep 2026 09:06:31 +0800 (CST)
+Received: from kwepemr100001.china.huawei.com (unknown [7.202.195.168])
+	by mail.maildlp.com (Postfix) with ESMTPS id EC32B40575;
+	Sat,  5 Sep 2026 09:17:56 +0800 (CST)
+Received: from [10.136.112.147] (10.136.112.147) by
+ kwepemr100001.china.huawei.com (7.202.195.168) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Sat, 5 Sep 2026 09:17:55 +0800
+Message-ID: <b47907f0-8ba2-4a15-8ce5-8de9596efca4@h-partners.com>
+Date: Sat, 5 Sep 2026 09:17:55 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,112 +42,222 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [net,PATCH v1] net: ks8851: Fix receiver error in 100BASE-TX mode
- following software power-down
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, andrew+netdev@lunn.ch,
- edumazet@google.com, pabeni@redhat.com, bigeasy@linutronix.de,
- yiconghui@gmail.com, kernel@dh-electronics.com, linux-kernel@vger.kernel.org
-References: <20260901173925.96183-1-marex@nabladev.com>
- <20260904003712.3484001-1-kuba@kernel.org>
+Subject: Re: [syzbot] [sctp?] WARNING: refcount bug in sctp_transport_put (6)
+To: Xin Long <lucien.xin@gmail.com>
+CC: David Laight <david.laight.linux@gmail.com>,
+	<syzbot+80dfcb1a2235b3efc877@syzkaller.appspotmail.com>, "David S . Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Simon Horman
+	<horms@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+	<marcelo.leitner@gmail.com>, Paolo Abeni <pabeni@redhat.com>,
+	<linux-kernel@vger.kernel.org>, <linux-sctp@vger.kernel.org>,
+	<netdev@vger.kernel.org>, <syzkaller-bugs@googlegroups.com>, gaoxingwang
+	<gaoxingwang1@huawei.com>, <huyizhen2@huawei.com>
+References: <6a7d8773.c5ad36c8.12f49d.002e.GAE@google.com>
+ <68cb4941-3668-44f1-a889-6b2f023b2a08@h-partners.com>
+ <CADvbK_eY4S1HbdNHuNq9b=Va-TA_6rNFvnCvtOUZ0sF-AWN67A@mail.gmail.com>
+ <20260901153524.3e92df3a@pumpkin>
+ <CADvbK_esKpvPWK0xipKeiDr6KDiAL2_uPOhrREOMMVjJ_ndK7A@mail.gmail.com>
+ <20260901224645.7c5bd2e6@pumpkin>
+ <057c057f-be11-4bf7-9403-f454bb2864c9@h-partners.com>
+ <CADvbK_eBx0AicxxWXE1ZOqeNUJtU2YPgTynthBkhq3_1jks9iw@mail.gmail.com>
 Content-Language: en-US
-From: Marek Vasut <marex@nabladev.com>
-In-Reply-To: <20260904003712.3484001-1-kuba@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+From: xietangxin <xietangxin@h-partners.com>
+In-Reply-To: <CADvbK_eBx0AicxxWXE1ZOqeNUJtU2YPgTynthBkhq3_1jks9iw@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+ kwepemr100001.china.huawei.com (7.202.195.168)
 
-On 9/4/26 2:37 AM, Jakub Kicinski wrote:
-> This is an AI-generated review of your patch.
 
-Sigh, a wall of generated text.
 
-> The human sending this
-> email has considered the AI review valid, or at least plausible.
-> ---
-> net: ks8851: Fix receiver error in 100BASE-TX mode following software power-down
+On 9/3/2026 10:00 PM, Xin Long wrote:
+> On Wed, Sep 2, 2026 at 11:23 PM xietangxin <xietangxin@h-partners.com> wrote:
+>>
+>>
+>>
+>> On 9/2/2026 5:46 AM, David Laight wrote:
+>>> On Tue, 1 Sep 2026 11:06:31 -0400
+>>> Xin Long <lucien.xin@gmail.com> wrote:
+>>>
+>>>> On Tue, Sep 1, 2026 at 10:35 AM David Laight
+>>>> <david.laight.linux@gmail.com> wrote:
+>>>>>
+>>>>> On Tue, 1 Sep 2026 09:45:42 -0400
+>>>>> Xin Long <lucien.xin@gmail.com> wrote:
+>>>>>
+>>>>>> On Mon, Aug 31, 2026 at 11:47 PM xietangxin <xietangxin@h-partners.com> wrote:
+>>>>>>>
+>>>>>>> Hi,
+>>>>>>>
+>>>>>>> I have analyzed this issue and successfully reproduced locally.
+>>>>>>> The race occurs between the timer callback (`sctp_generate_heartbeat_event`) and
+>>>>>>> the transport cleanup path (`sctp_transport_free`):
+>>>>>>>
+>>>>>>> Task 1(Timer Softirq)               Task 2(sctp_transport_free)
+>>>>>>> ==========================              ===============================
+>>>>>>> sctp_generate_heartbeat_event()
+>>>>>>>   refcnt = 2
+>>>>>>>
+>>>>>>>   bh_lock_sock(sk)
+>>>>>>>   sock_owned_by_user(sk)
+>>>>>>>   mod_timer(&hb_timer) -> returns 0
+>>>>>>>                                           sctp_transport_free()
+>>>>>>>                                             transport->dead = 1
+>>>>>>>                                             del_timer(&hb_timer) -> returns 1!
+>>>>>>>                                               sctp_transport_put() (2 -> 1)
+>>>>>>>                                             sctp_transport_put() (1 -> 0)
+>>>>>>>                                               sctp_transport_destroy()
+>>>>>>>
+>>>>>>>   sctp_transport_hold()
+>>>>>>>     -> refcnt is 0, increment fails
+>>>>>>
+>>>>>> This should not be 0, as the transport must hold a refcnt to start the
+>>>>>> hb_timer.
+>>>>>
+>>>>> Isn't there one hold sctp_generate_heartbeat_event() and a second for
+>>>>> whatever 'task 2' is doing.
+>>>> Right,
+>>>>
+>>>>> When hb_timer is started it is given another hold (does it actually need one??).
+>>>> You mean mod_timer() in sctp_generate_heartbeat_event()?  Yes, as it will
+>>>> release the last one in out_unlock, it must hold a new one.
+>>>
+>>> But can that ever be the last 'hold' that actually calls sctp_transport_destroy().
+> Sorry, by “release the last one” above, I meant releasing the previous
+> “hold.”
 > 
-> Per the KSZ8851 errata (DS80000716D, Module 3), a software power-down
-> followed by a power-on can leave the receiver circuit non-functional. This
-> patch implements the documented workaround by dropping both transitions into
-> PMECR_PM_SOFTDOWN, in ks8851_write_mac_addr() and ks8851_net_stop().
+> If the hold succeeds after mod_timer(), it can never be the last/final hold
+> that calls sctp_transport_destroy().
 > 
-> Link: https://ww1.microchip.com/downloads/en/DeviceDoc/80000716D.pdf
+> However, in the current code, there's a window between mod_timer() and
+> sctp_transport_hold() at [1], sctp_transport_destroy() can be called
+> to  delete the newly enqueued timer and release the previous hold.
+> The hold at [2] for the newly enqueuing has not been taken yet.
 > 
->> diff --git a/drivers/net/ethernet/micrel/ks8851_common.c b/drivers/net/ethernet/micrel/ks8851_common.c
->> index 4afbb40bc0e4a..cd8dfca22720b 100644
->> --- a/drivers/net/ethernet/micrel/ks8851_common.c
->> +++ b/drivers/net/ethernet/micrel/ks8851_common.c
->> @@ -143,9 +143,6 @@ static int ks8851_write_mac_addr(struct net_device *dev)
->>   		ks8851_wrreg16(ks, KS_MAR(i), val);
->>   	}
->>   
->> -	if (!netif_running(dev))
->> -		ks8851_set_powermode(ks, PMECR_PM_SOFTDOWN);
->> -
->>   	ks8851_unlock(ks);
->>   
->>   	return 0;
+>   if (!mod_timer(&transport->hb_timer, jiffies + (HZ/20))) {
+>           mdelay(1);  /* [1] */
+>           sctp_transport_hold(transport); /* [2] */
+>   }
 > 
-> [Severity: Low]
-> This isn't a bug
+>>> It the timer is always deleted (as task 2 above) it doesn't need one itself.
+>>> Might need to be del_timer_sync() so that it waits for the completion function
+>>> to terminate.
+>>>
+> Unfortunately, del_timer_sync() can only be used in sleepable contexts.
+> 
+>>>>
+>>>>> So when hb_timer is deleted it's hold is removed.
+>>>>> But the del_timer() is happening before the the extra hold is obtained.
+>>>>>
+>>>> Ahh, I can see the race now.
+>>>>
+>>>> I remember you mentioned holding it before mod_reduce() in a previous
+>>>> patch, maybe it will work here, like:
+>>>>
+>>>>                 sctp_transport_hold(transport);
+>>>>                 if (mod_timer(&transport->hb_timer, jiffies + (HZ/20)))
+>>>>                         sctp_transport_put(transport);
+>>>>
+>>>> Does it make sense?
+>>>
+>>> That should close the timing window, but is probably inefficient.
+>>> Rather depends on how often the 'put' ends up being done.
+>>>
+> Each timer enqueue must have a corresponding hold. As long as we take the
+> hold before enqueueing the timer, there is no race.
+> 
+>>> David
+>>>
+>>>>
+>>>> Thanks.
+>>>>
+>>>>> The RHS (task 2) would need to hold bh_lock_sock().
+>>>>>
+>>>>> Try giving sctp_generate_heartbeat_event() two holds.
+>>>>>
+>>>>> David
+>>>>>
+>>>>>
+>>>>>>
+>>>>>> Also, the delay below is under bh_lock_sock(), so it should not be the
+>>>>>> real cause of the issue.
+>>>>>>
+>>>>>> Could you share the PoC for this issue?
+>>>>>>
+>>>>>> Thanks.
+>>>>>>
+>>>>>>>   out_unlock:
+>>>>>>>     sctp_transport_put() (0 -> -1)
+>>>>>>>     -> refcount underflow warning!
+>>>>>>>
+>>>>>>>
+>>>>>>>
+>>>>>>> Adding a small delay  after `mod_timer()` increases the reproduction rate:
+>>>>>>>
+>>>>>>> --- a/net/sctp/sm_sideeffect.c
+>>>>>>> +++ b/net/sctp/sm_sideeffect.c
+>>>>>>> @@ -373,8 +373,10 @@ void sctp_generate_heartbeat_event(struct timer_list *t)
+>>>>>>>                 pr_debug("%s: sock is busy\n", __func__);
+>>>>>>>
+>>>>>>>                 /* Try again later.  */
+>>>>>>> -               if (!mod_timer(&transport->hb_timer, jiffies + (HZ/20)))
+>>>>>>> +               if (!mod_timer(&transport->hb_timer, jiffies + (HZ/20))) {
+>>>>>>> +                       mdelay(1);
+>>>>>>>                         sctp_transport_hold(transport);
+>>>>>>> +               }
+>>>>>>>                 goto out_unlock;
+>>>>>>>         }
+>>>>>>>
+>>>>>>> Any feedback or guidance would be greatly appreciated.
+>>>>>>>
+>>>>>>> --
+>>>>>>> Best regards,
+>>>>>>> Tangxin Xie
+>>>>>>>
+>>>>>>
+>>>>>
+>>>>
+>>>
+>>
+>> Hi , David,
+>>
+>> I have a syzkaller execution log that can trigger this issue.
+>> Please let me know if there is anything else I can do.
+> 
+> Hi, Tangxin,
+> 
+> Can you try if the change below will fix the race?
+> (You may add mdelay() back for reproducing)
+> 
+> diff --git a/net/sctp/sm_sideeffect.c b/net/sctp/sm_sideeffect.c
+> index 94716406d602..c0fddd5e8097 100644
+> --- a/net/sctp/sm_sideeffect.c
+> +++ b/net/sctp/sm_sideeffect.c
+> @@ -378,8 +378,9 @@ void sctp_generate_heartbeat_event(struct timer_list *t)
+>                 pr_debug("%s: sock is busy\n", __func__);
+> 
+>                 /* Try again later.  */
+> -               if (!mod_timer(&transport->hb_timer, jiffies + (HZ/20)))
+> -                       sctp_transport_hold(transport);
+> +               sctp_transport_hold(transport);
+> +               if (mod_timer(&transport->hb_timer, jiffies + (HZ/20)))
+> +                       sctp_transport_put(transport);
+>                 goto out_unlock;
+>         }
+> 
+> Thanks.
+Hi Xin,
 
-Aha ...
+Thanks for the patch.
+I have tested this fix in my local environment.
 
->, but should the two comments describing the software
-> power-down state be updated in the same patch?
-> 
-> After this hunk, ks8851_write_mac_addr() still carries this comment above
-> its remaining ks8851_set_powermode() call:
-> 
-> 	/*
-> 	 * Wake up chip in case it was powered off when stopped; otherwise,
-> 	 * the first write to the MAC address does not take effect.
-> 	 */
-> 	ks8851_set_powermode(ks, PMECR_PM_NORMAL);
-> 
-> Nothing in the driver can put the chip into software power-down anymore, so
-> the "in case it was powered off when stopped" precondition can no longer
-> occur. A grep of the tree confirms PMECR_PM_SOFTDOWN has no users left,
-> only its definition in ks8851.h, and the two remaining
-> ks8851_set_powermode() call sites in ks8851_write_mac_addr() and
-> ks8851_net_start() both write PMECR_PM_NORMAL.
+Testing results:
+- Without patch: The refcount underflow issue could be reproduced
+within 10 minutes using the reproducer.
+- With patch applied: Ran the same reproducer continuously for
+over 16 hours without encountering any issues.
 
-The driver obviously does not exist in a vacuum and prior stage before 
-Linux could have easily left the MAC in whatever powered down state. 
-This is bogus feedback.
+-- 
+Best regards,
+Tangxin Xie
 
-> Since the commit message uses that very call site as the argument that
-> dropping the power-down here is safe, would it help to note in the comment
-> that the PM_NORMAL write is kept deliberately (e.g. referencing the errata),
-> so a later cleanup does not remove it or reintroduce the SOFTDOWN
-> transition?
-> 
->> @@ -506,8 +503,6 @@ static int ks8851_net_stop(struct net_device *dev)
->>   	/* shutdown TX process */
->>   	ks8851_wrreg16(ks, KS_TXCR, 0x0000);
->>   
->> -	/* set powermode to soft power down to save power */
->> -	ks8851_set_powermode(ks, PMECR_PM_SOFTDOWN);
->>   	ks8851_unlock(ks);
-> 
-> [Severity: Low]
-> Related to the above: the kernel-doc for ks8851_net_stop() just above this
-> function still promises the low power transition that is being removed here:
-> 
-> 	/**
-> 	 * ks8851_net_stop - close network device
-> 	 * @dev: The device being closed.
-> 	 *
-> 	 * Called to close down a network device which has been active. Cancel any
-> 	 * work, shutdown the RX and TX process and then place the chip into a low
-> 	 * power state whilst it is not being used.
-> 	 */
-> 
-> The post-patch body only masks IER/ISR, zeroes RXCR1/TXCR, drains ks->txq
-> and calls free_irq(), with no PMECR access left. Should that last sentence
-> be dropped or reworded to mention the errata, so readers of
-> ks8851_suspend()->ks8851_net_stop() are not told a low power transition
-> happens?
-
-What exactly should I adjust in V2 ?
