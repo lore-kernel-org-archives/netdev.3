@@ -1,80 +1,87 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 825F7329E6C;
-	Sat,  5 Sep 2026 20:30:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABB561D9A5F;
+	Sat,  5 Sep 2026 20:31:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788640255; cv=none; b=fYCUrsZt2Bg0UupY1Fpe8oI1VA/UER7eqp5CpYPB2URRbimg/vGqvGo5wkYlatI1DQndpSaadegkL/mAoUbEyD4jSkeL5skboyeLFFBFB2oDxik2hC5NMJDMaYkMSR1wdZ7azbb2ZTreQj8QBRALfR0KAjWX3vzqnyyyneaG2Cs=
+	t=1788640270; cv=none; b=ViJkLElnXU6h0tfIKNKiuckW92Y6uJX70yRLX7jAPuQikES5lpmL9upzOi/Zl1Rs20/hXKSB42yBabXntcWynS21WNIGOk2I+JeikSFUUGbcD+oQitzB6ey6hVKcAYyicQn41J4sCoTdTAJjX/C33aWQ0gaflof72ku52bOk8QA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788640255; c=relaxed/simple;
-	bh=SXM8apCtbNkDIlpr+VZLnf7ArlfsYH3/PyE1qLajdtg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rj03Vye/7OTijxx7Y3eiBOKVbiY+Y96s2CJDXhEnE8eEF+9EtTQVFJkRj3vd5jD4FlzRzsohcF0pGx5Ernn/RezPeY852qq+kLCP/zibgWgezh/kuDSc6gYuiyacz4wp5HRqLFyRreH3vS+Tq3XUTUiL+0LOwneCTMdRFHAyyjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A/gsuIAI; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788640270; c=relaxed/simple;
+	bh=8nnmnAE20iGlGfEMdkHGIeDIaBITqRDCHBfLqe9WD4U=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=fNZ5Y9nbTxHPHqkaLQ7nB5jqdmYw4DQNlFe/dQyFDXEZm/dJPJTflWxQG3HYAGs4oJzQ9EZSsQg4dhl6MWoiNw+mOtMBDfj9Q25fuWcRHweQ6k8i5Od6yNrA0vObv4HL5km3tywxZ9dmRl1kRJHyvMExbkQxmKC2eZeikMLKQ2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iu3iIHVQ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A/gsuIAI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C70E1F00A3A;
-	Sat,  5 Sep 2026 20:30:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iu3iIHVQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A7081F00A3A;
+	Sat,  5 Sep 2026 20:31:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788640254;
-	bh=+eZf2V+wa2JVdic47rPz1ATyb5pBikOwrUj1c8azbOE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=A/gsuIAI/ov4tfVASWwmk9bCLiMY47DsCHchmIffs3ZAWX3qS+r5iK5bP63OGFSel
-	 RMo/kc72iwzAm3IVgpK1t9tMsB8uw+Ryllzk3/pt9ULaNA2fa+QtjKGSx1p4nvOoUE
-	 zBxl5coDUKFC02hEKah4LAkhSikgclcbuChQd4f/LlncShMrU/638VE89F0fCIIZzh
-	 m8REdYrxNe9LK/EUrrIVWOuQTzbAwCYwaV7xuy3NNTuXnvFoXc4kRPW9N5Kj9MTjri
-	 NJcmAdYm7+Q+XeoiGIg3JalJcRr+lVqN7lXBic3kPEwLuV2aKhefBG5vhWMUS5ICYW
-	 2BR68/DwLRwFw==
-Date: Sat, 5 Sep 2026 13:30:52 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: davem@davemloft.net, Andrew Lunn <andrew@lunn.ch>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Russell King
- <linux@armlinux.org.uk>, Heiner Kallweit <hkallweit1@gmail.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- thomas.petazzoni@bootlin.com, Christophe Leroy
- <christophe.leroy@csgroup.eu>, Herve Codina <herve.codina@bootlin.com>,
- Florian Fainelli <f.fainelli@gmail.com>, Vladimir Oltean
- <vladimir.oltean@nxp.com>, =?UTF-8?B?S8O2cnk=?= Maincent
- <kory.maincent@bootlin.com>, Marek =?UTF-8?B?QmVow7pu?= <kabel@kernel.org>,
- Oleksij Rempel <o.rempel@pengutronix.de>, =?UTF-8?B?Tmljb2zDsg==?= Veronese
- <nicveronese@gmail.com>, Simon Horman <horms@kernel.org>,
- mwojtas@chromium.org, Romain Gantois <romain.gantois@bootlin.com>, Daniel
- Golle <daniel@makrotopia.org>, Dimitri Fedrau
- <dimitri.fedrau@liebherr.com>, Frank Wunderlich
- <frank.wunderlich@linux.dev>, Pietro Ameruoso <p.ameruoso@live.it>
-Subject: Re: [PATCH net-next v16 00/10] net: phy_port: SFP modules
- representation and phy_port listing
-Message-ID: <20260905133052.62d1b224@kernel.org>
-In-Reply-To: <20260902212135.1805948-1-maxime.chevallier@bootlin.com>
-References: <20260902212135.1805948-1-maxime.chevallier@bootlin.com>
+	s=k20260515; t=1788640269;
+	bh=Z/TytDHXIdc5N78pnUKbJpTNvxp4fhYRli76ARDYJ8Q=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=iu3iIHVQ/f5DKFt8VnqHXLt4+VHJ0nurwcJ0xY5/V43GO9gRkzeFu1otaGgZ7SjVM
+	 9RtZT4KaohSt3K3Zpn5CPnLnbNk8s8ugky9j5M3oU6bWU5/GqF+62kujavnQGYl1Xj
+	 kZa+M7OWvbep/T2x8ktdG8/NDgNoYbBJb6XO4Agmnct9qI75HsdxG9njZyvZ/seNiF
+	 uzP3vjy8LuzfMClIVyTeLqs/RtplCQEYd4VtoOAa7s1BKZspfj1CJc1kVjMTl3nXJ/
+	 2jWiADoWCvQ/Wbtwhlq1ViezgNZf0XFZEH0g6mHFtvPcStg/AQEULpDjjw6n+ffhvz
+	 Oy/ZcniU+9qLQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93A073924FED;
+	Sat,  5 Sep 2026 20:30:10 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] net/mlx5: E-Switch,
+ prevent mc_list repopulation during vport disable
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178864020915.1345393.18226763979280316717.git-patchwork-notify@kernel.org>
+Date: Sat, 05 Sep 2026 20:30:09 +0000
+References: <20260902193854.3669035-1-tariqt@nvidia.com>
+In-Reply-To: <20260902193854.3669035-1-tariqt@nvidia.com>
+To: Tariq Toukan <tariqt@nvidia.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com,
+ cratiu@nvidia.com, gal@nvidia.com, lkayal@nvidia.com, leon@kernel.org,
+ linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org, maord@nvidia.com,
+ mbloch@nvidia.com, saeedm@nvidia.com
 
-On Wed,  2 Sep 2026 23:21:24 +0200 Maxime Chevallier wrote:
-> Here's V16 for the phy_port improved SFP support and netlink interface.
+Hello:
 
-ynl says =F0=9F=99=81=EF=B8=8F This needs to be squashed into the patches:
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-diff --git a/include/uapi/linux/ethtool_netlink_generated.h b/include/uapi/=
-linux/ethtool_netlink_generated.h
-index f9d8794eabc1..660e0c08a766 100644
---- a/include/uapi/linux/ethtool_netlink_generated.h
-+++ b/include/uapi/linux/ethtool_netlink_generated.h
-@@ -78,6 +78,9 @@ enum ethtool_pse_event {
-        ETHTOOL_PSE_EVENT_SW_PW_CONTROL_ERROR =3D 64,
- };
-=20
-+/*
-+ * type of physical connector
-+ */
- enum ethtool_port_type {
-        ETHTOOL_PORT_TYPE_MDI,
-        ETHTOOL_PORT_TYPE_SFP,
+On Wed, 2 Sep 2026 22:38:54 +0300 you wrote:
+> From: Lama Kayal <lkayal@nvidia.com>
+> 
+> In mlx5_esw_vport_disable(), move esw_apply_vport_rx_mode() ahead
+> of esw_vport_change_handle_locked() so vport->allmulti_rule is
+> NULL before the change handler observes it.
+> 
+> During FW-fatal recovery the disable runs while dev->state ==
+> INTERNAL_ERROR. The promisc query inside esw_update_vport_rx_mode()
+> fails and returns early, leaving vport->allmulti_rule intact, so
+> esw_update_vport_mc_promisc() runs and adds MLX5_ACTION_ADD entries
+> to vport->mc_list whose flow rules are then installed in the FDB
+> by esw_add_mc_addr(). esw_destroy_legacy_table() tears down the
+> FDB with those refs still held, corrupting the sub-tree and
+> leaving dangling flow_rule pointers in vport->mc_list.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net] net/mlx5: E-Switch, prevent mc_list repopulation during vport disable
+    https://git.kernel.org/netdev/net/c/c0c6f4ba8a37
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
