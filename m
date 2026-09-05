@@ -1,90 +1,103 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D09F3D170C;
-	Sat,  5 Sep 2026 11:21:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 054A94A260F
+	for <netdev@vger.kernel.org>; Sat,  5 Sep 2026 12:52:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788607308; cv=none; b=uFNlvcThGzeI/wBV1MpGK2mx/Itc7vdQLnbclkvn5uwFMMayKqqLyrVoNy8dSrqPf3TEYf32+366PKVE4axyDz5EwpO6Ens9GJBEqNkhLqAXs0DB/yd4EAFRBQen25cBtZDe2d44D3LM0Uju4v8t9hd9VGCtw6HfokBRqwKkzU4=
+	t=1788612732; cv=none; b=PYshxmW4wqnj6yOsL7SxqjilMu1PQkGiucu+o3OKPoibAz6niu0PBmjeC4T8kTATDDoL4GPxFZ3krcv6QyZXGDo9/ccVzVr2faiVqyUOHXxmAuZ23j1HrTzps0tO4ujP5MqErKqR8EyE9MPysQiLRWfOFoko6y93Jr1MsLNa6xk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788607308; c=relaxed/simple;
-	bh=ma6bS58FfCrfwdM8DYJ2sps8OuXCTGmCG8RQ3Wn0mOo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ErzJFHvaiTTyEKfEi0DgsrMwPvotBKIDvjcFz45fiwEbDKLo8UFl+FY9gKJnr7JUsqtqjN+c9zmsyO+iShGHu9G413dwQjYrIFbOXDLkpFjHOD0HJtd6QuwVYiz8WF5Z1COfX8eeML327WJdd91/y+XCIZbxs9Ut0OBtniiRYmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=p3MATlEg; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1788612732; c=relaxed/simple;
+	bh=SwU7O5u2Zi+0MO7A5w4CrHOUj77vcKhfx446RwYJXHw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Tj1RCM9Lkx/n8pxdsVW59pJBDkNfUEtSjKS1F96gJRh5DfgMU1g5Eq6rv3UEkvk3OeMYc9QQl3anIknMpBwC+LmVWUnfOG41RvxnSyENG6srLOoXsgFyiY8oUyU09g4/DW/FR7AesNYdMB7Gb0CvdRESUbf3uw8hd7iEBEID/Ew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V/3O0UO2; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="p3MATlEg"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 867C84E41535;
-	Sat,  5 Sep 2026 11:21:42 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 39BB960233;
-	Sat,  5 Sep 2026 11:21:42 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 42EA711C783E9;
-	Sat,  5 Sep 2026 13:21:28 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1788607296; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=FhTjWhvBY3J0Dewu042nmXY6DyK5b1tOm9obfDRLZyk=;
-	b=p3MATlEg/66zDHa22f3ifAmjMncnfKTK4roVoSVT9HLjcgdhTou+zP1J08g7iQ3L4i3NHF
-	/O1JGSToy6cOG9JGgS+Ohuhg3ZljinKmyCCUByLouMA275qUVx++CEThKYszMSpLLK05Tw
-	xqxstb8mElV5xCn/6u0RV5Yy9efLrsJPeKQyqbLt6M62VemFqH5z6n9RiP3QPub/QfLn8F
-	pTN0R0csEWQhLL/6ydW1daxfalqBrdJLJQ6XKqMFb+rzGa+qIx24RbMwJuFwbXRpGCA0LB
-	Jxu8T0r6LifhGm/dnw23SQWHe+MceGjV2l1n5SuZdumY665EyC8r1sFec1ejmA==
-Message-ID: <a48ec7e7-a2cc-4bb9-96de-69ebae5ba184@bootlin.com>
-Date: Sat, 5 Sep 2026 13:21:27 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V/3O0UO2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 420911F00A3D;
+	Sat,  5 Sep 2026 12:52:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788612729;
+	bh=SwU7O5u2Zi+0MO7A5w4CrHOUj77vcKhfx446RwYJXHw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=V/3O0UO2N7TAuDTcDreqSlhtwladrlO5QKUy1e5/D9xvoT985R3Bj7itqN8mcyR02
+	 88VjkIbjtq9Vg0JTxy3TkQTtdqpNco4x2EEAJ2Fi3aNLeUl+G3BQeospCtFZXpjYW7
+	 YG0NuinBhPqGLQDqLMpBwMzwsOJoxQwOQpH1WaS+CWgAWxFLVSQt4dfgFcIVpgPrfz
+	 HnqVAEp4jXmB9Ju92NFz43erb9yRMLef7FNj4W2uw4N8+wPNSBah+WygeQMQSq/HiM
+	 yfchUeKczzuPXxkqK7u0pEQJcbmEXvupPfM9uOzXVPc79FyKJqQqQGTFnNcNVz4fmW
+	 pYyA9O8jPcgAg==
+Date: Sat, 5 Sep 2026 14:52:07 +0200
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org,
+	Madhur Agrawal <madhur.agrawal@airoha.com>
+Subject: Re: [PATCH net-next v5] net: airoha: add HW GRO offload support
+Message-ID: <apwQd01aErOMVf7T@lore-desk>
+References: <20260831-airoha-eth-lro-v5-1-6b0f50401121@kernel.org>
+ <fce0ee5a-476a-4867-9dd2-08e55993bd90@redhat.com>
+ <aplpllPidmCjhSmA@lore-desk>
+ <1ef90408-99b6-42fb-a7c6-7e5bca20c46d@redhat.com>
+ <apmWLtgcUXRrOTFj@lore-desk>
+ <20260903162558.2679c1d1@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 7/9] net: stmmac: qcom-ethqos: set initial RGMII
- link clock to lowest speed
-To: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Andrew Davis <afd@ti.com>,
- Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
- Russell King <linux@armlinux.org.uk>,
- Richard Cochran <richardcochran@gmail.com>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Giuseppe Cavallaro <peppe.cavallaro@st.com>,
- Jose Abreu <joabreu@synopsys.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>
-Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org
-References: <20260904-shikra_ethernet-v1-0-a50765996035@oss.qualcomm.com>
- <20260904-shikra_ethernet-v1-7-a50765996035@oss.qualcomm.com>
-Content-Language: en-US
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-In-Reply-To: <20260904-shikra_ethernet-v1-7-a50765996035@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="CrcWeQCa+fXKdkYr"
+Content-Disposition: inline
+In-Reply-To: <20260903162558.2679c1d1@kernel.org>
 
-Hi,
+--CrcWeQCa+fXKdkYr
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On 9/3/26 20:43, Mohd Ayaan Anwar wrote:
-> On probe the RGMII link clock is initialised at SPEED_1000, which
-> translates to a 250 MHz source clock even when no PHY link is present,
-> drawing unnecessary power.
-> 
-> Initialise at SPEED_10 instead; fix_mac_speed updates the rate once
-> a link is established.
-> 
-> Signed-off-by: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>
+> On Thu, 3 Sep 2026 17:45:50 +0200 Lorenzo Bianconi wrote:
+> > > Lacking more details from the vendor, I think you need to use a
+> > > pktdrill-like sender, explicitly sets the segment lengths to some not
+> > > mergeable (like, i.e. 200-300-400) but otherwise fitting a GRO packet
+> > > (i.e. same hdr except for the sequence number and push flag allowed o=
+nly
+> > > in the last packet), ensure that the aggregation timeout lasts long
+> > > enough to receive all of them, and check if the engine really aggrega=
+tes
+> > > them or not. =20
+> >=20
+> > I think in the example you pointed out (length 200,300,400) the hw engi=
+ne will
+> > create a single TCP packet composed by 3 segments (with gso_size =3D 30=
+0) while
+> > sw GRO will just push sigle skbs. I agree this is just a GRO approximat=
+ion.
+> > If it is not enough I am fine to switch back to LRO implementation.
+>=20
+> FWIW the gro.py test covers that and many more cases..
 
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+ack, thx for the pointer.
+I run data_sml_lrg test available in gro.py and I can confirm the
+hw aggregates the transmitted packets (even if it is not supposed
+to do it). I will switch back to LRO in v6.
 
-Maxime
+Regards,
+Lorenzo
 
+--CrcWeQCa+fXKdkYr
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCapwQdwAKCRA6cBh0uS2t
+rPirAQC2OncL2LAuHYc8s0bUpffO3Nka35iD1jYtzPuIluDdaAEAwfTd23B04aYZ
+UlRKhK+AWicClQ7Sknyr1xeLgqtENgA=
+=U/DL
+-----END PGP SIGNATURE-----
+
+--CrcWeQCa+fXKdkYr--
