@@ -1,78 +1,148 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F237E2459EA;
-	Sat,  5 Sep 2026 01:11:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD82338238D;
+	Sat,  5 Sep 2026 01:16:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788570675; cv=none; b=TqW9l+7xfy/0Jx8U1sh7t+0U6WGjIR7WPmQbiq3UmDsibnAIg+9/ojqmJyjVSB/7CdjulnoaYQDLNJp963iAlg9ZNc94YeCUVPJUig4M/plKQ7z9/iURLDbuTjmggryKNIEadaITxIh9162vl1RfdsWBDBoaEvRVzJmvxpAxEGY=
+	t=1788570985; cv=none; b=OeP3Sp9zqto0sVWM1JmdtL0nAD2dPomYS1KRyPicDdPGgaJef+6w18uRiwp0tWZYkg9MGtP/D7GiB4Mo20yiPw6DsaTXzIZ3Zl/T7/A2z+O7pJMzRlnJFviEHxe9hXPMQh5qWuN1vYgO1tXAelHF2Ui5jtcN8AkknGSHN6mUHDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788570675; c=relaxed/simple;
-	bh=DObh0bhxchINFzCdCch8hAytuM+fDC3O6uWJdtvn3p0=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=TIxisccbFRbHpmPWyuMhRKnuArDwqeuhAOHS1lc8imnPguXqOV3qLaeI9HHTuCRw1i6dKGkKpl47cm4UnlknOkHmsT3xal917aPRhLQXlkVLIVb0g+/7mnkmSEQb+x9XmxjL0GIGP311MgwP9Q9tbVxGiFoWhc8cXUzUgTMFJkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a7j+u8RI; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788570985; c=relaxed/simple;
+	bh=tB2IpyX4dXAWMVu51m0Dmozi2sMAndrDPEGVg4go1I8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NYTh3fAYY6TXQ0C3RL5SlyZ1XOdIy+Gimrxu44fIhavHVVn/hWweBjvU8TuMEck4mJVmRJXreC+YMvIDoNwIy01SzO4seiaNlglpZJDeh1r/76L3o51UeGz4z/50Hh3JpNwHu1MO4Exl/+3pE6p6bNQ7qaaIp6PTB70QX+ZBvwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=X+1rLl7X; arc=none smtp.client-ip=178.251.229.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a7j+u8RI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85B481F00A3D;
-	Sat,  5 Sep 2026 01:11:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788570673;
-	bh=d7cfKCnUtikvVVDDboKxwvhfseWrrDeV4PaiCJ7rJ/0=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=a7j+u8RIR1CEP7BEWLeOFl/Y8hx1ElLgf74KGQdWaFxIx0D5M2ezqg+HKZh7Oix+p
-	 U/foVZ4p96KSGubJRBCVlTKSgs+AFhVyxQ+DZr81GK3Aj/UvWmi73OP0oTdQpX6xxx
-	 fC9pAFhCyFfbkQLKCIqP32EZwlMz7dbuu4ITpOJHr1YUfWXy7MEcJB8fJEoNrw1LSP
-	 xMJl2pkEEVdISgiB+rfqNRZojrAJsUEvCNzhV6+5/1IaYfPlP9pfRdNuBg0zyFoixm
-	 18dxc3ETgBGJIjCbBWpp9LrjIcC0wM0tLqhVYRmTOiMOw+KqoH+WXEncbKXmkjNS1c
-	 xd3Seen8UKKnw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 568EE3924FC0;
-	Sat,  5 Sep 2026 01:10:15 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="X+1rLl7X"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4018B11D8B6;
+	Sat, 05 Sep 2026 03:16:14 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
+	s=dkim; t=1788570977;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=KD35Y7PrHp3mXRQ+ctDP9TNjuQocO5bXRaIRALZodXU=;
+	b=X+1rLl7XTMmzY3XtFYWK1QrW7dXdHighihEaOpJrgtgKnFrBdIdXrvvF6MDg8T9atTVSkk
+	mkuh5NBZN2a45nd63yXArxBfln68vPWhMwg9E5SOQRGwaiSAYyQtO1ysERCvhSadkPVpX+
+	+4FQZVFMfudDpNrO/gwHgL6tMqVAdN4zjvf3H0lmN2bChqnLhaMMI9chUmYg9VN4I364p2
+	EJmO1D0Ej9ri+w5ApXA5Odr45/ewvf+jhGwss9IFOibh84qmoXF+YXx0V0Wch1dT9uWgP+
+	v9yi1b46sg0dMLdKORAuTMDh4Ss3i4BYG/Ggc5X0s+ApnjYszLSL5DaPvwgfSg==
+Message-ID: <f7149e71-2c32-4f53-86c9-d1c586218fc2@nabladev.com>
+Date: Sat, 5 Sep 2026 03:16:12 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] octeontx2-af: Show DMAC filter drop count
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178857061389.1044635.8541013262312747792.git-patchwork-notify@kernel.org>
-Date: Sat, 05 Sep 2026 01:10:13 +0000
-References: <20260901042503.1182121-1-nshettyj@marvell.com>
-In-Reply-To: <20260901042503.1182121-1-nshettyj@marvell.com>
-To: Nitin Shetty J <nshettyj@marvell.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, hkelam@marvell.com,
- sgoutham@marvell.com, rkannoth@marvell.com, gakula@marvell.com,
- sbhatta@marvell.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- richardcochran@gmail.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [net,PATCH v1] net: ks8851: Fix receiver error in 100BASE-TX mode
+ following software power-down
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, andrew+netdev@lunn.ch,
+ edumazet@google.com, pabeni@redhat.com, bigeasy@linutronix.de,
+ yiconghui@gmail.com, kernel@dh-electronics.com, linux-kernel@vger.kernel.org
+References: <20260901173925.96183-1-marex@nabladev.com>
+ <20260904003712.3484001-1-kuba@kernel.org>
+Content-Language: en-US
+From: Marek Vasut <marex@nabladev.com>
+In-Reply-To: <20260904003712.3484001-1-kuba@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hello:
+On 9/4/26 2:37 AM, Jakub Kicinski wrote:
+> This is an AI-generated review of your patch.
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Sigh, a wall of generated text.
 
-On Tue, 1 Sep 2026 09:55:02 +0530 you wrote:
-> From: Hariprasad Kelam <hkelam@marvell.com>
+> The human sending this
+> email has considered the AI review valid, or at least plausible.
+> ---
+> net: ks8851: Fix receiver error in 100BASE-TX mode following software power-down
 > 
-> Show the number of packets dropped by DMAC filters in the CGX/RPM
-> debugfs mac_filter entry.
+> Per the KSZ8851 errata (DS80000716D, Module 3), a software power-down
+> followed by a power-on can leave the receiver circuit non-functional. This
+> patch implements the documented workaround by dropping both transitions into
+> PMECR_PM_SOFTDOWN, in ks8851_write_mac_addr() and ks8851_net_stop().
 > 
-> CGX uses RX_STAT4 for this counter, while RPM/RPM2 use RX_STAT2.
+> Link: https://ww1.microchip.com/downloads/en/DeviceDoc/80000716D.pdf
 > 
-> [...]
+>> diff --git a/drivers/net/ethernet/micrel/ks8851_common.c b/drivers/net/ethernet/micrel/ks8851_common.c
+>> index 4afbb40bc0e4a..cd8dfca22720b 100644
+>> --- a/drivers/net/ethernet/micrel/ks8851_common.c
+>> +++ b/drivers/net/ethernet/micrel/ks8851_common.c
+>> @@ -143,9 +143,6 @@ static int ks8851_write_mac_addr(struct net_device *dev)
+>>   		ks8851_wrreg16(ks, KS_MAR(i), val);
+>>   	}
+>>   
+>> -	if (!netif_running(dev))
+>> -		ks8851_set_powermode(ks, PMECR_PM_SOFTDOWN);
+>> -
+>>   	ks8851_unlock(ks);
+>>   
+>>   	return 0;
+> 
+> [Severity: Low]
+> This isn't a bug
 
-Here is the summary with links:
-  - [net-next] octeontx2-af: Show DMAC filter drop count
-    https://git.kernel.org/netdev/net-next/c/5cce5d29273c
+Aha ...
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+>, but should the two comments describing the software
+> power-down state be updated in the same patch?
+> 
+> After this hunk, ks8851_write_mac_addr() still carries this comment above
+> its remaining ks8851_set_powermode() call:
+> 
+> 	/*
+> 	 * Wake up chip in case it was powered off when stopped; otherwise,
+> 	 * the first write to the MAC address does not take effect.
+> 	 */
+> 	ks8851_set_powermode(ks, PMECR_PM_NORMAL);
+> 
+> Nothing in the driver can put the chip into software power-down anymore, so
+> the "in case it was powered off when stopped" precondition can no longer
+> occur. A grep of the tree confirms PMECR_PM_SOFTDOWN has no users left,
+> only its definition in ks8851.h, and the two remaining
+> ks8851_set_powermode() call sites in ks8851_write_mac_addr() and
+> ks8851_net_start() both write PMECR_PM_NORMAL.
 
+The driver obviously does not exist in a vacuum and prior stage before 
+Linux could have easily left the MAC in whatever powered down state. 
+This is bogus feedback.
 
+> Since the commit message uses that very call site as the argument that
+> dropping the power-down here is safe, would it help to note in the comment
+> that the PM_NORMAL write is kept deliberately (e.g. referencing the errata),
+> so a later cleanup does not remove it or reintroduce the SOFTDOWN
+> transition?
+> 
+>> @@ -506,8 +503,6 @@ static int ks8851_net_stop(struct net_device *dev)
+>>   	/* shutdown TX process */
+>>   	ks8851_wrreg16(ks, KS_TXCR, 0x0000);
+>>   
+>> -	/* set powermode to soft power down to save power */
+>> -	ks8851_set_powermode(ks, PMECR_PM_SOFTDOWN);
+>>   	ks8851_unlock(ks);
+> 
+> [Severity: Low]
+> Related to the above: the kernel-doc for ks8851_net_stop() just above this
+> function still promises the low power transition that is being removed here:
+> 
+> 	/**
+> 	 * ks8851_net_stop - close network device
+> 	 * @dev: The device being closed.
+> 	 *
+> 	 * Called to close down a network device which has been active. Cancel any
+> 	 * work, shutdown the RX and TX process and then place the chip into a low
+> 	 * power state whilst it is not being used.
+> 	 */
+> 
+> The post-patch body only masks IER/ISR, zeroes RXCR1/TXCR, drains ks->txq
+> and calls free_irq(), with no PMECR access left. Should that last sentence
+> be dropped or reworded to mention the errata, so readers of
+> ks8851_suspend()->ks8851_net_stop() are not told a low power transition
+> happens?
+
+What exactly should I adjust in V2 ?
