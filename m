@@ -1,71 +1,35 @@
-Received: from mail-vk1-f179.google.com (mail-vk1-f179.google.com [209.85.221.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E61A82E92B3
-	for <netdev@vger.kernel.org>; Sat,  5 Sep 2026 19:48:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E73A17D6;
+	Sat,  5 Sep 2026 19:51:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788637718; cv=none; b=U/71+u8sPcSjZZHBfQBMxty9OUdGVtbiHA1iVoaj3s+3MYpHN4tnYri9+FXJd8ly8V62DfQ9igkbCac3peAGG16Ud5WZ0UPxxyt8QPgtantM1UbHy56qMPGJiQZbd0LGfGAB92Zmc0dNiLZf+MVtPTl5UkUo3Y1RHFB5Orc1nrg=
+	t=1788637866; cv=none; b=JAAQdlYggvAszs2tTOUT68eadY1os1TyyIh3mfUKnJmcxySB32TUDE+WnxP7/EUkT2tjdy1AbQqhumENXe0bCiC7gcmlNX2hk79CqvKJdaoCFusKVgFok/KHt4wz2sVW6sCvJeU/iMlJgWm41puexOYJtR5pWcsE3gWcDULFKNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788637718; c=relaxed/simple;
-	bh=zZqRSdRVzBOcjcDUhtyUq1mpFZmKcLHBt8LfU9cEZio=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lXEyhr/0QCkyMiiRyRnre/c5nzUd8ylYWyvEk5VX6u2xacs+6oIi0Is2jz/io2fXyeMs4DoAds73fhgljzMCernbFYHqyfYjsAAH+w8ramtFaLb7ZomTSUb7kMEZLnroFpH11Ab4HvdTLDUUt6T4O7xP+MKDn+W392z4GspA77E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NcO3uWGw; arc=none smtp.client-ip=209.85.221.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788637866; c=relaxed/simple;
+	bh=jqhSaI2cqKkziLLFSrSvU9GdnEejv/MdJuPpsTdcOUE=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=pBr/o7OnPBYZs+/RCoM7adjN0vmmfuDY01B/G3FiZ0Cmb2d8gdv1xckokaDRJDjZZ7674wwg3Jcd2/Ua7h2KZMfzfyGzGxaODGnDr9f5dMJp0NpFR3/gcYxJACy2j+MoFrN36ns3o7V5Z4rFpvrDtKzH4zfm909PJ4sGvydrgYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VoTTTBKF; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NcO3uWGw"
-Received: by mail-vk1-f179.google.com with SMTP id 71dfb90a1353d-5bf959b820cso2088330e0c.3
-        for <netdev@vger.kernel.org>; Sat, 05 Sep 2026 12:48:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788637715; x=1789242515; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=AuWHZWx2knaUk2C1quRHTj7/UzJr/0Vfr5UpvPiZUWE=;
-        b=NcO3uWGw7C/mkWfpRsqWuLZj59Kng4p59gUHWLnQskb9BCVfFP4AySLkMSrFkYb2+s
-         1OHZth8tK8xX2p3/K9KkrjSp68CFKcnNOsLRE/gRUHIQiH2dpUO3FLcQYRG+qY0X1pDH
-         ujHuJEIKM4Yc5uHJiJsO943+6U7EvHFhWgsSKVIP27vp+WDCw371ARP7EziMnoUY2zoX
-         nrONJYDiSSeLWGI4y9+M96aCxh8Kf6RztRRqlQgpROlN69SwKwJhwMAy0pc62t/dAHA6
-         d71/LjdeXw3qUqByPs4eaiNbot1SreeDgJkA9Pur9OdgoClxQNn26+4cc3BdKB3Ueb4e
-         1ZWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788637715; x=1789242515;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=AuWHZWx2knaUk2C1quRHTj7/UzJr/0Vfr5UpvPiZUWE=;
-        b=av569JAtWWcOrhbuzuAC6mmdFDVK+hb8kxpnnA8rnZwE/Hid9unjWwBn2SaDdTbZI+
-         w1vxgrC6iTLrfhb18zPMjvyvh9YvbwFu/zU9oP8cF2Kpb+R9lwORcSabdSOsQk9RXr+z
-         NLslvoBS+Sfi3j0bdCh+ML587jmH++9RRgLCh3DMfmeuPLHc0wq/TZRVYH09fK5yFc30
-         GazOfJ5RC4US6jnMY8cUuu4DaE5gKx1+GP8a7g3H35j5ylPwLiQt1jjA8DEvK/cCeyxE
-         q8zNz0E8cArZq6gYSvx1dmKYk4vdmOipAMZ+ZArPG/v4/H5lDKZmM0pCGZVSrFITIH+y
-         688A==
-X-Gm-Message-State: AFuF++k4LlLjcxOZkhGPFWpjaUES6Fttpq5Ju8eJQIlzWBvgCjTkRp0s
-	f1+6Yflcz4zIkeNg0enb5w10glhzxojWbmTs+fquHnIyQK6VOcNvysWU
-X-Gm-Gg: AYBFou2/sRsN9d4FIio40KsF9RTLCPT3XGxEg0A+cIOcFmIeaybhO8s02i8asHRSWBD
-	H6X3HJILm+lxt0BvqKuxc73iF+hgO9NxdQLuNPezDxVhza0SLUU5sopf62OqimPgixU1bMDrHKM
-	5XlfhnIW9G5JgIn3p5TBESh+6KJZv0nqFNjw1lJfOH1QLSjJaGJdcwygg5Wq8/r2hufN3LUFD4v
-	bARS9qR8c85jgFHkCScqMVLa61y+IDJZDrNphKPg6QZ5DWLpxqLHI0nsn3/R7GYyEECU5bQlLn3
-	sFbOzOYrwFld8uXlB1Py0HoxuRZev1kJ8u1gVR/XhIBsfiN+jtCZXHH6sVKFAJKaa/JA+hdpqLW
-	2QHqNuAgfD/kZXXWSPOZjSD9WZpBWOGBfI8dEkxicK0C8bFWxC6iAkVEe5DmNnITalsT/805r/a
-	iVJHUv02m0T7CbI0DnKvdQfshxAOziYgquHJQhK+TE1jSN1rwq35sOgzbrafdyBmc=
-X-Received: by 2002:a05:6123:22:b0:5c6:6c75:81c9 with SMTP id 71dfb90a1353d-5c7ed7ee91bmr5474604e0c.7.1788637715443;
-        Sat, 05 Sep 2026 12:48:35 -0700 (PDT)
-Received: from adriano ([190.215.95.120])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5c7ecac1033sm4678437e0c.18.2026.09.05.12.48.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 05 Sep 2026 12:48:35 -0700 (PDT)
-From: Adriano Cordova <adrianox@gmail.com>
-To: Marcel Holtmann <marcel@holtmann.org>,
-	Johan Hedberg <johan.hedberg@gmail.com>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	linux-bluetooth@vger.kernel.org
-Cc: netdev@vger.kernel.org,
-	Adriano Cordova <adrianox@gmail.com>
-Subject: [PATCH] Bluetooth: bnep: linearize skb before sending
-Date: Sat,  5 Sep 2026 15:47:25 -0400
-Message-ID: <20260905194725.284347-1-adrianox@gmail.com>
-X-Mailer: git-send-email 2.51.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VoTTTBKF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 357DF1F00A3A;
+	Sat,  5 Sep 2026 19:51:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788637865;
+	bh=yzm1hvxHBVn+B3AEQ0kR8LeF9ZDDoIaccH3h83YuSh0=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=VoTTTBKFaXjfTlbtLpNmJRzpwp0sFna/+YUoKCNtfNEipXrDV7u0ze22UBfqkHOgV
+	 DcHSrLE/Z7YzHbYbtUogQTzbfhtVSJ779MvPrKbkm0YwuOWH7H1w5R9/rX0k/C7LKC
+	 kXDvz0zZrQ/9m7eQVKi9CGXXIBrR7IFbnDIREYq6G3itIJ+QoOmQdrrubFr+vXiWsH
+	 QOm3iD971ecBjon8tEfwKJqyzoy54q1kSGTeVOSg075KhSVfAMeNYLPkx8jImk27lm
+	 UhHLuAkE1Y6mZzcu+PF2ANIJygaS2W2KZLkZ2a5R6LNAUI0fpjFSIjo7tiTfqHzlXS
+	 IthN+7aSDAH/g==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 938693924FED;
+	Sat,  5 Sep 2026 19:50:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -73,41 +37,45 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v2 0/1] net/sched: defer qdisc freeing after failed
+ creation
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178863780539.1335621.17808621390639346249.git-patchwork-notify@kernel.org>
+Date: Sat, 05 Sep 2026 19:50:05 +0000
+References: <20260902155231.2149915-1-bestswngs@gmail.com>
+In-Reply-To: <20260902155231.2149915-1-bestswngs@gmail.com>
+To: Weiming Shi <bestswngs@gmail.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, jhs@mojatatu.com, jiri@resnulli.us,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, dsahern@gmail.com,
+ xmei5@asu.edu
 
-kernel_sendmsg expects contiguous data. Check the skb is linear
-before building its kvec. Should be already linearized by the
-stack, so this is defensive, but drops the dead block and the
-FIXME.
+Hello:
 
-Signed-off-by: Adriano Cordova <adrianox@gmail.com>
----
- net/bluetooth/bnep/core.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-diff --git a/net/bluetooth/bnep/core.c b/net/bluetooth/bnep/core.c
-index 5a6a49885ab6..497eb1d2d6ee 100644
---- a/net/bluetooth/bnep/core.c
-+++ b/net/bluetooth/bnep/core.c
-@@ -457,13 +457,15 @@ static int bnep_tx_frame(struct bnep_session *s, struct sk_buff *skb)
- 	}
- 
- send:
-+	if (skb_linearize(skb)) {
-+		kfree_skb(skb);
-+		return -ENOMEM;
-+	}
-+
- 	iv[il++] = (struct kvec) { skb->data, skb->len };
- 	len += skb->len;
- 
--	/* FIXME: linearize skb */
--	{
--		len = kernel_sendmsg(sock, &s->msg, iv, il, len);
--	}
-+	len = kernel_sendmsg(sock, &s->msg, iv, il, len);
- 	kfree_skb(skb);
- 
- 	if (len > 0) {
+On Wed,  2 Sep 2026 23:52:30 +0800 you wrote:
+> This is v2 of the qdisc failed-creation lifetime fix posted by Kyle Zeng
+> and David Lee [1].  The public reproducer is available in a follow-up
+> message [2].
+> 
+> When clsact binds a populated shared ingress block, ->init() can publish
+> an embedded mini_Qdisc before qdisc_create() completes.  A later invalid
+> TCA_RATE makes estimator setup fail.  The unwind removes the published
+> pointer but frees the containing qdisc synchronously while tc_run() can
+> still hold it.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net,v2,1/1] net/sched: defer qdisc freeing after failed creation
+    https://git.kernel.org/netdev/net/c/e6662f2100f8
+
+You are awesome, thank you!
 -- 
-2.51.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
