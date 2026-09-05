@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF5451E0DD8;
-	Sat,  5 Sep 2026 19:39:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98AAF353A7C;
+	Sat,  5 Sep 2026 19:45:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788637142; cv=none; b=QM8BrTttWvZkDl4ImilGK26ykzD6hUzjg32v91HIBBeczlli4QCvi1G2v7EUUgwbr4pmTz+c6QAr1dMM2Ru+NKnmQ1YgvTJdgfQVm+TrX/MLtEiN3AgNqhKBAeVlTwa/o3zvSg6FBdX6LQl+Jg/99XdTFBM7IsOpLNuiis5B02U=
+	t=1788637519; cv=none; b=u8FCWaOaTf0w5KPpJHb9cQpw1uGhTjOcVHTJwfPK8LLlXogMyTPheh9trrx2IATDtFjTLypTbTMC9I29RwcR4wgRrhGDgNU9uPYFskMmuYy/OVfA7Pbu1SeZf3xsonfYgM5EcT3J/TUDrGMkVWfOI7Nie/U71qe589CySDBYwI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788637142; c=relaxed/simple;
-	bh=SF1UnUaMSoDUh8cGwnjxvVJLumAGug+SGl3MGqxHz3Q=;
+	s=arc-20240116; t=1788637519; c=relaxed/simple;
+	bh=d94TwUFpAuUqh2FGTEYSpBB6duhc06stSXMvZhodCFY=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=f7sxq9D8priqYDbhe0W9mNpzDsdRNEW2Wikok3/bKW+/05+4eFx9mv6cDlYKT8s4IcczSTsgIyn+yCad4bTfelpWPe6eH38NjS4mYV2q7fuygl8Taz5QSY51rXDz1POdhIoHp1Z9Q9sW3V5x9I1fKif0LIyROm5prlpLJNgHTyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aOz0W8l2; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=dcYCKk3KGdaz+1LpielonFt318SOqse0FXdJ6DgFeuXcMn25RdSgGdeAEHldnRu5oWGPKjzM8TbObBYUbmLGaKL0dr6v6jaj0r7ViDH6RP7E2eQot9f0wi42oSSz02u/EeGgL6CrQi/3YSyngn2I5lT2vhVAz+3bX3LJfhUzqmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oTpH3A4e; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aOz0W8l2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 468721F00A3A;
-	Sat,  5 Sep 2026 19:39:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oTpH3A4e"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B09A61F00A3A;
+	Sat,  5 Sep 2026 19:45:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788637141;
-	bh=7uQwcgk4iyBn+0+c2PKDLy0bjSpSWQzGOEaTS7hkGrc=;
+	s=k20260515; t=1788637518;
+	bh=poREzvz7c5aUS1OoQKY3QKVUwU7tl0IfykNqF/RlDTs=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=aOz0W8l27nbvbNIuDirDzTgk2vb4pbVNtzdpw3sgTpBQwrkvkOEpWbmTn/ySNqaT0
-	 fdWRAT/4hi65JNjPQsQjBfYsl4QRO8sXhIe3iFnveYL/IiJSU/TI1tS6IW47w6FSYj
-	 CdQN6JdNaXWL486GjAx+TByGBmLL6RchQ7Gzi6maFYQmxbujxgJ8Uh/2Ha/YUxslsO
-	 Meo/vI+TCHVsjXQ3Ckd1rYkpPuv7BHoDxRtyfim0gbSSyNt4VuWzAdq4Pt19thBBxI
-	 BsIpGgOwvcn/nTa22W5c78P1/JWaGLvNE1rbxKaIyHQSeMfInsLqDyvFg4VYk+jZbD
-	 v0cZ8Psa9YPyg==
-Date: Sat, 5 Sep 2026 12:39:00 -0700
+	b=oTpH3A4eURIKQWVfoQYoFZzoqajvNLjCsZ70DrHPkPNC7I7LsbeCXCXgx1K1AnoTj
+	 u1pWCFcMjNokC2OQ24IiAK7xX90r0kvRTQfZYUoypatTCP//UflSsO+fOs+4iJlnmD
+	 HrbU+TVCJnO358UJ0ac0Bj4JmJ3ND9WNb3fv5pt8odDBlHXtuAWZRIEFDRc/7nSxgG
+	 9CbTi4+985xf+W6eVmbl0++EGYwIxeL7LzktzkBIJKNNoq7hhvqrWYibFdVK34FlOP
+	 KMMa71l8g6NPqBmSXdXIOVvmC4aBmI+dySLyoF4jI7huDZMpEM2lR2qRT9JbuJiESJ
+	 yDP9THV/iuKBg==
+Date: Sat, 5 Sep 2026 12:45:17 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: netdev-bot+sashiko@kernel.org
-Cc: alishmery18@gmail.com, netdev@vger.kernel.org, pabeni@redhat.com,
- davem@davemloft.net, edumazet@google.com, andrew+netdev@lunn.ch,
- idosch@nvidia.com, razor@blackwall.org, stable@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v2] vxlan: vnifilter: validate the VNI range in
- vni_filter_entry_policy
-Message-ID: <20260905123900.23984eda@kernel.org>
-In-Reply-To: <178863701124.219967.14305621519981687842@kernel.org>
-References: <20260902154609.594009-1-alishmery18@gmail.com>
-	<178863701124.219967.14305621519981687842@kernel.org>
+To: Jinjie Ruan <ruanjinjie@huawei.com>
+Cc: <davem@davemloft.net>, <edumazet@google.com>, <pabeni@redhat.com>,
+ <horms@kernel.org>, <nb@tipi-net.de>, <kuniyu@google.com>,
+ <sdf@fomichev.me>, <liuhangbin@gmail.com>, <da-x@monatomic.org>,
+ <jeff@garzik.org>, <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net-next v3 2/2] 8021q: publish vlan_devices_arrays
+ entries with acquire/release
+Message-ID: <20260905124517.0e3daf69@kernel.org>
+In-Reply-To: <20260902073334.397685-3-ruanjinjie@huawei.com>
+References: <20260902073334.397685-1-ruanjinjie@huawei.com>
+	<20260902073334.397685-3-ruanjinjie@huawei.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,18 +48,34 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sat, 05 Sep 2026 19:36:51 +0000 netdev-bot+sashiko@kernel.org wrote:
-> > +	[VXLAN_VNIFILTER_ENTRY_START] = NLA_POLICY_FULL_RANGE(NLA_U32,
-> > +							      &vni_filter_vni_range),
-> > +	[VXLAN_VNIFILTER_ENTRY_END] = NLA_POLICY_FULL_RANGE(NLA_U32,
-> > +							    &vni_filter_vni_range),  
-> 
-> [Severity: High]
-> Does this clamp close the problem the changelog describes, or only the
-> U32_MAX endpoint?
+Some nits for the future..
 
-I tend to agree, either this is a security fix and we need a stronger
-check. Or it's just making things slightly better and doesn't deserve
-Fixes/stable.
--- 
-pw-bot: cr
+On Wed, 2 Sep 2026 15:33:34 +0800 Jinjie Ruan wrote:
+> Replace the smp_wmb()/smp_rmb() barrier pair with
+> smp_store_release()/smp_load_acquire() on
+> vg->vlan_devices_arrays[pidx][vidx].
+> 
+> vlan_group_prealloc_vid() publishes the array pointer via release;
+> __vlan_group_get_device() acquires it before accessing the array,
+> ensuring the allocated entries are visible.
+> 
+> No functional change intended.
+
+This phrase is usually reserved for patches which are pure refactor.
+You are changing the barriers.
+
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Eric Dumazet <edumazet@google.com>
+> Cc: Jakub Kicinski <kuba@kernel.org>
+> Cc: Paolo Abeni <pabeni@redhat.com>
+> Cc: Simon Horman <horms@kernel.org>
+> Cc: Nicolai Buchwitz <nb@tipi-net.de>
+> Cc: Stanislav Fomichev <sdf@fomichev.me>
+> Cc: Hangbin Liu <liuhangbin@gmail.com>
+> Cc: Kuniyuki Iwashima <kuniyu@google.com>
+
+Please put the CCs under the --- marker.
+
+> Assisted-by: DeepSeek:DeepSeek-V3
+> Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+
