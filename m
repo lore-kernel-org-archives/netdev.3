@@ -1,122 +1,114 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 117BF5478D;
-	Sat,  5 Sep 2026 18:45:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDCE73B994A;
+	Sat,  5 Sep 2026 19:02:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788633958; cv=none; b=h7yD4BDwd3fL4Fm42YJIG7X7BwJDLAYpmPcZ/e3Blv1UUVWS4W6pB/I5voM9F0CRQFt7zVFm21cKfOPvyk5QGeKLhPPeW5Ani0o1HIh97G/MQ74iqDR+aEvit6UBWj7fA8oiuuoF9HckRRTUSG5H7jQgY3RKCuyD6pkk7Cc80Mc=
+	t=1788634943; cv=none; b=seROcBMFkBdMIYOsbxmt0AqL83NSHI+zmDznt/Hh+qTMmk1HiAFUDtt3znLhj3o07x++AlyoB8xc1CoOF833FqA6q+zXbx5vYhvwBX5D2+a6vusgtCAePJdMDkB0nA9dw7r+0ix8h9rjhjZGO8dQjfVxaBkrBsfnVRAh8g76bQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788633958; c=relaxed/simple;
-	bh=A5WYoYJGPksF4SlhsnebSk2XOMVxE1RM7R/R0ylAkMw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ml7u81P1owU/A9hFCDylRhv7ZjabC/SP42AtqiRZC7nxxEHNPeo/TkSC73tZ4CALijiRBGws5YkZSMGfNYQzKWS7ZwUEWvFWfCdkPMMqJl6NwfGIsj6lM5qyqZFH5q39sN7SK97rCWVjbqp2UweDSzHzQ/7RrLV97SdBe5KUWm4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bX51lFzJ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788634943; c=relaxed/simple;
+	bh=0Vt1CxIWa3xf7zF0GUYRtISlccsSkXlDxhyroxC/qZQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QpwGdP6D3NshLx3LfVjaDNXRUMFdFgioaG40Jj78q89MdsGXFt6S3u2gPmqy7N+mcjyv3T+rL/mA47D8XZRg/jULjQLduQsukfPAZNguqKTOzPumuCUHHRSKPyeC9Ce9Nmjv0o+e/MWxN6mgAaPkxEByEBhF4lRIB2EvXr0aryU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GP+AT1oq; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bX51lFzJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C600F1F00A3D;
-	Sat,  5 Sep 2026 18:45:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GP+AT1oq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6D2C1F00A3A;
+	Sat,  5 Sep 2026 19:02:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788633956;
-	bh=sx65DJpNyhboJaajpJO1jJBfCnGS4AGckNMvfVqKdLc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=bX51lFzJjYzcVIXAYeq95vlzEGE8iMm2nWnwjdE4TIE4koPh/hcAz1NG5y4IYOuZy
-	 e0CnExlvEyICyd7KwoH/NHUVgXBHFTZIr5shBJN8yJ6gf2j5DXg3VRv1dcEipsMxRd
-	 lV1iNXos/kRE6TKbhRGk1CdxZHSqBIU2zmyug8K0f8MbNseXYd1gq+DUbQTlIbqSz2
-	 JW3h5nGPML/irWNdOo85+f+/ZvnAt2Aw+N1A8b4U7EC5rymet5Lq++chSVa35jb0v7
-	 K0LhY2udnT95jVrIeltRB7dUizdnFT+ZqRL3yESyLrR4ZLST5mbupE4oareo43WVPB
-	 XfJUwr3IEOLXQ==
+	s=k20260515; t=1788634941;
+	bh=3IFWBkpwt0DglCJ3/MwQDW/O3Cn5kGPmagAF2kfRUj4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=GP+AT1oq7qVonqXJI/yx6FqzXulAvrqUmCCAoz/El9ASH3nQxk8XfFbcSo9fB8maz
+	 p42HmiM6Mx8ZWHOoIKyeutET2LBSoMoQRoWL1oEkTktiwAQRWrE3LqKmFY0eCrSPR9
+	 eUNtAkeGmEFMSHkwR3dcetmyO1Ropwwxzkt4wOIrluc4RR6gTwzEfFIVGU/4xaNKqg
+	 wI0MzUTFxwuKiymuLdpkddcw0OkSPdCw1hVqGXyYwR2//KOc8Tel/E1/UY7tYEZvFa
+	 grAjPRDkQYa+ikmm4Gx3/eF0MNgEJDpaB3Qc/fdQGmbHAp6efSzQm5L3qix1cdlUSE
+	 c34XjApZFbg9w==
+Date: Sat, 5 Sep 2026 20:02:17 +0100
 From: Simon Horman <horms@kernel.org>
-To: omermetekaya0@gmail.com
-Cc: Simon Horman <horms@kernel.org>,
-	linux-wireless@vger.kernel.org,
-	johannes@sipsolutions.net,
-	kvalo@kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	syzbot+adeb8550754921fece20@syzkaller.appspotmail.com,
-	syzbot+101224300649c3eb8af4@syzkaller.appspotmail.com,
-	syzbot+8141dcbd23a8f857798a@syzkaller.appspotmail.com,
-	syzbot+b0ae8f1abf7d891e0426@syzkaller.appspotmail.com,
-	syzbot+d6bbe0f5705cb8a5aa2b@syzkaller.appspotmail.com
-Subject: Re: [PATCH v2] wifi: cfg80211: avoid holding rtnl_mutex across all cfg80211_leave() calls
-Date: Sat,  5 Sep 2026 19:45:45 +0100
-Message-ID: <20260905184545.172168-1-horms@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260903151542.486376-2-omermetekaya0@gmail.com>
-References: <20260903151542.486376-2-omermetekaya0@gmail.com>
+To: zihan xi <zihanx@nebusec.ai>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, xemul@parallels.com,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	vega@nebusec.ai
+Subject: Re: [PATCH net 1/1] udp: diag: bound bucket lock hold time
+Message-ID: <20260905190217.GE40544@horms.kernel.org>
+References: <133b6aee9e2c908c9da37d5585b3d2cd016906cd.1788187473.git.zihanx@nebusec.ai>
+ <20260905151227.75099-1-horms@kernel.org>
+ <CAANe3eRpVGnYpygfiQTsXd2VmBO43P-P1RfREkdDypgXBZB9Uw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAANe3eRpVGnYpygfiQTsXd2VmBO43P-P1RfREkdDypgXBZB9Uw@mail.gmail.com>
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://sashiko.dev/#/patchset/20260903151542.486376-2-omermetekaya0@gmail.com?part=1
----
-wifi: cfg80211: avoid holding rtnl_mutex across all cfg80211_leave() calls
+On Sat, Sep 05, 2026 at 11:49:05PM +0800, zihan xi wrote:
+> On Sat, Sep 5, 2026 at 11:12 PM Simon Horman <horms@kernel.org> wrote:
+> >
+> > This is an AI-generated review of your patch. The human sending this
+> > email has considered the AI review valid, or at least plausible.
+> > Full review at: https://sashiko.dev/#/patchset/133b6aee9e2c908c9da37d5585b3d2cd016906cd.1788187473.git.zihanx@nebusec.ai?part=1
+> > ---
+> > udp: diag: bound bucket lock hold time
+> >
+> > This patch limits the time the UDP hash bucket spinlock is held during
+> > netlink socket dumps by collecting a bounded batch of matching sockets.
+> > It takes a reference to each socket, releases the lock, processes the
+> > batch, and resumes from a preserved cursor.
+> >
+> > > diff --git a/net/ipv4/udp_diag.c b/net/ipv4/udp_diag.c
+> > > index f4b24e628cf8d..18cfe0df654dd 100644
+> > > --- a/net/ipv4/udp_diag.c
+> > > +++ b/net/ipv4/udp_diag.c
+> > [ ... ]
+> > > +static void udp_diag_dump_done(struct netlink_callback *cb)
+> > > +{
+> > > +     struct inet_diag_dump_data *cb_data = cb->data;
+> > > +     struct sock *sk = (struct sock *)cb->args[2];
+> > > +
+> > > +     if (sk) {
+> > > +             cb->args[2] = 0;
+> > > +             sock_put(sk);
+> > > +     }
+> > > +     cb_data->dump_done = NULL;
+> > > +     module_put(THIS_MODULE);
+> > > +}
+> >
+> > [Severity: High]
+> > Does this module_put() introduce a race condition with module unloading?
+> >
+> > When an active netlink dump for UDP sockets finishes, inet_diag_dump_done()
+> > invokes udp_diag_dump_done(). This function drops its module reference using
+> > module_put(THIS_MODULE) as its final step.
+> >
+> > If this was the last reference, a concurrent rmmod udp_diag operation can
+> > proceed and unmap the module's text segment before the thread executing
+> > udp_diag_dump_done() executes its return instruction to return to inet_diag.
+> >
+> > Could this result in a kernel panic due to the CPU attempting to execute
+> > unmapped memory?
+> 
+> Yes.  If that module_put() drops the last reference, rmmod can unmap
+> udp_diag while dump_done() is still returning to inet_diag.
+> 
+> I will keep the extra module_get() in udp_diag_dump(), and move the
+> matching module_put() into inet_diag_dump_done() so it runs after the
+> callback has returned.
 
-This commit changes reg_check_chans_work() to iterate over cfg80211_rdev_list
-using RCU instead of holding rtnl_mutex for the entire loop. It acquires
-rtnl_mutex on a per-device basis to prevent task hangs.
+I think that the fundamental problem here is that managing module lifecycle
+from within the module itself tends to be unsafe. I'm not sure your
+proposal addresses that problem.
 
-> diff --git a/net/wireless/reg.c b/net/wireless/reg.c
-> index a8336baf85dc6..a2e0d1cf8317c 100644
-> --- a/net/wireless/reg.c
-> +++ b/net/wireless/reg.c
-> @@ -2466,12 +2466,21 @@ static void reg_check_chans_work(struct work_struct *work)
->  	struct cfg80211_registered_device *rdev;
->  
->  	pr_debug("Verifying active interfaces after reg change\n");
-> -	rtnl_lock();
-> -
-> -	for_each_rdev(rdev)
-> +	/*
-> +	 * Acquire rtnl per-device instead of holding it for the entire loop;
-> +	 * cfg80211_leave() can be slow and starve other rtnl waiters otherwise.
-> +	 * wiphy_unregister() holds rtnl across list_del_rcu() + synchronize_rcu(),
-> +	 * so rdev cannot be freed while we hold rtnl_lock() below.
-> +	 */
-> +	rcu_read_lock();
-> +	list_for_each_entry_rcu(rdev, &cfg80211_rdev_list, list) {
-> +		rcu_read_unlock();
+I think one possible solution is to move the module_put into delayed work.
+And another, is to move module lifecycle handling into the core.
 
-[Severity: High]
-Does dropping the RCU read lock here remove the lifetime protection of the
-current rdev element while waiting for rtnl_lock()?
+Possibly the first option is cleaner as I think that only udp_diag
+has the need for this.
 
-If a concurrent thread unregisters the device (for example, via
-wiphy_unregister()), it could acquire rtnl_lock, remove the device with
-list_del_rcu(), and call synchronize_rcu().
-
-Because the RCU read lock was dropped by the work thread here,
-synchronize_rcu() could complete and allow the unregister thread to free rdev
-before this thread acquires the rtnl lock.
-
-> +		rtnl_lock();
->  		reg_leave_invalid_chans(&rdev->wiphy);
-
-[Severity: High]
-Can this regression lead to a use-after-free?
-
-If rdev was freed during the race window while waiting for rtnl_lock(),
-accessing rdev->wiphy here would read from freed memory.
-
-> -
-> -	rtnl_unlock();
-> +		rtnl_unlock();
-> +		rcu_read_lock();
-> +	}
-
-[Severity: High]
-Will the list_for_each_entry_rcu() macro implicitly dereference
-rdev->list.next to continue the iteration after the loop body finishes?
-
-If rdev was freed while the lock was dropped, does this result in another
-use-after-free when advancing to the next list element?
-
-> +	rcu_read_unlock();
->  }
