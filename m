@@ -1,97 +1,96 @@
-Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB8F9330B09
-	for <netdev@vger.kernel.org>; Sat,  5 Sep 2026 03:57:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16B0038237B
+	for <netdev@vger.kernel.org>; Sat,  5 Sep 2026 04:09:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.51
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788580626; cv=pass; b=N8x2aB1RncVFjr70D4o01uhmGaldGPMQGg8I1bBZeC9F1Mw0HyILSiHYwuGoKJx5uBRrE92HVRAju9leDFXVSCLEGfnHwEAUW4/f7RXOjHZ6C/ndQiWtvQY5+8Bff5tOnY3k+p0KyR62mI+i0zSSAp8gEZkzlYh7P/A59V1zPKg=
+	t=1788581383; cv=pass; b=ZQ5OPqDOeZFSoiMwrrfznYCJUsUGo76tOdEJFX3N8JF+8wSHyQ15v4upsd5m/m7+cmyMHuykYSnF7dFumMr/mbru6SwDvurif45VeNK4rikG9Zuy9PTAxqmNXn3IyVXtdWYBZLaZMlzxRd72lbMigvJVftqP5lohib0vum3Tkkg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788580626; c=relaxed/simple;
-	bh=I9LR/YOFTKqdgIxMctYxsuJb14CMUFkCc5k8rVoZSkA=;
+	s=arc-20240116; t=1788581383; c=relaxed/simple;
+	bh=QWn6X1YFiIQ4R3Q6NjaIeDPlwfd6j3PDWtBvbTjR0VY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VX4i2GSH74W8zHROIN9qvcfy8cvLOowXXKBMXpVTKIl9nsF+Zz7jRUZYwfbtToSPYHOed1te1roXcC1nr3tbjM5R4qNi50UnNZ1X8ijnTDdM3ud+ydYaXAiAas/qoAqIn3Bdn6MvctTRGr3+SwDzsTEpAcbnyGJ0uycBxDJv//4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=s9rqcmLn; arc=pass smtp.client-ip=209.85.215.173
+	 To:Cc:Content-Type; b=QU6kzajfxyjlqO00zJ7d4EA2ZBfgDWW4Q4TI0gp8LjXoYl0gjG2+ZSDTi5/4B9rE8nYQSBa9ymDbTJrft6x9YARg1RnNwwNa0VSHfzlbuB4hdlMFsVXR7nqKfLOyKJJXMqwqatJA832XysQNcOdndDPwI/4HigK2kYobmq5hXQk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=c1R9vjP0; arc=pass smtp.client-ip=209.85.216.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="s9rqcmLn"
-Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-cbe6295f05bso2023800a12.1
-        for <netdev@vger.kernel.org>; Fri, 04 Sep 2026 20:57:04 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788580624; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="c1R9vjP0"
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-39647184c73so2733898a91.1
+        for <netdev@vger.kernel.org>; Fri, 04 Sep 2026 21:09:41 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788581381; cv=none;
         d=google.com; s=arc-20260327;
-        b=IGM/NqwFs78311uKp5YTfrOeg1++jug8kMS/jZc4ZtpE5FrtPkqJp8hmPdtF9NX5yz
-         CdiqtClOZC0BrnOueyry8DqDf3X205BCKQSBs//VIZ++hUaZhcdfxBhdxyRMzPnyZaTR
-         CGwat0jx5PIPVSfj8BLcG2ygM3Zg8t4d1iAO9Dq83Yerd8KI9IBzr4HNv4ocNe8QrMVR
-         wKG0YpndbOhOi+kE0GAzCTBiSbwo9zT9kvWh6aelR2YDiqnz1iVaQBLdHOIeFyVU8cGQ
-         0gO8v1jSHT6gRdxcW1+1YLDMdQaAibXPNyW5WJiTm9sUjXJXnQkQFLheahYSuvcRmJr/
-         IEvA==
+        b=kF9J6F6X+B1Paw33x6xyba92d2sfpQg6qwnACy/FjpTRPy5CpBopxqzzb9f+v3kg1e
+         4SZ9qtQiyl/PszVBo+qcv3BronCQ08Y5wV5LsPPzSvJIFE/Y8/GgvJ9dGR0ssrcjfbu3
+         Q3GdEWUeMBk0ZFxuXeaJeGb4QRGsOOpW2h86SZgxVpw+nL+xKfGciQzHzETiJ18Y4dTv
+         jngNvkA9Gs+oaLFBDj7KDFBS9f/z59jzGsvPPmgWOk2m/18R3MGj1SDuHVFeVjmqWbty
+         qBHDfVImbGgFNf6y3CJQFd7HxPDsNLxTqS7HEAwy714vAAl3+oau9VvS1Rrc2dzYDKKG
+         nfrQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=g2SybOKfYwNLLqPuOlw67kWGnE97CPbyKtQUYXmDRnI=;
-        fh=ZEqupx/e6ES1JdDVtwYYUbPu8nB3s+HueU8Gxq+C8wg=;
-        b=VpQt3Mt8qb0i5nmmMdlz07NmwV+73Ar2iWuKE79BDomkvT2irm9uN0ycjRcP62T4LN
-         jDBu53Hf+nVZPAVMpFCjHniSTOtPrIFatMC7kQC1GqEJ2Lns4IZzHBmlZqzOcSjWI5HN
-         16rM2OdYgON3h/E3zLZt/tXspYxi/ZMx0WrexE1vY9hjs0cCS2kra0YyD5Y8Oi8FdJJW
-         9t/a+S4dfXUHy0EaX5Uhn77LSLOLeEARPQpHhQu3o2SNXNnfe9bglHxzXG+CDnd6qxlC
-         Ue46Q1BRy+zapjBpnU+ITTZIjKMHScxNII/TT6NYt7X5GQPIKQTUHNXRcolGcAP3RkEv
-         auzw==;
+        bh=QWn6X1YFiIQ4R3Q6NjaIeDPlwfd6j3PDWtBvbTjR0VY=;
+        fh=O2M6SO4uXEH6rac6dhKM4Ig5an2+iXc4E45U70d6zW8=;
+        b=F0KRIfxqxT3DsTvDqZBfH91XQZ+6ZFPue0+5OiGsrLltRVxO97hLffsuaTcKGnDi4B
+         NheItqnUuhOB/G/5dQVoCeLNM5gnv9MfT8DdOhswv47Jfznx4T/Rp9BO9F1MkgaBpe6y
+         Pfy7aUdHF7OwWcVbbh686LJKq38gli7hbASN9zrAot1pu3Td2oqkUI0Q1asENirgUxo+
+         3YCu+vXOYO9/Gfq4HcVmkinUGFCMOsmh+cEz7Il2nWxlAzPJLYjIXi/eNAaMiky3DuWH
+         UrHn53qSkZpZ1QIc6Dxm2W9fvdz7gCJG07yldKcUgg4H8xbdHk6o3B6oxvyAR5t/KCEm
+         K1dg==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788580624; x=1789185424; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1788581381; x=1789186181; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=g2SybOKfYwNLLqPuOlw67kWGnE97CPbyKtQUYXmDRnI=;
-        b=s9rqcmLnJ1IYH2cShNFXKXA8bK+vfb5tUE4R8bFxTmPu1gyoqz5PgQGw3ZhpDurBm5
-         QQBVtDiWE172PkeIJc5Jq75WKdhOE/TxU3lXYbZfCbbbKkTXZCcGeds3do2EkeSMMgud
-         w1E7yfzpi2SN301VFjCKtRs1FeP0UxuAxJj8kl5oISL/Hweg67eLIrVx4yPXREC4F7G4
-         hTWVH/eQPBazvtY+cFJq5sbhLTtFIb9r4xU7RsBp1WKXEtDoIfGvGPlQH1VSL9jcvGZw
-         Ymf/wYRPSo00tCJqwHrwfYgvFN+eIUB7WOP9hjeeIg+HGu1u5/XXpep3le6+4MnBVOZ2
-         486g==
+        bh=QWn6X1YFiIQ4R3Q6NjaIeDPlwfd6j3PDWtBvbTjR0VY=;
+        b=c1R9vjP0BfZtLQvC9S0geAMzp1hf1v1yRo8ffdaF6ZSGtMHnP90qSNJXkoISTEG0Va
+         ztIBAqvdHt/G4D6b1F8f3EsU3XK6VwRHD9OatZ+RTTcp5Q4PMd4mV6Wo52v5FVWAayjA
+         blgjWvDyF/Xj+RW2RP/dVaaDGuzYUf9tujEWV7euBTp3tEoSCBdxfxpLTOU9Bypc7M3d
+         RM+X+w2GGnAuTcZFoYy21MAZQqIY6xTcVRodxVqYIvx9wFpDSTUWbZb6PgZfNTW8flnN
+         6dT6gLiwTAkBUAuOwkIm1aNLaQKEam6B23DVWMa7pt0BZqWLKf8Yu61aTAEOyqGFkDBF
+         l/sg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788580624; x=1789185424;
+        d=1e100.net; s=20251104; t=1788581381; x=1789186181;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=g2SybOKfYwNLLqPuOlw67kWGnE97CPbyKtQUYXmDRnI=;
-        b=NoJ8yrODWjRRf5GsPcxtN1nC7d4wJRsZRi38x7tc1OyOPLZyqni6sfpqv2ar9TAnXg
-         0JCdlsI+rAdKzAR12RzzaFlZD//77htVdzjkPzX+XQz9TTtW2q++yf80qq2CNPaZicGh
-         aeGJ4aoZujo+EyShC4Et9cWc8YPh7WTWNGYNdaBXjBzx3wUOr7+m9Ds+E3VTkEYZ/Ht8
-         pNIc/C3RwSuGQkakrz0yLkGsbP5WhLBimK+qg9EWU4i7sPE3AilwwQYuMc3bEGbT7V0h
-         1zV7RBJSQePHJFryhjofwBikk3Yb4Oq1KBGGHL4TatMsnjqqiESklMAnuwN0kr2gLq0p
-         kuGA==
-X-Forwarded-Encrypted: i=1; AKwUvBx0iz2QF6qBzJSeCG7q+FPQpCpuyzLQXqpcCWRK4PD5OEjpKoTTlgMxrkF9R0gdJddavLgIj3c=@vger.kernel.org
-X-Gm-Message-State: AFuF++mEsbxhBRFcsBxpzbgevlxCY7PgqyG0pDjU7J5r4jFW1MCBaySr
-	9avfTa9pDlN63/TJnysoBPDwNz7UnJSQw5OExjcGdgJ1QJ7IN8ylwUMGNZiJrBO8lq3gXXwThuK
-	MKcSrc82tS0x8VsvvGTvHRtJ1MD4qCJcSOuuXtz4Y
-X-Gm-Gg: AYBFou1X76azApEvt6QzOzIRmg/ju65qwmDWQMtPbowVWZ0h0Ljv6ZuemlpvARYk+nq
-	L6Em7GB7mR6tSj+igtMc8pf67x1u03fvPrwOm2WS3CaKRPwGNZ4INMsncVO0nXiWJmNuwd8CqFx
-	0ubbHgjNqe+oXUdxM8n2463wahZZM+Ik3lKmN5/INv4fH8cKk3z1Q+4FqFc9CANl/uMl4ylN0XE
-	z19hLqUSDsaSP11ywnL0gMV8f0hv/5d4SgUw/bDcJq3t4SnPKZ44IQzxI7QZmRXdFqDHfH0pamg
-	Ef2U3pJoGClVpyfPHG+iw0aWEljVVaQby+tWk8LVQ8NYA4os6Ijb1Q8gvDun+eKG0VopdJS3F+i
-	UmYTa9Ab0tlxeg29eSJ2Qx3dJe10Mw3YH8kipeMBGxgE2/+c2naNGIG+H8kpt4QfkNWX+Fb0401
-	/lr2GXoInaBIJe
-X-Received: by 2002:a17:90b:518c:b0:38f:cfe2:fd3a with SMTP id
- 98e67ed59e1d1-39b0865357bmr18884715a91.15.1788580623576; Fri, 04 Sep 2026
- 20:57:03 -0700 (PDT)
+        bh=QWn6X1YFiIQ4R3Q6NjaIeDPlwfd6j3PDWtBvbTjR0VY=;
+        b=djtRlbdpvkTG/dLtKkk+azadt63npcioXgdaQVJav9E6u9wor2iRxCjHqy1X+sUkot
+         miS5zz3Iq4VGfKWD9dZ8FXOe6FbHf1IBfUdU9je5hCt5Wra3gPscMwefrfhErcd5V6If
+         6itNmAN3mYDJFlB9UkmU+v+35RzLFdhp3yim0HtDZOI++uWCXFeFpJZIy2OjWfDj7nmZ
+         eDvCDxgJNcRZbThFx/dsgF1lxc8eIK4j//BMC3IertAVCH9e8iZibs3ENHTi86xJCrFS
+         +S/+tOdTDcn0bgWepaD2wBVE9BPREVYSbFZDUphrcJOsuOrc3pCteXREqivyKGCbnPco
+         bWJg==
+X-Forwarded-Encrypted: i=1; AKwUvBwWm7DdvQVL6lVqG6kNlxBYPxyFiIBm3OR8DHWKlDH9zNRF9dntUFnSqUp5LN/djf10vCJVpao=@vger.kernel.org
+X-Gm-Message-State: AFuF++lMQLVb7IsH3Zk3qRb63s7dqmbIEOxEE34qyGC5tDbIO9L899FU
+	LmxFv2BN9JVTkgF4PwjnV1Acc+nUDojshzFkqSpRVa3FZm64IpsQkPQS4wzX81f6OCyn0dZP4T7
+	59/5TTXYHun9RMNu2Lz1RJW5b508YSXhxnEj1yjF2
+X-Gm-Gg: AYBFou04Ti+pF7oFAzjnrTxx60DLAaGLjleVT6SLMb1jkiYtIifSSKSErPQG0A5FWST
+	BMaoaVz+OSidxlnzyz+H3J6+ecBX+Oi7SqNzr4T69ueEQcyBYbi89rb4XbC3euh6Kr68TjdTiDL
+	EK2n6Vgcdcf4NGMyqTCf1jdeRXdphv/5Eg09Gb1m+E9leDR2aRUWxv5Wzh88K3kZpLNlUPFgbO/
+	xD2DrxsNpCL4kCX9+9CdhwefpV9YL+iQT0ScbynNZasewJaZDI8XokSb755JP2IT8s4P7n3B4p0
+	Qze/3dVjEEhEPKuetsZAal55HgO/nDatS9cTzceR4Pow6xHvvowODQ6QpeRcE6FsH1plIpccbNJ
+	v01zAxeEaHNxwqgmbv12rERVVy5OYSj723BL9aoHtegstOCH4uk2pKsBC+G2oZgc8MuQ1r+/A/o
+	ANmxyiwUMvSlo4
+X-Received: by 2002:a17:90b:4988:b0:398:ceed:b903 with SMTP id
+ 98e67ed59e1d1-39b080364famr19930154a91.11.1788581380572; Fri, 04 Sep 2026
+ 21:09:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260903120840.1024153-1-edumazet@google.com> <20260903120840.1024153-4-edumazet@google.com>
-In-Reply-To: <20260903120840.1024153-4-edumazet@google.com>
+References: <20260903120840.1024153-1-edumazet@google.com> <20260903120840.1024153-5-edumazet@google.com>
+In-Reply-To: <20260903120840.1024153-5-edumazet@google.com>
 From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Fri, 4 Sep 2026 20:56:52 -0700
-X-Gm-Features: AcwNN1UjlWWh4hKXuEXNwBV0-YkSlLAsCnV4A9HUGl938p3sp2PBr6g4EJROwa8
-Message-ID: <CAAVpQUBwW04hBPFeScVpfU6pbBdQrHiRXZ4A2xUSuLswS_8MsQ@mail.gmail.com>
-Subject: Re: [PATCH net-next 3/9] vxlan: vnifilter: use list_for_each_entry_rcu()
- in vxlan_vnifilter_dump_dev()
+Date: Fri, 4 Sep 2026 21:09:28 -0700
+X-Gm-Features: AcwNN1VBEcheMG4yns8O8V9CzcJDuXNMcXWUoJcSIOg7hNEwFdEsDfUkDiZVAjc
+Message-ID: <CAAVpQUDfVS_S4j=zie6cf0gziNoGsQ1A+g8i4G1kB2deARmPfg@mail.gmail.com>
+Subject: Re: [PATCH net-next 4/9] vxlan: pass vxlan_config pointer to helper functions
 To: Eric Dumazet <edumazet@google.com>
 Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
 	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
@@ -102,22 +101,14 @@ Content-Transfer-Encoding: quoted-printable
 On Thu, Sep 3, 2026 at 5:08=E2=80=AFAM Eric Dumazet <edumazet@google.com> w=
 rote:
 >
-> vxlan_vnifilter_dump_dev() runs under rcu_read_lock() without RTNL when
-> dumping VNI filter entries via RTM_GETTUNNEL.
+> In preparation for converting vxlan->cfg to an RCU-protected pointer,
+> refactor internal helper functions in the RX, TX, MDB, and VNIFILTER
+> paths to accept a pointer to struct vxlan_config (or pass flags/
+> saddr_family where appropriate) rather than directly accessing
+> vxlan->cfg.
 >
-> 1) Currently it traverses vg->vni_list using list_for_each_entry_safe(),
->    which performs raw pointer accesses without RCU dereference barriers.
->    Since concurrent RTNL writers modify vg->vni_list using list_add_rcu()
->    and list_del_rcu(), use list_for_each_entry_rcu() instead.
+> No functional changes.
 >
-> 2) If vxlan_vnifilter_dump_dev() returns early because VXLAN_F_VNIFILTER
->    is not set or vg has no VNIs, cb->args[1] was not cleared. If a
->    paginated dump was in progress, this leaked a non-zero cb->args[1]
->    to the next device in vxlan_vnifilter_dump(), silently skipping its
->    first N VNIs. Clear cb->args[1] on early returns.
->
-> Fixes: f9c4bb0b245c ("vxlan: vni filtering support on collect metadata de=
-vice")
 > Signed-off-by: Eric Dumazet <edumazet@google.com>
 
 Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
