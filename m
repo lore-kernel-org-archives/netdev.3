@@ -1,148 +1,123 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta1.migadu.com (out-218.mta1.migadu.com [95.215.58.218])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E8BA3515E5
-	for <netdev@vger.kernel.org>; Sat,  5 Sep 2026 06:16:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7766367B77
+	for <netdev@vger.kernel.org>; Sat,  5 Sep 2026 06:16:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788588994; cv=none; b=jk2nu2HM+dbYePAMUCG5BmNTdjXTuBuP6cigUQ7q6SUd8TbLtJF8I7j0YqOJdalnj4nK03HuwEFfvEZcKCf/tse4ZJwX5LwwZWXp+++vtGqJwURqKy8xKKtgbcwvg0Zw3MV+odw3fbH85Vep4JRKIIhEB96etRV5fkzpmKuUXfM=
+	t=1788588996; cv=none; b=bVgbMeyipFWlxoL9Cj8noAXd2W16/EeSdVARpLVki21S4nu1kYD1iD8zkjxVZrd00F31wwipa8F9hMNnA4VBWp3PbEh31yXAMTuSgWtUtFtZ2jUf17SvccwdzTekC0ZkHVN8reKrTsKHSsz1fwsJ+oS3GFKw6WEjWrVNRW4+UKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788588994; c=relaxed/simple;
-	bh=v8k24rcZ1MFIPM+pYRzI1CI7mZhPk99bCXlQjm/5kBc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KgNbNAG3zxOWBIT4QZl6DVnTDWIXytPkfBn/0k2+glkggTXXJBkkb92UoWKx3o9VYpAmUQPVq0DHv8oGTOLxMFPK4h62ggKqrBHTFWtrN+a8NcMKGY9oZ4R89meD+YwcrpPoCeqxS48bFLubtTwVLCbKI1Xnc/Bhbt7GCE6jVs8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eG6Yau/S; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788588996; c=relaxed/simple;
+	bh=wVvQY6FcjQcbsN6NidnWh4uveTQRJ0Nlbs9VKkQ617g=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=P3ABNMCc9qqIfCzw4A4j5tp9tdMsga2UV/rWVzYzCx7mVLa57IsQiXXRCCf4XOW5lJZgSLAMT4kCItXj0kAavxlFU+aBlGipi82AyWGrNwg0q+etUdVBq+iu/u4CE/eiORAD4pY36PQUm9WJb9KwNZGEbTZbZnzqysZjA6YLqxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=BVN/b/rt; arc=none smtp.client-ip=95.215.58.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eG6Yau/S"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DA7F1F00ADE
-	for <netdev@vger.kernel.org>; Sat,  5 Sep 2026 06:16:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788588992;
-	bh=wroX+IXZ78hb2aQP5LUDjSlqEruTGuDIlApEgq/LO60=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=eG6Yau/SZQyADBf7WEKKvoXO5elZ/bvCf/rLi+iKt3NTLV7xty74rhFfmCtOpPiim
-	 KsAmLG9Gn+z3shv/KSeuw44rHL9DtjgoqL/rXuxlacLkIVZF2+hqWRGRtWUTXi/qmJ
-	 kZl5s4svuLfbc9Q0nHCHcueEtH3KiRVj1uiGBF/HJ7S7HftHqGrPtY0Sno1Rhjpz4S
-	 r4ZM1gDlCVp9/4jsn5pfGOohCmBT4WDB98quAjGdOyMWd9pF1NAdOgRtz+4BlRvGeN
-	 E8KPCW/IB9VA/PTkef8GQF62ljNlTZ7dJCjGnGxIPtOxwhbNeoezclLf0Kn6pu8kjd
-	 1SF3HTI8TDArw==
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-5b523efb0bfso551582e87.3
-        for <netdev@vger.kernel.org>; Fri, 04 Sep 2026 23:16:32 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBzUBnUFohNXzQ1R2QOKIDz0wdqLr6rE0UqOaYUGUln/LvyaAqQDKUEeqI4EgayU76i75zme46Y=@vger.kernel.org
-X-Gm-Message-State: AFuF++mlqQkKEwWquFYiG63Q41fFiOKvBnBedwDKq6sCrxTX3SVihvlM
-	Ih/y0CfPRTpu/mZmYpG0dfZaEJmIUggoR+f0+PmbcadGCTfoDbCSPwMlQfFWAMjO1k6oNyjOE+T
-	ip3rVH+E8ornETocReOMfyPmSzREJgZ8=
-X-Received: by 2002:a05:6512:2c0c:b0:5b4:74a2:cf2e with SMTP id
- 2adb3069b0e04-5b616f235cemr3181239e87.21.1788588991087; Fri, 04 Sep 2026
- 23:16:31 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="BVN/b/rt"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=wVvQY6FcjQcbsN6NidnWh4uveTQRJ0Nlbs9VKkQ617g=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788588991; v=1; x=1789193791;
+ b=BVN/b/rtUMmz7m4UUzMzVNbEwlZOoDbrdpLs8SFyl7d/wgVtjYnV71Ay5b/AaRUU2FVXTd1+
+ dw57e1R60WxCSzTezi/EtjyazskPuKSWnAKRzQ7+LzfjYxY9QiENTq7Vum+9b5UrP2pQ7JYPQyp
+ rhXmxfxrBOmODNR28QZeNT9s=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id a0fbfabdf52cb018;
+	Sat, 05 Sep 2026 06:16:21 +0000
+X-Mizu-Trace-ID: a0fbfabdf52cb018
+X-Migadu-Flow: FLOW_OUT
+From: Xuanqiang Luo <xuanqiang.luo@linux.dev>
+To: linux-wpan@vger.kernel.org
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	alex.aring@gmail.com,
+	stefan@datenfreihafen.org,
+	miquel.raynal@bootlin.com,
+	david.girault@qorvo.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	stable@vger.kernel.org,
+	Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+Subject: [PATCH net v1] mac802154: avoid extra skb references in RX queues
+Date: Sat,  5 Sep 2026 14:15:23 +0800
+Message-ID: <20260905061524.91223-1-xuanqiang.luo@linux.dev>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260831082335.1184605-1-wei.fang@oss.nxp.com> <20260831082335.1184605-9-wei.fang@oss.nxp.com>
-In-Reply-To: <20260831082335.1184605-9-wei.fang@oss.nxp.com>
-From: Linus Walleij <linusw@kernel.org>
-Date: Sat, 5 Sep 2026 08:16:19 +0200
-X-Gmail-Original-Message-ID: <CAD++jLk+DMHzHiJoX6LMY5wUGMOWm3DN_yAHUUSvFKLKgFwJZw@mail.gmail.com>
-X-Gm-Features: AcwNN1VLKzpVVc3BcKIIuwpH2P20ZdeitB0o0lFGwyQdTkbcdnQSy6KPeNWVBSI
-Message-ID: <CAD++jLk+DMHzHiJoX6LMY5wUGMOWm3DN_yAHUUSvFKLKgFwJZw@mail.gmail.com>
-Subject: Re: [PATCH v3 net-next 8/8] net: dsa: netc: add PTP one-step
- timestamping support
-To: wei.fang@oss.nxp.com
-Cc: xiaoning.wang@nxp.com, andrew@lunn.ch, olteanv@gmail.com, 
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	richardcochran@gmail.com, wei.fang@nxp.com, imx@lists.linux.dev, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hi Wei,
+From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
 
-thanks for your patch!
+__ieee802154_rx_handle_packet() passes each cloned skb to
+ieee802154_subif_frame() and does not release it after the call. The
+callee consumes the skb on every path: it either frees it, hands it to
+the networking stack, or stores it in a queued RX descriptor.
 
-On Mon, Aug 31, 2026 at 10:24=E2=80=AFAM <wei.fang@oss.nxp.com> wrote:
+The beacon and MAC command paths nevertheless call skb_get() before
+storing the skb. The worker drops only that additional reference, leaving
+the original clone reference without an owner and leaking every queued
+skb.
 
-> From: Wei Fang <wei.fang@nxp.com>
->
-> The NETC switch supports one-step TX timestamping for PTP Sync frames.
-> When transmitting a Sync frame, the driver reads the current PTP time
-> and writes it into the frame's originTimestamp field, and inserts a
-> To_Port subtype 1 tag carrying the low 30 bits of that same PTP time.
-> As the frame leaves the wire, the MAC captures the SFD transmit time
-> and derives the residence time from the timestamp in the tag. It then
-> reads the correction field at the offset given by
-> PM_SINGLE_STEP[OFFSET], adds the residence time to it, and writes the
-> result back.
->
-> PM_SINGLE_STEP is a per-port register that can describe only one
-> in-flight frame at a time, and programming it requires reading the
-> current PTP time, which may sleep. Both constraints rule out handling
-> one-step Sync on the xmit path.
->
-> Instead, defer transmission to a per-port process-context work. The
-> xmit path classifies the frame in netc_port_txtstamp(): a genuine
-> one-step Sync (twoStepFlag cleared) has its PTP header offsets cached
-> in the skb control block; frames that cannot be handled as one-step
-> fall back to the two-step path or are sent as normal frames. netc_xmit()
-> hands the classified frame to the switch driver via the
-> onestep_sync_enqueue tagger callback, which queues it and kicks the work
-> if no frame is currently in flight.
->
-> The work dequeues one frame at a time, reads a fresh PTP time, programs
-> PM_SINGLE_STEP, updates the originTimestamp field, and transmits the
-> frame directly to the conduit via the onestep_sync_xmit tagger callback,
-> bypassing dsa_user_xmit() to avoid double-counting TX stats. Only one
-> frame is in flight at a time: the frame carries a TX-completion
-> destructor that reschedules the work when the conduit frees the skb,
-> keeping PM_SINGLE_STEP always matched to the frame being transmitted.
->
-> The one-step context is reference-counted and its lifetime is decoupled
-> from the devm-allocated netc_port. In-flight skbs hold a reference via
-> their destructor, so the context outlives port disable until the conduit
-> frees the last in-flight skb. Port disable clears onestep->active under
-> work_lock; a work that runs afterwards observes active cleared will
-> purge the onestep->queue and return without touching the freed port
-> resources.
->
-> Assisted-by: Wchat:claude-opus-4-8
-> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+kmemleak report:
 
-You agent produces "dostoyevsky commits" with too much verbiage.
+unreferenced object 0xffff0000c1fcd480 (size 232):
+  comm "softirq", pid 0, jiffies 4295683396
+  hex dump (first 32 bytes):
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+    00 60 fd d4 00 00 ff ff 00 00 00 00 00 00 00 00  .`..............
+  backtrace (crc ee03f6a1):
+    kmemleak_alloc+0xcc/0xf8
+    kmem_cache_alloc_noprof+0x240/0x418
+    skb_clone+0x60/0xe0
+    ieee802154_rx+0x19c/0x280 [mac802154]
+    ieee802154_tasklet_handler+0xa8/0xb8 [mac802154]
+    tasklet_action_common+0x148/0x528
+    tasklet_action+0x38/0x50
+    handle_softirqs+0x10c/0x450
+    __do_softirq+0x1c/0x28
 
-Tell you agent to "be terse and to the point" in your AGENTS.md.
+Transfer the existing skb reference to the descriptor instead of taking
+another one.
 
-> +
-> +               /* dsa_tree_teardown() calls dsa_tree_teardown_ports() be=
-fore
-> +                * dsa_tree_teardown_switches(), so netc_port_disable() i=
-s
-> +                * executed before netc_teardown() and onestep->active is=
- set
-> +                * to false. In-flight one-step skbs still hold reference=
-s via
-> +                * the destructor; the context (and its work) is freed on=
-ly
-> +                * after the conduit frees the last in-flight skb. By the=
-n np
-> +                * may be gone, but the work no longer dereferences np be=
-cause
-> +                * onestep->active has been cleared. And onestep->queue w=
-ill be
-> +                * cleared by netc_onestep_work()/netc_onestep_destroy_wo=
-rk().
-> +                */
-> +               netc_onestep_put(np->onestep);
-> +               np->onestep =3D NULL;
+Fixes: 57588c71177f ("mac802154: Handle passive scanning")
+Fixes: d021d218f6d9 ("mac802154: Handle received BEACON_REQ")
+Cc: stable@vger.kernel.org
+Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+---
+ net/mac802154/rx.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-This type of stuff is over-commenting and is considered AI slop.
-Tell you agent to be very restrictive with inserting comments, essentially
-it should only do that when you explicitly tell it to, such as when you
-yourself feel it is really necessary or you got a review comment that
-this is needed.
+diff --git a/net/mac802154/rx.c b/net/mac802154/rx.c
+index 19b5382e85a84..ad602d222e861 100644
+--- a/net/mac802154/rx.c
++++ b/net/mac802154/rx.c
+@@ -287,7 +287,7 @@ ieee802154_subif_frame(struct ieee802154_sub_if_data *sdata,
+ 		if (!mac_pkt)
+ 			goto fail;
+ 
+-		mac_pkt->skb = skb_get(skb);
++		mac_pkt->skb = skb;
+ 		mac_pkt->sdata = sdata;
+ 		mac_pkt->page = sdata->local->scan_page;
+ 		mac_pkt->channel = sdata->local->scan_channel;
+@@ -304,7 +304,7 @@ ieee802154_subif_frame(struct ieee802154_sub_if_data *sdata,
+ 		if (!mac_pkt)
+ 			goto fail;
+ 
+-		mac_pkt->skb = skb_get(skb);
++		mac_pkt->skb = skb;
+ 		mac_pkt->sdata = sdata;
+ 		netdev_hold(sdata->dev, &mac_pkt->dev_tracker, GFP_ATOMIC);
+ 		spin_lock(&sdata->local->rx_lock);
+-- 
+2.43.0
 
-Yours,
-Linus Walleij
