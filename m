@@ -1,64 +1,98 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99DB93BB124;
-	Sat,  5 Sep 2026 20:42:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0C8C1A9F8C;
+	Sat,  5 Sep 2026 20:51:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788640945; cv=none; b=ZxCfIGGZu6h6OgIkUnlbfpC2oNxR07FDvzKUgyIp3VtMOkbb8BOeXYchQQuuDBeFbi7+a+WPO+KgouRU9vPQ8N7/sZTGQ/nL24ZST53xyFlEfCA/IIpwkLVqxZmyEnO35c7r8TK20XUpArvEX05/vD0/b9GQLoHqwoFpLmq45QU=
+	t=1788641479; cv=none; b=MNCewIs4zRAQAEQwg2moPHooTKG2X6sw9uC3jgmVSrstMRiuRmh0+fkvVIQvH4AiaOTCDq5Es7l9ZM4IpQc9TplQnVaXtZhM7ZbcKkohockpqqG5pxGr7lgHp6R59/lRFwuVwzOVQPjDvHsRGnPSEikIDWnoQjHMb2G/P3qCA/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788640945; c=relaxed/simple;
-	bh=/fAPAdx4/GzrMW/hwBWEwYUpO5jDoI9jcjDG21RXJhU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=asFoZf2zn4cHh/cyf4ZI2DUIUrmmE7xe5nKIX/DHHo/AI6QMNM0Ls+pLB2ygWwuNR4TKKGA2r9TsrxDi3sp+Eory0Uqbf9n2U5Duf9w3wcbFEjTouTpQ4117EKH2Rb2SQ24nw8SIW+A442awGhb8di5Me0caeWOqNPEfSCWgiRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eYKflOhe; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788641479; c=relaxed/simple;
+	bh=eP6I4rdFH8zi9D0PcFC/JBxFgEdkQSnAujY0LoJUvho=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=m7A1+Gp2fnCk1TbDHVLQkmHrJJJhj2Lp1Uoo6GQPVpl9AEVKLSoZl/LYPDmJXCyc0FUkKvwux0spNrgr1KeImlLVIOudK+qUC/dd1NeTBWFTy4KEk17MqzxSVZLDWhKQTlnBd85+WIYnf4PbP3fTMEqrHsP8dR+eDjT7QjvB0H8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aXWNxR5D; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eYKflOhe"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07C291F00A3A;
-	Sat,  5 Sep 2026 20:42:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aXWNxR5D"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7684C1F00A3A;
+	Sat,  5 Sep 2026 20:51:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788640942;
-	bh=8nsdlGIzl2XD+lbi7c8VIZD6pHl0s5VgaJBuohl7ScY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=eYKflOheSYbP4/XvNREJPf4QZJ9D5B7uykHiqol23mylQxF94A/ESnQnDqeUc7mMA
-	 ryhIwZ5g1gLLpoWarmz8bw9XteZuJPpfElusN02e1l2lGoMkYpGyhFP442w0mlU5Ob
-	 wvqzteuTsI+x3bAiVj1GOHTC1DZHwTegXi11embCssWHOzwvM1Muue2MPT8FfiyxeU
-	 FqjmcvAT+iqJgWi0Anx7OhlGOgT6hhvFLUvXmOT88Ykeir3W0KkmQMCzHDiZPUoz3a
-	 ks86L3XmYaGqYTfQvwE5VEpZ+RzHWI9klyBQjE5Kg6UMXSSS/wLtYCTXayEBvfBKwX
-	 CSeOQoP1eTrYg==
-Date: Sat, 5 Sep 2026 13:42:21 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Jinjie Ruan <ruanjinjie@huawei.com>
-Cc: <jhs@mojatatu.com>, <jiri@resnulli.us>, <davem@davemloft.net>,
- <edumazet@google.com>, <pabeni@redhat.com>, <horms@kernel.org>,
- <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net-next v3] net: sched: act_gact: use acquire/release
- for tcfg_ptype
-Message-ID: <20260905134221.233ae6b5@kernel.org>
-In-Reply-To: <20260902071659.395509-1-ruanjinjie@huawei.com>
-References: <20260902071659.395509-1-ruanjinjie@huawei.com>
+	s=k20260515; t=1788641478;
+	bh=VnIsu5itAlYzuL5X7MCY8u3HD0I3nPhqDgGGuXqAu7E=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=aXWNxR5DumPj4E2M+Ip9txZQTRfTqQYnEFNQgMfzXfnjqV8So99aOyZ3OYhtm003k
+	 c18JJrel6i4FMZbqJZNWnL56yE0ONPu/VuQ6CwN4fWHhAd1ErTFRZl2WULFgY+4irX
+	 pMAzU90NV8udVEu+9IB3b1A6rRgUmUzpceNOK4QXlGoGF2nj3Yaf2eQsGKb8zC2K0C
+	 igGTzn6L6bxFaMLJkOr8fjC44Bik2KLRQlOEVF6DVE6GNhuJG1fu4CPo42Lf93OnbO
+	 ctCV08XrufOOEvGWef5vT83sqvGjsoOZA5gg6zxZqR4eEoymankS/B09bEbiEG8xP5
+	 QkLPsadoVBisA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0B0D3924FED;
+	Sat,  5 Sep 2026 20:50:19 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v3 0/9] net/sched: clamp quantum/psched_mtu in change
+ paths
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178864141844.1349963.2611834823551423169.git-patchwork-notify@kernel.org>
+Date: Sat, 05 Sep 2026 20:50:18 +0000
+References: <QDISC-0CFC.v3.20260901204856@mojatatu.com>
+In-Reply-To: <QDISC-0CFC.v3.20260901204856@mojatatu.com>
+To: Jamal Hadi Salim <jhs@mojatatu.com>
+Cc: netdev@vger.kernel.org, jiri@resnulli.us, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ victor@mojatatu.com, vega@nebusec.ai, stable@vger.kernel.org,
+ toke@redhat.com, chia-yu.chang@nokia-bell-labs.com,
+ subramanian.vijay@gmail.com, petrm@nvidia.com
 
-On Wed, 2 Sep 2026 15:16:59 +0800 Jinjie Ruan wrote:
-> @@ -160,7 +155,8 @@ TC_INDIRECT_SCOPE int tcf_gact_act(struct sk_buff *skb,
->  
->  #ifdef CONFIG_GACT_PROB
->  	{
-> -	u32 ptype = READ_ONCE(gact->tcfg_ptype);
-> +	/* Pairs with smp_store_release() in tcf_gact_init() */
-> +	u32 ptype = smp_load_acquire(&gact->tcfg_ptype);
->  
->  	if (ptype)
->  		action = gact_rand[ptype](gact);
+Hello:
 
-Clashiko points out that you are turning what used to be a conditional
-barrier into one that's always obeyed, even if ptype is 0.
+This series was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Tue,  1 Sep 2026 17:39:21 -0400 you wrote:
+> This is a followup to commit 709f34f7c28d ("net/sched: fq: add overflow
+> bounds to quantum and initial quantum").
+> 
+> The quantum_backlog_overflow series and the five siblings that followed
+> clamped the init-path quantum in fq, fq_codel, fq_pie, hhf, sfq. The
+> change() paths were not clamped but it is the same pattern, same writer
+> of q->quantum, same privilege level (CAP_NET_ADMIN in a user namespace).
+> A user can override the init clamp via tc qdisc change, restoring the
+> small-quantum deficit spin that the init clamp was meant to prevent.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net,v3,1/9] net/sched: fq: clamp quantum and initial_quantum in change path
+    https://git.kernel.org/netdev/net/c/094cc07f98df
+  - [net,v3,2/9] net/sched: fq_pie: clamp quantum in change path
+    https://git.kernel.org/netdev/net/c/4864f58c53eb
+  - [net,v3,3/9] net/sched: sfq: clamp quantum in change path
+    https://git.kernel.org/netdev/net/c/fb9f88a33c51
+  - [net,v3,4/9] net/sched: hhf: clamp quantum in change and init paths
+    https://git.kernel.org/netdev/net/c/eb56a495f59b
+  - [net,v3,5/9] net/sched: dualpi2: clamp psched_mtu at all call sites
+    https://git.kernel.org/netdev/net/c/3c01f1ca5dfc
+  - [net,v3,6/9] net/sched: pie: clamp psched_mtu in pie_drop_early
+    https://git.kernel.org/netdev/net/c/54370e44c002
+  - [net,v3,7/9] net/sched: drr: clamp quantum in change class
+    https://git.kernel.org/netdev/net/c/8382abec0f15
+  - [net,v3,8/9] net/sched: ets: clamp quantum in parse and fallback paths
+    https://git.kernel.org/netdev/net/c/1c38487f46b2
+  - [net,v3,9/9] selftests: tc-testing: update ETS test 41f5 for clamped quanta
+    https://git.kernel.org/netdev/net/c/8f0229bef3cb
+
+You are awesome, thank you!
 -- 
-pw-bot: cr
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
