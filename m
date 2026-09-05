@@ -1,83 +1,73 @@
-Received: from mail-ot1-f46.google.com (mail-ot1-f46.google.com [209.85.210.46])
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6E31314B95
-	for <netdev@vger.kernel.org>; Sat,  5 Sep 2026 10:02:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 812513DD85C
+	for <netdev@vger.kernel.org>; Sat,  5 Sep 2026 10:06:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788602525; cv=none; b=oyF4V4klwpuZSOpt0c3sEHs+bLDjtH/E+PrKrSSa6bk/Vz6GnmChbiD7SAf5rVLoEgYMK4XL2U24IcOcA7h7bllIm7P11hh/+PBWfr7kRg3Td9BIlU5YftVQ/mB3n9tRloBK2b0B2yAouINEr/Ox34wkZ6bE+nYmfaEXPSWQJAM=
+	t=1788602778; cv=none; b=QHr2Sbf7Xkozen83yqsZCHcHoMxzKrHJUsH2iEiMr9mapZBTntOogpcB0RpeMkziWrCtQ2d31bLhbmby2yUan5eVzIeYLe67ColqHAfCm2pyCe2p1u9E/zhxhS3gG7GnnFJ0Csa0wTJhKQTeab7A2CXCa1hjNxOd7cJqEjHAsW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788602525; c=relaxed/simple;
-	bh=d1kEFi2dgI7yPst5RrNJLJ4jaqLAqlgLOETc5aB6/ZM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SvQLrWIydnPbhQOP6gqA5XZ7leO/Tbf+zzn5NYCesx7qAHbRgCRaLQdYk00W39DAzXcCFiEUV2ABTVoJYmGAbVkpjAD2zgn3i1pZxFFfv982etSwWdN3v1v6YnrVTW2MOfZTtaz317di/DPa0PmQ6u1ZxA4wPymX9ElHv2jY7BA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=kmxgr7D2; arc=none smtp.client-ip=209.85.210.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
+	s=arc-20240116; t=1788602778; c=relaxed/simple;
+	bh=5H7SqX417qL+0SX5OskiLaFk2kFVaplSTtxV3hhdclg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=kL/Zs9TJkn312iUu1WM4DkqHmZiLkM9Kgp6r+wsc7CT3fM8RDY6N7JTxXs6hRqZe0/LKGER/uVpfAD8DHXGKOEbXfFtTffMLiiDx1+Ee+I8OMvBw1WFNwrNsziCfDyy7NIqfu6R5QfGq4kYtIjCl94dw5hHuP9dIGJwDZUN4C48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=E2bEQnvy; arc=none smtp.client-ip=209.85.221.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="kmxgr7D2"
-Received: by mail-ot1-f46.google.com with SMTP id 46e09a7af769-7e9fc3de7ceso1258244a34.1
-        for <netdev@vger.kernel.org>; Sat, 05 Sep 2026 03:02:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="E2bEQnvy"
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-48441a2ba14so1630241f8f.1
+        for <netdev@vger.kernel.org>; Sat, 05 Sep 2026 03:06:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1788602522; x=1789207322; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=1WlAzd/i+j4kX9CBtUrIIq7HtD/s6Y84Xw2IMehcF3g=;
-        b=kmxgr7D2U/B00CWdIO/nJJn9CRHy3n1ZrrHsLWSQpdfcUt3RgK3O2vYq2vpFmkh1uO
-         adsRc3O3vJ6HUASiovReuc+tqXCbUgD5+nIkqcEvNyFpqdrCOxkL1Iloln2nTB27ZlkY
-         joMnW8B1uqFXuoAVT4B4gL1lCQl/lFakiyUTyIsFRQLd+CHv/k58YNNLmtb0E92t4uyw
-         v1TFnY2V/hTjSu4wSkRYUt7SxGZzhu8DWxqC1lVMLwIEwuv1Idom829TvfkWevho0uMA
-         Lk9Mk5SlcImR9vjBiDvWm1HorJwetcxI7vtsn1j7nv35334umYnPMFZxsPw+9yevl6KO
-         2uVg==
+        d=gmail.com; s=20251104; t=1788602775; x=1789207575; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=9hbxRI2kqgXW8szRb8+pxHMF73xMKN7kRApAerLpQSI=;
+        b=E2bEQnvy2Bdf8cG+F0wAdSCSFD2vVJqTGNz7b1CFVHmyjOUh8ozKqZyd/++tltwfVd
+         SmgC5Tx8OWKiYgqHcDabh57DUgdsdH3BNixXUjqsIu4Xqupe6IfkhadCksQbn8LIL+6k
+         zYTgJCuETA8FEMW7X5Agn0YYNjolivv+gG7ktKa5NfAUGnXu8oJQ9f4NnvgNC6qqa2Bc
+         742B4AeS3Vpp7L74agW464/Blol59afNuz0RAG9iBUCo63+L5iahlKaiulZnbCQdzXjy
+         /s7uveomXDh/K3KDspFK9s09TNXdNt/idOM6tdTI3cu7YWzJty2/GS/Z8K55S1UDGFrC
+         2n3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788602522; x=1789207322;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=1WlAzd/i+j4kX9CBtUrIIq7HtD/s6Y84Xw2IMehcF3g=;
-        b=bxrAOvyDJDANeCYf4IlzBfOf+LbyYo09OLtNFd4rBtLRnJF2Bsxgt/2NBzZdLfUcZ3
-         HLLEb+PWHWWGSywPB81AvWbXljddHODynUpYnuWWFIEYpksxTnuERxmrBdpHB/v1JVWW
-         X6h8n/+RHeesbpISQXaDSdJa4bu1QDjmTgTUlrNZBaTZT01qKohScRMggV9w0VgOMLQe
-         mPCm299cXAczMCfN8ayzeRS9+kpHthvwmFxN43FDRtKi1lsOe4JqMV9D74gx+v5qYA/v
-         /gd0BKlMMwUK4QSfjjpbjPV+nJkSJPbjZYqRMOqDB/7CgwnXzevjKzKdVZK0q5ULcvy9
-         KS2g==
-X-Forwarded-Encrypted: i=1; AKwUvBw2ydL4wUNRlbxNs71KkuW0Y9Wi/8lTu+MA1f8pmrk+oOdx6nOkDv84Oyqt3h+kYdpfQ7vQZxI=@vger.kernel.org
-X-Gm-Message-State: AFuF++kKOrb+rnZJxY7sjNHpcqw6AYr/fk2NPZzVV+LutEJn3uaZ3x9e
-	Yi/f1ojuHlUxKCBdevZ5nsPqT5RFl7SXbkukV2OGkuKURnJTXggAOunPSeFVZXyGWL8V
-X-Gm-Gg: AYBFou0ejHyI8DfGh4xmvaNkqKvsgOXAEpY+QTrHfZT6PilK0n6NyQ/S/7XmwBB9A32
-	PvkEh+afVSjYjm84+kjfZX/sM+ttlllVncG0J6MHfdoCXwxKuav3wU8Qq0EJMVmEcvq5rkvFLw5
-	DT3l/rtPA9o8r01ornAXbc0kzj8GTwNfXuQsRKkcOWWayhOptOC4ZK08lsuApI6yrkjOlCf/F+Y
-	WlekYloEw5hrAmWZSykmORSroJrkvBDyqOO99d6xCFn2Tyvd/Pyzjp4btou0Rw1qpvKKpQrNqyn
-	nKruSCBss25PxrwMw1LOjqV4w1nOPW+jM3A4OFREBKvrdu+3ouqYXnuOLIeSfS20WLJ+tso1fOj
-	6DtuJRxStRwWgYTuLGL4zj0XHys1ViAGe5MGyTkpqbb9Ug/ivo2Hqeb+fKR/4CkpjNxnO2mcNil
-	D5FDxw6bDN1Cf9SYGuzAXVJ//I2HKg/Qa1FCxGD+ILK88+8UnWUvjUjqk28nQ395MRY3OUrQ==
-X-Received: by 2002:a05:6820:1c87:b0:6a1:8192:4d89 with SMTP id 006d021491bc7-6b6fe2b1023mr7764962eaf.29.1788602522226;
-        Sat, 05 Sep 2026 03:02:02 -0700 (PDT)
-Received: from enjou-Legion-Y7000P-2019 ([165.232.167.5])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-143243908a9sm11676920c88.9.2026.09.05.03.01.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 05 Sep 2026 03:02:01 -0700 (PDT)
-From: Ren Wei <weir@nebusec.ai>
-To: idosch@nvidia.com,
-	netdev@vger.kernel.org
-Cc: dsahern@kernel.org,
-	iprintercanon@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	tom@herbertland.com,
-	vega@nebusec.ai,
-	petalzu987@gmail.com,
-	weir@nebusec.ai
-Subject: [PATCH net v4 1/1] ip6_tunnel: snapshot encap in xmit
-Date: Sat,  5 Sep 2026 18:01:36 +0800
-Message-ID: <2ce8f3e4bbed6060afb0aee33dc4e1d9ae021280.1788262122.git.petalzu987@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <cover.1788262122.git.petalzu987@gmail.com>
-References: <cover.1788262122.git.petalzu987@gmail.com>
+        d=1e100.net; s=20251104; t=1788602775; x=1789207575;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=9hbxRI2kqgXW8szRb8+pxHMF73xMKN7kRApAerLpQSI=;
+        b=d1z5ewDm2GGF312oAg+88ITPFwi0qtcCUaxGlb49gJUccwa8rNBTxhDrMgZ3CdtSPi
+         iVWLB5XALgjBC2NaR7Mv93e2vNbMqUqTGGk80iNp1Le4G6P74OVbPoZecpFKK4/kg3vI
+         gmhS1Cvm7ObBMpodIpImNUX/ZyRyxUKVwq7Lmzp9dC0coK3DGTVpEGcFDDtlBJoDZekj
+         Iy0hiw427Qdrsyv76/PL5eNxsJ13mrUbbUBCPUWcs5cdekYhUnPj75q09Al2OPX37r5g
+         hMZj2+mwxcycfl9izu/z6aQKYxohq7/n2W8udP/wkYQLxEpXtekMF5izceMZV6ud3/nb
+         pt6g==
+X-Forwarded-Encrypted: i=1; AKwUvBwbEgB71u0mMmZ36eTXgAEL26WDbq6a1zX4nfGGYmAZ8fIprt3lCpgGA19PUOimyem83WPr+tU=@vger.kernel.org
+X-Gm-Message-State: AFuF++nnn4GQOb3OMKEqZ8xuBNdv3vPJItOl7LDhPO4e5exzWrVMj/Ln
+	6lUkVydKhfWu+qOtR/Qn/rO063ekWmwEPJoapO/hVIDPoyt8V7+5V9Q0ZGYBbCkt
+X-Gm-Gg: AYBFou0M+7+7p/PKUqCsdYyYBaShB+F8rqNjSz0OsFcG6zoWdaKLoXWjNNGLGe+AC8S
+	O+wNBMmLvYmFLlsWCZ1CXliSFzh6+PKs/Gt8iif6HfiIyvGAoervN86M+E0celjH6dUeHlyArZ2
+	OdvR7AhEaKBV8p6CFway8NWicwegw5R4OKQi+ujP+BkgbNnIhUGAe9/2g0Fs4ESUsjSXZ/OgPh2
+	82WreWSFUvzImosYZd5CVpbFzhTm+md1AbUq20rYlDLUNHKtTQzi0Uw7C/O/8OibmwpqlmkI6gN
+	kGJ4LmbMaKcEAE7oRRaV6JNxx2Gi393tVfbsoWDCjZQMDTVm4yvWFraJBweXcvoaKMOie4JUQSn
+	vDLSGZNgev+H2el2w7jka3C5OcG/DN48gSQTgH7Zs1bMHkAVxw9656H+8poIH4aU9sienkvq87R
+	2f36oKJO1VO28euJ5hOAHOdJHmBMpK+1gH/Znwoqu1ATJ8qBES2hsXyklqyFsayGA3UwE/fcJ0J
+	yGzYl35IcqG6e2XRfGnjzFhdymkcsCNl32b2fKwhQHzrUjn16H6NiQgGPjU8b7QwCMVIKu/AgDQ
+	2jLmTo1zBH6WowM/a2H96jsyChVpDUBztlT4a2JdQUNjrN1dIzlAc+iVVWTcthuGN+X7
+X-Received: by 2002:a05:6000:420f:b0:484:f26c:b9f3 with SMTP id ffacd0b85a97d-485872ebd4emr13211105f8f.28.1788602774606;
+        Sat, 05 Sep 2026 03:06:14 -0700 (PDT)
+Received: from localhost.localdomain (dynamic-2a02-3100-a4eb-3001-c06d-af27-9fa2-ea53.310.pool.telefonica.de. [2a02:3100:a4eb:3001:c06d:af27:9fa2:ea53])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4858dd90e1fsm9411657f8f.28.2026.09.05.03.06.13
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sat, 05 Sep 2026 03:06:14 -0700 (PDT)
+From: Karl Mehltretter <kmehltretter@gmail.com>
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: Karl Mehltretter <kmehltretter@gmail.com>,
+	Jason Xing <kernelxing@tencent.com>,
+	netdev@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH] MAINTAINERS: Update the so_txtime selftest path in SOCKET TIMESTAMPING
+Date: Sat,  5 Sep 2026 12:06:08 +0200
+Message-Id: <20260905100608.42539-1-kmehltretter@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -86,142 +76,35 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Zixuan Chai <petalzu987@gmail.com>
+Commit 5c6baef3885c ("selftests: drv-net: convert so_txtime to
+drv-net") moved the test to tools/testing/selftests/drivers/net/, but
+the SOCKET TIMESTAMPING entry still lists the old path and
+scripts/get_maintainer.pl --self-test=patterns reports it as matching
+nothing.
 
-ip6_tnl_changelink() can update encapsulation parameters while the
-netdevice is transmitting packets. ip6_tnl_xmit() can calculate packet
-headroom with t->encap_hlen and later build an encapsulation header from
-the live t->encap. A concurrent update can change the encapsulation
-header between these accesses and make skb_push() underflow the skb head.
+Point the pattern at the new location.
 
-Take a local snapshot of t->encap before calculating the encapsulation
-header length. Use that same snapshot for headroom accounting, metadata
-validation, and build_header(). This keeps all encapsulation decisions
-for an skb consistent even if changelink updates the live configuration.
-
-Fixes: b3a27b519b22 ("ip6_tunnel: Add support for fou/gue encapsulation")
-Cc: stable@vger.kernel.org
-Reported-by: Vega <vega@nebusec.ai>
+Fixes: 5c6baef3885c ("selftests: drv-net: convert so_txtime to drv-net")
 Assisted-by: LLM
-Signed-off-by: Zixuan Chai <petalzu987@gmail.com>
-Signed-off-by: Ren Wei <weir@nebusec.ai>
+Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
 ---
- include/net/ip6_tunnel.h | 10 +++++-----
- include/net/ip_tunnels.h | 10 ++++++++++
- net/ipv6/ip6_tunnel.c    | 18 ++++++++++++++----
- 3 files changed, 29 insertions(+), 9 deletions(-)
+ MAINTAINERS | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/net/ip6_tunnel.h b/include/net/ip6_tunnel.h
-index b99805ee2fd1..6e76e50a4406 100644
---- a/include/net/ip6_tunnel.h
-+++ b/include/net/ip6_tunnel.h
-@@ -106,22 +106,22 @@ static inline int ip6_encap_hlen(struct ip_tunnel_encap *e)
- 	return hlen;
- }
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 903e73ec4611..2ba35f12c46e 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -25332,8 +25332,8 @@ F:	Documentation/networking/timestamping.rst
+ F:	include/linux/net_tstamp.h
+ F:	include/uapi/linux/net_tstamp.h
+ F:	tools/testing/selftests/bpf/*/net_timestamping*
++F:	tools/testing/selftests/drivers/net/so_txtime.*
+ F:	tools/testing/selftests/net/*timestamp*
+-F:	tools/testing/selftests/net/so_txtime.c
  
--static inline int ip6_tnl_encap(struct sk_buff *skb, struct ip6_tnl *t,
-+static inline int ip6_tnl_encap(struct sk_buff *skb, struct ip_tunnel_encap *e,
- 				u8 *protocol, struct flowi6 *fl6)
- {
- 	const struct ip6_tnl_encap_ops *ops;
- 	int ret = -EINVAL;
- 
--	if (t->encap.type == TUNNEL_ENCAP_NONE)
-+	if (e->type == TUNNEL_ENCAP_NONE)
- 		return 0;
- 
--	if (t->encap.type >= MAX_IPTUN_ENCAP_OPS)
-+	if (e->type >= MAX_IPTUN_ENCAP_OPS)
- 		return -EINVAL;
- 
- 	rcu_read_lock();
--	ops = rcu_dereference(ip6tun_encaps[t->encap.type]);
-+	ops = rcu_dereference(ip6tun_encaps[e->type]);
- 	if (likely(ops && ops->build_header))
--		ret = ops->build_header(skb, &t->encap, protocol, fl6);
-+		ret = ops->build_header(skb, e, protocol, fl6);
- 	rcu_read_unlock();
- 
- 	return ret;
-diff --git a/include/net/ip_tunnels.h b/include/net/ip_tunnels.h
-index 7c9aadfe8fe3..ab217ddbeb20 100644
---- a/include/net/ip_tunnels.h
-+++ b/include/net/ip_tunnels.h
-@@ -522,6 +522,16 @@ skb_vlan_inet_prepare(struct sk_buff *skb, bool inner_proto_inherit)
- 	return SKB_NOT_DROPPED_YET;
- }
- 
-+static inline void
-+ip_tunnel_encap_snapshot(struct ip_tunnel_encap *dst,
-+			 const struct ip_tunnel_encap *src)
-+{
-+	dst->type = READ_ONCE(src->type);
-+	dst->flags = READ_ONCE(src->flags);
-+	dst->sport = READ_ONCE(src->sport);
-+	dst->dport = READ_ONCE(src->dport);
-+}
-+
- static inline int ip_encap_hlen(struct ip_tunnel_encap *e)
- {
- 	const struct ip_tunnel_encap_ops *ops;
-diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
-index d5ff50a2ac01..6ca373d6205a 100644
---- a/net/ipv6/ip6_tunnel.c
-+++ b/net/ipv6/ip6_tunnel.c
-@@ -1102,6 +1102,7 @@ int ip6_tnl_xmit(struct sk_buff *skb, struct net_device *dev, __u8 dsfield,
- 		 __u8 proto)
- {
- 	struct ip6_tnl *t = netdev_priv(dev);
-+	struct ip_tunnel_encap ipencap;
- 	struct net *net = t->net;
- 	struct ipv6hdr *ipv6h;
- 	struct ipv6_tel_txoption opt;
-@@ -1109,10 +1110,11 @@ int ip6_tnl_xmit(struct sk_buff *skb, struct net_device *dev, __u8 dsfield,
- 	struct net_device *tdev;
- 	int err_count, mtu;
- 	unsigned int eth_hlen = t->dev->type == ARPHRD_ETHER ? ETH_HLEN : 0;
--	unsigned int psh_hlen = sizeof(struct ipv6hdr) + t->encap_hlen;
--	unsigned int max_headroom = psh_hlen;
-+	unsigned int max_headroom;
- 	__be16 payload_protocol;
- 	bool use_cache = false;
-+	unsigned int psh_hlen;
-+	int encap_hlen;
- 	u8 hop_limit;
- 	int err = -1;
- 
-@@ -1202,6 +1204,14 @@ int ip6_tnl_xmit(struct sk_buff *skb, struct net_device *dev, __u8 dsfield,
- 				     t->parms.name);
- 		goto tx_err_dst_release;
- 	}
-+
-+	ip_tunnel_encap_snapshot(&ipencap, &t->encap);
-+	encap_hlen = ip6_encap_hlen(&ipencap);
-+	if (unlikely(encap_hlen < 0))
-+		goto tx_err_dst_release;
-+	psh_hlen = sizeof(struct ipv6hdr) + encap_hlen;
-+	max_headroom = psh_hlen;
-+
- 	mtu = dst6_mtu(dst) - eth_hlen - psh_hlen - t->tun_hlen;
- 	if (encap_limit >= 0) {
- 		max_headroom += 8;
-@@ -1240,7 +1250,7 @@ int ip6_tnl_xmit(struct sk_buff *skb, struct net_device *dev, __u8 dsfield,
- 		goto tx_err_dst_release;
- 
- 	if (t->parms.collect_md) {
--		if (t->encap.type != TUNNEL_ENCAP_NONE)
-+		if (ipencap.type != TUNNEL_ENCAP_NONE)
- 			goto tx_err_dst_release;
- 	} else {
- 		if (use_cache && ndst)
-@@ -1264,7 +1274,7 @@ int ip6_tnl_xmit(struct sk_buff *skb, struct net_device *dev, __u8 dsfield,
- 			+ dst->header_len + t->hlen;
- 	ip_tunnel_adj_headroom(dev, max_headroom);
- 
--	err = ip6_tnl_encap(skb, t, &proto, fl6);
-+	err = ip6_tnl_encap(skb, &ipencap, &proto, fl6);
- 	if (err)
- 		return err;
- 
+ SOEKRIS NET48XX LED SUPPORT
+ M:	Chris Boot <bootc@bootc.net>
 -- 
-2.34.1
+2.53.0
+
