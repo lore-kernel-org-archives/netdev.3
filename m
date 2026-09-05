@@ -1,89 +1,75 @@
-Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 022F32F2910
-	for <netdev@vger.kernel.org>; Sat,  5 Sep 2026 08:53:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B931A6817
+	for <netdev@vger.kernel.org>; Sat,  5 Sep 2026 09:27:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788598409; cv=none; b=qOqwtNNV7NvlLmLuASU9u/SSLu8WVFy/cO2lJsQK04z4Ql4hpKjKaJQJcnaEWzBc8qRxDE7+vTQcnWMsDG3PvRD/Kr4Q51Ex/87KAYPHa49kkgKP2sdLI58UX/1ol2wfdDs4CVVoDJ3O7Y3+mnVH87HESnODP+ZDsTLLrwNHFfI=
+	t=1788600467; cv=none; b=AUV3Tr85kIoJWaeHNavgbCBn2DJZ+Lqs9l9O9bko4UiuyOLFJkR8zFVuzslh4Q28JO2V34r6InUPdD9Vz4T79ubh1HwtLkvUerObq1YMTA5PRHBC+iE4M32b0BUIUxRplNHwRxvHIJ6JD2MvxYB2SvT7kHgjX87vn8m+5Hf5+yg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788598409; c=relaxed/simple;
-	bh=D7JaeCOjdBjWc38JeD5hIJbaNJss77DXuSprCXTCyT8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ovvyzp/s8YtOLfNUMVw3hvLOCiUKBFj7700j3RYnXe6zrGV8ti73sA16oa6jfTD+7fCtZNiWU4Yrv+JMPQYR/eL1AerXzmVc+C6ZuvnnsiAnsTmYXEzMi90IOEqqwNIGSnjPsekJlhT1ec91/CgrMkargFZ5trNAk22+90aYLds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b=iQyfZ20c; arc=none smtp.client-ip=185.125.188.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
+	s=arc-20240116; t=1788600467; c=relaxed/simple;
+	bh=TS2ZqAYkMKJx7jd+0qJxM03yHKpGscRqn7r8XoSyCHM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=MbY7QZ1zJ2c100B5+dg2Yo9VhWfD3v8epnrGXT5gnBVyhT0RgPtYmNBQITAIP4RoMo8VnqwuQT9c/RU6zRRqq/k5tLXPD5s/ZWGdVr6MqB/Ue5SfW95sjDUGXYkPb9el0HcptK/RwTXEu49z9f2t4xwvBr06rA2wiNBCM1XOlc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mFLsJGdm; arc=none smtp.client-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b="iQyfZ20c"
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com [209.85.128.69])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 3C42A3F215
-	for <netdev@vger.kernel.org>; Sat,  5 Sep 2026 08:53:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20251003; t=1788598404;
-	bh=bAyqUgf+I6QAh1/NXnB0FgN6nwCFM0fq8dEBHdP78N8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version;
-	b=iQyfZ20cHquVg2bhaAmAx7vhDm34iJttgaDAvpzKr9/63gdvVV7R0k7dwJuZUErgd
-	 9jHDSyR0bYj52YLLnG/LsZ+vaFnFaRyn/18qD5dNUumWIkYyOFy0vt6Anwj9z0e1Rc
-	 S1n55a4pA8IuQ/jQkUu7TSUJ1ViipVjAZ3ASTmwKa1Q+DNHvkBMsxx9e1Xw1PQvL1E
-	 yFLVQuDX9YLPBD0+XNkQEPWQjuDw0zo7zO9xsDlVjALMvFVfsAfg+ier9tlsopfKXh
-	 pLGS3FRZA9EMRRnN2sO9A5tkAESDv1vYK4MDGGfVEJLNu5omNOWQsO8XKgoricAjuZ
-	 lCyir01KNECfB23VQrMn52u5HFw1x6V/CUEMqyEUbNmt76uq1JPRGk7OMLuTZXeMYi
-	 HjZW9kesgPuebb1kpil2VZ7KCjE/sXgyhZdG7KNfh9SVj+wo4h+pojRfjV8XhmH04H
-	 UdpfEaG6YyEAZnCZPCqF0kXOmLtQPzLa/RhCH8UEILYovut9yjBi5SUsDjnH7M43Fd
-	 SqGS0DFTESCdPAEbHKz5Er/dHmtJeoqgye+xDyJ3xAYvCqKG8F3WjIMUcN/Iwaw2gV
-	 Xp4yC6PrPD6jkcon7kz31S+P9Zl1hOCd1LsOWCvE8xixsWUFCo51MB6Xw0IiqRx05v
-	 IJp8AxYWRK5jgS9lIS2LsgHE=
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4903dcaa06cso1597485e9.2
-        for <netdev@vger.kernel.org>; Sat, 05 Sep 2026 01:53:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mFLsJGdm"
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-484362f5c4aso2260472f8f.3
+        for <netdev@vger.kernel.org>; Sat, 05 Sep 2026 02:27:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788600464; x=1789205264; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ZoAyHVgP3ONjx3aSVQg0JS5TpUwPOrXUrMPzdKMVHIM=;
+        b=mFLsJGdmtdDdUKbg30wJEQOlZ58lPKx+u4biuQOpFIwRD0f4Gi6N4T6+NJJ3ynSxoI
+         qsbvS6sJb/yGbN7PP9s+FYVKfFMNPKvZQRY638CJHcIgdtsysaMEKPTPVrb8+U8m7LO8
+         TRaBmY3vpljdjdGAO8i/w3Hmu8fnIacmoe4BxHvQ305uJVhNFHCXQ/uW99iEAffhtkZZ
+         0Oh6LeUhiimB/9Z8drZ1Ci4bHvB6Vaao3cy3VJ1eKoYWrMuXlNHmL2EWvrxNpADfWPDS
+         +BmN+9be33x3e4lXQkCJpIAwX7DNIpqbdRbwdlxP7uLDB7V84HRnx3L4+D9+9jMWxgQm
+         LNFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788598404; x=1789203204;
+        d=1e100.net; s=20251104; t=1788600464; x=1789205264;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=bAyqUgf+I6QAh1/NXnB0FgN6nwCFM0fq8dEBHdP78N8=;
-        b=p97cB16XMwFuAhjVsCNeHOHsLJmuDcSpRNYb2T133VwFii96Flv/JpFmyzzdo/vmdt
-         Kt2ASDYzg2vEEBbzH3nYvB6yVabww6DR8Fy9v4Rp6frKSnxtcxDwnj4n1a6Dugf7DqwZ
-         6dM8Hx2RsCP1knXj5NK1/oS87RusBO/NZgeReG8l3U5RnrZivMBK8N+CQXN0YeAV4IEq
-         2QrOelyJ6nQDsEJIc0Mo+2Jp25SpvoeRN16cKDESNf0x9VtTixrK4cNwNNhNVV46vsXv
-         BmnpR3dk+9ZAZRCYDLGFTfEpJDNNEGpjq74FYyIYBWYSIqdLoM7MigyVFdkAs4koLswY
-         t3CQ==
-X-Gm-Message-State: AFuF++nhbZztTTXCVZg8ITwSp54Uh4Y2WBj5UF8FSY/erNajuCnIog/Q
-	dhbtLRrugUDUcNoThIf32lXS6zLjCyrNmVg/hLeaQ4Qq+/JBrBHmQBrbfjSHgXoi9lwqWRoGKBN
-	q4AIL21PHS+OHY6QxtCr6r7WXXC23GIHbG1s+IkrqZhNkqV5ef4WJn+iUj2I+NCUkyKypzgWIEP
-	8tfzQrihFm/xo=
-X-Gm-Gg: AYBFou2bmG9TGjte0mb5pPDb1xdL/1a4ctCJSih6PauwjTLkWHs/XgfyOthEHW9FBAy
-	NW8BRBTO2AMLAYXMTPpys6HOXZ0uOp3d3AcC6jCVnDAaDgvlK0XscKKa068nFXkBAvwYo/vYFAH
-	833GaB89Rrr9oEFESpSZpfju4qm+SBuegjoauszI+aPvuCrZewJDFWhGdzBqPDizk87VYiINwan
-	nG//p7Sm1uLJhNpHi7kyl+OOX6USeyzmkamZFSGaUgpvP1QP7n8SOEX80LQLqv9Tn2FLg23Vzhb
-	XfLLgAD2DlqnxpWv/twY6EhlAExfsvm71c9gU2bJFhC+NjL6nGaI7UynIRCr/X7OQIkYbuBEmGN
-	2jtH3ByBW44sJ
-X-Received: by 2002:a05:6000:983:b0:484:3d59:5ed with SMTP id ffacd0b85a97d-4858ffa115fmr3139798f8f.0.1788598403750;
-        Sat, 05 Sep 2026 01:53:23 -0700 (PDT)
-X-Received: by 2002:a05:6000:983:b0:484:3d59:5ed with SMTP id ffacd0b85a97d-4858ffa115fmr3139774f8f.0.1788598403365;
-        Sat, 05 Sep 2026 01:53:23 -0700 (PDT)
-Received: from localhost ([2a02:1388:a28:ba0f:6fd4:24de:787b:7c01])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-485885bfdf6sm12692505f8f.34.2026.09.05.01.53.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 05 Sep 2026 01:53:22 -0700 (PDT)
-From: Edoardo Canepa <edoardo.canepa@canonical.com>
-To: netdev@vger.kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
+        bh=ZoAyHVgP3ONjx3aSVQg0JS5TpUwPOrXUrMPzdKMVHIM=;
+        b=j/xN5de54wbF5/gcRleDGg0DjeijKG2Um8wfd8ECzE3StMYX/L0rskeVBWEsm3fvg1
+         nb7Kd4X/Pg5rHJNkFkHFp8R333iGn6cPfMzCfQ03Qxjqrwbbv3TTbqLwx293YkDHah1d
+         kSSHlevGpDHOpw2+sLGt5BWOr4mdHpRrhnXYhaLKlaCbag7n1mm+iCzky2QEskzjdjuF
+         rMbrztjs0GgdNZD0AbQnyWTx9utK4+oipR9FVlta+UydKxJh3ncBVAtazjJte6ta35r9
+         YQXNeQNCuFLvkstKPhuh+3ZtE6MPJ7v4TG1+sNaH0DR3J5S3Xo72f/q4QAqYdxNjBbZx
+         pmPQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxm6zBfNNChylU5C0cTmCpT25ZlKP7QLI9bWLsmdxaLImPg5FXPT6CgtTgTPaRo91dWFeZwp7A=@vger.kernel.org
+X-Gm-Message-State: AFuF++lmGxhbABHaSY0YF7q70gCMkbDz9hGmJhLezrOT5qhduc1Htidd
+	Fnbyd4DCYmjuYsjV2TzT3jZ6Yz0aNvMx0wcYtzTQJEi67/4YdOcWbY1A
+X-Gm-Gg: AYBFou28ai4KQispw++S/Df5GRRLEzKl9QzhsWUWyMNU4SdRZWFhXxIijc3YuxxIvNr
+	AcMosIQEUK6UBa+HETGYoKS0wbGwQ4/UOneB8uU9mydJUxrC8l0A/OIkgpLizMDcQln/ohYXekG
+	WWm1oe+FJYbq4rC/Krl9/GAjIIT5631UWCMbaHBn48lp8s3zF830xqSguz1LUsMCN9zddOkbjNl
+	4TQDlQ+qWNoVkmJJtcEBh4LvHU7fCj/YKVweYzSKwH6kJ1YTAsf1saBWaCDZ5G2LoCDRXBCB7xv
+	IfbSbIE6qDwz8tiDDnzrUveR4Jy/GfvO35RaUHf14mnCrYfMLrC5nfqnaeQpcACdC5P5F7MMxwd
+	yp8NBlUw5jp1m90Y4/8uaBHqV86aMnXDFXwcMOeR51He9rXBAJBAB0K5Lt4MnktzTlXZw5qEf4D
+	aeqzTAiycPveyEBKjuach/Eu2TNzL0Sfu4jZ7FMqRrCAyTRGXRkvLxgpFpBHxmXJB19wFXrxln/
+	tjcRWSK7D0lZ3n3BUGZb3QZAqwQP9VKxxny4aa0Ytrq6n9CxDZrs+u+zLn26iq8odBnfeDfJANI
+	J2wSN1P0B1CuaBkf45HDVdSW+n33WZEXrgnLwrb0Y+gSadLE+7J7mmRaWi+KMT2sN8w=
+X-Received: by 2002:a05:6000:70b:b0:485:8be1:378d with SMTP id ffacd0b85a97d-4858be14b94mr18555992f8f.12.1788600464134;
+        Sat, 05 Sep 2026 02:27:44 -0700 (PDT)
+Received: from localhost.localdomain (dynamic-2a02-3100-a4eb-3001-c06d-af27-9fa2-ea53.310.pool.telefonica.de. [2a02:3100:a4eb:3001:c06d:af27:9fa2:ea53])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-485883c81c3sm11782654f8f.26.2026.09.05.02.27.43
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sat, 05 Sep 2026 02:27:43 -0700 (PDT)
+From: Karl Mehltretter <kmehltretter@gmail.com>
+To: Alex Elder <elder@kernel.org>
+Cc: Karl Mehltretter <kmehltretter@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
 	Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Xu Du <xudu@redhat.com>,
-	Po-Hsu Lin <po-hsu.lin@canonical.com>,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net] selftests/net: run tun tests in a dedicated network namespace
-Date: Sat,  5 Sep 2026 11:53:02 +0300
-Message-ID: <20260905085318.3416670-1-edoardo.canepa@canonical.com>
-X-Mailer: git-send-email 2.53.0
+	netdev@vger.kernel.org
+Subject: [PATCH net-next] net: ipa: Drop the monitor_rx endpoint_id ABI entry
+Date: Sat,  5 Sep 2026 11:27:19 +0200
+Message-Id: <20260905092719.41497-1-kmehltretter@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -92,91 +78,44 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The tun_vnet_udptnl fixture creates a fresh tap device and installs an
-IPv6 outer neighbor entry as NUD_PERMANENT before sending packets.  On
-systems where systemd-udevd is running and a systemd .link file sets
+The ABI file documents .../endpoint_id/monitor_rx, but
+drivers/net/ipa/ipa_sysfs.c has only ever created modem_rx and modem_tx
+in the endpoint_id group. No monitor endpoint attribute exists.
 
-    MACAddressPolicy=persistent
+Drop the entry.
 
-(the default shipped by systemd in 99-default.link, so this is what
-most systemd-based hosts inherit), systemd-udevd's net_setup_link
-builtin asynchronously sends an RTM_SETLINK to reassign the freshly
-created tap device's MAC to a machine-persistent value.  When that
-netlink message races the test's ip_neigh_add() call, the address
-change kicks the following path:
-
-    do_setlink
-    -> netif_set_mac_address
-       -> call_netdevice_notifiers_info
-          -> ndisc_netdev_event
-             -> neigh_changeaddr
-                -> neigh_flush_dev(tbl, dev, /* skip_perm = */ false)
-
-which flushes every neighbor entry on the interface, including the one
-the test just installed as NUD_PERMANENT.  The subsequent packet
-therefore hits __neigh_create(), triggers NDISC, and times out with:
-
-  tun.c:947:send_gso_packet:Expected ret (0) == variant->data_size (1423)
-  tun.c:948:send_gso_packet:Expected r_num_mss (0) == variant->r_num_mss (2)
-
-The failure is non-deterministic and can affect both directions.  Both
-recv_gso_packet and send_gso_packet variants can hit it; the failure
-reproduces on a plain systemd-based VM with no containers, and is
-triggered whenever the udev worker's RTM_SETLINK lands after the test
-has installed its neighbor entry.
-
-Fix by calling unshare(CLONE_NEWNET) once, from main(), before invoking
-the kselftest_harness.  All tap and geneve devices are then created in
-a namespace that systemd-udevd (running in the init netns) does not
-watch, so its RTM_SETLINK never fires against them.  This mirrors the
-approach used by selftests/net/ipsec.c, which also unshares from main()
-rather than per-fixture; it keeps the harness output ordering intact
-and avoids paying the netns-creation cost on every variant.
-
-Verified on a plain systemd-based VM running the affected kernel:
-1000 repeated invocations of
-tun_vnet_udptnl.4in6_nogsosz_1byte.recv_gso_packet produce 7 failures
-without the fix and zero failures with it.  A 20-iteration run of the
-full test binary produces 4 failed runs (across different variants,
-all send_gso_packet) without the fix and zero failed runs with it.
-
-Reported-by: Po-Hsu Lin <po-hsu.lin@canonical.com>
-Closes: https://bugs.launchpad.net/bugs/2158217
-Fixes: 24e59f26eef2 ("selftest: tun: Add helpers for GSO over UDP tunnel")
+Fixes: d79e4164d0d5 ("net: ipa: add an endpoint device attribute group")
 Assisted-by: LLM
-Signed-off-by: Edoardo Canepa <edoardo.canepa@canonical.com>
+Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
 ---
- tools/testing/selftests/net/tun.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ .../ABI/testing/sysfs-devices-platform-soc-ipa     | 14 --------------
+ 1 file changed, 14 deletions(-)
 
-diff --git a/tools/testing/selftests/net/tun.c b/tools/testing/selftests/net/tun.c
-index abe488bac50b..7f118ba3ae0b 100644
---- a/tools/testing/selftests/net/tun.c
-+++ b/tools/testing/selftests/net/tun.c
-@@ -4,6 +4,7 @@
+diff --git a/Documentation/ABI/testing/sysfs-devices-platform-soc-ipa b/Documentation/ABI/testing/sysfs-devices-platform-soc-ipa
+index 364b1ba41242..3b3bae2369d4 100644
+--- a/Documentation/ABI/testing/sysfs-devices-platform-soc-ipa
++++ b/Documentation/ABI/testing/sysfs-devices-platform-soc-ipa
+@@ -75,20 +75,6 @@ Description:
+ 		the ID of the AP endpoint on which packets destined
+ 		for the embedded modem are sent.
  
- #include <errno.h>
- #include <fcntl.h>
-+#include <sched.h>
- #include <stdio.h>
- #include <stdlib.h>
- #include <string.h>
-@@ -985,4 +986,12 @@ XFAIL_ADD(tun_vnet_udptnl, 6in4_over_maxbytes, recv_gso_packet);
- XFAIL_ADD(tun_vnet_udptnl, 4in6_over_maxbytes, recv_gso_packet);
- XFAIL_ADD(tun_vnet_udptnl, 6in6_over_maxbytes, recv_gso_packet);
- 
--TEST_HARNESS_MAIN
-+int main(int argc, char **argv)
-+{
-+	if (unshare(CLONE_NEWNET) < 0) {
-+		perror("unshare(CLONE_NEWNET)");
-+		return 1;
-+	}
-+
-+	return test_harness_run(argc, argv);
-+}
-
-base-commit: 80dd7e754b3aa9637a0758ad93fa209f9650ec48
+-What:		.../XXXXXXX.ipa/endpoint_id/monitor_rx
+-Date:		July 2022
+-KernelVersion:	v5.19
+-Contact:	Alex Elder <elder@kernel.org>
+-Description:
+-		The .../XXXXXXX.ipa/endpoint_id/monitor_rx file contains
+-		the ID of the AP endpoint on which IPA "monitor" data is
+-		received.  The monitor endpoint supplies replicas of
+-		packets that enter the IPA hardware for processing.
+-		Each replicated packet is preceded by a fixed-size "ODL"
+-		header (see .../XXXXXXX.ipa/feature/monitor, above).
+-		Large packets are truncated, to reduce the bandwidth
+-		required to provide the monitor function.
+-
+ What:		.../XXXXXXX.ipa/modem/
+ Date:		June 2021
+ KernelVersion:	v5.14
 -- 
 2.53.0
 
