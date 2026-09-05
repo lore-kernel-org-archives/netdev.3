@@ -1,231 +1,113 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f179.google.com (mail-vk1-f179.google.com [209.85.221.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FFCB30C618;
-	Sat,  5 Sep 2026 19:46:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E61A82E92B3
+	for <netdev@vger.kernel.org>; Sat,  5 Sep 2026 19:48:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788637592; cv=none; b=QH6Xtz4pNL+Wrhi5io9iFSyvLz1Sab3vAZWhGGhhiQp7HezpNlWzJS++yBxj0pxHfGJoxAeqG7X3UXm9yh+2aAZDxxWNB3JSv3WHaoVJNXpNRyPuwj9Fu0P6JpioZYu0QhTmfGLdgcvvRzK38XjxCgeFOaKK1Dm59X5jhhAzEps=
+	t=1788637718; cv=none; b=U/71+u8sPcSjZZHBfQBMxty9OUdGVtbiHA1iVoaj3s+3MYpHN4tnYri9+FXJd8ly8V62DfQ9igkbCac3peAGG16Ud5WZ0UPxxyt8QPgtantM1UbHy56qMPGJiQZbd0LGfGAB92Zmc0dNiLZf+MVtPTl5UkUo3Y1RHFB5Orc1nrg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788637592; c=relaxed/simple;
-	bh=bT58/hIVivXfR+cVIAQdAXf64R1sSvSWyXwRcd0goCM=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=hDyLKxW2kz/zGXuAnwuAXZvlzVad1uGWBX7rmRpWWTZ08IAlVmKd+dD1KXc+YETgKV4ssLVI10gtgqnYKzvxuD12LDzDKm1MY0ZGCug6ArYo1gquAy6bJE0VYYSJUTSCM/u3Vup7LUTENb67m/6Z9pXowJ3H2I+KIoF5Vcy+6Ps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DM+gIQ5u; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788637718; c=relaxed/simple;
+	bh=zZqRSdRVzBOcjcDUhtyUq1mpFZmKcLHBt8LfU9cEZio=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lXEyhr/0QCkyMiiRyRnre/c5nzUd8ylYWyvEk5VX6u2xacs+6oIi0Is2jz/io2fXyeMs4DoAds73fhgljzMCernbFYHqyfYjsAAH+w8ramtFaLb7ZomTSUb7kMEZLnroFpH11Ab4HvdTLDUUt6T4O7xP+MKDn+W392z4GspA77E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NcO3uWGw; arc=none smtp.client-ip=209.85.221.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DM+gIQ5u"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4FD11F00A3A;
-	Sat,  5 Sep 2026 19:46:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788637584;
-	bh=2ObsW+H/YcTNdLYYwjDqgLrl8yqGH0OOU+Xl/KFFj44=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=DM+gIQ5umb0S4dOcxfDstp3iHyZTuwnrcL1SxqF0AH/tfnUbvis3jIbITF8a22d+r
-	 l79BHaXWER1vNtOOO32IBCkuPwSySLK+rmnpXk1eLEX3lfjrHUB/Lrw8/Mwk2XQLy4
-	 Ed8Cf389mFhcS+beWBErDJcRUG8IemSavE4Ze9Ib5VIotFG95ohKdtHA8ak4g+s3av
-	 h0ZbYJ5OUuFgzA3vG3uP6KY80EwE88jcUK6yz0FfmrYyit7P2jlMVTsnmprew5b58v
-	 15yM8GYICHZeA6l8Iz+rjNw+yKmyR5aZVRQj8jX0p11cIt72LR/SiBDoe7w4OdbtW7
-	 t43SH9N2berxw==
-Subject: Re: [PATCH net] atm: pppoatm: reject duplicate backend assignment
-From: netdev-bot+sashiko@kernel.org
-To: v3rdant.xiang@gmail.com
-Cc: mitch@sfgoth.com, 3chas3@gmail.com, netdev@vger.kernel.org,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, linux-atm-general@lists.sourceforge.net,
- linux-kernel@vger.kernel.org
-Date: Sat, 05 Sep 2026 19:46:23 +0000
-Message-ID: <178863758341.219967.1263005070837622760@kernel.org>
-In-Reply-To: <20260902040320.4007552-1-v3rdant.xiang@gmail.com>
-References: <20260902040320.4007552-1-v3rdant.xiang@gmail.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NcO3uWGw"
+Received: by mail-vk1-f179.google.com with SMTP id 71dfb90a1353d-5bf959b820cso2088330e0c.3
+        for <netdev@vger.kernel.org>; Sat, 05 Sep 2026 12:48:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788637715; x=1789242515; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=AuWHZWx2knaUk2C1quRHTj7/UzJr/0Vfr5UpvPiZUWE=;
+        b=NcO3uWGw7C/mkWfpRsqWuLZj59Kng4p59gUHWLnQskb9BCVfFP4AySLkMSrFkYb2+s
+         1OHZth8tK8xX2p3/K9KkrjSp68CFKcnNOsLRE/gRUHIQiH2dpUO3FLcQYRG+qY0X1pDH
+         ujHuJEIKM4Yc5uHJiJsO943+6U7EvHFhWgsSKVIP27vp+WDCw371ARP7EziMnoUY2zoX
+         nrONJYDiSSeLWGI4y9+M96aCxh8Kf6RztRRqlQgpROlN69SwKwJhwMAy0pc62t/dAHA6
+         d71/LjdeXw3qUqByPs4eaiNbot1SreeDgJkA9Pur9OdgoClxQNn26+4cc3BdKB3Ueb4e
+         1ZWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788637715; x=1789242515;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=AuWHZWx2knaUk2C1quRHTj7/UzJr/0Vfr5UpvPiZUWE=;
+        b=av569JAtWWcOrhbuzuAC6mmdFDVK+hb8kxpnnA8rnZwE/Hid9unjWwBn2SaDdTbZI+
+         w1vxgrC6iTLrfhb18zPMjvyvh9YvbwFu/zU9oP8cF2Kpb+R9lwORcSabdSOsQk9RXr+z
+         NLslvoBS+Sfi3j0bdCh+ML587jmH++9RRgLCh3DMfmeuPLHc0wq/TZRVYH09fK5yFc30
+         GazOfJ5RC4US6jnMY8cUuu4DaE5gKx1+GP8a7g3H35j5ylPwLiQt1jjA8DEvK/cCeyxE
+         q8zNz0E8cArZq6gYSvx1dmKYk4vdmOipAMZ+ZArPG/v4/H5lDKZmM0pCGZVSrFITIH+y
+         688A==
+X-Gm-Message-State: AFuF++k4LlLjcxOZkhGPFWpjaUES6Fttpq5Ju8eJQIlzWBvgCjTkRp0s
+	f1+6Yflcz4zIkeNg0enb5w10glhzxojWbmTs+fquHnIyQK6VOcNvysWU
+X-Gm-Gg: AYBFou2/sRsN9d4FIio40KsF9RTLCPT3XGxEg0A+cIOcFmIeaybhO8s02i8asHRSWBD
+	H6X3HJILm+lxt0BvqKuxc73iF+hgO9NxdQLuNPezDxVhza0SLUU5sopf62OqimPgixU1bMDrHKM
+	5XlfhnIW9G5JgIn3p5TBESh+6KJZv0nqFNjw1lJfOH1QLSjJaGJdcwygg5Wq8/r2hufN3LUFD4v
+	bARS9qR8c85jgFHkCScqMVLa61y+IDJZDrNphKPg6QZ5DWLpxqLHI0nsn3/R7GYyEECU5bQlLn3
+	sFbOzOYrwFld8uXlB1Py0HoxuRZev1kJ8u1gVR/XhIBsfiN+jtCZXHH6sVKFAJKaa/JA+hdpqLW
+	2QHqNuAgfD/kZXXWSPOZjSD9WZpBWOGBfI8dEkxicK0C8bFWxC6iAkVEe5DmNnITalsT/805r/a
+	iVJHUv02m0T7CbI0DnKvdQfshxAOziYgquHJQhK+TE1jSN1rwq35sOgzbrafdyBmc=
+X-Received: by 2002:a05:6123:22:b0:5c6:6c75:81c9 with SMTP id 71dfb90a1353d-5c7ed7ee91bmr5474604e0c.7.1788637715443;
+        Sat, 05 Sep 2026 12:48:35 -0700 (PDT)
+Received: from adriano ([190.215.95.120])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5c7ecac1033sm4678437e0c.18.2026.09.05.12.48.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 05 Sep 2026 12:48:35 -0700 (PDT)
+From: Adriano Cordova <adrianox@gmail.com>
+To: Marcel Holtmann <marcel@holtmann.org>,
+	Johan Hedberg <johan.hedberg@gmail.com>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	linux-bluetooth@vger.kernel.org
+Cc: netdev@vger.kernel.org,
+	Adriano Cordova <adrianox@gmail.com>
+Subject: [PATCH] Bluetooth: bnep: linearize skb before sending
+Date: Sat,  5 Sep 2026 15:47:25 -0400
+Message-ID: <20260905194725.284347-1-adrianox@gmail.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider:
+kernel_sendmsg expects contiguous data. Check the skb is linear
+before building its kvec. Should be already linearized by the
+stack, so this is defensive, but drops the dead block and the
+FIXME.
 
-Critical: 0 · High: 1 · Medium: 0 (1) · Low: 0
+Signed-off-by: Adriano Cordova <adrianox@gmail.com>
+---
+ net/bluetooth/bnep/core.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-- [High] Incomplete fix: the new `if (atmvcc->user_back) return -EBUSY;`
-  guard in pppoatm_assign_vcc() (net/atm/pppoatm.c:399) only rejects a…
-
-Pre-existing issues:
-- [Medium] pppoatm_assign_vcc() publishes the backend with two plain,
-  unordered stores: `atmvcc->user_back = pvcc;` immediately followed by…
-
---
-
-atm: pppoatm: reject duplicate backend assignment
-
-This adds a check in pppoatm_assign_vcc() that returns -EBUSY when
-atmvcc->user_back is already populated, so a second ATM_SETBACKEND with
-ATM_BACKEND_PPP cannot stack a second pppoatm_vcc on the same VCC. The
-commit message describes the resulting NULL user_back dereference during
-VCC teardown as the bug being fixed.
-
-> diff --git a/net/atm/pppoatm.c b/net/atm/pppoatm.c
-> index 6da52d12df68e..93ba22f437bc9 100644
-> --- a/net/atm/pppoatm.c
-> +++ b/net/atm/pppoatm.c
-> @@ -396,6 +396,8 @@ static int pppoatm_assign_vcc(struct atm_vcc *atmvcc, void __user *arg)
->  	if (be.encaps != PPPOATM_ENCAPS_AUTODETECT &&
->  	    be.encaps != PPPOATM_ENCAPS_VC && be.encaps != PPPOATM_ENCAPS_LLC)
->  		return -EINVAL;
-> +	if (atmvcc->user_back)
-> +		return -EBUSY;
-
-[Severity: High]
-Does this guard close the described crash, or only the pppoatm-over-pppoatm
-ordering of it?  pppoatm is not the only writer of atmvcc->user_back.
-br2684_regvcc() in net/atm/br2684.c writes the same field, and its only
-ownership checks are:
-
-net/atm/br2684.c:br2684_regvcc() {
-	...
-	if (atmvcc->push == NULL) {
-		err = -EBADFD;
-		goto error;
-	}
-	if (!list_empty(&brdev->brvccs)) {
-		/* Only 1 VCC/dev right now */
-		err = -EEXIST;
-		goto error;
-	}
-	...
-}
-
-After pppoatm_assign_vcc() has installed pppoatm_push, atmvcc->push is
-non-NULL, and a freshly created nas device from ATM_NEWBACKENDIF has an
-empty brvccs list, so neither check fires.  br2684_regvcc() then does:
-
-net/atm/br2684.c:br2684_regvcc() {
-	...
-	atmvcc->user_back = brvcc;
-	brvcc->encaps = (enum br2684_encaps)be.encaps;
-	brvcc->old_push = atmvcc->push;
-	...
-}
-
-which overwrites the pppoatm private pointer and chains pppoatm_push as
-old_push.
-
-On close, vcc_destroy_socket() calls vcc->push(vcc, NULL) -> br2684_push()
--> br2684_close_vcc():
-
-net/atm/br2684.c:br2684_close_vcc() {
-	...
-	brvcc->atmvcc->user_back = NULL;	/* what about vcc->recvq ??? */
-	brvcc->atmvcc->release_cb = brvcc->old_release_cb;
-	brvcc->old_push(brvcc->atmvcc, NULL);	/* pass on the bad news */
-	...
-}
-
-so pppoatm_push() runs with user_back already NULL and dereferences it:
-
-net/atm/pppoatm.c:pppoatm_push() {
-	...
-		module = pvcc->old_owner;
-		pppoatm_unassign_vcc(atmvcc);
-	...
-}
-
-Is that not the same NULL dereference the commit message says is removed,
-just with the two ATM_SETBACKEND calls in the opposite order?
-
-While both backends are stacked, can this also corrupt memory?  br2684_pop()
-calls brvcc->old_pop, which is pppoatm_pop():
-
-net/atm/pppoatm.c:pppoatm_pop() {
-	struct pppoatm_vcc *pvcc = atmvcc_to_pvcc(atmvcc);
-
-	pvcc->old_pop(atmvcc, skb);
-	atomic_dec(&pvcc->inflight);
-	...
-}
-
-Here user_back points at a struct br2684_vcc, so pvcc->old_pop is an
-indirect call through br2684_vcc::old_push and atomic_dec(&pvcc->inflight)
-writes into br2684_vcc::old_owner.  The same type confusion applies to
-br2684_release_cb() -> pppoatm_release_cb().  The first pvcc also stays
-registered via ppp_register_channel() with a live tasklet, and its
-__module_get(THIS_MODULE) is never balanced, since teardown now runs through
-br2684_push().
-
-Regarding this part of the commit message:
-
-    do_vcc_ioctl() holds ioctl_mutex while invoking backend handlers, so
-    concurrent backend assignments cannot race past this check.
-
-Is serialization the relevant property here?  do_vcc_ioctl() offers
-ATM_SETBACKEND to every registered backend handler with no core-level
-"backend already assigned" rejection:
-
-net/atm/ioctl.c:do_vcc_ioctl() {
-	...
-	list_for_each(pos, &ioctl_list) {
-		struct atm_ioctl *ic = list_entry(pos, struct atm_ioctl, list);
-		if (try_module_get(ic->owner)) {
-			error = ic->ioctl(sock, cmd, arg);
-	...
-}
-
-so the other writer of user_back runs under the same mutex without any such
-guard.  Would it make sense to add the same rejection to br2684_regvcc(), or
-to do the check once in the shared ATM_SETBACKEND dispatch instead?
-
->  	pvcc = kzalloc_obj(*pvcc);
->  	if (pvcc == NULL)
->  		return -ENOMEM;
-
-[Severity: Medium]
-This isn't a bug introduced by this patch, but since the same field is
-involved: is the publication of user_back ordered against the publication of
-the push callback?  Further down in pppoatm_assign_vcc() the two stores are
-plain and adjacent:
-
-net/atm/pppoatm.c:pppoatm_assign_vcc() {
-	...
-	atmvcc->user_back = pvcc;
-	atmvcc->push = pppoatm_push;
-	atmvcc->pop = pppoatm_pop;
-	...
-}
-
-ATM_SETBACKEND requires sock->state == SS_CONNECTED, and the driver receive
-path calls vcc->push(vcc, skb) from softirq context without any lock shared
-with do_vcc_ioctl(), which holds only ioctl_mutex.  If the store to
-atmvcc->push becomes visible first, pppoatm_push() reads user_back as NULL
-and dereferences it with no NULL check:
-
-net/atm/pppoatm.c:pppoatm_push() {
-	struct pppoatm_vcc *pvcc = atmvcc_to_pvcc(atmvcc);
-	pr_debug("\n");
-	if (skb == NULL) {
-	...
-		module = pvcc->old_owner;
-	...
-	switch (pvcc->encaps) {
-	...
-}
-
-The sibling backend orders the same sequence explicitly:
-
-net/atm/br2684.c:br2684_regvcc() {
-	...
-	brvcc->old_owner = atmvcc->owner;
-	barrier();
-	atmvcc->push = br2684_push;
-	...
-}
-
-Would smp_store_release(&atmvcc->push, pppoatm_push) after user_back is set
-be appropriate here?
-
+diff --git a/net/bluetooth/bnep/core.c b/net/bluetooth/bnep/core.c
+index 5a6a49885ab6..497eb1d2d6ee 100644
+--- a/net/bluetooth/bnep/core.c
++++ b/net/bluetooth/bnep/core.c
+@@ -457,13 +457,15 @@ static int bnep_tx_frame(struct bnep_session *s, struct sk_buff *skb)
+ 	}
+ 
+ send:
++	if (skb_linearize(skb)) {
++		kfree_skb(skb);
++		return -ENOMEM;
++	}
++
+ 	iv[il++] = (struct kvec) { skb->data, skb->len };
+ 	len += skb->len;
+ 
+-	/* FIXME: linearize skb */
+-	{
+-		len = kernel_sendmsg(sock, &s->msg, iv, il, len);
+-	}
++	len = kernel_sendmsg(sock, &s->msg, iv, il, len);
+ 	kfree_skb(skb);
+ 
+ 	if (len > 0) {
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260902040320.4007552-1-v3rdant.xiang%40gmail.com
+2.51.0
+
