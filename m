@@ -1,74 +1,75 @@
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 721413E3178
-	for <netdev@vger.kernel.org>; Sat,  5 Sep 2026 10:41:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1354545FFA6
+	for <netdev@vger.kernel.org>; Sat,  5 Sep 2026 10:46:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788604894; cv=none; b=Gh3bmQlrLfVzVOiG4WAfho8+U7YRCIVtTbuOlZFjTKn9St9hlpY9QjMeUalw82HfRu2a2IbcWUiIw5qExjL+RN0tlfZrNRvet8DcZOAMDV8S+XiK/zOD89MSRotH5H2iDOwXPVHeof1pZtEmfPAL0zerwhfo5gXxMxrAsUUi5Pg=
+	t=1788605198; cv=none; b=oinGipRGSpIzw+jCLLsm8TGJHBwQUajk4OqVLxm+IjX0H6I0wl/by/G3zUclz/EtFWyEJJwfR4U5DEH6pvKAmvyGSEXbwcJIk7PS1fQDB3NWDs73qmhzNDDVDfGxql6GoWpCWeVY2gI1ypIim85v62TQmnB/fkKJvG1CxrX2qZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788604894; c=relaxed/simple;
-	bh=lK6SylEY4LAQZljQVEJN4LwYrq5OYAYHrr5rGGnYhXE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=lIkN/CbDCnsPOzCPDDBSTaaPJL6izzfW7UqmUVltEbUMw0ML8KDE5HnJCqqhe0KW5wInsafFxjyqmEi+k+62gniD0RwRHtLCNePeDG0pHE6bfBgx+6pnDCuekM7X/hLqoLMRGJknUbv9rUEcZOjwWXA0eGVCjIg05XTACnpMKo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZbZdrZJN; arc=none smtp.client-ip=209.85.128.50
+	s=arc-20240116; t=1788605198; c=relaxed/simple;
+	bh=FgEGMIHyi34p6yz3OD6tTYDCoTrdvOj/pRpra1LVBOU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=bmxC1t2FM8mrXg2FlMizpt0mg0gDeOD9/rjlqjywu01a/6Ekz20qukvpVoZ64RC4MXVOwUtoZa+mXi9DVei9NEet1cfqsqbNs13ffajBVnYkyhCVNYQqj/OI/xTOJruZoworXfTxj7jhIbZHq3THSDYNLcK13u6w6L3e63Yc1tw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qGgIhS8j; arc=none smtp.client-ip=209.85.128.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZbZdrZJN"
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-49cd77e0f95so16898785e9.3
-        for <netdev@vger.kernel.org>; Sat, 05 Sep 2026 03:41:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qGgIhS8j"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-49d036e0e99so2385875e9.1
+        for <netdev@vger.kernel.org>; Sat, 05 Sep 2026 03:46:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788604889; x=1789209689; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1788605190; x=1789209990; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Jxq0uSbWX1tJusqk7o1sA3mVysrnqKqxAe3TJjvp4t4=;
-        b=ZbZdrZJNtU1Ua2LMgPCwpjpisRBcH4qHFB7GIZYEypIlrxFQ5GM/I4/SB8hjdfOY2W
-         3oin8dF29iy5doVadsw+iovnNBRz1gO9uqt5iuP3xF2wd0gTNy5CBlNsjYQKkJHbrIev
-         6owPGdcI5PxHhYrMsmYJMAWEdgwUaorAw5tavGebO34Z82SS/W5hUIbHneemvCUlneN1
-         s1DJ8P3i32SCACZQRTiq4TYbrPJXuohqJjJxlEmWuHMBZMS8NLajp/bTchHHcKNkDIAt
-         pl4Kki3ukvKPfEyiBoUihaU5WGHvtl6kZym1JZFBm38hk50wFNVHZRptE6ntAA2TD6qe
-         jzUA==
+        bh=uEpc1uNoyEmkilcb6oip3iNpVvRjfV4LqWJo0sBYBR0=;
+        b=qGgIhS8jLIkJ9yTY/1nVap7GRgb1j4yVxSFOkVpTOobK9vByQXaiYcNNk2z+i8dCIb
+         BwFxznCqr0+JznKYPnalper+d6hp4Syhj0e8qiOKkSp9iN18epnAlaG5ogtU5gqxXIIi
+         PEHCZB5djIh2WhrivCuwaMb9v6j/5Cup7bM5XmEdgp6xAsAtfORAvVVcxtEEtqjxbqSJ
+         60uJQlKZ8TsKnWN+K+yDJrbT+jNKRKsQc57DZpLa3WQm8lPXvc1UWArLvMgPWjZDnVYo
+         VbeQUQYHIOQNeQsqX1EOWMfSFYs41ozpyXAaxftd1WmlmjJFpYQCmM+2q03nQJfuM52v
+         3Jxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788604889; x=1789209689;
+        d=1e100.net; s=20251104; t=1788605190; x=1789209990;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Jxq0uSbWX1tJusqk7o1sA3mVysrnqKqxAe3TJjvp4t4=;
-        b=a7nnwM8ZrlINA0RPjPVSOnzUoRL9stSCsfUTOT/HP97VJCaIRyDqtLD6ZbZJGjzpWZ
-         xgOEjuZlZ27+ekYh4VPAKK8XB8wneQ55wiwH99tQNnCfQjZ15sqTA2MDVHhjlDplY2cs
-         0s8edRO/6Yxc7GgHTSr+lY/mVPnsSaHEawSF/TKLQoix8SAbDtkpBKKPCUuCD2N+s9cq
-         OqpiOY1vPdsIJ1tlnK36TArlLW/Ta660Gxh5w1Wbp0rMbl9cyBl0G5QO/FitPdUdAZtr
-         jMl7L182PPVSIimJjFLaVj5TBkQGCgYuZAw18CK3g/vAs00gXLj9rNMqI8irVtJlByZF
-         TyhQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxHsSetHBL0CezjkCa6a2X5KY8hvMWCruovAuPcxZ5Rm+Vvshtx8xrCMItZBdIMlHllMRUw5q8=@vger.kernel.org
-X-Gm-Message-State: AFuF++kSqKvefoIj+XGLgJt+EZc7TEebUTBJFlP3U/jlhBF2itK1EncQ
-	/l2KE0Rw3y5Ke9uAUQBFogoQ+1wORmLgjOYvxpjrNyvpR9AmeiPodIAWrOwKa6GJ
-X-Gm-Gg: AYBFou1CASkmL+26lgm4SsiT/zpsBCkD9xgyGbkRgJVsTHuBOxwc2tuxA3YbFJV926B
-	sHnj3DiEClTqml0c6Gk9KG0LhK7ZOBvN6ptaaUM1sx8FlaVa4OBMcfi0iBrn3UA6FwcJnpFwg7k
-	gGHvRVRkSJ0GSvKGTP6ofEDmAuRG4BeRwUD8qmYXEd1qw3u0Za/eAtiN5J0Hr2xUelhvKco14k1
-	4wUftdzPuTiqZs7NLJ+9E0KaH8vBpJt8dSU+WT72lSe+qtBGMPzlozawoHgafLYQ0IKoJU5GZTQ
-	qbCMopcNJj2CGMuLITxRUtTAUzmsl4hbkBAHtYrYVB0edgrhWOhEACS1nd9qr40UUFjyLefgD+e
-	rZwI0yLUgdKSVGDVeG7srhOc7TOPcVejdZZOKyF6aoFiscNn86l+A5jXDoHy9/kyC0q/qqmQbk+
-	0lO1MSnpzyDRWOJBnmkCFHfHwt2NyB2HKvVoSiAmon3CIL4duzbZ6wlXXfiLzah3K+5v+iesvi4
-	q1aZPb9jzXPQh6Bo5ECQ61Yh1PidT1pjfQf6O6Vr43w9T+r7q6gTwx+lX8sWgk2pPJ9QRMph/SH
-	Le062t1ZtGz3WuzXURgGz8QvJkNqZzIpeeLn36pOJM5ym02xdaDTqZQV/Gt4OTy51Gs=
-X-Received: by 2002:a05:600c:4e0e:b0:499:bf8c:cfd1 with SMTP id 5b1f17b1804b1-49cf81e6063mr117889645e9.2.1788604889257;
-        Sat, 05 Sep 2026 03:41:29 -0700 (PDT)
+        bh=uEpc1uNoyEmkilcb6oip3iNpVvRjfV4LqWJo0sBYBR0=;
+        b=KnANjxcTTEPPk/1m2/afFCHpq7UYgVzjdEV0R3bPLXCOk4NI6CZmbWL6tUux2Losr3
+         o7TeTXbEFiyBdvEPz/bMDfSzGGCeEJtjLcDfweKhN/sumw7WjVm2vXEVBAa+YPR9f8Pr
+         Fczqt1lLy6dlR2fqiFwkqEKM/22NxgMwBqHOtL53YJl9Lq3dMzF23Q9v3JIakBumWQWf
+         6zYs9OEZOv1EDGwNzDvgIqUy5hqmNIEowcUFWSoq5ymuL5XAv3HSolOTjfMWuNgWG9Np
+         3A4vNIHoEWjKSW+oTU2FPbt+rcO0/4+LkpPTUcANorQBZCmCX1GAtt4TSR7s4P77XYJI
+         FwTQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxLNdnW7A6waa/p/eDJraN7hhK7mgMno0DdqPKAmlDQv6QXXMfCF2lCM9ICVVAyfzY0kaGb/A4=@vger.kernel.org
+X-Gm-Message-State: AFuF++lyPtPKsdQgEDoOc2Q8x2C0yJU9tsdJSSOuhdlRLj3FyBSAZ1Mu
+	jsP+snmdDs8/hurV+fO3sKezzuYJSxXTF3x0osnKVCU6Xrw9Azv6pnuH
+X-Gm-Gg: AYBFou17ys4SzEqFl2r250IakokivV4MTrrEch5317bGHSmpGsFulXAQXl1V54QGrMh
+	xlM/8VVkmyg1OsN8bgMC5XwcgaokSCD235XBgYPQ69lnpK318WTpwu51lDUQPLdarhWtnCIyrw0
+	TwexPk1eFMUtOD1b6PX1fQcHS4MI8cRzOJrxHLzF0hQRb/OO1x9yvT3iqcYDgc9g7LJl15JyrWz
+	RoPtWx7ddhgrxR1stz2Lvi/oUW1yUF/w6GEbZymkSI8QIfPx+TAHtj0S3sEPYEXLGV2SPKlwErf
+	ghWFyhRIIvcvZeJ8sMsUgC69DZe3Kby2xnHPgBT8xv5EdkOHv1/SmsYeJ3S+fW5PGKVx4R2Mo9s
+	17WgCk2AUEt/p05D6ozkC715mTebczd0qJG0XMu2+eJlH15axZhMxGafPGoq/yzWgl1dCUTrfuj
+	hwRiiRu5Mpbo0aFBZFaVSlmciag1uFwf6aj9pC1SPv6da7HdHoml7U5rJOohAErnYAbyZbRUpVS
+	iKGNUaV5SF+LXFZkmo1EcQEa9koDAihRqa4n1CE3bB3rbfG3c/OzwJHjEzcH/FEZdhNJn5k6Jd2
+	7caBI+Pr9E08H4LG2csB/yC1797NRToV1IixZUJZQ8egOGXgjfEhyrMxU8NMpAIurG4=
+X-Received: by 2002:a05:600c:a0b:b0:49c:cee2:1697 with SMTP id 5b1f17b1804b1-49cf8262133mr122050915e9.16.1788605189720;
+        Sat, 05 Sep 2026 03:46:29 -0700 (PDT)
 Received: from localhost.localdomain (dynamic-2a02-3100-a4eb-3001-c06d-af27-9fa2-ea53.310.pool.telefonica.de. [2a02:3100:a4eb:3001:c06d:af27:9fa2:ea53])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49ce46696e8sm179967505e9.0.2026.09.05.03.41.26
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cee80eda4sm219626695e9.15.2026.09.05.03.46.28
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sat, 05 Sep 2026 03:41:28 -0700 (PDT)
+        Sat, 05 Sep 2026 03:46:29 -0700 (PDT)
 From: Karl Mehltretter <kmehltretter@gmail.com>
-To: =?UTF-8?q?R=C3=A9mi=20Denis-Courmont?= <courmisch@gmail.com>
+To: Steffen Klassert <steffen.klassert@secunet.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
 Cc: Karl Mehltretter <kmehltretter@gmail.com>,
 	netdev@vger.kernel.org,
 	Jonathan Corbet <corbet@lwn.net>,
 	linux-doc@vger.kernel.org,
 	Shuah Khan <skhan@linuxfoundation.org>,
 	Randy Dunlap <rdunlap@infradead.org>
-Subject: [PATCH net-next] docs: phonet: Fix the struct sockaddr_pn name in the example
-Date: Sat,  5 Sep 2026 12:41:23 +0200
-Message-Id: <20260905104123.43511-1-kmehltretter@gmail.com>
+Subject: [PATCH ipsec-next] docs: xfrm: Fix the two aevent sysctl paths
+Date: Sat,  5 Sep 2026 12:46:25 +0200
+Message-Id: <20260905104625.43722-1-kmehltretter@gmail.com>
 X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -78,30 +79,40 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-struct sockaddr_spn does not exist; the name is struct sockaddr_pn.
+The sysctls are registered as xfrm_aevent_etime and xfrm_aevent_rseqth
+under net.core (net/xfrm/xfrm_sysctl.c). The document calls them
+sysctl_xfrm_aevent_etime and sysctl_xfrm_aevent_rseqth; those names
+appear nowhere in the code but in a comment in net/xfrm/xfrm_user.c and
+were never the proc file names.
 
-Use struct sockaddr_pn.
+Use the proc file names.
 
-Fixes: 297edb600326 ("Phonet: support active connection without pipe controller on modem")
+Fixes: b8a99520f78e ("[XFRM]: Add documentation for async events.")
 Assisted-by: LLM
 Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
 ---
- Documentation/networking/phonet.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/networking/xfrm/xfrm_sync.rst | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/networking/phonet.rst b/Documentation/networking/phonet.rst
-index d705cc5b09fc..e5551fc45c78 100644
---- a/Documentation/networking/phonet.rst
-+++ b/Documentation/networking/phonet.rst
-@@ -172,7 +172,7 @@ two endpoints directly, using connect() on the active side. This is
- intended to support the newer Nokia Wireless Modem API, as found in
- e.g. the Nokia Slim Modem in the ST-Ericsson U8500 platform::
+diff --git a/Documentation/networking/xfrm/xfrm_sync.rst b/Documentation/networking/xfrm/xfrm_sync.rst
+index dfc2ec0df380..27e3d151b11e 100644
+--- a/Documentation/networking/xfrm/xfrm_sync.rst
++++ b/Documentation/networking/xfrm/xfrm_sync.rst
+@@ -120,12 +120,12 @@ in case they are not specified.
  
--  struct sockaddr_spn spn;
-+  struct sockaddr_pn spn;
-   int fd;
+ the two sysctls/proc entries are:
  
-   fd = socket(PF_PHONET, SOCK_SEQPACKET, PN_PROTO_PIPE);
+-a) /proc/sys/net/core/sysctl_xfrm_aevent_etime
++a) /proc/sys/net/core/xfrm_aevent_etime
+ 
+    Used to provide default values for the XFRMA_ETIMER_THRESH in incremental
+    units of time of 100ms. The default is 10 (1 second)
+ 
+-b) /proc/sys/net/core/sysctl_xfrm_aevent_rseqth
++b) /proc/sys/net/core/xfrm_aevent_rseqth
+ 
+    Used to provide default values for XFRMA_REPLAY_THRESH parameter
+    in incremental packet count. The default is two packets.
 -- 
 2.53.0
 
