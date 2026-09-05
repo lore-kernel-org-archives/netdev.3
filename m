@@ -1,97 +1,96 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFA19277C88;
-	Sat,  5 Sep 2026 18:31:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30B4B4EBAEF;
+	Sat,  5 Sep 2026 18:31:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788633089; cv=none; b=QYCMlRQQxCxxkoM3d/RXK+060NVZyYRhxBsy5j1/HsFg9Hs47BhIe9eXLrmU+UY8NCFRc8PmBynd/wUfWYvbFtcDaMmpMk3WjTJxA0NRfQdnNZKIxa/kwFCAN3tHM1kvAp1UruPE5G7h+M/mxiZzpdnS+bJJ0ty96t5vxESWtv0=
+	t=1788633117; cv=none; b=IZ5tItqMIUm3cZCsb6IjkzHaSlKIccFJdM0rcWWDgFqyCo8/RjMWStbexxd8ZYn3QtVP7v5Mwnc1NnOOODd2Nqp6lzBfG6E8KzrAVCnHOzdLO7Qc9C/lP+6lu8ZThlEkNTM0klhOuw0qyspJ9TAPpTTXrg0oDRCtCzGlqR0A8TI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788633089; c=relaxed/simple;
-	bh=IYNtE8DSuI83MVcNu77fmGwSAjCcjWAYiQyEU9w5Yqg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=T5Vuv0SFOyAF0JQxTyAnQoSOmrY1cDoADrMs+dglQRg/YD9HBAn8fo5cdFOyiLIFtooFHbo03iFK/vIWboK6NMdYaipybqiRazHBppQrprVQhh6Fd4LgTGUJdLDTnypXMEv4WPuf+LYNK6+QDxZ3w/ps1R0CHA6ujSjxuH7QTQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fg24wpUL; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788633117; c=relaxed/simple;
+	bh=NGqQvHeOqIzb3Oeb4USWRt47/sjo0ztvRC1rLkM2XHs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aHWTvW2Ck/FJhpAGh3cHV8wdAHYVWeNeiOxrDYRx8Oc6t9YzrnGce0hp/+obqmI76yyQYmZ/YPJDdlCkAvISA1kssMoU9bfhNXbUEaN/xZA3yWZtX4SdekAI5HTGbhRzAVRfs3LZtmFXEovs7/fDwlWxUGWjT8Nh+UWVvlsijTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YopoFfQw; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fg24wpUL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C26021F00A3D;
-	Sat,  5 Sep 2026 18:31:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YopoFfQw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BF441F00A3D;
+	Sat,  5 Sep 2026 18:31:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788633085;
-	bh=ZgTZzsobBXFy3gqKMxbJ+2mygrq6b55JxDH+/SpJQas=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Fg24wpUL5obq0NbH/VNVdLz/Jn3YoXX1GiQ92Ss1trDWkXK3x7kpdDbgM1LD3rAeZ
-	 oSj2dTwFizG6gKWM7bro0IlPCH5WoCj0tYVgOIpN6M+m8t4dAEtW8Vex7lo8iOuFd8
-	 cMzZbRJwPDKgyrMEd7ntFKZXX8aKYtiG1qtL1lBQpQi+WbTofa2gl4kZtrl3zkvLKz
-	 fXk9woc0Dg9ljj29z2e9DnLW4G8aPATDv6dPLqBjSLrBO07MsNXl7J8JaWhsGjdFJJ
-	 er2/8q2TJjaWWJ5zcQGWtTvYRSR3V31uK1dLNXbWqouS4nUZCo4Sy56FYhDapIFoZZ
-	 PkjfHaQTGq4yg==
-Date: Sat, 5 Sep 2026 11:31:24 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Johnathan Browall via B4 Relay
- <devnull+johnathan.browall.topgolf.com@kernel.org>
-Cc: johnathan.browall@topgolf.com, Michael Chan <michael.chan@broadcom.com>,
- Pavan Chebbi <pavan.chebbi@broadcom.com>, netdev@vger.kernel.org, Andrew
- Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, Pontus
- =?UTF-8?B?SMOlbGxzdGVkdA==?= <pontus.hallstedt@topgolf.com>
-Subject: Re: [PATCH net v3] bnxt_en: avoid redundant RX mask updates in UC
- overflow state
-Message-ID: <20260905113124.32280c67@kernel.org>
-In-Reply-To: <20260901-bnxt-uc-overflow-v3-1-2ea7c42c013c@topgolf.com>
-References: <20260901-bnxt-uc-overflow-v3-1-2ea7c42c013c@topgolf.com>
+	s=k20260515; t=1788633116;
+	bh=p2DvN4334apFD/6/MWBRYC8GzHwMGwZWsOlmewSgMk0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=YopoFfQwDQgqHkfbpL2iSR6ekgyO2G8KzPY2X6o4MnVAoh2ajWG+ka2PjUDp6+gMn
+	 YLQeq4q4YPvRFFin3IViemdhmPnaFBshd1wcgcnEaSTL8eatAbPGFUnX166oZ3miUz
+	 tmhISV5W0PiqSPI06uP7HHNBH//X4zm1CphufnCPXOtS01HtEOUwO710g3oyh9/2oD
+	 Mr024Mfg4LYFeyrKPWc3rQI6qfgML0R0AXUV4qbQXVeNo+vin7NPDvdl3783k6+41g
+	 e/hLQ/0sW1nQmcWZsT99Z1ysl24AWtlOBpGr0RBCn41baqweHBpuTfLOh3AeJy6Ju2
+	 Z36ls4tbbXAAQ==
+Date: Sat, 5 Sep 2026 19:31:52 +0100
+From: Simon Horman <horms@kernel.org>
+To: Yury Norov <ynorov@nvidia.com>
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/2] ice: simplify ice_pf_state_is_nominal()
+Message-ID: <20260905183152.GC40544@horms.kernel.org>
+References: <20260903132037.81346-1-ynorov@nvidia.com>
+ <20260903132037.81346-2-ynorov@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260903132037.81346-2-ynorov@nvidia.com>
 
-On Tue, 01 Sep 2026 14:46:47 +0200 Johnathan Browall via B4 Relay wrote:
-> Tested with the equivalent patch on 6.12.y on BCM57416: the repeated
-> SET_RX_MASK invocations no longer occur and the receive disruption is
-> no longer reproducible.
+On Thu, Sep 03, 2026 at 09:20:35AM -0400, Yury Norov wrote:
+> The function creates a temporary mask on stack just to check that
+> first ICE_STATE_NOMINAL_CHECK_BITS is empty. Simplify it by using
+> the ice_pf_state_is_nominal().
 
-You must test this on the kernel tree you are targeting.
+maybe s/the ice_pf_state_is_nominal/bitmap_empty/
 
-> Fixes: c0c050c58d84 ("bnxt_en: New Broadcom ethernet driver.")
-> Cc: stable@vger.kernel.org # needs adjustment for <= 6.18
+> 
+> Signed-off-by: Yury Norov <ynorov@nvidia.com>
 
-Please delete these and resend this to net-next, this is an improvement
-not a bug fix.
+The above nit not withstanding this looks good to me.
 
-> --- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-> +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-> @@ -13791,6 +13791,16 @@ static bool bnxt_uc_list_updated(struct bnxt *bp,
->  	struct netdev_hw_addr *ha;
->  	int off = 0;
+Reviewed-by: Simon Horman <horms@kernel.org>
+
+> ---
+>  drivers/net/ethernet/intel/ice/ice_lib.c | 8 +-------
+>  1 file changed, 1 insertion(+), 7 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
+> index 9e08db376d3d..73996e3022ef 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_lib.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_lib.c
+> @@ -1705,16 +1705,10 @@ static void ice_vsi_set_rss_flow_fld(struct ice_vsi *vsi)
+>   */
+>  bool ice_pf_state_is_nominal(struct ice_pf *pf)
+>  {
+> -	DECLARE_BITMAP(check_bits, ICE_STATE_NBITS) = { 0 };
+> -
+>  	if (!pf)
+>  		return false;
 >  
-> +	/* In the overflow state no secondary L2 filters are programmed
-> +	 * and unicast RX relies on the promiscuous mask, so the list
-> +	 * only needs reprogramming once it fits the available filters
-> +	 * again.  Reporting an update here would resend an identical
-> +	 * SET_RX_MASK on every callback, which causes brief RX packet
-> +	 * loss on some chips.
-
-Please trim the slop comments significantly, or remove them.
-
-> +	 */
-> +	if (vnic->flags & BNXT_VNIC_UC_PROMISC_FLAG)
-> +		return netdev_hw_addr_list_count(uc) <= (BNXT_MAX_UC_ADDRS - 1);
-
-> +	/* Commit the overflow state only once the mask is installed, so
-> +	 * that a failed attempt keeps the state marked as changed and the
-> +	 * next retry or rx-mode callback programs the mask again.
-> +	 */
-
-slop
-
-> +	netif_addr_lock_bh(dev);
-> +	if (uc_promisc)
-> +		vnic->flags |= BNXT_VNIC_UC_PROMISC_FLAG;
-> +	else
-> +		vnic->flags &= ~BNXT_VNIC_UC_PROMISC_FLAG;
-> +	netif_addr_unlock_bh(dev);
+> -	bitmap_set(check_bits, 0, ICE_STATE_NOMINAL_CHECK_BITS);
+> -	if (bitmap_intersects(pf->state, check_bits, ICE_STATE_NBITS))
+> -		return false;
+> -
+> -	return true;
+> +	return bitmap_empty(pf->state, ICE_STATE_NOMINAL_CHECK_BITS);
+>  }
+>  
+>  #define ICE_FW_MODE_REC_M BIT(1)
+> -- 
+> 2.53.0
+> 
