@@ -1,75 +1,86 @@
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B931A6817
-	for <netdev@vger.kernel.org>; Sat,  5 Sep 2026 09:27:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22C2F1632E7
+	for <netdev@vger.kernel.org>; Sat,  5 Sep 2026 09:39:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788600467; cv=none; b=AUV3Tr85kIoJWaeHNavgbCBn2DJZ+Lqs9l9O9bko4UiuyOLFJkR8zFVuzslh4Q28JO2V34r6InUPdD9Vz4T79ubh1HwtLkvUerObq1YMTA5PRHBC+iE4M32b0BUIUxRplNHwRxvHIJ6JD2MvxYB2SvT7kHgjX87vn8m+5Hf5+yg=
+	t=1788601182; cv=none; b=Tcy5MtfJ3LgsBIBv5xazYV3ZzXBAwzVFe82RfT75GqklhT9Zn1hCYEMeB+84bqO8jmYbNU0Gv4sonxI6Qusbd/IhKhEMKt5pS4PxDcnuunYh1rxRYKIzxc9XkaTP9mwoBIr/LLiOJSgC3LMzIdV4F3IRclzIN2zhYvsmgy68aRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788600467; c=relaxed/simple;
-	bh=TS2ZqAYkMKJx7jd+0qJxM03yHKpGscRqn7r8XoSyCHM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=MbY7QZ1zJ2c100B5+dg2Yo9VhWfD3v8epnrGXT5gnBVyhT0RgPtYmNBQITAIP4RoMo8VnqwuQT9c/RU6zRRqq/k5tLXPD5s/ZWGdVr6MqB/Ue5SfW95sjDUGXYkPb9el0HcptK/RwTXEu49z9f2t4xwvBr06rA2wiNBCM1XOlc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mFLsJGdm; arc=none smtp.client-ip=209.85.221.53
+	s=arc-20240116; t=1788601182; c=relaxed/simple;
+	bh=36gROY4qL9gSQnmwWWmssqa2Rc1TUhB5TO6YlZyD02Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qplJ2c/ISztMN/UFls9fMfYNn9//p2vH7s4h97CDDmldaxUEwV+dkM3BHVOtAZdiPhu1xgDynLHY8r4RB0FvuKfl42Pnv4dUIHnnhsl4SphxL2VPj4bMkD0o26YgwIoZ3/n89fDl11zTMPV431L3cwdUYzgUERNhMvMQY+eGO48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PeNXO/QL; arc=none smtp.client-ip=209.85.214.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mFLsJGdm"
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-484362f5c4aso2260472f8f.3
-        for <netdev@vger.kernel.org>; Sat, 05 Sep 2026 02:27:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PeNXO/QL"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2d9004f39d3so22973995ad.2
+        for <netdev@vger.kernel.org>; Sat, 05 Sep 2026 02:39:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788600464; x=1789205264; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1788601180; x=1789205980; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ZoAyHVgP3ONjx3aSVQg0JS5TpUwPOrXUrMPzdKMVHIM=;
-        b=mFLsJGdmtdDdUKbg30wJEQOlZ58lPKx+u4biuQOpFIwRD0f4Gi6N4T6+NJJ3ynSxoI
-         qsbvS6sJb/yGbN7PP9s+FYVKfFMNPKvZQRY638CJHcIgdtsysaMEKPTPVrb8+U8m7LO8
-         TRaBmY3vpljdjdGAO8i/w3Hmu8fnIacmoe4BxHvQ305uJVhNFHCXQ/uW99iEAffhtkZZ
-         0Oh6LeUhiimB/9Z8drZ1Ci4bHvB6Vaao3cy3VJ1eKoYWrMuXlNHmL2EWvrxNpADfWPDS
-         +BmN+9be33x3e4lXQkCJpIAwX7DNIpqbdRbwdlxP7uLDB7V84HRnx3L4+D9+9jMWxgQm
-         LNFw==
+         :to:from:sender:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=RohfZQzLcCU55CV/vABPS7u+EENiNPdreGoEMSHrxVg=;
+        b=PeNXO/QLNfyNaOzNHPIgIGP5PsR5Us8JGog4v6Mhwr5aq+NZbo1CJNf64yuQVYPL8I
+         BnueYOYLAFVElk67SCbbfZWLWlcP2Yf6qZca0XTVwARMpESNQUS1+a7v8dI8N4jDpkUf
+         qukf4nIQ7Wxj2nZBzzlFLEGQKkj8XaPE8Zv8dQ+NhnAjnHwau0lHF9WNnjmNAaa5soZK
+         gaAYd4VNrA2+tmfjfyZWRBzKqS+hPmZ8aEPOea9XWHszWeYhV2W3q04UeE/iK3CV1rHw
+         z7NAkESSaSPoBswJXOWUIYrXSC+fh+WOvvUtyBVHHtkV0nut+eIQjJ2M5eYC28QeLPEA
+         9bUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788600464; x=1789205264;
+        d=1e100.net; s=20251104; t=1788601180; x=1789205980;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :to:from:sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=ZoAyHVgP3ONjx3aSVQg0JS5TpUwPOrXUrMPzdKMVHIM=;
-        b=j/xN5de54wbF5/gcRleDGg0DjeijKG2Um8wfd8ECzE3StMYX/L0rskeVBWEsm3fvg1
-         nb7Kd4X/Pg5rHJNkFkHFp8R333iGn6cPfMzCfQ03Qxjqrwbbv3TTbqLwx293YkDHah1d
-         kSSHlevGpDHOpw2+sLGt5BWOr4mdHpRrhnXYhaLKlaCbag7n1mm+iCzky2QEskzjdjuF
-         rMbrztjs0GgdNZD0AbQnyWTx9utK4+oipR9FVlta+UydKxJh3ncBVAtazjJte6ta35r9
-         YQXNeQNCuFLvkstKPhuh+3ZtE6MPJ7v4TG1+sNaH0DR3J5S3Xo72f/q4QAqYdxNjBbZx
-         pmPQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxm6zBfNNChylU5C0cTmCpT25ZlKP7QLI9bWLsmdxaLImPg5FXPT6CgtTgTPaRo91dWFeZwp7A=@vger.kernel.org
-X-Gm-Message-State: AFuF++lmGxhbABHaSY0YF7q70gCMkbDz9hGmJhLezrOT5qhduc1Htidd
-	Fnbyd4DCYmjuYsjV2TzT3jZ6Yz0aNvMx0wcYtzTQJEi67/4YdOcWbY1A
-X-Gm-Gg: AYBFou28ai4KQispw++S/Df5GRRLEzKl9QzhsWUWyMNU4SdRZWFhXxIijc3YuxxIvNr
-	AcMosIQEUK6UBa+HETGYoKS0wbGwQ4/UOneB8uU9mydJUxrC8l0A/OIkgpLizMDcQln/ohYXekG
-	WWm1oe+FJYbq4rC/Krl9/GAjIIT5631UWCMbaHBn48lp8s3zF830xqSguz1LUsMCN9zddOkbjNl
-	4TQDlQ+qWNoVkmJJtcEBh4LvHU7fCj/YKVweYzSKwH6kJ1YTAsf1saBWaCDZ5G2LoCDRXBCB7xv
-	IfbSbIE6qDwz8tiDDnzrUveR4Jy/GfvO35RaUHf14mnCrYfMLrC5nfqnaeQpcACdC5P5F7MMxwd
-	yp8NBlUw5jp1m90Y4/8uaBHqV86aMnXDFXwcMOeR51He9rXBAJBAB0K5Lt4MnktzTlXZw5qEf4D
-	aeqzTAiycPveyEBKjuach/Eu2TNzL0Sfu4jZ7FMqRrCAyTRGXRkvLxgpFpBHxmXJB19wFXrxln/
-	tjcRWSK7D0lZ3n3BUGZb3QZAqwQP9VKxxny4aa0Ytrq6n9CxDZrs+u+zLn26iq8odBnfeDfJANI
-	J2wSN1P0B1CuaBkf45HDVdSW+n33WZEXrgnLwrb0Y+gSadLE+7J7mmRaWi+KMT2sN8w=
-X-Received: by 2002:a05:6000:70b:b0:485:8be1:378d with SMTP id ffacd0b85a97d-4858be14b94mr18555992f8f.12.1788600464134;
-        Sat, 05 Sep 2026 02:27:44 -0700 (PDT)
-Received: from localhost.localdomain (dynamic-2a02-3100-a4eb-3001-c06d-af27-9fa2-ea53.310.pool.telefonica.de. [2a02:3100:a4eb:3001:c06d:af27:9fa2:ea53])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-485883c81c3sm11782654f8f.26.2026.09.05.02.27.43
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sat, 05 Sep 2026 02:27:43 -0700 (PDT)
-From: Karl Mehltretter <kmehltretter@gmail.com>
-To: Alex Elder <elder@kernel.org>
-Cc: Karl Mehltretter <kmehltretter@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+        bh=RohfZQzLcCU55CV/vABPS7u+EENiNPdreGoEMSHrxVg=;
+        b=WuSAyeQg4FEJrlmcLQQsLXNYiuJMcotaAhPyuKDPQvonz32nUVXQnGwjrlnN9V8Ys9
+         1Vuq/vma2E59oBxj8jbZy6Z5YfQjTiyQQpi1uXWKMnya/Z0WZp3vGsv17OTWoxU7eguo
+         3YR90xZkKqTOHDi91Q5t+ZaRyeJyQHQWpQFbuFPangKd9szqn38Yq97pFNpizOYSHQ3H
+         ewD03kQv5Y6hEM56zbnE1gx+HZ0CVxCHp9J5EMINIPssQQA//0hYB2D4NgbdD4ZectIe
+         iON4A+lM5h8eoeeOlR7Vy2OpQrtybt6IDXozEZ5EQzhGGScSHwv3RQqWp0N0OYlKBqpQ
+         fbpA==
+X-Forwarded-Encrypted: i=1; AKwUvBy4mAAdRhGkzBlA/L0C7+nDi/Wx1ImLxyN071d9xB4KL/wybGOTcWuc+kJz8k2BYUTSyT2g38M=@vger.kernel.org
+X-Gm-Message-State: AFuF++m6Yf3JRz1K6HuyeUwOnCQbwxlHbvs4hAHaYIszD4n/lzE6hL78
+	iCVlVr4UnNXewXusmklqpKX6nF7KjGCt8dhYUiQHrR4eeIL+VCymS16L
+X-Gm-Gg: AYBFou3rQK0S34Iji62mAzBWnjmF5TrlPWtPqy8Cnl2Z9LbBJ6+eo2oVaMNvGbWdbPT
+	a0vxU57AVaTcIAOQt2rrK1o/m8RbUXOqChcbG8ItaQ0Y5IrkQ5jWlhdNoSk2ssldPZ4jHcYBdcB
+	CvcdMLpJWNicIdR6m+Eu78oeZm06uMJn6RmkjegofRoFZGorj7up+FJkSRRQFrUH0cpl24gMOO9
+	i0U+Vy8c1jDRAp0uO1yTbH+cqP/A2WJj4EqiFDjzp2lypM2Z2bjN2sMdl5wUdmiFnjaKO8uJFGX
+	AIz4mVeHcC4ROUB3i/xhrY9nVH8qXNfqejY172m3qCBe9BhL/O00vEVgJO5rEZxnm0qznZDV+y1
+	gRtPExYB9/rgWJ+hFsn9Ic4AyODRExfe2jOmVb0ecExEC1QztlHtIX6mLXvzKLZw6b6o39Xmpkm
+	NFifYJNxY3pe9Nb3MLqYyRBxyEm8peRGkaJWWOuTQLSIEH+9SEimT4pXC0okSxh1WKBTQqs4vGc
+	RZnA2vjuEsl9o3ES7RXAvnWORG/KmQddqQpQbtLm9JP9OJp
+X-Received: by 2002:a17:903:28c4:b0:2d7:f0:896b with SMTP id d9443c01a7336-2db125a3438mr104278615ad.13.1788601180369;
+        Sat, 05 Sep 2026 02:39:40 -0700 (PDT)
+Received: from m-upc-A520M-HDV.lan ([2400:2410:3f60:500:dbc1:ef89:4dd5:b812])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2db1495a0c0sm20393745ad.17.2026.09.05.02.39.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 05 Sep 2026 02:39:39 -0700 (PDT)
+Sender: Yuyang Huang <uyoko90@gmail.com>
+From: Yuyang Huang <sigefriedhyy@gmail.com>
+To: Yuyang Huang <sigefriedhyy@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	David Ahern <dsahern@kernel.org>,
+	Donald Hunter <donald.hunter@gmail.com>,
 	Eric Dumazet <edumazet@google.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Nikolaos Gkarlis <nickgarlis@gmail.com>,
 	Paolo Abeni <pabeni@redhat.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Shuah Khan <shuah@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Stanislav Fomichev <sdf.kernel@gmail.com>,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH net-next] net: ipa: Drop the monitor_rx endpoint_id ABI entry
-Date: Sat,  5 Sep 2026 11:27:19 +0200
-Message-Id: <20260905092719.41497-1-kmehltretter@gmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+Subject: [PATCH net-next 0/3] rtnetlink: dump link-layer multicast addresses
+Date: Sat,  5 Sep 2026 18:39:29 +0900
+Message-ID: <20260905093932.43726-1-sigefriedhyy@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -78,44 +89,45 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The ABI file documents .../endpoint_id/monitor_rx, but
-drivers/net/ipa/ipa_sysfs.c has only ever created modem_rx and modem_tx
-in the endpoint_id group. No monitor endpoint attribute exists.
+"ip maddr show" prints three kinds of entries: link-layer, IPv4 and
+IPv6. The IPv4 and IPv6 ones can be read over netlink today: IPv6 has
+had RTM_GETMULTICAST for a long time and IPv4 got it in eb4e17a1d915
+("netlink: support dumping IPv4 multicast addresses"), with IFA_MC_USERS
+added later so the user count no longer has to come from procfs.
 
-Drop the entry.
+The link-layer list is the missing piece. dev->mc, the addresses
+programmed into the device filter, is only exported via
+/proc/net/dev_mcast, so iproute2 still carries a procfs parser just for
+that. This series closes the gap so that "ip maddr show" can be served
+from rtnetlink alone.
 
-Fixes: d79e4164d0d5 ("net: ipa: add an endpoint device attribute group")
-Assisted-by: LLM
-Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
----
- .../ABI/testing/sysfs-devices-platform-soc-ipa     | 14 --------------
- 1 file changed, 14 deletions(-)
+Patch 1 handles RTM_GETMULTICAST dumps with ifa_family set to AF_PACKET
+and walks dev->mc under netif_addr_lock_bh(), no RTNL. The reply reuses
+the ifaddrmsg format of the IPv4 and IPv6 dumps: IFA_MULTICAST carries
+the raw link-layer address, IFA_MC_USERS the reference count, and
+IFA_F_PERMANENT is set for entries added with SIOCADDMULTI, which is the
+"static" column /proc/net/dev_mcast has and "ip maddr" prints. A
+non-zero ifa_index in a strict request limits the dump to one device.
 
-diff --git a/Documentation/ABI/testing/sysfs-devices-platform-soc-ipa b/Documentation/ABI/testing/sysfs-devices-platform-soc-ipa
-index 364b1ba41242..3b3bae2369d4 100644
---- a/Documentation/ABI/testing/sysfs-devices-platform-soc-ipa
-+++ b/Documentation/ABI/testing/sysfs-devices-platform-soc-ipa
-@@ -75,20 +75,6 @@ Description:
- 		the ID of the AP endpoint on which packets destined
- 		for the embedded modem are sent.
- 
--What:		.../XXXXXXX.ipa/endpoint_id/monitor_rx
--Date:		July 2022
--KernelVersion:	v5.19
--Contact:	Alex Elder <elder@kernel.org>
--Description:
--		The .../XXXXXXX.ipa/endpoint_id/monitor_rx file contains
--		the ID of the AP endpoint on which IPA "monitor" data is
--		received.  The monitor endpoint supplies replicas of
--		packets that enter the IPA hardware for processing.
--		Each replicated packet is preceded by a fixed-size "ODL"
--		header (see .../XXXXXXX.ipa/feature/monitor, above).
--		Large packets are truncated, to reduce the bandwidth
--		required to provide the monitor function.
--
- What:		.../XXXXXXX.ipa/modem/
- Date:		June 2021
- KernelVersion:	v5.14
+Patch 2 updates the rt-addr spec and patch 3 adds a selftest that
+checks the filter, the user count and the permanent flag on a dummy
+device.
+
+Nothing changes for other families. AF_PACKET dumps returned
+-EOPNOTSUPP before, so iproute2 can keep the procfs fallback for older
+kernels. I have the iproute2 side ready and will post it once this is
+in; with it, "ip maddr show" does not open /proc/net at all.
+
+Yuyang Huang (3):
+  rtnetlink: add AF_PACKET multicast dumps
+  netlink: specs: rt-addr: document AF_PACKET multicast dumps
+  selftests: net: test AF_PACKET multicast dumps
+
+ Documentation/netlink/specs/rt-addr.yaml |   7 +-
+ net/core/rtnetlink.c                     | 132 +++++++++++++++++++++++
+ tools/testing/selftests/net/rtnetlink.py |  58 +++++++++-
+ 3 files changed, 193 insertions(+), 4 deletions(-)
+
 -- 
-2.53.0
+2.43.0
 
