@@ -1,43 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA0873A451B;
-	Sat,  5 Sep 2026 20:02:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E2C7314A83;
+	Sat,  5 Sep 2026 20:05:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788638558; cv=none; b=jTKpWlCPBjA+z3omTnnnLzjopdifal+dhi6P0fTswDvBQ9MKqKYJmHW2YM1FCij4XoVxaIGB/3W2BsrxKs5MQ21fSyR41uQxC7Z4C2lRJiCkUH8hZCNGmh52IB8YAEyqtta14R4Kn5Wdf7zL6gkJW3BCRQ+9MjLVsQOPLMKX3Ok=
+	t=1788638751; cv=none; b=UOxGoYhQowTb1l4P0QuqV27b2wfBE0C/qLdHpDSZ2wOfyZoSEhfswJoS3kIcNZcbIG5wMeqdTBbKS1n49jyZP7uEVFv+mJ7n9Lo5YShd55Qo6YLoOwlyQyoRU56xSga5QT/iMU9zH+ESRk6jsDsNptvq0ett5fK4IBZ2RL6LlL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788638558; c=relaxed/simple;
-	bh=srOjzTF81bGvA3JmZCnhghe0OOBAJGDm1Ei8sCwaQyw=;
+	s=arc-20240116; t=1788638751; c=relaxed/simple;
+	bh=74GoPoepf9uUWrJ7zE98kdJZeLGan5Qu2KH16saz6Yw=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=YSyd9ZP9MnncIotxbmprJvCaq0oq/Q0/v8at46R7hZ7AFadeYEUSwx0MkBToqwJNt6SCbuvfbXqzB/dqbIAIQD3FSe0GafMCvhUbgpiBN12QoUIIbUCQdhr74btwvFmUo2QCMKmMejnO1bkoIRNOnnhfNrArQ8WSGPL560BETJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UqAR5dEO; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=A3NocLkPbEShWwiKRrqj6CBZIFQBVSeoTzI3hHv+u9gAl4pQLdbjoOoD/dvKXq7c3dufHQPXiZFR1LXMq074zoq9nIGkqicMyrrqk5oJHKUNX3V8UdisCnk2qQywAXWnYdIDsV+7VANJD5GhAOYpPODSGZtiSQ1A10YGBeenqnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fW4h7/ze; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UqAR5dEO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0B0F1F00A3A;
-	Sat,  5 Sep 2026 20:02:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fW4h7/ze"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CEF31F00A3A;
+	Sat,  5 Sep 2026 20:05:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788638553;
-	bh=Anq5W3k6w5GBCn1kH3K4ZibK2Kah8XyXSoL6UmHBtMs=;
+	s=k20260515; t=1788638749;
+	bh=eG+joLFXyi1YFshmvc0VaePPUpkxB8Vc/bsrxdq3FbY=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=UqAR5dEOtt3WKiLPxovKc39nfeXBq9wkE4Z8/MpwfY6OVP4z+dZJrKF2w4sCQjEYQ
-	 Uy+sCGw/azBDEz/5iy9WkTYZznqwp9L0Id9NCMb3yqy4/y7R0xH2hc3h8gXIwjQiGb
-	 0mLO+eiaaGZP0HsycA24/x494VwP8QPRs8n0wrtQXQkms/I05QwJmqQawR88vFU4ec
-	 Q6oqGz/Vg12B/q/eTQSHv66TlsZtz7FgTfaMKZyWu+VkuzsyxAHTWYcpcZYSBjgvJH
-	 kj7gb4EetX81e/96OP1NqN7RxBs48nhIG4JyuE1sbi5mRwKYZorVyW6n8aexb7xihv
-	 5X1n16ToibK4w==
-Subject: Re: [PATCH v6 net] octeontx2-af: switch qmem from coherent DMA alloc
- to streaming DMA mapping
+	b=fW4h7/zeLlh5qtkO70LNhTPEDtwursOHzD42/HYoQObX1/+eemUa+ubr9y9fxLGD9
+	 zuHMmyezoBPU9kZ/vc1BBfq5SC4wxRKXWdyKOU5ArvxAzk6y0bS0aLxp/C/G1uk0Ds
+	 ya0AZHtG61E9+7H21NNIH+4aPZJOKTPYfBasvh3B1iMFcTZ17MF8vrlb5n4/bSkf2B
+	 fULcQl5pKB8OeCTCyfGOjnKdwlltovHLsEenZiN9q0dM4vxDX8w+K2kGiD6E59Fn2E
+	 rJketOdHwGClQHUAcnRmYM0M/f/H/2+3yXunq3kUv0gERsisXI9KR1rndAEJMxxgCj
+	 4u3xFtDbsghZA==
+Subject: Re: [PATCH net-next v8] net: reduce RFS/ARFS flow updates by checking
+ LLC affinity
 From: netdev-bot+sashiko@kernel.org
-To: rkannoth@marvell.com
-Cc: davem@davemloft.net, gakula@marvell.com, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, sgoutham@marvell.com, andrew+netdev@lunn.ch,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, leon@kernel.org,
- Qqingfang.deng@linux.dev
-Date: Sat, 05 Sep 2026 20:02:32 +0000
-Message-ID: <178863855246.219967.10510865726694393307@kernel.org>
-In-Reply-To: <20260902021023.2987908-1-rkannoth@marvell.com>
-References: <20260902021023.2987908-1-rkannoth@marvell.com>
+To: nashuiliang@gmail.com
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, kuniyu@google.com, willemb@google.com,
+ sdf.kernel@gmail.com, liuhangbin@gmail.com, skhawaja@google.com,
+ ncardwell@google.com, martin.lau@kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Date: Sat, 05 Sep 2026 20:05:48 +0000
+Message-ID: <178863874807.219967.3784447414481415437@kernel.org>
+In-Reply-To: <20260902025203.4741-1-nashuiliang@gmail.com>
+References: <20260902025203.4741-1-nashuiliang@gmail.com>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -48,402 +49,288 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 6 potential
+Thank you for your contribution! Sashiko AI review found 4 potential
 issue(s) to consider:
 
-Critical: 0 · High: 2 · Medium: 3 (1) · Low: 1
+Critical: 0 · High: 1 · Medium: 1 · Low: 2
 
-- [High] New hard MAX_PAGE_ORDER ceiling in otx2_dma_alloc_coherent()
-  (drivers/net/ethernet/marvell/octeontx2/af/common.h:76-77) rejects…
-- [High] qmem regions are long-lived, bidirectionally shared hardware
-  structures (NIX/NPA context tables, AF admin-queue instruction/result…
-- [Medium] otx2_dma_phys_in_mask() (af/common.h:52-57) compares a raw CPU
-  physical address against dma_get_mask(dev).
-- [Medium] otx2_dma_alloc_coherent() maps up to 1<<MAX_PAGE_ORDER bytes'
-  worth of pages (4 MiB with 4 KiB pages) in a single…
-- [Medium] otx2_dma_alloc_coherent() unconditionally forces __GFP_RECLAIM
-  on all allocations, violating caller-provided GFP semantics.
-- [Low] The patch adds '#include <linux/dma-map-ops.h>' to
-  drivers/net/ethernet/marvell/octeontx2/af/common.h (line 11) solely to…
-
-Pre-existing issues:
-- [Medium] qmem_alloc() computes 'qmem->alloc_sz = (qsize * entry_sz) +
-  OTX2_ALIGN' in signed int arithmetic (af/common.h:121,135) from values…
+- [High] rps_llc_check() (net/core/dev.c:5275) makes its keep-or-update
+  decision purely from the CPU field of the flow-table word, discarding…
+- [Medium] sock_rps_record_flow() and sock_rps_record_flow_hash() are
+  converted from static inlines in include/net/rps.h into out-of-line…
+- [Low] The patch adds a permanent user-visible sysctl
+  (net.core.rps_feat_llc_affinity, net/core/sysctl_net_core.c:558-564)…
+- [Low] The patch contains changes that are dead or unrelated to the
+  feature.
 
 --
 
-octeontx2-af: switch qmem from coherent DMA alloc to streaming DMA mapping
+net: reduce RFS/ARFS flow updates by checking LLC affinity
 
-This replaces the dma_alloc_attrs(DMA_ATTR_FORCE_CONTIGUOUS) backing of
-qmem with buddy-allocated compound pages that are then mapped for the
-device with dma_map_page_attrs(DMA_BIDIRECTIONAL).  New helpers
-otx2_dma_alloc_coherent() and otx2_dma_free_coherent() gate on
-dev_is_dma_coherent() and retry with GFP_DMA32 when the physical range
-falls outside the device DMA mask.  A few questions below.
+This adds a new sysctl, net.core.rps_feat_llc_affinity, which makes
+rps_record_sock_flow() skip the flow table update when the old and new
+CPUs share a last level cache, in order to reduce ndo_rx_flow_steer
+churn.  It also converts sock_rps_record_flow() and
+sock_rps_record_flow_hash() from static inlines into exported
+out-of-line functions.
 
-> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/common.h b/drivers/net/ethernet/marvell/octeontx2/af/common.h
-> index 779413a383b74..4ec20c3cfec03 100644
-> --- a/drivers/net/ethernet/marvell/octeontx2/af/common.h
-> +++ b/drivers/net/ethernet/marvell/octeontx2/af/common.h
-> @@ -7,6 +7,11 @@
->  #ifndef COMMON_H
->  #define COMMON_H
+A few questions below.
+
+> diff --git a/include/net/rps.h b/include/net/rps.h
+> index e33c6a2fa8bbc..6dacf0888a6c2 100644
+> --- a/include/net/rps.h
+> +++ b/include/net/rps.h
+
+[ ... ]
+
+> @@ -55,11 +56,14 @@ struct rps_sock_flow_table {
 >  
-> +#include <linux/dma-mapping.h>
-> +#include <linux/dma-map-ops.h>
+>  #define RPS_NO_CPU 0xffff
+>  
+> +bool rps_llc_check(u32 old_val, u32 new_val);
+> +
+>  static inline void rps_record_sock_flow(rps_tag_ptr tag_ptr, u32 hash)
+>  {
+>  	unsigned int index = hash & rps_tag_to_mask(tag_ptr);
+>  	u32 val = hash & ~net_hotdata.rps_cpu_mask;
+>  	struct rps_sock_flow_table *table;
+> +	u32 old_val;
+>  
+>  	/* We only give a hint, preemption can change CPU under us */
+>  	val |= raw_smp_processor_id();
+> @@ -68,7 +72,8 @@ static inline void rps_record_sock_flow(rps_tag_ptr tag_ptr, u32 hash)
+>  	/* The following WRITE_ONCE() is paired with the READ_ONCE()
+>  	 * here, and another one in get_rps_cpu().
+>  	 */
+> -	if (READ_ONCE(table[index].ent) != val)
+> +	old_val = READ_ONCE(table[index].ent);
+> +	if (old_val != val && rps_llc_check(old_val, val))
+>  		WRITE_ONCE(table[index].ent, val);
+>  }
+>  
+> @@ -136,25 +141,8 @@ static inline bool rfs_is_needed(void)
+>  #endif
+>  }
+>  
+> -static inline void sock_rps_record_flow_hash(__u32 hash)
+> -{
+> -#ifdef CONFIG_RPS
+> -	if (!rfs_is_needed())
+> -		return;
+> -
+> -	_sock_rps_record_flow_hash(hash);
+> -#endif
+> -}
+> -
+> -static inline void sock_rps_record_flow(const struct sock *sk)
+> -{
+> -#ifdef CONFIG_RPS
+> -	if (!rfs_is_needed())
+> -		return;
+> -
+> -	_sock_rps_record_flow(sk);
+> -#endif
+> -}
+> +void sock_rps_record_flow_hash(__u32 hash);
+> +void sock_rps_record_flow(const struct sock *sk);
+
+[Severity: Medium]
+These two helpers were static inline, so the rfs_is_needed() static
+branch test was inlined into every caller: a patched-out jump label when
+RFS is off, and nothing at all for CONFIG_RPS=n because the whole body
+was inside #ifdef CONFIG_RPS.
+
+After this change every call site on the socket fast path
+(inet_send_prepare(), inet_recvmsg(), tcp_recvmsg(), af_inet6, mptcp,
+sctp, tun, io_uring zcrx) emits an out-of-line call before the static
+branch is evaluated, including CONFIG_RPS=n builds where the callee body
+is empty.
+
+The changelog says this "resolves a symbol visibility compilation error
+triggered by 'tun' using sock_rps_record_flow_hash()".  Isn't the actual
+undefined symbol the newly added rps_llc_check(), which is called from
+the still-inline rps_record_sock_flow()?  Would EXPORT_SYMBOL() on
+rps_llc_check(), or keeping the LLC test inline, be enough and leave
+these helpers inlined?
+
+Note also that rps_record_sock_flow() now calls rps_llc_check()
+unconditionally, so the rps_feat_llc_affinity static branch is only
+evaluated inside the callee, after the call overhead has been paid.
+
+>  
+>  static inline void sock_rps_delete_flow(const struct sock *sk)
+>  {
+> diff --git a/net/core/dev.c b/net/core/dev.c
+> index 38336858c168f..b27839eb594d6 100644
+> --- a/net/core/dev.c
+> +++ b/net/core/dev.c
+> @@ -5052,6 +5052,8 @@ struct static_key_false rps_needed __read_mostly;
+>  EXPORT_SYMBOL(rps_needed);
+>  struct static_key_false rfs_needed __read_mostly;
+>  EXPORT_SYMBOL(rfs_needed);
+> +struct static_key_false rps_feat_llc_affinity __read_mostly;
+> +EXPORT_SYMBOL(rps_feat_llc_affinity);
 
 [Severity: Low]
-This isn't a bug, but is including linux/dma-map-ops.h from a driver
-header intended?  That header opens with:
+Is this export needed?  A grep at this commit shows
+rps_feat_llc_affinity referenced only by the extern in include/net/rps.h,
+net/core/dev.c and net/core/sysctl_net_core.c, and since this patch moves
+sock_rps_record_flow*() out of line, the chain
+rps_record_sock_flow() -> rps_llc_check() is now reachable only from
+built-in code.
 
-  /*
-   * This header is for implementations of dma_map_ops and related code.
-   * It should not be included in drivers just using the DMA API.
-   */
+Two small unrelated items in the same patch: the two multi-line comments
+added in rps_llc_check() below start their text on the line after the
+"/*", whereas the surrounding comments in net/core/dev.c (for example in
+rps_flow_is_active() and get_rps_cpu()) start on the "/*" line; and the
+hunk in net/core/sysctl_net_core.c adds a blank line before
+"#endif /* CONFIG_RPS */" which is whitespace only.
 
-common.h is included across af/ and nic/, so this pulls DMA
-implementation internals into the whole driver, apparently only to reach
-dev_is_dma_coherent().
-
-Related to that, on builds without ARCH_HAS_SYNC_DMA_FOR_DEVICE and
-ARCH_HAS_SYNC_DMA_FOR_CPU, the same header defines:
-
-  static inline bool dev_is_dma_coherent(struct device *dev)
-  {
-	return true;
-  }
-
-so the guard below is a compile-time constant rather than a runtime
-check on those configurations.  Is that the intent?
-
-> +#include <linux/gfp.h>
-> +#include <linux/mm.h>
-> +
->  #include "rvu_struct.h"
 >  
->  #define OTX2_ALIGN			128  /* Align to cacheline */
-> @@ -44,6 +49,74 @@ struct qmem {
->  	u32		qsize;
->  };
+>  static u32 rfs_slot(u32 hash, rps_tag_ptr tag_ptr)
+>  {
+> @@ -5263,6 +5265,48 @@ static int get_rps_cpu(struct net_device *dev, struct sk_buff *skb,
+>  	return cpu;
+>  }
 >  
-> +static inline bool otx2_dma_phys_in_mask(struct device *dev, phys_addr_t paddr,
-> +					 size_t size)
+> +/**
+> + * rps_llc_check - determine if RPS flow table should be updated.
+> + * @old_val: previous flow record value.
+> + * @new_val: target flow record value.
+> + *
+> + * Return: true if the record needs an update, false otherwise.
+> + */
+> +bool rps_llc_check(u32 old_val, u32 new_val)
 > +{
-> +	u64 mask = dma_get_mask(dev);
-> +
-> +	return paddr + size - 1 <= mask;
-> +}
-
-[Severity: Medium]
-Is comparing a CPU physical address against dma_get_mask() the test that
-was wanted here?  The DMA mask constrains device (bus or IOVA)
-addresses, so the equivalent core-API check goes through phys_to_dma()
-and dma_capable(), which also account for dev->dma_range_map offsets and
-dev->bus_dma_limit.
-
-Two consequences follow:
-
-- Behind an SMMU (the configuration the changelog relies on) the IOVA is
-  allocated inside the mask no matter where the page sits physically, so
-  freeing the pages and retrying with GFP_DMA32 is a constraint the
-  hardware does not have, and it can end in NULL when no high-order
-  ZONE_DMA32 block is available.
-
-- With a non-zero dma-ranges offset or a bus_dma_limit below the mask, an
-  address that passes this check is still not addressable, and the real
-  verdict (bounce or DMA_MAPPING_ERROR) only comes later from
-  dma_map_page_attrs().
-
-Also, every octeontx2 device sets DMA_BIT_MASK(48) (rvu_probe(), cgx
-probe, otx2_pf/otx2_vf/rep probe), so on shipping hardware the check
-always passes and the GFP_DMA32 retry body is unreachable.  Could the
-retry simply be dropped and the decision left to dma_map_page_attrs()?
-
-> +
-> +static inline void *otx2_dma_alloc_coherent(struct device *dev, size_t size,
-> +					    dma_addr_t *dma_handle, gfp_t gfp)
-> +{
-> +	dma_addr_t dma_addr;
-> +	unsigned int order;
-> +	gfp_t alloc_gfp;
-> +	void *vaddr;
-> +
-> +	if (!dev || !dma_handle || !size)
-> +		return NULL;
-> +
-> +	if (!dev_is_dma_coherent(dev))
-> +		return NULL;
-> +
-> +	size = PAGE_ALIGN(size);
-> +	order = get_order(size);
-> +	if (order > MAX_PAGE_ORDER)
-> +		return NULL;
+> +	u32 old_cpu = old_val & net_hotdata.rps_cpu_mask;
+> +	u32 new_cpu = new_val & net_hotdata.rps_cpu_mask;
 
 [Severity: High]
-Does this cap reject qmem allocations that the previous
-dma_alloc_attrs(DMA_ATTR_FORCE_CONTIGUOUS) path served from CMA?  With
-4 KiB pages and the arm64 default ARCH_FORCE_MAX_ORDER, the ceiling is
-4 MiB, while dma_alloc_contiguous() had no such limit:
+Both operands are reduced to a CPU number here, and the flow identity
+bits of the table word are discarded.  Can this suppress the very first
+record for a flow?
 
-  kernel/dma/contiguous.c:dma_alloc_contiguous() {
-	if (dev->cma_area)
-		return cma_alloc_aligned(dev->cma_area, size, gfp);
-	...
-	return cma_alloc_aligned(dma_contiguous_default_area, size, gfp);
-  }
+table[index].ent is a composite value, (hash & ~rps_cpu_mask) | cpu, and
+every entry starts out as the RPS_NO_CPU sentinel:
 
-Call sites that appear to cross 4 MiB:
+net/core/sysctl_net_core.c:rps_sock_flow_sysctl()
+			net_hotdata.rps_cpu_mask =
+				roundup_pow_of_two(nr_cpu_ids) - 1;
+			...
+		for (i = 0; i < size; i++)
+			sock_table[i].ent = RPS_NO_CPU;
 
-  af/cn20k/mbox_init.c:rvu_alloc_mbox_memory()
-	err = qmem_alloc(rvu->dev, &mbox_addr, ndevs, mbox_size);
+With a power of two nr_cpu_ids (the 128*2 thread AMD host in the
+changelog gives mask = 255), RPS_NO_CPU & mask == nr_cpu_ids - 1, which
+is a valid and normally active CPU id, so the escape hatch below never
+fires for an entry that was never recorded.
 
-  reached from cn20k_rvu_mbox_init(TYPE_AFPF, rvu->hw->total_pfs) with
-  mbox_size = MBOX_SIZE = SZ_64K, so total_pfs >= 64 gives order 11 and
-  AF probe fails.  The CN20K mailbox IRQ code already handles PF indices
-  up to 96.
+If the recording CPU happens to share an LLC with nr_cpu_ids - 1,
+rps_llc_check() returns false and rps_record_sock_flow() skips the
+WRITE_ONCE(), so this flow's hash tag is never published.  get_rps_cpu()
+then rejects the entry:
 
-  nic/otx2_pf.c:cn20k_pfvf_mbox_alloc()
-	err = qmem_alloc(&pf->pdev->dev, &mbox_addr, numvfs, MBOX_SIZE);
+		if ((ident ^ hash) & ~net_hotdata.rps_cpu_mask)
+			goto try_rps;
 
-  fails once numvfs >= 64, i.e. on enabling SR-IOV.
+Doesn't that turn RFS/aRFS off entirely for every flow whose consumer
+thread runs in the LLC containing the last CPU, rather than steering it
+at LLC granularity?  The same applies when the slot is currently held by
+a different flow that hashed to the same index, and it can recur at
+runtime since _sock_rps_delete_flow() writes RPS_NO_CPU back on socket
+teardown:
 
-  nic/otx2_common.c:otx2_sq_init()
-	err = qmem_alloc(pfvf->dev, &sq->tso_hdrs, qset->sqe_cnt,
-			 TSO_HEADER_SIZE);
+include/net/rps.h:_sock_rps_delete_flow()
+		if (READ_ONCE(table[index].ent) != RPS_NO_CPU)
+			WRITE_ONCE(table[index].ent, RPS_NO_CPU);
 
-  nic/otx2_common.c:otx2_cq_init()
-	err = qmem_alloc(pfvf->dev, &cq->cqe, cq->cqe_cnt, cq->cqe_size);
+Would it be more accurate to apply the LLC heuristic only when the
+existing record already belongs to this flow, that is when
+((old_val ^ val) & ~net_hotdata.rps_cpu_mask) == 0, and always write when
+the hash portion differs?
 
-  and otx2_set_ringparam() still accepts up to a million entries:
-
-	tx_count = clamp_t(u32, ring->tx_pending,
-			   Q_COUNT(Q_SIZE_4K), Q_COUNT(Q_SIZE_MAX));
-
-  so the TSO header area (sqe_cnt * 128), the SQE ring and the CQE ring
-  (cqe_cnt * 128 or 512) pass 4 MiB somewhere around 16384 to 32768
-  entries and now return -ENOMEM at interface bring-up.
-
-Should these call sites be audited or capped before the allocator gains
-a hard limit?
-
-On the same subject, the changelog says:
-
-  Allocations requiring more than MAX_PAGE_ORDER pages are still
-  rejected, since the buddy allocator cannot serve them without CMA.
-
-For CMA-enabled configurations that is a new restriction rather than
-existing behaviour, and MAX_PAGE_ORDER is an order, not a page count.
-Could that paragraph be reworded to describe the change?
+If so, does that also change the reported drop of mlx5e_rx_flow_steer
+from ~335,000 to ~23,000 counts/sec, since part of it would come from
+flows that lost steering rather than from flows steered per LLC?
 
 > +
-> +	alloc_gfp = (gfp & ~(__GFP_DMA | __GFP_DMA32 | __GFP_HIGHMEM)) |
-> +		__GFP_ZERO | __GFP_COMP | __GFP_RECLAIM;
+> +	/*
+> +	 * RPS LLC Affinity Feature:
+> +	 * Reduce RFS/ARFS flow updates by checking LLC affinity.
+> +	 *
+> +	 * Frequent flow table updates can trigger constant hardware steering
+> +	 * reconfigurations (e.g., ndo_rx_flow_steer), leading to significant
+> +	 * contention on driver internal locks (like mlx5's arfs_lock).
+> +	 *
+> +	 * This strategy only updates the flow record if it migrates across LLC
+> +	 * boundaries. This minimizes expensive hardware updates while preserving
+> +	 * cache locality for the application.
+> +	 */
+> +	if (static_branch_unlikely(&rps_feat_llc_affinity)) {
+> +		/* Force update if the recorded CPU is invalid or has gone offline */
+> +		if (old_cpu >= nr_cpu_ids || !cpu_active(old_cpu))
+> +			return true;
 > +
-> +	vaddr = (void *)__get_free_pages(alloc_gfp, order);
-> +	while (vaddr &&
-> +	       !otx2_dma_phys_in_mask(dev, virt_to_phys(vaddr), size)) {
-> +		free_pages((unsigned long)vaddr, order);
-> +		if (alloc_gfp & GFP_DMA32)
-> +			return NULL;
-> +		alloc_gfp |= GFP_DMA32;
-> +		vaddr = (void *)__get_free_pages(alloc_gfp, order);
-> +	}
-> +	if (!vaddr)
-> +		return NULL;
+> +		/*
+> +		 * If CPUs do not share a cache, allow the update to prevent
+> +		 * expensive remote memory accesses and cache misses.
+> +		 */
+> +		if (!cpus_share_cache(old_cpu, new_cpu))
+> +			return true;
 > +
-> +	dma_addr = dma_map_page_attrs(dev, virt_to_page(vaddr), 0, size,
-> +				      DMA_BIDIRECTIONAL, 0);
-
-[Severity: Medium]
-The helper accepts a gfp argument but then ORs in __GFP_RECLAIM
-unconditionally, so whatever the caller asked for, the allocation ends
-up able to block.  __GFP_RECLAIM is
-__GFP_DIRECT_RECLAIM | __GFP_KSWAPD_RECLAIM, so a caller passing
-GFP_ATOMIC or GFP_NOWAIT to otx2_dma_alloc_coherent() has
-__GFP_DIRECT_RECLAIM added behind its back and __get_free_pages() may
-sleep.  From an atomic or spinlock-held context that is a
-scheduling-while-atomic BUG rather than the allocation failure the
-caller was prepared for.
-
-Note this is different in kind from the __GFP_ZERO and __GFP_COMP bits
-added in the same expression: those describe how the pages are
-formatted, while __GFP_RECLAIM changes whether the call can sleep,
-which is the caller's decision and not the allocator wrapper's.
-Stripping __GFP_DMA, __GFP_DMA32 and __GFP_HIGHMEM is likewise fine,
-since the helper manages the zone itself.
-
-There is no bug in this tree today, because the only caller is
-qmem_alloc() and it passes GFP_KERNEL, which already contains
-__GFP_RECLAIM.  But the helper is written as a general
-dma_alloc_coherent() replacement, is placed in a header shared by af/
-and nic/, and its name invites reuse, so the override is a trap for the
-next caller.
-
-Could the OR of __GFP_RECLAIM simply be dropped and the caller's flags
-honoured, or, if the helper is only ever meant to serve the sleeping
-qmem_alloc() path, would it be clearer to drop the gfp parameter
-altogether and hardcode GFP_KERNEL inside the helper?
-
-[Severity: High]
-Can this mapping end up on a SWIOTLB bounce buffer, so that the device
-and the CPU stop looking at the same memory?
-
-qmem regions are long-lived structures that hardware and the driver
-touch concurrently for the lifetime of the mapping: NIX/NPA contexts, AF
-admin queue instruction and result rings, CQE rings, the NPA fc_addr
-writeback area, CN10K LMT lines, and the mailbox regions.  The mailbox
-case is documented in the driver itself:
-
-  af/cn20k/mbox_init.c:rvu_alloc_mbox_memory() {
-	/* Allocate contiguous memory for mailbox communication.
-	 * ...
-	 * AF will access mbox memory using direct physical addresses
-	 * and PFs will access the same shared memory from BAR2.
-  }
-
-With attrs = 0, dma_map_page_attrs() is allowed to substitute a bounce
-buffer:
-
-  kernel/dma/direct.c:dma_direct_map_phys() {
-	if (is_swiotlb_force_bounce(dev)) {
-		if (attrs & (DMA_ATTR_MMIO | DMA_ATTR_REQUIRE_COHERENT))
-			return DMA_MAPPING_ERROR;
-
-		return swiotlb_map(dev, phys, size, dir, attrs);
-	}
-  }
-
-  drivers/iommu/dma-iommu.c:dev_use_swiotlb() {
-	return IS_ENABLED(CONFIG_SWIOTLB) &&
-		(dev_is_untrusted(dev) ||
-		 dma_kmalloc_needs_bounce(dev, size, dir));
-  }
-
-so swiotlb=force, restricted-DMA pools, confidential-computing guests,
-or a device marked untrusted behind the SMMU all bounce.  Regions at or
-below swiotlb_max_mapping_size() (fc_addr, AQ rings, qints contexts,
-small mailbox regions) would bounce successfully and silently.  In that
-case the AF programs NIX_AF_LFX_*_BASE, NPA_AF_LFX_LOC_AURAS_BASE or
-RVU_MBOX_AF_PFX_ADDR with the bounce address while the driver keeps
-using qmem->base, and there are no dma_sync_*() calls anywhere to
-reconcile the two.
-
-The unmap in otx2_dma_free_coherent() then copies the device-side buffer
-back over the page the CPU has been writing:
-
-	dma_unmap_page_attrs(dev, dma_handle, size, DMA_BIDIRECTIONAL, 0);
-	free_pages((unsigned long)vaddr, order);
-
-dev_is_dma_coherent() only reports cache coherency; it does not promise
-that the mapping aliases the same physical memory, and the physical-range
-check above cannot rule bouncing out either since force-bounce ignores
-the address.  Would DMA_ATTR_REQUIRE_COHERENT be the attribute wanted
-here, given its documented contract:
-
-  /*
-   * DMA_ATTR_REQUIRE_COHERENT: Indicates that DMA coherency is required.
-   * All mappings that carry this attribute can't work with SWIOTLB and cache
-   * flushing.
-   */
-  #define DMA_ATTR_REQUIRE_COHERENT	(1UL << 12)
-
-[Severity: Medium]
-Separately, should the size passed here be clamped by
-dma_max_mapping_size(dev)?  Documentation/core-api/dma-api.rst says of
-that helper:
-
-  Returns the maximum size of a mapping for the device. The size parameter
-  of the mapping functions like dma_map_single(), dma_map_page() and
-  others should not be larger than the returned value.
-
-The only bound applied is the buddy order, so up to 4 MiB can be handed
-to a single dma_map_page_attrs() call, while
-
-  kernel/dma/direct.c:dma_direct_max_mapping_size() {
-	if (is_swiotlb_active(dev) &&
-	    (dma_addressing_limited(dev) || is_swiotlb_force_bounce(dev) ||
-	     force_dma_unencrypted(dev)))
-		return swiotlb_max_mapping_size(dev);
-  }
-
-can be roughly 256 KiB.  The failure then surfaces as a generic
--ENOMEM from qmem_alloc() with no hint about the size limit.  The old
-dma_alloc_attrs() path had no per-mapping size limit.
-
-> +	if (dma_mapping_error(dev, dma_addr)) {
-> +		free_pages((unsigned long)vaddr, order);
-> +		return NULL;
+> +		return false;
 > +	}
 > +
-> +	*dma_handle = dma_addr;
-> +	return vaddr;
+> +	return true;
 > +}
 > +
 
 [ ... ]
 
->  static inline int qmem_alloc(struct device *dev, struct qmem **q,
->  			     int qsize, int entry_sz)
->  {
-> @@ -60,8 +133,8 @@ static inline int qmem_alloc(struct device *dev, struct qmem **q,
->  
->  	qmem->entry_sz = entry_sz;
->  	qmem->alloc_sz = (qsize * entry_sz) + OTX2_ALIGN;
-> -	qmem->base = dma_alloc_attrs(dev, qmem->alloc_sz, &qmem->iova,
-> -				     GFP_KERNEL, DMA_ATTR_FORCE_CONTIGUOUS);
-> +	qmem->base = otx2_dma_alloc_coherent(dev, qmem->alloc_sz, &qmem->iova,
-> +					     GFP_KERNEL);
->  	if (!qmem->base)
->  		return -ENOMEM;
+> diff --git a/net/core/sysctl_net_core.c b/net/core/sysctl_net_core.c
+> index eb35da3556f4a..9b6702f5eab19 100644
+> --- a/net/core/sysctl_net_core.c
+> +++ b/net/core/sysctl_net_core.c
 
-[Severity: Medium]
-This isn't a bug introduced by this patch, but since the size
-computation is now the only thing bounding the new allocator, can
-alloc_sz wrap here?  The product is signed int arithmetic over values
-that come straight from mailbox requests:
+[ ... ]
 
-  af/rvu_npa.c:rvu_mbox_handler_npa_lf_alloc()
-	err = qmem_alloc(rvu->dev, &pfvf->pool_ctx, req->nr_pools, hwctx_size);
+> @@ -554,6 +555,13 @@ static struct ctl_table net_core_table[] = {
+>  		.mode		= 0644,
+>  		.proc_handler	= rps_sock_flow_sysctl
+>  	},
+> +	{
+> +		.procname	= "rps_feat_llc_affinity",
+> +		.data		= &rps_feat_llc_affinity.key,
+> +		.maxlen		= sizeof(rps_feat_llc_affinity.key),
+> +		.mode		= 0644,
+> +		.proc_handler	= proc_do_static_key
+> +	},
 
-req->nr_pools is u32 and only checked for being non-zero, so
-nr_pools = 2^25 with a 128-byte pool context wraps the product to zero
-and leaves alloc_sz = 128.  A single page is then allocated while
-pool_ctx->qsize keeps the huge requested count used by later bounds
-checks and hardware programming.
+[Severity: Low]
+This adds a permanent user visible knob, but the patch touches no file
+under Documentation/, and a grep for rps_feat_llc_affinity finds hits only
+in include/net/rps.h, net/core/dev.c and net/core/sysctl_net_core.c.
 
-For the NIX RQ/SQ/CQ paths the same wrap is blocked before any register
-write, because the count-proportional allocation fails first:
+Documentation/networking/scaling.rst, which documents
+rps_sock_flow_entries and rps_flow_cnt, currently states:
 
-  af/rvu_nix.c:rvu_mbox_handler_nix_lf_alloc() {
-	pfvf->rq_bmap = kcalloc(req->rq_cnt, sizeof(long), GFP_KERNEL);
-	if (!pfvf->rq_bmap) {
-		rc = -ENOMEM;
-		goto free_mem;
-	}
+  rps_sock_flow_table is a global flow table that contains the *desired*
+  CPU for flows: the CPU that is currently processing the flow in
+  userspace.  Each table value is a CPU index that is updated during
+  calls to recvmsg and sendmsg
 
-	rvu_write64(rvu, blkaddr, NIX_AF_LFX_RQS_BASE(nixlf),
-		    (u64)pfvf->rq_ctx->iova);
-  }
+When the new knob is enabled, rps_llc_check() deliberately keeps a
+different CPU in the entry as long as it shares an LLC, so that text no
+longer describes the behaviour.  Could scaling.rst be updated with the
+knob's default, accepted values and topology dependence?
 
-The NPA pool_ctx path has no such companion allocation, and device
-accesses past the mapping land on untranslated IOVA that the SMMU
-faults, so this is an inconsistent qmem object rather than memory
-corruption.  Would it make sense to add a size sanity check on
-qsize * entry_sz while this code is being touched?
+Also, the rps_feat_ infix differs from the existing rps_* and rfs_*
+sysctl names, and it cannot be changed once the ABI is exposed.  Was a
+name like rps_llc_affinity considered?
 
-> @@ -80,10 +153,9 @@ static inline void qmem_free(struct device *dev, struct qmem *qmem)
->  		return;
->  
->  	if (qmem->base)
-> -		dma_free_attrs(dev, qmem->alloc_sz,
-> -			       qmem->base - qmem->align,
-> -			       qmem->iova - qmem->align,
-> -			       DMA_ATTR_FORCE_CONTIGUOUS);
-> +		otx2_dma_free_coherent(dev, qmem->alloc_sz,
-> +				       qmem->base - qmem->align,
-> +				       qmem->iova - qmem->align);
->  	devm_kfree(dev, qmem);
->  }
+>  #endif
+>  #ifdef CONFIG_NET_FLOW_LIMIT
+>  	{
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260902021023.2987908-1-rkannoth%40marvell.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260902025203.4741-1-nashuiliang%40gmail.com
