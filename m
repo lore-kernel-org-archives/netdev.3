@@ -1,159 +1,101 @@
-Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20D383246EB;
-	Sat,  5 Sep 2026 13:03:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D95C037A496;
+	Sat,  5 Sep 2026 13:30:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788613417; cv=none; b=WhgE1AyD83Lt2xmok3eQjRD1gXrYp09dlNW1cr4x8/My2Wpixtko3XgdyzdIaM8YsM+m3ZrwZVjQTTJmtOQE1Ujzg/LlLnPqh9TNxtU2Ysj8HP1HZc/4ktTiph4++VSxAGNqSFxAjKJDh9XQwj/VDLf1eOrGAnOej6ityCALm5A=
+	t=1788615073; cv=none; b=Skev6VxCoBi0xb3ACJ93xwusCvI2PYsKonoQkVaEoGc7MzQ/rL5icFfFBhZVYiVoWZsc+CJ0lkyu7IbwJvfoNvp5cusDT2J7vxtYueph7u5tyt0iHdRtUzE+KqftFg9G9ERbtjkCQZPG1qNLFLonPnmGfsymu4QXAdSDWXCfKCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788613417; c=relaxed/simple;
-	bh=LN2Nl+oClp30FFetV91S+xfkBUUmuWAqX2WMaLyGerI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=i8IYUhEug0BZ3fJ7IyYgIAMQSFXot5PH9tFm4PMA3HYOStC2SjH0luGfvNJU5rjMmCXlRycSVwy5q7Xbwrz6sFG77256LqXgL5WEwYlWP0oN8hRRAOau2YyM5ftXrBTyL/JlGorbD2WOySOqoOvzQ6JNcsShBQWnlCvzhDA8o0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=DWrOPE1n; arc=none smtp.client-ip=178.251.229.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
+	s=arc-20240116; t=1788615073; c=relaxed/simple;
+	bh=Zkfi1HVvrwSQhZHkNPnA77UHSfEJTPixXsCO8TP0Eus=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mxZ6uCLIFLL3KENLl/RzkLgTdVcRJb06F75uBIESDsp9GQWNHN6my8/MgVD43Av4zE9FoxZCMYAfXAypzzztVIEFcrM96srCIZAi/gt0pYlLD/UPWPJn0fFzsW9RsP3x4p2ZVgTnlyPdNdf4ceBhbo4I71hRmoBlY0+ROcB0ozE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=cjzPXlNg; arc=none smtp.client-ip=117.135.210.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="DWrOPE1n"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9FF2311D93E;
-	Sat, 05 Sep 2026 15:03:28 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1788613409; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding; bh=CRm27CIkzUHms/d9b2xD02yImE+Y8Zj9TkTzg37Uq88=;
-	b=DWrOPE1njNwaU+IihP/3ekiaqHXwmS70YcEtC6Fs/uC4z1dKwEUC+2ru3mSf43rICrWZEm
-	KklH7CxOXJEZJk4SJDE8VimnaEzP4WAgzb5VlIn9mrfds8x020qK2duzQ4JXq3ch1/FDr6
-	b7fttbCDt7sJcFqDEsDJCTlo6ioyMI3m+r3PCIAXh9wQqa7+IsePKY4SypVMP7yMKqWlGw
-	QnJmmTnzm4gG6K6jwcWSbgkasTvkU1MBK5r1O3EVoY0Sy8j1PtYz/almrrsBd6cL0wwkhR
-	VLA7sWz6QRGX2Mr8DNc2d6xspxubWAkvPYIYb5CXih2m7KCBympvU9TCKDfkyA==
-From: Marek Vasut <marex@nabladev.com>
-To: netdev@vger.kernel.org
-Cc: Marek Vasut <marex@nabladev.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	"David S. Miller" <davem@davemloft.net>,
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="cjzPXlNg"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=V1
+	sLHMDzzOomdHPsx4yOfg/S51LMi0KB8zcg4r6QBE8=; b=cjzPXlNgjdUrDfwt8p
+	G/H1/R4hyDfaevn8O4LgQZYoMshQZODBhPIdmpJhUtXIHwTb9UUiq34nB9Q4rxHr
+	p+7Dm/VgXgFzbfnzxRzmEUigrM3zc0ch/FExK14hB+i4WORaSBbH3Eo//XZ5Uzu9
+	lprewofHTgnp984KbAxbqLXjo=
+Received: from localhost.localdomain (unknown [])
+	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wA3cXBYGZxqS2BuAw--.57639S2;
+	Sat, 05 Sep 2026 21:30:01 +0800 (CST)
+From: "hpp.iscas" <hppiscas@163.com>
+To: Jian Shen <shenjian15@huawei.com>
+Cc: "hpp.iscas" <hppiscas@163.com>,
+	Jijie Shao <shaojijie@huawei.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Ronald Wahl <ronald.wahl@raritan.com>,
-	Yicong Hui <yiconghui@gmail.com>,
-	kernel@dh-electronics.com,
-	linux-kernel@vger.kernel.org
-Subject: [net,PATCH v2] net: ks8851: Fix receiver error in 100BASE-TX mode following software power-down
-Date: Sat,  5 Sep 2026 15:02:32 +0200
-Message-ID: <20260905130327.203851-1-marex@nabladev.com>
-X-Mailer: git-send-email 2.53.0
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Jiangfeng Xiao <xiaojiangfeng@huawei.com>
+Subject: [PATCH] net: hip04: use 16-bit byte order for HI13X1 TX fields
+Date: Sat,  5 Sep 2026 21:29:58 +0800
+Message-ID: <20260905132958.63085-1-hppiscas@163.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: quoted-printable
+X-CM-TRANSID:_____wA3cXBYGZxqS2BuAw--.57639S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7uryDXFW7uFWxZw43XF4Utwb_yoW8CF13pa
+	1DCFW3Kr1jvw15X3Wvgwn2q348ua1Sg34xGa15u34a9r1Syr409ryDKFWUCrWjqrs7XF4q
+	934F9anxJFs3K37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UBa0dUUUUU=
+X-CM-SenderInfo: 5kssx2xfdvqiywtou0bp/xtbC7Rke5mqcGVlG+AAA3E
 
-KSZ8851 errata sheet DS80000716D-page 4 Module 3 [1] states that,
-when issuing a software power-down (PMECR[1:0] = 10) followed by a
-power-on (PMECR[1:0] = 00), the receiver circuit can fail to start
-properly preventing communication. The Transmitter will still send
-data, but no data will be received.
-
-The errata sheet also includes a workaround, which states that,
-it is recommended that the software power-down feature not be used.
-
-Implement that workaround and drop the entry into software power-down
-mode. The ks8851_write_mac_addr() calls entry into normal power-on
-mode at the very beginning of the function, therefore dropping the
-second call to enter software power-down mode is sufficient here.
-The ks8851_net_stop() can only be called after ks8851_net_start()
-was already called, and ks8851_net_start() also makes the MAC enter
-normal power-on mode, therefore it is also fine to drop the call to
-enter software power-down mode from ks8851_net_stop().
-
-This will lead to a slight increase in power consumption, but it also
-fixes a sporadic reliability problem on at least KSZ8851-16MLL, which
-is where the problem was reported and this fix was tested.
-
-[1] https://ww1.microchip.com/downloads/en/DeviceDoc/80000716D.pdf
-
-Fixes: 3ba81f3ece3c ("net: Micrel KS8851 SPI network driver")
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Marek Vasut <marex@nabladev.com>
----
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Ronald Wahl <ronald.wahl@raritan.com>
-Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: Yicong Hui <yiconghui@gmail.com>
-Cc: kernel@dh-electronics.com
-Cc: linux-kernel@vger.kernel.org
-Cc: netdev@vger.kernel.org
----
-V2: - Add RB from Sebastian
-    - Update ks8851_net_stop() description based on input from Jakub
----
- drivers/net/ethernet/micrel/ks8851_common.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
-
-diff --git a/drivers/net/ethernet/micrel/ks8851_common.c b/drivers/net/ethernet/micrel/ks8851_common.c
-index 4afbb40bc0e4a..d49f281c78676 100644
---- a/drivers/net/ethernet/micrel/ks8851_common.c
-+++ b/drivers/net/ethernet/micrel/ks8851_common.c
-@@ -139,17 +139,14 @@ static int ks8851_write_mac_addr(struct net_device *dev)
- 	ks8851_set_powermode(ks, PMECR_PM_NORMAL);
- 
- 	for (i = 0; i < ETH_ALEN; i += 2) {
- 		val = (dev->dev_addr[i] << 8) | dev->dev_addr[i + 1];
- 		ks8851_wrreg16(ks, KS_MAR(i), val);
- 	}
- 
--	if (!netif_running(dev))
--		ks8851_set_powermode(ks, PMECR_PM_SOFTDOWN);
--
- 	ks8851_unlock(ks);
- 
- 	return 0;
- }
- 
- /**
-  * ks8851_read_mac_addr - read mac address from device registers
-@@ -474,16 +471,15 @@ static int ks8851_net_open(struct net_device *dev)
- }
- 
- /**
-  * ks8851_net_stop - close network device
-  * @dev: The device being closed.
-  *
-  * Called to close down a network device which has been active. Cancel any
-- * work, shutdown the RX and TX process and then place the chip into a low
-- * power state whilst it is not being used.
-+ * work and shutdown the RX and TX process.
-  */
- static int ks8851_net_stop(struct net_device *dev)
- {
- 	struct ks8851_net *ks = netdev_priv(dev);
- 
- 	netif_info(ks, ifdown, dev, "shutting down\n");
- 
-@@ -502,16 +498,14 @@ static int ks8851_net_stop(struct net_device *dev)
- 	ks8851_lock(ks);
- 	/* shutdown RX process */
- 	ks8851_wrreg16(ks, KS_RXCR1, 0x0000);
- 
- 	/* shutdown TX process */
- 	ks8851_wrreg16(ks, KS_TXCR, 0x0000);
- 
--	/* set powermode to soft power down to save power */
--	ks8851_set_powermode(ks, PMECR_PM_SOFTDOWN);
- 	ks8851_unlock(ks);
- 
- 	/* ensure any queued tx buffers are dumped */
- 	while (!skb_queue_empty(&ks->txq)) {
- 		struct sk_buff *txb = skb_dequeue(&ks->txq);
- 
- 		netif_dbg(ks, ifdown, ks->netdev,
--- 
-2.53.0
+The HI13X1 transmit descriptor stores send_size and data_offset in u16=0D
+fields, but hip04_mac_start_xmit() converts both values with=0D
+cpu_to_be32() before assigning them. On little-endian systems the=0D
+assignment truncates the converted value, leaving neither field with the=0D
+intended 16-bit big-endian representation.=0D
+=0D
+Use cpu_to_be16() for the two HI13X1 fields. Keep the original 32-bit=0D
+conversion for the other descriptor format.=0D
+=0D
+Fixes: d413779cdd93 ("net: hisilicon: Add an tx_desc to adapt HI13X1_GMAC")=
+=0D
+Signed-off-by: hpp.iscas <hppiscas@163.com>=0D
+---=0D
+ drivers/net/ethernet/hisilicon/hip04_eth.c | 5 +++--=0D
+ 1 file changed, 3 insertions(+), 2 deletions(-)=0D
+=0D
+diff --git a/drivers/net/ethernet/hisilicon/hip04_eth.c b/drivers/net/ether=
+net/hisilicon/hip04_eth.c=0D
+index fc2c47d..2920985 100644=0D
+--- a/drivers/net/ethernet/hisilicon/hip04_eth.c=0D
++++ b/drivers/net/ethernet/hisilicon/hip04_eth.c=0D
+@@ -527,13 +527,14 @@ hip04_mac_start_xmit(struct sk_buff *skb, struct net_=
+device *ndev)=0D
+ 	priv->tx_skb[tx_head] =3D skb;=0D
+ 	priv->tx_phys[tx_head] =3D phys;=0D
+ =0D
+-	desc->send_size =3D (__force u32)cpu_to_be32(skb->len);=0D
+ #if defined(CONFIG_HI13X1_GMAC)=0D
++	desc->send_size =3D (__force u16)cpu_to_be16(skb->len);=0D
+ 	desc->cfg =3D (__force u32)cpu_to_be32(TX_CLEAR_WB | TX_FINISH_CACHE_INV=
+=0D
+ 		| TX_RELEASE_TO_PPE | priv->port << TX_POOL_SHIFT);=0D
+-	desc->data_offset =3D (__force u32)cpu_to_be32(phys & SOC_CACHE_LINE_MASK=
+);=0D
++	desc->data_offset =3D (__force u16)cpu_to_be16(phys & SOC_CACHE_LINE_MASK=
+);=0D
+ 	desc->send_addr =3D  (__force u32)cpu_to_be32(phys & ~SOC_CACHE_LINE_MASK=
+);=0D
+ #else=0D
++	desc->send_size =3D (__force u32)cpu_to_be32(skb->len);=0D
+ 	desc->cfg =3D (__force u32)cpu_to_be32(TX_CLEAR_WB | TX_FINISH_CACHE_INV)=
+;=0D
+ 	desc->send_addr =3D (__force u32)cpu_to_be32(phys);=0D
+ #endif=0D
 
