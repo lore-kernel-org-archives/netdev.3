@@ -1,40 +1,36 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 487084519AA
-	for <netdev@vger.kernel.org>; Sat,  5 Sep 2026 11:10:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBFFA44237B
+	for <netdev@vger.kernel.org>; Sat,  5 Sep 2026 11:19:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788606641; cv=none; b=G5axZcgj85lXkeso57Xr9C+I3KSqK6NwUUZ6/FmC6n47WvJhaA5FkduLqUbKmGvTZtLMP4UQf5T0RIPnIT0yZ58LjUb6Ozfl7M6Kgt2h7IIXxEhGmuhfSvsfsC897b/Vin0VLXmdoZYTSPt84xnWmO7/PkzMRlySuEo4bFnTyN4=
+	t=1788607198; cv=none; b=WerIBmOHk4cIjRn54nK8HaaiW8fHAgMBmmVIWlxjGpkgxXkLKXqnJVeD0hRG5iuFkKRO+AQbOK6iReweaZBbbradJzsZJ7y0JEYZu7zlF0YbdxzSWUHG0Xna/1Vz4zxQNb6CgP35h1faWjGHCR5L/Y1xlhN0SOQiNpa42LboxHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788606641; c=relaxed/simple;
-	bh=KzRJhxRTrvqAiaVJVaqWQkWGZ+54F/AZGCB29WQ/d6Q=;
+	s=arc-20240116; t=1788607198; c=relaxed/simple;
+	bh=u9aIATvc41JAZqcBgTS/JO4h9M38OXTin6eDJyVLE8Q=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WDs0ejrv0RFZmmYa2ES2McwtcCJsweTdWcwXlP4bO7ozJ87WkQEgeXwxFgu7zDsUB8WBCTwF6YU0c1joq9p6h153Tgqjb4F2UjaTIJGt+pr35mnUavwgzUm8U5+9RxrUKESk16zP5TzRKTjybpk36koruVU6kbykJL0/CVKiZUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=w9fdaBoF; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	 In-Reply-To:Content-Type; b=ggpMNFvNUGbk/f6aPm4FGukHZEzoT9BsuZFrqtUFkto6oSAcjtFpMJhC2c0L9MSfUdBFItaq6rQushkctWKx6DJPHkGvCGKZE7dkRs7zt08ZDSwoMs54NxqHK2pkSdzOCVU98/PMY+04IdNF0LlFLYtxR7EqF7MNwFr2zwxUPQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=HiuBfwoD; arc=none smtp.client-ip=95.215.58.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="w9fdaBoF"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 9039C1A19CA;
-	Sat,  5 Sep 2026 11:10:30 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 5E9B860233;
-	Sat,  5 Sep 2026 11:10:30 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4E49B11C79AE2;
-	Sat,  5 Sep 2026 13:10:15 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1788606625; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=2G74mMDoSzWYSciLrgMYcbatz2kFir3mltJmFJtTQBo=;
-	b=w9fdaBoFJ6QLGxqG5SMb5jirUnc9KTDT6DGlJ4PpYqKfXBT/vhFNDW0RcspOWd0qzs6CG9
-	Qy13+SDsWyvPJrCG4zJGGHT21oWhqpIjvnrdqCGphIBmEmzfTF/s9eJauV3hjsH9MH90TH
-	xCpPntoKE1KOq5bMXJp2EGRoOCxgNzMDFZx92IrKP61l9NNQ8HT/pYOhrbhFZ5BcqopEEe
-	xrDwQvGlTxrD864jvGDdBnrZ2G3S+/oP9ODLMVSuaUyk+T3g3cQmSyppu7JYyydq12+Yh0
-	1meMNaurUlmkWyu3KzHmMGpBfrX4YX5TU5g/1xkN0qPLFGMFiN0+G/x/zoVZUg==
-Message-ID: <ce07b2ab-60b8-44d1-9d72-23c6b6a85250@bootlin.com>
-Date: Sat, 5 Sep 2026 13:10:14 +0200
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="HiuBfwoD"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=u9aIATvc41JAZqcBgTS/JO4h9M38OXTin6eDJyVLE8Q=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788607190; v=1; x=1789211990;
+ b=HiuBfwoD7NLNrHjyJoGxNTEkg6mwzCroXXM++WOhDQcOopTiDHrmVbrEpgI2a+ilGbErxPjB
+ WyDY0sMDcJJtK9jyL84b72QKJFJNEhyr9eAmt4y3p9zQI32+lOLTnJEJKmxzYtxFzIQTFtJntIo
+ Fu2B97EWAnYel4lAO/74V5NI=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 0a75017eff48b416;
+	Sat, 05 Sep 2026 11:19:40 +0000
+X-Mizu-Trace-ID: 0a75017eff48b416
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <65027d83-47e0-4ed6-828d-24c4ede4e7ab@linux.dev>
+Date: Sat, 5 Sep 2026 12:19:38 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -42,46 +38,49 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 4/9] net: stmmac: qcom-ethqos: convert
- ethqos_rgmii_macro_init() to void
-To: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Andrew Davis <afd@ti.com>,
- Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
- Russell King <linux@armlinux.org.uk>,
- Richard Cochran <richardcochran@gmail.com>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Giuseppe Cavallaro <peppe.cavallaro@st.com>,
- Jose Abreu <joabreu@synopsys.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>
-Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org
-References: <20260904-shikra_ethernet-v1-0-a50765996035@oss.qualcomm.com>
- <20260904-shikra_ethernet-v1-4-a50765996035@oss.qualcomm.com>
+Subject: Re: [PATCH net-next 1/4] netlink: specs: dpll: add
+ clock-quality-level to the device-get reply
+To: Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net
+Cc: netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
+ andrew+netdev@lunn.ch, horms@kernel.org, arkadiusz.kubalewski@intel.com,
+ ivecera@redhat.com, jiri@resnulli.us, donald.hunter@gmail.com
+References: <20260904191023.3869690-1-kuba@kernel.org>
+ <20260904191023.3869690-2-kuba@kernel.org>
 Content-Language: en-US
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-In-Reply-To: <20260904-shikra_ethernet-v1-4-a50765996035@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
+From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+In-Reply-To: <20260904191023.3869690-2-kuba@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
 
-Hi,
-
-On 9/3/26 20:43, Mohd Ayaan Anwar wrote:
-> The return value is never checked by its sole caller and the speed
-> validation duplicates a check higher up the call stack.  Convert to
-> void and remove the dead code.
+On 04/09/2026 20:10, Jakub Kicinski wrote:
+> dpll_device_get_one() calls dpll_msg_add_clock_quality_level(), which
+> puts DPLL_A_CLOCK_QUALITY_LEVEL into every device-get reply, dump entry
+> and device-*-ntf of a device whose driver implements
+> clock_quality_level_get() - mlx5 does. The &dev-attrs anchor lists 12
+> attributes and not this one, so struct dpll_device_get_rsp has no field
+> for it, dpll_device_get_rsp_parse() drops it and dpll.rst does not
+> document it.
 > 
-> Signed-off-by: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>
+> The attribute itself is correctly declared in the dpll attribute set,
+> only the reply list was missing an entry. Missing since commit
+> a1afb959add1 ("dpll: add clock quality level attribute and op").
+> 
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> ---
+>   Documentation/netlink/specs/dpll.yaml | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/Documentation/netlink/specs/dpll.yaml b/Documentation/netlink/specs/dpll.yaml
+> index cdc8c7b456df..64a45088c027 100644
+> --- a/Documentation/netlink/specs/dpll.yaml
+> +++ b/Documentation/netlink/specs/dpll.yaml
+> @@ -632,6 +632,7 @@ doc: DPLL subsystem.
+>               - mode-supported
+>               - lock-status
+>               - lock-status-error
+> +            - clock-quality-level
+>               - temp
+>               - clock-id
+>               - type
 
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-
-Maxime
-
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
