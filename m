@@ -1,128 +1,126 @@
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9BBC451980
-	for <netdev@vger.kernel.org>; Sat,  5 Sep 2026 16:38:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE5C94C77A3;
+	Sat,  5 Sep 2026 16:44:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788626317; cv=none; b=txY4Sj5mypIs602TISE+vuFDVSZltRGS52aYBZ7A+0113yrFUO5JUB92ScjHYWk8LUNkv/u+gzhiwOgCVDM4yXGukqJxoY2eZTi7vx6wiV+Nxdv0hlE46pBDQIG5a3MdZwJ/H4gYPQvfFkEjx7jD/Zsm2+nlAzb8f/MUiIMBAKU=
+	t=1788626645; cv=none; b=BJm1LF6pRRlEIM+gMD6CJoU31c2Z5XdMDrRhDBYUjW6IJG61Fhpys9PQFAL2yF0hntcG2/1hjmCd7exahFxKvCuEw6ZUi4JBIa+LKArp31LkuCWQkeuRsMzNm0Jdk94sJh3wc7Uk/CYA+3qTp1OhCHR9c2aPBYUtCRdeTa6ThH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788626317; c=relaxed/simple;
-	bh=3rYlH8LXVBW5SsYx659NfG0lyBaDhUqrzWQwq58K594=;
-	h=From:Content-Type:Mime-Version:Subject:Message-Id:Date:Cc:To; b=S8A4qTC4ivA8mnkP3VHSE3wdtRpIFRKhvCW3A9iManef6Y9VwlUwLJrlPKG2mR5OlLlnEhMYizOUV7dRA2C7b4EFrZe3RTCDoB7ltI4rzGpjtY8RwFLO3SHkdpidZkAP7NN+SlLY12NA9KwWv3O36ViCdNQR0Vn3qH5NAMh4030=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=doyensec.com; spf=pass smtp.mailfrom=doyensec.com; dkim=pass (2048-bit key) header.d=doyensec.com header.i=@doyensec.com header.b=Za5GfO0T; arc=none smtp.client-ip=209.85.208.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=doyensec.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=doyensec.com
+	s=arc-20240116; t=1788626645; c=relaxed/simple;
+	bh=ECfy6kf264WsG+e0/JSjZpNvCUxSaHGjxJJ54yikV8g=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=RkhnACIiCW9vP9PTufJlUibkmgpWGpTliISsHeh/OOV9G0FUninqYGg74G43sZLkSo2bLnOUWcAORjAPcu1ndvFVwK5fEy1uWtbexJwegtmD9PFu46BLGGejZBUgSw0qhZJdpXsm92Ye0+y/dd8pnPSYAxhQp/ZbWOzxxKwuLGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JNXGIKey; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=doyensec.com header.i=@doyensec.com header.b="Za5GfO0T"
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-6a6868f18aeso3009339a12.0
-        for <netdev@vger.kernel.org>; Sat, 05 Sep 2026 09:38:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=doyensec.com; s=google; t=1788626314; x=1789231114; darn=vger.kernel.org;
-        h=to:cc:date:message-id:subject:mime-version
-         :content-transfer-encoding:content-type:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=triNZ5qYyRouWDSU+cvR0dd2XFT1X3RzFe5HPcGxPww=;
-        b=Za5GfO0T/q+zzQnnN2CGYAbyZl5gLrr0uJvMES4K8gW1GDUHPZ29sHcV/9Fu4RHsH2
-         w6BDa95PZMW7p3wCaRsfoMLu+uxDPRTMibpIMtRiAG57f9paVmKOims/lDkG0AS+DkYy
-         awFpFx3p9mkUOe6Rro5ouP7l4ml07VPG/8eeDU940wUxNDWmJ38C8vCzyhrmH68lEUMI
-         Nao1k7YGCWBw7Tn52IqVrcAW4CxJWlEqJIcNUj1TaGJhGYMcke8cunb1sWRowlkIsbUT
-         //IFf8HHF7RH8sVMrHPq5lir68LXagcAKSNgu/RihruwodP8ATxLlxdiwNhimM3kp/IF
-         6mHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788626314; x=1789231114;
-        h=to:cc:date:message-id:subject:mime-version
-         :content-transfer-encoding:content-type:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=triNZ5qYyRouWDSU+cvR0dd2XFT1X3RzFe5HPcGxPww=;
-        b=TtA1R0HnNptrCXF9XlK2151H7YsDUDZAK7wzdEMfpbfVOWE74a4InRF7c531VRkw5H
-         +DB2+0Dje1e7VlhHyBppITEp2YErquhAhU75rXYaGzGkURAzC4EUuQrjqSIZdKKPtFr4
-         5ZCAg/JHUp9at3WsLYUXDwMSclIC5qLDOH755sHAjLSdHp8VI5Lz7WFzjXOv6aMSu9YD
-         8rl5/zWJ4b6b+6bzrCV3ttIaAIVGelafRucihMAtzQurNmpRbARw2fbv/LtWXDuFaqcp
-         tCFu3clT/iEsNIvSu4oI4shCllaqXyclTKZUpk+nufy/Gv9cOLPiEkeiAGh+iprpPA9A
-         6zKg==
-X-Gm-Message-State: AFuF++lJE/sl+BKmHCHM59ijWnU792FNQ9Dp0wlT+A7Oa4oscxulXblk
-	bI1GsWw2DTOePb/qmgXPWTfFiC7P8/0OlbxzYsbNqe+shmW+O6jywnB0x468lkW1HVMPuc7x9rH
-	lkMg2zOZPlw==
-X-Gm-Gg: AYBFou231Z5lml1Ib9RlIuw43MmpTZ83hiJKKL2ExeH+biGbcq3jQdgr687olPubstl
-	ADeNw7GH2RzuE81diFw81EIKfCsg5OcO37Svf23ANlgzLbWJyfClkZ4LQclGggOX2Uo82TldLJj
-	kDrV7fCdPs6MMt7WPLmMZjDuFCRc1+hsF/MphQYgKCqljZ9olLoPgXFkSUv0Y/DjyI3TvjO8UAm
-	yUz5nVEi3Sm8aQsTrB4p/E6zOIW2z25qq8kI1ProKtNaJ9SsAzYua3f+uErH3CLZZktCVTJ+ooo
-	bxbN2SMHc+odBV0QwZIlwCdD4vjSpmuv+S4GuugDzGjy5R9ePY1xllloAwJzj1aHBl5W8qMdcgW
-	mIyq00CC3fJCX5KWES0oNC2wMNcWtFIfpa28VgNrSdMttFPNDkaxcDAUPWobEdXFtsYTMe0LjFa
-	sGUALldhE4tz0aWkwuhTPYd0pwETsZ0ZG4lFnd8PVk1WIBl8VkDQp9rcKbnYWOhH6p291xWyU/S
-	UHkfLGTO6QfjNd/ulE84LDICCpYZcdjgVEuJ+W5E1lynBowlnpz
-X-Received: by 2002:a05:6402:218b:10b0:6a7:f2d5:dfcc with SMTP id 4fb4d7f45d1cf-6a7f2d5e240mr2090775a12.36.1788626313718;
-        Sat, 05 Sep 2026 09:38:33 -0700 (PDT)
-Received: from smtpclient.apple (83.10.35.35.ipv4.supernova.orange.pl. [83.10.35.35])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c260d03635csm243336466b.7.2026.09.05.09.38.31
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Sat, 05 Sep 2026 09:38:32 -0700 (PDT)
-From: Norbert Szetei <norbert@doyensec.com>
-Content-Type: text/plain;
-	charset=us-ascii
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JNXGIKey"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 999E61F00A3A;
+	Sat,  5 Sep 2026 16:44:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788626642;
+	bh=LWaaU5zyScA+VJ02eCufXGlRBF8ep/hpmQdGT9xk1D8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=JNXGIKey5pisbmytxYo7UefMTE3aD9X+bgOEHTATZJQ4/Wnn5WuULPujASquUWeyl
+	 pk2O5BLuIHkzVGnWM1j3gSgFf9DQXzsyKPXBQE3MZP7F9SE7w/OQcGqIc6j6QLXlAL
+	 StqG3AVsrbLVMiz7JQu7iCT2tpDm+g+LbwRG/LDHgdDMHAnGXjYiTmOtYYp5w3xPLP
+	 Tso6XsLb4glCAKSQ4i+xnN65UHQWkUkTFp/Pgwj8zcF4NdarwpVF05Pt9DJpjZ7Iyk
+	 6Wzv5T72IxSt2ol6OY58Y+C0adcJGdE4CfRzAVEzhnYLp0aw1xC4Hm+2xMqMzQp6N6
+	 aVmMcG0P0zlzQ==
+From: Simon Horman <horms@kernel.org>
+To: aaron.ma@canonical.com
+Cc: Simon Horman <horms@kernel.org>,
+	anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	henry.w.tieman@intel.com,
+	intel-wired-lan@lists.osuosl.org
+Subject: Re: [PATCH 1/2] ice: restore DDP state during PFR recovery
+Date: Sat,  5 Sep 2026 17:43:50 +0100
+Message-ID: <20260905164350.150004-1-horms@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260903074706.602087-1-aaron.ma@canonical.com>
+References: <20260903074706.602087-1-aaron.ma@canonical.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81.1.4\))
-Subject: [PATCH net] net/sched: cls_u32: take a reference on the hash table in
- u32_change()
-Message-Id: <79DB27AC-0FC0-42B2-A795-A8B585B73CFB@doyensec.com>
-Date: Sat, 5 Sep 2026 18:38:20 +0200
-Cc: Jamal Hadi Salim <jhs@mojatatu.com>,
- Jiri Pirko <jiri@resnulli.us>,
- "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>,
- Cong Wang <xiyou.wangcong@gmail.com>,
- linux-kernel@vger.kernel.org
-To: netdev@vger.kernel.org
-X-Mailer: Apple Mail (2.3826.700.81.1.4)
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-u32_change() keeps the target hash table in a local variable without
-taking a reference. u32_set_parms() may then drop rtnl to load an action
-module, and on a failed load returns without asking the caller to
-replay (-ENOENT). A concurrent RTM_DELTFILTER can free the table in
-that window, and u32_change() then removes the node id it reserved from
-the freed table.
-
-Take a reference on the table across u32_set_parms(). A racing
-u32_delete() then fails its refcount_dec_if_one() and returns -EBUSY
-instead of freeing it.
-
-Fixes: e7614370d6f0 ("net_sched: use idr to allocate u32 filter =
-handles")
-Assisted-by: Claude:claude-opus-5
-Signed-off-by: Norbert Szetei <norbert@doyensec.com>
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://sashiko.dev/#/patchset/20260903074706.602087-2-aaron.ma@canonical.com?part=1
 ---
-Reproducer available on request.
+Subject: ice: restore DDP state during PFR recovery
 
- net/sched/cls_u32.c | 3 +++
- 1 file changed, 3 insertions(+)
+This patch serializes rebuilds across PFs of the same adapter while allowing
+each PFR to complete independently. It reloads the DDP package from its
+cached copy and restores the default DVM recipes before rebuilding the
+remaining PF state.
 
-diff --git a/net/sched/cls_u32.c b/net/sched/cls_u32.c
-index a3e65c8cf29e..0e9128f2f33e 100644
---- a/net/sched/cls_u32.c
-+++ b/net/sched/cls_u32.c
-@@ -1180,8 +1180,11 @@ static int u32_change(struct net *net, struct =
-sk_buff *in_skb,
- 	}
- #endif
-=20
-+	/* u32_set_parms() may drop rtnl; keep ht alive across it */
-+	refcount_inc(&ht->refcnt);
- 	err =3D u32_set_parms(net, tp, n, tb, tca[TCA_RATE],
- 			    flags, n->flags, extack);
-+	refcount_dec(&ht->refcnt);
-=20
- 	u32_bind_filter(tp, n, base, tb);
-=20
---=20
-2.55.0
+Fixes: 462acf6aca85 ("ice: Enable DDP package download")
 
+[ ... ]
+
+> diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+> index d88835482d3aa..a97a1941cec6a 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_main.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_main.c
+> @@ -659,7 +659,9 @@ static void ice_do_reset(struct ice_pf *pf, enum ice_reset_req reset_type)
+>  	 */
+>  	if (reset_type == ICE_RESET_PFR) {
+>  		pf->pfr_count++;
+> +		mutex_lock(&pf->adapter->rebuild_lock);
+>  		ice_rebuild(pf, reset_type);
+> +		mutex_unlock(&pf->adapter->rebuild_lock);
+
+[Severity: High]
+Can this cause a use-after-free of pf->adapter during concurrent device
+removal?
+
+If a device reset triggered in the service task takes longer than the
+timeout, ice_remove() proceeds to teardown and calls ice_adapter_put().
+For the last PF on the adapter, this drops the refcount to zero and frees
+the adapter structure memory.
+
+However, the service task is only explicitly halted by ice_deinit_dev()
+after this point:
+
+ice_remove()
+    ...
+    ice_adapter_put(pdev);
+    ice_deinit_hw(&pf->hw);
+    ice_deinit_dev(pf); /* service task halted here */
+
+If the service task was executing ice_do_reset(), it will eventually
+complete the rebuild and call mutex_unlock(&pf->adapter->rebuild_lock),
+dereferencing the freed adapter structure.
+
+>  		clear_bit(ICE_PREPARED_FOR_RESET, pf->state);
+>  		clear_bit(ICE_PFR_REQ, pf->state);
+>  		wake_up(&pf->reset_wait_queue);
+> @@ -704,7 +706,9 @@ static void ice_reset_subtask(struct ice_pf *pf)
+>  		} else {
+>  			/* done with reset. start rebuild */
+>  			pf->hw.reset_ongoing = false;
+> +			mutex_lock(&pf->adapter->rebuild_lock);
+>  			ice_rebuild(pf, reset_type);
+> +			mutex_unlock(&pf->adapter->rebuild_lock);
+
+[Severity: High]
+Similarly, does this reset subtask release the rebuild_lock on a potentially
+freed adapter structure if the remove timeout expired while the rebuild was
+in progress?
+
+>  			/* clear bit to resume normal operations, but
+>  			 * ICE_NEEDS_RESTART bit is set in case rebuild failed
+>  			 */
+
+[ ... ]
