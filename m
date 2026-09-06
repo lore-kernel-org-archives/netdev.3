@@ -1,36 +1,36 @@
-Received: from mta0.migadu.com (out-75.mta0.migadu.com [91.218.175.75])
+Received: from mta0.migadu.com (out-78.mta0.migadu.com [91.218.175.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09B613644A4
-	for <netdev@vger.kernel.org>; Sun,  6 Sep 2026 11:45:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.75
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5605743A7FB
+	for <netdev@vger.kernel.org>; Sun,  6 Sep 2026 11:45:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788695110; cv=none; b=Ogi3RGpD3saTdZ1cIj8kZx/nw4mHAf5mOXW+DZTp/9Q3HHgMMn4LgDCOUGggWwvibU5JpwNJZhmsY3BBj1YVgM4/Ak3MBrQSbbSA/pZE8BEcB2iud/L3wJ24wpDD+QCPKV7/jSgv5/H2/sSjypFE9ls9VqeOt+wjLW7aOfIiT8w=
+	t=1788695140; cv=none; b=fY0hTbWvDV7QK51Yu/1vgNJPSW7Cr0mWdycK9SYzGayjOQ2HQW2bVQYJczJUY4tRnBaRTxO4W2syZ+3rk/ue+mk2lygd6nuOKmRKU8+rdL8Z1BRWxsnoM+o1ZJMAzS9dl82r9oBBlEl6X2E8qmGNevtquZC3GchXldhL7SkT0po=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788695110; c=relaxed/simple;
-	bh=9Og5jXYfO/MTFbbigamKhkKrathytUs/AVf/7SK0Kfw=;
+	s=arc-20240116; t=1788695140; c=relaxed/simple;
+	bh=ZtUeZ7Yibt2jGNcUKuwRepqyL6cGsgYYmGga/rUTm9o=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JCErSDl5F22UEKtOa0j6L1SXpYU18zq837oO3Edx+B8D72TjOjMJKqXmyx4tIQsPw9NEAK1N5h3T4ycEbCRDNl4N0GxIXcmeGBgWh87IvHkX1GOa0dnrinJHRBK7KB34vtAmOdxmpFoMzWvCzhhnKDsLdd7GCoRFp5MSsed6SrY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Lx9f+DSF; arc=none smtp.client-ip=91.218.175.75
+	 In-Reply-To:Content-Type; b=RYQKKtdkNeTR5fIzKYLXF7ktgS4odKc8xpCriGG5Bkii8/mJpnXuyNxcA+XA1BeC+gSMtS/Q6F3cLtjcJIx3Rbubtsiy/1w4Ka4ln8qNrAAfo8qEzRFK9DGu3mOI0ayVzQAtLwhGqP5lgeZ52D5Mlgp1X0cm4qUKnQBWvq4fSP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=aFGqjdSO; arc=none smtp.client-ip=91.218.175.78
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Lx9f+DSF"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="aFGqjdSO"
 X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=9Og5jXYfO/MTFbbigamKhkKrathytUs/AVf/7SK0Kfw=;
+DKIM-Signature: a=rsa-sha256; bh=ZtUeZ7Yibt2jGNcUKuwRepqyL6cGsgYYmGga/rUTm9o=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788695097; v=1; x=1789299897;
- b=Lx9f+DSFvqHw+lgdYbOXKwcLzUJD+skPqH0eBLv5aE7HcGIdIcwaACzostApEL/Ih+tc+p4h
- i1W/DBKFGhRkD6r0xYm6jMtzv/tjGYEEzdIim7GfU/JmNYs2jEQdoHEn2MZ0aKaX7kAOT7vTCwb
- bWaW++IFgL0GfNwv7pcdAIZc=
+ t=1788695133; v=1; x=1789299933;
+ b=aFGqjdSOC1AA51gMRJMyItNT0hyG672lgRiW3FUxOgX+R32lWg4k/+q/VwFI6thpH+cpeLRh
+ H57K7fOl8e7wodht/7M+jkLbJgR+vD4nL3KEs+f2GwMNcnqYP0BMYMkjH8MH5Glqd/z8cme/IIL
+ fJvIAPdtLkFnRknLWVinbPRs=
 X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 676414f334276134;
-	Sun, 06 Sep 2026 11:44:57 +0000
-X-Mizu-Trace-ID: 676414f334276134
+Received: by smtp.migadu.com with ESMTPS id 9114a5f128862369;
+	Sun, 06 Sep 2026 11:45:07 +0000
+X-Mizu-Trace-ID: 9114a5f128862369
 X-Migadu-Flow: FLOW_OUT
-Message-ID: <0503f189-d91c-4334-bcd6-0dea795db0e7@linux.dev>
-Date: Sun, 6 Sep 2026 12:44:56 +0100
+Message-ID: <d53aebb1-d707-4ab2-93cf-39c732e5c3d8@linux.dev>
+Date: Sun, 6 Sep 2026 12:45:06 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -38,40 +38,42 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 3/4] netlink: specs: dpll: pin-get has no dump
- filter
+Subject: Re: [PATCH net-next 4/4] MAINTAINERS: dpll: add the netlink spec
 To: Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net
 Cc: netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
  andrew+netdev@lunn.ch, horms@kernel.org, arkadiusz.kubalewski@intel.com,
  ivecera@redhat.com, jiri@resnulli.us, donald.hunter@gmail.com
 References: <20260904191023.3869690-1-kuba@kernel.org>
- <20260904191023.3869690-4-kuba@kernel.org>
+ <20260904191023.3869690-5-kuba@kernel.org>
 Content-Language: en-US
 From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-In-Reply-To: <20260904191023.3869690-4-kuba@kernel.org>
+In-Reply-To: <20260904191023.3869690-5-kuba@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 04/09/2026 20:10, Jakub Kicinski wrote:
-> The op doc promises "dump request with target dpll - list all the pins
-> registered with a given dpll device" and "do request with target dpll
-> and target pin". Neither exists. pin-get uses attribute-set: pin, so
-> the id in both requests is DPLL_A_PIN_ID, not a device id; there is no
-> reachable "target dpll" attribute at all (DPLL_A_PIN_PARENT_ID is in
-> neither list). dpll_nl_pin_get_dumpit() does not look at the request,
-> it walks dpll_pin_xa from ctx->idx and emits every registered,
-> available pin, and there is no dump start callback to consume an id
-> either.
-> 
-> So the generated dpll_pin_get_dump() sends an id, gets the full list
-> back and reports no error. Drop the id from the dump request and the
-> two targeting claims from the doc.
-> 
-> Present since commit 3badff3a25d8 ("dpll: spec: Add Netlink spec in
-> YAML").
-> Same caveat as for pin-set: sending DPLL_A_PIN_ID in a pin-get dump now
-> fails validation instead of being ignored.
+> get_maintainer.pl on Documentation/netlink/specs/dpll.yaml returns only
+> the YNL and NETWORKING [GENERAL] entries, so a change to the DPLL uAPI
+> description does not CC any of the DPLL maintainers. Ten other families
+> (binder, dev-energymodel, ethtool, handshake, mptcp_pm, ovpn, psp,
+> team, wireguard, rt-*) already list their spec explicitly.
 > 
 > Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> ---
+>   MAINTAINERS | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index b23fb6f2f4ef..b000853829b5 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -7919,6 +7919,7 @@ S:	Supported
+>   F:	Documentation/devicetree/bindings/dpll/dpll-device.yaml
+>   F:	Documentation/devicetree/bindings/dpll/dpll-pin.yaml
+>   F:	Documentation/driver-api/dpll.rst
+> +F:	Documentation/netlink/specs/dpll.yaml
+>   F:	drivers/dpll/
+>   F:	include/linux/dpll.h
+>   F:	include/uapi/linux/dpll.h
 
 Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
