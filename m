@@ -1,79 +1,62 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail-43103.protonmail.ch (mail-43103.protonmail.ch [185.70.43.103])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CFA318DB2A;
-	Sun,  6 Sep 2026 10:17:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04BAC394EA7;
+	Sun,  6 Sep 2026 10:28:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.103
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788689873; cv=none; b=ViadNrR9lKIPZQTfXzU5BbcMnGBpvam75B42w6RlQS/pT9L9wf5HsvXI3FJCVQxTvpFW6o2WVE39Ik2/TO9ElS5/VrBDeGlnPooDRiJRLvKnd0mWY0CHzovBWIT/bC4hvoZTDDH1aDyarwPli/Dhy0lqUKIu8Ti088/jRqNKEFE=
+	t=1788690532; cv=none; b=fni4+slheb6k0OlLMZi2IkIB8ZcGw+6YBFOI3uNA7QwaZaUzTYm/VGKG0tfZ9MbBI0PbuLv4GU6sMNCl2KRi8zDvFou/q4vk+lxg23kPnk0bHyG1OgNgSgQlDnE8JEMxbBU1BegrbuXPaZ6islybkMU2LQQMibYSaB8qi5H5ah4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788689873; c=relaxed/simple;
-	bh=KNbMmecFW8pnxQbyIPh4G7INs6HNiN4eOiQGWdcw8VM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KSlBSHEb2KYaGniHMdp1IC0cJUMgh5pi6m3yA6vwX6KhYHXhX1b3umM2zdgsU0RBcSInNVlfRumK7ls2V4BPzphKUZ9S4SlunsDM9Lkjryj2ZeytrKzca8Dz77gQaU1EVbpIxidV/FNsUZL/b14L61PZMVP499Jl+t5CZ4Jg0Qw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LYOqj9wn; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788690532; c=relaxed/simple;
+	bh=tL8sIC6QLDl8w6EVxitJamuoUEdvD5R0cq6sKy5DHhU=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=pzQjIm7xqFNx9QxrQhGrTOppRu3epNq/WokXbRptP+e5oZYlf8lHZr+i0mVl2w29zpwahWyr06Em0HOGtFyoN6OQ8JucbeitUvf7A7C/iEePTeez+V0KYlvSXCxCf4dMedeixY0w4ugID2mkz+3w91LwkMpjUxlP9BoW7X7L0fY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=YVrgdNnE; arc=none smtp.client-ip=185.70.43.103
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LYOqj9wn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AE781F00A3A;
-	Sun,  6 Sep 2026 10:17:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788689871;
-	bh=6cz/R+51JS7kiWhTPDSyzvviNSGMJboGNNDJolsr+k4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=LYOqj9wnc9s9dXA/dN4ufaiGBKW9N1kixaqCKk1pLWKkLVBQD8kc/+rqvh/ucSZlw
-	 UeSdKi/LHX5KMK/pEcoCLey23Mzeb+AdI6aK0UtA5Yn7nIUz1FevAVpzgzOw/NEsro
-	 vnQHxqNl8ATequbgqoYwqG0IgV81U/nVaH0CnVn/TV7Ifr9pL0oUCCbNfYMxAn/lVY
-	 XePso2voDHnavJY1uP+I1VEvQnOVyjC1ZhB9F5yl/dy5bvNMi1LjpMDuNwisInAVJ3
-	 Nr+l80MyEyPiKakDaNPi8P37wYbU56iWMM30QQtF6yGKx5zA+YJi8QKKNyS7QiGA8F
-	 77InxZkCqtmkg==
-Date: Sun, 6 Sep 2026 11:17:47 +0100
-From: Simon Horman <horms@kernel.org>
-To: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-Cc: Uwe =?utf-8?Q?Kleine-K=C3=B6nig_=28The_Capable_Hub=29?= <u.kleine-koenig@baylibre.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>, netdev@vger.kernel.org,
-	linux-scsi@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	"Martin K. Petersen" <mkp@kernel.org>
-Subject: Re: [PATCH] zorro: use module_driver() to avoid repeated boilerplate
- code
-Message-ID: <20260906101747.GH40544@horms.kernel.org>
-References: <20260906034037.81379-1-enelsonmoore@gmail.com>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="YVrgdNnE"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=pxla437r6faclkk6zezuntmxjq.protonmail; t=1788690519; x=1788949719;
+	bh=N/40xsEU7tolwSN75TzYB4doWa4y8gDvG2iAcA2tqvI=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=YVrgdNnE5vZyEpx8VQeT52RVtZlqI9N/0nR1Y4dX9OHvYHWmbpb17CagSfdkEAkKh
+	 9lrNrXB8MYtowcVz2jGqBTnMTk6bJjrUJ5FOD9TkssebAFB9eXk3gnMDBnZCVt2/Bf
+	 /3boeVH9Hag1xbYPUMrwJ3zxCaZjtsrz7jUOMPNMG5kK6KDtP0oA66FL5qcPrDglfX
+	 S8O+JTiH9ZOK1Ls5onmYuxOxqat+yzwqmsd0hlsoLtY3zpjCE5WuWttnsM48eeKoyV
+	 /r7f4YM0efw6jc+JLR4tC5/qJIXmvVtn2Rrm2ktd56Hj3AcpKpMbzBog0KZKw0WenP
+	 +c7uGxjBRZcmg==
+Date: Sun, 06 Sep 2026 10:28:34 +0000
+To: Miguel Ojeda <ojeda@kernel.org>, Danilo Krummrich <dakr@kernel.org>
+From: Sagar Taunk <sagartaunk@proton.me>
+Cc: Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>, "David S . Miller" <davem@davemloft.net>, Simon Horman <horms@kernel.org>, Abdiel Janulgue <abdiel.janulgue@gmail.com>, Daniel Almeida <daniel.almeida@collabora.com>, Robin Murphy <robin.murphy@arm.com>, Andreas Hindborg <a.hindborg@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, driver-core@lists.linux.dev, rust-for-linux@vger.kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Sagar Taunk <sagartaunk@proton.me>
+Subject: [PATCH v2 0/3] rust: migrate users to zerocopy traits
+Message-ID: <20260906102826.202874-1-sagartaunk@proton.me>
+Feedback-ID: 130121444:user:proton
+X-Pm-Message-ID: c9fd85c2705fa81c68284356847651d19339fb13
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260906034037.81379-1-enelsonmoore@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Sep 05, 2026 at 08:40:19PM -0700, Ethan Nelson-Moore wrote:
-> Many Zorro drivers have module_init and module_exit functions that only
-> call zorro_register_driver() and zorro_unregister_driver(). The
-> module_driver() macro automatically generates these functions given the
-> register and unregister functions. Switch to it to simplify the code.
-> 
-> Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-> ---
->  drivers/net/ethernet/8390/hydra.c     | 13 +------------
->  drivers/net/ethernet/8390/zorro8390.c | 13 +------------
->  drivers/net/ethernet/amd/a2065.c      | 13 +------------
->  drivers/net/ethernet/amd/ariadne.c    | 13 +------------
->  drivers/scsi/a2091.c                  | 12 +-----------
->  drivers/scsi/gvp11.c                  | 12 +-----------
->  drivers/scsi/zorro7xx.c               | 13 +------------
->  drivers/scsi/zorro_esp.c              | 13 +------------
->  8 files changed, 8 insertions(+), 94 deletions(-)
+This series migrates `dma.rs`, `uaccess.rs` and `net/netlink.rs`
+from the kernel's `transmute::{FromBytes, AsBytes}` traits to the
+equivalent zerocopy traits.=20
 
-I think it would be best to split this patch up on a per-subsystem
-of per driver basis. And send patches to appropriate subsystems.
+Sagar Taunk (3):
+  rust: net: netlink: Migrate to zerocopy's `IntoBytes`
+  rust: uaccess: migrate to zerocopy's `Frombytes/IntoBytes`
+  rust: dma.rs: Migrate to zerocopy's `Frombytes/IntoBytes`
 
-In particular, please break out the net/ changes into a patchset
-for net-next.
+ rust/kernel/dma.rs         | 22 +++++++++-------------
+ rust/kernel/net/netlink.rs |  3 +--
+ rust/kernel/uaccess.rs     |  5 ++---
+ 3 files changed, 12 insertions(+), 18 deletions(-)
 
---
-pw-bot: changes-requested
+--=20
+2.55.0
+
