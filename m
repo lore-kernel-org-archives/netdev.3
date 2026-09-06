@@ -1,949 +1,259 @@
-Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com [209.85.219.71])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 850853C3F5D
-	for <netdev@vger.kernel.org>; Sun,  6 Sep 2026 18:01:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80AFB382F0C
+	for <netdev@vger.kernel.org>; Sun,  6 Sep 2026 18:01:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788717688; cv=none; b=hbm/tb+EzAOnQJ4KrNojv15RB1MveqwRQRFtu1fZXYmaIqpb8+7c7cOEW5JeVmvNS1FPrQsbD+bJDJ+aZhUBRZm908eicN2l5F/a2MBbGUii7SfxYsXf9AaM5W8/pVie7cEcfWiEsnUJGXuGIl6RHwbkDPrrKAab8NHPuzudozk=
+	t=1788717713; cv=none; b=hvfmfeM8JP0ZTVCZAqvC3ycfFYJ7eoe3T5BbJmUTsyfWbIQeBVn/05tb66PPkM1xQ82bVbDoehKbgX1t0O6ZLe7JDtZAmuCNg6r/GPaxlso20Dh56mVAiFY+TuUw10FR9aDVvpPbcJ+JpNFtTuQ46c1cMy9cb/KOzDndCkx6wN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788717688; c=relaxed/simple;
-	bh=7i3lCB0kUVQlTgsadZA1bHuHMnTMvAY0M31b5hSUKjg=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=IwOsc//hcj+44u4rCstwRrO5z6UPsubwXh7SX8TS2n5UdmWpKVeBSjRhscM/VHxzd3A/CVMJP4n4QiBbR1/sec6ACoadnmCMlkRLiRF+leVOEJpnXkmBjy0Wf0SxstSS56pjYYo07twJT4U2cYf7GfM/cwdP2TDuCrhRfFgjKPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NRaRHF06; arc=none smtp.client-ip=209.85.219.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+	s=arc-20240116; t=1788717713; c=relaxed/simple;
+	bh=GUTPmQhrCP9yvcidN1Fin9zSiN1YDAsDej6CraxZ1uw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HRyT32cy/qhkYP1Dw+EYQkXHgQ2EGNA/pLo88BPrICheK31Q67sWnEK6ueCHLbRe67QJqJJ6+inwKvclY9edTsQxUi8kAccBpxgkidTHyOy0zPxqe9B0jmwRF1OfW+IPqPH4wqvl+1Wc/jmfMaIhgv0cvM+cbvqDKOMbzATWwQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=F3chIfGV; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=N8zkB3MR; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NRaRHF06"
-Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-90ceabcd64aso63938456d6.3
-        for <netdev@vger.kernel.org>; Sun, 06 Sep 2026 11:01:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="F3chIfGV";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="N8zkB3MR"
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 686HmOL01170761
+	for <netdev@vger.kernel.org>; Sun, 6 Sep 2026 18:01:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=tSD1AQ8YNJcxrDRm1u9U/EB9
+	4J/kvvGewRpxLnEWee4=; b=F3chIfGVxRE5LbEUbXTJnqpJ4f9bihyTrVXHE+AK
+	pqNRsEChNzSHP6Z4iQC9YpRkY8TtmOnl7wOUBt/JtKo+Uf3T7btBrZmG2S9doGSh
+	6dKpVnaUYfuvPnePtUlSRQE/UVH8ygcikWX+6XCDT1dhgX7g1ZVawcnRx2EXi4nh
+	0ZkEbqQbbrmcl5LSqU36/9hwTmaVNCzqTqZ9pnJgGQS1uCj5+R8RIZiFmDSOuCyB
+	Z3EsbTG+zHFmBgPrOyq0V0awIVx+KQnAl5C9kZ1DHLyvBF9hOR8PDwZL1lhbU62k
+	Ns98LYUkx0lT7nJUzVD8xSy6kwnb6LiG9hYX3X1wK/cJZw==
+Received: from mail-vk1-f197.google.com (mail-vk1-f197.google.com [209.85.221.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ggbuekywn-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Sun, 06 Sep 2026 18:01:47 +0000 (GMT)
+Received: by mail-vk1-f197.google.com with SMTP id 71dfb90a1353d-5c7ab4af214so753531e0c.1
+        for <netdev@vger.kernel.org>; Sun, 06 Sep 2026 11:01:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788717684; x=1789322484; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=bXPJuSriW6exMnVyCUTDBMEyleJTq22TbOgYFwYLQoM=;
-        b=NRaRHF06VtYHi6DQBoqJTFfKAVoAsxFRBc05PzgYfNR17z7i34IC1YmrLB2dX10AJ5
-         MpBgM6rVt48vWE2lBhbqdHs6mikD9hLjLrRGG6P+dXSGqhzDFcKvkrdr9L1teIZ5ffLn
-         l6Ub1IUtsA4Ovo1aigPTcQzqp9fFDFmVzR15jEmIaU6c0mP24l4b0YRzjJbd/9klptrR
-         00U5xio6fw0GSwt82KXqtNXOz2/ExcJT2LbLvsGipt/0uYbIKsLqWvRdQ+eAcd5E3H6W
-         tZMMgGl2md0phPHFewp5SZ/cxpUGXwLmdqrObASrl/y99obnRBRNyy7++Kcacipr2Sri
-         NUnA==
+        d=oss.qualcomm.com; s=google; t=1788717706; x=1789322506; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=tSD1AQ8YNJcxrDRm1u9U/EB94J/kvvGewRpxLnEWee4=;
+        b=N8zkB3MRkwzDUiYLvXIJ2MBDI7+gZxe/R6lUyygc3SxMSNxprKgNgKettHnirTwUQI
+         KRYqcYvtHVxo9zGweEbsBclarbOA3H60X1c3Q5ESFHMN782SpsuQ55ZEx7KICxN39wX2
+         tRDqZggeTM9bTXJWZrTZ2Z7dd7U71YYbEIBOXibVl1fpltsb4OqdzDB3SsYesqgXFhPU
+         QWmsK+sxCXox+UTGJCdI/XQ+uHoM0/M7QXQu6IItlk3sUoat+Vz/fivlRfCK636nvcDn
+         NCX5zEJS18QjrU/UZmjHPpQTilqjrYwMECrIrMMXsI7uuzCMiMOPE9YPFyIPzzdKfFDb
+         46Gw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788717684; x=1789322484;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=bXPJuSriW6exMnVyCUTDBMEyleJTq22TbOgYFwYLQoM=;
-        b=gkMY5TGJ4zEf4yX7JGVxu4H5VMtS9/gAgNN5l88geVB3GayX9jBY0SVe8YJVtBRFpA
-         j3ppr7+CnqSY+08Y+SeqgOr0/nuNik5J/D0++LxfYoSEzeSAtMpgE7W4yyu6DIHprU9T
-         98gbJXQ4g1SJm7p9Bt43XF39mPDcOqvmxyO825PkvdeTahc0HSEJVl11r96sEBpTm7ei
-         2MtYkGOI0+EqmkEhtAb0qtqdJLZKYLV97VkAaKBdO4Isds8X8IAj1OHNOqxNgLfZG/DD
-         ilm+JmIx9zSs/GbxhYk90oAQXYwQ4eihePBX9rzSilgE2V0LSN1CMX3/YdtnHmKsncID
-         0Bnw==
-X-Forwarded-Encrypted: i=1; AKwUvBxWzQ1CduANuEuEuCSxYxztaEzhLIq3fDKmMmYwh2bdSNVWLLKcdA7YvetQwHoIrkIcaGJW62w=@vger.kernel.org
-X-Gm-Message-State: AFuF++mbzH5bAmOKVxLrfmsew8zSSjiDhaVgDG/tTYx0rmVuPft+e36J
-	3XKfCzbG7vG+uOVFv88sER496OJhJvWUTf1JADuJHsYXWziKUVoExPf4Lcsi1YqALpDHenkTwZ8
-	mskJftT0d8WHVHw==
-X-Received: from qknsk6.prod.google.com ([2002:a05:620a:3a46:b0:92e:5a0f:5398])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:620a:25d4:b0:939:6df9:1996 with SMTP id af79cd13be357-9398077453bmr1847333885a.50.1788717683921;
- Sun, 06 Sep 2026 11:01:23 -0700 (PDT)
-Date: Sun,  6 Sep 2026 18:01:10 +0000
-In-Reply-To: <20260906180111.1973188-1-edumazet@google.com>
+        d=1e100.net; s=20251104; t=1788717706; x=1789322506;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=tSD1AQ8YNJcxrDRm1u9U/EB94J/kvvGewRpxLnEWee4=;
+        b=Ej4F1IBQOcuzmyFbkOQU1ODLoDnZ/Ppxj+wNuSsHHlEI/Lna2n6glOxbQeu6y/Tem8
+         9p9amaznlht3eMLKfDIrapQgNySmFJJMOLvIk7xAcIrt40gC//fmmnUfi5cLQ13iESGe
+         LmX6sblFJFDBfXzZq/mIHjlosxlTA4yyD75uKJFdj1+9Gcy7f+6S4GFe9QOd4iiUbM1b
+         N3GfwSjir+JqL5f9JPDYYNGAHrq+WTcPhbO563vWM7OO68WYr1JdQwfg5qS2blA8nup6
+         7+UWpYtCk4mI4VgRc165TcJE/pe49lkRxoDr7nNvJLxViY63khsCbF/NlB9aTLq5a6bF
+         4CNw==
+X-Forwarded-Encrypted: i=1; AKwUvBwCd1WSOnIXt2oN+TT/eY2lirF6huQfUGHY45FeGtil4fc46hiQH0PaZ2fZ1RidozdJ7YrV3Ac=@vger.kernel.org
+X-Gm-Message-State: AFuF++nPk4141QRFwBUx4LiB/E5+ZKtvHd1FykRRWSZiBqpqO/3U5oKJ
+	1u6yEg1sa/DeQwZQcUQH+Sayv2ahPcqIyldGzsf0S9nEcIQjgA2aVkcUbMZzirGsAt4AOrX2zMO
+	YUBlo3rHCj0CZd8HpJ9zU2s6OfK5VhCZwsswJmVaqux21TLDuzevRcWi3b+Y=
+X-Gm-Gg: AYBFou0YctGztAXKTT2sd/rHNcjxdB/5l2sD5kHGb/ItxJy+InSwMPeh/4OygqKZViH
+	OL9yyl/6tRTylj6nqVyU8Jlp4LuLg5hqBCjbCwkMMM4r5fkE2zT6yb0Mr+K4nn9yipdLnrIMzLX
+	c9wCUY+o6Zj6SGJlilZ6Zrxirqm0bafAcY0JR4xXz4a1KLVrHnHvhWeXdqqwwdxaNDkWNyThgyS
+	SeFmUOee+OWnLWBpdEqnJPbGFLZKxxHmVBILp35bUEDEkQ94q7vTVBio2kRoKMUQLiDfQ+Lf5Qj
+	VflcbGYL5IbDTYce35JybJremJlomJ55QA0MHcIRXJZ8HAJeZo0oZ6ChfZOr7X2J89j/5OAxEX3
+	G/sQQJ6YSYvTLDw==
+X-Received: by 2002:a05:6102:41a9:b0:784:4d38:ef58 with SMTP id ada2fe7eead31-78a4a57f683mr5696890137.0.1788717706350;
+        Sun, 06 Sep 2026 11:01:46 -0700 (PDT)
+X-Received: by 2002:a05:6102:41a9:b0:784:4d38:ef58 with SMTP id ada2fe7eead31-78a4a57f683mr5696869137.0.1788717705780;
+        Sun, 06 Sep 2026 11:01:45 -0700 (PDT)
+Received: from localhost ([188.216.77.92])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4858bc74298sm19933452f8f.6.2026.09.06.11.01.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 06 Sep 2026 11:01:44 -0700 (PDT)
+Date: Sun, 6 Sep 2026 20:01:44 +0200
+From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+To: Eric Dumazet <edumazet@google.com>
+Cc: Ren Wei <weir@nebusec.ai>, idosch@nvidia.com, netdev@vger.kernel.org,
+        dsahern@kernel.org, iprintercanon@gmail.com, davem@davemloft.net,
+        kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+        tom@herbertland.com, vega@nebusec.ai, petalzu987@gmail.com
+Subject: Re: [PATCH net v4 1/1] ip6_tunnel: snapshot encap in xmit
+Message-ID: <ap2qiIS2cQZB8D0h@lore-desk>
+References: <cover.1788262122.git.petalzu987@gmail.com>
+ <2ce8f3e4bbed6060afb0aee33dc4e1d9ae021280.1788262122.git.petalzu987@gmail.com>
+ <ap2ksmdL1FFulLnF@lore-desk>
+ <CANn89iKeNgRxhkUvxeMmyAJGcT+3hpbWaM+VubQ2sBVGSDeouw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260906180111.1973188-1-edumazet@google.com>
-X-Mailer: git-send-email 2.55.0.979.g7e5102b832-goog
-Message-ID: <20260906180111.1973188-8-edumazet@google.com>
-Subject: [PATCH v2 net-next 7/8] vxlan: remove default_dst and use
- vxlan_config and lowerdev
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	Ido Schimmel <idosch@nvidia.com>, Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org, 
-	eric.dumazet@gmail.com, Eric Dumazet <edumazet@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="FFrCH4JkhHLzpD2B"
+Content-Disposition: inline
+In-Reply-To: <CANn89iKeNgRxhkUvxeMmyAJGcT+3hpbWaM+VubQ2sBVGSDeouw@mail.gmail.com>
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA2MDIwMSBTYWx0ZWRfXzo79TwhGSqCX
+ 0eGx8HLIAajLIrRRwzSFEwyeDeYv6k4uTgvUFdKFgRa3jH/3T9JeE4T7U6rldfr7svl2S5MYIVZ
+ zI4bLsueNuEQ29QUyCaGojZY+RFe62+Dsy6SkqteB0sfmKM/+yW+jnqcj5aoFfKVMfUM068kbi9
+ 8kI1tvSexHEyGb6idq0WHWU94y94YdQsIWcmYR46sovdiHX+nLeHPvhYIf3JfSUGQLrmy5B2mH7
+ AKou7iUydZ7TcMGbBi0HfCYk4iNTKe5MPgAur6cB2sDkuQAT6voW14IaeOEGbcNMYMeKZTQGpMN
+ bhe/bDRJ6lRDg1QjTIQz7ASSV1K2qqFJ+DMlhoQQXz4T5BHoqH7/i+rjZMGyL666/yp76GGX2Zz
+ FooLTQ18iI3AjReOkLg9sj5SjeCB4rY4SSfkzWTSMsNUObKYjTfo0c//IAev/YGbNA8jCPq8MwM
+ AJfBWB47gE7+CBA/IXA==
+X-Authority-Analysis: v=2.4 cv=P8AKQCAu c=1 sm=1 tr=0 ts=6a9daa8b cx=c_pps
+ a=JIY1xp/sjQ9K5JH4t62bdg==:117 a=WpTaRW6qxYHRGzLzQsVYzg==:17
+ a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=_K5XuSEh1TEqbUxoQ0s3:22 a=EUspDBNiAAAA:8
+ a=pGLkceISAAAA:8 a=VwQbUJbxAAAA:8 a=eODW3LopGc6cI9Ebo2MA:9 a=QEXdDO2ut3YA:10
+ a=npIZgxzow1Zca20qZ2kA:9 a=tNoRWFLymzeba-QzToBc:22
+X-Proofpoint-GUID: SsItUnP3Y1cfkrWgg6jYioMTi85CXvDv
+X-Proofpoint-ORIG-GUID: SsItUnP3Y1cfkrWgg6jYioMTi85CXvDv
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTA2MDIwMSBTYWx0ZWRfX1k/dp43eAT03
+ x7nSQA7HxKMh4mmxL+LC5QY+fz152OUOvlqp1XGWTjRf+o0t+bpeVvDIUbrBlH5xb9v7mlL12Gz
+ ZVN243WMNIBeGxNhHCnHI5DNDOyYr7U=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-06_02,2026-09-03_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 impostorscore=0 bulkscore=0 clxscore=1015 adultscore=0
+ spamscore=0 lowpriorityscore=0 suspectscore=0 priorityscore=1501
+ malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2609060201
 
-Now that vxlan->cfg is an RCU-protected pointer, storing default
-destination attributes (remote_ip, remote_vni, remote_ifindex) in
-vxlan->default_dst is redundant and creates potential data races for
-lockless readers.
+--FFrCH4JkhHLzpD2B
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Furthermore, several fields of struct vxlan_rdst (remote_port,
-offloaded, list, rcu, dst_cache) in default_dst were completely unused.
+> On Sun, Sep 6, 2026 at 7:36=E2=80=AFPM Lorenzo Bianconi
+> <lorenzo.bianconi@oss.qualcomm.com> wrote:
+> >
+> > > From: Zixuan Chai <petalzu987@gmail.com>
+> > >
+> > > ip6_tnl_changelink() can update encapsulation parameters while the
+> > > netdevice is transmitting packets. ip6_tnl_xmit() can calculate packet
+> > > headroom with t->encap_hlen and later build an encapsulation header f=
+rom
+> > > the live t->encap. A concurrent update can change the encapsulation
+> > > header between these accesses and make skb_push() underflow the skb h=
+ead.
+> > >
+> > > Take a local snapshot of t->encap before calculating the encapsulation
+> > > header length. Use that same snapshot for headroom accounting, metada=
+ta
+> > > validation, and build_header(). This keeps all encapsulation decisions
+> > > for an skb consistent even if changelink updates the live configurati=
+on.
+> > >
+> > > Fixes: b3a27b519b22 ("ip6_tunnel: Add support for fou/gue encapsulati=
+on")
+> > > Cc: stable@vger.kernel.org
+> > > Reported-by: Vega <vega@nebusec.ai>
+> > > Assisted-by: LLM
+> > > Signed-off-by: Zixuan Chai <petalzu987@gmail.com>
+> > > Signed-off-by: Ren Wei <weir@nebusec.ai>
+> >
+> > Hi Ren and Zixuan,
+> >
+> > I agree this is a real issue, but I guess this patch is fixing just a
+> > small part of more extended problem. In particular, there are multiple
+> > parameters that are updated in ip6_tnl_update()/ip6_tnl_change() that a=
+re
+> > accessed concurrently in ip6_tnl_xmit() or in ip6_tnl_fill_forward_path=
+().
+> > I guess we should try to find a general fix for the extended issue.
+> > What do you think? We have probably the same issue in the IPv4 counterp=
+art.
+>=20
+> The general answer is : convert tunnels to RCU based configuration.
+>=20
+> In my quest for RTNL-less ip link dumps, I converted SIT tunnels to
+> RCU configuration.
+> I was holding the series because the net-next queue is huge, my vxlan
+> series was not merged yet.
+>=20
+> <cover letter>
+>=20
+> SIT (IPv6-in-IPv4) tunnel configuration and status reporting have
+> historically relied on the RTNL lock for synchronization. Consequently,
+> netlink dumps via ipip6_fill_info() had to run with RTNL held, adding
+> contention during network device dumps.
+>=20
+> At the same time, the transmit path (dev->lltx =3D=3D true), tunnel looku=
+ps,
+> and error handling run locklessly and can race with configuration
+> updates. This can result in torn reads of multi-word fields (such as the
+> 128-bit 6RD IPv6 prefix) or transiently zeroed encapsulation parameters.
+>=20
+> Furthermore, ipip6_tunnel_update() currently unhashes, re-hashes, and
+> calls synchronize_net() unconditionally, even when the tunnel endpoint
+> addresses (saddr and daddr) have not changed.
+>=20
+> This patch series modernizes SIT parameter management to use RCU
+> protection, fixes existing race conditions, optimizes tunnel updates,
+> and removes the RTNL requirement from ipip6_fill_info():
+>=20
+> - Patch 1 fixes a pre-existing UAF in PRL (Potential Router List)
+>   deletion where call_rcu() was invoked before unlinking t->prl.
+> - Patch 2 removes the unsafe in-place memset() in ip_tunnel_encap_setup()
+>   and uses WRITE_ONCE() to prevent lockless readers from observing
+>   transiently zeroed or torn fields.
+> - Patch 3 annotates data races on tunnel->fwmark with READ_ONCE() and
+>   WRITE_ONCE().
+> - Patch 4 converts 6RD configuration (tunnel->ip6rd) to an RCU-protected
+>   pointer, preventing torn reads on the 128-bit IPv6 prefix.
+> - Patch 5 implements a dedicated ipip6_get_iflink() callback to decouple
+>   SIT parameter handling from generic ip_tunnel.
+> - Patch 6 dynamically allocates struct ip_tunnel_parm_kern (sit_parms)
+>   as a preparatory step.
+> - Patch 7 converts tunnel->sit_parms to full RCU protection. Updates
+>   publish new parameters via rcu_assign_pointer() and free the old ones
+>   via kfree_rcu(). When saddr and daddr do not change, unhashing,
+>   re-hashing, and synchronize_net() are completely bypassed.
+> - Patch 8 wraps attribute serialization in ipip6_fill_info() under
+>   rcu_read_lock(), eliminating the reliance on the RTNL lock.
 
-Replace vxlan->default_dst with a 'struct net_device *lowerdev' pointer
-in struct vxlan_dev to track adjacent upper/lower netdev topology under
-RTNL, and switch all remaining users over to reading configuration
-attributes from vxlan->cfg.
+ack, nice. This is exactly I meant :)
 
-Also update mlx5e_tc_tun_get_remote_ifindex() to read remote_ifindex
-from vxlan->cfg under rcu_read_lock().
+Regards,
+Lorenzo
 
-While updating lowerdev handling in vxlan_changelink(), avoid clobbering
-lowerdev to NULL when unchanged, and properly unlink and clear
-vxlan->lowerdev if the lower device is removed.
+>=20
+> Eric Dumazet (8):
+>       sit: fix UAF in ipip6_tunnel_del_prl()
+>       ip_tunnel: use WRITE_ONCE in ip_tunnel_encap_setup
+>       sit: annotate data-races around tunnel->fwmark
+>       sit: convert 6RD configuration to RCU protection
+>       sit: implement ipip6_get_iflink()
+>       sit: dynamically allocate struct ip_tunnel_parm_kern
+>       sit: convert configuration to RCU protection
+>       sit: no longer rely on RTNL in ipip6_fill_info()
+>=20
+>  include/net/ip_tunnels.h |   5 +-
+>  net/ipv4/ip_tunnel.c     |  14 +-
+>  net/ipv6/sit.c           | 475 ++++++++++++++++++++++++++++++++---------=
+------
+>  3 files changed, 338 insertions(+), 156 deletions(-)
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
----
- .../mellanox/mlx5/core/en/tc_tun_vxlan.c      |  11 +-
- drivers/net/vxlan/vxlan_core.c                | 152 +++++++++---------
- drivers/net/vxlan/vxlan_mdb.c                 |  14 +-
- drivers/net/vxlan/vxlan_multicast.c           |  68 ++++----
- drivers/net/vxlan/vxlan_private.h             |  10 +-
- drivers/net/vxlan/vxlan_vnifilter.c           |  40 ++---
- include/net/vxlan.h                           |   2 +-
- 7 files changed, 160 insertions(+), 137 deletions(-)
+--FFrCH4JkhHLzpD2B
+Content-Type: application/pgp-signature; name=signature.asc
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_vxlan.c b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_vxlan.c
-index 7a18a469961db809890d69f7d6d8bc656e560946..467fbe43b89e9bc3d28047a3a17a84495c3875af 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_vxlan.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_vxlan.c
-@@ -241,9 +241,16 @@ static bool mlx5e_tc_tun_encap_info_equal_vxlan(struct mlx5e_encap_key *a,
- static int mlx5e_tc_tun_get_remote_ifindex(struct net_device *mirred_dev)
- {
- 	const struct vxlan_dev *vxlan = netdev_priv(mirred_dev);
--	const struct vxlan_rdst *dst = &vxlan->default_dst;
-+	const struct vxlan_config *cfg;
-+	int ifindex = 0;
- 
--	return dst->remote_ifindex;
-+	rcu_read_lock();
-+	cfg = rcu_dereference(vxlan->cfg);
-+	if (cfg)
-+		ifindex = cfg->remote_ifindex;
-+	rcu_read_unlock();
-+
-+	return ifindex;
- }
- 
- struct mlx5e_tc_tunnel vxlan_tunnel = {
-diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
-index b79a15985a994e77aa3307e05bfca6a22bd9a41a..2b7da90ae2da3d0d8cc305d24d071cbc74ec2e6e 100644
---- a/drivers/net/vxlan/vxlan_core.c
-+++ b/drivers/net/vxlan/vxlan_core.c
-@@ -804,6 +804,7 @@ static int vxlan_fdb_nh_update(struct vxlan_dev *vxlan, struct vxlan_fdb *fdb,
- 			       u32 nhid, struct netlink_ext_ack *extack)
- {
- 	struct nexthop *old_nh = rtnl_dereference(fdb->nh);
-+	const struct vxlan_config *cfg;
- 	struct nexthop *nh;
- 	int err = -EINVAL;
- 
-@@ -832,7 +833,8 @@ static int vxlan_fdb_nh_update(struct vxlan_dev *vxlan, struct vxlan_fdb *fdb,
- 	}
- 
- 	/* check nexthop group family */
--	switch (vxlan->default_dst.remote_ip.sa.sa_family) {
-+	cfg = rtnl_dereference(vxlan->cfg);
-+	switch (cfg->remote_ip.sa.sa_family) {
- 	case AF_INET:
- 		if (!nexthop_has_v4(nh)) {
- 			err = -EAFNOSUPPORT;
-@@ -1243,6 +1245,7 @@ static int vxlan_fdb_add(struct ndmsg *ndm, struct nlattr *tb[],
- 			 const unsigned char *addr, u16 vid, u16 flags,
- 			 bool *notified, struct netlink_ext_ack *extack)
- {
-+	const struct vxlan_config *cfg;
- 	struct vxlan_dev *vxlan = netdev_priv(dev);
- 	/* struct net *net = dev_net(vxlan->dev); */
- 	union vxlan_addr ip;
-@@ -1265,7 +1268,8 @@ static int vxlan_fdb_add(struct ndmsg *ndm, struct nlattr *tb[],
- 	if (err)
- 		return err;
- 
--	if (vxlan->default_dst.remote_ip.sa.sa_family != ip.sa.sa_family)
-+	cfg = rtnl_dereference(vxlan->cfg);
-+	if (cfg->remote_ip.sa.sa_family != ip.sa.sa_family)
- 		return -EAFNOSUPPORT;
- 
- 	spin_lock_bh(&vxlan->hash_lock);
-@@ -2309,7 +2313,14 @@ static void vxlan_encap_bypass(struct sk_buff *skb, struct vxlan_dev *src_vxlan,
- 	skb->dev = dev;
- 	__skb_pull(skb, skb_network_offset(skb));
- 
--	if (dst_vxlan->default_dst.remote_ip.sa.sa_family == AF_INET) {
-+	rcu_read_lock();
-+	dst_cfg = rcu_dereference(dst_vxlan->cfg);
-+	if (unlikely(!dst_cfg || !(dev->flags & IFF_UP))) {
-+		kfree_skb_reason(skb, SKB_DROP_REASON_DEV_READY);
-+		goto drop;
-+	}
-+
-+	if (dst_cfg->remote_ip.sa.sa_family == AF_INET) {
- 		loopback.sin.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
- 		loopback.sa.sa_family =  AF_INET;
- #if IS_ENABLED(CONFIG_IPV6)
-@@ -2319,13 +2330,6 @@ static void vxlan_encap_bypass(struct sk_buff *skb, struct vxlan_dev *src_vxlan,
- #endif
- 	}
- 
--	rcu_read_lock();
--	dst_cfg = rcu_dereference(dst_vxlan->cfg);
--	if (unlikely(!dst_cfg || !(dev->flags & IFF_UP))) {
--		kfree_skb_reason(skb, SKB_DROP_REASON_DEV_READY);
--		goto drop;
--	}
--
- 	if ((dst_cfg->flags & VXLAN_F_LEARN) && snoop)
- 		vxlan_snoop(dev, dst_cfg, &loopback, eth_hdr(skb)->h_source, 0, vni);
- 
-@@ -2339,8 +2343,9 @@ static void vxlan_encap_bypass(struct sk_buff *skb, struct vxlan_dev *src_vxlan,
- 	} else {
- drop:
- 		dev_dstats_rx_dropped(dev);
--		vxlan_vnifilter_count(dst_vxlan, dst_cfg, vni, NULL,
--				      VXLAN_VNI_STATS_RX_DROPS, 0);
-+		if (dst_cfg)
-+			vxlan_vnifilter_count(dst_vxlan, dst_cfg, vni, NULL,
-+					      VXLAN_VNI_STATS_RX_DROPS, 0);
- 	}
- 	rcu_read_unlock();
- }
-@@ -2966,10 +2971,14 @@ static void vxlan_vs_del_dev(struct vxlan_dev *vxlan)
- static void vxlan_vs_add_dev(struct vxlan_sock *vs, struct vxlan_dev *vxlan,
- 			     struct vxlan_dev_node *node)
- {
--	__be32 vni = vxlan->default_dst.remote_vni;
-+	const struct vxlan_config *cfg;
-+	__be32 vni;
- 
- 	ASSERT_RTNL();
- 
-+	cfg = rtnl_dereference(vxlan->cfg);
-+	vni = cfg->vni;
-+
- 	node->vxlan = vxlan;
- 	hlist_add_head_rcu(&node->hlist, vni_head(vs, vni));
- }
-@@ -3291,13 +3300,12 @@ static void vxlan_set_multicast_list(struct net_device *dev)
- static int vxlan_change_mtu(struct net_device *dev, int new_mtu)
- {
- 	struct vxlan_dev *vxlan = netdev_priv(dev);
--	struct vxlan_rdst *dst = &vxlan->default_dst;
- 	const struct vxlan_config *cfg;
- 	struct net_device *lowerdev;
- 
- 	cfg = rtnl_dereference(vxlan->cfg);
- 
--	lowerdev = __dev_get_by_index(vxlan->net, dst->remote_ifindex);
-+	lowerdev = __dev_get_by_index(vxlan->net, cfg->remote_ifindex);
- 
- 	/* This check is different than dev->max_mtu, because it looks at
- 	 * the lowerdev->mtu, rather than the static dev->max_mtu
-@@ -3626,9 +3634,11 @@ static int vxlan_get_link_ksettings(struct net_device *dev,
- 				    struct ethtool_link_ksettings *cmd)
- {
- 	struct vxlan_dev *vxlan = netdev_priv(dev);
--	struct vxlan_rdst *dst = &vxlan->default_dst;
--	struct net_device *lowerdev = __dev_get_by_index(vxlan->net,
--							 dst->remote_ifindex);
-+	const struct vxlan_config *cfg;
-+	struct net_device *lowerdev;
-+
-+	cfg = rtnl_dereference(vxlan->cfg);
-+	lowerdev = __dev_get_by_index(vxlan->net, cfg->remote_ifindex);
- 
- 	if (!lowerdev) {
- 		cmd->base.duplex = DUPLEX_UNKNOWN;
-@@ -4003,7 +4013,6 @@ static void vxlan_config_apply(struct net_device *dev,
- 			       bool changelink)
- {
- 	struct vxlan_dev *vxlan = netdev_priv(dev);
--	struct vxlan_rdst *dst = &vxlan->default_dst;
- 	unsigned short needed_headroom = ETH_HLEN;
- 	struct vxlan_config *old_cfg;
- 	int max_mtu = ETH_MAX_MTU;
-@@ -4021,13 +4030,7 @@ static void vxlan_config_apply(struct net_device *dev,
- 		vxlan->net = src_net;
- 	}
- 
--	dst->remote_vni = new_cfg->vni;
--
--	memcpy(&dst->remote_ip, &new_cfg->remote_ip, sizeof(new_cfg->remote_ip));
--
- 	if (lowerdev) {
--		dst->remote_ifindex = new_cfg->remote_ifindex;
--
- 		netif_inherit_tso_max(dev, lowerdev);
- 
- 		needed_headroom = lowerdev->hard_header_len;
-@@ -4087,10 +4090,8 @@ static int vxlan_dev_create(struct net *net, struct net_device *dev,
- 	struct vxlan_dev *vxlan = netdev_priv(dev);
- 	struct net_device *remote_dev = NULL;
- 	const struct vxlan_config *cfg;
--	struct vxlan_rdst *dst;
- 	int err;
- 
--	dst = &vxlan->default_dst;
- 	err = vxlan_dev_configure(net, dev, conf, extack);
- 	if (err)
- 		return err;
-@@ -4105,8 +4106,8 @@ static int vxlan_dev_create(struct net *net, struct net_device *dev,
- 		return err;
- 	}
- 
--	if (dst->remote_ifindex) {
--		remote_dev = __dev_get_by_index(net, dst->remote_ifindex);
-+	if (cfg->remote_ifindex) {
-+		remote_dev = __dev_get_by_index(net, cfg->remote_ifindex);
- 		if (!remote_dev) {
- 			err = -ENODEV;
- 			goto unregister;
-@@ -4116,7 +4117,7 @@ static int vxlan_dev_create(struct net *net, struct net_device *dev,
- 		if (err)
- 			goto unregister;
- 
--		dst->remote_dev = remote_dev;
-+		vxlan->lowerdev = remote_dev;
- 	}
- 
- 	err = rtnl_configure_link(dev, NULL, 0, NULL);
-@@ -4124,16 +4125,18 @@ static int vxlan_dev_create(struct net *net, struct net_device *dev,
- 		goto unlink;
- 
- 	/* create an fdb entry for a valid default destination */
--	if (!vxlan_addr_any(&dst->remote_ip)) {
-+	if (!vxlan_addr_any(&cfg->remote_ip)) {
-+		union vxlan_addr rip = cfg->remote_ip;
-+
- 		spin_lock_bh(&vxlan->hash_lock);
- 		err = vxlan_fdb_update(vxlan, all_zeros_mac,
--				       &dst->remote_ip,
-+				       &rip,
- 				       NUD_REACHABLE | NUD_PERMANENT,
- 				       NLM_F_EXCL | NLM_F_CREATE,
- 				       cfg->dst_port,
--				       dst->remote_vni,
--				       dst->remote_vni,
--				       dst->remote_ifindex,
-+				       cfg->vni,
-+				       cfg->vni,
-+				       cfg->remote_ifindex,
- 				       NTF_SELF, 0, true, extack);
- 		spin_unlock_bh(&vxlan->hash_lock);
- 		if (err)
-@@ -4551,13 +4554,11 @@ static int vxlan_changelink(struct net_device *dev, struct nlattr *tb[],
- 	struct net_device *lowerdev;
- 	struct vxlan_config conf;
- 	struct vxlan_config *new_cfg;
--	struct vxlan_rdst *dst;
- 	int err;
- 
- 	if (!rtnl_dev_link_net_capable(dev, vxlan->net))
- 		return -EPERM;
- 
--	dst = &vxlan->default_dst;
- 	err = vxlan_nl2conf(tb, data, dev, &conf, true, extack);
- 	if (err)
- 		return err;
-@@ -4571,20 +4572,19 @@ static int vxlan_changelink(struct net_device *dev, struct nlattr *tb[],
- 	if (!new_cfg)
- 		return -ENOMEM;
- 
--	if (dst->remote_dev == lowerdev)
--		lowerdev = NULL;
--
--	err = netdev_adjacent_change_prepare(dst->remote_dev, lowerdev, dev,
--					     extack);
--	if (err) {
--		kfree(new_cfg);
--		return err;
-+	if (vxlan->lowerdev != lowerdev) {
-+		err = netdev_adjacent_change_prepare(vxlan->lowerdev, lowerdev,
-+						     dev, extack);
-+		if (err) {
-+			kfree(new_cfg);
-+			return err;
-+		}
- 	}
- 
--	rem_ip_changed = !vxlan_addr_equal(&conf.remote_ip, &dst->remote_ip);
-+	rem_ip_changed = !vxlan_addr_equal(&conf.remote_ip, &cfg->remote_ip);
- 	change_igmp = vxlan->dev->flags & IFF_UP &&
- 		      (rem_ip_changed ||
--		       dst->remote_ifindex != conf.remote_ifindex);
-+		       cfg->remote_ifindex != conf.remote_ifindex);
- 
- 	/* handle default dst entry */
- 	if (rem_ip_changed) {
-@@ -4600,19 +4600,20 @@ static int vxlan_changelink(struct net_device *dev, struct nlattr *tb[],
- 					       NTF_SELF, 0, true, extack);
- 			if (err) {
- 				spin_unlock_bh(&vxlan->hash_lock);
--				netdev_adjacent_change_abort(dst->remote_dev,
--							     lowerdev, dev);
-+				if (vxlan->lowerdev != lowerdev)
-+					netdev_adjacent_change_abort(vxlan->lowerdev,
-+								     lowerdev, dev);
- 				kfree(new_cfg);
- 				return err;
- 			}
- 		}
--		if (!vxlan_addr_any(&dst->remote_ip))
-+		if (!vxlan_addr_any(&cfg->remote_ip))
- 			__vxlan_fdb_delete(vxlan, all_zeros_mac,
--					   dst->remote_ip,
-+					   cfg->remote_ip,
- 					   cfg->dst_port,
--					   dst->remote_vni,
--					   dst->remote_vni,
--					   dst->remote_ifindex,
-+					   cfg->vni,
-+					   cfg->vni,
-+					   cfg->remote_ifindex,
- 					   true);
- 		spin_unlock_bh(&vxlan->hash_lock);
- 
-@@ -4620,30 +4621,36 @@ static int vxlan_changelink(struct net_device *dev, struct nlattr *tb[],
- 		 * all vnis that were using default remote ip
- 		 */
- 		if (cfg->flags & VXLAN_F_VNIFILTER) {
--			err = vxlan_vnilist_update_group(vxlan, &dst->remote_ip,
-+			err = vxlan_vnilist_update_group(vxlan, &cfg->remote_ip,
- 							 &conf.remote_ip, extack);
- 			if (err) {
--				netdev_adjacent_change_abort(dst->remote_dev,
--							     lowerdev, dev);
-+				if (vxlan->lowerdev != lowerdev)
-+					netdev_adjacent_change_abort(vxlan->lowerdev,
-+								     lowerdev, dev);
- 				kfree(new_cfg);
- 				return err;
- 			}
- 		}
- 	}
- 
--	if (change_igmp && vxlan_addr_multicast(&dst->remote_ip))
-+	if (change_igmp && vxlan_addr_multicast(&cfg->remote_ip))
- 		err = vxlan_multicast_leave(vxlan);
- 
- 	if (netif_running(dev) && conf.age_interval != cfg->age_interval)
- 		mod_timer(&vxlan->age_timer, jiffies);
- 
--	netdev_adjacent_change_commit(dst->remote_dev, lowerdev, dev);
--	if (lowerdev && lowerdev != dst->remote_dev)
--		dst->remote_dev = lowerdev;
-+	if (vxlan->lowerdev != lowerdev) {
-+		if (lowerdev)
-+			netdev_adjacent_change_commit(vxlan->lowerdev, lowerdev,
-+						      dev);
-+		else
-+			netdev_upper_dev_unlink(vxlan->lowerdev, dev);
-+		vxlan->lowerdev = lowerdev;
-+	}
- 	vxlan_config_apply(dev, new_cfg, lowerdev, vxlan->net, true);
- 
- 	if (!err && change_igmp &&
--	    vxlan_addr_multicast(&dst->remote_ip))
-+	    vxlan_addr_multicast(&new_cfg->remote_ip))
- 		err = vxlan_multicast_join(vxlan);
- 
- 	return err;
-@@ -4658,8 +4665,8 @@ static void vxlan_dellink(struct net_device *dev, struct list_head *head)
- 
- 	list_del(&vxlan->next);
- 	unregister_netdevice_queue(dev, head);
--	if (vxlan->default_dst.remote_dev)
--		netdev_upper_dev_unlink(vxlan->default_dst.remote_dev, dev);
-+	if (vxlan->lowerdev)
-+		netdev_upper_dev_unlink(vxlan->lowerdev, dev);
- }
- 
- static size_t vxlan_get_size(const struct net_device *dev)
-@@ -4703,30 +4710,29 @@ static size_t vxlan_get_size(const struct net_device *dev)
- static int vxlan_fill_info(struct sk_buff *skb, const struct net_device *dev)
- {
- 	const struct vxlan_dev *vxlan = netdev_priv(dev);
--	const struct vxlan_rdst *dst = &vxlan->default_dst;
- 	struct ifla_vxlan_port_range ports;
- 	const struct vxlan_config *cfg;
- 
- 	cfg = rtnl_dereference(vxlan->cfg);
- 
--	if (nla_put_u32(skb, IFLA_VXLAN_ID, be32_to_cpu(dst->remote_vni)))
-+	if (nla_put_u32(skb, IFLA_VXLAN_ID, be32_to_cpu(cfg->vni)))
- 		goto nla_put_failure;
- 
--	if (!vxlan_addr_any(&dst->remote_ip)) {
--		if (dst->remote_ip.sa.sa_family == AF_INET) {
-+	if (!vxlan_addr_any(&cfg->remote_ip)) {
-+		if (cfg->remote_ip.sa.sa_family == AF_INET) {
- 			if (nla_put_in_addr(skb, IFLA_VXLAN_GROUP,
--					    dst->remote_ip.sin.sin_addr.s_addr))
-+					    cfg->remote_ip.sin.sin_addr.s_addr))
- 				goto nla_put_failure;
- #if IS_ENABLED(CONFIG_IPV6)
- 		} else {
- 			if (nla_put_in6_addr(skb, IFLA_VXLAN_GROUP6,
--					     &dst->remote_ip.sin6.sin6_addr))
-+					     &cfg->remote_ip.sin6.sin6_addr))
- 				goto nla_put_failure;
- #endif
- 		}
- 	}
- 
--	if (dst->remote_ifindex && nla_put_u32(skb, IFLA_VXLAN_LINK, dst->remote_ifindex))
-+	if (cfg->remote_ifindex && nla_put_u32(skb, IFLA_VXLAN_LINK, cfg->remote_ifindex))
- 		goto nla_put_failure;
- 
- 	if (!vxlan_addr_any(&cfg->saddr)) {
-@@ -4841,7 +4847,7 @@ static void vxlan_handle_lowerdev_unregister(struct vxlan_net *vn,
- 	LIST_HEAD(list_kill);
- 
- 	list_for_each_entry_safe(vxlan, next, &vn->vxlan_list, next) {
--		struct vxlan_rdst *dst = &vxlan->default_dst;
-+		const struct vxlan_config *cfg = rtnl_dereference(vxlan->cfg);
- 
- 		/* In case we created vxlan device with carrier
- 		 * and we loose the carrier due to module unload
-@@ -4849,7 +4855,7 @@ static void vxlan_handle_lowerdev_unregister(struct vxlan_net *vn,
- 		 * cases, it's not necessary and remote_ifindex
- 		 * is 0 here, so no matches.
- 		 */
--		if (dst->remote_ifindex == dev->ifindex)
-+		if (cfg->remote_ifindex == dev->ifindex)
- 			vxlan_dellink(vxlan->dev, &list_kill);
- 	}
- 
-diff --git a/drivers/net/vxlan/vxlan_mdb.c b/drivers/net/vxlan/vxlan_mdb.c
-index 4ae6369ed4e35e307565f91d0706970f460af552..c1a0551990555ce3e1dca81a9b5df7196a2a5fdf 100644
---- a/drivers/net/vxlan/vxlan_mdb.c
-+++ b/drivers/net/vxlan/vxlan_mdb.c
-@@ -195,7 +195,7 @@ static int vxlan_mdb_entry_info_fill(const struct vxlan_dev *vxlan,
- 			be16_to_cpu(rd->remote_port)))
- 		goto nest_err;
- 
--	if (rd->remote_vni != vxlan->default_dst.remote_vni &&
-+	if (rd->remote_vni != cfg->vni &&
- 	    nla_put_u32(skb, MDBA_MDB_EATTR_VNI, be32_to_cpu(rd->remote_vni)))
- 		goto nest_err;
- 
-@@ -620,12 +620,12 @@ static int vxlan_mdb_config_init(struct vxlan_mdb_config *cfg,
- 
- 	memset(cfg, 0, sizeof(*cfg));
- 	cfg->vxlan = vxlan;
--	cfg->group.vni = vxlan->default_dst.remote_vni;
-+	cfg->group.vni = vcfg->vni;
- 	INIT_LIST_HEAD(&cfg->src_list);
- 	cfg->nlflags = nlmsg_flags;
- 	cfg->filter_mode = MCAST_EXCLUDE;
- 	cfg->rt_protocol = RTPROT_STATIC;
--	cfg->remote_vni = vxlan->default_dst.remote_vni;
-+	cfg->remote_vni = vcfg->vni;
- 	cfg->remote_port = vcfg->dst_port;
- 
- 	if (entry->ifindex != dev->ifindex) {
-@@ -986,7 +986,7 @@ vxlan_mdb_nlmsg_remote_size(const struct vxlan_dev *vxlan,
- 	if (rd->remote_port && rd->remote_port != cfg->dst_port)
- 		nlmsg_size += nla_total_size(sizeof(u16));
- 	/* MDBA_MDB_EATTR_VNI */
--	if (rd->remote_vni != vxlan->default_dst.remote_vni)
-+	if (rd->remote_vni != cfg->vni)
- 		nlmsg_size += nla_total_size(sizeof(u32));
- 	/* MDBA_MDB_EATTR_IFINDEX */
- 	if (rd->remote_ifindex)
-@@ -1488,11 +1488,13 @@ static int vxlan_mdb_get_parse(struct net_device *dev, struct nlattr *tb[],
- {
- 	struct br_mdb_entry *entry = nla_data(tb[MDBA_GET_ENTRY]);
- 	struct nlattr *mdbe_attrs[MDBE_ATTR_MAX + 1];
-+	const struct vxlan_config *cfg;
- 	struct vxlan_dev *vxlan = netdev_priv(dev);
- 	int err;
- 
-+	cfg = rtnl_dereference(vxlan->cfg);
- 	memset(group, 0, sizeof(*group));
--	group->vni = vxlan->default_dst.remote_vni;
-+	group->vni = cfg->vni;
- 
- 	if (!tb[MDBA_GET_ENTRY_ATTRS]) {
- 		vxlan_mdb_group_set(group, entry, NULL);
-@@ -1641,7 +1643,7 @@ struct vxlan_mdb_entry *vxlan_mdb_entry_skb_get(struct vxlan_dev *vxlan,
- 	 * entries are stored with the VNI of the VXLAN device.
- 	 */
- 	if (!(cfg->flags & VXLAN_F_COLLECT_METADATA))
--		src_vni = vxlan->default_dst.remote_vni;
-+		src_vni = cfg->vni;
- 
- 	memset(&group, 0, sizeof(group));
- 	group.vni = src_vni;
-diff --git a/drivers/net/vxlan/vxlan_multicast.c b/drivers/net/vxlan/vxlan_multicast.c
-index e2cf10da274f1b608d8bb5020d2b87ebfedeff46..ae0320921c8ca5da8c9fabda5852467f2872ce00 100644
---- a/drivers/net/vxlan/vxlan_multicast.c
-+++ b/drivers/net/vxlan/vxlan_multicast.c
-@@ -14,11 +14,12 @@
- /* Update multicast group membership when first VNI on
-  * multicast address is brought up
-  */
--int vxlan_igmp_join(struct vxlan_dev *vxlan, union vxlan_addr *rip,
-+int vxlan_igmp_join(struct vxlan_dev *vxlan, const union vxlan_addr *rip,
- 		    int rifindex)
- {
--	union vxlan_addr *ip = (rip ? : &vxlan->default_dst.remote_ip);
--	int ifindex = (rifindex ? : vxlan->default_dst.remote_ifindex);
-+	const struct vxlan_config *cfg = rtnl_dereference(vxlan->cfg);
-+	const union vxlan_addr *ip = (rip ? : &cfg->remote_ip);
-+	int ifindex = (rifindex ? : cfg->remote_ifindex);
- 	int ret = -EINVAL;
- 	struct sock *sk;
- 
-@@ -47,11 +48,12 @@ int vxlan_igmp_join(struct vxlan_dev *vxlan, union vxlan_addr *rip,
- 	return ret;
- }
- 
--int vxlan_igmp_leave(struct vxlan_dev *vxlan, union vxlan_addr *rip,
-+int vxlan_igmp_leave(struct vxlan_dev *vxlan, const union vxlan_addr *rip,
- 		     int rifindex)
- {
--	union vxlan_addr *ip = (rip ? : &vxlan->default_dst.remote_ip);
--	int ifindex = (rifindex ? : vxlan->default_dst.remote_ifindex);
-+	const struct vxlan_config *cfg = rtnl_dereference(vxlan->cfg);
-+	const union vxlan_addr *ip = (rip ? : &cfg->remote_ip);
-+	int ifindex = (rifindex ? : cfg->remote_ifindex);
- 	int ret = -EINVAL;
- 	struct sock *sk;
- 
-@@ -80,8 +82,8 @@ int vxlan_igmp_leave(struct vxlan_dev *vxlan, union vxlan_addr *rip,
- 	return ret;
- }
- 
--static bool vxlan_group_used_match(union vxlan_addr *ip, int ifindex,
--				   union vxlan_addr *rip, int rifindex)
-+static bool vxlan_group_used_match(const union vxlan_addr *ip, int ifindex,
-+				   const union vxlan_addr *rip, int rifindex)
- {
- 	if (!vxlan_addr_multicast(rip))
- 		return false;
-@@ -96,14 +98,16 @@ static bool vxlan_group_used_match(union vxlan_addr *ip, int ifindex,
- }
- 
- static bool vxlan_group_used_by_vnifilter(struct vxlan_dev *vxlan,
--					  union vxlan_addr *ip, int ifindex)
-+					  const struct vxlan_config *cfg,
-+					  const union vxlan_addr *ip,
-+					  int ifindex)
- {
- 	struct vxlan_vni_group *vg = rtnl_dereference(vxlan->vnigrp);
- 	struct vxlan_vni_node *v, *tmp;
- 
- 	if (vxlan_group_used_match(ip, ifindex,
--				   &vxlan->default_dst.remote_ip,
--				   vxlan->default_dst.remote_ifindex))
-+				   &cfg->remote_ip,
-+				   cfg->remote_ifindex))
- 		return true;
- 
- 	list_for_each_entry_safe(v, tmp, &vg->vni_list, vlist) {
-@@ -112,7 +116,7 @@ static bool vxlan_group_used_by_vnifilter(struct vxlan_dev *vxlan,
- 
- 		if (vxlan_group_used_match(ip, ifindex,
- 					   &v->remote_ip,
--					   vxlan->default_dst.remote_ifindex))
-+					   cfg->remote_ifindex))
- 			return true;
- 	}
- 
-@@ -121,16 +125,17 @@ static bool vxlan_group_used_by_vnifilter(struct vxlan_dev *vxlan,
- 
- /* See if multicast group is already in use by other ID */
- bool vxlan_group_used(struct vxlan_net *vn, struct vxlan_dev *dev,
--		      __be32 vni, union vxlan_addr *rip, int rifindex)
-+		      __be32 vni, const union vxlan_addr *rip, int rifindex)
- {
--	union vxlan_addr *ip = (rip ? : &dev->default_dst.remote_ip);
--	int ifindex = (rifindex ? : dev->default_dst.remote_ifindex);
-+	const struct vxlan_config *dev_cfg = rtnl_dereference(dev->cfg);
-+	const union vxlan_addr *ip = (rip ? : &dev_cfg->remote_ip);
-+	int ifindex = (rifindex ? : dev_cfg->remote_ifindex);
- 	struct vxlan_dev *vxlan;
- 	struct vxlan_sock *sock4;
- #if IS_ENABLED(CONFIG_IPV6)
- 	struct vxlan_sock *sock6;
- #endif
--	unsigned short family = dev->default_dst.remote_ip.sa.sa_family;
-+	unsigned short family = dev_cfg->remote_ip.sa.sa_family;
- 
- 	sock4 = rtnl_dereference(dev->vn4_sock);
- 
-@@ -153,22 +158,22 @@ bool vxlan_group_used(struct vxlan_net *vn, struct vxlan_dev *dev,
- 			continue;
- 
- 		if (family == AF_INET &&
--		    rtnl_dereference(vxlan->vn4_sock) != sock4)
-+			rtnl_dereference(vxlan->vn4_sock) != sock4)
- 			continue;
- #if IS_ENABLED(CONFIG_IPV6)
- 		if (family == AF_INET6 &&
--		    rtnl_dereference(vxlan->vn6_sock) != sock6)
-+			rtnl_dereference(vxlan->vn6_sock) != sock6)
- 			continue;
- #endif
- 		cfg = rtnl_dereference(vxlan->cfg);
- 
- 		if (cfg->flags & VXLAN_F_VNIFILTER) {
--			if (!vxlan_group_used_by_vnifilter(vxlan, ip, ifindex))
-+			if (!vxlan_group_used_by_vnifilter(vxlan, cfg, ip, ifindex))
- 				continue;
- 		} else {
- 			if (!vxlan_group_used_match(ip, ifindex,
--						    &vxlan->default_dst.remote_ip,
--						    vxlan->default_dst.remote_ifindex))
-+						    &cfg->remote_ip,
-+						    cfg->remote_ifindex))
- 				continue;
- 		}
- 
-@@ -178,7 +183,8 @@ bool vxlan_group_used(struct vxlan_net *vn, struct vxlan_dev *dev,
- 	return false;
- }
- 
--static int vxlan_multicast_join_vnigrp(struct vxlan_dev *vxlan)
-+static int vxlan_multicast_join_vnigrp(struct vxlan_dev *vxlan,
-+				       const struct vxlan_config *cfg)
- {
- 	struct vxlan_vni_group *vg = rtnl_dereference(vxlan->vnigrp);
- 	struct vxlan_vni_node *v, *tmp, *vgood = NULL;
-@@ -189,7 +195,7 @@ static int vxlan_multicast_join_vnigrp(struct vxlan_dev *vxlan)
- 			continue;
- 		/* skip if address is same as default address */
- 		if (vxlan_addr_equal(&v->remote_ip,
--				     &vxlan->default_dst.remote_ip))
-+				     &cfg->remote_ip))
- 			continue;
- 		ret = vxlan_igmp_join(vxlan, &v->remote_ip, 0);
- 		if (ret == -EADDRINUSE)
-@@ -204,7 +210,7 @@ static int vxlan_multicast_join_vnigrp(struct vxlan_dev *vxlan)
- 			if (!vxlan_addr_multicast(&v->remote_ip))
- 				continue;
- 			if (vxlan_addr_equal(&v->remote_ip,
--					     &vxlan->default_dst.remote_ip))
-+					     &cfg->remote_ip))
- 				continue;
- 			vxlan_igmp_leave(vxlan, &v->remote_ip, 0);
- 			if (v == vgood)
-@@ -240,9 +246,9 @@ int vxlan_multicast_join(struct vxlan_dev *vxlan)
- 	const struct vxlan_config *cfg = rtnl_dereference(vxlan->cfg);
- 	int ret = 0;
- 
--	if (vxlan_addr_multicast(&vxlan->default_dst.remote_ip)) {
--		ret = vxlan_igmp_join(vxlan, &vxlan->default_dst.remote_ip,
--				      vxlan->default_dst.remote_ifindex);
-+	if (vxlan_addr_multicast(&cfg->remote_ip)) {
-+		ret = vxlan_igmp_join(vxlan, &cfg->remote_ip,
-+				      cfg->remote_ifindex);
- 		if (ret == -EADDRINUSE)
- 			ret = 0;
- 		if (ret)
-@@ -250,7 +256,7 @@ int vxlan_multicast_join(struct vxlan_dev *vxlan)
- 	}
- 
- 	if (cfg->flags & VXLAN_F_VNIFILTER)
--		return vxlan_multicast_join_vnigrp(vxlan);
-+		return vxlan_multicast_join_vnigrp(vxlan, cfg);
- 
- 	return 0;
- }
-@@ -261,10 +267,10 @@ int vxlan_multicast_leave(struct vxlan_dev *vxlan)
- 	struct vxlan_net *vn = net_generic(vxlan->net, vxlan_net_id);
- 	int ret = 0;
- 
--	if (vxlan_addr_multicast(&vxlan->default_dst.remote_ip) &&
-+	if (vxlan_addr_multicast(&cfg->remote_ip) &&
- 	    !vxlan_group_used(vn, vxlan, 0, NULL, 0)) {
--		ret = vxlan_igmp_leave(vxlan, &vxlan->default_dst.remote_ip,
--				       vxlan->default_dst.remote_ifindex);
-+		ret = vxlan_igmp_leave(vxlan, &cfg->remote_ip,
-+				       cfg->remote_ifindex);
- 		if (ret)
- 			return ret;
- 	}
-diff --git a/drivers/net/vxlan/vxlan_private.h b/drivers/net/vxlan/vxlan_private.h
-index ab7216c4e41011b99f8bf72de50fc2230b43c405..4f70afc502c906ca7361e33fee202d1a63da9506 100644
---- a/drivers/net/vxlan/vxlan_private.h
-+++ b/drivers/net/vxlan/vxlan_private.h
-@@ -216,8 +216,8 @@ void vxlan_vs_add_vnigrp(struct vxlan_dev *vxlan,
- 			 bool ipv6);
- void vxlan_vs_del_vnigrp(struct vxlan_dev *vxlan);
- int vxlan_vnilist_update_group(struct vxlan_dev *vxlan,
--			       union vxlan_addr *old_remote_ip,
--			       union vxlan_addr *new_remote_ip,
-+			       const union vxlan_addr *old_remote_ip,
-+			       const union vxlan_addr *new_remote_ip,
- 			       struct netlink_ext_ack *extack);
- 
- 
-@@ -225,10 +225,10 @@ int vxlan_vnilist_update_group(struct vxlan_dev *vxlan,
- int vxlan_multicast_join(struct vxlan_dev *vxlan);
- int vxlan_multicast_leave(struct vxlan_dev *vxlan);
- bool vxlan_group_used(struct vxlan_net *vn, struct vxlan_dev *dev,
--		      __be32 vni, union vxlan_addr *rip, int rifindex);
--int vxlan_igmp_join(struct vxlan_dev *vxlan, union vxlan_addr *rip,
-+		      __be32 vni, const union vxlan_addr *rip, int rifindex);
-+int vxlan_igmp_join(struct vxlan_dev *vxlan, const union vxlan_addr *rip,
- 		    int rifindex);
--int vxlan_igmp_leave(struct vxlan_dev *vxlan, union vxlan_addr *rip,
-+int vxlan_igmp_leave(struct vxlan_dev *vxlan, const union vxlan_addr *rip,
- 		     int rifindex);
- 
- /* vxlan_mdb.c */
-diff --git a/drivers/net/vxlan/vxlan_vnifilter.c b/drivers/net/vxlan/vxlan_vnifilter.c
-index 810540dbd057caf7ff4f216231aed3e82e2ef7ac..e6c5fa230134725827389fb7ea434775a66b7bc2 100644
---- a/drivers/net/vxlan/vxlan_vnifilter.c
-+++ b/drivers/net/vxlan/vxlan_vnifilter.c
-@@ -478,24 +478,25 @@ static const struct nla_policy vni_filter_policy[VXLAN_VNIFILTER_MAX + 1] = {
- };
- 
- static int vxlan_update_default_fdb_entry(struct vxlan_dev *vxlan, __be32 vni,
--					  union vxlan_addr *old_remote_ip,
--					  union vxlan_addr *remote_ip,
-+					  const union vxlan_addr *old_remote_ip,
-+					  const union vxlan_addr *remote_ip,
- 					  struct netlink_ext_ack *extack)
- {
- 	const struct vxlan_config *cfg = rtnl_dereference(vxlan->cfg);
--	struct vxlan_rdst *dst = &vxlan->default_dst;
- 	int err = 0;
- 
- 	spin_lock_bh(&vxlan->hash_lock);
- 	if (remote_ip && !vxlan_addr_any(remote_ip)) {
-+		union vxlan_addr rip = *remote_ip;
-+
- 		err = vxlan_fdb_update(vxlan, all_zeros_mac,
--				       remote_ip,
-+				       &rip,
- 				       NUD_REACHABLE | NUD_PERMANENT,
- 				       NLM_F_APPEND | NLM_F_CREATE,
- 				       cfg->dst_port,
- 				       vni,
- 				       vni,
--				       dst->remote_ifindex,
-+				       cfg->remote_ifindex,
- 				       NTF_SELF, 0, true, extack);
- 		if (err) {
- 			spin_unlock_bh(&vxlan->hash_lock);
-@@ -508,7 +509,7 @@ static int vxlan_update_default_fdb_entry(struct vxlan_dev *vxlan, __be32 vni,
- 				   *old_remote_ip,
- 				   cfg->dst_port,
- 				   vni, vni,
--				   dst->remote_ifindex,
-+				   cfg->remote_ifindex,
- 				   true);
- 	}
- 	spin_unlock_bh(&vxlan->hash_lock);
-@@ -523,8 +524,8 @@ static int vxlan_vni_update_group(struct vxlan_dev *vxlan,
- 				  struct netlink_ext_ack *extack)
- {
- 	struct vxlan_net *vn = net_generic(vxlan->net, vxlan_net_id);
--	struct vxlan_rdst *dst = &vxlan->default_dst;
--	union vxlan_addr *newrip = NULL, *oldrip = NULL;
-+	const struct vxlan_config *cfg = rtnl_dereference(vxlan->cfg);
-+	const union vxlan_addr *newrip = NULL, *oldrip = NULL;
- 	union vxlan_addr old_remote_ip;
- 	int ret = 0;
- 
-@@ -536,8 +537,8 @@ static int vxlan_vni_update_group(struct vxlan_dev *vxlan,
- 	if (group && !vxlan_addr_any(group)) {
- 		newrip = group;
- 	} else {
--		if (!vxlan_addr_any(&dst->remote_ip))
--			newrip = &dst->remote_ip;
-+		if (!vxlan_addr_any(&cfg->remote_ip))
-+			newrip = &cfg->remote_ip;
- 	}
- 
- 	/* if old rip exists, and no newrip,
-@@ -565,7 +566,7 @@ static int vxlan_vni_update_group(struct vxlan_dev *vxlan,
- 		if (vxlan_addr_multicast(&old_remote_ip) &&
- 		    !vxlan_group_used(vn, vxlan, vninode->vni,
- 				      &old_remote_ip,
--				      vxlan->default_dst.remote_ifindex)) {
-+				      cfg->remote_ifindex)) {
- 			ret = vxlan_igmp_leave(vxlan, &old_remote_ip,
- 					       0);
- 			if (ret)
-@@ -589,8 +590,8 @@ static int vxlan_vni_update_group(struct vxlan_dev *vxlan,
- }
- 
- int vxlan_vnilist_update_group(struct vxlan_dev *vxlan,
--			       union vxlan_addr *old_remote_ip,
--			       union vxlan_addr *new_remote_ip,
-+			       const union vxlan_addr *old_remote_ip,
-+			       const union vxlan_addr *new_remote_ip,
- 			       struct netlink_ext_ack *extack)
- {
- 	struct list_head *headp, *hpos;
-@@ -621,20 +622,19 @@ static void vxlan_vni_delete_group(struct vxlan_dev *vxlan,
- {
- 	struct vxlan_net *vn = net_generic(vxlan->net, vxlan_net_id);
- 	const struct vxlan_config *cfg = rtnl_dereference(vxlan->cfg);
--	struct vxlan_rdst *dst = &vxlan->default_dst;
- 
- 	/* if per vni remote_ip not present, delete the
- 	 * default dst remote_ip previously added for this vni
- 	 */
- 	if (!vxlan_addr_any(&vninode->remote_ip) ||
--	    !vxlan_addr_any(&dst->remote_ip)) {
-+	    !vxlan_addr_any(&cfg->remote_ip)) {
- 		spin_lock_bh(&vxlan->hash_lock);
- 		__vxlan_fdb_delete(vxlan, all_zeros_mac,
- 				   (vxlan_addr_any(&vninode->remote_ip) ?
--				   dst->remote_ip : vninode->remote_ip),
-+				   cfg->remote_ip : vninode->remote_ip),
- 				   cfg->dst_port,
- 				   vninode->vni, vninode->vni,
--				   dst->remote_ifindex,
-+				   cfg->remote_ifindex,
- 				   true);
- 		spin_unlock_bh(&vxlan->hash_lock);
- 	}
-@@ -643,7 +643,7 @@ static void vxlan_vni_delete_group(struct vxlan_dev *vxlan,
- 		if (vxlan_addr_multicast(&vninode->remote_ip) &&
- 		    !vxlan_group_used(vn, vxlan, vninode->vni,
- 				      &vninode->remote_ip,
--				      dst->remote_ifindex)) {
-+				      cfg->remote_ifindex)) {
- 			vxlan_igmp_leave(vxlan, &vninode->remote_ip, 0);
- 		}
- 	}
-@@ -854,6 +854,7 @@ static int vxlan_process_vni_filter(struct vxlan_dev *vxlan,
- 				    int cmd, struct netlink_ext_ack *extack)
- {
- 	struct nlattr *vattrs[VXLAN_VNIFILTER_ENTRY_MAX + 1];
-+	const struct vxlan_config *cfg;
- 	u32 vni_start = 0, vni_end = 0;
- 	union vxlan_addr group;
- 	int err;
-@@ -891,7 +892,8 @@ static int vxlan_process_vni_filter(struct vxlan_dev *vxlan,
- 		memset(&group, 0, sizeof(group));
- 	}
- 
--	if (vxlan_addr_multicast(&group) && !vxlan->default_dst.remote_ifindex) {
-+	cfg = rtnl_dereference(vxlan->cfg);
-+	if (vxlan_addr_multicast(&group) && !cfg->remote_ifindex) {
- 		NL_SET_ERR_MSG(extack,
- 			       "Local interface required for multicast remote group");
- 
-diff --git a/include/net/vxlan.h b/include/net/vxlan.h
-index 7ced743ec8816d412bb14ec7ee7b422e97c38895..f90d43a9284c1f7bc03002cbd6e079651129f727 100644
---- a/include/net/vxlan.h
-+++ b/include/net/vxlan.h
-@@ -295,7 +295,7 @@ struct vxlan_dev {
- #endif
- 	struct net_device *dev;
- 	struct net	  *net;		/* netns for packet i/o */
--	struct vxlan_rdst default_dst;	/* default destination */
-+	struct net_device *lowerdev;
- 
- 	struct timer_list age_timer;
- 	spinlock_t	  hash_lock;
--- 
-2.55.0.979.g7e5102b832-goog
+-----BEGIN PGP SIGNATURE-----
 
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCap2qiAAKCRA6cBh0uS2t
+rEquAQCWE6dSaR4tjveaMuQdXJqsSCMIiojVFV+OV98Wq+CROQD/eshncuHAQyIT
+T5GsdkCVoLYxuBPjkgtBhzzNFLrTsAs=
+=sj/E
+-----END PGP SIGNATURE-----
+
+--FFrCH4JkhHLzpD2B--
