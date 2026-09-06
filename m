@@ -1,84 +1,88 @@
-Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 598B9217704;
-	Sun,  6 Sep 2026 04:18:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0C373D891E;
+	Sun,  6 Sep 2026 04:22:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788668324; cv=none; b=dtrZkX4SMYZs+pi49g4h2eF7Sb0KPQ7aGv4rcUdTCbUp/GtfJDhEZnkHSfy69GT8HklUIpZHeFs801YrC8omJRLHqPpyeVbckm2WVjgk1jUqbawhr9EDqDnQWMq2BCcXb8aA5DBT499LrOjz+iHb0e5UnlhaB4kmkzpaPzKUQFY=
+	t=1788668527; cv=none; b=WvAkHPVS6rlk2uxqvU2+iwP9FRkzXWE90slrkq5bgEo8+aB4H0gF2LZDIpN/7zccQzWZzag963a7Lb2j79Qc+BLLfClRTnIYpC3yPagtCTdgEE2wrdV3Jb0kp8fDfxiC/NV+hlApHPx6esEL5rQLHq+x7IBMryZZjJAvLRx/JCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788668324; c=relaxed/simple;
-	bh=C2APnU0KFZkND5kSczDYEavOxInW2UclGHzMtXaxKvQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tZbvVHykqqXC6ZFPYiuHjaGQ7q/q6lpmJ/ZiKYVk58bC5A7NCE4h6M8AgmsKaRr/mVTYfy0zbcZiXRTchoe2cCz1pzv+UdCWDXONxVrilQPMefccHmixTzEjKbAfzUob2owcT9DTMivyN9UWbve0W6fcHHumZYzuRk7UcTBjR8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=strlen.de; arc=none smtp.client-ip=91.216.245.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=strlen.de
-Received: by Chamillionaire.breakpoint.cc (Postfix, from userid 1003)
-	id 3F89C60544; Sun, 06 Sep 2026 06:18:34 +0200 (CEST)
-Date: Sun, 6 Sep 2026 06:18:33 +0200
-From: Florian Westphal <fw@strlen.de>
-To: Weiming Shi <bestswngs@gmail.com>
-Cc: Pablo Neira Ayuso <pablo@netfilter.org>, Phil Sutter <phil@nwl.cc>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, co+459f67f4d8af8ce6@bugs.sh,
-	Xiang Mei <xmei5@asu.edu>
-Subject: Re: [PATCH nf] netfilter: ip6t_rpfilter: handle routes without
- inet6_dev
-Message-ID: <apzpbMAdqSa_SkEx@strlen.de>
-References: <20260906034939.3746540-1-bestswngs@gmail.com>
+	s=arc-20240116; t=1788668527; c=relaxed/simple;
+	bh=rbIiz3uJQFoVxoHrgo07TtcLEnv99oexyx4ls1WQz08=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OJ9zycyRtB3xePj88QhCBfQGVT2iabOJtSIEBleDLYQ2K/VdoRwXXlmQuoZsUb688OYhrGKOt6LtHW0Sb5Hq/M4DaGQZLu7dIU7O8j2cSPmiojEQdAnD6QngMNTNBD3zeUz7KY2JoPxAraL12Mu5HD2EoLV7G7LbyCv6jdw+nl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=RxOQo9e4; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="RxOQo9e4"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=3MKb3iLUbR2VkDI8TJ/lPhLP7ryFwI1nuNrk7TVhqBI=; b=RxOQo9e4AidBJLBpkObkvI03zu
+	fqP1oR3VjEOOgqhXPGq6gXddJP4t62DxuxhoioKaTy86lIN5XMz/O55+FErL6JES17h0k9vV2ee6e
+	NFvYSr7i/Srd/eGHT/88f+DC8CUpKaEfN/K2/Oq+mYFntoYFtTf4YoKNLhk14hR48qPxTdZCmvCbQ
+	mMVrBv2EX8YikP25iFU/a7FM96evG8Xv4u3tmpgD6W+DYGEMcPqzNf3c7KBQjnVFoVco8icDlKB5Y
+	4ZEdUVOcw52xgy2WgniHIMraw3jBCPAhQD8C/wL1PpifXSTUAsR0qNah4ymWkw3iu+p7QqGtG8dLz
+	OnU8u6jA==;
+Received: from [50.53.43.113] (helo=[192.168.254.34])
+	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1x34OH-00000004ftg-2bU8;
+	Sun, 06 Sep 2026 04:22:01 +0000
+Message-ID: <f63c002a-39ce-490f-9a7b-4f6baa8147b6@infradead.org>
+Date: Sat, 5 Sep 2026 21:22:00 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260906034939.3746540-1-bestswngs@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next] docs: mctp: Fix the struct net_device name
+To: Karl Mehltretter <kmehltretter@gmail.com>,
+ Jeremy Kerr <jk@codeconstruct.com.au>,
+ Matt Johnston <matt@codeconstruct.com.au>
+Cc: netdev@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+ linux-doc@vger.kernel.org, Shuah Khan <skhan@linuxfoundation.org>
+References: <20260905095116.42147-1-kmehltretter@gmail.com>
+Content-Language: en-US
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20260905095116.42147-1-kmehltretter@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Weiming Shi <bestswngs@gmail.com> wrote:
-> ip6_route_lookup() can return an error-free route whose rt6i_idev is
-> NULL.  For example, lowering an external nexthop device's MTU below
-> IPV6_MIN_MTU tears down its inet6_dev while fib6_ifdown() leaves routes
-> using nexthop objects in the FIB.
+
+
+On 9/5/26 2:51 AM, Karl Mehltretter wrote:
+> struct netdevice does not exist; the type is struct net_device.
 > 
-> rpfilter_lookup_reverse6() dereferences rt6i_idev before evaluating its
-> loose-mode condition.  This lets an unprivileged user with a private user
-> and network namespace trigger a NULL pointer dereference:
+> Use it.
 > 
->   Oops: general protection fault, probably for non-canonical address
->   0xdffffc0000000000
->   KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
->   RIP: rpfilter_mt
->   ip6t_do_table
->   nf_hook_slow
->   ipv6_rcv
->   process_backlog
->   net_rx_action
->   handle_softirqs
+> Fixes: 6a2d98b18900 ("mctp: Add MCTP overview document")
+> Assisted-by: LLM
+> Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
+
+Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
+Thanks.
+
+> ---
+>  Documentation/networking/mctp.rst | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> Evaluate loose mode first because route existence is sufficient there.
-> In strict mode, compare devices only when the route has an inet6_dev.
+> diff --git a/Documentation/networking/mctp.rst b/Documentation/networking/mctp.rst
+> index c628cb5406d2..3bff00c11702 100644
+> --- a/Documentation/networking/mctp.rst
+> +++ b/Documentation/networking/mctp.rst
+> @@ -19,7 +19,7 @@ networks.
+>  
+>  An interface (or "link") is an instance of an MCTP physical transport binding
+>  (as defined by DSP0236, section 3.2.47), likely connected to a specific hardware
+> -device. This is represented as a ``struct netdevice``.
+> +device. This is represented as a ``struct net_device``.
+>  
+>  A network defines a unique address space for MCTP endpoints by endpoint-ID
+>  (described by DSP0236, section 3.2.31). A network has a user-visible identifier
 
-I don't think we should treat rt->rt6i_idev == NULL as an eligible
-result, even in loose mode. Maybe this instead?
-
-diff --git a/net/ipv6/netfilter/ip6t_rpfilter.c b/net/ipv6/netfilter/ip6t_rpfilter.c
---- a/net/ipv6/netfilter/ip6t_rpfilter.c
-+++ b/net/ipv6/netfilter/ip6t_rpfilter.c
-@@ -61,7 +61,7 @@ static bool rpfilter_lookup_reverse6(struct net *net, const struct sk_buff *skb,
-                fl6.flowi6_oif = dev->ifindex;
- 
-        rt = (void *)ip6_route_lookup(net, &fl6, skb, lookup_flags);
--       if (rt->dst.error)
-+       if (rt->dst.error || !rt->rt6i_idev)
-                goto out;
- 
-        if (rt->rt6i_flags & (RTF_REJECT|RTF_ANYCAST))
-
-
+-- 
+~Randy
