@@ -1,178 +1,218 @@
-Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7C183314C4;
-	Sun,  6 Sep 2026 18:56:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.97.239
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C12493B42FE;
+	Sun,  6 Sep 2026 19:00:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788721012; cv=none; b=eMXHbCbqhgkPGsE/ZiMQ1FyVpxxQyrLxiYplfyYXqGVqkPfmleTfT6VzpHd//YYHB77Ojq21F2Y62aeWPtbixXxvq0Mq6MIySVyWlakhUSC+35KDFqgMn2mFyYgvla/zC+zs+ytzpzFVzhIFMXqPVIG1Ob3zy5piQbnva9Jf/Hk=
+	t=1788721246; cv=none; b=J75hbHDPfwShMC/S5VNqPRdOhGpJauT343fdWY2hbK1Jfn5xiZVYRH7+130H1ebNQf541ZGLZm7ugh3IL9kBmqClXZkUN4Dpt4NstT/r0x+rrHXvs7bIrRZFFp+SMH8ow1IDItUvrIehqazkCVrKD6IMXekbWU5QbhdaVzM0b4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788721012; c=relaxed/simple;
-	bh=GzwTYTPNB+3ZgaSGbOJhfN4xcVHixesBzXXyYH87uhM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XdbaXFvBatSfP4ER0t94gDEytjHjNnLxunzvE47By/all3SLIu4m3NEQ3ZbQn4y03k4LZDOL38HjOBIxYH1fAdkY1lHFFDxO8Jdy71+5tFqiUB1cx8nwgYJZGL2dPJjkrL5xizGWZDXVgCczku9QhoBJ6icGyH1VDU8uwvWJXt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=Np64Orrn; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=IEdo3RZl; arc=none smtp.client-ip=23.88.97.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
+	s=arc-20240116; t=1788721246; c=relaxed/simple;
+	bh=eZiV2g18eAGjzO/LLUTPp/72c+BuvitORBjdc3n/u8s=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=U1nQ1lOOC2pK8scGNbEBPCRDBaYlGr/lerdPrux34mvEP8PB2Ou3fPcfu5fcRALXqaHzPxxfx3+DEms35MHdWSn/MllOByjOpMmZFz1nRRM7PMoglekDkoXuSLOzL9cuvDRetWVhKqa2wVI+p3uFjol2Qt12CaAIyhgpdWpVrKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hzdYY/qW; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="Np64Orrn";
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="IEdo3RZl"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1788721003;
-	bh=GzwTYTPNB+3ZgaSGbOJhfN4xcVHixesBzXXyYH87uhM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Np64OrrnAiDjkzGw7b+8Sxetw8JEGWE9wGXt5gJMS0F24JZE37lL5FfV3oNgpMmRi
-	 xvzCBNl6OjtpfIZV3JLajfWqssO20HL9k4fAExJTUNclCNQYHlldOvL8IavbHocjIk
-	 BV93WsDVdO/Vcy0Dg27x2YPXeruiT+ItsjjeJWtJBy05AKTzysXMcG3E1rc7zQNi9C
-	 OWz5Evi+L2X9TC2YRWIkmSUpr37lGKy59rIQ4spcPODfBofymIy4xylowcqeZE78a1
-	 bxGh3jPF1Bg45QpSpT6aupTm8hZtKL1WOtb1L61iUNZwCJd9rlRWVPB2VbDVOxw3A8
-	 XcmmMtub2tKGA==
-Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
-	id 0CBB13F1ED; Sun,  6 Sep 2026 18:56:43 +0000 (UTC)
-X-Spam-Level: 
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1788721001;
-	bh=GzwTYTPNB+3ZgaSGbOJhfN4xcVHixesBzXXyYH87uhM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=IEdo3RZlgB8mBSaLjlE9yh03j0w1KvEPb6W2ens0JqphMz3PVC5in6vEhdZWLtVFB
-	 xUf3LbaBNUxZ/cCqrl3VvANwFTEi+78oZXg0wugvr6Lv8sMr8SrThl63p6SOi9m/Mg
-	 TPRiyirt92X/miVHl8yopnap0YJaqAfo4kNF7kY4R5EF3p/m/1ZsZkpfuFB0KeXZCt
-	 wYKy5R3svxh7ligpmNR66MNb3n3co7R9wkFN/Bs9vCw+Dx/jUXMhmhg8x+iIEo05J1
-	 XiO6Fmdc0ChwtZE8Dm93KiuA2Ds1q7Eaw/9h8J0zmKLoV6GmIxjWG09yEc6Yl+uAtZ
-	 4Qa9yc/fJ03gg==
-Received: from [IPV6:2a00:6020:47a3:e800:271c:c6c5:9fde:77cb] (unknown [IPv6:2a00:6020:47a3:e800:271c:c6c5:9fde:77cb])
-	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id 89F823F1B9;
-	Sun,  6 Sep 2026 18:56:41 +0000 (UTC)
-Message-ID: <f56aa06f-fad7-4714-9c54-846397bf2438@birger-koblitz.de>
-Date: Sun, 6 Sep 2026 20:56:41 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hzdYY/qW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AD221F00A3A;
+	Sun,  6 Sep 2026 19:00:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788721244;
+	bh=f6QaRcl8KphuJpnun+cYVXPrk2Qep1qZIcNAgvpEG+o=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=hzdYY/qWIbMcnIDFlVUx7d5emVW7AEpvHxITh7+5IccBYGnfSRxWa4VS5GJsfwNel
+	 xaKaWNYIiQiOLscm7hNT+a3s7iiuezKpic+jt4om9+SDlAPRaFK94e/niYQ/GdHIVD
+	 8Ya7PAqMhXQ7yCHYu+emnB4ZZRn0N0X1w9/hLc3Rq7V1c/1cZ9uD1bKiXjVA9/RGtM
+	 Mwv9z3ELk837QJiaXsHtED31peAGWsp/G7hbV/xEx+nWPiWsLsnUhHM8EeEGLeLIsz
+	 m0hCKDqXRThL6Etcqv9tR5QmLZkkOXnIusPRxQ+4uAA/OfOtVpW+aWFztnABDUxgjq
+	 cuJdMXXAkt6Zg==
+Subject: Re: [PATCH net] net/mlx5e: Keep HW timestamp stats monotonic across
+ reconfiguration
+From: netdev-bot+sashiko@kernel.org
+To: tariqt@nvidia.com
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com,
+ cjubran@nvidia.com, dtatulea@nvidia.com, gal@nvidia.com, leon@kernel.org,
+ linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org, mbloch@nvidia.com,
+ rrameshbabu@nvidia.com, richardcochran@gmail.com, saeedm@nvidia.com,
+ shshitrit@nvidia.com
+Date: Sun, 06 Sep 2026 19:00:42 +0000
+Message-ID: <178872124291.219967.5690857105577484083@kernel.org>
+In-Reply-To: <20260902193731.3668958-1-tariqt@nvidia.com>
+References: <20260902193731.3668958-1-tariqt@nvidia.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v10 00/15] ax88179_178a: Add support for
- AX88179A-based chips
-To: Jianhui Xu <neuromoments@gmail.com>
-Cc: andrew+netdev@lunn.ch, andrew@lunn.ch, davem@davemloft.net,
- edumazet@google.com, hkallweit1@gmail.com, kuba@kernel.org,
- linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
- linux@armlinux.org.uk, netdev@vger.kernel.org, pabeni@redhat.com
-References: <20260904-ax88179a-v10-0-b5e60eca7690@birger-koblitz.de>
- <20260906104031.78051-1-neuromoments@gmail.com>
-From: Birger Koblitz <mail@birger-koblitz.de>
-Content-Language: en-US
-In-Reply-To: <20260906104031.78051-1-neuromoments@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-Hi Jianhui,
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider:
 
-On 06/09/2026 12:40 pm, Jianhui Xu wrote:
-> Hi Birger,
-> 
-> I tested v9 on the same ASIX AX88179B adapter. By the time you read this,
-> v10 has already been posted. Given the relatively small differences between
-> v9 and v10, I expect the issue I found in v9 to apply to v10 as well.
-> 
-> First, as you already noticed, `data` is undeclared.
-> 
-> For QEMU runtime testing I also had to apply Chen-Yu Tsai's unrelated
-> `usb: xhci: Fix HCS_ERST_MAX conversion` patch. Without it, this base kernel
-> fails to initialize QEMU's xHCI controller before the network driver is
-> reached.
-> 
-> All three fresh functional starts completed cold DHCP at 1000baseT/Full
-> without reloading the driver and passed the normal 1000/100/10/1000 Mbit/s
-> matrix, EEE disable/restore, pause enable/restore, and EEPROM read.
-> 
-> During repeated speed transitions, I observed one intermittent carrier-loss
-> failure. Of 19 normally initiated restores from 100/full to the default
-> 1000/full advertisement, 18 passed and one failed to regain carrier. After
-> that failure, ethtool reported unknown speed and no link, and further
-> advertisement changes did not recover it. Dmesg showed the preceding
-> 100-Mbit Link Up followed by Link Down, with no subsequent Link Up before
-> the device was reattached.
-> 
-> I could not reproduce the failure in two later fresh starts or in a further
-> 90 unmodified-v9 stress cycles. Counting the normal matrix and stress
-> points, all 22 tested 100/full points passed, so I also did not reproduce
-> the earlier 100-Mbit carrier-without-RX failure.
-> 
-I tried to reproduce the issue myself. I am running the v10 USB and PHY 
-driver modules directly on a PC with otherwise Kernel
-Linux version 7.1.8+deb13-amd64
+Critical: 0 · High: 0 · Medium: 1 (1) · Low: 0
 
-I am using the following script to change between 100MBit and 1GBit
-1000 times with an AX88179A 1GBit dongle, each time testing a ping and 
-printing out the negotiated speed:
-!/bin/bash
-i=0
-speed=100
-while [ $i -lt 1000 ]
-do
-         ((i++))
-         echo "Run $i"
-         success="BAD"
-         success=$(ping -c 1 -q 192.168.10.247 >1 2>&1 && echo "OK")
-         echo "Success: $success"
+- [Medium] mlx5e_stats_ts_get()
+  (drivers/net/ethernet/mellanox/mlx5/core/en_stats.c:1199-1236)…
 
-         if [ "$success" != "OK" ]; then
-                 echo "Failed: $success $i"
-         fi
+Pre-existing issues:
+- [Medium] The mlx5 PTP CQ -> struct ethtool_ts_stats mapping retained
+  (and re-indented) by this patch in mlx5e_stats_ts_get()…
 
-         ethtool -s enx9c69d380ffff autoneg on speed $speed
-         if [ "$speed" != "100" ]; then
-                 speed=100
-         else
-                 speed=1000
-         fi
-         sleep 6
-         echo `ethtool enx9c69d380ffff | grep Speed:`
-done
+--
 
-This runs through without issues 1000 times:
-[...]
-Success: OK
-Speed: 1000Mb/s
-Run 999
-Success: OK
-Speed: 100Mb/s
-Run 1000
-Success: OK
-Speed: 1000Mb/s
+net/mlx5e: Keep HW timestamp stats monotonic across reconfiguration
 
-ethtool changes the speed, then reliably reads the correct speed while 
-ping works and the device continues to respond normally through the 
-entire test. All of this 1000 times.
+mlx5e_stats_ts_get() no longer picks between DMA and port timestamp
+counters based on tx_ptp_opened, and instead always sums the DMA
+timestamp counters from the persistent per-channel statistics, adding the
+port timestamp counters once the PTP TX queues have been opened. The
+state_lock is dropped since only persistent stats are read now.
 
-So, either what you observed is extremely rare, or it could also be 
-influenced by the different test setup, including the fact my test is on 
-bare metal, but also by the link partner (an RTL8372-switch in my case).
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_stats.c b/drivers/net/ethernet/mellanox/mlx5/core/en_stats.c
+> index e7e6db7f6bf1..cd94bb44f6ab 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_stats.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_stats.c
+> @@ -1199,50 +1199,39 @@ void mlx5e_stats_rmon_get(struct mlx5e_priv *priv,
+>  void mlx5e_stats_ts_get(struct mlx5e_priv *priv,
+>  			struct ethtool_ts_stats *ts_stats)
+>  {
+> -	int i, j;
+> +	u16 nch = mlx5e_stats_nch_read(priv);
+> +	int i, tc;
+>  
+> -	mutex_lock(&priv->state_lock);
+> +	ts_stats->pkts = 0;
+>  
+> -	if (priv->tx_ptp_opened) {
+> -		struct mlx5e_ptp *ptp = priv->channels.ptp;
+> +	for (i = 0; i < nch; i++) {
+> +		struct mlx5e_channel_stats *channel_stats =
+> +			priv->channel_stats[i];
+>  
+> -		ts_stats->pkts = 0;
+> +		for (tc = 0; tc < priv->max_opened_tc; tc++)
+> +			ts_stats->pkts += channel_stats->sq[tc].timestamps;
+> +	}
 
-The other point is that in principle what we are testing is not 
-something users do regularly: you plug the dongle in, it autonegotiates, 
-and that's it. And if you change the speed, there is a 50% chance you 
-will do it from the other side of the link, which seems to be much less 
-problematic as I noticed previously when we had the race condition due 
-to PHY polling, because the dongle does not try to optimize the link: it 
-accepts what is being offered.
+[Severity: Medium]
+Does this loop miss the HTB/QoS send queue timestamp counters?
 
-I did not test your code, but I am wondering whether it is not simply 
-enough to do:
-+	if (link)
-+		phylink_mac_interrupt(data->phylink);
-without reading the bit whether the MAC link is up. Speed changes come
-with a link-down, so I would think this is enough to do it like that. Or 
-maybe I am missing something?
+The DMA accumulation here only walks priv->channel_stats[i]->sq[tc], but
+HTB offload SQs keep their statistics elsewhere, in
+mlx5e_open_qos_sq():
 
-Given that we do not really know whether there is actually an issue, 
-what it is and whether it is really relevant, otherwise your tests all 
-succeed, and also because I have a feeling that Andrew may not like it 
-if we try to be smarter than phylink, I would suggest we leave it like 
-this for the moment. I would really like to see this being finally 
-reviewed to the point where it can be merged.
+drivers/net/ethernet/mellanox/mlx5/core/en/qos.c:mlx5e_open_qos_sq() {
+	...
+	err = mlx5e_open_txqsq(c, tisn, txq_ix, params, &param_sq, sq, 0, hw_id,
+			       priv->htb_qos_sq_stats[node_qid]);
+	...
+}
 
-Birger
+Those SQs are opened without a ptpsq (sq->ptpsq is only assigned in
+mlx5e_ptp_open_txqsq()), so every hardware timestamped skb completing on
+an HTB class queue takes the DMA branch:
 
+drivers/net/ethernet/mellanox/mlx5/core/en_tx.c:mlx5e_consume_skb() {
+	...
+		} else {
+			skb_tstamp_tx(skb, &hwts);
+			sq->stats->timestamps++;
+		}
+	...
+}
+
+incrementing priv->htb_qos_sq_stats[qid]->timestamps, which the new code
+never reads. With HTB TX offload configured, are those packets then
+permanently absent from ETHTOOL_A_TS_STAT_PKTS, even though the driver
+still reports the same events privately as qos_txN_timestamps via
+MLX5E_DECLARE_QOS_TX_STAT(struct mlx5e_sq_stats, timestamps)?
+
+If so, should the new comment claiming DMA timestamp counters are
+accumulated also mention this queue class, or should the loop fold in
+priv->htb_qos_sq_stats[] as well?
+
+> +
+> +	/* Accumulate DMA and port timestamp counters so values stay monotonic
+> +	 * across channel teardown and mode switches.
+> +	 */
+> +	if (priv->tx_ptp_opened) {
+> +		/* Err and Lost stats are only relevant for port timestamping,
+> +		 * as the DMA layer will always successfully timestamp packets.
+> +		 */
+>  		ts_stats->err = 0;
+>  		ts_stats->lost = 0;
+>  
+> -		if (!ptp)
+> -			goto out;
+> -
+> -		/* Aggregate stats across all TCs */
+> -		for (i = 0; i < ptp->num_tc; i++) {
+> +		for (tc = 0; tc < priv->max_opened_tc; tc++) {
+>  			struct mlx5e_ptp_cq_stats *stats =
+> -				ptp->ptpsq[i].cq_stats;
+> +				&priv->ptp_stats.cq[tc];
+>  
+>  			ts_stats->pkts += stats->cqe;
+>  			ts_stats->err += stats->abort + stats->err_cqe +
+> -				stats->late_cqe;
+> +					stats->late_cqe;
+>  			ts_stats->lost += stats->lost_cqe;
+>  		}
+
+[Severity: Medium]
+This is a pre-existing mapping that this patch only re-indents, so it is
+not introduced here, but can the same timestamp request end up counted in
+pkts, lost and err at once?
+
+The kernel-doc for struct ethtool_ts_stats in include/linux/ethtool.h
+describes err as:
+
+ * @err: Number of arbitrary timestamp generation error events that the
+ *	hardware encountered, exclusive of @lost statistics.
+
+In the driver, a request whose port CQE has not arrived within the
+undelivered timeout bumps lost_cqe while the skb stays in the metadata
+map:
+
+drivers/net/ethernet/mellanox/mlx5/core/en/ptp.c:mlx5e_ptpsq_mark_ts_cqes_undelivered() {
+	...
+		ptpsq->cq_stats->lost_cqe++;
+	...
+}
+
+If that CQE arrives later, mlx5e_ptp_handle_ts_cqe() takes the
+!nodes[metadata_id].inuse path and bumps late_cqe (mapped to err), and
+for a non-error CQE also cqe (mapped to pkts).
+
+Similarly, an aborted timestamp never reaches skb_tstamp_tx():
+
+drivers/net/ethernet/mellanox/mlx5/core/en/ptp.c:mlx5e_skb_cb_hwtstamp_tx() {
+	...
+		ptpsq->cq_stats->abort++;
+		ptpsq->cq_stats->abort_abs_diff_ns += diff;
+	...
+		return;
+}
+
+yet cq_stats->cqe was already incremented for that CQE, so pkts counts a
+packet whose timestamp was never delivered to the socket while err counts
+it too.
+
+Since this patch turns pkts into a permanent DMA plus port sum, would it
+be worth documenting or correcting the overlap so userspace summing
+pkts/lost/err does not exceed the number of timestamp requests?
+
+>  	}
+> -
+> -out:
+> -	mutex_unlock(&priv->state_lock);
+>  }
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260902193731.3668958-1-tariqt%40nvidia.com
