@@ -1,259 +1,199 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011010.outbound.protection.outlook.com [52.101.57.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80AFB382F0C
-	for <netdev@vger.kernel.org>; Sun,  6 Sep 2026 18:01:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788717713; cv=none; b=hvfmfeM8JP0ZTVCZAqvC3ycfFYJ7eoe3T5BbJmUTsyfWbIQeBVn/05tb66PPkM1xQ82bVbDoehKbgX1t0O6ZLe7JDtZAmuCNg6r/GPaxlso20Dh56mVAiFY+TuUw10FR9aDVvpPbcJ+JpNFtTuQ46c1cMy9cb/KOzDndCkx6wN0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788717713; c=relaxed/simple;
-	bh=GUTPmQhrCP9yvcidN1Fin9zSiN1YDAsDej6CraxZ1uw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HRyT32cy/qhkYP1Dw+EYQkXHgQ2EGNA/pLo88BPrICheK31Q67sWnEK6ueCHLbRe67QJqJJ6+inwKvclY9edTsQxUi8kAccBpxgkidTHyOy0zPxqe9B0jmwRF1OfW+IPqPH4wqvl+1Wc/jmfMaIhgv0cvM+cbvqDKOMbzATWwQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=F3chIfGV; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=N8zkB3MR; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8460C363C63;
+	Sun,  6 Sep 2026 18:19:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.10
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788718772; cv=fail; b=Fkts1BXnTY5IUTU1OR826CJY9QrSNisobYsfCDePWlx0wVXpgw/L+jPNLJuO+hQwqR2HmSafN1ancptUD9qdqheI/dp6X6Op8/EVpYWUv87u/PaR1tIWS+oO/xGD9K7PJLYojtjp0PCguLr+jxbFGgTcziJGxJ6Y4az3knA2JkU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788718772; c=relaxed/simple;
+	bh=FnXemtcSosMMsRobJ954dXcIegpOx0SIFs1vg5pUp5I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=QelwevBT7A2fCjPCnAP+tKraMBhe6i+B62DoPjhKGhS2nmLcDvGSks0fNqaeuuxhyWnKhDM+meEj4vjrGTD68lZ6kVWkAdeZn4WQR/vMJiYCIbqCF3PePOo6uzwA77R9yApYh8RlDYAsiGkKXADFqaqhjRRocvb3T2wRt8syTvk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=QWST2oug; arc=fail smtp.client-ip=52.101.57.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="F3chIfGV";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="N8zkB3MR"
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 686HmOL01170761
-	for <netdev@vger.kernel.org>; Sun, 6 Sep 2026 18:01:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=tSD1AQ8YNJcxrDRm1u9U/EB9
-	4J/kvvGewRpxLnEWee4=; b=F3chIfGVxRE5LbEUbXTJnqpJ4f9bihyTrVXHE+AK
-	pqNRsEChNzSHP6Z4iQC9YpRkY8TtmOnl7wOUBt/JtKo+Uf3T7btBrZmG2S9doGSh
-	6dKpVnaUYfuvPnePtUlSRQE/UVH8ygcikWX+6XCDT1dhgX7g1ZVawcnRx2EXi4nh
-	0ZkEbqQbbrmcl5LSqU36/9hwTmaVNCzqTqZ9pnJgGQS1uCj5+R8RIZiFmDSOuCyB
-	Z3EsbTG+zHFmBgPrOyq0V0awIVx+KQnAl5C9kZ1DHLyvBF9hOR8PDwZL1lhbU62k
-	Ns98LYUkx0lT7nJUzVD8xSy6kwnb6LiG9hYX3X1wK/cJZw==
-Received: from mail-vk1-f197.google.com (mail-vk1-f197.google.com [209.85.221.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ggbuekywn-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Sun, 06 Sep 2026 18:01:47 +0000 (GMT)
-Received: by mail-vk1-f197.google.com with SMTP id 71dfb90a1353d-5c7ab4af214so753531e0c.1
-        for <netdev@vger.kernel.org>; Sun, 06 Sep 2026 11:01:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1788717706; x=1789322506; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=tSD1AQ8YNJcxrDRm1u9U/EB94J/kvvGewRpxLnEWee4=;
-        b=N8zkB3MRkwzDUiYLvXIJ2MBDI7+gZxe/R6lUyygc3SxMSNxprKgNgKettHnirTwUQI
-         KRYqcYvtHVxo9zGweEbsBclarbOA3H60X1c3Q5ESFHMN782SpsuQ55ZEx7KICxN39wX2
-         tRDqZggeTM9bTXJWZrTZ2Z7dd7U71YYbEIBOXibVl1fpltsb4OqdzDB3SsYesqgXFhPU
-         QWmsK+sxCXox+UTGJCdI/XQ+uHoM0/M7QXQu6IItlk3sUoat+Vz/fivlRfCK636nvcDn
-         NCX5zEJS18QjrU/UZmjHPpQTilqjrYwMECrIrMMXsI7uuzCMiMOPE9YPFyIPzzdKfFDb
-         46Gw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788717706; x=1789322506;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=tSD1AQ8YNJcxrDRm1u9U/EB94J/kvvGewRpxLnEWee4=;
-        b=Ej4F1IBQOcuzmyFbkOQU1ODLoDnZ/Ppxj+wNuSsHHlEI/Lna2n6glOxbQeu6y/Tem8
-         9p9amaznlht3eMLKfDIrapQgNySmFJJMOLvIk7xAcIrt40gC//fmmnUfi5cLQ13iESGe
-         LmX6sblFJFDBfXzZq/mIHjlosxlTA4yyD75uKJFdj1+9Gcy7f+6S4GFe9QOd4iiUbM1b
-         N3GfwSjir+JqL5f9JPDYYNGAHrq+WTcPhbO563vWM7OO68WYr1JdQwfg5qS2blA8nup6
-         7+UWpYtCk4mI4VgRc165TcJE/pe49lkRxoDr7nNvJLxViY63khsCbF/NlB9aTLq5a6bF
-         4CNw==
-X-Forwarded-Encrypted: i=1; AKwUvBwCd1WSOnIXt2oN+TT/eY2lirF6huQfUGHY45FeGtil4fc46hiQH0PaZ2fZ1RidozdJ7YrV3Ac=@vger.kernel.org
-X-Gm-Message-State: AFuF++nPk4141QRFwBUx4LiB/E5+ZKtvHd1FykRRWSZiBqpqO/3U5oKJ
-	1u6yEg1sa/DeQwZQcUQH+Sayv2ahPcqIyldGzsf0S9nEcIQjgA2aVkcUbMZzirGsAt4AOrX2zMO
-	YUBlo3rHCj0CZd8HpJ9zU2s6OfK5VhCZwsswJmVaqux21TLDuzevRcWi3b+Y=
-X-Gm-Gg: AYBFou0YctGztAXKTT2sd/rHNcjxdB/5l2sD5kHGb/ItxJy+InSwMPeh/4OygqKZViH
-	OL9yyl/6tRTylj6nqVyU8Jlp4LuLg5hqBCjbCwkMMM4r5fkE2zT6yb0Mr+K4nn9yipdLnrIMzLX
-	c9wCUY+o6Zj6SGJlilZ6Zrxirqm0bafAcY0JR4xXz4a1KLVrHnHvhWeXdqqwwdxaNDkWNyThgyS
-	SeFmUOee+OWnLWBpdEqnJPbGFLZKxxHmVBILp35bUEDEkQ94q7vTVBio2kRoKMUQLiDfQ+Lf5Qj
-	VflcbGYL5IbDTYce35JybJremJlomJ55QA0MHcIRXJZ8HAJeZo0oZ6ChfZOr7X2J89j/5OAxEX3
-	G/sQQJ6YSYvTLDw==
-X-Received: by 2002:a05:6102:41a9:b0:784:4d38:ef58 with SMTP id ada2fe7eead31-78a4a57f683mr5696890137.0.1788717706350;
-        Sun, 06 Sep 2026 11:01:46 -0700 (PDT)
-X-Received: by 2002:a05:6102:41a9:b0:784:4d38:ef58 with SMTP id ada2fe7eead31-78a4a57f683mr5696869137.0.1788717705780;
-        Sun, 06 Sep 2026 11:01:45 -0700 (PDT)
-Received: from localhost ([188.216.77.92])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4858bc74298sm19933452f8f.6.2026.09.06.11.01.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 06 Sep 2026 11:01:44 -0700 (PDT)
-Date: Sun, 6 Sep 2026 20:01:44 +0200
-From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-To: Eric Dumazet <edumazet@google.com>
-Cc: Ren Wei <weir@nebusec.ai>, idosch@nvidia.com, netdev@vger.kernel.org,
-        dsahern@kernel.org, iprintercanon@gmail.com, davem@davemloft.net,
-        kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-        tom@herbertland.com, vega@nebusec.ai, petalzu987@gmail.com
-Subject: Re: [PATCH net v4 1/1] ip6_tunnel: snapshot encap in xmit
-Message-ID: <ap2qiIS2cQZB8D0h@lore-desk>
-References: <cover.1788262122.git.petalzu987@gmail.com>
- <2ce8f3e4bbed6060afb0aee33dc4e1d9ae021280.1788262122.git.petalzu987@gmail.com>
- <ap2ksmdL1FFulLnF@lore-desk>
- <CANn89iKeNgRxhkUvxeMmyAJGcT+3hpbWaM+VubQ2sBVGSDeouw@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="QWST2oug"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=sGq/9fchFmTfj8c5lBo3vQdrbH4L2PkdivLNGLalwnUI66HIQ8ZHz/iiuBNu+2M2Sw+7RNsmhD7eVImD0QNT8NpfRWw9oKGZvXPAY3louFS6H3vQ8U06sE1cpJKohaxIq9lOcA9kEKb0z9C4q+6DlhqmzehW87wBlwQ/tM7MJ4UN4qZdGkuw6PEZCSZivliRBw1+G2yWVof9Jcta7FXEfZ31tr/YTt7CW3b5klJCbuUR/3rEWVyg6IlMP4+XGYN2t60Kc833bSPGm0pGBjXVCKN4yzgMXGGktTPsspLMq266ilUKxTRWDuaRwxOPaxQwoS4aZqgFimyrlt4E8PRfow==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=QQJEXf01y1p9b5wsVfxDHXXTZrgUE9dZ1sS4bRUyW7k=;
+ b=VZrQRkhujrIjPmg4LLa++BL/lPpB3LByVnTvIrlud1ESS8vCtHAG1KFA66WlfvbokCA1GiJ3vWWKaW+2NwvsWJ4d8lhwW6LHHjNEIidTRt/cBAnRMZhAd3SPJ+pVwf0H25viMMKkQA/Zhq5SnYvbHDFozsw+xrgORLbWnFwOqNLB/70/dhKN6v2UdUfC+7QkzYRXc1Iyjdz1Th04gE5VBTTu9antZX5Fxcj0pMlgi6cUlhL9nkxJc5B81DcbjOgjTlwytCRFb15HwbJMGsuKPmG2kLbnQxhh4VIYcBcsZCKRow2YIvkLMjwjP6KtZ+j4MrLZdgZ/DkCyuQQu4VgPSQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=QQJEXf01y1p9b5wsVfxDHXXTZrgUE9dZ1sS4bRUyW7k=;
+ b=QWST2ougz7+LWBY5wheNoBIxb4i6DSr2Sg7cegOsrX0zpaV0gFlvJMGrsHKxPja94Z7EQ1jLOZhZST8MZMvzZpRqMsbg2dEWd013badH0Bfd5ncPPAP5IVD6KCas37RT+T4eB7iier07oWi51ubplrlJ8itVQFek+vzcP8emx0/KXVLuX5ocu+QAR32vT7MSN38ol2QpaJMff5hA7BK4WzSvSPQYbzeKM3HflAJ0nkAwAs0iUHJiaa6cSDay+jfl6RmcU6b2bm4KkVfZUh4iK9E6Rrjnu6VoBxOJlIp7h6UGC7ypvquSLMxR95pEJen1TR/YytXkHSxY8nw5wdYlow==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
+ by LV8PR12MB9405.namprd12.prod.outlook.com (2603:10b6:408:1fa::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.382.14; Sun, 6 Sep
+ 2026 18:19:22 +0000
+Received: from PH0PR12MB7957.namprd12.prod.outlook.com
+ ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
+ ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0382.014; Sun, 6 Sep 2026
+ 18:19:22 +0000
+Date: Sun, 6 Sep 2026 21:19:10 +0300
+From: Ido Schimmel <idosch@nvidia.com>
+To: Zihan Xi <zihanx@nebusec.ai>
+Cc: netdev@vger.kernel.org, David Ahern <dsahern@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Patrick McHardy <kaber@trash.net>,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Vega <vega@nebusec.ai>
+Subject: Re: [PATCH net v2 1/1] ipv6: ip6mr: fix mr_table leak from MRT6_TABLE
+Message-ID: <20260906181910.GA455897@shredder>
+References: <cover.1788622674.git.zihanx@nebusec.ai>
+ <5fc14a8ba754126b6897939e11154167281d4c5f.1788622674.git.zihanx@nebusec.ai>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5fc14a8ba754126b6897939e11154167281d4c5f.1788622674.git.zihanx@nebusec.ai>
+X-ClientProxiedBy: FR4P281CA0229.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:e9::7) To PH0PR12MB7957.namprd12.prod.outlook.com
+ (2603:10b6:510:281::22)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="FFrCH4JkhHLzpD2B"
-Content-Disposition: inline
-In-Reply-To: <CANn89iKeNgRxhkUvxeMmyAJGcT+3hpbWaM+VubQ2sBVGSDeouw@mail.gmail.com>
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA2MDIwMSBTYWx0ZWRfXzo79TwhGSqCX
- 0eGx8HLIAajLIrRRwzSFEwyeDeYv6k4uTgvUFdKFgRa3jH/3T9JeE4T7U6rldfr7svl2S5MYIVZ
- zI4bLsueNuEQ29QUyCaGojZY+RFe62+Dsy6SkqteB0sfmKM/+yW+jnqcj5aoFfKVMfUM068kbi9
- 8kI1tvSexHEyGb6idq0WHWU94y94YdQsIWcmYR46sovdiHX+nLeHPvhYIf3JfSUGQLrmy5B2mH7
- AKou7iUydZ7TcMGbBi0HfCYk4iNTKe5MPgAur6cB2sDkuQAT6voW14IaeOEGbcNMYMeKZTQGpMN
- bhe/bDRJ6lRDg1QjTIQz7ASSV1K2qqFJ+DMlhoQQXz4T5BHoqH7/i+rjZMGyL666/yp76GGX2Zz
- FooLTQ18iI3AjReOkLg9sj5SjeCB4rY4SSfkzWTSMsNUObKYjTfo0c//IAev/YGbNA8jCPq8MwM
- AJfBWB47gE7+CBA/IXA==
-X-Authority-Analysis: v=2.4 cv=P8AKQCAu c=1 sm=1 tr=0 ts=6a9daa8b cx=c_pps
- a=JIY1xp/sjQ9K5JH4t62bdg==:117 a=WpTaRW6qxYHRGzLzQsVYzg==:17
- a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=_K5XuSEh1TEqbUxoQ0s3:22 a=EUspDBNiAAAA:8
- a=pGLkceISAAAA:8 a=VwQbUJbxAAAA:8 a=eODW3LopGc6cI9Ebo2MA:9 a=QEXdDO2ut3YA:10
- a=npIZgxzow1Zca20qZ2kA:9 a=tNoRWFLymzeba-QzToBc:22
-X-Proofpoint-GUID: SsItUnP3Y1cfkrWgg6jYioMTi85CXvDv
-X-Proofpoint-ORIG-GUID: SsItUnP3Y1cfkrWgg6jYioMTi85CXvDv
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTA2MDIwMSBTYWx0ZWRfX1k/dp43eAT03
- x7nSQA7HxKMh4mmxL+LC5QY+fz152OUOvlqp1XGWTjRf+o0t+bpeVvDIUbrBlH5xb9v7mlL12Gz
- ZVN243WMNIBeGxNhHCnHI5DNDOyYr7U=
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-06_02,2026-09-03_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 impostorscore=0 bulkscore=0 clxscore=1015 adultscore=0
- spamscore=0 lowpriorityscore=0 suspectscore=0 priorityscore=1501
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2609060201
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|LV8PR12MB9405:EE_
+X-MS-Office365-Filtering-Correlation-Id: 17d14c14-756e-4213-1852-08df0c435fbb
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|7416014|366016|1800799024|376014|10067099003|22082099003|18002099003|11063799006|56012099006|4143699003;
+X-Microsoft-Antispam-Message-Info:
+	dYZAcnKpq/jCvCOKfaWuaprrIg9f6Wi1RROMjx2ukb2Z5B7Gk3VHamKpe/Zg8Zl0cbbiOkRSxfxlL1IOPvdcWajFQx5gzX9bsb06NG8OrROHoh5Mn1/df3tXJ+qRjWbMHQuYl0sD9q6UV30+cs+TUjMPA2cCG2ZN8ontnokzoshBfIOneTEatvC6ywNc5ALl0l9yul2dekvfWdEKZU7zzr1B1qzrmfgxpUMUMVKMLDJyVmBipd/ZwBBn6m9kfMErCLTOtkbUzq0NKUF97jBVoxJPb7Z7NMcGT1hDocoETqLa4amPyje7QR2drnOftjPPV14abkaLTEj8xMIKT9p3oM6bZ/vHsgh+rYF0XZHaKM9bfYUrYzGMz5KmQGIg6JSu17KM5VCTRQxnmH3B1hiWMT276yRKhiIXiqe0eWwbIolDTFu+PAO3YD+zAmFHfLcZ6WxYNhpdWfXwxQzdCMEDopKyAJ51VFYGM2cDkdmHLz3eL3ZBwp5H+sTTt769l8wdIlrKXEDEoqTg/2AqYGoWd3tm+FEqJqGlBu3wdmgBDQ2yMS2it/Z4BKxvelmuecI2ZKGzY1ueiBEmdq4SwjyrzHsdf4edxM1JOFe/hT+wZJFgUe1LabnvJNpJhzEQnss+snS/pfL/36rsoRqtwpYXu5+1zbmPs7+BUR5RqPowIW8=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(7416014)(366016)(1800799024)(376014)(10067099003)(22082099003)(18002099003)(11063799006)(56012099006)(4143699003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?RNVajQ/casScwa1aN4n9J3053rGH+rz7f3yIN9cvguCWWQq9Lii+wLXJ7ZRh?=
+ =?us-ascii?Q?tufTuupn8Y7Sbecho+DsVXiJwRY5DfhvChW+Ec2EaB/3IHUoRfqw6IF6yLTE?=
+ =?us-ascii?Q?bhCLcO5wCuI61Y0+omHJX19KpzLZrZ2kr0ND/Xyex/UexWu6uRP3JLfEZa6f?=
+ =?us-ascii?Q?mnWQ6QlqVr8Rh0uzXaFqTDAfdOfy/EXgW4LJ27M9PatpwDxW65AdxlzZNY6f?=
+ =?us-ascii?Q?RQGOxPQoQqWA0Jz/GllbDC678lWJfr0vR1p0uK/Cq0tefSW/wSCD2JuCAGyO?=
+ =?us-ascii?Q?Bv5dcwdHPbZhopsz/bIAnTZQ3863yfhXyssraGoVwkMIigJyIo0CY6yxbzaZ?=
+ =?us-ascii?Q?07CQjmf9W7SkMvs419/ZBwpFaBZq+2OMiApYg9fU9tNWW9qsndrGBuIpgQqp?=
+ =?us-ascii?Q?ifTFe5qV1Ej1bIczad4ZFHt6pt6SdmqpxxvWNgyM08C4varTkCohU4kd5McD?=
+ =?us-ascii?Q?1+x69oYCazI8x5Naztjb13WTlcHOBWvBM0Peveam3KOcnJfSi3CLVz/C0yBg?=
+ =?us-ascii?Q?xu3Iy38+lt4a/ophvdyQRCPrmvSirKNMtxQgN0UenZw2SJ7ULrPU87G9UPLP?=
+ =?us-ascii?Q?ODwhSyFxRvwUijtatog2ZGTUB9wtXGPpZA0u5fyzMwOdWm0PFSvRmc46fKN9?=
+ =?us-ascii?Q?XnZ2E5COnKpID5XvrvHJziJUux+aMT54j4gUR3tu64M3/z5w8U8BcmEhGz1N?=
+ =?us-ascii?Q?I1KR3X9WXqBBaSXiElqhVTrq5qpH44WkIL+YYku6PUpbVRydzTQHVIRa0esj?=
+ =?us-ascii?Q?r7FfqG/h3WjrnBsVrHFIZTrwOuexl4akqDYxupyWfMV5CKdUgEYogh/grsiR?=
+ =?us-ascii?Q?xqkdW/DxmgLfjSptoOmNeJFlS1BOfFoslE5rA/NqpGpMyhfWN45iyITmGnMA?=
+ =?us-ascii?Q?ZVFoK38mzRZe3SN4kDop7qPcs0IYv+6i1/i+llqB+0PjlIwlGWvVpDOa1OzM?=
+ =?us-ascii?Q?7QnmXnB9XJGUK87PuSgoqGYfrqlyYESKGI5OZ3SRM/GYqLO3L9GTeqMkV4jd?=
+ =?us-ascii?Q?0YfUlWXqlACRk7nwfp7QAo2eU2Ojdr+pa/FhTZWWxywysJtP4Ee22HA7DmUj?=
+ =?us-ascii?Q?s5KZA7ssTt8Ge6cgTNQ5aDYkPq3oZZQcBcX2HoVMox9fqDG5NrE8MUsoNpVt?=
+ =?us-ascii?Q?85jSJ/yyEosPweQm4GZxF3H6EAjJnCKVbJbCJzLX3YzXXwcHogaC1z6kBjOO?=
+ =?us-ascii?Q?EG/zAauoUjt1i+cqk1dYjVJ3s4FQm7GlBK7eZwAXfy0Zu7B+ulFs2wfCMRMe?=
+ =?us-ascii?Q?c8Xg9X6mkLvhutwvjD4R3Wmxavp5xevwaskLgUW6/Ev/CgLy1difBtYWchn1?=
+ =?us-ascii?Q?aRoOkmz3Q1V+Jke23sw4roZgmi5guhAp+Vd1cvPYW5sQops9gs84S2qYUIsj?=
+ =?us-ascii?Q?GHkGpzzFBOBvQezpNNC1p2vIpeBobKcJMcpAQYs/Nv1XsOjS4skEM+S/BDnw?=
+ =?us-ascii?Q?mzz/Tp1FBcB0Br5L97susyexqEl6GA+OG3UgNtkRxXbGNoj+bGNJSBdF2kJk?=
+ =?us-ascii?Q?nz3Be3Jv92B5KowjNKQDrlHLy6CrgD/UM3iUh7glgAmB0VhUF+61Usg/2Qgc?=
+ =?us-ascii?Q?xCuY+x6Y3DUwosh185Vs98OIa3Nku9Y9HtFj0L4MGmZwJXDI3BnxfcVuRiUg?=
+ =?us-ascii?Q?QR9n8WLD/HE0XIp0pd3Zlre8CgssRPbY1J7v/aGvBsFTiHvyJmG9+Luo+NSv?=
+ =?us-ascii?Q?LQ+2uHdg/JazJc2Tjg2BsgOiUzAQd0HLum1BRIQPAj3NV0Z9?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 17d14c14-756e-4213-1852-08df0c435fbb
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Sep 2026 18:19:21.9322
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: niVHm0KWcmabzy6m7O70R4AOACxdZqciHiYZ8mF5ntyGWwGuFiVF968NVXZSpuJRhPmnqq41LnZHjes9lKXKJg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR12MB9405
 
---FFrCH4JkhHLzpD2B
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Sat, Sep 05, 2026 at 04:30:07PM +0000, Zihan Xi wrote:
+> MRT6_TABLE is supposed to select a multicast routing table id, but
+> ip6_mroute_setsockopt() currently calls ip6mr_new_table() for every
+> unseen id. The new mr_table is linked into mr6_tables and is only
+> destroyed when the net namespace goes away.
+> 
+> A raw ICMPv6 socket with CAP_NET_ADMIN can therefore loop
+> MRT6_TABLE(fresh id) without MRT6_INIT, close the socket, and still
+> leave the tables allocated. Repeating this grows unreclaimable slab
+> until the machine OOMs.
 
-> On Sun, Sep 6, 2026 at 7:36=E2=80=AFPM Lorenzo Bianconi
-> <lorenzo.bianconi@oss.qualcomm.com> wrote:
-> >
-> > > From: Zixuan Chai <petalzu987@gmail.com>
-> > >
-> > > ip6_tnl_changelink() can update encapsulation parameters while the
-> > > netdevice is transmitting packets. ip6_tnl_xmit() can calculate packet
-> > > headroom with t->encap_hlen and later build an encapsulation header f=
-rom
-> > > the live t->encap. A concurrent update can change the encapsulation
-> > > header between these accesses and make skb_push() underflow the skb h=
-ead.
-> > >
-> > > Take a local snapshot of t->encap before calculating the encapsulation
-> > > header length. Use that same snapshot for headroom accounting, metada=
-ta
-> > > validation, and build_header(). This keeps all encapsulation decisions
-> > > for an skb consistent even if changelink updates the live configurati=
-on.
-> > >
-> > > Fixes: b3a27b519b22 ("ip6_tunnel: Add support for fou/gue encapsulati=
-on")
-> > > Cc: stable@vger.kernel.org
-> > > Reported-by: Vega <vega@nebusec.ai>
-> > > Assisted-by: LLM
-> > > Signed-off-by: Zixuan Chai <petalzu987@gmail.com>
-> > > Signed-off-by: Ren Wei <weir@nebusec.ai>
-> >
-> > Hi Ren and Zixuan,
-> >
-> > I agree this is a real issue, but I guess this patch is fixing just a
-> > small part of more extended problem. In particular, there are multiple
-> > parameters that are updated in ip6_tnl_update()/ip6_tnl_change() that a=
-re
-> > accessed concurrently in ip6_tnl_xmit() or in ip6_tnl_fill_forward_path=
-().
-> > I guess we should try to find a general fix for the extended issue.
-> > What do you think? We have probably the same issue in the IPv4 counterp=
-art.
->=20
-> The general answer is : convert tunnels to RCU based configuration.
->=20
-> In my quest for RTNL-less ip link dumps, I converted SIT tunnels to
-> RCU configuration.
-> I was holding the series because the net-next queue is huge, my vxlan
-> series was not merged yet.
->=20
-> <cover letter>
->=20
-> SIT (IPv6-in-IPv4) tunnel configuration and status reporting have
-> historically relied on the RTNL lock for synchronization. Consequently,
-> netlink dumps via ipip6_fill_info() had to run with RTNL held, adding
-> contention during network device dumps.
->=20
-> At the same time, the transmit path (dev->lltx =3D=3D true), tunnel looku=
-ps,
-> and error handling run locklessly and can race with configuration
-> updates. This can result in torn reads of multi-word fields (such as the
-> 128-bit 6RD IPv6 prefix) or transiently zeroed encapsulation parameters.
->=20
-> Furthermore, ipip6_tunnel_update() currently unhashes, re-hashes, and
-> calls synchronize_net() unconditionally, even when the tunnel endpoint
-> addresses (saddr and daddr) have not changed.
->=20
-> This patch series modernizes SIT parameter management to use RCU
-> protection, fixes existing race conditions, optimizes tunnel updates,
-> and removes the RTNL requirement from ipip6_fill_info():
->=20
-> - Patch 1 fixes a pre-existing UAF in PRL (Potential Router List)
->   deletion where call_rcu() was invoked before unlinking t->prl.
-> - Patch 2 removes the unsafe in-place memset() in ip_tunnel_encap_setup()
->   and uses WRITE_ONCE() to prevent lockless readers from observing
->   transiently zeroed or torn fields.
-> - Patch 3 annotates data races on tunnel->fwmark with READ_ONCE() and
->   WRITE_ONCE().
-> - Patch 4 converts 6RD configuration (tunnel->ip6rd) to an RCU-protected
->   pointer, preventing torn reads on the 128-bit IPv6 prefix.
-> - Patch 5 implements a dedicated ipip6_get_iflink() callback to decouple
->   SIT parameter handling from generic ip_tunnel.
-> - Patch 6 dynamically allocates struct ip_tunnel_parm_kern (sit_parms)
->   as a preparatory step.
-> - Patch 7 converts tunnel->sit_parms to full RCU protection. Updates
->   publish new parameters via rcu_assign_pointer() and free the old ones
->   via kfree_rcu(). When saddr and daddr do not change, unhashing,
->   re-hashing, and synchronize_net() are completely bypassed.
-> - Patch 8 wraps attribute serialization in ipip6_fill_info() under
->   rcu_read_lock(), eliminating the reliance on the RTNL lock.
+Isn't the established way to deal with this sort of issue to simply
+account for the memory and assume that the admin put some kind of a
+memory limit on the container?
 
-ack, nice. This is exactly I meant :)
+See for example commit 6126891c6d4f ("memcg: enable accounting for IP
+address and routing-related objects") and commit 5d26cff5bdbe ("net:
+account alternate interface name memory").
 
-Regards,
-Lorenzo
+This diff [1] accounts for the memory of both the multicast tables
+and the multicast routes.
 
->=20
-> Eric Dumazet (8):
->       sit: fix UAF in ipip6_tunnel_del_prl()
->       ip_tunnel: use WRITE_ONCE in ip_tunnel_encap_setup
->       sit: annotate data-races around tunnel->fwmark
->       sit: convert 6RD configuration to RCU protection
->       sit: implement ipip6_get_iflink()
->       sit: dynamically allocate struct ip_tunnel_parm_kern
->       sit: convert configuration to RCU protection
->       sit: no longer rely on RTNL in ipip6_fill_info()
->=20
->  include/net/ip_tunnels.h |   5 +-
->  net/ipv4/ip_tunnel.c     |  14 +-
->  net/ipv6/sit.c           | 475 ++++++++++++++++++++++++++++++++---------=
-------
->  3 files changed, 338 insertions(+), 156 deletions(-)
+With your C reproducer and this diff I get:
 
---FFrCH4JkhHLzpD2B
-Content-Type: application/pgp-signature; name=signature.asc
+# echo +memory > /sys/fs/cgroup/cgroup.subtree_control
+# mkdir /sys/fs/cgroup/mrtest
+# echo 64M > /sys/fs/cgroup/mrtest/memory.max
+# echo $$ > /sys/fs/cgroup/mrtest/cgroup.procs
+# unshare -Urn ./mrt_poc
+allocated=1 current_table=1 maxrss_kb=1788
+allocated=10001 current_table=10001 maxrss_kb=1788
+Killed                     bash
+# dmesg | tail -1
+[   63.360047] Memory cgroup out of memory: Killed process 297 (mrt_poc) total-vm:2424kB, anon-rss:92kB, file-rss:1448kB, shmem-rss:0kB, UID:0 pgtables:44kB oom_score_adj:0
 
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCap2qiAAKCRA6cBh0uS2t
-rEquAQCWE6dSaR4tjveaMuQdXJqsSCMIiojVFV+OV98Wq+CROQD/eshncuHAQyIT
-T5GsdkCVoLYxuBPjkgtBhzzNFLrTsAs=
-=sj/E
------END PGP SIGNATURE-----
-
---FFrCH4JkhHLzpD2B--
+[1]
+diff --git a/net/ipv4/ipmr.c b/net/ipv4/ipmr.c
+index e5f2b1c6150d..b9c544d48c45 100644
+--- a/net/ipv4/ipmr.c
++++ b/net/ipv4/ipmr.c
+@@ -3376,7 +3376,8 @@ int __init ip_mr_init(void)
+ {
+ 	int err;
+ 
+-	mrt_cachep = KMEM_CACHE(mfc_cache, SLAB_HWCACHE_ALIGN | SLAB_PANIC);
++	mrt_cachep = KMEM_CACHE(mfc_cache,
++				SLAB_HWCACHE_ALIGN | SLAB_PANIC | SLAB_ACCOUNT);
+ 
+ 	err = register_pernet_subsys(&ipmr_net_ops);
+ 	if (err)
+diff --git a/net/ipv4/ipmr_base.c b/net/ipv4/ipmr_base.c
+index 867b24beded1..a0ec6d19a237 100644
+--- a/net/ipv4/ipmr_base.c
++++ b/net/ipv4/ipmr_base.c
+@@ -52,7 +52,7 @@ mr_table_alloc(struct net *net, u32 id,
+ 	struct mr_table *mrt;
+ 	int err;
+ 
+-	mrt = kzalloc_obj(*mrt);
++	mrt = kzalloc_obj(*mrt, GFP_KERNEL_ACCOUNT);
+ 	if (!mrt)
+ 		return ERR_PTR(-ENOMEM);
+ 	mrt->id = id;
+diff --git a/net/ipv6/ip6mr.c b/net/ipv6/ip6mr.c
+index 3f2ed9b77deb..9d8116b5edb1 100644
+--- a/net/ipv6/ip6mr.c
++++ b/net/ipv6/ip6mr.c
+@@ -1427,7 +1427,7 @@ int __init ip6_mr_init(void)
+ {
+ 	int err;
+ 
+-	mrt_cachep = KMEM_CACHE(mfc6_cache, SLAB_HWCACHE_ALIGN);
++	mrt_cachep = KMEM_CACHE(mfc6_cache, SLAB_HWCACHE_ALIGN | SLAB_ACCOUNT);
+ 	if (!mrt_cachep)
+ 		return -ENOMEM;
