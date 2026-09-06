@@ -1,101 +1,148 @@
-Received: from mail-yx1-f52.google.com (mail-yx1-f52.google.com [74.125.224.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sendmail.purelymail.com (sendmail.purelymail.com [34.202.193.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 557B93B3BE7
-	for <netdev@vger.kernel.org>; Sun,  6 Sep 2026 17:09:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF0893BB12B
+	for <netdev@vger.kernel.org>; Sun,  6 Sep 2026 17:20:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=34.202.193.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788714579; cv=none; b=XkEV0wAvlPvOl5TMSRBuSKX9okzXh2aVa/BWFLLFk9cREGnDYQgxIVQG03+evclXjqq0W61zth+/xjSN51JiJo8WR0dG9l4zr00D92m5/pmGXFREiC1WQsHJprbKrnFwRxaJsctKJFIp/YjP0XrMkVcOrVv2H/Pet5AENFmIdaM=
+	t=1788715246; cv=none; b=uqZZvSiXN9pEceQsIE29hAiEzwHq9up36tXXdycE9GllNijsezgZ89H4nPaO81l3kOCy98edotvI8XjEi85e1iObscR8GoZjtYsuJd7q0T0RSTtsWZ2TrCX6SxvesnVIzD7JTYiEHSagiQnEagIW0W5/qxzi5MWeyKe96GRJNtQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788714579; c=relaxed/simple;
-	bh=nhrOTQyh7UMtQn++M8YzWCE80xzQyVC8r6SweaDBB30=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=Ya82+iFQAyQmEBch2An2qUdx5E7XoAzz9RozJIwqEIHvStBWoeFjgH9vdKojqEGrt0e/t8tZk4oc9wJeNPSMnirOSlGqytahsamoJ7UFs1w6g8+PXA9G1s/RnZfbEi0DzAhHP9NFdLdSyac2rM4Qn8EKNvXbEGqZlGnih3hld9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BiP6r0mY; arc=none smtp.client-ip=74.125.224.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788715246; c=relaxed/simple;
+	bh=gkjK4b72qfluTvt5HrhEMAUHGLY0Xm9kXN8MvueOQKg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=pyesBjZkOj44FwYZ+0X+0himItIYRWTegSQ/Tr5KOLShfFP3pBl08OAmmiTon+K5FuXCiuvFdxsrp2Xxd0WhM9j7cDPCjhb8c8eRJW88NMb+HsUxtgjbMqYWVdpoQTaKBHPr8K/oQe7VIO80ze1poyEHLqP08PzqrWMvtEkjVEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=tinyisr.com; spf=pass smtp.mailfrom=tinyisr.com; dkim=pass (2048-bit key) header.d=tinyisr.com header.i=@tinyisr.com header.b=iMKTdyRJ; dkim=pass (2048-bit key) header.d=purelymail.com header.i=@purelymail.com header.b=L5W9oly5; arc=none smtp.client-ip=34.202.193.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=tinyisr.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tinyisr.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BiP6r0mY"
-Received: by mail-yx1-f52.google.com with SMTP id 956f58d0204a3-66c7127a73dso3443056d50.2
-        for <netdev@vger.kernel.org>; Sun, 06 Sep 2026 10:09:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788714577; x=1789319377; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=DnDqiRyDIRazRpP6ROT2Wb0aydA/WE32NiS4KyeFgZU=;
-        b=BiP6r0mYUopx2Wk8A73Ezx23pVme8oQ9cJFLOQ9nesQy1OBAdWVeVWf7F3rct7Pcfq
-         ugbPsG7rrLrbFC7Kaf84OMVs4NWXFZfyk8UkjubXN7Jkiw1s8a/Sqx3bEXWjHSjXjICS
-         10WmzfmE7JwcbcJ1IQQtYjjk/jsr7KMW27v6Bq4KO2kJ72IbzlbF1nAGr9g2XSPlUaE+
-         DdfTS6QHFWPMYJLbhvWJMglv5+ayTYHMH9Nm4mGeVT91/2aTvHr0pNQYGi2exXrIz6dW
-         qJrpOCOhzVdcTM5SkKjAcznbhIPv9nV89YN9hvChbFz00VJiaHv0CEfk5IxE6EVDOJ0W
-         KlEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788714577; x=1789319377;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=DnDqiRyDIRazRpP6ROT2Wb0aydA/WE32NiS4KyeFgZU=;
-        b=WvPinUhaG0ju7GTsNocSBvZ1s6ivXbx17St0KL/eX5+uabK/VmccZi7PY/QTBCWJc3
-         QA3AT/0uta1eWbHWdR64gngmEWiX2SihZKR8irl4Qf8w1B/Dbb0w3beQwzsMudvw8UUi
-         1Eqwz4oiK3xk2bpNMbxWM1qnOfzZlio1GWU4cswcUlgsHlLwyVFmeYBYWPm7rX5TL64+
-         qPr1S9Ko3ucNl65vqsjle9b13Ihzw5l7yojvYTLn7zcKxSLQ6w1FekaZgPuNQM0QsyWa
-         XGRT6BbOFUAIexkasyjEw++fWDKFjFlTfuRvR0krqYyYIhl/R92BJcb5mUe6N1lkeNtU
-         iX6g==
-X-Gm-Message-State: AFuF++k+kKhapdUYAj3vYHfOigaM5JGJMNjoXqMSW1ZThvRNOnFLlAyj
-	/QLbNM8/z6KJ8D9yeEXtwJMTXFrvtoGzXtunkLncrtlB9vbMui4nHcOD
-X-Gm-Gg: AYBFou0gdgkbdJQWfOc1BbGMkj8SKKgsfLK9msx+wSQifrTO1m0FkPfGNexq/XenA5i
-	x5x7l4M9bFORx2epHcymtzOYR4Zf/fILl17q6UGMAAIZ98C3EctLm6Y+FJUK3Eeg4AMbcXN/rJ0
-	t5zXKn41F+Vee0eIMVDR201MhFrsSfTj2g0I4dDCHLXsV1b/5Ff8LmlGGqNcPs/prZexDaDPso+
-	sETunDiS28M9ascSLUieycZ+VdxoSsLJPcpwt94kooCoogXi1iYCd6Va28q+WXopLDaMy9FSjXP
-	qktIO0eKZb+MtxlbuZyWPM2vB911xpeb5tHtXD7gUUD06A+frSxP6eWDpYBu+42VEocsZKj3+zq
-	InIMRdywTAyRJK8AxFycdQ64HZnl6gFs+8eUnunqnSeF1TFCW3Hrf0AWbn07QYrJWScOMpNOqZh
-	+T9SItdQThMmCcy4MshaT7pf6mcx6QzfuCMjK8W1kyXdQpee4HT8g06tTisnShwTYKpZ/W5PSQd
-	4QiBZ4avwdgNzIEVcbV3u3wTAdbZzuLgb0/zLo1hQ==
-X-Received: by 2002:a53:bf12:0:b0:66f:c1be:84e0 with SMTP id 956f58d0204a3-66fc1be870amr2769319d50.78.1788714577274;
-        Sun, 06 Sep 2026 10:09:37 -0700 (PDT)
-Received: from gmail.com (234.207.85.34.bc.googleusercontent.com. [34.85.207.234])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-66fb48f1646sm6679692d50.9.2026.09.06.10.09.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 06 Sep 2026 10:09:35 -0700 (PDT)
-Date: Sun, 06 Sep 2026 13:09:35 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Daniel Zahka <daniel.zahka@gmail.com>, 
- Jakub Kicinski <kuba@kernel.org>, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
- "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, 
- Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, 
- Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org
-Message-ID: <willemdebruijn.kernel.6b59f4fe2f7f@gmail.com>
-In-Reply-To: <20260903-psp-prep-v1-4-d47e9c4c375d@gmail.com>
-References: <20260903-psp-prep-v1-0-d47e9c4c375d@gmail.com>
- <20260903-psp-prep-v1-4-d47e9c4c375d@gmail.com>
-Subject: Re: [PATCH net-next 4/4] netdevsim: psp: drop tx key ops
+	dkim=pass (2048-bit key) header.d=tinyisr.com header.i=@tinyisr.com header.b="iMKTdyRJ";
+	dkim=pass (2048-bit key) header.d=purelymail.com header.i=@purelymail.com header.b="L5W9oly5"
+Authentication-Results: purelymail.com; auth=pass
+DKIM-Signature: a=rsa-sha256; b=iMKTdyRJL39tXthmkaGGBy3R+4gbUn44jpiSeOzf0pozq/7ivwc0VNr3QGRKP22PVTmdMaCaxqRY2nViPHlYXncvEYFgABTgeRxPH0WMfAIoZXRR3lsVX9tkXWWDNHqDxOOgglXExApMkyF32ReFxGnsasTK3ELIsM9oFzqU1FQcCAUScFm/12vaui6lQV8IIAn68JxInyf7P+IeaiqM9LenuC0LcIw7l+jaiJdqTya5eMDrjwgK/uPwXP+8+dMNQdIT6+p9SzGLrJRWP1TCvK2MGdZO3fCOsP6tweJaZrA0es/LwGs9Fmlli54Mvt/pgOKINfYtmKCGJ4A4VnNMiw==; s=purelymail3; d=tinyisr.com; v=1; bh=gkjK4b72qfluTvt5HrhEMAUHGLY0Xm9kXN8MvueOQKg=; h=Received:From:To:Subject:Date;
+DKIM-Signature: a=rsa-sha256; b=L5W9oly5kJLowW4Uio1gkgO29R1fctUrMIF3fI7JWcJ4BISRUozN5rWAImGI9dcolj0fPZEWogueaY/EGhv9THwdjAXYg3XFVf/tXjqJ1aoAjISj0rp9eKXJYqrCG4x0Yh41VCIOrE7mqJk+nCaHkMDy3/q4QrZWoqtldaTuWtFq389sZ0XOLfOBJAs/z5BV+yoiPAB2om1L1GWlQC5MXk94rQt9mOs5UBaVxFWspb5BYSwG30bJG9Osloc3VOKuJVkdCFGeS+E6d5TPMqJwDbYac4Bq9SeauJGhOlEQQt+lE5mB+yhWEbwgoRZeK4Fa206YLPm+kmV3eEb8hEfF7w==; s=purelymail3; d=purelymail.com; v=1; bh=gkjK4b72qfluTvt5HrhEMAUHGLY0Xm9kXN8MvueOQKg=; h=Feedback-ID:Received:From:To:Subject:Date;
+Feedback-ID: 99681:12517:null:purelymail
+X-Pm-Original-To: netdev@vger.kernel.org
+Received: by smtp.purelymail.com (Purelymail SMTP) with ESMTPSA id 1438868657;
+          (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
+          Sun, 06 Sep 2026 17:20:42 +0000 (UTC)
+From: Joris Vaisvila <joey@tinyisr.com>
+To: netdev@vger.kernel.org
+Cc: horms@kernel.org,
+	pabeni@redhat.com,
+	kuba@kernel.org,
+	edumazet@google.com,
+	davem@davemloft.net,
+	olteanv@gmail.com,
+	Andrew Lunn <andrew@lunn.ch>,
+	Joris Vaisvila <joey@tinyisr.com>
+Subject: [PATCH net-next v1 2/6] net: dsa: mt7628: add port bridge offload support
+Date: Sun,  6 Sep 2026 20:16:21 +0300
+Message-ID: <20260906171625.533915-3-joey@tinyisr.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260906171625.533915-1-joey@tinyisr.com>
+References: <20260906171625.533915-1-joey@tinyisr.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+X-MIME-Autoconverted: from 8bit to quoted-printable by Purelymail
+Content-Type: text/plain; charset=UTF-8
 
-Daniel Zahka wrote:
-> netdevsim has no SADB. The usage of psp_assoc_drv_data() was always
-> obsolete given psp_validate_xmit(), so we can remove nsim_assoc_add()
-> and nsim_assoc_del(). netdevsim::assoc_cnt can also be removed. PSP core
-> can track the balance of tx_key_add vs tx_key_del calls in a future
-> change.
-> 
-> Delete psp_assoc_drv_data() because there are no more callers left in
-> the tree. mlx5 accesses pas->drv_data directly.
-> 
-> Signed-off-by: Daniel Zahka <daniel.zahka@gmail.com>
+Add STP support and hook up the generic tag_8021q bridge join and leave
+functions to dsa_switch_ops to allow hardware-offloaded bridging.
 
-Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: Joris Vaisvila <joey@tinyisr.com>
+---
+ drivers/net/dsa/mt7628.c | 43 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 43 insertions(+)
+
+diff --git a/drivers/net/dsa/mt7628.c b/drivers/net/dsa/mt7628.c
+index 990556cc2f65..7eabfad3e114 100644
+--- a/drivers/net/dsa/mt7628.c
++++ b/drivers/net/dsa/mt7628.c
+@@ -34,6 +34,7 @@
+ #define MT7628_ESW_REG_VUB(vlan) (0x100 + 4 * ((vlan) / 4))
+ #define MT7628_ESW_REG_SOCPC 0x8c
+ #define MT7628_ESW_REG_POC0 0x90
++#define MT7628_ESW_REG_POC1 0x94
+ #define MT7628_ESW_REG_POC2 0x98
+ #define MT7628_ESW_REG_SGC 0x9c
+ #define MT7628_ESW_REG_PCR0 0xc0
+@@ -92,6 +93,9 @@
+=20
+ #define MT7628_ESW_POC0_PORT_DISABLE GENMASK(29, 23)
+=20
++#define MT7628_ESW_POC1_PORT_BLOCKING_STATE GENMASK(22, 16)
++#define MT7628_ESW_POC1_PORT_DIS_LEARNING GENMASK(14, 8)
++
+ #define MT7628_ESW_POC2_PER_VLAN_UNTAG_EN BIT(15)
+=20
+ #define MT7628_ESW_SGC_AGING_INTERVAL GENMASK(3, 0)
+@@ -519,6 +523,8 @@ static int mt7628_setup(struct dsa_switch *ds)
+ =09for (int i =3D 0; i < MT7628_ESW_NUM_USER_PORTS + 1; i++)
+ =09=09esw->vlans[i].type =3D MT7628_VLAN_TYPE_UNAWARE;
+=20
++=09ds->max_num_bridges =3D DSA_TAG_8021Q_MAX_NUM_BRIDGES;
++
+ =09rtnl_lock();
+ =09ret =3D dsa_tag_8021q_register(ds, htons(ETH_P_8021Q));
+ =09rtnl_unlock();
+@@ -599,6 +605,40 @@ static void mt7628_teardown(struct dsa_switch *ds)
+ =09rtnl_unlock();
+ }
+=20
++static void mt7628_stp_state_set(struct dsa_switch *ds, int port, u8 state=
+)
++{
++=09struct mt7628_esw *esw =3D ds->priv;
++=09bool forward_disable;
++=09bool learn_disable;
++
++=09switch (state) {
++=09case BR_STATE_DISABLED:
++=09case BR_STATE_BLOCKING:
++=09case BR_STATE_LISTENING:
++=09=09forward_disable =3D true;
++=09=09learn_disable =3D true;
++=09=09break;
++=09case BR_STATE_LEARNING:
++=09=09forward_disable =3D true;
++=09=09learn_disable =3D false;
++=09=09break;
++=09case BR_STATE_FORWARDING:
++=09=09forward_disable =3D false;
++=09=09learn_disable =3D false;
++=09=09break;
++=09default:
++=09=09dev_err(ds->dev, "invalid STP state: %d\n", state);
++=09=09return;
++=09}
++
++=09regmap_assign_bits(esw->regmap, MT7628_ESW_REG_POC1,
++=09=09=09   FIELD_PREP(MT7628_ESW_POC1_PORT_DIS_LEARNING,
++=09=09=09=09      BIT(port)), learn_disable);
++=09regmap_assign_bits(esw->regmap, MT7628_ESW_REG_POC1,
++=09=09=09   FIELD_PREP(MT7628_ESW_POC1_PORT_BLOCKING_STATE,
++=09=09=09=09      BIT(port)), forward_disable);
++}
++
+ static const struct dsa_switch_ops mt7628_switch_ops =3D {
+ =09.get_tag_protocol =3D mt7628_get_tag_proto,
+ =09.setup =3D mt7628_setup,
+@@ -608,6 +648,9 @@ static const struct dsa_switch_ops mt7628_switch_ops =
+=3D {
+ =09.phylink_get_caps =3D mt7628_phylink_get_caps,
+ =09.tag_8021q_vlan_add =3D mt7628_dsa_8021q_vlan_add,
+ =09.tag_8021q_vlan_del =3D mt7628_dsa_8021q_vlan_del,
++=09.port_bridge_join =3D dsa_tag_8021q_bridge_join,
++=09.port_bridge_leave =3D dsa_tag_8021q_bridge_leave,
++=09.port_stp_state_set =3D mt7628_stp_state_set,
+ };
+=20
+ static int mt7628_probe(struct platform_device *pdev)
+--=20
+2.55.0
+
