@@ -1,81 +1,87 @@
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+Received: from mail-pj2-f8.google.com (mail-pj2-f8.google.com [74.125.227.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08D25217704
-	for <netdev@vger.kernel.org>; Sun,  6 Sep 2026 03:50:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3A423033CB
+	for <netdev@vger.kernel.org>; Sun,  6 Sep 2026 04:02:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788666656; cv=none; b=dBWAIjVwGcSjtTcwwdfZzllyhyFDweJCful/hVkX7aH9ENneukqnlwvVtPU/JXcX8FqSiYfUC61qlFXuWgnZx7QP4+HMgalpB2V+RzO3A3hBhuTQvNrELogor2pVS6H6RW/6XmZrytZ1bQLVbcJ9a4JSbJjgwubuvvEU8VPJ1tA=
+	t=1788667331; cv=none; b=R6yXLaNJFQOYq8wzLLyaxRrr2+pfpPF44CwEqXstptiO8SZxnH0wZP6913m1b6cGTc4PtBC/t5JuzmBfGpowmzBV9m7G9ZL6JdHUyl4mFG/pIQ0lgR/Nu2263AbAJJ09eluDuVow0G17N4A9sY2pvMvrbTh19lfHpAV+6CaYRLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788666656; c=relaxed/simple;
-	bh=hyapCilL5pWZnnG8x/9q9+l1rNqaeGLgUVdHkrndFms=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dSn6H6/0ythIXZEuSMMGq46JQ4/Nb1UMEkYG6QF69hMzPzKZAwLK5nYf0B3M9O/v8wZ1ESwREOILZcdLWMb2KtTm4zpyX5VV777rd/Eb7EVvj/RYQgZSEmeGJWtx8bWR79ypTKKuVTraZAPyQ5yA3S7axP1NGmlfgWRkFc2SHak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oeTal1p0; arc=none smtp.client-ip=209.85.215.169
+	s=arc-20240116; t=1788667331; c=relaxed/simple;
+	bh=e3kDwgTbjRMMWW/kMDqb+WZJtSvUWK03BPKsrvS7uos=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ine5W9yoThUl32wedsATFqKRPFsQKn+RFklJOAeM2Tx6gbwRSnCHuK4cpt3gOd/7yzJ138d7TUAS8eXth7gKL/rId72UZMomjJUP9mi+JEXeSUGJ/8kiuuDndRSPWwE8qRoZlSp1DJl9DkKUcB54Pt8YTg6DVEmqU61nJPeffxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ry1vF3i8; arc=none smtp.client-ip=74.125.227.136
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oeTal1p0"
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-cb5b8572b70so2407703a12.2
-        for <netdev@vger.kernel.org>; Sat, 05 Sep 2026 20:50:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ry1vF3i8"
+Received: by mail-pj2-f8.google.com with SMTP id d9443c01a7336-2db33361b2fso4453115ad.1
+        for <netdev@vger.kernel.org>; Sat, 05 Sep 2026 21:02:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788666654; x=1789271454; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1788667329; x=1789272129; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=fW6yt9nbpXpIAMyGGr3gNcQLhcmRLKyTBThr7JzkuBQ=;
-        b=oeTal1p0PCN54WsKAC/snSb9idD5QlHJy/FNGyDrd04kJ6JXkjDQ8phul7TSvuf/H6
-         hAUHEmjq2u3pl1u4uxY/7FldI9kL6kzR+lR2fjqqW33UgPsN0TDPQbnL4wWT38tyyqms
-         zw4kTdlActoVAkF23uBPk/Mo+xbIl9KKYQG9ou4Annt4fSS3CzQ7X7PQ+I6jXPHIFGNv
-         s4T0SmYK6Bo+f69bfD9Kq/57QG266O/6zkGmFRmVVbQ+tehZNWlIRvBtfFxLYiIsVTxM
-         HhhEfF1xrUSC/XL9SZBKy01TiU6CF/xJfOiqrPQ5oHgH5AoXKeo6Kia0UCYit9i12vaa
-         AdVw==
+        bh=cQv+gwRX7Z+DTbRSq5jeq2W2+DL4A8UrN+ZaQRvPPtM=;
+        b=Ry1vF3i85d3xZxYFMf9l1+18Y4eU3hfd7Mr3wvMLZ+v2cfzskYwgvDe5K1FXLsUbXQ
+         gJgRPhCzj8HG3y8IzG0D30D59Qc2BFtJAKw4bH9RQIpBDxKlqar2oKvwRvifBGOIAO9z
+         6S58mJW+dSKIhL4r9X54GXUcalHHZuXIsiEqo3TXUUHUwuqkesnkEFGLjV4KtFvDnqkz
+         TLEGWzCJTisCfgk2gwXHKZbMfyGpB4laomXANHByyVbsGgQ61GA1FnBG/S4cpvjxvpHg
+         TYbKK4dcPl0Lz76v2Zs6cZsLsoyqay2maCdKPZmuD9N8pHle13wcofUkm4V2gAmoxMCH
+         YfcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788666654; x=1789271454;
+        d=1e100.net; s=20251104; t=1788667329; x=1789272129;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=fW6yt9nbpXpIAMyGGr3gNcQLhcmRLKyTBThr7JzkuBQ=;
-        b=N2HBnF9mx+6HOsPAUOkRKvJFH/KucXmQ5kRmpKu6CZrCCW4CMQH/fJooG8t/wLaHyu
-         gLJdjyyd8CAKDo3SXEPnIgBzbzj/XwC2ZN9dxW3Glq0pbWXEctKmLPCY2kql5VsI719z
-         5wxCUNMBbteGdLI0aZftSW48XasDMboy6AovOXanj/zqZmvffqEZLVT5Hy++vjys1fPR
-         04gufp0qs8bLz4V7Zwx181SGAsrOtmpVf+p0Xi3WDsfZ/ipdUZjJhBwBsGDHKeCK6M1Z
-         GYBtEWlv283Tan88rStRnUZdNCIpVs58O+16j+CCxdqSFPRt7QfWT1xs7/wylIk9B6Zk
-         V6oA==
-X-Forwarded-Encrypted: i=1; AKwUvBxLFZTHhpmu87SMcBl46+gbxVE9TGqedJnCvP1uXosazwL2CKHHZH1OMDhWtx5vQV7kwNZkagM=@vger.kernel.org
-X-Gm-Message-State: AFuF++kUvciMZwkr5fPVkTmrkUlHfFgpvWNCzA5ICM2RCkIbX9hP/wd7
-	X5VN3oU1XvWQ5vhtatIfvxWmJfkSTGC/kqoAuCUvS2Bq1YElfrePX5yZ
-X-Gm-Gg: AYBFou0vf/D+dnMb/sogJ5bGMcgCCfAG2ydjO3V7TY73JShVDyFPU/NMNh8AfdwJtZE
-	+AHV8MAL0DLVnRo5noynjDXporAqVXaKIehW74L/R881hblmSIeUA4EKwtd08eBur4C92mVbJPg
-	uoHQ+xDdNtk7J1CwQ9vAPnVq3Srcd21AcEiJvWsNDaXHo+EMo0ebdh4DIZN+6Ak8AB11qfAtm5V
-	nwCPk2JtSGYZL6L3Qyyrana5ZejNDFxau10XndDBuLl0UFgM1pfKs6h6PZzTDQXS/GQoqKhU6Ks
-	tI0ubBVXX676ftahOrYID53FOgaX1fK+iOOfv1ZFD2hSWcj4iym1RdqZoSVaqRQKErXYDgdGi8q
-	YsZqXXKuZoDb6dN4edhfdoEF3TUFYNqAc9rRHwWNDDttopbZfUBHuF+Z5BAMxTT/ofmq6RHn4FX
-	+mI7VAmpMTD62BzwrxehaZvlViwKE1ezOMShgrznzNqTx7wgeyKlebBEzuVQX/naPnrQTOfqZ1n
-	iQk4iVoCy+7MrDWnOkq
-X-Received: by 2002:a05:6a20:7288:b0:3bf:5b7a:fc8b with SMTP id adf61e73a8af0-3da397c5713mr22545348637.0.1788666654238;
-        Sat, 05 Sep 2026 20:50:54 -0700 (PDT)
-Received: from 192.168.50.3 ([183.193.115.0])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc455485c25sm2550916a12.26.2026.09.05.20.50.50
+        bh=cQv+gwRX7Z+DTbRSq5jeq2W2+DL4A8UrN+ZaQRvPPtM=;
+        b=o+Hq6Up13wQkm7TM23O+S3edhqSRoSoOCx7qxXxo2eaFUPSrNHmAwMcbgN/fQlZg1g
+         JgIoUd5fn/v2GEgs7wYgZswgqHl2sxqqQ/wfbpbvoKTIVTAIYZC/1qrQ0iL/ws0O6/5X
+         ONuhxQrTliNKvlo5CZA/cJ/KgmcjECwZtlY5ItCCfsexjv3JBVjEZs6EQPYzpzjZazcl
+         v7JHVBe//0BjaEKH0gaW0XTI/OMURWd40VHd/YLOLSDY69z++FAJuLFoUZGooh8Geily
+         6odzFEhN9g5ElCxYcDNbM6YO+IgOmjFz8bFwpIlvqq1xBC13TTeMp2Zx+jFkTd+QRYZt
+         nMWQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwlDkLslGePhq4Q90Q7baHb6bIdBXAEmoQalOZexGBXJSWUrDZ6zikuBiO4jlbNhHjZVtenVTA=@vger.kernel.org
+X-Gm-Message-State: AFuF++mmqR6o7E2SPk4nYr+ad2iD/HgRIoxjFuEf/8SQcUVAKCt0pmYm
+	rljh59AWN507bcQWx1pk95EuOxn5M+leIEnYAjG2GgmutI0nm1rACgLAHWWaPnRF
+X-Gm-Gg: AYBFou3S2qvBlkk7naP4LzAFXGpGo4hS8MD+OCYRFtniV1a1L5I2fwvsJecT4aOODyn
+	SZYXerjMJF3eRV/hah1tbglFicFas5I9s6yZeQ0SMqrkRvFo/9NOSndqNAw0BMIipDmrng04/xx
+	4r3/Dv1YjwcxBiM+Jdfs4Gn+YIRh+mFZOIsGScoJME+UIP7ZLMJWLLpWtu+/uhOncSJrAoZiG3r
+	8tQ994fBVwCuOFwQxAhgujlNQF/6B9lGttp0vu0QUWEQ4YemRR5HDYyXUB12aOWx1rls8M8i0Jx
+	DbWfFgAqBNIDSAOXSrwgU7rS5drwaWJkLtVZFMrZTY/WPTRrbV5s35YYMYca6tc2rx2COFPCpRA
+	2byUS5m9xXf0+qMukS+TTQwxlaZ5r6/xSlI8RdCXeR69irWwbgE0a3Zzd8ZWB/OClzccDUHwN1X
+	CV8ewVdeNHq8DpfpPwzaAtiMd9zMoxltqNV3dphcrE8H7s3acuy0zU9Y+LXNNVHgNByBrLuaVE8
+	5nvZV2JVDtHkHakI/o39FDqwdlGmmrfJg8JExrzbtJa1To4lD6YyDkQeb1q6MrF8hAdsRos3ssR
+	Bcu/k4zLN7PvIGKmhfPQ25WTlCBcBbAHJxjAt33VoJrTkSTuTQ0IeXk=
+X-Received: by 2002:a17:903:9cf:b0:2d8:d4d1:313a with SMTP id d9443c01a7336-2db12634535mr249979245ad.17.1788667329144;
+        Sat, 05 Sep 2026 21:02:09 -0700 (PDT)
+Received: from ethan-latitude5420.. (host-127-24.cafrjco.fresno.ca.us.clients.pavlovmedia.net. [68.180.127.24])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3339a534152sm17127334eec.10.2026.09.05.21.02.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 05 Sep 2026 20:50:53 -0700 (PDT)
-From: Weiming Shi <bestswngs@gmail.com>
-To: Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	Phil Sutter <phil@nwl.cc>,
-	"David S . Miller" <davem@davemloft.net>,
+        Sat, 05 Sep 2026 21:02:08 -0700 (PDT)
+From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+To: Kees Cook <kees@kernel.org>,
+	linux-ide@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	netdev@vger.kernel.org,
+	linux-scsi@vger.kernel.org,
+	linux-serial@vger.kernel.org
+Cc: Ethan Nelson-Moore <enelsonmoore@gmail.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Cc: netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	co+459f67f4d8af8ce6@bugs.sh,
-	Xiang Mei <xmei5@asu.edu>
-Subject: [PATCH nf] netfilter: ip6t_rpfilter: handle routes without inet6_dev
-Date: Sun,  6 Sep 2026 11:49:38 +0800
-Message-ID: <20260906034939.3746540-1-bestswngs@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+	"Martin K. Petersen" <mkp@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>
+Subject: [PATCH] ecard: use module_driver() to avoid repeated boilerplate code
+Date: Sat,  5 Sep 2026 21:01:46 -0700
+Message-ID: <20260906040153.105692-1-enelsonmoore@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -84,56 +90,295 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-ip6_route_lookup() can return an error-free route whose rt6i_idev is
-NULL.  For example, lowering an external nexthop device's MTU below
-IPV6_MIN_MTU tears down its inet6_dev while fib6_ifdown() leaves routes
-using nexthop objects in the FIB.
+Many Acorn expansion card drivers have module_init and module_exit
+functions that only call ecard_register_driver() and
+ecard_remove_driver(). The module_driver() macro automatically
+generates these functions given the register and unregister functions.
+Switch to it to simplify the code.
 
-rpfilter_lookup_reverse6() dereferences rt6i_idev before evaluating its
-loose-mode condition.  This lets an unprivileged user with a private user
-and network namespace trigger a NULL pointer dereference:
-
-  Oops: general protection fault, probably for non-canonical address
-  0xdffffc0000000000
-  KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
-  RIP: rpfilter_mt
-  ip6t_do_table
-  nf_hook_slow
-  ipv6_rcv
-  process_backlog
-  net_rx_action
-  handle_softirqs
-
-Evaluate loose mode first because route existence is sufficient there.
-In strict mode, compare devices only when the route has an inet6_dev.
-
-Fixes: e26f9a480fb6 ("netfilter: add ipv6 reverse path filter match")
-Reported-by: co+459f67f4d8af8ce6@bugs.sh
-Closes: https://lore.kernel.org/all/VtWUkE8QzJt5CroTj2V2v3ZQ0gwbXZ7nq7I3@bugs.sh/
-Assisted-by: Claude:gpt-5
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
 ---
- net/ipv6/netfilter/ip6t_rpfilter.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/ata/pata_icside.c            | 13 +------------
+ drivers/net/ethernet/i825xx/ether1.c | 13 +------------
+ drivers/net/ethernet/seeq/ether3.c   | 13 +------------
+ drivers/scsi/arm/acornscsi.c         | 13 +------------
+ drivers/scsi/arm/arxescsi.c          | 14 +-------------
+ drivers/scsi/arm/cumana_1.c          | 13 +------------
+ drivers/scsi/arm/cumana_2.c          | 13 +------------
+ drivers/scsi/arm/eesox.c             | 13 +------------
+ drivers/scsi/arm/oak.c               | 14 +-------------
+ drivers/scsi/arm/powertec.c          | 13 +------------
+ drivers/tty/serial/8250/8250_acorn.c | 13 +------------
+ 11 files changed, 11 insertions(+), 134 deletions(-)
 
-diff --git a/net/ipv6/netfilter/ip6t_rpfilter.c b/net/ipv6/netfilter/ip6t_rpfilter.c
-index 67c87a88cde4f..2bcc96f9385cb 100644
---- a/net/ipv6/netfilter/ip6t_rpfilter.c
-+++ b/net/ipv6/netfilter/ip6t_rpfilter.c
-@@ -72,9 +72,11 @@ static bool rpfilter_lookup_reverse6(struct net *net, const struct sk_buff *skb,
- 		goto out;
- 	}
+diff --git a/drivers/ata/pata_icside.c b/drivers/ata/pata_icside.c
+index 70f056e47e6b..df7203a74f45 100644
+--- a/drivers/ata/pata_icside.c
++++ b/drivers/ata/pata_icside.c
+@@ -613,19 +613,8 @@ static struct ecard_driver pata_icside_driver = {
+ 	},
+ };
  
--	if (rt->rt6i_idev->dev == dev ||
--	    l3mdev_master_ifindex_rcu(rt->rt6i_idev->dev) == dev->ifindex ||
--	    (flags & XT_RPFILTER_LOOSE))
-+	if (flags & XT_RPFILTER_LOOSE)
-+		ret = true;
-+	else if (rt->rt6i_idev &&
-+		 (rt->rt6i_idev->dev == dev ||
-+		  l3mdev_master_ifindex_rcu(rt->rt6i_idev->dev) == dev->ifindex))
- 		ret = true;
-  out:
- 	ip6_rt_put(rt);
+-static int __init pata_icside_init(void)
+-{
+-	return ecard_register_driver(&pata_icside_driver);
+-}
+-
+-static void __exit pata_icside_exit(void)
+-{
+-	ecard_remove_driver(&pata_icside_driver);
+-}
++module_driver(pata_icside_driver, ecard_register_driver, ecard_remove_driver);
+ 
+ MODULE_AUTHOR("Russell King <rmk@arm.linux.org.uk>");
+ MODULE_LICENSE("GPL");
+ MODULE_DESCRIPTION("ICS PATA driver");
+-
+-module_init(pata_icside_init);
+-module_exit(pata_icside_exit);
+diff --git a/drivers/net/ethernet/i825xx/ether1.c b/drivers/net/ethernet/i825xx/ether1.c
+index 3e7d7c4bafdc..d21aeb831531 100644
+--- a/drivers/net/ethernet/i825xx/ether1.c
++++ b/drivers/net/ethernet/i825xx/ether1.c
+@@ -1070,17 +1070,6 @@ static struct ecard_driver ether1_driver = {
+ 	},
+ };
+ 
+-static int __init ether1_init(void)
+-{
+-	return ecard_register_driver(&ether1_driver);
+-}
+-
+-static void __exit ether1_exit(void)
+-{
+-	ecard_remove_driver(&ether1_driver);
+-}
+-
+-module_init(ether1_init);
+-module_exit(ether1_exit);
++module_driver(ether1_driver, ecard_register_driver, ecard_remove_driver);
+ 
+ MODULE_LICENSE("GPL");
+diff --git a/drivers/net/ethernet/seeq/ether3.c b/drivers/net/ethernet/seeq/ether3.c
+index 20dad39b5ab9..b0d2cbc35914 100644
+--- a/drivers/net/ethernet/seeq/ether3.c
++++ b/drivers/net/ethernet/seeq/ether3.c
+@@ -882,17 +882,6 @@ static struct ecard_driver ether3_driver = {
+ 	},
+ };
+ 
+-static int __init ether3_init(void)
+-{
+-	return ecard_register_driver(&ether3_driver);
+-}
+-
+-static void __exit ether3_exit(void)
+-{
+-	ecard_remove_driver(&ether3_driver);
+-}
+-
+-module_init(ether3_init);
+-module_exit(ether3_exit);
++module_driver(ether3_driver, ecard_register_driver, ecard_remove_driver);
+ 
+ MODULE_LICENSE("GPL");
+diff --git a/drivers/scsi/arm/acornscsi.c b/drivers/scsi/arm/acornscsi.c
+index 79d7d7336b6a..8b899fbf092e 100644
+--- a/drivers/scsi/arm/acornscsi.c
++++ b/drivers/scsi/arm/acornscsi.c
+@@ -2902,18 +2902,7 @@ static struct ecard_driver acornscsi_driver = {
+ 	},
+ };
+ 
+-static int __init acornscsi_init(void)
+-{
+-	return ecard_register_driver(&acornscsi_driver);
+-}
+-
+-static void __exit acornscsi_exit(void)
+-{
+-	ecard_remove_driver(&acornscsi_driver);
+-}
+-
+-module_init(acornscsi_init);
+-module_exit(acornscsi_exit);
++module_driver(acornscsi_driver, ecard_register_driver, ecard_remove_driver);
+ 
+ MODULE_AUTHOR("Russell King");
+ MODULE_DESCRIPTION("AcornSCSI driver");
+diff --git a/drivers/scsi/arm/arxescsi.c b/drivers/scsi/arm/arxescsi.c
+index 925d0bd68aa5..2d3f5b0519d1 100644
+--- a/drivers/scsi/arm/arxescsi.c
++++ b/drivers/scsi/arm/arxescsi.c
+@@ -344,20 +344,8 @@ static struct ecard_driver arxescsi_driver = {
+ 	},
+ };
+ 
+-static int __init init_arxe_scsi_driver(void)
+-{
+-	return ecard_register_driver(&arxescsi_driver);
+-}
+-
+-static void __exit exit_arxe_scsi_driver(void)
+-{
+-	ecard_remove_driver(&arxescsi_driver);
+-}
+-
+-module_init(init_arxe_scsi_driver);
+-module_exit(exit_arxe_scsi_driver);
++module_driver(arxescsi_driver, ecard_register_driver, ecard_remove_driver);
+ 
+ MODULE_AUTHOR("Stefan Hanske");
+ MODULE_DESCRIPTION("ARXESCSI driver for Acorn machines");
+ MODULE_LICENSE("GPL");
+-
+diff --git a/drivers/scsi/arm/cumana_1.c b/drivers/scsi/arm/cumana_1.c
+index d1a2a22ffe8c..62c11168f321 100644
+--- a/drivers/scsi/arm/cumana_1.c
++++ b/drivers/scsi/arm/cumana_1.c
+@@ -324,18 +324,7 @@ static struct ecard_driver cumanascsi1_driver = {
+ 	},
+ };
+ 
+-static int __init cumanascsi_init(void)
+-{
+-	return ecard_register_driver(&cumanascsi1_driver);
+-}
+-
+-static void __exit cumanascsi_exit(void)
+-{
+-	ecard_remove_driver(&cumanascsi1_driver);
+-}
+-
+-module_init(cumanascsi_init);
+-module_exit(cumanascsi_exit);
++module_driver(cumanascsi1_driver, ecard_register_driver, ecard_remove_driver);
+ 
+ MODULE_DESCRIPTION("Cumana SCSI-1 driver for Acorn machines");
+ MODULE_LICENSE("GPL");
+diff --git a/drivers/scsi/arm/cumana_2.c b/drivers/scsi/arm/cumana_2.c
+index e460068f6834..24945e1765ae 100644
+--- a/drivers/scsi/arm/cumana_2.c
++++ b/drivers/scsi/arm/cumana_2.c
+@@ -504,18 +504,7 @@ static struct ecard_driver cumanascsi2_driver = {
+ 	},
+ };
+ 
+-static int __init cumanascsi2_init(void)
+-{
+-	return ecard_register_driver(&cumanascsi2_driver);
+-}
+-
+-static void __exit cumanascsi2_exit(void)
+-{
+-	ecard_remove_driver(&cumanascsi2_driver);
+-}
+-
+-module_init(cumanascsi2_init);
+-module_exit(cumanascsi2_exit);
++module_driver(cumanascsi2_driver, ecard_register_driver, ecard_remove_driver);
+ 
+ MODULE_AUTHOR("Russell King");
+ MODULE_DESCRIPTION("Cumana SCSI-2 driver for Acorn machines");
+diff --git a/drivers/scsi/arm/eesox.c b/drivers/scsi/arm/eesox.c
+index 99be9da8757f..823ad179f24c 100644
+--- a/drivers/scsi/arm/eesox.c
++++ b/drivers/scsi/arm/eesox.c
+@@ -626,18 +626,7 @@ static struct ecard_driver eesoxscsi_driver = {
+ 	},
+ };
+ 
+-static int __init eesox_init(void)
+-{
+-	return ecard_register_driver(&eesoxscsi_driver);
+-}
+-
+-static void __exit eesox_exit(void)
+-{
+-	ecard_remove_driver(&eesoxscsi_driver);
+-}
+-
+-module_init(eesox_init);
+-module_exit(eesox_exit);
++module_driver(eesoxscsi_driver, ecard_register_driver, ecard_remove_driver);
+ 
+ MODULE_AUTHOR("Russell King");
+ MODULE_DESCRIPTION("EESOX 'Fast' SCSI driver for Acorn machines");
+diff --git a/drivers/scsi/arm/oak.c b/drivers/scsi/arm/oak.c
+index d69245007096..aea21bb13355 100644
+--- a/drivers/scsi/arm/oak.c
++++ b/drivers/scsi/arm/oak.c
+@@ -194,20 +194,8 @@ static struct ecard_driver oakscsi_driver = {
+ 	},
+ };
+ 
+-static int __init oakscsi_init(void)
+-{
+-	return ecard_register_driver(&oakscsi_driver);
+-}
+-
+-static void __exit oakscsi_exit(void)
+-{
+-	ecard_remove_driver(&oakscsi_driver);
+-}
+-
+-module_init(oakscsi_init);
+-module_exit(oakscsi_exit);
++module_driver(oakscsi_driver, ecard_register_driver, ecard_remove_driver);
+ 
+ MODULE_AUTHOR("Russell King");
+ MODULE_DESCRIPTION("Oak SCSI driver");
+ MODULE_LICENSE("GPL");
+-
+diff --git a/drivers/scsi/arm/powertec.c b/drivers/scsi/arm/powertec.c
+index 823c65ff6c12..67f071a0543b 100644
+--- a/drivers/scsi/arm/powertec.c
++++ b/drivers/scsi/arm/powertec.c
+@@ -432,18 +432,7 @@ static struct ecard_driver powertecscsi_driver = {
+ 	},
+ };
+ 
+-static int __init powertecscsi_init(void)
+-{
+-	return ecard_register_driver(&powertecscsi_driver);
+-}
+-
+-static void __exit powertecscsi_exit(void)
+-{
+-	ecard_remove_driver(&powertecscsi_driver);
+-}
+-
+-module_init(powertecscsi_init);
+-module_exit(powertecscsi_exit);
++module_driver(powertecscsi_driver, ecard_register_driver, ecard_remove_driver);
+ 
+ MODULE_AUTHOR("Russell King");
+ MODULE_DESCRIPTION("Powertec SCSI driver");
+diff --git a/drivers/tty/serial/8250/8250_acorn.c b/drivers/tty/serial/8250/8250_acorn.c
+index fb596262b9c7..f634de6e159f 100644
+--- a/drivers/tty/serial/8250/8250_acorn.c
++++ b/drivers/tty/serial/8250/8250_acorn.c
+@@ -120,19 +120,8 @@ static struct ecard_driver serial_card_driver = {
+ 	},
+ };
+ 
+-static int __init serial_card_init(void)
+-{
+-	return ecard_register_driver(&serial_card_driver);
+-}
+-
+-static void __exit serial_card_exit(void)
+-{
+-	ecard_remove_driver(&serial_card_driver);
+-}
++module_driver(serial_card_driver, ecard_register_driver, ecard_remove_driver);
+ 
+ MODULE_AUTHOR("Russell King");
+ MODULE_DESCRIPTION("Acorn 8250-compatible serial port expansion card driver");
+ MODULE_LICENSE("GPL");
+-
+-module_init(serial_card_init);
+-module_exit(serial_card_exit);
 -- 
-2.55.0
+2.43.0
+
