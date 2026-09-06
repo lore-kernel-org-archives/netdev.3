@@ -1,139 +1,222 @@
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E1663C109E
-	for <netdev@vger.kernel.org>; Sun,  6 Sep 2026 04:11:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.179
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788667886; cv=pass; b=dTXPgCeNfHZqTg/8oVtbMfKBayP3NfmzJ68SpGh9xOwHjKQqHpUkFdFYnkCyVxtE4enlV7zzMBpWhD33sMyNCt+XNaRoDVRe2JOyl5bIEdw/OxvMXcuHd9x2SuFxqcCLiiAnK3F4nNw8o2Hb0y/vJ9PfGKz/vDpUESqdva+5PiQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788667886; c=relaxed/simple;
-	bh=o8RRhMmOJZ4Q8Ws8xLNr8N1jORKBteyJlETpeYJ1kRY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=K+DMiMD5jbT5KfEBFhEMOc6iJdgoS0K/v1R8Dnsk3JQl7Koo9bDOq0i/Ys0WCfAsYuraCLe5SwUV5EgWzXj+QSPSwghnQEbMBCe9W/Wyh3byNl22L2AqzKdVgF4EpYkDCYbEKX/sfd0GO8YD8HuGCmIAZrGOpFLwPkv13ZCaCRQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=gsWl0xQl; arc=pass smtp.client-ip=209.85.208.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B2393D0BE9;
+	Sun,  6 Sep 2026 04:15:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788668118; cv=none; b=uzzB9vJG4K1DazvXPD+kQv3i8RKbt+Al3kBfdL82ztf4pF70d+ecAG89e1HbOKINu/6k98MFTMPY2DysVmcCUeTeK/97DzMuK+PEsv1scim4YVQrIxgMjW55rUa55mXMIaFluAXqHN/VQJlAjx5JuYin/sT6vgu91ydORJ6ZeUo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788668118; c=relaxed/simple;
+	bh=LzE2QxQvFjOldemw1joETAp+rAIqtzG30VTeIavs1H0=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=rqv8QfeuiSeqNWD8u7I//L+8FvG4PdpABezQtDbTjfCVIaVyt5EYKymoJyGcZ8S3c/jX9naLf/jxKXVMWtlF0YYPOYB4HvUfdKxvP84UHgfHwqwjYLhehfpTok9VdARUpFkOWEGMZVPwEy8SQH23iVWYIwRXPHNcToqR05g7gSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NPFEZz7G; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="gsWl0xQl"
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-3a1eb6fa0f4so22730761fa.2
-        for <netdev@vger.kernel.org>; Sat, 05 Sep 2026 21:11:24 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788667882; cv=none;
-        d=google.com; s=arc-20260327;
-        b=syVjQRKDTZVTH78U2F0RbwWgWPrpW4x7QU5XncfJhPlVWCrtPHBInh5aHGOeAtV8lj
-         q36UqihLF3xw+/h6eQzUmqdMwTBHtnnetuDx3+XV9tKwjT/+JPIh6VjYk8eMZ8rrYgtG
-         JjKm3ZUAaqeF37SztqVhrNQkhsHCvuIaVOG7TXBQniHQdogNImo0MiYdf0QNegbbSdPC
-         fcJq6e9ry9/pM8rN3gm4odVroLHU/ZX/S/XJ0eKoF52UeRpFUfHd7L31F1p1kPbhDhdN
-         AQCWOFCfBicvPr20r4b9fss8hJ7ud264iGsZUvfo76H5nZ8MN1GsTPiaAI7onpiiQ3IT
-         +CfQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=A8ob/HIduIdO4mxeAjoBbDAMkNrzJkir8KFEywokfoU=;
-        fh=0Ts8pT01yAOz0Ss45W1mmIl+/zCG/3zE6RcLbi34w7E=;
-        b=hky8fGWYsBJmVKej0Qg5gmu8pM4uNuT1L6k4VNyGMmv6CIWpBQE/+sSgSlLGKL+VIF
-         Gu4H9NtqPSRquovoYXyHktcRrUbzh032ejYTGpCO6rK/tGnzLywV1eo+65E22UXPTVp/
-         Sr4u3wehTjd8FHd5pQx/n3ZYS8mjoAJe1somBWJ7iCkXiJqUFgguBiZyNOnf81HWQu+h
-         yc4bz7I8uoqkGT6WlVOe1eBO2D8jMCcODZ4O9dxE3bCitNP3rUEtBN/oULwxI6GszERn
-         0k36uWAO6h93Q0Uibmxm2D5hM7WX2grKIBNiTZFwWm55Dm2PqD9A7O2kqSs+wFg+cqds
-         ilNA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1788667882; x=1789272682; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=A8ob/HIduIdO4mxeAjoBbDAMkNrzJkir8KFEywokfoU=;
-        b=gsWl0xQlYcx8XUNBl1rvfDlda8jv6dU2v/34V0RWMl0w8WWAUN99iynCISfQA1Wpa6
-         eXuyk38fDHSd424wVQK1Ak4PlfEdkwmD5mCfD/B7Jbfbbs5RZG0DqCG5nmRR9+anc+wr
-         C8e8+l1rf7mW4LAAI0rI/0oskDPGpZC0wjEBctRuich12FzON7mxCHVSEVPV4o26IrdC
-         KEBCnB7CS3pPPmZudziSGxh9CUrXOHWHp5Pe+SqV4mrgmMm5//cmK8pyP6PMWPBb52eO
-         SIr8vS0KTGh8rWiKzpumBYDXKC1ABbs2oKDXTAeO4pZfQqgz9BeTPDK0d5GBaggfpzUA
-         iOeA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788667882; x=1789272682;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=A8ob/HIduIdO4mxeAjoBbDAMkNrzJkir8KFEywokfoU=;
-        b=fZTG8gJtf6T0ARwiPDKIarqwD6Ms9imwVCNe+MYmrtlpQJB1Yn8uOLuWOtYjxhxtNb
-         0JxnZTDE/5HLh/B41aDqjKk195w4gyc64EMiUggqkCrO9eXlQZxsGpsaDNMOZiPpQ376
-         Iln35q49Stk9S9XO0YECMXWHlsNkSTr7PBXLrq3AVOua5s4a+v1w2ri0PLX3XdMt6Hud
-         exIxV250X8qe5Gq5+jjs06dfQaOCQD3lSO6WNRcFav8QysJvS+I14YyE5lYAsnK8Vt8j
-         54UQYRVr1y8s1Vp9scHHvoWC7YzDMfhNxivxOVj4dlHnHTuE7/5hVJq7zCgSkplCJcRd
-         VFlg==
-X-Forwarded-Encrypted: i=1; AKwUvBw7Ns5mUsc17vMk367cZc8RTme2PqPoey7z/l31nb+YeHYw38W6KkYyNNOlNtpovime8ohZwl8=@vger.kernel.org
-X-Gm-Message-State: AFuF++mi8Tg5DZ17SFulEoKkXrIvbLk3gRgnQGuseR9RF+mmoELy+19Y
-	C3yi584dN8nGRGlXNvpBQFcY2VsG72+5+dYYyBnbKhuylOl/U8DXQSxIGPdTU/grCQ5CMickcyT
-	Q21n+AOU1Mbg73dctwqCzgE6s3YaMVNfK2m2ighF1aIA=
-X-Gm-Gg: AYBFou2tlB9DTkSVwW9OmF7wDzL9nnWONihcvcwG92aXldiD1kZngZlqarpmqp2GElv
-	FooBJ2tR5AV+YA0A5NvFgNaAlq7CTqLo9ucibGZamGU+HiPIfA/31bVPTvchQJomipy56J+Cc3Z
-	AfngvIFQSWgivEnLjCDzvk/2xz7O/ZPBwnDXYDee3pxhBMdqgbbH3D9+GXvfm5wpPb3LkcEnwAU
-	CWG4/CYdja20UN9q+VcEzn+l/sy4XuEmBnu7SgbhdABVt/35KNrqjTjFJDzPqOxzz44RZiwCLi1
-	zhXY5GNSiaplgUbCnBLK7W2k5NFdLRM0+wVGspSCl08IgYfMAfbKfdDeq9Zg11iVfryxhUI4Hyc
-	=
-X-Received: by 2002:a2e:ae18:0:20b0:3a1:8510:cbab with SMTP id
- 38308e7fff4ca-3a371f4a7e8mr21960751fa.12.1788667882373; Sat, 05 Sep 2026
- 21:11:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NPFEZz7G"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16D7D1F00A3A;
+	Sun,  6 Sep 2026 04:15:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788668115;
+	bh=/ODEmOVaZNoe3SxxEirFhhdAgUoxNU8vfhBnBIpL+O8=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=NPFEZz7GDr7bRSnPMRBBJeRnSut+OwmxDf0yhEt9FQq0ZsVLw4BIul2SkiZlJCaOr
+	 VMKesvogHMC1dJzLQ4GttEVR2CC3JBUgC7TasyEr2yZDFz7TXVuGP+XIWr90Eic4QR
+	 7Rgpua5slSAVSjUNoB2ta232qEXnxDrdYdfl3DTx3uVJjA4KbYhVXecEHKaavBmZDN
+	 fpPmRfjmxe2HyOFcotvorfVqgwI4GYXUu7lltXK/gR8+DXzT2YIMx+dgFTKqrHETnJ
+	 2AVSvIZS0UitBzusdNOIvkIZgecE5q9foitDojl36+Y+c9+0xweJlt0RGEUtRDa2up
+	 +zdbWrNCeBiqQ==
+Subject: Re: [PATCH net-next v2] net: fec: support RX flushing via an ethtool
+ private flag
+From: netdev-bot+sashiko@kernel.org
+To: alexander.sverdlin@siemens.com
+Cc: netdev@vger.kernel.org, wei.fang@nxp.com, frank.li@nxp.com,
+ shenwei.wang@nxp.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, imx@lists.linux.dev,
+ linux-kernel@vger.kernel.org
+Date: Sun, 06 Sep 2026 04:15:14 +0000
+Message-ID: <178866811459.219967.2326693241215437513@kernel.org>
+In-Reply-To: <20260901074732.113791-1-alexander.sverdlin@siemens.com>
+References: <20260901074732.113791-1-alexander.sverdlin@siemens.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <133b6aee9e2c908c9da37d5585b3d2cd016906cd.1788187473.git.zihanx@nebusec.ai>
- <20260905151227.75099-1-horms@kernel.org> <CAANe3eRpVGnYpygfiQTsXd2VmBO43P-P1RfREkdDypgXBZB9Uw@mail.gmail.com>
- <20260905122929.5bd1bd45@kernel.org>
-In-Reply-To: <20260905122929.5bd1bd45@kernel.org>
-From: zihan xi <zihanx@nebusec.ai>
-Date: Sun, 6 Sep 2026 12:11:09 +0800
-X-Gm-Features: AcwNN1X4pr4fNZzhfVF2lKYxFSJa-AapKUR7vl8QhdvgCFTfBdfx9ZvtSLVLJBo
-Message-ID: <CAANe3eRLauCoiYjxBWGqF0Wz7FxMkNxJcTUaqiD6ZygxcUfUcA@mail.gmail.com>
-Subject: Re: [PATCH net 1/1] udp: diag: bound bucket lock hold time
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, davem@davemloft.net, 
-	edumazet@google.com, pabeni@redhat.com, xemul@parallels.com, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, vega@nebusec.ai
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Sun, Sep 6, 2026 at 3:29=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> wro=
-te:
->
-> On Sat, 5 Sep 2026 23:49:05 +0800 zihan xi wrote:
-> > > When an active netlink dump for UDP sockets finishes, inet_diag_dump_=
-done()
-> > > invokes udp_diag_dump_done(). This function drops its module referenc=
-e using
-> > > module_put(THIS_MODULE) as its final step.
-> > >
-> > > If this was the last reference, a concurrent rmmod udp_diag operation=
- can
-> > > proceed and unmap the module's text segment before the thread executi=
-ng
-> > > udp_diag_dump_done() executes its return instruction to return to ine=
-t_diag.
-> > >
-> > > Could this result in a kernel panic due to the CPU attempting to exec=
-ute
-> > > unmapped memory?
-> >
-> > Yes.  If that module_put() drops the last reference, rmmod can unmap
-> > udp_diag while dump_done() is still returning to inet_diag.
-> >
-> > I will keep the extra module_get() in udp_diag_dump(), and move the
-> > matching module_put() into inet_diag_dump_done() so it runs after the
-> > callback has returned.
-> >
-> > v2 incoming.
->
-> FTR your patch also looks atrociously ugly.
-> If you send v2 please make it better.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider:
 
-I'll rework it.  v2 will follow tcp_diag's batching and drop the
-socket cursor, dump_done callback, and extra module reference.
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
-Thanks,
-Zihan
+- [Medium] fec_enet_get_sset_count() returns 0 (not a negative error) for
+  ETH_SS_PRIV_FLAGS on every FEC variant lacking…
+- [Low] The new fec.rst documentation contradicts the implementation it
+  ships with.
+
+--
+
+net: fec: support RX flushing via an ethtool private flag
+
+This adds per-queue RX FIFO flushing support for the FEC controller by
+exposing the RX_FLUSHn bits of FEC_QOS_SCHEME as runtime ethtool private
+flags named rx-flush-qN.  A new fec.rst document describing the flags is
+added along with the driver changes.
+
+> diff --git a/Documentation/networking/device_drivers/ethernet/freescale/fec.rst b/Documentation/networking/device_drivers/ethernet/freescale/fec.rst
+> new file mode 100644
+> index 0000000000000..502261f517e05
+> --- /dev/null
+> +++ b/Documentation/networking/device_drivers/ethernet/freescale/fec.rst
+> @@ -0,0 +1,55 @@
+
+[ ... ]
+
+> +Some hardware features that are specific to the FEC and have no generic ethtool
+> +control are exposed as ethtool private flags. The set of available flags depends
+> +on the SoC and on the driver configuration (for example, the number of receive
+> +queues), so the flags are enumerated at runtime::
+> +
+> +	$ ethtool --show-priv-flags ethX
+> +
+> +	$ ethtool --set-priv-flags ethX <flag> on|off
+> +
+> +rx-flush-qN
+> +-----------
+> +
+> +On multi-queue capable controllers the driver exposes one ``rx-flush-qN``
+> +private flag per receive queue (``rx-flush-q0``, ``rx-flush-q1``, ...), which
+> +enables RX flushing for that queue. RX flushing is disabled by default.
+
+[Severity: Low]
+Does this description match the code that ships in the same patch?  The
+document says one flag is exposed "per receive queue" and that the flag set
+depends on "the number of receive queues", but fec_enet_get_sset_count() and
+fec_enet_get_strings() enumerate min(fep->num_rx_queues,
+fep->num_tx_queues) flags, and fec_enet_set_priv_flags() rejects anything
+above that minimum with -EINVAL.
+
+fec_enet_get_queue_num() reads the two counts from independent properties:
+
+	of_property_read_u32(np, "fsl,num-tx-queues", num_tx);
+
+	of_property_read_u32(np, "fsl,num-rx-queues", num_rx);
+
+each clamped separately to 1..3, and nothing in the driver or the binding
+forces them to be equal.  So with fsl,num-rx-queues=3 and
+fsl,num-tx-queues=1, the documented rx-flush-q1 and rx-flush-q2 do not exist
+and cannot be set, and the document gives no hint why.
+
+The commit message does explain the TX dependency ("RX flushing code just
+takes min() of the both values for now"), and the -EOPNOTSUPP path for
+controllers without FEC_QUIRK_HAS_MULTI_QUEUES is also not mentioned in the
+new .rst.  Could both be spelled out in the document as well?
+
+[ ... ]
+
+> diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+> index 794ec427b0ee6..e5c1d04a665c4 100644
+> --- a/drivers/net/ethernet/freescale/fec_main.c
+> +++ b/drivers/net/ethernet/freescale/fec_main.c
+
+[ ... ]
+
+> @@ -3561,11 +3581,18 @@ static void fec_enet_get_strings(struct net_device *netdev,
+>  	case ETH_SS_TEST:
+>  		net_selftest_get_strings(data);
+>  		break;
+> +	case ETH_SS_PRIV_FLAGS:
+> +		if (!(fep->quirks & FEC_QUIRK_HAS_MULTI_QUEUES))
+> +			break;
+> +		for (i = 0; i < min(fep->num_rx_queues, fep->num_tx_queues); i++)
+> +			ethtool_sprintf(&data, "rx-flush-q%d", i);
+> +		break;
+>  	}
+>  }
+>  
+>  static int fec_enet_get_sset_count(struct net_device *dev, int sset)
+>  {
+> +	struct fec_enet_private *fep = netdev_priv(dev);
+>  	int count;
+>  
+>  	switch (sset) {
+> @@ -3576,11 +3603,67 @@ static int fec_enet_get_sset_count(struct net_device *dev, int sset)
+>  
+>  	case ETH_SS_TEST:
+>  		return net_selftest_get_count();
+> +	case ETH_SS_PRIV_FLAGS:
+> +		if (fep->quirks & FEC_QUIRK_HAS_MULTI_QUEUES)
+> +			return min(fep->num_rx_queues, fep->num_tx_queues);
+> +		return 0;
+
+[Severity: Medium]
+Should this return a negative error instead of 0 when the quirk is absent?
+
+On the FEC variants without FEC_QUIRK_HAS_MULTI_QUEUES (i.MX25/27/28/6Q/6UL,
+mvf600, s32v234) this reports a private flag count of 0, while the patch
+installs .get_priv_flags/.set_priv_flags unconditionally, so
+privflags_prepare_data() no longer takes its early exit:
+
+net/ethtool/privflags.c:privflags_prepare_data() {
+	ops = dev->ethtool_ops;
+	if (!ops->get_priv_flags || !ops->get_sset_count || !ops->get_strings)
+		return -EOPNOTSUPP;
+
+ethnl_get_priv_flags_info() only errors on nflags < 0, so n_priv_flags stays
+0 and both reply helpers then evaluate a 32-bit shift by 32:
+
+net/ethtool/privflags.c:privflags_reply_size() {
+	const u32 all_flags = ~(u32)0 >> (32 - data->n_priv_flags);
+
+The same expression appears in privflags_fill_reply().  Can this produce an
+UBSAN shift-out-of-bounds report (or a trap with CONFIG_UBSAN_TRAP) for any
+local user running "ethtool --show-priv-flags eth0" on those SoCs?  Before
+this patch every FEC took the -EOPNOTSUPP path because ops->get_priv_flags
+was NULL.
+
+Returning -EOPNOTSUPP for ETH_SS_PRIV_FLAGS when the quirk is not present
+would be propagated unchanged by ethnl_get_priv_flags_info() and keeps the
+old behaviour.
+
+>  	default:
+>  		return -EOPNOTSUPP;
+>  	}
+>  }
+>  
+
+[ ... ]
+
+> +static int fec_enet_set_priv_flags(struct net_device *ndev, u32 flags)
+> +{
+> +	struct fec_enet_private *fep = netdev_priv(ndev);
+> +	u32 mask = 0;
+> +	int i;
+> +
+> +	if (!(fep->quirks & FEC_QUIRK_HAS_MULTI_QUEUES))
+> +		return -EOPNOTSUPP;
+> +
+> +	/* According to i.MX8QXP Reference Manual, "when both class 1 and
+> +	 * class 2 are disabled, RX flushing for these rings must also be
+> +	 * disabled".
+> +	 */
+> +	if (flags & ~(BIT(min(fep->num_rx_queues, fep->num_tx_queues)) - 1))
+> +		return -EINVAL;
+
+[ ... ]
+
+> @@ -3800,6 +3883,8 @@ static const struct ethtool_ops fec_enet_ethtool_ops = {
+>  	.get_strings		= fec_enet_get_strings,
+>  	.get_ethtool_stats	= fec_enet_get_ethtool_stats,
+>  	.get_sset_count		= fec_enet_get_sset_count,
+> +	.get_priv_flags		= fec_enet_get_priv_flags,
+> +	.set_priv_flags		= fec_enet_set_priv_flags,
+>  #endif
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260901074732.113791-1-alexander.sverdlin%40siemens.com
