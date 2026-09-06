@@ -1,76 +1,72 @@
-Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA7BF625
-	for <netdev@vger.kernel.org>; Sun,  6 Sep 2026 12:32:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 028A71940B0
+	for <netdev@vger.kernel.org>; Sun,  6 Sep 2026 12:32:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788697954; cv=none; b=KjJEMku23nquhfUOMtQgQ96RTjk1mxRmSWhRIqkPOromLn43Wd4D2NR+K762Aq6ZQaDIYAQ+ULoac2UTmxVeSaVEQ/ShzVEiYNUL/GSc3yCv0nhWt7eEzoRa49q6SSfo9TKtLFlDst7gdVnnJNozsdmk44wvfluLXN9Pihj1aBA=
+	t=1788697956; cv=none; b=K/pTrIy1PL5swuMJ1wNqD6dKLovNLG9mVSKplEW5pqU3rAeAsNeuzpBag0c3fdJVLcQa86k93npiA7dcSD8QrHqLRZmSjiZ7PgL2RdnkEoPCql+2+VDL9PE7I+2LlWclvwzObkQv2WuFqY8a3jpWMs/CKsGAccCXF0PtvaOXjE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788697954; c=relaxed/simple;
-	bh=257ha5482dGDut3K/eEsR7K8P9zIwElkWPJi5hXYxbo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=s6ZOnJLh+9Dq0KCeCC8fOUA/BfhRxZ70mMVU9TOKa5/QaQRZiIH6enirIvirV23xPi2ekCP9E0aBBKSrxzsZtfs03oniNPQKMAMlepqHKX5YTG+gFDnKCH56V7IjqsWA54YxDymUzpLyU+qEQX7YbK2wbeafGigyJhQhR9vOTbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mail.huji.ac.il; spf=pass smtp.mailfrom=mail.huji.ac.il; dkim=pass (1024-bit key) header.d=mail.huji.ac.il header.i=@mail.huji.ac.il header.b=azDatZic; arc=none smtp.client-ip=74.125.225.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mail.huji.ac.il
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mail.huji.ac.il
+	s=arc-20240116; t=1788697956; c=relaxed/simple;
+	bh=Sgcn14L0g02bItZ04E+YkjO9u5qGmAuMZdZAS26Crys=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=asQq1ltUtHCQ+SpYaPvdIDgaXIW0cXBHuPeNkyLpjYPEb78SRM5qMEZktR55GrX3i/z+vYYlryzcSMN3NpKlvLHfwNmobwMnGJG30yZLpufr3vlzXWwj0ZjHi9FDPR0HPdNK/dxDE2L+vTLBn8QiYxtUI0HV4NxsJTLOB0VejIE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YGLJaZ1K; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mail.huji.ac.il header.i=@mail.huji.ac.il header.b="azDatZic"
-Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-4843178b1c8so174145f8f.0
-        for <netdev@vger.kernel.org>; Sun, 06 Sep 2026 05:32:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YGLJaZ1K"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-49cf4f81d86so19538825e9.2
+        for <netdev@vger.kernel.org>; Sun, 06 Sep 2026 05:32:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mail.huji.ac.il; s=mailhuji; t=1788697948; x=1789302748; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1788697953; x=1789302753; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=2re4j2iFe8xgappvNLpp0Es9o+RXslUNOkb93dc7fFQ=;
-        b=azDatZicdgBmetHzMTm+e6f98k0srQY4FCkxJQGGJxymD/ysfko+373GPWyA1tenOY
-         x98UZBQvWL0uc8T1lv0moLvwvNlb892XG9KZsOxfwSO0kEtVeLqsrasxlPFq2sFRbtn7
-         zUFxgs8s5/Uqud54d0Wmp0fDguF8XgK3ftwq4=
+        bh=7bRw+3griMmmm9uOADm1tBgo3gIoZKRYcTHKvyuLxuU=;
+        b=YGLJaZ1KysSaNP7GwB5C2qbCFuItqtBZxoquO1FvJwmB81AsgomrPHuORDh8DnqkSH
+         CWP/XY8bf6svNrFM4zW9y+/RvmSmpZYtCIMLVD0ImcJrzYURtCVNVkf5fzXkSMco1pKR
+         p4EMhJ8VL9F1ibBkob9lH4P0hNTWavO2gitA6C2lhL+rVHlUW12JErHJdiJQiPGc54jh
+         7MH62BIs2iKCorX6koKWvTNj4Pw+LRD3TcotNqm2i/YJPtRL1s7omC20ApEXCWGyadQ9
+         D2t6pdSHvbpujXuUZRLwkKha5hChF2wvDGX4hvQ46nnE/k5O7xhDhQJf5Mcw+k+f1E9e
+         jzJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788697948; x=1789302748;
+        d=1e100.net; s=20251104; t=1788697953; x=1789302753;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=2re4j2iFe8xgappvNLpp0Es9o+RXslUNOkb93dc7fFQ=;
-        b=HrlbXDG/jotDRLOzWfDE3V257nG/8TPHYtv24/MXjL91Jm2z+igwe22Afewe8Sf3xz
-         E2vyKZXKnj5RAFdh2213i3kq0S6ZPsXymQHpE8r4kNEttR2G+oVmzjrDyNxZN3yVSdER
-         9YlqOfmWFe3hX8qWEYUV2EsoXPd9UFmoXdCAy/3DOywH0ZSgECoNUPoh8BVNQ4YCJJAi
-         11OhifgpkZ2u3jyjzvORzH17jZpUV2sTA9/VdbiMfLyjBpY5Ae9+5TfI638IBUnLfxG3
-         K7ALUQsi7Bm86rK/zpsx+Lwf5zUEMUmXsZQ3QB9mm+sR/WIK4+I2nunrmgOSjnH+oQ1o
-         cv8w==
-X-Forwarded-Encrypted: i=1; AKwUvBzMmdma+Uk+6uz+ObKsgRJdmcV6r0ePctmA8jWqEEo56OZH9tJNCq2ll/cv59fFZ9OJp7n5ebA=@vger.kernel.org
-X-Gm-Message-State: AFuF++n4IyL2yw1uVzUqtsWgvk7cmdW3XJ3d2lmYmNlceeKtgD6N2xib
-	5v0nR7mR1z5mD16juM0Ubal1FbvKf34/nCqVn1t/BMAxxXjVoa7E3KAShz9ROo4arA==
-X-Gm-Gg: AYBFou2hZj9WLwhnDOtjRys5YP76rh5Wh56fZgEpxPuhGPpuXoVa4QMRXP8x4lC6Mki
-	Lrpcsy/ft86mkDeoSTwkZJyUlx/lo5yi/vhLyd3S0IAuFFGLlrS+eeWTgikxFMa24d7nr9FXNKu
-	13BBHAsrHJZEQ0Oo9Zg+ycEiAstT3QoAnw98STvRsZRnx4tS93dhIJtIL8jYDVHERjuSNBw++JE
-	x/LU3b5W10U9VrXQiP6dHpHyd2+Xkx1LOzCjWg+2OlZeSyLQ/bIM8iNT9VdV+mXutVDFvZHPtcX
-	Bw1dfWh2kRNb9QgWo3f+vyhyg44XSqJpA2wEtdaKVpNbbcyGDJqpFQjiOe8wtAiEDUe+7XgG5r0
-	BwWLi4QHK8GaQesDkf4FjhFZJxkb2Gs30OwAMlowpRmPN60a2lVOnflRaORnG2N800S6hZrG69T
-	2bC/ewISkaeNuZjBZIs4vrlJrZh+YqGZTj4LMhhKe8Pt4Z7hy5In5btHPrWYIdNCvSZIxU/Befw
-	ABiIMwf503WOiooUtbqS+9YsA==
-X-Received: by 2002:a05:600c:c494:b0:499:d95a:41f with SMTP id 5b1f17b1804b1-49d010c3969mr86187115e9.0.1788697948407;
-        Sun, 06 Sep 2026 05:32:28 -0700 (PDT)
-Received: from inbal-OptiPlex-Micro-7020.tailf3f5b8.ts.net ([2a06:c701:c272:d400::7])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cfbdacc45sm200184035e9.11.2026.09.06.05.32.26
+        bh=7bRw+3griMmmm9uOADm1tBgo3gIoZKRYcTHKvyuLxuU=;
+        b=tH+srFThPoZUICyYC44Mj6WY86zIKU22PPFEEWPTxsC+jd6+kbFXgKHCEY6X4h1Qc4
+         JHDYvp3Mv6URUfewZfeboHWgl6x97gldw03SEQNGEoIWKEi2M2nWMZX1uWPas4DeJzjI
+         ypxfKP7TFkzeny8w3cLHEOrHjFAIGj1/5yuss8ZQ66pWKof9niKD7bF09MZUkmc+rmuH
+         CVwq4IZz3HXUyQu5/11Uv+/DHh7ywo4dze3lPRcPFpQ/64+yPkB6ARka2FwjqS3ggwn0
+         Wy8w7swNH9tN5MQ41skaNhkLqQAeHmAb5ctrNAYiwkes4rDB7ZE17pVguxPoitSqi6H/
+         CGMA==
+X-Gm-Message-State: AFuF++kIjfvTXu4bEEe60at/Xmeu1jb5062dUrQavSZEW+FM1ffsyERy
+	TuwzzIVxv/ef1iwrbJ0Au72ghdJsxhuX+YjreQ6R9LfxjRiz3BCLNQ8VxBvc4g==
+X-Gm-Gg: AYBFou1oEFIHCT4wlPTOkVH/9ZKFoaQ706yxlbdjhiCZPT8qKPffr9yqxBPnx1L5MQm
+	mLUGciAPScE9wOpj4E67QKAiQDVR2zzM9xiWTKrjyKmRmanBt1S9teyBX0zwjUycv3OHDvvSPtw
+	jXfhMh6TJ5/sJTPg1vHoQb3t6t+ghg+nDPnFRA17eBCVEDlxLM817e70Y/xCicqN59loIkv6d5o
+	gqIXvymyRb5jXnjb/9CvU1rnoQHIOxTR7G0opg5MENiXhMfv0xXHtSLci1on+3/XzEBt5YmQ5AI
+	NTbbfVNVUDol86HQIpFEZonhbajLmLm0kSSFOtmAbaROzX54JMexvo9Bx7twBktCxWVxal7uiLb
+	z7pwy+nEZYZOpspAUQXbxNBePFVADVxRY82czQzWPS1R1UC/hV9adkg/yoWuGM0eK5LDZsqlEvO
+	MZGN24Fjxs22FHSDj92ASDCgSDiCG17VttgFvWARBsVg6kEeMA7t0rsdSSrED8terivKy8
+X-Received: by 2002:a05:600d:8481:20b0:49c:fde6:8b39 with SMTP id 5b1f17b1804b1-49cfde68bacmr97434185e9.29.1788697952905;
+        Sun, 06 Sep 2026 05:32:32 -0700 (PDT)
+Received: from SurHub.localdomain ([102.218.51.179])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49d0af538d0sm65779485e9.8.2026.09.06.05.32.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 06 Sep 2026 05:32:28 -0700 (PDT)
-From: Inbal Schussheim <inbal.lipshtat@mail.huji.ac.il>
-To: edumazet@google.com,
-	ncardwell@google.com,
-	kuniyu@google.com,
-	netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
+        Sun, 06 Sep 2026 05:32:32 -0700 (PDT)
+From: Abdifatah Suruur <suruurism@gmail.com>
+To: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: subash.a.kasiviswanathan@oss.qualcomm.com,
+	sean.tranchetti@oss.qualcomm.com,
 	horms@kernel.org,
-	linux-kernel@vger.kernel.org,
-	Inbal Schussheim <inbal.lipshtat@mail.huji.ac.il>,
-	Amit Klein <amit.klein@mail.huji.ac.il>,
-	Tamir Shahar <tamir.shahar1@mail.huji.ac.il>
-Subject: [PATCH] tcp: validate old ACKs before fast path data processing
-Date: Sun,  6 Sep 2026 15:31:51 +0300
-Message-ID: <20260906123151.1391349-1-inbal.lipshtat@mail.huji.ac.il>
-X-Mailer: git-send-email 2.43.0
+	stable@vger.kernel.org,
+	Abdifatah Suruur <suruurism@gmail.com>
+Subject: [PATCH net v5] net: qualcomm: rmnet: require CAP_NET_ADMIN in the real device netns for config ops
+Date: Sun,  6 Sep 2026 15:32:11 +0300
+Message-ID: <20260906123212.10829-1-suruurism@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -79,141 +75,160 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-For incoming TCP segments processed in the fast path,
-Linux does not enforce the RFC5961 requirement:
+An rmnet device may be created with its real device in a different
+netns than the rmnet device itself (rmnet_newlink() resolves it in
+link_net), and the config paths below only check CAP_NET_ADMIN against
+dev_net(dev), while mutating rmnet port state attached to the real
+device:
 
-   The ACK value is considered acceptable only if
-   it is in the range of ((SND.UNA - MAX.SND.WND) <= SEG.ACK <=
-   SND.NXT).  All incoming segments whose ACK value doesn't satisfy the
-   above condition MUST be discarded and an ACK sent back.
+- rmnet_changelink() rewrites the endpoint mux table and
+  port->data_format and, via rmnet_vnd_update_dev_mtu(), can shrink the
+  MTU of the rmnet endpoint netdevs.
+- rmnet_add_bridge() and rmnet_del_bridge(), reachable via
+  ndo_add_slave/ndo_del_slave through RTM_SETLINK IFLA_MASTER, flip
+  port->rmnet_mode and port->bridge_ep on the real device's port; with
+  bridge_ep pointing at a caller-owned device, rmnet_rx_handler() then
+  forwards real-device ingress frames to it.
+- rmnet_set_coalesce() rewrites the port aggregation parameters via
+  ETHTOOL_SCOALESCE (ioctl) or ETHTOOL_MSG_COALESCE_SET (netlink),
+  whose capability checks likewise only cover dev's netns.
 
-Meaning the ack of incoming segments is no earlier than a window back
-from the first unacknowledged sent byte.
+A caller privileged only in the rmnet device's netns can therefore
+rewrite the shared cellular data-path state owned by another netns, and
+steer its ingress traffic.
 
-Later work showed that the condition (SND.UNA - MAX.SND.WND) <= SEG.ACK
-can be further tightened, eliminating some demonstrated TCP data
-injection attacks, resulting in CVE-2023-52881 assigned by Linux and
-the 2023 patch:
-Commit 3d501dd326fb1c7 ("tcp: do not accept ACK of bytes we never sent")
-that rejects ACKs for bytes so far back that were never sent.
+Gate the rtnl paths with rtnl_dev_link_net_capable(), matching the
+"require CAP_NET_ADMIN in the device netns for changelink" series
+(vxlan/geneve, CVE-2026-68432), and gate the ethtool setter with
+ns_capable() in the real device netns, mirroring the check dev_ethtool()
+already applies to dev's netns.  Report the new rejections through
+extack where one is available.
 
-Link: https://www.cve.org/CVERecord?id=CVE-2023-52881
-
-Both RFC5961 and the later patch were only applied to the slow path,
-leaving the fast path vulnerable and noncompliant with RFC5961.
-
-Enforce a validation test for the SEG.ACK in the fast path, before the data
-is processed. Failure to pass the validation will result in a challenge ACK
-and the packet will be discarded in compliance with RFC5961.
-
-Some details:
-RFC5961 (and the 2023 patch) is enforced in tcp_ack()
-(./net/ipv4/tcp_input.c).
-Incoming segments to a socket in ESTABLISHED state are processed in
-tcp_rcv_established() (./net/ipv4/tcp_input.c).
-Consider a packet that violates RFC5961 (meaning the SEG.ACK is too early).
-In the slow path (starting at the label "slow_path"), tcp_ack() is invoked,
-well before processing the segment data.
-A challenge ACK is sent there, tcp_ack() returns
--SKB_DROP_REASON_TCP_TOO_OLD_ACK,
-and slow path discards the segment as expected.
-In the fast path, tcp_ack() is also called,
-but only after the data from the segment is processed.
-Furthermore, the return value from tcp_ack() is not checked.
-De-facto, the data from the segment is accepted
-(and an ACK is generated), even though the segment violates RFC5961.
-
-The following packetdrill script shows the issue at hand.
-Linux (as a server) accepts data segment processed in the fast path with
-an ack that is far too low.
-
-// BASED ON PACKETDRILL SCRIPT FROM:
-// Commit 3d501dd326fb1c7 ("tcp: do not accept ACK of bytes we never sent")
-0 socket(..., SOCK_STREAM, IPPROTO_TCP) = 3
-+0 setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
-+0 bind(3, ..., ...) = 0
-+0 listen(3, 1024) = 0
-
-// ---------------- Handshake ------------------- //
-+0 < S 0:0(0) win 65535
-+0 > S. 0:0(0) ack 1 <...>
-+0 < . 1:1(0) ack 1 win 65535
-+0 accept(3, ..., ...) = 4
-
-// Data must be first sent/received on the socket
-// so that memory is allocated (sk_forward_alloc should be > 0)
-// and later data will be proccessed in the fast path
-+0 < P. 1:501(500) ack 1 win 65535 //valid packet forcing memory allocation
-+0 > . 1:1(0) ack 501
-
-// incoming segment, ack way in the past... (101 + 2^32 - 1500000000)
-// Oops, unpatched kernels happily accept this packet
-+0 < P. 501:1501(1000) ack 2794967397 win 65535
-
-// On unpatched kernels, this ACK will match,
-// showing that the segment is accepted
-+0 > . 1:1(0) ack 1501
-
-Reported-by: Amit Klein <amit.klein@mail.huji.ac.il>
-Reported-by: Tamir Shahar <tamir.shahar1@mail.huji.ac.il>
-Reported-by: Inbal Schussheim <inbal.lipshtat@mail.huji.ac.il>
-Signed-off-by: Inbal Schussheim <inbal.lipshtat@mail.huji.ac.il>
+Fixes: 2abb5792387e ("net: qualcomm: rmnet: Allow configuration updates to existing devices")
+Fixes: 60d58f971c1077 ("net: qualcomm: rmnet: Implement bridge mode")
+Cc: stable@vger.kernel.org
+Signed-off-by: Abdifatah Suruur <suruurism@gmail.com>
 ---
- net/ipv4/tcp_input.c | 26 +++++++++++++++++++++-----
- 1 file changed, 21 insertions(+), 5 deletions(-)
+v5:
+- also gate rmnet_set_coalesce(), the ethtool setter that rewrites the
+  port aggregation parameters of the real device's port, per the
+  Sashiko review
+- report the new capability rejections through extack where available
+v4:
+- use the netdev comment style, per Subash Abhinov Kasiviswanathan
+v3:
+- cover rmnet_add_bridge() and rmnet_del_bridge() with the same gate;
+  they mutate the same real-device port state via ndo_add_slave/
+  ndo_del_slave and have no capability check of their own
+- correct the impact wording: rmnet_vnd_update_dev_mtu() only reads
+  real_dev->mtu; the MTU store lands on the rmnet endpoint netdevs via
+  rmnet_vnd_change_mtu(), not on the real device
+v2:
+- drop Reported-by: (implied for the author), per Jakub Kicinski
+---
+ .../ethernet/qualcomm/rmnet/rmnet_config.c    | 33 ++++++++++++++++++-
+ .../net/ethernet/qualcomm/rmnet/rmnet_vnd.c   | 18 +++++++++-
+ 2 files changed, 49 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index daff93d51342..2474871e80ec 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -4272,6 +4272,17 @@ static void tcp_rack_update_reo_wnd(struct sock *sk, struct rate_sample *rs)
- 	}
- }
+diff --git a/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c b/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c
+index bed6f63facf25..7757fcb2fcc9f 100644
+--- a/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c
++++ b/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c
+@@ -312,6 +312,16 @@ static int rmnet_changelink(struct net_device *dev, struct nlattr *tb[],
+ 	if (!rmnet_is_real_dev_registered(real_dev))
+ 		return -ENODEV;
  
-+/* Validates that the ACK is older than the acceptable historical ACK window*/
-+static inline bool tcp_ack_too_old(const struct tcp_sock *tp, u32 ack,
-+				   u32 snd_una)
-+{
-+	u32 max_window;
++	/* The rtnl path only checks CAP_NET_ADMIN against dev_net(dev),
++	 * but the port state mutated below is attached to real_dev, which
++	 * may live in a different netns.
++	 */
++	if (!rtnl_dev_link_net_capable(dev, dev_net(real_dev))) {
++		NL_SET_ERR_MSG_MOD(extack,
++				   "Changing the port settings requires CAP_NET_ADMIN in the real device network namespace");
++		return -EPERM;
++	}
 +
-+	max_window = min_t(u64, tp->max_window, tp->bytes_acked);
+ 	port = rmnet_get_port_rtnl(real_dev);
+ 
+ 	if (data[IFLA_RMNET_MUX_ID]) {
+@@ -441,6 +451,16 @@ int rmnet_add_bridge(struct net_device *rmnet_dev,
+ 	struct rmnet_port *port, *slave_port;
+ 	int err;
+ 
++	/* The rtnl path only checks CAP_NET_ADMIN against dev_net(dev),
++	 * but the port state mutated below is attached to real_dev, which
++	 * may live in a different netns.
++	 */
++	if (!rtnl_dev_link_net_capable(rmnet_dev, dev_net(real_dev))) {
++		NL_SET_ERR_MSG_MOD(extack,
++				   "Attaching a bridge device requires CAP_NET_ADMIN in the real device network namespace");
++		return -EPERM;
++	}
 +
-+	return before(ack, snd_una - max_window);
-+}
-+
- /* This routine deals with incoming acks, but not outgoing ones. */
- static int tcp_ack(struct sock *sk, const struct sk_buff *skb, int flag)
+ 	port = rmnet_get_port_rtnl(real_dev);
+ 
+ 	/* If there is more than one rmnet dev attached, its probably being
+@@ -489,7 +509,18 @@ int rmnet_add_bridge(struct net_device *rmnet_dev,
+ int rmnet_del_bridge(struct net_device *rmnet_dev,
+ 		     struct net_device *slave_dev)
  {
-@@ -4303,12 +4314,8 @@ static int tcp_ack(struct sock *sk, const struct sk_buff *skb, int flag)
- 	 * then we can probably ignore it.
- 	 */
- 	if (before(ack, prior_snd_una)) {
--		u32 max_window;
--
--		/* do not accept ACK for bytes we never sent. */
--		max_window = min_t(u64, tp->max_window, tp->bytes_acked);
- 		/* RFC 5961 5.2 [Blind Data Injection Attack].[Mitigation] */
--		if (before(ack, prior_snd_una - max_window)) {
-+		if (tcp_ack_too_old(tp, ack, prior_snd_una)) {
- 			if (!(flag & FLAG_NO_CHALLENGE_ACK))
- 				tcp_send_challenge_ack(sk, false);
- 			return -SKB_DROP_REASON_TCP_TOO_OLD_ACK;
-@@ -6614,6 +6621,15 @@ void tcp_rcv_established(struct sock *sk, struct sk_buff *skb)
- 			if ((int)skb->truesize > sk->sk_forward_alloc)
- 				goto step5;
- 
-+			if (unlikely(before(TCP_SKB_CB(skb)->ack_seq, tp->snd_una))) {
-+				if (tcp_ack_too_old(tp, TCP_SKB_CB(skb)->ack_seq,
-+						    tp->snd_una)) {
-+					tcp_send_challenge_ack(sk, false);
-+					reason = SKB_DROP_REASON_TCP_TOO_OLD_ACK;
-+					goto discard;
-+				}
-+			}
+-	struct rmnet_port *port = rmnet_get_port_rtnl(slave_dev);
++	struct rmnet_priv *priv = netdev_priv(rmnet_dev);
++	struct net_device *real_dev = priv->real_dev;
++	struct rmnet_port *port;
 +
- 			/* Predicted packet is in window by definition.
- 			 * seq == rcv_nxt and rcv_wup <= rcv_nxt.
- 			 * Hence, check seq<=rcv_wup reduces to:
++	/* The rtnl path only checks CAP_NET_ADMIN against dev_net(dev),
++	 * but rmnet_unregister_bridge() below clears the bridge state of
++	 * the real device's port, which may live in a different netns.
++	 */
++	if (!rtnl_dev_link_net_capable(rmnet_dev, dev_net(real_dev)))
++		return -EPERM;
++
++	port = rmnet_get_port_rtnl(slave_dev);
+ 
+ 	rmnet_unregister_bridge(port);
+ 
+diff --git a/drivers/net/ethernet/qualcomm/rmnet/rmnet_vnd.c b/drivers/net/ethernet/qualcomm/rmnet/rmnet_vnd.c
+index 4f0ddcedfa979..1f4a3246f254a 100644
+--- a/drivers/net/ethernet/qualcomm/rmnet/rmnet_vnd.c
++++ b/drivers/net/ethernet/qualcomm/rmnet/rmnet_vnd.c
+@@ -4,9 +4,11 @@
+  * RMNET Data virtual network driver
+  */
+ 
++#include <linux/capability.h>
+ #include <linux/etherdevice.h>
+ #include <linux/ethtool.h>
+ #include <linux/if_arp.h>
++#include <linux/netlink.h>
+ #include <net/pkt_sched.h>
+ #include "rmnet_config.h"
+ #include "rmnet_handlers.h"
+@@ -240,9 +242,23 @@ static int rmnet_set_coalesce(struct net_device *dev,
+ 			      struct netlink_ext_ack *extack)
+ {
+ 	struct rmnet_priv *priv = netdev_priv(dev);
++	struct net_device *real_dev = priv->real_dev;
+ 	struct rmnet_port *port;
+ 
+-	port = rmnet_get_port_rtnl(priv->real_dev);
++	/*
++	 * The aggregation parameters live in the port attached to
++	 * real_dev, which may reside in a different netns.  The ethtool
++	 * paths only require CAP_NET_ADMIN in dev's netns, so require it
++	 * in real_dev's netns as well before mutating the shared port
++	 * state.
++	 */
++	if (!ns_capable(dev_net(real_dev)->user_ns, CAP_NET_ADMIN)) {
++		NL_SET_ERR_MSG_MOD(extack,
++				   "Changing aggregation parameters requires CAP_NET_ADMIN in the real device network namespace");
++		return -EPERM;
++	}
++
++	port = rmnet_get_port_rtnl(real_dev);
+ 
+ 	if (kernel_coal->tx_aggr_max_frames < 1 || kernel_coal->tx_aggr_max_frames > 64)
+ 		return -EINVAL;
 -- 
-2.43.0
+2.53.0
 
