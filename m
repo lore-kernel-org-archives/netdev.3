@@ -1,155 +1,169 @@
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C71B33195FE
-	for <netdev@vger.kernel.org>; Sun,  6 Sep 2026 23:18:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.177
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788736727; cv=pass; b=e3nw4gjqHs0VjEpSQRiIquNRn01Iwm6iZZlPV77z+GtPy1LyY9uOs/XTV7gs3NexyoIM388yrJBrvQOpkPEuSYvW61j1owLdoG/HE0ZIp9lFmYKIJUWk+nlGJKD5eIpgvihBuF5BCG+95Nbyz+Gw5oi9AkJfVq/F3zk3OImdO7Y=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788736727; c=relaxed/simple;
-	bh=724XBBM18e/5/TAVSEA0cDWj19CNMiPpyAaDTnCZGLo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rkobp8dipYEY0MP2ax9dp0AwHKO5WjBU3jT/yZ+slgCIINGX79xxEGeob4hcbcNvtePsAjMLBYL7pqrjPy6Z9GP9quqc96FcJCxZ2rvR7530EChRFK7XEdWMyq6iOTLSn3N46UTEztTRicG1nffEZEe8Ou5X1/bTb3WKL3epfWY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U0SQSRcQ; arc=pass smtp.client-ip=209.85.210.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FB4C24BBEB
+	for <netdev@vger.kernel.org>; Sun,  6 Sep 2026 23:35:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788737726; cv=none; b=IR9wop5feB3ZX4hj1ASMptCKCMCE9mDcefJELxjk2uJB97q/TyUCzk+Ht20qyuFnPUJiCjm+1ZcllfetgRlvuuGASzKmDcILpuo72bl36sVkrcXj6MAgEwnOlP5VuftcmYyq2EpsIGvuexecjpAVdpA8jHpTmQWdZRLTApGgmwQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788737726; c=relaxed/simple;
+	bh=y9P/I7jMpSUi3vaw+6VaWnnEbQ/XnWwOm+dYRgQyi7E=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=kvH1oEUkdGIk0WIqoqsvird+wgX/ILk3+jfQqlLSIa7wo9Z37LHx5uHWyJH7jGKRT/OiCb4U7Iyh/zxi97vGR3NdMlu0JdhffPYurTR6N9Z09869O3VljtGOOWgaiGb4qlHpfslcHc8QafD2UUjT5vsIaH0KQHkhoXPJ0dNUp8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b7nBIyDh; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U0SQSRcQ"
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-85339ed040aso2170646b3a.1
-        for <netdev@vger.kernel.org>; Sun, 06 Sep 2026 16:18:45 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788736725; cv=none;
-        d=google.com; s=arc-20260327;
-        b=eZ/69H7JlPgt23Co7wp/EzpXWqDHm2jUGoNIPzfqksdxfHmH2+KJwWiim+HmBKd382
-         GfuCLbxKSNqF73UpL8nwBI/++l67hzydCNAbqmim1blXufyd26FXMpCz3oPNSifo2d98
-         QJqGtl+9S7IkQpppEjpi0tomHi7m3ccDiTJxpqGylEJgk+Trss0DrwuOtWf9udNM6pUN
-         +k0uAbH79iwzfifGU3CyDaoa43XWqrYc2ADeQrBpmWtdZpwLy+mLoLrL23uU4sG9KSqq
-         Ii0kbNR8vZX41sCxWtcDppLFsXzX3sveJgkkzrKtxUkWvXg2NctJvRhE4G8AoD35q0//
-         2DuQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=/lolE45Uhyd+sThQbwL8EFg5+bmDGsCrRM5xzs+E9ks=;
-        fh=IsPHG0k72sGBl31uIxBOC1qMbtwUJbZaSTHjhVtzbno=;
-        b=FfulpRC+TzFYSwsGBHeXyRxXbm27O5p5owpW3/KjzR6IAnw5HrQPGPofUFpdcpIoD8
-         6qXj6dplsRPVznYr7vS1k0zQ0Udb4EOlEg3f3wjL+l4K65kQwjyojAnaj7KL3X+99j/h
-         zFpihMyuOh5pQ842X4XMxkAVa4VQMRHz8nP3Z16OJBk52pqHdTjyhvERBiUVaaSZksBf
-         SJ4VcKDk8zkJVZ/evIBBe2e4VrVjbvcFm3kO6PpMZM67z5nDmc3MZWC7N1sqIyiqdO4q
-         STpsGT0YRX5oDheHpgkE0VHAQ84387gLEbslfs9ckJozkYpQ9Admn6XEIAH2K3O7ldts
-         qygA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788736725; x=1789341525; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=/lolE45Uhyd+sThQbwL8EFg5+bmDGsCrRM5xzs+E9ks=;
-        b=U0SQSRcQpQGzr9UR8MK+L9br7STH2Yj3Gw/0QQtpr2LsD7ahUiJPVL6Hd5qyU9tIIK
-         LYn9bdXjdL64w/Vt62iOZr+0E6AtPvOvgSMO3Lpo4cyMfumMjOPfrIPqqz+aP/SPxtp6
-         PKT78kyRXTaqAnSnkIJEk3RYEVUHwla2xZ4VZKe8qbIfh6mr9kfeMJ/VKro0SxcMWyoF
-         X8cS15YfGT6ccabKtuGTcw02h4s0rbfgMU8RbQOL5A5L3KuIVTjjfip0nMIjHVcjmEtt
-         M4lQdXCKLE14sGYggseBHXhbq71cm0Ao0+Jqs8JT2t47o3mlf2z3XxfcRwATtyvFSEZV
-         aAQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788736725; x=1789341525;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=/lolE45Uhyd+sThQbwL8EFg5+bmDGsCrRM5xzs+E9ks=;
-        b=gxapbQS9dSQbEnMElWegGrUApHPyCwPP0iO38N0RAv0HchmVNOyLW3VyW4ualZ7p0n
-         bx5AjbaVEWCzl4PKo2kofmRWK2rIu62wZZkJTYhoHuLqRuFrhHDSmYVYG2I2lqgmMAE9
-         D2C/1G9fpUDfLuvonUU1za3qp1wTWs6G13Wg5XV7s9pq32icKQd7BN05iAJtr97Ah6px
-         53as6tfqKFIEYXiSgaKnni+tlbVCxMdl8s8QeGRg0oIF+xBDiA1ai+yJk/50FRqSXMPf
-         Tx0Z4bywTBIZHgY+i7SQ1dDXryi3KPyiXTxy8wgFjlj8gwsWU+PUZd72vDaJCiiOZxg6
-         SUHw==
-X-Forwarded-Encrypted: i=1; AKwUvByy9O6C+dDfXkv9WVwnthz82Ho4tKJ1GsrHe9oyj+ReH7k5j9/iQZpWiDl7V85wnJuJ2etAhqU=@vger.kernel.org
-X-Gm-Message-State: AFuF++n96L/1BjmgINqSAGQHP27ZEjYwd3AvpuIkgXsrkjeSyzXEKKqw
-	sBKx29fOzKzT+fP4kIMUIluQ0mFFC8jDbFj017m9LrSuPnfy3QabNuwjIyHaXNaO1RhoY9FmsXS
-	5mOrttqr+0AFWl4TqN0kWAfZIITfanyU=
-X-Gm-Gg: AYBFou0dQZnpjcX8O6vCJmVT+jad/7z8wXXOGWyZUN4mRk23Rb+qysnAFkuf9LYhW3S
-	yeydiJNKOmJIcIVUWdGcAcYfOjNhJmSoCvGtnXgTypNIJZbj1ecOLLxpSIEJd/zgPwRZ98PHb9+
-	PkP+L6p9sTd/ytMJ/m8K7Ws6rcU9lBoQE1feY5JA+rI3bvo9RNI2z6juaWQCTuPDFqpkC2xb3B9
-	xh9vZadp3GQJ9xy9PQjrbTeBRnm+4uwWG8v0buFXEU1k0HJtiDwbMrnm6nREm6ZZJYTrtJ1iR3/
-	x0omEIjwVKyyO5qVF8BXyCVBCG2nfDZWFQq2DVSngkjqQgkG5ssg3dFgcXifH9scA5g4SAekGYc
-	iJCadT+JXlvH2/XPHgIOVwCt32LXKZ5ESzeSL6K0=
-X-Received: by 2002:a05:6a00:13aa:b0:84c:5b65:ef86 with SMTP id
- d2e1a72fcca58-86168e88261mr23644101b3a.17.1788736724956; Sun, 06 Sep 2026
- 16:18:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b7nBIyDh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AAEF1F00A3A;
+	Sun,  6 Sep 2026 23:35:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788737724;
+	bh=ALYzCcc+RaUJBJ/34Hbrx2ZE/mbn0z196l6IfkOh10I=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject;
+	b=b7nBIyDhyIJHz4AonFtzNgi96OMDfIPEfhJhviCNHgIHoQ/oLfEA8Wcr/sQSWW4Nn
+	 0NjYpGuc9uGE34rf2vFXquvKtgu5aZRkvm2SjNfGRd8lBXH7uxsDB8RTmPJPlhlZdu
+	 p1X9rIDXDGZUs9PryMbfBz8RxA4F/tGNRJ85Cw5bFZb9QPhtXsgrpzxHcfhkcWITuL
+	 F4Ieg3hU/zBmPya0+oBFFtqIkhMY17BjmvPaHDwcs3gxqPpcpjo5gx40U4o663qcIU
+	 1vH/xhfW5WM/EkKaJkPQQ/+MVgjCicGLbECenvFms78UgRXkZI7G3sBebR7rc3KqV2
+	 DTW/9b7gI9YbA==
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfauth.phl.internal (Postfix) with ESMTP id AF2CBF40067;
+	Sun,  6 Sep 2026 19:35:22 -0400 (EDT)
+Received: from phl-imap-15 ([10.202.2.104])
+  by phl-compute-10.internal (MEProxy); Sun, 06 Sep 2026 19:35:22 -0400
+X-ME-Sender: <xms:uvidaja0xo1L1jCBSufBGkxr8lDssgTIP0xsAoT1GQWcxbAYf-JxJg>
+    <xme:uvidatMS2rQCUK952cnMU-0XhUJ4-j_95onLIbP16CDDfgGQWzYLrLDPC3QZ-sJG-
+    Aw0BLZwUMUPWZ2Ea21jkfm3YQRf4aWWNs_Ry4Y4RRlpKYw8F1u2neO2>
+X-ME-Proxy-Cause: dmFkZTFVLFX03x+PcQtEHIwixJo7XwTovcoA6joIK4E9ANGU/OQvk5+Tzi+9tkTeT4tAqn
+    tiOnBhFYoveZEAXCWUsR28Xr8dTHvbBlFe8FokUhwnpJ39e3Xr0HhSX5oVIWqhTi6ZjfMC
+    5eIiSvgnPzEYv1h13mAHAGZr+0HGPzSQ2qObLnUwgWDbCKWhHChz12Gp/xowmXwTdlXUHx
+    XLilpS0ZG3nu4stHYVLGrHKZJaWqnkYO/Rt2/BjojQ9IFXz9RMkHmPKUaKZwSdKUuun49H
+    5sClSpuLOgh4bcLvOYx5VCmqvwcygp110bS/+44lSJLoFQJurP79+qw8Stl6MKbAMeNLhx
+    aWR2nrdTrB7sDHQ5GlznfjQK0yn1G5CezBkrfVzfRWnz4rvx4TudhOE8RS50T6sCSH2BG+
+    oEOh9mnK5JK1pZhHQbsB22FAE+ozYw4wtQN43LG5T6nLUBsTvcUVeyhlswWNk9tjj5mdZ/
+    D8aQis3iXjGClzX1EiTiQRKO1Cp/ocq+J1LPwDS8Hh5UxxWuaNZbpGRKJ+wWpg2GCqoopP
+    /wBVIs3liF4tUN/MkGAFKeHlvEga7kfO2wKzjNh+1Ml80hf6KWMR9BZtbqtiahYsru4VeD
+    fSvLLwzqWntCwVNwW/DbGH+u1DvN1xOzPuotzP+0GfhFVoYRUJtmAII1MlBw
+X-ME-Proxy: <xmx:uvidaoHTfsOz2NitL7Ig6eOrOMX3ME0CEeGU9OF9Blngyve-v8E6IQ>
+    <xmx:uvidanVr9OBqq0nH8rgEgOUeZE7eM9SRMUxLG9-vlBXeAoQIbTQapQ>
+    <xmx:uvidas9HOXqheMyCOlsZ4lqfzz7uiG7MoPvypyi6yPvE2dSf20qpkw>
+    <xmx:uvidas6dLfiTNjEExFdR_KLcv-fiEKhgJxk4HA1Ohb4WbuL-1NRNOQ>
+    <xmx:uvidatkGlk568wPptmozAzJ9S3XwSNXZoMch-_tVBTlUwwRyp-ZG5WdY>
+Feedback-ID: ifa6e4810:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 88C777811F0; Sun,  6 Sep 2026 19:35:22 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <apl_5AVsAYLjVX5C@sirena.org.uk>
-In-Reply-To: <apl_5AVsAYLjVX5C@sirena.org.uk>
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Sun, 6 Sep 2026 16:18:33 -0700
-X-Gm-Features: AcwNN1WQk-B2sF_oTeT_a5F-7sgNbJL45Qm1_BHeZkWfObnP1i9S5tuc4ycX_W8
-Message-ID: <CAADnVQJuAGh0P0sw3wWWPAmq1OmAX27KNiCYn6__rZkGs0hPrw@mail.gmail.com>
-Subject: Re: linux-next: manual merge of the bpf-next tree with the bpf tree
-To: Mark Brown <broonie@kernel.org>
-Cc: Daniel Borkmann <daniel@iogearbox.net>, Alexei Starovoitov <ast@kernel.org>, 
-	Andrii Nakryiko <andrii@kernel.org>, bpf <bpf@vger.kernel.org>, 
-	Networking <netdev@vger.kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, 
-	Linux Next Mailing List <linux-next@vger.kernel.org>, Yonghong Song <yonghong.song@linux.dev>
-Content-Type: text/plain; charset="UTF-8"
+X-ThreadId: A0B-5ETSpz--
+Date: Sun, 06 Sep 2026 19:35:00 -0400
+From: "Chuck Lever" <cel@kernel.org>
+To: =?UTF-8?Q?Asbj=C3=B8rn_Sloth_T=C3=B8nnesen?= <ast@fiberby.net>,
+ "Jakub Kicinski" <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, edumazet@google.com,
+ "Paolo Abeni" <pabeni@redhat.com>, andrew+netdev@lunn.ch,
+ "Simon Horman" <horms@kernel.org>, "Donald Hunter" <donald.hunter@gmail.com>,
+ kernel-tls-handshake@lists.linux.dev, davem@davemloft.net
+Message-Id: <198d7f36-0fc5-4957-a38a-7dba4b1b1d64@app.fastmail.com>
+In-Reply-To: <e5de4d2a-4158-46ec-89cb-bed61e2ce2ce@fiberby.net>
+References: <20260904190410.3864660-1-kuba@kernel.org>
+ <e5de4d2a-4158-46ec-89cb-bed61e2ce2ce@fiberby.net>
+Subject: Re: [PATCH net-next 1/2] netlink: specs: handshake: type the remaining key
+ serials s32
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Sep 3, 2026 at 7:10=E2=80=AFAM Mark Brown <broonie@kernel.org> wrot=
-e:
->
-> Hi all,
->
-> Today's linux-next merge of the bpf-next tree got a conflict in:
->
->   kernel/bpf/backtrack.c
->
-> between commit:
->
->   e3e4f66cc4b72 ("bpf: backtracking shouldn't clear outer frame R1-R5 for=
- callbacks")
->
-> from the bpf tree and commit:
->
->   5bbb242c08590 ("bpf: Handle R2 as a return register in precision backtr=
-acking")
->
-> from the bpf-next tree.
->
-> I fixed it up (see below) and can carry the fix as necessary. This
-> is now fixed as far as linux-next is concerned, but any non trivial
-> conflicts should be mentioned to your upstream maintainer when your tree
-> is submitted for merging.  You may also want to consider cooperating
-> with the maintainer of the conflicting tree to minimise any particularly
-> complex conflicts.
->
-> I'm not entirely happy with this resolution but I think it's OK?
->
-> diff --cc kernel/bpf/backtrack.c
-> index 47282ffeeaf94,653db80bcc47b..0000000000000
-> --- a/kernel/bpf/backtrack.c
-> +++ b/kernel/bpf/backtrack.c
-> @@@ -533,8 -538,12 +537,12 @@@ static int backtrack_insn(struct bpf_ve
->                         from_subprog_call =3D subseq_idx - 1 >=3D 0 &&
->                                             bpf_pseudo_call(&env->prog->i=
-nsnsi[subseq_idx - 1]);
->
->  -                      /* Sample the return registers before the callbac=
-k
->  -                       * handling below clears R1-R5.
->  -                       */
->                         r0_precise =3D from_subprog_call && bt_is_reg_set=
-(bt, BPF_REG_0);
-> +                       r2_precise =3D from_subprog_call && bt_is_reg_set=
-(bt, BPF_REG_2);
-> +
-> ++                      bt_clear_reg(bt, BPF_REG_0);
-> ++                      bt_clear_reg(bt, BPF_REG_2);
->  +
 
-It was more involved than that,
-but now the conflict is resolved.
+
+On Sun, Sep 6, 2026, at 4:23 PM, Asbj=C3=B8rn Sloth T=C3=B8nnesen wrote:
+> On 9/4/26 7:04 PM, Jakub Kicinski wrote:
+>> include/linux/key.h has "typedef int32_t key_serial_t" and commit
+>> 160f404495aa ("handshake: Fix sign of key_serial_t fields") converted
+>> x509.cert and x509.privkey to s32, but accept.peer-identity,
+>> accept.keyring and done.remote-auth were left as u32 - the same
+>> quantity typed both ways inside one family, and a generated user space
+>> struct with __s32 cert next to __u32 keyring. All three come from
+>> key_serial_t storage in net/handshake/tlshd.c (treq->th_peerid[],
+>> treq->th_keyring), and special keyrings are legitimately negative
+>> (KEY_SPEC_PROCESS_KEYRING is -2).
+>>=20
+>> NLA_U32 and NLA_S32 have the same length and no range check here, so
+>> the only wire effect is how the value is printed.
+>>=20
+>> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+>> ---
+>> CC: cel@kernel.org
+>> CC: donald.hunter@gmail.com
+>> CC: kernel-tls-handshake@lists.linux.dev
+>> ---
+>>   Documentation/netlink/specs/handshake.yaml | 6 +++---
+>>   net/handshake/genl.c                       | 2 +-
+>>   2 files changed, 4 insertions(+), 4 deletions(-)
+>>=20
+>> diff --git a/Documentation/netlink/specs/handshake.yaml b/Documentati=
+on/netlink/specs/handshake.yaml
+>> index ffec12b46759..9ab46da04c49 100644
+>> --- a/Documentation/netlink/specs/handshake.yaml
+>> +++ b/Documentation/netlink/specs/handshake.yaml
+>> @@ -67,7 +67,7 @@ doc: Netlink protocol to request a transport layer =
+security handshake.
+>>           enum: auth
+>>         -
+>>           name: peer-identity
+>> -        type: u32
+>> +        type: s32
+>>           multi-attr: true
+>>         -
+>>           name: certificate
+>> @@ -79,7 +79,7 @@ doc: Netlink protocol to request a transport layer =
+security handshake.
+>>           type: string
+>>         -
+>>           name: keyring
+>> -        type: u32
+>> +        type: s32
+>>     -
+>>       name: done
+>>       attributes:
+>> @@ -93,7 +93,7 @@ doc: Netlink protocol to request a transport layer =
+security handshake.
+>>           type: s32
+>>         -
+>>           name: remote-auth
+>> -        type: u32
+>> +        type: s32
+>>           multi-attr: true
+>>  =20
+>>   operations:
+>> diff --git a/net/handshake/genl.c b/net/handshake/genl.c
+>> index feac1ad063ee..58606c2a4600 100644
+>> --- a/net/handshake/genl.c
+>> +++ b/net/handshake/genl.c
+>> @@ -21,7 +21,7 @@ static const struct nla_policy handshake_accept_nl_=
+policy[HANDSHAKE_A_ACCEPT_HAN
+>>   static const struct nla_policy handshake_done_nl_policy[HANDSHAKE_A=
+_DONE_REMOTE_AUTH + 1] =3D {
+>>   	[HANDSHAKE_A_DONE_STATUS] =3D NLA_POLICY_MAX(NLA_U32, MAX_ERRNO),
+>>   	[HANDSHAKE_A_DONE_SOCKFD] =3D { .type =3D NLA_S32, },
+>> -	[HANDSHAKE_A_DONE_REMOTE_AUTH] =3D { .type =3D NLA_U32, },
+>> +	[HANDSHAKE_A_DONE_REMOTE_AUTH] =3D { .type =3D NLA_S32, },
+>>   };
+>>  =20
+>>   /* Ops table for handshake */
+>
+> LGTM.
+>
+> Reviewed-by: Asbj=C3=B8rn Sloth T=C3=B8nnesen <ast@fiberby.net>
+
+For some reason, this patch (and 1/2) came to my oracle.com address but
+never appeared at my cel@kernel.org address.
+
+For both: Acked-by: Chuck Lever <cel@kernel.org>
+
+
+--=20
+Chuck Lever (Come to NFS bake-a-thon! https://nfsv4bat.org)
