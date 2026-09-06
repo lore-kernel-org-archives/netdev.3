@@ -1,40 +1,75 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12E0D154425;
-	Sun,  6 Sep 2026 14:11:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A3933D8123
+	for <netdev@vger.kernel.org>; Sun,  6 Sep 2026 14:19:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788703920; cv=none; b=SVfQkq4OV1Dp5BcE15hwk8xxjsSPCOt6eJmkBhX9/gnhmD7ns90pDj9fMTsOX3OSSyITpC0a5KWYgkQgVliRggKYA7v6kMZ4duhch4DIl7koPDPvneB0JluU+dd3VSFey8Sz3DGtmGrO6xdnEkkmD5dad7upJwCK7eGEbZ6SB+U=
+	t=1788704393; cv=none; b=U/vrF/hKpEbM3JB4vedoDFNude6ihInlyV5VVA54jpHCgPA2ZeRg7zBihKFPGqt7z5dp1kir8X+utaHTeJ6lZ+xKfxL5rO6pdX3p952hieb2p4Mx0wjyGZ5j2SUx63R0VH4qS0aPHIAviZwC+bi0iluNNQptOgIPB3/rAutyXjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788703920; c=relaxed/simple;
-	bh=1Rk/+P2J6RgGxt0bh4y60H1MVb4VVsBjwH7irCp/gN4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=o12vmgHGobmOatXVGC1cMKjDKoz3dMjA8zn1vzkGRjYgXZgCrJwGNA9yseqV7cInyDQOXh/EtpJ4LJwS1gGIScHmcStPQw42jbQTWx+/IxbwcrkYxl3LC+T2KrrpyOXSrvraCeu6h9XsFBN2JZfAkReiaLa988GY95rL0CaFJxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=Be6T7Itu; arc=none smtp.client-ip=117.135.210.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1788704393; c=relaxed/simple;
+	bh=8YKa5Bqth0IIk+EC3d0YaMMCxQVa+lDu0NS9FLv723k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qRHocsGy01l5X1aDgZ5TVcdLSliLApmDKplGGBIlCejVPCjW0rEnw0pBfV6shUO3uEoQHEO70CeKtGe04cgmZzgqSZ3Oo6bt1n+UzUl1mDV5ToPcgRmcchYK7HAtxEI7ha3siOjJH9jNKJnwPOgkyC8zLOqOR2BJSC7xyOF8dqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bairaktaris.de; spf=pass smtp.mailfrom=bairaktaris.de; dkim=pass (2048-bit key) header.d=bairaktaris.de header.i=@bairaktaris.de header.b=zZzt/5rw; arc=none smtp.client-ip=209.85.218.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bairaktaris.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bairaktaris.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="Be6T7Itu"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=T2
-	6o6a+4nyv9OBJZwDf7WyKMxGvNlsFRGQa82+m6wwc=; b=Be6T7ItuVhY+hGnRVU
-	E0lKqxmKIqOb64UwXuW6b13bRyLfGj2NMi3qLFw4X2Dq/6L5+BKYNnXJ1o6KWj34
-	sb7TDGCxzMUWZ/cqnyrQp7+WPNwnUmIEO21p/uCwg4HelRaWxwQ5g5DxDRH6a5fA
-	0hXBzqL91s3rkOSRyJz4jbqL8=
-Received: from LAPTOP-BJS5C4G0 (unknown [])
-	by gzga-smtp-mtada-g0-1 (Coremail) with SMTP id _____wDHnJKSdJ1qrqsTBA--.47155S2;
-	Sun, 06 Sep 2026 22:11:32 +0800 (CST)
-From: Heyang Tan <thy15333007817@163.com>
-To: netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	sgoutham@marvell.com,
-	rkannoth@marvell.com,
-	gakula@marvell.com,
-	sbhatta@marvell.com
-Subject: [PATCH] octeontx2-af: use seq_file for rsrc_alloc debugfs
-Date: Sun,  6 Sep 2026 22:11:29 +0800
-Message-ID: <20260906141129.1730-1-thy15333007817@163.com>
-X-Mailer: git-send-email 2.51.0.windows.1
+	dkim=pass (2048-bit key) header.d=bairaktaris.de header.i=@bairaktaris.de header.b="zZzt/5rw"
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-c2637dd37c1so93996666b.0
+        for <netdev@vger.kernel.org>; Sun, 06 Sep 2026 07:19:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bairaktaris.de; s=google; t=1788704390; x=1789309190; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=81ted4pMTbnzF3OTQRL5I6LA+qBpd0cXl1PuT1/p3yM=;
+        b=zZzt/5rwn3tAl0SbaPAQ3Zs4YsFqv83NMIHDkN5rjYziUXdCrPiNeNU4h5f3zFRZuj
+         hieUqRJyLABv6HoOguO9ioRnSRHquVbbBrg/L5TvLlncg9aN7P3aRUp2NVBtXnq5VORp
+         M+CO5HaaMY1IenKQJRxks1bjqzm6sjbNjatA6EDdmoGGaWOmlR7cTjLfVm+luhGG64T1
+         RV10lEySx9Qi7+97GGZYu8kNO7olOj7HXsn1kXEEOAhGG+1ywnoYhe8KQxiUNo6uDhtR
+         bePAIo1Xeho9bsQ/H4hYHVms+kW2s8PqNRskVSw3weAnmAPYu0SDhKw0jDSucF5vQKaA
+         OlKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788704390; x=1789309190;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=81ted4pMTbnzF3OTQRL5I6LA+qBpd0cXl1PuT1/p3yM=;
+        b=eDIAYn4okPdNIGZ0IQYKUYUe3ViCNOFBUigO5amxWLfwVgPyqTYljK5bOo0H9+fe4l
+         Bnkr4UTPF/7DMe1Fb8yZ7FxjAGDaVfB76F/fjLcpXZHQCTB+YwvOXmln91WeMU9GCkSL
+         ozBdcu4c2xSO8/M1xP6TFDnnUwulXz1PyKBoZhZjxz5F5MREBG5fneuqZUqSIWHejlBV
+         GE3pQLpD4bZK8wgziUJDe3wWh5D59eXWv6R8rzlFfl+ZEKDhioU5eXnLHsLPne3n8civ
+         kyIVLMrSUkvggIyBuu5Q7yBwbY0sexCxDaqMtcU1EngcXa5XyCwHcLBbAE6IB4FbVmpm
+         5AkQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwNd1HjvZYZnhXvfWFmNoMKbfMZKin1zOW7cxfbwI1QRXUyDruQaSwThMcNaYZym612Mz9Y50w=@vger.kernel.org
+X-Gm-Message-State: AFuF++mRJU76zAcqMmDuSgthBKE800QVquLJ6leY4Xk1cuEnLVSefEKa
+	DMggCXpBgQKbS1CPqMXF1vG9SDzDTxp9n+bKTI9lKzNY9VcSH6s9EZup3+5DnJEyfA==
+X-Gm-Gg: AYBFou0pSuRIXZ1pmwHiMpaODIvQJ4wLoBwkNCrS4XisVg7vIBaEVLt/p+u1B9M/nUd
+	O9bNzlTW6kSue6cq85YFp/Jacji7vhGLWYieFUaGSw/GKrwVTehc8jq41QuyrjyJc62JCPQgi5h
+	xixe13kDQsn7AC57MEfoYuzdeNOC6UwRvwGBEfmZlzHuPw3T9iQlWxWR1DW0JKybvygB11rFcCT
+	0jUSHSDMUMmiWyL+hvFQBl21OzH4tv0Nd2zTAjKcZtiFtHJA8jhKs4lHmXy0mCS/gtlsKkgKgvr
+	ZGrvIxxEdOD9mEdOyAWLNznQ2QPyWsx7+acdwPTl6WkLlyzBZe3R+HH23OSgOvG0L+fzAdEtYxP
+	nO3yY3EpCaAGjG9DLkBfJJxZFgxS6TYpSxHom614tScUYLCoKJea4k6gy4thkUazDikF6nUl8lf
+	mNtZ5m3DC2qslQXiua+kNVMuaL6PdOOT+sz4u518yhT9iToGVffSgRT+6GSmMK5veWXD0hQYGHV
+	kCCM+4+h6HGdh+n8rKVTmREKfr5Ff7ADtxbE9ZXEC++o5YTPIKHm38tdszJJwJL42kYhUp8lE8A
+	ljz2TMcBkijQRcpwUe0EHjrgrWQyAVIrNe1Y/THdfg4J/IBHlVAoVYI4tZv3dcVhzsRWKFjubEa
+	Ar+Hedl8cti1vNCNI9LQhD5MAMa2HKHgVSvEK3VPX51tr42Cd2Fb9jkerWyJ0gU8GhI/t0jo=
+X-Received: by 2002:a17:906:f591:b0:c20:f529:2d6a with SMTP id a640c23a62f3a-c260ca339fdmr622399366b.22.1788704390262;
+        Sun, 06 Sep 2026 07:19:50 -0700 (PDT)
+Received: from Desktop.fritz.box ([207.22.59.122])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c260d5b284bsm342888466b.51.2026.09.06.07.19.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 06 Sep 2026 07:19:49 -0700 (PDT)
+From: Julius Bairaktaris <julius@bairaktaris.de>
+To: netfilter-devel@vger.kernel.org
+Cc: pablo@netfilter.org,
+	fw@strlen.de,
+	phil@nwl.cc,
+	coreteam@netfilter.org,
+	netdev@vger.kernel.org
+Subject: [PATCH nf] netfilter: flowtable: advertise the vlan match in used_keys
+Date: Sun,  6 Sep 2026 16:19:47 +0200
+Message-ID: <20260906141947.480524-1-julius@bairaktaris.de>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -42,161 +77,56 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDHnJKSdJ1qrqsTBA--.47155S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxGrW3ur1rZr4kZFyxZF48Xrb_yoWrAFWrpa
-	1YyrW8tr1qqF18J3W8Ka1UJrW5WanIqFWFgrWkW348ZFnY9F4FvFyak3yjk3y8K397tr9x
-	ta98t397A3WUArJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UQL0OUUUUU=
-X-CM-SenderInfo: 5wk1ikatttiiixyrlqqrwthudrp/xtbC-hVE7WqddJV6ggAA3s
 
-The rsrc_status debugfs reader writes rows directly to userspace without
-respecting the caller's read count. It also uses the current row length as
-the userspace stride, which can corrupt output when rows have different
-widths.
+nf_flow_rule_match() fills the vlan and cvlan keys and sets their
+dissector offsets, but does not set their bits in used_keys. That bit
+is how a driver learns that a rule has the key: flow_rule_match_key()
+reads used_keys, and a key the rule does not declare cannot be read.
+So no driver sees the vlan match, although the rule carries the vlan
+pop action built from the same encapsulation. mtk_ppe_offload.c reads
+the ingress vlan through flow_rule_match_key() and so never gets it,
+and a driver that checks used_keys against the keys it supports
+installs an entry that ignores the tag.
 
-Build each row in the existing kernel buffer and use seq_file to handle
-userspace buffer sizes, offsets, and partial reads.
+Set the bits where the keys are filled, like the other keys in this
+function.
 
-Fixes: 23205e6d06d4 ("octeontx2-af: Dump current resource provisioning status")
-Signed-off-by: Heyang Tan <thy15333007817@163.com>
+Fixes: 3e1b0c168f6c ("netfilter: flowtable: add vlan match offload support")
+Assisted-by: Claude:claude-fable-5-1
+Signed-off-by: Julius Bairaktaris <julius@bairaktaris.de>
 ---
- .../marvell/octeontx2/af/rvu_debugfs.c        | 71 ++++++-------------
- 1 file changed, 22 insertions(+), 49 deletions(-)
+ net/netfilter/nf_flow_table_offload.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c
-index 22ee99676879..a222998482fa 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c
-@@ -714,52 +714,39 @@ static int get_max_column_width(struct rvu *rvu)
- }
- 
- /* Dumps current provisioning status of all RVU block LFs */
--static ssize_t rvu_dbg_rsrc_attach_status(struct file *filp,
--					  char __user *buffer,
--					  size_t count, loff_t *ppos)
-+static int rvu_dbg_rsrc_attach_status(struct seq_file *filp, void *unused)
- {
--	int index, off = 0, flag = 0, len = 0, i = 0;
--	struct rvu *rvu = filp->private_data;
--	int bytes_not_copied = 0;
-+	int index, off, flag, pf, vf, pcifunc;
-+	struct rvu *rvu = filp->private;
- 	struct rvu_block block;
--	int pf, vf, pcifunc;
- 	int buf_size = 2048;
- 	int lf_str_size;
- 	char *lfs;
- 	char *buf;
- 
--	/* don't allow partial reads */
--	if (*ppos != 0)
--		return 0;
--
- 	buf = kzalloc(buf_size, GFP_KERNEL);
- 	if (!buf)
- 		return -ENOMEM;
- 
--	/* Get the maximum width of a column */
- 	lf_str_size = get_max_column_width(rvu);
-+	if (lf_str_size < 0) {
-+		kfree(buf);
-+		return lf_str_size;
-+	}
- 
- 	lfs = kzalloc(lf_str_size, GFP_KERNEL);
- 	if (!lfs) {
- 		kfree(buf);
- 		return -ENOMEM;
+diff --git a/net/netfilter/nf_flow_table_offload.c b/net/netfilter/nf_flow_table_offload.c
+index 801a3dd9ceea..9ef89127bf25 100644
+--- a/net/netfilter/nf_flow_table_offload.c
++++ b/net/netfilter/nf_flow_table_offload.c
+@@ -126,6 +126,7 @@ static int nf_flow_rule_match(struct nf_flow_match *match,
+ 		nf_flow_rule_vlan_match(&key->vlan, &mask->vlan,
+ 					tuple->encap[0].id,
+ 					tuple->encap[0].proto);
++		match->dissector.used_keys |= BIT_ULL(FLOW_DISSECTOR_KEY_VLAN);
+ 		vlan_encap = true;
  	}
--	off +=	scnprintf(&buf[off], buf_size - 1 - off, "%-*s", lf_str_size,
--			  "pcifunc");
-+	off = scnprintf(buf, buf_size, "%-*s", lf_str_size, "pcifunc");
- 	for (index = 0; index < BLK_COUNT; index++)
--		if (strlen(rvu->hw->block[index].name)) {
--			off += scnprintf(&buf[off], buf_size - 1 - off,
--					 "%-*s", lf_str_size,
--					 rvu->hw->block[index].name);
--		}
-+		if (strlen(rvu->hw->block[index].name))
-+			off += scnprintf(&buf[off], buf_size - 1 - off, "%-*s",
-+					 lf_str_size, rvu->hw->block[index].name);
  
- 	off += scnprintf(&buf[off], buf_size - 1 - off, "\n");
--	bytes_not_copied = copy_to_user(buffer + (i * off), buf, off);
--	if (bytes_not_copied)
--		goto out;
--
--	i++;
--	*ppos += off;
-+	seq_puts(filp, buf);
- 	for (pf = 0; pf < rvu->hw->total_pfs; pf++) {
- 		for (vf = 0; vf <= rvu->hw->total_vfs; vf++) {
- 			off = 0;
-@@ -770,54 +757,40 @@ static ssize_t rvu_dbg_rsrc_attach_status(struct file *filp,
- 
- 			if (vf) {
- 				sprintf(lfs, "PF%d:VF%d", pf, vf - 1);
--				off = scnprintf(&buf[off],
--						buf_size - 1 - off,
--						"%-*s", lf_str_size, lfs);
-+				off = scnprintf(buf, buf_size, "%-*s", lf_str_size,
-+						lfs);
- 			} else {
- 				sprintf(lfs, "PF%d", pf);
--				off = scnprintf(&buf[off],
--						buf_size - 1 - off,
--						"%-*s", lf_str_size, lfs);
-+				off = scnprintf(buf, buf_size, "%-*s", lf_str_size,
-+						lfs);
- 			}
- 
- 			for (index = 0; index < BLK_COUNT; index++) {
- 				block = rvu->hw->block[index];
- 				if (!strlen(block.name))
- 					continue;
--				len = 0;
--				lfs[len] = '\0';
-+				lfs[0] = '\0';
- 				get_lf_str_list(&block, pcifunc, lfs);
- 				if (strlen(lfs))
- 					flag = 1;
- 
- 				off += scnprintf(&buf[off], buf_size - 1 - off,
--						 "%-*s", lf_str_size, lfs);
-+							 "%-*s", lf_str_size, lfs);
- 			}
- 			if (flag) {
--				off +=	scnprintf(&buf[off],
--						  buf_size - 1 - off, "\n");
--				bytes_not_copied = copy_to_user(buffer +
--								(i * off),
--								buf, off);
--				if (bytes_not_copied)
--					goto out;
--
--				i++;
--				*ppos += off;
-+				off += scnprintf(&buf[off], buf_size - 1 - off, "\n");
-+				seq_puts(filp, buf);
- 			}
+@@ -137,12 +138,16 @@ static int nf_flow_rule_match(struct nf_flow_match *match,
+ 			nf_flow_rule_vlan_match(&key->cvlan, &mask->cvlan,
+ 						tuple->encap[1].id,
+ 						tuple->encap[1].proto);
++			match->dissector.used_keys |=
++				BIT_ULL(FLOW_DISSECTOR_KEY_CVLAN);
+ 		} else {
+ 			NF_FLOW_DISSECTOR(match, FLOW_DISSECTOR_KEY_VLAN,
+ 					  vlan);
+ 			nf_flow_rule_vlan_match(&key->vlan, &mask->vlan,
+ 						tuple->encap[1].id,
+ 						tuple->encap[1].proto);
++			match->dissector.used_keys |=
++				BIT_ULL(FLOW_DISSECTOR_KEY_VLAN);
  		}
  	}
  
--out:
- 	kfree(lfs);
- 	kfree(buf);
--	if (bytes_not_copied)
--		return -EFAULT;
- 
--	return *ppos;
-+	return 0;
- }
- 
--RVU_DEBUG_FOPS(rsrc_status, rsrc_attach_status, NULL);
-+RVU_DEBUG_SEQ_FOPS(rsrc_status, rsrc_attach_status, NULL);
- 
- static int rvu_dbg_rvu_pf_cgx_map_display(struct seq_file *filp, void *unused)
- {
 -- 
-2.34.1
+2.53.0
 
