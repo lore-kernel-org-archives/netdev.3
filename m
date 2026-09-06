@@ -1,158 +1,81 @@
-Received: from mail-oo2-f6.google.com (mail-oo2-f6.google.com [74.125.231.134])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4273836215D
-	for <netdev@vger.kernel.org>; Sat,  5 Sep 2026 23:56:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.134
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9668118B0A;
+	Sun,  6 Sep 2026 00:21:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788652598; cv=none; b=hTZlbvptwKo9qUSuEy0laZ1QOA+mOhs+bGQ2qc16T5kKfum4toG8dttxVVHKrJlGVBcrquEnHivp3WP9aR1wfkeP5rFFQVX0Q/faEYNwkPjrszAFtF4fmOjf2up1YS9P+QUrJjgYWKJslT04vnURMQGWXAOqoflvKETD8GtETMY=
+	t=1788654068; cv=none; b=aNzCO5nUzaayW14jh94xeF1ORloN7S3xPlgR8AZeJFhcb4Bc/g3YdSXKnKqdjsaCl/VabdOCIfjp2719vedNxO1C4XRRACMt/ZyaYg5xyaM1nMIjzZDawSv93N+/3VZAasyff69ob2YXfuNYhH2NsvP7ksQCbZSqOFW0U2PLQk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788652598; c=relaxed/simple;
-	bh=pddK2N0duwoQb1mI4YqZ2LJG7qWQL7Meue62j2M7jOU=;
-	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
-	 Content-Type; b=LgAbUYcopV6y2SJGFkqlZTbwFLtbjXJaAL3Iubts1TZ00LqO187UvWjAmEBa2mWZhr0BN25SZaMDQXTi6NzToKSAE6gHqeogywTvvTLD5NxGqgzKDLOAa9e11cTthEUs9idH59/PAHFajmB/FItCy8KoVea7DTG8KjV+kZEutUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=74.125.231.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oo2-f6.google.com with SMTP id 006d021491bc7-6b1b32cc57bso183848eaf.1
-        for <netdev@vger.kernel.org>; Sat, 05 Sep 2026 16:56:37 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788652596; x=1789257396;
-        h=content-type:to:from:subject:message-id:in-reply-to:date
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=JnrjshyuggTKeO2OGoYPIVvGnKtaActQ8ii8qn0UbNs=;
-        b=FIYVamdmC2RP2rzUacWEFRvmevTwsJm6dL4Y/7MwzAB46pJJ2iBTM4wMfSD4fOJYGx
-         M/Q5B1YwVuRYyobc0CQzHwAuuTENMoCJpoLcOjWAJUuXS0Zl6rIEVXp+OVffRFTYLlIl
-         D4R5X3Ez6yfxvjjgc8h5N5Tu88QWL4LVhNjtX51ctOE75i267R98U1ikmrTdMZLcHNKP
-         yw+klHPLpOIyRR7J1diN/2bU3YTHuoWkAq56ijoHcM1DutN0zuJwIQ8x9z8SIEBWb9NW
-         rP+jAHyw8RDit5Eswxj5G5G99vbE36oz9SEcRE3WqHjJP/8rMWJ7TjGqivuBK/Y/Yuvq
-         takQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzxR7McuvM6skkK68pT8GwkwIaxauKWF4qP8cQ0DoNK7zD2KCuP43z0LxIH7SMZ9cf77XcYc0E=@vger.kernel.org
-X-Gm-Message-State: AFuF++nL4Rg6K+mJQhxn//TTIZtWUXaOTIFB6VKpeK4LwRabcFqt53Bb
-	nrIv6fLJKyCDBIojrg6MlaPootLhQLVaRIE3esB7k5iZqjgGoYdiDnMUJc8PyX6eby6CuF8QLMn
-	7JHllW5Be0iYWQqAtE8azAlv4Ah2djNGXOrfdVkDa7vnZsEIwoTwNwuZumV4=
+	s=arc-20240116; t=1788654068; c=relaxed/simple;
+	bh=955emJTfXHroZhu6atdLGAyIK3laY6kxsCgRWhe6Syg=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=UX+3z6M9lIB0MTBAJqOFkrr7JUxkuP26hvuaBJk48Okbu9pFkmbgXP/GSKPItPvq48U4r1079zMM0lRWKkPTApIfEC/YlBlmsd4KD7n8OiDGeqWEaAGgLqfXnzhTyu9fRg91RbJfNGuzHUFLVHq/yQePzBIfGYrOLMykkhojInM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F/6kjSUA; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F/6kjSUA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6C6B1F00A3A;
+	Sun,  6 Sep 2026 00:21:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788654066;
+	bh=rcwhg/AZAos+9wOTo0kL6LUtmvfW6LFdgMLURHiE/3o=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=F/6kjSUAXTKRAGa07wYMfqTtziSaA5LEPGfGyuk6HMviVNCVCJlB3vrSklKbR5IVQ
+	 d0NWJNjCdk5jhFzRjD7k/2mbngOY/jgFf8MsKCQN11pqiPuu52P+XWSgPd+jrxVODw
+	 D0ItfJEbR3VSXKzKMdJy0rGLvFgA5UGtN+AUZdm0oQ9FHJEoJ3gNAZ03AGu+EQDI4x
+	 9m2ReJWbbpo0ThQveMvZ1zjRpzxw85TrKeO05grwgB1RegPU/CER+DdMwz+Uf0jGXf
+	 8O+lir1JHQWm2FzbEsIMdvjrNYXhD4BEafd1s0Jzb7RoBoE5BSMHyIEUf8Bhgtsd24
+	 g4A0SZSf/E+sw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 1994D39253C3;
+	Sun,  6 Sep 2026 00:20:08 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:179b:b0:6ae:9815:7c8e with SMTP id
- 006d021491bc7-6b6fd2cea24mr10082448eaf.21.1788652596282; Sat, 05 Sep 2026
- 16:56:36 -0700 (PDT)
-Date: Sat, 05 Sep 2026 16:56:36 -0700
-In-Reply-To: <6a9a137f.9266084e.bf0d7.02e3.GAE@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6a9cac34.37659fcc.e790.0005.GAE@google.com>
-Subject: Re: [syzbot] [bridge?] general protection fault in br_del_frame
-From: syzbot <syzbot+1df7473ef265fe8ba6e1@syzkaller.appspotmail.com>
-To: andrew@lunn.ch, bridge@lists.linux.dev, davem@davemloft.net, 
-	edumazet@google.com, eric.dumazet@gmail.com, horms@kernel.org, 
-	idosch@nvidia.com, kuba@kernel.org, linux-kernel@vger.kernel.org, 
-	netdev@vger.kernel.org, pabeni@redhat.com, razor@blackwall.org, 
-	syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] net: macb: fix NULL pointer dereference on unbind
+ with
+ fixed-link
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178865400689.1390792.2279242920046320730.git-patchwork-notify@kernel.org>
+Date: Sun, 06 Sep 2026 00:20:06 +0000
+References: <20260902102836.2019355-1-vineeth.karumanchi@amd.com>
+In-Reply-To: <20260902102836.2019355-1-vineeth.karumanchi@amd.com>
+To: Vineeth Karumanchi <vineeth.karumanchi@amd.com>
+Cc: theo.lebrun@bootlin.com, conor.dooley@microchip.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, git@amd.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 
-syzbot has found a reproducer for the following issue on:
+Hello:
 
-HEAD commit:    4d7d9486c04d Merge tag 'integrity-v7.3-rc2' of git://git.k..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=16aeeb49580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=85bc5cc2fc7394d9
-dashboard link: https://syzkaller.appspot.com/bug?extid=1df7473ef265fe8ba6e1
-compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-userspace arch: i386
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=10da9125580000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=15aeeb49580000
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-4d7d9486.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/1233b136bf9d/vmlinux-4d7d9486.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/25eb977d33cf/bzImage-4d7d9486.xz
+On Wed, 2 Sep 2026 15:58:36 +0530 you wrote:
+> When the device tree describes a fixed-link and has no "mdio" child
+> node, macb_mii_init() returns early without allocating the MDIO bus,
+> leaving bp->mii_bus as NULL.
+> 
+> Two cleanup paths then dereference this NULL bus:
+> 
+> 1. On driver unbind, macb_remove() unconditionally calls
+>    mdiobus_unregister(bp->mii_bus), which oopses:
+> 
+> [...]
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+1df7473ef265fe8ba6e1@syzkaller.appspotmail.com
+Here is the summary with links:
+  - [net] net: macb: fix NULL pointer dereference on unbind with fixed-link
+    https://git.kernel.org/netdev/net/c/38b6be101006
 
-bridge_slave_0: left allmulticast mode
-bridge_slave_0: left promiscuous mode
-bridge0: port 1(bridge_slave_0) entered disabled state
-Oops: general protection fault, probably for non-canonical address 0xfbd59c0000000024: 0000 [#1] SMP KASAN NOPTI
-KASAN: maybe wild-memory-access in range [0xdead000000000120-0xdead000000000127]
-CPU: 1 UID: 0 PID: 5761 Comm: kworker/u32:2 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-Workqueue: netns cleanup_net
-RIP: 0010:__hlist_del include/linux/list.h:1045 [inline]
-RIP: 0010:hlist_del_rcu include/linux/rculist.h:599 [inline]
-RIP: 0010:br_del_frame+0x106/0x1a0 net/bridge/br_input.c:482
-Code: 00 fc ff df 48 89 fa 48 c1 ea 03 80 3c 02 00 0f 85 87 00 00 00 48 b8 00 00 00 00 00 fc ff df 4c 8b 65 18 4c 89 e2 48 c1 ea 03 <80> 3c 02 00 75 76 49 89 1c 24 48 85 db 74 24 e8 36 8b 6b f7 48 8d
-RSP: 0018:ffffc9000497f8e8 EFLAGS: 00010a06
-RAX: dffffc0000000000 RBX: 0000000000000000 RCX: 0000000000000000
-RDX: 1bd5a00000000024 RSI: ffffffff8a9fb08f RDI: ffffffff91470cb8
-RBP: ffffffff91470ca0 R08: 0000000000000001 R09: 0000000000000000
-R10: 0000000000000001 R11: 0000000000000000 R12: dead000000000122
-R13: ffff888068c49400 R14: 000000000000001c R15: ffff888068c49400
-FS:  0000000000000000(0000) GS:ffff888096a63000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00000000f7036630 CR3: 00000000223c0000 CR4: 0000000000352ef0
-Call Trace:
- <TASK>
- mep_delete_implementation+0x292/0x340 net/bridge/br_cfm.c:591
- br_cfm_port_del+0x14f/0x1e0 net/bridge/br_cfm.c:872
- del_nbp+0x168/0xd50 net/bridge/br_if.c:348
- br_dev_delete+0x96/0x1c0 net/bridge/br_if.c:387
- br_net_exit_rtnl+0xdb/0x140 net/bridge/br.c:414
- ops_exit_rtnl_list net/core/net_namespace.c:181 [inline]
- ops_undo_list+0x896/0xab0 net/core/net_namespace.c:249
- cleanup_net+0x499/0x920 net/core/net_namespace.c:706
- process_one_work+0xac7/0x1b10 kernel/workqueue.c:3396
- process_scheduled_works kernel/workqueue.c:3479 [inline]
- worker_thread+0x5ef/0xe50 kernel/workqueue.c:3560
- kthread+0x373/0x450 kernel/kthread.c:436
- ret_from_fork+0x730/0xd60 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-Modules linked in:
----[ end trace 0000000000000000 ]---
-RIP: 0010:__hlist_del include/linux/list.h:1045 [inline]
-RIP: 0010:hlist_del_rcu include/linux/rculist.h:599 [inline]
-RIP: 0010:br_del_frame+0x106/0x1a0 net/bridge/br_input.c:482
-Code: 00 fc ff df 48 89 fa 48 c1 ea 03 80 3c 02 00 0f 85 87 00 00 00 48 b8 00 00 00 00 00 fc ff df 4c 8b 65 18 4c 89 e2 48 c1 ea 03 <80> 3c 02 00 75 76 49 89 1c 24 48 85 db 74 24 e8 36 8b 6b f7 48 8d
-RSP: 0018:ffffc9000497f8e8 EFLAGS: 00010a06
-RAX: dffffc0000000000 RBX: 0000000000000000 RCX: 0000000000000000
-RDX: 1bd5a00000000024 RSI: ffffffff8a9fb08f RDI: ffffffff91470cb8
-RBP: ffffffff91470ca0 R08: 0000000000000001 R09: 0000000000000000
-R10: 0000000000000001 R11: 0000000000000000 R12: dead000000000122
-R13: ffff888068c49400 R14: 000000000000001c R15: ffff888068c49400
-FS:  0000000000000000(0000) GS:ffff888096a63000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00000000f7036630 CR3: 00000000223c0000 CR4: 0000000000352ef0
-----------------
-Code disassembly (best guess):
-   0:	00 fc                	add    %bh,%ah
-   2:	ff                   	lcall  (bad)
-   3:	df 48 89             	fisttps -0x77(%rax)
-   6:	fa                   	cli
-   7:	48 c1 ea 03          	shr    $0x3,%rdx
-   b:	80 3c 02 00          	cmpb   $0x0,(%rdx,%rax,1)
-   f:	0f 85 87 00 00 00    	jne    0x9c
-  15:	48 b8 00 00 00 00 00 	movabs $0xdffffc0000000000,%rax
-  1c:	fc ff df
-  1f:	4c 8b 65 18          	mov    0x18(%rbp),%r12
-  23:	4c 89 e2             	mov    %r12,%rdx
-  26:	48 c1 ea 03          	shr    $0x3,%rdx
-* 2a:	80 3c 02 00          	cmpb   $0x0,(%rdx,%rax,1) <-- trapping instruction
-  2e:	75 76                	jne    0xa6
-  30:	49 89 1c 24          	mov    %rbx,(%r12)
-  34:	48 85 db             	test   %rbx,%rbx
-  37:	74 24                	je     0x5d
-  39:	e8 36 8b 6b f7       	call   0xf76b8b74
-  3e:	48                   	rex.W
-  3f:	8d                   	.byte 0x8d
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
----
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
