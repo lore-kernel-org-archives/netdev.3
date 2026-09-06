@@ -1,177 +1,172 @@
-Received: from szelinsky.de (szelinsky.de [85.214.127.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B86E36074F;
-	Sun,  6 Sep 2026 15:39:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.127.56
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788709184; cv=none; b=fSSQAoWwxt7ILz0oLkbT6Xk3ESB/drcHHLEcmiMtPqPw3ChPf7r1Bv6Wc3WOUWZANS8fFNScAeYHm2DH6H/9YJ5y696kAH/v1yO2Vb8NDOpT0J32QHS7BLFLlcItVqKD90w2l6L7e6SCBgtCqI3n/mFLIVXc0rYOrpJr0fFoM9Y=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788709184; c=relaxed/simple;
-	bh=aGl8UbgF4M7weS+MGtc7GvL03A1J8QPok4slR8wkwek=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aJ14rm0KcbWAoPex/6LFZSCsHnZYwS5KhDFCaQZrPe6LEE9tIf3pVaw911l7RrsdZe13857XSYyp/geMe5jD+kRc3aph98EImYEDktnKwo34jSwgTp3T+eJix6TSY4E2qYX7nhBSMPkyyllPR/ossyquXAn0Uwx0O6IwpA9L+Zc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de; spf=pass smtp.mailfrom=szelinsky.de; dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b=Vs7mORV3; arc=none smtp.client-ip=85.214.127.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=szelinsky.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 049CE4CCDE5
+	for <netdev@vger.kernel.org>; Sun,  6 Sep 2026 15:41:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788709267; cv=pass; b=CK9gYzTdu3mHgQGMwpgNem85kMcroERyS/aegmIKgNuNVF9045f/8qfJVyJBEphSTXWhvIoGQPi1n0g3BSe94JCH7Oa5xWX64oXdbPi8uYiSJE94WMv5HC3seDOWgCCVY2B5qsGmHcLHNBpnSw9W7K4yv4shnB/dJtZ4pMccKus=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788709267; c=relaxed/simple;
+	bh=Q6WoKeShd1Pdex65m4287ETebem1B+r0qGMcvBxIg5I=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=aoOHy+YtHCycEIWRqxReT26MFQESPpFWVlGmoXgqkzciKgbpHVcicQzCKtmFiepbTGRUgu0Wn+W9kKCirQDOuNlldRC19VdmvaavVxjieCvAE9ekigwWF2AOsxeizSpbsMEn2UC809Sw+0FIvzQvAxkpYl5awYQiP3kwEs6/4E4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=knV70u60; arc=pass smtp.client-ip=209.85.219.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b="Vs7mORV3"
-Received: from localhost (localhost [127.0.0.1])
-	by szelinsky.de (Postfix) with ESMTP id 9F01EE8342C;
-	Sun, 06 Sep 2026 17:31:37 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=szelinsky.de;
-	s=mail; t=1788708697;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=Oq8H6Q1jKRnsexezCiaWS5vBv8CVT3geM4KV6vAmhBg=;
-	b=Vs7mORV3JSvWU2NUTgu0t3CU3WJ2Yb/1VLnX3ydOdTYTw3qU7EJvTF3ThUnIh/CBomIW6y
-	wemf7u9T1Ctlq75l8OlzrZZEJ04v2V7U7JjCdeLoN4OA44h67cd3knb40Diip7Rw5YaxF6
-	vKE3Esh8SCgVgMr0qBOA5IYkiSc/7oJ4m65HyBgt5rVMQdkH8QJMpDYoHyudCwHZWSVRjh
-	rC+R3s9kCGa9ZuX/SkeHcH2TtZGge5h2BPfJ/SWYyQD9j9aQcxnlbpaEVu7wnu4w/VvPj2
-	vfrKgC0pRRf2EfykHN5WFMHIQDYuYQYazKynA0UYT9BpI4du+2ESK8a1NIR7nA==
-X-Virus-Scanned: Debian amavis at szelinsky.de
-Received: from szelinsky.de ([127.0.0.1])
- by localhost (szelinsky.de [127.0.0.1]) (amavis, port 10025) with ESMTP
- id pjYNYdaOXwH2; Sun,  6 Sep 2026 17:31:37 +0200 (CEST)
-Received: from p14sgen5.lan (p578611d6.dip0.t-ipconnect.de [87.134.17.214])
-	by szelinsky.de (Postfix) with ESMTPSA;
-	Sun, 06 Sep 2026 17:31:36 +0200 (CEST)
-From: Carlo Szelinsky <github@szelinsky.de>
-To: Oleksij Rempel <o.rempel@pengutronix.de>,
-	Kory Maincent <kory.maincent@bootlin.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Corey Leavitt <corey@leavitt.info>,
-	Jonas Jelonek <jelonek.jonas@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Aleksander Jan Bajkowski <olek2@wp.pl>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Carlo Szelinsky <github@szelinsky.de>
-Subject: [PATCH net-next v6 0/5] net: pse-pd: decouple controller lookup from MDIO probe
-Date: Sun,  6 Sep 2026 17:30:57 +0200
-Message-ID: <20260906153102.959217-1-github@szelinsky.de>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="knV70u60"
+Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-90e7c71f86eso18947896d6.1
+        for <netdev@vger.kernel.org>; Sun, 06 Sep 2026 08:41:05 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788709265; cv=none;
+        d=google.com; s=arc-20260327;
+        b=qoUF7KlPTWWt6HEfnwkrpGFPrm3X54J5hIik1pJqgr14ZCtQZlS4wkvHJT7ICHLcSK
+         OEnVZATzdnltsh/2YKXm4aIhN/PM/EX4wzzoeDXG4rZHPFPHr4dLOzJPUum5mZ/YUWht
+         CSTXjKxaqqmVYRVMtjA5NHHKWeAJ/N35Gzt5pGDdJ0nRSx40w1sDSWQNykIPHYw0o2yb
+         PgaJksIeeZqXFZST4SAlysfCW8ErgszK+oLhyJmVWJdWDpaYrBOpHpqcc3lDSE+ZxAjV
+         NNC2FvNLBpEMuZm86bDrWTmcNg5oVuXTI5mbPC6teHIjrA41V+xmQn1NmWzkn/Ugqg6/
+         3qRQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=UrOVzk35f8NZkFEVJGXTvHEU4Z8nVv7T9wq6ezeDgeQ=;
+        fh=pqQMkZtCM9aV1tjHL3jMM5OJ4G3ldAHYNzxxPzs8v1c=;
+        b=sACkNnHeM5oDo8L58+6AMJz4jaqAtU9ei25u1Ixvx6B2gazmQxUH0ScquU3SlWShW/
+         TvQyJ7Xcq+Ffa/Z5kTTtNn98Sz0a3Nz7g43/1cF/34wn3TcEKsH0W7n+l5+LklOqbpcW
+         i9lhY9ZqxyC/i9oA8X1lf3oItRP3vuylaotdJtwnazzViknQlenCQiWFDJuQUsKer0vW
+         M4HHPkqEln9YQjo20MXHYa/+lI2y1WfDpTr3QQLCFNZ1o02QTsEfUeXln0UjmcQ/PvZ5
+         6g74iN6DkU1dTJ9cgDdX9MgcxoEoydPdEDLJV1viMaOFSw6hOVbUI3sxdGqXet00PMMS
+         KEsA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1788709265; x=1789314065; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=UrOVzk35f8NZkFEVJGXTvHEU4Z8nVv7T9wq6ezeDgeQ=;
+        b=knV70u6010AaQog6OrxbCDwuWKY3ilWpAHH9zQFgn3oAj1MMaQE4TsEAvNwjkC6C7m
+         Ad/sW2SQ/LUsHrDihXf5hUmrOwH+1Rv+wJkedfW1cKwTQB5p3XdPNd+Cnog5HsJs/YVN
+         QdRd0JwxUSS+7RD/M6tYHb0bHFVYhhZyzcV/eXIBUmggxBYe8fHw00wYvyJxpjTYdgRD
+         XgHc5qQlQtP5gT/8zEnDsnXY/I7xUlkIncXPVcxRPdEIoSyoIOe+vSt2u6M4o/avMuP+
+         x8udyn4hiG3tPXnJMXFcz9/Wllnd8qIvP+wFsC05iFFIaqWVNZx6gX1LjvQr4b3xu7vX
+         +2uQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788709265; x=1789314065;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=UrOVzk35f8NZkFEVJGXTvHEU4Z8nVv7T9wq6ezeDgeQ=;
+        b=sa55f5Wwz+ph++57fLTtSae3W/RXD6vDrApapL7DDBno08M5s6xhGrqpg2YFVht7OM
+         4HeL25hL1IIo4Xa13XbdyyQl6hcxDZWoaNr7LGr/p76tXEyiwCoxyGg5WBSY4NYJqlFY
+         4h9rpwy8rkqIeMklZYkhk3tbVwnjM4LjJ4YBm9umrM6oI0QHiRmgl6n+XC2xZi3BswAp
+         plpCfht48YoKYWr1UG62A4JEye96Zv0+Zqmfb21vwcNku2jxcRG/AP5EqvmK0eIgenvQ
+         AzQ6/dBr6hCLlGX7FYheNwQuQeTdg9xnoHiESi6HrcusLbSXJw5atM1A7wqYZkXhGXhb
+         kJxg==
+X-Forwarded-Encrypted: i=1; AKwUvBwdHlptUCWCNvWvRa/uzZUtVaAP3donfGA+PuK4h+3+sAx6WxtCU46YahnPioFd1NrTApJWS9w=@vger.kernel.org
+X-Gm-Message-State: AFuF++nsj6Z5B4OJr3H02uupWZjkgXzXXyjXkghjM9xAXAh2jo5lTlsb
+	0njJiNEEPSx15dEEYmJ5Iii9latpVQnJFRmvtDbC146q3PAX3jTTLns9YRSh/vHAcbSDt5bH09A
+	uZ5wsxx+FLRVVmNvY8p/O26MGjBNoPGbpWI8eiu+D
+X-Gm-Gg: AYBFou2y+QFUKLwa97drYLfEG/GZ8WiQjFYQN9C80ZqiJM9soN7gRq6he4tA3YrDna3
+	9A2UOzduT9BRWQz090R75MCD7ndignBkwZVKed+7CbEJwQCgUG0B96UsnyJYxqUa9ZgghwOrSIL
+	Gk6EPS1THkqrZLi2Sz/ijBArjdVnLTW8gp3HLiPSwGjj/qTemNuG0gBeGpsNSK5MGHy1pOSn0zZ
+	TdSlB761EnD4tFt4REfWMWcobmuQDAzAjm5uRFSg0P6NB8r7olQH8jtuGj4Ti7UOblQUHCp6Fpi
+	uKPmLc7N2lvEmTz3doK+GBOUh/OQEs9cPes8RJe0xk4cgVykjr7FNCelXVhbFTvFP1xdyu38Jyi
+	W5T+JO6jOEsWVXODwDNFvNho9ZYC8vygH8QuK4uoK/4SDQ+p+/0tcnn/y7S8KVqCzjZsA
+X-Received: by 2002:a05:622a:11d6:b0:530:4fc6:edc1 with SMTP id
+ d75a77b69052e-530549cad8cmr186239331cf.40.1788709264023; Sun, 06 Sep 2026
+ 08:41:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260903120840.1024153-1-edumazet@google.com> <20260903120840.1024153-3-edumazet@google.com>
+ <CAAVpQUBdXcxpGob6roJn=MbV+AZHmUKPE0=ferg9a4jGpc2ouA@mail.gmail.com>
+In-Reply-To: <CAAVpQUBdXcxpGob6roJn=MbV+AZHmUKPE0=ferg9a4jGpc2ouA@mail.gmail.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Sun, 6 Sep 2026 17:40:52 +0200
+X-Gm-Features: AcwNN1WEBUloIKJwfG0hY0VOrdni9OHlGq9VKwlarQ-SiqQiQkKEbtU_oQdDXMs
+Message-ID: <CANn89i+P0_yabKqvLhAYv0LW1A0tN_YnxBA3YB1kWedHcBwLdg@mail.gmail.com>
+Subject: Re: [PATCH net-next 2/9] vxlan: vnifilter: free vxlan_vni_group via
+ RCU in vxlan_vnigroup_uninit()
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, netdev@vger.kernel.org, eric.dumazet@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This is v6 of Corey's series [1]. It takes the PSE controller lookup out
-of the MDIO probe path, so a modular PSE driver no longer makes the
-PHY/DSA probe spin on -EPROBE_DEFER until the PSE module loads.
+On Sat, Sep 5, 2026 at 6:52=E2=80=AFAM Kuniyuki Iwashima <kuniyu@google.com=
+> wrote:
+>
+> On Thu, Sep 3, 2026 at 5:08=E2=80=AFAM Eric Dumazet <edumazet@google.com>=
+ wrote:
+> >
+> > vxlan->vnigrp is an RCU-protected pointer accessed locklessly under
+> > rcu_read_lock() in vxlan_vnifilter_dump_dev().
+> >
+> > Currently, vxlan_vnigroup_uninit() frees struct vxlan_vni_group
+> > synchronously via kfree(vg). If a VXLAN device is deleted concurrently
+> > with an RTM_GETTUNNEL dump, vxlan_vnifilter_dump_dev() can suffer a
+> > use-after-free when reading vg->num_vnis or walking vg->vni_list.
+>
+> In unregister_netdevice_many_notify(), does synchronize_net() after
+> unlist_netdevice() wait for the reader to complete before ->ndo_uninit() =
+?
+>
 
-Patches 1-3 are the same three notifier patches as v4 [4], unchanged,
-with Jonas's Tested-by. Patches 4 and 5 fix two problems the v4 review
-surfaced; v6 additionally fixes a build regression in v5 [7]'s patch 4.
+Good point. I added this patch after sashiko had a false positive:
 
-Patch 4: Aleksander reported [5] that v4 deadlocks on probe for an MDIO
-bus registered from ndo_init (lantiq_etop, sni_ave, netsec): those
-already hold rtnl via register_netdevice(), and v4's phy attach took rtnl
-again underneath. Patch 4 swaps that rtnl for a dedicated mutex, so the
-register path no longer recurses. The ethtool PSE paths take the same
-mutex, so the use-after-free that rtnl used to close stays closed. The
-mutex lives in pse_core rather than phylib: net/ethtool is always built
-into vmlinux but PHYLIB is tristate, so with CONFIG_PHYLIB=m or =n a
-phylib export is unresolved (v5 failed to link there [8]); PSE_CONTROLLER
-is bool, so pse_core is always reachable.
+<quote>
+ @@ -2979,10 +3007,13 @@ static int vxlan_init(struct net_device *dev)
+>  static void vxlan_uninit(struct net_device *dev)
+>  {
+>   struct vxlan_dev *vxlan =3D netdev_priv(dev);
+> + const struct vxlan_config *cfg;
+> +
+> + cfg =3D rtnl_dereference(vxlan->cfg);
+>
+>   vxlan_mdb_fini(vxlan);
+>
+> - if (vxlan->cfg.flags & VXLAN_F_VNIFILTER)
+> + if (cfg && (cfg->flags & VXLAN_F_VNIFILTER))
+>   vxlan_vnigroup_uninit(vxlan);
+This is a pre-existing issue, but does this synchronous cleanup cause a
+use-after-free for concurrent RCU readers?
+Looking at vxlan_vnigroup_uninit() in drivers/net/vxlan/vxlan_vnifilter.c
+around line 925, it destroys and frees the RCU-protected vxlan_vni_group
+synchronously:
+drivers/net/vxlan/vxlan_vnifilter.c:vxlan_vnigroup_uninit() {
+    ...
+    rhashtable_destroy(&vg->vni_hash);
+    kfree(vg);
+}
+Concurrently, a netlink dump for RTM_GETTUNNEL could call
+vxlan_vnifilter_dump_dev(), which retrieves the device under RCU and
+accesses vxlan->vnigrp via rcu_dereference(). If the vxlan device is
+deleted at the same time, unregister_netdevice_many() calls ndo_uninit() ->
+vxlan_uninit() -> vxlan_vnigroup_uninit(), which frees vg without waiting
+for an RCU grace period.
+Could this lead to memory corruption, and should it be using kfree_rcu()
+or synchronize_rcu() instead?
 
-Patch 5: Paolo's review [6] pointed out that patch 3 defers the
-pse_control_put() to phy_device_release(). A phy that is device_del()'d
-but still pinned (an attached netdev) is off the mdio_bus_type klist, so
-the PSE_UNREGISTERED notifier walk never clears its phydev->psec, and the
-deferred put later touches a pcdev->pi[] the controller has already
-freed. Patch 5 puts phydev->psec back in phy_device_remove(), which the
-mutex from patch 4 now makes safe (the rtnl recursion that motivated the
-deferral is gone), so the detach is synchronous and cannot outlive the
-controller.
+</quote>
 
-How it works: pse_core gets a notifier chain (REGISTERED / UNREGISTERED).
-The phy layer subscribes, owns phydev->psec, and attaches the PSE handle
-when the controller shows up instead of during probe. fwnode_mdio loses
-its PSE awareness, so no -EPROBE_DEFER leaves it and the probe-retry loop
-is gone.
+Sashiko saw vxlan->vnigrp annotated as __rcu and read under
+rcu_read_lock() in vxlan_vnifilter_dump_dev(),
+and assumed that because vxlan_vnigroup_uninit() directly does
+kfree(vg) without an RCU grace period,
+a concurrent netlink dump could hit a UAF.
 
-Tested on a Realtek rtl93xx PoE switch with two HS104 PSE controllers on
-i2c:
+However, Sashiko missed the netdevice unregistration sequence in
+net/core/dev.c: unlist_netdevice(dev)
+unlinks the device from lookup structures and synchronize_net() waits
+for all active readers to complete
+before dev->netdev_ops->ndo_uninit() is ever called.
 
- - clean boot, no probe-retry loop, no watchdog reset
- - 10G SFP+ port: module hotplug works, no deadlock
- - ethtool --set-pse enable/disable cuts and restores power to a PD
- - i2c unbind -> rmmod -> modprobe: PSE detaches on unbind and re-attaches
-   on reload with power restored, no reboot. No lockdep splats.
+I will drop this patch from V2 then.
 
-Jonas confirmed the RTL8214FC deadlock he reported is gone. Aleksander
-confirmed the lantiq_etop probe deadlock is gone at boot.
-
-Tested-by: Carlo Szelinsky <github@szelinsky.de>
-
-Changes in v6:
- - Fix a build regression in v5: net/ethtool/pse-pd.c called the phylib
-   export phy_pse_control_lock(), but net/ethtool is always in vmlinux
-   while PHYLIB is tristate, so CONFIG_PHYLIB=m or =n failed to link. Move
-   the mutex into pse_core (PSE_CONTROLLER is bool) and reach it through
-   pse_phy_lock() / pse_phy_unlock(), with no-op stubs for
-   !PSE_CONTROLLER. Folded into patch 4; no functional change. Reported by
-   the kernel test robot [8] and by OpenWrt CI.
- - Fold phy_device_register_locked() back into phy_device_register(): with
-   the attach no longer taking rtnl the two are identical.
- - Patches 1-3 unchanged.
-
-Changes in v5:
- - Add patch 4: replace rtnl with a dedicated mutex in the PSE attach
-   path, fixing the ndo_init probe deadlock Aleksander reported [5].
- - Add patch 5: put phydev->psec back in phy_device_remove(), closing the
-   off-klist use-after-free Paolo raised [6].
- - Patches 1-3 unchanged.
-
-Changes in v4:
- - Add Tested-by from Jonas Jelonek. No code changes.
- - Repost now that net-next has reopened (v3 was deferred during the
-   merge window).
-
-Changes in v3:
- - Drop patch 1 (regulator handle fix); it goes to net separately [2].
- - Rebase on net-next. No code changes to the three patches.
-
-v1 was an RFC by Corey [3].
-
-[1] https://lore.kernel.org/netdev/20260620112440.1734404-1-github@szelinsky.de/
-[2] https://lore.kernel.org/netdev/20260624204017.2752934-1-github@szelinsky.de/
-[3] https://lore.kernel.org/netdev/20260423-pse-notifier-decouple-v1-0-86ed750a9d62@leavitt.info/
-[4] https://lore.kernel.org/netdev/20260630091125.3162481-1-github@szelinsky.de/
-[5] https://lore.kernel.org/netdev/bac5e6e9-7358-4ccb-87fc-9c40baa33682@wp.pl/
-[6] https://lore.kernel.org/netdev/20260703071025.100797-1-pabeni@redhat.com/
-[7] https://lore.kernel.org/netdev/20260826220344.121865-1-github@szelinsky.de/
-[8] https://lore.kernel.org/oe-kbuild-all/202608302204.fr1FGYBF-lkp@intel.com/
-
-Carlo Szelinsky (2):
-  net: phy: use a dedicated mutex instead of rtnl for PSE control attach
-  net: phy: release phydev->psec from phy_device_remove() again
-
-Corey Leavitt (3):
-  net: pse-pd: add notifier chain for controller lifecycle events
-  net: pse-pd: fire lifecycle events on controller register/unregister
-  net: phy: own phydev->psec via PSE notifier and remove fwnode_mdio
-    hook
-
- drivers/net/mdio/fwnode_mdio.c |  34 ----------
- drivers/net/phy/phy_device.c   | 119 ++++++++++++++++++++++++++++++++-
- drivers/net/pse-pd/pse_core.c  | 100 +++++++++++++++++++++++++++
- include/linux/pse-pd/pse.h     |  64 ++++++++++++++++++
- net/ethtool/pse-pd.c           |  16 +++--
- 5 files changed, 293 insertions(+), 40 deletions(-)
-
-
-base-commit: cef9d6804030793cf8b8796fd6936197d065dd3e
---
-2.43.0
-
+Thanks.
