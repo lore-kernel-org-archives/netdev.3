@@ -1,89 +1,202 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30A1A332906;
-	Sun,  6 Sep 2026 14:44:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6313232570D
+	for <netdev@vger.kernel.org>; Sun,  6 Sep 2026 14:57:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788705844; cv=none; b=Qpc1Uy/zVQcHEybmyXH/W5HWxQwH0j61EgJBSrxGs8dUpiKCN6Otko0hjqYhXIv24dfhdcjokJxm0me5n7H1ZVgoz5fnrg4OE6FTdHWnPZ2YWde2UTto4s7mLc4Lo6cvgtEUfYfN+HltC137kKQxExHHZsbvGfzAcuGuoCHKapA=
+	t=1788706623; cv=none; b=GED4TFeZ6OcVuY+A5/mZYToLM6wYbdQllel//l0ES3DGMvHvMXu9cSEbXYGtD8YmEZIWc9v+o6PKOx1SM/Ka7MzUR/TTIdtucH/bb7AHra7wQX2DCwYOa7VigwN6+WgwfqbbIpR2SiPTrqfNRFdUFCMAvd/YSShdyg+e6rZPQcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788705844; c=relaxed/simple;
-	bh=f6E14dPxs9/EdiAyv7Qjb8W4Xupsto9s8SfquMix/dw=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=JTaIHfvpj+0c2qiUokMB49bXZM7g6h2GnRoXUKg0962KCBF62Hv6ckniaFiNaTF/DBDdYfZgEoXKxhvcut5CCSBn04Ao/kWqcEiw5zcdWMrjyYlf8gjXAfj6ud1JBhCVHoZT3a56FauzlPBpApxQnXtt+5IE8Ib9F3Nubtk015s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZqGEkiyX; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788706623; c=relaxed/simple;
+	bh=aPY0/u2AGw8ZO0X96EHt2DkF+60pJD+nkEu+ftpS9ok=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=JP+KemQ7zJg8kPn2lPoTiwfrRc12KzhDtjwiLC7CWBGC862Yfc8/aT9SVxa6UpfAKOH1ZRcbp44eRFcD12WWNHi2t+RZn1Tk2huRGr5Et3Uxgv20es29tuZk5ecQi78QQIZ74gxida1JiDT6hT2mPTVUiX89dFW2JKZ4iSnWaBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gs.ncku.edu.tw; spf=pass smtp.mailfrom=gs.ncku.edu.tw; dkim=pass (2048-bit key) header.d=gs-ncku-edu-tw.20251104.gappssmtp.com header.i=@gs-ncku-edu-tw.20251104.gappssmtp.com header.b=DuLwJ/VA; arc=none smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gs.ncku.edu.tw
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gs.ncku.edu.tw
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZqGEkiyX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 832751F00A3A;
-	Sun,  6 Sep 2026 14:44:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788705842;
-	bh=FhBvWn5zlBVcn4zzysQ5WRpXl36PT0HjiqVbtNJef5g=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=ZqGEkiyXzaYCUf9g/U/KT1mYjQdnBxWeEeAYgeWLv0Wv0auosb95PCWcb6C330SqQ
-	 s4SPTY5T3WVpnXYGxQ5i5v0kHWz1kj/fiRot3Ejrg6Dg72GseqfROgwlp5nmeTAv3R
-	 EXMk9CdMlOO9+lvt8Oo+YuzhQWBiReEeiUrb4i1npQ9XCRhB2j71d83aU5ooIiSuxt
-	 twDNDOqqW4f4+N0MV0TIBuRZlK6sGpDtpahaxm25li5+rF39DyOxjZYXQNgGD3Goga
-	 N71+i30kySu4VcPlhTAtIKSYUgYDWQbzLUBPrZfHaMEvKWq0iNA8sPe/B10YBOxyOo
-	 WOKeQjljYkXmw==
-Message-ID: <6cd13a40ffaf62bfb9b967bdd4dd28a38af3e7b1.camel@kernel.org>
-Subject: Re: [PATCH net] net/rds: fix tcp stream corruption with large pages
-From: Allison Henderson <achender@kernel.org>
-To: Greg Marsden <greg.marsden@oracle.com>
-Cc: kuba@kernel.org, netdev@vger.kernel.org, linux-rdma@vger.kernel.org, 
-	rds-devel@oss.oracle.com
-Date: Sun, 06 Sep 2026 07:44:01 -0700
-In-Reply-To: <apxJjxvStibPI0AS@oracle.com>
-References: <apxJjxvStibPI0AS@oracle.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.3-0ubuntu1.1 
+	dkim=pass (2048-bit key) header.d=gs-ncku-edu-tw.20251104.gappssmtp.com header.i=@gs-ncku-edu-tw.20251104.gappssmtp.com header.b="DuLwJ/VA"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-38a0c7e841fso3525946a91.2
+        for <netdev@vger.kernel.org>; Sun, 06 Sep 2026 07:57:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gs-ncku-edu-tw.20251104.gappssmtp.com; s=20251104; t=1788706620; x=1789311420; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=/U1N8oqUrXPlxgqRESYIGpkvBK8EXbenmMc2gn96fI0=;
+        b=DuLwJ/VA9U3I4Qdu5YwOdisGqpu0FXrfzwzmyCWy/s9oE+By3YQ40ceSEUZ/Gok/Tj
+         R1u8wqWzX598K8jadD87NryD2R/LakvAzmSwcqc+TfoI0xFz5s4iUUgsb4vjWq5pBqSe
+         1VKoz7heLAxXiWBJxdL7fg/qCLaFrXlqzBGrIeOGYJsR92v7Db8ysmSLbI+xZrwb/jUa
+         stwapJARgyKZpaKIXtE727QpiHKFdjMOmelcc8IibyYTSWlQtv1X8uLwMo7fSoaIdiaw
+         BgZk7Jd6A2uCJu/gUXid6eqB00buj76rJc7cDFiS38AVcsX45t1eMsgKlff3XIYnims1
+         e4Zg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788706620; x=1789311420;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=/U1N8oqUrXPlxgqRESYIGpkvBK8EXbenmMc2gn96fI0=;
+        b=DlnieQ4KlBqngkc1Ye6zQfgNFmwJ9vauCLcfpjvp7jX7qpU1mlF6iswpdVLKer9/Sr
+         FY/wV+t0HJrdp2OhuLGXmUu90/ulNxu7YyOMHulUgeM4um4wL6ldb+VS2GppeMOOBNj7
+         hWWmGfTyawM30B2dxUojoBIAIgOibjrLDjxwEmaut9JxrtQSg6iQ19sPPTC6BLjI4IP6
+         9PsvNn9bF5Lsg77cu+TVB4ZUBFT7PC6jQ28eMtKjR3iTH0B4yOI0Gd8+saT8lORSety7
+         Xl5lyo5T71UZP0Qp4R8+2j2pJBArOP2SwBBCAXacnCdxV75hgYYEPvp11zDqA4n5YqI0
+         /phw==
+X-Gm-Message-State: AFuF++nvei63RGeLsPAOnTw2c8ejxw7J48bv1tee3WhSBORhOWCyIf6k
+	idYQEry+jKFDatrHhNVrbcaB+aDFTviu7FUFfWptbD0P3dULj0pW3cQpFFt+A9JuDgA3AQlPosj
+	SvyrV3jLJCc5RL6uSrkjsiHLCaqsy4Z8cFxuEjOgo6aIQ+nBSicHH0GZhzWFlHFm6KHDo9DPjEb
+	Q+Mjkl0KSxd7rhtsn9EXzyH41sdC7xXZ7QsBeg4HkfBRoiX1lPKQ==
+X-Gm-Gg: AYBFou3DjrcnZI4pDbQ9xCd1R/M2hUUyrIfzSzRA619WA4a1YKaJ+koUq5+NCXVNqQT
+	GcxyEe9WGH0rgEQZCI+XMt44gxIvxKt4zBphi5lzYXug8refJX7yRXupKPyt+cijH43LGj0xITM
+	SslYFqD639jcvRjW1omDmCPRaRtNw//jnsp5ksiq+nViDFO63EmfwdBL8B6PoJGdb6fX5iKKdLE
+	sL/Imt2HkgToYTH6fZlSzEjJQZnURSPegmBGLLraLd62/HHIwvtcSnVJGYErhUCdxh8Co/cI7du
+	xGLIZiI9p1pQDGalBnPVWZunpDDceQ+3S/QqcpMNomwhAHfyrSxxJHJCcfB7RxOpqH/geY7YOzu
+	ZBqt3PwFzEezeqjvFyZwCPqsgC0O+nHqbvETzht6GzoNLs/S5yn9jQu5fqIYZSJV/U7DiZS1cuA
+	Ezk0zMEoeQ7P0MpS1desQGDl1hoRFRYKrZ1q1JayrxDsJbCn2CicYhz2HMzRiLs+a89CCJyWp/F
+	2R4VC4brkol5S+4+tGDLyDE4sIkAI+PompilKhvACkqvF8=
+X-Received: by 2002:a17:90b:2e0e:b0:398:9be5:b419 with SMTP id 98e67ed59e1d1-39b2622bfecmr27806022a91.20.1788706619783;
+        Sun, 06 Sep 2026 07:56:59 -0700 (PDT)
+Received: from localhost.localdomain (111-240-146-201.dynamic-ip.hinet.net. [111.240.146.201])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b260cd2aasm15199065a91.3.2026.09.06.07.56.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 06 Sep 2026 07:56:58 -0700 (PDT)
+From: shuo huang <f64116045@gs.ncku.edu.tw>
+To: netdev@vger.kernel.org
+Cc: linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	shuah@kernel.org,
+	f64116045@gs.ncku.edu.tw
+Subject: [PATCH net-next] selftests: net: Add TCP payload verification to udpgso_bench_rx
+Date: Sun,  6 Sep 2026 22:56:43 +0800
+Message-Id: <20260906145643.219609-1-f64116045@gs.ncku.edu.tw>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Sat, 2026-09-05 at 10:00 -0700, Greg Marsden wrote:
-> rds_message_map_pages() assigns PAGE_SIZE bytes to every
-> scatterlist entry, even when total_len ends in a partial page. The RDS
-> congestion map is defined as 8192 bytes, so on systems with PAGE_SIZE
-> greater than 8192 the scatterlist maps bytes beyond the end of the
-> congestion map.  RDS-TCP transmits the SG contents according to those
-> lengths, so the extra bytes become part of the TCP RDS stream and are
-> interpreted as subsequent RDS message headers, corrupting the stream.
->=20
-> Limit the final scatterlist mapping to the number of bytes remaining.
-> This has no effect on systems with a 4K page size and allows RDS-TCP to
-> be used on systems with 16K and larger page sizes. =20
->=20
-> The RDS selftest, which previously hung on 16K pages, now passes.
->=20
-> Fixes: 7875e18e0996 ("RDS: Message parsing")
-> Signed-off-by: Greg Marsden <greg.marsden@oracle.com>
+udpgso_bench_rx supports UDP payload verification but rejects the
+combination of TCP and verification mode. Its TCP receive path discards
+the payload, so it cannot check the data generated by udpgso_bench_tx.
 
-Looks good, thanks for the catch!
-Reviewed-by: Allison Henderson <achender@kernel.org>
+Read the TCP payload into a buffer when verification is requested
+and check it against the transmitter's repeating alphabetic
+pattern. Preserve the verification position across recv() calls
+because TCP does not preserve send boundaries. Restart the pattern
+at the payload length supplied with -l, matching the transmitter's
+pattern restart on each message.
 
-> ---
->  net/rds/message.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
->=20
-> diff --git a/net/rds/message.c b/net/rds/message.c
-> index f25f2592586f..47d5e9ab9b10 100644
-> --- a/net/rds/message.c
-> +++ b/net/rds/message.c
-> @@ -431,7 +431,9 @@ struct rds_message *rds_message_map_pages(unsigned lo=
-ng *page_addrs, unsigned in
->  	for (i =3D 0; i < rm->data.op_nents; ++i) {
->  		sg_set_page(&rm->data.op_sg[i],
->  				virt_to_page((void *)page_addrs[i]),
-> -				PAGE_SIZE, 0);
-> +				i =3D=3D rm->data.op_nents - 1
-> +					? total_len - (i * PAGE_SIZE)
-> +					: PAGE_SIZE, 0);
->  	}
-> =20
->  	return rm;
+Require a nonzero -l value for TCP verification and retain the existing
+discard path when verification is disabled.
+
+Signed-off-by: shuo huang <f64116045@gs.ncku.edu.tw>
+---
+ tools/testing/selftests/net/udpgso_bench_rx.c | 51 +++++++++++++++----
+ 1 file changed, 42 insertions(+), 9 deletions(-)
+
+diff --git a/tools/testing/selftests/net/udpgso_bench_rx.c b/tools/testing/selftests/net/udpgso_bench_rx.c
+index 1cbadd267..5270a46d2 100644
+--- a/tools/testing/selftests/net/udpgso_bench_rx.c
++++ b/tools/testing/selftests/net/udpgso_bench_rx.c
+@@ -89,6 +89,11 @@ static unsigned long gettimeofday_ms(void)
+ 	return (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
+ }
+ 
++static char expected_char(unsigned int off)
++{
++	return 'a' + (off % 26);
++}
++
+ static void do_poll(int fd, int timeout_ms)
+ {
+ 	struct pollfd pfd;
+@@ -161,14 +166,44 @@ static int do_socket(bool do_tcp)
+ 	return fd;
+ }
+ 
++static char sanitized_char(char val)
++{
++	return (val >= 'a' && val <= 'z') ? val : '.';
++}
++
++static void do_verify_tcp(const char *data, int len)
++{
++	static unsigned int stream_off;
++	int i;
++
++	for (i = 0; i < len; i++) {
++		char expected = expected_char(stream_off);
++
++		if (data[i] != expected)
++			error(1, 0,
++			      "data[%d]: stream offset %u, %c(%hhu) != %c(%hhu)\n",
++			      i, stream_off,
++			      sanitized_char(data[i]), data[i],
++			      expected, expected);
++
++		stream_off++;
++		if (stream_off == cfg_expected_pkt_len)
++			stream_off = 0;
++	}
++}
++
+ /* Flush all outstanding bytes for the tcp receive queue */
+ static void do_flush_tcp(int fd)
+ {
++	static char rbuf[ETH_MAX_MTU];
+ 	int ret;
+ 
+ 	while (true) {
+-		/* MSG_TRUNC flushes up to len bytes */
+-		ret = recv(fd, NULL, 1 << 21, MSG_TRUNC | MSG_DONTWAIT);
++		if (cfg_verify)
++			ret = recv(fd, rbuf, sizeof(rbuf), MSG_DONTWAIT);
++		else
++			/* MSG_TRUNC flushes up to len bytes */
++			ret = recv(fd, NULL, 1 << 21, MSG_TRUNC | MSG_DONTWAIT);
+ 		if (ret == -1 && errno == EAGAIN)
+ 			return;
+ 		if (ret == -1)
+@@ -178,17 +213,15 @@ static void do_flush_tcp(int fd)
+ 			exit(0);
+ 		}
+ 
++		if (cfg_verify)
++			do_verify_tcp(rbuf, ret);
++
+ 		packets++;
+ 		bytes += ret;
+ 	}
+ 
+ }
+ 
+-static char sanitized_char(char val)
+-{
+-	return (val >= 'a' && val <= 'z') ? val : '.';
+-}
+-
+ static void do_verify_udp(const char *data, int len)
+ {
+ 	char cur = data[0];
+@@ -347,8 +380,8 @@ static void parse_opts(int argc, char **argv)
+ 	if (optind != argc)
+ 		usage(argv[0]);
+ 
+-	if (cfg_tcp && cfg_verify)
+-		error(1, 0, "TODO: implement verify mode for tcp");
++	if (cfg_tcp && cfg_verify && !cfg_expected_pkt_len)
++		error(1, 0, "tcp verify mode requires -l");
+ }
+ 
+ static void do_recv(void)
+
+base-commit: 08dbfad3f5040f5bdb6c529da20d6d4e81fefd72
+-- 
+2.34.1
 
