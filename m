@@ -1,62 +1,64 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazolkn19010023.outbound.protection.outlook.com [52.103.33.23])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazolkn19010021.outbound.protection.outlook.com [52.103.33.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05DF7357D0D;
-	Sun,  6 Sep 2026 23:38:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.33.23
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CD7327AC57;
+	Sun,  6 Sep 2026 23:42:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.33.21
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788737908; cv=fail; b=AsxIpUtwMonZjyhH2QULVkCvWs/LLxb7vWSLHqJEzb5MdnVV/ryQ1RkQmf76Zi+3eyq932K39WuDFPN4wVJtWAwKazFuLa4eij4N06woE9aDvY8WeeQYPuLrdPrpn2n1HJSNn1NgGkWC1zsbxVqYkf/ojxGlZ4q2mIuYMOTmAcE=
+	t=1788738152; cv=fail; b=rquBzfaO2HEVrkBOVwLq0GW1PrNz+Vv9Vcdvw+RmdyVwLScnhdsbhWr/iW0YM9BVXlob+/cG6nYjR2cp75bVLt1Y+Hp4dPyuLsZTZAqhOpyv/KrVn29s38i/F65VDlxnniJxyw63hdgocLfumPMTlvx2nZncwVqIBS0/IQEm1oM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788737908; c=relaxed/simple;
-	bh=5CITPtiqpev9evaTuN6qo66T3olyzCNPiOkvfJUBZSs=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=CMp/C+drEcEtv7PKhybOKi1Ud+ecHrjQ5ZFXdDyGnYkfWJy3ldHME23c/CkKRLBmnhV3quisQF6ee7//owUXRZabljuaM5dtwuva1zhwjWLYH3Y/XjMr5vwxE0/oVXxKoP7nev0XwuW8B3+1LhMA5EpGdDHC7HspahcTmDFX32s=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.co.uk; spf=pass smtp.mailfrom=hotmail.co.uk; dkim=pass (2048-bit key) header.d=HOTMAIL.CO.UK header.i=@HOTMAIL.CO.UK header.b=RJcVJgKM; arc=fail smtp.client-ip=52.103.33.23
+	s=arc-20240116; t=1788738152; c=relaxed/simple;
+	bh=0X9v757BtP6zWA44C/l5fxSuB+vTe5e+4mGov1TamSI=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=kbFn2tw5+LtuVeGBtBDFeu48sRBb+L9U2hF/cBjwXQIzY7ecPmxKHmPVy2BbwehRHiDfIzvFGst7yNvqWZtmAi7SKY9dpGVRhh2TB2ra4tD9OnhFd5St+eok3WEv1Y4qDafYj2fdPtZAyIF7mAuxB9eSuKuuu48I9qCoTg8bd0Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.co.uk; spf=pass smtp.mailfrom=hotmail.co.uk; dkim=pass (2048-bit key) header.d=HOTMAIL.CO.UK header.i=@HOTMAIL.CO.UK header.b=Qr4caX+v; arc=fail smtp.client-ip=52.103.33.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.co.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hotmail.co.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=HOTMAIL.CO.UK header.i=@HOTMAIL.CO.UK header.b="RJcVJgKM"
+	dkim=pass (2048-bit key) header.d=HOTMAIL.CO.UK header.i=@HOTMAIL.CO.UK header.b="Qr4caX+v"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=G4JJHRN3jdZoFiVtURcTD+Um/aMUcwBKe6UiDHzk6G/E/nO1HmzAbzRBDhj/8MdQ4kK3Itwy2iaXp8AP8kh59AqhfFckBwa1o1QLu0uLwiu1otchPtIVJUgJZMlq2dE1hQhYeNsmFqTxWNjooUeX9Xq9AuN6gf6wyeGXLg9AYYEvAygkRIrjGIfVtDv5UPbisQZJeYnG3rSMPVi407y/CGJY6FgLtf3do5lNdHUrUCR6MW3fcsxCJySrqoLUiBmvekFOAqWb9KaHCqBQymlZI+g+Nci+r0jlSLMBMJuIrTJeQvKh6t/5vjTKcvBDCZLuVH6igHVEMf9s8JiAR8nw1Q==
+ b=J3+EvfO9243Qosq+0p2fvvbiT9NaQpkue5zxvhG/qnwuOk//w7mM8FSmU2uKxJwCZ/276KWYbhq7JOYbFQdJaIkT54AoZpljlpfQiV4jUYUvvrnKD7nxPHizGw0/CbTM/A2+Y9ZT1uQf2LQWuTl7GimVxHwIoMbYlnLbVGhMBd7KgRdoPsP0U2elaC8NOllgNpl9ee/EJRnzjQ7dcswDMwAKpuDwXHvHsPgY1kGkVPMijnyP74JMhvjfXVWFXTQyayBPCcg+okurEEti2HYFFof8kMTNRKr2QUI8Cop9rTguP+LpDR32EcZm5FNHIku/Jid5k8qVAD7pikg18iGapA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MLgFGpL62jvXO8af6NQ0lju/MhqiaL7QMr7Z6F1p5aY=;
- b=XnwvIB8ZlbdxmmqAn1NuQU9nLTftRUyih0POTd0hv9pyFcwaBEBeLDnXM7vUfVw91/5a6H4Nd3DFlW0bdp5MYGp9+9XcqPpe7rwj9dOwMoQ54PWvuI6EdEavOoyGzUyCVA9/cI6jiSnjaHhXLOSaUyvhH/Dc9ihYTQz0wZv35YcO5IV7IXcWrGh7W+fwFKQ0LQsBQDBNkHirDgfs98IOiJCWqrdBR/Z8qthIEjQ9LJW9jjNOJwR47hx/fyOS8CphvQEjnUzFKhHnIeNGeWyxW+b1gGmmGW9gcwGdcbKMyF5MbInNtbj6eR/GxFNhWUCZcV6hXXC9IhI19meKcESDFg==
+ bh=6621Tt8Wofg6hjcmAhxUXL9WY6V4fKEh16GVa0K/klc=;
+ b=GnObYswprXLQbdabbLxT6JPUp7b/BfF2LlbC/yUTo4gOPnAYFidWHmYeHHiYoP4uj9hQ/kGIRb8v/KqVMko8e/VRsImq8sHoRsp6IEnfrwPlnd8ulYbSkBAvrhdSQiVik1zXM2VM4ZpWe+9nZu/P1Fv0JGaLOqfMI+e7Kz/HzsmRv5hWzeYlm/uYe5hgl/O2wqyWWC6IPjYM5yffA4SJFIdYp645XzmAg+qtGrgdeEXfz+eS+VZkF1fs43RcOQw5N0iFa7vzEawOXY+bBkJjufTmWQc1Rlck+9QaS8n96bcl1SpsJ7QrkiMvTkOoh4MZyI8g9CRNvwOY0cGDyPgSdg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
  dkim=none; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=HOTMAIL.CO.UK;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MLgFGpL62jvXO8af6NQ0lju/MhqiaL7QMr7Z6F1p5aY=;
- b=RJcVJgKMXdkWgM97kz1TPod8lZUbKc7hJ5zm6linK9sfCE7XIHn15Y//uGIZU15hDgEaUeyGq4UOwhjDdlfCqHfOEgNS+JKWLFay7jNsSiSU/eA77THuDyHjpDm4iC1up3nwGWu1o5uhcbzK/Qeds2oG+sJD51CSbzH7Nyq1q4S8cdZg5zVNbj84ebOlTgsMD9ORr5mKrfaqode3u19gHA0c+D5mU2/NK00XDAAskW1Ud6KZSiTWe2QhVOWRRWOoGoEG4WSi+kEyhqgUekfut9fl21UkOQMCEC3h+5WkBYk5s5NjFMX9+7n94kD8TqX/MQrhi8bJnAuCGKAzaFVuUg==
+ bh=6621Tt8Wofg6hjcmAhxUXL9WY6V4fKEh16GVa0K/klc=;
+ b=Qr4caX+vhJKNR652dmlGEYoZdvZmyRC/2K6mV7ucB0gBVqhi+lQ8ec/418qEPGk9/HUFcsjv3+SU911jmSWdaIBeExO//xjQfqafN3pGgQb7mUA5VD/ODzIlZfHtQgBJC0kisANjKAt3f8Ht0TpoBOPuIr9rlEAaVcEQrLcMXU7nQdgGnC6WkJnibSJj9DuMYhDevqKrUg1d0su/NRqkzGsIMPPfXZQhDvhi8Vv0YJjehLN4wb++qQJj4XSsNrOQp4PVrT2bLF/g4IlQN9QiDYqJ/gQPdI/do1fyn0g0qtQzZYyWKPcGmBbGcR4u1l9mLk4k8SBRuoeAfZYB7wUmQw==
 Received: from AS8P251MB0001.EURP251.PROD.OUTLOOK.COM (2603:10a6:20b:344::22)
  by PAXP251MB0113.EURP251.PROD.OUTLOOK.COM (2603:10a6:102:200::19) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.382.15; Sun, 6 Sep
- 2026 23:38:24 +0000
+ 2026 23:42:29 +0000
 Received: from AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
  ([fe80::2952:d4d0:4ba:8352]) by AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
  ([fe80::2952:d4d0:4ba:8352%6]) with mapi id 15.21.0382.014; Sun, 6 Sep 2026
- 23:38:24 +0000
+ 23:42:28 +0000
 From: Aamir Ahmed <elb12345@hotmail.co.uk>
-To: Jon Maloy <jmaloy@redhat.com>,
-	Tung Quang Nguyen <tung.quang.nguyen@est.tech>
-Cc: tipc-discussion@lists.sourceforge.net,
+To: Lachlan Hodges <lachlan.hodges@morsemicro.com>,
+	Dan Callaghan <dan.callaghan@morsemicro.com>,
+	Kalle Valo <kvalo@kernel.org>
+Cc: Arien Judge <arien.judge@morsemicro.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	linux-wireless@vger.kernel.org,
 	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH] tipc: validate data size before reading Gap ACK block header
-Date: Mon,  7 Sep 2026 00:38:20 +0100
+Subject: [PATCH] wifi: mm81x: validate packet length in mm81x_yaps_read_pkt()
+Date: Mon,  7 Sep 2026 00:42:24 +0100
 Message-ID:
- <AS8P251MB000136A75E6C720544CAC017C8B32@AS8P251MB0001.EURP251.PROD.OUTLOOK.COM>
+ <AS8P251MB0001B650C31E9F37C3B7907BC8B32@AS8P251MB0001.EURP251.PROD.OUTLOOK.COM>
 X-Mailer: git-send-email 2.53.0.windows.1
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: LO4P265CA0178.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:311::9) To AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
+X-ClientProxiedBy: LO4P265CA0091.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:2bc::8) To AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
  (2603:10a6:20b:344::22)
 X-Microsoft-Original-Message-ID:
- <20260906233820.87800-1-elb12345@hotmail.co.uk>
+ <20260906234224.87901-1-elb12345@hotmail.co.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -66,61 +68,62 @@ MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: AS8P251MB0001:EE_|PAXP251MB0113:EE_
-X-MS-Office365-Filtering-Correlation-Id: 712ef473-89ce-4d9f-26ac-08df0c6ff190
+X-MS-Office365-Filtering-Correlation-Id: 7b61a61d-7b48-4a39-057d-08df0c7082e7
 X-Microsoft-Antispam:
-	BCL:0;ARA:14566002|24021099003|55001999006|5062599005|5072599009|4140399003|15080799012|25010399006|23021999003|25031999004|37011999003|19110799012|8060799015|12121999013|440099028|3412199025|26104999009|52005399003|40105399003|2607281247196008;
+	BCL:0;ARA:14566002|24021099003|55001999006|16051099003|5062599005|5072599009|4140399003|15080799012|25010399006|23021999003|25031999004|37011999003|19110799012|8060799015|41001999006|440099028|3412199025|26104999009|52005399003|40105399003|2607281247196008;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?X333TVDEMPotxnb1FiRPkWFB7P5MzZqileQgd0Ta464iTc28TudI0WOPD5JA?=
- =?us-ascii?Q?M0piwC8J86JOaukauODQt0MYHzUwmyZgU35+LlQIs/+4PG+UXM3wn6/iBZAM?=
- =?us-ascii?Q?VqAGu29BdcY+gjCi6TIPNc0YZU5WfysuJnJ0JiWpPlcceQIhmGFa70tQDikQ?=
- =?us-ascii?Q?CNgzPTuZgRdldMGQx2QdRseOLK1PFSGHuxkNhPlzl43gnvIdLM0w3DwMMCnm?=
- =?us-ascii?Q?+N+cJufJljEYgPNuQjGQff9258Kz4h3kfP0V1TelJ36A8bZkd+/z3gzYf8gO?=
- =?us-ascii?Q?Ovans63CIStOo0JAW2oUgK4TukBeAqnel2fVIm7EkScOSTL2fWuUBRl94Dy4?=
- =?us-ascii?Q?eRUN5zQC20Bb3qnYprCphsHlvF8YJdstFWrLCqrK/4xrjpyws0M8o8td6etg?=
- =?us-ascii?Q?BcNUeTa+l/+aqOCRnFBOwyJpp6Jfnq5RqNWOalMGsuAoOmivwSaNWCUBXrsi?=
- =?us-ascii?Q?rp3amXsnutpeN99RonDzhEJD2GaHHnwaO+6exKQU35pUxCqMcL73lUL72EaV?=
- =?us-ascii?Q?wTYSonLQYh3N9URx1msNWKcMgF135ytV5t50lGmmv5AuDdTnvh1KpM8RDjbV?=
- =?us-ascii?Q?PqPjQ9SL60SZ+KKQX5R7FPcvW78CFHD485tq3Spfjj1vDBUUNFYDUW9BVtFd?=
- =?us-ascii?Q?VnjVTA4ZLHj4BIvL2+pSzu14WiLScqPFofo2pTvnfNSv3jl8k6t8IttSuwVj?=
- =?us-ascii?Q?w1AIYzFyesJA7yY99zHaxBMG9m4L6tqBxkl5tLdJHl0N6L28S7RE4CW/tDzh?=
- =?us-ascii?Q?HpYzXMIxdJaMD6EYwr5lsDyY8hAw+tAqdxPTlXaQAHHISTyx0zKL5kwtD7W/?=
- =?us-ascii?Q?S8Dm8mX3/dCDWTgZg4WLI8nBhEKYj57xxoyUNf8hje7p4K2EYuSNSoriHK28?=
- =?us-ascii?Q?k8+cNyRIRPEf80RqpjLOFug3Xxi/5YPMmFtcRuOzEMMd/TcyuSkOQzAkXG04?=
- =?us-ascii?Q?RSe2360jugUVTslID5I/rmo21pvIbVYhcSmZGSfneMJ0HnbjkDJ5zfd00NU7?=
- =?us-ascii?Q?+xQikPsvCS8sLyAlHQ2yzC9CBc7uT0cXq291dDqAomUc3xwxKLpeqsp9FZlW?=
- =?us-ascii?Q?QXiHMEIPZbL5tAc4/Te8YuEHeufSDq49GL53GVlLQmQOH1CY9Ig=3D?=
+	=?us-ascii?Q?Hii0i5/BCKClTe5/cWnOSmnyAJTn3J1gN/1YNb/OZhEsZue8w/TtWDuzL6n0?=
+ =?us-ascii?Q?cL+cxDLXIxXgr4sqH8wPLxsAC78q8hujUIFUk6UdPABCrEkaroNtFPRmOnAp?=
+ =?us-ascii?Q?CdeDsP7ASlL0TblCGBhqA/yLsqJVGqLwE/UJzCoALmz01IIut9Hnd6GMxLZb?=
+ =?us-ascii?Q?AZtTAsGE+MgAyHcxXvWw3SLkBO7gl0sbSyCJMyVxTNlq18Jd2edaWNGf16/H?=
+ =?us-ascii?Q?pbJWfjPMxedGcKUBJDcAUKqj/cuNHnAuar0HQahykOF5d1wAEUrpi/JwlPGx?=
+ =?us-ascii?Q?01PgRtplf+CkpX2uuO8eoJ0RvbOyLo21wSCPmLngqGxdc82Jvhe6+cn/MCXt?=
+ =?us-ascii?Q?j4bOnQFsR+iZ3MeYqrpLkLyG8nd0fv5Ypsv2VKORTJFrsPvI24EnGbskWoPc?=
+ =?us-ascii?Q?/OYyo7Lf0kU7QLlndxip5J3iRsIl2Iy5REdOSYhCI4vJyCbM+KhVKNU3kWw+?=
+ =?us-ascii?Q?i3BwBfTxA2xQysum5SXA2WN6qlniW2Z9zp0UnJ386xSTCrVrTqKmaT8/gbmk?=
+ =?us-ascii?Q?LfiuHkGEhJH/cdMOpd4lqkc33hl4GVHzxoomAE0rPWDkDrxnelJUrIrVdCGB?=
+ =?us-ascii?Q?p0w6/7O4SwBO0uDHIBCEuzRd1ygvhfasvd0pDui0Np/MqUIeH094MeFKNs+y?=
+ =?us-ascii?Q?U7j2m7hWHNVPSgI1T+SmWjS/cl9SaRG3GyDs2ZJIZRMPO8zMpJim156t+ZIg?=
+ =?us-ascii?Q?Fj8xzypYpg01C6Yr6cqkPB8lOC9YpOpdUofBgrqMY0ZH+BZzffEffhfYiEm+?=
+ =?us-ascii?Q?L7BywJ55r/VnnmhrkSF0Qf7gzcYNkqNK8Q6RbMgJ1hADYsCYF+Anp/XcZHU5?=
+ =?us-ascii?Q?KehGdmCbn8wkxN/3TdGHmCIoIkKoiVLcx9+XgJi3x/kz7CgbE9L9UwJpySy8?=
+ =?us-ascii?Q?Y+lPl5Qx0G9HcPSgb1dwxuLObwNTPxI1HsklAl7/chuTvqQMrJof73zXXIMY?=
+ =?us-ascii?Q?rfWell7LwOsOknDoj+gSU0pJO5UWAVVTKORJvmXnfyjC0USPKeg+mcHzn0kN?=
+ =?us-ascii?Q?ngbeVm4cBWPX9I5vlNnJRPVjxaN7P5CvwcHFEbGY9ZIDLuF56oXxNCR5q7sY?=
+ =?us-ascii?Q?ztYQhn73D/g+V5Vvm3gTL+7I4FxGosM0sad53iOM6Pics+UMEnb3SCqVq4Q1?=
+ =?us-ascii?Q?rqhLvlWKxnGc?=
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?m/LbR8ZqNzOj6+X42etvimX1B9hEe1n0DZwM6gLEv1p8MR19MUQjoIMjNvJ5?=
- =?us-ascii?Q?7clNezL+0R8xE8f2Jw0FiqbtbjrXjeATV398s7Bq3vQSfs2wl8p4+aZi1y1M?=
- =?us-ascii?Q?3UQfjKEm7EzhWrMJykvs+pNDwld3rPZV7oAV+yuWRfjqEGaP7WDfW9veJv/z?=
- =?us-ascii?Q?J5CdMefMCpH9OU1lQNTCaK34gcQnz3yImjH6J/9goNimuz/IyiTV37b8FJoe?=
- =?us-ascii?Q?fGetr7DFVQhwaGfKsEi9P+j7AmKPBKFkcAsWZX+67xIEp7LZTOfyLD9GKU+L?=
- =?us-ascii?Q?wLFaLK6192lRJbmKng6qO940zPu6S/GW1Yk9upsS7gRUT7EE2l4VGqxB8yby?=
- =?us-ascii?Q?w9LhrqBsnqQ/tFq8GjvYsVr4t2g5LiZ/OPEszMkVNziQrTPvyRuFnkeJ51KC?=
- =?us-ascii?Q?k1nHS79GNB2OCNJcxVitMC+b/QE/Gtl388Q45NMMpMWh/DaYuEtAmR5eBjn0?=
- =?us-ascii?Q?whd38ZlsmmUPj6eZrSsahib194TzEMhjZaopAWY1i4dUviOlLVKdg3HQ8zv0?=
- =?us-ascii?Q?zeoIgKtJWIXD/dZudgN5iXI+GvCvZMII2ag1yXkfsyqyFiKBtKSZJMp8n8NM?=
- =?us-ascii?Q?snEooe/9sm2w63HyXVkh5rgHzXUm07X/SYgDPJMOtTy6bhriQxrGOyEU+FOq?=
- =?us-ascii?Q?pPT5hSHmWu61LXbwRzyxEXjJZkNe8D7/Aj2nV/MRQlA9iJjORqpdQd/DHdoT?=
- =?us-ascii?Q?cUlW8iuzR2uf5adb42gCafG4qKtzWFKKpctwXA4/X9fuexblmzLHXs50xIk+?=
- =?us-ascii?Q?kG27EeGOI4FJdcBmwYlWsrnejI79AZR3ezR3jkDbmeKpstsEHBY60qXHWtBE?=
- =?us-ascii?Q?ZtI5nSoqyj4UeCi/DLuJ2XaUGpiLjO/kITj2QYqTkjBA37E0CWMCbbHZVc7C?=
- =?us-ascii?Q?U1wov42baJl88i2zOT1hBr7fD1mXwdtF58CkawTt7UJLqX8O0DtCD2JjSGED?=
- =?us-ascii?Q?l4fFpUYPujbztyRSpwA4ie0Sd3Id/hfF4v9U7p9yMk3tKuxP/zSERYj/rWRr?=
- =?us-ascii?Q?FNOM0M9qXy4kGPy38Yt9aGbbC8IzCrrLYX2ElHyRfsGSrvSeG+E9DdzGY4Xs?=
- =?us-ascii?Q?ajLdiqExtBBfWExL1U0KQwdBgy68vffKeJH9rTFMLff6I/N6xfvQ7oOKO7pk?=
- =?us-ascii?Q?/7JnEx38ulS3nHybDUfVEoIBWdDJwUP1K/4aXAmI7vnKmyDhmiKRJBSs62Rb?=
- =?us-ascii?Q?CbY20BiGBDT75ONKr8rtXqttS4q4KKeqm8eCjPLNAoHBivZ3bHR7K3lafhWk?=
- =?us-ascii?Q?ZxsJwa5Bm0gVSZBIUada/SG1ajo8Cswg6N3peimGaby+TH7MXmuoB6ALbqXh?=
- =?us-ascii?Q?asdkPgkbjm9aCl1ILQCeqKs6kVqqB7hMx072efjfOfJFfC13Yu1SIDNb7WWm?=
- =?us-ascii?Q?1Shvapw81FQfztFAD0CVMiw2SGO93R140TC8DhmDvfb7wHPIlJsI8AZmpjfk?=
- =?us-ascii?Q?s5H7Fp05+CoC36LyrjgCH3XQiBX0cfv7?=
+	=?us-ascii?Q?Kda6xH05GM7jHGUHPFk3Uuff4R17YXP8RNwH/zfHtCk1Qc74zXTH20DSW7bt?=
+ =?us-ascii?Q?G7KxBIgvjO0FkGgSjS9tUWBwln/Xi5rEYGIalo2X5s7cVoseclynBc2P/2EK?=
+ =?us-ascii?Q?YFN3twHurqSt2shQoREzbqIev4B4dqa/k5OG7Z1CZEHkDzyvGuuF3tLGqsnb?=
+ =?us-ascii?Q?FT2YEkw+xFSD+J/lQwv7fkjngE2fsOIb97+QiN/U8kHOLaS1A+FDKQRgl9aN?=
+ =?us-ascii?Q?49UTvo2CQ8AsRIif+0iqjrwS2F+ZmZJY7o1U4vgTFsvLwAPBTfvlAxEFwWcm?=
+ =?us-ascii?Q?k4xxpAw9d1FJJKFWY71Q7dnARTyKkIAkaRHP91xHEhXNdLdjR8fn8n+1Rs3E?=
+ =?us-ascii?Q?gHDLIgj01aPmAo/r/H0zcsRzV8F4O1lZkydZKbj6e847IwZOq3CuzltdLXAc?=
+ =?us-ascii?Q?nAPy0TO5gsvLLAfKP0UD/TLpgjiJnj28TjN7foC0tkd9+HzBd2uf+WVkqsEz?=
+ =?us-ascii?Q?WAOzeXDT9z2CQwIXJXtewmggTl3UIA0l6OlkWsPMjLf8i9ST2MMiAAPqEVCq?=
+ =?us-ascii?Q?hH4FVizoaBJeWIm47gW08ahiDDMZS9lLCQ+mXerair2GvosL/PIc9Z5g+oNk?=
+ =?us-ascii?Q?CrtEYIY/6UYFCQzmmWO8aCvrr+Oo8aV0vmCVsR3eF1Hlmc3wrVFmsXPHkvRv?=
+ =?us-ascii?Q?vjAyHGrdnSeq/N5LJAuWWlnImpCG+rd+hdvxnNvd+d02fLDELx+2npn14mm/?=
+ =?us-ascii?Q?kYk1iOoFHf+7Bb+7a4YS0WuNgKRS5fFa58T1ppa8UMjDWRlpp/sxeCYM7SWf?=
+ =?us-ascii?Q?VjvXOFUaKy3Lw3Zhogrudi8cZi4dmf7N7sdg2UvSBnX1Xp7GvZfjFkacqy2W?=
+ =?us-ascii?Q?iIdatJ1sVzRgfQw9+tYNADBeEmRrfiON1Mf/DWV2xZwPPPzvp81pkNaJb0yi?=
+ =?us-ascii?Q?FVXKa22RN647mzBVLb8pzj5ScDFnVlr5v6bqvTQnjXfFjxrePNjCAs3kUy/o?=
+ =?us-ascii?Q?dEj5+M8/UM91ikgHh80GLb1pnkH0O/8fIZ5SdlfcjEvzlVBdDM/GQbqqu5rM?=
+ =?us-ascii?Q?mve3uo9k0MXpVbed2+YIU4hAP/Q58iN8/rOZ0hArk5BTbCnBfxipDwohNBRU?=
+ =?us-ascii?Q?7IMC5YrVNITNq7y1mFvAixeUORd1+5IV4+259qpiCQERXdnaZI+e9+OcBM+2?=
+ =?us-ascii?Q?koYalxtF/rd8mnKJlEbB+jgGv0AbGJcf2Zq399tTr8Za2KVCyrS4QBG5jQrZ?=
+ =?us-ascii?Q?Ka4LUrChw2iFT+9k3fkV9j/U6c8SQCzkSQZfNlq360vjNhognYPNmOVxTnSU?=
+ =?us-ascii?Q?WIP8Z1r2X5UtZNAaCnDLdxagOjee375Fq1T0R2X+5efbh8MHkjrEHr0rHP+E?=
+ =?us-ascii?Q?7E/2mSoSYGsVZTYRnIRxBOzoypzHiOiPlbmPIsVlDdi6WMllGStEE6sXsa9M?=
+ =?us-ascii?Q?PA4wB4/Dp0jkCkNwW95hvgfqLkDPuu7APKTN07zunzs4rCbZ+uGD1mLj/PWc?=
+ =?us-ascii?Q?E6GHJMniH+32z8QBz6Aq2Dge7Fv2R64S?=
 X-OriginatorOrg: sct-15-20-9412-3-msonline-outlook-fe3f5.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: 712ef473-89ce-4d9f-26ac-08df0c6ff190
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7b61a61d-7b48-4a39-057d-08df0c7082e7
 X-MS-Exchange-CrossTenant-AuthSource: AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Sep 2026 23:38:24.6364
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Sep 2026 23:42:28.4308
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
@@ -128,53 +131,63 @@ X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
 	00000000-0000-0000-0000-000000000000
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXP251MB0113
 
-tipc_get_gap_ack_blks() reads the Gap ACK block header fields (len,
-ugack_cnt, bgack_cnt) from msg_data(hdr) without first checking that the
-message data area is large enough to hold the header struct.  A peer
-that has negotiated TIPC_GAP_ACK_BLOCK capability can send a STATE_MSG
-or broadcast PROTOCOL message with a data area shorter than
-sizeof(struct tipc_gap_ack_blks), causing an out-of-bounds read of up
-to 4 bytes past the valid skb data.
+mm81x_yaps_read_pkt() casts skb->data to struct mm81x_skb_hdr and
+accesses header fields without first verifying that the skb contains
+enough data for the header structure.  A malformed device response with
+a valid YAPS delimiter but undersized payload would cause out-of-bounds
+reads from heap memory.
 
-In the backward-compatible code path, a 1-byte out-of-bounds write also
-occurs through "p->bgack_cnt = 0".
+Additionally, the function computes the expected packet length from
+header-embedded fields (hdr->offset and hdr->len) but never checks
+this against the actual skb length.  Since skb_trim() only shrinks, a
+claimed length exceeding the real data is silently accepted, and the
+subsequent __skb_pull() in the dispatch path underflows skb->len.
 
-Both callers (tipc_link_proto_rcv and tipc_bcast_sync_rcv) validate the
-returned size against msg_data_sz() after the function returns, so the
-invalid data is never used further.  However, the OOB accesses inside
-the function itself are undefined behavior and are detectable by KASAN.
+Add two validation checks:
+1. Verify skb->len >= sizeof(struct mm81x_skb_hdr) before accessing
+   any header fields.
+2. Verify the header-claimed total length does not exceed the actual
+   skb length before enqueuing.
 
-Add a check at the start of the function that msg_data_sz(hdr) is at
-least sizeof(*p) before reading any fields, jumping to the p = NULL path
-when the data area is too small.
-
-Fixes: d7626b5acff9 ("tipc: introduce Gap ACK blocks for broadcast link")
-Cc: stable@vger.kernel.org
+Fixes: b1906cea00b0 ("wifi: mm81x: add mm81x Wi-Fi HaLow driver")
+Signed-off-by: Aamir Ahmed <elb12345@hotmail.co.uk>
 ---
- net/tipc/link.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/wireless/morsemicro/mm81x/yaps.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/net/tipc/link.c b/net/tipc/link.c
-index 6427c69f8929..0be86cbdc913 100644
---- a/net/tipc/link.c
-+++ b/net/tipc/link.c
-@@ -1419,6 +1419,8 @@ u16 tipc_get_gap_ack_blks(struct tipc_gap_ack_blks **ga, struct tipc_link *l,
+diff --git a/drivers/net/wireless/morsemicro/mm81x/yaps.c b/drivers/net/wireless/morsemicro/mm81x/yaps.c
+index e98a2a58726f..da2c88901d64 100644
+--- a/drivers/net/wireless/morsemicro/mm81x/yaps.c
++++ b/drivers/net/wireless/morsemicro/mm81x/yaps.c
+@@ -147,6 +147,13 @@ static int mm81x_yaps_read_pkt(struct mm81x_yaps *yaps, struct sk_buff *skb)
  
- 	/* Does peer support the Gap ACK blocks feature? */
- 	if (l->peer_caps & TIPC_GAP_ACK_BLOCK) {
-+		if (msg_data_sz(hdr) < sizeof(*p))
-+			goto out;
- 		p = (struct tipc_gap_ack_blks *)msg_data(hdr);
- 		sz = ntohs(p->len);
- 		/* Sanity check */
-@@ -1435,6 +1437,7 @@ u16 tipc_get_gap_ack_blks(struct tipc_gap_ack_blks **ga, struct tipc_link *l,
- 		}
+ 	__skb_queue_head_init(&skbq);
+ 
++	if (skb->len < sizeof(*hdr)) {
++		dev_err(mors->dev, "packet too short for header (%u < %zu)",
++			skb->len, sizeof(*hdr));
++		ret = -EINVAL;
++		goto exit_return_page;
++	}
++
+ 	hdr = (struct mm81x_skb_hdr *)skb->data;
+ 	if (hdr->sync != MM81X_SKB_HEADER_SYNC) {
+ 		dev_err(mors->dev, "sync value error [0xAA:%d], hdr.len %d",
+@@ -186,6 +193,14 @@ static int mm81x_yaps_read_pkt(struct mm81x_yaps *yaps, struct sk_buff *skb)
  	}
- 	/* Other cases: ignore! */
-+out:
- 	p = NULL;
  
- ok:
+ 	skb_len = sizeof(*hdr) + hdr->offset + le16_to_cpu(hdr->len);
++	if (skb_len > skb->len) {
++		dev_err(mors->dev,
++			"header claims %d bytes but packet is only %u",
++			skb_len, skb->len);
++		ret = -EINVAL;
++		goto exit_return_page;
++	}
++
+ 	skb_bytes_remaining = mm81x_skbq_space(mq);
+ 
+ 	if (skb_len > skb_bytes_remaining) {
 -- 
 2.43.0
 
