@@ -1,45 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9763736194C;
-	Sun,  6 Sep 2026 15:00:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0163B362154;
+	Sun,  6 Sep 2026 15:00:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788706820; cv=none; b=cdZnQRMPP9k+N3vRI8XjBYIR/zX99C9HZ7JlN4AeFroiHHFFaDEdR+IsrraPrw9rXgCltBsocdESvxwdIRh1uay7Vw8txZN0t3y26AEnnXlFemCO/8GwvQN5Jvq+f8dfnwkj7l8emw3fviL6OBv2zlgEKIIYwElqO6OyOiGPQnI=
+	t=1788706829; cv=none; b=QcVqfhOA8dB21JRo2wAfSiY4w0BfPcvV0ZEbIqtGk/LCfpWteL0dBDMAWeyx2h22VSQ2VEV9hTooX+j3Dtv+zW6SQksllev4D5/01uWZZADQQ52uIztDmUxYDs2WbR5XeDhbz3elv0ZeP8m/jyX3vskYa1yvWdyNjEjh9YlAHDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788706820; c=relaxed/simple;
-	bh=qkH5ZLYexfKdcJNsx80mxBTFbKJyccLqmJDtCZ3CIEE=;
+	s=arc-20240116; t=1788706829; c=relaxed/simple;
+	bh=Rxy4YBlBtB5HAWk/JMk7n71PFj1H+GTbtc/lh+EOM0g=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=rk1yB5X8teTcohsvNvoTIN9Kkn4X7+EM8Kg3eDHRD5ugpmyqF+0Qsd/lo5Jfy4JPXhiDWaNul7C+frrCT25v6RZGhNAxaBrdieuXmr5r1JONqcHJozU4XQfMz/j6qZf8Ko9TS81QaHwk8gwzcmYEAsvbJp1OxbxoRUCfPTRIobQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lbSf2AHB; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=IMWS2j//NA2M26FodwvdxhEKd141A5frty/gLPoeLx9djxjCQKwbeQIeRzP+36SaWzLDQtmNAy3rFpLx8Txv7nKgVIg2UB2Hn9kLYzgCasOsx50f80Sb13nL3J7LU4Tv2ZiCthyg+ErIwmoK/Uur5kTEs7QUEn818Qku7Cn8sqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kRVcQe14; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lbSf2AHB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 790CE1F00A3A;
-	Sun,  6 Sep 2026 15:00:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kRVcQe14"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E00C91F00A3A;
+	Sun,  6 Sep 2026 15:00:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788706818;
-	bh=eXSsuSAzLI/VrVobKaxUE9hne+qRwLkijeVloyXvwJs=;
+	s=k20260515; t=1788706821;
+	bh=7rsy1jb7TwXnL4D5XTd/EAACeqOWAzhGZYCkXITHWOA=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=lbSf2AHBV73/eXZkb4Te8dNMAYWleLPyjpBkgOZNLgdaXgfiugjQuBbMDpnlokKk3
-	 V9XOjQjLAdsnwrdoLNIY+MAdl4rVJx0GntcS8XyTz1P0lAlpCrWeP3pDc1ejGg669e
-	 +FGU2xguylRv2RYg2aWJ99a1rLIW7W1xoPbQ71Xa2e+7I2YIjZxL8Tt1GuG1io/toj
-	 Xwi994KA69rWpmD2DAHaM2IDOCIXXNuPohtNwFp+JkaFvsfGisk7TjZIgawxEvg9IL
-	 7ZcCo0qHCLdkGFH2Ns6gWxxAzJbawZY8h3NR5D0lwbhfISGoLUtBv7WvO2x7WB9YFD
-	 9Mg5PSIm1jfDA==
-Subject: Re: [PATCH net v3] net: wwan: qcom_bam_dmux: account network packets
+	b=kRVcQe1460Ja6zrZt9OaYiq9A/30dWehyzX5GqNDxT8szqoIsRuP1nhFGmd6HDgxw
+	 kAnRS6HMqlq/L2/mcBuaHe3SgxOo2rEMFxRT4K/WvIF7yu5UtznhPLY1PeMvsGY5DF
+	 fSTMS1wJItbQdkwNrvd21xIeK3udYQ+0w0IVpt1on+9Lvl/44l26dc8lMMqQ9t2Yhu
+	 KvT3VWPyBmTVeJjsv4i+QtOUndsP7k813soOuCEAjmxiohXoZqOPh/NSdQbh6Il78n
+	 7t2TDGmVQjJGoF9bsNMqK7LnsWqJYJuzyrSuYrTA0QzpvbCJbt2BqMoT7vqihFB3uv
+	 ITqHP4KMTzdbA==
+Subject: Re: [PATCH net-next v2 2/2] selftests: drv-net: Use cross-compilation
+ environment for the io_uring check
 From: netdev-bot+sashiko@kernel.org
-To: sinyavin@gmail.com
-Cc: stephan@gerhold.net, stephan.gerhold@linaro.org,
- loic.poulain@oss.qualcomm.com, ryazanov.s.a@gmail.com,
- johannes@sipsolutions.net, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Sun, 06 Sep 2026 15:00:17 +0000
-Message-ID: <178870681701.219967.5248698671156408999@kernel.org>
-In-Reply-To: <20260902124506.363174-1-sinyavin@gmail.com>
-References: <20260902124506.363174-1-sinyavin@gmail.com>
-X-sashiko-severity: High
+To: maxime.chevallier@bootlin.com
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, donald.hunter@gmail.com, horms@kernel.org,
+ shuah@kernel.org, matttbe@kernel.org, sdf@fomichev.me, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, thomas.petazzoni@bootlin.com,
+ linux-kselftest@vger.kernel.org
+Date: Sun, 06 Sep 2026 15:00:20 +0000
+Message-ID: <178870682049.219967.8686151218558794028@kernel.org>
+In-Reply-To: <20260903155524.2241065-3-maxime.chevallier@bootlin.com>
+References: <20260903155524.2241065-3-maxime.chevallier@bootlin.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -52,225 +52,107 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider:
 
-Critical: 0 · High: 1 (1) · Medium: 1 (1) · Low: 0
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
-- [High] Use-after-free write of freed per-CPU statistics memory from the
-  TX DMA completion callback.
-- [Medium] Asymmetric / incomplete drop accounting introduced with the
-  new statistics plumbing.
-
-Pre-existing issues:
-- [High] Disclosure of uninitialized/stale kernel memory driven by the
-  modem-supplied length field.
-- [Medium] struct net_device leak on the driver removal path:
-  bam_dmux_register_netdev_work() allocates each interface with…
+- [Medium] Incomplete fix: the capability probe still uses a different
+  compiler than the one lib.mk installs to build `iou-zcrx`, in two…
+- [Low] Missing `Fixes:` tag.
 
 --
 
-net: wwan: qcom_bam_dmux: account network packets
+selftests: drv-net: Use cross-compilation environment for the io_uring check
 
-The patch adds per-CPU software statistics to the BAM-DMUX data path by
-setting NETDEV_PCPU_STAT_TSTATS, wiring up dev_get_tstats64() and
-accounting TX packets from the DMA completion callback and RX packets after
-the BAM-DMUX header is removed. It also counts packets discarded by the
-transmit error path.
+This patch sets CC to $(CROSS_COMPILE)gcc at the top of
+tools/testing/selftests/drivers/net/hw/Makefile so that the liburing
+zero-copy capability probe (HAS_IOURING_ZCRX) is compiled with the
+cross compiler instead of make's built-in default. The override is
+guarded by ifeq ($(LLVM)$(CC),cc).
 
-A few questions on the statistics plumbing below.
+[Severity: Low]
 
-> diff --git a/drivers/net/wwan/qcom_bam_dmux.c b/drivers/net/wwan/qcom_bam_dmux.c
-> index cc6ace8d6437..ef3356200b3e 100644
-> --- a/drivers/net/wwan/qcom_bam_dmux.c
-> +++ b/drivers/net/wwan/qcom_bam_dmux.c
-> @@ -177,8 +177,12 @@ static void bam_dmux_tx_callback(void *data)
->  {
->  	struct bam_dmux_skb_dma *skb_dma = data;
->  	struct sk_buff *skb = skb_dma->skb;
-> +	struct net_device *netdev = skb->dev;
+Should this carry a Fixes: tag?  git blame on the baseline attributes the
+whole probe block, including the ifeq ($(HAS_IOURING_ZCRX),y) gating, to
+f81171fecd0c3 ("selftests: hw-net: auto-disable building the iouring C
+code").  Since no CC is set before the probe in this Makefile, in
+tools/testing/selftests/Makefile, or in lib.mk, that commit is where the
+probe started evaluating with the built-in CC=cc in cross builds:
+
+  Fixes: f81171fecd0c3 ("selftests: hw-net: auto-disable building the iouring C code")
+
+On the changelog wording:
+
+> The CC value used for the io_uring library check defaults to the host
+> compiler, which will fail in cross-compiling environments.
+
+Does the check actually fail?  The compile of the probe program succeeds or
+fails against the host's liburing, so the result simply describes the host
+rather than the target.  The failure comes later, when iou-zcrx is
+cross-built and linked with -luring, or the test is silently dropped.
+Would it be more accurate to describe it that way?
+
+> diff --git a/tools/testing/selftests/drivers/net/hw/Makefile b/tools/testing/selftests/drivers/net/hw/Makefile
+> index 6105be8e590f..f9458dc6c150 100644
+> --- a/tools/testing/selftests/drivers/net/hw/Makefile
+> +++ b/tools/testing/selftests/drivers/net/hw/Makefile
+> @@ -1,5 +1,10 @@
+>  # SPDX-License-Identifier: GPL-2.0+ OR MIT
 >  
->  	bam_dmux_tx_done(skb_dma);
-> +	if (netdev)
-> +		dev_sw_netstats_tx_add(netdev, 1,
-> +				       ((struct bam_dmux_hdr *)skb->data)->len);
->  	dev_consume_skb_any(skb);
->  }
-
-[Severity: High]
-Can this write through a freed per-CPU pointer when a TX descriptor
-completes while the device is being removed?
-
-dev_sw_netstats_tx_add() dereferences dev->tstats with no validity check:
-
-include/linux/netdevice.h:
-    static inline void dev_sw_netstats_tx_add(struct net_device *dev,
-                                              unsigned int packets,
-                                              unsigned int len)
-    {
-            struct pcpu_sw_netstats *tstats = this_cpu_ptr(dev->tstats);
-            ...
-
-For NETDEV_PCPU_STAT_TSTATS that pointer is released by
-netdev_run_todo() -> netdev_do_free_pcpu_stats():
-
-net/core/dev.c:netdev_do_free_pcpu_stats() {
-        case NETDEV_PCPU_STAT_TSTATS:
-                free_percpu(dev->tstats);
-                break;
-}
-
-and dev->tstats is not cleared afterwards.
-
-In bam_dmux_remove() the todo list runs inside rtnl_unlock(), while the TX
-DMA channel is only stopped much later:
-
-    unregister_netdevice_many(&list);
-    rtnl_unlock();                      /* netdev_run_todo(): tstats freed */
-    cancel_work_sync(&dmux->tx_wakeup_work);
-    ...
-    if (!wait_event_timeout(dmux->pc_wait, !dmux->rx, BAM_DMUX_REMOTE_TIMEOUT))
-            dev_err(dev, "Timed out waiting for remote side to suspend\n");
-    disable_irq(dmux->pc_irq);
-    bam_dmux_power_off(dmux);            /* dmaengine_terminate_sync(dmux->tx) */
-
-Does anything prevent a descriptor still owned by the BAM hardware from
-completing inside that window (which can include a BAM_DMUX_REMOTE_TIMEOUT
-wait of up to two seconds) and running dev_sw_netstats_tx_add() on the
-freed percpu chunk?
-
-The deferred path looks similar: a packet queued through the "active <= 0"
-branch of bam_dmux_netdev_start_xmit() is submitted by
-bam_dmux_tx_wakeup_work(), which is only cancelled after rtnl_unlock(), and
-cancel_work_sync() waits for the work function, not for the DMA it just
-issued.
-
-Can the "if (netdev)" test catch any of this?  skb->dev holds no reference,
-bam_dmux_netdev_setup() never sets dev->needs_free_netdev and no
-priv_destructor is installed, so the struct net_device body is still
-readable and the pointer test passes even though tstats is gone.
-
-The same exposure exists on receive: dmux->netdevs[] is never cleared in
-bam_dmux_remove(), and bam_dmux_cmd_data() tests
-"!netdev || !netif_running(netdev)" on entry but writes dev->tstats further
-down, in tasklet context, while unregistration proceeds in process context.
-
-> @@ -368,6 +372,7 @@ static netdev_tx_t bam_dmux_netdev_start_xmit(struct sk_buff *skb,
->  
->  drop:
->  	bam_dmux_tx_done(skb_dma);
-> +	dev_core_stats_tx_dropped_inc(netdev);
->  	dev_kfree_skb_any(skb);
->  	return NETDEV_TX_OK;
->  }
+> +# Set CC for the io_uring check
+> +ifeq ($(LLVM)$(CC),cc)
+> +CC := $(CROSS_COMPILE)gcc
+> +endif
+> +
 
 [Severity: Medium]
-With this increment the driver starts reporting the dropped fields of
-rtnl_link_stats64, but two sibling discard sites are left uncounted.  Was
-that intentional?
 
-bam_dmux_tx_wakeup_work() finishes the deferred branch for skbs already
-accepted with NETDEV_TX_OK, and neither of its failure paths reaches
-bam_dmux_tx_callback():
+Can the probe and the actual build of iou-zcrx still end up on different
+compilers after this change?  The guard only matches when LLVM is empty and
+CC still holds the built-in value cc.
 
-    ret = pm_runtime_resume_and_get(dmux->dev);
-    if (ret < 0) {
-            dev_err(dmux->dev, "Failed to resume: %d\n", ret);
-            return;
-    }
-    ...
-    for_each_set_bit(i, &pending, BAM_DMUX_NUM_SKB) {
-            bam_dmux_skb_dma_submit_tx(&dmux->tx_skbs[i]);
-    }
+Two cases seem to slip through:
 
-The submit return value is discarded, and it can fail:
+  make LLVM=1 ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- ...
 
-    if (!desc) {
-            dev_err(dmux->dev, "Failed to prepare TX DMA buffer\n");
-            return false;
-    }
+  $(LLVM)$(CC) expands to "1cc", the ifeq is false, so HAS_IOURING_ZCRX is
+  probed with the host cc while lib.mk later sets:
 
-so such a packet moves neither tx_packets nor tx_dropped.  (The skb is also
-leaked and its ring slot wedged there, which predates this patch, but it is
-the reason no counter can move.)
+    CC := $(CLANG) $(CLANG_FLAGS) -fintegrated-as
 
-On the receive side, bam_dmux_cmd_data() returns early for
-"!netdev || !netif_running(netdev)" and for "hdr->len > BAM_DMUX_MAX_DATA_SIZE",
-and bam_dmux_rx_callback() drops frames with a bad magic, all before the new
-dev_sw_netstats_rx_add().  None of them touches rx_dropped or rx_errors, so
-userspace now sees TX discards while RX discards stay at zero.  Could
-dev_core_stats_rx_dropped_inc() be added on those paths, where a valid
-netdev is already in hand?
+CC arriving from the environment with any value other than cc.  The
+top-level kernel Makefile has:
+
+    export ARCH SRCARCH CONFIG_SHELL BASH HOSTCC KBUILD_HOSTCFLAGS CROSS_COMPILE LD CC HOSTPKG_CONFIG
+
+so kbuild-driven builds such as make kselftest always have CC in the
+environment (plain clang with no --target under LLVM=1).  The ifeq is
+false, the probe uses that compiler, but lib.mk's plain := assignment
+overrides an environment CC for the real build:
+
+    CC := $(CROSS_COMPILE)gcc
+
+In both cases, a host liburing that has io_uring_register_ifq sets
+HAS_IOURING_ZCRX=y, which adds iou-zcrx to COND_GEN_FILES and enables:
+
+    $(OUTPUT)/iou-zcrx: LDLIBS += -luring
+
+Does the subsequent cross compile then abort on liburing.h or -luring
+instead of taking the graceful path?
+
+    $(warning excluding iouring tests, liburing not installed or too old)
+
+The inverse case, where the target sysroot has liburing but the host does
+not, would silently drop a supported test.
+
+Since the probe is expanded well before include ../../../lib.mk, would it
+be possible to mirror lib.mk's own CC derivation here, or to move the probe
+after lib.mk is included, so the gate always matches the compiler that
+builds iou-zcrx?
+
+>  # Check if io_uring supports zero-copy receive
+>  HAS_IOURING_ZCRX := $(shell \
+>  	echo -e '#include <liburing.h>\n' \
 
 [ ... ]
 
-> @@ -421,6 +427,7 @@ static void bam_dmux_netdev_setup(struct net_device *dev)
->  	dev->needed_headroom = sizeof(struct bam_dmux_hdr);
->  	dev->needed_tailroom = sizeof(u32); /* word-aligned */
->  	dev->tx_queue_len = DEFAULT_TX_QUEUE_LEN;
-> +	dev->pcpu_stat_type = NETDEV_PCPU_STAT_TSTATS;
-
-[Severity: Medium]
-This isn't a bug introduced by this patch, but does the driver leak every
-registered struct net_device on unbind?  bam_dmux_netdev_setup() sets no
-dev->needs_free_netdev here (and no priv_destructor is installed anywhere in
-the file), and bam_dmux_remove() only unregisters:
-
-    for (i = 0; i < BAM_DMUX_NUM_CH; ++i)
-            if (dmux->netdevs[i])
-                    unregister_netdevice_queue(dmux->netdevs[i], &list);
-    unregister_netdevice_many(&list);
-    rtnl_unlock();
-
-with no matching free_netdev().  free_netdev() appears only on the
-register_netdev() failure path in bam_dmux_register_netdev_work().
-netdev_run_todo() frees the per-CPU stats unconditionally but only frees the
-device when needs_free_netdev is set:
-
-net/core/dev.c:netdev_run_todo() {
-        netdev_do_free_pcpu_stats(dev);
-        if (dev->priv_destructor)
-                dev->priv_destructor(dev);
-        if (dev->needs_free_netdev)
-                free_netdev(dev);
-}
-
-so each wwan%d device and its private area stay allocated, and
-dmux->netdevs[] keeps pointing at them.  This is also why the freed-tstats
-write above does not fault and can pass casual testing.
-
-> @@ -533,6 +540,7 @@ static void bam_dmux_cmd_data(struct bam_dmux_skb_dma *skb_dma)
->  		break;
->  	}
->  
-> +	dev_sw_netstats_rx_add(netdev, skb->len);
->  	netif_receive_skb(skb);
->  }
-
-[Severity: High]
-This is a pre-existing issue, but does skb->len here describe bytes the modem
-actually transferred?
-
-bam_dmux_skb_dma_queue_rx() allocates a non-zeroed buffer and puts the whole
-thing:
-
-    skb_dma->skb = __netdev_alloc_skb(NULL, BAM_DMUX_BUFFER_SIZE, gfp);
-    if (!skb_dma->skb)
-            return false;
-    skb_put(skb_dma->skb, BAM_DMUX_BUFFER_SIZE);
-
-so skb->len is always BAM_DMUX_BUFFER_SIZE regardless of the transfer size,
-and nothing in the driver queries the DMA residue (no dma_tx_status() call
-anywhere).  bam_dmux_cmd_data() then only bounds the peer-supplied length:
-
-    if (hdr->len > BAM_DMUX_MAX_DATA_SIZE) { ... return; }
-    ...
-    skb_pull(skb, sizeof(*hdr));
-    skb_trim(skb, hdr->len);
-
-Since skb_trim() can only shrink, a modem that writes a short frame but
-declares hdr->len = BAM_DMUX_MAX_DATA_SIZE gets the stale contents of the
-recycled page frag delivered to netif_receive_skb() as payload, and the new
-dev_sw_netstats_rx_add(netdev, skb->len) counts those bytes as received
-traffic.  Should hdr->len be clamped to the actually transferred length, or
-the RX buffer zeroed?
-
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260902124506.363174-1-sinyavin%40gmail.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260903155524.2241065-1-maxime.chevallier%40bootlin.com
