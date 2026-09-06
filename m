@@ -1,146 +1,202 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC4BB2F28EA;
-	Sun,  6 Sep 2026 14:02:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12E0D154425;
+	Sun,  6 Sep 2026 14:11:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788703347; cv=none; b=ifyY3j7PjnbuCzmKX0yQuvXdzn3l8aMa8RV+Sekgy6xQBV31Cu7SFP2oitTQZ8Lv3OYopMVEiyi9aF64fQjHWakBRONHdF6/1NzeiQLlP4X23Qr2xyKXBXmC2PUw20fW9pTca6yhuT2hjJ/TBsiuvoMzkw2Iht3IdPN6PGIZdS4=
+	t=1788703920; cv=none; b=SVfQkq4OV1Dp5BcE15hwk8xxjsSPCOt6eJmkBhX9/gnhmD7ns90pDj9fMTsOX3OSSyITpC0a5KWYgkQgVliRggKYA7v6kMZ4duhch4DIl7koPDPvneB0JluU+dd3VSFey8Sz3DGtmGrO6xdnEkkmD5dad7upJwCK7eGEbZ6SB+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788703347; c=relaxed/simple;
-	bh=m4X/qxNbi5DcgokuXTbaLgnScflV54NCxGlaOr5BYog=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=sDiKPAEEssM1j8fPlThrinWOGMIZVwXt0004kdxVVQKpzKhLE4Qjc2+1NIX04Pf8hDFqmLdQEV0+Ql5nUUlR2iTHbgzDM/Lrl3LQgP7VdgQmr8OpOucOjocBi0hc9Ziwipdss3udX5YrwsjxaEUSSS8C4QnActCHdlnN2FIAaUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GmtJ4cEa; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788703920; c=relaxed/simple;
+	bh=1Rk/+P2J6RgGxt0bh4y60H1MVb4VVsBjwH7irCp/gN4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=o12vmgHGobmOatXVGC1cMKjDKoz3dMjA8zn1vzkGRjYgXZgCrJwGNA9yseqV7cInyDQOXh/EtpJ4LJwS1gGIScHmcStPQw42jbQTWx+/IxbwcrkYxl3LC+T2KrrpyOXSrvraCeu6h9XsFBN2JZfAkReiaLa988GY95rL0CaFJxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=Be6T7Itu; arc=none smtp.client-ip=117.135.210.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GmtJ4cEa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0F3E1F00A3A;
-	Sun,  6 Sep 2026 14:02:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788703346;
-	bh=S8NZJkDhSbWcg/zqEMAu07Aymn+Ww7scUyc2kjcPZ8I=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=GmtJ4cEaFQky9q89CCrrW3M6THul8DmpcMe1FumeHcq4bxnu/uNJJRh1QBgQZ516s
-	 sfuBlxJckHl83CEzvsX6+wa0hERbPYsJnmavRRcJUziWKEKoe9tdNiUrQMTgSRTb63
-	 VTJ+fweg8X6eNxh+upzc6AwLXzEbHTIUWRF25qbcfXbhDVLsy36gfMX5x+kYfi2SxU
-	 YPMJ3QIJY2+91if9+QdRpc76BK/crgiOw+ZNxeFNwNRIFH9wq0PCCA1V/4fxS1F8kg
-	 irIAFVOnUv7n9hZNc+wEUCgdobRAOTgY4fAWgNJg3vik3bQDvLvnv48Uggxp4r0Uky
-	 OIFNA/4bppocA==
-Subject: Re: [PATCH net-next, v3] net/mlx5: Use dma_wmb() for completion queue
- doorbell updates
-From: netdev-bot+sashiko@kernel.org
-To: lirongqing@baidu.com
-Cc: saeedm@nvidia.com, leon@kernel.org, tariqt@nvidia.com, mbloch@nvidia.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, ast@kernel.org, daniel@iogearbox.net,
- hawk@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me, borisp@nvidia.com,
- richardcochran@gmail.com, cratiu@nvidia.com, dtatulea@nvidia.com,
- cjubran@nvidia.com, kees@kernel.org, agoldberger@nvidia.com, horms@kernel.org,
- netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
- linux-kernel@vger.kernel.org, bpf@vger.kernel.org
-Date: Sun, 06 Sep 2026 14:02:24 +0000
-Message-ID: <178870334429.219967.11248144823139889707@kernel.org>
-In-Reply-To: <20260902023429.1717-1-lirongqing@baidu.com>
-References: <20260902023429.1717-1-lirongqing@baidu.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="Be6T7Itu"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=T2
+	6o6a+4nyv9OBJZwDf7WyKMxGvNlsFRGQa82+m6wwc=; b=Be6T7ItuVhY+hGnRVU
+	E0lKqxmKIqOb64UwXuW6b13bRyLfGj2NMi3qLFw4X2Dq/6L5+BKYNnXJ1o6KWj34
+	sb7TDGCxzMUWZ/cqnyrQp7+WPNwnUmIEO21p/uCwg4HelRaWxwQ5g5DxDRH6a5fA
+	0hXBzqL91s3rkOSRyJz4jbqL8=
+Received: from LAPTOP-BJS5C4G0 (unknown [])
+	by gzga-smtp-mtada-g0-1 (Coremail) with SMTP id _____wDHnJKSdJ1qrqsTBA--.47155S2;
+	Sun, 06 Sep 2026 22:11:32 +0800 (CST)
+From: Heyang Tan <thy15333007817@163.com>
+To: netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	sgoutham@marvell.com,
+	rkannoth@marvell.com,
+	gakula@marvell.com,
+	sbhatta@marvell.com
+Subject: [PATCH] octeontx2-af: use seq_file for rsrc_alloc debugfs
+Date: Sun,  6 Sep 2026 22:11:29 +0800
+Message-ID: <20260906141129.1730-1-thy15333007817@163.com>
+X-Mailer: git-send-email 2.51.0.windows.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wDHnJKSdJ1qrqsTBA--.47155S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxGrW3ur1rZr4kZFyxZF48Xrb_yoWrAFWrpa
+	1YyrW8tr1qqF18J3W8Ka1UJrW5WanIqFWFgrWkW348ZFnY9F4FvFyak3yjk3y8K397tr9x
+	ta98t397A3WUArJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UQL0OUUUUU=
+X-CM-SenderInfo: 5wk1ikatttiiixyrlqqrwthudrp/xtbC-hVE7WqddJV6ggAA3s
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider:
+The rsrc_status debugfs reader writes rows directly to userspace without
+respecting the caller's read count. It also uses the current row length as
+the userspace stride, which can corrupt output when rows have different
+widths.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+Build each row in the existing kernel buffer and use seq_file to handle
+userspace buffer sizes, offsets, and partial reads.
 
-- [Medium] Commit message justification is factually wrong for at least
-  one converted site, and the change's correctness silently depends on…
+Fixes: 23205e6d06d4 ("octeontx2-af: Dump current resource provisioning status")
+Signed-off-by: Heyang Tan <thy15333007817@163.com>
+---
+ .../marvell/octeontx2/af/rvu_debugfs.c        | 71 ++++++-------------
+ 1 file changed, 22 insertions(+), 49 deletions(-)
 
---
-
-net/mlx5: Use dma_wmb() for completion queue doorbell updates
-
-This converts the wmb() that follows mlx5_cqwq_update_db_record() into
-dma_wmb() at six CQ polling sites in the mlx5 driver.  The reasoning given
-is that only DMA coherent memory is written around the barrier, so the
-lighter DMA barrier is sufficient.  The wmb() in wc.c is intentionally left
-alone.
-
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/ptp.c b/drivers/net/ethernet/mellanox/mlx5/core/en/ptp.c
-
-[ ... ]
-
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fpga/conn.c b/drivers/net/ethernet/mellanox/mlx5/core/fpga/conn.c
-> index 1f6bde5d76265..1341874ee58a3 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/fpga/conn.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/fpga/conn.c
-> @@ -384,7 +384,7 @@ static inline void mlx5_fpga_conn_cqes(struct mlx5_fpga_conn *conn,
->  
->  	mlx5_fpga_dbg(conn->fdev, "Re-arming CQ with cc# %u\n", conn->cq.wq.cc);
->  	/* ensure cq space is freed before enabling more cqes */
-> -	wmb();
-> +	dma_wmb();
->  	mlx5_fpga_conn_arm_cq(conn);
->  }
-
-[Severity: Medium]
-The commit message says:
-
-    Since only DMA coherent memory accesses are involved (no MMIO accesses
-    follow), we can safely use dma_wmb() instead of wmb().
-
-Is that accurate for mlx5_fpga_conn_cqes()?  The statement right after the
-converted barrier is mlx5_fpga_conn_arm_cq(), which reaches an MMIO write:
-
-drivers/net/ethernet/mellanox/mlx5/core/fpga/conn.c:
-static void mlx5_fpga_conn_arm_cq(struct mlx5_fpga_conn *conn)
-{
-	mlx5_cq_arm(&conn->cq.mcq, MLX5_CQ_DB_REQ_NOT,
-		    conn->fdev->conn_res.uar->map, conn->cq.wq.cc);
-}
-
-include/linux/mlx5/cq.h:mlx5_cq_arm() {
-	*cq->arm_db = cpu_to_be32(sn << 28 | cmd | ci);
-
-	/* Make sure that the doorbell record in host memory is
-	 * written before ringing the doorbell via PCI MMIO.
-	 */
-	wmb();
-	...
-	mlx5_write64(doorbell, uar_page + MLX5_CQ_DOORBELL);
-}
-
-and mlx5_write64() uses __raw_writeq()/__raw_writel(), which carry no
-implicit barriers.
-
-The same holds indirectly for the other four converted sites,
-mlx5e_poll_rx_cq(), mlx5e_poll_tx_cq(), mlx5e_poll_xdpsq_cq() and
-mlx5e_ptp_poll_ts_cq(): the NAPI caller in en_txrx.c arms the CQ over MMIO
-shortly after the poll returns:
-
-drivers/net/ethernet/mellanox/mlx5/core/en/txrx.h:
-static inline void mlx5e_cq_arm(struct mlx5e_cq *cq)
-{
-	mlx5_cq_arm(&cq->mcq, MLX5_CQ_DB_REQ_NOT, cq->uar->map, cq->wq.cc);
-}
-
-dma_wmb() is strictly weaker than wmb() on some architectures (arm64
-dmb(oshst) versus dsb(st)), and by itself it does not order the coherent
-memory consumer-index store against a later MMIO write.  So is the change
-relying on the wmb() inside mlx5_cq_arm() to provide that ordering?
-
-If so, could the changelog state that instead, and could the code comment
-be updated from "ensure cq space is freed before enabling more cqes" to
-mention that the MMIO ordering comes from mlx5_cq_arm()?  Otherwise a later
-change that relaxes the wmb() in mlx5_cq_arm(), or a new arm path without
-one, would quietly lose the CQ consumer-index versus arm-doorbell ordering
-with nothing in the history pointing at it.
-
-[ ... ]
-
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c
+index 22ee99676879..a222998482fa 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c
+@@ -714,52 +714,39 @@ static int get_max_column_width(struct rvu *rvu)
+ }
+ 
+ /* Dumps current provisioning status of all RVU block LFs */
+-static ssize_t rvu_dbg_rsrc_attach_status(struct file *filp,
+-					  char __user *buffer,
+-					  size_t count, loff_t *ppos)
++static int rvu_dbg_rsrc_attach_status(struct seq_file *filp, void *unused)
+ {
+-	int index, off = 0, flag = 0, len = 0, i = 0;
+-	struct rvu *rvu = filp->private_data;
+-	int bytes_not_copied = 0;
++	int index, off, flag, pf, vf, pcifunc;
++	struct rvu *rvu = filp->private;
+ 	struct rvu_block block;
+-	int pf, vf, pcifunc;
+ 	int buf_size = 2048;
+ 	int lf_str_size;
+ 	char *lfs;
+ 	char *buf;
+ 
+-	/* don't allow partial reads */
+-	if (*ppos != 0)
+-		return 0;
+-
+ 	buf = kzalloc(buf_size, GFP_KERNEL);
+ 	if (!buf)
+ 		return -ENOMEM;
+ 
+-	/* Get the maximum width of a column */
+ 	lf_str_size = get_max_column_width(rvu);
++	if (lf_str_size < 0) {
++		kfree(buf);
++		return lf_str_size;
++	}
+ 
+ 	lfs = kzalloc(lf_str_size, GFP_KERNEL);
+ 	if (!lfs) {
+ 		kfree(buf);
+ 		return -ENOMEM;
+ 	}
+-	off +=	scnprintf(&buf[off], buf_size - 1 - off, "%-*s", lf_str_size,
+-			  "pcifunc");
++	off = scnprintf(buf, buf_size, "%-*s", lf_str_size, "pcifunc");
+ 	for (index = 0; index < BLK_COUNT; index++)
+-		if (strlen(rvu->hw->block[index].name)) {
+-			off += scnprintf(&buf[off], buf_size - 1 - off,
+-					 "%-*s", lf_str_size,
+-					 rvu->hw->block[index].name);
+-		}
++		if (strlen(rvu->hw->block[index].name))
++			off += scnprintf(&buf[off], buf_size - 1 - off, "%-*s",
++					 lf_str_size, rvu->hw->block[index].name);
+ 
+ 	off += scnprintf(&buf[off], buf_size - 1 - off, "\n");
+-	bytes_not_copied = copy_to_user(buffer + (i * off), buf, off);
+-	if (bytes_not_copied)
+-		goto out;
+-
+-	i++;
+-	*ppos += off;
++	seq_puts(filp, buf);
+ 	for (pf = 0; pf < rvu->hw->total_pfs; pf++) {
+ 		for (vf = 0; vf <= rvu->hw->total_vfs; vf++) {
+ 			off = 0;
+@@ -770,54 +757,40 @@ static ssize_t rvu_dbg_rsrc_attach_status(struct file *filp,
+ 
+ 			if (vf) {
+ 				sprintf(lfs, "PF%d:VF%d", pf, vf - 1);
+-				off = scnprintf(&buf[off],
+-						buf_size - 1 - off,
+-						"%-*s", lf_str_size, lfs);
++				off = scnprintf(buf, buf_size, "%-*s", lf_str_size,
++						lfs);
+ 			} else {
+ 				sprintf(lfs, "PF%d", pf);
+-				off = scnprintf(&buf[off],
+-						buf_size - 1 - off,
+-						"%-*s", lf_str_size, lfs);
++				off = scnprintf(buf, buf_size, "%-*s", lf_str_size,
++						lfs);
+ 			}
+ 
+ 			for (index = 0; index < BLK_COUNT; index++) {
+ 				block = rvu->hw->block[index];
+ 				if (!strlen(block.name))
+ 					continue;
+-				len = 0;
+-				lfs[len] = '\0';
++				lfs[0] = '\0';
+ 				get_lf_str_list(&block, pcifunc, lfs);
+ 				if (strlen(lfs))
+ 					flag = 1;
+ 
+ 				off += scnprintf(&buf[off], buf_size - 1 - off,
+-						 "%-*s", lf_str_size, lfs);
++							 "%-*s", lf_str_size, lfs);
+ 			}
+ 			if (flag) {
+-				off +=	scnprintf(&buf[off],
+-						  buf_size - 1 - off, "\n");
+-				bytes_not_copied = copy_to_user(buffer +
+-								(i * off),
+-								buf, off);
+-				if (bytes_not_copied)
+-					goto out;
+-
+-				i++;
+-				*ppos += off;
++				off += scnprintf(&buf[off], buf_size - 1 - off, "\n");
++				seq_puts(filp, buf);
+ 			}
+ 		}
+ 	}
+ 
+-out:
+ 	kfree(lfs);
+ 	kfree(buf);
+-	if (bytes_not_copied)
+-		return -EFAULT;
+ 
+-	return *ppos;
++	return 0;
+ }
+ 
+-RVU_DEBUG_FOPS(rsrc_status, rsrc_attach_status, NULL);
++RVU_DEBUG_SEQ_FOPS(rsrc_status, rsrc_attach_status, NULL);
+ 
+ static int rvu_dbg_rvu_pf_cgx_map_display(struct seq_file *filp, void *unused)
+ {
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260902023429.1717-1-lirongqing%40baidu.com
+2.34.1
+
