@@ -1,128 +1,152 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1830370D4D;
-	Sun,  6 Sep 2026 08:23:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D12F38330E
+	for <netdev@vger.kernel.org>; Sun,  6 Sep 2026 08:44:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788683022; cv=none; b=pKquU9CMWJS6jJK2EdNKOOWQxKYFFL14rcG3e3DIqR1X+fZyeH54zy65dHI/2yQyrIsa4pGjEWakmqvMviGarNY6dwIoeoGWhxen7IhkV14q/r+LSRJaVSHCY99pnuXTlXn3dsqJDTDLo10RYPr5eeV6Zwya1oJ4yf5EeC5R+jY=
+	t=1788684267; cv=none; b=odKC0LOqbphYULfccyKVkKavW1iqLbeWwmCrrRxlb93UBm7REfdpt+Z2BPaPV5k1nFhqftGdONgtuijTYbmeA8b3GeaOYYAQ4ZpEam2FQWmR7wUiGMK9bgsOEHE+84Sr+7+uXfkKymM1SS+Hm1fopwOFc81ww7sjQye8v81h8qg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788683022; c=relaxed/simple;
-	bh=UePYk5EV/Qaqw0IY89yRO0r3qk+k5k+KkQ9cDqfoG4Y=;
-	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
-	 Subject:From:To:Cc:Date; b=uOjBtvbTDNTgM4DXjXHw08QAzYGknBQ0JQfWZiuZbuTZuMJHKA8qd5rtwXGdK8N2lUSv1JLF0Uvyd0v34PSz8X6/EwwvGI2gq3KK3ooWLx4ZPdH6O79OCuy4DzpZJQreMdtBlyM2u6FqwvVvOUZxI4Mb7Jy11hDeyC3Ce7zX59w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AzyqDPzS; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788684267; c=relaxed/simple;
+	bh=qNTDOlPILV3T04HAjwGIZq4By932gRZYYSompesDPNE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AfmlScsya7MZ1qn23wfIJIfuQJYul9LWbkSFWvyHGHsMgr9OPx1Ckrs35v72gtmVYKaAVGFN8ltZw7akSbrVt2vw/XDOfnYITbbzTUaYzG421uieoNHlPsO9a+2pCJwz2kMGIMkPXbhlnFWvit+bYlEkOhABYT2tk3EhTENaRmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=s+N8muI9; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AzyqDPzS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 189521F00A3A;
-	Sun,  6 Sep 2026 08:23:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788683020;
-	bh=tf2tdIx2P84L1/srTfE4j0DrGr7do6OVoEKFu4XPMyg=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date;
-	b=AzyqDPzSWkPtereqLO0/5w/WRiBqEltQzimGBA+SxP5qglz0IEpD+bHK8qQjgzThf
-	 w5E8aS/sLkv450lSvAzxzUsn09MfzGBJTNY8Lk+5PIFCO4bGVcp9zmFw1/w6vIl/i/
-	 Mtms+8NtSw4CSyxv5i9EHYxuEV3k8KytrIBEqR9OJsktQi0bRZD1nNGA43bhxTJWaq
-	 KE58ACJ+JAcSwRvlL1zYv4V6rFWUq0o2fjtjhyeIgezRHmGSFumW0YHB+Cv4As6LGd
-	 UBsaahYwt1n79WitFwM3nBsK4KtfqhwiLhspf4MdXeBOfb4lWvGSX7yCTSk5ElkeUu
-	 b4qxMIXiVnnhA==
-Content-Type: multipart/mixed; boundary="===============8904504023982474725=="
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="s+N8muI9"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2d8f265cbe6so18502895ad.0
+        for <netdev@vger.kernel.org>; Sun, 06 Sep 2026 01:44:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788684263; x=1789289063; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=/l1qLwJSS6D6HFID29WNOWsYoWwOmZTzkLIw+IBHN20=;
+        b=s+N8muI935x/XJrIVxbQJKnJDcod/ClhFST8qVlYz/Tv8bcLq3D8xXbsH0ZzhpJ8+u
+         n8xl9SprMXFaeOdI3asZhL9dBj52/sLIzfzha8OE2pFoVpQt6Z+pMKhZCwBrQjirft2P
+         GavT9ouD9Lp4hQtBL2MFngYmrseYDOzaDSj3neb/jLvyio/zR3gMphfTIXK++mZzVy8P
+         BTS9B0RmtARKFlF8LPJODcPM/ryAYPzDWU9XbyHbGnvI/2GicI1GUivw4lReC5DdpZ/s
+         yYSyhhzrw2ps75Xm4W2bVXLBEn4ofJP7gC95S4jPe4TX0VuReL7vl2mNNO6Hs9VVpCsA
+         4Y1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788684263; x=1789289063;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=/l1qLwJSS6D6HFID29WNOWsYoWwOmZTzkLIw+IBHN20=;
+        b=o42/Bs9uGZqUXvs4rncbrFpkLrV94xwUoWKzTvwaweqx6rt0l+zO3lOMLu9SWuPn5Y
+         lu46GW7qvO8hzTjBdg13fO09F+CO7c1EviDV3yyablt/53s3PLddVC30wDEowtHDs3sI
+         2lwjdderY0NMm+3O9dsWgDuGBchthtuLej0s6EMWySZYUvIEeNojW+ztQ2oXSgR9+m/T
+         5xte2QIytCyWdSUVhcYjyWxZIo7hUlTTNyENeiby/djzOlZtoU9E9imwipJvBSgEp5H6
+         qPEcAtQTqAjmEsFQ1dIz70HziLysfKgxSSUlKA6qejXKSLIfoUP6dxqeazi+Gh5b4zJZ
+         viLQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxtqxbDh/YYlhxIveP0tiU232LPS8qnh/4PsLZ4sA2h6JecyFPVwRySjqIacEHylU32aX5b80c=@vger.kernel.org
+X-Gm-Message-State: AFuF++lV/ifZrp+H85vPNblWuCs+tNzJlOyZvJHhYaoKyeJy8e2Gc2br
+	qLJS/GnC6eHX7b3KLB+VyiqyVjzE8ZY0glR8LIQObw4rjeZOW+sJ8Uof
+X-Gm-Gg: AYBFou0+kPlD+Y+C0IvlwF9O3RUio5Ow84X4Lknb8DSj3PyfnfBVo+MPpsIbOzn8V47
+	5Xb7ianUTwZ8vKBBFdZXNGMrXFif4nufx3JhhcW9AOj8nEtKMlOOfj4Uv2ando/V2xp0PT5KPA5
+	g+8s+aj1uBvNplrearr4XFU2V0DRNAnYeIWGmmvUcfPj/OeMBg/voBr+z8KB0KGKzGX5/Li0dLw
+	K49nUpZAKnr0L5u/tkHeoQgqePCF3E92bNyMKzeUii9fMUCFrGkFZqVrXLRvzb25gsGqN3ydild
+	sdjJUZXxN87uK3FTAlSkikhiRJXurgU0fHtyOiX99/aOCHm/89/Ua0HXswAfc5gHZoZ/nGjNsgu
+	1TGYQGxeC49K8UuSTQ8KqeoDfd8y/HA1e48vCAhGGKl7KUuL/+qSujGvpOIHLcUgVDPyF8z+oqL
+	u6ngUNlRVMea9hMJt7k76mkItMo+eU1clzhQCXg8oixEOVgINJtdxWyP+xCVF+9C02dIj/UWuqJ
+	/NFPqxs1VjkYkDEmS/4
+X-Received: by 2002:a17:903:b48:b0:2da:effd:f904 with SMTP id d9443c01a7336-2db1258c686mr229715195ad.8.1788684263408;
+        Sun, 06 Sep 2026 01:44:23 -0700 (PDT)
+Received: from 192.168.50.3 ([183.193.115.0])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2db190f6fb0sm28470765ad.51.2026.09.06.01.44.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 06 Sep 2026 01:44:22 -0700 (PDT)
+From: Weiming Shi <bestswngs@gmail.com>
+To: Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
+	Phil Sutter <phil@nwl.cc>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Cc: netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	co+459f67f4d8af8ce6@bugs.sh,
+	Xiang Mei <xmei5@asu.edu>,
+	stable@vger.kernel.org
+Subject: [PATCH nf v2] netfilter: ip6t_rpfilter: reject routes without inet6_dev
+Date: Sun,  6 Sep 2026 16:44:10 +0800
+Message-ID: <20260906084410.5601-1-bestswngs@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <0aa6425f9e8f32705ae827f6325b29079234c3f3d0c7b2cdefba3e5b50432766@mail.kernel.org>
-In-Reply-To: <20260906074135.185212-3-jiayuan.chen@linux.dev>
-References: <20260906074135.185212-3-jiayuan.chen@linux.dev>
-Subject: Re: [PATCH bpf v2 2/3] tcp: Skip cond_resched() in inet_csk_listen_stop() under BPF context
-From: bot+bpf-ci@kernel.org
-To: jiayuan.chen@linux.dev,bpf@vger.kernel.org
-Cc: jiayuan.chen@linux.dev,daniel@iogearbox.net,john.fastabend@gmail.com,sdf@fomichev.me,martin.lau@linux.dev,ast@kernel.org,andrii@kernel.org,eddyz87@gmail.com,memxor@gmail.com,song@kernel.org,yonghong.song@linux.dev,jolsa@kernel.org,emil@etsalapatis.com,ihor.solodrai@linux.dev,davem@davemloft.net,edumazet@google.com,kuba@kernel.org,pabeni@redhat.com,horms@kernel.org,ncardwell@google.com,kuniyu@google.com,shuah@kernel.org,aditi.ghag@isovalent.com,netdev@vger.kernel.org,linux-kernel@vger.kernel.org,linux-kselftest@vger.kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
-Date: Sun,  6 Sep 2026 08:23:39 +0000 (UTC)
+Content-Transfer-Encoding: 8bit
 
---===============8904504023982474725==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+ip6_route_lookup() can return an error-free route whose rt6i_idev is
+NULL. Lowering an external nexthop device's MTU below IPV6_MIN_MTU tears
+down its inet6_dev while fib6_ifdown() leaves routes using nexthop objects
+in the FIB. An unprivileged user can construct this state with rtnetlink
+in a private user and network namespace, then trigger a NULL dereference
+through an IPv6 rpfilter lookup:
 
-> tcp: Skip cond_resched() in inet_csk_listen_stop() under BPF context
->
-> bpf_sock_destroy() runs from the tcp iterator, under rcu_read_lock(). If
-> the sock is a listener that still has children in its accept queue,
-> tcp_abort() ends up in inet_csk_listen_stop() and the cond_resched()
-> there trips the debug check:
->
-> BUG: sleeping function called from invalid context at net/ipv4/inet_connection_sock.c:1523
-> in_atomic(): 0, irqs_disabled(): 0, non_block: 0, pid: 628, name: test_progs
-> preempt_count: 0, expected: 0
-> RCU nest depth: 1, expected: 0
-> locks held by test_progs/628: 3, last CPU#3:
->  #0: ffff8881158cee18 (&p->lock){+.+.}-{4:4}, at: bpf_seq_read+0x56/0x1210
->  #1: ffff8881106bb858 (sk_lock-AF_INET6){+.+.}-{0:0}, at: bpf_iter_tcp_seq_show+0x32b/0x4b0
->  #2: ffffffffb435af20 (rcu_read_lock){....}-{1:3}, at: bpf_iter_run_prog+0x46b/0xde0
-> CPU: 3 UID: 0 PID: 628 Comm: test_progs Tainted: G        W           7.2.0+ #65 PREEMPT
-> Tainted: [W]=WARN
-> Call Trace:
->  <TASK>
->  dump_stack_lvl+0xc1/0xf0
->  dump_stack+0x10/0x20
->  __might_resched+0x3d2/0x610
->  inet_csk_listen_stop+0x7b/0xbf0
->  tcp_abort+0x23b/0x3b0
->  bpf_sock_destroy+0xfc/0x140
->  bpf_prog_448133d24601754f_iter_tcp6_server+0x81/0x8a
->  bpf_iter_run_prog+0x538/0xde0
->  bpf_iter_tcp_seq_show+0x26b/0x4b0
->  bpf_seq_read+0x424/0x1210
->  vfs_read+0x197/0xe40
->  ksys_read+0x119/0x240
->  __x64_sys_read+0x72/0xc0
->  x64_sys_call+0x647/0x27e0
->  do_syscall_64+0xe5/0x610
->  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-> RIP: 0033:0x7fad39b28aca
-> RSP: 002b:00007ffc381c61c0 EFLAGS: 00000246 ORIG_RAX: 0000000000000000
-> RAX: ffffffffffffffda RBX: 00007ffc381c6a88 RCX: 00007fad39b28aca
-> RDX: 0000000000000032 RSI: 00007ffc381c6250 RDI: 0000000000000014
-> RBP: 00007ffc381c61e0 R08: 0000000000000000 R09: 0000000000000000
-> R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000003
-> R13: 0000000000000000 R14: 000055f077c1bbb0 R15: 00007fad3a0f3000
->  </TASK>
->
-> The commit that added the kfunc already guards lock_sock() in tcp_abort()
-> and udp_abort() with has_current_bpf_ctx(), but missed the listener path.
-> Do the same for the cond_resched(), it can't reschedule there anyway.
->
-> Fixes: 4ddbcb886268 ("bpf: Add bpf_sock_destroy kfunc")
-> Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+  Oops: general protection fault, probably for non-canonical address
+  0xdffffc0000000000
+  KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+  RIP: rpfilter_mt (net/ipv6/netfilter/ip6t_rpfilter.c:75)
+  Call Trace:
+  ip6t_do_table (net/ipv6/netfilter/ip6_tables.c:316)
+  nf_hook_slow (net/netfilter/core.c:619)
+  ipv6_rcv (net/ipv6/ip6_input.c:351)
+  __netif_receive_skb_one_core (net/core/dev.c:6216)
+  process_backlog (net/core/dev.c:6680)
+  __napi_poll (net/core/dev.c:7739)
+  net_rx_action (net/core/dev.c:7959)
+  handle_softirqs (kernel/softirq.c:622)
+  do_softirq.part.0 (kernel/softirq.c:523)
+  __local_bh_enable_ip (kernel/softirq.c:450)
+  __dev_queue_xmit (net/core/dev.c:4913)
+  packet_sendmsg (net/packet/af_packet.c:3139)
+  __sys_sendto (net/socket.c:2252)
+  __x64_sys_sendto (net/socket.c:2259)
+  do_syscall_64 (arch/x86/entry/syscall_64.c:94)
+  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:121)
+  Kernel panic - not syncing: Fatal exception in interrupt
 
-Is the justification "it can't reschedule there anyway" accurate?
+Reject routes without an inet6_dev immediately after lookup. Such routes
+are not eligible for reverse-path filtering, and the check protects all
+later rt6i_idev dereferences.
 
-With CONFIG_PREEMPT_DYNAMIC=y booted with preempt=none or preempt=voluntary,
-cond_resched() expands to __cond_resched() which can actually reschedule.
-The splat in the commit message confirms preempt_count is 0 while RCU nest
-depth is 1. With preempt_count==0, should_resched(0) can be true and
-__cond_resched() will call preempt_schedule_common() for a real reschedule.
-
-Additionally, in configurations with CONFIG_PREEMPT_RCU=n where
-rcu_read_lock() is preempt_disable(), __cond_resched() falls through to
-rcu_all_qs() which calls rcu_qs() to report a quiescent state from inside
-an RCU read-side critical section. That's a correctness problem beyond just
-the debug check.
-
-So the call can either reschedule (PREEMPT_DYNAMIC none/voluntary) or report
-a bogus quiescent state (non-preemptible RCU). Could the justification be
-reworded to explain that the loop runs inside the iterator's RCU read-side
-critical section and must not reschedule or report a quiescent state there?
-The code change itself is correct and matches the existing pattern in
-tcp_abort() and udp_abort().
-
-
+Fixes: e26f9a480fb6 ("netfilter: add ipv6 reverse path filter match")
+Reported-by: co+459f67f4d8af8ce6@bugs.sh
+Closes: https://lore.kernel.org/all/VtWUkE8QzJt5CroTj2V2v3ZQ0gwbXZ7nq7I3@bugs.sh/
+Suggested-by: Florian Westphal <fw@strlen.de>
+Assisted-by: Claude:gpt-5
+Cc: stable@vger.kernel.org
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
 ---
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+v2:
+- Reject routes without inet6_dev in both loose and strict modes, as
+  suggested by Florian.
+v1: https://lore.kernel.org/all/20260906034939.3746540-1-bestswngs@gmail.com/
+---
+ net/ipv6/netfilter/ip6t_rpfilter.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/34020353095
---===============8904504023982474725==--
+diff --git a/net/ipv6/netfilter/ip6t_rpfilter.c b/net/ipv6/netfilter/ip6t_rpfilter.c
+index 67c87a88cde4f..b5def30c3127e 100644
+--- a/net/ipv6/netfilter/ip6t_rpfilter.c
++++ b/net/ipv6/netfilter/ip6t_rpfilter.c
+@@ -61,7 +61,7 @@ static bool rpfilter_lookup_reverse6(struct net *net, const struct sk_buff *skb,
+ 		fl6.flowi6_oif = dev->ifindex;
+ 
+ 	rt = (void *)ip6_route_lookup(net, &fl6, skb, lookup_flags);
+-	if (rt->dst.error)
++	if (rt->dst.error || !rt->rt6i_idev)
+ 		goto out;
+ 
+ 	if (rt->rt6i_flags & (RTF_REJECT|RTF_ANYCAST))
+-- 
+2.55.0
