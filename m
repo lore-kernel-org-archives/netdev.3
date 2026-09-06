@@ -1,172 +1,277 @@
-Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 049CE4CCDE5
-	for <netdev@vger.kernel.org>; Sun,  6 Sep 2026 15:41:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788709267; cv=pass; b=CK9gYzTdu3mHgQGMwpgNem85kMcroERyS/aegmIKgNuNVF9045f/8qfJVyJBEphSTXWhvIoGQPi1n0g3BSe94JCH7Oa5xWX64oXdbPi8uYiSJE94WMv5HC3seDOWgCCVY2B5qsGmHcLHNBpnSw9W7K4yv4shnB/dJtZ4pMccKus=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788709267; c=relaxed/simple;
-	bh=Q6WoKeShd1Pdex65m4287ETebem1B+r0qGMcvBxIg5I=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aoOHy+YtHCycEIWRqxReT26MFQESPpFWVlGmoXgqkzciKgbpHVcicQzCKtmFiepbTGRUgu0Wn+W9kKCirQDOuNlldRC19VdmvaavVxjieCvAE9ekigwWF2AOsxeizSpbsMEn2UC809Sw+0FIvzQvAxkpYl5awYQiP3kwEs6/4E4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=knV70u60; arc=pass smtp.client-ip=209.85.219.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F3C3364942
+	for <netdev@vger.kernel.org>; Sun,  6 Sep 2026 15:43:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788709424; cv=none; b=ICSdBvRoXQsTalklP731FPKHFiqpPwG6ljGGBnMJXCzNqasdQK/eN1ZKNwclpQwHCovNnbrICSMT5o1XyPN9nKQdBRLYmnQ/JURXSW3nu8zJX+kmTrQ6kMVFZJW4xbBttoAKeEIsVhKiGZD6aGLagA/Og6MOxvzXm5TyEdyOQBQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788709424; c=relaxed/simple;
+	bh=VIhohHcx0SkBUGBuyu+li/MstEWPK62/31/grkhVZe8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Y+QYeqDedkwqiSV2lexMhrvQ0khi18OaBC0RjDL1cWRU81zGPLvLC45p9yKyaUcg5sgjdPxHys6ME1Yg86Q+yC7cRU/IdyVKHzp2AcKqPXSD1+Bvm3kKxtz/mjOdGCbN7DGvdh/8j2y2E9o56lL+nYbL6KLR6GnhK8OclIUDyGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PaYhfvml; arc=none smtp.client-ip=209.85.216.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="knV70u60"
-Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-90e7c71f86eso18947896d6.1
-        for <netdev@vger.kernel.org>; Sun, 06 Sep 2026 08:41:05 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788709265; cv=none;
-        d=google.com; s=arc-20260327;
-        b=qoUF7KlPTWWt6HEfnwkrpGFPrm3X54J5hIik1pJqgr14ZCtQZlS4wkvHJT7ICHLcSK
-         OEnVZATzdnltsh/2YKXm4aIhN/PM/EX4wzzoeDXG4rZHPFPHr4dLOzJPUum5mZ/YUWht
-         CSTXjKxaqqmVYRVMtjA5NHHKWeAJ/N35Gzt5pGDdJ0nRSx40w1sDSWQNykIPHYw0o2yb
-         PgaJksIeeZqXFZST4SAlysfCW8ErgszK+oLhyJmVWJdWDpaYrBOpHpqcc3lDSE+ZxAjV
-         NNC2FvNLBpEMuZm86bDrWTmcNg5oVuXTI5mbPC6teHIjrA41V+xmQn1NmWzkn/Ugqg6/
-         3qRQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=UrOVzk35f8NZkFEVJGXTvHEU4Z8nVv7T9wq6ezeDgeQ=;
-        fh=pqQMkZtCM9aV1tjHL3jMM5OJ4G3ldAHYNzxxPzs8v1c=;
-        b=sACkNnHeM5oDo8L58+6AMJz4jaqAtU9ei25u1Ixvx6B2gazmQxUH0ScquU3SlWShW/
-         TvQyJ7Xcq+Ffa/Z5kTTtNn98Sz0a3Nz7g43/1cF/34wn3TcEKsH0W7n+l5+LklOqbpcW
-         i9lhY9ZqxyC/i9oA8X1lf3oItRP3vuylaotdJtwnazzViknQlenCQiWFDJuQUsKer0vW
-         M4HHPkqEln9YQjo20MXHYa/+lI2y1WfDpTr3QQLCFNZ1o02QTsEfUeXln0UjmcQ/PvZ5
-         6g74iN6DkU1dTJ9cgDdX9MgcxoEoydPdEDLJV1viMaOFSw6hOVbUI3sxdGqXet00PMMS
-         KEsA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PaYhfvml"
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-3964dfb5b9aso3396626a91.1
+        for <netdev@vger.kernel.org>; Sun, 06 Sep 2026 08:43:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788709265; x=1789314065; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=UrOVzk35f8NZkFEVJGXTvHEU4Z8nVv7T9wq6ezeDgeQ=;
-        b=knV70u6010AaQog6OrxbCDwuWKY3ilWpAHH9zQFgn3oAj1MMaQE4TsEAvNwjkC6C7m
-         Ad/sW2SQ/LUsHrDihXf5hUmrOwH+1Rv+wJkedfW1cKwTQB5p3XdPNd+Cnog5HsJs/YVN
-         QdRd0JwxUSS+7RD/M6tYHb0bHFVYhhZyzcV/eXIBUmggxBYe8fHw00wYvyJxpjTYdgRD
-         XgHc5qQlQtP5gT/8zEnDsnXY/I7xUlkIncXPVcxRPdEIoSyoIOe+vSt2u6M4o/avMuP+
-         x8udyn4hiG3tPXnJMXFcz9/Wllnd8qIvP+wFsC05iFFIaqWVNZx6gX1LjvQr4b3xu7vX
-         +2uQ==
+        d=gmail.com; s=20251104; t=1788709422; x=1789314222; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=DQ5Zk4J+hLvsdimx8KJiE0DP9iSw9BVVCAqpnMEf3Qc=;
+        b=PaYhfvmlLeHSSClcoPMnp4n2CwH3QSRCr8aNivW8WklY3lzlSOr48pqbI4fUjA0wyK
+         v1boSs51UZiwdelXM2MbQLfwVbBVvNWSuUtI5UQf0FfmBq1BvY6WJ/NYgZtfl4ZpDrHQ
+         gAil7ti9kaAfnnWUSkcI5ZtkpISohQwm4Egijkb6DgwAG+45cLMMxuOkiyPJszKyXimB
+         sERG9cCvM5X8YrRRE27gdD+6I81CiU6lAWTA19Kjycy1l1zyOkKmD16Ku3jjsgRxG5NZ
+         vidoAT0ZWEMF63qXK3WpZ5YeGmDfnqv30NYcLBcGc4OOp9I1kFGoKRMf7G+RlXnqppXy
+         9zFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788709265; x=1789314065;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=UrOVzk35f8NZkFEVJGXTvHEU4Z8nVv7T9wq6ezeDgeQ=;
-        b=sa55f5Wwz+ph++57fLTtSae3W/RXD6vDrApapL7DDBno08M5s6xhGrqpg2YFVht7OM
-         4HeL25hL1IIo4Xa13XbdyyQl6hcxDZWoaNr7LGr/p76tXEyiwCoxyGg5WBSY4NYJqlFY
-         4h9rpwy8rkqIeMklZYkhk3tbVwnjM4LjJ4YBm9umrM6oI0QHiRmgl6n+XC2xZi3BswAp
-         plpCfht48YoKYWr1UG62A4JEye96Zv0+Zqmfb21vwcNku2jxcRG/AP5EqvmK0eIgenvQ
-         AzQ6/dBr6hCLlGX7FYheNwQuQeTdg9xnoHiESi6HrcusLbSXJw5atM1A7wqYZkXhGXhb
-         kJxg==
-X-Forwarded-Encrypted: i=1; AKwUvBwdHlptUCWCNvWvRa/uzZUtVaAP3donfGA+PuK4h+3+sAx6WxtCU46YahnPioFd1NrTApJWS9w=@vger.kernel.org
-X-Gm-Message-State: AFuF++nsj6Z5B4OJr3H02uupWZjkgXzXXyjXkghjM9xAXAh2jo5lTlsb
-	0njJiNEEPSx15dEEYmJ5Iii9latpVQnJFRmvtDbC146q3PAX3jTTLns9YRSh/vHAcbSDt5bH09A
-	uZ5wsxx+FLRVVmNvY8p/O26MGjBNoPGbpWI8eiu+D
-X-Gm-Gg: AYBFou2y+QFUKLwa97drYLfEG/GZ8WiQjFYQN9C80ZqiJM9soN7gRq6he4tA3YrDna3
-	9A2UOzduT9BRWQz090R75MCD7ndignBkwZVKed+7CbEJwQCgUG0B96UsnyJYxqUa9ZgghwOrSIL
-	Gk6EPS1THkqrZLi2Sz/ijBArjdVnLTW8gp3HLiPSwGjj/qTemNuG0gBeGpsNSK5MGHy1pOSn0zZ
-	TdSlB761EnD4tFt4REfWMWcobmuQDAzAjm5uRFSg0P6NB8r7olQH8jtuGj4Ti7UOblQUHCp6Fpi
-	uKPmLc7N2lvEmTz3doK+GBOUh/OQEs9cPes8RJe0xk4cgVykjr7FNCelXVhbFTvFP1xdyu38Jyi
-	W5T+JO6jOEsWVXODwDNFvNho9ZYC8vygH8QuK4uoK/4SDQ+p+/0tcnn/y7S8KVqCzjZsA
-X-Received: by 2002:a05:622a:11d6:b0:530:4fc6:edc1 with SMTP id
- d75a77b69052e-530549cad8cmr186239331cf.40.1788709264023; Sun, 06 Sep 2026
- 08:41:04 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1788709422; x=1789314222;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=DQ5Zk4J+hLvsdimx8KJiE0DP9iSw9BVVCAqpnMEf3Qc=;
+        b=TtmEFBDRVZvBkie+qUWGy4uSUd/xuWMfakgctTbxaJ8hMBOun9f6mRtjJunWR1flcD
+         qpZ5RUY5XAoi0TosbGObmBQqrIK6IuL3z1C0/9zbWB3qAm6y1onILqcvc3+p+MsQiPcK
+         /yQoKsDmZR/jAaJnb0tlm8kFzgro2jiV5F3iVWWiNXhFUOuv0PhFtm4Gg1aACrxhr2iM
+         vGtsByK2bMWn8WxCeipjuYTtEfo9GiCNBncNH9VnSZIx5a6/d/HDGvefByyCaWY6u7Nx
+         u1jbOB6XVIeNhBETKWVzTu7ErS0eqOAcw5Dt016Jg/YxvTaZi/1CaPEdnnxorxstGJo9
+         h7KA==
+X-Forwarded-Encrypted: i=1; AKwUvByLPtOwVWREA7cgImN4a18LAOPbMeWERs9yb+xFqWCxDpCCWiESJX2t7IeOMLY/Z/2LanbdfGA=@vger.kernel.org
+X-Gm-Message-State: AFuF++kSRxNMg/II3sTly6gOmvPlmtKkqk9/JT6ceAQH7gXTOTbH0sdI
+	cv/hUVjqRuJEJuyv159lUwrB+vg2aEvH0fCjAQKAS7pU4R+SzoQ4w0s1
+X-Gm-Gg: AYBFou2j3wq0iWkyFtHjWMPbZq1//17uv7xkje1Nufw+Rd9Fdgzqtpw8mujnhGqsCuE
+	kiOAzTBdb2fvF2qtxh7x1oGgohOsvJCezq2/8EXp7FoimBVNQE+vweXRB8F2hB4kZe3kZ6GJ9uR
+	r9X57BTmTp1erKSWiuhOoBrhUUOhUeV4hbe+cCkvZ9qAAxulQN33TSpwULJi4ZoN7LJVQp1Oi/V
+	LkwOLdtnIfKJQ6qgcMuoKQKwzQZMdeI3UVl3+ADZPbQ9JgZ0P0FHQ4jY8a+1iw6H+iSMvfABKi3
+	raIDD2hwHORCVKPZRn1FGBqAmWCxf8kRgWWbuwlX5uyObSe63T7Y2bDe1VTUN8Y+Ga39cQ+C1ax
+	Py6A+Mvereq7yCTQN4AGKFJjb/TG0rhVPs/X4gd77wn2oZv1Jnmxw7mcsj3QtKaKzNOeojOGXn+
+	YMsESIs31HULCNWFayRL7LBsRNWOtq6Zq8Y5YcN9kG0BFKBMgiRyRnR8Qi9x6jRe6AhKT3s0dbX
+	XJ1d5zp5O5NqEjgdFh2eLQz/P5mG+8Dvvird8pHfr8G
+X-Received: by 2002:a17:90b:17c2:b0:38e:659b:f366 with SMTP id 98e67ed59e1d1-39b25f1c5bdmr25690589a91.0.1788709422195;
+        Sun, 06 Sep 2026 08:43:42 -0700 (PDT)
+Received: from localhost.localdomain ([198.176.50.208])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3339a62be87sm18930617eec.6.2026.09.06.08.43.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 06 Sep 2026 08:43:41 -0700 (PDT)
+From: Weiming Shi <bestswngs@gmail.com>
+To: Marcel Holtmann <marcel@holtmann.org>,
+	Johan Hedberg <johan.hedberg@gmail.com>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Cc: linux-bluetooth@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Abhishek Pandit-Subedi <abhishekpandit@chromium.org>,
+	Manish Mandlik <mmandlik@google.com>,
+	syzbot+b170dbf55520ebf5969a@syzkaller.appspotmail.com,
+	Aby Sam Ross <abysamross@gmail.com>,
+	Tristan Madani <tristan@talencesecurity.com>,
+	Xiang Mei <xmei5@asu.edu>
+Subject: [PATCH v3 bluetooth] Bluetooth: coredump: Quiesce dump work on unregister
+Date: Sun,  6 Sep 2026 23:43:32 +0800
+Message-ID: <20260906154332.763402-1-bestswngs@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260903120840.1024153-1-edumazet@google.com> <20260903120840.1024153-3-edumazet@google.com>
- <CAAVpQUBdXcxpGob6roJn=MbV+AZHmUKPE0=ferg9a4jGpc2ouA@mail.gmail.com>
-In-Reply-To: <CAAVpQUBdXcxpGob6roJn=MbV+AZHmUKPE0=ferg9a4jGpc2ouA@mail.gmail.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Sun, 6 Sep 2026 17:40:52 +0200
-X-Gm-Features: AcwNN1WEBUloIKJwfG0hY0VOrdni9OHlGq9VKwlarQ-SiqQiQkKEbtU_oQdDXMs
-Message-ID: <CANn89i+P0_yabKqvLhAYv0LW1A0tN_YnxBA3YB1kWedHcBwLdg@mail.gmail.com>
-Subject: Re: [PATCH net-next 2/9] vxlan: vnifilter: free vxlan_vni_group via
- RCU in vxlan_vnigroup_uninit()
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, netdev@vger.kernel.org, eric.dumazet@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Sat, Sep 5, 2026 at 6:52=E2=80=AFAM Kuniyuki Iwashima <kuniyu@google.com=
-> wrote:
->
-> On Thu, Sep 3, 2026 at 5:08=E2=80=AFAM Eric Dumazet <edumazet@google.com>=
- wrote:
-> >
-> > vxlan->vnigrp is an RCU-protected pointer accessed locklessly under
-> > rcu_read_lock() in vxlan_vnifilter_dump_dev().
-> >
-> > Currently, vxlan_vnigroup_uninit() frees struct vxlan_vni_group
-> > synchronously via kfree(vg). If a VXLAN device is deleted concurrently
-> > with an RTM_GETTUNNEL dump, vxlan_vnifilter_dump_dev() can suffer a
-> > use-after-free when reading vg->num_vnis or walking vg->vni_list.
->
-> In unregister_netdevice_many_notify(), does synchronize_net() after
-> unlist_netdevice() wait for the reader to complete before ->ndo_uninit() =
-?
->
+hci_devcd_handle_pkt_init() arms dump_timeout and coredump producers
+queue dump_rx without holding an hdev reference. Unregister leaves both
+works live, so disconnecting during an active dump lets them access hdev
+after hci_release_dev() frees it.
 
-Good point. I added this patch after sashiko had a false positive:
+Shut down coredump processing during unregister. Close the producer gate
+under dump_q.lock before disabling both works, then free the active buffer
+and queued packets under hci_dev_lock. Serializing the gate with enqueue
+prevents controller-specific workers from adding packets after the final
+purge.
 
-<quote>
- @@ -2979,10 +3007,13 @@ static int vxlan_init(struct net_device *dev)
->  static void vxlan_uninit(struct net_device *dev)
->  {
->   struct vxlan_dev *vxlan =3D netdev_priv(dev);
-> + const struct vxlan_config *cfg;
-> +
-> + cfg =3D rtnl_dereference(vxlan->cfg);
->
->   vxlan_mdb_fini(vxlan);
->
-> - if (vxlan->cfg.flags & VXLAN_F_VNIFILTER)
-> + if (cfg && (cfg->flags & VXLAN_F_VNIFILTER))
->   vxlan_vnigroup_uninit(vxlan);
-This is a pre-existing issue, but does this synchronous cleanup cause a
-use-after-free for concurrent RCU readers?
-Looking at vxlan_vnigroup_uninit() in drivers/net/vxlan/vxlan_vnifilter.c
-around line 925, it destroys and frees the RCU-protected vxlan_vni_group
-synchronously:
-drivers/net/vxlan/vxlan_vnifilter.c:vxlan_vnigroup_uninit() {
-    ...
-    rhashtable_destroy(&vg->vni_hash);
-    kfree(vg);
-}
-Concurrently, a netlink dump for RTM_GETTUNNEL could call
-vxlan_vnifilter_dump_dev(), which retrieves the device under RCU and
-accesses vxlan->vnigrp via rcu_dereference(). If the vxlan device is
-deleted at the same time, unregister_netdevice_many() calls ndo_uninit() ->
-vxlan_uninit() -> vxlan_vnigroup_uninit(), which frees vg without waiting
-for an RCU grace period.
-Could this lead to memory corruption, and should it be using kfree_rcu()
-or synchronize_rcu() instead?
+Fixes: 9695ef876fd1 ("Bluetooth: Add support for hci devcoredump")
+Reported-by: syzbot+b170dbf55520ebf5969a@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=b170dbf55520ebf5969a
+Reported-by: Aby Sam Ross <abysamross@gmail.com>
+Link: https://lore.kernel.org/r/20260322210849.68743-1-abysamross@gmail.com
+Suggested-by: Aby Sam Ross <abysamross@gmail.com>
+Reported-by: Tristan Madani <tristan@talencesecurity.com>
+Link: https://lore.kernel.org/r/20260814231248.3096377-1-tristmd@gmail.com
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Assisted-by: OpenAI Codex:gpt-5
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+---
+Changes in v3:
+- Serialize coredump enqueue with the terminal shutdown gate.
+- Reject and free packets submitted after shutdown begins.
+- Disable dump_rx and dump_timeout, then free the buffered dump state.
+- Add links and credits for the two earlier attempts.
 
-</quote>
+ include/net/bluetooth/coredump.h |  2 +
+ net/bluetooth/coredump.c         | 65 +++++++++++++++++++++-----------
+ net/bluetooth/hci_core.c         |  1 +
+ 3 files changed, 47 insertions(+), 21 deletions(-)
 
-Sashiko saw vxlan->vnigrp annotated as __rcu and read under
-rcu_read_lock() in vxlan_vnifilter_dump_dev(),
-and assumed that because vxlan_vnigroup_uninit() directly does
-kfree(vg) without an RCU grace period,
-a concurrent netlink dump could hit a UAF.
+diff --git a/include/net/bluetooth/coredump.h b/include/net/bluetooth/coredump.h
+index 1f071ab554163..acc1849f66c0f 100644
+--- a/include/net/bluetooth/coredump.h
++++ b/include/net/bluetooth/coredump.h
+@@ -70,6 +70,7 @@ struct hci_devcoredump {
+ const char *hci_devcd_state_name(enum devcoredump_state state);
+ 
+ void hci_devcd_reset(struct hci_dev *hdev);
++void hci_devcd_shutdown(struct hci_dev *hdev);
+ void hci_devcd_rx(struct work_struct *work);
+ void hci_devcd_timeout(struct work_struct *work);
+ 
+@@ -89,6 +90,7 @@ static inline const char *hci_devcd_state_name(enum devcoredump_state state)
+ }
+ 
+ static inline void hci_devcd_reset(struct hci_dev *hdev) {}
++static inline void hci_devcd_shutdown(struct hci_dev *hdev) {}
+ static inline void hci_devcd_rx(struct work_struct *work) {}
+ static inline void hci_devcd_timeout(struct work_struct *work) {}
+ 
+diff --git a/net/bluetooth/coredump.c b/net/bluetooth/coredump.c
+index 5bee863bd6d2c..71fc8dab40047 100644
+--- a/net/bluetooth/coredump.c
++++ b/net/bluetooth/coredump.c
+@@ -104,6 +104,22 @@ static void hci_devcd_free(struct hci_dev *hdev)
+ 	hci_devcd_reset(hdev);
+ }
+ 
++void hci_devcd_shutdown(struct hci_dev *hdev)
++{
++	unsigned long flags;
++
++	spin_lock_irqsave(&hdev->dump.dump_q.lock, flags);
++	hdev->dump.supported = false;
++	spin_unlock_irqrestore(&hdev->dump.dump_q.lock, flags);
++
++	disable_work_sync(&hdev->dump.dump_rx);
++	disable_delayed_work_sync(&hdev->dump.dump_timeout);
++
++	hci_dev_lock(hdev);
++	hci_devcd_free(hdev);
++	hci_dev_unlock(hdev);
++}
++
+ /* Call with hci_dev_lock only. */
+ static int hci_devcd_alloc(struct hci_dev *hdev, u32 size)
+ {
+@@ -442,7 +458,29 @@ EXPORT_SYMBOL(hci_devcd_register);
+ 
+ static inline bool hci_devcd_enabled(struct hci_dev *hdev)
+ {
+-	return hdev->dump.supported;
++	return READ_ONCE(hdev->dump.supported);
++}
++
++static int hci_devcd_queue(struct hci_dev *hdev, struct sk_buff *skb)
++{
++	unsigned long flags;
++	int err = 0;
++
++	spin_lock_irqsave(&hdev->dump.dump_q.lock, flags);
++	if (!hdev->dump.supported)
++		err = -EOPNOTSUPP;
++	else
++		__skb_queue_tail(&hdev->dump.dump_q, skb);
++	spin_unlock_irqrestore(&hdev->dump.dump_q.lock, flags);
++
++	if (err) {
++		kfree_skb(skb);
++		return err;
++	}
++
++	queue_work(hdev->workqueue, &hdev->dump.dump_rx);
++
++	return 0;
+ }
+ 
+ int hci_devcd_init(struct hci_dev *hdev, u32 dump_size)
+@@ -459,10 +497,7 @@ int hci_devcd_init(struct hci_dev *hdev, u32 dump_size)
+ 	hci_dmp_cb(skb)->pkt_type = HCI_DEVCOREDUMP_PKT_INIT;
+ 	put_unaligned_le32(dump_size, skb_put(skb, 4));
+ 
+-	skb_queue_tail(&hdev->dump.dump_q, skb);
+-	queue_work(hdev->workqueue, &hdev->dump.dump_rx);
+-
+-	return 0;
++	return hci_devcd_queue(hdev, skb);
+ }
+ EXPORT_SYMBOL(hci_devcd_init);
+ 
+@@ -478,10 +513,7 @@ int hci_devcd_append(struct hci_dev *hdev, struct sk_buff *skb)
+ 
+ 	hci_dmp_cb(skb)->pkt_type = HCI_DEVCOREDUMP_PKT_SKB;
+ 
+-	skb_queue_tail(&hdev->dump.dump_q, skb);
+-	queue_work(hdev->workqueue, &hdev->dump.dump_rx);
+-
+-	return 0;
++	return hci_devcd_queue(hdev, skb);
+ }
+ EXPORT_SYMBOL(hci_devcd_append);
+ 
+@@ -503,10 +535,7 @@ int hci_devcd_append_pattern(struct hci_dev *hdev, u8 pattern, u32 len)
+ 	hci_dmp_cb(skb)->pkt_type = HCI_DEVCOREDUMP_PKT_PATTERN;
+ 	skb_put_data(skb, &p, sizeof(p));
+ 
+-	skb_queue_tail(&hdev->dump.dump_q, skb);
+-	queue_work(hdev->workqueue, &hdev->dump.dump_rx);
+-
+-	return 0;
++	return hci_devcd_queue(hdev, skb);
+ }
+ EXPORT_SYMBOL(hci_devcd_append_pattern);
+ 
+@@ -523,10 +552,7 @@ int hci_devcd_complete(struct hci_dev *hdev)
+ 
+ 	hci_dmp_cb(skb)->pkt_type = HCI_DEVCOREDUMP_PKT_COMPLETE;
+ 
+-	skb_queue_tail(&hdev->dump.dump_q, skb);
+-	queue_work(hdev->workqueue, &hdev->dump.dump_rx);
+-
+-	return 0;
++	return hci_devcd_queue(hdev, skb);
+ }
+ EXPORT_SYMBOL(hci_devcd_complete);
+ 
+@@ -543,10 +569,7 @@ int hci_devcd_abort(struct hci_dev *hdev)
+ 
+ 	hci_dmp_cb(skb)->pkt_type = HCI_DEVCOREDUMP_PKT_ABORT;
+ 
+-	skb_queue_tail(&hdev->dump.dump_q, skb);
+-	queue_work(hdev->workqueue, &hdev->dump.dump_rx);
+-
+-	return 0;
++	return hci_devcd_queue(hdev, skb);
+ }
+ EXPORT_SYMBOL(hci_devcd_abort);
+ 
+diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
+index d7355c73f93e8..a3338bc8a4ed7 100644
+--- a/net/bluetooth/hci_core.c
++++ b/net/bluetooth/hci_core.c
+@@ -2673,6 +2673,7 @@ void hci_unregister_dev(struct hci_dev *hdev)
+ 	disable_work_sync(&hdev->error_reset);
+ 	disable_delayed_work_sync(&hdev->cmd_timer);
+ 	disable_delayed_work_sync(&hdev->ncmd_timer);
++	hci_devcd_shutdown(hdev);
+ 
+ 	hci_cmd_sync_clear(hdev);
+ 
 
-However, Sashiko missed the netdevice unregistration sequence in
-net/core/dev.c: unlist_netdevice(dev)
-unlinks the device from lookup structures and synchronize_net() waits
-for all active readers to complete
-before dev->netdev_ops->ndo_uninit() is ever called.
-
-I will drop this patch from V2 then.
-
-Thanks.
+base-commit: 2deb76c21b81e42b3282224f7dd2046fe73fd1e0
+-- 
+2.55.0
