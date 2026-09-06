@@ -1,310 +1,312 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B34522E2EEE
-	for <netdev@vger.kernel.org>; Sun,  6 Sep 2026 17:36:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AB2B3A875D
+	for <netdev@vger.kernel.org>; Sun,  6 Sep 2026 17:45:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788716221; cv=none; b=hJCduwXi9kBOKpTne+5USm2gjm8dUNv43MhFANSlfE1qXUCzPCMLGB6u6DuLpXKLkq79pu5tiM80qYXd1rAcjLN+2WmmG5PsDDHbf+KdQRzZocJJ7284bMairWiVINQeUDbk5Ho9rKKqEpX1Le+CzYOvGN6gIAgzSsrAQn9Ikjc=
+	t=1788716753; cv=none; b=OLjftF/vVrbqRpovzUDlhzKnrUvaslOYFCyB9ggKRg1by1TAWBNHULqJKnCB9NrnL64OiqikfQHmk6CaAjqxZ4yFfVjP3DJ4zJAFBsgj6G6uOE9E7inndHw221PSYoo+yJOTqN+5sEHDfttjHfL3GckE2ZVLe58u7nGdO0UkU5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788716221; c=relaxed/simple;
-	bh=jEAjKAprW49FuLp+uW6WDFYcRYxohywLdFKifo/CH0Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SLphPm2YjJQ5D4EdBzaH1LcN/ETya0x2ymnGAS3NFiXhDDxXLDWQ/NDuwQwvIwJGGzREp6PX5gd2Zii6B/wen0KnOUqYWfYpUOPpqIQiFQHMbLYqeBXDKhdg2j0Om/AGvsuLihQ1thhCk7aXw9QclAhX8QC4Q1lszkSxa8EObpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=boUN3CMv; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=DItr78fK; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1788716753; c=relaxed/simple;
+	bh=LNzzwvE99ch0aM0gzq36c7Br7X2LkRgj4t9Tg+UGi0U=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bjKonHd2VVSQKJRbc1GvPXNf811sHWeYWL4J3OqLT2IDMwSJcDzQQ0hQt5H3QvuBlPjEl1L592dTOxtmMb+6VX7b25D75MCaeuS8FaM4SzZqQBQuRexg3riFJ7uTtbRUbYrYs67HpzAN60RuTRHrs43lYBux4Egy0MOKjesYZ58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la; spf=pass smtp.mailfrom=lex.la; dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b=d11CRMtg; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lex.la
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="boUN3CMv";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="DItr78fK"
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 686EWltf1301394
-	for <netdev@vger.kernel.org>; Sun, 6 Sep 2026 17:36:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=NNyWJkHCyIpLbg0Yf199LEoK
-	feIaby0BO4TsA7+gw/0=; b=boUN3CMv5HjLxFMIariADe3e74p4khxdB4IKWMq1
-	71QmqZgIXw+7nhqby9Ds+cqSkt3zNsJEv2wtVcPmVwb4ue4VWOezO1KM/6qAB4M/
-	PWFxSYBdEEnHgCqHawtoT7QUXYHPjvz06lhw9Hz3m8IP4CLFzWGxRnESC+lzEy8F
-	7bMgLZ2dqaeSACAfqh09wWRxUmxRF5/d0PD9Vj4H+IchN+9MPyJRvItUmgv5UalK
-	G+8pzUntMBLVCJwG9WIBFsiVGnQnO5S0qQqCiZvXontU9z7H/DrgwfTyAt8ZEN8B
-	chpU8TD19OukKUcFN3SbtBN4cv3wiiVpbaRSu+zflGUqRg==
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ggba3kx4e-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Sun, 06 Sep 2026 17:36:53 +0000 (GMT)
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-9375d92d8cdso565031385a.2
-        for <netdev@vger.kernel.org>; Sun, 06 Sep 2026 10:36:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b="d11CRMtg"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-499ac87c92bso30866545e9.1
+        for <netdev@vger.kernel.org>; Sun, 06 Sep 2026 10:45:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1788716213; x=1789321013; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=NNyWJkHCyIpLbg0Yf199LEoKfeIaby0BO4TsA7+gw/0=;
-        b=DItr78fKJjCmeo+3YcYuYa2zgOQnf2m4hYr+vgG1SQGaXMCWc2CplO8rIVLfRknWYo
-         Rsxk3MHQuPFMYOjmrXSn63lhnAEm6b9DfXVi4YijE7Dj70U2rMPTewm45rgkURy6u4Gf
-         wssJqMaLZjkahisE5+phHGxL09ZRMOaGOxcjCp7WdYhM8U345omYhL9pQjCkrVm+5af/
-         cI27nyJKnmgpTwHwDv8MC9VZQD4lC5lLUBuP2m5cy3dfOC9y5891d5RzgB9lpLs70RQK
-         WhZWctN0c955pwM/ORX/W+ffcd0CQRnn6c8ek6GbrSQzvuHC8vZtgDxK3L3/KtdkqeUD
-         fu+Q==
+        d=lex.la; s=google; t=1788716749; x=1789321549; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=e6ET6ngmB14l/Xn2lnQazMRgXbhRuRSrlViaoW+GKj4=;
+        b=d11CRMtg6ALfEgks81EhbAs6debUXB3or/xZ1HSbEekW/dvkBBZ3bz2c34s3KS0bqz
+         s51bqMC+s/zglD9glOAB4mLb/0WXXbkYLbwdJ7WohEFU+qM0n+3QH5aMPhM+MlWo2491
+         Pu7TFo+dKSYC97JNyb9YcXr9xD/QOwE17lzjPf0q73NiW9tGil36cM8zPnQ0I2sN1M6+
+         SdVMYWjy56xMJM9ylNCHTWswmfiB/Kh++xdv/dlkaRDqrC41YbV0wHd/Bx7+7HivRi9Y
+         EAJpA1zEZiqmd35MMNKB8iAesMwdC4kjexrKQUdHbzhEyNW9QrpP0aATaAYN5EZJaAIV
+         newQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788716213; x=1789321013;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=NNyWJkHCyIpLbg0Yf199LEoKfeIaby0BO4TsA7+gw/0=;
-        b=eCTEouSOfFdDqutAjrSzXYbpBTn4OWQmHFaj7kUOtnWGrwghv8vwN+yAsX39R/9HYZ
-         Sz9jfDw0i3VM71eV2fJFE6ajfCTT4NARZ08EkEOUKSPJssS0TyWTApt3p6OEEGo1RG/b
-         h6/1TaWN98lIDh4Er138VZuRd8nQQoHcmUNv+rSQHEr1rxgceh7E2SEQhYDNaAHmYw7x
-         kRafxMHxtEohQb/5/7rN/0Cvp7wJg+Gfz08VLaIvR1LWWKa+Fp6jbGs5F8XPmML1w5rT
-         LTglZF20FjXBkhx6aLjoES1I+d8zF5albxHXVV+3XRG14JKgtK0MnZUZLjR29tMaHJ/v
-         v9UA==
-X-Forwarded-Encrypted: i=1; AKwUvByvK1Dfe8nR7Op6s6GemfYJZ4aoWh8LcFjpCCgEoNc9meHUGvgxT0tMBeK9XzN2BrQLNfD62T8=@vger.kernel.org
-X-Gm-Message-State: AFuF++lE/PQ2TF2f6kEQSHkMzIfru3l59CeX3cDjFl0cq6updnUUMRRM
-	ouCJL5vwbt9DO1y9ya1vWA6Os4nupIe//afcNeLPQE6OzjG4Ydaihn97rprzyYAoyRWSt5zitJi
-	YWWwYRAZ82f8KlGNmdGSNxCmKUjnyF95r21I7yGcCfJ64Cmi6iHW9AayIEzw=
-X-Gm-Gg: AYBFou1wg/DLcG9/NEfCKB5hQsmtG8JzZ/AG7ONQyxqbdEpvYMAbi7pmIRkiT1w32XH
-	JDk7LECVoJWoLsyohzCQATj6xe7L3fbXH/msAp0rLGtP3d6o3vPWPztCXGQIra88SNiPR+mR5sw
-	xFBkiPGBnBQGNiC5nyc7TK/xF/ZHTMudcVlZlysYiHw2VZ0tvworK9QiL5/oM6hJM3kmL0QKIIu
-	ktLqFGB3xE8pqh+wyPNWkZ8nk56+9tnrII9sbhdam5zLZyJtwaU1vZTJOrz4cKOgDfrt7B4oyho
-	8TJoTbXCwYU1DfJx6xqLFrqfshCq+MfUpOTtL/5JjB/ngVfL2q2ySdB6wypx8Xq0MLFkaHgsLAo
-	nF5fwL75V2VlXOw==
-X-Received: by 2002:a05:620a:261e:b0:936:eeab:307e with SMTP id af79cd13be357-9398059c8b4mr1879892385a.9.1788716212644;
-        Sun, 06 Sep 2026 10:36:52 -0700 (PDT)
-X-Received: by 2002:a05:620a:261e:b0:936:eeab:307e with SMTP id af79cd13be357-9398059c8b4mr1879887785a.9.1788716212164;
-        Sun, 06 Sep 2026 10:36:52 -0700 (PDT)
-Received: from localhost ([188.216.77.92])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-485883959f0sm24437018f8f.10.2026.09.06.10.36.50
+        d=1e100.net; s=20251104; t=1788716749; x=1789321549;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=e6ET6ngmB14l/Xn2lnQazMRgXbhRuRSrlViaoW+GKj4=;
+        b=BRV8sZ7iMxcIb4wvxcaGIzrZPWEoLbD+x2+QJsp0qJTYIBKzm6tXHKp380v1K8tyWT
+         Kr0GNoBKn1qi6y0BfW2MBplr+eBqshj4b4EpXNtboij4BMtCoIK4Tf/R1beSb54fHAyb
+         X8yKaefY5v/FkloYoiGZ1e5pCT/2UmAMToEG/uAhQB8IYyyOk1vhVm4azlhFlRIfz92m
+         RdwCQzLc5lAknvqv1AmJaRc2zET5yIrC/i2Os7YIiOlUSubCySV7rKrm6+CYVUAZ1ilR
+         ot7+zp9CpqSrdhHzF6ReLifU01A8N5MDSQBaU+EHSmLLesRKAjco1i7C90ywiaaP515u
+         wU4g==
+X-Forwarded-Encrypted: i=1; AKwUvByP95Oqe8D+VjSMee2Laj8o0PXqMR0PP98mSbZ1dDzUWhP8yj2pGgVHpgwfbeNA6oerXYRuAEM=@vger.kernel.org
+X-Gm-Message-State: AFuF++kEwHh/8JBp5AvTHnQUx5aDv9vIeHsATr4e7ZtJaBQAbZVmQqWN
+	ououPkr/8Opo8ildgLJLzonbr9Q8E+yycUF0vcvnWhYNPGTrNtHD1hcM7fSuQhWW4H4=
+X-Gm-Gg: AYBFou3N2xHXofwCTCoWUAaO8TXbJHOTYXP7Cp6UB6DS7dJXvQFU8s2zEMH66v/qSw4
+	vDZ4K/Lr54aB9CtVDsbNABNVkK1OulJnlQ3l6meqNKHvyFHYBFXFmwecqgEAp3BeoiqlUvNko+6
+	KM3zh/U3Q7q43A1uIqG+nyY23qswmKL5Kl6gjPg8EzhCQvhJBplqsX+g8/TV1WSFH7wwG1ZTBEF
+	8/L0eXKLHsZK7cTWr8a1sZzX0EU+xDsFUyHDd/dONqd0CxkHNf+anzoKhnouPox0nqvylkB2CWi
+	9/JMniI2D5Jvbwm1+qOG5UscZXObzbi+7fzERpNxgMTmF8+GdwOTfpHOiNEc7chugkRa1fsPU14
+	o2aOH/anB5qkhW8YNJw4aAvzVS+VDuh6/SmLLms/+LWHXbzTN5QNATJz65iqilhW/PaJiqi+j/d
+	eIFAnud5ZUdMAvfWi8wNjAiNAK7ClpsLQSWoKYmQw=
+X-Received: by 2002:a05:600c:3f0a:b0:49c:e27c:6b10 with SMTP id 5b1f17b1804b1-49cf81e4a10mr182880765e9.3.1788716748829;
+        Sun, 06 Sep 2026 10:45:48 -0700 (PDT)
+Received: from remote-01 ([84.17.55.227])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cf755c22esm245418805e9.0.2026.09.06.10.45.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 06 Sep 2026 10:36:50 -0700 (PDT)
-Date: Sun, 6 Sep 2026 19:36:50 +0200
-From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-To: Ren Wei <weir@nebusec.ai>
-Cc: idosch@nvidia.com, netdev@vger.kernel.org, dsahern@kernel.org,
-        iprintercanon@gmail.com, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-        tom@herbertland.com, vega@nebusec.ai, petalzu987@gmail.com
-Subject: Re: [PATCH net v4 1/1] ip6_tunnel: snapshot encap in xmit
-Message-ID: <ap2ksmdL1FFulLnF@lore-desk>
-References: <cover.1788262122.git.petalzu987@gmail.com>
- <2ce8f3e4bbed6060afb0aee33dc4e1d9ae021280.1788262122.git.petalzu987@gmail.com>
+        Sun, 06 Sep 2026 10:45:48 -0700 (PDT)
+From: Aleksei Sviridkin <f@lex.la>
+To: andrew@lunn.ch,
+	andrew+netdev@lunn.ch,
+	hkallweit1@gmail.com,
+	linux@armlinux.org.uk,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org
+Cc: ericwouds@gmail.com,
+	netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [RFC PATCH net-next 0/7] net: mdio: an MDIO device driver for the Airoha EN8811H
+Date: Sun,  6 Sep 2026 17:45:36 +0000
+Message-ID: <cover.1788711797.git.f@lex.la>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="cITQjqMjX9o6+OXd"
-Content-Disposition: inline
-In-Reply-To: <2ce8f3e4bbed6060afb0aee33dc4e1d9ae021280.1788262122.git.petalzu987@gmail.com>
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA2MDE5NiBTYWx0ZWRfXwVBJXZVyplse
- aVELlVq0yVKoWPxgRFqVG/cNZKAeurLKSy1T58dpw5VorG4fhoSyD1kv5arqoz8mJpq5JpYrkB1
- LVozAydTrRbcIbj8SEav5vkY13fvSfbKh5HNOXlG5n0c1W9os9fNiJyT3cWAzPLJi35ZM8EigRP
- uNsxq6HldOQWjEoqtE++0u8C+sVzveb5TYcxMsEhG2bqlXf2Andr8JZitbfnOIRB35+o+7TSgH5
- 29/gM3rVEMtUpdlEZouomL15LFtBl8jJp5kRIPqHnZcNNVkL7UZqSaWyyg/xDn1WiEBLAYjuVO6
- nP2LpiJdzBE+sHFYKhg4SZEet05N1VSe+dlfJpqhdtkdT4r4du0qH9bQdUoKOx71hfzzLlmQb59
- xyJBs92BveItMJWAKFpZpI1OxCRBXwHLyQKCw6HQOk07ylOv7QOumoPlHLnjtHXygOAXqyC6ogj
- 9xFzna9b+v2qDAd/h4A==
-X-Proofpoint-ORIG-GUID: blDmhkm-DVNtXYO2eWh0Jj2Hqq-t9WVv
-X-Proofpoint-GUID: blDmhkm-DVNtXYO2eWh0Jj2Hqq-t9WVv
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTA2MDE5NiBTYWx0ZWRfXy2hWsm6lYomZ
- Dhd176BuiK20iOcPSUPaBj5rqmfyRwLijTYLAG4AnU9hXteZ5kYv/SbchpWGAoV577IN7UO2vw2
- HzHKRgWQ4U61hgWzL9OSM5ODEPVNTeU=
-X-Authority-Analysis: v=2.4 cv=Tf2mcxQh c=1 sm=1 tr=0 ts=6a9da4b5 cx=c_pps
- a=hnmNkyzTK/kJ09Xio7VxxA==:117 a=WpTaRW6qxYHRGzLzQsVYzg==:17
- a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=yOCtJkima9RkubShWh1s:22 a=pGLkceISAAAA:8
- a=VwQbUJbxAAAA:8 a=17Ogpx7Ge2VHjdCXMskA:9 a=CjuIK1q_8ugA:10
- a=nASmkU_yoCCGntK6NWwA:9 a=PEH46H7Ffwr30OY-TuGO:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-06_01,2026-09-03_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 suspectscore=0 priorityscore=1501 adultscore=0
- lowpriorityscore=0 phishscore=0 clxscore=1015 spamscore=0 malwarescore=0
- bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2609060196
+Content-Transfer-Encoding: 8bit
 
---cITQjqMjX9o6+OXd
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The Airoha EN8811H answers its PHY ID from power-on, but it is an MD32
+microcontroller until the host loads firmware into its volatile RAM.
+Today one driver owns both roles: the PHY driver downloads the firmware
+from .probe(), which works only when the files are readable by then and
+leaves the reset line in the hands of a PHY node whose detach wipes what
+was loaded.
 
-> From: Zixuan Chai <petalzu987@gmail.com>
->=20
-> ip6_tnl_changelink() can update encapsulation parameters while the
-> netdevice is transmitting packets. ip6_tnl_xmit() can calculate packet
-> headroom with t->encap_hlen and later build an encapsulation header from
-> the live t->encap. A concurrent update can change the encapsulation
-> header between these accesses and make skb_push() underflow the skb head.
->=20
-> Take a local snapshot of t->encap before calculating the encapsulation
-> header length. Use that same snapshot for headroom accounting, metadata
-> validation, and build_header(). This keeps all encapsulation decisions
-> for an skb consistent even if changelink updates the live configuration.
->=20
-> Fixes: b3a27b519b22 ("ip6_tunnel: Add support for fou/gue encapsulation")
-> Cc: stable@vger.kernel.org
-> Reported-by: Vega <vega@nebusec.ai>
-> Assisted-by: LLM
-> Signed-off-by: Zixuan Chai <petalzu987@gmail.com>
-> Signed-off-by: Ren Wei <weir@nebusec.ai>
+Describe the chip instead as an MDIO device that owns the download and
+the reset, and publish the PHY on a child pass-through bus once the
+firmware runs. Patch 1 adds the binding. Patch 2 adds mdiodev_lock(),
+mdiodev_lock_nested() and mdiodev_unlock(), the names Andrew asked for
+in [1], for code that holds the bus lock across a burst without a
+phy_device. Patches 3-5 move the download into the shared library,
+typed on the MDIO device, and teach it to skip a download when the MD32
+already runs firmware - which is what lets the two drivers coexist
+whichever runs first. Patches 6-7 add the driver and its bus.
 
-Hi Ren and Zixuan,
+This is one half of an RFC last posted whole as v2 [2]. The other half
+teaches phylink to keep a port whose PHY is expected to probe late,
+under a new phy-needs-host-firmware property; it is posted alongside
+this one at https://lore.kernel.org/r/cover.1788711837.git.f@lex.la/ . The halves touch no
+common file and go to different reviewers, so they are apart. They are
+not alternatives: the phylink half alone carries a board whose chip
+answers its ID before firmware and whose PHY driver is a module, and
+this half buys the cases that are not that - chips mute before
+firmware, a built-in PHY driver whose probe fails once on missing files
+and is never retried, and reset ownership. The shape also admits a quad
+package, one MCU serving four PHYs; this driver passes one address
+through and does not try.
 
-I agree this is a real issue, but I guess this patch is fixing just a
-small part of more extended problem. In particular, there are multiple
-parameters that are updated in ip6_tnl_update()/ip6_tnl_change() that are
-accessed concurrently in ip6_tnl_xmit() or in ip6_tnl_fill_forward_path().
-I guess we should try to find a general fix for the extended issue.
-What do you think? We have probably the same issue in the IPv4 counterpart.
+There is a smaller way to do the EN8811H alone, and I did not take it:
+keep the PHY driver, have it poll for its firmware from a workqueue,
+and hold the link down until the download is done. It fails on the
+cases above. A chip that is mute before firmware gets no phy_device at
+scan, so no PHY driver ever probes it. A PHY node that owns reset-gpios
+has that line asserted by phy_detach(), which erases the firmware, and
+the driver cannot refuse that from inside phylib. And once the firmware
+is up, nothing in phylib re-runs the initialisation the driver skipped
+at probe; the driver would be doing that itself, from a workqueue,
+under locks phylib expects to own.
 
-Regards,
-Lorenzo
+Publishing the PHY on a child bus splits the two agents that drive this
+chip onto two mutexes, so the driver holds the child bus lock around
+its own access and the library beneath takes the parent one level down.
+Patch 7 has the mechanism. Two choices in it are worth your opinion:
+the level is a bool and not an enum mdio_mutex_lock_class, because the
+helpers it picks between are the names Andrew asked for in [1], and the
+parameter arrives with the patch that creates the second level so it
+never sits unused. I can go the other way on either.
 
-> ---
->  include/net/ip6_tunnel.h | 10 +++++-----
->  include/net/ip_tunnels.h | 10 ++++++++++
->  net/ipv6/ip6_tunnel.c    | 18 ++++++++++++++----
->  3 files changed, 29 insertions(+), 9 deletions(-)
->=20
-> diff --git a/include/net/ip6_tunnel.h b/include/net/ip6_tunnel.h
-> index b99805ee2fd1..6e76e50a4406 100644
-> --- a/include/net/ip6_tunnel.h
-> +++ b/include/net/ip6_tunnel.h
-> @@ -106,22 +106,22 @@ static inline int ip6_encap_hlen(struct ip_tunnel_e=
-ncap *e)
->  	return hlen;
->  }
-> =20
-> -static inline int ip6_tnl_encap(struct sk_buff *skb, struct ip6_tnl *t,
-> +static inline int ip6_tnl_encap(struct sk_buff *skb, struct ip_tunnel_en=
-cap *e,
->  				u8 *protocol, struct flowi6 *fl6)
->  {
->  	const struct ip6_tnl_encap_ops *ops;
->  	int ret =3D -EINVAL;
-> =20
-> -	if (t->encap.type =3D=3D TUNNEL_ENCAP_NONE)
-> +	if (e->type =3D=3D TUNNEL_ENCAP_NONE)
->  		return 0;
-> =20
-> -	if (t->encap.type >=3D MAX_IPTUN_ENCAP_OPS)
-> +	if (e->type >=3D MAX_IPTUN_ENCAP_OPS)
->  		return -EINVAL;
-> =20
->  	rcu_read_lock();
-> -	ops =3D rcu_dereference(ip6tun_encaps[t->encap.type]);
-> +	ops =3D rcu_dereference(ip6tun_encaps[e->type]);
->  	if (likely(ops && ops->build_header))
-> -		ret =3D ops->build_header(skb, &t->encap, protocol, fl6);
-> +		ret =3D ops->build_header(skb, e, protocol, fl6);
->  	rcu_read_unlock();
-> =20
->  	return ret;
-> diff --git a/include/net/ip_tunnels.h b/include/net/ip_tunnels.h
-> index 7c9aadfe8fe3..ab217ddbeb20 100644
-> --- a/include/net/ip_tunnels.h
-> +++ b/include/net/ip_tunnels.h
-> @@ -522,6 +522,16 @@ skb_vlan_inet_prepare(struct sk_buff *skb, bool inne=
-r_proto_inherit)
->  	return SKB_NOT_DROPPED_YET;
->  }
-> =20
-> +static inline void
-> +ip_tunnel_encap_snapshot(struct ip_tunnel_encap *dst,
-> +			 const struct ip_tunnel_encap *src)
-> +{
-> +	dst->type =3D READ_ONCE(src->type);
-> +	dst->flags =3D READ_ONCE(src->flags);
-> +	dst->sport =3D READ_ONCE(src->sport);
-> +	dst->dport =3D READ_ONCE(src->dport);
-> +}
-> +
->  static inline int ip_encap_hlen(struct ip_tunnel_encap *e)
->  {
->  	const struct ip_tunnel_encap_ops *ops;
-> diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
-> index d5ff50a2ac01..6ca373d6205a 100644
-> --- a/net/ipv6/ip6_tunnel.c
-> +++ b/net/ipv6/ip6_tunnel.c
-> @@ -1102,6 +1102,7 @@ int ip6_tnl_xmit(struct sk_buff *skb, struct net_de=
-vice *dev, __u8 dsfield,
->  		 __u8 proto)
->  {
->  	struct ip6_tnl *t =3D netdev_priv(dev);
-> +	struct ip_tunnel_encap ipencap;
->  	struct net *net =3D t->net;
->  	struct ipv6hdr *ipv6h;
->  	struct ipv6_tel_txoption opt;
-> @@ -1109,10 +1110,11 @@ int ip6_tnl_xmit(struct sk_buff *skb, struct net_=
-device *dev, __u8 dsfield,
->  	struct net_device *tdev;
->  	int err_count, mtu;
->  	unsigned int eth_hlen =3D t->dev->type =3D=3D ARPHRD_ETHER ? ETH_HLEN :=
- 0;
-> -	unsigned int psh_hlen =3D sizeof(struct ipv6hdr) + t->encap_hlen;
-> -	unsigned int max_headroom =3D psh_hlen;
-> +	unsigned int max_headroom;
->  	__be16 payload_protocol;
->  	bool use_cache =3D false;
-> +	unsigned int psh_hlen;
-> +	int encap_hlen;
->  	u8 hop_limit;
->  	int err =3D -1;
-> =20
-> @@ -1202,6 +1204,14 @@ int ip6_tnl_xmit(struct sk_buff *skb, struct net_d=
-evice *dev, __u8 dsfield,
->  				     t->parms.name);
->  		goto tx_err_dst_release;
->  	}
-> +
-> +	ip_tunnel_encap_snapshot(&ipencap, &t->encap);
-> +	encap_hlen =3D ip6_encap_hlen(&ipencap);
-> +	if (unlikely(encap_hlen < 0))
-> +		goto tx_err_dst_release;
-> +	psh_hlen =3D sizeof(struct ipv6hdr) + encap_hlen;
-> +	max_headroom =3D psh_hlen;
-> +
->  	mtu =3D dst6_mtu(dst) - eth_hlen - psh_hlen - t->tun_hlen;
->  	if (encap_limit >=3D 0) {
->  		max_headroom +=3D 8;
-> @@ -1240,7 +1250,7 @@ int ip6_tnl_xmit(struct sk_buff *skb, struct net_de=
-vice *dev, __u8 dsfield,
->  		goto tx_err_dst_release;
-> =20
->  	if (t->parms.collect_md) {
-> -		if (t->encap.type !=3D TUNNEL_ENCAP_NONE)
-> +		if (ipencap.type !=3D TUNNEL_ENCAP_NONE)
->  			goto tx_err_dst_release;
->  	} else {
->  		if (use_cache && ndst)
-> @@ -1264,7 +1274,7 @@ int ip6_tnl_xmit(struct sk_buff *skb, struct net_de=
-vice *dev, __u8 dsfield,
->  			+ dst->header_len + t->hlen;
->  	ip_tunnel_adj_headroom(dev, max_headroom);
-> =20
-> -	err =3D ip6_tnl_encap(skb, t, &proto, fl6);
-> +	err =3D ip6_tnl_encap(skb, &ipencap, &proto, fl6);
->  	if (err)
->  		return err;
-> =20
-> --=20
-> 2.34.1
->=20
+One shape the series does not support, though nothing rejects it: the
+pass-through bus reads its parent at MDIO_MUTEX_NESTED, the same
+subclass a DSA user bus takes for the switch's own parent. An MCU
+sitting on such a bus gives lockdep three nesting levels of one class
+across two subclasses, and a recursive-locking report. The mutexes are
+distinct, so that is a complaint and not a demonstrated deadlock,
+and the driver neither detects nor refuses the topology. The enum's
+remaining value, MDIO_MUTEX_MUX, belongs to mdio-mux, so a third level
+wants a new one - not a decision this series should make on its own.
 
---cITQjqMjX9o6+OXd
-Content-Type: application/pgp-signature; name=signature.asc
+Andrew asked whether any board with this chip sits on a bus without
+direct Clause 45. I found none. The two in-tree device trees that carry
+it - mt7981b-openwrt-one by compatible, mt7986a-bananapi-bpi-r3-mini by
+bare PHY nodes at the chip's addresses - put it on mtk_eth_soc, and out
+of tree it hangs off one of four controllers: mtk_eth_soc, the MT7530
+DSA bus on EN7581, mdio-airoha on AN7583, or the SiFlower xgmac. All
+four set read_c45, and none of those boards reaches the chip through an
+mdio-mux or a bitbanged bus.
 
------BEGIN PGP SIGNATURE-----
+The status poll keeps the Clause 22 indirection, which patch 4
+explains. It is a preference and not a necessity: the chip does answer
+Clause 45 before its firmware, and the board readings below say what it
+answered.
 
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCap2ksgAKCRA6cBh0uS2t
-rLaHAP9yifbjUw66H1wWsQYcnEX83pVpNHB5sHpKfqG3+TTZDAD+O4sV7RAZe8aA
-N+PoeF9SZxXcVrBcCTvuTIQm5EHAWAc=
-=j9Cz
------END PGP SIGNATURE-----
+System sleep is handled but untested, since this board gives no way to
+cut power to the PHY. A power-cutting suspend wipes the MD32, so
+.resume repeats the reset decision and the download in line, because
+the child PHY's own resume calls phy_init_hw() immediately after and
+needs the firmware by then. request_firmware_direct() already caches what it
+loaded, so the explicit registration exists for the adopt path, where
+no file was ever read and the cache would otherwise hold nothing. A
+resume that cannot reload restores the chip and not the port; question
+3 says why.
 
---cITQjqMjX9o6+OXd--
+Tearing the MDIO device down while its child PHY is attached crashes:
+mdiobus_unregister() removes the PHY's driver without freeing the
+interrupt its consumer requested, so the next interrupt dereferences
+phydev->drv after phy_remove() cleared it. No open or close is needed.
+Module unload cannot reach it, because attaching a PHY takes a
+reference on the bus owner, and sysfs unbind cannot, because the
+attributes are suppressed. Removing the parent MDIO controller still
+can; question 3 again.
+
+Tested on an MT7981B board (MT7531 switch, EN8811H on a 2500base-x
+port), warm boots only - I have no remote way to cut power. The board
+runs OpenWrt, so what booted is these patches backported onto its 6.18
+tree, not the mailed text byte-for-byte. What the board showed:
+
+ - download and handover on the normal boot path: U-Boot leaves the
+   MD32 in its bootloader on every reboot here, so each boot runs the
+   driver's pulse-reset and download; ~144KB lands in about two
+   seconds, which is what 73728 Clause 22 frames cost at the 2.5 MHz
+   MDC these boards default to; the driver reports the firmware it
+   loaded at 6.33 s, and the PHY driver finds that firmware already
+   running at 6.39 s and skips its own download through the shared
+   check
+ - the PHY is attached at 7.10 s through the child bus with irq=15 from
+   DT and not PHY_POLL; the port reaches forwarding and the link
+   comes up at 20.1 s, and the interrupt line counts link events across
+   forced renegotiations
+ - Clause 45 before firmware: with the MD32 never programmed, read on
+   the parent bus while the child bus does not exist, the PMA/PMD
+   identifier is 0x03a2, matching the Clause 22 pair 0x03a2/0xa411 at
+   the same address, and the vendor status reads 0x0000 where a silent
+   chip would float to 0xffff
+
+Two of the v1 review points [3] went a different way than asked, and
+each gets a sentence rather than silence. The shared header went to
+include/linux/mdio/ beside the other MDIO driver headers: include/net/phy/
+does not exist, and include/linux/phy/ is the generic PHY framework. And
+the copy of parent->irq[addr] onto the child bus was in v2 and is gone
+from v3. A bus's irq[] starts as PHY_POLL from mdiobus_register(), and
+the DT path fills an entry only when it registers a PHY at that address,
+from the PHY node's own interrupts property. The MCU node is not a PHY,
+so the parent's entry at its address stays PHY_POLL, while the child bus
+gets its own entry filled from the child PHY node when that bus is
+registered. The copy carried PHY_POLL over a value the child fills
+correctly on its own, and the board's irq=15 comes from the child node
+either way.
+
+The base matters for patch 5: it makes the MCU restart on the adoption
+path, and commit 03b4702fc5e3 ("net: phy: air_en8811h: move LED GPIO
+configuration to config_init") with commit 3498acda6b68 ("net: phy:
+air_en8811h: restore AN8811HB LED GPIO after MCU restart") moved the
+LED GPIO enable to the end of config_init, after that restart. On an
+older base the restart would have cleared the buckpbus-mapped GPIO
+state with nothing to re-enable it. The firmware size check landed as
+commit daf0972d38e9 ("net: phy: air_en8811h: refuse a firmware blob
+that is not a multiple of 4"), and patch 4 carries it into the library
+with the write loop it guards.
+
+What I am asking:
+
+ 1. The binding lets software timing pick the topology: the same chip
+    on the same board is a plain PHY node when its firmware is in the
+    bootloader, and an MCU with a child bus when the firmware arrives
+    with the rootfs. Move the files into an initramfs and the
+    recommended description changes without a wire moving. The hardware
+    argument that does hold is narrower - the reset line belongs to the
+    MD32 core rather than to the PHY the firmware creates, and a PHY
+    node that owns it wipes the firmware on detach - and it argues for
+    the MCU node, not for the child bus. If the child bus has to be
+    justified by hardware too, I do not have that argument, and the
+    honest options are to describe the chip one way always, or to say
+    plainly in the binding that this is a driver model choice. Which
+    would you rather see?
+
+ 2. A third nesting level has no subclass, as above. Should this series
+    add one?
+
+ 3. Removing the parent MDIO controller reaches this driver's remove
+    with the child PHY attached, and nothing pins the parent's owner.
+    Closing it wants a way for a bus to tell its PHYs' consumers to let
+    go, which is a phy-core change. The failed-resume path above wants
+    the same channel for "re-initialise" rather than "let go", so that
+    is two uses for one mechanism. Is it worth doing here?
+
+ 4. MDIO_AIROHA_EN8811H sits in the "MDIO controller drivers" menu,
+    though it drives a device on a bus and not a controller. The
+    mdio-mux entries set the precedent, but say if you want it
+    elsewhere.
+
+ 5. The child bus accepts exactly one address, the one this node
+    occupies on the parent, and I do not think the schema can say so.
+    What it does say now is that a child named ethernet-phy@N is
+    validated as one, and that it must not carry reset-gpios or its
+    timings - the whole reason this node exists is that a PHY-node
+    reset is what phy_detach() asserts, and it erases the firmware.
+    What it cannot say is that a differently named child is refused:
+    mdio.yaml's own patternProperties evaluates any node@hex and its
+    additionalProperties: true admits the rest, so unevaluatedProperties
+    has nothing left to reject. Is prose enough for the address, and is
+    there an idiom I am missing for the rest?
+
+ 6. include/linux/mdio/mdio-airoha-en8811h.h is named for the driver
+    that consumes it, while its four neighbours in that directory name
+    the driver that implements them - here the implementation is
+    drivers/net/phy/air_phy_lib.c. Where should this header live, and
+    should the MAINTAINERS entry that now claims it also claim the
+    library files it declares?
+
+[1] https://lore.kernel.org/netdev/29f973e4-980d-4198-bbec-452f7421d416@lunn.ch/
+[2] https://lore.kernel.org/r/cover.1788548229.git.f@lex.la/
+[3] https://lore.kernel.org/netdev/20260829052546.1152446-1-f@lex.la/
+
+Aleksei Sviridkin (7):
+  dt-bindings: net: add Airoha EN8811H PHY MCU
+  net: phy: add mdiodev_lock(), mdiodev_lock_nested() and
+    mdiodev_unlock()
+  net: phy: air: type the buckpbus core on the mdio device
+  net: phy: air: move the EN8811H firmware download into the library
+  net: phy: air: skip the download when the MD32 is already running
+  net: mdio: add Airoha EN8811H MDIO device driver
+  net: mdio: en8811h: add the nested bus
+
+ .../bindings/net/airoha,en8811h-mcu.yaml      | 117 +++++
+ MAINTAINERS                                   |   8 +
+ drivers/net/mdio/Kconfig                      |  13 +
+ drivers/net/mdio/Makefile                     |   1 +
+ drivers/net/mdio/mdio-airoha-en8811h.c        | 382 ++++++++++++++++
+ drivers/net/phy/air_en8811h.c                 | 151 +------
+ drivers/net/phy/air_phy_lib.c                 | 421 ++++++++++++++++--
+ drivers/net/phy/air_phy_lib.h                 |  27 ++
+ include/linux/mdio/mdio-airoha-en8811h.h      |  25 ++
+ include/linux/phy.h                           |  16 +
+ 10 files changed, 982 insertions(+), 179 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/net/airoha,en8811h-mcu.yaml
+ create mode 100644 drivers/net/mdio/mdio-airoha-en8811h.c
+ create mode 100644 include/linux/mdio/mdio-airoha-en8811h.h
+
+
+base-commit: 761ae184f850f33d1bbf6c4530c7f237be780d21
+-- 
+2.53.0
+
