@@ -1,295 +1,300 @@
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012042.outbound.protection.outlook.com [40.93.195.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C67538472
-	for <netdev@vger.kernel.org>; Sun,  6 Sep 2026 15:14:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F4E730EF97
+	for <netdev@vger.kernel.org>; Sun,  6 Sep 2026 15:21:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.179
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788707669; cv=fail; b=oHod8S3w38zMVuzLFKKRWnr+omCLe6OxfBlXfvvCJr1eIcXRZAh/9CTR/PF5YHzL6qBVcDbdGJfDLaQEPRT4O55oQE5CJ2wONv7kwKWXjbfz3roe11vctrexbwT1EBKKYyxdVu+yrkPd+lqc8fMXAjMbdB/GWn0Ue7lJgSd//m4=
+	t=1788708090; cv=pass; b=R9DVbKv+RHksOFhV6lGSEP00ZeCPBw5RgmVG+w9Fzku0f5cKkmImNgE3MG0HISxUz+C6X6SqaX2sKLdK8/PQQf9YAZbnmdkK526xurAYGquVPaDLeBWrW0oynia9dbjIZH4GHez4efHdD3LZcBjl/cg+tKFk5G4A33NH6yBQzvo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788707669; c=relaxed/simple;
-	bh=nZYhR+16XFSt5iaiAVGTx4N64KhyLaQoRKuz1nSvRN0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=NUv9imfAJT4y1AN5ayUN6b7p6hCy3GKxOo7RrftjMBuj68XR7z9MX9Hy2ZvBzhHSMY7bnugsR+/z7DezNhw1OYm2Ldz7+8Nxm5VkKxrsEA3335ZSdkO35Utr1/pf1mASL6vZQeSdaAksCjAukFs14RC5wkceCWDm7AIan5gCP6k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ZxExttsm; arc=fail smtp.client-ip=40.93.195.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1788708090; c=relaxed/simple;
+	bh=LFOwrLkyPBKyNRbuTjUWsGqIJC+VDeAwPu6b+AJEr+o=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=t5+xkwG+htKY+bhsNr9J1lNyDNdueb/GBVTQQv+k8RGGJ7ByTKuylJ5vpHWOdrVThfJA1NJb+7Ti/3GeBUH6PW0DOJTAC5UbYYeQUB8qJRe0eWP4vV1Vxu8Eq+AbAhv7q+bWE097im88zDg95DSHKnBGY7d7Yi+rf6C/6xo22UQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MLaCtnwn; arc=pass smtp.client-ip=209.85.160.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ZxExttsm"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wK102F94tOW277VoU9VLgejd0ZL+YPgSPB/Z8seGJwCstmCaJOzYSrBEr66ItOekKkyWvQlXmPnWllDHP944oKVnNn+ZW8mpuCJJuG0zl9MqoBRIgTXxTgar24CfN/z69Hbwi+Ag8yPrbRFOj5l6uFCx2C1c0T2pQxmgAdMp2XC3r5CLM8gzajVSGy3gfclf4l9e7ybmE1lyQbHmiz+7bEi1A0ZxA0n6T7HYBnk30YgAkHPhTJsGMh0nU80a8o/8xxBTfmVaf/2bmu25HOpsEmYyUKJjrj4dlAtY5o3cyIrfriEi9wKyQSHqRSoZEffNrNY4BawaImcwYxxT3m0qmQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nBDhupQ6Xo0ab2lwukIPhP72ryA7NEA9Xctn3I1ccFk=;
- b=q8u4aER0uuCNtWijNcyR5xoUaA+5rs7XmgdyfMvy3FOaQceJEVhxuu3dV46lTc+Yt6ZTx71rgpJP5xb7mn0BrATYFH4fTJyOM/VRZLWb+fulwlEMCnjOJnfQNLrhX5KZAZEmdpCfbFBtizzDn2oZP1c0PrpzInLRKyXymBW9NRMUFDojE1gk7QW0XOw4ZchOlG/k5ceMR6UsYgpCiTBdnbOr7VVpoPbNA63uB1TNKLDmplWdUBrB3mkmBuS0BbFakYTNjMeXTuLBIY8qjBSOpztznzMWqhNleTjRM+dMZAyJGzgzNx38IJSU5oRiQ1yFtJpx8MJos9YN1YjevVz+aA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=nBDhupQ6Xo0ab2lwukIPhP72ryA7NEA9Xctn3I1ccFk=;
- b=ZxExttsmgvGjj6UN3mUsM+gEGz9yaFM4of7fIPRCGDbYmwqk7YnPSz5zIhU3rWwng6xeibkCw8e4z+UgK41kkWztlOzTHuvGw10DxZTcWzAePgTDPMLzXSJBH5PESw7hCEuae68W5O84HQrqfi34ZcVSD/QCajJKx75ZlUQ/LrgsKJoJ6OZOD9jesPLWAc2cRC8BxrRaX1OoaqrUosT+iiD1L8lIRGy/m5CfJ8NucUDp8EpJ/3uaQgWowgYDVKEcPHHaK1l/sCLV5ZCVHgv+6HjA4O0pqtfYFv5CHaHIHkp1WzQFzUpVgty8vI33saOJeJ3iQ9HfLq8nlLOYvhgC7w==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
- by DS0PR12MB8455.namprd12.prod.outlook.com (2603:10b6:8:158::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.382.14; Sun, 6 Sep
- 2026 15:14:21 +0000
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0382.014; Sun, 6 Sep 2026
- 15:14:21 +0000
-Date: Sun, 6 Sep 2026 18:14:10 +0300
-From: Ido Schimmel <idosch@nvidia.com>
-To: Ren Wei <weir@nebusec.ai>
-Cc: netdev@vger.kernel.org, dsahern@kernel.org, iprintercanon@gmail.com,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, horms@kernel.org, tom@herbertland.com,
-	vega@nebusec.ai, petalzu987@gmail.com
-Subject: Re: [PATCH net v4 1/1] ip6_tunnel: snapshot encap in xmit
-Message-ID: <20260906151410.GA323313@shredder>
-References: <cover.1788262122.git.petalzu987@gmail.com>
- <2ce8f3e4bbed6060afb0aee33dc4e1d9ae021280.1788262122.git.petalzu987@gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2ce8f3e4bbed6060afb0aee33dc4e1d9ae021280.1788262122.git.petalzu987@gmail.com>
-X-ClientProxiedBy: FR4P281CA0247.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:f5::10) To PH0PR12MB7957.namprd12.prod.outlook.com
- (2603:10b6:510:281::22)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MLaCtnwn"
+Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-5306baf6b53so19643631cf.1
+        for <netdev@vger.kernel.org>; Sun, 06 Sep 2026 08:21:28 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788708087; cv=none;
+        d=google.com; s=arc-20260327;
+        b=rIJHicmGQttqWPFf/cbCwQSZ3XIJx2hZSGSIrTYQcocATyI9TLUt3Yek94biS7YgFE
+         Nve/I4XDRY9Ogaryt95uUWzjQ10bXycExgLhcOzCp2jK/IvaFu4ryeTJm+wW2UftwlqQ
+         VjdNzBk5UZsU+pEHZKHBsRAwFXzduakk9bei+fgIbtaxf+9LbOrH/KtWAW/VDlOCWl0G
+         WcV2/kmQBngLOXyozhxpBloZgUOrR/DSJS8yBuGWXLzXo4mjI6Z4h1IIPkR3XmTMmYac
+         q8/CgjJg44e834igiLc49qGQ7YvXFRqnyoZIWOmtru9FW4Uj7QBnbon6tB8k/cuJaWO7
+         n5nA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=fs6XUMvGp+baARz1Qk60hvLbKLNjQnZThXQfdcJnmLw=;
+        fh=FPuMdgAyt7Oe25yEdEqr0NY+y/jzlUxqu45/cGAU0sc=;
+        b=gabD4FdDERGOj5mvK4sLHpaw83GnbIloUbY0fQrUQ2Lq4SVMKsMx3/QXC+cpATAwNj
+         YV1QObO+1Acwnu4r06XMiOHfeSvVrIKpCOzx28moRZ+7f4SW2yULKwXNXqI6eZNyd8oO
+         OcQ8bSo4QwOau5ZqO8aeb7zF200sq0OTbhSJmMTmkq4VVIxjbUI0vSOa4jHVbIaD8J3V
+         Xi8CJjo+PIJB5hLDGYzd8LRg6G9t0PeFUayuIATuI64+4VoaQcjaREVQJCj8rfCCUiZT
+         4BM9SCoRZ1/mcgsCMq0qnyfBWlkQaC8wvVrdE4IdyuXa8+tUAbqgkwt9iEoPZ6d6jhGX
+         Q/7A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1788708087; x=1789312887; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=fs6XUMvGp+baARz1Qk60hvLbKLNjQnZThXQfdcJnmLw=;
+        b=MLaCtnwnqOmU6GacYdE+OkbSaZdxo5b9/wpp5UWKAd78Fbje14If7g35Dm2JpZfFzN
+         icdVYFnbj1Ig0/mNt5cClzj8p7BYyMX3KYLgBx5l7x9QtOs1fNHVwil2FkbMitF+c7cK
+         9H3q31BgZotWB4s/qgt5KN0sZyFb5mKHs2/DX/l8zk0gd+wRulYdyHV30YpmHtG3tGXq
+         W6O6TcRLCRZEicRRDbfqhg7FEHrh0zbG5Rgknb6MijiyaMdlUjEG05XCaXF0iagU5Ru0
+         I08F9JS518I3//gmvEAQwPxvL7RUZI8IeJvPfmjSZAt2lFdFLXRnPKnV82qcassUvl6U
+         zu1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788708087; x=1789312887;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=fs6XUMvGp+baARz1Qk60hvLbKLNjQnZThXQfdcJnmLw=;
+        b=i1rI4BK0+4oPf9PHxHsCwx/ANnuzwUc04QPXKU75xYy/ZsYwcg7aYK7wwxBxAAM9ez
+         MfmBwA5SAx8z+vkpCRYprmTQwxZVXrGjr3aDBpyOY0P2Kbtc6HjJEIIDjnMradr2PeZf
+         0GnDIiVqnRGfI3XWugrsGvLA6ZfEVPHlX00pM1Bs9l9KmOyWExFz2s3j+92wP9GECYV/
+         N0bojKR8WjkCiV9Ai/yEueQVPOb1Fgqx2ocL/2Ir1RS28bMJuCPmtd/2BPiuYQag+quX
+         KAx4dRy21XoLMiWncH6TX7Q4wYSqto2Gri9DLAXgO/uVY37ZHbZmZiv7HnemUqIpI2Ep
+         ZMgg==
+X-Forwarded-Encrypted: i=1; AKwUvBz34om2uSQl2K3D9jg7qF3/FsKPC4qUF7wM19osxioy3ze8WUaVvVmeth8at7rf3ZE38au5poo=@vger.kernel.org
+X-Gm-Message-State: AFuF++kTHtlNt1i1scyWLoAp7Khh+pFrtYCIBbTdG91xkdABL8R1aosN
+	wyOUR4ldvExxQiIsSemZPNhLDvDoyAj1OiI40Pnm40A+os951FQ78WJy7D7s/LP6fw0P2yQrXvZ
+	gc3mOhwyw611bpH2Kuis69/JM+82jxYTKEtHeI7+q
+X-Gm-Gg: AYBFou1UBwhymdj5Pxl8fr6WqOzaDjaCGStV/aWQUWg3rrQ5xc78uFQrLXKLRm96qpB
+	a18LJKVKnV3V3v9LKxWKJPeZVC8VsZl0kTgbewkKGgmIS3nU0/r7dD5U6zw5OLsHURVG7h3Ku0H
+	XMDswJiWNs3HYnUP8niTivlp1VrNdoOEPS5xQaCY7ffFjEvEZEolx4EeXBhYKPwmXYaFjdiC4WT
+	zMFRLjJdPTiRU2Nn341mVDtHfSfd66A95KqaTk8xqVAqU3/wRpLW+tptbFaeDOpMiXimkqpOD9R
+	AFZmYAp/vLXqPaWSJ8ysWwRDWnbM3MsMaFeo7rKcRBgmXkT5PmdvnOzVd6YmLIAzdWKAlOHWIui
+	7dAw6Kp7nN6JOGNQ8IIpbQnN8xhydKGkEluzszSn/Imxeqefd0aBYI8OW2IpTMOgiKk7f
+X-Received: by 2002:ac8:5fc8:0:b0:51b:ec6c:766c with SMTP id
+ d75a77b69052e-530546a82admr168582461cf.12.1788708086577; Sun, 06 Sep 2026
+ 08:21:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|DS0PR12MB8455:EE_
-X-MS-Office365-Filtering-Correlation-Id: 701a7f0e-5571-4c80-fdee-08df0c298777
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|7416014|376014|23010399003|6133799003|3023799007|10067099003|4143699003|56012099006|11063799006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	jcvE/iV+FznNk1eNjKF3CKx3fW0KEy3HjzzaT5B825dfx8YmBK+5qcIkMNInPaarQF57xNs8WCGmHFuLlqBY+C36O/xMzFMliM1Q1s3OqYtBhXHsQqwhYzryDaKoh3obGm5hrB3g7eMa545UG5cmn+lysTYx+4ZOY0WmDuZBQJyd6EGUeltRx1F+tkTPYiC0DjHKzplrlu91MBgReGN6DEF6JWN2eXHmm92mbdBKdKVY/EifOiyfKZv9P/SEqZ6bU728nFyAljP3oHVyLWsYJm3EjiHIjuRIezftE35fXORDZwKVyrjttAx/NrQJ3KO47PASHTB52vJvIoi1mJ0LHMRyhZKvndFzeH8wblBsaJxe9QiDN/9Y0GcUsrjThHTayC5Bdy6c/BgrRVsZmwNNyVYz0YTmi749A0Z3UIK82HaJPT9AL5GQ17KCHNjGKpKugGZWfve1fnWbML9Ulk/p4WFz7P2uDN++ky8OWaaeu7udaP+H+t4sMBwzQbRrgSs62OKccGSi4bd5SmPOjyYA5NebCNcdpW0pBsF4q+PkFrSHvfvjQpRUZBZYBzIXCQ4Dv0hAWQxT4h5fbjL6nSgUF3SIect9tSQ6WMLyrNX7O3OGiYsQlctUJQhp3/9hswNHyOvC7h23YJy8TJXKwHPHI+oQBz6LTb9msVxBeQabxNo=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(23010399003)(6133799003)(3023799007)(10067099003)(4143699003)(56012099006)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?NcT/r0goJKIs17fgeknxcUk5hoBB3KsAFJFwGmcG8hCV5SRpA9mlhfEk9fwP?=
- =?us-ascii?Q?6GktDJsmt5V7oVyWEC/hV6sd+9OX32O4eztgenErr6y8jreZLRKCcG8ljZUc?=
- =?us-ascii?Q?wlEow4WnIA7CxK10k8yGd9hwQ06QyefvSSQe4eH2v7mESNMi8sHN7JQ2Aqgc?=
- =?us-ascii?Q?5ujqhWQKiAfNIi0cOGZYWB7kQbEv+U3hUstlp4yOXogVG7wfZgJWzMGbYqto?=
- =?us-ascii?Q?gJWWsJtDe6MVIsITvtKG4tx5S0LFKF4oILq4Jc+bS6nU0I+Gjo3rBFqrpSsJ?=
- =?us-ascii?Q?cpDDveAjbPFYlGsDZDzHEbvtbQJu2fLJKhO+KJYTT1ijOsk7+ikdL7zoeseQ?=
- =?us-ascii?Q?BNTThu1Yf5OEC6lx58en4eLWJYxnQ0ADK1eM6omxcvWK8NhLGn+TM2scrEj0?=
- =?us-ascii?Q?4pak3eIZAHtRhShmP48HlAHfg9vQBZS9ZwoZ4vmCYi9hsVKm43miHGJP0DLN?=
- =?us-ascii?Q?plTZRVIRJeECI6P3M1xZufjhQtH/+/Oyf0cOKZlHHappB9T05Wh/+rUaL5p6?=
- =?us-ascii?Q?7/0jLMsvbrRy58OPR3VZHB6heLhLgW8/k/RfpLOHpxKBq96Q5PVEmdV/253m?=
- =?us-ascii?Q?LaHmiebEfTYl4jRLkmBwuSV/8gyVesHIWRpxu9DCy3CUEAnewemPv6iWUtLo?=
- =?us-ascii?Q?2uVIXM0D5I9T8rsLozybhro5FTtuCnVQa0urG7q3HAGeCxw6mZkWcp1LHdtn?=
- =?us-ascii?Q?U9BB1s3gKWiiAusgYA9KHLfgb5+os/xpKOmkiM2ukj42BvF8hKP/009MUrSW?=
- =?us-ascii?Q?YZLfFrD3Wmhz6LJCEKmcLCW+7GafXHQ+YkCVUWNhRNuWhwQI52bpSgBsPTfi?=
- =?us-ascii?Q?T1Vj2zCNKoRc6dki7ygTqPhL74tZwz+b14E2htiqqgDiMXOf3Tkathruma2t?=
- =?us-ascii?Q?r9kBBYMAMQbshwOzr1/DAtZW1bpt+75LjoZSt/Y3MbZpWDtvP29ccNjML+uZ?=
- =?us-ascii?Q?2VXrLRmX/dupi1mDW32pCo1V6eoEBkSe9C365YMc+2sgSkRhsjYpEWgheBHI?=
- =?us-ascii?Q?H1dXHMW2yJFvEU2JpjXOd3w5WpiwCWKNl1dsWGSIMIoip2MvDfj3LtMCvkY8?=
- =?us-ascii?Q?328w2gkmWWihzS76wPu39CeZtxbBW1BV5ycCnAToHLAKVzEPc4xlc/6+ROko?=
- =?us-ascii?Q?PLYgnxP4vSMzEr4usurQTvdnfGocM73Ltd+IgMaPkZ6rIoi66q+stn0eykxi?=
- =?us-ascii?Q?/bHJtNmYBn0to3OLaqHe/OjNSrFibEdgqqbDu1svlsHUImjl3sjhyCNO6P5B?=
- =?us-ascii?Q?PfVijVd6DL0OqIVlFctF+ldxX8YkYdWKoTymWGZnRk0rFpa4+DO4T03O5z72?=
- =?us-ascii?Q?FLZKaZWAgU4EuvDVVhc3pgGeQM0Bn14BLvx65IjERAhprFu8skWIcvcLMFEJ?=
- =?us-ascii?Q?nz/tMDzwrOmDtCGunCBWa80qBgRFUUt1GVhRDmQy/Y880xk/7Y9LmAReNiIo?=
- =?us-ascii?Q?DIWxJveY4ecQa/0oEXz0e/wjK0RopA2CXfi1t1RhAyXCkqfAkou0I6pKhRmz?=
- =?us-ascii?Q?1q6ICRwJ04Zv66D+HKod9pbs4hoN2HeLgFOGfsxlndi4JDRttdZ5LXGef393?=
- =?us-ascii?Q?sGiGU0Ro3MF9Fj8mjhqWOo7wvLLHr3lLstR70vlxAdaUFyb38KG736J1LgoR?=
- =?us-ascii?Q?Iq5PoSj8yE7Bhz6es3knzlsHKIdYqGSy2OTJZtIHkLhi1IbsWAcNeX9CR+ZI?=
- =?us-ascii?Q?O4foplhmPWHPkqFH8URJRwnoZgiayXPHoeM+lB3iZh4tBDNK?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 701a7f0e-5571-4c80-fdee-08df0c298777
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Sep 2026 15:14:21.7191
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: iJg89ti2Fx2y75t5hSiWp/oNsWknaZK6GMT7mU++5oulKRacle0wO/yQkqmuHvfJjjVIjnBtZ/8SS8Ge8RX3lQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8455
+References: <20260906123151.1391349-1-inbal.lipshtat@mail.huji.ac.il>
+In-Reply-To: <20260906123151.1391349-1-inbal.lipshtat@mail.huji.ac.il>
+From: Eric Dumazet <edumazet@google.com>
+Date: Sun, 6 Sep 2026 17:21:14 +0200
+X-Gm-Features: AcwNN1WQXnyvmj9l2_bsUIwHuwiFXu_9bQaNcLrHVCLBPE8dwq4euhetf9-yCEQ
+Message-ID: <CANn89iLLWbqTk4zCaa3cB9BJAC1MmUjVBMXXPJGgzw37u+s_Lg@mail.gmail.com>
+Subject: Re: [PATCH] tcp: validate old ACKs before fast path data processing
+To: Inbal Schussheim <inbal.lipshtat@mail.huji.ac.il>
+Cc: ncardwell@google.com, kuniyu@google.com, netdev@vger.kernel.org, 
+	davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	linux-kernel@vger.kernel.org, Amit Klein <amit.klein@mail.huji.ac.il>, 
+	Tamir Shahar <tamir.shahar1@mail.huji.ac.il>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Sep 05, 2026 at 06:01:36PM +0800, Ren Wei wrote:
-> From: Zixuan Chai <petalzu987@gmail.com>
-> 
-> ip6_tnl_changelink() can update encapsulation parameters while the
-> netdevice is transmitting packets. ip6_tnl_xmit() can calculate packet
-> headroom with t->encap_hlen and later build an encapsulation header from
-> the live t->encap. A concurrent update can change the encapsulation
-> header between these accesses and make skb_push() underflow the skb head.
-> 
-> Take a local snapshot of t->encap before calculating the encapsulation
-> header length. Use that same snapshot for headroom accounting, metadata
-> validation, and build_header(). This keeps all encapsulation decisions
-> for an skb consistent even if changelink updates the live configuration.
-> 
-> Fixes: b3a27b519b22 ("ip6_tunnel: Add support for fou/gue encapsulation")
-> Cc: stable@vger.kernel.org
-> Reported-by: Vega <vega@nebusec.ai>
-> Assisted-by: LLM
-> Signed-off-by: Zixuan Chai <petalzu987@gmail.com>
-> Signed-off-by: Ren Wei <weir@nebusec.ai>
-
-tl;dr - Some changes are needed for v5.
-
+On Sun, Sep 6, 2026 at 2:32=E2=80=AFPM Inbal Schussheim
+<inbal.lipshtat@mail.huji.ac.il> wrote:
+>
+> For incoming TCP segments processed in the fast path,
+> Linux does not enforce the RFC5961 requirement:
+>
+>    The ACK value is considered acceptable only if
+>    it is in the range of ((SND.UNA - MAX.SND.WND) <=3D SEG.ACK <=3D
+>    SND.NXT).  All incoming segments whose ACK value doesn't satisfy the
+>    above condition MUST be discarded and an ACK sent back.
+>
+> Meaning the ack of incoming segments is no earlier than a window back
+> from the first unacknowledged sent byte.
+>
+> Later work showed that the condition (SND.UNA - MAX.SND.WND) <=3D SEG.ACK
+> can be further tightened, eliminating some demonstrated TCP data
+> injection attacks, resulting in CVE-2023-52881 assigned by Linux and
+> the 2023 patch:
+> Commit 3d501dd326fb1c7 ("tcp: do not accept ACK of bytes we never sent")
+> that rejects ACKs for bytes so far back that were never sent.
+>
+> Link: https://www.cve.org/CVERecord?id=3DCVE-2023-52881
+>
+> Both RFC5961 and the later patch were only applied to the slow path,
+> leaving the fast path vulnerable and noncompliant with RFC5961.
+>
+> Enforce a validation test for the SEG.ACK in the fast path, before the da=
+ta
+> is processed. Failure to pass the validation will result in a challenge A=
+CK
+> and the packet will be discarded in compliance with RFC5961.
+>
+> Some details:
+> RFC5961 (and the 2023 patch) is enforced in tcp_ack()
+> (./net/ipv4/tcp_input.c).
+> Incoming segments to a socket in ESTABLISHED state are processed in
+> tcp_rcv_established() (./net/ipv4/tcp_input.c).
+> Consider a packet that violates RFC5961 (meaning the SEG.ACK is too early=
+).
+> In the slow path (starting at the label "slow_path"), tcp_ack() is invoke=
+d,
+> well before processing the segment data.
+> A challenge ACK is sent there, tcp_ack() returns
+> -SKB_DROP_REASON_TCP_TOO_OLD_ACK,
+> and slow path discards the segment as expected.
+> In the fast path, tcp_ack() is also called,
+> but only after the data from the segment is processed.
+> Furthermore, the return value from tcp_ack() is not checked.
+> De-facto, the data from the segment is accepted
+> (and an ACK is generated), even though the segment violates RFC5961.
+>
+> The following packetdrill script shows the issue at hand.
+> Linux (as a server) accepts data segment processed in the fast path with
+> an ack that is far too low.
+>
+> // BASED ON PACKETDRILL SCRIPT FROM:
+> // Commit 3d501dd326fb1c7 ("tcp: do not accept ACK of bytes we never sent=
+")
+> 0 socket(..., SOCK_STREAM, IPPROTO_TCP) =3D 3
+> +0 setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) =3D 0
+> +0 bind(3, ..., ...) =3D 0
+> +0 listen(3, 1024) =3D 0
+>
+> // ---------------- Handshake ------------------- //
+> +0 < S 0:0(0) win 65535
+> +0 > S. 0:0(0) ack 1 <...>
+> +0 < . 1:1(0) ack 1 win 65535
+> +0 accept(3, ..., ...) =3D 4
+>
+> // Data must be first sent/received on the socket
+> // so that memory is allocated (sk_forward_alloc should be > 0)
+> // and later data will be proccessed in the fast path
+> +0 < P. 1:501(500) ack 1 win 65535 //valid packet forcing memory allocati=
+on
+> +0 > . 1:1(0) ack 501
+>
+> // incoming segment, ack way in the past... (101 + 2^32 - 1500000000)
+> // Oops, unpatched kernels happily accept this packet
+> +0 < P. 501:1501(1000) ack 2794967397 win 65535
+>
+> // On unpatched kernels, this ACK will match,
+> // showing that the segment is accepted
+> +0 > . 1:1(0) ack 1501
+>
+> Reported-by: Amit Klein <amit.klein@mail.huji.ac.il>
+> Reported-by: Tamir Shahar <tamir.shahar1@mail.huji.ac.il>
+> Reported-by: Inbal Schussheim <inbal.lipshtat@mail.huji.ac.il>
+> Signed-off-by: Inbal Schussheim <inbal.lipshtat@mail.huji.ac.il>
 > ---
->  include/net/ip6_tunnel.h | 10 +++++-----
->  include/net/ip_tunnels.h | 10 ++++++++++
->  net/ipv6/ip6_tunnel.c    | 18 ++++++++++++++----
->  3 files changed, 29 insertions(+), 9 deletions(-)
-> 
-> diff --git a/include/net/ip6_tunnel.h b/include/net/ip6_tunnel.h
-> index b99805ee2fd1..6e76e50a4406 100644
-> --- a/include/net/ip6_tunnel.h
-> +++ b/include/net/ip6_tunnel.h
-> @@ -106,22 +106,22 @@ static inline int ip6_encap_hlen(struct ip_tunnel_encap *e)
->  	return hlen;
+>  net/ipv4/tcp_input.c | 26 +++++++++++++++++++++-----
+>  1 file changed, 21 insertions(+), 5 deletions(-)
+>
+> diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+> index daff93d51342..2474871e80ec 100644
+> --- a/net/ipv4/tcp_input.c
+> +++ b/net/ipv4/tcp_input.c
+> @@ -4272,6 +4272,17 @@ static void tcp_rack_update_reo_wnd(struct sock *s=
+k, struct rate_sample *rs)
+>         }
 >  }
->  
-> -static inline int ip6_tnl_encap(struct sk_buff *skb, struct ip6_tnl *t,
-> +static inline int ip6_tnl_encap(struct sk_buff *skb, struct ip_tunnel_encap *e,
->  				u8 *protocol, struct flowi6 *fl6)
->  {
->  	const struct ip6_tnl_encap_ops *ops;
->  	int ret = -EINVAL;
->  
-> -	if (t->encap.type == TUNNEL_ENCAP_NONE)
-> +	if (e->type == TUNNEL_ENCAP_NONE)
->  		return 0;
->  
-> -	if (t->encap.type >= MAX_IPTUN_ENCAP_OPS)
-> +	if (e->type >= MAX_IPTUN_ENCAP_OPS)
->  		return -EINVAL;
->  
->  	rcu_read_lock();
-> -	ops = rcu_dereference(ip6tun_encaps[t->encap.type]);
-> +	ops = rcu_dereference(ip6tun_encaps[e->type]);
->  	if (likely(ops && ops->build_header))
-> -		ret = ops->build_header(skb, &t->encap, protocol, fl6);
-> +		ret = ops->build_header(skb, e, protocol, fl6);
->  	rcu_read_unlock();
->  
->  	return ret;
-> diff --git a/include/net/ip_tunnels.h b/include/net/ip_tunnels.h
-> index 7c9aadfe8fe3..ab217ddbeb20 100644
-> --- a/include/net/ip_tunnels.h
-> +++ b/include/net/ip_tunnels.h
-> @@ -522,6 +522,16 @@ skb_vlan_inet_prepare(struct sk_buff *skb, bool inner_proto_inherit)
->  	return SKB_NOT_DROPPED_YET;
->  }
->  
-> +static inline void
-> +ip_tunnel_encap_snapshot(struct ip_tunnel_encap *dst,
-> +			 const struct ip_tunnel_encap *src)
+>
+> +/* Validates that the ACK is older than the acceptable historical ACK wi=
+ndow*/
+> +static inline bool tcp_ack_too_old(const struct tcp_sock *tp, u32 ack,
+> +                                  u32 snd_una)
 > +{
-> +	dst->type = READ_ONCE(src->type);
-> +	dst->flags = READ_ONCE(src->flags);
-> +	dst->sport = READ_ONCE(src->sport);
-> +	dst->dport = READ_ONCE(src->dport);
+> +       u32 max_window;
+> +
+> +       max_window =3D min_t(u64, tp->max_window, tp->bytes_acked);
+> +
+> +       return before(ack, snd_una - max_window);
 > +}
-
-From Clashiko:
-
-https://netdev-ai.bots.linux.dev/sashiko/#/patchset/2ce8f3e4bbed6060afb0aee33dc4e1d9ae021280.1788262122.git.petalzu987%40gmail.com
-
-"
-The four READ_ONCE() loads set up a lockless read protocol for t->encap,
-but the writer side stays unannotated.  Is the snapshot actually atomic
-across the four fields?
-"
-
-Zixuan Chai, please drop the memset() from ip6_tnl_encap_setup() and add
-WRITE_ONCE() annotations there to avoid KCSAN splats. Also, make it
-clear in the commit message that the snapshot is not atomic and only
-meant to make sure that there's enough headroom in the skb for the
-headers that ip6_tnl_encap() is going to push.
-
-"
-The helper is added to the shared IPv4 tunnel header, but grep shows
-only two files reference it: include/net/ip_tunnels.h (the definition)
-and net/ipv6/ip6_tunnel.c (the sole caller). Should it live in
-include/net/ip6_tunnel.h instead, next to its only user?
-"
-
-Mention in the commit message that the intention is to later use this
-helper in the IPv4 code.
-
 > +
->  static inline int ip_encap_hlen(struct ip_tunnel_encap *e)
+>  /* This routine deals with incoming acks, but not outgoing ones. */
+>  static int tcp_ack(struct sock *sk, const struct sk_buff *skb, int flag)
 >  {
->  	const struct ip_tunnel_encap_ops *ops;
-> diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
-> index d5ff50a2ac01..6ca373d6205a 100644
-> --- a/net/ipv6/ip6_tunnel.c
-> +++ b/net/ipv6/ip6_tunnel.c
-> @@ -1102,6 +1102,7 @@ int ip6_tnl_xmit(struct sk_buff *skb, struct net_device *dev, __u8 dsfield,
->  		 __u8 proto)
->  {
->  	struct ip6_tnl *t = netdev_priv(dev);
-> +	struct ip_tunnel_encap ipencap;
->  	struct net *net = t->net;
->  	struct ipv6hdr *ipv6h;
->  	struct ipv6_tel_txoption opt;
-> @@ -1109,10 +1110,11 @@ int ip6_tnl_xmit(struct sk_buff *skb, struct net_device *dev, __u8 dsfield,
->  	struct net_device *tdev;
->  	int err_count, mtu;
->  	unsigned int eth_hlen = t->dev->type == ARPHRD_ETHER ? ETH_HLEN : 0;
-> -	unsigned int psh_hlen = sizeof(struct ipv6hdr) + t->encap_hlen;
-> -	unsigned int max_headroom = psh_hlen;
-> +	unsigned int max_headroom;
->  	__be16 payload_protocol;
->  	bool use_cache = false;
-> +	unsigned int psh_hlen;
-> +	int encap_hlen;
->  	u8 hop_limit;
->  	int err = -1;
->  
-> @@ -1202,6 +1204,14 @@ int ip6_tnl_xmit(struct sk_buff *skb, struct net_device *dev, __u8 dsfield,
->  				     t->parms.name);
->  		goto tx_err_dst_release;
->  	}
+> @@ -4303,12 +4314,8 @@ static int tcp_ack(struct sock *sk, const struct s=
+k_buff *skb, int flag)
+>          * then we can probably ignore it.
+>          */
+>         if (before(ack, prior_snd_una)) {
+> -               u32 max_window;
+> -
+> -               /* do not accept ACK for bytes we never sent. */
+> -               max_window =3D min_t(u64, tp->max_window, tp->bytes_acked=
+);
+>                 /* RFC 5961 5.2 [Blind Data Injection Attack].[Mitigation=
+] */
+> -               if (before(ack, prior_snd_una - max_window)) {
+> +               if (tcp_ack_too_old(tp, ack, prior_snd_una)) {
+>                         if (!(flag & FLAG_NO_CHALLENGE_ACK))
+>                                 tcp_send_challenge_ack(sk, false);
+>                         return -SKB_DROP_REASON_TCP_TOO_OLD_ACK;
+> @@ -6614,6 +6621,15 @@ void tcp_rcv_established(struct sock *sk, struct s=
+k_buff *skb)
+>                         if ((int)skb->truesize > sk->sk_forward_alloc)
+>                                 goto step5;
+>
+> +                       if (unlikely(before(TCP_SKB_CB(skb)->ack_seq, tp-=
+>snd_una))) {
+> +                               if (tcp_ack_too_old(tp, TCP_SKB_CB(skb)->=
+ack_seq,
+> +                                                   tp->snd_una)) {
+> +                                       tcp_send_challenge_ack(sk, false)=
+;
+> +                                       reason =3D SKB_DROP_REASON_TCP_TO=
+O_OLD_ACK;
+> +                                       goto discard;
+> +                               }
+> +                       }
 > +
-> +	ip_tunnel_encap_snapshot(&ipencap, &t->encap);
-> +	encap_hlen = ip6_encap_hlen(&ipencap);
-> +	if (unlikely(encap_hlen < 0))
-> +		goto tx_err_dst_release;
-> +	psh_hlen = sizeof(struct ipv6hdr) + encap_hlen;
-> +	max_headroom = psh_hlen;
-> +
->  	mtu = dst6_mtu(dst) - eth_hlen - psh_hlen - t->tun_hlen;
->  	if (encap_limit >= 0) {
->  		max_headroom += 8;
-> @@ -1240,7 +1250,7 @@ int ip6_tnl_xmit(struct sk_buff *skb, struct net_device *dev, __u8 dsfield,
->  		goto tx_err_dst_release;
->  
->  	if (t->parms.collect_md) {
-> -		if (t->encap.type != TUNNEL_ENCAP_NONE)
-> +		if (ipencap.type != TUNNEL_ENCAP_NONE)
->  			goto tx_err_dst_release;
->  	} else {
->  		if (use_cache && ndst)
-> @@ -1264,7 +1274,7 @@ int ip6_tnl_xmit(struct sk_buff *skb, struct net_device *dev, __u8 dsfield,
->  			+ dst->header_len + t->hlen;
->  	ip_tunnel_adj_headroom(dev, max_headroom);
 
-"
-t->hlen is still read live here, and it is written with a plain store in
-ip6_tnl_encap_setup() as t->hlen = t->encap_hlen + t->tun_hlen.  So
-dev->needed_headroom is adjusted from a possibly half-updated value
-while the encap length that sized skb_cow_head() came from the snapshot.
-Should this read be covered by the same snapshot protocol the patch
-introduces?
-"
 
-No. The snapshot is meant to make sure that we have enough headroom for
-the headers that we are about to push and the patch achieves it.
+Hi Inbal
+
+I would suggest :
+
+1) reduce the changelog to the problem at hand, not the old ones. You
+do not have to tell a story.
+
+2) Add a selftests (in a separate patch) instead of including it in a chang=
+elog.
+
+3) Make sure to handle pure ACK as well so that we avoid another CVE
+in ~3 years, presumably from your team.
+
+Segments with old ACKs (ack_seq < tp->snd_una) do not belong in the
+fast path in the first place,
+whether they carry payload or are pure ACKs.
+In the pure ACK fast path, an ancient ACK would also bypass drop
+accounting and update
+timestamps/state before tcp_ack() returns an error.
+
+Instead of duplicating the challenge ACK and drop logic in
+tcp_rcv_established(),
+we can simply tighten the header prediction check.
+
+The so-called 'slow-path' is already taking care of this.
+
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index 0f60a1dbf927468741f6f163e8d1b07687452c39..89f9f3913b52ff468f3bd4b098c=
+b5d0f3c45a9d2
+100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -6539,7 +6539,7 @@ void tcp_rcv_established(struct sock *sk, struct
+sk_buff *skb)
+
+        if ((tcp_flag_word(th) & TCP_HP_BITS) =3D=3D tp->pred_flags &&
+            TCP_SKB_CB(skb)->seq =3D=3D tp->rcv_nxt &&
+-           !after(TCP_SKB_CB(skb)->ack_seq, tp->snd_nxt)) {
++           between(TCP_SKB_CB(skb)->ack_seq, tp->snd_una, tp->snd_nxt)) {
+                int tcp_header_len =3D tp->tcp_header_len;
+                s32 delta =3D 0;
+                int flag =3D 0;
+
+
+Thanks!
+
+pw-bot: cr
