@@ -1,85 +1,99 @@
-Received: from mail-106121.protonmail.ch (mail-106121.protonmail.ch [79.135.106.121])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-139.mta0.migadu.com [91.218.175.139])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18B26377ABC
-	for <netdev@vger.kernel.org>; Sun,  6 Sep 2026 07:17:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.121
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97B5F353A81
+	for <netdev@vger.kernel.org>; Sun,  6 Sep 2026 07:42:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.139
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788679032; cv=none; b=S9ISmghsk4i6LqLBW0cDNtdm2z2/EumjLemFvsTg0ZlxNbNeKdG86Zk8GhYKSpaLPrEZ/ndpUVYk2tTzinLXStM+ZlIwgUGsYQAlts3DxXyNM/ff7vGb2dzVJRDMAP1EbnPmtWCrc+O+Qh2f6/rVwQHpnFva/2qOi1gtgXBdvMQ=
+	t=1788680541; cv=none; b=KDbwFDo588VHlCpSTBfM1Mt9wpTijWKMXqyNfiD7esVyEVpRE7DY40JZDdOyPlvMyTDRte5U1SHaQnR5kfXbomiezpmPJiveIlhxHDsmnOwzVFRc0FFl7f0wsnjLdND3KYXdtSz6QKB5YmBOXolXxEvntzNjzecXWEfS10QVcKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788679032; c=relaxed/simple;
-	bh=svJ28Nr1x2+/2H0P9vk+dg3WkoJwazZ1HiL88pPHfWw=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aQ1QFrUkn5QVKAmvgM0vi1OmdcHAUDcOf8E0Ugo1JWIjXTN/N2EttQNe9nyO/dmv/85r8nwCasUjYzXjS/7aE3g7Q32ZTvxYC1/MkWjZMBAzv5N9eURymuDazhuOHc9KoGFa0ei2+DTzGI547Ywg2N+5FzEb8O6lrRvWVm5ZmUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=d++j3ErQ; arc=none smtp.client-ip=79.135.106.121
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1788680541; c=relaxed/simple;
+	bh=63KHiFfHLGH3Q099di+5QV4oPkQj3cHpP147t4LHXJE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bXLZDWj4WBX+qsfBNA/ImxQ/4vL7HWm9/ZhL1H33kowLgQ7sY3+aMttO1xCSgYNWBcxWdNfE28pK/ae2Br4rPPDXVnJHqVwzDYmSrZ0vxwqFHBD5AkQRNZTqOoZLxU+sntqPlVUCxCzwXi/VlViR1ifqmQ6A+yeCR8geIq4Jy+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Alj9Zdqq; arc=none smtp.client-ip=91.218.175.139
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="d++j3ErQ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=hzvz6xoysne47afcy3bu4vxq6a.protonmail; t=1788679018; x=1788938218;
-	bh=ocoVgWYwl1+Ls/Yi4yGNUnvahlYRLe6cMNI+dgYGQ0k=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=d++j3ErQU9fvEsWXnRe2XRkxTRiByf/AR1T0kAJgb2uQHR5IfgEYWXvV1IhZXp94m
-	 mJtRva7falgBwBmkHFU+dsQweX6NPsOwoqJ6gcjWAbPO7SO31Cpb0ANchJK8ptwpi0
-	 KQ7Q2ZEV1yQtE/PtR15ar2v2RxBH8u3JHBO5+K9WgI711fQ6yugRiBtmBTHVRz9e47
-	 xd7iMKSClX1v0x9OnOovfu9EZkZYcrxtCSuGqVWL4XzYKLQJIwu9tRm4QCbX9cjRoH
-	 fxHPtbuZtMfebnmVC4lTPnczixl4DkDQwo76fudMPwQpP20A+jYjkZ4jEULsZi/im8
-	 jPUS3iCyQNDoA==
-Date: Sun, 06 Sep 2026 07:16:54 +0000
-To: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-From: Sagar Taunk <sagartaunk@proton.me>
-Cc: Sagar Taunk <sagartaunk@proton.me>
-Subject: [PATCH 1/3] rust: net: netlink: Migrate to zerocopy's `IntoBytes`
-Message-ID: <20260906071635.160615-2-sagartaunk@proton.me>
-In-Reply-To: <20260906071635.160615-1-sagartaunk@proton.me>
-References: <20260906071635.160615-1-sagartaunk@proton.me>
-Feedback-ID: 130121444:user:proton
-X-Pm-Message-ID: 140f8c1715cba43c8ad3bc952f5b4d62dab90b2c
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Alj9Zdqq"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=63KHiFfHLGH3Q099di+5QV4oPkQj3cHpP147t4LHXJE=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788680537; v=1; x=1789285337;
+ b=Alj9Zdqq8nf0TcVp3+LgqSGf68HQSm3Lp6nWiRkqbKjB7ydVrKfXJCfbH2Ha0Lo+8gc+QeMJ
+ jGum6GWsKMwRjLEPiGI8nMlhns1BCtKHCjMmRv2/bN78L/90XczLbbYknx0rA4DcQZHzAzlctDY
+ OCX737u/izfAWimWEllxG/gk=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id f45d4e25d8183e57;
+	Sun, 06 Sep 2026 07:42:07 +0000
+X-Mizu-Trace-ID: f45d4e25d8183e57
+X-Migadu-Flow: FLOW_OUT
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+To: bpf@vger.kernel.org
+Cc: Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	Ihor Solodrai <ihor.solodrai@linux.dev>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Neal Cardwell <ncardwell@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Aditi Ghag <aditi.ghag@isovalent.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH bpf v2 0/3] bpf,tcp: Fix bpf_sock_destroy() on TIME_WAIT and listener socks
+Date: Sun,  6 Sep 2026 15:41:01 +0800
+Message-ID: <20260906074135.185212-1-jiayuan.chen@linux.dev>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Replace remaning imports of kernel's own `transmute::FromBytes`/`AsBytes`
-traits with their zerocopy equvalent. In this case, `IntoBytes` which is
-already re-exported through kernel's prelude.
+Fix two bugs in bpf_sock_destroy(). One is an out-of-bounds read of
+sk->sk_protocol on TIME_WAIT and NEW_SYN_RECV socks, since the field is
+not in struct sock_common. The other is a might_sleep splat when
+destroying a listener with children in its accept queue, the
+cond_resched() in inet_csk_listen_stop() runs under the iterator's
+rcu_read_lock(). Patch 3 adds a subtest for each.
 
-Link: https://github.com/Rust-for-Linux/linux/issues/1241
-Signed-Off-By : Sagar Taunk <sagartaunk@proton.me>
-Signed-off-by: Sagar Taunk <sagartaunk@proton.me>
----
- rust/kernel/net/netlink.rs | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+v1 -> v2:
+ - Patch 1: fix the return comment too.
+ - Patch 2: new.
+ - Selftest: server recv()s EOF before close so the FINs can't cross,
+   comment style, keep the blank line before RUN_TESTS(), add the
+   tcp_listen_pending subtest.
+v1: https://lore.kernel.org/bpf/20260903125306.299943-1-jiayuan.chen@linux.dev/
 
-diff --git a/rust/kernel/net/netlink.rs b/rust/kernel/net/netlink.rs
-index 22ef3dde36fa..c3b50dd50a4c 100644
---- a/rust/kernel/net/netlink.rs
-+++ b/rust/kernel/net/netlink.rs
-@@ -12,7 +12,6 @@
-     alloc::{self, AllocError},
-     error::to_result,
-     prelude::*,
--    transmute::AsBytes,
-     types::Opaque,
-     ThisModule,
- };
-@@ -84,7 +83,7 @@ impl GenlMsg {
-     #[inline]
-     fn put<T>(&mut self, attrtype: c_int, value: &T) -> Result
-     where
--        T: ?Sized + AsBytes,
-+        T: ?Sized + IntoBytes,
-     {
-         let skb =3D self.skb.skb.as_ptr();
-         let len =3D size_of_val(value);
---=20
-2.55.0
+Jiayuan Chen (3):
+  bpf: Fix out-of-bounds read of sk_protocol in bpf_sock_destroy()
+  tcp: Skip cond_resched() in inet_csk_listen_stop() under BPF context
+  selftests/bpf: Test bpf_sock_destroy() on TIME_WAIT and listener socks
 
+ net/core/filter.c                             |  13 +-
+ net/ipv4/inet_connection_sock.c               |   3 +-
+ .../selftests/bpf/prog_tests/sock_destroy.c   | 119 ++++++++++++++++++
+ .../selftests/bpf/progs/sock_destroy_prog.c   |  30 +++++
+ 4 files changed, 160 insertions(+), 5 deletions(-)
+
+-- 
+2.43.0
 
