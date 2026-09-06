@@ -1,161 +1,128 @@
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A5A2370D4D
-	for <netdev@vger.kernel.org>; Sun,  6 Sep 2026 08:21:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1830370D4D;
+	Sun,  6 Sep 2026 08:23:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788682887; cv=none; b=WDffxnjETBfKw+sk/K21fhCi/jLSV5bvlqPeL0HCUfw706O5FQZa7S1XO31se59LArhzM7+keOmLD/lKWDRwzO4YV2qfQ/ETbyEnCzW9pZbY1rspcKMvRTPbvV7D/I6QY2mC/UHaJCM5hVxsgCkgC6ZbXkpoRq25xOovDezd7l0=
+	t=1788683022; cv=none; b=pKquU9CMWJS6jJK2EdNKOOWQxKYFFL14rcG3e3DIqR1X+fZyeH54zy65dHI/2yQyrIsa4pGjEWakmqvMviGarNY6dwIoeoGWhxen7IhkV14q/r+LSRJaVSHCY99pnuXTlXn3dsqJDTDLo10RYPr5eeV6Zwya1oJ4yf5EeC5R+jY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788682887; c=relaxed/simple;
-	bh=uWZ2W3TIWOIxgvmEeGroNmD7EQCmDVXUTnCWCeAdOdI=;
-	h=From:Content-Type:Mime-Version:Subject:Message-Id:Date:Cc:To; b=bR1sRRu6ruI7aZK7LLC4FmYDO60IPc3QueqD/vcMZz2kSs6Dca8AS1oAjj5u6aM2tP2lkGdyJXYTLH5acK31D6KfiWwpfvSrOFqAMugaaFVE1fe16TfXuuomuQsaE4xaenKfDU9DoUI48i1EVQx9sNV8FQ2P9rwNQNuzJyOPUSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=doyensec.com; spf=pass smtp.mailfrom=doyensec.com; dkim=pass (2048-bit key) header.d=doyensec.com header.i=@doyensec.com header.b=b4JbnRqG; arc=none smtp.client-ip=209.85.208.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=doyensec.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=doyensec.com
+	s=arc-20240116; t=1788683022; c=relaxed/simple;
+	bh=UePYk5EV/Qaqw0IY89yRO0r3qk+k5k+KkQ9cDqfoG4Y=;
+	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
+	 Subject:From:To:Cc:Date; b=uOjBtvbTDNTgM4DXjXHw08QAzYGknBQ0JQfWZiuZbuTZuMJHKA8qd5rtwXGdK8N2lUSv1JLF0Uvyd0v34PSz8X6/EwwvGI2gq3KK3ooWLx4ZPdH6O79OCuy4DzpZJQreMdtBlyM2u6FqwvVvOUZxI4Mb7Jy11hDeyC3Ce7zX59w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AzyqDPzS; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=doyensec.com header.i=@doyensec.com header.b="b4JbnRqG"
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-6a20319d030so3432335a12.2
-        for <netdev@vger.kernel.org>; Sun, 06 Sep 2026 01:21:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=doyensec.com; s=google; t=1788682883; x=1789287683; darn=vger.kernel.org;
-        h=to:cc:date:message-id:subject:mime-version
-         :content-transfer-encoding:content-type:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ykqgg5xFEjRgNm2Nt/xqenv1NfNv6CR9lGS6Bj69weM=;
-        b=b4JbnRqG0ITGek+quOZJ2oQZS/uIyF/kqND/qZ3z9HP/6pKpkQ4BGMqiVJRQ8S+lF5
-         wvqO/U+hPdUasTlD/4ejZ3C8DreMLVvdlY2utmDjRXeheeYy5VuDA1ob3bFhQpQlhrnT
-         x1T68JiJNM9CGPoXCBiYBbHnrL8oL/koHidtx0UAUdqcF9Vv5Pt89n1TfdCR4wV22YX0
-         R7YG4FpImQ1IyRhn9VeUlSLTm5NLSq6b0Ys82SYsN0rJpwQVT1srlP1sZEECckl0YvVV
-         eW60v5hCqQuhfSJy996v2ax35lMLzjJA7wix8rBiR3R2Bz9gInp1RmnD24ViG/oJeMzh
-         GCMQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788682883; x=1789287683;
-        h=to:cc:date:message-id:subject:mime-version
-         :content-transfer-encoding:content-type:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ykqgg5xFEjRgNm2Nt/xqenv1NfNv6CR9lGS6Bj69weM=;
-        b=kDm2b61e7pyx+dPLr74EfJWstoFJZDUnpt2B1PPFxmQyx8u72+iPCM/klZLDMP/0yO
-         e1OPyF8mTlakgdbCXn20BOlEF/u+4ucpIeIzVgYhXlWyRz+JxMG81Do0IvbcWT+1AXZ0
-         UVstxu6kpzWpa6fcDnDcz/eA3EYBbS9Fhs7EcugIGl9NqiTCPAqePE9W/kYoMLyCeBVQ
-         X1V0A84BIU7eY5Ez3VJ3LxHigCFspn1aORQtpwYzNv0amlhSQDgtim9B4VY3FH46YYWz
-         bqbBUJ/8LaHktjPjPzIxHpKOkyREFLEsd5bNjDF2ZXmaKzDJk4vUweOBkr4mOlPBThjr
-         McIg==
-X-Gm-Message-State: AFuF++npycJXux5L0nDLo5ob65mgMP1agzWVuafOYmrsoJKkCr6ADFm6
-	laGQApbJdq2FoFQSpwujadmoNRfMaLv2GeglbncZtMdfearCGiYLh1mrl+6hqH14iA1QCi0V7e3
-	TXbX9YkGvVA==
-X-Gm-Gg: AYBFou0MBmIo4+Cy/b06mq37rCitIJSyzmF1rZjrkaqNhpGXB0YJK2EGu0OJ3E3MGJT
-	ndXueWr57poPRZBPaMF5emR1lFCpXKeNLCyR/HMoyPxagyjXCGOX2ZmNBEJvJK5WTZhaEAb4H9I
-	kX7D64SGDdvJeRwgFH66bJP2LXIsl809JRz0zc7C1CvjWczul2x8nXzgomlHlOg4UkZ+J80jWYO
-	QhLuujy1HSUCZKzqPR26vzno6MKoxhQKTE0bgvRGNjHF6/ZKHsaJ6jxr2I3tCBNZ3qe9Byv9rCC
-	r02In2Fx892ZP+9aglaJdHNxIopNPJvhlYdF/7XaXhVkHV5IxC396qRyoMSiF1JTRoXRY2Yex4z
-	jzhezAggfUPnFmpPetY2og5JvvALvCKKGVyOPfWj8xM5JXxJcobTx2/Lk4LTqvyK3mRgwaTNv4l
-	uvTPazeJkkfCxVK78qqzdj9AZuLHoLHSqE0ze/6Y/badI1shegqLiELqnV/TDb4iHHxV5W64KED
-	VhT1VSuuV5RpTkME7D4hUBzfZIVQUnNbeb8Zbo5og==
-X-Received: by 2002:a05:6402:21cd:b0:6a3:87b7:b5a9 with SMTP id 4fb4d7f45d1cf-6a7e90aacd1mr5281640a12.12.1788682883313;
-        Sun, 06 Sep 2026 01:21:23 -0700 (PDT)
-Received: from smtpclient.apple (83.10.35.35.ipv4.supernova.orange.pl. [83.10.35.35])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a7e68c3b6asm3091727a12.13.2026.09.06.01.21.20
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 06 Sep 2026 01:21:22 -0700 (PDT)
-From: Norbert Szetei <norbert@doyensec.com>
-Content-Type: text/plain;
-	charset=us-ascii
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AzyqDPzS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 189521F00A3A;
+	Sun,  6 Sep 2026 08:23:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788683020;
+	bh=tf2tdIx2P84L1/srTfE4j0DrGr7do6OVoEKFu4XPMyg=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date;
+	b=AzyqDPzSWkPtereqLO0/5w/WRiBqEltQzimGBA+SxP5qglz0IEpD+bHK8qQjgzThf
+	 w5E8aS/sLkv450lSvAzxzUsn09MfzGBJTNY8Lk+5PIFCO4bGVcp9zmFw1/w6vIl/i/
+	 Mtms+8NtSw4CSyxv5i9EHYxuEV3k8KytrIBEqR9OJsktQi0bRZD1nNGA43bhxTJWaq
+	 KE58ACJ+JAcSwRvlL1zYv4V6rFWUq0o2fjtjhyeIgezRHmGSFumW0YHB+Cv4As6LGd
+	 UBsaahYwt1n79WitFwM3nBsK4KtfqhwiLhspf4MdXeBOfb4lWvGSX7yCTSk5ElkeUu
+	 b4qxMIXiVnnhA==
+Content-Type: multipart/mixed; boundary="===============8904504023982474725=="
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81.1.4\))
-Subject: [PATCH net] net: openvswitch: fix use-after-free of the flow table
- mask array
-Message-Id: <DE115F9C-2545-423E-A702-986FC952FD62@doyensec.com>
-Date: Sun, 6 Sep 2026 10:21:09 +0200
-Cc: Aaron Conole <aconole@redhat.com>,
- Eelco Chaudron <echaudro@redhat.com>,
- Ilya Maximets <i.maximets@ovn.org>,
- "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>,
- dev@openvswitch.org,
- linux-kernel@vger.kernel.org
-To: netdev@vger.kernel.org
-X-Mailer: Apple Mail (2.3826.700.81.1.4)
+MIME-Version: 1.0
+Message-Id: <0aa6425f9e8f32705ae827f6325b29079234c3f3d0c7b2cdefba3e5b50432766@mail.kernel.org>
+In-Reply-To: <20260906074135.185212-3-jiayuan.chen@linux.dev>
+References: <20260906074135.185212-3-jiayuan.chen@linux.dev>
+Subject: Re: [PATCH bpf v2 2/3] tcp: Skip cond_resched() in inet_csk_listen_stop() under BPF context
+From: bot+bpf-ci@kernel.org
+To: jiayuan.chen@linux.dev,bpf@vger.kernel.org
+Cc: jiayuan.chen@linux.dev,daniel@iogearbox.net,john.fastabend@gmail.com,sdf@fomichev.me,martin.lau@linux.dev,ast@kernel.org,andrii@kernel.org,eddyz87@gmail.com,memxor@gmail.com,song@kernel.org,yonghong.song@linux.dev,jolsa@kernel.org,emil@etsalapatis.com,ihor.solodrai@linux.dev,davem@davemloft.net,edumazet@google.com,kuba@kernel.org,pabeni@redhat.com,horms@kernel.org,ncardwell@google.com,kuniyu@google.com,shuah@kernel.org,aditi.ghag@isovalent.com,netdev@vger.kernel.org,linux-kernel@vger.kernel.org,linux-kselftest@vger.kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
+Date: Sun,  6 Sep 2026 08:23:39 +0000 (UTC)
 
-tbl_mask_array_realloc() retires the old mask_array before it stops =
-being
-reachable:
+--===============8904504023982474725==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-	old =3D ovsl_dereference(tbl->mask_array);
-	if (old) {
-		...
-		call_rcu(&old->rcu, mask_array_rcu_cb);
-	}
+> tcp: Skip cond_resched() in inet_csk_listen_stop() under BPF context
+>
+> bpf_sock_destroy() runs from the tcp iterator, under rcu_read_lock(). If
+> the sock is a listener that still has children in its accept queue,
+> tcp_abort() ends up in inet_csk_listen_stop() and the cond_resched()
+> there trips the debug check:
+>
+> BUG: sleeping function called from invalid context at net/ipv4/inet_connection_sock.c:1523
+> in_atomic(): 0, irqs_disabled(): 0, non_block: 0, pid: 628, name: test_progs
+> preempt_count: 0, expected: 0
+> RCU nest depth: 1, expected: 0
+> locks held by test_progs/628: 3, last CPU#3:
+>  #0: ffff8881158cee18 (&p->lock){+.+.}-{4:4}, at: bpf_seq_read+0x56/0x1210
+>  #1: ffff8881106bb858 (sk_lock-AF_INET6){+.+.}-{0:0}, at: bpf_iter_tcp_seq_show+0x32b/0x4b0
+>  #2: ffffffffb435af20 (rcu_read_lock){....}-{1:3}, at: bpf_iter_run_prog+0x46b/0xde0
+> CPU: 3 UID: 0 PID: 628 Comm: test_progs Tainted: G        W           7.2.0+ #65 PREEMPT
+> Tainted: [W]=WARN
+> Call Trace:
+>  <TASK>
+>  dump_stack_lvl+0xc1/0xf0
+>  dump_stack+0x10/0x20
+>  __might_resched+0x3d2/0x610
+>  inet_csk_listen_stop+0x7b/0xbf0
+>  tcp_abort+0x23b/0x3b0
+>  bpf_sock_destroy+0xfc/0x140
+>  bpf_prog_448133d24601754f_iter_tcp6_server+0x81/0x8a
+>  bpf_iter_run_prog+0x538/0xde0
+>  bpf_iter_tcp_seq_show+0x26b/0x4b0
+>  bpf_seq_read+0x424/0x1210
+>  vfs_read+0x197/0xe40
+>  ksys_read+0x119/0x240
+>  __x64_sys_read+0x72/0xc0
+>  x64_sys_call+0x647/0x27e0
+>  do_syscall_64+0xe5/0x610
+>  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> RIP: 0033:0x7fad39b28aca
+> RSP: 002b:00007ffc381c61c0 EFLAGS: 00000246 ORIG_RAX: 0000000000000000
+> RAX: ffffffffffffffda RBX: 00007ffc381c6a88 RCX: 00007fad39b28aca
+> RDX: 0000000000000032 RSI: 00007ffc381c6250 RDI: 0000000000000014
+> RBP: 00007ffc381c61e0 R08: 0000000000000000 R09: 0000000000000000
+> R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000003
+> R13: 0000000000000000 R14: 000055f077c1bbb0 R15: 00007fad3a0f3000
+>  </TASK>
+>
+> The commit that added the kfunc already guards lock_sock() in tcp_abort()
+> and udp_abort() with has_current_bpf_ctx(), but missed the listener path.
+> Do the same for the cond_resched(), it can't reschedule there anyway.
+>
+> Fixes: 4ddbcb886268 ("bpf: Add bpf_sock_destroy kfunc")
+> Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-	rcu_assign_pointer(tbl->mask_array, new);
+Is the justification "it can't reschedule there anyway" accurate?
 
-call_rcu() only waits for read-side critical sections already in flight.
-tbl->mask_array still points at old between the call_rcu() and the
-rcu_assign_pointer(), so a reader entering ovs_flow_tbl_lookup_stats() =
-in
-that window picks up old in a fresh critical section that the pending
-grace period does not cover.
+With CONFIG_PREEMPT_DYNAMIC=y booted with preempt=none or preempt=voluntary,
+cond_resched() expands to __cond_resched() which can actually reschedule.
+The splat in the commit message confirms preempt_count is 0 while RCU nest
+depth is 1. With preempt_count==0, should_resched(0) can be true and
+__cond_resched() will call preempt_schedule_common() for a real reschedule.
 
-tbl_mask_array_realloc() runs in process context under ovs_mutex, so the
-window is preemptible and can outlast the grace period. Then
-mask_array_rcu_cb() frees old before the swap runs:
+Additionally, in configurations with CONFIG_PREEMPT_RCU=n where
+rcu_read_lock() is preempt_disable(), __cond_resched() falls through to
+rcu_all_qs() which calls rcu_qs() to report a quiescent state from inside
+an RCU read-side critical section. That's a correctness problem beyond just
+the debug check.
 
-  BUG: KASAN: slab-use-after-free in flow_lookup.constprop.0+0x2bf/0x2f0
-  Read of size 8 at addr ffff888020b3e018 by task poc/741
-   flow_lookup.constprop.0+0x2bf/0x2f0
-   ovs_flow_tbl_lookup_stats+0x4a3/0x5c0
-   ovs_dp_process_packet+0x19c/0x710
-   ovs_vport_receive+0x243/0x390
-   internal_dev_xmit+0x81/0x170
-  Freed by task 728:
-   kfree+0x16a/0x4e0
-   rcu_core+0x853/0x1030
+So the call can either reschedule (PREEMPT_DYNAMIC none/voluntary) or report
+a bogus quiescent state (non-preemptible RCU). Could the justification be
+reworded to explain that the loop runs inside the iterator's RCU read-side
+critical section and must not reschedule or report a quiescent state there?
+The code change itself is correct and matches the existing pattern in
+tcp_abort() and udp_abort().
 
-Publish the new array before retiring the old one. The kfree_rcu() that
-call_rcu() replaced ran after the swap.
 
-Fixes: eac87c413bf9 ("net: openvswitch: reorder masks array based on =
-usage")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-5
-Signed-off-by: Norbert Szetei <norbert@doyensec.com>
 ---
-Reproducer available if needed. The issue was confirmed on a KASAN
-build, where the crash reproduces in about a minute on a 2 vCPU guest.
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
 
- net/openvswitch/flow_table.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/net/openvswitch/flow_table.c b/net/openvswitch/flow_table.c
-index 67d5b8c0fe79..1e0f9d193eb0 100644
---- a/net/openvswitch/flow_table.c
-+++ b/net/openvswitch/flow_table.c
-@@ -257,11 +257,13 @@ static int tbl_mask_array_realloc(struct =
-flow_table *tbl, int size)
- 			if (ovsl_dereference(old->masks[i]))
- 				new->masks[new->count++] =3D =
-old->masks[i];
- 		}
--		call_rcu(&old->rcu, mask_array_rcu_cb);
- 	}
-=20
- 	rcu_assign_pointer(tbl->mask_array, new);
-=20
-+	if (old)
-+		call_rcu(&old->rcu, mask_array_rcu_cb);
-+
- 	return 0;
- }
-=20
---=20
-2.55.0
-
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/34020353095
+--===============8904504023982474725==--
