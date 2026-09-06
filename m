@@ -1,173 +1,132 @@
-Received: from mail-244116.protonmail.ch (mail-244116.protonmail.ch [109.224.244.116])
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013041.outbound.protection.outlook.com [40.93.196.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A2DB392C21
-	for <netdev@vger.kernel.org>; Sun,  6 Sep 2026 10:29:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.116
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788690575; cv=none; b=hJvIThC48VdISJvjIymlKOV87J2YexWP+f9ih4dCegjLL4s9PudWdlLLNIK+pG7Fz9LHl8yYQim367WPJFcSWG4FxNqIW5oEYsZhHZcqSuYyO0JCCt2FOZw3Yg4Ii2JxWP5MDq2rYZUZo0p0dRPZ2C+/rd8KwnnR0uZHqFFybgo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788690575; c=relaxed/simple;
-	bh=rRCH8gt/5mOkrlJvq466GnwekETqDZn0YclcWLINKjM=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=R/36x/cZhs/jw6DWpHYO+SwHerXRm2iMgqwIMczkm1zhVtM30Z9Yjm6Hlcx4dnMvIZ+DAVYshMTXQ/+ybEs4ea636TRvTUAqp+wXl/kkhiFTRQQs7PAmcNLiUI44QhM2JnSxf+ZN0BqI6Pc7P23cIM/VhX/sZU8qQs9cHxaR9bs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=XeFFx3iZ; arc=none smtp.client-ip=109.224.244.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E00D3A6405
+	for <netdev@vger.kernel.org>; Sun,  6 Sep 2026 10:32:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788690772; cv=fail; b=A9A2ue/qm1fwqsEw4H5r4QDVRfEsU+JK7l8GlZ9/4Evj9cltReK6O8N43WSagVC54YT13y3GHDKZjNFo0KelVitRaMlgCpZn5iLBWmXZj6eZNbIYcPrTmTNy51IGEaJuyfF41OZAZ/3A9knI+/9OTHTLfRP/00b9kTz80qEUfcw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788690772; c=relaxed/simple;
+	bh=DPum5qnL/lQacCchOpKIXeCorlc91DcuRfCro25g46A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=XwHNeH2+/77gcIySmrIToNzsjXyQXuIhF3855UVKnViJswe7c+lM4f5iJ7C4EgU00Vt0/5zKbk/tNhT5NtUxWPv/jVl4kUStF9Sm1BrRedFWjq06EwQ/C5ULwRzY46VA1AisAVWPJ6+Q75Nrd8FeM9y2C7gY7Jd9c+yecTyZ8K4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Wy7ltZbL; arc=fail smtp.client-ip=40.93.196.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="XeFFx3iZ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1788690564; x=1788949764;
-	bh=QcZeDQsDI8IiVvV9Mls8GpNfSv4icCfhUiY5ki37lz8=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=XeFFx3iZOMlBRB0osVoQHp8FL6mr7gh/Aa7TIcVzsD9lYKVYE6e6hwQAM5TOzLMCT
-	 G9G1/tjYA9hbhsLDAo5vLx5fcIrHTOMZAvpI/gIAayZnXyYVCMFd5ao78YZEK1WYte
-	 X64zHT0wvJ3VnTm9sgt+38n1gziSKL4S0dK/N/L0kozGKGNLfPzWZIm2dYkeLWP30k
-	 9XpPLIm5laksDHbAQLnn7d84sMQb5dOQ3V3nrnB7G4ZHzqjsE2wQR40zEjPNO1u63d
-	 LkW83q4M0utek52d284QpzO5/deD3h0swI+sGR2SfnpLNWAj2GpS2s7kXXhcD6/Z3R
-	 A2+74sjuNEx3w==
-Date: Sun, 06 Sep 2026 10:29:18 +0000
-To: Miguel Ojeda <ojeda@kernel.org>, Danilo Krummrich <dakr@kernel.org>
-From: Sagar Taunk <sagartaunk@proton.me>
-Cc: Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Eric Dumazet <edumazet@google.com>, "David S . Miller" <davem@davemloft.net>, Simon Horman <horms@kernel.org>, Abdiel Janulgue <abdiel.janulgue@gmail.com>, Daniel Almeida <daniel.almeida@collabora.com>, Robin Murphy <robin.murphy@arm.com>, Andreas Hindborg <a.hindborg@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, driver-core@lists.linux.dev, rust-for-linux@vger.kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Sagar Taunk <sagartaunk@proton.me>
-Subject: [PATCH v2 3/3] rust: dma.rs: Migrate to zerocopy's `Frombytes/IntoBytes`
-Message-ID: <20260906102826.202874-4-sagartaunk@proton.me>
-In-Reply-To: <20260906102826.202874-1-sagartaunk@proton.me>
-References: <20260906102826.202874-1-sagartaunk@proton.me>
-Feedback-ID: 130121444:user:proton
-X-Pm-Message-ID: 76b9c1b357a8041559dba81548bae2c6353a0efd
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Wy7ltZbL"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=jkAW6bVfNo7KR9Mnnf/JrmpvOie7NvvVwHSYN+a9FdARhkfTgAcjeHf+VTYWtDFh3e179h4eb7ZA2A1OkZwtKfGw0UmshmGL8N3pB4DvOCGCaq9bostOITEHDoMqgfUq/eJPvlmrLO+wR89qlgSceoePqFYMOvwJsVZIVKe33T3v1yOCs37DlnWmGGKIr8oEZ+wSfJYRu/B5CvEt6kB3BRadb2CYNnxB692iBunXKqFBbrm0GE1J59iE5I0xJAO4gOFcWSOjU3H5l8SrJpK02y+Xrkhpfo9EArHov1kabsfDbNEIXOuF1DsjodOiFtzLJ2elXB4gbxqFxBwKQ3wBDg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=HoejjMRaqzRi3qQ+i+4uCk5EFCXiiH7agLYTjaGjPYM=;
+ b=FAjdvTZgdLjdgmJWW/x1vgJ1RKDuPy44QGnNK7LOyiH6dYVvr/gmrbOrv85ll1rI0PqMqMIOz3npD0whW09f4d6t87FcsmFp6y7BJ4MEljYsSaCe5mLBRezkIW0g+QeNUklkiIqUhEDyOOoguzC5VqJE91RfYb+RDMSMMjJ3kZnvZeh4SY2/mezHa8PmKopFVN69r9Th2h/eCV1UZyoQFl9X7/OdP9YbOC0JElKoueFlR3OpqVbgXBVqTLBdrz73WELyJHvkn3c6H/ddgBXfgDyABkYdszS9FzIwFINOOuh+Hf1mkxpZLiOAh7JMpOM8CbjAZLRnqHek7HAyQ5BS1Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=HoejjMRaqzRi3qQ+i+4uCk5EFCXiiH7agLYTjaGjPYM=;
+ b=Wy7ltZbLjlDpjhFXgv4MN+QGIKWdSyyP1PkKcS3EoS64m79TIDwIjQzjY7sMjxi03b1J7KsGJ+nSZuHHfF3e2tgFWxqSCxfqm7hheKS6V26xX2RBiHL1L/sNHjnl2xQupm5XLKV9//042mEYunTj9n/wKawl4UTYGh1omksJGEwbOGq1Fp3wmbRc55G4j0z/SrLOH4lNY9/y8AbQtecaNI7rHaqFl8S/+k6F62fEmKUd8g8aryz3dsvp3mQ5aKq2FCOkwB398rE88NA91YsbQ++9ETVDgxNEPWxKOFl3pr0++Mrlt/GH1Qwp5CezlzmySM5j471wXnC/0VcHocmRBQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
+ by SA0PR12MB7092.namprd12.prod.outlook.com (2603:10b6:806:2d5::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.382.15; Sun, 6 Sep
+ 2026 10:32:48 +0000
+Received: from PH0PR12MB7957.namprd12.prod.outlook.com
+ ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
+ ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0382.014; Sun, 6 Sep 2026
+ 10:32:47 +0000
+Date: Sun, 6 Sep 2026 13:32:30 +0300
+From: Ido Schimmel <idosch@nvidia.com>
+To: Nikolay Aleksandrov <razor@blackwall.org>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+	bridge@lists.linux.dev
+Subject: Re: [PATCH net-next v2 0/9] net: bridge: vlan: minor cleanups and
+ annotations
+Message-ID: <20260906103230.GA203224@shredder>
+References: <20260903143138.1574598-1-razor@blackwall.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260903143138.1574598-1-razor@blackwall.org>
+X-ClientProxiedBy: FR2P281CA0168.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:99::17) To PH0PR12MB7957.namprd12.prod.outlook.com
+ (2603:10b6:510:281::22)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|SA0PR12MB7092:EE_
+X-MS-Office365-Filtering-Correlation-Id: 633f9e19-fa15-444f-af5c-08df0c0231e1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|366016|1800799024|23010399003|11063799006|56012099006|10067099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	SkyeQ9AgNNUhhgA+L6GmC9V3cW/8yxEyj1rsCNylqbdLXbJKiUMJN2wq3dQO86IsdCB4N26ZfLPNaVUDT8yMQIDDq8ZoStpa7uoK73l3MRd1X327ZIehpBNpC0iOeFc+XcHDmtKdYDRupKfORt/tAdBGa1DgOqfMxUqImOT1XPUgZPCKj1MggADALQX/6lSh9rSMhUPCF4xR985FzxHrxKxKSj/mwcWebdlvNPmnSQveCjuY5raxTwgBESqbEqiD4xwPDg/rwAFZFxlkrUIq2Ufb/xmPVXsimEIFFt5kXTNmPUPst93bySyNhn/AOQLiLDP/gk+yh5O1L1e2smu5F00SgyISpr3jiG/e09xhrxdio1YRP7tRfSPKsKRx/G3GZh+t1xQ4nsiAjrcgIyLSAk5ifgqAtKuW431Ec/hCAR59WQ5tdsKhW61uiShM8WqAkWsPWfPgqcT3ZCyYvQuhQHPizGH+qPtBoCb8+n1XJj33QUvZl00zfnr/jC/sab0uAB0J+MLX0vu6fGLBKH90hJ090Hrpzr3IAOsJk6DIFjyiZ7Dp1BxXdB0YkLtQaPzxGkt7vx2oikGodzwn4zdtIrJUqKfbg9gEfMoEaiTLUqFBw3zLfxdOeIvlm4lYa8jJ1tazQhkVhSim9VmEi/tujusAJraRXtlAul75BWAezhI=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(23010399003)(11063799006)(56012099006)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?jYXEDNyskP0sLeUBm1k3M7VRnrb/YkIDfhGaG7fdlHTNbmYprl+n8CTv+Oqi?=
+ =?us-ascii?Q?wtixrB78NvsfvIgMHaFLhs6EuHJO7GJRZloJrgiODEFztvFRYmFKHGhprcCD?=
+ =?us-ascii?Q?FSoPJpNO6pGrTzKqVJVWv2CLXq7ICIhRkQ0fE2AM4wfbv5UA514a6Mk0p98P?=
+ =?us-ascii?Q?N26ZnKvWKWeuDuZHOgGmEppNVAAdT+CGyJaxR9AIFqQamESmVgTRX3K6Bh3p?=
+ =?us-ascii?Q?Rhe2HUxJ97QGlrctg/XTwtDWPHPik0qDmtWpgByuJtAQ78lMcghaowGga96z?=
+ =?us-ascii?Q?p2Pi202H1w2R0wjpJUMXzAmxDOwnLWz79xMNraBjmXXicNCAfD/gPnOfAIfY?=
+ =?us-ascii?Q?Rsrk1KKR6Zb+5ZzsKsSwI3XqZjQwERHuI0dAFPmPdCOCRHQgzBIOGqrGJKVd?=
+ =?us-ascii?Q?lQ/IrOR7mtgjL0J/sSuROFp8d9RfCjwUSobx0qHt2Cd3a36HYbCcdmGD4n8F?=
+ =?us-ascii?Q?cws1liH1R3cXwK5rY5Zl/M1e1tU378x4qmPUxFgy5I3RAYYB0xZ+5Jst/iYZ?=
+ =?us-ascii?Q?UGSVQTFkn3nLPj322/TlSqnet31qF+cFLCpFwV4uCo6p7A9KhbECwO+baY7Y?=
+ =?us-ascii?Q?j4t1wvtJ+6m4fF/dXjn5lxsHp89BkT/BwfWH6cRS1kPa6DX0JfPuA+j+sAAy?=
+ =?us-ascii?Q?cw0wxoVxtBpYzDzJKDAuqMR2A3hDUvLbyIJAxEZvD0TaeMLc89haLXay7r0v?=
+ =?us-ascii?Q?to3GYHo5ALawtsZirX6e6thG4lAELATkivry+Plim2IbA2K+e9kuNkQhXLSS?=
+ =?us-ascii?Q?DWYm+xLouKFyvPXmQS7fIFk/3G7uFy1jgdYDxas4lPb6pvJuQ2rY2HIlV5YH?=
+ =?us-ascii?Q?EVdvun7ruhjICX1P1iBXEdXPwTks7VwW7G42HX3ZKNVW0RZA4DgeKi3qgxe7?=
+ =?us-ascii?Q?o0NgiWfylUeyUq/F6EPliFKt85YErRiHMTHKRroxHkzOJ+Floc8l4Ml0n50H?=
+ =?us-ascii?Q?1EAMT2wOeDI8atUbHu3yUBUo2rimZUxN2/57DffUwE22yD2rPhq+2TAfh9S9?=
+ =?us-ascii?Q?qsp/we0eL5rZwvHFs8DLnMhLoarmXVLEGY/+n83aUexuB/isI0gMXeF7Jwlu?=
+ =?us-ascii?Q?AyebLnlT+nvHxLikUcJX0DnnWB3uEwIpvbXJr/Sw+Cr7g/ZaHUvRYGzG6XuX?=
+ =?us-ascii?Q?0k6K2nAzWZEjUKF/Dd+bRBewP5+atAKGJENZO+d8tGJTz+iqn2foLPCy7D7E?=
+ =?us-ascii?Q?wQIxO+qtXJh6GvoMOYRxEwEEqqDExBRIoCL+z+X+uTe6HiYqJbHBn+lLTCR7?=
+ =?us-ascii?Q?V9fQwhU2YmtfvaX1oIPXXhKT5CRBMgwCuKEvH5/4jaGN/FCKBwccDAP7ez2y?=
+ =?us-ascii?Q?z9rvAta3QIcLHqWS+A8BRgcwgrR0zCui755t6y/fluOJdHdhqatVpOdRz7Xc?=
+ =?us-ascii?Q?fomw/zqiHHX8BxQoOp4U8n4rSDkUBeswl9N1RIPM8FlL+jgZY6+fpo9tcP/D?=
+ =?us-ascii?Q?gglFSPL5aVesoEY9MyXyTDW2Ot+6eC90n7pdwqVdMuW/bc7stFcNIXb2+b5V?=
+ =?us-ascii?Q?n8p8lOH0Bts0QdeTQdzCpFmUGZWmgOYG3zMi849ACPJHBXkVIVK0PxBt1lQI?=
+ =?us-ascii?Q?zNY0eNwiPoyPW6meZM5hqs9/0+k6Rk15rQp+6h4KQoWDFGnbq93rtlkcbFR7?=
+ =?us-ascii?Q?GYSCZ71wSpM1zTvpFstzYDzlTZpecf6chYPI/wXMS7m22XBSshCHG7skormO?=
+ =?us-ascii?Q?QtF6FSNQsYgzFnx+G6EeT1c2pxVi1d0KUBr+wDed7/ewbw86?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 633f9e19-fa15-444f-af5c-08df0c0231e1
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Sep 2026 10:32:47.8267
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8Dgn+agzUQeo5QC1qKiZlnK2hbFSbbkLzXaqpSCAIVs9jR++S3qrRoKqKdIeKdCoSv5kloEWWBJCCxkek7zUPw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB7092
 
-Replace explicit imports of `transmute::FromBytes`/`AsBytes` with
-zerocopy's equivalents.
+On Thu, Sep 03, 2026 at 05:31:29PM +0300, Nikolay Aleksandrov wrote:
+> Hi,
+> In preparation for a complete vlan fast-path re-work, this set cleans up
+> a few minor things - removing legacy code barriers that don't help,
+>                      annotating lockless accesses and using proper helpers.
+> No functional changes are intended. Sashiko will find many pre-existing
+> problems, none of them are related to this set. I will try to fix
+> everything pre-existing separately in -net, there will probably be a few
+> critical items. So if there are missed places to annotate, or if there're
+> actual functional changes, these obviously should be addressed in this set.
 
-Link: https://github.com/Rust-for-Linux/linux/issues/1241
-Signed-off-by: Sagar Taunk <sagartaunk@proton.me>
----
- rust/kernel/dma.rs | 22 +++++++++-------------
- 1 file changed, 9 insertions(+), 13 deletions(-)
-
-diff --git a/rust/kernel/dma.rs b/rust/kernel/dma.rs
-index 2ce09f8e90c6..9bd47f20c784 100644
---- a/rust/kernel/dma.rs
-+++ b/rust/kernel/dma.rs
-@@ -25,10 +25,6 @@
-     prelude::*,
-     ptr::KnownSize,
-     sync::aref::ARef,
--    transmute::{
--        AsBytes,
--        FromBytes, //
--    },
-     uaccess::UserSliceWriter, //
- };
- use core::{
-@@ -417,7 +413,7 @@ fn from(direction: DataDirection) -> Self {
- /// ```
- pub struct CoherentBox<T: KnownSize + ?Sized>(Coherent<T>);
-=20
--impl<T: AsBytes + FromBytes> CoherentBox<[T]> {
-+impl<T: IntoBytes + FromBytes> CoherentBox<[T]> {
-     /// [`CoherentBox`] variant of [`Coherent::zeroed_slice_with_attrs`].
-     #[inline]
-     pub fn zeroed_slice_with_attrs(
-@@ -454,7 +450,7 @@ pub fn init_at<E>(&mut self, i: usize, init: impl Init<=
-T, E>) -> Result
-=20
-         // SAFETY:
-         // - `ptr` is valid, properly aligned, and within this allocation.
--        // - `T: AsBytes + FromBytes` guarantees all bit patterns are vali=
-d, so partial writes on
-+        // - `T: IntoBytes + FromBytes` guarantees all bit patterns are va=
-lid, so partial writes on
-         //   error cannot leave the element in an invalid state.
-         // - The DMA address has not been exposed yet, so there is no conc=
-urrent device access.
-         unsafe { pin_init::raw_try_init(ptr, init)? };
-@@ -523,7 +519,7 @@ pub fn from_slice(
-     }
- }
-=20
--impl<T: AsBytes + FromBytes> CoherentBox<T> {
-+impl<T: IntoBytes + FromBytes> CoherentBox<T> {
-     /// Same as [`CoherentBox::zeroed_slice_with_attrs`], but for a single=
- element.
-     #[inline]
-     pub fn zeroed_with_attrs(
-@@ -554,7 +550,7 @@ fn deref(&self) -> &Self::Target {
-     }
- }
-=20
--impl<T: AsBytes + FromBytes + KnownSize + ?Sized> DerefMut for CoherentBox=
-<T> {
-+impl<T: IntoBytes + FromBytes + KnownSize + ?Sized> DerefMut for CoherentB=
-ox<T> {
-     #[inline]
-     fn deref_mut(&mut self) -> &mut Self::Target {
-         // SAFETY:
-@@ -565,7 +561,7 @@ fn deref_mut(&mut self) -> &mut Self::Target {
-     }
- }
-=20
--impl<T: AsBytes + FromBytes + KnownSize + ?Sized> From<CoherentBox<T>> for=
- Coherent<T> {
-+impl<T: IntoBytes + FromBytes + KnownSize + ?Sized> From<CoherentBox<T>> f=
-or Coherent<T> {
-     #[inline]
-     fn from(value: CoherentBox<T>) -> Self {
-         value.0
-@@ -663,7 +659,7 @@ pub unsafe fn as_mut(&self) -> &mut T {
-     }
- }
-=20
--impl<T: AsBytes + FromBytes> Coherent<T> {
-+impl<T: IntoBytes + FromBytes> Coherent<T> {
-     /// Allocates a region of `T` of coherent memory.
-     fn alloc_with_attrs(
-         dev: &device::Device<Bound>,
-@@ -753,7 +749,7 @@ pub fn init_with_attrs<E>(
-         // SAFETY:
-         // - `ptr` is valid, properly aligned, and points to exclusively o=
-wned memory.
-         // - If `raw_try_init` fails, `self` is dropped, which safely free=
-s the underlying
--        //   `Coherent`'s DMA memory. `T: AsBytes + FromBytes` ensures the=
-re are no complex `Drop`
-+        //   `Coherent`'s DMA memory. `T: IntoBytes + FromBytes` ensures t=
-here are no complex `Drop`
-         //   requirements we are bypassing.
-         unsafe { pin_init::raw_try_init(ptr, init)? };
-=20
-@@ -948,9 +944,9 @@ unsafe impl<T: KnownSize + Send + ?Sized> Send for Cohe=
-rent<T> {}
- // methods that access the buffer contents (`field_read`, `field_write`, `=
-as_slice`,
- // `as_slice_mut`) are `unsafe`, and callers are responsible for ensuring =
-no data races occur.
- // The safe methods only return metadata or raw pointers whose use require=
-s `unsafe`.
--unsafe impl<T: KnownSize + ?Sized + AsBytes + FromBytes + Sync> Sync for C=
-oherent<T> {}
-+unsafe impl<T: KnownSize + ?Sized + IntoBytes + FromBytes + Sync> Sync for=
- Coherent<T> {}
-=20
--impl<T: KnownSize + AsBytes + ?Sized> debugfs::BinaryWriter for Coherent<T=
-> {
-+impl<T: KnownSize + IntoBytes + ?Sized> debugfs::BinaryWriter for Coherent=
-<T> {
-     fn write_to_slice(
-         &self,
-         writer: &mut UserSliceWriter,
---=20
-2.55.0
-
-
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
