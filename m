@@ -1,262 +1,103 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f44.google.com (mail-yx1-f44.google.com [74.125.224.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D767A36197A;
-	Sun,  6 Sep 2026 17:04:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9483536167F
+	for <netdev@vger.kernel.org>; Sun,  6 Sep 2026 17:08:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788714249; cv=none; b=XbwtuJqtx/QVEncYny7yMsxuxPHFe3jCqVSOtTehkhM2iCsr9KStwDOB/Mc2li1rK8+sPPgYzIhSHqupQvm6mKtEvIW8VDzuqN+x3tbBzc+04oWV33wApzZ86C30ZrfWnEEEyWw+HXGmQDuohb1XUjekSaPBe5oK1t+pAhpuS9s=
+	t=1788714516; cv=none; b=Vmr+oSIRGPbtujD0Vb/DzjIXHOMV03WWYjJb1KihMvmOFrYSZEjb49sYsczqgtSt6f5CXqzqpnMfPm24eeyUZpuwYJggwe3Rw1WC0825roojcLLDxjgOQc5nWaewbv4ymIku/0yWTJxCIF/calxWZnm5rEXWYWJNMgK8g7NVlio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788714249; c=relaxed/simple;
-	bh=uGPegOZ4x6exHDrJaJIMYvVtnTBGa3syLmKxGKgaxXI=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=VjDhoAjaPp5iFskVlEB8Sbqx9eSx57/1EAtOc+m29QxyuHTrHHl5GRh+vFp8Y6KcJNCkBvYDHEOEJBO/KpymtKIf9MSyiDz9M8h7h+iaN2E34oo7EK44qEF7whd/MI8rwxbgYE6t6tCpcsMW8/XjU6muRnP7+ZDcnhang8c3UCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LvNOGGY3; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788714516; c=relaxed/simple;
+	bh=o8dhmQZK6NUEp7bIlN+A8R8OEGXpbaUT6LyILEBVyOI=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=qn7hK3sGPP07tQ3bIIibTJ82D8Y9k3jORDbsEgBtMY2Yy6byO/Vc/3YXaMe9J1bTddlh+jDnJBiz+bogq2LwQz00LnZYPfue/n6sb/4MR6TUOSW17ZG1PA97RZV/zuXIHUrtU8jBfpokDfFqKLzwtbzAWDCZIswa2QUcLoTbdfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZEv6t4aQ; arc=none smtp.client-ip=74.125.224.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LvNOGGY3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 737AA1F00A3A;
-	Sun,  6 Sep 2026 17:04:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788714247;
-	bh=MhZAd/uwsSOpdpQgbrG1EQklPb0e0DHCvfNgsLIvO44=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=LvNOGGY3DOdN/gj49elHglokg730mBEOFGrXeKRC5SnOZ/KjLEAQzLYZpm5H07Tsy
-	 zlcqbTyyRJ3e1JYYuohLKBPstEiUZVgU2npXniFu8oaeoXaE+GXKZIc2Vp4yTICKdV
-	 4YMF6uKiwwPr3ovJXWfi7qPVCB48M5cji+Ijn3K3JamnkNfSRnduB9/HA/3QfR+JoP
-	 NDPLaWbrYpBjHShrBOx9Gr/6dmFo6aLPSZV7zBvesXWCya42birl3zQrnvzoCy8E0W
-	 ZzT81PjlgZcnU7HuPVqpjMc3dQZf8O9LYUN5oArqvOAeWPupL6zN9qmHwrZScT83mn
-	 1h165F9GwO1xA==
-Subject: Re: [PATCH net-next 6/6] selftests/vsock: test the assign ioctl
- privilege checks
-From: netdev-bot+sashiko@kernel.org
-To: bobbyeshleman@gmail.com
-Cc: sgarzare@redhat.com, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, corbet@lwn.net,
- skhan@linuxfoundation.org, stefanha@redhat.com, mst@redhat.com,
- jasowangio@gmail.com, xuanzhuo@linux.alibaba.com, eperezma@redhat.com,
- shuah@kernel.org, rdunlap@infradead.org, virtualization@lists.linux.dev,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, kvm@vger.kernel.org,
- linux-kselftest@vger.kernel.org, sargun@sargun.me, jlinbox@meta.com,
- bobbyeshleman@meta.com
-Date: Sun, 06 Sep 2026 17:04:06 +0000
-Message-ID: <178871424602.219967.12071178745366323858@kernel.org>
-In-Reply-To: <20260902-vsock-guest-ns-v1-6-9995383e9a8b@meta.com>
-References: <20260902-vsock-guest-ns-v1-6-9995383e9a8b@meta.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZEv6t4aQ"
+Received: by mail-yx1-f44.google.com with SMTP id 956f58d0204a3-66e63c2c9e1so3526568d50.0
+        for <netdev@vger.kernel.org>; Sun, 06 Sep 2026 10:08:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788714514; x=1789319314; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=waPq+1f8MAQW2drA+fK4ok8lWk2s9MiqHdPG9dnO1bU=;
+        b=ZEv6t4aQcic+gy/hKOjAcSQTANeUesFAGoQ+uFLcxv/XSccm3lUeqw6OOGFqgwWIo8
+         ePfOTbmS1kKN7mAcxdrZJGPLFs7xeeWhPW2wJd/MJgG9MBWFZeiC44nvnN/zU+7dCJtA
+         VZZjCk56VEPEc35c1gq9pYB+uGRfM/kuVGyKpasfWlm/vCswwUwTTNfmRw/mx4FFJS0o
+         C0cpvXyntZxGXhturuUdWQTW7c9ZQkBfGGvmdnlvf3NwqBAlkzibXWigrucfbF425q5i
+         bM4p1D7GvO7UiJ8+vhx+097VQzY+5zSuPBTqX1wCD5ld05Ru7zSntkhhDVswFd8b0elp
+         d+8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788714514; x=1789319314;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=waPq+1f8MAQW2drA+fK4ok8lWk2s9MiqHdPG9dnO1bU=;
+        b=KU4h6nQY951X2p67E/aVukW5sd6VkruOlDxAQBIh1Y+2DivZ7ggUm8QUAQdFkmSjdp
+         jQgtMGctIIPPP39d+ltIWMCRcUTpCbTEV3M78KvE4YZ70prtGbyABStcI+UZ5zkwnHyd
+         v43SaIKTi+9odzCVrjUIAerq8ofROnoLjQyKL8xSp/7oVRi2HUuYZiy0uqhzShp2IjRT
+         A39uqH3e27YeyzUYGOAz6nNNubsSCl6X8GJ9NNDG7YYU27Lo7M15daHsjBlmsPKIze29
+         uEOHOjyjuWV40hn5h/1JugBrXKco8UFt4hYqaqaAtKbJCdAMyhWHnDDzZVt0G6thfcvY
+         m9cA==
+X-Gm-Message-State: AFuF++m5ZOXXVx33mYbe2DcF131yLdL13nY1i8OtGdNu0lTLv32ltqkJ
+	HhXBVYtzqIDZE70wQURUz45ptKOgbcb8gaZZrtHF1M/YhtMlZEr90poL
+X-Gm-Gg: AYBFou0X54E9Ak9W20h+70cXZg2h6+VSitcNYw0xiYV9NwZ8ALs9ZSfTSfqvtSG9qMd
+	AkKOxzFlABWgGwEprGBA7XTC4seLdrmWg202WeHJIpDwIeOBTDQcpkWm4ZE6pbEi2hCbY+sqODV
+	FBqEaR/UouBTtZM9dcnRElljlmftk88/tw1v+PiwGJVgip4d9NPnvff7iyKFw+GybK+VSVvGFAL
+	guI2Csu+NdgewX4AEBEOIoXBg8hpyMBCBVmJrfLOFlKVY/6fm15CsV6LBsb97VMelVQBGM9FH5W
+	/xcrca6JgD/AaS6QYu68jqy2idECzDecgG2r1RCLmyNVoVgqWRAu91yKR190uGff9cm1q909ooF
+	8F5CPDb7rioI4G6TjAUpP0QLvFFY3MxHv11wWmfsXMJ97q7jiQjCyybKHZqwXLaRRUCJH6m8gFs
+	Qo25ahstm7PNL6byzFLyUiEBXkvbF9N8AIr3DKg5zyUnOHtmHxd9Ww3KV62kQtHXuJAgtReMR/J
+	XWYnR6vQSUFt+F7fdCPXyN9A67McbS1zB9RHPKM6Q==
+X-Received: by 2002:a05:690e:258f:b0:66f:c1bc:405e with SMTP id 956f58d0204a3-66fc1bc44d6mr1456669d50.38.1788714514524;
+        Sun, 06 Sep 2026 10:08:34 -0700 (PDT)
+Received: from gmail.com (234.207.85.34.bc.googleusercontent.com. [34.85.207.234])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-87149316347sm58780277b3.15.2026.09.06.10.08.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 06 Sep 2026 10:08:33 -0700 (PDT)
+Date: Sun, 06 Sep 2026 13:08:33 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Daniel Zahka <daniel.zahka@gmail.com>, 
+ Jakub Kicinski <kuba@kernel.org>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+ "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, 
+ Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org
+Message-ID: <willemdebruijn.kernel.160e8de2976b3@gmail.com>
+In-Reply-To: <20260903-psp-prep-v1-1-d47e9c4c375d@gmail.com>
+References: <20260903-psp-prep-v1-0-d47e9c4c375d@gmail.com>
+ <20260903-psp-prep-v1-1-d47e9c4c375d@gmail.com>
+Subject: Re: [PATCH net-next 1/4] psp: refactor psp_dev_tx_key_del()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider:
+Daniel Zahka wrote:
+> No functional changes.
+> 
+> Lift the list deletion and tx spi validation code into
+> callers. Deferred key deletion code paths will need similar checks
+> that a tx key needs removal from the underlying device, but will
+> diverge when it comes to list handling and when to call
+> psp_dev_ops::tx_key_del().
+> 
+> Also, move the predicate for tx key deletion into a helper for
+> readability and reuse in later patches.
+> 
+> Signed-off-by: Daniel Zahka <daniel.zahka@gmail.com>
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 1
-
-- [Medium] test_ns_guest_assign_g2h_netns_unpriv_user_ns_fails()
-  (tools/testing/selftests/vsock/vmtest.sh:1835-1863) runs the helper as…
-- [Medium] Both new tests equate a remote command exit status of 1 with
-  'the kernel returned -EPERM from IOCTL_VM_SOCKETS_ASSIGN_G2H_NETNS'.
-- [Low] Both new shared-VM tests (vmtest.sh:1820-1833 and 1835-1863) are
-  added to USE_SHARED_VM but omit the `vm_reset_g2h` teardown that every…
-
---
-
-selftests/vsock: test the assign ioctl privilege checks
-
-This adds two vmtest.sh cases around IOCTL_VM_SOCKETS_ASSIGN_G2H_NETNS on
-/dev/vsock: one drops CAP_NET_ADMIN via setpriv, the other runs the helper
-as an unprivileged uid inside a new user plus net namespace.  Both expect
-the helper to exit with the ioctl's errno, and CONFIG_USER_NS is added to
-the config.
-
-No Link: tags are present in the commit header.
-
-> diff --git a/tools/testing/selftests/vsock/vmtest.sh b/tools/testing/selftests/vsock/vmtest.sh
-> index 53591fa07f1a..efb94d17d997 100755
-> --- a/tools/testing/selftests/vsock/vmtest.sh
-> +++ b/tools/testing/selftests/vsock/vmtest.sh
-> @@ -28,6 +28,7 @@ readonly WAIT_PERIOD=3
->  readonly WAIT_PERIOD_MAX=60
->  readonly WAIT_QEMU=5
->  readonly PIDFILE_TEMPLATE=/tmp/vsock_vmtest_XXXX.pid
-> +readonly EPERM=1
->  declare -A PIDFILES
-
-[ ... ]
-
-> @@ -333,7 +344,8 @@ check_args() {
->  }
->  
->  check_deps() {
-> -	for dep in vng ${QEMU} busybox pkill ssh ss socat nsenter unshare; do
-> +	for dep in vng ${QEMU} busybox pkill ssh ss socat nsenter unshare \
-> +		setpriv; do
->  		if [[ ! -x $(command -v "${dep}") ]]; then
->  			echo -e "skip:    dependency ${dep} not found!\n"
->  			exit "${KSFT_SKIP}"
-
-[ ... ]
-
-> @@ -1805,6 +1817,51 @@ test_ns_guest_assign_g2h_netns_reset_on_ns_delete_ok() {
->  	return "${KSFT_PASS}"
->  }
->  
-> +test_ns_guest_assign_g2h_netns_no_cap_net_admin_fails() {
-> +	local cmd="unshare -n setpriv --bounding-set=-net_admin"
-> +	local rc
-> +
-> +	vm_ssh "init_ns" -- "${cmd}" ./vsock_assign_g2h_netns &>/dev/null
-> +	rc=$?
-> +
-> +	if [[ "${rc}" -ne "${EPERM}" ]]; then
-> +		log_host "expected EPERM (${EPERM}) without CAP_NET_ADMIN, got ${rc}"
-> +		return "${KSFT_FAIL}"
-> +	fi
-> +
-> +	return "${KSFT_PASS}"
-> +}
-
-[Severity: Medium]
-Can this test pass without ever issuing the ioctl?
-
-The helper turns errno into its own exit status:
-
-tools/testing/selftests/vsock/vsock_assign_g2h_netns.c:main() {
-	ret = ioctl(fd, IOCTL_VM_SOCKETS_ASSIGN_G2H_NETNS);
-	if (ret < 0) {
-		ret = errno;
-	...
-	return ret;
-}
-
-so "the ioctl returned -EPERM" is encoded as exit status 1, which is also
-the generic EXIT_FAILURE of the two wrappers that are prepended here.  If
-util-linux unshare cannot create the network namespace, or setpriv was
-built without libcap-ng and cannot handle --bounding-set=-net_admin, the
-wrapper exits 1 before exec'ing the helper, rc is 1, and the test returns
-KSFT_PASS with vsock_dev_do_ioctl() never reached.
-
-The &>/dev/null redirection discards the wrapper's own error message, so
-that outcome is silent.
-
-check_deps() only verifies that the setpriv binary exists, not that
---bounding-set is supported, so an unsupported setpriv becomes a pass
-rather than a skip.
-
-The same conflation applies to the second test below: the pre-flight probe
-runs only "unshare -U true", while the command actually executed is
-"${unpriv} unshare -Urn ${helper}".  A failure of the -r or -n part, or of
-setpriv --reuid/--regid/--clear-groups, also exits 1 and is read as the
-ioctl's EPERM.
-
-Would it be better for the helper to report a distinct sentinel exit code
-(or print a machine-checkable marker) for the ioctl result, so that the
-kernel's capable(CAP_NET_ADMIN) check in vsock_dev_do_ioctl() cannot be
-weakened without these tests noticing?
-
-> +
-> +test_ns_guest_assign_g2h_netns_unpriv_user_ns_fails() {
-> +	local helper=/tmp/vsock_assign_g2h_netns
-> +	local unpriv_uid=65534
-> +	local unpriv
-> +	local rc
-> +
-> +	unpriv="setpriv --reuid=${unpriv_uid} --regid=${unpriv_uid}"
-> +	unpriv="${unpriv} --clear-groups"
-> +
-> +	if ! vm_ssh "init_ns" -- "${unpriv} unshare -U true"; then
-> +		log_host "unprivileged user namespaces unavailable, skipping"
-> +		return "${KSFT_SKIP}"
-> +	fi
-> +
-> +	# The home shared with the guest is root-only, so place the helper where
-> +	# an unprivileged user can execute it.
-> +	vm_ssh "init_ns" -- \
-> +		"cp ./vsock_assign_g2h_netns ${helper} && chmod 755 ${helper}"
-> +
-> +	vm_ssh "init_ns" -- "${unpriv} unshare -Urn ${helper}" &>/dev/null
-> +	rc=$?
-> +
-> +	if [[ "${rc}" -ne "${EPERM}" ]]; then
-> +		log_host "expected EPERM (${EPERM}) for an unprivileged user, got ${rc}"
-> +		return "${KSFT_FAIL}"
-> +	fi
-
-[Severity: Medium]
-Can uid 65534 open /dev/vsock in this guest at all?
-
-The node is created from a miscdevice with no .mode:
-
-net/vmw_vsock/af_vsock.c
-static struct miscdevice vsock_device = {
-	.name		= "vsock",
-	.fops		= &vsock_device_ops,
-};
-
-misc_devnode() only overrides the mode when c->mode is non-zero, and
-devtmpfs_create_node() then applies mode 0600 with uid/gid
-GLOBAL_ROOT_UID/GLOBAL_ROOT_GID.  In the bare virtme-ng guest this script
-boots there is no udev rule loosening it, so /dev/vsock is 0600 root:root.
-
-With unshare -Urn only kuid 65534 is mapped, so the inode's kuid 0 is
-unmapped in the new user namespace and capable_wrt_inode_uidgid() cannot
-grant CAP_DAC_OVERRIDE.  open("/dev/vsock", O_RDONLY) then fails with
-EACCES and the helper does:
-
-tools/testing/selftests/vsock/vsock_assign_g2h_netns.c:main() {
-	fd = open("/dev/vsock", O_RDONLY);
-	if (fd < 0) {
-		fprintf(stderr, "open /dev/vsock: %s\n", strerror(errno));
-		return -1;
-	}
-
-which is exit status 255, so this rc check reports "expected EPERM (1) for
-an unprivileged user, got 255" and returns KSFT_FAIL even though the
-kernel behaved as intended.  The stderr message explaining why is dropped
-by &>/dev/null.
-
-Would it make sense to test whether the unprivileged uid can open
-/dev/vsock first and return KSFT_SKIP if it cannot, so that an
-inaccessible device node is distinguished from a refusal by the
-CAP_NET_ADMIN check?
-
-> +
-> +	return "${KSFT_PASS}"
-> +}
-> +
-
-[Severity: Low]
-Both new tests are listed in USE_SHARED_VM but neither calls vm_reset_g2h,
-while every other g2h-assign test does so on both the success and failure
-paths, for example test_ns_guest_assign_g2h_netns_connect_to_host_ok(),
-..._init_ns_connect_fails(), ..._host_connect_ok() and
-..._reset_on_ns_delete_ok().
-
-If the capable(CAP_NET_ADMIN) gate in vsock_dev_do_ioctl() is ever
-weakened, the assign succeeds inside the throwaway unshare -n or
-unshare -Urn namespace and these tests return KSFT_FAIL with the guest's
-vsock device still owned by a dying namespace.
-
-The neighbouring test already documents that the hand-back is not
-immediate:
-
-	# The holder is gone, but the namespace itself is dismantled from a
-	# workqueue, so the device does not come back the same instant. Retry
-	# until it does, rather than expecting the first send to succeed.
-
-Could the following shared-VM tests then run while the device is still
-unavailable, turning one real failure into a series of spurious ones?
-Should these two tests call vm_reset_g2h before returning, like the others?
-
->  shared_vm_test() {
->  	local tname
->
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260902-vsock-guest-ns-v1-0-9995383e9a8b%40meta.com
+Reviewed-by: Willem de Bruijn <willemb@google.com>
