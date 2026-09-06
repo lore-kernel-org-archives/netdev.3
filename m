@@ -1,49 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2891E3D5241;
-	Sun,  6 Sep 2026 13:33:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50D571FD4;
+	Sun,  6 Sep 2026 13:33:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788701633; cv=none; b=ARw/EoqqlF20btyS/yPvYCTn9mcb0Xd4rRr3P1j0T/CvSdSp2ss2tm52giPKhUIRp3t8Vtd2UOJOqyQYznP8twATea0XmowrgIvh+I32elt7ofjpq+8Hgm4XPOST0hbtmIbEZ4fOQyuFcLEDQGAZ/ItobVXqdqUJLvnijX7A/fQ=
+	t=1788701637; cv=none; b=shl7ayTb7josRunqYJSj5VuKGJBErwPO+lDxmI2fcKV0XRquiuimfxPJ0ByiGYv4xBXbLO8RBsOwLPdLeIhLRkdCqArx4gFi4PGZiumbzaenuXvq+L2ufyfGbKlyqob/3htEOobKCsh+HpZ+awjElQvrTGbSVrz/w6ITXtj9I1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788701633; c=relaxed/simple;
-	bh=v5Cmm4HKd07E8xmcmZlrRNkuesin1tN047/M3BTd/iw=;
+	s=arc-20240116; t=1788701637; c=relaxed/simple;
+	bh=9WwnX6Oy8SwjYT4mkd3WfDEispkJUVrvdc0/nwSwflY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U7fghC76N8wO7v2AvWgW5OL7JZKmvfPGNAXQUH23ydqyAigOUna8j/fNfn9cdTQ4p+xe1oZgkY4IdFL1p1k9z2/qN6IDd34zBqcuZ4Ci1ecGiJBI3PrEmFBes54kUtrMyZsy+xZ4zTwdcKDpRaJ0TZejPpg5l4hYt9N03GL6SHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XXY3Z1MR; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=mpITaReHglMXUKliIa7rlb1Ba6qlTgEVphVAWGfjwkUKmNW/roYm3jdlQbIJg9ke3aMS0q5X8rWJrEcxF1SMyzwYVG7tiXL9hNaXIItEvBoaat34f5HunV7gAmlQNYS8NLwH2a/n6aIRNFUqw2UNnSseoy7Hf9cBdSYMo/F/5Is=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mDfCcx3u; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XXY3Z1MR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B28881F00ACA;
-	Sun,  6 Sep 2026 13:33:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mDfCcx3u"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67C371F00A3D;
+	Sun,  6 Sep 2026 13:33:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788701628;
-	bh=QwzPbntWEQhpa2X35RldwG3rUsX2TQwN18soR5fZqrM=;
+	s=k20260515; t=1788701631;
+	bh=O+T+CEl3nX4kKk1DcMbOHHCsf5QZslg9EhYziHwEqP4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=XXY3Z1MRIlNV3wafjzOJ2tcsFx9Ybm/7DV0AIwvEa8CQEVfjxAzaC7FsBIHtPzC7p
-	 G7LXoYbhuD72uEdCf45Tws0a3PI4SigTunqV4Nr633pHa+FVK8M9TYU4ARb2F0P3H6
-	 bAgmPpmaAvvRBwzqos3TDwZ9B3/V5trpuAfD+zoOJY46CnvX+5aFAHqnuAirk+UjT1
-	 rAAvqZMs6Q6V7E7aFGHLbDFPUn5BHLO3jwZa7kIu5srOBba6+y0DUTnwkMcETmS3Jo
-	 KZYQfHWxEzaLlKie/m/apXP/A23oFOFuyIXHudQUwvKYmwmZmSsY/BAr3gJ8bCWs3u
-	 4Pb5tvkSB9Wdg==
+	b=mDfCcx3urStXVfz2B4nEUy0ELt7erimu+XlKQzi2pswO3mT23Ui/OoteS/9TFFp/3
+	 pNcD/wSH9zodFD5jtjBgazaEOB1+7NTzY/gL23DKu5W/qNRoZJe0+jPMgrDtrkYdBt
+	 sUSturo0Uu6UOJx7kuqo1qLMGytb6pMCjZV71Ry0ga91znL0FLFMRK86OtUqDYF0qM
+	 jA27ngbfbvfBL841Gcdpad/ROEmpz8H+LeuFWrnGK7tGb+rZcdHN1rLLvAj5pE7qSI
+	 HM669usB1d/hm4czgJUV4yyU6Vg6nZsgDzh9ZGi2CDktLwrHr8iLlcQQCGQSvn+yye
+	 /2DChgD+CvREg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Sasha Levin <sashal@kernel.org>,
-	Bjorn Topel <bjorn@kernel.org>,
-	Magnus Karlsson <magnus.karlsson@intel.com>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Jozsef Kadlecsik <kadlec@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
+	netfilter-devel@vger.kernel.org,
 	netdev@vger.kernel.org,
-	bpf@vger.kernel.org,
-	Jason Xing <kernelxing@tencent.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Jakub Kicinski <kuba@kernel.org>,
 	Suraj Jitindar Singh <surajjs@amazon.com>
-Subject: Re: [PATCH 6.12.y] xsk: cache csum_start/csum_offset to fix TOCTOU in xsk_skb_metadata()
-Date: Sun,  6 Sep 2026 09:32:54 -0400
-Message-ID: <2026-09-05-daily-reply-0024-xsk-csum-toctou-6-12@kernel.org>
+Subject: Re: [PATCH 6.1.y] netfilter: nf_tables: make nft_object rhltable per table
+Date: Sun,  6 Sep 2026 09:32:56 -0400
+Message-ID: <2026-09-05-daily-reply-0026-nf-tables-rhltable-6-1@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260903221130.27316-1-surajjs@amazon.com>
-References: <20260903221130.27316-1-surajjs@amazon.com>
+In-Reply-To: <20260904013102.22326-1-surajjs@amazon.com>
+References: <20260904013102.22326-1-surajjs@amazon.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -52,13 +49,13 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-> The TX metadata area resides in the UMEM buffer which is memory-mapped
-> and concurrently writable by userspace. In xsk_skb_metadata(),
-> csum_start and csum_offset are read from shared memory for bounds
-> validation, then read again for skb assignment. A malicious userspace
-> application can race to overwrite these values between the two reads,
+> The nft_object rhltable is global, this allows for accessing objects
+> that are being dismangled from lookup path by other existing netns.
+> Given the nft_obj_destroy() releases the object inmediately, this might
+> lead to use-after-free of these objects that are being released.
+> Make the existing rhltable per table to address this issue to deal with
 
-Queued for 6.12, thanks.
+Queued for 6.1, thanks.
 
 -- 
 Thanks,
