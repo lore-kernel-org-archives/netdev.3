@@ -1,237 +1,161 @@
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 464F7422556;
-	Sun,  6 Sep 2026 08:20:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A5A2370D4D
+	for <netdev@vger.kernel.org>; Sun,  6 Sep 2026 08:21:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788682827; cv=none; b=oB2/3NaSoU9EyHHXIeqOsYYQDr5PCY0I6LRL6tgqH2tRJXmZD4IBMasOdLJMMMjBQbiB6CGhnTO6Xngl41bzlWiQhQajJYw1ZuEYmJVjpFuXWcowy4P+fvTKbc7kvcM6QCDpVBpYpYaRijtjMPBvu3MmTzg96qaDsA6X2j3lR5I=
+	t=1788682887; cv=none; b=WDffxnjETBfKw+sk/K21fhCi/jLSV5bvlqPeL0HCUfw706O5FQZa7S1XO31se59LArhzM7+keOmLD/lKWDRwzO4YV2qfQ/ETbyEnCzW9pZbY1rspcKMvRTPbvV7D/I6QY2mC/UHaJCM5hVxsgCkgC6ZbXkpoRq25xOovDezd7l0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788682827; c=relaxed/simple;
-	bh=5wMLiO/m6DP23c5WzhgmTRjNAdIHtwOTtbPd0Usu2Bk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KBs9B9H9zhMAYExaP0CuOD/fqoB9fvCMdX3S8WCVbwS2OHjnqGO1YLwWfjLdSFi5smnZ9u1hGzHKq/IHusOeIaCjMS4dNO+6+ajgkU32TPynh09+gIA0Lpr6pkHGgfzAAcWUqH2hi4mQFvoPE0zPmdlsnVYRz5nLT5VkMWL+MRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=markus.stockhausen@gmx.de header.b=CjywL2Y2; arc=none smtp.client-ip=212.227.15.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+	s=arc-20240116; t=1788682887; c=relaxed/simple;
+	bh=uWZ2W3TIWOIxgvmEeGroNmD7EQCmDVXUTnCWCeAdOdI=;
+	h=From:Content-Type:Mime-Version:Subject:Message-Id:Date:Cc:To; b=bR1sRRu6ruI7aZK7LLC4FmYDO60IPc3QueqD/vcMZz2kSs6Dca8AS1oAjj5u6aM2tP2lkGdyJXYTLH5acK31D6KfiWwpfvSrOFqAMugaaFVE1fe16TfXuuomuQsaE4xaenKfDU9DoUI48i1EVQx9sNV8FQ2P9rwNQNuzJyOPUSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=doyensec.com; spf=pass smtp.mailfrom=doyensec.com; dkim=pass (2048-bit key) header.d=doyensec.com header.i=@doyensec.com header.b=b4JbnRqG; arc=none smtp.client-ip=209.85.208.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=doyensec.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=doyensec.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=markus.stockhausen@gmx.de header.b="CjywL2Y2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1788682801; x=1789287601;
-	i=markus.stockhausen@gmx.de;
-	bh=BYl5CqLRjFyOOeXcAdy/BFzSvd4ma8dmSeMvRtlfRAs=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:In-Reply-To:
-	 References:MIME-Version:Content-Transfer-Encoding:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=CjywL2Y2ERbEDnH7Bd9ss0PHwEMS2na4rny+32xFUj7EICsrREf8M6HMe/eY12ym
-	 w5s9jBkzkUbH6fq6n8GgTmZW72kEiF1ac3P+brgdVlg5da73nm2SaqYverB7/f98F
-	 oytN0w4fuYSSBpVUv9b5J2RQXs/337Vq84jBcHCBsLkz3dslHt5pa1jXKoe6NWruC
-	 Pd6yHT/QZMr+PbMBBeKTe2K3o5ucMnidubWbQeerNt1VzukCyPsxZpfW9rLb5QORt
-	 JS135cl91WwcMhZxoHRhLkwhfc6lmqWjfC9dIu3OSc+JL3K2PWZqmaG5uUZ9GPSty
-	 ilVVhreNa3qRGedhDQ==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from client.hidden.invalid by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MI5Q5-1x6gre1zPz-00HQsk; Sun, 06
- Sep 2026 10:20:01 +0200
-From: Markus Stockhausen <markus.stockhausen@gmx.de>
-To: andrew@lunn.ch,
-	hkallweit1@gmail.com,
-	linux@armlinux.org.uk,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org,
-	chris.packham@alliedtelesis.co.nz,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	devicetree@vger.kernel.org
-Cc: Markus Stockhausen <markus.stockhausen@gmx.de>
-Subject: [PATCH net-next v2 1/3] dt-bindings: net: realtek,rtl9301-mdio: Add clock-frequency
-Date: Sun,  6 Sep 2026 10:19:44 +0200
-Message-ID: <20260906081946.3499898-2-markus.stockhausen@gmx.de>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260906081946.3499898-1-markus.stockhausen@gmx.de>
-References: <20260906081946.3499898-1-markus.stockhausen@gmx.de>
+	dkim=pass (2048-bit key) header.d=doyensec.com header.i=@doyensec.com header.b="b4JbnRqG"
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-6a20319d030so3432335a12.2
+        for <netdev@vger.kernel.org>; Sun, 06 Sep 2026 01:21:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=doyensec.com; s=google; t=1788682883; x=1789287683; darn=vger.kernel.org;
+        h=to:cc:date:message-id:subject:mime-version
+         :content-transfer-encoding:content-type:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ykqgg5xFEjRgNm2Nt/xqenv1NfNv6CR9lGS6Bj69weM=;
+        b=b4JbnRqG0ITGek+quOZJ2oQZS/uIyF/kqND/qZ3z9HP/6pKpkQ4BGMqiVJRQ8S+lF5
+         wvqO/U+hPdUasTlD/4ejZ3C8DreMLVvdlY2utmDjRXeheeYy5VuDA1ob3bFhQpQlhrnT
+         x1T68JiJNM9CGPoXCBiYBbHnrL8oL/koHidtx0UAUdqcF9Vv5Pt89n1TfdCR4wV22YX0
+         R7YG4FpImQ1IyRhn9VeUlSLTm5NLSq6b0Ys82SYsN0rJpwQVT1srlP1sZEECckl0YvVV
+         eW60v5hCqQuhfSJy996v2ax35lMLzjJA7wix8rBiR3R2Bz9gInp1RmnD24ViG/oJeMzh
+         GCMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788682883; x=1789287683;
+        h=to:cc:date:message-id:subject:mime-version
+         :content-transfer-encoding:content-type:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ykqgg5xFEjRgNm2Nt/xqenv1NfNv6CR9lGS6Bj69weM=;
+        b=kDm2b61e7pyx+dPLr74EfJWstoFJZDUnpt2B1PPFxmQyx8u72+iPCM/klZLDMP/0yO
+         e1OPyF8mTlakgdbCXn20BOlEF/u+4ucpIeIzVgYhXlWyRz+JxMG81Do0IvbcWT+1AXZ0
+         UVstxu6kpzWpa6fcDnDcz/eA3EYBbS9Fhs7EcugIGl9NqiTCPAqePE9W/kYoMLyCeBVQ
+         X1V0A84BIU7eY5Ez3VJ3LxHigCFspn1aORQtpwYzNv0amlhSQDgtim9B4VY3FH46YYWz
+         bqbBUJ/8LaHktjPjPzIxHpKOkyREFLEsd5bNjDF2ZXmaKzDJk4vUweOBkr4mOlPBThjr
+         McIg==
+X-Gm-Message-State: AFuF++npycJXux5L0nDLo5ob65mgMP1agzWVuafOYmrsoJKkCr6ADFm6
+	laGQApbJdq2FoFQSpwujadmoNRfMaLv2GeglbncZtMdfearCGiYLh1mrl+6hqH14iA1QCi0V7e3
+	TXbX9YkGvVA==
+X-Gm-Gg: AYBFou0MBmIo4+Cy/b06mq37rCitIJSyzmF1rZjrkaqNhpGXB0YJK2EGu0OJ3E3MGJT
+	ndXueWr57poPRZBPaMF5emR1lFCpXKeNLCyR/HMoyPxagyjXCGOX2ZmNBEJvJK5WTZhaEAb4H9I
+	kX7D64SGDdvJeRwgFH66bJP2LXIsl809JRz0zc7C1CvjWczul2x8nXzgomlHlOg4UkZ+J80jWYO
+	QhLuujy1HSUCZKzqPR26vzno6MKoxhQKTE0bgvRGNjHF6/ZKHsaJ6jxr2I3tCBNZ3qe9Byv9rCC
+	r02In2Fx892ZP+9aglaJdHNxIopNPJvhlYdF/7XaXhVkHV5IxC396qRyoMSiF1JTRoXRY2Yex4z
+	jzhezAggfUPnFmpPetY2og5JvvALvCKKGVyOPfWj8xM5JXxJcobTx2/Lk4LTqvyK3mRgwaTNv4l
+	uvTPazeJkkfCxVK78qqzdj9AZuLHoLHSqE0ze/6Y/badI1shegqLiELqnV/TDb4iHHxV5W64KED
+	VhT1VSuuV5RpTkME7D4hUBzfZIVQUnNbeb8Zbo5og==
+X-Received: by 2002:a05:6402:21cd:b0:6a3:87b7:b5a9 with SMTP id 4fb4d7f45d1cf-6a7e90aacd1mr5281640a12.12.1788682883313;
+        Sun, 06 Sep 2026 01:21:23 -0700 (PDT)
+Received: from smtpclient.apple (83.10.35.35.ipv4.supernova.orange.pl. [83.10.35.35])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a7e68c3b6asm3091727a12.13.2026.09.06.01.21.20
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 06 Sep 2026 01:21:22 -0700 (PDT)
+From: Norbert Szetei <norbert@doyensec.com>
+Content-Type: text/plain;
+	charset=us-ascii
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:rfUqm8lirOudiT1VD0whI84KaPQzCAoJ0toZuMThUkEZPoIbzNo
- 2SVfOSobN6gW6KBnCUFCs8d2HlA9yHziKylf/OpypUT3z5f8kM9xizCB/5DwJytQgZqpnnI
- rssAyulsv67s5+gajhrR1XOrLJEM94pZs3Jk8Bu+FQgjlhBbt5nY99binEerysK1zABlkw4
- nFA37Pbpgn27ixqV42byw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:LrVe2TiRqqc=;2vrGadCYdCGfOHqiLExGMoX/bbs
- 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
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81.1.4\))
+Subject: [PATCH net] net: openvswitch: fix use-after-free of the flow table
+ mask array
+Message-Id: <DE115F9C-2545-423E-A702-986FC952FD62@doyensec.com>
+Date: Sun, 6 Sep 2026 10:21:09 +0200
+Cc: Aaron Conole <aconole@redhat.com>,
+ Eelco Chaudron <echaudro@redhat.com>,
+ Ilya Maximets <i.maximets@ovn.org>,
+ "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>,
+ dev@openvswitch.org,
+ linux-kernel@vger.kernel.org
+To: netdev@vger.kernel.org
+X-Mailer: Apple Mail (2.3826.700.81.1.4)
 
-The Realtek Otto Switch ethernet MDIO controller supports different MDC
-speeds ranging from 1.25MHz to 10MHz. Document the clock-frequency
-attribute for the device tree.
+tbl_mask_array_realloc() retires the old mask_array before it stops =
+being
+reachable:
 
-There is neither an official documentation nor any obvious registers that
-indicate a dependency to one of the hardware clocks. The usable setup bits
-are more like hardcoded values than dividers. Without further details do
-not add a clock reference.
+	old =3D ovsl_dereference(tbl->mask_array);
+	if (old) {
+		...
+		call_rcu(&old->rcu, mask_array_rcu_cb);
+	}
 
-Signed-off-by: Markus Stockhausen <markus.stockhausen@gmx.de>
-=2D--
- .../bindings/net/realtek,rtl9301-mdio.yaml    | 40 +++++++++++++++++++
- 1 file changed, 40 insertions(+)
+	rcu_assign_pointer(tbl->mask_array, new);
 
-diff --git a/Documentation/devicetree/bindings/net/realtek,rtl9301-mdio.ya=
-ml b/Documentation/devicetree/bindings/net/realtek,rtl9301-mdio.yaml
-index 67e0b23a8470..88502d017eed 100644
-=2D-- a/Documentation/devicetree/bindings/net/realtek,rtl9301-mdio.yaml
-+++ b/Documentation/devicetree/bindings/net/realtek,rtl9301-mdio.yaml
-@@ -56,6 +56,9 @@ patternProperties:
-       reg:
-         maxItems: 1
+call_rcu() only waits for read-side critical sections already in flight.
+tbl->mask_array still points at old between the call_rcu() and the
+rcu_assign_pointer(), so a reader entering ovs_flow_tbl_lookup_stats() =
+in
+that window picks up old in a fresh critical section that the pending
+grace period does not cover.
+
+tbl_mask_array_realloc() runs in process context under ovs_mutex, so the
+window is preemptible and can outlast the grace period. Then
+mask_array_rcu_cb() frees old before the swap runs:
+
+  BUG: KASAN: slab-use-after-free in flow_lookup.constprop.0+0x2bf/0x2f0
+  Read of size 8 at addr ffff888020b3e018 by task poc/741
+   flow_lookup.constprop.0+0x2bf/0x2f0
+   ovs_flow_tbl_lookup_stats+0x4a3/0x5c0
+   ovs_dp_process_packet+0x19c/0x710
+   ovs_vport_receive+0x243/0x390
+   internal_dev_xmit+0x81/0x170
+  Freed by task 728:
+   kfree+0x16a/0x4e0
+   rcu_core+0x853/0x1030
+
+Publish the new array before retiring the old one. The kfree_rcu() that
+call_rcu() replaced ran after the swap.
+
+Fixes: eac87c413bf9 ("net: openvswitch: reorder masks array based on =
+usage")
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:claude-opus-5
+Signed-off-by: Norbert Szetei <norbert@doyensec.com>
+---
+Reproducer available if needed. The issue was confirmed on a KASAN
+build, where the crash reproduces in about a minute on a 2 vCPU guest.
+
+ net/openvswitch/flow_table.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/net/openvswitch/flow_table.c b/net/openvswitch/flow_table.c
+index 67d5b8c0fe79..1e0f9d193eb0 100644
+--- a/net/openvswitch/flow_table.c
++++ b/net/openvswitch/flow_table.c
+@@ -257,11 +257,13 @@ static int tbl_mask_array_realloc(struct =
+flow_table *tbl, int size)
+ 			if (ovsl_dereference(old->masks[i]))
+ 				new->masks[new->count++] =3D =
+old->masks[i];
+ 		}
+-		call_rcu(&old->rcu, mask_array_rcu_cb);
+ 	}
 =20
-+      clock-frequency:
-+        default: 2500000
+ 	rcu_assign_pointer(tbl->mask_array, new);
+=20
++	if (old)
++		call_rcu(&old->rcu, mask_array_rcu_cb);
 +
-     required:
-       - reg
+ 	return 0;
+ }
 =20
-@@ -71,6 +74,43 @@ required:
-   - compatible
-   - reg
-=20
-+allOf:
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - realtek,rtl8380-mdio
-+              - realtek,rtl8381-mdio
-+              - realtek,rtl8382-mdio
-+    then:
-+      patternProperties:
-+        '^mdio-bus@[0-3]$':
-+          properties:
-+            clock-frequency:
-+              enum: [2500000, 10000000]
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - realtek,rtl8391-mdio
-+              - realtek,rtl8392-mdio
-+              - realtek,rtl8393-mdio
-+              - realtek,rtl9301-mdio
-+              - realtek,rtl9302b-mdio
-+              - realtek,rtl9302c-mdio
-+              - realtek,rtl9303-mdio
-+              - realtek,rtl9311-mdio
-+              - realtek,rtl9312-mdio
-+              - realtek,rtl9313-mdio
-+    then:
-+      patternProperties:
-+        '^mdio-bus@[0-3]$':
-+          properties:
-+            clock-frequency:
-+              enum: [1250000, 2500000, 5000000]
-+
- unevaluatedProperties: false
-=20
- examples:
-=2D-=20
+--=20
 2.55.0
 
