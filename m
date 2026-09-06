@@ -1,236 +1,190 @@
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA2CF18C02E
-	for <netdev@vger.kernel.org>; Sun,  6 Sep 2026 16:53:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6408D35E953;
+	Sun,  6 Sep 2026 17:04:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788713594; cv=none; b=QfryYqxCtLvytJmdc1Q6cHMF0xOErvz4At5NVR2orAQl40PTVhYHAyn1nQJhNo/V/ct375GE3kT6f63h0yWEgF5gzPTHgm2QkksFeq696r8qCm5SjTcBxEmCXGSdLcUcgWCYNCDW+appbDvvTJ0UfgFFeifPSQq8cbv2PUovBno=
+	t=1788714241; cv=none; b=dvANuwySAj3gw8ylNvQbvgDKgAUMqj8FAoyPte4/wH6Ex/jTrnDk6ir4D3DhcU+DZ4QvDAjrK/cthzqUBfDkdS67e9lXMMa7UKOHPOG0qEBT/X0rW7teFRb5loiwucM+HJA1VfLXOm9YIrBPFJX3ein+yu37CT/kBG+cdtkWktQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788713594; c=relaxed/simple;
-	bh=KuLX5nFd6sKvpOw24HCW5pPqc7gmdWxBz/dxA8XmQXs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ro+PrOKUOGlqErahj2OXmJcFr4Z4v+HBvUWsI9Qiyfd9CkO3+8maRCeAAaPYD/OMbVUeITfEt75cR+reGcFRhhzprD66Gz5WTPClxhDxvZW1p/8XgnsJALkPRJNxDnkdkYEY8MV+HaLapNzl0AAw9SBjSmT8lkPStiNbz2QUGeY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NJCgHhFI; arc=none smtp.client-ip=209.85.160.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788714241; c=relaxed/simple;
+	bh=MYGt/goz2YxcKBNLiTCOtDgRm7Te939HIktN81kX9u0=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=IW/yXtMex1rjFnKYIgZUKvovNgdltHaVRDyInNtx1M+Dh/tB+TU5Xgrt2u/EAFgCXF5CrRddsXeqC9HNf3gB89iUyGhE7hMCPYElIcfuaMBCoMPT+lJ6lxcwQdH1f3v/80T6w/O5RBmqYF0wrRnrl8VS2QP49WQcciN+e5bnPds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DG0ZWREz; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NJCgHhFI"
-Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-5303932c4f3so13869641cf.2
-        for <netdev@vger.kernel.org>; Sun, 06 Sep 2026 09:53:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788713592; x=1789318392; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ZZiMeD/Io3WtmguEFZgA5/+B6qbs9KLh5cpu9F1ku0A=;
-        b=NJCgHhFI67dm+OqHPvxTQWDpfDgLkY5b0CaIPL8jQQtD+hO3du/UoFnOasWuwhkZWU
-         Z625q3gdGHms+U5e8pPKjRd7O8cAjFMH6NBVBju0UgPTRlhNTL4ZXNDF2ZXKecYrWbis
-         Gm3UxlSGO2YrJCUAgGcqVaYonBJ7GuoAS8Oct66mKPigD4LPyAP2JKyrli0OBpwSa3r+
-         T/5TaVEYj0SILYFBQdJpHSWzW05986mWRy2TXX5dFWFY2sDYaDM1QoFB54XOZ0l45XcI
-         AlRVwFOqE4913VRcl0jEgUYalMva7rof6m6p0xIeu6PbP41snkesGUYO6zFhKhMJalOS
-         yAug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788713592; x=1789318392;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ZZiMeD/Io3WtmguEFZgA5/+B6qbs9KLh5cpu9F1ku0A=;
-        b=QLo7NudZnkXv2Fy28mB7RUPaaMfWPiz9W1cYTi6Ucnpb2wtsLTKbn60SNodr9/Ngx6
-         hcXj/BGSG2rFRrSy5l9QRmYRrf2eDCm/IgJIblQviJ1x6u7WW4GXxR9feev7mE1nu0Q8
-         tumMNZYkBbRKCwmiHG48RDnSSqgjEStpTsZXGpFg7xkPAGsgjyQxw3B6UwrM+8EFDwRa
-         Wkro3JuuJ7D3hvJ7rDB39pTCZgYAy3uIolgiMa9IuwRxHZZk75NMEsPv/i5KKlSQq7Wl
-         Ejx3qo0VtsUoeFY9xMKaGE82oli4Mbw0ky3ZXrVSk64U4LUNK9ZSzq9TTXlybZGH/RhQ
-         7Bqw==
-X-Gm-Message-State: AFuF++l9JACfFXXwvG+Dg58BxlIkCZt4sdhoXcwYDip/QWGD4Ni3cHUO
-	zEhtsbt6YtszelasXe8ESX4TZS6Xp5uz517cLaGAlNcFURGBjp9HQa2/vJKBhiZR
-X-Gm-Gg: AYBFou3W8utPeNjKzxF0wIiQRACQSojsNKm20nyCR9rhK8kq7M+C1fRrC1P3d0rQfAB
-	Q9cI8Wbug4/qImwwwOyX++trIgqRrVJNnxSVJTWDOj+zVgjgpyRMT7WFRIUrck37qR2tYBuREoP
-	JR2UT/w5KmcfgZ9RGd7st9xj1qbHozVCSatMzxjg9Ahj9vLj8mCe7k8eTPH0DLka0o6s9dBJFYG
-	juRaDiwqePfeqWzjGc/sbNFlO6cr++K4XtJKxcq17SX0dnTLJaJPwgsuEoEQA+zG4XF0tr0Jz4P
-	wAux269/ouj1EoDZ3ZmO9GlXvOzIIpGEzAlqCVngUTkoU3mIr7rUGlagS03ieiwXwPUHJ4YqiAa
-	RlJ7DVYfOtrutwvP5SMubcGwfz5+8faI3uPgzptZ6uMxVVcCMjnKDpHQuWDtjmFwjSj+iPLtuEt
-	FN4rn9s2j+D4sfg5RTNNqZao9dXMvuAHi9jlrTQzEkfWeB8pZ0xB2Qmda+EDQj7jI=
-X-Received: by 2002:a05:622a:449:b0:530:23cb:cac with SMTP id d75a77b69052e-530547d5adfmr206552741cf.6.1788713591570;
-        Sun, 06 Sep 2026 09:53:11 -0700 (PDT)
-Received: from houminxi ([163.123.141.225])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91040595f81sm72195696d6.2.2026.09.06.09.53.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 06 Sep 2026 09:53:11 -0700 (PDT)
-From: Minxi Hou <houminxi@gmail.com>
-To: netdev@vger.kernel.org
-Cc: aconole@redhat.com,
-	echaudro@redhat.com,
-	i.maximets@ovn.org,
-	davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	horms@kernel.org,
-	shuah@kernel.org,
-	linux-kselftest@vger.kernel.org,
-	dev@openvswitch.org,
-	Minxi Hou <houminxi@gmail.com>
-Subject: [PATCH v3 2/2] selftests/net/openvswitch: add SCTP NAT test with port translation
-Date: Sun,  6 Sep 2026 12:52:51 -0400
-Message-ID: <20260906165251.1176875-3-houminxi@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260906165251.1176875-1-houminxi@gmail.com>
-References: <20260906165251.1176875-1-houminxi@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DG0ZWREz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93DEA1F00A3A;
+	Sun,  6 Sep 2026 17:03:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788714239;
+	bh=yiFg3WA8eYzFRz4XD8gs7F68jVnn0z1bYOUFWOdeVtU=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=DG0ZWREzM2cZUReiwc8Hyz2YG6ief2XqF2XZtSiYfpI+xok6L1sBeUJ4tk9U0CFWP
+	 E7pQ8V1RfC6TnvQ1c2LOQ8kbeR/Aeo8t9YM8gHq3QIGbjtI+OQD3XhOe8tHfi68h04
+	 OZkzY9lpWr/36ZOKxu2Xhjg9JO7ahEVzGNlhfjpAuR2SGBEmd1oC2g960DsZfFPWTj
+	 HcrkYJNJk9ar7fsd34Fq21bSmstQsbwpVA8ejWmbkJoR34E3596uwvEU7Jf8Sh8hRE
+	 A0hEeoLsrDS2GvZrWF0wSXvcD+uXeD4zAdoNYnVjBIZoVqcUJJ1DIjKhu4hGxQu9jX
+	 jXbr635NFFTvA==
+Subject: Re: [PATCH net-next 2/6] vsock: add IOCTL_VM_SOCKETS_ASSIGN_G2H_NETNS
+From: netdev-bot+sashiko@kernel.org
+To: bobbyeshleman@gmail.com
+Cc: sgarzare@redhat.com, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, corbet@lwn.net,
+ skhan@linuxfoundation.org, stefanha@redhat.com, mst@redhat.com,
+ jasowangio@gmail.com, xuanzhuo@linux.alibaba.com, eperezma@redhat.com,
+ shuah@kernel.org, rdunlap@infradead.org, virtualization@lists.linux.dev,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, kvm@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, sargun@sargun.me, jlinbox@meta.com,
+ bobbyeshleman@meta.com
+Date: Sun, 06 Sep 2026 17:03:58 +0000
+Message-ID: <178871423810.219967.10502012402988056292@kernel.org>
+In-Reply-To: <20260902-vsock-guest-ns-v1-2-9995383e9a8b@meta.com>
+References: <20260902-vsock-guest-ns-v1-2-9995383e9a8b@meta.com>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-After conntrack NAT rewrites a packet, OVS refreshes the cached flow
-key in ovs_nat_update_key(), which has a per-protocol branch for the
-L4 ports (UDP/TCP/SCTP, conntrack.c). Address-only NAT cannot tell a
-working SCTP branch from a missing one: the ports survive unchanged
-either way, so a post-recirc match on the original port stays green
-even with the branch deleted. The suite's NAT coverage drives TCP
-over nc, and the merged SCTP test has no conntrack in the path, so
-the SCTP branch goes unexercised.
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider:
 
-Add test_sctp_nat_connect_v4: untracked client traffic to
-192.168.0.20:4443 hits ct(commit,nat(dst=172.31.110.20:5555)),recirc,
-and the post-recirc flows match the translated tuple,
-ipv4(dst=172.31.110.20),sctp(dst=5555). Reply traffic is matched on
-the restored original tuple, sctp(src=4443). With the SCTP branch
-broken the translated port never reaches the key, no post-recirc
-flow matches, and the association fails. The probe flow uses the
-same ct+nat action as the real flows, so a kernel without
-CONFIG_NF_NAT rejects it at flow-add time and the test skips instead
-of failing; CONFIG_NF_CT_PROTO_SCTP=y is added to the config fragment
-for the same reason (the symbol is user-visible only with
-NETFILTER_ADVANCED=y). After the association succeeds the test pushes
-a known payload across and waits for the listener to log it.
+Critical: 0 · High: 0 · Medium: 0 · Low: 3
 
-Signed-off-by: Minxi Hou <houminxi@gmail.com>
----
- .../testing/selftests/net/openvswitch/config  |  1 +
- .../selftests/net/openvswitch/openvswitch.sh  | 87 +++++++++++++++++++
- 2 files changed, 88 insertions(+)
+- [Low] Claim: the new ioctl is inert because no in-tree transport
+  implements `netns_assign_allow`, and `vsock_g2h_net_get()` /…
+- [Low] Claim: TOCTOU between `vsock_g2h_net_assign()` (which only sweeps
+  the connected hash table) and in-flight connections — a socket in…
+- [Low] Claim: the reachability gate in `vsock_assign_transport()` is
+  skipped by the `vsk->transport == new_transport` early return (so a…
 
-diff --git a/tools/testing/selftests/net/openvswitch/config b/tools/testing/selftests/net/openvswitch/config
-index a825e0b5c88e..fa90475dc388 100644
---- a/tools/testing/selftests/net/openvswitch/config
-+++ b/tools/testing/selftests/net/openvswitch/config
-@@ -7,6 +7,7 @@ CONFIG_NET_IPGRE=m
- CONFIG_NET_IPGRE_DEMUX=m
- CONFIG_NF_CONNTRACK=m
- CONFIG_NF_CONNTRACK_OVS=y
-+CONFIG_NF_CT_PROTO_SCTP=y
- CONFIG_OPENVSWITCH=m
- CONFIG_PSAMPLE=m
- CONFIG_VETH=y
-diff --git a/tools/testing/selftests/net/openvswitch/openvswitch.sh b/tools/testing/selftests/net/openvswitch/openvswitch.sh
-index 0926e304ed88..fb37b6ab2ec1 100755
---- a/tools/testing/selftests/net/openvswitch/openvswitch.sh
-+++ b/tools/testing/selftests/net/openvswitch/openvswitch.sh
-@@ -35,6 +35,7 @@ tests="
- 	icmpv6					icmpv6: ICMPv6 echo type match
- 	sctp_connect_v4				sctp: SCTP flow key matching
- 	sctp_connect_v6			sctp6: SCTP flow key matching over IPv6
-+	sctp_nat_connect_v4		sctpnat4: SCTP flow key across conntrack NAT
- 	psample					psample: Sampling packets with psample"
- 
- info() {
-@@ -1186,6 +1187,92 @@ test_nat_connect_v4 () {
- 	return 0
- }
- 
-+# sctp_nat_connect_v4 test
-+#  - SCTP association crosses a ct(commit,nat(dst=ip:port)) DNAT
-+#  - post-recirc flows match the translated address and port, so the
-+#    SCTP branch of the post-NAT flow key update is load-bearing
-+test_sctp_nat_connect_v4 () {
-+	local t="test_sctp_nat_connect_v4"
-+	local payload="SCTP_NAT_DATA_OK"
-+	local rxfile="${ovs_base}/${t}/sctp-rx.txt"
-+
-+	modprobe -q sctp 2>/dev/null || return "$ksft_skip"
-+	socat -V 2>&1 | grep -q "define WITH_SCTP" || return "$ksft_skip"
-+	# SCTP conntrack is compiled into nf_conntrack.ko, so check that
-+	# loading it actually exposed the SCTP conntrack sysctls.
-+	modprobe -q nf_conntrack 2>/dev/null || return "$ksft_skip"
-+	[ -e /proc/sys/net/netfilter/nf_conntrack_sctp_timeout_established ] \
-+	    || { info "no SCTP conntrack support - skipping"
-+	         return "$ksft_skip"; }
-+
-+	sbx_add "test_sctp_nat_connect_v4" || return $?
-+
-+	ovs_add_dp "test_sctp_nat_connect_v4" sctpnat4 || return 1
-+	info "create namespaces"
-+	for ns in client server; do
-+		ovs_add_netns_and_veths "test_sctp_nat_connect_v4" "sctpnat4" \
-+		    "$ns" "${ns:0:1}0" "${ns:0:1}1" || return 1
-+	done
-+
-+	ip netns exec client ip addr add 172.31.110.10/24 dev c1
-+	ip netns exec client ip link set c1 up
-+	ip netns exec server ip addr add 172.31.110.20/24 dev s1
-+	ip netns exec server ip link set s1 up
-+
-+	ip netns exec client ip route add default via 172.31.110.20
-+
-+	# Check if the ct and nat actions can be configured.
-+	ovs_add_flow "test_sctp_nat_connect_v4" sctpnat4 \
-+		'in_port(1),eth(),eth_type(0x0800),ipv4()' \
-+		'ct(commit,nat(dst=172.31.110.20:5555)),recirc(0x1)' &> /dev/null
-+	if [ $? == 1 ]; then
-+		info "no support for ct/nat actions - skipping"
-+		ovs_exit_sig
-+		return $ksft_skip
-+	fi
-+
-+	ovs_del_flows "test_sctp_nat_connect_v4" sctpnat4
-+
-+	ovs_add_flow "test_sctp_nat_connect_v4" sctpnat4 \
-+		'in_port(1),eth(),eth_type(0x0806),arp()' '2' || return 1
-+	ovs_add_flow "test_sctp_nat_connect_v4" sctpnat4 \
-+		'in_port(2),eth(),eth_type(0x0806),arp()' '1' || return 1
-+	ovs_add_flow "test_sctp_nat_connect_v4" sctpnat4 \
-+		"ct_state(-trk),in_port(1),eth(),eth_type(0x0800),ipv4(dst=192.168.0.20)" \
-+		"ct(commit,nat(dst=172.31.110.20:5555)),recirc(0x1)" || return 1
-+	ovs_add_flow "test_sctp_nat_connect_v4" sctpnat4 \
-+		"ct_state(-trk),in_port(2),eth(),eth_type(0x0800),ipv4()" \
-+		"ct(commit,nat),recirc(0x2)" || return 1
-+
-+	ovs_add_flow "test_sctp_nat_connect_v4" sctpnat4 \
-+		"recirc_id(0x1),ct_state(+trk-inv),in_port(1),eth(),eth_type(0x0800),ipv4(dst=172.31.110.20,proto=132),sctp(dst=5555)" \
-+		"2" || return 1
-+	ovs_add_flow "test_sctp_nat_connect_v4" sctpnat4 \
-+		"recirc_id(0x2),ct_state(+trk-inv),in_port(2),eth(),eth_type(0x0800),ipv4(src=192.168.0.20,proto=132),sctp(src=4443)" \
-+		"1" || return 1
-+
-+	ovs_netns_spawn_daemon "test_sctp_nat_connect_v4" "server" \
-+		socat -u -t 1 SCTP4-LISTEN:5555,fork \
-+		OPEN:"$rxfile",creat,append
-+	ovs_wait sctp_eps_has server 5555 || return 1
-+
-+	info "verify SCTP association across NAT"
-+	ovs_sbx "test_sctp_nat_connect_v4" ip netns exec client \
-+	    timeout 3 socat -u STDIN "SCTP4-CONNECT:192.168.0.20:4443" \
-+	    </dev/null || return 1
-+
-+	info "verify SCTP DATA chunk crosses NAT"
-+	ovs_sbx "test_sctp_nat_connect_v4" ip netns exec client \
-+	    timeout 3 socat -u STDIN "SCTP4-CONNECT:192.168.0.20:4443" \
-+	    <<< "$payload" || return 1
-+	ovs_wait grep -q "$payload" "$rxfile" \
-+	    || { info "server did not receive SCTP DATA payload"
-+	         return 1; }
-+
-+	info "done..."
-+	return 0
-+}
-+
- # nat_related_v4 test
- #  - client->server ip packets go via SNAT
- #  - client solicits ICMP destination unreachable packet from server
+--
+
+vsock: add IOCTL_VM_SOCKETS_ASSIGN_G2H_NETNS
+
+This adds an ioctl on /dev/vsock that moves the guest's vsock device into
+the network namespace of the calling process, gated on CAP_NET_ADMIN in the
+initial user namespace, plus a transport hook so transports can opt in.
+Sockets that can no longer reach the device after a move are reset, and the
+device falls back to init_net when the assigned namespace is destroyed.
+
+Link: https://lore.kernel.org/all/20200427142518.uwssa6dtasrp3bfc@steredhat/
+
+No regressions to report on this one. A few areas were looked at closely
+and appear fine; they are noted below only so the review record is
+complete.
+
+> diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+> index 29cde17e08f3..ad11f0f56eb8 100644
+> --- a/net/vmw_vsock/af_vsock.c
+> +++ b/net/vmw_vsock/af_vsock.c
+
+[ ... ]
+
+> @@ -548,6 +571,17 @@ static void vsock_deassign_transport(struct vsock_sock *vsk)
+>  	vsk->transport = NULL;
+>  }
+>  
+> +/* Return true if the loaded g2h transport honours namespace assignment. One
+> + * that does not keeps the reachability rules it had before the ioctl existed.
+> + *
+> + * Must be called with vsock_register_mutex held.
+> + */
+> +static bool vsock_g2h_netns_assignable(void)
+> +{
+> +	return transport_g2h && transport_g2h->netns_assign_allow &&
+> +	       transport_g2h->netns_assign_allow();
+> +}
+
+At this commit no in-tree transport sets .netns_assign_allow, so
+vsock_g2h_netns_assignable() is always false and vsock_g2h_net_assign()
+returns -EOPNOTSUPP, while vsock_g2h_net_get(), vsock_g2h_reachable_sk()
+and vsock_maybe_set_connected() have no callers yet.
+
+The following patch in the series adds virtio_transport_netns_assign_allow()
+and the calls into these helpers, so this is the usual core-first split
+rather than dead code.
+
+> @@ -622,6 +656,13 @@ int vsock_assign_transport(struct vsock_sock *vsk, struct vsock_sock *psk)
+>  		goto err;
+>  	}
+>  
+> +	if (new_transport && new_transport == transport_g2h &&
+> +	    vsock_g2h_netns_assignable() &&
+> +	    !vsock_g2h_net_reachable(sock_net(sk))) {
+> +		ret = -ENETUNREACH;
+> +		goto err;
+> +	}
+> +
+
+This gate is skipped by the preceding
+
+	if (vsk->transport && vsk->transport == new_transport) {
+		ret = 0;
+		goto err;
+	}
+
+early return, but vsock_connect() still consults
+transport->stream_allow() after vsock_assign_transport() returns, and the
+follow-up patch makes virtio_transport_stream_allow() and
+virtio_transport_seqpacket_allow() namespace aware, so a re-connect from an
+unreachable namespace is still refused with -ENETUNREACH.
+
+For SOCK_DGRAM, virtio registers only as VSOCK_TRANSPORT_F_G2H and
+virtio_transport_dgram_allow() returns false unconditionally, so a datagram
+socket never holds the assignable transport.
+
+[ ... ]
+
+> +bool vsock_maybe_set_connected(struct vsock_sock *vsk)
+> +{
+> +	struct list_head *list = vsock_connected_sockets(&vsk->remote_addr,
+> +							 &vsk->local_addr);
+> +	bool reachable;
+> +
+> +	spin_lock_bh(&vsock_table_lock);
+> +	reachable = vsock_g2h_reachable_sk(vsk);
+> +	if (reachable) {
+> +		sk_vsock(vsk)->sk_state = TCP_ESTABLISHED;
+> +		__vsock_insert_connected(list, vsk);
+> +	}
+> +	spin_unlock_bh(&vsock_table_lock);
+> +
+> +	return reachable;
+> +}
+
+[ ... ]
+
+> +static int vsock_g2h_net_assign(struct net *net)
+> +{
+[ ... ]
+> +		rcu_assign_pointer(vsock_g2h_net, net);
+> +		vsock_for_each_connected_socket(transport_g2h,
+> +						vsock_reset_unreachable_sock);
+> +	}
+
+Sockets still in TCP_SYN_SENT, and pending children, are not in the
+connected table and so are not visible to this sweep. The ordering here
+covers that case:
+
+vsock_g2h_net_assign()
+    rcu_assign_pointer(vsock_g2h_net, net);   /* store first */
+    vsock_for_each_connected_socket()         /* under vsock_table_lock */
+
+vsock_maybe_set_connected()
+    spin_lock_bh(&vsock_table_lock);
+    reachable = vsock_g2h_reachable_sk(vsk);  /* re-check under same lock */
+
+Either the insert wins the lock and the later walk sees and resets the
+socket, or the walk wins and the insert observes the new namespace and
+refuses, so a socket cannot slip into TCP_ESTABLISHED in a namespace that
+can no longer reach the device once the transport side lands.
+
 -- 
-2.55.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260902-vsock-guest-ns-v1-0-9995383e9a8b%40meta.com
