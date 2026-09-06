@@ -1,94 +1,71 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail-24416.protonmail.ch (mail-24416.protonmail.ch [109.224.244.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB77839EF20;
-	Sun,  6 Sep 2026 10:12:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D011F392C21;
+	Sun,  6 Sep 2026 10:12:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.224.244.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788689523; cv=none; b=romCFKak6ZcJwlLPXVOZY18UByw7RJmyebL8AhoBOYTkCggW7F/b1j6A/1/519wcoGkOeKfcL3RNTSwza08lJuEGMcxX2F8Sg7fRyKTKfpngKjdboue1yuGcHc2PI76jXpm9i3IsqAoibTM/3Val9XUHlTosdfwhkk5OcUvz0ic=
+	t=1788689564; cv=none; b=NmObjCU09C9O4oaTghkcdMbIkupHJBUWHg+17y2pgVWmwq1sds2PTB+SUsqZWKEGl9BZe4pSm/sKpjhtF+CUGSGsL9VYrZVuy6qsZTV7QVY6gfsnATQQeZTKt7OxkXvl53DjTRlAXa/Q9280bpoZJ1AxBXfMFy8iVrRo5hs7QRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788689523; c=relaxed/simple;
-	bh=5ZK4uAzPbQUwFP7ga/rgJh8iVCPSP1IOvwoBU5Z0T7M=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jUVo9HYnH2xrwr/lPkEmcKm4j6FAQhxCxKAdg9YAfl2RPLVohDPK63GNNFBaj+4lkyxib13WUhehjfuwgAWLPEy+O/otNXFvZpvAHn5kHAMGTJUGTIv8ea4v0s8rL4AnBzv3AvAcAMAqL4d/DQkWXWY+VH88Dy06wE2DIH0vZ/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cqIaYQxF; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788689564; c=relaxed/simple;
+	bh=62t68vJxET87LvpyIM/OSNaziUXNDoGAJ1DP4WFiAg4=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=W2sFnjNE9NstRKqdrVM9P5P4jN89tky29vnh647O2Wqo3OzGd1mPQoXRQIkKNu7HQKcWpFbJPWCEstL6t8SAfr1wIrVuNWY6n68gh34tnvtmZve4WwW97TYNk3Vci455F1+ZodB28XyWh1Nfhl0aej9woIbdxSHVV72vuFg/iM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=BizC1bnO; arc=none smtp.client-ip=109.224.244.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cqIaYQxF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BC0F1F00A3A;
-	Sun,  6 Sep 2026 10:11:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788689521;
-	bh=tJEaiXned6r11arNPZpz/fZrQApr9XNv+fEd4IKwKCE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=cqIaYQxFw/IsOGE1exv1cF46tjX0TrQKEGu2xQu/gcmPYT17YRoQ1aCY3G35FaWLY
-	 2oS2L2ZVV2VKH83Lx74gwcheiREoowXQFvnVxnRzFJ+wts4CT5zYLqXxnNYMYYsaD0
-	 cqMtu3bPl/001kt5FRrA8hSDf4DNgmAT2bQiLqz2AGU963msbZIlwiZOWLyyrVVrG0
-	 EQPTmhKnpFLq9UGhwfvb+nk4+LegqAgeI0TVBdLeJOr/QJnaxUpeJLovadXC2guf70
-	 XIGyt2MkEHh7i8Akey96HZEHsj7nF/d5ddI2YoQXPhwqtvXF7ouElhfx80XJKGO5Wd
-	 PMhjYLA52GBCg==
-From: Simon Horman <horms@kernel.org>
-To: zihanx@nebusec.ai
-Cc: Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	kees@kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	vega@nebusec.ai
-Subject: Re: [PATCH net v7 1/1] llc: fix listener child socket leaks before passive open completes
-Date: Sun,  6 Sep 2026 11:11:49 +0100
-Message-ID: <20260906101149.215761-1-horms@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <0b8964c9cd294898c9657fd34c9d04cec77782eb.1788414881.git.zihanx@nebusec.ai>
-References: <0b8964c9cd294898c9657fd34c9d04cec77782eb.1788414881.git.zihanx@nebusec.ai>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="BizC1bnO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1788689550; x=1788948750;
+	bh=BoOFXSWJsbe9xEWFNa53+EhJzDWNcTy3OcDqZ6vqHYQ=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=BizC1bnONXqubFDpE9wv8pmtb6zifU+V12M7Y5NEg5ec4JJQRPj/x7BHDTAxsnn03
+	 CllMFbRLMLIDBgYgFf0dFWYtg93WHB42q/35dZyEXxOOWdGKTEFPvt2q86AYYcJ/xk
+	 BzfOnO1vJpEjg0wFyxL2rDot5xR4cudHJNDkhG6hTXYvNPX/xjl1LJNIBfYo0Ow4h3
+	 pL0XbYr/EXWC4AJmL3tsCrM0TwwrQ5B+/zVvr67nZ2xKIf8jtdmYWqmhvRJEPuFFgB
+	 kfXSJ15Bad9x2kZHycEbeUGlJwK7HeIWBTSaLILulG5nI/Qw7oDkQJOWXZf8oy/WB4
+	 0pS8RSPedVs5w==
+Date: Sun, 06 Sep 2026 10:12:24 +0000
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+From: Sagar Taunk <sagartaunk@proton.me>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, =?utf-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>, netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/3] rust: net: netlink: Migrate to zerocopy's `IntoBytes`
+Message-ID: <5Lv6zXpygThzdV6Dvo0JExSOQ_f9mQDu2BcCG4aQEwczgpwywMzaFY09RfL6vkMPZ8niwnrXdg4vC9tCJYkQMNDWJqAPsByKhqk8Ej0jGUs=@proton.me>
+In-Reply-To: <CANiq72kUVbdGGbMnWTQp6kAoq8pbddRVUOPzT=0RjWFf5dtQ4w@mail.gmail.com>
+References: <20260906071635.160615-1-sagartaunk@proton.me> <20260906071635.160615-2-sagartaunk@proton.me> <CANiq72kUVbdGGbMnWTQp6kAoq8pbddRVUOPzT=0RjWFf5dtQ4w@mail.gmail.com>
+Feedback-ID: 130121444:user:proton
+X-Pm-Message-ID: 530eef4408cb2265819ecc6c172eafd02688fefb
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
-Full review at: https://sashiko.dev/#/patchset/0b8964c9cd294898c9657fd34c9d04cec77782eb.1788414881.git.zihanx@nebusec.ai?part=1
----
-llc: fix listener child socket leaks before passive open completes
 
-This patch addresses a child socket leak in the LLC subsystem during passive
-opens. It ensures that children are only created for SABME commands, avoiding
-leaks caused by non-SABME frames that never complete the connection. It also
-improves teardown and lifecycle management for incoming child sockets.
+Sorry, I missed that while checking. Let me send a V2. Also, are there any =
+other changes I should make ?
 
-> diff --git a/net/llc/llc_conn.c b/net/llc/llc_conn.c
-> index 260460d50f54c..092625e28b3bb 100644
-> --- a/net/llc/llc_conn.c
-> +++ b/net/llc/llc_conn.c
-> @@ -88,6 +89,13 @@ int llc_conn_state_process(struct sock *sk, struct sk_buff *skb)
->  		 * skb->sk pointing to the newly created struct sock in
->  		 * llc_conn_handler. -acme
->  		 */
-> +		if (sk != skb->sk &&
-> +		    atomic_read(&llc_sk(skb->sk)->incoming_state) ==
-> +		    LLC_INCOMING_PENDING) {
-> +			sock_hold(skb->sk);
-> +			atomic_set(&llc_sk(skb->sk)->incoming_state,
-> +				   LLC_INCOMING_QUEUED);
-> +		}
->  		skb_get(skb);
->  		skb_queue_tail(&sk->sk_receive_queue, skb);
 
-[Severity: High]
-This isn't a bug introduced by this patch, but is it possible for an attacker
-to exhaust kernel memory (OOM) via unbounded SABME flooding?
 
-Looking at llc_conn_state_process(), the new connection skb is queued directly
-to the listener's sk_receive_queue without checking if the accept queue is
-full (for example, by checking sk_acceptq_is_full(sk)).
+On Sunday, September 6th, 2026 at 3:19 PM, Miguel Ojeda <miguel.ojeda.sando=
+nis@gmail.com> wrote:
 
-Because llc_conn_handler() allocates a new child socket for each SABME packet,
-could a flood of spoofed SABME frames from the local subnet cause this queue
-to grow without bound?
+> On Sun, Sep 6, 2026 at 9:17=E2=80=AFAM Sagar Taunk <sagartaunk@proton.me>=
+ wrote:
+> >
+> > Signed-Off-By : Sagar Taunk <sagartaunk@proton.me>
+> > Signed-off-by: Sagar Taunk <sagartaunk@proton.me>
+>=20
+> It seems you wrote the first one by hand? There are two typos there.
+>=20
+> Thanks!
+>=20
+> Cheers,
+> Miguel
+> 
