@@ -1,152 +1,91 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from lan.nucleusys.com (lan.nucleusys.com [92.247.61.126])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74E603F327E
-	for <netdev@vger.kernel.org>; Sun,  6 Sep 2026 07:55:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D3FD41DE05;
+	Sun,  6 Sep 2026 08:08:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.247.61.126
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788681332; cv=none; b=PHw7WHYPJ3wANEq60xLRsy7dfgeffMC5cpYH7fbKvA+kTrnumeaCyjJ5iYrHpOujZH6Q//Q4pee3X6WlEmvgBNTsP8JdA/Dn984meU8t53EeWhS9WaDmLNjLXhq/uSLZU5FcyqFOaIXjhCoh6rRpWT5g1igcKeeKUdBQEh5Fg5s=
+	t=1788682114; cv=none; b=mKaG5s8NkrF1YxFvudA9P7C/s9FS2XAT+Zk8bIie/yGfHYpZfg/eI+FhV6H52RyGOndEJaCerzZPIlejvhxSgpZjsQpn+1vBV/EtnFNDCkywBG6Eu39TdHksaSJ+hk6DRXIQ0jpJM3GtdAVlGOfkih9Kec02H4rQa6WzlM9HQ8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788681332; c=relaxed/simple;
-	bh=qNTDOlPILV3T04HAjwGIZq4By932gRZYYSompesDPNE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rphgbHdLIOGg/cx1Umh2KAvoIRj5fzIe+4gMfBxyzx/i4Pj1GjXEYTrmFrimCWlWlUb0sfIXulXWoF2kI+CYyhHcIIRPGX39tFyU8U5RKOodAFA98Z9MwattPxrQl3rn0VIFN4qBnResAqcFxKPIZD0HVmYlLgII8PYr5uiR+MA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j5K1D/2k; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788682114; c=relaxed/simple;
+	bh=HMKw1qkRvIkC0UDtECn9DQ58auZHhqG8gtPrf4sQSjU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AZP1m6fEa3WM/zQ/xtWKuotfRbDjEzcktPjTQ9cFqSNMh/qhKZ7SLYyub6T+tukQlXz1phbUsq3y263iNl5naHmAxEULOrKUW8LzDsRJRp5fBrsZbTRERxXtTQUexoLtTMQ3m3w9rVvI5QXA1DOC+Ju1xVTfz6wxRdIMApU93Pk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nucleusys.com; spf=pass smtp.mailfrom=nucleusys.com; dkim=pass (2048-bit key) header.d=nucleusys.com header.i=@nucleusys.com header.b=FkZg3Af+; arc=none smtp.client-ip=92.247.61.126
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nucleusys.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nucleusys.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j5K1D/2k"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2d032846c95so26213615ad.1
-        for <netdev@vger.kernel.org>; Sun, 06 Sep 2026 00:55:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788681325; x=1789286125; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=/l1qLwJSS6D6HFID29WNOWsYoWwOmZTzkLIw+IBHN20=;
-        b=j5K1D/2k29HcTJ+qa0lx2BCGIjrj0+232m5KUNbxLr83GgA7rPw6Mf3FyNU5Ia+++6
-         UejkdeMIJXGBge8ahwgfVzcGgChwxn9BuOO6ucNmcbgb9XSe83BJdX0BujjTsoBxaJrA
-         hvhroZa7yOc8bNbhCX289xeiClq2y8qEWz0zkyAHZV3O22WNrMqvQl8GeocJnVqHWfuf
-         qZDxKq4zm8VuVmk2fk6hdaHlG4I7PANIr1ZG1NAQPad3FSvmj2aBKkPg5ED1JJBfuIUp
-         UWiEVGYK2dKR/rqvPwVz7SVevJrEObIXrqWxls3sDyDZh5z1h29iJld9tQC/x+1SIizs
-         fdVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788681325; x=1789286125;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=/l1qLwJSS6D6HFID29WNOWsYoWwOmZTzkLIw+IBHN20=;
-        b=OzjWnlXTIH3/uaR+nwpvaVOSER/pg+/QoowocZSdoNa50yN+ztiox8SuLZWmzeotqr
-         7q+JjucZH8bUNNmrhPohkPIH6unnVSS6cCGFJbnsDJRVjRo6L7zlhR3usO6uubysEGaw
-         uJGu64367XrH8W8XoUp+mQqdisfEionpHbQ1pLpoZJM1fNY8/XVl8+DmFvka/iraOKvX
-         bxZRbwxQfOj5AOemXNUpX8ekId2mPFCtZukoF6je+koG1WY6++2S4haXSJNZl1zFsHAg
-         Zzy64F+xMfp9xzh4pOSluioQUaAv+Mze4YJyuzzg/0YA62gh0FyBDAPuC5PMKvZKUMGQ
-         r0QA==
-X-Forwarded-Encrypted: i=1; AKwUvByHAPrFpuJq7SDcnS/u6S7Vv1u80m+P6WHO9ci6sdyWdZMXRsXEDWxUdBZBEEAre9toINijq2g=@vger.kernel.org
-X-Gm-Message-State: AFuF++mJPRzBWdciK+rnZOVOUGtTHpSEXqHBGrar6KMC/4IiIDzIz4qP
-	EyMz7kwJ4mBlmTSX/KHMOW1YdtYcJKNbwnI6/yq9tz4HbtjBV/Ay5xgL
-X-Gm-Gg: AYBFou0iBv96QZM7yp6cZquULi5cRKSntdQnQhhvDyY33j08bdYZYTlHT7vhEY3o9or
-	U/3fMNSkkkVBvFqGF/VAR4r2lzd54ibF0X2eLXYq1qphqJb0gHwMpqnwK1qEuq1HjGkwqk2Elht
-	wcYtyJBBztuaiJdtJWOjvKTgAo77mQib4kyqhg/5byVaUNHpaMsOntelabrSEz6R5QTBAn8eCVd
-	fQ3a+vxH35+zBjqQMEya12CHEVS0EMtBSklV15ByTVSDXTt8PReG8QFxfi0kTJPMKPsIsCFlRSV
-	oFf5LvW8eczQIQU2tdU9bNRi3mXs2bM2aJxlYrau9JrpFRHHnS5xYSAOIJYm7Ff34u7zPKfuepf
-	M8SuMMRKE0s0k3xWTzW6abPS5mOWzFy1ZrovU90ufcIYbr0hE9jz9FFcMa4DyuR//xgWuKOB2/a
-	Awx8vMTmrme4OgmApEyV5XQt7MZaVjI9kDyPVCzj22rGmHYtQ4MRIxxUhKP2tX36vroLEPXdhUa
-	VSK9wKgu4VC/vew9ReI
-X-Received: by 2002:a17:902:c40f:b0:2d7:107c:917b with SMTP id d9443c01a7336-2db1212ee51mr225631555ad.0.1788681324676;
-        Sun, 06 Sep 2026 00:55:24 -0700 (PDT)
-Received: from 192.168.50.3 ([183.193.115.0])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2db1495b57fsm29936115ad.24.2026.09.06.00.55.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 06 Sep 2026 00:55:23 -0700 (PDT)
-From: Weiming Shi <bestswngs@gmail.com>
-To: Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	Phil Sutter <phil@nwl.cc>,
+	dkim=pass (2048-bit key) header.d=nucleusys.com header.i=@nucleusys.com header.b="FkZg3Af+"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nucleusys.com; s=xyz;
+	t=1788682099; bh=HMKw1qkRvIkC0UDtECn9DQ58auZHhqG8gtPrf4sQSjU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=FkZg3Af+k2UAmshiuHnONZBaJ4Spi79eS4zh0eNqc1gXa4yJsTMG/R92oZGNfPhT5
+	 miP1DvxznRRioWyEIhHNm8vL9ENzYRfl0uWMlwtvD39IZeDO47Hob9QgjfVj2XEom7
+	 Bulrdaxai12QjJQPVSYKrQljnPbpYi8H1H74xcdesaDUW9OZ+uys2ilWT++fDHd1hp
+	 E3wVYzaGuseKpKWs9JKe7UQVbK605QwpOnMGl528bJo7/N1jClLIyOPfyH+fqVCs1a
+	 /RvqTgwsFpPB9i6VCdDlq4lY+fnkXd/C3qc9f/CxKrUR3vCNGFCaeaQPMM1JzmN5JG
+	 hhTDLTEmOSN6A==
+Received: from carbon.k.g (unknown [85.187.61.220])
+	by lan.nucleusys.com (Postfix) with ESMTPSA id 16F1F3FD2D;
+	Sun, 06 Sep 2026 11:08:19 +0300 (EEST)
+Date: Sun, 6 Sep 2026 11:08:18 +0300
+From: Petko Manolov <petkan@nucleusys.com>
+To: Alan Stern <stern@rowland.harvard.edu>
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Oliver Neukum <oneukum@suse.com>,
+	Marco Crivellari <marco.crivellari@suse.com>,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	Tejun Heo <tj@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Michal Hocko <mhocko@suse.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Cc: netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	co+459f67f4d8af8ce6@bugs.sh,
-	Xiang Mei <xmei5@asu.edu>,
-	stable@vger.kernel.org
-Subject: [PATCH nf v2] netfilter: ip6t_rpfilter: reject routes without inet6_dev
-Date: Sun,  6 Sep 2026 15:54:40 +0800
-Message-ID: <20260906075440.4123076-1-bestswngs@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-usb@vger.kernel.org
+Subject: Re: [PATCH v3 net-next 5/6] net: usb: pegasus: Move long delayed
+ work on system_dfl_long_wq
+Message-ID: <20260906080818.GC6356@carbon.k.g>
+References: <20260720100902.155605-1-marco.crivellari@suse.com>
+ <20260720100902.155605-6-marco.crivellari@suse.com>
+ <f972b514-87ef-45bc-8258-db199a4cc0b8@suse.com>
+ <20260825151812.4aJyFUgE@linutronix.de>
+ <31b46916-dd89-4ae9-89b9-9d39e29e8e69@rowland.harvard.edu>
+ <20260828094318.bOajNBno@linutronix.de>
+ <b6cf44a1-d2b1-443d-8efe-c596ef89cc2a@rowland.harvard.edu>
+ <20260905150450.2hrac_GV@linutronix.de>
+ <b6e6e8d0-0888-4bbc-85b8-ca3bdac88398@rowland.harvard.edu>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b6e6e8d0-0888-4bbc-85b8-ca3bdac88398@rowland.harvard.edu>
 
-ip6_route_lookup() can return an error-free route whose rt6i_idev is
-NULL. Lowering an external nexthop device's MTU below IPV6_MIN_MTU tears
-down its inet6_dev while fib6_ifdown() leaves routes using nexthop objects
-in the FIB. An unprivileged user can construct this state with rtnetlink
-in a private user and network namespace, then trigger a NULL dereference
-through an IPv6 rpfilter lookup:
+On 26-09-05 12:33:07, Alan Stern wrote:
+> On Sat, Sep 05, 2026 at 05:04:50PM +0200, Sebastian Andrzej Siewior wrote:
+> > 
+> > Still the wrong thing to do? The driver should do either flush_work() or
+> > cancel_work_sync() (not flush_workqueue()).
+> 
+> I think we're in agreement.  If the driver relies on calling
+> flush_workqueue(), it should not use a general-purpose workqueue.  However,
+> flush_work() or cancel_work_sync() is okay on an unordered general-purpose
+> workqueue.
 
-  Oops: general protection fault, probably for non-canonical address
-  0xdffffc0000000000
-  KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
-  RIP: rpfilter_mt (net/ipv6/netfilter/ip6t_rpfilter.c:75)
-  Call Trace:
-  ip6t_do_table (net/ipv6/netfilter/ip6_tables.c:316)
-  nf_hook_slow (net/netfilter/core.c:619)
-  ipv6_rcv (net/ipv6/ip6_input.c:351)
-  __netif_receive_skb_one_core (net/core/dev.c:6216)
-  process_backlog (net/core/dev.c:6680)
-  __napi_poll (net/core/dev.c:7739)
-  net_rx_action (net/core/dev.c:7959)
-  handle_softirqs (kernel/softirq.c:622)
-  do_softirq.part.0 (kernel/softirq.c:523)
-  __local_bh_enable_ip (kernel/softirq.c:450)
-  __dev_queue_xmit (net/core/dev.c:4913)
-  packet_sendmsg (net/packet/af_packet.c:3139)
-  __sys_sendto (net/socket.c:2252)
-  __x64_sys_sendto (net/socket.c:2259)
-  do_syscall_64 (arch/x86/entry/syscall_64.c:94)
-  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:121)
-  Kernel panic - not syncing: Fatal exception in interrupt
+The driver is actually using queue_delayed_work()/cancel_delayed_work_sync() so
+the above is of no concern.
 
-Reject routes without an inet6_dev immediately after lookup. Such routes
-are not eligible for reverse-path filtering, and the check protects all
-later rt6i_idev dereferences.
+Due to HW limitations the carrier state should be checked on a regular interval
+and reported to the upper network layers.  This worker relies only on generic
+USB transfers, to and from the usb-to-eth adapter, and as such does not depend
+on other I/O.
 
-Fixes: e26f9a480fb6 ("netfilter: add ipv6 reverse path filter match")
-Reported-by: co+459f67f4d8af8ce6@bugs.sh
-Closes: https://lore.kernel.org/all/VtWUkE8QzJt5CroTj2V2v3ZQ0gwbXZ7nq7I3@bugs.sh/
-Suggested-by: Florian Westphal <fw@strlen.de>
-Assisted-by: Claude:gpt-5
-Cc: stable@vger.kernel.org
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
----
-v2:
-- Reject routes without inet6_dev in both loose and strict modes, as
-  suggested by Florian.
-v1: https://lore.kernel.org/all/20260906034939.3746540-1-bestswngs@gmail.com/
----
- net/ipv6/netfilter/ip6t_rpfilter.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Failure to acquire correct carrier check does not seem to affect the device's
+functionality.  Overall i don't think the proposed workqueue change is
+disruptive.
 
-diff --git a/net/ipv6/netfilter/ip6t_rpfilter.c b/net/ipv6/netfilter/ip6t_rpfilter.c
-index 67c87a88cde4f..b5def30c3127e 100644
---- a/net/ipv6/netfilter/ip6t_rpfilter.c
-+++ b/net/ipv6/netfilter/ip6t_rpfilter.c
-@@ -61,7 +61,7 @@ static bool rpfilter_lookup_reverse6(struct net *net, const struct sk_buff *skb,
- 		fl6.flowi6_oif = dev->ifindex;
- 
- 	rt = (void *)ip6_route_lookup(net, &fl6, skb, lookup_flags);
--	if (rt->dst.error)
-+	if (rt->dst.error || !rt->rt6i_idev)
- 		goto out;
- 
- 	if (rt->rt6i_flags & (RTF_REJECT|RTF_ANYCAST))
--- 
-2.55.0
+
+		Petko
