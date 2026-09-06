@@ -1,43 +1,43 @@
 Received: from szelinsky.de (szelinsky.de [85.214.127.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B98C363C5A;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BA68364942;
 	Sun,  6 Sep 2026 15:39:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.127.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788709183; cv=none; b=OFDnyp6JQpgOKgm+Ry1q0rhy0ZAnXkraKT8aeNnIcgHxLI/oMqV8Ui8ueLxyIv4Djb+cwCVvyKv1udWDzWBIKxXhr3WjXVOddC3J0CHy1Q9gAs9XmkwMYQPe4pHNNOK+TiNCDVeDfIvTOYeiJc+fbMd/sCwmEQK7JeQLnkqNvrM=
+	t=1788709183; cv=none; b=FwDZ5tz5kYudRbdFQijd67/DCr8orSPXNDxvaxODT5YTzyqw/7qdkKIAXlpfOLVUEBSRatkzd35OmGXxw621RDs6cVgfXE504CVtCFASyFVsi5TI2jL0Zw6I49ijFm3iMSpZAjPVql4YXbiDvNUtiHI3mtpwP9zdKXOTbNiG3yc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1788709183; c=relaxed/simple;
-	bh=Xa/8+x3fbN/3+Jk52j6knMgpA06QVo/ahFSa00X/hN0=;
+	bh=4fHxGeXjo/4OXBi8jhnGGqUU/Ygon4FWYtEd4idbkWc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dJFMDBU7lBr8M4K2Wlxh9VDEfTCBP7E5JQRx/0ibw8lA7Ktiaet/0SoxhOK67OhfbB8QU9yT0KSnYbEKwhc/XhgzzUw136x76viFr5312Ds3UnLKVRAY6A4daBqrhjvx6WAkPrzOBfN8IIqiiogytxp7kUlHT5Y2FzG5Y2/NLuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de; spf=pass smtp.mailfrom=szelinsky.de; dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b=knzWzB8b; arc=none smtp.client-ip=85.214.127.56
+	 MIME-Version; b=RIYWaiOnc3tJhUcw5sc0KI7M5UxkoJLGHZ6xzmcA+bJSZBufePrJDn+Do3w3YyVjKCoTUAB2MQegsifBijvqSI7CFYkSNhTnu5yfJUSdrU7aP0E0OQ2vowaE2frrb/KaLl+uCNlFCuQRN2zxOiQERU+QO2vLtivXQcAFrJ0ClnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de; spf=pass smtp.mailfrom=szelinsky.de; dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b=S+Sx4h49; arc=none smtp.client-ip=85.214.127.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szelinsky.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=szelinsky.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b="knzWzB8b"
+	dkim=temperror (0-bit key) header.d=szelinsky.de header.i=@szelinsky.de header.b="S+Sx4h49"
 Received: from localhost (localhost [127.0.0.1])
-	by szelinsky.de (Postfix) with ESMTP id 81F8DE8393B;
-	Sun, 06 Sep 2026 17:31:43 +0200 (CEST)
+	by szelinsky.de (Postfix) with ESMTP id 7A68AE8392E;
+	Sun, 06 Sep 2026 17:31:40 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=szelinsky.de;
-	s=mail; t=1788708703;
+	s=mail; t=1788708700;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=n8STXjNlKV0wvUn+1PYv95+ojGlTOJB8a3/kKnQWGP4=;
-	b=knzWzB8bZRbrXBnRJD24n8OvzycjNOrKWW4ebduPEsWAfaFuu52QK+UHjqpmELHUCXmoKB
-	51ylqXnNLqILlsimNRWKqRqwAErs7KVgefTY0FsMTDTteKtwgShD2asNyfJ/Zj+pbTNlpe
-	HogkyDYCV0kaUU4sK9cX00JAnxYI/gpQDE8FPDnoP1yJ9qINxYpNMV5ejFuf6R4PIjP2iC
-	/WT1oPh2qnAc+OJsEsG2N29rlCSeYc4Xzmzv3eZhyozgl1XIu0rWd9ky42Z9wknexzayif
-	qhHJmq/5PbEpj2qxkbpCP7e+ViiCG26SbQZ2MJk5fhsNDqc1Ores7a9wZacwgw==
+	bh=bec0yhM2e6J0DHWUR9ij9INSwz0Ba/y7Pys3eGuwrro=;
+	b=S+Sx4h49U56+QoJpFECOKfod4mu42XueKRUBML18f9gDBGfGNXNh+pXJ/5wt1mUaWDN29O
+	HCX67LS2FhApGQAWGA6+sFZ4yHPiJ82Zq/thi8arF2cuC+uiNEKm46bIpBz3j41WFyWp7M
+	EGEbETZPRq0vn5e6301JqaUOoum48vyYsIMveaEy6WOoWP8DHUS44FWHFPI8tVBbPcVyjx
+	afHas8jWDmvKGEatmDVd4QAzLVGX2ubMCWDmT3NTmIIblKx6ueex8DbaWbI3gFvMbBt+84
+	IWzkqdugQpJApjrJJEbSQWglu6sdbt3mBqnDU0piB/YGfMeg5OSttEohZL+akg==
 X-Virus-Scanned: Debian amavis at szelinsky.de
 Received: from szelinsky.de ([127.0.0.1])
  by localhost (szelinsky.de [127.0.0.1]) (amavis, port 10025) with ESMTP
- id Exu2nY8tdKaB; Sun,  6 Sep 2026 17:31:43 +0200 (CEST)
+ id 9HTVk9JC-fd7; Sun,  6 Sep 2026 17:31:40 +0200 (CEST)
 Received: from p14sgen5.lan (p578611d6.dip0.t-ipconnect.de [87.134.17.214])
 	by szelinsky.de (Postfix) with ESMTPSA;
-	Sun, 06 Sep 2026 17:31:42 +0200 (CEST)
+	Sun, 06 Sep 2026 17:31:39 +0200 (CEST)
 From: Carlo Szelinsky <github@szelinsky.de>
 To: Oleksij Rempel <o.rempel@pengutronix.de>,
 	Kory Maincent <kory.maincent@bootlin.com>,
@@ -55,9 +55,9 @@ Cc: Corey Leavitt <corey@leavitt.info>,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Carlo Szelinsky <github@szelinsky.de>
-Subject: [PATCH net-next v6 2/5] net: pse-pd: fire lifecycle events on controller register/unregister
-Date: Sun,  6 Sep 2026 17:30:59 +0200
-Message-ID: <20260906153102.959217-3-github@szelinsky.de>
+Subject: [PATCH net-next v6 1/5] net: pse-pd: add notifier chain for controller lifecycle events
+Date: Sun,  6 Sep 2026 17:30:58 +0200
+Message-ID: <20260906153102.959217-2-github@szelinsky.de>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260906153102.959217-1-github@szelinsky.de>
 References: <20260906153102.959217-1-github@szelinsky.de>
@@ -71,48 +71,152 @@ Content-Transfer-Encoding: 8bit
 
 From: Corey Leavitt <corey@leavitt.info>
 
-Hook the newly-introduced pse_controller_notifier chain so that
-pse_controller_register() fires PSE_REGISTERED after the controller
-has been added to pse_controller_list (i.e. is now resolvable by
-of_pse_control_get()), and pse_controller_unregister() fires
-PSE_UNREGISTERED before the controller is removed from the list
-(while it is still valid to dereference from a subscriber's
-pse_control pointer targeting it).
+Introduce a blocking notifier chain that allows other subsystems to be
+informed when a PSE controller is registered or unregistered, and
+provide pse_register_notifier() / pse_unregister_notifier() as the
+subscriber interface.
 
-With no subscribers yet, this is observably a no-op. A later change
-wires the phy subsystem in as the first subscriber.
+Subsequent patches will use this to let the phy subsystem own the
+phydev->psec lifecycle directly, decoupling PSE lookup from
+fwnode_mdiobus_register_phy() and removing the probe-time
+-EPROBE_DEFER coupling that currently exists between mdio, phy and
+pse-pd when the PSE controller driver is modular.
+
+A blocking chain (rather than atomic) is used because callbacks will
+take rtnl_lock and call back into pse_core via of_pse_control_get().
+
+The enum pse_controller_event is placed outside the
+IS_ENABLED(CONFIG_PSE_CONTROLLER) guard so that subscribers compiled
+into a kernel without PSE support can still reference the event
+values in dead-code paths without breaking the build.
+
+This patch is pure infrastructure: nothing fires events yet, and
+nothing subscribes. No observable behavior change.
 
 Signed-off-by: Corey Leavitt <corey@leavitt.info>
 Signed-off-by: Carlo Szelinsky <github@szelinsky.de>
 Tested-by: Jonas Jelonek <jelonek.jonas@gmail.com>
 ---
- drivers/net/pse-pd/pse_core.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/pse-pd/pse_core.c | 34 ++++++++++++++++++++++++++++++++++
+ include/linux/pse-pd/pse.h    | 32 ++++++++++++++++++++++++++++++++
+ 2 files changed, 66 insertions(+)
 
 diff --git a/drivers/net/pse-pd/pse_core.c b/drivers/net/pse-pd/pse_core.c
-index 3c4d09f1d6e4..0190fac33c78 100644
+index 69dbdbde9d71..3c4d09f1d6e4 100644
 --- a/drivers/net/pse-pd/pse_core.c
 +++ b/drivers/net/pse-pd/pse_core.c
-@@ -1138,6 +1138,9 @@ int pse_controller_register(struct pse_controller_dev *pcdev)
- 	list_add(&pcdev->list, &pse_controller_list);
- 	mutex_unlock(&pse_list_mutex);
+@@ -8,6 +8,7 @@
+ #include <linux/device.h>
+ #include <linux/ethtool.h>
+ #include <linux/ethtool_netlink.h>
++#include <linux/notifier.h>
+ #include <linux/of.h>
+ #include <linux/phy.h>
+ #include <linux/pse-pd/pse.h>
+@@ -23,6 +24,39 @@ static LIST_HEAD(pse_controller_list);
+ static DEFINE_XARRAY_ALLOC(pse_pw_d_map);
+ static DEFINE_MUTEX(pse_pw_d_mutex);
  
-+	blocking_notifier_call_chain(&pse_controller_notifier,
-+				     PSE_REGISTERED, pcdev);
++static BLOCKING_NOTIFIER_HEAD(pse_controller_notifier);
 +
- 	return 0;
++/**
++ * pse_register_notifier - register a callback for PSE controller events
++ * @nb: notifier block to register
++ *
++ * See enum pse_controller_event for events fired and their subscriber
++ * contract. Callbacks run in process context; they may sleep, take
++ * rtnl, and call of_pse_control_get(). The chain fires synchronously,
++ * so a PSE controller driver's probe/unbind path must not hold any
++ * such lock when calling pse_controller_register() or
++ * pse_controller_unregister().
++ *
++ * Return: 0 on success, negative error code otherwise.
++ */
++int pse_register_notifier(struct notifier_block *nb)
++{
++	return blocking_notifier_chain_register(&pse_controller_notifier, nb);
++}
++EXPORT_SYMBOL_GPL(pse_register_notifier);
++
++/**
++ * pse_unregister_notifier - unregister a previously registered callback
++ * @nb: notifier block previously passed to pse_register_notifier()
++ *
++ * Return: 0 on success, negative error code otherwise.
++ */
++int pse_unregister_notifier(struct notifier_block *nb)
++{
++	return blocking_notifier_chain_unregister(&pse_controller_notifier, nb);
++}
++EXPORT_SYMBOL_GPL(pse_unregister_notifier);
++
+ /**
+  * struct pse_control - a PSE control
+  * @pcdev: a pointer to the PSE controller device
+diff --git a/include/linux/pse-pd/pse.h b/include/linux/pse-pd/pse.h
+index 4e5696cfade7..78fe3a2b1ea8 100644
+--- a/include/linux/pse-pd/pse.h
++++ b/include/linux/pse-pd/pse.h
+@@ -21,6 +21,7 @@ struct net_device;
+ struct phy_device;
+ struct pse_controller_dev;
+ struct netlink_ext_ack;
++struct notifier_block;
+ 
+ /* C33 PSE extended state and substate. */
+ struct ethtool_c33_pse_ext_state_info {
+@@ -337,6 +338,24 @@ enum pse_budget_eval_strategies {
+ 	PSE_BUDGET_EVAL_STRAT_DYNAMIC	= 1 << 2,
+ };
+ 
++/**
++ * enum pse_controller_event - PSE controller lifecycle events
++ *
++ * Event data in callbacks is always a pointer to the struct
++ * pse_controller_dev firing the event.
++ *
++ * @PSE_REGISTERED: controller added to pse_controller_list and
++ *	resolvable by of_pse_control_get().
++ * @PSE_UNREGISTERED: controller about to be removed from
++ *	pse_controller_list. Subscribers holding pse_control references
++ *	targeting it must drop them before returning and must not
++ *	acquire new references for it.
++ */
++enum pse_controller_event {
++	PSE_REGISTERED,
++	PSE_UNREGISTERED,
++};
++
+ #if IS_ENABLED(CONFIG_PSE_CONTROLLER)
+ int pse_controller_register(struct pse_controller_dev *pcdev);
+ void pse_controller_unregister(struct pse_controller_dev *pcdev);
+@@ -366,6 +385,9 @@ int pse_ethtool_set_prio(struct pse_control *psec,
+ bool pse_has_podl(struct pse_control *psec);
+ bool pse_has_c33(struct pse_control *psec);
+ 
++int pse_register_notifier(struct notifier_block *nb);
++int pse_unregister_notifier(struct notifier_block *nb);
++
+ #else
+ 
+ static inline struct pse_control *of_pse_control_get(struct device_node *node,
+@@ -416,6 +438,16 @@ static inline bool pse_has_c33(struct pse_control *psec)
+ 	return false;
  }
- EXPORT_SYMBOL_GPL(pse_controller_register);
-@@ -1148,6 +1151,9 @@ EXPORT_SYMBOL_GPL(pse_controller_register);
-  */
- void pse_controller_unregister(struct pse_controller_dev *pcdev)
- {
-+	blocking_notifier_call_chain(&pse_controller_notifier,
-+				     PSE_UNREGISTERED, pcdev);
+ 
++static inline int pse_register_notifier(struct notifier_block *nb)
++{
++	return 0;
++}
 +
- 	pse_flush_pw_ds(pcdev);
- 	pse_release_pis(pcdev);
- 	if (pcdev->irq)
++static inline int pse_unregister_notifier(struct notifier_block *nb)
++{
++	return 0;
++}
++
+ #endif
+ 
+ #endif
 -- 
 2.43.0
 
