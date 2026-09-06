@@ -1,107 +1,150 @@
-Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.w14.tutanota.de (mail.w14.tutanota.de [185.205.69.214])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D903E1E5B63
-	for <netdev@vger.kernel.org>; Sun,  6 Sep 2026 08:55:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5AA6156F45
+	for <netdev@vger.kernel.org>; Sun,  6 Sep 2026 09:02:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.205.69.214
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788684955; cv=none; b=G4CnGUp5FKe1EMKsY+peargVEqvmEa3Hes2cgJlAl+nDBL9S1tGbGgKzJ1PstDl/LYixgVUfxQ5Kaf4ib8S1o/XRHNf8QBz2U1EZogqx4on9Hx5BZ8X99RS33/8/BjYVYx1A1cc6nJWUishOuJuzQK6VR1kJYwCuKuGEi0hjfqA=
+	t=1788685367; cv=none; b=XM6EkEtNvLSaO1DmlpfolSfR1TGIOIkkOayxzYCe+8GxuGjEs45s+qAK4PgKkuexsnYt+lM/JU+zQiD7Yib2eSgVZz0jPW+yR30alcJXaa+6hz/T9YDoHXkr1kVMeilinW4OQem66ttBMwV0dpb7J5EuiwNyNSEumjsLYxY4H6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788684955; c=relaxed/simple;
-	bh=0fTfsL6DtqmPMUydqpBYd80XQl/Qn20sllWNzRzTvMo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QbO68iOTsF94k8ClqDwR3cau2jVbPifZq5fraCk4Hy+BNB9xv0BH8eX5KdlNFHSz9JqooGyya8wFp/cx/rtJDHPyxw46PzdCEk+JmdVwMCt+EgZuEha3V0xDmG8o3jSIHSliIOm76HA7ZxXbk18ugxuRyIiDmtGhY9vnCtC6xOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Dll/oKXf; arc=none smtp.client-ip=209.85.222.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788685367; c=relaxed/simple;
+	bh=yZFoGE8dGWi16UZgmT16DwSXvRwvxdKjnFRWXFI+KzI=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=VYdP37GGLUNoUU8cevJt2OwwDk8i6vePw7F207c6rg0YQPyFAYU2gk4IvN8BOrD3qdXgzVBOsqax8dTea5XR2XCbtsE22LukWPUmQOOBhqmtCPWzN3m/XNMoLs7ymiclM1lJekS2qL3zoBxgPVaLP57pc3k9VmNzyX+PlIDymfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=well-founded.dev; spf=pass smtp.mailfrom=well-founded.dev; dkim=pass (2048-bit key) header.d=well-founded.dev header.i=@well-founded.dev header.b=S61njnW4; arc=none smtp.client-ip=185.205.69.214
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=well-founded.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=well-founded.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Dll/oKXf"
-Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-92edb12cdf2so175764685a.3
-        for <netdev@vger.kernel.org>; Sun, 06 Sep 2026 01:55:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788684953; x=1789289753; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=4mnNNWacIPNZ19BAK9ep0Ao6WbM9le6D+0v/1tBsMak=;
-        b=Dll/oKXfI8V5JlPIOU1Z+gl6+BXWDPO3GezhvE/ojPxdxymbn9qU6P6mnaXxSrmgmD
-         YFN8xVdWTy7T8MXtPO1CjnVmBopXlksVXRLoOVqLbS+PQaGimHYzOzDlVdmRrHVsAAV2
-         vTS+GKnI05CqmkLuwvZwm6ON0iPEw2zp+Uv69U5JI2Vh1xgeaRJX/dEfHiPJWnvLndr/
-         +nMVMrarrvQ9AR+aDiO3+0R1qDPMWQct9QdAuqKxBrqMNZiOfZ0lH0fZyz/wXbA7sH/y
-         JDEexVoVBkdeBRkueY5jEcT9+zMTd2cdPMmai1nUzuHQGsVc3ZAPR9ZeNGCyK5t3wmO0
-         1yyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788684953; x=1789289753;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=4mnNNWacIPNZ19BAK9ep0Ao6WbM9le6D+0v/1tBsMak=;
-        b=A82sIgW/+m1pN0YKn7f4Os3oJNvuOltFwbLF34lnBEHCoRFqpw9pdXeq8cdGFSdI/u
-         vttiCwuWs38qeJTmiEkwgigNuqijr5UPo/SDNpLfcVdE1IOYj/wonDfX/B4aKOAJCVmt
-         k2dNDPAihOVAZV+SowcMLIxyJORW9qBM05dovqlc9z9QxaYXKKRTq5gLpDkLduq645Xa
-         oIUiAzIOqHi14QdwbcSVACjOsrpznU6G428xDZ+Hun/Dx6ktmhsKlA1wSAinV+cqMQd4
-         MJ/rh7b8ICh0e9D1ZzEsxUG00RrYlYy+o0v+1i5ZJumi81Td1Cpy8u+zNKu31qx73YzR
-         HfjA==
-X-Gm-Message-State: AFuF++kUhvqAhnDfXbB/1ghEc0GQWlzQCiCoXnMO00+O4FVw/3kvgGNq
-	8UNnPsLLLLZrwZzaiigJDFCQ1/qyHI9bDRqLoYykL6aA4a+UBdy2WhOPG3wmeCMqjvQ=
-X-Gm-Gg: AYBFou05jHBjaZn6Mz3WKYdJDYB4hpaGemWMkQgRDNHxEHRmOtA+DRcHh0PwxdS7PfY
-	nGM/x3qqtds/n5lxVibd83GTMeJIXKemFjbg1YVWfhTgiIs73KoBKczCpVYlWCGfa8VLp/LUoZM
-	0N+bUOpW75H0P9RpeUvywsFsK3jAfWAB7sX4vQOqO1Ct1K9Y1Sg+OAiO7wE0KkMCg9LEgz8Ckdt
-	AgaLgBj1s6z0tnQoo4PiVaaWY9xB2ZknY5VZp/KAuoIyy3wbp7atqAMj4x8VC87t4x/+1u4qL55
-	HmIyPJ5/oMOPi40824HIEN6tDVu2OrOMIEyhgLpXLnn982n5SESODJyHO0ulhBj7ZdmTjBlA8pO
-	670HLMNiJocUACOdFtrYX5DX6ZNMSKi1xGREnowfoQhb2TCKDymYzXevPGi6p6dfWCsVW0jculx
-	uBnuBnxvprnF7K2VYITWoyNv7vNNpM8lYQsGBX8bf+fFAyJ5ApOt/aYKwtOHunm3g=
-X-Received: by 2002:a05:620a:4622:b0:939:9e38:5d with SMTP id af79cd13be357-9399e381a2amr424103985a.1.1788684952605;
-        Sun, 06 Sep 2026 01:55:52 -0700 (PDT)
-Received: from houminxi ([163.123.141.225])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-939a57535a1sm56087385a.0.2026.09.06.01.55.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 06 Sep 2026 01:55:52 -0700 (PDT)
-From: Minxi Hou <houminxi@gmail.com>
-To: netdev@vger.kernel.org
-Cc: aconole@redhat.com,
-	echaudron@redhat.com,
-	i.maximets@redhat.com,
-	dev@openvswitch.org
-Subject: Re: [PATCH net-next 0/4] selftests: openvswitch: pylint cleanup of ovs-dpctl.py
-Date: Sun,  6 Sep 2026 04:55:40 -0400
-Message-ID: <20260906085540.609993-1-houminxi@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260905104026.3776396-1-houminxi@gmail.com>
-References: <20260905104026.3776396-1-houminxi@gmail.com>
+	dkim=pass (2048-bit key) header.d=well-founded.dev header.i=@well-founded.dev header.b="S61njnW4"
+Received: from tutadb.w10.tutanota.de (w10.api.tuta.com [IPv6:fd:ac::d:10])
+	by mail.w14.tutanota.de (Postfix) with ESMTP id 878FB17EB3CA0
+	for <netdev@vger.kernel.org>; Sun,  6 Sep 2026 11:02:37 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1788685357;
+	s=s1; d=well-founded.dev;
+	h=From:From:To:To:Subject:Subject:Content-Description:Content-ID:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Cc:Cc:Date:Date:In-Reply-To:In-Reply-To:MIME-Version:MIME-Version:Message-ID:Message-ID:Reply-To:References:References:Sender;
+	bh=yZFoGE8dGWi16UZgmT16DwSXvRwvxdKjnFRWXFI+KzI=;
+	b=S61njnW40fbOrn0odEA5X48hWhe5d70O9pNWwpu+OR4cu2d06xOqyL3qJjvHok6V
+	zf0tn8/lVYqkLpmkDk9SOWJwpNTi++2WKBohniotZHtmCB7fdbIn2jzVwbbQyCyG0Fr
+	we9KjAQsZyYKadqGJSXHhDat0kRMf0jplT8RzPx7IiyGWyohZ2IK8ITENLWAjJiharh
+	vJtZH8triw5MHASU2WABZOp/PPg+S22O35neNvTIsfX40Dn/LEU99Cb7HPvLirqjl5U
+	7zECohPl2lJcsoEZtTg2nt5toczf5nFgN13HpvBQMzdK91eotUQJpeSnNT81JzLEUef
+	B4APlL0Nwg==
+Date: Sun, 6 Sep 2026 11:02:37 +0200 (CEST)
+From: Ramses <ramses@well-founded.dev>
+To: Hangbin Liu <hangbin.liu@linux.dev>
+Cc: Jay Vosburgh <jv@jvosburgh.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>, Jiri Bohac <jbohac@suse.cz>,
+	Netdev <netdev@vger.kernel.org>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Message-ID: <P0pqA1I--F-9@well-founded.dev>
+In-Reply-To: <apD3VyaIOmMlv6kK@fedora>
+References: <20260827-bonding-last-rx-v2-1-7c3833822c23@well-founded.dev> <apD3VyaIOmMlv6kK@fedora>
+Subject: Re: [PATCH net v2] bonding: fix initial last_rx vs ARP-monitor
+ slack
+ window
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Feedback-ID: 0163e381fa67fa966160938ffa017803050e57578bb1735d37cd25d20463a96a9bb3a550250bbc5eaa94bfdfd8cf3defcf1aa43859ae980630826bb8230f264e7f:TurnOnPrivacy!:tutamail
 
-Hi all,
+Aug 28, 2026, 04:50 by hangbin.liu@linux.dev:
 
-This series is a respin of the pylint cleanup I posted in May [1],
-which got a changes-requested. I forgot to tag it as v2, sorry for
-the confusion.
+> On Thu, Aug 27, 2026 at 01:44:42PM +0200, Ramses de Norre via B4 Relay wr=
+ote:
+>
+>> From: Ramses de Norre <ramses@well-founded.dev>
+>>
+>> Commit f31c7937c254 ("bonding: start slaves with link down for ARP
+>> monitor") initialises a freshly enslaved port's last_rx to
+>> jiffies - (arp_interval + 1) so that it does not "immediately cause
+>> fake detection of 'up' state". At the time, the comparison was a plain
+>> <=3D arp_interval and the value was just stale enough.
+>>
+>> Commit da210f559019 ("bonding: add some slack to arp monitoring time
+>> limits"), four months later, added a +arp_interval/2 slack term to
+>> every comparison (now bond_time_in_interval()) but did not widen the
+>> init to match. Since then, bond_time_in_interval(bond, last_rx, 1) is
+>> true for the first ~arp_interval/2 after enslavement even though no
+>> packet has been received: the upper bound is last_rx + 1.5*delta and
+>> last_rx was set to jiffies - delta - 1.
+>>
+>> If the ARP monitor tick lands in that window, bond_ab_arp_inspect()
+>> proposes the slave UP. If the slave is the configured primary,
+>> bond_ab_arp_commit() sets do_failover and the still-armed
+>> force_primary in bond_choose_primary_or_current() makes it the active
+>> slave regardless of primary_reselect. ARP validation as the active
+>> slave then fails (the link has not actually received anything; on
+>> SFP+ ports the PHY is often still negotiating) and the bond falls back
+>> to the backup. With primary_reselect=3Dfailure, force_primary has now
+>> been spent and the bond stays on the backup until something else
+>> triggers a reselect.
+>>
+>
+> Can we set primary_reselect to always or better to avoid this? If you pre=
+fer
+> to using the primary slave.
+>
+That hides the symptom, but the wrong link state happens nonetheless, in bo=
+nd_ab_arp_inspect(), independent of any selection policy:
 
-Changes since v1:
+if (slave->link !=3D BOND_LINK_UP) {
+=C2=A0 if (bond_time_in_interval(bond, last_rx, 1)) {
+=C2=A0 =C2=A0 bond_propose_link_state(slave, BOND_LINK_UP);
 
-- Dropped the patch that renamed the NLA classes to snake_case. Those
-  names mirror the kernel-side netlink attribute enums, so keeping
-  them as-is makes the mapping obvious and avoids a large
-  cosmetic-only diff.
-- Rebased onto current net-next (base-commit 9eab111e7657).
-- Pylint score is now 9.93/10 (upstream file scores 7.66/10).
+bond_enslave() needs to seed last_rx with a timestamp old enough that this =
+test fails until a real ARP reply arrives. That is what the seed is for, se=
+e f31c7937c254 ("bonding: start slaves with link down for ARP monitor").
 
-On the direction Aaron raised in the v1 thread: moving ovs-dpctl.py
-from pyroute2 to the in-tree YNL specs is still the right move, and
-the gaps I listed back then (no ovs_packet.yaml or conntrack specs,
-datapath flow operations and attributes missing from the family spec)
-still stand. This cleanup is complementary to that migration: it
-clears the mechanical noise now and shrinks the diff any future YNL
-rewrite has to carry. Happy to pick up the migration discussion
-separately, offline works for me.
+The seed is one arp_interval old, which was just old enough back when the t=
+est was "jiffies <=3D last_rx + delta". da210f559019 then added delta/2 of =
+slack to every such comparison without adjusting the seed accordingly, so t=
+he seed now sits inside the window instead of outside it. So for the first =
+half ARP interval after enslavement the test indicates "received recently" =
+for a slave that hasn't actually received anything, and that is true for an=
+y freshly enslaved slave, primary or not, whatever primary_reselect is set =
+to.
 
-[1] https://lore.kernel.org/netdev/20260513121240.2590767-1-houminxi@gmail.com/
+With the always policy the bond does recover once the port really comes up,=
+ so it is not permanent, but until then traffic goes to a port whose PHY ha=
+s not finished negotiating and is dropped.
+So in my case, I use the failure policy precisely to avoid the bond flappin=
+g back to the primary while it is not actually up, which would cause droppe=
+d packets, but it would be much nicer if the link state was just detected c=
+orrectly and this workaround wasn't needed.
 
-Thanks,
-Minxi
+>>
+>> Reproducer:
+>>
+>> ip link add bond0 type bond mode active-backup arp_interval 1000 \
+>> arp_validate all arp_ip_target 192.0.2.1 \
+>> primary eth0 primary_reselect failure
+>> # eth0: SFP+ (slow link-up), eth1: RJ45 (fast link-up)
+>> ip link set eth0 master bond0
+>> ip link set eth1 master bond0
+>> ip link set bond0 up
+>> # bond0 lands on eth0 via force_primary, ARP-fails it before the
+>> # SFP+ has carrier, falls to eth1, and stays there.
+>>
+>> Initialise last_rx (and the per-target array, and last_tx) to two full
+>> intervals in the past so it is outside the slack window from the
+>> start.
+>>
+>
+> Is this trying to init the backup slave down by default?
+>
+No, the link state init is untouched, it still comes from netif_carrier_ok(=
+) a few lines further down. Only the last_rx seed changes, from one interva=
+l to two, so that it is outside the window bond_time_in_interval() checks.
+
+>
+> Thanks
+> Hangbin
+>
+
