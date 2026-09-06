@@ -1,80 +1,81 @@
-Received: from mail-pj2-f8.google.com (mail-pj2-f8.google.com [74.125.227.136])
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30ACE3A5438
-	for <netdev@vger.kernel.org>; Sun,  6 Sep 2026 03:40:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08D25217704
+	for <netdev@vger.kernel.org>; Sun,  6 Sep 2026 03:50:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788666051; cv=none; b=rR+k5GEE9PwB3QuCdnKX37P0Ch+86FWM5R9+6vUxx7OR/O8SLooWzjmzC3d5xKbXyqpFAndW3VfnLGbvcSVc3xiPbnkrxgho64qcHNzDMuGKJJwdvcSpEcDq9NwmKh7kUPKQVJ9aXL0ZRtAGFO9B02CJlpm2Lku493P3eqtScuo=
+	t=1788666656; cv=none; b=dBWAIjVwGcSjtTcwwdfZzllyhyFDweJCful/hVkX7aH9ENneukqnlwvVtPU/JXcX8FqSiYfUC61qlFXuWgnZx7QP4+HMgalpB2V+RzO3A3hBhuTQvNrELogor2pVS6H6RW/6XmZrytZ1bQLVbcJ9a4JSbJjgwubuvvEU8VPJ1tA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788666051; c=relaxed/simple;
-	bh=/8M0tegxRt4HmKQN/LPB34a28YCNaa39wlzYTA1fjKc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=luvJxn1XS0Qf5LZiMfiTVf3/DWKKubhUqlWCk8exzVvUgUDYEqWzsPSsc9vJosFcbbm/W8LCitSFhKfJ4TQOV84eIMpcfjJ+baWUeO+LM/rsxPNpi1H10a3YKyRNBIjM7vV2BRZy7O5a3Qqz4NQCETZ8uG2HxavkneGPJ00QptY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LKgZ5+2O; arc=none smtp.client-ip=74.125.227.136
+	s=arc-20240116; t=1788666656; c=relaxed/simple;
+	bh=hyapCilL5pWZnnG8x/9q9+l1rNqaeGLgUVdHkrndFms=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dSn6H6/0ythIXZEuSMMGq46JQ4/Nb1UMEkYG6QF69hMzPzKZAwLK5nYf0B3M9O/v8wZ1ESwREOILZcdLWMb2KtTm4zpyX5VV777rd/Eb7EVvj/RYQgZSEmeGJWtx8bWR79ypTKKuVTraZAPyQ5yA3S7axP1NGmlfgWRkFc2SHak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oeTal1p0; arc=none smtp.client-ip=209.85.215.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LKgZ5+2O"
-Received: by mail-pj2-f8.google.com with SMTP id 98e67ed59e1d1-38fd9408220so617085a91.1
-        for <netdev@vger.kernel.org>; Sat, 05 Sep 2026 20:40:50 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oeTal1p0"
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-cb5b8572b70so2407703a12.2
+        for <netdev@vger.kernel.org>; Sat, 05 Sep 2026 20:50:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788666049; x=1789270849; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1788666654; x=1789271454; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=IKdp+HR5KTqwNHJfV8ToQcuLLzhKcZ0RoFebWPsbOCw=;
-        b=LKgZ5+2OZF1Bg3SZwzR74iP4/p6JPiKDsOD+f/3bjmLZeTQtsg6O6Dyop5qS5dE/qI
-         1wXOtSII2pL2b+wpIXJICVINwkdpZZxOwsaWaZTeSrini4CHN+3dLcjm1wEqbEdTFEh8
-         N4cEoYVRoYGEP1B0gLEcCkv6srGyms0CrsrRBuVEk3gFxXXG1AaNCBvLkmSH6BpGiUYm
-         kfdbKZTPNHtm/xpuBiAy+iwQe0L1eIwLPYSCiRJtLRV5zLhG7KNDYdFjyggPDbc6++6I
-         M4o2oE8reBp9R4Bu8nGrTzIN3u+rZArpF+4PFe/T+Ey6pvYgELkO1A/L57IjDqfM0Hdc
-         ZUgQ==
+        bh=fW6yt9nbpXpIAMyGGr3gNcQLhcmRLKyTBThr7JzkuBQ=;
+        b=oeTal1p0PCN54WsKAC/snSb9idD5QlHJy/FNGyDrd04kJ6JXkjDQ8phul7TSvuf/H6
+         hAUHEmjq2u3pl1u4uxY/7FldI9kL6kzR+lR2fjqqW33UgPsN0TDPQbnL4wWT38tyyqms
+         zw4kTdlActoVAkF23uBPk/Mo+xbIl9KKYQG9ou4Annt4fSS3CzQ7X7PQ+I6jXPHIFGNv
+         s4T0SmYK6Bo+f69bfD9Kq/57QG266O/6zkGmFRmVVbQ+tehZNWlIRvBtfFxLYiIsVTxM
+         HhhEfF1xrUSC/XL9SZBKy01TiU6CF/xJfOiqrPQ5oHgH5AoXKeo6Kia0UCYit9i12vaa
+         AdVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788666049; x=1789270849;
+        d=1e100.net; s=20251104; t=1788666654; x=1789271454;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=IKdp+HR5KTqwNHJfV8ToQcuLLzhKcZ0RoFebWPsbOCw=;
-        b=S6RN8iLJFJVhuaf/HjUMK1HapOjehYV5Zel5gr9z0/YIAjwaKEd3OnBW7zWQ7E8/0t
-         M1Qew4ZKqZN/1zE9Z5BwPt0o4gvpC8zgJOVKTyGv3oKNi6X6eHShGjor30b9Av8mGPcC
-         xdvPCcmCC1hkNZFXaer2wgGOXdHhv/eKiT17m1DDfsk//kAlne15u0ls0XVfbkrMjiC3
-         1Ynalhjtc2IGrRFXQzvRxWtrUOimJEAIZ+uqwltWZSaLUk1BqZh2ShrrbKJKXYbiuSDQ
-         KM3L8hyhcscvBS6S0gRrb1TZuNcVFixP6f0B5ytffVKGX0meMKHifHm+kRr7eeunvpX7
-         YarA==
-X-Forwarded-Encrypted: i=1; AKwUvBx3Di7ewLab+AN2KDJ1hMmdap6U6/Rdlgd+62YgNEzs6juypEroefR23qHZYzuvvscsTmUY1/M=@vger.kernel.org
-X-Gm-Message-State: AFuF++m84oFTJd29/Emb5PS4luJ+PDd9F7yZjOW+ZJYXw4bo1O5uQTbW
-	eN1Tw7juskyU760rAorlIzLg1207lsnhYlU5IJU8BUbWWv7yRLT41GMp
-X-Gm-Gg: AYBFou0JWukTmCjwSz56OISx/c9UPYxqyw+/ZRFW1LeD19HCxF87fUb+elptt82owTs
-	h0P1loxXi3j5cmXIPhp5NunvHY11Js3A8YEFWA5v2ED4zCutISCmsA3VfqzySxl9s9IH9qkH3Ts
-	Hzt8kq8aYETl2wI8Ac8Khepd9o9hmCmQbzBnI8+yNzWHOtgb6tc72u5ABpqAC2gQ045OYcR1OK9
-	pa3y6gFzcg8G2aCfIoOAg12xIqFRq8BdMzrFpD1MyS8AhS4MefwUlZ3N8p8rmIs8JsuHN0aKJx0
-	Eq4OLlpkGOTbq0LOlde0+lwdb1UTcSsHvK0W26x7TsS9oLHNjoKRHP/BuPXJDz2czfPez1A0/qa
-	MoeXtRL6hpCd1tBqN+1m3/UImomCF1Uo2UlyQU9u1h0wI3USUz83CJheUeqpPXzt/XcRNjZFC8O
-	ESfVb7SZvx+qxdC1W57UIdXTZsa5yTwT9UhSyBvZlD5G7pNiQ+pn8+kyKfCfdHN1TncQpg1D9je
-	dUsTibojkNsl0fy1CCO/upyrJIio9u0q9RYL7Hzz/B0lO3q2xA0tQmUMr8G4jnqEO1MbtPxTDiy
-	pk2chrkEQVDaMJVoprb2gvnHsKz3WuSkgs6nKOtZthos/1/mGn/YrGI=
-X-Received: by 2002:a17:90b:1dc3:b0:398:d6f4:c61a with SMTP id 98e67ed59e1d1-39b26207ee4mr24439031a91.17.1788666048184;
-        Sat, 05 Sep 2026 20:40:48 -0700 (PDT)
-Received: from ethan-latitude5420.. (host-127-24.cafrjco.fresno.ca.us.clients.pavlovmedia.net. [68.180.127.24])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-143243a9388sm16121651c88.10.2026.09.05.20.40.46
+        bh=fW6yt9nbpXpIAMyGGr3gNcQLhcmRLKyTBThr7JzkuBQ=;
+        b=N2HBnF9mx+6HOsPAUOkRKvJFH/KucXmQ5kRmpKu6CZrCCW4CMQH/fJooG8t/wLaHyu
+         gLJdjyyd8CAKDo3SXEPnIgBzbzj/XwC2ZN9dxW3Glq0pbWXEctKmLPCY2kql5VsI719z
+         5wxCUNMBbteGdLI0aZftSW48XasDMboy6AovOXanj/zqZmvffqEZLVT5Hy++vjys1fPR
+         04gufp0qs8bLz4V7Zwx181SGAsrOtmpVf+p0Xi3WDsfZ/ipdUZjJhBwBsGDHKeCK6M1Z
+         GYBtEWlv283Tan88rStRnUZdNCIpVs58O+16j+CCxdqSFPRt7QfWT1xs7/wylIk9B6Zk
+         V6oA==
+X-Forwarded-Encrypted: i=1; AKwUvBxLFZTHhpmu87SMcBl46+gbxVE9TGqedJnCvP1uXosazwL2CKHHZH1OMDhWtx5vQV7kwNZkagM=@vger.kernel.org
+X-Gm-Message-State: AFuF++kUvciMZwkr5fPVkTmrkUlHfFgpvWNCzA5ICM2RCkIbX9hP/wd7
+	X5VN3oU1XvWQ5vhtatIfvxWmJfkSTGC/kqoAuCUvS2Bq1YElfrePX5yZ
+X-Gm-Gg: AYBFou0vf/D+dnMb/sogJ5bGMcgCCfAG2ydjO3V7TY73JShVDyFPU/NMNh8AfdwJtZE
+	+AHV8MAL0DLVnRo5noynjDXporAqVXaKIehW74L/R881hblmSIeUA4EKwtd08eBur4C92mVbJPg
+	uoHQ+xDdNtk7J1CwQ9vAPnVq3Srcd21AcEiJvWsNDaXHo+EMo0ebdh4DIZN+6Ak8AB11qfAtm5V
+	nwCPk2JtSGYZL6L3Qyyrana5ZejNDFxau10XndDBuLl0UFgM1pfKs6h6PZzTDQXS/GQoqKhU6Ks
+	tI0ubBVXX676ftahOrYID53FOgaX1fK+iOOfv1ZFD2hSWcj4iym1RdqZoSVaqRQKErXYDgdGi8q
+	YsZqXXKuZoDb6dN4edhfdoEF3TUFYNqAc9rRHwWNDDttopbZfUBHuF+Z5BAMxTT/ofmq6RHn4FX
+	+mI7VAmpMTD62BzwrxehaZvlViwKE1ezOMShgrznzNqTx7wgeyKlebBEzuVQX/naPnrQTOfqZ1n
+	iQk4iVoCy+7MrDWnOkq
+X-Received: by 2002:a05:6a20:7288:b0:3bf:5b7a:fc8b with SMTP id adf61e73a8af0-3da397c5713mr22545348637.0.1788666654238;
+        Sat, 05 Sep 2026 20:50:54 -0700 (PDT)
+Received: from 192.168.50.3 ([183.193.115.0])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc455485c25sm2550916a12.26.2026.09.05.20.50.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 05 Sep 2026 20:40:47 -0700 (PDT)
-From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-To: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig=20=28The=20Capable=20Hub=29?= <u.kleine-koenig@baylibre.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	netdev@vger.kernel.org,
-	linux-scsi@vger.kernel.org
-Cc: Ethan Nelson-Moore <enelsonmoore@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
+        Sat, 05 Sep 2026 20:50:53 -0700 (PDT)
+From: Weiming Shi <bestswngs@gmail.com>
+To: Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
+	Phil Sutter <phil@nwl.cc>,
+	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-	"Martin K. Petersen" <mkp@kernel.org>
-Subject: [PATCH] zorro: use module_driver() to avoid repeated boilerplate code
-Date: Sat,  5 Sep 2026 20:40:19 -0700
-Message-ID: <20260906034037.81379-1-enelsonmoore@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	Simon Horman <horms@kernel.org>
+Cc: netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	co+459f67f4d8af8ce6@bugs.sh,
+	Xiang Mei <xmei5@asu.edu>
+Subject: [PATCH nf] netfilter: ip6t_rpfilter: handle routes without inet6_dev
+Date: Sun,  6 Sep 2026 11:49:38 +0800
+Message-ID: <20260906034939.3746540-1-bestswngs@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -83,207 +84,56 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Many Zorro drivers have module_init and module_exit functions that only
-call zorro_register_driver() and zorro_unregister_driver(). The
-module_driver() macro automatically generates these functions given the
-register and unregister functions. Switch to it to simplify the code.
+ip6_route_lookup() can return an error-free route whose rt6i_idev is
+NULL.  For example, lowering an external nexthop device's MTU below
+IPV6_MIN_MTU tears down its inet6_dev while fib6_ifdown() leaves routes
+using nexthop objects in the FIB.
 
-Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+rpfilter_lookup_reverse6() dereferences rt6i_idev before evaluating its
+loose-mode condition.  This lets an unprivileged user with a private user
+and network namespace trigger a NULL pointer dereference:
+
+  Oops: general protection fault, probably for non-canonical address
+  0xdffffc0000000000
+  KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+  RIP: rpfilter_mt
+  ip6t_do_table
+  nf_hook_slow
+  ipv6_rcv
+  process_backlog
+  net_rx_action
+  handle_softirqs
+
+Evaluate loose mode first because route existence is sufficient there.
+In strict mode, compare devices only when the route has an inet6_dev.
+
+Fixes: e26f9a480fb6 ("netfilter: add ipv6 reverse path filter match")
+Reported-by: co+459f67f4d8af8ce6@bugs.sh
+Closes: https://lore.kernel.org/all/VtWUkE8QzJt5CroTj2V2v3ZQ0gwbXZ7nq7I3@bugs.sh/
+Assisted-by: Claude:gpt-5
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
 ---
- drivers/net/ethernet/8390/hydra.c     | 13 +------------
- drivers/net/ethernet/8390/zorro8390.c | 13 +------------
- drivers/net/ethernet/amd/a2065.c      | 13 +------------
- drivers/net/ethernet/amd/ariadne.c    | 13 +------------
- drivers/scsi/a2091.c                  | 12 +-----------
- drivers/scsi/gvp11.c                  | 12 +-----------
- drivers/scsi/zorro7xx.c               | 13 +------------
- drivers/scsi/zorro_esp.c              | 13 +------------
- 8 files changed, 8 insertions(+), 94 deletions(-)
+ net/ipv6/netfilter/ip6t_rpfilter.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/8390/hydra.c b/drivers/net/ethernet/8390/hydra.c
-index 9a59915436d2..2edf97e500df 100644
---- a/drivers/net/ethernet/8390/hydra.c
-+++ b/drivers/net/ethernet/8390/hydra.c
-@@ -257,18 +257,7 @@ static void hydra_remove_one(struct zorro_dev *z)
-     free_netdev(dev);
- }
+diff --git a/net/ipv6/netfilter/ip6t_rpfilter.c b/net/ipv6/netfilter/ip6t_rpfilter.c
+index 67c87a88cde4f..2bcc96f9385cb 100644
+--- a/net/ipv6/netfilter/ip6t_rpfilter.c
++++ b/net/ipv6/netfilter/ip6t_rpfilter.c
+@@ -72,9 +72,11 @@ static bool rpfilter_lookup_reverse6(struct net *net, const struct sk_buff *skb,
+ 		goto out;
+ 	}
  
--static int __init hydra_init_module(void)
--{
--    return zorro_register_driver(&hydra_driver);
--}
--
--static void __exit hydra_cleanup_module(void)
--{
--    zorro_unregister_driver(&hydra_driver);
--}
--
--module_init(hydra_init_module);
--module_exit(hydra_cleanup_module);
-+module_driver(hydra_driver, zorro_register_driver, zorro_unregister_driver);
- 
- MODULE_DESCRIPTION("Zorro-II Hydra 8390 ethernet driver");
- MODULE_LICENSE("GPL");
-diff --git a/drivers/net/ethernet/8390/zorro8390.c b/drivers/net/ethernet/8390/zorro8390.c
-index cb1d5ed20874..0f66f28e50b4 100644
---- a/drivers/net/ethernet/8390/zorro8390.c
-+++ b/drivers/net/ethernet/8390/zorro8390.c
-@@ -430,18 +430,7 @@ static struct zorro_driver zorro8390_driver = {
- 	.remove		= zorro8390_remove_one,
- };
- 
--static int __init zorro8390_init_module(void)
--{
--	return zorro_register_driver(&zorro8390_driver);
--}
--
--static void __exit zorro8390_cleanup_module(void)
--{
--	zorro_unregister_driver(&zorro8390_driver);
--}
--
--module_init(zorro8390_init_module);
--module_exit(zorro8390_cleanup_module);
-+module_driver(zorro8390_driver, zorro_register_driver, zorro_unregister_driver);
- 
- MODULE_DESCRIPTION("Zorro NS8390-based ethernet driver");
- MODULE_LICENSE("GPL");
-diff --git a/drivers/net/ethernet/amd/a2065.c b/drivers/net/ethernet/amd/a2065.c
-index 672c4996b30e..93f2261f4bfe 100644
---- a/drivers/net/ethernet/amd/a2065.c
-+++ b/drivers/net/ethernet/amd/a2065.c
-@@ -768,18 +768,7 @@ static void a2065_remove_one(struct zorro_dev *z)
- 	free_netdev(dev);
- }
- 
--static int __init a2065_init_module(void)
--{
--	return zorro_register_driver(&a2065_driver);
--}
--
--static void __exit a2065_cleanup_module(void)
--{
--	zorro_unregister_driver(&a2065_driver);
--}
--
--module_init(a2065_init_module);
--module_exit(a2065_cleanup_module);
-+module_driver(a2065_driver, zorro_register_driver, zorro_unregister_driver);
- 
- MODULE_DESCRIPTION("Commodore A2065 Ethernet driver");
- MODULE_LICENSE("GPL");
-diff --git a/drivers/net/ethernet/amd/ariadne.c b/drivers/net/ethernet/amd/ariadne.c
-index ec6e7e8c14fe..662eba9e8ffd 100644
---- a/drivers/net/ethernet/amd/ariadne.c
-+++ b/drivers/net/ethernet/amd/ariadne.c
-@@ -777,18 +777,7 @@ static struct zorro_driver ariadne_driver = {
- 	.remove		= ariadne_remove_one,
- };
- 
--static int __init ariadne_init_module(void)
--{
--	return zorro_register_driver(&ariadne_driver);
--}
--
--static void __exit ariadne_cleanup_module(void)
--{
--	zorro_unregister_driver(&ariadne_driver);
--}
--
--module_init(ariadne_init_module);
--module_exit(ariadne_cleanup_module);
-+module_driver(ariadne_driver, zorro_register_driver, zorro_unregister_driver);
- 
- MODULE_DESCRIPTION("Ariadne Ethernet Driver");
- MODULE_LICENSE("GPL");
-diff --git a/drivers/scsi/a2091.c b/drivers/scsi/a2091.c
-index f81e53b53e20..421330a7b6a7 100644
---- a/drivers/scsi/a2091.c
-+++ b/drivers/scsi/a2091.c
-@@ -288,17 +288,7 @@ static struct zorro_driver a2091_driver = {
- 	.remove		= a2091_remove,
- };
- 
--static int __init a2091_init(void)
--{
--	return zorro_register_driver(&a2091_driver);
--}
--module_init(a2091_init);
--
--static void __exit a2091_exit(void)
--{
--	zorro_unregister_driver(&a2091_driver);
--}
--module_exit(a2091_exit);
-+module_driver(a2091_driver, zorro_register_driver, zorro_unregister_driver);
- 
- MODULE_DESCRIPTION("Commodore A2091/A590 SCSI");
- MODULE_LICENSE("GPL");
-diff --git a/drivers/scsi/gvp11.c b/drivers/scsi/gvp11.c
-index 79bd64e12adc..eba868ac355d 100644
---- a/drivers/scsi/gvp11.c
-+++ b/drivers/scsi/gvp11.c
-@@ -461,17 +461,7 @@ static struct zorro_driver gvp11_driver = {
- 	.remove		= gvp11_remove,
- };
- 
--static int __init gvp11_init(void)
--{
--	return zorro_register_driver(&gvp11_driver);
--}
--module_init(gvp11_init);
--
--static void __exit gvp11_exit(void)
--{
--	zorro_unregister_driver(&gvp11_driver);
--}
--module_exit(gvp11_exit);
-+module_driver(gvp11_driver, zorro_register_driver, zorro_unregister_driver);
- 
- MODULE_DESCRIPTION("GVP Series II SCSI");
- MODULE_LICENSE("GPL");
-diff --git a/drivers/scsi/zorro7xx.c b/drivers/scsi/zorro7xx.c
-index 21c769dc1ecb..80e156b04b99 100644
---- a/drivers/scsi/zorro7xx.c
-+++ b/drivers/scsi/zorro7xx.c
-@@ -173,15 +173,4 @@ static struct zorro_driver zorro7xx_driver = {
- 	.remove	  = zorro7xx_remove_one,
- };
- 
--static int __init zorro7xx_scsi_init(void)
--{
--	return zorro_register_driver(&zorro7xx_driver);
--}
--
--static void __exit zorro7xx_scsi_exit(void)
--{
--	zorro_unregister_driver(&zorro7xx_driver);
--}
--
--module_init(zorro7xx_scsi_init);
--module_exit(zorro7xx_scsi_exit);
-+module_driver(zorro7xx_driver, zorro_register_driver, zorro_unregister_driver);
-diff --git a/drivers/scsi/zorro_esp.c b/drivers/scsi/zorro_esp.c
-index 178d46140674..121bcbbce52d 100644
---- a/drivers/scsi/zorro_esp.c
-+++ b/drivers/scsi/zorro_esp.c
-@@ -946,15 +946,4 @@ static struct zorro_driver zorro_esp_driver = {
- 	.remove	  = zorro_esp_remove,
- };
- 
--static int __init zorro_esp_scsi_init(void)
--{
--	return zorro_register_driver(&zorro_esp_driver);
--}
--
--static void __exit zorro_esp_scsi_exit(void)
--{
--	zorro_unregister_driver(&zorro_esp_driver);
--}
--
--module_init(zorro_esp_scsi_init);
--module_exit(zorro_esp_scsi_exit);
-+module_driver(zorro_esp_driver, zorro_register_driver, zorro_unregister_driver);
+-	if (rt->rt6i_idev->dev == dev ||
+-	    l3mdev_master_ifindex_rcu(rt->rt6i_idev->dev) == dev->ifindex ||
+-	    (flags & XT_RPFILTER_LOOSE))
++	if (flags & XT_RPFILTER_LOOSE)
++		ret = true;
++	else if (rt->rt6i_idev &&
++		 (rt->rt6i_idev->dev == dev ||
++		  l3mdev_master_ifindex_rcu(rt->rt6i_idev->dev) == dev->ifindex))
+ 		ret = true;
+  out:
+ 	ip6_rt_put(rt);
 -- 
-2.43.0
-
+2.55.0
