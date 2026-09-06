@@ -1,46 +1,58 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24C883D75C2;
-	Sun,  6 Sep 2026 13:33:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D4543DA5A6;
+	Sun,  6 Sep 2026 13:34:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788701641; cv=none; b=mg4cJNhL6KsZ+gKIt/F8SWbQZP+GYxoXzCYljSk8gJcPZtcOl1ff65MNTkqWFOz9NQ/j4BDcck4uNK9SUsXn0OujDZmYAATb+mnCFT4BKFU6tiITOCgrzWbsPh+LZS97u7KgySy6UPNdJPTjDIM+9WPDN50awOtRK2qnejIABqo=
+	t=1788701654; cv=none; b=iNaClweZxTfny2yLKQ8JjOqm9zKEvuZudERDmJonuWZHG36KV2n0GOxE3qbjcXLRDqOvOZ2aqfJ37ngAfCT3IJk0zBzy70ooW+nv7TCe4vYqfeXNNCiA/da6tHUEjDx4uOi9XqGZIe7L058y5QZ5vPZTWBjnZpQoyFwa8ExPnpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788701641; c=relaxed/simple;
-	bh=VSzsFfROQ0qjGYdPREcWKmUmn8KCt8Lpi/1u2GL0P1Y=;
+	s=arc-20240116; t=1788701654; c=relaxed/simple;
+	bh=GcnuUKSDTjrjKt3dwZsrbWpHfRqJGSYafHVPgHbF+c8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iYdz9AkiHwDJ6pM9rt9/Fy5zIv0PmErA6kNLB+RJjahX62Pk38jQj6/U1xEe9IJN2rzWVcN3CPKkmNEftekO0K2xB3PYTTb+kSnwHqYvlUAEukP3P8GsKN0KH4sUn0Lj2/NYDJTqwfkivIbDWnc98b+3W6Ltg+bRaPMqmK0oPQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KPFs1vJY; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=aCd/lCs7QxNbBlgr173h3n9sxfScjR/nUbrr7w08MtBqWlqy/omWZfcaoLve3GartlSfxSiAGBFyqRLtLyvZuVtVkHGmvKYGM490Na9lMePZmvXyIeIXDwH6pmU3xCiABsrN1n79nhZtN8t0Cbk11aAaEYRoNuxj9wkhiJ5p5cQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wk08MnZO; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KPFs1vJY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D45E1F00A3F;
-	Sun,  6 Sep 2026 13:33:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wk08MnZO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCE2D1F00A3A;
+	Sun,  6 Sep 2026 13:34:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788701632;
-	bh=PrrtWABTJ6R9cQwD0nncoOzeN4zhXns1H6XcXX31kO8=;
+	s=k20260515; t=1788701649;
+	bh=bQjJw6lRuzR3MyVeNvu2ZnKxhMxp73rcBr+n0G7mURw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KPFs1vJYzQwJwtnD2FvBrophLmRpaiyjwGxeLkw81d6X4K2oNS/wBsoU7eRd2IvGj
-	 Ky8bPNrZoc5sp+1DUkzQ1y6W/6HE3MAq/gfNPQnpnLm34xNNscu/2hYCy62iFoj/84
-	 B5nHhOJFZmf86T7WnLip6BvPAfCAJdfJcdYjCb9nPOubXZvumnXtOt18ThFIsgcXZX
-	 iSscM2M4K+nmZIAufAic6f7urVVOt/G82yexNZiH+BD0j7Q6rjU9F0ymAV09aaduep
-	 8hGf2KJGjem3Iv0k1QeWDmkqTgdUKFRyGpLezQdC/HLVg5qBLQIRDK4ZAb01bzVFeF
-	 Y5PLsrpOmRElA==
+	b=Wk08MnZOG2SgH6iiQOva/ZJEIww2Yd+w3jI0FDdbHoIE7ZqH7HCvxBkiLqh1rTaHI
+	 t3VxiAAWRJSHrEgiOMasUAtUi6IFrenQ4C4JR/c+NshUhCAaPya+z8+daTrmq0EmLt
+	 hTZs9GJUmXqhM1WzgHbxuqKn3M0vXfmlLxEz6wA4TH78S9x4kZCWRPDXT8EY4i99eA
+	 XW+NFyWgObTIIFnJQIr40DsnAMlreszZyv54NbCGQRTprbuWCk3E/F4wSfMwh00VbD
+	 DRG61rRvj1mU9F1mAXAZP1PKAvDcdyuPMHR02Mz7xvSstQblOYPovgSW5Sx3QW+cme
+	 2o277ds9wJz+w==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Sasha Levin <sashal@kernel.org>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Jozsef Kadlecsik <kadlec@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	netfilter-devel@vger.kernel.org,
+	Eric Dumazet <edumazet@google.com>,
+	syzbot+937b5bbb6a815b3e5d0b@syzkaller.appspotmail.com,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Neal Cardwell <ncardwell@google.com>,
+	Matthieu Baerts <matttbe@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
+	Geliang Tang <geliang@kernel.org>,
 	netdev@vger.kernel.org,
-	Suraj Jitindar Singh <surajjs@amazon.com>
-Subject: Re: [PATCH 5.10.y] netfilter: nf_tables: make nft_object rhltable per table
-Date: Sun,  6 Sep 2026 09:32:57 -0400
-Message-ID: <2026-09-05-daily-reply-0027-nf-tables-rhltable-5-10@kernel.org>
+	linux-kernel@vger.kernel.org,
+	mptcp@lists.linux.dev,
+	bcm-kernel-feedback-list@broadcom.com,
+	atul.joshi@nokia.com,
+	joakim.tjernlund@nokia.com
+Subject: Re: [PATCH stable 5.10 v2] tcp: fix potential race in tcp_v6_syn_recv_sock()
+Date: Sun,  6 Sep 2026 09:33:14 -0400
+Message-ID: <2026-09-05-daily-reply-0044-tcp-syn-recv-race-v2-5-10@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260904013055.22116-1-surajjs@amazon.com>
-References: <20260904013055.22116-1-surajjs@amazon.com>
+In-Reply-To: <20260904183500.3841094-1-florian.fainelli@broadcom.com>
+References: <20260904183500.3841094-1-florian.fainelli@broadcom.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,11 +61,10 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-> The nft_object rhltable is global, this allows for accessing objects
-> that are being dismangled from lookup path by other existing netns.
-> Given the nft_obj_destroy() releases the object inmediately, this might
-> lead to use-after-free of these objects that are being released.
-> Make the existing rhltable per table to address this issue to deal with
+> This fixes CVE-2026-43198. v1 broke the DCCP build on some trees because
+> it did not thread the new argument through every icsk_af_ops.syn_recv_sock
+> implementer. v2 updates dccp_v4_request_recv_sock/dccp_v6_request_recv_sock
+> as well as the TCP/MPTCP/SMC implementers.
 
 Queued for 5.10, thanks.
 
