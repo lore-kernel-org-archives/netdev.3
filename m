@@ -1,199 +1,215 @@
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013026.outbound.protection.outlook.com [40.93.196.26])
+Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011060.outbound.protection.outlook.com [52.101.57.60])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27825331EB9;
-	Sun,  6 Sep 2026 15:32:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.26
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B1093C2D;
+	Sun,  6 Sep 2026 15:34:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.60
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788708775; cv=fail; b=F7lAM7BYWfvzCX2d5oeLocmFbnxEw7hdf55k72zjUHc/Ou6lgNKidT40xQuT6uSPgEjxv8znesBSrpwno96m2MOtut0+sdWZhjSGWUqq1SfphNx+s4POoJNWxLI1gVAP04cQ+lR/cDZr+8NLzPLcQaUm7+5XDYYpvV+9dlwe0Y4=
+	t=1788708851; cv=fail; b=VSseMzQI42xGzGS4UB1aTqrpuVs6jiRT/LDeBvyeRJDvLdg7nrmUAdARy6QESkZdhq4R6AapdY07vLmFTeshKpN5K9/Uk7aY6waZk1ohMRH/0gBe3OR0Oly8kN6+ksWXBcJxG1n982uhJ5syPyGxl9VjKATW5+x9hRXrvoh05pI=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788708775; c=relaxed/simple;
-	bh=PnODsNWDyzyiwg5vvFQ+w+OUXTrJap8xcnz7WCwsM68=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=e7yEMvi4+CWFmxhNWSmjuXR+XgSwoxqAxSsErYEUCvTsyGDNmFIEWl8PZfmDM+mwECybGWgZ8LP3UkYt4PErDDecSqQsHHSngu+sWiK+urd52mDE9uJ8E6S/IWk6xjZDn7pxo4/GVbyI8iUvJhXnimmAXozjsyJUzhi6l5l4XzY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=zxB9u+6n; arc=fail smtp.client-ip=40.93.196.26
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	s=arc-20240116; t=1788708851; c=relaxed/simple;
+	bh=boWuphgAwuQjO5285QN5oUMdfv+G80fHvWqTJHjFYeI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=ZmkI7M2ElUY4LgQMEmVtuqohbZ6dLnNEXIjw1IbBWnWbXG8iGrXRjeyBrOZ8DU3NqQHQ4NuNGlxpalp8Y4msTfYGhKov+rs/ikPGnDDj4GUpxgg110OimwqQCP7CI1LqNhLu468duHOgpooorgL7wbWPI59rweo6yPihcUpH6ic=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Ox4XR967; arc=fail smtp.client-ip=52.101.57.60
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="zxB9u+6n"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Ox4XR967"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DYU5nWxO2ASXQBPiO+7iQVG7JAO2//3Nf1FIp60yBnKHQlj2zBpKDFuRBj5yVark9OTXgR6PxNxmI3wziwmZ9k6MtF2oix4iwrpoK+0/ULuL8uO7MOJDv0V1Hzx5E8MX6iKmvU6n2Xm+CZ6fQL64cJEcrG+xwkgSaOLsk5L5TzHEQLEewqlH3fl98lgGk/DPt/687Hcz0UQP5IMKRB6a4gNyGK4D4k0qBrJ4NWqhi7/sjS3hqUHLh44MRfN4vdKj5/puXL4Z/6xnSp4TMnQVMeAX/gssepFOmefxIs0A3dBh3tvq55w2xaA5IF6376Q5ePGpH1bLkOAN+iJvIjBdJQ==
+ b=eotdHg5Ngibqg4Bx6MEhxnOa30lXCMzXl+ybUD71tJqMILVrhrJ0k5meh4izVTFKaMoUa4hGTezlEsYRA4U0v8wdfGdv8fzBi+oDqjTNMHEIvlfgHKNwW6bQ/SacmUisp7oHgfMUo1qZ+FqYHipkJwJqZHOb/JubEEFbbF34gVB+TpeqJGZbhAqaxCBH5/dsOgMkGELXgg15KeIcEPu6h9INPtlhUI3M4JGXJUotXcYXjnILB39Xmh3Y1VySGE3qbafYZtOj92+PdmML+TKVmixDUAv+wjNtT+eMsenb31HUAoXuDWOgFSvrZ8LSzk+VfDpISDgQRKODWZB8YWJ+eA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=K2kym+OYk5U5tlDcWQAPSS3U4RWUcvfHHUMVoM6f4eI=;
- b=wdesCzRH5aOe4Wt2AKhqtFNlIDF0KXfsxuOe11yjssAaDcIDn4eCoGLPLs3fBcS8Num+E6yCVezqjo9lUyNfMM6GWhkAcD3o5Zow8ckoTkOnIwcpEFfPhhPLvxdbJdb78NKib+oeaPyoNPGKy7PyHloXJYmPIihEOInu3V1Q7aYTE0gM28t7wHi7B9IBBOOEqOGihFqV0VF379Syi38IZXeHRdfbGfIbyXYljHt44id/4tzlsm/8N/OTjdO4NTsBAI1QyZMQAKigb6jZ8E12fF7P0OD9/4to6aA2y/EZJGely1/wf+ipG4fKJbpK5uMGdhFonrLuQNCMONuAaw4rlQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lunn.ch smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ bh=r51klYyAF6Y0Dn2BoUkZOjprt16HmEtV87812zPwEkA=;
+ b=TKVT9V9KKCfD1zHtEtxIJSXT7lge7L9VWFNFUSXKy28MM1v0axYqqGeB87oXuq/Bz/uIZZ2Y2PkSvdckxC/PdxHTbL6+XiV9DL8GWNLTae7r0HmCkW5uwJ1KjlGE+T+5+zac8yKhT5QcyslV/J/AdEI2e9frRTsopNpRfZwi247AIheImR0Ai8kvdwBGeGbkcAvXnNvcXKElDp42TdfDjHyx0MABEzXwtB/QeQAv0JaR4Re0408wy64/ocIzGAJFvkeGlMIaGHTk06Cw2cykIEMsNE+annyvtdSK0XhtmXhii5ARDzup62NJEVASdRjGIIg17UewIzAmxuR/ux4j6w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=K2kym+OYk5U5tlDcWQAPSS3U4RWUcvfHHUMVoM6f4eI=;
- b=zxB9u+6nrxCA0QMYUPP9BKcvCQK72aieaLhg5BLChy4ufa/kRyrvQNRlDt2PW58xR0vrPD/SNFISfelRNfTIC+diOGuogutBKHVu3hHJSl5iJG8piLUoKGX9G7gpR4oX5NqicBSIl/zRp2++5ricPcl1Xb23VqdrwwC5PjxuxMk=
-Received: from MN0P223CA0028.NAMP223.PROD.OUTLOOK.COM (2603:10b6:208:52b::17)
- by CY8PR12MB7169.namprd12.prod.outlook.com (2603:10b6:930:5e::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.382.10; Sun, 6 Sep
- 2026 15:32:49 +0000
-Received: from MN1PEPF0000F0E3.namprd04.prod.outlook.com
- (2603:10b6:208:52b:cafe::3c) by MN0P223CA0028.outlook.office365.com
- (2603:10b6:208:52b::17) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.382.15 via Frontend Transport; Sun, 6
- Sep 2026 15:32:49 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
-Received: from satlexmb08.amd.com (165.204.84.17) by
- MN1PEPF0000F0E3.mail.protection.outlook.com (10.167.242.41) with Microsoft
+ bh=r51klYyAF6Y0Dn2BoUkZOjprt16HmEtV87812zPwEkA=;
+ b=Ox4XR9679kPA0x3o/ToPA0/WSYZ9mmBI8QgbnVE88N8Sz3YQK+m1ypqut2lqPfv5ufUKc9bBeUTx4OWIY9OraA1KFUzUtg6bOiREuI/jziP7MN9QyYA9PON4ujYxMa6LXeTBt2PebwMF46eieefNYn1VcopOQddlc2tFIqCooKwFlF4XQ4gExyIa5ATujhtJrvjpf9hJclelAhHqmY8OQxIS01C1Vxi3PyaIycvhoLvwmji0ONYPAopYg7moA/jOsT5dcTLXfQmWjKswPWpLZKInymuj62LVtbU40O28zHJanyuLGsHSK+rotDCBD8PFBAy1JxLY1oB4YWOGWKM/Jg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
+ by DS7PR12MB9043.namprd12.prod.outlook.com (2603:10b6:8:db::9) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.406.5 via Frontend Transport; Sun, 6 Sep 2026 15:32:49 +0000
-Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.46; Sun, 6 Sep
- 2026 10:32:48 -0500
-Received: from satlexmb08.amd.com (10.181.42.217) by satlexmb09.amd.com
- (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.46; Sun, 6 Sep
- 2026 10:32:47 -0500
-Received: from xhdharinik40.xilinx.com (10.180.168.240) by satlexmb08.amd.com
- (10.181.42.217) with Microsoft SMTP Server id 15.2.2562.46 via Frontend
- Transport; Sun, 6 Sep 2026 10:32:44 -0500
-From: Kusuma Vasana <kusuma.vasana@amd.com>
-To: <radhey.shyam.pandey@amd.com>, <andrew+netdev@lunn.ch>,
-	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <michal.simek@amd.com>, <Kusuma.Vasana@amd.com>
-CC: <git@amd.com>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>
-Subject: [PATCH net-next V3] net: axienet: Clear stale AXI DMA TX/RX status before re-enabling interrupts
-Date: Sun, 6 Sep 2026 21:02:43 +0530
-Message-ID: <20260906153243.1903501-1-kusuma.vasana@amd.com>
-X-Mailer: git-send-email 2.43.0
+ 15.21.382.15; Sun, 6 Sep 2026 15:34:05 +0000
+Received: from PH0PR12MB7957.namprd12.prod.outlook.com
+ ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
+ ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0382.014; Sun, 6 Sep 2026
+ 15:34:05 +0000
+Date: Sun, 6 Sep 2026 18:33:54 +0300
+From: Ido Schimmel <idosch@nvidia.com>
+To: Chengfeng Ye <nicoyip.dev@gmail.com>
+Cc: David Ahern <dsahern@kernel.org>, netdev@vger.kernel.org,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Xin Long <lucien.xin@gmail.com>,
+	William Tu <u9012063@gmail.com>, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net v4] ip_tunnel: reserve FOU/GUE headroom before
+ encapsulation
+Message-ID: <20260906153354.GB323313@shredder>
+References: <20260904165544.1362052-1-nicoyip.dev@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260904165544.1362052-1-nicoyip.dev@gmail.com>
+X-ClientProxiedBy: FR3P281CA0093.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:a1::13) To PH0PR12MB7957.namprd12.prod.outlook.com
+ (2603:10b6:510:281::22)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN1PEPF0000F0E3:EE_|CY8PR12MB7169:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4ad76a51-eda6-4612-8695-08df0c2c1bab
+X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|DS7PR12MB9043:EE_
+X-MS-Office365-Filtering-Correlation-Id: c18230a5-db46-4020-ee66-08df0c2c48e3
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|82310400026|36860700016|1800799024|376014|10067099003|18002099003|11063799006|56012099006;
+	BCL:0;ARA:13230040|1800799024|366016|7416014|376014|23010399003|6133799003|3023799007|10067099003|56012099006|11063799006|22082099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	rrUZ2QAIWjw73mh6H9x6/24wALSSfKvwE6C1Wfc/RTR/WWSiTuZv/QPBS6PDK91WwbCOLEBaCsYtU6vptxIXMuzR64N3xiB0B2rk6UuF7bTepyoeNCj0zbcKuXouUkYCokej7y1cOVwxmeHCcX+C3PVJp2OU4aoClK4qgD0/Q1LmreIAX+piCH5HCLAMM9j1YQMx0qT8ezwvxUT16f4fAI15ht2NRy5KZuEOidmghrC8NqDjG9tu/SWIPG6gZvaDInAQ20acEdEQnjqbDTnQQyDaQYVLWgPVVn8xDCqHHSIThYCNcDPCb/z742QIVCHQ89/N69vxGuMbD6Jsc95keuFDKl1hiNYyBNZPX8eYBgakHHALJY7M3Lavx+uN3r1ICMsNjC9HOvUcdvrhNx8DyB6u3ygD8Om5hmD9tpOhWIkPhiwjiGzkqElHXZNxhiFW9ExRgqBeFjAJe511wX9d7dRPXuu+6U/AhzmybRXh7oZFyDo57vwe1a1zrZKTaeuMs7C1hVQNQ7/sihiRgwcKLr0cNV4srhg0ezgfzh+ibsomhj7ZRAy1X7/D6SL0QvtIleyBiY+mvvxKeiOiEYGMoSZ3UieoeOGbvX7iL/CCvxzshQUlzjKv+IvtFBwBl0VCSqelkZNOYNA/rDKgP2egtnDpJU1b+OMi0rKLKR5Rci4IgsKLN+FkI+MlYafXaryt7BYkQ4bE4XLWj/zjXfRYUA==
+	7FbHHB26rVAZvtjXRifNObMvj3E7MlUCJnfGrb3zc0wj7+WO2cce3yqcZJ466hXY/m0uv5rLsiindfEixcC5AxGlW1Zq8/Cb29/jEuNekfRWAxMxFL6mq3YlB+mZEP5sVXb+WadaMofR/h1CdRvr0VQ5eCJKCpT8zGn1WQMZM3WDpapQEx7L+KBRv+bPYGQ1O+scr3/weGTNHvQAP7h4TNc6l9gUKbyAUhwQkPGSLCd63HsIGY3uqjtIXrRThlMWWH5+52aCXJjCEfdu2fNf1VLeK0vzDhvMlfr+XN/rvN3Vdva9u3dRH+Sk3H7qYG07rfy4DnH58Y5ZHAbd5eMW13VgRZPB31YVYTZ2pN264X2YGoUtpgk0jHasBU+2H11bMpe4aMoEME4GM0fNgVBoyr+6wuO70Rai8FB6wZ4ryjh2DYK0yTwV9ClaFbN/36Qe8T2SzXUSuBN9rXpCksxj7zw33Va2pWP8PQv3VstjYZjeaCJ5TyXhwTMqto64QdDUms3Qt+qOx/CvkDytDyXh5Vq9kjaEVCA/y9FlEkVZ/ErNF2KQj/BgCtno9VA0/N1N9U0wqnArc/A6SSNGC5nKG8YfXPpnZCtfyXihVjHcQ60xk3mEK2F4K2Amjed/mLOH547qtq6UcEIrUz16oYgh7bhSZVyd9Px53ucA/Clr7Jc=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(23010399003)(82310400026)(36860700016)(1800799024)(376014)(10067099003)(18002099003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(23010399003)(6133799003)(3023799007)(10067099003)(56012099006)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	CRI/0uQBy6DsCBGLczBqIoZyH177GOwQjlFygfjBvMTLPDK4UaWpfskkhzN+B873gRdGY9J5gkYiwn2ktm70a7fKh2Onq8p8BJjgXw7ANZwL4aRI3Xf7YYtxaY+ejvcxfxdpoR6rOUJ+gcL/s0ngQBbUiqJiWtvLHSB+y/bd92RPzJUQRl9AOzRshmYX8OHcrej7xbEF3OwytIbsXKCySOnB5HSHejDwV9cADrXYpSTsBfRikY0vpSTQSvGP6AlubXtk3KNkPqzWnveUBjyzsbJ7S9uNB4SSiLbBOlzGzn+xIQ8eeUKVR6u6aT9pXh+cIhOrO1MNIeOt9WTai8fqgwl/wHwWpK9YdhXrnu3XE3No/sXs4a0qWnjZw7oyAmBSZeII0neVIl+jHmKbrzuX/Q9yG6CyOYrrATjYGibZ+3jbfqgWTAOj7n2bq5htLyIH
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Sep 2026 15:32:49.1792
+	=?us-ascii?Q?3fgn4kwDfq0VmvsrBFLmM+8r4BOJDfucJWdhBY/cpF9eQh67ZtnYdBb1pbND?=
+ =?us-ascii?Q?1g8KbGEZPPcALPQnnnDdO6rDtaK3qbWJu3HysclYbiCoRRXVl91jXvIqq2a4?=
+ =?us-ascii?Q?L4b0A8q7lJfUUnPwqEX6xx87a5q5uDjh392ZbZ319KfnJLJsP0iwLILtzomE?=
+ =?us-ascii?Q?5naHryfYEmVSIcmbPJriUIQp0/SOy2cMYnj8gjN/Ij2eav8U+nTgTsjjg8h5?=
+ =?us-ascii?Q?7MDfohPFng6y3tPH/VDHgW3imG5DH2ZPTtMwNBnZTx1/NAb4lHM8Oo5u0Nc2?=
+ =?us-ascii?Q?iU5oCIehnfgdG2kWv6UByaC2pKFKQ6UAq58ic5mzeubvBn2oCco6Kghp00Hj?=
+ =?us-ascii?Q?OJq2CrCkq7QipOL9+N7BrUzghhZjo3uY2u+SaNYqub3Ib2KVsX0deeCrU11T?=
+ =?us-ascii?Q?nTnTn8GCJkaK7qkFkwyf4QOGHXvMkunSsrBDF/WKinvi4cQ3bcboJgYBONrH?=
+ =?us-ascii?Q?AIvDyC2bXFD2rqkDh1xkx/PP+tWrgKJmLdLAzh5BPUFdJnWpJQ0cSfl85Ij2?=
+ =?us-ascii?Q?tnicDaBTlpVowbQmMv3GcBsd57P7ln/nTT9dkQql95+UoHoE63mN97E4QuDU?=
+ =?us-ascii?Q?VmHHeNGQGlgt8tks5fV9pbaIHhlVPqi4rdcgRj9MtyyjKTjuIeg6k4zq2ytB?=
+ =?us-ascii?Q?zDVYZZkfgttE7vzipqt1LvaI0rbDKQ0mPLbe0gXuM/eygPNfYnBeT1uGhVGr?=
+ =?us-ascii?Q?oQB6xgCAqNRlpA4hvj4aWJeq5jP6lRAJFiNcX4PCAqfmksh+TK/51MzRV2Y2?=
+ =?us-ascii?Q?DLljWo0+QCCijd+D9OfIwkbE0IOU1PrHbQkknLGyhRP6Ic2pLK64W9lybHu5?=
+ =?us-ascii?Q?K9XtczogpYgsTn8vy48NTVwOac4DAnk2nr3Z0yKjnnEpzpo1gzKVg3ki7DWu?=
+ =?us-ascii?Q?A1nHwgKbh4HCgSLWdD5ptUv7wanArxJyQfiB0oPyEroI9dwc9UyG9pUGWA8F?=
+ =?us-ascii?Q?jvDgs+KAy8EeHdPOsbJYrNh4lwkIARsgAu14jKlKjxfryZ0wY3gJacHw85OQ?=
+ =?us-ascii?Q?hemLEkkVQoS5IcKZZY9Bec6hn44qoi6e5dk0YzCKstaqDDcieNGHoYBi2/++?=
+ =?us-ascii?Q?8dQikvI6XvjkxFnITD9rflbFdG9+Jgx5UG1YegtZ2Fkcnwr1M+FBwRqsK4m1?=
+ =?us-ascii?Q?tuhsRvDo9E8CigBFo+V+mY+BTw1YvDmgrwUAcWcVoLKPhMS0DSr1yNYeLKLi?=
+ =?us-ascii?Q?8OEmsVR4xOLpmBCO5UIPJJskv8CjrzGAMGXlrUZccNkwVhtDmnrZ3oRQqmPx?=
+ =?us-ascii?Q?EGVtV/Gg6MRY0aPTtW7mFYz9p0H+A7M6cdrwp+5infjFQTSZdy4bUCKZ23aD?=
+ =?us-ascii?Q?OX6obG7p876PmDw/4xN8F8dD7mDzDYe7a9Gu4+q4s+ep+9oTIpD0yClnmJq3?=
+ =?us-ascii?Q?2SZukmUEXh+4Tm1tTTnYmfqh1NNxsHSUVeWQS6vhoXtz6pbnWL+lAFtH0Zj9?=
+ =?us-ascii?Q?9kZNy4m2potehLrhvfWdX/npLjIh4mMxhyaedpECXS/F/AHMem3UGbstkF52?=
+ =?us-ascii?Q?o/7FjY7Y8hK6aPew5Y4B9ACMLCO3U27RKDl8VaT3ivNJZHtS/e/bg9CIXCup?=
+ =?us-ascii?Q?3afPntfCB8r+mWtoOTusUejRlM1RT42PSm2Oo29gF25itd051CLKqP6gVJ04?=
+ =?us-ascii?Q?O82BIIqFDJfWyNrWLFrzf7Tv/eUdThlvl7SYgcPIbfc+xIoiQ53ymmSw9veH?=
+ =?us-ascii?Q?eiZ4uitX08ubqgMOIfpTJgGdumz6cw1fblEh4DdIwkf++EuW?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c18230a5-db46-4020-ee66-08df0c2c48e3
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Sep 2026 15:34:05.3757
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4ad76a51-eda6-4612-8695-08df0c2c1bab
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	MN1PEPF0000F0E3.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7169
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: SPi5Tq37ls9AclVo14ZauSX4kakQOwxd61Xqr5lUsY8adduZopSjzg3XUTFVTu3qYw9I2t9LGJKjUcPKpR4AcA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB9043
 
-The AXI DMA interrupt line is level-sensitive: it asserts whenever
-the IOC (XAXIDMA_IRQ_IOC_MASK) or DELAY (XAXIDMA_IRQ_DELAY_MASK) bits
-in the status register (XAXIDMA_TX_SR_OFFSET / XAXIDMA_RX_SR_OFFSET)
-are set and their corresponding enable bits in the control register
-are active.
+On Sat, Sep 05, 2026 at 12:55:44AM +0800, Chengfeng Ye wrote:
+> ip_tunnel_encap() expects its callers to reserve headroom based on
+> ip_encap_hlen(). ip_tunnel_xmit() currently pushes FOU and GUE headers
+> before it grows the skb headroom.
+> 
+> That becomes visible when ipgre_changelink() publishes UDP
+> encapsulation before it updates the device headroom. The transmit path
+> does not serialize with RTNL, so it can interleave as follows:
+> 
+>   CPU 0 (ipgre_changelink)        CPU 1 (ipgre_xmit)
+>   install GUE encapsulation
+>                                   reserve the old needed_headroom
+>   publish larger GRE flags
+>   update tunnel->tun_hlen
+>                                   push the larger GRE header
+>                                   push the GUE and UDP headers
+>   update dev->needed_headroom
+> 
+> With REMCSUM, the new layout can push 16 bytes of GRE and 20 bytes of
+> GUE/UDP headers into an skb with only 32 bytes of actual headroom. The
+> final UDP push writes four bytes before skb->head.
+> 
+> With the update window widened, the kernel reported:
+> 
+>   skbuff: skb_under_panic: ... len:128 put:8 ... dev:gre0poc
+>   kernel BUG at net/core/skbuff.c:214!
+>   Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+>   Call Trace:
+>    skb_push
+>    fou_build_udp
+>    gue_build_header
+>    ip_tunnel_xmit
+>    __gre_xmit
+>    ipgre_xmit
+> 
+> Snapshot tunnel->encap, route and perform PMTU handling first, then
+> reserve the final headroom before ip_tunnel_encap() builds the UDP
+> tunnel headers. Because encapsulation is now delayed, pass the
+> snapshotted encap length into tnl_update_pmtu() so the inner packet
+> size stays skb->len + encap_hlen - tunnel_hlen.
+> 
+> ip_md_tunnel_xmit() is left unchanged. It takes FOU/GUE parameters
+> from the skb metadata dst, not from the device configuration, so it
+> is not exposed to this race. tnl_update_pmtu() still runs after
+> encapsulation there, so that path passes 0 for the extra length.
+> 
+> The IPv6 analogue of this headroom reservation is still work in
+> progress.
 
-During TX/RX, interrupts are disabled in the control register while
-NAPI runs. Completions arriving in this window cause hardware to latch
-IOC/DELAY into the status register regardless of the control register
-mask state. After NAPI completion, re-enabling interrupts immediately
-re-asserts the IRQ line due to these stale status register bits, even
-when no new work is pending.
+Please wait for the IPv6 part to be accepted (some changes are needed
+there and here as well) and then mention its sha1 in the commit message:
 
-This results in a stale interrupt and redundant NAPI poll cycle with
-no new work pending, causing unnecessary CPU processing.
+https://lore.kernel.org/netdev/2ce8f3e4bbed6060afb0aee33dc4e1d9ae021280.1788262122.git.petalzu987@gmail.com/
 
-In the initial driver, the status register was cleared after polling
-all packets, which naturally consumed any status accumulated during
-processing. In later versions of the driver, status register clearing
-was moved to the ISR before polling begins, leaving no mechanism to
-clear status bits that arrive during the NAPI poll window.
+> 
+> Link: https://lore.kernel.org/netdev/b58876297f7d45de008f2e94b6ecab8b2ed84d21.1786088695.git.petalzu987@gmail.com/
+> Fixes: dd9d598c6657 ("ip_gre: add the support for i/o_flags update via netlink")
 
-Clear the status register IOC/DELAY bits before re-enabling interrupts
-and recheck the next BD to catch race-window completions. Both are
-skipped on budget exhaustion. On the RX side, both are additionally
-skipped on refill failure to leave the level-sensitive IRQ armed so the
-poll is rescheduled on the next hardware completion.
+Looks like a more suitable Fixes tag:
 
-Signed-off-by: Kusuma Vasana <kusuma.vasana@amd.com>
----
-Targeting net-next with no Fixes tag: the extra poll cycle is a
-performance inefficiency, not a functional defect.
+Fixes: 56328486539d ("net: Changes to ip_tunnel to support foo-over-udp encapsulation")
 
-Changes in v3:
-- Updated the commit description.
-- Restricted TX/RX status-register clear and completion recheck to the
-  NAPI completion path, with RX only when refill succeeds.
-- Rechecked descriptor completion after status-register clear to handle
-  race-window completions.
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
+> ---
+> Changes in v4:
+> - Not restructure ip_md_tunnel_xmit(); only pass 0 into the new
+>   tnl_update_pmtu() argument.
+> - Snapshot tunnel->encap with data_race() and reuse the copy for both
+>   ip_encap_hlen() and ip_tunnel_encap().
+> - Fix tnl_update_pmtu() inner packet size after delaying the encap
+>   push: pkt_size = skb->len + encap_hlen - tunnel_hlen.
+> - Keep reverse xmas tree for the new locals.
+> - Note that the IPv6 FOU/GUE headroom fix is still WIP.
+> 
+> Changes in v3:
+> - Move the headroom reservation into ip_tunnel_xmit() instead of
+>   growing the skb inside the FOU/GUE builders.
+> - Use ip_encap_hlen() to reserve the final caller-side headroom before
+>   ip_tunnel_encap().
+> - Drop the IPv4 raw-pointer refreshes that were only needed when
+>   skb_cow_head() could run inside the encapsulation builders.
+> 
+> Link: https://lore.kernel.org/netdev/20260824111944.187200-1-nicoyip.dev@gmail.com/ [v3]
+> Link: https://lore.kernel.org/netdev/20260808005956.3761487-1-nicoyip.dev@gmail.com/ [v2]
+> Link: https://lore.kernel.org/netdev/20260801060115.3538849-1-nicoyip.dev@gmail.com/ [v1]
+> ---
+>  net/ipv4/ip_tunnel.c | 24 ++++++++++++++++++------
+>  1 file changed, 18 insertions(+), 6 deletions(-)
 
-Changes in v2:
--Added net-next prefix in the subject
--Updated the commit description
-
----
- .../net/ethernet/xilinx/xilinx_axienet_main.c | 22 +++++++++++++++++++
- 1 file changed, 22 insertions(+)
-
-diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-index fcf517069d16..4816870e8502 100644
---- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-+++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-@@ -1018,6 +1018,16 @@ static int axienet_tx_poll(struct napi_struct *napi, int budget)
- 			netif_wake_queue(ndev);
- 	}
- 
-+	/* Clear stale IOC/DELAY bits and re-check for race-window completions.
-+	 * Skipped on budget exhaustion.
-+	 */
-+	if (packets < budget) {
-+		axienet_dma_out32(lp, XAXIDMA_TX_SR_OFFSET,
-+				  XAXIDMA_IRQ_IOC_MASK | XAXIDMA_IRQ_DELAY_MASK);
-+		if (lp->tx_bd_v[lp->tx_bd_ci].status & XAXIDMA_BD_STS_COMPLETE_MASK)
-+			return budget;
-+	}
-+
- 	if (packets < budget && napi_complete_done(napi, packets)) {
- 		/* Re-enable TX completion interrupts. This should
- 		 * cause an immediate interrupt if any TX packets are
-@@ -1301,6 +1311,18 @@ static int axienet_rx_poll(struct napi_struct *napi, int budget)
- 	if (tail_p)
- 		axienet_dma_out_addr(lp, XAXIDMA_RX_TDESC_OFFSET, tail_p);
- 
-+	/* Clear stale IOC/DELAY bits and re-check for race-window completions.
-+	 * Skipped on budget exhaustion and on refill failure (cur_p->skb ==
-+	 * NULL) to leave the level-sensitive IRQ armed so the poll is
-+	 * rescheduled on the next hardware completion.
-+	 */
-+	if (packets < budget && cur_p->skb) {
-+		axienet_dma_out32(lp, XAXIDMA_RX_SR_OFFSET,
-+				  XAXIDMA_IRQ_IOC_MASK | XAXIDMA_IRQ_DELAY_MASK);
-+		if (cur_p->status & XAXIDMA_BD_STS_COMPLETE_MASK)
-+			return budget;
-+	}
-+
- 	if (packets < budget && napi_complete_done(napi, packets)) {
- 		if (READ_ONCE(lp->rx_dim_enabled)) {
- 			struct dim_sample sample = {
--- 
-2.43.0
-
+ipip6_tunnel_xmit() also calls ip_tunnel_encap() and seems to have the
+same problem as ip6_tnl_xmit().
