@@ -1,39 +1,39 @@
 Received: from mail.simonwunderlich.de (mail.simonwunderlich.de [23.88.38.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 492C143CE7E
-	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 08:18:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 646C943F089
+	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 08:18:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.38.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788769121; cv=none; b=Dcy/xZ8M089119ALjYsZrYm2ND0f5uWW1pOMr/ImDlh8OXDk3XCS0q6qRqM0AMEvH6e0TA4jUl7RmIU3d+qtkHeCx2wD1TdGiC4H79gV6+2TI6yCipw+My9np9g0pxrLeUdOdvH937VT7cBvJcQf4u6VB+6Tv5xrY+9RaRvywUA=
+	t=1788769123; cv=none; b=ZsEK8AMKG2dX1CPlqPnKxThIqsE1o6StwvWbt0p3X+ktLe+AgeckG0aDZ9i1yAWJo7HRRBuukxtFjDP0UdIv8tr/PnvS8KDpjkj5u4ZniEFObKNoozbsCPzK7gY0yu4WRMm0K3KvzVMOt0/Revscw9xzi8X87ZaE7Ra0B5Z7yPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788769121; c=relaxed/simple;
-	bh=eSQKYN7jvrvaC+GrYx1ISgeI/NJf8mbQM6xFfw8yYWE=;
+	s=arc-20240116; t=1788769123; c=relaxed/simple;
+	bh=O2+gD2mMhIdau0qWf/cMNi/RCk/Sg8AV2fH5przqFrg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ECrO/trgm1TMFYUj/YcfBQU9bKbf/8rNuyKlp9YXO2qorclER2TjX0JWcRuDhtuwDn/4ESu6ZnbTOIXlCeiO1ep06EhzC2elqNsvGJUeIFGdGbQiU+crM5FTolWLxJE/zFXEsXI70iTQyTbeYyJyPzJN9zS7r8kW5i6oy+oUpOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=VpFMlUAK; arc=none smtp.client-ip=23.88.38.48
+	 MIME-Version; b=b/xIUuMFMyLYyScSZLHiNyDDtFiikzlgMAqHqByaU81RlOJ44gfpQ6Y4rRhl30Ff9xIgz/YBDHP8k285rRBWWLnpKfghVnzFzec0VNuhDnfx+6UmTUCUpRMsE9kb1KLgH4bNqTSPGseoIPMlNZfRdu8PZ6bmYIcdMVvliq/YPLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de; spf=pass smtp.mailfrom=simonwunderlich.de; dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b=GkvY26hH; arc=none smtp.client-ip=23.88.38.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=simonwunderlich.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="VpFMlUAK"
-Received: from kero.packetmixer.de (p200300c59748d0d8c3747188E6dfE6C0.dip0.t-ipconnect.de [IPv6:2003:c5:9748:d0d8:c374:7188:e6df:e6c0])
+	dkim=pass (2048-bit key) header.d=simonwunderlich.de header.i=@simonwunderlich.de header.b="GkvY26hH"
+Received: from kero.packetmixer.de (p200300C59748d0d8c3747188e6dfE6C0.dip0.t-ipconnect.de [IPv6:2003:c5:9748:d0d8:c374:7188:e6df:e6c0])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange secp256r1 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mail.simonwunderlich.de (Postfix) with UTF8SMTPSA id 9E1ECFA2C0;
-	Mon, 07 Sep 2026 10:18:33 +0200 (CEST)
+	by mail.simonwunderlich.de (Postfix) with UTF8SMTPSA id E0962FA2C3;
+	Mon, 07 Sep 2026 10:18:35 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=simonwunderlich.de;
-	s=09092022; t=1788769113;
+	s=09092022; t=1788769116;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ZS6+oQjD9GI7kf3P/jASgDZaJ06znEuCzZF/IioT7eU=;
-	b=VpFMlUAKVDyDf1WYyzatgIgfLNje7G9/5N3n9iB0FBt7g05X+umcQ3Wlgg5Vh6R2L8kx4Q
-	80KV+eEKZGlJR6MWleUCoKqwmMqwBrYNhiivkg3r5PSewyDff6mTuy/SkdfwfZElyhXCsu
-	bZYUp++TKUX+XgJfWw4S+EnpSv9ZHUQRy8WwJ8ExXsI729I1wXe0TSvuQFKSg7Hi+dlANw
-	sTBffd3QBf2zlggTYtNhu9DinarFi4KCCpt6ETikvH4vBOYJ4qPp5sQzZBvIerLYc4y5aL
-	IxVz/AMelO2Yn02afgbaJxQlZSABS5eMZ7tyIC6sYXKRbB8xYalJiKilpR1qbg==
+	bh=tPBQnSTr3ybdpUxRTeJH+n9deVsj7/2bOs4cDMU5/88=;
+	b=GkvY26hHpwu5PRnxOhvZFkEbFDQzT0FhN+MyR80xl9wXnytw5lP0XgNiE8WT287TnwlLs3
+	OMxcO5mmr8urxuvz3HbeSGcZ/ufqWg90RY44vgvsDFt7dwonDNDjjqOeZ1kYRM0DoiENvC
+	Em+vaifnZys7nvnUpueF0HXPd+Bc3llCObjG0mLE6o7kNxOQoNZSJrXglJ4N3mzvlPE8+p
+	L6wrLymKKqVXU54oolFaPVKb4rv3dqiJ8FzaXtdQ67UY2rI5DjrGPfXtBsPIYHpcjbfQjf
+	UwSgdMn0A0d7gK+V9XqYn4PAgNs7oKCyKMXvUO53CZN1/kSjJIRCLYF7e7byxw==
 From: Simon Wunderlich <sw@simonwunderlich.de>
 To: netdev@vger.kernel.org
 Cc: "David S. Miller" <davem@davemloft.net>,
@@ -43,10 +43,11 @@ Cc: "David S. Miller" <davem@davemloft.net>,
 	Simon Horman <horms@kernel.org>,
 	b.a.t.m.a.n@lists.open-mesh.org,
 	Sven Eckelmann <sven@narfation.org>,
+	Sashiko <sashiko-bot@kernel.org>,
 	Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH net-next 11/15] batman-adv: tt: extract immediate purge of a local entry
-Date: Mon,  7 Sep 2026 10:18:20 +0200
-Message-ID: <20260907081824.2474040-12-sw@simonwunderlich.de>
+Subject: [PATCH net-next 14/15] batman-adv: bat_iv: fix ogm_neigh_is_sob parameters references
+Date: Mon,  7 Sep 2026 10:18:23 +0200
+Message-ID: <20260907081824.2474040-15-sw@simonwunderlich.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260907081824.2474040-1-sw@simonwunderlich.de>
 References: <20260907081824.2474040-1-sw@simonwunderlich.de>
@@ -60,101 +61,33 @@ Content-Transfer-Encoding: 8bit
 
 From: Sven Eckelmann <sven@narfation.org>
 
-A client which was added after the last ttvn increment was never announced
-and can be dropped from the local table right away. The code doing so is
-the second half of batadv_tt_local_remove() and needed a goto to skip the
-accounting when the entry was already gone from the hash.
+The batadv_iv_ogm_neigh_is_sob() kernel-doc summary line is still
+referencing the old parameter names "neigh1" and "neigh2". But these are
+now called "candidate" and "reference".
 
-Move it to batadv_tt_local_remove_now().
-
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260831135117.574836-1-sw%40simonwunderlich.de?part=5
 Signed-off-by: Sven Eckelmann <sven@narfation.org>
 Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 ---
- net/batman-adv/translation-table.c | 57 +++++++++++++++++++-----------
- 1 file changed, 37 insertions(+), 20 deletions(-)
+ net/batman-adv/bat_iv_ogm.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/batman-adv/translation-table.c b/net/batman-adv/translation-table.c
-index f5b753ed1ae1a..9f61797c64920 100644
---- a/net/batman-adv/translation-table.c
-+++ b/net/batman-adv/translation-table.c
-@@ -1475,6 +1475,42 @@ batadv_tt_local_mark_removed(struct batadv_tt_local_entry *tt_local_entry,
- 	return pending;
+diff --git a/net/batman-adv/bat_iv_ogm.c b/net/batman-adv/bat_iv_ogm.c
+index 3fe09b4c30463..89b499f7a37dd 100644
+--- a/net/batman-adv/bat_iv_ogm.c
++++ b/net/batman-adv/bat_iv_ogm.c
+@@ -2422,8 +2422,8 @@ static int batadv_iv_ogm_neigh_cmp(struct batadv_neigh_node *neigh1,
  }
  
-+/**
-+ * batadv_tt_local_remove_now() - purge a local entry which was never announced
-+ * @bat_priv: the bat priv with all the mesh interface information
-+ * @tt_local_entry: local TT entry to purge
-+ *
-+ * A client which was added right after the last ttvn increment was never sent
-+ * to the other nodes. It can therefore be dropped from the local table without
-+ * waiting for the next ttvn increment.
-+ */
-+static void
-+batadv_tt_local_remove_now(struct batadv_priv *bat_priv,
-+			   struct batadv_tt_local_entry *tt_local_entry)
-+{
-+	struct batadv_tt_common_entry *common = &tt_local_entry->common;
-+	struct hlist_node *tt_removed_node;
-+
-+	batadv_tt_local_event(bat_priv, tt_local_entry, BATADV_TT_CLIENT_DEL);
-+
-+	/* remove exactly this object when still present in hash */
-+	tt_removed_node = batadv_hash_remove(bat_priv->tt.local_hash,
-+					     batadv_compare_tt_entry,
-+					     batadv_choose_tt, common);
-+	if (!tt_removed_node)
-+		return;
-+
-+	/* batadv_tt_local_transition_new() may have committed the entry and
-+	 * thus counted it in the local table size since the
-+	 * BATADV_TT_CLIENT_NEW check in batadv_tt_local_mark_removed().
-+	 */
-+	if (!(batadv_tt_flags_get(common) & BATADV_TT_CLIENT_NEW))
-+		batadv_tt_local_size_dec(bat_priv, common->vid);
-+
-+	/* drop reference of remove hash entry */
-+	batadv_tt_local_entry_put(tt_local_entry);
-+}
-+
  /**
-  * batadv_tt_local_remove() - logically remove an entry from the local table
-  * @bat_priv: the bat priv with all the mesh interface information
-@@ -1490,7 +1526,6 @@ u16 batadv_tt_local_remove(struct batadv_priv *bat_priv, const u8 *addr,
- 			   bool roaming)
- {
- 	struct batadv_tt_local_entry *tt_local_entry;
--	struct hlist_node *tt_removed_node;
- 	u16 curr_flags = BATADV_NO_FLAGS;
- 	bool pending = false;
- 	u16 flags;
-@@ -1518,25 +1553,7 @@ u16 batadv_tt_local_remove(struct batadv_priv *bat_priv, const u8 *addr,
- 	/* if this client has been added right now, it is possible to
- 	 * immediately purge it
- 	 */
--	batadv_tt_local_event(bat_priv, tt_local_entry, BATADV_TT_CLIENT_DEL);
--
--	/* remove exactly this object when still present in hash */
--	tt_removed_node = batadv_hash_remove(bat_priv->tt.local_hash,
--					     batadv_compare_tt_entry,
--					     batadv_choose_tt,
--					     &tt_local_entry->common);
--	if (!tt_removed_node)
--		goto out;
--
--	/* batadv_tt_local_transition_new() may have committed the entry and
--	 * thus counted it in the local table size since the BATADV_TT_CLIENT_NEW
--	 * check above.
--	 */
--	if (!(batadv_tt_flags_get(&tt_local_entry->common) & BATADV_TT_CLIENT_NEW))
--		batadv_tt_local_size_dec(bat_priv, tt_local_entry->common.vid);
--
--	/* drop reference of remove hash entry */
--	batadv_tt_local_entry_put(tt_local_entry);
-+	batadv_tt_local_remove_now(bat_priv, tt_local_entry);
- 
- out:
- 	batadv_tt_local_entry_put(tt_local_entry);
+- * batadv_iv_ogm_neigh_is_sob() - check if neigh1 is similarly good or better
+- *  than neigh2 from the metric prospective
++ * batadv_iv_ogm_neigh_is_sob() - check if @candidate is similarly good or
++ *  better than @reference from the metric prospective
+  * @candidate: the first neighbor object of the comparison
+  * @if_outgoing_cand: outgoing interface for the @candidate neighbor
+  * @reference: the second neighbor object of the comparison
 -- 
 2.47.3
 
