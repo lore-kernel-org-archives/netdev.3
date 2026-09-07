@@ -1,45 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D834F29AB1A
-	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 05:58:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD6B138758D
+	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 05:58:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788760733; cv=none; b=W3kgN4Yx8fAfbb5oyYwHMuuO0WAPw6vSm1baldQcnsTOS8koZOi8hpVlHjYJroP+5Cm9u6JiB6ZkdUX9+tT1ARHTCuNPjbz+upz35vTnxh1zAbqZLrYGEdwHRLBncfTWztY/3i2MBzAmFiLdeG2ZF9kA9vrw/z1BVb59PVigDyU=
+	t=1788760734; cv=none; b=WTt/++fwGwVRNmXYX2LsigkSILYlb7tbuzA67ZrfNjeAmCZbWTcw04t0QbSG/YiPyAZmGMjHmZymL7AjCjm+BwOA1me5H+GT8ZIrg4ypl3DcyznZi9saYOKQJcedTdnz5eFc2UA0NMARufblcYf/cu9zRDo+xMrs5UIH2R/siew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788760733; c=relaxed/simple;
-	bh=HpLxNuRy1pON1tYtT7afxn9PEwtPdnSS4Gi3Zob98xQ=;
+	s=arc-20240116; t=1788760734; c=relaxed/simple;
+	bh=lvZ4iG1gLymkV473lXOR4e156g0S9Hdjkbp+tj+Mb7c=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=sCkjQzU2+TLaHzeuHTHfdlUQeH2HWZpRDzBEVwf+5p7XpNS43Knc3FNrfe0Aqgo3Zh44G0W+Kl+SIqriAwDTGqct8YkdUxsxt9hrORMgUHReqgBVisxAamNr+X4FhmvFlWDvP0KeMjjP4TxjgvGFBOSn4TqFviuKGfrVgKdkWSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TFxIP2Fi; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=X58AUBd36tayC9UOirlvBx5bGPpjD0G2qaw2CKEz6u9ZNo6CsRvLvp/6gFYLH1zYYwA2rN8sRL2IDj6ZaGR1F9EdjynlQIGsyz2ebIJTj46fO3KtqGDYUzbsUQf0GJH7dhgAnXVMKAfbBqfPNtc7lWb1DxLS08RM/3BK/wDAbwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A1UmDmXU; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TFxIP2Fi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F41E81F00A3A;
-	Mon,  7 Sep 2026 05:58:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A1UmDmXU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1189F1F00A3D;
+	Mon,  7 Sep 2026 05:58:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788760731;
-	bh=x1qgomIFHE0BhGw3VxQcXzWHayHTQ+eiPfEKUkjZit0=;
+	s=k20260515; t=1788760732;
+	bh=uGf5tDK5YhXUhyqxdRSQJv/rbRu/K65lzvqikpRmfAE=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=TFxIP2FiL9Sfv1gMrZauVaKzwHSy+aASXMms+bFyj8GYk81M2C39+CGOnTFSgxYLo
-	 p33vT8BRbNVB/fKlEPBE3oUn/bKQ8c9hjUFOn5967Sg+sRY7YClNaLbOfNPzRvOmj9
-	 dud8Nd+bk2SY0fgx3KjWKtUW3zAPF7KYbS8o2MPJOxlUrIJ6q3KmvpnQbBYCTCTL14
-	 qkuiZiSf4OH7hJ4QEq/5cjQlCdUvogJFDfLDCVv5jb27Lz7n68gV3alBaIzH3t07/f
-	 oprkDWzVuj9GS43MDYV3a8XnRh0QivI9GaE8EoYJKn8GUZJqIePyY+8jkKnz1Oinnl
-	 +0PGoV3qWva3Q==
-Subject: Re: [net-next PATCH 1/2] fbnic: Don't reject capabilities when BMC is
- present without a MAC
+	b=A1UmDmXUcifK+ssUdm0S/VWpJbXiM6fmvlj/1oY3NYt++w/Y558kFhV47HaGKC8D9
+	 QY89fKqnnPbZOX2EQY9kWHgO5RBLY/l/F37o2kcKwhvAaxM5ztMmFKJ7Ur24a9w9Dd
+	 E+Nl8C6Uv4B0NA9e5z5c+nYgKVgBzn8XO6t+Fq77JFCVpFPESP+0BNFz9oDH4Tm+uD
+	 onFtYQDOEZ/5p+2gyrEeKuvp0kzSL4tdri6IYyJqdRUH2mAKODSlgffhMKxswOrHQu
+	 GFXuBCFoijzagPHVFeJexKfoc7rLsh2i+Hu9iRc4XOUNjVCCqiUf2VbDZZkqr3vRRH
+	 swSZDxpfvA0TA==
+Subject: Re: [net-next PATCH 2/2] fbnic: Remove BMC routing rules when the BMC
+ channel is disabled
 From: netdev-bot+sashiko@kernel.org
 To: alexander.duyck@gmail.com
 Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
  edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, kernel-team@meta.com,
  horms@kernel.org
-Date: Mon, 07 Sep 2026 05:58:50 +0000
-Message-ID: <178876073051.219967.16317151777131268661@kernel.org>
+Date: Mon, 07 Sep 2026 05:58:51 +0000
+Message-ID: <178876073164.219967.6978528899000855726@kernel.org>
 In-Reply-To:
- <178845827907.2787.3876388161665795031.stgit@ahduyck-xeon-server.home.arpa>
+ <178845828588.2787.8575380594560953372.stgit@ahduyck-xeon-server.home.arpa>
 References:
- <178845827907.2787.3876388161665795031.stgit@ahduyck-xeon-server.home.arpa>
-X-sashiko-severity: Medium
+ <178845828588.2787.8575380594560953372.stgit@ahduyck-xeon-server.home.arpa>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -49,223 +49,349 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 4 potential
+Thank you for your contribution! Sashiko AI review found 7 potential
 issue(s) to consider:
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 2
+Critical: 0 · High: 2 · Medium: 2 · Low: 3
 
-- [Medium] fbnic_fw_parse_bmc_cap() (fbnic_fw.c:610-642) encodes 'FW says
-  BMC present but sent no MAC array' as fw_cap.bmc_present = false and…
-- [Medium] fbnic_fw_parse_bmc_cap() reads FBNIC_FW_CAP_RESP_BMC_ALL_MULTI
-  only on the success path (fbnic_fw.c:634); the new no_bmc path…
-- [Low] Missing Fixes: tag on a real bug fix.
-- [Low] Claimed hardware/driver state divergence: the new no_bmc path
-  clears fw_cap.bmc_mac_addr[] and reports bmc_present = false without…
+- [High] fbnic_bmc_rpc_check() relies on fbnic_rss_reinit() to converge
+  the action TCAM to the "no BMC" layout, but fbnic_rss_reinit()…
+- [High] The new teardown clears the DEST_BMC copy bit from the XCAST
+  (broadcast/multicast) RSS action entries by calling fbnic_rss_reinit()…
+- [Medium] The new branch in fbnic_bmc_rpc_check() reads
+  fbd->fw_cap.bmc_present, then performs a destructive multi-step…
+- [Medium] The new BMC-disable path mutates the shared filter shadow
+  tables and pushes them to hardware while holding only RTNL:…
+- [Low] The new kernel-doc on fbnic_bmc_rpc_disable()
+  (drivers/net/ethernet/meta/fbnic/fbnic_rpc.c:276-279) claims: "Clear…
+- [Low] The commit repairs a live, user-visible packet-steering defect
+  (BMC filters and the DEST_BMC action left programmed after the BMC…
+- [Low] fbnic_bmc_rpc_disable()
+  (drivers/net/ethernet/meta/fbnic/fbnic_rpc.c:281) marks the BMC action…
 
 --
 
-fbnic: Don't reject capabilities when BMC is present without a MAC
+fbnic: Remove BMC routing rules when the BMC channel is disabled
 
-The capability response parser no longer returns -EINVAL when firmware
-reports the BMC present without a BMC MAC address array; instead the stored
-BMC MAC addresses are cleared and the rest of the message is parsed.  The
-BMC handling is moved into a new helper, fbnic_fw_parse_bmc_cap().
+The patch adds a teardown path to fbnic_bmc_rpc_check() that removes the
+BMC MACDA entries and the BMC action rule when fw_cap.bmc_present has
+dropped while BMC tagged rules are still programmed. It then re-runs
+fbnic_rss_reinit() and pushes the filters to hardware via
+__fbnic_set_rx_mode().
 
 A few questions below.
 
-> diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_fw.c b/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
-> index ff1674eff7ad5..bf8006710f461 100644
-> --- a/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
-> +++ b/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
-> @@ -607,6 +607,40 @@ static int fbnic_fw_parse_bmc_addrs(u8 bmc_mac_addr[][ETH_ALEN],
->  	return 0;
+[Severity: Low]
+Should this carry a Fixes: tag?
+
+The behaviour being repaired is reachable on any tree containing
+04a230b27d8f ("fbnic: Add logic to repopulate RPC TCAM if BMC enables
+channel"), which added the runtime reconciliation in fbnic_bmc_rpc_check()
+but only handled the enable direction. fbnic_fw_parse_cap_resp() clears
+fw_cap.bmc_present and unconditionally sets fw_cap.need_bmc_tcam_reinit, and
+the pre-patch fbnic_bmc_rpc_check() then calls fbnic_bmc_rpc_init(), which
+returns immediately on !fbnic_bmc_present(fbd) and removes nothing.
+
+Without the tag stable backporters have no way to tell which releases are
+affected.
+
+> diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_rpc.c b/drivers/net/ethernet/meta/fbnic/fbnic_rpc.c
+> index bc0f38b6a2b2b..8e53428e35a64 100644
+> --- a/drivers/net/ethernet/meta/fbnic/fbnic_rpc.c
+> +++ b/drivers/net/ethernet/meta/fbnic/fbnic_rpc.c
+> @@ -238,10 +238,91 @@ void fbnic_bmc_rpc_init(struct fbnic_dev *fbd)
+>  	act_tcam->state = FBNIC_TCAM_S_UPDATE;
 >  }
->
-> +static int fbnic_fw_parse_bmc_cap(struct fbnic_dev *fbd,
-> +				  struct fbnic_tlv_msg **results,
-> +				  bool *bmc_present, u32 *all_multi)
+>  
+> +/**
+> + * fbnic_bmc_rules_present - is the BMC currently programmed into the filters?
+> + * @fbd: Pointer to fbnic device struct
+> + *
+> + * The BMC tag is only ever set on a MACDA entry while a BMC is present, so its
+> + * presence tells us the BMC routing rules are in place without having to keep a
+> + * separate state flag.
+> + *
+> + * Return: true if any MACDA entry carries the BMC tag, false otherwise.
+> + */
+> +static bool fbnic_bmc_rules_present(struct fbnic_dev *fbd)
 > +{
-> +	struct fbnic_tlv_msg *attr;
-> +	int err;
+> +	int idx;
 > +
-> +	/* The FW reports the BMC present as soon as its NC-SI channel is
-> +	 * enabled, which is before the BMC has been assigned a MAC address.
-> +	 * In that window the message carries no MAC array; there is nothing
-> +	 * to program, so treat the BMC as absent. On any absence clear the
-> +	 * stored BMC MAC addresses and report the BMC as not present.
+> +	for (idx = ARRAY_SIZE(fbd->mac_addr); idx--;) {
+> +		struct fbnic_mac_addr *mac_addr = &fbd->mac_addr[idx];
+> +
+> +		if (mac_addr->state == FBNIC_TCAM_S_DISABLED)
+> +			continue;
+> +
+> +		if (test_bit(FBNIC_MAC_ADDR_T_BMC, mac_addr->act_tcam))
+> +			return true;
+> +	}
+> +
+> +	return false;
+> +}
+> +
+> +/**
+> + * fbnic_bmc_rpc_disable - remove the BMC MAC and action rules
+> + * @fbd: Pointer to fbnic device struct
+> + *
+> + * Undo fbnic_bmc_rpc_init(). The BMC can disable its NC-SI channel while the
+> + * host interface stays up; when it does its routing rules must be torn down so
+> + * we stop directing traffic to a BMC that is no longer there.
+> + *
+> + * Clear the MAC entries before the action rule. The action rule matches on a
+> + * MAC entry index, so removing the entries first ensures the rule is never left
+> + * pointing at an entry that is already gone. The hardware is updated by the
+> + * __fbnic_set_rx_mode() call that follows this one.
+> + */
+
+[Severity: Low]
+Is the ordering guarantee described here actually provided?
+
+fbnic_bmc_rpc_disable() performs no register access. It only mutates
+fbd->mac_addr[].act_tcam/state through __fbnic_xc_unsync() and
+fbd->act_tcam[FBNIC_RPC_ACT_TBL_BMC_OFFSET].state, so the order in which it
+touches the shadow copies is invisible to hardware.
+
+The hardware order is fixed by the writer the comment names,
+__fbnic_set_rx_mode(), whose tail is:
+
+	fbnic_write_rules(fbd);
+	fbnic_write_macda(fbd);
+	fbnic_write_tce_tcam(fbd);
+
+That programs the action rules before the MACDA entries, which is the
+opposite of what the comment says is being established. Could this part of
+the kernel-doc be dropped or reworded?
+
+> +static void fbnic_bmc_rpc_disable(struct fbnic_dev *fbd)
+> +{
+> +	struct fbnic_act_tcam *act_tcam;
+> +	int idx;
+> +
+> +	/* Drop the BMC's claim on each MAC entry. An entry used only by the BMC
+> +	 * is deleted; one also used by the host is left in place.
 > +	 */
-> +	if (!results[FBNIC_FW_CAP_RESP_BMC_PRESENT])
-> +		goto no_bmc;
+> +	for (idx = ARRAY_SIZE(fbd->mac_addr); idx--;) {
+> +		struct fbnic_mac_addr *mac_addr = &fbd->mac_addr[idx];
 > +
-> +	attr = results[FBNIC_FW_CAP_RESP_BMC_MAC_ARRAY];
-> +	if (!attr)
-> +		goto no_bmc;
+> +		if (mac_addr->state == FBNIC_TCAM_S_DISABLED)
+> +			continue;
+> +
+> +		__fbnic_xc_unsync(mac_addr, FBNIC_MAC_ADDR_T_BMC);
+> +	}
+> +
+> +	/* Then remove the action rule that steered traffic to the BMC. */
+> +	act_tcam = &fbd->act_tcam[FBNIC_RPC_ACT_TBL_BMC_OFFSET];
+> +	if (act_tcam->state == FBNIC_TCAM_S_VALID)
+> +		act_tcam->state = FBNIC_TCAM_S_DELETE;
+
+[Severity: Low]
+Can this leak act_tcam[FBNIC_RPC_ACT_TBL_BMC_OFFSET] when the entry is in
+the FBNIC_TCAM_S_UPDATE state?
+
+The MACDA loop just above handles every state except
+FBNIC_TCAM_S_DISABLED, but the action rule is only handled when the state is
+exactly FBNIC_TCAM_S_VALID. FBNIC_TCAM_S_UPDATE (same value as
+FBNIC_TCAM_S_ADD) is a normal state for that entry: fbnic_bmc_rpc_init()
+leaves it as
+
+	act_tcam->state = FBNIC_TCAM_S_UPDATE;
+
+and fbnic_clear_rules()/fbnic_clear_valid_act_tcam() demote it from VALID
+back to UPDATE on interface down.
+
+If the disable path runs with the entry at UPDATE, the guard is false, the
+rule is never marked DELETE, and the following __fbnic_set_rx_mode() ->
+fbnic_write_rules() takes the fbnic_update_act_tcam() branch and programs
+the DEST_BMC rule into hardware as VALID.
+
+Since fbnic_bmc_rules_present() keys only off the MACDA
+FBNIC_MAC_ADDR_T_BMC tag, which the loop above has just cleared, the disable
+path can never fire again for that entry.
+
+Would setting state = FBNIC_TCAM_S_DELETE for any state other than
+FBNIC_TCAM_S_DISABLED make this symmetric with the MACDA loop?
+
+> +}
+> +
+>  void fbnic_bmc_rpc_check(struct fbnic_dev *fbd)
+>  {
+>  	int err;
+>  
+> +	/* The BMC went away while its rules are still programmed; remove them
+> +	 * now instead of waiting until the interface goes down. The enable
+> +	 * direction is handled by the need_bmc_tcam_reinit path below.
+> +	 */
+> +	if (!fbnic_bmc_present(fbd) && fbnic_bmc_rules_present(fbd)) {
+> +		struct fbnic_net *fbn = netdev_priv(fbd->netdev);
+> +
+> +		fbnic_bmc_rpc_disable(fbd);
+> +		/* Recompute the RSS actions so the multicast/broadcast copies
+> +		 * to the now absent BMC are cleared as well.
+> +		 */
+> +		fbnic_rss_reinit(fbd, fbn);
+
+[Severity: High]
+Can fbnic_rss_reinit() actually converge the action table to the no-BMC
+layout here?
+
+Its loop skips the unicast half entirely once the BMC is gone:
+
+	for (i = fbnic_bmc_present(fbd) ? 0 : FBNIC_RSS_EN_NUM_UNICAST;
+	     i < FBNIC_RSS_EN_NUM_ENTRIES; i++) {
+
+So the FBNIC_RSS_EN_NUM_UNICAST host-unicast RSS action entries at
+act_tcam[FBNIC_RPC_ACT_TBL_RSS_OFFSET ...] that were programmed while the
+BMC was present are neither rewritten nor marked FBNIC_TCAM_S_DELETE. They
+stay at FBNIC_TCAM_S_VALID, and fbnic_write_rules() only touches entries
+that have the UPDATE bit:
+
+	if (!(act_tcam->state & FBNIC_TCAM_S_UPDATE))
+		continue;
+
+VALID is 1 and UPDATE is 2, so those entries are skipped and remain armed in
+hardware. They sit at lower action TCAM indices than the wildcard xcast set,
+so they still win the match for host unicast traffic (MACDA index
+mac_addr_boundary and above), yet every later fbnic_rss_reinit() while the
+BMC stays absent keeps skipping them.
+
+Does that mean an `ethtool -N ethX rx-flow-hash ...` request, an
+RXH_DISCARD request via fbnic_set_rss_hash_opts(), and an rx_filter change
+via fbnic_hwtstamp_set() silently do not take effect for host unicast
+traffic after a BMC channel disable, until the interface is bounced?
+
+Since fbnic_rss_reinit() can only add entries and never mark them DELETE,
+would this path need to explicitly set state = FBNIC_TCAM_S_DELETE on
+act_tcam[FBNIC_RPC_ACT_TBL_RSS_OFFSET .. + FBNIC_RSS_EN_NUM_UNICAST - 1]?
 
 [Severity: Medium]
-Is the comment's claim that "there is nothing to program" accurate when the
-MAC array is missing?
+Which lock protects fbd->act_tcam[] and the FBNIC_RPC_TCAM_ACT registers
+here?
 
-fbnic_bmc_rpc_init() programs several things that do not depend on the MAC
-array at all: the broadcast MACDA entry tagged FBNIC_MAC_ADDR_T_BMC and the
-BMC action rule at FBNIC_RPC_ACT_TBL_BMC_OFFSET.  It bails out up front:
+fbnic_service_task() takes rtnl_lock() around fbnic_bmc_rpc_check() but not
+netdev_lock(). The userspace RSS path is serialized by the per-netdevice
+operations lock instead: fbnic sets netdev->queue_mgmt_ops so
+netdev_need_ops_lock() is true, and fbnic_ethtool_ops.op_needs_rtnl does not
+include ETHTOOL_OP_NEEDS_RTNL_RSS, so __dev_ethtool() computes need_rtnl ==
+false for ETHTOOL_SRXFH/ETHTOOL_SRSSH and reaches:
 
-drivers/net/ethernet/meta/fbnic/fbnic_rpc.c:fbnic_bmc_rpc_init() {
-	/* Check if BMC is present */
-	if (!fbnic_bmc_present(fbd))
-		return;
-	...
+fbnic_ethtool.c:fbnic_set_rss_hash_opts() {
+	if (netif_running(fbn->netdev)) {
+		fbnic_rss_reinit(fbn->fbd, fbn);
+		fbnic_write_rules(fbn->fbd);
+	}
 }
 
-fbnic_rss_reinit() also ORs the BMC destination into the multicast and
-broadcast RSS actions based on the same flag:
+with only netdev_lock_ops(dev) held. RTNL and the ops lock do not exclude
+each other.
+
+Can the two contexts then run fbnic_rss_reinit() and fbnic_write_rules() on
+the same act_tcam[] entries concurrently? fbnic_update_act_tcam() writes
+ACT_TBL0/ACT_TBL1, then the TCAM words, then the validate word, so an
+interleave looks like it could leave a rule built from two different
+configurations, plus lost UPDATE/VALID/DELETE transitions in the shadow copy.
+
+The pre-existing branch already called __fbnic_set_rx_mode() under RTNL
+only; this patch newly adds mutation of the RSS action entries that the
+ethtool path owns. Should the teardown plus flush run under netdev_lock,
+the same lock as the ethtool writers?
+
+> +		netif_addr_lock_bh(fbd->netdev);
+> +		__fbnic_set_rx_mode(fbd, &fbd->netdev->uc, &fbd->netdev->mc);
+> +		netif_addr_unlock_bh(fbd->netdev);
+> +		fbd->fw_cap.need_bmc_tcam_reinit = false;
+
+[Severity: Medium]
+Can this clear of need_bmc_tcam_reinit swallow a reinit request posted
+during the teardown?
+
+fbnic_bmc_rpc_check() runs from fbnic_service_task() under rtnl_lock()
+only, while fbnic_fw_parse_cap_resp() runs from the firmware mailbox
+threaded IRQ and takes neither rtnl nor any lock shared with the service
+task:
+
+fbnic_fw.c:fbnic_fw_parse_cap_resp() {
+	fbd->fw_cap.bmc_present = bmc_present;
+	...
+	/* Always assume we need a BMC reinit */
+	fbd->fw_cap.need_bmc_tcam_reinit = true;
+}
+
+After the branch condition has evaluated !bmc_present as true, the IRQ
+thread can set bmc_present and need_bmc_tcam_reinit while the teardown is
+still in progress. The teardown window spans the full fbnic_write_rules()
+and fbnic_write_macda() loops, so it is not narrow.
+
+In that interleaving:
+
+  - fbnic_bmc_rpc_disable() strips FBNIC_MAC_ADDR_T_BMC from every MACDA
+    entry and marks act_tcam[FBNIC_RPC_ACT_TBL_BMC_OFFSET] for deletion
+  - fbnic_rss_reinit() re-reads fbnic_bmc_present(fbd), now true, and
+    re-arms the DEST_BMC copies on the xcast actions
+  - __fbnic_set_rx_mode() -> fbnic_bmc_rpc_all_multi_config() likewise
+    re-arms the BMC all-multi rule
+  - the line above then discards the reinit request
+
+Does that leave a filter set advertising BMC destinations while the BMC's
+unicast MACDA entries and its steering rule have been deleted, with nothing
+scheduling a repair until the next firmware capability event?
+
+Separately, bmc_present, need_bmc_tcam_reinit, need_bmc_macda_sync and
+all_multi are 1-bit bitfields packed into the same byte of struct
+fbnic_fw_cap:
+
+fbnic_fw.h:
+	u8	bmc_present		: 1;
+	u8	need_bmc_tcam_reinit	: 1;
+	u8	need_bmc_macda_sync	: 1;
+	u8	all_multi		: 1;
+
+so this store is a read-modify-write of that byte. Can it drop a concurrent
+`bmc_present = true` store from the IRQ thread?
+
+> +	}
+> +
+>  	if (fbd->fw_cap.need_bmc_tcam_reinit) {
+>  		fbnic_bmc_rpc_init(fbd);
+>  		netif_addr_lock_bh(fbd->netdev);
+
+[Severity: High]
+Does anything restore the DEST_BMC copy bit when the BMC re-enables its
+channel?
+
+Broadcast and host-shared multicast delivery to the BMC is programmed only
+in fbnic_rss_reinit():
 
 	if (i >= FBNIC_RSS_EN_NUM_UNICAST && fbnic_bmc_present(fbd))
 		dest |= FIELD_PREP(FBNIC_RPC_ACT_TBL0_DEST_MASK,
 				   FBNIC_RPC_ACT_TBL0_DEST_BMC);
 
-Two more consumers read the flag as "the NC-SI channel is live", not as "we
-have BMC MAC addresses".  fbnic_rss_disable_hw() reprograms
-FBNIC_RPC_RMI_CONFIG when the BMC is reported absent, and fbnic_stop()
-forwards it straight to phylink as the mac_wol argument:
+The re-enable branch here runs fbnic_bmc_rpc_init() + __fbnic_set_rx_mode()
+only, and neither touches the xcast RSS entries. fbnic_rss_reinit() has no
+other call site on that path; its callers are __fbnic_open(),
+fbnic_hwtstamp_set(), fbnic_set_rss_hash_opts() and the new code above.
 
-drivers/net/ethernet/meta/fbnic/fbnic_netdev.c:fbnic_stop() {
-	phylink_suspend(fbn->phylink, fbnic_bmc_present(fbn->fbd));
-	...
-}
+The action rule restored by fbnic_bmc_rpc_init() cannot cover broadcast
+either, since it matches only MACDA indices 0-3:
 
-So for a message with BMC_PRESENT set and no MAC array, the RPC block can be
-disabled and the MAC/PCS link dropped while firmware has told the host the
-NC-SI channel is enabled.
+	act_tcam->value.tcam[1] = FBNIC_RPC_TCAM_ACT1_L2_MACDA_VALID;
+	act_tcam->mask.tcam[1] = 0xffff &
+			~FIELD_PREP(FBNIC_RPC_TCAM_ACT1_L2_MACDA_IDX, 0x1c) &
+			~FBNIC_RPC_TCAM_ACT1_L2_MACDA_VALID;
 
-Also, before this patch such a message left the previously recorded BMC
-state alone (the function returned -EINVAL before touching it).  Now a
-"present, MACs programmed" -> "present, no MAC array" transition clears the
-state, and with the follow-up commit "fbnic: Remove BMC routing rules when
-the BMC channel is disabled" the programmed BMC MACDA entries, action rule
-and DEST_BMC copies are actively removed from hardware.
+while broadcast lives at FBNIC_RPC_TCAM_MACDA_BROADCAST_IDX, and the BMC
+all-multi rule matches only MACDA index mac_addr_boundary - 1 and only when
+fw_cap.all_multi is set.
 
-Would it be better to track MAC-address availability separately from
-BMC/NC-SI channel presence rather than overloading fw_cap.bmc_present?
+So after a disable/re-enable cycle the xcast entries stay
+FBNIC_TCAM_S_VALID with dest = DEST_HOST. Does that mean the BMC
+permanently stops receiving broadcast (ARP, for example) and shared
+multicast until the host interface is bounced?
 
-> +
-> +	err = fbnic_fw_parse_bmc_addrs(fbd->fw_cap.bmc_mac_addr, attr, 4);
-> +	if (err)
-> +		return err;
-> +
-> +	*all_multi = fta_get_uint(results, FBNIC_FW_CAP_RESP_BMC_ALL_MULTI);
-> +	*bmc_present = true;
-> +	return 0;
-> +
-> +no_bmc:
-> +	memset(fbd->fw_cap.bmc_mac_addr, 0, sizeof(fbd->fw_cap.bmc_mac_addr));
-> +	*bmc_present = false;
-> +	return 0;
-> +}
-
-[Severity: Medium]
-Can this path lose a BMC all-multi request that firmware actually sent?
-
-FBNIC_FW_CAP_RESP_BMC_ALL_MULTI is only read on the success path, so the
-no_bmc path returns 0 with *all_multi still at the caller's initializer of
-0.  Because *bmc_present is forced false, the retention guard in
-fbnic_fw_parse_cap_resp() commits that 0:
-
-	if (results[FBNIC_FW_CAP_RESP_BMC_ALL_MULTI] || !bmc_present)
-		fbd->fw_cap.all_multi = all_multi;
-
-That guard appears to exist so a message omitting the attribute keeps the
-previously recorded value, but the !bmc_present half now fires even for a
-message that carried BMC_ALL_MULTI=1, since fta_get_uint() was never called
-on it.
-
-The sequence would be:
-
-  msg0 {PRESENT, MAC_ARRAY, ALL_MULTI=1} -> fw_cap.all_multi = 1
-  msg1 {PRESENT, ALL_MULTI=1, no MAC array} -> fw_cap.all_multi = 0
-  msg2 {PRESENT, MAC_ARRAY, no ALL_MULTI attr} -> guard false, 0 retained
-
-and fbnic_bmc_rpc_all_multi_config() then tears down or never installs the
-BMC all-multi entry:
-
-drivers/net/ethernet/meta/fbnic/fbnic_rpc.c:fbnic_bmc_rpc_all_multi_config() {
-	if (!fbnic_bmc_present(fbd) || !fbd->fw_cap.all_multi || enable_host) {
-		if (act_tcam->state == FBNIC_TCAM_S_VALID)
-			act_tcam->state = FBNIC_TCAM_S_DELETE;
-		return;
-	}
-	...
-}
-
-Pre-patch the -EINVAL return left fw_cap.all_multi untouched, so this looks
-introduced here.  Would parsing BMC_ALL_MULTI unconditionally, or leaving
-*all_multi untouched and letting the caller's guard do its job, be closer to
-the intent?
-
-On a related note, the fbnic_fw_parse_bmc_addrs() error path returns without
-ever writing *bmc_present.  It works today only because the caller returns
-immediately on error.  Would setting it there be worth doing?
-
-[Severity: Low]
-One more observation on this path, which resolves itself later in the
-series.  Clearing fw_cap.bmc_mac_addr[] and reporting bmc_present = false
-does not release the already programmed BMC filters (the MACDA entries from
-FBNIC_RPC_TCAM_MACDA_BMC_ADDR_IDX, the BMC-tagged broadcast entry, the act
-TCAM rule at FBNIC_RPC_ACT_TBL_BMC_OFFSET and the TCE TCAM BMC
-destinations), while fbnic_bmc_rpc_init() early-returns on
-!fbnic_bmc_present() so the need_bmc_tcam_reinit pass cannot clean them up,
-and fbnic_clear_macda() only warns and re-marks such entries:
-
-drivers/net/ethernet/meta/fbnic/fbnic_rpc.c:fbnic_clear_macda() {
-	if (test_bit(FBNIC_MAC_ADDR_T_BMC, mac_addr->act_tcam)) {
-		if (fbnic_bmc_present(fbd))
-			continue;
-		dev_warn_once(fbd->dev,
-			      "Found BMC MAC address w/ BMC not present\n");
-	...
-}
-
-The follow-up commit "fbnic: Remove BMC routing rules when the BMC channel
-is disabled" adds fbnic_bmc_rules_present() and fbnic_bmc_rpc_disable() to
-fbnic_bmc_rpc_check() and pushes the removals into hardware, so the shadow
-state and hardware are back in sync by the end of the series.  Is the
-intermediate state between the two commits worth avoiding, or is bisecting
-into this window not a concern here?
-
-> +
->  static int fbnic_fw_parse_cap_resp(void *opaque, struct fbnic_tlv_msg **results)
->  {
->  	u32 all_multi = 0, version = 0;
-
-[ ... ]
-
-> @@ -671,25 +705,9 @@ static int fbnic_fw_parse_cap_resp(void *opaque, struct fbnic_tlv_msg **results)
->  	fbd->fw_cap.link_fec =
->  		fta_get_uint(results, FBNIC_FW_CAP_RESP_FW_LINK_FEC);
->
-> -	bmc_present = !!results[FBNIC_FW_CAP_RESP_BMC_PRESENT];
-> -	if (bmc_present) {
-> -		struct fbnic_tlv_msg *attr;
-> -
-> -		attr = results[FBNIC_FW_CAP_RESP_BMC_MAC_ARRAY];
-> -		if (!attr)
-> -			return -EINVAL;
-
-[Severity: Low]
-Should this patch carry a Fixes: tag?  git blame attributes the -EINVAL
-rejection being removed here to 20d2e88cc7461b, which has been in released
-kernels for a couple of years.
-
-The commit message describes a user-visible defect on those kernels: a
-well-formed capabilities message is rejected, fw_cap.bmc_present,
-fw_cap.all_multi and fw_cap.anti_rollback_version are not recorded,
-need_bmc_tcam_reinit stays unset, and fbnic_mbx_process_rx_msgs() logs
-"Unable to process message" with a hex dump.
-
-Without a Fixes: tag (or a note that the fix is intentionally not
-backportable) stable tooling will not pick this up.
-
->  	fbd->fw_cap.bmc_present = bmc_present;
->
+Before this patch the DEST_BMC bits were never cleared while the interface
+was up, so a BMC channel bounce kept working. Commit 04a230b27d8f describes
+channel flapping as an expected scenario, so should the enable branch call
+fbnic_rss_reinit() as well?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/178845766796.2787.6001399537275460493.stgit%40ahduyck-xeon-server.home.arpa
