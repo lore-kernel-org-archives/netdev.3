@@ -1,117 +1,89 @@
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9F62483BD3
-	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 12:06:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.177
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788782769; cv=pass; b=kr4EXQn3pD3A7yZyqZuaKxUk2+hGEHb3B2HbpEMOldG1XTcKFRIwoJASKffBYD8dcycRRckTRRY/C01kgJe4ukwgrV91e2FzX57eOFhESXmIEzab/OU3dWHbdhyxpKXx/6WzQIXnbjmLVYyoEvRN5DqQenJYbTchKWS4S5C+11I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788782769; c=relaxed/simple;
-	bh=HhprkWnzm5aZiGMD+GyLSsyNyk0pGLWTcDgmWY/eXjY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CZXLUjVvBy1ILzSZbFEVRrvVRf363elqQWEe+me1GIlpxMiTvK7+xIMZp3h0qjnhpgHfE51npQMzYpqLspQBf/TYL1DZMxo8WqPgjmXEAAxY6+LNxs0WsmzM4ZGt9E68z67wFmiWppC9lfBdpuQpRfmUatOnt9GkbidDiDuvO38=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fxNT5QpY; arc=pass smtp.client-ip=209.85.210.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B18B347ECF7;
+	Mon,  7 Sep 2026 12:06:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788782794; cv=none; b=lcthb+Fi1/H+wKGxnem4S7tWphmBGAqS3ApBtUvGO/tGRv+c8ZhFbm5aAxG7r/paCdBlkFhThbVBCQiqZjIprEBubklaqn18L3w7jWboBwAoLTBu7uOyszN1Weh5G8ZmU4v4hMDWowiyon4GyNOFB3vKb+ZUjR2wynVyisoHymY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788782794; c=relaxed/simple;
+	bh=piInyLgkcbDyzpblMqGAf2ynunGkgJ4We8r7EwXq64M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PVk2T9DONfvcNHrmsC0r43mXxNjSE16uC0Uq9MysJUtnJ5881B3FPTQ+ipntAGObIpdLQv+T5bjBtnDZPKWB/s1+lCeBgQKDTgBbFMEL8uDxAkecokUT2MAZmHR7Dx3+wjP1zVB48zdSFgqvhMkDiaH5xJIcZohJMHp1ud7lPn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=eDZNiepM; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fxNT5QpY"
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-8557c3f270eso1630702b3a.3
-        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 05:06:07 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788782767; cv=none;
-        d=google.com; s=arc-20260327;
-        b=H6YnJ6r5bd4SfpSsJlBZ5bY4yhZ+jue5zoBysl5kLkoMdxsKBQV/pUwK+9WifLhx43
-         sVaTQAmEnuI3HpdZSsHfqJZHCu9nxm9QfjmdRp532/8XvQcO5FkfUSmsuWI2ZDyhlKrg
-         Y8DGxioT08TZcb+NFXk4LA8Yo8o9Gqk8vvUFYtTQuUKYSV96C12xk8YSVJso6LauL8h4
-         N0uJy15EAnpRoVSftHLnKbf450BunWP6uzQ9Zb1Rv1R2y+0bWizwgJHZcG6vsCGAujKM
-         /+oxb36NYiqCWRrqirN7+cjKHNlyygZRie1HYSB5cUJfBHts+AS3i5TWxK4ZgAENAQO6
-         j+Ew==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=HhprkWnzm5aZiGMD+GyLSsyNyk0pGLWTcDgmWY/eXjY=;
-        fh=q0LNdNRJzlveklUvzp3WnGSk9BT1OD2YCQcUS0me2gM=;
-        b=LfK7VO+QmBn3gvn3lHMZqLHq6bZHoMwfY5ucqQtB0z599SMuWP0jEQgUmf7xJ8xfN2
-         L9MLSOBNOuhbpEP/pXyBBHItOc1yuoiMsmXNDXwJEyzzsx406D8EgZHR1ogAKY8XYozH
-         y/xfN3kCdAGjnWm9aC8Kgzf6n3Hh5sXCrbi4tkUubWFCzelaT0syO4y7kLHpMO4DbsxW
-         pMbDB5UMOBkO771AuSYI5ay0KakhzHn/xDMq21HLzvR1obTweitJV7wgSjyW++I1vQaA
-         +Qli99a2AciytEA2vl2r49CyhXVGfYE0K0bOmSzmbxKZfj5iUGQDy8rIcWLCDKpN41E7
-         F4Tw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788782767; x=1789387567; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=HhprkWnzm5aZiGMD+GyLSsyNyk0pGLWTcDgmWY/eXjY=;
-        b=fxNT5QpYexlIL22aDz3shdSqdSZS8CWn+2qNZe26Aqij3+N3Jg9X8Un+Ah0MhJUI4r
-         YePPyUHDxzoCgfycSH7FyGkT7X/VFK1bWLP2HO4k0CDGG4mHswDxmqbO6ips7h/0vKfj
-         2KiH7/nNn0hm+5ZEf9vzDheBsSN6epTSTToeI3MJ1C+onSCWBnkbV9VFCYOH9U1vM3tu
-         tF1iLs7pUR047s/9qzSbz1fZGU47T9x7G32MIxVSfy+DhATeNlElAAi1vOpP5zj0+0iS
-         AVXcyIRVgpYaagmQlxk2taQrEZkvMg3+mLkqn934TcVLMlqDbYiOGo4hooq3ac9oHT8T
-         P0Gw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788782767; x=1789387567;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=HhprkWnzm5aZiGMD+GyLSsyNyk0pGLWTcDgmWY/eXjY=;
-        b=YiDUqXdCUoNZtK4+GCY7pdlfeBWi5oC9oxuUzHUQvlXvfeY7hXT59njYbS+pMG1FDZ
-         G5iQQXXOTIdpJag4bcr7/olmh8ndJ4t8hceeEamGhlWaE9oGlEmFUIE+wVz+TZj/PQTc
-         0wNy8VQ26pOYLpcNM4iqRNAO5ukBSPS2B+lyI3hVbiNUQC38KVQmIaCKrISYsGzXTH1E
-         qHo0GVimsAyOGZ5SP/T5hle7+b+BWDLRhgkf+rXSMpsd/5J5K7QVxe2yqIWbPSzFycAr
-         x+NzwHZopWz6EvUxKRpZ7FXe5eCKkkHaGLXhpMJWUnKUvdZzrkjV/3nZ8MCzzuayaQZa
-         B7yA==
-X-Forwarded-Encrypted: i=1; AKwUvBxj3qk41RrVp8mKPMIglNy1MaB6E9pHnXaSKDiTm7RUvxV/Zv7R7q/7GaShIH0TMoAKhhEegUo=@vger.kernel.org
-X-Gm-Message-State: AFuF++m9hQ6uunX5dj3/oUNwnZKDaAffD/1ywNNVEU0sKCuE0zw0kS9v
-	qm5ywtExEhrvVm4nuZGhooEHFBcIYZQ2JO3wvQYdzA99nNfrpqpCWSqyvdZAn9sNc/qu5EUqBpc
-	SYf+b+MZR+NQkXy9N7NhNXPivlNfwOVU=
-X-Gm-Gg: AYBFou23SZpvQUGPkKsgWb5C0mt8ilIqmpkE08QpRULnD+r0CSMs2+3dn+zoSv6TmEM
-	crImRiIHCFJePGFlC/1Ntx0rjv0dkTTMRh9cyNcoJnwjY5H85pkXjA3FCMgJpdZcI/Mu6Y90w5g
-	El2MKMreUzkpjq023kfEMb7b0KBh6K5J7+WWDILSTUbXrJYHPA2RxVRoTmO6+U/VibXaEdR/8Co
-	0p9CIOxhS4Q7H/HygQjvXyDcykF4YZkMtAk1rLfWTPHtZ96PzL+M5MVT7s/s3nh3u99RRp6wPOp
-	L53rh8I0FKGhEyAtYhLdl+SOviFEKySqTGnNAgrdSymgb2DMEeEeBplQTwF/MZQCd5QNPhyOUwO
-	Z8Nfw0MnF5iTiAYDQ+GwWh/Mf9mmzy9J2Z3OKXpXVkfqOIMAF150Azywk
-X-Received: by 2002:a05:6a00:4c15:b0:848:46a0:3d74 with SMTP id
- d2e1a72fcca58-86169b6b588mr27969662b3a.9.1788782766620; Mon, 07 Sep 2026
- 05:06:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="eDZNiepM"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Reply-To:Content-ID:Content-Description;
+	bh=eqN+lGGowV/0PJOpQ1jZTWLYGirGXTEyq2f7xgjKbOY=; b=eDZNiepMtBaKYeKraQipuckICA
+	59VH4/wNICYoM+4MZDtZijGsjP/EF2AXDVoRuE5VqXF8dAOurqlwek2PI6XHex6OIMm6HH/gtKK3a
+	2KFzYTUybztBPWCMkryrVayc5P39+C3f25iFdGE0rTbs1xGO0qeIVIiNz/hL7t3ZQ8bsYZa3pg1UP
+	q40uQMQzsPC0xAZUdI2mQ+UW81o+wVd0ZbTK2yI8O7BOkJ+SN8mp/1O3sDf8Tt7LDVQfz224QQNCi
+	8Od9cGrRnfSnpgKsvpKGWCFcoO6zdzaoR3IkrKrqC9GuXoPwfuwTb2lGnYjn3bN81/UFhJICv2mwf
+	HMhUfNEg==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1x3Y6s-001Ukf-2j;
+	Mon, 07 Sep 2026 12:06:03 +0000
+Date: Mon, 7 Sep 2026 05:05:56 -0700
+From: Breno Leitao <leitao@debian.org>
+To: Hangbin Liu <hangbin.liu@linux.dev>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Shuah Khan <shuah@kernel.org>, 
+	Jay Vosburgh <jv@jvosburgh.net>, Vladimir Oltean <olteanv@gmail.com>, 
+	Jiri Pirko <jiri@resnulli.us>, "Michael S. Tsirkin" <mst@redhat.com>, 
+	Jason Wang <jasowangio@gmail.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
+	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, Petr Machata <petrm@nvidia.com>, 
+	Matthieu Baerts <matttbe@kernel.org>, netdev@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, virtualization@lists.linux.dev, 
+	Hangbin Liu <liuhangbin@kylinos.cn>
+Subject: Re: [PATCH net] selftests/drivers/net: include lib/sh/*.sh
+Message-ID: <ap6oi4YujKEgoKhu@gmail.com>
+References: <20260907-selftest_lib_defer-v1-1-8af94645aaa3@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260907034502.12619-1-phucduc.bui@gmail.com> <GV2PR04MB11739E45D1562C9063E05D77788B22@GV2PR04MB11739.eurprd04.prod.outlook.com>
-In-Reply-To: <GV2PR04MB11739E45D1562C9063E05D77788B22@GV2PR04MB11739.eurprd04.prod.outlook.com>
-From: Bui Duc Phuc <phucduc.bui@gmail.com>
-Date: Mon, 7 Sep 2026 19:05:52 +0700
-X-Gm-Features: AcwNN1VgFt55b8C2DAXKx-uTJk3d_l7pJsW4Kx0oozTChu1fJXNM2fyLx2t5bvA
-Message-ID: <CAABR9nEHY+A3y52GmozKTQnot1RcCRZVV-Js5eyt7CQsb3JZjw@mail.gmail.com>
-Subject: Re: [PATCH net v4] net: fec: Propagate PTP initialization errors
-To: Wei Fang <wei.fang@nxp.com>
-Cc: Frank Li <frank.li@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, Simon Horman <horms@kernel.org>, 
-	"davem@davemloft.net" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Richard Cochran <richardcochran@gmail.com>, Stephen Boyd <swboyd@chromium.org>, 
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260907-selftest_lib_defer-v1-1-8af94645aaa3@kylinos.cn>
+X-Debian-User: leitao
 
-Hi Wei,
+On Mon, Sep 07, 2026 at 03:28:09PM +0800, Hangbin Liu wrote:
+> From: Hangbin Liu <liuhangbin@kylinos.cn>
+> 
+> When I tried to install and run bonding selftests via:
+> 
+>   make INSTALL_PATH=/tmp/kself TARGETS=drivers/net/bonding \
+>      -C tools/testing/selftests install
+> 
+> Some tests fail because net/lib/sh/defer.sh is missing:
+> 
+>   /tmp/kself/net/forwarding/../lib.sh: line 5: /tmp/kself/net/lib/sh/defer.sh: No such file or directory
+> 
+> One option is to add defer.sh directly to TEST_INCLUDES. Alternatively,
+> follow the approach from commit f72aa1b27628 ("selftests: net: include
+> lib/sh/*.sh with lib.sh"), which pulls in all .sh files to accommodate
+> future changes to the library directory.
+> 
+> This patch adds a wildcard to include all shell files for drivers/net
+> tests that consume net lib.sh. TEST_INCLUDES is also sorted to avoid
+> ordering‑related problems for future modifications. The team driver is
+> not affected by this bug, but we use the wildcard for it as well, rather
+> than listing only defer.sh.
+> 
+> Fixes: a6e263f125cd ("selftests: net: lib: Introduce deferred commands")
+> Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
 
-Thanks for the review.
-
-> This part is unrelated to PTP and inconsistent with the subject, it shoul=
-d be
-> added to a separate patch.
->
-
-I=E2=80=99ll split this out into a separate patch and send it shortly.
-
-Best regards,
-Phuc
+Reviewed-by: Breno Leitao <leitao@debian.org>
