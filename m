@@ -1,115 +1,133 @@
-Received: from mta1.migadu.com (out-225.mta1.migadu.com [95.215.58.225])
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0987175A6C
-	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 07:08:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.225
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788764893; cv=none; b=Rk0/iK1NarqwVtWRPPdYhhIWmUXu2a6Bp7betzGtzQ2Ux3P12kKPu0VvbyKp6fXQ/e8hN/xkFZmJz3bVf5os0034GktU/E5u5k/mQDO5+WHY9rp6o4nZdvYglura0JJ2SNoeRyC3Xjf5KdGm1KjDX/NLhsQOXNpf6LINkQQUz8c=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788764893; c=relaxed/simple;
-	bh=nV5+II1fALDOgMZJw5NeP0syCJgew30SZ/qsXoP2ri8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=CB7hpU2kuOxmOT1CWnIxkGF9Aqeo/BAEcumNbu/0fg9aM0rd2aYVlQijXSlcCb5+RGd85721YN5K8i1alEa3rvvow2kQxy0qpkgaY79vVdYs6zZreVZXf95YJUanUFYEP60D7kBhjE0dQ5B5Ev/ndJcKaeOHoLZng2CZfC0Dpo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=t7/oRxAy; arc=none smtp.client-ip=95.215.58.225
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28605411F93
+	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 07:10:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.173
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788765002; cv=pass; b=VdJBIPp575peQEIQBWz8l8t8DhfJvYDJtDYbhdrCnvfwjwhTzDkcrPKxMTm3ft43im/RDEHCkyfpZubmahBtq6Ebh/eu9b8psT1kkBF/kCYMZhAvUIfmkj5D36YRrwxWbCq7h8KYNJHMUBw3H8pv2255/3kuCkH13wv9g4nVSyM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788765002; c=relaxed/simple;
+	bh=bY8T7KF0qJSw0FCfp2fmHHR9P2/vJUU2JRlv2EGdr60=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=IMqKUSE7iysHwtELSqpsgeBRBIRlFoCjr3X+YwjdR7nluVvrZucU9zgGatkHW76mjN8W1hCd/Ad7hOeWWv+GwuJ5doZg3cZq6HtcamzM43GJWNrgU8l/hjEslhUxL1VW1Sx2bFjUu3E2eZ3iGRdEgng9DJ2nSHjz3ILZxBGTqtc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DNDwjwAb; arc=pass smtp.client-ip=209.85.160.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="t7/oRxAy"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=nV5+II1fALDOgMZJw5NeP0syCJgew30SZ/qsXoP2ri8=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788764889; v=1; x=1789369689;
- b=t7/oRxAyb8OVWEHLBww5ojvoT6l7bKkuIYYfJm3HAJPvSVbjC6vNY+I2iljacK+esk9rHlBT
- TTA4TYQF8d31yNMJBn9nWMdDsC1yDMYEbw584eaWvFtAWaZt6mRO9t1ehVWAMEAuLFBbenN+vdS
- wfiUZ2ZRv803x++b/fkEBUHE=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 7c224f9ee2c31f1d;
-	Mon, 07 Sep 2026 07:08:09 +0000
-X-Mizu-Trace-ID: 7c224f9ee2c31f1d
-X-Migadu-Flow: FLOW_OUT
-From: Hangbin Liu <hangbin.liu@linux.dev>
-Date: Mon, 07 Sep 2026 15:07:53 +0800
-Subject: [PATCH net v3] bonding: fix slave_cnt leak on XDP error paths
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DNDwjwAb"
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-51c0006ea8eso46626641cf.1
+        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 00:10:00 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788765000; cv=none;
+        d=google.com; s=arc-20260327;
+        b=B151+feFM/qhpu+tpZ63bdVfcVBaLmFcu7cy9HhNPZiZyDlueOkSo58vFJAM8tjHAT
+         ez5oXaaPhrT9nJ410k2BWk7YiYF4d03pomAoYOJ45ptco5lQ+T5Oi54cG2V7voe8niAa
+         teALTESCM9faALfZH84vvIeEfP0Nshlxl1mNqohUdpXJ9uWeVwpG/V6w7VwkvKv2MKIm
+         v6zGwurDPND+wrGjp9iDN7kvjecu/XAYt0+rSY9/67vS9iuCDYkpluNdMHKr7Xr+eSaF
+         QE5/mYUQcbj4XwQe5OwqupwjKtKzGAIVfZ9jl8OsPirSjFO3IHP4N0Rp34SfIlNphGL5
+         9qjg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=bY8T7KF0qJSw0FCfp2fmHHR9P2/vJUU2JRlv2EGdr60=;
+        fh=efSqhjLFJ0pSgKgz+OVycKOK1Cn7ny6ZThkPbAW1Fds=;
+        b=F8cnvqD6IqQef9x+bnm42wT2aO5ar43ieoPxU00zOPjFfx6pQn/FtAl66/cdcJdAtw
+         MdaviKFpL1m5hdYxBJTCU3Yef7acPqW0wz+ZmiMw4oFQGOpJejVWvqAySB7D2aMO5HmH
+         hiQ0qKo0Q53wVV/ZfNXVYIr+SGzDB5Qf6sOoWkHn128u/IanF4q1Lj1MPcXMUbh+9geB
+         LBhjGDkHh1WL8UuS9jkmyLmIBUODbmGkFGkw1Wc9oB4qK5Qzp1S2WOHtM3v0YZ9EgNbG
+         +ibWfk+JsOMi1C2LjSQEnDNaHqvE14W2CGb2ntJGf7LTeQiR/KgQ871Eda53odQ5oXHm
+         A4Aw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1788765000; x=1789369800; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=bY8T7KF0qJSw0FCfp2fmHHR9P2/vJUU2JRlv2EGdr60=;
+        b=DNDwjwAbwLxb/vjqZoJ6266SI9OFz+CRF20kRsRaVJQF1iCzpn8hwIZOEdh5VxTZFm
+         ue2qn5tjAgvNzIU5F2Tl+JsqdGB56h/wwC536s3/ZAf8++l17XanvmPxS5xttFqpnAYL
+         FXScekSslo0iG7S03As+qjFZgLjY5YNAgYRQsiKi1ATQuka7TktN/3BcmwsKodS3fnMx
+         DqeiaIIGei+5KOcvV7E7SEPPFPcsTchO7kXhI7DeOJmWO3tNqIv9IHa6UhXF9UeerPC3
+         nHkXebvBvxJl+4sN5kw60OfI02aCZvsHc4eXW7Vi04ALTrk6PsVOKCF7C+s7pQ7D0xZ4
+         kinQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788765000; x=1789369800;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=bY8T7KF0qJSw0FCfp2fmHHR9P2/vJUU2JRlv2EGdr60=;
+        b=THdZ/aP5HYfCBDUG1liQOUrBhHt0cEqDlUdaj4uJudIvUZtczCWTz28pnzxoCaO25V
+         pZldVX7ECRXBWBj59y7fys56uREeqY33ynGJ9jk+203wx7HG0veqQbqXgt/QM08Rzj3S
+         kiiR9dmUw8gPM/8WKLXSZlv4VkSOmMtWKOlHZ5SZnbvifcooD9RPiCXo7nzlE1+uEitJ
+         O3MSmNXe6714IZkTPUVjR41Clgt7aVIlaN8c9jsprxeaeLCTn4RWTQo3Na4yQUffDX5L
+         tDBo0nbo2efyJJRuhT8vQblMm4Fi0MjNAI72cA4MwLJ3a7UBxaJajZjPNknX3iOzv1uu
+         hnFw==
+X-Gm-Message-State: AFuF++mP72BXNc3jDhiICyUmMBMsXny/lOD3wA5RSNrac5kFuHpNkukl
+	ByUnVpoJVfZBOZg80TmHpGl9HuIUaJkgec3/GYYKVUSe0eI6tCuLx3efywI93tcRZYEmwonPCS7
+	Gsa65zKUIWsQB4g8ue/rkObx/qvrGlS4qi2WaxF1I
+X-Gm-Gg: AYBFou0N00TCcrHzNi8BPAng0SwDS8OW2iJ7HInHWuBX/0WF0bYjy7wHVDHXDHc+Aqj
+	RE60EPFWEsQWzJLG2CsxEQH/kuofhWG+bcsuJnCpR9NN5dPaU/9UOkyRQ2dQKvMnqUlATv7YgW1
+	SbQSqf6469cjZWcZymIysv9Ti+I+wOtsL17EFbVzsPcSuQpCg/5SLcyGs1XXbHzIUCaIbj7IkiX
+	OhGWtlk9XqsvDKbOrVs/4NxgsWVjfJYUNpIMVUb8WRdMazsDK7ZEzEH+1+6XEwmeO5CIG6J+pRV
+	AjEnJy2IdWHBmZUlv5cn8BHRFqqMqucspK2kCXkQlqP/j+QSN4YOea77MnAw/iXlQKBKoPVnwG+
+	DVvUwOuZiigDpaYF7T8c+DbVpXaueFj3aO2gdCzHZX71lU5vTbiSGJxOBGHqYCVukaFWB
+X-Received: by 2002:a05:622a:1f98:b0:530:31c8:a302 with SMTP id
+ d75a77b69052e-5305495da66mr256081741cf.23.1788764999462; Mon, 07 Sep 2026
+ 00:09:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260907-bond_slave_cnt-v3-1-57df3b3cf2cb@kylinos.cn>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/2WNywrDIBREf6XcdS1GE2O66n+UEoy5NtKgRYM0h
- Px7xVUfy5nhnNkgYrAY4XzYIGCy0XqXAz8eQE/K3ZHYMWdglAkqaUsG78Y+ziphr91CpMRW6sZ
- QNXSQoWdAY19FeAWHC9xyOdm4+LCWk1SVqfg6yn59qSIV4QK7ZjC1EsZcHutsnY8n7YorsU+e/
- /Es85QhazmtteLii9/3/Q2wy7CP8gAAAA==
-X-Change-ID: 20260807-bond_slave_cnt-88e78c5f0ab9
-To: Jay Vosburgh <jv@jvosburgh.net>, Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Daniel Borkmann <daniel@iogearbox.net>, Jussi Maki <joamaki@gmail.com>, 
- Nikolay Aleksandrov <razor@blackwall.org>
-Cc: Hangbin Liu <hangbin.liu@linux.dev>, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Hangbin Liu <liuhangbin@kylinos.cn>
-X-Mailer: b4 0.14.3
+References: <cover.1788248601.git.zihanx@nebusec.ai> <db1f34ca8461c7b0dc5ec504ea1b99c24b909e34.1788248601.git.zihanx@nebusec.ai>
+In-Reply-To: <db1f34ca8461c7b0dc5ec504ea1b99c24b909e34.1788248601.git.zihanx@nebusec.ai>
+From: Eric Dumazet <edumazet@google.com>
+Date: Mon, 7 Sep 2026 09:09:47 +0200
+X-Gm-Features: AcwNN1UdIl3PlzbDUGiFbT4WHqVNX_a67HKQKn1qGUPRwr6NlLZpE3hbS-2nlZ4
+Message-ID: <CANn89iKzChGpDLsJ6iKRsMvHKdW6r_9xvkQv9g6bTy_-Pt8xOw@mail.gmail.com>
+Subject: Re: [PATCH net v2 2/2] mptcp: diag: bound listener bucket lock hold
+To: Zihan Xi <zihanx@nebusec.ai>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	mptcp@lists.linux.dev, "David S . Miller" <davem@davemloft.net>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	Matthieu Baerts <matttbe@kernel.org>, Mat Martineau <martineau@kernel.org>, 
+	Geliang Tang <geliang@kernel.org>, Guillaume Nault <gnault@redhat.com>, Florian Westphal <fw@strlen.de>, 
+	stable@vger.kernel.org, Vega <vega@nebusec.ai>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Hangbin Liu <liuhangbin@kylinos.cn>
+On Tue, Sep 1, 2026 at 2:54=E2=80=AFPM Zihan Xi <zihanx@nebusec.ai> wrote:
+>
+> MPTCP listener diag dumping reuses sk_diag_dump(), which executes
+> inet_diag_bc_sk() before filling the netlink reply. The listener walk in
+> mptcp_diag_dump_listeners() currently performs that work while holding th=
+e
+> listener bucket lock.
+>
+> The time spent under the listener bucket lock can therefore grow with the
+> number of sockets visited and with per-socket dump work. The resume state
+> also requires later batches to revisit the bucket prefix.
+>
+> Fix this by collecting only referenced listener sockets while holding the
+> bucket lock. After dropping it, re-check the listener properties, obtain
+> the parent MPTCP socket reference, and call sk_diag_dump(). Keep a
+> referenced cursor so later batches resume after the previous listener
+> instead of rescanning the bucket head. Validate a cursor against the
+> current listener bucket and TCP_LISTEN state before resuming from it.
+> After dropping the lock, read icsk_ulp_data with rcu_dereference().
+>
+> Fixes: 4fa39b701ce9 ("mptcp: listen diag dump support")
+> Cc: stable@vger.kernel.org
+> Reported-by: Vega <vega@nebusec.ai>
+> Assisted-by: Codex:gpt-5.4
+> Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
 
-When bond_enslave() succeeds up to the XDP setup stage, slave_cnt is
-already incremented. If XDP setup subsequently fails, the error paths
-jump directly to err_sysfs_del, bypassing the slave_cnt decrement.
+pw-bot: rejected
 
-This causes slave_cnt to drift upward on each failed enslaving attempt,
-which would lead to unbalanced traffic distribution with round-robin
-mode.
+Please limit the complexity of filters.
 
-Fix it by moving the slave_cnt increase after XDP setup.
-
-Fixes: 9e2ee5c7e7c3 ("net, bonding: Add XDP support to the bonding driver")
-Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
----
-Changes in v3:
-- move the slave_cnt increasement before bond_update_slave_arr() (selftest)
-- run all bonding selftests on debug kernel to make sure no regression (Jakub)
-- Link to v2: https://lore.kernel.org/r/20260903-bond_slave_cnt-v2-1-02e27304ca36@kylinos.cn
-
-Changes in v2:
-- move the slave_cnt increasement after XDP setup (Nikolay Aleksandrov)
-- balance-xor mode is not affected, not mention it (Nikolay Aleksandrov)
-- Link to v1: https://lore.kernel.org/r/20260902-bond_slave_cnt-v1-1-36e95bf4a6ff@kylinos.cn
----
- drivers/net/bonding/bond_main.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index a9bff7663eec..1514a8ba0888 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -2284,7 +2284,6 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
- 		}
- 	}
- 
--	WRITE_ONCE(bond->slave_cnt, bond->slave_cnt + 1);
- 	netdev_compute_master_upper_features(bond->dev, true);
- 	bond_set_carrier(bond);
- 
-@@ -2332,6 +2331,9 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
- 			bpf_prog_inc(bond->xdp_prog);
- 	}
- 
-+	/* Increase the slave count before rebuilding the slave arrays. */
-+	WRITE_ONCE(bond->slave_cnt, bond->slave_cnt + 1);
-+
- 	/* broadcast mode uses the all_slaves to loop through slaves. */
- 	if (bond_mode_can_use_xmit_hash(bond) ||
- 	    BOND_MODE(bond) == BOND_MODE_BROADCAST)
-
----
-base-commit: 38b6be101006d3e7af972999f45d4f1e8250587a
-change-id: 20260807-bond_slave_cnt-88e78c5f0ab9
-
-Best regards,
--- 
-Hangbin Liu <liuhangbin@kylinos.cn>
-
+Anyone needing complex filters will implement them in user space.
