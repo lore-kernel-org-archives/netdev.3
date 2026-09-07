@@ -1,134 +1,121 @@
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E94033A875F
-	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 14:42:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.177
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788792146; cv=pass; b=Q0oMHDz+xoDKpAq5NMGEvjZG8LuiB8t/55fNDUrpYe6fDTaOv8pcEqwvqA3y1HTB0QttapPJ1KfemVb7Rj56Wpked1tfnzesikPYElYxobPPNNkOGq6tJxpxBJ8RjS0oo9AWTthU2O6be8Mk6PYE7XbuceQYr0p9kKpw4uGb4Eo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788792146; c=relaxed/simple;
-	bh=CsTidLUG0CLTgjErnlm8+OqDENBUP1sGkwcCgpK05F4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Uz7xXYExCEJ/ZP1g8MgQaiRlkz8ciV2d0RSJdKWs1y9bRe01JUAtyOzkjx1uAd/0Qi+Ilszi1lxGxAMXXIoYqRfzgrXMH9miDSgSxX1V8GvTrDrKDY6eT2oVzx6o5IsBTp3xBuuDSBxzwXWDbYaD0Q2xWUiKmRuchRRCLH4F7qw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hLuX3W+y; arc=pass smtp.client-ip=209.85.160.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABDEE4F30E7;
+	Mon,  7 Sep 2026 14:45:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788792330; cv=none; b=OBYBaNDjggoB5kXbLtlkeUTq2lRilhCOieCcGm40ykPuOoRT4H00On1UYVb8Cao/HsMvyiSMdKVY4nkjIFG6UkJn8DIx7ETVa34YlrWZ7NJkLvRv/sz2rV3EPw/t73+4/r9jdTAZ6Lz4gT3bJQ1sdcg+N/wv2+SG3yTWqDXwYuE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788792330; c=relaxed/simple;
+	bh=7KEvK2r5nReuxmEXXY+DweaqPsLLb5FbO9dEADvc/Ac=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=b5kO+OUen5d7twDSPel7A9Oyq1UZIKPfLKiabaE3b8ACw8AKGY8xvxt+7MA2gwEV4NRoxvTd0XYOBoUN7RJZw3tDzkt6neVTI+VowmeUC4gMPdlKbJNTnO2BuFy0kTZlI8gh/8GLaqnzRESlxG8/zLAxerCf9m8oUMVeNy/S6Jc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=JIL0NPOR; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hLuX3W+y"
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-52ff0eea420so37906931cf.0
-        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 07:42:24 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788792143; cv=none;
-        d=google.com; s=arc-20260327;
-        b=g2dACxP0orv/HaMqy4QX0o3mdJVzRLizw7isTSUvq3Oo+TKGUJdAlTVTvUes9dqgIo
-         iPqQdzTAssSJVHM1TajhMYBaeZ0IJgvtptfUTvZhqNSrouEKcH+U2DGuUG3czCmiBrtc
-         t1/AtABbx6U0LUZ2byc01s6Ci3nEUwgAT7Ujo5HIQ6maz872XDrl9aTlTIJGL0EKZFFG
-         ofq5zvQDqjH0HJNWEvllut92xiUxV0H5dl7++i7kXFwqDXN2xxIUw578eUM6NgJ9d0ed
-         Sj3juDpcdy42UDTwGc/+qC0ylNpcK3uDuSAurN2bMvi5HsuZwOogLlKl9/furw6NXSVN
-         vr0w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=CsTidLUG0CLTgjErnlm8+OqDENBUP1sGkwcCgpK05F4=;
-        fh=dcG4sbbhie4O3KJTDio2yAwsNQH+AO17jP4WfmG5eOw=;
-        b=gM1HlVHnKo0FK56+l5MolrFr9PGsita0noNiAXjqfIxeCXlNxOF7wRxOXbO1bzqheJ
-         hxu2X/FDfU+OTykpq1V0zKuE3dKRbVl6QQT9V/Na6+nLLxKnWvsiwlISzmZDJmlgcENH
-         9lWwe5SVDgJp+uN/iqRWRzIIdNpYaGAjh4olTY+/6Z8sY4HZ2z+3beAV0DxrYSltyN62
-         wwa393GHnbyC4Nha5cCfesTdLcACd2E3y/NNAbX+8oodIdk6EtwMi/Q9NlxLWZGSlCun
-         dmhVBC34JoPanhfxvtkrHLkOsI8NtFdQRH+/Xh0ZUQTI2oFENuhlGUYKu3ibCh6yPjFb
-         U0Qw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788792143; x=1789396943; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=CsTidLUG0CLTgjErnlm8+OqDENBUP1sGkwcCgpK05F4=;
-        b=hLuX3W+yWx6zUvE5wnct4H873smNWVkfo2AIWWd4KTQpX1caHkRd4LTpshhQX2JoAd
-         mo7vfa58y/yHTcqsK20Up0GvhW1t83rfj1/bUVqcFJJgcpUQm91eTeiBoEaghucI73mr
-         DwzvMacgOsVZoCotaSBXCmCmQNznfIwxcKAPyAM+LmXOVutyhncISb8N6QM4Cmji9++e
-         Vejs259lVq++SNMHxUH2suJkv2IAxUoppKwd3LAx6QyzmTWupqeqFOaAIZqwM1QYHify
-         9Phvp5HByLHjehBGpTaUYM2iABXQDPuIaTLiqOI0ZEfUyBCSxaPZ4LBYC1u0umJhygV4
-         zSSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788792143; x=1789396943;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=CsTidLUG0CLTgjErnlm8+OqDENBUP1sGkwcCgpK05F4=;
-        b=jIQIOq48XIDC/SWraW28H6saUvuaqGysg8nv/Wc5YISiXt6orZxRV/yp1O9+egJSsw
-         qLQrkQeod5x0Vh7yxCoYaRjvqmx8vLwBKtarYR2ZapQUBkHhek8vtHanmzeMgcdwEJo2
-         OKuYVYEdMQnR0B3q6cX0V/Xd7bNHzkePXkCYkCt+MfRGtRVVPiHbG2Rr1zlUUEljqxCc
-         XK+7DDn8WEokYtKnhSr00YI8ezleajc5Z5I7lepmDCxgeaDAq5EBwxk8WVXA8swgCZBT
-         mNylBVm3U49lc7usQ9TD02BtGwZzeJZ2Qozm53spI7iWAOntoUfpCiVfW8KVR5Tl8P41
-         ATug==
-X-Forwarded-Encrypted: i=1; AKwUvByDY6mjBsjAsJZiEhTPZQ0yO5Fl56cgqfScXSLQ/+lk+yt+52Ue3Mw2BTjq+wn1Z6NvifzzCOc=@vger.kernel.org
-X-Gm-Message-State: AFuF++mKaneCjaAufAkSUuKarYBYfQsvG+sBtDR+XdN3VzBN9/XY3Loc
-	3aDcQW6xll8H4oEraF10mAo/iprWbRgnCtyycV4cRMeIbXvPpha+b3s/TDGXN6tmjCEZ7suYaB+
-	1NFkd8p58Pvlh1T4oFbc4p9V1tdVe2h9Zie5AnUNs
-X-Gm-Gg: AYBFou373mdImbjItihkCkbyikFhKBW0HYlvlnKpTgTKX/ruhXzOp2Up5gv6rve0o57
-	1itcd1pUEqVjaLZZ0hyM5wjQjHZd9fFRRf1dQ3YxaoBoz4Dbc9WPLBn5cOJb6ojTqgjOjC5/ICc
-	Y5kGoNmvleoxKj/zwGKYCcCNnofxJBDaVysq7sis2FYEhPnKoA62ZhT/NbuhqhhisGpmUvgL4tX
-	w+CBg4Huf2g9pv8hJfdLIVcmwgYSuqIOTehYGLnZTv6wsp2Bw7LQ92PnCdpxG1yFOBT4sjf/mEi
-	3IjBCBQyJoJbFLFXzBS31yDt4biZuy4mRq2DzLlw3c4w7raJJuhMwlSqhqZQwowWfHB0UhL92Ft
-	snxDmgkxhxkchiItdv09M+UtvsYmHe58e2BVPi2k29xuFWVrMB+piHteuwg==
-X-Received: by 2002:a05:622a:181c:b0:530:4773:1139 with SMTP id
- d75a77b69052e-530477313damr240525321cf.23.1788792142504; Mon, 07 Sep 2026
- 07:42:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="JIL0NPOR"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 687E1Rss280857;
+	Mon, 7 Sep 2026 14:45:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=j4ezVPVPq/Y0GA+y4NQpYhe/XCJlKsLHmSPblIhkF
+	Vw=; b=JIL0NPORXIHif5VKEpBDS3Zf/6iyDnhP1NrOtIMOykjXIQNzK46PUMW8i
+	NvfcaaXYWYpxM2hBG91jbDud4WKurOidhWVGj/n1G6uB74xo4andr+US58SRT4yK
+	cRk0nB4mdFoOYGg0wJzIYDbVF6qh5sFGvweEw+gKhriRb1yLB5BNq+ElCHAoNnPp
+	n6b8Oef5O8HbS++VrHvlI7+ruEFepacEqS85RcgGE6y0j5c0fStjBGJ/WBMxNcAr
+	OKCr8JNGH4kptEao3qRKQ07XNCso48W2WXRbUlpYEyve86NtcU1TG/Pxyq++K6PH
+	x3D3Taj0lK00O1i2SGKE/qEkn0WDQ==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ggbqjs9hg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 07 Sep 2026 14:45:19 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 687EfGR7024241;
+	Mon, 7 Sep 2026 14:45:18 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4ggwdq6mkd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 07 Sep 2026 14:45:17 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 687EjDTu47710636
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 7 Sep 2026 14:45:13 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A948E2004B;
+	Mon,  7 Sep 2026 14:45:13 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 61CD320049;
+	Mon,  7 Sep 2026 14:45:13 +0000 (GMT)
+Received: from t83lp71.lnxne.boe (unknown [9.87.84.240])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon,  7 Sep 2026 14:45:13 +0000 (GMT)
+From: Nagamani PV <nagamani@linux.ibm.com>
+To: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com
+Cc: wintera@linux.ibm.com, aswin@linux.ibm.com, hca@linux.ibm.com,
+        gor@linux.ibm.com, agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
+        svens@linux.ibm.com, kees@kernel.org, linux-s390@vger.kernel.org,
+        netdev@vger.kernel.org, Nagamani PV <nagamani@linux.ibm.com>
+Subject: [PATCH net 0/2] s390/ctcm: Fix timer bugs in fsm.c
+Date: Mon,  7 Sep 2026 16:45:09 +0200
+Message-ID: <20260907144511.3810194-1-nagamani@linux.ibm.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260907075846.2913645-1-edumazet@google.com> <20260907075846.2913645-9-edumazet@google.com>
- <ap7LFmE1Ykohf-eM@lore-desk>
-In-Reply-To: <ap7LFmE1Ykohf-eM@lore-desk>
-From: Eric Dumazet <edumazet@google.com>
-Date: Mon, 7 Sep 2026 16:42:11 +0200
-X-Gm-Features: AcwNN1Vm90Ick5u_RE-85bmKCHDAHVRCL0SV2bTzq8Q56FEg6VyPh2P-y87bw4U
-Message-ID: <CANn89i+tmdCextmwm9zWCODWNQkCLFE2x+wrAJmcgrGmEMFTKA@mail.gmail.com>
-Subject: Re: [PATCH net-next 8/9] sit: convert configuration to RCU protection
-To: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, Ido Schimmel <idosch@nvidia.com>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, Artem Lytkin <iprintercanon@gmail.com>, netdev@vger.kernel.org, 
-	eric.dumazet@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-ORIG-GUID: M3PTxuXPL730JIsKHv0V3vd1h6Z1KJiQ
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTA3MDE2MSBTYWx0ZWRfX6O2yZPB1kwDU
+ NWz5yxktAj39Yio5FEzauR+FTQvHO190TxcrdSqFDd+p2dVmsouC69AWnnJP8s0mBk5UxEFhYB5
+ 4R3ykmsyTslXkFUPIDthpsG/UeExA5Y=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA3MDE2MSBTYWx0ZWRfX1RLHbf9xeP/l
+ hRlyoe/HzYT+8RLd07/AgGhpIIm2WpsWFO1HQppC+P7U6i8eRhkML4OT3+18NSG813KRcs4Dl8Q
+ OVlM4lUAriihsb/Sbv0JzEGAl5VagkIzi9rVQleyMyEZ3o4wvXZgU9TUVsJwg6pU59K2dpelijz
+ ybsBHuFIH42hrPKJi1IuERNJjH+ZzGxq4wSvebLHw95QnFCjnfar8ZoHtxa3l/7TEbJlkCVP9lF
+ LbcnVPb1i6GlF81PmN47lUV4ZxL5TPkPBDi39f5yUqK1hDytvanrHgauT+2lskxkWGDqCPoa2pY
+ qPXuXKR20F1JVE9LIGETTxp5433l8UhLzg/hh2XFEldE3bN0HmKhaRMP8+x5VPb4EMGGmcAqqkp
+ I7UbeFy9kpQ3OnGLf2Iks14thc55+9vGLxjHwLiiEuSzXzPs5N5UXNtXkaBaRi84a851x2Gb46y
+ s8oH/lKb18Qf2PaxBYg==
+X-Authority-Analysis: v=2.4 cv=JaKMa0KV c=1 sm=1 tr=0 ts=6a9ece00 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=uAbxVGIbfxUO_5tXvNgY:22 a=3qrFNP2tgWyxs8p2YccA:9 a=zZCYzV9kfG8A:10
+X-Proofpoint-GUID: RExddxdM6czKp8AV_HgEbOLx76E2kS-x
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-07_04,2026-09-07_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 spamscore=0 phishscore=0 impostorscore=0 lowpriorityscore=0
+ adultscore=0 bulkscore=0 priorityscore=1501 suspectscore=0 clxscore=1011
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2609070161
 
-On Mon, Sep 7, 2026 at 4:33=E2=80=AFPM Lorenzo Bianconi
-<lorenzo.bianconi@oss.qualcomm.com> wrote:
->
-> > Now that SIT parameters are dynamically allocated, convert
-> > tunnel->sit_parms to an RCU-protected pointer.
-> >
-> > Updates in ipip6_tunnel_update() allocate a new parameter block,
-> > publish it using rcu_assign_pointer(), and free the old one
-> > via kfree_rcu().
-> >
-> > We only need to unlink and re-link the tunnel in the hash table
-> > if either saddr or daddr changed. When neither address changes,
-> > the unhash/re-hash and synchronize_net() can be completely skipped.
-> >
-> > Readers in ipip6_tunnel_lookup(), ipip6_tunnel_xmit(), ipip6_err(),
-> > and ipip6_rcv() now safely dereference tunnel->sit_parms under RCU.
->
-> I think this patch is fine, I am just wondering if we can use more generi=
-c name
-> with respect to 'sit_parms' since I guess we have the same issue for IPIP=
- and
-> IP6IP6 tunnels. Do you prefer to have dedicated pointers for them?
+Fix two bugs in drivers/s390/net/fsm.c found by Sashiko AI code review.
 
-Name could be more generic indeed.
+Patch 1 fixes timer list corruption when fsm_addtimer() is called on
+an already-pending timer - timer_setup() re-initializes the timer
+list_head while it is still enqueued in the wheel.
 
-I was thinking of using a union for future tunnel conversions.
+Patch 2 fixes a use-after-free in channel_remove() - timer_delete()
+returns before any running callback finishes, leaving a window where
+the timer callback can access freed memory. Fix by waiting for any
+running callback to complete before freeing the channel.
 
->
-> Acked-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
->
-> Regards,
-> Lorenzo
+Nagamani PV (2):
+  s390/ctcm: fix timer corruption in fsm_addtimer()
+  s390/ctcm: fix use-after-free in channel_remove()
+
+ drivers/s390/net/ctcm_main.c |  4 ++--
+ drivers/s390/net/fsm.c       | 10 ++--------
+ 2 files changed, 4 insertions(+), 10 deletions(-)
+
+-- 
+2.47.1
+
