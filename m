@@ -1,82 +1,79 @@
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB14646EC6A
-	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 13:35:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2681493626
+	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 13:35:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788788109; cv=none; b=TonX97AJTTgN6nS3ltN5dMsqc1IL1a7RI6WAxmgJB+XpuQb0w8OK1UxaGxcQMZPg/6feVimbd++BdObVrQE8qQIMck3bAtJossB7DW5xG8KePVC4k+B7kFINNuZs37iWORSy5U6uDxbZaAgBeFKbFUz83/QSRkjpX2cpOsbaX2E=
+	t=1788788122; cv=none; b=gpJ3NU2F4IUZkEXnnV0tDO7mIckLhDTUz1VZjdtZQLIV8UMOXxTMKVPIx6Nk5r8aWM28GOeNzh/UNCAMkbcy01hRjDHnhf5MEPiT3Gw4TZtUkVxhLr5fnAooyvGdxo9oDMJ0FkMpAmHJ29/ZFup7ataosVqKLKdbqkUFHvIewPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788788109; c=relaxed/simple;
-	bh=wAtWM/hfeS3jpiaKFdtxYS7UyB1KGr86tNchBo63Iu0=;
+	s=arc-20240116; t=1788788122; c=relaxed/simple;
+	bh=LxVaiSZFYdCWw5o76jR+r64eg9BGglyX0nY8xxuVmIA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WCtgB1cwSt7GBrEb0bsZQej53Xt5/LR1rwUw0v+6BDeoMYEan2lTdU8dzjhokjH1Xhl9f55rZjWwbl8JVMxbZGmZSzSLWjjK5QjHc8g88T9XC9UvyvLx4UC23GUT+6yN2A9IJx0KjEvcW1DX1iVf3+kE9SE3OjW9ISD+CM1U/7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iL3rBv0Q; arc=none smtp.client-ip=209.85.167.43
+	 MIME-Version; b=TK6skgandX1RQ+MFF1gcol5Baa06oryNgMccN9w5qWP3zWlwCUZI4ucQkt6NQHN711iTGBLqCpeeAUEUGKWN7xDE3d9DwpHneQ75vju5iJpMB+lPmEP3D6+DNC3OrRl3QCnvZvOGWhyzu+T7fHcaa1bViU0L76xoEHLITF/32Lg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OtJnl2+u; arc=none smtp.client-ip=209.85.208.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iL3rBv0Q"
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-5b6036e9c70so2689338e87.1
-        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 06:35:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OtJnl2+u"
+Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-39c9a3acd40so28836341fa.3
+        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 06:35:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788788105; x=1789392905; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1788788118; x=1789392918; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=1utksJgoKAcBBVDcs57ghN3fD6lkAp5ozwsC08r8c1c=;
-        b=iL3rBv0Qd7RUUFWl0H3x5Z9Hc9bZbVeEZ2UoqD+TTbqgMi5q/BKHU6u4o6d/vbXaeM
-         EUscj7Mi2V4LmaHmapbRkNNCyMUskuELPCtU0KqpGjva+KaxcUEAAenPHwzFrzNFROUV
-         tl0bV9qR5FyvwnlZ5kx8x3V0pOYIeFj0HjJ9xh40PyJTviVJpfkXPNnkS9o9ngPlSo5k
-         o1FTmpVIDMDeSmlN8RxFOxiurgFNSFsjtDQYm/i/vjrrm4y1ZQBhRW+Pq1ElJKv+384n
-         76xz8aBpz9g6lL0RNVq+Q4DNCuCiP9gxa3PGnkzBwUZkSK19XUT1lNCSCJX8nkB32Yvf
-         BDJg==
+        bh=LxVaiSZFYdCWw5o76jR+r64eg9BGglyX0nY8xxuVmIA=;
+        b=OtJnl2+uUwYrGV5vEaWnRan7LSiJIURCfjaSr45iywj+2sgPjJFq1ZkU12O0uHH2FY
+         Wz841iricYDNt6feFhS5RT7n8Mcq1CeI80bUkGr7t3Qrx9q2kcS/CoqlK8abLL/rTAoD
+         L3Ezrx/Ms14IVcyvRB4HMY2TEeztUoM11gPoLSdmiGnOOW/7q5UjAeCBfWa/Twd0Tj/G
+         LwxnF5C9wnAvwhIH1smPFbczFyNiYlpu2fAp8lST0tFrYumP5O6ypn5/THaskhUCL6OS
+         lZjwI1cziPuliHexngWrgfPV4cIRXLAEj+LddTffCb0E4I8+upCjoCBQsx0PSpxdHpjh
+         /cuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788788105; x=1789392905;
+        d=1e100.net; s=20251104; t=1788788118; x=1789392918;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=1utksJgoKAcBBVDcs57ghN3fD6lkAp5ozwsC08r8c1c=;
-        b=CJVWBFe4ibxx3smn/+vh2k3sJ96pvQLET9uByCW83Q7OHtCozoNPeTrUQiZVvEl6ma
-         W8lkCF/ph9yxDVU7Tq8e656O1aZPeyNac7HvxMSRPD92NoxLNlohcXfNbDTErUhpQ5/T
-         vB8BtvJLB32DIrMbZqbNiRQfcYYvadSnMKbYrlanVXYx063sQf7pIs0HAPZJR3uE3jBE
-         N96G/+X1yVn0H9B7YQji/JeDt8GEFkBYC7/Wq7bspUkbmg5Db9/zkXwXDt8lODqBiwqM
-         oUSmQx/XzcLq4gYxEj7in34PzFC5+0zckT2VX5BNvZ3TnHaw314lGTEpbNkCXbjhEiag
-         DaVA==
-X-Forwarded-Encrypted: i=1; AKwUvByf+LcuxcL1ODp3/ueHnlxcfdq7bNx8xkKkiWOnRw/C3qt20sUS0bKc8sXX41yFjuhKoq6IqII=@vger.kernel.org
-X-Gm-Message-State: AFuF++mrTUqOtr9unWUai/+2PhqKUdzUJAbzoMAZM0zOpxH7d8IPxghO
-	m6EWEKVVS3K7MJKpifUNk9WGmdBYcjnRQ7PLsI1J4Ff/7GqDtsoXMAAo
-X-Gm-Gg: AYBFou0d4T9ullptr4ENgRtSLuNS27ZUq8tv98t8E6Gg8WFJYh9M3dkVCPZK+jF9FVA
-	Pmz5jy87xIHl/r+dzEDL1kw4v4FKrShfM3RSz2S/Vfg02kkm0sMYk/roC/3LguZBX4gWPyZNW4t
-	NRy3F61mlXznXd5fCcZXhfllDdJF6e9UbsDne8NirBbdm/8xKJlSHSN5O6zpk8wWYI5H1JTAAMx
-	yzc8YdXe0Vb400pvT5VinAiQkuSPgvhC+MIWcYPEbm3JVTffqbi3VYhtTTHOSzG57I8LFxciwrt
-	24f4bspRqHMwINlDfs9bx7lhyNQgv5XcFdrTaKaTXhRYZR6Z/bqia/HBsYpeDUtlUKN+Vk0VZm6
-	L9iudSgetSvfCPaP77magtwxpuVKm0RTmP9rxTUXkRpKAmf2u2Lk/9bUay9t2d1Z8HGmRYcWWym
-	77eGKCyW4DE0/IRfqQWGIb9x0Zif00P3KrA5AZCkzfUccT7CKVKpxBPgfkCIoQIcPFA2RUe0W48
-	pC8mbX2C4wH1BivBngruZrl9tyPuRIwaSxAsA7Rpuh9cRrkWbq3Vg7+aao=
-X-Received: by 2002:a05:6512:3ca7:b0:5b6:1a7c:37 with SMTP id 2adb3069b0e04-5b61a7c0261mr3283856e87.58.1788788105369;
-        Mon, 07 Sep 2026 06:35:05 -0700 (PDT)
+        bh=LxVaiSZFYdCWw5o76jR+r64eg9BGglyX0nY8xxuVmIA=;
+        b=mto+yN5fH6OiGO4t93nUY4kyPJyd/JpDM2J63BAx7jY7eUuht8gLwoPGq2TereGigM
+         Tkz/iXS+TK7DbjoYDuU6LVbSp4akWYv5/FWdnUVe2HPbBm3nq/RWbMlDMimZ4MZ5Aawt
+         QGfxKymNypTkZGdYNnqXjoBlzmwePXCqsQopqkKn8sfqKWeAT/4XdzoxobxICE22T+eP
+         /yaBkOhTTF+1+l6CbrzJA8K3QI9F8kQ3Mqscdi4p+hcECnAYFliP6VyJTTEeWLG+s+/5
+         Dzt9dJxb920oRvshxjmBDu71RFdRncYR8sPjtVUrbcK1svPDJ1HfKCqeTcjEVcQxAvDH
+         9U9g==
+X-Gm-Message-State: AFuF++l0QVBaKq+QskJ9rNVBj3r4Zu5t/zoY7tP7ayGcCQWVTO2sexUt
+	OkvK3Tu2r1kos6J1tewxIi7NOJbgPT0EDyy62NuSTlFOW2jwYMWzrfd8
+X-Gm-Gg: AYBFou0AFBMQJ3wdi+0t5W5/OQHsA0YB5vgubdBPgQAmLhESQ995j0pZwpmY1GYphfm
+	hATI1Q7zapphvDLe4JRqXiZGCbRwM3Lpy1+YIbV8ktWuno4vZHkvlidrNdeJmFBDGEjfWtvUDT8
+	mvEGenya2jSMcRojKVzKtorrlddWD0f3IG/LH4to7kMcMRjTYvowkWJGscgH5I4U++3lCCuQNf7
+	up4HhZZkG95RRgHMMP1qm2yT7Cmba/LbZtpSpg2Kv1l1GSoVfbasqjPguFRED9Du/0bvoJdTI6j
+	2/ux8pyiJq6GEzb56tNZdZGThkEuYJz/moUjZZRRKgUyV5knenLt1AqEdELaG5gmplrcBuL/4ol
+	qif1Lzumf/WhxHgnBWr1fKBk286Pr7VzRBg+NKcazuU1KOjl1zV7VlSYl0OqS6+JPLP5RQStdxF
+	DL6FgapldOQ+P/OtLGO/6T8m62rSq5ebPy9qAMlg8mpHbOhNk1fjZBIjspzhb3bqrAC1NRyNOh4
+	OHI43YSINS06zkqi50Xh/dgSTrCn7nLaLf81N4QwnHWSOSx7319/Lmi0Q==
+X-Received: by 2002:a2e:be1e:0:b0:3a1:edd7:340e with SMTP id 38308e7fff4ca-3a371995b91mr42775031fa.0.1788788118329;
+        Mon, 07 Sep 2026 06:35:18 -0700 (PDT)
 Received: from localhost.localdomain (46-138-187-224.dynamic.spd-mgts.ru. [46.138.187.224])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5b6166fe10asm2328484e87.47.2026.09.07.06.35.04
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3a37058669fsm26853201fa.17.2026.09.07.06.35.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Sep 2026 06:35:04 -0700 (PDT)
+        Mon, 07 Sep 2026 06:35:17 -0700 (PDT)
 From: Artem Lytkin <iprintercanon@gmail.com>
-To: Eric Dumazet <edumazet@google.com>
-Cc: "David S . Miller" <davem@davemloft.net>,
+To: Nikolay Aleksandrov <razor@blackwall.org>
+Cc: netdev@vger.kernel.org,
+	bridge@lists.linux.dev,
+	Ido Schimmel <idosch@nvidia.com>,
+	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>,
-	netdev@vger.kernel.org,
-	eric.dumazet@gmail.com
-Subject: Re: [PATCH net-next 7/9] sit: dynamically allocate struct ip_tunnel_parm_kern
-Date: Mon,  7 Sep 2026 16:34:52 +0300
-Message-ID: <20260907133452.5266-1-iprintercanon@gmail.com>
+	"David S. Miller" <davem@davemloft.net>
+Subject: Re: [PATCH net-next] net: bridge: bound the port VLAN lists in the IFLA_AF_SPEC nest
+Date: Mon,  7 Sep 2026 16:35:04 +0300
+Message-ID: <20260907133505.5291-1-iprintercanon@gmail.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260907075846.2913645-8-edumazet@google.com>
-References: <20260907075846.2913645-1-edumazet@google.com> <20260907075846.2913645-8-edumazet@google.com>
+In-Reply-To: <ba2dcdb6-923d-4fc1-9c92-7a77c0b61a09@blackwall.org>
+References: <20260906224246.21719-1-iprintercanon@gmail.com> <ba2dcdb6-923d-4fc1-9c92-7a77c0b61a09@blackwall.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -85,26 +82,17 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On Mon, Sep 07, 2026 at 07:58:44AM +0000, Eric Dumazet wrote:
->  	ipip6_tunnel_unlink(sitn, t);
->  	synchronize_net();
-> -	t->parms.iph.saddr = p->iph.saddr;
-> -	t->parms.iph.daddr = p->iph.daddr;
-> +	t->sit_parms = new_p;
-[...]
-> +	kfree(old_p);
+On Mon, Sep 07, 2026 at 11:47:24AM +0300, Nikolay Aleksandrov wrote:
+> I prefer a more explicit path - return error for both (RTM_GETLINK and notifications)
+> you'll have to plumb down extack but then user-space will know there are too many objects or lost
+> RTNL_LINK notifications and it should resync (e.g. use RTM_GETVLAN to dump the vlans if needed).
 
-At this point in the series old_p is freed with no grace period: the
-synchronize_net() runs before the pointer switch and only covers the
-hash readers. ipip6_tunnel_xmit() doesn't go through the hash and
-keeps tiph = &tunnel->sit_parms->iph across the route lookup, and
-ipip6_get_iflink() is reached from iflink_show() with no lock at all.
-8/9 turns this into kfree_rcu(), so the end result is fine, but this
-commit on its own is a UAF and breaks bisection. Moving the rcu_head
-and kfree_rcu() here (or squashing 7 and 8) would keep each step safe.
-
-Smaller thing of the same kind in 5/9: check_6rd() gets
-rcu_dereference() but the rcu_read_lock() around the xmit path only
-arrives in 8/9.
+OK, v2 will do that: br_fill_ifinfo() fails with -E2BIG once the nest
+would pass 65535, kept distinct from -EMSGSIZE so the WARN_ON in
+br_info_notify() still means what it means today and the error goes to
+rtnl_set_sk_err(). For the dump, rtnl_bridge_getlink() can turn -E2BIG
+into the extack message itself, which keeps ndo_bridge_getlink() as it
+is; or do you want extack plumbed through the ndo? The size clamp and
+the doc text go away.
 
 Artem
