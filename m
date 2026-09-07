@@ -1,124 +1,149 @@
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DED940EB81
-	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 06:39:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFCCE356766
+	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 06:41:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.181
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788763182; cv=pass; b=fj92hqR6dBvUCulaDwtQ9sUPaetwrFa9K5E76uGN0WCN6BRNZuVaPh/mrjlWnjIg8x70H1rIBdi/tGLABKkSnAl7Fd+VzU5G/ZzH7NZd9V3Jtg9nZueZ4jT7EsFhW4Hm25Q7uSp24PBzOqzkUxPv1L3z3mdFNdtb2fum4AMfNr0=
+	t=1788763297; cv=pass; b=fUDH+23GrknBwZtJGb5fySKNziB1RSr+vXwaGzDWdE6BlXJz9WtHnYPV8EBZCc8mxkHB1igB4pWTFLoFCUW7yBjdpI/HDNQtAzQpVuEC6uUU21W96FueV9LUA7OSYfjtqAFeRNhQqXBAIsLr+k7YuHClANWyFsZc9rgkVTTqxNM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788763182; c=relaxed/simple;
-	bh=xTia762Vvba4AjG+dbVzWcBhFiY5w5JJuSUhfNUmqBM=;
+	s=arc-20240116; t=1788763297; c=relaxed/simple;
+	bh=m5m4JO08EThTXTYklbxKLzV8kne9dBNlzPsK/Alag6Q=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XvRT78dcpt42egkam413ReK3Gw1EmcQC0A7P+FSnVdXruAW9cakaeq6LYyz9WiMlAynRzBPDfKu76adwzZzXaVtTLaoInzCtn8xkykV5o1dPe6b1C1I4SCZh86IBT2xcwJMEwGgKTlkUko0YNa8h1cZ26VskhMIAlpyY3cVafak=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PhvKe78o; arc=pass smtp.client-ip=209.85.160.176
+	 To:Cc:Content-Type; b=HMwZzYhmWSYB4C3VuSgFa9hiTYa5cyNk9PuB7+cyVr+HfxzSDMm6KkU/0/RRJ2xk5sD6trfok4SjsJu4/JI1/9l3yBfcrAPsfPXMPsSEK+owJERheYYexLfmQWiJx4xItHO/yoOQTBwbfLzKLV15bI0uidK+AXybnywdaOK9jfk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uFeQn8al; arc=pass smtp.client-ip=209.85.160.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PhvKe78o"
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-53024149d40so15550531cf.1
-        for <netdev@vger.kernel.org>; Sun, 06 Sep 2026 23:39:41 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788763180; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uFeQn8al"
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-53069ec6e61so18861871cf.2
+        for <netdev@vger.kernel.org>; Sun, 06 Sep 2026 23:41:35 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788763295; cv=none;
         d=google.com; s=arc-20260327;
-        b=NCd6Jp3uWqLrDf0CONVKqXN0rqPPBdayJsg3SxxcLcMhU/ajiAIFF8eNT3M+zdkn1M
-         nNcMCCHhlnSnRivgfFrzjZuQ1Av7fVYkT0KLVL4tlmROOILq2XoR23a1g1Fj0uaihUu7
-         zjWNfJe8luz1br/1p3hzbF5+1E8dtrLQdvRHKPlrxfpEswHyjpCTNulEgtXiGA51yTiN
-         /OLgi7dtUw5+ylPvShm9vMEPV5gWFFOjRTepbTuQYM8mifwo/+VF+VH8F+N8DpyTrChz
-         k6PT3eKW3ae8y55FQy8xHbrbJILIcx3d2mjCmO+XjNjhGw4/uaUIHFujbyTGGeDLd9HS
-         Dbmg==
+        b=cIjy0oC4ks5PT39FI7xIZPyhIl3DV2ZbBcFT/mrdkrghpE/TnQHRS+nRZ+sbhkfaBA
+         yM3yo0v2M69+RYCekU9riQuKNiGammJRTkH1Nf8SZ0XLIkoTdScKY/SFgtXIglQD2cWL
+         K2ZVblMezuc1Swn7fkSj86TCFhDOOprV2hxnPKxoDMYVKMZjUv4lD5lYuMubN70fS426
+         kepEo0O405mEQquMnthSbfTQG2HwvV9N1PVR6Y7f8za8S2Rvk8Nbx2jjZ0MvLj4Gyl7d
+         PA9laHTArSbCGwOj4klX/TvNYWC0NjznLgf/lH27mjKKnh2VIZ9GLJtTcTOyVmDmGEhn
+         A0Kw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=842Z+5Q9VhiQaGsYCUO5ThRJsGbGQOKT50TCjOqqFxM=;
-        fh=zTitgXbw0+YN5RnegeJ3a0xtk3jPxBzaRt5ZcSpWBSM=;
-        b=q3YPK7CA7RI3RvHwrXLP81spz+eoNPRK9GAfuFiKDb9KQLblIt4b4gUG8tJJVDOVwk
-         eFmNwAVCwCgwtYsaQhq/gs4AQhBJKt80lv/P707twn0sCxpSR5SYbXc7Y8nsOVpwhTWO
-         FS2zV2Fq9OMQ6D5gP8jjpCCyk31GEDzjqG+89/QxI+PPj2ewuaZtCJwYGA0bDujjG9zR
-         fSoI6m8RTYm7uNUf2/u9G86VGSjpOXHxc4CN2m3z5rNafngU77oIsTLp/SxQMxoWqzbn
-         GXdUdjFOpWa8xmaieW6rCruh3ab4Ji+mij+s5nIAfN5RzlTLb+8LQ3yef9EMdzs3WGnp
-         +2qw==;
+        bh=M1ECfHkfNtF/iwj++qvEF8FxOpV8gl3x4XLc7yus438=;
+        fh=9If27XZ90QB6y/08dsN8oShGP30FSJZ9Ex+HZ+3LeRQ=;
+        b=fQNHMxjlYQZKVTkC4G7McT9ux0mATNkac8vqPUEaaM8VyNkP1+qmC3QzaUUalgSBaK
+         aUdHIVJlcGa/Ec7TQmsucUQkf0kPq5BMZ5GLLcGC3UgUPfmO/pzhx8TjN7zaj/gnce8d
+         75IazmMDjNgmXZRbxl8y4pXulIxRZbWO8QrCHtNz7wrnG6MgryvwRD9p7z2mrKUGRR/5
+         DHDUPVn+0gxIf2jM+A/DQi5NPC+kTdvZtZKMjkYWKTnR2Pk7jCAsomTn1e3EeDweNb3J
+         BcC0sufZEfR+nGj6ToDbT93Klnh2ELZWrcE5ex26t3uYHmhFgenBV6ED+wOo1dwNvMwh
+         oEPQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788763180; x=1789367980; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1788763295; x=1789368095; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=842Z+5Q9VhiQaGsYCUO5ThRJsGbGQOKT50TCjOqqFxM=;
-        b=PhvKe78omUNzOM2IbClrMOwSBizGjXu1hWHpRXYDn0TsYfgdUo2Q9K5P1Bs9nZDM66
-         3jR+AfSU0tvqXTQAN51j9nwnN8pntc3Nheul5TanzRpbJWzwuTiCZipsyrYIAOZxVIXf
-         4dWrdaHubxta8EYZEFqEINncEdup4wmFPoMvk3XJ9j7YpKy7d7hIlp9rH+8Mmk+1rWh7
-         UGGcbQEf4EMapR9pdjpixfThmwPPlYu8fR9frY/YvROxdQMHvCGcCPLvX6G1g49SIFXC
-         cHY69V+xMqJnBJC/ZlIMH+7M1Nr7C56BJr0EQTXaRVYT8h6Us9bWSSvqoAj8J713jeej
-         uZMA==
+        bh=M1ECfHkfNtF/iwj++qvEF8FxOpV8gl3x4XLc7yus438=;
+        b=uFeQn8alJ71H8E7Ahmtq/yauFkfx3d+QDpDBLHCufN00vTV2KvkIrzkDttz+L+BdAQ
+         w+tYkG0L1LHDXaSlfkb7qn3o8Ln1S/HfG7FEF8BYQaqwFs3c8fOYuZsEGNhUCIYR/KhX
+         /HUTA63ZB3qMIn3+b+890U6liQCjigP/gYT/+ERfbfapoD1dipnamIEL43Usr1mZYgfb
+         8OEs2qE/FSm7nctUvXcocwGBTNb1ASK1u2olfdiNMlwSvEtk0cS1ZggB9MEHSQSvfDdw
+         aqyByw7ZWF1z8Ow33JJcGzDYVu2qoGrTvXvL/ESzf0V+0e860kgoF55SOYuvSVC162Fh
+         2ZIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788763180; x=1789367980;
+        d=1e100.net; s=20251104; t=1788763295; x=1789368095;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=842Z+5Q9VhiQaGsYCUO5ThRJsGbGQOKT50TCjOqqFxM=;
-        b=D2JEmtEVv30qL0FkJszvsPpJVOxOMVI9Yxu9q2+kWHi1GBY6ZaAoiJU/kb7kcx1Obb
-         NFSwvbP7y0+AxU66RKsVcIRb6fDsOEUQIuVjYOJBdnrzxPAa1KLcn2FOMlkD2/GT8ka3
-         xOCBNXWQf2ravUFtg0Vc34CWbuYWoduVhyyXRJLw/qwG+neVTxt46CiUpZjimDPsQ268
-         VUINr1Qr+5mqn3SeONJvJPZ97DJjJV9yD4XDh3VVq9vHbBMZbeMZjDwwbTgmTRZ36R3s
-         cWioCW7i+xZqK7Q8eRVGBVG8tDgxsU3aNuyUZh/qvkj9LEhla3FQoiKOzoR8G0sGKM0a
-         o5Dw==
-X-Forwarded-Encrypted: i=1; AKwUvBztD5MH1gzdNUjx1rGQ9I4lrJEzoM+/UW5Ar5W+ieAgUGz48a6XWA4I+KilWAN9whpnrJrNudU=@vger.kernel.org
-X-Gm-Message-State: AFuF++nvjdgDhpDBuR3AXhPtXDzOyneWXa0ZPBLcC5l4MVpMJHfcBHZx
-	jxbIhzm+vtoHyKBprqo4AGiA9JVnyIMf9qole/RzBFuDp3SCo0k69U21t7h6IADNwYzpia4I8fv
-	CyKU3qk2jSsrfFRJ89BOR6GIPsfuuvpmxL6OkYZX5
-X-Gm-Gg: AYBFou3FvCV1h6jqTqsfHPeaBwibV2qomiZs2zW47Lt+JEYHCbK5xjTZzhJAyrecIWf
-	gKik36vyrKZOsfE1DMA9al1mSZIUnfDIZPXeQ0755o101Yyv02tYQHuAikc3vIvC7OrYfQk/Yh1
-	9Too5wAhu2/IBum/tT1bv6lSsFXkbD7RGk4x8cf4N5nXAZAL4lRll7uKOfHQCVzTwhdZQQGzEqJ
-	o5aay3q6xuWfW6pTZimse8qOF35PpQ+QGs413lVI7G6yVCUdlCOOJuK89mdhHnehutG7105sgcj
-	fuggcUjtYvUrsSVRdull9SMFsDTXtp0FuXJ+awC+noZpHdyb6OaiTd92/2jPW5EDKhctPNQhH9b
-	xPbcwtIZ6R9l66nH+T3SF3lSqmmJhb/fZIZA++AOuO3GqmKCbpJza+FR+CbDUx8hM26hD
-X-Received: by 2002:a05:622a:1f90:b0:52d:6afd:7d9c with SMTP id
- d75a77b69052e-53054955047mr224853321cf.29.1788763179614; Sun, 06 Sep 2026
- 23:39:39 -0700 (PDT)
+        bh=M1ECfHkfNtF/iwj++qvEF8FxOpV8gl3x4XLc7yus438=;
+        b=PEWgV3L8bCuFwUJU0uN244hd6u71ThcxrzFMjyj1zegzUh7R+DmKJrlgyP+O5NCxY2
+         excAWgMJzhzy6YzjQPgg5/zaTVmEETGTO7pMix1OMRavxF4CWUFw3A1uBEIgj1qIIcLG
+         LDpdO8WTtHfuJSaTET2LM+sQKdc6wXhxa+57Yplocbs/h3UEesWZnCG0mKipezT+sdWB
+         heBWKB4+XF8jUV6bz2D7pppm4nW9njgeZV9DryHsNlg5Zvida/ma/7ydbi//i7qc+i3F
+         MD5KuorQtuDJPjBxNXMC+n09Edo3JHAfCK+5F6Z0Pigl4EXHY0T+zAnXjfCj89oelkJH
+         0cKA==
+X-Forwarded-Encrypted: i=1; AKwUvBy6VGbZ0EvsQhJkxs2MucrfN3hDYBxm9juhzM0L8vWS0olbiCREORlBzLokMN1qUHG9oyHbJBQ=@vger.kernel.org
+X-Gm-Message-State: AFuF++mJmboCSH8zEg6DmN0O9eipDWk+iRa2CqpJ9Toa8Y4jueeiar7C
+	WSb+NPw/Ne25UJo9IG/xRM6KuODL0skd11kMMht62xegHiGVNyIyJ9ZX7bC5bnEUVpPsQcReySC
+	CSxDQYgywt7X4r9Y5FlYr9gaIRgBL4izkf3+29k9Q
+X-Gm-Gg: AYBFou0OUjSUYTAq2IBMNyH39SwpbFT1nZOLTjaIEOLkndNEZ/J/3EZ3GS7QGSH6WHN
+	NgYRCbEs+aO+5jHzZziHnPTvKrH+DSYPA+Y1f9tTpX2k1xLhU5Tzk5NpLdY7mljqNL0YNr1wkp/
+	afPvhd3mz0ZkVH3C7lVW7/RDMXJ33ob0Mtl86ArrPyN97vJZRj9UC85Y93UXq2xW9Kd1QvqeUpZ
+	0AefNCf5dusnj1Dwv7k2rW/JuDo0ph6umrJudt4FV3ld3XjMnjTGiPfQlmS5FgqKnAp/srRI0Nj
+	nQibYkS7NzCzUcFXrYJ6eqREywewPFGEj0ADiBSWkofcpujlIyGDxpXBxv1Ak42iEcUAdhbtAG5
+	nA6PZQJ8cQLqA2Y4vybXXQy8s0c+DfqxLJDJhuly97LJGaK96dMkfdilTdg==
+X-Received: by 2002:a05:622a:22c7:20b0:530:8853:43ab with SMTP id
+ d75a77b69052e-530885345camr20854921cf.28.1788763294233; Sun, 06 Sep 2026
+ 23:41:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260903120840.1024153-7-edumazet@google.com> <178876148532.219967.4493447289054249092@kernel.org>
-In-Reply-To: <178876148532.219967.4493447289054249092@kernel.org>
+References: <20260902003344.1931843-1-edumazet@google.com> <20260902003344.1931843-4-edumazet@google.com>
+ <e7060ffa-df20-4e29-b0da-184f763cdf14@linux.ibm.com>
+In-Reply-To: <e7060ffa-df20-4e29-b0da-184f763cdf14@linux.ibm.com>
 From: Eric Dumazet <edumazet@google.com>
-Date: Mon, 7 Sep 2026 08:39:27 +0200
-X-Gm-Features: AcwNN1UvQCTps3MrE3RLI2uyzpyaMgVKFcccgso4BE1adua67GBs_jTVW_8XjX8
-Message-ID: <CANn89iK4RUxLxbiwiiRTTZJfwHEfq5cuqYV6dj=PYiATZVksNw@mail.gmail.com>
-Subject: Re: [PATCH net-next 6/9] vxlan: dynamically allocate struct vxlan_config
-To: netdev-bot+sashiko@kernel.org
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	kuniyu@google.com, idosch@nvidia.com, andrew+netdev@lunn.ch, 
-	netdev@vger.kernel.org, eric.dumazet@gmail.com
+Date: Mon, 7 Sep 2026 08:41:23 +0200
+X-Gm-Features: AcwNN1Xz_tpHrfh2TAEWkJFvlmqZmN5-BsvZshfWE7OPLmHhh4HN6hopDOmkgEg
+Message-ID: <CANn89iKzOESmrWBt28-6_MoVioFZyP+AA-TV5U1q=GOLeUcucQ@mail.gmail.com>
+Subject: Re: [PATCH net-next 03/10] ibmveth: do not assume mac header is set
+ in ibmveth_start_xmit()
+To: mingming cao <mmc@linux.ibm.com>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, netdev@vger.kernel.org, eric.dumazet@gmail.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 7, 2026 at 8:11=E2=80=AFAM <netdev-bot+sashiko@kernel.org> wrot=
-e:
+On Mon, Sep 7, 2026 at 7:20=E2=80=AFAM mingming cao <mmc@linux.ibm.com> wro=
+te:
 >
-> Thank you for your contribution! Sashiko AI review found 4 potential
-> issue(s) to consider:
 >
-> Critical: 0 =C2=B7 High: 1 =C2=B7 Medium: 1 =C2=B7 Low: 2
+> On 9/1/26 5:33 PM, Eric Dumazet wrote:
+> > We should not assume mac header is set in output path.
+> >
+> > Use skb_eth_hdr() instead of eth_hdr() to fix the issue.
+> >
+> > Signed-off-by: Eric Dumazet <edumazet@google.com>
+> > ---
+> >   drivers/net/ethernet/ibm/ibmveth.c | 2 +-
+> >   1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/=
+ibm/ibmveth.c
+> > index 73e051d26b9d8887cfed1c4168684ae199bd3108..88e8bdfbcd11293d2cc0a36=
+ebea6dfffa50bcedd 100644
+> > --- a/drivers/net/ethernet/ibm/ibmveth.c
+> > +++ b/drivers/net/ethernet/ibm/ibmveth.c
+> > @@ -1218,7 +1218,7 @@ static int ibmveth_is_packet_unsupported(struct s=
+k_buff *skb,
+> >       struct ethhdr *ether_header;
+> >       int ret =3D 0;
+> >
+> > -     ether_header =3D eth_hdr(skb);
+> > +     ether_header =3D skb_eth_hdr(skb);
+> >
+> >       if (ether_addr_equal(ether_header->h_dest, netdev->dev_addr)) {
+> >               netdev_dbg(netdev, "veth doesn't support loopback packets=
+, dropping packet.\n");
+> Correct. mac_header is not guaranteed to be set on entry to
+> ndo_start_xmit; skb->data is the stable anchor in the TX path.
 >
-> - [High] vxlan_config_apply() publishes the newly allocated config with a
->   plain store and immediately reclaims the old one with a bare kfree()=E2=
-=80=A6
-> - [Medium] The new configuration pointer is published with a plain store
->   (vxlan_core.c:4038 `vxlan->cfg =3D new_cfg;`) right after the payload i=
-s=E2=80=A6
-> - [Low] vxlan_encap_bypass() adds a `!dst_cfg` NULL test whose error
->   branch (`goto drop`) lands on the `drop:` label, and that label passes=
-=E2=80=A6
-> - [Low] The patch introduces two mutually exclusive assumptions about
->   vxlan->cfg for a live/registered netdev, on the same code paths.
+> The RX poll path already reads the IP header check through skb->data
+> after eth_type_trans(), so no parallel fix is needed there.
 >
+> ibmvnic has a similar issue in its TX path: build_hdr_descs_arr(),
+> called from ibmvnic_xmit(), passes skb_mac_header(skb) to
+> create_hdr_descs(). Is that covered in a later batch, or shall I
+> send a fix?
+>
+> Reviewed-by: Mingming Cao <mmc@linux.ibm.com>
 
-For the record, I am ditching all Medium/Low reports from Sahiko.
+Series has been dropped, I will post single patches at a time.
 
-One of Sashiko's suggestions led me to write an unnecessary patch,
-which was a waste of time.
+Feel free to join the effort!
+Thanks.
