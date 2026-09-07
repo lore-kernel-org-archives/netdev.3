@@ -1,271 +1,149 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazolkn19011028.outbound.protection.outlook.com [52.103.39.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AF5129B766;
-	Mon,  7 Sep 2026 22:28:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788820125; cv=none; b=Isdu8FgHDVvuojB4r6LTLHc1fLP50ijp/+FBK3qd9XT6O5FHk0EFcNrctaMPvV/O9e9zUx3Ti+i2diDmGMeg2USRgNLbGOZ3Q4K4ofIKzvvFKOqmY55W0TjEV30iFvG//MamIgWYuXhALvQtWIK/u9SnGkbNYi1zQuSzPkHa7oA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788820125; c=relaxed/simple;
-	bh=okZP9YA8of/dppP99bLktXk24pN3bXeDO5/37rESBwo=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=D0IrvWBqcHj41oM4WA1kxw5TCDVO2efY1yWGdn1oRgyKa1/JQG3JKDQQT3jihjH7od/pV1GbTmwnimUyPHBe3k8zrXHmanyA/HK8sBOL8E60wxa+bQk/tzQcMg/VJMwweLlRa/ncRPmXtooPhQPUkYTY+R2OTs0AsovwmZLNq6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lLsCg+pp; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C9C723D297
+	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 22:40:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.39.28
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788820808; cv=fail; b=a22qXoxXubr/3HP2800DpujDJU/NnBwlqBWc2PvyXBt+a97V+uE40co5ybNuyAQyr9TzL9a/TtwYWr4ZxxbCO+jVmH9cwQcXvyfJaB3GFbvkDZ0SyHu70NjRbvpqkVMOeyrmiCw0KIoAYSA/wyVoiqKyo0Qj+28iZD5EIuf9b/s=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788820808; c=relaxed/simple;
+	bh=JVfhCwpntiqIXgBRV0c9a9gnUmFLHGCnwl6hMwCTl6I=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=lCqkaNDjaa52+rsFHqpAdlVq89vEHbVM+Xw3QzCdnKuDurBaBZjYZLtwMS2sJqN/dr7jyPi6S/3WLiZpfycvFSrbdE45RZxl8cwWGL733AIt2bKEb8KTWCP/39NQnFemovV3XlI61k/VR/PuPiVPmZ33F1hxSJbWUurfHdnkIlI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.co.uk; spf=pass smtp.mailfrom=hotmail.co.uk; dkim=pass (2048-bit key) header.d=HOTMAIL.CO.UK header.i=@HOTMAIL.CO.UK header.b=q81IL4R1; arc=fail smtp.client-ip=52.103.39.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.co.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hotmail.co.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lLsCg+pp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5CF51F00A3A;
-	Mon,  7 Sep 2026 22:28:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788820124;
-	bh=uWvwo68q0NiNc9fVhinIy0eFRzsHQNVbNmrCZS9XcMo=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=lLsCg+pp8pIi8dXNlao2ibO+D5LwxEnDKcbLC39blku54J243+/c5Vmro+lWuRKAN
-	 E2GAqmXC1XmMDrACulrCvrZlIRIsz7MN0BoHdv9Kt8NqzLhHE0y15fsQ507KeFcZbh
-	 pUudh6VlmDcDE04Xo26Iuob3GQYzt6C5G3nE7jO8xOfqwcnTbpIJgB6PnNBYpiRpLV
-	 MOpAkOO/NIUlnBi/F+42ms+W7DfYk6LvSBvs/gzFCPo75DCvptT48SVSFO4KKmRnbv
-	 dmFyGzPiEthtKD60mKISiRt95q6HGRwP2QIKmuovmzi7Wy9YsMGIQbbaYkp/JTlD95
-	 ssEAcJlWZHstw==
-Subject: Re: [PATCH net-next v2] net: davicom: Propagate wakeup IRQ errors
-From: netdev-bot+sashiko@kernel.org
-To: phucduc.bui@gmail.com
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, paul@crapouillou.net,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-Date: Mon, 07 Sep 2026 22:28:43 +0000
-Message-ID: <178882012336.219967.15894359577050376625@kernel.org>
-In-Reply-To: <20260903102656.370039-1-phucduc.bui@gmail.com>
-References: <20260903102656.370039-1-phucduc.bui@gmail.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=HOTMAIL.CO.UK header.i=@HOTMAIL.CO.UK header.b="q81IL4R1"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=aOHkVXUyOK3Rzt2ZFi//FIHhXj0FveW/umQ3HbtHNxuZtecsgwiG8zQ/fUPMDr9ygJogcOCASyU5CJPN9OLkH7JvuzgDaGMnIs77UXQu0TijTze33Jb0BdNpIqI14xpkVLAVG9igSy0Eigsfq1mOXsR77+B7nSHyP0Lx9RWMprdb+xziua8SV7rbyYHobPqjdo21XMDENT8x1j6SUZzUbAep0SKTqhPW9XgKaL9peBAiZe0/5Bl28csXIjJUZnRsEoX4IMTvsLPcQmptTSskgCGIr4Ho0URuDfQVMEZnzayx8S5rEDYsAjwB6U8H6dc5eBqYOlT5/0inhZQDHkNdLQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=JVfhCwpntiqIXgBRV0c9a9gnUmFLHGCnwl6hMwCTl6I=;
+ b=gTYQ6Pg6qlBxvARAVy+lhvRjk9TuIGA6uYyGrl5Ra1bm+uaiHQGW3yaGursr4MpJV3tfoN+9qjTA6RARqzBM15gveVByVQfmc2XNCiJtZ3mfvkfebVdiZiik4TTVx61U/Uy92vuBJFxWy4PqYLLAx3Gox43K5waVMkXj4XCG6p5w4DzHGDp/qHpUHq43BH/kWSA5sSzzdJgKWoZXCaIrVMvYRzZLZaz2U/bxlo/C5Rie5AJYja8EosEhOU7PXQ6XyDhoChM0hDmaKm4b0Mm+vJHTqQZwSlL7lACl5uCacOAoaP7yzOwHBidkEqd+1hE40iGoY+ONblpthOf7cbSi7Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=HOTMAIL.CO.UK;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=JVfhCwpntiqIXgBRV0c9a9gnUmFLHGCnwl6hMwCTl6I=;
+ b=q81IL4R1uXkkIns9aEgX1fmDCYdY2urB7HyaqqeEr17IlR2hzP70MWiF7f0/rR9cC7vkY+MZB/OCa6C1i8EX65v2npEgEXAJn2HwMXgUNITZInH8BCzubp+nmcJm8UhMGnlheKYw48EWGE7hFry7OsDWVz83/BM1cW7C2lNQX+uObEBHkSMJWC/f4KOgYLocqHqNn8MtYudQyrSGiNWCEEGQoS1XotyZAAR0U+uYVoHuV+YfWddSxNplOjEfb27FyW4KN0arNm1nyn4w1tVmCa9coKIdIa1+7Qymqn4D1oSduchf/fc/wTBJ9m0iOQC5BhCAUTEDL+YtySsiOzQhrQ==
+Received: from AS8P251MB0001.EURP251.PROD.OUTLOOK.COM (2603:10a6:20b:344::22)
+ by DB9P251MB0029.EURP251.PROD.OUTLOOK.COM (2603:10a6:10:2c1::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.382.15; Mon, 7 Sep
+ 2026 22:40:03 +0000
+Received: from AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
+ ([fe80::2952:d4d0:4ba:8352]) by AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
+ ([fe80::2952:d4d0:4ba:8352%6]) with mapi id 15.21.0382.014; Mon, 7 Sep 2026
+ 22:40:03 +0000
+From: Aamir Ahmed <elb12345@hotmail.co.uk>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org,
+	davem@davemloft.net,
+	kuba@kernel.org,
+	edumazet@google.com,
+	enachman@marvell.com,
+	Aamir Ahmed <elb12345@hotmail.co.uk>
+Subject: Re: [PATCH] net: prestera: validate num_counters in counter response
+Date: Mon,  7 Sep 2026 23:39:58 +0100
+Message-ID:
+ <AS8P251MB0001B264DFE6DBEF30DC45D3C8B22@AS8P251MB0001.EURP251.PROD.OUTLOOK.COM>
+X-Mailer: git-send-email 2.53.0.windows.1
+In-Reply-To: <f52b173f-79f6-407a-b7a3-f3b94f34003a@redhat.com>
+References: <f52b173f-79f6-407a-b7a3-f3b94f34003a@redhat.com>
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: LO4P123CA0057.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:153::8) To AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
+ (2603:10a6:20b:344::22)
+X-Microsoft-Original-Message-ID:
+ <20260907223959.113027-1-elb12345@hotmail.co.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS8P251MB0001:EE_|DB9P251MB0029:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9f96357f-a317-457c-fa1b-08df0d30f470
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|55001999006|5072599009|51005399006|15080799012|24021099003|25010399006|23021999003|37011999003|25031999004|19110799012|8060799015|2604032031799003|3412199025|440099028|26104999009|40105399003|2607281247196008|1710799026;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?2b/NnFLap4R348yq7vQ0HUNBNB9dJf39vesw3UBq9VHk7HMw6oQ4CIF+HzPg?=
+ =?us-ascii?Q?gbJFiKdAXDl1K2sdzM2HExKp9foRVw/Y/qSudq77arTMwFIFGrIlZGO0LxAb?=
+ =?us-ascii?Q?9Z0x2JkQGw+RH/wnvdC90JME1Cy7yXFvyYZVBGxMuU9ABNRJuPKM+m7AUZVo?=
+ =?us-ascii?Q?SDYrjz8J3hIdcr4tF07fzJDKaTAXg82Kn3M1BxLqviltUoj+OMy8dm+ANj5a?=
+ =?us-ascii?Q?+PpD58aHomypYMIHPjF4c26o/R0cZeoOrYvNeH9RVLcNdxtpyqGmX9J81gKI?=
+ =?us-ascii?Q?CMONbBZARf4EQX95hs/NEzx4I6ZZK0UgoXIJ+uMW8KwTNTf1ZrSbWyoeNHB0?=
+ =?us-ascii?Q?Q9OcnZWsKkMw2JclMRGZE4AjMpXVl2zr66r3jq6ES7KvXo4pgthQsqUSLsM7?=
+ =?us-ascii?Q?fuiNREkS7s6c2HOxYIO8Jzfn/O3ik1aQHRLpDBZSXUZpSwF0nfqNc4KHLdEd?=
+ =?us-ascii?Q?m97Sx0/7QmzwyHhZoAnX/Ula0XzznR11XGjsU+WZe26vxb1K4igbztZkL3Be?=
+ =?us-ascii?Q?tHPQdvzmGBcZAKmTt/Qsrok42L4wWEAorM5xEp7tOJr4UrSp3EgvF6NA/zYR?=
+ =?us-ascii?Q?wgh3AMo2De7niZWYVwrpcWzWI/MSTYAEeqLFuU8qJfTrYFlY3CluWzqMpBBG?=
+ =?us-ascii?Q?Sac2JAg+J2O0w9JqeIqrItqTrXtntxZe3jJk+DFKACbOjZbezdLqHowqIHkP?=
+ =?us-ascii?Q?D+yQwCevVuLNPF3IZ8EuPWPII1v69BFQoYle3db3fAS24dvhcIy3D5iDvrSN?=
+ =?us-ascii?Q?5N1NeizV/znL4nm98rNPJj6Ee74hhmgkVhuXN+D1hMkbAeePHpjrWuoDGxYz?=
+ =?us-ascii?Q?0qJfmPthlhtbHGSPLVpeDaZ1eGN4HVHgyr64NX/9wOuw1+iww4rudnPsN0hO?=
+ =?us-ascii?Q?m2l98rSAz/KF33tPAHaJiiOKUpVep+T8gn+l1xHfsYRWYMrXePLEzTt3HbAf?=
+ =?us-ascii?Q?QLT9qPNpugO4IS3otjhF1FIZDvs9OzvPLDgvNZ9w0JWSze611A3M1DtvhEN9?=
+ =?us-ascii?Q?Z+1+7s8yRUYkJB0ITMvRQ6e9IUBJbSXMelFj/7UwLs+GGkcE47V4dpuqHf2y?=
+ =?us-ascii?Q?royatYYP8kK4ASmhR9LtlgHzwp8OfW1E3Ep7VkaSmU2Wv5a057E=3D?=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?5Vhh4Tu/6WsYCVefAJQnVpTRlI4OUYenpT0FWwmAqlDOzaZzOPIqTWhrhvpn?=
+ =?us-ascii?Q?GAXHtyi+ntFHR1IfwOuqX6yd6fmxVEE0LeiASOOm3fkyiz85nX0efhxIZ7H5?=
+ =?us-ascii?Q?Rfzr+LWyNHhcDAc84ijhZb3R9nu42Q1iglaaqrXYTLJoyGur8OLradrY+vJT?=
+ =?us-ascii?Q?bKCAnAG71Y0p2+4hes8tFnGLJeymM/nvhZUHmlm14gnfhrhxOIRLmTYHMSK7?=
+ =?us-ascii?Q?FjUhDER3yXJ0TBanQbRMcdEGWZRzLQi//0++BGYMfbJTWr9HHybk+djQXTW1?=
+ =?us-ascii?Q?4gEio6xUhZ1omGFQpGXfifrnQWQIsWccd7yUaxxiTusjiq+gG/ilcIBMECUE?=
+ =?us-ascii?Q?dGFzkRHUK68SwS0uuPCZGNmALCM7aRoQWEhIpqtq8tmOhTS2o0kyrBWlwqRK?=
+ =?us-ascii?Q?OOPUA41NiFjGh7anYRZ4Aa6xloiYWtMvxfOSAFt7A9/xjZxQJ8LCTWBcVKpb?=
+ =?us-ascii?Q?bmSqiLWsopd7yTZkGiZNeUpqkfZ+qzc1SwhNLbP7r5DVuz97pYpnOiDxSjQa?=
+ =?us-ascii?Q?XllDC8nGv8KdsIXAFOpC7poXVRejHbnQUdH7gtO3TbUDXyX6qKH8RPpYhNV+?=
+ =?us-ascii?Q?BVCO/2v/r5vQy7FdLI2IhN/TOEteZYSDECo/421aaQNyTr0YIfA+fZXxWhWv?=
+ =?us-ascii?Q?My/je1Lr/qrz7pCWVToAz/uhymYiA1BpSIGsLT0rf+YWAcMbrpQ/q6/dtPLp?=
+ =?us-ascii?Q?ETY9B5LP4vF/SiE2ePQMm79q9mRdPP92NxTHZo8rHBBMlaCxQDKhqGfFp8iK?=
+ =?us-ascii?Q?RWUtkyakuzFWwz+SDeIVFGUk2alXs4NHLbrGU65c8vWyQtjas7xBZKpoqYYz?=
+ =?us-ascii?Q?QQQMOlwejPU5d7LiYpdF/cFL8TpU++cpnl4LAU2/JCOBm6QYWf8Wq9CBKB9R?=
+ =?us-ascii?Q?tdWILB7P3QYViXvDJAqrmfDj4C51IfiumKvvH4MaPgN/M0drmfRsY5vGwWZu?=
+ =?us-ascii?Q?x8TZjAWbNyw+nwZRhBjMqqNrajQ0hCvYbPIbTMAa/mBbKtrTttS8iSHBuzRO?=
+ =?us-ascii?Q?sD/aLlaGe/gf1v4w86X9LiICuFrnYoeY+rT5NVGGQS4eGMlXUEYeYeWnb5pL?=
+ =?us-ascii?Q?enYMLLcEitHv5qP92Ft9q6uc41YEMhby05Jn4pCmeccBwDo3jySfMgR1fAvC?=
+ =?us-ascii?Q?CjhUajU9b22NIiTl6k3Ay3C1Oa9ywJXF1kvdJR68SR6enrbbuELvsjgPwuwW?=
+ =?us-ascii?Q?Vts4xb+y3ur3MOzOGTZTn+pEzOl5/8nB84YNBDLRayadadD42uE5GXAhf1FL?=
+ =?us-ascii?Q?tciiiGjPjWsK7WwvFqD2WueMveOEuMZcbpYj288qskWqIxXJBy86ha2gLFp+?=
+ =?us-ascii?Q?1v/qDOTEE1WgV2aIYzd+sNbfVkmaXqHnh4xKZcoyOXIP6Hj1WwJMt+TrxdlX?=
+ =?us-ascii?Q?75MThNS9qx0AxEbYm/zKC4rlyCsl3d0Q8y+iNXFcL8x8+A0v2NV/EiLUbWWx?=
+ =?us-ascii?Q?6VTBPOqCh5Gpp4wanwg1EUpYI1oorG4q?=
+X-OriginatorOrg: sct-15-20-9412-3-msonline-outlook-fe3f5.templateTenant
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9f96357f-a317-457c-fa1b-08df0d30f470
+X-MS-Exchange-CrossTenant-AuthSource: AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Sep 2026 22:40:03.4156
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9P251MB0029
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider:
+On Mon, Sep 07, 2026 at 11:03:19AM +0200, Paolo Abeni wrote:
+> Patchwork shows more than 20 patches from you in flight. Please read
+>
+> Documentation/process/maintainer-netdev.rst
+>
+> carefully, especially the section about the 15 patches limit.
+>
+> Stop sending new patches until are the pending ones are processed.
 
-Critical: 0 · High: 2 (2) · Medium: 0 · Low: 0 (1)
+Apologies! This is my bad, understandable if anything I sent over is to
+be backlogged. Will ensure this doesn't happen again for the future.
 
-- [High] dm9000_probe() now aborts the whole probe when the *optional*
-  wakeup-IRQ setup fails.
-- [High] The newly added 'goto out' after a failing
-  irq_set_irq_wake(db->irq_wake, 1) is taken while…
+Kind Regards
 
-Pre-existing issues:
-- [High] The wakeup IRQ requested in dm9000_probe() is never released on
-  any path other than the newly added one either: the pre-existing later…
-- [High] In dm9000_probe() the shared wakeup IRQ is requested (line 1521,
-  IRQF_SHARED, handler dm9000_wol_interrupt, dev_id = ndev) before…
-- [Low] Documentation/devicetree/bindings/net/davicom,dm9000.yaml
-  restricts 'interrupts' to 'maxItems: 1' (and defines no interrupt-…
-
---
-
-net: davicom: Propagate wakeup IRQ errors
-
-This changes dm9000_probe() so that an error from
-platform_get_irq_optional(pdev, 1) is returned to the caller unless it is
--ENXIO, and so that failures of request_irq() and irq_set_irq_wake() for
-the optional wakeup IRQ abort the probe instead of only being logged.
-
-A few questions about the new error paths below.
-
-> diff --git a/drivers/net/ethernet/davicom/dm9000.c b/drivers/net/ethernet/davicom/dm9000.c
-> index b87eaf0c250c..904b859f0a63 100644
-> --- a/drivers/net/ethernet/davicom/dm9000.c
-> +++ b/drivers/net/ethernet/davicom/dm9000.c
-> @@ -1511,13 +1511,18 @@ dm9000_probe(struct platform_device *pdev)
->  	}
->  
->  	db->irq_wake = platform_get_irq_optional(pdev, 1);
-> -	if (db->irq_wake >= 0) {
-> +	if (db->irq_wake < 0 && db->irq_wake != -ENXIO) {
-> +		ret = db->irq_wake;
-> +		goto out;
-> +	}
-> +	if (db->irq_wake > 0) {
-
-[Severity: Low]
-This is a pre-existing inconsistency and not something introduced here, but
-is the wakeup IRQ index reachable at all from device tree?
-
-Documentation/devicetree/bindings/net/davicom,dm9000.yaml declares:
-
-  interrupts:
-    maxItems: 1
-
-and defines no interrupt-names.  For a node that validates against that
-schema, index 1 does not exist, so of_irq_get() fails and
-platform_get_irq_affinity() falls back to platform_get_resource(), which
-returns NULL and produces -ENXIO.  That is exactly the value the new check
-tolerates, so on schema-compliant device trees the whole wakeup block that
-this patch hardens is skipped.
-
-Should the binding gain a second interrupt entry (with interrupt-names) so
-the driver and the documented contract agree on how many interrupts a
-davicom,dm9000 node may declare?
-
->  		dev_dbg(db->dev, "wakeup irq %d\n", db->irq_wake);
->  
->  		ret = request_irq(db->irq_wake, dm9000_wol_interrupt,
->  				  IRQF_SHARED, dev_name(db->dev), ndev);
->  		if (ret) {
->  			dev_err(db->dev, "cannot get wakeup irq (%d)\n", ret);
-> +			goto out;
-
-[Severity: High]
-Is it intended that a failure to set up an optional feature now takes down
-the whole netdev?
-
-request_irq() here uses IRQF_SHARED, so it can legitimately return -EBUSY
-when a non-shared handler already owns that line.  Before this change the
-failure was logged, db->wake_supported stayed 0, and the interface
-registered normally; dm9000_set_wol() then simply refused WoL:
-
-	if (!dm->wake_supported)
-		return -EOPNOTSUPP;
-
-With the new goto out, register_netdev() is never reached and such a board
-loses Ethernet entirely.  Would it be better to keep the graceful
-degradation for the two setup failures and only propagate the
-platform_get_irq_optional() error (which is where -EPROBE_DEFER matters)?
-
-[Severity: High]
-This ordering isn't introduced by this patch, but can the shared wake
-handler run before the register window exists?
-
-request_irq() installs dm9000_wol_interrupt() here, while db->io_addr and
-db->io_data are only filled in later in dm9000_probe():
-
-	db->io_addr = ioremap(db->addr_res->start, iosize);
-	...
-	db->io_data = ioremap(db->data_res->start, iosize);
-
-db comes from alloc_etherdev()/netdev_priv() and is zeroed, so both
-pointers are NULL in that window.  The handler starts with MMIO
-immediately:
-
-	nsr = ior(db, DM9000_NSR);
-	wcr = ior(db, DM9000_WCR);
-
-and ior() has no guard:
-
-	writeb(reg, db->io_addr);
-	return readb(db->io_data);
-
-Since the line is shared, a co-tenant device (or an already-asserted
-level-triggered line at request time) can invoke this and dereference NULL
-in hard-IRQ context.  Would moving the wake-IRQ request to after the
-ioremap()/dm9000_set_io() sequence close this, and at the same time make
-the new error paths easier to unwind?
-
->  		} else {
->  
->  			/* test to see if irq is really wakeup capable */
-> @@ -1525,6 +1530,7 @@ dm9000_probe(struct platform_device *pdev)
->  			if (ret) {
->  				dev_err(db->dev, "irq %d cannot set wakeup (%d)\n",
->  					db->irq_wake, ret);
-> +				goto out;
-
-[Severity: High]
-The comment right above this call describes the operation as a capability
-test:
-
-	/* test to see if irq is really wakeup capable */
-	ret = irq_set_irq_wake(db->irq_wake, 1);
-
-Is a non-zero return really an error condition here?  set_irq_wake_real()
-in kernel/irq/manage.c starts with:
-
-	int ret = -ENXIO;
-
-	if (irq_desc_get_chip(desc)->flags &  IRQCHIP_SKIP_SET_WAKE)
-		return 0;
-
-	if (desc->irq_data.chip->irq_set_wake)
-		ret = desc->irq_data.chip->irq_set_wake(&desc->irq_data, on);
-
-so -ENXIO is the normal result for any irqchip that implements no
-.irq_set_wake and is not flagged IRQCHIP_SKIP_SET_WAKE, which covers many
-simple platform, SoC and GPIO controllers.  On such a board the probe now
-fails where it previously succeeded with WoL disabled.
-
-[Severity: High]
-Can this goto out leave the wake handler registered on a freed net_device?
-
-At this point request_irq(db->irq_wake, dm9000_wol_interrupt, IRQF_SHARED,
-dev_name(db->dev), ndev) has already succeeded, but the unwind path is:
-
-out:
-	dev_err(db->dev, "not found (%d).\n", ret);
-
-	dm9000_release_board(pdev, db);
-	free_netdev(ndev);
-
-and dm9000_release_board() does no IRQ teardown at all:
-
-	iounmap(db->io_addr);
-	iounmap(db->io_data);
-
-	if (db->data_req)
-		release_resource(db->data_req);
-	kfree(db->data_req);
-	...
-
-The only free_irq() in the driver is free_irq(ndev->irq, ndev) in
-dm9000_stop(), so nothing releases db->irq_wake.  After free_netdev(ndev)
-the shared handler is still installed with dev_id pointing at the freed
-net_device, and any assertion of that line runs:
-
-	struct net_device *dev = dev_id;
-	struct board_info *db = netdev_priv(dev);
-	...
-	spin_lock_irqsave(&db->lock, flags);
-
-	nsr = ior(db, DM9000_NSR);
-
-which touches freed memory and does MMIO through the already-iounmapped
-bases in hard-IRQ context.  Should this path get its own label that calls
-free_irq(db->irq_wake, ndev) before dm9000_release_board()?
-
-[Severity: High]
-This isn't a bug introduced by this patch, but the same missing free_irq()
-applies to the paths that already existed.  The later goto out failures in
-dm9000_probe() (request_mem_region() or ioremap() failure, unknown chip ID,
-register_netdev() failure), for example:
-
-	if (db->addr_req == NULL) {
-		dev_err(db->dev, "cannot claim address reg area\n");
-		ret = -EIO;
-		goto out;
-	}
-
-and dm9000_drv_remove():
-
-	unregister_netdev(ndev);
-	dm9000_release_board(pdev, dm);
-	if (dm->power_supply)
-		regulator_disable(dm->power_supply);
-
-	free_netdev(ndev);		/* free device structure */
-
-all reach free_netdev(ndev) while dm9000_wol_interrupt() is still
-registered with dev_id = ndev, so an unbind or rmmod of a device that has a
-wake IRQ leaves a dangling handler on a shared line.  Would it make sense
-to add the wake-IRQ release in a helper shared between the probe error
-paths and remove()?
-
->  			} else {
->  				irq_set_irq_wake(db->irq_wake, 0);
->  				db->wake_supported = 1;
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260903102656.370039-1-phucduc.bui%40gmail.com
+Aamir A.
