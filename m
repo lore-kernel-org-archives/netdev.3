@@ -1,89 +1,89 @@
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 917CF49EC7B
-	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 20:33:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30339417BD9
+	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 20:33:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788813215; cv=none; b=IUXd+UTXpjLrPTAUlzx7mlBwJuICs6SYaBOdHxBdtd0wMNXnQUM0eaSEuRiwmQvkpgC/pCos0nmlpLnfVO33+7V5EGHw2Qt3sgAQr3L4uToFiAZjTCIkWriCNJaPoGY875IK89683+Wbq1jTla6ulGd42pqIv7VjFd2WeHFBNGM=
+	t=1788813218; cv=none; b=ZBmi/T5Nb1uUChnA5zLjKvHUmiMykMII8JXDeEKOJdlnaBzTpE3C6sGSCecjuq/y57+Ko25WxvDsctpC5738Z6pT0CAAT3AWNv3UOLUWi+megw6j67TqXjHM1qHgNqTvsi4lL5tLLMrnij7+6pB3SRRwIj4Bi/wazOMtwz1xCjA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788813215; c=relaxed/simple;
-	bh=okDgO6J3Qp+rfKQOFHaR0Wyt8fws8ufD69oII3M+1Jg=;
+	s=arc-20240116; t=1788813218; c=relaxed/simple;
+	bh=n6QZOZ4ipBg1ZD4KtCHhdn0h3EQTsWMtpUTn1ZHyNpw=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=NRls3R/0EaBDnAH2WNY4qoKKryokvxZIDxO6o6aSaTm3HEYp41gt5l+C8FwW66Oi+SPqUOu667avMy/+Kg2RXXo7H4KXUcyDP7e0hpZCRV0oWdpSme/ur4h+r/vhGxWgVmc24/J4JnOFbMlCzLW8d/W+5T5GbIo2G3uU+ExS99g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=oU+cGpA3; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=ePlfY0T8; arc=none smtp.client-ip=205.220.168.131
+	 In-Reply-To:To:Cc; b=pCH62ZSx4kYCuZAlcUEDd9eDbALZU+NhW92PTydkKtWvwEsqdewWG2J2ma994E+LPOQHLh9P/MXZnZ0RR56gillsQ4EXHpA9IYQCfSyAFJ1orq44AxVGKXBkNy80C2EVJcRDNSte22zSvnlKiqrXEOKO4Hj8zd/k5eoKUCs0WP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=VfTHNGbA; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=NCncq8oE; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="oU+cGpA3";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="ePlfY0T8"
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 687H7vqM4016002
-	for <netdev@vger.kernel.org>; Mon, 7 Sep 2026 20:33:33 GMT
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="VfTHNGbA";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="NCncq8oE"
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 687H7nuT1314413
+	for <netdev@vger.kernel.org>; Mon, 7 Sep 2026 20:33:36 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	nlCSODNKgYyiYLj0bQxf12brdADlE9sLW5aEHOCrxXQ=; b=oU+cGpA3MXqoIz0L
-	Xu0oj6z+lOw4ZocBIj6KK6Dmy65FB2AigOX956whehe3MUXHbmFOxDb5Yjb7SgfF
-	zzs+yK17gQgd7wDGYXwV+pe5AAHiiYtOYYk6fnsgJrppXQSGO+E8gebDA64L1Cbo
-	9MVtYMMEZ1eKSfHN63P6/UDPqtw+J5hpAYJKcH2q59x15gPp5BiX5ZRmI9zkMdiY
-	2bpQOylUr+BsYNvMW5LiGCbbEuw4CCkxD5yjIp/PO1LfAb9ZA5hXSmqrluQg3/lO
-	Wyp8H+YC97GF6u9ewSGVqi3rmaJEwjIIlHleMh13num9xy6kDhqdQBeI1MqNs/4Z
-	FroyEw==
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ghsw22fs2-1
+	4cSKp76Wny+ccMBfbKuXS85MttxoIgTePwgcdN/NDrU=; b=VfTHNGbAqawR0xvl
+	vlP2wlJ7T0WonKha64ImA46JyV07ZyMgjV5Xj5eoxcVNJL/r5A74sZxRt+tMx9CI
+	m/JO2dYrQctSuTIrfIs9O7OQwRr3PCCA9GQYn0wtpWmLu5isXfU1qAJ6rmFPkzQg
+	pPQLg/ObcEzhCDD3qATlccxXm2BFNfWtFq7semEPY0P5NrjJvDuJIkLCqs7xLwH9
+	q/1avRtfyOi6sITix36FLsR69NeChJ3PVwK8O5zv0x6rUJbvfDdXCmlXQARm6Y3k
+	iT1krPbTP2kLWdMeChZGUxnSjsdljS/5PBqaEebpayaKbQknPU0O0xXPDsGdTxOC
+	MxHfDQ==
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com [209.85.210.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ghuyk9vrq-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 20:33:32 +0000 (GMT)
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-cc4922b7c31so23754a12.1
-        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 13:33:32 -0700 (PDT)
+	for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 20:33:36 +0000 (GMT)
+Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-862a0aa7d2aso4198118b3a.1
+        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 13:33:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1788813212; x=1789418012; darn=vger.kernel.org;
+        d=oss.qualcomm.com; s=google; t=1788813216; x=1789418016; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=nlCSODNKgYyiYLj0bQxf12brdADlE9sLW5aEHOCrxXQ=;
-        b=ePlfY0T8+1y0+ez2+A1w/L6faQ6mmEU+2cN9o1d1gguc4OrWiFSv7oFqeMv6AnjgIX
-         tO7FjFITHFIvJZkGiWaJuhGTHHQK5fnnCMOURXzHJrskcjWLOwo9nr1kcENMM1m43Rou
-         x06ZeyaMObSn2beHXGXvcU6AAvlIKXMyMy4xluRb9C9VPIJX6uHCcvL4jHNxpMxw2DB6
-         TILqcB/8mSEP//SaBnzcNNT6i11Om3rVWBNos9Mesw0qC5PEO4gZ5pxzvmt8NPnMst6e
-         GfT3JLtPZKG5bM+GKXJ4VgW9jo9VM+NieDCkxVAA5cnIFuPFVME7XSCfrrw4fiAsm7Vl
-         Qybg==
+        bh=4cSKp76Wny+ccMBfbKuXS85MttxoIgTePwgcdN/NDrU=;
+        b=NCncq8oE9oYH4zxb6ejEsJ4DVAqGG7/SHaRWROLokS344UDWFcTOOKErAWul31QZyJ
+         Yee621h7FLd7Rlhw9Bxk1ix6qKL/QvUOOP934od7JkoyqE0e5AL4qOGB+LeOlA0l2Gkt
+         3IEsYlmlmgc18ZVnvQI9v/2f5PBV3hwE79TE+EcpMrduR+vxFyY+RpU72wrdpMJcqcQ4
+         Sx0QTk7mIaN9JlpGSAYfQ2GSXv687vPIElBcDaBIaIg7hdrM4jFX7FLEcXFc/NLEm6ME
+         QnLXWOdHuAEAmCCQdp6FNjQ1JVdj+Kxz65Fz6mrc0hrMWbHdvqS95VeAE6lFZA2+4rV3
+         Uc1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788813212; x=1789418012;
+        d=1e100.net; s=20251104; t=1788813216; x=1789418016;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=nlCSODNKgYyiYLj0bQxf12brdADlE9sLW5aEHOCrxXQ=;
-        b=biP6EOGeZnJ0rXShUNQPMR4FRyN0VhQCXq/yN3oOPgRSjQUAEt4hrBLhk1dRjB2DGE
-         9I0UiUKKcnCu8B6V/IfFxsXD2cE1TDofmVahIBEuS2y/lbAlDY6S4ecIW0/RL+o/T523
-         QNkcDP41bEJ6HPb0JF0OjphBjzE550cYh932Oxgoj1hjNcutVrDL4KEoqAXb5yCIFibJ
-         6UdX0L2vYNKkQuG8Z0l18XCH3JgqNDeeJIdXyFnad+QqD/lSGz/2n9fEp5I5tlwc7r6d
-         I+ArMYMT4Wnc8lrq8Py0MjuhaiwxxFGRCcsNQvrsdWbVWjM+qWjmbD5JGIHL+PVDf+wf
-         mAwg==
-X-Forwarded-Encrypted: i=1; AKwUvBwNH4+2GAEifMlAr0opuQvCw678Ucd42e8SXNoPZ5LdgKIBtexEU0rfsDIGenh3FfpHMcRUMRQ=@vger.kernel.org
-X-Gm-Message-State: AFuF++m3TNZjXvBuhqS28X2jVdM78p1p6Ke7pTuDTRjffLT1YT8NYU1j
-	LnY31lTI+LwUgfXcc4PuVUAPRrYPDjixTRRSfoe/cLAbNeuexIVC8Q2shHZyhko5THQAv6o3b4O
-	QqbGajYl2iV5SFV8WlfXgZ7j8Ca8/XZiN/rAwKK5fnd2s/HCugymZTUcWQg==
-X-Gm-Gg: AYBFou3GpjWOa1rvswp/hImNOfiW6smDY6uOfdUHtIcAhHHR/WIAIWGPFyKNhmIupk6
-	iTDSaSYgqFMcqqKIJvcYgQcUD8VMiFrCqY+3WZnDUqpv1uzBIWW88FC7Ldn94Br6hE4di569Gey
-	etBEQP3yIA8FklmFOcmaj4QVnT0mrKTQIZ4IkeGDRIjlnDigLoINjTy8RkBof40SmSmPQhl375K
-	YTAKEAzZ50BBFwIu0qfuwu5ko/k87q/Bp4bTdixeq3jRSOlBOhjKbhZM92FEKY867us+uOM5vqa
-	jxu93IN7O4ZwwYhu82BZzgAiyLRXx3V/j/y7Dv/E5niVWnSs92eEI/9TDx1qcUcZC26/I4J99DG
-	ntVgKVIQuGDLFwWiqntkQPhK4e1hhX+5fLvx4WqkKB3m2MDuQYcFnG3qk5mF9VN8DjqTmuji2AB
-	BNtxe5V1DjYlAQdI1XyDQcnw==
-X-Received: by 2002:a05:6a20:9630:b0:3cd:9f0b:f7a2 with SMTP id adf61e73a8af0-3da39ee15d0mr39841126637.11.1788813212170;
-        Mon, 07 Sep 2026 13:33:32 -0700 (PDT)
-X-Received: by 2002:a05:6a20:9630:b0:3cd:9f0b:f7a2 with SMTP id adf61e73a8af0-3da39ee15d0mr39841089637.11.1788813211641;
-        Mon, 07 Sep 2026 13:33:31 -0700 (PDT)
+        bh=4cSKp76Wny+ccMBfbKuXS85MttxoIgTePwgcdN/NDrU=;
+        b=f7ErjVg4bnIhi8mxRSce3HMJvk7ibE5WRW8yrgukO0w/VxIa9TFns9hYYEVIDaGnKD
+         FGKetgNpZdprVJVAHV3LYRlOzThWUUOiCNg9No9EZvbKu8xckrJsGr8B1kYmVO+tQJQA
+         Ezba03Di2G3ISdhy9mJcsPk/4JUDRVLn2crAG4x4ykaP3VOJ7ALi8Y2iNM91RlNac4Pk
+         VthR1GhAw0lG4NmbywyIHBkioAJHrZWSnZnNf5vRf6q7zpRYD55ZRykprvU7E9MYu8ze
+         GsT14ff6FfdDb50rnxp+RHtuudmfJMHa1H0T21zgxv1AGnX81F1/uWT9dPuqrFpUNeIg
+         OOyg==
+X-Forwarded-Encrypted: i=1; AKwUvBwyL2Wsuq4ApRo6QSBg66NItLWYKHVbnx0hlSqvNY66Fo3YCcrYo8RghqPnW0aOA7odvTxlptI=@vger.kernel.org
+X-Gm-Message-State: AFuF++muJ6i6nd13N7zUl5Vk8nvp8JNSP4WbUwgcqaPa/7HI2iYgbWCe
+	FySh4Ci30Z46YbiAz1/pOgL8wNvqaZ2v3hzBUH3qMdwwQfo5j0PuNPILvXWHFyeUS1s2wwSpNcD
+	Dnae4V9TF1thMvCeXNkjadxzwX46glvmX1xjY2euuhh54OOLLi8KqSQfNWw==
+X-Gm-Gg: AYBFou3OWvuqz+5z5v5FFRXqW3QyJi5GgXzDtFBfpYMv8jCFfxk/x7pOPRuzj5teCII
+	OprfX4tAkYa6VNmNcSDeiHkrdGTG/7jupdRkMeqNn6K5R3KZ6mfYRq4OZ9lYgdy4A1XlAdkVWRm
+	7Uv/vlnQDePD12b2NxzBhmaoPI6kZKXSaXLox5p6c7gjFPjNQYubJH/uHwwIQPAWIihxKku2/fZ
+	0Av+AIsHauM4yLqrR9Gfvhfh65/V91yk9vTaK3Vwp6YJT5gZA48O+tBT9fDDwXS27VnuZycAjoj
+	RewINH9YiYFw3AybFl+99E5gfA8jfhlwcKT427zaHmXuyo9q47cOBYNkA0rASaPWw5jn+bP1AN7
+	B3M81dRqsdW+JszdjCjntCOfIL2znmOgzP/0JxEfA1Trj+CpMvyVGZdb9bUdZ8rJzKafanFgHtN
+	0sfUTp81uX8U3sDBeJBomySg==
+X-Received: by 2002:a05:6a21:2983:b0:3d9:6f0:b42f with SMTP id adf61e73a8af0-3da39fd0822mr41240291637.17.1788813215928;
+        Mon, 07 Sep 2026 13:33:35 -0700 (PDT)
+X-Received: by 2002:a05:6a21:2983:b0:3d9:6f0:b42f with SMTP id adf61e73a8af0-3da39fd0822mr41240244637.17.1788813215525;
+        Mon, 07 Sep 2026 13:33:35 -0700 (PDT)
 Received: from hu-pooventh-blr.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com. [103.229.18.19])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3339af25062sm47841297eec.16.2026.09.07.13.33.28
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3339af25062sm47841297eec.16.2026.09.07.13.33.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Sep 2026 13:33:31 -0700 (PDT)
+        Mon, 07 Sep 2026 13:33:35 -0700 (PDT)
 From: Pooventhiran G <pooventhiran.g@oss.qualcomm.com>
-Date: Tue, 08 Sep 2026 01:59:14 +0530
-Subject: [PATCH wireless-next 05/18] wifi: cfg80211/mac80211: Parse SMD
- parameters in STA addition/modification
+Date: Tue, 08 Sep 2026 01:59:15 +0530
+Subject: [PATCH wireless-next 06/18] wifi: nl80211/cfg80211: Indicate STA
+ creation via SMD BSS Transition
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -92,7 +92,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260908-smd-v1-5-65ad4ab30fbd@oss.qualcomm.com>
+Message-Id: <20260908-smd-v1-6-65ad4ab30fbd@oss.qualcomm.com>
 References: <20260908-smd-v1-0-65ad4ab30fbd@oss.qualcomm.com>
 In-Reply-To: <20260908-smd-v1-0-65ad4ab30fbd@oss.qualcomm.com>
 To: "David S. Miller" <davem@davemloft.net>,
@@ -103,342 +103,114 @@ Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
         linux-wireless@vger.kernel.org,
         Pooventhiran G <pooventhiran.g@oss.qualcomm.com>
 X-Mailer: b4 0.14.3
-X-Proofpoint-ORIG-GUID: VdWqOzkwwjCCCXIzDF2iuvtBKwiqKiWy
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTA3MDIyNiBTYWx0ZWRfX4wfz9OYQaNtC
- wqSt542hTo6V7GYK8cRY5NJTNFhV5dSg277h/sYmKM5GGlG89JNx28CGNJVlhhS/DWAebzGm0SW
- Wzh9FZjVBqnl1RCJwAoU6aPLwLhmJ2g=
-X-Authority-Analysis: v=2.4 cv=eKwjSnp1 c=1 sm=1 tr=0 ts=6a9f1f9c cx=c_pps
- a=Oh5Dbbf/trHjhBongsHeRQ==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTA3MDIyNiBTYWx0ZWRfX1B3v+xmYUDMS
+ Lde7esY2jh49AnXxpx6I8zy1xmZu2uypmNOSVA90wx9/avIn/ztDVEOPjKP7M0k1JCUBPvwZNo0
+ 5ycfLikOd3ouGNvPE69LheFQhnhSWIg=
+X-Proofpoint-GUID: XKuiLSBsBksYFU5q8wKmRtRwGOFku1uJ
+X-Authority-Analysis: v=2.4 cv=ObSoyBTY c=1 sm=1 tr=0 ts=6a9f1fa0 cx=c_pps
+ a=mDZGXZTwRPZaeRUbqKGCBw==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
  a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=YMgV9FUhrdKAYTUUvYB2:22
- a=EUspDBNiAAAA:8 a=Y27KnQjsX7IjzuVWbagA:9 a=QEXdDO2ut3YA:10
- a=_Vgx9l1VpLgwpw_dHYaR:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA3MDIyNiBTYWx0ZWRfXze6h45e4X71N
- RrGlZH0aHE+efsQUqetdMHTMskz8pYgU9DS2k3wo6ANDge2n/4pKLo0bhE25jrDUfSpEkHh2uCC
- zsFhXkldw+K7Q2jZksKgwXVGckNMZs0Sd9MzQXOb46PnrEz+kPB4hj6jARFXVQLijk0SePNWhh8
- NSmNvDx+ntgPnE8OAwjuHNFGcAnsTt3yfxn8STyH/0zvqv7WmkpUaGZVSPrADgi2DhDUFq8+j/S
- QB4Tk9xXky6yEmwdfBXYJGVyGyjSzYQA6xhv38p9rg07nDM1woO4ReiwwB0wZ01LG1JYHskZNt8
- XoZpXJ9Agrm/9sIUy5rOdoaJlQSzhhdFRjD7L3OynlpE3OMulHzHOHZCOIxboLHA8gvkVR55nHR
- xgrEUHZJ+wrvFYSSQ3POUZPwNzMdJCdui2A6h9kucv9HcWE5+xyjO2krXd34Z5Dsau/Tw2IKRrC
- qaJH3EVxL4i7UsgHDhg==
-X-Proofpoint-GUID: VdWqOzkwwjCCCXIzDF2iuvtBKwiqKiWy
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=Um2Pa8k9VHT-vaBCBUpS:22
+ a=EUspDBNiAAAA:8 a=YW6yegcWvZZGXztGtDAA:9 a=QEXdDO2ut3YA:10
+ a=zc0IvFSfCIW2DFIPzwfm:22
+X-Proofpoint-ORIG-GUID: XKuiLSBsBksYFU5q8wKmRtRwGOFku1uJ
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA3MDIyNiBTYWx0ZWRfX73uL5jMJrBqZ
+ HRQDZATB/qFrmoV/peYKEHMw+WhB+RT9ctvDxLaRsNmd6YvGfsY7j4MLKtcvcNF259ixTiOZui+
+ gXKoHlr+fC6IuHqc5OmLPwapwS6lkmjk/lHbg30edULXsw6kcUp8+RggJWIBMPM9lnqxy36caC9
+ ZiTHWnnhlKzaNCnzL0J/YJcuvy2y4xyPxDAR450CWVY3c5wyVDmV+TlxAcVBU2RwMcR8s8OOftB
+ D516hYbr2OmmTfOeJh3T3SrJN0ADy/oHmF43Zu3bGjXFjPYB3QVMSoKcAOQXz9h3riOCX/wrFWC
+ 0M/0u9iZS/hYtpZwYvPxd1mgiqMFKA/W9KLsHMWxb1v6NIe/2A8ZAgHECVO5g9Zdjoca3kUG4Xy
+ 6A9XIBTJp6xQbC9tZlXIBE3UCaHxa6HxnBE7FY1JZHVPj64q/lfuv1ySuOLBA4Zy0dW8ixn88ud
+ u4pti1ROzrOBmdxb70A==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-09-07_05,2026-09-07_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 lowpriorityscore=0 malwarescore=0 priorityscore=1501
- suspectscore=0 clxscore=1015 adultscore=0 spamscore=0 phishscore=0
- impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
- definitions=main-2609070226
+ suspectscore=0 lowpriorityscore=0 impostorscore=0 adultscore=0 phishscore=0
+ priorityscore=1501 malwarescore=0 clxscore=1011 bulkscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2609070226
 
-From: Aditya Sathish <asathish@qti.qualcomm.com>
+From: Rohan Dutta <drohan@qti.qualcomm.com>
 
-When a non-AP MLD is getting added or having its capabilities updated,
-handle the SMD parameters passed from userspace. Otherwise, drivers will
-not be able to identify that the non-AP MLD has negotiated SMD with this
-AP MLD during association nor can they support SMD BSS Transition if it
-has been requested later by the non-AP MLD.
+When the peer STA is created via SMD BSS Transition Preparation on the
+target AP MLD, indicate that the STA is created as part of SMD procedure
+unlike STA creation using typical association. This indication helps the
+drivers and lower layers to prepare the STA for handling ST Execution
+and datapath switch once the ST procedure is completed.
 
-Signed-off-by: Aditya Sathish <asathish@qti.qualcomm.com>
-Co-developed-by: Sidhanta Sahu <sidhanta.sahu@oss.qualcomm.com>
-Signed-off-by: Sidhanta Sahu <sidhanta.sahu@oss.qualcomm.com>
-Co-developed-by: Pooventhiran G <pooventhiran.g@oss.qualcomm.com>
+Signed-off-by: Rohan Dutta <drohan@qti.qualcomm.com>
 Signed-off-by: Pooventhiran G <pooventhiran.g@oss.qualcomm.com>
 ---
- include/net/cfg80211.h       | 15 +++++++++++++
- include/net/mac80211.h       |  3 +++
- include/uapi/linux/nl80211.h | 17 ++++++++++++++
- net/mac80211/cfg.c           | 10 +++++++++
- net/mac80211/debugfs_sta.c   |  1 +
- net/mac80211/sta_info.h      |  2 ++
- net/wireless/nl80211.c       | 53 ++++++++++++++++++++++++++++++++++++++------
- 7 files changed, 94 insertions(+), 7 deletions(-)
+ include/net/cfg80211.h       | 2 ++
+ include/uapi/linux/nl80211.h | 7 +++++++
+ net/wireless/nl80211.c       | 3 +++
+ 3 files changed, 12 insertions(+)
 
 diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index d0a269f4c711..bf33cf5366ef 100644
+index bf33cf5366ef..75d0123fbb5d 100644
 --- a/include/net/cfg80211.h
 +++ b/include/net/cfg80211.h
-@@ -1897,6 +1897,19 @@ struct cfg80211_ttlm_params {
- 	u16 ulink[8];
- };
- 
-+/**
-+ * struct cfg80211_sta_smd_params - SMD parameters for an added station
-+ *
-+ * @smd_sta: SMD-negotiated STA
-+ * @smd_identifier: SMD Identifier
-+ * @dl_data_fwd: MSDU forwarding supported
-+ */
-+struct cfg80211_sta_smd_params {
-+	bool smd_sta;
-+	u8 smd_identifier[ETH_ALEN];
-+	bool dl_data_fwd;
-+};
-+
- /**
-  * struct station_parameters - station parameters
-  *
-@@ -1937,6 +1950,7 @@ struct cfg80211_ttlm_params {
-  * @link_sta_params: link related params.
-  * @epp_peer: EPP peer indication
-  * @nmi_mac: MAC address of the NMI station of the NAN peer
-+ * @smd_params: SMD params for this station
+@@ -1903,11 +1903,13 @@ struct cfg80211_ttlm_params {
+  * @smd_sta: SMD-negotiated STA
+  * @smd_identifier: SMD Identifier
+  * @dl_data_fwd: MSDU forwarding supported
++ * @roam_sta: station was created via SMD BSS Transition procedure
   */
- struct station_parameters {
- 	struct net_device *vlan;
-@@ -1965,6 +1979,7 @@ struct station_parameters {
- 	struct link_station_parameters link_sta_params;
- 	bool epp_peer;
- 	const u8 *nmi_mac;
-+	struct cfg80211_sta_smd_params smd_params;
+ struct cfg80211_sta_smd_params {
+ 	bool smd_sta;
+ 	u8 smd_identifier[ETH_ALEN];
+ 	bool dl_data_fwd;
++	bool roam_sta;
  };
  
  /**
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index 6b82ca07fbf0..d8f5e5d8a021 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -2727,6 +2727,7 @@ struct ieee80211_link_sta {
-  * @nan_sched: NAN peer schedule for this station. Valid only for NMI stations.
-  * @ext_mld_capa_ops: the MLD's extended MLD capabilities and operations
-  *	NOTE: currently only tracked for AP STAs
-+ * @smd_params: SMD parameters of the STA
-  */
- struct ieee80211_sta {
- 	u8 addr[ETH_ALEN] __aligned(2);
-@@ -2761,6 +2762,8 @@ struct ieee80211_sta {
- 	/* should only be accessed with the wiphy mutex held */
- 	struct ieee80211_nan_peer_sched *nan_sched;
- 
-+	struct cfg80211_sta_smd_params smd_params;
-+
- 	/* must be last */
- 	u8 drv_priv[] __aligned(sizeof(void *));
- };
 diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index f5c8dbe5f26a..f1d8db31f17e 100644
+index f1d8db31f17e..5e474fda2a49 100644
 --- a/include/uapi/linux/nl80211.h
 +++ b/include/uapi/linux/nl80211.h
-@@ -3191,6 +3191,17 @@ enum nl80211_commands {
-  *	%NL80211_EXT_FEATURE_SMD.
-  *	Used with %NL80211_CMD_START_AP. See &enum nl80211_smd_params_attrs.
+@@ -3202,6 +3202,11 @@ enum nl80211_commands {
+  *	supports DL data forwarding within the SMD domain.
+  *	Used with %NL80211_CMD_NEW_STATION.
   *
-+ * @NL80211_ATTR_PEER_SMD_ENABLED: Flag indicating a peer STA has SMD enabled.
-+ *	Used with %NL80211_CMD_NEW_STATION.
-+ *
-+ * @NL80211_ATTR_PEER_SMD_MAC_ADDR: Binary attribute with the 6-byte MAC
-+ *	address of the SMD-capable peer STA.
-+ *	Used with %NL80211_CMD_NEW_STATION.
-+ *
-+ * @NL80211_ATTR_PEER_SMD_DL_DATA_FORWARDING: Flag indicating the peer STA
-+ *	supports DL data forwarding within the SMD domain.
-+ *	Used with %NL80211_CMD_NEW_STATION.
++ * @NL80211_ATTR_SMD_ROAM_STA: Flag attribute indicating this station was
++ *	created via SMD BSS Transition Preparation at the Target AP MLD (refer
++ *	IEEE P802.11bn/D2.0, Aug 2026, subclause 37.16.6).
++ *	This flag is carried in %NL80211_CMD_NEW_STATION.
 + *
   * @NUM_NL80211_ATTR: total number of nl80211_attrs available
   * @NL80211_ATTR_MAX: highest attribute number currently defined
   * @__NL80211_ATTR_AFTER_LAST: internal use
-@@ -3793,6 +3804,10 @@ enum nl80211_attrs {
+@@ -3808,6 +3813,8 @@ enum nl80211_attrs {
+ 	NL80211_ATTR_PEER_SMD_MAC_ADDR,
+ 	NL80211_ATTR_PEER_SMD_DL_DATA_FORWARDING,
  
- 	NL80211_ATTR_SMD_PARAMS,
- 
-+	NL80211_ATTR_PEER_SMD_ENABLED,
-+	NL80211_ATTR_PEER_SMD_MAC_ADDR,
-+	NL80211_ATTR_PEER_SMD_DL_DATA_FORWARDING,
++	NL80211_ATTR_SMD_ROAM_STA,
 +
  	/* add attributes here, update the policy in nl80211.c */
  
  	__NL80211_ATTR_AFTER_LAST,
-@@ -3942,6 +3957,7 @@ enum nl80211_iftype {
-  *	that support %NL80211_FEATURE_FULL_AP_CLIENT_STATE to transition a
-  *	previously added station into associated state
-  * @NL80211_STA_FLAG_SPP_AMSDU: station supports SPP A-MSDUs
-+ * @NL80211_STA_FLAG_SMD: station has negotiated SMD.
-  * @NL80211_STA_FLAG_MAX: highest station flag number currently defined
-  * @__NL80211_STA_FLAG_AFTER_LAST: internal use
-  */
-@@ -3955,6 +3971,7 @@ enum nl80211_sta_flags {
- 	NL80211_STA_FLAG_TDLS_PEER,
- 	NL80211_STA_FLAG_ASSOCIATED,
- 	NL80211_STA_FLAG_SPP_AMSDU,
-+	NL80211_STA_FLAG_SMD,
- 
- 	/* keep last */
- 	__NL80211_STA_FLAG_AFTER_LAST,
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index b4b42790c5d7..138b67f4bda4 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -2528,6 +2528,16 @@ static int sta_apply_parameters(struct ieee80211_local *local,
- 	if (mask & BIT(NL80211_STA_FLAG_SPP_AMSDU))
- 		sta->sta.spp_amsdu = set & BIT(NL80211_STA_FLAG_SPP_AMSDU);
- 
-+	if (mask & BIT(NL80211_STA_FLAG_SMD)) {
-+		if (set & BIT(NL80211_STA_FLAG_SMD))
-+			set_sta_flag(sta, WLAN_STA_SMD);
-+		else if (test_sta_flag(sta, WLAN_STA_SMD))
-+			clear_sta_flag(sta, WLAN_STA_SMD);
-+	}
-+
-+	if (params->smd_params.smd_sta)
-+		sta->sta.smd_params = params->smd_params;
-+
- 	/* mark TDLS channel switch support, if the AP allows it */
- 	if (test_sta_flag(sta, WLAN_STA_TDLS_PEER) &&
- 	    !sdata->deflink.u.mgd.tdls_chan_switch_prohibited &&
-diff --git a/net/mac80211/debugfs_sta.c b/net/mac80211/debugfs_sta.c
-index ef75255d47d5..d7e7c9c578e4 100644
---- a/net/mac80211/debugfs_sta.c
-+++ b/net/mac80211/debugfs_sta.c
-@@ -78,6 +78,7 @@ static const char * const sta_flag_names[] = {
- 	FLAG(PS_DELIVER),
- 	FLAG(USES_ENCRYPTION),
- 	FLAG(DECAP_OFFLOAD),
-+	FLAG(SMD),
- #undef FLAG
- };
- 
-diff --git a/net/mac80211/sta_info.h b/net/mac80211/sta_info.h
-index ee0d32877c5b..506aeb241a6d 100644
---- a/net/mac80211/sta_info.h
-+++ b/net/mac80211/sta_info.h
-@@ -72,6 +72,7 @@
-  * @WLAN_STA_USES_ENCRYPTION: This station was configured for encryption,
-  *	so drop all packets without a key later.
-  * @WLAN_STA_DECAP_OFFLOAD: This station uses rx decap offload
-+ * @WLAN_STA_SMD: this station is associated to an SMD-ME.
-  *
-  * @NUM_WLAN_STA_FLAGS: number of defined flags
-  */
-@@ -104,6 +105,7 @@ enum ieee80211_sta_info_flags {
- 	WLAN_STA_PS_DELIVER,
- 	WLAN_STA_USES_ENCRYPTION,
- 	WLAN_STA_DECAP_OFFLOAD,
-+	WLAN_STA_SMD,
- 
- 	NUM_WLAN_STA_FLAGS,
- };
 diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index aa7aa70a5b41..0d20c2ab3d5e 100644
+index 0d20c2ab3d5e..7577eb31ff65 100644
 --- a/net/wireless/nl80211.c
 +++ b/net/wireless/nl80211.c
-@@ -1114,6 +1114,9 @@ static const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
- 	[NL80211_ATTR_STA_DUMP_LINK_STATS] = { .type = NLA_FLAG },
- 	[NL80211_ATTR_SMD_PARAMS] =
- 		NLA_POLICY_NESTED(nl80211_smd_params_policy),
-+	[NL80211_ATTR_PEER_SMD_ENABLED] = { .type = NLA_FLAG },
-+	[NL80211_ATTR_PEER_SMD_MAC_ADDR] = NLA_POLICY_ETH_ADDR,
-+	[NL80211_ATTR_PEER_SMD_DL_DATA_FORWARDING] = { .type = NLA_FLAG },
+@@ -1117,6 +1117,7 @@ static const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
+ 	[NL80211_ATTR_PEER_SMD_ENABLED] = { .type = NLA_FLAG },
+ 	[NL80211_ATTR_PEER_SMD_MAC_ADDR] = NLA_POLICY_ETH_ADDR,
+ 	[NL80211_ATTR_PEER_SMD_DL_DATA_FORWARDING] = { .type = NLA_FLAG },
++	[NL80211_ATTR_SMD_ROAM_STA] = { .type = NLA_FLAG },
  };
  
  /* policy for the key attributes */
-@@ -7702,6 +7705,7 @@ static const struct nla_policy sta_flags_policy[NL80211_STA_FLAG_MAX + 1] = {
- 	[NL80211_STA_FLAG_MFP] = { .type = NLA_FLAG },
- 	[NL80211_STA_FLAG_AUTHENTICATED] = { .type = NLA_FLAG },
- 	[NL80211_STA_FLAG_TDLS_PEER] = { .type = NLA_FLAG },
-+	[NL80211_STA_FLAG_SMD] = { .type = NLA_FLAG },
- };
+@@ -9289,6 +9290,8 @@ static int nl80211_set_station_smd(struct genl_info *info,
+ 	params->smd_params.dl_data_fwd =
+ 		!!info->attrs[NL80211_ATTR_PEER_SMD_DL_DATA_FORWARDING];
  
- static int parse_station_flags(struct genl_info *info,
-@@ -7768,11 +7772,13 @@ static int parse_station_flags(struct genl_info *info,
- 	switch (iftype) {
- 	case NL80211_IFTYPE_AP:
- 	case NL80211_IFTYPE_AP_VLAN:
-+		params->sta_flags_mask = BIT(NL80211_STA_FLAG_SMD);
-+		fallthrough;
- 	case NL80211_IFTYPE_P2P_GO:
--		params->sta_flags_mask = BIT(NL80211_STA_FLAG_AUTHORIZED) |
--					 BIT(NL80211_STA_FLAG_SHORT_PREAMBLE) |
--					 BIT(NL80211_STA_FLAG_WME) |
--					 BIT(NL80211_STA_FLAG_MFP);
-+		params->sta_flags_mask |= BIT(NL80211_STA_FLAG_AUTHORIZED) |
-+					  BIT(NL80211_STA_FLAG_SHORT_PREAMBLE) |
-+					  BIT(NL80211_STA_FLAG_WME) |
-+					  BIT(NL80211_STA_FLAG_MFP);
- 		break;
- 	case NL80211_IFTYPE_P2P_CLIENT:
- 	case NL80211_IFTYPE_STATION:
-@@ -8913,7 +8919,7 @@ int cfg80211_check_station_change(struct wiphy *wiphy,
- 		return -EINVAL;
- 
- 	/* When you run into this, adjust the code below for the new flag */
--	BUILD_BUG_ON(NL80211_STA_FLAG_MAX != 8);
-+	BUILD_BUG_ON(NL80211_STA_FLAG_MAX != 9);
- 
- 	switch (statype) {
- 	case CFG80211_STA_MESH_PEER_KERNEL:
-@@ -9007,7 +9013,8 @@ int cfg80211_check_station_change(struct wiphy *wiphy,
- 				  BIT(NL80211_STA_FLAG_SHORT_PREAMBLE) |
- 				  BIT(NL80211_STA_FLAG_WME) |
- 				  BIT(NL80211_STA_FLAG_MFP) |
--				  BIT(NL80211_STA_FLAG_SPP_AMSDU)))
-+				  BIT(NL80211_STA_FLAG_SPP_AMSDU) |
-+				  BIT(NL80211_STA_FLAG_SMD)))
- 			return -EINVAL;
- 
- 		/* but authenticated/associated only if driver handles it */
-@@ -9261,6 +9268,30 @@ static int nl80211_parse_sta_txpower_setting(struct genl_info *info,
++	params->smd_params.roam_sta = !!info->attrs[NL80211_ATTR_SMD_ROAM_STA];
++
  	return 0;
  }
  
-+static int nl80211_set_station_smd(struct genl_info *info,
-+				   struct station_parameters *params)
-+{
-+	struct nlattr *smd_mac;
-+
-+	params->smd_params.smd_sta =
-+		!!info->attrs[NL80211_ATTR_PEER_SMD_ENABLED];
-+
-+	if (!params->smd_params.smd_sta)
-+		return 0;
-+
-+	smd_mac = info->attrs[NL80211_ATTR_PEER_SMD_MAC_ADDR];
-+
-+	if (!info->attrs[NL80211_ATTR_MLD_ADDR] || !smd_mac)
-+		return -EINVAL;
-+
-+	nla_memcpy(params->smd_params.smd_identifier, smd_mac, ETH_ALEN);
-+
-+	params->smd_params.dl_data_fwd =
-+		!!info->attrs[NL80211_ATTR_PEER_SMD_DL_DATA_FORWARDING];
-+
-+	return 0;
-+}
-+
- static int nl80211_set_station(struct sk_buff *skb, struct genl_info *info)
- {
- 	struct cfg80211_registered_device *rdev = info->user_ptr[0];
-@@ -9399,6 +9430,10 @@ static int nl80211_set_station(struct sk_buff *skb, struct genl_info *info)
- 	if (err)
- 		return err;
- 
-+	err = nl80211_set_station_smd(info, &params);
-+	if (err)
-+		return err;
-+
- 	/* Include parameters for TDLS peer (will check later) */
- 	err = nl80211_set_station_tdls(info, &params);
- 	if (err)
-@@ -9627,6 +9662,10 @@ static int nl80211_new_station(struct sk_buff *skb, struct genl_info *info)
- 	if (parse_station_flags(info, wdev->iftype, &params))
- 		return -EINVAL;
- 
-+	err = nl80211_set_station_smd(info, &params);
-+	if (err)
-+		return err;
-+
- 	/* HT/VHT requires QoS, but if we don't have that just ignore HT/VHT
- 	 * as userspace might just pass through the capabilities from the IEs
- 	 * directly, rather than enforcing this restriction and returning an
-@@ -9660,7 +9699,7 @@ static int nl80211_new_station(struct sk_buff *skb, struct genl_info *info)
- 		return -EINVAL;
- 
- 	/* When you run into this, adjust the code below for the new flag */
--	BUILD_BUG_ON(NL80211_STA_FLAG_MAX != 8);
-+	BUILD_BUG_ON(NL80211_STA_FLAG_MAX != 9);
- 
- 	switch (wdev->iftype) {
- 	case NL80211_IFTYPE_AP:
 
 -- 
 2.34.1
