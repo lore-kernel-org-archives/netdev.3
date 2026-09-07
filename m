@@ -1,125 +1,105 @@
-Received: from mta0.migadu.com (out-16.mta0.migadu.com [91.218.175.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC395411F95
-	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 08:22:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9949143BDB4;
+	Mon,  7 Sep 2026 08:22:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788769342; cv=none; b=P8kGicuuUUOq4lLt8TYNxe70Vt8sira3sH7BUIDygiCvlmPCKiflBzTWdPrL/TT8XDfyJcT59guFIA3w+Z2JFSqhgMzX74NJizUkVjuEX11nQEw2lCEJihalm1PEIQH1gBTuUvzQehhBb94oDMhb48OrR9k1B9a7JyRYA8ZTosw=
+	t=1788769375; cv=none; b=FyUQuiKR88kCNguF97GmVdD/xsR+UecbA4q7YDbM/Llozm9St/2hv984aZWc3bVGlON18sFO8RpT1lCt2HPDtM1sDKQgC9Rb4hGWDPsok2297VMM8KBLqA92qf9Oa7cidfd6sYsbzY5Z5u0pHQDPW5dClGv4A+biIrR4odMKwME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788769342; c=relaxed/simple;
-	bh=LSTwH7YPnh688EaYa+Imxdg38h8r1Vt9jgw0Fed1QyU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rR3aePVoJSsg+LkC+dske3qiC2V8GXbVpikYa2WqikT6UtnOE34NtHBLTKxVTyKgEyBxzZSKWTlU73m5ME2lCKdTHKVRCA3V8T/Qw431/DBu3AxbmFKBDn3nYRteLNzfbYU6uBU1DggN89CDNMfNoqdnCPdf9484t9/1mkQmqdc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=fZftVR6Y; arc=none smtp.client-ip=91.218.175.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1788769375; c=relaxed/simple;
+	bh=KU55nb/L8hOqLp+NhbwKS2WcnkIPg95D/pO/pEcv+Wk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VmoaRtnnI1AgT4/PbYolgfcLzDU3kKTMIIAl5UBO0w+ZsJH4KBbLZb5I3PhSiKlQLwumqYDer5vtsL2BaS9Z6JzKm8WclrmYta9MHaKiaUni3GJYcmMEkAQ+1XUVq8exc8gf7WZHLfl3vtFz5KHHYM/i+lS+SQGVTv6ZLaZyzcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=OV64HFnQ; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="fZftVR6Y"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=LSTwH7YPnh688EaYa+Imxdg38h8r1Vt9jgw0Fed1QyU=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788769337; v=1; x=1789374137;
- b=fZftVR6YanTIOg4Vz/I0mzDxKtlnB+68uKSv00O1+jJ5MBowD9ZRI+Gyx+O1E2U8LbfdEvyM
- N8CB0Wnj50L6LbmDVPaogR8Rz6BCRaQ3cSraaxEroRmqjydLY+dlI/R6Cgt5nbY0RT/q/T74F7v
- +wWzTlufO+xhrmVpz7aih3Co=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta11.migadu.com with ESMTPS id a05b63f883a0db4a;
-	Mon, 07 Sep 2026 08:22:17 +0000
-X-Mizu-Trace-ID: a05b63f883a0db4a
-X-Migadu-Flow: FLOW_OUT
-Date: Mon, 7 Sep 2026 16:22:07 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: Nikolay Aleksandrov <razor@blackwall.org>
-Cc: Jay Vosburgh <jv@jvosburgh.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jussi Maki <joamaki@gmail.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Hangbin Liu <liuhangbin@kylinos.cn>
-Subject: Re: [PATCH net v3] bonding: fix slave_cnt leak on XDP error paths
-Message-ID: <ap50L7dUBxZulHWK@fedora>
-References: <20260907-bond_slave_cnt-v3-1-57df3b3cf2cb@kylinos.cn>
- <c5d539bb-3bb6-4f76-8c75-05a8f240c39f@blackwall.org>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="OV64HFnQ"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id E2A3C1A1A22;
+	Mon,  7 Sep 2026 08:22:50 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id B53C760383;
+	Mon,  7 Sep 2026 08:22:50 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7972B11C7AF0F;
+	Mon,  7 Sep 2026 10:22:46 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1788769369; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=jPR05otjLbJCGaV5jK++Qw2cQ++1iAzWzFPIrf0FWbA=;
+	b=OV64HFnQQIlF4DJx4ciaxPzStUeiTodewTSwQgGqTeQl/CiAFbDV9dbosp3aMQVFB4FzY4
+	SyE6SKf1A4GEV5vjD0XlHslnQrMeMNdbx+lo5/xaVSfRDy0INFOa2lYDMDpW5hNWv4qtBB
+	ZAEX8+zFiUZPx7d7aSm+26KEpSLZicGzzqh69cqn01H/6Hu4ivYisUdoeoJKd0pE5eEFab
+	7M+eDxRy0Ubmtv3cKnlnEGLLW+cvZBC6CZpq23/Hueo2A7f879BMMMcga+dWwzl3PI2kqs
+	zXyaqK3KXfFCTs1jhIUFWC5ulSfAGjSJRXrrywvO9ABV3GPdSptTSXzvrwt8BA==
+Message-ID: <d1928f33-23ca-46cd-af71-1f3cdc55bf96@bootlin.com>
+Date: Mon, 7 Sep 2026 10:22:45 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c5d539bb-3bb6-4f76-8c75-05a8f240c39f@blackwall.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2 1/2] tools: ynl: Allow cross-compiling ynl and
+ associated tools
+To: netdev-bot+sashiko@kernel.org
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, donald.hunter@gmail.com,
+ horms@kernel.org, shuah@kernel.org, matttbe@kernel.org, sdf@fomichev.me,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ thomas.petazzoni@bootlin.com, linux-kselftest@vger.kernel.org
+References: <20260903155524.2241065-2-maxime.chevallier@bootlin.com>
+ <178870681916.219967.14635919564673520317@kernel.org>
+Content-Language: en-US
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <178870681916.219967.14635919564673520317@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Mon, Sep 07, 2026 at 10:41:50AM +0300, Nikolay Aleksandrov wrote:
-> On 07/09/2026 10:07, Hangbin Liu wrote:
-> > From: Hangbin Liu <liuhangbin@kylinos.cn>
-> > 
-> > When bond_enslave() succeeds up to the XDP setup stage, slave_cnt is
-> > already incremented. If XDP setup subsequently fails, the error paths
-> > jump directly to err_sysfs_del, bypassing the slave_cnt decrement.
-> > 
-> > This causes slave_cnt to drift upward on each failed enslaving attempt,
-> > which would lead to unbalanced traffic distribution with round-robin
-> > mode.
-> > 
-> > Fix it by moving the slave_cnt increase after XDP setup.
-> > 
-> > Fixes: 9e2ee5c7e7c3 ("net, bonding: Add XDP support to the bonding driver")
-> > Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
-> > ---
-> > Changes in v3:
-> > - move the slave_cnt increasement before bond_update_slave_arr() (selftest)
-> > - run all bonding selftests on debug kernel to make sure no regression (Jakub)
-> > - Link to v2: https://lore.kernel.org/r/20260903-bond_slave_cnt-v2-1-02e27304ca36@kylinos.cn
-> > 
-> > Changes in v2:
-> > - move the slave_cnt increasement after XDP setup (Nikolay Aleksandrov)
-> > - balance-xor mode is not affected, not mention it (Nikolay Aleksandrov)
-> > - Link to v1: https://lore.kernel.org/r/20260902-bond_slave_cnt-v1-1-36e95bf4a6ff@kylinos.cn
-> > ---
-> >   drivers/net/bonding/bond_main.c | 4 +++-
-> >   1 file changed, 3 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-> > index a9bff7663eec..1514a8ba0888 100644
-> > --- a/drivers/net/bonding/bond_main.c
-> > +++ b/drivers/net/bonding/bond_main.c
-> > @@ -2284,7 +2284,6 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
-> >   		}
-> >   	}
-> > -	WRITE_ONCE(bond->slave_cnt, bond->slave_cnt + 1);
-> >   	netdev_compute_master_upper_features(bond->dev, true);
-> >   	bond_set_carrier(bond);
-> > @@ -2332,6 +2331,9 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
-> >   			bpf_prog_inc(bond->xdp_prog);
-> >   	}
-> > +	/* Increase the slave count before rebuilding the slave arrays. */
-> > +	WRITE_ONCE(bond->slave_cnt, bond->slave_cnt + 1);
-> > +
-> >   	/* broadcast mode uses the all_slaves to loop through slaves. */
-> >   	if (bond_mode_can_use_xmit_hash(bond) ||
-> >   	    BOND_MODE(bond) == BOND_MODE_BROADCAST)
-> > 
-> > ---
-> > base-commit: 38b6be101006d3e7af972999f45d4f1e8250587a
-> > change-id: 20260807-bond_slave_cnt-88e78c5f0ab9
-> > 
-> > Best regards,
+Hi,
+
+On 9/6/26 17:00, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 3 potential
+> issue(s) to consider:
 > 
-> I think the comment is redundant, of course we should change slave_cnt before it
-> is used by anything that needs it.
+> Critical: 0 · High: 0 · Medium: 2 · Low: 1
 
-Yeah, this is a reminder if someone else need to move it to other place.
-I can remove it if others also ask.
+[...]
 
-> 
-> Anyway, the patch looks good:
-> Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+> [Severity: Medium]
+> Should the new include come before Makefile.arch rather than after it?
 
-Thanks again for your review.
+This looks like a legit point
 
-Regards
-Hangbin
+[...]
+
+> [Severity: Medium]
+> The commit message says the change accounts for "the cross-compiling options
+> such as CROSS_COMPILE or the LLVM-specific variables". Does this also cover
+> the documented LLVM form described in Documentation/kbuild/llvm.rst, that is
+> make LLVM=1 ARCH=<arch> with no CROSS_COMPILE?
+
+I'll update the commit log to document the limitation
+
+[...]
+
+> [Severity: Low]
+> This isn't a bug, but now that Makefile.include is pulled in here, the
+> existing Q assignment later in this same file disagrees with it:
+
+Also legit as well.
+
+So, I'll swap the Makefile.arch and Makefile.include inclusions, document in
+the commit log that we don't deal with LLVM + no CROSS_COMPILE, and drop the
+
+Q = @
+
+line in ynltool/Makefile.
+
+Matthieu, are you OK with me keeping your review tag with the above changes,
+or do I drop it and resend for you to re-review ?
+
+Maxime
