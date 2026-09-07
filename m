@@ -1,127 +1,102 @@
-Received: from fhigh-b1-smtp.messagingengine.com (fhigh-b1-smtp.messagingengine.com [202.12.124.152])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sg-2-2.ptr.blmpb.com (sg-2-2.ptr.blmpb.com [71.18.227.2])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79CA142E413;
-	Mon,  7 Sep 2026 15:54:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16D8B3537E5
+	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 15:59:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=71.18.227.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788796456; cv=none; b=Hssj5uF34ocTkTP4X+evyH8MchP1CrdZ8390gm515Jg4Es8TLJv5mRbpzxiypnCLxDBzCqYlMN9VHBG+mfJ9Gyie3g21BTvp6gTWjHE4JaYreP5Cfkh8LijHHxST0JNwtJIuI87wkIt666WuCPv5GJ5cugAvIqo4gDWh7qLF2ME=
+	t=1788796756; cv=none; b=ZlOTl+LVFr1Sp6tf/kkU6BoKlTjLNOwP54Beia7XhGQqRZb/EvvZqZ8ckRi+3BOyxIXjs9r97lQdtd7fLr0G0Dqjv2R89dVdx/R1agzswDa+uVYLlxC0M17b/642ijP1+LxLC7BSAulbKzRW8PC6gjH7Zl1wKs7zzWy+69NkfiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788796456; c=relaxed/simple;
-	bh=7DAkVuwaidRKILEW8df4p8sJNNgVBr5msRytFD+Y8kA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=W1QtCLruOoEgvkKJljVxp2KFnJupgiQY/+OSeZJKBJvCYONSg3znyFFjFS2rutQzY4hjRBmGSSIP6ac7SwpIbKI/clLwVUg57LvrBLI/Gv6R5+wFWKnMVZ5GpKFh0lycCMpAJW8Io6gmoFmWNJ+nIJ1mCC3j3ORA65VSy+4siwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=RBRpsKGh; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=EneXJojm; arc=none smtp.client-ip=202.12.124.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+	s=arc-20240116; t=1788796756; c=relaxed/simple;
+	bh=wUEIL7VoWm6sWHD+ZViWxNXwM4BP7GRQp8vE/tW9rMU=;
+	h=Message-Id:References:Content-Type:Content-Disposition:Cc:From:
+	 Subject:Mime-Version:To:In-Reply-To:Date; b=TIyrfBeWIuaWa7cdnkq2FA41/3/SAvJFmmd1SYg8xt5wF50mmHJwGMJVGJO+WHxvmvpxmqiHVADZ4RmLWA+lVy853BhDCtXJeyWzzNNCVDqxR3KNpJ/XMoXgdGjwwcBCDPVTAeJsMK6InmkWBuyZV8rbz/Le8TZBrwjlkfKY3z8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cherr.cc; spf=pass smtp.mailfrom=cherr.cc; dkim=pass (2048-bit key) header.d=cherr.cc header.i=@cherr.cc header.b=r0LrwAnn; arc=none smtp.client-ip=71.18.227.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cherr.cc
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cherr.cc
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="RBRpsKGh";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="EneXJojm"
-Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 79B8E7A0134;
-	Mon,  7 Sep 2026 11:54:12 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-09.internal (MEProxy); Mon, 07 Sep 2026 11:54:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm1; t=1788796452; x=1788882852; bh=vmcGIo6Tl1
-	RcZJbVOwce0WI7+vR6QGOBP3ns+dsw7RA=; b=RBRpsKGhr3iVKD/4XRcSvSMQIX
-	c6Wmq11KagSv2cTxBaS8sTux0LfAekJm1vwV1x+Nl7GIcrGogLYyYZpmFCN+hgYp
-	Vr5c3zirdavuLuctXlenzlOOqZ64WOQgHghFsAawBIGxo6l2WDcChbI1sUZZdCai
-	j4S+yVcJwZ5RtX3YbfNRZ+j6XNl8RSn4lRrdlmpHZyKSNdbDfdDpR2Ei7bncUqcL
-	aVee5IartYjazvovvHqNlYsUr/UES9f6y1rWWL22/HobyfDV0/+oVIASji66JBdD
-	rPJXbmI+dpBCYyrZBOwIl+yu9d8QJnFOG/FDio17j59uvZbBu5j/naNpzX/g==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-	1788796452; x=1788882852; bh=vmcGIo6Tl1RcZJbVOwce0WI7+vR6QGOBP3n
-	s+dsw7RA=; b=EneXJojmKobprvmKmHAmSE2YqioDVwiQBTNO+OgPTkDUUaoD8JH
-	4SUKFv4A+MJqG5Ng+JFDqiV77Hp8sP/pbzWBC2ih+RDf0WddRXWbCl0u5m9eHLD6
-	CpL33FWE3MfKzUh3mLCdhguI+Mevv+wRztO5vdMdvNcIyTq4xgCO3eZRI184Dvz3
-	+14qlOEb1vd8YXBPJ9capb93FVn68oS8ogvd68zbbmozkLvT32EXwZe/wBftWgQM
-	6mpj/CMbfnVDtNSju3jgt9r1qMkSYdDU3ejggFVH/PtKAVp6pmAy/iSh1EwlkhGb
-	jDqIy+AdlFDEJwAsLWTa1jy8S28sVhjkwlA==
-X-ME-Sender: <xms:I96ear5yfNHAdjSBT3MhjRFTDzMuzikzTIiqbyd-soH4s1DODhbVEQ>
-    <xme:I96easD3rtDPl8KCFrUwtZ7epfQ6cxcWZcpwPot64enVT2KpHO10alpKjX2SEDwGW
-    0-rUPs01jE5jXzOSCM15LKvaDcE6uRlOmPQn94Wtvav-JX3yw>
-X-ME-Received: <xmr:I96eao2jw4TVKe8C2d67c6IA18pkpk7_28FU8EQ5sdNNfMHjIIcZPus-fvnZWw>
-X-ME-Proxy-Cause: dmFkZTGFhKjfemZgkL0XlIifGOFrkZeBE+xq/rfP4Fl+LXvjMd7PQ5LXrQ4oDSNls84ZQS
-    whb+IcnI3qMyXyp1sqiOPAFp7Qd6BcjKLCiA4c2AYY56lOSMEfNtALIXOsU1z3b0aB5ynH
-    bqHHggXXb9CiRuLqLWoKd6NPChd5NOL1wMVsV2TvKPwBxp5RjKlfTl+RZSgDdN4RD4vmc1
-    +B+DVJ50wrF+QSsrrLlVVn+BzitzC50Yy7nua+OsUiEKKOtDAkpYYJwTiuosO1vx693207
-    UDoVv6uYD9IM7pcTQciblNBrLmLSNwKh43tqveeXctGjXgzwRNaFyZU8u3iikqnLME93PX
-    GHY12OuASo1ZNEQ7E38DQn87wOYR86Lfs8sRsm+SDOrSZaJpLvmRJWM8j9sjJ8QIHJQ+vE
-    06rQTm6GK6rtErwaIzFAbz74aEalc72ky/iiY7ogAnXRALPV13752QQUvefxusUCxA5MZ/
-    +8gJLlEpwTCdYHbgCagJwZiEhjEknAXIRbe4nryXp0RXb4wtBSZlVOjo07Cno2MtVNJmh+
-    OPZTISdi6ISYgNtkvdQ+irCn3p76mg23rgpjzSQzOWi1uGU9qqNzuJeStn/b2NkN73oE5O
-    +CyB6XUemKiPQr5vklzwmhB2LKh9OhABhnBHrA0Oa+bWtD8lsv5V9kTjjydw
-X-ME-Proxy: <xmx:I96eanFBzJq0zv6ywdxWdWVOrwYVQ-Y1UT85sK64JvgvmpZbvIqQjw>
-    <xmx:JN6eahiYn5Ez7rWl-nh158i5MnhUuyBlwGkEImbudRHxJ1gTYjUA5A>
-    <xmx:JN6eahugvP7IPJq7Ju8QWZ18irDVf9QxA9BSPWmnTdtogDTd5UJrZg>
-    <xmx:JN6eaksLSKtoiijqZBURXosemi2yDK0Y6AEsIxurztkIv9ty00taUQ>
-    <xmx:JN6eapRmon52uqJur9PH5RxDUobu6E7B0QAwpGa9M_UXEbvlVRSMTmBB>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 7 Sep 2026 11:54:11 -0400 (EDT)
-Date: Mon, 7 Sep 2026 17:52:23 +0200
-From: Greg KH <greg@kroah.com>
-To: "Joakim Tjernlund (Nokia)" <joakim.tjernlund@nokia.com>
-Cc: Sasha Levin <sashal@kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	"syzbot+937b5bbb6a815b3e5d0b@syzkaller.appspotmail.com" <syzbot+937b5bbb6a815b3e5d0b@syzkaller.appspotmail.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-	Neal Cardwell <ncardwell@google.com>,
-	Matthieu Baerts <matttbe@kernel.org>,
-	Mat Martineau <martineau@kernel.org>,
-	Geliang Tang <geliang@kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"mptcp@lists.linux.dev" <mptcp@lists.linux.dev>,
-	"bcm-kernel-feedback-list@broadcom.com" <bcm-kernel-feedback-list@broadcom.com>,
-	"Atul Joshi (Nokia)" <atul.joshi@nokia.com>
-Subject: Re: [PATCH stable 6.12 v2] tcp: fix potential race in
- tcp_v6_syn_recv_sock()
-Message-ID: <2026090706-dehydrate-hence-4fe8@gregkh>
-References: <20260904183500.3841094-4-florian.fainelli@broadcom.com>
- <2026-09-05-daily-reply-0047-tcp-syn-recv-race-v2-6-12@kernel.org>
- <22b7bae35253cebe11b515d11b245d7c551c0f29.camel@nokia.com>
+	dkim=pass (2048-bit key) header.d=cherr.cc header.i=@cherr.cc header.b="r0LrwAnn"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=feishu2604220257; d=cherr.cc; t=1788796740; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=M8/WI6AJeSmvEUTgCg9I0OUNh2rq2++od/Uz13Erlf0=;
+ b=r0LrwAnnVwrDqdKZt88mDsSiChw/sNqErmbwcYw+6FO/za7fp9DTZyVxysalixLBdOqk8L
+ eFhO3wLpLdfjO3P5Rec3MD5q/tiZD1qNHKDs/ZVG5qJesvkHjcol1PYMqh5SYaD9hCCc3U
+ m0PCIbiytwgyDiNpjtfe66hGrpLT6kXSdNtFM2473Zz06DPTONhdRdoa7chvIATbTLlUj8
+ ggHAIM7kFrn9ICBeiAaR/79aDCXFyU8kyTZsk2LqA1KdFXDe+NjrzB65DZm/Cx8zu1fBH2
+ 201mJdMdzhxlMq0T39N8UbF6jJpVhjHB6TLKmy1SQQH16rZYdurkSt4SVlwx1g==
+Message-Id: <ap7fP5Lz04kySgn9@pve>
+X-Original-From: Shengzhuo Wei <me@cherr.cc>
+X-Lms-Return-Path: <lba+26a9edf43+f9605b+vger.kernel.org+me@cherr.cc>
+Received: from pve ([111.42.148.75]) by smtp.feishu.cn with ESMTPS; Mon, 07 Sep 2026 23:58:58 +0800
+References: <20260904105542.70540-1-phucduc.bui@gmail.com> <20260906131711.247708-1-horms@kernel.org> <CAABR9nFYrmteCtb6E_txg13U31Bf50p0PUBvaOXi3gmT7Z+0RQ@mail.gmail.com> <GV2PR04MB1173965A34420E072C0DD3A1988B22@GV2PR04MB11739.eurprd04.prod.outlook.com> <CAABR9nHUXPL8dV8iqJ-x4OWRLw-qRm8MTq_QDTEJ94WhLWRiqg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 7bit
+Cc: "Wei Fang" <wei.fang@nxp.com>, "Simon Horman" <horms@kernel.org>, 
+	"Frank Li" <frank.li@nxp.com>, "Shenwei Wang" <shenwei.wang@nxp.com>, 
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, 
+	"davem@davemloft.net" <davem@davemloft.net>, 
+	"edumazet@google.com" <edumazet@google.com>, 
+	"kuba@kernel.org" <kuba@kernel.org>, 
+	"pabeni@redhat.com" <pabeni@redhat.com>, 
+	"richardcochran@gmail.com" <richardcochran@gmail.com>, 
+	"swboyd@chromium.org" <swboyd@chromium.org>, 
+	"imx@lists.linux.dev" <imx@lists.linux.dev>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, 
+	"Shengzhuo Wei" <me@cherr.cc>
+From: "Shengzhuo Wei" <me@cherr.cc>
+Subject: Re: [PATCH net v3] net: fec: Propagate PTP initialization errors
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <22b7bae35253cebe11b515d11b245d7c551c0f29.camel@nokia.com>
+Mime-Version: 1.0
+To: "Bui Duc Phuc" <phucduc.bui@gmail.com>
+In-Reply-To: <CAABR9nHUXPL8dV8iqJ-x4OWRLw-qRm8MTq_QDTEJ94WhLWRiqg@mail.gmail.com>
+Date: Mon, 7 Sep 2026 23:58:55 +0800
 
-On Mon, Sep 07, 2026 at 03:34:45PM +0000, Joakim Tjernlund (Nokia) wrote:
-> On Sun, 2026-09-06 at 09:33 -0400, Sasha Levin wrote:
-> > 
-> > 
-> > > This fixes CVE-2026-43198 (v2 -- v1 broke the DCCP build by not updating
-> > > every icsk_af_ops.syn_recv_sock implementer for the new argument).
-> > 
-> > Queued for 6.12, thanks.
-> > 
-> > --
-> > Thanks,
-> > Sasha
+On 2026-09-07 09:28, Bui Duc Phuc wrote:
+> Oh, great! I see it now.
 > 
-> Hi
+> However, it looks like that patch does not fully address the root cause.
 > 
-> I do not see this one in the just released 6.12.109, maybe I am blind?
+> There are two places where devm_request_irq() is called:
+> For PPS in fec_ptp_init().
+> 
+> In probe():
+> devm_request_irq(&pdev->dev, irq, fec_enet_interrupt,
+> 0, pdev->name, ndev);
+> 
+> The approach in that patch only handles the first case, so it does not
+> fully solve the problem.
+> 
 
-Nope, "next one".
+Yes, my patch leaves the main Ethernet IRQs unchanged.
 
-thanks,
+For PPS, it also addresses the handler racing with PHC teardown,
+as discussed in your earlier thread. Clearing pps_enable does not
+wait for a handler that has already passed the check. The explicit
+devm_free_irq() waits for that handler before ptp_clock_unregister().
 
-greg k-h
+Moving the netdev allocation to devm would address the IRQ/netdev
+freeing order, but by itself would not provide that synchronization
+before PHC teardown.
+
+For the probe failure case Simon pointed out, we also need to account
+for the failed_reset path skipping fec_ptp_stop(). With the explicit
+IRQ release in fec_ptp_stop(), applying both patches would still
+leave that path without the early IRQ cleanup.
+
+I am preparing v2 with fec_ptp_stop() moved after unregister_netdev(),
+as Wei suggested for patch 1.
+
+Are you planning a separate patch for the IRQ lifetime issue? I'd
+like to coordinate so that we cover these paths without duplicating
+the work.
+
+Thanks,
+Shengzhuo
