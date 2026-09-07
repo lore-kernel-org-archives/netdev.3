@@ -1,133 +1,269 @@
-Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73F2640DB52
-	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 07:15:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.181
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788765355; cv=pass; b=f1jSUpfv5ET46xPcBNlrTVUGJ4IIDajhZTvbTCcVu25DYMpQ4FawdbFn1OaOt8spUJu9m78g34Bz2gkWjokWwGgps45fSG4XTu/D7z89fRkzkaul6tERjC1jjHRrqOAKZQWwxKuuoV8KrbB7wCqROs0aSzvntj1kHd5ml0bKEmg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788765355; c=relaxed/simple;
-	bh=leHVZXld9eH9iZDPZ6fIXvSuhv4Lo3E5ocYgQ1ebU9M=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jg/1Wi9Kc3SvSGgOF3bEgvuN0JuXYGd6OBjZChQGpVuXzD5b+gcYdmHpQEegArXDqFmO27k/mRKRLp9a+FOE4HAW0evMTQ7KR3n1ZOjVX1nM98eOvCBvxnAE/8Gezd64yVcAbhJVtYKajxQKI30BCSX9j4XbrZ8RPeAhmy7eMjo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=Lq1YwZgP; arc=pass smtp.client-ip=209.85.208.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3C283B0AF8;
+	Mon,  7 Sep 2026 07:21:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788765662; cv=none; b=DJYzF2JAXcU4DFjptvJHGA2OkJe1ZCEw/yssG0pYcC2A/cWrZDNgQhYlMANj7+GJKsZHQ4ieCOsV8kC9pCtebh83PH7rHBNr9t3Fe4F3d6cOpp8GiLzsT0Q5J/znDpYktujF0CF2Em2xgxwYCS+xOjR9WM/eJf3MS7UeBLrefsw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788765662; c=relaxed/simple;
+	bh=mHKyplDpMnkx1uTKj5BFGnKcUH8YmAQC9USBmMyMm4c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gmbNswGMJYGXYfb6Ta6Yg/clv9ZtKZFxhvkc1lhc2ITNMmd8CEusUOzsKVipeBkXuj6SgrcAbdnajRih7uJYNvWKN1M7lJgxrEW071so6Qpm7ewgFF1Yly+bl9CG/CXUyEY7yd6H5yPpeNrnrJwFjWvXCLI1YW6+VCbXaM8Bc24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QssIiPdo; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="Lq1YwZgP"
-Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-39f20d19895so22417261fa.2
-        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 00:15:52 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788765350; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Z/NdXKwVE7LhUSedEwd/Cujgx7JyM7QMrBRu55AmXQUlWgbAhtHqn4i5Py5hspZrJM
-         jX5N/6cwA4/De9aSt03XZSjg4wjvkuluw60vhx+PCd2CMNuvRW/kK3VEfAFEpkYPq8bU
-         +E2Pv9qOEAUTibNWSsKGKCNuLxM4/KkHzagMqG6vjVV8r/A6eM4aju8PrJL+pecQg9QC
-         132o+gb2OJT2SN9Nc5LoSbm2ZBGJhUcTrbBknUZstDqZZx00FdniUNVZgYr6HRNn9Lwx
-         W6DtH54m4lXRowA2mHXar4+nHSmrahW8f6tfKzOzHgEbXevgDh/mSJOxpKnxZlN1P8rS
-         7kvA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=WWwKXGzFB/6B7wjEdxdxzEcQwrEfUSJ8Wvetx/HvB60=;
-        fh=YF8Z5OoqUuN+8xajeZOw1D+81LATu+L+ckxDTkjvcYY=;
-        b=LmyQSbSv1E49v3CyFBmdELsBT1hBDvsXlBNbCe8VRSbhsdk/0kMXsvVFkVbMipc0na
-         Q/xvgDKJO0Mh+XpPK45YtSO3RR1rnPjxpeP8sLN3nnoH3mQDaFOuASSx7dtRS1yYusZt
-         +iZmCjpsLCJ9CYEHfVEQbe1l7wVo31xgMZm5idcIvJ6KD74AKjWMw+kp0MMr1FRb+BJF
-         GJwoO8t9ezprq4ehwRFVoS/vjCyXr41EE+cQe4b/jnRIQveAnanrdoekrfXj+lAeb+Nz
-         eEuUfDcqR03Z+n5JF2c9aSKta9O3ZqBOv79zfzUE6FoQieLcQ9dO+IGTBAciQhIisTAP
-         G+nQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1788765350; x=1789370150; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=WWwKXGzFB/6B7wjEdxdxzEcQwrEfUSJ8Wvetx/HvB60=;
-        b=Lq1YwZgPqRf+7Pxl9disFZ14dqGl/QPk4Q92znevy1bB4ggHV+vi6ltGVKpRmbXSeY
-         Fz6I/psXx6S5j5exsaDwFrnRr65fPKk2efBueXG2RcEiQT4NZtQdhs/RsuTa3m70o1bw
-         H6vnT+hB1BCqedp6kAOjo4jEVz3PzJKynHawAZ6gCaqVnyUeX7DxbFseqFq2vkXH2NHm
-         avTL/6+q3Icf03UjmNMx6EIPZn/XmdoW+ysI1bpzh3l5PgWUKDvbBdDoTuJpImd2TxrX
-         JIexykIu2edhMbyLxJzM3O27zDY6wBqYCTbi76dRReRRMy2mvfsIvB+5IPgUwHLmGhtV
-         O28A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788765350; x=1789370150;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=WWwKXGzFB/6B7wjEdxdxzEcQwrEfUSJ8Wvetx/HvB60=;
-        b=qCQd/5MKarE6pEA+Ehy2sNaa7pTIdLFlxxuytNOhCwjUozzYmL9lg+h3C4Or0cJRd5
-         yB5Dhk/NLLzGGChfvhv1lgzKgXhBBoBhy2uaq5Xl5jYvacncw3JCClLbVhVtvHcMjTXu
-         Y5fhJHDTppvsvHDNJaYqKeErn+owAaAEVNLGjbxFOcYsfAhCxmfcbZ4l61a5niclyGVT
-         q9ST6JZyxAWDuMFsEWpXz7d0jA8VhyUtzY0Mqdj+7jy6zB71Zu1cX8/NiQabbay6ol9r
-         VCWRwsuNOtP+/v2nk2cNtGNsR+5h5Sx2TjPWu98lyeEhP0GzfmFC5P8i7Lk36q3BVghe
-         iInw==
-X-Forwarded-Encrypted: i=1; AKwUvBwM8TY4hEJo8HZjdYl9kzsgiBo5t30dimaSyDp5VkjSDO+9792vSLpbFXWgTjichGkFIXeYqXE=@vger.kernel.org
-X-Gm-Message-State: AFuF++nXup3EaYmHJdDAp0YKe0CChlE30+hpnzSVRQM6u4yIxdk5/EA1
-	qs0HqEIrdZrmQFeId2wF+Wabtt1PS8ekOAjCptDdSpEGLOkH5/DIMkOrl/d+ReFCTTNnNQYj7Ps
-	dkWrSxNXTE83QZs496AC9fdEbFSuQS0Z4mj+rwcw0S9Y=
-X-Gm-Gg: AYBFou3/eVkQWtRwxzS+2sNdfHHiiPFRJySgrynzUT/YJbgQi35YV6LyUe7A8nq14aU
-	a4j4RbZfPfW1pKRLTLzSwHgY9i7ILAfyk0w4HbPkDOBV0FNyKc6hdoCIEmuxJrUI59WLPouji4L
-	CF0KT+6GGy+TX9/r9yEsdL2VX2Xbb73UpA0InUk4CHY4xGjOOuL3sAKoaKpTGwm7cmMkxrVgDr6
-	62HsFR0XhM9zT0kmYObYMQ8nv2BjMPZJy/ttN7GR7F3tmolmC8jPaX2O2ttNn4khpKMAyvOnRQk
-	lJ59VyEWztVCXv3kLpGuPIGDsk/inrEh27lRVTHULAXpD0yyGPvyvlJyRwf/p2vFWctRzZHJxWw
-	=
-X-Received: by 2002:a2e:a98e:0:b0:3a3:2a41:c0c4 with SMTP id
- 38308e7fff4ca-3a371bdb9ecmr21466191fa.14.1788765349741; Mon, 07 Sep 2026
- 00:15:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QssIiPdo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 765451F00A3A;
+	Mon,  7 Sep 2026 07:20:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788765660;
+	bh=Fh4nIXEc46CLzKEaUTzNpdWpkc0RIh50f/WAlJVmzzo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=QssIiPdoKluxQNZbkf+oqDFslHn3cnqbW3yvcXmGD0mpA45+04tehXgB7ND+nY5gk
+	 c73yf0ziOfW25KdugDr/WCmf61YGIRG+VtRCtdQBpnpE2WbNWeN5IK3I40I9CEHR2d
+	 eaqdYpN3RmhGRrSHYuCsRNH8UHvkQVbirtvcmJdJwTPBb4ijGEbVFl2Oa23fTjCwz/
+	 /eDdpCsrodwggrZQTXFsKye7c7mW9FRrRvdOzP/LHN2bMlKW4ZLe3smjPUvTSoYevU
+	 IwrDX0urqYNZANhirtHBi4ZB3bP7mLUuZq4/wVn3OefUtnD3RXNTWwK6X7gEp7MZTl
+	 Fs5hFKF74QbfA==
+Date: Mon, 7 Sep 2026 10:20:55 +0300
+From: Leon Romanovsky <leon@kernel.org>
+To: Ratheesh Kannoth <rkannoth@marvell.com>
+Cc: davem@davemloft.net, gakula@marvell.com, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, sgoutham@marvell.com, andrew+netdev@lunn.ch,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
+Subject: Re: [PATCH v7 net] octeontx2-af: switch qmem from coherent DMA alloc
+ to streaming DMA mapping
+Message-ID: <20260907072055.GF13683@unreal>
+References: <20260907042617.4076723-1-rkannoth@marvell.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cdc628415cf10721480a51ce14837f846ec778c2.1788248601.git.zihanx@nebusec.ai>
- <178875495405.219967.5594821749566554418@kernel.org> <CAANe3eRBOQud=bMgLnPbD_yUYUkJtT=GBqtY+GR0ZtU0_kbzhg@mail.gmail.com>
- <CANn89iLn+Xi9cEphy3nR4bGnFCownrWa9rTZ=AnijArDFo2O7Q@mail.gmail.com>
-In-Reply-To: <CANn89iLn+Xi9cEphy3nR4bGnFCownrWa9rTZ=AnijArDFo2O7Q@mail.gmail.com>
-From: zihan xi <zihanx@nebusec.ai>
-Date: Mon, 7 Sep 2026 15:15:37 +0800
-X-Gm-Features: AcwNN1VAmgJsxlkj9OvW4LjLVIy_57TEsN_AWLvPrdkLDxAVfSNlHuWjRZ_THxg
-Message-ID: <CAANe3eR=sQeTRNuewiqo0ZFwS6fk=HtxvT6TMGhq8F5Pqdxovg@mail.gmail.com>
-Subject: Re: [PATCH net v2 1/2] tcp: diag: bound bucket lock hold in tcp_diag_dump()
-To: Eric Dumazet <edumazet@google.com>
-Cc: netdev-bot+sashiko@kernel.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, mptcp@lists.linux.dev, davem@davemloft.net, 
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, ncardwell@google.com, 
-	kuniyu@google.com, matttbe@kernel.org, martineau@kernel.org, 
-	geliang@kernel.org, gnault@redhat.com, fw@strlen.de, stable@vger.kernel.org, 
-	vega@nebusec.ai
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260907042617.4076723-1-rkannoth@marvell.com>
 
-On Mon, Sep 7, 2026 at 3:06=E2=80=AFPM Eric Dumazet <edumazet@google.com> w=
-rote:
->
-> > - bind cursor UAF / dangling tb2: valid
-> > - unconditional sock_hold() on unpublished TIME_WAIT: valid
-> > - clearing s_num on cursor mismatch: valid
-> > - lockless cursor-membership checks: valid as a concern
-> > - commit message overstating bind/ehash fill-under-lock: valid
-> > - missing note that MPTCP needs the follow-up patch: valid as a
-> >   backport note
-> > - endless re-scan of the same bucket head: not valid as a
-> >   guaranteed livelock; duplicate output after a rejected cursor
-> >   is valid
->
-> I just saw your patch today. This is absolutely insane.
->
-> Please limit the complexity of a filter to something reasonable.
-> Absolutely no sane user is using a very complex filter.
->
-> Same for UDP.
+On Mon, Sep 07, 2026 at 09:56:16AM +0530, Ratheesh Kannoth wrote:
+> qmem_alloc() uses dma_alloc_attrs() with DMA_ATTR_FORCE_CONTIGUOUS, which
+> allocates CPU-cache-coherent DMA memory and, with CMA enabled, draws from
+> the CMA pool. qmem backs NIX/NPA queue contexts, admin queues, and LMTST
+> regions (including CN10K LMTST areas that span page boundaries), so
+> consumption grows with enabled interfaces and is hard to provision in CMA.
+> 
+> Switch qmem to a streaming-DMA-style path: allocate physically contiguous
+> compound pages from the buddy allocator via __get_free_pages(), then map
+> them for device access with dma_map_page_attrs(). Add
+> otx2_dma_alloc_coherent() and otx2_dma_free_coherent() helpers that
+> enforce dev_is_dma_coherent(), retry with GFP_DMA32 when the physical
+> range is outside the device DMA mask, and wire qmem_alloc()/qmem_free()
+> through them instead of dma_alloc_attrs()/dma_free_attrs().
+> 
+> This works on Octeon because the octeontx2 driver is written for
+> DMA-coherent devices: Octeon platforms provide IO coherency (via SMMU), so
+> the driver already uses streaming DMA APIs for packet data while
+> deliberately skipping explicit CPU cache sync (DMA_ATTR_SKIP_CPU_SYNC).
+> The same IO coherency lets qmem use a streaming map of buddy-allocated
+> pages instead of a dedicated coherent allocator or CMA reservation. That
+> is valid because the platform is DMA-coherent, not because omitting
+> dma_sync_* magically makes memory coherent.
+> 
+> Allocations requiring more than MAX_PAGE_ORDER pages are still rejected,
+> since the buddy allocator cannot serve them without CMA.
+> 
+> cc: Geetha sowjanya <gakula@marvell.com>
+> Fixes: 73d33dbc0723 ("octeontx2-af: Use DMA_ATTR_FORCE_CONTIGUOUS attribute in DMA alloc")
+> Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
+> 
+> ---
+> v6 -> v7: Addressed Sashiko comments
+> 	https://lore.kernel.org/netdev/178863855246.219967.10510865726694393307@kernel.org/
+> 
+> v5 -> v6: Addressed Review comments
+> 	https://lore.kernel.org/netdev/20260901015621.2708182-1-rkannoth@marvell.com/
+> 
+> v4 -> v5: Fixed compilation issues.
+> 	https://lore.kernel.org/netdev/20260831024210.208447-1-rkannoth@marvell.com/
+> 
+> v3 -> v4: Fixed compilation issues.
+> 	https://lore.kernel.org/netdev/apTpKcN_S1xIwRbZ@rkannoth-OptiPlex-7090/
+> 
+> v2 -> v3: Addressed sashiko comments
+> 	https://sashiko.dev/#/patchset/20260825045616.3723078-1-rkannoth%40marvell.com
+> 
+> v1 -> v2: Rewrote patch as per sashiko comment
 
-Thanks for the feedback.
+Your changelog says nothing. It should contain bullet points describing
+what was actually changed. A generic "Addressed Sashiko comments" is not
+sufficient.
 
-We will drop the dump-cursor rewrite.
+> ---
+>  .../ethernet/marvell/octeontx2/af/common.h    | 99 +++++++++++++++++--
+>  1 file changed, 93 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/common.h b/drivers/net/ethernet/marvell/octeontx2/af/common.h
+> index 779413a383b7..cca2ae22c753 100644
+> --- a/drivers/net/ethernet/marvell/octeontx2/af/common.h
+> +++ b/drivers/net/ethernet/marvell/octeontx2/af/common.h
+> @@ -7,6 +7,11 @@
+>  #ifndef COMMON_H
+>  #define COMMON_H
+>  
+> +#include <linux/dma-direct.h>
+> +#include <linux/dma-mapping.h>
+> +#include <linux/gfp.h>
+> +#include <linux/mm.h>
+> +
+>  #include "rvu_struct.h"
+>  
+>  #define OTX2_ALIGN			128  /* Align to cacheline */
+> @@ -44,6 +49,90 @@ struct qmem {
+>  	u32		qsize;
+>  };
+>  
+> +static inline bool otx2_dma_phys_in_mask(struct device *dev, phys_addr_t paddr,
+> +					 size_t size)
+> +{
+> +	dma_addr_t dma_addr = phys_to_dma(dev, paddr);
+> +
+> +	return dma_capable(dev, dma_addr, size, true, 0);
 
-A follow-up can cap inet_diag bytecode complexity in
-inet_diag_bc_audit() so TCP, UDP and MPTCP dumps share the same limit.
+This line makes no sense in the driver code.
 
-Please let me know if that is the direction you want.
+> +}
+> +
+> +static inline void *otx2_dma_alloc_coherent(struct device *dev, size_t size,
+> +					    dma_addr_t *dma_handle)
+> +{
+> +	dma_addr_t dma_addr;
+> +	unsigned int order;
+> +	gfp_t alloc_gfp;
+> +	void *vaddr;
+> +
+> +	if (!dev || !dma_handle || !size)
+> +		return NULL;
+
+Please remove defensive programming style, how can you call to DMA API
+without device, dma_handle or size?
+
+> +
+> +	if (!dev_is_dma_coherent(dev))
+> +		return NULL;
+> +
+> +	size = PAGE_ALIGN(size);
+> +	order = get_order(size);
+> +
+> +	/* Octeontx2 qmem call sites size their allocations within
+> +	 * MAX_PAGE_ORDER; mailbox, queue context, and ring memory
+> +	 * requirements stay below the buddy allocator's limit.
+> +	 */
+> +	if (order > MAX_PAGE_ORDER) {
+
+Size is coming from the kernel, how can it be with order more than MAX_PAGE_ORDER?
+
+> +		dev_err(dev,
+> +			"CONFIG_ARCH_FORCE_MAX_ORDER is set to %u, minimum needed is %u\n",
+> +			MAX_PAGE_ORDER, order);
+> +		return NULL;
+> +	}
+> +
+> +	if (size > dma_max_mapping_size(dev))
+> +		return NULL;
+
+Same comment.
+
+> +
+> +	alloc_gfp = GFP_KERNEL | __GFP_ZERO | __GFP_COMP;
+
+__GFP_COMP???
+
+> +
+> +	vaddr = (void *)__get_free_pages(alloc_gfp, order);
+
+You should use plain ksmalloc(). There was ongoing effort to remove
+useless __get_free_pages().
+https://lore.kernel.org/all/20260713-b4-rdma-v2-0-65d2a1a5180c@kernel.org/
+
+> +	while (vaddr &&
+> +	       !otx2_dma_phys_in_mask(dev, virt_to_phys(vaddr), size)) {
+> +		free_pages((unsigned long)vaddr, order);
+> +		if (alloc_gfp & GFP_DMA32)
+> +			return NULL;
+> +		alloc_gfp |= GFP_DMA32;
+> +		vaddr = (void *)__get_free_pages(alloc_gfp, order);
+> +	}
+
+If you want to use streamline API, please use it like any other driver
+without these DMA32 hacks.
+
+> +	if (!vaddr)
+> +		return NULL;
+> +
+> +	/* dev_is_dma_coherent() only guarantees cache coherency, not that the
+> +	 * mapped DMA address aliases qmem->base.  Require a coherent mapping
+> +	 * so the DMA API rejects SWIOTLB bounce buffers.
+> +	 */
+> +	dma_addr = dma_map_page_attrs(dev, virt_to_page(vaddr), 0, size,
+> +				      DMA_BIDIRECTIONAL, DMA_ATTR_REQUIRE_COHERENT);
+
+I don't understand why you insist on DMA_ATTR_REQUIRE_COHERENT. It is
+clearly documented as being required for UAPI-visible memory.
+
+> +	if (dma_mapping_error(dev, dma_addr)) {
+> +		free_pages((unsigned long)vaddr, order);
+> +		return NULL;
+> +	}
+> +
+> +	*dma_handle = dma_addr;
+> +	return vaddr;
+> +}
+> +
+> +static inline void otx2_dma_free_coherent(struct device *dev, size_t size,
+> +					  void *vaddr, dma_addr_t dma_handle)
+> +{
+> +	unsigned int order;
+> +
+> +	if (!dev || !vaddr)
+> +		return;
+> +
+> +	size = PAGE_ALIGN(size);
+> +	order = get_order(size);
+> +
+> +	dma_unmap_page_attrs(dev, dma_handle, size, DMA_BIDIRECTIONAL,
+> +			     DMA_ATTR_REQUIRE_COHERENT);
+> +	free_pages((unsigned long)vaddr, order);
+> +}
+> +
+>  static inline int qmem_alloc(struct device *dev, struct qmem **q,
+>  			     int qsize, int entry_sz)
+>  {
+> @@ -60,8 +149,7 @@ static inline int qmem_alloc(struct device *dev, struct qmem **q,
+>  
+>  	qmem->entry_sz = entry_sz;
+>  	qmem->alloc_sz = (qsize * entry_sz) + OTX2_ALIGN;
+> -	qmem->base = dma_alloc_attrs(dev, qmem->alloc_sz, &qmem->iova,
+> -				     GFP_KERNEL, DMA_ATTR_FORCE_CONTIGUOUS);
+> +	qmem->base = otx2_dma_alloc_coherent(dev, qmem->alloc_sz, &qmem->iova);
+>  	if (!qmem->base)
+>  		return -ENOMEM;
+>  
+> @@ -80,10 +168,9 @@ static inline void qmem_free(struct device *dev, struct qmem *qmem)
+>  		return;
+>  
+>  	if (qmem->base)
+> -		dma_free_attrs(dev, qmem->alloc_sz,
+> -			       qmem->base - qmem->align,
+> -			       qmem->iova - qmem->align,
+> -			       DMA_ATTR_FORCE_CONTIGUOUS);
+> +		otx2_dma_free_coherent(dev, qmem->alloc_sz,
+> +				       qmem->base - qmem->align,
+> +				       qmem->iova - qmem->align);
+>  	devm_kfree(dev, qmem);
+>  }
+>  
+> -- 
+> 2.43.0
+> 
+> 
