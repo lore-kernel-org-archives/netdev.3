@@ -1,57 +1,57 @@
 Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0827E45349A
-	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 09:30:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB1454508E9
+	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 09:30:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788773438; cv=none; b=RATeOAHZCk+xFXLvPAlY38IQ8ncUfavnrsLD6tmeTImV3Kl262m9cqre3ex3YnMBXzr3LsUakJ/Rg9ihVgDbYY7V2sgVbLobRPT8QY7usoOmQ+RQDIYrY1TOU+UsBrZ6/UyoPTC6r6mMDRCW1Tx4VwFOcc1l2XoPIkYkDOSntRk=
+	t=1788773438; cv=none; b=R6S5YZicYc6S+oyhOix5LNyqQ1ShghinHeufPSyZ6KXQI7/gakDYHN1O2n/GQwqBQHGt/dZzQk0r6umSQg6O2N+dsMzAG2ktyvmcWcKdpItaaaWne9JHFlQgL+pBzhFBveKDtxZyJC7TbmYhmHVSkgqFL04R7V3y5p9lma7XKo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1788773438; c=relaxed/simple;
-	bh=PypWq0MhG+kVqexSMZzJkkOER33fEE6MSvvoZEu85nw=;
+	bh=EnFcOp/5smEyL9UjudpmjJpO0RVyj9b71zV5dewldlQ=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=U9Qi4ys7gg0SqUk+0fXYkQ5AkndrLOJzyfdRZcisAO0LE65/ToSkNyMC+q6j7x3xBLPByZI0gpz0vQoOzo2kGvpAixzLTSFJjYq3tRDx+kyFYjOqCgHlvrKCqWwr6wgU+zPZ+XQow46AASPHTTI+2Otvivw8jNfF+GGf/lNTDqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=cOljL5Ld; arc=none smtp.client-ip=62.96.220.36
+	 MIME-Version:Content-Type; b=Iv8Bjc4gRr3Kwn2Xq5cKaieeAqsVGN85ZsmcBnzy4L/H+0m6qxgP3xqpxVgiU0FWYAD0pUIeSC1N8rT0R040cfn9qLQtBrj0jKpaXXRmocPEHEJvfdZrsmh0FBSwuNRtBMy7OFSZ4S4b35QQGp9GeEbvuLHJIuOYOaQIRzHZQcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=l7BYmT4+; arc=none smtp.client-ip=62.96.220.36
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="cOljL5Ld"
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="l7BYmT4+"
 Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id 690EB204D9;
-	Mon,  7 Sep 2026 11:30:34 +0200 (CEST)
+	by mx1.secunet.com (Postfix) with ESMTP id B763020754;
+	Mon,  7 Sep 2026 11:30:32 +0200 (CEST)
 X-Virus-Scanned: by secunet
 Received: from mx1.secunet.com ([127.0.0.1])
  by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id OdjSpGwD1l5F; Mon,  7 Sep 2026 11:30:33 +0200 (CEST)
+ with ESMTP id B1TgLiX4Cmlp; Mon,  7 Sep 2026 11:30:32 +0200 (CEST)
 Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id 7BA2320508;
-	Mon,  7 Sep 2026 11:30:33 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 7BA2320508
+	by mx1.secunet.com (Postfix) with ESMTPS id A189420663;
+	Mon,  7 Sep 2026 11:30:31 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com A189420663
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1788773433;
-	bh=tjU/viO+z/ifhOFBVx3TRsY4JPRfp92qCD//JKhvuvY=;
+	s=202301; t=1788773431;
+	bh=6STJUMD1l5xGn2J2trTkCbNUqgNpDPUE/nySkJGqvDk=;
 	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
-	b=cOljL5LdayoAySjLL5CGi3bTImCUHTyfu3OK1hQaN2FiIMqiZ5pVypc8mjhlj6oCD
-	 jvvq0RAk9Hrv442yoNjgznaoY4+Jug14K26eJklN1bQwaCbPXUNqEcOmAEEIYoqMSf
-	 Y2/aahkxGoYLvrJtZH+2f0U1D3Lc7cOHdsKVGE4b2xEA1xomR+TcO/r1NL+nwlC51f
-	 b5M05ODf+oSbKjXY+vp+WZD7CNKySIySsl1AwS3o6Et8P490odOhz6zVZPQukdJZME
-	 Olbux670UnYrclz65FazpR2cXtJZnDdCmmz5ngKrSjCk7RlmCh4TFF9zZ8V4H50vXN
-	 phCqVmTrDXpYg==
+	b=l7BYmT4+GDjKRrUWxN2l06A7zrcEYgUbnrJymDF+3MEUHBc+m3o9aPSzgF3SwYn8v
+	 0CtFi890t8fC2q6ysC3fhVB3XBimklqtMIxTK4iLjkS6aJGy2gfczg7JTh8UtmkHVn
+	 OclzcIRovQykTrNvDOGoW4d38Ir7bFar8xuVeOxU7TKo575svUTqQ0P45Ytq9PWLWW
+	 G/u1FByYG6TJ0FUxI7bg//OGM0j6rkKBUKAmfHlmvchrtqwSMashTmu4NrHZm+x09Q
+	 q/erRgkGabdUPGj4nBgK29TjHIjwPc+7ZSciRbqF9CHEViWRcU1WhWXdqQjCoRajN3
+	 xAOZfJW57BjLA==
 Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Mon, 7 Sep
- 2026 11:30:32 +0200
-Received: (nullmailer pid 2228808 invoked by uid 1000);
+ 2026 11:30:30 +0200
+Received: (nullmailer pid 2228817 invoked by uid 1000);
 	Mon, 07 Sep 2026 09:30:24 -0000
 From: Steffen Klassert <steffen.klassert@secunet.com>
 To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
 CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
 	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
-Subject: [PATCH 03/12] xfrm: add missing RCU read lock in xfrm_send_migrate_state()
-Date: Mon, 7 Sep 2026 11:29:46 +0200
-Message-ID: <20260907093020.2228346-4-steffen.klassert@secunet.com>
+Subject: [PATCH 06/12] xfrm: fix compat ALLOCSPI request use-after-free
+Date: Mon, 7 Sep 2026 11:29:49 +0200
+Message-ID: <20260907093020.2228346-7-steffen.klassert@secunet.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260907093020.2228346-1-steffen.klassert@secunet.com>
 References: <20260907093020.2228346-1-steffen.klassert@secunet.com>
@@ -63,57 +63,71 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: EXCH-04.secunet.de (10.32.0.184) To EXCH-01.secunet.de
+X-ClientProxiedBy: EXCH-03.secunet.de (10.32.0.183) To EXCH-01.secunet.de
  (10.32.0.171)
 
-From: Aleksandr Nogikh <nogikh@google.com>
+From: Kyle Zeng <kylebot@openai.com>
 
-xfrm_nlmsg_multicast() requires the RCU read lock to be held because it
-safely dereferences the net->xfrm.nlsk pointer using rcu_dereference().
-When it is called from xfrm_send_migrate_state(), the RCU read lock is not
-held, which triggers a suspicious RCU usage warning:
+xfrm_state_netlink() builds the ALLOCSPI response with
+dump_one_state(), which already calls alloc_compat() with the response
+skb and header.
 
-WARNING: suspicious RCU usage
-net/xfrm/xfrm_user.c:1630 suspicious rcu_dereference_check() usage!
+xfrm_alloc_userspi() then calls alloc_compat() again, but passes the
+original request skb and its header. For a compat request, the
+translator therefore interprets the 228-byte compat xfrm_userspi_info
+as the 232-byte native layout and reads four bytes past the declared
+payload. It also publishes the translated child through the request's
+frag_list.
 
-Call Trace:
- lockdep_rcu_suspicious+0x13f/0x1d0 kernel/locking/lockdep.c:6876
- xfrm_nlmsg_multicast+0x1d8/0x1f0 net/xfrm/xfrm_user.c:1630
- xfrm_send_migrate_state+0x870/0xae0 net/xfrm/xfrm_user.c:3340
- xfrm_do_migrate_state+0x1749/0x1e90 net/xfrm/xfrm_user.c:3507
- xfrm_user_rcv_msg+0x7a8/0xf30 net/xfrm/xfrm_user.c:3907
+A multicast clone of the request shares skb_shared_info and can observe
+that child. xfrm_user_rcv_msg() frees it after the request handler
+returns, racing a compat receiver which may still be copying from it and
+resulting in a use-after-free.
 
-Fix this by wrapping the xfrm_nlmsg_multicast() call in
-xfrm_send_migrate_state() with rcu_read_lock() and rcu_read_unlock().
+Remove the redundant conversion. The response keeps its correct compat
+translation from dump_one_state(), and no child is attached to the
+inbound request.
 
-Fixes: a9d155ea9b44 ("xfrm: add XFRM_MSG_MIGRATE_STATE for single SA migration")
-Assisted-by: Gemini:gemini-3.5-flash Gemini:gemini-3.1-pro-preview syzbot
-Reported-by: syzbot+c0e99a1aa85a286d7a3b@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=c0e99a1aa85a286d7a3b
-Link: https://syzkaller.appspot.com/ai_job?id=8977f559-3a7e-4bb5-b4d6-1196956260b6
-Signed-off-by: Aleksandr Nogikh <nogikh@google.com>
+Fixes: 5f3eea6b7e8f ("xfrm/compat: Attach xfrm dumps to 64=>32 bit translator")
+Assisted-by: Codex:gpt-5.6-sol Codex:gpt-5.5-cyber
+Signed-off-by: Kyle Zeng <kylebot@openai.com>
+Co-developed-by: David Lee <david.lee@trailofbits.com>
+Signed-off-by: David Lee <david.lee@trailofbits.com>
 Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 ---
- net/xfrm/xfrm_user.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ net/xfrm/xfrm_user.c | 12 ------------
+ 1 file changed, 12 deletions(-)
 
 diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
-index 6266a92cf302..980dbeb5a57d 100644
+index 980dbeb5a57d..a2587c7e796b 100644
 --- a/net/xfrm/xfrm_user.c
 +++ b/net/xfrm/xfrm_user.c
-@@ -3337,7 +3337,11 @@ static int xfrm_send_migrate_state(struct net *net,
- 		return err;
+@@ -1877,7 +1877,6 @@ static int xfrm_alloc_userspi(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 	struct net *net = sock_net(skb->sk);
+ 	struct xfrm_state *x;
+ 	struct xfrm_userspi_info *p;
+-	struct xfrm_translator *xtr;
+ 	struct sk_buff *resp_skb;
+ 	xfrm_address_t *daddr;
+ 	int family;
+@@ -1943,17 +1942,6 @@ static int xfrm_alloc_userspi(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 		goto out;
  	}
  
--	return xfrm_nlmsg_multicast(net, skb, 0, XFRMNLGRP_MIGRATE);
-+	rcu_read_lock();
-+	err = xfrm_nlmsg_multicast(net, skb, 0, XFRMNLGRP_MIGRATE);
-+	rcu_read_unlock();
-+
-+	return err;
- }
+-	xtr = xfrm_get_translator();
+-	if (xtr) {
+-		err = xtr->alloc_compat(skb, nlmsg_hdr(skb));
+-
+-		xfrm_put_translator(xtr);
+-		if (err) {
+-			kfree_skb(resp_skb);
+-			goto out;
+-		}
+-	}
+-
+ 	err = nlmsg_unicast(xfrm_net_nlsk(net, skb), resp_skb, NETLINK_CB(skb).portid);
  
- static int xfrm_do_migrate_state(struct sk_buff *skb, struct nlmsghdr *nlh,
+ out:
 -- 
 2.43.0
 
