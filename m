@@ -1,297 +1,158 @@
-Received: from mail-ej2-f12.google.com (mail-ej2-f12.google.com [74.125.228.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012008.outbound.protection.outlook.com [40.107.200.8])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 033C13B19BA
-	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 10:07:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EB6E45519B
+	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 10:15:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.8
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788775674; cv=pass; b=utHzLOQGzZp+tFmckpAYBLtSMtmEykQZp+OkChnYxrbVJQ3t8DBFj+6q0mBy0X8VTh+Vlb0rfL0U10sFqtzmJf1o7R6UoX5w6djsHB8BEvTYMWLtBNH5S4+NXWoxlzMqigBzt3vtEagoBEOhUIjALOS1fg9hurbioL/KVZTguk0=
+	t=1788776136; cv=fail; b=XksHCqizUB8NA/ZtFD9nT3QbIwZAcN50a7J0OwUw2s9V0CIkognPwB4Ez9tuj5S5/067ZqVKYkzl+m5yBtQg+zB5K/hiz2zzNAlDG6yLknAPjPwcpr9KSKmO4siA6j8asw6+GLBQqwC6dpqMckML64o/Gx/oTpkVP7dgbR02kCM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788775674; c=relaxed/simple;
-	bh=2Ll82zU9YTcjyoerXCYANDbZSFwKQrbdnSaKvUSG0rE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Hdl6ebTOXuytzFuCR3dprVEjl5ePReEwInnbRTIHEq6iJejEqswCeuvUM0/eDJ4SyahkAyxkYqoVtBNbY0kx+e8TyoRCRUY6bgv82xQIZ8ODK00chrsEAsLgNFEEEAPw5WzDrjn6QtyXtoEb6ZYaAZytCWLUaghscayqrrlmFFs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mihalicyn.com; spf=pass smtp.mailfrom=mihalicyn.com; dkim=pass (1024-bit key) header.d=mihalicyn.com header.i=@mihalicyn.com header.b=f8QQ8XiX; arc=pass smtp.client-ip=74.125.228.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mihalicyn.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mihalicyn.com
+	s=arc-20240116; t=1788776136; c=relaxed/simple;
+	bh=eWDe27/afzSC9yJCkpTb6pESWhrBkCKH+hBy7u75vVY=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=l0bIAwy/Ft52eHtdZ2YOabR151vzgGFMMxGfqwRmhDM70d0G5YZ/+bQykUZWweg1UCNQwwOfFMdGv2V9MrIKlyDFxBYxqgHk24lM5hzdLQLHDwFQTILPdSsZCDbw7MXImAjdIi25V8jb10oOm2fqrPbIveg3cpPEK7lmZeqX9b4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=onu718+a; arc=fail smtp.client-ip=40.107.200.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mihalicyn.com header.i=@mihalicyn.com header.b="f8QQ8XiX"
-Received: by mail-ej2-f12.google.com with SMTP id a640c23a62f3a-c254f9c60b9so404266b.0
-        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 03:07:52 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788775671; cv=none;
-        d=google.com; s=arc-20260327;
-        b=g+gXrF+VdNqwK0TcEN4UqdHs+kmsQEYta20WJnYPPIjsLcXzRJNAf43bN3SScpC1dJ
-         rl8T3CXSvj0Zhm0HETxcBkJFvMVTtmkmyzm0gW4f/K+hrTSJsfr/zCpQZAYkbK5saF5e
-         A9yr6tElzAnUFRtWKb+A96OXvjOZGlR5RbaC3up4KLwutt1CA+ExEsafkxulOGTFLPPF
-         TxFcw57WHAqR7hNp7qbv14JuKxtyKpXGn8PT19ug/J8xIh3Ef1Q2nZSVzXCSawuW2bNX
-         InstRBJ6CtMusDdFjw1m3nVaKQM1ZmTZPxMaWmzzMqGUF6QZo2doCYim+hoMCJEwQiYK
-         81vg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=BNaEPel1NdtIe+zUUZDBwTrn792D672lVbXfid2E2LE=;
-        fh=lAGjCI8n01G7zKDc8bQUPSGerj/3/RLsuS525HTjRw8=;
-        b=EwoUYGlBuyp3SCk4G3PIrdT1yPtm9h9x+578SqYjkx5Wn7/GOLbkxtb/s1yPtftOKi
-         oZxWvbftq86mxVjUbPw3dTFoSWZS24BgFiWldgFGPKFrXy2Nyv6rZQ5LL2LU6Jq8Vv0M
-         +K2H5p135FvkD8HXgZkz9hSSzQqvg1REs+j1wdWBcvXUIndte/ZieSuZ5nrc6Rjutiq2
-         otmL3GRz8MuELf9eglFTYCSF2pcGdOYhC11aPpV/Kp+vG8nQw5avoc2P0d96ga8/pDPW
-         z4sWnixQt6Px0Zt+4Ow2SBGt+lL9upye65GTab1Vi7v9krHxPGOdKUFpYichZEBaccne
-         CqEQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mihalicyn.com; s=mihalicyn; t=1788775671; x=1789380471; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=BNaEPel1NdtIe+zUUZDBwTrn792D672lVbXfid2E2LE=;
-        b=f8QQ8XiX0mMbv/5/uythpObXlnDkhytxt/gKhOrPiqNNOa4Pc8Oclr5yMCj4w2vL1g
-         n3OOfAaIaF6otWkrmwzZai/GAvvMCzTL/wp5sTRxZuz8Wx2hiS0JW21ryXt9HCAqLv+h
-         ewYbMFqbwMw+OFrLBEuKDknPWE36bb0LGznYg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788775671; x=1789380471;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=BNaEPel1NdtIe+zUUZDBwTrn792D672lVbXfid2E2LE=;
-        b=RiGKJvVEtXg4c/nT5l0sEU4mAtmw+cQlNlrpFLY+V3O2sIP8pv+04PsInrmIBFVY42
-         p+RZXWdKF1iYLDNwTwmJpU3ZkjbfSeiaMrV2FX9NZJdlg8faAsuuKRoIBrZEsM17FqT6
-         DybM5xITyI1OAQqkA8WvG7lEQthIpo5MfamYkibTe97ikfZJ0Q9OMLTb86NN0N7VdPgw
-         +tZHo6cOJgLtT9OvMIz6ZjX0iB5FQmRxiJZTKhg+M1K7Jt2FpMzf7P0Xa2VfU+NmRECM
-         gEDMd4PgSRXfFpBGq64ADQSQrBTtkD5lYtpEbOB/rO5XJfFhVDx5uMH3LejVqtDALCqa
-         GG9w==
-X-Forwarded-Encrypted: i=1; AKwUvBwI8W1QIF+wCfXdK+N5W4JSkoAMEtfDGyHasLu2GQRYHn8mblCoh73k/6+nQKZDeiy8P9RQvrc=@vger.kernel.org
-X-Gm-Message-State: AFuF++koHex6occWRyllutdFkkg1nkMKjxcsNmNNYZ8TKTAYUJofDnx3
-	oUhG6G/mxl75F0vxt/0F9WuJHoXGNVDVqbgOpqHh/06xytJOqhP/LEXZcJmPU/865iQ2mfkdnCH
-	dSnmJ9sMg8X+FxAZWSsRiqxunuBcSpRcjnlTAXPiThg==
-X-Gm-Gg: AYBFou1lok+ABGXySTF6ItUMUpeoBQDGWkfpZMOrn19zhef2xcxW5KBmVXxgjt/Bzma
-	NaHNay+boVX95/2RLCFalXU2y5ECJwneWRvp/8PkOVygnoxQC7qV9l/+b3D+f7ZKSf76XCB1JEa
-	FZHH6ZWfy0/SKY4p3xQG6pnkcQlPcaQ+R7XZx4GVBfHnVs48Um9eVniLxOxzS4z827ULxHHMqVV
-	/pb50vyoXQddF8GBQaVBK2OgV8izYhXxhHd9lLIFNmdQFE2HLy2TibBw6i/c7jJ7WBS4U8S7Ihu
-	fYAKHF82gwCevvADtmrM7Q+iBvySjxigw3HslGTPqj7Ag/+OdSIISZR6FAmc5In5iDhI0oKTrsl
-	I
-X-Received: by 2002:a17:906:f597:b0:c26:3377:752b with SMTP id
- a640c23a62f3a-c29042b7343mr2628366b.3.1788775671134; Mon, 07 Sep 2026
- 03:07:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="onu718+a"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=h5nXPzbgsVlQm1dq/VWxemTALRZCdXBLWJUTcQUi3/tMOCAJ1/xmbenhaLjP5WaGemD1qtRyToMpxvJikHIPsx4a14PBmldweV8ilaknqwZouBPQaQUPyKhJgX90pUiWJRvZoPiQaKl+JnylkiAfnj9W5qtE9GlURpvlJ7KHg5tGIUSbb92EO1Abk7fM7cJEXJ7iCcEYC75lGT+toeNoH1HJZ9tBsFc1Lu3OYXe0FIBcX6evhMiFAF4HMP9QhedrEXb99pBBGzowbxJb/wLWyajClDMjtuC/7mccIVgo3tUW4lF7W4eVskDYNhQTUn+uJv+uO5piyLppP+DP+HqDUQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=pmvb2kKCgtVVBYbUFXs6N+O8XsauTv4sCRN7Myuwl1A=;
+ b=cc6NhB43hJbLIOqkOcDEe2ZTgqbg3x8fwrM1RAmrVLZxKf2IfP9c2sEUpJrc60tBPalPgZD/zoj4yapn7SncqoPghzTNUaNhd41HbIv7a9JI6UB236rvBj5jWQH0bAjzIKRAS/F6rruaA/LmQzsTE63sV//seG0WjJMuYI4HeYI15oB5lleb/Bk+ZdQ/IIao/aeAB8ZREOHDgxJNi2qEwzv4lw5RsRysxkJJe3OVeeceeF9HnOpviIqUw2rCz0b2kjF5RGZh0dR7Mf83YaDCk2eJzcVDMFGrsJjlCM/2BabDgrjCCJR80cStWHxu3OpQ7hTRG85njW37XQVihnZTPw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=pmvb2kKCgtVVBYbUFXs6N+O8XsauTv4sCRN7Myuwl1A=;
+ b=onu718+a9c9vj0dEEMeJaYoqFwQqmlDJsuGCgtBlLrx0Rj/AOKapEuBcGy6tbuKi41sciYMp32BnHVWaoSM5OGNuGh51oYkcbHNm0MElOJFtgitSE2ivEFVQWjs6jz0XFha2CAtUTQN1lT5ul1DL7QJrhVzAAaWznWA9TEa36+BMn4li2ifKS1KxbRONTkYSrnxlrVVvBxxk18zn+A7YHHB7qyAzLKJAG7IAiLnkzYRJ0dqn6A2Hyy+UFXKfI4egi0O5KtnQMFYobgIei7Ud0UKBU5w2yRX9o/ryYmGiH7VFYenUWNTZVuzybL1QDcWyHyoLLZ+7TJDdZaZG5stZAQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
+ by DS7PR12MB6334.namprd12.prod.outlook.com (2603:10b6:8:95::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.382.15; Mon, 7 Sep
+ 2026 10:15:27 +0000
+Received: from PH0PR12MB7957.namprd12.prod.outlook.com
+ ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
+ ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0382.014; Mon, 7 Sep 2026
+ 10:15:20 +0000
+From: Ido Schimmel <idosch@nvidia.com>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	willemdebruijn.kernel@gmail.com,
+	horms@kernel.org,
+	Ido Schimmel <idosch@nvidia.com>
+Subject: [PATCH net-next] ipv6: udp: Use ip6_sk_redirect() for tunnel sockets
+Date: Mon,  7 Sep 2026 13:13:58 +0300
+Message-ID: <20260907101358.596953-1-idosch@nvidia.com>
+X-Mailer: git-send-email 2.55.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: FR4P281CA0407.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:d0::16) To PH0PR12MB7957.namprd12.prod.outlook.com
+ (2603:10b6:510:281::22)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260831-work-unix-passpidfd-v1-0-70cbfda0c7ba@kernel.org> <20260831-work-unix-passpidfd-v1-1-70cbfda0c7ba@kernel.org>
-In-Reply-To: <20260831-work-unix-passpidfd-v1-1-70cbfda0c7ba@kernel.org>
-From: Alexander Mikhalitsyn <alexander@mihalicyn.com>
-Date: Mon, 7 Sep 2026 12:07:39 +0200
-X-Gm-Features: AcwNN1V7LPSWnyROmwcXNgMOTNDk9p2-2d_HjS0RFfSlm_TayeYshLabGwoOGk8
-Message-ID: <CAJqdLrp-5zkpUOzA8WeAyTq-KqQ0f=BERy0PcniSmXYmOJ2wZw@mail.gmail.com>
-Subject: Re: [PATCH 01/10] pid: add helpers to operate on a struct pid array
-To: Christian Brauner <brauner@kernel.org>
-Cc: Jakub Kicinski <kuba@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, Oleg Nesterov <oleg@redhat.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Willem de Bruijn <willemb@google.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|DS7PR12MB6334:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4bdb8995-c3cd-4474-08e4-08df0cc8ec0f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|376014|23010399003|10067099003|56012099006|11063799006|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	AUavR0RPlxvGUMQc3Uff2n/1sp7A5nqQ1CTpIaBbVYX440+FWgZ0SkNg+Nlw5d9rBur6CGHFBjabTFxaW4EnEiQsC3jMqw4sX42q5ubak0T959UrnjjdEpS1OMZxT4KVtzRa8ECdaDTvecwNVDI7fzOU4d5DG9jprtzOkXyOCnUpZY8A3+pZbWOO/n8AL53472qnXfaJm6+e1Z+fj1f2FklBFjDcq52jjYm/Q0LWAuEEmeZUL25T5NwZnkWYCewhnXPZOUBBhsKxPWmdGVYTHIK9T+SPt+S35M0x/kHG7oR8F72W1BUeFTTZy10YpFcb8943u1trhjeLAras9cBk0PJBOVgRwvsuIAj5wCl6A90GooijQU3y/uAjRCF5+sBnvzBMJZAqOKb4fiBmOEPoS+0ddnaP6rGkPPNFxtaT3CEN/9atR9/SM0110bsx5JVqi4MJjyd3wDN54NdiLwvYJBq6jUeSWvfb+4TlYIfRZnfav67fJPAXURnwwv/6cdRSAtd+ZM2b6y6fa1B7KjIc9DNivl19glBPJ8Iy4+JkbfdNJAkkgXVvm+dNgTZp0RM2Up4EQv4zg8i09PI6rvbveyNwo5KN96uXTle64iFwfNgxDPYKCUHVApmZsEbUi5wQ+EoOh98ae/fN8k7XnXvnUHU5qfykABx1LAsWwr2xB2c=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(23010399003)(10067099003)(56012099006)(11063799006)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?mxx+cuXzM8zhwMTjsCD+wtoq75Df9D1jvzmSaG4HB9AXLh3gjkgTraS0lC7R?=
+ =?us-ascii?Q?mPHDvIKgLysgT2oWoZ3iPwIRgRcPYxrCFQE6CvXE7w1hFMsTPlu+rFFbNJHr?=
+ =?us-ascii?Q?SKJCyhdSyWXFZzPPMSXZZJYAu8FYPrk1BxscXBFq8tx7y55c505v84daHnKy?=
+ =?us-ascii?Q?FUExgr0NdhnWhMUI1ThkHQrbkn0sEiDKBnnI5JCuLSghrZbOIYHh/DDzBfh4?=
+ =?us-ascii?Q?6fg6cK549ZlLVQdhShnI1ypkZpA1RHNXjZykAfjvJgFLJ/MRP0L0FmxTPoHW?=
+ =?us-ascii?Q?d7F+fQZWBRhsKty2fXArk3UFGtYp2mSHOVAFhHs9VAve88Wo+O1PgyIwunqk?=
+ =?us-ascii?Q?h0g3aCCALoSaw9SQbDvy6pcpK7JiauODk46WYgGKixWcRxxvzab27AFDTTBS?=
+ =?us-ascii?Q?W2g8XY2bphCvxzs2vm12J7EwuWesiLHXfUAS6z/FHxd+GL/9e1YMOIdByacV?=
+ =?us-ascii?Q?MF+gfy1ATP6X9pgP501RUuwOouZ7jqipSVO2BAOjtxbhtoFMaumz4eRNObGK?=
+ =?us-ascii?Q?K0CfnkOnlW0+yw3tZpVU6WALVetYE06E6V3e2NohyeXUKUjceujZdIShl4Mg?=
+ =?us-ascii?Q?+NrVe1IXaOniJ0O9hzIDTa5WbIfPGvxF5MEXGe/kXF3J5wWaeo79hvT3fnVY?=
+ =?us-ascii?Q?0r+rx0/BjDiha8kjPW3raxOIXKwjtxw4xpBiUHXo08qz3Cy6N2jNtzmYb0NK?=
+ =?us-ascii?Q?ZfdlUUP0AV3MmMcamW0pi+X7s+xb3prW+IUVzrRH+B5be8tN6u/AaR6gDp2i?=
+ =?us-ascii?Q?8PpS6BOt/OJV9yUDEmzpe75pyCjoVFm/Vi7F+PKEiV9OQhfM6SWER8Cz/gvi?=
+ =?us-ascii?Q?ZifNnRUrBpzpiTBLgAy8t3ZuwdV4H12qtwtNQYp9yYGmOjpJjBIcnEBaxz3y?=
+ =?us-ascii?Q?n3A+2dxJ8vMozvpWAs8UsyVJe/a1kj2uGRu6sviFdJADjAL0K8/YOiTrIprX?=
+ =?us-ascii?Q?N0gBeFMT45il+H8meHG+t2I/tijuzB7tEWkghRoieEDzoQhDubClHHQjZLSh?=
+ =?us-ascii?Q?0zKwutB6TzG/R/ZFD4bfJcw/iw1N6a2SOEna3aREJDr+u8Rg1S23gClwa0IL?=
+ =?us-ascii?Q?AXi6vYmihHVd6wwqc2vUDjz6SbBlimDzoFPpDiQ+iu3B5Y182/lPYle3Nlf8?=
+ =?us-ascii?Q?hfbwn6fJr2DoN26w9wNk4F1IZ7W+sUUosXwmMMwh/JWERlJScSJ2UWoTcYpC?=
+ =?us-ascii?Q?Bz2JbyUO5FMtgkk8bTCSQdp4ykmCCXjKQb5o9IUX4qEmxBARKZR5XD7Cr6Se?=
+ =?us-ascii?Q?PIkkGqkOzifwiSbijCfkTbGB8MOiSR+P6fx1Zs3AyMgcZe+B0FUR6v2F1nZw?=
+ =?us-ascii?Q?kajWI3BiKl22mJhizQ44zcdIkH20GPqXBMEpueLL3PmC0QwV/5iQrJ4jUVG/?=
+ =?us-ascii?Q?ZbSwjliYMePrl5AbE+Z1ArSFiEQ1G7fKT+Ei4+Gkv15kRMt8QYXF6YcbaxUx?=
+ =?us-ascii?Q?8Z56MRl2vyU0lJf2XJVNX14hqaTEZxKL+OffC9b7LdeVWtpiR9en7pSk34Oe?=
+ =?us-ascii?Q?cqzSAkZ8Nb7PeETMHSKmPiEy9mObuTZiMjwzBDu+Pg8izb3+caYit2BJo33T?=
+ =?us-ascii?Q?HZKvBmix4vYaiK343Dtu0rJuBVbx7PphrTYlap79Tjgux61jU8bs3cz811Oo?=
+ =?us-ascii?Q?0uzJO6aYUsAjWjsGaYRBm0abhjSzsT5G+Opyj0hilrPFFNvlaPYDq43o7gSs?=
+ =?us-ascii?Q?qg+3lgra4WDCtbn6iEX+o2zLwtPQUUMQGbW8IISi5/bIblux?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4bdb8995-c3cd-4474-08e4-08df0cc8ec0f
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Sep 2026 10:15:20.7492
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: OxLAWCEf/hM76OIjnM58HCYmvXkLjJG1uxN5HJ28EjUueg/ULDRziO9lK8ZHDrpoMlx5XXsvXY3DdNVQjjvxQQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6334
 
-Am Mo., 31. Aug. 2026 um 13:21 Uhr schrieb Christian Brauner
-<brauner@kernel.org>:
->
-> We're about to extend af_unix sockets and coredump code with the ability
-> to hand out thread-specific pidfds. Add a few simple helpers that allow
-> to operate on multiple struct pids up to PIDTYPE_MAX with automatic
-> bounds checking.
->
-> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+After commit cd51b74bdd0b ("ipv6: Fix redirect exception creation for
+UDP/RAW sockets") the two redirect calls are now equivalent and there is
+no need to specifically call ip6_redirect() for tunnel sockets. Simplify
+and call ip6_sk_redirect() for both tunnel sockets and regular sockets.
 
-LGTM
+Note that for ICMPv6 Redirect Message packets the VRF driver does not
+reset skb->dev to the VRF device, so skb->dev->ifindex is equivalent to
+inet6_iif(skb), even when the packet was received from a VRF port.
 
-Reviewed-by: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@futurfusion.io>
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+---
+ net/ipv6/udp.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-> ---
->  fs/pidfs.c                   | 16 +++++++++++++
->  include/linux/pid.h          | 53 ++++++++++++++++++++++++++++++++++++++++++++
->  include/linux/pid_types.h    |  8 +++++++
->  include/linux/pidfs.h        |  5 +++++
->  include/linux/sched/signal.h | 18 +++++++++++++++
->  5 files changed, 100 insertions(+)
->
-> diff --git a/fs/pidfs.c b/fs/pidfs.c
-> index a6a643f15d08..586af2e5811c 100644
-> --- a/fs/pidfs.c
-> +++ b/fs/pidfs.c
-> @@ -1070,6 +1070,22 @@ int pidfs_register_pid_gfp(struct pid *pid, gfp_t gfp)
->         return 0;
->  }
->
-> +/* Register the pids up to pid type @last of @pids in pidfs. */
-> +int __pidfs_register_pids(struct pid *const *pids, enum pid_type last)
-> +{
-> +       if (WARN_ON_ONCE(last >= PIDTYPE_MAX))
-> +               return -EINVAL;
-> +
-> +       for (enum pid_type type = PIDTYPE_PID; type <= last; type++) {
-> +               int ret = pidfs_register_pid(pids[type]);
-> +
-> +               if (unlikely(ret))
-> +                       return ret;
-> +       }
-> +
-> +       return 0;
-> +}
-> +
->  static struct dentry *pidfs_stash_dentry(struct dentry **stashed,
->                                          struct dentry *dentry)
->  {
-> diff --git a/include/linux/pid.h b/include/linux/pid.h
-> index ddaef0bbc8ba..87635d0cc1f7 100644
-> --- a/include/linux/pid.h
-> +++ b/include/linux/pid.h
-> @@ -2,6 +2,9 @@
->  #ifndef _LINUX_PID_H
->  #define _LINUX_PID_H
->
-> +#include <linux/array_size.h>
-> +#include <linux/build_bug.h>
-> +#include <linux/minmax.h>
->  #include <linux/pid_types.h>
->  #include <linux/rculist.h>
->  #include <linux/rcupdate.h>
-> @@ -92,6 +95,56 @@ static inline struct pid *get_pid(struct pid *pid)
->  }
->
->  extern void put_pid(struct pid *pid);
-> +
-> +/*
-> + * Helpers for arrays of struct pid indexed by pid type declared with
-> + * DECLARE_PIDS(). The array covers PIDTYPE_PID up to the pid type it
-> + * was declared with and the helpers take that bound from the array.
-> + */
-> +static inline void __get_pids(struct pid **dst, struct pid *const *src,
-> +                             enum pid_type last)
-> +{
-> +       for (enum pid_type type = PIDTYPE_PID; type <= last; type++)
-> +               dst[type] = get_pid(src[type]);
-> +}
-> +
-> +static inline void __put_pids(struct pid **pids, enum pid_type last)
-> +{
-> +       for (enum pid_type type = PIDTYPE_PID; type <= last; type++) {
-> +               put_pid(pids[type]);
-> +               pids[type] = NULL;
-> +       }
-> +}
-> +
-> +static inline void __swap_pids(struct pid **a, struct pid **b,
-> +                              enum pid_type last)
-> +{
-> +       for (enum pid_type type = PIDTYPE_PID; type <= last; type++)
-> +               swap(a[type], b[type]);
-> +}
-> +
-> +static inline bool __pids_equal(struct pid *const *a, struct pid *const *b,
-> +                               enum pid_type last)
-> +{
-> +       for (enum pid_type type = PIDTYPE_PID; type <= last; type++)
-> +               if (a[type] != b[type])
-> +                       return false;
-> +       return true;
-> +}
-> +
-> +/* The last pid type an array declared with DECLARE_PIDS() covers. */
-> +#define pids_last(pids)                                                        \
-> +       ((enum pid_type)(ARRAY_SIZE(pids) - 1 +                         \
-> +                        BUILD_BUG_ON_ZERO(ARRAY_SIZE(pids) > PIDTYPE_MAX)))
-> +
-> +#define __pids_last2(a, b)                                             \
-> +       (pids_last(a) + BUILD_BUG_ON_ZERO(ARRAY_SIZE(a) != ARRAY_SIZE(b)))
-> +
-> +#define get_pids(dst, src)     __get_pids(dst, src, __pids_last2(dst, src))
-> +#define put_pids(pids)         __put_pids(pids, pids_last(pids))
-> +#define swap_pids(a, b)                __swap_pids(a, b, __pids_last2(a, b))
-> +#define pids_equal(a, b)       __pids_equal(a, b, __pids_last2(a, b))
-> +
->  extern struct task_struct *pid_task(struct pid *pid, enum pid_type);
->  static inline bool pid_has_task(struct pid *pid, enum pid_type type)
->  {
-> diff --git a/include/linux/pid_types.h b/include/linux/pid_types.h
-> index c2aee1d91dcf..3302690a2a28 100644
-> --- a/include/linux/pid_types.h
-> +++ b/include/linux/pid_types.h
-> @@ -2,6 +2,8 @@
->  #ifndef _LINUX_PID_TYPES_H
->  #define _LINUX_PID_TYPES_H
->
-> +#include <linux/build_bug.h>
-> +
->  enum pid_type {
->         PIDTYPE_PID,
->         PIDTYPE_TGID,
-> @@ -10,6 +12,12 @@ enum pid_type {
->         PIDTYPE_MAX,
->  };
->
-> +struct pid;
-> +
-> +/* An array of struct pid indexed by pid type, PIDTYPE_PID up to @last. */
-> +#define DECLARE_PIDS(name, last)                                       \
-> +       struct pid *name[(last) + 1 + BUILD_BUG_ON_ZERO((last) >= PIDTYPE_MAX)]
-> +
->  struct pid_namespace;
->  extern struct pid_namespace init_pid_ns;
->
-> diff --git a/include/linux/pidfs.h b/include/linux/pidfs.h
-> index 0abf7da9ab23..3c1e82f1a369 100644
-> --- a/include/linux/pidfs.h
-> +++ b/include/linux/pidfs.h
-> @@ -3,6 +3,7 @@
->  #define _LINUX_PID_FS_H
->
->  #include <linux/gfp_types.h>
-> +#include <linux/pid.h>
->
->  struct coredump_params;
->
-> @@ -32,5 +33,9 @@ static inline int pidfs_register_pid(struct pid *pid)
->  }
->
->  void pidfs_free_pid(struct pid *pid);
-> +int __pidfs_register_pids(struct pid *const *pids, enum pid_type last);
-> +
-> +/* Register the pids of an array declared with DECLARE_PIDS(). */
-> +#define pidfs_register_pids(pids)      __pidfs_register_pids(pids, pids_last(pids))
->
->  #endif /* _LINUX_PID_FS_H */
-> diff --git a/include/linux/sched/signal.h b/include/linux/sched/signal.h
-> index 584ae88b435e..9444b47789a0 100644
-> --- a/include/linux/sched/signal.h
-> +++ b/include/linux/sched/signal.h
-> @@ -677,6 +677,24 @@ struct pid *task_pid_type(struct task_struct *task, enum pid_type type)
->         return pid;
->  }
->
-> +/* Fill @pids with the pid types of @task up to @last, without references. */
-> +static inline void __task_pids(struct pid **pids, enum pid_type last,
-> +                              struct task_struct *task)
-> +{
-> +       for (enum pid_type type = PIDTYPE_PID; type <= last; type++)
-> +               pids[type] = task_pid_type(task, type);
-> +}
-> +
-> +static inline void __get_task_pids(struct pid **pids, enum pid_type last,
-> +                                  struct task_struct *task)
-> +{
-> +       for (enum pid_type type = PIDTYPE_PID; type <= last; type++)
-> +               pids[type] = get_pid(task_pid_type(task, type));
-> +}
-> +
-> +#define task_pids(pids, task)          __task_pids(pids, pids_last(pids), task)
-> +#define get_task_pids(pids, task)      __get_task_pids(pids, pids_last(pids), task)
-> +
->  static inline struct pid *task_tgid(struct task_struct *task)
->  {
->         return task->signal->pids[PIDTYPE_TGID];
->
-> --
-> 2.53.0
->
+diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
+index 93478d1ad576..59f9872c3552 100644
+--- a/net/ipv6/udp.c
++++ b/net/ipv6/udp.c
+@@ -751,13 +751,7 @@ static int udpv6_err(struct sk_buff *skb, struct inet6_skb_parm *opt,
+ 			harderr = 1;
+ 	}
+ 	if (type == NDISC_REDIRECT) {
+-		if (tunnel) {
+-			ip6_redirect(skb, sock_net(sk), inet6_iif(skb),
+-				     READ_ONCE(sk->sk_mark),
+-				     sk_uid(sk));
+-		} else {
+-			ip6_sk_redirect(skb, sk);
+-		}
++		ip6_sk_redirect(skb, sk);
+ 		goto out;
+ 	}
+ 
+-- 
+2.55.0
+
