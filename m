@@ -1,32 +1,32 @@
 Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B71E39524E;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B8553EC83D;
 	Mon,  7 Sep 2026 21:09:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788815394; cv=none; b=WVc2tekr3ZPb4Iw2UC+XGxt6upjciGInKoYpb33cTKC4PwQIHvfKTW9Y8wiCCJ0EyRSFv9qs2y/7U3JFgaJoofqsdaj7ydr8499RGcuQ++tqB1n4YRNyXfnomM4mD1zqsFWX0N5rcmvvfq5OEQ93ChK62WpSO7BcJpOgiakkr58=
+	t=1788815394; cv=none; b=o/GeW/SKHZ/j5RwKtLPH8kpCpX50iubmK6sAlz9GSrRorlqtH5xA0gQUWaM1ZAXpWvo9v++N7Lzmcd/Ykr9+jZK4NhQNB8/ZmZzbDVJh0iwoxI1zHlgWQL0Vufm31+8e/zMusWKi9ACWHFbgrPezbu7CAm1gFaTqlOlVzSW7jNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1788815394; c=relaxed/simple;
-	bh=a7YW5hjZh0TwOLgIvOZqet/j8ia0E5sW4qQD/ASq7yc=;
+	bh=Gtole8bpHJlN9kBgzU1UFFrRwCjYwTjo7ZyLnzUSuZU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fpm0w2hy4MWy7EYUrk9XXCG1F7xJb9LcgBe8qNSUgNUj2oDrwzjkcxCoytedXyyNO+GcfPncxSWhZLlfunXO5RjeRrUs0MY6ZjHScHewEgzPswLPOWov517mPdfA6HV4EuJrK3mH0aO/CxuVy8G6Bw6TUbuZKy7mJG8sizMpTRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=YNlPjlF3; arc=none smtp.client-ip=194.13.80.246
+	 MIME-Version; b=CY6t9o7QFdNRFn5ps+J3x7OwXVuZKGZddiKXFgX1HweK268oJ5WzggoT0Ko+g43xlVB/aby/hWKKJ7xHMVPTVHC6xKxCiJ2+ZIb+cdDKzGchLRFxofjnyQy66Tw9hhF9z0tSNhwD3zCPa7I2s8MaU3SG+kyeUxMA7foDoqRDZiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=rM8Z2QJQ; arc=none smtp.client-ip=194.13.80.246
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="YNlPjlF3"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E8DA6A9062;
-	Mon,  7 Sep 2026 23:09:40 +0200 (CEST)
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="rM8Z2QJQ"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8F943A9063;
+	Mon,  7 Sep 2026 23:09:41 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1788815381; h=from:subject:date:message-id:to:cc:mime-version:
+	t=1788815382; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=rOA2BdjPpZaSYssObVM1j9wz484oV9GgefpfGULJRvQ=;
-	b=YNlPjlF33l+4IElz/mze1Eu9LtctOkRi8akU4QdYNrLdL7xF1JFm9/JnK1+kZZkHHy+//n
-	X4rUYVafpr8xzNO2SFNx6Tj/eOX5nxnjeyMbDlGwsh2uFvbX9OKF65K7B/pTKjnmzMlgjI
-	EQh2+ih2XHWJoHzuDf7c+iJWGGSQeIAjSAENsd9i6xr7KZ24sruOLmctB54OSTu2Qc3rjg
-	iqX6ZdC1y3ht7ICG506sCnNFsMXHVb30zPr3BZCBpQQSIyMQokQlS+W+1/wK5YowS+RyNV
-	cctD0L9ZF/KiuwZP1VfEtWQnv7AU1t7pLT3uz4e1nbZTjPLwduIUq9PrBhlSwA==
+	bh=Oua79dA4L0N4jwd8kW5LCvsL72Y/KchIsEBtlJfQiWw=;
+	b=rM8Z2QJQ9GFupdHMwuOegWLNZ2GZSiCNgLuQ2Vd9LezS0XPy86W1Gr4ka2OAMP33XBhnRz
+	kjepYfKqU0jfYGP+Nl7C8L5IqU5BBJlNGskhVhpD8V9HTEeHUbjQZ3KZo2Im3gMsWHWzCy
+	nbA7zYUtcfR6joQKALJDEdyowOhZeQ2zA4OlN//iAkONQbFg2Tg6FoAyWj871llM/fQaKz
+	gv80xi+Ubk4JTZ662CKfLmd6WljVIQZ/XND7KErfPPnQAstiA0usnYKZtRmS7JRA8KIZYu
+	beZlftxMYVcx3sqlNg+5EMjXNyaaKaVhntSgq7eW9+eG1bVspv2FhFRI8TSMLg==
 From: Nicolai Buchwitz <nb@tipi-net.de>
 To: netdev@vger.kernel.org
 Cc: andrew+netdev@lunn.ch,
@@ -41,9 +41,9 @@ Cc: andrew+netdev@lunn.ch,
 	o.rempel@pengutronix.de,
 	linux-kernel@vger.kernel.org,
 	Nicolai Buchwitz <nb@tipi-net.de>
-Subject: [PATCH net 1/2] net: macb: destroy the phylink instance on the probe error path
-Date: Mon,  7 Sep 2026 23:08:55 +0200
-Message-ID: <20260907210856.1673589-2-nb@tipi-net.de>
+Subject: [PATCH net 2/2] net: macb: put the "mdio" child node reference on success
+Date: Mon,  7 Sep 2026 23:08:56 +0200
+Message-ID: <20260907210856.1673589-3-nb@tipi-net.de>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260907210856.1673589-1-nb@tipi-net.de>
 References: <20260907210856.1673589-1-nb@tipi-net.de>
@@ -56,31 +56,35 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-macb_mii_init() creates a phylink instance on both of its success paths,
-but the probe unwind frees the netdev without destroying it, so a failing
-macb_alloc_tieoff() or register_netdev() leaks the instance.
+macb_mii_init() holds the reference returned by of_get_child_by_name()
+for macb_mdiobus_register() and drops it only on the error paths, so
+every successful probe leaks a node reference. On a CM5, overlay
+removal after four bind cycles reports
 
-Destroy it at err_out_unregister_mdio, which is only reachable once
-macb_mii_init() has succeeded, so bp->phylink is valid there.
+  OF: ERROR: memory leak, expected refcount 1 instead of 5
 
-Fixes: 7897b071ac3b ("net: macb: convert to phylink")
+Drop the reference after registration, where __mdiobus_register() has
+already taken its own for the lifetime of the bus.
+
+Fixes: 8a6631f1cece ("net: macb: avoid redundant lookup for "mdio" child node in MDIO setup")
 Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
 ---
- drivers/net/ethernet/cadence/macb_main.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/cadence/macb_main.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index 8469df0d89c3..bba7246e1dbd 100644
+index bba7246e1dbd..b1dc5840d756 100644
 --- a/drivers/net/ethernet/cadence/macb_main.c
 +++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -5980,6 +5980,7 @@ static int macb_probe(struct platform_device *pdev)
- 		mdiobus_unregister(bp->mii_bus);
- 		mdiobus_free(bp->mii_bus);
- 	}
-+	phylink_destroy(bp->phylink);
+@@ -1164,6 +1164,8 @@ static int macb_mii_init(struct macb *bp)
+ 	if (err)
+ 		goto err_out_unregister_bus;
  
- err_out_phy_exit:
- 	phy_exit(bp->phy);
++	of_node_put(mdio_np);
++
+ 	return 0;
+ 
+ err_out_unregister_bus:
 -- 
 2.53.0
 
