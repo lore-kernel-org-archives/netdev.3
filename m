@@ -1,118 +1,160 @@
-Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpbgsg1.qq.com (smtpbgsg1.qq.com [54.254.200.92])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CCDF40EB80
-	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 07:06:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.44
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788764766; cv=pass; b=DWk6uWqOsIt+DTJOkRa6mI/DPGUGViLFKcnYA55AGG5/uf/QlUfrOFId8SwijuqsHD5bxpEfm6tFRakiC0lNGKBXMiHn0jmoF6bTaxOYfJVRP1OrXml8VNLZn0cxz1H91gHFhgpKERD7rqtop6y9gcxdDJGpoWyNbr2kEt7NiXQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788764766; c=relaxed/simple;
-	bh=J/iKiNhcMgi580dPsKQsRdnOhMrWs8rCz30Zn7cW2ms=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pdFmQELa46ObKddIZBj9FRqg9iddVXRl4gU9/aJALx+ZlRZsqLiFDlPzwDDVtXO9KiVE0xMg7cBKOdCdd3m3r7rl6p7nMc4aEfss5H/v5YrzQkM7iCcE74KeRJgYGSf8tZcj6d9GRzNtYEXSmOjpWLN5kew0Hubzcj9rWXEAtR0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qjsM4RUW; arc=pass smtp.client-ip=209.85.219.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65C8E409624;
+	Mon,  7 Sep 2026 07:06:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.254.200.92
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788764802; cv=none; b=Ay2OSDaZPSfMnalxT/D8Ve+Kt03m359BS+Q5XdFiSGChSg45xJGq9tuGjtyIbkMjX3G21IN5ze78qw7kaxWdqpsv8w7SBtDSbfaGfhyHKwLiTyyFmFQ8q/319EFIA+DWOeIOAQ+wcISG2m4aM0soYIUj8JhreeYxghyou1I2/bQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788764802; c=relaxed/simple;
+	bh=43l6s6Pgrn8yOxJeuT4TcGACuUoK6HUv620UrE/SUwQ=;
+	h=Date:From:To:Cc:Subject:References:Mime-Version:Message-ID:
+	 Content-Type; b=lwdWERuZ2RQhChmzNTBEOuNbWPMlrp356Ct2fzXf0vxAWweyglrQwBbE+0R+0YCfEITKeES3F6cbEUolLjF96Wcxym6nVfquIxvsIPEUkqmNrlAglw3N6CnQslVuif/EYF5HnuUrkeuoBqjiV4EGQERVcM5CpsPIDQolP+3tlOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=itsJW2M6; arc=none smtp.client-ip=54.254.200.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qjsM4RUW"
-Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-90cc107c451so19965626d6.0
-        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 00:06:04 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788764764; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ROHdCztFM+XHkpdQpI0wzg0cT3QEmpJurrjyNdhmlWzg7rOZ3K8scO7gHz8KXsehJN
-         meOdftXGaGHgE96pXN+WScdGQYdSi2jrbX77YYTkQp0ZRZkjkGOPpsFiFNwcHuut7+uc
-         AVQy5wkwXFx7QntaRMuxEBKK5c+tEGWlxZkDPnVPrU3m7dXhYqLozoDxfbqF47SMn+rf
-         0ChQmiDTsaQ6ENHafrvQ5JhyqHPGfCBb0X9fZVxkPYoI6OLE2IGpMm+Q1PFMyksu8utm
-         VjiYjduiQasynloTcmMC0rWS+DiQPmoCDWVHe5buDxsTWKJsbQpDqRbvD7H/8BF4iVtc
-         D0tw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=IzBhMBKiowEdTe+IMHog+Eg52EGA4098JFXUESCuu4Q=;
-        fh=wa9bt9K+wuBDNwY7UxXIElpST0Ywvzu8uVJrnmfhbpw=;
-        b=gVvlWfZaMe679pAiD9P/AdWaJT6x4StXR7VCeBZz7ERYvya5SJ2hHj5EhcKGzzH7xL
-         HXHyyuGMHCfkcAZXErrIVPBQIqRB9SVFXy6hQsKFkYk3EmK6Zcg2BloCKeE5rOo2ZvhS
-         AmAmffkLeDqa4KM9gLaQcLMIWuH1CjnIaghVxxxGM66gMCAUSPc1MZy7cGKllsjc+OIg
-         jF55n7YV58oWv9Xtnt+lsHHMSUsxLV7LbQIP7x1d8yYK73NU6SoHdUUOPcqGA8OeW4Ae
-         lVzxAOwGqJ7VEDOb5dRd4/YSzxIdkJflERE4SHTOeQFCOcx1/mQYNZ/dROhIaARqFikl
-         UiXg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788764764; x=1789369564; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=IzBhMBKiowEdTe+IMHog+Eg52EGA4098JFXUESCuu4Q=;
-        b=qjsM4RUWobGJVYNVrJdBC+xv9h0Gj/EyzWmx8HLNwAfKy9xTEKUyn9Bdx6O961QFok
-         GhR09b+UkVLUfHYKJcVykEAvbRYLP7SrCfFwjSU8eZ4oQ7b5gyLLM/PuVA3RCueovqr2
-         ywD8lU6XpHcCoUy33Ew+uaqcIbxOG7m6/eEuWR6hRGUoX/Cgdcv///sSGgLd8QNXmRyE
-         AOtzcqGdjKT9JIonnJ8AcRFOVXgunlUl7iV/nDTk8sSNB5Vr/UzQIW+ENU2i3XkwwbTi
-         iYxeI4OnPd1ZXSDsQXNmeeGE6Cv1NgtdEhnuyKtPqKRbkEy66aRjqqv5GhvK+FYcB+rq
-         n6Bg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788764764; x=1789369564;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=IzBhMBKiowEdTe+IMHog+Eg52EGA4098JFXUESCuu4Q=;
-        b=eWyfLM4lE9VqO7DL1/BuMZFt0WbfVsMM3JaHgNXyLKFwzagmhRqot53+j9yPmCx1KP
-         lsJfx2/T0nPoU8Ln248OyV+CWLPcmbVEDnQwghko6cXQCAiCTNoL9blTrlJToSEEcKJC
-         w4WgHjRnzcdYskbxKvGrACyO6muTV3Tf11DWxhE8GBRgTZjMJiS5K4UzksGX9sTJSMGb
-         slKFFD3sEM6wzhbQwqkB4STzfJlqXObOGnnrbNFfuxauMG5O6RJdRUH6faUJ3R/pCqcb
-         mlEM2UJino7jTqqKkNn4VEAKqpI6yf57r/597eYbAfRC9dFOEWMtA0Dh/3beQ5yQoqDy
-         oHNA==
-X-Forwarded-Encrypted: i=1; AKwUvBwF7oMQvcZsypiT1/F4AXOwnNkxtlBWeX5/2Dc4yAxixokRRL79cB/PXXBLC3lmqwwuOfmryYo=@vger.kernel.org
-X-Gm-Message-State: AFuF++nv308/AgtRgsXTHOBdXDK2hvnGIJPZk0vYDJXGXE9UDfl1uaLN
-	zd1bJPFEkvNqKNuOMFcA1QTDfosILUuwU9Ziebm0Z93WYhTObU7SizzVQ33hXyu12PKw0HaUH1P
-	2V+dSMNuUzC67/3b1QcEN7+LUNFbxMrTMLFN8/xzf
-X-Gm-Gg: AYBFou09/QinCfkd6Pavs/zUtiiw5WRspOtNZyeMW7Vw7XJGEF20VdRveOb+MKASNq7
-	KhH2HnMwsZcZrZQh88gnyJfaLTU7tS1uFDtD40RyaP5dIQKJ43Q3Wb+OmLN4ZVofOSY03wXeDUA
-	iRdu5ykxxiYMr1uacRpmcFZxmOqoktUlFcmL9JN/UPFT9J5kEEe8U/Cg7t7IQZ7aRgskve8wOyo
-	TLhLktH88/D2WCRlZAO3wFcK9/B4v7upLmPdBum3GUVjhKQsJRYaEV/VZoW1fzNnjQZ9jKXJj2m
-	FMxB8aa7gj3F9vA+faJN5E5Vs1ezE6one5VfP7wzkCIsY2R7awrqE9OWyceQ3ttdywY1Qxv/B4r
-	Fosox99SZsNmCRh645/nylKJDnfHA0NR4vb8frgy29uHyjFrqxPL9wbJEyw==
-X-Received: by 2002:a05:620a:649c:b0:937:1b8d:e3da with SMTP id
- af79cd13be357-9398053955bmr2321525285a.42.1788764762921; Mon, 07 Sep 2026
- 00:06:02 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="itsJW2M6"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1788764767;
+	bh=43l6s6Pgrn8yOxJeuT4TcGACuUoK6HUv620UrE/SUwQ=;
+	h=Date:From:To:Subject:Mime-Version:Message-ID;
+	b=itsJW2M6tfYi2OYOXATvxfBqmiX+I/hN1Vq/SROn0dhQvgNfh54PATLfgu2vxwsmD
+	 VCkCdYwhBBv43da8eW+XYwxU+B/6/fiQcN0CcLzia41jYUVYebNevXyTvpmYNdYEZ4
+	 M5T2TaqxHMmIGZ367Pd7cF74L/46S37SsTbKHUvk=
+X-QQ-mid: zesmtpgz4t1788764764tf478b456
+X-QQ-Originating-IP: /0CXJVCxXTrVWLkOYaAwZSxz5I8ztM5QAKcBZrDAjDE=
+Received: from PEN002676 ( [1.202.39.170])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Mon, 07 Sep 2026 15:06:01 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 16136033036701943877
+Date: Mon, 7 Sep 2026 15:06:02 +0800
+From: =?GB2312?B?1dS98MP3?= <zhaojinming@uniontech.com>
+To: "Lorenzo Bianconi" <lorenzo.bianconi@oss.qualcomm.com>
+Cc: maxime.chevallier <maxime.chevallier@bootlin.com>, 
+	andrew+netdev <andrew+netdev@lunn.ch>, 
+	davem <davem@davemloft.net>, 
+	edumazet <edumazet@google.com>, 
+	kuba <kuba@kernel.org>, 
+	pabeni <pabeni@redhat.com>, 
+	mcoquelin.stm32 <mcoquelin.stm32@gmail.com>, 
+	alexandre.torgue <alexandre.torgue@foss.st.com>, 
+	horms <horms@kernel.org>, 
+	ansuelsmth <ansuelsmth@gmail.com>, 
+	jose.abreu <Jose.Abreu@synopsys.com>, 
+	netdev <netdev@vger.kernel.org>, 
+	linux-stm32 <linux-stm32@st-md-mailman.stormreply.com>, 
+	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, 
+	linux-kernel <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2] net: stmmac: clear dma_conf in __stmmac_open error path
+References: <20260904-fix-stmmac-mtu-change-use-after-free-v2-1-91e680476921@uniontech.com>, 
+	<apqkBQJMqHKTUxEp@lore-desk>
+X-Priority: 3
+X-GUID: 3B32DCFF-6EB4-4369-948A-FAAB222D1623
+X-Has-Attach: no
+X-Mailer: Foxmail 7.2.25.375[cn]
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <cdc628415cf10721480a51ce14837f846ec778c2.1788248601.git.zihanx@nebusec.ai>
- <178875495405.219967.5594821749566554418@kernel.org> <CAANe3eRBOQud=bMgLnPbD_yUYUkJtT=GBqtY+GR0ZtU0_kbzhg@mail.gmail.com>
-In-Reply-To: <CAANe3eRBOQud=bMgLnPbD_yUYUkJtT=GBqtY+GR0ZtU0_kbzhg@mail.gmail.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Mon, 7 Sep 2026 09:05:51 +0200
-X-Gm-Features: AcwNN1WeOqUEs6cInW9RchAY2pakJxhz5cPcUgFjFoO3v5x7dYx5vG4SQCc85dA
-Message-ID: <CANn89iLn+Xi9cEphy3nR4bGnFCownrWa9rTZ=AnijArDFo2O7Q@mail.gmail.com>
-Subject: Re: [PATCH net v2 1/2] tcp: diag: bound bucket lock hold in tcp_diag_dump()
-To: zihan xi <zihanx@nebusec.ai>
-Cc: netdev-bot+sashiko@kernel.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, mptcp@lists.linux.dev, davem@davemloft.net, 
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, ncardwell@google.com, 
-	kuniyu@google.com, matttbe@kernel.org, martineau@kernel.org, 
-	geliang@kernel.org, gnault@redhat.com, fw@strlen.de, stable@vger.kernel.org, 
-	vega@nebusec.ai
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+Message-ID: <B2251BD5D0B36E28+202609071506015851872@uniontech.com>
+Content-Type: text/plain;
+	charset="GB2312"
+Content-Transfer-Encoding: base64
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpgz:uniontech.com:qybglogicsvrsz:qybglogicsvrsz4b-0
+X-QQ-XMAILINFO: NAeO0+xU6W76+Jh2d2IGzOW7akI7whTSpLuf7rgadEQDcg/aBN0oSvz5
+	48BtVfEFOLUCfIDY19iu+3p/Ag/VAT+OqPWLZhXOlVpk8Y1h3vT1X5BMLxvkOgeUYbKOyqh
+	msVJMrcHvE7hNijnnBSjs0TELx+y/4AYy4YCG9shuEm5gwkV7+bWIu9ORIgp8WaJUlIwJXu
+	drGfF44qct6G4ZlZsSW6Ew/kaUFR9fTJ05DCxEcdRYoSAudnWNyCzxLGSFdbbAJPqvMgYXe
+	BeVlP/WR9MIa9/drPicDBxHtt7zRbINmtujsnfQc/MK4XDjLcXRyLpYp2WHSw9ywc3flfhm
+	hsEJeWvhu2v80SMRAHOqGWktQ0i4wi/DdLeJNVIwGDv2vwknFVk75dXZm/ZRKhlfFAwst+H
+	VnTI1xWSB9LEUWCzVdBlu6IyOVTPIyW/qBG/Tbhojv+8KkhG54j6pJfyQa3IOmjo/Yd7Es2
+	f/Lbh+f9vyZHx5NPHaCMXOfhlelMeaZeSkTkjFZtDTzX34HSGxmCPjUTgR3KpoyOwIrpuw5
+	cNXoaAEoHbhzxpG0lgjzxf6m6WFqotpuNOGTjVColthyIYirl5i4gBzka/NLBfuzq0/qREM
+	+mIdZo+NazZUIGl7q+g+sIQ5whnhR/hq4xofReXpikH0iMLQiSPvSJiMkPcL4hHVVn4V5eg
+	JgwSR77MsSA8tofytTlTqOh99JfIJ3nrE87is6j/2jAUFVpjCv51eugEaYwU4vXSN4YgsSc
+	Y+s12IS2cuecEJV+CmYdHyx3/KzJcJRyA5wOcig4e5zrftQDPSm8oiIqgE8sGW3kSx6hxHa
+	YDE2GEwi+70mLGMMESIEV8+JPzfEeE3/YcHKDnS9zH+cXCPvl/kXcsIzL8KvoMAixiUp6Om
+	65Xu5K/4GMkrk8XziD5GRfllXx+lTi8gXWOirJ/7p+Dtal1fX3XrahFl4P6PaBhJGXDs+7x
+	FoJxkA17d0TRFA6ucaasl4KvPjGtFsu1Y08pOJf9MJ83gJqangKwdufSD+4CgCa9sre0=
+X-QQ-XMRINFO: NS+P29fieYNwqS3WCnRCOn9D1NpZuCnCRA==
+X-QQ-RECHKSPAM: 0
 
-> - bind cursor UAF / dangling tb2: valid
-> - unconditional sock_hold() on unpublished TIME_WAIT: valid
-> - clearing s_num on cursor mismatch: valid
-> - lockless cursor-membership checks: valid as a concern
-> - commit message overstating bind/ehash fill-under-lock: valid
-> - missing note that MPTCP needs the follow-up patch: valid as a
->   backport note
-> - endless re-scan of the same bucket head: not valid as a
->   guaranteed livelock; duplicate output after a rejected cursor
->   is valid
+VGhhbmtzIGZvciB0aGUgcmV2aWV3LgoKSSBhZ3JlZSB0aGF0IHVzaW5nIE5VTEwgYXMgYW4gZXhw
+bGljaXQgIm5vIGNvbmZpZ3VyYXRpb24iIHNlbnRpbmVsIGlzIGNsZWFuZXIgdGhhbiByZWx5aW5n
+IG9uIGFuIGFsbC16ZXJvIHN0cnVjdC4gSG93ZXZlciwgdGhlIHplcm9lZCBzdHJ1Y3QgaXMgY3Vy
+cmVudGx5IHNhZmUgdG8gdGVhciBkb3duLCBhbmQgdGhhdCBzYWZldHkgY29tZXMgZnJvbSBlc3Rh
+Ymxpc2hlZCBrZXJuZWwgY29udmVudGlvbnMgcmF0aGVyIHRoYW4gZnJvbSBhbnl0aGluZyBzdG1t
+YWMtc3BlY2lmaWM6CiAtIGtmcmVlKE5VTEwpIGlzIGEgbm8tb3AgYnkgZGVmaW5pdGlvbi4KIC0g
+ZG1hX2ZyZWVfY29oZXJlbnQoKSBiYWlscyBvdXQgZWFybHkgb24gYSBOVUxMIGNwdV9hZGRyIChz
+ZWUga2VybmVsL2RtYS9tYXBwaW5nLmMsIGRtYV9mcmVlX2F0dHJzKCkgLT4gImlmICghY3B1X2Fk
+ZHIpIHJldHVybjsiKS4KIC0gcGFnZV9wb29sX2Rlc3Ryb3koKSBpcyBndWFyZGVkIGJ5ICJpZiAo
+cnhfcS0+cGFnZV9wb29sKSIuCiAtIHhkcF9yeHFfaW5mb191bnJlZygpIGlzIGd1YXJkZWQgYnkg
+eGRwX3J4cV9pbmZvX2lzX3JlZygpLgogLSBUaGUgc2tiL2Rlc2NyaXB0b3IgbG9vcHMgYXJlIGJv
+dW5kZWQgYnkgZG1hX3R4X3NpemUvZG1hX3J4X3NpemUsIHdoaWNoIGFyZSB6ZXJvIGFmdGVyIHRo
+ZSBtZW1zZXQsIHNvIHRoZXkgbmV2ZXIgZGVyZWZlcmVuY2UgdGhlIChub3cgTlVMTCkgYnVmZmVy
+L2Rlc2NyaXB0b3IgcG9pbnRlcnMuClNvIHdoaWxlIG1lbXNldCgpIGRvZXMgbGVhbiBvbiB0aG9z
+ZSBndWFyZHMsIHRoZXkgYXJlIG5vdCBhY2NpZGVudGFsIGFuZCBob2xkIGZvciB0aGUgY3VycmVu
+dCBjb2RlLgoKQ29udmVydGluZyBwcml2LT5kbWFfY29uZiB0byBhIHBvaW50ZXIgaXMgYSBtdWNo
+IGxhcmdlciBjaGFuZ2UgdGhhbiBpdCBmaXJzdCBhcHBlYXJzOiBpdCBpcyByZWZlcmVuY2VkIH4x
+MjAgdGltZXMgYWNyb3NzIHNpeCBmaWxlcyAoc3RtbWFjX21haW4uYywgc3RtbWFjX3NlbGZ0ZXN0
+cy5jLCBzdG1tYWNfdGMuYywgc3RtbWFjX2V0aHRvb2wuYywgY2hhaW5fbW9kZS5jLCByaW5nX21v
+ZGUuYyksIGFuZCB3b3VsZCByZXF1aXJlIGNoYW5naW5nIHRoZSBhbGxvY2F0aW9uIGxpZmV0aW1l
+IGluIHByb2JlL3JlbW92ZSBwbHVzIE5VTEwgZ3VhcmRzIGF0IGV2ZXJ5IHRlYXJkb3duIHNpdGUu
+IFRoYXQgZmVlbHMgbGlrZSBuZXQtbmV4dCBjbGVhbnVwIG1hdGVyaWFsIHJhdGhlciB0aGFuIHNv
+bWV0aGluZyB0byBmb2xkIGludG8gYSB1c2UtYWZ0ZXItZnJlZSBmaXggdGhhdCBzaG91bGQgYmUg
+YmFja3BvcnRlZCB0byBzdGFibGUuCgpXb3VsZCB5b3UgYmUgT0sgd2l0aCBrZWVwaW5nIHRoZSBt
+ZW1zZXQoKSBoZXJlIGFzIHRoZSBtaW5pbWFsIGZpeCwgYW5kIEkgZm9sbG93IHVwIHdpdGggYSBz
+ZXBhcmF0ZSBuZXQtbmV4dCBzZXJpZXMgdG8gY29udmVydCBwcml2LT5kbWFfY29uZiB0byBhIHBv
+aW50ZXI/IElmIHlvdSdkIHN0aWxsIHByZWZlciB0aGUgcG9pbnRlciBhcHByb2FjaCBpbiB0aGlz
+IHBhdGNoLCBJIGNhbiBkbyBpdCwgYnV0IEkgd2FudGVkIHRvIGZsYWcgdGhlIHNjb3BlIGZpcnN0
+LgoKUmVnYXJkcywgClpoYW9KaW5taW5nCgoKCj4+IF9fc3RtbWFjX29wZW4oKSBjb3BpZXMgdGhl
+IGZyZXNobHkgYWxsb2NhdGVkIGRtYV9jb25mIGludG8gcHJpdi0+ZG1hX2NvbmYKCgoKPj4gdmlh
+IG1lbWNweSgpIGJlZm9yZSBpdCBjYW4gZmFpbCwgZS5nLiBpbiBzdG1tYWNfcmVxdWVzdF9pcnEo
+KS4/IFdoZW4gaXQKCgoKPj4gZG9lcyBmYWlsLCB0aGUgY2FsbGVycyBmcmVlIHRoZSBkbWFfY29u
+ZiBkZXNjcmlwdG9yIHJlc291cmNlcyBhbmQgdGhlCgoKCj4+IHN0cnVjdCBpdHNlbGYsIGJ1dCBw
+cml2LT5kbWFfY29uZiBzdGlsbCBob2xkcyBwb2ludGVycyB0byB0aG9zZSBmcmVlZAoKCgo+PiBy
+ZXNvdXJjZXMsIGEgdXNlLWFmdGVyLWZyZWUgdGhhdCB0cmlnZ2VycyB3aGVuIGEgc3Vic2VxdWVu
+dAoKCgo+PiBzdG1tYWNfcmVsZWFzZSgpIG9yIGFub3RoZXIgTVRVIGNoYW5nZSByZWxlYXNlcyB0
+aGUgcmVzb3VyY2VzIGFnYWluLgoKCgo+PiAKCgoKPj4gVW5kbyB0aGUgbWVtY3B5IGluIHRoZSBl
+cnJvciBwYXRoIGJ5IHplcm9pbmcgcHJpdi0+ZG1hX2NvbmYsIGxlYXZpbmcgdGhlCgoKCj4+IHN0
+YXRlIGNvbnNpc3RlbnQgcmVnYXJkbGVzcyBvZiB0aGUgY2FsbGVyLgoKCgo+PiAKCgoKPj4gRml4
+ZXM6IDMwMTM0YjdjNDdiZDIgKCJuZXQ6IGV0aGVybmV0OiBzdG1pY3JvOiBzdG1tYWM6IGZpeCBw
+b3NzaWJsZSBtZW1vcnkgbGVhayBpbiBfX3N0bW1hY19vcGVuIikKCgoKPj4gU2lnbmVkLW9mZi1i
+eTogWmhhb0ppbm1pbmcgPHpoYW9qaW5taW5nQHVuaW9udGVjaC5jb20+CgoKCj4KCgoKPkhpIFpo
+YW9KaW5taW5nLAoKCgo+CgoKCj5JIGFncmVlIHRoZSBpc3N1ZSBpcyByZWFsLCBidXQgYXNzdW1p
+bmcgZnJlZV9kbWFfZGVzY19yZXNvdXJjZXMoKSBhbHdheXMKCgoKPnRvbGVyYXRlcyBhIGZ1bGx5
+IHplcm9lZCBkbWFfY29uZiBzdHJ1Y3Qgc2VlbXMgYSBiaXQgZnJhZ2lsZSB0byBtZS4KCgoKPklz
+IGl0IGJldHRlciB0byB1c2UgYSBwb2ludGVyIGZvciBwcml2LT5kbWFfY29uZiB0aGF0IHdlIGNh
+biBzZXQgdG8gTlVMTCBpbgoKCgo+Y2FzZSBvZiBlcnJvcj8gV2hhdCBkbyB5b3UgdGhpbms/CgoK
+Cj4KCgoKPlJlZ2FyZHMsCgoKCj5Mb3JlbnpvCgoKCj4KCgoKPj4gLS0tCgoKCj4+IENoYW5nZXMg
+aW4gdjI6CgoKCj4+IC0gTW92ZSB0aGUgY2xlYXJpbmcgb2YgcHJpdi0+ZG1hX2NvbmYgZnJvbSBz
+dG1tYWNfY2hhbmdlX210dSgpIGludG8KCgoKPj4/PyBfX3N0bW1hY19vcGVuKCkgZXJyb3IgcGF0
+aCwgdW5kb2luZyB0aGUgbWVtY3B5KCkgYXQgdGhlIHBvaW50IHdoZXJlIGl0CgoKCj4+Pz8gd2Fz
+IG1hZGUgYW5kIGNvdmVyaW5nIGJvdGggY2FsbGVycy4KCgoKPj4gLSBMaW5rIHRvIHYxOiBodHRw
+czovL2xvcmUua2VybmVsLm9yZy9yLzIwMjYwOTAzLWZpeC1zdG1tYWMtbXR1LWNoYW5nZS11c2Ut
+YWZ0ZXItZnJlZS12MS0xLWM4MWRjN2Q2ZDE4YUB1bmlvbnRlY2guY29tCgoKCj4+IC0tLQoKCgo+
+Pj8gZHJpdmVycy9uZXQvZXRoZXJuZXQvc3RtaWNyby9zdG1tYWMvc3RtbWFjX21haW4uYyB8IDEg
+KwoKCgo+Pj8gMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspCgoKCj4+IAoKCgo+PiBkaWZm
+IC0tZ2l0IGEvZHJpdmVycy9uZXQvZXRoZXJuZXQvc3RtaWNyby9zdG1tYWMvc3RtbWFjX21haW4u
+YyBiL2RyaXZlcnMvbmV0L2V0aGVybmV0L3N0bWljcm8vc3RtbWFjL3N0bW1hY19tYWluLmMKCgoK
+Pj4gaW5kZXggMjQ2NTZiMzUzNTBiMTQ0NTRmYjEwZGVjZWQ2NTE2ZWI4OWUyYzBjOS4uNDM2OWU2
+NGZhZjlmODc4YWEyMGFjNTA3NTcwNTA0NGY1NWM1ZjhiZiAxMDA2NDQKCgoKPj4gLS0tIGEvZHJp
+dmVycy9uZXQvZXRoZXJuZXQvc3RtaWNyby9zdG1tYWMvc3RtbWFjX21haW4uYwoKCgo+PiArKysg
+Yi9kcml2ZXJzL25ldC9ldGhlcm5ldC9zdG1pY3JvL3N0bW1hYy9zdG1tYWNfbWFpbi5jCgoKCj4+
+IEBAIC00MTkwLDYgKzQxOTAsNyBAQCBzdGF0aWMgaW50IF9fc3RtbWFjX29wZW4oc3RydWN0IG5l
+dF9kZXZpY2UgKmRldiwKCgoKPj4/IAoKCgo+Pj8gCXN0bW1hY19yZWxlYXNlX3B0cChwcml2KTsK
+CgoKPj4/IGluaXRfZXJyb3I6CgoKCj4+ICsJbWVtc2V0KCZwcml2LT5kbWFfY29uZiwgMCwgc2l6
+ZW9mKHByaXYtPmRtYV9jb25mKSk7CgoKCj4+PyAJcmV0dXJuIHJldDsKCgoKPj4/IH0KCgoKPj4/
+IAoKCgo+PiAKCgoKPj4gLS0tCgoKCj4+IGJhc2UtY29tbWl0OiBhNTAwZGI3ODE5YzUwZGI1OWU1
+NWYxYjRmYTFjM2JhYTVhMjYxNmYzCgoKCj4+IGNoYW5nZS1pZDogMjAyNjA5MDMtZml4LXN0bW1h
+Yy1tdHUtY2hhbmdlLXVzZS1hZnRlci1mcmVlLTY5M2RhNmViNGEzMAoKCgo+PiAKCgoKPj4gQmVz
+dCByZWdhcmRzLAoKCgo+PiAtLSAKCgoKPj4gWmhhb0ppbm1pbmcgPHpoYW9qaW5taW5nQHVuaW9u
+dGVjaC5jb20+CgoKCj4+IAoKCgo+PiAKCgo=
 
-I just saw your patch today. This is absolutely insane.
-
-Please limit the complexity of a filter to something reasonable.
-Absolutely no sane user is using a very complex filter.
-
-Same for UDP.
