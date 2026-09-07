@@ -1,102 +1,101 @@
-Received: from sg-2-2.ptr.blmpb.com (sg-2-2.ptr.blmpb.com [71.18.227.2])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16D8B3537E5
-	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 15:59:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=71.18.227.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCDA05013CC;
+	Mon,  7 Sep 2026 16:14:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788796756; cv=none; b=ZlOTl+LVFr1Sp6tf/kkU6BoKlTjLNOwP54Beia7XhGQqRZb/EvvZqZ8ckRi+3BOyxIXjs9r97lQdtd7fLr0G0Dqjv2R89dVdx/R1agzswDa+uVYLlxC0M17b/642ijP1+LxLC7BSAulbKzRW8PC6gjH7Zl1wKs7zzWy+69NkfiE=
+	t=1788797693; cv=none; b=gqejiocF8YYRRe9zEr/sB5bv8I/cOgoYqKghN2SJAfJEx1dPXM2eulvRnR8XQfuvqXdhhOwPF/8aCnhNz/PXuXUPclJheQbqnQRWfLmH8cf9Je0U0gSKbGQwslbxsqMiA5s2n2idXRjSakZjugPqgeNtsS0XwR06dqGRm7oSl0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788796756; c=relaxed/simple;
-	bh=wUEIL7VoWm6sWHD+ZViWxNXwM4BP7GRQp8vE/tW9rMU=;
-	h=Message-Id:References:Content-Type:Content-Disposition:Cc:From:
-	 Subject:Mime-Version:To:In-Reply-To:Date; b=TIyrfBeWIuaWa7cdnkq2FA41/3/SAvJFmmd1SYg8xt5wF50mmHJwGMJVGJO+WHxvmvpxmqiHVADZ4RmLWA+lVy853BhDCtXJeyWzzNNCVDqxR3KNpJ/XMoXgdGjwwcBCDPVTAeJsMK6InmkWBuyZV8rbz/Le8TZBrwjlkfKY3z8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cherr.cc; spf=pass smtp.mailfrom=cherr.cc; dkim=pass (2048-bit key) header.d=cherr.cc header.i=@cherr.cc header.b=r0LrwAnn; arc=none smtp.client-ip=71.18.227.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cherr.cc
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cherr.cc
+	s=arc-20240116; t=1788797693; c=relaxed/simple;
+	bh=gWNNBH/8ik7zKyhFYLyGskN+w5uScFhl4PyboR0fegY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=W6Ac3Q8cRK/PR6TiuDTbzFta+uFof1W8xvMd70UD0/l98kX4pGC4gFIVhRy1Di+KOxmfh+DNg6EfIP2D/4bMT8m8FhgHALmUDmz47K0sIrOpv2bAK85KlYecXkHk10RWqyQsoDR6y6lqYDTGn/XQwFqRfMGah3ZrXXlDGbcXTAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=0JvrS2ZD; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cherr.cc header.i=@cherr.cc header.b="r0LrwAnn"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=feishu2604220257; d=cherr.cc; t=1788796740; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=M8/WI6AJeSmvEUTgCg9I0OUNh2rq2++od/Uz13Erlf0=;
- b=r0LrwAnnVwrDqdKZt88mDsSiChw/sNqErmbwcYw+6FO/za7fp9DTZyVxysalixLBdOqk8L
- eFhO3wLpLdfjO3P5Rec3MD5q/tiZD1qNHKDs/ZVG5qJesvkHjcol1PYMqh5SYaD9hCCc3U
- m0PCIbiytwgyDiNpjtfe66hGrpLT6kXSdNtFM2473Zz06DPTONhdRdoa7chvIATbTLlUj8
- ggHAIM7kFrn9ICBeiAaR/79aDCXFyU8kyTZsk2LqA1KdFXDe+NjrzB65DZm/Cx8zu1fBH2
- 201mJdMdzhxlMq0T39N8UbF6jJpVhjHB6TLKmy1SQQH16rZYdurkSt4SVlwx1g==
-Message-Id: <ap7fP5Lz04kySgn9@pve>
-X-Original-From: Shengzhuo Wei <me@cherr.cc>
-X-Lms-Return-Path: <lba+26a9edf43+f9605b+vger.kernel.org+me@cherr.cc>
-Received: from pve ([111.42.148.75]) by smtp.feishu.cn with ESMTPS; Mon, 07 Sep 2026 23:58:58 +0800
-References: <20260904105542.70540-1-phucduc.bui@gmail.com> <20260906131711.247708-1-horms@kernel.org> <CAABR9nFYrmteCtb6E_txg13U31Bf50p0PUBvaOXi3gmT7Z+0RQ@mail.gmail.com> <GV2PR04MB1173965A34420E072C0DD3A1988B22@GV2PR04MB11739.eurprd04.prod.outlook.com> <CAABR9nHUXPL8dV8iqJ-x4OWRLw-qRm8MTq_QDTEJ94WhLWRiqg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 7bit
-Cc: "Wei Fang" <wei.fang@nxp.com>, "Simon Horman" <horms@kernel.org>, 
-	"Frank Li" <frank.li@nxp.com>, "Shenwei Wang" <shenwei.wang@nxp.com>, 
-	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, 
-	"davem@davemloft.net" <davem@davemloft.net>, 
-	"edumazet@google.com" <edumazet@google.com>, 
-	"kuba@kernel.org" <kuba@kernel.org>, 
-	"pabeni@redhat.com" <pabeni@redhat.com>, 
-	"richardcochran@gmail.com" <richardcochran@gmail.com>, 
-	"swboyd@chromium.org" <swboyd@chromium.org>, 
-	"imx@lists.linux.dev" <imx@lists.linux.dev>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, 
-	"Shengzhuo Wei" <me@cherr.cc>
-From: "Shengzhuo Wei" <me@cherr.cc>
-Subject: Re: [PATCH net v3] net: fec: Propagate PTP initialization errors
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="0JvrS2ZD"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 15FB01A1A3E;
+	Mon,  7 Sep 2026 16:14:49 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id D698660383;
+	Mon,  7 Sep 2026 16:14:48 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7DBC111C79257;
+	Mon,  7 Sep 2026 18:14:39 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1788797683; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=bzQS0SQV+MIhTjSJhNIXgjRAgj5KvFckOQuhEmYopSA=;
+	b=0JvrS2ZDqB2DQInzb/4+L+J++3K0kiUCL8y4/oh6SDS/I7gXQs4kx8nBmvszCljeyeupo8
+	XsGmQQdUPQfgXC4pFT5c33RGyKz4YFU7rPIRFIBpxAU8xtNuH5pzXyZrW6v0rMxDShaPv5
+	aSL49JqyaRnSpghzj+mtmunBn+P969jgoVgZne+hKDs3pFEBvCpzCMO+ujpu641fCFxJNm
+	jCNIbloVxYo8BkHvm63TrwtA1PBvYh0CpddbZmMREvGkdoTyFEI5HuucFrtoY8qXBqGrIS
+	Mmr+vgKeQH0TX4aDVMlVtlKTRdN//EJ1YTJEFVnAk0nRvKxCNrXiSQPKRtNHkQ==
+From: "Maxime Chevallier (Netdev Foundation)" <maxime.chevallier@bootlin.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	davem@davemloft.net,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	matttbe@kernel.org,
+	Stanislav Fomichev <sdf@fomichev.me>
+Cc: "Maxime Chevallier (Netdev Foundation)" <maxime.chevallier@bootlin.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	thomas.petazzoni@bootlin.com,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH net-next v3 0/2] selftests: drv-net: Allow cross-compiling the hardware tests
+Date: Mon,  7 Sep 2026 18:14:34 +0200
+Message-ID: <20260907161438.755125-1-maxime.chevallier@bootlin.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-To: "Bui Duc Phuc" <phucduc.bui@gmail.com>
-In-Reply-To: <CAABR9nHUXPL8dV8iqJ-x4OWRLw-qRm8MTq_QDTEJ94WhLWRiqg@mail.gmail.com>
-Date: Mon, 7 Sep 2026 23:58:55 +0800
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 2026-09-07 09:28, Bui Duc Phuc wrote:
-> Oh, great! I see it now.
-> 
-> However, it looks like that patch does not fully address the root cause.
-> 
-> There are two places where devm_request_irq() is called:
-> For PPS in fec_ptp_init().
-> 
-> In probe():
-> devm_request_irq(&pdev->dev, irq, fec_enet_interrupt,
-> 0, pdev->name, ndev);
-> 
-> The approach in that patch only handles the first case, so it does not
-> fully solve the problem.
-> 
+Hi,
 
-Yes, my patch leaves the main Ethernet IRQs unchanged.
+This is the third version for the ynl and drivers/net/hw
+cross-compilation enablement series.
 
-For PPS, it also addresses the handler racing with PHC teardown,
-as discussed in your earlier thread. Clearing pps_enable does not
-wait for a handler that has already passed the check. The explicit
-devm_free_irq() waits for that handler before ptp_clock_unregister().
+Changes come from Sashiko reviews, that detected some Makefile inclusion
+ordering issues, a stray 'Q = @' in the ynl makefiles to have proper
+verbosity support, and some commit log rewording.
 
-Moving the netdev allocation to devm would address the IRQ/netdev
-freeing order, but by itself would not provide that synchronization
-before PHC teardown.
+Changes in V3:
+ - Add Matthieu's review tags
+ - Drop 'Q = @' line in patch 1, it's now handled properly through
+   Makefile.include
+ - Include Makefile.include before Makefile.arch
+ - Reword the commit logs to explain the limitations
 
-For the probe failure case Simon pointed out, we also need to account
-for the failed_reset path skipping fec_ptp_stop(). With the explicit
-IRQ release in fec_ptp_stop(), applying both patches would still
-leave that path without the early IRQ cleanup.
+Changes in V2:
+V2: https://lore.kernel.org/r/20260903155524.2241065-1-maxime.chevallier@bootlin.com
+ - Update the topic for patch 1
+ - Update the CC construction for patch 2
 
-I am preparing v2 with fec_ptp_stop() moved after unregister_netdev(),
-as Wei suggested for patch 1.
+V1: https://lore.kernel.org/r/20260901164200.1124343-1-maxime.chevallier@bootlin.com
 
-Are you planning a separate patch for the IRQ lifetime issue? I'd
-like to coordinate so that we cover these paths without duplicating
-the work.
+Maxime Chevallier (Netdev Foundation) (2):
+  tools: ynl: Allow cross-compiling ynl and associated tools
+  selftests: drv-net: Use cross-compilation environment for the io_uring
+    check
 
-Thanks,
-Shengzhuo
+ tools/net/ynl/Makefile                          | 1 +
+ tools/net/ynl/generated/Makefile                | 3 ++-
+ tools/net/ynl/lib/Makefile                      | 3 ++-
+ tools/net/ynl/tests/Makefile                    | 2 +-
+ tools/net/ynl/ynltool/Makefile                  | 6 ++----
+ tools/testing/selftests/drivers/net/hw/Makefile | 5 +++++
+ 6 files changed, 13 insertions(+), 7 deletions(-)
+
+-- 
+2.55.0
+
