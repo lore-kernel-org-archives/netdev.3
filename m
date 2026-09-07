@@ -1,184 +1,189 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazolkn19013074.outbound.protection.outlook.com [52.103.51.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72A262DB7B9
-	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 07:24:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2A3C418A5E;
+	Mon,  7 Sep 2026 07:25:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.51.74
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788765870; cv=pass; b=g9BKuIEAcwgC8EZrhCFjqwZLKdfX0LLkVEdcxN7FSdTmfIZIy1P10Ne86VETBY7ACJsH9QIcFB0thFDsJ6b7Ch4LjZ2EKEZ8AF21J1ZGyxcjm2Cjzc57bnwPeahYi5bxw8jfa7QV8G26LiGGdt8p7WxBp65ARy+rvfPnh2g7518=
+	t=1788765942; cv=fail; b=T/bhJeO2BDRS7nFApQBFHjM4XPq5+dRAjKkh03I2bo+GhIOyVGUf2A6mVnjra9Uz9soAti4oaVsXqmlXgBU+Uu9WU6dVjRvpHky2aYVVRWcLBiReSrxu5WPzEnTMPUs6lHDamnfAybnYgfBwbCOGYgfW6M23PGRg6tdm+iNUXcs=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788765870; c=relaxed/simple;
-	bh=2yE2vKhYco15cq1LAqgS54dJAg4li6tJCb9pHzWm1p8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NAck0xyuH9UaMz1zeZ82ZchHSTmJ0YP5m00M4+40n8RBh1gH3+E1iZYMCAG0+p+TADhT2dAkdrysDIEq5ZYiFdyRAYtpdGYmxwRKXWbc1hr6oIYftNTCtrmhYx8K6fij5Sbti4ZOu+Kqe5gRQHJVODQ4txo8bQRtZs0zVQHOre8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=S8ZiJ5Iz; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=B4Uvh9Kh; arc=pass smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1788765942; c=relaxed/simple;
+	bh=HYiGodGkK9xP7NFZCHsI/ZUD987RuwPEwWbhwu1WIDE=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=mwcl7E+bPwZ8FWkOgDfOnY46VA+BinwIzh9rOEDsuPxKu9jwQP9rtpu11WluWdf3ipSAXi2mP/sc9MxJmfqECS9j5tjXOFiJjt7woVn1nYUlGXEphN1CP5SzfagXvLQUpPSpdC044RHG2auKzqrSiDiQ4gvASbQFP+ncVuD8Ssk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.co.uk; spf=pass smtp.mailfrom=hotmail.co.uk; dkim=pass (2048-bit key) header.d=HOTMAIL.CO.UK header.i=@HOTMAIL.CO.UK header.b=Vf7cuEl1; arc=fail smtp.client-ip=52.103.51.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.co.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hotmail.co.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="S8ZiJ5Iz";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="B4Uvh9Kh"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1788765868;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2yE2vKhYco15cq1LAqgS54dJAg4li6tJCb9pHzWm1p8=;
-	b=S8ZiJ5IzRswZcAlOTqhqSg8tZTG1pVm4aNsPGvgcg92Fj6H/mjYX75htO4w9cZWz6/rueM
-	J+Pt5DaG4gXkI47eWEugo5Rny+0+IVyyKcLuOpXOU3YQHfb2UeZ6e4JfqFiSwOoZrllVub
-	+dG8ov1Jgf97752WqpWRCpPEn3PWpuQ=
-Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
- [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-392-O7uqsJKKNTec1Rfr8HyRLg-1; Mon, 07 Sep 2026 03:24:27 -0400
-X-MC-Unique: O7uqsJKKNTec1Rfr8HyRLg-1
-X-Mimecast-MFC-AGG-ID: O7uqsJKKNTec1Rfr8HyRLg_1788765866
-Received: by mail-lf1-f72.google.com with SMTP id 2adb3069b0e04-5b60bfcb6fcso1784400e87.1
-        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 00:24:26 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788765866; cv=none;
-        d=google.com; s=arc-20260327;
-        b=X2adoymZRwHVpraA3V5PtjanPZ9EyBje3LpvRYiYQs/kWP8N/p7RO9dx1qzABNPlwO
-         FRtfDxVbNgJmK2YburIwKJBgntfki7RS2mqk+37irJoh/54gcDVxe0FErIWJdg0wOIuK
-         6+JLGeMDYcq/ho3g239/4gJJOAiREmZj8A1eznQQ68wR5YLDlWIlPc1YiwPa0Go7K0SC
-         IKR5UMwSyoLDNe3iSfBjC8U1MvXpbySf96YvbYn05YLzX5xeJgG6k2wAebSDTLaqs0vG
-         FS2rIyXqS3Q7Hal9X613fLK/5Od32AZ05xTTfDmvXgZ4Ww16BEmlAfwhjpg8uiVAoIJ0
-         ci9Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=2yE2vKhYco15cq1LAqgS54dJAg4li6tJCb9pHzWm1p8=;
-        fh=6R6jhkgs+iurWw/vPXJtV4d9bc/IizmxwblooULe2BE=;
-        b=EMZVJtcnqWxDWJY/PqQSbJ589PzKmjONO8Nc4TqQD0UTYfRJkfC3UwJccg1ETMokmX
-         q7koG0OBzINOP8RF43Jf2Sw1g6StMVFwuNHwsTDYMQNlgGHJTuvXzLCmOVW4c4gYWDub
-         eRcwJJCvGbxzGhoW6aZ3U7rZYSA1j/DbzvTu8VrRVN49QIH7RV8uu5SzVfnSM/h7JfyQ
-         IpG6YaV/wgbgX42oEyoswhiJ3a7s1B0N6dPwLnYy6x9vJoi6oDI51ruj62WWnqDE6+Gx
-         YVXzg8fRi4XQgL7gBO+nb+BibCmksXgp1QGgt/z5kQPJpDuB0ZqKyZu2vDPJRdb2Ee4g
-         CmEw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1788765866; x=1789370666; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=2yE2vKhYco15cq1LAqgS54dJAg4li6tJCb9pHzWm1p8=;
-        b=B4Uvh9Kh038DoTB9gEMhPTq75k2pfy56Vh0rJgVZ914d3OJux9BdPQdPtLi9p4A0EL
-         jHGN1rXi5iABqzb2dKM7HlbsASwafFzIl2UxW6/wYXe/MUcAz4wRHzI8X+Vp85oiXjPC
-         oE1QHAKd2rmNwHqMT7K2TGix/eJmCbKAHYJn21tgaBs2uPScY+5pcYN4z5bm6noyzrF4
-         lPSzIMP+3C3Wdr9Lk4ZQa5ayx85Jzw/vpeN514kUZn6VzyTbY7KoGw1m7fzKBDDxCNsj
-         Lj5etN2/Ks74jHdzULam1Bz3jeBo8eBeUlepKaC9AcnQznMy+jbtrB8x2wzwes+pJJ/9
-         eiHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788765866; x=1789370666;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=2yE2vKhYco15cq1LAqgS54dJAg4li6tJCb9pHzWm1p8=;
-        b=qEWTxapc8IataJzCsN2OIQh0DHjC99vGDEnc26uqTOc/LmIL98wPj0RA4DDcAJfSMh
-         xARmW2MCY2bUjkwXkuQijO796onOZihdkLUCYORlc3U/+6vjNnmw2BpV08J+Ejo0sYA8
-         GHfxHqcvpvSLjqgXRo0J9rLGa8hMDTH5mNg4RAo1xQ950vNdOejp3jzgprzxjLvoZpIw
-         pGN2siMIrSYRlfAwseNN8OWVG4voJqR94koFVlVlDkqOeMMBvvxNIzkJwS39m6ze5XWW
-         J+lszK9v1YMErzRyEgNprmLT00u1Fd+VYyf1Z/sk8q+itxdYRLNtWIzb8uhPaiq9vHEi
-         PkFQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzcw/76TxO3KJZbX1lVXM2QDWojjwFM2Rg/f6GD16uZBaF+Up3bb/LEP9O2v6nZ9Nl+rd2VAfA=@vger.kernel.org
-X-Gm-Message-State: AFuF++lXZbLqVTcypAvKGU06UM6CGJkp30WXZzmk0Bdx90ApIOq5vEm3
-	+JY73aZnCPqiH7EQMfSbziR666GU54UNnRPEwgqCJhG0QJoa/Vg4shYO80xS2YFUcWMN9KtgQzM
-	gEie/oBbMmM3ILqxbJj1vQqb3+Bty4MQhf6FWevBy3QYJg9qG3nKbTETagb7t9ysGa/3LBqMN1D
-	2GT5HelzpxBY/+Zurg8GjrUx/o1O17lHa4
-X-Gm-Gg: AYBFou0zU0XHTD97B/Gj/2o21DrLL7X4+Y0Nmmnb1J96LtecLJdCQxQjaGCj4NfeWeL
-	4FbQUR+KwLYfm2OqUBHHWuVxT8sTicBJwkZW4C8u2eUG4iuai1HXeHQv4S2mn6+sX7rc0iyMQx/
-	vMOy1g2RIyLc2YWAxVtMOU7vU7Gp7CGm1pX1KG2CWKhHvzDjcjys3yETil
-X-Received: by 2002:a05:6512:3f0e:b0:5b5:e86f:3550 with SMTP id 2adb3069b0e04-5b616eed114mr3346327e87.9.1788765865564;
-        Mon, 07 Sep 2026 00:24:25 -0700 (PDT)
-X-Received: by 2002:a05:6512:3f0e:b0:5b5:e86f:3550 with SMTP id
- 2adb3069b0e04-5b616eed114mr3346309e87.9.1788765865162; Mon, 07 Sep 2026
- 00:24:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=HOTMAIL.CO.UK header.i=@HOTMAIL.CO.UK header.b="Vf7cuEl1"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=V1aDLnEUc5PJQdeOaj4RBTeardKtwVqcUYggbvYTQlu+TvuTOXtv6+++ZwUgFdfV77/OAio9TwFUtzP5nsAAFc5pEl8WSbjIkbN/fufM4NJAyffSKkU3uugKeaOKIPRND4qEH0enxwbwEaaiprfOcCXM8aq8hpyjAHEWVBJtHyFmSOhqY5ID1W9FsvY7H9ghpYpX+SZYDsJcAvDyujb1y/TJAkJ1UUHYglRKf9S/MNVH+niNF5v/C9fWUI66e33Z/yr+s1NWDwm4gBZ7IiZQLwmBbsun/UmG5qn9Y3FI2/2a4psr3QvXPLOOEH0qg+bWbV4Joz14lEfQp5AQYCZF5w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=gGihvwGAIEuPP9LOZ/gNTyybVnfLzBjX8DWzkmKCHXE=;
+ b=DCDP/JdfGwADjFou3bdoFYoAYqaECgB8L/bwnr9JymaJlwMa6dMkugQi1Mh4jWCxREN2M6MPRgbkv+LQYK4vfcKM6+rRkZkzUcAfwEdHv5UJ5QPVGkHocSBFoWqB9TgcDjk/5FXmFdElu4w39ff8bb0pSR6bnLyv3BMMJNXQxsVdeskm6k38AC4IRaOxH288EVnBJqTFyPhxxIibJbATTcHZfTT4RyEmxJQH5mVbWg8Lc+xITlqCAj3Ql/ggrBFaI7sP7OMiPP5pltpLqRowslk+OMx9Wm/UHbt/P8TT3BVnaAxKW8W/rN5Fijk2MfaxQVyZ7nCcMqNla1gAN83Ngw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=HOTMAIL.CO.UK;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=gGihvwGAIEuPP9LOZ/gNTyybVnfLzBjX8DWzkmKCHXE=;
+ b=Vf7cuEl1xV7jaAwjc2ECvaMQHqztwmok45hncEUeKdX0zRmDKc/MA98A7VumChL0rbXc36vrpGrzwbn9GAHAAS3Poop6uG+uhBUCyxmQ0hSXxkEO7snVkkBMR1/1L0++jqsKFWXhgIn11egT/+xa4SQEwY6p0fn3Ss87ZQwatmDZp3Do2Nvp3yqyoK0VCG52ZFitBKny6016iwT7Rle9t6+iPgAJVzMq8SVqQl4B6gQU8skWJueoBqOASbGSI2DVxZaXAKdIu1Ii8wizB3sig6EQXPINXOFYGeX6ZnTBlsUXaJNuqr/JKfJMsC4CwEI/Rj4VPS2zbD5fzOaNcQSBKg==
+Received: from AS8P251MB0001.EURP251.PROD.OUTLOOK.COM (2603:10a6:20b:344::22)
+ by AS8P251MB0136.EURP251.PROD.OUTLOOK.COM (2603:10a6:20b:403::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.382.10; Mon, 7 Sep
+ 2026 07:25:38 +0000
+Received: from AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
+ ([fe80::2952:d4d0:4ba:8352]) by AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
+ ([fe80::2952:d4d0:4ba:8352%6]) with mapi id 15.21.0382.014; Mon, 7 Sep 2026
+ 07:25:38 +0000
+From: Aamir Ahmed <elb12345@hotmail.co.uk>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Peter Korsgaard <peter@korsgaard.com>,
+	linux-usb@vger.kernel.org,
+	netdev@vger.kernel.org,
+	Aamir Ahmed <elb12345@hotmail.co.uk>,
+	stable@vger.kernel.org
+Subject: [PATCH] net: usb: catc: fix out-of-bounds read in catc_rx_done()
+Date: Mon,  7 Sep 2026 07:25:34 +0000
+Message-ID:
+ <AS8P251MB00013A0DCA600A79DC58B0FEC8B22@AS8P251MB0001.EURP251.PROD.OUTLOOK.COM>
+X-Mailer: git-send-email 2.43.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: LO6P123CA0039.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:2fe::19) To AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
+ (2603:10a6:20b:344::22)
+X-Microsoft-Original-Message-ID:
+ <20260907072534.588817-1-elb12345@hotmail.co.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260903121057.80006-1-ihuguet@riseup.net> <20260903145631.GA182962@shredder>
-In-Reply-To: <20260903145631.GA182962@shredder>
-From: =?UTF-8?B?w43DsWlnbyBIdWd1ZXQ=?= <ihuguet@redhat.com>
-Date: Mon, 7 Sep 2026 09:24:13 +0200
-X-Gm-Features: AcwNN1VwMZKu46IzJzKROmEYRy2rjJetX0BeFnxsi74O5FJcBryBFl6vpHj-5Dg
-Message-ID: <CACT4oufRecaPSMTJPK3yJurmaEaMN5i_CArV-mHd=rAA4zOJEw@mail.gmail.com>
-Subject: Re: [PATCH net v2] net/ipv6: don't route packets with unknown source address
-To: Ido Schimmel <idosch@nvidia.com>
-Cc: =?UTF-8?B?w43DsWlnbyBIdWd1ZXQ=?= <ihuguet@riseup.net>, 
-	David Ahern <dsahern@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Neal Cardwell <ncardwell@google.com>, Pablo Neira Ayuso <pablo@netfilter.org>, 
-	Florian Westphal <fw@strlen.de>, Willem de Bruijn <willemdebruijn.kernel@gmail.com>, dcaratti@redhat.com, 
-	Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, Phil Sutter <phil@nwl.cc>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Junseo Lim <zirajs7@gmail.com>, 
-	Martin KaFai Lau <martin.lau@kernel.org>, Xuanqiang Luo <luoxuanqiang@kylinos.cn>, 
-	Fernando Fernandez Mancera <fmancera@suse.de>, Leon Hwang <leon.hwang@linux.dev>, 
-	Willem de Bruijn <willemb@google.com>, Kees Cook <kees@kernel.org>, Jeff Layton <jlayton@kernel.org>, 
-	Christian Brauner <brauner@kernel.org>, Qi Tang <tpluszz77@gmail.com>, Joe Damato <joe@dama.to>, 
-	Breno Leitao <leitao@debian.org>, Li RongQing <lirongqing@baidu.com>, 
-	"open list:VRF" <netdev@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, 
-	"open list:NETFILTER" <netfilter-devel@vger.kernel.org>, 
-	"open list:NETFILTER" <coreteam@netfilter.org>, 
-	"open list:BPF [MISC]:Keyword:(?:b|_)bpf(?:b|_)" <bpf@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS8P251MB0001:EE_|AS8P251MB0136:EE_
+X-MS-Office365-Filtering-Correlation-Id: c92f4e82-5cf0-4b63-0aae-08df0cb136e9
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|24021099003|55001999006|51005399006|2604032031799003|23021999003|5062599005|5072599009|15080799012|37011999003|25031999004|12121999013|8060799015|19110799012|25010399006|4140399003|40105399003|2607281247196008|3412199025|440099028|26104999009|1710799026;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?Oin4iOXLASh4sMWJtmvUpPC0gUsZvvjUXcPPJIeo34FSFJdBd4kAgSMYsyou?=
+ =?us-ascii?Q?lj+KLDjoqssHWCk+ynLlVEyzEAqk3fIywB4Cg2nwtfdxUoIKN0Oxes4TWpFY?=
+ =?us-ascii?Q?00T4GjbGJJ7XAV0DjSrK8clrUL1lfCowcDneHUsZBbLPJzAklvzgtZfyh74e?=
+ =?us-ascii?Q?3z9MVwbOJaDVzXhe7f06oAjvtiWQ3uKs9MY1RbpYhV54xQA2GPf1/KL+KBJM?=
+ =?us-ascii?Q?XJm5ocCWupYtKjp/eTSH3nebxKBit/1Sac35m5nHN0Lnopv0NlZB7c7Xxw5C?=
+ =?us-ascii?Q?eEQ6E0DkuS64VBbtbx+hxtOljsn2s7ikmaa8ve67vJPNgAHb811+VlhgGQQP?=
+ =?us-ascii?Q?TK+j5a4V1HCCqh7/uYBQhAoU+EAqdnuhUoPksmiyMZWj9z+69cyqmqS5Ijem?=
+ =?us-ascii?Q?Sz8oFMy2BComc3fYzMHOPEj2IhGJllhRHSN7GQOtciTok1YLVncrfJ0Eua3d?=
+ =?us-ascii?Q?81Pwr2fqAPJxLOsfdylFFhCvWAuo4dQw6pOWtmCecnT8ABc5rgMuh8sLzZAR?=
+ =?us-ascii?Q?5mldhTTbdkYxUWyI9jry8yuS4FZ0AuF1/IIsRI/Jn+kq2eju6VTljhiMzxUS?=
+ =?us-ascii?Q?Tu1nDaVyABrjME3MS2xB0FoeZSkt9gr0OHWf1Mdvam8RQKhIZj4TifFnUo0k?=
+ =?us-ascii?Q?5MXJNb3KoQCIZxmezWVnSSEEUup5GYvtIYVLsRnxeCxa3t+YXL6aQgx/m68e?=
+ =?us-ascii?Q?NCZtNOPj7noYGqFcvMlQBgFRo+i42Zz8VCLUxijjfPRCefvqlWQQn9mORqQM?=
+ =?us-ascii?Q?Pzv67egy/pCd4Q9+/jRYdz67Wzb4fWrJYJY+Vczb0Tm1xoqcA1hYpdCN72Rt?=
+ =?us-ascii?Q?wtIvoSBnDV/s3rPthvWaJ5xQHjafalGEmzbAGxL6DQUWTO0XOBpjj1+y0F15?=
+ =?us-ascii?Q?AKrRiq/iiTvA1qK6clKJN+4yS6dFCxebmj+xsYEz5Uk/kzPScGgvDI9kn1/n?=
+ =?us-ascii?Q?DOC+k1mNZWVuFVh5G4hEV9LgBP5CUvDrtP0B5z+X7czpmk8eABqIiFC21xa0?=
+ =?us-ascii?Q?kkB33mPiVoys+Ley3IYkSBDvSytomgGgjVLChoj0vzrClDkUpBKBaoz68O2z?=
+ =?us-ascii?Q?nXESI5lGuOSyNUOoh+6X+BOPkpfWCZ8wwCQI1jwJqR48tdnkPE38x1zeiyPg?=
+ =?us-ascii?Q?pHxIysmrn59hET7OjmDbnJd93giOOTqwtcfEndWVMCPDHlqxNE1e2SY=3D?=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?cmaXM4g+t1XAOFgYCZA/pkPPaRK4SZC6B+AH59y2nzE3hJbPfOyimgx20kKN?=
+ =?us-ascii?Q?eVXAa5EJvA8kYJn6WNaCDUhSMTC1j7FuKUusGrnNy83ZIUeeanv+iHsetUx1?=
+ =?us-ascii?Q?eXIVLeRro2VSrKzzCDaBwwdJTOehhEZyc4Ospr8tXNB3FvzDADsDRaJOiSjv?=
+ =?us-ascii?Q?JMrkvUw7w+g8Ux7awErO6V8JxMYXAPRo9hKNcdHitXVMDiqNvRlCR0D4oPGQ?=
+ =?us-ascii?Q?gBGUbf6tvLgnYegA7fg0xBGcmALaalvHWvpaQqrzUsXn55U3wkh+kg4dFTTP?=
+ =?us-ascii?Q?h39m7VhP2f0OK09Ql/GJ96kiAghITWTYu1wadMYxdVJjlWiGkAAQj8mV9qdT?=
+ =?us-ascii?Q?bXMhmpLOLV0ZdZSoCjTktz0DyX/1j8TBS0BvoQuBPOxzSL/HlTmXnDwlozP6?=
+ =?us-ascii?Q?iXIJ6oDmwVu83IvePRt82yUCFoqZV2dmJgfYPU+/yFPMrLjKjjFPEQiPZXLj?=
+ =?us-ascii?Q?a1ZRAJfH7cMwgplI2EbaIBOKyiWT+9W+IL7N32Cw06ub+Ibf8FUnf/7cFa5t?=
+ =?us-ascii?Q?UBZgK+5Rvw1iAF7RHptwiG1i1BXI66CrJT7xFOm0+tvufBCIS5XTYrvvVzZE?=
+ =?us-ascii?Q?fOrzipAZc/XFJwb2W3EXLfreq8uClJJZ1bvAGhZpoPjDuuEGAoqtwFDS56AF?=
+ =?us-ascii?Q?RLJBURmIwsLVpX2x3Vq7kSgHr6LZUuxb02oHgmXo60+HOkpxzlW9hlx838Rc?=
+ =?us-ascii?Q?wojq0CzHPy9f0F4+UYILcbRNY5DkNewPwz8CESF60L+U82j+Vkwm3LcP/8Mn?=
+ =?us-ascii?Q?q7aySh8o2oRPjf8C3WA9KUxCcfl16HGZVzq82q8c4ukt5BKu9W00OUsHkqcG?=
+ =?us-ascii?Q?IdDQtLL7keKauIUtuY3cj3jF9g/Pb/bsdVZN3tRxgA3It70l2jnNLP6TIdbn?=
+ =?us-ascii?Q?aPlwPqKQbd29OPOhkY5+KVTJSPRc77F7mUR57+qoNOtV92TEzN9ZbyYDMRs9?=
+ =?us-ascii?Q?NTZyAaxr+Hcl+/kKHtpoaNPRdWLC7IVLu9cwJt6lOw+d0rzZ7AfUBRFHzkxb?=
+ =?us-ascii?Q?zavTqK+KP3m2ktwo3fQiAM9eeQISSP/Ah0zverg5fmqzVg2QiKQyHLf0XU/5?=
+ =?us-ascii?Q?xkDgXmPpi9kKZZQ8gZaqk5j1yKkNp6/k+REyuMgjnZ+c5Fje4g8VExo7u/hQ?=
+ =?us-ascii?Q?1ehfodC0UdQUdDc2YLioxyno92srse7V3uwJDH5Sf5+vge0GdLmrueoz9//E?=
+ =?us-ascii?Q?RGzSQc2xEGm4uiOScc+Cled78EJIqAvzOz3yei7V4CBaggyf2W6XAomCJX7h?=
+ =?us-ascii?Q?9DODzve0ys4nqHd6HNqUhLW8x1mLfWLhDwRCdpcgWfhdUfVqOSQ9GkIyYPdE?=
+ =?us-ascii?Q?PE7+vHI9VKdT/UNONETFftMoeS6y5I/li/16A2/7Jx0bvv7GrJxRIo1cVUil?=
+ =?us-ascii?Q?JE1b/HuxCLjBauVKaFPx2eMeC+7qWxpMa03i+w8edV8zdWkF9VkjDWjnlMzR?=
+ =?us-ascii?Q?DuknxLmLFxF6ku5h2sfcNXtvQ4F0pM0/?=
+X-OriginatorOrg: sct-15-20-9412-3-msonline-outlook-fe3f5.templateTenant
+X-MS-Exchange-CrossTenant-Network-Message-Id: c92f4e82-5cf0-4b63-0aae-08df0cb136e9
+X-MS-Exchange-CrossTenant-AuthSource: AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Sep 2026 07:25:38.2509
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8P251MB0136
 
-On Thu, Sep 3, 2026 at 4:57=E2=80=AFPM Ido Schimmel <idosch@nvidia.com> wro=
-te:
-> 1. This is a behavior change, not a bug fix, and should be targeted at
-> net-next without a Fixes tag.
+catc_rx_done() parses multi-packet USB transfers by iterating over the
+received data. For each packet, it reads a 2-byte little-endian length
+from the buffer, then copies that many bytes as the packet payload.
 
-I see it as a bug. If you remove an address or its valid_lft expires,
-the expectation is that it's not used any more. Anyway, even if we
-consider it a bug, it's certainly not urgent, so it's OK for me to
-send it to net-next instead.
+The bounds check "pkt_len > urb->actual_length" is insufficient:
 
-> 2. What is the motivation for this drastic change beyond RFC conformance
-> and parity with IPv4? IMO, these two are not a good enough reason to
-> make such a change with a huge blast radius.
+1. It does not account for the 2-byte header offset, so the memcpy can
+   read 2 bytes beyond the received data.
 
-IMHO conforming to RFCs is always a strong reason. But beyond that, I
-think that the current behavior is wrong because, as I've said above,
-keeping using an address that has been removed or expired is not OK.
+2. For subsequent packets in the same URB, pkt_start advances through
+   the buffer but the check still compares against the total
+   urb->actual_length rather than the remaining bytes, allowing reads
+   well past the end.
 
-It's true that it's difficult to spot all the corner cases that may be
-affected by the changes, so the tradeoff of fixing vs risk of
-regressions is not that clear, I understand it.
+Fix this by calculating the remaining bytes from the current pkt_start
+position and checking both that enough bytes exist to read the header
+and that the packet length plus header fits within the remaining data.
 
-> 3. See [1] for a list of regressions that AI flagged. Even if v3 fixes
-> all of them (which means a much bigger diff), I don't think such a
-> change will be merged without a proper real-world motivation beyond RFC
-> conformance and IPv4 parity.
+A malicious USB device can craft transfers that trigger the out-of-bounds
+heap read.
 
-I will try to address all of them; thanks.
+Fixes: 1da177e4c3f41 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Aamir Ahmed <elb12345@hotmail.co.uk>
+Assisted-by: Claude (Anthropic)
+---
+ drivers/net/usb/catc.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-About the real-world motivation: this comes from a customer's bug
-report, who is worried about packet leaks in their production
-environment. I mentioned IPv4 parity and RFC compliance because I
-thought that without those arguments it would be very difficult for
-the patch to be accepted.
-
-
-On Fri, Sep 4, 2026 at 12:38=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> wr=
-ote:
-> breaks a bunch of selftests, too, FWIW
-> Please make sure to mend those if you want to forge ahead as a non-fix
-
-Sure!
-
-
-On Fri, Sep 4, 2026 at 12:22=E2=80=AFPM Matthieu Baerts <matttbe@kernel.org=
-> wrote:
-> Just in case, do not hesitate to look at the new countainers that might
-> help you running those tests locally:
-
-I didn't know about this, thank you!
-
---=20
-=C3=8D=C3=B1igo Huguet
+diff --git a/drivers/net/usb/catc.c b/drivers/net/usb/catc.c
+index 96e82f94edcf8..e4f8b9a0caf19 100644
+--- a/drivers/net/usb/catc.c
++++ b/drivers/net/usb/catc.c
+@@ -234,8 +234,16 @@ static void catc_rx_done(struct urb *urb)
+ 
+ 	do {
+ 		if(!catc->is_f5u011) {
++			int remaining = urb->actual_length -
++					(pkt_start - (u8 *)urb->transfer_buffer);
++
++			if (remaining < pkt_offset) {
++				catc->netdev->stats.rx_length_errors++;
++				catc->netdev->stats.rx_errors++;
++				break;
++			}
+ 			pkt_len = le16_to_cpup((__le16*)pkt_start);
+-			if (pkt_len > urb->actual_length) {
++			if (pkt_len + pkt_offset > remaining) {
+ 				catc->netdev->stats.rx_length_errors++;
+ 				catc->netdev->stats.rx_errors++;
+ 				break;
+-- 
+2.43.0
 
