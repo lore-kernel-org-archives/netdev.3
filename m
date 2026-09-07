@@ -1,42 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA217382287
-	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 06:05:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FC5D3876C9
+	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 06:11:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788761112; cv=none; b=Vx8Fdy3cUvHWxPDUH+EyH+LPIFFeavRUNwh0R/pZQIM2Z+CrR4ZmKCeWB3uqsWHDSJjC+MwkYNvlD4Zjprhc1ybRHY/qHmpksOUzHIBa6vxwWeA6cT1HnnJslwXG6yZS47SIHAXqpcsvIFv1Mp5HtjtJ3Gl6PGRNfJP0lRz2YDo=
+	t=1788761484; cv=none; b=NXdI3xtl1lZU9MfaFa0tA4QMC3A2qvB5ksvD69nBP6fX7vb+uZLsGmp1zDHWXpwWkQtZ2Cigz+uegx3tk9Id0r9v/34gRNX/7mx5hprReyf9kaGmjDuZ3qAanRDTHhX1k7/fC5CZp/cvNuWaFor5X+g2rZiWufqFo95CQTA6Qxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788761112; c=relaxed/simple;
-	bh=iCLiocdkZA0odzzCw9wXF78QhEzSAQXVgEyCqU3/s4U=;
+	s=arc-20240116; t=1788761484; c=relaxed/simple;
+	bh=+UMbsviVjO5pyUXtdonNVl76O0/qws6vlaJQuMs4PnA=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Ppumijok3adjTqiXXRXNnybc/WSEvH/mUaboBcOaq6d6zlJfnQVdY06ExggMeECLNkSHX4ZYQPc9uUQ5TDRub9GH4y7QupvMluC2DFg5xR4HvLVWfK/gXYHNSpx7Jno3dLWDbPkzh4SaKRYgH/PmxeTAPE3gEabr8SgAbsyEDS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XnVDxjah; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=YjhWMerCB8bwTvMvelGXtZHtpUlgKJNPjKWG4yr3RrrlPaO+aTMMF6kcT5VF1cp3VGHvz3seBTHKMgTMTdlVmpNBLHcSF4y9d4VOxoxC2RsBOWrgXVtoyL6S4evIGDMRKXBIfw+0YyK5a62dMhWudRvLNCGx/PVLvtCenb7Chso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=go+g3N4L; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XnVDxjah"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 576531F00A3D;
-	Mon,  7 Sep 2026 06:05:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="go+g3N4L"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 379251F00A3D;
+	Mon,  7 Sep 2026 06:11:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788761110;
-	bh=7kVWr9dPymC0VdTl0d3eHs2YGrPYNQs6pK61IyXhPjM=;
+	s=k20260515; t=1788761482;
+	bh=lO9gpVVzGIESPEMZBPw4cMp7DERchWccYiFB677C7cM=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=XnVDxjahExSI5ltuFWN13PScutV5troxFp99px4UYCWYwRVL2KvpeMDXC3oFWo1IG
-	 qc/1I2hJFFDvI59+Fb9YBTc4N5+IwxO/XXmHGdeyuhzxMPCC9Uk/7y3hY0d4zo4PwR
-	 zvquYUzc9QLERiIOvl9rPqO0GacS1lvxy2K2DEjCrXZWQ1AWtndSx0/FF8T1py7i5g
-	 AuJvm909YsFaDuiFd6PvjqYNn9yZ+NQEDZt7TbD1v/9bgWOAzvDiVmm/722dQSlgdH
-	 D26GdPxeA2OuBkaNPD2EVWIhRZ8cRMUKN//ghH5ktdud87GjeL2hgvibZxGBOs8JfS
-	 WRLDMZnd56mmQ==
-Subject: Re: [PATCH net-next v2] selftests: net: csum: filter packets by
- source address and port
+	b=go+g3N4LAWItfcIUUGW1bgsgAQYsj14wActYDNzuHWvsu1AHlijPKCRdxXiJYNV0w
+	 tCaVTTyrh+B4AsElGS5pnqoKRGm5WtsFOBvWKhXKoaro6vkQ1jtdbnTsWy0jUzClNs
+	 mcOVaM7XWWGTr2MPKpH4t7gVJ7Jd0tUCLgfSjq+E0gA9pyO1p4nW7h/KOveXU4N48t
+	 e6b2LWdo7WLb5zf3/FV/ZV0n3FgrvAHUUgvgkmdWcRSK11SHiPFk7EO1ePLWM6yzYC
+	 8vVnyb0u1MH9VfQrh2QzMT23x+vh67aT83rTKTVsFifj6XjOdy3PDk8qCv/k3XdycL
+	 0FkrBZ/ET39wQ==
+Subject: Re: [PATCH net-next 2/9] vxlan: vnifilter: free vxlan_vni_group via
+ RCU in vxlan_vnigroup_uninit()
 From: netdev-bot+sashiko@kernel.org
-To: willemdebruijn.kernel@gmail.com
-Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
- edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
- andrew+netdev@lunn.ch, willemb@google.com
-Date: Mon, 07 Sep 2026 06:05:09 +0000
-Message-ID: <178876110986.219967.12438774212046389670@kernel.org>
-In-Reply-To: <20260904030624.3833721-1-willemdebruijn.kernel@gmail.com>
-References: <20260904030624.3833721-1-willemdebruijn.kernel@gmail.com>
+To: edumazet@google.com
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ kuniyu@google.com, idosch@nvidia.com, andrew+netdev@lunn.ch,
+ netdev@vger.kernel.org, eric.dumazet@gmail.com
+Date: Mon, 07 Sep 2026 06:11:21 +0000
+Message-ID: <178876148175.219967.9585071476410633782@kernel.org>
+In-Reply-To: <20260903120840.1024153-3-edumazet@google.com>
+References: <20260903120840.1024153-3-edumazet@google.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -52,125 +52,105 @@ issue(s) to consider:
 
 Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-- [Medium] The newly added source-port filter is silently disabled for
-  the `-Z` (zero-checksum) configuration in both receive paths, leaving…
+- [Medium] Changelog premise is not supported by the code: commit "vxlan:
+  vnifilter: free vxlan_vni_group via RCU in vxlan_vnigroup_uninit()"…
 
 --
 
-selftests: net: csum: filter packets by source address and port
+vxlan: vnifilter: free vxlan_vni_group via RCU in vxlan_vnigroup_uninit()
 
-The csum receiver now verifies the source address (and for TCP/UDP the
-source port) of packets read from the PF_PACKET and UDP sockets, skipping
-non-matching packets so background traffic does not fail the test. It also
-adds a 20us inter-packet delay on transmit and drops a stale comment.
+This clears vxlan->vnigrp with rcu_assign_pointer() in
+vxlan_vnigroup_uninit() and defers the freeing of struct vxlan_vni_group
+to kfree_rcu(), adding an rcu_head to the structure.  It is described as
+fixing a use-after-free between device deletion and an RTM_GETTUNNEL dump.
 
-v1: https://lore.kernel.org/netdev/20260831210128.1359978-1-willemdebruijn.kernel@gmail.com/
-
-> diff --git a/tools/testing/selftests/net/lib/csum.c b/tools/testing/selftests/net/lib/csum.c
-> index e28884ce3ab39..5c8f9d175dd32 100644
-> --- a/tools/testing/selftests/net/lib/csum.c
-> +++ b/tools/testing/selftests/net/lib/csum.c
-
-[ ... ]
-
-> @@ -571,15 +570,38 @@ static int recv_prepare_packet(void)
->  static int recv_udp(int fd)
->  {
->  	static char buf[MAX_PAYLOAD_LEN];
-> +	struct sockaddr_storage addr;
-> +	socklen_t addrlen;
->  	int ret, count = 0;
->  
->  	while (1) {
-> -		ret = recv(fd, buf, sizeof(buf), MSG_DONTWAIT);
-> +		addrlen = sizeof(addr);
-> +		ret = recvfrom(fd, buf, sizeof(buf), MSG_DONTWAIT,
-> +			       (struct sockaddr *)&addr, &addrlen);
->  		if (ret == -1 && errno == EAGAIN)
->  			break;
->  		if (ret == -1)
->  			error(1, errno, "recv r");
->  
-> +		if (cfg_family == PF_INET) {
-> +			struct sockaddr_in *sin = (void *)&addr;
-> +
-> +			if (sin->sin_addr.s_addr != cfg_saddr4.sin_addr.s_addr)
-> +				continue;
-> +			if (!cfg_zero_sum &&
-> +			    sin->sin_port != htons(cfg_port_src))
-> +				continue;
-> +		} else {
-> +			struct sockaddr_in6 *sin6 = (void *)&addr;
-> +
-> +			if (memcmp(&sin6->sin6_addr, &cfg_saddr6.sin6_addr,
-> +				   sizeof(sin6->sin6_addr)))
-> +				continue;
-> +			if (!cfg_zero_sum &&
-> +			    sin6->sin6_port != htons(cfg_port_src))
-> +				continue;
-> +		}
-> +
->  		fprintf(stderr, "rx: udp: len=%u\n", ret);
->  		count++;
->  	}
-
-[ ... ]
-
-> @@ -647,6 +672,9 @@ static int recv_verify_packet_udp(void *th, int len)
->  		return recv_verify_packet_udp_encap(udph + 1,
->  						    len - sizeof(*udph));
->  
-> +	if (!cfg_zero_sum && udph->source != htons(cfg_port_src))
-> +		return -1;
-> +
+>     vxlan->vnigrp is an RCU-protected pointer accessed locklessly under
+>     rcu_read_lock() in vxlan_vnifilter_dump_dev().
+>
+>     Currently, vxlan_vnigroup_uninit() frees struct vxlan_vni_group
+>     synchronously via kfree(vg). If a VXLAN device is deleted concurrently
+>     with an RTM_GETTUNNEL dump, vxlan_vnifilter_dump_dev() can suffer a
+>     use-after-free when reading vg->num_vnis or walking vg->vni_list.
+>
+>     Fixes: f9c4bb0b245c ("vxlan: vni filtering support on collect metadata device")
 
 [Severity: Medium]
-Could the !cfg_zero_sum condition in recv_udp() and in
-recv_verify_packet_udp() get a comment, or be replaced by computing the
-expected port on the receiver?
+Is the described race reachable in this tree?  The RTM_GETTUNNEL dump is
+registered without RTNL_FLAG_DUMP_UNLOCKED:
 
-As written, a -Z run keeps the old behaviour for UDP: the only remaining
-filter on the PF_PACKET path is the source address checked in
-recv_verify_packet_ipv4()/recv_verify_packet_ipv6(), and the BPF program
-installed by recv_prepare_packet() only matches pkttype, nexthdr and the
-destination port. A foreign UDP packet from the peer address to the
-destination port therefore still reaches:
+drivers/net/vxlan/vxlan_vnifilter.c:
+static const struct rtnl_msg_handler vxlan_vnifilter_rtnl_msg_handlers[] = {
+	{THIS_MODULE, PF_BRIDGE, RTM_GETTUNNEL, NULL, vxlan_vnifilter_dump, 0},
 
-	if (cfg_zero_sum && csum_field != 0xFFFF) {
-		fprintf(stderr, "pkt: zero csum: field should be 0xFFFF, is 0x%hx\n", csum_field);
-		return 1;
-	}
+With flags == 0, rtnl_dumpit() wraps the whole callback in RTNL:
 
-which bumps bad_csums in recv_packet() and aborts the run through
-error(1, 0, "rx: errors at pf_packet: ..."), i.e. the same background
-traffic failure the commit message describes as fixed ("non-matching
-packets are skipped").
+net/core/rtnetlink.c:rtnl_dumpit() {
+	const bool needs_lock = !(cb->flags & RTNL_FLAG_DUMP_UNLOCKED);
+	...
+	if (needs_lock)
+		rtnl_lock();
+	err = dumpit(skb, cb);
+	if (needs_lock)
+		rtnl_unlock();
+}
 
-The reason for the guard looks real but is not visible here: cfg_port_src
-is only rewritten to the derived zero-sum port inside build_packet_udp():
+so vxlan_vnifilter_dump() and vxlan_vnifilter_dump_dev() run with RTNL held,
+not "locklessly" as the changelog states.
 
-	if (cfg_zero_sum) {
-		uh->source = 0;
-		uh->source = checksum(uh, IPPROTO_UDP, sizeof(*uh) + cfg_payload_len);
-		...
-		cfg_port_src = ntohs(uh->source);
-	}
+On the freeing side, vxlan_vnigroup_uninit() is reached only from the
+vxlan_init() error path and from vxlan_uninit() (ndo_uninit), both of which
+run under RTNL via register_netdevice() and
+unregister_netdevice_many_notify().  Doesn't that make the dump and the free
+mutually exclusive today?
 
-and build_packet() is only reached from do_tx(), so a -R receiver keeps
-the default cfg_port_src while the wire packets carry the computed port.
+The dump also does not cache a device or vnigrp pointer across paginated
+recvmsg iterations: it stores only an ifindex in cb->args[0] and re-resolves
+through dev_get_by_index_rcu()/for_each_netdev_rcu(), so a stale vnigrp does
+not appear to be observable between iterations either.
 
-The receiver has the same inputs as the sender for the -Z case (same -S/-D,
-same -l, fixed payload character, and randomization is rejected by
-"Cannot combine zero checksum conversion with randomization"), so it could
-derive the same port instead of skipping the comparison. Failing that,
-would it be worth noting the -Z limitation in the commit message and next
-to both !cfg_zero_sum guards?
+The code change itself looks harmless, since the remaining readers already
+tolerate a NULL vnigrp:
 
->  	return recv_verify_csum(th, len, ntohs(udph->source), udph->check);
->  }
+drivers/net/vxlan/vxlan_vnifilter.c:vxlan_vnifilter_dump_dev() {
+	/* RCU needed because of the vni locking rules (rcu || rtnl) */
+	vg = rcu_dereference(vxlan->vnigrp);
+	if (!vg || !vg->num_vnis)
+		return 0;
+
+and vxlan_vnifilter_lookup() in drivers/net/vxlan/vxlan_private.h does the
+same NULL check.
+
+Would it be more accurate to describe this as preparation for an
+RTNL-unlocked RTM_GETTUNNEL dump, and to drop the Fixes: tag (or justify it)
+so this is not backported to stable as a use-after-free fix?
+
+The next patch in the series, "vxlan: vnifilter: use
+list_for_each_entry_rcu() in vxlan_vnifilter_dump_dev()", repeats the same
+premise ("runs under rcu_read_lock() without RTNL"), and the RTM_GETTUNNEL
+handler is still registered with flags == 0 at the end of the series, so the
+same question applies there.
+
+> diff --git a/drivers/net/vxlan/vxlan_vnifilter.c b/drivers/net/vxlan/vxlan_vnifilter.c
+> index dd94085e0886..ddfa24ad16f9 100644
+> --- a/drivers/net/vxlan/vxlan_vnifilter.c
+> +++ b/drivers/net/vxlan/vxlan_vnifilter.c
+> @@ -902,6 +902,7 @@ void vxlan_vnigroup_uninit(struct vxlan_dev *vxlan)
+>  	struct vxlan_vni_group *vg;
 >  
+>  	vg = rtnl_dereference(vxlan->vnigrp);
+> +	rcu_assign_pointer(vxlan->vnigrp, NULL);
+>  	list_for_each_entry_safe(v, tmp, &vg->vni_list, vlist) {
+>  		rhashtable_remove_fast(&vg->vni_hash, &v->vnode,
+>  				       vxlan_vni_rht_params);
+> @@ -914,7 +915,7 @@ void vxlan_vnigroup_uninit(struct vxlan_dev *vxlan)
+>  		call_rcu(&v->rcu, vxlan_vni_node_rcu_free);
+>  	}
+>  	rhashtable_destroy(&vg->vni_hash);
+> -	kfree(vg);
+> +	kfree_rcu(vg, rcu);
+>  }
 
 [ ... ]
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260904030624.3833721-1-willemdebruijn.kernel%40gmail.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260903120840.1024153-1-edumazet%40google.com
