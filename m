@@ -1,191 +1,163 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCDD9233941;
-	Mon,  7 Sep 2026 17:02:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FCBB3C5550;
+	Mon,  7 Sep 2026 17:07:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788800564; cv=none; b=QhiIx0I2n3U4R0nEXkMiR6HXPLBk77HdMzbHfc4tdeEFIpQm8WOUoV3DZNnzdRy+A82xVyxeGHs2fOvpsy5CCNqqKu8RmnGQEKT3wMlUJxo/+5CRRwTSSgLyYLYuliFw3Yp2VPLCHlr4jxA8s2bMlL/k+sgWvyMBDemp8JNYID4=
+	t=1788800883; cv=none; b=jw29mwQpoEWSlOCpnHLCStaaLcuVo0NjRIzyu5+sgjMPeD4AgRs/HW+8ufds+Ll1nS9r1Ft9DTwoOiSx3UC//yPB5GiL5Af4CHT4AEvb+rTF3ww8YhcIc2EGpPF7uYo9VQnJAKJJU1JK5f7NnEAACAuwE+74tgQSZCbdWrnABlo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788800564; c=relaxed/simple;
-	bh=X/s1XNaINmiUqzvzDx/P4+fqGZPIdSlPLAWBJ/UyuMw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=TsRABKXJxwwVSNCkxPbE8iMITGFxhaIgAgGjmVolbWQ4T8hewDfgrUZL7CpdcooookXUaWjExyp0Cl5p6sCPoGgxa4I9JEi/qenwzHeMvzzZ5bmCBXPqn6g154butBlCZoIH/MAk0LJQtT/ItIc66W+gLHfOpFt+aKJPyQnlkGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=KN1T63TQ; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1788800883; c=relaxed/simple;
+	bh=1ifQzGu3Hf4b8ZqQCDKJvP8hspJ29GVdzYNzK8Asi1w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=l2HkwY8Y0Zc8nP6bNDBhgdilDQibDqt3pyU48Sk3RrlkhXKv7DJTyGN3m7yNQbBT92T14Ko/GQgAcWKTcg69DsENOccnxDh7g+pRjuPNj/ezWrU5xGW2JZ9JDBPjYNhq5eFz1iCk05XqxsHAVK3GST6JNTYd/8AIC61w14xL9pA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=qwMAw8d+; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="KN1T63TQ"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 3E81F1A1A40;
-	Mon,  7 Sep 2026 17:02:40 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 1059C60383;
-	Mon,  7 Sep 2026 17:02:40 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5B3DD11C7A34F;
-	Mon,  7 Sep 2026 19:02:33 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1788800559; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=TPBFaRQq2cT8jbiEmrzWCCDROYRAcXs2NN30XcIR25k=;
-	b=KN1T63TQ3ZnSJ4mevdIUUZ4InvDmcu++2eCJ4+otbuUH2Ets5xoyZ+9kJhZ5a8xGv5PcGA
-	ie0THgIg+PNDIiIFC+MWtWqHxEP93hEmg2z8WhWwgULEKaFLJdWJIkFYJBQ1q71OslYolt
-	XGfIfhY/rdkh5o6hEnU1+xlwZxlhJlUkl8LVBRjdbDHL/SuqsUAHGrOwGMfdI/EhnBsvn3
-	v0t5llm2Ijc4tC+YO0AjP70IQTvhfrtGuLltTx7jduCMZVSo5aQ9KLjy6tAp/lpOCmPati
-	PrIMAjv9Mc1LXFZdQqfQ9dNuPReepM0H1TfedlhHr/Mo3q3+TZv613FsNO0SrQ==
-From: "Miguel Gazquez (Schneider Electric)" <miguel.gazquez@bootlin.com>
-Date: Mon, 07 Sep 2026 19:02:30 +0200
-Subject: [PATCH 6.12.y] tcp: clear sock_ops cb flags before force-closing a
- child socket
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="qwMAw8d+"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=w16HbRTZNk24gYHENslvNzYjNJGR1RDXFGDxYomI30I=; b=qwMAw8d+42MYS2oG8Nf8XTmcEz
+	evcY/5k4QE1GzQd8e+sml+VBEoNSv6zjnDXeutOfvKS8KPxfTcVD5SYeiFLhGfWDk1GnydiqagqGO
+	Vqg7u7o2Yu8Aa1z4WClGpKVkKkUR5+zXPaXbV/6vw0rIiE6oJ+VmDg78BmpwJuxoe/LgUyWRTLPWW
+	UrC+pI6O2EZ3Na3377iiJqv5uoxLtiAbNo37eWeZAI3OUEyoM0fgQcVn1hsgCSkhv99f66N0a+6Hm
+	6HvW1vOSt/TuUdcoWubAc7DeGOhjO4Aj8tCtytBEhdKtEmI5+75nqY3UMJkNX6NGbQMLH6XkkOOj4
+	f7IQl1NQ==;
+Received: from [50.53.43.113] (helo=[192.168.254.34])
+	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1x3cp2-00000007RIP-1xvw;
+	Mon, 07 Sep 2026 17:07:56 +0000
+Message-ID: <6fc6daf7-efb7-48c3-95d5-1beb01cc0924@infradead.org>
+Date: Mon, 7 Sep 2026 10:07:55 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] net: intel: fix typos in comments
+To: Hemanth Selam <hemanth.selam@gmail.com>,
+ Tony Nguyen <anthony.l.nguyen@intel.com>,
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>
+Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
+References: <20260907064528.6602-1-hemanth.selam@gmail.com>
+ <20260907064528.6602-2-hemanth.selam@gmail.com>
+Content-Language: en-US
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20260907064528.6602-2-hemanth.selam@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260907-cve-2026-74268-v1-1-cacea38d7fb3@bootlin.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMQQ7CMBBD0atUXjNVEiCBXgWxgMHAsCgogQpU9
- e6ksHyW/EcUZmNB14zIHKzYva/wiwZ6PfQXip2qEVyIbuuS6ECZIWkV4kY8U/Jr1SWVqKdH5tn
- ev+AOsfWh/WD/38vreKM+5xqm6QtZUEhfegAAAA==
-X-Change-ID: 20260907-cve-2026-74268-1e7715cc3ece
-To: stable@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
- David Ahern <dsahern@kernel.org>, Alexei Starovoitov <ast@kernel.org>, 
- Lawrence Brakmo <brakmo@fb.com>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, bpf@vger.kernel.org, 
- Sechang Lim <rhkrqnwk98@gmail.com>, Jiayuan Chen <jiayuan.chen@linux.dev>, 
- Kuniyuki Iwashima <kuniyu@google.com>, Sasha Levin <sashal@kernel.org>, 
- "Miguel Gazquez (Schneider Electric)" <miguel.gazquez@bootlin.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1788800553; l=4566;
- i=miguel.gazquez@bootlin.com; s=20250708; h=from:subject:message-id;
- bh=eQtDX2FDK17S6DsoeWyEMqBzN907bygcNtweixVS7tM=;
- b=3rkpEAzzhblkFI6ongGK7I6+IHHAbACofPIdRX27pJXf5AMvX04hoEk7+5iin0lSw7SWL1+Aw
- tx/1VEXb78tDMiLQTFvpy9mE8M15LURzfTA6MsyxqYPpnmFTgQfO3U2
-X-Developer-Key: i=miguel.gazquez@bootlin.com; a=ed25519;
- pk=k/2KI9jkmayaF0ghZ8QYUH9Wm/kFHDhl8QoZ0RHbr4w=
-X-Last-TLS-Session-Version: TLSv1.3
 
-From: Sechang Lim <rhkrqnwk98@gmail.com>
 
-[ Upstream commit 990348e5bb457697c2f1f7f7b65154a3334d9d2b ]
 
-A child socket inherits the listener's bpf_sock_ops_cb_flags via
-sk_clone_lock(). If its setup fails in tcp_v4_syn_recv_sock() /
-tcp_v6_syn_recv_sock(), the child is freed through put_and_exit, where
-inet_csk_prepare_forced_close() drops the socket lock and tcp_done() runs
-without it.
+On 9/6/26 11:45 PM, Hemanth Selam wrote:
+> Fix typos in comments, reported by scripts/checkpatch.pl using the
+> misspelling list in scripts/spelling.txt.  Only touches comments, no code
+> changes.
+> 
+> Assisted-by: Cursor:claude-opus-5
+> Signed-off-by: Hemanth Selam <hemanth.selam@gmail.com>
 
-If BPF_SOCK_OPS_STATE_CB_FLAG was inherited, tcp_done() -> tcp_set_state()
-calls tcp_call_bpf(), which expects the lock and trips sock_owned_by_me():
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
+Thanks.
 
-  WARNING: include/net/sock.h:1799 at tcp_set_state+0x433/0x550
-  RIP: 0010:tcp_set_state+0x433/0x550 include/net/sock.h:1799
-  Call Trace:
-   <IRQ>
-   tcp_done+0xba/0x250 net/ipv4/tcp.c:5095
-   tcp_v4_syn_recv_sock+0x850/0xa50 net/ipv4/tcp_ipv4.c:1787
-   tcp_check_req+0xf30/0x1360 net/ipv4/tcp_minisocks.c:926
-   tcp_v4_rcv+0x1047/0x1b50 net/ipv4/tcp_ipv4.c:2164
-   </IRQ>
+> ---
+>  drivers/net/ethernet/intel/i40e/i40e_common.c     | 2 +-
+>  drivers/net/ethernet/intel/i40e/i40e_ethtool.c    | 2 +-
+>  drivers/net/ethernet/intel/ice/ice.h              | 2 +-
+>  drivers/net/ethernet/intel/ice/ice_main.c         | 2 +-
+>  drivers/net/ethernet/intel/ice/ice_sriov.c        | 2 +-
+>  drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c | 2 +-
+>  6 files changed, 6 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/intel/i40e/i40e_common.c b/drivers/net/ethernet/intel/i40e/i40e_common.c
+> index 8dadfef2c09f..026b35e5a000 100644
+> --- a/drivers/net/ethernet/intel/i40e/i40e_common.c
+> +++ b/drivers/net/ethernet/intel/i40e/i40e_common.c
+> @@ -676,7 +676,7 @@ int i40e_pf_reset(struct i40e_hw *hw)
+>  	grst_del = FIELD_GET(I40E_GLGEN_RSTCTL_GRSTDEL_MASK,
+>  			     rd32(hw, I40E_GLGEN_RSTCTL));
+>  
+> -	/* It can take upto 15 secs for GRST steady state.
+> +	/* It can take up to 15 secs for GRST steady state.
+>  	 * Bump it to 16 secs max to be safe.
+>  	 */
+>  	grst_del = grst_del * 20;
+> diff --git a/drivers/net/ethernet/intel/i40e/i40e_ethtool.c b/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
+> index 3da9ec49cc74..ef9d1e78c16a 100644
+> --- a/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
+> +++ b/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
+> @@ -2614,7 +2614,7 @@ static u64 i40e_eeprom_test(struct net_device *netdev, u64 *data)
+>  	netif_info(pf, hw, netdev, "eeprom test\n");
+>  	*data = i40e_diag_eeprom_test(&pf->hw);
+>  
+> -	/* forcebly clear the NVM Update state machine */
+> +	/* forcibly clear the NVM Update state machine */
+>  	pf->hw.nvmupd_state = I40E_NVMUPD_STATE_INIT;
+>  
+>  	return *data;
+> diff --git a/drivers/net/ethernet/intel/ice/ice.h b/drivers/net/ethernet/intel/ice/ice.h
+> index db3c7015c56c..e5f940d324dc 100644
+> --- a/drivers/net/ethernet/intel/ice/ice.h
+> +++ b/drivers/net/ethernet/intel/ice/ice.h
+> @@ -1105,7 +1105,7 @@ extern const struct xdp_metadata_ops ice_xdp_md_ops;
+>   * ice_is_dual - Check if given config is multi-NAC
+>   * @hw: pointer to HW structure
+>   *
+> - * Return: true if the device is running in mutli-NAC (Network
+> + * Return: true if the device is running in multi-NAC (Network
+>   * Acceleration Complex) configuration variant, false otherwise
+>   * (always false for non-E825 devices).
+>   */
+> diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+> index d88835482d3a..fe47ec0ba809 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_main.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_main.c
+> @@ -6202,7 +6202,7 @@ ice_fdb_del(struct ndmsg *ndm, __always_unused struct nlattr *tb[],
+>   *
+>   * Features that need fixing:
+>   *	Cannot simultaneously enable CTAG and STAG stripping and/or insertion.
+> - *	These are mutually exlusive as the VSI context cannot support multiple
+> + *	These are mutually exclusive as the VSI context cannot support multiple
+>   *	VLAN ethertypes simultaneously for stripping and/or insertion. If this
+>   *	is not done, then default to clearing the requested STAG offload
+>   *	settings.
+> diff --git a/drivers/net/ethernet/intel/ice/ice_sriov.c b/drivers/net/ethernet/intel/ice/ice_sriov.c
+> index e04de0215596..9ef1aa66fa2b 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_sriov.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_sriov.c
+> @@ -924,7 +924,7 @@ static void ice_sriov_remap_vectors(struct ice_pf *pf, u16 restricted_id)
+>   * is correct etc. Then disable old mapping (MSI-X and queues registers), change
+>   * MSI-X and queues, rebuild VSI and enable new mapping.
+>   *
+> - * If it is possible (driver not binded to VF) try to remap also other VFs to
+> + * If it is possible (driver not bound to VF) try to remap also other VFs to
+>   * linearize irqs register usage.
+>   */
+>  int ice_sriov_set_msix_vec_count(struct pci_dev *vf_dev, int msix_vec_count)
+> diff --git a/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c b/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
+> index 7ce46b4b4821..7eb4acf59dab 100644
+> --- a/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
+> +++ b/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
+> @@ -3995,7 +3995,7 @@ static void ixgbevf_tx_olinfo_status(union ixgbe_adv_tx_desc *tx_desc,
+>  	if (tx_flags & IXGBE_TX_FLAGS_CSUM)
+>  		olinfo_status |= cpu_to_le32(IXGBE_ADVTXD_POPTS_TXSM);
+>  
+> -	/* enble IPv4 checksum for TSO */
+> +	/* enable IPv4 checksum for TSO */
+>  	if (tx_flags & IXGBE_TX_FLAGS_IPV4)
+>  		olinfo_status |= cpu_to_le32(IXGBE_ADVTXD_POPTS_IXSM);
+>  
 
-The child is freed before it is ever established, so it should run no
-sock_ops callback. Clear its cb flags in inet_csk_prepare_for_destroy_sock(),
-the common point for the IPv4, IPv6 and chtls forced-close paths and for the
-MPTCP ->syn_recv_sock() failure path (dispose_child), which reaches tcp_done()
-on a child that was never established too.
-
-Suggested-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Fixes: d44874910a26 ("bpf: Add BPF_SOCK_OPS_STATE_CB")
-Signed-off-by: Sechang Lim <rhkrqnwk98@gmail.com>
-Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260611092923.1895982-1-rhkrqnwk98@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-[ Moved inet_csk_prepare_for_destroy_sock() to inet_connection_sock.c due to header dependency ]
-Signed-off-by: Miguel Gazquez (Schneider Electric) <miguel.gazquez@bootlin.com>
----
- include/net/inet_connection_sock.h | 8 +-------
- include/net/tcp.h                  | 9 +++++++++
- net/ipv4/inet_connection_sock.c    | 8 ++++++++
- 3 files changed, 18 insertions(+), 7 deletions(-)
-
-diff --git a/include/net/inet_connection_sock.h b/include/net/inet_connection_sock.h
-index bcc138ff087b..534f4fafad42 100644
---- a/include/net/inet_connection_sock.h
-+++ b/include/net/inet_connection_sock.h
-@@ -296,14 +296,8 @@ reqsk_timeout(struct request_sock *req, unsigned long max_timeout)
- 	return (unsigned long)min_t(u64, timeout, max_timeout);
- }
- 
--static inline void inet_csk_prepare_for_destroy_sock(struct sock *sk)
--{
--	/* The below has to be done to allow calling inet_csk_destroy_sock */
--	sock_set_flag(sk, SOCK_DEAD);
--	this_cpu_inc(*sk->sk_prot->orphan_count);
--}
--
- void inet_csk_destroy_sock(struct sock *sk);
-+void inet_csk_prepare_for_destroy_sock(struct sock *sk);
- void inet_csk_prepare_forced_close(struct sock *sk);
- 
- /*
-diff --git a/include/net/tcp.h b/include/net/tcp.h
-index 1cc25e0b3bde..c472c1cdd3b8 100644
---- a/include/net/tcp.h
-+++ b/include/net/tcp.h
-@@ -2702,6 +2702,11 @@ static inline int tcp_call_bpf_3arg(struct sock *sk, int op, u32 arg1, u32 arg2,
- 	return tcp_call_bpf(sk, op, 3, args);
- }
- 
-+static inline void tcp_clear_sock_ops_cb_flags(struct sock *sk)
-+{
-+	tcp_sk(sk)->bpf_sock_ops_cb_flags = 0;
-+}
-+
- #else
- static inline int tcp_call_bpf(struct sock *sk, int op, u32 nargs, u32 *args)
- {
-@@ -2719,6 +2724,10 @@ static inline int tcp_call_bpf_3arg(struct sock *sk, int op, u32 arg1, u32 arg2,
- 	return -EPERM;
- }
- 
-+static inline void tcp_clear_sock_ops_cb_flags(struct sock *sk)
-+{
-+}
-+
- #endif
- 
- static inline u32 tcp_timeout_init(struct sock *sk)
-diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
-index 91dcdb7567ac..e0bd8e76fa78 100644
---- a/net/ipv4/inet_connection_sock.c
-+++ b/net/ipv4/inet_connection_sock.c
-@@ -1315,6 +1315,14 @@ void inet_csk_destroy_sock(struct sock *sk)
- }
- EXPORT_SYMBOL(inet_csk_destroy_sock);
- 
-+void inet_csk_prepare_for_destroy_sock(struct sock *sk)
-+{
-+	/* The below has to be done to allow calling inet_csk_destroy_sock */
-+	tcp_clear_sock_ops_cb_flags(sk);
-+	sock_set_flag(sk, SOCK_DEAD);
-+	this_cpu_inc(*sk->sk_prot->orphan_count);
-+}
-+
- /* This function allows to force a closure of a socket after the call to
-  * tcp/dccp_create_openreq_child().
-  */
-
----
-base-commit: 064531c7e30cd67b79c0c694ac97f00c7796f4d6
-change-id: 20260907-cve-2026-74268-1e7715cc3ece
-
-Best regards,
---  
-Miguel Gazquez (Schneider Electric) <miguel.gazquez@bootlin.com>
-
+-- 
+~Randy
