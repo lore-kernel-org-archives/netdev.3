@@ -1,88 +1,88 @@
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB4E5415F20
-	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 07:34:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EE92417BD9
+	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 07:34:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788766451; cv=none; b=cmpX3aptc6wS0emXLNeExxa9pXGdcz96FzoWPVwYl1bQpIrqsnIfdoYCwn3KT8BtofA+WHRCdPP+4mVILT0sL3/GRhyMd+FOB1qXeIo1oT058lbLr5KFvBCVyMqtfCVFzfAyK/F2WaizuT2Jvrj1IGYgsow62i+9jl8G4oQLY64=
+	t=1788766452; cv=none; b=T/WH8mYSnVNyzA/MKW66xpisnyk4BK36zmOxSpztGi+9Ae3lEd1rKOYUMWZGMOYURoF5fhgCsMNhOu8wTIFFAL6qpD7yRhUW1pzr92I6/TvRcQwaQrKN8FQTA9K9OPU3JxxUkJwV5q8GxRNWEqqoQ0zsh8t/nrCz7OXlxNX9S6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788766451; c=relaxed/simple;
-	bh=lHVF8s0Wcz9LBxO8G6crtjxSLQILW6JFK03HQ68HxHg=;
+	s=arc-20240116; t=1788766452; c=relaxed/simple;
+	bh=CFRrn4x6ponRYhQFZSF7DOt0uGwt2i4dOTnusXvOQb0=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=DbukUFgsoI9LTrGppcWFMq48IhXIlgVzM4hQZJmImXFwhHD2yUVJ4PMoseK8PpAPnRqT0MCQxVCKr9iwWTRJA77k0BmMWGGT0WPvFjh+sMbgOyZ67AzBKwWCOeEZQ4r0bVBBA23S8M1O0IH43mfmnXFCtXnu0OgSs4CvH/R+62E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=ecnvviY3; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=d2GjgiHx; arc=none smtp.client-ip=205.220.168.131
+	 In-Reply-To:To:Cc; b=SlvXpSW3b2sq8IA2UdBk0AS6U/uKLNX6fhxl8QhDuoyBV+d0OqYllKPOHA0V8LsXTBrloLCb2uUB6OCSM9GFI/Y0lhGfzXHjVve1Nr2QINMAKwcvFL6WNYzjJ2xh5An4P/txTHEf3au808YzIzmk5+s+TztlUPXxTyTJcxEidQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=L1yohPxP; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=WSZ/Yx6e; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="ecnvviY3";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="d2GjgiHx"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="L1yohPxP";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="WSZ/Yx6e"
 Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6877NNHV333057
-	for <netdev@vger.kernel.org>; Mon, 7 Sep 2026 07:34:09 GMT
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6877NNaA333063
+	for <netdev@vger.kernel.org>; Mon, 7 Sep 2026 07:34:10 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	bPPpF5ergNhRT/pW00RFS37TyyLLqr/jihR+fYpv5CY=; b=ecnvviY3wGMI1gMe
-	y2TIqbcELMGotD02zoo0z+VQKj25dq8XEsRbb1yRe4qT/kaiC4TfKls2pRkkwuVR
-	VDNCnT6cXqA7FTPFgjPxc3c0yhWzwuuRLc823yMEYRjYHwyl/d5A2WDo54Yjc1va
-	KoPB+nnBdB7NIw7INS5pVAp85wAPkObs6F+KhY0FTZkT0macq91GrO/+Otm3Skpe
-	0xizKncYNzf5GdBdDyZG/KlQewS7j/ijFF2UQhQRoZ+mTFB0gLzgi2JVeLK67p4/
-	Hz80X0tTb59U076oMjmvpyF/rFKUTUoqOk+YetwIGdbjzlDtlrhZZYD5rsyMZEZX
-	T3FJWg==
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ghrua8550-1
+	LoFiFadfWvsKDJXbfNr3lKGOOeQeasFcKWql2l4h94M=; b=L1yohPxPT5KqCg1h
+	BqOuOyHHVj/9rgW9k9CJFLWeu0GZziZHU3cmnqKtCVs1kubp120COb5oJI9DG3al
+	UQs6vAJL505hxg78sCw7Xkq1j16fx0GI2z+E2TBkkX7V6Yj79WUN/I6QLju7va1C
+	DRDMcH7a43acqDnvWsTT3qFzWfmmQxSh4HFwm5yOl3oLieQS4I0RHMAHl8qg34Ub
+	tRsuVmYXYKQNI2vwUiU3fd+80/Aoa3+LiMcpBZDTHe2lRBX9KMOH6+JwWb9Ji8wW
+	arBCRXZDSMyRMlqXGQAEeVPRsddC7pMd0dIaloDcr5TXHI696YCi2Dq4EB5zrGcF
+	9XKnOQ==
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ghrua8555-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 07:34:09 +0000 (GMT)
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-933023a5980so166559685a.3
-        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 00:34:08 -0700 (PDT)
+	for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 07:34:10 +0000 (GMT)
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-93909014c85so536188985a.0
+        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 00:34:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1788766448; x=1789371248; darn=vger.kernel.org;
+        d=oss.qualcomm.com; s=google; t=1788766449; x=1789371249; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=bPPpF5ergNhRT/pW00RFS37TyyLLqr/jihR+fYpv5CY=;
-        b=d2GjgiHxAaFVpOPOYbX6q/UCBhW8ARwNJRkugaO1rvmsfYDMfNonnKyffdo1xmkQZf
-         czznPxVClRYwi/bxFdAenJpnNp0djV/aG9Or26jbyTYpvKYQm66Hh/hJKoebeX00ru3B
-         FAVHIC4fD+bNIuC9YRY7bx/3MjC1JzXyEtqNYNXKX+onab9i7Nf0XpsInM3xCoir8pLf
-         /l2cKkjNTfaVe6aWmsLmn2GmdxHzO7mOIqzptk1SO4cDccEzX9tsQQnnlzigxqpw3zNh
-         eJVd6eSH/3Vk8MGKQuUkXqMvNcXV3k4e7vhV7brD7B0ohYq2HV66tBb+qvNCQPHeH4BV
-         BYfw==
+        bh=LoFiFadfWvsKDJXbfNr3lKGOOeQeasFcKWql2l4h94M=;
+        b=WSZ/Yx6eFSGqVUgmSjY3GEg0z6aGBA19PbrCjQ4cJVCO80rd+YDi6dY/Qb/Y8DlSCm
+         dWFw9l3IkBsNFHd9WTQnZs9CJLQ/0EeghBU+M5xu2rgkpMqEK182Gv5Yqmq8OZkWcHfr
+         FP6KJKZh442i4s/ovKGu8OZDWSXf0p6FOlTOvByDzS8/CbcxNKCmgnGhD98cIxjmdKxc
+         /w5263+upR0aW0sSgdVb+9POjTi3PvjQk34pvUEX+znihIBC0YZah3vB00u4jCYJdAwn
+         SF1Y5LxOSGCG/eGjDVt2c3QEv2vV11xiK8Ax4Zca1LLgD5bjh6246fcGEWrDvu10jTkf
+         mERw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788766448; x=1789371248;
+        d=1e100.net; s=20251104; t=1788766449; x=1789371249;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=bPPpF5ergNhRT/pW00RFS37TyyLLqr/jihR+fYpv5CY=;
-        b=pHJYXiNGAeEahY+vw2xfW7AYxVf+O4IawUQ9VEn7qxDur9OFuvN7651+HjwEQMmeX/
-         sQjxobjQmpRZqNPRWRqsmRt77PzzyoCJzVhLWHLmw16bINzO2TbsIpFFzdAfweq639Y4
-         C1AQ7vnnXFGROSkM0WXE/BvR7mvvnmD5z4CL6FRZKBxTWO69HHr8cXk3N+sdkn2DOgI8
-         DOdPmItYZ+6YLnoqcR4xLcwjGxrCXhG4wT+byPmSYwHDSBG3v/k2QaQXX3iS33XwSec/
-         WJB7HXqlW2S8bR4NWtpud9rKa1Pz+tWLBr0syhBXcCkZZpR89O3vb54eEdgR2pmo9Iic
-         5O8Q==
-X-Forwarded-Encrypted: i=1; AKwUvBykPsDzrHS38KpU2YfoEezE8cq+Uovh3wTj4TVL/Rri02R9G6TFFtp6Z+a9GaQnM99aB7CKgco=@vger.kernel.org
-X-Gm-Message-State: AFuF++lrMkWXqungLK99b61Avu26FQEgIbxQAG2ih2WPg40NJy69vpzO
-	G8EbV7TNuknagk+gZlDNYGv0dlvLPa37yrkqZcfVEizW64RlX0b3GDZgz3C+wTe6UybLfWtyfDm
-	g1LnSX72p32Yh/OkfF5yxoB65VQGkU8MQ3s2ZtpE6K3aaCaSe0Dl6BToWVzc=
-X-Gm-Gg: AYBFou1DkWwERzG8cwe6fxwr/fRZLeJK44dc1F67CmnY+2PwVYtIlGBJ7zbOQ0ZeT3H
-	z8+aNCpoLNI0G2SYcg9OZKq0vBabY6vLFABYLZg3BI4SGuwsQDyCHxzsN74YbtdAukGIdC5r/Vr
-	tBxXn5MrlqzqkrURcDnG293uILU+Mvx8Vdy8GO3mUCNmxBQXC0M44AkS0tCrt/j8RvBuzcS0D3P
-	XEP6Ni6TPaaGiBYWg0YbvS5CzLU4cDj0D8XdWy0PkyS7B60reI0j/P6FfFQ39mfQ2jkmfiygHUj
-	hp7cX3kQKLRljZA0GJ/k/05BRh97V2mPPEH//TsrYay8I+J3RS4Jn3ttfKse7RDXfGdGsCOBiGa
-	MvpPrc+KekYLH8w==
-X-Received: by 2002:a05:620a:4042:b0:939:869:a8bb with SMTP id af79cd13be357-9398034f09bmr2154007185a.14.1788766447962;
-        Mon, 07 Sep 2026 00:34:07 -0700 (PDT)
-X-Received: by 2002:a05:620a:4042:b0:939:869:a8bb with SMTP id af79cd13be357-9398034f09bmr2154002185a.14.1788766447478;
-        Mon, 07 Sep 2026 00:34:07 -0700 (PDT)
+        bh=LoFiFadfWvsKDJXbfNr3lKGOOeQeasFcKWql2l4h94M=;
+        b=ojsJ85tBLDdK0EE9ktK/xBsYE2xhFdw7LWeVmYqyHY5bn/tiNyltcLzuoD1kO+l7WN
+         L6m40JuaZ4Z0h0lBTlA60fBg3Sn9m5AIYRo5C/llsKO8p9Ox0xd1pUegfK1eE7cpLks9
+         8ww0Mb5+XNWnJxTaSWVr/CdTFRAAIUivYe2ILktPxf1cSh3cebh7WG4FDz5r9FjHkRmj
+         cSicfHpuxMe+DogvoS4CdRXVmn9GAvBjncj1K7bPkutOAo6uAt2cx0f8d5swvd0fh4Ae
+         6SKrZk5e0OKXQUBQ3VdV3kXDfJxBmrcs6DwbILtSDuRIZJvpy9NhFsbPRcYQzOyHLMsh
+         kExg==
+X-Forwarded-Encrypted: i=1; AKwUvBxfWN1USc0Kjs5uLMvEdDUIRNP9R9sRvnue718weU4cgKgV+C8FX1r3GUDG09ZfhMy5VrpCPc8=@vger.kernel.org
+X-Gm-Message-State: AFuF++mvETdx/A7nrs4uoBgXSFu6iw715siJZKNJwX/eFWFsC6LZzeAL
+	M3q03coVLKd/r7+Epm/Rd3pBN/F0JVStx/tSe+mU9SelJ+LDs3RtMbzVdS9DI/tXeMCsmsOpUDx
+	NzOwvCqDBUpYOxhFmpORenUgxc+1+lKIQIpgEPYInT5jQrJBY0daDs5OCnzA=
+X-Gm-Gg: AYBFou3PjFra0FCGx1JOtkMAoteAQC0Oa+TFgldlggoxaj7HWdbiQOAh23jf879UTEZ
+	KtbXOC494N2qYTAweMmi+Uekc9EEztztlzUnNTcupCOtak0ZqGJgDToLb4C1279+wBPgWqEwc+2
+	nknm/SNeRWC72tlCJUmS+AbzYlxQ113Xu/r6UrE33xqC+wnK/j3idUXvTyeoIe+LS2l8SCdH5CS
+	laOAdux2XkxGzeZl8euQtuXfo/jDhxBG+OaHcj6uJ+iwSo146bEy2MID7uZlJb8JQfEuGSM5GKW
+	vWykCCALfm5nI/W/FnRsaTDTjvcfIvdaRFnNtwRqZ455SKBthuyuZ94LUSZ4sLvtOX4mRBqcKE6
+	3Uge1w7SzjST1Kg==
+X-Received: by 2002:a05:620a:40d1:b0:939:8c80:669 with SMTP id af79cd13be357-9398c801af9mr390050085a.42.1788766449525;
+        Mon, 07 Sep 2026 00:34:09 -0700 (PDT)
+X-Received: by 2002:a05:620a:40d1:b0:939:8c80:669 with SMTP id af79cd13be357-9398c801af9mr390045985a.42.1788766449011;
+        Mon, 07 Sep 2026 00:34:09 -0700 (PDT)
 Received: from localhost ([188.216.77.92])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cf7736132sm284358105e9.12.2026.09.07.00.34.06
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-485885bfe14sm26955912f8f.35.2026.09.07.00.34.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Sep 2026 00:34:06 -0700 (PDT)
+        Mon, 07 Sep 2026 00:34:08 -0700 (PDT)
 From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-Date: Mon, 07 Sep 2026 09:33:36 +0200
-Subject: [PATCH nf-next v2 1/6] net: netfilter: nf_flow_table: recognize
- IPv4/IPv6 in tunnel proto matching
+Date: Mon, 07 Sep 2026 09:33:37 +0200
+Subject: [PATCH nf-next v2 2/6] net: netfilter: nf_flow_table: set inner
+ protocol when popping tunnel header
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -91,7 +91,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260907-nf-flowtable-sw-accel-ip6ip-sit-preliminary-v2-1-7c6ac1750725@oss.qualcomm.com>
+Message-Id: <20260907-nf-flowtable-sw-accel-ip6ip-sit-preliminary-v2-2-7c6ac1750725@oss.qualcomm.com>
 References: <20260907-nf-flowtable-sw-accel-ip6ip-sit-preliminary-v2-0-7c6ac1750725@oss.qualcomm.com>
 In-Reply-To: <20260907-nf-flowtable-sw-accel-ip6ip-sit-preliminary-v2-0-7c6ac1750725@oss.qualcomm.com>
 To: Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>,
@@ -104,25 +104,25 @@ Cc: netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
         netdev@vger.kernel.org,
         Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
 X-Mailer: b4 0.14.3
-X-Proofpoint-ORIG-GUID: 7latPMbQ5xqMt03xybslcNDVUoDV81lt
-X-Authority-Analysis: v=2.4 cv=U+aiy+ru c=1 sm=1 tr=0 ts=6a9e68f1 cx=c_pps
- a=hnmNkyzTK/kJ09Xio7VxxA==:117 a=WpTaRW6qxYHRGzLzQsVYzg==:17
+X-Proofpoint-ORIG-GUID: _dcpa4XW7VI5_nki1HMEToWiBQthp0PW
+X-Authority-Analysis: v=2.4 cv=U+aiy+ru c=1 sm=1 tr=0 ts=6a9e68f2 cx=c_pps
+ a=qKBjSQ1v91RyAK45QCPf5w==:117 a=WpTaRW6qxYHRGzLzQsVYzg==:17
  a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
  a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=eoimf2acIAo5FJnRuUoq:22
- a=EUspDBNiAAAA:8 a=m99eJ5p7w77CmUfuVTAA:9 a=QEXdDO2ut3YA:10
- a=PEH46H7Ffwr30OY-TuGO:22
-X-Proofpoint-GUID: 7latPMbQ5xqMt03xybslcNDVUoDV81lt
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTA3MDA4MCBTYWx0ZWRfX60Yio5qUGaIA
- Pw6yjNnceX+vFamWjKSsrOGLbkbdjSYz4ZlE6eklU6hThRUjWSbo3zy8kvwqaOYK+fVkB0YSN5i
- 9P6XP2m8XvpKP0644edqNXgTWjjzS4g=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA3MDA4MCBTYWx0ZWRfX6VU0HKj79yGg
- FiYl0h4KmYC3VY0zg04RSgKIT/hIsYviIv1VEeIWcpCjLfeIgHTWVntgmj+Wy8V8E0Od6ashENk
- Rug5KXFvhwUKLhgTbmBVTgTSDAAyoezm5v9UjQiU3EGYSGwMzUAjsoJWkalESGOKFYqSI/GbRKF
- safLJ8ycq0QEmEgVniXRinZykPQImZ6SnnI9lmceTFIgybbQ25Spybck8/euXWeOmfTbEzWmnGL
- X0oecuz7hWGySmpeN1V8PXtRi6NqWEm+nA2gt3r28wUH7384iXIZdjzB6o/7kmKDm317yvKyy7M
- 0K0FiVFuwvdv2GucLL3vdOyRRQm7i9N9orH1yRwI0vW3hUGRKAu2/1fuHbeQzmC+ufIdLBZL287
- qm9WZTRvhWc3Rtg4NS23K37lWfPhO8My5hosbqoTlUCpnhb0B9WhZG6s7asTH/nZfP77vo3RUz+
- qY1lum+pzM82U5UxsAw==
+ a=EUspDBNiAAAA:8 a=gKarwEfFoU5_EcFYj1IA:9 a=QEXdDO2ut3YA:10
+ a=NFOGd7dJGGMPyQGDc5-O:22
+X-Proofpoint-GUID: _dcpa4XW7VI5_nki1HMEToWiBQthp0PW
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTA3MDA4MCBTYWx0ZWRfX0GpAVvhW/EWa
+ wl02ZFw2DVUb9PkMcVnGztxiDl4SfR9t4cxn+rV5lFXyg0CeQLm2CjoEcRYy3Gs5ZA1YEL4lZD8
+ mx09hAcjoL9jLSDbiRlnbXv6c7OkQnU=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA3MDA4MCBTYWx0ZWRfXx2MDiZEJmU53
+ 5j57n6LzEB03py2hhi4F0+pwV2Opw7H/YqAKvgWP6Z5kgts3AdifVJnbpBNAWXXejYTUh+HhunF
+ p12Hf/QgZPy2s2CecvKqKfpqNSIPHb7vf/6dKuhACe9TRjXoC0I9k//STf6Psbph8V4VF2qL6vZ
+ 8IpROeegocIZeZ3OqUBfuARXJiYZyC8NrL8kiO29bFL0SWi1yXLummuCiLOFwn8ErjYVXMlBv+U
+ ITQ65KHI/QV/XiWZkxiGalT+0iS9ft2tU7GbbBXen/wlH6+ZsKgM+aq5u2hTYr/O2QZbhmQikEf
+ TjOS/6M/5uXt0R8o2ufU/+IHVJNmu5G2TR8QLUWMMxKyzS4o5hUv+8lsNh8rHYXl8Qxc+UxXiFI
+ 1qQ6Iq3liD2flME5wXBHuYRcFSUvqqOCyK8LjdzH2G8lT2P3WXWlLtD/9tEq2BUe1ZkxdZK1TDa
+ i7mWAp5MMXguyjgMCLw==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-09-07_02,2026-09-03_01,2025-10-01_01
@@ -133,41 +133,33 @@ X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
  route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
  definitions=main-2609070080
 
-Allow the flowtable to parse IPv4-in-IPv6 and IPv6-in-IPv4 tunnels by
-accepting both IPPROTO_IPIP and IPPROTO_IPV6 as the inner protocol when
-walking the outer header in nf_flow_ip4_tunnel_proto() and
-nf_flow_ip6_tunnel_proto(). This is a preliminary patch to support IPv4
-over IPv6 and SIT tunnel flowtable offload.
-Please note IPv4 over IPv6 and SIT tunnel flowtable offloading is not
-enabled yet.
+Pop the outer tunnel header and set skb->protocol to the inner protocol
+derived from ctx->tun.inner_proto in nf_flow_ip_tunnel_pop(), instead of
+bailing out unless the tunnel carries IP-in-IP or IPv6-in-IPv6.
+This is a preliminary patch to support IPv4 over IPv6 and SIT tunnel
+flowtable offload.
 
 Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
 ---
- net/netfilter/nf_flow_table_ip.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/netfilter/nf_flow_table_ip.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
 diff --git a/net/netfilter/nf_flow_table_ip.c b/net/netfilter/nf_flow_table_ip.c
-index c8c29a9a1684..42e8de696474 100644
+index 42e8de696474..cd636b4cf74b 100644
 --- a/net/netfilter/nf_flow_table_ip.c
 +++ b/net/netfilter/nf_flow_table_ip.c
-@@ -326,7 +326,7 @@ static bool nf_flow_ip4_tunnel_proto(struct nf_flowtable_ctx *ctx,
- 	if (iph->ttl <= 1)
- 		return false;
+@@ -372,6 +372,11 @@ static void nf_flow_ip_tunnel_pop(struct nf_flowtable_ctx *ctx,
  
--	if (iph->protocol == IPPROTO_IPIP) {
-+	if (iph->protocol == IPPROTO_IPIP || iph->protocol == IPPROTO_IPV6) {
- 		ctx->tun.inner_proto = iph->protocol;
- 		ctx->tun.hdr_size = size;
- 		ctx->offset += ctx->tun.hdr_size;
-@@ -351,7 +351,7 @@ static bool nf_flow_ip6_tunnel_proto(struct nf_flowtable_ctx *ctx,
- 	if (ipv6_ext_hdr(ip6h->nexthdr))
- 		return false;
+ 	skb_pull(skb, ctx->tun.hdr_size);
+ 	skb_reset_network_header(skb);
++
++	if (ctx->tun.inner_proto == IPPROTO_IPIP)
++		skb->protocol = htons(ETH_P_IP);
++	else
++		skb->protocol = htons(ETH_P_IPV6);
+ }
  
--	if (ip6h->nexthdr == IPPROTO_IPV6) {
-+	if (ip6h->nexthdr == IPPROTO_IPIP || ip6h->nexthdr == IPPROTO_IPV6) {
- 		ctx->tun.inner_proto = ip6h->nexthdr;
- 		ctx->tun.hdr_size = sizeof(*ip6h);
- 		ctx->offset += ctx->tun.hdr_size;
+ static bool nf_flow_skb_encap_protocol(struct nf_flowtable_ctx *ctx,
 
 -- 
 2.55.0
