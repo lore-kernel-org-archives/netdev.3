@@ -1,66 +1,46 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A12EF448D1D;
-	Mon,  7 Sep 2026 09:12:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8177B448B93;
+	Mon,  7 Sep 2026 09:14:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788772328; cv=none; b=TqD7YPzCtYOu0okBhu1k3RPJ0NgtrdecEy973Y8HrE2x7r1ABEuqEsFKTRyZm3O56GYP+aGDSGjaiS4MJ9z/ynUBcqENCzKHmmUh5rjnsMYqg7U4CRD2tACWtWiCBFiG9GQca97e3BeQawVcIi7b0XChpdieUkUtfSoDcooEFW8=
+	t=1788772447; cv=none; b=V3nZqVnX2fRAkvgagAAWrEuPSzGmoO18wSv7zCDesbtazmN5AaHtFGPa0H+DP0YH/E17KuD7X6cR2p7sAi5BPZ2O9fjyNXrOyrlyr/3ElVmPgt6bEcVAUYy03MrM9QHNfJXnIboHnkwkDhHYVssO7kfxI8PyPex3NA9krtyUYWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788772328; c=relaxed/simple;
-	bh=ZusEL3lsgLdP6fWCQSIm0JKvq+rgZVBvTczC1OOm1MM=;
+	s=arc-20240116; t=1788772447; c=relaxed/simple;
+	bh=M7lrh72WBldL7IR+woYjHiS82BYGU6gyBU7lXx4XiDc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kyUd3/Z2rGtSteC1S8ddSFaH9fWjmW2fx7kL3OdQHnjR80p9pjZSZgUgvWYpXFUbQ5QYx0CyHZ2KQnexIq3DPPFNUM6Tib68Nz0e3qB1o1k68BAOQscJ5wI3PHVnnSMIyMf0YbtuAP/uJhkWPtYE9/yNj0qY+x9W6wu+/ODlwuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Q9dTsZMG; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=4bDT0edh; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	 Content-Type:Content-Disposition:In-Reply-To; b=pOQxiviDum8y7kvRhRxRNHmntaa88pLLkw95vQnWfuIJ/f/+Dj5qt7YXoLJrqLnwAEVMdHkmGKzOLkLHMGBYtAmkHASLDaCN4XvBTyPRZtkPOkotGNQZVnR7DDdErgZOT5TKP+FMer2dgnF1kxNK3XhW/JWv01Yha+c+wzc5oI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VjnODmGv; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Q9dTsZMG";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="4bDT0edh"
-Date: Mon, 7 Sep 2026 11:12:02 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1788772323;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OXHJuH5OBiG6iOq4zyP3h3piKcfc+3M2EOW8DAxaSVE=;
-	b=Q9dTsZMG2ggfiN6+gN2DuwoBopDAvsseK+oZAONgHbEvLukxiUtJ6rHIYjwSFzkuzU5Zsp
-	AnEPmM104fVUx6q2YRxUMWy7lrRTRD2pVlE3sZY5k4rg166QETNqibaYmFMPkfSABCQhA4
-	fJevxvgvP1ByzJJB6Cgp3ox56WITXVD6HoaPaudGMT8rKgrbYGDM1ZovmOfIw+A9iIGlfF
-	me4ql6oLhAM6AEjBx6kQWZq3EeO3TokHdxtTKgjQaMg8r61Yk2Mv8zXfynMD2FdpM8WuQX
-	/Dm0fovpkBDW0yI6JJd7OByhosSEE9PGvcqALCNYzMbWYh6F7cmOPAHhkcpagA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1788772323;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OXHJuH5OBiG6iOq4zyP3h3piKcfc+3M2EOW8DAxaSVE=;
-	b=4bDT0edh++2GOxOL9lAmt0HpVjPt7aoJVeF0GUXqCVVf5aPBMAt7i/kjiUEO0eFs14KN//
-	8BML7//kVv4v1cDQ==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: Alan Stern <stern@rowland.harvard.edu>
-Cc: Oliver Neukum <oneukum@suse.com>,
-	Marco Crivellari <marco.crivellari@suse.com>,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	Tejun Heo <tj@kernel.org>, Lai Jiangshan <jiangshanlai@gmail.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Michal Hocko <mhocko@suse.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Petko Manolov <petkan@nucleusys.com>, linux-usb@vger.kernel.org
-Subject: Re: [PATCH v3 net-next 5/6] net: usb: pegasus: Move long delayed
- work on system_dfl_long_wq
-Message-ID: <20260907091202.hnFpCqFV@linutronix.de>
-References: <20260720100902.155605-1-marco.crivellari@suse.com>
- <20260720100902.155605-6-marco.crivellari@suse.com>
- <f972b514-87ef-45bc-8258-db199a4cc0b8@suse.com>
- <20260825151812.4aJyFUgE@linutronix.de>
- <31b46916-dd89-4ae9-89b9-9d39e29e8e69@rowland.harvard.edu>
- <20260828094318.bOajNBno@linutronix.de>
- <b6cf44a1-d2b1-443d-8efe-c596ef89cc2a@rowland.harvard.edu>
- <20260905150450.2hrac_GV@linutronix.de>
- <b6e6e8d0-0888-4bbc-85b8-ca3bdac88398@rowland.harvard.edu>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VjnODmGv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90EB21F00A3D;
+	Mon,  7 Sep 2026 09:14:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788772445;
+	bh=92S6a0o4SCOGgg77JenRODeNS6f6fFk6zfyz3/qTRkg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=VjnODmGvWXZ2wHE3rjrXt4+9Ef3tzmEe0X7zaLtlhU6CU0lMnnoKqWQgj8yiVLZG7
+	 9yC6Aq6L8f2gZ3aCpVrqaLitfIZ0sV24VOa1WOU8Hm7+X6ow0K9Ew12FCqI4uH/Ase
+	 ix4Gb2l/5ByWYCPKmBWI/elF/FKOFPoOZM5Yr0yDt/3Oh4ybqzKU03avq3BfBfTupo
+	 KVeZ8hBzaBzAMnOB9dnhCJuM+Jypsh6KcCQ35MfiPmE1C7jww6FU1kDIQGUyMoQ+RQ
+	 fb5nJr+SzZ4cv+HJqx2X5vSwLOEKibkIqns2GbfqitlQfHq5+Fuxp9IHhBMcEdayB0
+	 65N54SiZi/LQg==
+Date: Mon, 7 Sep 2026 11:14:01 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Vasilij Strassheim <v.strassheim@linutronix.de>
+Cc: Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Andrew Lunn <andrew@lunn.ch>, 
+	Vladimir Oltean <olteanv@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Russell King <linux@armlinux.org.uk>, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org, Martin Kaistra <martin.kaistra@linutronix.de>, 
+	Benedikt Spranger <b.spranger@linutronix.de>
+Subject: Re: [PATCH net-next v2 1/4] dt-bindings: vendor-prefixes: Add soce
+Message-ID: <20260907-airborne-delicate-chipmunk-d1a5c5@quoll>
+References: <20260903-devel-vstrassheim-soce-dsa-ml-v2-0-fb0587cb466b@linutronix.de>
+ <20260903-devel-vstrassheim-soce-dsa-ml-v2-1-fb0587cb466b@linutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -69,23 +49,19 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <b6e6e8d0-0888-4bbc-85b8-ca3bdac88398@rowland.harvard.edu>
+In-Reply-To: <20260903-devel-vstrassheim-soce-dsa-ml-v2-1-fb0587cb466b@linutronix.de>
 
-On 2026-09-05 12:33:07 [-0400], Alan Stern wrote:
-> > Still the wrong thing to do? The driver should do either flush_work() or
-> > cancel_work_sync() (not flush_workqueue()).
+On Thu, Sep 03, 2026 at 08:10:58PM +0200, Vasilij Strassheim wrote:
+> Document binding for System-On-Chip Engineering, S.L.
 > 
-> I think we're in agreement.  If the driver relies on calling 
-> flush_workqueue(), it should not use a general-purpose workqueue.  
-> However, flush_work() or cancel_work_sync() is okay on an unordered 
-> general-purpose workqueue.
+> Link: https://soc-e.com/
+> Signed-off-by: Vasilij Strassheim <v.strassheim@linutronix.de>
+> ---
+>  Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
+>  1 file changed, 2 insertions(+)
 
-Perfect, thank you.
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
-> If Oliver still has any objections, he can raise them.
+Best regards,
+Krzysztof
 
-Okay. So far this is good to go ;)
-
-> Alan Stern
-
-Sebastian
