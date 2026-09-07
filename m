@@ -1,83 +1,81 @@
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7024455177
-	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 09:51:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24C1F3C5DD4
+	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 09:52:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788774719; cv=none; b=ktgwU9O5WkX1zbnPm2VNvLCzkl9FiT/tWQ0v0pwzyaRgQo5W30tToPeACkH3nymhuYURYuUT4Ya8ndDeOWErGWw/rxo4dpZ6zDDC15jJ1+IPhkSqUSF2Z6v3a5s/mQ+PHfYQtfhNWEyypCpZxM1g2ow1W1yZn0mBjjmILDaD+bA=
+	t=1788774770; cv=none; b=RzKskKPf4THC/opZexUpdfhOJIH+jj244z97NfbMwry5WY+B/XIykHpQB+kpqqh/gFko5HRa8XGO6nleeJQSsk3MZFlGx+Q3g9hzujWwOqYZlbziTZ2q9+yK59rEU3gRlOHNxl9/mD1629dXGMjHZinVHdyKqYUf/1o1LVAkzD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788774719; c=relaxed/simple;
-	bh=q8AQh/Jdl7kkNyeKYqO/b/5eoQwQe5/Rapj/D4WZ5kA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UC2tHEzhydoy5i7rr0/EEI3mVGQinskGMPQAWOmj+vNiyzbcEhroxLCCuKyH6nHWYQvVxRolsXoiyfjYasclrlBVXXrwfMwgP9o3kgUWEghT4O8C6CS+hnldJKKkoGWYgW0Oinl165r5lUShI87lc3CefmSQGR0kqu6z+ds9O7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h2VvqeLM; arc=none smtp.client-ip=209.85.216.42
+	s=arc-20240116; t=1788774770; c=relaxed/simple;
+	bh=cqlFSrgeVcyAu1DwjM5N2nW2E2ZNBwopzV3zyer3On4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KpbngPtov79LJwsm9vCn6IPsoWgo7Dnm/ZD3mkI5h5hXfiL1Z8cVD3Kq068VnbUReqqWLx5YxiheKSzJFsg51rGjn47FNYkGKmyQmLEJiby4lb470dRbN9yfxbFlzrb+Z1iiZzMsXvu6NtAmPz0nKqM9OB6uQV46Ul/AnlSCkpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bjLwZjxq; arc=none smtp.client-ip=209.85.215.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h2VvqeLM"
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-39647184c73so3960965a91.1
-        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 02:51:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bjLwZjxq"
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-c9b373d5af0so2593514a12.2
+        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 02:52:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788774708; x=1789379508; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=QRV3VX28th3l/YUKQYZU4Bx7v7ROHkdn+qJgfLM6OBo=;
-        b=h2VvqeLMs4tNgNCneN8uXEd8WJ+7JcP3V1+YtTup0gKIkVmXuxVBp45ETh2AtgUfEF
-         hhuR6U3hTumrSdRUq5Raa9v+Nni/JZBW/LxnnSxYmZGnjIVxSUfGnOBQIU6s6fw64fD5
-         Rllai7THzUzeTva7eIvAPRt0RsUMOltxWzPsPlbd4x0cm86mzy+bkJQZWEXXy5Dt6cnl
-         mzh5fs7W0AhxbbvGsqE9FkdrUtCVuKsJYevz74vin/4qfWZqA6i+kq65fZECEZ22iFp5
-         czbIsO4Q13PgoPMaVuO7MdvgASx/Y9ug/hkCREtjReIseA0TwfbbfHtgkjcm7PA1iufE
-         4wcA==
+        d=gmail.com; s=20251104; t=1788774768; x=1789379568; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=iLGaza3s6F5rgIQf4Pq3PulD1HjtmOc+h6lAEkmWtfU=;
+        b=bjLwZjxqs6MoH7uIcpsGHtDVI9kXVStsDfRBRRognSb1JCxLQh1n+wyNUtlKNwyVSa
+         1idNSCcz7PUMJARA9h2KsWv/MBgaEFd/+dysIFEPTwPya9ALc8Gsvd/96xSUyvJ0zhxF
+         254x1gKhTc9mLrUsS637Wwwpi5P+ZF9MNZX1nByvRUMX3kzi2nuZABbGGoArtAnZQlTT
+         SXwY2sW0z53WVUkgky+Qb2JSLa01zfegGOCo8Zu9x0uKxiZGp2lcwBU5ZNRv8WjgLzX2
+         2s3YT4mKFyZq9nPpcGe51v+MJa9x8+EJmpf9Cn8nbMGv82qIXBYOWZxQ89fbHYiBTq5S
+         jIKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788774708; x=1789379508;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=QRV3VX28th3l/YUKQYZU4Bx7v7ROHkdn+qJgfLM6OBo=;
-        b=g7dshAYbzXfvUOkUCyPQkchpuFJH6SogwSKPNoRfKXBV2F/OGeXTXynmoD1SClwMhI
-         4AUvc/uuviVHYA/kUpHLR44Jclt61P5etvFTJ8AG9Nq/offzI8PPFR6RdTzakvRmYoOe
-         +56Q17WNz2W9s1zz5B1Y5QuZWpiB7GI/Asbkh07IZX6X97dnuo2pkB994WAARo5Y66sB
-         tzrXV3tldiEystriRLUbkZNVSKeTKValk/MRMXpwndV3XYEhelzSzkF+ohX6ej3A9qjT
-         IAu1sMIi2qM6shkuT1TfIayzCQVUepNHbqKSjPWYCXqyUznd1zPoM1d9Y0kg1THmY0aH
-         +2lA==
-X-Forwarded-Encrypted: i=1; AKwUvBwP+DzxAzD7Vs+IIeh6V5W9R8ZRPhcK3ddiu4qzEXghhKZymwvdJ0JMu67GCNJevxIciPn5vps=@vger.kernel.org
-X-Gm-Message-State: AFuF++m5V9eQz2CJVW6d33vvrgny9wFMIgOkSJ8gIOehbplMCSHxxeHW
-	LhxLQiXk/2vm1XWLbTbL7yfxYuNNXrq19UIwneYcczSpk0Fs3HQKL9RR
-X-Gm-Gg: AYBFou0JqOKMcRPrqlCgeGcLUep9V1au2ow5dC2x8UV2udck/auKmgv7eiDMAMpfJO7
-	b0De+FC45glZWzxSm2mmMYf6sRkHPJmKoWBv7UbloCNptdTXg2ci3Vdi5iWFUIZ1MFvQv03pEfX
-	0XZKIRniyg/DUQgRbLPuJiQ5kMU1OkWnbo6lmvO2S+IjoxwdZEKUfH6HCg5ZnfQ9zgLLaaFzm0P
-	EkEj2Ku/qvDubpl8TipN4E/G8Bj1u4+FiIS/ejTCqzohRGc4fH4cXbXHsKBr9Pk+X412vnCtOAN
-	WokVwQH0LFoCcqIFQ7K1kYxrZJ0UEw56q8fDUhsj+4E4LzTvVa8DYSiHjaHFYpCQExzK1IAc3xq
-	lJ00+hnQT9iODi6i4lTFE+Dn1uw76hr/y0g/5CnSv6VG1Edmbid9SJjrgVkcCYyoqQmxavN/aQa
-	u7pWoJTpXrCSUFjPhow/qU5IQGWDbZiuFbxLkORYPbwFCx4+9eUtYDS/xz3CT6I0pk/IVLZb+3n
-	yOREhhwQKKkQw==
-X-Received: by 2002:a17:90b:3fd0:b0:36b:de66:92c3 with SMTP id 98e67ed59e1d1-39b07fed101mr30316424a91.10.1788774707944;
-        Mon, 07 Sep 2026 02:51:47 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1788774768; x=1789379568;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=iLGaza3s6F5rgIQf4Pq3PulD1HjtmOc+h6lAEkmWtfU=;
+        b=piF27wKhANuzNiFp1j5Ruv1yTQlxzHcgC8RVb3EDeq4j/ktX6r/kM3YOuVyuW+92WB
+         bR5qLSys3NTDkY+TXaabewMPxy89y1zM3mlceWS+5uyOYy1mYWxn/uiJWoacxXaYgFRz
+         w8AsJSk5iw+/d5ashqL24v0IJtdVWC/YbFEJKilIP5XmMRaRVec5I/REsbl4BA27Uo1I
+         XvVAXuSkHoWQYEh3VJDQ/ESbTil6AI4TuX9p667uqRW4/v3oHT0HqBq00rPaFbPPKBKy
+         06/23VjZWdVUEtJVBGR2d4KTgw9LyuxgOXDH14jHGizH9qtqkmEU4270R+X3If2Zzc9j
+         SGkA==
+X-Forwarded-Encrypted: i=1; AKwUvBwYk14l4j1C6cgT3NcwgIH7Px3CFJbiP0taQeOBlPDz8wn86Rg58zROPcGh34XCnxWOCDrDCm4=@vger.kernel.org
+X-Gm-Message-State: AFuF++nFkC85OurZqD4VQxQ41MRNcm0X8LIm8/8+cnbzGedf6XEDiZXR
+	MDVg9KhiZGr6a2rhKlQKa0c2oRx3+MAU5svPpn09WbH24jiUj6Ekc49p
+X-Gm-Gg: AYBFou1xsEHuEbieaT4+LovnVnfgGikod972D/k2arkC2NNF3RwrFi/T8c55dBkDQGT
+	mtyrinegRAtQqf7Caa44Ly1G+51SJk52/wkHdgpzUs4HE3U31437TY0gvfsjaZGGg0btfJmNggX
+	Ye+KnVBYfLQd5XaOEbwZKK3B3Fkbkt3VAkLLy7jtITDACKlQhISFqMWWx1v1TgUI+29aX3futUu
+	AHZz6pNypDUuEGRtWTqO/+NIViwMa9XHYdZDF5SvRBLscjG4DNJiel+j+ioBdt35FjfWr4QYXYI
+	ZRTHoyFPgl/nnENrJZVk5Be1EC/Wk29P7OF4pHMZucHtLdO39q16w/JqQLcoMKzNMYnUH7cJ0AD
+	c9c3jp82zfv0JAiIBoRzOK+FA6hGJrygYXcfw/qb5QQtFh5k7YBtj+8ugcXoPqALjCXBRqQaA8C
+	EPCIux8cc4wKYJ5BkywMrYM6ZjZmOqJ36ujYZp9e8OUxMYPJb4Hz4xXwvA8a4tta3kfK/nuxCTS
+	vFQ9FrrBC3kF7E0sPnR2DQ2
+X-Received: by 2002:a17:90b:1d52:b0:398:dcef:c040 with SMTP id 98e67ed59e1d1-39b26242a20mr34261880a91.19.1788774768453;
+        Mon, 07 Sep 2026 02:52:48 -0700 (PDT)
 Received: from volcano9f6e-hostos.amd.com ([165.204.217.251])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3339885ca07sm30049167eec.1.2026.09.07.02.51.43
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-14332405e92sm18924258c88.8.2026.09.07.02.52.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Sep 2026 02:51:47 -0700 (PDT)
+        Mon, 07 Sep 2026 02:52:48 -0700 (PDT)
 From: Hemanth Selam <hemanth.selam@gmail.com>
-To: Alexander Aring <alex.aring@gmail.com>,
-	Stefan Schmidt <stefan@datenfreihafen.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
+To: Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
+	Phil Sutter <phil@nwl.cc>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Cc: linux-wpan@vger.kernel.org,
+	Simon Horman <horms@kernel.org>,
+	Shuah Khan <shuah@kernel.org>
+Cc: netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
 	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH wpan-next v2 2/2] mac802154: fix typo "substract" in comment
-Date: Mon,  7 Sep 2026 15:21:32 +0530
-Message-ID: <20260907095132.21244-3-hemanth.selam@gmail.com>
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH nf-next v2 0/3] netfilter: fix typos in comments
+Date: Mon,  7 Sep 2026 15:22:38 +0530
+Message-ID: <20260907095241.24441-1-hemanth.selam@gmail.com>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20260907095132.21244-1-hemanth.selam@gmail.com>
-References: <20260907095132.21244-1-hemanth.selam@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -86,34 +84,25 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Fix a typo in comments, found with scripts/checkpatch.pl using the
-misspelling list in scripts/spelling.txt. Only touches comments, no code
+Three comment typos under netfilter, split one per component.  Found with scripts/checkpatch.pl using the
+misspelling list in scripts/spelling.txt.  Comments only, no code
 changes.
 
-Assisted-by: Cursor:claude-opus-5
-Signed-off-by: Hemanth Selam <hemanth.selam@gmail.com>
----
+v1 went out with a bare [PATCH] and a "net:" subject prefix.  As
+maintainer-netdev.rst asks, v2 designates the patches to a tree, and
+each subject now names the component it touches instead of "net:".  The
+series is rebased onto that tree; the diff is unchanged.
 
-Notes:
-    v2: designate the patch to wpan-next and use a subject prefix naming the
-    component, as maintainer-netdev.rst asks; v1 went out with a bare
-    [PATCH] and a "net:" prefix. Rebased onto wpan-next, diff unchanged.
-    
-    v1: https://lore.kernel.org/all/20260907064346.3288-1-hemanth.selam@gmail.com/
+v1: https://lore.kernel.org/all/20260907064239.39910-1-hemanth.selam@gmail.com/
 
- net/mac802154/iface.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/mac802154/iface.c b/net/mac802154/iface.c
-index 000be60d9580..8f3968d2e516 100644
---- a/net/mac802154/iface.c
-+++ b/net/mac802154/iface.c
-@@ -521,7 +521,7 @@ static void ieee802154_if_setup(struct net_device *dev)
- 
- 	/* Let hard_header_len set to IEEE802154_MIN_HEADER_LEN. AF_PACKET
- 	 * will not send frames without any payload, but ack frames
--	 * has no payload, so substract one that we can send a 3 bytes
-+	 * has no payload, so subtract one that we can send a 3 bytes
- 	 * frame. The xmit callback assumes at least a hard header where two
- 	 * bytes fc and sequence field are set.
- 	 */
+Hemanth Selam (3):
+  netfilter: arp_tables: fix typo "alignement" in comment
+  netfilter: ipset: fix typo "artifical" in comment
+  selftests: netfilter: fix typo "adress" in comment
+
+ net/ipv4/netfilter/arp_tables.c                                 | 2 +-
+ net/netfilter/ipset/ip_set_core.c                               | 2 +-
+ tools/testing/selftests/net/netfilter/conntrack_icmp_related.sh | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
