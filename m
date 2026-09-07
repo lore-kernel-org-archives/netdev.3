@@ -1,205 +1,107 @@
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF32F3FF1B5
-	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 06:34:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.176
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788762845; cv=pass; b=VX1mFBs08Im1kXjXLWhlW3m9xF4pM1ojB4LfyNbHa3eWhRasVPRdeN+patbTeXCSbZfLhJyjfbaYuN80drZtm7/f3TuFOXjFq18ySmMziQASrHj0Mww9+Dr+llIjf2Bp2QGDlsS3TpU1CPsAAcQEOZkd0knWyDfK3aZDk+u8/Yw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788762845; c=relaxed/simple;
-	bh=xcsQHwdrRWYkM4QTQD70RTNUYZJJL7rpA0TJMV4kEk8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=M+UvXi51hXDJOcXpe5dUd9GmC1RT5o68pM1roG+MzL6BieHq3G/y8rYOehBXzBMszUF90gZ64nDLpYCft71LF3EVgKKpYHpPv8TPtQGMgbNS8Dq6gvLadr892ML5BMeoHW0nCzzrDntJhAVtgiui0oTWqNus5nv5qH+XUs2pFhg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=AiTX8rLx; arc=pass smtp.client-ip=209.85.160.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52F2A38BF9C
+	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 06:38:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788763092; cv=none; b=I73knor85hsENmY4cIECfiJpUA26YrLEKZEyhWHcpFv178JG5ZNxWDdFAw/y6y478ETmVxw3EnRS8N3s4X1HaiVmmTiYL7fb21vlvsaiLYJwEKgVeVy+QunBKcG1Gz5i7UhXNECM+LyUXeDlZow28NhIM2XV5kxcRvZI8pno4b4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788763092; c=relaxed/simple;
+	bh=axaYHO8Bx7A6SwagGOHhoHo/gv6UY0jGnfB+8icSGAE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=V8MnlJKjVlczDqs6xSwsOL49gLEFLyzqHqPoeDdX07Xo7vJRdJ2aKVOUhHokBHva6OLio4zZEf8XaiXu1qQObXCdUr+uX1VVY4BAVcZxq5kSdV76SHN9T7RkPVv2Spn817ys/Dev92HrhcZiGZMPLolUOqkZMvJXhlF/00apwQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ri3ZLXhN; arc=none smtp.client-ip=209.85.216.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="AiTX8rLx"
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-5302b692c8eso28907641cf.2
-        for <netdev@vger.kernel.org>; Sun, 06 Sep 2026 23:34:01 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788762840; cv=none;
-        d=google.com; s=arc-20260327;
-        b=d1lWAiopWVbBtcA5Ic6mYpRA6ecAkld83zdN8jRsGdoy1mRpHUfdHuw6lTGz5lAM6l
-         hgDXacriLGi/YQdAC9YvMIILK981cMj0vQrosOuNaPk8e+vEIFbWCojjBxS7sgCoSmlt
-         mXbhqimdybMsQP6msoxtqKkitO/4iesZGGl7CzJOvNEAO0Y1+LJAHkiuqe8u/QbPAHiI
-         Z2q7XPprXKW68Wn5fC5yBTuTeIFfFn7A3a9UhMSFIiy32ozXRaWnTI3sZdvzGd/ClZoX
-         XSE1CnYtuc7ktAlTDEkcXl1I30Dz91zlrjX2fIHdEnbI2xDg5DRB5o7R4hY0zP8o92aa
-         a5jg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=G1eHW2V7q06p4N9KdZ3EMVmUuYgRalVGJGGybQfpM7o=;
-        fh=FWLaimJoyfw6rF/A1cHXNQ4nu5ptjueFJhMH6X3r7Ag=;
-        b=PXiA8vWXd7zWMcNrMbfE6CqHI0omsfv1VOjl/SulvbY5ME2ioMTQdC8Smo5UfzkaKh
-         O6p+E1WRtIV//9UR8+45td+pIlWjN0xkMO76EykZygMAVbX4QFBm9P2JSt2SzPytRtPM
-         JuA501dGi8ofaDkby4k9VPOu420snohJXmwq1TvvIwybQSM+7ewTxUsDicTLfJ3fdrZL
-         odWYsTjHKupJ5bEmNCFTkxbtYYotoVv5/cJwFfDyzQLVlV+rLAi1zzP7mnT3ruGeZsyo
-         j+KNfTCsL1DIawMvrQezoOgWiuMC2RU0tQ7/Uu5+NGhDjPOuh1wQ+JfUoPcxkRIKRDFp
-         P6DA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ri3ZLXhN"
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-38759bcd877so3184291a91.2
+        for <netdev@vger.kernel.org>; Sun, 06 Sep 2026 23:38:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788762840; x=1789367640; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=G1eHW2V7q06p4N9KdZ3EMVmUuYgRalVGJGGybQfpM7o=;
-        b=AiTX8rLx+BEslb6RwH4QELfjBJwVN2H3LuLvB+6TSxaMiNMelK55eiLmDqIfkos3WJ
-         E21nonG65/9NoGK+0hP5Ft8J7B2yDcSp+Rjk823AJPUz+2PUvig2eFtLSl8aze3HTAN3
-         MVjHk3yz3WBgAdMiDy+N1l0dlNB9b4Yc6PiSlCc5LIJ0ZrHcfWKUEPtAjGNuHfhwcylR
-         lF0TdqZJYfubUDUVwazQP2BvZZ/El29RkeWnvnQdrLcLQjjmfnQ51nHk+66pFuEUVtQM
-         IDZ8HME8gRJZXT+nL8RoI4EexNlpyW9wIGm7HtnWgwFnJY740/6DtzTg+QhljI+M+BFn
-         nuVw==
+        d=gmail.com; s=20251104; t=1788763091; x=1789367891; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=xbM2ytUwgMYDUMgw3izsEczlFofBu8pewRebFwxAFDA=;
+        b=ri3ZLXhNmZd0A2YeWGYQGWTORjlUANwWbFIHX02T9dvNXzMxrBhrwrAi+ismrpXbGK
+         i1G+Z7bgm1dwCZ3DLGr/3bS6HrSjZzuB6bzz9lsRs9tXDOwayOb5u4xe+lVgrBTAp05R
+         +by3US2NdI0hboBuABCNf6EERmRjKGMuB/5Qsj4U/syh2MWMDnWN0JwEIsqTzkloxeZE
+         e7kdfsnsVplHxd9F9bZIxCTnPDGJV6myRTjf2W+31YBimuF8eBBRsY/06wAFGVd2Iiu2
+         TKYpSiFISULq84hocTwQvHVYGCGbXK0zRIue7WcvqoKUMAk20fT4piTS6ffkUReC5CXT
+         CemQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788762840; x=1789367640;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=G1eHW2V7q06p4N9KdZ3EMVmUuYgRalVGJGGybQfpM7o=;
-        b=ijAlOm1tOkysBtOGlEfvqUXJcYHk0pEwqypZ3n6tr63bSMP2IM1nBZApD3jlGRyoMx
-         GJros7ltqArrIwCObuNUueRU5+W0KhFwr7bH1Us77eISFGxuKR7e90GD2FcwsnRXJelG
-         Q5+dYU0bBZIpOJbDFaKBPQgQHHR8NN/Uh8VoalFkdZXNoZlsFTB1O3YC6JANwZRKNLoW
-         NShJ8opwX6AvXb0J+ktp42NoEVoCOEe6sS4lVYS5zeC5HJl6TxnkDC7Zg3nWeZfy6ZDj
-         ruTvv4N1bwFMimGQ8ShcLlSRI9DOt7eSQlHsD/U/P3wWZ9Eqdh6tT5Wb193a+0xEysbK
-         DUig==
-X-Forwarded-Encrypted: i=1; AKwUvBwsNM6GSX0fm+G/IDD9I0ok07te3rL+UbM+NUQhJavq7TSMGHELKT7d9HRf3fkI513a5A49yj4=@vger.kernel.org
-X-Gm-Message-State: AFuF++kuVCQMvJ8Z9H0UeVLkTZ48dW+SD1tgjrzhUad8Exv5pu8r0r3i
-	apfHxZdLW+eSflHiIeHZwnbRjpbTM+SYAQ2C88npdf5+O1o8Xais9Cg1Fu40BNhqsrs3T+rkmAh
-	uLgPzhaPMNF303/2WZ1sMr2vKxXgMpFu0+hOCDVo5
-X-Gm-Gg: AYBFou3zxTU4fbdJ3zZ9Lbzddxhkmfu1LAhih5axQFsZC5ENUjZ/O3305t5rZIYh73Y
-	FJDOIfIRxM4gMQxh8Gb87T0nBvQzz4JFAGY1hHcagQRcvO3m87WMRP7D7UpCdlG/cWU1/rWelso
-	u1+JjgcTeZWdH/sit0II2p8P4+gibZruVmNQbbtKRAS+2cuZCOmKtoD3HBw8n5t1lCNwwk2lgsP
-	nfB7OC2TMGL2J7GHlrHWpSffMM3aJca47PXAzH12D8cie0XA2pdwxJNA4JZhZbqYZjRlcl6TZzq
-	tXsH+HViRx/NUsPZSF4Zoyc0i3WjHeHiQiMzghgUP0x7Vr2OaGy6XvWz5YjQpTiVlV1pZpHDMRR
-	Q1amtCfOpNRIyv5ybrRMcdKYrl4+fcP1OAyJLZ2uGGOZ7ogv1bMAz6LYrbgw=
-X-Received: by 2002:a05:622a:4c18:b0:52f:bfb3:ed3d with SMTP id
- d75a77b69052e-53054944d7bmr258043911cf.25.1788762839165; Sun, 06 Sep 2026
- 23:33:59 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1788763091; x=1789367891;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=xbM2ytUwgMYDUMgw3izsEczlFofBu8pewRebFwxAFDA=;
+        b=kwSkithnVWt9v5Sw2QnZ3uAHfGnZp4u1gn358AUtyWA5KoDgSx/4HBV+e98dn+LtkE
+         S6RlsqlcCgehUvvex8syfBB9qS1mtjficVPV8U9cZXnSJ5gixAIs4QVOMBVo11RBbyAZ
+         XBX1IAAgiGu4Dlo8PHwxQdeRdBUAGR2g7MDzSgP19i7a3ixpky8X4x75BLAcH7Oil7r4
+         QYOSsdNQAmatY3RL1sKLeFjWsJfVwczS2Wy3gsIasLzYrgpBNbn0vS/SBy6DhJkF1fSc
+         RvPPPN7wy4vshfr1pEYBC9AdY4oyX+70Kke8NbzMtBTRuynofIgdk9IEJsTVl2yDyHxZ
+         larg==
+X-Forwarded-Encrypted: i=1; AKwUvBydG6ndUr8rwXGgmdB8pMtXttNTcGLJaysRpdz3VSAvPG4VS5jQqVOx2hZtpZGiag0gvEkQtDg=@vger.kernel.org
+X-Gm-Message-State: AFuF++lx4YkfdsfBGuY1xinVTDu4cTfMF89hmqotqOy2gWm3EOvzpm9C
+	64SUtL1pVrDGPvpik3O/xY5CUWMMAkuJtMfeGbi8j/7JWfP8lNOuN+Y6
+X-Gm-Gg: AYBFou1j51zTFqpy8fCrzIxbcq9k1MMmzc+IOwlxLNhx3I3Il1wPFgHc2J19cOEG9Jk
+	UsnOoKMmb8YsaUI4tr+VDsHaPoTtmPab8dLAca4ReJus/TjFAWonvGQreah+POamSvkcz8Uxpwf
+	ioYV20VUUMokxOQd1oFsUVSjhi46F18xJ3h7/uFmEwWD4gTISDSEFZiNffMGcz2kI84vhkGg9gK
+	ZzBFA2Pi2IQxVbGT2dSOzAm7o1n2aNJwnlnCG9qzP/SuGzGZW66rnkf/yjRsnSWgxN2Vg3SHEb9
+	RqDRJug9B5qTBR0S5kTzt0ZnSAxrDHigjMTbdZOOjDibPKPnNrb/5AiwduL45s7xnm5aL2OZH/F
+	Vi+34QXgJE7CdqQXuxl71m34jyP2oAYG2CKeS3jS0C37M8CKpu3v5VdgJZTjswYIfyHBH4i4VdP
+	RiXMPXXn2fWbnobfoYL2VC4dKMXTKJ8dMb1twQBQjtfgDA1hhmb7DnZ+7YbC4/+QCNqZfMnXFVS
+	hgCJMpMii94pQ==
+X-Received: by 2002:a17:90b:3c45:b0:398:9beb:5c19 with SMTP id 98e67ed59e1d1-39b26232bb1mr33016891a91.20.1788763090750;
+        Sun, 06 Sep 2026 23:38:10 -0700 (PDT)
+Received: from volcano9f6e-hostos.amd.com ([165.204.217.251])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1432437d0f4sm22103963c88.7.2026.09.06.23.38.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 06 Sep 2026 23:38:10 -0700 (PDT)
+From: Hemanth Selam <hemanth.selam@gmail.com>
+To: Pablo Neira Ayuso <pablo@netfilter.org>,
+	Harald Welte <laforge@gnumonks.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: osmocom-net-gprs@lists.osmocom.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] net: fix repeated word 'to' in comment
+Date: Mon,  7 Sep 2026 12:08:04 +0530
+Message-ID: <20260907063804.26581-1-hemanth.selam@gmail.com>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260903120840.1024153-3-edumazet@google.com> <178876148175.219967.9585071476410633782@kernel.org>
-In-Reply-To: <178876148175.219967.9585071476410633782@kernel.org>
-From: Eric Dumazet <edumazet@google.com>
-Date: Mon, 7 Sep 2026 08:33:47 +0200
-X-Gm-Features: AcwNN1XGJs0pz339HeOYbu1YqHaywkU2PExCB-7xAL1umY3S0g_snx6N0MJWFD4
-Message-ID: <CANn89iKm6fVE4StiX8q0eUJGqf8zxBPAChyVBYORPPF69x8qsA@mail.gmail.com>
-Subject: Re: [PATCH net-next 2/9] vxlan: vnifilter: free vxlan_vni_group via
- RCU in vxlan_vnigroup_uninit()
-To: netdev-bot+sashiko@kernel.org
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	kuniyu@google.com, idosch@nvidia.com, andrew+netdev@lunn.ch, 
-	netdev@vger.kernel.org, eric.dumazet@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, Sep 7, 2026 at 8:11=E2=80=AFAM <netdev-bot+sashiko@kernel.org> wrot=
-e:
->
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider:
->
-> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 1 =C2=B7 Low: 0
->
-> - [Medium] Changelog premise is not supported by the code: commit "vxlan:
->   vnifilter: free vxlan_vni_group via RCU in vxlan_vnigroup_uninit()"=E2=
-=80=A6
->
-> --
->
-> vxlan: vnifilter: free vxlan_vni_group via RCU in vxlan_vnigroup_uninit()
->
-> This clears vxlan->vnigrp with rcu_assign_pointer() in
-> vxlan_vnigroup_uninit() and defers the freeing of struct vxlan_vni_group
-> to kfree_rcu(), adding an rcu_head to the structure.  It is described as
-> fixing a use-after-free between device deletion and an RTM_GETTUNNEL dump=
-.
->
-> >     vxlan->vnigrp is an RCU-protected pointer accessed locklessly under
-> >     rcu_read_lock() in vxlan_vnifilter_dump_dev().
-> >
-> >     Currently, vxlan_vnigroup_uninit() frees struct vxlan_vni_group
-> >     synchronously via kfree(vg). If a VXLAN device is deleted concurren=
-tly
-> >     with an RTM_GETTUNNEL dump, vxlan_vnifilter_dump_dev() can suffer a
-> >     use-after-free when reading vg->num_vnis or walking vg->vni_list.
-> >
-> >     Fixes: f9c4bb0b245c ("vxlan: vni filtering support on collect metad=
-ata device")
->
-> [Severity: Medium]
-> Is the described race reachable in this tree?  The RTM_GETTUNNEL dump is
-> registered without RTNL_FLAG_DUMP_UNLOCKED:
->
-> drivers/net/vxlan/vxlan_vnifilter.c:
-> static const struct rtnl_msg_handler vxlan_vnifilter_rtnl_msg_handlers[] =
-=3D {
->         {THIS_MODULE, PF_BRIDGE, RTM_GETTUNNEL, NULL, vxlan_vnifilter_dum=
-p, 0},
->
-> With flags =3D=3D 0, rtnl_dumpit() wraps the whole callback in RTNL:
->
-> net/core/rtnetlink.c:rtnl_dumpit() {
->         const bool needs_lock =3D !(cb->flags & RTNL_FLAG_DUMP_UNLOCKED);
->         ...
->         if (needs_lock)
->                 rtnl_lock();
->         err =3D dumpit(skb, cb);
->         if (needs_lock)
->                 rtnl_unlock();
-> }
->
-> so vxlan_vnifilter_dump() and vxlan_vnifilter_dump_dev() run with RTNL he=
-ld,
-> not "locklessly" as the changelog states.
->
-> On the freeing side, vxlan_vnigroup_uninit() is reached only from the
-> vxlan_init() error path and from vxlan_uninit() (ndo_uninit), both of whi=
-ch
-> run under RTNL via register_netdevice() and
-> unregister_netdevice_many_notify().  Doesn't that make the dump and the f=
-ree
-> mutually exclusive today?
->
-> The dump also does not cache a device or vnigrp pointer across paginated
-> recvmsg iterations: it stores only an ifindex in cb->args[0] and re-resol=
-ves
-> through dev_get_by_index_rcu()/for_each_netdev_rcu(), so a stale vnigrp d=
-oes
-> not appear to be observable between iterations either.
->
-> The code change itself looks harmless, since the remaining readers alread=
-y
-> tolerate a NULL vnigrp:
->
-> drivers/net/vxlan/vxlan_vnifilter.c:vxlan_vnifilter_dump_dev() {
->         /* RCU needed because of the vni locking rules (rcu || rtnl) */
->         vg =3D rcu_dereference(vxlan->vnigrp);
->         if (!vg || !vg->num_vnis)
->                 return 0;
->
-> and vxlan_vnifilter_lookup() in drivers/net/vxlan/vxlan_private.h does th=
-e
-> same NULL check.
->
-> Would it be more accurate to describe this as preparation for an
-> RTNL-unlocked RTM_GETTUNNEL dump, and to drop the Fixes: tag (or justify =
-it)
-> so this is not backported to stable as a use-after-free fix?
->
-> The next patch in the series, "vxlan: vnifilter: use
-> list_for_each_entry_rcu() in vxlan_vnifilter_dump_dev()", repeats the sam=
-e
-> premise ("runs under rcu_read_lock() without RTNL"), and the RTM_GETTUNNE=
-L
-> handler is still registered with flags =3D=3D 0 at the end of the series,=
- so the
-> same question applies there.
+Drop the second 'to', reported by checkpatch.pl as a possible repeated
+word.  Only touches a comment, no code changes.
 
-Not that Kuniyuki pointed out that the patch was not needed, it was
-dropped from V2.
+Assisted-by: Cursor:claude-opus-5
+Signed-off-by: Hemanth Selam <hemanth.selam@gmail.com>
+---
+ drivers/net/gtp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/gtp.c b/drivers/net/gtp.c
+index 69fe5717846b..4aff23bcfdd1 100644
+--- a/drivers/net/gtp.c
++++ b/drivers/net/gtp.c
+@@ -770,7 +770,7 @@ static int gtp_parse_exthdrs(struct sk_buff *skb, unsigned int *hdrlen)
+ 	 *
+ 	 * This length field includes length field size itself (1 byte),
+ 	 * payload (variable length) and next type (1 byte). The extension
+-	 * header is aligned to to 4 bytes.
++	 * header is aligned to 4 bytes.
+ 	 */
+ 
+ 	do {
+-- 
+2.48.1
+
