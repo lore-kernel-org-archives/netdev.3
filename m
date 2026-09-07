@@ -1,23 +1,23 @@
-Received: from out28-4.mail.aliyun.com (out28-4.mail.aliyun.com [115.124.28.4])
+Received: from out198-26.us.a.mail.aliyun.com (out198-26.us.a.mail.aliyun.com [47.90.198.26])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C39594B2045;
-	Mon,  7 Sep 2026 12:39:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E4564ACC81;
+	Mon,  7 Sep 2026 12:39:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=47.90.198.26
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788784775; cv=none; b=tebJ4vC4xDbJ/PDBmZ3f7f4P197bO6T8he6iEWPkLnJnSlvZdR7pWQg3KZkiOOBeA9Yxr622iEM3h9nVmCYXJRpUR0BmYQDiZknEkqhm3aJdaq2hUcb4U7eZrRqqmbDFK5GPuxcEELn55WjU/YkaW/UXvgFHX0Bxf8+PC3qaMQs=
+	t=1788784787; cv=none; b=uD+vhw7Gf6Q2lG+8fQpxP8yD/wjjY/HKic+fHuFUw2UXMJJKwakXk9zUuwT8MO/NXQp11Mh76DVmOh8DVKUxLefJOmIc7JyYltw4GZWc6a4Bf2I2YuRpL3oBPNQz0k7QxtM/qV/WZTUpIiK9fNuttduTdAFw/uYTgMIXwCk97Fs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788784775; c=relaxed/simple;
-	bh=yx18y3wtkZgaJsfFA76dWV5RXdepblwhoCOI0rbjVB4=;
+	s=arc-20240116; t=1788784787; c=relaxed/simple;
+	bh=lwqA7WlOJFd/La1pu/Rq9NQ6qo67dBmst5mmfLR+ywQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RyrTUjGB5XhqsM6+zaqGLU0hE9x/TzjlitcdzT5FMyGM7drxLcb7HkSv2KP5ppTNVYNq0OJhedwHktPz8Rl87W6mdrVfXhjN/Ijz0KvqCdOcFYiW5BXHoNChJNhQuQX7TyS3KBAgJouDSawF57hMPyKspytClr1D0DGxf1j2vDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com; spf=pass smtp.mailfrom=nebula-matrix.com; arc=none smtp.client-ip=115.124.28.4
+	 MIME-Version; b=GJr4RUXCj5YIbl+RgNQNZZfVmVazzKzYqV5XA9m/C8kQML5r/4rEAcAxjOnR/MY3ztp4n/aiAfYEg5asctIX+yNCSHnoIuiE1TKSu4BUbCZGn/k3VVFSWeT6C1Lze5+cgkPwr5n403YnTyTsLD4NVidwEwUn8pfyN8adQwjG5Lo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com; spf=pass smtp.mailfrom=nebula-matrix.com; arc=none smtp.client-ip=47.90.198.26
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebula-matrix.com
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.06712908|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.0113905-0.00586475-0.982745;FP=16884942909933637122|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam011083013073;MF=illusion.wang@nebula-matrix.com;NM=1;PH=DS;RN=18;RT=18;SR=0;TI=SMTPD_---.j7sZklN_1788784761;
-Received: from localhost.localdomain(mailfrom:illusion.wang@nebula-matrix.com fp:SMTPD_---.j7sZklN_1788784761 cluster:ay29)
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.06712908|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.00789118-0.00105738-0.991051;FP=17461577503454285562|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033068005250;MF=illusion.wang@nebula-matrix.com;NM=1;PH=DS;RN=18;RT=18;SR=0;TI=SMTPD_---.j7sZkmN_1788784762;
+Received: from localhost.localdomain(mailfrom:illusion.wang@nebula-matrix.com fp:SMTPD_---.j7sZkmN_1788784762 cluster:ay29)
           by smtp.aliyun-inc.com;
-          Mon, 07 Sep 2026 20:39:21 +0800
+          Mon, 07 Sep 2026 20:39:23 +0800
 From: "illusion.wang" <illusion.wang@nebula-matrix.com>
 To: dimon.zhao@nebula-matrix.com,
 	illusion.wang@nebula-matrix.com,
@@ -37,9 +37,9 @@ Cc: andrew+netdev@lunn.ch,
 	skhan@linuxfoundation.org,
 	hkallweit1@gmail.com,
 	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH v27 net-next 09/10] net/nebula-matrix: add common/ctrl dev init/remove operation
-Date: Mon,  7 Sep 2026 20:38:44 +0800
-Message-ID: <20260907123848.30256-10-illusion.wang@nebula-matrix.com>
+Subject: [PATCH v27 net-next 10/10] net/nebula-matrix: add common dev start/stop operation
+Date: Mon,  7 Sep 2026 20:38:45 +0800
+Message-ID: <20260907123848.30256-11-illusion.wang@nebula-matrix.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260907123848.30256-1-illusion.wang@nebula-matrix.com>
 References: <20260907123848.30256-1-illusion.wang@nebula-matrix.com>
@@ -53,432 +53,476 @@ Content-Transfer-Encoding: 8bit
 
 From: illusion wang <illusion.wang@nebula-matrix.com>
 
-Add nbl_dev core infrastructure. Introduce
-nbl_dev_setup_common_dev() and nbl_dev_setup_ctrl_dev() initialization
-helpers with their teardown counterparts, and wire them into
-nbl_dev_init() / nbl_dev_remove() from nbl_core_init() /
-nbl_core_remove().
+Implement nbl_dev_start() and nbl_dev_stop() to manage MSI-X
+mapping, mailbox interrupt initialization and deinitialization.
 
-Common device setup (nbl_dev_setup_common_dev):
-- Allocate per-device state (nbl_dev_common)
-- Set up mailbox channel queue and register cleanup work
-- Initialize MSI-X service counts (mailbox = 1 vector; actual
-  allocation deferred to nbl_dev_start() in the next patch)
-- On the control PF only: fetch VSI/ETH identity via local
-  dispatch ops.  Non-control PFs defer this to nbl_dev_start(),
-  when the mailbox channel is fully operational and the control
-  PF's responder is running; this keeps every intermediate commit
-  bisect-bootable on multi-PF systems.
+nbl_dev_start() performs device startup in strict order:
+  1. Configure hardware MSI-X mapping table (cfg_msix_map)
+  2. Allocate MSI-X IRQ vectors via pci_alloc_irq_vectors()
+  3. Request mailbox interrupt and attach handler
+     (nbl_dev_clean_mailbox -> schedule cleanup work)
+  4. Enable hardware mailbox interrupt and mark channel
+     interrupt ready (NBL_CHAN_IRQ_RDY)
 
-Control device setup (nbl_dev_setup_ctrl_dev, control PF only):
-- disp_ops->init_module(): chip-wide hardware init (datapath
-  pipeline, driver_status flag)
-- Program mailbox QINFO routing map (bus/devid for each PF)
+On non-control PFs, VSI/ETH identity is fetched via mailbox RPC
+in nbl_dev_setup_common_dev() during probe, before start runs.
+The control PF's responder is reachable once its own probe has
+completed and the mailbox queue is operational.
 
-Chip core hardware initialization is handled by firmware at
-power-on.  The driver only configures functional table entries
-after hardware becomes ready, so common_dev setup before ctrl_dev
-setup is safe.
+nbl_dev_stop() tears down resources in the reverse order, with
+the device-side mapping destroyed before kernel-side vectors are
+released:
+  1. Switch channel to polling mode (clear NBL_CHAN_IRQ_RDY)
+     before masking hardware mailbox interrupt.  This ordering
+     avoids discarding in-flight ACKs that would trigger
+     "Channel waiting ack failed" errors.
+  2. Release mailbox IRQ via free_irq()
+  3. Destroy hardware MSI-X mapping table (masks all device
+     vectors and clears the pcompleter map entry)
+  4. Free kernel-side MSI-X vectors via pci_free_irq_vectors()
+  5. Drain mailbox cleanup work via cancel_work_sync()
 
-Deinit order: ctrl dev first, then common dev.
-nbl_dev_remove_ctrl_dev() calls deinit_module(), which sets
-driver_status=false to notify firmware to asynchronously clean
-all per-PF hardware state including qinfo registers.  The qinfo
-map is not explicitly cleared by the driver; firmware handles it
-on driver_status change.  No completion handshake exists in the
-current hardware revision; the caller must ensure no new DMA is
-initiated after deinit (the mailbox channel is stopped first).
+The start error-unwind path uses the same reverse ordering
+(err_disable_irq -> err_destroy_map -> err_cancel_work), so a
+failure at any stage leaves the device and kernel in a consistent
+state.  Rollback failures are logged; pci_clear_master() in
+nbl_remove() provides the final safety net if a teardown RPC to
+the manager PF cannot complete.
+
+Add thin wrappers nbl_core_start() / nbl_core_stop() and hook
+them into PCI probe and remove paths to control the device
+lifecycle.
 
 Signed-off-by: illusion wang <illusion.wang@nebula-matrix.com>
 ---
- .../net/ethernet/nebula-matrix/nbl/Makefile   |   1 +
- .../net/ethernet/nebula-matrix/nbl/nbl_core.h |   1 +
- .../nebula-matrix/nbl/nbl_core/nbl_dev.c      | 233 ++++++++++++++++++
- .../nebula-matrix/nbl/nbl_core/nbl_dev.h      |  55 +++++
- .../nbl/nbl_include/nbl_def_dev.h             |  14 ++
- .../net/ethernet/nebula-matrix/nbl/nbl_main.c |   9 +
- 6 files changed, 313 insertions(+)
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.h
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dev.h
+ .../net/ethernet/nebula-matrix/nbl/nbl_core.h |   2 +
+ .../nebula-matrix/nbl/nbl_core/nbl_dev.c      | 318 +++++++++++++++++-
+ .../nbl/nbl_include/nbl_def_dev.h             |   2 +
+ .../net/ethernet/nebula-matrix/nbl/nbl_main.c |  18 +
+ 4 files changed, 329 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/Makefile b/drivers/net/ethernet/nebula-matrix/nbl/Makefile
-index b7eebd89b4d1..71fbe3ee7e62 100644
---- a/drivers/net/ethernet/nebula-matrix/nbl/Makefile
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/Makefile
-@@ -11,4 +11,5 @@ nbl-objs +=	nbl_common/nbl_common.o \
- 		nbl_hw/nbl_interrupt.o \
- 		nbl_hw/nbl_chip.o \
- 		nbl_core/nbl_dispatch.o \
-+		nbl_core/nbl_dev.o \
- 		nbl_main.o
 diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
-index 4d8cea8d8ab3..c3c4dd685bf6 100644
+index c3c4dd685bf6..56872c8ca9a7 100644
 --- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
 +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
-@@ -25,6 +25,7 @@ struct nbl_core {
- 	struct nbl_hw_mgt *hw_mgt;
- 	struct nbl_resource_mgt *res_mgt;
- 	struct nbl_dispatch_mgt *disp_mgt;
-+	struct nbl_dev_mgt *dev_mgt;
- 	struct nbl_channel_mgt *chan_mgt;
- };
+@@ -39,5 +39,7 @@ struct nbl_adapter {
+ struct nbl_adapter *nbl_core_init(struct pci_dev *pdev,
+ 				  struct nbl_init_param *param);
+ void nbl_core_remove(struct nbl_adapter *adapter);
++int nbl_core_start(struct nbl_adapter *adapter);
++void nbl_core_stop(struct nbl_adapter *adapter);
  
+ #endif
 diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
-new file mode 100644
-index 000000000000..7813ff31a3cf
---- /dev/null
+index 7813ff31a3cf..af003a240e7b 100644
+--- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
 +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
-@@ -0,0 +1,233 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright (c) 2026 Nebula Matrix Limited.
-+ */
-+#include <linux/device.h>
-+#include <linux/pci.h>
-+#include "nbl_dev.h"
+@@ -6,6 +6,17 @@
+ #include <linux/pci.h>
+ #include "nbl_dev.h"
+ 
++static void nbl_dev_clean_mailbox_schedule(struct nbl_dev_mgt *dev_mgt);
 +
-+static void nbl_dev_init_msix_cnt(struct nbl_dev_mgt *dev_mgt)
++/* ----------  Interrupt config  ---------- */
++static irqreturn_t nbl_dev_clean_mailbox(int __always_unused irq, void *data)
++{
++	struct nbl_dev_mgt *dev_mgt = (struct nbl_dev_mgt *)data;
++
++	nbl_dev_clean_mailbox_schedule(dev_mgt);
++	return IRQ_HANDLED;
++}
++
+ static void nbl_dev_init_msix_cnt(struct nbl_dev_mgt *dev_mgt)
+ {
+ 	struct nbl_dev_common *dev_common = dev_mgt->common_dev;
+@@ -17,6 +28,189 @@ static void nbl_dev_init_msix_cnt(struct nbl_dev_mgt *dev_mgt)
+ 	msix_info->serv_info[NBL_MSIX_MAILBOX_TYPE].num = 1;
+ }
+ 
++static int nbl_dev_request_mailbox_irq(struct nbl_dev_mgt *dev_mgt)
 +{
 +	struct nbl_dev_common *dev_common = dev_mgt->common_dev;
 +	struct nbl_msix_info *msix_info = &dev_common->msix_info;
-+
-+	/* mailbox vector allocated in nbl_dev_start() via
-+	 * nbl_dev_request_mailbox_irq()
-+	 */
-+	msix_info->serv_info[NBL_MSIX_MAILBOX_TYPE].num = 1;
-+}
-+
-+/* ----------  Channel config  ---------- */
-+static void nbl_dev_setup_chan_qinfo(struct nbl_dev_mgt *dev_mgt, u8 chan_type)
-+{
-+	struct nbl_channel_ops *chan_ops = dev_mgt->chan_ops_tbl->ops;
-+	struct nbl_channel_mgt *priv = dev_mgt->chan_ops_tbl->priv;
 +	struct nbl_common_info *common = dev_mgt->common;
++	u16 local_vec_id;
++	int irq_num;
++	int err;
 +
-+	if (!chan_ops->check_queue_exist(priv, chan_type))
-+		return;
++	if (!msix_info->serv_info[NBL_MSIX_MAILBOX_TYPE].num)
++		return 0;
 +
-+	chan_ops->cfg_chan_qinfo_map_table(priv, common->hw_bus, common->devid);
-+}
-+
-+static int nbl_dev_setup_chan_queue(struct nbl_dev_mgt *dev_mgt, u8 chan_type)
-+{
-+	struct nbl_channel_ops *chan_ops = dev_mgt->chan_ops_tbl->ops;
-+	struct nbl_channel_mgt *priv = dev_mgt->chan_ops_tbl->priv;
-+	int ret = 0;
-+
-+	if (chan_ops->check_queue_exist(priv, chan_type))
-+		ret = chan_ops->setup_queue(priv, chan_type);
-+
-+	return ret;
-+}
-+
-+static int nbl_dev_remove_chan_queue(struct nbl_dev_mgt *dev_mgt, u8 chan_type)
-+{
-+	struct nbl_channel_ops *chan_ops = dev_mgt->chan_ops_tbl->ops;
-+	struct nbl_channel_mgt *priv = dev_mgt->chan_ops_tbl->priv;
-+	int ret = 0;
-+
-+	if (chan_ops->check_queue_exist(priv, chan_type))
-+		ret = chan_ops->teardown_queue(priv, chan_type);
-+
-+	return ret;
-+}
-+
-+static void nbl_dev_register_chan_task(struct nbl_dev_mgt *dev_mgt,
-+				       u8 chan_type, struct work_struct *task)
-+{
-+	struct nbl_channel_ops *chan_ops = dev_mgt->chan_ops_tbl->ops;
-+
-+	if (chan_ops->check_queue_exist(dev_mgt->chan_ops_tbl->priv, chan_type))
-+		chan_ops->register_chan_task(dev_mgt->chan_ops_tbl->priv,
-+					     chan_type, task);
-+}
-+
-+/* ----------  Tasks config  ---------- */
-+static void nbl_dev_clean_mailbox_task(struct work_struct *work)
-+{
-+	struct nbl_dev_common *common_dev =
-+		container_of(work, struct nbl_dev_common, clean_mbx_task);
-+	struct nbl_dev_mgt *dev_mgt = common_dev->dev_mgt;
-+	struct nbl_channel_ops *chan_ops = dev_mgt->chan_ops_tbl->ops;
-+
-+	chan_ops->clean_queue_subtask(dev_mgt->chan_ops_tbl->priv,
-+				      NBL_CHAN_TYPE_MAILBOX);
-+}
-+
-+/* ----------  Dev init process  ---------- */
-+static int nbl_dev_setup_common_dev(struct nbl_adapter *adapter)
-+{
-+	struct nbl_dev_mgt *dev_mgt = adapter->core.dev_mgt;
-+	struct nbl_dispatch_ops *disp_ops = dev_mgt->disp_ops_tbl->ops;
-+	struct nbl_dispatch_mgt *priv = dev_mgt->disp_ops_tbl->priv;
-+	struct nbl_common_info *common = dev_mgt->common;
-+	struct nbl_dev_common *common_dev;
-+	int ret;
-+
-+	common_dev = devm_kzalloc(&adapter->pdev->dev, sizeof(*common_dev),
-+				  GFP_KERNEL);
-+	if (!common_dev)
-+		return -ENOMEM;
-+	common_dev->dev_mgt = dev_mgt;
-+
-+	ret = nbl_dev_setup_chan_queue(dev_mgt, NBL_CHAN_TYPE_MAILBOX);
-+	if (ret)
-+		return ret;
-+
-+	INIT_WORK(&common_dev->clean_mbx_task, nbl_dev_clean_mailbox_task);
-+	nbl_dev_register_chan_task(dev_mgt, NBL_CHAN_TYPE_MAILBOX,
-+				   &common_dev->clean_mbx_task);
-+	if (common->has_ctrl) {
-+		ret = disp_ops->get_vsi_id(priv, NBL_VSI_DATA, &common->vsi_id);
-+		if (ret)
-+			goto err_cleanup;
-+		ret = disp_ops->get_eth_id(priv, common->vsi_id,
-+					   &common->eth_num,
-+					   &common->eth_id,
-+					   &common->logic_eth_id);
-+		if (ret)
-+			goto err_cleanup;
++	local_vec_id =
++		msix_info->serv_info[NBL_MSIX_MAILBOX_TYPE].base_vector_id;
++	irq_num = pci_irq_vector(common->pdev, local_vec_id);
++	if (irq_num < 0) {
++		dev_err(common->dev, "Failed to get mailbox IRQ vector: %d\n",
++			irq_num);
++		return irq_num;
 +	}
 +
-+	dev_mgt->common_dev = common_dev;
-+	nbl_dev_init_msix_cnt(dev_mgt);
++	snprintf(dev_common->mailbox_name, sizeof(dev_common->mailbox_name),
++		 "nbl_mailbox@pci:%s", pci_name(common->pdev));
++	err = request_irq(irq_num, nbl_dev_clean_mailbox, 0,
++			  dev_common->mailbox_name, dev_mgt);
++	if (err)
++		return err;
 +
 +	return 0;
-+err_cleanup:
-+	cancel_work_sync(&common_dev->clean_mbx_task);
-+	nbl_dev_remove_chan_queue(dev_mgt, NBL_CHAN_TYPE_MAILBOX);
-+	nbl_dev_register_chan_task(dev_mgt, NBL_CHAN_TYPE_MAILBOX, NULL);
-+	return ret;
 +}
 +
-+static void nbl_dev_remove_common_dev(struct nbl_adapter *adapter)
++static void nbl_dev_free_mailbox_irq(struct nbl_dev_mgt *dev_mgt)
++{
++	struct nbl_dev_common *dev_common = dev_mgt->common_dev;
++	struct nbl_msix_info *msix_info = &dev_common->msix_info;
++	struct nbl_common_info *common = dev_mgt->common;
++	u16 local_vec_id;
++	int irq_num;
++
++	if (!msix_info->serv_info[NBL_MSIX_MAILBOX_TYPE].num)
++		return;
++
++	local_vec_id =
++		msix_info->serv_info[NBL_MSIX_MAILBOX_TYPE].base_vector_id;
++	irq_num = pci_irq_vector(common->pdev, local_vec_id);
++	if (irq_num >= 0)
++		free_irq(irq_num, dev_mgt);
++}
++
++static int nbl_dev_enable_mailbox_irq(struct nbl_dev_mgt *dev_mgt)
++{
++	struct nbl_dispatch_ops *disp_ops = dev_mgt->disp_ops_tbl->ops;
++	struct nbl_channel_ops *chan_ops = dev_mgt->chan_ops_tbl->ops;
++	struct nbl_dev_common *dev_common = dev_mgt->common_dev;
++	struct nbl_msix_info *msix_info = &dev_common->msix_info;
++	u16 local_vec_id;
++
++	if (!msix_info->serv_info[NBL_MSIX_MAILBOX_TYPE].num)
++		return 0;
++
++	local_vec_id =
++		msix_info->serv_info[NBL_MSIX_MAILBOX_TYPE].base_vector_id;
++	chan_ops->set_queue_state(dev_mgt->chan_ops_tbl->priv,
++				  NBL_CHAN_IRQ_RDY,
++				  NBL_CHAN_TYPE_MAILBOX, true);
++
++	return disp_ops->set_mailbox_irq(dev_mgt->disp_ops_tbl->priv,
++					    local_vec_id, true);
++}
++
++static int nbl_dev_disable_mailbox_irq(struct nbl_dev_mgt *dev_mgt)
++{
++	struct nbl_dispatch_ops *disp_ops = dev_mgt->disp_ops_tbl->ops;
++	struct nbl_channel_ops *chan_ops = dev_mgt->chan_ops_tbl->ops;
++	struct nbl_dev_common *dev_common = dev_mgt->common_dev;
++	struct nbl_msix_info *msix_info = &dev_common->msix_info;
++	u16 local_vec_id;
++
++	if (!msix_info->serv_info[NBL_MSIX_MAILBOX_TYPE].num)
++		return 0;
++
++	local_vec_id =
++		msix_info->serv_info[NBL_MSIX_MAILBOX_TYPE].base_vector_id;
++	/*
++	 * Disable sequence invariant: update software state first, then mask
++	 * hardware interrupt. Must not reverse the order.
++	 *
++	 * If hardware interrupt is masked before clearing INTERRUPT_READY,
++	 * the hardware may still transmit outstanding ACK packets for in-flight
++	 * messages. Subsequent switch to polling mode discards pending ACK
++	 * processing, triggering "Channel waiting ack failed" and "Skip ack
++	 * with invalid status" errors.
++	 *
++	 * By entering polling mode first, any late hardware interrupts are
++	 * ignored without pending ACK expectations, then hardware interrupt
++	 * can be safely disabled.
++	 *
++	 * This helper is invoked in two paths:
++	 * 1. Error unwind path of nbl_dev_start(): followed immediately by
++	 * nbl_dev_free_mailbox_irq() and full channel teardown. No new mailbox
++	 * interrupts can fire afterwards, and subsequent cancel_work_sync()
++	 * drains pending cleanup work before resources are released.
++	 * 2. Normal device stop path nbl_dev_stop(): free_irq() blocks until
++	 * any in-flight hardirq handler completes and prevents new interrupts.
++	 * cancel_work_sync() then waits for any already running mailbox cleanup
++	 * work to finish, or cancels queued but unstarted work items before
++	 * final channel destruction. No stuck descriptors linger in either
++	 * scenario.
++	 */
++	chan_ops->set_queue_state(dev_mgt->chan_ops_tbl->priv,
++				  NBL_CHAN_IRQ_RDY,
++				  NBL_CHAN_TYPE_MAILBOX, false);
++
++	return disp_ops->set_mailbox_irq(dev_mgt->disp_ops_tbl->priv,
++					    local_vec_id, false);
++}
++
++static int nbl_dev_cfg_msix_map(struct nbl_dev_mgt *dev_mgt)
++{
++	struct nbl_dispatch_ops *disp_ops = dev_mgt->disp_ops_tbl->ops;
++	struct nbl_dev_common *dev_common = dev_mgt->common_dev;
++	struct nbl_msix_info *msix_info = &dev_common->msix_info;
++	bool mask_en = msix_info->serv_info[NBL_MSIX_NET_TYPE].hw_self_mask_en;
++	u16 msix_net_num = msix_info->serv_info[NBL_MSIX_NET_TYPE].num;
++	u16 msix_not_net_num = 0;
++	int err, i;
++
++	msix_info->serv_info[NBL_MSIX_NET_TYPE].base_vector_id = 0;
++	for (i = NBL_MSIX_NET_TYPE + 1; i < NBL_MSIX_TYPE_MAX; i++)
++		msix_info->serv_info[i].base_vector_id =
++			msix_info->serv_info[i - 1].base_vector_id +
++			msix_info->serv_info[i - 1].num;
++
++	for (i = 0; i < NBL_MSIX_TYPE_MAX; i++) {
++		if (i == NBL_MSIX_NET_TYPE)
++			continue;
++		msix_not_net_num += msix_info->serv_info[i].num;
++	}
++
++	err = disp_ops->cfg_msix_map(dev_mgt->disp_ops_tbl->priv,
++					   msix_net_num, msix_not_net_num,
++					   mask_en);
++
++	return err;
++}
++
++static int nbl_dev_destroy_msix_map(struct nbl_dev_mgt *dev_mgt)
++{
++	struct nbl_dispatch_ops *disp_ops = dev_mgt->disp_ops_tbl->ops;
++
++	return disp_ops->destroy_msix_map(dev_mgt->disp_ops_tbl->priv);
++}
++
++static int nbl_dev_init_interrupt_scheme(struct nbl_dev_mgt *dev_mgt)
++{
++	struct nbl_dev_common *dev_common = dev_mgt->common_dev;
++	struct nbl_msix_info *msix_info = &dev_common->msix_info;
++	struct nbl_common_info *common = dev_mgt->common;
++	int needed = 0;
++	int err;
++	int i;
++
++	for (i = 0; i < NBL_MSIX_TYPE_MAX; i++)
++		needed += msix_info->serv_info[i].num;
++
++	err = pci_alloc_irq_vectors(common->pdev, needed, needed,
++				    PCI_IRQ_MSIX | PCI_IRQ_AFFINITY);
++	if (err < 0) {
++		dev_err(common->dev,
++			"pci_alloc_irq_vectors failed, err = %d\n", err);
++		return err;
++	}
++
++	return 0;
++}
++
++static void nbl_dev_clear_interrupt_scheme(struct nbl_dev_mgt *dev_mgt)
++{
++	struct nbl_common_info *common = dev_mgt->common;
++
++	pci_free_irq_vectors(common->pdev);
++}
++
+ /* ----------  Channel config  ---------- */
+ static void nbl_dev_setup_chan_qinfo(struct nbl_dev_mgt *dev_mgt, u8 chan_type)
+ {
+@@ -76,6 +270,14 @@ static void nbl_dev_clean_mailbox_task(struct work_struct *work)
+ 				      NBL_CHAN_TYPE_MAILBOX);
+ }
+ 
++static void nbl_dev_clean_mailbox_schedule(struct nbl_dev_mgt *dev_mgt)
++{
++	struct nbl_dev_common *common_dev = dev_mgt->common_dev;
++	struct nbl_common_info *common = dev_mgt->common;
++
++	queue_work(common->wq, &common_dev->clean_mbx_task);
++}
++
+ /* ----------  Dev init process  ---------- */
+ static int nbl_dev_setup_common_dev(struct nbl_adapter *adapter)
+ {
+@@ -99,17 +301,18 @@ static int nbl_dev_setup_common_dev(struct nbl_adapter *adapter)
+ 	INIT_WORK(&common_dev->clean_mbx_task, nbl_dev_clean_mailbox_task);
+ 	nbl_dev_register_chan_task(dev_mgt, NBL_CHAN_TYPE_MAILBOX,
+ 				   &common_dev->clean_mbx_task);
+-	if (common->has_ctrl) {
+-		ret = disp_ops->get_vsi_id(priv, NBL_VSI_DATA, &common->vsi_id);
+-		if (ret)
+-			goto err_cleanup;
+-		ret = disp_ops->get_eth_id(priv, common->vsi_id,
+-					   &common->eth_num,
+-					   &common->eth_id,
+-					   &common->logic_eth_id);
+-		if (ret)
+-			goto err_cleanup;
+-	}
++	/*
++	 * Even if has_ctrl=false (no dedicated control PF channel), we fetch
++	 * VSI/ETH info via regular mailbox message instead of dedicated
++	 * control command.
++	 */
++	ret = disp_ops->get_vsi_id(priv, NBL_VSI_DATA, &common->vsi_id);
++	if (ret)
++		goto err_cleanup;
++	ret = disp_ops->get_eth_id(priv, common->vsi_id, &common->eth_num,
++			     &common->eth_id, &common->logic_eth_id);
++	if (ret)
++		goto err_cleanup;
+ 
+ 	dev_mgt->common_dev = common_dev;
+ 	nbl_dev_init_msix_cnt(dev_mgt);
+@@ -231,3 +434,96 @@ void nbl_dev_remove(struct nbl_adapter *adapter)
+ 		nbl_dev_remove_ctrl_dev(adapter);
+ 	nbl_dev_remove_common_dev(adapter);
+ }
++
++/* ----------  Dev start process  ---------- */
++int nbl_dev_start(struct nbl_adapter *adapter)
 +{
 +	struct nbl_dev_mgt *dev_mgt = adapter->core.dev_mgt;
 +	struct nbl_dev_common *common_dev = dev_mgt->common_dev;
-+
-+	if (!common_dev)
-+		return;
-+	cancel_work_sync(&common_dev->clean_mbx_task);
-+	nbl_dev_remove_chan_queue(dev_mgt, NBL_CHAN_TYPE_MAILBOX);
-+	nbl_dev_register_chan_task(dev_mgt, NBL_CHAN_TYPE_MAILBOX, NULL);
-+}
-+
-+static int nbl_dev_setup_ctrl_dev(struct nbl_adapter *adapter)
-+{
-+	struct nbl_dev_mgt *dev_mgt = adapter->core.dev_mgt;
-+	struct nbl_dispatch_ops *disp_ops = dev_mgt->disp_ops_tbl->ops;
++	int cleanup_ret;
 +	int ret;
 +
-+	ret = disp_ops->init_module(dev_mgt->disp_ops_tbl->priv);
++	ret = nbl_dev_cfg_msix_map(dev_mgt);
 +	if (ret)
-+		return ret;
++		goto err_cancel_work;
 +
-+	nbl_dev_setup_chan_qinfo(dev_mgt, NBL_CHAN_TYPE_MAILBOX);
++	ret = nbl_dev_init_interrupt_scheme(dev_mgt);
++	if (ret)
++		goto err_destroy_map;
++
++	ret = nbl_dev_request_mailbox_irq(dev_mgt);
++	if (ret)
++		goto err_destroy_map;
++
++	ret = nbl_dev_enable_mailbox_irq(dev_mgt);
++	if (ret)
++		goto err_disable_irq;
 +
 +	return 0;
-+}
 +
-+/*
-+ * Tear down control device: deinit_module sets driver_status=false
-+ * to notify firmware to clean all per-PF hardware state (including
-+ * qinfo registers).  The qinfo map programmed in setup_ctrl_dev is
-+ * not explicitly cleared; firmware handles it on driver_status change.
-+ */
-+static void nbl_dev_remove_ctrl_dev(struct nbl_adapter *adapter)
-+{
-+	struct nbl_dev_mgt *dev_mgt = adapter->core.dev_mgt;
-+	struct nbl_dispatch_ops *disp_ops = dev_mgt->disp_ops_tbl->ops;
-+
-+	disp_ops->deinit_module(dev_mgt->disp_ops_tbl->priv);
-+}
-+
-+static struct nbl_dev_mgt *nbl_dev_setup_dev_mgt(struct nbl_common_info *common)
-+{
-+	struct nbl_dev_mgt *dev_mgt;
-+
-+	dev_mgt = devm_kzalloc(common->dev, sizeof(*dev_mgt), GFP_KERNEL);
-+	if (!dev_mgt)
-+		return ERR_PTR(-ENOMEM);
-+
-+	dev_mgt->common = common;
-+	return dev_mgt;
-+}
-+
-+int nbl_dev_init(struct nbl_adapter *adapter)
-+{
-+	struct nbl_common_info *common = &adapter->common;
-+	struct nbl_dispatch_ops_tbl *disp_ops_tbl =
-+		adapter->intf.dispatch_ops_tbl;
-+	struct nbl_channel_ops_tbl *chan_ops_tbl =
-+		adapter->intf.channel_ops_tbl;
-+	struct nbl_dev_mgt *dev_mgt;
-+	int ret;
-+
-+	dev_mgt = nbl_dev_setup_dev_mgt(common);
-+	if (IS_ERR(dev_mgt)) {
-+		ret = PTR_ERR(dev_mgt);
-+		return ret;
-+	}
-+
-+	dev_mgt->disp_ops_tbl = disp_ops_tbl;
-+	dev_mgt->chan_ops_tbl = chan_ops_tbl;
-+	adapter->core.dev_mgt = dev_mgt;
-+
++err_disable_irq:
++	cleanup_ret = nbl_dev_disable_mailbox_irq(dev_mgt);
++	if (cleanup_ret)
++		dev_err(dev_mgt->common->dev,
++			"rollback: disable mailbox IRQ failed: %d\n",
++			cleanup_ret);
++	nbl_dev_free_mailbox_irq(dev_mgt);
++err_destroy_map:
 +	/*
-+	 * Chip hardware initialization is completed by firmware at power-up.
-+	 * Only driver functional table/register config follows here, safe to
-+	 * access hardware registers before ctrl dev setup.
++	 * Destroy device-side MSI-X map BEFORE releasing kernel-side
++	 * vectors.  This masks all hardware vectors and clears the
++	 * pcompleter map entry, so no MSI-X message can fire after
++	 * pci_free_irq_vectors() releases the vectors.
++	 *
++	 * For non-control PFs this is a polling-mode mailbox RPC
++	 * (IRQ_RDY already cleared by disable above, or never set).
++	 * If the RPC fails the device may remain armed; pci_clear_master()
++	 * in nbl_remove() is the final safety net.
 +	 */
-+	ret = nbl_dev_setup_common_dev(adapter);
-+	if (ret)
-+		goto setup_err;
-+
-+	if (common->has_ctrl) {
-+		ret = nbl_dev_setup_ctrl_dev(adapter);
-+		if (ret)
-+			goto setup_ctrl_dev_fail;
-+	}
-+
-+	return 0;
-+setup_ctrl_dev_fail:
-+	nbl_dev_remove_common_dev(adapter);
-+setup_err:
++	cleanup_ret = nbl_dev_destroy_msix_map(dev_mgt);
++	if (cleanup_ret)
++		dev_err(dev_mgt->common->dev,
++			"rollback: destroy MSI-X map failed: %d\n",
++			cleanup_ret);
++	nbl_dev_clear_interrupt_scheme(dev_mgt);
++err_cancel_work:
++	/*
++	 * destroy_msix_map() polling send may requeue clean_mbx_task.
++	 * Drain before returning on all rollback paths.
++	 */
++	cancel_work_sync(&common_dev->clean_mbx_task);
 +	return ret;
 +}
 +
-+/*
-+ * Teardown order: ctrl dev first, then common dev.
-+ * nbl_dev_remove_ctrl_dev() notifies firmware to clean all per-PF state
-+ * (including qinfo registers), so subsequent common dev queue cleanup
-+ * will not trigger PCIe master abort or invalid register access.
-+ */
-+void nbl_dev_remove(struct nbl_adapter *adapter)
++void nbl_dev_stop(struct nbl_adapter *adapter)
 +{
-+	struct nbl_common_info *common = &adapter->common;
++	struct nbl_dev_mgt *dev_mgt = adapter->core.dev_mgt;
++	struct nbl_dev_common *common_dev = dev_mgt->common_dev;
++	int ret;
 +
-+	if (common->has_ctrl)
-+		nbl_dev_remove_ctrl_dev(adapter);
-+	nbl_dev_remove_common_dev(adapter);
++	ret = nbl_dev_disable_mailbox_irq(dev_mgt);
++	if (ret)
++		dev_err(dev_mgt->common->dev,
++			"Failed to disable mailbox IRQ: %d\n", ret);
++	nbl_dev_free_mailbox_irq(dev_mgt);
++
++	/*
++	 * Destroy hardware MSI-X map BEFORE releasing kernel-side
++	 * vectors.  Masks all device vectors and clears pcompleter
++	 * map entry first; pci_free_irq_vectors() then runs with no
++	 * possibility of a stale MSI-X message arriving.
++	 */
++	ret = nbl_dev_destroy_msix_map(dev_mgt);
++	if (ret)
++		dev_err(dev_mgt->common->dev,
++			"Failed to destroy MSI-X map: %d\n", ret);
++
++	nbl_dev_clear_interrupt_scheme(dev_mgt);
++
++	/*
++	 * destroy_msix_map() sends ack-requested messages which may
++	 * requeue clean_mbx_task via polling send path.  Drain work
++	 * after the operation.
++	 */
++	cancel_work_sync(&common_dev->clean_mbx_task);
 +}
-diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.h
-new file mode 100644
-index 000000000000..24e890fd8987
---- /dev/null
-+++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.h
-@@ -0,0 +1,55 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Copyright (c) 2026 Nebula Matrix Limited.
-+ */
-+
-+#ifndef _NBL_DEV_H_
-+#define _NBL_DEV_H_
-+
-+#include <linux/types.h>
-+
-+#include "../nbl_include/nbl_include.h"
-+#include "../nbl_include/nbl_def_channel.h"
-+#include "../nbl_include/nbl_def_hw.h"
-+#include "../nbl_include/nbl_def_resource.h"
-+#include "../nbl_include/nbl_def_dispatch.h"
-+#include "../nbl_include/nbl_def_dev.h"
-+#include "../nbl_include/nbl_def_common.h"
-+#include "../nbl_core.h"
-+
-+#define NBL_STRING_NAME_LEN			32
-+
-+enum nbl_msix_serv_type {
-+	NBL_MSIX_NET_TYPE,
-+	NBL_MSIX_MAILBOX_TYPE,
-+	NBL_MSIX_TYPE_MAX
-+};
-+
-+struct nbl_msix_serv_info {
-+	char irq_name[NBL_STRING_NAME_LEN];
-+	u16 num;
-+	u16 base_vector_id;
-+	/* true: hw report msix, hw need to mask actively */
-+	bool hw_self_mask_en;
-+};
-+
-+struct nbl_msix_info {
-+	struct nbl_msix_serv_info serv_info[NBL_MSIX_TYPE_MAX];
-+};
-+
-+struct nbl_dev_common {
-+	struct nbl_dev_mgt *dev_mgt;
-+	struct nbl_msix_info msix_info;
-+	char mailbox_name[NBL_STRING_NAME_LEN];
-+	/* for ctrl-dev/net-dev mailbox recv msg */
-+	struct work_struct clean_mbx_task;
-+};
-+
-+struct nbl_dev_mgt {
-+	struct nbl_common_info *common;
-+	struct nbl_dispatch_ops_tbl *disp_ops_tbl;
-+	struct nbl_channel_ops_tbl *chan_ops_tbl;
-+	struct nbl_dev_common *common_dev;
-+};
-+
-+#endif
 diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dev.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dev.h
-new file mode 100644
-index 000000000000..51cf04e4c552
---- /dev/null
+index 51cf04e4c552..a66c633a0e7a 100644
+--- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dev.h
 +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dev.h
-@@ -0,0 +1,14 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Copyright (c) 2026 Nebula Matrix Limited.
-+ */
-+
-+#ifndef _NBL_DEF_DEV_H_
-+#define _NBL_DEF_DEV_H_
-+
-+struct nbl_adapter;
-+
-+int nbl_dev_init(struct nbl_adapter *adapter);
-+void nbl_dev_remove(struct nbl_adapter *adapter);
-+
-+#endif
+@@ -10,5 +10,7 @@ struct nbl_adapter;
+ 
+ int nbl_dev_init(struct nbl_adapter *adapter);
+ void nbl_dev_remove(struct nbl_adapter *adapter);
++int nbl_dev_start(struct nbl_adapter *adapter);
++void nbl_dev_stop(struct nbl_adapter *adapter);
+ 
+ #endif
 diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
-index 5d5c0bbf418c..9896c1b49be2 100644
+index 9896c1b49be2..02cb35d32012 100644
 --- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
 +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
-@@ -12,6 +12,7 @@
- #include "nbl_include/nbl_def_hw.h"
- #include "nbl_include/nbl_def_resource.h"
- #include "nbl_include/nbl_def_dispatch.h"
-+#include "nbl_include/nbl_def_dev.h"
+@@ -16,6 +16,16 @@
  #include "nbl_include/nbl_def_common.h"
  #include "nbl_core.h"
  
-@@ -53,7 +54,14 @@ struct nbl_adapter *nbl_core_init(struct pci_dev *pdev,
- 	ret = nbl_disp_init(adapter);
- 	if (ret)
- 		goto disp_init_fail;
++int nbl_core_start(struct nbl_adapter *adapter)
++{
++	return nbl_dev_start(adapter);
++}
 +
-+	ret = nbl_dev_init(adapter);
-+	if (ret)
-+		goto dev_init_fail;
- 	return adapter;
++void nbl_core_stop(struct nbl_adapter *adapter)
++{
++	nbl_dev_stop(adapter);
++}
 +
-+dev_init_fail:
-+	nbl_disp_remove(adapter);
- disp_init_fail:
- 	nbl_res_remove_leonis(adapter);
- res_init_fail:
-@@ -66,6 +74,7 @@ struct nbl_adapter *nbl_core_init(struct pci_dev *pdev,
- 
- void nbl_core_remove(struct nbl_adapter *adapter)
+ struct nbl_adapter *nbl_core_init(struct pci_dev *pdev,
+ 				  struct nbl_init_param *param)
  {
-+	nbl_dev_remove(adapter);
- 	nbl_disp_remove(adapter);
- 	nbl_res_remove_leonis(adapter);
- 	nbl_chan_remove_common(adapter);
+@@ -127,7 +137,13 @@ static int nbl_probe(struct pci_dev *pdev,
+ 		goto adapter_init_err;
+ 	}
+ 	pci_set_drvdata(pdev, adapter);
++	err = nbl_core_start(adapter);
++	if (err)
++		goto core_start_err;
++
+ 	return 0;
++core_start_err:
++	nbl_core_remove(adapter);
+ adapter_init_err:
+ 	pci_clear_master(pdev);
+ 	return err;
+@@ -140,6 +156,8 @@ static void nbl_remove(struct pci_dev *pdev)
+ 	if (!adapter)
+ 		return;
+ 	pci_set_drvdata(pdev, NULL);
++
++	nbl_core_stop(adapter);
+ 	nbl_core_remove(adapter);
+ 
+ 	pci_clear_master(pdev);
 -- 
 2.47.3
 
