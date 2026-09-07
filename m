@@ -1,145 +1,59 @@
-Received: from mail.auroraos.dev (unknown [95.181.193.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A347A385529;
-	Mon,  7 Sep 2026 19:46:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.181.193.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9EA1525A7F;
+	Mon,  7 Sep 2026 19:56:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788810407; cv=none; b=O7T9WghOR1Xucsa+mrioMrMYjmufY2BunVl/I0f5tD9F76G+EvKeADTf5cERav5R6W1jMdIEOQwWGo7HrPSm6Yd9W5lyrnufTE6jWZTNOkah/3Wv/XZS5uwAYnxjmlQBEysI6Vh9h5mZKNeNt/YgK/fCAv30JIskrdpRGHKHSDg=
+	t=1788810984; cv=none; b=Xm4BNL/Hnw5VgsmswNZhtTpyO1FNOP1tZ33GMTsBtPQ06lXalKkscgR3ktR0P+apH5HYwPRTrFnrknXKJs6AKZObiUaqLOya1uml2clcdtiqbeV61iW2HtbDpHwgV/TaQ39DC6W94qhG04p/SSHgAp+bslsz2iOiDPS3dBoZzV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788810407; c=relaxed/simple;
-	bh=JNqCcPPEumidimaVvJdFKAg98Bly9gejgVcrh20/d8c=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:CC:Content-Type; b=gaE+z8QBF7jCW14O9o20K3cyR5X4+2ilTUhiHOI6Cdbc8xQJcWjHSbWw0/FzkOETngmcDSdbBXt0zRbPE9MwKqFkE35x6lIM3nd4bEjb2q6Qbq95lNDdCX2EOZTtqj1QiZ0OxQeYYYFVL6CmmF3fLqdDEi1sqO5rgZnf+LADvAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=auroraos.dev; spf=pass smtp.mailfrom=auroraos.dev; arc=none smtp.client-ip=95.181.193.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=auroraos.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=auroraos.dev
-Received: from [192.168.2.104] (91.79.21.186) by exch16.corp.auroraos.dev
- (10.189.209.38) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1847.3; Mon, 7 Sep 2026
- 22:46:32 +0300
-Message-ID: <863dac62-89ef-42d7-9108-d4a0600913a4@auroraos.dev>
-Date: Mon, 7 Sep 2026 22:46:32 +0300
+	s=arc-20240116; t=1788810984; c=relaxed/simple;
+	bh=dpLJTD0ulS67m9Wlsx6gXxyMvrHBlwpS9Myge1UGs6Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sGd79ATdYsDeQMFtNWirgYZaM1Ttx0yDPIUd5EhV7bpncxyDyshVR9XlDxnsQro/CEkv3pXevc/pQLB0l7CjWSWF4FKL1eKO9J/mb8c5O9xtzQHhMisWat4zgQpK5bYpFr36p2ZBqRyFBSiaroHaF5wOiBmZqXwOqKUuN0mGWL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=4WT8lyQX; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="4WT8lyQX"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=u3PebQQH89K9sJyCI/oeC9tMmRauFJqG/ZCBCEcaQ6U=; b=4WT8lyQX3UxBmTS6jqGGZG4MMR
+	Y3TnjCKUUXrQNSNtrBR+wHZVimf2DOoynotPPf1bHrfayik287ytcWmm+A2Mhn4x5TEnwDEvkJF6q
+	eDvpGa8619gSTreYzHJ/C379ubm07BXnnbl1UhaAkGXpRGy8swnpxjOb4EIMcHKhksgU=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1x3fRu-003cYd-Cp; Mon, 07 Sep 2026 21:56:14 +0200
+Date: Mon, 7 Sep 2026 21:56:14 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: David Yang <mmyangfl@gmail.com>
+Cc: netdev@vger.kernel.org, Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2 1/6] net: dsa: motorcomm: Rename MIB stuffs
+Message-ID: <512aba3c-10d9-4796-95c4-d481b14652b0@lunn.ch>
+References: <20260904162952.709368-1-mmyangfl@gmail.com>
+ <20260904162952.709368-2-mmyangfl@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Sergey Shtylyov <s.shtylyov@auroraos.dev>
-Subject: [PATCH net-next v3] r8152: simplify loops in
- generic_ocp_{read,write}()
-To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	<linux-usb@vger.kernel.org>, <netdev@vger.kernel.org>
-CC: Sergey Shtylyov <s.shtylyov@auroraos.dev>, Michal Pecio
-	<michal.pecio@gmail.com>
-Content-Language: en-US
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: exch16.corp.auroraos.dev (10.189.209.38) To
- exch16.corp.auroraos.dev (10.189.209.38)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260904162952.709368-2-mmyangfl@gmail.com>
 
-In generic_ocp_{read,write}(), the *while* loops look very strange:
-the last iteration is implemented differently to the previous ones
-(doing some useless assignments before *break*) for no good reason.
-Merge the different iterations into one, using the local variables
-in the loop bodies...
+On Sat, Sep 05, 2026 at 12:29:43AM +0800, David Yang wrote:
+> Rename them in preparation of major MIB refactor.
+> 
+> Signed-off-by: David Yang <mmyangfl@gmail.com>
 
-Found by Linux Verification Center (linuxtesting.org) with the Svace
-static analysis tool.
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-Suggested-by: Michal Pecio <michal.pecio@gmail.com>
-Signed-off-by: Sergey Shtylyov <s.shtylyov@auroraos.dev>
-
----
-Changes in version 3:
-- removed [RFC] from the subject;
-- added the version log.
-
-Changes in version 2:
-- instead of moving the code for the last iteration out of the loop bodies,
-  merged the separate iterations into a single one as suggested by Michal
-  Pecio (adding the Suggested-by tag), rewrote the description accordingly.
-
- drivers/net/usb/r8152.c | 55 +++++++++++++----------------------------
- 1 file changed, 17 insertions(+), 38 deletions(-)
-
-diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-index f61686433031..af3d7dcb2f14 100644
---- a/drivers/net/usb/r8152.c
-+++ b/drivers/net/usb/r8152.c
-@@ -1432,24 +1432,15 @@ static int generic_ocp_read(struct r8152 *tp, u16 index, u16 size,
- 		return -EPERM;
- 
- 	while (size) {
--		if (size > limit) {
--			ret = get_registers(tp, index, type, limit, data);
--			if (ret < 0)
--				break;
--
--			index += limit;
--			data += limit;
--			size -= limit;
--		} else {
--			ret = get_registers(tp, index, type, size, data);
--			if (ret < 0)
--				break;
-+		u16 n = min(size, limit);
- 
--			index += size;
--			data += size;
--			size = 0;
-+		ret = get_registers(tp, index, type, n, data);
-+		if (ret < 0)
- 			break;
--		}
-+
-+		index += n;
-+		data += n;
-+		size -= n;
- 	}
- 
- 	if (ret == -ENODEV)
-@@ -1499,28 +1490,16 @@ static int generic_ocp_write(struct r8152 *tp, u16 index, u16 byteen,
- 			size -= 4;
- 
- 		while (size) {
--			if (size > limit) {
--				ret = set_registers(tp, index,
--						    type | BYTE_EN_DWORD,
--						    limit, data);
--				if (ret < 0)
--					goto error1;
--
--				index += limit;
--				data += limit;
--				size -= limit;
--			} else {
--				ret = set_registers(tp, index,
--						    type | BYTE_EN_DWORD,
--						    size, data);
--				if (ret < 0)
--					goto error1;
--
--				index += size;
--				data += size;
--				size = 0;
--				break;
--			}
-+			u16 n = min(size, limit);
-+
-+			ret = set_registers(tp, index, type | BYTE_EN_DWORD,
-+					    n, data);
-+			if (ret < 0)
-+				goto error1;
-+
-+			index += n;
-+			data += n;
-+			size -= n;
- 		}
- 
- 		/* Set the last DWORD */
--- 
-2.55.0
+    Andrew
