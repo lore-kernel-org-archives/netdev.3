@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D98B3E6DE7;
-	Mon,  7 Sep 2026 02:48:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B1823E6DF7;
+	Mon,  7 Sep 2026 02:48:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788749312; cv=none; b=I22YHQ3TIAEWXT7JfOtEZ/fmLIMnM9PFUNKneo/Ml0NGbIQRWZz6A2NWa4NtsOa/+g/mttELR+kbVG+WOlPM7242k943KMPp7HceavevOMBJvgptNzVTSG3eOvVeZQTW/scQxD4Y2pxKQDddmIZ6+M21k1wIp00xmawhObLXxbI=
+	t=1788749314; cv=none; b=dY9PRe6/hmGW00oN/KMCuqBYmiTShegdHnR9/4Oe4GJMGMHinPuiopcT97lNrzy4IZ0q2ZqT1m1G4uM/bU6sx2I6Os7mdlQ5Isr/3w5E8f+Zrce+s3Mix/UUBrMhsOBfUyEGveyL4GIyEEkDhZ5PYkDm8+1XFcu4L2VdkRew2go=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788749312; c=relaxed/simple;
-	bh=jtUYZYgr0w/BlqJyZ5s+BuDknnxMpCLGV3JWsHOqrB4=;
+	s=arc-20240116; t=1788749314; c=relaxed/simple;
+	bh=8WNIpdWRexDbK7vRrFMY44cRCxAxmYVnn5/tmVcDQA4=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=JrhHrP0DYaxmcgRhQ69/OGpGm+40KdaB7b87qqwY4pc+CG0yNpHKA1pRI+zcT8IXWKHmC0n9zF6tnlsZ6481rqXF8bZDX2B1xegnadW5OtsjFCX9rQYHGkWs3RkuwZXSa1VHF4HK83H4MwXUZJrCWdVQGWabQYjDm/W7Zj8HX3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cC5CxgMW; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=p9kk471EavIKh2oNkqEMrzSBPd9lmzeN6JvJ9rmTb9xAZvFyAOu410qwrN7nxL0ncQlTkJ6YEtpnfpATuL4vvyjRiDhAoI78/giRqwTtCSYxWKtzUMTB+KfxnXYX01dDO5/CrT1IlXDlXWIYWdaK6dIHB8h7rZtyJ0wVgXpLrdg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kta9dEhE; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cC5CxgMW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 908A01F00A3E;
-	Mon,  7 Sep 2026 02:48:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kta9dEhE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CDBE1F00A3A;
+	Mon,  7 Sep 2026 02:48:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788749311;
-	bh=wBPDGP64+3usE5t5lksKJG89iMY9MpvAMijAJB+ie3c=;
+	s=k20260515; t=1788749313;
+	bh=M2CM6t5n607eXYzMmEmt1Ivm49OVAv9hSL0ovMsh4kk=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=cC5CxgMW6pY/5sZ03AD8cjScvkZKG/vGqxC54QCeyZpGq1u55LYk2wlZwTMeMORBI
-	 jGE9gpWDI0Bj3b9wQ9mxVNMcqc9lRQjgIOAk3UJPL9FmAuWmaum5uI4zGEc+ilIsv4
-	 QyuyxLZ0SfQOeFfZweSGP2YgUwdliMiTKn5S7R+pPEkzlvriHU9Wg59moWz3XwIV5w
-	 dpIWcihZFno4eCrL7x2JhWdws4yjBr1/DsMdXZdXCGfbfA6rUMGWOTwV0PfqlKs1qj
-	 5HZAS9zNf1wMqwsVGRkAO4J3ZpNI/qT7NZuM5dUUzOF+AuS5MkZhH3sW861ypU/Kms
-	 1qza1mBTfrvlQ==
-Subject: Re: [PATCH net-next v3 02/10] net: ethernet: ravb: Move programming
- of gPTP timer interval
+	b=kta9dEhEjio2QknfBjCQnyQG4FmNCxgKr7t5qc2pqquIw/66p0QfUTT39bsCB0LYV
+	 qbEM0cGkBaD0jbnPC4T/7leNg7Gxfy2ZRB7RQkVzzowMD1Wwx5iFdvU4aErr43YrZC
+	 6zuuWkA/E8G/MVt7vgpXmg+IRVEU29RwKYZrW0KpGrV/hpANYe4j4sooiQ811BOyMa
+	 9bMgRP1D7IRe0QSRryQjN7LSQJTLIayJh6CaTsZT0ljdi5gKnOWg4zelkPThIeSGmq
+	 g/SR7dYCh6B9cZJDPh/WTtIu9JuxvhsobOaFgSZQu4a35NpUlP9hIZ70oLCaquF2iO
+	 kWb/2XwXew6Vg==
+Subject: Re: [PATCH net-next v3 03/10] net: ethernet: ravb: Simplify gPTP
+ start and stop
 From: netdev-bot+sashiko@kernel.org
 To: niklas.soderlund+renesas@ragnatech.se
 Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
@@ -37,11 +37,11 @@ Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
  sergei.shtylyov@gmail.com, linux-renesas-soc@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
  netdev@vger.kernel.org
-Date: Mon, 07 Sep 2026 02:48:30 +0000
-Message-ID: <178874931017.219967.14949916137032056889@kernel.org>
-In-Reply-To: <20260902084703.3228504-3-niklas.soderlund+renesas@ragnatech.se>
-References: <20260902084703.3228504-3-niklas.soderlund+renesas@ragnatech.se>
-X-sashiko-severity: Medium
+Date: Mon, 07 Sep 2026 02:48:31 +0000
+Message-ID: <178874931163.219967.10631528994436956442@kernel.org>
+In-Reply-To: <20260902084703.3228504-4-niklas.soderlund+renesas@ragnatech.se>
+References: <20260902084703.3228504-4-niklas.soderlund+renesas@ragnatech.se>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -54,180 +54,226 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider:
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 0
+Critical: 0 · High: 2 · Medium: 0 · Low: 0
 
-- [Medium] In ravb_ptp_init() (drivers/net/ethernet/renesas/ravb_ptp.c),
-  the newly moved gPTP timer-interval programming polls the wrong GCCR…
-- [Medium] The commit is presented as relocating existing programming
-  ("moving the programming to the gPTP initialization function"), but it…
+- [High] ravb_open() leaks the registered PTP clock for info->ccc_gac
+  devices (R-Car Gen3/Gen4) when ravb_phy_start() fails.
+- [High] Folding ravb_ptp_stop() into the tail of ravb_stop_dma()
+  (ravb_main.c:1126-1128) makes gPTP teardown conditional on the AVB-…
 
 --
 
-net: ethernet: ravb: Move programming of gPTP timer interval
+net: ethernet: ravb: Simplify gPTP start and stop
 
-This moves the gPTP timer interval programming out of ravb_set_gti() in
-ravb_main.c and into ravb_ptp_init(), where it is now done under
-priv->lock, and takes priv->ptp.default_addend from priv->gti_tiv instead
-of reading GTI back from the hardware.
-
-A couple of questions below about the wait that follows the load request,
-and about the callers of ravb_ptp_init() other than ravb_open().
+This moves the info->gptp gPTP clock start and stop into ravb_dmac_init()
+and ravb_stop_dma() so the gPTP clock follows the AVB-DMAC, and drops the
+info->gptp part of the combined "gptp || ccc_gac" conditions in
+ravb_open() and ravb_close().  The commit message states "There are no
+functional change".  Two behaviour differences below look like they may
+not hold up.
 
 > diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
-> index 36173a09e2fdb..a89f6fe7866fe 100644
+> index a89f6fe7866fe..2d0022a4f85c3 100644
 > --- a/drivers/net/ethernet/renesas/ravb_main.c
 > +++ b/drivers/net/ethernet/renesas/ravb_main.c
-> @@ -1846,20 +1846,6 @@ static int ravb_set_config_mode(struct net_device *ndev)
->  	return error;
+> @@ -707,7 +707,15 @@ static int ravb_dmac_init(struct net_device *ndev)
+>  		return error;
+>  
+>  	/* Setting the control will start the AVB-DMAC process. */
+> -	return ravb_set_opmode(ndev, CCC_OPC_OPERATION);
+> +	error = ravb_set_opmode(ndev, CCC_OPC_OPERATION);
+> +	if (error)
+> +		return error;
+> +
+> +	/* Initialise PTP Clock driver */
+> +	if (info->gptp)
+> +		ravb_ptp_init(ndev, priv->pdev);
+> +
+> +	return 0;
 >  }
 >  
-> -static void ravb_set_gti(struct net_device *ndev)
-> -{
-> -	struct ravb_private *priv = netdev_priv(ndev);
-> -	const struct ravb_hw_info *info = priv->info;
-> -
-> -	if (!(info->gptp || info->ccc_gac))
-> -		return;
-> -
-> -	ravb_write(ndev, priv->gti_tiv, GTI);
-> -
-> -	/* Request GTI loading */
-> -	ravb_modify(ndev, GCCR, GCCR_LTI, GCCR_LTI);
-> -}
-> -
+>  static void ravb_get_tx_tstamp(struct net_device *ndev)
+> @@ -1115,6 +1123,10 @@ static int ravb_stop_dma(struct net_device *ndev)
+>  			netdev_err(ndev, "failed to stop AXI BUS\n");
+>  	}
+>  
+> +	/* Stop PTP Clock driver */
+> +	if (info->gptp)
+> +		ravb_ptp_stop(ndev);
+> +
+
+[Severity: High]
+
+Is the gPTP stop still guaranteed to run for info->gptp parts?  Placing it
+here puts it behind the three ravb_wait() timeouts earlier in
+ravb_stop_dma():
+
+	error = ravb_wait(ndev, TCCR, info->tccr_mask, 0);
+	if (error)
+		return error;
+
+	error = ravb_wait(ndev, CSR, CSR_TPO0 | CSR_TPO1 | CSR_TPO2 | CSR_TPO3,
+			  0);
+	if (error)
+		return error;
+	...
+	error = ravb_wait(ndev, CSR, CSR_RPO, 0);
+	if (error)
+		return error;
+
+Before this patch every caller ran the stop unconditionally before
+ravb_stop_dma(), so a wedged DMAC could not skip it.  Now ravb_close()
+only logs the failure and keeps going:
+
+	if (ravb_stop_dma(ndev) < 0)
+		netdev_err(ndev,
+			   "device will be stopped after h/w processes are done.\n");
+
+so on a .gptp = 1 part (ravb_gen2_hw_info, ravb_rzv2m_hw_info) the PHC
+stays registered across close.  A later open then goes
+ravb_open() -> ravb_dmac_init() -> ravb_ptp_init(), which registers a
+second clock and overwrites the pointer without checking:
+
+	clock = ptp_clock_register(&priv->ptp.info, &pdev->dev);
+	...
+	WRITE_ONCE(priv->ptp.clock, clock);
+
+Does that permanently orphan the first registration?  ravb_remove() does
+no PTP teardown before free_netdev(), and the orphaned clock's
+ptp_clock_info lives in the netdev private area, so its ops would point
+at freed memory after unbind.
+
+Skipping ravb_ptp_stop() on those early returns also skips the interrupt
+quiescing it performs:
+
+	ravb_ptp_disable(ndev);
+	ravb_ptp_sync_irqs(ndev);
+
+ravb_close() then walks and frees priv->ts_skb_list without priv->lock,
+while ravb_timestamp_interrupt() -> ravb_get_tx_tstamp() can still be
+doing list_del() on the same list.  Can that corrupt the list?
+
+There is also the reverse ordering.  If ravb_stop_dma() fails only in its
+final ravb_set_opmode(ndev, CCC_OPC_CONFIG), the ravb_ptp_stop() above has
+already unregistered the clock, and ravb_tx_timeout_work() takes the
+"goto out" path whose ravb_ptp_init() is removed by this patch (hunk
+below), leaving a running interface with no PHC until an administrative
+down/up.  Same question for ravb_set_ringparam(): its
+
+		error = ravb_stop_dma(ndev);
+		if (error) {
+			netdev_err(ndev,
+				   "cannot set ringparam! Any AVB processes are still running?\n");
+			return error;
+		}
+
+now returns with the gPTP clock still registered where previously it had
+been stopped first.
+
+>  	/* Stop AVB-DMAC process */
+>  	return ravb_set_opmode(ndev, CCC_OPC_CONFIG);
+>  }
+> @@ -1719,9 +1731,7 @@ static int ravb_set_ringparam(struct net_device *ndev,
+>  
+>  	if (netif_running(ndev)) {
+>  		netif_device_detach(ndev);
+> -		/* Stop PTP Clock driver */
+> -		if (info->gptp)
+> -			ravb_ptp_stop(ndev);
+> +
+>  		/* Wait for DMA stopping */
+>  		error = ravb_stop_dma(ndev);
+>  		if (error) {
 
 [ ... ]
 
-> @@ -1974,8 +1960,6 @@ static int ravb_open(struct net_device *ndev)
->  
+> @@ -1961,7 +1967,7 @@ static int ravb_open(struct net_device *ndev)
 >  	ravb_emac_init(ndev);
 >  
-> -	ravb_set_gti(ndev);
-> -
 >  	/* Initialise PTP Clock driver */
->  	if (info->gptp || info->ccc_gac)
+> -	if (info->gptp || info->ccc_gac)
+> +	if (info->ccc_gac)
 >  		ravb_ptp_init(ndev, priv->pdev);
-
-> diff --git a/drivers/net/ethernet/renesas/ravb_ptp.c b/drivers/net/ethernet/renesas/ravb_ptp.c
-> index 43218bc15b151..157fb78209c78 100644
-> --- a/drivers/net/ethernet/renesas/ravb_ptp.c
-> +++ b/drivers/net/ethernet/renesas/ravb_ptp.c
-> @@ -321,11 +321,20 @@ void ravb_ptp_init(struct net_device *ndev, struct platform_device *pdev)
 >  
->  	priv->ptp.info = ravb_ptp_info;
+>  	/* PHY control start */
+> @@ -1974,9 +1980,6 @@ static int ravb_open(struct net_device *ndev)
+>  	return 0;
 >  
-> -	priv->ptp.default_addend = ravb_read(ndev, GTI);
-> +	priv->ptp.default_addend = priv->gti_tiv;
->  	priv->ptp.current_addend = priv->ptp.default_addend;
+>  out_ptp_stop:
+> -	/* Stop PTP Clock driver */
+> -	if (info->gptp || info->ccc_gac)
+> -		ravb_ptp_stop(ndev);
+>  	ravb_stop_dma(ndev);
+
+[Severity: High]
+
+Does this leak the registered PTP clock for info->ccc_gac parts?
+
+ravb_open() still registers it just above:
+
+	if (info->ccc_gac)
+		ravb_ptp_init(ndev, priv->pdev);
+
+and the next fallible step is ravb_phy_start(), which jumps here.  The
+replacement stop folded into ravb_stop_dma() is gated on info->gptp, and
+that flag is mutually exclusive with ccc_gac (ravb_gen2_hw_info and
+ravb_rzv2m_hw_info set .gptp = 1, ravb_gen3_hw_info and ravb_gen4_hw_info
+set .ccc_gac = 1), so nothing unregisters the clock on this path.
+
+ravb_close() is the only remaining ccc_gac ravb_ptp_stop() site, and it is
+not reached because ndo_open returned an error.  The device is then put in
+CCC_OPC_RESET and runtime suspended while /dev/ptpN stays alive with
+ptp_clock_info pointing into the netdev private area.  Each further
+"ip link set ethX up" attempt registers another clock and orphans the
+previous one via the WRITE_ONCE(priv->ptp.clock, clock) in
+ravb_ptp_init(), and ravb_remove() frees the netdev without unregistering
+anything.
+
+>  out_set_reset:
+>  	ravb_set_opmode(ndev, CCC_OPC_RESET);
+
+[ ... ]
+
+> @@ -2020,10 +2023,6 @@ static void ravb_tx_timeout_work(struct work_struct *work)
 >  
->  	spin_lock_irqsave(&priv->lock, flags);
-> +
-> +	/* Set gPTP Timer Increment Value. */
-> +	ravb_write(ndev, priv->ptp.default_addend, GTI);
+>  	netif_tx_stop_all_queues(ndev);
+>  
+> -	/* Stop PTP Clock driver */
+> -	if (info->gptp)
+> -		ravb_ptp_stop(ndev);
+> -
+>  	/* Wait for DMA stopping */
+>  	if (ravb_stop_dma(ndev)) {
+>  		/* If ravb_stop_dma() fails, the hardware is still operating
 
-[Severity: Medium]
+[ ... ]
 
-Before this patch ravb_set_gti() was called only from ravb_open(), so GTI
-was programmed once per open.  ravb_ptp_init() has two other callers that
-run on a live interface:
+> @@ -2056,10 +2055,6 @@ static void ravb_tx_timeout_work(struct work_struct *work)
+>  	ravb_emac_init(ndev);
+>  
+>  out:
+> -	/* Initialise PTP Clock driver */
+> -	if (info->gptp)
+> -		ravb_ptp_init(ndev, priv->pdev);
+> -
+>  	netif_tx_start_all_queues(ndev);
+>  
+>  out_unlock:
+> @@ -2374,7 +2369,7 @@ static int ravb_close(struct net_device *ndev)
+>  	}
+>  
+>  	/* Stop PTP Clock driver */
+> -	if (info->gptp || info->ccc_gac)
+> +	if (info->ccc_gac)
+>  		ravb_ptp_stop(ndev);
+>  
+>  	/* Set the config mode to stop the AVB-DMAC's processes */
 
-  ravb_set_ringparam()
-      if (netif_running(ndev)) {
-          ...
-          if (info->gptp)
-              ravb_ptp_init(ndev, priv->pdev);
-
-  ravb_tx_timeout_work()
-  out:
-      /* Initialise PTP Clock driver */
-      if (info->gptp)
-          ravb_ptp_init(ndev, priv->pdev);
-
-Both of those paths previously only read the live GTI back into
-priv->ptp.default_addend and left the hardware increment alone.  With the
-write moved here they now reprogram GTI with the nominal priv->gti_tiv and
-assert GCCR_LTI.
-
-Does that mean an ethtool -G ring resize, or a TX watchdog recovery, now
-discards whatever frequency correction ravb_ptp_adjfine() had programmed?
-
-  ravb_ptp_adjfine()
-      addend = (u32)adjust_by_scaled_ppm(priv->ptp.default_addend,
-                                        scaled_ppm);
-
-The commit message describes this as moving the programming, so this extra
-effect on the ringparam and tx-timeout paths is not visible from the
-changelog.  Could it be mentioned there if it is intentional?
-
-> +
-> +	/* Request GTI loading. */
-> +	ravb_modify(ndev, GCCR, GCCR_LTI, GCCR_LTI);
-> +
-> +	/* Wait for GIT loading to complete. */
->  	ravb_wait(ndev, GCCR, GCCR_TCR, GCCR_TCR_NOREQ);
-> +
->  	ravb_modify(ndev, GCCR, GCCR_TCSS, GCCR_TCSS_ADJGPTP);
->  	spin_unlock_irqrestore(&priv->lock, flags);
-
-[Severity: Medium]
-
-Does this ravb_wait() actually observe the GTI load?  The fields in
-ravb.h look disjoint:
-
-  GCCR_TCR         = 0x00000003,
-  GCCR_TCR_NOREQ   = 0x00000000, /* No request */
-  GCCR_TCR_RESET   = 0x00000001, /* gPTP/AVTP presentation timer reset */
-  GCCR_TCR_CAPTURE = 0x00000003, /* Capture value set in GCCR.TCSS */
-  GCCR_LTO         = 0x00000004,
-  GCCR_LTI         = 0x00000008,
-
-GCCR_TCR is the timer capture/reset request field, while the increment load
-request just asserted is GCCR_LTI.  So the wait returns immediately as long
-as no capture or reset request is outstanding, and the load itself is never
-confirmed.
-
-The driver's own handling of the same register elsewhere treats LTI as the
-load-pending bit:
-
-  ravb_ptp_adjfine()
-      gccr = ravb_read(ndev, GCCR);
-      if (gccr & GCCR_LTI) {
-          spin_unlock_irqrestore(&priv->lock, flags);
-          return -EBUSY;
-      }
-      ravb_write(ndev, addend & GTI_TIV, GTI);
-      ravb_write(ndev, gccr | GCCR_LTI, GCCR);
-
-Would ravb_wait(ndev, GCCR, GCCR_LTI, 0) be the condition intended here?
-As written, the following read-modify-write
-
-  ravb_modify(ndev, GCCR, GCCR_TCSS, GCCR_TCSS_ADJGPTP);
-
-can read GCCR with LTI still set and write it back, re-arming a second load
-while one is in flight, and the new GTI write is issued without the
-LTI-pending check that ravb_ptp_adjfine() makes.
-
-Note that the register sequence itself matches the pre-patch code, where
-ravb_set_gti() wrote GTI plus GCCR_LTI and ravb_ptp_init() then did the same
-TCR wait and TCSS read-modify-write, so the re-assertion window and the
-ignored ravb_wait() return value are not new here.  What is new is the
-comment, and the changelog sentence that the move is based on:
-
-    Having split the two apart this can be improved further by moving the
-    programming to the gPTP initialization function, as the first action of
-    the gPTP init function is to wait for the timer interval programming to
-    be acknowledge by the hardware.
-
-Since the wait polls GCCR_TCR and not GCCR_LTI, is that rationale accurate?
-
-Also in the same comment, GIT looks like a typo for GTI, and "acknowledge"
-in the changelog should be "acknowledged".
-
-This is still the same code at the end of the series
-(941e688417745c4877c88108bd047381e5c6e533 keeps the identical
-ravb_wait(ndev, GCCR, GCCR_TCR, GCCR_TCR_NOREQ) under the same comment), and
-priv->ptp.default_addend = priv->gti_tiv followed by the GTI write and LTI
-request is unchanged there too.
+Both concerns come down to the same question: since ravb_stop_dma() can
+return early, and its callers treat that failure differently, is the
+folded start/stop still symmetric on every exit path, or would performing
+the stop before the ravb_wait() loops (or leaving it at the call sites)
+keep the previous behaviour?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260902084703.3228504-1-niklas.soderlund%2Brenesas%40ragnatech.se
