@@ -1,403 +1,116 @@
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2723146C4D2
-	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 11:00:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788778844; cv=pass; b=roxmb3cKPMPJ/HdY7TG5n8lDlvoyaD6ETZrZ5FS5ffvwsiYVxWSMGhgt5TFHIrdfOxFIFS73TGyGbYva6m0P2TVQd6+xpz8USZzgEq9AjGkyAXjbH3H5B9qlArBuIt8+A4f2gD7BFTzPOV3drfrYbCDRhzkMqXH6RGNC32vt24A=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788778844; c=relaxed/simple;
-	bh=1W8uvQaYp8lzNksLgoSJuXrmpDkGKXa2H0+Uugp+NpU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ebuhW3a+v5+/MSklwKpTES95wOQTRxp4W7dAN7QtLIglXLplXpgBx386WUjwMTbUga5/9HEiloLNCvjd+XvIrD295V7QjOjRE2x+3i/4Z1Ch0ed4nGbddvnnuQtIEljI9vbGmAoFrF4XRrImQ1vYkOsqVCV3COIyOyy7Fa5/jls=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mihalicyn.com; spf=pass smtp.mailfrom=mihalicyn.com; dkim=pass (1024-bit key) header.d=mihalicyn.com header.i=@mihalicyn.com header.b=fes6b/oi; arc=pass smtp.client-ip=209.85.218.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mihalicyn.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mihalicyn.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7C463B9D86;
+	Mon,  7 Sep 2026 11:02:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788778929; cv=none; b=bUNeKfde08I+NJrf9aEZHzL0VEx/lgSq1XvfUlYnD+Uta3NmLHxh/8yxqwZYlfuTFyR7XJsRkp9YlxwIaOz5IIj9FvzzhlZFs7IeB0yTVNveVqqKMJtaYyL/OVlDKxhoIlFWZ/hf9ZpNh7can9HMx02G+SLmjGTdxjzlQARAqCU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788778929; c=relaxed/simple;
+	bh=3C84IEMFAiiWfWQ9rsDQ9T4zHS6EtLuWEEHMX862IJA=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ma0KuobrOjtvFHG/LGN3zYuU4ZaT09VeyoYf/og8O1LHg3dCJBYy2c67gIlv8Qbqx9j/Ex99tnHhPhKPzuAVx/vqOBdLzNgK1gIIFZAijuDXWTfjz6XEpY8NFHrexwZou/ylUAtont07LIutdB2boS3ziuZtvThEGiag8YtKzCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=IsCs3eAR; arc=none smtp.client-ip=67.231.156.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mihalicyn.com header.i=@mihalicyn.com header.b="fes6b/oi"
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-c15e2dab83eso563602266b.1
-        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 04:00:41 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788778840; cv=none;
-        d=google.com; s=arc-20260327;
-        b=Njb/G6DqV0ZzO5xhRxPb3wuYccZFkWv+wm1fUUR1Fk6f//QDTJpTv6phNzS1XnmhIP
-         FBz7/CD+h9U59BNuLebppuA/0TcAEglZ+kaGIsd8ZADxO0J8nlabgMejoXti3z9vikSe
-         pEg8E6i6V/ie3knQCDFbJmV4SL02x/sRnmsyxAHtKM79Xq3gk4XSDHyR/AQBF6vgzuLt
-         jBuXp6Z/bcWJCE7JH29wkBeKD3+mF0Xf8NU5bpnHjsdF7KkQ5ZqmDRJz6n237gXwNyu3
-         eiRw2Ptiqlkz24TW6UL2fp4dNlS8LfKzXVvgWgeOS5uGBBrasJjggQ3xi3S2ythYE4T2
-         9aKg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=zny1KKC/uPX8QbOxaFwPCGHoxMxtpzdiurM7Tl80u1k=;
-        fh=cmku/jA6nzXMyZA5oK9Nag5AzbGsH8AGgjpfUBe5nXk=;
-        b=mmZvsDE3JsoYMpHFL6IzxrZ8mhOvFVtYNlW/Hy+hdioD6pLMrUkuC6GHpDoKUuKKYQ
-         QVrD4nm7JMqL/ZjslMlTKovY0iwb/3sRoNi8TlssPNJTZ1XsqH222Esn6MddtzhYw18Y
-         ET81rFa6qTfeCJFKymO8ufFK9y3fmYMWjM93Q33R4jgsNze8QXawzwVsJY+RiBKSSMIN
-         5rIC/SIG5Ycf41AqaXSd5KYIg3i9HByTxJlbuC2NuBCpLA+qprjaF/25CDz3u2MQve/v
-         wylxPPue7P8Pbup/YqhEcHLB/CpJtHfpMpKAmrKlGzPxZP5Q3rjLFb1L8rPOl9jO/qFi
-         RtsA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mihalicyn.com; s=mihalicyn; t=1788778840; x=1789383640; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=zny1KKC/uPX8QbOxaFwPCGHoxMxtpzdiurM7Tl80u1k=;
-        b=fes6b/oi9GNDqVkNavvFasu3Ix6qQF3e72pzkNmozFR13Q4JgFNWmijgUukPPBkTRz
-         mQrEGCxy9QYh7qe6aHOtf/mUPiy5NppxysGh2K8i+hcWhce/GGL+YPL6SRJThSmwFrZO
-         78adGg/qgqERyN5scyWvT8eWFwajNMyDJe+t4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788778840; x=1789383640;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=zny1KKC/uPX8QbOxaFwPCGHoxMxtpzdiurM7Tl80u1k=;
-        b=LGY2JNlqrk/dOzcjOzwcVOl3HGxNeKyTTwYss3HvgBqPKWvUDW7ywvZ0HQsuUyTDS3
-         ztB35+XyRbIh1uPCTuXFbcOwkeg+K7I5Qv0vgB6+7rM3JvhAWoHz1g1IbWbxdWDus/sY
-         PiquKQ4FINi2WppqEdHP1mFk6CSQrjUukmsnCpP9w6/FOrJnSy3j3nhxd9+vCw2kChia
-         fre4ZpBIGr3Tdt1aEznclfeY/fUYdoRig1iLcF5mtpF9ublI/1iu50xD1w/z9GVsHlnY
-         /eo1K1PrZk91DLeALzUnSxKyF4YN7vI9/D9e70Ubd7e6fd4swOfWHoLbkOO058iCA0bv
-         fpZQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzvCqsTKbETp8V0s5tvLatyQyLMwXXXZL0fJAhvTqqgFXlWkdsoWIHyjiTsgaUHwDmz3hFP93Q=@vger.kernel.org
-X-Gm-Message-State: AFuF++n4EzlAYH783V8QDZEBo0QHRg9/bc2gsqv+VwHqXf2wxXXlQ1Gm
-	R/57ChGnKanjqatnNLIC7wNLGyYh+5+5+V+fxLQocjPCSGqhHMv3Jrvlu+HwuHh7JRE1hdSUkkO
-	74QOH7jkG6yfyP6xnbQOpezBzw1WyLg/3+FSfTv7skw==
-X-Gm-Gg: AYBFou2BXtM54NJwiM/pXitHy/KXao1v18p1x4j2a13pg/99tuOjLSTVanSImyRiE2/
-	R3njdyT2VtsGEjLj7tMYFs1Z9MfV9wBifrGl33u5j7aN0csh4zOTHVj19ENAwpq2MOKq+Vo3wNa
-	Hp4Aa7V7Vv1HRW/YgrD/Su0HYSpkjGLYCnws8iAxF18SUViGMFLnoKlYv8xiIY9ON6ZLNXqlrkz
-	bE2eApJqLC+6orlgA7sfxbzKrkcgrCVyrgWrbSNVCVeQBbmdEW3+whnGDtDTxqZeDGDVvzFmLXf
-	YJDNm9kmA6in9dwNAi4M29JQxCXoeQLXWt/4btmAyWlBCg3A+7NA6n5EHH3mEUKG0oysGRz5rFQ
-	=
-X-Received: by 2002:a17:907:7294:b0:c26:19de:9139 with SMTP id
- a640c23a62f3a-c2619dea0f1mr752175766b.44.1788778839290; Mon, 07 Sep 2026
- 04:00:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="IsCs3eAR"
+Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 687Ap5uh2654431;
+	Mon, 7 Sep 2026 04:01:56 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pfpt0220; bh=W4R0+d+WUbd6nGaO245VWULp6
+	Ck4ivLU3Nq5ngnHZCY=; b=IsCs3eARAPTiMtO6amGrfatUDqa8qketK+EX/YIAK
+	9Wk/NR8I8ucWVHGhDLzxJyFKpqqC1PYOUOb8AZpMSUDzTvpvIIWNLaiE9hi+YR5u
+	ssHuZWOroopLL7yNAg25hwH4irtYQjZlxsSS1kNnacvnggB8hRWSN5Zn23j9uJIq
+	l5om0l5YOFAP03pE6RKQZ0DSmacjiZ+UWRqiIvWQ8bAu/XBWjjn1P4TxvYSB9KDe
+	z1GImr3rjaA2U4Fct5uzU9hFcPs0e3DCuxkorHNg/dERFh/kO2Qpmr6Maupnjvdg
+	/6a2PTUHLv+EKPKfw7JtHXnfPlZAr7BZnArQ5Qqsv+L0g==
+Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4ghupy81y3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 07 Sep 2026 04:01:56 -0700 (PDT)
+Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
+ DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Mon, 7 Sep 2026 04:01:55 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
+ (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Mon, 7 Sep 2026 04:01:54 -0700
+Received: from rkannoth-OptiPlex-7090 (unknown [10.28.36.165])
+	by maili.marvell.com (Postfix) with SMTP id C290F3F704D;
+	Mon,  7 Sep 2026 04:01:51 -0700 (PDT)
+Date: Mon, 7 Sep 2026 16:31:45 +0530
+From: Ratheesh Kannoth <rkannoth@marvell.com>
+To: Leon Romanovsky <leon@kernel.org>
+CC: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+        <kuba@kernel.org>, <pabeni@redhat.com>, <sgoutham@marvell.com>,
+        "Hariprasad
+ Kelam" <hkelam@marvell.com>
+Subject: Re: [PATCH v2 net-next] octeontx2-pf: report port connector type in
+ ethtool link ksettings
+Message-ID: <ap6ZmZ4SwFa4Xf4_@rkannoth-OptiPlex-7090>
+References: <20260907042827.4077114-1-rkannoth@marvell.com>
+ <20260907072315.GG13683@unreal>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260831-work-unix-passpidfd-v1-0-70cbfda0c7ba@kernel.org> <20260831-work-unix-passpidfd-v1-10-70cbfda0c7ba@kernel.org>
-In-Reply-To: <20260831-work-unix-passpidfd-v1-10-70cbfda0c7ba@kernel.org>
-From: Alexander Mikhalitsyn <alexander@mihalicyn.com>
-Date: Mon, 7 Sep 2026 13:00:27 +0200
-X-Gm-Features: AcwNN1U23yfZ1nAFBhZtDhOey9YcEzK38gF_zORjIDm7e-DTOat32VqriNkwZBM
-Message-ID: <CAJqdLrpDz4DAkoK-5+s-KmafRsudctd3OouhXmgV=nNM-Up72w@mail.gmail.com>
-Subject: Re: [PATCH 10/10] selftests/coredump: check the dumping thread's pidfd
-To: Christian Brauner <brauner@kernel.org>
-Cc: Jakub Kicinski <kuba@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, Oleg Nesterov <oleg@redhat.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Willem de Bruijn <willemb@google.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260907072315.GG13683@unreal>
+X-Authority-Analysis: v=2.4 cv=AYyB2XXG c=1 sm=1 tr=0 ts=6a9e99a4 cx=c_pps
+ a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
+ a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=l0iWHRpgs5sLHlkKQ1IR:22 a=QXcCYyLzdtTjyudCfB6f:22 a=VwQbUJbxAAAA:8
+ a=M5GUcnROAAAA:8 a=-yquJuTKTeUr1aoEfloA:9 a=CjuIK1q_8ugA:10 a=zZCYzV9kfG8A:10
+ a=OBjm3rFKGHvpk9ecZwUJ:22 a=lhd_8Stf4_Oa5sg58ivl:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA3MDEyMSBTYWx0ZWRfX2+2BGVNUvRP0
+ EOhZjw4YnyvcLeCMzA/2dZPNNNhixFQk6lWvr8UgjYjsqkN09PBV0LDpUdg4aq1iib7A8w3PyTZ
+ algoWZeRjZXMP7Ugfd4fq+zk8boJr2i9HVeC1bq8dtfyJZQy8/SfizxtU258+eVjA1QiaIN6LCn
+ 8fJw25j/H0FTaR+M9MXntr9vrzZYoaVIWhm9XaPpoF19jSvrtMZ/gmTuzYlmF/BKkvVXP7oKow0
+ j7r9zQ5++8rE5BEZW18YtYZ6356zl8KF8Oqxka8QSRE3oMqBwd0qrlVJYpPv99/LfpGgL+Hie1h
+ Ze9ENEjlOnUm4VwJNK91oEdf2G1UEbZaiTGlbxjS+EYNAD7crc1Fxomcn7J/SKqZip+SBlyxm9d
+ YCt2573J/Yu4+yrGSy9f4I98JpJmamTeUYKMmY3K24p5AJEvck9YkhM5Fro7+E/yxzV/4WDtXf8
+ kcjqDfuaO7+HqwKOa/g==
+X-Proofpoint-ORIG-GUID: toM_TnWfbVdUtfGK-sK5cO3lOLc702Jy
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTA3MDEyMSBTYWx0ZWRfXxy+F58UpH5Wn
+ KQ62sJCZmShm0wqT4C8pG+SPrPwi0au1xZHHjOF2k0ewZB4sJEsPeAhpsRhy26fB6JEWN8s2Nvc
+ h8VK2w03apBdg9wEi9D+3sz/7w2WqUc=
+X-Proofpoint-GUID: toM_TnWfbVdUtfGK-sK5cO3lOLc702Jy
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-07_03,2026-09-07_01,2025-10-01_01
 
-Am Mo., 31. Aug. 2026 um 13:22 Uhr schrieb Christian Brauner
-<brauner@kernel.org>:
+On 2026-09-07 at 12:53:15, Leon Romanovsky (leon@kernel.org) wrote:
+> On Mon, Sep 07, 2026 at 09:58:27AM +0530, Ratheesh Kannoth wrote:
+> > From: Hariprasad Kelam <hkelam@marvell.com>
+> >
+> > +++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
+> > @@ -1231,6 +1231,8 @@ static int otx2_get_link_ksettings(struct net_device *netdev,
+> >  				OTX2_MODE_SUPPORTED, cmd);
+> >  	otx2_get_fec_info(rsp->fwdata.supported_fec,
+> >  			  OTX2_MODE_SUPPORTED, cmd);
+> > +
+> > +	cmd->base.port = (u8)rsp->fwdata.port;
 >
-> Crash from a non-leader thread and verify that the pidfd from
-> SO_PEERPIDFD_THREAD on the coredump socket refers to that thread and
-> reports the coredump like the thread-group leader's pidfd does.
+> You should declare identical fields with the same type and avoid silently
+> casting variables.
 >
-> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+> Thanks
+You are suggesting to split rsp->fwdata.port to  u8 port + 7-byte pad ?
+Currently FW is writing as 64bit.
 
-LGTM
-
-Reviewed-by: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@futurfusion.io>
-
-> ---
->  .../selftests/coredump/coredump_socket_test.c      | 175 +++++++++++++++++++++
->  tools/testing/selftests/coredump/coredump_test.h   |   2 +
->  .../selftests/coredump/coredump_test_helpers.c     |  49 ++++++
->  3 files changed, 226 insertions(+)
 >
-> diff --git a/tools/testing/selftests/coredump/coredump_socket_test.c b/tools/testing/selftests/coredump/coredump_socket_test.c
-> index 422728f632ca..ec73bb690bbc 100644
-> --- a/tools/testing/selftests/coredump/coredump_socket_test.c
-> +++ b/tools/testing/selftests/coredump/coredump_socket_test.c
-> @@ -592,6 +592,181 @@ TEST_F(coredump, socket_coredump_signal_sigsegv)
->         wait_and_check_coredump_server(pid_coredump_server, _metadata, self);
->  }
->
-> +static bool check_coredump_info(const struct pidfd_info *info, const char *what)
-> +{
-> +       if (!(info->mask & PIDFD_INFO_COREDUMP)) {
-> +               fprintf(stderr, "%s: PIDFD_INFO_COREDUMP not set in mask\n", what);
-> +               return false;
-> +       }
-> +
-> +       if (!(info->coredump_mask & PIDFD_COREDUMPED)) {
-> +               fprintf(stderr, "%s: PIDFD_COREDUMPED not set in coredump_mask\n", what);
-> +               return false;
-> +       }
-> +
-> +       if (!(info->mask & PIDFD_INFO_COREDUMP_SIGNAL) || info->coredump_signal != SIGSEGV) {
-> +               fprintf(stderr, "%s: coredump_signal=%d, expected SIGSEGV=%d\n",
-> +                       what, info->coredump_signal, SIGSEGV);
-> +               return false;
-> +       }
-> +
-> +       if (!(info->mask & PIDFD_INFO_COREDUMP_CODE) || info->coredump_code != SEGV_MAPERR) {
-> +               fprintf(stderr, "%s: coredump_code=%d, expected SEGV_MAPERR=%d\n",
-> +                       what, info->coredump_code, SEGV_MAPERR);
-> +               return false;
-> +       }
-> +
-> +       return true;
-> +}
-> +
-> +/*
-> + * Test: PIDFD_INFO_COREDUMP on the dumping thread's pidfd
-> + *
-> + * Crash from a non-leader thread and verify that the pidfd from
-> + * SO_PEERPIDFD_THREAD refers to that thread and reports the coredump
-> + * like the thread-group leader's pidfd from SO_PEERPIDFD does.
-> + */
-> +TEST_F(coredump, socket_coredump_thread)
-> +{
-> +       int pidfd, ret, status;
-> +       pid_t pid, pid_coredump_server;
-> +       struct pidfd_info info = {};
-> +       int ipc_sockets[2];
-> +       char c;
-> +
-> +       ASSERT_TRUE(set_core_pattern("@/tmp/coredump.socket"));
-> +
-> +       ret = socketpair(AF_UNIX, SOCK_STREAM | SOCK_CLOEXEC, 0, ipc_sockets);
-> +       ASSERT_EQ(ret, 0);
-> +
-> +       pid_coredump_server = fork();
-> +       ASSERT_GE(pid_coredump_server, 0);
-> +       if (pid_coredump_server == 0) {
-> +               int fd_server = -1, fd_coredump = -1, fd_peer_pidfd = -1;
-> +               int fd_thread_pidfd = -1, fd_core_file = -1;
-> +               struct pidfd_info thread_info = {};
-> +               int exit_code = EXIT_FAILURE;
-> +
-> +               close(ipc_sockets[0]);
-> +
-> +               fd_server = create_and_listen_unix_socket("/tmp/coredump.socket");
-> +               if (fd_server < 0) {
-> +                       fprintf(stderr, "socket_coredump_thread: listen socket failed: %m\n");
-> +                       goto out;
-> +               }
-> +
-> +               if (write_nointr(ipc_sockets[1], "1", 1) < 0) {
-> +                       fprintf(stderr, "socket_coredump_thread: ipc write failed: %m\n");
-> +                       goto out;
-> +               }
-> +
-> +               close(ipc_sockets[1]);
-> +
-> +               fd_coredump = accept4(fd_server, NULL, NULL, SOCK_CLOEXEC);
-> +               if (fd_coredump < 0) {
-> +                       fprintf(stderr, "socket_coredump_thread: accept4 failed: %m\n");
-> +                       goto out;
-> +               }
-> +
-> +               fd_peer_pidfd = get_peer_pidfd(fd_coredump);
-> +               if (fd_peer_pidfd < 0) {
-> +                       fprintf(stderr, "socket_coredump_thread: get_peer_pidfd failed\n");
-> +                       goto out;
-> +               }
-> +
-> +               fd_thread_pidfd = get_peer_pidfd_thread(fd_coredump);
-> +               if (fd_thread_pidfd < 0) {
-> +                       fprintf(stderr, "socket_coredump_thread: get_peer_pidfd_thread failed\n");
-> +                       goto out;
-> +               }
-> +
-> +               if (!get_pidfd_info(fd_peer_pidfd, &info) ||
-> +                   !get_pidfd_info(fd_thread_pidfd, &thread_info)) {
-> +                       fprintf(stderr, "socket_coredump_thread: get_pidfd_info failed\n");
-> +                       goto out;
-> +               }
-> +
-> +               /* The peer is the thread-group leader, the dumping thread is not. */
-> +               if (info.pid != info.tgid || thread_info.tgid != info.tgid ||
-> +                   thread_info.pid == thread_info.tgid) {
-> +                       fprintf(stderr, "socket_coredump_thread: unexpected ids %d/%d and %d/%d\n",
-> +                               info.pid, info.tgid, thread_info.pid, thread_info.tgid);
-> +                       goto out;
-> +               }
-> +
-> +               if (!check_coredump_info(&info, "SO_PEERPIDFD") ||
-> +                   !check_coredump_info(&thread_info, "SO_PEERPIDFD_THREAD"))
-> +                       goto out;
-> +
-> +               fd_core_file = open_coredump_tmpfile(self->fd_tmpfs_detached);
-> +               if (fd_core_file < 0) {
-> +                       fprintf(stderr, "socket_coredump_thread: core tmpfile failed: %m\n");
-> +                       goto out;
-> +               }
-> +
-> +               for (;;) {
-> +                       char buffer[4096];
-> +                       ssize_t bytes_read, bytes_write;
-> +
-> +                       bytes_read = read(fd_coredump, buffer, sizeof(buffer));
-> +                       if (bytes_read < 0) {
-> +                               fprintf(stderr, "socket_coredump_thread: core read failed: %m\n");
-> +                               goto out;
-> +                       }
-> +
-> +                       if (bytes_read == 0)
-> +                               break;
-> +
-> +                       bytes_write = write(fd_core_file, buffer, bytes_read);
-> +                       if (bytes_read != bytes_write) {
-> +                               fprintf(stderr, "socket_coredump_thread: core write %zd/%zd: %m\n",
-> +                                       bytes_read, bytes_write);
-> +                               goto out;
-> +                       }
-> +               }
-> +
-> +               exit_code = EXIT_SUCCESS;
-> +               fprintf(stderr, "socket_coredump_thread: completed successfully\n");
-> +out:
-> +               if (fd_core_file >= 0)
-> +                       close(fd_core_file);
-> +               if (fd_thread_pidfd >= 0)
-> +                       close(fd_thread_pidfd);
-> +               if (fd_peer_pidfd >= 0)
-> +                       close(fd_peer_pidfd);
-> +               if (fd_coredump >= 0)
-> +                       close(fd_coredump);
-> +               if (fd_server >= 0)
-> +                       close(fd_server);
-> +               _exit(exit_code);
-> +       }
-> +       self->pid_coredump_server = pid_coredump_server;
-> +
-> +       EXPECT_EQ(close(ipc_sockets[1]), 0);
-> +       ASSERT_EQ(read_nointr(ipc_sockets[0], &c, 1), 1);
-> +       EXPECT_EQ(close(ipc_sockets[0]), 0);
-> +
-> +       pid = fork();
-> +       ASSERT_GE(pid, 0);
-> +       if (pid == 0)
-> +               crashing_child_thread();
-> +
-> +       pidfd = sys_pidfd_open(pid, 0);
-> +       ASSERT_GE(pidfd, 0);
-> +
-> +       waitpid(pid, &status, 0);
-> +       ASSERT_TRUE(WIFSIGNALED(status));
-> +       ASSERT_EQ(WTERMSIG(status), SIGSEGV);
-> +       ASSERT_TRUE(WCOREDUMP(status));
-> +
-> +       ASSERT_TRUE(get_pidfd_info(pidfd, &info));
-> +       ASSERT_TRUE(!!(info.mask & PIDFD_INFO_COREDUMP));
-> +       ASSERT_TRUE(!!(info.coredump_mask & PIDFD_COREDUMPED));
-> +       ASSERT_EQ(info.coredump_signal, SIGSEGV);
-> +
-> +       wait_and_check_coredump_server(pid_coredump_server, _metadata, self);
-> +}
-> +
->  /*
->   * Test: PIDFD_INFO_COREDUMP_SIGNAL via simple socket coredump with SIGABRT
->   *
-> diff --git a/tools/testing/selftests/coredump/coredump_test.h b/tools/testing/selftests/coredump/coredump_test.h
-> index ed47f01fa53c..4212656e31f0 100644
-> --- a/tools/testing/selftests/coredump/coredump_test.h
-> +++ b/tools/testing/selftests/coredump/coredump_test.h
-> @@ -27,10 +27,12 @@ FIXTURE(coredump)
->  /* Shared helper function declarations */
->  void *do_nothing(void *arg);
->  void crashing_child(void);
-> +void crashing_child_thread(void);
->  int create_detached_tmpfs(void);
->  int create_and_listen_unix_socket(const char *path);
->  bool set_core_pattern(const char *pattern);
->  int get_peer_pidfd(int fd);
-> +int get_peer_pidfd_thread(int fd);
->  bool get_pidfd_info(int fd_peer_pidfd, struct pidfd_info *info);
->
->  /* Inline helper that uses harness types */
-> diff --git a/tools/testing/selftests/coredump/coredump_test_helpers.c b/tools/testing/selftests/coredump/coredump_test_helpers.c
-> index 2a20faf9cb0a..36306069f62e 100644
-> --- a/tools/testing/selftests/coredump/coredump_test_helpers.c
-> +++ b/tools/testing/selftests/coredump/coredump_test_helpers.c
-> @@ -13,6 +13,7 @@
->  #include <string.h>
->  #include <sys/epoll.h>
->  #include <sys/ioctl.h>
-> +#include <sys/mman.h>
->  #include <sys/socket.h>
->  #include <sys/types.h>
->  #include <sys/un.h>
-> @@ -38,6 +39,10 @@ struct _fixture_coredump_data {
->
->  #define NUM_THREAD_SPAWN 128
->
-> +#ifndef SO_PEERPIDFD_THREAD
-> +#define SO_PEERPIDFD_THREAD 87
-> +#endif
-> +
->  void *do_nothing(void *arg)
->  {
->         (void)arg;
-> @@ -59,6 +64,36 @@ void crashing_child(void)
->         i = *(volatile int *)NULL;
->  }
->
-> +static void *crashing_thread(void *arg)
-> +{
-> +       int *p;
-> +
-> +       (void)arg;
-> +
-> +       /* crash on purpose with SEGV_MAPERR */
-> +       p = mmap(NULL, PAGE_SIZE, PROT_READ | PROT_WRITE,
-> +                MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-> +       if (p == MAP_FAILED)
-> +               return NULL;
-> +       munmap(p, PAGE_SIZE);
-> +       *p = 0;
-> +
-> +       return NULL;
-> +}
-> +
-> +void crashing_child_thread(void)
-> +{
-> +       pthread_t thread;
-> +       int i;
-> +
-> +       for (i = 0; i < NUM_THREAD_SPAWN; ++i)
-> +               pthread_create(&thread, NULL, do_nothing, NULL);
-> +
-> +       /* crash from a non-leader thread */
-> +       pthread_create(&thread, NULL, crashing_thread, NULL);
-> +       pause();
-> +}
-> +
->  int create_detached_tmpfs(void)
->  {
->         int fd_context, fd_tmpfs;
-> @@ -138,6 +173,20 @@ int get_peer_pidfd(int fd)
->         return fd_peer_pidfd;
->  }
->
-> +int get_peer_pidfd_thread(int fd)
-> +{
-> +       int fd_peer_pidfd;
-> +       socklen_t fd_peer_pidfd_len = sizeof(fd_peer_pidfd);
-> +       int ret = getsockopt(fd, SOL_SOCKET, SO_PEERPIDFD_THREAD, &fd_peer_pidfd,
-> +                            &fd_peer_pidfd_len);
-> +       if (ret < 0) {
-> +               fprintf(stderr, "%s: getsockopt(SO_PEERPIDFD_THREAD) failed: %m\n", __func__);
-> +               return -1;
-> +       }
-> +       fprintf(stderr, "%s: successfully retrieved pidfd %d\n", __func__, fd_peer_pidfd);
-> +       return fd_peer_pidfd;
-> +}
-> +
->  bool get_pidfd_info(int fd_peer_pidfd, struct pidfd_info *info)
->  {
->         int ret;
->
-> --
-> 2.53.0
->
+> >  	return 0;
+> >  }
+> >
+> > --
+> > 2.43.0
+> >
+> >
