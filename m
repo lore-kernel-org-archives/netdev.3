@@ -1,228 +1,136 @@
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96E7747ACD2
-	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 10:51:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788778317; cv=pass; b=GFhFSLCFkOn3rjqR4khkV8PymhrZvbcQPdDOYco1kBYhGNjdL+YnZC2AyrvpEFX6B4EMQ/j43mkRiL00Et6KmYpHH9fk/wiofyr7Jbtlh8rp+14ibXZC9l2SdebDVnQ7etJOVKQMhnP2+Rbr9061dNqV7FJyMM8wwB9FTWztnog=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788778317; c=relaxed/simple;
-	bh=W0+b9KvoApA0Cu4KJvDEn2s8LS//dxJC59n6wwetQT8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WQs3sNMxwtLXaIgZ09XNoF/p3MirdIVWIb2hktBlrd51LU1BXLFpWe+HOzCkil0ef3d8KlqMfh6tZsbwIYdRzu6lFtObII9QFwtBtDgS3lrpjATogOC5wOhCMRZEkZLFbScqiws2EyOnjPi8wi6pvYAbq+FRuEIaP1aSnklUnKo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mihalicyn.com; spf=pass smtp.mailfrom=mihalicyn.com; dkim=pass (1024-bit key) header.d=mihalicyn.com header.i=@mihalicyn.com header.b=c0ltu23P; arc=pass smtp.client-ip=209.85.218.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mihalicyn.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mihalicyn.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7AA049EC43
+	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 10:52:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788778364; cv=none; b=ighn72CNO9oFrmBHpwJVcyQv6k5uhwQZqfcJfSeBfk/in1K7usrFFoYRSNwFLqDd4y+UNf/W8NZ3Vi0EgCBoy2/yQUPb5ZHzpblzj53Io1GN0jszAmh8qDEJALcSPEgngvvnpSdRQDJpKBFaFunRvtBBayNdT9Il9nFpXVbotx8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788778364; c=relaxed/simple;
+	bh=h1ZF1W56dL6/r0RgWXJeczzYimE4P9maVag8fcLZjDc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=DKEAvoYYiOyEKn7f1G4IW+SE4DzgKP3p4+KN1RdgxE4gPX/l3+UDYu6t1j3nuuZhbN/EsXjvpoqs+ajj9GTS38NNY22zmquLrPqUbuKPPcWq4Z3f3S4rMlJT1iDXYZmuIZSzFE+EVLHBix3o/V6YNUdFiT2mMmD2kMu9lBkG2zo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I3ovtm8e; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mihalicyn.com header.i=@mihalicyn.com header.b="c0ltu23P"
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-c2533d83e3bso561599066b.2
-        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 03:51:54 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788778312; cv=none;
-        d=google.com; s=arc-20260327;
-        b=i5GrZAriTt173jWL4Z0x/t3/w0HY2c63Ko6QQQGqhRU1OQBhQIHoEef7t5mU+XKtED
-         RPHz2/vOHb5NTb5b6kXaQf80SkkLr31DXNGfv8IBooKBJ4EPnj2qrg69B1Sw4vT9Xb0T
-         ri2GmIS0BG4GAtK21M2XN10kWyVbGGd9USjF3/+Tjz9MZ3VJ3Y8prpqnshLhJpUZKdrg
-         jTEYPQNSlnS8Ctj+I+6dJlMGO90yak3JIF8O6pon0/VY/GO0IJM3LEikATiZiUIhQxmd
-         as2sCUYsSV/bjcEK79IOuTLS4rP5N+UEI+SSjT8DgYPZPrLmq/EKn9Pr5Xq47wD4yY+P
-         Va3Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=GKeVIBKeBEiqOVb6fEusAWCMyuo++LHKEtSCxIMKohw=;
-        fh=s1yZ3EI6kftMAqIa3s82ErXWxwRs6wcDchjpSOMBcBo=;
-        b=QAWqlBEIZbzZn+WI9PxJTk8CsvWRyq39Q4XHo3upT8vw0RypdrUjO3sWi2LqC04Yh7
-         b4egPYgQ28xsp91YgzCm4WHT7U1zVOjnCrUWu+aU5JFCBPQk8WyuJRw5jgkxtj8nkzEo
-         1w7bsl2KqRxpjAFqu0PmoOpOfjxYJvWKtT4tWQYdiAJhOCHCFdcDt+X4IYeje6mVtEzP
-         Oknj34VY+BEohoFkK2bn4ISqTANeCJgG6CJT/11fQkomz6moq8CioOY62qS0Ry4Ng3VD
-         CNIa6NTxIvo8bbzbqGEtk57Zd6GgYGRMh+DwUiAzt/5zBZpt4G6v/3qnwQpZh6W87MNu
-         7yPQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I3ovtm8e"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-49b8e527d63so40477345e9.2
+        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 03:52:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mihalicyn.com; s=mihalicyn; t=1788778312; x=1789383112; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=GKeVIBKeBEiqOVb6fEusAWCMyuo++LHKEtSCxIMKohw=;
-        b=c0ltu23PRE6Vkb70dkQgLopWyERqmVyY4VAevKZB3faJDwTC26STv7TqMJZ8hDC+Vo
-         dRXOgDmhA2EKBpBCaDKCmZ3iZbyqlzxvReT4FsIuRxZoRmThb6SrYFZxFUMCaBC9UMc4
-         g1dDH2OSaVvI2RuV6lrGWrbP2kkej9bBPSZ98=
+        d=gmail.com; s=20251104; t=1788778361; x=1789383161; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=h1ZF1W56dL6/r0RgWXJeczzYimE4P9maVag8fcLZjDc=;
+        b=I3ovtm8ecrLEol+Rv/dcvdE7ClSRafynHqs9bGBMsl6l0c3YhqoxcnG2EUatA0weLL
+         AiJxfmiuO0pBsWsNkCtOJSeZ1B6czZCPujJQaqHLt5ZY4MQ+5G1Ng8bxwLGnjBKJfO+/
+         GszhpThtsWyI0wbRyKSWYay3edEOxz7MD07q/Nx+4KhhjiQFu0EtyT192atHdMtyqfz/
+         6Yk3/keX2j7NfUafeiXAtj38C9y6b5E7l5wHb4Su6l5V/ZdK3TaTmM9Y/R4qmcH1i23W
+         87SAOydPUF00n9PLrVHv3asi2RqgMDsa3RLPkWqze+3xTlL3Fo6K5KURBvEtAmC35NM/
+         w51w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788778312; x=1789383112;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=GKeVIBKeBEiqOVb6fEusAWCMyuo++LHKEtSCxIMKohw=;
-        b=bLsC/7kn/EcLcPlhyS4sw+pLDYJg2hFPX1Tyi/VohvHeOUNhXNfdMhf4HOXSG5TrIG
-         nvQm91U8nGstpGA4UlEpK3eI7rh6/naHLUnfmjbmrR60OKeBtzDzJ/Nv+CbuiJR7ZGK6
-         P+SWugJaKEJf0lkuHVSAZFbCjCH0ZS5GBMoF1pDw2Z1eNxLNH3/+x8Qb6vCKZQimPDEt
-         8R4lHMbapRVwIOozmu6WjBNgOEiWZAZVSc06TPi5tOVslPEEMdzV7MvU5hYuojhd78pC
-         pEO3gwSIz0V/CBeEK/LZqrywGE7xRqY4cznZWhlp2zvE1+io5IWhsLEK7nA+8T46Hsh7
-         VrPQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxPMTqqtTyxDdiPiV9zVmFvxeKqnG03pWzglRs8AYlwni3+wGNwu44pwO0R5POhgGMJOKMdVzU=@vger.kernel.org
-X-Gm-Message-State: AFuF++n+OOx8763+CXt0Sj55kTCBlSBuGmEv5s9W3toVi8DlBlOZ6PqM
-	FiUvhdPXirrakZ0dJ+9mI/edl1JkhY6pwnPaKNJwH54CMFg9YH4/ZTp7YgHMfaR2vsguT3VGozu
-	vA4CRvuGdUnvwn/jzKXEO1s0CN9U1oZ+ABlwTpulMNw==
-X-Gm-Gg: AYBFou2ABsYZUkyngXmGP61PwkF5vsWuGBw02f/2AW9HjZMg1uvDHnHm315Pxf1faCI
-	hUeMtYwrlPGzx5mDmwsK9DK4VOK3bPd42UQS+AtuGfOJOPX9K6OI5sc3rqqTlqXc+/3MOyC+StX
-	333vzPF730EHc3d7hhmbTRHu5yv3GPm8mdqXEnkvJV44kjOhh7SNuGHHZRpwxwIeN/GOjPd6bFO
-	jtr7ylglNFrgYnc8HDaz5AZLYDx9NFjPzjsdtqPM3anN+0w8MvrPy7pa2+upq0ZjpVsUntAeLua
-	qBInc0UyliACLuPF8KEBE3DJ7n4yFEXGIEQtZ+BLyzl1H4c60wOTdoayo+ktkpdgrIptvwbku+M
-	=
-X-Received: by 2002:a17:907:3e1a:b0:c24:87e5:6491 with SMTP id
- a640c23a62f3a-c260c971f12mr1411193766b.2.1788778312538; Mon, 07 Sep 2026
- 03:51:52 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1788778361; x=1789383161;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=h1ZF1W56dL6/r0RgWXJeczzYimE4P9maVag8fcLZjDc=;
+        b=Hkh6yK7MHWMjyWFQIsknOp062hutMvpAJ0XGXiFxw9j36mAd3EqLUMFE/P5Q2Vx6Cl
+         p5UyFrXyMkmdpESZGWQLVxoKPRq34Gzld7DEMUnOCjeOTCLXYU1gdHCX2eh9C7atno16
+         AS16H9pvrp0zuks8JExJRXXaRlwbz0jRyYehWHTLGmfu1tt1AmiP8gvRlZBxMq4GzDsO
+         JagZcvuonkxubemz08Q05txJT0tptcwm/AeR0teu/qGW+G11rJRS2YgUVFpVxw3boMA4
+         lOvo06Sq26dFxQfvG0baxECi10ux3rr+OkHtQMqApv/lIhxXUKSjgwinCRS07HPE1x6Z
+         xATw==
+X-Gm-Message-State: AFuF++lXzU7kqbHRznaYZo2LKUefDRMq8AiZFrtwkipc5p/LNHBVDVDV
+	nIEwT6/5EPQBWHhPXcSjwqPF9fa12eGsnN3CXJbcc27EdnrTmuEGQuNf
+X-Gm-Gg: AYBFou2oAmfZXGarPXgA1TSn1mRk8YUqXjcmzW9U6N5eUzkkj/SGWA21UznCV5DJ/vT
+	bSrW2NM4CFTghw71rvTy1H1t7qvx5hpM0ghKXXAnCuqr/s8Zh/lOYK4LYnbEisLJtKz4n9Lg0Em
+	xSu8K8AxbxPgaBRu8taxDyHfalL85Xs04Ibx27ELUM9h7D5KY9Ce5gqXkUavupVeY2MDp1xgueC
+	SgrBxLUwCRzjPq9X1dZi9Q0sOBnOpTWQcKdRRjJnyPKQJoPugCXNQFzUBBD3lh8sIigYczNyzCY
+	RDyBdF+/a358GVAEoAzDlRSgtXiSCF8vMOmDkt7gB+qkETDHnujzqJTLdekxRzUV/NluQF9DFjC
+	oMPu9TAuBne3JyPVZh2gGAZ8IUaDWkOolNtYUhj3yw2tAxNz9jUwk1hXwQcl9/frVgvh+xlUib5
+	gsCpTjYV8j8xLOUwi+a4SKxQ7UtLcLzzjTNwMc4QkgCutDdhtAqgJxMUejH31HaBXhbVni1YZJX
+	22pKIhxVf3laA==
+X-Received: by 2002:a05:600c:3b02:b0:49b:9202:6f80 with SMTP id 5b1f17b1804b1-49cf8220edemr238557705e9.6.1788778360821;
+        Mon, 07 Sep 2026 03:52:40 -0700 (PDT)
+Received: from kali ([169.224.126.247])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cffdb2c40sm175663215e9.1.2026.09.07.03.52.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 07 Sep 2026 03:52:40 -0700 (PDT)
+From: Ali Firas <alishmery18@gmail.com>
+To: kuba@kernel.org
+Cc: netdev@vger.kernel.org,
+	idosch@nvidia.com,
+	pabeni@redhat.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	andrew+netdev@lunn.ch,
+	Ali Firas <alishmery18@gmail.com>
+Subject: Re: [PATCH net v2] vxlan: vnifilter: validate the VNI range in vni_filter_entry_policy
+Date: Mon,  7 Sep 2026 13:52:23 +0300
+Message-ID: <20260907105223.3960496-1-alishmery18@gmail.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260906231609.2995559-1-alishmery18@gmail.com>
+References: <20260902154609.594009-1-alishmery18@gmail.com> <20260906231609.2995559-1-alishmery18@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260831-work-unix-passpidfd-v1-0-70cbfda0c7ba@kernel.org> <20260831-work-unix-passpidfd-v1-8-70cbfda0c7ba@kernel.org>
-In-Reply-To: <20260831-work-unix-passpidfd-v1-8-70cbfda0c7ba@kernel.org>
-From: Alexander Mikhalitsyn <alexander@mihalicyn.com>
-Date: Mon, 7 Sep 2026 12:51:40 +0200
-X-Gm-Features: AcwNN1XE00oDe9AYh-ifVutenx203jQLfwtnAnzkRMIu2D8-Sqlf4xuqnAwBMnI
-Message-ID: <CAJqdLroK2W7N59+96feng5_gPCHca81utJw0KsU5d1hpVMKFqQ@mail.gmail.com>
-Subject: Re: [PATCH 08/10] selftests/net: SO_PEERPIDFD_THREAD
-To: Christian Brauner <brauner@kernel.org>
-Cc: Jakub Kicinski <kuba@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, Oleg Nesterov <oleg@redhat.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Willem de Bruijn <willemb@google.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Am Mo., 31. Aug. 2026 um 13:21 Uhr schrieb Christian Brauner
-<brauner@kernel.org>:
->
-> Add tests for SO_PEERPIDFD_THREAD.
->
-> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+I have the measurements now. They split into two independent problems,
+which changes what I was going to send.
 
-LGTM
+Cost per VNI, measured with per-cache attribution rather than estimated:
+128 B slab (kmalloc-128, exactly 1.000 objects per VNI) plus 64 B per
+possible CPU for the stats block. rhashtable buckets add roughly 11-21 B
+amortised; the RTM_NEWTUNNEL skb is freed promptly and retains nothing.
+So 256 B/VNI on 2 CPUs, and a full in-range request is about 66 GiB on a
+64-CPU host. My earlier 521 B figure was an artifact of
+CONFIG_SLUB_DEBUG_ON inflating the object to 384 B; it is withdrawn.
 
-Reviewed-by: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@futurfusion.io>
+rhashtable cannot intervene: max_elems is 2^25 against a 2^24 reachable
+key space, so -E2BIG is structurally unreachable. Every configuration I
+tested (2/4/8 CPUs) reaches a global OOM instead, with no errno returned
+because the caller is OOM-killed, and UID 0 processes killed in most
+runs.
 
-> ---
->  tools/testing/selftests/net/af_unix/scm_pidfd.c | 97 +++++++++++++++++++++++++
->  1 file changed, 97 insertions(+)
->
-> diff --git a/tools/testing/selftests/net/af_unix/scm_pidfd.c b/tools/testing/selftests/net/af_unix/scm_pidfd.c
-> index 019c48e1cdcd..bbbd5e7b4fa7 100644
-> --- a/tools/testing/selftests/net/af_unix/scm_pidfd.c
-> +++ b/tools/testing/selftests/net/af_unix/scm_pidfd.c
-> @@ -32,6 +32,10 @@
->  #define SO_PASSPIDFD_THREAD 86
->  #endif
->
-> +#ifndef SO_PEERPIDFD_THREAD
-> +#define SO_PEERPIDFD_THREAD 87
-> +#endif
-> +
->  #define CHILD_EXIT_CODE_OK 123
->
->  static void child_die()
-> @@ -822,4 +826,97 @@ TEST(scm_pidfd_thread_creds)
->         EXPECT_EQ(ids.pid, info.tgid);
->  }
->
-> +static void *peer_connect_thread(void *arg)
-> +{
-> +       struct sock_addr *sa = arg;
-> +       struct thread_ids ids = {
-> +               .pid = getpid(),
-> +               .tid = gettid(),
-> +       };
-> +       int fd;
-> +       char sync;
-> +
-> +       fd = socket(AF_UNIX, SOCK_STREAM, 0);
-> +       if (fd < 0)
-> +               return (void *)1;
-> +
-> +       if (connect(fd, (struct sockaddr *)&sa->listen_addr, sa->addrlen))
-> +               return (void *)1;
-> +
-> +       if (send(fd, &ids, sizeof(ids), 0) != sizeof(ids))
-> +               return (void *)1;
-> +
-> +       /* stay alive until the server has looked at our pidfd */
-> +       if (read(fd, &sync, 1) != 1)
-> +               return (void *)1;
-> +
-> +       close(fd);
-> +       return NULL;
-> +}
-> +
-> +static int peer_pidfd_info(int fd, int optname, struct pidfd_info *info)
-> +{
-> +       int pidfd;
-> +       socklen_t len = sizeof(pidfd);
-> +
-> +       if (getsockopt(fd, SOL_SOCKET, optname, &pidfd, &len)) {
-> +               log_err("getsockopt(SO_PEERPIDFD*)");
-> +               return -1;
-> +       }
-> +
-> +       info->mask = PIDFD_INFO_PID;
-> +       if (ioctl(pidfd, PIDFD_GET_INFO, info)) {
-> +               log_err("ioctl(PIDFD_GET_INFO)");
-> +               close(pidfd);
-> +               return -1;
-> +       }
-> +
-> +       close(pidfd);
-> +       return 0;
-> +}
-> +
-> +/* SO_PEERPIDFD_THREAD returns a pidfd for the peer's connecting thread. */
-> +TEST(so_peerpidfd_thread)
-> +{
-> +       struct sock_addr sa;
-> +       struct thread_ids ids;
-> +       struct pidfd_info info;
-> +       pthread_t thread;
-> +       void *tret;
-> +       int server, cfd;
-> +
-> +       server = socket(AF_UNIX, SOCK_STREAM, 0);
-> +       ASSERT_LE(0, server);
-> +
-> +       fill_sockaddr(&sa, true);
-> +       ASSERT_EQ(0, bind(server, (struct sockaddr *)&sa.listen_addr, sa.addrlen));
-> +       ASSERT_EQ(0, listen(server, 1));
-> +
-> +       ASSERT_EQ(0, pthread_create(&thread, NULL, peer_connect_thread, &sa));
-> +
-> +       cfd = accept(server, NULL, NULL);
-> +       ASSERT_LE(0, cfd);
-> +
-> +       ASSERT_EQ(sizeof(ids), recv(cfd, &ids, sizeof(ids), MSG_WAITALL));
-> +       ASSERT_NE(ids.pid, ids.tid);
-> +
-> +       /* SO_PEERPIDFD refers to the peer's thread-group. */
-> +       ASSERT_EQ(0, peer_pidfd_info(cfd, SO_PEERPIDFD, &info));
-> +       EXPECT_EQ(ids.pid, info.pid);
-> +       EXPECT_EQ(ids.pid, info.tgid);
-> +
-> +       /* SO_PEERPIDFD_THREAD refers to the connecting thread. */
-> +       ASSERT_EQ(0, peer_pidfd_info(cfd, SO_PEERPIDFD_THREAD, &info));
-> +       EXPECT_EQ(ids.tid, info.pid);
-> +       EXPECT_EQ(ids.pid, info.tgid);
-> +
-> +       /* release the connecting thread */
-> +       ASSERT_EQ(1, write(cfd, "x", 1));
-> +       ASSERT_EQ(0, pthread_join(thread, &tret));
-> +       ASSERT_EQ(NULL, tret);
-> +
-> +       close(cfd);
-> +       close(server);
-> +}
-> +
->  TEST_HARNESS_MAIN
->
-> --
-> 2.53.0
->
+First problem, memory. GFP_KERNEL_ACCOUNT on the node and its per-CPU
+stats confines this: the OOM becomes CONSTRAINT_MEMCG, the host survives,
+and unconstrained callers are unaffected within 0.4% on both VNI count
+and wall time. It does not produce a graceful failure — try_charge()
+invokes the memcg OOM killer rather than returning -ENOMEM, and the
+partially installed VNIs stay until the netns is torn down.
+
+Second problem, and this is the one I had not measured when I wrote last
+time. vxlan_vnifilter_rtnl_msg_handlers registers RTM_NEWTUNNEL with
+flags = 0, so rtnetlink takes the locked path and rtnl_lock is held
+across the whole loop. From a second namespace, "ip link add dummy0 type
+dummy" takes 0.011 s normally, 4.47 s during a 1M-VNI request, and never
+completes at all during a full-range request — it is still blocked when
+the OOM killer arrives.
+
+rtnl_lock is global rather than per-netns, so an unprivileged user in one
+namespace stalls network configuration for the host and every other
+namespace. memcg accounting does nothing for that. cond_resched() yields
+the CPU without releasing rtnl, so it only addresses soft-lockup
+warnings. As far as I can see only a per-request work cap would fix it,
+and that would change uAPI since the full 24-bit space is a legitimate
+request today.
+
+So I have the accounting patch ready, but I would rather not send it as
+if it closed the problem when it closes half of it. Would you prefer the
+accounting patch on its own with the rtnl stall described as a known
+remaining issue, or is the stall something you would want addressed
+first, in which case I would need guidance on whether a cap is
+acceptable at all?
+
+Reproducer and full measurement data available on request.
+
+Thanks,
+Ali
