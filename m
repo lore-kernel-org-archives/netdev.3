@@ -1,178 +1,151 @@
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11021077.outbound.protection.outlook.com [40.93.194.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C40D3A453A;
-	Mon,  7 Sep 2026 23:14:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FA8D3C1D77
+	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 23:23:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.43
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788822870; cv=fail; b=KZh2SPqmqkL6RU0RTTisKPtVixTgc1XWmOXTXzKvA/9+6XsBQFf8w1/q0Wtz9VY5WQ3e0ER+bEwOviHoaB2J+uwTDrDgzkJo7wwpZzPc8qHfjwindnpQBNPsv48RluIHtfedetGL7vns26U6KFgY01cI9pUzGh8/gIk6niCLt5M=
+	t=1788823403; cv=pass; b=gC5yI5lxW9xgWu8fnOhXqXK76X/Mi0p+wGDc1i/07LsO68xw9vMBtlbTsQXhIqDDOPwkJr6Rtku1RrVf4OaNZYJTQDyg9dCu/+eXSHVy2ZjjXupy2nqyweLdsvRGdNOgJgiuZyyp2fXt/5Of6q9kFvPUKFLG0xH/hxX0ti/NJaA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788822870; c=relaxed/simple;
-	bh=Y+vLudvIY4b64ibRv04apDBtnE/ymLAxz2X2IXecMIg=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=bPz2Tu1fP3AySZScUsfua7oRS4e38iwnSZR4IA1eaTmGzN8bShYSvwWBYKb/ZgBdYgflwS5mkOfNM5npRgf27bI7BUjfxNQ1eU9uPPyKat8ydHeUqaCqFFA5jVchXhmYka2yjiN5SeWfDZIsHP5j7rKCbMm9YHstl+QRO8DWq/k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=microsoft.com; dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b=LcICpBuj; arc=fail smtp.client-ip=40.93.194.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microsoft.com
+	s=arc-20240116; t=1788823403; c=relaxed/simple;
+	bh=jfAp60OBp4doOiN+x+Yf0On7RHIw5hZfHkDWrPwTz6U=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=SFDTAbKpBufoZzGeEhwrQDsagQdTmZDkOS4xea/omKhFJyVCb083YVpZlWg9e8fINbiZD2PgTLaM9QV4jNAOQKWRUPWP2Lg6n1Y25zHlmYJKHteYbAo1rUQERBKrkm5KmBuVYBzT/o2wWcAuqNGJWjS1w+gQ6svuXYZCSl2ArRc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HpzOhlsq; arc=pass smtp.client-ip=209.85.216.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b="LcICpBuj"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RgI99GXgCoDVV6oM39X1xxrgt/0t8crYYZiumQ1s2e/uj0oOwOExFUlotZy/aXWLKoxIr1gqkKb9FQ+sG1IyR1WHxj9hSiyJD92LR88fzpa/6Pn3BqLFrHtSHSm6SYke5/uTL6Gd3eVUdZkbBJexGLd6KzB33Za98F/G0y+WBDZAd7YxguyhSS3mzbLTOVmxFTLhNykGNUCqSgJO7sATvnvrGsY5eBf1vLJ+LLB7zDlsuCAhT52TmzopnXo0ZuFyJYQIS5Mn5DxHitKLSVhIeWez01uUUKiQyQpCOaiKvtGovdQjZUudvmQx63wrCtMtqjGIKUU2hI12ValZF0DfOQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Y+vLudvIY4b64ibRv04apDBtnE/ymLAxz2X2IXecMIg=;
- b=feYEAvoyDPsUj1hPUS82VM1CdyvgD/5JHy6K1AdnsqOhrlmuJAM5qJWUHJjINk1d92PtyKiK/4WzhNcPVuGjJrGB0WWCh1Zpe7w8VwTzRXrPbUsR2kqL8B/iIGi4tZkjwmCrMqRV7q7sAKranWKgbaHcQSP1Sgvzoburem0mj/l5wA//oepNqistCnShMVngHHJRsbMYOKoTfn1v9gjAJWzq44m2XHYHs888AF5zMiTveYxcFFB3xCc7lDxLYuKGm50hWZ/KtrrFYc6LIkSId0JLyNE3wrtN2mssOk1gkYrMXdfVaf2ViIl3i2+tU7ezkHUTDUvLH1noTJIwgjSFBQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microsoft.com; dmarc=pass action=none
- header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Y+vLudvIY4b64ibRv04apDBtnE/ymLAxz2X2IXecMIg=;
- b=LcICpBujvwgIKS1BI2w7Raa01t/Z+YNUyCFr7eZhz8FcTzqDXSUCn0hwooqBMbLAao/WQuw6+KI7rlR6r2KRNuh2OwC1z29EWfCaJfYmHax1kA3lCv8Oy1KQxQPFCDgzu/xyQQnQ9fNpTX0VJ1FGtQWeyuzHXeNkVI9xwhEN1ks=
-Received: from SA1PR21MB6683.namprd21.prod.outlook.com (2603:10b6:806:4a4::6)
- by SA1PR21MB4325.namprd21.prod.outlook.com (2603:10b6:806:3df::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.428.3; Mon, 7 Sep 2026
- 23:14:25 +0000
-Received: from SA1PR21MB6683.namprd21.prod.outlook.com
- ([fe80::8bad:6294:8a07:fe18]) by SA1PR21MB6683.namprd21.prod.outlook.com
- ([fe80::8bad:6294:8a07:fe18%6]) with mapi id 15.21.0315.008; Mon, 7 Sep 2026
- 23:14:25 +0000
-From: Long Li <longli@microsoft.com>
-To: Jakub Kicinski <kuba@kernel.org>
-CC: Konstantin Taranov <kotaranov@microsoft.com>, "David S . Miller"
-	<davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>, Eric Dumazet
-	<edumazet@google.com>, Andrew Lunn <andrew+netdev@lunn.ch>, Jason Gunthorpe
-	<jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, Haiyang Zhang
-	<haiyangz@microsoft.com>, KY Srinivasan <kys@microsoft.com>, Wei Liu
-	<wei.liu@kernel.org>, Dexuan Cui <DECUI@microsoft.com>,
-	"shradhagupta@linux.microsoft.com" <shradhagupta@linux.microsoft.com>, Simon
- Horman <horms@kernel.org>, "ernis@linux.microsoft.com"
-	<ernis@linux.microsoft.com>, "stephen@networkplumber.org"
-	<stephen@networkplumber.org>, "shirazsaleem@microsoft.com"
-	<shirazsaleem@microsoft.com>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "linux-rdma@vger.kernel.org"
-	<linux-rdma@vger.kernel.org>, "linux-hyperv@vger.kernel.org"
-	<linux-hyperv@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-Subject: RE: [EXTERNAL] Re: [PATCH net-next v3 00/13] net: mana: reconfigure
- by replacing the queue set
-Thread-Topic: [EXTERNAL] Re: [PATCH net-next v3 00/13] net: mana: reconfigure
- by replacing the queue set
-Thread-Index: AQHdObORl56UnCqQx0e1x/hW63VD/La/L6kAgASX2GA=
-Date: Mon, 7 Sep 2026 23:14:25 +0000
-Message-ID:
- <SA1PR21MB66830D05FA11076C120BD699CEB22@SA1PR21MB6683.namprd21.prod.outlook.com>
-References: <20260901014442.2945689-1-longli@microsoft.com>
- <20260904175732.41c0d5b6@kernel.org>
-In-Reply-To: <20260904175732.41c0d5b6@kernel.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=e8e5ecf4-664d-4cfb-bde8-df6851e015b4;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ContentBits=0;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=true;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Method=Standard;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=Internal;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2026-09-07T23:06:02Z;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Tag=10,
- 3, 0, 1;
-authentication-results: mx.microsoft.com 1; dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=microsoft.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SA1PR21MB6683:EE_|SA1PR21MB4325:EE_
-x-ms-office365-filtering-correlation-id: 4fb929ee-9da3-4ea8-0811-08df0d35c26d
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|1800799024|23010399003|7416014|376014|10067099003|7146999003|22082099003|18002099003|56012099006|4143699003|11063799006|38070700021;
-x-microsoft-antispam-message-info:
- XP93sCSwPXk5JGSLP7KnoxEmaD/tqg2KqFrcqQsmb050l259+XmOjiPJU5KKMfZfH6biO8++s2HtL8rRp6OYwveoJwxfbmltr3iupPrI8psfi8rbpwCdgLDtYTc1h+QqOtlN4V7irPGJZIFVMVfZ0ld5fUDLprs9wks92/UXWSIaZpkhoN9KSlo3kWLXTuMIRvFqndgMSTyUBhtmCdvY7XvDpA/Solt+Ydv5uXm0PsSkLi09xImmrkLhrni5LUk811XO1M7U74O5IGCue9N1nExFnTP2JZLR4Kz/qCW+ZZIzeKszF3W+ik5jvxkyJW9IyrkNN9VqVhlM6For7iaK8OjXxtt5drmixZ9zPyU8m2LAoX8j/8yndShFoOeENC73ZHPydMXEUiiO/Us8+0Nr0YZzBuABx36JgzBkhT2mvQqKr3ZE7Y4QcBTIHO7k3YGQAVxOubW4JqTEMFrmyjsdcOHeWBmcKemoT+Vt/Wsssb+QJ9cnpVXyNf/fJr2pwnoV58/AOje4AF4ypSLJwZkLeN22CtI9k6AZUrITGKuOEOwMyzPe9zF/7HAequ0KlN0KIXKYTf2gb9GW1yoOZfEWrhWFWOjkebjNaBtLaScnk8kP3pbOgS8/UXopq1U+hQIhWkLAOm+FcrNELeDlnnQU7YE2/rif66O/mbSpN/pthhAYN0mwX88jxFAsFduJo7xO3NtYc1DCFULbNd3Useb6kjG2TjqMh4bzpMDivf3vE5M=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR21MB6683.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(7416014)(376014)(10067099003)(7146999003)(22082099003)(18002099003)(56012099006)(4143699003)(11063799006)(38070700021);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?iKlxYltseH+2mnZb6GYIGmg8db+VpURYE91nPNPB9ln8rOTWup5nyMURhWOQ?=
- =?us-ascii?Q?9MQWt2U5py1qB5Pvko9LlRL4d2vLHQ+hOyW1hRUUoWNYWBGa1NhNJpVYuNM0?=
- =?us-ascii?Q?ibbE2q7gTk5Uxg/jeEcpRc6OcDw/zIQvw9Xf4+9PO5Q0NZLMdtE92/Tl/5fl?=
- =?us-ascii?Q?NhCpqVNp2R3fFXPZEEqSxq4YIzQ8ssEyQUVLnm7k/hVLTeqXDfFeWc9zwazc?=
- =?us-ascii?Q?yvIrFqGYVYk5KbO2vJDAiZvTb9sd3aPmQoz8Li7zoyZqFHH+cG4E2UpeclsQ?=
- =?us-ascii?Q?Xi4ZYfbu2EiuMVTrET6yG7mNAzTSYK8h6PjU8YmGT8X33OOpr1sQYDMNtKGN?=
- =?us-ascii?Q?L/OjPfpDAo5e4If5U/HPiaUUcnjeSxqY3xdM3Wtm57A3YHm/qtbP1p6vMSGP?=
- =?us-ascii?Q?fQVL34KVQnYJmZWZpUufBC5pgj1vRTJPkwC1XVSHjP7XijamzM8AxpMXBVQy?=
- =?us-ascii?Q?FpMm3h/FGTW2C317paYV0Oyadl31vSamNE3TV7DiBbLviiSZBunQ2JwouDtQ?=
- =?us-ascii?Q?XfLSZEGlB/KCGmU7rL6RDZGxQ60qt+DXcFsLOVzclUVPS9jmH0IwDrikEa3g?=
- =?us-ascii?Q?KRUJMYFkinJYC46ciI62zY4gYidxOpRiqVKp3UpyKUQBN451sufUxBvJIMpF?=
- =?us-ascii?Q?ry5tkk5XJ3e8zNwqSGZwj8gtos/7pStwrgLAIhCgRW4dbnPNCe/rX5zAfC9y?=
- =?us-ascii?Q?HnpaXA/yNLITZkoWF22qefkG+ffXp3sDgl94KKI+b/uqxFZVtcMq8tOW6LW+?=
- =?us-ascii?Q?d+4lAn/qfQeOpbQQfjr1lqyRV/KQbFPG9jqvy5Q1i4mq3EUFF3JhpGIgKyWM?=
- =?us-ascii?Q?nP/6FhymWoLAZ1nD7OJNYy3IdiukYb0dJ35B/7OvXRZBrwdeQXCSVM0loBUh?=
- =?us-ascii?Q?z3bsO849Ggdp9YvhSRmFLh4XrVF7LcfectZuLGDfj9RAdZQFdzAoKD49ydGk?=
- =?us-ascii?Q?INICNTmVZo5obhrbAv0k0EvnQQpqSjkjdOHBOhtj7xK23wvH4Hj1NFxpmvIx?=
- =?us-ascii?Q?JSVaJqpdarpbvKeXgRZmWh9e797aY9fpMZiXwXaDYmf+meg1aXe8X9NFpC5O?=
- =?us-ascii?Q?eSVbwItEaTUqhwiL+C3pP6AOIS4MTjPG/nfvLJ9swYSch/jXZF9z2cqMww8q?=
- =?us-ascii?Q?aPddOZLqwscedRH/kmgEmjES1n5hHL1Z21HesEeGYz6h+nUeEsQdUlRxY/Uw?=
- =?us-ascii?Q?IXbav0UEISCZzVUqR90XvPM//WTdHJLLJp05rZKypuWsi9uwF/Tq2g9lzlQo?=
- =?us-ascii?Q?ZkfZcH1nmSoY+CcZWpopnE1HIP2eOKx+RGzlzXLZNtwNMQJof3hvl0Pn4Huz?=
- =?us-ascii?Q?APiKKmN2GboPwEDUVgMZxEiCSK+YBi39OETFoMajzgHCDmUX1R935myaz9Fh?=
- =?us-ascii?Q?t2q4HMf7ysFXVL8WY8a9mPfjsJRbzn5nGcYUPqRRRnTjFAa0E27mFO1uVfPK?=
- =?us-ascii?Q?x0wnTOmASi8na/5GQ2CxpE4LMISnUKhU+IdJWo3Dw4D+FJB+DgKCQzPHevMX?=
- =?us-ascii?Q?SkI2vOcVJCNAT8yzsEEdGNxdMTLOldyl0Zg2xkrWFLHdFpGynIAdAjc+6ng0?=
- =?us-ascii?Q?qD1qKyXxVOP+8xq7TX03YUCQAThtbtU9PG8AQg4YCmyV1R19VKrgIV81ThOR?=
- =?us-ascii?Q?0yd/l63gDr1MHkqTCWCsKCbe5Jn749ydn1wJEs+V+WBoSfJvCmoN1Cr7DVpG?=
- =?us-ascii?Q?lvG4y/r7TKOAbHp8iNc8//8x+z5Pjgsdgdh2imGboEXfDKez?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HpzOhlsq"
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-398a5aad413so2994528a91.3
+        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 16:23:20 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788823400; cv=none;
+        d=google.com; s=arc-20260327;
+        b=DlFzpEfu4y663Mm73SWu+3Nl4AzGDWwGi+zo57ba9BrmquKjMrp3uSV2ZyZCFYJeUQ
+         Jju67/RNCz+8CGSrV4GqR3s/aoWd6mMeGSyhZAYaHgkn0LLQ3e71hlwPQxLMkCnGY8Hm
+         pHCps2hbF5dgg9+vd7PVULqr1wEw8DWw3CCsrJOfOvXIYQz99LSGTD4/0epxVE1igB0P
+         DyVGHAN8ChiPcvdLTTw2hHFPv1qhGy15aJI/GEFI8IMi75p27wFycD6KwlJrAdJ3ElOy
+         GZ8fd2kUw2hW7f3czh8Mx7/t2lkHeY42yeQi5R/BG6UiDgAB5UjyD24bxbmdAFpdAa4g
+         sVmw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=0IgSRwxcuB6vnZUxcMMegnldun7vRf9Aq4Po2V8pKwA=;
+        fh=whguyLWexIAnmh9ll3T47SCzsyMSiDbmhE43JrKClO8=;
+        b=Fih2p6Opu9DUfMZYeYyG0RGxfP5+krGkE1YgmkZ3DlW2R/7x1zSG96uft5fYw1raw0
+         7BXej+xW9yvB1+DH2sjbJfpVYc3KlZWRbY31u0joNZkuF+1WbTW7p3ph+nI00xJehls/
+         Os2bsz9mrws2J2y/CETE5sQ1WGP2xtOzGBiVczJgjj1yJouSyd0jmkh8mnGReVjG43oz
+         n+DTIWmJQpGKppMZ2LMDTbzW/i/7sCHbreld2vdizSUeCRiSoZr6TF+hhEqGLaS2GUqu
+         RWH/zDT/MSOAGLndqtsxBnwjBVj0B7EfvIuCTH2R3M8Bfzaa7BS7gBMj+4d9aS2HRhaB
+         GDQw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1788823400; x=1789428200; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=0IgSRwxcuB6vnZUxcMMegnldun7vRf9Aq4Po2V8pKwA=;
+        b=HpzOhlsqs1wTA1S2qEtpNxFT1eY274fqC9BMPpUDx7bLrVEmt9ohAcHvk8GzPshCwF
+         0FZ4a2Fu5wZ9jdxdoX6XCAMO/ZGDKwHAWmd9hQCF6knaaR5gPMgHzZzD5jeMFGWHsDeZ
+         wxZo1TolvpdeZZXz+SSaHfWdqhzrXkW8JxDgeF6oy45jtfELHkLKYenRq46VlNd5sw4l
+         Tk7P9wFAQYfexwEhMQXAhFSAuWpMDlrcEid9kRzOkYHbD5ALyZj0d6ICGSHLXdM401qL
+         /i9diuZHsYJu8lnsAbDbDgcA3xUc4k6Vxv5o90HrsCwQlBhQ0761KsOO+fYpPPUuAJnd
+         GS7w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788823400; x=1789428200;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=0IgSRwxcuB6vnZUxcMMegnldun7vRf9Aq4Po2V8pKwA=;
+        b=P/u8soAH6Jyl98qgg4miu74frI3CnJoNn/CccvSZlciO1wf59tN5cfdfrnDQhbsYJv
+         PN2DB+wWmtsKZSMwZHcbBma3wizyuZX929Rq/gYYE2u3bOMskeZq9oMP8o3RcicyMPZB
+         3uvb/H63nSMQa3KyqPsUJYQNv8Ew5MZ+HV1zsyX2RDYJg5chtxMhhtmGZwogmIMYJPiN
+         BwVdWrlzyN52pJxMavPthNc3XgWZBdy3j64MYE4l+pnv0iAnHNoirMc8WwWeCa23NmNj
+         ONtAiPn7p9+1BWbMw8PGbiXfmvYBETDs/8QHXXunKdJ7V3c60rZ8v3F5jgP6S52uYHXm
+         T3Nw==
+X-Forwarded-Encrypted: i=1; AKwUvBxrG441nmRHcdwASJosMu8BrI+xsAzqQrCRcsfYIu9OF24m+THk8OKIo7D8nlzC7Py5GrYjYJo=@vger.kernel.org
+X-Gm-Message-State: AFuF++mT+AbU+EdYwOOcrHFT9MBYvbFX9u/7hbD0/D4A5bdnlyW4T++b
+	pvf5ghW+EW3oA6vKDyJeEjLI9ErqCQ9KIxxiJ1I18hggTnOmYQk0BNUvcKG20iMM5tF5pffQI8K
+	GwPLs9Eo8NJ56HmV1ujB76isRmLxrEf85CImbd0xr94cuyWiU5fvNkJwfTlQ=
+X-Gm-Gg: AYBFou0DUxWBTX7tBZU9kiXNx4m9CRZKOSjlfga9xtpc2n1vI2VXK7WX5aUidN/goCx
+	VkYvZGElwFcjJ7aITdLeKvBu52+bbzfxI6gw9U1oZSgJLcKWijclqtJpoCLARg3KrqwBmvSpDSC
+	kvXSMga20VGhLQw5BKcg8dld8ggW5NwcVwLNMwu5hKeKc5ibo0Hmu0vvOZtG1mBspmC3TuVjDiG
+	9+/Cv5Fc9rcPJg/QPCGpf0C1ZQhziJ4DhenVNEOnkAxBKR5QjgkZfLRNywCHdpHFF5/Sj/p5/0x
+	3u9I/AmAF0H706ZZP/4fc3GAcMUhjRfrmfbbK/EUCKFf1ZhWlvY2IY7baRnXRG7ru83uJBFLmeW
+	J+NGu/5Gp7EkC9CEzBAf0jODttWnNR1yEt2sQ497Pq1IGDzcwrpii1NQV
+X-Received: by 2002:a17:90a:d2c7:b0:398:9bd1:3216 with SMTP id
+ 98e67ed59e1d1-39b262e4e02mr36924728a91.23.1788823399150; Mon, 07 Sep 2026
+ 16:23:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: microsoft.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SA1PR21MB6683.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4fb929ee-9da3-4ea8-0811-08df0d35c26d
-X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Sep 2026 23:14:25.5865
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Y4giHMnvymZMum4i3BnF8gwMonRXITcEgJjsclgZIzoGBuEJd1u8qHkTfQjmQNhSIjam/mUV6kGgJ52m3FbHFA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR21MB4325
+References: <20260906074135.185212-1-jiayuan.chen@linux.dev> <20260906074135.185212-2-jiayuan.chen@linux.dev>
+In-Reply-To: <20260906074135.185212-2-jiayuan.chen@linux.dev>
+From: Kuniyuki Iwashima <kuniyu@google.com>
+Date: Mon, 7 Sep 2026 16:23:06 -0700
+X-Gm-Features: AcwNN1Xz9UhdXiFIx-Dg3fA6cQJzjy8WgHXHsftsUBO_tigszkI2pXJJ9JByUSk
+Message-ID: <CAAVpQUCzacvL7n0DejvtYQB2ZnHiUM_sg4-d==iviyvVKv=_xg@mail.gmail.com>
+Subject: Re: [PATCH bpf v2 1/3] bpf: Fix out-of-bounds read of sk_protocol in bpf_sock_destroy()
+To: Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: bpf@vger.kernel.org, Xiang Mei <xmei5@asu.edu>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
+	Eduard Zingerman <eddyz87@gmail.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
+	Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, 
+	Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
+	Emil Tsalapatis <emil@etsalapatis.com>, Ihor Solodrai <ihor.solodrai@linux.dev>, 
+	John Fastabend <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Neal Cardwell <ncardwell@google.com>, Shuah Khan <shuah@kernel.org>, 
+	Aditi Ghag <aditi.ghag@isovalent.com>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
->=20
-> On Mon, 31 Aug 2026 18:44:29 -0700 Long Li wrote:
-> > MANA reconfigures a port by destroying its queues and building them
-> again.
-> > mana_detach() tears the whole queue set down, mana_attach() allocates
-> > a new one, and every path that changes a queue property does this: the
-> > ethtool channel, ring and private-flag setters, the MTU change and XDP
-> attach.
->=20
-> Given the sheer number of reports I'm going to assume that at least one o=
-f
-> the Medium+ ones is right and respin is needed. Please LMK if that's not =
-the
-> case.
->=20
-> If you're respinning please take a pass and delete the more pointless
-> comments your LLM has added.
-> --
-> pw-bot: cr
+On Sun, Sep 6, 2026 at 12:42=E2=80=AFAM Jiayuan Chen <jiayuan.chen@linux.de=
+v> wrote:
+>
+> sk_protocol lives in struct sock, not in struct sock_common. A timewait
+> or request sock handed to bpf_sock_destroy() by the tcp iterator is
+> neither, so reading sk->sk_protocol runs past the object:
+>
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> BUG: KASAN: slab-out-of-bounds in bpf_sock_destroy+0xc7/0xe0
+> Read of size 2 at addr ffff8881047d11b4 by task test_progs/428
+>
+> Tainted: [W]=3DWARN
+> Call Trace:
+>  <TASK>
+>  dump_stack_lvl+0x91/0xf0
+>  print_report+0xd1/0x630
+>  kasan_report+0xf3/0x130
+>  __asan_report_load2_noabort+0x14/0x30
+>  bpf_sock_destroy+0xc7/0xe0
+>  bpf_prog_c3dd61f9d9cd9f37_iter_tcp6_timewait+0x9f/0xb7
+>  bpf_iter_run_prog+0x538/0xde0
+>  bpf_iter_tcp_seq_show+0x26b/0x4b0
+>  bpf_seq_read+0x424/0x1210
+>  vfs_read+0x197/0xe40
+>  ksys_read+0x119/0x240
+>  __x64_sys_read+0x72/0xc0
+>  x64_sys_call+0x647/0x27e0
+>  do_syscall_64+0xe5/0x610
+>  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+>
+> Only check sk_protocol on full socks. tcp_abort() already knows how to
+> deal with TIME_WAIT and NEW_SYN_RECV socks. Also fix the comment, it
+> never matched the code.
+>
+> Fixes: 4ddbcb886268 ("bpf: Add bpf_sock_destroy kfunc")
+> Reported-by: Xiang Mei (Microsoft) <xmei5@asu.edu>
+> Closes: https://lore.kernel.org/bpf/20260702224519.800135-1-xmei5@asu.edu=
+/
+> Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-Thank you for looking at this.
-
-Sashiko flagged that two fixes should be sent with the "Fixes" tag. I have =
-sent those two separate patches to net:
-https://lore.kernel.org/all/20260904202640.3900685-1-longli@microsoft.com/
-https://lore.kernel.org/all/20260905004401.3937066-1-longli@microsoft.com/
-
-But I can also argue that those fixes are related to this patch series and =
-should be included in this series instead. Sending them together reduces co=
-de churns.
-
-Please let me know if those net patches are appropriate, or they should be =
-sent part of the net-next series.
-
-I'll respin the patches with all the Sashiko reviews addressed.
-
-Long
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
