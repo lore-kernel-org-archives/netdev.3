@@ -1,89 +1,111 @@
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B18B347ECF7;
-	Mon,  7 Sep 2026 12:06:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E8F1494823;
+	Mon,  7 Sep 2026 12:10:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.62
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788782794; cv=none; b=lcthb+Fi1/H+wKGxnem4S7tWphmBGAqS3ApBtUvGO/tGRv+c8ZhFbm5aAxG7r/paCdBlkFhThbVBCQiqZjIprEBubklaqn18L3w7jWboBwAoLTBu7uOyszN1Weh5G8ZmU4v4hMDWowiyon4GyNOFB3vKb+ZUjR2wynVyisoHymY=
+	t=1788783037; cv=none; b=WnmdneLfwaVyFZ7oQUIAl6QgVija8akFNANCn5EoAHRLe9iQvxR8egyCNUztcDoTsp8f0OUtfeXj5+zQ5QC+NHOJB2owlR+Q9JfUcI78Q4g2OC017Yr8eB6/T2MLnUgpa1xDfcapTREfePwRTWMBVT0BUH/fpESGgx1g4S8eUPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788782794; c=relaxed/simple;
-	bh=piInyLgkcbDyzpblMqGAf2ynunGkgJ4We8r7EwXq64M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PVk2T9DONfvcNHrmsC0r43mXxNjSE16uC0Uq9MysJUtnJ5881B3FPTQ+ipntAGObIpdLQv+T5bjBtnDZPKWB/s1+lCeBgQKDTgBbFMEL8uDxAkecokUT2MAZmHR7Dx3+wjP1zVB48zdSFgqvhMkDiaH5xJIcZohJMHp1ud7lPn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=eDZNiepM; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
+	s=arc-20240116; t=1788783037; c=relaxed/simple;
+	bh=pBFTDUlgVQK476EvcxWLk9HFtl+TxdrOxm61fklUco4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=R94ZoZT0jurJ1Ke70bKyO/PPqE5exrteTPjQ2MHAcA+0PbT7KtXC6i56kNE4EGmaZ6xo1IVQCDvgi7z0lSKk9ewvzhIYnruydstS1/Rur5imc+Ytp+gEMT9p0iuUVpRGQzTJVhoBwZ9LRDpNWWVjB/3zLwsxscUnhjA8zj9h2AE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=IYqdOMsA; arc=none smtp.client-ip=213.133.104.62
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iogearbox.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="eDZNiepM"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Reply-To:Content-ID:Content-Description;
-	bh=eqN+lGGowV/0PJOpQ1jZTWLYGirGXTEyq2f7xgjKbOY=; b=eDZNiepMtBaKYeKraQipuckICA
-	59VH4/wNICYoM+4MZDtZijGsjP/EF2AXDVoRuE5VqXF8dAOurqlwek2PI6XHex6OIMm6HH/gtKK3a
-	2KFzYTUybztBPWCMkryrVayc5P39+C3f25iFdGE0rTbs1xGO0qeIVIiNz/hL7t3ZQ8bsYZa3pg1UP
-	q40uQMQzsPC0xAZUdI2mQ+UW81o+wVd0ZbTK2yI8O7BOkJ+SN8mp/1O3sDf8Tt7LDVQfz224QQNCi
-	8Od9cGrRnfSnpgKsvpKGWCFcoO6zdzaoR3IkrKrqC9GuXoPwfuwTb2lGnYjn3bN81/UFhJICv2mwf
-	HMhUfNEg==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1x3Y6s-001Ukf-2j;
-	Mon, 07 Sep 2026 12:06:03 +0000
-Date: Mon, 7 Sep 2026 05:05:56 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Hangbin Liu <hangbin.liu@linux.dev>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Shuah Khan <shuah@kernel.org>, 
-	Jay Vosburgh <jv@jvosburgh.net>, Vladimir Oltean <olteanv@gmail.com>, 
-	Jiri Pirko <jiri@resnulli.us>, "Michael S. Tsirkin" <mst@redhat.com>, 
-	Jason Wang <jasowangio@gmail.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, Petr Machata <petrm@nvidia.com>, 
-	Matthieu Baerts <matttbe@kernel.org>, netdev@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, virtualization@lists.linux.dev, 
-	Hangbin Liu <liuhangbin@kylinos.cn>
-Subject: Re: [PATCH net] selftests/drivers/net: include lib/sh/*.sh
-Message-ID: <ap6oi4YujKEgoKhu@gmail.com>
-References: <20260907-selftest_lib_defer-v1-1-8af94645aaa3@kylinos.cn>
+	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="IYqdOMsA"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:MIME-Version:
+	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References;
+	bh=I6g5bmQMO0nIQS4wp5i9NSNRztEbYChHlJxfnE70RS4=; b=IYqdOMsAh742rulpCbHcdD3Hc5
+	rjAYFtMlCPBZlA5Y972J6B9dcEpxT8bDpwzDAcz4OqT9Hy9ByQbu4LOlcEVi0eGWvPV6q0BytQhb+
+	qdS4yLWiogi0zVWnIoiov/+ivgZXPeND7FDJC179YsZiMfAmHrkLr7G5yv4zAfg9zZqrxPsNkM9Xh
+	ccbT4/eIprnn6lje9ichIMDT/MvRyN88OmKiVKJnvvBMzyzEnjiLIc6Syb47V3FlEBgL5hl0vIrQH
+	zmGGSbxCUDDVAxdosJuFFM/yUKwKQnLkydJqlh2YVkrHuEJ+vraVmZAg2pZojc2WjWz8qtAVq4SGj
+	FRjMwC3A==;
+Received: from localhost ([127.0.0.1])
+	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <daniel@iogearbox.net>)
+	id 1x3YB7-000Moq-2m;
+	Mon, 07 Sep 2026 14:10:26 +0200
+From: Daniel Borkmann <daniel@iogearbox.net>
+To: ast@kernel.org
+Cc: memxor@gmail.com,
+	yusuke.suzuki@isovalent.com,
+	tom.hadlaw@isovalent.com,
+	bpf@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH bpf 1/2] bpf: Fix bpf_skb_change_tail wrt csum partial skbs
+Date: Mon,  7 Sep 2026 14:10:24 +0200
+Message-ID: <20260907121025.1923656-1-daniel@iogearbox.net>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260907-selftest_lib_defer-v1-1-8af94645aaa3@kylinos.cn>
-X-Debian-User: leitao
+X-Virus-Scanned: Clear (ClamAV 1.4.3/28116/Mon Sep  7 08:24:32 2026)
 
-On Mon, Sep 07, 2026 at 03:28:09PM +0800, Hangbin Liu wrote:
-> From: Hangbin Liu <liuhangbin@kylinos.cn>
-> 
-> When I tried to install and run bonding selftests via:
-> 
->   make INSTALL_PATH=/tmp/kself TARGETS=drivers/net/bonding \
->      -C tools/testing/selftests install
-> 
-> Some tests fail because net/lib/sh/defer.sh is missing:
-> 
->   /tmp/kself/net/forwarding/../lib.sh: line 5: /tmp/kself/net/lib/sh/defer.sh: No such file or directory
-> 
-> One option is to add defer.sh directly to TEST_INCLUDES. Alternatively,
-> follow the approach from commit f72aa1b27628 ("selftests: net: include
-> lib/sh/*.sh with lib.sh"), which pulls in all .sh files to accommodate
-> future changes to the library directory.
-> 
-> This patch adds a wildcard to include all shell files for drivers/net
-> tests that consume net lib.sh. TEST_INCLUDES is also sorted to avoid
-> ordering‑related problems for future modifications. The team driver is
-> not affected by this bug, but we use the wildcard for it as well, rather
-> than listing only defer.sh.
-> 
-> Fixes: a6e263f125cd ("selftests: net: lib: Introduce deferred commands")
-> Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
+Cilium generates ICMP "frag needed" replies from BPF when a LB DSR
+packet exceeds the egress MTU. The reply is built by first trimming the
+packet down to target size via bpf_skb_change_tail(), and then pushing
+the ICMP error headers in front of it.
 
-Reviewed-by: Breno Leitao <leitao@debian.org>
+The trim is rejected for skbs which carry a checksum offload, e.g. TCP
+packets aggregated by GRO on ingress where tcp_gro_complete() leaves
+the skb as CHECKSUM_PARTIAL. __bpf_skb_min_len() raises the minimum
+length to the end of the L4 checksum field, so a trim to 42 bytes bails
+out with -EINVAL given a min_len of 52 in this case, and due to that
+the ICMP generator fails. This is not the case if GRO is turned off.
+
+Fix this bpf_skb_change_tail() restriction and drop the checksum offload
+when the new length no longer covers the checksum field. The BPF program
+rewrites the skb into an ICMP error and computes the checksum itself
+anyway.
+
+Fixes: 5293efe62df8 ("bpf: add bpf_skb_change_tail helper")
+Reported-by: Tom Hadlaw <tom.hadlaw@isovalent.com>
+Reported-by: Yusuke Suzuki <yusuke.suzuki@isovalent.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+---
+ net/core/filter.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
+
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 61940e753552..8513167a858a 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -3961,12 +3961,6 @@ static u32 __bpf_skb_min_len(const struct sk_buff *skb)
+ 		if (offset > 0)
+ 			min_len = offset;
+ 	}
+-	if (skb->ip_summed == CHECKSUM_PARTIAL) {
+-		offset = skb_checksum_start_offset(skb) +
+-			 skb->csum_offset + sizeof(__sum16);
+-		if (offset > 0)
+-			min_len = offset;
+-	}
+ 	return min_len;
+ }
+ 
+@@ -3983,6 +3977,11 @@ static int bpf_skb_grow_rcsum(struct sk_buff *skb, unsigned int new_len)
+ 
+ static int bpf_skb_trim_rcsum(struct sk_buff *skb, unsigned int new_len)
+ {
++	if (skb->ip_summed == CHECKSUM_PARTIAL &&
++	    new_len < skb_checksum_start_offset(skb) + skb->csum_offset +
++		      sizeof(__sum16))
++		skb->ip_summed = CHECKSUM_NONE;
++
+ 	return __skb_trim_rcsum(skb, new_len);
+ }
+ 
+-- 
+2.43.0
+
