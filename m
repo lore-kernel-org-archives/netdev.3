@@ -1,56 +1,56 @@
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com [209.85.160.197])
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F255642A173
-	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 07:58:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E4DA424D48
+	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 07:58:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.198
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788767935; cv=none; b=r69Pr2nYiXNEI0/52wn8ni9S9Sy4R+UBX8nlHTvWzGAsqMpQf/UdjLrmsW9EIYEzYZTH4Kn/NEvQowKkxEjptdgUpxsKSeVmbMprVYveUT6F4Kf/Ku3C9ZN1+0bW5Mj8d7VeZQ/t6OGVj80x35gL42+5Ac/rPsFPCCPkHeoD2NU=
+	t=1788767937; cv=none; b=jQH/Y2YK0uYHhyg3xxDV6fyxMQYjHCbUu9OTMB1Df6k2/NNa71VKHpZetght/sPK6gPg2VzTP3TpS53nIpv7fX7heubwyVO+Y9mdiiV6CxHOwgJEEGv1b3ZzBL1FVleH+RW/qcv7UxQq8wieUFgBU7ABOVlA3D5AbCOvevztr8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788767935; c=relaxed/simple;
-	bh=Xi4QG/BTy8HKRmVsIYHCwIXJHhtAoIkdIzGsesrgmMs=;
+	s=arc-20240116; t=1788767937; c=relaxed/simple;
+	bh=pkUSS715p7d5hGPiF+aYF7T+6zleozhSlqCpZugoAUc=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Nj7lgbE27CwxGW+rBRbjNNphLmjsT8klCYraxMXLoEmXHIbN4CU3rr4Z7q54gh+0qiG/wfovY43mrWhA0K96Cmp8p5ereD6TXzZmKmuvlIhQ92C/rCtDNTkr6T6xhCe/e/R1Jx0zKf9i0IA0G9O6CR++DqVULb2y5RuZLF56TXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QsvoF2Mh; arc=none smtp.client-ip=209.85.160.197
+	 To:Cc:Content-Type; b=ScDmTVlvG5/YBV54JXmrY5SvtzQmEJK9ngEyn7RzNPO+2yfeJkg6RDCjlTsdt3y6SYA4O9SAqKU5Xqb/2dXUHhxSVFyMGDqxEr9Ft4MdxL/7kl+la0wCIA6N6lTpIS0ilNeROMOlYfky5bXc+nYUNaYKZgohj56VYr+GcpAy8eQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pz3fyRRo; arc=none smtp.client-ip=209.85.222.198
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QsvoF2Mh"
-Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-5308a3825deso5716771cf.2
-        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 00:58:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pz3fyRRo"
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-939a6937513so113171485a.3
+        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 00:58:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788767933; x=1789372733; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1788767934; x=1789372734; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=0I3J3LwymPulf1lYIwrlJKH1O7QI1ghU+DumRc3rtkI=;
-        b=QsvoF2Mhu8pB6MuFdZeQbjqX8Rb1PYUNF4+GtT3H0aRkJGow7O4Ye/u2r50Gx9ACCb
-         QF6uToBc1xykSJCmyjDq3Qx8gV2R5AUt/IYV9vrQgLiDS99OYhLuM4NuO72dJgapoqCB
-         uEgfMTY+K2MmzhR3s2KnM3JchNBOLvpPqY6LoPEz2FgC7L7Bugocxvq7SVWKvMPGvuWm
-         DBQk0YQJtJFqD7ReyqKYrk6ut07I0zGOrU4TUDlkHWimaKNS1EOE7CaJbRqeGLcQBzKG
-         EDNEiT9uNNa3j0SHf7O/fRK0WaKiWBTc8F3azxIP94wsJp+yGJKXvQ30QV8EOOVoCGpU
-         zivw==
+        bh=BaeqZtHJoEIzUDnyhRVEvnp2Lmbszo5r/MdxSoprwx8=;
+        b=pz3fyRRohv7JiSOoUbOBxmjfKVaok8aiCUcPYw0h35M+jS1S47IYrBfKwUFE8Ee0BB
+         qECvCgSMmPLJ+UuvuoCvKwqg38S5WvF4uPb+PKuREsLGuJyXu8hx0JNRYWf0z2UaUZy3
+         3NP+sMppXEw4tv0u8BoPMpTapeU/sSzF+bCQZLs9u2xF94rAm4r7ppjrZeqjCc18Lsn6
+         FnATEMXL9UiqFmhz0KaoqwtsyQf7etfJP+jUvgSrql+xqVrVSzUZ/TWcXY7HTZQd3aOm
+         VHSTQjCmgcKY6qFOwl395+mLo4z8LmFGDCIQe3CXA72X8OgwKCsxn/i0O7wjMLXMUp4K
+         M5QA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788767933; x=1789372733;
+        d=1e100.net; s=20251104; t=1788767934; x=1789372734;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=0I3J3LwymPulf1lYIwrlJKH1O7QI1ghU+DumRc3rtkI=;
-        b=f1+HTcpnI+K4mf5phkKHnienxcSLh/0mBZzITxjXFmmCWR6GDr/ud88jYw2a1kpjU0
-         O5l65QyLkxka4z7ckMfi1sPdpGKaz9AjV3JMOIpgApwrD6stSaSPcA9oPsjXROWeWNdy
-         Ni6sf7CyCWKvAwx+Miltsje4euprqnBSuq9Bnl/VdQRC32H6RSIttB6nLDuw50cqQiAa
-         X07leWbnmR9942R8p/X9IF+9jWUZXOUtfSg76wey0fQlXRv6serNv44oETp5cVDnlNGC
-         Rsjor4zvfE+bxxrSLku41iVbQXUSEsSbI7gbfbjB7p4kBudNjdwbP1BgxjZ6Xok6Rii8
-         sjRQ==
-X-Forwarded-Encrypted: i=1; AKwUvByR5MWCllzQwQUQLGQn5ogKurMheSFivvtYuMCPGKE/KX5Jy8m3KzyTdsEVhoCj+E5yw36AvEA=@vger.kernel.org
-X-Gm-Message-State: AFuF++lbQersopmr2H4+cs1RuC32dqc8xJ2lej1vLu7zjEOfVT/PYjPX
-	saGVIXPTo+/rFPCsGY0aw9JoVd9Y1WxIhOIgFCo3V4tUl+sKXr4KLYwYzB66FsvBt4/cMRvSd69
-	fgqdqVr0y0YHI7g==
-X-Received: from qttt16-n1.prod.google.com ([2002:a05:622a:aa10:10b0:51c:136e:bd6c])
+        bh=BaeqZtHJoEIzUDnyhRVEvnp2Lmbszo5r/MdxSoprwx8=;
+        b=qHABFwfM+npsixKv/R9qhVbc/8POSwonNbOEVr7Y+JuDIetKNbQz72LIeu45gLizYE
+         fN8Jjrci4qnuajnWRZpg07YD3zrJk+rrSI/ja5w6vASE1plhdq4kRQY1CoKpfHw4+uEU
+         7g6QCg6Cum1Shs2z1mLeco0Lw9eD+GshWnBQ8AzQy4bSc4HYaVkUOJGaorBq2kouf+jh
+         LrJHXYhlHmoX51DtjowHFR55WLkFhivTvWgImO4cNJYjAWtqntZgu7/Z8f8fyWSENzYv
+         wOveL2c5JX6314hi+LPS84fpHGE3NUzzHGUkDCIgoOsIFNnOn6TNicHATmtApWUz61EQ
+         ubkA==
+X-Forwarded-Encrypted: i=1; AKwUvBzlK5Fpue7Sso0VUoQdeZi4MXcX6SArtY029jvY9++UZwnubYswjxsBZCBGgqD+LpYmDIOunL4=@vger.kernel.org
+X-Gm-Message-State: AFuF++m0YMMyr+kdT+/8ag9Uf8q95RvNX7KRsRD6Tfw7EH8HVtdnHctJ
+	nitk0P9aAyJ+hOtMA8xwaJqGpoM3CWfKoT8Zslb9tO02WahOAnSDs7cus51Z8tbNg6lOSGZ/lC3
+	eTyPAdYpNbqB+kw==
+X-Received: from qknot2.prod.google.com ([2002:a05:620a:8182:b0:92e:5c5a:beda])
  (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:622a:1450:b0:52d:2e0a:8ca1 with SMTP id d75a77b69052e-530549f8df5mr220278001cf.39.1788767932372;
- Mon, 07 Sep 2026 00:58:52 -0700 (PDT)
-Date: Mon,  7 Sep 2026 07:58:40 +0000
+ 2002:a05:620a:5229:b0:936:afa0:3661 with SMTP id af79cd13be357-939804a386cmr1669135685a.36.1788767933756;
+ Mon, 07 Sep 2026 00:58:53 -0700 (PDT)
+Date: Mon,  7 Sep 2026 07:58:41 +0000
 In-Reply-To: <20260907075846.2913645-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -60,8 +60,8 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260907075846.2913645-1-edumazet@google.com>
 X-Mailer: git-send-email 2.55.0.979.g7e5102b832-goog
-Message-ID: <20260907075846.2913645-4-edumazet@google.com>
-Subject: [PATCH net-next 3/9] ip_tunnel: use WRITE_ONCE in ip_tunnel_encap_setup
+Message-ID: <20260907075846.2913645-5-edumazet@google.com>
+Subject: [PATCH net-next 4/9] sit: annotate data-races around tunnel->fwmark
 From: Eric Dumazet <edumazet@google.com>
 To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
 	Paolo Abeni <pabeni@redhat.com>
@@ -72,52 +72,48 @@ Cc: Simon Horman <horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
 	Eric Dumazet <edumazet@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Update ip_tunnel_encap_setup() to use WRITE_ONCE() when writing
-to encap fields (type, sport, dport, flags) and hlen fields.
-This ensures that concurrent lockless readers (like fill_info)
-do not see torn writes.
+ipip6_tunnel_xmit() runs locklessly (dev->lltx == true) and reads
+tunnel->fwmark.
 
-Also remove the unsafe memset() on t->encap which could cause
-concurrent readers to transiently see zeroed fields.
-Removing it also fixes a bug where t->encap was left cleared
-even if ip_encap_hlen() failed, resulting in partial configuration.
+In preparation for converting ipip6_fill_info() to run without RTNL,
+add READ_ONCE() and WRITE_ONCE() annotations around tunnel->fwmark.
 
-Fixes: 56328486539d ("net: Changes to ip_tunnel to support foo-over-udp encapsulation")
 Signed-off-by: Eric Dumazet <edumazet@google.com>
 ---
- net/ipv4/ip_tunnel.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ net/ipv6/sit.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/ipv4/ip_tunnel.c b/net/ipv4/ip_tunnel.c
-index e6bcf01411d0bcd12cc9a88e449d9283c4a83c64..13b5e35e8790b13ed4c87f28d46aa2bafc9ad72c 100644
---- a/net/ipv4/ip_tunnel.c
-+++ b/net/ipv4/ip_tunnel.c
-@@ -491,19 +491,17 @@ int ip_tunnel_encap_setup(struct ip_tunnel *t,
- {
- 	int hlen;
+diff --git a/net/ipv6/sit.c b/net/ipv6/sit.c
+index 9a2bbd76d3794849cd11c6530ba1303bf53fa388..e85fa80e80d1ad2c593b860685b9f5bac21e66d9 100644
+--- a/net/ipv6/sit.c
++++ b/net/ipv6/sit.c
+@@ -929,7 +929,7 @@ static netdev_tx_t ipip6_tunnel_xmit(struct sk_buff *skb,
+ 	if (!dst && !ipip6_tunnel_dst_find(skb, &dst, false))
+ 		goto tx_error;
  
--	memset(&t->encap, 0, sizeof(t->encap));
--
- 	hlen = ip_encap_hlen(ipencap);
- 	if (hlen < 0)
- 		return hlen;
+-	flowi4_init_output(&fl4, tunnel->parms.link, tunnel->fwmark,
++	flowi4_init_output(&fl4, tunnel->parms.link, READ_ONCE(tunnel->fwmark),
+ 			   tos & INET_DSCP_MASK, RT_SCOPE_UNIVERSE,
+ 			   IPPROTO_IPV6, 0, dst, tiph->saddr, 0, 0,
+ 			   sock_net_uid(tunnel->net, NULL));
+@@ -1153,7 +1153,7 @@ static void ipip6_tunnel_update(struct ip_tunnel *t,
+ 	t->parms.iph.frag_off = p->iph.frag_off;
+ 	if (t->parms.link != p->link || t->fwmark != fwmark) {
+ 		t->parms.link = p->link;
+-		t->fwmark = fwmark;
++		WRITE_ONCE(t->fwmark, fwmark);
+ 		ipip6_tunnel_bind_dev(t->dev);
+ 	}
+ 	dst_cache_reset(&t->dst_cache);
+@@ -1706,7 +1706,7 @@ static int ipip6_fill_info(struct sk_buff *skb, const struct net_device *dev)
+ 	    nla_put_u8(skb, IFLA_IPTUN_PROTO, parm->iph.protocol) ||
+ 	    nla_put_be16(skb, IFLA_IPTUN_FLAGS,
+ 			 ip_tunnel_flags_to_be16(parm->i_flags)) ||
+-	    nla_put_u32(skb, IFLA_IPTUN_FWMARK, tunnel->fwmark))
++	    nla_put_u32(skb, IFLA_IPTUN_FWMARK, READ_ONCE(tunnel->fwmark)))
+ 		goto nla_put_failure;
  
--	t->encap.type = ipencap->type;
--	t->encap.sport = ipencap->sport;
--	t->encap.dport = ipencap->dport;
--	t->encap.flags = ipencap->flags;
-+	WRITE_ONCE(t->encap.type, ipencap->type);
-+	WRITE_ONCE(t->encap.sport, ipencap->sport);
-+	WRITE_ONCE(t->encap.dport, ipencap->dport);
-+	WRITE_ONCE(t->encap.flags, ipencap->flags);
- 
--	t->encap_hlen = hlen;
--	t->hlen = t->encap_hlen + t->tun_hlen;
-+	WRITE_ONCE(t->encap_hlen, hlen);
-+	WRITE_ONCE(t->hlen, hlen + t->tun_hlen);
- 
- 	return 0;
- }
+ #ifdef CONFIG_IPV6_SIT_6RD
 -- 
 2.55.0.979.g7e5102b832-goog
 
