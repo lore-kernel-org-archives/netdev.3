@@ -1,162 +1,167 @@
-Received: from hr2.samba.org (hr2.samba.org [144.76.82.148])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4EA25111B4;
-	Mon,  7 Sep 2026 16:48:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.76.82.148
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1595751E443;
+	Mon,  7 Sep 2026 16:52:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788799716; cv=none; b=L8R/ABs4mjNRXoHbz6Tn4IVjABh5ySFdKKfSUy4DUweq9cKUhWzru/pFk11lG11kPAtw/uexcTVkWOzFihZ9l7Z8cmJ9I7Qrrz6EiEMstthm7mDGXeIMSn0IwsXXOIn5yC8n0/WvvUfh2irXjPNw8t9PrZzN0vBfE+j+DOD+Ojc=
+	t=1788799982; cv=none; b=Rz4jbnHR76rtx6y4XUqv2tsmTyL0J5C6j7C/m+KfcKUxriE3fAGW9cWpWTMU9jd8Cz23JenjlADXq59Dz4lhlxMkySOzdp7g6jEWptICRyZnxXpk8dubBPACN2nEHA1qokioL6DYhzufRhyyHs6FdRJDF1XZ/gGf9W0ylIYHZc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788799716; c=relaxed/simple;
-	bh=kwI2m1iUU4+WXQsG+OZNBZprZHpEnMTkNocut//aGK8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AH4cv2teGNs3JFjALzrU4FQhMG7+uI3YJPyZAfqNWpCLgHr6G1kTCYRGTAxbQ7q08xKGWSg9UY3+FMTZrchxEmhuzxgOrMvQb7JRuS0LEz8OLdlrdmgSMbM0oOAZcKsTtGCADuzdPQ2/yzMXvupn+NAF8/Akz+knAUn9sjHbipM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=samba.org; spf=pass smtp.mailfrom=samba.org; dkim=pass (3072-bit key) header.d=samba.org header.i=@samba.org header.b=KBo4vUkA; arc=none smtp.client-ip=144.76.82.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=samba.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samba.org
+	s=arc-20240116; t=1788799982; c=relaxed/simple;
+	bh=bBRbQ94ZOEkSEakBN1pIgYkF19BeSbsVt2yRQi0m7k0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BnE3i4dHhrVpKTjDackQXHV/8EpNZK2wQQtzblMjlagrsMYHs02Q6j89HQudACE0I8RsnXBn4c7mcG8Q6yOr801J0YazmpGUNmBjZZ2ogcB3eDGyQJRQ/kz9sybwRaa8Rk3+cLvVMN1w+n6nJ2oPHCBK4s2Ycpi4Byw7qSY5aAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=z42pw5VT; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (3072-bit key) header.d=samba.org header.i=@samba.org header.b="KBo4vUkA"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=samba.org;
-	s=42; h=Message-ID:Date:Cc:To:From;
-	bh=8r9SnL35HhiSLVJEbRnHKRUmG3f/HAJLdYLhcCv44DQ=; b=KBo4vUkAURwWxaGK5c61L2ZBD6
-	HAaI50GF6FBzxK//MHyMxipG1loqo/2a9pYvo5iN1wtXgWeLyO4N00+r7OHZZtAh6j5iobJ4kkByS
-	LNy0hZ2BotczspO/v92IX9fVD4Y7Y07i9eJSGQgn6hzNRdXIfwOd9tz0D3MBr+K9OnVFwCF1gS/t7
-	+lfVkptVw21SZCQW1ZVFSYaeFZcxQ42swJjJK92BRw5JchysovU8VbS9wwQxUnB0zuhjHQR96GOq4
-	c4uVQ70mCo2kaGMXS/UBgY7oZU9AN/DKFq70nWVXl+lxzhYME6UkJO6+e9nW1dHP1eEgSoY0iWmJj
-	0CHQfmTsf6Y5gTAca9GJemMJaD1WHohg8CcT5gRhL+2qWvFHTHiZ13NlyT1AyHKHY6eD5voXkxD1o
-	xy6mZCJvbsxzW390Lr7HeBSsPJu1YrI/KIaMQ5iOJ3MD8CkIFsAAtFbicwU5YVFhF7pSMlrgioHZO
-	oM19YAm8lHu3+MIrnsink7tD;
-Received: from [127.0.0.2] (localhost [127.0.0.1])
-	by hr2.samba.org with esmtpsa (TLS1.3:ECDHE_SECP256R1__ECDSA_SECP256R1_SHA256__CHACHA20_POLY1305:256)
-	(Exim)
-	id 1x3cW5-00000000BzV-1gZ3;
-	Mon, 07 Sep 2026 16:48:22 +0000
-From: Stefan Metzmacher <metze@samba.org>
-To: intel-wired-lan@lists.osuosl.org
-Cc: metze@samba.org,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] ice: fix double dereference in TP_printk problems in ice_{rx,tx}_dim_template
-Date: Mon,  7 Sep 2026 18:48:10 +0200
-Message-ID: <20260907164810.1048081-1-metze@samba.org>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="z42pw5VT"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 3B3C44E41575;
+	Mon,  7 Sep 2026 16:52:58 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 0CC2360383;
+	Mon,  7 Sep 2026 16:52:58 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id CC4B411C7A34F;
+	Mon,  7 Sep 2026 18:52:50 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1788799977; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=SaxvEmxspb626SKeKU9mGlI9YVMzBYhU6QaMsiPoRkw=;
+	b=z42pw5VT/hKkzDp1oZOWeeLe8QHIWVUwnodkcevKFLGyygzG2ttmLhuahw9f2l8O+qheKo
+	KrSY7uRg5oyLcgUD7CNvQ+kpLfRFV8upBGS8anhHtMKLaSUvSV6epFhOwHCIeNX0yVsvH+
+	RGpluv3ZTz5OCfneviWZDiCX2hjhkR4cMThml22MJZn5ypHKr7puyrumT+QB4n7ZUe6cXa
+	/hobKyvbhZFpif7b/rRVYBaJ9+/66u/Q0XNAJl+z1n5kOa752D0RItCG3AeHM5mffBX8IT
+	QW0hA9LrWMRfmYzpbIu3qKbZJVM8jRZqOchau2KEQsANi/mIIGr6oS18LANS3Q==
+Message-ID: <e01d0dc2-a1e5-415d-9126-fbf2344e6b7d@bootlin.com>
+Date: Mon, 7 Sep 2026 18:52:49 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2] net: stmmac: propagate PTP init failures in
+ __stmmac_open() and stmmac_resume()
+To: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Richard Cochran <richardcochran@gmail.com>,
+ Rayagond Kokatanur <rayagond@vayavyalabs.com>,
+ Thierry Reding <treding@nvidia.com>, Russell King <linux@armlinux.org.uk>
+Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+References: <20260907-stmmac-ptp-error-propagate-v2-1-4a2e8e41e860@oss.qualcomm.com>
+Content-Language: en-US
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <20260907-stmmac-ptp-error-propagate-v2-1-4a2e8e41e860@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-ice_tx_dim_work and ice_rx_dim_work generate the
-following: "has double dereference in TP_printk" errors:
+Hi,
 
- REC->q_vector->tx.tx_ring->q_index
- REC->dim->state
- REC->dim->profile_ix
- REC->dim->tune_state
- REC->dim->steps_right
- REC->dim->steps_left
- REC->dim->tired
+On 9/7/26 13:50, Lorenzo Bianconi wrote:
+> stmmac_setup_ptp() returns void and swallows both PTP setup errors:
+> the PTP reference clock enable and stmmac_init_timestamping()
+> failures are logged but never propagated. When they fail, the MAC
+> system time counter is left in its post-reset, non-running state,
+> while the driver keeps operating as if timestamping were up.
+> This matters for TAPRIO/EST qdisc offloading, which derives the EST
+> base time from the hardware timestamp counter: arming the gate list
+> against a non-advancing time base would leave the schedule permanently
+> stuck.
+> 
+> Make stmmac_setup_ptp() return an error code and propagate the
+> failure in __stmmac_open() and stmmac_resume(), stopping the DMA
+> engines when PTP setup fails.
+> 
+> Extend the same error propagation to the timestamping counter
+> initialisation: stmmac_update_subsecond_increment() and
+> stmmac_init_tstamp_counter() now return the addend and system time
+> programming errors instead of discarding them, so a counter that
+> cannot be configured is reported as a failure rather than silently
+> left non-running.
+> 
+> While at it, factor the timestamping availability check into a
+> stmmac_check_timestamp_cap() helper that requires both the hardware
+> timestamping capability and a valid PTP reference clock rate. This
+> keeps the interface operational on platforms with PTP-capable
+> silicon but an unconfigured PTP clock, where timestamping cannot be
+> enabled: those are treated as PTP-less rather than failing to open
+> or resume. Apply the same helper to the hwtstamp get/set paths so
+> they consistently report -EOPNOTSUPP when timestamping is not usable.
+> 
+> Fixes: 92ba6888510c ("stmmac: add the support for PTP hw clock driver")
+> Fixes: 0ad2be79f254 ("net: stmmac: Balance PTP reference clock enable/disable")
+> Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+> ---
+> Changes in v2:
+> - Check clk_ptp_rate value in stmmac_check_timestamp_cap().
+> - Return error code in stmmac_update_subsecond_increment() and
+>   stmmac_init_tstamp_counter().
+> - Rely on stmmac_check_timestamp_cap() in stmmac_hwtstamp_set() and
+>   stmmac_hwtstamp_get().
+> - Link to v1: https://lore.kernel.org/r/20260904-stmmac-ptp-error-propagate-v1-1-80f01b03dafa@oss.qualcomm.com
+> ---
+>  drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 96 +++++++++++++++--------
+>  1 file changed, 64 insertions(+), 32 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> index 07a6fab6460e..99d4fbccc300 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> @@ -601,7 +601,7 @@ static void stmmac_get_rx_hwtstamp(struct stmmac_priv *priv, struct dma_desc *p,
+>  	}
+>  }
+>  
+> -static void stmmac_update_subsecond_increment(struct stmmac_priv *priv)
+> +static int stmmac_update_subsecond_increment(struct stmmac_priv *priv)
+>  {
+>  	bool xmac = dwmac_is_xmac(priv->plat->core_type);
+>  	u32 sec_inc = 0;
+> @@ -625,7 +625,18 @@ static void stmmac_update_subsecond_increment(struct stmmac_priv *priv)
+>  	 */
+>  	temp = (u64)(temp << 32);
+>  	priv->default_addend = div_u64(temp, priv->plat->clk_ptp_rate);
+> -	stmmac_config_addend(priv, priv->ptpaddr, priv->default_addend);
+> +	return stmmac_config_addend(priv, priv->ptpaddr, priv->default_addend);
+> +}
+> +
+> +static bool stmmac_check_timestamp_cap(struct stmmac_priv *priv)
+> +{
+> +	if (!priv->dma_cap.time_stamp && !priv->dma_cap.atime_stamp)
+> +		return false;
+> +
+> +	if (!priv->plat->clk_ptp_rate)
+> +		return false;
+> +
+> +	return true;
+>  }
+>  
+>  /**
+> @@ -653,7 +664,7 @@ static int stmmac_hwtstamp_set(struct net_device *dev,
+>  	u32 ts_master_en = 0;
+>  	u32 ts_event_en = 0;
+>  
+> -	if (!(priv->dma_cap.time_stamp || priv->adv_ts)) {
+> +	if (!stmmac_check_timestamp_cap(priv)) {
 
-And the first one hits a WARN_ONCE()...
+This isn't equivalent, as here we check for adv_ts. adv_ts is more restrictive than
+just checking the atime_stamp cap, as on dwmac1000 we need both extend descriptors
+and atime_stamp capa to set adv_ts.
 
-Fixes: 3089cf6d3caa ("ice: add tracepoints")
-Cc: Tony Nguyen <anthony.l.nguyen@intel.com>
-Cc: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
----
- drivers/net/ethernet/intel/ice/ice_trace.h | 44 +++++++++++-----------
- 1 file changed, 22 insertions(+), 22 deletions(-)
+Now we do have a discrepancy between the _set and _get timestamping ops, as the _get
+part only checks the atime_stamp capa.
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_trace.h b/drivers/net/ethernet/intel/ice/ice_trace.h
-index 4f35ef8d6b29..c641f8ce1aff 100644
---- a/drivers/net/ethernet/intel/ice/ice_trace.h
-+++ b/drivers/net/ethernet/intel/ice/ice_trace.h
-@@ -63,23 +63,23 @@
- DECLARE_EVENT_CLASS(ice_rx_dim_template,
- 		    TP_PROTO(struct ice_q_vector *q_vector, struct dim *dim),
- 		    TP_ARGS(q_vector, dim),
--		    TP_STRUCT__entry(__field(struct ice_q_vector *, q_vector)
--				     __field(struct dim *, dim)
-+		    TP_STRUCT__entry(__field(u16, q_index)
-+				     __field_struct(struct dim, dim)
- 				     __string(devname, q_vector->rx.rx_ring->netdev->name)),
- 
--		    TP_fast_assign(__entry->q_vector = q_vector;
--				   __entry->dim = dim;
-+		    TP_fast_assign(__entry->q_index = q_vector->rx.rx_ring->q_index;
-+				   memcpy(&__entry->dim, dim, sizeof(__entry->dim));
- 				   __assign_str(devname);),
- 
- 		    TP_printk("netdev: %s Rx-Q: %d dim-state: %d dim-profile: %d dim-tune: %d dim-st-right: %d dim-st-left: %d dim-tired: %d",
- 			      __get_str(devname),
--			      __entry->q_vector->rx.rx_ring->q_index,
--			      __entry->dim->state,
--			      __entry->dim->profile_ix,
--			      __entry->dim->tune_state,
--			      __entry->dim->steps_right,
--			      __entry->dim->steps_left,
--			      __entry->dim->tired)
-+			      __entry->q_index,
-+			      __entry->dim.state,
-+			      __entry->dim.profile_ix,
-+			      __entry->dim.tune_state,
-+			      __entry->dim.steps_right,
-+			      __entry->dim.steps_left,
-+			      __entry->dim.tired)
- );
- 
- DEFINE_EVENT(ice_rx_dim_template, ice_rx_dim_work,
-@@ -90,23 +90,23 @@ DEFINE_EVENT(ice_rx_dim_template, ice_rx_dim_work,
- DECLARE_EVENT_CLASS(ice_tx_dim_template,
- 		    TP_PROTO(struct ice_q_vector *q_vector, struct dim *dim),
- 		    TP_ARGS(q_vector, dim),
--		    TP_STRUCT__entry(__field(struct ice_q_vector *, q_vector)
--				     __field(struct dim *, dim)
-+		    TP_STRUCT__entry(__field(u16, q_index)
-+				     __field_struct(struct dim, dim)
- 				     __string(devname, q_vector->tx.tx_ring->netdev->name)),
- 
--		    TP_fast_assign(__entry->q_vector = q_vector;
--				   __entry->dim = dim;
-+		    TP_fast_assign(__entry->q_index = q_vector->tx.tx_ring->q_index;
-+				   memcpy(&__entry->dim, dim, sizeof(__entry->dim));
- 				   __assign_str(devname);),
- 
- 		    TP_printk("netdev: %s Tx-Q: %d dim-state: %d dim-profile: %d dim-tune: %d dim-st-right: %d dim-st-left: %d dim-tired: %d",
- 			      __get_str(devname),
--			      __entry->q_vector->tx.tx_ring->q_index,
--			      __entry->dim->state,
--			      __entry->dim->profile_ix,
--			      __entry->dim->tune_state,
--			      __entry->dim->steps_right,
--			      __entry->dim->steps_left,
--			      __entry->dim->tired)
-+			      __entry->q_index,
-+			      __entry->dim.state,
-+			      __entry->dim.profile_ix,
-+			      __entry->dim.tune_state,
-+			      __entry->dim.steps_right,
-+			      __entry->dim.steps_left,
-+			      __entry->dim.tired)
- );
- 
- DEFINE_EVENT(ice_tx_dim_template, ice_tx_dim_work,
--- 
-2.43.0
+It seems to me that your fix is the correct one though.
 
+To me the patch looks OK,
+
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+
+Maxime
