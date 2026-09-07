@@ -1,210 +1,296 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7888039CD10
-	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 23:34:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B9CE198A17
+	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 23:57:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.169
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788824086; cv=pass; b=RIxmtol0lEQcBW6h4CvteyEmF7zbF4GyoBNvnnbw/YZ4rJDoO35PYPkb3oHiGPDdOlhmEVeA8lxJmnTUB6gFRxQlnVhgk8Sx7ZSDpv0j0QOZjoaxno+gN3J0VJhBmL55G6ZqJbu6nG9HDMxrTVVh/Bi9H5gr/ug803DiuJz5Xaw=
+	t=1788825427; cv=pass; b=JzfaTR0ba2GmYPXIXckJ75BFH/HHl0cSIm2nqimA7dlJrx04n8jOLXfHviPNLQDFm2icjWUzrdGFOBLtYMujEWeD8RibMIUY8VNHuHRl9yojcyvXxVTRPosbwk/FYQ3RDGLCC24TPSDRfyvysBJOYr50B+kCDAyjFmEiY0EX/v0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788824086; c=relaxed/simple;
-	bh=l6bwwoVueCaG8E45kbLYaQURVS5qLWt2C7NdrvXHikY=;
+	s=arc-20240116; t=1788825427; c=relaxed/simple;
+	bh=c46rKTMk+T0MRz6l9oagh37NJf3pH9LBMlVldg+ehAQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XFSK7vRR2AaA0idx7Qq2oZE8Oneb4+47ZE2ZZ7oBosTLloPw86StEJQWGvXuwCgdT5HNziRHnP0Wvecg4MNou46K/W1oB1TAVxjcUnUuetlxHNGToKaPK54LS4k3PIHXSWcUbMfLsaiacuUOWpQo+RQX1Aq9mWY2kj1NB6GeolQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LueDEPZr; arc=pass smtp.client-ip=209.85.214.172
+	 To:Cc:Content-Type; b=CBQs6w+OwpmLJG5NQNum3SZBxKXBR/TQfQFYXK46yiqP10xo5q5FPR08vsbWkCMdsHidYHG5FSh2t5Zs3xLIciJc+y9+dMlXyiLjjCVVadr/YHgFo7caNTRSPgf/18PWNf7gzFq0Pknl/aC0tOmUt1v0G3B/lemwwEJIsDDQ5Tg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HKLQvJR5; arc=pass smtp.client-ip=209.85.215.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LueDEPZr"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2db3305f94fso27336045ad.0
-        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 16:34:45 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788824085; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HKLQvJR5"
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-cbe827e3cb4so4204255a12.3
+        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 16:57:06 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788825426; cv=none;
         d=google.com; s=arc-20260327;
-        b=lNAT0arjYrMvLGuGfxKgN5tMxLXbimoLRbsATn+TDp56Nh/fZf3ef9Umx6NGG5p0y0
-         3Ok0v48F2LOSCzM74XitwsnKm8JptJVcuS1rW6lYaP4YYida3NidJRaTwz1vZ98PxwOA
-         +JtCS6cuCjI5OIb0SY0tc2GGEZuu/BZkQpfr3ivXloC2pB97J2vdFPk3bYG1ueZ3rTfN
-         9ZwHsHVEGDgt3mlTQKtRUcQhwL3hNDWBmUU5KGYQPTXCL8vTr/SsNpfpy6vZZIfisHW5
-         vfT7IwnHpwnBVb+20MApCejU4Brvbv7eTVPSVFsA49+584m3w4ox00yZ++WlV+Jqj+Fk
-         DrLg==
+        b=LS4UbjhByNukfITLZFn0cSeXtd9QStgezFXdvAp1SPi+Z02TfOkB+DUnZdUGjaOwoF
+         BSDuhkK3XWUnW43s7FOGHBv3Brr5Ph2AEbzIPEWQLO0GG6VWcchbB7rKrS1OnqEdu+5C
+         bu8231sxiCXlmVuEp2LXG4JtJ3P94As76XXXHwm/thbyEeIEiMfh4fwO50j5Vf2fnGkd
+         jerO/Cjgij+NpWw27NZn+Oy3rOm8LJDv+hESzzqdku54zWxnmW9cf9nLDrB6ibszEBKD
+         qV7oyygztdOf/R5jV3c3LcJ+LuYsTQT1u/I1hkw4FYiylkTrDsN/nCliGGnYRl+9LP7D
+         gxaw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=Awv3H1wnvCKoXScc4pcndUyTglaueBmQi2mzpL4GQqA=;
-        fh=xlvwSrPcKnMIRmjnaU5GJoM8lMkGS7bELURWUFmCOjY=;
-        b=qXGRvqlWeR2mchhuSOwfJqLaXg4OYjU2kfDVk11tQJK5dBJug4tHDCVqg140VoCll0
-         O0exkyIWXJu1HMCrdSVrGXuhdHk0RAqW3wPF8MSGtdo26O/AXIx39dXlBv/XI2H7/JBP
-         bttVVSXUEDr+/9Lqc8kKgE0pXaSMRS5/AS7oK08acDXJx17TubEuUoHHCP26SedrOV2B
-         It4FqnTNGNizlQrikXZqTBYLC5dCsJyAI1qbbrvbeX5hY6VqvkervWaKwVvJU/9TaeHu
-         J13i9V7SMmnMSa1MwawgpZiLO//X+JH1svUlKtlOo6yj3zv0v9CWk4/ZsNJb8NG+y3T2
-         6xqQ==;
+        bh=D/z7LJACNXlnGot4pgyxsZRjQOLIXZF20cD2esZWxL4=;
+        fh=IIHQYwYi4raubTOEtx9IFnIJfu7hqrhsPHbTxfUuvHs=;
+        b=aoxkTTCOuAbRYZXJoTNO0naQjB14uwOM+59kqdJwELKazdrx+SFlvbyRctDC7IV4ky
+         ufdTRr/nnP+3rCdzd6V7A0k7okZYKV2rPaXb2lY/7LoHm94JRWTWmdg5rODQvi2NQ37Q
+         Bj9ab32YLn+LX3Ko+2LNytlX62AoVAGScJZNrWgB0HCsh8HMnkWcx3N8l2C9livqElAA
+         v2n4hvHq9O22Ki4IGZHBUsuvWHP+du+9NnROjT4eEXRfNHzg7PfFMrk9F3hJNc4J1ZmW
+         qMvwzDErzwBK+/1JaysVsq45V/stqSgOsa8d4506UOVq5bJY+0LaS1AR8+xSM67Miahj
+         hA1A==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788824085; x=1789428885; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1788825426; x=1789430226; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=Awv3H1wnvCKoXScc4pcndUyTglaueBmQi2mzpL4GQqA=;
-        b=LueDEPZrwERRQSqM4jQrV4y5AcPQiFDDOxYgL798newQ1GTpIjbL3H5vEICl9llvd4
-         Y92DZADnXzh2vJDaQPscrI/URK4PCO33pne9encxE94MXh6t4BQ2eeu+mDP3InZkgve4
-         7vbvzttqw0aiGB0pI082mmpMQBE2Zo5Ef4cg0YlV8Pge0uITCSJ9YqYDpUUAKteDsOZl
-         svnjiO2HuX0cHbYXpXQH3gCGtMYzg6tTM8oxMt7tDr4BSffy5A+mdjJHoeBAzt3qqeD3
-         o+4c+M2UC0vgAZQBjKcwNV1eF2Vr86KKswB8/Ttv80E5547Og37X9ZGnyt2tL3d1RoBo
-         rmFg==
+        bh=D/z7LJACNXlnGot4pgyxsZRjQOLIXZF20cD2esZWxL4=;
+        b=HKLQvJR5RsM3uYCvYh9JwI1uCGJxiSKFCHIl7szrkkm57gz8yFHex7c0Sxb03fL0cA
+         pe7X1j6HBerKwl5NZTdfEhZAwkKVKyGrLuFO2w7etaDkE9IAe+t2XLSu6e00YyeY0Bjr
+         0wq2HpSjcJ+JG5yn1MTpl1po+nKb9zfICO7t7lQ+WkXUERs/ldrw5zqfv7Efy8timYSQ
+         TBp3lvjPj7lmlsjeTge8Aj3e+NYRFR/7gdcwQtiXjlNBs3/EoDT1tGepdInUHNEjKZtP
+         cBfrMlv29f4Ts0wChMBiV2CBvdezyOIpMmfvRwjxN1caPEgWeYwXrBvzJbSATQnQtRgm
+         BZSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788824085; x=1789428885;
+        d=1e100.net; s=20251104; t=1788825426; x=1789430226;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Awv3H1wnvCKoXScc4pcndUyTglaueBmQi2mzpL4GQqA=;
-        b=OSexzAmItEqUEvoRR9hi6JHaVkSZSqEpjstEJice/N1D86ED8gYMX2xcpLNBJwRCLS
-         FwlvoEODENLLTy0EPhTKJQQqAnbq9PVPrVMwe5xZcz5APGgWgs/2an3JN5+twDHuIjWC
-         CBuDqsoTsSCmXUYXGcDm6+9/HLHWYBlu/Qm/xrduUUW/FM5zqRN+ZQKSgrByqWX5i5zD
-         hlg+sRKP5678DI0pYKOtswrsFL0fUifDvZfD/Ogq4yMtNHnlzJM5jlLUQ4ApQ70Njh5M
-         2huCEnJcjHcA1vC7r0q5n1GAdAHpug73a3JvODB4L6ENwev6wlkQcvl1H4L5LRb8stoE
-         s7cg==
-X-Forwarded-Encrypted: i=1; AKwUvBxJx+4RpHBrFVJwzjpU9Cz9mBdtyqjHnqaBrz9rGaFOSD9PpUW5pF2EaaFcjS6Lfr72ZcNTAU0=@vger.kernel.org
-X-Gm-Message-State: AFuF++n3h/tcU+oUaeuKcV9RPzCQQ2w3QjK9ePWf9RMs2PauDGWjqJ0j
-	8kwqH49ggRSVDqiVVG+CiJV6bYdiKWT8dcqC7rtv7pQtItZ3D73DIh34PF1W80wOg98y+hV4Ufj
-	8H8Wh1RjpoYGC8nQskIgwJJEUXRA85kosa41sbS82
-X-Gm-Gg: AYBFou2BFC66qmkAY0cMMKurv4+Jy2RauGS288TbkAGMqBg1LKZDSuBZsKl35z2oIYe
-	EMMh7tYozfm5R3vvsjgKz0q2fi9MrCprjeP6rnnLUtr6QX3YwxhKO/eXgwpr2OJcrtax0Ii4tl7
-	lw0iw3L0hMACqM8SlIKkYTIMa3wevcuuvoxw66T6lG2sYLU9qIcRbA9RbvOb33KxNf3K2mp04km
-	ihpYflN1PRfsQQU4sc++JUdYDVPPFyss+6FcF+aYo+seNH2b5yxwfeEDzSN93M3pwnoRQ5IZkv3
-	KlWG1hWv/tDvdoMq1YjdcH0ylYlu7vARnhmIs5FSWaIOwDDm2ANHb+aXLLGEU2FM/UHFW0b8G2F
-	yP4klYVzj+Z0gTiURopmQndf00DLAsd9hpC2QZKtOjmP1qOI6cq7MuNkb
-X-Received: by 2002:a17:90b:570b:b0:398:deed:6e1d with SMTP id
- 98e67ed59e1d1-39b260de5bbmr39739841a91.5.1788824084339; Mon, 07 Sep 2026
- 16:34:44 -0700 (PDT)
+        bh=D/z7LJACNXlnGot4pgyxsZRjQOLIXZF20cD2esZWxL4=;
+        b=GRUgM2xKcKFU+ZzVCAb1tv8CsvWyKjrE25A2cHo8+I5kS5DEECK42pK2lBwha3ARWl
+         9hrXqKtH1XR3PTdGPsj74c6jPIgVg3dT7jz72y3llb9wyQJsDbKU1OPnOZbWFUzogQ+Z
+         Hvdn0f9FVLkTMw3mHmDY1rsGsq17+TOGipM/a1SnZjC66kzmDF5nAir9CJCkUJ7QqDvX
+         nRdsATjeZGIjK1J6f2lX12wUgUbYep8ymRPJ/pIJ/L6mIxr7/Xm1M8qIeUba64krJpZN
+         qmjf3mukjrPuE7A23IckOy89SU6ZxS59NK2xgo5dsAjKEuGNObadc52Kqd0HlZzB2QMN
+         1IBA==
+X-Forwarded-Encrypted: i=1; AKwUvBxR+0kq+hWRUkWULNbqW0zfLNqLRZYtASmz8wpv28TlviylrW9sCJ+lM9meyKndbSwA9BsuMik=@vger.kernel.org
+X-Gm-Message-State: AFuF++mjzDtk0SMJmiaybrVpN8Ots7DQWRttlmH/dOGfZxLpZu3yGz0W
+	Op+OOyvK7Wkwhya1/EiGhjDwOO8FDMKAa5mLJxPPqoEqjpHjdhMtlbOpMUljVvkPe2hl9Ustcag
+	FugEQ0gIaVTO6kv3aaNESEGi3x+gub4LtKvAZcFEz
+X-Gm-Gg: AYBFou1qwR0hzbw8e6tIuhatEzhyWDu1/76fNew+p2CO4Ajl2SaACvVnp/t0sbQ7pVM
+	sy8UCYS50PYQqqEZJD0KsyoIJIEOQHuLxjrj+RAePEcXsmW04TdDLHBpuXsd9Vb1UmEComoJAtJ
+	wSTurhckpDWeKf3NqnDAZGoOSuEnf2E9vLIv/U9U93dFjm7cH5Nw546s8Dwyn3MCdgWgOOoP+Uw
+	MZMSn87lySeIhbkRIrUF1GFCR80ZFPzvmq8rImVf00yU9eWD3yduYD/nRzA4hi1TzBHP97bIGAo
+	3+OAX3d7J2C2YuILtsr74V9pV6j29Oaw9enO+poTGoeEWRrkHPNAfC2i1dszT3jlztx11z3g3mV
+	Eo94l86q87DmhYTZQMTXuwRvtFMbdqsD4eXkta74sT0IcPfSiqQbCgdsF
+X-Received: by 2002:a05:6300:6ccf:20b0:3da:a65a:84f5 with SMTP id
+ adf61e73a8af0-3daa65a8585mr1388467637.22.1788825424973; Mon, 07 Sep 2026
+ 16:57:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260906074135.185212-3-jiayuan.chen@linux.dev> <0aa6425f9e8f32705ae827f6325b29079234c3f3d0c7b2cdefba3e5b50432766@mail.kernel.org>
-In-Reply-To: <0aa6425f9e8f32705ae827f6325b29079234c3f3d0c7b2cdefba3e5b50432766@mail.kernel.org>
+References: <20260902202202.892676-2-kuniyu@google.com> <178851031241.4131868.9083667477267963758@kernel.org>
+In-Reply-To: <178851031241.4131868.9083667477267963758@kernel.org>
 From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Mon, 7 Sep 2026 16:34:32 -0700
-X-Gm-Features: AcwNN1UK4ePHf92C8dfodAq8wlNSEQxGqv1s9W_oplqA5uHsM2tjuHOURyVXA5A
-Message-ID: <CAAVpQUBztYDHyiCN1fnhdxCPv_5AZ09yCMQfNW96SzZyw0LhHA@mail.gmail.com>
-Subject: Re: [PATCH bpf v2 2/3] tcp: Skip cond_resched() in
- inet_csk_listen_stop() under BPF context
-To: bot+bpf-ci@kernel.org
-Cc: jiayuan.chen@linux.dev, bpf@vger.kernel.org, daniel@iogearbox.net, 
-	john.fastabend@gmail.com, sdf@fomichev.me, martin.lau@linux.dev, 
-	ast@kernel.org, andrii@kernel.org, eddyz87@gmail.com, memxor@gmail.com, 
-	song@kernel.org, yonghong.song@linux.dev, jolsa@kernel.org, 
-	emil@etsalapatis.com, ihor.solodrai@linux.dev, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	ncardwell@google.com, shuah@kernel.org, aditi.ghag@isovalent.com, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, martin.lau@kernel.org, mason@kernel.org
+Date: Mon, 7 Sep 2026 16:56:53 -0700
+X-Gm-Features: AcwNN1WnVdC9bMdt5ndpzqvd8FZNkodwzSQORcM_zHpAy9v5kpjpbHQaXLr8iBA
+Message-ID: <CAAVpQUAnN3Nd6bnmV4pV5Nuei2kM9R0PJDOforHDqpFigYvMMA@mail.gmail.com>
+Subject: Re: [PATCH v1 net 1/3] af_unix: Update last skb marker in manage_oob().
+To: netdev-bot+sashiko@kernel.org
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	pabeni@redhat.com, horms@kernel.org, fahad@codepure.com, kuni1840@gmail.com, 
+	netdev@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Sep 6, 2026 at 1:23=E2=80=AFAM <bot+bpf-ci@kernel.org> wrote:
+On Fri, Sep 4, 2026 at 1:25=E2=80=AFAM <netdev-bot+sashiko@kernel.org> wrot=
+e:
 >
-> > tcp: Skip cond_resched() in inet_csk_listen_stop() under BPF context
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider:
+>
+> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 1 (2) =C2=B7 Low: 0
+>
+> - [Medium] With only this patch applied, a zero-length receive that hits
+>   the OOB-skip path turns a busy-wait into an indefinite block.
+
+This is fixed in the next patch.
+
+
+>
+> Pre-existing issues:
+> - [Medium] manage_oob() (net/unix/af_unix.c:2815-2869) drops the
+>   unconsumed OOB skb without decrementing u->inq_len, so SIOCINQ /=E2=80=
+=A6
+> - [Medium] The wait marker @last passed to unix_stream_data_wait() is a
+>   bare skb address captured under unix_state_lock, but both=E2=80=A6
+>
+> --
+>
+> af_unix: Update last skb marker in manage_oob().
+>
+> manage_oob() can skip OOB skbs and return NULL, after which
+> unix_stream_read_generic() may call unix_stream_data_wait() with a stale
+> @last, so the wait returns immediately and the reader busy-waits.  This
+> patch passes @last into manage_oob() and updates it on the paths that ski=
+p
+> or unlink an OOB skb.
+>
+> > diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+> > index 13f9926bf205..6861370062df 100644
+> > --- a/net/unix/af_unix.c
+> > +++ b/net/unix/af_unix.c
+> > @@ -2812,8 +2812,8 @@ static int unix_stream_recv_urg(struct unix_strea=
+m_read_state *state)
+> >       return 1;
+> >  }
 > >
-> > bpf_sock_destroy() runs from the tcp iterator, under rcu_read_lock(). I=
-f
-> > the sock is a listener that still has children in its accept queue,
-> > tcp_abort() ends up in inet_csk_listen_stop() and the cond_resched()
-> > there trips the debug check:
+> > -static struct sk_buff *manage_oob(struct sk_buff *skb, struct sock *sk=
+,
+> > -                               int flags, int copied)
+> > +static struct sk_buff *manage_oob(struct sk_buff *skb, struct sk_buff =
+**last,
+> > +                               struct sock *sk, int flags, int copied)
+> >  {
+> >       struct sk_buff *read_skb =3D NULL, *unread_skb =3D NULL;
+> >       struct unix_sock *u =3D unix_sk(sk);
+> > @@ -2827,11 +2827,13 @@ static struct sk_buff *manage_oob(struct sk_buf=
+f *skb, struct sock *sk,
+> >               if (copied && (!u->oob_skb || skb =3D=3D u->oob_skb)) {
+> >                       skb =3D NULL;
+> >               } else if (flags & MSG_PEEK) {
+> > +                     *last =3D skb;
+> >                       skb =3D skb_peek_next(skb, &sk->sk_receive_queue)=
+;
+> >               } else {
+> >                       read_skb =3D skb;
+> >                       skb =3D skb_peek_next(skb, &sk->sk_receive_queue)=
+;
+> >                       __skb_unlink(read_skb, &sk->sk_receive_queue);
+> > +                     *last =3D skb;
+> >               }
 > >
-> > BUG: sleeping function called from invalid context at net/ipv4/inet_con=
-nection_sock.c:1523
-> > in_atomic(): 0, irqs_disabled(): 0, non_block: 0, pid: 628, name: test_=
-progs
-> > preempt_count: 0, expected: 0
-> > RCU nest depth: 1, expected: 0
-> > locks held by test_progs/628: 3, last CPU#3:
-> >  #0: ffff8881158cee18 (&p->lock){+.+.}-{4:4}, at: bpf_seq_read+0x56/0x1=
-210
-> >  #1: ffff8881106bb858 (sk_lock-AF_INET6){+.+.}-{0:0}, at: bpf_iter_tcp_=
-seq_show+0x32b/0x4b0
-> >  #2: ffffffffb435af20 (rcu_read_lock){....}-{1:3}, at: bpf_iter_run_pro=
-g+0x46b/0xde0
-> > CPU: 3 UID: 0 PID: 628 Comm: test_progs Tainted: G        W           7=
-.2.0+ #65 PREEMPT
-> > Tainted: [W]=3DWARN
-> > Call Trace:
-> >  <TASK>
-> >  dump_stack_lvl+0xc1/0xf0
-> >  dump_stack+0x10/0x20
-> >  __might_resched+0x3d2/0x610
-> >  inet_csk_listen_stop+0x7b/0xbf0
-> >  tcp_abort+0x23b/0x3b0
-> >  bpf_sock_destroy+0xfc/0x140
-> >  bpf_prog_448133d24601754f_iter_tcp6_server+0x81/0x8a
-> >  bpf_iter_run_prog+0x538/0xde0
-> >  bpf_iter_tcp_seq_show+0x26b/0x4b0
-> >  bpf_seq_read+0x424/0x1210
-> >  vfs_read+0x197/0xe40
-> >  ksys_read+0x119/0x240
-> >  __x64_sys_read+0x72/0xc0
-> >  x64_sys_call+0x647/0x27e0
-> >  do_syscall_64+0xe5/0x610
-> >  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-> > RIP: 0033:0x7fad39b28aca
-> > RSP: 002b:00007ffc381c61c0 EFLAGS: 00000246 ORIG_RAX: 0000000000000000
-> > RAX: ffffffffffffffda RBX: 00007ffc381c6a88 RCX: 00007fad39b28aca
-> > RDX: 0000000000000032 RSI: 00007ffc381c6250 RDI: 0000000000000014
-> > RBP: 00007ffc381c61e0 R08: 0000000000000000 R09: 0000000000000000
-> > R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000003
-> > R13: 0000000000000000 R14: 000055f077c1bbb0 R15: 00007fad3a0f3000
-> >  </TASK>
+> >               if (!skb)
+> > @@ -2850,8 +2852,10 @@ static struct sk_buff *manage_oob(struct sk_buff=
+ *skb, struct sock *sk,
+> >                       __skb_unlink(skb, &sk->sk_receive_queue);
+> >                       unread_skb =3D skb;
+> >                       skb =3D skb_peek(&sk->sk_receive_queue);
+> > +                     *last =3D skb;
+> >               }
+>
+> [Severity: Medium]
+>
+> This is a pre-existing issue and not something this patch introduces, but
+> since this branch is being touched: the OOB skb is unlinked here and then
+> freed at the end of manage_oob():
+>
+>         kfree_skb_reason(unread_skb, SKB_DROP_REASON_UNIX_SKIP_OOB);
+>
+> I don't see u->inq_len being adjusted anywhere in manage_oob(), while
+> queue_oob() accounts the 1-byte OOB skb:
+>
+>         WRITE_ONCE(ousk->inq_len, ousk->inq_len + 1);
+>
+> Other places that remove queued bytes do decrement it, including
+> unix_stream_read_skb(), which drops the same skb with the same reason:
+>
+>         WRITE_ONCE(u->inq_len, u->inq_len - unix_skb_len(skb));
+>         if (skb =3D=3D u->oob_skb) {
+>                 WRITE_ONCE(u->oob_skb, NULL);
+>                 ...
+>                 kfree_skb_reason(skb, SKB_DROP_REASON_UNIX_SKIP_OOB);
+>
+> With:
+>
+>         send(sk0, "ab", 2, MSG_OOB);
+>         recv(sk1, buf, 1, 0);   /* reads 'a', inq_len =3D=3D 1 */
+>         recv(sk1, buf, 10, 0);  /* manage_oob() unlinks and frees the OOB=
+ skb */
+>
+> the receive queue ends up empty with u->inq_len still 1.  Does SIOCINQ vi=
+a
+> unix_inq_len(), and msg_inq/SCM_INQ, then report a readable byte that can
+> never be read, growing by one for every skipped OOB byte?
+>
+> >       } else if (!sock_flag(sk, SOCK_URGINLINE)) {
+> > +             *last =3D skb;
+> >               skb =3D skb_peek_next(skb, &sk->sk_receive_queue);
+> >       }
 > >
-> > The commit that added the kfunc already guards lock_sock() in tcp_abort=
-()
-> > and udp_abort() with has_current_bpf_ctx(), but missed the listener pat=
-h.
-> > Do the same for the cond_resched(), it can't reschedule there anyway.
-> >
-> > Fixes: 4ddbcb886268 ("bpf: Add bpf_sock_destroy kfunc")
-> > Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
 >
-> Is the justification "it can't reschedule there anyway" accurate?
+> [Severity: Medium]
 >
-> With CONFIG_PREEMPT_DYNAMIC=3Dy booted with preempt=3Dnone or preempt=3Dv=
-oluntary,
-> cond_resched() expands to __cond_resched() which can actually reschedule.
-> The splat in the commit message confirms preempt_count is 0 while RCU nes=
-t
-> depth is 1. With preempt_count=3D=3D0, should_resched(0) can be true and
-> __cond_resched() will call preempt_schedule_common() for a real reschedul=
-e.
+> This is a pre-existing property of the @last marker rather than something
+> introduced here, but this path now publishes u->oob_skb as the wait marke=
+r,
+> and @last is only ever compared as a bare address:
 >
-> Additionally, in configurations with CONFIG_PREEMPT_RCU=3Dn where
-> rcu_read_lock() is preempt_disable(), __cond_resched() falls through to
-> rcu_all_qs() which calls rcu_qs() to report a quiescent state from inside
-> an RCU read-side critical section. That's a correctness problem beyond ju=
-st
-> the debug check.
+> unix_stream_data_wait()
+>         tail =3D skb_peek_tail(&sk->sk_receive_queue);
+>         if (tail !=3D last || ...)
+>                 break;
 >
-> So the call can either reschedule (PREEMPT_DYNAMIC none/voluntary) or rep=
-ort
-> a bogus quiescent state (non-preemptible RCU). Could the justification be
-> reworded to explain that the loop runs inside the iterator's RCU read-sid=
+> unix_stream_read_generic() drops both unix_state_lock and u->iolock befor=
 e
-> critical section and must not reschedule or report a quiescent state ther=
-e?
-> The code change itself is correct and matches the existing pattern in
-> tcp_abort() and udp_abort().
-
-or maybe simply remove cond_resched(), hoping 7dadeaa6e851 would
-resolve the scheduling issue.
-
-
+> that comparison:
 >
+>         unix_state_unlock(sk);
+>         ...
+>         mutex_unlock(&u->iolock);
 >
-> ---
-> AI reviewed your patch. Please fix the bug or email reply why it's not a =
-bug.
-> See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/READM=
-E.md
+>         timeo =3D unix_stream_data_wait(sk, timeo, last, freezable);
 >
-> CI run summary: https://github.com/kernel-patches/bpf/actions/runs/340203=
-53095
+> so a second reader on the same socket can free that OOB skb in manage_oob=
+()
+> via kfree_skb_reason(unread_skb, SKB_DROP_REASON_UNIX_SKIP_OOB).
+>
+> If the sk_buff slab hands the same address back for a newly sent skb that
+> becomes the queue tail before the sleeper reaches prepare_to_wait(), the
+> accompanying sk_data_ready() finds no waiter and the tail re-check sees
+> tail =3D=3D last again.
+>
+> The pointer is only compared and never dereferenced, so this is not a
+> use-after-free, but can the recv() then sleep with readable data queued
+> until the next send, a signal, or SO_RCVTIMEO?  Would comparing a tail
+> generation counter or qlen be more robust than a raw skb address?
+>
+> > @@ -2971,7 +2975,7 @@ static int unix_stream_read_generic(struct unix_s=
+tream_read_state *state,
+> >  again:
+> >  #if IS_ENABLED(CONFIG_AF_UNIX_OOB)
+> >               if (skb) {
+> > -                     skb =3D manage_oob(skb, sk, flags, copied);
+> > +                     skb =3D manage_oob(skb, &last, sk, flags, copied)=
+;
+> >                       if (!skb && copied) {
+> >                               unix_state_unlock(sk);
+> >                               break;
+>
+> [Severity: Medium]
+>
+> For cases 1) and 2) in the commit message, recv(sk[1], buf, 0, MSG_PEEK)
+> leaves copied =3D=3D 0 because size is 0, so this escape is not taken whe=
+n
+> manage_oob() returns NULL.
+>
+> Execution then falls into the skb =3D=3D NULL path, where copied >=3D tar=
+get is
+> 0 >=3D 1 since sock_rcvlowat() clamps target to at least 1, and
+> unix_stream_data_wait() is entered with @last now set to the skipped OOB
+> skb, which is also the queue tail.
+>
+> Since tail =3D=3D last now holds, does the zero-length blocking peek slee=
+p
+> until unrelated new data arrives, a signal is delivered, or SO_RCVTIMEO
+> expires, instead of returning 0?  With MSG_DONTWAIT the same path appears
+> to return -EAGAIN rather than 0.
+>
+> The next patch in the series, "af_unix: Return immediately when
+> manage_oob() returns NULL for 0-length buffer.", changes this test to:
+>
+>         if (!skb && (copied || !state->size)) {
+>
+> which looks like it covers exactly this case.  Would it make sense to ord=
+er
+> that change first, or fold the two together, so that a bisection landing =
+on
+> this commit alone does not convert the busy-wait into a blocking recv()?
+>
+> --
+> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
+set/20260902202202.892676-1-kuniyu%40google.com
