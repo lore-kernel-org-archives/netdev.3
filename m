@@ -1,300 +1,122 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A6B644CACB
-	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 09:30:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.9
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788773447; cv=fail; b=QVJoC0XJFtnSAn3u/wGHo+M5mY7cBvKE7gDSmDVKfml+a78+IPnXDel7jKMxuwXOf/NgAhmsOEdTW3M0POxlhvIYWDrm3LNbWrqwZW3BXEdhVfYzGVAEqxZtxT4PxwnXBqUvlnUM2+SyB7pjuCmldhwJZl9zFqXvAWyBo1742VA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788773447; c=relaxed/simple;
-	bh=G2/eqbuN1pSMgygwz5BL9X9rvfKklGADTIL5941ywj0=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=nUbTeVRTvSykudV6ibUKiP7EvG60eH3FwyjeFi/A06PwDSbNfwsYUwTv/0kVvotRI1k3AvQfvrw9WgzT9H5qCVwpZw8zrj3q03KNnn7Drxc2E8XDQrQ4U+ljKAcmkYYNBqn+KK/2T7QsVBaOf9pO8sFS/NKrQE0shfa/a76yOFU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hWCsliQb; arc=fail smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11199456DFB
+	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 09:30:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788773449; cv=none; b=Qg6uXLCPxU+TmWOf4rKQLyCRVp25jwMUIb0ogNJ2U/eSSdC3iq18nuot/xxw30uPuY++b5ayX1EXV1Hq0/5AzLbbM4DIbbe63vaePh+MNrFoU2h8SHvVY0hP7Q+VaYDMz48noYhNgvpzZan+o62nMqW9W8PjSfeNTpnewXK/Kfo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788773449; c=relaxed/simple;
+	bh=sz8ppNriR8oSgeUlBwhBJIHWBpO29c56Ey+X53I4OH0=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=czaEdkdPCnO1PLdaINaqEy7Oi9QjZzlS+/Wp8YAMroFXe4zE63LY7IyaT7kJ4y+zMw2v5/KVRNcI/UV7G6kW0/MQdtJxLQwjcgAzboVlq6TnjmhGdBBsWJkVJi7a7Sx+i9LvEdDYbIFOjMD/tp4b0hKvlqmkA6iVw+DZh/VKUs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=Mo8vkhX3; arc=none smtp.client-ip=62.96.220.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hWCsliQb"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788773446; x=1820309446;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=G2/eqbuN1pSMgygwz5BL9X9rvfKklGADTIL5941ywj0=;
-  b=hWCsliQbd0lwRb2wAKKju/GCmhqVgyZPSCBB0KNk7v6d2pFGvmtl8teU
-   OAWotMLdLB8HUb5aer6M48MlzuxtkqwocYq81O4j8lkBoNVAcaNErQsOg
-   d27KrJ50hXIjF7sv95B7IzGRCTyc6JY+PtoaXjDIx65RdIlmebWNk1Wkn
-   WtMD56Ii12UpsAk9WM3esxWUqKKZN8w8B4wIzEuA6mQnBKWPI9vEMus6E
-   bQQtNTwJqQB/vZ1rxmIu0FpmQptEUpq2fN/dnCTpA/NgovN/holB3JtuX
-   z0MI72tt6gqJWujetL7hGGAVpfRuxaE7bJvLTelgy72tVuu2T4E7lr+Ar
-   w==;
-X-CSE-ConnectionGUID: fTI3xrWTSbOEFtPqYSerFQ==
-X-CSE-MsgGUID: qQy0X1DFRleKvud6ZV2Cyw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11898"; a="111950369"
-X-IronPort-AV: E=Sophos;i="6.25,267,1779174000"; 
-   d="scan'208";a="111950369"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2026 02:30:45 -0700
-X-CSE-ConnectionGUID: R8Tute09QaStB9QpEiOPew==
-X-CSE-MsgGUID: JUz7VqAyQreFTI3TcSFsNw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,267,1779174000"; 
-   d="scan'208";a="271176256"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
-  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2026 02:30:46 -0700
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Mon, 7 Sep 2026 02:30:45 -0700
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46 via Frontend Transport; Mon, 7 Sep 2026 02:30:45 -0700
-Received: from CH1PR05CU001.outbound.protection.outlook.com (52.101.193.14) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Mon, 7 Sep 2026 02:30:43 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=a/A4MQmYP9g0KvhBoN3FQLEyF1zyRO3NcZXcWcLEeO5DKC00vE+6Ux1TJ272Ztfhgj1aXphQ4k6ol5ZOTarjr9jaUUa4G3E0ShywhicXlV1fJUt7VnbJ52zG/m7iCKU31gyK5yoagSJQzbTyQpkfrlbCzDV9lHruQumB85ewNHr0OC0RdW4nhbfkhPrZnFzdf/NxOV9yDZ936sFwLppGdSV8QLLYJgN1ayH0S6WFcpDxIAWGJghjg00VfbM97MVPOoion6kLQc9CDMFbVHhq0REW937zxfSaPQ5C2iYUJdYanotlTDyhr1mpmDW1rOUuZTD5Yg3PF5+U3ZyJkg35OA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4job4vW/NzT/5QnpWg3v6wwYZW2MDrkl6jWTrAb/QEk=;
- b=Hi1jz+W0DYsWCK15MzF49LvQkJNd4BvMousoegB2s4vwiO4PT3jAl9zjXLlTlDjV0NOR7YMYF/+ilmC4rWVRTj6hbfmrdKeDrnJy52MFphGtBUv1hJcLYmAzn2MC1PwFfrKZlGaFtVGSL0J3NF+4kDI8qeME5qcqa3BmPPKZ2sXbqr5kuh9My4vp6T7g/dweF7/tX94aCuf6uhZzsOWRFP3Di7ZxMaMJOLhEFFNY0ris1I33l3huZO9M+7P5fwGmPKMs3Dga09CA7XV5aljp4+8xrBrWadq8aNQbOV0kWR37OZAQY0tAS0zu7v6xJMEz1rQh0h39mrPIeDTo55Za3w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from IA3PR11MB8986.namprd11.prod.outlook.com (2603:10b6:208:577::21)
- by LV2PR11MB6072.namprd11.prod.outlook.com (2603:10b6:408:176::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.360.12; Mon, 7 Sep
- 2026 09:30:39 +0000
-Received: from IA3PR11MB8986.namprd11.prod.outlook.com
- ([fe80::e6f0:6afb:6ef9:ab5c]) by IA3PR11MB8986.namprd11.prod.outlook.com
- ([fe80::e6f0:6afb:6ef9:ab5c%6]) with mapi id 15.21.0382.014; Mon, 7 Sep 2026
- 09:30:39 +0000
-From: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
-CC: "davem@davemloft.net" <davem@davemloft.net>, "kuba@kernel.org"
-	<kuba@kernel.org>, "edumazet@google.com" <edumazet@google.com>,
-	"pabeni@redhat.com" <pabeni@redhat.com>, "horms@kernel.org"
-	<horms@kernel.org>, "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "Willem
- de Bruijn" <willemb@google.com>, "Nguyen, Anthony L"
-	<anthony.l.nguyen@intel.com>, "Kitszel, Przemyslaw"
-	<przemyslaw.kitszel@intel.com>, "Hay, Joshua A" <joshua.a.hay@intel.com>,
-	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>
-Subject: RE: [PATCH net-next v8 3/6] idpf: support pacing offload
-Thread-Topic: [PATCH net-next v8 3/6] idpf: support pacing offload
-Thread-Index: AQHdOwd0zdy+Q+hozk61dck9ZI0iZLbC37tA
-Date: Mon, 7 Sep 2026 09:30:39 +0000
-Message-ID: <IA3PR11MB8986BD23939D98382AAC3971E5B22@IA3PR11MB8986.namprd11.prod.outlook.com>
-References: <20260902181747.2483351-1-willemdebruijn.kernel@gmail.com>
- <20260902181747.2483351-4-willemdebruijn.kernel@gmail.com>
-In-Reply-To: <20260902181747.2483351-4-willemdebruijn.kernel@gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: IA3PR11MB8986:EE_|LV2PR11MB6072:EE_
-x-ms-office365-filtering-correlation-id: 564516f3-15ed-4b65-5fad-08df0cc2ae0b
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|366016|1800799024|23010399003|7416014|376014|10067099003|56012099006|18002099003|4143699003|11063799006|6133799003|22082099003|38070700021;
-x-microsoft-antispam-message-info: UYj6cuq1dT80ajCElKn7KrrSUn3sBwsTlFT+QxVJArkG3cpryW2bf88NGG99SYWMwtlnbQZ9uYrPp+V7QycirLO/iIIZJClpcVE8+lC1x8iecvt6LPmeuPN/u2dwg7+73l3jgdXiBfrnLc1+G8B37noAr7WD2+Ar0L2oDw4HSc+SLtQIOqDOqDP1s5v5UTPlUbQ1CKBTiZxmzAschCrAhzkwm460jwvv+EBgqaIR/pMAQkymibrICPwjsIialATZZ133RXoR6y+e21E3e/jaelaQ4hQlCTFHg2mHLw38ebDD3fOvnXsIYN8QcoF+UEVNUJ02Bt+mS08zze1FmdB6pxOfZAHyqAZGxT7FmhaFhG+7HAXuu1G5Z/Wmy/w5dLjrzt4uGIvSOWh3FRwSozOlbwdeYenouBksvge76D8fNkn/gBdEc8uAcyvegpna4jry1wY0N2U3VeS8yxIItX36nM4tA6fXcL44Wfuedr7X+ltni6if217PG01S0y8/QYkoCkR8NgsoSeA6Rl6cKPL7i5xHqGset6xt6FSp824Jl3MLwcZk1wYZSdyRG5KqJNbki2spkja+eIb/SbsnStErPSbN9RLyhy6ZxtZnN12G1aDlwAoVT+0YJXaaiUrev2YJYad5156dLiLEWKWv3leoR6Z0OjtILGbuNBKEmHM1ezPyr//OkqvO64lBF9DxmTfNhA7i+Hivote5fJlROPiS9A91AySKMhj2ig+PltVsG+g=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA3PR11MB8986.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(7416014)(376014)(10067099003)(56012099006)(18002099003)(4143699003)(11063799006)(6133799003)(22082099003)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?UdqD+lwLo+fYFQlsqRvepqG7bjgkX8phnrp1o949/qjDKHSruyXbC8uAhxSP?=
- =?us-ascii?Q?Yy2iRQRA4KXnp9Mi/BQ1c5DiDvMdPFuRqofjMs8a9joSlf6GTlkcszZv7Fv4?=
- =?us-ascii?Q?6xx+6HW1232LHFLzFyOSfWkqy3kGJbQmdkQ+mh20DoUPcLCVaYtwpvSEmWix?=
- =?us-ascii?Q?nQYOriz4uxFAWDZWiZE/UkOJPD9AKwqzebMIw4AJZz8PSNV9EP9O752NrjlR?=
- =?us-ascii?Q?Ml2er7/Cn9YJxND4VRpC0FUr9QdDLvPbXwquCH/ja37VH/rV9/o3bND3+sDL?=
- =?us-ascii?Q?WQqE/sWCa58B5edGDUXQwqgaf4kPilUTt2/wd90K+PWJR6ovfMPCKJRrH18N?=
- =?us-ascii?Q?vFOWvdKUYIxwBtPbqof1rxejvpcJkoItm6gj7iRIz1YznYEk5dhb574P8E49?=
- =?us-ascii?Q?mCFu7oLXSoGjvls629E4yyUxv8IpqyTC8yr9LHRi/uQj7UGoXUOGDMhssnnn?=
- =?us-ascii?Q?CEHlN6b2JHbvGeZhXVAR9+Ku3qT+UrwrWvfSTS4acnvU74SkCVx+KXMFGNqS?=
- =?us-ascii?Q?N9Au4mYo71ZxhBZMP+h/hUu5R3h5KlTl1dtRS//O5+gdGz0xxdUpa/PY299S?=
- =?us-ascii?Q?DLSs4Tnqg5R9fCJD1oc4XO84w8Nbv0AHlk1PLC7BX1Fb8UkdXZVqJPut2U6X?=
- =?us-ascii?Q?Hxh2+yGAyccAFDhvyhpePdlZkHQsgl6C6I9/cjxXsiqiyEYDy+b0ZglkYbas?=
- =?us-ascii?Q?vzbqSQeKAAVjKgzeTUtBH7SVnENMQwOTH+/sW/jJpsnV+lJQ6SzB6/ZrjwD0?=
- =?us-ascii?Q?gW91FeY1CU3E+Pg2+gnxLMAUCL1Zf6Lmd2rInEnbhj8967/nGAAVyPjNgXDo?=
- =?us-ascii?Q?NNQXfjkanafLjgiNAOYepaCgKn0iadv9qVaZ4NymIUJMSMeA7BDF6zsAiWFS?=
- =?us-ascii?Q?tJIDi/EHo7po7kIsc2XZvnoapvj2oSMaRVs66OIyVEhH7Q2FFI6t2bjtZc3g?=
- =?us-ascii?Q?xY9D4ySHDxVunJf10poHNYlc4PGpRz/PNIbr7sZ6/amiE2VnNGcLxl2IXKw8?=
- =?us-ascii?Q?Q51zuMJgSrnIvV8FAzWPtpBx3/eZ7kfXZ9RC0XE8pjlbGX6a8eLtwut+vt2H?=
- =?us-ascii?Q?9XdHK+znDNojPwIva/7oG9fx8CbCxdoKo3R4SyPS9+aKUg2MT3GgA0hsA+85?=
- =?us-ascii?Q?RcBihtWt2HZhV4OmBuhLPvruMnHm3/bD8pQV9+IHRBn0tJGdeWm+/Jz8l0hW?=
- =?us-ascii?Q?pqc2ulvwr/oQbLk/2MHLeLj2kY4D71nXy4bQE1e6W6Mp9Bz25KQKVEiyyMQj?=
- =?us-ascii?Q?gs0sko5EY2c1vJTGJVKgF1LTGLZvRmbvX/vYUCiTJRxxBiFfKESYLFSeGFsf?=
- =?us-ascii?Q?7e3SnoyJmuQTaWHFxj4AUbmqsCqkXdpsU94mCKD58oUEhO4rb0Tuk76ZpPx/?=
- =?us-ascii?Q?0ttBQJLyWebP6wERHPFjFB2SYtR7k/haSuW4Xw7w214xuO1mhnOizTFZuiyj?=
- =?us-ascii?Q?D0Kb4CeZWb9EgtDvYH1xF2OCfZLik7bT9H7FudZihoskoaMYUxCOiUsjli7l?=
- =?us-ascii?Q?Xi7B08O+AlFjNDSzo8ILDtWF60n+7AFGRFrg1+cQqhz0mjR+/FI6aJWRvSKQ?=
- =?us-ascii?Q?GzBB8dHD+c6EfoTukgLHn0ATSVXGDqHUHkbn+qus14w2Zdu/yKLxFRj+qaLB?=
- =?us-ascii?Q?5zbO0VcX6CuNkoRJLD4HeNVnhgayhTkRziBe8F6azkyyc4QRwOoJIjNHQItA?=
- =?us-ascii?Q?bvsqZf+gdHYaszdHkmXF/ovQpoPhLFGMRuylm0LiEiO7jw1Dabk3qgnHAerz?=
- =?us-ascii?Q?U3BMUFPobAERIFpZuXNutVLMblZGBow=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="Mo8vkhX3"
+Received: from localhost (localhost [127.0.0.1])
+	by mx1.secunet.com (Postfix) with ESMTP id 88426204D9;
+	Mon,  7 Sep 2026 11:30:46 +0200 (CEST)
+X-Virus-Scanned: by secunet
+Received: from mx1.secunet.com ([127.0.0.1])
+ by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id gS3pWOGauYzP; Mon,  7 Sep 2026 11:30:45 +0200 (CEST)
+Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mx1.secunet.com (Postfix) with ESMTPS id BA252201D5;
+	Mon,  7 Sep 2026 11:30:45 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com BA252201D5
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
+	s=202301; t=1788773445;
+	bh=3Fsgf2n/V2UcQUsXshGE99FgW6wrKV9zWwEM+m1AdcI=;
+	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
+	b=Mo8vkhX3KQ0n7K2d8FjG0SS1yJfYItR+wer2W7YkWAv4faAMy0pEYztpHr8JUFEY3
+	 UKid9zvsvPm0mg5q9qp5FRXhhbpe575MYaJKF16G/X2VTw3xRIwwreSzmSuXrAqW5+
+	 KsEQvb+oJaKni3R6vJUdkieCWYbv4VMZjxeW/wQtbjFaBjnbjLZBK0l36C0g+eRqZO
+	 Ts1IGj52wD5dqRhPV7RkMcT1NhVpW3dgT8IXvrz/U/oYPj6TTUiQlXp4ZV3Yofy0zn
+	 Qgfhhu0logYuPX3qthpB7LpbbLrQe5ty8oLidUd7Ac2DV0eNwjLzvxAqC3C7UjCmg9
+	 j+p08AXmB4RUg==
+Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Mon, 7 Sep
+ 2026 11:30:44 +0200
+Received: (nullmailer pid 2228823 invoked by uid 1000);
+	Mon, 07 Sep 2026 09:30:24 -0000
+From: Steffen Klassert <steffen.klassert@secunet.com>
+To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
+CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
+	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
+Subject: [PATCH 08/12] xfrm: use hlist_del_init_rcu for state_cache and state_cache_input
+Date: Mon, 7 Sep 2026 11:29:51 +0200
+Message-ID: <20260907093020.2228346-9-steffen.klassert@secunet.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260907093020.2228346-1-steffen.klassert@secunet.com>
+References: <20260907093020.2228346-1-steffen.klassert@secunet.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: 48p87R3sOQ4qWDKjNj2cucHdhdIwXPjEmV5NB4hdrMHfLTW2CN3ahMDNrXBM8JGIjn8XkNDPyr1Vnh0R1b0AkVd3NLF8FKx6Z3BI1MTCm/QR7zSzsAcUTGextC9BHaGR2NtB4bKpbw88WnPyYKN1blPZs6SV3nUwM3NYi5DPuK2wdMC1cBvZ8gcVoT91ZtWoRPURzZ8PqyOObSn4TYyi/0KFBEUioF9ygnOav8CK6iVrXUM/xSsKeveXbZIToHdCdHIJaNFxv+mERjmgh8g7vp6vhOHtVpEF/qZNOQJuWdmHB9mjPf95c1CTvGZOq4jIjTjV63R+N7wACiSfWd7frA==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: IA3PR11MB8986.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 564516f3-15ed-4b65-5fad-08df0cc2ae0b
-X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Sep 2026 09:30:39.2479
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 2m5I68d5WxD6iXZUaGbYJ8js1l3Vl9j2PeOflir3ck4vUjtZONQ8MPvv/JNYspfRjZuYiLKX57FTPEIxHpEqfLXnVURJ/lcp6qMwADeKikM=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR11MB6072
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: EXCH-03.secunet.de (10.32.0.183) To EXCH-01.secunet.de
+ (10.32.0.171)
 
+From: Siwei Zhang <fourdizhang@tencent.com>
 
+Commit 14acf9652e56 ("xfrm: defensively unhash xfrm_state lists in
+__xfrm_state_delete") converted bydst/bysrc/byseq/byspi from
+hlist_del_rcu() to hlist_del_init_rcu() so that a second
+__xfrm_state_delete() on the same object becomes a no-op rather than a
+write through LIST_POISON pprev. It missed state_cache and
+state_cache_input, which kept hlist_del_rcu():
 
-> -----Original Message-----
-> From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-> Sent: Wednesday, September 2, 2026 8:17 PM
-> To: netdev@vger.kernel.org
-> Cc: davem@davemloft.net; kuba@kernel.org; edumazet@google.com;
-> pabeni@redhat.com; horms@kernel.org; andrew+netdev@lunn.ch; Willem de
-> Bruijn <willemb@google.com>; Nguyen, Anthony L
-> <anthony.l.nguyen@intel.com>; Kitszel, Przemyslaw
-> <przemyslaw.kitszel@intel.com>; Hay, Joshua A
-> <joshua.a.hay@intel.com>; intel-wired-lan@lists.osuosl.org
-> Subject: [PATCH net-next v8 3/6] idpf: support pacing offload
->=20
-> From: Willem de Bruijn <willemb@google.com>
->=20
-> If skb->tstamp is in the future, program this future delivery txtime
-> in the transmit descriptor.
->=20
-> TCP pacing offload is only offloaded if SK_PACING_FQ is negotiated and
-> the FQ offload_horizon is configured. But device support for pacing
-> offload must be more robust: it can also be reached through SO_TXTIME.
->=20
-> Bounds check txtime. Only packets with timestamp between now and the
-> horizon (pacing_offload_horizon) are offloaded.
->=20
-> Negotiate the feature with the device using virtchnl. Support is
-> conditional on
-> - splitq mode, where tx and tx completion queues are separate, so
->   completions can be returned out of order.
-> - flow scheduling mode, where completions can arrive out of order.
-> - PTP to ensure the NIC clock is synced to CLOCK_TAI.
->=20
-> These features are negotiated per adapter, but expect all vports to
-> uniformly request splitq (req_[rt]x_splitq) and flow scheduling
-> (flow_sch_en) when available.
->=20
-> Do not explicitly check all preconditions. Trust the firmware to only
-> advertise EDT when all are met. In general, firmware response is
-> trusted to be correct. If not, EDT would be the least of the worries.
-> In particular, granularity is trusted to be a power of two. And
-> time_horizon_ns is a range expressible given the chosen granularity.
->=20
-> Packets beyond the horizon are sent immediately with the overflow bit
-> set.
->=20
-> On device reset, dev->pacing_offload_horizon, fq offload_horizon and
-> granularity are not re-negotiated. It is safe to assume that firmware
-> does not change these EDT capabilities across resets.
->=20
-> Must not be called from netpoll due to ktime_get. But netpoll does not
-> generate packets with EDT, so no explicit test is needed.
->=20
-> Do not fail device initialization on EDT init error. Log an error, but
-> continue without EDT, similar to PTP.
->=20
-> Cc: Tony Nguyen <anthony.l.nguyen@intel.com>
-> Cc: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-> Cc: Joshua A Hay <joshua.a.hay@intel.com>
-> Cc: intel-wired-lan@lists.osuosl.org
-> Signed-off-by: Willem de Bruijn <willemb@google.com>
->=20
-> ---
->=20
-> Changes
->   v7 -> v8
->     - remove unused variable np in idpf_tx_splitq_set_txtime
->   v6 -> v7
->     - rebase onto libie changes: adjust idpf_send_get_edt_caps_msg
->     - only set horizon if splitq with flow scheduling
->     - fail on illegal granularity 0, rather than use hardcoded default
->     - zero edt_caps on negotation error, in case of call after reset
-negotation -> negotiation
+- hlist_del_rcu() leaves pprev = LIST_POISON2 (non-NULL), so
+  hlist_unhashed() returns false.
+- hlist_del_init_rcu() leaves pprev = NULL, so hlist_unhashed()
+  returns true.
 
+A second __xfrm_state_delete() therefore enters __hlist_del() on the
+already-deleted state_cache/state_cache_input nodes and does
+WRITE_ONCE(*pprev, next) through LIST_POISON2 — a write use-after-free
+once the slab is reused. The corruption can in turn cause a subsequent
+hlist_for_each_entry_rcu traversal to follow a dangling next pointer,
+producing the read use-after-free reported in xfrm_input_state_lookup().
 
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Switch state_cache and state_cache_input to hlist_del_init_rcu() to
+match the other four lists, closing the write use-after-free and, with
+it, the read use-after-free it spawns.
 
->     - cache ts_gran_pow2 in idpf_tx_queue to be in hot cache line
->     - similar to FQ, add offload slack to avoid pacing < 400ns of now
->     - remove now superfluous include netpoll.h
->     - reverse xmas tree (1x)
->   v5 -> v6
->     - move EDT caps from virtchnl2_edt_caps_ilog2 to
-> idpf_edt_caps_ilog2
->     - do not fail device init if EDT init failed, same as PTP
->     - replace netpoll branch with commit-msg comment
->     - add commit-msg comment about device reset
->     - add commit-msg about behavior beyond horizon
->     - add commit-msg about trusting EDT capability response
->   v4 -> v5
->     - fix kdoc: idpf.h:738 struct member 'edt_caps' not described..
->   v3 -> v4
->     - add EDT virtchnl negotiation
->     - move endianness fix to its own iwl-net patch
->     - update commit-msg: check is against pacing_offload_horizon, not
-> max_..
->     - simplify assignment, avoid the le32 assignment in favor of u8
-> inits
->     - replace open coded constant with
-> IDPF_TXD_FLOW_SCH_HORIZON_OVERFLOW_M
->     - (minor) fix 24b timestamp comment: is 23b + overflow bit
->     - (minor) remove unused parameter
->   v2 -> v3
->     - use READ_ONCE and read pacing_offload_horizon only once
->   v1 -> v2
->     - move special zero case up and return early
->=20
-> Sashiko, ignore pre-existing issues.
->=20
-> Sashiko, ignore that idpf_tx_splitq_set_txtime may have a benign race
-> by calling ktime_mono_to_any twice to get TAI to REALTIME offset.
-> ---
->  drivers/net/ethernet/intel/idpf/idpf.h        | 12 ++++
->  drivers/net/ethernet/intel/idpf/idpf_lib.c    |  6 ++
->  drivers/net/ethernet/intel/idpf/idpf_txrx.c   | 66
-> ++++++++++++++++++-
->  drivers/net/ethernet/intel/idpf/idpf_txrx.h   |  8 ++-
->  .../net/ethernet/intel/idpf/idpf_virtchnl.c   | 60 ++++++++++++++++-
->  5 files changed, 149 insertions(+), 3 deletions(-)
->=20
-> diff --git a/drivers/net/ethernet/intel/idpf/idpf.h
-> b/drivers/net/ethernet/intel/idpf/idpf.h
-> index 470bc23c844c..f214023095ee 100644
-> --- a/drivers/net/ethernet/intel/idpf/idpf.h
-> +++ b/drivers/net/ethernet/intel/idpf/idpf.h
-> @@ -604,6 +604,16 @@ struct idpf_vport_config {
->  	DECLARE_BITMAP(flags, IDPF_VPORT_CONFIG_FLAGS_NBITS);  };
->=20
+Assisted-by: CodeBuddy:GLM-5.2
+Fixes: 0045e3d80613 ("xfrm: Cache used outbound xfrm states at the policy.")
+Fixes: 81a331a0e72d ("xfrm: Add an inbound percpu state cache.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Siwei Zhang <fourdizhang@tencent.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+---
+ net/xfrm/xfrm_state.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-...
-
->  	pci_sriov_set_totalvfs(adapter->pdev,
-> idpf_get_max_vfs(adapter));
->  	num_max_vports =3D idpf_get_max_vports(adapter);
->  	adapter->vports =3D kzalloc_objs(*adapter->vports,
-> num_max_vports);
-> --
-> 2.55.0.970.g62bdec98f9-goog
+diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
+index de097bba803b..e45aa1ed5b96 100644
+--- a/net/xfrm/xfrm_state.c
++++ b/net/xfrm/xfrm_state.c
+@@ -826,9 +826,9 @@ int __xfrm_state_delete(struct xfrm_state *x)
+ 		if (!hlist_unhashed(&x->byseq))
+ 			hlist_del_init_rcu(&x->byseq);
+ 		if (!hlist_unhashed(&x->state_cache))
+-			hlist_del_rcu(&x->state_cache);
++			hlist_del_init_rcu(&x->state_cache);
+ 		if (!hlist_unhashed(&x->state_cache_input))
+-			hlist_del_rcu(&x->state_cache_input);
++			hlist_del_init_rcu(&x->state_cache_input);
+ 
+ 		if (!hlist_unhashed(&x->byspi))
+ 			hlist_del_init_rcu(&x->byspi);
+-- 
+2.43.0
 
