@@ -1,267 +1,229 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 012CB499F17
-	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 11:38:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2A4A479868
+	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 11:38:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788781115; cv=none; b=b21r19PhtrCNAQcFEYQokvJt/diAfWPSFKpsmqVijfzOrDn1blUaTFRKaJ63rzTsPHfSCQAaMY3E4ud0F9kBkEHdM+OsicxWJPd4Hj7LNIxLBPD7aIbJLgIQDyHRLdnS430D1n8Xo2p660rLHndAlq/960Jv4cGXDMV59arNe0k=
+	t=1788781118; cv=none; b=l0fYZltDsXhA0zAAj0S4KBw2s7gJU5WxJ1Zp7w2lemOQgTiPLnEp2AeZvgK5i+WLhFdq04DmtrMXHn/ZNy5YXWeeR2C1HIlpEMD2x6PwkcwF7/MlP8FeO5nKDRg4x2GhGoO+iJPRP/8x3w1iGwfTUA+1Mf6hyxk5OJ5JzFkWhzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788781115; c=relaxed/simple;
-	bh=65Br1auYBiiHj8wgAzhI7CcyzB0oho0ZsG+SnKoqrq0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j1rhiUwzjqAMz+XIDf7C0AivCCIwQh7SoyiV6SAOY3WOUnNH1J5zzKvydGvvG7fsCQLhkESmxZVYXJSoZ0Lafg5u7t6xn6k/2aTM+o5xAuduhV5I2K57mSPiGIiAQJOAu/iAHiovjlB8lMd1Q8j2xGD/U9kv2nTYctRKXLKWugw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=N0+Zn/9+; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1788781118; c=relaxed/simple;
+	bh=QwwysY4kOM43IbyyWzoqUwfxdkp/ukWs4YrGuT2WZP8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=aKcpsQ1U6uAnXA1wmKBDg0FwVNO42l94tMgn4nb3ILSUp3CAdRrkaUBOuu5RONOn9HTZO3vAPfJ4NTpF2WcT7ucMw+xWBUFwO04ACvOLdva+/kSjocyJam3brIqZhY/MZIV6id5hBzmxsbP7bdTE/faIYrSlUW4n392ZltHy0sU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=idpgG5X3; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=pIUf37WU; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Y+5sIrJ0; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=MChbDhfT; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="N0+Zn/9+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1788781111;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="idpgG5X3";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="pIUf37WU";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Y+5sIrJ0";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="MChbDhfT"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 9FA4F1F785;
+	Mon,  7 Sep 2026 11:38:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1788781110; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=HP2muXCb2/7xiWXwklq1DL43HbQ2QGhMliF1aXSsjNI=;
-	b=N0+Zn/9+4Ao3+PhTMzCya748hWtckL2QRqV10l2dgWlLP5f2ycb9ElVh5nU7LLgr/NA10s
-	XvCUpsE7+0hv+20dWYme6OKOhmbDympXkMjXzKjpJdJOvH/9hJJ5tkAitmGrdEC1oQcMQq
-	S5qH4BHCAPyhiyM5TLmsc/R2Cu3cjeM=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-641-2VOKuYX5PaWBPzFv0iXN-w-1; Mon,
- 07 Sep 2026 07:38:29 -0400
-X-MC-Unique: 2VOKuYX5PaWBPzFv0iXN-w-1
-X-Mimecast-MFC-AGG-ID: 2VOKuYX5PaWBPzFv0iXN-w_1788781108
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	bh=/G9iIGu/9g0dryRqsEYEcbpFTvYwURVflBEUt+5w6pI=;
+	b=idpgG5X3XEAnwZu0CloAiW1a/H/wVn+0u9F8kk5/W6JBJBIXrUhtmilhF7EmAlsfHu9gj2
+	hvbYsRinyENEzSHg1c3W8Tm1ZUtagEhsfLiwv27me37nsa0J5YHzCQVtM2mwgPogvN/gC+
+	7skZMp+V9JAwj5M7WNWBVazEK6xjiLY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1788781110;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/G9iIGu/9g0dryRqsEYEcbpFTvYwURVflBEUt+5w6pI=;
+	b=pIUf37WUghLnE71Bc/quiac0AH0f92y0qN3k/gn3A4w+pkiq+VNWxL7c/dveItgsFglzpM
+	oqR2QnQtA8sOTwAQ==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Y+5sIrJ0;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=MChbDhfT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1788781106; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/G9iIGu/9g0dryRqsEYEcbpFTvYwURVflBEUt+5w6pI=;
+	b=Y+5sIrJ0++mbf1bjfwbjT7nWge/YF0oToq4/jXPhKdups30NHFlNjfCtNBqQvVDTV4Ew2s
+	Sk9LJDdkPI8zHzPe4QVqR8UURJZfetQ28S3HGeyIBWgums0cL+dvIQXZfyrZx+bvQj2VgF
+	KrKp2sLk947mH2LR/TRzHZApnLoxMfg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1788781106;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/G9iIGu/9g0dryRqsEYEcbpFTvYwURVflBEUt+5w6pI=;
+	b=MChbDhfTsL4jIxyGY1lXgNyGS7Oblab90jIHtOZrJajilb3qOd3grFUbk+UGqU3FudcnxL
+	7n0whG6xSgM8uXDQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B9A5B182FA53;
-	Mon,  7 Sep 2026 11:38:27 +0000 (UTC)
-Received: from warthog.com (unknown [10.44.32.158])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id AD80C180034F;
-	Mon,  7 Sep 2026 11:38:24 +0000 (UTC)
-From: David Howells <dhowells@redhat.com>
-To: netdev@vger.kernel.org
-Cc: David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH net v9 07/14] rxrpc: Fix update of call->tx_pending without holding lock
-Date: Mon,  7 Sep 2026 12:37:34 +0100
-Message-ID: <20260907113743.1453210-8-dhowells@redhat.com>
-In-Reply-To: <20260907113743.1453210-1-dhowells@redhat.com>
-References: <20260907113743.1453210-1-dhowells@redhat.com>
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id EE82613432;
+	Mon,  7 Sep 2026 11:38:25 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id ELhqNzGinmoJfAAAD6G6ig
+	(envelope-from <fmancera@suse.de>); Mon, 07 Sep 2026 11:38:25 +0000
+Message-ID: <7612748f-3a0d-4930-9067-f5bc49e1b361@suse.de>
+Date: Mon, 7 Sep 2026 13:37:40 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] ipv6: null-check fib6_node before accessing in
+ __ip6_del_rt_siblings()
+To: Naman Gulati <namangulati@google.com>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, David Ahern <dsahern@kernel.org>,
+ Ido Schimmel <idosch@nvidia.com>, Simon Horman <horms@kernel.org>,
+ Kuniyuki Iwashima <kuniyu@google.com>,
+ syzbot+a73e5ee0fd534fed75bd@syzkaller.appspotmail.com
+References: <20260904180645.706425-1-namangulati@google.com>
+Content-Language: en-US
+From: Fernando Fernandez Mancera <fmancera@suse.de>
+In-Reply-To: <20260904180645.706425-1-namangulati@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Score: -3.01
+X-Rspamd-Queue-Id: 9FA4F1F785
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Level: 
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-3.01 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	TAGGED_RCPT(0.00)[a73e5ee0fd534fed75bd];
+	RCVD_TLS_ALL(0.00)[];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email,suse.de:dkim,suse.de:email,suse.de:mid,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	DKIM_TRACE(0.00)[suse.de:+]
+X-Spam-Flag: NO
 
-Currently, rxrpc_send_data() updates call->tx_pending just before it
-returns - but it won't be holding the call->user_mutex when it does this if
-a wait was interrupted by a signal.  This would allow a parallel sendmsg()
-to race.
+On 9/4/26 8:06 PM, Naman Gulati wrote:
+> syzbot reported a null-ptr-deref in __ip6_del_rt_siblings() [0].
+> 
+> The stack trace hinted towards a null dereference of rt->fib6_node when
+> fn->leaf is accessed in __ip6_del_rt_siblings(). With
+> RTNL_FLAG_DOIT_UNLOCKED set, inet6_rtm_delroute() operations run
+> concurrently without acquiring the RTNL lock. In ip6_route_del(), the
+> route lookup happens under rcu_read_lock() without acquiring
+> table->tb6_lock.
+> 
+> Between ip6_route_del() looking up the route and __ip6_del_rt_siblings()
+> acquiring table->tb6_lock, another thread can modify the routing table.
+> For example, when an ECMP route is replaced via RTM_NEWROUTE with
+> NLM_F_REPLACE, fib6_add_rt2node() unlinks all old siblings and sets
+> iter->fib6_node = NULL. A reproducer was found that triggers this [1].
+> 
+> Add a check to ensure rt->fib6_node is non-null before accessing it.
+> 
+> [0]
+> KASAN: null-ptr-deref in range [0x0000000000000020-0x0000000000000027]
+> RIP: 0010:__ip6_del_rt_siblings+0x31e/0x7c0 net/ipv6/route.c:4056
+> Call Trace:
+>   <TASK>
+>   ip6_route_del+0x1054/0x1110 net/ipv6/route.c:4232
+>   inet6_rtm_delroute+0x5d7/0x6d0 net/ipv6/route.c:5669
+>   rtnetlink_rcv_msg+0x802/0xc00 net/core/rtnetlink.c:7132
+>   netlink_rcv_skb+0x226/0x4a0 net/netlink/af_netlink.c:2556
+>   netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline]
+>   netlink_unicast+0x7f5/0x990 net/netlink/af_netlink.c:1345
+>   netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1900
+>   sock_sendmsg_nosec+0x13a/0x180 net/socket.c:800
+>   __sock_sendmsg net/socket.c:815 [inline]
+>   ____sys_sendmsg+0x565/0x870 net/socket.c:2713
+>   ___sys_sendmsg+0x2a5/0x360 net/socket.c:2767
+>   __sys_sendmsg net/socket.c:2799 [inline]
+>   __do_sys_sendmsg net/socket.c:2804 [inline]
+>   __se_sys_sendmsg net/socket.c:2802 [inline]
+>   __x64_sys_sendmsg+0x1b7/0x290 net/socket.c:2802
+>   do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+>   do_syscall_64+0x166/0x520 arch/x86/entry/syscall_64.c:84
+>   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+>   </TASK>
+> 
+> [1] https://gist.github.com/NamanGulati/0766a1159b6ca61928faaf87425ff899
+> 
+> Fixes: bd11ff421d36 ("ipv6: Get rid of RTNL for SIOCDELRT and RTM_DELROUTE.")
+> Reported-by: syzbot+a73e5ee0fd534fed75bd@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/netdev/6a9b03f9.04649fcc.10325f.0003.GAE@google.com
+> Signed-off-by: Naman Gulati <namangulati@google.com>
+> Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
 
-Further, both the callers of rxrpc_send_data() call it with the lock held,
-and then it returns an indication through the parameter list to say whether
-it has dropped the lock or not - after which the callers both just drop the
-lock if it's still held.
+Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
 
-Fix this by:
+Thanks!
 
- (1) Moving the release of call->user_mutex down into rxrpc_send_data() and
-     get rid of the indicator parameter.  This makes it easier to see where
-     the lock is held.
-
- (2) After waiting, if the attempt to reacquire the mutex is interrupted,
-     just return directly there rather than going to out_unlock
-
-Note that there's a slight change in behaviour in that wait_for_space
-failure now doesn't check for completion because it doesn't hold the call
-user_mutex.  The caller, however, should re-issue the send and pick up any
-error at a second attempt.
-
-Fixes: b0f571ecd794 ("rxrpc: Fix locking in rxrpc's sendmsg")
-Closes: https://sashiko.dev/#/patchset/20260702144919.172295-1-dhowells%40redhat.com
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Eric Dumazet <edumazet@google.com>
-cc: "David S. Miller" <davem@davemloft.net>
-cc: Jakub Kicinski <kuba@kernel.org>
-cc: Paolo Abeni <pabeni@redhat.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: stable@vger.kernel.org
----
- net/rxrpc/sendmsg.c | 48 ++++++++++++++++++++++-----------------------
- 1 file changed, 24 insertions(+), 24 deletions(-)
-
-diff --git a/net/rxrpc/sendmsg.c b/net/rxrpc/sendmsg.c
-index 4ce3ae0ba2e8..8bb327dc2833 100644
---- a/net/rxrpc/sendmsg.c
-+++ b/net/rxrpc/sendmsg.c
-@@ -320,8 +320,8 @@ static int rxrpc_alloc_txqueue(struct sock *sk, struct rxrpc_call *call)
- static int rxrpc_send_data(struct rxrpc_sock *rx,
- 			   struct rxrpc_call *call,
- 			   struct msghdr *msg, size_t len,
--			   rxrpc_notify_end_tx_t notify_end_tx,
--			   bool *_dropped_lock)
-+			   rxrpc_notify_end_tx_t notify_end_tx)
-+	__releases(&call->user_mutex)
- {
- 	struct rxrpc_txbuf *txb;
- 	struct sock *sk = &rx->sk;
-@@ -334,12 +334,12 @@ static int rxrpc_send_data(struct rxrpc_sock *rx,
- 
- 	ret = rxrpc_wait_to_be_connected(call, &timeo);
- 	if (ret < 0)
--		return ret;
-+		goto out_unlock;
- 
- 	if (call->conn->state == RXRPC_CONN_CLIENT_UNSECURED) {
- 		ret = rxrpc_init_client_conn_security(call->conn);
- 		if (ret < 0)
--			return ret;
-+			goto out_unlock;
- 	}
- 
- 	/* this should be in poll */
-@@ -464,7 +464,7 @@ static int rxrpc_send_data(struct rxrpc_sock *rx,
- 				if (ret == -ENOMEM)
- 					goto maybe_error_rewind;
- 				set_bit(RXRPC_CALL_TX_ERROR, &call->flags);
--				goto out;
-+				goto out_txb;
- 			}
- 
- 			if (len == 0 && !more)
-@@ -476,15 +476,18 @@ static int rxrpc_send_data(struct rxrpc_sock *rx,
- 
- success:
- 	ret = copied;
--out:
-+out_txb:
- 	call->tx_pending = txb;
-+out_unlock:
-+	mutex_unlock(&call->user_mutex);
- 	_leave(" = %d", ret);
- 	return ret;
- 
- call_terminated:
- 	rxrpc_put_txbuf(txb, rxrpc_txbuf_put_send_aborted);
--	_leave(" = %d", call->error);
--	return call->error;
-+	call->tx_pending = NULL;
-+	ret = call->error;
-+	goto out_unlock;
- 
- maybe_error_rewind:
- 	/* If we got a retryable error after copying all the supplied data into
-@@ -507,36 +510,38 @@ static int rxrpc_send_data(struct rxrpc_sock *rx,
- 		if (rxrpc_call_is_complete(call) &&
- 		    call->error < 0) {
- 			ret = call->error;
--			goto out;
-+			goto out_txb;
- 		}
- 		goto success;
- 	}
--	goto out;
-+	goto out_txb;
- 
- efault:
- 	ret = -EFAULT;
--	goto out;
-+	goto out_txb;
- 
- wait_for_space:
- 	ret = -EAGAIN;
- 	if (msg->msg_flags & MSG_DONTWAIT)
- 		goto maybe_error;
- 	mutex_unlock(&call->user_mutex);
--	*_dropped_lock = true;
-+
- 	ret = rxrpc_wait_for_tx_window(rx, call, &timeo,
- 				       msg->msg_flags & MSG_WAITALL);
- 	if (ret < 0)
--		goto maybe_error;
-+		goto out_nolock;
- 	if (call->interruptibility == RXRPC_INTERRUPTIBLE) {
- 		if (mutex_lock_interruptible(&call->user_mutex) < 0) {
- 			ret = sock_intr_errno(timeo);
--			goto maybe_error;
-+			goto out_nolock;
- 		}
- 	} else {
- 		mutex_lock(&call->user_mutex);
- 	}
--	*_dropped_lock = false;
- 	goto reload;
-+out_nolock:
-+	_leave(" = %d [intr]", ret);
-+	return copied ?: ret;
- }
- 
- /*
-@@ -702,7 +707,6 @@ rxrpc_new_client_call_for_sendmsg(struct rxrpc_sock *rx, struct msghdr *msg,
- int rxrpc_do_sendmsg(struct rxrpc_sock *rx, struct msghdr *msg, size_t len)
- {
- 	struct rxrpc_call *call;
--	bool dropped_lock = false;
- 	int ret;
- 
- 	struct rxrpc_send_params p = {
-@@ -811,16 +815,15 @@ int rxrpc_do_sendmsg(struct rxrpc_sock *rx, struct msghdr *msg, size_t len)
- 		ret = 0;
- 		break;
- 	case RXRPC_CMD_SEND_DATA:
--		ret = rxrpc_send_data(rx, call, msg, len, NULL, &dropped_lock);
--		break;
-+		ret = rxrpc_send_data(rx, call, msg, len, NULL);
-+		goto error_put;
- 	default:
- 		ret = -EINVAL;
- 		break;
- 	}
- 
- out_put_unlock:
--	if (!dropped_lock)
--		mutex_unlock(&call->user_mutex);
-+	mutex_unlock(&call->user_mutex);
- error_put:
- 	rxrpc_put_call(call, rxrpc_call_put_sendmsg);
- 	_leave(" = %d", ret);
-@@ -857,7 +860,6 @@ int rxrpc_kernel_send_data(struct socket *sock, struct rxrpc_call *call,
- 			   struct msghdr *msg, size_t len,
- 			   rxrpc_notify_end_tx_t notify_end_tx)
- {
--	bool dropped_lock = false;
- 	int ret;
- 
- 	_enter("{%d},", call->debug_id);
-@@ -868,12 +870,10 @@ int rxrpc_kernel_send_data(struct socket *sock, struct rxrpc_call *call,
- 	mutex_lock(&call->user_mutex);
- 
- 	ret = rxrpc_send_data(rxrpc_sk(sock->sk), call, msg, len,
--			      notify_end_tx, &dropped_lock);
-+			      notify_end_tx);
- 	if (ret == -ESHUTDOWN)
- 		ret = call->error;
- 
--	if (!dropped_lock)
--		mutex_unlock(&call->user_mutex);
- 	_leave(" = %d", ret);
- 	return ret;
- }
+> ---
+>   net/ipv6/route.c | 9 ++++++---
+>   1 file changed, 6 insertions(+), 3 deletions(-)
+> 
+> diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+> index 9658939511e0..08bd68f1b5bb 100644
+> --- a/net/ipv6/route.c
+> +++ b/net/ipv6/route.c
+> @@ -4019,6 +4019,7 @@ static int __ip6_del_rt_siblings(struct fib6_info *rt, struct fib6_config *cfg)
+>   	struct net *net = info->nl_net;
+>   	struct sk_buff *skb = NULL;
+>   	struct fib6_table *table;
+> +	struct fib6_node *fn;
+>   	int err = -ENOENT;
+>   
+>   	if (rt == net->ipv6.fib6_null_entry)
+> @@ -4026,9 +4027,13 @@ static int __ip6_del_rt_siblings(struct fib6_info *rt, struct fib6_config *cfg)
+>   	table = rt->fib6_table;
+>   	spin_lock_bh(&table->tb6_lock);
+>   
+> +	fn = rcu_dereference_protected(rt->fib6_node,
+> +				       lockdep_is_held(&table->tb6_lock));
+> +	if (!fn)
+> +		goto out_unlock;
+> +
+>   	if (rt->fib6_nsiblings && cfg->fc_delete_all_nh) {
+>   		struct fib6_info *sibling, *next_sibling;
+> -		struct fib6_node *fn;
+>   
+>   		/* prefer to send a single notification with all hops */
+>   		skb = nlmsg_new(rt6_nlmsg_size(rt), GFP_ATOMIC);
+> @@ -4051,8 +4056,6 @@ static int __ip6_del_rt_siblings(struct fib6_info *rt, struct fib6_config *cfg)
+>   		 * and emit a replace or delete notification, respectively.
+>   		 */
+>   		info->skip_notify_kernel = 1;
+> -		fn = rcu_dereference_protected(rt->fib6_node,
+> -					    lockdep_is_held(&table->tb6_lock));
+>   		if (rcu_access_pointer(fn->leaf) == rt) {
+>   			struct fib6_info *last_sibling, *replace_rt;
+>   
 
