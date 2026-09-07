@@ -1,154 +1,157 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6E952DC765;
-	Mon,  7 Sep 2026 07:29:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788766150; cv=none; b=IrroisWkulC0adKL2+XYTI43JJuOT5wJfA9kg9gw97ZXmhwXyTZ+xvPWqHmh2TSn7DA1PsCHiDuXPMdDQY10IOW63rint+Vh3ppFxo3JmZ30bFd7sn9XGcuK1qBx+5PQHLEXPccz7KKHZVxs8excI8H9EXMqIzsbZ8VI78J1900=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788766150; c=relaxed/simple;
-	bh=uDa6rYQmXTGgcYIJLVFNrSmufukAoyTcQnshhgvR3Po=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TZn5DMvIKXk6vJXxi7tQWoixmM0vCxOECDRpEcnN51IjC6EdfUvK5AdOG99wT3VIKlv43EFIJaNAHFfaqf4Q2n65/Sc1jilLV3IT7EEVla/Ec5e+Rnuh1J/DdpafftHNK1mLTBW05vOJRQGd09JJegcx5EyiHrW02+WSdrD7r6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=QZ9Cn0PW; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 845F74119E0
+	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 07:30:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.177
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788766246; cv=pass; b=GDMvrbBTOJ6AnrkTUhsjXAwLCqwlDM978zwHObYMyat4bao80MU8fzHg+qqevIncZXafkZXVmzvXclywdybFjWn9rUo+uL+d9xpeprMtVpGi5sa2FreCDLJksi5B8RfUp+TPiH/fxWsUaMA4w3NugJ3XlOM88kc0SSuT66hzV9M=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788766246; c=relaxed/simple;
+	bh=ws1lt2A9wuTY0mZ//UjpSJvqUAKan2kCqa9w0DLo52c=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=K81fd7YQbNYgb5ec+6LjJ/XV/yx4uYJR4YJ7QPEJqMGSH0rCd+XipCx0BO27lj43fu6sAENvh44QMNrziw6gTmG5BlCkylkqUmXcpx7UJoMfePkAkJicU9HM2YMTG9Jvy5cDkvRgI1Xbizkrl7XUzI1P3dOo9PYn20crAflnPMw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=r2xJc220; arc=pass smtp.client-ip=209.85.208.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="QZ9Cn0PW"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 11BA41A1A1C;
-	Mon,  7 Sep 2026 07:29:06 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id D2B4660383;
-	Mon,  7 Sep 2026 07:29:05 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8286A11C7A131;
-	Mon,  7 Sep 2026 09:28:52 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1788766140; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=aLz+YXhDXlEGNDvoI1Sa9xZvW1NLNKMWivo0ZPJIY08=;
-	b=QZ9Cn0PWrljorCBOhiK1CJ1CZTrACqwecmjkSZL6aH++MTyIZx/YDEF5Vv9n6WLwIYfPQe
-	7CBGnXgwfPsGyOCRBkxTvexerYSf7S41IzTaHKSeK5sdhB8p7J06iZXIelfhN6SvrJ6lV9
-	sVEL7gy5QBOXFswDyJqBGrOsu8Ea9G6+nyIEaUtcgkOw8w2QEplRixDEYSuoCSHomNKP+h
-	e8iIkLHNiwpi65LEYWLOvTowa3Fu7Taomx7mR0e9I/FtfT7w5FRoT+ZLHtg67qozO8l5cd
-	H3LDIKWwkfOuhN9kQ/ULuqi6mX0pWa/nl+4NytM9Xsr95U0djysT9yOrU5spYQ==
-Message-ID: <248c1a07-7a5c-44dc-a73e-f95a69bb4161@bootlin.com>
-Date: Mon, 7 Sep 2026 09:28:51 +0200
+	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="r2xJc220"
+Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-3a1e9f55e03so28723551fa.1
+        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 00:30:44 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788766242; cv=none;
+        d=google.com; s=arc-20260327;
+        b=RQXC6gMD9irBTcf0yJBF9dRwNcyht2MaoOQ/z7a57RBgDKebyalHr9k2ESnve6xtwK
+         ZoQQCjQ4T1czj6rtgqtC0hSjHNhZ4X7umur/sPDOKmbUhalJoapq29aP9pu2C6RKOpB7
+         8h8BbaKu1dpgvTgW/fZ1cHpbd9XqIiCgErunwkpsZlSnLzphZ0yEnzxDAQBcdS6PQn2c
+         aJDxarARG+SuiCMhj2sIWxBKDKEwhaVCK60cRKoya+zm7RxxtXdjyz2dMNIXRWVWfAqL
+         RZl7WmwmkogtunTvY9+yeyTd2PVGyLj2GYxSepcRu5jcnK6z7JbUtk5e6M7yOfh75CG9
+         xl8g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=K8pzZlzdqRIT/RWxSl/nFSJH5gf6fu3+T1v+V4JsYz8=;
+        fh=ine+tQB2q30PsVDteuWAMWHPfwZCeKPXdHtFUa7yXgs=;
+        b=lnoiUoBm9o25OW6aHWwdPh152RRjUO3awEmBYO4Pn+gdBEAS1dM5++bnRytuVr2hcq
+         3xK4yU9nSAXzcLKmbY12YRecJrpEyXN62sV94G7Udf2SgT6HdSupAFgAt68SHahiKGpT
+         I6zxUsBGyWoYNqscayzuiv0cVvdtxJTYJtTtUghFVmQBYaJ09IcYmxF5Gj1x2WErKphg
+         cyGxnQIGKs6af2MTbjimrberB3jpkW1SmPFBgvK1DIbAQK+IoryK/mQlLLkNSeswH9Fp
+         dVPkz+rKtIGpQTjkelqPr79hT9BK7ZffwKQeMLVMuv659lklRQDFr5Am5OZI5kb5/7eq
+         QiHw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=nebusec.ai; s=google; t=1788766242; x=1789371042; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=K8pzZlzdqRIT/RWxSl/nFSJH5gf6fu3+T1v+V4JsYz8=;
+        b=r2xJc220Zc65Y7W2MaMaq3YAsTrjViOVCgIePlgRrEVuKOUCWhaobo2ZN7lFvrwJmH
+         jwhgA2Ey/xrqrDsX0hTrSZArRxWNUbTJ1BBoXFDAuqPVGWS3uzGaKwJtrj/Q46uRMssS
+         o1MQx7lWWvmkB+Y5OpNmQAepBU7XbVWnx3dk+9NRACPts7fAe4ufO3sOWgfakB6qSATi
+         BRw1VEHwqp+x4iOmusvYYb8A47gpu6ssJcKBZyybXPBYZQ2Kj63vfBr+ZkF2Or4l2THO
+         Q/7Q/eobjosfi0XLUIJxdEXDoTfrjgRLmSfIZn8te4/DI2fK1mfOnuavwXgBtxjZX36d
+         suxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788766242; x=1789371042;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=K8pzZlzdqRIT/RWxSl/nFSJH5gf6fu3+T1v+V4JsYz8=;
+        b=GnP7yERN1IqGsK05q+HebHFOD7Lr6Wrm/MsJrm1s8YzXGj7Gqq1DiK6PO2ANE94LOY
+         vASj/y26n1cQCg7eWbP3laOtax0GIvM35fL0jRAXAwwX8PjZqfdocdljPYuj2ABT4Oy5
+         fKfh7TJ1c8T5f4yB+y666et708N1WXQfLoCrGwscSjeklfDzNQMoJugJY8EGnuk2Z8Wb
+         ntOsTqzoZNL3JEcgqNxEcVFrrC5YzTRk9gwn++tPZv5Qhyr5+jL7tsdhoq4yFY9foddI
+         KRxAT2Ef2QoJu2jYty0zWAz/ECwlEWf1VHNVQ2Jot82PYzjwnhsy6Vf8XT8rab+85N16
+         LHtw==
+X-Gm-Message-State: AFuF++nToznf4juRLuaZz7/lXAS+D8NgVk2jBSIAHo5ECKDOeCyHhOkH
+	JOhYTe4Dbuz/dnBJrWOurvHpMEQYvqvz4ytp7G0R+ZSk/ZGGGB0hzloHIHee9ZlJgC8A5e9jH7U
+	RQUd+gnfRQ63qotONvFHm0G2jwuQZ3cNvjj77y4Id17M=
+X-Gm-Gg: AYBFou0kojUcE3sqiU62AlLUHecnOtVBPqheVJmyz1ELllPYdicra8N4830+QthZ/I0
+	oR0cf8jocieZrBQI/c+qctuxcgqoyOJds5umP3TX/9c+S3iGvpXkusQjg6PqMjzGyqjgApyYVvq
+	1qs5UmiGTXpKgtaCifk7iAy3pjO8znF2o1IeUprxOpGOPAPVrJ58Q7pUaR8sHqdlkQjEPv/MBGz
+	gtDVP8Gt5QZaoEiCR82r0gxZn8uVF7C1xm3hitnFTPSHNEkMJWNV9OBRlknelCPuUWkR1Eq0HNG
+	xaa8GgZLC2vR/m6eXK+9Vbs6C3fPx1jGi5ylL4+zf2G9q7Url8aw5wpnLARGcvn+CgAbggGq/oA
+	=
+X-Received: by 2002:a2e:be1e:0:b0:3a3:314d:1169 with SMTP id
+ 38308e7fff4ca-3a371b39b13mr25408981fa.1.1788766242436; Mon, 07 Sep 2026
+ 00:30:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 3/3] net: stmmac: Add UltraRISC DP1000 GMAC
- support
-To: Jia Wang <wangjia@ultrarisc.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Giuseppe Cavallaro <peppe.cavallaro@st.com>,
- Jose Abreu <joabreu@synopsys.com>, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org
-References: <20260901-dwmac-ultrarisc-v1-0-f19454814bcf@ultrarisc.com>
- <20260901-dwmac-ultrarisc-v1-3-f19454814bcf@ultrarisc.com>
- <910be156-b631-4b62-972a-79d9a9e38697@lunn.ch>
- <178842162417.2701756.3296149694160507506.b4-reply@b4>
- <1622b0a7-5516-4e72-b5e1-60c12b65b52e@lunn.ch>
- <8611dff3-56ea-4798-8303-b0a8af84580e@bootlin.com>
- <178850166577.1486454.10728134844652956076.b4-reply@b4>
- <178876008871.2542659.8460758662538260209.b4-reply@b4>
-Content-Language: en-US
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-In-Reply-To: <178876008871.2542659.8460758662538260209.b4-reply@b4>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+References: <cover.1788668475.git.zihanx@nebusec.ai> <e8782427d0b3cd1854ab8d141eea224b53db55b9.1788668475.git.zihanx@nebusec.ai>
+ <CANn89iKdX2-a+VhWa4CyDODSZByk=r5VRq38yQhLYBFRQ1Wy3A@mail.gmail.com>
+In-Reply-To: <CANn89iKdX2-a+VhWa4CyDODSZByk=r5VRq38yQhLYBFRQ1Wy3A@mail.gmail.com>
+From: zihan xi <zihanx@nebusec.ai>
+Date: Mon, 7 Sep 2026 15:30:30 +0800
+X-Gm-Features: AcwNN1VDHzbFiSzp25pLBVGEmL8dzveakPy4WZ3YZpO1QfoeCh76H4bfuzwlclo
+Message-ID: <CAANe3eQpztNQF_e0qHXxAr+GM39tUdU0FS=1kO0h5LY+v-iVGw@mail.gmail.com>
+Subject: Re: [PATCH net v2 1/1] udp: diag: bound bucket lock hold time
+To: Eric Dumazet <edumazet@google.com>
+Cc: netdev@vger.kernel.org, "David S . Miller" <davem@davemloft.net>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, Willem de Bruijn <willemb@google.com>, 
+	Pavel Emelyanov <xemul@parallels.com>, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Vega <vega@nebusec.ai>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On Mon, Sep 7, 2026 at 3:07=E2=80=AFPM Eric Dumazet <edumazet@google.com> w=
+rote:
+>
+> On Sun, Sep 6, 2026 at 12:35=E2=80=AFPM Zihan Xi <zihanx@nebusec.ai> wrot=
+e:
+> >
+> > udp_diag_dump() currently keeps the UDP hash bucket spinlock held while
+> > running the request's bytecode filter and filling a netlink response fo=
+r
+> > every socket in the bucket.  A large filter and a heavily populated buc=
+ket
+> > can therefore keep bottom halves disabled for an attacker-scaled amount=
+ of
+> > time.
+> >
+> > Collect at most SKARR_SZ matching sockets under the bucket lock, taking=
+ a
+> > reference for each socket, then run the filter and fill the response af=
+ter
+> > releasing the lock.  Resume with the existing (slot, s_num) dump state =
+so
+> > the next batch can skip already-walked sockets.  Leave bytecode filteri=
+ng
+> > until after unlock; unlike tcp_diag, a rejecting inet_diag bytecode pro=
+gram
+> > is the expensive part of this walk.
+> >
+> > Fixes: b6d640c2286d ("udp_diag: Implement the dump-all functionality")
+> > Cc: stable@vger.kernel.org
+> > Reported-by: Vega <vega@nebusec.ai>
+> > Assisted-by: LLM
+> > Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
+> > ---
+> > changes in v2:
+> >   - Drop the hash-list cursor, dump_done callback, extra module
+> >     reference, and inet_diag core changes.  Dump state is only
+> >     (slot, s_num), so the existing handler get/put around dump() is
+> >     enough and udp_diag no longer manages its own module lifetime.
+> >   - Batch at most SKARR_SZ matching sockets under the bucket lock
+> >     like tcp_diag, and run bytecode filtering plus netlink fill after
+> >     unlock.
+> >   - v1 Link: https://lore.kernel.org/all/133b6aee9e2c908c9da37d5585b3d2=
+cd016906cd.1788187473.git.zihanx@nebusec.ai
+>
+> pw-bot: rejected
+>
+> Please limit the complexity of filters.
+>
+> Anywone needing complex filters will implement them in user space.
 
-On 9/7/26 07:48, Jia Wang wrote:
-> On 2026-09-04 14:01 +0800, Jia Wang wrote:
->> On 2026-09-03 14:30 +0200, Maxime Chevallier wrote:
->>>
->>>
->>> On 9/3/26 14:10, Andrew Lunn wrote:
->>>>>> This looks to be 90% identical to dwmac-sophgo.c.
->>>>>>
->>>>>> Do you expect any further changes to this driver? Is everything
->>>>>> supported? Are there more clocks? A GPIO for WoL?
->>>>>>
->>>>>> I'm just wondering if the common code should be pulled out, or even
->>>>>> dwmac-sophgo.c made generic so it can handle all plain boring devices
->>>>>> which have RGMII delays and not a lot else.
->>>>>>
->>>>>
->>>>> The probe boilerplate is indeed largely similar because both drivers
->>>>> use the common stmmac platform helpers. However, their platform-specific
->>>>> requirements differ: Sophgo requires additional TX clock handling and
->>>>> other configuration, while DP1000 requires fixed TX and RX delay
->>>>> handling. ACPI support under development is also intended to use the
->>>>> UltraRISC glue driver.
->>>>
->>>> ACPI is going to be fun, since nobody does ACPI networking.
->>>>
->>>> But how big is the change to the glue driver? I expect the change will
->>>> be minor, a call to devm_stmmac_probe_config_acpi(), in addition to
->>>> devm_stmmac_probe_config_dt(). Anything else?
->>>
->>> I agree that if ACPI support is added, let's try to make it part of the
->>> core.
->>>
->>
->> The ACPI support is still under development, but the current prototype
->> adds ACPI device matching and ACPI-specific platform-data setup. Some
->> common stmmac changes are also needed for ACPI-described platform
->> resources and MDIO.
->>
->>>>
->>>> One problem the stmmac driver has is cut/paste glue driver
->>>> development. The same code is repeated again and again. Russell King
->>>> spent a lot of time and effort trying to reduce the duplication. So we
->>>> should not be adding more duplicated code unless it is actually
->>>> required.
->>>
->>> It seems to me that all the RGMII handling could be made much more generic,
->>> as this is commong pattern in glue drivers :
->>>
->>> dwmac-sophgo has the "has_internal_rx_delay" field, and dwmac-eic7700 has
->>> both has_internal_[r|t]x_delay.
->>>
->>> With this third one, it makes sense to start sharing that logic across
->>> glues.
->>>
->>
->> I agree. DP1000 is another user of this pattern, with fixed internal
->> delays on both the TX and RX paths. I will look at moving this handling
->> into the common stmmac platform code, leaving each glue driver to
->> describe its internal delay capabilities.
->>
-> 
-> After looking further into the implementation, I see two possible
-> approaches:
-> 
-> 1. Keep a minimal UltraRISC glue driver that only describes the fixed TX
-> and RX delay capabilities, while the common stmmac code handles the PHY
-> mode adjustment.
-> 
-> 2. Store these capabilities as compatible-specific match data in
-> dwmac-generic and remove the UltraRISC glue driver entirely.
-Let's go with 1 for now I'd say. UtraRISC will be the only one that's basically
-an empty glue calling core code (maybe you have some plat->flags to passs ?).
+Agreed.  v2 tried to make the dump walk tolerate large bytecode;
+that was the wrong approach.
 
-If we manage to simplify even further (e.g. tx clock handling for exmaple), we could
-also deal with dwmac-sophgo the same way. We could then consider something like
-dwmac-simple.c , keeping dwmac-generic.c for the raw dwmac IPs.
-
-Maxime
+I will drop this patch and send a new series that rejects oversized
+programs in inet_diag_bc_audit().  Richer matching can stay in
+userspace.
