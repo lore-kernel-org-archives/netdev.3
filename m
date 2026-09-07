@@ -1,136 +1,112 @@
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 703D7424D58
-	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 09:48:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5075778F4A
+	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 09:49:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788774516; cv=none; b=IZNzNyxQNOuL4BcJ9Uqc/vmpDc5Rkg88HCNHsPMwJbDtWbtW28iBzvif+BRPVQ8sqyagwbAFL5iOEWO9w2nNevH1Q/qHOPK6hD95jZuJpeBv77wmEa0mblMcwP6/yRuYaBEteSdv+5ygo0jk2HIbxZTdUzX7AvqGO0pWp0cVtJQ=
+	t=1788774599; cv=none; b=r1+VcvyyQIzFLboSfUkSlf7PLe/DRi3po0WgIOt+jJN0bqHrEWbKrcKtWU9rSvO7G/cce2Nfs//VFbEFUWyQ2b6RUNx1VGEUqTL4m7cGkqM165DbeEtg/kTvZ//A31Cymmgn7ZpVFTf26Rwr/c125At52xcYCSH5QEUbLoq+yLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788774516; c=relaxed/simple;
-	bh=Znhy9yn5b81v+QAcdiMnxOmRxxBxG6BRBXmGN4tWj6Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=exge6wOeZV1rRVWTHE3yuYrUzTyr/aq0xsFmO8WSk65khrmDX7cxkCDlWh5DS5GHcKFFFnbld6vYq234DEoEMB58tddWIrmDrtMKaet4CyZKrN5r3jW9koJxoLmXxgv3og1HPxDpaBeMeniNbhl/J1AlstH13ZvIVLkG8qpuVqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=ALSwTc8E; arc=none smtp.client-ip=209.85.221.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1788774599; c=relaxed/simple;
+	bh=iLBB57PZ5U3pb7SS7fqcg5Rhd7j7cnvqUvLtPUqFASA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XqvaZSIh8ZHua8clY05uGgJc1nLoftgRba4+hRW5imeTduWUFz5UrvnfzsY4pMBqN0iC4EG7ZFV8fAG+mbtbtXq7RppUmcV0JkgdMAqMTTPo6KjcFpkKo3ayeTe0pAk+6N5W0i9JRaSkoDdQ2xbjgQb2JVWMpVExy5RwNrsUcJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MTJPYR6i; arc=none smtp.client-ip=209.85.215.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="ALSwTc8E"
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-4843e9c5960so3342288f8f.0
-        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 02:48:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MTJPYR6i"
+Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-c9e607d81fcso1826171a12.2
+        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 02:49:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1788774512; x=1789379312; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Rozep1Nd9gPmq9At2RT1kz9pDynd1CZ982/t935zvDA=;
-        b=ALSwTc8E9uU6l3XDxrKufs4RX6f932myz+3sF5FE9VTdd3u9aBtMyNG55yM0zbXSEN
-         7mtuDyYywyaLvH9XsrHF8bV4M/M9awMxqY/ZdT3BF0jYxKjSzwTr4W/QHzeFmEzTJRKK
-         wi/gE+7kiC/V79oCk875HqdSt7EqPnCzJ3X8fG4sahOqacgeOoFCjPOfI0N4QR1Jh38P
-         fmam7XDGdCgL2XHLN53u/FBFACGxTE7GGV/0KDAS1b1mHPrKrtHVsBO1g8+J4VUXYvab
-         KOlIVtYq/q0hDgQGsnfxSbsmi3kkvZn0X11bjGS/sjmx/DVsbJL8+jdQLkjf/PtFNPf2
-         NnLQ==
+        d=gmail.com; s=20251104; t=1788774597; x=1789379397; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=4Rc67cTd4W9vIL1rwpsbclZB6rOxxrOtQ39JEau+6IA=;
+        b=MTJPYR6iIZnbMO0pBe1GEdvXpBh2rVdKqq8goORy7mrna5xJVfjce6p3wg1Pltt3uB
+         yaWCW6gDSoy6pWE1s2KO+WcyTVLFuEbHbCsEiJkICimER/QsMNcCKk5k/LsyWDrvYCwd
+         zwcilDBQNDBTLhH2mLAOeaowZucrOSkvajay2vq5mQ+gYfig4DgN/A/egf53LIChqAyU
+         khlOP4ZsRlTkElqaTD5vkDCD1PTFNLacLTZRx6HTMDQQTufbKgL1ZMp4O+G4OkNM3tvC
+         g0nH7whtxHkOo4oXx7OWRA1i4O2FwAEeJIRBVDEH7rpApkuTkq+3lvWyZEdJOjaPAFh4
+         Abtg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788774512; x=1789379312;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Rozep1Nd9gPmq9At2RT1kz9pDynd1CZ982/t935zvDA=;
-        b=ZgFqP/F3O+0ZM7yI4o4huiE/Q2Ik/lcLejXE3ViVRe+X9zv2r11u1lXOMQzyN8w7QA
-         A1qs4YE1zJzfb2PYWRSUoW7KkGCNd1XqtbHen77ax1IZwY72y7eb5ja0SR/dCQcpSEoG
-         1qhQ5/HazPjeBVZxagEiDfg3ra2jM4FLrM7P1sHu49OQzKwVk+JtJOLra5o9LtYOe9kn
-         CBZyG7YWBfTorAFNHItjLztuKGxkHu0hrfH68WgpQh9vDpoGvQmx8BMQoFMXX+2RspZQ
-         Apo+Qom9sTcSSwmzUdA+dycdGYfpi3yFmKEJVj9MhZiEAYLW20mKQUZUirH89wSDe3+E
-         yyMQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzEIt7p9pacEA7E5V8TAAanrFn9IbF5wR9e5VZaYUojfzlHnmthhlljIK4y/96npFKUEBLs5mM=@vger.kernel.org
-X-Gm-Message-State: AFuF++mwESFhaBkukEIKGYMPm8AvCeX2LlGGAmlD93ru67B+FjPMPlfF
-	BLv+X+qvASSgNvafeLx0L6Lyd68oa0oMQSx8IoC9AY2eXSL1LYkCXPJ1JizSTNpAPY4=
-X-Gm-Gg: AYBFou1Dbs3nHbCxNQq5inj7uyOdHYQvgjlKjMv10qxYjoIF9cP0F1ir9J8nm1Hzwxr
-	4ko5SswUx1NNSh/NKoU9xIOuZHEBkTauDbVvq2j69UsHllcuaneeoLofiBTbqrbeG9NbwPTuW0I
-	pzbkFy1V3+0lreovFBmKvl+85OwfO1tUdA0W8h54JagEP2ylZPrpLLr8+EjuaSlQIQ4/fwuh7oO
-	lpVyDKNn8d8ij9ceHljP4eibYgc/uvRyWwsxLqXXDC1nQEJFVx9HA5g0sxTlhvsTMyfFax+1pqq
-	GT13zlgta7Oj8qnftIffZ2iCZzolrq6+M13vcFEstjRMzzEyXVMQPJyF76xrGTtfo5bZ249bM/t
-	LxxYwUK0NaM4+SzxNgrbqNgi/uibX1n2I91d8/dVpI8AZ0+OrHyUi0T/pZ7+lTIQCtsVebG7X1W
-	5i4OkjqDwxy98T2/GhXpzjXpmHYecZvKurE/FKaXc9qckBQSorFyUzByPOJiYspS6xWaV1ewCDo
-	k7AUUrPg2iMflJbYjyrfw==
-X-Received: by 2002:a05:6000:41db:b0:485:82f9:44b4 with SMTP id ffacd0b85a97d-4858709c044mr25136906f8f.7.1788774512475;
-        Mon, 07 Sep 2026 02:48:32 -0700 (PDT)
-Received: from localhost.localdomain ([2a00:6d43:105:c401:e307:1a37:2e76:ce91])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4858dd90e1fsm25976318f8f.28.2026.09.07.02.48.30
+        d=1e100.net; s=20251104; t=1788774597; x=1789379397;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=4Rc67cTd4W9vIL1rwpsbclZB6rOxxrOtQ39JEau+6IA=;
+        b=ceH6aP2+CDVhDrPwNRMIffD+6gl8YovY82g59kwGT2HFLZ92dNLH11EY95VX6hZokg
+         GXn18bzeA7tIgYIkCU6OMqrTlBFt4HF/pnExSGxYF9aWnpGWIfoQC0b0B9wOPHXPq8Ml
+         t6Gzh8/sMm0o2W/IApd9CgxWtMiFaiWmF/4/eLEDeidVoJSkmOJKW0rkIB0BK0RSOxFw
+         H81XhZTzf35WZpnjnPjRCvS73Ly1u1H1ee6wxenPwOiRZv+OJeYZ4WMIOoT0Vznyp/p3
+         6ZP9Ek3KYvPq5XNWKmnFfyJSCL4k8LoFTonlU0bkYoSRJ9FebNcHcxEGo66C9TkWCaDB
+         SI9A==
+X-Forwarded-Encrypted: i=1; AKwUvByYJPpaAkPsgtsJruz9ffEHuxOdTvWgYE5Aqc/3TG8zbfssWZKjEpwhNADz7gynFBwfQJJby4U=@vger.kernel.org
+X-Gm-Message-State: AFuF++nim6YjI4z/w1fHXqF6XnJTMNdmQ5yvSMG4zviwmF1piHZ8L2Sa
+	093wrGGG0taIGW674Q+8L4HML5mpwDHIEJ4qjGn/i+7kbz4cW0bq91uF
+X-Gm-Gg: AYBFou0+onHUfr0mTfUfhcxZfZQuoG4e3hEGHkzphDYGaX1CDm0cayTL9/iZnNP/kSg
+	31qtuqZw/pfqg+d+eD3jHgVUVUHW0MBYeIeTnH6HPlu5cEt8dYAusz0dtA+CdX1x6st+GtfEEQb
+	bwOgjJ8/wWZDIBI3igGE5C93B++wLALagf2srnwMTzNVFsyf6egN6d32KFuMnxZr5J/PBn6p5ae
+	/sB4/zAZDxtpfQ4LtR059Bq7EZ8HAczvwG0AzBIjh1zjC4Jz2zXb9U6EQfJPom0Mca/84oivwFe
+	ZBYL/ZwCKlbFSkQDkZpua1Nw4aW0HR32NlKaVR0xgUMe63hJx7iP+MWzIcQhnpKo2+zVMd5dU0U
+	c09MZtmxFJeR5LvZowXXUm/Kdjvz1lICDQKcSiDLE7vv00RQbJaSkn9G2Qyyyyzekb8+JK8ybmf
+	zZjsdYx6YpGh2gwvRmxT4pqAKGPwCsyvPzzaOheFNsmJ9jKutEBkKy9EYtignuR3wFkT6g40+4j
+	5o8upTG7c0W1g==
+X-Received: by 2002:a05:6a21:828c:b0:3d1:39e9:b267 with SMTP id adf61e73a8af0-3da39b721f7mr33007088637.3.1788774596398;
+        Mon, 07 Sep 2026 02:49:56 -0700 (PDT)
+Received: from volcano9f6e-hostos.amd.com ([165.204.217.251])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3339ac24d7esm41895888eec.15.2026.09.07.02.49.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Sep 2026 02:48:31 -0700 (PDT)
-From: Marco Crivellari <marco.crivellari@suse.com>
-To: linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org
-Cc: Tejun Heo <tj@kernel.org>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Marco Crivellari <marco.crivellari@suse.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Sunil Goutham <sgoutham@marvell.com>,
-	Linu Cherian <lcherian@marvell.com>,
-	Geetha sowjanya <gakula@marvell.com>,
-	Jerin Jacob <jerinj@marvell.com>,
-	hariprasad <hkelam@marvell.com>,
-	Subbaraya Sundeep <sbhatta@marvell.com>,
+        Mon, 07 Sep 2026 02:49:56 -0700 (PDT)
+From: Hemanth Selam <hemanth.selam@gmail.com>
+To: Pablo Neira Ayuso <pablo@netfilter.org>,
+	Harald Welte <laforge@gnumonks.org>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH net-next] Octeontx2-af: Add WQ_PERCPU to alloc_workqueue users
-Date: Mon,  7 Sep 2026 11:48:22 +0200
-Message-ID: <20260907094822.121457-1-marco.crivellari@suse.com>
-X-Mailer: git-send-email 2.55.0
+Cc: osmocom-net-gprs@lists.osmocom.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v2] gtp: fix repeated word 'to' in comment
+Date: Mon,  7 Sep 2026 15:19:50 +0530
+Message-ID: <20260907094950.18606-1-hemanth.selam@gmail.com>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-This continues the effort to refactor workqueue APIs, which began with
-the introduction of new workqueues and a new alloc_workqueue flag in:
+Drop the second 'to', reported by checkpatch.pl as a possible repeated
+word. Only touches a comment, no code changes.
 
-    commit 128ea9f6ccfb ("workqueue: Add system_percpu_wq and system_dfl_wq")
-    commit 930c2ea566af ("workqueue: Add new WQ_PERCPU flag")
-
-The refactoring is going to alter the default behavior of
-alloc_workqueue() to be unbound by default.
-
-With the introduction of the WQ_PERCPU flag (equivalent to !WQ_UNBOUND),
-any alloc_workqueue() caller that doesn’t explicitly specify WQ_UNBOUND
-must now use WQ_PERCPU. For more details see the Link tag below.
-
-This is also enforced by:
-
-    commit 21c05ca88a548 ("workqueue: Add warnings and ensure one among WQ_PERCPU or WQ_UNBOUND is present")
-
-In order to keep alloc_workqueue() behavior identical, explicitly request
-WQ_PERCPU.
-
-Link: https://lore.kernel.org/all/20250221112003.1dSuoGyc@linutronix.de/
-Suggested-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Marco Crivellari <marco.crivellari@suse.com>
+Assisted-by: Cursor:claude-opus-5
+Signed-off-by: Hemanth Selam <hemanth.selam@gmail.com>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/rvu.c | 2 +-
+
+Notes:
+    v2: designate the patch to net-next and use a subject prefix naming the
+    component, as maintainer-netdev.rst asks; v1 went out with a bare
+    [PATCH] and a "net:" prefix. Rebased onto net-next, diff unchanged.
+    
+    v1: https://lore.kernel.org/all/20260907063804.26581-1-hemanth.selam@gmail.com/
+
+ drivers/net/gtp.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-index 937b085582b5..b8f81e068f53 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-@@ -3371,7 +3371,7 @@ static int rvu_flr_init(struct rvu *rvu)
- 	}
+diff --git a/drivers/net/gtp.c b/drivers/net/gtp.c
+index 69fe5717846b..4aff23bcfdd1 100644
+--- a/drivers/net/gtp.c
++++ b/drivers/net/gtp.c
+@@ -770,7 +770,7 @@ static int gtp_parse_exthdrs(struct sk_buff *skb, unsigned int *hdrlen)
+ 	 *
+ 	 * This length field includes length field size itself (1 byte),
+ 	 * payload (variable length) and next type (1 byte). The extension
+-	 * header is aligned to to 4 bytes.
++	 * header is aligned to 4 bytes.
+ 	 */
  
- 	rvu->flr_wq = alloc_workqueue("rvu_afpf_flr",
--				      WQ_HIGHPRI | WQ_MEM_RECLAIM, 0);
-+				      WQ_HIGHPRI | WQ_MEM_RECLAIM | WQ_PERCPU, 0);
- 	if (!rvu->flr_wq)
- 		return -ENOMEM;
- 
--- 
-2.55.0
-
+ 	do {
