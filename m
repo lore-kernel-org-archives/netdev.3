@@ -1,107 +1,138 @@
-Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C91C48B38A;
-	Mon,  7 Sep 2026 12:15:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3216D445AC4
+	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 12:18:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788783313; cv=none; b=hsvHnnStZwncZYaBT2F1HP3VBTGwHkoxkMM7MiUdrcyV9xMpL+0ttngV9jssngQSvLqpb4aj3UC02uIJ1YejsulKeRxd4PaTfuE3pbNIT8tXtTjkbxrxZIVJqu6zwJg8vvzr8uuxG6HW0+J3iBU9G0FwuDHYFikoy9Fb8wM0uYo=
+	t=1788783507; cv=none; b=qaHX9h62HynpteKhYoJccZp7oS5V0YU81LAlGoDYEyzAN21RKGi4rzPHoeVgVSjgWn8O7+NxChZSLTKBB38Sv23jUKA0ANustjG/gmv/n/88SE2bLuB2bOgzzHZXzQJJ1KcyDIPCogwQ68m/WWPEwnm0EMl2ySHWzqrMDWdviD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788783313; c=relaxed/simple;
-	bh=5PyYdMswPoWuC/vz/WpSF8rYKbgXA8kSCw+SpxwQX2E=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ITKVctEjrRvZbeFfPUIjhGng4rBpnl423kHL6FNGbKistHYyj5YbzlZW7QtLJrsealKYw6z17fbs1IyQFVQtRgVihNkgGxSS/Tv4vZNop1qhZG5FY4c7f+hco1UuhiU8Nej72LabtAvXm4btteGkevI262J6j8q1ViS2+4T0TF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=BaDH57ab; arc=none smtp.client-ip=67.231.148.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	s=arc-20240116; t=1788783507; c=relaxed/simple;
+	bh=MkWGEFafuVF1/BklgAJXV0fN5ghDmV0dTjlZs4zA3sk=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=SyyfuTo/zXzUL/joPK5EiHcVAsnNmm4NuYFz6UWUlE+f92fSm5R+GeHvHdIYJIMKRvNeNhRAMxdU2sRL3W8UyNz6nGrTcWygsu+ushYFZQ9Um5le9CzbdjiDOOKHuQ56vyE6C+F0hqe9gVPsSnyZ1cowCROLXfAcqHIixVrujhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ogD1f6yn; arc=none smtp.client-ip=209.85.216.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="BaDH57ab"
-Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
-	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 687ArdET2711095;
-	Mon, 7 Sep 2026 05:15:01 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pfpt0220; bh=7qVAtyZ/oURqi1HhgNSfPYKR5
-	MPqNxaytKxW6SYp8KE=; b=BaDH57abVroa+NTp3VmjafmyYHWs8MxxU18//ejG4
-	x699Sdo6Z1/JTD0Y5qSinNn2mKfHz4aIepxIbciqaHIOcmmW0ASsrbFJSECQUN3R
-	uzJKP4WVRWbIOwO0RediAe53DJKq0SRxcS/conW8lYgpPqTSKf/pT+TUGzCC8+6W
-	zPMdQsRUguCX91Xt/+O34Hs24eeyMXANHzDHlLyi4L7VuYDwqtGExOxshK/7xqn/
-	YjmroietPU1eCRLYMBbNy2pqGzvm7t/4VnCyx450DwsYMwnM0HRomLp//sicLyLK
-	iylxZGpQquq6OsVUKb1xV4CFo6I62yj2s6g+wzlY47IKw==
-Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4ghuwjg686-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 07 Sep 2026 05:15:01 -0700 (PDT)
-Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
- DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Mon, 7 Sep 2026 05:14:57 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
- (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Mon, 7 Sep 2026 05:14:57 -0700
-Received: from rkannoth-OptiPlex-7090 (unknown [10.28.36.165])
-	by maili.marvell.com (Postfix) with SMTP id CAF313F709F;
-	Mon,  7 Sep 2026 05:14:54 -0700 (PDT)
-Date: Mon, 7 Sep 2026 17:44:48 +0530
-From: Ratheesh Kannoth <rkannoth@marvell.com>
-To: Leon Romanovsky <leon@kernel.org>
-CC: <davem@davemloft.net>, <gakula@marvell.com>,
-        <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <sgoutham@marvell.com>, <andrew+netdev@lunn.ch>, <edumazet@google.com>,
-        <kuba@kernel.org>, <pabeni@redhat.com>
-Subject: Re: [PATCH v7 net] octeontx2-af: switch qmem from coherent DMA alloc
- to streaming DMA mapping
-Message-ID: <ap6quHlmYxI0cJAl@rkannoth-OptiPlex-7090>
-References: <20260907042617.4076723-1-rkannoth@marvell.com>
- <20260907072055.GF13683@unreal>
- <ap6VHVYnXcUcMTNG@rkannoth-OptiPlex-7090>
- <20260907113244.GJ13683@unreal>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ogD1f6yn"
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-38dfe910e9dso3784823a91.3
+        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 05:18:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788783505; x=1789388305; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=M+HAsxQQxUDOt5N6zlO4MPtV29db2csxIdg6BsvV3Xg=;
+        b=ogD1f6ynEvol+sKbjXJjQiLwbikJAoxQsJEF1rh89BiAgPW44T9zKmiLIPL0qbAPsA
+         PMobPxc/zLbTs1X59QwdrFWTbAzYEBjVqgMgD2jXZIxgD2+G+XhHpxuioSUaBzYEPHeE
+         iOnGnr9DNLJznhm9XeTm5lxfYyrZbHwUNkkVld3IYsH+a1q4twgLBbi7PH2aFUq1crjW
+         1F4grt1qcjFdngg9B0ZDHazzfNHE8OWIqBw6BEj+HQFirFAKzJ55e/93Uo+DZhRXBxZL
+         D5D4ET6EFmgOm1FNRKLSC4h55tFBWBoeycj/yfGVAeXYt15UOcqb2uHBCDplMtp7WoYY
+         feqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788783505; x=1789388305;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=M+HAsxQQxUDOt5N6zlO4MPtV29db2csxIdg6BsvV3Xg=;
+        b=BRdNFeCbMmquPtdoeGGWDqYjDE9MXbH95oXFG9mRamp8nJBZffgJtWB7CNson7+NTa
+         4SEvBqSXl6AIB/D5cJUQIPARJPAcu1TRfPEzNTDv+NVxmWtIu0USvqZStYITYDCFS5TZ
+         1zrmMZmTtJWh3eupRWJEArD3h1RLgE2YX51lDg78LLElFmNW+Ho5uvjV3jmic+hsGMMR
+         pPK2irAVW6J/2Wx9L9S2EfVIiaQ85eV4MUR3zNOPAweg7w13T8oAVv1/MqiVRFxlM6Rz
+         tIda6vaDsSpxp+bG57iQEJCNnwogTyA9lIGBESgiRXIyjoSif+XIwNebvxvKcSv5J5mA
+         91+g==
+X-Forwarded-Encrypted: i=1; AKwUvBwyv5TGrD5M+Yzl6cOpdN2MAS8cNSPPdJ5rB+9UHF/LLJRbiSQMM3oMLnNE4dqJ0xG7JhqvKnI=@vger.kernel.org
+X-Gm-Message-State: AFuF++nYfzkdS6RF3Y6hO8rB9GWfOih2ST0HVIPh/0Gf6ZGpRn5VT1/j
+	GQfKUMLze88NOHBu2pc/z2sSzrOjw4JcAjuRii4L2xSonXlF0Wq+y0H4
+X-Gm-Gg: AYBFou3Cbbf5ACeJlIWKkxISX2QwDKf4epM9KfemCOVwpPVmaJV+YbCPKwe0uccMHWU
+	qN9IANZr90+9mhbKOZtn/PUge0fIDsu6gL8r3jwzhHxUfeFhHtjEIF4sxtgGpsG6kKYAT9fPRKP
+	q7oQn58ox1+fEYvHeuBnx+uRGUc6C+oVl8f+2jEaVYPpTEBOSEBLDdKRcUUTNYY4qXYZtikZILc
+	ojifF9V4LbfDgffeDvWRfP5CpSqehDjBR/1lOBgtzA8/9bKfusx5A4GwgU3ijY+qohD0gDLNwSR
+	HCXjMURUEHc1T22OZYBDMIRaY5GKcE3cj3jQySM/1nvT97ak8chIaeo/UE4d8s88QAxZdPSD//v
+	SvM6htDlaLs3CFDGHwjgEtMZDXWEw7kqQ9ddUKZEaNV0Rjp2O9solXg1MmDFEHkiFVyNlEYnI15
+	687FRZDNiD/rqDjn/WKDV+mxI9E3RUem9rly6ccBoJB1zgN+iOb9JRi8b4t+gqrfYtmRXRsGzmu
+	RwVaYeUHmpfmGZ4nVZgK3yJUWCq1g==
+X-Received: by 2002:a17:90b:2b43:b0:38e:c7b0:84ad with SMTP id 98e67ed59e1d1-39b25ed34f3mr39413109a91.0.1788783505530;
+        Mon, 07 Sep 2026 05:18:25 -0700 (PDT)
+Received: from [10.10.15.228] (61-220-246-151.hinet-ip.hinet.net. [61.220.246.151])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b083e4fafsm26350223a91.1.2026.09.07.05.18.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 07 Sep 2026 05:18:24 -0700 (PDT)
+From: Potin Lai <potin.lai.pt@gmail.com>
+Subject: [PATCH 0/2] net: add USB CDC Ethernet NCSI support and fix
+ unregister UAF
+Date: Mon, 07 Sep 2026 20:15:54 +0800
+Message-Id: <20260907-ncsi-over-usb-v1-0-6b74d2f1196c@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20260907113244.GJ13683@unreal>
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA3MDEzNSBTYWx0ZWRfX/d232z6LeXRO
- J2bzI9nc8W8bZfKdSKLLxu3R7slaCT604szPlx+uG4fpLYY2Y5LYLkfBtP0+Pav7gY0M+JiFdOL
- vMTYz1gRQZbEjR11Lt6lcP5cj/a7eP/yWraOONqQA6tlpb07Y2gfH4whMxD8wTGumL4tO0+G4AH
- bME46pHuE9e9N0AJ+g8+vAqcA04odjmmywAhpvtwstyglO6BbsPofvx+PHSszKYiJZZgOteghhC
- zZLihs72qXFNzyzcztbc6m1x0vhiikGkjBAxMHb+zO4Vkml03uxGZioiP1AUZOckdVsFlp79EAp
- NZI2Ml3YYBdPcXndM1v3mZ0rTJc5ev093iSSDk2WeMg7sDIwq38DKadGlNmEr0uopnjPfIEIRxw
- 4okGW+xdjRlt9fNT2DWVTDLy4A9iM1GGrqbKHle8Hd8UtNU1TLT08V4NQBNyAYYq3TAsIDkxtZ1
- wwi/vAOV8/bgA0e89vA==
-X-Proofpoint-GUID: OxZlxKwyvaGdrDAYSzHO-MQ0nODM1V77
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTA3MDEzNSBTYWx0ZWRfXxmb32u8JRmpw
- pyNE3yAMCMvjP3eX9pNuN+BoUpM7rSTWCpmL7MIuyvVtTAaoD6JouGOQAC1nVHhUiDSXGwPw2e3
- k0ubrToQeB0ZorKKZ1fiNCQF2Nw8igg=
-X-Proofpoint-ORIG-GUID: OxZlxKwyvaGdrDAYSzHO-MQ0nODM1V77
-X-Authority-Analysis: v=2.4 cv=GewnWwXL c=1 sm=1 tr=0 ts=6a9eaac5 cx=c_pps
- a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
- a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=l0iWHRpgs5sLHlkKQ1IR:22 a=EAYMVhzMl8SCOHhVQcBL:22 a=VwQbUJbxAAAA:8
- a=Okv2uDtsJ0kjqiF-2gsA:9 a=CjuIK1q_8ugA:10 a=lhd_8Stf4_Oa5sg58ivl:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-07_03,2026-09-07_01,2025-10-01_01
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAPqqnmoC/yXMTQ5AMBBA4avIrE1SP6lyFbGgBmNR0kEk4u6K5
+ bd47wIhzyRQRRd4Olh4cQFJHIGdWjcSch8MqUq1KlWBzgrjcpDHXTrMqDB6yLXR1kBoVk8Dn9+
+ vbn7L3s1kt3cC9/0AkTI383EAAAA=
+X-Change-ID: 20260907-ncsi-over-usb-3e786f4686c8
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Oliver Neukum <oliver@neukum.org>, 
+ Samuel Mendoza-Jonas <sam@mendozajonas.com>, 
+ Paul Fertser <fercerpav@gmail.com>, Simon Horman <horms@kernel.org>
+Cc: linux-usb@vger.kernel.org, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Cosmo Chou <cosmo.chou@quantatw.com>, 
+ Mike Hsieh <Mike_Hsieh@quantatw.com>, Mik Lin <Mik.Lin@quantatw.com>, 
+ Potin Lai <potin.lai@quantatw.com>, Potin Lai <potin.lai.pt@gmail.com>, 
+ Adrian Ambrozewicz <aambrozewicz@nvidia.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788783501; l=1794;
+ i=potin.lai.pt@gmail.com; s=20260522; h=from:subject:message-id;
+ bh=MkWGEFafuVF1/BklgAJXV0fN5ghDmV0dTjlZs4zA3sk=;
+ b=Fx16GO5ucEg/0bu7HbuHd3717YW/a0u4iihQVxPSlAPCpDP75sojVy1WFJ3tumaGE/oBfABNP
+ DEktHDPO+5YD4JJ8XuKgvktiEceLa+zi6QTKXsCwoQCfrnMHOUJxTZR
+X-Developer-Key: i=potin.lai.pt@gmail.com; a=ed25519;
+ pk=j3/nMxzz1ZPpp1revghyZ8IqOnwi6RWfuxXN2XrNMRE=
 
-On 2026-09-07 at 17:02:44, Leon Romanovsky (leon@kernel.org) wrote:
-> > > > +	 */
-> > > > +	if (order > MAX_PAGE_ORDER) {
-> > >
-> > > Size is coming from the kernel, how can it be with order more than MAX_PAGE_ORDER?
-> > There is contigious memory allocation request from driver for PF-to-VF mail box memory.
-> > It is crossing max page order in newer platforms as number of VFs per PF increased.
->
-> I'm not sure what this means. You can't create a VF without assigning it
-> enough memory for DMA. You shouldn't get an "order > MAX_PAGE_ORDER"
-> error at this stage. If you do, there is likely another bug involved.
+This series introduces NCSI (Network Controller Sideband Interface)
+passthrough support for USB CDC Ethernet devices and fixes a
+use-after-free race condition in the NCSI core unregistration path.
 
-I will move the MAX_PAGE_ORDER / size validation out of the DMA helper and handle any
-allocation failure with a clear error at the call site, where we know the required size and VF count.
+In DPU (Data Processing Unit) platforms such as the NVIDIA BlueField
+series, the Baseboard Management Controller (BMC) communicates with the
+host or DPU via a dedicated USB CDC Ethernet connection for out-of-band
+management traffic.
 
-One question on dev_is_dma_coherent(): this qmem path relies on the platform being DMA-coherent
-(as noted in the commit message). Would you prefer that we keep this check in this function as explicit
-guard so that a future port to a non-I/O-coherent SoC fails early rather than silently misbehaving?
+Unlike traditional platform Ethernet devices where NCSI is initialized
+statically at probe time, USB devices require dynamic lifecycle
+management within ndo_open() and ndo_stop():
+
+1. NCSI control packets share the USB data path, requiring the link
+   carrier to remain enabled while the interface is up.
+2. In USB drivers, usbnet_disconnect() invokes unregister_netdev()
+   before unbind(). Performing NCSI registration in ndo_open() and
+   cleanup in ndo_stop() ensures NCSI packet handlers are removed before
+   netdevice teardown occurs.
+3. Dynamic unregistration of NCSI devices revealed a race in the NCSI
+   core: ncsi_unregister_dev() freed the ncsi_dev_priv structure while
+   asynchronous request timers and workqueue items were still active.
+
+Signed-off-by: Potin Lai <potin.lai.pt@gmail.com>
+---
+Adrian Ambrozewicz (2):
+      net: usb: cdc_ether: add NCSI passthrough support
+      net/ncsi: fix use-after-free in ncsi_unregister_dev()
+
+ drivers/net/usb/Kconfig     |  20 +++++
+ drivers/net/usb/cdc_ether.c | 190 +++++++++++++++++++++++++++++++++++++++++++-
+ net/ncsi/ncsi-manage.c      |  19 +++++
+ 3 files changed, 228 insertions(+), 1 deletion(-)
+---
+base-commit: 8d3ae59288f1e7d58d76558a6ee96d533bc5019f
+change-id: 20260907-ncsi-over-usb-3e786f4686c8
+
+Best regards,
+--  
+Potin Lai <potin.lai.pt@gmail.com>
+
