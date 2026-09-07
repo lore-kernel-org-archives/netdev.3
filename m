@@ -1,183 +1,169 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazolkn19011029.outbound.protection.outlook.com [52.103.33.29])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EB814119E0;
-	Mon,  7 Sep 2026 07:32:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.33.29
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788766327; cv=fail; b=Pt5ZbJX/D29NHDr6JGQ16EBmkFP+Y2YV7+9E9EmDlak9itZF1U82Y9PnT1NgS9HuWKBsOAgX0LpHv1vcAuI2Kop9QxuUlqZoafRishd+n0XwTrzz/weZHttaCFBAcX/KsGD+bjOp9kp6NfpiHUqrd/XiKJMTHSQzrHFDO7H0Nw4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788766327; c=relaxed/simple;
-	bh=A4nl/Z1I+z0iQPVyv0OqQdJfaoq05auVt+gJA08b8XQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=F6vDY416XYarw9Y5o6zLpaEeYw6OOlRwgj4FleqDvl+TabcYdnDibEcP95NBRG19J4qlE+j/QPK7N9UTOM90ud1hIzETuCBdhBjuB70j2CmDc3VX8LxdA832UW/TokqZeHi7EbVSlIKII67kLlS2cFe3jkRxmZO7mpMj45v5oF4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.co.uk; spf=pass smtp.mailfrom=hotmail.co.uk; dkim=pass (2048-bit key) header.d=HOTMAIL.CO.UK header.i=@HOTMAIL.CO.UK header.b=oSr/ppC5; arc=fail smtp.client-ip=52.103.33.29
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.co.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hotmail.co.uk
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58AF140A93E
+	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 07:34:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788766450; cv=none; b=uvqXFB+izphMGvQMQowJ155rhONt+rvimm1oupBR9luzXmqa23ixA5glA1XpwB7+yYGusw3fep+XdI6SeF4BT3ioRvcz2N5Lw1dntPJsIzvHDIZx7KSlVgZm2ekD/uZ+QvvrcUKOtsFdfH4SUQpgSKqxHbX18wEld681lZq7z+g=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788766450; c=relaxed/simple;
+	bh=yagJzAETAF4TC2pRSdlDch5zUPhjR+z4M/nbHRlg9vQ=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=OOdU/d/Jw4FWYsCPmPc7yd1cH6JaSQPzMmZzEiiEMCaXQCC74roFMqr+qflZnMXjFoonq4oLrX59vwr8x86MiXPcttSvgG3jKNuUUbUewfZd21T7pMWh2eMmMiRzTAN/NGo/58NewB9L8xinoXwevvGbrN6kHb85Ug9F0uPAPRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=AsydXSqe; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=JmmuyVMm; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=HOTMAIL.CO.UK header.i=@HOTMAIL.CO.UK header.b="oSr/ppC5"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=p0M8aFnIr/6ximKPyJwe5kB5MIHSCVXlq0a7QDK0ZZXKgQiuMkGd0pgwntNqAhd7nWmldgjCidFEr+Wj1we2vH14JH8FJbECkeu7A5Jo3PbSgLDHnzrcKZHgF43govabYKCwdNCTlCzFBN4547kUvO58/NwZZK7UFIBrLF6vN2ekhbG6ifTsNE+IVlZmdwT02AHrMZRSW5KynYGYHqJ1ZIV9924ooFWNYGp6PVCSYxxL6u+NmHzujSUlSfuCnZBWVyjNZOxbedUsGqFVhVf0gBIefiEIkNJzFSVPeqZjqBR3Chyo/5qcpN2uI0dSTOe+oga3G8J/8wVTzFYSKikNlA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zT3cWyQlPwtegoE1wY7GcaoDzle3aMBnFzXJY1/Fw2Y=;
- b=D/0dcDGR4APU5S8lXYw6eDBvx4clUoxXNqnYEQn6DdIe8jLn+yHshSyxdozAJpIdIKFhUkcwL2n+whLAm1zBc9IjesrSroHOQxUup/SEFuC6C91+OkUYjcZOEVqlCWncIy3v/n47Ctg+q0+hdT/k47MUPPt5v5foknp1QjPd6pfWDb/AUrdqLwVGMIagXoyBmsNPwoombbaK7gKvl9m+GBsCTWgrARwkS0uMpZeYYtW6W+zfkH+6FMNk/ZP/TgsZ7OowF8FhJyKLUgxV5bSQ4BoezHS6ZUzk6BIVGsMIghe6DZJJVjc3FBCYl38l7Mc4kNadcrgrzW6aaY9M2OAeow==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=HOTMAIL.CO.UK;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zT3cWyQlPwtegoE1wY7GcaoDzle3aMBnFzXJY1/Fw2Y=;
- b=oSr/ppC5NX2zBKbsIWfXytjhrge+b/+neQY+KWIDaJ0/01LWf0UD7E3cHxKdsvDi4s3faBeFy0NhaBzfQDJuLtOsU/Cnd1nHIPEFbkZQevTnCMZjQE5+dUMM7dbfauC5gq1CQSDvFsGL3XkS4fBJZdq9WCI00lc4PB6/Al1dyQF7QkY18sS0NS4nsvS6ZO/W56hq3LDXYZpHOUWDOQG1NLwS1MQ5XAa1K1Vfe2keODn+YGzYQbrTvhSIenn/h1FzeKpUBRyGW4SpgYEtJftV4gP/WFu+7rN9xVRvd0a/p5V7C7T5PD0LWYLLGQzQijKgBuQxx6QinTvVjslKDPhciQ==
-Received: from AS8P251MB0001.EURP251.PROD.OUTLOOK.COM (2603:10a6:20b:344::22)
- by AS8P251MB0136.EURP251.PROD.OUTLOOK.COM (2603:10a6:20b:403::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.382.10; Mon, 7 Sep
- 2026 07:31:59 +0000
-Received: from AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
- ([fe80::2952:d4d0:4ba:8352]) by AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
- ([fe80::2952:d4d0:4ba:8352%6]) with mapi id 15.21.0382.014; Mon, 7 Sep 2026
- 07:31:59 +0000
-From: Aamir Ahmed <elb12345@hotmail.co.uk>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Xiang Mei <xmei5@asu.edu>,
-	linux-usb@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Aamir Ahmed <elb12345@hotmail.co.uk>,
-	stable@vger.kernel.org
-Subject: [PATCH] net: usb: net1080: fix out-of-bounds access in rx_fixup()
-Date: Mon,  7 Sep 2026 07:31:55 +0000
-Message-ID:
- <AS8P251MB0001E8B611B22B19AA882542C8B22@AS8P251MB0001.EURP251.PROD.OUTLOOK.COM>
-X-Mailer: git-send-email 2.43.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: LO4P123CA0629.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:294::10) To AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
- (2603:10a6:20b:344::22)
-X-Microsoft-Original-Message-ID:
- <20260907073155.590713-1-elb12345@hotmail.co.uk>
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="AsydXSqe";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="JmmuyVMm"
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6877NNSd333053
+	for <netdev@vger.kernel.org>; Mon, 7 Sep 2026 07:34:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=BCeB2q39kGDNUzJWVGp367
+	dKzfsU4Ljb97JBe37jcyk=; b=AsydXSqeRixpMaoIVj1h4B2ZDcov3KreYxAomN
+	H9OEO/1qF1X3PW+XaY5E7AFHwwD4ewHsYtbw86JuHENHtjbL//1Vc1H0woS0jZlp
+	V0HjM47ULHAuparY43HyQ+TTEEn93PwhE4UuKQmmfeQ9HBysW7m9xveXeslFI/TS
+	vR7EmGYLMoknfE6Hy+wDN5D/xZtuMsMrXUKlm16M6wAImwa1y1PDvPHHNlNRsBE7
+	pKfju2gSByU51Qw6JykPpKQggcGTE7OVjBGq1aKmFITP1uAO0JclyPGIKgdW8DTY
+	pkSJtaJqunyP/aTivGgA2c44LGZ40fP95ARpE/UBWvcG2Npw==
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ghrua854h-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 07:34:07 +0000 (GMT)
+Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-930b571432fso509222685a.0
+        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 00:34:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1788766446; x=1789371246; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=BCeB2q39kGDNUzJWVGp367dKzfsU4Ljb97JBe37jcyk=;
+        b=JmmuyVMm8ixtR+8BXNqJzWC8L5Hnb/xV7djha72vX0D3b9AFuZQHK8p1+cD1pjepPn
+         2E8vhMS/xvV7zpKgiNBZjlnX9xjQMCNj7l+FDAJL2euu2HOOfxIKiKIgI2S/3Fl3P0y+
+         uPR3l7w4iPNqlPYyAUdt3mGyGJUFgwJlRbhFjMvOdKDXatzPDPvbFs4dRzOFH1Pa23fN
+         /gjAnKApOWlr9xuVHrdRN4+yliWDoPhQ2WJvLvbb6bxpG78CLPDCb5lu+DRIIDWW+MSD
+         04gNV9gxvEofT6nEe92PeYxCFR+ig7shPDqq1ETT18Syf9mvTBq0nzHU081oyJYkrlIQ
+         CP4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788766446; x=1789371246;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=BCeB2q39kGDNUzJWVGp367dKzfsU4Ljb97JBe37jcyk=;
+        b=It3DrMqbik1dhPhQ46SM790ZMmrfchvc7utB8UkjHZx54sIe93g40kkhfFfgxQZlzy
+         SwgEhZiFxb7HILYfdO3XTDzrI/dq/C+FRdqZ3z+kqOCQY9IKquKFAveNT6m+VJvQHI7z
+         IDt/dNG4CXdQrVbzghGpol52vmYlBz+HGQNeXhjaqtcrxORd9oKdRJ2ctl3r34IbKjKb
+         BCFw95JrbdOeTbTjpa6arBHRu6uCt2SfijSiC0c3mFCVh6L97CqnzzLwjCM16ezR1j9T
+         8xbspRm1nwCSIAnPojRVuxlY4f+PU5/GiWd0K53XO90jZT58GVOuxfwnc2MTPdLV5U+V
+         Cl8Q==
+X-Forwarded-Encrypted: i=1; AKwUvBxYBfohtVexYlwUCVTQCGIUGuoMG7Il7HFZ0lGQd1VqxtdpxAjS1BuMb3OjBFx54gL7JNHdtoY=@vger.kernel.org
+X-Gm-Message-State: AFuF++kOSg+z0WLyFI4pcywy36Jvgf2O82rTOzwrmhbbzcjUTRwmZR6o
+	P/C98afMSLJFBuY8i1PSSCRxeDEifJ7+IgUF+F6YubRVikgTKr5NgObVMRPCtDP90UCii91mOAP
+	FEP44woeF/0jo2uuc6Dsay/Pb/C8FuUk5I28w9yi2RZ6F1mwporBLSKire4c=
+X-Gm-Gg: AYBFou1DzSLuRTMyS5/VlgNIxskkQUs98ncGuPlqnT9nxhSt3bKs+BDpbOftCSjNSeJ
+	bM+rqMXEXxBbrJTn0/2LE5yGbAPxPj1ZGL8jFoik/aGs9b5JLDgmmDShXV2Mt4m3BSDY2QMCUJ2
+	II0jGZb9sK8CKl1zRyuJRKyG6RPgYHRH0wu+/84GgmVJuvJcUQprmR3pY6TLa+jjuGyFe/YibZu
+	sTY/cf1ZZmQd9ZiYLMZZY9PxoFS04NA58S7Eb8EG+zSdp66xNMBsRGlIsrJMod7BHc1TU7eb+ta
+	b9b/kcJIBOw3X71CYb/QAWpAM8viSUJH6dqyyt/ZcFIA+SOfiNCVdhUBtg1KmQI/KrmTlH/4CXd
+	IFxrqgCq/RE+ZEA==
+X-Received: by 2002:a05:620a:8393:b0:939:78da:5c2f with SMTP id af79cd13be357-93978da5d6amr1959837485a.43.1788766446248;
+        Mon, 07 Sep 2026 00:34:06 -0700 (PDT)
+X-Received: by 2002:a05:620a:8393:b0:939:78da:5c2f with SMTP id af79cd13be357-93978da5d6amr1959834485a.43.1788766445826;
+        Mon, 07 Sep 2026 00:34:05 -0700 (PDT)
+Received: from localhost ([188.216.77.92])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4858ab73c2bsm24990405f8f.22.2026.09.07.00.34.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 07 Sep 2026 00:34:04 -0700 (PDT)
+From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+Subject: [PATCH nf-next v2 0/6] net: netfilter: preliminary support for
+ IPv4 over IPv6 and SIT flowtable offload
+Date: Mon, 07 Sep 2026 09:33:35 +0200
+Message-Id: <20260907-nf-flowtable-sw-accel-ip6ip-sit-preliminary-v2-0-7c6ac1750725@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8P251MB0001:EE_|AS8P251MB0136:EE_
-X-MS-Office365-Filtering-Correlation-Id: a31f6aa1-3c2b-4167-9518-08df0cb2197c
-X-Microsoft-Antispam:
-	BCL:0;ARA:14566002|24021099003|55001999006|51005399006|2604032031799003|23021999003|5062599005|5072599009|15080799012|37011999003|25031999004|41001999006|12121999013|8060799015|19110799012|25010399006|4140399003|40105399003|2607281247196008|3412199025|440099028|26104999009|1710799026;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?XT/O8JcV19omB/xUpp2sU+YIC7QKSr9tcGFw9a/6j9vrQU0QILxEqHXe0TLb?=
- =?us-ascii?Q?2ia2GQqnFSSBb3lPAi676xTvmTJiwzWtKo4qaLfDeQzXFX/dOTVPY+EaT6kv?=
- =?us-ascii?Q?hwATkV5mue6aVevaJDRyBMjVsucKDwogCzKYOFlRRSEUVxI7RuRDiqKHoMh3?=
- =?us-ascii?Q?I9cIzE2PW0cGBg5tWsorZGMWzgsG1yMMoprJnVeYVytQ86XiaQSsxx6Zg2Ct?=
- =?us-ascii?Q?F87zQvYXb59+yRWQbP9F5RW7okPf6UkX2b86k8xbtLmIALoM9UBD4LQwOXQV?=
- =?us-ascii?Q?UiBiXzUnUSDJgLNW+zekmFQBZ6BnOzsg8UpKokbz4Ka/rNOyg+OBVFeW4xhY?=
- =?us-ascii?Q?2RJr55Ub+HHziq/UV2r3rNLNyeXnYAP52HGdAPAvOplUPl5XmSDzLBfRijG0?=
- =?us-ascii?Q?vG4cp+cAIhzidBqKYdzKmbpW6JdBYj6wthv2ABqUPcw/dKzCYmHY8QD6ZcPK?=
- =?us-ascii?Q?V5uZmaJhXCriPsl2hmSdrl9YyAyN33Y6BwZ3c+62FfGlyLP/3jVLsSyHTR25?=
- =?us-ascii?Q?iQP0+Cu4rnFbxcNlxvUaWWpMhkljmMIwCXSG2el/ch4acxLl3p0cn8mjwn1l?=
- =?us-ascii?Q?zd6hBy5HH2WMkhfGQZLZ5O8Ttd5S+kAaF87/WlT4DOdSQxbsdpZGTfFjrQJN?=
- =?us-ascii?Q?UofP49QUu/Hqrc6Hvs3Uo0wuA3TdgccuCR9TkZHhZ/w3F41YubZFO78Ac2PR?=
- =?us-ascii?Q?Z/3YLUclwuUJ2sJE+/U+hCm9iijXCG+6QmgCx80wkyevfC2ARuRzJcEwl5vR?=
- =?us-ascii?Q?8B20IiU39qKCrPfUQtWbF76CvY08LfjcYud6m0hUgYuukdxY9JMITmCz3tC2?=
- =?us-ascii?Q?AkGpKhO/t4ePe0+UiOMOZyUKSrduptYw78GpZk6JKCWXg8Vo0oetPd8zFpfO?=
- =?us-ascii?Q?MscFBs8KyqIa0UHi3PKdBbiplIsJDNicPKQawh15fUpFudx5oLc3TCk5XqZF?=
- =?us-ascii?Q?NmdJK8fIyy3JoHh7wdUO/pyihuGSWBo8XyDP/3vPf7YufY3/GOM9cH5f8Aoh?=
- =?us-ascii?Q?wqlgkRQNYCHWnZEd99jcmiuk5Zc6DHvzo1AgoaBF2KlWSJe6TDuRDL54fMGd?=
- =?us-ascii?Q?ks2XoR+2g3+QH+7tO+PWLSUPr24a1wMhCPm1nzCut8bc0UKjquRXt5337WqA?=
- =?us-ascii?Q?JZhF/kgENKwUEMcBz2B2mWoQH5TJPWhGjCH5H4bUCSUVqTAAeP0jb0XKnZ40?=
- =?us-ascii?Q?8rf0eK97/TZJE16P?=
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?j/sHex4d16Umvkbjg7A3FZQfPH//c8fcuuz6NDJycQj2Ru5IoBl/ZxtILAIi?=
- =?us-ascii?Q?QI5eUYkWX2gyLE2Aiwu1emNQHQ2hsmDXuBDgnRvdwKsLeR/RvvwpsyOPlpjC?=
- =?us-ascii?Q?TMqGonhh3WKGuETEzWZCxuKwiETvD27SQUevSwWAP1qoKkLKMdT5aXDat0hx?=
- =?us-ascii?Q?q9TjWTc8GqvY1GvN6uMplOAJc7Vsm0E8tm5wZ3rwy/pvNJF2t7GzmZw0nI7j?=
- =?us-ascii?Q?vx5ZVqbhlmciQdOfeebQE1XhsSE49G3U44VrhkHstLN7WVgIq5A8oHIN8PKw?=
- =?us-ascii?Q?qW5SBKbByWQgHoq1ZZlyCb5XozreG8M6/8wU7nL/A7tOJ7f1IWNuNQ4S5R7h?=
- =?us-ascii?Q?ivtjbN0qkhREoL+o85qLTzwhWxNeHpkgCbNFUjkuqWa+7hr3/c4FkYzdNmNK?=
- =?us-ascii?Q?Vn5bgUup0FwFi+VbtsCKFqkZmJbsHZoAeu/wPNecq0drXFipdvOfJ5I0oj0P?=
- =?us-ascii?Q?OXvIfn3c8U/xsx5FnMmc3QoUF3+QyasrCJygTJqP5WcwUZCBX8+RsJhBTkyl?=
- =?us-ascii?Q?Wr/t2E0qHv2Rsiiy9SZ6E2Nj3fu4g71Y5l4ZTCk1yMO3gLVgHTOlDh7yzhfG?=
- =?us-ascii?Q?ZLRjL0XmcNNEoVEWimPoy0ipqnH4k3X/kr5vyw+Q3iIvKHXfMalp/HSEics5?=
- =?us-ascii?Q?S1feyWtQsV0c5mtw8P0VLkI6Qur5z0NQh+HBiB3LodsRRg8EWqph3UheWCKm?=
- =?us-ascii?Q?TXSFIPgSeFjFHTG3BWGKwGfdwGq+ds23ta6J/P8z2rRWW7VT5yx/5yCFMw11?=
- =?us-ascii?Q?k78omzeyondAy/QDMhR/o7yqCSwtjeBCRV7bTgJO3AyVi/KXVtMjKbjKhwwO?=
- =?us-ascii?Q?V18rfKgmKQ5ouMannn2iM5oRCvVnvKPjERR8pRuB5pK8OrZ7lxxwJL9obMVw?=
- =?us-ascii?Q?TzdSnO1i1fKVkDHJ5gTbpT+VXrThoZ8GhA3IMe3Pis+kW6GjFFl/jlgKZfBJ?=
- =?us-ascii?Q?ea28TIx7o9ouH1/z+E3vhgv0IGPLJYaGhxyW8rSX3FROJNYioeG8W47AIXb7?=
- =?us-ascii?Q?4k624JXcHsTHLBlTs8D86DEE//7iGh7iq6btSlG8t7gSjmDSJ5R4zD24UMBe?=
- =?us-ascii?Q?Q5Mamw8qDtxglGQ+KvsrctJKlPoPl79AP1kCDVjxcAFl3XkphvxUNHPdffYN?=
- =?us-ascii?Q?tvr7/JDKLUT+r4F6bjzyNnrKQNCMyITpb7hApoXbC/aGevtmVZBQWNEvPoaR?=
- =?us-ascii?Q?6tQpVbf043T9ZOkS7xCZXdglM6Oj3+dpVp+pv0OCLeZNLaCFo5OgQvSiVYPj?=
- =?us-ascii?Q?iyb8TSTxFYKBNN1nEcZNc6JsJd+OVd6gMKqugfTRlS1r0II/fAvo6vqnBUHT?=
- =?us-ascii?Q?kEYN0w6M9PNbw5DVOGmUyOb+qBhB2v8V2GzzCAFcqtQqCC/cMC3EbkRBdv+B?=
- =?us-ascii?Q?dSwXf/3G7aOvZM+6tj1r/xEizMghQshuYGpE/TTbjM51bIaXa1B90laQm830?=
- =?us-ascii?Q?RpKnOBaphL5pmvyJ4PpB9EFBUNtFwuVM?=
-X-OriginatorOrg: sct-15-20-9412-3-msonline-outlook-fe3f5.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: a31f6aa1-3c2b-4167-9518-08df0cb2197c
-X-MS-Exchange-CrossTenant-AuthSource: AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Sep 2026 07:31:59.1066
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
-	00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8P251MB0136
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/52OQQ6CMBBFr0Jm7ZBSBMWV9zAsSp3KJKXFFgFDu
+ LsNR3Dzk5+XvP83iBSYItyyDQLNHNm7VOQpA90r9yLkZ+oghaxFIwp0Bo31y6Q6SxgXVFqTRR5
+ rHjHyhGMgywM7Fb5Y1WVlFInSlATJmJjh9Vh7QBI5WidoE+g5Tj58jxdzceC/BucCBV4knZuOr
+ roszN3HmL8/ymo/DHkKaPd9/wGqP9Ch9gAAAA==
+X-Change-ID: 20260901-nf-flowtable-sw-accel-ip6ip-sit-preliminary-5635fae03f3e
+To: Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>,
+        Phil Sutter <phil@nwl.cc>, "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+        Andrew Lunn <andrew+netdev@lunn.ch>, David Ahern <dsahern@kernel.org>,
+        Ido Schimmel <idosch@nvidia.com>
+Cc: netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+        netdev@vger.kernel.org,
+        Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>,
+        Lorenzo Bianconi <lorenzo@kernel.org>
+X-Mailer: b4 0.14.3
+X-Proofpoint-ORIG-GUID: 8WUsvaMHiXCC27EXFofexhMAWq0H9c3k
+X-Authority-Analysis: v=2.4 cv=U+aiy+ru c=1 sm=1 tr=0 ts=6a9e68ef cx=c_pps
+ a=hnmNkyzTK/kJ09Xio7VxxA==:117 a=WpTaRW6qxYHRGzLzQsVYzg==:17
+ a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=eoimf2acIAo5FJnRuUoq:22
+ a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=hjUsVgM4bzNdy_QoUQ0A:9 a=QEXdDO2ut3YA:10
+ a=PEH46H7Ffwr30OY-TuGO:22
+X-Proofpoint-GUID: 8WUsvaMHiXCC27EXFofexhMAWq0H9c3k
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTA3MDA4MCBTYWx0ZWRfXzFVMH5oaFklF
+ QJLsS6kwhjgvSwndcyuUBf/IQVle4YLaAL9ezeney+acGgPjzHaU49KwM2XISQlQzjaLdMB8VNk
+ 2hRUAqYbPs+D7FWclkSYpWJQP/f1DCQ=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA3MDA4MCBTYWx0ZWRfXx6cekmXV6l/d
+ Jz437q53R3BWajc9+Lm9gORmO+1yK/IphLNbe1sH1h7KtZ0v08fBggsBMQQjf0JIKrGDOmzKHiy
+ r04R97qM7w0H/fFLWIihjhT6/aKL2YYtH9xyKjseHe6JX/cGMR4rOd1fi9sfF/GgV5f3z0JPcGX
+ HYH4dzSWwgv3F1Q0b9SfHvscSXjdvyq1UMGcA0pDiMizaQh9wD2hYATXReuclMKQ1/J8IqGwvqZ
+ jgwGXg8u7MuouH7Sd1uCyLkc85K8konXy917y/J6Ip5E8CA+CO/3JIx2yy0KSfSi6kAAjGAw6IJ
+ iT8IeFCNAOTR2j/Jagk7t7VVRpPYqcoG/0TP4TNO0+40kAwxqf2PdsmBndDj2vm1VsrG+plo9bv
+ LTyKfxHIgrXAkiOEPLug6XAdpWyY/C88VTe4N7sgbETtA13uoFhRZe+DweJV6Wp4q3Xdv/ERlp9
+ Z6b5PeiDJfflKL9gxFg==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-07_02,2026-09-03_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 suspectscore=0 priorityscore=1501 lowpriorityscore=0
+ clxscore=1015 impostorscore=0 adultscore=0 bulkscore=0 spamscore=0
+ malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2609070080
 
-net1080_rx_fixup() reads hdr_len from the USB device and uses it to
-strip the header with skb_pull(). It then calculates the trailer
-pointer as:
+Introduce some preliminary changes needed to support flowtable offload
+for IPv4 over IPv6 and SIT traffic.
 
-  trailer = (struct nc_trailer *)(skb->data + skb->len - sizeof *trailer);
-
-If hdr_len is close to skb->len (e.g. skb->len - 1), the pull leaves
-fewer bytes than sizeof(nc_trailer) = 2, and the pointer arithmetic
-underflows, pointing before skb->data. The subsequent read of
-trailer->packet_id accesses memory outside the skb buffer.
-
-A malicious USB device can craft a frame with hdr_len >= MIN_HEADER (6)
-but large enough to leave insufficient room for the trailer after the
-header is stripped.
-
-Add a check that the frame is long enough to contain both the header
-and trailer before pulling.
-
-Fixes: 904813cd8a0b3 ("[PATCH] USB: usbnet (4/9) module for net1080 cables")
-Cc: stable@vger.kernel.org
-Signed-off-by: Aamir Ahmed <elb12345@hotmail.co.uk>
-Assisted-by: Claude (Anthropic)
 ---
- drivers/net/usb/net1080.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+Changes in v2:
+- Fix dir configuration in nf_flow_offload_check_mtu() to compute tunnel
+  MTU overhead.
+- Link to v1: https://lore.kernel.org/r/20260901-nf-flowtable-sw-accel-ip6ip-sit-preliminary-v1-0-72e49be8c31f@oss.qualcomm.com
 
-diff --git a/drivers/net/usb/net1080.c b/drivers/net/usb/net1080.c
-index 19f6e1222d931..64477a4caa07b 100644
---- a/drivers/net/usb/net1080.c
-+++ b/drivers/net/usb/net1080.c
-@@ -374,6 +374,13 @@ static int net1080_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
- 		nc_ensure_sync(dev);
- 		// switch (vendor/product ids) { ... }
- 	}
-+	if (hdr_len + sizeof(*trailer) > skb->len) {
-+		dev->net->stats.rx_frame_errors++;
-+		netdev_dbg(dev->net, "header too long for frame, %d\n",
-+			   hdr_len);
-+		nc_ensure_sync(dev);
-+		return 0;
-+	}
- 	skb_pull(skb, hdr_len);
- 
- 	trailer = (struct nc_trailer *)
+---
+Lorenzo Bianconi (6):
+      net: netfilter: nf_flow_table: recognize IPv4/IPv6 in tunnel proto matching
+      net: netfilter: nf_flow_table: set inner protocol when popping tunnel header
+      net: netfilter: nf_flow_table: populate tunnel tuple regardless of inner protocol
+      net: netfilter: add encap_proto to flow_offload_tunnel
+      net: netfilter: nf_flow_table: refactor MTU check for tunnel offload
+      net: netfilter: nf_flow_table: unify tunnel push for IPv4 and IPv6
+
+ include/linux/netdevice.h             |   1 +
+ include/net/netfilter/nf_flow_table.h |   1 +
+ net/ipv4/ipip.c                       |   1 +
+ net/ipv6/ip6_tunnel.c                 |   1 +
+ net/netfilter/nf_flow_table_ip.c      | 201 ++++++++++++++++++++++------------
+ net/netfilter/nf_flow_table_path.c    |   2 +
+ 6 files changed, 135 insertions(+), 72 deletions(-)
+---
+base-commit: 6ebcf5074cff0402730c6981d2397139fee6322d
+change-id: 20260901-nf-flowtable-sw-accel-ip6ip-sit-preliminary-5635fae03f3e
+
+Best regards,
 -- 
-2.43.0
+Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
 
