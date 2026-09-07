@@ -1,151 +1,173 @@
-Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010008.outbound.protection.outlook.com [52.101.69.8])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEC7631F996;
-	Mon,  7 Sep 2026 05:42:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.8
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788759726; cv=fail; b=NL0fHooJCQ/nnVWng69ihS/U8I0sFMryddf590+C+blYiQbcRk+6PSDMZBGmY/aL/+1OnxJM4UnupS3aC0J2weL/bIH+IkLIbHTebjt7ZR8xHHerf5TYgNFd/P4cho0NrwqaQQR2LVinwaVs8v8SPrvfg/pMkdTaJH1XG9jeU2A=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788759726; c=relaxed/simple;
-	bh=c51pSBwnwQGWpnJQcMC499gMsVnrpHlYldva79obhBI=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=TWkm58VxaJ+CpiSJY0kblnynFE5zV08u6vntG5CtPH6I+/dgGMqfandFMeUFhCRL1OEIxF8npAyKSSGfRilbP2aunn2k1qrjBTb99jdMY+V6DMVeNcxl/QTl+msb2O5ZUQzZQS8rJL57ACeW2Q42FxVu5TgfQulS0KYuukb/hns=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=ChLaoVua; arc=fail smtp.client-ip=52.101.69.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Received: from ultrarisc.com (unknown [218.76.62.146])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75FAF15350B;
+	Mon,  7 Sep 2026 05:48:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=218.76.62.146
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788760130; cv=none; b=EOuk9wEL2pjXto8SQF4Mb8Xg0DwHhAIVTq2c7ecSBdP30IP3fF6NWdfPGhXtW1egVjwcK7QW/2faWOZvah0Io6/Jhg+0kk3vInKiOfShBoVYYS46A05yO6RnscVjTag5ihh816SIuudHgduV7ZvWSQti7e/8lV4ceecxVBe1reo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788760130; c=relaxed/simple;
+	bh=qUtYxSNBiONjQzXEg3XYSFbzrYyRAtXzx9MwMN+ANbI=;
+	h=MIME-Version:Content-Type:Subject:From:To:Cc:In-Reply-To:
+	 References:Date:Message-Id; b=K/z+gVT1q2njofFti/19qLpR7U3CxQJj9jAJrWc6tS6120FFgEMxQQsuo6k3qBys7/6xGp+EINkoSMZJke7MWyKelB/kSw2SWq1b1jp6kC+WDfUmHMBZJdp6t0R8Ln265VqYyEWn/milfe89+2OITRmR1jf7qyicCgxJTw1weXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ultrarisc.com; spf=none smtp.mailfrom=ultrarisc.com; dkim=pass (1024-bit key) header.d=ultrarisc.com header.i=@ultrarisc.com header.b=CUdP17ds; arc=none smtp.client-ip=218.76.62.146
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ultrarisc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ultrarisc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="ChLaoVua"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jOTv+lW5hmQGA8vAK95s9zvtFMLuZTB3GBZXA7EO4CRCyCGyum2+gtktCrbRahm2TCdogbGffQc6zx7gQ9sHWURIwHU3ETmQh/KOj5ZXmr9WxRGuGZX/6Spo0QlRodxRpENIV9jqzGB6hpUVvyZ/xcWIMEgRw/ies3Ktp2eL/cARCvT2TwhcSqQrXEvNF7fG0J0HOB3ZOfoITSh6cpdzW+WJZ+9YuVxOdj84rPOWV44gtl4jkyVoSVrCFxidfRSu8tqnickBjmQtJU6TxKcsHW/6pDKlPhN/eJPN1MPU4vG7DSvtcUi1HUAGh4zWNt+ZQYfWSAeRMMOdU2jXisEmMA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YUUDZghgG12ujm9R6/iqUc0EVZtTgmBfDL3PIomec4s=;
- b=DwV+GeHSzbETHWDT+eqg7xBIOY+UtLUhGu1jUf3FD7MwDI8DvbV5+v3GaPL66H5ZRvWDpoWOVcy7lTlVdPhBjdTyi90AvSwfdsixYP5fHr/ZgQNCRboYluFuaBY+BvwhqgUsscatvSZ/C3aTlRRh6wB/XjXJ2qn79scsQ1WkLhS5nGuDEwLClSf3/zJ1tEjEGsuI+e+7jHELAzSVS4cOclvj6uPGYg/Rn2qm1Mv07hv8xecmNKN4f5KTaSJc+UQU9fh/FWSzrH36X1ResyAGFYnoPvhDd+owqqxQs+mVOAhJ8gP/wnaZaD27V+GFgDHII81X/SWuhP02s209/08U7Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YUUDZghgG12ujm9R6/iqUc0EVZtTgmBfDL3PIomec4s=;
- b=ChLaoVuaHV4UrOVX2O7EogBidDZWL7diyMza1shWJ+822TEY/yKSG7aB0oMEDw0Dn7cPMwA9UXBt/isSmbAtVCiXIDo2/thWDJUX2cJLSRvRNbuL0+SfiqR/tTIolGrRmfmuV5w387a46WAqavM/G7kLc1/W4hjatlF8UsfzcoD0cMmWXOLCtFNexie/88v2m1kt2zkKh0xoHDiw4pQhke3ociydT2toxwn+tMjc2/riP5J9YLgXlx4LvOxoBzYXKhWhiA8t5xeTx/X7uB9yUJAoeLHgSH6N+x/rELDzQP+LYPO58LHuedVjVioPWRZAFXOpAUaTdtoudOJ9/hiLgg==
-Received: from GV2PR04MB11739.eurprd04.prod.outlook.com
- (2603:10a6:150:2fc::18) by AM9PR04MB7505.eurprd04.prod.outlook.com
- (2603:10a6:20b:285::18) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.382.15; Mon, 7 Sep
- 2026 05:42:02 +0000
-Received: from GV2PR04MB11739.eurprd04.prod.outlook.com
- ([fe80::71c2:937b:d466:174a]) by GV2PR04MB11739.eurprd04.prod.outlook.com
- ([fe80::71c2:937b:d466:174a%5]) with mapi id 15.21.0382.014; Mon, 7 Sep 2026
- 05:42:02 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: "phucduc.bui@gmail.com" <phucduc.bui@gmail.com>, Frank Li
-	<frank.li@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>
-CC: Andrew Lunn <andrew+netdev@lunn.ch>, Simon Horman <horms@kernel.org>,
-	"davem@davemloft.net" <davem@davemloft.net>, Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Richard Cochran <richardcochran@gmail.com>, Stephen Boyd
-	<swboyd@chromium.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: RE: [PATCH net v4] net: fec: Propagate PTP initialization errors
-Thread-Topic: [PATCH net v4] net: fec: Propagate PTP initialization errors
-Thread-Index: AQHdPntQqjO8VRJ7PUik+O14Mb/yyLbCkrXw
-Date: Mon, 7 Sep 2026 05:42:01 +0000
-Message-ID:
- <GV2PR04MB11739E45D1562C9063E05D77788B22@GV2PR04MB11739.eurprd04.prod.outlook.com>
-References: <20260907034502.12619-1-phucduc.bui@gmail.com>
-In-Reply-To: <20260907034502.12619-1-phucduc.bui@gmail.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: GV2PR04MB11739:EE_|AM9PR04MB7505:EE_
-x-ms-office365-filtering-correlation-id: 724dcd79-7dac-465d-eba9-08df0ca2bdda
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|7416014|366016|376014|19092799006|23010399003|1800799024|22082099003|18002099003|38070700021|10067099003|56012099006|11063799006;
-x-microsoft-antispam-message-info:
- TkKzQ1SoHcjNUnJgKIOnDsUOWpeoLfFp6RfOs1+kyO6mB9Zddz9NXbwQfEyCx7iUgLDyifN4w8J7rBxcOcdFlCVtZt9gi1lCeCjkB7rmjhwsQORwHjlLy9d8Hy3NJQTFSIekLiTtVJp60ZkumpUJH4RuRkl4GS/j60KRJ8MTdClqHLAZuQ6w6fL0lnJfkfZN8JmBJWIr0gDMPfZGv/8B4EcnAkKfim4xDPIS2t6DO5+MahBLxbzLrJdmZGhMuY6gLHsaxrXTTN9TukmudTalZ33WocUgxVbTTCAEAqGepMDYStA6+q7ENdAyVF06HpeXTIe17sHan9nFW31hHB79eGHPj7DfGJIQbH42Rz9zkJhoZ58+Zb8ifWIT1E1CLxKcrd9NvWWnyFHvARiQwecpgYlniRjhtxYV51GyoOkGvzy4UwLswhDCxi5lT6gn21O+/sgMW7G41roDcAaD6IfoZYqaydezMlEsesEU34MFAzEeSmyyheGTR35TQPOYdevC1uSb9r3e8OGIXfMF3Xuz2yPU9OKbM623ahWfJdlbMNYrvVs/tLrwGxvscRQD6Cp1UbG7WlLMCLWiatmdDBIPy2S5qPEm4ejFoPgcWvmhDx2lhbKyKFrktQdlFQ+3b+5zy4rNfswf1X7nFoGRovtw0OQHPqF8MNJxb+E3hM/TpZJ7y+yAkq/pZ9L6PQJnquFbSP9b02h78swAwv5ucSTKshLmQMLaxbTh/ZPrCZE7UFc=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11739.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(376014)(19092799006)(23010399003)(1800799024)(22082099003)(18002099003)(38070700021)(10067099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?4kyD8EHouWFnG3x8/EtUihHlrSBP958p75hXZQklj63QR7lP5OVTv8siHY41?=
- =?us-ascii?Q?y1rl3z5CmhOF6RRGCojx7F5g3mVUtCovN2yL3qijnmDegOKvtW4PyFEU2lzo?=
- =?us-ascii?Q?8ZhGkcuy0aaYEtzNlqU/O4+q8nfg8uTPkBn4DgB6fER2d8C9rF0Ap72ESFv+?=
- =?us-ascii?Q?vvAmfU8yGMImkddOz8PPnDvFpwnJNXPll96UdnQMkzPCKzbEGu7cDcFjWWVc?=
- =?us-ascii?Q?aG0YDMmNg+naGEjSIUcAg3c5P8W5KfbLrSBCbE7u4Q9BzKaRnjXStrGmW8QY?=
- =?us-ascii?Q?w8HCRcS8/Hc/PStVpcoUK1FQ6h5zaJch+ZbMx7kwimWJU9KLPgArqJeeFCjp?=
- =?us-ascii?Q?Fd92q3YoZFH6yiRYIwgA+reUSTjQLcjSQAh1c4DgAUK6GUVOClaga55D0F6L?=
- =?us-ascii?Q?b+gEPaPiWwWKxq8zhjaFVJ17yC8Q0GYmCPOSXg3YXNSMLlixbNwNN8p3MzDQ?=
- =?us-ascii?Q?0H+YBXxOx3UL4252ak8KYS6hPVpzQw3GICycySqwp/ja2x2tbYFvZtMEJ1Aq?=
- =?us-ascii?Q?r8zAQGLECPvqjXGZLGwekNaVU9eV+2XQc0aowrxMEiz81WlSTzei/6URjZEZ?=
- =?us-ascii?Q?7LzV4r9wMi5lflMTIUdNLQSvybSjRb+GWsmx45Rti1bsxP8n4DyHskr+xOg/?=
- =?us-ascii?Q?Ny0VB1Wprk3bRQQwo7ehE6wWvJwKtNZcyoD774FHf+O4otdA3pdJts3kIqGZ?=
- =?us-ascii?Q?FK/zjTFkA5mF7hbc5ckzmidA3MTOxdQ5P5pOTG01KuyPgEfhpZvemBLUpGpa?=
- =?us-ascii?Q?yShUx5vhxqlWg0VRI+zgW+auHTzO2ttJYER7Ybg6UCE9/Oxy9TNhFw3ePwvw?=
- =?us-ascii?Q?fTHNCMGucfuhpgwGyE3hOYquOW5S/uhTliKX7RztTq6F47SQBobFNcUH5UGQ?=
- =?us-ascii?Q?Dz1P4U0sqJEtp0f45c7ayh9HB3MAiRsaBhUk2CfOFW61bATIBhHpshbucHxD?=
- =?us-ascii?Q?SysJmgHTCyDrT6D8ql21VGZq/7BwnEwY4Dwll9M55wCE7En1i7kHE4kyl8+p?=
- =?us-ascii?Q?Mp2VrohNZO9gi/dOOy8ehsD5fp98VwpCj4VNDGFV8nE0QOLQ3+vH3IuVTrZw?=
- =?us-ascii?Q?JnKgdm3ZsJxziaf8X6NQ7TAoJSIzOyOtxMgRWPpgK1jgcRltxnBw2PPugnvb?=
- =?us-ascii?Q?FlPaIlRaHzLd+q4bDjoKzQ3OcQ+0csa+aGO7bJMNr6BDOVMStcrOOQYuuLij?=
- =?us-ascii?Q?K3Zxvf5IuJ2yfhVOaEgbJJWJi9WBnpD/KjvjAY1d2lrrmrV0TjITRda1qpPt?=
- =?us-ascii?Q?ef9r0zIzQGN6g5x0LkpVfWXISbF0/fpa0ovuTcEyxIMoiCggUEIZGqE27rQR?=
- =?us-ascii?Q?HoIh11s1rYdYoLdla8A82WaFu7UBGpGxZ1eh3kw4tTOWHrpjiWMVeDmQ2WZP?=
- =?us-ascii?Q?YAJAt5OfEAyFGohL5dMj3Zp8qJJJaInajLqb6yImrDE5PuIyyz6RAYJelQ2u?=
- =?us-ascii?Q?CJZX8Ou/8ZZG9iy9qRHooAW1MO0KYydJih7ciz+MOQ3Ijur6ymO8uoFU0mBM?=
- =?us-ascii?Q?AULccUAEytvaWD1l6XJtLGGj4JCGSGuXEzUfALuon9D/qJOt30iwQ9EeRIO+?=
- =?us-ascii?Q?YIEvXOS7Twp4MoyUpC7oiXb61QtYlg05prLxVER7Thk4yzuV7gr+8zjBqAyA?=
- =?us-ascii?Q?cApzRzrqqQdvDg3LT803M/r9SsqFcgqZ+VgxBgP4TMHH0OvVEpaBSjenL1K1?=
- =?us-ascii?Q?740WAtlB3M2lpge+6lqHAHpL+qDJC3RtCtklQiT8pe2JF94Y?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (1024-bit key) header.d=ultrarisc.com header.i=@ultrarisc.com header.b="CUdP17ds"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=ultrarisc.com; s=dkim; h=Received:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Subject:From:To:Cc:In-Reply-To:
+	References:Date:Message-Id; bh=vpmX1Nr9Z0XRMXX7TP0ZsOPsAdBe8vusq
+	IUuEvNu6dw=; b=CUdP17dsRY2ZIGhCx9QCUD+ld5OTqvk5n9MErX7kWtyGldbn3
+	7MOqNxuZsrEJjS5Uyo0nX5X29AM88AJShldpbs7SBNbDEQiNuar6sWNKcGP8kXKV
+	K72Ybxs8IYIPFfWR+Q10LRGpkWB7PrJUftgWtEUz5M3KCVCqkIRgMwTVW0=
+Received: from [127.0.0.1] (unknown [192.168.100.1])
+	by localhost.localdomain (Coremail) with SMTP id AQAAfwDHQAcjUJ5q0VQAAA--.356S2;
+	Mon, 07 Sep 2026 13:48:19 +0800 (CST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11739.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 724dcd79-7dac-465d-eba9-08df0ca2bdda
-X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Sep 2026 05:42:01.9077
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: q1zM98pLwNWUH1l36pClspvXuCw4gWcZ1QMGUx5/WtUFdS9CIFr93rVZFWBPOnIiBYsd+OXUILPIz+Lrn14bxQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB7505
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH net-next 3/3] net: stmmac: Add UltraRISC DP1000 GMAC
+ support
+From: Jia Wang <wangjia@ultrarisc.com>
+To: Jia Wang <wangjia@ultrarisc.com>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>, 
+ Andrew Lunn <andrew@lunn.ch>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Giuseppe Cavallaro <peppe.cavallaro@st.com>, 
+ Jose Abreu <joabreu@synopsys.com>, netdev@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-stm32@st-md-mailman.stormreply.com, 
+ linux-arm-kernel@lists.infradead.org
+In-Reply-To: <178850166577.1486454.10728134844652956076.b4-reply@b4>
+References: <20260901-dwmac-ultrarisc-v1-0-f19454814bcf@ultrarisc.com>
+ <20260901-dwmac-ultrarisc-v1-3-f19454814bcf@ultrarisc.com>
+ <910be156-b631-4b62-972a-79d9a9e38697@lunn.ch>
+ <178842162417.2701756.3296149694160507506.b4-reply@b4>
+ <1622b0a7-5516-4e72-b5e1-60c12b65b52e@lunn.ch>
+ <8611dff3-56ea-4798-8303-b0a8af84580e@bootlin.com>
+ <178850166577.1486454.10728134844652956076.b4-reply@b4>
+Date: Mon, 07 Sep 2026 13:48:08 +0800
+Message-Id: <178876008871.2542659.8460758662538260209.b4-reply@b4>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788760089; l=3543;
+ i=wangjia@ultrarisc.com; s=20260515; h=from:subject:message-id;
+ bh=qUtYxSNBiONjQzXEg3XYSFbzrYyRAtXzx9MwMN+ANbI=;
+ b=DkxTkgZPEqWGJPTmqJdrMYYLlGkZDktaKPAYIYaGbOG0mN8JBmNVZoeyKo+EkISm5zyS10b0W
+ gO4OUEpUz1nDFNx6ZkpOxP4baQV1GyOfC1qdoU7I013wrcgad6AuUr7
+X-Developer-Key: i=wangjia@ultrarisc.com; a=ed25519;
+ pk=wGVm18siRScehKOkOz0WKxgxDy7IezHEszhnN4/TUCY=
+X-CM-TRANSID:AQAAfwDHQAcjUJ5q0VQAAA--.356S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxXw45CrWxKr1rGw1DtF4Dtwb_yoW5tr4UpF
+	WUGayayw4kJr4Ivr1jyr40vFWagr4IqFW2qwn5KryFvan0yF1aqr18K3yUuasrWrs7W3Wj
+	vr18tF9xWFs8ZaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9l14x267AKxVW5JVWrJwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Jr0_Gr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4j6r
+	4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
+	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
+	n2kIc2xKxwCY1x0262kKe7AKxVW8ZVWrXwCY02Avz4vE-syl42xK82IYc2Ij64vIr41l4I
+	8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AK
+	xVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcV
+	AFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8I
+	cIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r
+	4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjTRNJ5oDUUUU
+X-CM-SenderInfo: pzdqwylld63zxwud2x1vfou0bp/1tbiAQACEWqdDaQAAQAEsJ
 
-> @@ -5394,12 +5397,17 @@ fec_probe(struct platform_device *pdev)
->  	for (i =3D 0; i < irq_cnt; i++) {
->  		snprintf(irq_name, sizeof(irq_name), "int%d", i);
->  		irq =3D platform_get_irq_byname_optional(pdev, irq_name);
-> -		if (irq < 0)
-> -			irq =3D platform_get_irq(pdev, i);
-> -		if (irq < 0) {
-> +		if (irq < 0 && irq !=3D -ENXIO) {
->  			ret =3D irq;
->  			goto failed_irq;
->  		}
-> +		if (irq =3D=3D -ENXIO) {
-> +			irq =3D platform_get_irq(pdev, i);
-> +			if (irq < 0) {
-> +				ret =3D irq;
-> +				goto failed_irq;
-> +			}
-> +		}
+On 2026-09-04 14:01 +0800, Jia Wang wrote:
+> On 2026-09-03 14:30 +0200, Maxime Chevallier wrote:
+> > 
+> > 
+> > On 9/3/26 14:10, Andrew Lunn wrote:
+> > >>> This looks to be 90% identical to dwmac-sophgo.c.
+> > >>>
+> > >>> Do you expect any further changes to this driver? Is everything
+> > >>> supported? Are there more clocks? A GPIO for WoL?
+> > >>>
+> > >>> I'm just wondering if the common code should be pulled out, or even
+> > >>> dwmac-sophgo.c made generic so it can handle all plain boring devices
+> > >>> which have RGMII delays and not a lot else.
+> > >>>
+> > >>
+> > >> The probe boilerplate is indeed largely similar because both drivers
+> > >> use the common stmmac platform helpers. However, their platform-specific
+> > >> requirements differ: Sophgo requires additional TX clock handling and
+> > >> other configuration, while DP1000 requires fixed TX and RX delay
+> > >> handling. ACPI support under development is also intended to use the
+> > >> UltraRISC glue driver.
+> > > 
+> > > ACPI is going to be fun, since nobody does ACPI networking.
+> > > 
+> > > But how big is the change to the glue driver? I expect the change will
+> > > be minor, a call to devm_stmmac_probe_config_acpi(), in addition to
+> > > devm_stmmac_probe_config_dt(). Anything else?
+> > 
+> > I agree that if ACPI support is added, let's try to make it part of the
+> > core.
+> > 
+> 
+> The ACPI support is still under development, but the current prototype
+> adds ACPI device matching and ACPI-specific platform-data setup. Some
+> common stmmac changes are also needed for ACPI-described platform
+> resources and MDIO.
+> 
+> > > 
+> > > One problem the stmmac driver has is cut/paste glue driver
+> > > development. The same code is repeated again and again. Russell King
+> > > spent a lot of time and effort trying to reduce the duplication. So we
+> > > should not be adding more duplicated code unless it is actually
+> > > required.
+> > 
+> > It seems to me that all the RGMII handling could be made much more generic,
+> > as this is commong pattern in glue drivers :
+> > 
+> > dwmac-sophgo has the "has_internal_rx_delay" field, and dwmac-eic7700 has
+> > both has_internal_[r|t]x_delay.
+> > 
+> > With this third one, it makes sense to start sharing that logic across
+> > glues.
+> > 
+> 
+> I agree. DP1000 is another user of this pattern, with fixed internal
+> delays on both the TX and RX paths. I will look at moving this handling
+> into the common stmmac platform code, leaving each glue driver to
+> describe its internal delay capabilities.
+> 
 
-This part is unrelated to PTP and inconsistent with the subject, it should =
-be
-added to a separate patch.
+After looking further into the implementation, I see two possible
+approaches:
+
+1. Keep a minimal UltraRISC glue driver that only describes the fixed TX
+and RX delay capabilities, while the common stmmac code handles the PHY
+mode adjustment.
+
+2. Store these capabilities as compatible-specific match data in
+dwmac-generic and remove the UltraRISC glue driver entirely.
+
+I currently prefer the first approach. The fixed internal delays are
+properties of the DP1000 integration rather than the generic Synopsys IP,
+so keeping them in the glue driver preserves that distinction. The delay
+handling and validation would still be shared by the common stmmac code,
+leaving the glue driver responsible only for declaring the hardware
+capabilities. This also avoids turning dwmac-generic into a table of
+SoC-specific capabilities.
+
+Would this approach be acceptable, or would you prefer using dwmac-generic
+for DP1000?
+
+Best regards,
+Jia Wang
+
 
