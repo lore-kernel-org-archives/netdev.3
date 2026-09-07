@@ -1,56 +1,56 @@
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com [209.85.219.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8D7A424D48
-	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 07:58:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB4BB427F91
+	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 07:58:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788767933; cv=none; b=Uy2xVnBstE7seDfgDnHy8BOOVf88O3EvqPxY5PiYafgaaUqxAvxtMdXxBofh2hLWpabMAZ8FdbINtyxJfU8kurCqut+js3ZM6N0v90ul58KokDD6O0ZOu877rChBAorZXXJVRR7P9TvL1BccqbIQhO0ZqribMd/8lr8u0yM0vUE=
+	t=1788767934; cv=none; b=VLsAUbEUASe6tnaVutmJoaTp+dk2kVhV3lhGet+7cDfdCmPnaWLcuitajzTC/dxRvcsiW7lB8XcIujLkiEWfxkTyKWFEYWnu++Pjiy3Thb79N5HG/6IVPdaZXVp2+j2o6dYKDXN9rwUjPumRhZyE4DFqXazsUol5F67Ty67VnaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788767933; c=relaxed/simple;
-	bh=H032FftfyQqxrqsZ5xng+VNTRD8DcHWwJAxnkH+XyqE=;
+	s=arc-20240116; t=1788767934; c=relaxed/simple;
+	bh=766tLnydMOZdpH9/E8tnR9AYugZQEf+BKBeXLjyldEY=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=fBElcPNe+bBaCkoKlYC097frLZ5VcHghn4xvBaCXidE3tecOX2fqNWts4i0L36AxLsh2y9iyscbfPMzNHjos4muriA/NlmTi3VBr42hrcoaCsYuz/lSZxsGlbGO+diC8o45CfpIxJy8T37u+yFBu6t0tDmP/5XWesDKxjrjJsK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=u2v9qep9; arc=none smtp.client-ip=209.85.222.200
+	 To:Cc:Content-Type; b=IzPQpSx6ph0rJEZliF+aMYKq+J73o2ZJ6kyz1bLjNUHhx7bsDUiCdcmVhxIeDDVm0fywk/eJLJcIvkromPmbo7SU83Cdt3zx7MFUQYW7TRQnd5/q35bzDcJDVu7DYfOY7aiZw8spMEZ0KWFD4sY/2EORuDeO+wU46BEGq9ZM0x4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vNQMfJER; arc=none smtp.client-ip=209.85.219.71
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="u2v9qep9"
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-9399b66e0e7so226289485a.1
-        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 00:58:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vNQMfJER"
+Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-90cc0ed09b5so31121266d6.0
+        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 00:58:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788767930; x=1789372730; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1788767931; x=1789372731; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=0O8yjq4bE4vbONsKrnt/y7VtXskqzX8m3Lw5BhIaKJs=;
-        b=u2v9qep92EJ85Tq/pxbXI1ua1y2FnnHkrHkgnpMeY5jFxutrJFlEEEfFSt3GZsq39+
-         5GXKQmXgjYKZGqoXqwhcq8Zjqs7A6pyW34NRBrixwBnGkofXVmfRuoxmuGb5njlMDGMx
-         41BU12/fjbg2nHf5jMLR/g4EzvlRyYDkWNIBrYvzkDPm6oU38YP8w0aIHiLZL3YcnVY5
-         lM1b88QyCCYUVXPwbnE1/7Wuh05opbziVSPSMryBGdVa7hhneZgUMAILSx9M+u4tFf21
-         HOo4Z5i/GkpQ1Mt+XR3RsVg+Sz3ZqBmyIxYSUgJwpxdY6Mui/KlPLGWiXaQkbBOyPeaO
-         GGtg==
+        bh=N3MmM5X8B8Zwm6S8BewYUtvvv5At7631+EBIqGdqMXc=;
+        b=vNQMfJER2KLVfMVlPmzPuRLePqWrebsUR3N6JesSdlEW15GLES4HQ6ikNqj/L2m2NZ
+         hwTUvDpLOtsZJ2pjd1AILbhBE9/hYzNlLLwPfiPmMo/K4QZVlp1ydNslkDD2IzMKRXL7
+         evcGgTtAuPOPmEFe089Bwq9PBkMAPVhmjI0IA5rMVADz8xmrVSlD3Uuyuh0B8GhR4EXp
+         Xvh7/7nqhHDXzqa30R8y6ZukIAdJkxRG6g6gcgWVZHrZPgfwWVueJRh3gHR/03zoU3XS
+         r7oG62VDf3fe6QGPzqnYu0Er/3lLTIss6JISUTRtYFUDjGWucWfm9ytERZxtwAUHAY6Q
+         Meng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788767930; x=1789372730;
+        d=1e100.net; s=20251104; t=1788767931; x=1789372731;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=0O8yjq4bE4vbONsKrnt/y7VtXskqzX8m3Lw5BhIaKJs=;
-        b=gjT69T/z3PHKFkhZ3eUpGvY9zK3hkt6ApzD1CKqlCFM4FOhvqz96N9u+JdGa0I/jAz
-         VNy5gpSr1NOgE/l822Gi2TZu2MTvxy0JDuQp/XU7CtPgj6DqqY07eMQRY1pcWySX9uKU
-         OSSk4lQHfag4mBkyPwnQhbw0ynN06ZS9BiX/bCBWGg9Zvq1kVu/M+vFZJZHF+FS9JEzX
-         X8IeRuxKZNRiGTs6+ZglmEMAkR9V6iw51A7Rkb2vB6+FSFBqEujH7pciy8+sT/kGbZ0J
-         7suAyOVTNUroGPluk2weVeHFkUrF7zt+MpST8OSRB79XVYxu9/MCfLV6GpY/ufmEhF50
-         QpBg==
-X-Forwarded-Encrypted: i=1; AKwUvBw1yTQDNmVruW8+PoMWqOa1NkR1PuKMNswwhG3r23Ya3wlDl19kSFsccCE0xtj0GoVhJ8UVLTg=@vger.kernel.org
-X-Gm-Message-State: AFuF++n60BIFWYJLyCEteK7xDMRi78xZ3O33ZuboGqWbBeM3sYGL18Yi
-	rnlaaMF7EssP64+3qp3y+0bwWixNB1l1ifcjIOz6+VtUq7z6DsG8RA3npFkDWp+o6sYSZTcxerg
-	WXe4S63Uu9Cocgg==
-X-Received: from qknur2.prod.google.com ([2002:a05:620a:6f02:b0:92e:6aaa:d1c3])
+        bh=N3MmM5X8B8Zwm6S8BewYUtvvv5At7631+EBIqGdqMXc=;
+        b=LQi6oZAVSo7vXsMGTDRHW71e4CIJw0msT3wq2TlEmlmgorH+5yEedludEaZxbcVG1w
+         ldmc1sFna+kRi9VdwqVmIU/C3NJtBtbklIfWXNhSXBqb2oINJ5E5pd7VgPgwCqKKyhWR
+         EH1+FH5lJV8mVl48j7iOBVtLr9HS4dxbO2OctwxH+bpWjjSglaMofL/nBfX86hQKe689
+         tG3icQLSGN6yzwUBwXVDUxpfnXfg1lI5tjPzMbUxDBDVOQ9YBT6uGg0RgEjS5tVoLv5q
+         04vzTN+wsUhPl1Y4atOjWP6pxU6fokWBjTlUPTc9RuwPa3v46Qe+ut1XH9ceTv26MHZo
+         PAaw==
+X-Forwarded-Encrypted: i=1; AKwUvBwVAs663Lq9eHMZcEodaIhrDo/f+3zZHMN96PMM4rjfSDzGjfmRbzMDIeh016WB77iHKel8QnY=@vger.kernel.org
+X-Gm-Message-State: AFuF++kj+aHDwujuUHZ4dY2hrIZ5q/UZDnHSlHXHlSFErA6OlO1lDze/
+	f11JozuUy4dxcPQrcGizIt7jWzFFedcjU6g4KLsSD5AObDbq8AWagCCPsmgLnVKjP4d6YlS9bqS
+	GPTSZWknxyi4s3Q==
+X-Received: from qvil12.prod.google.com ([2002:a0c:d6cc:0:b0:910:45cc:dc80])
  (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:620a:298f:b0:933:a17:c0c4 with SMTP id af79cd13be357-939803118a2mr2239862885a.9.1788767929601;
- Mon, 07 Sep 2026 00:58:49 -0700 (PDT)
-Date: Mon,  7 Sep 2026 07:58:38 +0000
+ 2002:a05:6214:2266:b0:90e:995c:42d2 with SMTP id 6a1803df08f44-9103ef94182mr258203786d6.12.1788767930961;
+ Mon, 07 Sep 2026 00:58:50 -0700 (PDT)
+Date: Mon,  7 Sep 2026 07:58:39 +0000
 In-Reply-To: <20260907075846.2913645-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -60,8 +60,8 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260907075846.2913645-1-edumazet@google.com>
 X-Mailer: git-send-email 2.55.0.979.g7e5102b832-goog
-Message-ID: <20260907075846.2913645-2-edumazet@google.com>
-Subject: [PATCH net-next 1/9] sit: fix UAF in ipip6_tunnel_del_prl()
+Message-ID: <20260907075846.2913645-3-edumazet@google.com>
+Subject: [PATCH net-next 2/9] sit: charge ip_tunnel_prl_entry allocations to memcg
 From: Eric Dumazet <edumazet@google.com>
 To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
 	Paolo Abeni <pabeni@redhat.com>
@@ -72,47 +72,37 @@ Cc: Simon Horman <horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
 	Eric Dumazet <edumazet@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-When flushing all potential router list (PRL) entries,
-ipip6_tunnel_del_prl() called call_rcu(&x->rcu_head, prl_list_destroy_rcu)
-before clearing t->prl.
+ipip6_tunnel_add_prl() allocates struct ip_tunnel_prl_entry for each
+potential router entry added via SIOCADDPRL.
+An unprivileged user with CAP_NET_ADMIN in a user namespace can add
+an unbounded number of entries, consuming uncharged kernel memory.
 
-A concurrent reader in isatap_chksrc() could enter an RCU read-side
-critical section after call_rcu() but before t->prl is set to NULL,
-allowing prl_list_destroy_rcu() to free nodes while the reader traverses
-them.
+Commit 1b51d8271973 ("memcg: ipv6/sit: account and don't WARN on
+ip_tunnel_prl structs allocation") added accounting to the temporary
+buffer in ipip6_tunnel_get_prl(), but missed the entry allocations
+in ipip6_tunnel_add_prl().
 
-Clear t->prl using RCU_INIT_POINTER() before invoking call_rcu().
-Also use rcu_assign_pointer() when unlinking individual entries.
+Use GFP_KERNEL_ACCOUNT when allocating struct ip_tunnel_prl_entry.
 
-Fixes: ef9a9d1183b3 ("ipv6 sit: RCU conversion phase I")
+Fixes: 1b51d8271973 ("memcg: ipv6/sit: account and don't WARN on ip_tunnel_prl structs allocation")
 Signed-off-by: Eric Dumazet <edumazet@google.com>
 ---
- net/ipv6/sit.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/ipv6/sit.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/net/ipv6/sit.c b/net/ipv6/sit.c
-index 19b7fa8d1a2a07991a00b250c5ae58819d104e79..4438b2472b28764f813b9162bdb9f6b6dee5a007 100644
+index 4438b2472b28764f813b9162bdb9f6b6dee5a007..9a2bbd76d3794849cd11c6530ba1303bf53fa388 100644
 --- a/net/ipv6/sit.c
 +++ b/net/ipv6/sit.c
-@@ -436,7 +436,7 @@ ipip6_tunnel_del_prl(struct ip_tunnel *t, struct ip_tunnel_prl *a)
- 		     (x = rtnl_dereference(*p)) != NULL;
- 		     p = &x->next) {
- 			if (x->addr == a->addr) {
--				*p = x->next;
-+				rcu_assign_pointer(*p, rtnl_dereference(x->next));
- 				kfree_rcu(x, rcu_head);
- 				t->prl_count--;
- 				goto out;
-@@ -447,8 +447,8 @@ ipip6_tunnel_del_prl(struct ip_tunnel *t, struct ip_tunnel_prl *a)
- 		x = rtnl_dereference(t->prl);
- 		if (x) {
- 			t->prl_count = 0;
-+			RCU_INIT_POINTER(t->prl, NULL);
- 			call_rcu(&x->rcu_head, prl_list_destroy_rcu);
--			t->prl = NULL;
- 		}
+@@ -395,7 +395,7 @@ ipip6_tunnel_add_prl(struct ip_tunnel *t, struct ip_tunnel_prl *a, int chg)
+ 		goto out;
  	}
- out:
+ 
+-	p = kzalloc_obj(struct ip_tunnel_prl_entry);
++	p = kzalloc_obj(struct ip_tunnel_prl_entry, GFP_KERNEL_ACCOUNT);
+ 	if (!p) {
+ 		err = -ENOBUFS;
+ 		goto out;
 -- 
 2.55.0.979.g7e5102b832-goog
 
