@@ -1,160 +1,141 @@
-Received: from smtpbgsg1.qq.com (smtpbgsg1.qq.com [54.254.200.92])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65C8E409624;
-	Mon,  7 Sep 2026 07:06:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.254.200.92
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788764802; cv=none; b=Ay2OSDaZPSfMnalxT/D8Ve+Kt03m359BS+Q5XdFiSGChSg45xJGq9tuGjtyIbkMjX3G21IN5ze78qw7kaxWdqpsv8w7SBtDSbfaGfhyHKwLiTyyFmFQ8q/319EFIA+DWOeIOAQ+wcISG2m4aM0soYIUj8JhreeYxghyou1I2/bQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788764802; c=relaxed/simple;
-	bh=43l6s6Pgrn8yOxJeuT4TcGACuUoK6HUv620UrE/SUwQ=;
-	h=Date:From:To:Cc:Subject:References:Mime-Version:Message-ID:
-	 Content-Type; b=lwdWERuZ2RQhChmzNTBEOuNbWPMlrp356Ct2fzXf0vxAWweyglrQwBbE+0R+0YCfEITKeES3F6cbEUolLjF96Wcxym6nVfquIxvsIPEUkqmNrlAglw3N6CnQslVuif/EYF5HnuUrkeuoBqjiV4EGQERVcM5CpsPIDQolP+3tlOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=itsJW2M6; arc=none smtp.client-ip=54.254.200.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA4D840BCB6
+	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 07:07:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.180
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788764879; cv=pass; b=J8dhYoQPa2l+NBO4WZpioQ2TPv1/ZPe3f9SuMs1xW69l9ETJNws/rCdmF9Nc+q27GlUHY5orpHp75IgVndMAfBsOcRPKteSz2n4QT6KjcDPjVdaBh+OZnQEGq5lRA7sYo5y/Ft+oyTZ3GZwYLslSgRlY1UQB94+frB1UpF3x660=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788764879; c=relaxed/simple;
+	bh=Y2ur+9djzyvL32htqpN4jDktQyKA4StfEKcENrbnevU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=WQSO5s4vvfQQ6A39XJX4g68YO69hUylkFC+J+yCefCBcTzjCaSkMsJFrV5ZnTzKc0pvXps8OLiLpBLw0taWqvdm/CskdLZk/DP0w63is/CJuusZ+ZWJ4bhadgN7Z1IFZv9cz8EYRe3kK8ehunwlTPlpwJKNjAQxvFciBl56W/4Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=T5WmuwoE; arc=pass smtp.client-ip=209.85.160.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="itsJW2M6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1788764767;
-	bh=43l6s6Pgrn8yOxJeuT4TcGACuUoK6HUv620UrE/SUwQ=;
-	h=Date:From:To:Subject:Mime-Version:Message-ID;
-	b=itsJW2M6tfYi2OYOXATvxfBqmiX+I/hN1Vq/SROn0dhQvgNfh54PATLfgu2vxwsmD
-	 VCkCdYwhBBv43da8eW+XYwxU+B/6/fiQcN0CcLzia41jYUVYebNevXyTvpmYNdYEZ4
-	 M5T2TaqxHMmIGZ367Pd7cF74L/46S37SsTbKHUvk=
-X-QQ-mid: zesmtpgz4t1788764764tf478b456
-X-QQ-Originating-IP: /0CXJVCxXTrVWLkOYaAwZSxz5I8ztM5QAKcBZrDAjDE=
-Received: from PEN002676 ( [1.202.39.170])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Mon, 07 Sep 2026 15:06:01 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 16136033036701943877
-Date: Mon, 7 Sep 2026 15:06:02 +0800
-From: =?GB2312?B?1dS98MP3?= <zhaojinming@uniontech.com>
-To: "Lorenzo Bianconi" <lorenzo.bianconi@oss.qualcomm.com>
-Cc: maxime.chevallier <maxime.chevallier@bootlin.com>, 
-	andrew+netdev <andrew+netdev@lunn.ch>, 
-	davem <davem@davemloft.net>, 
-	edumazet <edumazet@google.com>, 
-	kuba <kuba@kernel.org>, 
-	pabeni <pabeni@redhat.com>, 
-	mcoquelin.stm32 <mcoquelin.stm32@gmail.com>, 
-	alexandre.torgue <alexandre.torgue@foss.st.com>, 
-	horms <horms@kernel.org>, 
-	ansuelsmth <ansuelsmth@gmail.com>, 
-	jose.abreu <Jose.Abreu@synopsys.com>, 
-	netdev <netdev@vger.kernel.org>, 
-	linux-stm32 <linux-stm32@st-md-mailman.stormreply.com>, 
-	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, 
-	linux-kernel <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2] net: stmmac: clear dma_conf in __stmmac_open error path
-References: <20260904-fix-stmmac-mtu-change-use-after-free-v2-1-91e680476921@uniontech.com>, 
-	<apqkBQJMqHKTUxEp@lore-desk>
-X-Priority: 3
-X-GUID: 3B32DCFF-6EB4-4369-948A-FAAB222D1623
-X-Has-Attach: no
-X-Mailer: Foxmail 7.2.25.375[cn]
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="T5WmuwoE"
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-52ff7e275e0so33550871cf.1
+        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 00:07:57 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788764876; cv=none;
+        d=google.com; s=arc-20260327;
+        b=pyvxNqzAVeF+iBySlpVIkR8NI1dQ7hpCYxfsiRobokJkv+iFfmFOkmdR2FYo3Og7fJ
+         nLIECLzsfN1/gLj6ama+TC0bJ8eBvwwONKlSazcTJfSncYqwHitvNaRv2AglCXG1Kqvq
+         956jOFAJBA+xRqE3Smh0fLCqyqavyed6wUAkQ7JBLd7YeuC/rUvTLxG/LV8hkWZpBEwi
+         1DpRqE7PIQNnmnCNRQUL9FuI8y+dDN/HIy259oXlUCqmGxIrpcUXXRXW1f9DXmBDd/Y2
+         KTRleqkk+IDjhD87iqrA24UUdxO7YfpElTaXyYtSFc9U+8h5/M9V0VpZmEoUySpfTNnw
+         hKFA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=hqvu5zoZvKKDOuz/BamMJAjw8ii3eTJFwC7iUaWUsFM=;
+        fh=wXlIZ/HaVBTRQfb+MJOOLSW1QUqFAb3oJXGyvF19CGA=;
+        b=dnh2tukG+AIR86cghMNAzbou6Nqr5bDTjdaAt/evXorUvb9IBLn3pdKTq7mJbe8FAs
+         O+RZ+CRMqDrx9B9o7W+CMzdmC7cX7y/ZC8tOgeHjAKH1uJYidivGK9PnGp5iCPUepsYr
+         5f8COqllfadZT7PXLhzgAJhvtWcL5VCD6Q2au2/oq4do9eT2Ae2yKSWBiHqdxHypPKEd
+         O5MUPO7HxPlQ+ngEPySSbPCQZRtCYZdHLKjQC0fZ9KO5pWtpkAMPXON3Ud974ybJ9QHA
+         6WpN5JYhKiIsJLL1r0KKRKtPDxZREwwSwReLD48QsrxVB5JVWhyJRUU+0scm2hz6ivkV
+         SNyQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1788764876; x=1789369676; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=hqvu5zoZvKKDOuz/BamMJAjw8ii3eTJFwC7iUaWUsFM=;
+        b=T5WmuwoE2Wmkif6ZHlr7z75zgfDcYmcQejKwGE+psT7vyXnOrEs9W5puKXDeat0PNp
+         fvicIfeALAW5jAcrtvsAomYPHv35SfUAQlCf7dTKVFkKEwLJoKgUkGgj2/iLsMUNEfBQ
+         RuINvu/5htOfsXNvzOKPPOB2ihCv4PFBS3lK2NE2z/SSSUiTqCs0EHA7PEA41Q0moMwU
+         Mz5wLGFmBJlZ0SK26WVihBEEkZG3RzoRwjMHB1DyVX/tn/NsiWI9HA7vaocARvMZ1828
+         pcTRCLmY9ooj4sYd1gKHcnS3J1BhHZZ2Of/1HoDE5XcfCSXDuuIxeGMpZZ8ma8iLFuRc
+         dhbw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788764876; x=1789369676;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=hqvu5zoZvKKDOuz/BamMJAjw8ii3eTJFwC7iUaWUsFM=;
+        b=RDHQ3b2DCXnDocVZc4pxMZArTx9q3XN6yjc5FQiyVNXmHNJ+iAGPoD2PbcnVsrURxJ
+         cLc1tGn7rz+3ea31Zh3+6xppovx8gNVw8lElFwpog7k73pgl1gSTPtfSVquRFWljJ2J4
+         AkVMFQNjdI9rwn0CUZJ5krg9a75nrhFyYjYypSycuB9+qQ4UuomjV2+Ov4U4Jd9sz1dn
+         FcpQueRGKYvA+BXYlhCYZBIveS0u0yd5XtdXuQH8Ph9BQ9xflPTsBqvjd/3oVHUF82qO
+         5PBaCjMx6fd7dzYGSl0RSSQgYEK6ipU7j6QqbNZENIycgC8cV8JJyFn18kRItYtW4uvq
+         99Yg==
+X-Gm-Message-State: AFuF++kgyncHRPCnZffamyGJRyN0sDATJCV2Vodwd0fi/gQn6vXqVYSR
+	sRdfUIm7muzrPjjFsCv/nw2qig7mRGpD5N6rizn+mzx+74RPOtPzSLSdIuw12NKADEFNrLA7wp6
+	x04ytyy0/6PmMrkldShs0H7a5NDlpnT+q9OBt6AAa
+X-Gm-Gg: AYBFou1Hc6F+LZZK2oxhoaul3Y96hoiESb9UHA+9RIdInLjXxxKV8wUuwKRhWaLZv0g
+	r+5lWEhWZKB9ArGxM7JgQSM1R3KoBgSKcX1OTEr2UlVUQ0HB3Iayf1oKJyZTeo4qi2e3VOjDROg
+	5xmVfvSf/XoKYs/wMMaMoBUfEVB9VvFrhvX3xsp/vHonofqLHGjThZ8ox8ZQZOroqjq+AQU0p6I
+	UfIUpOcifVuUx2/vUyNjADdR7fV+3TNykZphwX2EkYQbXddeUbkbk/QFJTAMfBeJdxhBL8gdrQA
+	ffxmNjUhmhIbL+O5oiyGBDcABlgtSsQQscGpHcZM8PhK8Ygd7O23nguaG/mcjp6sfKXt4c84KSy
+	s/Rl5ODb4poBXrsMnwXf7qfs6ZAMm84zUgbIxn0+TaNwK7hF1sZsHy9V+Ew==
+X-Received: by 2002:a05:622a:48e:b0:530:42e4:f280 with SMTP id
+ d75a77b69052e-530549f0484mr242761321cf.41.1788764875411; Mon, 07 Sep 2026
+ 00:07:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Message-ID: <B2251BD5D0B36E28+202609071506015851872@uniontech.com>
-Content-Type: text/plain;
-	charset="GB2312"
-Content-Transfer-Encoding: base64
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpgz:uniontech.com:qybglogicsvrsz:qybglogicsvrsz4b-0
-X-QQ-XMAILINFO: NAeO0+xU6W76+Jh2d2IGzOW7akI7whTSpLuf7rgadEQDcg/aBN0oSvz5
-	48BtVfEFOLUCfIDY19iu+3p/Ag/VAT+OqPWLZhXOlVpk8Y1h3vT1X5BMLxvkOgeUYbKOyqh
-	msVJMrcHvE7hNijnnBSjs0TELx+y/4AYy4YCG9shuEm5gwkV7+bWIu9ORIgp8WaJUlIwJXu
-	drGfF44qct6G4ZlZsSW6Ew/kaUFR9fTJ05DCxEcdRYoSAudnWNyCzxLGSFdbbAJPqvMgYXe
-	BeVlP/WR9MIa9/drPicDBxHtt7zRbINmtujsnfQc/MK4XDjLcXRyLpYp2WHSw9ywc3flfhm
-	hsEJeWvhu2v80SMRAHOqGWktQ0i4wi/DdLeJNVIwGDv2vwknFVk75dXZm/ZRKhlfFAwst+H
-	VnTI1xWSB9LEUWCzVdBlu6IyOVTPIyW/qBG/Tbhojv+8KkhG54j6pJfyQa3IOmjo/Yd7Es2
-	f/Lbh+f9vyZHx5NPHaCMXOfhlelMeaZeSkTkjFZtDTzX34HSGxmCPjUTgR3KpoyOwIrpuw5
-	cNXoaAEoHbhzxpG0lgjzxf6m6WFqotpuNOGTjVColthyIYirl5i4gBzka/NLBfuzq0/qREM
-	+mIdZo+NazZUIGl7q+g+sIQ5whnhR/hq4xofReXpikH0iMLQiSPvSJiMkPcL4hHVVn4V5eg
-	JgwSR77MsSA8tofytTlTqOh99JfIJ3nrE87is6j/2jAUFVpjCv51eugEaYwU4vXSN4YgsSc
-	Y+s12IS2cuecEJV+CmYdHyx3/KzJcJRyA5wOcig4e5zrftQDPSm8oiIqgE8sGW3kSx6hxHa
-	YDE2GEwi+70mLGMMESIEV8+JPzfEeE3/YcHKDnS9zH+cXCPvl/kXcsIzL8KvoMAixiUp6Om
-	65Xu5K/4GMkrk8XziD5GRfllXx+lTi8gXWOirJ/7p+Dtal1fX3XrahFl4P6PaBhJGXDs+7x
-	FoJxkA17d0TRFA6ucaasl4KvPjGtFsu1Y08pOJf9MJ83gJqangKwdufSD+4CgCa9sre0=
-X-QQ-XMRINFO: NS+P29fieYNwqS3WCnRCOn9D1NpZuCnCRA==
-X-QQ-RECHKSPAM: 0
+MIME-Version: 1.0
+References: <cover.1788668475.git.zihanx@nebusec.ai> <e8782427d0b3cd1854ab8d141eea224b53db55b9.1788668475.git.zihanx@nebusec.ai>
+In-Reply-To: <e8782427d0b3cd1854ab8d141eea224b53db55b9.1788668475.git.zihanx@nebusec.ai>
+From: Eric Dumazet <edumazet@google.com>
+Date: Mon, 7 Sep 2026 09:07:43 +0200
+X-Gm-Features: AcwNN1V6FVySmL5DFqzL_7zCey1PZNw_Qi_Gx6_T0FzTqcJVGcZG-fCSLd-LjtA
+Message-ID: <CANn89iKdX2-a+VhWa4CyDODSZByk=r5VRq38yQhLYBFRQ1Wy3A@mail.gmail.com>
+Subject: Re: [PATCH net v2 1/1] udp: diag: bound bucket lock hold time
+To: Zihan Xi <zihanx@nebusec.ai>
+Cc: netdev@vger.kernel.org, "David S . Miller" <davem@davemloft.net>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, Willem de Bruijn <willemb@google.com>, 
+	Pavel Emelyanov <xemul@parallels.com>, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Vega <vega@nebusec.ai>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-VGhhbmtzIGZvciB0aGUgcmV2aWV3LgoKSSBhZ3JlZSB0aGF0IHVzaW5nIE5VTEwgYXMgYW4gZXhw
-bGljaXQgIm5vIGNvbmZpZ3VyYXRpb24iIHNlbnRpbmVsIGlzIGNsZWFuZXIgdGhhbiByZWx5aW5n
-IG9uIGFuIGFsbC16ZXJvIHN0cnVjdC4gSG93ZXZlciwgdGhlIHplcm9lZCBzdHJ1Y3QgaXMgY3Vy
-cmVudGx5IHNhZmUgdG8gdGVhciBkb3duLCBhbmQgdGhhdCBzYWZldHkgY29tZXMgZnJvbSBlc3Rh
-Ymxpc2hlZCBrZXJuZWwgY29udmVudGlvbnMgcmF0aGVyIHRoYW4gZnJvbSBhbnl0aGluZyBzdG1t
-YWMtc3BlY2lmaWM6CiAtIGtmcmVlKE5VTEwpIGlzIGEgbm8tb3AgYnkgZGVmaW5pdGlvbi4KIC0g
-ZG1hX2ZyZWVfY29oZXJlbnQoKSBiYWlscyBvdXQgZWFybHkgb24gYSBOVUxMIGNwdV9hZGRyIChz
-ZWUga2VybmVsL2RtYS9tYXBwaW5nLmMsIGRtYV9mcmVlX2F0dHJzKCkgLT4gImlmICghY3B1X2Fk
-ZHIpIHJldHVybjsiKS4KIC0gcGFnZV9wb29sX2Rlc3Ryb3koKSBpcyBndWFyZGVkIGJ5ICJpZiAo
-cnhfcS0+cGFnZV9wb29sKSIuCiAtIHhkcF9yeHFfaW5mb191bnJlZygpIGlzIGd1YXJkZWQgYnkg
-eGRwX3J4cV9pbmZvX2lzX3JlZygpLgogLSBUaGUgc2tiL2Rlc2NyaXB0b3IgbG9vcHMgYXJlIGJv
-dW5kZWQgYnkgZG1hX3R4X3NpemUvZG1hX3J4X3NpemUsIHdoaWNoIGFyZSB6ZXJvIGFmdGVyIHRo
-ZSBtZW1zZXQsIHNvIHRoZXkgbmV2ZXIgZGVyZWZlcmVuY2UgdGhlIChub3cgTlVMTCkgYnVmZmVy
-L2Rlc2NyaXB0b3IgcG9pbnRlcnMuClNvIHdoaWxlIG1lbXNldCgpIGRvZXMgbGVhbiBvbiB0aG9z
-ZSBndWFyZHMsIHRoZXkgYXJlIG5vdCBhY2NpZGVudGFsIGFuZCBob2xkIGZvciB0aGUgY3VycmVu
-dCBjb2RlLgoKQ29udmVydGluZyBwcml2LT5kbWFfY29uZiB0byBhIHBvaW50ZXIgaXMgYSBtdWNo
-IGxhcmdlciBjaGFuZ2UgdGhhbiBpdCBmaXJzdCBhcHBlYXJzOiBpdCBpcyByZWZlcmVuY2VkIH4x
-MjAgdGltZXMgYWNyb3NzIHNpeCBmaWxlcyAoc3RtbWFjX21haW4uYywgc3RtbWFjX3NlbGZ0ZXN0
-cy5jLCBzdG1tYWNfdGMuYywgc3RtbWFjX2V0aHRvb2wuYywgY2hhaW5fbW9kZS5jLCByaW5nX21v
-ZGUuYyksIGFuZCB3b3VsZCByZXF1aXJlIGNoYW5naW5nIHRoZSBhbGxvY2F0aW9uIGxpZmV0aW1l
-IGluIHByb2JlL3JlbW92ZSBwbHVzIE5VTEwgZ3VhcmRzIGF0IGV2ZXJ5IHRlYXJkb3duIHNpdGUu
-IFRoYXQgZmVlbHMgbGlrZSBuZXQtbmV4dCBjbGVhbnVwIG1hdGVyaWFsIHJhdGhlciB0aGFuIHNv
-bWV0aGluZyB0byBmb2xkIGludG8gYSB1c2UtYWZ0ZXItZnJlZSBmaXggdGhhdCBzaG91bGQgYmUg
-YmFja3BvcnRlZCB0byBzdGFibGUuCgpXb3VsZCB5b3UgYmUgT0sgd2l0aCBrZWVwaW5nIHRoZSBt
-ZW1zZXQoKSBoZXJlIGFzIHRoZSBtaW5pbWFsIGZpeCwgYW5kIEkgZm9sbG93IHVwIHdpdGggYSBz
-ZXBhcmF0ZSBuZXQtbmV4dCBzZXJpZXMgdG8gY29udmVydCBwcml2LT5kbWFfY29uZiB0byBhIHBv
-aW50ZXI/IElmIHlvdSdkIHN0aWxsIHByZWZlciB0aGUgcG9pbnRlciBhcHByb2FjaCBpbiB0aGlz
-IHBhdGNoLCBJIGNhbiBkbyBpdCwgYnV0IEkgd2FudGVkIHRvIGZsYWcgdGhlIHNjb3BlIGZpcnN0
-LgoKUmVnYXJkcywgClpoYW9KaW5taW5nCgoKCj4+IF9fc3RtbWFjX29wZW4oKSBjb3BpZXMgdGhl
-IGZyZXNobHkgYWxsb2NhdGVkIGRtYV9jb25mIGludG8gcHJpdi0+ZG1hX2NvbmYKCgoKPj4gdmlh
-IG1lbWNweSgpIGJlZm9yZSBpdCBjYW4gZmFpbCwgZS5nLiBpbiBzdG1tYWNfcmVxdWVzdF9pcnEo
-KS4/IFdoZW4gaXQKCgoKPj4gZG9lcyBmYWlsLCB0aGUgY2FsbGVycyBmcmVlIHRoZSBkbWFfY29u
-ZiBkZXNjcmlwdG9yIHJlc291cmNlcyBhbmQgdGhlCgoKCj4+IHN0cnVjdCBpdHNlbGYsIGJ1dCBw
-cml2LT5kbWFfY29uZiBzdGlsbCBob2xkcyBwb2ludGVycyB0byB0aG9zZSBmcmVlZAoKCgo+PiBy
-ZXNvdXJjZXMsIGEgdXNlLWFmdGVyLWZyZWUgdGhhdCB0cmlnZ2VycyB3aGVuIGEgc3Vic2VxdWVu
-dAoKCgo+PiBzdG1tYWNfcmVsZWFzZSgpIG9yIGFub3RoZXIgTVRVIGNoYW5nZSByZWxlYXNlcyB0
-aGUgcmVzb3VyY2VzIGFnYWluLgoKCgo+PiAKCgoKPj4gVW5kbyB0aGUgbWVtY3B5IGluIHRoZSBl
-cnJvciBwYXRoIGJ5IHplcm9pbmcgcHJpdi0+ZG1hX2NvbmYsIGxlYXZpbmcgdGhlCgoKCj4+IHN0
-YXRlIGNvbnNpc3RlbnQgcmVnYXJkbGVzcyBvZiB0aGUgY2FsbGVyLgoKCgo+PiAKCgoKPj4gRml4
-ZXM6IDMwMTM0YjdjNDdiZDIgKCJuZXQ6IGV0aGVybmV0OiBzdG1pY3JvOiBzdG1tYWM6IGZpeCBw
-b3NzaWJsZSBtZW1vcnkgbGVhayBpbiBfX3N0bW1hY19vcGVuIikKCgoKPj4gU2lnbmVkLW9mZi1i
-eTogWmhhb0ppbm1pbmcgPHpoYW9qaW5taW5nQHVuaW9udGVjaC5jb20+CgoKCj4KCgoKPkhpIFpo
-YW9KaW5taW5nLAoKCgo+CgoKCj5JIGFncmVlIHRoZSBpc3N1ZSBpcyByZWFsLCBidXQgYXNzdW1p
-bmcgZnJlZV9kbWFfZGVzY19yZXNvdXJjZXMoKSBhbHdheXMKCgoKPnRvbGVyYXRlcyBhIGZ1bGx5
-IHplcm9lZCBkbWFfY29uZiBzdHJ1Y3Qgc2VlbXMgYSBiaXQgZnJhZ2lsZSB0byBtZS4KCgoKPklz
-IGl0IGJldHRlciB0byB1c2UgYSBwb2ludGVyIGZvciBwcml2LT5kbWFfY29uZiB0aGF0IHdlIGNh
-biBzZXQgdG8gTlVMTCBpbgoKCgo+Y2FzZSBvZiBlcnJvcj8gV2hhdCBkbyB5b3UgdGhpbms/CgoK
-Cj4KCgoKPlJlZ2FyZHMsCgoKCj5Mb3JlbnpvCgoKCj4KCgoKPj4gLS0tCgoKCj4+IENoYW5nZXMg
-aW4gdjI6CgoKCj4+IC0gTW92ZSB0aGUgY2xlYXJpbmcgb2YgcHJpdi0+ZG1hX2NvbmYgZnJvbSBz
-dG1tYWNfY2hhbmdlX210dSgpIGludG8KCgoKPj4/PyBfX3N0bW1hY19vcGVuKCkgZXJyb3IgcGF0
-aCwgdW5kb2luZyB0aGUgbWVtY3B5KCkgYXQgdGhlIHBvaW50IHdoZXJlIGl0CgoKCj4+Pz8gd2Fz
-IG1hZGUgYW5kIGNvdmVyaW5nIGJvdGggY2FsbGVycy4KCgoKPj4gLSBMaW5rIHRvIHYxOiBodHRw
-czovL2xvcmUua2VybmVsLm9yZy9yLzIwMjYwOTAzLWZpeC1zdG1tYWMtbXR1LWNoYW5nZS11c2Ut
-YWZ0ZXItZnJlZS12MS0xLWM4MWRjN2Q2ZDE4YUB1bmlvbnRlY2guY29tCgoKCj4+IC0tLQoKCgo+
-Pj8gZHJpdmVycy9uZXQvZXRoZXJuZXQvc3RtaWNyby9zdG1tYWMvc3RtbWFjX21haW4uYyB8IDEg
-KwoKCgo+Pj8gMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspCgoKCj4+IAoKCgo+PiBkaWZm
-IC0tZ2l0IGEvZHJpdmVycy9uZXQvZXRoZXJuZXQvc3RtaWNyby9zdG1tYWMvc3RtbWFjX21haW4u
-YyBiL2RyaXZlcnMvbmV0L2V0aGVybmV0L3N0bWljcm8vc3RtbWFjL3N0bW1hY19tYWluLmMKCgoK
-Pj4gaW5kZXggMjQ2NTZiMzUzNTBiMTQ0NTRmYjEwZGVjZWQ2NTE2ZWI4OWUyYzBjOS4uNDM2OWU2
-NGZhZjlmODc4YWEyMGFjNTA3NTcwNTA0NGY1NWM1ZjhiZiAxMDA2NDQKCgoKPj4gLS0tIGEvZHJp
-dmVycy9uZXQvZXRoZXJuZXQvc3RtaWNyby9zdG1tYWMvc3RtbWFjX21haW4uYwoKCgo+PiArKysg
-Yi9kcml2ZXJzL25ldC9ldGhlcm5ldC9zdG1pY3JvL3N0bW1hYy9zdG1tYWNfbWFpbi5jCgoKCj4+
-IEBAIC00MTkwLDYgKzQxOTAsNyBAQCBzdGF0aWMgaW50IF9fc3RtbWFjX29wZW4oc3RydWN0IG5l
-dF9kZXZpY2UgKmRldiwKCgoKPj4/IAoKCgo+Pj8gCXN0bW1hY19yZWxlYXNlX3B0cChwcml2KTsK
-CgoKPj4/IGluaXRfZXJyb3I6CgoKCj4+ICsJbWVtc2V0KCZwcml2LT5kbWFfY29uZiwgMCwgc2l6
-ZW9mKHByaXYtPmRtYV9jb25mKSk7CgoKCj4+PyAJcmV0dXJuIHJldDsKCgoKPj4/IH0KCgoKPj4/
-IAoKCgo+PiAKCgoKPj4gLS0tCgoKCj4+IGJhc2UtY29tbWl0OiBhNTAwZGI3ODE5YzUwZGI1OWU1
-NWYxYjRmYTFjM2JhYTVhMjYxNmYzCgoKCj4+IGNoYW5nZS1pZDogMjAyNjA5MDMtZml4LXN0bW1h
-Yy1tdHUtY2hhbmdlLXVzZS1hZnRlci1mcmVlLTY5M2RhNmViNGEzMAoKCgo+PiAKCgoKPj4gQmVz
-dCByZWdhcmRzLAoKCgo+PiAtLSAKCgoKPj4gWmhhb0ppbm1pbmcgPHpoYW9qaW5taW5nQHVuaW9u
-dGVjaC5jb20+CgoKCj4+IAoKCgo+PiAKCgo=
+On Sun, Sep 6, 2026 at 12:35=E2=80=AFPM Zihan Xi <zihanx@nebusec.ai> wrote:
+>
+> udp_diag_dump() currently keeps the UDP hash bucket spinlock held while
+> running the request's bytecode filter and filling a netlink response for
+> every socket in the bucket.  A large filter and a heavily populated bucke=
+t
+> can therefore keep bottom halves disabled for an attacker-scaled amount o=
+f
+> time.
+>
+> Collect at most SKARR_SZ matching sockets under the bucket lock, taking a
+> reference for each socket, then run the filter and fill the response afte=
+r
+> releasing the lock.  Resume with the existing (slot, s_num) dump state so
+> the next batch can skip already-walked sockets.  Leave bytecode filtering
+> until after unlock; unlike tcp_diag, a rejecting inet_diag bytecode progr=
+am
+> is the expensive part of this walk.
+>
+> Fixes: b6d640c2286d ("udp_diag: Implement the dump-all functionality")
+> Cc: stable@vger.kernel.org
+> Reported-by: Vega <vega@nebusec.ai>
+> Assisted-by: LLM
+> Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
+> ---
+> changes in v2:
+>   - Drop the hash-list cursor, dump_done callback, extra module
+>     reference, and inet_diag core changes.  Dump state is only
+>     (slot, s_num), so the existing handler get/put around dump() is
+>     enough and udp_diag no longer manages its own module lifetime.
+>   - Batch at most SKARR_SZ matching sockets under the bucket lock
+>     like tcp_diag, and run bytecode filtering plus netlink fill after
+>     unlock.
+>   - v1 Link: https://lore.kernel.org/all/133b6aee9e2c908c9da37d5585b3d2cd=
+016906cd.1788187473.git.zihanx@nebusec.ai
 
+pw-bot: rejected
+
+Please limit the complexity of filters.
+
+Anywone needing complex filters will implement them in user space.
