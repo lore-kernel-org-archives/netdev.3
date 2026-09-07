@@ -1,197 +1,316 @@
-Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8452489888
-	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 11:52:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.123
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788781976; cv=none; b=WSmMfNAE0PoXsZKCIIv0qYs7Vi9E7x74VPK0ayYLzPmIaayFix1KYBqIDmdKnmK5x6K37sjzD8etnEhpJdZ9ULJCMFQEh8a1DZt2f7ROcWvWyt+nUwYPjwnfvKFL+8xiMtw1u4AD5dkX5+4bpzfLwfR/f41RO0sN57iIObWWFzQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788781976; c=relaxed/simple;
-	bh=40/pWuMmhrmQ327BpTkiE1YZ9HbTMqwKJSk/jESlSqI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nmdkAMNXt3ahP/7628HvEOXVcx3iXIU74XIOFIf0wZnS3M1U1vjamYoS8tD1f1gIRtz7+drr88bACejoFWBlrwWS8ofQ7fimVvDkEM+ldAcnc5rBQhgoG/IGaPVSJLQaQgLZ+erI38uecutbILi/5M5Nr20K40JZVSdgrebyXnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b=Whg17Uq2; arc=none smtp.client-ip=185.125.188.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76D7636A374
+	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 12:02:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.172
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788782551; cv=pass; b=iOgR8MbWcQ+Xvy9/6GZg3voFwzx66AAhkvpIs9uYiG4PFMRdlOGo3X+gn4gaANtODEdX1BK4oLGA0AIUO1j50du+JRonnRyBwwJ3t9gdXIdiYNYJj+N+lhCmPymD+9LHQDksBmQVyjm8Y0GE+sk9BTt/pl2Lo3wYFo6Z8v6ZzJg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788782551; c=relaxed/simple;
+	bh=8mLhQjFzbnDtZL3RLj4NMp1vbK4Ud5V55RlXePRzdoA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pNgX87+eQwWFmx/2jMQoHb6uoekgYqe0TanFeTXsiXl36SLWx9n6sBYDuRVUlvR29OC2oMffL8muFFjGApZ2V7hUsh0nW3k2/9lSFP7ckBjl7MnKuJ9GFM5kyogDA+4kmH8fvAZZ9A/cELk3TUEPH4cnDSIeCKXRnbZuy99LbqU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mzE6PWjJ; arc=pass smtp.client-ip=209.85.208.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b="Whg17Uq2"
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 49FEA3F1DD
-	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 11:52:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20251003; t=1788781972;
-	bh=f719CSeWdbk3xX0dreB43mfMPTEcjgTdJiglOAe4/WA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version;
-	b=Whg17Uq2/9WJNAegTGAoRBoMdMxoEFNHFHP81S4ZW7ob1Asyaxd5HMQk3zV7lvAa3
-	 zduU+p0BFfnna34vftKjn2hLsKKpJuuWQ0fMgTM/JXQ/PUPAZIdtzCJT4JWMjq2PiK
-	 kI+C/+13T+J6xbH5SIs2hnmtKJxzOkT/EkHSEyIdwPKmGPUzTlA4OUFneScWUxyoEm
-	 2/LxtbljXV9XRfQEQZfHwE/sntZfCy5iyfprJD8FLHEtUlLerLBqTjVA1Ewh0PlkZb
-	 Qlx76N67kta1QVuZ6PGLSt0Th4tAFJ5rX2FDUh3ivl7L4t2CzyliVeM8pC2dNN0WXI
-	 ZOWHcfA34tk4eHGDtakUGIS+LNyPV12UgyHGtafgsMCdagFOys8xbjq9x5PxVL0pXZ
-	 DvNExD6r9oyeqU3BBy5ZDA9wRfonJTmRWJpxCyDqzwmzVLlAGXCRP91Pnk5GlxktyT
-	 RfGnBTBd2b70tJNEx2G5EfV5kgGUK0J0ka6SPdPyZFovTaLwE6B4watCoDpq1wZdto
-	 JZbVYFTML8czicUow6m68GQtiWV5M0C0S1+4iELdLUdjBaG2RmV8UyMSkC0LHUlpu9
-	 91x1nJzaSxKyiodh3G+cTSQXvlQRq5Xk0rR7QyKWISEl5Zb06ID2G88fDZoUfNQyfD
-	 jo1JfMNjENs3kBoCOFf4FQTk=
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-3968dfff779so4922727a91.1
-        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 04:52:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mzE6PWjJ"
+Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-3a468f4c547so16942161fa.0
+        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 05:02:29 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788782547; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ISTBtIIPQi5Cp8yQPxHZPSVA3Uq62PPtANISVAv9F4Q2gLJN8wcvZiR0UDM8o5OEmJ
+         2fEWuI4dfYUco6IUlW9JmP66mWMatCfYvyKVgAPOS9vJzGJEZnGRmBvPikKcYKQBP4wC
+         MF5L7OSfqUPZ74AZpHZIfP+pkl3RDCMcjCFzPr8IGf069ekR5cYymURcVHPzh+Vf1yGw
+         1kinrOr1QOAgZzUKzLgXPOKXqOtxRAwxCinlM/mRwVXjgB1CzlZkdV4tOb3dhMz8LC7s
+         hUv0GqHD0/QuGHVrBrkj1tdlo3O1RTmtBq46KfuhCyNKOtkSJkRokmQ8ajyVc4fPtLwj
+         pbxQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=k3B8KS8WBh42Tb8VOzZfjr64kES2Mp9rftQPtYL4FQk=;
+        fh=GihRKJay7TZgzI6ci5evheP8hrIdIwJLd7TkBeqWEqk=;
+        b=DhFNtNq+L+qmYIs7NHzXmUTuugIDOf09oYX5+EHh04H6bERJ4j8Lfp1LSbzkYqxkVj
+         Qj2cqSli+5g4wxicsYSzWpwozmyjNo8hJoTBHvzXOd8+DucEJq8eu1tCKDT4fAkJk/OL
+         +ETRMlc5Ite5xza1mF8BifegXSCz+xDjogJ3R1cfHuymXeKMSXWSgJi963WxaKktssw3
+         w0j63XP8/yZnGKRiUzydKyAsHn71B8eXmyq/YRke7OaLrElItBF6rGISMj5u+A1hYWmO
+         nkECCSspNzQxnktxj2yrZj3z3p13tRplUGowg046RCxU8f7a1qpdDHtKcYKOjAlYFVOk
+         UEYQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788782547; x=1789387347; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=k3B8KS8WBh42Tb8VOzZfjr64kES2Mp9rftQPtYL4FQk=;
+        b=mzE6PWjJtVn7KQQ0MllXuV/UJD/rG2Z1cnKDPNsslr8xMHu7vItvyqtFpMeSSs003k
+         XFCuxcweVICG4jj1B38Lm10MRO+pWnOdWVNe2rsee0soCgaOQWrmLd2edjZ9FhqbVx/w
+         aqg5KcQRWBb9UBM/EfFg6WTZPFTsiGBuyN6AgJIcTqBRceYg0a5g7Skpp+7xQIdt5P29
+         AZ5f4NlDFwqfc04ESHgWVPRK4f9b9zzBQMYHR9ZnK6NVnfmOyuwdY/CbQXN+LOssyLJi
+         +0ZFaQU6k5woItyzztSmc1nw97v42lIM+MCDmHowiEvEKK3SNEAwXXaerpW+mlMLOuJa
+         E5rg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788781971; x=1789386771;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=f719CSeWdbk3xX0dreB43mfMPTEcjgTdJiglOAe4/WA=;
-        b=rE4DzcI/wnTocN/AidXFC6z9A83ksP/v+JpBAofgcWsjBEnGd3tTTrYlQtK3a4IvlU
-         Xxgb+ARhGwGP+pr9xfx36GuPXUvc93xLZk/b5JJVgmdpiTn6THs+VtLAQBL7J96VYvmv
-         jhF5J46Jq9/geY8cFUaniD6E+Uj25x+8x3xW9HLukXeFNHtnlytQ0gSHSUCG/GWt0Kqk
-         izJCBG9zoBupInkmoK1t6CvinDVY9OW7edm8h3tWzp8HGfHC1176PBMRby5wHK+wyzzg
-         YMztK7eoyzDd4ES3Df7JRG0feq0RrcsFYzNwbVJEE1rsgbN90pomnsOKZvFdgAFePzK/
-         0BIA==
-X-Forwarded-Encrypted: i=1; AKwUvBzbPyqaaPT1H+9zVDLwXv7N7b7wgNXpz5bYgKO6Aa5WhR5iam7AOZtBuDL4oz0s2BEUxh/pBPY=@vger.kernel.org
-X-Gm-Message-State: AFuF++mCv/1sWrrVx8DcM6PfAUJYkbYEXJ/BXxgedXuxiNihbEzrqWYO
-	lAt0wRwRZEe1An23k255Wj+FtGXbdl31uMIMLqSLAxajM2N1ViCvr0BAxDGLiRpN4zUbjPxRa36
-	jw6Ljnr1hR4UNyNpyLpX8OH0ih0hOKzN0cjaNf7pN4CghUCkPDnetBOQt1vtcTTjlD7mFZ9Oi+Q
-	==
-X-Gm-Gg: AYBFou0Rmfvstt85bv2+tL4fr9i63F0wztXOeg5HsPZY+HhbkTbAgoxb/xDimvUuP/b
-	/+66WXXZ+nA81ShN03HJN3F88y5t3T423dfaCMeorRBlDxXcjenoV3560LsKmc7Q0uV6ZvVM+8X
-	kpNMDyGdZH2f0wel945lI3DH3nTIkuoUP9nu57DxgpuT7LbMFmhtsgqIp0UsAbmtYYmAfduQjvv
-	q2AGjoWF+sD6kgpp9hAR5QhyHtIYwDQhpMo1yfD6OF74lBaksdjOjmPMi/WFeCtVX2K4VP4AN1a
-	63Aef6vQ3BDqPkWzdIQyas943VgLdBOgYM9Id5eKbfghzAmYC4+c8AQc2zEBtMZXLU4kKL2XpmS
-	cmaAnxEF6hUdiNs1/yjGIs+E09gV2KJ5bKYW8smx7Si3NjUub6CNnGkDXoE08/zTvGNCWg0j3CF
-	t1IGV2hxxIPBHLM1BXDzGA6BKDDs1+Tys/hfrqGRw=
-X-Received: by 2002:a17:90b:5110:b0:390:84db:888e with SMTP id 98e67ed59e1d1-39b8bd4aef3mr422549a91.7.1788781970702;
-        Mon, 07 Sep 2026 04:52:50 -0700 (PDT)
-X-Received: by 2002:a17:90b:5110:b0:390:84db:888e with SMTP id 98e67ed59e1d1-39b8bd4aef3mr422518a91.7.1788781970233;
-        Mon, 07 Sep 2026 04:52:50 -0700 (PDT)
-Received: from u-ThinkPad-X1-Extreme-Gen-4i ([103.155.100.15])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b08c39227sm26922513a91.9.2026.09.07.04.52.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Sep 2026 04:52:49 -0700 (PDT)
-From: Aaron Ma <aaron.ma@canonical.com>
-To: Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Henry Tieman <henry.w.tieman@intel.com>,
-	intel-wired-lan@lists.osuosl.org (moderated list:INTEL ETHERNET DRIVERS)
-Subject: [PATCH v2 2/2] ice: clear Flow Director entries before reset cleanup
-Date: Mon,  7 Sep 2026 19:52:21 +0800
-Message-ID: <20260907115221.926007-2-aaron.ma@canonical.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260907115221.926007-1-aaron.ma@canonical.com>
-References: <20260907115221.926007-1-aaron.ma@canonical.com>
+        d=1e100.net; s=20251104; t=1788782547; x=1789387347;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=k3B8KS8WBh42Tb8VOzZfjr64kES2Mp9rftQPtYL4FQk=;
+        b=chtJ50wPwJZuVEy9SraJvQTikQjacsiK73Ik/ISJCfMY5a2roIkJhRUSMyoMKP648n
+         uPYVyV5SMQiWthcRTkwTRgzpwqxCOpIpacmVaY/V9xMBoGiRRSJONIs89wncMp1OV1Ik
+         6BYYtOs/mLZFlG/hX+bfi70qiYXAPLR1zle2oxi04ss/phnUStSuqHLCbQOQzMeJd8ik
+         TuuOetdlh9MbhvnypCuvUeqQBSK4dL2SeqGhtWwSRnYam1gIKB7tHLjNQhuQqnol61Kg
+         TQ5jP8a5mFkwm1Or3V3S3638g26mUmm2DUGve8o40vW8uOr+I6ADFxF/lM5xql0hwg8i
+         yOWA==
+X-Forwarded-Encrypted: i=1; AKwUvBwlVkH34MUhPmqbHM1n25EjAJql7edHRZ3uwSftDdKbeUNkbBhTzWG2+kEn8iiL3wOnBYpX+t0=@vger.kernel.org
+X-Gm-Message-State: AFuF++mNK0C68rJfxahfyz1njGaCYyPlGZnqvqpR4icb9i9liiS9dcO3
+	DLRCSnqKDVZ0DitFl/rk1gJpardKVnCO+jEYcdT0fLSb/Qwr0CmD8FKo/5PCZQwvWT1PI04HBX4
+	Q8HOwld+B+scWFM50zKqvJQPaDFCt+h4=
+X-Gm-Gg: AYBFou0VlanWG87RycVPcDR3b5Ww6GyPMM4uN4oOg2kM7SfOtoOQAvfjua0sTHu1Beu
+	zh2v1ID77S/jNXbnHnLvhP99IIixv0iksKjROiLbpidjzi0cFOMJzdmkxZa3YZsacL2UGwZ5lu6
+	ee0SfaJV/UX6qPIplNKhAT5crjbV8TWuVsaJnA7gMx7zdh13IQtVIFfbjKNmruucqKWxvyxwlVP
+	IAm6KIQWdExerRe1GzXrgpeYOzYYkstMhPf46aVqPiBtd+rj4Bo0QVH8HyzZhKrRMqhFuNZQUyK
+	uihewX+GnkmDMuhE2EwVxw7ebpp8450XvCr718pUnw3p/yai9VhLqtaHbn8EoalGHOlj1A75WeO
+	ngaMCWQ4LKfLu2vjpfESxhR86pRNBTREoNTOpKtjp0u3eqNAjYWBBoexYQDDg7/hjGbk3pg==
+X-Received: by 2002:a05:6512:3c9b:b0:5b6:4ae:8c04 with SMTP id
+ 2adb3069b0e04-5b61706b270mr3397799e87.31.1788782546928; Mon, 07 Sep 2026
+ 05:02:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260902121028.74092-1-kerneljasonxing@gmail.com> <178875475592.219967.3353530907347334836@kernel.org>
+In-Reply-To: <178875475592.219967.3353530907347334836@kernel.org>
+From: Jason Xing <kerneljasonxing@gmail.com>
+Date: Mon, 7 Sep 2026 20:01:48 +0800
+X-Gm-Features: AcwNN1Wer9yQeRJHRbGGSnaXJdlvEOLVEKwGoPC3Lb0_2G1H3MBxfPoD6oYKNgc
+Message-ID: <CAL+tcoCPKPucCJVGD7MA=XSUyCte0K7WTOYuCrLfbRTdWv2mrw@mail.gmail.com>
+Subject: Re: [PATCH net v3] xsk: set network header on skb at generic transmit
+To: netdev-bot+sashiko@kernel.org
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	pabeni@redhat.com, bjorn@kernel.org, magnus.karlsson@intel.com, 
+	maciej.fijalkowski@intel.com, jonathan.lemon@gmail.com, sdf@fomichev.me, 
+	ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org, 
+	john.fastabend@gmail.com, aleksander.lobakin@intel.com, bpf@vger.kernel.org, 
+	netdev@vger.kernel.org, syzbot+f16c1b285c9f63994eec@syzkaller.appspotmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Flow Director profiles retain handles to generic flow entries. Reset calls
-ice_clear_hw_tbls() to free those entries, but leaves the Flow Director
-handles unchanged until replay replaces them.
+On Mon, Sep 7, 2026 at 12:19=E2=80=AFPM <netdev-bot+sashiko@kernel.org> wro=
+te:
+>
+> Thank you for your contribution! Sashiko AI review found 2 potential
+> issue(s) to consider:
+>
+> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 2 =C2=B7 Low: 0
+>
+> - [Medium] net/xdp/xsk.c: xsk_skb_init_misc() (line 950) now does
+>   skb_reset_network_header(skb) unconditionally, i.e. it declares the=E2=
+=80=A6
+> - [Medium] By making skb_network_offset() valid (0), the patch makes
+>   tunnel ndo_start_xmit paths that were previously *always* rejected=E2=
+=80=A6
+>
+> --
+>
+> xsk: set network header on skb at generic transmit
+>
+> This adds skb_reset_network_header() to xsk_skb_init_misc() so that
+> skb_network_offset() no longer returns -hr for skbs built by the XSK
+> generic transmit path.  The negative offset was promoted to unsigned in
+> pskb_may_pull_reason() and tripped the DEBUG_NET_WARN_ON_ONCE(len >
+> INT_MAX) check when such an skb reached a tunnel xmit routine.
+>
+> Closes: https://syzkaller.appspot.com/bug?extid=3Df16c1b285c9f63994eec
+> Link: https://lore.kernel.org/all/20260901083325.3445-1-kerneljasonxing@g=
+mail.com/
+> Link: https://lore.kernel.org/all/20260826012052.51028-1-kerneljasonxing@=
+gmail.com/
+>
+> > diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
+> > index 33475b180ea6f..2077bb6299ca9 100644
+> > --- a/net/xdp/xsk.c
+> > +++ b/net/xdp/xsk.c
+> > @@ -947,6 +947,8 @@ static int xsk_skb_init_misc(struct sk_buff *skb, s=
+truct xdp_sock *xs,
+> >  {
+> >       int err;
+> >
+> > +     skb_reset_network_header(skb);
+> > +
+>
+> [Severity: Medium]
+> The changelog says:
+>
+>     AF_PACKET only cares about the boundary because it can cook an L2 hea=
+der
+>     itself (SOCK_DGRAM) and supports GSO/checksum offload; none of that
+>     applies here, where the frame is sent as-is via __dev_direct_xmit().
+>
+> Is the checksum offload part of that accurate?  xsk_skb_metadata(), in th=
+is
+> same generic xmit path, does:
+>
+> net/xdp/xsk.c:xsk_skb_metadata() {
+>         ...
+>                 skb->csum_start =3D hr + csum_start;
+>                 skb->csum_offset =3D csum_offset;
+>                 skb->ip_summed =3D CHECKSUM_PARTIAL;
+>
+>                 if (unlikely(pool->tx_sw_csum)) {
+>                         err =3D skb_checksum_help(skb);
+>         ...
+> }
+>
+> So when the descriptor carries XDP_TX_METADATA with
+> XDP_TXMD_FLAGS_CHECKSUM and pool->tx_sw_csum is clear, the skb is handed =
+to
+> the driver with CHECKSUM_PARTIAL, and hardware checksum offload does appl=
+y
+> to AF_XDP generic xmit.
+>
+> With network_header now anchored at skb->data, on an ARPHRD_ETHER device
+> that offset points at the userspace-supplied struct ethhdr rather than th=
+e
+> L3 boundary, so skb_network_offset() is 0 where the drivers expect
+> ETH_HLEN.  Drivers derive descriptor geometry from it:
+>
+> drivers/net/ethernet/intel/ixgbe/ixgbe_main.c:ixgbe_tx_csum() {
+>         ...
+>         vlan_macip_lens =3D skb_checksum_start_offset(skb) -
+>                           skb_network_offset(skb);
+> no_csum:
+>         vlan_macip_lens |=3D skb_network_offset(skb) << IXGBE_ADVTXD_MACL=
+EN_SHIFT;
+>         ...
+> }
+>
+> That programs MACLEN as 0 and an L3 length that is ETH_HLEN too large
+> (igb_tx_csum() is the same shape, and i40e_tx_enable_csum() sets ip.hdr =
+=3D
+> skb_network_header(skb) and then reads ip.v4->version, which now inspects
+> the destination MAC bytes).
+>
+> For comparison, the AF_PACKET complete-frame path anchors both headers:
+>
+> net/packet/af_packet.c:packet_parse_headers() {
+>         ...
+>         /* On TX skb->data is the L2 header; anchor it for all socket typ=
+es. */
+>         skb_reset_mac_header(skb);
+>         ...
+>                 skb_set_network_header(skb, depth);
+>         ...
+> }
+>
+> Could the changelog either drop the checksum offload claim and document t=
+he
+> remaining descriptor inaccuracy, or could the network header be set to th=
+e
+> real L3 boundary (mac header plus dev->hard_header_len / VLAN depth, or
+> consistently with csum_start when XDP_TXMD_FLAGS_CHECKSUM is requested)?
+> Note the pre-patch offset of -hr was worse, so this is not a regression
+> relative to current behaviour, but the value chosen is wrong for every
+> ARPHRD_ETHER device.
 
-If rebuild fails before replay completes, later driver removal follows a
-stale handle and dereferences a freed flow entry in ice_flow_rem_entry().
-KASAN reports a wild access to list poison from
-ice_fdir_erase_flow_from_hw().
+I think it's a pre-existing bug associated with csum logic, which is
+what I've already replied in the V2 thread:"Until now, it seems we've
+got three fixes in the queue:1. reset mac header:
+https://lore.kernel.org/all/20260817153957.3177627-1-poros@redhat.com/
+(commit 35fcde7f8deb "xsk: support for Tx")
+2. reset network header like this patch. (commit 3914d88f7608 "xsk:
+Respect device's headroom and tailroom")
+3. handle csum offload issue by adding probing code. (commit
+48eb03dd2630 "xsk: Add TX ... checksum offload support")"
 
-The failure is reported as:
+However, I strongly feel a need to discuss this before moving on to V4.
 
-  KASAN: maybe wild-memory-access in range [0xdead000000000108-...]
-  RIP: ice_flow_rem_entry+0xaf/0x170 [ice]
-  ice_fdir_erase_flow_from_hw+0x1ee/0x420 [ice]
+https://lore.kernel.org/all/CAL+tcoDpyG-Hy9mtDnLSGu0nvU_VDqTjs-k51r2+OPwVyH=
+tABA@mail.gmail.com/
 
-Clear the Flow Director handles while holding hw->fdir_fltr_lock before
-the hardware tables free their entries. A successful replay installs new
-handles, while a failed rebuild leaves them invalid for later cleanup.
+Thanks,
+Jason
 
-Fixes: 148beb612031 ("ice: Initialize Flow Director resources")
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Aaron Ma <aaron.ma@canonical.com>
----
-v1 -> v2:
-- Acquire hw->fdir_fltr_lock in ice_fdir_clear_flow_handles() to
-  synchronize with concurrent ethtool filter add/del.
-
- drivers/net/ethernet/intel/ice/ice.h          |  1 +
- .../net/ethernet/intel/ice/ice_ethtool_fdir.c | 26 +++++++++++++++++++
- drivers/net/ethernet/intel/ice/ice_main.c     |  2 ++
- 3 files changed, 29 insertions(+)
-
-diff --git a/drivers/net/ethernet/intel/ice/ice.h b/drivers/net/ethernet/intel/ice/ice.h
-index db3c7015c56c4..4739ff882b9ec 100644
---- a/drivers/net/ethernet/intel/ice/ice.h
-+++ b/drivers/net/ethernet/intel/ice/ice.h
-@@ -1029,6 +1029,7 @@ ice_get_fdir_fltr_ids(struct ice_hw *hw, struct ethtool_rxnfc *cmd,
- 		      u32 *rule_locs);
- void ice_fdir_rem_adq_chnl(struct ice_hw *hw, u16 vsi_idx);
- void ice_fdir_release_flows(struct ice_hw *hw);
-+void ice_fdir_clear_flow_handles(struct ice_hw *hw);
- void ice_fdir_replay_flows(struct ice_hw *hw);
- void ice_fdir_replay_fltrs(struct ice_pf *pf);
- int ice_fdir_create_dflt_rules(struct ice_pf *pf);
-diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool_fdir.c b/drivers/net/ethernet/intel/ice/ice_ethtool_fdir.c
-index aceec184e89b2..04510b36aa56b 100644
---- a/drivers/net/ethernet/intel/ice/ice_ethtool_fdir.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ethtool_fdir.c
-@@ -428,6 +428,32 @@ void ice_fdir_release_flows(struct ice_hw *hw)
- 		ice_fdir_erase_flow_from_hw(hw, ICE_BLK_FD, flow);
- }
- 
-+/**
-+ * ice_fdir_clear_flow_handles - clear handles freed during reset
-+ * @hw: pointer to HW instance
-+ */
-+void ice_fdir_clear_flow_handles(struct ice_hw *hw)
-+{
-+	int flow;
-+
-+	if (!hw->fdir_prof)
-+		return;
-+
-+	mutex_lock(&hw->fdir_fltr_lock);
-+	for (flow = 0; flow < ICE_FLTR_PTYPE_MAX; flow++) {
-+		struct ice_fd_hw_prof *prof = hw->fdir_prof[flow];
-+		int tun, i;
-+
-+		if (!prof)
-+			continue;
-+
-+		for (tun = 0; tun < ICE_FD_HW_SEG_MAX; tun++)
-+			for (i = 0; i < prof->cnt; i++)
-+				prof->entry_h[i][tun] = 0;
-+	}
-+	mutex_unlock(&hw->fdir_fltr_lock);
-+}
-+
- /**
-  * ice_fdir_replay_flows - replay HW Flow Director filter info
-  * @hw: pointer to HW instance
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index abb6e850ec09f..164428ba116a0 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -601,6 +601,8 @@ ice_prepare_for_reset(struct ice_pf *pf, enum ice_reset_req reset_type)
- 		netif_device_detach(vsi->netdev);
- skip:
- 
-+	if (hw->fdir_prof)
-+		ice_fdir_clear_flow_handles(hw);
- 	/* clear SW filtering DB */
- 	ice_clear_hw_tbls(hw);
- 	/* disable the VSIs and their queues that are not already DOWN */
--- 
-2.43.0
-
+>
+> [Severity: Medium]
+> Does making skb_network_offset() valid also newly admit AF_XDP frames int=
+o
+> tunnel xmit code that parses the inner L2 header without any length check=
+?
+>
+> Before this change, erspan_xmit() dropped every AF_XDP skb at its first
+> statement, because pskb_inet_may_pull() -> pskb_network_may_pull_reason()
+> computed (unsigned)(-hr) + nhlen and failed the len > skb->len test:
+>
+> net/ipv4/ip_gre.c:erspan_xmit() {
+>         ...
+>         if (!pskb_inet_may_pull(skb))
+>                 goto free_skb;
+>         ...
+> }
+>
+> skb->protocol is never assigned in net/xdp/xsk.c, so nhlen is 0 and after
+> this patch pskb_may_pull_reason(skb, 0) succeeds and the frame reaches
+> erspan_build_header() / erspan_build_header_v2():
+>
+> include/net/erspan.h:erspan_build_header() {
+>         ...
+>         tos =3D is_ipv4 ? ip_hdr(skb)->tos : ...
+>         if (eth->h_proto =3D=3D htons(ETH_P_8021Q)) {
+>                 qp =3D (struct qtag_prefix *)(skb->data + 2 * ETH_ALEN);
+>                 vlan_tci =3D ntohs(qp->tci);
+>         ...
+> }
+>
+> Those read skb->data[1], skb->data[12..13] and skb->data[14..15] with no
+> validation, and the results end up in the transmitted header via
+> ershdr->cos =3D tos_to_cos(tos) and set_vlan(ershdr, vlan_tci).
+>
+> Is there anything in the AF_XDP path that guarantees the frame is at leas=
+t
+> 16 bytes long?  Descriptor validation only rejects zero length:
+>
+> net/xdp/xsk_queue.h:xp_aligned_validate_desc() {
+>         ...
+>         if (!len)
+>                 return false;
+>         ...
+> }
+>
+> and neither __xsk_generic_xmit() nor __dev_direct_xmit() enforces
+> dev->hard_header_len, unlike AF_PACKET:
+>
+> net/packet/af_packet.c:packet_snd() {
+>         ...
+>         if ((sock->type =3D=3D SOCK_RAW &&
+>              !dev_validate_header(dev, skb->data, len)) || !skb->len) {
+>                 err =3D -EINVAL;
+>         ...
+> }
+>
+> For a descriptor with len between 1 and 15 those offsets are past skb->le=
+n
+> inside the non-zeroed head from sock_alloc_send_skb(hr + len + tr), so ca=
+n
+> this copy a couple of bytes of uninitialized slab memory into the packet =
+on
+> the wire (and produce a KMSAN use-of-uninitialized-value report)?  The
+> "complete, opaque blob from userspace" premise in the changelog is what
+> opens this, since nothing checks that the frame contains the device's lin=
+k
+> layer header.
+>
+> An approximately equivalent primitive already exists via AF_PACKET SOCK_R=
+AW
+> with a 14-byte frame on the same device, so this mainly exposes the short=
+er
+> frame variant.  Would a minimum length or header check for AF_XDP generic
+> xmit be appropriate here?
+>
+> --
+> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
+set/20260902121028.74092-1-kerneljasonxing%40gmail.com
