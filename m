@@ -1,64 +1,64 @@
-Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com [209.85.128.174])
+Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73E5B47277C
-	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 21:54:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B50D243F085
+	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 21:54:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788818096; cv=none; b=OCPekRy77VP1BmDdnjrJmsOAEcB3V7RtUF55grpDvV9u7p0jOQje2PyKQeuosZlnPmiXJTjUxVx/f/w7yJs2OVgQpGbv2V41Qt5LAtC4XxXlPGWq/0KRQTHg+la8/drOT64uO3U2clK+T2CJ4NzwV8bwkmNYPIhqla+ais4x83s=
+	t=1788818097; cv=none; b=Lz12s/OXMD5Fa+zfwGMQFJfM7lJo4Eis9ft24HO9Jxb1Pw/22ZT6JcU9xqSafyQz3jBehYVBvkKi8nLUD06t2FlhO1WEycBBMOJgcOpPnBlEH+znLPh2XmdM7x08YC4FM4uMzNNf7NWG3vpElvzYx4ZvotSaFD/i6YZTYjTvSco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788818096; c=relaxed/simple;
-	bh=DU6aX0Z0p+fdTWqaCesdEJ1etwt1QeLalmsiq/Dz8xk=;
+	s=arc-20240116; t=1788818097; c=relaxed/simple;
+	bh=UueUMpeCwNeGVdy3GJf5lm29xyeCkwc/aGA+P30mwdU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=plmJ8xgJrmERKvOH5DKisRmbHwu8/Fh+2w4qoF66P/Mcz1OyIxguKedzJtNhRAI7by+5HwoAmhU5P9V2kZkAExiYPW4wVpRueqWPN+hT743SosRlf86owXH1q1UT0yxHL1lGBucD3XSZ6pjMXdd4PUCZ58zfk6lhUT4HDqYpQoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fbzJCkHV; arc=none smtp.client-ip=209.85.128.174
+	 MIME-Version; b=fa1M29MSqTAhFEWRASAwECtsL3RP8h18S3VtXwo/A3T9j+FhUBGi6JgXEPZii/KJfh2m8NfeMuuZp2EMhBuxpaue7Fx6WJKeacP3X7aaW0VARM1leJSl399MYeIGOVL5rMF31MS1/KYf68Wd82kN8SNc2mXVqlcjrliRZxS6Yjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j73ZnSGr; arc=none smtp.client-ip=209.85.128.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fbzJCkHV"
-Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-87005a0e052so42555807b3.2
-        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 14:54:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j73ZnSGr"
+Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-86fbd1a23ebso28152557b3.2
+        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 14:54:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788818086; x=1789422886; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1788818089; x=1789422889; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=FMBKloH328hYHvt9A91TOoJByZqoZnKZvzZqMuRPjLA=;
-        b=fbzJCkHVmw+kYHLOmVkyZ0CBUGz5bRWVGiqy+nOetZyljJTzHh6G5jgDBdwrkpHebX
-         cWWT8Fi5RXOqj5jNhumOQOxYLsV4d1MSesKt/jwJ/kT1CYQMjQzT5uVG32yOxfcpqVXx
-         B1p38RjyQHSpMIismV6VD5gG7HnSjbzqRXXVb9QxTpQO3NRw9Af//ICUsCZAkXzssjdR
-         0PYHNFi/hPN+lRP4E0SVZIAlSTBY9g3e1IRxwNOcD+qyDFbktUXW2rj5Q80QhcPUFjzG
-         V1CFKNnfxl/VcPPhAxr8g8RFixQeAam9GP6z4AKivMfS97XmCtQybQi8EWaQ2+X4J3Gm
-         oNZQ==
+        bh=8dBsS+uIQswAO+1Zq7ZFjEaF0vj6TxYTsi3HHjhGAsc=;
+        b=j73ZnSGrWL60KlmfspddoXdvmb153n0+llSPhJJy5CQ5dPoVj7T90b0b0Ifx/3GKQa
+         7wbdHTPJ+HpGPwa8scBxlsxEctTL81MSiLHMQ3aD5s5mGxIuRAiNHaIDVSMmfn/G3Y2f
+         EulYrEOSlZ4XO+zfRFhYfT54W+pDT0OrUtzOfHukN11SbDrhcs1FLl7kPxZC2aws8v04
+         PpUqkZMsm6yfx03LRUUABGR1g7deHfHKierqt3ertUQTVeZwzJFQ66tZ3ByF2VJPHv4z
+         +XV8VaiW23XsFrQTGNWmkl/xBGJe5cy6WMVJeX04vwJwgTgT0u5CFLu/LQyWRdECsIjz
+         392w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788818086; x=1789422886;
+        d=1e100.net; s=20251104; t=1788818089; x=1789422889;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=FMBKloH328hYHvt9A91TOoJByZqoZnKZvzZqMuRPjLA=;
-        b=K0H68CKs7ZFiuTnSHdtKb6Bts5ErjeQxDa3/UhCFWvh/9pClC+xFi5BlANX93tu0ya
-         MBm3EkW+8/t4cPREoRiNnvzHHH5PJbIrnLaEpACTbFscvTz4qQRO6y9UZmG1UVy/GGex
-         /5utGkTCMGZv45NP1LtkEIYsdqHHr2zWYOtxQ1yly3MDxVLvlTjEvQR/r1dDBaaeHlXU
-         RPV8ANt7U70r4EeS1k2tPpsGY3GVW40QUwxsTDqUQOURnkIz5FJzcE8eDB0DGyBSq3f4
-         suS74mT0Zec489U6DjMaI70pRYP04BO1+vgJYW3JPRH5gV+2xFbStLQEDcC2E7Z3xXsu
-         E7Pw==
-X-Forwarded-Encrypted: i=1; AKwUvBxBGKpVZTMqEnKkL1bi9fG2sm2wqHTl3A1Ku/YIwEsOOYgE1uMWAIS/nLXpMxBOsHvp/Uq5y0c=@vger.kernel.org
-X-Gm-Message-State: AFuF++lx9t22iMLNpof2XAh05DGnq+58uz3aq7TGN1hmIyXU+jQfw2U+
-	gnMmWcyRIySAneI1xTIkAuVURLXFThyizjbJlRUPKviOS0yx4YREVtPd
-X-Gm-Gg: AYBFou2Ab9Px7xKC7cCI7WUTXqptPRFyRjAhxcvUhRT0Dlx/+4e8GZusN+Jhakg53ZO
-	i3+99Z7CdR/Gpb6oGtnazC24qC5EdX5h39dTjnmQSFP+iXq5AkExulEVXab//MtxvPgslDLLBCB
-	giywNSs4V5LoDXgglslz/eV3PR+3s4COGWadN1qRDuLOXXHA//tSfJj9kb+gdhm79TLDlUp8+c6
-	JZNlOlAe8D5wKp5ZPuRRxAbGKHwIDiTNiTwt5e+Xeqh7mnAe5e2JMrgfZJdS0bu0HsjRaWLfhFZ
-	A4DMmcjsjRRLMA+vJitXtSZco6P1aK1e0hI0HcaUmFhMJqwblpSLJARxeHfj1latvoUI62Sl0NO
-	irg1VlyI+o+F349b25urcxDkd8HlQGyxwuwMY8p2h5jlXr1bYfXpOnJ00axMXyMiP7AsaDvh2Zy
-	UyBkKuSB0b11gLfRRQK4v82NOhtRE4pi9y9mHnRkYPI+5+wkWloLpDqG5DsZ1v+6t0BTSoIJVEj
-	qY3tYb6HavbmKzmMQ==
-X-Received: by 2002:a05:690c:88:b0:864:6f4d:ef7f with SMTP id 00721157ae682-87121acbbc5mr98578937b3.7.1788818086189;
-        Mon, 07 Sep 2026 14:54:46 -0700 (PDT)
+        bh=8dBsS+uIQswAO+1Zq7ZFjEaF0vj6TxYTsi3HHjhGAsc=;
+        b=lLovX6F9xomARqe3Z+wEQ7Y0+PxrTSbbQqF3PsXf5tdMIiA5dmKtJSCh+FTiD//2bd
+         tHSjP5yWa3LRxU3YHLdFMz2x2frq2yhv6b0OUAqJR87+qWmyuiYvNUADlhk8CCXo1t95
+         O43s9dlmkclcEOkLd8fl3nZrPLXssWRQabTupXEvxht7c0nzfO5WQDwR7IW9rlwusxjR
+         JC3dchakrPY9aErIy8U1oZpRerJcgSifyHD9SWg2P1VXFxn6AbGQhUcz9IDocuL+QUPR
+         08WXVQf56XPmrUlB4+g/MYgi5chnITtvGFzfmhi4IcaR+vAG4g7cJ+eLdiOi1OtQ5X6O
+         4Uwg==
+X-Forwarded-Encrypted: i=1; AKwUvBzSJchhW1nTYyxoFGm9M2zhtDIYuisrbhR3tf0dXWNyCGPJP1odi6awnzkoI5Fo1dXqW5xjAtc=@vger.kernel.org
+X-Gm-Message-State: AFuF++kQgToBxyabb/0Gdj/XJnWQ1bFUCmKoCQpezIg0qrpyCkS0uA8V
+	nfQWns86jZ0BLGipl8TA3Xx2vqZoVSH4LeQFcwT9s8nZegFDK/TTqHV3
+X-Gm-Gg: AYBFou2jpmwugzTyrHlsQYE+SgePkaiE8f4UqFDZbsCx2eOutv2ECAsV6WZzITwXQCJ
+	YVHo3BGs4x/HYfL/mYA0dxlLhuT+Tg04XuoLZzaEacPF+cBRu7jYSdTWC5UlFJjO03FibqAwmLR
+	5SXl9Vg3lSErF9EwGhoOJm73TKMYpuhoh1qrL+tkUJLjp+S+EayEBAXhFozOpBJWPA9GVs6U6gv
+	FxCUIjYlY8ny0oyUM+NfanWWWpNfu+LV36KfS81XjeczZTYFaBs97TdU2d8hz6QWt16bZrQdZ+W
+	53HBnb04OTNHm+xStEpmtWR7PbCZimpx9YTjLuDnctsZIAx/VekYEw4RG4VdaN2jXur/nAN09sz
+	XFOqi/3BchtIDg9s9RMhallYtjjFnLyl8qheUM/bxCA4vmgopc0tnPv9k0T5b5o+D/HmrDDoVFF
+	n+Mj5e5J4EJI1pgby1HTFeBBYTqwcCjdRwfykwudwrKSHSoqb0fn8nYtclcjBLYHPKbZ+cJy0uV
+	O5MD25aYRFZaLeCdnNAgWbHbEP6
+X-Received: by 2002:a05:690c:c4fa:b0:866:e57f:58db with SMTP id 00721157ae682-8711ec239e9mr98053137b3.0.1788818088629;
+        Mon, 07 Sep 2026 14:54:48 -0700 (PDT)
 Received: from localhost (c-73-105-0-191.hsd1.fl.comcast.net. [73.105.0.191])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-87149316356sm77902237b3.9.2026.09.07.14.54.45
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8714c1e1eacsm78453177b3.49.2026.09.07.14.54.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Sep 2026 14:54:45 -0700 (PDT)
+        Mon, 07 Sep 2026 14:54:48 -0700 (PDT)
 From: Yury Norov <yury.norov@gmail.com>
 X-Google-Original-From: Yury Norov <ynorov@nvidia.com>
 To: Andrew Lunn <andrew@lunn.ch>,
@@ -82,9 +82,9 @@ Cc: Yury Norov <ynorov@nvidia.com>,
 	Yury Norov <yury.norov@gmail.com>,
 	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5/9] net: phy: use linkmode_and() return value in genphy_c45_eee_is_active()
-Date: Mon,  7 Sep 2026 17:54:34 -0400
-Message-ID: <20260907215439.409858-6-ynorov@nvidia.com>
+Subject: [PATCH 8/9] r8152: use linkmode_and_and() in EEE checks
+Date: Mon,  7 Sep 2026 17:54:37 -0400
+Message-ID: <20260907215439.409858-9-ynorov@nvidia.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260907215439.409858-1-ynorov@nvidia.com>
 References: <20260907215439.409858-1-ynorov@nvidia.com>
@@ -96,28 +96,62 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Use the return value of linkmode_and() to detect an empty set of
-common EEE modes and get rid of a separate linkmode_empty() call.
+Combine the three link mode masks in a single operation and use its
+return value to determine whether EEE is active.
 
 Signed-off-by: Yury Norov <ynorov@nvidia.com>
 ---
- drivers/net/phy/phy-c45.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/usb/r8152.c  | 10 ++++------
+ include/linux/linkmode.h |  8 ++++++++
+ 2 files changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/phy/phy-c45.c b/drivers/net/phy/phy-c45.c
-index 870920311f9a..27da1b9ddbc5 100644
---- a/drivers/net/phy/phy-c45.c
-+++ b/drivers/net/phy/phy-c45.c
-@@ -1623,8 +1623,7 @@ int genphy_c45_eee_is_active(struct phy_device *phydev, unsigned long *lp)
- 	if (lp)
- 		linkmode_copy(lp, tmp_lp);
+diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
+index f61686433031..75f0574fe1d4 100644
+--- a/drivers/net/usb/r8152.c
++++ b/drivers/net/usb/r8152.c
+@@ -9149,9 +9149,8 @@ static int r8152_get_eee(struct r8152 *tp, struct ethtool_keee *eee)
+ 	if (speed & _100bps)
+ 		linkmode_set_bit(ETHTOOL_LINK_MODE_100baseT_Full_BIT, common);
  
--	linkmode_and(common, phydev->advertising_eee, tmp_lp);
--	if (linkmode_empty(common))
-+	if (!linkmode_and(common, phydev->advertising_eee, tmp_lp))
- 		return 0;
+-	linkmode_and(common, common, eee->advertised);
+-	linkmode_and(common, common, eee->lp_advertised);
+-	eee->eee_active = !linkmode_empty(common);
++	eee->eee_active = linkmode_and_and(common, common, eee->advertised,
++					   eee->lp_advertised);
  
- 	return phy_check_valid(phydev->speed, phydev->duplex, common);
+ 	return 0;
+ }
+@@ -9222,9 +9221,8 @@ static int r8153_get_eee(struct r8152 *tp, struct ethtool_keee *eee)
+ 	if (speed & _100bps)
+ 		linkmode_set_bit(ETHTOOL_LINK_MODE_100baseT_Full_BIT, common);
+ 
+-	linkmode_and(common, common, eee->advertised);
+-	linkmode_and(common, common, eee->lp_advertised);
+-	eee->eee_active = !linkmode_empty(common);
++	eee->eee_active = linkmode_and_and(common, common, eee->advertised,
++					   eee->lp_advertised);
+ 
+ 	return 0;
+ }
+diff --git a/include/linux/linkmode.h b/include/linux/linkmode.h
+index 49587a2e0f69..efd392dc62ae 100644
+--- a/include/linux/linkmode.h
++++ b/include/linux/linkmode.h
+@@ -26,6 +26,14 @@ static inline bool linkmode_and(unsigned long *dst, const unsigned long *a,
+ 	return bitmap_and(dst, a, b, __ETHTOOL_LINK_MODE_MASK_NBITS);
+ }
+ 
++static inline bool linkmode_and_and(unsigned long *dst,
++				    const unsigned long *a,
++				    const unsigned long *b,
++				    const unsigned long *c)
++{
++	return bitmap_and_and(dst, a, b, c, __ETHTOOL_LINK_MODE_MASK_NBITS);
++}
++
+ static inline bool linkmode_and_andnot(unsigned long *dst,
+ 				       const unsigned long *a,
+ 				       const unsigned long *b,
 -- 
 2.53.0
 
