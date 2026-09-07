@@ -1,57 +1,57 @@
 Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EC6444C659
-	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 09:30:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8A154570EE
+	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 09:30:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788773451; cv=none; b=nNi0lVdg7szEWZQD8YeMQjuWMWlT2E+Mi34Xp5PKSHz1hhihFWCkAMGilPCGuQqzUIl2hbpdMpacAn2EYoiQMicO3lDrXl2W1oqYaCGn6iG+U16YZNqIVFS8VNEhnJ/V11IIxlTyPR1+5RYy+phqNGdyPNxZ5SclVSymBTO+OIM=
+	t=1788773453; cv=none; b=CEfiSzgWZqH+n4be3duWLAvFu5Tm6J72HvljrS6ENt+/oGG45+IOLcKlQqL6HNJ7mMRj0thZU/GAwrhGYgKuAeDfTJR2/Bv/ozDtXxPMmgbxVgyrNtA5AlwOwvOz64cD0zHrTBuz6jmWxcYxdS/KnntJisbf4MCVhDi77WlmggE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788773451; c=relaxed/simple;
-	bh=NorjP9Ji/6c0JqsYKr2QuPoTu82n8ADX4ib/q5RaTJI=;
+	s=arc-20240116; t=1788773453; c=relaxed/simple;
+	bh=qvP8K4UKDa4M9oyjy2UbYcYy9RpgyFpceqn/yLEozbo=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eLnj+ZGg9112F62zCOPsb65wxbwamEJI6MLqyLndfKC9r+IfFercvw9sgeXGrO6CczHAFpMBjKrhtmiN9CF1mAgSekjBf8yOpdcCKzPCgh6XdnFI+tBAXqtsqSkcH+bEZ95Ul6vNkMwJE281loegmMCkNf5QTKkTf1Lk1x0TWYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=pLiQePCf; arc=none smtp.client-ip=62.96.220.36
+	 MIME-Version:Content-Type; b=UVMf3I12j8DeiCc2Lr+RRZ9XpFffH5ebJcAaE6LtGVhouHG7byodtw4z7uMo07Ax8S2IjTs+KCVdoBebQ5ybx67LDZP3GWIWYo4IWATCyhya3XVWu9Utt74qkkKZg2KXJvMEcs4RZG/2mVUNzvoHYt6oV8N8ON0KnQEPmZWgWhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=bklZBzOR; arc=none smtp.client-ip=62.96.220.36
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="pLiQePCf"
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="bklZBzOR"
 Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id C155D20719;
-	Mon,  7 Sep 2026 11:30:47 +0200 (CEST)
+	by mx1.secunet.com (Postfix) with ESMTP id 5C528201D5;
+	Mon,  7 Sep 2026 11:30:50 +0200 (CEST)
 X-Virus-Scanned: by secunet
 Received: from mx1.secunet.com ([127.0.0.1])
  by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id 3SGZLJQBP0WJ; Mon,  7 Sep 2026 11:30:47 +0200 (CEST)
+ with ESMTP id mZajDtse4dZi; Mon,  7 Sep 2026 11:30:49 +0200 (CEST)
 Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id 217BD20728;
-	Mon,  7 Sep 2026 11:30:47 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 217BD20728
+	by mx1.secunet.com (Postfix) with ESMTPS id 91EA420728;
+	Mon,  7 Sep 2026 11:30:49 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 91EA420728
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1788773447;
-	bh=SWX4oM0Q9Pno217azcu8xzFzvth9Y2ajCTS1tZhYeMg=;
+	s=202301; t=1788773449;
+	bh=yf4a79oMszL4kA9jPCJ5dDSZnduFmdrFw7qXHATDEag=;
 	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
-	b=pLiQePCf3icY/10lB2XQrtAxJROeepGx0djc3iC4JNLwGZAjjaEz+xvZDwg1t6l1Q
-	 JK8rNtbu77tQMw4PdlHEKqTX1sBRAk5L41aDIofUZ4a9KV4xTsppQCPHZZm3mni2ar
-	 OHPNJHZXDL1ADsRMCrZSTW2QerVYAKIjsHroIkjTRMUF7NlRk2FSayG0VH+A58MYOt
-	 /mgD4JQyV9vnABs/JmdXOEgHE8IqjNg+IpBnfPltVL2jTiIbjQ1vbQvfPKUAaCW5HT
-	 YFN6YtjM5zWvjFy7lVoPvSxd+3y33PRajVDpfrGeyD7WEqvWFR52x+okk/qgkvfwgd
-	 raVHqhqLZqMXQ==
+	b=bklZBzORfdwCwfDIj/EdmBQrdAN4ws7OcZW5fMd3VTvHrychhQnnsUFIeoN8TrKCu
+	 Ib7LeYKF4bkOpqXgsvQxOUdY2S1Y6bH3dOnfeiBGlsgmfRM5wyeGlm3NdkXVQu06B/
+	 5QjeVJj7tUCXBVHmzkOtnbYJaHPp4mUwso6NNFDNk24s5dE8sb8oj5IOse7YpFJ6kp
+	 vOh2UVslzN9POZoFXuXsUZtEpJkU8ulCj1c6XyY647iZvLUsRrpSQfp4isSpKBXgbp
+	 9V1lZICVG1egNlgFlUX8H+VS4fqPX/pNFNufg8MuQDEEB9VPHvaGrzPmqx8W/4tlMr
+	 OoEaxUNvQEKdQ==
 Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Mon, 7 Sep
- 2026 11:30:46 +0200
-Received: (nullmailer pid 2228805 invoked by uid 1000);
+ 2026 11:30:48 +0200
+Received: (nullmailer pid 2228832 invoked by uid 1000);
 	Mon, 07 Sep 2026 09:30:24 -0000
 From: Steffen Klassert <steffen.klassert@secunet.com>
 To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
 CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
 	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
-Subject: [PATCH 02/12] xfrm: serialize state GC with device state flush
-Date: Mon, 7 Sep 2026 11:29:45 +0200
-Message-ID: <20260907093020.2228346-3-steffen.klassert@secunet.com>
+Subject: [PATCH 11/12] xfrm: save input state data before secpath resets
+Date: Mon, 7 Sep 2026 11:29:54 +0200
+Message-ID: <20260907093020.2228346-12-steffen.klassert@secunet.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260907093020.2228346-1-steffen.klassert@secunet.com>
 References: <20260907093020.2228346-1-steffen.klassert@secunet.com>
@@ -63,107 +63,111 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: EXCH-02.secunet.de (10.32.0.172) To EXCH-01.secunet.de
+X-ClientProxiedBy: EXCH-04.secunet.de (10.32.0.184) To EXCH-01.secunet.de
  (10.32.0.171)
 
-From: Chengfeng Ye <nicoyip.dev@gmail.com>
+From: Zhiling Zou <zhilinz@nebusec.ai>
 
-The deferred-device pass in xfrm_dev_state_flush() finds states under
-xfrm_state_dev_gc_lock, but drops the lock before calling
-xfrm_dev_state_free() because the driver callback may sleep.  The device
-GC list does not hold an xfrm_state reference, so the state GC worker can
-destroy the same state concurrently.
+xfrm_input() stores the current xfrm_state in the skb secpath while it
+continues receive-side processing. Some input paths can reset that secpath
+before xfrm_input() has finished dereferencing the state.
 
-The race can proceed as follows:
+Receive callback users such as VTI and XFRM interfaces can reset the
+secpath. The VTI receive path does so before checking whether the packet
+crosses network namespaces, while the XFRM interface path does so only for
+cross-network-namespace packets. The XFRM_MAX_DEPTH error path can also
+reset the secpath before the final drop callback reports the current
+state's protocol.
 
-  CPU 0                               CPU 1
-  find x on the device GC list
-  drop xfrm_state_dev_gc_lock
-  read x->xso.dev
-                                      xfrm_state_gc_destroy(x)
-                                      xfrm_dev_state_free(x)
-                                      xfrm_state_free(x)
-  continue xfrm_dev_state_free(x)
+If secpath_reset() drops the last state reference while the state is
+concurrently deleted, xfrm_input() can still dereference the freed state
+when selecting transport_finish() or reporting the drop callback protocol.
 
-Both paths can invoke the driver callback and drop the device reference.
-CPU 0 can also access the xfrm_state after CPU 1 has freed it.
+Save the state protocol on the stack while the state is still valid,
+and use the already saved address family for transport_finish(). A larval
+XFRM_STATE_ACQ state has no type, so retain nexthdr as its protocol. This
+preserves the existing drop-path fallback while avoiding the post-reset
+state dereferences without adding an extra state reference to every
+received packet.
 
-KASAN reported:
-
-  BUG: KASAN: slab-use-after-free in xfrm_dev_state_free+0x24c/0x2a0
-  Read of size 8 at addr ffff88810bbaa960 by task poc/102
-
-  Call Trace:
-   xfrm_dev_state_free+0x24c/0x2a0
-   xfrm_dev_state_flush+0x353/0x400
-   xfrm_dev_event+0x26d/0x3a0
-   notifier_call_chain+0xc0/0x280
-   __dev_notify_flags+0x169/0x250
-   netif_change_flags+0xe7/0x160
-   dev_change_flags+0x96/0x220
-   devinet_ioctl+0x7f4/0x1880
-
-  Allocated by task 87:
-   xfrm_state_alloc+0x1e/0x5c0
-   xfrm_add_sa+0xe7f/0x5820
-   xfrm_user_rcv_msg+0x4f3/0x940
-
-  Freed by task 57:
-   kmem_cache_free+0xcb/0x3d0
-   xfrm_state_gc_task+0x4a8/0x650
-   process_one_work+0x63a/0x1070
-
-Serialize xfrm_state destruction against the deferred-device pass with a
-mutex.  Keep xfrm_state_dev_gc_lock limited to list operations and retain
-the existing callback and device-reference release ordering.
-
-Fixes: 07b87f9eea0c ("xfrm: Fix unregister netdevice hang on hardware offload.")
+Fixes: df3893c176e9 ("vti: Update the ipv4 side to use it's own receive hook.")
 Cc: stable@vger.kernel.org
-Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
+Reported-by: Vega <vega@nebusec.ai>
+Signed-off-by: Zhiling Zou <zhilinz@nebusec.ai>
 Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 ---
- net/xfrm/xfrm_state.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ net/xfrm/xfrm_input.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
-index 36a4f6793ede..de097bba803b 100644
---- a/net/xfrm/xfrm_state.c
-+++ b/net/xfrm/xfrm_state.c
-@@ -226,6 +226,7 @@ static struct xfrm_state_afinfo __rcu *xfrm_state_afinfo[NPROTO];
+diff --git a/net/xfrm/xfrm_input.c b/net/xfrm/xfrm_input.c
+index 8f6109eada7e..5ed87d51392a 100644
+--- a/net/xfrm/xfrm_input.c
++++ b/net/xfrm/xfrm_input.c
+@@ -474,6 +474,7 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
+ 	struct xfrm_state *x = NULL;
+ 	xfrm_address_t *daddr;
+ 	u32 mark = skb->mark;
++	u8 xfrm_proto = nexthdr;
+ 	unsigned int family = AF_UNSPEC;
+ 	int decaps = 0;
+ 	int async = 0;
+@@ -485,6 +486,7 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
+ 	if (encap_type < 0 || (xo && (xo->flags & XFRM_GRO || encap_type == 0 ||
+ 				      encap_type == UDP_ENCAP_ESPINUDP))) {
+ 		x = xfrm_input_state(skb);
++		xfrm_proto = x->type ? x->type->proto : nexthdr;
  
- static DEFINE_SPINLOCK(xfrm_state_gc_lock);
- static DEFINE_SPINLOCK(xfrm_state_dev_gc_lock);
-+static DEFINE_MUTEX(xfrm_state_gc_mutex);
+ 		if (unlikely(x->km.state != XFRM_STATE_VALID)) {
+ 			if (x->km.state == XFRM_STATE_ACQ)
+@@ -592,11 +594,13 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
  
- int __xfrm_state_delete(struct xfrm_state *x);
+ 		x = xfrm_input_state_lookup(net, mark, daddr, spi, nexthdr, family);
+ 		if (x == NULL) {
++			xfrm_proto = nexthdr;
+ 			secpath_reset(skb);
+ 			XFRM_INC_STATS(net, LINUX_MIB_XFRMINNOSTATES);
+ 			xfrm_audit_state_notfound(skb, family, spi, seq);
+ 			goto drop;
+ 		}
++		xfrm_proto = x->type ? x->type->proto : nexthdr;
  
-@@ -632,8 +633,10 @@ static void xfrm_state_gc_task(struct work_struct *work)
+ 		if (unlikely(x->dir && x->dir != XFRM_SA_DIR_IN)) {
+ 			secpath_reset(skb);
+@@ -604,6 +608,7 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
+ 			xfrm_audit_state_notfound(skb, family, spi, seq);
+ 			xfrm_state_put(x);
+ 			x = NULL;
++			xfrm_proto = nexthdr;
+ 			goto drop;
+ 		}
  
- 	synchronize_rcu();
+@@ -728,7 +733,7 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
+ 	} while (!err);
  
-+	mutex_lock(&xfrm_state_gc_mutex);
- 	hlist_for_each_entry_safe(x, tmp, &gc_list, gclist)
- 		xfrm_state_gc_destroy(x);
-+	mutex_unlock(&xfrm_state_gc_mutex);
+ 	rcu_read_lock();
+-	err = xfrm_rcv_cb(skb, family, x->type->proto, 0);
++	err = xfrm_rcv_cb(skb, family, xfrm_proto, 0);
+ 	if (err) {
+ 		rcu_read_unlock();
+ 		goto drop;
+@@ -753,7 +758,7 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
+ 			xfrm_gro = xo->flags & XFRM_GRO;
+ 
+ 		err = -EAFNOSUPPORT;
+-		afinfo = xfrm_state_afinfo_get_rcu(x->props.family);
++		afinfo = xfrm_state_afinfo_get_rcu(family);
+ 		if (likely(afinfo))
+ 			err = afinfo->transport_finish(skb, xfrm_gro || async);
+ 		if (xfrm_gro) {
+@@ -776,7 +781,7 @@ int xfrm_input(struct sk_buff *skb, int nexthdr, __be32 spi, int encap_type)
+ drop:
+ 	if (async)
+ 		dev_put(dev);
+-	xfrm_rcv_cb(skb, family, x && x->type ? x->type->proto : nexthdr, -1);
++	xfrm_rcv_cb(skb, family, xfrm_proto, -1);
+ 	kfree_skb(skb);
+ 	return 0;
  }
- 
- static enum hrtimer_restart xfrm_timer_handler(struct hrtimer *me)
-@@ -1000,6 +1003,7 @@ int xfrm_dev_state_flush(struct net *net, struct net_device *dev, bool task_vali
- out:
- 	spin_unlock_bh(&net->xfrm.xfrm_state_lock);
- 
-+	mutex_lock(&xfrm_state_gc_mutex);
- 	spin_lock_bh(&xfrm_state_dev_gc_lock);
- restart_gc:
- 	hlist_for_each_entry_safe(x, tmp, &xfrm_state_dev_gc_list, dev_gclist) {
-@@ -1014,6 +1018,7 @@ int xfrm_dev_state_flush(struct net *net, struct net_device *dev, bool task_vali
- 
- 	}
- 	spin_unlock_bh(&xfrm_state_dev_gc_lock);
-+	mutex_unlock(&xfrm_state_gc_mutex);
- 
- 	xfrm_flush_gc();
- 
 -- 
 2.43.0
 
