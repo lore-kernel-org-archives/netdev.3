@@ -1,159 +1,110 @@
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BDC54E8E16
-	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 13:24:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB14646EC6A
+	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 13:35:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788787474; cv=none; b=rGaeFfzRPgcNd5lk00XzWJ6nG5ziQcbLHNQ3Rj77KuTEXKbrowX6aS0A6pMnNadgc7q1ylkWs8quwrW6+J+YCSBu+pFmgvbYG6pF8yFFwN9Fp1N5kkeLqvDeCWW/ukR6fDUxZc29nYBxrX/8LbTBaMDccJknv2HGED2em9xiJz8=
+	t=1788788109; cv=none; b=TonX97AJTTgN6nS3ltN5dMsqc1IL1a7RI6WAxmgJB+XpuQb0w8OK1UxaGxcQMZPg/6feVimbd++BdObVrQE8qQIMck3bAtJossB7DW5xG8KePVC4k+B7kFINNuZs37iWORSy5U6uDxbZaAgBeFKbFUz83/QSRkjpX2cpOsbaX2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788787474; c=relaxed/simple;
-	bh=Nagh04+KQAewuDbPwP2YDdNLfRxDNRFuBOQ3mfXIfWs=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=teQJiB3FPqlyJ7ymSBmm/7KgXjmca4BNc23hQFJ8XYjzpx/EBYhalNO+ALbQf5EXFPkJSBitDK6jy7BHhbAnWFAEUivohb84A3mHynNtT3kdVoLjoKcgUHeELRNX8/JuQ7CaQ/SRw0lkizhrIxANBecA2SpIY/KYM0Zsm5+2obQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=a+f5tMm6; arc=none smtp.client-ip=209.85.222.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+	s=arc-20240116; t=1788788109; c=relaxed/simple;
+	bh=wAtWM/hfeS3jpiaKFdtxYS7UyB1KGr86tNchBo63Iu0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=WCtgB1cwSt7GBrEb0bsZQej53Xt5/LR1rwUw0v+6BDeoMYEan2lTdU8dzjhokjH1Xhl9f55rZjWwbl8JVMxbZGmZSzSLWjjK5QjHc8g88T9XC9UvyvLx4UC23GUT+6yN2A9IJx0KjEvcW1DX1iVf3+kE9SE3OjW9ISD+CM1U/7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iL3rBv0Q; arc=none smtp.client-ip=209.85.167.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="a+f5tMm6"
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-92e5fc4c7e9so334849185a.3
-        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 06:24:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iL3rBv0Q"
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-5b6036e9c70so2689338e87.1
+        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 06:35:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788787465; x=1789392265; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=JNpSx6TYD3rjxjaguatGBbeejpPsuGdP72b1vXHlLxA=;
-        b=a+f5tMm6MQX55VWttX0q2FiWQiLmwGuU9cKF9rCZDbE0rQ8n0NzuSjeTLPN0nKelgs
-         129hJgtP2JSOOOZ2/oBqwoAf5E7oJbsOfBLY9729D4G6WvMejzC+vzw0SzzHCZFiw+NO
-         zfZ2ktEmv3gpUBWR7MyaM4W1E8LOaZyN54yC7SwLPn99A/zPg7quzch+ZSNawkJnxDhL
-         HkwJfeBo3uVNt7Or5OzsD7SE5LX5IMByAZPWl87PgH38/pJANLL1PCFd2oAvsaJeMq91
-         Dkv2+GqqQGUq/rU+WDLHzxMHM8T3ZOPRoTxGaJezBs/glzJ7ddPEkdcWJr0qWbZneVdQ
-         Ouew==
+        d=gmail.com; s=20251104; t=1788788105; x=1789392905; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=1utksJgoKAcBBVDcs57ghN3fD6lkAp5ozwsC08r8c1c=;
+        b=iL3rBv0Qd7RUUFWl0H3x5Z9Hc9bZbVeEZ2UoqD+TTbqgMi5q/BKHU6u4o6d/vbXaeM
+         EUscj7Mi2V4LmaHmapbRkNNCyMUskuELPCtU0KqpGjva+KaxcUEAAenPHwzFrzNFROUV
+         tl0bV9qR5FyvwnlZ5kx8x3V0pOYIeFj0HjJ9xh40PyJTviVJpfkXPNnkS9o9ngPlSo5k
+         o1FTmpVIDMDeSmlN8RxFOxiurgFNSFsjtDQYm/i/vjrrm4y1ZQBhRW+Pq1ElJKv+384n
+         76xz8aBpz9g6lL0RNVq+Q4DNCuCiP9gxa3PGnkzBwUZkSK19XUT1lNCSCJX8nkB32Yvf
+         BDJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788787465; x=1789392265;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=JNpSx6TYD3rjxjaguatGBbeejpPsuGdP72b1vXHlLxA=;
-        b=q7YpQBwpPrRE8Hc66Uug/Op0KgZUF/xw8bNyyEBiB+aWIoqiiiwK7UIKJNwkO05ALA
-         MnrQ09ABzqVMrWCIWu372/4Q9wnn/xF87QG037fcRZNt7YmCg5octm83P/FwG7sCIGsc
-         BBych/g5bCpqJeZri3aKOhgiSB7oYJ8Y/UgCCrn79DBUvIvaMHDl8GfD0VCIObUa6JOU
-         Io31nOX0uJVuoRLrtuPiKAflF+iD+gV034kuP2sDf2VfdeL1lU+FsnmL8hmIvnSWc38j
-         VJNCCrUrV6NkOwG0Nvhwb//pOEu9cltol5lH5w1YddUgU+T3l9zcChlQTmhqdA/0oXDd
-         8XBA==
-X-Forwarded-Encrypted: i=1; AKwUvBwW0KsHkNxP2hyp15h/+guqLLirFlfelqEZyyYdRMomGhlXz0NTTIol6vFQiUuaMJKqgng63nU=@vger.kernel.org
-X-Gm-Message-State: AFuF++m1CM4mWzw5XO6zDnzPyFE5GwlQceHKtmD9smto8nY7oOY7t2gA
-	WNUr5/rljW6vQfB4lTnKy1vQ/K3GbWAEXmgooypmcEZxzvjyUsKKJAaV/IjLnEmob/tRqZ7QFzf
-	JYkFsoKo2WmsR8Q==
-X-Received: from qknur2.prod.google.com ([2002:a05:620a:6f02:b0:92e:6aaa:d1c3])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:620a:6919:b0:939:6df9:f991 with SMTP id af79cd13be357-93980587869mr2324646585a.52.1788787464839;
- Mon, 07 Sep 2026 06:24:24 -0700 (PDT)
-Date: Mon,  7 Sep 2026 13:24:23 +0000
+        d=1e100.net; s=20251104; t=1788788105; x=1789392905;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=1utksJgoKAcBBVDcs57ghN3fD6lkAp5ozwsC08r8c1c=;
+        b=CJVWBFe4ibxx3smn/+vh2k3sJ96pvQLET9uByCW83Q7OHtCozoNPeTrUQiZVvEl6ma
+         W8lkCF/ph9yxDVU7Tq8e656O1aZPeyNac7HvxMSRPD92NoxLNlohcXfNbDTErUhpQ5/T
+         vB8BtvJLB32DIrMbZqbNiRQfcYYvadSnMKbYrlanVXYx063sQf7pIs0HAPZJR3uE3jBE
+         N96G/+X1yVn0H9B7YQji/JeDt8GEFkBYC7/Wq7bspUkbmg5Db9/zkXwXDt8lODqBiwqM
+         oUSmQx/XzcLq4gYxEj7in34PzFC5+0zckT2VX5BNvZ3TnHaw314lGTEpbNkCXbjhEiag
+         DaVA==
+X-Forwarded-Encrypted: i=1; AKwUvByf+LcuxcL1ODp3/ueHnlxcfdq7bNx8xkKkiWOnRw/C3qt20sUS0bKc8sXX41yFjuhKoq6IqII=@vger.kernel.org
+X-Gm-Message-State: AFuF++mrTUqOtr9unWUai/+2PhqKUdzUJAbzoMAZM0zOpxH7d8IPxghO
+	m6EWEKVVS3K7MJKpifUNk9WGmdBYcjnRQ7PLsI1J4Ff/7GqDtsoXMAAo
+X-Gm-Gg: AYBFou0d4T9ullptr4ENgRtSLuNS27ZUq8tv98t8E6Gg8WFJYh9M3dkVCPZK+jF9FVA
+	Pmz5jy87xIHl/r+dzEDL1kw4v4FKrShfM3RSz2S/Vfg02kkm0sMYk/roC/3LguZBX4gWPyZNW4t
+	NRy3F61mlXznXd5fCcZXhfllDdJF6e9UbsDne8NirBbdm/8xKJlSHSN5O6zpk8wWYI5H1JTAAMx
+	yzc8YdXe0Vb400pvT5VinAiQkuSPgvhC+MIWcYPEbm3JVTffqbi3VYhtTTHOSzG57I8LFxciwrt
+	24f4bspRqHMwINlDfs9bx7lhyNQgv5XcFdrTaKaTXhRYZR6Z/bqia/HBsYpeDUtlUKN+Vk0VZm6
+	L9iudSgetSvfCPaP77magtwxpuVKm0RTmP9rxTUXkRpKAmf2u2Lk/9bUay9t2d1Z8HGmRYcWWym
+	77eGKCyW4DE0/IRfqQWGIb9x0Zif00P3KrA5AZCkzfUccT7CKVKpxBPgfkCIoQIcPFA2RUe0W48
+	pC8mbX2C4wH1BivBngruZrl9tyPuRIwaSxAsA7Rpuh9cRrkWbq3Vg7+aao=
+X-Received: by 2002:a05:6512:3ca7:b0:5b6:1a7c:37 with SMTP id 2adb3069b0e04-5b61a7c0261mr3283856e87.58.1788788105369;
+        Mon, 07 Sep 2026 06:35:05 -0700 (PDT)
+Received: from localhost.localdomain (46-138-187-224.dynamic.spd-mgts.ru. [46.138.187.224])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5b6166fe10asm2328484e87.47.2026.09.07.06.35.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 07 Sep 2026 06:35:04 -0700 (PDT)
+From: Artem Lytkin <iprintercanon@gmail.com>
+To: Eric Dumazet <edumazet@google.com>
+Cc: "David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>,
+	netdev@vger.kernel.org,
+	eric.dumazet@gmail.com
+Subject: Re: [PATCH net-next 7/9] sit: dynamically allocate struct ip_tunnel_parm_kern
+Date: Mon,  7 Sep 2026 16:34:52 +0300
+Message-ID: <20260907133452.5266-1-iprintercanon@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260907075846.2913645-8-edumazet@google.com>
+References: <20260907075846.2913645-1-edumazet@google.com> <20260907075846.2913645-8-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.55.0.979.g7e5102b832-goog
-Message-ID: <20260907132423.3353361-1-edumazet@google.com>
-Subject: [PATCH net-next] selftests: icmp_redirect: remove xfail support
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>, 
-	Ido Schimmel <idosch@nvidia.com>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
-	Eric Dumazet <edumazet@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Commit 0a36a75c6818 ("selftests: icmp_redirect: support expected failures")
-added xfail support to icmp_redirect.sh because IPv6 redirect tests
-(including the VRF variants) were failing due to bugs in the IPv6
-redirect logic.
+On Mon, Sep 07, 2026 at 07:58:44AM +0000, Eric Dumazet wrote:
+>  	ipip6_tunnel_unlink(sitn, t);
+>  	synchronize_net();
+> -	t->parms.iph.saddr = p->iph.saddr;
+> -	t->parms.iph.daddr = p->iph.daddr;
+> +	t->sit_parms = new_p;
+[...]
+> +	kfree(old_p);
 
-Part of this was addressed in commit 0e02bf5de46a ("selftests:
-icmp_redirect: IPv6 PMTU info should be cleared after redirect"), which
-updated the test expectation that old PMTU information should be
-cleared following a redirect.
+At this point in the series old_p is freed with no grace period: the
+synchronize_net() runs before the pointer switch and only covers the
+hash readers. ipip6_tunnel_xmit() doesn't go through the hash and
+keeps tiph = &tunnel->sit_parms->iph across the route lookup, and
+ipip6_get_iflink() is reached from iflink_show() with no lock at all.
+8/9 turns this into kfree_rcu(), so the end result is fine, but this
+commit on its own is a UAF and breaks bisection. Moving the rcu_head
+and kfree_rcu() here (or squashing 7 and 8) would keep each step safe.
 
-Recently, commit cd51b74bdd0b ("ipv6: Fix redirect exception creation for
-UDP/RAW sockets") fixed the underlying kernel bug in ip6_sk_redirect():
-previously, passing sk->sk_bound_dev_if caused exception creation to
-fail for sockets not bound to a device or bound to a VRF. Now that
-skb->dev->ifindex is used, redirect exceptions are created properly for
-UDP and RAW sockets, including in VRF environments.
+Smaller thing of the same kind in 5/9: check_6rd() gets
+rcu_dereference() but the rcu_read_lock() around the xmit path only
+arrives in 8/9.
 
-With this fix in place, all IPv6 tests in icmp_redirect.sh pass as
-expected. Passing xfail=1 to log_test() for all IPv6 tests is no longer
-necessary and masks unexpected failures as XFAIL instead of FAIL.
-
-Commit 3748939bce3f ("selftests: icmp_redirect: pass xfail=0 to log_test()")
-worked around a bash error caused by empty xfail arguments on IPv4 tests.
-
-Remove the obsolete xfail support from log_test() and restore standard
-pass/fail reporting across all tests.
-
-Tested:
-Tests passed:  40
-Tests failed:   0
-
-Signed-off-by: Eric Dumazet <edumazet@google.com>
----
- tools/testing/selftests/net/icmp_redirect.sh | 10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
-
-diff --git a/tools/testing/selftests/net/icmp_redirect.sh b/tools/testing/selftests/net/icmp_redirect.sh
-index b13c89a99ecbaa37638c39b12818d2d59a97ec50..35357d02e823bcad7106cd7d628824d1787af4e7 100755
---- a/tools/testing/selftests/net/icmp_redirect.sh
-+++ b/tools/testing/selftests/net/icmp_redirect.sh
-@@ -64,14 +64,10 @@ log_test()
- 	local rc=$1
- 	local expected=$2
- 	local msg="$3"
--	local xfail=$4
- 
- 	if [ ${rc} -eq ${expected} ]; then
- 		printf "TEST: %-60s  [ OK ]\n" "${msg}"
- 		nsuccess=$((nsuccess+1))
--	elif [ ${rc} -eq ${xfail} ]; then
--		printf "TEST: %-60s  [XFAIL]\n" "${msg}"
--		nxfail=$((nxfail+1))
- 	else
- 		ret=1
- 		nfail=$((nfail+1))
-@@ -303,7 +299,7 @@ check_exception()
- 		ip -netns $h1 ro get ${H1_VRF_ARG} ${H2_N2_IP} | \
- 		grep -E -v 'mtu|redirected' | grep -q "cache"
- 	fi
--	log_test $? 0 "IPv4: ${desc}" 0
-+	log_test $? 0 "IPv4: ${desc}"
- 
- 	# No PMTU info for test "redirect" and "mtu exception plus redirect"
- 	if [ "$with_redirect" = "yes" ] && [ "$desc" != "redirect exception plus mtu" ]; then
-@@ -319,7 +315,7 @@ check_exception()
- 		ip -netns $h1 -6 ro get ${H1_VRF_ARG} ${H2_N2_IP6} | \
- 		grep -v "mtu" | grep -q "${R1_LLADDR}"
- 	fi
--	log_test $? 0 "IPv6: ${desc}" 1
-+	log_test $? 0 "IPv6: ${desc}"
- }
- 
- run_ping()
-@@ -485,7 +481,6 @@ which ping6 > /dev/null 2>&1 && ping6=$(which ping6) || ping6=$(which ping)
- ret=0
- nsuccess=0
- nfail=0
--nxfail=0
- 
- while getopts :pv o
- do
-@@ -530,6 +525,5 @@ fi
- 
- printf "\nTests passed: %3d\n" ${nsuccess}
- printf "Tests failed: %3d\n"   ${nfail}
--printf "Tests xfailed: %3d\n"  ${nxfail}
- 
- exit $ret
--- 
-2.55.0.979.g7e5102b832-goog
-
+Artem
