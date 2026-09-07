@@ -1,140 +1,133 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1221722B8DF;
-	Mon,  7 Sep 2026 17:23:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 716973EEAC1;
+	Mon,  7 Sep 2026 17:26:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788801790; cv=none; b=pNNb8Nqskv378poKizDO2IElxbYab+mkPPNRtoX9Tqg9bCAdfUtQB6IWvq1uEGG1ZkpBzl0R985Wgu96DPzCZyOazhP9Ut2hHUXoWmUdIl45NUyYhbjVnmL/2/VOvVCKrdrPduFHo8OFB/t9bkzkodY1goSJcHdEBNgLJJcwzN8=
+	t=1788801997; cv=none; b=Age4/QKtXTfGvIKUEKO7Vc7qKyIXdqIvNHHEPgR6sfybvqO6xu8Ir9dAENEZZeZ2ZasgTaa+iuEndjkJ4K4j3STlzWPVUQYOx/uj+dBm2Rod9jWyFfUXj0f2JvyLoZxGti5IBuLW1nA1eMmsryyGJ4d8fPMt75qGva2gka/mHGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788801790; c=relaxed/simple;
-	bh=IsgOz23jgtxh6t9JZSP6IEO1hhjpWphaC5Zz14LTxIA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=F+kVfYm0r7WcSEZcidio1tr1aab1VL2+RQnXv5gqMLaJgJ8a2A4xOimGGoMp8pTac0MtQtn4YSNkCfPA8EDLNURNEyB8liqNuS3mY5J+J5jECog75uHcLg5v7R7j30zJqIexVYwnOLi7LymceBwKVBRs6rQXyLit+KPrxYQ+kas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=is3AQ3HR; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788801997; c=relaxed/simple;
+	bh=eqskA1VjthOmHKa0hZ6Zmh2m5htnj0F978lZrJxeTx4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OM9Zc5CgUQi3ZghL7XT4Ozyl2OyvrMMCWTkaetV87SuNUZOim/2LQYDQNEcw4Ab5Zum4TXlxhotIdKW9UT/K19dhS6Pnc1BKzegMdHYBDmRPbjtT0LjLz8gtKvq+btDTKPQoqR0qLYq+Do/kWl9reu5yB/bIwNm4QhMblZaqDh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ENU9nkXt; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="is3AQ3HR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A85A81F00A3A;
-	Mon,  7 Sep 2026 17:23:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ENU9nkXt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23A8B1F00A3A;
+	Mon,  7 Sep 2026 17:26:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788801788;
-	bh=jG1ZK2ISJn6wMPTOrAsRj6Xemqw0VX1VQJjjXEJrdqI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=is3AQ3HRDL8a5qjAFDPNCBSxvXnEkEAF6pensEMfbTchD579zlSjf9oOqFTPjeiAq
-	 5Jpt9yv5e2caI5XsQlAqevq6KgyP6qnMe9W5VzUptoAePYvJ4G9mM/kp09TNKWtQna
-	 rMBEdnuwGeg1Vr++2Pgyf57XTYZcUoVW4hQPdktosMHfpiAqb8NXdrpC6kCZC8FmZr
-	 emVfrv8AZ/2gXivDasel+ImYMDm/Az7CIgzitPAq4P/wr3vgd9uR6+WjwXpJgYrcXv
-	 8ihuis1zkLjK1GJ/Mfj8XbmrHh3Vc2l2UwU2TqL7qIDpnTVJhrq43sPNhi5lPVazus
-	 t6PJWoJgIElWA==
-Message-ID: <948c60be-5e45-45b1-823a-7599f7c7fd38@kernel.org>
-Date: Mon, 7 Sep 2026 19:23:00 +0200
+	s=k20260515; t=1788801996;
+	bh=91SRoZDdLD+HhVe8dFmoX9MKbAE8G0CUPo4lkv6+zTs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ENU9nkXtX1rg/XAELd15uYMWC9pZLh/+Wzjk3JTk9w4Lq+hfeGuGkTINVPsPXcENa
+	 mesgXj7LZuw/o8E49l5s0IXNEwacqEgf5JdwO7SOJdxX7TzqtqxpGEQe2U7uYChRmu
+	 eaUsTabeDrFlUYgdShrKyxmBIUSz7sLiVBHt4CqIMgrzEZNZFB5yywIFznIDrNx1IZ
+	 QY8ZwwAFLUIYAhkspCEGvsMOxdmcU7y9nodTXXCGtP7MAMm64ANJBNH1tdfTrkuo1b
+	 DwSJqbPaF57zBoyi+zAJ3TJECmertmVKH2fPaumz3eDYrtIn2FGvB28Q3vzQuo2BJz
+	 RAIufsyM5OkCw==
+Date: Mon, 7 Sep 2026 18:26:31 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Aleksei Sviridkin <f@lex.la>
+Cc: linux@armlinux.org.uk, andrew@lunn.ch, andrew+netdev@lunn.ch,
+	hkallweit1@gmail.com, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	netdev@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH net-next 1/2] dt-bindings: net: ethernet-controller:
+ add phy-needs-host-firmware
+Message-ID: <20260907-shallow-universal-b614da6fe0c4@spud>
+References: <cover.1788711837.git.f@lex.la>
+ <20260906174621.4107320-1-f@lex.la>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 1/5] mm: Make per-VMA locks available universally
-To: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org
-Cc: dave.hansen@linux.intel.com, Liam.Howlett@oracle.com, ljs@kernel.org,
- willy@infradead.org, shakeel.butt@linux.dev, vbabka@kernel.org,
- jannh@google.com, aliceryhl@google.com, arve@android.com,
- cmllamas@google.com, christian@brauner.io, tkjos@android.com,
- dsahern@kernel.org, davem@davemloft.net, gregkh@linuxfoundation.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, netdev@vger.kernel.org
-References: <20260813193433.3318288-1-surenb@google.com>
- <20260813193433.3318288-2-surenb@google.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
- dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
- QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
- XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
- Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
- PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
- WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
- UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
- jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
- B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
- ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
- AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
- 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
- g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
- ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
- 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
- /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
- jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
- DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
- HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
- 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
- LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
- 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
- VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
- /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
- iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
- 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
- zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
- azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
- FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
- sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
- 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
- EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
- IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
- 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
- Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
- sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
- yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
- 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
- r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
- 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
- CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
- qIws/H2t
-In-Reply-To: <20260813193433.3318288-2-surenb@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="jqVFKD0jBpgf4Aly"
+Content-Disposition: inline
+In-Reply-To: <20260906174621.4107320-1-f@lex.la>
 
-On 8/13/26 21:34, Suren Baghdasaryan wrote:
-> From: Dave Hansen <dave.hansen@linux.intel.com>
-> 
-> The per-VMA locks have been around for several years. They've had some
-> bugs worked out of them and have seen quite wide use. However, they
-> are still only available when architectures explicitly enable them.
-> Remove the conditional compilation around the per-VMA locks, making
-> them available on all architectures and configs.
-> 
-> The approach up to now seemed to be to add ARCH_SUPPORTS_PER_VMA_LOCK
-> when the architecture started using per-VMA locks in the fault
-> handler. But, contrary to the naming, the Kconfig option does not
-> really indicate whether the architecture supports per-VMA locks or
-> not. It is more of a marker for whether the architecture is likely to
-> benefit from per-VMA locks.
-> 
-> To me, the most important thing side-effect of universal availability
-> is letting per-VMA locks be used in SMP=n configs. This lets us use
-> per-VMA locking in all x86 code without fallbacks.
-> 
-> Overall, this just generally makes the kernel simpler. Just look at
-> the diffstat. It also opens the door to users that want to use the
-> per-VMA locks in common code. Doing *that* brings additional
-> simplifications.
-> 
-> The downside of this is adding some fields to vm_area_struct and
-> mm_struct. There are likely ways to optimize this, especially for
-> things like SMP=n configs. For now, do the simplest thing: use the
-> same implementation everywhere.
-> 
-> == Considerations for NOMMU config ==
+--jqVFKD0jBpgf4Aly
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Maybe the NOMMU "support" could have been had in a separate prep patch (where a
-lot of the description below could have been moved), making the patch itself
-just mostly a removal of code.
+On Sun, Sep 06, 2026 at 05:46:18PM +0000, Aleksei Sviridkin wrote:
+> A port can reference a PHY that cannot be identified or driven when
+> the controller connects to it, because the firmware the chip needs is
+> not in hand yet. Such a port is dropped at setup and stays unusable for
+> the whole uptime, even though the PHY works seconds later.
+>=20
+> The flag declares that the PHY behind phy-handle is expected to become
+> usable only after this controller has probed. A consumer that sees it
+> keeps the port and connects the PHY once its driver binds, instead of
+> failing the connect. The prefix names the entity, like the other
+> properties here that name what they describe rather than the
+> controller; a PCS needing firmware would get pcs-needs-host-firmware
+> by the same rule.
+>=20
+> It sits on the controller here because that is where the waiting
+> happens. The flag says nothing without a phy-handle to qualify, so it
+> depends on one; the deprecated phy and phy-device spellings are left
+> out, since no tree combines them with a property this new.
 
+That doesn't seem right, sounds like it should be on the phy if the
+behaviour is caused by the phy.
+In fact, it seems like something that should be determined when the phy
+is identified, not really sure why it needs a property at all? Or based
+on the fact that the phy has firmware-name.
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+>=20
+> Assisted-by: LLM
+> Signed-off-by: Aleksei Sviridkin <f@lex.la>
+> ---
+>  .../devicetree/bindings/net/ethernet-controller.yaml      | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+>=20
+> diff --git a/Documentation/devicetree/bindings/net/ethernet-controller.ya=
+ml b/Documentation/devicetree/bindings/net/ethernet-controller.yaml
+> index 1bafd687dcb1..074c54fa6d78 100644
+> --- a/Documentation/devicetree/bindings/net/ethernet-controller.yaml
+> +++ b/Documentation/devicetree/bindings/net/ethernet-controller.yaml
+> @@ -108,6 +108,13 @@ properties:
+>      $ref: "#/properties/phy-handle"
+>      deprecated: true
+> =20
+> +  phy-needs-host-firmware:
+> +    $ref: /schemas/types.yaml#/definitions/flag
+> +    description:
+> +      The PHY referenced by phy-handle runs firmware that the host must
+> +      load before the PHY can be driven, and so is not usable for as
+> +      long as that has not happened.
+> +
+>    ptp-timer:
+>      $ref: /schemas/types.yaml#/definitions/phandle
+>      description:
+> @@ -240,6 +247,7 @@ properties:
+> =20
+>  dependencies:
+>    pcs-handle-names: [pcs-handle]
+> +  phy-needs-host-firmware: [phy-handle]
+> =20
+>  allOf:
+>    - $ref: /schemas/net/network-class.yaml#
+> --=20
+> 2.53.0
+>=20
 
--- 
-Cheers,
+--jqVFKD0jBpgf4Aly
+Content-Type: application/pgp-signature; name=signature.asc
 
-David
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCap7zxwAKCRB4tDGHoIJi
+0pNiAQCPmq9WGlOMGaIUC4rvMdLDP9jYBzLwQnKtTcsk/5RolQD9HEgJmCDW2Q8y
+TgkdOWSWcTYwlHPZKBT9auPJTJfwAws=
+=XDrU
+-----END PGP SIGNATURE-----
+
+--jqVFKD0jBpgf4Aly--
