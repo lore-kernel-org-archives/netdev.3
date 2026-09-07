@@ -1,56 +1,56 @@
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E14274457D3
-	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 22:58:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFBA9440A24
+	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 22:58:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788821939; cv=none; b=cap1kptnqEdOOMlWvd9oYy0/H3guPXFu0D/+Pwflwer3mE2Z/NI64E16oB2ODZC+IvMlxnPJvMpqpd6V4dwY4GOUjsSedxO4Oei7gkVH3rs8H7l/UN0aoshLHVd1ogLnmdjwzsOlmQxqMRzj5p752aC3Gqwbb4rjODzzwtYUdrU=
+	t=1788821940; cv=none; b=ohykOFRr1zJqQPHByW2ZV3wCkS5BHmNRF4LWF2SfFmqCjqbzNjLx0uZOnIAL5NEVvY05JRdFhCERcw2LbQDb2dj8qsVZnH7Lrb0lFKCuE0FuJMC0x3tevx6lgjz9PSsoZDLCTRzZwIZ1VcZYeyYOQrID55fCpTwGdT6oD/nheXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788821939; c=relaxed/simple;
-	bh=ekb8cnXJN6IhVShuPmqPv5+DOjSyCuJ0BV8cevW4n38=;
+	s=arc-20240116; t=1788821940; c=relaxed/simple;
+	bh=cp43fHmgHlbMCEgPJIQWQoxL5TDExDyjispxCD8X4i4=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=QzwvcFWKgnr29oeGe+b4LY0dhm01ZYc0cmm+05Jnani/fz5fmv4cuwmpa3dzELCrbr7NLIWE1EzDwXslZAHMszsW+5ABdTC1W62IYHLTdyTPUpTqxRtHZcu3hYMKldC7xwgD/5fzyJtwu0ednazTIdiksFqlTQ75uqEh25IW7VY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=e3axYgO9; arc=none smtp.client-ip=209.85.214.198
+	 To:Cc:Content-Type; b=FTY1fVoOsXNGJiVDeez5mG+BrH9WCBVHp/OUIJPuOxj1zurbBCQ7kp6egmtBoWbbx4WP/HH72j9SKdo/h2ufnbs5R+a7uO5y10wzQPi8sfIQEnlzEqO09bFudE7GB5iV8bMVZlB4HmRDC9B7eriq5XOSE1WkkyqS0kvVG2zDC6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pSZrh6wV; arc=none smtp.client-ip=209.85.216.71
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="e3axYgO9"
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2cfc52ddc55so56812555ad.3
-        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 15:58:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pSZrh6wV"
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-38f5ac7416eso4754620a91.3
+        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 15:58:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788821937; x=1789426737; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1788821938; x=1789426738; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=rIQMjAqTIwtT9S0LMA4qcau8Y2sq3v6Hjp+lwZWXkSg=;
-        b=e3axYgO9m3uLAl5ow7YFGP7uuPyRUM59ZAmPiaPDkxz2bUMkD8itRXoJQA53ESYMkq
-         VtyOFSHGAhgvGKwlHUiao7f5pPdp25B/aU0yHLD8+OFtgMRp+Bqy79ah7fWVqFlL0a20
-         shZihPfn0t25DWT6/m7D6FK83BVJNRfHIDH3TLHy+6emJs8axC2H++9j9wcpBcOFmsyk
-         Ggq+jGIrsAj5Zcq2czftAQCXvgiuGRI7j6dwif8OGGfJzzyQWdAv0IONSdLq818RXRuK
-         xerrjc36Nr51RHV5PQymYAONaXvT+UM3jte7kdxx+aVa5mg/7jneKyd3wyt9LCPkiUTI
-         jCXA==
+        bh=oPeHoAp96qVJQtBdKQRtObanZSycV+yeuM3H6wqItRA=;
+        b=pSZrh6wVzA3gtOWnSospWhx1jo/TemPKC1nMB7Y5+/JmGWT5IXM1y6n5RIwSu454kj
+         xJeZnFJeJlHWPMr10X8iabfUlSpUEcrzrozQc70S5GvNoJTftnjrgqwzYj46zzL3TToY
+         oYG1Nzt3Sq7P7XENeOlG4ggH8VKdu30eAoaAWgqpUPIzY7HqcSWnX++FcWxsqb552mSw
+         9FUPL3ifzSNHsWcF6vsPeHpZ+pdtpUdRk8TFPcP/19YyrGzuWYQI4UIvCCPyhwsUBua8
+         t47VrBZ7CfkE+z3WQ9tRmmkXFSQ1QuTX+4g3sDh7ETAg9ET2GDDOJX86FCU8nvViRXKO
+         o6sQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788821937; x=1789426737;
+        d=1e100.net; s=20251104; t=1788821938; x=1789426738;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=rIQMjAqTIwtT9S0LMA4qcau8Y2sq3v6Hjp+lwZWXkSg=;
-        b=EYIUoGRvIU/O19bZOLZnfDivsVOU7MhEOp40Dg6AV2CsyZ0NHayLbvYCNAdxQQ64Zn
-         n5cKRymutJ1EBE5CCJTDsYphdad9w9GBTU2Rk1bG2xdjcqb6n/Hxvfp9R0uVWM9bqlqK
-         F8cklvIubUytLjCAvOexhib/ZpGNOHP64SZxDQ4edXAz4H5tH9UcbVfnweesPsBi6Fwq
-         WroFA0yGvSX5GXfUgS6/zbIsCzNkscW+6Ru+k3X0rRHXKHp5dkgs4qvIvyT68qyZb6uZ
-         KVnnfPXnhstv3cuO5QE1xZdtNiybbFsEQbm8tv451ja8zRraoBvxF6uryfA4UNnWdMcW
-         96/A==
-X-Forwarded-Encrypted: i=1; AKwUvBwe9yAf7Q26j73URQwtzXzaymO9Z9fC+Tr3v6LCCeADUZKebPxftO/graAeOAF/cv1AjRws14Y=@vger.kernel.org
-X-Gm-Message-State: AFuF++mi43HLxbfmxutpx9bxRam+CPwjF1dD1E910IcdclvxQCRvgmpa
-	7k0XlW0mnAmznL634+LmAXgwyX/l5OPovhhDJW4heuYgWf+4eADmwQM7LXheB/S0HIeOsQIbzh+
-	M4ATV3A==
-X-Received: from pleb11.prod.google.com ([2002:a17:902:d40b:b0:2db:2f11:a00])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:3804:b0:2cf:9347:f445
- with SMTP id d9443c01a7336-2db126d8a54mr412050525ad.10.1788821937088; Mon, 07
+        bh=oPeHoAp96qVJQtBdKQRtObanZSycV+yeuM3H6wqItRA=;
+        b=omc7u3zxHFA8hSVnjTiNGLYqesPpNoUwFfjb9A/flfOR6AC7IznLH5gpuXiFzBT9Bd
+         hNSrjmRPna05e8Tw2QUTNA2uHx08EUgO7UhlfTWqCBJEcCl4I8XgvzHYemrHcmlnlbJ7
+         j+6gG8sdp1qVF0Fulznmq/7YAIhXROjC8fU8yYvbBKp84bo/EWpWFclpHTB93o09w2/J
+         SR2o95ISM2+lAgx9X/sJqLfob4tV60DSkFPR6osU8O9WpL/jyVWc2YeEml6TJyIJSNl6
+         T6UmTM/wGfX3Vu7MfASQ44XV8By2VJANFVlmiTIiTmPjcaOlr8lR0mIh3rRDG6GRK7ZI
+         7qOg==
+X-Forwarded-Encrypted: i=1; AKwUvBxWDram/3q7LPGwjmcIVBJLsNJ+xeDt2C0F36mGwBgbMZeRY0PAgk2H7IOLGuCijfDcb7+MVjw=@vger.kernel.org
+X-Gm-Message-State: AFuF++lG2IQfmNydKUxCHBfAQvdJoyPHF15TMPhRo83iRMRfYj/ITgRQ
+	C+hnRBXnm/x11SybE6MMAa0dNM5mOsLTkq/2x1+HBzv+yGzTtM9jKw0/4Qb48pnr+YpzKSuYcJK
+	YzXRdSQ==
+X-Received: from pjbgg16.prod.google.com ([2002:a17:90b:a10:b0:39b:8e8b:e1f3])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4fc5:b0:37f:e1b6:4c7d
+ with SMTP id 98e67ed59e1d1-39b26190c25mr38002011a91.6.1788821937878; Mon, 07
  Sep 2026 15:58:57 -0700 (PDT)
-Date: Mon,  7 Sep 2026 22:56:49 +0000
+Date: Mon,  7 Sep 2026 22:56:50 +0000
 In-Reply-To: <20260907225846.3787676-1-kuniyu@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -60,8 +60,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260907225846.3787676-1-kuniyu@google.com>
 X-Mailer: git-send-email 2.55.0.1003.g10538fe699-goog
-Message-ID: <20260907225846.3787676-5-kuniyu@google.com>
-Subject: [PATCH v1 net-next 4/7] ip_tunnel: Centralise ip_tunnel_del() to ip_tunnel_dellink().
+Message-ID: <20260907225846.3787676-6-kuniyu@google.com>
+Subject: [PATCH v1 net-next 5/7] ip_tunnel: Unify error paths in
+ ip_tunnel_newlink() and ip_tunnel_changelink().
 From: Kuniyuki Iwashima <kuniyu@google.com>
 To: "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, David Ahern <dsahern@kernel.org>, 
@@ -71,80 +72,112 @@ Cc: Simon Horman <horms@kernel.org>, Steffen Klassert <steffen.klassert@secunet.
 	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-With the previous patch, itn->fb_tunnel_dev can be removed
-via ->dellink().
+The next patch will introduce per-netns mutex and acquire it
+in ip_tunnel_newlink() and ip_tunnel_changelink().
 
-However, ioctl(SIOCDELTUNNEL) still uses unregister_netdevice(),
-which requires ip_tunnel_del() in ip_tunnel_uninit().
-
-Let's use ip_tunnel_dellink() everywhere to remove ip_tunnel device
-and remove ip_tunnel_del() in ip_tunnel_uninit().
+To make the diff cleaner, let's unify the error paths.
 
 Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 ---
- net/ipv4/ip_tunnel.c | 19 ++++++++++---------
- 1 file changed, 10 insertions(+), 9 deletions(-)
+ net/ipv4/ip_tunnel.c | 37 ++++++++++++++++++++++++-------------
+ 1 file changed, 24 insertions(+), 13 deletions(-)
 
 diff --git a/net/ipv4/ip_tunnel.c b/net/ipv4/ip_tunnel.c
-index 1696ba1f3ed9..5833f93c1964 100644
+index 5833f93c1964..3ba03c2b3b90 100644
 --- a/net/ipv4/ip_tunnel.c
 +++ b/net/ipv4/ip_tunnel.c
-@@ -897,10 +897,13 @@ static void ip_tunnel_update(struct ip_tunnel_net *itn,
- int ip_tunnel_ctl(struct net_device *dev, struct ip_tunnel_parm_kern *p,
- 		  int cmd)
+@@ -1181,21 +1181,23 @@ int ip_tunnel_newlink(struct net *net, struct net_device *dev,
+ 		      struct nlattr *tb[], struct ip_tunnel_parm_kern *p,
+ 		      __u32 fwmark)
  {
--	int err = 0;
- 	struct ip_tunnel *t = netdev_priv(dev);
+-	struct ip_tunnel *nt;
+ 	struct ip_tunnel_net *itn;
++	struct ip_tunnel *nt;
++	int err = 0;
+ 	int mtu;
+-	int err;
+ 
+ 	nt = netdev_priv(dev);
+ 	itn = net_generic(net, nt->ip_tnl_net_id);
+ 
+ 	if (nt->collect_md) {
+ 		if (rtnl_dereference(itn->collect_md_tun))
+-			return -EEXIST;
++			err = -EEXIST;
+ 	} else {
+ 		if (ip_tunnel_find(itn, p, dev->type))
+-			return -EEXIST;
++			err = -EEXIST;
+ 	}
++	if (err)
++		goto out;
+ 
+ 	nt->net = net;
+ 	nt->parms = *p;
+@@ -1222,22 +1224,26 @@ int ip_tunnel_newlink(struct net *net, struct net_device *dev,
+ 		goto err_dev_set_mtu;
+ 
+ 	ip_tunnel_add(itn, nt);
+-	return 0;
++out:
++	return err;
+ 
+ err_dev_set_mtu:
+ 	unregister_netdevice(dev);
+ err_register_netdevice:
+-	return err;
++	goto out;
+ }
+ EXPORT_SYMBOL_GPL(ip_tunnel_newlink);
+ 
+ int ip_tunnel_changelink(struct net_device *dev, struct nlattr *tb[],
+ 			 struct ip_tunnel_parm_kern *p, __u32 fwmark)
+ {
+-	struct ip_tunnel *t;
+ 	struct ip_tunnel *tunnel = netdev_priv(dev);
+ 	struct net *net = tunnel->net;
+-	struct ip_tunnel_net *itn = net_generic(net, tunnel->ip_tnl_net_id);
 +	struct ip_tunnel_net *itn;
-+	LIST_HEAD(dev_kill_list);
- 	struct net *net = t->net;
--	struct ip_tunnel_net *itn = net_generic(net, t->ip_tnl_net_id);
++	struct ip_tunnel *t;
 +	int err = 0;
 +
-+	itn = net_generic(net, t->ip_tnl_net_id);
++	itn = net_generic(net, tunnel->ip_tnl_net_id);
  
- 	switch (cmd) {
- 	case SIOCGETTUNNEL:
-@@ -984,7 +987,8 @@ int ip_tunnel_ctl(struct net_device *dev, struct ip_tunnel_parm_kern *p,
- 				goto done;
- 			dev = t->dev;
+ 	if (dev == itn->fb_tunnel_dev)
+ 		return -EINVAL;
+@@ -1245,8 +1251,10 @@ int ip_tunnel_changelink(struct net_device *dev, struct nlattr *tb[],
+ 	t = ip_tunnel_find(itn, p, dev->type);
+ 
+ 	if (t) {
+-		if (t->dev != dev)
+-			return -EEXIST;
++		if (t->dev != dev) {
++			err = -EEXIST;
++			goto out;
++		}
+ 	} else {
+ 		t = tunnel;
+ 
+@@ -1259,13 +1267,16 @@ int ip_tunnel_changelink(struct net_device *dev, struct nlattr *tb[],
+ 				nflags = IFF_POINTOPOINT;
+ 
+ 			if ((dev->flags ^ nflags) &
+-			    (IFF_POINTOPOINT | IFF_BROADCAST))
+-				return -EINVAL;
++			    (IFF_POINTOPOINT | IFF_BROADCAST)) {
++				err = -EINVAL;
++				goto out;
++			}
  		}
--		unregister_netdevice(dev);
-+
-+		ip_tunnel_dellink(dev, &dev_kill_list);
- 		err = 0;
- 		break;
- 
-@@ -993,6 +997,8 @@ int ip_tunnel_ctl(struct net_device *dev, struct ip_tunnel_parm_kern *p,
  	}
  
- done:
-+	unregister_netdevice_many(&dev_kill_list);
-+
- 	return err;
+ 	ip_tunnel_update(itn, t, dev, p, !tb[IFLA_MTU], fwmark);
+-	return 0;
++out:
++	return err;
  }
- EXPORT_SYMBOL_GPL(ip_tunnel_ctl);
-@@ -1166,7 +1172,7 @@ void ip_tunnel_delete_net(struct net *net, unsigned int id,
- 		struct ip_tunnel *t;
+ EXPORT_SYMBOL_GPL(ip_tunnel_changelink);
  
- 		hlist_for_each_entry_safe(t, n, thead, hash_node)
--			unregister_netdevice_queue(t->dev, head);
-+			ip_tunnel_dellink(t->dev, head);
- 	}
- }
- EXPORT_SYMBOL_GPL(ip_tunnel_delete_net);
-@@ -1297,11 +1303,6 @@ EXPORT_SYMBOL_GPL(__ip_tunnel_init);
- void ip_tunnel_uninit(struct net_device *dev)
- {
- 	struct ip_tunnel *tunnel = netdev_priv(dev);
--	struct net *net = tunnel->net;
--	struct ip_tunnel_net *itn;
--
--	itn = net_generic(net, tunnel->ip_tnl_net_id);
--	ip_tunnel_del(itn, netdev_priv(dev));
- 
- 	dst_cache_reset(&tunnel->dst_cache);
- }
 -- 
 2.55.0.1003.g10538fe699-goog
 
