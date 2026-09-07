@@ -1,149 +1,167 @@
-Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazolkn19011028.outbound.protection.outlook.com [52.103.39.28])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C9C723D297
-	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 22:40:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.39.28
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788820808; cv=fail; b=a22qXoxXubr/3HP2800DpujDJU/NnBwlqBWc2PvyXBt+a97V+uE40co5ybNuyAQyr9TzL9a/TtwYWr4ZxxbCO+jVmH9cwQcXvyfJaB3GFbvkDZ0SyHu70NjRbvpqkVMOeyrmiCw0KIoAYSA/wyVoiqKyo0Qj+28iZD5EIuf9b/s=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788820808; c=relaxed/simple;
-	bh=JVfhCwpntiqIXgBRV0c9a9gnUmFLHGCnwl6hMwCTl6I=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=lCqkaNDjaa52+rsFHqpAdlVq89vEHbVM+Xw3QzCdnKuDurBaBZjYZLtwMS2sJqN/dr7jyPi6S/3WLiZpfycvFSrbdE45RZxl8cwWGL733AIt2bKEb8KTWCP/39NQnFemovV3XlI61k/VR/PuPiVPmZ33F1hxSJbWUurfHdnkIlI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.co.uk; spf=pass smtp.mailfrom=hotmail.co.uk; dkim=pass (2048-bit key) header.d=HOTMAIL.CO.UK header.i=@HOTMAIL.CO.UK header.b=q81IL4R1; arc=fail smtp.client-ip=52.103.39.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.co.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hotmail.co.uk
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F2423F40D;
+	Mon,  7 Sep 2026 22:51:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788821497; cv=none; b=Ew8Xsa60oH6bD1i1RRvMyaao6wZACmEMZCJMCJPLuXWBtJ3DLtKbsoxy7N6Ao48sEUSLAo4qoCucLI7e+aqUva3gaPv2RP/qck0kQbFuUSXz+DoFewN6F96VjH+/B9ilATA4a4jF4VBQ9r4ZsUiG96T9n2xkhMq1BQFaZwEH1zQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788821497; c=relaxed/simple;
+	bh=e88CkWXLFXByErav3eyr21WjqFho/Gvfnvap7eHR0Rw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=puOGPqDbLqYumYEODco//5KqKP7x7BHtCGY1raI8iPz1O/DuFTqlIG7lZXoD+dnuj/20epYm1hOzKAVCXsAo4cpMnWpXqkLQHHipEjA/CMg1u56qJUQYZpKDhq7aRKTbA07rr2+rSHzqASQ1zqUgH6g+3w5fLMlrf6UmgoykHhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fProWdD8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=HOTMAIL.CO.UK header.i=@HOTMAIL.CO.UK header.b="q81IL4R1"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=aOHkVXUyOK3Rzt2ZFi//FIHhXj0FveW/umQ3HbtHNxuZtecsgwiG8zQ/fUPMDr9ygJogcOCASyU5CJPN9OLkH7JvuzgDaGMnIs77UXQu0TijTze33Jb0BdNpIqI14xpkVLAVG9igSy0Eigsfq1mOXsR77+B7nSHyP0Lx9RWMprdb+xziua8SV7rbyYHobPqjdo21XMDENT8x1j6SUZzUbAep0SKTqhPW9XgKaL9peBAiZe0/5Bl28csXIjJUZnRsEoX4IMTvsLPcQmptTSskgCGIr4Ho0URuDfQVMEZnzayx8S5rEDYsAjwB6U8H6dc5eBqYOlT5/0inhZQDHkNdLQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JVfhCwpntiqIXgBRV0c9a9gnUmFLHGCnwl6hMwCTl6I=;
- b=gTYQ6Pg6qlBxvARAVy+lhvRjk9TuIGA6uYyGrl5Ra1bm+uaiHQGW3yaGursr4MpJV3tfoN+9qjTA6RARqzBM15gveVByVQfmc2XNCiJtZ3mfvkfebVdiZiik4TTVx61U/Uy92vuBJFxWy4PqYLLAx3Gox43K5waVMkXj4XCG6p5w4DzHGDp/qHpUHq43BH/kWSA5sSzzdJgKWoZXCaIrVMvYRzZLZaz2U/bxlo/C5Rie5AJYja8EosEhOU7PXQ6XyDhoChM0hDmaKm4b0Mm+vJHTqQZwSlL7lACl5uCacOAoaP7yzOwHBidkEqd+1hE40iGoY+ONblpthOf7cbSi7Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=HOTMAIL.CO.UK;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JVfhCwpntiqIXgBRV0c9a9gnUmFLHGCnwl6hMwCTl6I=;
- b=q81IL4R1uXkkIns9aEgX1fmDCYdY2urB7HyaqqeEr17IlR2hzP70MWiF7f0/rR9cC7vkY+MZB/OCa6C1i8EX65v2npEgEXAJn2HwMXgUNITZInH8BCzubp+nmcJm8UhMGnlheKYw48EWGE7hFry7OsDWVz83/BM1cW7C2lNQX+uObEBHkSMJWC/f4KOgYLocqHqNn8MtYudQyrSGiNWCEEGQoS1XotyZAAR0U+uYVoHuV+YfWddSxNplOjEfb27FyW4KN0arNm1nyn4w1tVmCa9coKIdIa1+7Qymqn4D1oSduchf/fc/wTBJ9m0iOQC5BhCAUTEDL+YtySsiOzQhrQ==
-Received: from AS8P251MB0001.EURP251.PROD.OUTLOOK.COM (2603:10a6:20b:344::22)
- by DB9P251MB0029.EURP251.PROD.OUTLOOK.COM (2603:10a6:10:2c1::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.382.15; Mon, 7 Sep
- 2026 22:40:03 +0000
-Received: from AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
- ([fe80::2952:d4d0:4ba:8352]) by AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
- ([fe80::2952:d4d0:4ba:8352%6]) with mapi id 15.21.0382.014; Mon, 7 Sep 2026
- 22:40:03 +0000
-From: Aamir Ahmed <elb12345@hotmail.co.uk>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org,
-	davem@davemloft.net,
-	kuba@kernel.org,
-	edumazet@google.com,
-	enachman@marvell.com,
-	Aamir Ahmed <elb12345@hotmail.co.uk>
-Subject: Re: [PATCH] net: prestera: validate num_counters in counter response
-Date: Mon,  7 Sep 2026 23:39:58 +0100
-Message-ID:
- <AS8P251MB0001B264DFE6DBEF30DC45D3C8B22@AS8P251MB0001.EURP251.PROD.OUTLOOK.COM>
-X-Mailer: git-send-email 2.53.0.windows.1
-In-Reply-To: <f52b173f-79f6-407a-b7a3-f3b94f34003a@redhat.com>
-References: <f52b173f-79f6-407a-b7a3-f3b94f34003a@redhat.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: LO4P123CA0057.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:153::8) To AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
- (2603:10a6:20b:344::22)
-X-Microsoft-Original-Message-ID:
- <20260907223959.113027-1-elb12345@hotmail.co.uk>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fProWdD8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 214341F00A3A;
+	Mon,  7 Sep 2026 22:51:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788821495;
+	bh=osyr9vbobtjiClFCVLlSdXjYM+xnAGLkGjSYTf1jHo8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=fProWdD8hdqV3J6Cs439SgfRjqDZrtdPaUoBSxecDNKYG0FC4/PDrVfpBYfK/t3sZ
+	 7AMzpDAbYx2lR1uG18bjo5qubbpiLNCNqnyHhuEgXVJ9SLsloERycfvxyF6uzjSGwM
+	 RYakJlPhxj7sZrwho1TeRZ0rOO+r37jeTw924uJxwtTOw9QsPinTtBPbNlERdQMF75
+	 RBOs47a1KqZucaz1IVtx6NeuQgbSQh+cyFZeMa5enw4m/2hMDnZdiErXnGCGIWcJOO
+	 808jLskhYt6kXdqujzmHYhp3GhrSjosuCEFh0ojlWKUm4opK78GTazVIFonp5R9Ls5
+	 /nBbxXYVPaRaA==
+Date: Mon, 7 Sep 2026 15:51:34 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: "Sverdlin, Alexander" <alexander.sverdlin@siemens.com>
+Cc: "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "davem@davemloft.net" <davem@davemloft.net>, "shenwei.wang@nxp.com"
+ <shenwei.wang@nxp.com>, "frank.li@nxp.com" <frank.li@nxp.com>,
+ "wei.fang@nxp.com" <wei.fang@nxp.com>, "pabeni@redhat.com"
+ <pabeni@redhat.com>, "edumazet@google.com" <edumazet@google.com>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "imx@lists.linux.dev"
+ <imx@lists.linux.dev>
+Subject: Re: [PATCH net-next v2] net: fec: support RX flushing via an
+ ethtool private flag
+Message-ID: <20260907155134.6e9e77f2@kernel.org>
+In-Reply-To: <371b9a61b150bce5f43e70a8032be4b4bc97e759.camel@siemens.com>
+References: <20260901074732.113791-1-alexander.sverdlin@siemens.com>
+	<20260904182056.0d81cf1f@kernel.org>
+	<371b9a61b150bce5f43e70a8032be4b4bc97e759.camel@siemens.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8P251MB0001:EE_|DB9P251MB0029:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9f96357f-a317-457c-fa1b-08df0d30f470
-X-Microsoft-Antispam:
-	BCL:0;ARA:14566002|55001999006|5072599009|51005399006|15080799012|24021099003|25010399006|23021999003|37011999003|25031999004|19110799012|8060799015|2604032031799003|3412199025|440099028|26104999009|40105399003|2607281247196008|1710799026;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?2b/NnFLap4R348yq7vQ0HUNBNB9dJf39vesw3UBq9VHk7HMw6oQ4CIF+HzPg?=
- =?us-ascii?Q?gbJFiKdAXDl1K2sdzM2HExKp9foRVw/Y/qSudq77arTMwFIFGrIlZGO0LxAb?=
- =?us-ascii?Q?9Z0x2JkQGw+RH/wnvdC90JME1Cy7yXFvyYZVBGxMuU9ABNRJuPKM+m7AUZVo?=
- =?us-ascii?Q?SDYrjz8J3hIdcr4tF07fzJDKaTAXg82Kn3M1BxLqviltUoj+OMy8dm+ANj5a?=
- =?us-ascii?Q?+PpD58aHomypYMIHPjF4c26o/R0cZeoOrYvNeH9RVLcNdxtpyqGmX9J81gKI?=
- =?us-ascii?Q?CMONbBZARf4EQX95hs/NEzx4I6ZZK0UgoXIJ+uMW8KwTNTf1ZrSbWyoeNHB0?=
- =?us-ascii?Q?Q9OcnZWsKkMw2JclMRGZE4AjMpXVl2zr66r3jq6ES7KvXo4pgthQsqUSLsM7?=
- =?us-ascii?Q?fuiNREkS7s6c2HOxYIO8Jzfn/O3ik1aQHRLpDBZSXUZpSwF0nfqNc4KHLdEd?=
- =?us-ascii?Q?m97Sx0/7QmzwyHhZoAnX/Ula0XzznR11XGjsU+WZe26vxb1K4igbztZkL3Be?=
- =?us-ascii?Q?tHPQdvzmGBcZAKmTt/Qsrok42L4wWEAorM5xEp7tOJr4UrSp3EgvF6NA/zYR?=
- =?us-ascii?Q?wgh3AMo2De7niZWYVwrpcWzWI/MSTYAEeqLFuU8qJfTrYFlY3CluWzqMpBBG?=
- =?us-ascii?Q?Sac2JAg+J2O0w9JqeIqrItqTrXtntxZe3jJk+DFKACbOjZbezdLqHowqIHkP?=
- =?us-ascii?Q?D+yQwCevVuLNPF3IZ8EuPWPII1v69BFQoYle3db3fAS24dvhcIy3D5iDvrSN?=
- =?us-ascii?Q?5N1NeizV/znL4nm98rNPJj6Ee74hhmgkVhuXN+D1hMkbAeePHpjrWuoDGxYz?=
- =?us-ascii?Q?0qJfmPthlhtbHGSPLVpeDaZ1eGN4HVHgyr64NX/9wOuw1+iww4rudnPsN0hO?=
- =?us-ascii?Q?m2l98rSAz/KF33tPAHaJiiOKUpVep+T8gn+l1xHfsYRWYMrXePLEzTt3HbAf?=
- =?us-ascii?Q?QLT9qPNpugO4IS3otjhF1FIZDvs9OzvPLDgvNZ9w0JWSze611A3M1DtvhEN9?=
- =?us-ascii?Q?Z+1+7s8yRUYkJB0ITMvRQ6e9IUBJbSXMelFj/7UwLs+GGkcE47V4dpuqHf2y?=
- =?us-ascii?Q?royatYYP8kK4ASmhR9LtlgHzwp8OfW1E3Ep7VkaSmU2Wv5a057E=3D?=
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?5Vhh4Tu/6WsYCVefAJQnVpTRlI4OUYenpT0FWwmAqlDOzaZzOPIqTWhrhvpn?=
- =?us-ascii?Q?GAXHtyi+ntFHR1IfwOuqX6yd6fmxVEE0LeiASOOm3fkyiz85nX0efhxIZ7H5?=
- =?us-ascii?Q?Rfzr+LWyNHhcDAc84ijhZb3R9nu42Q1iglaaqrXYTLJoyGur8OLradrY+vJT?=
- =?us-ascii?Q?bKCAnAG71Y0p2+4hes8tFnGLJeymM/nvhZUHmlm14gnfhrhxOIRLmTYHMSK7?=
- =?us-ascii?Q?FjUhDER3yXJ0TBanQbRMcdEGWZRzLQi//0++BGYMfbJTWr9HHybk+djQXTW1?=
- =?us-ascii?Q?4gEio6xUhZ1omGFQpGXfifrnQWQIsWccd7yUaxxiTusjiq+gG/ilcIBMECUE?=
- =?us-ascii?Q?dGFzkRHUK68SwS0uuPCZGNmALCM7aRoQWEhIpqtq8tmOhTS2o0kyrBWlwqRK?=
- =?us-ascii?Q?OOPUA41NiFjGh7anYRZ4Aa6xloiYWtMvxfOSAFt7A9/xjZxQJ8LCTWBcVKpb?=
- =?us-ascii?Q?bmSqiLWsopd7yTZkGiZNeUpqkfZ+qzc1SwhNLbP7r5DVuz97pYpnOiDxSjQa?=
- =?us-ascii?Q?XllDC8nGv8KdsIXAFOpC7poXVRejHbnQUdH7gtO3TbUDXyX6qKH8RPpYhNV+?=
- =?us-ascii?Q?BVCO/2v/r5vQy7FdLI2IhN/TOEteZYSDECo/421aaQNyTr0YIfA+fZXxWhWv?=
- =?us-ascii?Q?My/je1Lr/qrz7pCWVToAz/uhymYiA1BpSIGsLT0rf+YWAcMbrpQ/q6/dtPLp?=
- =?us-ascii?Q?ETY9B5LP4vF/SiE2ePQMm79q9mRdPP92NxTHZo8rHBBMlaCxQDKhqGfFp8iK?=
- =?us-ascii?Q?RWUtkyakuzFWwz+SDeIVFGUk2alXs4NHLbrGU65c8vWyQtjas7xBZKpoqYYz?=
- =?us-ascii?Q?QQQMOlwejPU5d7LiYpdF/cFL8TpU++cpnl4LAU2/JCOBm6QYWf8Wq9CBKB9R?=
- =?us-ascii?Q?tdWILB7P3QYViXvDJAqrmfDj4C51IfiumKvvH4MaPgN/M0drmfRsY5vGwWZu?=
- =?us-ascii?Q?x8TZjAWbNyw+nwZRhBjMqqNrajQ0hCvYbPIbTMAa/mBbKtrTttS8iSHBuzRO?=
- =?us-ascii?Q?sD/aLlaGe/gf1v4w86X9LiICuFrnYoeY+rT5NVGGQS4eGMlXUEYeYeWnb5pL?=
- =?us-ascii?Q?enYMLLcEitHv5qP92Ft9q6uc41YEMhby05Jn4pCmeccBwDo3jySfMgR1fAvC?=
- =?us-ascii?Q?CjhUajU9b22NIiTl6k3Ay3C1Oa9ywJXF1kvdJR68SR6enrbbuELvsjgPwuwW?=
- =?us-ascii?Q?Vts4xb+y3ur3MOzOGTZTn+pEzOl5/8nB84YNBDLRayadadD42uE5GXAhf1FL?=
- =?us-ascii?Q?tciiiGjPjWsK7WwvFqD2WueMveOEuMZcbpYj288qskWqIxXJBy86ha2gLFp+?=
- =?us-ascii?Q?1v/qDOTEE1WgV2aIYzd+sNbfVkmaXqHnh4xKZcoyOXIP6Hj1WwJMt+TrxdlX?=
- =?us-ascii?Q?75MThNS9qx0AxEbYm/zKC4rlyCsl3d0Q8y+iNXFcL8x8+A0v2NV/EiLUbWWx?=
- =?us-ascii?Q?6VTBPOqCh5Gpp4wanwg1EUpYI1oorG4q?=
-X-OriginatorOrg: sct-15-20-9412-3-msonline-outlook-fe3f5.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9f96357f-a317-457c-fa1b-08df0d30f470
-X-MS-Exchange-CrossTenant-AuthSource: AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Sep 2026 22:40:03.4156
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
-	00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9P251MB0029
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 07, 2026 at 11:03:19AM +0200, Paolo Abeni wrote:
-> Patchwork shows more than 20 patches from you in flight. Please read
->
-> Documentation/process/maintainer-netdev.rst
->
-> carefully, especially the section about the 15 patches limit.
->
-> Stop sending new patches until are the pending ones are processed.
+On Mon, 7 Sep 2026 15:47:07 +0000 Sverdlin, Alexander wrote:
+> On Fri, 2026-09-04 at 18:20 -0700, Jakub Kicinski wrote:
+> > On Tue,  1 Sep 2026 09:47:29 +0200 A. Sverdlin wrote: =20
+> > > The FEC controller can flush the RX FIFO of an individual receive que=
+ue
+> > > through the RX_FLUSHn bits of the FEC_QOS_SCHEME (ENET_QOS) register.
+> > >=20
+> > > RX flushing prevents frames in the RX FIFO from being blocked. Blocki=
+ng
+> > > can occur when the frame at the head of the RX FIFO cannot be forward=
+ed
+> > > because the ring it is associated with cannot accept it, i.e. when the
+> > > ring's RxBD[EMPTY] is not set or ENET_RDARn is not set. When RX flush=
+ing
+> > > is enabled for a ring, such a blocking frame is flushed (discarded)
+> > > instead of stalling the FIFO and holding up the other rings.
+> > >=20
+> > > Expose this per-queue capability as a runtime ethtool private flag
+> > > ("rx-flush-qN").
+> > >=20
+> > > Due to erratum ERR050395 (observed e.g. on i.MX8QXP), enabling RX flu=
+shing
+> > > on more than one queue at a time can lock up the receive path, so onl=
+y a
+> > > single queue may have flushing enabled.
+> > >=20
+> > > According to i.MX8QXP Reference Manual, "when both class 1 and class =
+2 are
+> > > disabled, RX flushing for these rings must also be disabled". Both RX=
+ and
+> > > TX QoS classes are enabled via DMA_CLASS_EN bit, currently tied to
+> > > num_tx_queues in the driver. Currently there are no constraints on
+> > > num_tx_queues =3D=3D num_rx_queues, neither in DT nor in the code, ev=
+en though
+> > > having different values doesn't make much sense even without RX flush=
+ing.
+> > > RX flushing code just takes min() of the both values for now. =20
+> >=20
+> > For the errata - how is the user supposed to pick a queue?
+> > The documentation talks a lot about device specific terms instead of
+> > using generic easily understood terms. IOW it reads like slop. =20
+>=20
+> Fair point on the wording, let me re-phrase:
+>=20
+> The FEC has a single shared RX FIFO that feeds multiple DMA rings via
+> hardware classification. The FIFO is drained strictly in order, so if the
+> frame at its head is classified to a ring that currently cannot accept it
+> (the host has not replenished that ring's descriptors), that one frame
+> head-of-line-blocks the entire FIFO and starves all other rings,
+> including higher-priority ones. RX flush lets the MAC drop such a blocking
+> frame instead of stalling the whole port.
+>=20
+> So this is not a generic "queue full -> drop its own packets" situation.
+> On a controller with independent per-queue FIFOs a backed-up ring only
+> drops its own traffic; there is no cross-queue impact. On FEC the shared
+> FIFO means a low-priority ring can stall a high-priority one, which is the
+> specific problem this knob addresses.
 
-Apologies! This is my bad, understandable if anything I sent over is to
-be backlogged. Will ensure this doesn't happen again for the future.
+Sound pretty typical for a NIC so far..
 
-Kind Regards
+> In practice a user would enable the flushing on the lower-priority
+> ring(s) =E2=80=94 the ones whose backlog you are willing to discard to ke=
+ep the
+> FIFO head clear for high-priority traffic. The queue->priority association
+> is hardcoded in the driver: VLAN PCP 0=E2=80=931 (and unclassified) -> ri=
+ng 0,
+> PCP 2=E2=80=934 -> ring 1, PCP 5=E2=80=937 -> ring 2.
+>=20
+> There are actually two constraints stacked here, and I should have made
+> both explicit in the commit message and documentation:
+>=20
+> - Why flush is needed at all: a low-priority ring can head-of-line-block
+> a high-priority ring through the shared FIFO.
+> - Erratum ERR050395: only one RX_FLUSH bit may be set at a time, so only
+> one ring can be protected this way. With three rings, the remaining
+> ring must be guaranteed not to stall by other means (limiting link rate,
+> for instance).
+>=20
+> So because of the Errata we cannot set RX_FLUSH in queues 1 and 2, but
+> if PCP 5-7 bandwith is already limited in HW, we might want to set RX_FLU=
+SH
+> not in ring 2, but in ring 1.
+>=20
+> > In general AFAIU the flushing should be enabled in tandem with pause
+> > frames right now. It'd be great if we can stick to that, or failing
+> > that add a generic config knob rather than private flags.
+> > There's nothing private about the drop decision when host ring is empty=
+ =20
+>=20
+> I don't think tying it to pause works on FEC, because pause-frame
+> generation is port-global. There is a single flow-control enable and a
+> single pause-quanta setting, driven by the shared RX FIFO thresholds.
+> There is no per-ring pause.
 
-Aamir A.
+Global pause means no drops for all rings, PFC/DCB can be more
+selective with certain queues and traffic classes being "lossless".
+
+> I fully agree there is nothing private about "drop when the host ring is
+> backed up". If we want a generic uAPI, the natural shape would be a
+> per-queue attribute (drop-on-backpressure / flush), not a pause-linked
+> one, since the decision is inherently per-ring.
+>=20
+> Does the above justify the ethtool private flag in your opinion, with the
+> fix being a much better commit message and documentation or do you have
+> a new generic uAPI proposal in mind?
+
+The problem is fairly generic. Ideally you would find something
+matching in PFC/DCB APIs or even devlink shared-buffer config.=20
+Failing that we can add something to netlink APIs at queue level.=20
+But since you seem to have a strong association between the rings=20
+and traffic classes AFAIU, the PFC/devlink direction would probably=20
+be better than ring level.
