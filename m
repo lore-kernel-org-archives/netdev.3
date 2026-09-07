@@ -1,155 +1,211 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012033.outbound.protection.outlook.com [40.107.200.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51DB34F054B;
-	Mon,  7 Sep 2026 14:45:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788792337; cv=none; b=DnWT2oCJAfIPDqazgehcHs17OlpCb1TGZDLQ0+NPiAPuQQnjUA3Cz5lisWYqWlhKpuliUO59/7H5v2BYQ96yQi9d4lVOksPdk/H+fX5pLiyj7zJY6300xOAnd5TqWa+2ZhZiuw497W7AvhDnZJvq465dnuwRuS/3pwzvZlJEJKg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788792337; c=relaxed/simple;
-	bh=tVN7exGVe+OxPH5wzllGt4ki5atK0RKHwBWi4j3CTUw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fXrbJO1WLMKlOD+N95qTPxTY/gHjF9gImfQjnR++Hc43wFaC2A8WoEcH7TizrI9XhQrQw0eLe4o0NkSr18tCQy3EkwJtwDhKsqOeg2EEvK9yVgQXDetbFEkPOxjgRnqMJN4fC2ca4E/autiSlMhhu4DipGgag9DTGBxFQ8CMk98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=HSQsSB2Z; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B7824FECCB;
+	Mon,  7 Sep 2026 14:53:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.33
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788792836; cv=fail; b=hSoGRrP3j3y2IBubuPbYCrAlnBL9fVvRsZFd0TQDl/YFSwHuow9CRbAXg4J7+4dsCqlpGCQVdQ2O4YyRdQ+F++zxcW16bcAw2zkzvEqkrAYC8OR32kzLiGXFwGiQ1FoY/hRFue6zGlBGjtKwLwfq2IdSj1sQpFDs9yG2aMzJUdk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788792836; c=relaxed/simple;
+	bh=GmEsvQ1Ros/NGdJjMg6OWG+djxPUcbdyWcuTsAy1aqM=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=BIIQriMstscVmLR4UZB8PtIVDrRUJTfqvXVJe2r6jHlBUEDCm3OVA3KUKqJ8xyfRn3OTb5cvl3WPJ7rkp1yx1EW+dZrPxMv+8CBqYci8MoH2PbjGP2Gl/bMujvn8EfuH9vV0q+J/q3sFVCz2k3X9xaNKWPA8kent48P2ltmMwPA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=4jOxBJkY; arc=fail smtp.client-ip=40.107.200.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="HSQsSB2Z"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 687E1ZbH1006149;
-	Mon, 7 Sep 2026 14:45:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=pCM9+mBbY9cVhqzRP
-	L2jwxQGBQ0gRlI4+HZraomA43E=; b=HSQsSB2ZSszOtFJL8HTcZbHh0etyiH//I
-	ABpWI30GYiqrkepmsMJYK/dRq6UiGLA872HUNu13fR5I18AkM1LkMIjPeXCxNv61
-	kxH0t20QbYjMn42Z5it2p4RJ4n0bh4weHGu5Ue+ozw2YfHbUoSzvL5fQcXEmfxVm
-	93ECajAm0JFrTujU5SCtG66qHUbT5nYvWT+dzPWax239pzq/0Nee2uwltP7w3KrD
-	brL3hjvgqkarttTNsaacmY5AvnA5OUqutczKTvrXYCKR6iCZaqiIPTtd+Mf6uVZg
-	4ul8+e2y/7gzmGGEI/pheY5KZeL4FZAfOVW7LocqLa5EKBRlBOaOw==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ggbjrh5ub-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 07 Sep 2026 14:45:24 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 687EfPus001287;
-	Mon, 7 Sep 2026 14:45:23 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gh03y695s-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 07 Sep 2026 14:45:23 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 687EjJdP50463072
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 7 Sep 2026 14:45:19 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C222620049;
-	Mon,  7 Sep 2026 14:45:19 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8757B20040;
-	Mon,  7 Sep 2026 14:45:19 +0000 (GMT)
-Received: from t83lp71.lnxne.boe (unknown [9.87.84.240])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  7 Sep 2026 14:45:19 +0000 (GMT)
-From: Nagamani PV <nagamani@linux.ibm.com>
-To: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com
-Cc: wintera@linux.ibm.com, aswin@linux.ibm.com, hca@linux.ibm.com,
-        gor@linux.ibm.com, agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
-        svens@linux.ibm.com, kees@kernel.org, linux-s390@vger.kernel.org,
-        netdev@vger.kernel.org, Nagamani PV <nagamani@linux.ibm.com>,
-        Sashiko <sashiko-bot@kernel.org>
-Subject: [PATCH net 2/2] s390/ctcm: Fix use-after-free in channel_remove()
-Date: Mon,  7 Sep 2026 16:45:11 +0200
-Message-ID: <20260907144511.3810194-3-nagamani@linux.ibm.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260907144511.3810194-1-nagamani@linux.ibm.com>
-References: <20260907144511.3810194-1-nagamani@linux.ibm.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="4jOxBJkY"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=jrkh1b/ipe/GVKewYVr3JX2B0BOoP/4zVUYbTjt8jlT8zq1jqWfwh4sHuYN8k2Yso/Kjh8aPEfycVFdZc9cCeGlsqtqNj1ZAKoNm6FADU6ZP2ivm9fuZqi1fOD12OZfz/GWZDK5FtsY3uRDfRERQOLpR2RNVqzHbUDTwCx/AruOqKjeVjRqJWFeal8+IRBQBl3AfN1ALnHi5xXfNqXQbN8e4zMtn4xmbW8Eo6xQA8LXsfxWk3kCIsKCdDYQKClRgQ6bkavaLYIeX27s5HOqFcNhcciCRQfzYZ08TxWRLqUC1PNkOLdE50gnlZFfPSvKy4TzWEuhQi+yxDg5uvFAlCg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=F3ErdVwhslrfzMCaD/lQoPrrw/XkadqDDRtMB8TLhpo=;
+ b=TVmgc1XupTRq3/RMcbpxKE8TeDmY0FdBS3+R7whTYCCqOdjognZaz6UrNGSLN0KvNpEL/LxCvhg501T4s/B4bKXMqHZokeD06AsZtsAterGNW/xpZEz48tjLNAI67lnCrBV8G8WB0LPHRtjgXCRdd+6MDP7yxFDjYrD6Wi98PFtSgz8tBFhrLwJGSFdWAEVN1qZezxJlkFMsGKgaaCgip5E2PAJmbHuo53cMOrqNfccAcz4MRT6iVNz1QtjSZenn3T7gLCV58m/SiN2JmqvXU8WcYx4NE7/LG5q+sIpiNV8qlwppDMW2SSC9uMmj4kE/47LPP/LUsM7rhRG58DHqQw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=F3ErdVwhslrfzMCaD/lQoPrrw/XkadqDDRtMB8TLhpo=;
+ b=4jOxBJkYIpwDRXL/dMEAE7wg5kubEYfhd1Ruta0W6q/VXdS48oNP9si9CXKWNaG6KhD0f29QvK6OD9//slBZYfpZJn8zEORkvWGI0Z6Mr50t92BJNw76gsNiPNBNoEOJtK6CZZRN/6ldD38HlZxkgjMAePxfD2Kkjw+E6Np7O3g=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from SA1PR12MB6798.namprd12.prod.outlook.com (2603:10b6:806:25a::22)
+ by SJ0PR12MB7036.namprd12.prod.outlook.com (2603:10b6:a03:483::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.382.15; Mon, 7 Sep
+ 2026 14:53:36 +0000
+Received: from SA1PR12MB6798.namprd12.prod.outlook.com
+ ([fe80::e317:e4a3:6ae9:8c54]) by SA1PR12MB6798.namprd12.prod.outlook.com
+ ([fe80::e317:e4a3:6ae9:8c54%5]) with mapi id 15.21.0382.014; Mon, 7 Sep 2026
+ 14:53:35 +0000
+Message-ID: <3369241a-b591-415a-9f40-36f95bdd6a9d@amd.com>
+Date: Mon, 7 Sep 2026 20:23:27 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V2 1/4] dmaengine: Add support to configure and read IRQ
+ coalescing parameters
+To: Vinod Koul <vkoul@kernel.org>
+Cc: "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+ "davem@davemloft.net" <davem@davemloft.net>,
+ "kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com"
+ <pabeni@redhat.com>, "Simek, Michal" <michal.simek@amd.com>,
+ "Pandey, Radhey Shyam" <radhey.shyam.pandey@amd.com>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "dmaengine@vger.kernel.org" <dmaengine@vger.kernel.org>,
+ "Katakam, Harini" <harini.katakam@amd.com>
+References: <20250710101229.804183-1-suraj.gupta2@amd.com>
+ <20250710101229.804183-2-suraj.gupta2@amd.com> <aICPiS1_ITwELrxq@vaman>
+ <BL3PR12MB65713879CB569E3B330C1E76C95FA@BL3PR12MB6571.namprd12.prod.outlook.com>
+ <aKxJQLx6yprNdU03@vaman>
+Content-Language: en-US
+From: "Gupta, Suraj" <suraj.gupta2@amd.com>
+In-Reply-To: <aKxJQLx6yprNdU03@vaman>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: PN1PEPF000067EA.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:c04::26) To SA1PR12MB6798.namprd12.prod.outlook.com
+ (2603:10b6:806:25a::22)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=E7T9Y6dl c=1 sm=1 tr=0 ts=6a9ece05 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=V8glGbnc2Ofi9Qvn3v5h:22 a=c92rfblmAAAA:8 a=VnNF1IyMAAAA:8 a=VwQbUJbxAAAA:8
- a=LCK66-T8MJ8bHskDLlgA:9 a=GvGzcOZaWPEFPQC_NcjD:22
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTA3MDE2MSBTYWx0ZWRfX+bAo5mhFFbaE
- eAH/e8wdBprqTEc+KyOx+QdslXrqgTW0hIPveONlM7/BLEzZUcKwnC2w+B53pYyrLtcrmAuUlNR
- rcUj/QlVBMhsIRHkHPp1C/cF+FFPpU0=
-X-Proofpoint-ORIG-GUID: XKf7XC4XMiK-uFTmRUpZ4CiXDW_8RcvK
-X-Proofpoint-GUID: pMaG_TKejyVRX8DqcBpzzoXhxXTr2dkd
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA3MDE2MSBTYWx0ZWRfX5z6NwR0TkGcD
- QYib7iFdkmGu+TK4iyQ2g0cyMoVEIb33gYYAkXFNUIw7dDZCk/6WATm8Nb0qkbp0Nn9V8QbHaaX
- 4Vv2QFvfuVupN8Qy54gMDcuGZo19NAZlvp0drdcsAgw60GM34kvhxRn5vSqYe3JCXqWo0tdgzTd
- ADmBSsJs7bofcIoW3vYpR1BfVy1AdufKqZLJBO+970qowkAvY3nYAQuEGb4XY0kJ1YxZyYezI+l
- N+aYWoXCzZ0XaEx75kx6pkCvRE3Uw5rCT5R7WqjYCNDeWx/Za2sconbzgb+oX40KeSJvw5WhoMj
- sGtLbQ9bRxjhCmImjmVbxxbs6SHcDEvr3wAip0NcUA+CHUx1ML0gdQseaLYQP/3xEm7PltB48h+
- H084gL5uAkNqPxPtPIShHZQXB5ebzMf86IQDpJ5cdAmCUOztj0wgvslBJJYnWIEuKBxt1ppNPgv
- y+sVgj+sVQ7GAyKlLVg==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-07_04,2026-09-07_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 phishscore=0 spamscore=0 suspectscore=0 priorityscore=1501
- bulkscore=0 impostorscore=0 malwarescore=0 lowpriorityscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2609070161
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA1PR12MB6798:EE_|SJ0PR12MB7036:EE_
+X-MS-Office365-Filtering-Correlation-Id: 342038ab-dacd-4d7d-b2e6-08df0cefcb22
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|376014|23010399003|6133799003|3023799007|10067099003|4143699003|11063799006|56012099006|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	h/BX7nrxXeM9FxC8/Ch7g1Un5gFENaB7n7tP7j3E8FujWmI97+wvDVqI0s6AUL7D53QWkKrHcwuQtaK3UmVCOutVGWvDjq9PzC20wMHmVSqCf/hD407+I3DVV+qqZ9LrNxv0/kBWCqyTtjeNMHkB5nkUBkY3Dpgaqx+poW+/TxKdGFhPzFsMdxOrcuKtQ3khbc7RX0xcl4hH083dQIMZgJBbduSJFLKxRiOxUaMA99vGAJoww491jCvcI5kea/GfMiA5gsCM7nyz5usB6RVt6dU2pRMsjpRldKd1dI1PkGO2kaWQoog9ZtjQv1tgatbq9Z4ms6GBwJ9NazkfSU6w2PmlKsbkCZmiIgPLpSpmirI2u+UVI9JRpLH/Gb/vw/GG9/m+lNA5R9fxFs2crv9FKHA3rewTvG503njeWDoa8zlzSVSkMjMNd26a3sTiNsncOevSDLsrtNq+lwONTMHM9eA47ol6N41IAHSNPpjOH6fjjLo3mb4uP4v37+IOkVdzC86odfrpQkh7n1HatXNt3gEoBSqIC5jG0HW2L5bz3eOLhGQ8R1vw9k9cdgzTxSso+SgkgD7N48EZNcZ7d5v9z7a8Ji8jv0xiaJlY6J2Z9e7G1KB592fw9N4DXtiicjm1+dtOsQFhA7/6cpFpd1px3pOhKjUP1uzwj1cK8J4kk3Q=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR12MB6798.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(23010399003)(6133799003)(3023799007)(10067099003)(4143699003)(11063799006)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?VTNPLzVzUklmN1FsMWtQcGtBeWxFZFVLS1dETkZST0ErMkpUWWZMZ0k1Nmxv?=
+ =?utf-8?B?bDFmcERDUXZOS2Q3VC8zZ1Jha1E2TXQwanlrYkVIdnRRS041TzA3RTNUZDUv?=
+ =?utf-8?B?SG1ncm8zekM3N0VnRFJyWlo5bk9BQ0tySEZEYnRqTCtueE8wZTdVRWU5bTRY?=
+ =?utf-8?B?dnAxcDhORHFKTXFGNFpzMlFKbHMxMUJHQmJ6cEgwLzNHWjdCTUlTejlHSnRQ?=
+ =?utf-8?B?b1dBK1BPWG9yR3IxUW4xK3IvTTRTV3k1WmtVMkdPREFJQ1lRb0NmS0ZqSC9L?=
+ =?utf-8?B?SUtHb0grM3BIYWxCT3JweWRTU1lmemNKN1piQVl6MWZkNVVLNjZWcktLbWdT?=
+ =?utf-8?B?dTYrK3hFZEpHV2J1S0FFcGlseExkeTJ4ajlLOTRIaWVVRXVJUUhaRkxORXJa?=
+ =?utf-8?B?b0JXNlZrNUw3bG9NbGJOZGw4Qm5RdVdsTVR1bmVKdExVd1gvdjcyNVRJN1Bx?=
+ =?utf-8?B?cm9xVnFFd1JuWEI1ZFVrcHlRbzhCaUIwVG9lSXRkOThEUXVKZy9pMjVEVDYv?=
+ =?utf-8?B?MzdsVWpJM2lqWE9ZSndKRk9ibVF5OVhkWm96enNUd2ZkL01ZSzdLWUZJOCt3?=
+ =?utf-8?B?d25EVG9XdGl6aHpWMEdPRXhCMHNOREUxZVZOaXJobkJOMnc1b0IvaWVMaHll?=
+ =?utf-8?B?UXo4WVBsdzBxSTRFZlYrakxtOHQ2Q2liMXVjUTZjTFN3TmNHRXNLUHE0KzVZ?=
+ =?utf-8?B?c010MDY5OFZuTWk1TFdJNjVIUGN4VVdaYTFhRnRMVGVzQkIxK2w1d2dHTDVF?=
+ =?utf-8?B?SG9MK1QrWnlOeVVJSzc1eVZKNUhsUEVLcE1kVmVUdkhEQitZdDlhL2NlbFVC?=
+ =?utf-8?B?T2M5R05yZk5UVjFTazJlSm5FY0oxeDM5K2dUWkd5V0Njb3M5cC9zdU1LRWVE?=
+ =?utf-8?B?Q25odHhkcHkyVnRCTzRuQW9xcVZlck1Ob3JiSTV2VTdxeFIyanpyZnVWL1BM?=
+ =?utf-8?B?S1NQcmMwdkZ3d3g1M1hVaXg2T0VXeEF2THQrZXg4aUl5VkdWbXl6ZDJYblNE?=
+ =?utf-8?B?bEdVcEtYdjU3VU1JSTFxTlVOa2E4bzFUQVlyQWhuYWpsM2R1K2FkOVlRaFJ2?=
+ =?utf-8?B?RXhhaXNjOEJaSnFhMDUyVDU0a3J3dUhQa2FUZUxadmNkMXp3T1NmSGd2VlBI?=
+ =?utf-8?B?aFZNRGlyTlM1ZXhBU2hzNENvdC9MQmNyUWs0SEhLa0hCVGdFVlpCT2N4d0xJ?=
+ =?utf-8?B?QVRmMVJBS2t5TEU0S0cvSDdkbnJ6eUE4TDJUdmhwV252TjIzRVI4RjE3akVQ?=
+ =?utf-8?B?bUhldUh0RDhrZlZmeDc5T2JZOEtCMytFSHF0RjJzYk5YN2ZhM0U4SDJjMnJt?=
+ =?utf-8?B?YW12akFRSFJDZ1NuazB0cGdHYy92d1pEQVFlYW9qZEdwVUt5OU1iNEsxTnFW?=
+ =?utf-8?B?bFdrTWwrWkZWSjg2bUVVVGRzMjNXaDJkTUpyaDRrRnQ4MjZMb1ozdXdlbmU1?=
+ =?utf-8?B?WW4wTG9KelpEcFRscis3bmhvVUNNSHlMVkJaWS9aS2R0Y3p2QnVNc2pDWXF5?=
+ =?utf-8?B?elR2N3ZQTkxtQnE3dTQ2dk5wRERCKzM2ejdPMjdCNWNTdElwWUdjYkkxcmlm?=
+ =?utf-8?B?MnFyZDZjY004aFFLM1QwNWFMYTh1YVJ4VDF2RHhmcStBNXlJMEpyQnNNUDB5?=
+ =?utf-8?B?a0U0SkJISE0wbWRoQlZ4OU10K0o0VnJETWJEVmpldjg2eGdhQ1VyRVFrVDJG?=
+ =?utf-8?B?UUpnbXFBRjBNQVB6UERHMmZyOTFZZE91dWQ5eHJ1N054YVNGampkK0FydmRO?=
+ =?utf-8?B?NzBmVUpYY1B5VGMwWjB0K3M4aThlTlFCelRuOWl2ZVNYL0tob0cvUWQ1Z213?=
+ =?utf-8?B?bU56dVYrd25DaitJcFYwQ3h6WmJWRzlaVnpBZHhzdXJnY1lyTlJCaHd5UmVq?=
+ =?utf-8?B?RzMzcytjZ3h4OWJGTjBRMzVPRzVhVFB2enFLUGFORFJwSVN1T3hZcGZEU0hH?=
+ =?utf-8?B?ZTBVQnlUOWhLb3NrL25CMWNIeGdIU1M4ZEhtMmpvaWJ4bWxEZXJiNnc3NlNo?=
+ =?utf-8?B?WGppdVRiR2NKY0MzUjc1WCtrTmRDYWQ0eE9XQTU3RjYzQzhSZ1hsR1o3SEU4?=
+ =?utf-8?B?THpHSTA2NUpXVG5LZ01DNHJUdW5wS1VrL0JHdnEwcmlKeDhTcHFOU3pmTVZZ?=
+ =?utf-8?B?elQvbkk5aDRLWmgzb1VuRks0S1N5M09QeXVUcEdyWGhwQWowQkdVMWFxaGFV?=
+ =?utf-8?B?enJ2RTFYVGhwVVFNKzhwbSsrOFRtYTVkYUZmZjA5L2xLV21kSDRLNlJVTjV2?=
+ =?utf-8?B?VjZqWVRjQWprSkhNMjRzN3ZmZGFtY0ZLRUtFRWN1djZFSHhrdWVlRFlSWG5Q?=
+ =?utf-8?B?N2FMcktUSmZGeENrUXZ5SWEwQVhRWW9Ja3ZwSU4zLzI2K3JKOUZSUT09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 342038ab-dacd-4d7d-b2e6-08df0cefcb22
+X-MS-Exchange-CrossTenant-AuthSource: SA1PR12MB6798.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Sep 2026 14:53:35.7916
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: cV+Cy31gRg4vpuKBWQHWWSgItztsVpVif67abwq18N4Z4TcdL4ohe34Z2IxJSK/rfh5Ikiwg6i3wML9CoV1kPA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB7036
 
-channel_remove() calls fsm_deltimer() which internally uses
-timer_delete(), then immediately frees the channel structure:
 
-  fsm_deltimer(&ch->timer);
-  kfree_fsm(ch->fsm);       /* freed while callback may still run */
-  kfree(ch);
+Hi Vinod,
+On 8/25/2025 5:00 PM, Vinod Koul wrote:
+> Caution: This message originated from an External Source. Use proper caution when opening attachments, clicking links, or responding.
+> 
+> 
+> On 23-07-25, 11:49, Gupta, Suraj wrote:
+>>>>   struct dma_slave_caps {
+>>>>        u32 src_addr_widths;
+>>>> @@ -520,6 +528,8 @@ struct dma_slave_caps {
+>>>>        bool cmd_terminate;
+>>>>        enum dma_residue_granularity residue_granularity;
+>>>>        bool descriptor_reuse;
+>>>> +     u32 coalesce_cnt;
+>>>> +     u32 coalesce_usecs;
+>>>
+>>> Why not selectively set interrupts for the descriptor. The dma descriptors are in order,
+>>> so one a descriptor is notified and complete, you can also complete the descriptors
+>>> before that. I would suggest to use that rather than define a new interface for this
+>>>
+>>
+>> The reason I used struct dma_slave_config to pass coalesce and delay information to DMA driver is that the coalesce count is configured per channel in AXI DMA channel control register[1].
+>> AXI DMA IP doesn't have provision to set interrupt per descriptor[2].
+>> I can explore other ways to pass this information via struct dma_async_tx_descriptor or metadata, or any other way.
+>> Please let me know your thoughts.
+> 
+> dma_async_tx_descriptor has dma_ctrl_flags and one of them is
+> DMA_PREP_INTERRUPT which you can set for a descriptor and control when
+> you get the interrupt
+> 
+> I am not a fan of adding custom interfaces.
+> 
+> --
+> ~Vinod
 
-timer_delete() returns immediately even if the timer callback is
-currently executing on another CPU, creating a window where
-fsm_expire_timer() accesses this->fi (which points to ch->fsm)
-after it has been freed by kfree_fsm().
+Apologies for reviving this old thread. I got pulled onto other work and 
+am now picking this back up.
+Reposting the context below so we can converge on the interface direction.
 
-Fix this by calling timer_delete_sync() directly on the underlying
-timer_list fields before freeing, instead of going through
-fsm_deltimer(). timer_delete_sync() is used rather than
-timer_shutdown_sync() because the channel is fully torn down by
-channel_remove() and the timer is never re-armed after this point,
-making the re-arm prevention of timer_shutdown_sync() unnecessary.
-This cannot be fixed in fsm_deltimer() itself because FSM action
-functions triggered by CTC_EVENT_TIMER call fsm_deltimer() from within
-the timer callback chain, which would cause a self-deadlock in
-timer_delete_sync().
+As mentioned earlier, interrupt coalescing on AXI DMA/MCDMA is a 
+per-channel configuration (IRQThreshold + IRQDelay), not a 
+per-descriptor attribute. Because of this, DMA_PREP_INTERRUPT does not 
+map cleanly to the underlying hardware model:
 
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Link: https://sashiko.dev/#/patchset/20260803182736.2356374-1-nagamani@linux.ibm.com?part=1
-Reviewed-by: Aswin Karuvally <aswin@linux.ibm.com>
-Tested-by: Aswin Karuvally <aswin@linux.ibm.com>
-Signed-off-by: Nagamani PV <nagamani@linux.ibm.com>
----
- drivers/s390/net/ctcm_main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+- The coalescing delay is a per-channel timeout expressed in 
+microseconds, whereas a boolean flag cannot represent a time-based value.
+- Linux Dynamic Interrupt Moderation (DIM) adjusts both the coalescing 
+threshold and delay at runtime, requiring an atomic per-channel update. 
+Flags on already queued descriptors cannot provide this capability.
 
-diff --git a/drivers/s390/net/ctcm_main.c b/drivers/s390/net/ctcm_main.c
-index 8b0d76a47d9f..63f8832f9b14 100644
---- a/drivers/s390/net/ctcm_main.c
-+++ b/drivers/s390/net/ctcm_main.c
-@@ -211,9 +211,9 @@ static void channel_remove(struct channel *ch)
- 	while (*c) {
- 		if (*c == ch) {
- 			*c = ch->next;
--			fsm_deltimer(&ch->timer);
-+			timer_delete_sync(&ch->timer.tl);
- 			if (IS_MPC(ch))
--				fsm_deltimer(&ch->sweep_timer);
-+				timer_delete_sync(&ch->sweep_timer.tl);
- 
- 			kfree_fsm(ch->fsm);
- 			clear_normalized_cda(&ch->ccw[4]);
--- 
-2.53.0
+DIM is important for modern Ethernet drivers because it balances 
+throughput, latency, and CPU overhead at high speeds.
 
+If adding a new interface to configure interrupt moderation parameters 
+for networking clients using DMAEngine is not preferred, would either of 
+the following approaches be acceptable?
+
+- Passing the coalescing parameters through per-descriptor metadata, or
+- Using the existing Xilinx-specific struct xilinx_vdma_config from 
+include/linux/dma/xilinx_dma.h, which already provides coalesce and 
+delay fields.
+
+I initially avoided the latter in favor of a standard dmaengine 
+interface that could be used by other networking clients utilizing 
+DMAEngine. However, I'm open to either approach if it aligns better with 
+the subsystem's direction.
+
+Regards,
+Suraj
