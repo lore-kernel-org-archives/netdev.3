@@ -1,108 +1,144 @@
-Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F30C444BCB4
-	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 09:31:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D4A74483A8
+	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 09:31:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788773507; cv=none; b=AX5tumFymzfE4jrW4KkOgDI50FjLw4o0j5IeEJejeYvyFrEdpR3i6WDZo3OawSDFn2VBStdGn4MajtpBwNOQGjtxZo1LYZ6YKAXhgO/r6kw4tgWbYTd1H1WfA+Hve4VNmMWYGHOzmZS79ZA/wu7NnaJQpQUXBvXnwv11a63sOIo=
+	t=1788773522; cv=none; b=MueWvMdoSBIO1L8g27G4zrbQZyqXGWh22bRtEAS+S90EXpzykZoNERJYeZpZYFMroggZeHp/yPM+kpzpcQI+OhOLKqTK1mg6QQlhL/JGM0Y70TQyodyXlTB6iRNblWxqjAPyogYTfkRiwrY5fB9H42pDamVHoAP8MNZRsdBoFNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788773507; c=relaxed/simple;
-	bh=Th+Z1q0V4zPiQYGZPxtT9YSQKgS/aF+czsGn/Ny+bDQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cIFv4MCBV4peWVnrsCYRbfebuDgz+oLLjL6LSzCb4156Yunj5+zNzrgDygeTsi7QX0EZleMe4d5eum11DomJUznrqlT/Snsfk4YEApNEex7HF1YQGrbW3uUa8oD3IU9K5ftNSOl8yWKagnCvTJMgGB8wd2y5c58H2SXWS5kVGeE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dW5+NEID; arc=none smtp.client-ip=209.85.210.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788773522; c=relaxed/simple;
+	bh=LdLKqC7dAURPLybTCRhczbmIb+fvHo2IE0tsoVIELjs=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=OBE6x1yHSPHtb9QKYd8APCXY/I9X0anpHBvyKdn5CPDfD1SDG/XC/JK1UNUpVgWwwwTqJHygOERaJ3BRTY1yeCP+TPjK9Vk0rfwSs5NPzZq5SXUx31cOpWbTEDQI2d0MSryKmwXy6lWMrHUjA2twvZys1po5DL3Ac3/y9hkav6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=Rx7xP8xY; arc=none smtp.client-ip=62.96.220.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dW5+NEID"
-Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-7f0167e59a3so2247199a34.0
-        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 02:31:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788773505; x=1789378305; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Vh36yaSDktV57csBdLTXMj3w1R2afjebrhYltH9Evw4=;
-        b=dW5+NEIDIDCU1lIVCZE0WcbWayJJFOY1wVqVu31s1DiKcsB6R4NT1x8NcP5cQWvsDF
-         rwJS+vQga1XPrjYW54uFjpgPMueZzOMok+BnGLzAPK75rQq7u5y1fiCqqINlT8CrOU0s
-         f0jTHiyH16LXl4s57uU5G2vPSSqfLVtIs5pI6mrUxEigN9hxCh/jJyiaeBCs7FE8qx2W
-         z+v25oJhDw9C1jzY0vvp2dkJhjbTk9s3LS/yq7Rz8UQcC9G4BKf9pTi+P7UCIGtgwi29
-         deAQC+i6zpZcSh1wjC4QMVNU/LHVOp39fOoLL+15s2BQtf9N3r8s9cl9fnuFwwp58dRV
-         hIiw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788773505; x=1789378305;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Vh36yaSDktV57csBdLTXMj3w1R2afjebrhYltH9Evw4=;
-        b=bzBkWEeKG1xJCE/hK5lBSF4wQn36Rsg4ilPrarfccOVBok/ONtznLL0uhd8BDi3y4S
-         cf2cX5LImw/0kgyjH8eeInFNYC2GxgLvB3KEn//+lbV6QzIJ+EuExqkx8uaDf5B3ZMRn
-         ZP/CUtKRC1I1ETe1XcwJK8gp7M3rZz3nurz96eOyh6IY0NBBEnlji/O10uU+mhe3/CwS
-         KSH0qx0iwGgEmu62zukuYZNaSVD7AESnqJ1F2REgYNRDMUM1AKnVAyCiFpCzcOs3TzJZ
-         35RKfUhJWTZ2S8PWqDeEJQWKbk4q1HrGCHmb9ox8L3Vw3msDzsS8xJMAtiuiyi7EPcv9
-         lApA==
-X-Forwarded-Encrypted: i=1; AKwUvBxHtuTfctmkDOsObcWGhdfFsVbOceJ7SP4lrTyeNXkoKPtViwZxKyYZevvhzFGysWPAjxzoQ7A=@vger.kernel.org
-X-Gm-Message-State: AFuF++nN2R8fkVP/GNhAi5grXweqr/MOfIxf+fuZoIAqQTV6/xwjDbEm
-	DzDO5kG7dfewZR9E5iYA8T4IHnmNtekCjluX2b5ydd/8Bkp0K5HpnJ/1J3KJQ9IyeIM=
-X-Gm-Gg: AYBFou3IeOQtckPAJXvqMovPwy55MnPc3WycnGbnHVmL4pqe+7RnQHfUvlJmBZ+74Fh
-	vDbflsK1BK6r7tUIHDH6LiNOjYD5PouX2960eJ3CY6LsRupM6H8xl4rECzdPyNYbYVnrS1RCO/U
-	pRRpaLeGLV1FCo1inLGst4SLH89P6CHUupeTJvYv94GwTGuZF3QvNg0QGzNHOcRZc17Jz0Cb8tD
-	3GOFUK+jg7vdCZr4w7+NBLQEQEmg74TOaxLW2W9RaIlHFrEAXMQJoZ7+z9ntBTsQzlePgbVKdZH
-	nfrMCh9ZYO5zQssgwNzhpvV5Xv4k5tThvs0ITzWN6hcEY5lo+OxSyhrC0LhX/a45KIXAvepT/W7
-	vPjmddgJE+wWAeITyyL+pDigOyVke13HItiDdP8f3OmA3XHY7CLq1S78ttlb0hRQfaiDiAXBFIE
-	BOHq4nKr+Gpj4Nz6mJD8764Oj/51UobaUjpaul5ZJwDudI3Jg/9vYJieXzhbnvzcIzYQGFYu30k
-	AWeYRWEgboPwA==
-X-Received: by 2002:a05:6830:34a0:b0:7fa:ab72:9e04 with SMTP id 46e09a7af769-7faab72a877mr12868818a34.28.1788773504746;
-        Mon, 07 Sep 2026 02:31:44 -0700 (PDT)
-Received: from volcano9f6e-hostos.amd.com ([165.204.217.251])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33517b57ac8sm16320232eec.28.2026.09.07.02.31.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Sep 2026 02:31:44 -0700 (PDT)
-From: Hemanth Selam <hemanth.selam@gmail.com>
-To: Xuanqiang Luo <xuanqiang.luo@linux.dev>
-Cc: osmocom-net-gprs@lists.osmocom.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Harald Welte <laforge@gnumonks.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: Re: [PATCH] net: fix repeated word 'to' in comment
-Date: Mon,  7 Sep 2026 15:01:38 +0530
-Message-ID: <20260907093138.24589-1-hemanth.selam@gmail.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <aa963ff1-0cfb-48de-ba76-d37467676a78@linux.dev>
-References: <20260907063804.26581-1-hemanth.selam@gmail.com> <aa963ff1-0cfb-48de-ba76-d37467676a78@linux.dev>
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="Rx7xP8xY"
+Received: from localhost (localhost [127.0.0.1])
+	by mx1.secunet.com (Postfix) with ESMTP id 78880201D5;
+	Mon,  7 Sep 2026 11:31:57 +0200 (CEST)
+X-Virus-Scanned: by secunet
+Received: from mx1.secunet.com ([127.0.0.1])
+ by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id MMFgqljS6HKT; Mon,  7 Sep 2026 11:31:56 +0200 (CEST)
+Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mx1.secunet.com (Postfix) with ESMTPS id C714E20704;
+	Mon,  7 Sep 2026 11:31:56 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com C714E20704
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
+	s=202301; t=1788773516;
+	bh=X0nLmZgAUWhCxjgnwBI99b86423YMzwquppoEGrMZHo=;
+	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
+	b=Rx7xP8xYps8FZga8ABbkjj7/hD28FDiKOG6vX/57nUrZlvyzCv2GOvkxRuJUI8Sir
+	 93z20UjYD++XK7zITwyAkOwtohNoMIsB3iLHvZQLG0NFSuglaJdc067yxAU1V3gKxS
+	 k0+kKLQX9fHgfs6a8oR9LfWemJSnyBMQgo9TVtqKPk5oPoKBfRt6rZHlI08tnarwtt
+	 5soI+182WWMxAM2H1Qr8J4wheqB5YNHOemoI7POx/SWFkifQLNL0KOaCbgT2gnNF4b
+	 gDEmIPweZKoZi3EBNlCJFmWUXAt1nYPOAM9Sn7bM5P03zco45G8VQuFu6+NMZOvTKh
+	 iQEWQc1hOeOog==
+Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Mon, 7 Sep
+ 2026 11:31:55 +0200
+Received: (nullmailer pid 2228802 invoked by uid 1000);
+	Mon, 07 Sep 2026 09:30:24 -0000
+From: Steffen Klassert <steffen.klassert@secunet.com>
+To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
+CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
+	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
+Subject: [PATCH 01/12] xfrm: iptfs: fix stack OOB read in iptfs_skb_reset_frag_walk()
+Date: Mon, 7 Sep 2026 11:29:44 +0200
+Message-ID: <20260907093020.2228346-2-steffen.klassert@secunet.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260907093020.2228346-1-steffen.klassert@secunet.com>
+References: <20260907093020.2228346-1-steffen.klassert@secunet.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EXCH-03.secunet.de (10.32.0.183) To EXCH-01.secunet.de
+ (10.32.0.171)
 
-On Mon, Sep 07, 2026 at 04:16:00PM +0800, Xuanqiang Luo wrote:
-> Typo fixes are cleanups.
-> Please specify the target tree: use [PATCH net-next] instead of a bare
-> [PATCH].
+From: Roshan Kumar <roshaen09@gmail.com>
 
-You are right, and thank you for the correction.  I missed
-maintainer-netdev.rst on this; it asks for the tree in the subject and I
-sent these with a bare [PATCH].
+iptfs_skb_reset_frag_walk() advances to the fragment containing @offset
+with an unbounded loop:
 
-The same document also asks not to repost within 24 hours, so rather
-than resend immediately I will send v2 tomorrow as
+	while (offset >= walk->past + walk->frags[walk->fragi].len)
+		walk->past += walk->frags[walk->fragi++].len;
 
-  [PATCH net-next] gtp: fix repeated word 'to' in comment
+walk->fragi is advanced and walk->frags[walk->fragi] is dereferenced
+without ever checking fragi against walk->nr_frags. When the requested
+offset is at or beyond the total length spanned by the walk's fragments,
+fragi runs past nr_frags and off the end of the fixed-size on-stack
+frags[MAX_SKB_FRAGS + 1] array, reading out-of-bounds stack memory.
 
-which also fixes the subject prefix, since "net:" does not name the file
-being touched.  I will do the same for the other patches I sent to
-netdev today, and use the right tree for the wireless and wpan ones.
+The two callers behave differently: iptfs_skb_add_frags() already guards
+against this with
 
-Hemanth
+	if (!walk->nr_frags ||
+	    offset >= walk->total + walk->initial_offset)
+		return len;
+
+but iptfs_skb_can_add_frags() has no such guard and calls
+iptfs_skb_reset_frag_walk() unconditionally, so it performs the
+out-of-range walk. Its own "fragi < walk->nr_frags" bound check runs only
+afterwards, too late to prevent the read.
+
+This is reachable from the receive path: a crafted IP-TFS (AGGFRAG)
+payload delivered to an IPTFS SA drives iptfs_reassem_cont() ->
+iptfs_skb_can_add_frags() with an offset past the fragment total, e.g.:
+
+  BUG: KASAN: stack-out-of-bounds in iptfs_skb_reset_frag_walk+0x235/0x250
+  Read of size 4 at addr ffff888008ad7210 by task repro/345
+   iptfs_skb_reset_frag_walk+0x235/0x250 net/xfrm/xfrm_iptfs.c:392
+   iptfs_skb_can_add_frags+0x155/0x310  net/xfrm/xfrm_iptfs.c:420
+   iptfs_reassem_cont+0xcf8/0x1140      net/xfrm/xfrm_iptfs.c:902
+   iptfs_input_ordered+0x552/0x670      net/xfrm/xfrm_iptfs.c:1280
+   iptfs_input+0x3d6/0xde0              net/xfrm/xfrm_iptfs.c:1741
+   xfrm_input+0x282f/0x6140             net/xfrm/xfrm_input.c:700
+   xfrm4_esp_rcv+0x93/0x120             net/ipv4/xfrm4_protocol.c:104
+   ip_rcv+0x278/0x2d0                   net/ipv4/ip_input.c:612
+
+Give iptfs_skb_can_add_frags() the same up-front guard that
+iptfs_skb_add_frags() already has, so the walk is never entered with an
+out-of-range offset. When it triggers, the caller falls back to the
+existing linearize-and-copy path, which is safe.
+
+Fixes: 5f2b6a909574 ("xfrm: iptfs: add skb-fragment sharing code")
+Reported-by: Roshan Kumar <roshaen09@gmail.com>
+Signed-off-by: Roshan Kumar <roshaen09@gmail.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+---
+ net/xfrm/xfrm_iptfs.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/net/xfrm/xfrm_iptfs.c b/net/xfrm/xfrm_iptfs.c
+index 597aedeac26e..2ce15c472cc4 100644
+--- a/net/xfrm/xfrm_iptfs.c
++++ b/net/xfrm/xfrm_iptfs.c
+@@ -416,6 +416,14 @@ static bool iptfs_skb_can_add_frags(const struct sk_buff *skb,
+ 	if (skb_has_frag_list(skb) || skb->pp_recycle != walk->pp_recycle)
+ 		return false;
+ 
++	/* Reject an @offset that is at or beyond the end of the walk's data
++	 * before calling iptfs_skb_reset_frag_walk(), whose fragment-advance
++	 * loop is otherwise unbounded and would index past walk->frags[].
++	 * This mirrors the guard already present in iptfs_skb_add_frags().
++	 */
++	if (!walk->nr_frags || offset >= walk->total + walk->initial_offset)
++		return false;
++
+ 	/* Make offset relative to current frag after setting that */
+ 	offset = iptfs_skb_reset_frag_walk(walk, offset);
+ 
+-- 
+2.43.0
+
