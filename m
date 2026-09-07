@@ -1,195 +1,271 @@
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com [209.85.128.69])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5613C2D12EC
-	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 22:23:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AF5129B766;
+	Mon,  7 Sep 2026 22:28:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788819823; cv=none; b=fxqSvFCrEaq4/dJAzza1guEMKqa/7wFhXOZOd10Ay3pU9/6C4aJOxLtN/pKklN+svTBDszCec593XKEs2FBsxKVHRFyq6WFe7tRL/M/jmf2udmf0GmJmCUZI0GYVE/t/EDsg3/nOLmPJaUPLqXCWxlWkIvqnOtvLB8yctke4LpE=
+	t=1788820125; cv=none; b=Isdu8FgHDVvuojB4r6LTLHc1fLP50ijp/+FBK3qd9XT6O5FHk0EFcNrctaMPvV/O9e9zUx3Ti+i2diDmGMeg2USRgNLbGOZ3Q4K4ofIKzvvFKOqmY55W0TjEV30iFvG//MamIgWYuXhALvQtWIK/u9SnGkbNYi1zQuSzPkHa7oA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788819823; c=relaxed/simple;
-	bh=8Y7JZ/9KeV+f5YzC1zDml+qR+atE8hzkYH3mXgwAZLI=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=VI87kKwP5ZEVxciS+UiwLGc6uqdR2C0S8biuO0O4sjojBknR5TzegIRaFST3Eppmy60f6NFP4pl1fugqo75RdlYEpvm/vVIQvFmbh2N5NNI/cyQeA/rH2M7fMgQqr2vXfPnyN6AkkrvRv3D4uw5m+5nR79MqoqDzy+UjpwU25vk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--elver.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ukL8U+I6; arc=none smtp.client-ip=209.85.128.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--elver.bounces.google.com
+	s=arc-20240116; t=1788820125; c=relaxed/simple;
+	bh=okZP9YA8of/dppP99bLktXk24pN3bXeDO5/37rESBwo=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=D0IrvWBqcHj41oM4WA1kxw5TCDVO2efY1yWGdn1oRgyKa1/JQG3JKDQQT3jihjH7od/pV1GbTmwnimUyPHBe3k8zrXHmanyA/HK8sBOL8E60wxa+bQk/tzQcMg/VJMwweLlRa/ncRPmXtooPhQPUkYTY+R2OTs0AsovwmZLNq6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lLsCg+pp; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ukL8U+I6"
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-49b0e6638e3so29212375e9.2
-        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 15:23:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788819819; x=1789424619; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=zCQLPwejd9kneAE29OCqj++bBUuNyPXeUmci722Ghtw=;
-        b=ukL8U+I60IU3XshPrhcTojuwYqiJ67+SeTvIstWmo7enwRPyVcEwOTGXBvwOw3IewB
-         mnzyDN3/Fu1LhrYL3teAgCGHTqOnQKRtSTozZUzMrbj7QMZz6bjqeQz/5fWkOhBui2QW
-         VDdB/DNZtvbESHE0Z/gJGZ/QAqnRwCSIK8Ue2axW3vNizBE2Dy+3E414yk6cFczA6ZjT
-         c37TAKv9MwWS2lVPGehvfI387/bpeCowBdCIrVSUn1t/EcvISavlDFpcj6OYGorIZVQu
-         IcvtIIw9oPb+en4w7LbYlHL3IsMSOuNLmFTqnNiJ9A937Z22DgTwxFIhMyQqCkT0Q7f1
-         82xw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788819819; x=1789424619;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=zCQLPwejd9kneAE29OCqj++bBUuNyPXeUmci722Ghtw=;
-        b=T9T2nsqkAFUWR39OvPRZTn2hZ2WcJ4srjEIrCxkOxA4PlE9I+Bj0ePcaM8I/P3Lfi7
-         7qPoGqbA0sERQqgQ5MHiGxdFsj2d/rEFlT9vw33QXEPlBlhdW62G+Sh6kbFnrpIVuDBR
-         dPgAsTN6EgZqwTy6aDY8C51XWEC1LRjYdL1pPOoH4cXqzlQWi8p1g8QLA21vHxq5sSuk
-         BgKTQ5Tf4o1TMO44J2wjAR4i4PdKlF3sT+7K53NQLoGHyFT5Kv0sQX0YKwV2TVYum2C0
-         zaopIUvoJnwrCzpzVgYwoMTkOUn2mEiD+lbTz2HKa5jMu11Eu36bF0orx3iz3xb0MaEs
-         yClA==
-X-Forwarded-Encrypted: i=1; AKwUvBwN4gjIFA93vnG2c621cumdz2Q9IHVNs95Hx/Rm4MXpU8SFa9VRnKtzNxpaUxctg5RY0yqU5+Q=@vger.kernel.org
-X-Gm-Message-State: AFuF++lmwWD+itsjjqGwvSaUcT2k0b9VnKClWmILt1T/f0Ydgjt1nZ4I
-	50YgwnH6AFELYK45Q39FoLffMxxk1Iqp7LVAuTzbj1zEcXYpYOpeG6zp89COJFpL0su/5nc0rOO
-	qYA==
-X-Received: from wmbhh15.prod.google.com ([2002:a05:600c:530f:b0:49c:cf3b:c30f])
- (user=elver job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:4f83:b0:49d:91:274
- with SMTP id 5b1f17b1804b1-49d00910374mr172516735e9.10.1788819819179; Mon, 07
- Sep 2026 15:23:39 -0700 (PDT)
-Date: Mon,  7 Sep 2026 22:21:26 +0000
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lLsCg+pp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5CF51F00A3A;
+	Mon,  7 Sep 2026 22:28:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788820124;
+	bh=uWvwo68q0NiNc9fVhinIy0eFRzsHQNVbNmrCZS9XcMo=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=lLsCg+pp8pIi8dXNlao2ibO+D5LwxEnDKcbLC39blku54J243+/c5Vmro+lWuRKAN
+	 E2GAqmXC1XmMDrACulrCvrZlIRIsz7MN0BoHdv9Kt8NqzLhHE0y15fsQ507KeFcZbh
+	 pUudh6VlmDcDE04Xo26Iuob3GQYzt6C5G3nE7jO8xOfqwcnTbpIJgB6PnNBYpiRpLV
+	 MOpAkOO/NIUlnBi/F+42ms+W7DfYk6LvSBvs/gzFCPo75DCvptT48SVSFO4KKmRnbv
+	 dmFyGzPiEthtKD60mKISiRt95q6HGRwP2QIKmuovmzi7Wy9YsMGIQbbaYkp/JTlD95
+	 ssEAcJlWZHstw==
+Subject: Re: [PATCH net-next v2] net: davicom: Propagate wakeup IRQ errors
+From: netdev-bot+sashiko@kernel.org
+To: phucduc.bui@gmail.com
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, paul@crapouillou.net,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Date: Mon, 07 Sep 2026 22:28:43 +0000
+Message-ID: <178882012336.219967.15894359577050376625@kernel.org>
+In-Reply-To: <20260903102656.370039-1-phucduc.bui@gmail.com>
+References: <20260903102656.370039-1-phucduc.bui@gmail.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.55.0.1003.g10538fe699-goog
-Message-ID: <20260907222242.3361174-2-elver@google.com>
-Subject: [PATCH v2] rxrpc: Fix use-after-free in rxrpc_destroy_all_peers()
-From: Marco Elver <elver@google.com>
-To: elver@google.com
-Cc: David Howells <dhowells@redhat.com>, Marc Dionne <marc.dionne@auristor.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	linux-afs@lists.infradead.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com, 
-	syzkaller-bugs@googlegroups.com, 
-	syzbot+c876adfab6362679008c@syzkaller.appspotmail.com
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
 
-During network namespace teardown, rxrpc_destroy_all_peers() iterates over
-the rxnet->peer_hash table to print leaked peers without holding
-rxnet->peer_hash_lock. If concurrent activity or asynchronous teardown
-drops the last reference to a peer, __rxrpc_put_peer() unlinks the peer
-from rxnet->peer_hash and frees it via kfree_rcu(). Without locking,
-traversal can follow an unlinked peer or race with RCU reclamation,
-triggering a KASAN slab-use-after-free.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider:
 
-BUG: KASAN: slab-use-after-free in rxrpc_destroy_all_peers+0xcc/0x150
-net/rxrpc/peer_object.c:461
-Read of size 8 at addr ffff88811089e420 by task kworker/u8:1/13
-Call Trace:
- <TASK>
- rxrpc_destroy_all_peers+0xcc/0x150 net/rxrpc/peer_object.c:461
- rxrpc_exit_net+0x7f/0xc0 net/rxrpc/net_ns.c:114
- ops_exit_list net/core/net_namespace.c:199 [inline]
- ops_undo_list+0x43d/0x8d0 net/core/net_namespace.c:252
- cleanup_net+0x572/0x810 net/core/net_namespace.c:702
- process_one_work kernel/workqueue.c:3322 [inline]
- process_scheduled_works+0xa8e/0x14e0 kernel/workqueue.c:3405
- worker_thread+0x92d/0xe10 kernel/workqueue.c:3486
- kthread+0x388/0x470 kernel/kthread.c:436
- ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
+Critical: 0 · High: 2 (2) · Medium: 0 · Low: 0 (1)
 
-To fix the slab-use-after-free, acquire rxnet->peer_hash_lock with
-spin_lock_bh() while iterating over rxnet->peer_hash in
-rxrpc_destroy_all_peers().
+- [High] dm9000_probe() now aborts the whole probe when the *optional*
+  wakeup-IRQ setup fails.
+- [High] The newly added 'goto out' after a failing
+  irq_set_irq_wake(db->irq_wake, 1) is taken while…
 
-Additionally, split netns teardown by implementing .pre_exit in
-rxrpc_net_ops to clean up calls, connections, and keepalive work. This
-ensures in-flight references are released before cleanup_net() executes
-its intermediate synchronize_rcu(), so that peer and local endpoint leak
-checks in rxrpc_exit_net() run only after deferred RCU releases complete,
-avoiding spurious leak warnings.
+Pre-existing issues:
+- [High] The wakeup IRQ requested in dm9000_probe() is never released on
+  any path other than the newly added one either: the pre-existing later…
+- [High] In dm9000_probe() the shared wakeup IRQ is requested (line 1521,
+  IRQF_SHARED, handler dm9000_wol_interrupt, dev_id = ndev) before…
+- [Low] Documentation/devicetree/bindings/net/davicom,dm9000.yaml
+  restricts 'interrupts' to 'maxItems: 1' (and defines no interrupt-…
 
-Fixes: 17226f124038 ("rxrpc: Fix leak of rxrpc_peer objects")
-Reported-by: syzbot+c876adfab6362679008c@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=c876adfab6362679008c
-Link: https://syzkaller.appspot.com/ai_job?id=7fecbeb2-cd9b-4ca2-8149-48663e20b153
-Signed-off-by: Marco Elver <elver@google.com>
----
-v2:
-* Split teardown and use .pre_exit instead of rcu_barrier() (Eric).
----
- net/rxrpc/net_ns.c      | 23 +++++++++++++++--------
- net/rxrpc/peer_object.c |  8 ++++++++
- 2 files changed, 23 insertions(+), 8 deletions(-)
+--
 
-diff --git a/net/rxrpc/net_ns.c b/net/rxrpc/net_ns.c
-index 9a9834145e81..169116735366 100644
---- a/net/rxrpc/net_ns.c
-+++ b/net/rxrpc/net_ns.c
-@@ -97,10 +97,7 @@ static __net_init int rxrpc_init_net(struct net *net)
- 	return ret;
- }
- 
--/*
-- * Clean up a per-network namespace record.
-- */
--static __net_exit void rxrpc_exit_net(struct net *net)
-+static __net_exit void rxrpc_pre_exit_net(struct net *net)
- {
- 	struct rxrpc_net *rxnet = rxrpc_net(net);
- 
-@@ -111,14 +108,24 @@ static __net_exit void rxrpc_exit_net(struct net *net)
- 	timer_delete_sync(&rxnet->peer_keepalive_timer);
- 	rxrpc_destroy_all_calls(rxnet);
- 	rxrpc_destroy_all_connections(rxnet);
-+}
-+
-+/*
-+ * Clean up a per-network namespace record.
-+ */
-+static __net_exit void rxrpc_exit_net(struct net *net)
-+{
-+	struct rxrpc_net *rxnet = rxrpc_net(net);
-+
- 	rxrpc_destroy_all_peers(rxnet);
- 	rxrpc_destroy_all_locals(rxnet);
- 	proc_remove(rxnet->proc_net);
- }
- 
- struct pernet_operations rxrpc_net_ops = {
--	.init	= rxrpc_init_net,
--	.exit	= rxrpc_exit_net,
--	.id	= &rxrpc_net_id,
--	.size	= sizeof(struct rxrpc_net),
-+	.init		= rxrpc_init_net,
-+	.pre_exit	= rxrpc_pre_exit_net,
-+	.exit		= rxrpc_exit_net,
-+	.id		= &rxrpc_net_id,
-+	.size		= sizeof(struct rxrpc_net),
- };
-diff --git a/net/rxrpc/peer_object.c b/net/rxrpc/peer_object.c
-index fa9a406e1168..faa2983638b2 100644
---- a/net/rxrpc/peer_object.c
-+++ b/net/rxrpc/peer_object.c
-@@ -454,6 +454,12 @@ void rxrpc_destroy_all_peers(struct rxrpc_net *rxnet)
- 	struct rxrpc_peer *peer;
- 	int i;
- 
-+	/*
-+	 * Prevent use-after-free if a peer is concurrently unlinked from the
-+	 * hash table and freed via RCU during iteration.
-+	 */
-+	spin_lock_bh(&rxnet->peer_hash_lock);
-+
- 	for (i = 0; i < HASH_SIZE(rxnet->peer_hash); i++) {
- 		if (hlist_empty(&rxnet->peer_hash[i]))
- 			continue;
-@@ -465,6 +471,8 @@ void rxrpc_destroy_all_peers(struct rxrpc_net *rxnet)
- 			       &peer->srx.transport);
- 		}
- 	}
-+
-+	spin_unlock_bh(&rxnet->peer_hash_lock);
- }
- 
- /**
+net: davicom: Propagate wakeup IRQ errors
+
+This changes dm9000_probe() so that an error from
+platform_get_irq_optional(pdev, 1) is returned to the caller unless it is
+-ENXIO, and so that failures of request_irq() and irq_set_irq_wake() for
+the optional wakeup IRQ abort the probe instead of only being logged.
+
+A few questions about the new error paths below.
+
+> diff --git a/drivers/net/ethernet/davicom/dm9000.c b/drivers/net/ethernet/davicom/dm9000.c
+> index b87eaf0c250c..904b859f0a63 100644
+> --- a/drivers/net/ethernet/davicom/dm9000.c
+> +++ b/drivers/net/ethernet/davicom/dm9000.c
+> @@ -1511,13 +1511,18 @@ dm9000_probe(struct platform_device *pdev)
+>  	}
+>  
+>  	db->irq_wake = platform_get_irq_optional(pdev, 1);
+> -	if (db->irq_wake >= 0) {
+> +	if (db->irq_wake < 0 && db->irq_wake != -ENXIO) {
+> +		ret = db->irq_wake;
+> +		goto out;
+> +	}
+> +	if (db->irq_wake > 0) {
+
+[Severity: Low]
+This is a pre-existing inconsistency and not something introduced here, but
+is the wakeup IRQ index reachable at all from device tree?
+
+Documentation/devicetree/bindings/net/davicom,dm9000.yaml declares:
+
+  interrupts:
+    maxItems: 1
+
+and defines no interrupt-names.  For a node that validates against that
+schema, index 1 does not exist, so of_irq_get() fails and
+platform_get_irq_affinity() falls back to platform_get_resource(), which
+returns NULL and produces -ENXIO.  That is exactly the value the new check
+tolerates, so on schema-compliant device trees the whole wakeup block that
+this patch hardens is skipped.
+
+Should the binding gain a second interrupt entry (with interrupt-names) so
+the driver and the documented contract agree on how many interrupts a
+davicom,dm9000 node may declare?
+
+>  		dev_dbg(db->dev, "wakeup irq %d\n", db->irq_wake);
+>  
+>  		ret = request_irq(db->irq_wake, dm9000_wol_interrupt,
+>  				  IRQF_SHARED, dev_name(db->dev), ndev);
+>  		if (ret) {
+>  			dev_err(db->dev, "cannot get wakeup irq (%d)\n", ret);
+> +			goto out;
+
+[Severity: High]
+Is it intended that a failure to set up an optional feature now takes down
+the whole netdev?
+
+request_irq() here uses IRQF_SHARED, so it can legitimately return -EBUSY
+when a non-shared handler already owns that line.  Before this change the
+failure was logged, db->wake_supported stayed 0, and the interface
+registered normally; dm9000_set_wol() then simply refused WoL:
+
+	if (!dm->wake_supported)
+		return -EOPNOTSUPP;
+
+With the new goto out, register_netdev() is never reached and such a board
+loses Ethernet entirely.  Would it be better to keep the graceful
+degradation for the two setup failures and only propagate the
+platform_get_irq_optional() error (which is where -EPROBE_DEFER matters)?
+
+[Severity: High]
+This ordering isn't introduced by this patch, but can the shared wake
+handler run before the register window exists?
+
+request_irq() installs dm9000_wol_interrupt() here, while db->io_addr and
+db->io_data are only filled in later in dm9000_probe():
+
+	db->io_addr = ioremap(db->addr_res->start, iosize);
+	...
+	db->io_data = ioremap(db->data_res->start, iosize);
+
+db comes from alloc_etherdev()/netdev_priv() and is zeroed, so both
+pointers are NULL in that window.  The handler starts with MMIO
+immediately:
+
+	nsr = ior(db, DM9000_NSR);
+	wcr = ior(db, DM9000_WCR);
+
+and ior() has no guard:
+
+	writeb(reg, db->io_addr);
+	return readb(db->io_data);
+
+Since the line is shared, a co-tenant device (or an already-asserted
+level-triggered line at request time) can invoke this and dereference NULL
+in hard-IRQ context.  Would moving the wake-IRQ request to after the
+ioremap()/dm9000_set_io() sequence close this, and at the same time make
+the new error paths easier to unwind?
+
+>  		} else {
+>  
+>  			/* test to see if irq is really wakeup capable */
+> @@ -1525,6 +1530,7 @@ dm9000_probe(struct platform_device *pdev)
+>  			if (ret) {
+>  				dev_err(db->dev, "irq %d cannot set wakeup (%d)\n",
+>  					db->irq_wake, ret);
+> +				goto out;
+
+[Severity: High]
+The comment right above this call describes the operation as a capability
+test:
+
+	/* test to see if irq is really wakeup capable */
+	ret = irq_set_irq_wake(db->irq_wake, 1);
+
+Is a non-zero return really an error condition here?  set_irq_wake_real()
+in kernel/irq/manage.c starts with:
+
+	int ret = -ENXIO;
+
+	if (irq_desc_get_chip(desc)->flags &  IRQCHIP_SKIP_SET_WAKE)
+		return 0;
+
+	if (desc->irq_data.chip->irq_set_wake)
+		ret = desc->irq_data.chip->irq_set_wake(&desc->irq_data, on);
+
+so -ENXIO is the normal result for any irqchip that implements no
+.irq_set_wake and is not flagged IRQCHIP_SKIP_SET_WAKE, which covers many
+simple platform, SoC and GPIO controllers.  On such a board the probe now
+fails where it previously succeeded with WoL disabled.
+
+[Severity: High]
+Can this goto out leave the wake handler registered on a freed net_device?
+
+At this point request_irq(db->irq_wake, dm9000_wol_interrupt, IRQF_SHARED,
+dev_name(db->dev), ndev) has already succeeded, but the unwind path is:
+
+out:
+	dev_err(db->dev, "not found (%d).\n", ret);
+
+	dm9000_release_board(pdev, db);
+	free_netdev(ndev);
+
+and dm9000_release_board() does no IRQ teardown at all:
+
+	iounmap(db->io_addr);
+	iounmap(db->io_data);
+
+	if (db->data_req)
+		release_resource(db->data_req);
+	kfree(db->data_req);
+	...
+
+The only free_irq() in the driver is free_irq(ndev->irq, ndev) in
+dm9000_stop(), so nothing releases db->irq_wake.  After free_netdev(ndev)
+the shared handler is still installed with dev_id pointing at the freed
+net_device, and any assertion of that line runs:
+
+	struct net_device *dev = dev_id;
+	struct board_info *db = netdev_priv(dev);
+	...
+	spin_lock_irqsave(&db->lock, flags);
+
+	nsr = ior(db, DM9000_NSR);
+
+which touches freed memory and does MMIO through the already-iounmapped
+bases in hard-IRQ context.  Should this path get its own label that calls
+free_irq(db->irq_wake, ndev) before dm9000_release_board()?
+
+[Severity: High]
+This isn't a bug introduced by this patch, but the same missing free_irq()
+applies to the paths that already existed.  The later goto out failures in
+dm9000_probe() (request_mem_region() or ioremap() failure, unknown chip ID,
+register_netdev() failure), for example:
+
+	if (db->addr_req == NULL) {
+		dev_err(db->dev, "cannot claim address reg area\n");
+		ret = -EIO;
+		goto out;
+	}
+
+and dm9000_drv_remove():
+
+	unregister_netdev(ndev);
+	dm9000_release_board(pdev, dm);
+	if (dm->power_supply)
+		regulator_disable(dm->power_supply);
+
+	free_netdev(ndev);		/* free device structure */
+
+all reach free_netdev(ndev) while dm9000_wol_interrupt() is still
+registered with dev_id = ndev, so an unbind or rmmod of a device that has a
+wake IRQ leaves a dangling handler on a shared line.  Would it make sense
+to add the wake-IRQ release in a helper shared between the probe error
+paths and remove()?
+
+>  			} else {
+>  				irq_set_irq_wake(db->irq_wake, 0);
+>  				db->wake_supported = 1;
+
+[ ... ]
+
 -- 
-2.55.0.1003.g10538fe699-goog
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260903102656.370039-1-phucduc.bui%40gmail.com
