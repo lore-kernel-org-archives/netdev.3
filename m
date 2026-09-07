@@ -1,318 +1,151 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11010008.outbound.protection.outlook.com [52.101.69.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A618B67E;
-	Mon,  7 Sep 2026 05:39:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788759588; cv=none; b=cVwFikvPQH01abRv5AvH886yofqaFzUNXkjBd0fXkxRongCsMe7z+cx6RPa59dJmqBP5IODQ48i7kjOWAdvH7cWHig/swxry8vvrUcvA1dyF8S4t6B8bC4DzaztE8kVir8gH+6plTW+B8xD0nGnV3xtWOwiW8KyTAV4WzUVIAQE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788759588; c=relaxed/simple;
-	bh=1ayE33JIYEgD8v2D8aiKYUHjDj35pSwuimK8pvsU9TI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TFxa9UTq8E5Vq6lVV/ObERCmzKoquVJrEUDQksnNJ+Y/RGH8m7Y2Ly48LaPtVqlBRuT2fyBaaK2PRofeM7hpyf+rHeSGcBjfvfuN49k9QZQaQ6GF4chg9qP21NgwkY+sx8fiefqdf9jm9RCQFdSS03+0ckiIAKFEtXvRCiuR200=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Ysz+RQQv; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEC7631F996;
+	Mon,  7 Sep 2026 05:42:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.8
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788759726; cv=fail; b=NL0fHooJCQ/nnVWng69ihS/U8I0sFMryddf590+C+blYiQbcRk+6PSDMZBGmY/aL/+1OnxJM4UnupS3aC0J2weL/bIH+IkLIbHTebjt7ZR8xHHerf5TYgNFd/P4cho0NrwqaQQR2LVinwaVs8v8SPrvfg/pMkdTaJH1XG9jeU2A=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788759726; c=relaxed/simple;
+	bh=c51pSBwnwQGWpnJQcMC499gMsVnrpHlYldva79obhBI=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=TWkm58VxaJ+CpiSJY0kblnynFE5zV08u6vntG5CtPH6I+/dgGMqfandFMeUFhCRL1OEIxF8npAyKSSGfRilbP2aunn2k1qrjBTb99jdMY+V6DMVeNcxl/QTl+msb2O5ZUQzZQS8rJL57ACeW2Q42FxVu5TgfQulS0KYuukb/hns=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=ChLaoVua; arc=fail smtp.client-ip=52.101.69.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Ysz+RQQv"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68741TCw786605;
-	Mon, 7 Sep 2026 05:39:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=7I11SF
-	9E/mQe/lwfM/926kpmsrcGT+7JJpNnz49U6r8=; b=Ysz+RQQvFMtGUumCBNJ9bG
-	dMGWjUIIuhpxQrWWcUzUEsyWI3yHryYCUbkgHT32uRKdHLybQhbOiN0Hr+u5u7kR
-	8Xyuy0P+/Va6ScmEx2QkI79thIklnT6Ur3Xtz+q6B656JeocKPI6lOlyKmHdLHc3
-	vEy0pCNFcbgD0w5HBk2UDfeLn4XVNy7EnXAKkN9HM74vqcgk/zhL7vT3w1jOqCGf
-	zm4twOwDV/RUTQJkVAWCM3AcrwArZ9pOPxA4kpHNv6qdoPCOgVE0jwJzN9JVG4RQ
-	c8dm5I29sKiIyG9SPjtKa9ZKmomyqkNrj3AeZBAV6II5cCOtJ/M6b81eEjjNklYA
-	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ggbhket6d-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 07 Sep 2026 05:39:40 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6875QFpu002205;
-	Mon, 7 Sep 2026 05:39:39 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gh03y3ww1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 07 Sep 2026 05:39:39 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
-	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6875dbUn60686746
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 7 Sep 2026 05:39:37 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 331FF5805A;
-	Mon,  7 Sep 2026 05:39:37 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1E3DA5805E;
-	Mon,  7 Sep 2026 05:39:31 +0000 (GMT)
-Received: from [9.39.28.204] (unknown [9.39.28.204])
-	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  7 Sep 2026 05:39:30 +0000 (GMT)
-Message-ID: <7a174d1f-80d8-4294-ae66-829c9dacd662@linux.ibm.com>
-Date: Mon, 7 Sep 2026 11:09:29 +0530
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="ChLaoVua"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=jOTv+lW5hmQGA8vAK95s9zvtFMLuZTB3GBZXA7EO4CRCyCGyum2+gtktCrbRahm2TCdogbGffQc6zx7gQ9sHWURIwHU3ETmQh/KOj5ZXmr9WxRGuGZX/6Spo0QlRodxRpENIV9jqzGB6hpUVvyZ/xcWIMEgRw/ies3Ktp2eL/cARCvT2TwhcSqQrXEvNF7fG0J0HOB3ZOfoITSh6cpdzW+WJZ+9YuVxOdj84rPOWV44gtl4jkyVoSVrCFxidfRSu8tqnickBjmQtJU6TxKcsHW/6pDKlPhN/eJPN1MPU4vG7DSvtcUi1HUAGh4zWNt+ZQYfWSAeRMMOdU2jXisEmMA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=YUUDZghgG12ujm9R6/iqUc0EVZtTgmBfDL3PIomec4s=;
+ b=DwV+GeHSzbETHWDT+eqg7xBIOY+UtLUhGu1jUf3FD7MwDI8DvbV5+v3GaPL66H5ZRvWDpoWOVcy7lTlVdPhBjdTyi90AvSwfdsixYP5fHr/ZgQNCRboYluFuaBY+BvwhqgUsscatvSZ/C3aTlRRh6wB/XjXJ2qn79scsQ1WkLhS5nGuDEwLClSf3/zJ1tEjEGsuI+e+7jHELAzSVS4cOclvj6uPGYg/Rn2qm1Mv07hv8xecmNKN4f5KTaSJc+UQU9fh/FWSzrH36X1ResyAGFYnoPvhDd+owqqxQs+mVOAhJ8gP/wnaZaD27V+GFgDHII81X/SWuhP02s209/08U7Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=YUUDZghgG12ujm9R6/iqUc0EVZtTgmBfDL3PIomec4s=;
+ b=ChLaoVuaHV4UrOVX2O7EogBidDZWL7diyMza1shWJ+822TEY/yKSG7aB0oMEDw0Dn7cPMwA9UXBt/isSmbAtVCiXIDo2/thWDJUX2cJLSRvRNbuL0+SfiqR/tTIolGrRmfmuV5w387a46WAqavM/G7kLc1/W4hjatlF8UsfzcoD0cMmWXOLCtFNexie/88v2m1kt2zkKh0xoHDiw4pQhke3ociydT2toxwn+tMjc2/riP5J9YLgXlx4LvOxoBzYXKhWhiA8t5xeTx/X7uB9yUJAoeLHgSH6N+x/rELDzQP+LYPO58LHuedVjVioPWRZAFXOpAUaTdtoudOJ9/hiLgg==
+Received: from GV2PR04MB11739.eurprd04.prod.outlook.com
+ (2603:10a6:150:2fc::18) by AM9PR04MB7505.eurprd04.prod.outlook.com
+ (2603:10a6:20b:285::18) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.382.15; Mon, 7 Sep
+ 2026 05:42:02 +0000
+Received: from GV2PR04MB11739.eurprd04.prod.outlook.com
+ ([fe80::71c2:937b:d466:174a]) by GV2PR04MB11739.eurprd04.prod.outlook.com
+ ([fe80::71c2:937b:d466:174a%5]) with mapi id 15.21.0382.014; Mon, 7 Sep 2026
+ 05:42:02 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: "phucduc.bui@gmail.com" <phucduc.bui@gmail.com>, Frank Li
+	<frank.li@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>
+CC: Andrew Lunn <andrew+netdev@lunn.ch>, Simon Horman <horms@kernel.org>,
+	"davem@davemloft.net" <davem@davemloft.net>, Eric Dumazet
+	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Richard Cochran <richardcochran@gmail.com>, Stephen Boyd
+	<swboyd@chromium.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Subject: RE: [PATCH net v4] net: fec: Propagate PTP initialization errors
+Thread-Topic: [PATCH net v4] net: fec: Propagate PTP initialization errors
+Thread-Index: AQHdPntQqjO8VRJ7PUik+O14Mb/yyLbCkrXw
+Date: Mon, 7 Sep 2026 05:42:01 +0000
+Message-ID:
+ <GV2PR04MB11739E45D1562C9063E05D77788B22@GV2PR04MB11739.eurprd04.prod.outlook.com>
+References: <20260907034502.12619-1-phucduc.bui@gmail.com>
+In-Reply-To: <20260907034502.12619-1-phucduc.bui@gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: GV2PR04MB11739:EE_|AM9PR04MB7505:EE_
+x-ms-office365-filtering-correlation-id: 724dcd79-7dac-465d-eba9-08df0ca2bdda
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|7416014|366016|376014|19092799006|23010399003|1800799024|22082099003|18002099003|38070700021|10067099003|56012099006|11063799006;
+x-microsoft-antispam-message-info:
+ TkKzQ1SoHcjNUnJgKIOnDsUOWpeoLfFp6RfOs1+kyO6mB9Zddz9NXbwQfEyCx7iUgLDyifN4w8J7rBxcOcdFlCVtZt9gi1lCeCjkB7rmjhwsQORwHjlLy9d8Hy3NJQTFSIekLiTtVJp60ZkumpUJH4RuRkl4GS/j60KRJ8MTdClqHLAZuQ6w6fL0lnJfkfZN8JmBJWIr0gDMPfZGv/8B4EcnAkKfim4xDPIS2t6DO5+MahBLxbzLrJdmZGhMuY6gLHsaxrXTTN9TukmudTalZ33WocUgxVbTTCAEAqGepMDYStA6+q7ENdAyVF06HpeXTIe17sHan9nFW31hHB79eGHPj7DfGJIQbH42Rz9zkJhoZ58+Zb8ifWIT1E1CLxKcrd9NvWWnyFHvARiQwecpgYlniRjhtxYV51GyoOkGvzy4UwLswhDCxi5lT6gn21O+/sgMW7G41roDcAaD6IfoZYqaydezMlEsesEU34MFAzEeSmyyheGTR35TQPOYdevC1uSb9r3e8OGIXfMF3Xuz2yPU9OKbM623ahWfJdlbMNYrvVs/tLrwGxvscRQD6Cp1UbG7WlLMCLWiatmdDBIPy2S5qPEm4ejFoPgcWvmhDx2lhbKyKFrktQdlFQ+3b+5zy4rNfswf1X7nFoGRovtw0OQHPqF8MNJxb+E3hM/TpZJ7y+yAkq/pZ9L6PQJnquFbSP9b02h78swAwv5ucSTKshLmQMLaxbTh/ZPrCZE7UFc=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV2PR04MB11739.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(376014)(19092799006)(23010399003)(1800799024)(22082099003)(18002099003)(38070700021)(10067099003)(56012099006)(11063799006);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?4kyD8EHouWFnG3x8/EtUihHlrSBP958p75hXZQklj63QR7lP5OVTv8siHY41?=
+ =?us-ascii?Q?y1rl3z5CmhOF6RRGCojx7F5g3mVUtCovN2yL3qijnmDegOKvtW4PyFEU2lzo?=
+ =?us-ascii?Q?8ZhGkcuy0aaYEtzNlqU/O4+q8nfg8uTPkBn4DgB6fER2d8C9rF0Ap72ESFv+?=
+ =?us-ascii?Q?vvAmfU8yGMImkddOz8PPnDvFpwnJNXPll96UdnQMkzPCKzbEGu7cDcFjWWVc?=
+ =?us-ascii?Q?aG0YDMmNg+naGEjSIUcAg3c5P8W5KfbLrSBCbE7u4Q9BzKaRnjXStrGmW8QY?=
+ =?us-ascii?Q?w8HCRcS8/Hc/PStVpcoUK1FQ6h5zaJch+ZbMx7kwimWJU9KLPgArqJeeFCjp?=
+ =?us-ascii?Q?Fd92q3YoZFH6yiRYIwgA+reUSTjQLcjSQAh1c4DgAUK6GUVOClaga55D0F6L?=
+ =?us-ascii?Q?b+gEPaPiWwWKxq8zhjaFVJ17yC8Q0GYmCPOSXg3YXNSMLlixbNwNN8p3MzDQ?=
+ =?us-ascii?Q?0H+YBXxOx3UL4252ak8KYS6hPVpzQw3GICycySqwp/ja2x2tbYFvZtMEJ1Aq?=
+ =?us-ascii?Q?r8zAQGLECPvqjXGZLGwekNaVU9eV+2XQc0aowrxMEiz81WlSTzei/6URjZEZ?=
+ =?us-ascii?Q?7LzV4r9wMi5lflMTIUdNLQSvybSjRb+GWsmx45Rti1bsxP8n4DyHskr+xOg/?=
+ =?us-ascii?Q?Ny0VB1Wprk3bRQQwo7ehE6wWvJwKtNZcyoD774FHf+O4otdA3pdJts3kIqGZ?=
+ =?us-ascii?Q?FK/zjTFkA5mF7hbc5ckzmidA3MTOxdQ5P5pOTG01KuyPgEfhpZvemBLUpGpa?=
+ =?us-ascii?Q?yShUx5vhxqlWg0VRI+zgW+auHTzO2ttJYER7Ybg6UCE9/Oxy9TNhFw3ePwvw?=
+ =?us-ascii?Q?fTHNCMGucfuhpgwGyE3hOYquOW5S/uhTliKX7RztTq6F47SQBobFNcUH5UGQ?=
+ =?us-ascii?Q?Dz1P4U0sqJEtp0f45c7ayh9HB3MAiRsaBhUk2CfOFW61bATIBhHpshbucHxD?=
+ =?us-ascii?Q?SysJmgHTCyDrT6D8ql21VGZq/7BwnEwY4Dwll9M55wCE7En1i7kHE4kyl8+p?=
+ =?us-ascii?Q?Mp2VrohNZO9gi/dOOy8ehsD5fp98VwpCj4VNDGFV8nE0QOLQ3+vH3IuVTrZw?=
+ =?us-ascii?Q?JnKgdm3ZsJxziaf8X6NQ7TAoJSIzOyOtxMgRWPpgK1jgcRltxnBw2PPugnvb?=
+ =?us-ascii?Q?FlPaIlRaHzLd+q4bDjoKzQ3OcQ+0csa+aGO7bJMNr6BDOVMStcrOOQYuuLij?=
+ =?us-ascii?Q?K3Zxvf5IuJ2yfhVOaEgbJJWJi9WBnpD/KjvjAY1d2lrrmrV0TjITRda1qpPt?=
+ =?us-ascii?Q?ef9r0zIzQGN6g5x0LkpVfWXISbF0/fpa0ovuTcEyxIMoiCggUEIZGqE27rQR?=
+ =?us-ascii?Q?HoIh11s1rYdYoLdla8A82WaFu7UBGpGxZ1eh3kw4tTOWHrpjiWMVeDmQ2WZP?=
+ =?us-ascii?Q?YAJAt5OfEAyFGohL5dMj3Zp8qJJJaInajLqb6yImrDE5PuIyyz6RAYJelQ2u?=
+ =?us-ascii?Q?CJZX8Ou/8ZZG9iy9qRHooAW1MO0KYydJih7ciz+MOQ3Ijur6ymO8uoFU0mBM?=
+ =?us-ascii?Q?AULccUAEytvaWD1l6XJtLGGj4JCGSGuXEzUfALuon9D/qJOt30iwQ9EeRIO+?=
+ =?us-ascii?Q?YIEvXOS7Twp4MoyUpC7oiXb61QtYlg05prLxVER7Thk4yzuV7gr+8zjBqAyA?=
+ =?us-ascii?Q?cApzRzrqqQdvDg3LT803M/r9SsqFcgqZ+VgxBgP4TMHH0OvVEpaBSjenL1K1?=
+ =?us-ascii?Q?740WAtlB3M2lpge+6lqHAHpL+qDJC3RtCtklQiT8pe2JF94Y?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net/smc: do not credit bytes that splice() did not
- take
-To: Simon Horman <horms@kernel.org>
-Cc: alibuda@linux.alibaba.com, dust.li@linux.alibaba.com,
-        sidraya@linux.ibm.com, mjambigi@linux.ibm.com, andrew+netdev@lunn.ch,
-        tonylu@linux.alibaba.com, guwen@linux.alibaba.com, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        pasic@linux.ibm.com, linux-s390@vger.kernel.org,
-        netdev@vger.kernel.org, linux-rdma@vger.kernel.org
-References: <20260820085543.967490-1-hidayath@linux.ibm.com>
- <20260824104758.996259-1-horms@kernel.org>
-Content-Language: en-GB
-From: Hidayath Khan <hidayath@linux.ibm.com>
-In-Reply-To: <20260824104758.996259-1-horms@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTA3MDA1NyBTYWx0ZWRfX4u+t7fQl2RVb
- XG1qdyrb5WVSPGcig18fnExe9PcvFaMjNba6CIz+AWtuFKThnZtxKJaWq+aTCG7UucqEZeDNhFN
- 0+c5cD2j/yBMFZNgFiN0cl4GOfhCh30=
-X-Proofpoint-ORIG-GUID: 1SPqgldcfgpyxhbU5BXxrvwhO0sCyYsg
-X-Authority-Analysis: v=2.4 cv=NMDlPU6g c=1 sm=1 tr=0 ts=6a9e4e1c cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=9R54UkLUAAAA:8
- a=VnNF1IyMAAAA:8 a=NNFXEjkSxkYUhrEG1f8A:9 a=QEXdDO2ut3YA:10
- a=YTcpBFlVQWkNscrzJ_Dz:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA3MDA1NyBTYWx0ZWRfX3ROHL8dc7Ns0
- tNShS6ovtdNVdqN32s8HcNoRBk5Q+QRQfazQKTiKVpcMj5iGz1ldttUo3gZ02yj1IUbtJ1Eo2zV
- m3G3NKAIjzrvWPvUgwmPmbWBBDjWv0soueQ7lTmkHijPJM4TYLubIcWmDAs3PjAPgoIogFEoZo4
- YZhfNabEyfXbfkf70Jhpj6sX1lDU/YBkRV0AWkEeoKCwjHOgNDqfx9ZSncNTsOZbmD+r2fF21qY
- tvZdQSfjnPv6ywkVE5efgH8h50hGb0jPcfZ4OoaQKoiOAOf9i4OeKgap4qRWYh3XcP+s89rnM5Q
- +E0LVyyBb76kEE5YDVHEzscc83aF56aIS5JwFzoIobenrEiddLX4HzRIzyHjcVWNyhY9DwL1VCb
- BRNsKPOQPbwL63AUoCFJrG+Hm68ctR9eL4x5Fu5+aZ5DxpquocNy+Gev7SZ6HNEyqDbViGNeHAO
- +POIfu6cGEls3f4+Ahw==
-X-Proofpoint-GUID: 5603NIrZcwhNm_tGCvePs_yuVBcXFvzA
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-07_01,2026-09-03_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 spamscore=0 lowpriorityscore=0 clxscore=1015 adultscore=0
- impostorscore=0 bulkscore=0 malwarescore=0 priorityscore=1501 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2609070057
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: GV2PR04MB11739.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 724dcd79-7dac-465d-eba9-08df0ca2bdda
+X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Sep 2026 05:42:01.9077
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: q1zM98pLwNWUH1l36pClspvXuCw4gWcZ1QMGUx5/WtUFdS9CIFr93rVZFWBPOnIiBYsd+OXUILPIz+Lrn14bxQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB7505
 
-Thanks for the review, Simon.
+> @@ -5394,12 +5397,17 @@ fec_probe(struct platform_device *pdev)
+>  	for (i =3D 0; i < irq_cnt; i++) {
+>  		snprintf(irq_name, sizeof(irq_name), "int%d", i);
+>  		irq =3D platform_get_irq_byname_optional(pdev, irq_name);
+> -		if (irq < 0)
+> -			irq =3D platform_get_irq(pdev, i);
+> -		if (irq < 0) {
+> +		if (irq < 0 && irq !=3D -ENXIO) {
+>  			ret =3D irq;
+>  			goto failed_irq;
+>  		}
+> +		if (irq =3D=3D -ENXIO) {
+> +			irq =3D platform_get_irq(pdev, i);
+> +			if (irq < 0) {
+> +				ret =3D irq;
+> +				goto failed_irq;
+> +			}
+> +		}
 
-All four points are correct. Because the 3rd point removes part of the 
-patch,
-v2 will be sent as a series.
+This part is unrelated to PTP and inconsistent with the subject, it should =
+be
+added to a separate patch.
 
-On 24/08/26 4:17 pm, Simon Horman wrote:
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
-> Full review at: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260820085543.967490-1-hidayath@linux.ibm.com?part=1
-> ---
-> net/smc: do not credit bytes that splice() did not take
->
-> The patch adds a short-count path to the chunk loop in smc_rx_recvmsg()
-> so that only the number of bytes splice_to_pipe() actually accepted is
-> credited to copylen, read_remaining and read_done.  It also adds a
-> zero-count path that returns -EAGAIN when nothing was taken.
->
->>      A pipe that is not empty is enough to hit this; SPLICE_F_NONBLOCK on a
->>      full pipe produces the zero case.
-> [Severity: Low]
-> Is "A pipe that is not empty is enough to hit this" accurate?  A non-zero
-> short return from splice_to_pipe() requires smc_rx_splice() to submit more
-> than one page:
->
-> net/smc/smc_rx.c:smc_rx_splice() {
-> 	nr_pages = !lgr->is_smcd && smc->conn.rmb_desc->is_vm ?
-> 		   PAGE_ALIGN(len + offset) / PAGE_SIZE : 1;
->
-> For SMC-D and for SMC-R with physically contiguous RMBs nr_pages is 1 and
-> the single pipe_buffer carries partial[0].len == len, so the transfer is
-> all-or-nothing.  Together with wait_for_space() in splice_file_to_pipe()
-> guaranteeing at least one free slot on entry, doesn't the short-count case
-> only occur for SMC-R with is_vm RMBs?
-
-Yes. For SMC-D and SMC-R with physically contiguous RMBs, nr_pages is 1, so
-the transfer is all-or-nothing. I will clarify in the commit message that a
-short count only happens on SMC-R with virtually contiguous RMBs (is_vm).
-
->
-> Would it help to name that configuration in the changelog so backporters
-> know what to test?
->
->> diff --git a/net/smc/smc_rx.c b/net/smc/smc_rx.c
->> index 5c9e4d8b57de4..d951dbe8eec3c 100644
->> --- a/net/smc/smc_rx.c
->> +++ b/net/smc/smc_rx.c
->> @@ -488,6 +488,24 @@ int smc_rx_recvmsg(struct smc_sock *smc, struct msghdr *msg,
->>   						read_done = -EFAULT;
->>   					goto out;
->>   				}
-> [Severity: High]
-> This isn't a bug introduced by this patch, but since the patch reworks
-> exactly this accounting: does this pre-existing exit leak bytes_to_rcv on
-> a wrapped read?
-Yes. The "goto out" skips atomic_sub(), so chunk 0 bytes are never
-subtracted from bytes_to_rcv. But the pipe reader still updates the cursor,
-leaving bytes_to_rcv permanently incorrect.
-
-I will fix this in the series: when chunk 1 fails after chunk 0 was
-delivered, set copylen to chunk 0 length and break instead of "goto out".
-The memcpy_to_msg() path has the same problem and will be fixed as well.
->
-> For a read that wraps the ring, chunk 0 can succeed and chunk 1 fail.
-> smc_rx_splice() has already committed chunk 0:
->
-> net/smc/smc_rx.c:smc_rx_splice() {
-> 	bytes = splice_to_pipe(pipe, &spd);
-> 	if (bytes > 0)
-> 		atomic_add(bytes, &smc->conn.splice_pending);
->
-> and the queued buffers advance the consumer cursor when the reader drains
-> them:
->
-> net/smc/smc_rx.c:smc_rx_pipe_buf_release() {
-> 	lock_sock(sk);
-> 	smc_rx_update_cons(smc, priv->len);
-> 	release_sock(sk);
->
-> Chunk 1 then finds the pipe full.  fs/splice.c:splice_to_pipe() converts
-> no progress to an error rather than 0:
->
-> 	if (!ret)
-> 		ret = -EAGAIN;
->
-> so control takes the quoted "if (rc < 0) ... goto out" with read_done ==
-> chunk 0 length, jumping past the only debit site in smc_rx_recvmsg():
->
-> 	atomic_sub(copylen, &conn->bytes_to_rcv);
->
-> Doesn't that leave cons advanced by the delivered bytes while
-> bytes_to_rcv still counts them?  smc_rx_data_available() reads
-> atomic_read(&conn->bytes_to_rcv) - peeked, so would a subsequent
-> recvmsg()/splice() start at the advanced cursor and copy that many bytes
-> of stale RMB content from past the producer position?
->
-> Also, can the documented invariant "0 <= bytes_to_rcv <= rmb_desc->len"
-> be violated if this repeats?
->
->> +				/* splice_to_pipe() takes only what the pipe
->> +				 * has room for, which may be less than was
->> +				 * offered, or nothing. Account what it took
->> +				 * and stop: crediting the whole chunk would
->> +				 * advance the consumer past data the reader
->> +				 * never received.
->> +				 */
->> +				if (!msg && rc < chunk_len) {
->> +					if (!rc) {
->> +						if (!read_done)
->> +							read_done = -EAGAIN;
->> +						goto out;
->> +					}
-> [Severity: Medium]
-> Can rc ever be 0 here?  splice_to_pipe() returns 0 only for
-> spd->nr_pages == 0, and otherwise ends with:
->
-> fs/splice.c:splice_to_pipe() {
-> 	if (!ret)
-> 		ret = -EAGAIN;
->
-> smc_rx_splice() always builds nr_pages >= 1 and returns the
-> splice_to_pipe() value unchanged, so the "took nothing" case arrives as
-> -EAGAIN and is consumed by the pre-existing block above, which reports
-> -EFAULT to userspace.  Does that make this "if (!rc)" arm unreachable,
-> and the changelog claim
->
->       When it took nothing, return -EAGAIN instead of reporting a length
->       that was not delivered.
->
-> not take effect?
-Yes, it is unreachable. smc_rx_splice() always passes nr_pages >= 1, so
-splice_to_pipe() returns -EAGAIN instead of 0.
-
-The zero case arrives as -EAGAIN, which the existing code turns into
--EFAULT. In v2, I will drop the dead arm and return rc directly instead
-of -EFAULT (which also fixes -ENOMEM reporting). I will also reword the
-comment.
->
-> On the same note, does "SPLICE_F_NONBLOCK on a full pipe produces the
-> zero case" hold?  splice_file_to_pipe() calls wait_for_space() before
-> do_splice_read():
->
-> fs/splice.c:wait_for_space() {
-> 		if (!pipe_is_full(pipe))
-> 			return 0;
-> 		if (flags & SPLICE_F_NONBLOCK)
-> 			return -EAGAIN;
->
-> so a completely full pipe fails before smc_splice_read() is entered.
-> Should the comment block above also be reworded, since it describes a
-> callee returning zero that splice_to_pipe() does not do?
->
->> +					copylen = chunk_len_sum - chunk_len + rc;
->> +					read_remaining -= rc;
->> +					read_done += rc;
->> +					break;
->> +				}
->>   			}
->>   			read_remaining -= chunk_len;
->>   			read_done += chunk_len;
-> [Severity: High]
-> This is a pre-existing issue outside the diff, but this patch depends on
-> the invariant it breaks, so it may be worth mentioning: in
-> smc_rx_pipe_buf_release() the cursor advance happens under the socket
-> lock while the splice_pending decrement happens after it is dropped:
->
-> net/smc/smc_rx.c:smc_rx_pipe_buf_release() {
-> 	lock_sock(sk);
-> 	smc_rx_update_cons(smc, priv->len);
-> 	release_sock(sk);
-> 	if (atomic_sub_and_test(priv->len, &conn->splice_pending))
-> 		smc_rx_wake_up(sk);
->
-> smc_rx_recvmsg() assumes cons plus splice_pending marks the start of
-> unread data:
->
-> 	splbytes = atomic_read(&conn->splice_pending);
-> 	...
-> 	smc_curs_copy(&cons, &conn->local_tx_ctrl.cons, conn);
-> 	...
-> 	if (splbytes)
-> 		smc_curs_add(conn->rmb_desc->len, &cons, splbytes);
->
-> In the window between release_sock() and atomic_sub_and_test(), cons
-> already includes priv->len and splice_pending still counts the same
-> bytes.  Can a concurrent splice on the same socket then start priv->len
-> bytes too far, skipping unread data and handing stale ring content to the
-> pipe?
->
-> The recvmsg() path looks protected because it waits while splice_pending
-> is non-zero:
->
-> 		if (!readable || (msg && splbytes)) {
->
-> but the splice path (msg == NULL) is not gated on splice_pending.  The
-> pipe mutex doesn't serialize this either, since splice_file_to_pipe()
-> holds only the destination pipe's lock, so draining pipe A can race with
-> splicing the same socket into pipe B.
->
-> Would moving the atomic_sub_and_test() before release_sock() make cons
-> and splice_pending change together with respect to the socket lock?
-Yes. I will move the subtraction inside lock_sock() and keep the wake-up
-outside. I will send this in a separate patch.
-
-v2 will follow as a series
-
-Thanks,
-Hidayath
