@@ -1,123 +1,150 @@
-Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FADF424D58
-	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 09:32:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D9E778F4A;
+	Mon,  7 Sep 2026 09:37:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788773523; cv=none; b=lffvABIKzoJfy4ya7zqf4Z6HtCd18EBce9fH3egpUjVu6zUqDYFuOwEmFbpwvzIYzCD6wcjfSmaUAwAy/1gcPPIT02NkKc6X4pqm4TvkpXKpZbLu5IU8L/3SyCgmrVM4LYLexczPXZTfT5E9Qxr+l9s2+fFxK5/zFhGaXb567wk=
+	t=1788773821; cv=none; b=trnlcHAT1HSEp/TabDh+a925JkIrbFb+Bnyyp9nBT6sIayhzd9Vll81LbIxGIoQLv37KNWp4epjeDfdEfld4A+26CWNmg32/zGqTfS5i19lO/wM3a5ZGWCxKRoymI7n7l/GLKfvhwFcBVjO+p9KWH1xXqyA4WUDKIRSCdDbCN8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788773523; c=relaxed/simple;
-	bh=3aWASqYVLMNH+HcLl4Q33NxoWH3YrdvFvkFHWrmcr40=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qiHInlCMSzZIFGEB+9lQ1Zj4g+P3cgrm7Ja+PhD0u/1bTnDZmev4kPmQFF7Ui+1uYUVSMqbYU99H4sPjCXHVNcvPzqTm1VaHjKGQGajLRLJhWdAAoJXFOwD3V1A7Sw1VoB0yqwUCLY73VbjKIQUS80s+FUcS4MQcpporsFEH/vg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=FgVkSvP8; arc=none smtp.client-ip=62.96.220.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
+	s=arc-20240116; t=1788773821; c=relaxed/simple;
+	bh=pocvtLvVAA3KCKWrQpdsbyTH4eJeGTnLbzDEaWWybkc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lhZJFCa7YSOfhn+aXdAW9MV5knLCI8NMVstiVW6h87cVEFnlQNYHTgACGf/WTpFM9h1f6PZTGYkW27kWfILUK4Cn4H84k8whIZdPuFC/+iNy+iqUeUabVLnhG9mesJGZFh1ywhC8PO6pwZwIkS4lzH9bMyoZY7gG6B90+2Lex2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NPjB/p46; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="FgVkSvP8"
-Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id 692FB20719;
-	Mon,  7 Sep 2026 11:31:59 +0200 (CEST)
-X-Virus-Scanned: by secunet
-Received: from mx1.secunet.com ([127.0.0.1])
- by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id oLFGGOPIpjxJ; Mon,  7 Sep 2026 11:31:58 +0200 (CEST)
-Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id C947020704;
-	Mon,  7 Sep 2026 11:31:58 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com C947020704
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1788773518;
-	bh=i9AeNAGhGR2t8VeH7S/nXGCq8LwypJwwiV0NShmk0vU=;
-	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
-	b=FgVkSvP86WksFQJ8+kOLme5obTEefAi5TOz/010zJPchL8reUfR1scnjkTAo5A5WY
-	 55Oob2jusnomQzO6NvqFb5OVx6zaOnVq8/o0UY2e2l0FhSAq6D0th7t0gZzl50I0/M
-	 tpFRud3njV0ehLekgPcun1SUQMCYmYFpT9uSlBeQiPVxErbw/wfoMEOrLBUOlVJ+c5
-	 B2Se5rDjSnVXrlOhlT62TBa0+eSwNWmRg9U022GXSl9x5vhgOsyHdwuwjK8Y/svV6E
-	 jx/i2JdXWIkGYrui6FEwbHr2edICkD4BW22SHiIFjbkf/QWGGBd5/QxeNhU10WAhE/
-	 a2Q4pLbGqyzrQ==
-Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Mon, 7 Sep
- 2026 11:31:58 +0200
-Received: (nullmailer pid 2228811 invoked by uid 1000);
-	Mon, 07 Sep 2026 09:30:24 -0000
-From: Steffen Klassert <steffen.klassert@secunet.com>
-To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
-CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
-	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
-Subject: [PATCH 04/12] xfrm: iptfs: fix runt reassembly panic from short inner tot_len
-Date: Mon, 7 Sep 2026 11:29:47 +0200
-Message-ID: <20260907093020.2228346-5-steffen.klassert@secunet.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260907093020.2228346-1-steffen.klassert@secunet.com>
-References: <20260907093020.2228346-1-steffen.klassert@secunet.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NPjB/p46"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F01F1F00A3A;
+	Mon,  7 Sep 2026 09:36:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788773819;
+	bh=ytKsqBo5/2HLVu6fIuVVD3BDl61BPKw3UXH/G57rWfs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=NPjB/p46ZY4uuoYs4ZsbTiCzvkCIg/PMEEQ77KFNKzpEyLuSEQYPTcfLwyY++OlRw
+	 aHuGDcVYFqq30PWwk8S7oAkmT5xY2W/Qzxae7mwzsnGdynWdtdQArlC4N7KjBi0bmc
+	 Hv/YHoAM5fU7YLYZ05a0dBnjxNFd+1WQMgk45koQ5SZq6ZwwbqA/HOT66bhVnp8GSK
+	 808w2MUDwIusK+gG/lfUg69HItV/4rYjO4XC33TYQoevfdxPMmMPXt2mkESZhqbmAN
+	 TNmO5hd9CMx5omdC6Pc3oy7llr/jtNVpdeG/BajoqhfBgACMNeurGQTXNqoktM82NX
+	 KztrDZXbsLqlg==
+Message-ID: <23359076-eae2-4fdb-a8ee-23968b84869c@kernel.org>
+Date: Mon, 7 Sep 2026 11:36:53 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH net-next v2 1/2] tools: ynl: Allow cross-compiling ynl and
+ associated tools
+Content-Language: fr
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+ netdev-bot+sashiko@kernel.org
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, donald.hunter@gmail.com,
+ horms@kernel.org, shuah@kernel.org, sdf@fomichev.me, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, thomas.petazzoni@bootlin.com,
+ linux-kselftest@vger.kernel.org
+References: <20260903155524.2241065-2-maxime.chevallier@bootlin.com>
+ <178870681916.219967.14635919564673520317@kernel.org>
+ <d1928f33-23ca-46cd-af71-1f3cdc55bf96@bootlin.com>
+From: Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <d1928f33-23ca-46cd-af71-1f3cdc55bf96@bootlin.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EXCH-04.secunet.de (10.32.0.184) To EXCH-01.secunet.de
- (10.32.0.171)
 
-From: Henry Martin <bsdhenrymartin@gmail.com>
+Hi Maxime,
 
-When the start of an inner packet is split across two outer packets
-such that fewer than 4 bytes land at the end of the first one,
-__input_process_payload() saves those bytes as a runt and skips the
-iplen/iphlen validation performed for in-place packets. When the
-continuation packet arrives, iptfs_reassem_cont() only requires the
-declared inner length to be >= sizeof(ra_runt) (6) before allocating
-the reassembly skb with that attacker-controlled length.
+On 07/09/2026 10:22, Maxime Chevallier wrote:
+> Hi,
+> 
+> On 9/6/26 17:00, netdev-bot+sashiko@kernel.org wrote:
+>> Thank you for your contribution! Sashiko AI review found 3 potential
+>> issue(s) to consider:
+>>
+>> Critical: 0 · High: 0 · Medium: 2 · Low: 1
+> 
+> [...]
+> 
+>> [Severity: Medium]
+>> Should the new include come before Makefile.arch rather than after it?
+> 
+> This looks like a legit point
+> 
+> [...]
+> 
+>> [Severity: Medium]
+>> The commit message says the change accounts for "the cross-compiling options
+>> such as CROSS_COMPILE or the LLVM-specific variables". Does this also cover
+>> the documented LLVM form described in Documentation/kbuild/llvm.rst, that is
+>> make LLVM=1 ARCH=<arch> with no CROSS_COMPILE?
+> 
+> I'll update the commit log to document the limitation
+> 
+> [...]
+> 
+>> [Severity: Low]
+>> This isn't a bug, but now that Makefile.include is pulled in here, the
+>> existing Q assignment later in this same file disagrees with it:
+> 
+> Also legit as well.
+> 
+> So, I'll swap the Makefile.arch and Makefile.include inclusions, document in
+> the commit log that we don't deal with LLVM + no CROSS_COMPILE, and drop the
+> 
+> Q = @
+> 
+> line in ynltool/Makefile.
+> 
+> Matthieu, are you OK with me keeping your review tag with the above changes,
+> or do I drop it and resend for you to re-review ?
 
-However, __iptfs_iphlen() always returns the fixed minimum IP header
-size (20 for IPv4, 40 for IPv6), so for an inner IPv4 tot_len in
-[6, 19] the header-completion copy writes past the declared packet
-length, and the subsequent "ipremain -= copylen" underflows to ~4GB,
-leaving the payload copy length bounded only by blkoff (up to 64KB).
-At runtime the skb_put() tailroom check turns this into
-skb_over_panic(), i.e. an unprivileged kernel panic (DoS), reachable
-locally via userns+netns IPTFS SAs and remotely against IPTFS VPN
-gateways when the decrypted outer skb is linear (e.g. AF_PACKET taps,
-tun/tap delivery).
+Thank you for asking. I agree with the above changes, (and TBH, I didn't
+check for such issues in my review :) ), so you can keep my RvB tag.
 
-Align the runt path with the normal path by requiring the declared
-inner length to cover at least the IP header size. This also subsumes
-the previous >= sizeof(ra_runt) check, since the minimum IP header
-is always larger than the runt buffer.
-
-This issue was found by the autokbug dynamic kernel fuzzer at
-Tencent Yunding Lab.
-
-Fixes: 075694765446 ("xfrm: iptfs: handle received fragmented inner packets")
-Reported-by: Henry Martin <bsdhenrymartin@gmail.com>
-Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
----
- net/xfrm/xfrm_iptfs.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/net/xfrm/xfrm_iptfs.c b/net/xfrm/xfrm_iptfs.c
-index 2ce15c472cc4..6920940a35b4 100644
---- a/net/xfrm/xfrm_iptfs.c
-+++ b/net/xfrm/xfrm_iptfs.c
-@@ -828,8 +828,8 @@ static u32 iptfs_reassem_cont(struct xfrm_iptfs_data *xtfs, u64 seq,
- 		 * allocate an in progress skb
- 		 */
- 		ipremain = __iptfs_iplen(xtfs->ra_runt);
--		if (ipremain < sizeof(xtfs->ra_runt)) {
--			/* length has to be at least runtsize large */
-+		if (ipremain < __iptfs_iphlen(xtfs->ra_runt)) {
-+			/* length has to be at least the IP header size */
- 			XFRM_INC_STATS(xs_net(xtfs->x),
- 				       LINUX_MIB_XFRMINIPTFSERROR);
- 			goto abandon;
--- 
-2.43.0
-
+Cheers,
+Matt
