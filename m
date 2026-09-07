@@ -1,299 +1,110 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B1AB463B94;
-	Mon,  7 Sep 2026 13:43:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7898C4EE872
+	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 13:46:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788788625; cv=none; b=mltlsw7xnKl20OUElwTi0c2f1CPsFdhlV8f6wmxUhtvx8BTHgpEulmamGYzLOp4Fnkg53T+FhPPgH4Z40AXc055aBCv7V2iyCGvi4BoC0XMpUlgEKqhpQ3iwuHKG4Ipoh4KuAV93BpCLkwvZtr6NF8PcvYG1JTsRq45afF2Tn60=
+	t=1788788796; cv=none; b=SHE4RT8H9wdGqC9zU3+GkEh/IECFrG7SgtabUrFyOv0vCiDz6pzFtKN/dfwYCA1X7iRKoG1g7/xC5mEN3dZfNgvDjJvF8HeReNtaNNb4aBHATz+gMnFDcVfclGT1LaB3BuxIAxz0L/562JMWUkPhB2+MeeypJL68SHUx6CKaU0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788788625; c=relaxed/simple;
-	bh=YZ8FA5JL6PMill5gcWmIwEDZT1PtVMuLuMDMyIsfqPA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bEi1lplJXYHBlQDLzuJymRvFY7Qe1sIwXWWIOxlWgvEMDFxhtQM5LJvqSa6Ug1YriTP277aw3ny81HaR2RA94esUeAObfqU29DlhNPwNqW2abHBs1L4znfxlslFtpxJq3clWUzHqPn4rKxhyek3V01VSwht9EWJSBXPSBP0vpwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE1F21F00A3A;
-	Mon,  7 Sep 2026 13:43:33 +0000 (UTC)
-From: Greg Ungerer <gerg@linux-m68k.org>
-To: linux-m68k@lists.linux-m68k.org
-Cc: linux-kernel@vger.kernel.org,
-	arnd@kernel.org,
-	wei.fang@nxp.com,
-	frank.li@nxp.com,
-	shenwei.wang@nxp.com,
-	imx@lists.linux.dev,
-	netdev@vger.kernel.org,
-	nico@fluxnic.net,
-	linux-can@vger.kernel.org,
-	linux-spi@vger.kernel.org,
-	olteanv@gmail.com,
-	Greg Ungerer <gerg@linux-m68k.org>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Frank Li <Frank.Li@nxp.com>
-Subject: [PATCHv3 3/3] m68k: coldfire: fix non-standard readX()/writeX() functions
-Date: Mon,  7 Sep 2026 23:37:11 +1000
-Message-ID: <20260907134037.1855408-4-gerg@linux-m68k.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260907134037.1855408-1-gerg@linux-m68k.org>
-References: <20260907134037.1855408-1-gerg@linux-m68k.org>
+	s=arc-20240116; t=1788788796; c=relaxed/simple;
+	bh=ey+ea/XaUzKmLSSv/fmRwtg/pqMjVi9RuYBhFPeenHo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lcXUv86WiAwWjxbwV7yKAxRj124rPWuAlwjsi1YBIQrgQOeK58f/0G7WgnWhYZTz2+6S2gGmXt3b22aUoVjCzWViaTE9RqxvkDu3U70Q+DLo3ubVoe3IcHxku6S4TXxP2yzon3Y5SSyz9GZpLr9i1HOl5Ur5nIEpjTzV93LS4zI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=O4lXPVCH; arc=none smtp.client-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="O4lXPVCH"
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-4859b45abadso163323f8f.2
+        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 06:46:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=blackwall.org; s=google; t=1788788789; x=1789393589; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=HmOQIAWcEZHB6gZrTF2GCi64OHYKHOStwvoinD4q/34=;
+        b=O4lXPVCHheDL96euIFGBnf3Jf4VqPZqM7eyu5evF9lOuR2HIZ1Qkd7CGohCuokaLc8
+         KdVt4Vi2Pd7yLpFfydUGpZcJ2zPBSjjGvDN6OfGUtkW0R5fb3lNlzWq3hAW1io+xWq/u
+         Xrk/SIZKKaxJg08MTAjnKTiGg71ojlExT8Dj7pfsQBhcHO26nIH+qNdeyMO02pI7uvcc
+         i0eVdwQfTmkf9/BQowH1DaPckg4LSavEQ4ZeQEjsL0PFlZegsifHXF7cxAS81+LVSDrc
+         fzo6gIVoF1dheV41cW73bbkky8f+T+PH3TXrvqntBtrpMUTUQh3cY3cZwJdr6n9sy0HW
+         nnaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788788789; x=1789393589;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=HmOQIAWcEZHB6gZrTF2GCi64OHYKHOStwvoinD4q/34=;
+        b=KDZJQCwcW6vJWSpu/metw5BDBzJv9aZc9AmE7ygQOqyFUB4nGFGpSTzp1SYIMTj6/c
+         ZVKK/GUyp4bFweArPm9GO7kQfcSFFN/+08EcZbM33MZd+dL50N6jSv1rgWIoIreoMr29
+         Fkj4vXEdcLxjUgtXHHUyV5HQ963Auid4octCWbRrtp0Oo8WQqXpnQFD9gGxrxrmqPnIB
+         I4FCbov65Nt9erOzA8qO3LPp4JPAAerkH+ajvLM5q560Ozm6u8Qd31IjU0DkULgD0uM0
+         SzwSf9YNlze6vBtB53HlQ8BC0+d2fv++ydxkOK26ZVwUstlkYn6WLe/3yRLhVxbwXjIV
+         7fyw==
+X-Gm-Message-State: AFuF++n7O/LxeWYbs5QDRm3QB1GVbDiVgo94jWbx/mpSZ4CcI9omW0uB
+	oNvtvIej172bkWmrV5uscpRM72TbHlVmPSN54I57DjbXscwd2+ySGm1RfvYdt6yLgW4=
+X-Gm-Gg: AYBFou15QXGulCgTSOJ3E1+TQIvCq9oYyQMbdeYu92TMseTUbWn6I45B4Q9abhRgh2N
+	3EVGPh6RbTZkUVs+R+EODWtKMVArODp7d4RHwOVWY14Js48WAH59gn8YNs/RwQt1memcMom0WDY
+	7+WlP9TN28A9JxsiUagOXeQ6gZL3VAdx0k3wUK8W155L027L7Vg+ePwJQ1S0SmeMBk9mGgZoYP8
+	rVIwMsxcbI1AnvRizxagcbncwRIN6NfiBE2qP2RTDA6Iibo8XBE2wXddA5E81bAN67oSFUKFwHB
+	yn8vskrTHDfx8i74WAh8lV+7a5wWp5npfcGRl207V87gBoTtpRSGySOTfrngTdBxsS8LmQj10oa
+	2fLNmyFZYR2MCz0CIjxKXmfmIzHbNATs3M1FR+kmIZ/I2whE9gGu734EMZkWkPrazmGLafPExuU
+	jM2Bd1LeEFco2uVT0bkKFVFKeFrz2fI9G2ZFKW0qeclmN2hlfFy/ILa3GtlcmMUvCVGGrweIVTG
+	nD//2ejUnFOpzMY682k
+X-Received: by 2002:a5d:5d09:0:b0:485:8a46:b3cb with SMTP id ffacd0b85a97d-4858a46b609mr22977040f8f.51.1788788788535;
+        Mon, 07 Sep 2026 06:46:28 -0700 (PDT)
+Received: from [192.168.0.161] (78-154-14-127.ip.btc-net.bg. [78.154.14.127])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-485958f1493sm17273193f8f.37.2026.09.07.06.46.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 07 Sep 2026 06:46:27 -0700 (PDT)
+Message-ID: <76e98b59-9371-4700-92bf-20e41aaf0210@blackwall.org>
+Date: Mon, 7 Sep 2026 16:46:26 +0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next] net: bridge: bound the port VLAN lists in the
+ IFLA_AF_SPEC nest
+Content-Language: en-US, bg
+To: Artem Lytkin <iprintercanon@gmail.com>
+Cc: netdev@vger.kernel.org, bridge@lists.linux.dev,
+ Ido Schimmel <idosch@nvidia.com>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, "David S. Miller" <davem@davemloft.net>
+References: <20260906224246.21719-1-iprintercanon@gmail.com>
+ <ba2dcdb6-923d-4fc1-9c92-7a77c0b61a09@blackwall.org>
+ <20260907133505.5291-1-iprintercanon@gmail.com>
+From: Nikolay Aleksandrov <razor@blackwall.org>
+In-Reply-To: <20260907133505.5291-1-iprintercanon@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Remove the local ColdFire definitions of readb()/readw()/readl() and
-writeb()/writew()/writel() and use the asm-generic versions of them.
+On 07/09/2026 16:35, Artem Lytkin wrote:
+> On Mon, Sep 07, 2026 at 11:47:24AM +0300, Nikolay Aleksandrov wrote:
+>> I prefer a more explicit path - return error for both (RTM_GETLINK and notifications)
+>> you'll have to plumb down extack but then user-space will know there are too many objects or lost
+>> RTNL_LINK notifications and it should resync (e.g. use RTM_GETVLAN to dump the vlans if needed).
+> 
+> OK, v2 will do that: br_fill_ifinfo() fails with -E2BIG once the nest
+> would pass 65535, kept distinct from -EMSGSIZE so the WARN_ON in
+> br_info_notify() still means what it means today and the error goes to
+> rtnl_set_sk_err(). For the dump, rtnl_bridge_getlink() can turn -E2BIG
+> into the extack message itself, which keeps ndo_bridge_getlink() as it
+> is; or do you want extack plumbed through the ndo? The size clamp and
+> the doc text go away.
+> 
+> Artem
 
-The implementation of the readX()/writeX() family of IO access functions
-is non-standard on ColdFire platforms. They either return big-endian (that
-is native endian) data, or on platforms with PCI bus support check the
-supplied address and return either big or little endian data based on that
-check. This is non-standard, they are expected to always return
-little-endian byte ordered data. Unfortunately this behavior also means
-that ioreadX()/iowroteX() and their big-endian counter parts
-ioreadXbe()/iowriteXbe() are currently broken because they are implemented
-using the readX()/writeX() functions.
+I'd prefer to plumb down the extack so the bridge can set it itself and be specific
+if needed. Others might want to fill it with something different, there are only
+a few drivers that implement it and some may decide to return user-friendly errors.
+Please make sure to split the patches well, don't do everything in a single patch.
 
-The change to use the asm-generic versions of readX()/writeX() itself is
-quite straight forward, just remove the ColdFire local versions of them. But
-this of course has implications for any remaining drivers that use any of
-these IO access functions. A number of drivers can be independently fixed,
-before this final fix to readX()/writeX() for ColdFire. A small number of
-drivers cannot easily be independently fixed and remain in a working
-state. Those drivers are fixed here as well:
-
-drivers/dma/mcf-edma-main.c
-  Supports big-endian access by setting the big-endian flag of
-  the drivers struct fsl_edma_engine. But locally should be using
-  ioread32be() and iowrite32be() instead of ioread32() and iowrite32().
-
-drivers/net/can/flexcan/flexcan-core.c
-  Setting the driver quirks flag for big-endian access will force
-  driver to use correct access functions.
-
-drivers/spi/spi-fsl-dspi.c
-  Setting the regmap format_endian flags to use native endian will
-  force driver to use appropriate big or little endian access on
-  whatever platform it is built for.
-
-These drivers have only been compile tested.
-
-Acked-by: Marc Kleine-Budde <mkl@pengutronix.de> # for drivers/net/can/flexcan
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Greg Ungerer <gerg@linux-m68k.org>
----
-v2: changed from RFC to PATCH
-    use separate regmap config for mcf5441x (spi-fsl-dspi.c)
-    reorder quirks for mcf5441x (flexcan-core.c)
-v3: no change
-
- arch/m68k/include/asm/io_no.h          | 68 +++-----------------------
- drivers/dma/mcf-edma-main.c            | 14 +++---
- drivers/net/can/flexcan/flexcan-core.c |  1 +
- drivers/spi/spi-fsl-dspi.c             | 14 +++++-
- 4 files changed, 27 insertions(+), 70 deletions(-)
-
-diff --git a/arch/m68k/include/asm/io_no.h b/arch/m68k/include/asm/io_no.h
-index 4f0f34b06e37..2f12f4ed0da5 100644
---- a/arch/m68k/include/asm/io_no.h
-+++ b/arch/m68k/include/asm/io_no.h
-@@ -3,15 +3,10 @@
- #define _M68KNOMMU_IO_H
- 
- /*
-- * Convert a physical memory address into a IO memory address.
-- * For us this is trivially a type cast.
-- */
--#define iomem(a)	((void __iomem *) (a))
--
--/*
-- * The non-MMU m68k and ColdFire IO and memory mapped hardware access
-- * functions have always worked in CPU native endian. We need to define
-- * that behavior here first before we include asm-generic/io.h.
-+ * Historically the raw native endian IO access macros for non-MMU m68k and
-+ * ColdFire have accepted any integral value as the address argument.
-+ * The asm-generic versions of these expect "void __iomem *" for the address,
-+ * so define local permissive versions here.
-  */
- #define __raw_readb(addr) \
-     ({ u8 __v = (*(__force volatile u8 *) (addr)); __v; })
-@@ -45,66 +40,15 @@
-  * applies just the same of there is no MMU but something like a PCI bus
-  * is present.
-  */
--static int __cf_internalio(unsigned long addr)
-+static inline int __cf_internalio(unsigned long addr)
- {
- 	return (addr >= IOMEMBASE) && (addr <= IOMEMBASE + IOMEMSIZE - 1);
- }
- 
--static int cf_internalio(const volatile void __iomem *addr)
-+static inline int cf_internalio(const volatile void __iomem *addr)
- {
- 	return __cf_internalio((unsigned long) addr);
- }
--
--/*
-- * We need to treat built-in peripherals and bus based address ranges
-- * differently. Local built-in peripherals (and the ColdFire SoC parts
-- * have quite a lot of them) are always native endian - which is big
-- * endian on m68k/ColdFire. Bus based address ranges, like the PCI bus,
-- * are accessed little endian - so we need to byte swap those.
-- */
--#define readw readw
--static inline u16 readw(const volatile void __iomem *addr)
--{
--	if (cf_internalio(addr))
--		return __raw_readw(addr);
--	return swab16(__raw_readw(addr));
--}
--
--#define readl readl
--static inline u32 readl(const volatile void __iomem *addr)
--{
--	if (cf_internalio(addr))
--		return __raw_readl(addr);
--	return swab32(__raw_readl(addr));
--}
--
--#define writew writew
--static inline void writew(u16 value, volatile void __iomem *addr)
--{
--	if (cf_internalio(addr))
--		__raw_writew(value, addr);
--	else
--		__raw_writew(swab16(value), addr);
--}
--
--#define writel writel
--static inline void writel(u32 value, volatile void __iomem *addr)
--{
--	if (cf_internalio(addr))
--		__raw_writel(value, addr);
--	else
--		__raw_writel(swab32(value), addr);
--}
--
--#else
--
--#define readb __raw_readb
--#define readw __raw_readw
--#define readl __raw_readl
--#define writeb __raw_writeb
--#define writew __raw_writew
--#define writel __raw_writel
--
- #endif /* IOMEMBASE */
- 
- #if defined(CONFIG_COLDFIRE)
-diff --git a/drivers/dma/mcf-edma-main.c b/drivers/dma/mcf-edma-main.c
-index 9e1c6400c77b..4ed0ce644e37 100644
---- a/drivers/dma/mcf-edma-main.c
-+++ b/drivers/dma/mcf-edma-main.c
-@@ -21,9 +21,9 @@ static irqreturn_t mcf_edma_tx_handler(int irq, void *dev_id)
- 	unsigned int ch;
- 	u64 intmap;
- 
--	intmap = ioread32(regs->inth);
-+	intmap = ioread32be(regs->inth);
- 	intmap <<= 32;
--	intmap |= ioread32(regs->intl);
-+	intmap |= ioread32be(regs->intl);
- 	if (!intmap)
- 		return IRQ_NONE;
- 
-@@ -43,7 +43,7 @@ static irqreturn_t mcf_edma_err_handler(int irq, void *dev_id)
- 	struct edma_regs *regs = &mcf_edma->regs;
- 	unsigned int err, ch;
- 
--	err = ioread32(regs->errl);
-+	err = ioread32be(regs->errl);
- 	if (!err)
- 		return IRQ_NONE;
- 
-@@ -55,7 +55,7 @@ static irqreturn_t mcf_edma_err_handler(int irq, void *dev_id)
- 		}
- 	}
- 
--	err = ioread32(regs->errh);
-+	err = ioread32be(regs->errh);
- 	if (!err)
- 		return IRQ_NONE;
- 
-@@ -203,8 +203,8 @@ static int mcf_edma_probe(struct platform_device *pdev)
- 		edma_write_tcdreg(mcf_chan, cpu_to_le32(0), csr);
- 	}
- 
--	iowrite32(~0, regs->inth);
--	iowrite32(~0, regs->intl);
-+	iowrite32be(~0, regs->inth);
-+	iowrite32be(~0, regs->intl);
- 
- 	ret = mcf_edma->drvdata->setup_irq(pdev, mcf_edma);
- 	if (ret)
-@@ -248,7 +248,7 @@ static int mcf_edma_probe(struct platform_device *pdev)
- 	}
- 
- 	/* Enable round robin arbitration */
--	iowrite32(EDMA_CR_ERGA | EDMA_CR_ERCA, regs->cr);
-+	iowrite32be(EDMA_CR_ERGA | EDMA_CR_ERCA, regs->cr);
- 
- 	return 0;
- }
-diff --git a/drivers/net/can/flexcan/flexcan-core.c b/drivers/net/can/flexcan/flexcan-core.c
-index f5d22c61503f..f0571b97817b 100644
---- a/drivers/net/can/flexcan/flexcan-core.c
-+++ b/drivers/net/can/flexcan/flexcan-core.c
-@@ -295,6 +295,7 @@ static_assert(sizeof(struct flexcan_regs) ==  0x4 * 18 + 0xfb8);
- 
- static const struct flexcan_devtype_data fsl_mcf5441x_devtype_data = {
- 	.quirks = FLEXCAN_QUIRK_BROKEN_PERR_STATE |
-+		FLEXCAN_QUIRK_DEFAULT_BIG_ENDIAN |
- 		FLEXCAN_QUIRK_NR_IRQ_3 | FLEXCAN_QUIRK_NR_MB_16 |
- 		FLEXCAN_QUIRK_SUPPORT_RX_MAILBOX |
- 		FLEXCAN_QUIRK_SUPPORT_RX_FIFO,
-diff --git a/drivers/spi/spi-fsl-dspi.c b/drivers/spi/spi-fsl-dspi.c
-index 23e6bc5f202e..5fb5f5dd1b0d 100644
---- a/drivers/spi/spi-fsl-dspi.c
-+++ b/drivers/spi/spi-fsl-dspi.c
-@@ -192,6 +192,7 @@ enum {
- 	DSPI_XSPI_REGMAP,
- 	S32G_DSPI_XSPI_REGMAP,
- 	DSPI_PUSHR,
-+	MCF5441X_DSPI_REGMAP,
- };
- 
- static const struct regmap_config dspi_regmap_config[] = {
-@@ -238,6 +239,17 @@ static const struct regmap_config dspi_regmap_config[] = {
- 		.reg_stride	= 2,
- 		.max_register	= 0x2,
- 	},
-+	[MCF5441X_DSPI_REGMAP] = {
-+		.reg_bits	= 32,
-+		.val_bits	= 32,
-+		.reg_stride	= 4,
-+		.max_register	= SPI_RXFR3,
-+		.volatile_table	= &dspi_volatile_table,
-+		.rd_table	= &dspi_access_table,
-+		.wr_table	= &dspi_access_table,
-+		.reg_format_endian = REGMAP_ENDIAN_BIG,
-+		.val_format_endian = REGMAP_ENDIAN_BIG,
-+	},
- };
- 
- static const struct fsl_dspi_devtype_data devtype_data[] = {
-@@ -303,7 +315,7 @@ static const struct fsl_dspi_devtype_data devtype_data[] = {
- 		.trans_mode		= DSPI_DMA_MODE,
- 		.max_clock_factor	= 8,
- 		.fifo_size		= 16,
--		.regmap			= &dspi_regmap_config[DSPI_REGMAP],
-+		.regmap			= &dspi_regmap_config[MCF5441X_DSPI_REGMAP],
- 	},
- 	[S32G] = {
- 		.trans_mode	  = DSPI_XSPI_MODE,
--- 
-2.55.0
+Thanks,
+  Nik
 
