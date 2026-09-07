@@ -1,127 +1,92 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6770F3537C8
-	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 09:03:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30F28448391;
+	Mon,  7 Sep 2026 09:10:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788771808; cv=none; b=AEvbMStE4SHd+C7bPrc+cjDj5l9Ijhhjj1WLhk5arqwDwrCwC4Ze7UErBqfMdjvBf9h/9JAIVYDKxG/1r4PDAAfzV4cC9IdA278VfUPHqBQEkxCPk3FfvM97cm7hZP+kDWQ/CocXOVdzVIWZwFO1c31QQjyQEpX8M2vWXTIDFTI=
+	t=1788772258; cv=none; b=EBXXo27uDrdIYkj8efWBqMtJlRwz9A0lb9wYieF/FYW6svGFobZRZQHZcZdDrfJUSSHjOOAVPNRBfDh7JTOCfr2bcJVqhZRMNmmyxcOhlWNGy4uOoxeexc2q2KtijYyUQyYcFZHQWn4dZdAtcl3jFdn9/wppKep5t483GK58PC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788771808; c=relaxed/simple;
-	bh=UCys/yk5OxSHFlx0G+FD6MU3BrVVamNj9bHLgi00djw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pBcHusR9dKWrM5R4a7mJXqpudBt64Hwcmm5mds6R2QlZZCzLNdcHVqsVnN+IdnfKZNp0pPOxFknp83t/3UTTNlOdoe5W0IjyKXojIjk4PnPELV1yRyIh+Jwzd6BThfgQfKWyawyI5wLvCFEYFd6OjxPU/60myJ+M1AxhynaScLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GZP86Wvt; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=uOhUxvlX; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1788772258; c=relaxed/simple;
+	bh=kD88WPjO2q8Z0rvP+M+ld9b/ip/Dnp/7Qdyt/uY1O+M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HKWYtno2KRTaMLvIVWU1kaXmIUlRyXLLRUB+e3sXbDNWvJgNPUWXdbNM8hi0E2aAw2lV3oPstkZPNgSt1S3jduLgHvuW+9d7kjjH1lcbZr7cAzTd66/avlKTMNV3Y4KqojDu2u+bTqEb5qpf5smMWGHvdIqDof2yUz3O3XbgBo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mixHjN6T; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GZP86Wvt";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="uOhUxvlX"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1788771805;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ucajRS6H+HWWoQAE3fO8klKyejIpls/4GdgTUYhqPJk=;
-	b=GZP86Wvthu6OPB6UVI+W6ibvJQk9AXVWYuFOIyj098REiiMJfrZfcmcAuD50n4muDfu6py
-	Q6h50gBbC1szbSUsfac08BO51Acfs6GWyT0F7kkyujVWFiii0DwQBktxjlvMsAkTvnZJnP
-	3WNW010Qd1PNxGFo7en0C74G5YSrr3U=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-679-ackqZYs0NJmamzfrGZE5lA-1; Mon, 07 Sep 2026 05:03:23 -0400
-X-MC-Unique: ackqZYs0NJmamzfrGZE5lA-1
-X-Mimecast-MFC-AGG-ID: ackqZYs0NJmamzfrGZE5lA_1788771803
-Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-c253185765dso344673366b.0
-        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 02:03:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1788771803; x=1789376603; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ucajRS6H+HWWoQAE3fO8klKyejIpls/4GdgTUYhqPJk=;
-        b=uOhUxvlXAFmxZjF8oVWuUrrIP9v9fMSRn0bzxodH2SSvDLP9rMnG8/ND/er1GFygzE
-         8obFhiJcZn2P7u+jk8zKJurWH/rhseMPTvyoYAl2KKxc99etRlgFYVstWu0esnNoIObb
-         wSBfrMKVNtBmNJdTq2roHMm0SGscxXaHFN9bpB/HQgwhEmq/Ft9X4pg/qrvGxgFcWOYb
-         MnvGJLOm/SZ4oAhFT6zuY4TkiN6PAAT7hfC1FGVQ9Ct3NNAE+JJvO67o0go/5nVWvu3D
-         GKGyloXrq/RAY10GFevk6A1Dpg3S8RSkH8ckmL7sB/ZWISEnsymjmdr6q7JZlsZSPm+j
-         LwCw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788771803; x=1789376603;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ucajRS6H+HWWoQAE3fO8klKyejIpls/4GdgTUYhqPJk=;
-        b=bK3xZj1QoagdPxcBeSbQG9lruZksRLKB3gDtWM6wBqLrnSuTiibPOnHXbz6UPeEvvC
-         PJb99nhQNODYwoapru/zJN+SDdpW3556nUKvww/5nEET0umieyEAzjzJBfVH5F0wYnMZ
-         nqtzbmDS0DlngapHYUry5vLXoMpXJgXq/RvMX1mhZQEw1juCOySgl/iIeeCaZG1ryN1M
-         8TpCWVA2Frct1fmaJWBhGngX2NeKd9VCmPdCRWrONMfhZHJHpEGN28xyf85eELKe2RUE
-         bFiqyjgtNNiZSP8ycj6QdyZAOGIiolZLKHpO1t5GO1FVGP4IhkOwb1zgUmt5ukjjJ8Ya
-         3LCQ==
-X-Forwarded-Encrypted: i=1; AKwUvByusxw4h9dKV/Bqp15kiTeNYx99Y3AGzCKoDn22AI28iD1yz0H5sG1+pynIMx2g65GouB5AjhM=@vger.kernel.org
-X-Gm-Message-State: AFuF++kHTFiJm8SBrnhNMDHymxlcpdvBtlZ32we2U3UEP3YHNmh9zbyH
-	375Mqe+7mNOHmDNsTqO3RjGElJRelD4EHi9IUjjpQK+3z4mPwNuT/ZX2xERBznGefDPry1AUsFl
-	deIyUk+cbLFnodF6zYY8wBmEtDwpA/l4JgALmOtlOjpjV5kvlgaSL1loZew==
-X-Gm-Gg: AYBFou0gKXOb0Cp5Qx/V+RQhV7Zoero8bjcOW3wBfuGcOeaPiW3WnYZ7da9IltUhX8B
-	8l0xDpyW2KEGgULWv6nK3ITD23riLOkDOe/NaLrl5hpscTGyPlggecs3BTAbG3QqT0DA+pEMlEW
-	7NwTcefFep4sJlwpINQsKkxoVT8rWjefHvl7giZWyEoalL86GAfb24LRGvxL3kXvRIyZQG16B0U
-	XTtqQq8czg03z88OogShTaOGa8GU22rOu5iJ5W35W7lu004D5FjyidvAJt6AFTtptCnb5QI6de4
-	5gdNqyR7lShfY49oR9Wq47nmbrkSBUTHrDlmzeJt2itmw6+mUOets1bc+0NQfsdcp2wlwzglqWE
-	FOEGpD1kqNnsXTFkgB3U/mA1kxi3qTARHBHxcSxGZVCYIz3IecBPDDrY06wm/EKIaAwlDjotVcg
-	==
-X-Received: by 2002:a17:907:1c9f:b0:c26:1691:b374 with SMTP id a640c23a62f3a-c261691ba04mr806871166b.45.1788771802707;
-        Mon, 07 Sep 2026 02:03:22 -0700 (PDT)
-X-Received: by 2002:a17:907:1c9f:b0:c26:1691:b374 with SMTP id a640c23a62f3a-c261691ba04mr806869166b.45.1788771802245;
-        Mon, 07 Sep 2026 02:03:22 -0700 (PDT)
-Received: from [192.168.188.218] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c28e9eb4d38sm142341066b.41.2026.09.07.02.03.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 07 Sep 2026 02:03:21 -0700 (PDT)
-Message-ID: <f52b173f-79f6-407a-b7a3-f3b94f34003a@redhat.com>
-Date: Mon, 7 Sep 2026 11:03:19 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mixHjN6T"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFB0E1F00A3A;
+	Mon,  7 Sep 2026 09:10:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788772256;
+	bh=QunEK4bJDjHKRItDHtFYdP6VKrb5WXoolVwD0wMuE5Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=mixHjN6Ti1Yew2y+wZItCTtCjGFWJmoBTa4FMfaQV68ilRglzrAcZfwXLwQsyH5nV
+	 PAMyGsKZFeBTbcxcNgs4Q2iI0u+YoNa41pyHywl/yAZ+7wY7lIKgfLIIxXPsj+vo+G
+	 d3CstSY+v7qb5s7mV5bit/lAsBqsBN1HmlTofTR1c00VsJ+9OSDUmHEf7wOn4h9xN0
+	 8fAl1SkmdfdICwMeDIqEiiQ0eGyCQSmJukwWEibL2dIvMImzNFyjK0W/83Chl1ky38
+	 Ao30mguWPye4Gz5ZuJRDcTC9m9zYZvtiwsQ10hIiOLUuzVoIzV3WQ/ICYXwTvHXMU3
+	 nBOV59oflQFbg==
+Date: Mon, 7 Sep 2026 11:10:53 +0200
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Vasilij Strassheim <v.strassheim@linutronix.de>
+Cc: Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Andrew Lunn <andrew@lunn.ch>, 
+	Vladimir Oltean <olteanv@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Russell King <linux@armlinux.org.uk>, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org, Martin Kaistra <martin.kaistra@linutronix.de>, 
+	Benedikt Spranger <b.spranger@linutronix.de>
+Subject: Re: [PATCH net-next v2 0/4] net: dsa: Add SoC-e DSA driver
+Message-ID: <20260907-resourceful-hissing-hummingbird-70cf8c@quoll>
+References: <20260903-devel-vstrassheim-soce-dsa-ml-v2-0-fb0587cb466b@linutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] net: prestera: validate num_counters in counter response
-To: Aamir Ahmed <elb12345@hotmail.co.uk>, netdev@vger.kernel.org
-Cc: davem@davemloft.net, kuba@kernel.org, edumazet@google.com,
- enachman@marvell.com
-References: <AS8P251MB0001CC8A4737B0CC46F41DDFC8B22@AS8P251MB0001.EURP251.PROD.OUTLOOK.COM>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <AS8P251MB0001CC8A4737B0CC46F41DDFC8B22@AS8P251MB0001.EURP251.PROD.OUTLOOK.COM>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260903-devel-vstrassheim-soce-dsa-ml-v2-0-fb0587cb466b@linutronix.de>
 
-On 9/7/26 5:22 AM, Aamir Ahmed wrote:
-> prestera_hw_counters_get() iterates over resp->num_counters
-> entries from the firmware response without verifying it does
-> not exceed the number of entries requested. A firmware response
-> claiming more counters than requested causes out-of-bounds reads
-> from the response buffer and out-of-bounds writes to the caller
-> stats array.
+On Thu, Sep 03, 2026 at 08:10:57PM +0200, Vasilij Strassheim wrote:
+> Add support for SoC-e Ethernet switch IP cores synthesized for and
+> implemented in FPGAs.
 > 
-> Validate that num_counters does not exceed the requested count
-> before iterating.
+> The series introduces the SoC-e vendor prefix and device tree binding,
+> an EtherType-based SDSA tagger, and an initial DSA switch driver.
 > 
-> Fixes: 6e36c7bcb461 ("net: prestera: add counter HW API")
-> Signed-off-by: Aamir Ahmed <elb12345@hotmail.co.uk>
-Patchwork shows more than 20 patches from you in flight. Please read
+> The driver uses a memory-mapped control interface. During probe, it
+> detects the core version and the licensed and implemented port counts,
+> and verifies that the synthesized core provides DSA support. Port
+> counts from 1 through 31 are supported.
+> 
+> The initial implementation supports Ethernet switching using MII, GMII,
+> RMII, and RGMII port interfaces. Offloading features are not
+> implemented.
+> 
+> External MDIO outputs are exposed as separate logical MDIO buses sharing
+> the integrated MDIO controller.
+> 
+> The driver was tested with a SoC-e MRS 25.01 IP core on a Xilinx ZynqMP
+> platform.
+> 
+> Signed-off-by: Vasilij Strassheim <v.strassheim@linutronix.de>
+> ---
+> Changes in v2:
+> - Correctly use net-next prefix
+> - Rework the binding into a single MMIO-based switch node
+> - Model hardware MDIO outputs as separate logical MDIO buses
+> - Detect the switch version, features, and port count from hardware
+> - Drop incomplete STP, bridge, and FDB offloading
+> - Derive phylink capabilities from each port's phy-mode
+> - Harden MDIO access and SDSA receive validation
+> - Address binding, naming, and coding style review comments
 
-Documentation/process/maintainer-netdev.rst
+This is not specific enough. Every contributor can say that for every
+patch...
 
-carefully, especially the section about the 15 patches limit.
-
-Stop sending new patches until are the pending ones are processed.
-
-Processing for the pending ones will be likely significantly delayed.
-
-/P
+Best regards,
+Krzysztof
 
