@@ -1,191 +1,344 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ED0A2BDC1C;
-	Mon,  7 Sep 2026 03:01:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788750120; cv=none; b=hXnH8XFz+/mvzIbtwi3EQUwAnwuadCVa1oJMo0hO8JXfTDEkU2VOS+yIT4ZYuaHfBHwaGsUCK4naOXiepy9FAsQiOVFjNhJfTrQ/eTJ1XAJpgruitl+hdKFkCzJu1AV62PKwUd81J8EzUP7A5bylUmEPxOJEo8UGqXG0NCt4h5o=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788750120; c=relaxed/simple;
-	bh=UEPUoGcF7oa68YMn4/8BDr/OhI1xYmdiu/yKbf/bFjY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ETHEE3PrFYhqgnVdJDnfcKM53xaK83kNaX3DNoNevisXwhjCaS5twPn0+c37n+baGciOsBfNCl9hUZkeD4d3oNqcqWMGqRsIGXFRTkyyhSjM6xRd1OYounRmMGRKf05dOWaTB/MZZ+L2xcRFmvLnmYf+xwWJziyZQtRKYv7MNyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=avnDvDgc; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7261B3E5EC5
+	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 03:05:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788750358; cv=pass; b=h70zTV0Ja09/a4P+1sj3TO4q8MRrCTMs+LxD+s6cs2NKBhEarZ5orIBO6hOLbzPvZSD4v8gkVb5OR9VmNTIIqWE9GOE/r5BxPmU62YVtqq1AmVJLH404JinMUV2G9AIln2B5xhsNU7g1ww93coiN/BU88peSR+60A0sBhev9lF0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788750358; c=relaxed/simple;
+	bh=JjTBnWXYcPYPei20BQ2ElWZXSEdrjRdouifOfM3rT+Q=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rD6PG9rpp1jXaYh6tC4AFcFxFMkLK5lmJCTy3pCeY0k0elXeE4sslRYl1EX4K8MrtHk538RK8ZZbdEOnjhQEnMdMoJIv3pguKWyx9jzkx/RXJIr59mgvOJPeqI+djx3ZZeQltrWKsl5+cP1bE5P8L0FKQIiV2es3kH51ML3UJs8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lb7XK2Yn; arc=pass smtp.client-ip=209.85.219.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="avnDvDgc"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788750118; x=1820286118;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=UEPUoGcF7oa68YMn4/8BDr/OhI1xYmdiu/yKbf/bFjY=;
-  b=avnDvDgcAKmjZtqu8wS83/3Jpu7rNgZWsnwy7qvZH99EamBaDDm1BXJu
-   xzu9kIEpASTmDsHTkhTGEpZkZDRLfEWmjKABDf9nSVbEQ3w9/LKZPn37k
-   qQAm6JqDPNTcx3VS9xyiql0hcbQTK83gVq7s99iJIL+cHSv4YnK0Mm3OX
-   DXU0USBPe2uNmoTtC/qo/3/KphafGns1ceJyozzwEw/oJ6sisgHFEw/cB
-   sQ8F0+cebVOz7IerAFnRmMbooFhvZCR3B1qwVgoyMxIViEDhV5menU4WM
-   A1VrOotu6XLEQvS0Hra85zXJ8vU8rMR717pNhZ31J+XRCJTCBPYERAtJM
-   Q==;
-X-CSE-ConnectionGUID: XzbtBq6hSbuA1CefD9hVHQ==
-X-CSE-MsgGUID: f5APEwIjRYCSs9g6PGZkUg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11898"; a="76705997"
-X-IronPort-AV: E=Sophos;i="6.25,266,1779174000"; 
-   d="scan'208";a="76705997"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Sep 2026 20:01:57 -0700
-X-CSE-ConnectionGUID: NylP5cS6T6Ko0qgXvfppIg==
-X-CSE-MsgGUID: xRTjAO1qRTyw7bmZbf8XDQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,266,1779174000"; 
-   d="scan'208";a="268847217"
-Received: from junjie-desk-dev.bj.intel.com ([10.238.152.71])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Sep 2026 20:01:54 -0700
-From: Junjie Cao <junjie.cao@intel.com>
-To: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: David Ahern <dsahern@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v4] net: dropreason: add SKB_DROP_REASON_IP_TTL_EXCEEDED
-Date: Mon,  7 Sep 2026 11:01:33 +0800
-Message-ID: <20260907030133.482834-1-junjie.cao@intel.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lb7XK2Yn"
+Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-90cc39e06bdso37952426d6.0
+        for <netdev@vger.kernel.org>; Sun, 06 Sep 2026 20:05:56 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788750355; cv=none;
+        d=google.com; s=arc-20260327;
+        b=pXfEe6JOaMqEOuoIDsXT4lJTpYKOCqYnh87Z93e+L8bQz62fzd2KMINCsLfg3bj5mg
+         zNABuiC3uT9x2XqhTTQPrsCqN05qMqqnhOSj7408EM/HNkewohIczDm+Sf/mn9gvhSqU
+         DA70U/V5Y7I4v+6YgailAZs6AMdiUVEsA9CGmTbm+oJqVhsuV2KOIXyBdSlUyvQSRu4P
+         uISE8SunSO7esJAgHsmgfJjbeFgipuiUDLZZGjElFSdj3TbQxqYSjJvv4J/4gBZBIW9A
+         /0rAbanT1Rbjt+FAdJ47ivgKxRESFwPPZn998ApnDq3JiDOwbwfudCgMZOlu+WJzRS2J
+         1LlQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=vp6kqRH18z2BkXSeT4B0EuoiGVpEoZr0cYZ/GmzT9oY=;
+        fh=BLP3SvYL0vQ0QVXM5cssecArqhgKvMKty2/ztLkdpFk=;
+        b=isul10HWjfWYkMCqN+HU+bhpKsSNMDfQBH3LJS8TROd0sVpMZQH0zLTRspuDZ/43/U
+         XCl7pA9V5kw/mKRbSAIJ6Oy+OE4SoplmUMjLf9GGWebdoIsydkGNeaJH2AZcW5pC+aDq
+         hh5MyYaCmwB+5dTs7GsBIM/TveiRpOxEftGkE4j+ijWkbG9LfxWd5BskAkk5u76CmBcR
+         uzdg9Mx9hQI1YLlRCa23AeZvSFtIFQs+j1muftemdLm2fFjpSmZpEgyqCepPlCp1jPn6
+         pbLbQGT0cyT1rteJBqBtVcgQbT2ODvJHAmhuj21Mh9vcetEUMEcT+MbINUxMPE24GoKu
+         LWxA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788750355; x=1789355155; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=vp6kqRH18z2BkXSeT4B0EuoiGVpEoZr0cYZ/GmzT9oY=;
+        b=lb7XK2YnsMtZrRT/UX0+h9qtswiC9rOSpUrlU1rK2RoOyXNWNxHuuR6ECTwTKiJq5f
+         UCTt1okVAZmiGSaoORqWS2UZ0OaiWafng3yHWqWXHxPQotOW4ZBJuv9RRiZ3WmW9YNPm
+         kcp/S/UwThhd27Z3ihFWqpn390AB0hhkHsHOVi3Yoq35YMkCp/G6aWszfzWYXOhGoSwb
+         tYojMmVtOtApShnyyLxc6o17Ag2OcAIX51jdzzrdgMrT3SPL2SyMOH3vZN80KH4OLFmb
+         LodAecxQJMRBKD7Akyl/rrSc8PpkPaIujYLmCv+VQ9SwayUOvr/g1nomNm4mCn+oQ8pb
+         E9jw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788750355; x=1789355155;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=vp6kqRH18z2BkXSeT4B0EuoiGVpEoZr0cYZ/GmzT9oY=;
+        b=LS1AlbRBqURJdsZkiBSTWdo6EgjG8eKxPjfI7ScJjW1I8XmyDCU4lALA9RL8JMeqqV
+         SXiMES3ZLdo0A0IoFzTiNrWLOnzdOOm3foMhQqZyeHBfl+vmzIsVnPu8IWikNBeBJA9Z
+         mPFdYgfRGG7aXyqc46y96QrRvcdNscp8nfqUTIqNiYZefUZd3bKkOH2yrRvvZEFti24E
+         e90479903+HGLcGZrdSDRR1h8PwRH4M2GW/lrfLWl38EWv9zp+PeRnuN/E1lKWQ4yEQL
+         QIkicujy23W+FfYSH+xbT2OLi3+E0QufOv17EYx7YpGUGyilUGhkXge4dap0WIuF1xat
+         JDDw==
+X-Forwarded-Encrypted: i=1; AKwUvBz1hb4l9p8wOYBFcBxmVRtxpmId8VYCv2LMdSYYCimltdRda83Ik2xXAT8YC4H+35/PAa5MZkY=@vger.kernel.org
+X-Gm-Message-State: AFuF++mjQr5vX1DzMEK8XKx3DHqAWh61J79K0k1EGZNMnk1ezxxKE3H3
+	tYUh7D9LJbpvsqAB9De3/P2kmybg9/zcGbT+trfRjY0K3DA4smp3uMTPLYWrL3QuR1OPCyT9VFs
+	VveQ1Yhe1fiEGy9qUGGo5TxoI6gdLQ3TeJNkO
+X-Gm-Gg: AYBFou2MWxP19DpcYHn0C+8C2B53pHnIuUtFud8rBQsMhpluiqX0BdRGT273oCiQ/DK
+	R8Ih5k9bsQQq44kLSz66TY7LZH6Uk7OS1sH4knszRzDZ2rZycR4VY270yA51yGvW6wYtPXc5hJl
+	d3xU52BgllC79vltxtf6mq9CBhKhmDvulWVX09jCEsYnbrXtHMN2AUZbGdfbRptnWslt6+2P2LL
+	mQyo/RlZjg2ZsVF7UBgMiI8mAKaibMQqBZEak1sMsZfNiWiG5YkZf2OAhkV0ZzuSlwQI4cZuqkF
+	DIagn2tScbIwAaTg0X5rvuwRRNz4W9meqsf8R8bAkmNw
+X-Received: by 2002:a05:620a:2a14:b0:939:16f6:4d01 with SMTP id
+ af79cd13be357-93980371409mr1860789685a.21.1788750355107; Sun, 06 Sep 2026
+ 20:05:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260906013659.517889-1-physicalmtea@gmail.com> <20260905234007-mutt-send-email-mst@kernel.org>
+In-Reply-To: <20260905234007-mutt-send-email-mst@kernel.org>
+From: Jia Jia <physicalmtea@gmail.com>
+Date: Mon, 7 Sep 2026 11:05:18 +0800
+X-Gm-Features: AcwNN1VD3mXF6xsr3Q77Ee5e_NmlFL287LdrgSbhF2Hf-aI0ro1H1y2newXV4-0
+Message-ID: <CAJwVaMJcqOPPt6eQuVdySmwvjMz2Bh5dRPYidF+s8_1fNf2uiw@mail.gmail.com>
+Subject: Re: [PATCH v4] vhost/vsock: batch RX used-ring updates
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: sgarzare@redhat.com, stefanha@redhat.com, jasowang@redhat.com, 
+	eperezma@redhat.com, kvm@vger.kernel.org, virtualization@lists.linux.dev, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The forwarding paths report an expired TTL or hop limit as
-SKB_DROP_REASON_IP_INHDR, the reason otherwise used for a header that is
-malformed (ip_input.c, exthdrs.c, br_netfilter). Nothing else in the drop
-path separates the two: IPSTATS_MIB_INHDRERRORS covers both, and the TTL
-check runs before NF_INET_FORWARD, so netfilter tracing stops at
-PREROUTING and never sees the drop.
+>
+> On Sun, Sep 06, 2026 at 09:36:59AM +0800, Jia Jia wrote:
+> > vhost_transport_do_send_pkt() calls vhost_add_used() for every Guest RX
+> > buffer even though it delays the Guest signal until the worker finishes=
+.
+> > Each call publishes one used entry and updates the used index separatel=
+y.
+> >
+> > Collect the completed buffer heads in the arrays already allocated for =
+the
+> > virtqueue and publish them with vhost_add_used_n().  Bound the batch by=
+ the
+> > ring size and array capacity.  Flush when the batch reaches its limit o=
+r
+> > before leaving the worker.
+> >
+> > Each used entry describes one completed RX buffer and keeps its actual =
+used
+> > length, so set nheads to 1 for every entry.  This patch does not change
+> > negotiated features or compress multiple buffers into one used entry.
+> >
+> > This patch is limited to the current skb-based vhost-vsock RX path.
+> >
+> > Performance:
+> >
+> > The test used vsock_perf with a fresh Guest for each state and 20 paire=
+d
+> > runs. The Guest receiver used:
+> >
+> >   vsock_perf --port PORT --buf-size 64M --vsk-size 64M --rcvlowat 1
+> >
+> > The Host sender used:
+> >
+> >   vsock_perf --sender 3 --port PORT --bytes 1G \
+> >       --buf-size SEND_BUF --vsk-size 64M
+> >
+> > The table reports geometric mean Guest RX throughput.
+> >
+> >   SEND_BUF   baseline RX   batching RX   change
+> >              (Gbit/s)       (Gbit/s)
+> >   256 B      0.0795724      0.0831509      +4.497%
+> >   512 B      0.1194885      0.1210297      +1.290%
+> >   4 KiB      0.7208273      0.7242053      +0.469%
+> >   64 KiB     2.1712797      2.1951941      +1.101%
+>
+>
+> I will be frank I don't find the numbers compelling enough
+> to bother with this trickery.
+>
+> vsock wasn't optimized all that much for small packets -
+> first of all, it is doing most of its work in a work item
+> so we are already at the mercy of the scheduler.
+>
+> That's more work but you will see a much bigger win for bw and
+> latency by just handling small packets directly in the cb
+> if you can.
+>
+> Looking at batching: wakeup per packet in rx_work, lock_sock per packet,
+> sk->sk_write_space per rx packet are all high overhead things we are
+> doing in the data path that are likely easier to handle
+> and will give you more bang for the buck.
+>
+>
+>
+>
+>
 
-The Fedora bug linked below shows how that reads in practice. The
-reporter took kfree_skb(reason=IP_INHDR, loc=ip_forward) to mean the
-software header checksum check had failed, and worked through RX checksum
-offload, tc csum actions and both libvirt firewall backends before the
-drops turned out to be replies arriving with TTL 1. ip_forward() never
-verifies the header checksum; that runs earlier, in ip_rcv_core(), and
-reports IP_CSUM.
+Thank you very much for giving such a clear direction!
 
-TTL expiry is not a corner case -- every traceroute through a Linux
-router goes through too_many_hops.
+> >
+> > As supplementary data, perf stat measured the vhost worker cycles and
+> > instructions per GiB in 10 paired runs. The patched implementation
+> > reduced cycles by 3.846%, 2.162%, and 4.109%, and instructions by
+> > 2.548%, 2.084%, and 4.637% for 256 B, 4 KiB, and 64 KiB, respectively.
+> >
+> > An AF_VSOCK request-response latency test with 10 AB/BA pairs showed no
+> > consistent RTT change: -0.102% for 256-byte messages (4/10 pairs lower)=
+ and
+> > +3.281% for 4-KiB messages (5/10 pairs lower), using arithmetic mean RT=
+Ts.
+> >
+> > Signed-off-by: Jia Jia <physicalmtea@gmail.com>
+> > Acked-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
+> > ---
+> > Changes in v4:
+> > - Simplify the performance description.
+> > - Add a brief AF_VSOCK RTT measurement.
+> > - Keep the batch limit within the used ring and scratch arrays, without
+> >   duplicating the worker weight limit.
+> > - Flush after adding a used entry when the batch reaches the limit, and
+> >   remove the redundant flush in the empty-queue path.
+> > ---
+> >  drivers/vhost/vsock.c | 47 +++++++++++++++++++++++++++++++++++++++++++=
+++--
+> >  1 file changed, 45 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
+> > index 9aaab6bb8061..7a13abe73345 100644
+> > --- a/drivers/vhost/vsock.c
+> > +++ b/drivers/vhost/vsock.c
+> > @@ -103,12 +103,35 @@ static bool vhost_transport_has_remote_cid(struct=
+ vsock_sock *vsk, u32 cid)
+> >       return found;
+> >  }
+> >
+> > +static bool vhost_vsock_flush_used(struct vhost_virtqueue *vq,
+> > +                                unsigned int used_count)
+> > +{
+> > +     if (!used_count)
+> > +             return false;
+> > +
+> > +     vhost_add_used_n(vq, vq->heads, vq->nheads, used_count);
+> > +     return true;
+> > +}
+> > +
+> > +static void vhost_vsock_add_used(struct vhost_virtqueue *vq,
+> > +                              unsigned int used_count,
+> > +                              unsigned int head, unsigned int len)
+> > +{
+> > +     struct vring_used_elem *used =3D &vq->heads[used_count];
+> > +
+> > +     used->id =3D cpu_to_vhost32(vq, head);
+> > +     used->len =3D cpu_to_vhost32(vq, len);
+> > +     vq->nheads[used_count] =3D 1;
+> > +}
+> > +
+>
+>
+> flush where? add where? return what? these apis don't make it
+> easier to read code.
+>
 
-The three loopback hop limit checks in exthdrs.c drop with no reason at
-all; give them the new one.
+Thanks for pointing this out. If I understand correctly, the
+responsibilities, call sites, and return values of these helpers make
+the control flow harder to follow. I will be careful not to make the
+path more complicated for the sake of abstraction in the future.
 
-IPSTATS_MIB_INHDRERRORS stays as it is: RFC 1213 counts time-to-live
-exceeded under ipInHdrErrors. The drop reason has no such constraint.
+> >  static void
+> >  vhost_transport_do_send_pkt(struct vhost_vsock *vsock,
+> >                           struct vhost_virtqueue *vq)
+> >  {
+> >       struct vhost_virtqueue *tx_vq =3D &vsock->vqs[VSOCK_VQ_TX];
+> >       int pkts =3D 0, total_len =3D 0;
+> > +     unsigned int used_count =3D 0;
+> > +     unsigned int used_limit;
+> >       bool added =3D false;
+> >       bool restart_tx =3D false;
+> >
+> > @@ -120,6 +143,11 @@ vhost_transport_do_send_pkt(struct vhost_vsock *vs=
+ock,
+> >       if (!vq_meta_prefetch(vq))
+> >               goto out;
+> >
+> > +     /* Keep the batch within the used ring and the scratch arrays. */
+>
+> what "the batch"? this is the 1st time code mentions any batch.
+>
 
-Link: https://bugzilla.redhat.com/show_bug.cgi?id=2517131
-Signed-off-by: Junjie Cao <junjie.cao@intel.com>
-Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
----
-v4: kernel-doc says "<= 1" instead of "hit zero" (Jiayuan Chen)
-v3: https://lore.kernel.org/netdev/20260904030112.450920-1-junjie.cao@intel.com/
-v2: https://lore.kernel.org/netdev/20260901020613.417495-1-junjie.cao@intel.com/
-v1: https://lore.kernel.org/netdev/20260825073906.336072-1-junjie.cao@intel.com/
- include/net/dropreason-core.h | 6 ++++++
- net/ipv4/ip_forward.c         | 2 +-
- net/ipv6/exthdrs.c            | 6 +++---
- net/ipv6/ip6_output.c         | 2 +-
- 4 files changed, 11 insertions(+), 5 deletions(-)
+In the future, I will try not to introduce concepts used in a patch
+midway through the code. They should be explained when used.
 
-diff --git a/include/net/dropreason-core.h b/include/net/dropreason-core.h
-index 2f312d1f67d6..3d6aec203c3f 100644
---- a/include/net/dropreason-core.h
-+++ b/include/net/dropreason-core.h
-@@ -128,6 +128,7 @@
- 	FN(PSP_INPUT)			\
- 	FN(PSP_OUTPUT)			\
- 	FN(RECURSION_LIMIT)		\
-+	FN(IP_TTL_EXCEEDED)		\
- 	FNe(MAX)
- 
- /**
-@@ -606,6 +607,11 @@ enum skb_drop_reason {
- 	SKB_DROP_REASON_PSP_OUTPUT,
- 	/** @SKB_DROP_REASON_RECURSION_LIMIT: Dead loop on virtual device. */
- 	SKB_DROP_REASON_RECURSION_LIMIT,
-+	/**
-+	 * @SKB_DROP_REASON_IP_TTL_EXCEEDED: IPv4 TTL or IPv6 hop limit <= 1
-+	 * (see IPSTATS_MIB_INHDRERRORS)
-+	 */
-+	SKB_DROP_REASON_IP_TTL_EXCEEDED,
- 	/**
- 	 * @SKB_DROP_REASON_MAX: the maximum of core drop reasons, which
- 	 * shouldn't be used as a real 'reason' - only for tracing code gen
-diff --git a/net/ipv4/ip_forward.c b/net/ipv4/ip_forward.c
-index 8b65f12583eb..b242561d37e7 100644
---- a/net/ipv4/ip_forward.c
-+++ b/net/ipv4/ip_forward.c
-@@ -174,7 +174,7 @@ int ip_forward(struct sk_buff *skb)
- 	/* Tell the sender its packet died... */
- 	__IP_INC_STATS(net, IPSTATS_MIB_INHDRERRORS);
- 	icmp_send(skb, ICMP_TIME_EXCEEDED, ICMP_EXC_TTL, 0);
--	SKB_DR_SET(reason, IP_INHDR);
-+	SKB_DR_SET(reason, IP_TTL_EXCEEDED);
- drop:
- 	kfree_skb_reason(skb, reason);
- 	return NET_RX_DROP;
-diff --git a/net/ipv6/exthdrs.c b/net/ipv6/exthdrs.c
-index 09a4552f7f08..55391e2e5612 100644
---- a/net/ipv6/exthdrs.c
-+++ b/net/ipv6/exthdrs.c
-@@ -464,7 +464,7 @@ static int ipv6_srh_rcv(struct sk_buff *skb, struct inet6_dev *idev)
- 			__IP6_INC_STATS(net, idev, IPSTATS_MIB_INHDRERRORS);
- 			icmpv6_send(skb, ICMPV6_TIME_EXCEED,
- 				    ICMPV6_EXC_HOPLIMIT, 0);
--			kfree_skb(skb);
-+			kfree_skb_reason(skb, SKB_DROP_REASON_IP_TTL_EXCEEDED);
- 			return -1;
- 		}
- 		ipv6_hdr(skb)->hop_limit--;
-@@ -623,7 +623,7 @@ static int ipv6_rpl_srh_rcv(struct sk_buff *skb, struct inet6_dev *idev)
- 			__IP6_INC_STATS(net, idev, IPSTATS_MIB_INHDRERRORS);
- 			icmpv6_send(skb, ICMPV6_TIME_EXCEED,
- 				    ICMPV6_EXC_HOPLIMIT, 0);
--			kfree_skb(skb);
-+			kfree_skb_reason(skb, SKB_DROP_REASON_IP_TTL_EXCEEDED);
- 			return -1;
- 		}
- 		ipv6_hdr(skb)->hop_limit--;
-@@ -815,7 +815,7 @@ static int ipv6_rthdr_rcv(struct sk_buff *skb)
- 			__IP6_INC_STATS(net, idev, IPSTATS_MIB_INHDRERRORS);
- 			icmpv6_send(skb, ICMPV6_TIME_EXCEED, ICMPV6_EXC_HOPLIMIT,
- 				    0);
--			kfree_skb(skb);
-+			kfree_skb_reason(skb, SKB_DROP_REASON_IP_TTL_EXCEEDED);
- 			return -1;
- 		}
- 		ipv6_hdr(skb)->hop_limit--;
-diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
-index 96ee3de55f93..ddaba0aebcb1 100644
---- a/net/ipv6/ip6_output.c
-+++ b/net/ipv6/ip6_output.c
-@@ -577,7 +577,7 @@ int ip6_forward(struct sk_buff *skb)
- 		icmpv6_send(skb, ICMPV6_TIME_EXCEED, ICMPV6_EXC_HOPLIMIT, 0);
- 		__IP6_INC_STATS(net, idev, IPSTATS_MIB_INHDRERRORS);
- 
--		kfree_skb_reason(skb, SKB_DROP_REASON_IP_INHDR);
-+		kfree_skb_reason(skb, SKB_DROP_REASON_IP_TTL_EXCEEDED);
- 		return -ETIMEDOUT;
- 	}
- 
--- 
-2.43.0
+> > +     used_limit =3D min_t(unsigned int, vq->num, vq->dev->iov_limit);
+> > +     if (unlikely(!used_limit))
+> > +             goto out;
+> > +
+> >       /* Avoid further vmexits, we're already processing the virtqueue =
+*/
+> >       vhost_disable_notify(&vsock->dev, vq);
+> >
+> > @@ -150,9 +178,16 @@ vhost_transport_do_send_pkt(struct vhost_vsock *vs=
+ock,
+> >
+> >               if (head =3D=3D vq->num) {
+> >                       virtio_vsock_skb_queue_head(&vsock->send_pkt_queu=
+e, skb);
+> > +
+> > +                     /* Flush completed buffers before re-enabling not=
+ifications. */
+>
+>
+> redundant - i can see this is what it does but why? and what does flush m=
+ean here?
+>
 
+I will pay attention to making the purpose of comments clear.
+
+> > +                     if (vhost_vsock_flush_used(vq, used_count)) {
+> > +                             added =3D true;
+> > +                             used_count =3D 0;
+> > +                     }
+> > +
+> >                       /* We cannot finish yet if more buffers snuck in =
+while
+> >                        * re-enabling notify.
+> >                        */
+> >                       if (unlikely(vhost_enable_notify(&vsock->dev, vq)=
+)) {
+> >                               vhost_disable_notify(&vsock->dev, vq);
+> >                               continue;
+> > @@ -230,8 +265,13 @@ vhost_transport_do_send_pkt(struct vhost_vsock *vs=
+ock,
+> >                */
+> >               virtio_transport_deliver_tap_pkt(skb);
+> >
+> > -             vhost_add_used(vq, head, sizeof(*hdr) + payload_len);
+> > -             added =3D true;
+> > +             vhost_vsock_add_used(vq, used_count, head,
+> > +                                  sizeof(*hdr) + payload_len);
+> > +             used_count++;
+> > +             if (used_count =3D=3D used_limit) {
+> > +                     added |=3D vhost_vsock_flush_used(vq, used_count)=
+;
+>
+>
+> bitwise or on a boolean likely not what was intended.
+>
+
+Understood.
+
+> > +                     used_count =3D 0;
+> > +             }
+> >
+> >               VIRTIO_VSOCK_SKB_CB(skb)->offset +=3D payload_len;
+> >               total_len +=3D payload_len;
+> > @@ -264,6 +304,9 @@ vhost_transport_do_send_pkt(struct vhost_vsock *vso=
+ck,
+> >                       virtio_transport_consume_skb_sent(skb, true);
+> >               }
+> >       } while(likely(!vhost_exceeds_weight(vq, ++pkts, total_len)));
+> > +
+> > +     added |=3D vhost_vsock_flush_used(vq, used_count);
+> > +
+>
+>
+> and here.
+>
+
+I will drop the current patch and try a new optimization direction.
+Thank you.
+
+> >       if (added)
+> >               vhost_signal(&vsock->dev, vq);
+> >
+> > --
+> > 2.34.1
+>
