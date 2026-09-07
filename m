@@ -1,79 +1,36 @@
-Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2681493626
-	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 13:35:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F26023C4F3;
+	Mon,  7 Sep 2026 13:42:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788788122; cv=none; b=gpJ3NU2F4IUZkEXnnV0tDO7mIckLhDTUz1VZjdtZQLIV8UMOXxTMKVPIx6Nk5r8aWM28GOeNzh/UNCAMkbcy01hRjDHnhf5MEPiT3Gw4TZtUkVxhLr5fnAooyvGdxo9oDMJ0FkMpAmHJ29/ZFup7ataosVqKLKdbqkUFHvIewPU=
+	t=1788788521; cv=none; b=FE6k0jPHO/kV6g358wsSUGddFbuYFFyc+DwODCk2OWV8oUkCHUCGDn1eUYh27pcfp3wV/LXaXBrEGo12Eb3Aet5Pt6KHrFbEsui2k1wcXug5g9e2bWk6GNYTMAPTl3CQJ84NvZZZ1e1DqrrNY+8fw/g5U8r+p9Geo1L48wBtt20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788788122; c=relaxed/simple;
-	bh=LxVaiSZFYdCWw5o76jR+r64eg9BGglyX0nY8xxuVmIA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TK6skgandX1RQ+MFF1gcol5Baa06oryNgMccN9w5qWP3zWlwCUZI4ucQkt6NQHN711iTGBLqCpeeAUEUGKWN7xDE3d9DwpHneQ75vju5iJpMB+lPmEP3D6+DNC3OrRl3QCnvZvOGWhyzu+T7fHcaa1bViU0L76xoEHLITF/32Lg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OtJnl2+u; arc=none smtp.client-ip=209.85.208.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OtJnl2+u"
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-39c9a3acd40so28836341fa.3
-        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 06:35:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788788118; x=1789392918; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=LxVaiSZFYdCWw5o76jR+r64eg9BGglyX0nY8xxuVmIA=;
-        b=OtJnl2+uUwYrGV5vEaWnRan7LSiJIURCfjaSr45iywj+2sgPjJFq1ZkU12O0uHH2FY
-         Wz841iricYDNt6feFhS5RT7n8Mcq1CeI80bUkGr7t3Qrx9q2kcS/CoqlK8abLL/rTAoD
-         L3Ezrx/Ms14IVcyvRB4HMY2TEeztUoM11gPoLSdmiGnOOW/7q5UjAeCBfWa/Twd0Tj/G
-         LwxnF5C9wnAvwhIH1smPFbczFyNiYlpu2fAp8lST0tFrYumP5O6ypn5/THaskhUCL6OS
-         lZjwI1cziPuliHexngWrgfPV4cIRXLAEj+LddTffCb0E4I8+upCjoCBQsx0PSpxdHpjh
-         /cuw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788788118; x=1789392918;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=LxVaiSZFYdCWw5o76jR+r64eg9BGglyX0nY8xxuVmIA=;
-        b=mto+yN5fH6OiGO4t93nUY4kyPJyd/JpDM2J63BAx7jY7eUuht8gLwoPGq2TereGigM
-         Tkz/iXS+TK7DbjoYDuU6LVbSp4akWYv5/FWdnUVe2HPbBm3nq/RWbMlDMimZ4MZ5Aawt
-         QGfxKymNypTkZGdYNnqXjoBlzmwePXCqsQopqkKn8sfqKWeAT/4XdzoxobxICE22T+eP
-         /yaBkOhTTF+1+l6CbrzJA8K3QI9F8kQ3Mqscdi4p+hcECnAYFliP6VyJTTEeWLG+s+/5
-         Dzt9dJxb920oRvshxjmBDu71RFdRncYR8sPjtVUrbcK1svPDJ1HfKCqeTcjEVcQxAvDH
-         9U9g==
-X-Gm-Message-State: AFuF++l0QVBaKq+QskJ9rNVBj3r4Zu5t/zoY7tP7ayGcCQWVTO2sexUt
-	OkvK3Tu2r1kos6J1tewxIi7NOJbgPT0EDyy62NuSTlFOW2jwYMWzrfd8
-X-Gm-Gg: AYBFou0AFBMQJ3wdi+0t5W5/OQHsA0YB5vgubdBPgQAmLhESQ995j0pZwpmY1GYphfm
-	hATI1Q7zapphvDLe4JRqXiZGCbRwM3Lpy1+YIbV8ktWuno4vZHkvlidrNdeJmFBDGEjfWtvUDT8
-	mvEGenya2jSMcRojKVzKtorrlddWD0f3IG/LH4to7kMcMRjTYvowkWJGscgH5I4U++3lCCuQNf7
-	up4HhZZkG95RRgHMMP1qm2yT7Cmba/LbZtpSpg2Kv1l1GSoVfbasqjPguFRED9Du/0bvoJdTI6j
-	2/ux8pyiJq6GEzb56tNZdZGThkEuYJz/moUjZZRRKgUyV5knenLt1AqEdELaG5gmplrcBuL/4ol
-	qif1Lzumf/WhxHgnBWr1fKBk286Pr7VzRBg+NKcazuU1KOjl1zV7VlSYl0OqS6+JPLP5RQStdxF
-	DL6FgapldOQ+P/OtLGO/6T8m62rSq5ebPy9qAMlg8mpHbOhNk1fjZBIjspzhb3bqrAC1NRyNOh4
-	OHI43YSINS06zkqi50Xh/dgSTrCn7nLaLf81N4QwnHWSOSx7319/Lmi0Q==
-X-Received: by 2002:a2e:be1e:0:b0:3a1:edd7:340e with SMTP id 38308e7fff4ca-3a371995b91mr42775031fa.0.1788788118329;
-        Mon, 07 Sep 2026 06:35:18 -0700 (PDT)
-Received: from localhost.localdomain (46-138-187-224.dynamic.spd-mgts.ru. [46.138.187.224])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-3a37058669fsm26853201fa.17.2026.09.07.06.35.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Sep 2026 06:35:17 -0700 (PDT)
-From: Artem Lytkin <iprintercanon@gmail.com>
-To: Nikolay Aleksandrov <razor@blackwall.org>
-Cc: netdev@vger.kernel.org,
-	bridge@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: Re: [PATCH net-next] net: bridge: bound the port VLAN lists in the IFLA_AF_SPEC nest
-Date: Mon,  7 Sep 2026 16:35:04 +0300
-Message-ID: <20260907133505.5291-1-iprintercanon@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <ba2dcdb6-923d-4fc1-9c92-7a77c0b61a09@blackwall.org>
-References: <20260906224246.21719-1-iprintercanon@gmail.com> <ba2dcdb6-923d-4fc1-9c92-7a77c0b61a09@blackwall.org>
+	s=arc-20240116; t=1788788521; c=relaxed/simple;
+	bh=k2rKP7HwoQdmY5JKGHPxTdOnhTrrrC8ZlJgg1gEffT0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DAxg7ak20BAqYFor9k1E4sh2Y7P62UTBmXeSU6Xc0evhEgxaeWoIRVj1I6m7A1P9+l/GqooxriN/SPK3t83/6TrLqzAL7QHa/7/igNsNknBZZ24y1D9Gc+dd3R4iZKEXpP0KorfyQtVl09IE6YIqpyp4o6uGGTkQ6a1182CrhiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CC031F00A3A;
+	Mon,  7 Sep 2026 13:41:57 +0000 (UTC)
+From: Greg Ungerer <gerg@linux-m68k.org>
+To: linux-m68k@lists.linux-m68k.org
+Cc: linux-kernel@vger.kernel.org,
+	arnd@kernel.org,
+	wei.fang@nxp.com,
+	frank.li@nxp.com,
+	shenwei.wang@nxp.com,
+	imx@lists.linux.dev,
+	netdev@vger.kernel.org,
+	nico@fluxnic.net,
+	linux-can@vger.kernel.org,
+	linux-spi@vger.kernel.org,
+	olteanv@gmail.com,
+	Greg Ungerer <gerg@linux-m68k.org>
+Subject: [PATCHv3 0/3] m68k: coldfire: fix non-standard readX()/writeX() functions
+Date: Mon,  7 Sep 2026 23:37:08 +1000
+Message-ID: <20260907134037.1855408-1-gerg@linux-m68k.org>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -82,17 +39,56 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On Mon, Sep 07, 2026 at 11:47:24AM +0300, Nikolay Aleksandrov wrote:
-> I prefer a more explicit path - return error for both (RTM_GETLINK and notifications)
-> you'll have to plumb down extack but then user-space will know there are too many objects or lost
-> RTNL_LINK notifications and it should resync (e.g. use RTM_GETVLAN to dump the vlans if needed).
+This collection of patches is aimed at fixing the non-standard ColdFire
+set of readX()/writeX() IO access functions. Instead switching to using the
+asm-generic definitions in include/asm-generic/io.h. The difficulty comes
+in trying not to break any drivers with this change.
 
-OK, v2 will do that: br_fill_ifinfo() fails with -E2BIG once the nest
-would pass 65535, kept distinct from -EMSGSIZE so the WARN_ON in
-br_info_notify() still means what it means today and the error goes to
-rtnl_set_sk_err(). For the dump, rtnl_bridge_getlink() can turn -E2BIG
-into the extack message itself, which keeps ndo_bridge_getlink() as it
-is; or do you want extack plumbed through the ndo? The size clamp and
-the doc text go away.
+The implementation of the readX()/writeX() family of IO access functions
+is non-standard on ColdFire platforms. They either return big-endian (that
+is native endian) data, or on platforms with PCI bus support check the
+supplied address and return either big or little endian data based on that
+check. This is non-standard, they are expected to always return
+little-endian byte ordered data. Unfortunately this behavior also means
+that ioreadX()/iowroteX() and their big-endian counter parts
+ioreadXbe()/iowriteXbe() are currently broken because they are implemented
+using the readX()/writeX() functions.
 
-Artem
+Patches 1 and 2 in this series are specific net driver changes that can be
+applied independently of the final ColdFire readX()/writeX() change.
+
+Patch 3 is the actual switch to ColdFire building using asm-generic
+readX()/writeX(), but also contains three driver fixes that are not easily
+handled independently.
+
+Note that I don't have access to all supported hardware needed to fully
+test all these changes. I have tested what I have, a bunch of the standard
+Freescale ColdFire eval boards, and inspected generated code for differences.
+
+Note that the v1 and v2 versions of this series carried a change to the
+sdhci-esdhc-mcf.c driver that is now in mainline - so dropped from this
+current v3 series.
+
+The v2 series moved from an RFC to a patch series. There was only minor
+changes overall to address comments. Changes include formatting, separating
+out the mcf5441x regmap in spi-fsl-dspi.c (patch 3) and reordering the
+quirks in flexcan-core.c (patch 3).
+
+This v3 series has no new code changes. It is sent with an expanded CC
+list in the hope of getting the net driver changes (patches 1 and 2)
+picked up so the final readl/writel fix (patch 3) that depends on them
+can be applied.
+
+Signed-off-by: Greg Ungerer <gerg@linux-m68k.org>
+---
+ arch/m68k/include/asm/io_no.h             |   68 -------
+ drivers/dma/mcf-edma-main.c               |   14 -
+ drivers/net/can/flexcan/flexcan-core.c    |    1 
+ drivers/net/ethernet/freescale/fec.h      |   15 +
+ drivers/net/ethernet/freescale/fec_main.c |  257 +++++++++++++++---------------
+ drivers/net/ethernet/freescale/fec_ptp.c  |   78 ++++-----
+ drivers/net/ethernet/smsc/smc91x.h        |   12 -
+ drivers/spi/spi-fsl-dspi.c                |   14 +
+ 8 files changed, 218 insertions(+), 241 deletions(-)
+
+
