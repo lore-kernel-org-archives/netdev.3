@@ -1,237 +1,271 @@
-Received: from va-2-36.ptr.blmpb.com (va-2-36.ptr.blmpb.com [209.127.231.36])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 143413890E0
-	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 05:58:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.127.231.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D834F29AB1A
+	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 05:58:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788760710; cv=none; b=srx/I/caYKzfe2AgkWu6q3qaCJ7ov+lc2mQoHdASzN8bCSmmCZy2FeMXrRQtz7JPy7mdyOmlNj5e+zz8bjiSmQmaGgcsmXtzTBDkEFo0uoXu4dEm0fuSWyxpMy2k1uNskeZMeuEWBPzJd2O+5A0HavKPrhftekO6iBrLRlafpG0=
+	t=1788760733; cv=none; b=W3kgN4Yx8fAfbb5oyYwHMuuO0WAPw6vSm1baldQcnsTOS8koZOi8hpVlHjYJroP+5Cm9u6JiB6ZkdUX9+tT1ARHTCuNPjbz+upz35vTnxh1zAbqZLrYGEdwHRLBncfTWztY/3i2MBzAmFiLdeG2ZF9kA9vrw/z1BVb59PVigDyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788760710; c=relaxed/simple;
-	bh=UVqQr7ZzsWjJxJKPp0/dlfrz/Hzlj+Njg9CldDgfT3c=;
-	h=From:Mime-Version:Content-Type:To:Subject:Message-Id:Cc:Date; b=rFBQOvDo/ic8uDIYpWYR6fPP8eaPL5U+MAMmmAC6cmrRaNkLprKiC1GCUYwFeFlsYPQ1DGGQx9KfCSbknIKOcORHjSGbusKhHLLViNMh2+NSknIKV+aNYrRS/BJG3G5aYRghSxQX3uu7Z3DWA6zfK586DEI58Av2auzVNggv4oE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=moonshot.ai; spf=pass smtp.mailfrom=moonshot.ai; dkim=pass (2048-bit key) header.d=moonshot.ai header.i=@moonshot.ai header.b=XssAbK15; arc=none smtp.client-ip=209.127.231.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=moonshot.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=moonshot.ai
+	s=arc-20240116; t=1788760733; c=relaxed/simple;
+	bh=HpLxNuRy1pON1tYtT7afxn9PEwtPdnSS4Gi3Zob98xQ=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=sCkjQzU2+TLaHzeuHTHfdlUQeH2HWZpRDzBEVwf+5p7XpNS43Knc3FNrfe0Aqgo3Zh44G0W+Kl+SIqriAwDTGqct8YkdUxsxt9hrORMgUHReqgBVisxAamNr+X4FhmvFlWDvP0KeMjjP4TxjgvGFBOSn4TqFviuKGfrVgKdkWSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TFxIP2Fi; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=moonshot.ai header.i=@moonshot.ai header.b="XssAbK15"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=feishu2510091218; d=moonshot.ai; t=1788760697; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=EXce8WNCt7tmMo1/aZLT8dvcxxF3rqzOVQZpw6dbimM=;
- b=XssAbK15OS9bVJcgI170RDSVxMTYrOUZruJDXvLB3tGmrfz1T8tEBabIVfDfo6KPHjWNxH
- PdOSzkEViL+FOP5FDcOx3QvPh7x10or29mVOb+K0h7hGb2YDwB2fDUl1ZtLKFblpfU2Xqf
- zr2VAK71LiWOqs3QQIfd9RG087jQte6S4CaldDpFeijtASrObXuNDZ/r5Sk2tJIrrvjVQc
- MttJSpdcn/nVQqpOGQY3aztzquMHCq6aLF7sf2qdl6xDOqBTYvy7tuBLZuIWmnq/jK2RjL
- RzwuIID3nvfJU0eNg21taOJVQVlwu7on770xkxQcwxddpYJ+AlbV0FhX/Ewgdg==
-From: "Yilin Zhang" <yilinzhang@moonshot.ai>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TFxIP2Fi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F41E81F00A3A;
+	Mon,  7 Sep 2026 05:58:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788760731;
+	bh=x1qgomIFHE0BhGw3VxQcXzWHayHTQ+eiPfEKUkjZit0=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=TFxIP2FiL9Sfv1gMrZauVaKzwHSy+aASXMms+bFyj8GYk81M2C39+CGOnTFSgxYLo
+	 p33vT8BRbNVB/fKlEPBE3oUn/bKQ8c9hjUFOn5967Sg+sRY7YClNaLbOfNPzRvOmj9
+	 dud8Nd+bk2SY0fgx3KjWKtUW3zAPF7KYbS8o2MPJOxlUrIJ6q3KmvpnQbBYCTCTL14
+	 qkuiZiSf4OH7hJ4QEq/5cjQlCdUvogJFDfLDCVv5jb27Lz7n68gV3alBaIzH3t07/f
+	 oprkDWzVuj9GS43MDYV3a8XnRh0QivI9GaE8EoYJKn8GUZJqIePyY+8jkKnz1Oinnl
+	 +0PGoV3qWva3Q==
+Subject: Re: [net-next PATCH 1/2] fbnic: Don't reject capabilities when BMC is
+ present without a MAC
+From: netdev-bot+sashiko@kernel.org
+To: alexander.duyck@gmail.com
+Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, kernel-team@meta.com,
+ horms@kernel.org
+Date: Mon, 07 Sep 2026 05:58:50 +0000
+Message-ID: <178876073051.219967.16317151777131268661@kernel.org>
+In-Reply-To:
+ <178845827907.2787.3876388161665795031.stgit@ahduyck-xeon-server.home.arpa>
+References:
+ <178845827907.2787.3876388161665795031.stgit@ahduyck-xeon-server.home.arpa>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Mailer: git-send-email 2.34.1
-Content-Type: text/plain; charset=UTF-8
-To: "Paul Mackerras" <paulus@samba.org>
-X-Original-From: Yilin Zhang <yilinzhang@moonshot.ai>
-Received: from dev.msh-dev.svc.cluster.local ([117.157.206.135]) by smtp.feishu.cn with ESMTPS; Mon, 07 Sep 2026 13:58:14 +0800
-Subject: [PATCH net] ppp: deflate: validate output buffer sizes
-Message-Id: <20260907055809.3379942-1-yilinzhang@moonshot.ai>
-Cc: "Yilin Zhang" <yilinzhang@moonshot.ai>, <linux-ppp@vger.kernel.org>, 
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
-	"Kimi Security Team" <bug-report@moonshot.ai>, 
-	"Weiming Shi" <shiweiming@moonshot.ai>
-X-Lms-Return-Path: <lba+26a9e5277+f740bd+vger.kernel.org+yilinzhang@moonshot.ai>
-Date: Mon,  7 Sep 2026 13:58:09 +0800
+MIME-Version: 1.0
 
-z_compress() assumes that the output buffer can hold the six-byte
-PPP/Deflate header.  With an MTU of 1, pad_compress_skb() supplies an
-output size of 5.  The header write overruns the skb and subtracting the
-header length makes avail_out wrap, allowing zlib to continue writing
-past the allocation.
+Thank you for your contribution! Sashiko AI review found 4 potential
+issue(s) to consider:
 
-Use a real scratch buffer to discard compressed output when the caller's
-buffer has no payload space or becomes full.  Continue consuming input so
-the compressor history remains synchronized with the peer.  Unlike the
-previous NULL output convention, a real buffer is also safe for the s390
-DFLTCC backend.
+Critical: 0 · High: 0 · Medium: 2 · Low: 2
 
-Take one READ_ONCE() snapshot of the MTU when deriving both the allocation
-and compressor sizes.  Otherwise a concurrent MTU increase can make the
-compressor receive a size larger than the skb allocated from an earlier
-read, bypassing its bounds check.
+- [Medium] fbnic_fw_parse_bmc_cap() (fbnic_fw.c:610-642) encodes 'FW says
+  BMC present but sent no MAC array' as fw_cap.bmc_present = false and…
+- [Medium] fbnic_fw_parse_bmc_cap() reads FBNIC_FW_CAP_RESP_BMC_ALL_MULTI
+  only on the success path (fbnic_fw.c:634); the new no_bmc path…
+- [Low] Missing Fixes: tag on a real bug fix.
+- [Low] Claimed hardware/driver state divergence: the new no_bmc path
+  clears fw_cap.bmc_mac_addr[] and reports bmc_present = false without…
 
-z_decompress() likewise assumes that the output buffer can hold a PPP
-header.  PPPIOCSMRU accepts -1, causing ppp_decompress_frame() to allocate
-a three-byte skb.  After decoding the first protocol byte, subtracting
-PPP_HDRLEN makes avail_out wrap and lets inflate overwrite the skb.
+--
 
-Reject undersized decompression buffers before writing the header.
+fbnic: Don't reject capabilities when BMC is present without a MAC
 
-The two memory-corruption paths produce (Linux 6.1.0, KASAN, decoded):
+The capability response parser no longer returns -EINVAL when firmware
+reports the BMC present without a BMC MAC address array; instead the stored
+BMC MAC addresses are cleared and the rest of the message is parsed.  The
+BMC handling is moved into a new helper, fbnic_fw_parse_bmc_cap().
 
-  BUG: KASAN: slab-out-of-bounds in deflate_slow (lib/zlib_deflate/defutil.h:431 lib/zlib_deflate/deflate.c:1123)
-  Write of size 8198 at addr ff110000045edc06 by task exp/78
-  CPU: 1 PID: 78 Comm: exp Not tainted 6.1.0 #1
-  Call Trace:
-    kasan_check_range (mm/kasan/generic.c:190)
-    memcpy (mm/kasan/shadow.c:65)
-    deflate_slow (lib/zlib_deflate/defutil.h:431 lib/zlib_deflate/deflate.c:1123)
-    zlib_deflate (lib/zlib_deflate/deflate.c:412)
-    z_compress (drivers/net/ppp/ppp_deflate.c:227)
-    __ppp_xmit_process (drivers/net/ppp/ppp_generic.c:1703 drivers/net/ppp/ppp_generic.c:1826 drivers/net/ppp/ppp_generic.c:1646)
-    ppp_xmit_process (drivers/net/ppp/ppp_generic.c:1668)
-    ppp_write (drivers/net/ppp/ppp_generic.c:520)
+A few questions below.
 
-  Allocated by task 78:
-    __alloc_skb (net/core/skbuff.c:437 net/core/skbuff.c:509)
-    __ppp_xmit_process (include/linux/skbuff.h:1267 drivers/net/ppp/ppp_generic.c:1692 drivers/net/ppp/ppp_generic.c:1826 drivers/net/ppp/ppp_generic.c:1646)
-    ppp_xmit_process (drivers/net/ppp/ppp_generic.c:1668)
-    ppp_write (drivers/net/ppp/ppp_generic.c:520)
+> diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_fw.c b/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
+> index ff1674eff7ad5..bf8006710f461 100644
+> --- a/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
+> +++ b/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
+> @@ -607,6 +607,40 @@ static int fbnic_fw_parse_bmc_addrs(u8 bmc_mac_addr[][ETH_ALEN],
+>  	return 0;
+>  }
+>
+> +static int fbnic_fw_parse_bmc_cap(struct fbnic_dev *fbd,
+> +				  struct fbnic_tlv_msg **results,
+> +				  bool *bmc_present, u32 *all_multi)
+> +{
+> +	struct fbnic_tlv_msg *attr;
+> +	int err;
+> +
+> +	/* The FW reports the BMC present as soon as its NC-SI channel is
+> +	 * enabled, which is before the BMC has been assigned a MAC address.
+> +	 * In that window the message carries no MAC array; there is nothing
+> +	 * to program, so treat the BMC as absent. On any absence clear the
+> +	 * stored BMC MAC addresses and report the BMC as not present.
+> +	 */
+> +	if (!results[FBNIC_FW_CAP_RESP_BMC_PRESENT])
+> +		goto no_bmc;
+> +
+> +	attr = results[FBNIC_FW_CAP_RESP_BMC_MAC_ARRAY];
+> +	if (!attr)
+> +		goto no_bmc;
 
-  The buggy address belongs to the object at ff110000045edc00
-   which belongs to the cache kmalloc-512 of size 512
-  The buggy address is located 6 bytes inside of
-   512-byte region [ff110000045edc00, ff110000045ede00)
+[Severity: Medium]
+Is the comment's claim that "there is nothing to program" accurate when the
+MAC array is missing?
 
-  BUG: KASAN: slab-out-of-bounds in zlib_inflate (lib/zlib_inflate/inflate.c:458)
-  Write of size 8191 at addr ff110000021d1044 by task ksoftirqd/0/12
-  CPU: 0 PID: 12 Comm: ksoftirqd/0 Not tainted 6.1.0 #1
-  Call Trace:
-    kasan_check_range (mm/kasan/generic.c:190)
-    memcpy (mm/kasan/shadow.c:65)
-    zlib_inflate (lib/zlib_inflate/inflate.c:458)
-    z_decompress (drivers/net/ppp/ppp_deflate.c:460)
-    ppp_receive_nonmp_frame (drivers/net/ppp/ppp_generic.c:2546 drivers/net/ppp/ppp_generic.c:2383)
-    ppp_input (drivers/net/ppp/ppp_generic.c:2355 drivers/net/ppp/ppp_generic.c:2195 drivers/net/ppp/ppp_generic.c:2310)
-    ppp_async_process (drivers/net/ppp/ppp_async.c:496)
+fbnic_bmc_rpc_init() programs several things that do not depend on the MAC
+array at all: the broadcast MACDA entry tagged FBNIC_MAC_ADDR_T_BMC and the
+BMC action rule at FBNIC_RPC_ACT_TBL_BMC_OFFSET.  It bails out up front:
 
-  Allocated by task 12:
-    __alloc_skb (net/core/skbuff.c:437 net/core/skbuff.c:509)
-    __netdev_alloc_skb (net/core/skbuff.c:575)
-    ppp_receive_nonmp_frame (include/linux/skbuff.h:3155 include/linux/skbuff.h:3168 drivers/net/ppp/ppp_generic.c:2539 drivers/net/ppp/ppp_generic.c:2383)
-    ppp_input (drivers/net/ppp/ppp_generic.c:2355 drivers/net/ppp/ppp_generic.c:2195 drivers/net/ppp/ppp_generic.c:2310)
-    ppp_async_process (drivers/net/ppp/ppp_async.c:496)
+drivers/net/ethernet/meta/fbnic/fbnic_rpc.c:fbnic_bmc_rpc_init() {
+	/* Check if BMC is present */
+	if (!fbnic_bmc_present(fbd))
+		return;
+	...
+}
 
-  The buggy address belongs to the object at ff110000021d1000
-   which belongs to the cache kmalloc-512 of size 512
-  The buggy address is located 68 bytes inside of
-   512-byte region [ff110000021d1000, ff110000021d1200)
+fbnic_rss_reinit() also ORs the BMC destination into the multicast and
+broadcast RSS actions based on the same flag:
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: Kimi Security Team <bug-report@moonshot.ai>
-Co-developed-by: Weiming Shi <shiweiming@moonshot.ai>
-Signed-off-by: Weiming Shi <shiweiming@moonshot.ai>
-Signed-off-by: Yilin Zhang <yilinzhang@moonshot.ai>
----
- drivers/net/ppp/ppp_deflate.c | 43 +++++++++++++++++++++++------------
- drivers/net/ppp/ppp_generic.c |  5 ++--
- 2 files changed, 32 insertions(+), 16 deletions(-)
+	if (i >= FBNIC_RSS_EN_NUM_UNICAST && fbnic_bmc_present(fbd))
+		dest |= FIELD_PREP(FBNIC_RPC_ACT_TBL0_DEST_MASK,
+				   FBNIC_RPC_ACT_TBL0_DEST_BMC);
 
-diff --git a/drivers/net/ppp/ppp_deflate.c b/drivers/net/ppp/ppp_deflate.c
-index d6d5e656b3f4..96d689b97fdf 100644
---- a/drivers/net/ppp/ppp_deflate.c
-+++ b/drivers/net/ppp/ppp_deflate.c
-@@ -186,7 +186,9 @@ static int z_compress(void *arg, unsigned char *rptr, unsigned char *obuf,
- {
- 	struct ppp_deflate_state *state = (struct ppp_deflate_state *) arg;
- 	int r, proto, off, olen, oavail;
-+	unsigned char discard_buf[64];
- 	unsigned char *wptr;
-+	bool discard;
- 
- 	/*
- 	 * Check that the protocol is in the range we handle.
-@@ -200,20 +202,29 @@ static int z_compress(void *arg, unsigned char *rptr, unsigned char *obuf,
- 	if (osize > isize)
- 		osize = isize;
- 
--	wptr = obuf;
--
- 	/*
--	 * Copy over the PPP header and store the 2-byte sequence number.
-+	 * Copy over the PPP header and store the 2-byte sequence number only if
-+	 * there is room for compressed data.  Otherwise discard the compressed
-+	 * output while consuming the input, so the compressor history remains
-+	 * synchronized with the peer.
- 	 */
--	wptr[0] = PPP_ADDRESS(rptr);
--	wptr[1] = PPP_CONTROL(rptr);
--	put_unaligned_be16(PPP_COMP, wptr + 2);
--	wptr += PPP_HDRLEN;
--	put_unaligned_be16(state->seqno, wptr);
--	wptr += DEFLATE_OVHD;
- 	olen = PPP_HDRLEN + DEFLATE_OVHD;
--	state->strm.next_out = wptr;
--	state->strm.avail_out = oavail = osize - olen;
-+	discard = osize <= olen;
-+	if (discard) {
-+		state->strm.next_out = discard_buf;
-+		oavail = sizeof(discard_buf);
-+	} else {
-+		wptr = obuf;
-+		wptr[0] = PPP_ADDRESS(rptr);
-+		wptr[1] = PPP_CONTROL(rptr);
-+		put_unaligned_be16(PPP_COMP, wptr + 2);
-+		wptr += PPP_HDRLEN;
-+		put_unaligned_be16(state->seqno, wptr);
-+		wptr += DEFLATE_OVHD;
-+		state->strm.next_out = wptr;
-+		oavail = osize - olen;
-+	}
-+	state->strm.avail_out = oavail;
- 	++state->seqno;
- 
- 	off = (proto > 0xff) ? 2 : 3;	/* skip 1st proto byte if 0 */
-@@ -231,8 +242,10 @@ static int z_compress(void *arg, unsigned char *rptr, unsigned char *obuf,
- 		}
- 		if (state->strm.avail_out == 0) {
- 			olen += oavail;
--			state->strm.next_out = NULL;
--			state->strm.avail_out = oavail = 1000000;
-+			discard = true;
-+			state->strm.next_out = discard_buf;
-+			oavail = sizeof(discard_buf);
-+			state->strm.avail_out = oavail;
- 		} else {
- 			break;		/* all done */
- 		}
-@@ -242,7 +255,7 @@ static int z_compress(void *arg, unsigned char *rptr, unsigned char *obuf,
- 	/*
- 	 * See if we managed to reduce the size of the packet.
- 	 */
--	if (olen < isize && olen <= osize) {
-+	if (!discard && olen < isize && olen <= osize) {
- 		state->stats.comp_bytes += olen;
- 		state->stats.comp_packets++;
- 	} else {
-@@ -420,6 +433,8 @@ static int z_decompress(void *arg, unsigned char *ibuf, int isize,
- 			       state->unit, isize);
- 		return DECOMP_ERROR;
- 	}
-+	if (osize < PPP_HDRLEN)
-+		return DECOMP_ERROR;
- 
- 	/* Check the sequence number. */
- 	seq = get_unaligned_be16(ibuf + PPP_HDRLEN);
-diff --git a/drivers/net/ppp/ppp_generic.c b/drivers/net/ppp/ppp_generic.c
-index 1a610a18893b..0443af231e8b 100644
---- a/drivers/net/ppp/ppp_generic.c
-+++ b/drivers/net/ppp/ppp_generic.c
-@@ -1719,10 +1719,11 @@ pad_compress_skb(struct ppp *ppp, struct sk_buff *skb)
- {
- 	struct net_device *dev = netdev_from_priv(ppp);
- 	struct sk_buff *new_skb;
-+	int mtu = READ_ONCE(dev->mtu);
- 	int len;
--	int new_skb_size = dev->mtu +
-+	int new_skb_size = mtu +
- 		ppp->xcomp->comp_extra + dev->hard_header_len;
--	int compressor_skb_size = dev->mtu +
-+	int compressor_skb_size = mtu +
- 		ppp->xcomp->comp_extra + PPP_HDRLEN;
- 
- 	if (skb_linearize(skb))
+Two more consumers read the flag as "the NC-SI channel is live", not as "we
+have BMC MAC addresses".  fbnic_rss_disable_hw() reprograms
+FBNIC_RPC_RMI_CONFIG when the BMC is reported absent, and fbnic_stop()
+forwards it straight to phylink as the mac_wol argument:
+
+drivers/net/ethernet/meta/fbnic/fbnic_netdev.c:fbnic_stop() {
+	phylink_suspend(fbn->phylink, fbnic_bmc_present(fbn->fbd));
+	...
+}
+
+So for a message with BMC_PRESENT set and no MAC array, the RPC block can be
+disabled and the MAC/PCS link dropped while firmware has told the host the
+NC-SI channel is enabled.
+
+Also, before this patch such a message left the previously recorded BMC
+state alone (the function returned -EINVAL before touching it).  Now a
+"present, MACs programmed" -> "present, no MAC array" transition clears the
+state, and with the follow-up commit "fbnic: Remove BMC routing rules when
+the BMC channel is disabled" the programmed BMC MACDA entries, action rule
+and DEST_BMC copies are actively removed from hardware.
+
+Would it be better to track MAC-address availability separately from
+BMC/NC-SI channel presence rather than overloading fw_cap.bmc_present?
+
+> +
+> +	err = fbnic_fw_parse_bmc_addrs(fbd->fw_cap.bmc_mac_addr, attr, 4);
+> +	if (err)
+> +		return err;
+> +
+> +	*all_multi = fta_get_uint(results, FBNIC_FW_CAP_RESP_BMC_ALL_MULTI);
+> +	*bmc_present = true;
+> +	return 0;
+> +
+> +no_bmc:
+> +	memset(fbd->fw_cap.bmc_mac_addr, 0, sizeof(fbd->fw_cap.bmc_mac_addr));
+> +	*bmc_present = false;
+> +	return 0;
+> +}
+
+[Severity: Medium]
+Can this path lose a BMC all-multi request that firmware actually sent?
+
+FBNIC_FW_CAP_RESP_BMC_ALL_MULTI is only read on the success path, so the
+no_bmc path returns 0 with *all_multi still at the caller's initializer of
+0.  Because *bmc_present is forced false, the retention guard in
+fbnic_fw_parse_cap_resp() commits that 0:
+
+	if (results[FBNIC_FW_CAP_RESP_BMC_ALL_MULTI] || !bmc_present)
+		fbd->fw_cap.all_multi = all_multi;
+
+That guard appears to exist so a message omitting the attribute keeps the
+previously recorded value, but the !bmc_present half now fires even for a
+message that carried BMC_ALL_MULTI=1, since fta_get_uint() was never called
+on it.
+
+The sequence would be:
+
+  msg0 {PRESENT, MAC_ARRAY, ALL_MULTI=1} -> fw_cap.all_multi = 1
+  msg1 {PRESENT, ALL_MULTI=1, no MAC array} -> fw_cap.all_multi = 0
+  msg2 {PRESENT, MAC_ARRAY, no ALL_MULTI attr} -> guard false, 0 retained
+
+and fbnic_bmc_rpc_all_multi_config() then tears down or never installs the
+BMC all-multi entry:
+
+drivers/net/ethernet/meta/fbnic/fbnic_rpc.c:fbnic_bmc_rpc_all_multi_config() {
+	if (!fbnic_bmc_present(fbd) || !fbd->fw_cap.all_multi || enable_host) {
+		if (act_tcam->state == FBNIC_TCAM_S_VALID)
+			act_tcam->state = FBNIC_TCAM_S_DELETE;
+		return;
+	}
+	...
+}
+
+Pre-patch the -EINVAL return left fw_cap.all_multi untouched, so this looks
+introduced here.  Would parsing BMC_ALL_MULTI unconditionally, or leaving
+*all_multi untouched and letting the caller's guard do its job, be closer to
+the intent?
+
+On a related note, the fbnic_fw_parse_bmc_addrs() error path returns without
+ever writing *bmc_present.  It works today only because the caller returns
+immediately on error.  Would setting it there be worth doing?
+
+[Severity: Low]
+One more observation on this path, which resolves itself later in the
+series.  Clearing fw_cap.bmc_mac_addr[] and reporting bmc_present = false
+does not release the already programmed BMC filters (the MACDA entries from
+FBNIC_RPC_TCAM_MACDA_BMC_ADDR_IDX, the BMC-tagged broadcast entry, the act
+TCAM rule at FBNIC_RPC_ACT_TBL_BMC_OFFSET and the TCE TCAM BMC
+destinations), while fbnic_bmc_rpc_init() early-returns on
+!fbnic_bmc_present() so the need_bmc_tcam_reinit pass cannot clean them up,
+and fbnic_clear_macda() only warns and re-marks such entries:
+
+drivers/net/ethernet/meta/fbnic/fbnic_rpc.c:fbnic_clear_macda() {
+	if (test_bit(FBNIC_MAC_ADDR_T_BMC, mac_addr->act_tcam)) {
+		if (fbnic_bmc_present(fbd))
+			continue;
+		dev_warn_once(fbd->dev,
+			      "Found BMC MAC address w/ BMC not present\n");
+	...
+}
+
+The follow-up commit "fbnic: Remove BMC routing rules when the BMC channel
+is disabled" adds fbnic_bmc_rules_present() and fbnic_bmc_rpc_disable() to
+fbnic_bmc_rpc_check() and pushes the removals into hardware, so the shadow
+state and hardware are back in sync by the end of the series.  Is the
+intermediate state between the two commits worth avoiding, or is bisecting
+into this window not a concern here?
+
+> +
+>  static int fbnic_fw_parse_cap_resp(void *opaque, struct fbnic_tlv_msg **results)
+>  {
+>  	u32 all_multi = 0, version = 0;
+
+[ ... ]
+
+> @@ -671,25 +705,9 @@ static int fbnic_fw_parse_cap_resp(void *opaque, struct fbnic_tlv_msg **results)
+>  	fbd->fw_cap.link_fec =
+>  		fta_get_uint(results, FBNIC_FW_CAP_RESP_FW_LINK_FEC);
+>
+> -	bmc_present = !!results[FBNIC_FW_CAP_RESP_BMC_PRESENT];
+> -	if (bmc_present) {
+> -		struct fbnic_tlv_msg *attr;
+> -
+> -		attr = results[FBNIC_FW_CAP_RESP_BMC_MAC_ARRAY];
+> -		if (!attr)
+> -			return -EINVAL;
+
+[Severity: Low]
+Should this patch carry a Fixes: tag?  git blame attributes the -EINVAL
+rejection being removed here to 20d2e88cc7461b, which has been in released
+kernels for a couple of years.
+
+The commit message describes a user-visible defect on those kernels: a
+well-formed capabilities message is rejected, fw_cap.bmc_present,
+fw_cap.all_multi and fw_cap.anti_rollback_version are not recorded,
+need_bmc_tcam_reinit stays unset, and fbnic_mbx_process_rx_msgs() logs
+"Unable to process message" with a hex dump.
+
+Without a Fixes: tag (or a note that the fix is intentionally not
+backportable) stable tooling will not pick this up.
+
+>  	fbd->fw_cap.bmc_present = bmc_present;
+>
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/178845766796.2787.6001399537275460493.stgit%40ahduyck-xeon-server.home.arpa
