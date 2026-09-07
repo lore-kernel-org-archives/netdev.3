@@ -1,48 +1,47 @@
 Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D85BD3612E0;
-	Mon,  7 Sep 2026 05:20:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6212D380FF7;
+	Mon,  7 Sep 2026 05:21:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788758435; cv=none; b=eGbXLnA/HwXOVQcX6XMN70Td5eD63nRTuc0tOk6zYfqZVVF7PWNqkKwzTrgbFiUc58XIgbCeoJcnjLkXB5V76OveprhglWRH/Acv1PMhD12HWXNksNznjoH/WmmkRVs/tXITqXNteKHWpI9qY81F9oQTZWEIF1X+OdJPK8UuxaA=
+	t=1788758484; cv=none; b=lENHMNdBql0Sj6XFPRBxq35OMI+yIyjU7RePFLu5WlqsWQCAaJa8kcxNuqtyawmGJhnqTky7Hmwgnq4qwHZybK0/E/yh+YH8fKvhNh06KKNbuPwZf09RrtmJR3gU/WVVsvLacv8wg7AbvuZ0MaaX06wDODlyaJ1JW7VwlE6vPGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788758435; c=relaxed/simple;
-	bh=VwLGan1+3YGhVfuzesPn4v2bxGRsWy+Aj5ZjsYag92s=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LPl3pLddBw3N5vplU9558V2MyEs+IUlOQXGFlwCDvd8tXeQw94zDI1sYkiKGsAvsR+YbEFo04RV8oDP9wTlj3A7I/B83mN0z4Qs2OeYXmCE+GQqFFTX03qXIZt4tGpgJjs53VUBPRCaxz2rVeY4tHPAWiZouMuFfnS6EN8hHjPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=COdk1lFf; arc=none smtp.client-ip=68.232.154.123
+	s=arc-20240116; t=1788758484; c=relaxed/simple;
+	bh=b2TCn9rlAsmkly0EHt6O3ksK+OsH2/828LwoizpnH7s=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=sEt8kYkNSx8u5tImn92Lvl4PlC5kNL79IfWnP0vwUauf+ghVqioWrV5l7QG0kjhxmnM/g01PPLug+ctlGjrB0YUxQgPO0HDCLekKwWmkazuM07HhHatiqX3ad/v1qTClNP0Hzym2TZqVDqadgksGyFBj2fdpqCsOtxDB2BAcAUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=JUgTEi1e; arc=none smtp.client-ip=68.232.154.123
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="COdk1lFf"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="JUgTEi1e"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1788758437; x=1820294437;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=VwLGan1+3YGhVfuzesPn4v2bxGRsWy+Aj5ZjsYag92s=;
-  b=COdk1lFfDWJ1MgncBy2ABF19wQc/41vv1zZpBnR52b/7thgvBL4dDmO3
-   Zmf1LGL22a8U9S/xDntrjDNTurJU7d6ppMawRRocYi3GZfh496hGHrZiQ
-   Ow9inXJzDvT/PgJHW9MxyL5G/MHtUSi/Xm7AJZvm0CTiI7LQ9kKUUAl2j
-   HUqQ+88j60NS8Kq9hJf8NoiVangaB1uxTN2wWy+TJZnMF/kkS0KMLGPoT
-   g0Aml8G3LdRLgjVbxOCFF8abUT+yVwepZarwbncd1NUd5b6XOBIjOSjzb
-   BrHAdgdOrMhxBoo1gDH64AhRi6giH5ACuXORd3sb+7vP99wVF35GN6832
-   Q==;
-X-CSE-ConnectionGUID: Ob4BUn1rS3yTrrsWSXfa+g==
-X-CSE-MsgGUID: BLVKhjU+RdGj5GCAMeYC9w==
+  t=1788758483; x=1820294483;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=b2TCn9rlAsmkly0EHt6O3ksK+OsH2/828LwoizpnH7s=;
+  b=JUgTEi1ec0tgMzx194oObYO6jy/gn3JvTWdqDUQaJsG4DAo2sCtBpZkx
+   mHrYXNSxEk/v/ExbdqqP07jwy3jmVLef0MMjxIafnPKMXe4/pn0PDvGTQ
+   k3aXwSs/KMOH9JS+9NibG3EAazz/l4Zwoq015SBIdoFJAR0qnwSIOlsmc
+   N/Ipo0VNh9ayqgWCd3uNKYJy+JpYd2HcNbWeuQpN3aPSpiwME/a5UzhBB
+   e/oppQ66jGyUAVsSg+3cLS8ymU9DD/lJJgDQkFPXpK2YuclXynd8NZvha
+   gv5h4mDR6ZUQcbW3b6RpPrYh738wZJS58XgEdF8O1VQWXyJCoSBSdg7PQ
+   A==;
+X-CSE-ConnectionGUID: ynNG5RA4SXC1LMqIiB7wqA==
+X-CSE-MsgGUID: mzles+cmQuOYuBF8VHPPyQ==
 X-IronPort-AV: E=Sophos;i="6.25,266,1779174000"; 
-   d="scan'208";a="62323103"
+   d="scan'208";a="63542719"
 X-Amp-Result: SKIPPED(no attachment in message)
 Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa4.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 06 Sep 2026 22:20:37 -0700
-Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
+  by esa2.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Sep 2026 22:20:15 -0700
+Received: from chn-vm-ex04.mchp-main.com (10.10.87.151) by
+ chn-vm-ex3.mchp-main.com (10.10.87.32) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Sun, 6 Sep 2026 22:20:32 -0700
+ 15.2.2562.45; Sun, 6 Sep 2026 22:20:14 -0700
 Received: from che-ll-i17164.microchip.com (10.10.85.11) by
  chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Sun, 6 Sep 2026 22:20:28 -0700
+ 15.1.2507.58 via Frontend Transport; Sun, 6 Sep 2026 22:20:10 -0700
 From: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>
 To: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
 	<kuba@kernel.org>, <pabeni@redhat.com>, <hkallweit1@gmail.com>,
@@ -50,183 +49,112 @@ To: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
 CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
 	<UNGLinuxDriver@microchip.com>, <Parthiban.Veerasooran@microchip.com>,
 	Parthiban Veerasooran <parthiban.veerasooran@microchip.com>
-Subject: [PATCH net-next v2 4/4] net: phy: microchip_t1s: fix collision detection for LAN867X Rev.D0
-Date: Mon, 7 Sep 2026 10:50:06 +0530
-Message-ID: <20260907052007.391972-5-parthiban.veerasooran@microchip.com>
+Subject: [PATCH net-next v2 0/4] net: microchip_t1s: fix collision detection on PLCA status change
+Date: Mon, 7 Sep 2026 10:50:02 +0530
+Message-ID: <20260907052007.391972-1-parthiban.veerasooran@microchip.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260907052007.391972-1-parthiban.veerasooran@microchip.com>
-References: <20260907052007.391972-1-parthiban.veerasooran@microchip.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
 
-LAN867X Rev.D0 introduces a Collision Counting and MAC Forwarding Control
-field (CCMFC, bits 10:9) in the Collision Detector Control 0 register
-(CDCTL0, 0x0087). When configured to the OA default value (0x1), the
+In a 10BASE-T1S multidrop network, when PLCA mode is configured, the PHY
+autonomously transitions between PLCA mode and CSMA/CD mode based on
+BEACON availability, without any further user action. The existing
+collision detection logic only adjusted on explicit ethtool PLCA
+configuration changes, leaving it in the wrong state across these
+autonomous mode transitions.
+
+This series fixes that gap, wires up the complete interrupt path, and
+improves collision detection handling for LAN867X Rev.D0.
+
+Patch 1 fixes the collision detection handling in the PHY driver. It adds
+the PLCA Status Changed (PSTC) interrupt handler for LAN86XX PHYs. On
+each PSTC interrupt, the PLCA operational status is checked and collision
+detection is adjusted accordingly: disabled when PLCA is online,
+re-enabled when PLCA goes offline to restore correct CSMA/CD operation.
+The interrupt handler uses a conditional assignment pattern without early
+returns for better extensibility. The existing static CDEN write in
+lan86xx_plca_set_cfg() is retained as a baseline for PHYs running with
+phydev->irq == PHY_POLL on boards where the PHY interrupt is not routed
+to the host. PHYs with routed interrupts (including LAN865X and LAN867X
+with interrupt support) skip the static write since the interrupt handler
+handles CDEN dynamically.
+
+Patch 2 delivers the in-band PHY interrupt to phylib from the 10BASE-T1S
+MAC-PHY SPI driver. The OA TC6 standard defines PHY interrupt delivery
+via the SPI status register as optional; the OA_TC6_PHY_INT quirk flag is
+introduced so drivers can opt in when the PHY interrupt is routed in-band.
+When set, a nested virtual IRQ is created inside oa_tc6_mdiobus_register()
+before mdiobus_register() is called. All mii_bus->irq[] entries are
+populated with the virtual IRQ so phy_device_create() picks it up
+regardless of the PHY's MDIO address, keeping mii_bus->irq[] and
+phydev->irq consistent. The teardown is integrated into
+oa_tc6_mdiobus_unregister(). When the PHYINT bit is seen in the extended
+status, handle_nested_irq() is dispatched synchronously from the sleepable
+threaded IRQ so phylib enters interrupt mode and drives the PHY driver's
+config_intr/handle_interrupt callbacks.
+
+Patch 3 enables the PHY interrupt via virtual IRQ for LAN865X by passing
+the OA_TC6_PHY_INT quirk flag to oa_tc6_init(). The LAN865X integrates
+the PHY directly into the MAC-PHY SPI device. The PHY has no dedicated
+interrupt line; its interrupt is always delivered as the PHYINT bit in
+STATUS0.
+
+Patch 4 fixes collision detection for LAN867X Rev.D0 by configuring the
+hardware Collision Counting and MAC Forwarding Control field (CCMFC) in
+the Collision Detector Control 0 register to the OA default value. The
 hardware automatically gates collision forwarding to the MAC based on the
 live PLCA_Status: collisions are neither counted nor forwarded when
 PLCA_Status is OK, and are counted and forwarded when PLCA_Status is not
-OK.
+OK. This eliminates the inherent delay between a PLCA status change and
+the software interrupt handler toggling CDEN, which was a limitation on
+older revisions that had no hardware alternative. A dedicated
+lan867x_revd0_handle_interrupt() is added to handle two separate interrupt
+events: link status change events trigger the phylib state machine for
+link re-evaluation; PLCA status change events update the link status
+selection. The handler uses the same conditional assignment pattern for
+extensibility. Collision detection gating is handled autonomously by
+CCMFC in hardware. The .config_intr/.handle_interrupt handlers are wired
+up for Rev.D0 using the shared lan86xx_config_intr() and the new handler
+to unmask both link status change and PLCA status change interrupts.
 
-This eliminates the inherent delay between a PLCA status change and the
-software interrupt handler toggling CDEN, which was a limitation on older
-revisions that had no hardware alternative. Since CCMFC handles collision
-gating autonomously, the PSTC interrupt handler for Rev.D0 only needs to
-update the link status selection on each PLCA status transition.
+Note: Patch 1 carries a Fixes: tag but requires patches 2 and 3 to be
+applied together -- the interrupt handler in patch 1 cannot fire without
+the virtual IRQ wiring in patch 2, and the virtual IRQ infrastructure is
+activated for LAN865X by patch 3. This dependency applies to 10BASE-T1S
+MAC-PHYs (e.g. LAN8650/1) where the PHY has no dedicated interrupt line
+and relies on the MAC-PHY SPI driver to deliver the interrupt.
 
-Configure CCMFC to the OA default in lan867x_revd0_config_init(). Add
-lan867x_revd0_handle_interrupt() to handle two separate events:
+Changes in v2:
+- Patch 2: Introduce OA_TC6_PHY_INT quirk flag to guard the virtual IRQ
+  infrastructure; PHYINT is optional per the OA TC6 standard. Move
+  oa_tc6_phy_irq_setup()/oa_tc6_phy_irq_teardown() into
+  oa_tc6_mdiobus_register()/oa_tc6_mdiobus_unregister(). Populate all
+  mii_bus->irq[] entries with the virtual IRQ before mdiobus_register()
+  so phy_device_create() picks it up regardless of the PHY's MDIO
+  address, keeping mii_bus->irq[] and phydev->irq consistent.
+- Patch 3 (new): Pass OA_TC6_PHY_INT quirk flag from the LAN865X driver
+  to enable the virtual IRQ infrastructure for LAN865X.
 
-1. Link Status Change (LNKSTSC): Triggers the phylib state machine via
-   phy_trigger_machine() to re-evaluate link status and perform necessary
-   state transitions.
+Parthiban Veerasooran (4):
+  net: phy: microchip_t1s: fix collision detection on PLCA status change
+  net: ethernet: oa_tc6: deliver the PHY interrupt to phylib
+  microchip: lan865x: enable PHY interrupt via virtual IRQ
+  net: phy: microchip_t1s: fix collision detection for LAN867X Rev.D0
 
-2. PLCA Status Change (PSTC): Reads the current PLCA operational status
-   via genphy_c45_plca_get_status() and calls
-   lan867x_revd0_link_active_selection() to update the link status
-   selection accordingly.
+ .../net/ethernet/microchip/lan865x/lan865x.c  |   4 +-
+ drivers/net/ethernet/oa_tc6.c                 |  76 ++++++++-
+ drivers/net/phy/microchip_t1s.c               | 159 ++++++++++++++++++
+ include/linux/oa_tc6.h                        |   3 +
+ 4 files changed, 238 insertions(+), 4 deletions(-)
 
-Unmask both link status change and PLCA status change interrupt masks for
-Rev.D0 in lan86xx_config_intr(). Wire up .config_intr and .handle_interrupt
-for Rev.D0 using the shared lan86xx_config_intr() and the new handler.
 
-Fixes: e7e756779afa ("net: phy: microchip_t1s: add support for Microchip LAN867X Rev.D0 PHY")
-Signed-off-by: Parthiban Veerasooran <parthiban.veerasooran@microchip.com>
----
- drivers/net/phy/microchip_t1s.c | 68 +++++++++++++++++++++++++++++++--
- 1 file changed, 65 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/phy/microchip_t1s.c b/drivers/net/phy/microchip_t1s.c
-index afb7e52594e7..c3a738c7425b 100644
---- a/drivers/net/phy/microchip_t1s.c
-+++ b/drivers/net/phy/microchip_t1s.c
-@@ -33,6 +33,7 @@
- #define LAN86XX_REG_STS1		0x0018
- #define LAN86XX_REG_IMSK1		0x001C
- 
-+#define LAN86XX_STS1_LINK_STS_CHANGED	BIT(13)
- #define LAN86XX_STS1_PLCA_STS_CHANGED	BIT(11)
- 
- /* Collision Detector Control 0 Register */
-@@ -40,6 +41,9 @@
- #define COL_DET_CTRL0_ENABLE_BIT_MASK	BIT(15)
- #define COL_DET_ENABLE			BIT(15)
- #define COL_DET_DISABLE			0x0000
-+#define COL_DET_CTRL0_CCMFC_MASK	GENMASK(10, 9)
-+/* OA default: collisions gated by PLCA_Status in hardware */
-+#define COL_DET_CTRL0_CCMFC_OA_DEFAULT	BIT(9)
- 
- /* LAN8670/1/2 Rev.D0 Link Status Selection Register */
- #define LAN867X_REG_LINK_STATUS_CTRL	0x0012
-@@ -502,6 +506,18 @@ static int lan867x_revd0_config_init(struct phy_device *phydev)
- 			return ret;
- 	}
- 
-+	/* AN1760: configure CCMFC to OA default so that the hardware
-+	 * automatically gates collision forwarding to the MAC based on
-+	 * PLCA_Status. Collisions are neither counted nor forwarded when
-+	 * PLCA_Status = OK, eliminating the need for software-driven CDEN
-+	 * toggling in the interrupt handler. CDEN remains enabled.
-+	 */
-+	ret = phy_modify_mmd(phydev, MDIO_MMD_VEND2, LAN86XX_REG_COL_DET_CTRL0,
-+			     COL_DET_CTRL0_CCMFC_MASK,
-+			     COL_DET_CTRL0_CCMFC_OA_DEFAULT);
-+	if (ret)
-+		return ret;
-+
- 	/* Initially the PHY will be in CSMA/CD mode by default. So it is
- 	 * required to set the link always active as it doesn't support
- 	 * autoneg.
-@@ -526,8 +542,12 @@ static int lan86xx_read_status(struct phy_device *phydev)
- 
- static int lan86xx_config_intr(struct phy_device *phydev)
- {
-+	u16 mask = LAN86XX_STS1_PLCA_STS_CHANGED;
- 	int ret;
- 
-+	if (phydev->phy_id == PHY_ID_LAN867X_REVD0)
-+		mask |= LAN86XX_STS1_LINK_STS_CHANGED;
-+
- 	if (phydev->interrupts == PHY_INTERRUPT_ENABLED) {
- 		/* Read to clear any pending status before enabling. */
- 		ret = phy_read_mmd(phydev, MDIO_MMD_VEND2, LAN86XX_REG_STS1);
-@@ -536,12 +556,11 @@ static int lan86xx_config_intr(struct phy_device *phydev)
- 
- 		/* A mask bit of 0 enables the corresponding interrupt. */
- 		return phy_clear_bits_mmd(phydev, MDIO_MMD_VEND2,
--					  LAN86XX_REG_IMSK1,
--					  LAN86XX_STS1_PLCA_STS_CHANGED);
-+					  LAN86XX_REG_IMSK1, mask);
- 	}
- 
- 	ret = phy_set_bits_mmd(phydev, MDIO_MMD_VEND2, LAN86XX_REG_IMSK1,
--			       LAN86XX_STS1_PLCA_STS_CHANGED);
-+			       mask);
- 	if (ret)
- 		return ret;
- 
-@@ -595,6 +614,47 @@ static irqreturn_t lan86xx_handle_interrupt(struct phy_device *phydev)
- 	return ret_irq;
- }
- 
-+static irqreturn_t lan867x_revd0_handle_interrupt(struct phy_device *phydev)
-+{
-+	struct phy_plca_status plca_st;
-+	irqreturn_t ret_irq = IRQ_NONE;
-+	int sts1, ret;
-+
-+	/* Reading the status register clears the latched event bits. */
-+	sts1 = phy_read_mmd(phydev, MDIO_MMD_VEND2, LAN86XX_REG_STS1);
-+	if (sts1 < 0) {
-+		phy_error(phydev);
-+		return IRQ_NONE;
-+	}
-+
-+	if (sts1 & LAN86XX_STS1_LINK_STS_CHANGED) {
-+		phy_trigger_machine(phydev);
-+		ret_irq = IRQ_HANDLED;
-+	}
-+
-+	if (sts1 & LAN86XX_STS1_PLCA_STS_CHANGED) {
-+		ret = genphy_c45_plca_get_status(phydev, &plca_st);
-+		if (ret < 0) {
-+			phy_error(phydev);
-+			return IRQ_NONE;
-+		}
-+
-+		/* Collision detection is handled autonomously by the hardware
-+		 * via CCMFC. Only the link status selection needs to be updated
-+		 * on each PLCA status transition.
-+		 */
-+		ret = lan867x_revd0_link_active_selection(phydev, plca_st.pst);
-+		if (ret < 0) {
-+			phy_error(phydev);
-+			return IRQ_NONE;
-+		}
-+
-+		ret_irq = IRQ_HANDLED;
-+	}
-+
-+	return ret_irq;
-+}
-+
- static struct phy_driver microchip_t1s_driver[] = {
- 	{
- 		PHY_ID_MATCH_EXACT(PHY_ID_LAN867X_REVB1),
-@@ -637,6 +697,8 @@ static struct phy_driver microchip_t1s_driver[] = {
- 		.name               = "LAN867X Rev.D0",
- 		.features           = PHY_BASIC_T1S_P2MP_FEATURES,
- 		.config_init        = lan867x_revd0_config_init,
-+		.config_intr        = lan86xx_config_intr,
-+		.handle_interrupt   = lan867x_revd0_handle_interrupt,
- 		.get_plca_cfg	    = genphy_c45_plca_get_cfg,
- 		.set_plca_cfg	    = lan86xx_plca_set_cfg,
- 		.get_plca_status    = genphy_c45_plca_get_status,
+base-commit: 31f961de2f90fbf52eb2d4e15b3eeaa09f9b4fc2
 -- 
 2.43.0
 
