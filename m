@@ -1,96 +1,156 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 199143A6B6D
-	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 19:15:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DCAB393DD3
+	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 19:19:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788808547; cv=none; b=TZUMLRSMPijcHMZTRlzsESdfX7XVjpxqF1jvttdW7gDkt7a3+PZ45LdskCFwUNhPTJb5TCc0E/LhCeDqs5ZfgZ/pT0C5gtGokbH8GJ4s237m6wSrxYo0/E+fpDY2e1xqsASzoU+jtbD3wT1Y0oCyPBLP4hJE291iLuZDvb7kpxQ=
+	t=1788808789; cv=none; b=XpGrytCiRkrXTnmJVti48ngZDkI7sw2v3vhKfqyHgk0l05267lohrGIGqmB9ZJecCg8E33IeZZRU2Ej/HI9uIxOhWttMtID2hbJqOe2JsKbDSLsCPzxHR7IBa8cIMOYLowxcOdnvmGZJ0KcvBlFy/48eYnv7a+yOZ4qyRnpdWSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788808547; c=relaxed/simple;
-	bh=XQXhzDCg2dhhu1WnZjNPmpaah8H+eGUxRVpDiA9aivE=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=DiZNZEdsMcn5ulA08KuTjzOwPZKsjdyGt+gNcpTjI5tqDv6QQYKqIyDCCKuAJetpNkg/hpr0uUJYvj7VF8XJjyHbgiCRGIlGgx33mTzogR+sd7vcg1r5YXrflsIbNhvR7n2+1Qv1soKMTDZMVF2DdUVIoytFi4CSMAt23/bchHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g0cSj6gQ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788808789; c=relaxed/simple;
+	bh=X1cxe9LTfm0MWVMHD8ZVie2/ZFrkeJFXtLRCR4KT9k0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=olBWMGQZWiXS+LMggLAtTUNLiX4ktqkWUAsYLvxBeHgQ3DkE/omrvnxD1aXPSjgDTb+IrAfOXxPhSOuP99wQOQMbnzODS13BloffiIdNyoWFWx+7ZAzll3s9ngNTVY3Dxhkxq8aSF8eRIAcQkxJB/g0XCNvGb8zSmKcKPN8kX6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O/jG6jhb; arc=none smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g0cSj6gQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A749E1F00A3E
-	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 19:15:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788808544;
-	bh=tiXZzvH6IH4UX6JC04NiKtmHUrGl1MNxToT35sq2QiQ=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject;
-	b=g0cSj6gQKa4854Tbs8A/nuK08z6ueEgBcypPe2TwH7Pp+7XezeFSk0v9b2PylfX1N
-	 qA2XYtaXaENWsL+MUBCUOwhuOAb1rwDcctCbyOk/V5lf3Cs8DyV43+s8izbRPhHCGA
-	 wvj89PqNljsWxUK0NXjAcZyDjjaazUOnDKET1k8DB3SFT6iZ/1U1Rh/UNF//DcUTaC
-	 4UnHufSBMBiIn6KeBdHqH2RQhAcT9lNtOMeDOzvuktBqxrrIMqccXZH3OtuTt+1TV2
-	 vrTJrDj1tYzXICXpVo4GFiq4Rtf0p2yobo1QVth7lzPXEGsotujHKFYGEPAMeV6UH2
-	 mHYjobaVPCdyw==
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfauth.phl.internal (Postfix) with ESMTP id B0AA4F40066;
-	Mon,  7 Sep 2026 15:15:43 -0400 (EDT)
-Received: from phl-imap-15 ([10.202.2.104])
-  by phl-compute-10.internal (MEProxy); Mon, 07 Sep 2026 15:15:43 -0400
-X-ME-Sender: <xms:Xw2fakR5KFhVaI_OeCrdv_MVw1BFQTsCKj-SR4ohyRdQ_YVLMMjJkg>
-    <xme:Xw2fasmNbYQW6TQ_iccyb3_kPzA3DEHRnjNB2tbXIADDNg-rFKF3xdMNc3JyYZ1Hr
-    kWfzUBSxl_6GlgY_6CkMcrJ4EUOTs-MQ7GGuJg-MEXYWkfoz7lI94od>
-X-ME-Proxy-Cause: dmFkZTE31xTmpyx5/rgzD8Yn08Xp4dnoKBm2ae8X5WOcf4Nj45ZwRG470q1Aox5KXGeh2t
-    TpsnHVsFD9kjkEUj23D6SUarxwbsP724jABoOSS7UY7pOOSC1/xhrO4PYgof1WiFCNzoEO
-    YC1TkKYWR2ITL9s0/4H/qHdmiEyBPEj913Xs4vPyibFri5o823i0tDIUGLhAXEiy2YHE2a
-    tsG8h2sxphjOCFk/THMegNieNjeNq5/m6dcMeEL62dKB12/bb62uOpwgk+Imjp11GMOWGv
-    W+XPF3l5A8zuc4n011G4Aj30S/jpsEHsenFcS/7SeGknsYjPS+PyAlK5t9mzuRGRbG8di7
-    36oVOC0Sh0DwvT9KNs7RBOWA9S367K/s+xIRQ3KKfPRa8mLHTTWyKXau45EXIuO8uwtWVw
-    ckea5qv9mioeT7GoFpwXDr5bODsdJSh0lR3YCcnDYD9HZ6J/iQVuG/KHYEYA8AIE9k3WIE
-    qRwe0mQhCYLRxw0nebiKp7uM21PuWuBzC8Do06rl+E5Z3hHSRx2dqFJ9c+D7nd1yIobZ6n
-    4Po1Wg+/hlZTgJlQzOwPkOm7+lSppg9QFKefQB75DEOj9ZqeLqu7gpi5AhE14w2+kxZEOS
-    w4VeUuS0AqtISQbAj6oLq1LIgMgwFvXvMvgnd2oDtx4lDqB2UIJ449LGBdrw
-X-ME-Proxy: <xmx:Xw2fan-0rlntAvegWvXUU4z1huJmpBB1_ev7Ti9D9ETFIrFTQHwFFg>
-    <xmx:Xw2fatBjjpA8Py1MmdmiWCqFEOdpeNNcaXasdzVAwkt_K8O9hezVUQ>
-    <xmx:Xw2fasQug0R97reVNhSK-iDNbVhpGOc6BX50C-wvGfKIUG_e4cL-yA>
-    <xmx:Xw2faksgv6uw04VL1nwNIogOy8mE6yT7XTet71q2_2cPhGBRliLOmg>
-    <xmx:Xw2fao2YkLTqQcWqqsORg8zmuIfuMgmktjhCL4eJLJU3xLOvd8qD6lYQ>
-Feedback-ID: ifa6e4810:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 8E4C37811F3; Mon,  7 Sep 2026 15:15:43 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O/jG6jhb"
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-482dd6ee390so4443791f8f.3
+        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 12:19:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788808785; x=1789413585; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=P88mw7jxmkXBU/JAeuDwKiJ/YVmoCPyskYUuX4IRFD0=;
+        b=O/jG6jhb92mBsrs5XrnwcNIyETLpzQ99NXtrY0cIaFNk245oYnL3PXGhNPW1UGXjGU
+         Bi7wriWvvmE1ZafwehjAszmHj/7NvTcVNxgZ3hB8JG50XwKacuFRprxgiIVJXdK9aWAR
+         xSfpLjTdua8hhTAWvhZAAbeMcwO7dQp6Nk/lANPeE1p707GH/MO7VF7WF9DCnOxN53xB
+         42zSXZeKISsDc9TH0Vnr2nNAFnYGtEWZbWCDbfnf08hsy5VpHwtRG9czuEOAHCwGNTpl
+         +NF+mNHbpDIN1WFsrnBg7n2JOq7ORKp/5VHOxlAHDP3jYT6Sw7cPzhoqpE2Q3tQxKkBS
+         Kt6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788808785; x=1789413585;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=P88mw7jxmkXBU/JAeuDwKiJ/YVmoCPyskYUuX4IRFD0=;
+        b=WZta6MWqShreGboOi9kSLVIf0ocJ+WR7sTe54eY3mQF9MRi5y52XNnO0w8/WQVUuqO
+         RmKPE1j/Q52kkXjK7YibrSpbOCuR4L41qW+DGiYDqdSsNcrGKrIEBMT3yk3UNdZoYxX6
+         pqxLuJgHPzwxRd+kzzH6hlW5sRrZWGAMb4f5j51dNGLPOdkAzNsoXujdewZ8WRS+mh+R
+         K01j6kDf8PtPxNMx+MKQTitPySps+sELPd95HCw+lMaZc7BoTdpbLf7UkJqnBjFOvGT3
+         MMQx0u+JLmGZmeliJmkcP9Q+tgk2yj7sCk5318Fbf9Jt0etI22Viq8FPwFfe+Fnj7AZy
+         GL1Q==
+X-Gm-Message-State: AFuF++kSJ3xUFGawPGCGRDxSFKB1QoPWuMwh7bNu4AN7Vgns/OMln4+m
+	Asf52LU8nCCKIQbjuDSB8y8skBr68vlnQeeYPNHa20poVILNVH938cnqs8DlX74K
+X-Gm-Gg: AYBFou3PeM+DDuV+Gpp8ERggxf2/AWKAYcDJ28eLWkLFfdv+Rf+x7heDPUZzD+wKgvM
+	zTnhGU96C6XhwwSUqd9gbNZQbwg+NWChckdU1vMVT9MBcpnYbltvmakJ6y2tfTKId2ljrSqOI6d
+	yVu9eo4r515/sBfQhx9Ow5nZ8IYuuhOSzWbJhXi6uqCDqC+6VWKHcwN4b3VwdlXtk8zt8XB46jd
+	xdnjmhFNDv4vnDSrygovFPixWqRk6TBFf+3mqNFecIVKRpyyDTPooKotYnw7CGZ7EjxC7sWifsD
+	e3lFWSjES6HAFVIcryrmzSy8mRRtLITzSf1/HaRM5caaeN+ZLpu3vbGecQhXCxG49zE/4l3G9SU
+	oflK6YlIOgYHPuqWCHI8pZkzqIYkUw3ySUQw+U4yti8sFPfFCJIHqIY4ouM+XMrdgtjrCKZU4gd
+	upQQJvgaaw85piv2UqmKdx0qgwVyXrKB/KjXyVKYhnT21fYToJIY6a62Z44zrg13fXrjc9vfC6h
+	33mWAi8BB1l1279bR7sOmffBY6S3aFWtS+sB78e
+X-Received: by 2002:a05:6000:2910:b0:482:d98f:ec9c with SMTP id ffacd0b85a97d-48587050696mr26889219f8f.10.1788808785339;
+        Mon, 07 Sep 2026 12:19:45 -0700 (PDT)
+Received: from VivoBook-ASUS-X712UA-M712UA.lan (public-gprs692038.centertel.pl. [5.184.246.135])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-485885bbb51sm31975196f8f.30.2026.09.07.12.19.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 07 Sep 2026 12:19:44 -0700 (PDT)
+From: Stanislaw Pal <kuncy7@gmail.com>
+To: Linus Walleij <linus.walleij@linaro.org>,
+	=?UTF-8?q?Alvin=20=C5=A0ipraga?= <alsi@bang-olufsen.dk>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Stanislaw Pal <kuncy7@gmail.com>
+Subject: [PATCH net] net: dsa: realtek: rtl8365mb: wait out the full chip reset time
+Date: Mon,  7 Sep 2026 21:19:40 +0200
+Message-ID: <20260907191940.806734-1-kuncy7@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: AGBspSFnGaaV
-Date: Mon, 07 Sep 2026 15:15:20 -0400
-From: "Chuck Lever" <cel@kernel.org>
-To: syzbot <syzbot+d5c77cabf7a3492aa650@syzkaller.appspotmail.com>
-Cc: linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org,
- netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
-Message-Id: <4c018446-e4c0-457a-b2d1-a5bf856d0e2e@slotpi15m67>
-In-Reply-To: <6a9ef807.2bb5a69c.24b23c.0007.GAE@google.com>
-References: <6a9ef807.2bb5a69c.24b23c.0007.GAE@google.com>
-Subject: Re: [syzbot] [nfs?] [net?] KASAN: vmalloc-out-of-bounds Read in
- rpc_queue_upcall
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 9/7/26 1:44 PM, syzbot wrote:
-> Hello,
-> 
-> syzbot found the following issue on:
-> 
-> HEAD commit:    df2908090cda Linux 7.3-rc2
-> git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
-> console output: https://syzkaller.appspot.com/x/log.txt?x=1416cc8e580000
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=8c5c3949d762a91f
-> dashboard link: https://syzkaller.appspot.com/bug?extid=d5c77cabf7a3492aa650
-> compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=14daa071580000
+The reset bit clears well before the chip has finished its internal
+bring-up, so configuring it right away makes register writes to blocks
+that are not up yet get lost. The switch is then left half configured:
+the CPU port link comes up and the switch still transmits towards the
+CPU, but nothing the CPU sends is ever forwarded - no MIB TX counter
+moves on any user port, while the MAC reports every frame as transmitted
+without errors.
 
-The fix is already queued in nfsd-testing:
+The driver already documents the 1 s reset time the chip needs and polls
+with a 1 s timeout, but stops waiting as soon as the bit clears. Sleep
+out the remainder of that second instead, measured from the reset write,
+so the total wait stays at 1 s regardless of how long the poll took.
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/cel/linux.git/commit/?id=8e5890ef0296
+Seen on a TP-Link Archer AX55 v1 (IPQ5018 + RTL8367S, 2.5G HSGMII trunk)
+on roughly three out of four boots. Unbinding and rebinding the driver
+always fixed it at runtime. With this patch: 6 out of 6 clean boots.
 
-#syz test: git://git.kernel.org/pub/scm/linux/kernel/git/cel/linux.git nfsd-testing
-
--- 
-Chuck Lever (Come to NFS bake-a-thon! https://nfsv4bat.org)
+Fixes: 4af2950c50c8 ("net: dsa: realtek-smi: add rtl8365mb subdriver for RTL8365MB-VC")
+Signed-off-by: Stanislaw Pal <kuncy7@gmail.com>
+---
+--- a/drivers/net/dsa/realtek/rtl8365mb_main.c
++++ b/drivers/net/dsa/realtek/rtl8365mb_main.c
+@@ -136,6 +136,9 @@
+ #define RTL8365MB_CHIP_RESET_SW_MASK	0x0002
+ #define RTL8365MB_CHIP_RESET_HW_MASK	0x0001
+ 
++/* Time the chip needs to complete a reset, per Realtek documentation */
++#define RTL8365MB_CHIP_RESET_TIME_MS	1000
++
+ /* Interrupt polarity register */
+ #define RTL8365MB_INTR_POLARITY_REG	0x1100
+ #define   RTL8365MB_INTR_POLARITY_MASK	0x0001
+@@ -2980,18 +2983,38 @@ static int rtl8365mb_switch_init(struct
+ 
+ static int rtl8365mb_reset_chip(struct realtek_priv *priv)
+ {
++	unsigned long deadline;
++	unsigned long remaining;
+ 	u32 val;
++	int ret;
+ 
+ 	priv->write_reg_noack(priv, RTL8365MB_CHIP_RESET_REG,
+ 			      FIELD_PREP(RTL8365MB_CHIP_RESET_HW_MASK, 1));
+ 
++	deadline = jiffies + msecs_to_jiffies(RTL8365MB_CHIP_RESET_TIME_MS);
++
+ 	/* Realtek documentation says the chip needs 1 second to reset. Sleep
+ 	 * for 100 ms before accessing any registers to prevent ACK timeouts.
+ 	 */
+ 	msleep(100);
+-	return regmap_read_poll_timeout(priv->map, RTL8365MB_CHIP_RESET_REG, val,
+-					!(val & RTL8365MB_CHIP_RESET_HW_MASK),
+-					20000, 1e6);
++	ret = regmap_read_poll_timeout(priv->map, RTL8365MB_CHIP_RESET_REG, val,
++				       !(val & RTL8365MB_CHIP_RESET_HW_MASK),
++				       20000, 1e6);
++	if (ret)
++		return ret;
++
++	/* The bit clearing only means the reset was accepted, not that the
++	 * chip is ready: register writes issued before the documented reset
++	 * time has elapsed are silently dropped by blocks that are still
++	 * coming up, which leaves the switch half configured. Wait out
++	 * whatever is left of that second, measured from the reset write, so
++	 * the poll above does not add to the total.
++	 */
++	remaining = deadline - jiffies;
++	if ((long)remaining > 0)
++		msleep(jiffies_to_msecs(remaining));
++
++	return 0;
+ }
+ 
+ static int rtl8365mb_setup(struct dsa_switch *ds)
