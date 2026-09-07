@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CC102D8385;
-	Mon,  7 Sep 2026 02:48:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE8E23E95AE;
+	Mon,  7 Sep 2026 02:48:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788749315; cv=none; b=oxQBKazW5ZndMR83BCXuoCljjnoTriEDGcOOHwyW5vKooc23XItz1uq+ZvcKSkhlOzAU3WgF3NbX3nzY7kPEv9SUqS61X7NqvNggskiauRSqkJohmXdIU1264sE0NeeF20rj4iy0LRmpfLul2xesbn8e132nt0mK7RirxmODBvM=
+	t=1788749316; cv=none; b=L+qnveEDgpvtnmGUC681viZ4fP4j7+A/RykxTcHTuA8xZMlC1F/W9lPosy5q5z7LEb3YNcSMdXS8p/k9lT/1tvUCyXXRb1pW/u4BwsWW3N56D2T3PTNH93PcSTPomTzJEHrgKb19sDewibsUZ5eAOGeY1v+tEpJ8JlBfbtZfJEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788749315; c=relaxed/simple;
-	bh=xE7iCcQDu8jC76QvjFf1xVomy+/64KpowcBZsrtHvWo=;
+	s=arc-20240116; t=1788749316; c=relaxed/simple;
+	bh=vAUiddykLX646pm+uXk/rkbKBcK5YWDov5N4UiexjOE=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Kwz5m3AHiLNWcBcl5grrWzt+IXBGKC1z25uXmKm3msY5WoNu4Cho0tx/N9SqlwpsgL2AFBygzr7lAHSndWDtXVAL8pD5lEGgeBFZtj+kO/HziY4m2lSFg3G3+LI05ku4UYn4s4NPilne1Gxn8/lgVByjGJwsoMyDF71hZjunamk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nl63M8EU; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=LcJpReWnIW4UjrQNqI6mdCBD70scdToCQgwRN3og07OxtuuEfWEl+YUtP0yxp1dMN61Qw6uv8glj0l0HaVODOTQQRvVv/sPuAUrMGLAcsZZXrBy5IAGQGvFdz0pB6Bo07n4tAzaSx1kvvrJ98hdsKyZYSNB3tIEnxpQQaOM2foM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HvhgIaD0; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nl63M8EU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21BC31F00A3D;
-	Mon,  7 Sep 2026 02:48:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HvhgIaD0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFEF51F00A3E;
+	Mon,  7 Sep 2026 02:48:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788749310;
-	bh=kaFoZ09Q/GQYhfFfEM0Mkm+WLW9Tg82Vt7wCS5hV4o0=;
+	s=k20260515; t=1788749314;
+	bh=82oDAmhbaL8wcR8ln5uOWhmRWIFS1wXKMEAQdRXM9WA=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=nl63M8EUfJRkwWIaW+27Jkb546ewCqVT2Aru1X7jxZhV7JE2gdnzmy4OipbZ8ROmR
-	 kcQECEhumbDgpUoygYJPRZTdnfmX/rKVmV1rPbhWdR+Yc85Nn/SYq81X8nXFZwegsE
-	 6vbyzy2ni9N9+1IoYZE3M8/Ahby8BiMOebl+BQ8G1xqDKIgLFNo481+MMDZODS1Nba
-	 y9bn5y984nCXOjnvefp5ijFGUfw3uJRS7LUfRC0EZDlbCVcUyD42AKfyGyTXco635u
-	 afCs4JDFjM7mcQnoIPmXRXewH4ZYw/SXj/0sjIz2NvgtisM4ktZyuZyjtocSz3Mu+7
-	 dF6jbdPskFajw==
-Subject: Re: [PATCH net-next v3 01/10] net: ethernet: ravb: Remove gPTP
- control from WoL setup and restore
+	b=HvhgIaD0nzaOJU/PbOTX5F5WXQCG55H4TYaxESp9asUYvOf27WqTr8UKntl8mCo6V
+	 JmurR+cr0NuuBkR7DoChEWLO9KQQlga8WS+EpqR64My3y4odv9MUIe+BhqHooonXNL
+	 iWPN//hQsNY7l8tvfx95ME8qszNyZQkcAfjZZC5maaqNViF6t5gDQlAxOG9QCbbWN4
+	 qmG37UyEGw7HYToVEKLU3RPN7yNojA95oh1NC0Nv6/smfUtQ65BUXJWiq62k+9n3JP
+	 n5zRQQNZGomDkGshMSPeF3yupzvTd+nMEOZXy/bsxdUcu7/ixwyOrsXOg1dwVdaqxe
+	 gbonYfsX/z7ig==
+Subject: Re: [PATCH net-next v3 05/10] net: ethernet: ravb: Propagate error
+ from ptp_clock_register()
 From: netdev-bot+sashiko@kernel.org
 To: niklas.soderlund+renesas@ragnatech.se
 Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
@@ -37,11 +37,11 @@ Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
  sergei.shtylyov@gmail.com, linux-renesas-soc@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
  netdev@vger.kernel.org
-Date: Mon, 07 Sep 2026 02:48:28 +0000
-Message-ID: <178874930868.219967.4558251177406504137@kernel.org>
-In-Reply-To: <20260902084703.3228504-2-niklas.soderlund+renesas@ragnatech.se>
-References: <20260902084703.3228504-2-niklas.soderlund+renesas@ragnatech.se>
-X-sashiko-severity: High
+Date: Mon, 07 Sep 2026 02:48:33 +0000
+Message-ID: <178874931332.219967.1304331824681845155@kernel.org>
+In-Reply-To: <20260902084703.3228504-6-niklas.soderlund+renesas@ragnatech.se>
+References: <20260902084703.3228504-6-niklas.soderlund+renesas@ragnatech.se>
+X-sashiko-severity: Critical
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -51,136 +51,289 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
+Thank you for your contribution! Sashiko AI review found 5 potential
 issue(s) to consider:
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 0
+Critical: 2 · High: 0 · Medium: 2 · Low: 1
 
-- [High] The commit message's stated justification for the removal is
-  factually wrong for the suspend leg, and the removal deletes the only…
+- [Critical] NULL pointer dereference reachable by any unprivileged local
+  user via `ethtool -T ethX`.
+- [Critical] Dangling PTP clock pointer leading to use-after-free and
+  double unregister.
+- [Medium] Undisclosed revert of two in-tree stable-tagged fixes.
+- [Medium] ravb_ptp_init() publishes the raw result of
+  ptp_clock_register() into the shared, hardirq-visible priv->ptp.clock…
+- [Low] Concern (baseline decision: false positive after series
+  validation): ravb.h now declares `int ravb_ptp_init(struct net_device…
 
 --
 
-net: ethernet: ravb: Remove gPTP control from WoL setup and restore
+net: ethernet: ravb: Propagate error from ptp_clock_register()
 
-This drops the ccc_gac special case that called ravb_ptp_stop() from
-ravb_wol_setup() and ravb_ptp_init() from ravb_wol_restore(), on the
-grounds that ndo_open/ndo_close already start and stop the gPTP clock.
+ravb_ptp_init() is changed from void to int so that a failed
+ptp_clock_register() can be reported to its callers. Along the way the
+cached priv->ptp.phc_index field is removed and ravb_get_ts_info() reads
+the index directly from priv->ptp.clock.
+
+Link: https://sashiko.dev/#/patchset/20260610102432.3538432-2-niklas.soderlund+renesas@ragnatech.se?part=1
+
+A few questions below.
+
+> diff --git a/drivers/net/ethernet/renesas/ravb.h b/drivers/net/ethernet/renesas/ravb.h
+> index aa45f5466001d..0c122a8158409 100644
+> --- a/drivers/net/ethernet/renesas/ravb.h
+> +++ b/drivers/net/ethernet/renesas/ravb.h
+> @@ -1028,7 +1028,6 @@ struct ravb_ptp_perout {
+>  struct ravb_ptp {
+>  	struct ptp_clock *clock;
+>  	struct ptp_clock_info info;
+> -	int phc_index;
+>  	u32 default_addend;
+>  	u32 current_addend;
+>  	int extts[N_EXT_TS];
+
+[Severity: Medium]
+The commit message says the change is about propagating the error from
+ptp_clock_register(), but this hunk plus the ravb_ptp_stop() hunk below
+also back out two in-tree fixes.  Could the changelog describe that?
+
+The phc_index field being removed here was added by 1f77af0aaf27 ("net:
+ravb: avoid dereferencing an invalid PTP clock"), and the
+xchg(&priv->ptp.clock, NULL) removed from ravb_ptp_stop() came from
+1cb9663789c5 ("net: ravb: serialize PTP clock teardown").  Both carry
+Fixes: a0d2f20650e8 and Cc: stable.
+
+The note "Rework to remove the caching of phc_index added by LLM without
+access to hardware" is below the --- cut line, so it does not end up in
+git history.
+
+There is also a new side effect that is not mentioned: ravb_ptp_init()
+now calls ravb_ptp_stop() itself on the registration failure path, so it
+writes GIC=0/GIS=0 and runs synchronize_irq() before returning.
+
+[ ... ]
 
 > diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
-> index ea1c7e536791e..36173a09e2fdb 100644
+> index e44d065f77cc8..7c7b3ac81e5d6 100644
 > --- a/drivers/net/ethernet/renesas/ravb_main.c
 > +++ b/drivers/net/ethernet/renesas/ravb_main.c
-> @@ -3182,9 +3182,6 @@ static int ravb_wol_setup(struct net_device *ndev)
->  	/* Enable MagicPacket */
->  	ravb_modify(ndev, ECMR, ECMR_MPDE, ECMR_MPDE);
+> @@ -1785,7 +1785,7 @@ static int ravb_get_ts_info(struct net_device *ndev,
+>  			(1 << HWTSTAMP_FILTER_NONE) |
+>  			(1 << HWTSTAMP_FILTER_PTP_V2_L2_EVENT) |
+>  			(1 << HWTSTAMP_FILTER_ALL);
+> -		info->phc_index = READ_ONCE(priv->ptp.phc_index);
+> +		info->phc_index = ptp_clock_index(priv->ptp.clock);
+>  	}
 >  
-> -	if (priv->info->ccc_gac)
-> -		ravb_ptp_stop(ndev);
-> -
->  	return enable_irq_wake(priv->emac_irq);
+>  	return 0;
+
+[Severity: Critical]
+Can this dereference NULL when the interface has never been opened?
+
+The only guard in ravb_get_ts_info() is the static hardware test:
+
+	if (hw_info->gptp || hw_info->ccc_gac) {
+		...
+		info->phc_index = ptp_clock_index(priv->ptp.clock);
+	}
+
+priv->ptp.clock lives in netdev_priv() and is zeroed at allocation.  It
+is only assigned by ravb_ptp_init(), which runs from ravb_dmac_init()
+(info->gptp) or ravb_open() (info->ccc_gac), i.e. not before the first
+ndo_open.  With CONFIG_PTP_1588_CLOCK=y, ptp_clock_index() in
+drivers/ptp/ptp_clock.c is an unconditional dereference:
+
+	int ptp_clock_index(struct ptp_clock *ptp)
+	{
+		return ptp->index;
+	}
+
+ETHTOOL_GET_TS_INFO is in the "allow some commands to be done by anyone"
+list in dev_ethtool(), and dev_ethtool() only requires
+netif_device_present(), not netif_running(), so on a gen2/gen3/RZ-V2M
+board "ethtool -T eth0" on a down interface looks reachable by any local
+user.
+
+The second way to get here with a NULL pointer is the failure this patch
+is about: ravb_ptp_init() stores NULL on registration failure and both
+call sites in this commit discard the return value, so the interface is
+brought up with priv->ptp.clock == NULL.
+
+The other readers in the driver, ravb_ptp_interrupt() and
+ravb_ptp_stop(), still NULL-check this field, so the new site looks like
+it breaks the in-driver invariant.  Should ravb_get_ts_info() keep a
+sentinel of -1 for "no PHC" as before?
+
+> @@ -2934,7 +2934,6 @@ static int ravb_probe(struct platform_device *pdev)
+>  	priv->rstc = rstc;
+>  	priv->ndev = ndev;
+>  	priv->pdev = pdev;
+> -	priv->ptp.phc_index = -1;
+>  	priv->num_tx_ring[RAVB_BE] = BE_TX_RING_SIZE;
+>  	priv->num_rx_ring[RAVB_BE] = BE_RX_RING_SIZE;
+>  	if (info->nc_queues) {
+
+diff --git a/drivers/net/ethernet/renesas/ravb_ptp.c b/drivers/net/ethernet/renesas/ravb_ptp.c
+index f70b616ac847c..19d039b9d24a5 100644
+--- a/drivers/net/ethernet/renesas/ravb_ptp.c
++++ b/drivers/net/ethernet/renesas/ravb_ptp.c
+> @@ -313,11 +313,11 @@ void ravb_ptp_interrupt(struct net_device *ndev)
+>  	ravb_write(ndev, ~(gis | GIS_RESERVED), GIS);
+>  }
+>  
+> -void ravb_ptp_init(struct net_device *ndev)
+> +int ravb_ptp_init(struct net_device *ndev)
+>  {
+>  	struct ravb_private *priv = netdev_priv(ndev);
+> -	struct ptp_clock *clock;
+>  	unsigned long flags;
+> +	int ret = 0;
+>  
+>  	priv->ptp.info = ravb_ptp_info;
+>  
+> @@ -338,15 +338,14 @@ void ravb_ptp_init(struct net_device *ndev)
+>  	ravb_modify(ndev, GCCR, GCCR_TCSS, GCCR_TCSS_ADJGPTP);
+>  	spin_unlock_irqrestore(&priv->lock, flags);
+>  
+> -	clock = ptp_clock_register(&priv->ptp.info, &priv->pdev->dev);
+> -	if (IS_ERR(clock)) {
+> -		netdev_err(ndev, "failed to register PTP clock: %pe\n", clock);
+> -		clock = NULL;
+> +	priv->ptp.clock = ptp_clock_register(&priv->ptp.info, &priv->pdev->dev);
+> +	if (IS_ERR(priv->ptp.clock)) {
+> +		ret = PTR_ERR(priv->ptp.clock);
+> +		priv->ptp.clock = NULL;
+> +		ravb_ptp_stop(ndev);
+>  	}
+>  
+> -	WRITE_ONCE(priv->ptp.clock, clock);
+> -	if (clock)
+> -		WRITE_ONCE(priv->ptp.phc_index, ptp_clock_index(clock));
+> +	return ret;
 >  }
 
-[Severity: High]
+[Severity: Medium]
+Is it intentional that the registration result is published into the
+shared field before the error pointer is normalised?
 
-Is the ndev really closed on the suspend leg when WoL is enabled?
-ravb_suspend() returns immediately after ravb_wol_setup() without ever
-calling ravb_close():
-
-drivers/net/ethernet/renesas/ravb_main.c:ravb_suspend() {
-	rtnl_lock();
-	if (priv->wol_enabled) {
-		ret = ravb_wol_setup(ndev);
-		rtnl_unlock();
-		return ret;
-	}
-
-	ret = ravb_close(ndev);
-	...
-}
-
-The only ravb_close() in the WoL flow is at the end of ravb_wol_restore(),
-i.e. on the resume leg. So the commit message statement:
-
-  "As the ndev will always be closed and re-opened when suspending and
-  resuming the system."
-
-does not appear to hold for the suspend direction. Should the message be
-adjusted, or is the intent to change behaviour here?
-
-With ravb_ptp_stop() gone from ravb_wol_setup(), doesn't the WoL suspend
-path lose the gPTP masking and IRQ draining that ravb_ptp_stop() performed?
-
-drivers/net/ethernet/renesas/ravb_ptp.c:ravb_ptp_stop() {
-	ravb_ptp_disable(ndev);		/* GIC = 0, GIS = 0 */
-	ravb_ptp_sync_irqs(ndev);	/* synchronize_irq(ndev->irq), err_irq, mgmt_irq */
-	...
-}
-
-After this patch ravb_wol_setup() only clears RIC0/RIC2/TIC, narrows
-ECSIPR, and synchronizes priv->emac_irq, so gPTP interrupt sources armed by
-userspace (extts PTCE, perout PTME) stay enabled and the AVB-DMAC / err /
-mgmt IRQ lines are never drained. Do the retained comments in
-ravb_wol_setup() still describe the code?
-
-	/* Disable interrupts by clearing the interrupt masks. */
-	...
-	/* Only allow ECI interrupts */
-	synchronize_irq(priv->emac_irq);
-
-Can a gPTP interrupt latched during the sleep then be replayed against a
-block that ravb_wol_restore() is resetting? resume_device_irqs() runs in
-the noirq phase, before the .resume callback, so:
-
-ravb_interrupt()/ravb_multi_interrupt()
-	if (iss & ISS_CGIS)
-		ravb_ptp_interrupt(ndev);
+The store to priv->ptp.clock is a plain store outside priv->lock, and it
+can briefly contain an ERR_PTR value until the next statements replace
+it with NULL.  The lockless hardirq reader still expects "valid if
+non-NULL" and still uses READ_ONCE():
 
 drivers/net/ethernet/renesas/ravb_ptp.c:ravb_ptp_interrupt() {
-	gis &= ravb_read(ndev, GIC);
+	struct ptp_clock *clock = READ_ONCE(priv->ptp.clock);
 	...
-	if (gis & GIS_PTMF) {
+	if ((gis & GIS_PTCF) && clock) {
 		...
-		ravb_ptp_update_compare(priv, perout->target);
+		ptp_clock_event(clock, &event);
 	}
-	ravb_write(ndev, ~(gis | GIS_RESERVED), GIS);
 }
 
-can run while ravb_wol_restore() is driving the block through
-CCC_OPC_RESET and config mode:
+So the WRITE_ONCE()/READ_ONCE() pairing added by 1cb9663789c5 is now
+one-sided.  Keeping the registration result in a local variable and
+storing only NULL or a valid pointer, as the previous code did, would
+avoid both the plain-store annotation mismatch and the transient
+ERR_PTR.
 
-drivers/net/ethernet/renesas/ravb_main.c:ravb_wol_restore() {
-	/* Set reset mode to rearm the WoL logic. */
-	error = ravb_set_opmode(ndev, CCC_OPC_RESET);
-	...
-	error = ravb_set_config_mode(ndev);
-	...
+[Severity: Low]
+This isn't a regression in behaviour, but the netdev_err("failed to
+register PTP clock: %pe") diagnostic is dropped here while both callers
+in this commit still ignore the new return value:
+
+drivers/net/ethernet/renesas/ravb_main.c:ravb_dmac_init() {
+	/* Initialise PTP Clock driver */
+	if (info->gptp)
+		ravb_ptp_init(ndev);
+
+	return 0;
 }
 
-Neither ravb_set_opmode() nor ravb_set_config_mode() takes priv->lock, so
-is there anything serializing that window? Related, does the PHC stay
-registered across a sleep in which the block is subsequently reset?
+drivers/net/ethernet/renesas/ravb_main.c:ravb_open() {
+	/* Initialise PTP Clock driver */
+	if (info->ccc_gac)
+		ravb_ptp_init(ndev);
+}
 
-This also looks like it reverses commit b07bc55cbb1c ("net: ravb: Simplify
-ravb_suspend()"), which moved ravb_ptp_stop() into ravb_wol_setup()
-specifically because the WoL branch bypasses ravb_close(). Checking the end
-of this series (up to "net: ethernet: ravb: Add gPTP support for Gen4"),
-ravb_wol_setup() still has no gPTP stop, so no later patch restores it.
+The later patch "net: ethernet: ravb: Replace gPTP flags with callbacks"
+does consume the error at both sites (dmac_start() and ndev_open()), so
+the ignored return is only an intermediate state.  In this intermediate
+commit a registration failure is however quieter than before, since
+nothing prints anything at all.  Should the message be kept until the
+callers report the error?
 
-Would it work to keep the gPTP masking and IRQ draining in
-ravb_wol_setup()? Dropping the ravb_ptp_init() from ravb_wol_restore()
-below looks fine on its own, since ravb_close() there already stops gPTP.
-
-> @@ -3204,9 +3201,6 @@ static int ravb_wol_restore(struct net_device *ndev)
->  	if (error)
->  		return error;
 >  
-> -	if (priv->info->ccc_gac)
-> -		ravb_ptp_init(ndev, priv->pdev);
+>  static void ravb_ptp_disable(struct net_device *ndev)
+> @@ -369,14 +368,10 @@ static void ravb_ptp_sync_irqs(struct net_device *ndev)
+>  void ravb_ptp_stop(struct net_device *ndev)
+>  {
+>  	struct ravb_private *priv = netdev_priv(ndev);
+> -	struct ptp_clock *clock;
 > -
->  	if (info->nc_queues)
->  		napi_enable(&priv->napi[RAVB_NC]);
->  	napi_enable(&priv->napi[RAVB_BE]);
+> -	WRITE_ONCE(priv->ptp.phc_index, -1);
+> -	clock = xchg(&priv->ptp.clock, NULL);
+>  
+>  	ravb_ptp_disable(ndev);
+>  	ravb_ptp_sync_irqs(ndev);
+>  
+> -	if (clock)
+> -		ptp_clock_unregister(clock);
+> +	if (priv->ptp.clock)
+> +		ptp_clock_unregister(priv->ptp.clock);
+>  }
+
+[Severity: Critical]
+Does this leave priv->ptp.clock pointing at freed memory?
+
+ptp_clock_unregister() ends with:
+
+drivers/ptp/ptp_clock.c:ptp_clock_unregister() {
+	...
+	/* The final put, normally here, will invoke ptp_clock_release(). */
+	put_device(&ptp->dev);
+}
+
+so the struct ptp_clock is released, but the field keeps the old value
+because the xchg() to NULL is gone.  Two consequences look possible.
+
+First, a use-after-free read.  After a normal close of a gen3 interface
+(ravb_close() -> ravb_ptp_stop()), an unprivileged "ethtool -T eth0"
+reaches the new ravb_get_ts_info() -> ptp_clock_index(priv->ptp.clock)
+and reads ->index out of freed memory, returning it to userspace as
+phc_index.
+
+Second, a double unregister on gptp hardware, where ravb_stop_dma()
+tears the clock down:
+
+drivers/net/ethernet/renesas/ravb_main.c:ravb_stop_dma() {
+	/* Stop PTP Clock driver */
+	if (info->gptp)
+		ravb_ptp_stop(ndev);
+}
+
+If the following ravb_dmac_init() fails, ravb_ptp_init() is not re-run:
+
+drivers/net/ethernet/renesas/ravb_main.c:ravb_tx_timeout_work() {
+	error = ravb_dmac_init(ndev);
+	if (error) {
+		...
+		goto out_unlock;
+	}
+}
+
+ravb_set_ringparam() has the same early-return shape.  A later
+ravb_close() -> ravb_stop_dma() -> ravb_ptp_stop() then sees the stale
+non-NULL pointer and calls ptp_clock_unregister() a second time on the
+released object, where ptp_vclock_in_use(), get_device(&ptp->dev) and
+kthread_destroy_worker() all touch freed memory.
+
+Before this change the xchg() made ravb_ptp_stop() idempotent and made
+both sequences impossible.  Would storing NULL after unregistering, or
+restoring the xchg(), be preferable?
+
+Neither of these appears to be addressed by the rest of the series;
+ravb_ptp_stop() is unchanged at the end of the series and
+ravb_gen2_ptp_clock_index() still does "return ptp_clock_index(priv->ptp.clock)".
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260902084703.3228504-1-niklas.soderlund%2Brenesas%40ragnatech.se
