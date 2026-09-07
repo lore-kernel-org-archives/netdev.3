@@ -1,63 +1,63 @@
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C40D43636B
-	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 09:54:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E55238F935
+	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 09:55:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788774900; cv=none; b=U6kR443NLyfGa4NYbnrPezbT8XZy2xNsPayaRbiIzHQo/fXpyR7RfZ/qKMMZ3HEpBZ2ETcKGBu3VVvy8DAL4h1jfCdSdoZtmwSQy2vkMyElAkQGDxakIwYyRyO9JU784+N5RoeJ/NGsqgzjvrNbP6NQyJ5MJpX4bQJ/mflFjf44=
+	t=1788774910; cv=none; b=TY+D+LcQYt1ZJ2cBIsLg8ExVorcl8v56EDZ2R2Ooha9kr+sCQHiE7Hc9hxJR4ybKxFVRh1cNVWKKJxSZF4ihSDWYbeO+HrOOauRLywiXZa3jy6qluzp9Yrfgs0CJjQJFyXMFn/G5s2ZaoMJv1HJFNM67LwJV/N0Prf84o16go2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788774900; c=relaxed/simple;
-	bh=s549kevUZC4ZyUc7XqUZMng2RkCpooWQvdm+Nz2D0W8=;
+	s=arc-20240116; t=1788774910; c=relaxed/simple;
+	bh=GvzajizbOY90kaz3HZugV1nPa93/ZqnhoDEgNe4G3Jk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tiBE8P8pmKrNEifBiZm++vtHCGB9gqWr4S1R/54mIUJUwBbgl7mUPd3saKkPb4qI4J2ChGOGEmPOvv7mjlpDzmuS1Dioia5sojyTAa6kV9JM3uXqXa5CI1DLZMMvArj3HqCzCrKwMEkdNrtZkJw0JLxZ3+05lWq0zd77mzEd+yA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O4IFcsRl; arc=none smtp.client-ip=209.85.216.41
+	 MIME-Version; b=euZc1k9uhU4q10YazauqZDGQAfmwL6BBmVW2rUW0TtOaBLBXsa6LNxXiLaksw3uYhUu6q4+U8u+wLHogU11j177MgEYPTqdttsRTz5eGrHhMHnW7I9jCy9tlr+wsfc/ocKaBAh2B1zLclH6CQwxcU5qYBuvDW/wXiMUl6cI3sDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EPe3KuMj; arc=none smtp.client-ip=209.85.216.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O4IFcsRl"
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-38e041ea211so2556952a91.0
-        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 02:54:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EPe3KuMj"
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-39b52169dacso1053080a91.3
+        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 02:55:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788774898; x=1789379698; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1788774908; x=1789379708; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=CAjCGFj9uN24CROal9WgOpj03Aiwe9JIURKGhaUN4Iw=;
-        b=O4IFcsRlp1gUSfPO5iwfSBPxBw+b73izEsYnNtRZbCijsuG6NlHuX+K97alavRu5Nv
-         Ydqt6eOu1VCuktpGnl3MJpHeuPkZhl+c5mTTA1pjAImBiRmGBqI8nfwsInm4cQCgreC5
-         j/VBc3LKidVrsglvBAjm1bwTTh59WGezMpXlWjXV3IgJS5noUyQmIO9CCgl268sn+xm9
-         IlmVoU/TX2W0rz6P2Hoi7uar5dgki3npcuJSwk8lcpMjK8fcxCOuUEEwWAfkSgyWW+6/
-         pfs9HvhGqhxGt+KpPWESaCkVI94uAh6D6ZhBkwrsF/JBFULUckDLKpHv6xbTx6MlkxKX
-         iqGQ==
+        bh=Gm+TyPV1iDM9aVdXh0QUxUBtbEP62ax0fUff+nPkYjU=;
+        b=EPe3KuMjUqln7ym73592bTp9gWYhAWm6jCk6skEJpytBoim75ycjRHIfxVIlzCIeZs
+         sC8eahpT9JXSlpty9H40ZuJB/AE4xx/0Qp4johqb1XiKxxtt32hVhyPQY5PlxYOKoBan
+         oLw8be/vEcULyd/PMASmFVV+iRhVPIvlQS26YqaSBonkhgW4dcFkIEFQMW+8hCImdaZ2
+         AlrjaAry5J/H6hYJmQE6BZIIRGbkjQxFuE0h1hVn0i1Yk3jo4ptTAackIY2IEnD/H+qo
+         pq3KdZQWGOghZjbnxoZN/qv+o3N4/iLXRlHOcD+dGZe1jGlf47kR+RteG/giTGW6XjZ0
+         eVtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788774898; x=1789379698;
+        d=1e100.net; s=20251104; t=1788774908; x=1789379708;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=CAjCGFj9uN24CROal9WgOpj03Aiwe9JIURKGhaUN4Iw=;
-        b=ZYaSj2LeIYV/g6bKGqrBgTk61KuwtHESGP7x+2VUuW+PPRxzGM+21hVd8u8OhNxvdX
-         5xgFcrq393+Dc47y0dH6wSKCXeQ/99aPjeURNNUqof9a9eokzr4AMsM/OGWL7DujJGQu
-         4TjuSRX1HKJNgihsV4a5aTOz5GGW5jaTrT3dsPl53IMf0u8O3/+evZzt+mA04qUTWirx
-         ix19uvvNKQ72MBLB9xfUlb1t2rtI26MSslH/9sMd5HBcnqTukOPCR/GNHWFw96/aGFYV
-         9mtwGV2TFXyzcdrywmf0Cb5cbtYo0F4V/8xC/g+VCWFzJAQwmOi2rb5iKYRtdgjGIn1L
-         FsYA==
-X-Gm-Message-State: AFuF++k6R0hoN4CDfOPvnrpfK30HZ48FqD1S8N463yVu23/jcriVLXgC
-	5DfAYzhrq/LGv+PE8YVLxu94DGfIepP8PnkSUlE+SXpJpaSDk/+YTodw
-X-Gm-Gg: AYBFou25/VO4zmtscAs8VavC8Kuc+sdpV1e6x7p4L6I7cDk0EcIpLoFoZ3r46f234D1
-	y0umvKWksx43rmrjeTZwqs+wyQdIPj2wpZ/TIFoeM20g6OKmjqW956irJCPYGAHR8jReNT0QtjS
-	6RI91r1a2aQXLdjEPmezrPF1ZwkHyVCRCO89M7OYEayzz/OwHrzXxmjAzeVk3WX8aA4Hz69Uo+G
-	nLlmOCtNlBxwhoackj1NSs8V+fp9A93Th3eQgBrvroQSR1cR8wNtxKGXRtwSiQ3IsPMJ2sSPHQD
-	ycEb3soZoGYykKzF8mWnG2To7YNBv3sn6vY/hqchIoQ/u+OKzi25HOAOUq8/MhNSPaPsSxjnmF8
-	jXQKxR9EDd6YT2AN4ilRx4EhGctC9uhXdPu+P5XkvixNXU4u2g/pazfcPlYxJL9dZ+Y+1Ye5rwj
-	nVTAQPeWlw1tEEkUYP1tQPv/B6yKnJegmYAVrZ/kVuyv1QuKWjEUwQtZ3Gguc1n/PFeGac5VoG5
-	a389f7sv9G/9g==
-X-Received: by 2002:a17:90b:510c:b0:398:9be6:f999 with SMTP id 98e67ed59e1d1-39b262e27a9mr36356477a91.24.1788774898462;
-        Mon, 07 Sep 2026 02:54:58 -0700 (PDT)
+        bh=Gm+TyPV1iDM9aVdXh0QUxUBtbEP62ax0fUff+nPkYjU=;
+        b=ceXIOiaWJUoqJbXV/CuO/tYiLwYefPLvav76ZrIkiSTiVMadSdcH9fvMrQqA8C4FK4
+         amOjDGsk1nI5gDXABxVT+T/zT7xS05HUwfZRVkwx1e2XOcoWV4f+AjX4ZBBKgaxlY85l
+         M1NhqgfpbI8KVSuxjKxAS6jvlVblEIHH6Z7baS6kinZVwreK0hnl0bX+K+N+QJl+HOmq
+         tfsTAUFFsK9fur9WUMWv/yyg9wfg1nJ/CsL6DleHDBQtTLQRLX+VqLa2tSC9iQXVmkYW
+         elXe0gmEObe8VmO2wc3tLqjAnEqaj65K+E6GijvPMJXKS8aUy5zT0AWJGut2y4kEPdIo
+         08VA==
+X-Gm-Message-State: AFuF++lgbVxvGarzxBM6s+oRfz1UvJv3a+sXIIIX7CgWYxjFM1WPclqG
+	om40GB17HYzGmvBdZRaW7QFN1sKj9XyGXXFIvqbHgeXqBlx3u76g8D8s
+X-Gm-Gg: AYBFou0G3PMUN9T9JajnrLwFA8buGXTrP7I9ARiWlaNYPODda/F6DpaR5pEsREYP2H+
+	qzz4+qOtpdwjfm+IOEGkbYI0FlNtdyii2vLNGNY7hHWtddGnLazcD3kdahb++zwODCQiAqyiDBu
+	GMWwsT7pjEEqcTqz1OOah3jRfl5JbUvBPEArsH9ZgLgSJAaPGneVYEYIbVKMQqQ7PjbzqZ0V9Gl
+	rYHv75t6hcr7mXfIgqb3c1vJ/GuRMrbyl8VNzfwY/e8bwCn5B/Kaq6PXkXQ4Y0oldVZVMIQKXgo
+	5roTvU/xJySYWnYmM54AFDEzM5iZKGQZFu/xrUhdzKO+wTh7mkRxjWLD5/B6HoE/t9qX1A9zZc5
+	6S5DTm0OTfv3lel5sRdPpaRCFfwnXK6EKTU4I7g6Nf9k5zcL5qnEHc3RsYU2kNLHmlWQWwyC5g4
+	IQ3IzpoLB+DKpDORkO8XCE85KZYQX3wspfpfmTQT0VD8C8JJDgwsdaGhGLipf5h3mbZTfX8GBH3
+	Eu5lgWtIkFSdQ==
+X-Received: by 2002:a17:90b:1c0a:b0:398:d132:ba76 with SMTP id 98e67ed59e1d1-39b2623abfemr31923733a91.21.1788774908390;
+        Mon, 07 Sep 2026 02:55:08 -0700 (PDT)
 Received: from volcano9f6e-hostos.amd.com ([165.204.217.251])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1432424d27asm34831030c88.2.2026.09.07.02.54.53
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1432424d27asm34831030c88.2.2026.09.07.02.55.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Sep 2026 02:54:57 -0700 (PDT)
+        Mon, 07 Sep 2026 02:55:08 -0700 (PDT)
 From: Hemanth Selam <hemanth.selam@gmail.com>
 To: Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
@@ -74,9 +74,9 @@ To: Tony Nguyen <anthony.l.nguyen@intel.com>,
 Cc: netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-doc@vger.kernel.org
-Subject: [PATCH iwl-next v2 1/4] i40e: fix typos in comments
-Date: Mon,  7 Sep 2026 15:24:43 +0530
-Message-ID: <20260907095446.27290-2-hemanth.selam@gmail.com>
+Subject: [PATCH iwl-next v2 3/4] ixgbevf: fix typo "enble" in comment
+Date: Mon,  7 Sep 2026 15:24:45 +0530
+Message-ID: <20260907095446.27290-4-hemanth.selam@gmail.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20260907095446.27290-1-hemanth.selam@gmail.com>
 References: <20260907095446.27290-1-hemanth.selam@gmail.com>
@@ -88,7 +88,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Fix typos in comments, found with scripts/checkpatch.pl using the
+Fix a typo in comments, found with scripts/checkpatch.pl using the
 misspelling list in scripts/spelling.txt. Only touches comments, no code
 changes.
 
@@ -103,33 +103,19 @@ Notes:
     
     v1: https://lore.kernel.org/all/20260907064528.6602-1-hemanth.selam@gmail.com/
 
- drivers/net/ethernet/intel/i40e/i40e_common.c  | 2 +-
- drivers/net/ethernet/intel/i40e/i40e_ethtool.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_common.c b/drivers/net/ethernet/intel/i40e/i40e_common.c
-index 8dadfef2c09f..026b35e5a000 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_common.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_common.c
-@@ -676,7 +676,7 @@ int i40e_pf_reset(struct i40e_hw *hw)
- 	grst_del = FIELD_GET(I40E_GLGEN_RSTCTL_GRSTDEL_MASK,
- 			     rd32(hw, I40E_GLGEN_RSTCTL));
+diff --git a/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c b/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
+index 7ce46b4b4821..7eb4acf59dab 100644
+--- a/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
++++ b/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
+@@ -3995,7 +3995,7 @@ static void ixgbevf_tx_olinfo_status(union ixgbe_adv_tx_desc *tx_desc,
+ 	if (tx_flags & IXGBE_TX_FLAGS_CSUM)
+ 		olinfo_status |= cpu_to_le32(IXGBE_ADVTXD_POPTS_TXSM);
  
--	/* It can take upto 15 secs for GRST steady state.
-+	/* It can take up to 15 secs for GRST steady state.
- 	 * Bump it to 16 secs max to be safe.
- 	 */
- 	grst_del = grst_del * 20;
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_ethtool.c b/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
-index 3da9ec49cc74..ef9d1e78c16a 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
-@@ -2614,7 +2614,7 @@ static u64 i40e_eeprom_test(struct net_device *netdev, u64 *data)
- 	netif_info(pf, hw, netdev, "eeprom test\n");
- 	*data = i40e_diag_eeprom_test(&pf->hw);
+-	/* enble IPv4 checksum for TSO */
++	/* enable IPv4 checksum for TSO */
+ 	if (tx_flags & IXGBE_TX_FLAGS_IPV4)
+ 		olinfo_status |= cpu_to_le32(IXGBE_ADVTXD_POPTS_IXSM);
  
--	/* forcebly clear the NVM Update state machine */
-+	/* forcibly clear the NVM Update state machine */
- 	pf->hw.nvmupd_state = I40E_NVMUPD_STATE_INIT;
- 
- 	return *data;
