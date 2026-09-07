@@ -1,162 +1,407 @@
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazolkn19011030.outbound.protection.outlook.com [52.103.32.30])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8CC2331EB0;
-	Sun,  6 Sep 2026 23:42:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.32.30
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788738160; cv=fail; b=EJAR3AxsbWmqq/vI237HZ87rX4G5pyCzpayG+CG8mgZ3TerxgIxRE/KsPTZc8D0L1UlsoVgAc0C+k2CkNyFTFVCJdtDsDtAHaHM1G1ybHN/fqOCT5EVlaDzR8WWYKQq7Emhu5H3XZ03j95pKBataHFI8Es5uY4S9pPkrJkzc0V4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788738160; c=relaxed/simple;
-	bh=66OXOUPU4lFZJnugzfM3gOQ14Xp+3HXIqQ3pZb2OuCQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=Guj8OgXPmzAxPSjuXy4MkotYOiM7PgZhL+NWnEx+Eif5AYtC2mU79bhOsuR0fK/Y2ZMy+rKeBp+NDN2U4Q7fwMIs99k5m9FNh40Yu42j81UgThtmj8tfCWzuYvjzyGx1DsoBBuRuK6in3vXMBBBhGa2vR0no1om5zbJ7T0eSlLc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.co.uk; spf=pass smtp.mailfrom=hotmail.co.uk; dkim=pass (2048-bit key) header.d=HOTMAIL.CO.UK header.i=@HOTMAIL.CO.UK header.b=s45Fsg0A; arc=fail smtp.client-ip=52.103.32.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.co.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hotmail.co.uk
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AFE22E401;
+	Mon,  7 Sep 2026 00:03:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788739436; cv=none; b=dKS63NzrMvysdXe+u23QE7jV6z0OA4jRHDR41ctiyKFNbgdy5zm61r9+APTtY+agfub78lIivElrxKfwgH4b1/V377yrKAhS9raQ7+vK3rKmVZcfjYoIW2UJABGoZ1pN1Som2k8QFkN+4vHjewYF9Bm0CXCt3sNHO9pYO1nZIAU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788739436; c=relaxed/simple;
+	bh=WC5YPFMgHVtwDE7hem+m0waMrMTakwDcFX80oG20pms=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=mwoU5gocpgzLhAoIeRQE08UaevBiXkxMLkuoymS7LtVEpPA+XlFc6fHCmuGn3y82uw+t4wWXtncQ1jIbpKWjmwH2S3kGsweYNtwQU6alhiM9XZ0hId8ZBkc/+9ZmCiSlMkzG6wF2/Vw1u9RHeue3uO/avfF3Ao+Rht5vnZvcUWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bl6qqQSR; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=HOTMAIL.CO.UK header.i=@HOTMAIL.CO.UK header.b="s45Fsg0A"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jPQDY33Rx6dki+4YpfM2hsQ4pfv4luifLg0aH8FqELRL4KhFL0AG2jLFheb20LWqi4f/dK8froy+cx/H3RIkyrZdIhF8/l14LJ2FVe1mtFkgSXkgzAN/QiF7bFOcZPyxzIRlwLTZXkkfJK4Ftxr52edv+15zvJC/neiamUdn2KY+K6MR97kyOcbIk8HA8zpHml5/RnlfN7Z9HbnWMn915vm68fkT2YNLsnE0jiOlEvie4tddz1Qm7rTZ00oj/EOizjkW2NgPwILFscH72S+zT4yI0ftET136ZFNFk09P2TM+4fuRts+I5APsxH5M1rP4MCutydjkJBuJ3OobynKoXQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YpwjOm7cOOYQQ/rlKmqGw0OIQL6HxXm59Ycs0PNkh/o=;
- b=pt0JsA61ROKLx83XF8r5W8d3K73TM+ITs6bLWw3236AnsfGqRte/ed9k+FckyUK115nK/l2+tN3b2RrXE0q/CYy48no5UZ0whWwU7Je7s+CdGTn8yx6tUTKNbvUNeglSCqJFc6XXLmic1uWiGvUQY5KVUmTS/I45AGsNZDfky6M9XRHYier/F1TyWCFJWVCQHyZRniEVZEiuYFfSDUhZFIUO8DuGC23HWTmNw61BK3hPtUcXDuqSb8Aqt8UKWxjn+HjPiXSB0M9of+FNNqZLvVlSEms4iLjZBaw6yxEgXgNX8itKfYXrwJwynmhr5R0+NtIbZqXd+Iy9jXrI90u1vQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=HOTMAIL.CO.UK;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YpwjOm7cOOYQQ/rlKmqGw0OIQL6HxXm59Ycs0PNkh/o=;
- b=s45Fsg0A9YoKELOOImDRonzdWSV/qfl3m/muAn4aX5p2mPXf2+puQ69LxXTrY/cpMOhbqSu/TKzc1h+Xav1vce/OhWzgRj14x3Z/FGygEsGxnCDLHeRVFIBKetlyB4xMRNGVWIPzsCm+ELwmsZWnGSWBLN0AJteumjAB9FkNjn6D5YX93O+BiLV+9VXKe5b15F7N+Dtiw/cjXjCZ0OEMTFvteUB3102+QxIMkaqP/TPk3PUOaSuSlw1/YSpnxeVLgpqlswHTSwLQAXJwHvWdYyX3iI4SH/J8K6B38l9fWoqBPkCdCpR3Wiy8/JVqOnrzUMPZL1AZ/dDJpCaHLNxYIA==
-Received: from AS8P251MB0001.EURP251.PROD.OUTLOOK.COM (2603:10a6:20b:344::22)
- by PAXP251MB0113.EURP251.PROD.OUTLOOK.COM (2603:10a6:102:200::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.382.15; Sun, 6 Sep
- 2026 23:42:36 +0000
-Received: from AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
- ([fe80::2952:d4d0:4ba:8352]) by AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
- ([fe80::2952:d4d0:4ba:8352%6]) with mapi id 15.21.0382.014; Sun, 6 Sep 2026
- 23:42:36 +0000
-From: Aamir Ahmed <elb12345@hotmail.co.uk>
-To: Lachlan Hodges <lachlan.hodges@morsemicro.com>,
-	Dan Callaghan <dan.callaghan@morsemicro.com>,
-	Kalle Valo <kvalo@kernel.org>
-Cc: Arien Judge <arien.judge@morsemicro.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] wifi: mm81x: bound response memcpy by actual skb length
-Date: Mon,  7 Sep 2026 00:42:32 +0100
-Message-ID:
- <AS8P251MB0001B37B237975CAE6092B80C8B32@AS8P251MB0001.EURP251.PROD.OUTLOOK.COM>
-X-Mailer: git-send-email 2.53.0.windows.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bl6qqQSR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84C5C1F00A3A;
+	Mon,  7 Sep 2026 00:03:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788739434;
+	bh=ECOrYA0cpj6y5Jadj+BhOX8T+CCQ8iodDMe4wWyjnNU=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=Bl6qqQSRbwZ8pYJkivIyyIteS0GEy/Kq4kbkPsJqBQduNCWA8byFhMk9JytkbyYwq
+	 OYdnyrXaoLYsN6zC2iUcY/fLhJWEi+wknICbcLGGmasMCFBzqLEsMV/ORHBUMibo+A
+	 ttflt+i8AGzceBWqkIfgG3J9VbI40dyI5OK/7vylvL7fP64Y04LeGCfNSjoiJUIXvQ
+	 WC65WdZDGtFa1z4H+pkwitq+uwI+3dDc+IRwZat8A/u5TpuKvaHHMAfT5+b5orQkX9
+	 z+qb33EmuWPwtfu7EPA36uizSM9Njcfb+X490GWWexfKn0yGlNdy966Ysft+SfreK1
+	 S069sacahgDJg==
+Subject: Re: [PATCH net-next v5 01/12] gve: add struct gve_device_info to hold
+ device properties
+From: netdev-bot+sashiko@kernel.org
+To: hramamurthy@google.com
+Cc: netdev@vger.kernel.org, joshwash@google.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org,
+ john.fastabend@gmail.com, sdf@fomichev.me, jordanrhee@google.com,
+ willemb@google.com, nktgrg@google.com, maolson@google.com, thostet@google.com,
+ jacob.e.keller@intel.com, debarghyak@google.com, kees@kernel.org,
+ bpf@vger.kernel.org, linux-kernel@vger.kernel.org,
+ przemyslaw.kitszel@intel.com
+Date: Mon, 07 Sep 2026 00:03:53 +0000
+Message-ID: <178873943304.219967.4275641978466508716@kernel.org>
+In-Reply-To: <20260903215606.31633-2-hramamurthy@google.com>
+References: <20260903215606.31633-2-hramamurthy@google.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: LO4P265CA0090.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:2bc::11) To AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
- (2603:10a6:20b:344::22)
-X-Microsoft-Original-Message-ID:
- <20260906234232.87912-1-elb12345@hotmail.co.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8P251MB0001:EE_|PAXP251MB0113:EE_
-X-MS-Office365-Filtering-Correlation-Id: b30a5345-6569-4a67-b847-08df0c708790
-X-Microsoft-Antispam:
-	BCL:0;ARA:14566002|24021099003|55001999006|16051099003|5062599005|5072599009|15080799012|25010399006|51005399006|23021999003|25031999004|37011999003|19110799012|8060799015|440099028|3412199025|26104999009|40105399003|2607281247196008;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?6gtj8mfbriaktOg7m7/XJuSvTwjSAmnOJcZqRrzbmYQvA9h7hVRu95dfLWif?=
- =?us-ascii?Q?MgN1pJi6Eulb2IVQqZDW6wFjH3UscNwuPXduQeQx9y6GoIGQcZoLCKEpDRRU?=
- =?us-ascii?Q?TW6ReUhJP/kZqGbBggRHiq0Zh1oOhFh5HlJhUorfZ8He+ApIWL8jmAWVo2zI?=
- =?us-ascii?Q?7HzVZlF4pVEvEhIOG1xOflydNjkoqK91LoCIH8VirbdD+F2Wkzaf6HNTEGnI?=
- =?us-ascii?Q?aLXbj5CezKQ63IKSuLKCn4JNxABOXFtvM9ciDyNQ//qdRrCiCk0WQZqJlsH0?=
- =?us-ascii?Q?vMYr2nt3F5cX+23aLDuPhqPH82oimLSlS0iuLRwJsM4Mf2Om1FADy3BXIfws?=
- =?us-ascii?Q?T4YzOlmRYdHCMv01oQTI6tVmryRubgm9StVqeP8zz6x0KWBFGDBxZJTIh+5B?=
- =?us-ascii?Q?JE3MUWXhJusTogDiAI3egOY2cGgH4ybnlseC7fhcnRKe8DjX3kEnNkS9TCzB?=
- =?us-ascii?Q?mzxQAN5wpXS+v4Hucw8E/SozeqcEBgewQwHav73E8gHZbCZRLGbnahEp/k2k?=
- =?us-ascii?Q?9n4wIaOPoVar5i94nFORAuOF00lDkOLq//Ki0TzjcgtC7Uo77t+pJbgNZ8fq?=
- =?us-ascii?Q?RqAqaiYF1O+jLmaTX7YhJ3p2iFGOGf89X4pCfynZ3NBDpj9G01Tf073MA8wh?=
- =?us-ascii?Q?Ozl201nsOF8ExFFDxVVgpl5+8LEu3wFpfwVcnetwj1VaFIpygaBQvT/dpR2A?=
- =?us-ascii?Q?9+Khk2mUt2X/jH1UvD3Poevn/OlB3zwEUMiK1elUlYuBDv2IuItGorsRVpMF?=
- =?us-ascii?Q?XK9NCVIAdVeCVDhpF/gxCXmNqEv2llmRTs6NtOlvfLqxlbDh4V5lsPu1FyRS?=
- =?us-ascii?Q?Rz5/yyAWWgJsWaXHmzNMUMc//vPdPiWA7RB4SSHtE3z3/oZvlyW76l6r2uNp?=
- =?us-ascii?Q?NfEI7xqnDda4K1mc4er1XUFh3XkybK8JrWZBZ8uTzUJ6An9AzAnfGIQW7i1B?=
- =?us-ascii?Q?HLsedQ2rRKeAOfz5SqynIIrfXQ9jbY1FuAVaXr76qiWl/clSy0oxzjzudVO1?=
- =?us-ascii?Q?zdMdBg5O1FXR15Pl3uj3hss/YcXqDEP2OLDWO6qtNYC6aS4kw9ONKR8G2LUF?=
- =?us-ascii?Q?PifCEl2+dyw7+iegmwPmjCuJZDloRXntV8Dlr/08za9ODWjrjXc=3D?=
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?QBMGp7KqZhPkeCIKk4WZWwtH4U8N6aRXrXURtPbd9SheyavWHzfIc4aBml2r?=
- =?us-ascii?Q?S5jYl1V0ldC4U4yA08JcUO3gBtk6Z4rhk3ijI0y1UjSXdt9Zg7+Q3GyN4ORJ?=
- =?us-ascii?Q?lPFKyQ0etj1dsEo3HCrEYyQWFD4tV0ar3sKkyp31qh7nHOfjtC0EyrIHW+EZ?=
- =?us-ascii?Q?oHFxBEfr8i7zf9WjTENVsXC2kd0EOmMpQUjN3UZMYrjSWLj3BW5bcYtgGaLz?=
- =?us-ascii?Q?6be7KhmSUXVplAGoc+0f42+IQt6FOUIVVgmHt5pqAlsGe4Dq6IpuVLAIm8um?=
- =?us-ascii?Q?IhCOzri6t3hhUnE4L4OGdVK5+6NtD6yhWVozwKjomyPjXhglI9rh9rhK5va7?=
- =?us-ascii?Q?l+i+6z9pNFJWT1SLIHjhkGDiMp5VXGIeplg5KTq8wGhQsHsGnLvjj0LIqKDE?=
- =?us-ascii?Q?sQ8DzBEj60U6slL+zcdnoq+a2cip1KpEny6C37UEshU3/60xXPE7Ucjt4tsm?=
- =?us-ascii?Q?fVMq8Pz6oHwZCFAO4a59GpBPxB95Da9yDY1mDrPGWOJ9xJWu+Ei+8SMIrpl9?=
- =?us-ascii?Q?ujH38Mqxv/P8Rtx6XoggFz4IVpYTj2UTRsmv9yUv/c+aQUfLYA0kC0XomoNX?=
- =?us-ascii?Q?nr2VQZRsMyaXSg5kDd6sp4vBgcbBs4zbYiObphmOSc5Qmw0O6yIr21POVz7Y?=
- =?us-ascii?Q?2CmUyF4DU1x9soGPh4yOR0gZT/qrSGzGYToqu92ycR4wLXNCd/7jg8li1Xdc?=
- =?us-ascii?Q?VLefPs+rOLX1XjCa8xIONHlAzkKsWrJTEUXkgmCJGCIAClx0c5C6ASezUCt4?=
- =?us-ascii?Q?YscD9vwq6sUL3faiKqEBx1XR8DN9XPliy18lGolSwAEZQ+xipLnmC0eMf1ee?=
- =?us-ascii?Q?3R41nQ/mB2vWnVCYgDGx/zLKRYJly/fyuEwF0w2fMI0N5+S+jrOHcxAdXTaW?=
- =?us-ascii?Q?UtCfgmZdpJiYtsEAv1ic4aDy1rzHHzfBnuPCf/XTsQ+3qQ2ZU6VNTbqvOw5R?=
- =?us-ascii?Q?daVIwZ9HQWejUH7Q7USXnD58vc9FveifPt7+XV80p6cspL7eOsjtW1Ma7sYt?=
- =?us-ascii?Q?EKgiTet2qjvSUOjHh88+5tDIyVSYuUnbHIjvD/BrfdUWBdsGLHvAlrDASxJ7?=
- =?us-ascii?Q?gGlylhBjDCtdfkOvbC+EcfffOT2sFfr+Zlo5h3PcSf3BahtULItV+nsQpVBd?=
- =?us-ascii?Q?lAUCcj689SfYdo8mdRgERg/WNqrGbvZ7s0MrCB5Y9rBJk35RcYa7rMDJ2LQ+?=
- =?us-ascii?Q?/XFbQoYRSESqIiUHnXEmaHNEJXHuK4FaxugurCNfah4ofljqqGEBsemKBXaX?=
- =?us-ascii?Q?HFq6DqGjo2yih7V5WiAhUmznC489NwDxoSGng4Sv0d0VDV2CCwA8Ah3CavXa?=
- =?us-ascii?Q?zViaZwBhlHmPrE2/TIWSraN3ZqZ9gCZQ1K35Rs42Jq3BcG7QDyLrk493X2kR?=
- =?us-ascii?Q?1xGtQfeRO1iZr6THAT0+1UsIoa/WeENBQ1YciNqVAn1kAWq7T5XnHaPwoZ1r?=
- =?us-ascii?Q?8eKxgsxrSS+zXAAe25VPh0p1Jp+zLm8u?=
-X-OriginatorOrg: sct-15-20-9412-3-msonline-outlook-fe3f5.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: b30a5345-6569-4a67-b847-08df0c708790
-X-MS-Exchange-CrossTenant-AuthSource: AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Sep 2026 23:42:36.2651
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
-	00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXP251MB0113
 
-In mm81x_cmd_resp_process(), the memcpy length is bounded by the
-caller's expected length and the firmware-reported response length,
-but not by the actual data available in the skb.  A malformed device
-response where the inner header's len field exceeds the YAPS payload
-would cause the memcpy to read past valid skb data.
+Thank you for your contribution! Sashiko AI review found 4 potential
+issue(s) to consider:
 
-Add a min_t() bound against skb->len so the copy never exceeds the
-data actually present in the buffer.
+Critical: 0 · High: 0 · Medium: 1 · Low: 3
 
-Fixes: b1906cea00b0 ("wifi: mm81x: add mm81x Wi-Fi HaLow driver")
-Signed-off-by: Aamir Ahmed <elb12345@hotmail.co.uk>
----
- drivers/net/wireless/morsemicro/mm81x/command.c | 1 +
- 1 file changed, 1 insertion(+)
+- [Medium] The ETH_MIN_MTU validation now applies to a different value
+  than before, contradicting the commit message claim that these changes…
+- [Low] `struct gve_priv` still declares `bool default_min_ring_size;`
+  (drivers/net/ethernet/google/gve/gve.h:849) and `u16…
+- [Low] The newly added `struct gve_device_info` declares `u16
+  max_tx_queues;` and `u16 max_rx_queues;`…
+- [Low] The comment above the netdev feature initialization in
+  `gve_probe()` (drivers/net/ethernet/google/gve/gve_main.c, target…
 
-diff --git a/drivers/net/wireless/morsemicro/mm81x/command.c b/drivers/net/wireless/morsemicro/mm81x/command.c
-index afb7ee9bb236..591e5ba10753 100644
---- a/drivers/net/wireless/morsemicro/mm81x/command.c
-+++ b/drivers/net/wireless/morsemicro/mm81x/command.c
-@@ -209,6 +209,7 @@ int mm81x_cmd_resp_process(struct mm81x *mors, struct sk_buff *skb)
- 		length = min_t(int, length,
- 			       le16_to_cpu(src_resp->hdr.len) +
- 				       sizeof(struct host_cmd_header));
-+		length = min_t(int, length, skb->len);
- 		memcpy(dest_resp, src_resp, length);
- 	} else {
- 		ret = le32_to_cpu(src_resp->status);
+--
+
+gve: add struct gve_device_info to hold device properties
+
+This adds struct gve_device_info to hold the properties negotiated with
+the device, converts gve_adminq_describe_device() and its helpers to fill
+that structure, and moves the code that applies those properties to priv
+into gve_init_priv().  The commit message states the changes are refactors
+only with no functional change.
+
+> diff --git a/drivers/net/ethernet/google/gve/gve.h b/drivers/net/ethernet/google/gve/gve.h
+> index c280ff35ee771..021adb9108dff 100644
+> --- a/drivers/net/ethernet/google/gve/gve.h
+> +++ b/drivers/net/ethernet/google/gve/gve.h
+> @@ -797,6 +797,34 @@ struct gve_ptp {
+>  	struct gve_priv *priv;
+>  };
+>  
+> +struct gve_device_info {
+> +	enum gve_queue_format queue_format;
+> +	u16 default_tx_queues;
+> +	u16 default_rx_queues;
+> +	u16 max_tx_queues;
+> +	u16 max_rx_queues;
+
+[Severity: Low]
+Who fills in max_tx_queues and max_rx_queues?  gve_fill_device_info() in
+gve_adminq.c sets tx_pages_per_qpl, max_registered_pages,
+num_event_counters, mac, max_mtu, default_tx/rx_queues and the four
+ring-size fields, but never these two, and nothing reads them either.
+
+Meanwhile the one consumer that needs device queue maxima,
+gve_set_num_queues(), still derives them from priv->tx_cfg.max_queues and
+priv->rx_cfg.max_queues (read from the BAR registers in gve_probe()) while
+this patch converts the defaults to come from device_info:
+
+	priv->tx_cfg.max_queues =
+		min_t(int, priv->tx_cfg.max_queues, priv->num_ntfy_blks / 2);
+	...
+	if (device_info->default_tx_queues > 0)
+		priv->tx_cfg.num_queues = min_t(int,
+						device_info->default_tx_queues,
+						priv->tx_cfg.num_queues);
+
+Would it be clearer to either populate the two fields in
+gve_fill_device_info() and have gve_set_num_queues() use them, or drop them
+until there is a producer?  As it stands a later MailboxQ consumer reading
+device_info->max_tx_queues in AdminQ mode would see 0.
+
+> +	u16 default_tx_ring_size;
+> +	u16 default_rx_ring_size;
+> +	u16 max_tx_ring_size;
+> +	u16 max_rx_ring_size;
+> +	u16 min_tx_ring_size;
+> +	u16 min_rx_ring_size;
+> +	u16 max_mtu;
+> +	u8 mac[ETH_ALEN];
+> +	u16 max_rx_buffer_size;
+> +	u16 header_buf_size;
+> +	u32 max_flow_rules;
+> +	u16 rss_key_size;
+> +	u16 rss_lut_size;
+> +	u16 tx_pages_per_qpl;
+> +	u16 num_event_counters;
+> +	u64 max_registered_pages;
+> +	bool default_min_ring_size;
+> +	bool nic_timestamp_supported;
+> +	bool modify_ring_size_enabled;
+> +	bool cache_rss_config;
+> +};
+> +
+
+[ ... ]
+
+> diff --git a/drivers/net/ethernet/google/gve/gve_adminq.c b/drivers/net/ethernet/google/gve/gve_adminq.c
+> index f05f4895f4c74..512349c5517f4 100644
+> --- a/drivers/net/ethernet/google/gve/gve_adminq.c
+> +++ b/drivers/net/ethernet/google/gve/gve_adminq.c
+
+[ ... ]
+
+> @@ -190,7 +190,7 @@ void gve_parse_device_option(struct gve_priv *priv,
+>  
+>  		/* device has not provided min ring size */
+>  		if (option_length == GVE_DEVICE_OPTION_NO_MIN_RING_SIZE)
+> -			priv->default_min_ring_size = true;
+> +			priv->device_info.default_min_ring_size = true;
+
+[Severity: Low]
+Should the now-orphaned copies in struct gve_priv be removed in the same
+patch?  This was the only writer of priv->default_min_ring_size, and
+gve_enable_supported_features() now reads info->default_min_ring_size, so
+gve.h still carries
+
+	bool default_min_ring_size;
+
+with no writer and no reader.
+
+The same applies to priv->default_num_queues: gve_set_queue_properties() in
+gve_main.c no longer assigns it and gve_set_num_queues() now reads
+device_info->default_tx_queues / default_rx_queues, yet gve.h keeps
+
+	u16 default_num_queues; /* default num queues to set up */
+
+Both priv fields stay 0/false forever after this change, and the comment
+describes behaviour no code implements.  A follow-on MailboxQ patch reading
+priv->default_num_queues (always 0, meaning "no default") or
+priv->default_min_ring_size (always false, meaning "device provided
+minimums") would get the opposite of what the device reported.
+
+>  		break;
+>  	case GVE_DEV_OPT_ID_FLOW_STEERING:
+>  		if (option_length < sizeof(**dev_op_flow_steering) ||
+
+[ ... ]
+
+> @@ -946,77 +949,105 @@ static void gve_enable_supported_features(struct gve_priv *priv,
+>  					  const struct gve_device_option_modify_ring
+>  					  *dev_op_modify_ring)
+>  {
+> +	struct gve_device_info *info = &priv->device_info;
+> +
+>  	/* Before control reaches this point, the page-size-capped max MTU from
+>  	 * the gve_device_descriptor field has already been stored in
+> -	 * priv->dev->max_mtu. We overwrite it with the true max MTU below.
+> +	 * device_info->max_mtu. We overwrite it with the true max MTU below.
+>  	 */
+>  	if (dev_op_jumbo_frames &&
+>  	    (supported_features_mask & GVE_SUP_JUMBO_FRAMES_MASK)) {
+>  		dev_info(&priv->pdev->dev,
+>  			 "JUMBO FRAMES device option enabled.\n");
+> -		priv->dev->max_mtu = be16_to_cpu(dev_op_jumbo_frames->max_mtu);
+> +		info->max_mtu = be16_to_cpu(dev_op_jumbo_frames->max_mtu);
+>  	}
+
+[ ... ]
+
+>  	if (dev_op_flow_steering &&
+>  	    (supported_features_mask & GVE_SUP_FLOW_STEERING_MASK)) {
+>  		if (dev_op_flow_steering->max_flow_rules) {
+> -			priv->max_flow_rules =
+> +			info->max_flow_rules =
+>  				be32_to_cpu(dev_op_flow_steering->max_flow_rules);
+> -			priv->dev->hw_features |= NETIF_F_NTUPLE;
+
+[Severity: Low]
+Does this leave the comment in gve_probe() pointing at the wrong function?
+gve_main.c still says:
+
+	/* Set default and supported features.
+	 *
+	 * Features might be set in other locations as well (such as
+	 * `gve_adminq_describe_device`).
+	 */
+	dev->hw_features = NETIF_F_HIGHDMA;
+
+After this change gve_adminq_describe_device() and
+gve_enable_supported_features() only record properties into
+struct gve_device_info, and the NETIF_F_NTUPLE update lives in
+gve_init_priv().  Should the comment reference gve_init_priv() instead?
+
+>  			dev_info(&priv->pdev->dev,
+>  				 "FLOW STEERING device option enabled with max rule limit of %u.\n",
+> -				 priv->max_flow_rules);
+> +				 info->max_flow_rules);
+>  		}
+>  	}
+
+[ ... ]
+
+> @@ -1097,18 +1129,9 @@ int gve_adminq_describe_device(struct gve_priv *priv)
+>  			 "Driver is running with GQI QPL queue format.\n");
+>  	}
+>  
+> +	gve_fill_device_info(priv, descriptor);
+>  	gve_set_default_rss_sizes(priv);
+>  
+> -	err = gve_set_mtu(priv, descriptor);
+> -	if (err)
+> -		goto free_device_descriptor;
+> -
+> -	priv->num_event_counters = be16_to_cpu(descriptor->counters);
+> -
+> -	gve_set_mac(priv, descriptor);
+> -
+> -	gve_set_queue_properties(priv, descriptor);
+> -
+>  	gve_enable_supported_features(priv, supported_features_mask,
+>  				      dev_op_jumbo_frames, dev_op_dqo_qpl,
+>  				      dev_op_buffer_sizes, dev_op_flow_steering,
+
+[ ... ]
+
+> @@ -1595,6 +1618,8 @@ int gve_set_num_ntfy_blks(struct gve_priv *priv)
+>  
+>  void gve_set_num_queues(struct gve_priv *priv)
+>  {
+> +	struct gve_device_info *device_info = &priv->device_info;
+> +
+>  	priv->tx_cfg.max_queues =
+>  		min_t(int, priv->tx_cfg.max_queues, priv->num_ntfy_blks / 2);
+>  	priv->rx_cfg.max_queues =
+> @@ -1602,10 +1627,13 @@ int gve_set_num_ntfy_blks(struct gve_priv *priv)
+>  
+>  	priv->tx_cfg.num_queues = priv->tx_cfg.max_queues;
+>  	priv->rx_cfg.num_queues = priv->rx_cfg.max_queues;
+> -	if (priv->default_num_queues > 0) {
+> -		priv->tx_cfg.num_queues = min_t(int, priv->default_num_queues,
+> +	if (device_info->default_tx_queues > 0)
+> +		priv->tx_cfg.num_queues = min_t(int,
+> +						device_info->default_tx_queues,
+>  						priv->tx_cfg.num_queues);
+> -		priv->rx_cfg.num_queues = min_t(int, priv->default_num_queues,
+> +
+> +	if (device_info->default_rx_queues > 0)
+> +		priv->rx_cfg.num_queues = min_t(int,
+> +						device_info->default_rx_queues,
+>  						priv->rx_cfg.num_queues);
+> -	}
+>  }
+
+[ ... ]
+
+> diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/ethernet/google/gve/gve_main.c
+> index 9cc343a162712..d3882de584e36 100644
+> --- a/drivers/net/ethernet/google/gve/gve_main.c
+> +++ b/drivers/net/ethernet/google/gve/gve_main.c
+
+[ ... ]
+
+> -void gve_set_queue_properties(struct gve_priv *priv,
+> -			      struct gve_device_descriptor *descriptor)
+> +static void gve_set_queue_properties(struct gve_priv *priv)
+>  {
+> -	/* set default descriptor counts */
+> -	gve_set_default_desc_cnt(priv, descriptor);
+> +	struct gve_device_info *device_info = &priv->device_info;
+>  
+> -	priv->max_registered_pages = be64_to_cpu(descriptor->max_registered_pages);
+> -	priv->tx_pages_per_qpl = be16_to_cpu(descriptor->tx_pages_per_qpl);
+> -	priv->default_num_queues = be16_to_cpu(descriptor->default_num_queues);
+> +	gve_set_desc_cnt(priv);
+> +	priv->max_registered_pages = device_info->max_registered_pages;
+> +	priv->tx_pages_per_qpl = device_info->tx_pages_per_qpl;
+>  }
+>  
+> -int gve_set_mtu(struct gve_priv *priv,
+> -		struct gve_device_descriptor *descriptor)
+> +static int gve_set_mtu(struct gve_priv *priv)
+>  {
+> +	struct gve_device_info *device_info = &priv->device_info;
+>  	u16 mtu;
+>  
+> -	mtu = be16_to_cpu(descriptor->mtu);
+> +	mtu = device_info->max_mtu;
+>  	if (mtu < ETH_MIN_MTU) {
+>  		dev_err(&priv->pdev->dev, "MTU %d below minimum MTU\n", mtu);
+>  		return -EINVAL;
+>  	}
+>  	priv->dev->max_mtu = mtu;
+> +	priv->dev->mtu = mtu;
+>  
+>  	return 0;
+>  }
+
+[Severity: Medium]
+Is the ETH_MIN_MTU check still validating the same value?  The commit
+message says:
+
+    These changes are refactors only, no functional change.
+
+Before this patch, gve_adminq_describe_device() called
+gve_set_mtu(priv, descriptor), which checked be16_to_cpu(descriptor->mtu)
+and returned -EINVAL before gve_enable_supported_features() could overwrite
+priv->dev->max_mtu from the JUMBO_FRAMES option, and the jumbo value itself
+was never re-checked.
+
+Now gve_fill_device_info() stores descriptor->mtu into
+device_info->max_mtu unchecked, gve_enable_supported_features() may
+overwrite it with dev_op_jumbo_frames->max_mtu, and gve_init_priv() checks
+whatever value survived.
+
+So two device-supplied combinations change outcome:
+
+  descriptor->mtu < ETH_MIN_MTU plus a valid jumbo max_mtu:
+    probe used to fail with -EINVAL, now succeeds.
+
+  valid descriptor->mtu plus a JUMBO_FRAMES option advertising
+  max_mtu < ETH_MIN_MTU (for example 0):
+    probe used to succeed and register the netdev, now fails with -EINVAL
+    and the device is unusable.
+
+The end of the series still validates device_info->max_mtu, so this is not
+restored by a later patch.  Could the commit message mention the moved
+validation point, or could the check be kept on the descriptor MTU?
+
+> -void gve_set_mac(struct gve_priv *priv,
+> -		 struct gve_device_descriptor *descriptor)
+> +static void gve_set_mac(struct gve_priv *priv)
+>  {
+> +	struct gve_device_info *device_info = &priv->device_info;
+>  	u8 *mac;
+>  
+> -	mac = descriptor->mac;
+> +	mac = device_info->mac;
+>  	eth_hw_addr_set(priv->dev, mac);
+>  	dev_info(&priv->pdev->dev, "MAC addr: %pM\n", mac);
+>  }
+>  
+
+[ ... ]
+
+> @@ -2507,12 +2523,34 @@ static int gve_init_priv(struct gve_priv *priv, bool skip_describe_device)
+>  		netif_set_tso_max_size(priv->dev, GVE_DQO_TX_MAX);
+>  	}
+>  
+> -	priv->dev->mtu = priv->dev->max_mtu;
+> +	if (gve_set_mtu(priv)) {
+> +		err = -EINVAL;
+> +		goto err;
+> +	}
+> +
+> +	priv->num_event_counters = device_info->num_event_counters;
+> +
+> +	gve_set_mac(priv);
+> +
+> +	gve_set_queue_properties(priv);
+> +	priv->modify_ring_size_enabled = device_info->modify_ring_size_enabled;
+> +
+> +	gve_set_buf_sizes(priv);
+> +
+> +	priv->max_flow_rules = device_info->max_flow_rules;
+> +	if (priv->max_flow_rules)
+> +		priv->dev->hw_features |= NETIF_F_NTUPLE;
+
+[ ... ]
+
 -- 
-2.43.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260903215606.31633-1-hramamurthy%40google.com
