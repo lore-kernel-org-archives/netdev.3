@@ -1,214 +1,154 @@
-Received: from mta1.migadu.com (out-121.mta1.migadu.com [95.215.58.121])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A74535A39D
-	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 07:28:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.121
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6E952DC765;
+	Mon,  7 Sep 2026 07:29:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788766129; cv=none; b=uruwp2ukj97+42rlfAyjIXhzQRNh6L2+nL6roPcfsq9vhHb0LxlEWLEQcjLMxd4BQk/Ks2zGSF51bBu8dUvQiZLdttxHFNj3FJY4GzQ7DR368S26kYrl97RZ4KrgHqaV8dzyOpqDy4owbDSazvQFoNKP8qhqvifNarTLdDruHGg=
+	t=1788766150; cv=none; b=IrroisWkulC0adKL2+XYTI43JJuOT5wJfA9kg9gw97ZXmhwXyTZ+xvPWqHmh2TSn7DA1PsCHiDuXPMdDQY10IOW63rint+Vh3ppFxo3JmZ30bFd7sn9XGcuK1qBx+5PQHLEXPccz7KKHZVxs8excI8H9EXMqIzsbZ8VI78J1900=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788766129; c=relaxed/simple;
-	bh=U36+s7lt3j4odLOnhivVcwQ+iQNG4iZNIJVXSr//Roc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=RnXxI+Cu8iYt5Shabe90R0eZNIP17IhjoG1B3/pwr0BZ/OyGMyfafCp+S1/BVfRYhw4DLLPAiIjkHwPD95apRq0znw4hlfli9FLBsJh9I6J3dx+kKEsbLCMBWVdjfs9gSLe6SCC3czg+9jNDtmztLpeOohryC9zkBOEwl+s+csQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=QXHSYsI0; arc=none smtp.client-ip=95.215.58.121
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1788766150; c=relaxed/simple;
+	bh=uDa6rYQmXTGgcYIJLVFNrSmufukAoyTcQnshhgvR3Po=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TZn5DMvIKXk6vJXxi7tQWoixmM0vCxOECDRpEcnN51IjC6EdfUvK5AdOG99wT3VIKlv43EFIJaNAHFfaqf4Q2n65/Sc1jilLV3IT7EEVla/Ec5e+Rnuh1J/DdpafftHNK1mLTBW05vOJRQGd09JJegcx5EyiHrW02+WSdrD7r6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=QZ9Cn0PW; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="QXHSYsI0"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=U36+s7lt3j4odLOnhivVcwQ+iQNG4iZNIJVXSr//Roc=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788766125; v=1; x=1789370925;
- b=QXHSYsI05oa2EJ7KUSdTjYU1/aBB/bkcwLM6nxuNLxz2kPDeJCxiTL+FXNGDx0U+gTyplZay
- Ma6AmWEujKq0th3pBGjVdh/0rmrfwq/RGK1jmvuPvbxvgLhwynQbXV5P2yBXKYHSr7C555rpClx
- Ij3Ro6Os4qyy1MxmlAO6YUE0=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 06bd02fb2dca1679;
-	Mon, 07 Sep 2026 07:28:34 +0000
-X-Mizu-Trace-ID: 06bd02fb2dca1679
-X-Migadu-Flow: FLOW_OUT
-From: Hangbin Liu <hangbin.liu@linux.dev>
-Date: Mon, 07 Sep 2026 15:28:09 +0800
-Subject: [PATCH net] selftests/drivers/net: include lib/sh/*.sh
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="QZ9Cn0PW"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 11BA41A1A1C;
+	Mon,  7 Sep 2026 07:29:06 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id D2B4660383;
+	Mon,  7 Sep 2026 07:29:05 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8286A11C7A131;
+	Mon,  7 Sep 2026 09:28:52 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1788766140; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=aLz+YXhDXlEGNDvoI1Sa9xZvW1NLNKMWivo0ZPJIY08=;
+	b=QZ9Cn0PWrljorCBOhiK1CJ1CZTrACqwecmjkSZL6aH++MTyIZx/YDEF5Vv9n6WLwIYfPQe
+	7CBGnXgwfPsGyOCRBkxTvexerYSf7S41IzTaHKSeK5sdhB8p7J06iZXIelfhN6SvrJ6lV9
+	sVEL7gy5QBOXFswDyJqBGrOsu8Ea9G6+nyIEaUtcgkOw8w2QEplRixDEYSuoCSHomNKP+h
+	e8iIkLHNiwpi65LEYWLOvTowa3Fu7Taomx7mR0e9I/FtfT7w5FRoT+ZLHtg67qozO8l5cd
+	H3LDIKWwkfOuhN9kQ/ULuqi6mX0pWa/nl+4NytM9Xsr95U0djysT9yOrU5spYQ==
+Message-ID: <248c1a07-7a5c-44dc-a73e-f95a69bb4161@bootlin.com>
+Date: Mon, 7 Sep 2026 09:28:51 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260907-selftest_lib_defer-v1-1-8af94645aaa3@kylinos.cn>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MQQqDMBBG4avIrA1EG9LqVUREzZ92QKJkggjBu
- ze4/BbvZRJEhlBfZYo4WXgPBU1d0fqbwxeKXTG1urW600YJNp8gadp4mRw8otLN26wwL+s+M5X
- wiPB8PdOBAhKN9/0HLM7MAWkAAAA=
-X-Change-ID: 20260904-selftest_lib_defer-0174ce436d8a
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Shuah Khan <shuah@kernel.org>, Jay Vosburgh <jv@jvosburgh.net>, 
- Vladimir Oltean <olteanv@gmail.com>, Breno Leitao <leitao@debian.org>, 
- Jiri Pirko <jiri@resnulli.us>, "Michael S. Tsirkin" <mst@redhat.com>, 
- Jason Wang <jasowangio@gmail.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
- =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
- Petr Machata <petrm@nvidia.com>
-Cc: Matthieu Baerts <matttbe@kernel.org>, 
- Hangbin Liu <hangbin.liu@linux.dev>, netdev@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
- virtualization@lists.linux.dev, Hangbin Liu <liuhangbin@kylinos.cn>
-X-Mailer: b4 0.14.3
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 3/3] net: stmmac: Add UltraRISC DP1000 GMAC
+ support
+To: Jia Wang <wangjia@ultrarisc.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+ Jose Abreu <joabreu@synopsys.com>, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org
+References: <20260901-dwmac-ultrarisc-v1-0-f19454814bcf@ultrarisc.com>
+ <20260901-dwmac-ultrarisc-v1-3-f19454814bcf@ultrarisc.com>
+ <910be156-b631-4b62-972a-79d9a9e38697@lunn.ch>
+ <178842162417.2701756.3296149694160507506.b4-reply@b4>
+ <1622b0a7-5516-4e72-b5e1-60c12b65b52e@lunn.ch>
+ <8611dff3-56ea-4798-8303-b0a8af84580e@bootlin.com>
+ <178850166577.1486454.10728134844652956076.b4-reply@b4>
+ <178876008871.2542659.8460758662538260209.b4-reply@b4>
+Content-Language: en-US
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <178876008871.2542659.8460758662538260209.b4-reply@b4>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-From: Hangbin Liu <liuhangbin@kylinos.cn>
+Hi,
 
-When I tried to install and run bonding selftests via:
+On 9/7/26 07:48, Jia Wang wrote:
+> On 2026-09-04 14:01 +0800, Jia Wang wrote:
+>> On 2026-09-03 14:30 +0200, Maxime Chevallier wrote:
+>>>
+>>>
+>>> On 9/3/26 14:10, Andrew Lunn wrote:
+>>>>>> This looks to be 90% identical to dwmac-sophgo.c.
+>>>>>>
+>>>>>> Do you expect any further changes to this driver? Is everything
+>>>>>> supported? Are there more clocks? A GPIO for WoL?
+>>>>>>
+>>>>>> I'm just wondering if the common code should be pulled out, or even
+>>>>>> dwmac-sophgo.c made generic so it can handle all plain boring devices
+>>>>>> which have RGMII delays and not a lot else.
+>>>>>>
+>>>>>
+>>>>> The probe boilerplate is indeed largely similar because both drivers
+>>>>> use the common stmmac platform helpers. However, their platform-specific
+>>>>> requirements differ: Sophgo requires additional TX clock handling and
+>>>>> other configuration, while DP1000 requires fixed TX and RX delay
+>>>>> handling. ACPI support under development is also intended to use the
+>>>>> UltraRISC glue driver.
+>>>>
+>>>> ACPI is going to be fun, since nobody does ACPI networking.
+>>>>
+>>>> But how big is the change to the glue driver? I expect the change will
+>>>> be minor, a call to devm_stmmac_probe_config_acpi(), in addition to
+>>>> devm_stmmac_probe_config_dt(). Anything else?
+>>>
+>>> I agree that if ACPI support is added, let's try to make it part of the
+>>> core.
+>>>
+>>
+>> The ACPI support is still under development, but the current prototype
+>> adds ACPI device matching and ACPI-specific platform-data setup. Some
+>> common stmmac changes are also needed for ACPI-described platform
+>> resources and MDIO.
+>>
+>>>>
+>>>> One problem the stmmac driver has is cut/paste glue driver
+>>>> development. The same code is repeated again and again. Russell King
+>>>> spent a lot of time and effort trying to reduce the duplication. So we
+>>>> should not be adding more duplicated code unless it is actually
+>>>> required.
+>>>
+>>> It seems to me that all the RGMII handling could be made much more generic,
+>>> as this is commong pattern in glue drivers :
+>>>
+>>> dwmac-sophgo has the "has_internal_rx_delay" field, and dwmac-eic7700 has
+>>> both has_internal_[r|t]x_delay.
+>>>
+>>> With this third one, it makes sense to start sharing that logic across
+>>> glues.
+>>>
+>>
+>> I agree. DP1000 is another user of this pattern, with fixed internal
+>> delays on both the TX and RX paths. I will look at moving this handling
+>> into the common stmmac platform code, leaving each glue driver to
+>> describe its internal delay capabilities.
+>>
+> 
+> After looking further into the implementation, I see two possible
+> approaches:
+> 
+> 1. Keep a minimal UltraRISC glue driver that only describes the fixed TX
+> and RX delay capabilities, while the common stmmac code handles the PHY
+> mode adjustment.
+> 
+> 2. Store these capabilities as compatible-specific match data in
+> dwmac-generic and remove the UltraRISC glue driver entirely.
+Let's go with 1 for now I'd say. UtraRISC will be the only one that's basically
+an empty glue calling core code (maybe you have some plat->flags to passs ?).
 
-  make INSTALL_PATH=/tmp/kself TARGETS=drivers/net/bonding \
-     -C tools/testing/selftests install
+If we manage to simplify even further (e.g. tx clock handling for exmaple), we could
+also deal with dwmac-sophgo the same way. We could then consider something like
+dwmac-simple.c , keeping dwmac-generic.c for the raw dwmac IPs.
 
-Some tests fail because net/lib/sh/defer.sh is missing:
-
-  /tmp/kself/net/forwarding/../lib.sh: line 5: /tmp/kself/net/lib/sh/defer.sh: No such file or directory
-
-One option is to add defer.sh directly to TEST_INCLUDES. Alternatively,
-follow the approach from commit f72aa1b27628 ("selftests: net: include
-lib/sh/*.sh with lib.sh"), which pulls in all .sh files to accommodate
-future changes to the library directory.
-
-This patch adds a wildcard to include all shell files for drivers/net
-tests that consume net lib.sh. TEST_INCLUDES is also sorted to avoid
-ordering‑related problems for future modifications. The team driver is
-not affected by this bug, but we use the wildcard for it as well, rather
-than listing only defer.sh.
-
-Fixes: a6e263f125cd ("selftests: net: lib: Introduce deferred commands")
-Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
----
-Since this is a trivial fix, I have also updated the virtio_net part
-within this patch. Please let me know if I should split the virtio_net
-changes into a separate patch.
-
-Before posting the patch, I ran `make install` for each subtest and
-verified that `defer.sh` gets installed.
----
- tools/testing/selftests/drivers/net/Makefile            | 1 +
- tools/testing/selftests/drivers/net/bonding/Makefile    | 3 ++-
- tools/testing/selftests/drivers/net/dsa/Makefile        | 1 +
- tools/testing/selftests/drivers/net/hw/Makefile         | 3 ++-
- tools/testing/selftests/drivers/net/netconsole/Makefile | 3 ++-
- tools/testing/selftests/drivers/net/team/Makefile       | 4 ++--
- tools/testing/selftests/drivers/net/virtio_net/Makefile | 1 +
- 7 files changed, 11 insertions(+), 5 deletions(-)
-
-diff --git a/tools/testing/selftests/drivers/net/Makefile b/tools/testing/selftests/drivers/net/Makefile
-index d5bf4cb638a8..ab39c2e508f0 100644
---- a/tools/testing/selftests/drivers/net/Makefile
-+++ b/tools/testing/selftests/drivers/net/Makefile
-@@ -3,6 +3,7 @@ CFLAGS += $(KHDR_INCLUDES)
- 
- TEST_INCLUDES := $(wildcard lib/py/*.py) \
- 		 $(wildcard lib/sh/*.sh) \
-+		 $(wildcard ../../net/lib/sh/*.sh) \
- 		 ../../net/lib.sh \
- 
- TEST_GEN_FILES := \
-diff --git a/tools/testing/selftests/drivers/net/bonding/Makefile b/tools/testing/selftests/drivers/net/bonding/Makefile
-index 6364ca02642d..e337c099fb40 100644
---- a/tools/testing/selftests/drivers/net/bonding/Makefile
-+++ b/tools/testing/selftests/drivers/net/bonding/Makefile
-@@ -27,9 +27,10 @@ TEST_FILES := \
- # end of TEST_FILES
- 
- TEST_INCLUDES := \
--	../../../net/lib.sh \
-+	$(wildcard ../../../net/lib/sh/*.sh) \
- 	../lib/sh/lib_netcons.sh \
- 	../../../net/forwarding/lib.sh \
-+	../../../net/lib.sh \
- # end of TEST_INCLUDES
- 
- include ../../../lib.mk
-diff --git a/tools/testing/selftests/drivers/net/dsa/Makefile b/tools/testing/selftests/drivers/net/dsa/Makefile
-index 7994bd0e5c44..7893011b3842 100644
---- a/tools/testing/selftests/drivers/net/dsa/Makefile
-+++ b/tools/testing/selftests/drivers/net/dsa/Makefile
-@@ -19,6 +19,7 @@ TEST_FILES := \
- # end of TEST_FILES
- 
- TEST_INCLUDES := \
-+	$(wildcard ../../../net/lib/sh/*.sh) \
- 	../../../net/forwarding/bridge_locked_port.sh \
- 	../../../net/forwarding/bridge_mdb.sh \
- 	../../../net/forwarding/bridge_mld.sh \
-diff --git a/tools/testing/selftests/drivers/net/hw/Makefile b/tools/testing/selftests/drivers/net/hw/Makefile
-index 78bb0169350b..17c7e878ca42 100644
---- a/tools/testing/selftests/drivers/net/hw/Makefile
-+++ b/tools/testing/selftests/drivers/net/hw/Makefile
-@@ -64,10 +64,11 @@ TEST_FILES := \
- 
- TEST_INCLUDES := \
- 	$(wildcard lib/py/*.py ../lib/py/*.py) \
--	../../../net/lib.sh \
-+	$(wildcard ../../../net/lib/sh/*.sh) \
- 	../../../net/forwarding/ipip_lib.sh \
- 	../../../net/forwarding/lib.sh \
- 	../../../net/forwarding/tc_common.sh \
-+	../../../net/lib.sh \
- 	#
- 
- # YNL files, must be before "include ..lib.mk"
-diff --git a/tools/testing/selftests/drivers/net/netconsole/Makefile b/tools/testing/selftests/drivers/net/netconsole/Makefile
-index f0674c0017fc..c7972a40babf 100644
---- a/tools/testing/selftests/drivers/net/netconsole/Makefile
-+++ b/tools/testing/selftests/drivers/net/netconsole/Makefile
-@@ -1,8 +1,9 @@
- # SPDX-License-Identifier: GPL-2.0
- 
- TEST_INCLUDES := \
--	../../../net/lib.sh \
-+	$(wildcard ../../../net/lib/sh/*.sh) \
- 	../lib/sh/lib_netcons.sh \
-+	../../../net/lib.sh \
- # end of TEST_INCLUDES
- 
- TEST_PROGS := \
-diff --git a/tools/testing/selftests/drivers/net/team/Makefile b/tools/testing/selftests/drivers/net/team/Makefile
-index 7c58cf82121e..e40c83a92724 100644
---- a/tools/testing/selftests/drivers/net/team/Makefile
-+++ b/tools/testing/selftests/drivers/net/team/Makefile
-@@ -13,12 +13,12 @@ TEST_PROGS := \
- # end of TEST_PROGS
- 
- TEST_INCLUDES := \
--	team_lib.sh \
-+	$(wildcard ../../../net/lib/sh/*.sh) \
- 	../bonding/lag_lib.sh \
- 	../../../net/forwarding/lib.sh \
- 	../../../net/in_netns.sh \
- 	../../../net/lib.sh \
--	../../../net/lib/sh/defer.sh \
-+	team_lib.sh \
- # end of TEST_INCLUDES
- 
- include ../../../lib.mk
-diff --git a/tools/testing/selftests/drivers/net/virtio_net/Makefile b/tools/testing/selftests/drivers/net/virtio_net/Makefile
-index 868ece3fea1f..df34e29b5680 100644
---- a/tools/testing/selftests/drivers/net/virtio_net/Makefile
-+++ b/tools/testing/selftests/drivers/net/virtio_net/Makefile
-@@ -5,6 +5,7 @@ TEST_PROGS = basic_features.sh
- TEST_FILES = virtio_net_common.sh
- 
- TEST_INCLUDES = \
-+	$(wildcard ../../../net/lib/sh/*.sh) \
- 	../../../net/forwarding/lib.sh \
- 	../../../net/lib.sh \
- # end of TEST_INCLUDES
-
----
-base-commit: 38b6be101006d3e7af972999f45d4f1e8250587a
-change-id: 20260904-selftest_lib_defer-0174ce436d8a
-
-Best regards,
--- 
-Hangbin Liu <liuhangbin@kylinos.cn>
-
+Maxime
