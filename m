@@ -1,197 +1,72 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f72.google.com (mail-ot1-f72.google.com [209.85.210.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0631B4FB9B8;
-	Mon,  7 Sep 2026 19:28:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B044A2D592D
+	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 19:31:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788809315; cv=none; b=OudM94bMluFQ4bjUCsqCwSJFdfpQ/Pj8LoIaG75RISeKMUcKyS1+DKW0M/XISle/+plXR9Thx+STwGtIDcFUKoWJPS7FIOoBOzmiyMEUpqRiehse0Q/K/IOO1TLOWM44mDwmyWFxN87RBtzMH2uHV6eZrNf9CxQcpQww6ezNuWM=
+	t=1788809464; cv=none; b=QbHrABnTmsfCmooKTQYMPlA/bEp6jzlfUIC3vCZa7I01tQSBzkivmSm25kNcnrC+RYCfbShIZzG4r31D0mjP/oCpd2MbwzO/RVCCVdb5DIgu75GdMDyS9FO9g6qO7jYQ1boEnEr8/g6aqBp/ekwJLfL0gDWgb86jcTOfRMrsNaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788809315; c=relaxed/simple;
-	bh=GpWLUF/cOPE67N4nLaEEaqtCZZY+HHLd/s1QQGJTUOU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hW3ualTHRdzSjJ/oC9ocjw5/NnxyVLyXBGjy/lxAREYLD0848HGXN/jeHZCiBS5/94mzBejCn7IIRf3urVBcr6TxqAp+k0TpmkUJpuoaW9zUcpDojTsv9HH4VzigdorDtNwrb6BxKI0TpZVgGVQFGnSDKW2jECPZD2DB7PmxqQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=zdvEHIJp; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="zdvEHIJp"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=5C+dVUlcvBaOxX6mLwUe0cyuABYSMsgJjYxwPsJA6HE=; b=zdvEHIJpRpL8Fmdz2c3E0u68PW
-	vanlygKR4MnHvIpljfzPbGesX8X+WwZsV9P6leelwe36m1eVEWriS+eHwvAptw7n5ZQlLFiEHtMjL
-	P8GsX6Fkf9VSb+bWI73ZoSsah0IdfD/5Jnn6X7BeRDPFbtV2bmu0H6nbJL1Qy9hGhYm4=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1x3f0z-003c2Q-AP; Mon, 07 Sep 2026 21:28:25 +0200
-Date: Mon, 7 Sep 2026 21:28:25 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Vasilij Strassheim <v.strassheim@linutronix.de>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Russell King <linux@armlinux.org.uk>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	Martin Kaistra <martin.kaistra@linutronix.de>,
-	Benedikt Spranger <b.spranger@linutronix.de>
-Subject: Re: [PATCH net-next v2 4/4] net: dsa: soce: Add basic support for
- SoC-e switch IP cores
-Message-ID: <3c2c5b39-6a7d-4cb2-af1c-b5015b6bf1e8@lunn.ch>
-References: <20260903-devel-vstrassheim-soce-dsa-ml-v2-0-fb0587cb466b@linutronix.de>
- <20260903-devel-vstrassheim-soce-dsa-ml-v2-4-fb0587cb466b@linutronix.de>
+	s=arc-20240116; t=1788809464; c=relaxed/simple;
+	bh=Y/f7gKfTtD3caAROXXmlez0v7+lxdkmJJ2ksmNTB8Bs=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=KCrknc3geOlTuMBbZ93HXm0n05ytq0MzQ5oxAD4M3QLE95Xy2moONZhLZC56bjDiGEfmYGUXUkcf3bl6wzjMbllQ+6L7J7np9IHyPoAQS1B9Z4F14OoSXbFgsl2ieTXD5CMx+sDbjIzrOvl/O+IRy8ZDRhNKF0pUwzXvLReJjBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.210.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-ot1-f72.google.com with SMTP id 46e09a7af769-7f653940ba4so4880898a34.1
+        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 12:31:02 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788809461; x=1789414261;
+        h=content-type:to:from:subject:message-id:in-reply-to:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=7xhFNaP6KQHnAXOKkPy8YZJSop4UrDgQg8b1cvrfSdQ=;
+        b=mvaYYF9qThRpMCzkE6LEHYqGv3/K6xM8j6u5Wmqnu+9t8uMh2QmSb7sIhX0rMNMa3a
+         9ypyXSp6ze9WMI+LwPzSNJUEpPg9LdrYPfTp9Xsp8LzFCzP1/FqEpXz+tNpRCVHRIldl
+         +9Id2C/c/RFx8iJPHsUQJELuPogTjCG/tSN8zOX/scUo5PIbMdon27snIZ8dPa0oof7O
+         ROIW8MKqzNUG9nPatp7F0NQyZjOvqan7+z+oewYGFwyAGgiXVuZ6m422sF6xmNZgK5i+
+         p/GWolKlrNq8h2oZCNLvwzfg6AluH+2kK6s3niLWG/9ybsBgGZLoCEeRmeRnX+6uQvU8
+         js0Q==
+X-Forwarded-Encrypted: i=1; AKwUvByXF4aBSVOO0VbHV1gswSHcJymemavlkCya4Ts59czhrdkitc0WjWoGqle+sylK0yaXERmgmbo=@vger.kernel.org
+X-Gm-Message-State: AFuF++kkQMxMv9vqVd2jcUQ2HNZ/mmugHg/TnZ4ZgpI0hXZ4yU8Ekocc
+	NIguNulyEx61npjddha/ihNakb0RrapOCJTLozODBgACSv7aYt/pz5n4++XcupObdTBFMXHM9Bj
+	3ExW8QY+lWIfGBB90yZA1OOweUgtBC79JZSmDUT6QMETDeN1/eSjN/VsMHx4=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260903-devel-vstrassheim-soce-dsa-ml-v2-4-fb0587cb466b@linutronix.de>
+X-Received: by 2002:a05:6820:c3d6:b0:6ba:3635:800b with SMTP id
+ 006d021491bc7-6ba36359f2amr3741068eaf.68.1788809461737; Mon, 07 Sep 2026
+ 12:31:01 -0700 (PDT)
+Date: Mon, 07 Sep 2026 12:31:01 -0700
+In-Reply-To: <4c018446-e4c0-457a-b2d1-a5bf856d0e2e@slotpi15m67>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a9f10f5.2bb5a69c.24b23c.000a.GAE@google.com>
+Subject: Re: [syzbot] [nfs?] [net?] KASAN: vmalloc-out-of-bounds Read in rpc_queue_upcall
+From: syzbot <syzbot+d5c77cabf7a3492aa650@syzkaller.appspotmail.com>
+To: cel@kernel.org, linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, 
+	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-> +#define SOCE_MAX_NUM_PORTS 31
-> +#define SOCE_MAX_MDIO_ADDR 32
+Hello,
 
-Given what the binding says, that looks odd.
+syzbot has tested the proposed patch and the reproducer did not trigger any issue:
 
-> +#define SOCE_MAX_MDIO_OUTPUTS SOCE_MAX_NUM_PORTS
-> +
-> +struct dsa_switch;
-> +
-> +struct soce_mdio_ops {
-> +	int (*phy_read)(struct dsa_switch *ds, int mdio_output, int phy_addr,
-> +			int regnum);
-> +	int (*phy_write)(struct dsa_switch *ds, int mdio_output, int phy_addr,
-> +			 int regnum, u16 val);
-> +	int (*phy_read_c45)(struct dsa_switch *ds, int mdio_output, int phy_addr,
-> +			    int devad, int regnum);
-> +	int (*phy_write_c45)(struct dsa_switch *ds, int mdio_output, int phy_addr,
-> +			     int devad, int regnum, u16 val);
-> +};
-> +
-> +struct soce_dsa_local {
-> +	void __iomem *base_addr;
-> +	void __iomem *mdio_master_addr;
-> +	/* Serializes all logical buses sharing the MDIO master. */
-> +	struct mutex mdio_lock;
+Reported-by: syzbot+d5c77cabf7a3492aa650@syzkaller.appspotmail.com
+Tested-by: syzbot+d5c77cabf7a3492aa650@syzkaller.appspotmail.com
 
-What is the MDIO master?
+Tested on:
 
-> +static const struct soce_mdio_ops soce_mdio_ops_c22_c45 = {
-> +	.phy_read	= soce_mdio_23_02_read,
-> +	.phy_write	= soce_mdio_23_02_write,
-> +	.phy_read_c45	= soce_mdio_23_02_read_c45,
-> +	.phy_write_c45	= soce_mdio_23_02_write_c45,
-> +};
+commit:         5965280c SUNRPC: fix netns use-after-free in write_gss..
+git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/cel/linux.git nfsd-testing
+console output: https://syzkaller.appspot.com/x/log.txt?x=1374eaf9580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=8c5c3949d762a91f
+dashboard link: https://syzkaller.appspot.com/bug?extid=d5c77cabf7a3492aa650
+compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
 
-It seems like this is the only struct soce_mdio_ops. Does the IP
-support different MDIO buses? Is this level of abstraction actually
-needed?
-
-> +static inline bool soce_mdio_output_valid(int mdio_output)
-> +{
-> +	return mdio_output >= 0 && mdio_output < SOCE_MAX_MDIO_OUTPUTS;
-> +}
-
-No inline functions in .c files. Let the compile decide.
-
-> +static inline bool soce_mdio_addr_valid(int phy_addr)
-> +{
-> +	return phy_addr >= 0 && phy_addr < SOCE_MAX_MDIO_ADDR;
-> +}
-> +
-> +static inline bool soce_mdio_c22_reg_valid(int regnum)
-> +{
-> +	return regnum >= 0 && regnum <= SOCE_MDIO_C22_REG_MAX;
-> +}
-> +
-> +static inline bool soce_mdio_c45_params_valid(int devad, int regnum)
-> +{
-> +	return devad >= 0 && devad <= SOCE_MDIO_C45_DEVAD_MAX &&
-> +	       regnum >= 0 && regnum <= SOCE_MDIO_C45_REG_MAX;
-> +}
-
-Do you see any other MDIO driver doing this sort of checking?
-
-> +static int soce_mdio_read(struct mii_bus *bus, int addr, int reg)
-> +{
-> +	struct soce_mdio_bus *state = bus->priv;
-> +	struct soce_dsa_local *local;
-> +	struct soce_priv *priv;
-> +	int ret;
-> +
-> +	priv = state->ds->priv;
-> +	local = &priv->local;
-> +
-> +	if (!local->mdio_ops || !local->mdio_ops->phy_read)
-> +		return -EOPNOTSUPP;
-> +
-> +	if (!soce_mdio_addr_valid(addr))
-> +		return -EINVAL;
-> +
-> +	mutex_lock(&local->mdio_lock);
-> +	ret = local->mdio_ops->phy_read(state->ds, state->mdio_output, addr,
-> +					reg);
-> +	mutex_unlock(&local->mdio_lock);
-
-What is the lock protecting?
-
-> +static int soce_register_mdio_bus(struct soce_priv *priv, struct device *dev,
-> +				  struct device_node *mdio_np,
-> +				  u32 mdio_output)
-> +{
-> +	struct soce_mdio_bus *state;
-> +	struct mii_bus *bus;
-> +
-> +	bus = devm_mdiobus_alloc(dev);
-> +	if (!bus)
-> +		return -ENOMEM;
-> +
-> +	state = devm_kzalloc(dev, sizeof(*state), GFP_KERNEL);
-> +	if (!state)
-> +		return -ENOMEM;
-> +
-> +	state->ds = priv->ds;
-> +	state->mdio_output = mdio_output;
-
-Can you think of a better name than mdio_output. It seems to be the
-bus number?
-
-> +
-> +	bus->priv = state;
-> +	bus->name = "soce mdio";
-> +	bus->read = soce_mdio_read;
-> +	bus->write = soce_mdio_write;
-> +	bus->read_c45 = soce_mdio_read_c45;
-> +	bus->write_c45 = soce_mdio_write_c45;
-> +	/* ds->dst can be NULL during probe, before dsa_register_switch() */
-> +	snprintf(bus->id, MII_BUS_ID_SIZE, "%s-mdio-%u", dev_name(dev),
-> +		 mdio_output);
-> +	bus->parent = dev;
-> +
-> +	return devm_of_mdiobus_register(dev, bus, mdio_np);
-> +}
-> +int soce_mdio_23_02_read_c45(struct dsa_switch *ds, int mdio_output,
-> +			     int phy_addr, int devad, int regnum)
-> +{
-> +	void __iomem *ctrl, *params, *read_reg, *write_reg;
-> +	struct soce_priv *priv = ds->priv;
-> +	struct soce_dsa_local *local;
-> +	u32 regvalue;
-> +	int ret;
-> +
-> +	if (!soce_mdio_output_valid(mdio_output) ||
-> +	    !soce_mdio_addr_valid(phy_addr) ||
-> +	    !soce_mdio_c45_params_valid(devad, regnum))
-> +		return -EINVAL;
-
-Hasn't this already been checked once?
-
-	Andrew
+Note: no patches were applied.
+Note: testing is done by a robot and is best-effort only.
