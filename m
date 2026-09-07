@@ -1,159 +1,181 @@
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11012048.outbound.protection.outlook.com [52.101.66.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B89D550AC0C;
-	Mon,  7 Sep 2026 15:34:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.48
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788795291; cv=fail; b=GDEwExMfc+htdeQwtyAJiNfFGxW8jC4njXMA2kf2AJzr8l5Qdoh9sfPi2MdchUdogA8GqMfEhlt7zlJIZv83skvYrAL0aOvg2qpIQPqvJxdLqanA02aR7GRf9rKtNMNtxtdtUhtYH+gw6bK7vzyOGn3e2uQmTkDT/cRTXu2xJj8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788795291; c=relaxed/simple;
-	bh=NKshpJR/nXNg2pEJ4Tdo8mF1hAH/tQOQoQV4IcUC1xQ=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=jWbv6BbFoE15tA7AcCwxSDl+mO5FFEVtbLLeGn1nXPvwCB2CorUWVKqc3XS3mfR/VFvLZU70Q1OrkjM/o8HpLLLIS/8ryWXk9+auNwh/Ni4gSrqgnHRjLemdPsB6OpxDKK6baQ86nrGrvdOdHuLzQ4qyxsc7yQbiMOZ7yHzjZP4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nokia.com; spf=fail smtp.mailfrom=nokia.com; dkim=pass (2048-bit key) header.d=nokia.com header.i=@nokia.com header.b=AsyOo8M4; arc=fail smtp.client-ip=52.101.66.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nokia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nokia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5BDC46C825
+	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 15:37:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788795438; cv=none; b=Lqqi9b6AkulWYyrpUBXikM7xfER1vEUpeyF+Ui3ASSkhIYtrMpTq6Ttyi2Yj375R/xYvOOiMxaUJPHiLHtD5z+ZERQDm1WgHIV03tLMV9ok5NJDcO7IE2SfXnb4PRIxQXKDYh9P21oH9GQhxqZ8mPrlPSTkaCjdEkNcQo/EtatM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788795438; c=relaxed/simple;
+	bh=OAARye3bqTwYbW4R9i8hEdUhoTwMnRP1LZaGR0XvoSQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FB1GqttCo/2I+oYpmW8v8oeQEn3QNTA8hLg3o/apMJ2W1ZYCsfJhJZXIhDF2PjfwD11cyERZ3RjZMNx7XJYywNIHt+8l5bmJanb3scMJ9FuGj/X+Yy9wJbcgU9dpIca/qxQnZf0yxhrbVa7OmtGGVxMsG7bKjiAps+Cqka7XfFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H+3W+e1+; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nokia.com header.i=@nokia.com header.b="AsyOo8M4"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=F7unWIplOZS/9MW8jb4sFL1OFVmvdgSIh88LzwEZU2trtp2V54EWVnWWRq/+WBFjxoy25nBRWlExY3NHDN4geirlWP9aDo5AqjT+qF1JRrD9yho3L/HE7shuWuQZ3jh+sJ9ye+rwHcjaopWC1vtvbXvx8iHjXW3gQpe2VeUG8FYYxoaj/IT6UTDuNu7Mn4BGI5MYdpeKurwDMKwGB2Nyowfionk/oEGhGHaRo56xgsgw4zWNPNCuBFu881aaCSV2f68dFSTpvlrw6tPyr+Sy99KVpqeMc1ITkUfh2JlSB6gcmyyBM6gjHs1TFHg9jSCU+Zzg5L20/k44oLmMswNQ2A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=NKshpJR/nXNg2pEJ4Tdo8mF1hAH/tQOQoQV4IcUC1xQ=;
- b=frOc7yNvtG1zyg5N7iZVvRyGuLb8TWf3vjcUaaS7EKwn8ASIIM9VbixF2BeUUg+4TCCUBg7yJynDKnWeAcftzLyPesmuej5WELtSdR//qnNQ9WsbIS6NxFFVIOsX/RWxgmhz8nga5fmluXHtkuXAt4/ztTEvObyQ7dN5voZ9PbFgzcuXqNZgXeE3rxl5/9DKtjmbpNf+VjXJ4TtJV5g7NwloJC/GBMOPhx/lLWtj9Aee3zIOmBLkCT9FqZ7arZOMeRw70+XpWWDMmTNPVPTDCyZP3XGDy0pRxDDPbD+89rG+1s2c0syv4FXSReN898TSmzCfxiYIWDHLGWClC+biOQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nokia.com; dmarc=pass action=none header.from=nokia.com;
- dkim=pass header.d=nokia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nokia.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=NKshpJR/nXNg2pEJ4Tdo8mF1hAH/tQOQoQV4IcUC1xQ=;
- b=AsyOo8M4eGBjqWv+dPzw6zEogkCGX++TucNRo71PwFMhAhEqEiV0NH+gXBBaoO0Ztbv4G5FkoHrmmhkf6DHAy7bsgln7r0AIr8yCG4jEGKuLiB2z7al6oaewGi+MOQdRTVRAItomxEqZ9AIKuVixIvvHQq0vlvf4wRsvxsFgMVTAF6S0CVxUvUTyjxLuSexr4RFJ2a9MR5EJTeK5DBTXiegGyZpVIXmp5zL0/u4JdtdYxfwOQklAxtowKlTBWmLFgm3dnFWP+V6+qHBfLcxBVN4tqJ2bqVDIHmLn0TFL2s1stLi9CVQljjjNnPFei2rFSUurRCtA5yc1Ybw+M5Gu8A==
-Received: from GVXPR07MB12099.eurprd07.prod.outlook.com
- (2603:10a6:150:2c5::13) by AS8PR07MB8314.eurprd07.prod.outlook.com
- (2603:10a6:20b:37d::5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.382.15; Mon, 7 Sep
- 2026 15:34:45 +0000
-Received: from GVXPR07MB12099.eurprd07.prod.outlook.com
- ([fe80::f0e5:e65d:145:fd0f]) by GVXPR07MB12099.eurprd07.prod.outlook.com
- ([fe80::f0e5:e65d:145:fd0f%5]) with mapi id 15.21.0382.007; Mon, 7 Sep 2026
- 15:34:45 +0000
-From: "Joakim Tjernlund (Nokia)" <joakim.tjernlund@nokia.com>
-To: Sasha Levin <sashal@kernel.org>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>
-CC: Eric Dumazet <edumazet@google.com>,
-	"syzbot+937b5bbb6a815b3e5d0b@syzkaller.appspotmail.com"
-	<syzbot+937b5bbb6a815b3e5d0b@syzkaller.appspotmail.com>, Kuniyuki Iwashima
-	<kuniyu@google.com>, Jakub Kicinski <kuba@kernel.org>, Florian Fainelli
-	<florian.fainelli@broadcom.com>, "David S . Miller" <davem@davemloft.net>,
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Neal
- Cardwell <ncardwell@google.com>, Matthieu Baerts <matttbe@kernel.org>, Mat
- Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"mptcp@lists.linux.dev" <mptcp@lists.linux.dev>,
-	"bcm-kernel-feedback-list@broadcom.com"
-	<bcm-kernel-feedback-list@broadcom.com>, "Atul Joshi (Nokia)"
-	<atul.joshi@nokia.com>
-Subject: Re: [PATCH stable 6.12 v2] tcp: fix potential race in
- tcp_v6_syn_recv_sock()
-Thread-Topic: [PATCH stable 6.12 v2] tcp: fix potential race in
- tcp_v6_syn_recv_sock()
-Thread-Index: AQHdPJwfkdwn80RKEEOmmv2uuDBtMbbBj1SAgAG0QwA=
-Date: Mon, 7 Sep 2026 15:34:45 +0000
-Message-ID: <22b7bae35253cebe11b515d11b245d7c551c0f29.camel@nokia.com>
-References: <20260904183500.3841094-4-florian.fainelli@broadcom.com>
-	 <2026-09-05-daily-reply-0047-tcp-syn-recv-race-v2-6-12@kernel.org>
-In-Reply-To:
- <2026-09-05-daily-reply-0047-tcp-syn-recv-race-v2-6-12@kernel.org>
-Accept-Language: en-SE, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-user-agent: Evolution 3.60.2 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nokia.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: GVXPR07MB12099:EE_|AS8PR07MB8314:EE_
-x-ms-office365-filtering-correlation-id: 86d8f0c1-a1b7-48d6-fd12-08df0cf58b22
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|376014|1800799024|7416014|23010399003|366016|38070700021|10067099003|4143699003|56012099006|11063799006|22082099003|18002099003;
-x-microsoft-antispam-message-info:
- ve2kXonRM7OGEjKzO7PDQr2wEOciVtBtV11whHP8wWU6cKZcCilSxtYi1IbCQDFsoi95UKLoG7tq4x1NcuMbla/9FNpcHfxjta2Z3H2NV+HBa6kBk6ocFqtuU5d1ejjoaTBXOU0VhdePxNtGIKO0orD+FpsEbZoAYfHpqGYpjrNv8OpWDIvdOyggKa7RlZqBVNsHL6O0XysabaEOYFF+UFoYa+GrOG5VixyP7/BgmShAWZhVkscBdbLuACblh57+5fMO7Y0N+GtEfIEeB6xLurpL9XJglscgPRkkbSPRSKT50ExxsAHirkmgczUow4w/B+XTA6MlStCTBBWDvslSYxZGKzMhSDdupLb1T9BDU2LVJG8VCrdenGWdEQgivhSiRtM1T1xQT47jeGsXv26zbuF81eBzJjWmREPkR2GeD6UkkbTRrRTyNBcDjdYuFVJPQ28Yp/Trsq3BlLwQaj0e7S5AcM/OBuwTA8PsL3v2vw7fUG2c3LhoB8U5mO0jRrI30MYw0cuBx1AB9skj30n9RnCjhY5QiN45yb1zOT1pZAqBQ4D7hR/z3wPNKk2XoBq37tp8mfEEZZgUoZ97Ru6wat+rGniJ7Dl2SjeMetUy75TEqeVhqLce/aVTHpYIy98obrR6KdchiUfp8mj1EEZd76led5uj3Ekm+872YcPUK/p+e47a561vXvrfNbsrZUevo7qZwAvbGZALUxz/k7q0ew==
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GVXPR07MB12099.eurprd07.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(7416014)(23010399003)(366016)(38070700021)(10067099003)(4143699003)(56012099006)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?NWVleG9mcG50TFd5Q0VtaElRY0VudnRWQzY3eFJrTEpUakdXOHkxUE1QUXpa?=
- =?utf-8?B?OFBJUFMzeU1ZME1ZMmxvdXNBbUd1SGxBVnpZdXI4RWc1cjRGQkZVTW9wNmww?=
- =?utf-8?B?WkZkNSswZCtpZzBiMzg5cTZyVGVHY3p2MEpGTnNEUmEzZmdKcUNIeDcxc2Fz?=
- =?utf-8?B?OUV6MWR6VHdTK242c2h4aERlanRZd0dhZ29JNU1BdVlhQTE0anh3Q2gyeXVC?=
- =?utf-8?B?TWlSaGNDV1lMdjV5N0xmd3BUQWtaT3R1dE44bHlyNzZUZzF3d2lkYjJ3Vitj?=
- =?utf-8?B?ZG9RbktlYTU0QTk2aDlyWWJKWGxZd3lRTTBaNFJqK3NMWEw3WWlJNW1YMm5n?=
- =?utf-8?B?eG5Jc2NjdTNZblZ6UzROY2c0eUZCckVERmhtQU5iRTFySmxtQkx6OEhSbkpM?=
- =?utf-8?B?aGw2ZS9PRVJLTDVJa21OR09sWXZDdkQ1eGF5dGN2dXBYZEg1ZElhdEhlN2Qz?=
- =?utf-8?B?NDRkYm94WXdaNHhhQ3VOWE4vbXphejFxYWdlRjV0d0pQZFd2NnZjN1hqT0VN?=
- =?utf-8?B?OVVSUjl5Ym5tK2hCdG9mejRvdXJiR0dIZUhzQjRCN3E1MjFlNEI1Qlc3S0Z3?=
- =?utf-8?B?bWxMVFFObFVjZ1p3VlViSXBVeDJ4RkRHTHZMeWgxcEk5UzJsN1B0U1ppQ3Z2?=
- =?utf-8?B?OWJxYk5jWUJpdk55WHpLRzRaQ3ZWRWhwdHNzeXAzYVM2b003Vi9KdlJJWTln?=
- =?utf-8?B?d2VraXB6dVdseExLcDlyVW8wUTlRVzk4dFdEU1UybXN3ak41aUdnTFRLKzR3?=
- =?utf-8?B?VjNEdE0rQUV2Q2JyQUxnQnVSSmFwVGdIWnNoTkVlcElweTlnWHRFdWxYOHhT?=
- =?utf-8?B?VlhsTjFDc1F1OVNkUHQwUnl6SkJEZDJjaEszTGFWWkwvTDNVS0t6VFByY215?=
- =?utf-8?B?MnFlVDhLVGtSZldzODdCQ1R6T2ZreGxjZndCb0xVTWxXQ1BEYmFyV2pnd2V2?=
- =?utf-8?B?UkQ3bXJyanVRSm5oMnZLUWpSZ2FhYjMydjdWbWx1UHZBMy9scTcxTnNaSVY3?=
- =?utf-8?B?L3dyN0dwdkhzajBnemU2OE9PM013R2VwWXVaUkgzV1VoeHRlZDNaYWE1MU1Y?=
- =?utf-8?B?MG9odWlVVWVPb000MDNhd1NWbUNIWkhudUFXSGNYZlp2V00yMVZ6V1dlWGRj?=
- =?utf-8?B?dHAyQVUyMGJKM3IvMWl2d1NPZFNuRnkrZDdyaTdUNzFaS1A1eG5OTGp0SDFG?=
- =?utf-8?B?L1VrQmw3Q0dLbk9ETEprRVA0ajJNbndZTDB3aXFpMG1hU3FsN1c2Rm5nY1lz?=
- =?utf-8?B?eUVtRnZtVGZ1QTIzV0txSDkrc2ZsbkZuOFBCNnBEdGhrT3hPS21qYWxKSmtS?=
- =?utf-8?B?T3QweGtBRjQwdTFMc08vTFpXcGdzcW5seVBJU3lhRzMvSjNaazRPazFBSUZJ?=
- =?utf-8?B?M2VUamRic0lGanYzUUtURDNvNEhxeGJ1TllIOG9lK2xGTlBDR1NpcFJ4T2Y0?=
- =?utf-8?B?Y010NHNMSUx3STZuMFVYNTNpMm1obFBVYWpPVmFFRE5RWXpyZDB6OUxoOTJ0?=
- =?utf-8?B?UHNLZmlOZzhjSXZTS0IrbFRQTEx3b3o2VWpybFBqYk5mU3A3RTZRYWs1ZDJ6?=
- =?utf-8?B?WlBVTnltaEFtbWZFem9nMzlBOWFYSHBHV1RDbHZOZWZNM3l3MDIrTnFCNTds?=
- =?utf-8?B?VzdhQWhzTGEzcmlxcFRrZTdGVm1mYkhaYkJWMldkaHBucmtwL241UE84ZWFN?=
- =?utf-8?B?NXFwVlZCSmxaRXMrZ0ZJSDJWZlBhMjR3eVh1TkJ4SjFPNXNTL25tTU9Vd1Fm?=
- =?utf-8?B?L3BUVXkrRjY4dCtteFlscEZoL1ZzUUUzNjBoS01sb20zVGs4ajFPc1hYR1U4?=
- =?utf-8?B?TFpRTmVRSUlFTzRScXNzbFFpcDVjK1BYdUpRQ1A0TmN6bm9iNjlpZVRGUURv?=
- =?utf-8?B?RWFXakZqWWZOeWtCYkdYcXhqWERXZFFZTTJYa0wwaUNVZFhNNWRyaVJkZG00?=
- =?utf-8?B?bENGRmNGRnliNEN1WGYrRGFaR1ZZeWxBLzV4RE56STZxRW5LSE9iYTJiY0Uw?=
- =?utf-8?B?QXBKRW5zVFBKcG95U3pqdmdDdy93NERCOWUwL2dFOFN6TDlqazBEZ1ZCanov?=
- =?utf-8?B?WGNyLzZ6RHFSZTJDaVhNdW5qZnV2YjY1c1kzbG1CQ2t6YVFDazVOSmVmNUxP?=
- =?utf-8?B?ZTROMW81NWRqRWVzU01tSUJXelQrblpKcklXbmQyOE8yQTdFRDVkRTBNQTh6?=
- =?utf-8?B?d21ZK3pvc09kR1ZzMHhMOGViNkRoRU9KQ1VWRHFxU2lBTTZoSzZBeUpKR28z?=
- =?utf-8?B?KzFRU0N4Y2FIN2NRM0IrZTdWWStMTEcxVURIbDdmUTNYNDRnVlVsbk96T1pw?=
- =?utf-8?B?NkFxM1lGOTlqNkRBSjJlc1NrV2MwanNtWWx3MGx1SEhTbnJhRTdIdz09?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <6DB1EFC9014B4C4EA1FF3420DFE50A3F@eurprd07.prod.outlook.com>
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H+3W+e1+"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-495590dde14so53162925e9.0
+        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 08:37:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788795435; x=1789400235; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=iwmjFU3bbTIZNihHLqre37XheLVH2NBtdBfRtXysiDA=;
+        b=H+3W+e1+PnV4Ek/4ourIs8vjKykypxxsIy+fIuoBHWdJwssJau679ZoottG9yPktym
+         GHCVCv1SgQcrzP3R5PkkEsZHaa0yo5aUYrZNVnLgEMAuO4YFdfYLO0DTojyYGaLXq4A/
+         olNh6gyLBdzaD0D9FFiyYWsqPdtvxFri3OPCNpzk2b0ez95iiUkxMC0l4oSCqQDx+bGl
+         GJn+08heUdNbm+f/ebqmN3T34hjzt0UHp+bFBHr4JfX/Fn7zdvVwE0VXU/i6wx0QhzmG
+         WSXM7cfm+zxPBhDNwp+R2nKt22CZPMpaYKNfbLTJol4aDJmogWNwGT0yQKLIwIE2SpN5
+         nwmQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788795435; x=1789400235;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=iwmjFU3bbTIZNihHLqre37XheLVH2NBtdBfRtXysiDA=;
+        b=ZD1FSWh7jMKbm76IS8xQdwMrlQa60KpeppMK5dHd1+mBU1ScpYjdqHiQRsexq0RoIJ
+         5DA9KKXvZslyrjvXTZFZG+z1Tz4y667eFiCiMFKy2FeIE/+HaEMiL1g18xNKq09G8lef
+         nhzeDAy619FZFrjXZtRwYy0JSwpSFropBQRMLw605cKySyn+BT09Whlyo5SpSwNxoUgi
+         bHKY9T7SrHPrdC2TCR5V0EBLcSA0w8eFl0CHMcmU30+SClNhbMEoFypcNhjC2jO+fp5v
+         qJIoAqa2gjqJYTBm0ASx/r0TEI7RJ4T5XwE9btTiv8bw2ScWZYNzbWZcYrSTj73Uvh7d
+         kPfA==
+X-Gm-Message-State: AFuF++kDFr2LhZMb/cbk8WPILr9vtZjSChXFz/JICMEYudTq8oc3lvJ7
+	E3CX0ltkYKBDUtnMMHZVb7TaHWTgGIHGDuoUTdP9DelVfxm5vH7oj/QL
+X-Gm-Gg: AYBFou2Gs7O3GYd4pVadgusyfI8qtU0uZvwVRtdhNULXOHnlIA+O1oQe8pJpJWP5rpA
+	14wfHZkLEo+6vkQQWwiiBYzZcSBIYUAeGQ+cLWqJGfu46cCtUuMXevlV60Ant4e2+TcdijyzqrT
+	CC24LySXKZOXo0hMubO9JN/7SIYzE9GIUac0i1fXZjSxl8PqGYLXqJY1Tf3czOPdwXYJeq/l60J
+	8mOweElp/eTS9mfNakT8N7Hu7AHcbuU7NYsg2TWpY6gBeyEHoixSlME5eVSSDleEWOmT2ijedYY
+	uzElFi36m/bWHREKkxreduycyypV0qNnVBx4LnU94gqxgVrkE65yMUuHgq3z3c2FutNx5DMMXK0
+	Ixsef2I0NdCT0S5gwnV+aPY4YY4ht85jZMwvdNGi11Eb1P6H7b4uzAPneRJP0LvRnjUpIyy3b2N
+	mrPQoNBiy8qRT7ziyBXNtovsv8OoOPC7lUweVJLG8BiB/NyCAlmZKVw8NGDW1qPSdlRco5MP+sA
+	46GpPEoj06Wfa7TEOIA0cxNEwMTeC4vfqRVaw1fU05Xz++Va6mhOwej5Kt0bA==
+X-Received: by 2002:a05:600c:8b11:b0:49c:edfe:d525 with SMTP id 5b1f17b1804b1-49cf82417f7mr549249705e9.10.1788795434804;
+        Mon, 07 Sep 2026 08:37:14 -0700 (PDT)
+Received: from [192.168.1.122] (cpc159313-cmbg20-2-0-cust161.5-4.cable.virginm.net. [82.0.78.162])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cee6158e9sm404982005e9.12.2026.09.07.08.37.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 07 Sep 2026 08:37:14 -0700 (PDT)
+Message-ID: <2520c402-e54a-4451-ae2e-9ab9816c11ed@gmail.com>
+Date: Mon, 7 Sep 2026 16:37:12 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked:
-	j+87BOoRU6jRSjzM2JpCgbrtyEuDHDLAmgppFD1S+88aJXWYux/mBaWl9Vpyz3N7Vw3B2hOGbFfkRhKyHMGZb9RtMnrF3lgIyvU+PnDMRULeSPJr9CewmDSEROFf9q37BNp/Or5B0VzMg3Ync2RtzbZH09AfSGFl+yNM6geESYvxFErgKse/Ruq5qtDZhERODdfjbfcO063ddlJ+GNvvFIXxzFHkTHqKbTw+U5QBEu8XSeun7vkao6Sp588H78KBrHrCRK2B/QwM0AvaQ+qQ4d95I4gU4vD/A/0VnFDRJTS7ZwtXFtItKpzz2eBpgESdqF15MIi4st/T/QZcSIe54A==
-X-OriginatorOrg: nokia.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: GVXPR07MB12099.eurprd07.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 86d8f0c1-a1b7-48d6-fd12-08df0cf58b22
-X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Sep 2026 15:34:45.0420
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 5d471751-9675-428d-917b-70f44f9630b0
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: nqx/9I5LQAj4tSbSQ7mL0Y+EGU/xYoFaG/KEjK1NrDn0YCWzgTmj49CZwNkGCHkcQlFL7WzV9foB0//mriPxm26STm7r9/T0teCyVi10wkE=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR07MB8314
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/6] net: fix typos in comments
+To: Hemanth Selam <hemanth.selam@gmail.com>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew@lunn.ch>,
+ Sudarsana Kalluru <skalluru@marvell.com>, Manish Chopra
+ <manishc@marvell.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-net-drivers@amd.com, linux-kselftest@vger.kernel.org,
+ linux-usb@vger.kernel.org
+References: <20260907044635.7141-1-hemanth.selam@gmail.com>
+ <20260907044635.7141-2-hemanth.selam@gmail.com>
+Content-Language: en-GB
+From: Edward Cree <ecree.xilinx@gmail.com>
+In-Reply-To: <20260907044635.7141-2-hemanth.selam@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-T24gU3VuLCAyMDI2LTA5LTA2IGF0IDA5OjMzIC0wNDAwLCBTYXNoYSBMZXZpbiB3cm90ZToKPiAK
-PiAKPiA+IFRoaXMgZml4ZXMgQ1ZFLTIwMjYtNDMxOTggKHYyIC0tIHYxIGJyb2tlIHRoZSBEQ0NQ
-IGJ1aWxkIGJ5IG5vdCB1cGRhdGluZwo+ID4gZXZlcnkgaWNza19hZl9vcHMuc3luX3JlY3Zfc29j
-ayBpbXBsZW1lbnRlciBmb3IgdGhlIG5ldyBhcmd1bWVudCkuCj4gCj4gUXVldWVkIGZvciA2LjEy
-LCB0aGFua3MuCj4gCj4gLS0KPiBUaGFua3MsCj4gU2FzaGEKCkhpCgpJIGRvIG5vdCBzZWUgdGhp
-cyBvbmUgaW4gdGhlIGp1c3QgcmVsZWFzZWQgNi4xMi4xMDksIG1heWJlIEkgYW0gYmxpbmQ/Cgog
-Sm9ha2ltCg==
+On 07/09/2026 05:46, Hemanth Selam wrote:
+> Fix typos in comments, reported by scripts/checkpatch.pl using the
+> misspelling list in scripts/spelling.txt.  Only touches comments, no code
+> changes.
+> 
+> Assisted-by: Cursor:claude-opus-5
+> Signed-off-by: Hemanth Selam <hemanth.selam@gmail.com>
+...
+> diff --git a/drivers/net/ethernet/sfc/mcdi_pcol.h b/drivers/net/ethernet/sfc/mcdi_pcol.h
+
+mcdi_pcol.h (and the Siena version) are generated from firmware definitions,
+ so any changes you make would be overwritten next time they are regenerated.
+I have forwarded these changes internally, so they should reach the firmware
+ team.
+
+> index b9866e389e6d..b00e7c100566 100644
+> --- a/drivers/net/ethernet/sfc/mcdi_pcol.h
+> +++ b/drivers/net/ethernet/sfc/mcdi_pcol.h
+> @@ -5736,7 +5736,7 @@
+>  /*            Enum values, see field(s): */
+>  /*               MC_CMD_ETH_TECH/TECH */
+>  /* Pause abilities to advertise during auto-negotiation. Valid when auto-
+> - * negotation is enabled and MC_CMD_SET_MAC_IN/FCTL is set to
+> + * negotiation is enabled and MC_CMD_SET_MAC_IN/FCTL is set to
+>   * MC_CMD_FCNTL_AUTO. If auto-negotiation is disabled the driver must
+>   * explicitly configure pause mode with MC_CMD_SET_MAC.
+>   */
+> @@ -10173,7 +10173,7 @@
+>   * configuration.
+>   */
+>  #define    MC_CMD_GET_FIXED_PORT_PROPERTIES_IN_LEN 4
+> -/* Handle to the port to from which to retreive properties */
+> +/* Handle to the port to from which to retrieve properties */
+>  #define       MC_CMD_GET_FIXED_PORT_PROPERTIES_IN_PORT_HANDLE_OFST 0
+>  #define       MC_CMD_GET_FIXED_PORT_PROPERTIES_IN_PORT_HANDLE_LEN 4
+>  
+> @@ -13547,7 +13547,7 @@
+>   * an ancestor of the current user (see MC_CMD_SET_VI_USER). Note that LL
+>   * queues require this to be called after allocation but before initialisation
+>   * of the queue. TLP options of a queue are fixed after queue is initialised,
+> - * with the values set to current global value or they can be overriden using
+> + * with the values set to current global value or they can be overridden using
+>   * this command. At LL queue allocation, all overrides are cleared.
+>   */
+>  #define MC_CMD_SET_VI_TLP_PROCESSING 0xb1
+> @@ -21387,7 +21387,7 @@
+>  #define          MC_CMD_PRIVILEGE_MASK_IN_GRP_ALL_MULTICAST 0x200 /* enum */
+>  #define          MC_CMD_PRIVILEGE_MASK_IN_GRP_PROMISCUOUS 0x400 /* enum */
+>  /* enum: Allows to set the TX packets' source MAC address to any arbitrary MAC
+> - * adress.
+> + * address.
+>   */
+>  #define          MC_CMD_PRIVILEGE_MASK_IN_GRP_MAC_SPOOFING_TX 0x800
+>  /* enum: Privilege that allows a Function to change the MAC address configured
+> diff --git a/drivers/net/ethernet/sfc/siena/mcdi_pcol.h b/drivers/net/ethernet/sfc/siena/mcdi_pcol.h
+> index b81b0aa460d2..4d1da698c524 100644
+> --- a/drivers/net/ethernet/sfc/siena/mcdi_pcol.h
+> +++ b/drivers/net/ethernet/sfc/siena/mcdi_pcol.h
+> @@ -6861,7 +6861,7 @@
+>  /***********************************/
+>  /* MC_CMD_CLP
+>   * Perform a CLP related operation, see SF-110495-PS for details of CLP
+> - * processing. This command has been extended to accomodate the requirements of
+> + * processing. This command has been extended to accommodate the requirements of
+>   * different manufacturers which are to be found in SF-119187-TC, SF-119186-TC,
+>   * SF-120509-TC and SF-117282-PS.
+>   */
+> @@ -16293,7 +16293,7 @@
+>  
+>  /***********************************/
+>  /* MC_CMD_GET_LICENSED_V3_FEATURE_STATES
+> - * Query the state of an one or more licensed features. (Note that the actual
+> + * Query the state of a one or more licensed features. (Note that the actual
+
+Neither this nor the original text makes grammatical sense; I think the article
+ 'an' should be deleted entirely rather than replaced with 'a'.
+
+>   * state may be invalidated by the MC_CMD_LICENSING_V3 OP_UPDATE_LICENSE
+>   * operation or a reboot of the MC.) Used for V3 licensing (Medford)
+>   */
+> @@ -16798,7 +16798,7 @@
+>  #define          MC_CMD_PRIVILEGE_MASK_IN_GRP_ALL_MULTICAST 0x200 /* enum */
+>  #define          MC_CMD_PRIVILEGE_MASK_IN_GRP_PROMISCUOUS 0x400 /* enum */
+>  /* enum: Allows to set the TX packets' source MAC address to any arbitrary MAC
+> - * adress.
+> + * address.
+>   */
+>  #define          MC_CMD_PRIVILEGE_MASK_IN_GRP_MAC_SPOOFING_TX 0x800
+>  /* enum: Privilege that allows a Function to change the MAC address configured
+The other sfc changes outside of pcol look fine.
+-ed
