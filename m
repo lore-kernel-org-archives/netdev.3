@@ -1,144 +1,99 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C9894ADD8F
-	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 11:39:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CE0538D01E;
+	Mon,  7 Sep 2026 11:40:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788781149; cv=none; b=e6ZJn1BxpaAzJv7sBoCTVlNp1C7i7C2SCn0dt7Gce6P8HPkaAqiaUarQSyB8vNDXcFwZmzl0BF4KfqCFflEq2cqDauFmVPr1kPW/M5I1uUSbfJfIXVxD6brj9H+vca/rtYB0I/EscBeYQiK1IZgfCuVWf48/cQ9vyCLealibNzo=
+	t=1788781221; cv=none; b=Hhy3va2lMXIMjMqrf8B4fDyXjn8sddG0ZUFs1QKbeTBTzZBgYSkuyyxbczyp9WIHbL0+jvhT/tHVCq2JV65UEoauNNiIvNaizTkVl/3Z1T7jEbuUtzcTcBrqDXQvvpgSuu4wHfdfFfuChD/rYqKprOP0YUk0LP/0Ysg5TztR2oc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788781149; c=relaxed/simple;
-	bh=dq6JvsI/jNN+xx3oqp5h32L/PtDtEz2jrI6gO+wTr7w=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pGvtl3EYj0mSRPAH+nIgRll/gSrG7A3hViAPUzZqHniC2qjsdjuOU7mP6gVpMSFp/TbkNDYbKD4/hUMIhzsSmW4M+uFYJn9cSnTuKslaK8OfSxOe1K6BHDcUbUEDZOxaQUEc+YMhFrteB7zjtEn0J8+QnvA/NFmPCUf711QQGn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MaTtEw/J; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MaTtEw/J"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1788781147;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7bnZX78xLpA1SrjplgD6zRqvHIJMbFWF4J8SNmE5f/c=;
-	b=MaTtEw/JH2jNVErzqMPLkSZopbGSBC+o6HrVxl+dp6ztQ15u5OQTaD57HrDmkt15WwzZfS
-	jq3QyuRSsC45PouJ4rPnYrr1E5gU0aGka5K5Iz6F2FHx6zplCc3QE8TwhHW4AE+TB9116x
-	+EPDOUpVUAfVhIvmijX9zlZAnmFNLOk=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-436-7O9EPnsDOuaN2S2plpZ7wA-1; Mon,
- 07 Sep 2026 07:39:04 -0400
-X-MC-Unique: 7O9EPnsDOuaN2S2plpZ7wA-1
-X-Mimecast-MFC-AGG-ID: 7O9EPnsDOuaN2S2plpZ7wA_1788781142
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A70201828AD4;
-	Mon,  7 Sep 2026 11:39:02 +0000 (UTC)
-Received: from warthog.com (unknown [10.44.32.158])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 6234D1956042;
-	Mon,  7 Sep 2026 11:38:59 +0000 (UTC)
-From: David Howells <dhowells@redhat.com>
-To: netdev@vger.kernel.org
-Cc: David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	s=arc-20240116; t=1788781221; c=relaxed/simple;
+	bh=tltbt1A3Nc5D17pIot5qXqiTroidEzrGrcV64s1B+U4=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=fYY5YVxTTw8t01Pe8QCDq96t1NBwxjNYlwvSe9DYvs1OklHQL1XnfwSBlW586+WJya/FXACxkzNagUwGUnj7oynKZ6axCvXPoLhZe1M3JX9x2Cf0EaXBeRPpCavY/E3PHyn3+CJ/XrIZUnI3CF6Essa8qCdGoJsGRa29RjnHa/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
+Received: from local
+	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256:X25519MLKEM768)
+	 (Exim 4.100)
+	(envelope-from <daniel@makrotopia.org>)
+	id 1x3Xhm-000000002Os-4BZl;
+	Mon, 07 Sep 2026 11:40:07 +0000
+Date: Mon, 7 Sep 2026 12:40:00 +0100
+From: Daniel Golle <daniel@makrotopia.org>
+To: Daniel Golle <daniel@makrotopia.org>, Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-afs@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Chengfeng Ye <nicoyip.dev@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH net v9 14/14] rxrpc: Take write lock when publishing the initial RxGK key
-Date: Mon,  7 Sep 2026 12:37:41 +0100
-Message-ID: <20260907113743.1453210-15-dhowells@redhat.com>
-In-Reply-To: <20260907113743.1453210-1-dhowells@redhat.com>
-References: <20260907113743.1453210-1-dhowells@redhat.com>
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH net] net: dsa: mxl862xx: disable the stats poll on teardown
+Message-ID: <8b861014c836377afab0fdfb66a83fa017e5cd84.1788779062.git.daniel@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-From: Chengfeng Ye <nicoyip.dev@gmail.com>
+The WORK_STOPPED flag test in mxl862xx_get_stats64() and in the stats
+poll's own re-arm is not atomic with the cancel in remove(), shutdown()
+and the probe error path. A re-arm that read the flag before it was set
+queues the work after cancel_delayed_work_sync() has returned, and the
+poll then walks the port list while dsa_unregister_switch() frees it, or
+runs against the devres-freed priv once remove() has returned.
 
-rxgk_rekey() updates the transport-key ring under security_use_lock,
-and rxgk_get_key() takes a reference under the corresponding read
-lock.  The initial publication in rxgk_init_connection_security()
-writes conn->rxgk.enctype and conn->rxgk.keys[] without the write
-lock.
+Disable the work instead of cancelling it. disable_delayed_work_sync()
+drains a running poll just as the cancel did, and every later attempt to
+queue the work is a no-op, so neither re-arm can bring the poll back.
 
-On a client connection, a second sendmsg can observe
-RXRPC_CONN_CLIENT through a lockless load of conn->state, skip
-rxrpc_init_client_conn_security(), and call rxgk_get_key() without
-ever acquiring security_lock.  Because the initializer never took
-the write lock, the reader's read lock provides neither exclusion
-nor a matching acquire-release pair.
-
-Concurrent RxGK key consumers were observed in a two-sender
-workload.  KCSAN reported:
-
-  BUG: KCSAN: data-race in rxgk_get_key / rxgk_secure_packet
-
-  write to 0xffff8aef4023c318 of 8 bytes by task 1968 on cpu 0:
-   rxgk_secure_packet+0x46c/0x820
-   rxrpc_send_data+0x562/0x1a20
-   rxrpc_do_sendmsg+0x976/0xa80
-   rxrpc_sendmsg+0x20f/0x2a0
-
-  read to 0xffff8aef4023c318 of 8 bytes by task 1969 on cpu 1:
-   rxgk_get_key+0x209/0x5e0
-   rxgk_alloc_txbuf+0xa4/0x2a0
-   rxrpc_send_data+0x8e2/0x1a20
-   rxrpc_do_sendmsg+0x976/0xa80
-   rxrpc_sendmsg+0x20f/0x2a0
-
-  value changed: 0x7fffffffffffffff -> 0x7fffffffffffffee
-
-That report is on the key context's byte counter rather than the
-initial publication, but it shows that lookup and secured transmit
-already overlap on the same connection.
-
-Take security_use_lock for writing while publishing the initial
-enctype and transport key, matching the locking used when rekeying.
-
-Fixes: 9d1d2b59341f ("rxrpc: rxgk: Implement the yfs-rxgk security class (GSSAPI)")
-Signed-off-by: Chengfeng Ye <nicoyip.dev@gmail.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Eric Dumazet <edumazet@google.com>
-cc: "David S. Miller" <davem@davemloft.net>
-cc: Jakub Kicinski <kuba@kernel.org>
-cc: Paolo Abeni <pabeni@redhat.com>
-cc: Simon Horman <horms@kernel.org>
-cc: linux-afs@lists.infradead.org
-cc: stable@vger.kernel.org
+Fixes: a21d33a5265f ("net: dsa: mxl862xx: implement .get_stats64")
+Assisted-by: LLM
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
 ---
- net/rxrpc/rxgk.c | 2 ++
- 1 file changed, 2 insertions(+)
+Found by the Sashiko AI reviews of v11 and v12 of the mxl862xx devlink
+flash series, where a first attempt to close this race by reordering
+remove() only moved the window.
 
-diff --git a/net/rxrpc/rxgk.c b/net/rxrpc/rxgk.c
-index 77a67ace1d24..b49221f57f67 100644
---- a/net/rxrpc/rxgk.c
-+++ b/net/rxrpc/rxgk.c
-@@ -251,8 +251,10 @@ static int rxgk_init_connection_security(struct rxrpc_connection *conn,
- 					 GFP_NOFS);
- 	if (IS_ERR(gk))
- 		return PTR_ERR(gk);
-+	write_lock(&conn->security_use_lock);
- 	conn->rxgk.enctype = gk->krb5->etype;
- 	conn->rxgk.keys[gk->key_number & 3] = gk;
-+	write_unlock(&conn->security_use_lock);
+---
+ drivers/net/dsa/mxl862xx/mxl862xx.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/dsa/mxl862xx/mxl862xx.c b/drivers/net/dsa/mxl862xx/mxl862xx.c
+index cfa7e3e269a2..a31ebbe451e0 100644
+--- a/drivers/net/dsa/mxl862xx/mxl862xx.c
++++ b/drivers/net/dsa/mxl862xx/mxl862xx.c
+@@ -2131,7 +2131,7 @@ static int mxl862xx_probe(struct mdio_device *mdiodev)
+ 	err = dsa_register_switch(ds);
+ 	if (err) {
+ 		set_bit(MXL862XX_FLAG_WORK_STOPPED, &priv->flags);
+-		cancel_delayed_work_sync(&priv->stats_work);
++		disable_delayed_work_sync(&priv->stats_work);
+ 		mxl862xx_host_shutdown(priv);
+ 		for (i = 0; i < MXL862XX_MAX_PORTS; i++)
+ 			cancel_work_sync(&priv->ports[i].host_flood_work);
+@@ -2152,7 +2152,7 @@ static void mxl862xx_remove(struct mdio_device *mdiodev)
+ 	priv = ds->priv;
  
- 	switch (conn->security_level) {
- 	case RXRPC_SECURITY_PLAIN:
+ 	set_bit(MXL862XX_FLAG_WORK_STOPPED, &priv->flags);
+-	cancel_delayed_work_sync(&priv->stats_work);
++	disable_delayed_work_sync(&priv->stats_work);
+ 
+ 	dsa_unregister_switch(ds);
+ 
+@@ -2181,7 +2181,7 @@ static void mxl862xx_shutdown(struct mdio_device *mdiodev)
+ 	dsa_switch_shutdown(ds);
+ 
+ 	set_bit(MXL862XX_FLAG_WORK_STOPPED, &priv->flags);
+-	cancel_delayed_work_sync(&priv->stats_work);
++	disable_delayed_work_sync(&priv->stats_work);
+ 
+ 	mxl862xx_host_shutdown(priv);
+ 
 
+base-commit: 38b6be101006d3e7af972999f45d4f1e8250587a
+-- 
+2.55.0
