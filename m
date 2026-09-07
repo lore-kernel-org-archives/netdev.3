@@ -1,47 +1,47 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 408C74A8FC4
-	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 11:38:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BAA0478E38
+	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 11:39:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788781140; cv=none; b=JODiJDPPD9j7JdW4/mA5ZZ6oDvzKsEA7By68nivRcsv068IEAJ2E7rlz3x3fN7c93T4XKDblXbePGv815VVg8VOJZ1lNxZoWFy7cdTp+Fa83bfu8tlKn9A/D3KOdjqMfWucv9b12NfqqYqPoLk7opuuz5Eep7wYBHDZe7FAhPVI=
+	t=1788781145; cv=none; b=qSd82jD4PBWJ4hWkS5z7NQWBZPu+/38bTJHIfsqhtzxcGuGO9/3xTijqjzTMGHP9/U9qe4D3SWstVdtm+GI5a3fRbdHNmUqC1q1pMgFdmz+daL3AnpBRgFjFUxJU2Tp0wiga0o4iM7hVYUpz3tl/ePKl0yKg3T4nzhIlwAMcFTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788781140; c=relaxed/simple;
-	bh=Nzi/FqImYPqXJEs6LFrx+Ut98+MzVTc2UR4XsymYE1A=;
+	s=arc-20240116; t=1788781145; c=relaxed/simple;
+	bh=hNd6bIyFAvlFxc6hjuFcDqVwVqg86Zvx1YHzqvt4tLo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ENQ9rJlw3xDCVsrDoHEXhZZDZ8xfJ5ZHVKEioH3BO4OMoDrrQ4bcie7PXq7LCxGLpRHQQiD3liva8Yi4L0P4r1GH6UGrXh1eT19QXoATzBF+q3se4ZbUYNE0mIqyyZe4k/zU9P7htz5GNEA3DeAuEGMPDiY0gugnQhjfQ0ts6Vo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HstraWmR; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version; b=tEfewfRxokyF7HBZznQHxobwQ2U9+hPGdMZ2lrEU2MQHBgxS8cOnkqkHAecmLYOTJYZ1LEwzjQBSF1iiz09+jHboAf8Sth0ygatuwR9xUlB4o/HvhIZXzkaVijClG7OFdi7mtWK9wslQ4J6LcEsrlPcJCuMYn9Xjl0QxAfP2xJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Nch8TyND; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HstraWmR"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Nch8TyND"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1788781136;
+	s=mimecast20190719; t=1788781143;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=LDbA/tBSiTsaFEYItL2PrPsX/0bFDHesm+RDDbpSdww=;
-	b=HstraWmRvERbBF6MLtKu4l2TL12eXBW88f1pVe8hiJtZ8psDbt75EcdlVHnwHzZQ48yaJS
-	Lzsa71ohs7w2rctxJX+2Ryv6GLc58H+BIgGLuCBO87pCmDtbtjy3lLYKkSCuOpl0Bl9/D1
-	F2M5E4R743e7ArVmeAdF9Lvm72VmDj0=
+	bh=HHCKmh+GTex17viqHU7+p3b1kZPrhM46bDIsKbGkEho=;
+	b=Nch8TyNDlnwLos5cevYWHtv6Dk8AHrv6EQM1q10NAs8gzZC+VPgYEV7tyqGPk6Z/CvUrlE
+	tyDs7uG8Y2PSOMymOWqdeWGi6B52Ms5ceX/J/dkQrJTIzPLMIPUIuhHcHeMqqAoplw+iiB
+	6cE7g5p9iRolU8Ddc5CSGvt+FSENxgI=
 Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-1-ft0pyjulOKOv4D0kkoa0Rg-1; Mon,
- 07 Sep 2026 07:38:53 -0400
-X-MC-Unique: ft0pyjulOKOv4D0kkoa0Rg-1
-X-Mimecast-MFC-AGG-ID: ft0pyjulOKOv4D0kkoa0Rg_1788781132
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-264-3OA5z2N7Niam5fyVXGe7bA-1; Mon,
+ 07 Sep 2026 07:38:59 -0400
+X-MC-Unique: 3OA5z2N7Niam5fyVXGe7bA-1
+X-Mimecast-MFC-AGG-ID: 3OA5z2N7Niam5fyVXGe7bA_1788781138
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E8AE819560B6;
-	Mon,  7 Sep 2026 11:38:51 +0000 (UTC)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id CC0BD19540DE;
+	Mon,  7 Sep 2026 11:38:57 +0000 (UTC)
 Received: from warthog.com (unknown [10.44.32.158])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 335D11955F0E;
-	Mon,  7 Sep 2026 11:38:47 +0000 (UTC)
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 89F2530001A2;
+	Mon,  7 Sep 2026 11:38:53 +0000 (UTC)
 From: David Howells <dhowells@redhat.com>
 To: netdev@vger.kernel.org
 Cc: David Howells <dhowells@redhat.com>,
@@ -53,13 +53,11 @@ Cc: David Howells <dhowells@redhat.com>,
 	Simon Horman <horms@kernel.org>,
 	linux-afs@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
-	Jeffrey Altman <jaltman@auristor.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	keyrings@vger.kernel.org,
-	stable@kernel.org
-Subject: [PATCH net v9 12/14] afs: Fix lack of setting call->server when doing FS.InlineBulkStatus
-Date: Mon,  7 Sep 2026 12:37:39 +0100
-Message-ID: <20260907113743.1453210-13-dhowells@redhat.com>
+	Seungwon Bae <qotmddnjs@ajou.ac.kr>,
+	stable@vger.kernel.org
+Subject: [PATCH net v9 13/14] rxrpc: fix use-after-free in rxrpc_poke_conn()
+Date: Mon,  7 Sep 2026 12:37:40 +0100
+Message-ID: <20260907113743.1453210-14-dhowells@redhat.com>
 In-Reply-To: <20260907113743.1453210-1-dhowells@redhat.com>
 References: <20260907113743.1453210-1-dhowells@redhat.com>
 Precedence: bulk
@@ -69,95 +67,64 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-Fix afs_make_op_call to set call->server.  This will prevent
-afs_done_fs_inline_bulk_status() from oopsing if the server does not
-support the FS.InlineBulkStatus RPC due to call->server not being set.
+From: Seungwon Bae <qotmddnjs@ajou.ac.kr>
 
-Note that this requires afs_make_op_call() to be moved so that it can use
-afs_use_server(); the server is un-used by afs_free_server().
+rxrpc_poke_conn() takes a reference on the connection with no liveness
+check, unlike its sibling rxrpc_queue_conn() which gates on
+atomic_read(&conn->active) >= 0.  The per-connection timer is armed with
+no reference held for it, and rxrpc_put_connection() cancels it with a
+non-synchronous timer_delete() only after the refcount reaches 0.
+refcount_t saturates rather than resurrecting, so the connection can be
+kfree()d while still linked in local->conn_attend_q (nothing in teardown
+unlinks attend_link).  The rxrpc I/O thread then performs a UAF write
+(list_del_init) plus UAF reads and indirect calls through conn->security.
 
-Fixes: e49c7b2f6de7 ("afs: Build an abstraction around an "operation" concept")
-Link: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260824091645.415423-1-dhowells%40redhat.com
+Reproduced on a KASAN + PREEMPT kernel: 56 "refcount_t: addition on 0"
+saturations at load, escalating to
+
+  BUG: KASAN: slab-use-after-free in rxrpc_io_thread   Write of size 8
+
+AF_RXRPC socket creation (rxrpc_create) has no capability check, so this
+is reachable by an unprivileged user.
+
+Guard rxrpc_poke_conn() with the same liveness/refcount check the sibling
+rxrpc_queue_conn() uses before taking the poke reference, so a connection
+past its last-active point is not poked/requeued after teardown began.
+
+Verified before/after on KASAN+PREEMPT at equal timer volume: 56
+saturations + 15 KASAN reports unpatched vs 0 and 0 patched.
+
+Fixes: f2cce89a074e ("rxrpc: Implement a mechanism to send an event notification to a connection")
+Signed-off-by: Seungwon Bae <qotmddnjs@ajou.ac.kr>
 Signed-off-by: David Howells <dhowells@redhat.com>
 cc: Marc Dionne <marc.dionne@auristor.com>
-cc: Jeffrey Altman <jaltman@auristor.com>
 cc: Eric Dumazet <edumazet@google.com>
 cc: "David S. Miller" <davem@davemloft.net>
 cc: Jakub Kicinski <kuba@kernel.org>
 cc: Paolo Abeni <pabeni@redhat.com>
 cc: Simon Horman <horms@kernel.org>
-cc: Jarkko Sakkinen <jarkko@kernel.org>
 cc: linux-afs@lists.infradead.org
-cc: keyrings@vger.kernel.org
-cc: stable@kernel.org
+cc: stable@vger.kernel.org
 ---
- fs/afs/internal.h          | 33 +++++++++++++++++----------------
- include/trace/events/afs.h |  1 +
- 2 files changed, 18 insertions(+), 16 deletions(-)
+ net/rxrpc/conn_object.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/fs/afs/internal.h b/fs/afs/internal.h
-index 290873bac89b..65a0866cd8b8 100644
---- a/fs/afs/internal.h
-+++ b/fs/afs/internal.h
-@@ -1416,22 +1416,6 @@ static inline void afs_see_call(struct afs_call *call, enum afs_call_trace why)
- 		       __builtin_return_address(0));
- }
- 
--static inline void afs_make_op_call(struct afs_operation *op, struct afs_call *call,
--				    gfp_t gfp)
--{
--	struct afs_addr_list *alist = op->estate->addresses;
--
--	op->call	= afs_get_call(call, afs_call_trace_get);
--	op->type	= call->type;
--	call->op	= op;
--	call->key	= op->key;
--	call->intr	= !(op->flags & AFS_OPERATION_UNINTR);
--	call->peer	= rxrpc_kernel_get_peer(alist->addrs[op->addr_index].peer);
--	call->service_id = op->server->service_id;
--	afs_make_call(call, gfp);
--	afs_put_call(call);
--}
--
- static inline void afs_extract_begin(struct afs_call *call, void *buf, size_t size)
- {
- 	call->iov_len = size;
-@@ -1763,6 +1747,23 @@ static inline struct inode *AFS_VNODE_TO_I(struct afs_vnode *vnode)
- 	return &vnode->netfs.inode;
- }
- 
-+static inline void afs_make_op_call(struct afs_operation *op, struct afs_call *call,
-+				    gfp_t gfp)
-+{
-+	struct afs_addr_list *alist = op->estate->addresses;
-+
-+	op->call	= afs_get_call(call, afs_call_trace_get);
-+	op->type	= call->type;
-+	call->op	= op;
-+	call->server	= afs_use_server(op->server, false, afs_server_trace_use_call);
-+	call->key	= op->key;
-+	call->intr	= !(op->flags & AFS_OPERATION_UNINTR);
-+	call->peer	= rxrpc_kernel_get_peer(alist->addrs[op->addr_index].peer);
-+	call->service_id = op->server->service_id;
-+	afs_make_call(call, gfp);
-+	afs_put_call(call);
-+}
-+
- /*
-  * Note that a dentry got changed.  We need to set d_fsdata to the data version
-  * number derived from the result of the operation.  It doesn't matter if
-diff --git a/include/trace/events/afs.h b/include/trace/events/afs.h
-index 1b3c48b5591d..04b0bb682b81 100644
---- a/include/trace/events/afs.h
-+++ b/include/trace/events/afs.h
-@@ -148,6 +148,7 @@ enum yfs_cm_operation {
- 	EM(afs_server_trace_unuse_slist_isort,	"UNU isort") \
- 	EM(afs_server_trace_update,		"UPDATE   ") \
- 	EM(afs_server_trace_use_by_uuid,	"USE uuid ") \
-+	EM(afs_server_trace_use_call,		"USE call ") \
- 	EM(afs_server_trace_use_cm_call,	"USE cm-cl") \
- 	EM(afs_server_trace_use_get_caps,	"USE gcaps") \
- 	EM(afs_server_trace_use_give_up_cb,	"USE gvupc") \
+diff --git a/net/rxrpc/conn_object.c b/net/rxrpc/conn_object.c
+index 0ece717db0f8..1be50e0c9cee 100644
+--- a/net/rxrpc/conn_object.c
++++ b/net/rxrpc/conn_object.c
+@@ -34,7 +34,10 @@ void rxrpc_poke_conn(struct rxrpc_connection *conn, enum rxrpc_conn_trace why)
+ 	spin_lock_irq(&local->lock);
+ 	busy = !list_empty(&conn->attend_link);
+ 	if (!busy) {
+-		rxrpc_get_connection(conn, why);
++		if (!rxrpc_get_connection_maybe(conn, why)) {
++			spin_unlock_irq(&local->lock);
++			return;
++		}
+ 		list_add_tail(&conn->attend_link, &local->conn_attend_q);
+ 	}
+ 	spin_unlock_irq(&local->lock);
 
