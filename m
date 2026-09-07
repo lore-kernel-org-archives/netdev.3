@@ -1,121 +1,100 @@
-Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BACD43CE4E
-	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 21:54:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADB8C347533
+	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 21:58:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788818104; cv=none; b=fQNxEAo5jMrLnkoCbWw6Hi8KA/ROdh/SbcujJW91u5ONM+KXCuTCz4fx34XYf9VEehhBOMLzxukpBB25WQ2YwL5w8JhFiarqNVCcVtptQZlh4xdSd/pE/dPvXVJn4zVwIOlfCqz8DFV0SM7kFZ01nOZCgOy/7grCZTk9Q1wrP28=
+	t=1788818338; cv=none; b=q5sOxkE5H/U7O+LXq3mqx7ptNONm8wHAUNvST+slkYRb8ru1FMVJ6HNkSSLlrTIh5m26wZI4MZtcdenFtlCYcW9fTuvRFq9kHLnjBYCPKh9+lkIan0w6wdJnCkjJeor0qHIs442DzO4kUHbuC/wlNOspP9f0ceoeyOaTETnQ2gs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788818104; c=relaxed/simple;
-	bh=5QSvUUBEwul0t3wOfYWCRctJgwUlnqFBztayCoeh9K4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hooGK35xQ4SX0NwjonZsGDFov4/GW2m4UZrLGp6hB4qKMbg4A6Yt7SSD0ckfTCdE0zLU0u4iF9LZ1xwxtXy/EwfvJstmiMoFctLs4RS2vBfxxWws4ytGY/zkb8+SJ7Xt41x1Cbft1GGNiIjaQpMSCePriEdoTGtvAn6aEuR1IHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ghWEb/Xn; arc=none smtp.client-ip=209.85.128.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788818338; c=relaxed/simple;
+	bh=xv/RzvCBJXVfBLAu9QM6obaEdYaU2eSYEEJluVolyBA=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=lptjXurvHfUUzAPXrJXXp7we4uH8u4qOAp9HdWtuJ64TFAIJ5KHdrrg7lV4RxMPeIgi+VNsgrPHCHAekjY66ypf5CuAydV6XRzczaPX181s0zj4m7k9+ZW9CnBIInvRS1Pfsi3SKfrbda470kYcTHaVZHGkrI8lv0Waq82z+Ddk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Z6s1C5Uq; arc=none smtp.client-ip=209.85.215.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ghWEb/Xn"
-Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-865bdc6ed72so66848077b3.2
-        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 14:54:50 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Z6s1C5Uq"
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cc1b6f65dacso4535041a12.1
+        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 14:58:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788818089; x=1789422889; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Kb2gmiVIlb5vlxpKkwwNuzRtWNaOFk2YDHgZ7G5RM8s=;
-        b=ghWEb/XnNyy4QmDPJ6GZIOY2NBsnV8RtAhU7Y3YaeS+VYJjDZyvQh6LE2C+50My4g9
-         +yXdJphB2Sd2yolBWiyE6e6h7gDNhCjTrPhoppjhQOUDoEnRzIe2bokaeDnDv2tLvIvu
-         AIQIQor6M4n/ikeOgcIDVCPlhJq61TvzWtsYGf9Z2HFvkiOlu53dkIhto9bF0aVxK2W2
-         wSZi1qJFlUIpX7lM/rAV4JM6odFIQktAV+g4KkvqIrZxrQbDHvu9I9HsQ5FeqPgVeU0W
-         hatk3X/z/J05tREj04viygGS+rgnX+c0IOFASyhpJAhkNLcKq+wH/0VHMzjUHDyIaaWO
-         GQBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788818089; x=1789422889;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+        d=google.com; s=20251104; t=1788818336; x=1789423136; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Kb2gmiVIlb5vlxpKkwwNuzRtWNaOFk2YDHgZ7G5RM8s=;
-        b=dToU0BkZMhDgxYSgNpTwC2hrt8/nY7TSZkEBCbrgxTNhyNWZvXFfvvKznt3u+CMIxG
-         13XTHc/Iz7vO9I3Mcv9dMtvKo5EHXPxAuZlW5QWye4U8olXrhpAuK0H1sJ2Npqr9QP5A
-         idxX70bQ3RMPaPhf0LPBTB9TynQ/AI2K/xMCm74IUzE/Bye8k7k+470dlMttNCQwABob
-         NAYuFW2MtCdDQrsNDynpCBNHpjMP0AqJ8VVjlRS06qifso0lNBb3yD3TkuYu0IuhsX7Q
-         d/laGLuAGKK7X0syCgG0c/vv3JROWPCNc7g0XlDfVJYqms2nL5F8U+vLEoNcvgkQf7Kv
-         owSA==
-X-Forwarded-Encrypted: i=1; AKwUvByRpOGvyNr5zq6odD4RkpzLsXgRLtCYo881rzoJsftbL0wbZ8YIl3YonoOOx8GK/J+HghNm+fM=@vger.kernel.org
-X-Gm-Message-State: AFuF++m62LtrTn5Xobxxcm5dta1KwjcTqgzkxI1CMG4mBMHQAEKLOI2E
-	aOkPbD0CdUe03bq1lKOROb1/3SYyndX9m94gNbyw1VmJUB9I78/nFCJt
-X-Gm-Gg: AYBFou3GHDdm+EiqtG/Vn1Ua3rM5Hl568eWOcg7k58ETI3ZTgcKFcI3CU8gHNPAKoum
-	uciESB8SFgauBjQLCV1dlKibhanqZjrOoShl3TEMxaQTIriPLDZFC/8fI2wH8PpKj7Dehtr5eoL
-	Kecj6e0hK0pgnK6A3DuhgRRNIXNMBTY66Pj+lNrhCSEoQBWy129qWRuIZxU6UxHmhaPSIilo6ki
-	uIO4DFE2tMq67pfXfVqEQfY60KeSlpUECnPsZY5R3pSBptoEVQRlFIis0UpruHKubC+iBaIlYYo
-	kD4ELli28nyJCjUKXeLCnnzjjlmk+9G5nxWK6lHqlsSia3HBo/b6vC3sC71OeJqrZ5uXueRORMK
-	1KbrGgMZwufOvowDswH6qCEvEoA5mrA6TMfRAKhiKB1DEPsrOkgx2bOH9APyBGnFfFlMJVspF2Z
-	o73j1jruNB7FbKVxLDEWpT01DUmr/IfrMJ0z6GQtG4pUN1uCl2WZLWGvMkwBr7ZFaogfW14nPxN
-	NTt+0OU+LaUSFumIA==
-X-Received: by 2002:a05:690c:4adb:b0:873:5bd1:98c3 with SMTP id 00721157ae682-8735bd1a0damr49302177b3.53.1788818089522;
-        Mon, 07 Sep 2026 14:54:49 -0700 (PDT)
-Received: from localhost (c-73-105-0-191.hsd1.fl.comcast.net. [73.105.0.191])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-871439bcb5bsm78484247b3.3.2026.09.07.14.54.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Sep 2026 14:54:49 -0700 (PDT)
-From: Yury Norov <yury.norov@gmail.com>
-X-Google-Original-From: Yury Norov <ynorov@nvidia.com>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Raju Rangoju <Raju.Rangoju@amd.com>,
-	Prashanth Kumar K R <PrashanthKumar.K.R@amd.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Jian Shen <shenjian15@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	intel-wired-lan@lists.osuosl.org,
-	linux-usb@vger.kernel.org
-Cc: Yury Norov <ynorov@nvidia.com>,
-	Yury Norov <yury.norov@gmail.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 9/9] MAINTAINERS: co-maintain linkmode.h under BITMAP
-Date: Mon,  7 Sep 2026 17:54:38 -0400
-Message-ID: <20260907215439.409858-10-ynorov@nvidia.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260907215439.409858-1-ynorov@nvidia.com>
-References: <20260907215439.409858-1-ynorov@nvidia.com>
+        bh=HSa5ClCFyrQx7TeVWrfAEYFbdP31MvYOQf/MsTJvIW0=;
+        b=Z6s1C5UqnEFe8IEI3gaxRp5o9BrPwoFRj7syv4vKZc1VfpY0riG+ORBlWgXZMkFR1G
+         TwYA/a4CGdmqQSNjbcHxTOaHFVJzEggwZ3UYH3611gmd2jDwvdoLo1Zr6tUXP/7o7q5k
+         HMRzhs7rTzY7hU4SbkznD8YiW4yNrQrInh0q4gq9bqbOCYhW8eEXT2itQ4VnmK6V4s/r
+         TiI9vk9x90yDio36L24lhck4mkefMMMpSGELrfj4aF0zFuPVXWMykzf0KcmTLXW9zyMJ
+         NHvXa1eHLdgDa8Bjv4aBlpTmUrebEufFUDlVWIspa0jCw6uvVYchtAt3R9WjrU1Ev4BW
+         23UA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788818336; x=1789423136;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=HSa5ClCFyrQx7TeVWrfAEYFbdP31MvYOQf/MsTJvIW0=;
+        b=jebPOzGKavnaC6fkY53V18MN2c1vV+50H2ij4k1P1TEBR09J65h4dqWtIPCEzovffS
+         ur2pIdKYHLUujLmwEsx7TPJc7b1M9Umy0ex3qQ3N9m+dVT5zdpekHxa9unYGEKAzPS7w
+         I96lCXGXKWMR+TefDyipqgrjBa/jken0kgpWtIbYWC48sJDVXGh09uXzpkARmd4wjonr
+         FGml5LuoAwXIKJSnwmZ4Gh9/ytaY/K8fZrH9MbZHflcuXjITkX//vC9m/RSKcHVgiy+m
+         nTCE+MTGKnAiCTJnnicMHKBmXvKo5cOWarmpnvjb6LEpR8h/K6gzEP8h6ORehXcJJngk
+         xvVw==
+X-Forwarded-Encrypted: i=1; AKwUvByjI7jJR92TfiEgpTUy6fDI8lHT3qVzeJPfBWiaUHOjxGAqFVoKDZ8I3T/Vcx2tPytQQX8gdvA=@vger.kernel.org
+X-Gm-Message-State: AFuF++nkiP/jrrYW4+yhFwo+77Q/8NoFeLYOMjZfR6sBMtVLXMO4aLAo
+	SzA3yv6Hn2x4bauum9D0YO38erpBGSy2GNPLu2dnqcgRGzWUTIPicqi1v4zEY35iSiipxc10adM
+	IePpReQ==
+X-Received: from pfnu20.prod.google.com ([2002:aa7:8494:0:b0:84f:a7f0:9315])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:338d:b0:857:73e2:9104
+ with SMTP id d2e1a72fcca58-8616be5fd03mr34001684b3a.20.1788818335793; Mon, 07
+ Sep 2026 14:58:55 -0700 (PDT)
+Date: Mon,  7 Sep 2026 21:57:51 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.1003.g10538fe699-goog
+Message-ID: <20260907215853.3709987-1-kuniyu@google.com>
+Subject: [PATCH v1 net 0/4] neighbour: Small fixes for RTM_{GET,SET}NEIGHTBL.
+From: Kuniyuki Iwashima <kuniyu@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: Ido Schimmel <idosch@nvidia.com>, Simon Horman <horms@kernel.org>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-The file is largely a wrapper around bitmap.h. List it under BITMAP
-section for co-maintenance.
+While working on the follow-up suggested here,
 
-Signed-off-by: Yury Norov <ynorov@nvidia.com>
----
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
+  https://lore.kernel.org/netdev/20260902143023.GA3966681@shredder/
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 3a19da74d00c..b78f0bccff54 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -4646,6 +4646,7 @@ F:	include/linux/cpumask.h
- F:	include/linux/cpumask_types.h
- F:	include/linux/find.h
- F:	include/linux/hw_bitfield.h
-+F:	include/linux/linkmode.h
- F:	include/linux/nodemask.h
- F:	include/linux/nodemask_types.h
- F:	include/uapi/linux/bits.h
+I found a few bugs in RTM_GETNEIGHTBL and RTM_SETNEIGHTBL,
+which this series fixes.
+
+Patch 1, 3, 4 will conflict with net-next in neightbl_dump_info()
+due to removal of net_eq() below:
+
+	p = list_next_entry(&tbl->parms, list);
+	list_for_each_entry_from_rcu(p, &tbl->parms_list, list) {
+		if (!net_eq(neigh_parms_net(p), net))
+			continue;
+
+Note also that currently neigh_proc_dointvec_ms_jiffies_positive()
+is buggy and does not enforce min/max, and it needs this fix:
+
+  https://lore.kernel.org/linux-fsdevel/20260905233819.1064529-2-kuniyu@google.com/
+
+
+Kuniyuki Iwashima (4):
+  neighbour: Add missing RCU annotation for neightbl_dump_info().
+  neighbour: Enforce min/max to NDTPA_INTERVAL_PROBE_TIME_MS.
+  neighbour: Don't render blackhole_netdev via RTM_GETNEIGHTBL.
+  neighbour: Skip default parms when resumed in neightbl_dump_info().
+
+ net/core/neighbour.c | 36 +++++++++++++++++++++++++++---------
+ 1 file changed, 27 insertions(+), 9 deletions(-)
+
 -- 
-2.53.0
+2.55.0.1003.g10538fe699-goog
 
