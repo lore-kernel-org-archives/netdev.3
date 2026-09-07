@@ -1,157 +1,210 @@
-Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazolkn19013079.outbound.protection.outlook.com [52.103.46.79])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD5E2346E43;
-	Mon,  7 Sep 2026 23:29:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.46.79
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7888039CD10
+	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 23:34:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.172
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788823766; cv=fail; b=Bn3O3EvHWdSO/Wwv8T8BeArB7bGxTZonMUoX9Lw50hLmt1cnndEp1C8jxT3//qrnzVQnQXIWW3SfsUqhV9zxjONZl53OiLWhIM84AOLptTgeqOTpLlE2MN3eORDlF4NNQpCbaPJdXst9wpGutDQ/0dlCdQ05VBSxtc+QVUR0lgI=
+	t=1788824086; cv=pass; b=RIxmtol0lEQcBW6h4CvteyEmF7zbF4GyoBNvnnbw/YZ4rJDoO35PYPkb3oHiGPDdOlhmEVeA8lxJmnTUB6gFRxQlnVhgk8Sx7ZSDpv0j0QOZjoaxno+gN3J0VJhBmL55G6ZqJbu6nG9HDMxrTVVh/Bi9H5gr/ug803DiuJz5Xaw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788823766; c=relaxed/simple;
-	bh=g+g6VDLllkg0dynMatl/Am/3FhQ2e+dopcBKxQXAqgY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=t7rtMRfhxHvMDCyWgV7NAYUTQBqHGlqgbmjlC2HsiKzY4DPm9loFnDTMTdb5x0aYd9v+9yWxY9vOqeJBDTuW7DhHb6qA+K2aG2TFQWk5F/XZTCpjZFe1yZuRbll6JumbLzrZSZvK5rMD0+OLvQr+GnxXC/o9iZZMHqGxGa/O/Rk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.co.uk; spf=pass smtp.mailfrom=hotmail.co.uk; dkim=pass (2048-bit key) header.d=HOTMAIL.CO.UK header.i=@HOTMAIL.CO.UK header.b=NxnAeGcT; arc=fail smtp.client-ip=52.103.46.79
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.co.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hotmail.co.uk
+	s=arc-20240116; t=1788824086; c=relaxed/simple;
+	bh=l6bwwoVueCaG8E45kbLYaQURVS5qLWt2C7NdrvXHikY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XFSK7vRR2AaA0idx7Qq2oZE8Oneb4+47ZE2ZZ7oBosTLloPw86StEJQWGvXuwCgdT5HNziRHnP0Wvecg4MNou46K/W1oB1TAVxjcUnUuetlxHNGToKaPK54LS4k3PIHXSWcUbMfLsaiacuUOWpQo+RQX1Aq9mWY2kj1NB6GeolQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LueDEPZr; arc=pass smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=HOTMAIL.CO.UK header.i=@HOTMAIL.CO.UK header.b="NxnAeGcT"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=G1YPlvtacC12u4/q4tXBRXM9PYp6O9J4aLO7A/MDnGSuCNahCf13iQakMUYXyfRvmIn+c+6ZzPYtPse8biCxdTV2o6tfhR3EwHqnuXJdHWmA+bg4CSl/YHfvlfSx8Nv4rw07hmG3UJyqv+7jUVt9AdJI7w82MYQk5FX4bxNuaZb2iKucXEAg3fF9XnF+mZHiHsg49MGYWQLPYNTpx0Gvr+X+2hM3gLFW5Of9s2oqtjjUYOwSyyFEw/lx6Xhp2+J4gIuCUh7gOhiObg+1w9ykb1viM6745dh5M9WKNKfLFllyLjHBimINfKmDEP4eVW/lUaMrOx1Si6BXXUzwI72Ofg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/Oub944lfy3Zt6i/neZSZYe+SMwC22YeC0wUzMr6xEg=;
- b=vE02mQ/sEipwFS8iB/+OQdKQJfMFzeeVum8ARGtGeEzNG+o4z9mbubgomYEnOrWQWr7xmEANRLD5kI0OBZSZo5lbY8B+169oglyII6yWIiBn02MyecfSU7CJiIggxSBceW7p9T2KHM96SLrJEP/6/dEa6y8DDYusRac2vDDDhHLXnGsGg7fWHCUMUdx5QzwUF6CYXkm9b4VjvAEf/IPg+gKGCvPfrA/Ew9wE5pT9KhKREn8Wup9cCD7lpMn0mQZM0lonEAq0FfTVb/16dykd6LvsobQ8dBk5nEobKUvOKhgN/VscjhW+ZaWGSEmL3/i1K2ebrECuQOr53Zoru4MuRA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=HOTMAIL.CO.UK;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/Oub944lfy3Zt6i/neZSZYe+SMwC22YeC0wUzMr6xEg=;
- b=NxnAeGcTf6a1ZYTVfFBg8kL/2y7DfqdSvd6M6iC7V8+r9D9albR6YGLHV2i7rhkZM5qU1zcUGjlrZCFDxuOO4+GK4I3SaiAyxgTnslb9Gp2GOtiAKcSbqv38sl3UoHyOpT3M9fhjF4kB5zo/BWbDhsaSpvXIuL4d+RQej0YK0sIiuNpuJEraxbl4FrFqE58VU01G74URDHTBNnsazG/444kU7AyQpnCjbWloRNtMQTndu67sxqyWju+3NPp2SO4xVlh8VjjWEiYwRpK9mKKLefG96BY02GpDdL4XIc4HBFvQXTPW4/sj9bSAoWs1q8nIOgpNjDlvioRqaJVVXL6+jQ==
-Received: from AS8P251MB0001.EURP251.PROD.OUTLOOK.COM (2603:10a6:20b:344::22)
- by DB9P251MB0358.EURP251.PROD.OUTLOOK.COM (2603:10a6:10:2cd::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.382.15; Mon, 7 Sep
- 2026 23:29:20 +0000
-Received: from AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
- ([fe80::2952:d4d0:4ba:8352]) by AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
- ([fe80::2952:d4d0:4ba:8352%6]) with mapi id 15.21.0382.014; Mon, 7 Sep 2026
- 23:29:20 +0000
-From: Aamir Ahmed <elb12345@hotmail.co.uk>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Aamir Ahmed <elb12345@hotmail.co.uk>,
-	Xiang Mei <xmei5@asu.edu>,
-	linux-usb@vger.kernel.org,
-	netdev@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] net: usb: net1080: fix out-of-bounds access in rx_fixup()
-Date: Tue,  8 Sep 2026 00:29:17 +0100
-Message-ID:
- <AS8P251MB00015BF44CA9B34835C7155CC8B22@AS8P251MB0001.EURP251.PROD.OUTLOOK.COM>
-X-Mailer: git-send-email 2.53.0.windows.1
-In-Reply-To: <AS8P251MB0001E8B611B22B19AA882542C8B22@AS8P251MB0001.EURP251.PROD.OUTLOOK.COM>
-References: <AS8P251MB0001E8B611B22B19AA882542C8B22@AS8P251MB0001.EURP251.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: LO4P265CA0225.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:315::10) To AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
- (2603:10a6:20b:344::22)
-X-Microsoft-Original-Message-ID:
- <20260907232918.113793-1-elb12345@hotmail.co.uk>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LueDEPZr"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2db3305f94fso27336045ad.0
+        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 16:34:45 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788824085; cv=none;
+        d=google.com; s=arc-20260327;
+        b=lNAT0arjYrMvLGuGfxKgN5tMxLXbimoLRbsATn+TDp56Nh/fZf3ef9Umx6NGG5p0y0
+         3Ok0v48F2LOSCzM74XitwsnKm8JptJVcuS1rW6lYaP4YYida3NidJRaTwz1vZ98PxwOA
+         +JtCS6cuCjI5OIb0SY0tc2GGEZuu/BZkQpfr3ivXloC2pB97J2vdFPk3bYG1ueZ3rTfN
+         9ZwHsHVEGDgt3mlTQKtRUcQhwL3hNDWBmUU5KGYQPTXCL8vTr/SsNpfpy6vZZIfisHW5
+         vfT7IwnHpwnBVb+20MApCejU4Brvbv7eTVPSVFsA49+584m3w4ox00yZ++WlV+Jqj+Fk
+         DrLg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Awv3H1wnvCKoXScc4pcndUyTglaueBmQi2mzpL4GQqA=;
+        fh=xlvwSrPcKnMIRmjnaU5GJoM8lMkGS7bELURWUFmCOjY=;
+        b=qXGRvqlWeR2mchhuSOwfJqLaXg4OYjU2kfDVk11tQJK5dBJug4tHDCVqg140VoCll0
+         O0exkyIWXJu1HMCrdSVrGXuhdHk0RAqW3wPF8MSGtdo26O/AXIx39dXlBv/XI2H7/JBP
+         bttVVSXUEDr+/9Lqc8kKgE0pXaSMRS5/AS7oK08acDXJx17TubEuUoHHCP26SedrOV2B
+         It4FqnTNGNizlQrikXZqTBYLC5dCsJyAI1qbbrvbeX5hY6VqvkervWaKwVvJU/9TaeHu
+         J13i9V7SMmnMSa1MwawgpZiLO//X+JH1svUlKtlOo6yj3zv0v9CWk4/ZsNJb8NG+y3T2
+         6xqQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1788824085; x=1789428885; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Awv3H1wnvCKoXScc4pcndUyTglaueBmQi2mzpL4GQqA=;
+        b=LueDEPZrwERRQSqM4jQrV4y5AcPQiFDDOxYgL798newQ1GTpIjbL3H5vEICl9llvd4
+         Y92DZADnXzh2vJDaQPscrI/URK4PCO33pne9encxE94MXh6t4BQ2eeu+mDP3InZkgve4
+         7vbvzttqw0aiGB0pI082mmpMQBE2Zo5Ef4cg0YlV8Pge0uITCSJ9YqYDpUUAKteDsOZl
+         svnjiO2HuX0cHbYXpXQH3gCGtMYzg6tTM8oxMt7tDr4BSffy5A+mdjJHoeBAzt3qqeD3
+         o+4c+M2UC0vgAZQBjKcwNV1eF2Vr86KKswB8/Ttv80E5547Og37X9ZGnyt2tL3d1RoBo
+         rmFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788824085; x=1789428885;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Awv3H1wnvCKoXScc4pcndUyTglaueBmQi2mzpL4GQqA=;
+        b=OSexzAmItEqUEvoRR9hi6JHaVkSZSqEpjstEJice/N1D86ED8gYMX2xcpLNBJwRCLS
+         FwlvoEODENLLTy0EPhTKJQQqAnbq9PVPrVMwe5xZcz5APGgWgs/2an3JN5+twDHuIjWC
+         CBuDqsoTsSCmXUYXGcDm6+9/HLHWYBlu/Qm/xrduUUW/FM5zqRN+ZQKSgrByqWX5i5zD
+         hlg+sRKP5678DI0pYKOtswrsFL0fUifDvZfD/Ogq4yMtNHnlzJM5jlLUQ4ApQ70Njh5M
+         2huCEnJcjHcA1vC7r0q5n1GAdAHpug73a3JvODB4L6ENwev6wlkQcvl1H4L5LRb8stoE
+         s7cg==
+X-Forwarded-Encrypted: i=1; AKwUvBxJx+4RpHBrFVJwzjpU9Cz9mBdtyqjHnqaBrz9rGaFOSD9PpUW5pF2EaaFcjS6Lfr72ZcNTAU0=@vger.kernel.org
+X-Gm-Message-State: AFuF++n3h/tcU+oUaeuKcV9RPzCQQ2w3QjK9ePWf9RMs2PauDGWjqJ0j
+	8kwqH49ggRSVDqiVVG+CiJV6bYdiKWT8dcqC7rtv7pQtItZ3D73DIh34PF1W80wOg98y+hV4Ufj
+	8H8Wh1RjpoYGC8nQskIgwJJEUXRA85kosa41sbS82
+X-Gm-Gg: AYBFou2BFC66qmkAY0cMMKurv4+Jy2RauGS288TbkAGMqBg1LKZDSuBZsKl35z2oIYe
+	EMMh7tYozfm5R3vvsjgKz0q2fi9MrCprjeP6rnnLUtr6QX3YwxhKO/eXgwpr2OJcrtax0Ii4tl7
+	lw0iw3L0hMACqM8SlIKkYTIMa3wevcuuvoxw66T6lG2sYLU9qIcRbA9RbvOb33KxNf3K2mp04km
+	ihpYflN1PRfsQQU4sc++JUdYDVPPFyss+6FcF+aYo+seNH2b5yxwfeEDzSN93M3pwnoRQ5IZkv3
+	KlWG1hWv/tDvdoMq1YjdcH0ylYlu7vARnhmIs5FSWaIOwDDm2ANHb+aXLLGEU2FM/UHFW0b8G2F
+	yP4klYVzj+Z0gTiURopmQndf00DLAsd9hpC2QZKtOjmP1qOI6cq7MuNkb
+X-Received: by 2002:a17:90b:570b:b0:398:deed:6e1d with SMTP id
+ 98e67ed59e1d1-39b260de5bbmr39739841a91.5.1788824084339; Mon, 07 Sep 2026
+ 16:34:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8P251MB0001:EE_|DB9P251MB0358:EE_
-X-MS-Office365-Filtering-Correlation-Id: b06fb913-a22c-4527-3fc7-08df0d37d77a
-X-Microsoft-Antispam:
-	BCL:0;ARA:14566002|37011999003|25031999004|5072599009|25010399006|8060799015|19110799012|12121999013|15080799012|55001999006|24021099003|23021999003|2604032031799003|51005399006|3412199025|440099028|26104999009|40105399003|2607281247196008|1710799026;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?TiamTcOdKGqxaRVDume2oCDD/JSAFe9FwZG3OYjwWEPq//TWCctMEOG4JbP2?=
- =?us-ascii?Q?XO74VuSfiZpjossj2QBIYaWdb63djvr79tV61jnHDwmeA/lxV/TroImgOgNw?=
- =?us-ascii?Q?SnXMPdey/LYWQq1zmwlPo+xfMx2AkkSqCoxMC6FCg9Gcayo/ll0kW/G7fePt?=
- =?us-ascii?Q?Z08G/xta+99sz0nGp2pEL8VLRGW7sIA4cvkdLbkjI1j8FYPrjLDLJ4oabP2D?=
- =?us-ascii?Q?Dm7Zl1pWIpLf5A3prpe6j6TlcZ3RFRSc4Ss2wBSanxM1WT5z8uG5boTPqDMG?=
- =?us-ascii?Q?YyIhLHxi1cM6iTt1YC3UufxRTdItP9f94N0Rhh8BDFmTSPilZEXG2ULnPc6v?=
- =?us-ascii?Q?sYTfcSpPE/xBJeWvXswg54R19VUmTmGtjbhVZsALtYuQqyiVT/S0Jh1pZ3xK?=
- =?us-ascii?Q?DYWH4kO02QR3VO3xG/q08BuyhfuAfIUQTFjLWfqdb5MWpbANpFtyhu4MdheV?=
- =?us-ascii?Q?DF/IwplUtRBaz7IPG4jc/F3V6Ju1uLaww3GCLi6VuuLPlE8FwLGOZAZQrJWR?=
- =?us-ascii?Q?eb3q12hzkDOhzd6ItzDLRkg1/Ep/TuFKg+9dBPXziWbsuYIhYb+mW+P6r2gh?=
- =?us-ascii?Q?Y0NE3XFWuCuTyQqeniP+zW29KqVMxeV10VzY9VPuFirPHx4psQIt/GudUVcD?=
- =?us-ascii?Q?VPUnwFGNJT64Y95j1csGDxWL11QfDEwTZxG4zY5yJqS1sCDB4VK+kcpjIVdi?=
- =?us-ascii?Q?BSRSNQOvc2XRTOZ0fbdpc7Qip57xw9JyfYR13KBOt/C5MiOdwbwd8YstatNR?=
- =?us-ascii?Q?a4dfObKDPJbMZjg6OAkBXGN6xT9ej1N6nwnhke86mbK8MqIyRMK3skFahu3x?=
- =?us-ascii?Q?7yiqUHMYEjdrOX5fhsw6ngjDoV7No4S0k3qGsgk2A2711nJPRmfdvxGXFR8+?=
- =?us-ascii?Q?hJfFlUhJvKShpoihQuhpdO6b+Oo/lQt8aCFnaJfl3HCt3q673y9p3iyWpSPE?=
- =?us-ascii?Q?G6qWAkbagyYR3WTNd7AwS90UTiHo2+Gm4vclvTPuyYYvoe3SxNeNScbpVLfc?=
- =?us-ascii?Q?iqo5IMtgqCL5uhjshp4D70NGnsUhSGNVzAiFfuw5YvMTo2YjIp/IUa5+TXOb?=
- =?us-ascii?Q?HJUhxs5ofQZenrjFlj0VqHzTYpnO+K3ZzD8fHXhqsAYmt3pBUMG/dXqycstP?=
- =?us-ascii?Q?Wk2DVycH7jIhrCajj3HNDaxUy+oWCK5B/A=3D=3D?=
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?7P25uKYYSYWCsMMfUZk24+ohjdGNLK/vnw6SX6rpu1qKz0Cg5yTthWC5p+MW?=
- =?us-ascii?Q?jcSeVeWpVX9VVWKuC2Etvo/kyXUwFlLclPy++bWxPirCieY2Djv1hCAVETyW?=
- =?us-ascii?Q?X2qfyuKy7o5qfzFnxYnQL5RucKQL2K0R9xIehQLUxDz62XhYoeTEQpy9DjuM?=
- =?us-ascii?Q?Lm2XqS9+Bd4bj7W8SiiP83D6uDY7fy1I5XqUX1m/MwvFd3LBL+eqs4aLZ4jS?=
- =?us-ascii?Q?oiZDfyKm/IncSDcufaydLSpV/zFcq+xqutYl+ICJ9+0/4Jg1nLcSyM2P96Z+?=
- =?us-ascii?Q?bZ1VLYB3CRkW4Azr5hr3DNZx2Gb6n2fxwWuiPYKoaksz4k/zXHpz/LGfbZdp?=
- =?us-ascii?Q?zNx7oREagYDg8+Xi6rOfc0lovI9vz7LBXPQUDqb2eSsxym/5c5DgV1y1Xrb/?=
- =?us-ascii?Q?RTJa6tUaa8Ar+yFQT0ti8dazJNkO8uh1Z7nuuUVHbWNLod7RHHfpt0sKFvt5?=
- =?us-ascii?Q?75xScjTEGzjdKJZbDki2NqCcdE7dTNpvlBexJFEP85pWLf6SjD38W56cYGVe?=
- =?us-ascii?Q?RYQZaEi7n7ycM51WCDe744a/6rS8ZpiLmsPiWi/zBcSVRlilDr1+gE/9Bejs?=
- =?us-ascii?Q?2wfQWOMCX+wWrW+XmmTIl0J+4o7CGpoce6MpyXDujCxydv4QN4e5xOfGGKWS?=
- =?us-ascii?Q?/ZYeB9pMCj4Un6BAYys+EoXvm9uA3Qpk8uLo5du64OdTUIGsH3/m6sX9/lX8?=
- =?us-ascii?Q?Uj2PQcrZHpJOmEyDdlTCkqRG1h9QIXczXmwW9OzKzkOsohsHjLHWNQVK9de/?=
- =?us-ascii?Q?wIc/9NNFp66WEbZgmTtdIlu9pUTKab8WIZb3xgK0b7Axz+y/UKh3TF3IlMRv?=
- =?us-ascii?Q?cvC+vEoKjoxt88sEJ10Mfs1tzD5Axbc1AKL/EIfeIh26awicP0QeRGBcfldB?=
- =?us-ascii?Q?FZAZ1SwaqAKM8JQEiQe9rayD+2CpE4wHyHBAhJbXyiBOZrLlqCy445En6t09?=
- =?us-ascii?Q?0cuy17uEzQQgXJ669bdyJ7ZDJ+iLMchZgwtRlTLr2qXGoVVFeH1FFOTy5kcC?=
- =?us-ascii?Q?ndPMXXzX433vNSXsw9vZRnDx/lph3GcR+jGxt126U9OkhHl6qnrQpaYqtYfW?=
- =?us-ascii?Q?YxexBlo4HLIp70dxslJiszg9YZ4sx8yB73KsygdbDB7oTY18oiTvrs6VLmE3?=
- =?us-ascii?Q?c0e7K4hpyeTmXSM9Hfv0phfIT7NzOMkF4lEIQzyIeU7jGmRAZXfhGxZ1QQJj?=
- =?us-ascii?Q?j3y0pkvg+cOQjNKi3wzC/sG3RI/cDYltQ/VMzh1LGxX5jbg8BphrpWEdNDAC?=
- =?us-ascii?Q?nY1SdgFO9HATWryJtf+lvmQ5+cDKJu1SSBe618wMZdGDrim94e6jmdBWP2xC?=
- =?us-ascii?Q?vkKD881g/by30Elhf+rWu6GbNbqJMQvfTkJwQ5atXeK/OpT6/8RP3ko2n+lx?=
- =?us-ascii?Q?vic/oZVB6B/aBYyp7d4gKWphKXn9jcC16OJBY9iEzu2onR1OldJQ1GlVIStQ?=
- =?us-ascii?Q?vXc/DUypTvU0Kl76yvrMYfwalkHLE8pL?=
-X-OriginatorOrg: sct-15-20-9412-3-msonline-outlook-fe3f5.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: b06fb913-a22c-4527-3fc7-08df0d37d77a
-X-MS-Exchange-CrossTenant-AuthSource: AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Sep 2026 23:29:20.2562
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
-	00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9P251MB0358
+References: <20260906074135.185212-3-jiayuan.chen@linux.dev> <0aa6425f9e8f32705ae827f6325b29079234c3f3d0c7b2cdefba3e5b50432766@mail.kernel.org>
+In-Reply-To: <0aa6425f9e8f32705ae827f6325b29079234c3f3d0c7b2cdefba3e5b50432766@mail.kernel.org>
+From: Kuniyuki Iwashima <kuniyu@google.com>
+Date: Mon, 7 Sep 2026 16:34:32 -0700
+X-Gm-Features: AcwNN1UK4ePHf92C8dfodAq8wlNSEQxGqv1s9W_oplqA5uHsM2tjuHOURyVXA5A
+Message-ID: <CAAVpQUBztYDHyiCN1fnhdxCPv_5AZ09yCMQfNW96SzZyw0LhHA@mail.gmail.com>
+Subject: Re: [PATCH bpf v2 2/3] tcp: Skip cond_resched() in
+ inet_csk_listen_stop() under BPF context
+To: bot+bpf-ci@kernel.org
+Cc: jiayuan.chen@linux.dev, bpf@vger.kernel.org, daniel@iogearbox.net, 
+	john.fastabend@gmail.com, sdf@fomichev.me, martin.lau@linux.dev, 
+	ast@kernel.org, andrii@kernel.org, eddyz87@gmail.com, memxor@gmail.com, 
+	song@kernel.org, yonghong.song@linux.dev, jolsa@kernel.org, 
+	emil@etsalapatis.com, ihor.solodrai@linux.dev, davem@davemloft.net, 
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	ncardwell@google.com, shuah@kernel.org, aditi.ghag@isovalent.com, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, martin.lau@kernel.org, mason@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Please drop this patch.
+On Sun, Sep 6, 2026 at 1:23=E2=80=AFAM <bot+bpf-ci@kernel.org> wrote:
+>
+> > tcp: Skip cond_resched() in inet_csk_listen_stop() under BPF context
+> >
+> > bpf_sock_destroy() runs from the tcp iterator, under rcu_read_lock(). I=
+f
+> > the sock is a listener that still has children in its accept queue,
+> > tcp_abort() ends up in inet_csk_listen_stop() and the cond_resched()
+> > there trips the debug check:
+> >
+> > BUG: sleeping function called from invalid context at net/ipv4/inet_con=
+nection_sock.c:1523
+> > in_atomic(): 0, irqs_disabled(): 0, non_block: 0, pid: 628, name: test_=
+progs
+> > preempt_count: 0, expected: 0
+> > RCU nest depth: 1, expected: 0
+> > locks held by test_progs/628: 3, last CPU#3:
+> >  #0: ffff8881158cee18 (&p->lock){+.+.}-{4:4}, at: bpf_seq_read+0x56/0x1=
+210
+> >  #1: ffff8881106bb858 (sk_lock-AF_INET6){+.+.}-{0:0}, at: bpf_iter_tcp_=
+seq_show+0x32b/0x4b0
+> >  #2: ffffffffb435af20 (rcu_read_lock){....}-{1:3}, at: bpf_iter_run_pro=
+g+0x46b/0xde0
+> > CPU: 3 UID: 0 PID: 628 Comm: test_progs Tainted: G        W           7=
+.2.0+ #65 PREEMPT
+> > Tainted: [W]=3DWARN
+> > Call Trace:
+> >  <TASK>
+> >  dump_stack_lvl+0xc1/0xf0
+> >  dump_stack+0x10/0x20
+> >  __might_resched+0x3d2/0x610
+> >  inet_csk_listen_stop+0x7b/0xbf0
+> >  tcp_abort+0x23b/0x3b0
+> >  bpf_sock_destroy+0xfc/0x140
+> >  bpf_prog_448133d24601754f_iter_tcp6_server+0x81/0x8a
+> >  bpf_iter_run_prog+0x538/0xde0
+> >  bpf_iter_tcp_seq_show+0x26b/0x4b0
+> >  bpf_seq_read+0x424/0x1210
+> >  vfs_read+0x197/0xe40
+> >  ksys_read+0x119/0x240
+> >  __x64_sys_read+0x72/0xc0
+> >  x64_sys_call+0x647/0x27e0
+> >  do_syscall_64+0xe5/0x610
+> >  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> > RIP: 0033:0x7fad39b28aca
+> > RSP: 002b:00007ffc381c61c0 EFLAGS: 00000246 ORIG_RAX: 0000000000000000
+> > RAX: ffffffffffffffda RBX: 00007ffc381c6a88 RCX: 00007fad39b28aca
+> > RDX: 0000000000000032 RSI: 00007ffc381c6250 RDI: 0000000000000014
+> > RBP: 00007ffc381c61e0 R08: 0000000000000000 R09: 0000000000000000
+> > R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000003
+> > R13: 0000000000000000 R14: 000055f077c1bbb0 R15: 00007fad3a0f3000
+> >  </TASK>
+> >
+> > The commit that added the kfunc already guards lock_sock() in tcp_abort=
+()
+> > and udp_abort() with has_current_bpf_ctx(), but missed the listener pat=
+h.
+> > Do the same for the cond_resched(), it can't reschedule there anyway.
+> >
+> > Fixes: 4ddbcb886268 ("bpf: Add bpf_sock_destroy kfunc")
+> > Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+>
+> Is the justification "it can't reschedule there anyway" accurate?
+>
+> With CONFIG_PREEMPT_DYNAMIC=3Dy booted with preempt=3Dnone or preempt=3Dv=
+oluntary,
+> cond_resched() expands to __cond_resched() which can actually reschedule.
+> The splat in the commit message confirms preempt_count is 0 while RCU nes=
+t
+> depth is 1. With preempt_count=3D=3D0, should_resched(0) can be true and
+> __cond_resched() will call preempt_schedule_common() for a real reschedul=
+e.
+>
+> Additionally, in configurations with CONFIG_PREEMPT_RCU=3Dn where
+> rcu_read_lock() is preempt_disable(), __cond_resched() falls through to
+> rcu_all_qs() which calls rcu_qs() to report a quiescent state from inside
+> an RCU read-side critical section. That's a correctness problem beyond ju=
+st
+> the debug check.
+>
+> So the call can either reschedule (PREEMPT_DYNAMIC none/voluntary) or rep=
+ort
+> a bogus quiescent state (non-preemptible RCU). Could the justification be
+> reworded to explain that the loop runs inside the iterator's RCU read-sid=
+e
+> critical section and must not reschedule or report a quiescent state ther=
+e?
+> The code change itself is correct and matches the existing pattern in
+> tcp_abort() and udp_abort().
 
-I rechecked the code earlier and there is no out-of-bounds access to
-fix here, so the commit message is wrong.
+or maybe simply remove cond_resched(), hoping 7dadeaa6e851 would
+resolve the scheduling issue.
 
-skb_pull() returns NULL without modifying the skb when hdr_len is
-larger than skb->len, and when it does pull it leaves skb->data +
-skb->len unchanged. Either way
 
-  trailer = (struct nc_trailer *)(skb->data + skb->len - sizeof *trailer);
-
-resolves to the last two bytes of the frame as received, which is in
-bounds because of the earlier skb->len < hard_header_len check. The
-read of skb->data[packet_len] is likewise already guarded by the
-packet_len >= skb->len test above it.
-
-Thank you.
-
-pw-bot: changes-requested
+>
+>
+> ---
+> AI reviewed your patch. Please fix the bug or email reply why it's not a =
+bug.
+> See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/READM=
+E.md
+>
+> CI run summary: https://github.com/kernel-patches/bpf/actions/runs/340203=
+53095
