@@ -1,138 +1,150 @@
-Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5825B417BD9
-	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 07:41:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.175
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788766905; cv=pass; b=MY3eNsksRjXiIuRHXv2B6FLZctqUqXc2d+OagXzbgNfDT8DlEC3CEWnXFoVRkWn2RMVgfeUSr0s9QNKsM0X5pUT2N5qaL0X/+4sQSGfjoYweLjEOl/vusZ7XQi8wCnQ2v8PFByjCVzdwAL0djCQgdEoMkloTjwTtQqD6qrzcE6Q=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788766905; c=relaxed/simple;
-	bh=QKjvgmeZzGEaOpz3gNTV5TQ4+j80gPA1r1+NsciZfkc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uIAOnX64UW/HhGZ57CZOdfTPcVHMO6yQGTyVWyxMTXiVK1LaSlagL3yO1BScqAxBMh3JKBDngmYignvvUVEhTpyb+I7BnH8gGfBtDPLaBVpSYYQXZD2i/Y84bPwImQzPGdlT0kGNb41FhxgzQ2EYA7E6AbvlsS33VM1uH8yRgQE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=tE1VOsdn; arc=pass smtp.client-ip=209.85.208.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D7A83CF1FD
+	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 07:41:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788766917; cv=none; b=VmX/sL7DRnWvbBrcPrsqKy5AwyJKkL7VrTdRi1b1QsF8eVP7gVgc5kjpQxplhpjH1omeXCzIbyyf4SPwE0mhzwqxXveor1gKWxy6jexsfe5mqxFwl/Z4hP5XaYcPqb1X9AJ1Fh+20KqGToz/RsHgg99woE/QGyHsFRIlCv4xKrM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788766917; c=relaxed/simple;
+	bh=846bMTmXtFIz58zwn2KWlMI0oVbNLlrCfeJ17SRVbqg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RGo3Y2k2+WoX0bKBj0HeEc2aPOsVgrCBtruwcv18KFTfb9DqKLMYmrhX8ZJqkMx4SOCv/TtVSL1nqgRsvBSfH4YsmZ8aYPN2aatZ8ECVjGO34SeOGt+60ic7FPgZ5DzjPcjEw7xebxWxwUsA/fte7/XscndlxSBSzC60PIngm9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=nq4BMIQ1; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="tE1VOsdn"
-Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-3a20c95e412so27210551fa.1
-        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 00:41:43 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788766901; cv=none;
-        d=google.com; s=arc-20260327;
-        b=cTEQnrguXlQKvtVN9kLwwXbgDlXgkr7AUIzBrNr9IDYSTapb9mIEq+9osNJg2hEVdh
-         ddQ7Eoc+fk+34dxE8fE5pkOB4L2dUX7OmRX0QzTL3C3CJqTVq6fY/M+2pldJrLLhpYha
-         vM2VFgxHvUUwg6bNZjoNHRj4coGFSOx0c82ow/15Fim4VVv4RYnelJz8GrJJtuULCNTM
-         F5Zwk73nUusQhPksymxN9PyWDr5VsjOiaWXq58/ASveMgVFcufahBCcSYp0A8lfAn1sL
-         4o9oM1Kxkga9KlGmPqCVqfVz+9wRx1d6AsF8UnY1scz41CtqMDNHPfQvO7BlxTneFAla
-         ZRug==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=BH9WMir8rF2hqn5Htua6dfyRLLaHMRp/CMdHgEBBKQA=;
-        fh=HAcQy8C4YzEycmjsF3en6cb1pU6RTzLm+CDFpZHQYhc=;
-        b=oPzjSObRS+1gbTDWokAN++A4wR2Q8B5ks7HdPhQF3dJYh0vY+YMRc4DZxmN0xuml+d
-         +0OJv/ctMVcv7SF+9b4qpht8PEWfat6nt20Si7dmST6WtyfG4SHXMBicqMyZhg4eenfX
-         CVeOru3Ld7QgsGbL7nu1bpzMOGgwc26gScKkhE28h9xkn8107UugPz6Ovc/SfhfPBOh9
-         W4/yrwBIKJSKDNl/OfzdK4csGshoUax/LeqZyqQvtAa5S5+wFKGSr8OXXq1C5bHvhbRZ
-         eqwZge9V9SdKpkTyKAE657BAVKVaV7q3m/ft73axPlqEoEzq9Aq1WnYrn0eHbM5T/DPu
-         8r6A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="nq4BMIQ1"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4998b5a63e2so38804545e9.1
+        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 00:41:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1788766901; x=1789371701; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=BH9WMir8rF2hqn5Htua6dfyRLLaHMRp/CMdHgEBBKQA=;
-        b=tE1VOsdn0HBsn78ZbWEqbsgTuwQ3F1SMSe/52v0opUisM8ohTsP2QouD/nMe+q9U6B
-         GTAtfx07P5cLiUH4o9Cb9Rj8D4kSvIxxWBvqFrEt2s+sQ//fQuaQueokxj8yK4J5iFJL
-         2+4iZUo/7XZ2Eqvao+FuRRrEShLphXqC9w33yyweTMm0SoF9lNQUXW1/QU/BmfzCIfD+
-         T4Bcta3UBDR1ELd3CARFsvVuc7DDZW2BwJ3Q5PHGsUbQYI/lhmGuZE6urcaKRkD4QMOo
-         p9OxDdk5I300G/QQcUzGC649IEgk9t25h0behUz5PTiaqut1lZ4OSZCseTI05LEq8w0v
-         xiVw==
+        d=blackwall.org; s=google; t=1788766912; x=1789371712; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=pl8Bn3vVjsLyABhtV3hHgEyHKlUX2lWCov436sZUw3c=;
+        b=nq4BMIQ1q+FfOmtN44ipGA07cHtsWIUqOT12Hi3dSUrGLdIo1cOS1pg0T3o6iP8WQA
+         tC64TC3JU/oCmU58hUfHIuP+mBTkwTmpDg9X5R46KdM3vKh2dW3kLQs4Wj5Kneq6fIbm
+         Kh8g9ckrANzsNVz7wJ2zaE/cDR5SulFTYpBJP+UppKt/s/HU9bt2x9G2DwkfDgv68Wz6
+         m5289RzW+2k17JKxy18ST3nzFXRD5bKRB6/BYvNSjGO+agGIBQ6BUhJE7Iv15wE9C/YY
+         RFyYXzaJD0qtk6mI/sX6z2enVnI6HzT0UCxKMEjlYCLQ55LsNTORhtiZ6A99EfYjdAYE
+         lD1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788766901; x=1789371701;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=BH9WMir8rF2hqn5Htua6dfyRLLaHMRp/CMdHgEBBKQA=;
-        b=Do1O1g/ErvHkLweMHg4P/k5bqMy2/np6ohN0rHO6YxVl0jRcGTvjkboL8DG8lzByuK
-         r/fQGp+fpHtTv7j4yWRnrHD4fg/0CFsTgNzz5oARFu8vKmTjgq4RUA0HoHtp3AHar3z4
-         4E/abraUT58yHL/DM7fOXoqQaeYA7A+/rccB0OskOxWfLc0Tdy2f6dHKKe+281jRD6in
-         wCxQb2v05eH4cuNEKgZsCPoe2h4/8PAvRdXU5UaF9kYpiJ5vAQAs98MJyV6soBwo90EI
-         pmBHvTNm4npEhS7g44itLCwDRyRonzT8DBw230nhq3nyiDZGS6ydhi82A7kM6mBFGDqs
-         aDTw==
-X-Forwarded-Encrypted: i=1; AKwUvByHLgA/PE4Jh6uEF8x7jBsLBnqPiCLf8E/gLwI7SIEl2yd3++XTRgygSFtiKVMYceGMlRwIg8I=@vger.kernel.org
-X-Gm-Message-State: AFuF++m+CrcAIcTC/J9vUgs8ujsbQBdEs61BUjPWQtlcxyzzt6m6PICn
-	llaAAca11dJ4R0xXsrnEs1FmYHHaQmuN5gGUQim6CSgq1qDgktj38YKFY0CaQ2sX4rmLV8x3Fu9
-	0T8EMZ6U+QFBg3rGdNkik0BE2yEwDZW173pZ4q3UwCbtYTaJcFpChlAx4L8sM2g==
-X-Gm-Gg: AYBFou1H753+UX9YBwfkwQiVUOl4Kdtx5vJpAs+9fDf5mR0i00q68gig705iJE/z7f8
-	E/lwmlwce5labC4zC1rs7XJvrRroCUcOXnKmF8mp2DMCJEsVLdqAmOF2O/yNj2/6PaT8eckO8bh
-	kf1Izg2jWEXg9HdEiWzbItun5JuDp8IGvelHmMlnT+t7QylBe4XyzZHIceEKjV8BJ/Be2UC7a2d
-	hhr4r8JPzVHh8gin4+alPWFRUkGdkOS9t2vGVzujtvYA1Rtm6w9K3XfOAPadp74GVGCRYYXSvLV
-	DgFevkCFpdKyLB+usqCQ7AfD7f6B5uP2x04dCV7qddwgU+AKVugfHLMWdzxPbRgDdfC4htSJbjo
-	=
-X-Received: by 2002:a05:651c:15c1:20b0:3a2:fda9:34fd with SMTP id
- 38308e7fff4ca-3a371bb4496mr14915881fa.9.1788766901322; Mon, 07 Sep 2026
- 00:41:41 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1788766912; x=1789371712;
+        h=content-transfer-encoding:content-type:in-reply-to:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=pl8Bn3vVjsLyABhtV3hHgEyHKlUX2lWCov436sZUw3c=;
+        b=jdSHx4v5ZSfj0o8w6O76Onq56O72lsB8nFtOUAOgab4p7Q9FYMTxkgaoS7TwvLkw/A
+         hbKSDUglaalxcKt8dmY9OOyGMujkzod0cd4+E1YWe272R3iBDvSBJaUQlJsSAMJ3jixX
+         vgtL4FfnqC7M+Q+Uds1aK72aeczsfWss/5dqmItdS10/uFrxYCPvnXhcxNFEW5WHamr9
+         TN7PC9VeVyrXOTpBABN+eM+FRe9yx91cYx1VQ9LUDL3Y58Q5LyTsnALmyAxudtEJ6QNd
+         CWDofCs2frWBWHkePvfE8jrGB+G/irVPcCQcGT7MadPWXbGLA35dkujdHkAFjulkVnMd
+         IVnQ==
+X-Gm-Message-State: AFuF++l7rxbOV2cLz61EewZgjfA7lCSRK1vGct0Gp97/2bH4Ue7rUWAO
+	n0y5EbAPS4FaOGgnkzZL6w/97/QI794hxkkT5NKzmi+rJcxrXPeKhBjH5rX6fWb/tmk=
+X-Gm-Gg: AYBFou3gsCLzHND3JcNmpSmd119MJRxboe21sRsZPi7Jbas5X+lPi25rrOLv04f89Iz
+	wnMbib0jqFmFuFif1hg5d6yPw3KQlIxc/Rgedr0VANCbsNhRhHUDTnYty6EwBaLM14GaRjcIEyl
+	4Z8l3ya/MMopYawCajk1CgqmRAM/268MbhDfZopETGm1ZaKxxTR7Fkca68cZvMRrvMwU5dtgFAE
+	Z1ukCN9U7MQ7EzsQnW+Ob76zMNCj3YmH0Gy+pfXMHAIvB/JDexNU+Y34cBTL4M9CIJP4rYL5BqD
+	qwojRjhfVMa0Scsu7Ikn+IbROcho6qNnOYxchs5PLhE7U+nEluPapr3xdLFgrn6281Lp3WShCVu
+	HP9BY8lgp44VVewgvoKDoBxxxHize9iCybfVZH8RUdwIC8B15umvjqzZdk4bN4XOD+gFoPsqGe0
+	HXBxzfWCcSgRYctRkB6myiFMJMXi1HcYTixdUPURmvxn0f2BJ+e+N9PH5nYjZ5TeitIPGvkuw9V
+	EoaqROjMD9aZPQrP11GMsdf3+zBBQ==
+X-Received: by 2002:a05:600c:4e8e:b0:49c:dada:f57f with SMTP id 5b1f17b1804b1-49cf823cd42mr194952845e9.7.1788766912309;
+        Mon, 07 Sep 2026 00:41:52 -0700 (PDT)
+Received: from [192.168.0.161] (78-154-14-127.ip.btc-net.bg. [78.154.14.127])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cee7fec25sm433527415e9.13.2026.09.07.00.41.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 07 Sep 2026 00:41:51 -0700 (PDT)
+Message-ID: <c5d539bb-3bb6-4f76-8c75-05a8f240c39f@blackwall.org>
+Date: Mon, 7 Sep 2026 10:41:50 +0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cdc628415cf10721480a51ce14837f846ec778c2.1788248601.git.zihanx@nebusec.ai>
- <178875495405.219967.5594821749566554418@kernel.org> <CAANe3eRBOQud=bMgLnPbD_yUYUkJtT=GBqtY+GR0ZtU0_kbzhg@mail.gmail.com>
- <CANn89iLn+Xi9cEphy3nR4bGnFCownrWa9rTZ=AnijArDFo2O7Q@mail.gmail.com> <CAANe3eR=sQeTRNuewiqo0ZFwS6fk=HtxvT6TMGhq8F5Pqdxovg@mail.gmail.com>
-In-Reply-To: <CAANe3eR=sQeTRNuewiqo0ZFwS6fk=HtxvT6TMGhq8F5Pqdxovg@mail.gmail.com>
-From: zihan xi <zihanx@nebusec.ai>
-Date: Mon, 7 Sep 2026 15:41:27 +0800
-X-Gm-Features: AcwNN1VzGJxnqabKgTDT5QXQvwkk_pkpIGT7iWj3PbbALy5PgIuN8fmhJFOeJSY
-Message-ID: <CAANe3eSbySUA=RreUvFxBaE4xFp5Ob1uapgFn86UYO4J8WuXzA@mail.gmail.com>
-Subject: Re: [PATCH net v2 1/2] tcp: diag: bound bucket lock hold in tcp_diag_dump()
-To: Eric Dumazet <edumazet@google.com>
-Cc: netdev-bot+sashiko@kernel.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, mptcp@lists.linux.dev, davem@davemloft.net, 
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, ncardwell@google.com, 
-	kuniyu@google.com, matttbe@kernel.org, martineau@kernel.org, 
-	geliang@kernel.org, gnault@redhat.com, fw@strlen.de, stable@vger.kernel.org, 
-	vega@nebusec.ai
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v3] bonding: fix slave_cnt leak on XDP error paths
+Content-Language: en-US, bg
+To: Hangbin Liu <hangbin.liu@linux.dev>, Jay Vosburgh <jv@jvosburgh.net>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Daniel Borkmann <daniel@iogearbox.net>, Jussi Maki <joamaki@gmail.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Hangbin Liu <liuhangbin@kylinos.cn>
+References: <20260907-bond_slave_cnt-v3-1-57df3b3cf2cb@kylinos.cn>
+From: Nikolay Aleksandrov <razor@blackwall.org>
+In-Reply-To: <20260907-bond_slave_cnt-v3-1-57df3b3cf2cb@kylinos.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Sep 7, 2026 at 3:15=E2=80=AFPM zihan xi <zihanx@nebusec.ai> wrote:
->
-> On Mon, Sep 7, 2026 at 3:06=E2=80=AFPM Eric Dumazet <edumazet@google.com>=
- wrote:
-> >
-> > > - bind cursor UAF / dangling tb2: valid
-> > > - unconditional sock_hold() on unpublished TIME_WAIT: valid
-> > > - clearing s_num on cursor mismatch: valid
-> > > - lockless cursor-membership checks: valid as a concern
-> > > - commit message overstating bind/ehash fill-under-lock: valid
-> > > - missing note that MPTCP needs the follow-up patch: valid as a
-> > >   backport note
-> > > - endless re-scan of the same bucket head: not valid as a
-> > >   guaranteed livelock; duplicate output after a rejected cursor
-> > >   is valid
-> >
-> > I just saw your patch today. This is absolutely insane.
-> >
-> > Please limit the complexity of a filter to something reasonable.
-> > Absolutely no sane user is using a very complex filter.
-> >
-> > Same for UDP.
->
-> Thanks for the feedback.
->
-> We will drop the dump-cursor rewrite.
->
-> A follow-up can cap inet_diag bytecode complexity in
-> inet_diag_bc_audit() so TCP, UDP and MPTCP dumps share the same limit.
->
-> Please let me know if that is the direction you want.
+On 07/09/2026 10:07, Hangbin Liu wrote:
+> From: Hangbin Liu <liuhangbin@kylinos.cn>
+> 
+> When bond_enslave() succeeds up to the XDP setup stage, slave_cnt is
+> already incremented. If XDP setup subsequently fails, the error paths
+> jump directly to err_sysfs_del, bypassing the slave_cnt decrement.
+> 
+> This causes slave_cnt to drift upward on each failed enslaving attempt,
+> which would lead to unbalanced traffic distribution with round-robin
+> mode.
+> 
+> Fix it by moving the slave_cnt increase after XDP setup.
+> 
+> Fixes: 9e2ee5c7e7c3 ("net, bonding: Add XDP support to the bonding driver")
+> Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
+> ---
+> Changes in v3:
+> - move the slave_cnt increasement before bond_update_slave_arr() (selftest)
+> - run all bonding selftests on debug kernel to make sure no regression (Jakub)
+> - Link to v2: https://lore.kernel.org/r/20260903-bond_slave_cnt-v2-1-02e27304ca36@kylinos.cn
+> 
+> Changes in v2:
+> - move the slave_cnt increasement after XDP setup (Nikolay Aleksandrov)
+> - balance-xor mode is not affected, not mention it (Nikolay Aleksandrov)
+> - Link to v1: https://lore.kernel.org/r/20260902-bond_slave_cnt-v1-1-36e95bf4a6ff@kylinos.cn
+> ---
+>   drivers/net/bonding/bond_main.c | 4 +++-
+>   1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+> index a9bff7663eec..1514a8ba0888 100644
+> --- a/drivers/net/bonding/bond_main.c
+> +++ b/drivers/net/bonding/bond_main.c
+> @@ -2284,7 +2284,6 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
+>   		}
+>   	}
+>   
+> -	WRITE_ONCE(bond->slave_cnt, bond->slave_cnt + 1);
+>   	netdev_compute_master_upper_features(bond->dev, true);
+>   	bond_set_carrier(bond);
+>   
+> @@ -2332,6 +2331,9 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
+>   			bpf_prog_inc(bond->xdp_prog);
+>   	}
+>   
+> +	/* Increase the slave count before rebuilding the slave arrays. */
+> +	WRITE_ONCE(bond->slave_cnt, bond->slave_cnt + 1);
+> +
+>   	/* broadcast mode uses the all_slaves to loop through slaves. */
+>   	if (bond_mode_can_use_xmit_hash(bond) ||
+>   	    BOND_MODE(bond) == BOND_MODE_BROADCAST)
+> 
+> ---
+> base-commit: 38b6be101006d3e7af972999f45d4f1e8250587a
+> change-id: 20260807-bond_slave_cnt-88e78c5f0ab9
+> 
+> Best regards,
 
-To be clear, this series is dropped. I will send the bytecode cap
-as a new series.
+I think the comment is redundant, of course we should change slave_cnt before it
+is used by anything that needs it.
+
+Anyway, the patch looks good:
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+
+
