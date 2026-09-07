@@ -1,200 +1,267 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E4764B0494;
-	Mon,  7 Sep 2026 12:55:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AD004CA76E
+	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 12:57:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788785735; cv=none; b=bJI8gVkClD6aYofrIXyQkMSD5ZNmx5Ixhgu8w2UnK8rmyqfYSh42GsAC9PcTAvI74fCh6reU8ZAVJdcBBJjCysN6+zAre1r0JkXXUoNmSfET1dYco7jrt7ikiqv5i6jxdnabbiHVR5gMICb0z0zPY8DMGWbQH4MqLRGoE2ZRNkw=
+	t=1788785870; cv=none; b=qKElzi4bt/rPpicbHyBsjbTN2Ca0oGSZlB8P0ZnpahUJ0qQ1Qo4kltwns0EV4o6IYj+vwh42Mu4W4EiKlZXDpQstBoRWI3m32Ngc1ygbbn5/sAn87Wv0zO1m9FQON/POwJDCaF3mWA+tV/mWv9KYKBvewCruLsrqq4pjRs8o0PM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788785735; c=relaxed/simple;
-	bh=1dDfNap5rRQ1W2ITxZNyZ4dYag8d6/uBDIlvAyexnYQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ToHg8/5wiC4NTgrOaS8XXjH8JpCX/W9lsbFugaMhGAmmK7Qhn0cFai6a2ZuBhYseE8A1FRKsNnGOpUe45KkzYVk5hZq7rViIkmOkyaNELjSRPKJHIy3/iSIt8wo9xzVkA51kkcCfjLTSCZQWc6Lxa/2xGTtKib+qe/sMlYoIu8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=f/QecW3Q; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1788785870; c=relaxed/simple;
+	bh=EEa5Zi9LqTTBtv+k4iS/Z6wcC+7GSoaaTpvJcBZVW74=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=GyecHN0TAkdZmUH1/Zlq2l/UfPBjzWX9N0F7mTw4AduTcuYXSuRqKfMPEq9HkDQ30uStnOg7umJBW1DDMbpq5l+gRzgeGSteLHz2lgM85yHpDvNSmnsCC3GXibrXcLqwLXM3iHIkmlaB2FarMOVLOtmKepSA9yU0ujrapP36yFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=SJLGC5qf; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=X4qAgUmP; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="f/QecW3Q"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 687B1SCq1778468;
-	Mon, 7 Sep 2026 12:55:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=Csi7Hw
-	QhP036lAM+Ru/v+fSgjw9hVgEibUCVAWp81BY=; b=f/QecW3Qmd9EIzGLR+rVbS
-	sAWBOTVybWaucGO+evU7loPXKP4hyqUyeuRMxjFx7vmDFMaPdK9hvmJb/sZNGTGu
-	c9bf0oyLnW5j5Q8y4OOy8tzONaTAxuKyFIfLc9unqBC19ZAhfygDGmp3yldeCb+7
-	V5xV7B0FEa7TP7NLOXsZTwFL9U7sv9hb4cz47EJlrcVjrLAXJvFEA+Ei2yJOCeQd
-	EDJ5U2GUmThSmt8swF1fZ3hq5PhO17fpQZDCxQwcWQauFwNwEyjjwpA6dHVyo5ln
-	EKAvOK90e+xAn9bwjW8n0Uj52hBUqafE9/Pcf2zI9vcmX87jkRmBrNjGN209OdGA
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ggbhkgtpd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 07 Sep 2026 12:55:22 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 687CfJB2029768;
-	Mon, 7 Sep 2026 12:55:21 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4ggwdq6508-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 07 Sep 2026 12:55:21 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 687CtHFT46924082
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 7 Sep 2026 12:55:17 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id F0F6B20049;
-	Mon,  7 Sep 2026 12:55:16 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A1FC920040;
-	Mon,  7 Sep 2026 12:55:08 +0000 (GMT)
-Received: from [9.61.245.29] (unknown [9.61.245.29])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  7 Sep 2026 12:55:08 +0000 (GMT)
-Message-ID: <7a192ab6-d8c7-4823-b569-658c1c0f76af@linux.ibm.com>
-Date: Mon, 7 Sep 2026 18:25:06 +0530
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="SJLGC5qf";
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="X4qAgUmP"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 7B43E1F78D;
+	Mon,  7 Sep 2026 12:57:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1788785854; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=0QT+LAkmdk5EzUCxU/xLcEaUjtu1mg3JSlcK6WoskWY=;
+	b=SJLGC5qfLdfEYxmdYkP3eZfp5ykno6641a1vSt0wmkKOYnyEEI38xBn+uWqh5HYZqrZRtv
+	fqcLc8z2d+RFHyNqZ8okp5QxlgOuVr4ejVSNNE3V1ykKa2fAvS/kteUc74mHSCyy/JPsF/
+	K/cH/kbbw5avfak5cG5SL/hPuRIgqJI=
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1788785850; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=0QT+LAkmdk5EzUCxU/xLcEaUjtu1mg3JSlcK6WoskWY=;
+	b=X4qAgUmPn5EUs7WEJeTyGqiL44Z9t9jcnA5cMchcCQYabGO3GJJ7x3oGYHxf7KIPlwrWJE
+	xmKB9/EK8KCF+Qll8ZYhkVRy6ob5fzTSojKaU8XglYUf0OvolyuPUCDgZItJNnrBWhTDa4
+	uQg12eEEllm09ThVXgNQNyd4X4UgPfY=
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3E0851339B;
+	Mon,  7 Sep 2026 12:57:30 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 3+XYDrq0nmp/SwAAD6G6ig
+	(envelope-from <martin.jaburek@suse.com>); Mon, 07 Sep 2026 12:57:30 +0000
+From: =?UTF-8?q?Martin=20Jab=C5=AFrek?= <martin.jaburek@suse.com>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	kuba@kernel.org,
+	=?UTF-8?q?Martin=20Jab=C5=AFrek?= <martin.jaburek@suse.com>,
+	Fernando Fernandez Mancera <fmancera@suse.de>
+Subject: [PATCH net-next v2] selftests: net: add IPv4 and IPv6 address order check
+Date: Mon,  7 Sep 2026 14:57:22 +0200
+Message-ID: <20260907125722.9473-1-martin.jaburek@suse.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] s390/qeth: allow bridgeport queries despite
- OS_MISMATCH
-To: netdev-bot+sashiko@kernel.org
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, wintera@linux.ibm.com,
-        pasic@linux.ibm.com, aswin@linux.ibm.com, hca@linux.ibm.com,
-        gor@linux.ibm.com, agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
-        svens@linux.ibm.com, Eugene.Crosser@ru.ibm.com,
-        ubraun@linux.vnet.ibm.com, netdev@vger.kernel.org,
-        linux-s390@vger.kernel.org, stable@vger.kernel.org
-References: <20260901155344.3561483-1-nagamani@linux.ibm.com>
- <178863834632.219967.10151398782993596479@kernel.org>
-Content-Language: en-US
-From: Nagamani PV <nagamani@linux.ibm.com>
-In-Reply-To: <178863834632.219967.10151398782993596479@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTA3MDEzOSBTYWx0ZWRfX+WFIqCNPfeu2
- 4AmIDsCl5BnyV9w5siGsuWrN4quaYnKn16RU4SGrwl7k30SzdqYEUKMMS+t3M810e76Dg4B/3V/
- FhijUOlOEradsriho7G8DFPJ9/E6PHE=
-X-Proofpoint-ORIG-GUID: g2M_iozXlb-lYL_FT3_AdPjobl3knIS1
-X-Authority-Analysis: v=2.4 cv=NMDlPU6g c=1 sm=1 tr=0 ts=6a9eb43b cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VwQbUJbxAAAA:8
- a=8Fpi8FWupL010RkRYMUA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA3MDEzOSBTYWx0ZWRfX45uDBMjFz3e0
- V5Eg8wdkORqhvDd4SPrQ6xrcxHI3DE4EStunEueZ6H/jGw6AV4No6haFQDk2stMDYmkpyWoMFZJ
- yupz45wJ9bqLLM1mrzp/JWYI/THaBxrp3WY3eI067rT4vQhUMEnEjewO1pa1pDbnjLYa+et1RR9
- F0YNSuxjZJrpdI7zwCcO39FDoL4nPQpRRdSdqFYxrDxt4ezdGwVKLJTXve83KsuJB0MxgxKrPN/
- OmmvKubqg+0AByBKeQ/JraP1x+McSBfVKqvLRuS3Ttv9N3IuJIjZFW0nmRJTc8b2huLgSCQ/HK7
- +iExhB3TasFBbtNubr2nS0Izwo3JYPDb8bsIbzCwX6EceUKM3Qtg7lmmmH/8J6a2xhIu9hlfpqr
- F8diLsYWwx/UizkvKlp5zbMWSp3OQZ+9CVDxQs//CNZMKlRl5wapNvONZJwgQQy+4JFI0Cj18+4
- XpfZ3V+l/DE8ZVZ/AIQ==
-X-Proofpoint-GUID: I_aazv1YbmSP99TmsYZD6SH0nghi1PpF
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-07_03,2026-09-07_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 spamscore=0 lowpriorityscore=0 clxscore=1011 adultscore=0
- impostorscore=0 bulkscore=0 malwarescore=0 priorityscore=1501 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2609070139
+X-Spam-Score: -3.30
+X-Spam-Level: 
+X-Spamd-Result: default: False [-3.30 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-0.996];
+	MIME_GOOD(-0.10)[text/plain];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.com:s=susede1];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,imap1.dmz-prg2.suse.org:helo,suse.com:mid,suse.com:email]
+X-Spam-Flag: NO
 
+Introduce the following new tests: `ipv4_verify_same_scope_addr_order`,
+`ipv4_verify_inter_scope_addr_order`, `ipv6_verify_same_scope_addr_order`,
+`ipv6_verify_inter_scope_addr_order` to check the ordering of a
+set of IP addresses after being inserted.
 
+The implementations of these protocols are inconsistent
+in regard to address ordering. IPv4 addresses stay in the
+same order as inserted while IPv6 addresses appear in
+reverse order. This inconsistency has prompted attempts
+to unify the ordering, so both protocols act the same
+(as IPv4). This however caused user-space regressions in
+certain applications, which relied on the order as it
+was prior to the change (particularly NetworkManager).
+A similar inconsistency occurs when inserting different
+scope addresses, where IPv4 puts link local ones before global
+and IPv6 does the opposite. Attempts were already made
+to unify this also, risking further regressions.
 
-On 06/09/26 1:29 AM, netdev-bot+sashiko@kernel.org wrote:
+The addition of these tests aims to consolidate current
+behaviour to prevent regressions in the future.
+The expected behaviour is the initial one, where each
+protocol acts differently. The same goes for inter scope
+addresses.
 
-Thank you for the careful review. Addressing each point below.
+Conversations detailing the decision processes for creating
+these tests are linked below.
 
-> 
-> [Severity: Medium]
-> Should this test also be qualified with IS_IQD(card)?
->
->     IPA_RC_SBP_IQD_OS_MISMATCH = 0x0010,
->     IPA_RC_SBP_OSA_OS_MISMATCH = 0x2B10,
->
-> On an OSA (non-IQD) card, a reply carrying ipa_rc == 0 and sbp_rc ==
-> 0x0010 is not an OS mismatch in the OSA numbering, yet the new shortcut
-> turns it into success...
+Link: https://lore.kernel.org/netdev/20260521135310.GC977@cmadams.net/
+Link: https://lore.kernel.org/netdev/20260529112357.5079-1-fmancera@suse.de/
+Link: https://lore.kernel.org/netdev/20260721090114.GA2510713@shredder/
+Suggested-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Signed-off-by: Martin Jabůrek <martin.jaburek@suse.com>
+---
+v2: added tests for inter-scope addresses, created helper functions,
+fixed linter errors for new code
+---
+ tools/testing/selftests/net/rtnetlink.py | 115 ++++++++++++++++++++++-
+ 1 file changed, 114 insertions(+), 1 deletion(-)
 
-OSA devices cannot reach qeth_bridgeport_query_ports_cb(). Commit
-cdf8df5b42e7 ("s390/qeth: don't offer .ndo_bridge_* ops for OSA
-devices") removed ndo_bridge_getlink and ndo_bridge_setlink from the
-OSA netdev ops entirely. Its commit message states:
-"qeth_l2_bridge_getlink() and qeth_l2_bridge_setlink() will always
-return -EOPNOTSUPP on OSA devices."
-
-qeth_l2_detect_dev2br_support() also confirms this: it returns
-immediately for non-IQD cards (if (!IS_IQD(card)) return;) and never
-sets brport_hw_features on OSA.
-
-There is therefore no call path by which an OSA card can invoke
-qeth_bridgeport_query_ports() or reach its callback. The IS_IQD(card)
-guard is not needed.
-> [Severity: High]
-> Can this discard the user's configured bridge port role?
->
-> ...qeth_bridgeport_setrole() still fails with -EPERM under mismatch,
-> and the following qeth_bridgeport_query_ports(card,
-> &card->options.sbp.role, NULL, NULL) now succeeds and overwrites the
-> field with "none"...so once the field has been zeroed, no later
-> set-online or recovery retries qeth_bridgeport_setrole(), even after
-> the other OS family releases the port.
-
-IPA_RC_SBP_IQD_OS_MISMATCH reflects a deliberate configuration:
-bridge port ownership on the VCHID is assigned to a different OS
-family via z/VM Virtual Switch configuration. This is not a transient
-error — it is a permanent topology decision. If the other OS family
-releases the bridge port, that is equally a deliberate administrative
-action, after which bridge_role would be explicitly reconfigured.
-
-In the deployment this patch fixes, the Linux device observes bridge
-port status for visibility but does not own the bridge port.
-card->options.sbp.role is NONE before the query. Firmware returns
-role=NONE under OS_MISMATCH, so the query writes NONE into NONE: no
-user-configured value is clobbered. Confirmed on hardware: cat
-bridge_role returns "none (OS family mismatch)" with no impact on
-device functionality.
-
-The scenario of a device that previously held an active bridge role
-losing it to another OS family, then expecting automatic role
-re-application, requires the driver to act as a persistent intent
-store across an administrative topology change. That is not the
-contract qeth bridge port configuration provides.
-
-> 
-> [Severity: Medium]
-> Can the value emitted here be written back to the same attribute?
->
-> ...a read-modify-write or a save-and-restore of bridge_role by the
-> zdev tooling named in the commit message (chzdev save/restore) would
-> get -EINVAL...
-> 
-
-"none (OS family mismatch)" is only emitted when the card is online
-and hardware-reachable. A write-back attempt fails immediately at the
-parse step in qeth_bridge_port_role_store() before reaching setrole().
-Confirmed on hardware:
-
-  # echo "none (OS family mismatch)" > bridge_role
-  -bash: echo: write error: Invalid argument
-
-No configuration is corrupted or discarded.
-
-The patch is correct as submitted. No code changes are needed in
-response to these review points. Tested on a HiperSockets IQD device
-under OS_MISMATCH: bridge_role reads "none (OS family mismatch)" and
-bridge_state is readable, while write attempts to bridge_role are
-correctly rejected. The change carries Reviewed-by from Alexandra Winter.
-
-Regards,
-Nagamani
+diff --git a/tools/testing/selftests/net/rtnetlink.py b/tools/testing/selftests/net/rtnetlink.py
+index 5cc3ebdcf08d..5605be411f1a 100755
+--- a/tools/testing/selftests/net/rtnetlink.py
++++ b/tools/testing/selftests/net/rtnetlink.py
+@@ -314,11 +314,124 @@ def ipv6_route_del_reason_absent() -> None:
+                         "user deletion must not carry del-reason")
+ 
+ 
++def _insert_and_get_addrs_ipv4(test_addrs: list[str], scopes: list[str]) -> list[str]:
++    with NetNS() as ns, NetNSEnter(str(ns)):
++        dev_name = "dummy_dev"
++
++        ip(f"link add name {dev_name} type dummy", ns=str(ns))
++        for test_addr, scope in zip(test_addrs, scopes):
++            ip(f"address add {test_addr}/24 dev {dev_name} scope {scope}", ns=str(ns))
++        ip(f"link set dev {dev_name} up", ns=str(ns))
++
++        rtnl = RtnlAddrFamily()
++        addrs = rtnl.getaddr({"ifa-family": socket.AF_INET}, dump=True)
++        return [addr["address"] for addr in addrs]
++
++
++def ipv4_verify_same_scope_addr_order() -> None:
++    """
++    After inserting multiple same scope IPv4 addresses, their order
++    must be the same as the insertion order.
++    """
++
++    # Primary addresses of test subnets are inserted first.
++    test_addresses = [
++        "192.0.2.1", "203.0.113.1",
++        "192.0.2.2", "203.0.113.2", "192.0.2.3"
++    ]
++    scopes = ["global"] * 5
++
++    address_list = _insert_and_get_addrs_ipv4(test_addresses, scopes)
++    ksft_eq(test_addresses, address_list, "Unexpected IPv4 address order")
++
++
++def ipv4_verify_inter_scope_addr_order() -> None:
++    """
++    Checks the ordering of inter-scope addresses. This has also
++    been attempted to be patched, bringing in a new risk of a user-space
++    regression, similar to the same scope equivalent. This will further
++    consolidate the implementation differences of both protocols.
++    """
++
++    test_addresses = [
++        "192.0.2.1", "203.0.113.1",
++        "192.0.2.2", "203.0.113.2", "192.0.2.3"
++    ]
++    # IPv4 puts link local addresses before global ones.
++    scopes = [
++        "link", "global",
++        "link", "global", "link"
++    ]
++
++    address_list = _insert_and_get_addrs_ipv4(test_addresses, scopes)
++    ksft_eq(test_addresses, address_list, "Unexpected IPv4 address order across scopes")
++
++
++def _insert_and_get_addrs_ipv6(test_addrs: list[str], scopes: list[str]) -> list[str]:
++    with NetNS() as ns, NetNSEnter(str(ns)):
++        dev_name = "dummy_dev"
++
++        ip(f"link add name {dev_name} type dummy", ns=str(ns))
++        for test_addr, scope in zip(test_addrs, scopes):
++            ip(f"address add {test_addr}/64 dev {dev_name} scope {scope}", ns=str(ns))
++        ip(f"link set dev {dev_name} up", ns=str(ns))
++
++        rtnl = RtnlAddrFamily()
++        addrs = rtnl.getaddr({"ifa-family": socket.AF_INET6}, dump=True)
++        return [addr["address"] for addr in addrs]
++
++
++def ipv6_verify_same_scope_addr_order() -> None:
++    """
++    After inserting multiple same scope IPv6 addresses, their order
++    must be the _reverse_ of the insertion order.
++
++    While this behaviour is different from how IPv4 acts,
++    updating the IPv6 implementation to act the same way
++    has proved to cause user-space application regressions
++    (particularly in NetworkManager). This behaviour is being
++    tested for to consolidate it as being expected and correct.
++    """
++
++    test_addresses = [
++        "2001:db8:a::1", "2001:db8:b::1",
++        "2001:db8:a::2", "2001:db8:b::2", "2001:db8:a::3"
++    ]
++    scopes = ["global"] * 5
++
++    address_list = _insert_and_get_addrs_ipv6(test_addresses, scopes)
++    # We ignore the link-local address present by default.
++    ksft_eq(test_addresses[::-1], address_list[:5], "Unexpected IPv6 address order")
++
++
++def ipv6_verify_inter_scope_addr_order() -> None:
++    """
++    To prevent potential user-space regressions with IPv6
++    addresses, the inter-scope insertion order is also being tested.
++
++    This again differs from IPv4, here global scope addresses have priority
++    against link local ones - the behaviours are opposite.
++    """
++    test_addresses = [
++        "2001:db8:a::1", "2001:db8:b::1",
++        "2001:db8:a::2", "2001:db8:b::2", "2001:db8:a::3"
++    ]
++    scopes = [
++        "global", "link",
++        "global", "link", "global"
++    ]
++
++    address_list = _insert_and_get_addrs_ipv6(test_addresses, scopes)
++    ksft_eq(test_addresses[::-1], address_list[:5], "Unexpected IPv6 address order across scopes")
++
++
+ def main() -> None:
+     ksft_run([dump_mcaddr_check, dump_mcaddr6_check, ipv4_devconf_notify,
+               ipv6_route_del_reason_expired,
+               ipv6_route_del_reason_ra_withdrawn,
+-              ipv6_route_del_reason_absent])
++              ipv6_route_del_reason_absent,
++              ipv4_verify_same_scope_addr_order, ipv4_verify_inter_scope_addr_order,
++              ipv6_verify_same_scope_addr_order, ipv6_verify_inter_scope_addr_order])
+     ksft_exit()
+ 
+ if __name__ == "__main__":
+-- 
+2.55.0
 
