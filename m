@@ -1,92 +1,110 @@
-Received: from dispatch1-us1.ppe-hosted.com (dispatch1-us1.ppe-hosted.com [148.163.129.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C3AB51D512;
-	Mon,  7 Sep 2026 16:38:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.129.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBE6651D51D;
+	Mon,  7 Sep 2026 16:39:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788799122; cv=none; b=Yy19lmIyrC07fAdULvwetdHC6skwjfRjdxJdysJILR1DxnVpMNftRg3/zgYKhjvsUDA8Zf4GExt2ZcokUTmzkNVkF8Wrll1PLcE5Vlltgw61tP+WSuPYMD9LPrcVKgFRtcSRjLotoXmgnavACswUNqHL0L+CKcda7iq/IKN6h4Q=
+	t=1788799186; cv=none; b=P5n3KNjX1I6npFTzq4a3izAq0an6/f1gTafrFW7E2Uxn6T2VEbGryVtnfSAY7qmCAyUpofGmPiQL7QaewArXEZcdLlDuKilE8TaCglF88/lxxX1+SlNKJtbXwtXw1UXTFF+V2oOU7AwY/nTn7SWTUMHifLQFW/K0tgBqbfM7CuM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788799122; c=relaxed/simple;
-	bh=0jap3ZDKcYB9NpovB34NodaYGLRQNOA87oMfzixSoDc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VnIPB+nIjfVeNkbFRsLctthQxRHqvlKnrsR540GWw2o6TrHyTpq6tvFZpY1B8+SP0EFKztE7WVVjtSTXbUy5ODS7Mkc9wN6ABnhFVVCzYBgPa4BFCTd2SoXBLbDsjE0W8TDgP++HcXI/u2XI+ipKc7n8ibygRh5fNwMtT2M4uO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com; spf=pass smtp.mailfrom=candelatech.com; dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b=b+M1y5rE; arc=none smtp.client-ip=148.163.129.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=candelatech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=candelatech.com
+	s=arc-20240116; t=1788799186; c=relaxed/simple;
+	bh=I2/Pu/n3Ot241PzWj3Lu7otMzkTRPOVmRDBpl+KjAhs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NO/fbNTRNFz5NacdKQSpm8UPk37DDHRvPBLYYZWdAnSvMC0a15/39zNHtdBdgpfuqDpOs7hVlh1lEsVJj7QUmVRJPYhrA6Pds2xYcffKkGafakTvBHUr8/Bj2tjgLiagkUn9RM2+kEY2zx9z9xi+8m36WjlWHqvJBrK7eNEloTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=m2mG2LWl; arc=none smtp.client-ip=217.70.190.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=candelatech.com header.i=@candelatech.com header.b="b+M1y5rE"
-Received: from dispatch1-us1.ppe-hosted.com (ip6-localhost [127.0.0.1])
-	by dispatch1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 85CBD2A5342;
-	Mon,  7 Sep 2026 16:30:41 +0000 (UTC)
-X-Virus-Scanned: Proofpoint Essentials engine
-Received: from mail3.candelatech.com (mail.candelatech.com [208.74.158.173])
-	by mx1-us1.ppe-hosted.com (PPE Hosted ESMTP Server) with ESMTP id 2B1851C0077;
-	Mon,  7 Sep 2026 16:30:33 +0000 (UTC)
-Received: from [192.168.3.187] (unknown [98.97.32.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by mail3.candelatech.com (Postfix) with ESMTPSA id 5ED3513C2B0;
-	Mon,  7 Sep 2026 09:30:32 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail3.candelatech.com 5ED3513C2B0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=candelatech.com;
-	s=default; t=1788798632;
-	bh=0jap3ZDKcYB9NpovB34NodaYGLRQNOA87oMfzixSoDc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=b+M1y5rE1xdBy4i+oy/zYD3L+1rBaAApiScuYqt3tHSlzIEfZlgXml5O9c3e7gkcA
-	 3oakjFv806GSgyFouKq4nKfhvvthUnqFUmvsJ93Fuxp5Fiv95VNKDvu6cERfy1MtsN
-	 efVNc7bmb3Fj80bC/OmvinGynRJv2Zebkj7688Gk=
-Message-ID: <eb405366-6574-4e4c-a89d-363751ed848b@candelatech.com>
-Date: Mon, 7 Sep 2026 09:30:31 -0700
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="m2mG2LWl"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1788799180;
+	bh=pecX4PTwJVO1k/u3nyvqJANocQuoLCiiudhXRhOvrgo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=m2mG2LWlfmGyy7mn7jPgrwlB9/AdRQlBEA8hahyTKQKPOGOEA0Juhlog2oAcbd0kJ
+	 epEybWtPLEfkyL+HwkgJizykaTPZRn6LUyEeX1XuDYdIMLPbrr8H4xHNq7+VT0mwJ3
+	 WRGovz9gFSBNDyu8mlbxfnow3AYMblAeowjqgtQK8LKOuUb+6/fmC+rNggmtaGOFTw
+	 NUTsGslHgMoB3QvkdL2gDnEAtFtolUAhcetQa8ygDyqT6SluSJPP03zYPlDmTYI4FX
+	 F7Iyew0NlCKHKfIZe4kbhHc2OsDPt+Yb1aMITafJGK+O8JbauDxdt0LhLn/dwRnSuC
+	 T9/df2yKdPmbw==
+Received: from netfilter.org (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with UTF8SMTPSA id A936D607A3;
+	Mon,  7 Sep 2026 18:39:40 +0200 (CEST)
+Date: Mon, 7 Sep 2026 18:39:38 +0200
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: HACKE-RC <rc@rexion.ai>
+Cc: Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v3 3/4] netfilter: nf_conntrack_amanda: use
+ nf_ct_helper_parse_port()
+Message-ID: <ap7oygJrnJ0YcE7V@chamomile>
+References: <afSBzDE-caw3Dsr1@orbyte.nwl.cc>
+ <20260503083220.630655-1-rc@rexion.ai>
+ <20260503083220.630655-4-rc@rexion.ai>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [bug] Triple whammy of mt7996e bugs on 7.2+
-To: Ilya K <me@0upti.me>
-Cc: linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
- linux-mediatek@lists.infradead.org
-References: <1767631788532094@64c4e675-cd08-4a74-816f-886742f9bfcd>
- <529a79bc-dab7-aa41-00bd-c47ecbefaa00@candelatech.com>
- <471221788538289@323ca970-5bd2-4c6b-b52d-2b863a718615>
- <3acf531c-bcc7-412b-b3bb-665069260e46@candelatech.com>
- <2028561788553569@f088f4ec-f441-47a1-b7e4-75a1052aa4df>
- <2418461788691106@84aa39c5-f501-4e64-8418-6a8b6eb88e21>
-Content-Language: en-MW
-From: Ben Greear <greearb@candelatech.com>
-Organization: Candela Technologies
-In-Reply-To: <2418461788691106@84aa39c5-f501-4e64-8418-6a8b6eb88e21>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-MDID: 1788798634-Qedb_RYpJlvj
-X-PPE-STACK: {"stack":"us5"}
-X-MDID-O:
- us5;ut7;1788798634;Qedb_RYpJlvj;<greearb@candelatech.com>;6f76c88c2c731de9ad886e575864f8cc
-X-PPE-TRUSTED: V=1;DIR=OUT;
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260503083220.630655-4-rc@rexion.ai>
 
-On 9/6/26 3:38 AM, Ilya K wrote:
->> This abomination is now booted on my hardware and I'll get back to you if it explodes again, which I'd expect to happen at some point
-> during the weekend at worst (and if it survives longer, that's already an improvement).
+Hi Raoul,
+
+On Sun, May 03, 2026 at 02:02:19PM +0530, HACKE-RC wrote:
+> Replace simple_strtoul() with the new nf_ct_helper_parse_port() helper.
+> This removes the dependency on NUL-terminated strings and adds an
+> explicit port range check, rejecting port 0 and values above 65535.
 > 
-> OK so it's been over a day with no explosions which is already better than its previous best. The question now I guess is: which one of the patches actually fixes it? And do the teardown paths still need fixing?
+> Fixes: 16958900578b ("netfilter: nf_conntrack_amanda: the match is called 'amanda', not 'AMANDA'")
+> Signed-off-by: HACKE-RC <rc@rexion.ai>
+
+We need a real name here, please target this to the nf/nf-next trees.
+
+Thanks.
+> ---
+>  net/netfilter/nf_conntrack_amanda.c | 11 ++++++-----
+>  1 file changed, 6 insertions(+), 5 deletions(-)
 > 
-
-I don't know why your kernel wasn't working to begin with, so not sure exactly what in our tree would
-fix it.  We do have some mt7996 tx-hang work arounds, but that bug was reproduced in STA mode in a fairly weird
-test case with lots of virtual STA vdevs, so not sure it applies to your case.
-
-Possibly too it is something we pulled in from Felix's tree that will likely be in 7.3
-kernel.
-
-As a note, we found a regression in our current 7.2 tree, MLMR has regressed with scan failure being the
-symptom, hopefully we'll get that fixed this week.
-
-Thanks,
-Ben
-
--- 
-Ben Greear <greearb@candelatech.com>
-Candela Technologies Inc  http://www.candelatech.com
+> diff --git a/net/netfilter/nf_conntrack_amanda.c b/net/netfilter/nf_conntrack_amanda.c
+> index d2c09e8dd..30b5c4b84 100644
+> --- a/net/netfilter/nf_conntrack_amanda.c
+> +++ b/net/netfilter/nf_conntrack_amanda.c
+> @@ -88,11 +88,12 @@ static int amanda_help(struct sk_buff *skb,
+>  	struct nf_conntrack_expect *exp;
+>  	struct nf_conntrack_tuple *tuple;
+>  	unsigned int dataoff, start, stop, off, i;
+> +	nf_nat_amanda_hook_fn *nf_nat_amanda;
+>  	char pbuf[sizeof("65535")], *tmp;
+> +	int ret = NF_ACCEPT;
+>  	u_int16_t len;
+> +	u16 parsed_port;
+>  	__be16 port;
+> -	int ret = NF_ACCEPT;
+> -	nf_nat_amanda_hook_fn *nf_nat_amanda;
+>  
+>  	/* Only look at packets from the Amanda server */
+>  	if (CTINFO2DIR(ctinfo) == IP_CT_DIR_ORIGINAL)
+> @@ -132,10 +133,10 @@ static int amanda_help(struct sk_buff *skb,
+>  			break;
+>  		pbuf[len] = '\0';
+>  
+> -		port = htons(simple_strtoul(pbuf, &tmp, 10));
+> -		len = tmp - pbuf;
+> -		if (port == 0 || len > 5)
+> +		if (nf_ct_helper_parse_port(pbuf, len, &parsed_port, &tmp))
+>  			break;
+> +		port = htons(parsed_port);
+> +		len = tmp - pbuf;
+>  
+>  		exp = nf_ct_expect_alloc(ct);
+>  		if (exp == NULL) {
+> -- 
+> 2.54.0
+> 
