@@ -1,33 +1,33 @@
 Received: from ultrarisc.com (unknown [218.76.62.146])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FE523E49FE;
-	Mon,  7 Sep 2026 07:47:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 568F0411FA6;
+	Mon,  7 Sep 2026 07:47:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=218.76.62.146
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788767257; cv=none; b=D8M576PwwMnQ0BQJ0KNKrhhJtz5L3YuXT0sBEKLJMAAi3Rk/x4+RAzPeDKUQL+Bg0oFxtOgBHI+Bs8QN3UTrLMnpbn2MHq3rcsBGrCL8c6NMpZLfIFhFMtc6OuYpQofbpYtKPTGuaQl1EGjcVIHxq0n0uFRiD4nuaJoFvF8DdUA=
+	t=1788767258; cv=none; b=DJLkQFHU1G+x3Pw0hRGvG8TCBBbsqXw6HYG0O7WtlTyCvE+uTU2+yCojgXm+Yk67WFqPeRIRR5nGkntadWVUqnaywacT+sFcVC9LxX26kHvBF2KhXyJVZow1cbcrFgPSr6sRDw121a3AR00fjfgGeYkAzASxXpvF6r75VwV54Dg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788767257; c=relaxed/simple;
-	bh=8JFbeS+Py36rOhLIgvUhB9mAaPmVG/RndlIsx1DgsiM=;
+	s=arc-20240116; t=1788767258; c=relaxed/simple;
+	bh=hVW7kxIlJWKK6GmEDtwPV5h6IvvOs7xgT4usmIedGEw=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=qgkI9rN0aRv739f4aB04hxTVrQ8a3JTVp4AHS8wjcvEcAS9u15Uhisc4XXeJVJZsb2fhsnX2QiS4fqkFXuCH7pLrhSvl6+Kh55A3lRexmsY+/FnsUvwsToqssRFuQjbjx8QwyecfoJ3bn3OzdRLOVQFwXuf30Za+YABJgf4rJ4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ultrarisc.com; spf=none smtp.mailfrom=ultrarisc.com; dkim=pass (1024-bit key) header.d=ultrarisc.com header.i=@ultrarisc.com header.b=i4Wk9lQT; arc=none smtp.client-ip=218.76.62.146
+	 In-Reply-To:To:Cc; b=d6yCgXXEL161FzL1YG2EEleoi/sDYiikDVKd7kgAjmDAegGEUXH0P/rp69R7fdSJGcWCVsGaRk6auC/fKlsLhHMDtXhPKD4AMY4CQleeDwXaDciIvgazJ8pL5JJsj4UYWf2QO6ap6/0jhdGdPWUZNG4nX7RdHDCJ61q/4dTYuDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ultrarisc.com; spf=none smtp.mailfrom=ultrarisc.com; dkim=pass (1024-bit key) header.d=ultrarisc.com header.i=@ultrarisc.com header.b=WUewQy2L; arc=none smtp.client-ip=218.76.62.146
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ultrarisc.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ultrarisc.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ultrarisc.com header.i=@ultrarisc.com header.b="i4Wk9lQT"
+	dkim=pass (1024-bit key) header.d=ultrarisc.com header.i=@ultrarisc.com header.b="WUewQy2L"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=ultrarisc.com; s=dkim; h=Received:From:Date:Subject:
 	MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:
-	References:In-Reply-To:To:Cc; bh=826tG4CJ8qXFpoWs+M4CKnCE0V6wdTg
-	DiM5l8QR/xC0=; b=i4Wk9lQTV1c8cUxckKQbwikaLXzLidwHd907Qxwqs3rCjJj
-	F1uxUjuR7SEMN6wDILp40V+kF/MTAUcloEc6WNADj8Mi6UJT3X0MpVk+qQRvf+6w
-	7FaazqjFKoNeheg1I12blBhVmSQoPeObmMaAqrnlng1eF2nQG8hpMm9GOsIc=
+	References:In-Reply-To:To:Cc; bh=5AEcR7kglOxkPlraOwPL2V4mlGtETzE
+	yke9xSmsbwpI=; b=WUewQy2LEwUM8ZXXtXi1utzS2MvhXxpi4rI3RATGH0zvY23
+	es5DgiIz1VStOEetJv7l3TyrWBX75wHmgEHm+PgUAu7XEto1E1Jq4G3v28Zg4VXH
+	DRSgCwymh5Fa5fkDnOIb00UHnRJmSjwho/6HtOJW5XVD1a2jTnWEGkAvjgzs=
 Received: from [127.0.0.1] (unknown [192.168.100.1])
-	by localhost.localdomain (Coremail) with SMTP id AQAAfwDHQAf_a55qnlUAAA--.364S3;
-	Mon, 07 Sep 2026 15:47:18 +0800 (CST)
+	by localhost.localdomain (Coremail) with SMTP id AQAAfwDHQAf_a55qnlUAAA--.364S6;
+	Mon, 07 Sep 2026 15:47:24 +0800 (CST)
 From: Jia Wang <wangjia@ultrarisc.com>
-Date: Mon, 07 Sep 2026 15:46:50 +0800
-Subject: [PATCH net-next v2 1/5] net: stmmac: Add common internal RGMII
- delay handling
+Date: Mon, 07 Sep 2026 15:46:53 +0800
+Subject: [PATCH net-next v2 4/5] dt-bindings: net: Add UltraRISC DP1000
+ GMAC
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -36,7 +36,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260907-dwmac-ultrarisc-v2-1-9a39bf8db313@ultrarisc.com>
+Message-Id: <20260907-dwmac-ultrarisc-v2-4-9a39bf8db313@ultrarisc.com>
 References: <20260907-dwmac-ultrarisc-v2-0-9a39bf8db313@ultrarisc.com>
 In-Reply-To: <20260907-dwmac-ultrarisc-v2-0-9a39bf8db313@ultrarisc.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
@@ -53,94 +53,158 @@ To: Andrew Lunn <andrew+netdev@lunn.ch>,
 Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org, 
  linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
  linux-arm-kernel@lists.infradead.org, Jia Wang <wangjia@ultrarisc.com>, 
- sophgo@lists.linux.dev
+ sophgo@lists.linux.dev, Conor Dooley <conor.dooley@microchip.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1788767221; l=2291;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788767221; l=3690;
  i=wangjia@ultrarisc.com; s=20260515; h=from:subject:message-id;
- bh=8JFbeS+Py36rOhLIgvUhB9mAaPmVG/RndlIsx1DgsiM=;
- b=U54wAoUOL/UPMsjC/20nyWiakLD/fkZD8+RhaL3RFCDl5C7EBqSc173xsMTwiaWma0ybZQDE7
- N5lKAYPGMB6BQV4hsQWg/jNQc6rSZJOGZsOPakAP94oi0ZDMnC4/rQx
+ bh=hVW7kxIlJWKK6GmEDtwPV5h6IvvOs7xgT4usmIedGEw=;
+ b=WQkgTG42gvlcvGWw+mpq3+buBMHKqc7QB3Fb/UkBfAn9ERSSF7VP/DRrjFNFIEMdBjwdT0ooR
+ M4UEd/0l0PxAfcmshVyCycClcVWsNvBoIjpZ/OJ26YqpYN/vfzBwZOQ
 X-Developer-Key: i=wangjia@ultrarisc.com; a=ed25519;
  pk=wGVm18siRScehKOkOz0WKxgxDy7IezHEszhnN4/TUCY=
-X-CM-TRANSID:AQAAfwDHQAf_a55qnlUAAA--.364S3
-X-Coremail-Antispam: 1UD129KBjvJXoW7ZrWDGw15Kr1rZrW8JF1xGrg_yoW8Kr13pa
-	yDCa43Xr1kGr17KwnxCa1UZFyY9ay7KrW2k34UW393Zay7tr9Iqrn0qrWjyFnxCrZxW3W7
-	tr12ka98ua98ZrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUmC14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_Jr4l82xGYIkIc2
-	x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2z4x0
-	Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Cr0_Gr1UM2
-	8EF7xvwVC2z280aVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4UJVWxJr1l
-	e2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI
-	8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwAC
-	jcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka0x
-	kIwI1lc7CjxVAaw2AFwI0_GFv_Wrylc2xSY4AK6svPMxAIw28IcxkI7VAKI48JMxC20s02
-	6xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_Jr
-	I_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v2
-	6r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWxJVW8Jr1lIxAIcVCF04k26cxKx2IYs7
-	xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_
-	Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUU9N3UUUUU=
-X-CM-SenderInfo: pzdqwylld63zxwud2x1vfou0bp/1tbiAQACEWqdDaQAAQANsA
+X-CM-TRANSID:AQAAfwDHQAf_a55qnlUAAA--.364S6
+X-Coremail-Antispam: 1UD129KBjvJXoWxAw13Jw13Kry8Zr1rXw1kZrb_yoW5KrW3pF
+	ZxCFs3JFn2gr13Ww4fta4xA3ZIqw18AFy3A3Z2yw18tF98Was5XwsFk345ZF98ArW7Xayq
+	9Fy09r1Fy3W09w7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUQF14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_JF0E3s1l82xGYI
+	kIc2x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2
+	z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j6F
+	4UJwA2z4x0Y4vEx4A2jsIE14v26r4j6F4UM28EF7xvwVC2z280aVCY1x0267AKxVW8Jr0_
+	Cr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6x
+	IIjxv20xvE14v26r106r15McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_
+	Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8c
+	xan2IY04v7MxkF7I0En4kS14v26r4a6rW5MxkIecxEwVCm-wCF04k20xvY0x0EwIxGrwCF
+	x2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14
+	v26r106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY
+	67AKxVWUCVW8JwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr1j6F4UJwCI42IY6xAIw20EY4
+	v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AK
+	xVW8Jr0_Cr1UYxBIdaVFxhVjvjDU0xZFpf9x0pRiF4iUUUUU=
+X-CM-SenderInfo: pzdqwylld63zxwud2x1vfou0bp/1tbiAQACEWqdDaQAAQATse
 
-Some DWMAC integrations add fixed RGMII clock delays internally.
-Glue drivers need to account for these delays before passing the
-interface mode to the PHY.
+The DP1000 integrates a Synopsys DesignWare GMAC from the 5.20 series with
+one MMIO register range, one clock and one interrupt.
 
-Add TX and RX delay capability flags to the common platform data.
-Apply phy_fix_phy_mode_for_mac_delays() in stmmac_pltfr_probe() when
-either capability is present.
-
-This lets glue drivers describe the MAC capabilities without
-duplicating the interface-mode validation and conversion.
+It also provides fixed TX and RX RGMII clock delays that cannot be
+disabled. Board connections must therefore not add either delay in PCB
+traces, making "rgmii-id" the only supported phy-mode.
 
 Signed-off-by: Jia Wang <wangjia@ultrarisc.com>
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c | 11 +++++++++++
- include/linux/stmmac.h                                |  2 ++
- 2 files changed, 13 insertions(+)
+ .../devicetree/bindings/net/snps,dwmac.yaml        |  1 +
+ .../bindings/net/ultrarisc,dp1000-gmac.yaml        | 74 ++++++++++++++++++++++
+ MAINTAINERS                                        |  5 ++
+ 3 files changed, 80 insertions(+)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-index 6128ed1bd521..93b9af203a18 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-@@ -16,6 +16,7 @@
- #include <linux/of.h>
- #include <linux/of_net.h>
- #include <linux/of_mdio.h>
-+#include <linux/phy.h>
+diff --git a/Documentation/devicetree/bindings/net/snps,dwmac.yaml b/Documentation/devicetree/bindings/net/snps,dwmac.yaml
+index 2449311c6d28..2ed4564ae99d 100644
+--- a/Documentation/devicetree/bindings/net/snps,dwmac.yaml
++++ b/Documentation/devicetree/bindings/net/snps,dwmac.yaml
+@@ -119,6 +119,7 @@ properties:
+         - starfive,jh7110-dwmac
+         - tesla,fsd-ethqos
+         - thead,th1520-gmac
++        - ultrarisc,dp1000-gmac
  
- #include "stmmac.h"
- #include "stmmac_platform.h"
-@@ -847,6 +848,16 @@ int stmmac_pltfr_probe(struct platform_device *pdev,
- 		       struct plat_stmmacenet_data *plat,
- 		       struct stmmac_resources *res)
- {
-+	if (plat->has_internal_tx_delay || plat->has_internal_rx_delay) {
-+		plat->phy_interface =
-+			phy_fix_phy_mode_for_mac_delays(plat->phy_interface,
-+							plat->has_internal_tx_delay,
-+							plat->has_internal_rx_delay);
-+		if (plat->phy_interface == PHY_INTERFACE_MODE_NA)
-+			return dev_err_probe(&pdev->dev, -EINVAL,
-+					     "unsupported phy interface mode\n");
-+	}
+   reg:
+     minItems: 1
+diff --git a/Documentation/devicetree/bindings/net/ultrarisc,dp1000-gmac.yaml b/Documentation/devicetree/bindings/net/ultrarisc,dp1000-gmac.yaml
+new file mode 100644
+index 000000000000..13029302877b
+--- /dev/null
++++ b/Documentation/devicetree/bindings/net/ultrarisc,dp1000-gmac.yaml
+@@ -0,0 +1,74 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/net/ultrarisc,dp1000-gmac.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
- 	if (!plat->suspend && plat->exit)
- 		plat->suspend = stmmac_plat_suspend;
- 	if (!plat->resume && plat->init)
-diff --git a/include/linux/stmmac.h b/include/linux/stmmac.h
-index 4430b967abde..00be2df63d22 100644
---- a/include/linux/stmmac.h
-+++ b/include/linux/stmmac.h
-@@ -242,6 +242,8 @@ struct plat_stmmacenet_data {
- 	 * that phylink uses.
- 	 */
- 	phy_interface_t phy_interface;
-+	bool has_internal_tx_delay;
-+	bool has_internal_rx_delay;
- 	struct stmmac_mdio_bus_data *mdio_bus_data;
- 	struct device_node *phy_node;
- 	struct device_node *mdio_node;
++title: UltraRISC DP1000 DWMAC Ethernet controller
++
++maintainers:
++  - Jia Wang <wangjia@ultrarisc.com>
++
++description:
++  The DP1000 integrates a Synopsys DesignWare GMAC controller from the
++  5.20 series. The SoC integration adds fixed RGMII TX and RX clock delays
++  which cannot be disabled. Consequently, a functional RGMII link requires
++  a PCB without TX or RX clock delays, represented by "rgmii-id".
++
++select:
++  properties:
++    compatible:
++      contains:
++        const: ultrarisc,dp1000-gmac
++  required:
++    - compatible
++
++properties:
++  compatible:
++    items:
++      - const: ultrarisc,dp1000-gmac
++      - const: snps,dwmac-5.20
++
++  reg:
++    maxItems: 1
++
++  clocks:
++    maxItems: 1
++
++  clock-names:
++    const: stmmaceth
++
++  interrupts:
++    maxItems: 1
++
++  interrupt-names:
++    const: macirq
++
++  phy-mode:
++    const: rgmii-id
++
++required:
++  - compatible
++  - reg
++  - clocks
++  - clock-names
++  - interrupts
++  - interrupt-names
++  - phy-mode
++
++allOf:
++  - $ref: snps,dwmac.yaml#
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    ethernet@38000000 {
++        compatible = "ultrarisc,dp1000-gmac", "snps,dwmac-5.20";
++        reg = <0x38000000 0x1000000>;
++        clocks = <&clk 0>;
++        clock-names = "stmmaceth";
++        interrupts = <84>;
++        interrupt-names = "macirq";
++        phy-mode = "rgmii-id";
++    };
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 6215fcb07770..01597d1df270 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -27995,6 +27995,11 @@ F:	Documentation/devicetree/bindings/clock/ultrarisc,dp1000-clk.yaml
+ F:	drivers/clk/ultrarisc/*
+ F:	include/dt-bindings/clock/ultrarisc,dp1000-clk.h
+ 
++ULTRARISC DP1000 DWMAC GLUE LAYER
++M:	Jia Wang <wangjia@ultrarisc.com>
++S:	Maintained
++F:	Documentation/devicetree/bindings/net/ultrarisc,dp1000-gmac.yaml
++
+ ULTRARISC DP1000 PINCTRL DRIVER
+ M:	Jia Wang <wangjia@ultrarisc.com>
+ L:	linux-gpio@vger.kernel.org
 
 -- 
 2.34.1
