@@ -1,158 +1,150 @@
-Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012008.outbound.protection.outlook.com [40.107.200.8])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EB6E45519B
-	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 10:15:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.8
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788776136; cv=fail; b=XksHCqizUB8NA/ZtFD9nT3QbIwZAcN50a7J0OwUw2s9V0CIkognPwB4Ez9tuj5S5/067ZqVKYkzl+m5yBtQg+zB5K/hiz2zzNAlDG6yLknAPjPwcpr9KSKmO4siA6j8asw6+GLBQqwC6dpqMckML64o/Gx/oTpkVP7dgbR02kCM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788776136; c=relaxed/simple;
-	bh=eWDe27/afzSC9yJCkpTb6pESWhrBkCKH+hBy7u75vVY=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=l0bIAwy/Ft52eHtdZ2YOabR151vzgGFMMxGfqwRmhDM70d0G5YZ/+bQykUZWweg1UCNQwwOfFMdGv2V9MrIKlyDFxBYxqgHk24lM5hzdLQLHDwFQTILPdSsZCDbw7MXImAjdIi25V8jb10oOm2fqrPbIveg3cpPEK7lmZeqX9b4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=onu718+a; arc=fail smtp.client-ip=40.107.200.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0374F2C11EE;
+	Mon,  7 Sep 2026 10:19:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788776377; cv=none; b=LRPl2+X1juVbl29haDYfVSBWTScqNoo1Obu48JwZo3GstyvBmh7tuD//QnOzxMXGNwk+df73YmKLY6X5Xug5bbQXCqJP4JumMYCwDK3NaOPQeuQDPI50w7h19kQll9eUg86kymrIbNT3jyxU4Pyv9P7BKOsDB2oJNOW39zStNI4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788776377; c=relaxed/simple;
+	bh=6d7gMyjKxr/l7HlxfudaAzuJOUwkTRvMW6NcYfHRJmU=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=YhG6Apw8MS26f2Pnc5LxuGGH+qxoDMOYdTsEtJ7cn9yhJ134dG7T2eJ29bhBzKmXt4Ln2r7hU5dOdIJ3niJrgmg8oUcjEa016q49z2atqGK5vCDtCXeSdlQdnHbvZx6UYI6PGj3xnc2rBA0uZv2uE7+quUSVE0kHpW4eQEDTX1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TVIhlkvn; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="onu718+a"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=h5nXPzbgsVlQm1dq/VWxemTALRZCdXBLWJUTcQUi3/tMOCAJ1/xmbenhaLjP5WaGemD1qtRyToMpxvJikHIPsx4a14PBmldweV8ilaknqwZouBPQaQUPyKhJgX90pUiWJRvZoPiQaKl+JnylkiAfnj9W5qtE9GlURpvlJ7KHg5tGIUSbb92EO1Abk7fM7cJEXJ7iCcEYC75lGT+toeNoH1HJZ9tBsFc1Lu3OYXe0FIBcX6evhMiFAF4HMP9QhedrEXb99pBBGzowbxJb/wLWyajClDMjtuC/7mccIVgo3tUW4lF7W4eVskDYNhQTUn+uJv+uO5piyLppP+DP+HqDUQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pmvb2kKCgtVVBYbUFXs6N+O8XsauTv4sCRN7Myuwl1A=;
- b=cc6NhB43hJbLIOqkOcDEe2ZTgqbg3x8fwrM1RAmrVLZxKf2IfP9c2sEUpJrc60tBPalPgZD/zoj4yapn7SncqoPghzTNUaNhd41HbIv7a9JI6UB236rvBj5jWQH0bAjzIKRAS/F6rruaA/LmQzsTE63sV//seG0WjJMuYI4HeYI15oB5lleb/Bk+ZdQ/IIao/aeAB8ZREOHDgxJNi2qEwzv4lw5RsRysxkJJe3OVeeceeF9HnOpviIqUw2rCz0b2kjF5RGZh0dR7Mf83YaDCk2eJzcVDMFGrsJjlCM/2BabDgrjCCJR80cStWHxu3OpQ7hTRG85njW37XQVihnZTPw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pmvb2kKCgtVVBYbUFXs6N+O8XsauTv4sCRN7Myuwl1A=;
- b=onu718+a9c9vj0dEEMeJaYoqFwQqmlDJsuGCgtBlLrx0Rj/AOKapEuBcGy6tbuKi41sciYMp32BnHVWaoSM5OGNuGh51oYkcbHNm0MElOJFtgitSE2ivEFVQWjs6jz0XFha2CAtUTQN1lT5ul1DL7QJrhVzAAaWznWA9TEa36+BMn4li2ifKS1KxbRONTkYSrnxlrVVvBxxk18zn+A7YHHB7qyAzLKJAG7IAiLnkzYRJ0dqn6A2Hyy+UFXKfI4egi0O5KtnQMFYobgIei7Ud0UKBU5w2yRX9o/ryYmGiH7VFYenUWNTZVuzybL1QDcWyHyoLLZ+7TJDdZaZG5stZAQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
- by DS7PR12MB6334.namprd12.prod.outlook.com (2603:10b6:8:95::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.382.15; Mon, 7 Sep
- 2026 10:15:27 +0000
-Received: from PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
- ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0382.014; Mon, 7 Sep 2026
- 10:15:20 +0000
-From: Ido Schimmel <idosch@nvidia.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	willemdebruijn.kernel@gmail.com,
-	horms@kernel.org,
-	Ido Schimmel <idosch@nvidia.com>
-Subject: [PATCH net-next] ipv6: udp: Use ip6_sk_redirect() for tunnel sockets
-Date: Mon,  7 Sep 2026 13:13:58 +0300
-Message-ID: <20260907101358.596953-1-idosch@nvidia.com>
-X-Mailer: git-send-email 2.55.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: FR4P281CA0407.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:d0::16) To PH0PR12MB7957.namprd12.prod.outlook.com
- (2603:10b6:510:281::22)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TVIhlkvn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06E381F00A3A;
+	Mon,  7 Sep 2026 10:19:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788776375;
+	bh=uJpEQumiMK8QBjz1f4FE6/TgKaoIasT/3Xx2aix74JQ=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=TVIhlkvnVb16X7uiy3QySHSeop9L+rdNyBJaQSRoy+u9yf3enRT/TBoBl+CxyqtT/
+	 Z1oF/oLZVvDUwbVITa5j1IycsTAkr9RuMYqh0J9du+9BBBl0P4hyR19mjuJ5FYw1E+
+	 htw/bXQS18M6fqPsuY5Xq9TkSqOn0UrcJp7oY7Rsf7XKKruc5iabTpggWeJvl/4ojU
+	 Pmf/UaYlcfkF6xeVf1tHk9ZTc96WRRDfIa+c843mg9vY75uuU9qqpamHQf9a4poQna
+	 jb6CnCwl35jxOpwYw+xIX4L5o/QZbBcvgFbMZibtoY9acIdAOl2YRa1Gt/k+Lat3l/
+	 rpzRF9Z6FOfcA==
+Message-ID: <9857cc27cd1c5bb8778141263fd79b29298fe24a.camel@kernel.org>
+Subject: Re: [PATCH v2] bpf, sockmap: Fix self-redirect copied_seq
+ double-counting
+From: Geliang Tang <geliang@kernel.org>
+To: Jiayuan Chen <jiayuan.chen@linux.dev>, John Fastabend	
+ <john.fastabend@gmail.com>, Jakub Sitnicki <jakub@cloudflare.com>, "David
+ S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
+ Kicinski <kuba@kernel.org>,  Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>
+Cc: Geliang Tang <tanggeliang@kylinos.cn>, netdev@vger.kernel.org, 
+	bpf@vger.kernel.org
+Date: Mon, 07 Sep 2026 18:19:28 +0800
+In-Reply-To: <949b0983-4491-474f-b105-5a69925dab69@linux.dev>
+References: 
+	<1d2370f4c81f10834b8dd77524924575c629a464.1788591198.git.tanggeliang@kylinos.cn>
+	 <949b0983-4491-474f-b105-5a69925dab69@linux.dev>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.56.2-9 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|DS7PR12MB6334:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4bdb8995-c3cd-4474-08e4-08df0cc8ec0f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|23010399003|10067099003|56012099006|11063799006|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	AUavR0RPlxvGUMQc3Uff2n/1sp7A5nqQ1CTpIaBbVYX440+FWgZ0SkNg+Nlw5d9rBur6CGHFBjabTFxaW4EnEiQsC3jMqw4sX42q5ubak0T959UrnjjdEpS1OMZxT4KVtzRa8ECdaDTvecwNVDI7fzOU4d5DG9jprtzOkXyOCnUpZY8A3+pZbWOO/n8AL53472qnXfaJm6+e1Z+fj1f2FklBFjDcq52jjYm/Q0LWAuEEmeZUL25T5NwZnkWYCewhnXPZOUBBhsKxPWmdGVYTHIK9T+SPt+S35M0x/kHG7oR8F72W1BUeFTTZy10YpFcb8943u1trhjeLAras9cBk0PJBOVgRwvsuIAj5wCl6A90GooijQU3y/uAjRCF5+sBnvzBMJZAqOKb4fiBmOEPoS+0ddnaP6rGkPPNFxtaT3CEN/9atR9/SM0110bsx5JVqi4MJjyd3wDN54NdiLwvYJBq6jUeSWvfb+4TlYIfRZnfav67fJPAXURnwwv/6cdRSAtd+ZM2b6y6fa1B7KjIc9DNivl19glBPJ8Iy4+JkbfdNJAkkgXVvm+dNgTZp0RM2Up4EQv4zg8i09PI6rvbveyNwo5KN96uXTle64iFwfNgxDPYKCUHVApmZsEbUi5wQ+EoOh98ae/fN8k7XnXvnUHU5qfykABx1LAsWwr2xB2c=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(23010399003)(10067099003)(56012099006)(11063799006)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?mxx+cuXzM8zhwMTjsCD+wtoq75Df9D1jvzmSaG4HB9AXLh3gjkgTraS0lC7R?=
- =?us-ascii?Q?mPHDvIKgLysgT2oWoZ3iPwIRgRcPYxrCFQE6CvXE7w1hFMsTPlu+rFFbNJHr?=
- =?us-ascii?Q?SKJCyhdSyWXFZzPPMSXZZJYAu8FYPrk1BxscXBFq8tx7y55c505v84daHnKy?=
- =?us-ascii?Q?FUExgr0NdhnWhMUI1ThkHQrbkn0sEiDKBnnI5JCuLSghrZbOIYHh/DDzBfh4?=
- =?us-ascii?Q?6fg6cK549ZlLVQdhShnI1ypkZpA1RHNXjZykAfjvJgFLJ/MRP0L0FmxTPoHW?=
- =?us-ascii?Q?d7F+fQZWBRhsKty2fXArk3UFGtYp2mSHOVAFhHs9VAve88Wo+O1PgyIwunqk?=
- =?us-ascii?Q?h0g3aCCALoSaw9SQbDvy6pcpK7JiauODk46WYgGKixWcRxxvzab27AFDTTBS?=
- =?us-ascii?Q?W2g8XY2bphCvxzs2vm12J7EwuWesiLHXfUAS6z/FHxd+GL/9e1YMOIdByacV?=
- =?us-ascii?Q?MF+gfy1ATP6X9pgP501RUuwOouZ7jqipSVO2BAOjtxbhtoFMaumz4eRNObGK?=
- =?us-ascii?Q?K0CfnkOnlW0+yw3tZpVU6WALVetYE06E6V3e2NohyeXUKUjceujZdIShl4Mg?=
- =?us-ascii?Q?+NrVe1IXaOniJ0O9hzIDTa5WbIfPGvxF5MEXGe/kXF3J5wWaeo79hvT3fnVY?=
- =?us-ascii?Q?0r+rx0/BjDiha8kjPW3raxOIXKwjtxw4xpBiUHXo08qz3Cy6N2jNtzmYb0NK?=
- =?us-ascii?Q?ZfdlUUP0AV3MmMcamW0pi+X7s+xb3prW+IUVzrRH+B5be8tN6u/AaR6gDp2i?=
- =?us-ascii?Q?8PpS6BOt/OJV9yUDEmzpe75pyCjoVFm/Vi7F+PKEiV9OQhfM6SWER8Cz/gvi?=
- =?us-ascii?Q?ZifNnRUrBpzpiTBLgAy8t3ZuwdV4H12qtwtNQYp9yYGmOjpJjBIcnEBaxz3y?=
- =?us-ascii?Q?n3A+2dxJ8vMozvpWAs8UsyVJe/a1kj2uGRu6sviFdJADjAL0K8/YOiTrIprX?=
- =?us-ascii?Q?N0gBeFMT45il+H8meHG+t2I/tijuzB7tEWkghRoieEDzoQhDubClHHQjZLSh?=
- =?us-ascii?Q?0zKwutB6TzG/R/ZFD4bfJcw/iw1N6a2SOEna3aREJDr+u8Rg1S23gClwa0IL?=
- =?us-ascii?Q?AXi6vYmihHVd6wwqc2vUDjz6SbBlimDzoFPpDiQ+iu3B5Y182/lPYle3Nlf8?=
- =?us-ascii?Q?hfbwn6fJr2DoN26w9wNk4F1IZ7W+sUUosXwmMMwh/JWERlJScSJ2UWoTcYpC?=
- =?us-ascii?Q?Bz2JbyUO5FMtgkk8bTCSQdp4ykmCCXjKQb5o9IUX4qEmxBARKZR5XD7Cr6Se?=
- =?us-ascii?Q?PIkkGqkOzifwiSbijCfkTbGB8MOiSR+P6fx1Zs3AyMgcZe+B0FUR6v2F1nZw?=
- =?us-ascii?Q?kajWI3BiKl22mJhizQ44zcdIkH20GPqXBMEpueLL3PmC0QwV/5iQrJ4jUVG/?=
- =?us-ascii?Q?ZbSwjliYMePrl5AbE+Z1ArSFiEQ1G7fKT+Ei4+Gkv15kRMt8QYXF6YcbaxUx?=
- =?us-ascii?Q?8Z56MRl2vyU0lJf2XJVNX14hqaTEZxKL+OffC9b7LdeVWtpiR9en7pSk34Oe?=
- =?us-ascii?Q?cqzSAkZ8Nb7PeETMHSKmPiEy9mObuTZiMjwzBDu+Pg8izb3+caYit2BJo33T?=
- =?us-ascii?Q?HZKvBmix4vYaiK343Dtu0rJuBVbx7PphrTYlap79Tjgux61jU8bs3cz811Oo?=
- =?us-ascii?Q?0uzJO6aYUsAjWjsGaYRBm0abhjSzsT5G+Opyj0hilrPFFNvlaPYDq43o7gSs?=
- =?us-ascii?Q?qg+3lgra4WDCtbn6iEX+o2zLwtPQUUMQGbW8IISi5/bIblux?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4bdb8995-c3cd-4474-08e4-08df0cc8ec0f
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Sep 2026 10:15:20.7492
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: OxLAWCEf/hM76OIjnM58HCYmvXkLjJG1uxN5HJ28EjUueg/ULDRziO9lK8ZHDrpoMlx5XXsvXY3DdNVQjjvxQQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6334
+Content-Transfer-Encoding: 8bit
 
-After commit cd51b74bdd0b ("ipv6: Fix redirect exception creation for
-UDP/RAW sockets") the two redirect calls are now equivalent and there is
-no need to specifically call ip6_redirect() for tunnel sockets. Simplify
-and call ip6_sk_redirect() for both tunnel sockets and regular sockets.
+Hi Jiayuan,
 
-Note that for ICMPv6 Redirect Message packets the VRF driver does not
-reset skb->dev to the VRF device, so skb->dev->ifindex is equivalent to
-inet6_iif(skb), even when the packet was received from a VRF port.
+On Mon, 2026-09-07 at 09:34 +0800, Jiayuan Chen wrote:
+> 
+> On 9/5/26 3:03 PM, Geliang Tang wrote:
+> > From: Geliang Tang <tanggeliang@kylinos.cn>
+> > 
+> > When a BPF stream_verdict program redirects an skb back to the same
+> > socket (self-redirect with BPF_F_INGRESS), sk_psock_verdict_apply()
+> > calls tcp_eat_skb() which advances tcp_sk->copied_seq. However, the
+> > skb is then delivered to the socket's psock ingress queue and later
+> > read by tcp_bpf_recvmsg_parser(), which also advances copied_seq
+> > via
+> > the copied_from_self accounting path. This double-counting causes
+> > copied_seq to advance by 2x the actual data length, triggering:
+> > 
+> >    TCP recvmsg seq # bug 2: copied BF2E806, seq BF2E7FD, \
+> > 			   rcvnxt BF2E806, fl 0
+> >    WARNING: net/ipv4/tcp.c:2745 at tcp_recvmsg_locked+0x72b/0x2640
+> >    Call Trace:
+> >     tcp_recvmsg+0x10a/0x500
+> >     sock_recvmsg+0x168/0x1d0
+> >     __sys_recvfrom+0x19a/0x2a0
+> >     __x64_sys_recvfrom+0xe4/0x1f0
+> >     do_syscall_64+0xf7/0x530
+> >     entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> > 
+> >    cleanup rbuf bug: copied BF2E806 seq BF2E806 rcvnxt BF2E806
+> >    WARNING: net/ipv4/tcp.c:1609 at tcp_cleanup_rbuf+0xf2/0x1c0
+> >    Call Trace:
+> >     tcp_recvmsg_locked+0x8d1/0x2640
+> >     tcp_recvmsg+0x10a/0x500
+> >     sock_recvmsg+0x168/0x1d0
+> >     __sys_recvfrom+0x19a/0x2a0
+> >     __x64_sys_recvfrom+0xe4/0x1f0
+> >     do_syscall_64+0xf7/0x530
+> >     entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> > 
+> > Fix this by converting self-redirect verdict to __SK_PASS at the
+> > beginning of sk_psock_verdict_apply(). This bypasses the
+> > __SK_REDIRECT case entirely (which calls sk_psock_eat_skb), letting
+> > the __SK_PASS path queue the skb to the psock ingress queue. The
+> > data is then read via tcp_bpf_recvmsg_parser(), which advances
+> > copied_seq exactly once through copied_from_self. Cross-socket
+> > redirects continue through __SK_REDIRECT with sk_psock_eat_skb()
+> > unchanged.
+> > 
+> > Fixes: e5c6de5fa025 ("bpf, sockmap: Incorrectly handling
+> > copied_seq")
+> > Suggested-by: Jakub Sitnicki <jakub@cloudflare.com>
+> > Suggested-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+> > Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
+> > ---
+> > v2:
+> >   - fixup the verdict as Jakub and Jiayuan suggested.
+> > 
+> > v1:
+> >   -
+> > https://patchwork.kernel.org/project/netdevbpf/patch/b840c35fdfdf36e9fddedfa645b12699bc51aa34.1787968065.git.tanggeliang@kylinos.cn/
+> > ---
+> >   net/core/skmsg.c | 4 ++++
+> >   1 file changed, 4 insertions(+)
+> > 
+> > diff --git a/net/core/skmsg.c b/net/core/skmsg.c
+> > index 2521b643fa05..df385a5a961e 100644
+> > --- a/net/core/skmsg.c
+> > +++ b/net/core/skmsg.c
+> > @@ -1000,6 +1000,10 @@ static int sk_psock_verdict_apply(struct
+> > sk_psock *psock, struct sk_buff *skb,
+> >   	int err = 0;
+> >   	u32 len, off;
+> >   
+> > +	if (verdict == __SK_REDIRECT && skb_bpf_ingress(skb) &&
+> > +	    skb_bpf_redirect_fetch(skb) == psock->sk)
+> > +		verdict = __SK_PASS;
+> > +
+> >   	switch (verdict) {
+> >   	case __SK_PASS:
+> >   		err = -EIO;
+> 
+> 
+> LGTM.
+> 
+> Please target to bpf tree so that BPF CI cat capature it.
 
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
----
- net/ipv6/udp.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+Sorry, I forgot to add the prefix. It's been a while since I last sent
+a patch to the bpf mailing list. Just to confirm, I should use [PATCH
+bpf] instead of [PATCH bpf-next] for this fix, correct?
 
-diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
-index 93478d1ad576..59f9872c3552 100644
---- a/net/ipv6/udp.c
-+++ b/net/ipv6/udp.c
-@@ -751,13 +751,7 @@ static int udpv6_err(struct sk_buff *skb, struct inet6_skb_parm *opt,
- 			harderr = 1;
- 	}
- 	if (type == NDISC_REDIRECT) {
--		if (tunnel) {
--			ip6_redirect(skb, sock_net(sk), inet6_iif(skb),
--				     READ_ONCE(sk->sk_mark),
--				     sk_uid(sk));
--		} else {
--			ip6_sk_redirect(skb, sk);
--		}
-+		ip6_sk_redirect(skb, sk);
- 		goto out;
- 	}
- 
--- 
-2.55.0
+Thanks,
+-Geliang
 
+> 
+> 
+> Thanks
+> 
