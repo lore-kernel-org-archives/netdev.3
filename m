@@ -1,40 +1,60 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FD904457A6
-	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 08:43:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA983446BEA;
+	Mon,  7 Sep 2026 08:44:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788770593; cv=none; b=gJcWrXazUJMJQ+IxCH9omHgB76XjMir3ScHF0jCCm15hTgAG3hzCPseeyPwMoK8L/E0TJtXy0Sng4/W6Dqu6bg7mePtQLkIjqxvQD/iUksAe6Sm6fAdx7FOjkynN+fpHpBq+dmjrQfyuXIs0r93QAmx83pwKeOOcT4+5MrX9biE=
+	t=1788770691; cv=none; b=h4GD0frLl7FgFQ+0yxdIxni24s7tbdyGuVqyWM/0jdMK4D5GDoiN51sIAKz3oApEVKShhB6Xee+4LjH/NZYwgWB2QuLMHIulOj5fF5Vf0U6ccj2z6fF1MJe4LWHe24CvscemJz+tFXr4f7x+58YK0oQLYhcCdDUW3iX/d8ACFSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788770593; c=relaxed/simple;
-	bh=OywrNZ4BtrhKjQt24W3zA3T7LubwDSC/jinrjoF+zgM=;
+	s=arc-20240116; t=1788770691; c=relaxed/simple;
+	bh=XXR4CdSOCQVaEWh/J/sOK4i5cim+nXOfmdVGqWCXSHw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=q0ZeXXwRqIFw2SljDlbX2UvblNWIyzYsqhXwEz5dMuEHuPYmw9OVZYJz96OOURrNK2gFulQkieY2ITSfCL6pYjbvEqDs8Pxb/TjMnDmGGH+c5mEgq5dggUzELaBcp9SlQ3kOcMFn5QeZbE7xYTQEo4iH5lSoryFM9B5oG4Bv98Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=coAlhRbA; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	 In-Reply-To:Content-Type; b=iIBAUbMrVfGoWF+XDCtvFR1+8DqeYqwMIf4sjM880av0BICbKG6B5FfNlFXvoBQ3JVD2ScrgLzIkLHCmSyN61B/FPukQFdB4wQpQheOr8gAzEoOEy3hF6nDCrjpb9Nnn3VCxH4doR7NkEfE2e4wDJ+t28wGRvtqe/Uu6CC5ZxUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=GJUje829; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="coAlhRbA"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id C1E374E41569;
-	Mon,  7 Sep 2026 08:43:08 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 9428760383;
-	Mon,  7 Sep 2026 08:43:08 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D9DE811C7A43E;
-	Mon,  7 Sep 2026 10:43:02 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1788770587; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=QPH9SwD0hXddm6xXbxjZJJRgmfIRKy2x0pI2YYN7uWo=;
-	b=coAlhRbAGLCBssJtWVENWIjlmTXIFDrRkn/FUW9R7GJF0H3uYFpCozKK57CHxWHqGltbl6
-	9kW3LR+wuQmweNJVwCSruG51FkFy37lFfbIPWJ2tj8FtYOsdmRWain/eNRldoCVA9wn1ZA
-	pmf96tNkede6vgD8UNP/fWu/8RvWsdHIM4GDVfL+SEfJgsAjpOrQsOnuCmgNxDmBocT5xT
-	BzzleahE2adqKJk3b1UrFy66G9PpxIPGlFMQWq0J6Trate8IQZvyx68boN0iVG0GcMvrd6
-	Ltbuk1J0B39LmRw+YRjAQUICJoLDkZwse3VzboFjj6Bbk74XoL0nX71+XUBblQ==
-Message-ID: <a3ee0fb0-417a-4844-8c8d-b29189ea2b31@bootlin.com>
-Date: Mon, 7 Sep 2026 10:43:01 +0200
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="GJUje829"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6877VbJD1321163;
+	Mon, 7 Sep 2026 08:44:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=EAfw4d
+	96C9QBb2fWVi/UeCpZirm/U+Gfs/73M9rpazQ=; b=GJUje829Qg2okkFJcX8V5Y
+	eRPKRnvBzyI/uyClZ4I+S/3u+CIzW890DeC/hOw7HfBsvcb8zWix51AoVsWSMf77
+	iomgCF9xri1cJRn2Nu5GQGGk5cbyHaurDSMK57w0gw0CwHeBvDY+FHKIQKub3yz6
+	M3ucL2c3kj9TUTBuC7qszpmm1fTi6vkwMR8p8S4SjK8tXxthvGCp4F9Mx7Pd57jp
+	SNjq9C2VpSD6252cDdXRn3wy6D8fuxV78TRtQYt4c2tbi6NAP4NHrtOanMLiog2m
+	bH55WWIn0DCCZz2+Q34ygExbNhdNb4Bc3xlCTFiZYaaX913t//XDZ/Qrkk4E1O7w
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ggbheqgn6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 07 Sep 2026 08:44:35 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6878fMqd030062;
+	Mon, 7 Sep 2026 08:44:34 GMT
+Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4ggymg4q08-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 07 Sep 2026 08:44:34 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
+	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6878iWAD18481900
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 7 Sep 2026 08:44:32 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7F8A258053;
+	Mon,  7 Sep 2026 08:44:32 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CDA4C58043;
+	Mon,  7 Sep 2026 08:44:25 +0000 (GMT)
+Received: from [9.111.200.229] (unknown [9.111.200.229])
+	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Mon,  7 Sep 2026 08:44:25 +0000 (GMT)
+Message-ID: <fc1eb33d-f9da-427c-9e0c-c2ff79d2a1fe@linux.ibm.com>
+Date: Mon, 7 Sep 2026 14:14:23 +0530
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -42,80 +62,69 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v2 10/10] net: dsa: microchip: add periodic
- output support for the KSZ8463
-To: netdev-bot+sashiko@kernel.org
-Cc: woojung.huh@microchip.com, UNGLinuxDriver@microchip.com, andrew@lunn.ch,
- olteanv@gmail.com, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, richardcochran@gmail.com,
- pascal.eberhard@se.com, miquel.raynal@bootlin.com,
- thomas.petazzoni@bootlin.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260902-ksz-perout-v2-10-6f277fcc9e68@bootlin.com>
- <178857332410.219967.8963048354667407581@kernel.org>
+Subject: Re: [PATCH net v5 0/3] net/smc: bound wire-controlled CDC cursors
+ against the local buffers
+To: Jakub Kicinski <kuba@kernel.org>, hexlabsecurity@proton.me
+Cc: hexlabsecurity@proton.me, Sidraya Jayagond <sidraya@linux.ibm.com>,
+        "D. Wythe" <alibuda@linux.alibaba.com>,
+        "David S. Miller"
+ <davem@davemloft.net>,
+        Wen Gu <guwen@linux.alibaba.com>, Wenjia Zhang <wenjia@linux.ibm.com>,
+        Eric Dumazet <edumazet@google.com>, Tony Lu <tonylu@linux.alibaba.com>,
+        Dust Li <dust.li@linux.alibaba.com>, Paolo Abeni <pabeni@redhat.com>,
+        linux-s390@vger.kernel.org, linux-rdma@vger.kernel.org,
+        Ursula Braun <ubraun@linux.ibm.com>, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Stefan Raspl <raspl@linux.ibm.com>,
+        Simon Horman <horms@kernel.org>
+References: <20260723-b4-disp-0d07164f-v5-0-6a9e235dbc4e@proton.me>
+ <db896915-5858-4fc3-a56c-77b626980284@linux.ibm.com>
+ <20260901162012.602cc62e@kernel.org>
 Content-Language: en-US
-From: Bastien Curutchet <bastien.curutchet@bootlin.com>
-In-Reply-To: <178857332410.219967.8963048354667407581@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
-
-Hi all,
-
-On 9/5/26 3:55 AM, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 5 potential
-> issue(s) to consider:
-> 
-> Critical: 0 · High: 2 (1) · Medium: 3 · Low: 0 (2)
-> 
-> - [High] KSZ8463 periodic output is advertised as 12 independent channels
->    (.n_pins = 12, .n_per_out = 12 in ksz_switch_chips[KSZ8463]) but the…
-> - [High] KSZ8463 periodic output (TOU) is not properly disabled in
->    hardware (leaves EN bit).
-> - [Medium] Build failure when CONFIG_NET_DSA_MICROCHIP_KSZ_PTP=n:
->    ksz8463_setup() in drivers/net/dsa/microchip/ksz8.c now calls…
-> - [Medium] The newly added ksz8463_ptp_configure_perout() dereferences
->    dev->ptp_data.pin_config[index] (reading pin->chan to select the…
-> - [Medium] KSZ8463 TOU enable bit is left set in the hardware if the
->    activation verification check fails.
-> 
-> Pre-existing issues:
-> - [High] A non-normalized periodic-output period whose nanosecond value
->    converts to zero is accepted, stored as the global restart period, and…
-> - [Low] The KSZ periodic-output implementation accepts and processes
->    PTP_PEROUT_DUTY_CYCLE (ksz_ptp_get_pin() returns -EOPNOTSUPP only for…
-> - [Low] ksz_ptp_clock_unregister() only calls ptp_clock_unregister(); it
->    never disables the trigger units that the perout path enabled.
-> 
-> --
-> 
-> net: dsa: microchip: add periodic output support for the KSZ8463
-> 
-> This adds KSZ8463 specific periodic output handling, since the chip has one
-> configuration register block per trigger unit, a smaller maximum pulse
-> width and 12 outputs instead of 2.  It wires new ksz8463_ptp_* callbacks
-> into a dedicated ksz8463_ptp_set_caps() and advertises 12 pins / 12
-> periodic output channels for the KSZ8463.
-> 
-> A few questions on the new code below.
-> 
->> diff --git a/drivers/net/dsa/microchip/ksz8.c b/drivers/net/dsa/microchip/ksz8.c
->> index f2a23e2e474ac..6b08bb8fed5b7 100644
->> --- a/drivers/net/dsa/microchip/ksz8.c
->> +++ b/drivers/net/dsa/microchip/ksz8.c
->> @@ -2478,7 +2478,7 @@ static int ksz8463_setup(struct dsa_switch *ds)
->>   		if (ret)
->>   			goto free_girq;
->>   
->> -		ksz_ptp_set_caps(ds);
->> +		ksz8463_ptp_set_caps(ds);
-> 
-> [Severity: Medium]
-> Does this still build with CONFIG_NET_DSA_MICROCHIP_KSZ_PTP=n?
-> 
-
-No it doesn't .. I'll send a new iteration with this fixed
+From: Mahanta Jambigi <mjambigi@linux.ibm.com>
+In-Reply-To: <20260901162012.602cc62e@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-GUID: sn1HUWt12Rt2VV8QcIsYcPlNZwOtMDAI
+X-Authority-Analysis: v=2.4 cv=RIaD2Yi+ c=1 sm=1 tr=0 ts=6a9e7973 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=oaOSjWHYWp1lFbvcr-AA:9
+ a=QEXdDO2ut3YA:10 a=ZXulRonScM0A:10
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTA3MDA5MiBTYWx0ZWRfX0uHFajoQP/6V
+ xpU3yYlH4kOeEb+GYaZi62p8NyDIYYAAgmakUgHuUMexjhgUElzDLN53DnLUw9dstv1oCK57YU0
+ Lm2iyEqiyGPtb4uTWCjI5Ons7R+Mrdw=
+X-Proofpoint-ORIG-GUID: kOxnBZaBb7HhVYlTyBAa0J70dqPcLZaP
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA3MDA5MiBTYWx0ZWRfX9mgXC+SYhJay
+ +jYYZ3qpy933/G7F9I5B5ISjsLo8pgCMbsaXN9zydhwgH7UKxAHWQhDI5647ZPy5E6yRM5XpYRZ
+ SqtyN9LI0lbStK+zbwuD6lZsCBlscA0Ynji2A0fHr8XHRpsYe/w4IVLcS7UlsVt7Yq/+W5ulomi
+ tDWa7dFZrrMyWx3SEuxaqA5yaQsKZfmlszdza+dNF/9Y03BC+TQ57pb+PMDnsLwVkcycYKHHOoy
+ xIpgkpNWd2ajoCI4SIoeg48K38kdeasu9joDp2DxlqUnze2TNMYjxbCRBAJ82AptjtxL10mfkYe
+ A/763S5wyc6oeubFVvIAuReK4XPGkTWDKpQ5aoP/48Qz7Ggw7XHm4+dj7Hm81DY20AspnEtnTvY
+ Sja9mh9T6n9IkAyBNHY0Tq+wjyHubNcz3bue8cQ4sTIfB1Z5aWJI2UXe21j5Rm7ZEFu1Sjc2EvZ
+ AD14MHduvkWmE7ALb+w==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-07_02,2026-09-03_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 suspectscore=0 malwarescore=0 priorityscore=1501 bulkscore=0
+ adultscore=0 phishscore=0 clxscore=1015 impostorscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2609070092
 
 
-Best regards,
-Bastien
+
+On 02/09/26 4:50 am, Jakub Kicinski wrote:
+> On Tue, 1 Sep 2026 12:10:35 +0530 Mahanta Jambigi wrote:
+>> I noticed that this series has *not* yet been merged into the net tree.
+>> Is there anything still pending or any outstanding concerns that need to
+>> be addressed before it can be merged?
+> 
+> FWIW it needs to be reposted to be considered for merging since it's
+> over a month old at this point.
+> 
+
+Hi Bryam Vargas,
+
+Could you please repost as requested by Jakub Kicinski?
