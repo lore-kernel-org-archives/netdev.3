@@ -1,66 +1,40 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D7A83CF1FD
-	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 07:41:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E98F23B19B3
+	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 07:46:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788766917; cv=none; b=VmX/sL7DRnWvbBrcPrsqKy5AwyJKkL7VrTdRi1b1QsF8eVP7gVgc5kjpQxplhpjH1omeXCzIbyyf4SPwE0mhzwqxXveor1gKWxy6jexsfe5mqxFwl/Z4hP5XaYcPqb1X9AJ1Fh+20KqGToz/RsHgg99woE/QGyHsFRIlCv4xKrM=
+	t=1788767166; cv=none; b=QNue2MtLnZyoR7yRsGnoE+GufhrYZbBerK6P465isdbZmHfu2mpZpDvqk/IH/U51Qw8FjDPQbW2yOkYuWrpM+0T6MxZnBlyIJV2a62YpdDUyW+o2JnxlX+Y5GI6UISL4Cd1T/2LeFcwJ9gom6v+kbr7bIVOo5nfS7ddwxNN17jc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788766917; c=relaxed/simple;
-	bh=846bMTmXtFIz58zwn2KWlMI0oVbNLlrCfeJ17SRVbqg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RGo3Y2k2+WoX0bKBj0HeEc2aPOsVgrCBtruwcv18KFTfb9DqKLMYmrhX8ZJqkMx4SOCv/TtVSL1nqgRsvBSfH4YsmZ8aYPN2aatZ8ECVjGO34SeOGt+60ic7FPgZ5DzjPcjEw7xebxWxwUsA/fte7/XscndlxSBSzC60PIngm9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=nq4BMIQ1; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="nq4BMIQ1"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4998b5a63e2so38804545e9.1
-        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 00:41:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blackwall.org; s=google; t=1788766912; x=1789371712; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=pl8Bn3vVjsLyABhtV3hHgEyHKlUX2lWCov436sZUw3c=;
-        b=nq4BMIQ1q+FfOmtN44ipGA07cHtsWIUqOT12Hi3dSUrGLdIo1cOS1pg0T3o6iP8WQA
-         tC64TC3JU/oCmU58hUfHIuP+mBTkwTmpDg9X5R46KdM3vKh2dW3kLQs4Wj5Kneq6fIbm
-         Kh8g9ckrANzsNVz7wJ2zaE/cDR5SulFTYpBJP+UppKt/s/HU9bt2x9G2DwkfDgv68Wz6
-         m5289RzW+2k17JKxy18ST3nzFXRD5bKRB6/BYvNSjGO+agGIBQ6BUhJE7Iv15wE9C/YY
-         RFyYXzaJD0qtk6mI/sX6z2enVnI6HzT0UCxKMEjlYCLQ55LsNTORhtiZ6A99EfYjdAYE
-         lD1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788766912; x=1789371712;
-        h=content-transfer-encoding:content-type:in-reply-to:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=pl8Bn3vVjsLyABhtV3hHgEyHKlUX2lWCov436sZUw3c=;
-        b=jdSHx4v5ZSfj0o8w6O76Onq56O72lsB8nFtOUAOgab4p7Q9FYMTxkgaoS7TwvLkw/A
-         hbKSDUglaalxcKt8dmY9OOyGMujkzod0cd4+E1YWe272R3iBDvSBJaUQlJsSAMJ3jixX
-         vgtL4FfnqC7M+Q+Uds1aK72aeczsfWss/5dqmItdS10/uFrxYCPvnXhcxNFEW5WHamr9
-         TN7PC9VeVyrXOTpBABN+eM+FRe9yx91cYx1VQ9LUDL3Y58Q5LyTsnALmyAxudtEJ6QNd
-         CWDofCs2frWBWHkePvfE8jrGB+G/irVPcCQcGT7MadPWXbGLA35dkujdHkAFjulkVnMd
-         IVnQ==
-X-Gm-Message-State: AFuF++l7rxbOV2cLz61EewZgjfA7lCSRK1vGct0Gp97/2bH4Ue7rUWAO
-	n0y5EbAPS4FaOGgnkzZL6w/97/QI794hxkkT5NKzmi+rJcxrXPeKhBjH5rX6fWb/tmk=
-X-Gm-Gg: AYBFou3gsCLzHND3JcNmpSmd119MJRxboe21sRsZPi7Jbas5X+lPi25rrOLv04f89Iz
-	wnMbib0jqFmFuFif1hg5d6yPw3KQlIxc/Rgedr0VANCbsNhRhHUDTnYty6EwBaLM14GaRjcIEyl
-	4Z8l3ya/MMopYawCajk1CgqmRAM/268MbhDfZopETGm1ZaKxxTR7Fkca68cZvMRrvMwU5dtgFAE
-	Z1ukCN9U7MQ7EzsQnW+Ob76zMNCj3YmH0Gy+pfXMHAIvB/JDexNU+Y34cBTL4M9CIJP4rYL5BqD
-	qwojRjhfVMa0Scsu7Ikn+IbROcho6qNnOYxchs5PLhE7U+nEluPapr3xdLFgrn6281Lp3WShCVu
-	HP9BY8lgp44VVewgvoKDoBxxxHize9iCybfVZH8RUdwIC8B15umvjqzZdk4bN4XOD+gFoPsqGe0
-	HXBxzfWCcSgRYctRkB6myiFMJMXi1HcYTixdUPURmvxn0f2BJ+e+N9PH5nYjZ5TeitIPGvkuw9V
-	EoaqROjMD9aZPQrP11GMsdf3+zBBQ==
-X-Received: by 2002:a05:600c:4e8e:b0:49c:dada:f57f with SMTP id 5b1f17b1804b1-49cf823cd42mr194952845e9.7.1788766912309;
-        Mon, 07 Sep 2026 00:41:52 -0700 (PDT)
-Received: from [192.168.0.161] (78-154-14-127.ip.btc-net.bg. [78.154.14.127])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cee7fec25sm433527415e9.13.2026.09.07.00.41.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 07 Sep 2026 00:41:51 -0700 (PDT)
-Message-ID: <c5d539bb-3bb6-4f76-8c75-05a8f240c39f@blackwall.org>
-Date: Mon, 7 Sep 2026 10:41:50 +0300
+	s=arc-20240116; t=1788767166; c=relaxed/simple;
+	bh=3OA1/xixfyppJthmSg4mc3vejG0dxTu9z8eAvuYaOA8=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=JZLQvqrTsCsxrkP8qrkZkQ16/dZlClDRmEwFPHNvSuzcX6uqC4rk59c8zDERRt5UG4PS4MuCA7wkb0M+GQqRDZVmNpFHdPF6sUNMeCAIwR1a+2SaoUfGkKoHKhBhhhdigIlbU7A4nApdfXoqFRF/8HovBz9iiqTW0eA2Rqn+9h0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 294c2aaaaa9011f19a56ed5b684f684d-20260907
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.19,REQID:cfe5bff2-321e-4463-a9c9-0adf656d6a01,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:7db8b62,CLOUDID:0f6bccee99a48475681ad77a18a78966,BulkI
+	D:nil,BulkQuantity:0,SF:80|81|82|83|102|865|898,TC:nil,Content:0|15|50|99,
+	EDM:-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OS
+	A:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 294c2aaaaa9011f19a56ed5b684f684d-20260907
+X-User: weirongguang@kylinos.cn
+Received: from [10.42.124.137] [(10.44.16.150)] by mailgw.kylinos.cn
+	(envelope-from <weirongguang@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_128_GCM_SHA256 128/128)
+	with ESMTP id 971881444; Mon, 07 Sep 2026 15:45:57 +0800
+Message-ID: <e16178ad-85c6-42da-931f-f0b2f8240828@kylinos.cn>
+Date: Mon, 7 Sep 2026 15:45:54 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -68,83 +42,120 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v3] bonding: fix slave_cnt leak on XDP error paths
-Content-Language: en-US, bg
-To: Hangbin Liu <hangbin.liu@linux.dev>, Jay Vosburgh <jv@jvosburgh.net>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Daniel Borkmann <daniel@iogearbox.net>, Jussi Maki <joamaki@gmail.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- Hangbin Liu <liuhangbin@kylinos.cn>
-References: <20260907-bond_slave_cnt-v3-1-57df3b3cf2cb@kylinos.cn>
-From: Nikolay Aleksandrov <razor@blackwall.org>
-In-Reply-To: <20260907-bond_slave_cnt-v3-1-57df3b3cf2cb@kylinos.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: weirongguang <weirongguang@kylinos.cn>
+Subject: Re: [PATCH net v1] vsock: validate buffer min/max size in setsockopt
+To: David Laight <david.laight.linux@gmail.com>,
+ Rongguang Wei <clementwei90@163.com>
+Cc: sgarzare@redhat.com, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ virtualization@lists.linux.dev, netdev@vger.kernel.org
+References: <20260824091257.136269-1-clementwei90@163.com>
+ <20260824131632.2d325c42@pumpkin>
+Content-Language: en-US
+In-Reply-To: <20260824131632.2d325c42@pumpkin>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 07/09/2026 10:07, Hangbin Liu wrote:
-> From: Hangbin Liu <liuhangbin@kylinos.cn>
-> 
-> When bond_enslave() succeeds up to the XDP setup stage, slave_cnt is
-> already incremented. If XDP setup subsequently fails, the error paths
-> jump directly to err_sysfs_del, bypassing the slave_cnt decrement.
-> 
-> This causes slave_cnt to drift upward on each failed enslaving attempt,
-> which would lead to unbalanced traffic distribution with round-robin
-> mode.
-> 
-> Fix it by moving the slave_cnt increase after XDP setup.
-> 
-> Fixes: 9e2ee5c7e7c3 ("net, bonding: Add XDP support to the bonding driver")
-> Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
-> ---
-> Changes in v3:
-> - move the slave_cnt increasement before bond_update_slave_arr() (selftest)
-> - run all bonding selftests on debug kernel to make sure no regression (Jakub)
-> - Link to v2: https://lore.kernel.org/r/20260903-bond_slave_cnt-v2-1-02e27304ca36@kylinos.cn
-> 
-> Changes in v2:
-> - move the slave_cnt increasement after XDP setup (Nikolay Aleksandrov)
-> - balance-xor mode is not affected, not mention it (Nikolay Aleksandrov)
-> - Link to v1: https://lore.kernel.org/r/20260902-bond_slave_cnt-v1-1-36e95bf4a6ff@kylinos.cn
-> ---
->   drivers/net/bonding/bond_main.c | 4 +++-
->   1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-> index a9bff7663eec..1514a8ba0888 100644
-> --- a/drivers/net/bonding/bond_main.c
-> +++ b/drivers/net/bonding/bond_main.c
-> @@ -2284,7 +2284,6 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
->   		}
->   	}
->   
-> -	WRITE_ONCE(bond->slave_cnt, bond->slave_cnt + 1);
->   	netdev_compute_master_upper_features(bond->dev, true);
->   	bond_set_carrier(bond);
->   
-> @@ -2332,6 +2331,9 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
->   			bpf_prog_inc(bond->xdp_prog);
->   	}
->   
-> +	/* Increase the slave count before rebuilding the slave arrays. */
-> +	WRITE_ONCE(bond->slave_cnt, bond->slave_cnt + 1);
-> +
->   	/* broadcast mode uses the all_slaves to loop through slaves. */
->   	if (bond_mode_can_use_xmit_hash(bond) ||
->   	    BOND_MODE(bond) == BOND_MODE_BROADCAST)
-> 
-> ---
-> base-commit: 38b6be101006d3e7af972999f45d4f1e8250587a
-> change-id: 20260807-bond_slave_cnt-88e78c5f0ab9
-> 
-> Best regards,
-
-I think the comment is redundant, of course we should change slave_cnt before it
-is used by anything that needs it.
-
-Anyway, the patch looks good:
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
 
 
+On 2026/8/24 20:16, David Laight wrote:
+> On Mon, 24 Aug 2026 17:12:57 +0800
+> Rongguang Wei <clementwei90@163.com> wrote:
+> 
+>> From: Rongguang Wei <weirongguang@kylinos.cn>
+>>
+>> SO_VM_SOCKETS_BUFFER_MIN_SIZE and SO_VM_SOCKETS_BUFFER_MAX_SIZE
+>> do not cross-validate against each other, allowing userspace to
+>> set buffer_min_size > buffer_max_size.
+>> When min > max, buffer_size is silently clamped to an incorrect
+>> value. For example, setting min=512KB then max=128 results in
+>> buffer_size=128 despite the user requesting much larger buffers
+>> via SO_VM_SOCKETS_BUFFER_SIZE.
+>>
+>> Reproduced with a test program:
+>> setsockopt(fd, AF_VSOCK, SO_VM_SOCKETS_BUFFER_MIN_SIZE,
+>> 	   512 * 1024, sizeof(int));
+>> setsockopt(fd, AF_VSOCK, SO_VM_SOCKETS_BUFFER_MAX_SIZE,
+>> 	   128, sizeof(int));
+>> // User asked for 1MB but got 128 bytes silently
+>> setsockopt(fd, AF_VSOCK, SO_VM_SOCKETS_BUFFER_SIZE,
+>> 	   1024 * 1024, sizeof(int));
+>>
+>> After that use getsockopt to get the buffer_size = 128 and
+>> buffer_min_size = 524288, buffer_max_size = 128.
+>> The buffer_min_size > buffer_max_size and the kernel accepted
+>> contradictory values without error.
+>>
+>> Add value check to fix this issue. Return -EINVAL to userspace
+>> when setting MAX_SIZE to a value smaller than the current MIN_SIZE
+>> or setting MIN_SIZE to a value larger than the current MAX_SIZE.
+> 
+> That is going to break userspace that sets the minimum before the maximum
+> when the new minimum is larger than the old maximum.
+> 
+> David
+> 
+Hi, David.
+Thanks for pointing out the issue.
+
+Here is an alternative approach:
+instead of returning -EINVAL, automatically adjust the other value to preserve buffer_min_size <= buffer_max_size.
+The trade-off is that setting one parameter may implicitly adjust the other, but this is preferable to breaking existing applications.
+Does this approach look reasonable?
+---
+diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+index a33b2a2d381d..bd4646115af5 100644
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -2050,12 +2050,18 @@ static int vsock_connectible_setsockopt(struct socket *sock,
+ 
+        case SO_VM_SOCKETS_BUFFER_MAX_SIZE:
+                COPY_IN(val);
++               /* If the new max is less than current min, shrink min to match. */
++               if (val < vsk->buffer_min_size)
++                       vsk->buffer_min_size = val;
+                vsk->buffer_max_size = val;
+                vsock_update_buffer_size(vsk, transport, vsk->buffer_size);
+                break;
+ 
+        case SO_VM_SOCKETS_BUFFER_MIN_SIZE:
+                COPY_IN(val);
++               /* If the new min is greater than current max, expand max to match. */
++               if (val > vsk->buffer_max_size)
++                       vsk->buffer_max_size = val;
+                vsk->buffer_min_size = val;
+                vsock_update_buffer_size(vsk, transport, vsk->buffer_size);
+                break;                                                           
+
+>>
+>> Fixes: b9f2b0ffde0c ("vsock: handle buffer_size sockopts in the core")
+>> Signed-off-by: Rongguang Wei <weirongguang@kylinos.cn>
+>> ---
+>>  net/vmw_vsock/af_vsock.c | 8 ++++++++
+>>  1 file changed, 8 insertions(+)
+>>
+>> diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+>> index a33b2a2d381d..5faa30ee8745 100644
+>> --- a/net/vmw_vsock/af_vsock.c
+>> +++ b/net/vmw_vsock/af_vsock.c
+>> @@ -2050,12 +2050,20 @@ static int vsock_connectible_setsockopt(struct socket *sock,
+>>  
+>>  	case SO_VM_SOCKETS_BUFFER_MAX_SIZE:
+>>  		COPY_IN(val);
+>> +		if (val < vsk->buffer_min_size) {
+>> +			err = -EINVAL;
+>> +			goto exit;
+>> +		}
+>>  		vsk->buffer_max_size = val;
+>>  		vsock_update_buffer_size(vsk, transport, vsk->buffer_size);
+>>  		break;
+>>  
+>>  	case SO_VM_SOCKETS_BUFFER_MIN_SIZE:
+>>  		COPY_IN(val);
+>> +		if (val > vsk->buffer_max_size) {
+>> +			err = -EINVAL;
+>> +			goto exit;
+>> +		}
+>>  		vsk->buffer_min_size = val;
+>>  		vsock_update_buffer_size(vsk, transport, vsk->buffer_size);
+>>  		break;
