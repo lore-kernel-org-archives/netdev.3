@@ -1,178 +1,180 @@
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazolkn19013010.outbound.protection.outlook.com [52.103.33.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E998F4195C8;
-	Mon,  7 Sep 2026 06:48:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.33.10
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788763693; cv=fail; b=jY94T7+2ShC5mmp9yTMfv4rAzJjxzDHIec38+hnJAXrbXNPdShGt/OKhMVtJUj++MfPaXtd1O+YDOxAUpHneR7rP9JoYoyct04vS2c3x10wJQuYv0NB9oU408usxlE49xW+pZOpvpbcmujL09BfKqqKPZDsGdIgRLmJNX8HY9gk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788763693; c=relaxed/simple;
-	bh=R5U0HAdKGZ/FSpVYYnTBaaXuOACG56D+ZfaT9iiEHiM=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=SrkTaBM44hYnGTXH/mdME3RgqFsQJJVstxF7VM/pwitcgy9ac+Y3daUpqPVnkUa7uLhBbgQXiTRzEzpjiK3MnvcVdUNVQtf50KWGU0o4EbldkZJC8VKR12Sf6W+gNqIv2PkUD3EoXYkBS8R0aB6A4M/3vLsasdqM+wyzHCJaiFM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.co.uk; spf=pass smtp.mailfrom=hotmail.co.uk; dkim=pass (2048-bit key) header.d=HOTMAIL.CO.UK header.i=@HOTMAIL.CO.UK header.b=Fv+oHm9K; arc=fail smtp.client-ip=52.103.33.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.co.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hotmail.co.uk
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A93A40B0EC
+	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 06:52:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788763926; cv=none; b=Toh+vI2tGA3RJxGUYV+ZLT8YhsXeSqZjA/pXhhiT/c31KTQsqvH2juEHEcdpsythZhdBGEKBA/loXpctAtFaJmAuUC8TekGLCFU57J/t5BS7I0bae0dk/QlurP3vNdJ+Wa3oBZN/y9kbHARnzRhx3nJb8p7Jp8q7C0IVwbhQ0tE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788763926; c=relaxed/simple;
+	bh=Z9XniWzjJlKB0mButU1sj2cWuQBEqd9MHwaueowg4yI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bzXxDZ3jWDcFXCOhIgkV14KRVrQKP89b/mDuRRI/nXfWMEtAddT6X1jiomR71PbeBVa1hvqNnV1qr84LH3stOPwYdSKr9N+yfabHSh8/Cw6d+0ZG/8129wJvcdAkcr0oDWMlwM7ivCSYFqlKj4rzTvkIB/9sO/ksZBV/BJjO1XM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EvVs2M3X; arc=none smtp.client-ip=209.85.210.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=HOTMAIL.CO.UK header.i=@HOTMAIL.CO.UK header.b="Fv+oHm9K"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=dUG3vuaGK0oAj7TFoL9R/BAZ/zrXmtlaW/yNb7m3HhFxVplUi98z0hWN97QkgZeKWg2nXjeQfEbdLFYmwMLPnqEi20TiLUvr4/+CRm0Us+Ld/HXXU3w9UVz/wQyxuNjECTUIFzTt7A9IZ40ZSzAd3NvGxiVgm8c+dcV8zAYYgOjpQnY8FApYWy9Etq4ttYl1G/kMaL+Kw27bJjPqcgE9fQrxeNJ/F1tmHye0e9LAfwbCVVwHqN9ZXzSSXWy9pt9b558pGgzRqB6WwYZE+YpVAgZzByCklvFx2UAczjrZUQKjv3bOBnsoUqR5Djj1iokdyeUY3m/Z9pxV9P2FXLGSCQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fg6W5bs1umjOPtQbnhGl/QkQO5k9SOiMFqLlVjDUhyg=;
- b=p666KqUDhw4WMnv0gMIVQ0tipRMOw6i6GLBqLiMYux0VkUePfCzPU4OoSLWZUHtMde2htv9xAyC0foyfznwgzuO/vnt8l+YpR/28IeYFVKc8uhpxCsJHcDYTe2Qesley7nQAsgwh6UIu/ANgRG8oA6BpS1ftcbP/WTu2ZeqhTEm4ehEJ0RifmpkzdxbIeDzj0fsYcR6b5ztbYqSD8onWbPjYIojbBdy7yhTHPdajOfOM2Whz1gymi58tUswIXNmou8gXveQaF6X3gTB04p3QGv4SSjjsxrNyKM4zpgikZYXpuG3xWn//mfn2HMlMbkTy7Nl6+xC+W9s6kfewxkI2SQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=HOTMAIL.CO.UK;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fg6W5bs1umjOPtQbnhGl/QkQO5k9SOiMFqLlVjDUhyg=;
- b=Fv+oHm9KvbXar4SzK+9UK8UY47swRzl00nLqv0sF1oDERusneOJNAqnIRAPvfprB4B17OAvX7qt0D879ZX1XLXa09TNwwXKz2OZpEBP+uE+6iib9iypjvCDXB1aeLBt2BwL2ETLlEbRqKlMumErfk0LRsB6cgl+7ibIoJaUQPpD3u5CbEdInU92tH8A7QZW4BnWVdjsSdflvbDL7PVGDCZCfPeRtOL0LVTshHyra+j9HPZ16g+fXNeBX7p//u38zlWjre6mXbGWhU3viu6EldLyMLeT2tXjNb+GWdWplD9fEBU38x5PTOigcsZsGot5XsE0K6HLUnwu+i5T5vZxR9A==
-Received: from AS8P251MB0001.EURP251.PROD.OUTLOOK.COM (2603:10a6:20b:344::22)
- by AS4P251MB0610.EURP251.PROD.OUTLOOK.COM (2603:10a6:20b:4bd::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.382.15; Mon, 7 Sep
- 2026 06:48:09 +0000
-Received: from AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
- ([fe80::2952:d4d0:4ba:8352]) by AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
- ([fe80::2952:d4d0:4ba:8352%6]) with mapi id 15.21.0382.014; Mon, 7 Sep 2026
- 06:48:09 +0000
-From: Aamir Ahmed <elb12345@hotmail.co.uk>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EvVs2M3X"
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-862815e2683so1692371b3a.2
+        for <netdev@vger.kernel.org>; Sun, 06 Sep 2026 23:52:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788763923; x=1789368723; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=eJnRbzrCd1m2NleK0en88gJsG/d6sqX5zOAxr1Lx8cg=;
+        b=EvVs2M3XukLrbCr5xtIpyrjGa6IbzpZnN+AbmSu2sUxwqt+rbe9Okr7WCXzrsJiVbu
+         ZQasksmIDywaU+x1vCbcZ4/tPzESEIpZOI1eV2u5jrDmnHAlP0EBCb9jrscfNNyZkETT
+         /VIbtwrzr0Mb/eT0v6jl5P6yAYrWVx9P9TwZr7HM9eaxF+f710V2FneEPIVRLjAAYnw1
+         Pi3Iwfd0BmL+xMRetuo/lRD0Q2RMi23coENAy5zIaGwUiGPO04eILkT2smevlAoe1FZg
+         9wN5LoM3zx7SOl0e0aC4ltR7SZ4eA6UNhVaFaQ7gs2lypbO61DNWjWHzvhIseNI6LEII
+         LagA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788763923; x=1789368723;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=eJnRbzrCd1m2NleK0en88gJsG/d6sqX5zOAxr1Lx8cg=;
+        b=RcVQ+UQCkDDHHWLovpuQHfKoXUPk1nqySAU3ovOvU4S0fD7GyLsQVEgme3+7MGTqVS
+         qSKpMrwTEi2CandsG2Bxp6ImrvPVYKVA9NHc2wsTRNV9nBDnx5FKNoT1CbJYHZPyVx3T
+         S2Ylwe4hsoSFGcJgpKfRTq/GcfOyxmOgbpSBWI+azrwOUEMj0SZxG10E02CurzF2eKsL
+         0K3ARmncB2fiNa/BGTzsfKLyGx+9fMldHq5/EDj9ZvMThPVivqOjCRAh2rvsnwQ4V2IP
+         NwiloGmTmttuPppl7gjM+ZqnO1wVUzGS8Tj3/1NWzP71r2QfBim+WbVjXTQcoS3YBKVo
+         42FQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwcKWd4vd6p+11abOlnUNpFU3W/SSWZJcfzDaTV5qBzgWzkD4r0JxPVk/+4DyX6o2/pop6sxcY=@vger.kernel.org
+X-Gm-Message-State: AFuF++kh2X5BmBslp3gioDkmsx31vkeTzU8YB41dDD5y64nuAyqldwQd
+	ySW+TUFDhmmapLPH/Ocjf5jS36hmMxStqDQ6X1Fom2dBi4t1oKaW3L3G
+X-Gm-Gg: AYBFou1dLGQNitK/hU1YLAFLhcTnxEGVkUSMohwTc2H433nkjivdThaaSk4TrgESkCT
+	3kzcxlLPaIYqqhI5EFxf/gv0tnE69Wt9Q5Nl4pgJ3Md8sw4I8AiVfIiEwZ16kYEI94fvugEy/J4
+	LiABhj+Stvp++ADaSxvkv+2j536fUUcfdbrLwGVUImaSCZVV50MAYyQFis2+Vz7DrSED3tDcI7L
+	SdHVtvysxdb5Gq+ZI2RFcopfYlzbAycoXFBEnaB4kHZCZi+tTGCQbf87PkqZoJX6FJqCegWt7PW
+	pPO86pn4cdLOK3ppRseOhGrT2yE7XT6QM2ujf/GXDTQ0FkHKpQ/p+dAu1g/S8yfg7kbEuvKhnEC
+	2+ldL/nWoiltRsM+xB8jiM9Hd+0nixBF7oCNVjMk1UPG4qI5RJXwWA2gyleHDpgfQcJ6SCLIat3
+	+42KE5vjfeLCjNAPUh5Omy0VRncObM1r/HY317tdB9QN2ulKENLESAYxrL6oLdukwDNVAuKHvyt
+	fYCspfFcw8ifcQ=
+X-Received: by 2002:a05:6a21:7748:b0:3da:6bdd:2c74 with SMTP id adf61e73a8af0-3da6bdd6cfcmr13705124637.10.1788763923318;
+        Sun, 06 Sep 2026 23:52:03 -0700 (PDT)
+Received: from volcano9f6e-hostos.amd.com ([165.204.217.251])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3339b608409sm28825941eec.21.2026.09.06.23.51.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 06 Sep 2026 23:52:02 -0700 (PDT)
+From: Hemanth Selam <hemanth.selam@gmail.com>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <chleroy@kernel.org>,
+	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+	Oliver O'Halloran <oohall@gmail.com>,
+	Geoff Levand <geoff@infradead.org>,
+	Haren Myneni <haren@linux.ibm.com>,
+	Rick Lindsley <ricklind@linux.ibm.com>,
+	Nick Child <nnac123@linux.ibm.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: linux-usb@vger.kernel.org,
-	netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Shuah Khan <shuah@kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org,
 	linux-kernel@vger.kernel.org,
-	Aamir Ahmed <elb12345@hotmail.co.uk>
-Subject: [PATCH] net: usb: cx82310_eth: validate skb length in partial packet reassembly
-Date: Mon,  7 Sep 2026 06:48:06 +0000
-Message-ID:
- <AS8P251MB0001C1EC5208155FCAB25268C8B22@AS8P251MB0001.EURP251.PROD.OUTLOOK.COM>
-X-Mailer: git-send-email 2.43.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: LO4P123CA0520.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:272::16) To AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
- (2603:10a6:20b:344::22)
-X-Microsoft-Original-Message-ID:
- <20260907064806.578064-1-elb12345@hotmail.co.uk>
+	kvm@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-serial@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH 0/2] powerpc: fix typos and repeated words in comments
+Date: Mon,  7 Sep 2026 12:21:51 +0530
+Message-ID: <20260907065153.33578-1-hemanth.selam@gmail.com>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8P251MB0001:EE_|AS4P251MB0610:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8965f03f-135b-48e5-9b26-08df0cabfa82
-X-Microsoft-Antispam:
-	BCL:0;ARA:14566002|5062599005|55001999006|41001999006|4140399003|5072599009|25010399006|2604032031799003|19110799012|15080799012|23021999003|37011999003|25031999004|12121999013|8060799015|24021099003|51005399006|19061999003|3412199025|440099028|26104999009|40105399003|2607281247196008|1710799026;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?Tji+zYVPD2HR6QH0ozIwWkqGhTlKVxIjEcudrlw8bnYyJxvDyB6Z9YJo2L1l?=
- =?us-ascii?Q?7BSQbF4YivxI4UhVOpQ1aZuDMWF7d3Xrfa8HtHKtKe/bk3ALGrsL9Q5AJHgL?=
- =?us-ascii?Q?WS9a2ZWbKvgUcBrFt3AFvK02l+g0m8Mftz60cGfAFXekYgK9MYx6Y0Cwb2W4?=
- =?us-ascii?Q?qb2wNtf1qHybDnsGtKb2AwJ/K5Y73RyCsI3aIc7ah7yGMzyBxbejs4Ii9yB3?=
- =?us-ascii?Q?ReS37OXrxasdiYnAQ7QfTmF4r6mVWB0pKf152cg10wSsB3cPjtmLaCTty540?=
- =?us-ascii?Q?3pENKxFtc/N1o7mde3LZMOIqJvx16D86fP2o0UZ+H1jzFY/bWpPCdLfXPbIE?=
- =?us-ascii?Q?rK5aiM69gUbmXJ5sbKP0bWiimOSpYx1b9U3Mbes7/kx9+YLUy/VSSu4/OkLx?=
- =?us-ascii?Q?ychgtCWCbPWxbguHKngyu8rMZ3EMgcwk5ssSR8lKoOclOGs22wq22O5StAaE?=
- =?us-ascii?Q?70v8uuo8XrQvwXMw9Dj39GGvDnFD5DRiaP3Ygu/tdFc13YvpwpjQQ61NF6Hb?=
- =?us-ascii?Q?02Ky2nEwnCudixdzIi2grX3ims9af2NcNITzJ7mZhaZ6XK9d/tOle/Cy4reb?=
- =?us-ascii?Q?zHZULoHnBi8KrqN2ARd00SE/YCWjzZXvfKlTc3d48bLBM8TRXrR6o/kwSKlH?=
- =?us-ascii?Q?PIZFm2E80cIXuhFx+eLgXVUMBxNYohbJflV0QJv4h/7Si7/gNpr5FvAuhUtG?=
- =?us-ascii?Q?x91oAf98igYE2VJfvfCLh2pPH2bODGrSO+xdeBHdZSM7qcEWN/RX/B5J5sWS?=
- =?us-ascii?Q?hqQNNp4rgrOz7ApXy1fpu1cK9Bs3IA0JrTQJ+Sxy6wM4YknB+GF4ACArqfmI?=
- =?us-ascii?Q?rhCD9uq/DXEWX3d6c1SSBx5YDR6Upv4coo/Rz/6aj9jcGYhsYVGboyDVWign?=
- =?us-ascii?Q?gxJisZGdpXYc40N31XAGrHR4BjPLkUSC01FwkxyNp5XB5skGm+wq38/HqZ45?=
- =?us-ascii?Q?kezIP7PuRVfya3+AJ7KuLfBglFnZ7V0AzKh9uXg+dE5VLT2IukbI913v379D?=
- =?us-ascii?Q?dBKDMVTe6742YlsJtAooxB2YexFbZUdEB1PLmu34L3fM2RYi1pnTTnggcxtO?=
- =?us-ascii?Q?xRR2Rh2loAjhMJ7FRQfshZ8KbKRjaepclnP2csjBVrOab7F0nBRrtzUu3/lW?=
- =?us-ascii?Q?NOOJzKbP1Hv9ipCGL3ZH3XtmEWfxykdlbaQDPRM2Ry4vVkMl4AjPC/mREGPP?=
- =?us-ascii?Q?TjswMPQyk7NdBEOjUj6D4f64jXvCPRhXWEeHJXYTLEORAaYFvL+RQEGs834?=
- =?us-ascii?Q?=3D?=
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?LUAD8mEbcn0GH+vsMRI/qyKSZVfKJ5kJQLhY1jG017z2VZ5K/gygII00+KTf?=
- =?us-ascii?Q?xpdybwMB0Dz/MF9nKVIGrI8SXVHs7EZuvXhYDgxUR/Ah9cES7wWds4ExL+bw?=
- =?us-ascii?Q?Ciyljsh6YaZX9135+EGe7gXrD0bWTF1bgPFN3GI5sjmdWTMhv1itNWeL5L0f?=
- =?us-ascii?Q?J/jFgbE+9ASi29FGIsIqXQf1LujYBrjXNq0sfbvYRJ0nQO/Qe8iItfAOVGeN?=
- =?us-ascii?Q?pdF0oEUOIzCHAI4EKvy+U2IQXotTq9uTuFadZBOqkMfQ9nY1edBxLwljqnFX?=
- =?us-ascii?Q?5hS8u+hnWVS5GOzfiX+QlSx6GzrT/q//uNtpwrM2LUCvMeM5tFwWnEhUBgWQ?=
- =?us-ascii?Q?i7bdBwt8rZ2cow2K87AEErasCZN+pRUzn/t+nPVv7m4GsoYVyAcZpgAI5Jg8?=
- =?us-ascii?Q?fACFuORcNk42T4jyJd4EPb6s1v9SRCPMMfoQPmYZA0Brg643JmRNTRTpJVmG?=
- =?us-ascii?Q?RQFI4ISG5dwEGo5IADdwwmATIB7mVj73nRTftnuDFXiKvCrYnR7nphjP1XbA?=
- =?us-ascii?Q?ccZ505YsOvTa2q1r7khaWTwD+afMviTcN0OQ8Zxl3n9SLWtWZbrmzpIQpQ/k?=
- =?us-ascii?Q?5YmKPTKXun4HxHbLARTpBcAMj0g0LUdtprL7foMDt2sq8ariVGHQQvWm6nKo?=
- =?us-ascii?Q?v+Kmkv8g6ZhEJa5fpVo38PI13iT4YwH4dEHC+kAfLUJ8QXkcSXBry4vWHV22?=
- =?us-ascii?Q?5OMIOgjii9vylQ0XvKNWWyaogUM3ajlsASGczhDEwQgtc4EU9lz2jyCGPWTR?=
- =?us-ascii?Q?dwJoKOKBbuwu+KhYQ676sd1kf1KPmiErolnpkmNtMR4B+bA8y79vBRuHdtAw?=
- =?us-ascii?Q?R/dVrjheN2zHm0hbCazHuVNVP3Ow/aJdNL43pDfNnjitAbinjy/kA3FmeKLF?=
- =?us-ascii?Q?IXWSQVwCqRjpa0IKDDSOU13oUHKngHBrSn41vr+PiWWM9fx7Sn0tCRxQJe5d?=
- =?us-ascii?Q?Y3MsT0sqDd8IyeoSSU6cao9ugA5AJ1mbskz+HscIadWb3ULEZgsrHxYSksqN?=
- =?us-ascii?Q?fivo0jabSpEp48NzqHtZGIwHKNE3FvhYvwCugkNrnJlX0R1J746q3kh56Fyz?=
- =?us-ascii?Q?XKaFyDmZlIFw+eNelJkyQcULjze8/Wl2RcEQ7mZDMSyNQb7Edu4LVJizyGp6?=
- =?us-ascii?Q?OQ0bfDxo8X4xotncwN2AgKxGmFxGstkL3ZArSiDC7P6jmR9zF9VYDAZtE6UE?=
- =?us-ascii?Q?8MwQqNyaDdHCFo7/irio2zoAuybRd6Iat9T04+kTvC3HD35TGEBB8fcAbfJ6?=
- =?us-ascii?Q?WY2dNXqK5iwybF2s1bci/aWCR0hlScKjg/SJMrueCJsy2sWdSl+yhojMuLjc?=
- =?us-ascii?Q?3EKGez7zmK0TZsIJsPvcwev1wdzjpd8124WjIzazplDQojL1rneymSGXVf3o?=
- =?us-ascii?Q?o4GG373D9dgbMNe+aC19aGgEC5H+9aIRjZ7AYSS4tOV8AOUgNvbfBhcl+tPu?=
- =?us-ascii?Q?3BT7eSoDi+aYAOZoMbK6zmNe9y1LbivM?=
-X-OriginatorOrg: sct-15-20-9412-3-msonline-outlook-fe3f5.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8965f03f-135b-48e5-9b26-08df0cabfa82
-X-MS-Exchange-CrossTenant-AuthSource: AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Sep 2026 06:48:09.4679
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
-	00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4P251MB0610
+Content-Transfer-Encoding: 8bit
 
-cx82310_rx_fixup() saves partially received packets and attempts to
-complete them with data from the next USB transfer. However, it does not
-check that the new skb contains enough data to supply the remaining
-bytes (dev->partial_rem). The memcpy at the reassembly site blindly
-copies partial_rem bytes from skb->data, which can read beyond the skb
-data buffer when a malicious or malfunctioning USB device sends a
-transfer shorter than expected.
+This corrects 2 misspellings and repeated words in comments.  Each is a
+separate patch so that any one of them can be dropped without touching
+the rest.
 
-A crafted USB device can exploit this by first sending a packet header
-claiming a large payload but providing only a few bytes (setting up a
-large partial_rem), then sending a very short follow-up transfer. The
-memcpy reads past the skb data into adjacent heap memory, and the
-resulting over-long frame is delivered to the network stack via
-usbnet_skb_return(), potentially leaking kernel heap contents.
+Nothing outside comments changes.  Every touched C file was checked by
+dropping its comments, replacing each string literal with a placeholder
+and collapsing whitespace; what remained was identical before and after,
+so the compiled code cannot differ.
 
-Add a check that skb->len >= partial_rem before the reassembly memcpy.
-When the transfer is too short, reset partial_rem and drop the frame.
+The mistakes were found with scripts/checkpatch.pl against the list in
+scripts/spelling.txt.  The scanning, the edits and the changelogs were
+produced with Cursor running the claude-opus-5 model, from a request to
+find and fix spelling mistakes across the tree, and every correction was
+then re-checked by the comparison described above.  Words that name an
+identifier were left alone deliberately, even when they read as typos,
+because correcting the prose would make the comment disagree with the
+code it describes.
 
-Fixes: cc28a20e77b2 ("introduce cx82310_eth: Conexant CX82310-based ADSL router USB ethernet driver")
-Signed-off-by: Aamir Ahmed <elb12345@hotmail.co.uk>
----
- drivers/net/usb/cx82310_eth.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Tested by building x86_64 defconfig at v7.3-rc1-269-gbc35965f6940, which
+is clean.  Nothing else was built, so any patch touching code that
+x86_64 defconfig does not compile has been read but not compiled.
 
-diff --git a/drivers/net/usb/cx82310_eth.c b/drivers/net/usb/cx82310_eth.c
-index 068acb052adb0..e243898917fdb 100644
---- a/drivers/net/usb/cx82310_eth.c
-+++ b/drivers/net/usb/cx82310_eth.c
-@@ -251,6 +251,10 @@ static int cx82310_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
- 	 * end of that packet at the beginning.
- 	 */
- 	if (dev->partial_rem) {
-+		if (skb->len < dev->partial_rem) {
-+			dev->partial_rem = 0;
-+			return 0;
-+		}
- 		len = dev->partial_len + dev->partial_rem;
- 		skb2 = alloc_skb(len, GFP_ATOMIC);
- 		if (!skb2)
--- 
-2.43.0
+Hemanth Selam (2):
+  powerpc: fix typos in comments
+  powerpc: fix repeated words in comments
+
+ arch/powerpc/include/asm/book3s/64/mmu-hash.h          |  8 ++++----
+ arch/powerpc/include/asm/book3s/64/radix.h             |  2 +-
+ arch/powerpc/include/asm/fsl_hcalls.h                  |  2 +-
+ arch/powerpc/include/asm/io.h                          |  2 +-
+ arch/powerpc/include/asm/machdep.h                     |  2 +-
+ arch/powerpc/include/asm/nohash/32/pte-8xx.h           |  2 +-
+ arch/powerpc/include/asm/pmac_feature.h                |  2 +-
+ arch/powerpc/include/asm/prom.h                        |  2 +-
+ arch/powerpc/include/asm/sfp-machine.h                 |  2 +-
+ arch/powerpc/include/asm/smu.h                         | 10 +++++-----
+ arch/powerpc/include/asm/task_size_64.h                |  2 +-
+ arch/powerpc/include/asm/uaccess.h                     |  2 +-
+ arch/powerpc/include/uapi/asm/bootx.h                  |  2 +-
+ arch/powerpc/kernel/eeh.c                              |  4 ++--
+ arch/powerpc/kernel/eeh_event.c                        |  2 +-
+ arch/powerpc/kernel/exceptions-64e.S                   |  2 +-
+ arch/powerpc/kernel/exceptions-64s.S                   |  4 ++--
+ arch/powerpc/kernel/fadump.c                           |  2 +-
+ arch/powerpc/kernel/irq_64.c                           |  2 +-
+ arch/powerpc/kernel/paca.c                             |  4 ++--
+ arch/powerpc/kernel/pci_dn.c                           |  2 +-
+ arch/powerpc/kernel/prom.c                             |  4 ++--
+ arch/powerpc/kernel/setup_64.c                         |  2 +-
+ arch/powerpc/kernel/signal_64.c                        |  2 +-
+ arch/powerpc/kernel/smp.c                              |  2 +-
+ arch/powerpc/kernel/switch.S                           |  2 +-
+ arch/powerpc/kexec/core_64.c                           |  2 +-
+ arch/powerpc/kvm/book3s_pr.c                           |  2 +-
+ arch/powerpc/kvm/book3s_xive.c                         |  8 ++++----
+ arch/powerpc/kvm/bookehv_interrupts.S                  |  2 +-
+ arch/powerpc/lib/copyuser_power7.S                     |  4 ++--
+ arch/powerpc/lib/memcpy_power7.S                       |  4 ++--
+ arch/powerpc/lib/rheap.c                               |  2 +-
+ arch/powerpc/mm/book3s64/hash_native.c                 |  6 +++---
+ arch/powerpc/mm/book3s64/hugetlbpage.c                 |  2 +-
+ arch/powerpc/mm/book3s64/radix_tlb.c                   |  4 ++--
+ arch/powerpc/mm/book3s64/slb.c                         |  4 ++--
+ arch/powerpc/mm/nohash/tlb.c                           |  2 +-
+ arch/powerpc/perf/imc-pmu.c                            |  2 +-
+ arch/powerpc/platforms/powermac/low_i2c.c              |  2 +-
+ arch/powerpc/platforms/powermac/pci.c                  |  2 +-
+ arch/powerpc/platforms/powermac/sleep.S                |  2 +-
+ arch/powerpc/platforms/powernv/opal-memory-errors.c    |  2 +-
+ arch/powerpc/platforms/powernv/opal.c                  |  2 +-
+ arch/powerpc/platforms/powernv/pci-ioda.c              |  2 +-
+ arch/powerpc/platforms/powernv/vas.h                   |  2 +-
+ arch/powerpc/platforms/ps3/platform.h                  |  4 ++--
+ arch/powerpc/platforms/pseries/firmware.c              |  4 ++--
+ arch/powerpc/platforms/pseries/papr_scm.c              |  4 ++--
+ arch/powerpc/sysdev/xics/xics-common.c                 |  2 +-
+ arch/powerpc/xmon/ppc-opc.c                            |  4 ++--
+ arch/powerpc/xmon/ppc.h                                |  2 +-
+ drivers/net/ethernet/ibm/ibmvnic.h                     |  4 ++--
+ drivers/tty/hvc/hvc_opal.c                             |  2 +-
+ .../testing/selftests/powerpc/tm/tm-signal-msr-resv.c  |  2 +-
+ tools/testing/selftests/powerpc/tm/tm-tar.c            |  2 +-
+ 56 files changed, 81 insertions(+), 81 deletions(-)
 
