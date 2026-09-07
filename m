@@ -1,148 +1,197 @@
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A3AE40F730
-	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 19:26:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.52
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788809209; cv=pass; b=ZUIaSg5EPNgGk5NxfPndCTXupwdSVcb4aVXlyRh1mjfCMZzd+eI49shd90edXDAGbqNMPyXjh1FAuXqVt6PtddVMFlOQQwtqda3JF1DKLsEwoo+7Nt0+yfWFOJ99KyY3Nkvib2Hoi5fd0eexXhawacFJATYSTkES3fj+lGfOyG8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788809209; c=relaxed/simple;
-	bh=DmILtzqZDzEUGV1I4V8TMYjsJF/IY1peGYXwFN9ey4g=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DwaS+sic3uZF4/SJ475ENnHnCi4yJOq2Nljn8ZSUghqQYpd83To6tbz0AXwvXK+9cCBdh27vsqS9eLAkEtI9WCVt9PM0wXiOc1Ym3LiKSZcY2x0CJHYfPpOnTDYvGIwPh27sMoC0FCwrb8xx9quZd/R7RA541hkfmxNAGj5yMys=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fq18f210; arc=pass smtp.client-ip=209.85.221.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0631B4FB9B8;
+	Mon,  7 Sep 2026 19:28:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788809315; cv=none; b=OudM94bMluFQ4bjUCsqCwSJFdfpQ/Pj8LoIaG75RISeKMUcKyS1+DKW0M/XISle/+plXR9Thx+STwGtIDcFUKoWJPS7FIOoBOzmiyMEUpqRiehse0Q/K/IOO1TLOWM44mDwmyWFxN87RBtzMH2uHV6eZrNf9CxQcpQww6ezNuWM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788809315; c=relaxed/simple;
+	bh=GpWLUF/cOPE67N4nLaEEaqtCZZY+HHLd/s1QQGJTUOU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hW3ualTHRdzSjJ/oC9ocjw5/NnxyVLyXBGjy/lxAREYLD0848HGXN/jeHZCiBS5/94mzBejCn7IIRf3urVBcr6TxqAp+k0TpmkUJpuoaW9zUcpDojTsv9HH4VzigdorDtNwrb6BxKI0TpZVgGVQFGnSDKW2jECPZD2DB7PmxqQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=zdvEHIJp; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fq18f210"
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-4843e9c5960so3832730f8f.0
-        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 12:26:47 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788809205; cv=none;
-        d=google.com; s=arc-20260327;
-        b=H7zUO71NRAoRVrt+0vxejnWk414YeYl8zGkkLrheVa4J2BSR+YbukQwFTxmtB3R1Ku
-         r5A12/FGCwY6UVhtZe3XvkVgBbKZg3KSbqhCDROge5B0nkITKn3qBiqoat+hQ0p4qSxe
-         PX2jFrOpeddzMLacyRCT1vT49Y3fgj6GBAR+T8MtQrkk+hg89lTaW2/SFDPtR5rZJEYj
-         LWB0rXA/SUU8Lv3u/xmNjb5muTWZPM6KCYx8wYrIm1w70rbQRPFeqOejCNwb/qfO0bGs
-         gxbqOFDBYn+MnJPigvLE6M6V9SQR4nlbI3sMftkrLcIlGa2JUWhZ2ZC8zB4flDDKNaPN
-         05iw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=kBhKUAdBctYk4OBLe+242bptFLWaOmD7/1s701If7kU=;
-        fh=zl7P2MjMxIZZ7zJ1LGkSiGUi1j+f7FS5y0Qk2o1E/xE=;
-        b=HP794h7p6g9v+N/LDTSwaZHAeQnM3gOAuzLWjy5C/C40JoYzGUFLnQA0NGTB3XOiVu
-         MNSEaL8pva66RWdww3C8nIyriqpGYD/RYzaYK0K5OFBncHTUcin6ieNMos9dccel3FRV
-         OyX0GyjYxFaajzPFYJYRi0I7sCqXH9hzCtDLKaWt9sWX5V9LnXCFS3FZX1WEoMZuC0Uw
-         LG4INVZG0Q4XmWGEU/HN0QpK+m2bG/CZkwhziRCfDI1uBK/CPBMySzNNJ5kWwcaQPy33
-         LGTZc664tCT4IAAoNFK2kifjfFzA7JlbYfJB+3vUs6ukHGMbtQzlTyoY9hLsaW8jh/nF
-         +94Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788809205; x=1789414005; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=kBhKUAdBctYk4OBLe+242bptFLWaOmD7/1s701If7kU=;
-        b=fq18f210MM3m80kQ2Uea52OvkX+yulhV+P5OEhS7K4mi8w7ZGBtOLUMGkLknSrA5os
-         eJT1JBZ4bGLPhzuoZGRcOmWuYczYzVUfTo8hD2vqbjcJOSiCZJO6BV6q2dI0hUE/xBjA
-         QvZMqncGlOfVhpoF0SwiUdarZeRwvjoCZKKhs0PgjZx8dV/3dfOymoHUmtDb8YC6ucAv
-         VJiEZR0G7gWK89vgBZTkAMhcB8xCVyLC0iqc7tHNs4VNUGCnwDn6Ybus4tRAJ5QHVsgO
-         S11Pf9zpRxtM1k5y9AQQMwUvAGIxX67xQF2OmwpOwzVMtPRUZ/rp160LEIiXdtL0Ylqr
-         xLBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788809205; x=1789414005;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=kBhKUAdBctYk4OBLe+242bptFLWaOmD7/1s701If7kU=;
-        b=Joxe5aHJ1SnX5vrSpn09u93ys/GV4DdqTOSryR//7lSbp3Mb6PvahEgGC/rZi/58Vs
-         yAKa0tU105DHMVWh98HkWawOJd8oN2Fi9BJS2SOE7JYuBGcb8l2fWTEhPULSd7IS9LvE
-         8SACR5gkousgyWcCk/TS3H4xYRVk3eUoa5CWkUxbtgdFi41tR8XvEL+stOiBSJwqi2nB
-         rp3s6q6zToR3AhVUhHo7RwVbYO44e6DF5WXbWmeDz72x1ijkxGTBGYYUyJzhfozOgctM
-         PudR1QMmG7rtTQEsvPuNTMFll7WYZPWmP8+N78KHnlxRE9ruXC0zRXKNbrGR0a2+LljP
-         1R5w==
-X-Forwarded-Encrypted: i=1; AKwUvBwLgZ9mPPE0AkfY2ov6BywrqyfAtaEVB2pS+weSD7eVILT0ylshZkI7rNA112y4/Ztx/qXJjAU=@vger.kernel.org
-X-Gm-Message-State: AFuF++lFcm+nhZKuMOYuxoaViQ04jFwhMySv51zMteiQW38oZ0jwD2pu
-	20o1bmLDHnuV0oxzw0HEgpi46WQ7djr8vif2PYoyMsYxiLo7Axcu84qtO/xGDTTfyliP/WZLsPF
-	Ti9rxUktCp3giYinG1gz7bAQifwvC110=
-X-Gm-Gg: AYBFou2Zrrb7SRqR2hfQ8tLQfAM1LMJWVeNKQeAmPtrQcRi+tNQh12TbRg9dkES49PT
-	lcEfZZ/n2+EWX9ikvP4EIlkZZbHjxsoy/17NdJ4g0TJQaGAIeY1D1OK6WvbNvAAl5GY77FxH5Ja
-	pvNLpI+cBTvOx4HgETW42mq+ge7CKfgabevewJwi5uyJkC/kPF/VMnRDwwe2/PPAhbQWLA6IB5y
-	o5GhqXdDZoOR9LWeGWc/6bzPJ7bvm+ILNQQk0/SNQsl3CKe7nfjEseMTCONFba4TIvmJebLyN+t
-	MiQhvNWiS9g0+FsGYfSPfUbnv8FNeHzYbnTbjbjD5p4Cb2TIzvVcnogpLqLirUvt0spoH4uIqQT
-	tXNRpiS3d3OrvGXjHzyIiGjsCQBhap731
-X-Received: by 2002:a05:6000:704:b0:485:8c16:5eea with SMTP id
- ffacd0b85a97d-4858c166202mr24838505f8f.36.1788809205349; Mon, 07 Sep 2026
- 12:26:45 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="zdvEHIJp"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=5C+dVUlcvBaOxX6mLwUe0cyuABYSMsgJjYxwPsJA6HE=; b=zdvEHIJpRpL8Fmdz2c3E0u68PW
+	vanlygKR4MnHvIpljfzPbGesX8X+WwZsV9P6leelwe36m1eVEWriS+eHwvAptw7n5ZQlLFiEHtMjL
+	P8GsX6Fkf9VSb+bWI73ZoSsah0IdfD/5Jnn6X7BeRDPFbtV2bmu0H6nbJL1Qy9hGhYm4=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1x3f0z-003c2Q-AP; Mon, 07 Sep 2026 21:28:25 +0200
+Date: Mon, 7 Sep 2026 21:28:25 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Vasilij Strassheim <v.strassheim@linutronix.de>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Russell King <linux@armlinux.org.uk>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	Martin Kaistra <martin.kaistra@linutronix.de>,
+	Benedikt Spranger <b.spranger@linutronix.de>
+Subject: Re: [PATCH net-next v2 4/4] net: dsa: soce: Add basic support for
+ SoC-e switch IP cores
+Message-ID: <3c2c5b39-6a7d-4cb2-af1c-b5015b6bf1e8@lunn.ch>
+References: <20260903-devel-vstrassheim-soce-dsa-ml-v2-0-fb0587cb466b@linutronix.de>
+ <20260903-devel-vstrassheim-soce-dsa-ml-v2-4-fb0587cb466b@linutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260902-rzn1-miic-fix-array-v3-0-3f7dccffaf5a@reliablecontrols.com>
- <20260902-rzn1-miic-fix-array-v3-1-3f7dccffaf5a@reliablecontrols.com>
-In-Reply-To: <20260902-rzn1-miic-fix-array-v3-1-3f7dccffaf5a@reliablecontrols.com>
-From: "Lad, Prabhakar" <prabhakar.csengg@gmail.com>
-Date: Mon, 7 Sep 2026 20:26:19 +0100
-X-Gm-Features: AcwNN1VUA3S6ZAAGYKSTEqV8ikrWj4M6EW9VSx8IWuQuy8lbnm_o-FkNlvIGfjI
-Message-ID: <CA+V-a8tqFCB=c0_74=pdOT1ujz6w+SUVLmNVy98qyzd5FrusiA@mail.gmail.com>
-Subject: Re: [PATCH v3 1/2] net: pcs: rzn1-miic: Fix config array initialization
-To: khendry@reliablecontrols.com
-Cc: =?UTF-8?B?Q2zDqW1lbnQgTMOpZ2Vy?= <clement.leger@bootlin.com>, 
-	Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
-	Russell King <linux@armlinux.org.uk>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, linux-renesas-soc@vger.kernel.org, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Geert Uytterhoeven <geert+renesas@glider.be>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260903-devel-vstrassheim-soce-dsa-ml-v2-4-fb0587cb466b@linutronix.de>
 
-On Wed, Sep 2, 2026 at 7:55=E2=80=AFPM Kyle Hendry via B4 Relay
-<devnull+khendry.reliablecontrols.com@kernel.org> wrote:
->
-> From: Kyle Hendry <khendry@reliablecontrols.com>
->
-> Fix memset parameters to initialize the entire DT value array
->
-> Fixes: f39e968dc168a7bd ("net: pcs: rzn1-miic: Move configuration data to=
- SoC-specific struct")
-> Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-> Signed-off-by: Kyle Hendry <khendry@reliablecontrols.com>
-> ---
->  drivers/net/pcs/pcs-rzn1-miic.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+> +#define SOCE_MAX_NUM_PORTS 31
+> +#define SOCE_MAX_MDIO_ADDR 32
 
-Cheers,
-Prabhakar
+Given what the binding says, that looks odd.
 
-> diff --git a/drivers/net/pcs/pcs-rzn1-miic.c b/drivers/net/pcs/pcs-rzn1-m=
-iic.c
-> index 2b72fa98ddf1..c50b65d064fa 100644
-> --- a/drivers/net/pcs/pcs-rzn1-miic.c
-> +++ b/drivers/net/pcs/pcs-rzn1-miic.c
-> @@ -683,7 +683,7 @@ static int miic_parse_dt(struct miic *miic, u32 *mode=
-_cfg)
->         if (!dt_val)
->                 return -ENOMEM;
->
-> -       memset(dt_val, MIIC_MODCTRL_CONF_NONE, sizeof(*dt_val));
-> +       memset(dt_val, MIIC_MODCTRL_CONF_NONE, sizeof(*dt_val) * miic->of=
-_data->conf_conv_count);
->
->         if (of_property_read_u32(np, "renesas,miic-switch-portin", &conf)=
- =3D=3D 0)
->                 dt_val[0] =3D conf;
->
-> --
-> 2.43.0
->
->
->
+> +#define SOCE_MAX_MDIO_OUTPUTS SOCE_MAX_NUM_PORTS
+> +
+> +struct dsa_switch;
+> +
+> +struct soce_mdio_ops {
+> +	int (*phy_read)(struct dsa_switch *ds, int mdio_output, int phy_addr,
+> +			int regnum);
+> +	int (*phy_write)(struct dsa_switch *ds, int mdio_output, int phy_addr,
+> +			 int regnum, u16 val);
+> +	int (*phy_read_c45)(struct dsa_switch *ds, int mdio_output, int phy_addr,
+> +			    int devad, int regnum);
+> +	int (*phy_write_c45)(struct dsa_switch *ds, int mdio_output, int phy_addr,
+> +			     int devad, int regnum, u16 val);
+> +};
+> +
+> +struct soce_dsa_local {
+> +	void __iomem *base_addr;
+> +	void __iomem *mdio_master_addr;
+> +	/* Serializes all logical buses sharing the MDIO master. */
+> +	struct mutex mdio_lock;
+
+What is the MDIO master?
+
+> +static const struct soce_mdio_ops soce_mdio_ops_c22_c45 = {
+> +	.phy_read	= soce_mdio_23_02_read,
+> +	.phy_write	= soce_mdio_23_02_write,
+> +	.phy_read_c45	= soce_mdio_23_02_read_c45,
+> +	.phy_write_c45	= soce_mdio_23_02_write_c45,
+> +};
+
+It seems like this is the only struct soce_mdio_ops. Does the IP
+support different MDIO buses? Is this level of abstraction actually
+needed?
+
+> +static inline bool soce_mdio_output_valid(int mdio_output)
+> +{
+> +	return mdio_output >= 0 && mdio_output < SOCE_MAX_MDIO_OUTPUTS;
+> +}
+
+No inline functions in .c files. Let the compile decide.
+
+> +static inline bool soce_mdio_addr_valid(int phy_addr)
+> +{
+> +	return phy_addr >= 0 && phy_addr < SOCE_MAX_MDIO_ADDR;
+> +}
+> +
+> +static inline bool soce_mdio_c22_reg_valid(int regnum)
+> +{
+> +	return regnum >= 0 && regnum <= SOCE_MDIO_C22_REG_MAX;
+> +}
+> +
+> +static inline bool soce_mdio_c45_params_valid(int devad, int regnum)
+> +{
+> +	return devad >= 0 && devad <= SOCE_MDIO_C45_DEVAD_MAX &&
+> +	       regnum >= 0 && regnum <= SOCE_MDIO_C45_REG_MAX;
+> +}
+
+Do you see any other MDIO driver doing this sort of checking?
+
+> +static int soce_mdio_read(struct mii_bus *bus, int addr, int reg)
+> +{
+> +	struct soce_mdio_bus *state = bus->priv;
+> +	struct soce_dsa_local *local;
+> +	struct soce_priv *priv;
+> +	int ret;
+> +
+> +	priv = state->ds->priv;
+> +	local = &priv->local;
+> +
+> +	if (!local->mdio_ops || !local->mdio_ops->phy_read)
+> +		return -EOPNOTSUPP;
+> +
+> +	if (!soce_mdio_addr_valid(addr))
+> +		return -EINVAL;
+> +
+> +	mutex_lock(&local->mdio_lock);
+> +	ret = local->mdio_ops->phy_read(state->ds, state->mdio_output, addr,
+> +					reg);
+> +	mutex_unlock(&local->mdio_lock);
+
+What is the lock protecting?
+
+> +static int soce_register_mdio_bus(struct soce_priv *priv, struct device *dev,
+> +				  struct device_node *mdio_np,
+> +				  u32 mdio_output)
+> +{
+> +	struct soce_mdio_bus *state;
+> +	struct mii_bus *bus;
+> +
+> +	bus = devm_mdiobus_alloc(dev);
+> +	if (!bus)
+> +		return -ENOMEM;
+> +
+> +	state = devm_kzalloc(dev, sizeof(*state), GFP_KERNEL);
+> +	if (!state)
+> +		return -ENOMEM;
+> +
+> +	state->ds = priv->ds;
+> +	state->mdio_output = mdio_output;
+
+Can you think of a better name than mdio_output. It seems to be the
+bus number?
+
+> +
+> +	bus->priv = state;
+> +	bus->name = "soce mdio";
+> +	bus->read = soce_mdio_read;
+> +	bus->write = soce_mdio_write;
+> +	bus->read_c45 = soce_mdio_read_c45;
+> +	bus->write_c45 = soce_mdio_write_c45;
+> +	/* ds->dst can be NULL during probe, before dsa_register_switch() */
+> +	snprintf(bus->id, MII_BUS_ID_SIZE, "%s-mdio-%u", dev_name(dev),
+> +		 mdio_output);
+> +	bus->parent = dev;
+> +
+> +	return devm_of_mdiobus_register(dev, bus, mdio_np);
+> +}
+> +int soce_mdio_23_02_read_c45(struct dsa_switch *ds, int mdio_output,
+> +			     int phy_addr, int devad, int regnum)
+> +{
+> +	void __iomem *ctrl, *params, *read_reg, *write_reg;
+> +	struct soce_priv *priv = ds->priv;
+> +	struct soce_dsa_local *local;
+> +	u32 regvalue;
+> +	int ret;
+> +
+> +	if (!soce_mdio_output_valid(mdio_output) ||
+> +	    !soce_mdio_addr_valid(phy_addr) ||
+> +	    !soce_mdio_c45_params_valid(devad, regnum))
+> +		return -EINVAL;
+
+Hasn't this already been checked once?
+
+	Andrew
