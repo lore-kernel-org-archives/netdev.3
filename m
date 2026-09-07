@@ -1,83 +1,115 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-175.mta0.migadu.com [91.218.175.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55CC941A909;
-	Mon,  7 Sep 2026 06:52:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25B17372071
+	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 06:55:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788763973; cv=none; b=YeAaMMp5rsmLZvlBkwuh0mWDipi6plY4msbXbPvQCWhDjPmWsnxrFMyYH99nSe04A8BuHnFs0JiP3oSlOzPKRNbB4Ho/VWBfiEI17IvMt4O3gVQJL2ROUZko+mnqMxWRXNU1nnRzG6CQ1/ORQhxx5bNckciOK0eULeuW+WlJf/Y=
+	t=1788764151; cv=none; b=H6dwilxf2gX+YXdxuAGiRpSP/dTQcw0BoN+UnCfxcDv5UBlR8JR1J1eiv6VY2Pq4FTde6FXLFF03vgsJBBiVmxBD6nTxgcjOiP9ZTIMLWXHFogdrOvgTSwhOP1sRqgH/1HjDzpiJTOAX8V7WhL7uCmeiaSqcvmae7njCSp5ww4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788763973; c=relaxed/simple;
-	bh=0lBdv2+luebBNSp6vspKPBMwE0i/9ESDBR/xiCjDxhQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WuHkJ0IG1NmAbDGyjbUdkrQ6YFV+kU29d0Xd2Foec9AQA874fDwa5WKHRBpuZWIcVmkyeMBhl1H/6+l3x3B9hpDuDTjm/fzgTyUex6v1wJDF4cFREvCcw9FiglBmX2EwB0JeqNgI6JTGrd6JUZ/xoUa9boahUk6zjduOVJ8gbcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wj7lbqV2; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788764151; c=relaxed/simple;
+	bh=GpmpSA+wJhq9XMvD6uJ1M+brW58Ptbg+555BbR3w48E=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=vA6OWHM9qhjPt/nEQTH3h8msyyZvsZCyC3Ct9ohhvDc86GuB6JJTB/jUJfG6H/VJC+dr8BeNtzy3gRagWPW4201H0A7O1qjHyfFHnZ7J2NzwdKpnbdFAAzYZ5TvrJk150H1obGoPHB7qSyATqmlXhgwmYuRBvD60m3o+PwOAS2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=XsidjwkM; arc=none smtp.client-ip=91.218.175.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wj7lbqV2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE3911F00A3A;
-	Mon,  7 Sep 2026 06:52:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788763971;
-	bh=VxBiuUgqkS0SQe1yE8BmZbODGbM8ARODThXC3vmkcs4=;
-	h=From:To:Cc:Subject:Date;
-	b=Wj7lbqV2f5m5vcdGp1o/ZIbYhNwphoLDejYnSSjdGk/mJoxmjotZ65LhTddlzLTJ+
-	 8MbQDJctsCYpgeMaB5wpqCUFGwT02CfmVoOi7Eh9HMfhmgNGCF0jJDaOQnmrBHGZCb
-	 UPxm/ESWblBgpPwGTJ9R6jDehikMZn6By4sUVGo+g/RtkoGY8myZ1G0BAYK9o8veFF
-	 dxkuqHmoRD+5KXl5kcILeLayRnfT4tlPY1zoxRgCDbHRL8kXGEF+fA6APe4AeNNWdR
-	 4rAzb4xFT7uRlOvxm2ag//u71AMQdHuZSQXzhY4lfgzQKU3VJQ7N/Doa7hb0JygElR
-	 1GM+yxVvFTu0g==
-Received: from johan by xi.lan with local (Exim 4.99.4)
-	(envelope-from <johan@kernel.org>)
-	id 1x3TDl-00000000QEy-0zwA;
-	Mon, 07 Sep 2026 08:52:49 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: linux-usb@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Johan Hovold <johan@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH net] net: hso: fix TIOCMIWAIT race
-Date: Mon,  7 Sep 2026 08:52:35 +0200
-Message-ID: <20260907065235.100848-1-johan@kernel.org>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="XsidjwkM"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=GpmpSA+wJhq9XMvD6uJ1M+brW58Ptbg+555BbR3w48E=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788764147; v=1; x=1789368947;
+ b=XsidjwkMr1sIltqe74PWN2tvAtAdASdI0OuFtpSFtj2leOqsGNXSDf6Vo1gKkr03lTcrt7vT
+ ItnJ3uyJ4BVw1tTGa3iUPk4oD5b9GKP7FUYIiRCrRpKv6f7USz9eCtm7DuWzLxcBWjbwLG4DMAA
+ 2HqYTKZ6dthzZiz6CEwJCL2k=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 7e1d064e21304fbe;
+	Mon, 07 Sep 2026 06:55:47 +0000
+X-Mizu-Trace-ID: 7e1d064e21304fbe
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <214d51c6-a71b-4b93-8dd7-6bd1c02b4c3f@linux.dev>
+Date: Mon, 7 Sep 2026 14:56:13 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] netfilter: conntrack_amanda: fix port value truncation
+To: Aamir Ahmed <elb12345@hotmail.co.uk>,
+ Pablo Neira Ayuso <pablo@netfilter.org>
+Cc: netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <AS8P251MB0001CCFE2A0F40637E5A366CC8B32@AS8P251MB0001.EURP251.PROD.OUTLOOK.COM>
+Content-Language: en-US
+From: Chenguang Zhao <chenguang.zhao@linux.dev>
+In-Reply-To: <AS8P251MB0001CCFE2A0F40637E5A366CC8B32@AS8P251MB0001.EURP251.PROD.OUTLOOK.COM>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-The task state must be updated before checking the wakeup condition to
-avoid missing a racing modem status update.
 
-Fixes: 542f54823614 ("tty: Modem functions for the HSO driver")
-Cc: stable@vger.kernel.org	# 2.6.29
-Signed-off-by: Johan Hovold <johan@kernel.org>
----
- drivers/net/usb/hso.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+在 2026/9/7 07:37, Aamir Ahmed 写道:
+> amanda_help() uses simple_strtoul() to parse the port number from
+> Amanda CONNECT replies, passing the result directly through htons()
+> into a __be16.  simple_strtoul() returns unsigned long, so values
+> above 65535 are silently truncated by the implicit conversion to u16
+> inside htons().
+>
+> The existing check "port == 0 || len > 5" is insufficient: it
+> catches values that truncate to zero (e.g. 65536) and strings longer
+> than 5 digits, but misses values 65537-99999 whose u16 truncation is
+> non-zero.  For example, port 65537 becomes port 1, creating a
+> conntrack expectation for an unintended port.
+>
+> Parse into an unsigned long and explicitly reject values above 65535
+> before the htons() conversion, mirroring the pattern used by the FTP
+> helper's get_port() and the recent IPVS FTP fix (commit
+> e625a9477d12).
+>
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Signed-off-by: Aamir Ahmed <elb12345@hotmail.co.uk>
+> ---
+>  net/netfilter/nf_conntrack_amanda.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+>
+> diff --git a/net/netfilter/nf_conntrack_amanda.c b/net/netfilter/nf_conntrack_amanda.c
+> index 14ae660491f3..057cef7e2a7e 100644
+> --- a/net/netfilter/nf_conntrack_amanda.c
+> +++ b/net/netfilter/nf_conntrack_amanda.c
+> @@ -91,6 +91,7 @@ static int amanda_help(struct sk_buff *skb,
+>  	char pbuf[sizeof("65535")], *tmp;
+>  	u16 len;
+>  	__be16 port;
+> +	unsigned long tmp_port;
+>  	int ret = NF_ACCEPT;
+>  	nf_nat_amanda_hook_fn *nf_nat_amanda;
+>  
+> @@ -132,10 +133,11 @@ static int amanda_help(struct sk_buff *skb,
+>  			break;
+>  		pbuf[len] = '\0';
+>  
+> -		port = htons(simple_strtoul(pbuf, &tmp, 10));
+> +		tmp_port = simple_strtoul(pbuf, &tmp, 10);
+>  		len = tmp - pbuf;
+> -		if (port == 0 || len > 5)
+> +		if (tmp_port == 0 || tmp_port > 65535 || len > 5)
+len = min_t(unsigned int, sizeof(pbuf) - 1, stop - off) already
+limits the length so that it cannot be greater than 5. Could the
+len > 5 check here be dropped?
+>  			break;
+> +		port = htons(tmp_port);
+>  
+>  		exp = nf_ct_expect_alloc(ct);
+>  		if (exp == NULL) {
 
-diff --git a/drivers/net/usb/hso.c b/drivers/net/usb/hso.c
-index c1aec67688ae..71caa3764b23 100644
---- a/drivers/net/usb/hso.c
-+++ b/drivers/net/usb/hso.c
-@@ -1547,10 +1547,10 @@ hso_wait_modem_status(struct hso_serial *serial, unsigned long arg)
- 	spin_unlock_irq(&serial->serial_lock);
- 	add_wait_queue(&tiocmget->waitq, &wait);
- 	for (;;) {
-+		set_current_state(TASK_INTERRUPTIBLE);
- 		spin_lock_irq(&serial->serial_lock);
- 		memcpy(&cnow, &tiocmget->icount, sizeof(struct uart_icount));
- 		spin_unlock_irq(&serial->serial_lock);
--		set_current_state(TASK_INTERRUPTIBLE);
- 		if (((arg & TIOCM_RNG) && (cnow.rng != cprev.rng)) ||
- 		    ((arg & TIOCM_DSR) && (cnow.dsr != cprev.dsr)) ||
- 		    ((arg & TIOCM_CD)  && (cnow.dcd != cprev.dcd))) {
--- 
-2.55.0
+The subject is "[PATCH] ...". Since this is a bugfix, please use "[PATCH net] ...".
+
+Reviewed-by: Chenguang Zhao <zhaochenguang@kylinos.cn>
+
+Thanks
+
+Chenguang
 
