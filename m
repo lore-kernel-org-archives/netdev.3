@@ -1,143 +1,109 @@
-Received: from mail-vs1-f48.google.com (mail-vs1-f48.google.com [209.85.217.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E609251E44B
-	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 17:26:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CDFC3EEAC1;
+	Mon,  7 Sep 2026 17:27:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788802018; cv=none; b=lUTJy+aRHSLaPdeUY63uaoXRTWyFNiZxy9u5R8GdS/eBCRVy740biUF2ISncCDof3qI6+smb0WNmW6auBNW5MbJKoUg0GHWmHcV9FAUk6+RwPv2Zrwo6RVhv0KeLRpPH9tPXLDow3Cu0/X5ljW+HaY29ppnfWy18riIlQ7uQzU0=
+	t=1788802040; cv=none; b=hjJjiUfbwNXt/xzfWZzvP9HDjPo0dH0AWCYduEGstEXZkG75lX2LleJc0akVy+YbTtLAJJrqXDLbfVGTQxcI8hpzPlfw0UcJYpotecsaIO7WaMbpBwikR3H4hQ7VzF0nRv8ysDQKibsDjMZPtYKN7VAnVC6yha8XlFIUGI3yrNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788802018; c=relaxed/simple;
-	bh=02qaJEwVgTIqA4K8p/BTonU2DB7NC6EVGzLYjbxtdUU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cor9ne3M6VLCKk0dog5cFZ3sjheuefVPW+CN72jDnvYTchdii8b4RRvSyf5Kq/F1AWJZoqlscxYGZ6Lm4ANYHQMu2WqQ9RVyyYPUB+3x2TusLWrW6t1q3cO/a2UrvgiGIvrZdMl1NoNf4FZDeoumENV3gLGIJL6yFqSGX3lDBvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N0tUoLhw; arc=none smtp.client-ip=209.85.217.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788802040; c=relaxed/simple;
+	bh=NVkZTLR6E1Fi8cnffwG7jdAf1LCJ2wXhJiC84d+aSB4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EIceSRsHcEYQWJjgrDEhQuSRmdJebxDmBr+maDuVN3sbi+nEQlPqSdnUe6imkcXl5/lp4Qu7Of1wGxFA2wGVZ/V77++MEaai4Dh0Al+ftZdYP41aqNysLmV8XDZ8YcFwvUPVH/yy3Jkr20pS8ADrgtCxCgh1eF1DVz5+CQZkl4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=rTDLpUlr; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N0tUoLhw"
-Received: by mail-vs1-f48.google.com with SMTP id ada2fe7eead31-78a338fe106so3500034137.0
-        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 10:26:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788802016; x=1789406816; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=SXd7v2Ygni0i6U7y+pmnE/Fo/s2IHHa5Wom3Hs7W14k=;
-        b=N0tUoLhw51+XM3ffY46NaIqbPVpXAXNtpp0XCsYvM2Bg8UTXO9bd8Vz3LAIQktelJE
-         qrGO1kMw7w3ofut7SZ1JNPIsSnudovLXmLs16lJqKVpSH7Ez9G7NADgAfHMLTL54Jzj0
-         /wDHk30BceDulSJPMpWZiEdtkKIOruzALgx3LNqMahRORrXBI9XU4ftEiKJ9/kCxul1F
-         LioHRilnxi5YEctjxggUBPdWPzwE/DFD/Btqh6UatuNftP50FFNDMLHGCVuyjQmePGa7
-         +iZVtJAvI65GAXzsblq5FZHj+ZG+6FWIIsDw18CNbrBngspeH00tqo6rjcrptQhui3gK
-         figw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788802016; x=1789406816;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=SXd7v2Ygni0i6U7y+pmnE/Fo/s2IHHa5Wom3Hs7W14k=;
-        b=O9ypKAYkdinRnWaWtT2keCaNYawX+UfUXbXy0oceeBmHoGG7mVzzJyLwirave0pDOc
-         kADlVsujtW+uxBEsBH3J12xqLJJKVsNHinFBdlnSRSqMtvgGearUsFbmACXK2tEq82ip
-         Qejh2cDNYEuOk8Ulx5LMY5ormDT9yoeiOWQ+qE/ZJvq95IA/DaFtV/5OwtLSOHQwEe/F
-         LMAXif3PgU6t+7VsF9kyhe5quONsMb0l7s6dxKL4e4S/h4qG9ptuImcigRYrmXUzoSZV
-         OscUdHk+sileKO/SPypSEnPyf6F6eaNTZKQR0Xh+PxvzvEdu4soLUCspB5VisaZb5THw
-         HUeQ==
-X-Forwarded-Encrypted: i=1; AKwUvBx0m3Dwe6R57dKzBKP5BYGoeplm7TxQ+6Fj6U7uu35wxC4X2Iswq+T6WODa6gMXwkND5ZJoLhY=@vger.kernel.org
-X-Gm-Message-State: AFuF++k6IzlemCpRaLZbalpIbo9iqX43bcpW3PgMwn7sAFBpHCNfuvPX
-	INvPGUCaW2uWz/37hg0iyBSfShkzCw3U0MnoM8XAeer0M5JR/3NEtIMMqZeh8RRm
-X-Gm-Gg: AYBFou0uRbE2945pYdCm7OPFN65EFUhjgMgnANMoBUcde6cLbAo8IcPgIWOHsSu4V5T
-	7d1f6gmiyF7vNJlbzwmrj+EqK6M1qdRywPuPHyzXS4dYgYTcl59FcBL/6G6GHHI2TR4nwRzRddf
-	RXwz4Dc7HHWDEKcaobeelFCiEo/5hrYjzO8emfFzsVOKi6j8oBs/NbtVQQgchIDdunOLmjS2w9/
-	MEdXDaWVB2LtB6bcZUlbcELzryb4D/HJW9kaHVtDgKkF28Mgk2wSOLcgCmDbpdclEmbs7oP4OcD
-	GasoiXgy/CdBdPubsfD8wEeSPYer/R2Z6jGCTdtj0toFcasG5kRI2czbIM8zpYQmiJH36UGhPYl
-	wCck/DL1UQodXwW5NB7RdiyMg3COuQ25pOQnfkBozD9Syjq1QUzMhlXN0mPDe+P6vj0Dm0nxhx9
-	OxxbEd/2CCOjBOUKDn+ZtzNVRAtRZHQR5025SLYSseuJUyUkcBuA3frTNIk/QwNyez1Ogmd/GIZ
-	hg+dEu+A0tf3aale88+xTH5ExnjxcBPdoUTrMGDvRrKtG7XdqrNZb/AaXR+5+NN7w==
-X-Received: by 2002:a05:6102:30c6:20b0:780:c9c:bfcd with SMTP id ada2fe7eead31-78a2f00e2a9mr5595522137.17.1788802015660;
-        Mon, 07 Sep 2026 10:26:55 -0700 (PDT)
-Received: from lvondent-mobl5 ([72.188.211.115])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-980d774ad5dsm855190241.9.2026.09.07.10.26.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Sep 2026 10:26:55 -0700 (PDT)
-From: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-To: davem@davemloft.net,
-	kuba@kernel.org
-Cc: linux-bluetooth@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [GIT PULL] bluetooth 2026-09-07
-Date: Mon,  7 Sep 2026 13:26:48 -0400
-Message-ID: <20260907172648.457103-1-luiz.dentz@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="rTDLpUlr"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=qc3L0xLUv/lYkUXmkoozru40b0Kewh1PPsm8nRO1ZD4=; b=rTDLpUlrNypoqlRiGdfc6rSdrD
+	7LMWqUrifhoBnTBkTzyguZFMXg4SZNtEBOdrWhgb1kARZGfyeisRwe3vCycBxDHupw2RyaWP2N8/Q
+	VyU731ksk/MEbR4l0f43b7Y/taRTNzRrP1tVpEJgWfw548UFtPFEUuF+CjudzOu6sAN/o6KmMzIp+
+	QFdsTZiGTySzpyKIY4yJ9XaIpbvSnRluuD0uG55oxPI3lK2bu7AVyXncklODhy/ho4qHkVHM87weO
+	Hn19XFG75rCZSP2kNXfK5pfIzbmS1epLZajgUXCYmm4e0AVL+mJsegz47JMQ9AAj3iGe3riRyyQbo
+	tpUe3XQQ==;
+Received: from [50.53.43.113] (helo=[192.168.254.34])
+	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1x3d7j-00000007UPc-3zwW;
+	Mon, 07 Sep 2026 17:27:15 +0000
+Message-ID: <45869dba-955b-425c-88b5-a9793ab2717a@infradead.org>
+Date: Mon, 7 Sep 2026 10:27:14 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH iwl-next v2 0/4] intel: fix typos in comments
+To: Hemanth Selam <hemanth.selam@gmail.com>,
+ Tony Nguyen <anthony.l.nguyen@intel.com>,
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org
+References: <20260907095446.27290-1-hemanth.selam@gmail.com>
+Content-Language: en-US
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20260907095446.27290-1-hemanth.selam@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-The following changes since commit 38b6be101006d3e7af972999f45d4f1e8250587a:
+Hi,
 
-  net: macb: fix NULL pointer dereference on unbind with fixed-link (2026-09-05 13:58:52 -0700)
+On 9/7/26 2:54 AM, Hemanth Selam wrote:
+> Comment typos across the Intel ethernet drivers, split per driver.  Found with scripts/checkpatch.pl using the
+> misspelling list in scripts/spelling.txt.  Comments only, no code
+> changes.
+> 
+> v1 went out with a bare [PATCH] and a "net:" subject prefix.  As
+> maintainer-netdev.rst asks, v2 designates the patches to a tree, and
+> each subject now names the component it touches instead of "net:".  The
+> series is rebased onto that tree; the diff is unchanged.
+> 
+> v1: https://lore.kernel.org/all/20260907064528.6602-1-hemanth.selam@gmail.com/
+> 
+> 
+> Hemanth Selam (4):
+>   i40e: fix typos in comments
+>   ice: fix typos in comments
+>   ixgbevf: fix typo "enble" in comment
+>   Documentation/eth/intel: fix repeated words in comments
+> 
+>  Documentation/networking/device_drivers/ethernet/intel/i40e.rst | 2 +-
+>  Documentation/networking/device_drivers/ethernet/intel/iavf.rst | 2 +-
+>  drivers/net/ethernet/intel/i40e/i40e_common.c                   | 2 +-
+>  drivers/net/ethernet/intel/i40e/i40e_ethtool.c                  | 2 +-
+>  drivers/net/ethernet/intel/ice/ice.h                            | 2 +-
+>  drivers/net/ethernet/intel/ice/ice_main.c                       | 2 +-
+>  drivers/net/ethernet/intel/ice/ice_sriov.c                      | 2 +-
+>  drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c               | 2 +-
+>  8 files changed, 8 insertions(+), 8 deletions(-)
 
-are available in the Git repository at:
+How did you choose iwl-next as the target tree?
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth.git tags/for-net-2026-09-07
+The closest match to that in the MAINTAINERS file is this:
+INTEL WIRELESS WIFI LINK (iwlwifi)
+M:	Miri Korenblit <miriam.rachel.korenblit@intel.com>
+L:	linux-wireless@vger.kernel.org
+S:	Supported
+W:	https://wireless.wiki.kernel.org/en/users/drivers/iwlwifi
+T:	git https://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/iwlwifi-next.git/
+F:	drivers/net/wireless/intel/iwlwifi/
 
-for you to fetch changes up to 3ffa1008d5018a15163938fa54a99284bbde1c31:
+but the patches don't touch any of the Intel wifi drivers.
 
-  Bluetooth: btusb: Fix leaked runtime PM reference in btusb_reset (2026-09-07 13:13:49 -0400)
+I expect that you want net-next there, but I could just be confuzed.
 
-----------------------------------------------------------------
-bluetooth pull request for net:
+thanks.
+-- 
+~Randy
 
-Core:
-
- - hci_sysfs: Fix NULL pointer dereference in device_del()
- - hci_sync: Fix not setting CE length properly
- - btqcomsmd: destroy RPMsg endpoints before freeing hci_dev
-
-Drivers:
-
- - btmtk: Declare MT7920 (MT7961 1a) Bluetooth firmware
- - btusb: mediatek: Fix leaked runtime PM reference in reset
- - btusb: Fix leaked runtime PM reference in btusb_reset
- - btusb: Fix UAF of btusb_data by rx_work
- - btusb: Properly disable remote wakeup for MT7922/MT7925 on Ryzen platform
- - btintel_pcie: validate packet_len before skb_put_data
- - btintel_pcie: fix tx_handle bounds off-by-one
- - btrtl: Don't leak return code when parsing firmware format v2
-
-----------------------------------------------------------------
-Ivan Hu (1):
-      Bluetooth: btmtk: Declare MT7920 (MT7961 1a) Bluetooth firmware
-
-Jiajia Liu (2):
-      Bluetooth: btusb: mediatek: Fix leaked runtime PM reference in reset
-      Bluetooth: btusb: Fix leaked runtime PM reference in btusb_reset
-
-Kiran K (2):
-      Bluetooth: btintel_pcie: validate packet_len before skb_put_data
-      Bluetooth: btintel_pcie: fix tx_handle bounds off-by-one
-
-Krystian Kaniewski (1):
-      Bluetooth: hci_sysfs: Fix NULL pointer dereference in device_del()
-
-Luiz Augusto von Dentz (2):
-      Bluetooth: btusb: Fix UAF of btusb_data by rx_work
-      Bluetooth: hci_sync: Fix not setting CE length properly
-
-Rong Zhang (2):
-      Bluetooth: Properly disable remote wakeup for MT7922/MT7925 on Ryzen platform
-      Bluetooth: btrtl: Don't leak return code when parsing firmware format v2
-
-Xu Rao (1):
-      Bluetooth: btqcomsmd: destroy RPMsg endpoints before freeing hci_dev
-
- drivers/bluetooth/btintel_pcie.c |   6 ++-
- drivers/bluetooth/btmtk.c        |  11 +---
- drivers/bluetooth/btmtk.h        |   1 +
- drivers/bluetooth/btqcomsmd.c    |   6 ++-
- drivers/bluetooth/btrtl.c        |   5 +-
- drivers/bluetooth/btusb.c        | 105 +++++++++++++++++++++++++++++++++++----
- net/bluetooth/hci_sync.c         |  38 +++++++++++++-
- net/bluetooth/hci_sysfs.c        |  17 ++++++-
- 8 files changed, 159 insertions(+), 30 deletions(-)
