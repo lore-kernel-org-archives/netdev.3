@@ -1,192 +1,138 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 381C63375C3
-	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 07:39:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788766772; cv=none; b=BFRPmH7YVjBpuwun33LQj0JVuokQGPnWYhrN9SCCPn+MPY6Axf/5KWmqgWcOCYGo+R6xSg7CNNwn4nPOMTfGe+JnH7J9GYjGDpFu8and1pqREjgykuqNBf5WCOBX2wPNDV+ifNHYh5mbHTeGP1pS6JdKP6lrKeLAdsu4XZKn6+w=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788766772; c=relaxed/simple;
-	bh=AmYTVtq9q2zdn0RuPo3cddtrzQkCt+YTwmkXJN2yUuE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=O+ceAOtz+hOuug+u+SnXppEkkiuJh7BWkHACsHj7yo6dyLspein7ov6qUe718Mj09l0Dq82q3fEMkkqB1Xmcph+idp/wH2HLYgOSHbMm6Kiy8IqnYtq1Ijw6ujmOqd37G6jXdJK4oDFxfPTVBLZJzhKM7gOtj/LGBPx7eUyjAVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=aqBawn7U; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Gt/GpCBU; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5825B417BD9
+	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 07:41:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.175
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788766905; cv=pass; b=MY3eNsksRjXiIuRHXv2B6FLZctqUqXc2d+OagXzbgNfDT8DlEC3CEWnXFoVRkWn2RMVgfeUSr0s9QNKsM0X5pUT2N5qaL0X/+4sQSGfjoYweLjEOl/vusZ7XQi8wCnQ2v8PFByjCVzdwAL0djCQgdEoMkloTjwTtQqD6qrzcE6Q=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788766905; c=relaxed/simple;
+	bh=QKjvgmeZzGEaOpz3gNTV5TQ4+j80gPA1r1+NsciZfkc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=uIAOnX64UW/HhGZ57CZOdfTPcVHMO6yQGTyVWyxMTXiVK1LaSlagL3yO1BScqAxBMh3JKBDngmYignvvUVEhTpyb+I7BnH8gGfBtDPLaBVpSYYQXZD2i/Y84bPwImQzPGdlT0kGNb41FhxgzQ2EYA7E6AbvlsS33VM1uH8yRgQE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=tE1VOsdn; arc=pass smtp.client-ip=209.85.208.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="aqBawn7U";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Gt/GpCBU"
-Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68777LVI3363489
-	for <netdev@vger.kernel.org>; Mon, 7 Sep 2026 07:39:30 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	fE4Th4zCBtqTO9C1K+gn1Kc8P08Hlw4ollCF0wc+vGw=; b=aqBawn7UPQKb2I/B
-	/MFAC09C6D0z2fnwiCEfVWt4OOQ35gHZkdRDbx3CTV0Emee5xccVQy6bbN1DVKDk
-	iQHFiXneu2LiXBfwC/qg1XQv1I/GXppXvOHoqM/H0+regLtbAiks6nIEJfE7TDwV
-	3VMqVqo0ybvKec4EHxgC5f4UZ07XUM9OpZsCPlsiygINeZcvhnlIq97pDH2bxeVR
-	Mi1iHrsMsquoL3Tbizkv1RRw5XobIJ2HRuSEv8LT71zv37E+XuqS846ftp7FKnYJ
-	DbtmFwo9mxlRjX+alYEQrY5C3eEe1XO7sLZkyVOCi8k/vUKhThW5Dp6Ulrj1Wr50
-	vb73Iw==
-Received: from mail-oa1-f71.google.com (mail-oa1-f71.google.com [209.85.160.71])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ghnmj0tq1-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 07:39:30 +0000 (GMT)
-Received: by mail-oa1-f71.google.com with SMTP id 586e51a60fabf-46a12cfc288so3450783fac.2
-        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 00:39:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="tE1VOsdn"
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-3a20c95e412so27210551fa.1
+        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 00:41:43 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788766901; cv=none;
+        d=google.com; s=arc-20260327;
+        b=cTEQnrguXlQKvtVN9kLwwXbgDlXgkr7AUIzBrNr9IDYSTapb9mIEq+9osNJg2hEVdh
+         ddQ7Eoc+fk+34dxE8fE5pkOB4L2dUX7OmRX0QzTL3C3CJqTVq6fY/M+2pldJrLLhpYha
+         vM2VFgxHvUUwg6bNZjoNHRj4coGFSOx0c82ow/15Fim4VVv4RYnelJz8GrJJtuULCNTM
+         F5Zwk73nUusQhPksymxN9PyWDr5VsjOiaWXq58/ASveMgVFcufahBCcSYp0A8lfAn1sL
+         4o9oM1Kxkga9KlGmPqCVqfVz+9wRx1d6AsF8UnY1scz41CtqMDNHPfQvO7BlxTneFAla
+         ZRug==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=BH9WMir8rF2hqn5Htua6dfyRLLaHMRp/CMdHgEBBKQA=;
+        fh=HAcQy8C4YzEycmjsF3en6cb1pU6RTzLm+CDFpZHQYhc=;
+        b=oPzjSObRS+1gbTDWokAN++A4wR2Q8B5ks7HdPhQF3dJYh0vY+YMRc4DZxmN0xuml+d
+         +0OJv/ctMVcv7SF+9b4qpht8PEWfat6nt20Si7dmST6WtyfG4SHXMBicqMyZhg4eenfX
+         CVeOru3Ld7QgsGbL7nu1bpzMOGgwc26gScKkhE28h9xkn8107UugPz6Ovc/SfhfPBOh9
+         W4/yrwBIKJSKDNl/OfzdK4csGshoUax/LeqZyqQvtAa5S5+wFKGSr8OXXq1C5bHvhbRZ
+         eqwZge9V9SdKpkTyKAE657BAVKVaV7q3m/ft73axPlqEoEzq9Aq1WnYrn0eHbM5T/DPu
+         8r6A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1788766769; x=1789371569; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=fE4Th4zCBtqTO9C1K+gn1Kc8P08Hlw4ollCF0wc+vGw=;
-        b=Gt/GpCBULm6HRUmMMQqa9rdHyXQcd2DoFvr/IXMsHuIxvXtUoE3FsbtffQx9pHWmi3
-         /OyyZUk38KrEJaJRDH+eWlgecvCeLLN6J0XvizU3GZ94LI668QMF4Huhb8cNcmCkh2gi
-         LbzQFkQtpvGALnHQEgdFgcWi8+kZp8y/hMGy5QAUwAXezcmUO8HjdxsKo6ET335FmMff
-         g1/dmxb65PmXf+ckPk78zW3S3waHRYYX6TYP3/60vliTwABrdegGQN/xlFw2sH/KbEm+
-         9K0qogs7WxplwKY+ADQTHLRwxpC9LAzmFGkG8oIdiPh+OqWzGpZsoQBclU6LmOEA1XK5
-         x52A==
+        d=nebusec.ai; s=google; t=1788766901; x=1789371701; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=BH9WMir8rF2hqn5Htua6dfyRLLaHMRp/CMdHgEBBKQA=;
+        b=tE1VOsdn0HBsn78ZbWEqbsgTuwQ3F1SMSe/52v0opUisM8ohTsP2QouD/nMe+q9U6B
+         GTAtfx07P5cLiUH4o9Cb9Rj8D4kSvIxxWBvqFrEt2s+sQ//fQuaQueokxj8yK4J5iFJL
+         2+4iZUo/7XZ2Eqvao+FuRRrEShLphXqC9w33yyweTMm0SoF9lNQUXW1/QU/BmfzCIfD+
+         T4Bcta3UBDR1ELd3CARFsvVuc7DDZW2BwJ3Q5PHGsUbQYI/lhmGuZE6urcaKRkD4QMOo
+         p9OxDdk5I300G/QQcUzGC649IEgk9t25h0behUz5PTiaqut1lZ4OSZCseTI05LEq8w0v
+         xiVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788766769; x=1789371569;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
+        d=1e100.net; s=20251104; t=1788766901; x=1789371701;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=fE4Th4zCBtqTO9C1K+gn1Kc8P08Hlw4ollCF0wc+vGw=;
-        b=rtwmXm/KRH6B+EZFS2Ua2DhfYWQevsu5mdqchxmsZwl9s/zoHA1x5bv4Qjg+Li+ZXI
-         ssCqoVKfaUfknLwq2+IyzVO9CUz85Lt1z2gzSVUTSoAnc+5hK1o5j3cTHyiog+TbR9SJ
-         aVtLaiuB3MscptraFgo0KushAZFFFfqtNqbISZ5SjazGMEVHFYwgtW0gmebJxyWkVfL/
-         BJ4fc6JCAeQtMRmBThqsYOuxn1flmWBNQzF+qOKpFfXCCbqRRE+LJzx0JS8gQmFAyjzs
-         aVT4ImxDd/l4y+eLwsxoLYs0bsil7ktWDcCw91TOnnjBYiDNa0NiyjqhPS9VryRLdGmG
-         /+Mw==
-X-Forwarded-Encrypted: i=1; AKwUvBzFkiZwufRYnZwQ8GYeV34SK9gzD4s9sg6u0aaDUzUidG1GrhB2ej027U8k6JcSxN01tr1lTJQ=@vger.kernel.org
-X-Gm-Message-State: AFuF++lEy0XeGXCtlNgvne0xbB5no+iOWbX88aymf70R9l3NXSYqQ8Yd
-	A0VOWAK4kQdW4Q7SJf7Jqar7HcnaE8hNQHvVzOzoBODyfT1sjbgLZrEtmv5p9cLlkvJ9jy4q9sQ
-	iExr+zDe1vkdA07XNJdnk8P1ZM5Vq2Xow4hB6CA0ZPLmenqxkkPCxe4jtgR8qAALkTi8=
-X-Gm-Gg: AYBFou3zV+hYw1jdcCIlazGFtka7JWYjSO6CGQsfn4BexeI/RqiIA3l12BFG5r6Rqv8
-	BnPgcJ/YSxcQpBGu41Hrr5O9IV9wfMowIFvJgKt987dyX2wM/SuXvDM9Tx0FYLMgjXzdxlC5Blb
-	edCYYVA51expnJnapK0E7x3qWzZWxejlAADOnqpwd++koekD+c5IFKR8PXLe62/6gJUqy0BQSq3
-	pJ6OCnoOSy4sMh8RFxEAlRHRU8UQ2dtDf2vvrcoGX29TxoDIs4vgifUllA/GqutirHpiVYKzRHU
-	WJgTtM0MaGlCvhfwzqzgDPjZSCknLq0pmDIrxkYVX/BevBxM6T+OXG4EyfxRsMinKC1VA2yHLVx
-	M2BvSQGdraPge6w==
-X-Received: by 2002:a05:6870:3349:b0:45e:6cd1:9a3f with SMTP id 586e51a60fabf-4754ece1b35mr23481662fac.0.1788766769591;
-        Mon, 07 Sep 2026 00:39:29 -0700 (PDT)
-X-Received: by 2002:a05:620a:936c:b0:939:6d2a:6e38 with SMTP id af79cd13be357-9398044643emr2074255485a.33.1788766450579;
-        Mon, 07 Sep 2026 00:34:10 -0700 (PDT)
-Received: from localhost ([188.216.77.92])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cff8195ffsm232774415e9.14.2026.09.07.00.34.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Sep 2026 00:34:09 -0700 (PDT)
-From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-Date: Mon, 07 Sep 2026 09:33:38 +0200
-Subject: [PATCH nf-next v2 3/6] net: netfilter: nf_flow_table: populate
- tunnel tuple regardless of inner protocol
+        bh=BH9WMir8rF2hqn5Htua6dfyRLLaHMRp/CMdHgEBBKQA=;
+        b=Do1O1g/ErvHkLweMHg4P/k5bqMy2/np6ohN0rHO6YxVl0jRcGTvjkboL8DG8lzByuK
+         r/fQGp+fpHtTv7j4yWRnrHD4fg/0CFsTgNzz5oARFu8vKmTjgq4RUA0HoHtp3AHar3z4
+         4E/abraUT58yHL/DM7fOXoqQaeYA7A+/rccB0OskOxWfLc0Tdy2f6dHKKe+281jRD6in
+         wCxQb2v05eH4cuNEKgZsCPoe2h4/8PAvRdXU5UaF9kYpiJ5vAQAs98MJyV6soBwo90EI
+         pmBHvTNm4npEhS7g44itLCwDRyRonzT8DBw230nhq3nyiDZGS6ydhi82A7kM6mBFGDqs
+         aDTw==
+X-Forwarded-Encrypted: i=1; AKwUvByHLgA/PE4Jh6uEF8x7jBsLBnqPiCLf8E/gLwI7SIEl2yd3++XTRgygSFtiKVMYceGMlRwIg8I=@vger.kernel.org
+X-Gm-Message-State: AFuF++m+CrcAIcTC/J9vUgs8ujsbQBdEs61BUjPWQtlcxyzzt6m6PICn
+	llaAAca11dJ4R0xXsrnEs1FmYHHaQmuN5gGUQim6CSgq1qDgktj38YKFY0CaQ2sX4rmLV8x3Fu9
+	0T8EMZ6U+QFBg3rGdNkik0BE2yEwDZW173pZ4q3UwCbtYTaJcFpChlAx4L8sM2g==
+X-Gm-Gg: AYBFou1H753+UX9YBwfkwQiVUOl4Kdtx5vJpAs+9fDf5mR0i00q68gig705iJE/z7f8
+	E/lwmlwce5labC4zC1rs7XJvrRroCUcOXnKmF8mp2DMCJEsVLdqAmOF2O/yNj2/6PaT8eckO8bh
+	kf1Izg2jWEXg9HdEiWzbItun5JuDp8IGvelHmMlnT+t7QylBe4XyzZHIceEKjV8BJ/Be2UC7a2d
+	hhr4r8JPzVHh8gin4+alPWFRUkGdkOS9t2vGVzujtvYA1Rtm6w9K3XfOAPadp74GVGCRYYXSvLV
+	DgFevkCFpdKyLB+usqCQ7AfD7f6B5uP2x04dCV7qddwgU+AKVugfHLMWdzxPbRgDdfC4htSJbjo
+	=
+X-Received: by 2002:a05:651c:15c1:20b0:3a2:fda9:34fd with SMTP id
+ 38308e7fff4ca-3a371bb4496mr14915881fa.9.1788766901322; Mon, 07 Sep 2026
+ 00:41:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260907-nf-flowtable-sw-accel-ip6ip-sit-preliminary-v2-3-7c6ac1750725@oss.qualcomm.com>
-References: <20260907-nf-flowtable-sw-accel-ip6ip-sit-preliminary-v2-0-7c6ac1750725@oss.qualcomm.com>
-In-Reply-To: <20260907-nf-flowtable-sw-accel-ip6ip-sit-preliminary-v2-0-7c6ac1750725@oss.qualcomm.com>
-To: Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>,
-        Phil Sutter <phil@nwl.cc>, "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-        Andrew Lunn <andrew+netdev@lunn.ch>, David Ahern <dsahern@kernel.org>,
-        Ido Schimmel <idosch@nvidia.com>
-Cc: netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
-        netdev@vger.kernel.org,
-        Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-X-Mailer: b4 0.14.3
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA3MDA4MSBTYWx0ZWRfX1Xu8PEwlRMsq
- bfrQHCiQAZN4BBJNqzk0HOH13Y1uyllt4zQ4Vm+mDHTH/FDpoYw9csDzvW+oLVkMUl4M9dMO7sm
- PQaAdEL03c+Iywq0oD1pWmJM22J61y6aG+DatCEp9wW3nMTOpdfqJ6BGDlu1LeAUjOSvCiNH+yP
- cHDdXnETtlLG2DJx91PQEofIQBbxspo2pBshZNSZyC9Qi3Qn3eYe3M64PZ+iCRUK+Z4Y4QZfj6M
- Jn+pZnT7fnlUESxk492RQUT3Ua6DZFg1uKTAJVPxeaBOXGkcZjB0UX1pyTHF0+NhpBwTMNgCK/I
- agMcPvg1GXGdwQtu/miK8ffzvqJQs97dwzzyyNUNNkNq83r+K7/hUyyCtaXV2O83FKIFiYVUc2K
- x+JLuluPxOO8hkSoVg8yXanwN6lLVnCvNeNyoWd/NlRFptr+X8ImlnRBUEc/Vo5yW61JXJWgWnn
- 295fwBoIwhkDIJ2GZYQ==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTA3MDA4MSBTYWx0ZWRfX8b/BFTOubcQo
- TDmUFdyESNHNJIsoXZ4CedwT8K2e0am+QOg6mYDPFBHQwr8BZV4LT8pHMYPn09bLbCVL2CxOBhM
- xzsakh1fun/Cs9aqx9dNYcU4FUk7Riw=
-X-Proofpoint-ORIG-GUID: I5BCZcZzWNhhWHc0n1w8j1iex7c990or
-X-Proofpoint-GUID: I5BCZcZzWNhhWHc0n1w8j1iex7c990or
-X-Authority-Analysis: v=2.4 cv=LZYMLDfi c=1 sm=1 tr=0 ts=6a9e6a32 cx=c_pps
- a=CWtnpBpaoqyeOyNyJ5EW7Q==:117 a=WpTaRW6qxYHRGzLzQsVYzg==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yOCtJkima9RkubShWh1s:22
- a=EUspDBNiAAAA:8 a=9AI-LCzJV_BIknmlFlkA:9 a=QEXdDO2ut3YA:10
- a=vh23qwtRXIYOdz9xvnmn:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-07_02,2026-09-03_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 priorityscore=1501 malwarescore=0 suspectscore=0 impostorscore=0
- lowpriorityscore=0 phishscore=0 bulkscore=0 clxscore=1015 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2609070081
+References: <cdc628415cf10721480a51ce14837f846ec778c2.1788248601.git.zihanx@nebusec.ai>
+ <178875495405.219967.5594821749566554418@kernel.org> <CAANe3eRBOQud=bMgLnPbD_yUYUkJtT=GBqtY+GR0ZtU0_kbzhg@mail.gmail.com>
+ <CANn89iLn+Xi9cEphy3nR4bGnFCownrWa9rTZ=AnijArDFo2O7Q@mail.gmail.com> <CAANe3eR=sQeTRNuewiqo0ZFwS6fk=HtxvT6TMGhq8F5Pqdxovg@mail.gmail.com>
+In-Reply-To: <CAANe3eR=sQeTRNuewiqo0ZFwS6fk=HtxvT6TMGhq8F5Pqdxovg@mail.gmail.com>
+From: zihan xi <zihanx@nebusec.ai>
+Date: Mon, 7 Sep 2026 15:41:27 +0800
+X-Gm-Features: AcwNN1VzGJxnqabKgTDT5QXQvwkk_pkpIGT7iWj3PbbALy5PgIuN8fmhJFOeJSY
+Message-ID: <CAANe3eSbySUA=RreUvFxBaE4xFp5Ob1uapgFn86UYO4J8WuXzA@mail.gmail.com>
+Subject: Re: [PATCH net v2 1/2] tcp: diag: bound bucket lock hold in tcp_diag_dump()
+To: Eric Dumazet <edumazet@google.com>
+Cc: netdev-bot+sashiko@kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, mptcp@lists.linux.dev, davem@davemloft.net, 
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, ncardwell@google.com, 
+	kuniyu@google.com, matttbe@kernel.org, martineau@kernel.org, 
+	geliang@kernel.org, gnault@redhat.com, fw@strlen.de, stable@vger.kernel.org, 
+	vega@nebusec.ai
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Store the outer tunnel addresses and inner protocol in the flow tuple
-unconditionally in nf_flow_tuple_encap(), instead of only when the
-tunnel is IP-in-IP or IPv6-in-IPv6. Bail out early when the inner
-protocol is neither IPPROTO_IPIP nor IPPROTO_IPV6.
-This makes the tuple usable for cross-family tunnels such as
-IPv4-over-IPv6 and SIT, where the inner protocol differs from the
-outer address family.
-This is a preliminary patch to support IPv4 over IPv6 and SIT tunnel
-flowtable offload.
-Please note IPv4 over IPv6 and SIT tunnel flowtable offloading is not
-enabled yet.
+On Mon, Sep 7, 2026 at 3:15=E2=80=AFPM zihan xi <zihanx@nebusec.ai> wrote:
+>
+> On Mon, Sep 7, 2026 at 3:06=E2=80=AFPM Eric Dumazet <edumazet@google.com>=
+ wrote:
+> >
+> > > - bind cursor UAF / dangling tb2: valid
+> > > - unconditional sock_hold() on unpublished TIME_WAIT: valid
+> > > - clearing s_num on cursor mismatch: valid
+> > > - lockless cursor-membership checks: valid as a concern
+> > > - commit message overstating bind/ehash fill-under-lock: valid
+> > > - missing note that MPTCP needs the follow-up patch: valid as a
+> > >   backport note
+> > > - endless re-scan of the same bucket head: not valid as a
+> > >   guaranteed livelock; duplicate output after a rejected cursor
+> > >   is valid
+> >
+> > I just saw your patch today. This is absolutely insane.
+> >
+> > Please limit the complexity of a filter to something reasonable.
+> > Absolutely no sane user is using a very complex filter.
+> >
+> > Same for UDP.
+>
+> Thanks for the feedback.
+>
+> We will drop the dump-cursor rewrite.
+>
+> A follow-up can cap inet_diag bytecode complexity in
+> inet_diag_bc_audit() so TCP, UDP and MPTCP dumps share the same limit.
+>
+> Please let me know if that is the direction you want.
 
-Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
----
- net/netfilter/nf_flow_table_ip.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
-
-diff --git a/net/netfilter/nf_flow_table_ip.c b/net/netfilter/nf_flow_table_ip.c
-index cd636b4cf74b..a53393f8eda0 100644
---- a/net/netfilter/nf_flow_table_ip.c
-+++ b/net/netfilter/nf_flow_table_ip.c
-@@ -189,22 +189,22 @@ static void nf_flow_tuple_encap(struct nf_flowtable_ctx *ctx,
- 		break;
- 	}
- 
-+	if (ctx->tun.inner_proto != IPPROTO_IPIP &&
-+	    ctx->tun.inner_proto != IPPROTO_IPV6)
-+		return;
-+
- 	switch (ctx->ether_type) {
- 	case htons(ETH_P_IP):
- 		iph = (struct iphdr *)(skb_network_header(skb) + offset);
--		if (ctx->tun.inner_proto == IPPROTO_IPIP) {
--			tuple->tun.dst_v4.s_addr = iph->daddr;
--			tuple->tun.src_v4.s_addr = iph->saddr;
--			tuple->tun.inner_proto = IPPROTO_IPIP;
--		}
-+		tuple->tun.dst_v4.s_addr = iph->daddr;
-+		tuple->tun.src_v4.s_addr = iph->saddr;
-+		tuple->tun.inner_proto = ctx->tun.inner_proto;
- 		break;
- 	case htons(ETH_P_IPV6):
- 		ip6h = (struct ipv6hdr *)(skb_network_header(skb) + offset);
--		if (ctx->tun.inner_proto == IPPROTO_IPV6) {
--			tuple->tun.dst_v6 = ip6h->daddr;
--			tuple->tun.src_v6 = ip6h->saddr;
--			tuple->tun.inner_proto = IPPROTO_IPV6;
--		}
-+		tuple->tun.dst_v6 = ip6h->daddr;
-+		tuple->tun.src_v6 = ip6h->saddr;
-+		tuple->tun.inner_proto = ctx->tun.inner_proto;
- 		break;
- 	default:
- 		break;
-
--- 
-2.55.0
-
+To be clear, this series is dropped. I will send the bytecode cap
+as a new series.
