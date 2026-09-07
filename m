@@ -1,107 +1,138 @@
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FC233AF666;
-	Mon,  7 Sep 2026 17:07:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4F8B5111BB;
+	Mon,  7 Sep 2026 17:17:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788800883; cv=none; b=SHxuC0eSIYQyqu/095wtEjAMU3LV/jBSo0OUANjulHeVbjBm88X60yicciXigjiirEzP8+ToEKvNojwU5jzb7oQX820YleJE9V8ijBR7Vx4DcqpV/k/h61Pfkzah4FIFSohXlDbKXjQMoiXferfrRCG1cPsmJPV0/MDVoUCQVXs=
+	t=1788801461; cv=none; b=YY3hX8+CTzOa72+RWH4GAlS9vdjcMHVO+FSMw5kF2TZk3XwW23XY1j5MM/X7zlbDYrZLY4mQcFiP+EE0OgsCNgkvc1J7yCEd5RECYKEFppXH5TWqdEL1QOgInIHV1X7chqxnLG+g4o/8XRl6xMiwyJxcCADf81uy4nLyvdGnh2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788800883; c=relaxed/simple;
-	bh=oFMzoHc6wsn0F9CSxGcMSq2JdF3BliB7CLDIKejfMBo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=giiLjSXgKbLcRn928v6MRMqYqsf4j+YCnuZYRjF3VgZMQH3bXig3c0NS9kp/1DWnSwrk3rRSwmUAqBC7jyS0WHnEKLazJvAQBMlGRhptdYnTMqAPetn3s6CNTEM8h57cOwXPGzIF0BJ8sUP0sMstlEzL6eEgaBfvyOTS7uCWfFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=pass smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=WTzWqTdy; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1788801461; c=relaxed/simple;
+	bh=xKfwSGhhH3BbqJGertPlsHTVY4ImpDlnewKFxzE9+Y0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Cxu8EQK48SPl0voC51qFBenJZvw8wpY5ILhhvR/gZM+RCnE2D/Yw3Gz0KbKRlOW6S67kLnQEAbCFZNV3W6dTxECciv/43hH6jIZ8a8MaR6VbbSPqpMu34IKEVTpw8vGzgiiQQ+mWcvxtyGApR6wwqW7oPjia0yZUan6Uwjpg8tg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=D/mXeJKp; arc=none smtp.client-ip=217.70.190.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="WTzWqTdy"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=tUA4k8R2t1QpHAGgeyT0ZKIm7T5VVZVvcJldkkde15c=; b=WTzWqTdywnsEwqjXCxEQTDsw2S
-	S0GF02yWDOz/17M8o03Ohp0ZWpez/vaC4WRDHIdPsxPCPdCQt9y9sgjFNgtTaPektuda40Bf5/FfF
-	6sdeMfTnS2nI6S1Nxp9uVKKD1PZgbhUkOKYqN3glIn/acrrSjFRXe8982InOs9xpKId6JlAOt7Sfs
-	dpzwPxjregJkSAwu5TP3UbfgCzvkL/rBvbv7NSS13WwGu8L0PSGw+Y9qkLc2dA0vfKcN0GU0ryFSj
-	pkAKlDUUxC+Z5nV5MoCF6w3E4iUf32YHRZOyWT0VEhvjaQdZjfuVCMt5hL7B7O3dL3sYmuh/+MX6k
-	mj/33REA==;
-Received: from [50.53.43.113] (helo=[192.168.254.34])
-	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x3cp0-00000007RIP-364Z;
-	Mon, 07 Sep 2026 17:07:54 +0000
-Message-ID: <c2f439ac-ca0e-4532-b649-c32c4e474436@infradead.org>
-Date: Mon, 7 Sep 2026 10:07:53 -0700
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="D/mXeJKp"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1788801456;
+	bh=afifqUi6Dx73QCCc7nFoL55Bf9UGkLVbHOmtTb3cL0Q=;
+	h=From:To:Cc:Subject:Date:From;
+	b=D/mXeJKpb5STkvukLYFInxDf9BCa924RGmCPoG019JCO/J1INXPBja6XPcdRuDg15
+	 /CGzGQ0fjdW1A+/ZxQeh1fu0++sIGOK1I2ukpVjNTxQmpQ5jhSQAarPAbSzUsthQlX
+	 jj4o0LC+P3x6NBJ6aTfS/DFPOS62MkgqvYVJRhLltt9+Zz+vebivtljaB0MOI4k00m
+	 rAy+XYgFbEB+GxHQwAIz9j2tAceIbsHIqiCAlxh+JaEpTMkSaU6PxKklTSRsb8pf22
+	 BIeELvOL1L0XnRKleF+pioGvR0qfy7o3He0DGrAqeoBDNlDFTY6OpopUEKRafVx8eB
+	 o/JcX6E2Diu5A==
+Received: from localhost.localdomain (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with ESMTPSA id C1B07607CF;
+	Mon,  7 Sep 2026 19:17:35 +0200 (CEST)
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: netfilter-devel@vger.kernel.org
+Cc: davem@davemloft.net,
+	netdev@vger.kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	horms@kernel.org,
+	fw@strlen.de,
+	ja@ssi.bg
+Subject: [PATCH net,v2 0/9] Netfilter/IPVS fixes for net
+Date: Mon,  7 Sep 2026 19:17:23 +0200
+Message-ID: <20260907171732.1407739-1-pablo@netfilter.org>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] Documentation/networking: fix repeated words in
- comments
-To: Hemanth Selam <hemanth.selam@gmail.com>,
- Tony Nguyen <anthony.l.nguyen@intel.com>,
- Przemek Kitszel <przemyslaw.kitszel@intel.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>
-Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
-References: <20260907064528.6602-1-hemanth.selam@gmail.com>
- <20260907064528.6602-3-hemanth.selam@gmail.com>
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20260907064528.6602-3-hemanth.selam@gmail.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
+v2: Keep back all the patches that Jakub's LLMs are complaining
+    about.
 
+-o-
 
-On 9/6/26 11:45 PM, Hemanth Selam wrote:
-> Drop words accidentally written twice, reported by checkpatch.pl as a
-> possible repeated word.  Only touches comments, no code changes.
-> 
-> Assisted-by: Cursor:claude-opus-5
-> Signed-off-by: Hemanth Selam <hemanth.selam@gmail.com>
+The following patchset contains Netfilter/IPVS fixes for net:
+ 
+1) Reject malformed messages in IPVS sync, from Kyle Zeng.
+ 
+2) Fix possible stale infoleak in IPVS sync, also from Kyle Zeng.
+ 
+3) Out-of-bound read in the SIP conntrack helper, from
+   Joas Antonio dos Santos.
+ 
+4) UaF on cttimeout module removal, from Chengfeng Ye.
+ 
+5) Unregister nf_loggers before netns teardown to fix UaF,
+   also from Chengfeng Ye.
+ 
+6) Fix race in nfnetlink_log due to concurrent instance destruction,
+   from Florian Westphal.
+ 
+7) Remove arp_table 32bit compat interface, this is already off in
+    many distributions, from Florian Westphal.
+ 
+8) Set IP6T_F_PROTO flag is e->ipv6.proto is set on to deal with
+    insufficient validation of xtables extensions when used from
+    legacy ip6tables, from Florian.
+ 
+9) Set on the NLM_F_DUMP_FILTERED flag when all is filtering out
+   in ctnetlink, from Ilya Maximets.
 
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
+Please, pull these changes from:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf.git nf-26-09-07
+
 Thanks.
 
-> ---
->  Documentation/networking/device_drivers/ethernet/intel/i40e.rst | 2 +-
->  Documentation/networking/device_drivers/ethernet/intel/iavf.rst | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/Documentation/networking/device_drivers/ethernet/intel/i40e.rst b/Documentation/networking/device_drivers/ethernet/intel/i40e.rst
-> index 53d9d5829d69..e01f0adda3f6 100644
-> --- a/Documentation/networking/device_drivers/ethernet/intel/i40e.rst
-> +++ b/Documentation/networking/device_drivers/ethernet/intel/i40e.rst
-> @@ -692,7 +692,7 @@ queues: for each tc, <num queues>@<offset> (e.g. queues 16@0 16@16 assigns
->  16 queues to tc0 at offset 0 and 16 queues to tc1 at offset 16. Max total
->  number of queues for all tcs is 64 or number of cores, whichever is lower.)
->  
-> -hw 1 mode channel: ‘channel’ with ‘hw’ set to 1 is a new new hardware
-> +hw 1 mode channel: ‘channel’ with ‘hw’ set to 1 is a new hardware
->  offload mode in mqprio that makes full use of the mqprio options, the
->  TCs, the queue configurations, and the QoS parameters.
->  
-> diff --git a/Documentation/networking/device_drivers/ethernet/intel/iavf.rst b/Documentation/networking/device_drivers/ethernet/intel/iavf.rst
-> index eb926c3bd4cd..5840569917f5 100644
-> --- a/Documentation/networking/device_drivers/ethernet/intel/iavf.rst
-> +++ b/Documentation/networking/device_drivers/ethernet/intel/iavf.rst
-> @@ -171,7 +171,7 @@ queues: for each tc, <num queues>@<offset> (e.g. queues 16@0 16@16 assigns
->  16 queues to tc0 at offset 0 and 16 queues to tc1 at offset 16. Max total
->  number of queues for all tcs is 64 or number of cores, whichever is lower.)
->  
-> -hw 1 mode channel: ‘channel’ with ‘hw’ set to 1 is a new new hardware
-> +hw 1 mode channel: ‘channel’ with ‘hw’ set to 1 is a new hardware
->  offload mode in mqprio that makes full use of the mqprio options, the
->  TCs, the queue configurations, and the QoS parameters.
->  
+----------------------------------------------------------------
 
--- 
-~Randy
+The following changes since commit 1d2929d0850fff683b8aff051275945e65f082c8:
+
+  net: psp: do not inherit the Rx association on clone (2026-09-01 15:12:24 +0200)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf.git nf-26-09-07
+
+for you to fetch changes up to 7a099b347fef536a84068076e2d384f044e5cfc5:
+
+  netfilter: report NLM_F_DUMP_FILTERED when all is filtered out (2026-09-07 18:48:56 +0200)
+
+----------------------------------------------------------------
+netfilter pull request 26-09-07
+
+----------------------------------------------------------------
+Chengfeng Ye (2):
+      netfilter: cttimeout: prevent UAF during module unload
+      netfilter: nf_log: unregister loggers before per-net teardown
+
+Florian Westphal (3):
+      netfilter: nfnetlink_log: cope with concurrent instance destruction
+      netfilter: arp_tables: remove the 32bit compat interface
+      netfilter: ip6_tables: set F_PROTO when proto value is nonzero
+
+Ilya Maximets (1):
+      netfilter: report NLM_F_DUMP_FILTERED when all is filtered out
+
+Joas Antonio dos Santos (1):
+      netfilter: nf_conntrack_sip: fix OOB read in sip_skip_whitespace()
+
+Kyle Zeng (2):
+      ipvs: reject invalid states in connection template sync records
+      ipvs: fix reversed sequence option serialization
+
+ include/linux/netfilter_arp/arp_tables.h |  19 --
+ net/ipv4/netfilter/arp_tables.c          | 472 +------------------------------
+ net/ipv6/netfilter/ip6_tables.c          |   5 +
+ net/netfilter/Kconfig                    |   2 +-
+ net/netfilter/ipvs/ip_vs_sync.c          |  20 +-
+ net/netfilter/nf_conntrack_netlink.c     |   2 +
+ net/netfilter/nf_conntrack_sip.c         |   2 +-
+ net/netfilter/nf_log_syslog.c            |   2 +-
+ net/netfilter/nfnetlink_cttimeout.c      |   2 +-
+ net/netfilter/nfnetlink_log.c            |  15 +-
+ 10 files changed, 34 insertions(+), 507 deletions(-)
