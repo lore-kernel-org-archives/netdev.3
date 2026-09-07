@@ -1,63 +1,67 @@
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3F66336884
-	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 22:58:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85C1E352021
+	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 22:58:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788821935; cv=none; b=b32mwOAzAZclNs7hHqzUcwxM1MD7/rOfr1MxJRFjK7S24OhIJzkZ9VpnAsmnixcjtpcTn3FfdHT1UIjsSQrxrFXAthO3iv300VHvnCxoAHjpMFDwSZwUgfAOypmIfrSvYCdGF5zABLxPBSNIayrKR51uKXgC1uIrq3kVMPS9XoU=
+	t=1788821936; cv=none; b=p5ayPO22EoZL2nsCLVWaY+hFMkxEESo3AT0NZBxlr+0ucIlnU4s5EZLSPosH81YHdmQ2f/6yOW7PTWX12DrKAVB6eU/sYBPkV7NnbhRjFu7A4dQ/OPv48vABE0fLdB/ByC9xERhyoKDbbkB8dAjusOtYx6JNls7ZwUMeXZS/nQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788821935; c=relaxed/simple;
-	bh=O1wRdOK/4FV/s60XoKZi4nQynGL+G+aK0jn00MdKTNU=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=U3bpG61gREVd7M3ZwHCjs3R2b9iLPJwyIhEjniOG+hD+WlffqdWjxWm/aX/j6CUkycYQgC/E2a7PzaqZ8KaPGG0Egdcm4DKh/MCoP5X3nmfOYyQfoCHjcYWuSP+lOPouOpFitj2pu3yBg2uV1j1v7UdU2z1Yo6v6VdDfW7MR8oo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UAynYC4q; arc=none smtp.client-ip=209.85.216.70
+	s=arc-20240116; t=1788821936; c=relaxed/simple;
+	bh=Pop2v5/DbnH0fvUO75ng2j1XQpXra/KdXB+K/2aR3Js=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=eTOy3Abtx3aan8PEhxIxUCzgTVzmSlQJ7snpH8yg/nBW/QyeUs5RYNUzZ46G0OxpJEXgsl+iV7cr3g5hxXC+wczPCvWyW5NF3olNw2XUNud7UmkY61ctVleWsp7io2rHVv2OUmRJVbvcrmwg6NpCzKdHT2jXuAtwPWRrQZR7cmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YjBYgk7R; arc=none smtp.client-ip=209.85.214.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UAynYC4q"
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-38f5ac7416eso4754586a91.3
-        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 15:58:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YjBYgk7R"
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2db3d832827so23971205ad.2
+        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 15:58:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788821934; x=1789426734; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=RDK7pyNygcWJr0LsujOFGCPe6Vs8aQ6Fi0qEXMAYmMY=;
-        b=UAynYC4qwg8jtqirAt9ZJZeXzbB1nToIMZES0XvOx6pDiDRMWbiMe8pZpcBmvkP58z
-         osrwHuF5qyd7+oQeoC6RBb6mS4xFp9KSyBZmViu7LCcooqyXTrqIZhU5jrl9khOwjAob
-         QfkkCbDVueVWMivkhdeC+0DWMoMELLVoD/Ft9FybaxUu8glmgxWvJpx/22rRnQt1qtBi
-         IWjcg8gHgIHNT7PucGngZWV3smnZO9Zio1u//aTTosQXBhn2b1asV1N7NeUHhsf/7zPI
-         Jw5GgMBqJrFVcf8R7mnfNem2DHURITwUbeHCDXIGydHXj2RgiEVj8kLn+5GsqoxT1LsX
-         qV3w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788821934; x=1789426734;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=google.com; s=20251104; t=1788821935; x=1789426735; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=RDK7pyNygcWJr0LsujOFGCPe6Vs8aQ6Fi0qEXMAYmMY=;
-        b=r2lDNsyOQIg3lnfcgVqRoSO2L6U0F4nq/+Wkb5kFVXd9wB+PwKTEVUObxMnKDzZzCi
-         nkJF43urp5mL9uhZ87g5GetonQAJI9+3kH0wqKxv/P6T0pz/EPLZJlqjF2/Zy4/MCGzZ
-         w8Jbu9KVdKjY4/HKW46LaHcEO6SC2Ar22hsa5oqhYTS3+Rp2A3eZdX6R0J8ifrsbFI22
-         ypUTO/9+jfSSorRUGwEklOILo3+OgvadIxx5AWW9FMsqn8bodO6xqCQKt848hS5pLjas
-         As8c4dAs9O+FVeQ32sP6yJqZ6iMVvYaIkE8SmGZjUE80OXMHc+kI12RJulC8bg9/JINN
-         l3tg==
-X-Forwarded-Encrypted: i=1; AKwUvBw7LeSAVeKPYQmfkPhKmXWOJSg0/7HJpu1ugpMPJxeLPX8Wk9r+liE10s7LvqLP9owNuAvegqM=@vger.kernel.org
-X-Gm-Message-State: AFuF++l94lWrsFiDhxJKJVxdiJgE/IVzmVTaFpeuVc8D7hx5hcxuSam+
-	sCRGykq+ARnqgH+dj7e2Z6j3cKlj7u/HtJO/d4rWVntqK51ItnT8DIUG1FQojnqfUKX08TrMPDY
-	iBNrmlg==
-X-Received: from pjbfa9.prod.google.com ([2002:a17:90a:f0c9:b0:39b:7c8f:db9f])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1643:b0:380:21b7:e727
- with SMTP id 98e67ed59e1d1-39b26272f04mr36866808a91.14.1788821933816; Mon, 07
- Sep 2026 15:58:53 -0700 (PDT)
-Date: Mon,  7 Sep 2026 22:56:45 +0000
+        bh=luVRHM6REa3BI9V3QVekzqN5Qk+se2x+ZTm/czwa1VU=;
+        b=YjBYgk7RwbiFRSxHBa3zXN455opLll8OUSqVquLI7TmSeef7InwFflUMm+GUV/seT4
+         p7cgrj+XSwMxjobkzlxYNQ4JVH9igfpBm677WkqTGoE5tVdZO1uEUbVyu/MHrYJipIN+
+         XpvgMqMsdb68dXncj2FgS5XroryPs0NF4lI6I/ker5vr2viR6Xp2gSGcnMx8oNjSz8pN
+         MpnTRdfiWZ0ul4TYw7zszZ4aNWGXEYjEo1H5znpxtUVIvFheqJNuc6u5HYrvOJVZmCwC
+         D1jvFjIeBuoCwgD72NOmGaV9Y4dBZ2+4rXPkR7Hyo5rUtjn/FxLsRw2jCxThOUasuU41
+         oC1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788821935; x=1789426735;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=luVRHM6REa3BI9V3QVekzqN5Qk+se2x+ZTm/czwa1VU=;
+        b=CyoB1WQZIFwffU2pjcQ7es9XzffwAgDr6o9GBePu6yv1F0kdYdCCBA74v2mmkqJDcO
+         eJSxY8ItuivyoelSGkQsK8Pit5SepCTsgfRCXlyP7soblp3+Tv4q2Wty3H2f4OlkzXnr
+         7mnjGukM9w73NygXFbpgIiTJ2UuXfPDc+pltJmoq24yobwEMV13z8sRabJl9gUF/iiTp
+         o1JE2FVTtNnkWVJwwZMx7CXaXev+JIxPpWn6TYImPF7w3C5/OGcLiHoj9VN2abDdshqd
+         pkWWXqlEGzlpZstQ1R1w4dP9giWqbG50dLNUoIcfT5huoWvxQorXUA38+p+vTyMdT0Tl
+         34HA==
+X-Forwarded-Encrypted: i=1; AKwUvBxC3jY2iVRD16fXX6kPSpuCjlc/BMI9iGMyyQelNC3J/flhNbnL+boJaL0IUsfObeuJ1zInwVQ=@vger.kernel.org
+X-Gm-Message-State: AFuF++mBBLc65LDgJTbpP14kKHEic/TomMDCZzMHezSdrXmgafkPFHf0
+	y/GfGGKm/LcZ51WmZwxuPp5OLE9WS0UZIjgPhbMIzWPMMKeBwy2giVkyDCsasLa7rIQWGwxgKbh
+	pwG7mig==
+X-Received: from plcx2.prod.google.com ([2002:a17:903:c2:b0:2db:5eae:a078])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:32cb:b0:2c9:bf82:dd11
+ with SMTP id d9443c01a7336-2db1248c3f4mr323543225ad.7.1788821934601; Mon, 07
+ Sep 2026 15:58:54 -0700 (PDT)
+Date: Mon,  7 Sep 2026 22:56:46 +0000
+In-Reply-To: <20260907225846.3787676-1-kuniyu@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20260907225846.3787676-1-kuniyu@google.com>
 X-Mailer: git-send-email 2.55.0.1003.g10538fe699-goog
-Message-ID: <20260907225846.3787676-1-kuniyu@google.com>
-Subject: [PATCH v1 net-next 0/7] ip_tunnel: Support per-netns device unregistration.
+Message-ID: <20260907225846.3787676-2-kuniyu@google.com>
+Subject: [PATCH v1 net-next 1/7] ipmr: Call ->dellink() to remove DVMRP tunnel device.
 From: Kuniyuki Iwashima <kuniyu@google.com>
 To: "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, David Ahern <dsahern@kernel.org>, 
@@ -67,36 +71,62 @@ Cc: Simon Horman <horms@kernel.org>, Steffen Klassert <steffen.klassert@secunet.
 	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-Patch 1 - 3 are prep patches to unlink ip_tunnel device from
-the hash table in ip_tunnel_dellink() only.
+ipmr.c uses unregister_netdevice() to remove DVMRP tunnel devices
+created in ipmr_new_tunnel().
 
-Patch 4 removes ip_tunnel_del() from ip_tunnel_uninit() to
+This is fine because currently ipip_link_ops.dellink() is no-op
+for non-fallback tunnel devices.
+
+However, we will move ip_tunnel_del() from ip_tunnel_uninit() to
 ip_tunnel_dellink().
 
-Patch 5 & 6 adds mutex to protect the per-netns hash table.
+Removing DVMRP tunnel devices by unregister_netdevice() would leave
+them in the hash table.
 
-Patch 7 uses unregister_netdevice_queue_net() to support
-cross-netns device unregistration.
+Let's call ->dellink for DVMRP tunnel devices.
 
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+---
+ net/ipv4/ipmr.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-Kuniyuki Iwashima (7):
-  ipmr: Call ->dellink() to remove DVMRP tunnel device.
-  ip_tunnel: Set itn->fb_tunnel_dev to NULL in ip_tunnel_delete_net().
-  ip_tunnel: Don't pass rtnl_link_ops to ip_tunnel_delete_net().
-  ip_tunnel: Centralise ip_tunnel_del() to ip_tunnel_dellink().
-  ip_tunnel: Unify error paths in ip_tunnel_newlink() and
-    ip_tunnel_changelink().
-  ip_tunnel: Protect ip_tunnel_net.tunnels[] with mutex.
-  ip_tunnel: Support per-netns device unregistration.
-
- include/net/ip_tunnels.h |   2 +-
- net/ipv4/ip_gre.c        |   6 +-
- net/ipv4/ip_tunnel.c     | 127 +++++++++++++++++++++++++++------------
- net/ipv4/ip_vti.c        |   2 +-
- net/ipv4/ipip.c          |   2 +-
- net/ipv4/ipmr.c          |  12 +++-
- 6 files changed, 103 insertions(+), 48 deletions(-)
-
+diff --git a/net/ipv4/ipmr.c b/net/ipv4/ipmr.c
+index e5f2b1c6150d..02edf9d7f4b5 100644
+--- a/net/ipv4/ipmr.c
++++ b/net/ipv4/ipmr.c
+@@ -479,6 +479,7 @@ static struct net_device *ipmr_new_tunnel(struct net *net, struct vifctl *v)
+ {
+ 	struct net_device *tunnel_dev, *new_dev;
+ 	struct ip_tunnel_parm_kern p = { };
++	LIST_HEAD(dev_kill_list);
+ 	int err;
+ 
+ 	tunnel_dev = __dev_get_by_name(net, "tunl0");
+@@ -520,7 +521,8 @@ static struct net_device *ipmr_new_tunnel(struct net *net, struct vifctl *v)
+ 	return new_dev;
+ 
+ out_unregister:
+-	unregister_netdevice(new_dev);
++	new_dev->rtnl_link_ops->dellink(new_dev, &dev_kill_list);
++	unregister_netdevice_many(&dev_kill_list);
+ out:
+ 	return ERR_PTR(-ENOBUFS);
+ }
+@@ -733,8 +735,12 @@ static int vif_delete(struct mr_table *mrt, int vifi, int notify,
+ 		ip_rt_multicast_event(in_dev);
+ 	}
+ 
+-	if (v->flags & (VIFF_TUNNEL | VIFF_REGISTER) && !notify)
+-		unregister_netdevice_queue(dev, head);
++	if (!notify) {
++		if (v->flags & VIFF_TUNNEL)
++			dev->rtnl_link_ops->dellink(dev, head);
++		else if (v->flags & VIFF_REGISTER)
++			unregister_netdevice_queue(dev, head);
++	}
+ 
+ 	netdev_put(dev, &v->dev_tracker);
+ 	return 0;
 -- 
 2.55.0.1003.g10538fe699-goog
 
