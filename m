@@ -1,1572 +1,713 @@
-Received: from mail-oa1-f42.google.com (mail-oa1-f42.google.com [209.85.160.42])
+Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 311E737F8A7
-	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 04:48:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.42
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788756493; cv=none; b=N2r1QYDao/uChrHfEHwPTLJTPeLFBagmMnYnPAcjnKUcEEbDnL80NM927lnD6RlRL4r7YH+yrjNB4w5QlQhTvoDmpYV+lDDGr9dPFACH148QKlrVwz3lWbPMpKpS6cIGKXFSXTJMsM0nv3yV4N6hQe67lXLapbVb2ihGP+xWpvY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788756493; c=relaxed/simple;
-	bh=E/kK3ouXTF1PgJn7+fZ+ewf2SKMpMiVOwLIkui4Kcjc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=XQNngRePIMtYa1lUnLcILzkj+3bRN8keZBeEFJ9NhoLGheWzxL4AJOhDlhD+KUzvPM2G5+m72teW6F73zB64NcQsFr6KLzegwaM2yYRCS7X6CUjfjyIUnWgn5hl5vym0uRKQrdSGfNOXgyYmBQQ6zyZX7zZqnfElYBwD9+z87Ho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dBiDu7U8; arc=none smtp.client-ip=209.85.160.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A0F737E5E1
+	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 04:48:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.174
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788756508; cv=pass; b=UlrMY0WyHPv6YIbIb+a76BuT58K9PESKC7UnKSXppOurvBNTn0K5PxibiPjJTC7OawtEfiIITj6MzZFDoPuivKebyZXP5hkaWRVdEyWtsOtKzXcS/8k5j9ckwCHNdeOfE6I58qgAlTKbuuSdHnj7LzxMYIqW/rwyfVk049bbJkA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788756508; c=relaxed/simple;
+	bh=lg2EjNYcWX1YmrLgH226d++MXZyTtWRz7Bf2+axtCig=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=sOCl3imPFmUCZ/KyqzRARHqKGRZEm1UVR67/A8xtSInzfKH2cf5nN5Qen4Bbx8yAp2/JsnCxhQETmUU+B7qiOq+IDsKz47NGjyM3C4lvqiHpJrkni8oqy8+0WD/5nIEAQuC5i0Tj4lOwnwAKSiW4kaYz2+XGfrRshbhYku9yXdo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=oMFcLEBG; arc=pass smtp.client-ip=209.85.208.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dBiDu7U8"
-Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-43bf9548df4so2979198fac.0
-        for <netdev@vger.kernel.org>; Sun, 06 Sep 2026 21:48:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="oMFcLEBG"
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-3a34f7ebcedso26208321fa.3
+        for <netdev@vger.kernel.org>; Sun, 06 Sep 2026 21:48:25 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788756503; cv=none;
+        d=google.com; s=arc-20260327;
+        b=Ud13MOPwcuL2bMEvcFmKbatLWsgpwPnNfW1igLmum+Ju/UgvhtE24iFklmZtSP2IP8
+         5lnzSCWkuG9CERVhlzOdMDCxMzT8MZwLviAxn5i3Ws+1V0XX6tU4TLqIGSGYxMW5/97j
+         t8WWqGyMKcxOS+TfZHx0TReOFBJUjsGk3yK4d2qvO4HD32g0z1W7Cd9VNp8HDvocpkvV
+         TclvJz6AfPda68t6MzTK8OxNyT3RqQ18RfjwRYNUIMhoq9yrRGTu6MrkdcftYmmP1BWD
+         EU0m+tWZQkrWRon9+KHMHCQhChHai2MFrLzELpc9nU8AZiuH9wSiHjGZqP7oEA5slEvU
+         YG3g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=LlCwC+OeHPgAlG4+7+P7EiIGYUqFR1bYavtRdwQlpTo=;
+        fh=Yvulvj0Tzc0B8eOPgvm00sXefhTBCUrKFZsarxqroCU=;
+        b=LvYfsmmCsCazDRWKldkmIbn12fZC+T4YBLy7hxjQF6nwlvYdEFakz2S9Ena0jl5Xqy
+         JZR2X1RJqdMRMnElEKNByLO8oGIUv+2NNW6EqfjuaDdXKtgMu/MrC/3+hhyxZ706qksy
+         9122dHrapcUpjSgKGoLISuFQk/EDfxR6jXQQtlJL0McnhYmYE/wdU1c1wBYy6wASLffq
+         h/AKL6bZyZxQu5//EInjAYNBWISxfn77ZHCO2oCe4Soghjh+rCcwG6yFsQfjHb2pKNsj
+         hG2laej54mMfiqivhyueRQBnI0v4aL/aoZgc0UMJpLqhcqwfGPKk4l6dvey7j7Wip2+x
+         iQvA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788756489; x=1789361289; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=8uEtI0V91UJMhNGfdTep+fwtZoYSLs/7MR8CPzmmz0s=;
-        b=dBiDu7U8XYd+3PynBjXPfUi7TADNChC/6bE7IIIkYf96XUlge/hgYJTCVKv1l4C+JW
-         4+sF/CmpBT97ASUiSwq7ArTFOmtCWmQuAC2Z+9ROysTzHeatZPJO2iIdaAsYImMvFB+v
-         t6AIThxgQWdFIShul8awqyghgbcXh48T98FcdMdxcp/E3jREnIEJPmoR2Juwp9iDLroE
-         gxLNupXHCJ00iScW8hFnQWYY+3XFt42gddBgR2/8VYxLdRy9+YI9H7Uyl5ltHyHAB6jp
-         EXU+mEBAM6RXxBmMZ2N9ewBrHjIVWnni6E1Xmo7Qb83zGF74HpN2rv77nW/qV0eDcjWO
-         ipaw==
+        d=nebusec.ai; s=google; t=1788756503; x=1789361303; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=LlCwC+OeHPgAlG4+7+P7EiIGYUqFR1bYavtRdwQlpTo=;
+        b=oMFcLEBGhwr0CMRgiypasbtZKXspSqp2168AuMo9IiI5YA8SkWQvJKEw0XNGyX29bM
+         JHFcEZEduZ/2EaWnNDaYRS6Zw23f/WhBNd0+/lz4aTufLk0GBOvQM93sf/k3OrQYER6k
+         QIK+IRACcXJ4r2XekME9RN1Zxxe7+sP6O7I9E0YoN1qvzSC9O8JTWaN3WB4J2mkcm5WV
+         CbmNS8xbJXXEdlTonvNa8PwEX7gX7ExOL1Tykh9uHNuM7gk2nyNsWTNQQLuSCWP5vl37
+         umwq7eGugZCmi98/ZP8JwvJgLKiynoL1sq6x9jCHPpU+DGq+Q4xCJlyGGWPn2EX1IdAt
+         Ft/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788756489; x=1789361289;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
+        d=1e100.net; s=20251104; t=1788756503; x=1789361303;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=8uEtI0V91UJMhNGfdTep+fwtZoYSLs/7MR8CPzmmz0s=;
-        b=mVW9Fbo5ksnVII2yuoudkkR0B/K64LjgahDuJgDvDJiTlB4ZbAIh4KPhU23PG/oYhc
-         gqcRRMOSnI44LF08kERrCmPtj/8FX4NkD3J0J9TJmi63w1blFg2nZJ+xb/brMnSmNpli
-         MoubkqJ0Av/RGr9OmI/9WFGZW+EZ/aukXKAAjKAVf+Z/isNXFCXE9TmIT+n5Md6wN8IL
-         fhdHQPbCiolYJSP9UzHQOYnaBRgjcPkZ0HrnnoxCK7VX9fY0q6q6kf92fk0xCRIHZGU6
-         OtRkEGG1pv3fo+MxDS8DihqGdNQZnf5AflasxLs5gQfeM4RkGfgQFjKFnMRJQAx660Kq
-         12OQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwvQdeAeUIDm764YG2K9hfKHeW3t1AE66iibKXBGMTLJUvmMwiM184Ymlp0ymloTV5wtYn9U/U=@vger.kernel.org
-X-Gm-Message-State: AFuF++lo2Hak9aQ8XDX6cnX1tneAmuzApcdnsZTd2OB4nKBz/AJtSOLB
-	pQu4UWAsAzH6xAmSFZAp6RXEHrf9L+JROfkNK3Dc0gXJQKEBFpG6iuHa
-X-Gm-Gg: AYBFou1A6aigI2GUYXNYaqPHQyOa7y4o7rFe5wzd7awBWn91zx0zWCaWyOckUtY5rkn
-	StQL/PaGBEvbMslCZS2SFQUII93ieqdipSqk38C2Sw8mHC5Jod8hqIbFU6Ovfx2VpogLjE4xqZQ
-	QDpZ2tX0zIrNE+eKNJpy/Y8Y/VLIVnSUTjbIf66aJg6TKTeFSNDvr3okhdOeiFNq0TqSeEVX9TH
-	jG1udb7SqKA/ziXiaJM2tS/8yLAkFJA0H3a7hFbk6JkE6f+dCSEXAoWTYiDbzufI9YQq8Z7+uef
-	kMy4XEt4aGe31FHT4Yh248+UHbMTXQ9fei4EF+0u3XKMAF0eJaKpWd9/daIK9AD7sMGDQDxv+Id
-	xDMkNh9hp3iKKpMJLozF3YZf71bc9prryNc3VVD5H2dYtUNZSAtNSzjpyggWlbsR1dzhCE23se7
-	m/8UClwCTJ6wSQhkaZlAC0jplxKnhaCjpLUnra/wI+U687JhwbwHqVuwlt7ZlqBejYoYbuMt8Po
-	IB4l105x2fI0YrGzZ7GIhmtPW/kQHYa7ImTHRaMouvuKrYSslew29jSIOoyW0D0ysPKQNLcCj2p
-	UNo40b5qZ+JmqhEttAET0veGM1ZD0aIsHApU0IOBSDBBeaMk2ce2E1pGYnuzz74GDHqki4vi//4
-	upFxOSa4gf4jZBfs3oA==
-X-Received: by 2002:a05:6870:3b88:b0:475:a153:2dc1 with SMTP id 586e51a60fabf-475a1537b5emr12336980fac.23.1788756485961;
-        Sun, 06 Sep 2026 21:48:05 -0700 (PDT)
-Received: from [127.0.1.1] (184-96-151-165.hlrn.qwest.net. [184.96.151.165])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-475501412f2sm9013503fac.0.2026.09.06.21.48.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 06 Sep 2026 21:48:05 -0700 (PDT)
-From: James Hilliard <james.hilliard1@gmail.com>
-Date: Sun, 06 Sep 2026 22:47:47 -0600
-Subject: [PATCH net-next v10 2/2] net: phy: add X-Powers AC200/AC300 EPHY
- driver
+        bh=LlCwC+OeHPgAlG4+7+P7EiIGYUqFR1bYavtRdwQlpTo=;
+        b=AtntzrCWX4SRkowsLY1twaLTj/H9Avsea196w9EOmFEjSKcLeOTx7vZ1/3Atieiya3
+         p88oYRrjVbNOU0NTqXxyGwEjCPg6oBnM+ilE0osQvEjqRqKKVHOn9z6/lIHAdMlWUfgB
+         R/i3iDCqvPeI+zHSoIH3o+89dusHvpQpl5Y8izhf12BMO8oixnqrtLK5OwRPDIMB1Txe
+         zLvlkh8kpy3fyGMKk+wbdIp2L4YOokyArPvkC8qisn5mpm32AEgABoEof0EQ9fEjxOjA
+         yBLPL54m6gNEnlr6kF98KBLxo6d2RKC5RKMte2QGmJ8zbCaj6eIoZmyJUD9LBl7zx3WX
+         JaZQ==
+X-Gm-Message-State: AFuF++kSrJkvA0qf/0GWqYRhTe++qiVMgqGqPWMDYoAph+LUKj2cFh4Q
+	+TVmBs9xnrPuCmbgtVk3sMlZw9A18DwQTrJaqmW3MIM/mFew/7ovd0XFN07gNdJT7TCTTYQvqvo
+	y7jt4Qy4m0WSVgcPns7lc4MDvW6Ue1ECMa5HMKa/33Ds=
+X-Gm-Gg: AYBFou0dbBCoRvGYfSEHsc1soVv1zjFAXPPQlCbD6cJA8RwJ+VyaL76WizYMGeIKxro
+	raZSM5cGVOEtVzM5BEnk24zd1sF9i7S8sFIncTPMuT4HO3QXvbW9a3STgBU1Sy/5LivUM9NaKJD
+	OrsxP6qf3DXeZlEQ9nwfreFTKSifY2i3HNJfCmTC731tVZekVWz5oNU+GZT4CNlPdQtq2hoB0pN
+	kZYg8c4SNzgt8+fjEtLdwRWC17zoqZUS6M80oYWmEQqPoiNuWb+4NROPKro7aZJvJ2a/VqXaF7c
+	dCF3xQDnvmmSw+9jo/5rp0amhMl+Izv95QLFXW5auVFuYGCaP5K+wHXN7yWNLyGSkH4LOsA1PAU
+	=
+X-Received: by 2002:a2e:b893:0:b0:3a3:74b7:fc0a with SMTP id
+ 38308e7fff4ca-3a374b8279dmr19375891fa.22.1788756503017; Sun, 06 Sep 2026
+ 21:48:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260906-submit-acx00-of-dynamic-v1-v10-2-dd272e03b547@gmail.com>
-References: <20260906-submit-acx00-of-dynamic-v1-v10-0-dd272e03b547@gmail.com>
-In-Reply-To: <20260906-submit-acx00-of-dynamic-v1-v10-0-dd272e03b547@gmail.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
- Russell King <linux@armlinux.org.uk>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- James Hilliard <james.hilliard1@gmail.com>
-Cc: Arnd Bergmann <arnd@arndb.de>, 
- "Jagielski, Jedrzej" <jedrzej.jagielski@intel.com>, 
- Andre Przywara <andre.przywara@arm.com>, Chen-Yu Tsai <wens@kernel.org>, 
- =?utf-8?q?Jernej_=C5=A0krabec?= <jernej.skrabec@gmail.com>, 
- Maxime Chevallier <maxime.chevallier@bootlin.com>, 
- linux-sunxi@lists.linux.dev, netdev@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-X-Mailer: b4 0.15.2
+References: <cdc628415cf10721480a51ce14837f846ec778c2.1788248601.git.zihanx@nebusec.ai>
+ <178875495405.219967.5594821749566554418@kernel.org>
+In-Reply-To: <178875495405.219967.5594821749566554418@kernel.org>
+From: zihan xi <zihanx@nebusec.ai>
+Date: Mon, 7 Sep 2026 12:48:11 +0800
+X-Gm-Features: AcwNN1UF1s5IJXPuklb8t5AThGjsMeHr902veOyCGjoeg8FS-0N6M_r-kwl8j7s
+Message-ID: <CAANe3eRBOQud=bMgLnPbD_yUYUkJtT=GBqtY+GR0ZtU0_kbzhg@mail.gmail.com>
+Subject: Re: [PATCH net v2 1/2] tcp: diag: bound bucket lock hold in tcp_diag_dump()
+To: netdev-bot+sashiko@kernel.org
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	mptcp@lists.linux.dev, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, ncardwell@google.com, 
+	kuniyu@google.com, matttbe@kernel.org, martineau@kernel.org, 
+	geliang@kernel.org, gnault@redhat.com, fw@strlen.de, stable@vger.kernel.org, 
+	vega@nebusec.ai
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The AC200 and AC300 contain compatible Fast Ethernet link PHYs, but the
-link endpoint is inaccessible until package-specific control registers
-have powered and configured it.
+On Mon, Sep 7, 2026 at 12:22=E2=80=AFPM <netdev-bot+sashiko@kernel.org> wro=
+te:
+>
+> Thank you for your contribution! Sashiko AI review found 6 potential
+> issue(s) to consider:
+>
+> Critical: 2 =C2=B7 High: 1 =C2=B7 Medium: 2 =C2=B7 Low: 1
+>
+> - [Critical] Use-after-free / wild-pointer traversal: the new bind-hash
+>   dump cursor revalidation in tcp_diag_dump() cannot detect that the=E2=
+=80=A6
+> - [Critical] Refcount initialization race: tcp_diag_bind_collect_sock()
+>   calls sock_hold() unconditionally on every node of tb2->owners,=E2=80=
+=A6
+> - [High] Loss of dump forward progress and duplicate output: the patch
+>   deletes every positional (`s_num`) resume path in tcp_diag_dump()=E2=80=
+=A6
+> - [Medium] Lockless, unordered reads of cursor state: the listen and
+>   ehash cursor validations establish "this socket is in the bucket I=E2=
+=80=A6
+> - [Medium] The commit message mischaracterizes the pre-existing defect.
+> - [Low] Concern that the sibling MPTCP listener dump
+>   (mptcp_diag_dump_listeners()) keeps evaluating request-supplied=E2=80=
+=A6
+>
+> --
+>
+> tcp: diag: bound bucket lock hold in tcp_diag_dump()
+>
+> This reworks the three tcp_diag_dump() hash walks so that only referenced
+> sockets are collected under each bucket lock, and moves the family/port
+> filters, inet_diag_bc_sk() bytecode evaluation and the fill work outside =
+the
+> critical section.  A referenced dump cursor is added to
+> struct inet_diag_dump_data so a following batch resumes after the previou=
+sly
+> reported socket, with per-table validation of the cursor.
+>
+> v1 Link: https://lore.kernel.org/all/cover.1785307984.git.zihanx@nebusec.=
+ai/
+>
+> >     inet_diag dumps run request-supplied bytecode through inet_diag_bc_=
+sk().
+> >     tcp_diag_dump() currently evaluates socket filters and fills replie=
+s while
+> >     holding the listener, bind, and ehash bucket locks.
+>
+> [Severity: Medium]
+> Is this description accurate for all three tables?
+>
+> At the baseline (544d85de4dc2) only the listener walk fills replies under
+> ilb->lock.  The bind walk already collected at most SKARR_SZ =3D 16 refer=
+enced
+> sockets under spin_lock_bh(&ibb->lock) and only called inet_sk_diag_fill(=
+)
+> after the lock was dropped:
+>
+>         pause_bind_walk:
+>                         spin_unlock_bh(&ibb->lock);
+>
+>                         res =3D 0;
+>                         for (idx =3D 0; idx < accum; idx++) {
+>                                 if (res >=3D 0) {
+>                                         res =3D inet_sk_diag_fill(sk_arr[=
+idx],
+>                                                                 NULL, skb=
+, cb,
+>                                                                 r, NLM_F_=
+MULTI,
+>                                                                 net_admin=
+);
+>
+> The ehash walk did the same with sk_diag_fill() after spin_unlock_bh(lock=
+).
+> What remained under the bind and ehash locks was inet_diag_bc_sk() plus t=
+he
+> cheap family/port comparisons, bounded to 16 sockets per lock hold.
+>
+> Could the changelog be narrowed to the listener walk, or state explicitly
+> what part of the bind/ehash work it is moving out?
+>
+> > diff --git a/include/linux/inet_diag.h b/include/linux/inet_diag.h
+> > index 704fd415c2b49..6ccd32bc48f91 100644
+> > --- a/include/linux/inet_diag.h
+> > +++ b/include/linux/inet_diag.h
+>
+> [ ... ]
+>
+> > @@ -32,12 +33,23 @@ struct inet_diag_handler {
+> >  };
+> >
+> >  struct bpf_sk_storage_diag;
+> > +
+> > +enum inet_diag_dump_cursor_type {
+> > +     INET_DIAG_DUMP_CURSOR_NONE,
+> > +     INET_DIAG_DUMP_CURSOR_TCP_LISTEN,
+> > +     INET_DIAG_DUMP_CURSOR_TCP_BIND,
+> > +     INET_DIAG_DUMP_CURSOR_TCP_EHASH,
+> > +};
+> > +
+>
+> [Severity: Low]
+> This isn't a bug, but a note for backporters.  The sibling MPTCP listener
+> dump mptcp_diag_dump_listeners() is converted by the follow-up patch in t=
+his
+> series (INET_DIAG_DUMP_CURSOR_MPTCP_LISTEN, which is why the enum slot an=
+d
+> the exported inet_diag_dump_clear_cursor() appear here), so at the tip of=
+ the
+> series the MPTCP listener walk also drops ilb->lock before calling
+> sk_diag_dump()/inet_diag_bc_sk().
+>
+> This patch is Cc: stable, and the commit message body does not mention th=
+at
+> the MPTCP listener walk keeps running request-supplied bytecode under the
+> same hashinfo->lhash2 bucket lock until the follow-up patch is applied.  =
+Only
+> the v2 changelog, which is stripped on apply, mentions "Left
+> INET_DIAG_DUMP_CURSOR_MPTCP_LISTEN to the MPTCP patch".  Could that
+> dependency be stated in the commit message?
+>
+> [ ... ]
+>
+> > diff --git a/include/net/inet_hashtables.h b/include/net/inet_hashtable=
+s.h
+> > index 6e2fe186d0dcb..d95639ac70c67 100644
+> > --- a/include/net/inet_hashtables.h
+> > +++ b/include/net/inet_hashtables.h
+> > @@ -188,6 +188,24 @@ inet_lhash2_bucket(struct inet_hashinfo *h, u32 ha=
+sh)
+> >       return &h->lhash2[hash & h->lhash2_mask];
+> >  }
+> >
+> > +static inline struct inet_listen_hashbucket *
+> > +inet_lhash2_bucket_sk(struct inet_hashinfo *h, struct sock *sk)
+> > +{
+> > +     u32 hash;
+> > +
+> > +#if IS_ENABLED(CONFIG_IPV6)
+> > +     if (sk->sk_family =3D=3D AF_INET6)
+> > +             hash =3D ipv6_portaddr_hash(sock_net(sk),
+> > +                                       &sk->sk_v6_rcv_saddr,
+> > +                                       inet_sk(sk)->inet_num);
+> > +     else
+> > +#endif
+> > +             hash =3D ipv4_portaddr_hash(sock_net(sk),
+> > +                                       inet_sk(sk)->inet_rcv_saddr,
+> > +                                       inet_sk(sk)->inet_num);
+> > +     return inet_lhash2_bucket(h, hash);
+> > +}
+> > +
+>
+> [ ... ]
+>
+> > diff --git a/net/ipv4/tcp_diag.c b/net/ipv4/tcp_diag.c
+> > index ba1fdbe9807fd..842e13ee79e5b 100644
+> > --- a/net/ipv4/tcp_diag.c
+> > +++ b/net/ipv4/tcp_diag.c
+> > @@ -285,6 +285,73 @@ static int sk_diag_fill(struct sock *sk, struct sk=
+_buff *skb,
+> >                                net_admin);
+> >  }
+> >
+>
+> [ ... ]
+>
+> > +static struct inet_bind2_bucket *tcp_diag_sk_bind2(const struct sock *=
+sk)
+> > +{
+> > +     if (sk->sk_state =3D=3D TCP_TIME_WAIT)
+> > +             return inet_twsk(sk)->tw_tb2;
+> > +
+> > +     return inet_csk(sk)->icsk_bind2_hash;
+> > +}
+> > +
+> > +static bool tcp_diag_bind_collect_sock(struct sock *sk, struct sock **=
+sk_arr,
+> > +                                    int *num_arr, int *accum, int num)
+> > +{
+> > +     sock_hold(sk);
+> > +     num_arr[*accum] =3D num;
+> > +     sk_arr[*accum] =3D sk;
+> > +
+> > +     return ++*accum =3D=3D SKARR_SZ;
+> > +}
+> > +
+> > +static bool tcp_diag_bind_collect_owners(struct hlist_head *owners,
+> > +                                      struct sock **sk_arr, int *num_a=
+rr,
+> > +                                      int *accum, int *num, int s_num)
+> > +{
+> > +     struct sock *sk;
+> > +
+> > +     sk_for_each_bound(sk, owners) {
+> > +             if (*num < s_num) {
+> > +                     (*num)++;
+> > +                     continue;
+> > +             }
+> > +
+> > +             if (tcp_diag_bind_collect_sock(sk, sk_arr, num_arr, accum=
+, *num))
+> > +                     return true;
+> > +             (*num)++;
+> > +     }
+> > +
+> > +     return false;
+> > +}
+>
+> [Severity: Critical]
+> Can the unconditional sock_hold() in tcp_diag_bind_collect_sock() hit a
+> TIME_WAIT socket whose tw_refcnt is still 0?
+>
+> The changelog says "Bind collection counts TIME_WAIT nodes toward the bat=
+ch
+> limit", and tcp_diag_bind_collect_owners() no longer filters on
+> sk->sk_state !=3D TCP_CLOSE before taking the reference, so every node of
+> tb2->owners now gets a refcount_inc().
+>
+> inet_twsk_alloc() starts the object at zero on purpose:
+>
+>         /*
+>          * Because we use RCU lookups, we should not set tw_refcnt
+>          * to a non null value before everything is setup for this
+>          * timewait socket.
+>          */
+>         refcount_set(&tw->tw_refcnt, 0);
+>
+> and inet_twsk_hashdance_schedule() publishes it into the bind owners list=
+ and
+> drops both bind locks before initializing the count:
+>
+>         sk_add_bind_node((struct sock *)tw, &tw->tw_tb2->owners);
+>
+>         spin_unlock(&bhead2->lock);
+>         spin_unlock(&bhead->lock);
+>
+>         spin_lock(lock);
+>
+>         refcount_set(&tw->tw_refcnt, 3);
+>
+> A dumper blocked on bhead2->lock acquires it right after that unlock and
+> immediately walks tb2->owners, so it can observe the published tw with
+> tw_refcnt =3D=3D 0.  sock_hold() then calls refcount_inc() on zero, which=
+ trips
+> refcount_warn_saturate() and leaves the counter saturated, after which
+> refcount_set(&tw->tw_refcnt, 3) discards the dump's reference.  The later
+> sock_gen_put() from the fill loop then consumes one of the three structur=
+al
+> references (bhash, ehash, timer).
+>
+> Would using refcount_inc_not_zero() here, or keeping the TCP_CLOSE check
+> under the lock, be safer?
+>
+> > @@ -335,8 +402,15 @@ static void tcp_diag_dump(struct sk_buff *skb, str=
+uct netlink_callback *cb,
+> >               for (i =3D s_i; i <=3D hashinfo->lhash2_mask; i++) {
+> >                       struct inet_listen_hashbucket *ilb;
+> >                       struct hlist_nulls_node *node;
+> > +                     struct sock *sk_arr[SKARR_SZ];
+> > +                     int num_arr[SKARR_SZ];
+> > +                     struct sock *cursor;
+> > +                     int idx, accum, res;
+> > +                     bool use_cursor;
+> >
+> > +resume_listen_walk:
+> >                       num =3D 0;
+> > +                     accum =3D 0;
+> >                       ilb =3D &hashinfo->lhash2[i];
+> >
+> >                       if (hlist_nulls_empty(&ilb->nulls_head)) {
+> > @@ -344,52 +418,81 @@ static void tcp_diag_dump(struct sk_buff *skb, st=
+ruct netlink_callback *cb,
+> >                               continue;
+> >                       }
+> >                       spin_lock(&ilb->lock);
+> > -                     sk_nulls_for_each(sk, node, &ilb->nulls_head) {
+> > -                             struct inet_sock *inet =3D inet_sk(sk);
+> > +                     cursor =3D cb_data->dump_cursor;
+> > +                     use_cursor =3D cursor &&
+> > +                                  cb_data->dump_cursor_type =3D=3D
+> > +                                  INET_DIAG_DUMP_CURSOR_TCP_LISTEN &&
+> > +                                  cb_data->dump_cursor_slot =3D=3D i &=
+&
+> > +                                  inet_sk_state_load(cursor) =3D=3D TC=
+P_LISTEN &&
+> > +                                  !hlist_nulls_unhashed(&cursor->sk_nu=
+lls_node) &&
+> > +                                  cursor->sk_nulls_node.pprev !=3D LIS=
+T_POISON2 &&
+> > +                                  inet_lhash2_bucket_sk(hashinfo, curs=
+or) =3D=3D ilb;
+> > +                     node =3D use_cursor ? cursor->sk_nulls_node.next =
+:
+> > +                                         ilb->nulls_head.first;
+>
+> [Severity: Medium]
+> Is the "cursor is still in this bucket" conclusion sound when every input=
+ to
+> it is read without the lock that publishes it?
+>
+> In the listener path the recomputation uses sock_net(cursor),
+> sk_v6_rcv_saddr (a 16-byte non-atomic read) and inet_sk(cursor)->inet_num=
+ via
+> the newly exported inet_lhash2_bucket_sk(), none of which is protected by
+> ilb->lock, and the pprev test and the bucket computation are separate pla=
+in
+> loads with no barrier between them.
+>
+> The ehash variant later in this function has the same shape with
+> cursor->sk_nulls_node.pprev followed by cursor->sk_hash.  The insertion s=
+ide
+> sets sk->sk_hash before taking the target bucket lock and linking with
+> __sk_nulls_add_node_rcu(), and inet_csk_listen_start() stores TCP_LISTEN
+> before hashing into lhash2, so a reader that observes the new linkage is =
+not
+> guaranteed to observe the matching sk_hash/sk_state store.  A socket that
+> left ehash bucket i and called listen() keeps its old sk_hash, so
+> inet_sk_state_load(cursor) !=3D TCP_LISTEN can still be true while the lh=
+ash2
+> linkage is already visible.
+>
+> If validation passes on a stale snapshot, the walk then follows
+> cursor->sk_nulls_node.next into a chain whose spinlock is not held and
+> sock_hold()s the entries it finds.  On x86 the store order makes the
+> inconsistent snapshot hard to observe, but is bucket membership something
+> that can be established from lockless per-socket fields at all?
+>
+> > +                     if (!use_cursor)
+> > +                             s_num =3D 0;
+> > +                     hlist_nulls_for_each_entry_from(sk, node, sk_null=
+s_node) {
+> >
+> > -                             if (!net_eq(sock_net(sk), net))
+> > -                                     continue;
+> > +                             sock_hold(sk);
+> > +                             num_arr[accum] =3D num;
+> > +                             sk_arr[accum] =3D sk;
+> > +                             if (++accum =3D=3D SKARR_SZ)
+> > +                                     break;
+> >
+> > -                             if (num < s_num) {
+> > -                                     num++;
+> > -                                     continue;
+> > -                             }
+> > +                             ++num;
+> > +                     }
+> > +                     spin_unlock(&ilb->lock);
+>
+> [Severity: High]
+> With the num < s_num skip removed from this loop and s_num forced to 0 wh=
+en
+> the cursor is rejected, what stops the bucket from being re-dumped from i=
+ts
+> head?
+>
+> All three walks now do:
+>
+>         if (!use_cursor)
+>                 s_num =3D 0;
+>
+> and the batch continuations replace s_num =3D num + 1 with s_num =3D 0:
+>
+>         if (accum =3D=3D SKARR_SZ) {
+>                 s_num =3D 0;
+>                 goto resume_listen_walk;
+>         }
+>
+> The bind walk and the ehash walk have the same two changes, and the s_num
+> parameter of tcp_diag_bind_collect_owners() is dead because its only call=
+er
+> sits in the !use_cursor branch where s_num has just been zeroed.
+>
+> So whenever cursor validation fails, which the changelog describes as the
+> "safe restart on mismatch", the walk restarts at ilb->nulls_head.first, a=
+t
+> the head of ibb->chain, or at head->chain.first, and re-emits sockets fro=
+m
+> that bucket that were already sent to user space earlier in the same dump=
+.
+> Before this change s_num =3D num + 1 guaranteed the restart advanced.
+>
+> There is a second effect: if all of the re-collected leading SKARR_SZ soc=
+kets
+> are discarded after the lock is dropped (foreign netns, since lhash2 and
+> ehash are shared across netns, or sdiag_family/port mismatch, or bytecode
+> rejection), nothing is emitted, res stays 0 and the goto resume_*_walk lo=
+op
+> repeats over the same head with only cond_resched() yielding.
+>
+> tcp_diag_dump() still loads s_num =3D num =3D cb->args[2] on entry and st=
+ill
+> stores cb->args[2] =3D num at the done: label, but num is now a chunk-rel=
+ative
+> counter that no resume path consumes.  Should that state be dropped, or
+> should a positional fallback be kept for the mismatch case?  Also, since =
+the
+> walk can now repeat objects within a dump, should NLM_F_DUMP_INTR be set =
+via
+> a generation counter in netlink_callback.seq?
+>
+> [ ... ]
+>
+> > @@ -412,34 +517,46 @@ static void tcp_diag_dump(struct sk_buff *skb, st=
+ruct netlink_callback *cb,
+> >                               continue;
+> >                       }
+> >                       spin_lock_bh(&ibb->lock);
+> > -                     inet_bind_bucket_for_each(tb2, &ibb->chain) {
+> > -                             if (!net_eq(ib2_net(tb2), net))
+> > -                                     continue;
+> > -
+> > -                             sk_for_each_bound(sk, &tb2->owners) {
+> > -                                     struct inet_sock *inet =3D inet_s=
+k(sk);
+> > -
+> > -                                     if (num < s_num)
+> > -                                             goto next_bind;
+> > -
+> > -                                     if (sk->sk_state !=3D TCP_CLOSE |=
+|
+> > -                                         !inet->inet_num)
+> > -                                             goto next_bind;
+> > -
+> > -                                     if (r->sdiag_family !=3D AF_UNSPE=
+C &&
+> > -                                         r->sdiag_family !=3D sk->sk_f=
+amily)
+> > -                                             goto next_bind;
+> > -
+> > -                                     if (!inet_diag_bc_sk(cb_data, sk)=
+)
+> > -                                             goto next_bind;
+> > -
+> > -                                     sock_hold(sk);
+> > -                                     num_arr[accum] =3D num;
+> > -                                     sk_arr[accum] =3D sk;
+> > -                                     if (++accum =3D=3D SKARR_SZ)
+> > +                     cursor =3D cb_data->dump_cursor;
+> > +                     use_cursor =3D cursor &&
+> > +                                  cb_data->dump_cursor_type =3D=3D
+> > +                                  INET_DIAG_DUMP_CURSOR_TCP_BIND &&
+> > +                                  cb_data->dump_cursor_slot =3D=3D i &=
+&
+> > +                                  !hlist_unhashed(&cursor->sk_bind_nod=
+e) &&
+> > +                                  cursor->sk_bind_node.pprev !=3D LIST=
+_POISON2;
+> > +                     if (use_cursor) {
+> > +                             tb2 =3D tcp_diag_sk_bind2(cursor);
+> > +                             use_cursor =3D tb2 &&
+> > +                                          inet_bhashfn_portaddr(hashin=
+fo, cursor,
+> > +                                                                sock_n=
+et(cursor),
+> > +                                                                inet_s=
+k(cursor)->inet_num) =3D=3D
+> > +                                          ibb;
+> > +                     }
+> > +                     if (!use_cursor)
+> > +                             s_num =3D 0;
+> > +                     if (use_cursor) {
+> > +                             sk =3D cursor;
+> > +                             if (tcp_diag_bind_collect_owners_continue=
+(sk, sk_arr,
+> > +                                                                      =
+ num_arr,
+> > +                                                                      =
+ &accum,
+> > +                                                                      =
+ &num))
+> > +                                     goto pause_bind_walk;
+> > +                             hlist_for_each_entry_continue(tb2, node) =
+{
+> > +                                     if (tcp_diag_bind_collect_owners(=
+&tb2->owners,
+> > +                                                                      =
+sk_arr,
+> > +                                                                      =
+num_arr,
+> > +                                                                      =
+&accum,
+> > +                                                                      =
+&num, 0))
+> > +                                             goto pause_bind_walk;
+> > +                             }
+>
+> [Severity: Critical]
+> Can these two liveness checks ever detect that the cursor left
+> tb2->owners, and can tb2 here already be freed?
+>
+> Removal from a bind chain goes through __sk_del_bind_node():
+>
+> include/net/sock.h:
+> static inline void __sk_del_bind_node(struct sock *sk)
+> {
+>         __hlist_del(&sk->sk_bind_node);
+> }
+>
+> __hlist_del() only writes *pprev and next->pprev; it leaves the removed
+> node's own pprev and next untouched.  So for a socket that was unlinked,
+> hlist_unhashed(&cursor->sk_bind_node) is false and
+> cursor->sk_bind_node.pprev !=3D LIST_POISON2 holds, and both tests pass.
+>
+> The freed-bucket part comes from __inet_bhash2_update_saddr():
+>
+> net/ipv4/inet_hashtables.c:
+>         spin_lock(&head2->lock);
+>         __sk_del_bind_node(sk);
+>         inet_bind2_bucket_destroy(hinfo->bind2_bucket_cachep, inet_csk(sk=
+)->icsk_bind2_hash);
+>         spin_unlock(&head2->lock);
+>
+>         if (reset)
+>                 inet_reset_saddr(sk);
+>         else
+>                 inet_update_saddr(sk, saddr, family);
+>
+> icsk_bind2_hash is never cleared, and inet_bind2_bucket_destroy() frees t=
+he
+> bucket immediately with no grace period when it was the sole owner:
+>
+>         if (hlist_empty(&tb->owners)) {
+>                 __hlist_del(&tb->node);
+>                 __hlist_del(&tb->bhash_node);
+>                 kmem_cache_free(cachep, tb);
+>                 return;
+>         }
+>
+> In the window between that spin_unlock() and the address update, the addr=
+ess
+> is unchanged, so inet_bhashfn_portaddr() still resolves to ibb, and
+> tcp_diag_sk_bind2(cursor) returns the dangling icsk_bind2_hash.  use_curs=
+or
+> therefore becomes true.
+>
+> tcp_diag_bind_collect_owners_continue() then iterates the cursor's stale
+> sk_bind_node.next, and hlist_for_each_entry_continue(tb2, node) reads
+> tb2->node.next out of the freed slab object, producing an arbitrary
+> struct inet_bind2_bucket * whose owners list is walked with sock_hold()
+> applied to each apparent entry.
+>
+> Note the dumper holds only hashinfo->bhash2[i].lock and never the primary
+> bhash head lock, and a cursor is saved for every collected owner includin=
+g
+> the ones filtered out afterwards, so a process that dumps with
+> TCPF_BOUND_INACTIVE while calling connect() on a bound socket in that buc=
+ket
+> can reach this.  Could the cursor instead record a validated tb2 identity
+> that is re-looked-up under ibb->lock, rather than being derived from
+> icsk_bind2_hash?
+>
+> > +                     } else {
+> > +                             inet_bind_bucket_for_each(tb2, &ibb->chai=
+n) {
+> > +                                     if (tcp_diag_bind_collect_owners(=
+&tb2->owners,
+> > +                                                                      =
+sk_arr,
+> > +                                                                      =
+num_arr,
+> > +                                                                      =
+&accum,
+> > +                                                                      =
+&num, s_num))
+> >                                               goto pause_bind_walk;
+> > -next_bind:
+> > -                                     num++;
+> >                               }
+> >                       }
+> >  pause_bind_walk:
+>
+> [ ... ]
+>
+> > @@ -463,13 +598,15 @@ static void tcp_diag_dump(struct sk_buff *skb, st=
+ruct netlink_callback *cb,
+> >                       cond_resched();
+> >
+> >                       if (accum =3D=3D SKARR_SZ) {
+> > -                             s_num =3D num + 1;
+> > +                             s_num =3D 0;
+> >                               goto resume_bind_walk;
+> >                       }
+> >
+> > +                     inet_diag_dump_clear_cursor(cb_data);
+> >                       s_num =3D 0;
+> >               }
+>
+> [ ... ]
+>
+> >               if (accum =3D=3D SKARR_SZ) {
+> > -                     s_num =3D num + 1;
+> > +                     s_num =3D 0;
+> >                       goto next_chunk;
+> >               }
+>
+> [ ... ]
+>
+> --
+> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
+set/cover.1788248601.git.zihanx%40nebusec.ai
 
-Add one PHY driver which binds the link child and joins its parent
-Ethernet PHY package. Fixed package compatibles select the corresponding
-backend. The generic ACx00 compatible reads one packed configuration field
-and selects the backend before touching backend-specific resources. The
-AC300 path therefore does not resolve or access the candidate AC200 I2C
-device.
-
-AC200 locates the I2C device referenced by the package and establishes a
-managed device link. It verifies that the provider is fully bound under
-the supplier device lock before retrieving the regmap attached to the I2C
-device. The companion MFD provider enables and exclusively pins the input
-clock rate while it is bound. The link keeps the supplier bound until the
-PHY consumer has unbound. Firmware must make the selected AC200 provider
-path available before the PHY probes.
-
-AC300 uses the PHY package helpers to access the control range at base
-address plus 16. Keeping both backends in the same module lets the common
-link implementation own the complete PHY without registering artificial
-control devices.
-
-Obtain and manage the selected package supply and calibration, manage the
-AC300 input clock, validate or program the link address, and apply the
-required reset, clock, I/O and shutdown sequences. Start in the
-hardware-default MII mode so the forced PHY device can probe before a MAC
-attaches, then apply the MAC-provided MII or RMII mode before the normal
-PHY soft reset. AC200 specifies no additional delay between its EPHY
-controls; the provider's input-clock startup delay is already complete
-before its regmap becomes available.
-
-Apply the common vendor analog initialization, optional AC300
-low-calibration tuning and board-selected receive-clock inversion. Keep
-MDI/MDI-X in automatic mode. Preserve standard MAC-managed EEE support
-while disabling the vendor PHY-autonomous Intelligent EEE mode. Restart
-autonegotiation when restoring the standard EEE advertisement changes it.
-
-Serialize package state and the multi-register power sequences across the
-different phylib callback lock contexts. Power down the package control
-block and its supply during PHY suspend, then restore them and the vendor
-configuration during resume. If shutdown fails, recover the running PHY
-under the phylib lock before returning the original error. Unwind package
-power if reset, resume or configuration fails after power-on.
-
-Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
----
- drivers/net/phy/Kconfig          |  11 +
- drivers/net/phy/Makefile         |   1 +
- drivers/net/phy/xpowers/Makefile |   3 +
- drivers/net/phy/xpowers/ac200.c  | 314 ++++++++++++++++++++
- drivers/net/phy/xpowers/ac300.c  | 387 ++++++++++++++++++++++++
- drivers/net/phy/xpowers/acx00.c  | 621 +++++++++++++++++++++++++++++++++++++++
- drivers/net/phy/xpowers/acx00.h  |  28 ++
- 7 files changed, 1365 insertions(+)
-
-diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
-index b4ef927fd4a6..d3835597e379 100644
---- a/drivers/net/phy/Kconfig
-+++ b/drivers/net/phy/Kconfig
-@@ -484,6 +484,17 @@ config VITESSE_PHY
- 	help
- 	  Currently supports the vsc8244
- 
-+config XPOWERS_ACX00_PHY
-+	tristate "X-Powers AC200/AC300 Ethernet PHY"
-+	depends on COMMON_CLK && NVMEM && OF_MDIO && REGULATOR
-+	depends on I2C || !I2C
-+	select PHY_PACKAGE
-+	help
-+	  Enable the Fast Ethernet PHY driver shared by the X-Powers AC200
-+	  and AC300 companion ICs. The driver configures their common MDIO PHY
-+	  registers and the package-specific AC200 I2C or AC300 MDIO control
-+	  registers.
-+
- config XILINX_GMII2RGMII
- 	tristate "Xilinx GMII2RGMII converter driver"
- 	help
-diff --git a/drivers/net/phy/Makefile b/drivers/net/phy/Makefile
-index 25c4a3c2429f..49575fa18522 100644
---- a/drivers/net/phy/Makefile
-+++ b/drivers/net/phy/Makefile
-@@ -101,4 +101,5 @@ obj-$(CONFIG_SMSC_PHY)		+= smsc.o
- obj-$(CONFIG_STE10XP)		+= ste10Xp.o
- obj-$(CONFIG_TERANETICS_PHY)	+= teranetics.o
- obj-$(CONFIG_VITESSE_PHY)	+= vitesse.o
-+obj-$(CONFIG_XPOWERS_ACX00_PHY)	+= xpowers/
- obj-$(CONFIG_XILINX_GMII2RGMII) += xilinx_gmii2rgmii.o
-diff --git a/drivers/net/phy/xpowers/Makefile b/drivers/net/phy/xpowers/Makefile
-new file mode 100644
-index 000000000000..ae977a795832
---- /dev/null
-+++ b/drivers/net/phy/xpowers/Makefile
-@@ -0,0 +1,3 @@
-+# SPDX-License-Identifier: GPL-2.0
-+xpowers-acx00-y := acx00.o ac200.o ac300.o
-+obj-$(CONFIG_XPOWERS_ACX00_PHY) += xpowers-acx00.o
-diff --git a/drivers/net/phy/xpowers/ac200.c b/drivers/net/phy/xpowers/ac200.c
-new file mode 100644
-index 000000000000..afdd2a3dfbe4
---- /dev/null
-+++ b/drivers/net/phy/xpowers/ac200.c
-@@ -0,0 +1,314 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * X-Powers AC200 Ethernet PHY package backend
-+ *
-+ * Copyright (c) 2022 Arm Ltd. (Andre Przywara <andre.przywara@arm.com>)
-+ * Copyright (C) 2026 James Hilliard <james.hilliard1@gmail.com>
-+ */
-+
-+#include <linux/bitfield.h>
-+#include <linux/clk.h>
-+#include <linux/i2c.h>
-+#include <linux/of.h>
-+#include <linux/phy.h>
-+#include <linux/regmap.h>
-+#include <linux/regulator/consumer.h>
-+#include <linux/slab.h>
-+
-+#include "acx00.h"
-+
-+#define AC200_EPHY_BPS_EFFUSE_OFFSET	3
-+#define AC200_EPHY_CLK_RATE_24_MHZ	24000000
-+#define AC200_EPHY_CLK_RATE_27_MHZ	27000000
-+
-+#define AC200_SYS_EPHY_CTL0_REG			0x0014
-+#define AC200_EPHY_RESET_DEASSERT		BIT(0)
-+#define AC200_EPHY_SYSCLK_ENABLE			BIT(1)
-+
-+#define AC200_SYS_EPHY_CTL1_REG			0x0016
-+#define AC200_EPHY_MII_IO_ENABLE			BIT(0)
-+
-+/* AC200-internal copy of the Ethernet PHY calibration eFuse. */
-+#define AC200_EFUSE_EPHY_REG			0x8004
-+
-+#define AC200_EPHY_CTL_REG			0x6000
-+#define AC200_EPHY_SHUTDOWN			BIT(0)
-+#define AC200_EPHY_CLK_SEL_24_MHZ		BIT(2)
-+#define AC200_EPHY_PHY_ADDR_MASK			GENMASK(8, 4)
-+#define AC200_EPHY_RMII_SEL			BIT(11)
-+#define AC200_EPHY_BPS_EFFUSE_MASK		GENMASK(15, 12)
-+
-+struct ac200_ephy_ctl {
-+	struct acx00_ephy_control control;
-+	struct regmap *regmap;
-+	struct regulator *vcc;
-+	struct device *dev;
-+	u16 ephy_ctl;
-+	unsigned int phy_addr;
-+	phy_interface_t interface;
-+	bool supply_enabled;
-+	bool powered;
-+};
-+
-+static u16 ac200_ephy_ctl_config(const struct ac200_ephy_ctl *priv)
-+{
-+	return priv->ephy_ctl |
-+		(priv->interface == PHY_INTERFACE_MODE_RMII ?
-+		 AC200_EPHY_RMII_SEL : 0) |
-+		FIELD_PREP(AC200_EPHY_PHY_ADDR_MASK, priv->phy_addr);
-+}
-+
-+static int ac200_ephy_ctl_write(struct ac200_ephy_ctl *priv,
-+				unsigned int reg, u16 value)
-+{
-+	int ret;
-+
-+	ret = regmap_write(priv->regmap, reg, value);
-+	if (ret)
-+		dev_err(priv->dev, "failed to write register %#x: %pe\n",
-+			reg, ERR_PTR(ret));
-+
-+	return ret;
-+}
-+
-+static int ac200_ephy_ctl_disable(struct ac200_ephy_ctl *priv)
-+{
-+	int err;
-+	int ret = 0;
-+
-+	if (priv->powered) {
-+		ret = ac200_ephy_ctl_write(priv, AC200_EPHY_CTL_REG,
-+					   ac200_ephy_ctl_config(priv) |
-+					   AC200_EPHY_SHUTDOWN);
-+		err = ac200_ephy_ctl_write(priv, AC200_SYS_EPHY_CTL1_REG, 0);
-+		if (!ret)
-+			ret = err;
-+		err = ac200_ephy_ctl_write(priv, AC200_SYS_EPHY_CTL0_REG, 0);
-+		if (!ret)
-+			ret = err;
-+
-+		priv->powered = false;
-+	}
-+
-+	if (priv->supply_enabled) {
-+		err = regulator_disable(priv->vcc);
-+		if (!err)
-+			priv->supply_enabled = false;
-+		else if (!ret)
-+			ret = err;
-+	}
-+
-+	return ret;
-+}
-+
-+static int ac200_ephy_ctl_power_off(struct acx00_ephy_control *control)
-+{
-+	struct ac200_ephy_ctl *priv =
-+		container_of(control, struct ac200_ephy_ctl, control);
-+
-+	return ac200_ephy_ctl_disable(priv);
-+}
-+
-+static int
-+ac200_ephy_ctl_set_interface(struct acx00_ephy_control *control,
-+			     phy_interface_t interface)
-+{
-+	struct ac200_ephy_ctl *priv =
-+		container_of(control, struct ac200_ephy_ctl, control);
-+	int ret = 0;
-+
-+	if (interface != PHY_INTERFACE_MODE_MII &&
-+	    interface != PHY_INTERFACE_MODE_RMII)
-+		return -EINVAL;
-+
-+	if (priv->interface == interface)
-+		return 0;
-+
-+	if (priv->powered)
-+		ret = regmap_update_bits(priv->regmap, AC200_EPHY_CTL_REG,
-+					 AC200_EPHY_RMII_SEL,
-+					 interface == PHY_INTERFACE_MODE_RMII ?
-+					 AC200_EPHY_RMII_SEL : 0);
-+	if (!ret)
-+		priv->interface = interface;
-+
-+	return ret;
-+}
-+
-+static int ac200_ephy_ctl_power_on(struct acx00_ephy_control *control,
-+				   unsigned int phy_addr)
-+{
-+	struct ac200_ephy_ctl *priv =
-+		container_of(control, struct ac200_ephy_ctl, control);
-+	u16 ephy_ctl;
-+	int ret;
-+
-+	if (phy_addr > FIELD_MAX(AC200_EPHY_PHY_ADDR_MASK))
-+		return -EINVAL;
-+
-+	if (priv->powered && priv->phy_addr == phy_addr)
-+		return 0;
-+
-+	if (priv->powered) {
-+		ret = ac200_ephy_ctl_disable(priv);
-+		if (ret)
-+			return ret;
-+	}
-+	priv->phy_addr = phy_addr;
-+
-+	if (!priv->supply_enabled) {
-+		ret = regulator_enable(priv->vcc);
-+		if (ret)
-+			return ret;
-+		priv->supply_enabled = true;
-+	}
-+
-+	ephy_ctl = ac200_ephy_ctl_config(priv);
-+
-+	/*
-+	 * Start from a disabled state before applying the configuration. AC200
-+	 * specifies no additional delay between these controls. The companion
-+	 * MFD provider has completed its input-clock startup delay before
-+	 * publishing the regmap.
-+	 */
-+	ret = ac200_ephy_ctl_write(priv, AC200_SYS_EPHY_CTL0_REG, 0);
-+	if (ret)
-+		goto err_disable;
-+
-+	ret = ac200_ephy_ctl_write(priv, AC200_SYS_EPHY_CTL1_REG,
-+				   AC200_EPHY_MII_IO_ENABLE);
-+	if (ret)
-+		goto err_disable;
-+
-+	ret = ac200_ephy_ctl_write(priv, AC200_EPHY_CTL_REG,
-+				   ephy_ctl | AC200_EPHY_SHUTDOWN);
-+	if (ret)
-+		goto err_disable;
-+
-+	ret = ac200_ephy_ctl_write(priv, AC200_SYS_EPHY_CTL0_REG,
-+				   AC200_EPHY_RESET_DEASSERT |
-+				   AC200_EPHY_SYSCLK_ENABLE);
-+	if (ret)
-+		goto err_disable;
-+
-+	ret = ac200_ephy_ctl_write(priv, AC200_EPHY_CTL_REG, ephy_ctl);
-+	if (ret)
-+		goto err_disable;
-+
-+	priv->powered = true;
-+	return 0;
-+
-+err_disable:
-+	/* Attempt every step of the shutdown sequence after a partial start. */
-+	priv->powered = true;
-+	ac200_ephy_ctl_disable(priv);
-+
-+	return ret;
-+}
-+
-+struct acx00_ephy_control *
-+ac200_ephy_ctl_create(struct phy_device *phydev,
-+		      struct device_node *package_node,
-+		      bool has_calibration, u8 calibration)
-+{
-+	struct device *dev = &phydev->mdio.dev;
-+	unsigned int internal_calibration;
-+	struct device_node *ac200_node;
-+	struct ac200_ephy_ctl *priv;
-+	struct i2c_client *client;
-+	unsigned long clk_rate;
-+	u8 bps_effuse_code;
-+	struct clk *clk;
-+	int ret;
-+
-+	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
-+	if (!priv)
-+		return ERR_PTR(-ENOMEM);
-+	priv->dev = dev;
-+	priv->vcc = devm_of_regulator_get(dev, package_node, "vcc");
-+	if (IS_ERR(priv->vcc))
-+		return ERR_PTR(dev_err_probe(dev, PTR_ERR(priv->vcc),
-+					     "failed to get package supply\n"));
-+
-+	ac200_node = of_parse_phandle(package_node, "x-powers,ac200", 0);
-+	if (!ac200_node)
-+		return ERR_PTR(dev_err_probe(dev, -EINVAL,
-+					     "missing x-powers,ac200 reference\n"));
-+	client = of_find_i2c_device_by_node(ac200_node);
-+	of_node_put(ac200_node);
-+	if (!client) {
-+		ret = IS_ENABLED(CONFIG_I2C) ? -EPROBE_DEFER : -ENODEV;
-+		return ERR_PTR(dev_err_probe(dev, ret,
-+					     "AC200 device is not registered\n"));
-+	}
-+
-+	if (!device_link_add(dev, &client->dev,
-+			     DL_FLAG_AUTOREMOVE_CONSUMER)) {
-+		ret = dev_err_probe(dev, -EINVAL,
-+				    "failed to link AC200 device\n");
-+		goto out_put_client;
-+	}
-+
-+	device_lock(&client->dev);
-+	if (device_is_bound(&client->dev))
-+		priv->regmap = dev_get_regmap(&client->dev, NULL);
-+	device_unlock(&client->dev);
-+	if (!priv->regmap) {
-+		ret = dev_err_probe(dev, -EPROBE_DEFER,
-+				    "AC200 driver is not ready\n");
-+		goto out_put_client;
-+	}
-+
-+	if (!has_calibration) {
-+		ret = regmap_read(priv->regmap, AC200_EFUSE_EPHY_REG,
-+				  &internal_calibration);
-+		if (ret)
-+			goto out_error;
-+		calibration = internal_calibration;
-+	}
-+
-+	/* The vendor driver supplies no transfer function beyond this offset. */
-+	bps_effuse_code = (calibration + AC200_EPHY_BPS_EFFUSE_OFFSET) &
-+			   FIELD_MAX(AC200_EPHY_BPS_EFFUSE_MASK);
-+	priv->ephy_ctl =
-+		FIELD_PREP(AC200_EPHY_BPS_EFFUSE_MASK, bps_effuse_code);
-+	/* EPHY_MODE and BIST_CLK_EN stay clear for normal operation. */
-+
-+	clk = clk_get(&client->dev, NULL);
-+	if (IS_ERR(clk)) {
-+		ret = PTR_ERR(clk);
-+		goto out_error;
-+	}
-+
-+	/* The bound AC200 provider enables and exclusively pins this rate. */
-+	clk_rate = clk_get_rate(clk);
-+	clk_put(clk);
-+
-+	switch (clk_rate) {
-+	case AC200_EPHY_CLK_RATE_24_MHZ:
-+		priv->ephy_ctl |= AC200_EPHY_CLK_SEL_24_MHZ;
-+		break;
-+	case AC200_EPHY_CLK_RATE_27_MHZ:
-+		break;
-+	default:
-+		ret = dev_err_probe(dev, -EINVAL,
-+				    "unsupported AC200 clock rate %lu Hz\n",
-+				    clk_rate);
-+		goto out_put_client;
-+	}
-+
-+	priv->control.power_on = ac200_ephy_ctl_power_on;
-+	priv->control.power_off = ac200_ephy_ctl_power_off;
-+	priv->control.set_interface = ac200_ephy_ctl_set_interface;
-+	/* MII is the reset default used until the MAC supplies its interface. */
-+	priv->interface = PHY_INTERFACE_MODE_MII;
-+	put_device(&client->dev);
-+
-+	return &priv->control;
-+
-+out_error:
-+	ret = dev_err_probe(dev, ret, "failed to initialize AC200 control\n");
-+out_put_client:
-+	put_device(&client->dev);
-+	return ERR_PTR(ret);
-+}
-diff --git a/drivers/net/phy/xpowers/ac300.c b/drivers/net/phy/xpowers/ac300.c
-new file mode 100644
-index 000000000000..aa560432a14c
---- /dev/null
-+++ b/drivers/net/phy/xpowers/ac300.c
-@@ -0,0 +1,387 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * X-Powers AC300 Ethernet PHY package backend
-+ *
-+ * Copyright (C) 2026 James Hilliard <james.hilliard1@gmail.com>
-+ */
-+
-+#include <linux/bitfield.h>
-+#include <linux/clk.h>
-+#include <linux/delay.h>
-+#include <linux/of.h>
-+#include <linux/phy.h>
-+#include <linux/regulator/consumer.h>
-+
-+#include "../phylib.h"
-+#include "acx00.h"
-+
-+#define AC300_EPHY_BGS_EFFUSE_OFFSET	3
-+#define AC300_EPHY_CLK_RATE_24_MHZ	24000000
-+#define AC300_EPHY_CLK_RATE_25_MHZ	25000000
-+#define AC300_EPHY_CLK_RATE_27_MHZ	27000000
-+#define AC300_SYS_CONTROL_REG			0x00
-+#define AC300_PACKAGE_STATUS_MASK		GENMASK(11, 8)
-+#define AC300_EPHY_CLK_SEL_MASK			GENMASK(7, 6)
-+#define AC300_EPHY_CLK_SEL_25_MHZ		FIELD_PREP(AC300_EPHY_CLK_SEL_MASK, 0)
-+#define AC300_EPHY_CLK_SEL_27_MHZ		FIELD_PREP(AC300_EPHY_CLK_SEL_MASK, 1)
-+#define AC300_EPHY_CLK_SEL_24_MHZ		FIELD_PREP(AC300_EPHY_CLK_SEL_MASK, 2)
-+#define AC300_EFUSE_CLK_ENABLE			BIT(5)
-+#define AC300_EPHY_REG_CLK_ENABLE		BIT(4)
-+#define AC300_CLKIN_GATING_ENABLE		BIT(2)
-+#define AC300_EPHY_RESET_DEASSERT		BIT(1)
-+#define AC300_CHIP_RESET_DEASSERT		BIT(0)
-+
-+#define AC300_PACKAGE_POR_INTERNAL_DLDO		BIT(3)
-+#define AC300_PACKAGE_PHY_ADDR_MASK		GENMASK(2, 0)
-+
-+#define AC300_SYS_BIAS1_REG			0x02
-+#define AC300_INTERNAL_DLDO_ENABLE		BIT(15)
-+
-+#define AC300_SYS_IO_REG			0x05
-+#define AC300_MDIO_DRV_MASK			GENMASK(15, 14)
-+#define AC300_MII_DRV_MASK			GENMASK(11, 10)
-+#define AC300_IO_DRV_LEVEL_2			2
-+#define AC300_CLKIN_PAD_ENABLE			BIT(4)
-+#define AC300_EPHY_MII_IO_ENABLE			BIT(0)
-+
-+#define AC300_EPHY_CONFIG_REG			0x06
-+#define AC300_EPHY_BGS_EFFUSE_MASK		GENMASK(15, 12)
-+#define AC300_EPHY_RMII_SEL			BIT(11)
-+#define AC300_EPHY_SHUTDOWN			BIT(0)
-+
-+#define AC300_SYS_CONTROL_ENABLE_BITS \
-+	(AC300_EFUSE_CLK_ENABLE | AC300_EPHY_REG_CLK_ENABLE | \
-+	 AC300_CLKIN_GATING_ENABLE | AC300_EPHY_RESET_DEASSERT | \
-+	 AC300_CHIP_RESET_DEASSERT)
-+
-+#define AC300_SYS_IO_VALUE \
-+	(FIELD_PREP(AC300_MDIO_DRV_MASK, AC300_IO_DRV_LEVEL_2) | \
-+	 FIELD_PREP(AC300_MII_DRV_MASK, AC300_IO_DRV_LEVEL_2) | \
-+	 AC300_CLKIN_PAD_ENABLE | AC300_EPHY_MII_IO_ENABLE)
-+
-+struct ac300_ephy_ctl {
-+	struct acx00_ephy_control control;
-+	struct phy_device *phydev;
-+	struct regulator *vcc;
-+	struct clk *clk;
-+	u16 sys_control;
-+	u16 ephy_config;
-+	phy_interface_t interface;
-+	bool package_known;
-+	bool internal_dldo;
-+	bool supply_enabled;
-+	bool powered;
-+};
-+
-+static unsigned int
-+ac300_ephy_ctl_link_addr(const struct ac300_ephy_ctl *priv)
-+{
-+	return priv->phydev->mdio.addr;
-+}
-+
-+static int ac300_ephy_ctl_read(struct ac300_ephy_ctl *priv, u32 regnum)
-+{
-+	int ret;
-+
-+	phy_lock_mdio_bus(priv->phydev);
-+	ret = __phy_package_read(priv->phydev,
-+				 AC300_EPHY_CONTROL_ADDR_OFFSET, regnum);
-+	phy_unlock_mdio_bus(priv->phydev);
-+
-+	return ret;
-+}
-+
-+static int ac300_ephy_ctl_write(struct ac300_ephy_ctl *priv, u32 regnum,
-+				u16 val)
-+{
-+	int ret;
-+
-+	phy_lock_mdio_bus(priv->phydev);
-+	ret = __phy_package_write(priv->phydev,
-+				  AC300_EPHY_CONTROL_ADDR_OFFSET, regnum, val);
-+	phy_unlock_mdio_bus(priv->phydev);
-+
-+	return ret;
-+}
-+
-+static int ac300_ephy_ctl_modify(struct ac300_ephy_ctl *priv, u32 regnum,
-+				 u16 mask, u16 set)
-+{
-+	int ret;
-+
-+	phy_lock_mdio_bus(priv->phydev);
-+	ret = __phy_package_read(priv->phydev,
-+				 AC300_EPHY_CONTROL_ADDR_OFFSET, regnum);
-+	if (ret >= 0) {
-+		u16 val = (ret & ~mask) | (set & mask);
-+
-+		ret = val == ret ? 0 :
-+			__phy_package_write(priv->phydev,
-+					    AC300_EPHY_CONTROL_ADDR_OFFSET,
-+					    regnum, val);
-+	}
-+	phy_unlock_mdio_bus(priv->phydev);
-+
-+	return ret;
-+}
-+
-+static u16 ac300_ephy_ctl_config(const struct ac300_ephy_ctl *priv)
-+{
-+	return priv->ephy_config |
-+		(priv->interface == PHY_INTERFACE_MODE_RMII ?
-+		 AC300_EPHY_RMII_SEL : 0);
-+}
-+
-+static u16 ac300_ephy_ctl_reset_value(const struct ac300_ephy_ctl *priv)
-+{
-+	/*
-+	 * A chip reset restores DLDOEN to one. Until PKG_STATUS has identified
-+	 * the supply arrangement, preserve any external-VDD setup left by the
-+	 * bootloader by asserting only the EPHY reset.
-+	 */
-+	return !priv->package_known || !priv->internal_dldo ?
-+		AC300_CHIP_RESET_DEASSERT : 0;
-+}
-+
-+static int ac300_ephy_ctl_disable(struct ac300_ephy_ctl *priv)
-+{
-+	int err;
-+	int ret = 0;
-+
-+	if (priv->powered) {
-+		ret = ac300_ephy_ctl_write(priv, AC300_EPHY_CONFIG_REG,
-+					   ac300_ephy_ctl_config(priv) |
-+					   AC300_EPHY_SHUTDOWN);
-+		err = ac300_ephy_ctl_write(priv, AC300_SYS_IO_REG, 0);
-+		if (!ret)
-+			ret = err;
-+		err = ac300_ephy_ctl_write(priv, AC300_SYS_CONTROL_REG,
-+					   ac300_ephy_ctl_reset_value(priv));
-+		if (!ret)
-+			ret = err;
-+
-+		clk_disable_unprepare(priv->clk);
-+		priv->powered = false;
-+	}
-+
-+	if (priv->supply_enabled) {
-+		err = regulator_disable(priv->vcc);
-+		if (!err)
-+			priv->supply_enabled = false;
-+		else if (!ret)
-+			ret = err;
-+	}
-+
-+	return ret;
-+}
-+
-+static int ac300_ephy_ctl_power_off(struct acx00_ephy_control *control)
-+{
-+	struct ac300_ephy_ctl *priv =
-+		container_of(control, struct ac300_ephy_ctl, control);
-+
-+	return ac300_ephy_ctl_disable(priv);
-+}
-+
-+static int
-+ac300_ephy_ctl_set_interface(struct acx00_ephy_control *control,
-+			     phy_interface_t interface)
-+{
-+	struct ac300_ephy_ctl *priv =
-+		container_of(control, struct ac300_ephy_ctl, control);
-+	int ret = 0;
-+
-+	if (interface != PHY_INTERFACE_MODE_MII &&
-+	    interface != PHY_INTERFACE_MODE_RMII)
-+		return -EINVAL;
-+
-+	if (priv->interface == interface)
-+		return 0;
-+
-+	if (priv->powered)
-+		ret = ac300_ephy_ctl_modify(priv, AC300_EPHY_CONFIG_REG,
-+					    AC300_EPHY_RMII_SEL,
-+					    interface == PHY_INTERFACE_MODE_RMII ?
-+					    AC300_EPHY_RMII_SEL : 0);
-+	if (!ret)
-+		priv->interface = interface;
-+
-+	return ret;
-+}
-+
-+static int ac300_ephy_ctl_power_on(struct acx00_ephy_control *control,
-+				   unsigned int phy_addr)
-+{
-+	struct ac300_ephy_ctl *priv =
-+		container_of(control, struct ac300_ephy_ctl, control);
-+	u8 package_status;
-+	u16 reset_value;
-+	int sys_control;
-+	int ret;
-+
-+	if (phy_addr != ac300_ephy_ctl_link_addr(priv))
-+		return -EINVAL;
-+
-+	if (priv->powered)
-+		return 0;
-+
-+	if (!priv->supply_enabled) {
-+		ret = regulator_enable(priv->vcc);
-+		if (ret)
-+			return ret;
-+		priv->supply_enabled = true;
-+
-+		/* Wait for the power-on reset interval specified by the manual. */
-+		fsleep(10000);
-+	}
-+
-+	ret = clk_prepare_enable(priv->clk);
-+	if (ret)
-+		goto err_power_off;
-+	priv->powered = true;
-+
-+	/* Keep the external-supply configuration across chip resets. */
-+	reset_value = ac300_ephy_ctl_reset_value(priv);
-+	ret = ac300_ephy_ctl_write(priv, AC300_SYS_CONTROL_REG, reset_value);
-+	if (ret)
-+		goto err_power_off;
-+
-+	/* The manual requires both resets to be released before the clocks. */
-+	ret = ac300_ephy_ctl_write(priv, AC300_SYS_CONTROL_REG,
-+				   AC300_EPHY_RESET_DEASSERT |
-+				  AC300_CHIP_RESET_DEASSERT);
-+	if (ret)
-+		goto err_power_off;
-+
-+	/* Retain the vendor clock-enable defaults, including the eFuse clock. */
-+	ret = ac300_ephy_ctl_write(priv, AC300_SYS_CONTROL_REG,
-+				   priv->sys_control);
-+	if (ret)
-+		goto err_power_off;
-+
-+	sys_control = ac300_ephy_ctl_read(priv, AC300_SYS_CONTROL_REG);
-+	if (sys_control < 0) {
-+		ret = sys_control;
-+		goto err_power_off;
-+	}
-+
-+	package_status = FIELD_GET(AC300_PACKAGE_STATUS_MASK, sys_control);
-+	if ((~package_status & AC300_PACKAGE_PHY_ADDR_MASK) !=
-+	    ac300_ephy_ctl_link_addr(priv)) {
-+		ret = -EINVAL;
-+		goto err_power_off;
-+	}
-+
-+	priv->internal_dldo = package_status & AC300_PACKAGE_POR_INTERNAL_DLDO;
-+	priv->package_known = true;
-+	ret = ac300_ephy_ctl_modify(priv, AC300_SYS_BIAS1_REG,
-+				    AC300_INTERNAL_DLDO_ENABLE,
-+				   priv->internal_dldo ?
-+				   AC300_INTERNAL_DLDO_ENABLE : 0);
-+	if (ret)
-+		goto err_power_off;
-+
-+	/* Keep the documented default drive level and leave the IRQ disabled. */
-+	ret = ac300_ephy_ctl_write(priv, AC300_SYS_IO_REG,
-+				   AC300_SYS_IO_VALUE);
-+	if (ret)
-+		goto err_power_off;
-+
-+	fsleep(10000);
-+
-+	ret = ac300_ephy_ctl_write(priv, AC300_EPHY_CONFIG_REG,
-+				   ac300_ephy_ctl_config(priv) |
-+				  AC300_EPHY_SHUTDOWN);
-+	if (ret)
-+		goto err_power_off;
-+
-+	fsleep(10000);
-+
-+	ret = ac300_ephy_ctl_write(priv, AC300_EPHY_CONFIG_REG,
-+				   ac300_ephy_ctl_config(priv));
-+	if (ret)
-+		goto err_power_off;
-+
-+	return 0;
-+
-+err_power_off:
-+	ac300_ephy_ctl_disable(priv);
-+
-+	return ret;
-+}
-+
-+static void ac300_ephy_clk_put(void *data)
-+{
-+	clk_put(data);
-+}
-+
-+struct acx00_ephy_control *
-+ac300_ephy_ctl_create(struct phy_device *phydev,
-+		      struct device_node *package_node, u8 calibration)
-+{
-+	struct device *dev = &phydev->mdio.dev;
-+	struct ac300_ephy_ctl *priv;
-+	unsigned long clk_rate;
-+	u8 bgs_effuse_code;
-+	int ret;
-+
-+	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
-+	if (!priv)
-+		return ERR_PTR(-ENOMEM);
-+	if (phydev->mdio.addr > FIELD_MAX(AC300_PACKAGE_PHY_ADDR_MASK))
-+		return ERR_PTR(dev_err_probe(dev, -EINVAL,
-+					     "link address is outside the package range\n"));
-+	priv->phydev = phydev;
-+
-+	priv->vcc = devm_of_regulator_get(dev, package_node, "vcc");
-+	if (IS_ERR(priv->vcc))
-+		return ERR_PTR(dev_err_probe(dev, PTR_ERR(priv->vcc),
-+					     "failed to get package supply\n"));
-+
-+	priv->clk = of_clk_get(package_node, 0);
-+	if (IS_ERR(priv->clk))
-+		return ERR_PTR(dev_err_probe(dev, PTR_ERR(priv->clk),
-+					     "failed to get input clock\n"));
-+
-+	ret = devm_add_action_or_reset(dev, ac300_ephy_clk_put, priv->clk);
-+	if (ret)
-+		return ERR_PTR(ret);
-+
-+	ret = devm_clk_rate_exclusive_get(dev, priv->clk);
-+	if (ret)
-+		return ERR_PTR(dev_err_probe(dev, ret,
-+					     "failed to lock clock rate\n"));
-+
-+	clk_rate = clk_get_rate(priv->clk);
-+	switch (clk_rate) {
-+	case AC300_EPHY_CLK_RATE_24_MHZ:
-+		priv->sys_control = AC300_EPHY_CLK_SEL_24_MHZ;
-+		break;
-+	case AC300_EPHY_CLK_RATE_25_MHZ:
-+		priv->sys_control = AC300_EPHY_CLK_SEL_25_MHZ;
-+		break;
-+	case AC300_EPHY_CLK_RATE_27_MHZ:
-+		priv->sys_control = AC300_EPHY_CLK_SEL_27_MHZ;
-+		break;
-+	default:
-+		return ERR_PTR(dev_err_probe(dev, -EINVAL,
-+					     "unsupported input clock rate %lu Hz\n",
-+					     clk_rate));
-+	}
-+	priv->sys_control |= AC300_SYS_CONTROL_ENABLE_BITS;
-+
-+	/* The vendor driver supplies no transfer function beyond this offset. */
-+	bgs_effuse_code = (calibration + AC300_EPHY_BGS_EFFUSE_OFFSET) &
-+			   FIELD_MAX(AC300_EPHY_BGS_EFFUSE_MASK);
-+	priv->ephy_config =
-+		FIELD_PREP(AC300_EPHY_BGS_EFFUSE_MASK, bgs_effuse_code);
-+	/* EPHY_MODE and BIST_CLK_EN stay clear for normal operation. */
-+
-+	priv->control.power_on = ac300_ephy_ctl_power_on;
-+	priv->control.power_off = ac300_ephy_ctl_power_off;
-+	priv->control.set_interface = ac300_ephy_ctl_set_interface;
-+	/* MII is the reset default used until the MAC supplies its interface. */
-+	priv->interface = PHY_INTERFACE_MODE_MII;
-+
-+	return &priv->control;
-+}
-diff --git a/drivers/net/phy/xpowers/acx00.c b/drivers/net/phy/xpowers/acx00.c
-new file mode 100644
-index 000000000000..932ed4335d84
---- /dev/null
-+++ b/drivers/net/phy/xpowers/acx00.c
-@@ -0,0 +1,621 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * X-Powers AC200/AC300 Ethernet PHY driver
-+ *
-+ * Copyright (C) 2019 Jernej Skrabec <jernej.skrabec@gmail.com>
-+ * Copyright (C) 2026 James Hilliard <james.hilliard1@gmail.com>
-+ */
-+
-+#include <linux/bitfield.h>
-+#include <linux/device.h>
-+#include <linux/module.h>
-+#include <linux/mutex.h>
-+#include <linux/nvmem-consumer.h>
-+#include <linux/of.h>
-+#include <linux/phy.h>
-+#include <linux/slab.h>
-+
-+#include "../phylib.h"
-+#include "acx00.h"
-+
-+#define ACX00_EPHY_ID				0x00441400
-+
-+#define ACX00_EPHY_CONFIG_CALIBRATION_MASK	GENMASK(3, 0)
-+#define ACX00_EPHY_CONFIG_VARIANT_AC300		BIT(8)
-+#define ACX00_EPHY_CONFIG_CALIBRATION_LOW	BIT(9)
-+
-+#define ACX00_PAGE_SELECT_REG			0x1f
-+#define ACX00_PAGE_SELECT_MASK			GENMASK(12, 8)
-+#define ACX00_PAGE_0				0
-+#define ACX00_PAGE_1				1
-+#define ACX00_PAGE_2				2
-+#define ACX00_PAGE_6				6
-+#define ACX00_PAGE_8				8
-+
-+#define ACX00_PAGE0_GLOBAL_CONFIG_REG		0x13
-+#define ACX00_PAGE0_XMII_RX_CLOCK_INVERT	BIT(12)
-+#define ACX00_PAGE0_MDI_MODE_MASK		GENMASK(1, 0)
-+#define ACX00_PAGE0_MDI_MODE_AUTO		2
-+
-+#define ACX00_PAGE1_APS_CONTROL_REG		0x12
-+#define ACX00_PAGE1_APS_DISABLED_4S_VALUE	0x4824
-+#define ACX00_PAGE1_UAPS_CONTROL_REG		0x13
-+#define ACX00_PAGE1_UAPS_ENABLE			BIT(15)
-+#define ACX00_PAGE1_INTELLIGENT_EEE_CONTROL_REG	0x17
-+#define ACX00_PAGE1_INTELLIGENT_EEE_ENABLE	BIT(3)
-+
-+#define ACX00_PAGE2_TX_DATA_CONTROL_REG		0x18
-+#define ACX00_PAGE2_10BT_FIR_SELECT_MASK		GENMASK(14, 12)
-+#define ACX00_PAGE2_10BT_FIR_SELECT_DEFAULT	0
-+
-+#define ACX00_PAGE6_ADC_CONTROL_REG		0x10
-+#define ACX00_PAGE6_ADC_CONTROL_LOW_CAL_VALUE	0x5523
-+#define ACX00_PAGE6_AFE_RX_CONTROL_REG		0x13
-+#define ACX00_PAGE6_AFE_RX_CONTROL_VALUE		0xf000
-+#define ACX00_PAGE6_AFE_EQ_RX_DETECT_CONTROL_REG	0x14
-+#define AC200_PAGE6_AFE_EQ_RX_DETECT_VALUE	0x708f
-+#define AC300_PAGE6_AFE_EQ_RX_DETECT_VALUE	0x708b
-+#define ACX00_PAGE6_AFE_EQ_RX_DETECT_LOW_CAL_VALUE 0x7809
-+#define ACX00_PAGE6_TX_LEVEL_REG			0x15
-+#define ACX00_PAGE6_TX_LEVEL_100M_MASK		GENMASK(15, 8)
-+#define ACX00_PAGE6_TX_LEVEL_10M_MASK		GENMASK(7, 0)
-+#define ACX00_PAGE6_TX_LEVEL_VALUE(_100m, _10m) \
-+	(FIELD_PREP(ACX00_PAGE6_TX_LEVEL_100M_MASK, (_100m)) | \
-+	 FIELD_PREP(ACX00_PAGE6_TX_LEVEL_10M_MASK, (_10m)))
-+#define ACX00_PAGE6_TX_LEVEL_DEFAULT_VALUE \
-+	ACX00_PAGE6_TX_LEVEL_VALUE(0x15, 0x30)
-+#define ACX00_PAGE6_TX_LEVEL_LOW_CAL_VALUE \
-+	ACX00_PAGE6_TX_LEVEL_VALUE(0x35, 0x33)
-+
-+#define ACX00_PAGE8_AFE_CONTROL_REG		0x18
-+#define ACX00_PAGE8_AFE_CONTROL_VALUE		0x00bc
-+#define ACX00_PAGE8_AUTO_CAL_CONTROL_REG		0x1d
-+#define ACX00_PAGE8_AUTO_CAL_TX_LEVEL_ADJUST_BYPASS BIT(11)
-+#define ACX00_PAGE8_AUTO_CAL_LOW_CAL_OPAQUE_BITS	0x0044
-+#define ACX00_PAGE8_AUTO_CAL_LOW_VALUE \
-+	(ACX00_PAGE8_AUTO_CAL_TX_LEVEL_ADJUST_BYPASS | \
-+	 ACX00_PAGE8_AUTO_CAL_LOW_CAL_OPAQUE_BITS)
-+
-+/*
-+ * Another integration of this exact-ID PHY documents its digital vendor
-+ * register map, which also matches the observed ACx00 reset values. The ACx00
-+ * analog-page field encodings remain unpublished, so keep those as opaque
-+ * vendor initialization values instead of inventing bit definitions.
-+ */
-+
-+struct acx00_ephy_priv {
-+	struct phy_device *phydev;
-+	struct acx00_ephy_control *control;
-+	/* Serializes package state and multi-register power sequences. */
-+	struct mutex state_lock;
-+	bool is_ac300;
-+	bool use_low_calibration_tuning;
-+	bool xmii_rx_clock_inverted;
-+};
-+
-+static int acx00_ephy_read_page(struct phy_device *phydev)
-+{
-+	int ret;
-+
-+	ret = __phy_read(phydev, ACX00_PAGE_SELECT_REG);
-+	if (ret < 0)
-+		return ret;
-+
-+	return FIELD_GET(ACX00_PAGE_SELECT_MASK, ret);
-+}
-+
-+static int acx00_ephy_write_page(struct phy_device *phydev, int page)
-+{
-+	return __phy_write(phydev, ACX00_PAGE_SELECT_REG,
-+			   FIELD_PREP(ACX00_PAGE_SELECT_MASK, page));
-+}
-+
-+static int acx00_ephy_control_power_on(struct acx00_ephy_priv *priv)
-+{
-+	lockdep_assert_held(&priv->state_lock);
-+
-+	return priv->control->power_on(priv->control,
-+				       priv->phydev->mdio.addr);
-+}
-+
-+static int acx00_ephy_control_power_off(struct acx00_ephy_priv *priv)
-+{
-+	lockdep_assert_held(&priv->state_lock);
-+
-+	return priv->control->power_off(priv->control);
-+}
-+
-+static int acx00_ephy_set_interface(struct phy_device *phydev)
-+{
-+	struct acx00_ephy_priv *priv = phydev->priv;
-+
-+	lockdep_assert_held(&priv->state_lock);
-+
-+	if (phydev->interface == PHY_INTERFACE_MODE_NA)
-+		return 0;
-+	if (phydev->interface != PHY_INTERFACE_MODE_MII &&
-+	    phydev->interface != PHY_INTERFACE_MODE_RMII)
-+		return -EINVAL;
-+
-+	return priv->control->set_interface(priv->control,
-+					    phydev->interface);
-+}
-+
-+static void acx00_ephy_control_power_off_warn(struct acx00_ephy_priv *priv)
-+{
-+	int ret;
-+
-+	ret = acx00_ephy_control_power_off(priv);
-+	if (ret)
-+		phydev_warn(priv->phydev,
-+			    "failed to power off control block: %pe\n",
-+			    ERR_PTR(ret));
-+}
-+
-+static void acx00_ephy_control_release(void *data)
-+{
-+	struct acx00_ephy_priv *priv = data;
-+
-+	mutex_lock(&priv->state_lock);
-+	acx00_ephy_control_power_off_warn(priv);
-+	mutex_unlock(&priv->state_lock);
-+}
-+
-+static int acx00_ephy_read_nvmem_u16(struct device_node *node,
-+				     const char *name, u16 *value)
-+{
-+	struct nvmem_cell *cell;
-+	size_t i;
-+	size_t len;
-+	u8 *buf;
-+	u16 val = 0;
-+
-+	cell = of_nvmem_cell_get(node, name);
-+	if (IS_ERR(cell))
-+		return PTR_ERR(cell);
-+
-+	buf = nvmem_cell_read(cell, &len);
-+	nvmem_cell_put(cell);
-+	if (IS_ERR(buf))
-+		return PTR_ERR(buf);
-+	if (!len || len > sizeof(*value)) {
-+		kfree(buf);
-+		return len ? -ERANGE : -EINVAL;
-+	}
-+
-+	for (i = 0; i < len; i++)
-+		val |= (u16)buf[i] << (8 * i);
-+	kfree(buf);
-+	*value = val;
-+
-+	return 0;
-+}
-+
-+static int acx00_ephy_init_package(struct phy_device *phydev,
-+				   struct acx00_ephy_priv *priv)
-+{
-+	struct device *dev = &phydev->mdio.dev;
-+	struct device_node *package_node;
-+	bool selectable;
-+	bool fixed_ac300;
-+	bool has_configuration;
-+	u8 calibration;
-+	u32 base_addr;
-+	u16 configuration = 0;
-+	int ret;
-+
-+	package_node = of_get_parent(dev->of_node);
-+	if (!package_node)
-+		return -EINVAL;
-+	if (!of_node_name_eq(package_node, "ethernet-phy-package")) {
-+		ret = dev_err_probe(dev, -EINVAL,
-+				    "PHY is not in an Ethernet PHY package\n");
-+		goto out_put_node;
-+	}
-+
-+	ret = of_property_read_u32(package_node, "reg", &base_addr);
-+	if (ret || base_addr != phydev->mdio.addr) {
-+		ret = dev_err_probe(dev, -EINVAL,
-+				    "package and link PHY addresses differ\n");
-+		goto out_put_node;
-+	}
-+
-+	selectable = of_device_is_compatible(package_node,
-+					     "x-powers,acx00-ephy-package");
-+	fixed_ac300 = of_device_is_compatible(package_node,
-+					      "x-powers,ac300-ephy-package");
-+	if (!selectable && !fixed_ac300 &&
-+	    !of_device_is_compatible(package_node,
-+				     "x-powers,ac200-ephy-package")) {
-+		ret = dev_err_probe(dev, -EINVAL,
-+				    "unsupported Ethernet PHY package\n");
-+		goto out_put_node;
-+	}
-+
-+	ret = devm_of_phy_package_join(dev, phydev, 0);
-+	if (ret)
-+		goto out_put_node;
-+
-+	has_configuration =
-+		of_property_match_string(package_node, "nvmem-cell-names",
-+					 "configuration") >= 0;
-+	if (has_configuration) {
-+		ret = acx00_ephy_read_nvmem_u16(package_node, "configuration",
-+						&configuration);
-+		if (ret) {
-+			ret = dev_err_probe(dev, ret,
-+					    "failed to read package configuration\n");
-+			goto out_put_node;
-+		}
-+	} else if (selectable || fixed_ac300) {
-+		ret = dev_err_probe(dev, -EINVAL,
-+				    "package configuration is required\n");
-+		goto out_put_node;
-+	}
-+
-+	if (selectable) {
-+		priv->is_ac300 =
-+			configuration & ACX00_EPHY_CONFIG_VARIANT_AC300;
-+	} else {
-+		priv->is_ac300 = fixed_ac300;
-+		if (has_configuration &&
-+		    !!(configuration & ACX00_EPHY_CONFIG_VARIANT_AC300) !=
-+		    priv->is_ac300) {
-+			ret = dev_err_probe(dev, -EINVAL,
-+					    "configuration does not match package\n");
-+			goto out_put_node;
-+		}
-+	}
-+
-+	calibration = FIELD_GET(ACX00_EPHY_CONFIG_CALIBRATION_MASK,
-+				configuration);
-+
-+	priv->use_low_calibration_tuning =
-+		priv->is_ac300 &&
-+		!!(configuration & ACX00_EPHY_CONFIG_CALIBRATION_LOW);
-+	priv->xmii_rx_clock_inverted =
-+		of_property_read_bool(package_node,
-+				      "x-powers,xmii-rx-clock-inverted");
-+
-+	if (priv->is_ac300)
-+		priv->control =
-+			ac300_ephy_ctl_create(phydev, package_node,
-+					      calibration);
-+	else
-+		priv->control =
-+			ac200_ephy_ctl_create(phydev, package_node,
-+					      has_configuration,
-+					      calibration);
-+	ret = PTR_ERR_OR_ZERO(priv->control);
-+
-+out_put_node:
-+	of_node_put(package_node);
-+	return ret;
-+}
-+
-+static int acx00_ephy_disable_autonomous_eee(struct phy_device *phydev)
-+{
-+	struct acx00_ephy_priv *priv = phydev->priv;
-+	int ret;
-+
-+	mutex_lock(&priv->state_lock);
-+	ret = phy_modify_paged(phydev, ACX00_PAGE_1,
-+			       ACX00_PAGE1_INTELLIGENT_EEE_CONTROL_REG,
-+			       ACX00_PAGE1_INTELLIGENT_EEE_ENABLE, 0);
-+	mutex_unlock(&priv->state_lock);
-+
-+	return ret;
-+}
-+
-+static int acx00_ephy_probe(struct phy_device *phydev)
-+{
-+	struct device *dev = &phydev->mdio.dev;
-+	struct acx00_ephy_priv *priv;
-+	int ret;
-+
-+	if (!dev->of_node)
-+		return -ENODEV;
-+
-+	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
-+	if (!priv)
-+		return -ENOMEM;
-+
-+	priv->phydev = phydev;
-+	mutex_init(&priv->state_lock);
-+	ret = acx00_ephy_init_package(phydev, priv);
-+	if (ret)
-+		return ret;
-+
-+	phydev->priv = priv;
-+	ret = devm_add_action_or_reset(dev, acx00_ephy_control_release, priv);
-+	if (ret)
-+		return ret;
-+
-+	mutex_lock(&priv->state_lock);
-+	ret = acx00_ephy_control_power_on(priv);
-+	mutex_unlock(&priv->state_lock);
-+	if (ret)
-+		return dev_err_probe(dev, ret,
-+				     "failed to power on control block\n");
-+
-+	return 0;
-+}
-+
-+static int acx00_ephy_soft_reset(struct phy_device *phydev)
-+{
-+	struct acx00_ephy_priv *priv = phydev->priv;
-+	int ret;
-+
-+	mutex_lock(&priv->state_lock);
-+
-+	ret = acx00_ephy_set_interface(phydev);
-+	if (ret)
-+		goto out_power_off;
-+
-+	ret = acx00_ephy_control_power_on(priv);
-+	if (ret)
-+		goto out_power_off;
-+
-+	/* ACx00 can acknowledge reset in power-down without restarting. */
-+	ret = genphy_resume(phydev);
-+	if (ret)
-+		goto out_power_off;
-+
-+	ret = genphy_soft_reset(phydev);
-+	if (ret)
-+		goto out_power_off;
-+
-+	goto out_unlock;
-+
-+out_power_off:
-+	acx00_ephy_control_power_off_warn(priv);
-+out_unlock:
-+	mutex_unlock(&priv->state_lock);
-+
-+	return ret;
-+}
-+
-+static int __acx00_ephy_config_init(struct phy_device *phydev)
-+{
-+	struct acx00_ephy_priv *priv = phydev->priv;
-+	u16 afe_eq_rx_detect = priv->is_ac300 ?
-+		AC300_PAGE6_AFE_EQ_RX_DETECT_VALUE :
-+		AC200_PAGE6_AFE_EQ_RX_DETECT_VALUE;
-+	u16 tx_level_value = ACX00_PAGE6_TX_LEVEL_DEFAULT_VALUE;
-+	u16 global_config;
-+	int oldpage;
-+	int ret;
-+
-+	lockdep_assert_held(&priv->state_lock);
-+
-+	global_config = FIELD_PREP(ACX00_PAGE0_MDI_MODE_MASK,
-+				   ACX00_PAGE0_MDI_MODE_AUTO);
-+	if (priv->xmii_rx_clock_inverted)
-+		global_config |= ACX00_PAGE0_XMII_RX_CLOCK_INVERT;
-+
-+	ret = phy_modify_paged(phydev, ACX00_PAGE_0,
-+			       ACX00_PAGE0_GLOBAL_CONFIG_REG,
-+			       ACX00_PAGE0_XMII_RX_CLOCK_INVERT |
-+			       ACX00_PAGE0_MDI_MODE_MASK, global_config);
-+	if (ret)
-+		return ret;
-+
-+	if (priv->is_ac300 && priv->use_low_calibration_tuning) {
-+		afe_eq_rx_detect =
-+			ACX00_PAGE6_AFE_EQ_RX_DETECT_LOW_CAL_VALUE;
-+		tx_level_value = ACX00_PAGE6_TX_LEVEL_LOW_CAL_VALUE;
-+	}
-+
-+	oldpage = phy_select_page(phydev, ACX00_PAGE_1);
-+	if (oldpage < 0)
-+		return phy_restore_page(phydev, oldpage, oldpage);
-+
-+	ret = __phy_write(phydev, ACX00_PAGE1_APS_CONTROL_REG,
-+			  ACX00_PAGE1_APS_DISABLED_4S_VALUE);
-+	if (ret)
-+		goto out_restore_page;
-+	ret = __phy_modify(phydev, ACX00_PAGE1_UAPS_CONTROL_REG,
-+			   ACX00_PAGE1_UAPS_ENABLE, 0);
-+	if (ret)
-+		goto out_restore_page;
-+	ret = __phy_modify(phydev, ACX00_PAGE1_INTELLIGENT_EEE_CONTROL_REG,
-+			   ACX00_PAGE1_INTELLIGENT_EEE_ENABLE, 0);
-+	if (ret)
-+		goto out_restore_page;
-+
-+	ret = acx00_ephy_write_page(phydev, ACX00_PAGE_2);
-+	if (ret)
-+		goto out_restore_page;
-+	ret = __phy_modify(phydev, ACX00_PAGE2_TX_DATA_CONTROL_REG,
-+			   ACX00_PAGE2_10BT_FIR_SELECT_MASK,
-+			   FIELD_PREP(ACX00_PAGE2_10BT_FIR_SELECT_MASK,
-+				      ACX00_PAGE2_10BT_FIR_SELECT_DEFAULT));
-+	if (ret)
-+		goto out_restore_page;
-+
-+	ret = acx00_ephy_write_page(phydev, ACX00_PAGE_6);
-+	if (ret)
-+		goto out_restore_page;
-+	ret = __phy_write(phydev, ACX00_PAGE6_AFE_EQ_RX_DETECT_CONTROL_REG,
-+			  afe_eq_rx_detect);
-+	if (ret)
-+		goto out_restore_page;
-+	ret = __phy_write(phydev, ACX00_PAGE6_AFE_RX_CONTROL_REG,
-+			  ACX00_PAGE6_AFE_RX_CONTROL_VALUE);
-+	if (ret)
-+		goto out_restore_page;
-+	if (priv->is_ac300 && priv->use_low_calibration_tuning) {
-+		ret = __phy_write(phydev, ACX00_PAGE6_ADC_CONTROL_REG,
-+				  ACX00_PAGE6_ADC_CONTROL_LOW_CAL_VALUE);
-+		if (ret)
-+			goto out_restore_page;
-+	}
-+	ret = __phy_write(phydev, ACX00_PAGE6_TX_LEVEL_REG, tx_level_value);
-+	if (ret)
-+		goto out_restore_page;
-+
-+	ret = acx00_ephy_write_page(phydev, ACX00_PAGE_8);
-+	if (ret)
-+		goto out_restore_page;
-+	if (priv->is_ac300 && priv->use_low_calibration_tuning) {
-+		ret = __phy_write(phydev, ACX00_PAGE8_AUTO_CAL_CONTROL_REG,
-+				  ACX00_PAGE8_AUTO_CAL_LOW_VALUE);
-+		if (ret)
-+			goto out_restore_page;
-+	}
-+	ret = __phy_write(phydev, ACX00_PAGE8_AFE_CONTROL_REG,
-+			  ACX00_PAGE8_AFE_CONTROL_VALUE);
-+
-+out_restore_page:
-+	ret = phy_restore_page(phydev, oldpage, ret);
-+	if (ret)
-+		return ret;
-+
-+	/* Restore the standard EEE policy retained by phylib across resets. */
-+	ret = genphy_c45_an_config_eee_aneg(phydev);
-+	if (ret <= 0)
-+		return ret;
-+
-+	return genphy_restart_aneg(phydev);
-+}
-+
-+static int acx00_ephy_config_init(struct phy_device *phydev)
-+{
-+	struct acx00_ephy_priv *priv = phydev->priv;
-+	int ret;
-+
-+	mutex_lock(&priv->state_lock);
-+	ret = __acx00_ephy_config_init(phydev);
-+	if (ret)
-+		acx00_ephy_control_power_off_warn(priv);
-+	mutex_unlock(&priv->state_lock);
-+
-+	return ret;
-+}
-+
-+static int __acx00_ephy_power_on_and_resume(struct phy_device *phydev)
-+{
-+	struct acx00_ephy_priv *priv = phydev->priv;
-+	int ret;
-+
-+	lockdep_assert_held(&phydev->lock);
-+	lockdep_assert_held(&priv->state_lock);
-+
-+	ret = acx00_ephy_set_interface(phydev);
-+	if (ret)
-+		goto out_power_off;
-+
-+	ret = acx00_ephy_control_power_on(priv);
-+	if (ret)
-+		goto out_power_off;
-+
-+	ret = genphy_resume(phydev);
-+	if (ret)
-+		goto out_power_off;
-+
-+	/* Powering off the control block loses the vendor-page state. */
-+	ret = __acx00_ephy_config_init(phydev);
-+	if (ret)
-+		goto out_power_off;
-+
-+	return 0;
-+
-+out_power_off:
-+	acx00_ephy_control_power_off_warn(priv);
-+
-+	return ret;
-+}
-+
-+static int acx00_ephy_resume(struct phy_device *phydev)
-+{
-+	struct acx00_ephy_priv *priv = phydev->priv;
-+	int ret;
-+
-+	mutex_lock(&priv->state_lock);
-+	ret = __acx00_ephy_power_on_and_resume(phydev);
-+	mutex_unlock(&priv->state_lock);
-+
-+	return ret;
-+}
-+
-+static int acx00_ephy_suspend(struct phy_device *phydev)
-+{
-+	struct acx00_ephy_priv *priv = phydev->priv;
-+	int resume_ret;
-+	int ret;
-+
-+	/* The suspend callback is invoked without the phylib lock held. */
-+	mutex_lock(&phydev->lock);
-+	mutex_lock(&priv->state_lock);
-+
-+	ret = genphy_suspend(phydev);
-+	if (ret)
-+		goto out_unlock;
-+
-+	ret = acx00_ephy_control_power_off(priv);
-+	if (ret) {
-+		resume_ret = __acx00_ephy_power_on_and_resume(phydev);
-+		if (resume_ret)
-+			phydev_warn(phydev,
-+				    "failed to recover from suspend error: %pe\n",
-+				    ERR_PTR(resume_ret));
-+	}
-+
-+out_unlock:
-+	mutex_unlock(&priv->state_lock);
-+	mutex_unlock(&phydev->lock);
-+
-+	return ret;
-+}
-+
-+static int acx00_ephy_match_phy_device(struct phy_device *phydev,
-+				       const struct phy_driver *phydrv)
-+{
-+	struct device_node *node = phydev->mdio.dev.of_node;
-+	struct device_node *package_node;
-+	bool match;
-+
-+	if (!genphy_match_phy_device(phydev, phydrv) || !node)
-+		return 0;
-+
-+	/* RK630 reports the same PHY ID, so also match the package identity. */
-+	package_node = of_get_parent(node);
-+	if (!package_node)
-+		return 0;
-+	match = of_device_is_compatible(package_node,
-+					"x-powers,ac200-ephy-package") ||
-+		of_device_is_compatible(package_node,
-+					"x-powers,ac300-ephy-package") ||
-+		of_device_is_compatible(package_node,
-+					"x-powers,acx00-ephy-package");
-+	of_node_put(package_node);
-+
-+	return match;
-+}
-+
-+static struct phy_driver acx00_ephy_driver[] = {
-+	{
-+		PHY_ID_MATCH_MODEL(ACX00_EPHY_ID),
-+		.name = "X-Powers AC200/AC300 EPHY",
-+		.match_phy_device = acx00_ephy_match_phy_device,
-+		.probe = acx00_ephy_probe,
-+		.read_page = acx00_ephy_read_page,
-+		.write_page = acx00_ephy_write_page,
-+		.soft_reset = acx00_ephy_soft_reset,
-+		.config_init = acx00_ephy_config_init,
-+		.disable_autonomous_eee = acx00_ephy_disable_autonomous_eee,
-+		.suspend = acx00_ephy_suspend,
-+		.resume = acx00_ephy_resume,
-+	},
-+};
-+module_phy_driver(acx00_ephy_driver);
-+
-+static const struct mdio_device_id __maybe_unused acx00_ephy_tbl[] = {
-+	{ PHY_ID_MATCH_MODEL(ACX00_EPHY_ID) },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(mdio, acx00_ephy_tbl);
-+
-+MODULE_AUTHOR("James Hilliard <james.hilliard1@gmail.com>");
-+MODULE_DESCRIPTION("X-Powers AC200/AC300 Ethernet PHY driver");
-+MODULE_LICENSE("GPL");
-diff --git a/drivers/net/phy/xpowers/acx00.h b/drivers/net/phy/xpowers/acx00.h
-new file mode 100644
-index 000000000000..7df6084c7a77
---- /dev/null
-+++ b/drivers/net/phy/xpowers/acx00.h
-@@ -0,0 +1,28 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+#ifndef __DRIVERS_NET_PHY_XPOWERS_ACX00_H
-+#define __DRIVERS_NET_PHY_XPOWERS_ACX00_H
-+
-+#include <linux/err.h>
-+#include <linux/phy.h>
-+
-+#define AC300_EPHY_CONTROL_ADDR_OFFSET	16
-+
-+struct device_node;
-+
-+struct acx00_ephy_control {
-+	int (*power_on)(struct acx00_ephy_control *control,
-+			unsigned int phy_addr);
-+	int (*power_off)(struct acx00_ephy_control *control);
-+	int (*set_interface)(struct acx00_ephy_control *control,
-+			     phy_interface_t interface);
-+};
-+
-+struct acx00_ephy_control *
-+ac200_ephy_ctl_create(struct phy_device *phydev,
-+		      struct device_node *package_node,
-+		      bool has_calibration, u8 calibration);
-+struct acx00_ephy_control *
-+ac300_ephy_ctl_create(struct phy_device *phydev,
-+		      struct device_node *package_node, u8 calibration);
-+
-+#endif
-
--- 
-2.53.0
-
+- bind cursor UAF / dangling tb2: valid
+- unconditional sock_hold() on unpublished TIME_WAIT: valid
+- clearing s_num on cursor mismatch: valid
+- lockless cursor-membership checks: valid as a concern
+- commit message overstating bind/ehash fill-under-lock: valid
+- missing note that MPTCP needs the follow-up patch: valid as a
+  backport note
+- endless re-scan of the same bucket head: not valid as a
+  guaranteed livelock; duplicate output after a rejected cursor
+  is valid
