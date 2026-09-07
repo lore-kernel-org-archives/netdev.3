@@ -1,161 +1,123 @@
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E98F23B19B3
-	for <netdev@vger.kernel.org>; Mon,  7 Sep 2026 07:46:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
+Received: from ultrarisc.com (unknown [218.76.62.146])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A31741A926;
+	Mon,  7 Sep 2026 07:47:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=218.76.62.146
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788767166; cv=none; b=QNue2MtLnZyoR7yRsGnoE+GufhrYZbBerK6P465isdbZmHfu2mpZpDvqk/IH/U51Qw8FjDPQbW2yOkYuWrpM+0T6MxZnBlyIJV2a62YpdDUyW+o2JnxlX+Y5GI6UISL4Cd1T/2LeFcwJ9gom6v+kbr7bIVOo5nfS7ddwxNN17jc=
+	t=1788767253; cv=none; b=V9TilFQSHMpqX3WhfBbgY2oxsFlcumeCOxzXugLCTHDGsFlthxbvhjjf7iT0aUKjIVwKkhoAGrRnIy7jDDpf1+nA4NOvDdYErE79QjEmVhIT26/Vc4hO+OmwbVBGz+sabq1zy7eihnsAtYtzVZD632Hq38S7rZEAMoMmqBoZp1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788767166; c=relaxed/simple;
-	bh=3OA1/xixfyppJthmSg4mc3vejG0dxTu9z8eAvuYaOA8=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=JZLQvqrTsCsxrkP8qrkZkQ16/dZlClDRmEwFPHNvSuzcX6uqC4rk59c8zDERRt5UG4PS4MuCA7wkb0M+GQqRDZVmNpFHdPF6sUNMeCAIwR1a+2SaoUfGkKoHKhBhhhdigIlbU7A4nApdfXoqFRF/8HovBz9iiqTW0eA2Rqn+9h0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
-X-UUID: 294c2aaaaa9011f19a56ed5b684f684d-20260907
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.19,REQID:cfe5bff2-321e-4463-a9c9-0adf656d6a01,IP:0,U
-	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
-	release,TS:0
-X-CID-META: VersionHash:7db8b62,CLOUDID:0f6bccee99a48475681ad77a18a78966,BulkI
-	D:nil,BulkQuantity:0,SF:80|81|82|83|102|865|898,TC:nil,Content:0|15|50|99,
-	EDM:-3,IP:nil,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OS
-	A:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 294c2aaaaa9011f19a56ed5b684f684d-20260907
-X-User: weirongguang@kylinos.cn
-Received: from [10.42.124.137] [(10.44.16.150)] by mailgw.kylinos.cn
-	(envelope-from <weirongguang@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_128_GCM_SHA256 128/128)
-	with ESMTP id 971881444; Mon, 07 Sep 2026 15:45:57 +0800
-Message-ID: <e16178ad-85c6-42da-931f-f0b2f8240828@kylinos.cn>
-Date: Mon, 7 Sep 2026 15:45:54 +0800
+	s=arc-20240116; t=1788767253; c=relaxed/simple;
+	bh=CDI070e+NOZ/ruqicjlaZpPE25aCTxfliAy88qsKICo=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=VaWl23jwEdr7IB7AQHbo8NeqLz1y84CVm5INSpMRUxdBQL99JHlItpm8RtV1spvfWWbXBrQV2MSQqlfdZJN2PYtJAyKi0e427WBo9640bGdfVcH3Vn/TiPFQgRCtdp6qhgvX4zq8RfRUhaQ4ouK+lk5Wyp+SN6j7TSwSI7XhCNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ultrarisc.com; spf=none smtp.mailfrom=ultrarisc.com; dkim=pass (1024-bit key) header.d=ultrarisc.com header.i=@ultrarisc.com header.b=ZtJifY6q; arc=none smtp.client-ip=218.76.62.146
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ultrarisc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ultrarisc.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=ultrarisc.com header.i=@ultrarisc.com header.b="ZtJifY6q"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=ultrarisc.com; s=dkim; h=Received:From:Date:Subject:
+	MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:
+	References:In-Reply-To:To:Cc; bh=+nPO1TI6PhcIovZv4CegSlinuFtOw5S
+	UcbsLM6dvhUU=; b=ZtJifY6qz+n1xQC7E8yC6YfAJhyMYlTTYA7SabGkgKkESMe
+	+OXOG4Ya+3NmB88YK1kUKtxp6BddPG41Vhk/49qz9pbFWoJyOewsXzcYXqwUYGQa
+	BxvJeG5QgPJAWx22z+ADXg6zz5gACOpX71WDs4SGyLlmVF9jjHBjLEFcCrGs=
+Received: from [127.0.0.1] (unknown [192.168.100.1])
+	by localhost.localdomain (Coremail) with SMTP id AQAAfwDHQAf_a55qnlUAAA--.364S4;
+	Mon, 07 Sep 2026 15:47:19 +0800 (CST)
+From: Jia Wang <wangjia@ultrarisc.com>
+Date: Mon, 07 Sep 2026 15:46:51 +0800
+Subject: [PATCH net-next v2 2/5] net: stmmac: sophgo: Use common RGMII
+ delay handling
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: weirongguang <weirongguang@kylinos.cn>
-Subject: Re: [PATCH net v1] vsock: validate buffer min/max size in setsockopt
-To: David Laight <david.laight.linux@gmail.com>,
- Rongguang Wei <clementwei90@163.com>
-Cc: sgarzare@redhat.com, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- virtualization@lists.linux.dev, netdev@vger.kernel.org
-References: <20260824091257.136269-1-clementwei90@163.com>
- <20260824131632.2d325c42@pumpkin>
-Content-Language: en-US
-In-Reply-To: <20260824131632.2d325c42@pumpkin>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20260907-dwmac-ultrarisc-v2-2-9a39bf8db313@ultrarisc.com>
+References: <20260907-dwmac-ultrarisc-v2-0-9a39bf8db313@ultrarisc.com>
+In-Reply-To: <20260907-dwmac-ultrarisc-v2-0-9a39bf8db313@ultrarisc.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Maxime Chevallier <maxime.chevallier@bootlin.com>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Giuseppe Cavallaro <peppe.cavallaro@st.com>, 
+ Jose Abreu <joabreu@synopsys.com>, Chen Wang <chen.wang@linux.dev>, 
+ Inochi Amaoto <inochiama@gmail.com>
+Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+ linux-arm-kernel@lists.infradead.org, Jia Wang <wangjia@ultrarisc.com>, 
+ sophgo@lists.linux.dev
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788767221; l=1357;
+ i=wangjia@ultrarisc.com; s=20260515; h=from:subject:message-id;
+ bh=CDI070e+NOZ/ruqicjlaZpPE25aCTxfliAy88qsKICo=;
+ b=IQF3xUotir2QfLDg3r7ZgEAnMaIc0rhUw8Jyn+COg58zKlYEvAyzLQJcHMCEMeDMSQNy/Eym6
+ SbxQS1Zz9uZBX9n3GyIwwcYaEumahXlVcDAx+Fav+0HlgAhVbHHcDMo
+X-Developer-Key: i=wangjia@ultrarisc.com; a=ed25519;
+ pk=wGVm18siRScehKOkOz0WKxgxDy7IezHEszhnN4/TUCY=
+X-CM-TRANSID:AQAAfwDHQAf_a55qnlUAAA--.364S4
+X-Coremail-Antispam: 1UD129KBjvJXoW7CrW8uw4UurW3CrWUJw1rtFb_yoW8GFy5pr
+	ZrCa4a9rn7tr4aq3Z8Jr48ZFy5Wa47KFWj9a48tws3Zay0yFyaqwn0yFW0qFnrAFWUZry7
+	tr4UZFy5ZF98Ar7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUmK14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_Jryl82xGYIkIc2
+	x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2z4x0
+	Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Cr0_Gr1UM2
+	8EF7xvwVC2z280aVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4UJVWxJr1l
+	e2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI
+	8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwAC
+	jcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka0x
+	kIwI1lc7CjxVAaw2AFwI0_GFv_Wrylc2xSY4AK6svPMxAIw28IcxkI7VAKI48JMxC20s02
+	6xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_Jr
+	I_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v2
+	6r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWxJVW8Jr1lIxAIcVCF04k26cxKx2IYs7
+	xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr1j
+	6F4UJbIYCTnIWIevJa73UjIFyTuYvjTRRCJPDUUUU
+X-CM-SenderInfo: pzdqwylld63zxwud2x1vfou0bp/1tbiAQACEWqdDaQAAQAPsC
 
+Describe the SG2042 internal RX delay through the common stmmac
+platform data and let stmmac_pltfr_probe() adjust the PHY interface
+mode.
 
+This removes the duplicated mode conversion without changing the
+hardware behavior.
 
-On 2026/8/24 20:16, David Laight wrote:
-> On Mon, 24 Aug 2026 17:12:57 +0800
-> Rongguang Wei <clementwei90@163.com> wrote:
-> 
->> From: Rongguang Wei <weirongguang@kylinos.cn>
->>
->> SO_VM_SOCKETS_BUFFER_MIN_SIZE and SO_VM_SOCKETS_BUFFER_MAX_SIZE
->> do not cross-validate against each other, allowing userspace to
->> set buffer_min_size > buffer_max_size.
->> When min > max, buffer_size is silently clamped to an incorrect
->> value. For example, setting min=512KB then max=128 results in
->> buffer_size=128 despite the user requesting much larger buffers
->> via SO_VM_SOCKETS_BUFFER_SIZE.
->>
->> Reproduced with a test program:
->> setsockopt(fd, AF_VSOCK, SO_VM_SOCKETS_BUFFER_MIN_SIZE,
->> 	   512 * 1024, sizeof(int));
->> setsockopt(fd, AF_VSOCK, SO_VM_SOCKETS_BUFFER_MAX_SIZE,
->> 	   128, sizeof(int));
->> // User asked for 1MB but got 128 bytes silently
->> setsockopt(fd, AF_VSOCK, SO_VM_SOCKETS_BUFFER_SIZE,
->> 	   1024 * 1024, sizeof(int));
->>
->> After that use getsockopt to get the buffer_size = 128 and
->> buffer_min_size = 524288, buffer_max_size = 128.
->> The buffer_min_size > buffer_max_size and the kernel accepted
->> contradictory values without error.
->>
->> Add value check to fix this issue. Return -EINVAL to userspace
->> when setting MAX_SIZE to a value smaller than the current MIN_SIZE
->> or setting MIN_SIZE to a value larger than the current MAX_SIZE.
-> 
-> That is going to break userspace that sets the minimum before the maximum
-> when the new minimum is larger than the old maximum.
-> 
-> David
-> 
-Hi, David.
-Thanks for pointing out the issue.
-
-Here is an alternative approach:
-instead of returning -EINVAL, automatically adjust the other value to preserve buffer_min_size <= buffer_max_size.
-The trade-off is that setting one parameter may implicitly adjust the other, but this is preferable to breaking existing applications.
-Does this approach look reasonable?
+Signed-off-by: Jia Wang <wangjia@ultrarisc.com>
 ---
-diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index a33b2a2d381d..bd4646115af5 100644
---- a/net/vmw_vsock/af_vsock.c
-+++ b/net/vmw_vsock/af_vsock.c
-@@ -2050,12 +2050,18 @@ static int vsock_connectible_setsockopt(struct socket *sock,
- 
-        case SO_VM_SOCKETS_BUFFER_MAX_SIZE:
-                COPY_IN(val);
-+               /* If the new max is less than current min, shrink min to match. */
-+               if (val < vsk->buffer_min_size)
-+                       vsk->buffer_min_size = val;
-                vsk->buffer_max_size = val;
-                vsock_update_buffer_size(vsk, transport, vsk->buffer_size);
-                break;
- 
-        case SO_VM_SOCKETS_BUFFER_MIN_SIZE:
-                COPY_IN(val);
-+               /* If the new min is greater than current max, expand max to match. */
-+               if (val > vsk->buffer_max_size)
-+                       vsk->buffer_max_size = val;
-                vsk->buffer_min_size = val;
-                vsock_update_buffer_size(vsk, transport, vsk->buffer_size);
-                break;                                                           
+ drivers/net/ethernet/stmicro/stmmac/dwmac-sophgo.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
->>
->> Fixes: b9f2b0ffde0c ("vsock: handle buffer_size sockopts in the core")
->> Signed-off-by: Rongguang Wei <weirongguang@kylinos.cn>
->> ---
->>  net/vmw_vsock/af_vsock.c | 8 ++++++++
->>  1 file changed, 8 insertions(+)
->>
->> diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
->> index a33b2a2d381d..5faa30ee8745 100644
->> --- a/net/vmw_vsock/af_vsock.c
->> +++ b/net/vmw_vsock/af_vsock.c
->> @@ -2050,12 +2050,20 @@ static int vsock_connectible_setsockopt(struct socket *sock,
->>  
->>  	case SO_VM_SOCKETS_BUFFER_MAX_SIZE:
->>  		COPY_IN(val);
->> +		if (val < vsk->buffer_min_size) {
->> +			err = -EINVAL;
->> +			goto exit;
->> +		}
->>  		vsk->buffer_max_size = val;
->>  		vsock_update_buffer_size(vsk, transport, vsk->buffer_size);
->>  		break;
->>  
->>  	case SO_VM_SOCKETS_BUFFER_MIN_SIZE:
->>  		COPY_IN(val);
->> +		if (val > vsk->buffer_max_size) {
->> +			err = -EINVAL;
->> +			goto exit;
->> +		}
->>  		vsk->buffer_min_size = val;
->>  		vsock_update_buffer_size(vsk, transport, vsk->buffer_size);
->>  		break;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-sophgo.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-sophgo.c
+index e02ad3762b5f..f62c803665ad 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-sophgo.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-sophgo.c
+@@ -55,14 +55,10 @@ static int sophgo_dwmac_probe(struct platform_device *pdev)
+ 		return ret;
+ 
+ 	data = device_get_match_data(&pdev->dev);
+-	if (data && data->has_internal_rx_delay) {
+-		plat_dat->phy_interface = phy_fix_phy_mode_for_mac_delays(plat_dat->phy_interface,
+-									  false, true);
+-		if (plat_dat->phy_interface == PHY_INTERFACE_MODE_NA)
+-			return -EINVAL;
+-	}
+-
+-	return stmmac_dvr_probe(dev, plat_dat, &stmmac_res);
++	if (data)
++		plat_dat->has_internal_rx_delay = data->has_internal_rx_delay;
++
++	return stmmac_pltfr_probe(pdev, plat_dat, &stmmac_res);
+ }
+ 
+ static const struct sophgo_dwmac_data sg2042_dwmac_data = {
+
+-- 
+2.34.1
+
