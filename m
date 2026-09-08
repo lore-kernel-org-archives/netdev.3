@@ -1,258 +1,101 @@
-Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
+Received: from mail-pj2-f11.google.com (mail-pj2-f11.google.com [74.125.227.139])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00F4754EEAE
-	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 15:55:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ABF9579818
+	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 15:56:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.139
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788882945; cv=none; b=jalwNBNShcToLnm8aTEICi9FtXDlwtpqXQ4+13hpd3L7DzcrOU6oqQu6GFGaTsLzW+WqUk/GYsLzspcjray6mvomdlrOytMwoOotvuzW62P+pzDQg5A/B4hoUPwZmO4NHC5Oy4sdlVXxegYWexbTQosF3nSSiQYjL5d4AT2TYFg=
+	t=1788883012; cv=none; b=X/ENCKnl6Ui1K3Wfrw0SNbyfaBU35vVtq+kvO2dO724RILXg9leUepMNr4QAjscZnKRot1n6BhVqjvQFTpSoBPtVv39X95tstchoiwSXv7ah7oIrFGt2PDbK/NaU4cYT7VHDEtXf8lgYbeJ+6yvzmnxWiLIXlOVynMNK4Wep5OI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788882945; c=relaxed/simple;
-	bh=Fr0xxasfpoCdqyW2Y+wnB0SRm0CawnQKI+wUYZ9sMYw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=c9ewrrKhUdza5R0gsiKkLUYypUN4yAwW60cyVRZ9shOzLYbnwe+K5s6vLqxhvNqoO4lufzJKc8taiUJnSRDuMX7Wsq4vkcvI7hkIC6PetIlo9XmhAGKReo5CtNpqmkGMf/4nIhr7dMcxq/gpGAcQ7JyWXFOCAawbvOqQ5pifNfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JSLy1wkf; arc=none smtp.client-ip=209.85.128.175
+	s=arc-20240116; t=1788883012; c=relaxed/simple;
+	bh=BDTXw8V1+T9yYLdscvALeVjlTpmAO2A5VFSV1E8Xfnk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MDiGlez/Y0tKK1C5l2u0zOkEtA+CApZMSauqlTfd+RLyhccZY4QJaryaOXPNKs+B97w4qVmCG0qwQLhGqAVJ8DnK1iZADuDsyvQywC1Tcpx9dbOO0hWAac0or9pHYcPT9jDVwYWT2NKmtNDXmWr8ZPWUXGCrGPFe42UIs8LaLLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H2BeSqhS; arc=none smtp.client-ip=74.125.227.139
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JSLy1wkf"
-Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-861f30636f9so70553127b3.0
-        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 08:55:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H2BeSqhS"
+Received: by mail-pj2-f11.google.com with SMTP id 98e67ed59e1d1-39569e136f9so2795831a91.0
+        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 08:56:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788882943; x=1789487743; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=+h93Z2EsFFcXgx5aRvzZ3nxYHcEqvVXtZkykR/Wpr5k=;
-        b=JSLy1wkfBgy2MLrdeHunAHb9LLTT2DeBliYpgn/cXrcL9DT7hYmXKSLw2t10wJCcwM
-         PYdZdWzAsaeBQozI96c98sHiRAndrRRqgKHpK1iRsxcMgqFQMRA+NlkjtK2aJ2lVQCU4
-         O4O6ZPV9n6/VR+b5iBm3h3N+6dEkjeQHgpcSpOUb/YGWKwUaMxBie/WO9grMB+VcUTUR
-         ZGgviusf2NQS5JcKHbKrjaC/bxOszDHXSE8tM6dcDGz5sSxxunKIX9UutFwI6yvAugOo
-         jaFvwMVzHQIKFzj61QKLjYlg6y6TxwcwJc/o+Hw89IDC1f1QFH0AMKMzf+H6JtjgUsjB
-         0mgg==
+        d=gmail.com; s=20251104; t=1788883010; x=1789487810; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=7/ERv+qulj128buK5/vZcxB8uIf+XT0ARLfsLruBLn8=;
+        b=H2BeSqhS29aORvc5nwxngxVHu/4Jf8/jWlMP1u62pRM7n7k5g4LjkXigndSupnDaPT
+         6XvXznjQKRVu5gPurLjVt5OlTx5aUnr6i4NO6y+17blylnyvaP2BTnWTqaLCjrfrsU7+
+         TUNeM4mQ+CNXPmxVogsfrHIOjbFXhRN+a7yRTZmL5U82otwERL0Rz873hsV2H2jRLdqp
+         FN1Vb9KUwsmda927HaMaiGRq7yNaPcm2U/PXU0EE11jMY33Z0k9zRIdghxwyvnNEHdMU
+         Cd4T8RxOw9IWFZK0kXYnLD/6lXsxz/gykZFAZVbz4AdOOoo5dJBsReplhCfvwcXkKwVN
+         kEVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788882943; x=1789487743;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=+h93Z2EsFFcXgx5aRvzZ3nxYHcEqvVXtZkykR/Wpr5k=;
-        b=NI4Jj4WHbRLigpEBNg6mK1O0ZeeZ6OF3/ptU0yt3F9ee0LeByU84JQ5XzXJ4c3I7mO
-         joxqm++rfq2e3Ln77Uxts0GM7kJG3/ZB17D8WkMzpO+3JXIM4yeKvrPZoOFmBI/1Totr
-         Md1b4bRHz15pw5gqSeyWUhoo24l9ZTrsGfVftTJkPjv4ZGCnd+D8NezlveZybwBphKuP
-         yyJF4LIkvI9CWC94AvOU+6l3kjC3F/HZ/9pHThencVEJYyukOUmlNAFHs59IKwBEZN1P
-         SyeeDYIzZE5cjpxyLhl62CXyxXNr1smHI055080wODtj4oQdFHXpT8MAWqSIDkBfBS1D
-         pcvg==
-X-Gm-Message-State: AFuF++mPUCKIwb+riOiWXHfyH0Ea67WqU+6AGB2tZB2eZIvjv2qrExAD
-	8mWMTVrL0zVjielI2/NBNCZ8g9NnbPi4nhp6M76z6WwQuCG86QFSVoTinyi6qw==
-X-Gm-Gg: AYBFou30MmodX0mX4ZgZccmRo8VrMNEhl8umEQtQW922U4og090nfwiV5DBF/SDM+xN
-	Qt48fYmZV1lFSNt37bIevE9GUwTJw//X0ifDO5XXFGGDUqOvc03vumSPLWGcIrXN5j7S3c1jKVq
-	DdsJDNiCNYtsSP5qwZ1EXnY25ntZkrhtfl4XS5WeiMTqw4jQjzDhrxtXKv0IBgGfOHDbkEVOrhU
-	c5Rwq5I4NHE4A9TApRIJkhQh6FhKW5q6PGJUCfVv5ut3MbmEhomHrSIPtMCZjKJIzflwqQoYWlz
-	NVUHG9k7/YyFFKYc8bHTosyh4/ieBgwmjWTUf6Yt7w4ZEzMJgGTMcDiozmRlsVwfUIf4D++S3Jv
-	aXJBwpiW9X13/j5t3TxcNlbfg2BJAMu6zmA/7lE1gqbnc5wN1DsgAlbDTN3uWm6pXHsdKzf70yL
-	UVjHJhcch8xciokgF2YWI+Tlb65DvbrSRSiGhbcynkkPSgxeX8ISIA070Z+gaA9G4HSfD7ZBlv+
-	5m9bq/3z+r2lDPf9t9WsAgl/q64BMsVtExeSWAbSdw8e3NxACTXkJBezwTYbpyG7luS3+fJwlo=
-X-Received: by 2002:a53:9310:0:b0:66f:c1bc:4031 with SMTP id 956f58d0204a3-66fc1bc465amr5613629d50.94.1788882942839;
-        Tue, 08 Sep 2026 08:55:42 -0700 (PDT)
-Received: from willemb.c.googlers.com.com (234.207.85.34.bc.googleusercontent.com. [34.85.207.234])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-66fb49763bfsm10598362d50.19.2026.09.08.08.55.42
+        d=1e100.net; s=20251104; t=1788883010; x=1789487810;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=7/ERv+qulj128buK5/vZcxB8uIf+XT0ARLfsLruBLn8=;
+        b=nKTSbLmWR/bJ2fB3C6cJCeBU8q3sB8/yO6q9BYRRohLLofPxP/koTPfdIML8fNsPwF
+         2PecXj9e1K+8v17s+bmLTICK+45jOIJC9/amHI4tQ7gBY/96SXdaOiFA4EDVK+GquZef
+         VHAgjbFj/VtQakKHTtdhVpqMXyh+7XzpCUMJVTw2IB/JJ8h/sx7Jrt64NVljrT5mu+Yq
+         lqnhVIO7H/51ojBcWbRfloZ87I+fMKBpRx3PfZKRvKoW+ZvRl13qIen7XuWamccblYMo
+         PxStcG6hVIJ/Jb1yC+oKg35cCfVDpJK+ERQ/Ecpzozp8XJJ16xxrgnVXTIuN5dHoZL8Y
+         DZ9g==
+X-Gm-Message-State: AFuF++lMHOlUnOvfkRPhVQtiY3nDvtZ3QYSDROqPOQnJwd2lY9THRbjE
+	ZpH/3o1CbJBBpBcPxLBHMCgky/JQPGyLuFdtCyWRzE8LEUPG8gSevgkWcEX8sEsR
+X-Gm-Gg: AYBFou08u83jFsJ/UGz6Cp8q0gOfNtrwHyqyt9zVvOl14NtEuXvSMfS9oRL7CuB8iSm
+	qb3HG5ByaIPbTrYijRfn119Nrz9UAmOPyvrBqu2ojuaqsZOFlTGdnFgHJ1B+fxAg3vz4ic3N7Ty
+	aatOKxlRwnb6jSZYdD8Ew2dFXkXM9OJYDze58EiA4ig2o45R4tAkY4uGE/33td3DK9IJVZjH+wz
+	0kJpVQVrxNHWGFtIsmsarxj0wpPGTh/kJdoZmbZCEO73rTHTSwF5umbP4D8IZZb6P9oFUBsJSgQ
+	PaFSjaMqqEsfQYcgBEy9Lt/3TiXPrOioF4teMgX/YYEhOdyaimxHjrtMpFO5WrNSXHBlV0fiAYZ
+	ufdsWc8uSqS8rvvV1zekCxxDW2+LDxUyjIQK8SIAqvHDvqz0ggBgQVvIx+LONP6QJq+odZYuAbR
+	HHaqsdByWr63uQqKlZqNbLfgDHdGhTdnfGj+YVJ4Gcv9IkVe1OOfNX8w==
+X-Received: by 2002:a17:90b:3c42:b0:38e:fea2:df53 with SMTP id 98e67ed59e1d1-39b260d2977mr44660146a91.4.1788883010217;
+        Tue, 08 Sep 2026 08:56:50 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:48::])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b260cd15asm27244367a91.4.2026.09.08.08.56.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Sep 2026 08:55:42 -0700 (PDT)
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	andrew+netdev@lunn.ch,
-	Willem de Bruijn <willemb@google.com>
-Subject: [PATCH net-next v3] selftests: net: csum: filter packets by source address and port
-Date: Tue,  8 Sep 2026 11:54:29 -0400
-Message-ID: <20260908155537.813889-1-willemdebruijn.kernel@gmail.com>
-X-Mailer: git-send-email 2.55.0.979.g7e5102b832-goog
+        Tue, 08 Sep 2026 08:56:49 -0700 (PDT)
+Date: Tue, 8 Sep 2026 08:56:46 -0700
+From: Stanislav Fomichev <sdf.kernel@gmail.com>
+To: Matthieu Baerts <matttbe@kernel.org>
+Cc: Netdev <netdev@vger.kernel.org>
+Subject: Re: [ANN] Containers to run Netdev CI tests locally
+Message-ID: <aqAvrZhltKTjlKe7@devvm7509.cco0.facebook.com>
+References: <9c66a2b4-2787-4421-bc9b-627de2f708bd@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <9c66a2b4-2787-4421-bc9b-627de2f708bd@kernel.org>
 
-From: Willem de Bruijn <willemb@google.com>
+On 09/03, Matthieu Baerts wrote:
+> Hello,
+> 
+> TL;DR: containers are now available with all dependencies to easily
+> execute all static, unit, and functional tests in an environment closed
+> to the Netdev CI one:
+> 
+> - https://github.com/orgs/linux-netdev/packages
 
-Add source address and port verification in recv_verify_packet_* and
-recv_udp: non-matching packets are skipped.
+Are these public/published? I don't see any packages when I go
+to that page in the browser.
 
-The receiver reads from PF_PACKET and UDP sockets to verify incoming
-packets to test hardware checksum offload. It did not validate the
-packet source address or source port.
+Also:
 
-During tests expecting an invalid checksum (-E) or zero checksum (-Z),
-background packets can fail the test.
+$ ./docker/selftests/run.sh --pull
+Using ghcr.io/linux-netdev/nipa-selftests:latest image
+Emulate Docker CLI using podman. Create /etc/containers/nodocker to quiet msg.
+Trying to pull ghcr.io/linux-netdev/nipa-selftests:latest...
+Error: unable to copy from source docker://ghcr.io/linux-netdev/nipa-selftests:latest: initializing source docker://ghcr.io/linux-netdev/nipa-selftests:latest: unable to retrieve auth token: invalid username/password: unauthorized
 
-For -Z, build_packet_udp chooses a specific source port that causes
-the checksum to sum to zero. When running in receive-only mode (-R),
-call build_packet in do_rx to compute the expected source port so
-that source port filtering can be applied to -Z as well.
+(and it's the same 'unauthorized' on another machine with real docker
+instead of podman)
 
-Also
-- add an inter-packet delay to avoid drops from bursts.
-- remove a comment that is no longer correct.
-
-Fixes: 91a7de85600d ("selftests/net: add csum offload test")
-Signed-off-by: Willem de Bruijn <willemb@google.com>
-
----
-
-Changes
-  v2 -> v3
-    - also fix same issue for zero checksum:
-      calculate expected src_port by calling build_packet on rx side
-  v1 -> v2
-    - also check udp socket, with recvfrom
-
-v2: https://lore.kernel.org/netdev/20260904030624.3833721-1-willemdebruijn.kernel@gmail.com/
-v1: https://lore.kernel.org/netdev/20260831210128.1359978-1-willemdebruijn.kernel@gmail.com/
----
- tools/testing/selftests/net/lib/csum.c | 55 +++++++++++++++++++++++---
- 1 file changed, 50 insertions(+), 5 deletions(-)
-
-diff --git a/tools/testing/selftests/net/lib/csum.c b/tools/testing/selftests/net/lib/csum.c
-index e28884ce3ab3..ad960e07e31b 100644
---- a/tools/testing/selftests/net/lib/csum.c
-+++ b/tools/testing/selftests/net/lib/csum.c
-@@ -2,8 +2,7 @@
- 
- /* Test hardware checksum offload: Rx + Tx, IPv4 + IPv6, TCP + UDP.
-  *
-- * The test runs on two machines to exercise the NIC. For this reason it
-- * is not integrated in kselftests.
-+ * The test runs on two machines to exercise the NIC.
-  *
-  *     CMD=$((./csum -[46] -[tu] -S $SADDR -D $DADDR -[RT] -r 1 $EXTRA_ARGS))
-  *
-@@ -236,7 +235,8 @@ static void *build_packet_udp(void *_uh)
- 		uh->source = 0;
- 		uh->source = checksum(uh, IPPROTO_UDP, sizeof(*uh) + cfg_payload_len);
- 
--		fprintf(stderr, "tx: changing sport: %hu -> %hu\n",
-+		fprintf(stderr, "%s: changing sport: %hu -> %hu\n",
-+			cfg_do_tx ? "tx" : "rx",
- 			cfg_port_src, ntohs(uh->source));
- 		cfg_port_src = ntohs(uh->source);
- 	}
-@@ -249,7 +249,8 @@ static void *build_packet_udp(void *_uh)
- 	if (cfg_bad_csum)
- 		uh->check = ~uh->check;
- 
--	fprintf(stderr, "tx: sending checksum: 0x%x\n", uh->check);
-+	if (cfg_do_tx)
-+		fprintf(stderr, "tx: sending checksum: 0x%x\n", uh->check);
- 	return uh + 1;
- }
- 
-@@ -571,15 +572,36 @@ static int recv_prepare_packet(void)
- static int recv_udp(int fd)
- {
- 	static char buf[MAX_PAYLOAD_LEN];
-+	struct sockaddr_storage addr;
-+	socklen_t addrlen;
- 	int ret, count = 0;
- 
- 	while (1) {
--		ret = recv(fd, buf, sizeof(buf), MSG_DONTWAIT);
-+		addrlen = sizeof(addr);
-+		ret = recvfrom(fd, buf, sizeof(buf), MSG_DONTWAIT,
-+			       (struct sockaddr *)&addr, &addrlen);
- 		if (ret == -1 && errno == EAGAIN)
- 			break;
- 		if (ret == -1)
- 			error(1, errno, "recv r");
- 
-+		if (cfg_family == PF_INET) {
-+			struct sockaddr_in *sin = (void *)&addr;
-+
-+			if (sin->sin_addr.s_addr != cfg_saddr4.sin_addr.s_addr)
-+				continue;
-+			if (sin->sin_port != htons(cfg_port_src))
-+				continue;
-+		} else {
-+			struct sockaddr_in6 *sin6 = (void *)&addr;
-+
-+			if (memcmp(&sin6->sin6_addr, &cfg_saddr6.sin6_addr,
-+				   sizeof(sin6->sin6_addr)))
-+				continue;
-+			if (sin6->sin6_port != htons(cfg_port_src))
-+				continue;
-+		}
-+
- 		fprintf(stderr, "rx: udp: len=%u\n", ret);
- 		count++;
- 	}
-@@ -620,6 +642,9 @@ static int recv_verify_packet_tcp(void *th, int len)
- 	if (len < sizeof(*tcph) || tcph->dest != htons(cfg_port_dst))
- 		return -1;
- 
-+	if (tcph->source != htons(cfg_port_src))
-+		return -1;
-+
- 	return recv_verify_csum(th, len, ntohs(tcph->source), tcph->check);
- }
- 
-@@ -647,6 +672,9 @@ static int recv_verify_packet_udp(void *th, int len)
- 		return recv_verify_packet_udp_encap(udph + 1,
- 						    len - sizeof(*udph));
- 
-+	if (udph->source != htons(cfg_port_src))
-+		return -1;
-+
- 	return recv_verify_csum(th, len, ntohs(udph->source), udph->check);
- }
- 
-@@ -659,6 +687,9 @@ static int recv_verify_packet_ipv4(void *nh, int len)
- 	if (len < sizeof(*iph) || iph->protocol != proto)
- 		return -1;
- 
-+	if (iph->saddr != cfg_saddr4.sin_addr.s_addr)
-+		return -1;
-+
- 	ip_len = ntohs(iph->tot_len);
- 	if (ip_len > len || ip_len < sizeof(*iph))
- 		return -1;
-@@ -680,6 +711,9 @@ static int recv_verify_packet_ipv6(void *nh, int len)
- 	if (len < sizeof(*ip6h) || ip6h->nexthdr != proto)
- 		return -1;
- 
-+	if (memcmp(&ip6h->saddr, &cfg_saddr6.sin6_addr, sizeof(ip6h->saddr)))
-+		return -1;
-+
- 	payload_len = ntohs(ip6h->payload_len);
- 	if (payload_len > len - sizeof(*ip6h))
- 		return -1;
-@@ -940,6 +974,9 @@ static void do_tx(void)
- 			cfg_payload_len = rand() % MAX_PAYLOAD_LEN;
- 			buf = build_packet(_buf, sizeof(_buf), &len);
- 		}
-+
-+		/* avoid bursting */
-+		usleep(20);
- 	}
- 
- 	if (close(fd))
-@@ -952,6 +989,14 @@ static void do_rx(int fdp, int fdr)
- 	long tleft, tstop;
- 	struct pollfd pfd;
- 
-+	if (!cfg_do_tx && cfg_zero_sum) {
-+		static char _buf[MAX_HEADER_LEN + MAX_PAYLOAD_LEN];
-+		int len;
-+
-+		/* calculate source port that causes csum to add up to zero */
-+		build_packet(_buf, sizeof(_buf), &len);
-+	}
-+
- 	tstop = gettimeofday_ms() + cfg_timeout_ms;
- 	tleft = cfg_timeout_ms;
- 
--- 
-2.55.0.979.g7e5102b832-goog
-
+What am I missing?
