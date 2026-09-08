@@ -1,133 +1,133 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-pj2-f1.google.com (mail-pj2-f1.google.com [74.125.227.129])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBF6C524AE3
-	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 10:56:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.174
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788865023; cv=pass; b=VFrb0jl0c+u6FDD0rCTIFP5dOXRGqqA8ESnlW2X2Jzida9yb1SoTTYSPRsQKUAcQe0ca+lR0PwoIoyO8JXmnCsiPIY/22TUB+UiXcCYJCQ148rhMtzxzSG9u2fVSX9u5qRLn5b7jH7+tbRDSip2+M+4/PH1Q0Yqnjw+3evl2rxk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788865023; c=relaxed/simple;
-	bh=V8PNUIhnuSxMXu7bv/hFvQS8+NwLBC1vm1+K70T9sIY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DYRTZ9wO112aWQkveqMGSsy8ilujN8Jx+4yGG14C+gOShgg6DqRMLupeBxvgGAcKCH2YNbt34sgo5M7H231UNVPVDJ2NAerzLgqiDfDta+UvVhR2H3enU9KX1lGYu/jd7N0Lge8SicgILRdZqN/PkhcCPCH9LEBNGxEh9tj+/fM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qJrfD3ZR; arc=pass smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8A12524B08
+	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 11:00:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.129
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788865210; cv=none; b=TDts+920wBMGmIaWtEekx1IDRZhZHjHtzFGWRvXme8+ooUpNN+rouBrGKX/7++/5m2c1v2/7SauqMOV8kZZuiYMATss8x5xA52SlkQhtVcRi9JSuScUf1KtHSXeMRctKHymvz06TkCVdMzI5S7uTxVFw0jNxE5YSxnLM3X/tIuI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788865210; c=relaxed/simple;
+	bh=8YTFKS1gIdMvKjHceC8WCGeaJ3Tt3+sMDQ22Q2fAGns=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Vi+qy/YnRdxz63GrHSUjovvmbIZUDkSHgK3EKG6GTlAagwF54jqjeuVOA1i5HdKb8D+KB6Wov6ZD/VZlccPvRgPx1W6vtIHGzbSTXdIRstZaDcfpseoVjsrjn6NLiLkyQLI3pQWlf/N57zwfJLaAh8ERq87GXyb/2O5GerUg/84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Cm51llJB; arc=none smtp.client-ip=74.125.227.129
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qJrfD3ZR"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2d01663d816so31205785ad.1
-        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 03:56:59 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788865018; cv=none;
-        d=google.com; s=arc-20260327;
-        b=BmGqwwwfqHOAHmvW0CdMxUK9SGn2QDCps9DXnEJjwiv8EPQaWf4SSeHakJWoNkuV1v
-         jM202mAyi+S04drcR+QUxc2DyF1WLQ6qu+pgDEasIK7MKVRpu0ve2tJ28JNy5b/XUstJ
-         /87q8bklzjcGLmBKuOmE8u1uttatLaP8hs9z/v5OSOSnGQn+hodMXFy1q85sihiPUDT0
-         tXs+fbCCqH588ztjK3tJFWU6CuDWIu/cdyKUs6dqSWfub6xzqWLSbyGAqiEHSXgiFNAF
-         ng1C6BWxxw+hZP1qTXdCsChLJ/ELjbOLuLeDDpBKnt85DBkaUbNBDaFJvMrqM/QfGo++
-         J/5w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=j4pKWv8axLBCBa+7S9xcrFVMWNZcwuk2DrI/wzHOezE=;
-        fh=xHHHxaBOd8L6ZXd12jlc86yN51wlYBH08vy9AJKU6Tw=;
-        b=ktjDBt5PqEUU2fxuy+DQ4Foz+acDXR9prUdDrpeNOE7u9UJdpEWVq/mPnc39IL3xrj
-         MinWacLf0omOaVIfnQhbcJN3HkdSVd5gllZ8juFoHQTGoIhsgMlVc5KLpluF9vffE3GQ
-         1WIeTDDSjqz2SoATupSTNY5rY7LfloK3DB+rafhDzd7OIsLi6r7YctAydZBkc7GsRec4
-         MylCONOpd7TbuFrSIa0LWaJgI6Uqh0ucDxTYOCdqfIkJfxP/+6d6scaGMs+q7rCUJlWu
-         Z31Wv3WsSCCo5MpPNN4e9LWadKBWTK/vBBjBNEph3SbLsuw9qvKpTSgkorueBnyJuCr8
-         oYKA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Cm51llJB"
+Received: by mail-pj2-f1.google.com with SMTP id 98e67ed59e1d1-383390e7584so152467a91.0
+        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 04:00:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788865018; x=1789469818; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=j4pKWv8axLBCBa+7S9xcrFVMWNZcwuk2DrI/wzHOezE=;
-        b=qJrfD3ZRYCitY6Rv54OkP5s8eOZ0Mya4DkRlrfXzr1FqMXG68PrnI2kpFOSfpTdgpH
-         jHBVVPCtyfwz2nc+pAyakjca5sZH1bxNsn0fej5//XzH059w0Ra1BC4rMlhPnL7v66LL
-         bEosRR3AZ2ueKBSxub9uNp+dvZIrUPJLmr2Ok1JnFkocp5XugHYkaNRVqw+7sD2TJWj0
-         IT4sFK/PWVp4sakvccgVYAQnxCyYaHt6bK0rXmO+dq2GfspQWR1jEYZ4PdJ6ZPehKECg
-         w9jU2FZnu7xFnjSgMv79aEgPEcaLIGSjYZ1GDpmiF5eFxwUL2u5c+DPikYNZC3rwMPKJ
-         9epg==
+        d=gmail.com; s=20251104; t=1788865207; x=1789470007; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=1MUi2XRPwjF/pI/qfQzJ3ednwuCIXcpoQGAgnhFM4yc=;
+        b=Cm51llJBwwH6bylDW76pv6mAUfDU/KGJ88yPfjK012uqO95yJGtNlbFma73w+QZUpt
+         W3Ffslrfel3x0+9oi2sGPioSjbUjAh4lXyVMMm/P+h3+LaPAY5RdlA8wKGUxDDmhDAWl
+         NSkgi7IPb/dJYQmq9xBvxhkjxKU/NhhPatGqAHlCmD0YF7NrqQg5FNs+kU6fwqWgOhKc
+         70W3OlaM0yF0dSis+cX9IYV4jAvuAis2mNG8GKjre/imOsRhvUtI6mmX0V9Nw9PgPejB
+         N1XoR06cdb09boT/iCkZrpXcJHd95Y2A5uLwbuAcMSkahW/iJwJSDI4jrEe7C3KC8Cz5
+         vwXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788865018; x=1789469818;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=j4pKWv8axLBCBa+7S9xcrFVMWNZcwuk2DrI/wzHOezE=;
-        b=NYCbXUlo8GmM2/ml3mUvZW/Lbhjfsk78TD+zB/lFzQyJO/+H+8IN3tvjLu/eQGiPda
-         jQLTRR+/h2iBIHeuA3spMbpp+QY2uhbxLGp5/Hyn5R64VoGkkF3a8PSBbILvYp2MHTYk
-         dFjQDCZ7hetGKGjgowLpwc8QeV++Ew/w5GWsbOCpl5i/Rwjylavh1NJGEoUg/29iRlJc
-         nVbmVapUYMBwONGQvPj+1qSwHVkx20S39rIiW4s4z9mlSRWFIXW9LORRNsBdd/G2/NFu
-         bB9r7HydJ+RUfPTmCC47CQdOabNwy+bXCJZnQC+wOe3yXuDjvdfnMVZSfmfMz7DVp+Sb
-         UVXQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwmv0LXqyxpHpb5RylSikNL1y0rUPvMhDXef1D5+X22bdDlipDfnwUDkCZlABWJgaLlGq2qKUU=@vger.kernel.org
-X-Gm-Message-State: AFuF++lHnlRKUW6JtMS8In38FPKKnC9vBwArWgH9HCebjxFc6b4oMCmB
-	kn9LBrpAiLQOmy61ssv1t5nZE1jc4tChjnqv05ArgRm8y8K+L4n8O9uydhukL4/DSb7L/85WRXT
-	/dGp1ZgMw9E1yoL0qOFNtfNucCm+i1bs=
-X-Gm-Gg: AYBFou3C/HggBTP3nXIv2b52G4BQ4Mfajz3sflHbl15RoIQqYWB6bx/C9dLuvWgl5IP
-	BSKHdgigoRFR6UhR/yvnu7hMRn1KLpsYUAh/7otIf4K5YlOntwRk5DDq9jMMRntQ6M5qkmI8RM9
-	qUaSC+MeatwKWJST/pu2+OGCm9POSb52ikKq9cIynOLGx2mrJRYoe2NNRYoQXt7RVDxW0vlBQ+M
-	iBqQNkkX8h7HIqVDEFCNhyieWsvKUx2KY/ZcoF2E+T143oKs3Dv91zb1F0MK4E+zKG9sdBOWfxD
-	JSPPce7Bo5DGstxDTJWqS7RtJv4icO1EViZpybiW8B4OAFKTWNA6bhkp2tzBqRuHxZ6+NBKbsw5
-	bDl8WEhH+XQN76UsyyewCGNCo8BeOXgqkN5Y02++B4fwrm1vDqehLHtRC
-X-Received: by 2002:a17:902:cf08:b0:2da:f8a5:afd8 with SMTP id
- d9443c01a7336-2db1220e898mr402860255ad.0.1788865017806; Tue, 08 Sep 2026
- 03:56:57 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1788865207; x=1789470007;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=1MUi2XRPwjF/pI/qfQzJ3ednwuCIXcpoQGAgnhFM4yc=;
+        b=PWcvQ9Cqx7D4kPc3xp8wiCJgw7zXYUdnO1LZ9s82qvsZEppe4M76Dk85S78B9blNg0
+         eOYOpG5VJ30KLBCV0rihWNM+Y6gqNEs1XtlvhXm5vNSOhlvJ0nX62NFilQiQtWYJl9Nj
+         lpNVNq4gtfND574kS98bngxB2cr+IbNsZgwRFoyMjTm+uifS3ygaROFpuKGc6q3UZ9X6
+         Pbavn0u/Ehqkt895rl1/0ks4HvgMzQbNdTzpGrlz3pN/tFw1Cav3p0dLFk+HyHu5DJTm
+         TDtp00+O5m4YEBT2xlFwfpfgw9/70hGPOiS7Sh72VeB+BdpRZ/elxJUnOytSVGTCnprW
+         YSXQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwAmCHWqxMEk6Y+bpFziKgn5let0gNjFUzb760wLUSl1rGIgRqL5T35xBZuUpDZL2UNpr760AI=@vger.kernel.org
+X-Gm-Message-State: AFuF++nBnwW1SfS9gZ9SPVkAfs/XiHiq8dDG//lwzQoVjR7NHs6s6AbE
+	Gk5igU5IelHx61OKlaT0WbBmYibJ0hRpndZqrQFfGh6uQujBYVVLrEo=
+X-Gm-Gg: AYBFou2QSXq6BuRJv01pRxngpvFos1D4/liItOklR7RrIrw81+mCezp3QmYhcW2A4Rk
+	OUxo6ixFvMXwg+voQ87QNALJOEPR3sKIwWUUlzyEQdSnj98sDLttIBApjH8XxrO9IQpkr6LHklm
+	HDLuImrmXknEvKXtgBXPz+wxrOL1OfTQr4emDDQYXMTfTX03mMDPraoosX/BeXeX1cpxYp2Rlat
+	T7mP8XRWWFdIiKKeFZFkjrn3coEceh9jpxJDx75je80pNK2dJKCsl7j8dyxcUPMTg6xzB7qHqOR
+	SObxbkdZkorZNVlwcd+oXzdfXEWmifPlXrScWI5pjYLhkOtiRAUgAWAviZdiZYIGEoPdw48NLNC
+	1oYL2DvlZPZOhPXf8I3vcMg3LLxFfFgFA1vpMtKCUhEW71bNU/2fEMcUIEHaSByxkHyegp6+Rhz
+	lUM+yWQ75Xo3tuq1MBblWnaZfwVt/6wFa4tskr4+2VhcSszETs8tpdyF2NvYASeUC1d+lLmogDV
+	C44Esc/bpR8Ps5B
+X-Received: by 2002:a17:90a:4cc3:b0:398:ba46:1d9f with SMTP id 98e67ed59e1d1-39b97d98709mr1926967a91.13.1788865207066;
+        Tue, 08 Sep 2026 04:00:07 -0700 (PDT)
+Received: from ydg-Zenbook-14-UM3406GA ([2001:2d8:6467:d689:f6ea:9d29:b387:9ed5])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b08cacbb0sm32429842a91.13.2026.09.08.04.00.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Sep 2026 04:00:06 -0700 (PDT)
+From: Donggeun Yoo <donggeunyoo.kernel@gmail.com>
+To: andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: linux@armlinux.org.uk,
+	daniel@makrotopia.org,
+	o.rempel@pengutronix.de,
+	netdev@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	donggeunyoo.kernel@gmail.com
+Subject: [PATCH net v3 0/3] net: phy: handle the active-high LED polarity mode
+Date: Tue,  8 Sep 2026 19:59:56 +0900
+Message-ID: <20260908105959.70453-1-donggeunyoo.kernel@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260903102656.370039-1-phucduc.bui@gmail.com> <178882012336.219967.15894359577050376625@kernel.org>
-In-Reply-To: <178882012336.219967.15894359577050376625@kernel.org>
-From: Bui Duc Phuc <phucduc.bui@gmail.com>
-Date: Tue, 8 Sep 2026 17:56:46 +0700
-X-Gm-Features: AcwNN1Xbg2lp4fbc4ezWtbMEH7uw5gip40oD0YN2_nVZLMuXLhJFxllUnLeYZN0
-Message-ID: <CAABR9nFG2Mk__ptdWrhkPTTmSpnL8keaHPGx-wz+kgck4EDFhQ@mail.gmail.com>
-Subject: Re: [PATCH net-next v2] net: davicom: Propagate wakeup IRQ errors
-To: netdev-bot+sashiko@kernel.org
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, pabeni@redhat.com, paul@crapouillou.net, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
->
-> - [High] dm9000_probe() now aborts the whole probe when the *optional*
->   wakeup-IRQ setup fails.
+Commit a274465cc3be ("net: phy: support 'active-high' property for PHY
+LEDs") let a device tree LED node request PHY_LED_ACTIVE_HIGH, but a
+->led_polarity_set() that only handles PHY_LED_ACTIVE_LOW returns -EINVAL
+for it. of_phy_leds() propagates that, phy_probe() fails, the mdio device
+is left unbound, and phy_attach_direct() falls back to the genphy driver,
+so the PHY loses its driver-specific configuration. Three in-tree drivers
+still have that gap; each already programs active high as its default, so
+the fix is one case label per driver.
 
-I agree with the issues raised in the review.
-Since request_irq() uses IRQF_SHARED and can fail, for example with -EBUSY,
-I will address this in the next version by only propagating the
-possible errors from
-platform_get_irq_optional().
+Unlike commit eb89c79c1b8f ("net: phy: mxl-gpy: correctly describe LED
+polarity") and commit 9d55e68b19f2 ("net: phy: aquantia: correctly
+describe LED polarity override"), which restructured their callbacks to
+fix inverted polarity, these three program active high correctly at reset
+and only lack the case label, so each fix is a single case label.
 
-There will be no changes to the existing handling of request_irq() or
-irq_set_irq_wake() failures.
+The three drivers take different Fixes: tags. dp83867 and qca808x had
+their LED callbacks before a274465cc3be and should have been updated by
+it, so they point at that commit. dp83td510 gained its callback later and
+was born rejecting active high, so it points at its own introducing commit.
 
-> - [High] The newly added 'goto out' after a failing
->   irq_set_irq_wake(db->irq_wake, 1) is taken while=E2=80=A6
->
+Compile tested only; I have no affected hardware. The failure path was
+traced by inspection through of_phy_led(), of_phy_leds(), phy_probe() and
+phy_attach_direct().
 
-This issue will no longer occur if we keep the existing handling for
-`irq_set_irq_wake()` failures.
+Changes in v3:
+- Cc: stable on all three, and state the observable consequence (fall back
+  to genphy, driver configuration lost) rather than only "phy_probe fails".
+- Drop the mxl-gpy/aquantia reference from patch 1; contrast the two at the
+  series level here instead.
 
-> Pre-existing issues:
-> - [High] The wakeup IRQ requested in dm9000_probe() is never released on
->   any path other than the newly added one either: the pre-existing later=
-=E2=80=A6
-> - [High] In dm9000_probe() the shared wakeup IRQ is requested (line 1521,
->   IRQF_SHARED, handler dm9000_wol_interrupt, dev_id =3D ndev) before=E2=
-=80=A6
-> - [Low] Documentation/devicetree/bindings/net/davicom,dm9000.yaml
->   restricts 'interrupts' to 'maxItems: 1' (and defines no interrupt-=E2=
-=80=A6
->
+Changes in v2:
+- Add dp83td510 and qca808x, so the a274465cc3be regression class is
+  fully closed.
+- Link: https://lore.kernel.org/all/20260903022839.4006614-1-donggeunyoo.kernel@gmail.com/
 
-These are pre-existing issues and are outside the scope of this patch.
-I will leave them unchanged.
+Donggeun Yoo (3):
+  net: phy: dp83867: handle the active-high LED polarity mode
+  net: phy: dp83td510: handle the active-high LED polarity mode
+  net: phy: qca808x: handle the active-high LED polarity mode
+
+ drivers/net/phy/dp83867.c      | 3 +++
+ drivers/net/phy/dp83td510.c    | 3 +++
+ drivers/net/phy/qcom/qca808x.c | 3 +++
+ 3 files changed, 9 insertions(+)
+
+-- 
+2.53.0
+
