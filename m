@@ -1,637 +1,180 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C22EC3290DB;
-	Tue,  8 Sep 2026 03:29:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788838175; cv=none; b=oZ15qWlKYA1B3HTTUZvlhtIDMst5H0wuNXXH87ieKmtxhk/QmAtt1pYw7jl/KAolBTyK1pLFUyczp03bMWEUzyVs+sa7sdKH0WWd6Mx9hJeWuYoJobp+cqe3DVtxBr7Xz4Wu/A8J7VIWmIjxJXUs4vaFo7UJhXxr5wqEylEuufs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788838175; c=relaxed/simple;
-	bh=jA3CMd8E1fTwT+hO7MGigiQ3OPRra42pMPdYeyTTXYc=;
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazolkn19010017.outbound.protection.outlook.com [52.103.33.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD07B3403FF;
+	Tue,  8 Sep 2026 03:35:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.33.17
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788838594; cv=fail; b=lvdQy5yEsoc8EmsA6cGy4R/TKpuvIhRqvN2sIfnx5obvvLGhTYEl4h9664kC4sHuSCB7+wUAL4lwuZU1FtsmS+iMVH1IcqkSbMFFzD7Z33ljbXhrOHzXCQ7ZlC2RtWhjuWjoTjfrU2cbVJ/9rqOPiZMEhHYHLsK4GDXRo0nCuZc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788838594; c=relaxed/simple;
+	bh=BPUdt2S5/u1tMNwhFX/H9yz42UTEiUATQh7yPkaJesQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mu6hghBQBQfaUf2P2KmrK3hJvoZ+BSj+RIe93zn+FxajrX5Cwp+tUYV9baP/KfkYF4EqA3CHkAeoaf/VjOaYriAjTQpcOV4y2k+rqmIY/9n4XYix8FcB+mS8JCTA6c4ekL6E1shL/581TkXzjlomMS1sS8L1ZSKiewXHG7RA2Nk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: by linux.microsoft.com (Postfix, from userid 1202)
-	id 41C0E20B700D; Mon,  7 Sep 2026 20:28:48 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 41C0E20B700D
-From: Long Li <longli@microsoft.com>
-To: Long Li <longli@microsoft.com>,
-	Long Li <longli@kernel.org>,
-	Konstantin Taranov <kotaranov@microsoft.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	 Content-Type:MIME-Version; b=I1JakpoxB08fBobA91ezIdB24H+HZZVzi0QUuIIzgW1AXg74X+oyMQFuYfqFYvZ0NgzAZT6IGgDS4FEG6QXJ6a1WDfkjw5RF/uhJbBGyo12Z1WU5aUjaCysnjQAWqoXyP1RUBPbJH9v7jfsOWRF5dw2Uxjh3Z2ignBz/2DPmKno=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.co.uk; spf=pass smtp.mailfrom=hotmail.co.uk; dkim=pass (2048-bit key) header.d=HOTMAIL.CO.UK header.i=@HOTMAIL.CO.UK header.b=b+LbJ2F9; arc=fail smtp.client-ip=52.103.33.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.co.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hotmail.co.uk
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=HOTMAIL.CO.UK header.i=@HOTMAIL.CO.UK header.b="b+LbJ2F9"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=dOAIzvEq3vb9bSx2HL32NReWxUSr/vz3ZpxsGOycSC8FGy2Ni8pu6ZgmpMQJ2Xy5+ZtJrb/SySCiCboQl2Ib2QXgBEZzIjKqafBK6v/1v+My1pr3LHrgIqwD7dA/c8qsiu9WwO4rvUJ8P2sF79z66ebweQWkBrgoCYiVN/5F6Xf83GyB7Z51KePdsA9igeO33BWhgO00wcbt2qFvqF9dDB3Vgzh/uFhxkMqXzVFOXNmuJ56P9X2/JwiyOWkWYd7wi5kn5aOeEg/ItcOmgY0ULLsJ7+6QDugYFxLf/YFYe3bdE+1MzDpoJJYC4e2/WwJ8lQyJAv7r2SlLSnTQiKdUXQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=qOkaGA6q0syuhWwpbHcZA3LgreHGQfyjmEwRqqA2cqk=;
+ b=KU0n47RI7Ts3uumLnx9OgjQ+6lt4dAWRWxZjHhRLvGEec8vsGJcO2YE/jYviE77dIY4UWF81hcqtboEA3JkWX9FI2OH1iY5CPu2CAYME+XvKyr9EZR+JkygcvRgcpsTalMeQ3Y06GXRCwpMicxud7vuM+5SXNMwGfmmlc1E0EoV6AUOGp1Hk1ZBOZuVsOy3BCB3WbMZXjkmjmhpIKOlCFl8keGojiGklTWl7Clk4ZTRZa3CZZWT559lmJUG8MdVa3VjClU8hEHdnOXo9ntqNm0D/bCSRM604dOAlHqs8V86Vd/s5/mnweZqivVUZwAfEOk0bhb8UmSIdU4RhwZlm1Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=HOTMAIL.CO.UK;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=qOkaGA6q0syuhWwpbHcZA3LgreHGQfyjmEwRqqA2cqk=;
+ b=b+LbJ2F967OuyN365bEdL+HKEWxpjnDdVAEqnmqjX0EYpiaApyimTqUW/hNTtOdTk+y+jz5BtSNeKGyeAnoqntJu4rO6l1z5W3gA7+Y3Mhi4C5SAhXdTpLeBTb+t4+oAO7b542j6V9eNLQTiR2emhdLr6WlLxW0RJElDx+gnbYGX0jxr1TJLsBc0+eDOVLrDg6oSYNon8JMN0StIoPQw5ul40oTKoUkCcr2dLSf5KrI2HkXoifyLV/7tzbLYGZTM69riyxRg8e7z7o6AKZ+wsv0BcdZaK3+zJbACTDc0f5gTaqujPmWpWTx/Gt900RkbMV3S0th7gaF7Oyb3JoWoHg==
+Received: from PAXP251MB0010.EURP251.PROD.OUTLOOK.COM (2603:10a6:102:1d9::15)
+ by DB9P251MB0016.EURP251.PROD.OUTLOOK.COM (2603:10a6:10:2ce::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.382.15; Tue, 8 Sep
+ 2026 03:35:12 +0000
+Received: from PAXP251MB0010.EURP251.PROD.OUTLOOK.COM
+ ([fe80::fb91:30d8:e31d:1f35]) by PAXP251MB0010.EURP251.PROD.OUTLOOK.COM
+ ([fe80::fb91:30d8:e31d:1f35%4]) with mapi id 15.21.0382.014; Tue, 8 Sep 2026
+ 03:35:12 +0000
+From: Aamir Ahmed <elb12345@hotmail.co.uk>
+To: Andrew Lunn <andrew@lunn.ch>,
 	"David S . Miller" <davem@davemloft.net>,
-	Paolo Abeni <pabeni@redhat.com>,
 	Eric Dumazet <edumazet@google.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Leon Romanovsky <leon@kernel.org>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	"K . Y . Srinivasan" <kys@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	shradhagupta@linux.microsoft.com,
-	Simon Horman <horms@kernel.org>,
-	ernis@linux.microsoft.com,
-	stephen@networkplumber.org,
-	shirazsaleem@microsoft.com
-Cc: netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	linux-hyperv@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v4 09/13] net: mana: keep per-queue statistics in the port context
-Date: Mon,  7 Sep 2026 20:28:39 -0700
-Message-ID: <20260908032843.397667-10-longli@microsoft.com>
-X-Mailer: git-send-email 2.43.7
-In-Reply-To: <20260908032843.397667-1-longli@microsoft.com>
-References: <20260908032843.397667-1-longli@microsoft.com>
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Aamir Ahmed <elb12345@hotmail.co.uk>,
+	Peter Korsgaard <peter@korsgaard.com>,
+	Dean Jenkins <Dean_Jenkins@mentor.com>,
+	John Stultz <jstultz@google.com>,
+	linux-usb@vger.kernel.org,
+	netdev@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] net: usb: asix: fix off-by-one in rx_fixup bounds check
+Date: Tue,  8 Sep 2026 04:35:08 +0100
+Message-ID:
+ <PAXP251MB0010B79D228ED25E09D83C8CC8B12@PAXP251MB0010.EURP251.PROD.OUTLOOK.COM>
+X-Mailer: git-send-email 2.53.0.windows.1
+In-Reply-To: <AS8P251MB00014BB4591CE6011152DB4FC8B22@AS8P251MB0001.EURP251.PROD.OUTLOOK.COM>
+References: <AS8P251MB00014BB4591CE6011152DB4FC8B22@AS8P251MB0001.EURP251.PROD.OUTLOOK.COM>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: LO4P265CA0011.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:2ad::19) To PAXP251MB0010.EURP251.PROD.OUTLOOK.COM
+ (2603:10a6:102:1d9::15)
+X-Microsoft-Original-Message-ID:
+ <20260908033508.125132-1-elb12345@hotmail.co.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXP251MB0010:EE_|DB9P251MB0016:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6d77f7a7-8d56-4006-09ca-08df0d5a308e
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|23021999003|51005399006|25010399006|15080799012|19110799012|8060799015|2604032031799003|12121999013|37011999003|25031999004|55001999006|6090799003|24021099003|5072599009|40105399003|2607281247196008|440099028|3412199025|26104999009|1710799026;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?TVA2WjdPak9pOXZXQW9LT1REWmZYU3ZiWk5vWUdtTWZyL25NNmlKbHNkTGpP?=
+ =?utf-8?B?eDgzMldmMHAzcDlwclVKb25PbUZxRjVuMEpLM2RLUkhjRG9YNjV2bmpJUVdi?=
+ =?utf-8?B?aFhBaVVGTlNYZzMvUVVTYW1ySy9LNkcxOW9ZS21YNEEyTFBDcE45MjFHZkVs?=
+ =?utf-8?B?TE41dmgxSWJjaEhBUjBTbGliOXVhNkIvRWRsVUhPR2NiRlBranAybVZXM3h3?=
+ =?utf-8?B?NWRkek1reldwTGFNYjcxd1ZjRUR2cktXZGFQUU1PUVJOWGhQU1ZUSUpkb245?=
+ =?utf-8?B?N1NlL3NJTGs4SVlMTEhrOWR5VjJEa3lOQmc2NDFMTzljVzhQWU5xNmRhVzA1?=
+ =?utf-8?B?N0s5a25wV0dXcmdiV0NBeFg0enNrZXVVbEhDMDVZK2dTQkRqeCtHOVlyQWZ5?=
+ =?utf-8?B?eUZIdXRNUndaUUxQaXRUNm5RN0xhTmVUL3hLejFyQ2MyOEpFL2RHaHRaQmxO?=
+ =?utf-8?B?a2twYiszZDFVTVBmd2pPOUZ5dy8ySjJla1Vuak9xc2Q4VGd6VHBtOXA0RGpS?=
+ =?utf-8?B?MjB5RFNDalJjcnB4cWNEVDdBdGNxVUZoaUFMRGc3QnErOCtHejFqd0lVZEc2?=
+ =?utf-8?B?em4zTXpUcVBZTENvb1cxSDBIVzZSYXdsdDN3Y0pTalQ5ZFFNWk8zNjhsZk4w?=
+ =?utf-8?B?dmVvNWVwa292d0dxeWtzbGpLLzdBbXV0UFhZK2REVyt2ZzNnUE9ZQ1lFMXRU?=
+ =?utf-8?B?NGhpS0J0S3U0VVVlNE5wNEY0RU1jWHpkTThVZVVSdGRPSWFTOXZ3N0ZQOTFq?=
+ =?utf-8?B?Umlqci9wOEFzcHgzT1IwQnhxb2F1cEx4V21DVlFoRFZpdklQRnR0OUM4c0p6?=
+ =?utf-8?B?Q2N2bnpZVWNRT1ozRHc2ZDFUTVVUVlhud3Y2cWlRSkMwZUdJMkdKbXZZRVBs?=
+ =?utf-8?B?Qk1ldnkxOWN2aEZGOURaUkZaekg4Y1dyY00ybURkNjNETXdhQm8rK25YcExv?=
+ =?utf-8?B?d3ZCUmhTb0dRVHFTNy81N3JPMjF6Y0k2SUQ0RmV2MHFaMEFyZVh6b1ZEN3Mr?=
+ =?utf-8?B?cTA5a0FsV1lQWlVnbk1NS2ZlVzMrZXFRR0hXeW0xeFUwWUEvSGJZQ0sramxU?=
+ =?utf-8?B?b0I3Z0t0S3ROY3pZT2RlSmk5OFJXQk1GaGVGVVN5Z3dUbGZmcTh6OUd3YTIw?=
+ =?utf-8?B?bmQrWm5oM09QQ2NZenRTNVlLelQ3R3UzcFVLWjNoWHJhcjkycFJxWkVHOWda?=
+ =?utf-8?B?cUkvY3JjeVNwZ2k1UitEcy9zZ2MwZnpDY1JRQ2kwcnJsTitySWU1OWRhcEt0?=
+ =?utf-8?B?V2dLeld0SERscHpJU2p4QWgyNkkwT01vT2dBSzlHbVAxWmwrcitGWnpWMjVp?=
+ =?utf-8?B?RXZFNkI2aWxzTjVxQi83NTlqcVNyTWc3WUd0a2s2ekNiaEJXTkRsbzFiczZ1?=
+ =?utf-8?B?WVhjdE5nMEFZV1Q3V2xqVzN0VU83VjRzN3UwWUdWTVY4WkxkZ3dVTU1DcWsx?=
+ =?utf-8?B?TC9EMXFlb2dvUnRnTzkweTNFMjJvMGt2TzgwS1g5YzNtVnYyZTFSdUZLSDVm?=
+ =?utf-8?B?clRPSE93bWRFbkRKRytNTWVEYnpYSDdjR3VnTnpyQkNSTFFGQTJhaXd6Z1Jp?=
+ =?utf-8?Q?UCr3jvVKkW62CLPcdL4gC/VqU=3D?=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?VW0yTXVCa09tSkNPVSs1NzZVc3I0V0gxSmZ3ajZSWVhueG5KQUdMVWZ3MWxv?=
+ =?utf-8?B?OGpiTHhuUWpWQmxQa0xMSExHQXplZmpON0pYQVVZb0ZDUGJLb20wZ0lwN2lK?=
+ =?utf-8?B?VTArWXhneGNucG5NV1hWS1NYQ2ZqM2xSelJTVndvZ01FM3VxaXc3d2dEbnBj?=
+ =?utf-8?B?bEJZME02cTFlbjhEMUplaTFFb3c2SncvNXA4US9jZWkzOTljQWcrWi9vcjVv?=
+ =?utf-8?B?aTcxQ2dVUzQ2K0FHNjRCenlXYUN0RmRVTGxvNU8vMlNrVWRhMjhlM1VaMVE3?=
+ =?utf-8?B?WTFmRjVTZkJPUklnVlRKQWR3RlMvN1cvN1pXdTVCOWdUbUdhRWw4cUNBVnZm?=
+ =?utf-8?B?VHdiMnE1VGdhYi9MZVJyanpMTDVZY3VjSEM2VlhIeTVqRWRGRGpKZFNIRGkz?=
+ =?utf-8?B?ZFlMSlY3UVBJYmdJSzZFT0JUSk90SFhUMk42UlF6NTh2K0tCZkJJajdxeUFT?=
+ =?utf-8?B?TDdSY3ZwMDNWUEV0eVZzc2U4VkNrTGVEQ3FNMHBRRmxwNzM2YUZNVlA2aUhh?=
+ =?utf-8?B?SnZTalh4NnNDbk5DNmo2K3pJWlhubU9aeWpPZDJsUXFscFhzZUttZExqZld0?=
+ =?utf-8?B?ZU96NkwvMTJFYTZ0Z1ZqZk1EeHdoV3FZejhTbEg4dTQ0UStOR29tM3BmWWZu?=
+ =?utf-8?B?UkUwSFFlUlFpRUpnQTN0aGtoRkt3UVNZVnFNR0p6V2piS05rYlliQ2NnSmNr?=
+ =?utf-8?B?NjBSTDRTbUc3Tys0b1RKakRXcFFhTmFzellPRUtqQ3Z1NmgvNGN6RVFzYXh4?=
+ =?utf-8?B?dUlmcnRPT1F2VmZkZVcrU1hnRXNPeWlOQ3hGcEliMlBFK043aXYrQ1YwVHpU?=
+ =?utf-8?B?ZFRPYmJTVEpVbzFlYW9EaEd0Z3FaWUV5MEs1MXRXZVlZdHFPbU5yeEFXWGRq?=
+ =?utf-8?B?cVUvejdXRjMvbE5BQkcyYVZ2SW9UOXdCelBWem5oYm0veWs3MU5oaHZPbUlS?=
+ =?utf-8?B?M0VmVG9VV0l0L1liWG8xQlJKRDdocFRxelZrdEdIVHYrNURDUVdHRUtGNnpw?=
+ =?utf-8?B?am10ZjY5aVZZSWhEUXhPdjdpaEtDV0VLVUVGWlZXa1Z1M2xZdXVnS3FwaEpV?=
+ =?utf-8?B?a2kyWWpoT1U5bENHQnRiSlN1UTRwbmgrSkV4d0diZVUzc21mK1dYT1diemtT?=
+ =?utf-8?B?WlM5NHBXT2cyR2NlOXFvdmhYZU40M3c5UW93ODdMcW4xcGFDS3UySlBiWG9n?=
+ =?utf-8?B?Y3o0R0VyQlVqNkNDK0hzRkRKZ3hyUUtzM2pyN045bWRJRDBMdllnR2FZS2hT?=
+ =?utf-8?B?Qk1FQzJubFZTcGRrQSt6RllVbkIzZEZtZmY3RHNEamEvWmMrK2JYMEdVWUNR?=
+ =?utf-8?B?N0ZVZGp0STZzSnlBRGpkdTN6YzZ0cVVNY2U0c09od09TMDVUM0ZzMGJ4K2Jw?=
+ =?utf-8?B?M3Fpb0Z4aUNyTmlBUTJ5LzZxbTV6djBSQ2l1TXI2OTk3amVZcHdFc2VPZGVn?=
+ =?utf-8?B?cnAxTnhhWnYrSDgwT2t6Z21PK29WbU5QdTFuOG8xWGoyOVZDSjB4RmtyRDNl?=
+ =?utf-8?B?T0o0d2hJWFp3QjdFK2lRS2lIQmFkM2FITlpON3pwQnNzUnlKQkhoMTAydXl0?=
+ =?utf-8?B?aTk3L2M1QW1NQ1lzSkw3WkVrTzRJSXlDc3N3ZXMvQm5mdUgvZG9zRXhZUEdR?=
+ =?utf-8?B?cjZMOGszdDl6SVNoYlFqSWE4L0w3bzdmNlZqZjVrUFlueFdtTXhaTERkMlZG?=
+ =?utf-8?B?TXgvUkx1R0ZuNThzdFh0Y2IzL1IyUHBjbWpWNkhvRXVKU3BXS3Vtb1dXZ3hL?=
+ =?utf-8?B?RzhJQlJZUHJSSjN2N08raG0zWnZWcTZPK3dDU2RBTmFhNTNIN0ZsOE1xRzRn?=
+ =?utf-8?B?VGErbldXdS91SE84TVRFcUk1Tk1MQyt2NThqWnRKS05WNmtydXpCck1BajRT?=
+ =?utf-8?B?QjlMU2t5QXRENnpUVXFYck9ibExlNWFwRzNTeVNTTU5mRkNHbUNqUC9mSzly?=
+ =?utf-8?Q?80UsKOja1u1ah4JdSbuLM0nfBZQQ0C4i?=
+X-OriginatorOrg: sct-15-20-9412-3-msonline-outlook-fe3f5.templateTenant
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6d77f7a7-8d56-4006-09ca-08df0d5a308e
+X-MS-Exchange-CrossTenant-AuthSource: PAXP251MB0010.EURP251.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Sep 2026 03:35:12.5906
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9P251MB0016
 
-Move RX/TX counters into port-lifetime arrays so queue rebuilds do not
-reset them. Sum all max_queues slots for ndo_get_stats64(); keep the
-current queue count for ethtool's per-queue output.
+Further revision is needed - the check is in the wrong place.
 
-Retiring RX queues count into private drain_stats. Destruction and
-rollback fold these into separate port slots after writer quiescence.
-Report counters while down too, but gate the PHY query on port_is_up.
+With rx->remaining = 3 and skb->len = 7 the new check does skip the
+sync peek, but the loop below then reaches the same byte:
 
-DIM now samples the persistent live counters and skips retiring queues.
+	while (offset + sizeof(u16) <= skb->len) {
+		if (!rx->remaining) {
+			...
+			rx->header = get_unaligned_le32(skb->data + offset);
 
-Signed-off-by: Long Li <longli@microsoft.com>
----
-Changes in v4:
-  - Remove the port-up early returns from both statistics readers;
-    retain that condition only for the hardware PHY query.
-  - Clarify drain-stat folding and DIM input changes; shorten comments.
+It copies the 3 remaining bytes, advances offset to 4, re-enters with
+3 bytes left and reads 4 there. The guard only requires 2 bytes while
+that branch reads 4; there is a case for exactly 2 bytes (split_head)
+and none for 3.
 
- .../net/ethernet/microsoft/mana/mana_bpf.c    |   4 +-
- drivers/net/ethernet/microsoft/mana/mana_en.c | 204 +++++++++++++++---
- .../ethernet/microsoft/mana/mana_ethtool.c    |  48 ++++-
- include/net/mana/mana.h                       |  30 ++-
- 4 files changed, 242 insertions(+), 44 deletions(-)
+I will send a v2 that guards that read instead.
 
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_bpf.c b/drivers/net/ethernet/microsoft/mana/mana_bpf.c
-index 2dc2624128a9141012ab59b723dbfc9617ae6237..8daeb65cc647bb4cf4391f6fadcd04793630c3b6 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_bpf.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_bpf.c
-@@ -73,7 +73,7 @@ int mana_xdp_xmit(struct net_device *ndev, int n, struct xdp_frame **frames,
- 		count++;
- 	}
- 
--	tx_stats = &apc->tx_qp[q_idx]->txq.stats;
-+	tx_stats = apc->tx_qp[q_idx]->txq.stats;
- 
- 	u64_stats_update_begin(&tx_stats->syncp);
- 	tx_stats->xdp_xmit += count;
-@@ -100,7 +100,7 @@ u32 mana_run_xdp(struct net_device *ndev, struct mana_rxq *rxq,
- 
- 	act = bpf_prog_run_xdp(prog, xdp);
- 
--	rx_stats = &rxq->stats;
-+	rx_stats = mana_rxq_stats(rxq);
- 
- 	switch (act) {
- 	case XDP_PASS:
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-index 5752e3745ccc6ba26bdd8f9be3108e4f3de69be0..98007bb3ef7caa974849c3f4998854f15c925321 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -396,7 +396,7 @@ netdev_tx_t mana_start_xmit(struct sk_buff *skb, struct net_device *ndev)
- 	txq = &apc->tx_qp[txq_idx]->txq;
- 	gdma_sq = txq->gdma_sq;
- 	cq = &apc->tx_qp[txq_idx]->tx_cq;
--	tx_stats = &txq->stats;
-+	tx_stats = txq->stats;
- 
- 	BUILD_BUG_ON(MAX_TX_WQE_SGL_ENTRIES != MANA_MAX_TX_WQE_SGL_ENTRIES);
- 	if (MAX_SKB_FRAGS + 2 > MAX_TX_WQE_SGL_ENTRIES &&
-@@ -575,7 +575,7 @@ netdev_tx_t mana_start_xmit(struct sk_buff *skb, struct net_device *ndev)
- 	/* Populated the packet and bytes counters based on post GSO packet
- 	 * calculations
- 	 */
--	tx_stats = &txq->stats;
-+	tx_stats = txq->stats;
- 	u64_stats_update_begin(&tx_stats->syncp);
- 	tx_stats->packets += num_gso_seg;
- 	tx_stats->bytes += len + ((num_gso_seg - 1) * gso_hs);
-@@ -621,15 +621,15 @@ static void mana_get_stats64(struct net_device *ndev,
- 			     struct rtnl_link_stats64 *st)
- {
- 	struct mana_port_context *apc = netdev_priv(ndev);
--	unsigned int num_queues = apc->num_queues;
- 	struct mana_stats_rx *rx_stats;
- 	struct mana_stats_tx *tx_stats;
-+	unsigned int num_queues;
- 	unsigned int start;
- 	u64 packets, bytes;
- 	int q;
- 
--	if (!apc->port_is_up)
--		return;
-+	/* Report even while down; dev_get_stats() zeroes its output. */
-+	num_queues = apc->max_queues;
- 
- 	netdev_stats_to_stats64(st, &ndev->stats);
- 
-@@ -639,7 +639,18 @@ static void mana_get_stats64(struct net_device *ndev,
- 	st->rx_missed_errors = apc->ac->hc_stats.hc_rx_discards_no_wqe;
- 
- 	for (q = 0; q < num_queues; q++) {
--		rx_stats = &apc->rxqs[q]->stats;
-+		rx_stats = &apc->rxq_stats[q];
-+
-+		do {
-+			start = u64_stats_fetch_begin(&rx_stats->syncp);
-+			packets = rx_stats->packets;
-+			bytes = rx_stats->bytes;
-+		} while (u64_stats_fetch_retry(&rx_stats->syncp, start));
-+
-+		st->rx_packets += packets;
-+		st->rx_bytes += bytes;
-+
-+		rx_stats = &apc->rxq_stats_ret[q];
- 
- 		do {
- 			start = u64_stats_fetch_begin(&rx_stats->syncp);
-@@ -652,7 +663,7 @@ static void mana_get_stats64(struct net_device *ndev,
- 	}
- 
- 	for (q = 0; q < num_queues; q++) {
--		tx_stats = &apc->tx_qp[q]->txq.stats;
-+		tx_stats = &apc->txq_stats[q];
- 
- 		do {
- 			start = u64_stats_fetch_begin(&tx_stats->syncp);
-@@ -1065,6 +1076,105 @@ static void mana_cleanup_port_context(struct mana_port_context *apc)
- 	apc->rxqs = NULL;
- }
- 
-+/* Port lifetime preserves counters across queue replacement. */
-+static int mana_alloc_queue_stats(struct mana_port_context *apc)
-+{
-+	unsigned int i;
-+
-+	apc->rxq_stats = kcalloc(apc->max_queues, sizeof(*apc->rxq_stats),
-+				 GFP_KERNEL);
-+	if (!apc->rxq_stats)
-+		return -ENOMEM;
-+
-+	apc->rxq_stats_ret = kcalloc(apc->max_queues,
-+				     sizeof(*apc->rxq_stats_ret), GFP_KERNEL);
-+	if (!apc->rxq_stats_ret)
-+		goto free_rxq_stats;
-+
-+	apc->txq_stats = kcalloc(apc->max_queues, sizeof(*apc->txq_stats),
-+				 GFP_KERNEL);
-+	if (!apc->txq_stats)
-+		goto free_rxq_stats_ret;
-+
-+	for (i = 0; i < apc->max_queues; i++) {
-+		u64_stats_init(&apc->rxq_stats[i].syncp);
-+		u64_stats_init(&apc->rxq_stats_ret[i].syncp);
-+		u64_stats_init(&apc->txq_stats[i].syncp);
-+	}
-+
-+	return 0;
-+
-+free_rxq_stats_ret:
-+	kfree(apc->rxq_stats_ret);
-+	apc->rxq_stats_ret = NULL;
-+free_rxq_stats:
-+	kfree(apc->rxq_stats);
-+	apc->rxq_stats = NULL;
-+	return -ENOMEM;
-+}
-+
-+static void mana_free_queue_stats(struct mana_port_context *apc)
-+{
-+	kfree(apc->rxq_stats);
-+	apc->rxq_stats = NULL;
-+	kfree(apc->rxq_stats_ret);
-+	apc->rxq_stats_ret = NULL;
-+	kfree(apc->txq_stats);
-+	apc->txq_stats = NULL;
-+}
-+
-+/* Fold under RTNL after drain_stats writers quiesce. Clear drain_stats to
-+ * prevent double counting on rollback.
-+ */
-+static void mana_fold_rxq_stats(struct mana_port_context *apc,
-+				struct mana_rxq *rxq)
-+{
-+	struct mana_stats_rx *src = &rxq->drain_stats;
-+	struct mana_stats_rx *dst;
-+	unsigned int i;
-+
-+	ASSERT_RTNL();
-+
-+	if (!apc->rxq_stats_ret || rxq->rxq_idx >= apc->max_queues)
-+		return;
-+
-+	dst = &apc->rxq_stats_ret[rxq->rxq_idx];
-+
-+	u64_stats_update_begin(&dst->syncp);
-+	dst->packets		+= src->packets;
-+	dst->bytes		+= src->bytes;
-+	dst->xdp_drop		+= src->xdp_drop;
-+	dst->xdp_tx		+= src->xdp_tx;
-+	dst->xdp_redirect	+= src->xdp_redirect;
-+	dst->pkt_len0_err	+= src->pkt_len0_err;
-+	for (i = 0; i < ARRAY_SIZE(dst->coalesced_cqe); i++)
-+		dst->coalesced_cqe[i] += src->coalesced_cqe[i];
-+	u64_stats_update_end(&dst->syncp);
-+
-+	src->packets		= 0;
-+	src->bytes		= 0;
-+	src->xdp_drop		= 0;
-+	src->xdp_tx		= 0;
-+	src->xdp_redirect	= 0;
-+	src->pkt_len0_err	= 0;
-+	for (i = 0; i < ARRAY_SIZE(src->coalesced_cqe); i++)
-+		src->coalesced_cqe[i] = 0;
-+}
-+
-+static void mana_fold_qset_rx_stats(struct mana_port_context *apc,
-+				    struct mana_qset *qset)
-+{
-+	unsigned int q;
-+
-+	if (!qset->rxqs)
-+		return;
-+
-+	for (q = 0; q < qset->num_queues; q++) {
-+		if (qset->rxqs[q])
-+			mana_fold_rxq_stats(apc, qset->rxqs[q]);
-+	}
-+}
-+
- static void mana_cleanup_indir_table(struct mana_port_context *apc)
- {
- 	apc->indir_table_sz = 0;
-@@ -2172,7 +2282,7 @@ static void mana_rx_skb(void *buf_va, bool from_pool,
- 			struct mana_rxcomp_oob *cqe, struct mana_rxq *rxq,
- 			u32 pkt_len, u32 pkt_hash)
- {
--	struct mana_stats_rx *rx_stats = &rxq->stats;
-+	struct mana_stats_rx *rx_stats = mana_rxq_stats(rxq);
- 	struct net_device *ndev = rxq->ndev;
- 	u16 rxq_idx = rxq->rxq_idx;
- 	struct napi_struct *napi;
-@@ -2405,6 +2515,7 @@ static void mana_process_rx_cqe(struct mana_rxq *rxq, struct mana_cq *cq,
- 	struct net_device *ndev = rxq->ndev;
- 	struct mana_recv_buf_oob *rxbuf_oob;
- 	struct mana_port_context *apc;
-+	struct mana_stats_rx *rx_stats;
- 	struct device *dev = gc->dev;
- 	bool coalesced_8 = false;
- 	bool coalesced = false;
-@@ -2486,13 +2597,15 @@ static void mana_process_rx_cqe(struct mana_rxq *rxq, struct mana_cq *cq,
- 	 * Coalesced CQEs have at least 2 packets, so index is pkt_i - 2.
- 	 */
- 	if (pkt_i > 1) {
--		u64_stats_update_begin(&rxq->stats.syncp);
--		rxq->stats.coalesced_cqe[pkt_i - 2]++;
--		u64_stats_update_end(&rxq->stats.syncp);
-+		rx_stats = mana_rxq_stats(rxq);
-+		u64_stats_update_begin(&rx_stats->syncp);
-+		rx_stats->coalesced_cqe[pkt_i - 2]++;
-+		u64_stats_update_end(&rx_stats->syncp);
- 	} else if (!pkt_i && !pktlen) {
--		u64_stats_update_begin(&rxq->stats.syncp);
--		rxq->stats.pkt_len0_err++;
--		u64_stats_update_end(&rxq->stats.syncp);
-+		rx_stats = mana_rxq_stats(rxq);
-+		u64_stats_update_begin(&rx_stats->syncp);
-+		rx_stats->pkt_len0_err++;
-+		u64_stats_update_end(&rx_stats->syncp);
- 		netdev_err_once(ndev,
- 				"RX pkt len=0, rq=%u, cq=%u, rxobj=0x%llx\n",
- 				rxq->gdma_id, cq->gdma_id, rxq->rxobj);
-@@ -2624,8 +2737,12 @@ static void mana_update_rx_dim(struct mana_cq *cq)
- 	if (!smp_load_acquire(&apc->rx_dim_enabled))
- 		return;
- 
--	dim_update_sample(READ_ONCE(cq->dim_event_ctr), rxq->stats.packets,
--			  rxq->stats.bytes, &dim_sample);
-+	/* Skip retiring RXQs; DIM reads shared per-index counters. */
-+	if (READ_ONCE(rxq->retiring))
-+		return;
-+
-+	dim_update_sample(READ_ONCE(cq->dim_event_ctr), rxq->stats->packets,
-+			  rxq->stats->bytes, &dim_sample);
- 	net_dim(&cq->dim, &dim_sample);
- }
- 
-@@ -2842,7 +2959,7 @@ static int mana_create_txq(struct mana_port_context *apc,
- 		/* Create SQ */
- 		txq = &apc->tx_qp[i]->txq;
- 
--		u64_stats_init(&txq->stats.syncp);
-+		txq->stats = &apc->txq_stats[i];
- 		txq->ndev = net;
- 		txq->net_txq = netdev_get_tx_queue(net, i);
- 		txq->reset_gen = READ_ONCE(apc->ac->reset_gen);
-@@ -2969,6 +3086,9 @@ static void mana_destroy_rxq(struct mana_port_context *apc,
- 		netif_napi_del_locked(napi);
- 	}
- 
-+	/* NAPI is quiesced, so drain_stats has no remaining writer. */
-+	mana_fold_rxq_stats(apc, rxq);
-+
- 	if (xdp_rxq_info_is_reg(&rxq->xdp_rxq))
- 		xdp_rxq_info_unreg(&rxq->xdp_rxq);
- 
-@@ -3154,6 +3274,8 @@ static struct mana_rxq *mana_create_rxq(struct mana_port_context *apc,
- 		return ERR_PTR(-ENOMEM);
- 
- 	rxq->ndev = ndev;
-+	rxq->stats = &apc->rxq_stats[rxq_idx];
-+	u64_stats_init(&rxq->drain_stats.syncp);
- 	rxq->num_rx_buf = apc->rx_queue_size;
- 	rxq->rxq_idx = rxq_idx;
- 	rxq->rxobj = INVALID_MANA_HANDLE;
-@@ -3304,8 +3426,6 @@ static int mana_add_rx_queues(struct mana_port_context *apc,
- 			goto out;
- 		}
- 
--		u64_stats_init(&rxq->stats.syncp);
--
- 		apc->rxqs[i] = rxq;
- 
- 		mana_create_rxq_debugfs(apc, i);
-@@ -4076,16 +4196,27 @@ static void mana_start_txqs(struct mana_port_context *apc)
- /* Retiring completions must not wake replacement queues. Mark the leaving set
-  * before unmarking the incoming set.
-  */
--static void mana_qset_set_retiring(struct mana_qset *qset, bool retiring)
-+static void mana_qset_set_retiring(struct mana_qset *qset,
-+				   const struct mana_qset *keep, bool retiring)
- {
- 	unsigned int q;
- 
--	if (!qset->tx_qp)
--		return;
--
- 	for (q = 0; q < qset->num_queues; q++) {
--		if (qset->tx_qp[q])
-+		if (qset->tx_qp && qset->tx_qp[q])
- 			WRITE_ONCE(qset->tx_qp[q]->txq.retiring, retiring);
-+
-+		if (!qset->rxqs || !qset->rxqs[q])
-+			continue;
-+
-+		/* Carried RXQs remain the sole poll writers of shared slots. */
-+		if (retiring && keep && q < keep->num_queues &&
-+		    keep->rxqs && keep->rxqs[q] == qset->rxqs[q])
-+			continue;
-+
-+		/* Switch to drain_stats; hand off shared slots after a grace
-+		 * period.
-+		 */
-+		WRITE_ONCE(qset->rxqs[q]->retiring, retiring);
- 	}
- }
- 
-@@ -4140,12 +4271,12 @@ int mana_publish_qset(struct mana_port_context *apc, struct mana_qset *newq,
- 	/* Mark before the grace period so old completions cannot wake the
- 	 * replacement's stopped queue.
- 	 */
--	mana_qset_set_retiring(out_old, true);
-+	mana_qset_set_retiring(out_old, newq, true);
- 
- 	/* Drain TX/XDP readers past the gate and polls missing retiring. */
- 	synchronize_net();
- 
--	mana_qset_set_retiring(newq, false);
-+	mana_qset_set_retiring(newq, NULL, false);
- 
- 	mana_qset_install(apc, newq);
- 	apc->rss_state = apc->num_queues > 1 ? TRI_STATE_TRUE : TRI_STATE_FALSE;
-@@ -4183,8 +4314,16 @@ int mana_publish_qset(struct mana_port_context *apc, struct mana_qset *newq,
- 	netdev_err(ndev, "%s failed: %d, restoring previous queue set\n",
- 		   __func__, err);
- 
--	mana_qset_set_retiring(newq, true);
--	mana_qset_set_retiring(out_old, false);
-+	mana_qset_set_retiring(newq, out_old, true);
-+
-+	/* Quiesce new shared-slot writers before restoring old ones. */
-+	synchronize_net();
-+
-+	mana_qset_set_retiring(out_old, NULL, false);
-+
-+	/* Quiesce old drain_stats writers before folding. */
-+	synchronize_net();
-+	mana_fold_qset_rx_stats(apc, out_old);
- 
- 	mana_qset_install(apc, out_old);
- 	apc->rss_state = apc->num_queues > 1 ? TRI_STATE_TRUE : TRI_STATE_FALSE;
-@@ -4393,6 +4532,10 @@ static int mana_probe_port(struct mana_context *ac, int port_idx,
- 		apc->tx_dim_enabled = MANA_ADAPTIVE_TX_DEF;
- 	}
- 
-+	err = mana_alloc_queue_stats(apc);
-+	if (err)
-+		goto free_net;
-+
- 	mutex_init(&apc->vport_mutex);
- 	apc->vport_use_count = 0;
- 
-@@ -4415,7 +4558,7 @@ static int mana_probe_port(struct mana_context *ac, int port_idx,
- 
- 	err = mana_init_port(ndev);
- 	if (err)
--		goto free_net;
-+		goto free_stats;
- 
- 	err = mana_rss_table_alloc(apc);
- 	if (err)
-@@ -4452,6 +4595,8 @@ static int mana_probe_port(struct mana_context *ac, int port_idx,
- 	mana_cleanup_indir_table(apc);
- reset_apc:
- 	mana_cleanup_port_context(apc);
-+free_stats:
-+	mana_free_queue_stats(apc);
- free_net:
- 	*ndev_storage = NULL;
- 	netdev_err(ndev, "Failed to probe vPort %d: %d\n", port_idx, err);
-@@ -4792,6 +4937,7 @@ void mana_remove(struct gdma_dev *gd, bool suspending)
- 
- 		unregister_netdevice(ndev);
- 		mana_cleanup_indir_table(apc);
-+		mana_free_queue_stats(apc);
- 
- 		/* Remove the port from reset walks before freeing its netdev.
- 		 */
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_ethtool.c b/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
-index 32f40f5cd850e6c67ea0dd57cc45a51b37c43b93..77dcbd01a1f3da692c341f17d8f2a8301c02bd6b 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
-@@ -242,6 +242,12 @@ static void mana_get_ethtool_stats(struct net_device *ndev,
- 	u64 xdp_tx;
- 	u64 pkt_len0_err;
- 	u64 coalesced_cqe[MANA_CQE_COAL_PKTS_8 - 1];
-+	u64 ret_coalesced_cqe[MANA_CQE_COAL_PKTS_8 - 1];
-+	u64 ret_packets, ret_bytes;
-+	u64 ret_xdp_redirect;
-+	u64 ret_pkt_len0_err;
-+	u64 ret_xdp_drop;
-+	u64 ret_xdp_tx;
- 	u64 tso_packets;
- 	u64 tso_bytes;
- 	u64 tso_inner_packets;
-@@ -252,14 +258,11 @@ static void mana_get_ethtool_stats(struct net_device *ndev,
- 	u64 mana_map_err;
- 	int q, i = 0, j;
- 
--	if (!apc->port_is_up)
--		return;
--
--	/* We call this mana function to get the phy stats from GDMA and includes
--	 * aggregate tx/rx drop counters, Per-TC(Traffic Channel) tx/rx and pause
--	 * counters.
-+	/* Counters outlive the queues, but suspend can destroy the HW channel
-+	 * while the netdev remains registered. Gate only the PHY query.
- 	 */
--	mana_query_phy_stats(apc);
-+	if (apc->port_is_up)
-+		mana_query_phy_stats(apc);
- 
- 	for (q = 0; q < ARRAY_SIZE(mana_eth_stats); q++)
- 		data[i++] = *(u64 *)(eth_stats + mana_eth_stats[q].offset);
-@@ -271,7 +274,7 @@ static void mana_get_ethtool_stats(struct net_device *ndev,
- 		data[i++] = *(u64 *)(phy_stats + mana_phy_stats[q].offset);
- 
- 	for (q = 0; q < num_queues; q++) {
--		rx_stats = &apc->rxqs[q]->stats;
-+		rx_stats = &apc->rxq_stats[q];
- 
- 		do {
- 			start = u64_stats_fetch_begin(&rx_stats->syncp);
-@@ -285,6 +288,33 @@ static void mana_get_ethtool_stats(struct net_device *ndev,
- 				coalesced_cqe[j] = rx_stats->coalesced_cqe[j];
- 		} while (u64_stats_fetch_retry(&rx_stats->syncp, start));
- 
-+		/* Snapshot separately so a retry cannot add retired counters
-+		 * twice.
-+		 */
-+		rx_stats = &apc->rxq_stats_ret[q];
-+
-+		do {
-+			start = u64_stats_fetch_begin(&rx_stats->syncp);
-+			ret_packets = rx_stats->packets;
-+			ret_bytes = rx_stats->bytes;
-+			ret_xdp_drop = rx_stats->xdp_drop;
-+			ret_xdp_tx = rx_stats->xdp_tx;
-+			ret_xdp_redirect = rx_stats->xdp_redirect;
-+			ret_pkt_len0_err = rx_stats->pkt_len0_err;
-+			for (j = 0; j < MANA_CQE_COAL_PKTS_8 - 1; j++)
-+				ret_coalesced_cqe[j] =
-+					rx_stats->coalesced_cqe[j];
-+		} while (u64_stats_fetch_retry(&rx_stats->syncp, start));
-+
-+		packets += ret_packets;
-+		bytes += ret_bytes;
-+		xdp_drop += ret_xdp_drop;
-+		xdp_tx += ret_xdp_tx;
-+		xdp_redirect += ret_xdp_redirect;
-+		pkt_len0_err += ret_pkt_len0_err;
-+		for (j = 0; j < MANA_CQE_COAL_PKTS_8 - 1; j++)
-+			coalesced_cqe[j] += ret_coalesced_cqe[j];
-+
- 		data[i++] = packets;
- 		data[i++] = bytes;
- 		data[i++] = xdp_drop;
-@@ -296,7 +326,7 @@ static void mana_get_ethtool_stats(struct net_device *ndev,
- 	}
- 
- 	for (q = 0; q < num_queues; q++) {
--		tx_stats = &apc->tx_qp[q]->txq.stats;
-+		tx_stats = &apc->txq_stats[q];
- 
- 		do {
- 			start = u64_stats_fetch_begin(&tx_stats->syncp);
-diff --git a/include/net/mana/mana.h b/include/net/mana/mana.h
-index 9b8c038042b4f90b0b5958fc33cdad36e169863c..6c6d906db207304cd2d32c474cf2e9e5f32f4738 100644
---- a/include/net/mana/mana.h
-+++ b/include/net/mana/mana.h
-@@ -102,7 +102,7 @@ struct mana_stats_rx {
- 	u64 pkt_len0_err;
- 	u64 coalesced_cqe[MANA_CQE_COAL_PKTS_8 - 1];
- 	struct u64_stats_sync syncp;
--};
-+} ____cacheline_aligned_in_smp;
- 
- struct mana_stats_tx {
- 	u64 packets;
-@@ -117,7 +117,7 @@ struct mana_stats_tx {
- 	u64 csum_partial;
- 	u64 mana_map_err;
- 	struct u64_stats_sync syncp;
--};
-+} ____cacheline_aligned_in_smp;
- 
- struct mana_txq {
- 	struct gdma_queue *gdma_sq;
-@@ -148,7 +148,7 @@ struct mana_txq {
- 	/* Suppress completion wakeups on the replacement's netdev queue. */
- 	bool retiring;
- 
--	struct mana_stats_tx stats;
-+	struct mana_stats_tx *stats;
- };
- 
- /* skb data and frags dma mappings */
-@@ -410,7 +410,16 @@ struct mana_rxq {
- 
- 	u32 buf_index;
- 
--	struct mana_stats_rx stats;
-+	/* Port-owned live slot; use mana_rxq_stats() to select the writer's
-+	 * slot.
-+	 */
-+	struct mana_stats_rx *stats;
-+
-+	/* Set under RTNL before another queue takes over this index. */
-+	bool retiring;
-+
-+	/* Folded under RTNL after drain-stat writers quiesce. */
-+	struct mana_stats_rx drain_stats;
- 
- 	struct bpf_prog __rcu *bpf_prog;
- 	struct xdp_rxq_info xdp_rxq;
-@@ -613,6 +622,14 @@ struct mana_port_context {
- 	unsigned int max_queues;
- 	unsigned int num_queues;
- 
-+	/* Port-lifetime arrays with max_queues slots. Live RX queues write
-+	 * rxq_stats[]; teardown and rollback fold drain_stats into
-+	 * rxq_stats_ret[] under RTNL. Readers sum both.
-+	 */
-+	struct mana_stats_rx *rxq_stats;
-+	struct mana_stats_rx *rxq_stats_ret;
-+	struct mana_stats_tx *txq_stats;
-+
- 	unsigned int rx_queue_size;
- 	unsigned int tx_queue_size;
- 
-@@ -714,6 +731,11 @@ int mana_detach(struct net_device *ndev, bool from_close);
- struct mana_port_context *
- mana_qset_scratch_alloc(struct mana_port_context *apc);
- void mana_qset_scratch_free(struct mana_port_context *scratch);
-+static inline struct mana_stats_rx *mana_rxq_stats(struct mana_rxq *rxq)
-+{
-+	return READ_ONCE(rxq->retiring) ? &rxq->drain_stats : rxq->stats;
-+}
-+
- int mana_alloc_qset(struct mana_port_context *apc,
- 		    struct mana_port_context *scratch, unsigned int num_queues,
- 		    unsigned int rx_queue_size, unsigned int tx_queue_size,
--- 
-2.43.0
+Reaching 3 bytes left also needs an odd skb->len, which a conforming
+device does not produce, so the v2 will drop the Fixes and stable
+tags.
+
+pw-bot: changes-requested
+
+Regards,
+Aamir Ahmed
