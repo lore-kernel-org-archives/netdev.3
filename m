@@ -1,180 +1,119 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 694A5387599
-	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 07:23:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCC3738B7D9
+	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 07:27:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788852229; cv=none; b=ZUXbsR9x8juw+O7TZRbg9RgNmBG7zilQJt4jdWaqd5dPznOsWYjSkP27GiYfC8rSQyEKFYypvp4Wb4v2l2KNp8o1YKlBTdzYbwCXg4IGbZOjmFC3CpSbj6dK16vK1fBUFV0hcNEx2WH4txgVmtzTI4enWu1gk1tqZRQmCpi9w1M=
+	t=1788852478; cv=none; b=KtRtRyg0H1nT4GYb9R49ZeaLDCrTuiPHLYPPEO69KcCwaizHhcWQRQS+zQufjQqC2HKPOjY4Hjx6Qm0s79se5LARNS3ow7gMqoR6Ih4UA5MZtzNGMMuLO4BYNaehwZ/XCVxbtP5eE8serdJ3SCJlBWXajqNk9RJyFSJDBUj6cPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788852229; c=relaxed/simple;
-	bh=0Hn3nwFflocQDE1Vnf/oZsgxF4q4ZrlzvFiOG4Em9aI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pbHh05YiBn4QTuiQqR38E09P5Abrx744POyj7EZdSt0WPB+Pxio4LY3GMdemTXitQWjB8Uz8EzaPjHilO8sredq53gyQ+dq67dUgta76FAuhjU1o+N/Ifa0X9LHUjGJwXvy9dhRJHlXz8Zn8R+vypnu/Mgeacu7g9EVT+8zaA4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=gAt3yW2A; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=EE9n50bc; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1788852478; c=relaxed/simple;
+	bh=p1ZcMHGo68iCWyW/brIIWAXY278T8hlmIapDoVvZ+rE=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=av5vHaOgK2K0SkEJfgemhNl54LDxZJBYYrWc9KtjThSzwmpx+BLsJlf8OCSlDAKV7DysHpNgDNZD/Pe2Cw8JOtwZhfm2QvNZoXNZcUS86LLt5eHmtRgIMhd2Ofczl1cnplF9L8gojsU9v2kEyHhNk/60DeaPNzxQ2Mz/kOK6pdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=At/jTLZR; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="gAt3yW2A";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="EE9n50bc"
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6886M1eL2363234
-	for <netdev@vger.kernel.org>; Tue, 8 Sep 2026 07:23:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=repPIlp7EV4oN5ph2gAva5Wf
-	gIj/jHE07iTHvT9P2zQ=; b=gAt3yW2A0/zE7b8Wn5f82T+fA4l7lq4kudwqWMvC
-	adw2vDQmfLzguOQnOKVRgc+CptAbjA4k3bbFiPYItE+pZhV3tS94rzo1j7VNqxGe
-	nKuTI1hKNJHvvEJorFf+juJgYSsKNCg2esVmi85pvdYMESKGSnFFvyNAXAehz6Io
-	pKPWCOG568TXw5QQVeg0hphYQiIa+cT+WkThGj2+0iWDQl4OmuDaLxJJ7Xn7AcNl
-	SnThu0XD8uwvFpG9EhxkVHsnc8NlMOL0/Ce5f9PVcRbXx3AesZU9Whyh3flUAf2s
-	h8sEJhvc65j1KhiURLf7A6luPK45cFDWb8MdKeXEy+0tHw==
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gjagugt9d-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 07:23:47 +0000 (GMT)
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2cee1ec30f2so50326675ad.3
-        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 00:23:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1788852226; x=1789457026; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=repPIlp7EV4oN5ph2gAva5WfgIj/jHE07iTHvT9P2zQ=;
-        b=EE9n50bcw6o9gzcOVgt7yyHkY9bq6skq50Zobpd+BwqD9I3pGaO+Mp7fMRolx8GM4h
-         OdQYlZS6TI2Wk1zo+JSHOn0uylTJTEFXG175stMRste4mLvkMOMHyySTL8lQKaszTaXe
-         7qTlrLgNCVxZ9h2B2BHszoiNh3F+d9BI36c95spKZpBliCbQF6BoMulTEXZ+4gmJnIXl
-         OOUvti0sz1DYR9eiIh8OsKjSHOI8oBNrar00mAzZuP823RTY/2ycBYG88cUBjO9KRfCG
-         XOj8XBEjWtsDH8IhlOd0eg4XnlYMIqYr2qAeJVym4BbTnSokbq50DrRo7hqt5dg385cE
-         +5Ig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788852226; x=1789457026;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=repPIlp7EV4oN5ph2gAva5WfgIj/jHE07iTHvT9P2zQ=;
-        b=mtOnmWkjHtMcu4SI8uO9o8U/EQgKg9IKiP2Fx8LTxg6OBhzE1mkXTuuum5p0l5RpOb
-         M1ZOwKCx/K4mKsPOqO454RXKd9r1Qqo9wjI6f3eYfy7Mltt39YNoRXznpzLe9NP42+E9
-         o63iOPKT5FbFheyO8H78YhyusAuw2QoxCqE1QEmOzoO8U0GaXeyjWusl363Pf9X7f67e
-         ex0t3L7k2en9zam2DR6l4UutL7Us22yAvvVQx+ZHe+3YNpiaGA6ikYJsrzDlQUCoycmM
-         arNvsy30kvhLTvNY/cIdRMjLr+0/lF+bZF/Ir6PlMc8MriE29uP2N7firllEIuToPMCI
-         rq+w==
-X-Forwarded-Encrypted: i=1; AKwUvBxXH5BPkPoVTjDH6Qb+q7xTeYZCpRBmdXdoRsN1sWH3wLP/hYqgoTtKRFUI0kkZ0lzcKIivv0g=@vger.kernel.org
-X-Gm-Message-State: AFuF++kalNY3wubANADa1EBZW2F+Th7hUh8/i+MIOGQRBwVdm3im1rC9
-	ync/6qnrlzeM/3cDqo8sylgsXIVq/dRSQcK/NGyKgkht+0w1k8OX2NyvV7TE47W2oZuAIlZ665F
-	YCuNG2lE1epuoSa2M8LEtow2pUxUzwdr76hL6uoQcRfkHyvvBzndsBWvT/LQ=
-X-Gm-Gg: AYBFou0KAFWXnaO/dMSQKeQeyHrlRX5KO8KAtxGu2gmToLFo0fTEZ+IHI4QaKlSIpig
-	XYcbFbCXh397i543rYmMMy2Ywdo4n9TNiDUG7tyvbGS1Jhq2qE/xXyZkKGgvxDOxGLSxe43z56/
-	r+6C2inPpSfft6zymUZBiLHxSspr6ptoX3T9JvcLouQx3rvz2hsMSx64Iehba3iNyoSCo0+k5IB
-	PziG+i0/nrjTN9wP6cRtCcJ227kG/gx0K9j/svvICB3W9tUGa4DiCvS19F/3/eZTTBSOJNSSl0a
-	CxAgLQ2XJxHEu/3tLSO/60WoWRTOkKdVMuEKgfVz96sk7Syv2SB/ze+YE7BZerKubJq6cPabn8h
-	0Z3xZEQh9PlybvQ==
-X-Received: by 2002:a05:6a20:2583:b0:3bf:7bf7:7913 with SMTP id adf61e73a8af0-3da39ff4716mr38887947637.14.1788852226265;
-        Tue, 08 Sep 2026 00:23:46 -0700 (PDT)
-X-Received: by 2002:a05:6a20:2583:b0:3bf:7bf7:7913 with SMTP id adf61e73a8af0-3da39ff4716mr38887881637.14.1788852225783;
-        Tue, 08 Sep 2026 00:23:45 -0700 (PDT)
-Received: from oss.qualcomm.com ([202.46.23.25])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3339b9f68e4sm35845902eec.24.2026.09.08.00.23.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Sep 2026 00:23:45 -0700 (PDT)
-Date: Tue, 8 Sep 2026 12:53:37 +0530
-From: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Komal Bajaj <komal.bajaj@oss.qualcomm.com>,
-        Anurag Pateriya <apateriy@qti.qualcomm.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-        Richard Cochran <richardcochran@gmail.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        Maxime Chevallier <maxime.chevallier@bootlin.com>,
-        Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH PRELIMINARY 0/5] arm64: dts: qcom: shikra: add Ethernet
- support
-Message-ID: <ap+3+Xhq6ygnPzQ7@oss.qualcomm.com>
-References: <20260908-shikra_ethernet_dts-v1-0-69c0c5c7c124@oss.qualcomm.com>
- <e9388ffc-ddc8-456f-ad7f-1d185d35ab69@kernel.org>
- <ap+zd/2QmerMwi0o@oss.qualcomm.com>
- <c23369fc-84ff-4881-8327-c18fc3692306@kernel.org>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="At/jTLZR"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id A80DD1A1A51;
+	Tue,  8 Sep 2026 07:27:47 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 6F0B1603C4;
+	Tue,  8 Sep 2026 07:27:47 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 98DEE11C7AF1B;
+	Tue,  8 Sep 2026 09:27:42 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1788852466; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=YMCM4ejLgCs5i3vF09xaernSR5tuvNenK7m4oOC/9/w=;
+	b=At/jTLZRCjQyQpjAPIvPXJBdB8g3EFbvh6K9BJwC+aiktiofqtFJoGrtNFKc2bgZuHNG9B
+	rmAT1brTHxKAWlbsYGa90I/jo5hlMFdsI9pznDTwrqMpxAKk78gam+NaGd1TVNR7NCoic5
+	3ZfDyAmXZXqm2T10hykkH0Q9KqFWMwC7ikT8nkN4LHzGW8zX4ii7VALXTfrvQ9eq/FqBoT
+	MgM/dmqKQJHCW4Vct1nWcjqiFXJvggMIb8vM4BkSrjsP5onRVSiThsEICnlo9o++Nw88eH
+	6g5JmUVynMHaU/yShg7CprXkDI705d8mF77xW5cH6qOhB7tK2Ovr0Lg5p87bIQ==
+From: "Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>
+Subject: [PATCH net-next v3 00/10] net: dsa: microchip: add periodic output
+ support for the KSZ8463
+Date: Tue, 08 Sep 2026 09:27:40 +0200
+Message-Id: <20260908-ksz-perout-v3-0-6722a3f1ca75@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c23369fc-84ff-4881-8327-c18fc3692306@kernel.org>
-X-Authority-Analysis: v=2.4 cv=TqLWQjXh c=1 sm=1 tr=0 ts=6a9fb803 cx=c_pps
- a=MTSHoo12Qbhz2p7MsH1ifg==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
- a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=gowsoOTTUOVcmtlkKump:22
- a=enzuNw960j4ePshAGDsA:9 a=CjuIK1q_8ugA:10 a=GvdueXVYPmCkWapjIL-Q:22
-X-Proofpoint-GUID: -kCYY0E3Fx3DP2MH47oBXfbkixn77-kJ
-X-Proofpoint-ORIG-GUID: -kCYY0E3Fx3DP2MH47oBXfbkixn77-kJ
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTA4MDA3NCBTYWx0ZWRfX7NWMUk9eOohW
- fl62zFuMPwXnm1jDw/xpPuvWIg+pXv+F3Qj+0XetRu/20C4tMCJanFK9rP9Rq3PkoebM0EzTNk3
- Oi6MQsKqP9EY3joOXqDUAYup4UJun40=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA4MDA3NCBTYWx0ZWRfXwWSePT3sK+pe
- LeJiqCpYSm2xjSWwICnosiVs5lcUhqujQF8TAJNetYuACmRcBmJD7JQzWwkLqqI2y1QKI/0ncuD
- vPXRV0t+Zg5PyhWZI8GTe5JWPbGH9VCymNj0ULTn32LJWL1nwSKL0LyNAuEUYp6empQBaIDNKK/
- 3p4brTuX/G5qkV/5/NHszg3HNXnOF+zvo/uTOpXj1j7mZbGaPtnsBgLM7Bhe7Ud8bl8+SBAGOm4
- bultI2+rgJzt7LW0iPIG4/s93SXJ7QIcSPwfOPSBk0OU5Tmzta+a2a/GPPbkyp05x3eHqOkjBGr
- l/TMsiiMZlqd6LpmzGu4TtvMCb6YHYr6FKUBM+tNpV2dsXYX4NyexdvWG4Tpzss9QJM15OQeopt
- CxQ3Id6MlfnwJ2h5ejIpeIH4gVK/3CHM47MI/Co0UANYmZDOHKgn8Kvz6fgsQwf4uQX1CuREiDy
- UtnfV0XjFRUd6c/eBWQ==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-08_01,2026-09-07_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 adultscore=0 bulkscore=0 lowpriorityscore=0 spamscore=0
- phishscore=0 malwarescore=0 clxscore=1015 impostorscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2609080074
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/1WNTQ7CIBgFr9KwFsOPpdSV9zAuWvphiQoNIKk2v
+ bsEF9rly2TmLSiANxDQsVqQh2SCcTYPvquQGjt7BWyGvBEjTBDJanwLbzyBd8+IO91KyoEyWku
+ UhcmDNnOJnZGFiC3MEV0yGU2Izr/KS6KFf4Oc/gcTxQTTQ0ZD3wje81PvXLwbu1fuUUKJ/eSWs
+ I3Msiw0axqtVAtCbuV1XT+sTXMZ7QAAAA==
+X-Change-ID: 20260825-ksz-perout-af9813e12158
+To: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com, 
+ Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Richard Cochran <richardcochran@gmail.com>
+Cc: Pascal Eberhard <pascal.eberhard@se.com>, 
+ =?utf-8?q?Miqu=C3=A8l_Raynal?= <miquel.raynal@bootlin.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ "Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>
+X-Mailer: b4 0.14.3
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Tue, Sep 08, 2026 at 09:14:45AM +0200, Krzysztof Kozlowski wrote:
-> On 08/09/2026 09:04, Mohd Ayaan Anwar wrote:
-> > On Tue, Sep 08, 2026 at 08:56:39AM +0200, Krzysztof Kozlowski wrote:
-> >> On 08/09/2026 08:23, Mohd Ayaan Anwar wrote:
-> >>> Hi,
-> >>>
-> >>> This preliminary series adds the DTS changes required to enable
-> >>> Ethernet on the Qualcomm Shikra CQM, CQS, and IQS EVKs.
-> >>
-> >> What is "PRELIMINARY" patch in upstream? Where is this process
-> >> documented or expressed?
-> >>
-> > 
-> > My apologies. The code is ready, and I was hoping that sharing the DTS
-> > changes would make reviewing the driver and dt-bindings a bit easier.
-> > The original RFC had them together, and I split it out for net-next
-> > and linux-next.
-> 
-> Yeah, but why calling it completely different than every other patchset?
-> Why coming with different style? Why this cannot be RFC?
+This series aims to add periodic output support for the KSZ8463. The
+way the KSZ8463 handles periodic output differs from that of the other
+KSZ switches. It therefore needs its own set of perout callbacks
+(configure, start, reset, enable, restart).
 
-Agreed. In hindsight, this should probably have been an RFC v2. I saw
-some recent series using a PRELIMINARY tag, but I see that its
-ultimately just an RFC.
+Patches 1 to 3 prepare the driver to accept different kinds of periodic
+output settings.
 
-> 
-> > 
-> > The only reason I added a PRELIMINARY tag was because these DTS changes
-> > should go in after the driver changes and dt-bindings.
-> > 
-> 
-> DTS cannot go after the driver changes. If that is your requirement,
-> then original work is broken and needs to be fixed.
-> 
+Patches 4 to 9 extract a set of functions from the existing periodic
+output support that can be reused by the KSZ8463, avoiding code
+duplication as much as possible.
 
-I should have worded it better. I am only worried about the dt-bindings
-going in before this DTS. The driver changes just add support for
-whatever we are desribing in this series, they can go in after
-dt-bindings and DTS without any issues.
+Patch 10 adds periodic output support for the KSZ8463.
 
-	Ayaan
+Signed-off-by: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
+---
+Changes in v3:
+- PATCH 10: Fix build error when CONFIG_NET_DSA_MICROCHIP_KSZ_PTP=n
+- Link to v2: https://lore.kernel.org/r/20260902-ksz-perout-v2-0-6f277fcc9e68@bootlin.com
+
+Changes in v2:
+- PATCH 1: Init n_pins for all PTP capable switches
+- PATCH 2: Init n_per_out for all PTP capable switches
+- Link to v1: https://lore.kernel.org/r/20260831-ksz-perout-v1-0-14202db763b3@bootlin.com
+
+---
+Bastien Curutchet (Schneider Electric) (10):
+      net: dsa: microchip: add the number of pins to chip infos
+      net: dsa: microchip: add the number of periodic signals to chip infos
+      net: dsa: microchip: use dynamic mask to check pulse width validity
+      net: dsa: microchip: extract PTP callbacks configuration from PTP registration
+      net: dsa: microchip: extract ptp_get_pin
+      net: dsa: microchip: extract compute_width
+      net: dsa: microchip: extract prepare reset
+      net: dsa: microchip: extract time update
+      net: dsa: microchip: extract time adjustment
+      net: dsa: microchip: add periodic output support for the KSZ8463
+
+ drivers/net/dsa/microchip/ksz8.c         |   2 +
+ drivers/net/dsa/microchip/ksz9477.c      |   1 +
+ drivers/net/dsa/microchip/ksz_common.c   |  22 ++
+ drivers/net/dsa/microchip/ksz_common.h   |   2 +
+ drivers/net/dsa/microchip/ksz_ptp.c      | 473 ++++++++++++++++++++++++++-----
+ drivers/net/dsa/microchip/ksz_ptp.h      |   6 +-
+ drivers/net/dsa/microchip/ksz_ptp_reg.h  |  16 ++
+ drivers/net/dsa/microchip/lan937x_main.c |   1 +
+ 8 files changed, 452 insertions(+), 71 deletions(-)
+---
+base-commit: f7f619ecda5761bd48578764ef5ff9e8fd97b916
+change-id: 20260825-ksz-perout-af9813e12158
+
+Best regards,
+-- 
+Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
+
