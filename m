@@ -1,137 +1,183 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from va-2-35.ptr.blmpb.com (va-2-35.ptr.blmpb.com [209.127.231.35])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB7403F99F4;
-	Tue,  8 Sep 2026 08:40:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E3C74A090A
+	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 08:41:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.127.231.35
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788856857; cv=none; b=SDthw1Z9Pi9wjmALgQoO0+gpq0ioLibRypHVEU/dCO/IU/hq9zl4a394O24KbRoqSfzGFqxzZUFB/nMj1ovkwGt3jDtbwIoCp2Obtdkk2ylyFBbHbhSyhTF8MVtNiAOXG3GCkwx5pnIylazReJIKUzwoRKqqxnJAySTDjdzO/CE=
+	t=1788856900; cv=none; b=YqE5Jm7yoTCw6hwelyEQ7PKyDzn6V/VKktzGcRHL7ZX+2gt4CwwWXrAaiIJlCngwFhE+AglvLwPchi3Fk/nEuZ3wypwhin04aj7uiJOcsavrhoIDSyucG/uX+j80xtfhqAMdE125lNM7+i591OHH5VZZ5jKb5Mjjf7lc0plE2DA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788856857; c=relaxed/simple;
-	bh=oPG8VBNrRlqipsMmtZpmQ3beL9mc/4dKsNEBMmlHVzg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=U1L5eavygcg3bbt6Gn1711bUIWGN4hOVHgufFTd9D2jz5p94RgUaAP4mdaCrNzWYmpk64KNgxs/jawBXxVRUKhl5MHbQR6z6G0dia8jEr/4op73nqseyQ39jGRAiFbdaJRsNdf3vLaEHiLkNU7qjze1NoNH8FcD2MA60MtWSQR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PhWtAtE0; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788856900; c=relaxed/simple;
+	bh=wY3VV5WDN1nI99aH2yAc9UFlxwaH9JlgtrHoShr7BTI=;
+	h=To:Date:From:Message-Id:Subject:Content-Type:Cc:Mime-Version; b=hle9eOZSS5GS/Vh5wTefa2YZyifJHPCtJbbyxpGeepw59wXjJvFQhYEg8YjwEH9Q+4dtsl7kUSpFV0f27zNnpI+n2TmWOcW2eg4wVklEZQ1aHGLLRIuGmya617OdbkgWX30M9G/kUSsMvxwUnlKOr4ZxNE5gy5kgdqAO+LhSnT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=moonshot.ai; spf=pass smtp.mailfrom=moonshot.ai; dkim=pass (2048-bit key) header.d=moonshot.ai header.i=@moonshot.ai header.b=igU+VauJ; arc=none smtp.client-ip=209.127.231.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=moonshot.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=moonshot.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PhWtAtE0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B582E1F00A3D;
-	Tue,  8 Sep 2026 08:40:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788856854;
-	bh=jSuLEe6P7QY7UzfjfsGtEwmzDfa2TYxR0HKzgMeZmUw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=PhWtAtE0KEcCG98o1pIsJJ6a3rK1l6z+R9VmbKYDRmWiJcQ3H0AblQV9Q9DElj/K2
-	 9DdzrzLxjLdApNdLM5QUyNugyFFw3OpDQ3rGJIwApIPTmloOgJ4C85emmurItDWD5i
-	 KtLG7BXjtOJyH/OExhNyJWsWvtAAc1qDz9RGM1CIVa47QMf9LbJifJPgdWxenngJPk
-	 5F8/5FStfc87d42IPU0eROCZahzFTosbELD41d7O7oqz0dAHcUBuiOuFKpS/go+2GX
-	 c4N9bFWmyax34NmoGtTAxqi6OSRqXWt4zirCd0S5zCmHshCYwoEQ/pAIAjfISq1yDB
-	 U9/X+prdEhmdw==
-Message-ID: <fd428d1c-646f-47f1-9fbb-91f3b50760dd@kernel.org>
-Date: Tue, 8 Sep 2026 10:40:45 +0200
+	dkim=pass (2048-bit key) header.d=moonshot.ai header.i=@moonshot.ai header.b="igU+VauJ"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=feishu2510091218; d=moonshot.ai; t=1788856886; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=5o7fWMlFekwwncUURIGYfK7rbrZX2OhHQRVSVrU9p+w=;
+ b=igU+VauJ8HLhNVdaQf16qG27f3O9AROpbiVYrV+3fvNwBlwVMYcp5svve6kEboFl/LN4M2
+ mW9kFqvmDVO9esq6fJk5TtdD/P8gYWb/RNOL7mhaDPIAXEPvE5zt2bOiQYIyVsSakfbt/g
+ GkKS8oHbkVMY/GTkpHJxWwX8K6tZ3Xt9Yj7exbHWrn39Zp8+aBuYJ/BQQeXZJNqF2uDwC3
+ gmy+evkeJVDvnwQQkwXrw7GfiMrM4cjPIyQ4PBxVF15s5o+Fu1fdjDlgmOGeqhIX+TOkHj
+ smw/BEzrpxnhzOk3N/I9XwFMvMsbVkau72Zt/2EnGHOhcwvnM9eaUGMZ27fL3Q==
+To: "Paul Mackerras" <paulus@ozlabs.org>
+Date: Tue,  8 Sep 2026 16:41:16 +0800
+X-Lms-Return-Path: <lba+26a9fca35+6aa51c+vger.kernel.org+yilinzhang@moonshot.ai>
+From: "Yilin Zhang" <yilinzhang@moonshot.ai>
+Message-Id: <20260908084116.634633-1-yilinzhang@moonshot.ai>
+Received: from dev.msh-dev.svc.cluster.local ([117.157.206.135]) by smtp.feishu.cn with ESMTPS; Tue, 08 Sep 2026 16:41:23 +0800
+Subject: [PATCH net v2] ppp: enforce minimum MTU/MRU to fix Deflate buffer underflows
+Content-Type: text/plain; charset=UTF-8
+Cc: "Yilin Zhang" <yilinzhang@moonshot.ai>, <linux-ppp@vger.kernel.org>, 
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
+	"Kimi Security Team" <bug-report@moonshot.ai>, 
+	"Weiming Shi" <shiweiming@moonshot.ai>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH PRELIMINARY 0/5] arm64: dts: qcom: shikra: add Ethernet
- support
-To: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>
-Cc: Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Komal Bajaj <komal.bajaj@oss.qualcomm.com>,
- Anurag Pateriya <apateriy@qti.qualcomm.com>,
- Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
- Richard Cochran <richardcochran@gmail.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>,
- Maxime Chevallier <maxime.chevallier@bootlin.com>,
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-References: <20260908-shikra_ethernet_dts-v1-0-69c0c5c7c124@oss.qualcomm.com>
- <e9388ffc-ddc8-456f-ad7f-1d185d35ab69@kernel.org>
- <ap+zd/2QmerMwi0o@oss.qualcomm.com>
- <c23369fc-84ff-4881-8327-c18fc3692306@kernel.org>
- <ap+3+Xhq6ygnPzQ7@oss.qualcomm.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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
-In-Reply-To: <ap+3+Xhq6ygnPzQ7@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
+Mime-Version: 1.0
+X-Original-From: Yilin Zhang <yilinzhang@moonshot.ai>
 Content-Transfer-Encoding: 7bit
+X-Mailer: git-send-email 2.34.1
 
-On 08/09/2026 09:23, Mohd Ayaan Anwar wrote:
-> On Tue, Sep 08, 2026 at 09:14:45AM +0200, Krzysztof Kozlowski wrote:
->> On 08/09/2026 09:04, Mohd Ayaan Anwar wrote:
->>> On Tue, Sep 08, 2026 at 08:56:39AM +0200, Krzysztof Kozlowski wrote:
->>>> On 08/09/2026 08:23, Mohd Ayaan Anwar wrote:
->>>>> Hi,
->>>>>
->>>>> This preliminary series adds the DTS changes required to enable
->>>>> Ethernet on the Qualcomm Shikra CQM, CQS, and IQS EVKs.
->>>>
->>>> What is "PRELIMINARY" patch in upstream? Where is this process
->>>> documented or expressed?
->>>>
->>>
->>> My apologies. The code is ready, and I was hoping that sharing the DTS
->>> changes would make reviewing the driver and dt-bindings a bit easier.
->>> The original RFC had them together, and I split it out for net-next
->>> and linux-next.
->>
->> Yeah, but why calling it completely different than every other patchset?
->> Why coming with different style? Why this cannot be RFC?
-> 
-> Agreed. In hindsight, this should probably have been an RFC v2. I saw
-> some recent series using a PRELIMINARY tag, but I see that its
+z_compress() assumes that its output buffer can hold the six-byte
+PPP/Deflate header.  A user with CAP_NET_ADMIN can set the MTU to 1,
+making pad_compress_skb() allocate a five-byte skb.  z_compress() then
+writes the header past the end and makes avail_out wrap when subtracting
+the header length, allowing zlib to continue writing past the allocation.
 
-Where?
-https://lore.kernel.org/all/?q=s%3APRELIMINARY
+On receive, PPPIOCSMRU accepts any signed int.  An MRU of -1 makes
+ppp_decompress_frame() allocate a three-byte skb, after which
+z_decompress() writes the PPP header and makes avail_out wrap when
+subtracting PPP_HDRLEN, letting inflate overwrite the skb.
 
+Set the PPP netdevice minimum MTU to 128 and reject MRU values below 128
+(or large enough to overflow the allocation-size calculation) in
+PPPIOCSMRU, matching the minimum that pppd uses when negotiating MRU
+values.  This ensures that the output buffer seen by z_compress() and
+z_decompress() always covers the PPP/Deflate header, so avail_out
+cannot wrap.
 
-Best regards,
-Krzysztof
+Take one MTU snapshot when calculating both the skb allocation and
+compressor sizes, so a concurrent MTU change cannot make them
+inconsistent.
+
+The two memory-corruption paths produce (Linux 6.1.0, KASAN, decoded):
+
+  BUG: KASAN: slab-out-of-bounds in deflate_slow (lib/zlib_deflate/defutil.h:431 lib/zlib_deflate/deflate.c:1123)
+  Write of size 8198 at addr ff110000045edc06 by task exp/78
+  CPU: 1 PID: 78 Comm: exp Not tainted 6.1.0 #1
+  Call Trace:
+    kasan_check_range (mm/kasan/generic.c:190)
+    memcpy (mm/kasan/shadow.c:65)
+    deflate_slow (lib/zlib_deflate/defutil.h:431 lib/zlib_deflate/deflate.c:1123)
+    zlib_deflate (lib/zlib_deflate/deflate.c:412)
+    z_compress (drivers/net/ppp/ppp_deflate.c:227)
+    __ppp_xmit_process (drivers/net/ppp/ppp_generic.c:1703 drivers/net/ppp/ppp_generic.c:1826 drivers/net/ppp/ppp_generic.c:1646)
+    ppp_xmit_process (drivers/net/ppp/ppp_generic.c:1668)
+    ppp_write (drivers/net/ppp/ppp_generic.c:520)
+
+  Allocated by task 78:
+    __alloc_skb (net/core/skbuff.c:437 net/core/skbuff.c:509)
+    __ppp_xmit_process (include/linux/skbuff.h:1267 drivers/net/ppp/ppp_generic.c:1692 drivers/net/ppp/ppp_generic.c:1826 drivers/net/ppp/ppp_generic.c:1646)
+    ppp_xmit_process (drivers/net/ppp/ppp_generic.c:1668)
+    ppp_write (drivers/net/ppp/ppp_generic.c:520)
+
+  The buggy address belongs to the object at ff110000045edc00
+   which belongs to the cache kmalloc-512 of size 512
+  The buggy address is located 6 bytes inside of
+   512-byte region [ff110000045edc00, ff110000045ede00)
+
+  BUG: KASAN: slab-out-of-bounds in zlib_inflate (lib/zlib_inflate/inflate.c:458)
+  Write of size 8191 at addr ff110000021d1044 by task ksoftirqd/0/12
+  CPU: 0 PID: 12 Comm: ksoftirqd/0 Not tainted 6.1.0 #1
+  Call Trace:
+    kasan_check_range (mm/kasan/generic.c:190)
+    memcpy (mm/kasan/shadow.c:65)
+    zlib_inflate (lib/zlib_inflate/inflate.c:458)
+    z_decompress (drivers/net/ppp/ppp_deflate.c:460)
+    ppp_receive_nonmp_frame (drivers/net/ppp/ppp_generic.c:2546 drivers/net/ppp/ppp_generic.c:2383)
+    ppp_input (drivers/net/ppp/ppp_generic.c:2355 drivers/net/ppp/ppp_generic.c:2195 drivers/net/ppp/ppp_generic.c:2310)
+    ppp_async_process (drivers/net/ppp/ppp_async.c:496)
+
+  Allocated by task 12:
+    __alloc_skb (net/core/skbuff.c:437 net/core/skbuff.c:509)
+    __netdev_alloc_skb (net/core/skbuff.c:575)
+    ppp_receive_nonmp_frame (include/linux/skbuff.h:3155 include/linux/skbuff.h:3168 drivers/net/ppp/ppp_generic.c:2539 drivers/net/ppp/ppp_generic.c:2383)
+    ppp_input (drivers/net/ppp/ppp_generic.c:2355 drivers/net/ppp/ppp_generic.c:2195 drivers/net/ppp/ppp_generic.c:2310)
+    ppp_async_process (drivers/net/ppp/ppp_async.c:496)
+
+  The buggy address belongs to the object at ff110000021d1000
+   which belongs to the cache kmalloc-512 of size 512
+  The buggy address is located 68 bytes inside of
+   512-byte region [ff110000021d1000, ff110000021d1200)
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Suggested-by: Paul Mackerras <paulus@ozlabs.org>
+Reported-by: Kimi Security Team <bug-report@moonshot.ai>
+Co-developed-by: Weiming Shi <shiweiming@moonshot.ai>
+Signed-off-by: Weiming Shi <shiweiming@moonshot.ai>
+Signed-off-by: Yilin Zhang <yilinzhang@moonshot.ai>
+---
+ drivers/net/ppp/ppp_generic.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
+
+Changes in v2:
+- Set dev->min_mtu = 128 and reject MRU < 128 in PPPIOCSMRU per Paul's
+  suggestion; drop the z_compress()/z_decompress() changes from v1.
+
+diff --git a/drivers/net/ppp/ppp_generic.c b/drivers/net/ppp/ppp_generic.c
+index 1a610a1..4022117 100644
+--- a/drivers/net/ppp/ppp_generic.c
++++ b/drivers/net/ppp/ppp_generic.c
+@@ -72,6 +72,8 @@
+ 
+ #define PPP_PROTO_LEN	2
+ #define PPP_LCP_HDRLEN	4
++#define PPP_MIN_MTU	128
++#define PPP_MIN_MRU	128
+ 
+ /* The filter instructions generated by libpcap are constructed
+  * assuming a four-byte PPP header on each packet, where the last
+@@ -808,6 +810,10 @@ static long ppp_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+ 	case PPPIOCSMRU:
+ 		if (get_user(val, p))
+ 			break;
++		if (val < PPP_MIN_MRU || val > INT_MAX - PPP_HDRLEN - 1) {
++			err = -EINVAL;
++			break;
++		}
+ 		ppp_recv_lock(ppp);
+ 		ppp->mru = val;
+ 		ppp_recv_unlock(ppp);
+@@ -1628,6 +1634,7 @@ static void ppp_setup(struct net_device *dev)
+ 
+ 	dev->hard_header_len = PPP_HDRLEN;
+ 	dev->mtu = PPP_MRU;
++	dev->min_mtu = PPP_MIN_MTU;
+ 	dev->addr_len = 0;
+ 	dev->tx_queue_len = 3;
+ 	dev->type = ARPHRD_PPP;
+@@ -1719,10 +1726,11 @@ pad_compress_skb(struct ppp *ppp, struct sk_buff *skb)
+ {
+ 	struct net_device *dev = netdev_from_priv(ppp);
+ 	struct sk_buff *new_skb;
++	int mtu = READ_ONCE(dev->mtu);
+ 	int len;
+-	int new_skb_size = dev->mtu +
++	int new_skb_size = mtu +
+ 		ppp->xcomp->comp_extra + dev->hard_header_len;
+-	int compressor_skb_size = dev->mtu +
++	int compressor_skb_size = mtu +
+ 		ppp->xcomp->comp_extra + PPP_HDRLEN;
+ 
+ 	if (skb_linearize(skb))
+-- 
+2.55.0
