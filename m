@@ -1,73 +1,152 @@
-Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f51.google.com (mail-yx1-f51.google.com [74.125.224.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B82B3CC337
-	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 15:18:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FE495540A8
+	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 15:19:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788880710; cv=none; b=K3ocvY+cBQgk4xG+d+NxDTMc7RZDQb7v1BBdA0UlGNL3DYMGquMmG7DB7/8picuxIxzhd1uEj1EHBSWzd7YtcreHyHf4/TT+5VLoh3AR2gXhmPpsOoTvttGf6cHpNXA13qlfeOpBoK07EF/OEy+IQdb/TOnqX4tYxwSrPiyAEq4=
+	t=1788880772; cv=none; b=dl3vCWpOd3OGYT+C1jCWDcQgWZLCzeNxsXjPM4BjyyL47IvOgRnYbn4rT4KJqDOZMEe5uzKt/GSNd3N4NDOVBT1Ls9b1lY7W1bRSS7CL4Vp7HBTTknhbrIyxdXPEYSnLHJD/4g5tiBI01vlGAg3zWbNUBiiTBAeBbmJX9/+W1iA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788880710; c=relaxed/simple;
-	bh=AN+a+kYp6jBISAgGfUnagMa8xe4a3N6zMwCVIdeKd/o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Tk/5q9WiPwkgtPgibqNN3h6wezRNOzZKWI0er2Yz94TCbXxitjARpSrvbd5ZO3rapGsgrUNlUvqbF9/dWpfbmy9/0EBqBnz9x4d80P3ZuqXuJnZskECC00s0GixN3/e2LAPdAi91j1J8fEPAKlOgRpb2bfuKJ9wAHPw1h4JBNw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=EzbhBRx9; arc=none smtp.client-ip=185.226.149.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
+	s=arc-20240116; t=1788880772; c=relaxed/simple;
+	bh=2E2paIhVSecgEqjIXBb7PZzzAn2OOgH65j7qNTEeMiY=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Wm4LYRGxB6jryTumgCVPiqFuU7w/EcqiLOxVDmzp+CHhv4xG2fdPf5TKZaQJv34vA8PQH/G2/rC4iCJhE/1tmzkTM9Sc7sKyCszz2jqUaia3wnHo/Bnh8lfmE5Q9Ya94wo99Ls90TVMy8Cs+WGw31fz9C3wymU0upQVZc1eDcbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CFBxOYKB; arc=none smtp.client-ip=74.125.224.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="EzbhBRx9"
-Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
-	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.93)
-	(envelope-from <mhal@rbox.co>)
-	id 1x3xa4-00F5p0-84; Tue, 08 Sep 2026 17:17:52 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
-	s=selector2; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID;
-	bh=AN+a+kYp6jBISAgGfUnagMa8xe4a3N6zMwCVIdeKd/o=; b=EzbhBRx94csRsvKR9DaG+hjI+q
-	sPuoqH9+SbyERvR9QTCS/PLO85ARmc66v804E5FtG8g9Oikj86zB+/KdK5H+DHpc/XxinrCYNXY1+
-	L3ZGuvrDL1fxvcZN+J/H37bPwB/dCuDyAchn+3Kfc4DWA8lCoU1is+4QWBm/ujuLpU25bChPjsv+P
-	2XaEYpfl1I8onemIjXXaO6j8LY9igj7o7y4n5eJ64D1dXcroZH7yb2oo5hZeE6HU2c1s68lJntO8y
-	k9n8ekwBnhcGBQ8Ddqx0hzMKk7Qd1zicJMGgXtgDLU9W0XZQq9kEn68bM9vOHfRwSdeSdG8PKpHw7
-	H64X+W1g==;
-Received: from [10.9.9.74] (helo=submission03.runbox)
-	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
-	(envelope-from <mhal@rbox.co>)
-	id 1x3xZy-0008Gc-3F; Tue, 08 Sep 2026 17:17:46 +0200
-Received: by submission03.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.95)
-	id 1x3xZe-00EdyY-2i;
-	Tue, 08 Sep 2026 17:17:26 +0200
-Message-ID: <4ee9a2ec-c16c-4f1a-ba81-2dcc47c1c3cb@rbox.co>
-Date: Tue, 8 Sep 2026 17:17:19 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CFBxOYKB"
+Received: by mail-yx1-f51.google.com with SMTP id 956f58d0204a3-66c7e3a2332so3458840d50.2
+        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 08:19:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788880761; x=1789485561; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:date:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=QhdCOmP4zDl1C4qG/vDZ2J5jFE+DMqbe+H/tbxij/K4=;
+        b=CFBxOYKB3iRfvLbButzgKpzs1fOoQywfEeAYQVEyRRu0uRJHy9btNUKKy6vQ/FYDlf
+         KY0X7JPm+TPmkMLm4oXmTnri693RhMPrR+MSsie4WAgAzLJFtcMZDR645ARELlf/eONu
+         b1LQbzBGi6u7leRHYiZ0Mi03+3C7Hl66lYz9s785Dzu9oY1HWjaDlhkD72A6cZT7bs7o
+         m7vF/XYi6N13hl8kkbL4m/R2/bKZ/szzUFGIFPXWDHA25l33JiiaDHCLkn2zT6oIYTBn
+         DdepwaZ50w2KKo33Enz1rdxsF6J1VJULQol2YAhDOzoIQkjPKq8QfOr5xDCnET0ENzst
+         MwWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788880761; x=1789485561;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=QhdCOmP4zDl1C4qG/vDZ2J5jFE+DMqbe+H/tbxij/K4=;
+        b=R/CQyw5hwE14p+ffm5ODesFkJf3XWsllaPpMyk60F3QiA8f8bfG1wJEY4pHr7pArMn
+         P0jftaLmtZJiNh0mVqyPk1z1CNJvZbpFxGzmqSeZVKwKELv+iroK6QmwZkSry0sMfMIg
+         F4evwlDOk6E0XJyKQmbxzFbhn8N9enyZoeiGyzvTGZ5XgyhG8zxCxiLZWf7Peslcn2qI
+         /uFK2ONMe/e9XY254E3ZxIthrrgc5zyu5eqga1THAoYFpZMZK8i9tSoxRWDKbKlAIS3l
+         BaCJDXy1zsE1z27zaS6/x4iOJqOSt/+/zgnkLO1DXOSXGJQQEPjewPltoueDwH+EDl3u
+         XpFg==
+X-Forwarded-Encrypted: i=1; AKwUvBw6/rygFWqYM2piCYwgtSVWbgcxCtzpMUnP00vZl1OuEB9d3CHFoW12BRhsn1wOQVW5EYnHDPY=@vger.kernel.org
+X-Gm-Message-State: AFuF++kYpoavOzrORiWvMp94bUpu6ymYTUFwXTufAm1mu9PGoQpJS5HU
+	i30X73G0yjgomDW33RVY5sBFIKuoj1ytCw1icyFPDJCSS1ZMa5mI4cg3
+X-Gm-Gg: AYBFou1wcfWp2ErvmeCn9IxjV5EXxFuUUm1HLZptRU2/XF/4evO9v9nXVz78SE2iuXW
+	kpA2V+VQBiMEKioOUP5zu6sswqcXAnf8On8EgPQj5d8MaSuycwHmqVVqoWSuFOo/JJh19c6Xdql
+	weIZK5/7GKBr+vHTwc4w1QaeL9TRGAMIVXcGjIA5WJHWXiHj/5aogT4RvdO78GTyONgdvmHzane
+	OW74yYRTJD/ADeyrbU5zsPASL1n4Y+GpNOWa0GSPNQwFi8EWpjAd5VY2aTmFWM7tdiGcKse82s9
+	6E+WMv/Nc9C2y9etyff390HKn5HmKHl22bY5zzjYG4bMAyMO+1L2fU4/SKGY+wF7EKXiPzEv/l7
+	nxbLVFiF7aa6xsTseHmt8tFOL+9JcFl/uOGoKCwDFUy7ZNjyQ6XxhBLiwJABksYs55eh/mpHKnT
+	zQ/vBn8v+Ut8xuMysQtHruw6ZcUlaEPXRdDBrBfRuUoy/VVNofvwEF1UOolxOPU/jghPVQZ91TN
+	yRr9ugZVYuj6AKsaw==
+X-Received: by 2002:a05:690e:4893:10b0:66f:c6b0:e10b with SMTP id 956f58d0204a3-670f63fcd8fmr2064936d50.68.1788880760843;
+        Tue, 08 Sep 2026 08:19:20 -0700 (PDT)
+Received: from localhost (c-73-105-0-191.hsd1.fl.comcast.net. [73.105.0.191])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-670febedc44sm1035024d50.11.2026.09.08.08.19.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Sep 2026 08:19:19 -0700 (PDT)
+From: Yury Norov <yury.norov@gmail.com>
+X-Google-Original-From: Yury Norov <ynorov@nvidia.com>
+Date: Tue, 8 Sep 2026 11:19:19 -0400
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Yury Norov <yury.norov@gmail.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Raju Rangoju <Raju.Rangoju@amd.com>,
+	Prashanth Kumar K R <PrashanthKumar.K.R@amd.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Jian Shen <shenjian15@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	intel-wired-lan@lists.osuosl.org, linux-usb@vger.kernel.org,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH 7/9] net: phy: use linkmode operation return values in
+ phy_device.c
+Message-ID: <aqAnd1gpXne2lqCT@yury>
+References: <20260907215439.409858-1-ynorov@nvidia.com>
+ <20260907215439.409858-8-ynorov@nvidia.com>
+ <67ed1522-cec8-4137-85df-ffbae654e07c@lunn.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] vsock: do not reset a socket in connect() once it has
- connected
-To: Hyunwoo Kim <imv4bel@gmail.com>, Stefano Garzarella <sgarzare@redhat.com>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, leonardi@redhat.com,
- bobbyeshleman@meta.com, stefanha@redhat.com, mst@redhat.com,
- virtualization@lists.linux.dev, netdev@vger.kernel.org
-References: <anzT1fREOSyHT99k@v4bel>
- <218226a4-38e6-4a16-a660-6c1bb92f9f96@rbox.co> <an5zJ9Uf94_L9TyB@v4bel>
- <c11d6fe8-fdf9-4b45-b291-e5d5b0ef5cb4@rbox.co>
- <aoVnp0w9jlyFDPj7@sgarzare-redhat> <ap8EBx3pkSr5Csy1@v4bel>
-Content-Language: pl-PL, en-GB
-From: Michal Luczaj <mhal@rbox.co>
-In-Reply-To: <ap8EBx3pkSr5Csy1@v4bel>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <67ed1522-cec8-4137-85df-ffbae654e07c@lunn.ch>
 
-On 9/7/26 20:35, Hyunwoo Kim wrote:
-> Gentle ping. I'd appreciate an update on where this stands.
-Thanks for poking me. I'll post a patch today or tomorrow.
+On Tue, Sep 08, 2026 at 03:52:09PM +0200, Andrew Lunn wrote:
+> > -	linkmode_and(sfp_support, port->supported, caps->link_modes);
+> > -	if (linkmode_empty(sfp_support)) {
+> > +	if (!linkmode_and(sfp_support, port->supported, caps->link_modes)) {
+> >  		dev_err(&phydev->mdio.dev, "incompatible SFP module inserted, no common linkmode\n");
+> 
+> From a readability perspective, i like linkmode_empty(). It is more
+> obvious than !linkmode_and().
 
-Apologies for the delay,
-Michal
+OK, a function returning 2 values is not something obvious in C. What
+about this?
 
+        
+	sfp_supported = linkmode_and(sfp_support, port->supported, caps->link_modes);
+        if (!sfp_supported)
+		dev_err(&phydev->mdio.dev, "incompatible SFP module inserted, no common linkmode\n");
+
+> None of this code is in the hot path. So we should put readability
+> above performance. 
+> 
+> >  	/* Some PHYs may advertise, by default, not support EEE modes. So,
+> >  	 * we need to clean them. In addition remove all disabled EEE modes.
+> >  	 */
+> > -	linkmode_and(phydev->advertising_eee, phydev->supported_eee,
+> > -		     phydev->advertising_eee);
+> > -	linkmode_andnot(phydev->advertising_eee, phydev->advertising_eee,
+> > -			phydev->eee_disabled_modes);
+> > -
+> >  	/* There is no "enabled" flag. If PHY is advertising, assume it is
+> >  	 * kind of enabled.
+> >  	 */
+> > -	phydev->eee_cfg.eee_enabled = !linkmode_empty(phydev->advertising_eee);
+> > +	phydev->eee_cfg.eee_enabled =
+> > +		linkmode_and_andnot(phydev->advertising_eee,
+> > +				    phydev->advertising_eee,
+> > +				    phydev->supported_eee,
+> > +				    phydev->eee_disabled_modes);
+> 
+> So, which is more readable, the original or this?
+
+The new version is more readable to me. What about this:
+        
+        eee_advertised = linkmode_and_andnot(phydev->advertising_eee,
+	                                     phydev->advertising_eee,
+                                             phydev->supported_eee,
+		                             phydev->eee_disabled_modes);
+
+  	/* There is no "enabled" flag. If PHY is advertising, assume it is
+  	 * kind of enabled.
+  	 */
+	phydev->eee_cfg.eee_enabled = eee_advertised;
+
+Thanks,
+Yury
