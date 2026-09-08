@@ -1,83 +1,56 @@
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EFEE374E73
-	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 06:04:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69E1335C1B1;
+	Tue,  8 Sep 2026 06:11:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788847465; cv=none; b=Se9ky0gF5nCMrLeCURVSPs0gPk7Grh+BavUGFeKw4np64TRSpwXn/QYwx5gEqIijNF9wqZYjqxLwz/NGLki5ln8Rds5k1906jG7Hz9JRAspCrB6rc0RtciiOF7vIzLlG411RORZdeeO/oTyh/I89rmyCnKViJawQt1HtFgGOu/Y=
+	t=1788847912; cv=none; b=kdSnbhRsBBLGnKzyloUGH8jck7AOQzdRFKBMDy5kjQHBsyad4FTdlqRBFueHThfDr6K6LGlYXpKkR0SrxaVpjPsZmQPwnIrRRvRNkUgCGynw0f5VxtRNvO0t2kJ03NiNRDdoJX5mdois375076ttiFGcLbRNmGTItuBjNjiOQoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788847465; c=relaxed/simple;
-	bh=sWXCfu8FwHMoSU3G2XuP8pA5+VU1Ub4UjWZZpjiBNmo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Y/iMWEyJLB5Isl2kgWufkZ9zusgoWFhoYHlNEjJ2O5+Gf8AHzDx+T3esTj/+ZNO6LZUxRbIVVrus+3brzNo2HuTqdIc9Z4cX0MrKw8LsdQfssbtRx2TgReQkCHzd0Vj3ALe5mhEbnDcaf/x8wUX3QB9pFAvcDWdEKgYEYjQ90yw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WCs+jezj; arc=none smtp.client-ip=209.85.215.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788847912; c=relaxed/simple;
+	bh=36V7lOv5QZtTZ1R0ymeUOfInUP/3oP0JCDsHGYMyqG0=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=E8nejQVJ6/GyCojjobjcHud99fBQItZ2u6Qwx1TGMk8x4xtXZoIbV0xKkjPExzz8SCvvcRT4ozMSyBJ8sNQ0jcwwIb3I+yAnirD5KsFvIUmZ2ktViNcM4fNw5HJExR8TSp7J1/tK8w1oB5BRnJAMObggzNrKjfH1G7m+sJlBgBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=MGaJwntx; arc=none smtp.client-ip=67.231.156.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WCs+jezj"
-Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-cc1cc97b84bso3187842a12.1
-        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 23:04:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788847464; x=1789452264; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=CdJpPQMHra+6KUNfJHNv+LpTpcYtMxeyZTHJMP8o2QA=;
-        b=WCs+jezjWZwNkuED+E50I8y3Xm3H2z5nmxsIzc28DGOBfrbb94G8Vjac6LWqzkGsuT
-         Sr4JVis39AXi0MB5y/8l78UXKlDme2TtMsc42S6WL4UiuuMLBzPQxjF4Gqgq+oaMwuVy
-         ToNObICta4sovAL6/CSkwS7BowA8dWHLL67nl3A8tkRT+s1QO8zYEcnl3gU/5NrMINV4
-         386iFuruA093nNNzpckFAEixZ8eVm1cWsNpN1WHTTi7bvqUmW8ed2JgiSehhV7WA3eo+
-         ORt/ILDiNhdrAhBIsQk1nhxNn30/wy1KeXvugVVSlnHqcb+7Lz5lUnUkb0YoaEwv+VQl
-         BoMA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788847464; x=1789452264;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=CdJpPQMHra+6KUNfJHNv+LpTpcYtMxeyZTHJMP8o2QA=;
-        b=WgnsYW2R31srQKqX0PUS83ggUkW//DibeeFybejVlPAOC69jykihK+gAlG5ShVYdWr
-         a7RrEQbqKx0o/O3AETE7UGlHQMTuwAHfCGHIIIVoHCk6NdKsBbiYfZM2QZwEwz6Ym9IJ
-         TPT2cktOi9Bof1UuUTQdqaLJfioQg5mPTkJtfCEalMln3FZRu7keH49DAoV7rLb+cbK1
-         bXXcWo36LjRi9pF7QPKrfyF+Tkm6G8h2zLSG4CX138bbBQQ82GzNoGU2Z/6ozsx/mXA2
-         Q5yRcp5KscYKjuHEbyMjrwN2BU63Zi0wJCzmwkBhDlz0N2xyF52Chk6IAjCkd9A3TpZk
-         U8Rw==
-X-Forwarded-Encrypted: i=1; AKwUvByimsmVTGmsVQIlyrPj9nWoruVf6bzCbdVb7DwTIGOlvJcXwonNUSPZDAjG4dCgoElFdsIisMk=@vger.kernel.org
-X-Gm-Message-State: AFuF++ngt/CNtVHjrYT8cCezFKO3VgEG8+wDCdv0KspUzFBfGEDj6KqS
-	PWieHm7uXylTb2JQIcjTU6s5CljlrJRefSWv7H0YArbNvE4hEieOleIk
-X-Gm-Gg: AYBFou0wmcREUBUpGDdG/PakNZkLGHAgT/JeKQ0JmhUFJhlrO7P2bBE99MXieJq0T3t
-	+Cc5QpVJ+N+n/8qBWaV/VAD4CgOdvpoL4Z6SuGgm7a85icgvq9gOUCvbzyej+XF5mfXZHDpqKOF
-	0jl5qP2IzWQjHeoAwT/X51u9Uuxz8f7E22FNBX4J5o2NBGcVDcThqMA8eS/vaxMaZSm7vgNijqN
-	DhyCDd4++gNooYA7bVxbTeEqDO6+0KXGtsnMkVjoEbfleycmAnsZA6t849NLy1aYqiGUbkzTAWk
-	coI1fwGaXZxQ+ENL4H3xMwtWYfaQTM8hjXqZsTzB88X2dlYe7POsNI6/wGvtRlORT2zjSle9yJB
-	P2K0Y8/U6p5t8Zx4irOA9U9HaMmPWyfEE+hNl1IJte50JNlMpHv/1sQqiHXFMj7Dz5FoNkwBqIf
-	D6GyBndper5bSin0ErWWnAbLT7YF47sPRbPo0z5t6KSXr7kmO7cN5XxNhDzf8WebNkMIexQZnsZ
-	xg8WX5yoX46XQvsqzJRUzVBdnlnEj6Kc16aiw5x
-X-Received: by 2002:a17:90b:4c4e:b0:399:1b64:e0d7 with SMTP id 98e67ed59e1d1-39b262aaf32mr41697028a91.19.1788847463386;
-        Mon, 07 Sep 2026 23:04:23 -0700 (PDT)
-Received: from localhost.localdomain ([2409:891f:9124:20e6:7861:48bc:cc17:ca2a])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b260fdf9asm24617396a91.9.2026.09.07.23.04.18
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 07 Sep 2026 23:04:22 -0700 (PDT)
-From: Chuang Wang <nashuiliang@gmail.com>
-To: 
-Cc: Chuang Wang <nashuiliang@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Stanislav Fomichev <sdf.kernel@gmail.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v9] net: reduce RFS/ARFS flow updates by checking LLC affinity
-Date: Tue,  8 Sep 2026 14:04:00 +0800
-Message-ID: <20260908060410.3982-1-nashuiliang@gmail.com>
-X-Mailer: git-send-email 2.50.1
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="MGaJwntx"
+Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 687Np2pJ3008857;
+	Mon, 7 Sep 2026 23:11:42 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pfpt0220; bh=gqrsgzyvWvkaIbFDytwXhf0
+	UfL2PpmIHIs1RiHOadBw=; b=MGaJwntx6K3RwucZgcUz3j/5ssv3a535d3WztSm
+	7z183TpofB+Z3lWhq9a0N8/9oXWtgenewvmoeSLi+Q92R8ZPQgE5gjb/dxgEPKTX
+	kvCZv6sqQ5QhuT4ZB6NtwG0GipMeEXfSlKAAcmz03hkLa9PUfwNNX4j1VnWhHeKL
+	snEX1SwmPmzu5Ju4mIa3JJKk51Rty61QLtyLE3U/5HoGX21Iop+8/WG3k6d4/gGA
+	O3l4+YPPstl1p8Bdp5uk6h9sRA41FV7G1lL3eYm12MG7D7AXUdadomQmjK6HmL6h
+	jCKh8bZzWp7g+kYiRwmD6RgU2dqHrEdRz6vx8OPvb9k4aOg==
+Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4gh3u8vuhk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 07 Sep 2026 23:11:42 -0700 (PDT)
+Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
+ DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Mon, 7 Sep 2026 23:11:42 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
+ (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Mon, 7 Sep 2026 23:11:42 -0700
+Received: from rkannoth-OptiPlex-7090.. (unknown [10.28.36.165])
+	by maili.marvell.com (Postfix) with ESMTP id 312793F7077;
+	Mon,  7 Sep 2026 23:11:38 -0700 (PDT)
+From: Ratheesh Kannoth <rkannoth@marvell.com>
+To: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>
+CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+        <kuba@kernel.org>, <pabeni@redhat.com>, <sgoutham@marvell.com>,
+        "Ratheesh
+ Kannoth" <rkannoth@marvell.com>
+Subject: [PATCH net-next] octeontx2: collapse consecutive blank lines in source files
+Date: Tue, 8 Sep 2026 11:41:13 +0530
+Message-ID: <20260908061113.246837-1-rkannoth@marvell.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -85,258 +58,75 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-GUID: AQ5-abD6mcEoyEEtNLLJRHjcQ6oa_xLc
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTA4MDA2NSBTYWx0ZWRfX3St+kdf1Xcrj
+ RAfvT3JBsWkByiqZ9gHTJItTx+tfHhdcz4nK0E0lnBe7zWyg4opsQFw2+yYKhLHHwlZgCBtnjgT
+ F1Zo2xgCVef8vTHm6SqNuw1dbu1DoDI=
+X-Authority-Analysis: v=2.4 cv=b7+CJNGx c=1 sm=1 tr=0 ts=6a9fa71e cx=c_pps
+ a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
+ a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
+ a=qit2iCtTFQkLgVSMPQTB:22 a=M5GUcnROAAAA:8 a=f-IhN4xM_Ets_Pua6zgA:9
+ a=OBjm3rFKGHvpk9ecZwUJ:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA4MDA2NSBTYWx0ZWRfX9zxxKNis2GHW
+ Kz/wD1rLbLG34DqSaoRbSUpx2N45qXdYS8jhqnLnwoaC4OiM5GrsRfEeIg5H4bgDPdHqrYfSXOB
+ 0Dn8tSD83+JZDBcUJ8E/pwEWOlyCaU593pgIEoL7tvx3m9k1cduMbaF8W+6ViSJ4z0e5rjjfDgR
+ ESwI0Uw1ERRuwAa33zW8W1uO5SPp+HhHgt0GlkK6edi+PSghEA5q2pr+p8mnuYodCdQnZE4to4O
+ GH6Vf9C/1rE72Avl7c6HupUDsUi/iKYDqC4YB8ZaZuaK76/CJGzhZeWuShkABNXkaLfedo2qIe0
+ NxHbUVPVv8G5cmsRJI9p+xZo61QFDOC3Yt9u/AYP2da6v/eiDJZt7HrynTGRoFCteU+lWIuc3em
+ 3kOW/iu8VhBJ4sPWTgJb8rshABbWZwUlYzkCYG4t1L2HuR1GCKjhNc+EPSteiWkaZc0/2AmBqHe
+ zLuP1FrQP67M8d2Ru1w==
+X-Proofpoint-ORIG-GUID: AQ5-abD6mcEoyEEtNLLJRHjcQ6oa_xLc
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-07_07,2026-09-07_01,2025-10-01_01
 
-The current implementation of rps_record_sock_flow() updates the flow
-table every time a socket is processed on a different CPU. In high-load
-scenarios, especially with Accelerated RFS (ARFS), this triggers
-frequent flow steering updates via ndo_rx_flow_steer.
+Remove extra blank lines across the octeontx2 driver source.
 
-For drivers like mlx5 that implement hardware flow steering, these
-constant updates lead to significant contention on internal driver locks
-(e.g., arfs_lock). This contention often becomes a performance
-bottleneck that outweighs the steering benefits.
-
-This patch introduces a cache-aware update strategy: the flow record is
-only updated if the flow migrates across Last Level Cache (LLC)
-boundaries. This minimizes expensive hardware reconfigurations while
-preserving cache locality for the application. A new sysctl,
-net.core.rps_feat_llc_affinity, is added to toggle this feature.
-
-Additionally, export sock_rps_record_flow_hash() and
-sock_rps_record_flow(). This resolves a symbol visibility compilation
-error triggered by 'tun' using sock_rps_record_flow_hash() in
-tun_flow_update() when CONFIG_TUN is built as a module. The same logic
-is applied to SCTP, allowing it to use sock_rps_record_flow() safely
-when built as a module.
-
-Performance Test Results:
-The patch was tested in a K8s environment (AMD CPU 128*2, 16-core Pod
-with CPU pinning, mlx5 NIC) using brpc[1] echo_server and rpc_press.
-
-rpc_press Commands:
-
-  for i in {1..8}; do
-    ./rpc_press -proto=./echo.proto -method=example.EchoService.Echo
-    -server=<IP>:8000 -input='{"message":"hello"}'
-    -qps=0 -thread_num=512 -connection_type=pooled &
-  done
-
-Monitor mlx5e_rx_flow_steer frequency:
-
-  /usr/share/bcc/tools/funccount -i 1 mlx5e_rx_flow_steer
-
-Frequency of mlx5e_rx_flow_steer (via funccount[2]):
-
-  Before: ~335,000 counts/sec
-  After:   ~23,000 counts/sec (reduced by ~93%)
-
-System Metrics (after enabling rps_feat_llc_affinity):
-
-  CPU Utilization: 38% -> 32%
-  CPU PSI (Pressure Stall Information): 20% -> 10%
-
-These results demonstrate that filtering updates by LLC affinity
-significantly reduces driver lock contention and improves overall
-CPU efficiency under heavy network load.
-
-[1] https://github.com/apache/brpc/
-[2] https://github.com/iovisor/bcc/blob/master/tools/funccount.py
-
-Signed-off-by: Chuang Wang <nashuiliang@gmail.com>
+Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
 ---
-v8 -> v9:
-- fix errors in AI submissions by Simon Horman
-v6 -> v8:
-- simplify code and fix errors in AI submissions by Simon Horman
-v5 -> v6:
-- remove the multi-check 'old_val == new_val' by Xuan Zhuo
-- fix 'modpost: "sock_rps_record_flow_hash" [drivers/net/tun.ko] undefined!' by kernel
-  test robot
-- fix 'tcp.c:(.text+0x3e90): undefined reference to `sock_rps_record_flow'' by kernel test
-  robot
-v4 -> v5: fix 'modpost: "rps_llc_check" [net/sctp/sctp.ko] undefined!' by kernel test robot
-v3 -> v4: add rps_llc_check by Eric Dumazet
-v2 -> v3: patch net -> net-next by Jakub Kicinski
-v1 -> v2: add rps_feat_llc_affinity; add brpc tests
- include/net/rps.h          | 29 ++++++-----------
- net/core/dev.c             | 65 ++++++++++++++++++++++++++++++++++++++
- net/core/sysctl_net_core.c |  7 ++++
- 3 files changed, 81 insertions(+), 20 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/af/cgx.c     | 2 --
+ drivers/net/ethernet/marvell/octeontx2/af/mcs_reg.h | 2 --
+ drivers/net/ethernet/marvell/octeontx2/nic/qos.h    | 2 --
+ 3 files changed, 6 deletions(-)
 
-diff --git a/include/net/rps.h b/include/net/rps.h
-index e33c6a2fa8bb..fc301ce3987d 100644
---- a/include/net/rps.h
-+++ b/include/net/rps.h
-@@ -12,6 +12,7 @@
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
+index 3696bec7a8fc..8ced44a4495e 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
+@@ -2043,8 +2043,6 @@ static int cgx_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	}
  
- extern struct static_key_false rps_needed;
- extern struct static_key_false rfs_needed;
-+extern struct static_key_false rps_feat_llc_affinity;
+ 	list_add(&cgx->cgx_list, &cgx_list);
+-
+-
+ 	cgx_populate_features(cgx);
  
- /*
-  * This structure holds an RPS map which can be of variable length.  The
-@@ -55,11 +56,14 @@ struct rps_sock_flow_table {
- 
- #define RPS_NO_CPU 0xffff
- 
-+bool rps_llc_check(u32 old_val, u32 new_val);
-+
- static inline void rps_record_sock_flow(rps_tag_ptr tag_ptr, u32 hash)
- {
- 	unsigned int index = hash & rps_tag_to_mask(tag_ptr);
- 	u32 val = hash & ~net_hotdata.rps_cpu_mask;
- 	struct rps_sock_flow_table *table;
-+	u32 old_val;
- 
- 	/* We only give a hint, preemption can change CPU under us */
- 	val |= raw_smp_processor_id();
-@@ -68,7 +72,9 @@ static inline void rps_record_sock_flow(rps_tag_ptr tag_ptr, u32 hash)
- 	/* The following WRITE_ONCE() is paired with the READ_ONCE()
- 	 * here, and another one in get_rps_cpu().
- 	 */
--	if (READ_ONCE(table[index].ent) != val)
-+	old_val = READ_ONCE(table[index].ent);
-+	if (old_val != val &&
-+		(((old_val ^ val) & ~net_hotdata.rps_cpu_mask) || rps_llc_check(old_val, val)))
- 		WRITE_ONCE(table[index].ent, val);
- }
- 
-@@ -136,25 +142,8 @@ static inline bool rfs_is_needed(void)
+ 	mutex_init(&cgx->lock);
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mcs_reg.h b/drivers/net/ethernet/marvell/octeontx2/af/mcs_reg.h
+index f4c6de89002c..ec932a592707 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/mcs_reg.h
++++ b/drivers/net/ethernet/marvell/octeontx2/af/mcs_reg.h
+@@ -19,8 +19,6 @@
+ 		offset = 0xa28ull;			\
+ 	offset += (a) * 0x8ull;				\
+ 	offset; })
+-
+-
+ #define MCSX_MCS_TOP_SLAVE_CHANNEL_CFG(a) ({		\
+ 	u64 offset;					\
+ 							\
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/qos.h b/drivers/net/ethernet/marvell/octeontx2/nic/qos.h
+index 221bd0438f60..bd12174bf94e 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/qos.h
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/qos.h
+@@ -73,6 +73,4 @@ struct otx2_qos_node {
+ 	u8 level;
+ 	bool is_static;
+ };
+-
+-
  #endif
- }
- 
--static inline void sock_rps_record_flow_hash(__u32 hash)
--{
--#ifdef CONFIG_RPS
--	if (!rfs_is_needed())
--		return;
--
--	_sock_rps_record_flow_hash(hash);
--#endif
--}
--
--static inline void sock_rps_record_flow(const struct sock *sk)
--{
--#ifdef CONFIG_RPS
--	if (!rfs_is_needed())
--		return;
--
--	_sock_rps_record_flow(sk);
--#endif
--}
-+void sock_rps_record_flow_hash(__u32 hash);
-+void sock_rps_record_flow(const struct sock *sk);
- 
- static inline void sock_rps_delete_flow(const struct sock *sk)
- {
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 290e0f099e6b..3a0dd1f98084 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -5052,6 +5052,7 @@ struct static_key_false rps_needed __read_mostly;
- EXPORT_SYMBOL(rps_needed);
- struct static_key_false rfs_needed __read_mostly;
- EXPORT_SYMBOL(rfs_needed);
-+struct static_key_false rps_feat_llc_affinity __read_mostly;
- 
- static u32 rfs_slot(u32 hash, rps_tag_ptr tag_ptr)
- {
-@@ -5263,6 +5264,48 @@ static int get_rps_cpu(struct net_device *dev, struct sk_buff *skb,
- 	return cpu;
- }
- 
-+/**
-+ * rps_llc_check - determine if RPS flow table should be updated.
-+ * @old_val: previous flow record value.
-+ * @new_val: target flow record value.
-+ *
-+ * Return: true if the record needs an update, false otherwise.
-+ */
-+bool rps_llc_check(u32 old_val, u32 new_val)
-+{
-+	u32 old_cpu = old_val & net_hotdata.rps_cpu_mask;
-+	u32 new_cpu = new_val & net_hotdata.rps_cpu_mask;
-+
-+	/*
-+	 * RPS LLC Affinity Feature:
-+	 * Reduce RFS/ARFS flow updates by checking LLC affinity.
-+	 *
-+	 * Frequent flow table updates can trigger constant hardware steering
-+	 * reconfigurations (e.g., ndo_rx_flow_steer), leading to significant
-+	 * contention on driver internal locks (like mlx5's arfs_lock).
-+	 *
-+	 * This strategy only updates the flow record if it migrates across LLC
-+	 * boundaries. This minimizes expensive hardware updates while preserving
-+	 * cache locality for the application.
-+	 */
-+	if (static_branch_unlikely(&rps_feat_llc_affinity)) {
-+		/* Force update if the recorded CPU is invalid or has gone offline */
-+		if (old_cpu >= nr_cpu_ids || !cpu_active(old_cpu))
-+			return true;
-+
-+		/*
-+		 * If CPUs do not share a cache, allow the update to prevent
-+		 * expensive remote memory accesses and cache misses.
-+		 */
-+		if (!cpus_share_cache(old_cpu, new_cpu))
-+			return true;
-+
-+		return false;
-+	}
-+
-+	return true;
-+}
-+
- #ifdef CONFIG_RFS_ACCEL
- 
- /**
-@@ -5318,6 +5361,28 @@ static void rps_trigger_softirq(void *data)
- 
- #endif /* CONFIG_RPS */
- 
-+void sock_rps_record_flow_hash(__u32 hash)
-+{
-+#ifdef CONFIG_RPS
-+	if (!rfs_is_needed())
-+		return;
-+
-+	_sock_rps_record_flow_hash(hash);
-+#endif
-+}
-+EXPORT_SYMBOL(sock_rps_record_flow_hash);
-+
-+void sock_rps_record_flow(const struct sock *sk)
-+{
-+#ifdef CONFIG_RPS
-+	if (!rfs_is_needed())
-+		return;
-+
-+	_sock_rps_record_flow(sk);
-+#endif
-+}
-+EXPORT_SYMBOL(sock_rps_record_flow);
-+
- /* Called from hardirq (IPI) context */
- static void trigger_rx_softirq(void *data)
- {
-diff --git a/net/core/sysctl_net_core.c b/net/core/sysctl_net_core.c
-index 23310581f494..e13af75d9f25 100644
---- a/net/core/sysctl_net_core.c
-+++ b/net/core/sysctl_net_core.c
-@@ -555,6 +555,13 @@ static struct ctl_table net_core_table[] = {
- 		.mode		= 0644,
- 		.proc_handler	= rps_sock_flow_sysctl
- 	},
-+	{
-+		.procname	= "rps_feat_llc_affinity",
-+		.data		= &rps_feat_llc_affinity.key,
-+		.maxlen		= sizeof(rps_feat_llc_affinity.key),
-+		.mode		= 0644,
-+		.proc_handler	= proc_do_static_key
-+	},
- #endif
- #ifdef CONFIG_NET_FLOW_LIMIT
- 	{
 -- 
-2.47.3
+2.43.0
 
