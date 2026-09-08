@@ -1,111 +1,124 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EE103CF95A
-	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 08:17:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788855435; cv=none; b=ceivaKdgoI8hwCAPGDcew5lEMAWH7/xIf9u8DC7x6RtVkZqMUb9HXf05k3E5jJ68fxYLAgAmWkfZXRaxtQIKsB6qgeHHi1ZZRjNvNiTEpd9DjKLsYWXnoMgjh94T47QrvE+kSCahxHkyeiG88QLZSyGueKCFuvYkMK9t7e1SulE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788855435; c=relaxed/simple;
-	bh=X4SCGzR9Z/D6wjU/3yGHHJ8OLesQMj3JDhp/4C8Z1lA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IfdX+JPbmFngAmqqIoDbDsVHVGnavnpDcw578kRM0eV5GVJl8HvEIQz/cdGQsDJEpBlFqw5CarxAmzLDljV96W/rCAepzlDXtlxoQao0KHqdOOSqEvtwkaPAko+Lh12X4WScxMpUKI8eA+s+og7417Ct/GjE+Dik3RU/J9msMIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=EVe5o1lr; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E88F3ED5BE
+	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 08:20:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.46
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788855619; cv=pass; b=pbzNRHbkxoyTNep+Bf1QZJmW/GBmgoredf6RAD7vcfR6Ej3CFOMl8H/CaLuoyHQ9dGc1yz18xbRw4ZvM7G52XNfh5Ui4GcAofH3Cgya+W6C4Xx51IZFeJ2/ommJ+uBY+BAqHFa6LnkSx144mSlykVRyygwFBQBKTGZ9lO0YDl98=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788855619; c=relaxed/simple;
+	bh=hsjTDp8GxgJOwpED1Wg/Qo5pHHkBB4Ysmhw6O6ZbUK4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OFNKOMseP20ElOmZ94nBNPTCqpTcO97vWQdsD7mFw9Wn9lSNjow7RSrwAldX4QzQVIbO6AHxbmg+9XoBqdfednDt4Voq49KErPlnaSAoQWpxjTRc4a+XT782kuNy8HM+EtaBBGFn9iebgDITlhc6DIVhOt13QbwTRkzga9FvUno=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sO8ebbnR; arc=pass smtp.client-ip=209.85.219.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="EVe5o1lr"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 50A1E4E41586;
-	Tue,  8 Sep 2026 08:17:10 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 21053603C4;
-	Tue,  8 Sep 2026 08:17:10 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0C6D911C79CA0;
-	Tue,  8 Sep 2026 10:17:00 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1788855428; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=9lLKZepQhjXkaNa0awySroD+8Sxqj/MifOMg6ARzVN0=;
-	b=EVe5o1lrk/uElndENaukKIAenamtp9ru0HgtgYqmOfJPIbT6TI1HF+xmeYzSESUVjATgMw
-	PXpGl2lYMjNRF8yXA5SsZ9wTmBJGoKrgr3Tfz5v22CG1CNoMOZODko0+Ww5cy27BM+ePtE
-	xkTtEW4EAFv5a6Pn0cyVQp/ki5EyFmAVif4UbMZWIkl1dLBKD0WcNo7ZufpNFl+z3gMXBk
-	ANhKGcMxbviUMGCI2HoTYm7F4LRUPylkzVKrsPhyhyL/is8uwWZVn1IscGC1dCcehefvPC
-	2xzqU155ckmK5W1i/TFVZGHbEPFXC4D5HTSr3a1mIITD4/cG6u347BWm0//Imw==
-Message-ID: <09e7cd4b-b79c-47ea-95b6-1c1a96fe7657@bootlin.com>
-Date: Tue, 8 Sep 2026 10:16:59 +0200
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sO8ebbnR"
+Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-91055b076c7so24884606d6.0
+        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 01:20:17 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788855616; cv=none;
+        d=google.com; s=arc-20260327;
+        b=G7+gBLI40YWg6IVVvu+bC2QZnYZsa0dXMNRWW7FKn86LRBwdl3HGzDyWT22ic1Ze/T
+         acRqRhizHHmCbMIR0kBRKDoTq65qWtzRS8kRyGOxdmvY064p2rttxQEVAOuYSNvoOE0B
+         Id9Ne1p9L3MBxaGjlx7yYz03QenxV1UCTYI3WiFMGoGyL/JaU2vYEMlMPnb8WLpsafnw
+         tTFBNlTD9Rk0kTdXLFAw8LUcHqEt0oWRA/bxJEjB/mguWZT6pllbw5SGdDxwEDCLr3ca
+         qn5QW2oy6SomunMQCBhdVPci0m1pafPUBPuZ7IWN1D5XwdKFKR5wJrWfw06c+4zJ2twx
+         I+zw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=hsjTDp8GxgJOwpED1Wg/Qo5pHHkBB4Ysmhw6O6ZbUK4=;
+        fh=F4uJmobbrYbWNPfRq3D0Pz/jo7n4kydtCtwsjlKNvwA=;
+        b=DkU3gQ6udCycDn49fPwg0GXWz3f56PyxsiON3PP2rrjnMHZsShVh8F/W2NOnZrBHty
+         Ng5y5g+6lz1v/n46tiVYHwP1FBqTbeFeW8UEBl0twRl3V800eMv4KcPeOuL0s6GBODUQ
+         5F/K44uIKEepJRoVBvgTduAV1MBTOjFtZO8+QllbCuOVJuSgqIpeyu//e/3CXxvSgZgZ
+         Mrvfk1thZMTV+aT+WWCIoeMUf9V/iA38xyCFNak9ZpUGAr5VH1NFce+/z5RBxUuTHKPT
+         v4KmxWvQGPG9eroCo8LLHK46pTaIOhHQdGAVWNmCGFrHHUfgO454ilmw/VA5DWmzYgFB
+         YGMQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1788855616; x=1789460416; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=hsjTDp8GxgJOwpED1Wg/Qo5pHHkBB4Ysmhw6O6ZbUK4=;
+        b=sO8ebbnRRyogAoRUoEKrDUIrV9/y3WCeanjkAFp/SRpg/dbdT0cqX+wN2pNTpuFDX/
+         +d9L75Qm2B5nKiNt8BOFJ7xKu/VPzEwH1XXltWfXF8MfArLid1o/wwxXOMSudlwqkf5b
+         iv+2MJpKykr9OOcDdb0iGuOtCwXDS97rFgfbVWVftInFIhwAN9mfYyr4Etkr2Xcf85+O
+         dmPWy+RMlAO6KgtbEr/+LskeSzf6StieEdPwll9jU/hP2DA4DYZgHWhxmymgCqWysBBS
+         sIjpHQv5bpjIFh8kBlqHDCsL/zGpVHKEz0AyDi8msAhBSUvwlfMKCMnH9bC3ntPrEys4
+         IJcw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788855616; x=1789460416;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=hsjTDp8GxgJOwpED1Wg/Qo5pHHkBB4Ysmhw6O6ZbUK4=;
+        b=ItBqmfzf3fBIos5pQ0SMBWtmsIhtKQAGDYzvNHSlJ9ymhiYG7AcqEsKEQ/MlbY+KWk
+         ovckKqUIFiTdEAFWGk72ZpllqCgTN3RvHM76icErVo2p0ZvL9xT/dH6H6T3txe1TNFhU
+         xZk0/zxYIYcG6BsqYBrQkPH/iFimrXzLzsfREwMQSPGjZGNLQ8SvF6GeUVG0hdnK8akt
+         dUNeY0Nsp5KDfPHDctjB/xLdUKNgQ8iOhrwCcyXyd1yvHIKK86LR+7YNxZtjcHp2m2ly
+         BVicra7N+yInanAbAX4+rTwjmHexNJeIh+YEBaDv9SwRZ4Fbm2eTSxPBahLhsfpFItxV
+         19zQ==
+X-Forwarded-Encrypted: i=1; AKwUvByMiah6J+o8d03IR38ZbAEG+La8ndmWw9uQlKoej05nLelT5xCGEJ8e5tLhXYdT9c7jXxLXFGI=@vger.kernel.org
+X-Gm-Message-State: AFuF++mBGQxLjUyMbscvs8C15ydHjlYgoGa+gWQBR4ym7FszlUG9m4ih
+	qM4pQ9ieXk0YxIqwxKmNAMEpqLq/2uqEvrLWxY2yBkFIg/tRMtRuHMWvUnTSHeejVnXYDsvssXO
+	pgP6/wZCWdvTQ1H2Wz026SMVsb2Szxzu8TmxwFlRm
+X-Gm-Gg: AYBFou2wWv22gq1GfbN6hOz5IFrvzhfIDzBuOwyh+Jf0J9GGgiGrqsWHS/4RG9elvYC
+	2KDJILXzWUI07v8wTXCMUEq5+Y+LfKTQcvma4UPbd7F0EiLhPb9bwkSFSJk8OQQxWrkRFsW2U7V
+	PxVgV5KDHAf7oJ9ZNZZAJ8iH6MCx+uX+IEwZ7TXaIi01U1KWA+wG17oFxs2uKRORrUr8ltZY1aN
+	ThHuebCIMvBKfVaxiCp3FR6kVJGmhu3n9av5oOuYI40uPDLhPViIbXlI2t6HZTYft+woxfPcWQQ
+	8wHaJiUl9o89Jx/clCUn49x7zoqnzTSsYUZc1ZfapDfVvl5ASQoUfEt5YTTSmLA8TVX8fv7slMq
+	YrPXXBwscDuqUy5t9M9dUgfwp1d7/WmYenSa6erNgEDwh0WuG+Qn8OCFJzw==
+X-Received: by 2002:a05:620a:2855:b0:936:eb7f:d2c7 with SMTP id
+ af79cd13be357-93980400609mr3654539685a.27.1788855615776; Tue, 08 Sep 2026
+ 01:20:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2] net: stmmac: restore NET_IP_ALIGN in the RX DMA
- offset
-To: Pascal Kneuper <PKneuper@dspace.de>, kuba@kernel.org
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
- rmk+kernel@armlinux.org.uk, 0x1207@gmail.com, si.yanteng@linux.dev,
- larysa.zaremba@intel.com, aleksander.lobakin@intel.com,
- netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- DBaldin@dspace.de
-References: <20260813092923.284285-1-PKneuper@dspace.de>
- <20260824125014.47862-1-PKneuper@dspace.de>
-Content-Language: en-US
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-In-Reply-To: <20260824125014.47862-1-PKneuper@dspace.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+References: <20260908072135.877364-1-qingfang.deng@linux.dev>
+In-Reply-To: <20260908072135.877364-1-qingfang.deng@linux.dev>
+From: Eric Dumazet <edumazet@google.com>
+Date: Tue, 8 Sep 2026 10:20:03 +0200
+X-Gm-Features: AcwNN1Xe-V-EjnVcuPI54J8HF_f0_7IiJQXu4AsaIKhTCzrczAlMe4wF4WaYDBY
+Message-ID: <CANn89i+w-txLUf9KbUORYy03x2GS8Z=Uroh+rqiBKztdc9hqFQ@mail.gmail.com>
+Subject: Re: [PATCH net] ppp_synctty: ensure a writeable skb header
+To: Qingfang Deng <qingfang.deng@linux.dev>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>, Kees Cook <kees@kernel.org>, Tom Parkin <tparkin@katalix.com>, 
+	linux-ppp@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Markus Elfring <Markus.Elfring@web.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On Tue, Sep 8, 2026 at 9:21=E2=80=AFAM Qingfang Deng <qingfang.deng@linux.d=
+ev> wrote:
+>
+> ppp_sync_txmunge() checks headroom before prepending the address and
+> control bytes, but does not ensure that the skb header is writable.
+> A received skb can reach this function through PPP channel bridging
+> without passing through ppp_start_xmit(), which calls skb_cow_head().
+>
+> For example, a PPPoE frame may share its buffer with a clone queued to
+> an AF_PACKET socket. If it is bridged to a synchronous tty channel, the
+> address/control bytes can overwrite data still visible to that socket.
+>
+> Use skb_cow_head() to ensure both sufficient headroom and a writable
+> header.
+>
+> Fixes: 4cf476ced45d ("ppp: add PPPIOCBRIDGECHAN and PPPIOCUNBRIDGECHAN io=
+ctls")
+> Signed-off-by: Qingfang Deng <qingfang.deng@linux.dev>
 
-On 8/24/26 14:50, Pascal Kneuper wrote:
-> Since the RX path was converted to zero-copy, the page pool page is handed
-> to the stack directly as the skb head, and the offset the DMA engine writes
-> at is what determines the alignment of the packet headers.
-> 
-> Before the conversion the payload was copied into an skb obtained from
-> napi_alloc_skb(), which reserves NET_SKB_PAD + NET_IP_ALIGN. The
-> conversion moved the headroom into stmmac_rx_offset() but did not carry
-> over NET_IP_ALIGN, so on architectures where NET_IP_ALIGN is 2 the IP
-> header now lands misaligned:
-> 
->   64 (NET_SKB_PAD) + 14 (ethernet) + 20 (IP) = 98
-> 
-> Same for the XDP branch:
-> 
->   256 (XDP_PACKET_HEADROOM) + 14 (ethernet) + 20 (IP) = 290
-> 
-> On ARM32 this is fatal, because ldm and ldrd trap on unaligned addresses
-> even when CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS is set.
-This patch breaks the stmmac selftests for Jumbo Frames on dwmac1000 :(
+SGTM. I will fix pppoatm_send() in net/atm/pppoatm.c which has a similar bu=
+g.
 
-Try ethtool -t ethX, before :
-
-27. Jumbo Frame               0
-
-after :
-
-27. Jumbo Frame               -110
-
-I _think_ the issue is that we have buffer start that is not 4-bytes aligned,
-the controller can handle that no problem but it still performs a 4-byte
-aligned transfer and discards the first 2 bytes of the first DMA word xfer,
-and last 2 bytes of the last xfer.
-
-The issue is that that last burst may not fit in the buffer size we specify in
-the descriptor, so another descriptor is used to store the last 2 bytes of the
-frame, and the first one doesn't have the "last" bit set.
-
-We need to account for that when computing the descriptor size field in
-stmmac_rx_buf1_len().
-
-I can try to send a followup, if you can give it try that would be appreciated.
-
-(this is the first bug found with my stmmac CI setup, we'rre getting somwhere !)
-
-Maxime
+Reviewed-by: Eric Dumazet <edumazet@google.com>
