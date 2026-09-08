@@ -1,80 +1,141 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 127B85505F8;
-	Tue,  8 Sep 2026 14:02:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97B0C5505E5
+	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 14:04:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.122
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788876168; cv=none; b=HsdFyprVcKZJVmNL/co3e2ml/azgOSHsz//NWPODN06EXMT50+U1TOmMdUX/oQHkdvDYBkZSYEDb1x4XkF+3kNtDTks+TusmBJCiQO2S+0muiyroGTwKKabWeltqynVyO9E3Su9SIlsfvid0KA8s27qUQMvySb0tQiQkV1FJX3s=
+	t=1788876250; cv=none; b=cuKVEarGM19KfDllJekBMYmp2I0PGcoM0NBz1nqc8OGn4pYrXp3ZwheHZANofuOfXWrp/bXzwDb2S2+GBCLkAjesN5NWfNAR4Kh9t1NIIU6sp7aJEeImj+MoatnNI9PccTqZwm3z1uyIe0NPvAJppyYHDA44dXTLLLijsmDzz0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788876168; c=relaxed/simple;
-	bh=kF3LKAARWQizVNE+qH0R94O/9WOnLGwrvU3Qm6uBEaw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KFLffCypedDewsNuWxYDxysh6JAUcr85S5Fk4AXSqKZIKJDwZ/ZH3NKMBK873bTzE6Wra+2ZHV0ykfs5uc+55R9YRgfXwUbHCCAPnEazG2wOg/SVGPxWmUlpEVVrIG9TRrlm0qsqx+NyZw549q27/liAvl+oS4CGZELMDGYty30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=CoiUyQ64; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1788876250; c=relaxed/simple;
+	bh=/hf+JaN80kkUeIvT9savcMWGneOYjndNEDsyR1nSTpY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Y5a/VjgiYTewKxBmwElNxtSBt67pFiz+EgavOJlx30pMxjO7XWu1bmDSm7xqLg1079huy+P8/gkvQE2mlZrmV2eV17lCrlyf/ysiUiYxmMSEj8V4VgxAttXqzpHgupZ+26k/SgSmogdXivBOwnwgPwcIgVXCgDDj/MOhtWGzwJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b=MpAwRV9j; arc=none smtp.client-ip=185.125.188.122
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="CoiUyQ64"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=Kek9Jm5onQkzyAbCdbm8LAc6qHIsTh0LobTQe/hAH7s=; b=CoiUyQ64z3JotxjdgkGckaNrcq
-	ort5zM466hiO6uVu7HecCb3HNyimvwQV1os/0sl/GEP+E2r/aRgGltvXBbOtyy9WdZQxdANixDxev
-	vWEMhjKYUcfMHTW0oB928gm4RGdAAVyneVkhGyWxaqbDzw2dAz2yz+KfwF1FKcMfUNBo=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1x3wOx-003uLZ-FS; Tue, 08 Sep 2026 16:02:19 +0200
-Date: Tue, 8 Sep 2026 16:02:19 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Donggeun Yoo <donggeunyoo.kernel@gmail.com>
-Cc: hkallweit1@gmail.com, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, linux@armlinux.org.uk,
-	daniel@makrotopia.org, o.rempel@pengutronix.de,
-	netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH net v3 1/3] net: phy: dp83867: handle the active-high LED
- polarity mode
-Message-ID: <7929059d-c55f-4adc-bf6b-f6d3d9b0598e@lunn.ch>
-References: <20260908105959.70453-1-donggeunyoo.kernel@gmail.com>
- <20260908105959.70453-2-donggeunyoo.kernel@gmail.com>
+	dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b="MpAwRV9j"
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com [209.85.218.70])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 09BC43F4E7
+	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 14:03:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+	s=20251003; t=1788876232;
+	bh=SXIMe4oMHTuXDpcB4oft04tFKxq0tl8ji9Vspwz0rd0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version;
+	b=MpAwRV9jc9+EBdHYjU7mVVJ6N6GJOuwhNGOW200+1i7B7l+Z0F4kbVRuT+lZG6VgF
+	 293qVLsq3LqkkNJqbbsrrx2ULr3E2NvOv/Tw+5CrB+zDROoSJUXsx/WEulgjf27YuO
+	 YGM8MA7iiw0+somTIIqPuDvoSvO/XlTPeBZ0V2MYsB5r4Y7iwhWf5L31ltzbsZ7Cmu
+	 8OHyzh+UnQq8b7ukv0GDJsEc7cUNJZPpnApAA+UckCAmFIgOThNfRXJ7X39FbPxpRZ
+	 QKjr5Y8TGrwcvSzWSDRe9827g0yS/u+QfasxlUoucjxZWDt7/FB+HCI1GVKIMKv4ag
+	 FCSxcrDqYq1TzC7RBguYpVHfkARKEYPO+nVUPOBDtbX/7LVP32F0IHOY9ACfZceV5C
+	 qJkpgOLdN0ME1BvkqJiCHJnNUcrOYaehiNLN0EFFfBRBC+PKIRd+uqwVyuhXAZjqSN
+	 Bw4ps7vjZJoMJG+1LG+S7qA5U/WtBTUhSkCILaVPE+dnkPe4Llyffet4k7TwoyshTU
+	 53SRRnOO0aIu4VRQTgarMdWyXLZOqLJN2OCNgEq66uFatN0O1u+ggq97a/Ahf4KVMo
+	 oH6Q0iTPXgy2VH/RJtTET3wg5gvQiSaqjjw65uGajtwbtO8UmsNnm3FTj+71askfkr
+	 xoiNku/T8+ZeS8tIsQMxbYSQ=
+Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-c1c232fa136so591238666b.0
+        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 07:03:52 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788876231; x=1789481031;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=SXIMe4oMHTuXDpcB4oft04tFKxq0tl8ji9Vspwz0rd0=;
+        b=PJjmm9pe73zaiwPnQ+67syE3ZqcklbeQaM4lZRjSV3nNDvlZoRktn/yyCyLmWQPCvY
+         J5Ss6VIWnLB6YXI/Ecf5x2q06Nt8m8d4Qv2VFWvlJdOvSWLRAf/tAWkgUa/88eWADhLZ
+         vAPsxXFSPFieJOC49U+8dVQBH/EZEV1+YlP4HHPJMBUPhwSaHNHeAYysQt4CVBeqe8nu
+         ZV1jUrg0PPW3tNbFmwpozpmg6arqkPzBMWaP7EjTnq/GBjn+JQo39PNMRpL6+Iip/u+1
+         JU0RX660qinIG1gymLs+y5k95XYbuFdBayiixzhUHxBzQOGG2bfDLCpZgZ1YT6BuhiEU
+         e6yg==
+X-Gm-Message-State: AFuF++nBHRqmIaIEk0farHZYTC1eRmuSXOQaF8edJlhNj/mbEHGzGgE4
+	viXvfowcJfqh+mH0JgXk0/WvYzaede2stuOY5AUVseEoxYrt5lSAy6S4q3CqyCLy446j876KyZl
+	PTW6PsCm5xAdggIFnkgGN1fnZ4AWWkBoQmMfWtW+8bzzQLBNoAjkfNydBpFN9O2l4sgn9xvuifw
+	==
+X-Gm-Gg: AYBFou0u4emmKg3d6h6R/wVOqmKopC/O5HgppGhSRETWur3ZB2yCCFh8Q13xGERl4T3
+	xGgxfd19q+AUGl7ZmA3SjB/OYL1OqqATo2f5GFJ70zvpKyctD49mYrqpuWcWnoo9XA16mzHnC3K
+	ktCUPWFddQ6tzEzOo3k/sVR4gBHz0JC9RT9TkzMxihYnSBMDePjqE2DLIaQnVr0hG+sBJBn+clJ
+	PEQ7p0Ryj/TTUcuVBF0QcyxO9XlbAL9jOkTeygvrytcys5inLH0qyCqKpCadB1WuZBDP4XhnubT
+	aaY0l7pmluuprh/cQkpP1pN+rxEXnRN4yQ97BIiwNbYJVz9XBD6c68sEU8hV0gh5qBkXFyRIkco
+	IeAXeEufVXPbbJa8V3uZNEmFHgsRNZePE51bgUFoCnFcTsXL1utUL3NIxyHEMBkUkog==
+X-Received: by 2002:a17:907:c48b:b0:c25:f7dc:2dd with SMTP id a640c23a62f3a-c25f7dc091fmr1249500466b.30.1788876231440;
+        Tue, 08 Sep 2026 07:03:51 -0700 (PDT)
+X-Received: by 2002:a17:907:c48b:b0:c25:f7dc:2dd with SMTP id a640c23a62f3a-c25f7dc091fmr1249496266b.30.1788876230905;
+        Tue, 08 Sep 2026 07:03:50 -0700 (PDT)
+Received: from localhost ([154.62.191.154])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c260d5768c2sm616647866b.39.2026.09.08.07.03.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Sep 2026 07:03:49 -0700 (PDT)
+From: Andrei Gherzan <andrei.gherzan@canonical.com>
+To: Jakub Kicinski <kuba@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Shuah Khan <shuah@kernel.org>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	Kleber Sacilotto de Souza <kleber.souza@canonical.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Andrei Gherzan <andrei.gherzan@canonical.com>
+Subject: [PATCH net 0/2] netdevsim: fix IPsec debugfs byte order
+Date: Tue,  8 Sep 2026 15:03:23 +0100
+Message-ID: <20260908140325.13367-1-andrei.gherzan@canonical.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260908105959.70453-2-donggeunyoo.kernel@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Sep 08, 2026 at 07:59:57PM +0900, Donggeun Yoo wrote:
-> Commit a274465cc3be ("net: phy: support 'active-high' property for PHY
-> LEDs") added PHY_LED_ACTIVE_HIGH and made of_phy_led() set the matching
-> bit in the modes mask when a LED node carries the 'active-high'
-> property. dp83867 was not part of that series.
-> 
-> dp83867_led_polarity_set() only recognizes PHY_LED_ACTIVE_LOW, so
-> PHY_LED_ACTIVE_HIGH falls through to the default case and returns -EINVAL.
-> of_phy_led() propagates the error, of_phy_leds() drops the LEDs registered
-> so far and passes it on, and phy_probe() returns it. A device tree marking
-> a DP83867 LED as 'active-high', which leds/common.yaml allows and
-> ethernet-phy.yaml references for led@N nodes, thus leaves the mdio device
-> unbound, so phy_attach_direct() falls back to the genphy driver: the PHY
-> comes up without its DP83867 configuration and loses the RGMII internal
-> delay setup.
-> 
-> Active high is what the function programs when no polarity mode is
-> requested at all, so the initial value of polarity already satisfies the
-> request and only the case label is missing.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: a274465cc3be ("net: phy: support 'active-high' property for PHY LEDs")
-> Assisted-by: Claude:claude-fable-5
-> Signed-off-by: Donggeun Yoo <donggeunyoo.kernel@gmail.com>
+The netdevsim IPsec debugfs file (used by selftests/net/rtnetlink.sh's
+ipsec_offload subtest) prints the SA salt and key in host CPU byte
+order instead of network byte order, because nsim_sa.key[]/salt are
+typed as plain u32 and printed directly with "%08x". This makes the
+reported values differ between little-endian and big-endian hosts for
+the same underlying key material, and breaks the selftest on
+big-endian (e.g. s390x), which hardcodes the little-endian output.
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+A driver-side fix was proposed in 2022 but stalled in review: keeping
+the fields as plain u32 meant sparse could not validate the added
+ntohl()/be32_to_cpu() conversions.
 
-    Andrew
+  https://lore.kernel.org/netdev/20220308135106.890270-1-kleber.souza@canonical.com/
+
+This series:
+
+  1/2 retypes nsim_sa.key[]/salt to __be32 (matching the existing
+      __be32 ipaddr[] field) and converts with be32_to_cpu() before
+      printing, so the debugfs output is now network-order on every
+      host, independent of endianness.
+
+  2/2 updates the selftest's expected output to match the new,
+      endianness-independent values. It depends on 1/2: applied on
+      its own it would regress little-endian hosts (though it happens
+      to have no effect on big-endian hosts, whose old host-order
+      output already matched the new expected values).
+
+Tested on real booted kernels, both patches applied:
+  - x86_64 (little-endian): PASS: ipsec_offload
+  - s390x (big-endian):     PASS: ipsec_offload
+
+checkpatch.pl --strict and sparse (make C=2) are clean on both patches.
+
+Andrei Gherzan (2):
+  netdevsim: print IPsec salt/key in network byte order
+  selftests: rtnetlink: update ipsec_offload expected output
+
+ drivers/net/netdevsim/ipsec.c            | 10 +++++-----
+ drivers/net/netdevsim/netdevsim.h        |  4 ++--
+ tools/testing/selftests/net/rtnetlink.sh |  8 ++++----
+ 3 files changed, 11 insertions(+), 11 deletions(-)
+
+-- 
+2.43.0
+
