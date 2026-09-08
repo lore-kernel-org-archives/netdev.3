@@ -1,122 +1,206 @@
-Received: from mta0.migadu.com (out-117.mta0.migadu.com [91.218.175.117])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14FED3845A4
-	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 06:22:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.117
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2515A378D8E
+	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 06:23:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788848545; cv=none; b=oi4XdcaZHIfNLiJ9/bniRyDL26rbzsp0DxJr0sdTZo9xroIAz3YU9m3BLcJ4+EFJPceSkEs1P+b24mCoOZCN5UfgUJnrf8do8HwVNUKF4F9QSkBBKlGLY+wKWo30YfkotJK0OekSBa3T2BpdbLJ36y1qAtR/FVYw34ffk2Rsj3Q=
+	t=1788848626; cv=none; b=XObB/3wa9+iWpZMG/GAusfcIhl8aROHD9E7DQBpDuVqF6o3AY7ADkMZjkYa7nSTGmmvIFvUus/dtbVvTyRrEUqsv+GxSGnGiWMJWXKtkekPOjkLL/vCw7PozQPQkEhsstq6Mf0H1sefRBDFGT8OTFcwiaX0Sr6EacHEU/QAsZJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788848545; c=relaxed/simple;
-	bh=z0MVAooCmQ3rZNmO0VCYVTgDQhlmc13rqoT9wo169BE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=W0x0fJBhdDPQEXtw2I3YetN25MzW3FhUKVSkp64Q4R/QlCAdvowLYaOMzs7iUIzaUf2738l0L4+ppbpI5/xs5D4xsmlP6KJ/Plq2FkfzJIoMgmoiWbf45G4mGsohf4qZJP+zVt+t22/5FKK4vUqQ/AkTkrfUSgzKPeafK/FToBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=FQc8V1oK; arc=none smtp.client-ip=91.218.175.117
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1788848626; c=relaxed/simple;
+	bh=9gpvYZiiK++7fxFQKJTx+k6/ozmAgJ952XedouNhT/o=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=LFIT/UXrob0JS84BXnt3H5O3gCxbWBwVqz2LPamCARkD/uSQl7gderxsZ5lXNgnUNPVm7XfRvoPRB0a9xW73fwosw9Ovw6mPKqD00Ev9vbdA35f2IYOZLWB0k8qw3ZQaesq+3NBKAeB1epWhGrlbKwtHoUM+Q3WyndIhx++RTWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=o0HMIsTW; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=JVOeiEcD; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="FQc8V1oK"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=z0MVAooCmQ3rZNmO0VCYVTgDQhlmc13rqoT9wo169BE=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788848539; v=1; x=1789453339;
- b=FQc8V1oKBmRocgDHXCKMMxfQRrFh69ApwKYSbOzPgSey6FyOY7rHCKZ0K5GT/vXAL6S2/IwG
- CEET4Q34UbvmkvTtESDyiQtr5fISi3e/mLuzlpsNH3g1g9OYuyHcRaFw3HphmCw1cVFaIvLKMnB
- OeizhUt8IadYeZM4A++u+W+E=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta12.migadu.com with ESMTPS id 14da612d3da88a82;
-	Tue, 08 Sep 2026 06:22:19 +0000
-X-Mizu-Trace-ID: 14da612d3da88a82
-X-Migadu-Flow: FLOW_OUT
-Date: Tue, 8 Sep 2026 14:22:08 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: faicker.mo@gmail.com
-Cc: stable@vger.kernel.org, Sridhar Samudrala <sridhar.samudrala@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Stanislav Fomichev <sdf@fomichev.me>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] net: net_failover: Fix the deadlock in
- net_failover_slave_name_change()
-Message-ID: <ap-pkHCX6O5AOEIz@fedora>
-References: <20260908040708.3972058-1-faicker.mo@gmail.com>
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="o0HMIsTW";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="JVOeiEcD"
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6886MBOx1521769
+	for <netdev@vger.kernel.org>; Tue, 8 Sep 2026 06:23:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=5LkBz/6+6EbGMarTpjWjMr
+	IiSvDbCV1mNMUZslHPIt0=; b=o0HMIsTWgg/AOpgaCl4VuHQB/5sa833g4xyNVa
+	prCMDlvSRJi6jgZ+9peM1zoFVbhv2W8NSjh6DGYQQjkNvyrB08fCzGbM5WUXrD9y
+	HiREqBAC6d83XM4u4Oq3QFTd9JOq8O83uBW2XAuni/Qb5EewsEsFhkLfn55L5dMA
+	ZzOOQVgHG0IfBMccPLa2PC5gwG72S8R3Tg2q7Kgmmh33cYw+AYqmhpq/k7K5HR4r
+	XY2cO1KKstv4baq+CtLhFqDpZvOpYy/xuhv2NSsG4oYYMRQahxfyQoFMft+MfjA/
+	b7UfiNJtj6SwYHhTUJwTbhJ2GkFAVGFT3wAoTX0uzLapsY+Q==
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gj077j8yf-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 06:23:44 +0000 (GMT)
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cc1a439db36so4228030a12.2
+        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 23:23:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1788848623; x=1789453423; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=5LkBz/6+6EbGMarTpjWjMrIiSvDbCV1mNMUZslHPIt0=;
+        b=JVOeiEcD3/zSNbNl7uYA9gyz5J35B/MR6HpFiPU79hEZonwpdkVZaVJmp51zlpqfY+
+         867PhQ2l/NxdK+dKa93ssa8YklCKIrhxzp/DoQfJf4F8Cj9sirPP/iT4kBi1bTBOlRBf
+         DCT+QTeR8YLAuvEvCFY3qDnGMQ8aomBIT3VcU/4Tx+54MOOJ8yZpEqGQOxJpFnUpdspC
+         509cg7Rvz+WZJgRUmc+CB9IInZUkTscKRbiYKK6z2ikbM2CQW71pTEAILPeCIDp9AKvD
+         +wVKah9ALzgrsbZgpAex6m5yFk43arxbu9xndEop8VxpqKYCAYxFR9RPqKgRHfSEeOHp
+         cgvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788848623; x=1789453423;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=5LkBz/6+6EbGMarTpjWjMrIiSvDbCV1mNMUZslHPIt0=;
+        b=YuCmoBF8LZTO2hpwDJp5RCGiEhUtKyJGGOrg2nT2SVhVxjVKhhC2brYhb35pfhyE+L
+         q0y47osd3bslVKJWy/l3Wc9cumXOz6STkN2lIhiwnbF2pN9h570HLdyubrgRlNV92OQr
+         XmFJYQ4C+ST8RmBlCWfEzhHYQl8LcRQR1KUvcb+c7KRCxt4TwJVczI53DAj5LTR3X3IF
+         Yl1ZWiSDjYug2WpHnN/Ted/9hQ7QQOXgzf8KLYgxDYu5LShCzQghJ0HiZ7NDaIzzE3pZ
+         jcSbZkFGx2XybSA1FijkmTvKGrRJc0EdQFGSr9pTXPpKw/YtURMvPhndNGon7PvmHahb
+         swpA==
+X-Forwarded-Encrypted: i=1; AKwUvBzvxpH24KiDDDQv2wi0tPbQeQdzERbopy53ykSKfW+hpneFxj1YMGG0SwyDxcLIrHj7pAXFyb0=@vger.kernel.org
+X-Gm-Message-State: AFuF++lqyfcPesQz7z28Bry/nAEx7FZeCs3WinBceXDMqNbaLw/xNVbY
+	rnitGDvguaX6kUzp/AFGAsauUsiUzxdOOXky3mw0I6NE73F16Hm1lT+z9ZfIySfg4B7R27HDKxP
+	/2BH3LlIEqPcPN0ppsynCVak30TIymuVdcVTLkL2a/iv6tJz/i2immXu/HIf0R7Q6Xb4=
+X-Gm-Gg: AYBFou3s2f7rzTjRMVFdXjB7FDR7igO4Aq6r/RUwjHQsh37nGKydrVfovxb/cajaEk8
+	0Zk8df4XM+06s2RsMFznYtkDOX2vEPRiyRhl8gu1wbp3FUCzmiRQJ0Kt3KxB5G+tlMs7NJjX7So
+	8L2x6VQGhdYclU+g7J80Ge3FZycgNfkd5KcqgOAIp1wQJEOlzPeqe/VacLf81GZbldF0ArkLd5E
+	URXEeEu4US0h0egTrO3cc9dCO+Ta9VHHTmJ82gIUh1/7X+XQSkT71IHcCVHlpOB0sU/SB1b0Eh5
+	TX8DgNb5Nfe67WDSDVnq3JGRfJSCemhINOh2DldJgjmqB09ZoGKD1CXAt3ItWwkHA+JIwRjEC+A
+	kWk0T06+rikfk+UzIOX66Wc1nf/EOWg==
+X-Received: by 2002:a05:6a20:e607:b0:3d3:ae51:181e with SMTP id adf61e73a8af0-3da3a16ab56mr42582289637.26.1788848622866;
+        Mon, 07 Sep 2026 23:23:42 -0700 (PDT)
+X-Received: by 2002:a05:6a20:e607:b0:3d3:ae51:181e with SMTP id adf61e73a8af0-3da3a16ab56mr42582205637.26.1788848622316;
+        Mon, 07 Sep 2026 23:23:42 -0700 (PDT)
+Received: from hu-mohdayaa-hyd.qualcomm.com ([202.46.23.25])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-14332405e92sm26266297c88.8.2026.09.07.23.23.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 07 Sep 2026 23:23:41 -0700 (PDT)
+From: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>
+Subject: [PATCH PRELIMINARY 0/5] arm64: dts: qcom: shikra: add Ethernet
+ support
+Date: Tue, 08 Sep 2026 11:53:29 +0530
+Message-Id: <20260908-shikra_ethernet_dts-v1-0-69c0c5c7c124@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260908040708.3972058-1-faicker.mo@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAOGpn2oC/13NzWrDMBAE4Fcxe65gLTmW5FsPOQTaUnIrIQRJn
+ saixGklNRRC3j3ODzn0OMzsfkfKSBGZuupICYeY436cQv1UURjcuIWI/ZRJsmzZshF5iF/JbVA
+ GpBFl05csmLWGaXRvLdN0+Z3wGf+uX1f0vpy/LF4Xb8/LD1rfyoSf30kq98UD6qo7o/4zwkF7Y
+ AbDDbqDvCjeZYiw3+1i6SrNjQwm1FZh1reqqa3xOui29V45roOBAhiS1qfTGfdTAav1AAAA
+X-Change-ID: 20260908-shikra_ethernet_dts-0077e847d990
+To: Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Komal Bajaj <komal.bajaj@oss.qualcomm.com>,
+        Anurag Pateriya <apateriy@qti.qualcomm.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+        Richard Cochran <richardcochran@gmail.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788848616; l=2801;
+ i=mohd.anwar@oss.qualcomm.com; s=20250907; h=from:subject:message-id;
+ bh=9gpvYZiiK++7fxFQKJTx+k6/ozmAgJ952XedouNhT/o=;
+ b=BWNdle9xwzgMQXU+Fng3OrQQKVZCffhPMemmrtLubzjbmjkz1Qo9DHZLLqp+1B7NDbw1dJ/c6
+ Feg3lLCRwFQAYAmzRzDFnUFWV/RhMGTbsx0iWkLz4EqTDUTslssilHA
+X-Developer-Key: i=mohd.anwar@oss.qualcomm.com; a=ed25519;
+ pk=7JNY72mz7r6hQstsamPYlUbLhQ5+W64pY4LgfSh9DJU=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA4MDA2OCBTYWx0ZWRfX4K0D1C1uBgjn
+ Uv+2Ycu2zZaINs+aGo9C+NNfRA5L6R3gSNT/NdRq2rDfLNahW60TrMbMAlIW3aMGvsMdopNJz9J
+ Bd1TFY8IOtGXT5aqnZJ4IgOEQ0hsWa2dKjaONKN7dtD5UJ1uSjaWCLseu04wZ1ov/kTsxTrqKAA
+ I5nmrYk5vqoe83RJe1aHuLbsdx0buI7vRIht17s7LyWOpZT3Guw8X/Kg9Y5annbMvKqKkV9e2SI
+ Fc/EXL1FXmWa3JdkSQG/RktiO1n2n+8FKqbDzzOquovMx4RsEE/UGAOoEHGP3NA6JiPRXlpHRbB
+ jvO82SnT/+CrmO7EcDhSFAEhtyevIE6OUyqmquD14bNUq/BsJ5YyDhDiJPKfK/XlU/MN7UmKJHT
+ dmNX377QyhlA3ehfke0rPcfXmm2WpSfA07728KdyJccl/Lz6riCUkOynjpjPK9TJ0XbAJT7vf/N
+ llPbHDyvg6/izL7zwtQ==
+X-Authority-Analysis: v=2.4 cv=Xbe5Co55 c=1 sm=1 tr=0 ts=6a9fa9f0 cx=c_pps
+ a=oF/VQ+ItUULfLr/lQ2/icg==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
+ a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yx91gb_oNiZeI1HMLzn7:22
+ a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=EtmUyxdyGpvgt5L2qVsA:9 a=QEXdDO2ut3YA:10
+ a=3WC7DwWrALyhR5TkjVHa:22
+X-Proofpoint-ORIG-GUID: ja2DDKmTSXTLkqyvaASbneQfEuzi7k2m
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTA4MDA2OCBTYWx0ZWRfXy3lO/RcX42F6
+ XgRSoK752dPF7a56ySaGtHcqEY5UtQLdjwZ76DvO/Z/21pGbN4/QeJqATmXM/fWISFNKxC/oxNa
+ 1pdxNQmUsZLGFamHPetQ6w/adLc+5lE=
+X-Proofpoint-GUID: ja2DDKmTSXTLkqyvaASbneQfEuzi7k2m
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-08_01,2026-09-07_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 impostorscore=0 lowpriorityscore=0 clxscore=1015 adultscore=0
+ suspectscore=0 priorityscore=1501 spamscore=0 bulkscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2609080068
 
-On Tue, Sep 08, 2026 at 12:06:29PM +0800, faicker.mo@gmail.com wrote:
-> From: Faicker Mo <faicker.mo@gmail.com>
-> 
-> This is a sibling fix of commit
-> b84c5632c7b3 ("net: net_failover: Fix the deadlock in slave register").
-> There is netdev_lock_ops() in the upper callers, so using netif_open()
-> instead of dev_open().
-> 
-> Call Trace:
->  __schedule+0x2bb/0x650
->  schedule+0x27/0xb0
->  schedule_preempt_disabled+0x15/0x30
->  __mutex_lock.constprop.0+0x550/0xaf0
->  __mutex_lock_slowpath+0x13/0x20
->  mutex_lock+0x3b/0x50
->  dev_open+0x3b/0xe0
->  net_failover_slave_name_change+0x22/0x40
->  failover_event+0xd4/0x1e0
->  notifier_call_chain+0x62/0xf0
->  raw_notifier_call_chain+0x16/0x30
->  call_netdevice_notifiers_info+0x50/0x80
->  netif_change_name+0x200/0x330
->  do_setlink.isra.0+0xb12/0xdf0
->  ? security_capable+0x9a/0x1e0
->  ? ns_capable+0x31/0x60
->  rtnl_setlink+0x302/0x670
->  ? netlink_recvmsg+0x296/0x340
->  ? security_capable+0x9a/0x1e0
->  ? __pfx_rtnl_setlink+0x10/0x10
->  rtnetlink_rcv_msg+0x384/0x460
->  ? __pfx_rtnetlink_rcv_msg+0x10/0x10
->  netlink_rcv_skb+0x61/0x120
->  rtnetlink_rcv+0x15/0x30
->  netlink_unicast+0x28f/0x3c0
->  netlink_sendmsg+0x216/0x450
->  __sys_sendto+0x222/0x230
->  __x64_sys_sendto+0x24/0x40
->  x64_sys_call+0x1d5d/0x2390
->  do_syscall_64+0x105/0x5a0
->  ? do_syscall_64+0x140/0x5a0
->  ? exc_page_fault+0x94/0x1e0
->  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-> 
-> Fixes: 7e4d784f5810 ("net: hold netdev instance lock during rtnetlink operations")
-> Signed-off-by: Faicker Mo <faicker.mo@gmail.com>
-> ---
->  drivers/net/net_failover.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/net_failover.c b/drivers/net/net_failover.c
-> index 3f7d31033bae..1b5213e87070 100644
-> --- a/drivers/net/net_failover.c
-> +++ b/drivers/net/net_failover.c
-> @@ -675,7 +675,7 @@ static int net_failover_slave_name_change(struct net_device *slave_dev,
->  	/* We need to bring up the slave after the rename by udev in case
->  	 * open failed with EBUSY when it was registered.
->  	 */
-> -	dev_open(slave_dev, NULL);
-> +	netif_open(slave_dev, NULL);
->  
->  	return 0;
->  }
-> -- 
-> 2.53.0
-> 
+Hi,
 
-Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
+This preliminary series adds the DTS changes required to enable
+Ethernet on the Qualcomm Shikra CQM, CQS, and IQS EVKs.
+
+It adds the two Shikra EMAC controller nodes, enables the first
+Ethernet port on the CQM and CQS EVKs, enables both ports on the IQS
+EVK, describes the DP83867 PHYs and their GPIO-controlled 2.5 V
+supplies, and fixes an incorrect GPIO reservation on the IQS SoM.
+
+This series is functionally dependent on the driver and binding changes
+posted here:
+
+https://lore.kernel.org/netdev/20260908-shikra_ethernet-v2-0-bbe3389d0652@oss.qualcomm.com/
+
+I am hoping that a preliminary DTS series makes the review of the
+driver, dt-bindings, and board-description changes easier.
+
+Changes since RFC:
+  - Model the PHY supplies as fixed regulators controlled by the PHY
+    driver -- Konrad, Andrew.
+  - Add the IQS GPIO reservation fix as the first patch -- Krzysztof.
+  - Move the Ethernet pinctrl default states to shikra.dtsi -- Konrad.
+  - Resolve property-ordering issues and add missing final newlines --
+    Konrad.
+  - Link to RFC: https://lore.kernel.org/netdev/20260612-shikra_ethernet-v1-0-f0f4a1d19929@oss.qualcomm.com/
+
+Signed-off-by: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>
+---
+Mohd Ayaan Anwar (5):
+      arm64: dts: qcom: shikra-iqs-som: fix GPIO138 reservation
+      arm64: dts: qcom: shikra: add ethernet nodes
+      arm64: dts: qcom: shikra-cqm-evk: enable the first Ethernet port
+      arm64: dts: qcom: shikra-cqs-evk: enable the first Ethernet port
+      arm64: dts: qcom: shikra-iqs-evk: enable both Ethernet ports
+
+ arch/arm64/boot/dts/qcom/shikra-cqm-evk.dts  |  46 +++++
+ arch/arm64/boot/dts/qcom/shikra-cqs-evk.dts  |  46 +++++
+ arch/arm64/boot/dts/qcom/shikra-iqs-evk.dts  |  90 +++++++++
+ arch/arm64/boot/dts/qcom/shikra-iqs-som.dtsi |   2 +-
+ arch/arm64/boot/dts/qcom/shikra.dtsi         | 266 +++++++++++++++++++++++++++
+ 5 files changed, 449 insertions(+), 1 deletion(-)
+---
+base-commit: 7042c8c193e5d634198b7c766bb3a01c8e3ee0e2
+change-id: 20260908-shikra_ethernet_dts-0077e847d990
+prerequisite-change-id: 20260903-shikra_ethernet-ae7bee5e804e:v2
+prerequisite-patch-id: 218773849d643c66166408f849566323f3d466c2
+prerequisite-patch-id: 8973e6e7fa7b09e09705913a37035c1bff8ad385
+prerequisite-patch-id: 6686a8aef5f4f729892d0b3ce2e75816fe874f82
+prerequisite-patch-id: 2ba77f9b01c8bf2f22589361e005805c28353f6e
+prerequisite-patch-id: bf25cc81677cccb0740f26a4fb3ed8fdd2e240d8
+prerequisite-patch-id: 5333cc3ebc07361084298168344d230b234e8795
+prerequisite-patch-id: c1ef6e429b44f3227554e8c50cc2dc9baaa54cb7
+prerequisite-patch-id: 0b2817da8c502234bf2867f9985f488389c519fa
+prerequisite-patch-id: f5716827eca798a78fea6a40b3097e52c14c1e81
+
+Best regards,
+-- 
+Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>
+
