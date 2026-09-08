@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F39459D63F
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A15AF3B14D4
 	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 22:48:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788907744; cv=none; b=s/Y1tnNAlmUKJWXoNur9eyx6Fb947sYbsOMduYm/x7B8sNDD5itlNkGEsWHwHeZVxvV9T4B+mj3No5+lI+Yyi0ETpQctp6L/E67JppUVXT0m7styQOI96n2RayghPCf6VvWwSX15McqoQGTI5fct27jElkH19w8pmfqQtd5ImX0=
+	t=1788907744; cv=none; b=Jvw71yJpW1KlEygiD9ZPybrviLiIXuBXJIjUIoX0EfEOAzUSw4gABKb2cLpC/wrre46mduQ8ncjrirJ2xFAK+bx7bHWXR5I/l4/LI5LmjZCzXn5UmcWHeiy7Gn31ywMDwCvrv+bFxh8sCuxrrzVSl7d9o4M5GqVOEjzZlQ2QIkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1788907744; c=relaxed/simple;
-	bh=fU2u7hy3bOUzEcv0iSH0XfbQyxzGXEH4rCehpMOpSzg=;
+	bh=Xf+vcN4BzZJYWyCCg+IHSp7N2pgZE3yTia8lmOH+2Lw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WYFhDUz+r7RtAZM9g4Eu8a/XSL2JIUPR0Zp6lDbnpk0hkJCLcd/Ey6F+BHOY59W61wjX4dkMUtEFgsI9+yE8EC1U0DT3szwfQ28vub+RCzZ4Va24urNG1msHNi50A/+QYTPcjIISnfGC+Jt+tJLMaTKvaUJtVaMfIX1HE7+FrRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q0yjPGkx; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=DXyl4IWAazN9UsegGX6o4DvS0DjkgSP5QvVqDTbVi6nkMC6YxToiVzgFdjBGU1O9UVvat6UGvGLrkFjqL/wMQBTf94Uuk0g9lllMhtOwEFLsz8qWwggWXdN89kP4IuHT7q9u19ZT3A7Xx0Y/RxwuKNaEuWGRe9m3UGBM4W+5YbU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Of/PafQX; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q0yjPGkx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 124EF1F00A3D;
-	Tue,  8 Sep 2026 22:48:55 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Of/PafQX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8B3D1F00A3A;
+	Tue,  8 Sep 2026 22:48:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788907735;
-	bh=2QfZk9RfFjFZuTm5Thf1TLno1ktUCon+oFASO1azv0E=;
+	s=k20260515; t=1788907733;
+	bh=Il8UIHJC/7UbD1enFL8myjYOeOo48gkLLAOCJErYPhc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Q0yjPGkx54JFX5A+x1uPQZWXiPL+2iWhN1EAgdz0wzlbWnDoclZ5Ryi4IafWLSKQe
-	 ofsrsG57a5J25b1v1cs3EWKceLH0HALc6t/SKbnMoyq3BwXokvu3ujRWvyh7BBLAD8
-	 HTS2DtQInXe/zxLecavyfrm94GmI/KN7TzyZS3JOUVky57gv/DK3juA3i1iNTHTAt2
-	 UqXeuX2qOwyDhFvqcmiw8oAtSqoFfTZwWq23l+wWZk/HZmmxl4SCW1zqavYM5H/gOY
-	 /9rLqAtIOv/4SReua1vxto5mfDQb+qhtgSLm3jZzGCatgl4AhJJpke8w2v2R3+cq7/
-	 98HfTe0VTMv4w==
+	b=Of/PafQX5fgNU7VN7GcgmI+9ij0Vz9WWqEpVXSgex0RVsaXLD2Ex8oKV9Aj0tMhOk
+	 12PGBlMMNjrmijszMPutJaKeeoLjqzPAp0SKM1pB20qg4zW34aGKtOWNnhJVeU28SA
+	 wC+FB+GMfLMc7bR5MTM6S0m92z0p58CfttKBR0dozVxhnDOF8OPVmehz4J6xE4d+Sx
+	 epAUGtv0ye9V8TLjNoY7btlCWPYKFAGSSbqty0UOiakOYbC74/MiySFOySmatk79XU
+	 srLa9T0MJwcYBbParbgZzrOgax+Tiu1XPMRbrNo1JJm93iQuAaaifIf7iMTuxJIVsK
+	 x8ga0za46n+2g==
 From: Jakub Kicinski <kuba@kernel.org>
 To: steffen.klassert@secunet.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
 	davem@davemloft.net,
 	herbert@gondor.apana.org.au,
 	netdev@vger.kernel.org
-Subject: Re: [PATCH 02/12] xfrm: serialize state GC with device state flush
-Date: Tue,  8 Sep 2026 15:48:54 -0700
-Message-ID: <20260908224854.1591115-1-kuba@kernel.org>
+Subject: Re: [PATCH 01/12] xfrm: iptfs: fix stack OOB read in iptfs_skb_reset_frag_walk()
+Date: Tue,  8 Sep 2026 15:48:02 -0700
+Message-ID: <20260908224803.1587019-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260907093020.2228346-3-steffen.klassert@secunet.com>
-References: <20260907093020.2228346-3-steffen.klassert@secunet.com>
+In-Reply-To: <20260907093020.2228346-2-steffen.klassert@secunet.com>
+References: <20260907093020.2228346-2-steffen.klassert@secunet.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,142 +49,114 @@ Content-Transfer-Encoding: 8bit
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
-xfrm: serialize state GC with device state flush
+xfrm: iptfs: fix stack OOB read in iptfs_skb_reset_frag_walk()
 
-This adds a global mutex, xfrm_state_gc_mutex, taken by the state GC worker
-around xfrm_state_gc_destroy() and by the deferred-device pass of
-xfrm_dev_state_flush(), so the two paths no longer run xfrm_dev_state_free()
-on the same state concurrently.  The KASAN slab-use-after-free reported in
-xfrm_dev_state_free() from xfrm_dev_state_flush() is addressed by that
-serialization.
+This adds an up-front range check to iptfs_skb_can_add_frags() so that
+iptfs_skb_reset_frag_walk() is never entered with an offset at or beyond
+the end of the walk's fragment data, where its unbounded advance loop
+would read past walk->frags[]. The guard mirrors the one already present
+in iptfs_skb_add_frags().
 
-> diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
-> index 36a4f6793edef..de097bba803b7 100644
-> --- a/net/xfrm/xfrm_state.c
-> +++ b/net/xfrm/xfrm_state.c
-> @@ -226,6 +226,7 @@ static struct xfrm_state_afinfo __rcu *xfrm_state_afinfo[NPROTO];
+> diff --git a/net/xfrm/xfrm_iptfs.c b/net/xfrm/xfrm_iptfs.c
+> index 597aedeac26eb..2ce15c472cc4d 100644
+> --- a/net/xfrm/xfrm_iptfs.c
+> +++ b/net/xfrm/xfrm_iptfs.c
+> @@ -416,6 +416,14 @@ static bool iptfs_skb_can_add_frags(const struct sk_buff *skb,
+>  	if (skb_has_frag_list(skb) || skb->pp_recycle != walk->pp_recycle)
+>  		return false;
 >  
->  static DEFINE_SPINLOCK(xfrm_state_gc_lock);
->  static DEFINE_SPINLOCK(xfrm_state_dev_gc_lock);
-> +static DEFINE_MUTEX(xfrm_state_gc_mutex);
->  
->  int __xfrm_state_delete(struct xfrm_state *x);
->  
-> @@ -632,8 +633,10 @@ static void xfrm_state_gc_task(struct work_struct *work)
->  
->  	synchronize_rcu();
->  
-> +	mutex_lock(&xfrm_state_gc_mutex);
->  	hlist_for_each_entry_safe(x, tmp, &gc_list, gclist)
->  		xfrm_state_gc_destroy(x);
-> +	mutex_unlock(&xfrm_state_gc_mutex);
->  }
->  
->  static enum hrtimer_restart xfrm_timer_handler(struct hrtimer *me)
-> @@ -1000,6 +1003,7 @@ int xfrm_dev_state_flush(struct net *net, struct net_device *dev, bool task_vali
->  out:
->  	spin_unlock_bh(&net->xfrm.xfrm_state_lock);
->  
-> +	mutex_lock(&xfrm_state_gc_mutex);
->  	spin_lock_bh(&xfrm_state_dev_gc_lock);
->  restart_gc:
->  	hlist_for_each_entry_safe(x, tmp, &xfrm_state_dev_gc_list, dev_gclist) {
+> +	/* Reject an @offset that is at or beyond the end of the walk's data
+> +	 * before calling iptfs_skb_reset_frag_walk(), whose fragment-advance
+> +	 * loop is otherwise unbounded and would index past walk->frags[].
+> +	 * This mirrors the guard already present in iptfs_skb_add_frags().
+> +	 */
+> +	if (!walk->nr_frags || offset >= walk->total + walk->initial_offset)
+> +		return false;
+> +
 
-[Severity: High]
-Is the new mutex enough to cover every xfrm_dev_state_free() caller?  There
-is a third caller in the acquire path in xfrm_state_find() that takes
-neither the new mutex nor RTNL:
+[Severity: Medium]
 
-net/xfrm/xfrm_state.c:xfrm_state_find() {
+Should this return true (or be conditioned on len) instead of false?
+
+In the iptfs_reassem_cont() path the walk is prepared and then queried
+with the same offset:
+
+net/xfrm/xfrm_iptfs.c:iptfs_reassem_cont() {
 	...
-#ifdef CONFIG_XFRM_OFFLOAD
-		struct xfrm_dev_offload *xso = &x->xso;
+	fraglen = min(blkoff, remaining);
+	copylen = min(fraglen, ipremain);
 
-		if (xso->type == XFRM_DEV_OFFLOAD_PACKET) {
-			xfrm_dev_state_delete(x);
-			xfrm_dev_state_free(x);
+	if (!skb_has_frag_list(skb) && !skb_has_frag_list(newskb) &&
+	    (skb->head_frag || skb->len == skb->data_len) &&
+	    skb->pp_recycle == newskb->pp_recycle) {
+		fragwalk = &_fragwalk;
+		iptfs_skb_prepare_frag_walk(skb, data, fragwalk);
+	}
+
+	if (fragwalk &&
+	    iptfs_skb_can_add_frags(newskb, fragwalk, data, copylen)) {
+	...
+}
+
+Since offset == walk->initial_offset == data here, the new clause reduces
+to walk->total == 0, and iptfs_skb_prepare_frag_walk() sums exactly
+skb->len - data, so it only fires when data == skb->len, i.e. when
+remaining == 0 and therefore copylen == 0 as well.
+
+For that case the guard now sends control into the else branch:
+
+	} else {
+		if (skb_linearize(newskb)) {
+			...
 		}
-#endif
+
+		/* copy fragment data into newskb */
+		if (skb_copy_seq_read(st, data, skb_put(newskb, copylen),
+				      copylen)) {
+			XFRM_INC_STATS(xs_net(xtfs->x),
+				       LINUX_MIB_XFRMINBUFFERERROR);
+			goto abandon;
+		}
+	}
+
+with copylen == 0 and data == skb->len.  skb_copy_seq_read() calls
+skb_seq_read() before it looks at len:
+
+net/core/skbuff.c:skb_copy_seq_read() {
+	for (;;) {
+		sqlen = skb_seq_read(offset, &data, st);
+		if (sqlen == 0)
+			return -EINVAL;
+		if (sqlen >= len) {
 	...
 }
 
-That code runs inside the rcu_read_lock() taken earlier in
-xfrm_state_find() (it uses xfrm_state_hold_rcu() on the found state), so it
-cannot take a sleeping mutex even if one were added there.
+and skb_seq_read() returns 0 once abs_offset >= st->upper_offset, so the
+zero-length copy returns -EINVAL and iptfs_reassem_cont() takes the
+abandon label, where iptfs_reassem_abort() frees xtfs->ra_newskb and
+destroys the in-progress inner packet reassembly.
 
-xfrm_dev_state_delete() publishes x on the global, reference-less device GC
-list while xso->dev is still set:
+Before this patch the same input took the sharing branch: can_add_frags()
+fell through its "while (len && fragi < walk->nr_frags)" loop with len == 0
+and returned true, iptfs_skb_add_frags() returned immediately via its own
+!walk->nr_frags check, and reassembly continued via
+"if (copylen < ipremain) xtfs->ra_wantseq++;".
 
-net/xfrm/xfrm_state.c:xfrm_dev_state_delete() {
-	if (dev) {
-		dev->xfrmdev_ops->xdo_dev_state_delete(dev, x);
-		spin_lock_bh(&xfrm_state_dev_gc_lock);
-		hlist_add_head(&x->dev_gclist, &xfrm_state_dev_gc_list);
-		spin_unlock_bh(&xfrm_state_dev_gc_lock);
-	}
-}
+Two inputs from a peer on an IPTFS SA appear to reach this: an AGGFRAG
+payload carrying only the basic/CC header with block_offset >= ipremain
+while a reassembly is in progress, and the "newskb->len < iphlen" block
+copying exactly iphremain == remaining bytes so that "data += copylen"
+leaves data == skb->len.
 
-so the deferred pass added here, which matches only on xso->dev == dev, can
-pick up the same state and call xfrm_dev_state_free() on it in parallel:
+Would a guard on len, for example returning true when len == 0 and only
+rejecting when there is data left to add, close the stack out-of-bounds
+read without changing the reassembly outcome?
 
-  CPU 0 (xfrm_state_find(), packet offload, km_query() failed)
-  xfrm_dev_state_delete(x)		/* x now on xfrm_state_dev_gc_list */
-  xfrm_dev_state_free(x)
-    dev = READ_ONCE(xso->dev)		/* non-NULL */
+The other caller, iptfs_pskb_add_frags() in __input_process_payload(), is
+only reached when capturelen > iphlen and remaining >= iphlen, so it does
+not appear to be able to hit the new guard.
 
-  CPU 1 (xfrm_dev_event() -> xfrm_dev_state_flush(), same dev)
-  mutex_lock(&xfrm_state_gc_mutex)
-  finds x, xso->dev == dev
-  spin_unlock_bh(&xfrm_state_dev_gc_lock)
-  xfrm_dev_state_free(x)
-    dev = READ_ONCE(xso->dev)		/* also non-NULL */
-
-Can both CPUs then run the driver callback and the device put twice?
-
-net/xfrm/xfrm_state.c:xfrm_dev_state_free() {
-	if (dev && dev->xfrmdev_ops) {
-		spin_lock_bh(&xfrm_state_dev_gc_lock);
-		if (!hlist_unhashed(&x->dev_gclist))
-			hlist_del(&x->dev_gclist);
-		spin_unlock_bh(&xfrm_state_dev_gc_lock);
-
-		if (dev->xfrmdev_ops->xdo_dev_state_free)
-			dev->xfrmdev_ops->xdo_dev_state_free(dev, x);
-		WRITE_ONCE(xso->dev, NULL);
-		xso->type = XFRM_DEV_OFFLOAD_UNSPECIFIED;
-		netdev_put(dev, &xso->dev_tracker);
-	}
-}
-
-The hlist_unhashed() test only guards the list removal, not
-xdo_dev_state_free() or netdev_put(), and dev is sampled before the
-spinlock, so a double driver teardown and a net_device refcount underflow
-look possible.
-
-Also, since hlist_del() is used rather than hlist_del_init(), does the
-second caller see the poisoned pprev as still hashed and call __hlist_del()
-again, writing through LIST_POISON2?
-
-This is the same failure mode the commit message describes:
-
-  "Both paths can invoke the driver callback and drop the device reference."
-
-Would addressing the root cause the commit message names -- "The device GC
-list does not hold an xfrm_state reference" -- be a better fit, either by
-taking an xfrm_state reference for the device GC list, or by making the
-release in xfrm_dev_state_free() idempotent (test-and-clear of xso->dev plus
-hlist_del_init() under xfrm_state_dev_gc_lock)?  That would also cover the
-xfrm_state_find() caller, which cannot participate in a mutex-based scheme.
-
-For reference, no later commit in this series through 231bb4a13161 changes
-xfrm_dev_state_free(), xfrm_dev_state_delete() or the xfrm_state_find() call
-site.
-
-> @@ -1014,6 +1018,7 @@ int xfrm_dev_state_flush(struct net *net, struct net_device *dev, bool task_vali
->  
->  	}
->  	spin_unlock_bh(&xfrm_state_dev_gc_lock);
-> +	mutex_unlock(&xfrm_state_gc_mutex);
->  
->  	xfrm_flush_gc();
->
+For reference, this behaviour is unchanged through the rest of the series:
+the only later change to net/xfrm/xfrm_iptfs.c is the ra_runt iplen check
+in "xfrm: iptfs: fix runt reassembly panic from short inner tot_len", and
+iptfs_skb_can_add_frags() is the same at the end of the series.
