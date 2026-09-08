@@ -1,221 +1,111 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A46058F084
-	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 22:24:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C51CA3C1D6A
+	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 22:34:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788906285; cv=none; b=lw1EhQxuVUuNhjz9dr+5JI9vgIf/WeI0B3HJ7Iy9kdIYGhKajGHnWJ3HBxpqqD1S56K6+UJyjZ3i8kQKqdQbakRSzTVUUeMpC1+AXya5XFG1xUxR4B2Owz4eKBXkix3GORZ4sRMEN6UBrTDBa3ikuKxXwXKSJtXieEyknJlIxgI=
+	t=1788906845; cv=none; b=DzYBj2AFwmjk85d+SWnrYqRYIqwMp+4gakzeji1/DGBubznwvlOM3MHQiT0hn6Fvdx2bsX9fJhv2kQnkkMaVK9k5ZlIVhY5xdSm0ER2KIB/QpvX2qV7axso1DZBKWDXPwEqp/nRYdz4MvzWBjycyDGAnrtaRwJoBy6S4RLXLYhU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788906285; c=relaxed/simple;
-	bh=CRe0s58JQTnKy1ToPw+Jvn2Gha1QD/NaYoXuEsk/Iho=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=doOzGlU/3ibfN1rwC8csuZOq/ueCVj4rrsovoUv6/ZFgr08S2B/AZlhwSeCIX/+lJo7ld/1xu+mPTY9yPi724MU+mMnq9Ska5TE1xRUzj7Spg5jgx6DqsGFUXolO9HlQy+T3EIvpjPPWK6m6hKFIG9h7q5tKic70L2VREAdve3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Elbr5rVS; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1788906845; c=relaxed/simple;
+	bh=vHvk+bjLs682I9QfsEUIDfLsqAAo2RU7OhlRf0yB+ME=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=m1ugyIh72i6Yo8p68Wk3w19naO0MbNsle37TC8+Ay1ligG6vwGP+pCWU5/waUero7xRbE9JLDHjCrDf49NEpvWNiYkoH9gOdOU9vJnNUD3ENzV0/VXgKMM5UA9ajNTwb52kjrcRv1wRiVk/3yDpU9gOQelvOq4E16xVhkHkSneE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HjBDfIpH; arc=none smtp.client-ip=209.85.219.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Elbr5rVS"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788906283; x=1820442283;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=CRe0s58JQTnKy1ToPw+Jvn2Gha1QD/NaYoXuEsk/Iho=;
-  b=Elbr5rVSynb08sZsesXbx4O+7Mww8AW3FOgZEbNbsbdF4cjDrCiOK+8h
-   pvAdCfDG745nT/DTgFhWpYXfwM3auY5pyRgJrvUXXl0YaSOn3f6EKz+6g
-   fvHxmExYWFKW0TCwF83iVIkIalTd6xjdBkGtJV2lZYrpiyOmQaZOQOIR0
-   Q499kYHiyXvxC/p6flLVpS5wxtbgzvimbzEB2YAP79i9C5LgdRcfJEjLl
-   PMb+LO9OM9lBNQ4coUg4Urjc8hMtihfGnLZPYgWiXm297XNHqXDI2ndky
-   klKKWIFCOrIU4f/c4Gs+SNhFEiEUxxf9qYBphrk0NbJsFxec62BVTV/Bm
-   g==;
-X-CSE-ConnectionGUID: xjhn8oIXQEqXAVvdk6LryQ==
-X-CSE-MsgGUID: hEPzxtnQTAWBLtrAF7C8VQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11900"; a="89354888"
-X-IronPort-AV: E=Sophos;i="6.25,269,1779174000"; 
-   d="scan'208";a="89354888"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2026 15:24:39 -0700
-X-CSE-ConnectionGUID: 1q7oxxjgQUmaVkkSBQ/1uw==
-X-CSE-MsgGUID: m1A1rFggRvCM+eYCrOtqPQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,269,1779174000"; 
-   d="scan'208";a="274660835"
-Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by orviesa003.jf.intel.com with ESMTP; 08 Sep 2026 15:24:38 -0700
-From: Tony Nguyen <anthony.l.nguyen@intel.com>
-To: davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	andrew+netdev@lunn.ch,
-	netdev@vger.kernel.org
-Cc: Grzegorz Nitka <grzegorz.nitka@intel.com>,
-	anthony.l.nguyen@intel.com,
-	arkadiusz.kubalewski@intel.com,
-	przemyslaw.korba@intel.com,
-	richardcochran@gmail.com,
-	Alexander Nowlin <alexander.nowlin@intel.com>
-Subject: [PATCH net-next 3/3] ice: use per-interface clock_id for E825 generic DPLLs
-Date: Tue,  8 Sep 2026 15:24:26 -0700
-Message-ID: <20260908222428.872254-4-anthony.l.nguyen@intel.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20260908222428.872254-1-anthony.l.nguyen@intel.com>
-References: <20260908222428.872254-1-anthony.l.nguyen@intel.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HjBDfIpH"
+Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-90ccbed6edcso77094096d6.0
+        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 15:34:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788906842; x=1789511642; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=vHvk+bjLs682I9QfsEUIDfLsqAAo2RU7OhlRf0yB+ME=;
+        b=HjBDfIpHB0DhMU1TfTOhcF1xXbOH0hAKJJEbmgmShosPNp/LZ8kALRvYEFhqk0y+lm
+         4inHS4iRNdJ13sKzo6AWsELPrRVZVAlCFX1z2s3Y0aqukURku0ol/8t1EWJRKCdzIUVh
+         CQj7VBLrck3obTG+Yh+kEr3osMu856Ge/UVFwRLoet9U4FtiivEcHOMmdhDM6CmPEvAn
+         SmRewESyc4A6tWDWnhwdCiV9Kj5T47M+7SK8NO0mXxiVGkF4cAsjYUjGcBjF47mBeVxn
+         iMQPcP7Wb1z8+6GIPELrNTX7OG29Hmeyi/dU2v/G3p0MeYLUsQ8F1FRBpjJbFaONdxgU
+         Yr7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788906842; x=1789511642;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=vHvk+bjLs682I9QfsEUIDfLsqAAo2RU7OhlRf0yB+ME=;
+        b=orNh/bG5NCX9SfgiTnMINnyNV0cNpcaVwngx2nyzNSGwk+5Iznw2EeAG0vhvqli7kM
+         MpH9g2zcgvzXV1vOJjCijJq2b1mELu1DhzQ3JBFguC+ZS1umiakYWJ4vJX4HNNCTiv6x
+         82EUyWTebBwW9cjV6RFxEJ7fAuSsWnoPnVj2FjnghEd/kAeZSrUjRbkAkyhBoZ/q7Urg
+         0U9hfjSqrc1rT/2YKIpFQ7kb1Jw91vJFDTSql+OO6jRmmMnv3D+b6McTvyKyMFe61Vdj
+         ZwW4+KtVQDRLLLjfx5TQ3BxvnG1HhOs8j+OK+nl5SnvX7dfNEzR8ISl8a0o/0TGEbcFX
+         MCiA==
+X-Forwarded-Encrypted: i=1; AKwUvBxyzfYCHTGuZpV2E3d4kT8cSt1d8a7XKW4LYzyPDqr2yNaJ29KL08tv1YHKrlKAKBl4Ed6EzP8=@vger.kernel.org
+X-Gm-Message-State: AFuF++mCn/3R1X10zHMcZAU4E1wAHNiA30GOFypOSoyPnOIiyH0WjTp8
+	y3h5nqKJJkTTC7Mp5uE/hRPbmtMcIITgSqtD4BN2jjbfAbDfUsD+cFrw
+X-Gm-Gg: AYBFou2+uKTmS3aWxxRsysB8MfZ1jU3PJ/JJyypEJWYJ25P77S5m92z11Hlo6p1gjgR
+	/bEj5wjLp3LLFLZbuk/SMRPjCYcwJuMW+kojUT9idKPslkoXEnbI9vJCVOgOQF5nsgMev48ngJN
+	nMio/fVNGQzTH6qTgrH/38mfdWik0EOlppiO46KK9Wq94AUYWcvcMdrhsLBl5v73pndf0N4xFM5
+	wJb/hmMrJhAc1piQd4EuoF4B4mT0hchPNN6zLLKhMTfQjWgOmMtwa06tNvLxXwL4EcWYCQFI5F3
+	s/KrRA/SklLHOvJeq3wf0zXqppXpRO6GoVRjtW5hunE9buFhhx+ul6JISPaRRmwMMN9EXNsVkEY
+	eVGVvlLe6doWdNfXMOI5jcpc/dsVR7U/v0kd4IPceXYTFo56hxBv5W5sy2m3B6aqdGwO6nCpbjh
+	UiM5AlUvqxzKL4i552ro++/8i75wHfCY2Ole5tSv95zJegtCOSuMmi31fBvPju/BUisQ==
+X-Received: by 2002:a05:620a:3711:b0:92e:541e:632b with SMTP id af79cd13be357-93980599abfmr3254114885a.2.1788906842594;
+        Tue, 08 Sep 2026 15:34:02 -0700 (PDT)
+Received: from localhost ([2600:4040:9399:4000:e553:72e5:7d37:c7ef])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-939b39dc1d4sm461648185a.47.2026.09.08.15.34.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 08 Sep 2026 15:34:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 08 Sep 2026 18:34:00 -0400
+Message-Id: <DLAAJTBDGCKN.1B13MQ3OGWWBG@gmail.com>
+Cc: "Bobby Eshleman" <bobbyeshleman@meta.com>, "Boris Pismenny"
+ <borisp@nvidia.com>, "Carolina Jubran" <cjubran@nvidia.com>, "Cosmin Ratiu"
+ <cratiu@nvidia.com>, "Daniel Zahka" <daniel.zahka@gmail.com>, "Doruk Tan
+ Ozturk" <doruk@0sec.ai>, "Dragos Tatulea" <dtatulea@nvidia.com>, "Gal
+ Pressman" <gal@nvidia.com>, "Jianbo Liu" <jianbol@nvidia.com>, "Kees Cook"
+ <kees@kernel.org>, "Leon Romanovsky" <leon@kernel.org>, "open list"
+ <linux-kernel@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+ <linux-rdma@vger.kernel.org>, "Mark Bloch" <mbloch@nvidia.com>, "Petr
+ Machata" <petrm@nvidia.com>, "Raed Salem" <raeds@nvidia.com>, "Rahul
+ Rameshbabu" <rrameshbabu@nvidia.com>, "Saeed Mahameed" <saeedm@nvidia.com>,
+ "Shuah Khan" <shuah@kernel.org>, "Shuah Khan" <skhan@linuxfoundation.org>,
+ "Simon Horman" <horms@kernel.org>, "Willem de Bruijn" <willemb@google.com>,
+ "Willem de Bruijn" <willemdebruijn.kernel@gmail.com>
+Subject: Re: [PATCH net-next V4 12/14] selftests: drv-net: psp: Extract
+ shared helpers into psp_lib.py
+From: "Daniel Zahka" <daniel.zahka@gmail.com>
+To: "Tariq Toukan" <tariqt@nvidia.com>, "Andrew Lunn"
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
+ Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>,
+ <netdev@vger.kernel.org>, "Paolo Abeni" <pabeni@redhat.com>, "Sabrina
+ Dubroca" <sd@queasysnail.net>
+X-Mailer: aerc 0.21.0-threadmapfix
+References: <20260908065244.3799142-1-tariqt@nvidia.com>
+ <20260908065244.3799142-13-tariqt@nvidia.com>
+In-Reply-To: <20260908065244.3799142-13-tariqt@nvidia.com>
 
-From: Grzegorz Nitka <grzegorz.nitka@intel.com>
+On Tue Sep 8, 2026 at 2:52 AM EDT, Tariq Toukan wrote:
+> From: Cosmin Ratiu <cratiu@nvidia.com>
+>
+> Put init_psp_dev() and the logic for requiring a psp version into a
+> shared lib, since they will soon be used by a second test file.
+>
+> No functional change for psp.py.
+>
+> Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
+> Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+> Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+> ---
 
-On E825, the TX-CLK and TSPLL DPLL devices are registered as
-DPLL_TYPE_GENERIC. Their clock_id was derived from the board-level
-PCIe DSN, which is identical for all interfaces sharing the same
-NAC/quad. As a result, userspace (e.g. 'dpll device show') reports
-several DPLL devices with the same clock_id and no board or signal
-label, making it impossible to unambiguously map a DPLL device to
-the interface it belongs to.
-
-Since these DPLLs are per-interface, use the permanent port MAC as
-the clock_id basis for E825 generic DPLLs:
-
-  * TX-CLK uses the plain MAC-derived value.
-  * TSPLL on the source-timer owner PF uses the same MAC-derived
-    value with a dedicated tag bit, so it stays distinct from
-    TX-CLK while remaining stable per interface.
-
-Other DPLL objects (EEC/PPS and non-E825 paths) keep the board
-DSN-derived clock_id. When the permanent MAC is not yet valid, fall
-back to the existing board-level clock_id to preserve init behavior.
-
-Reviewed-by: Przemyslaw Korba <przemyslaw.korba@intel.com>
-Signed-off-by: Grzegorz Nitka <grzegorz.nitka@intel.com>
-Tested-by: Alexander Nowlin <alexander.nowlin@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
----
- drivers/net/ethernet/intel/ice/ice_dpll.c | 80 +++++++++++++++++++++--
- 1 file changed, 75 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.c b/drivers/net/ethernet/intel/ice/ice_dpll.c
-index 00e3f7de7810..0109fc34307c 100644
---- a/drivers/net/ethernet/intel/ice/ice_dpll.c
-+++ b/drivers/net/ethernet/intel/ice/ice_dpll.c
-@@ -3059,6 +3059,68 @@ static u64 ice_generate_clock_id(struct ice_pf *pf)
- 	return pci_get_dsn(pf->pdev);
- }
- 
-+/**
-+ * ice_generate_dpll_clock_id - generate clock_id for a specific dpll device
-+ * @pf: board private structure
-+ * @d: dpll device context
-+ * @type: dpll type being registered
-+ *
-+ * For E825 generic DPLLs, use per-interface permanent MAC as the clock_id
-+ * basis so userspace can unambiguously map DPLL devices to interfaces.
-+ * TX-CLK keeps plain MAC-derived ID, while TSPLL uses the same basis with
-+ * a dedicated tag bit to remain distinct on source-timer owner PFs.
-+ * Other DPLL objects keep board-level DSN-derived clock_id.
-+ *
-+ * Return: generated clock id for a dpll device
-+ */
-+static u64 ice_generate_dpll_clock_id(struct ice_pf *pf, struct ice_dpll *d,
-+				      enum dpll_type type)
-+{
-+	struct ice_hw *hw = &pf->hw;
-+	u64 mac_clock_id;
-+
-+	if (hw->mac_type == ICE_MAC_GENERIC_3K_E825 &&
-+	    type == DPLL_TYPE_GENERIC &&
-+	    hw->port_info &&
-+	    is_valid_ether_addr(hw->port_info->mac.perm_addr)) {
-+		mac_clock_id = ether_addr_to_u64(hw->port_info->mac.perm_addr);
-+
-+		if (d->dpll_idx >= E825_DPLL_TXCLK_BASE_IDX)
-+			return mac_clock_id;
-+
-+		if (d->dpll_idx == E825_DPLL_TSPLL_BASE_IDX)
-+			return mac_clock_id | BIT_ULL(63);
-+	}
-+
-+	return pf->dplls.clock_id;
-+}
-+
-+/**
-+ * ice_dpll_is_own_dpll_clock_id - check if clock_id belongs to this pf's DPLLs
-+ * @pf: board private structure
-+ * @clock_id: clock_id from a DPLL notification
-+ *
-+ * Match info->src_clock_id from a DPLL pin notification against any DPLL
-+ * device this PF has registered. Used to suppress self-notifications
-+ * generated as a side effect of our own dpll_pin_register() and
-+ * dpll_pin_unregister() calls on the fwnode-backed SYNCE and TIME_REF pins,
-+ * whose DPLLs (TXC and TSPLL) use MAC-derived clock_ids on E825.
-+ *
-+ * Return: true if clock_id matches one of this PF's registered DPLL devices.
-+ */
-+static bool ice_dpll_is_own_dpll_clock_id(struct ice_pf *pf, u64 clock_id)
-+{
-+	if (clock_id == pf->dplls.clock_id)
-+		return true;
-+	if (pf->hw.mac_type != ICE_MAC_GENERIC_3K_E825)
-+		return false;
-+	if (clock_id == ice_generate_dpll_clock_id(pf, &pf->dplls.txc,
-+						   DPLL_TYPE_GENERIC))
-+		return true;
-+	return clock_id == ice_generate_dpll_clock_id(pf, &pf->dplls.tspll,
-+						      DPLL_TYPE_GENERIC);
-+}
-+
- /**
-  * ice_dpll_pin_ntf - notify pin change including any SW pin wrappers
-  * @dplls: pointer to dplls struct
-@@ -3858,10 +3920,12 @@ static int ice_dpll_pin_notify(struct notifier_block *nb, unsigned long action,
- 	if (pin->fwnode != info->fwnode)
- 		return NOTIFY_DONE; /* Not this pin */
- 
--	/* Ignore notification which are the outcome of internal pin
--	 * registration/unregistration calls - synce pin case.
-+	/* Ignore notifications that are a side effect of internal pin
-+	 * registration/unregistration calls. E825 uses per-device
-+	 * MAC-derived clock_ids for the TXC and TSPLL generic DPLLs, so
-+	 * info->src_clock_id may not equal pf->dplls.clock_id.
- 	 */
--	if (info->src_clock_id == pin->pf->dplls.clock_id)
-+	if (ice_dpll_is_own_dpll_clock_id(pin->pf, info->src_clock_id))
- 		return NOTIFY_DONE;
- 
- 	work = kzalloc_obj(*work);
-@@ -4206,10 +4270,16 @@ static int ice_dpll_init_txclk_pins(struct ice_pf *pf, int start_idx)
- {
- 	struct ice_dpll_pin *ref_pin = pf->dplls.txclks;
- 	struct ice_dpll *txc = &pf->dplls.txc;
-+	u64 clock_id;
- 	int ret;
- 
-+	/* EXT_EREF0 is a non-fwnode pin; its clock_id must match the TX-CLK
-+	 * DPLL device clock_id (see dpll_pin_register()).
-+	 */
-+	clock_id = ice_generate_dpll_clock_id(pf, txc, DPLL_TYPE_GENERIC);
-+
- 	/* Configure EXT_EREF0 pin */
--	ret = ice_dpll_get_pins(pf, ref_pin, start_idx, 1, pf->dplls.clock_id);
-+	ret = ice_dpll_get_pins(pf, ref_pin, start_idx, 1, clock_id);
- 	if (ret)
- 		return ret;
- 	ret = dpll_pin_register(txc->dpll, ref_pin->pin, &ice_dpll_txclk_ops,
-@@ -4487,7 +4557,7 @@ static int
- ice_dpll_init_dpll(struct ice_pf *pf, struct ice_dpll *d, bool cgu,
- 		   enum dpll_type type)
- {
--	u64 clock_id = pf->dplls.clock_id;
-+	u64 clock_id = ice_generate_dpll_clock_id(pf, d, type);
- 	int ret;
- 
- 	d->dpll = dpll_device_get(clock_id, d->dpll_idx, THIS_MODULE,
--- 
-2.47.1
-
+Reviewed-by: Daniel Zahka <daniel.zahka@gmail.com>
