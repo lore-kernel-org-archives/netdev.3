@@ -1,138 +1,137 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFBED3A9605;
-	Tue,  8 Sep 2026 18:19:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9823D59D61F;
+	Tue,  8 Sep 2026 18:20:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788891599; cv=none; b=KXktI1MaGbOgvUGiiSsJDyNgdFeWV2b8E0j2g3D5+aKPfrHP3IeXnXLEzYgDvZLLZ0ZFXmYL7ze8UR0H/XESoLu2vgRJdV8QcB5yiD3pa0SPZeneO20qgUoMpMryaKrZDci2KhKJlILPuWVLy5XnWqyD+yHQhjp0f44M/ziqoXQ=
+	t=1788891639; cv=none; b=Uvt4LQsh4p0lAZz7MkmoipyWoTdOTH/YmX8vplS+yHKNoyEwoyUv24Ws3PdTIVMfJfmaegv6/syWBSZUyq03xgJ7s+1Ik8YgiHCZR2hwpsQ93j3GT1y95HxQldRn7zpHQ+Zcnf3BSSGyftLt2UWkpINKUD1EREeuVr7+1Ud0Zlo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788891599; c=relaxed/simple;
-	bh=LUiVOTFg1tnrxdQsq6or85GsD7yX0CD8cnaCVNhMmjM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pD1uICE7Rc3tV2Uiz9gJ3AEHpa7Y6g56RGwdvfJKc9ecAUVQ+9+h3JWxqWeQbJvbKAUDLQev+xM/L9dc41pkopcAlOjWX1btfw587H3IHHiYhT2yXDeVrmpsZgW6H+zV9pIs9PZ0A2fpsKBuocM0A/1qMusdmJ2z8yWreeAPm4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FcTlrPE/; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788891639; c=relaxed/simple;
+	bh=BFI5caB6ERVBcSiLhlW766huNtLaUxnIRkAkZWxkjFk=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=fB9bUKjVAiyMHfT4TqJsyFio9LJLHdRIzCWrYU+OS7QK2jQ3T1DgDvy68n5jv6Xe7zFTdCOIw6p9OacO3rIj1i0GMRWp1gNHPI9cxmy6b+tpaE4rQnA/Uzg7qwHXwPIQYD/xD2hAgCVILGX2giGHJsQSI8RXqQ+ntC6zmt1klu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SSiMqoZN; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FcTlrPE/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFE481F00A3A;
-	Tue,  8 Sep 2026 18:19:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SSiMqoZN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C4B11F00A3A;
+	Tue,  8 Sep 2026 18:20:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788891598;
-	bh=vnf1Aokfz0Pd+GQW7kvwiEALZgbY6RG7KxqSv9UBbm8=;
-	h=From:To:Cc:Subject:Date;
-	b=FcTlrPE/FfPlph6rgO0ddGee5oGKXZeONniWmoyDxIQdXhuZrzpbHm58pS9qkeEaV
-	 Nd6ksZdtRr7SFp4zL1fFX57O1n9T9y1b64IWTAuTFYL6RoXG5TronC/A+R7kiDTcW+
-	 YeVAs0ctL9rG5MJEDF9KdXxSnmH/drfyp15W6B+AIM0tmvz+YOnE5x9JuRr6zo5gLt
-	 hkyK6GYRPp8EFLni+4COG+Z9743lVu+yRt3UxJV/+mSAlZWw/QXKAFPIJMYEgjZq+R
-	 FsWLkhOKM2fm3zZdQPgmXPfFKMYZi0cetXfyUcFwzl+zJbgliMYQ8+pVB9Zt3KBvkd
-	 PpO+e65uKmcCQ==
-From: Jakub Kicinski <kuba@kernel.org>
-To: davem@davemloft.net
-Cc: netdev@vger.kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	horms@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>,
-	adrian.pielech@intel.com,
-	sheenamo@google.com,
-	przemyslaw.kitszel@intel.com,
-	shuah@kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH net-next] selftests: drv-net: warn if LOCAL_V6 has DAD or not kept on link down
-Date: Tue,  8 Sep 2026 11:19:56 -0700
-Message-ID: <20260908181956.1357684-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.55.0
+	s=k20260515; t=1788891638;
+	bh=QOwwJhACw69omnvZR/W13CeKCMFQ80Z4kKgnTmOEJKo=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=SSiMqoZNK7Z+un7EEgGWUk/oV9nbX35iUVpuHGrZiHe7OUxOUeOzDA1zic82znT31
+	 NFPuZFcaWAYKxPfYWwrUUyiBn+qiHYP2DIFwQMRh0zLELb2zTlmomjRCvUABiNUOrq
+	 pfy3wJSOVQA2y+raUYL3QUFoL9QNlkZCc7GAGk5HzBmV04uy/lBobIaqqFSYsSVJ1M
+	 GgnFJrgdCpPx4migrcFeHidF9glrUURKhlP4R9ClyIR4FBmdX9UXdNd2QwJHScXiqJ
+	 pBpyLhJ6bn/XGsCVvSE4QG8Pq5g/DKJi7nNmHJZPh2ZXU78nRx8tfwwSNucfFUHvdH
+	 LjtxLf6MAa3EA==
+Subject:
+ Re: [PATCH 1/2] ieee802154: register a device type for the wpan netdev
+From: netdev-bot+sashiko@kernel.org
+To: adrianox@gmail.com
+Cc: alex.aring@gmail.com, stefan@datenfreihafen.org, miquel.raynal@bootlin.com,
+ linux-wpan@vger.kernel.org, netdev@vger.kernel.org, kuba@kernel.org
+Date: Tue, 08 Sep 2026 18:20:37 +0000
+Message-ID: <178889163770.219967.16467487407776248344@kernel.org>
+In-Reply-To: <20260905212007.304875-1-adrianox@gmail.com>
+References: <20260905212007.304875-1-adrianox@gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-napi_id.py intermittently fails to start its helper on Intel and Google
-HW runners:
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider:
 
-  CMD: /srv/netdev/drivers/net/napi_id_helper 3001::1 37569
-    EXIT: 1
-    STDERR: bind failed: Cannot assign requested address
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-Either keep_addr_on_down is not set or more likely the address is
-configured without nodad. Having to make sure that all tests
-always wait for DAD after impacting the link would be a whack-a-mole
-so we expect the env to have nodad and keep_addr_on_down set.
+- [Medium] Commit message mischaracterizes both the pre-patch state and
+  the effect of the change in net/ieee802154/core.c.
 
-Warn about both while validating the environment, and document this.
-We could fail completely but most tests don't impact the link so for
-quick local testing it'd be annoying to have to apply the settings.
-I hope the warninging stikes the right balance.
+--
 
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
----
-Adrian, Sheena, please update the setups scripts for your
-systems. Looks like nodad is missing.
+ieee802154: register a device type for the wpan netdev
 
-CC: adrian.pielech@intel.com
-CC: sheenamo@google.com
-CC: przemyslaw.kitszel@intel.com
-CCL hramamurthy@google.com
-CC: shuah@kernel.org
-CC: linux-kselftest@vger.kernel.org
----
- .../testing/selftests/drivers/net/README.rst  |  9 +++++++++
- .../selftests/drivers/net/lib/py/env.py       | 19 +++++++++++++++++++
- 2 files changed, 28 insertions(+)
+This adds a wpan_dev_type with only a .name field and assigns it from a
+new NETDEV_POST_INIT case in cfg802154_netdev_notifier_call(), replacing
+the "TODO NETDEV_DEVTYPE" comment.  It mirrors what cfg80211 does with
+wiphy_type in cfg80211_netdev_notifier_call().
 
-diff --git a/tools/testing/selftests/drivers/net/README.rst b/tools/testing/selftests/drivers/net/README.rst
-index c6bed9a985bc..3fe49bce4f3a 100644
---- a/tools/testing/selftests/drivers/net/README.rst
-+++ b/tools/testing/selftests/drivers/net/README.rst
-@@ -70,6 +70,15 @@ LOCAL_V4, LOCAL_V6, REMOTE_V4, REMOTE_V6
- 
- Local and remote endpoint IP addresses.
- 
-+Tests reconfigure the device freely, including taking the link down, and
-+expect the addresses to work immediately afterwards. IPv6 needs help::
-+
-+  ip -6 address add 2001:db8:1::1/64 dev eth0 nodad
-+  sysctl -w net.ipv6.conf.eth0.keep_addr_on_down=1
-+
-+Without those the address is flushed when the link goes down, or spends
-+a second unusable while waiting for DAD to finish.
-+
- LOCAL_PREFIX_V6
- ~~~~~~~~~~~~~~~
- 
-diff --git a/tools/testing/selftests/drivers/net/lib/py/env.py b/tools/testing/selftests/drivers/net/lib/py/env.py
-index 25903f580b40..6262080a8bf4 100644
---- a/tools/testing/selftests/drivers/net/lib/py/env.py
-+++ b/tools/testing/selftests/drivers/net/lib/py/env.py
-@@ -239,6 +239,25 @@ from . import bpftool, RtnlFamily, Netlink
-         if missing:
-             raise Exception("Invalid environment, missing configuration:", missing,
-                             "Please see tools/testing/selftests/drivers/net/README.rst")
-+        if "LOCAL_V6" in self.env:
-+            self._check_v6_env()
-+
-+    def _check_v6_env(self):
-+        """Tests bind() to LOCAL_V6 and bounce the link, it must survive both."""
-+        ifname, addr = self.env["NETIF"], self.env["LOCAL_V6"]
-+
-+        def _keep_addr(scope):
-+            with open(f"/proc/sys/net/ipv6/conf/{scope}/keep_addr_on_down",
-+                      encoding="utf-8") as fp:
-+                return int(fp.read())
-+
-+        # 'all' wins when non-zero, see addrconf_ifdown()
-+        if (_keep_addr("all") or _keep_addr(ifname)) <= 0:
-+            ksft_pr(f"WARN: net.ipv6.conf.{ifname}.keep_addr_on_down not set")
-+
-+        dev = ip(f"-6 address show dev {ifname} to {addr}", json=True)
-+        if not (dev and dev[0]["addr_info"][0].get("nodad")):
-+            ksft_pr(f"WARN: LOCAL_V6 {addr} not configured with nodad")
- 
-     def resolve_remote_ifc(self):
-         v4 = v6 = None
+> ieee802154: register a device type for the wpan netdev
+>
+>     The cfg802154 netdev notifier never sets a device type, so wpan
+>     interfaces lack a sysfs "type". Mirror cfg80211 by calling
+>     SET_NETDEV_DEVTYPE() in a NETDEV_POST_INIT case with a new
+>     wpan_dev_type.
+
+[Severity: Medium]
+Is the statement "wpan interfaces lack a sysfs 'type'" accurate?  Every
+netdev already gets a type file unconditionally from net/core/net-sysfs.c:
+
+    NETDEVICE_SHOW_RO(type, fmt_dec);
+    ...
+    static struct attribute *net_class_attrs[] __ro_after_init = {
+            ...
+            &dev_attr_type.attr,
+
+That attribute shows struct net_device::type, which for wpan interfaces is
+already 804 (ARPHRD_IEEE802154), so /sys/class/net/<if>/type exists before
+this patch.
+
+The macro used here touches a different field:
+
+    #define SET_NETDEV_DEVTYPE(net, devtype)        ((net)->dev.type = (devtype))
+
+and a struct device_type carrying only .name creates no sysfs attribute
+file at all.  The one observable effect is in dev_uevent() in
+drivers/base/core.c:
+
+    if (dev->type && dev->type->name)
+            add_uevent_var(env, "DEVTYPE=%s", dev->type->name);
+
+So the change adds a DEVTYPE=wpan key to the netdev uevent environment
+(also visible in /sys/class/net/<if>/uevent), which is what the cfg80211
+precedent does with .name = "wlan".
+
+Could the changelog be reworded to describe that effect instead, and also
+mention that this is a new userspace-visible uevent key?  udev and
+systemd-networkd rules that match on Type= will now see wpan for
+interfaces that previously exported no DEVTYPE.
+
+The code change itself looks fine and consistent with
+cfg80211_netdev_notifier_call().
+
+> diff --git a/net/ieee802154/core.c b/net/ieee802154/core.c
+> index c0b8712018a16..c6213412d2914 100644
+> --- a/net/ieee802154/core.c
+> +++ b/net/ieee802154/core.c
+> @@ -272,6 +272,10 @@ void cfg802154_dev_free(struct cfg802154_registered_device *rdev)
+>  	kfree(rdev);
+>  }
+>  
+> +static const struct device_type wpan_dev_type = {
+> +	.name	= "wpan",
+> +};
+> +
+>  static void
+>  cfg802154_update_iface_num(struct cfg802154_registered_device *rdev,
+>  			   int iftype, int num)
+> @@ -296,7 +300,9 @@ static int cfg802154_netdev_notifier_call(struct notifier_block *nb,
+>  	/* TODO WARN_ON unspec type */
+>  
+>  	switch (state) {
+> -		/* TODO NETDEV_DEVTYPE */
+> +	case NETDEV_POST_INIT:
+> +		SET_NETDEV_DEVTYPE(dev, &wpan_dev_type);
+> +		break;
+
+[ ... ]
+
 -- 
-2.55.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260905212007.304875-1-adrianox%40gmail.com
