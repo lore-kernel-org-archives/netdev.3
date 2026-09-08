@@ -1,136 +1,91 @@
-Received: from lahtoruutu.iki.fi (lahtoruutu.iki.fi [185.185.170.37])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B70AC4A4986;
-	Tue,  8 Sep 2026 09:33:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.185.170.37
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788859990; cv=pass; b=ftSLD8O68QKIi+6U+yx9ar2YqUQvCWS1FGYj4pweLlFjRiyF9Xhn6WM3ijO7Qffv3RHwaRVhs3gswkI8fNGof1ZAjxNa+ZvqDzk58jNWBiADqNgwYC4aVHdyi/xwT5GukPMxA4zjjM2SUqD6ttfvO6DvRZiCKzAYamsgfMfR338=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788859990; c=relaxed/simple;
-	bh=Wn4IKjyUqQAeg93wKRRA9smjCbWjQ5UnbHEmDo+F8sU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=EpsAMyz1Vc9Xvn6N4dUFenngyc8vLeqPbpN7hT+sXE6QkD4jy3SQWQOQaeslouqSaQDTj7yXZdiqhfpTENvoXl7bzh/PqbBLezJo57am0/t5hAC2QGU0rMWnL/YWA0TdOFxL2ZTABDXA5Qu5lXDbbR8X/miX4j4BDWjf+gSFl6o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b=vW7tD3wI; arc=pass smtp.client-ip=185.185.170.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iki.fi
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05E843CB540;
+	Tue,  8 Sep 2026 09:34:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788860059; cv=none; b=YN3LPCe1bhHb0D0ARYOO2SnAyGswRnYaGjHrLM9P9YSUE9uABdsQlvFvkipXnrdZpaFpcgvV8B3D8vvd1SP56/MI0wxNCg0EQiC4/Jjt1Xm4JBlETbOXaMQicLU7wF9vGnB2sRSW8iS1eykhKMxArzlww3cmvKjIgtS5TLyKOPk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788860059; c=relaxed/simple;
+	bh=fjdbg+HCU2qxrwaR7lo/p3ulijKZL0z3QYmLV8+ahKQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kHXPepqjVDkuUEkYetURJZyiBrLOKE4GmU5+Y1yq1tCvJLO3EU+RhmssQY3JdpiyjeWYxfZdyZZhgR4mX+MUE6PTspSLyBIolpyucCpeZC/xDo+YeIkwL4hVNLmbTPgiwrM0J8h4jZuAzBzaUYSW13r6IcGTk/20yZF2s2imaaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oO6CdAq4; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b="vW7tD3wI"
-Received: from mandelbrot.. (xdsl-83-150-90-33.nebulazone.fi [83.150.90.33])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: jmtilli)
-	by lahtoruutu.iki.fi (Postfix) with ESMTPSA id 4hfJdV69cMz49Q5T;
-	Tue, 08 Sep 2026 12:33:02 +0300 (EEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=lahtoruutu;
-	t=1788859982;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5udMw/D8l5XFimn7AbO4dlFXaCD2w5J+n7KjzzUgXYM=;
-	b=vW7tD3wIIVgCQQrTmPaMwzUOGCYk77EF3NVVkeyl+PtT59V0f4nxvf1vfTyBJ4yhHjs8sn
-	CvJPMjO3KG6jRdtcNK9GFQp0QLeR0NqSjh+fUgRZf7vhwPoScc7jtjMIrbUECN38glbMZ0
-	jgRS55tIuKJCdKbYeMUcv4Tyr7v9qHmvTteYTrm9eJCgQuucfbO41kId4FtqaMTnkJoSAR
-	NOSQkIkdPpPHlT4MgbxP3DROiOFaaPLPYLuk6NvlnWOJy/A0uJFkJFNej2dHAhjj8H69u9
-	ZXl+nf7hrLHzCjsx2G4VypEsxXFEC5bhklk5GIGCMvNiEuEdN+28RDwWKStkzw==
-ARC-Seal: i=1; a=rsa-sha256; d=iki.fi; s=lahtoruutu; cv=none; t=1788859982;
-	b=J5Pfce0uqTTKFI3fcHbJfSLnSLf34lImwqmRun5dFCu6SmX4L6JbZQ4srrJJhv53LDm4Sj
-	x3awGT5tsuyEXHn1DYR8da39YisJ497i4GgH8aQvvzjr+9FXO0iHfiKwmeUKWOVIAPtpcj
-	xX6LprZnfOuOEa1k+DGrFyMG+3AYWclkff+/pLcRtr+d0LeFwrREsxNJ4kVao6PsdPJdle
-	ediNSg1zfR4doXUdLwtsjYsXMjmrmyZ308Kkb6nP4b5E8WAKzeLh7A2cYcqXyMo+RyZGp9
-	jHuQo+EhyLiRyBkFNKwh0b7OZ5ZhQpdINePNZAk3x03D8Fn0zQ1NCyDGWmEeSg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
-	s=lahtoruutu; t=1788859982;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5udMw/D8l5XFimn7AbO4dlFXaCD2w5J+n7KjzzUgXYM=;
-	b=ti+olMMG7KD8wtFkqqj1n6zEHfsKA3VDlBeI7rBdrAnMw0ufwND4lgEagunynsCIMJJpdR
-	tjCjc02j1fpKVqqiMib8k910eWjCYQEXn8tCeRDq6Te59dRKcJnRM2m23Z/A7QPepmDyjH
-	q0B9588D4uav37g/KGSm1gCxNZKCT0ZAZJrhRLuXxmgx+xjZlcTBRB0GkU2/Hi8fLSzuSg
-	5rh+7buJ9gns5W2nuJ8CiYoX/KEe+b9a74MEjQOW//IOetrDj2pYq79Zo476jfyCBcRTI6
-	EzIHq93wUnes4VmrePKcjhdQtAlOYyKgJHKUyM2xuXCeT65CV0M2u14QN4oDZA==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=jmtilli smtp.mailfrom=juha-matti.tilli@iki.fi
-From: Juha-Matti Tilli <juha-matti.tilli@iki.fi>
-To: ath11k@lists.infradead.org,
-	ath12k@lists.infradead.org,
-	Kalle Valo <kvalo@kernel.org>,
-	Jeff Johnson <jjohnson@kernel.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc: Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Mihai Moldovan <ionic@ionic.de>,
-	Juha-Matti Tilli <juha-matti.tilli@iki.fi>,
-	linux-wireless@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 07/12] wifi: ath11k: stub QRTR endpoint ID fetching
-Date: Tue,  8 Sep 2026 12:31:40 +0300
-Message-Id: <20260908093145.2492666-8-juha-matti.tilli@iki.fi>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260908093145.2492666-1-juha-matti.tilli@iki.fi>
-References: <20260908093145.2492666-1-juha-matti.tilli@iki.fi>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oO6CdAq4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B46EF1F00A3A;
+	Tue,  8 Sep 2026 09:34:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788860057;
+	bh=sn0B+07X4/4/8Tz4orPX57lBjTzDwNVTfmimWBkfJco=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=oO6CdAq4YNnjfKtB2opLcT6Y5D9Mx7IM2llNbQdWAHorw3nHt3n8kaGfiOLWwIvfh
+	 ypOvTMIo8l5uQj7xNP/O5a5/kNJL4Zvnqk/o41JJGLDTkWgDSvhnb28UWgeWA7pfN9
+	 BOJDVRJvQ4u6eDMQbXc1/JG9ASS7KXIXgDtIIruEadpQkN7EVd1tgeCuOAdtk0kkYP
+	 zvcCqqwwDmTUya7V1hUThgNNhHzn3cHgawYuQAyR3mOxRiRQhVh3i7DxIjaNuDaLn7
+	 6ln2oGbCueGEB08E3ZgpQczfHOv4fGu3TChSmE2nh5qwGkmYHwe7icVlYk9wIZpAD/
+	 JkyeuIhDWnugg==
+Date: Tue, 8 Sep 2026 10:34:14 +0100
+From: Simon Horman <horms@kernel.org>
+To: Chris Gellermann <christian.gellermann@codasip.com>
+Cc: bongsu.jeon@samsung.com, david@ixit.cz, netdev@vger.kernel.org,
+	oe-linux-nfc@lists.linux.dev, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] nfc: virtual_ncidev: Add missing ioctl compat handler
+Message-ID: <20260908093414.GQ40544@horms.kernel.org>
+References: <20260904164252.18351-1-christian.gellermann@codasip.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260904164252.18351-1-christian.gellermann@codasip.com>
 
-From: Mihai Moldovan <ionic@ionic.de>
+On Fri, Sep 04, 2026 at 06:42:52PM +0200, Chris Gellermann wrote:
+> The compat handler for ioctls to the virtual nci device is missing. So,
+> nci-specific ioctls of a compat task return with -1 and errno set to
+> ENOTTY. Add a handler.
+> 
+> The handling of an ioctl() call of a compat task to get the index of
+> virtual nci device (IOCTL_GET_NCIDEV_IDX) lands in the default case of
+> the ioctl compat handler (see fs/ioctl.c):
+> 
+> COMPAT_SYSCALL_DEFINE3(ioctl, ...)
+> {
+> 	...
+> 	default:
+>        		error = do_vfs_ioctl(fd_file(f), fd, cmd, ...);
+> 		if (error != -ENOIOCTLCMD)
+> 			break;
+> 
+> 		if (fd_file(f)->f_op->compat_ioctl)
+> 			error = fd_file(f)->f_op->compat_ioctl(fd_file(f), cmd, arg);
+> 		if (error == -ENOIOCTLCMD)
+> 			error = -ENOTTY;
+> 	...
+> }
+> 
+> There, do_vfs_ioctl() returns -ENOIOCTLCMD and compat_ioctl is not
+> set for virtual_ncidev_fops, i.e. f_op->compat_ioctl == NULL. So, the
+> ioctl() syscall returns with -1 and errno set to ENOTTY to the compat
+> task.
+> 
+> To fix this, use the compat_ptr_ioctl helper for compat handling here.
+> It shall be used for ioctls that "either ignore the argument or pass a
+> pointer to a compatible data type". The driver's sole ioctl takes a user
+> void pointer and copies nfc_dev->idx to it, a 4-byte integer across all
+> ABIs.
+> 
+> This issue has been found by running the nci_dev kernel selftest as
+> rv64 binary on top of a CHERI kernel, where the ioctl() ends up in
+> the ioctl compat handler, similar to a 32-bit application on top of a
+> 64-bit kernel.
+> 
+> Fixes: e624e6c3e777 ("nfc: Add a virtual nci device driver")
+> Signed-off-by: Chris Gellermann <christian.gellermann@codasip.com>
 
-QRTR endpoint ID fetching will currently not be available for AHB.
-
-Signed-off-by: Mihai Moldovan <ionic@ionic.de>
-Signed-off-by: Juha-Matti Tilli <juha-matti.tilli@iki.fi>
----
- drivers/net/wireless/ath/ath11k/ahb.c | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/drivers/net/wireless/ath/ath11k/ahb.c b/drivers/net/wireless/ath/ath11k/ahb.c
-index 27d01411b6e9c..1cd81d2ac1201 100644
---- a/drivers/net/wireless/ath/ath11k/ahb.c
-+++ b/drivers/net/wireless/ath/ath11k/ahb.c
-@@ -798,6 +798,11 @@ static int ath11k_ahb_hif_resume(struct ath11k_base *ab)
- 	return 0;
- }
- 
-+static int ath11k_ahb_set_qrtr_endpoint_id(struct ath11k_base *ab)
-+{
-+	return -EOPNOTSUPP;
-+}
-+
- static const struct ath11k_hif_ops ath11k_ahb_hif_ops_ipq8074 = {
- 	.start = ath11k_ahb_start,
- 	.stop = ath11k_ahb_stop,
-@@ -811,6 +816,7 @@ static const struct ath11k_hif_ops ath11k_ahb_hif_ops_ipq8074 = {
- 	.power_up = ath11k_ahb_power_up,
- 	.ce_irq_enable = ath11k_ahb_ce_irqs_enable,
- 	.ce_irq_disable = ath11k_ahb_ce_irq_disable_sync,
-+	.set_qrtr_endpoint_id = ath11k_ahb_set_qrtr_endpoint_id,
- };
- 
- static const struct ath11k_hif_ops ath11k_ahb_hif_ops_wcn6750 = {
-@@ -830,6 +836,7 @@ static const struct ath11k_hif_ops ath11k_ahb_hif_ops_wcn6750 = {
- 	.resume = ath11k_ahb_hif_resume,
- 	.ce_irq_enable = ath11k_pci_enable_ce_irqs_except_wake_irq,
- 	.ce_irq_disable = ath11k_pci_disable_ce_irqs_except_wake_irq,
-+	.set_qrtr_endpoint_id = ath11k_ahb_set_qrtr_endpoint_id,
- };
- 
- static int ath11k_core_get_rproc(struct ath11k_base *ab)
--- 
-2.34.1
+Reviewed-by: Simon Horman <horms@kernel.org>
 
