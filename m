@@ -1,83 +1,122 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A36F538D72;
-	Tue,  8 Sep 2026 12:11:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF32F52D2B3;
+	Tue,  8 Sep 2026 12:18:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788869520; cv=none; b=PsD1PBW07ZtB7QlyBmJRRCScLTIl6ZDQR0QKEzh4B3ZYvnS3b8ovK736QO9IzyyWe6LTV5BdnZPfX/BjpLLMdu50rjGUxQaNRrIZeMEjQcgKO0qd7i8m5ngoRQC3NGwHi1tUxJT6xTUzfIcFtrPmL2Wjwz33KKZD/nXZEAHc5Q0=
+	t=1788869885; cv=none; b=NnoEDlL7i2nmILgiXbmvU0XVe+MgtrWqzBcU+DhenQ5SR46B0zgW0w08sApc+X9rsuVHoNRMxP7OIEaNaXKiyaoCMe/MEQGMisEfJWskT2g7dXcNBLFMm9PX++NF3fF/TLUE5YA02N0qP1tE3ju2YnIt6L8g3KDYdWvob7G1aCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788869520; c=relaxed/simple;
-	bh=g3EU/SwNXzHcls/4SnZ5WjIBF80bI+SuZA3/IBQzgSc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=e0Xcj0sD+7LB3nDJsI23uzuBEGvgNDZcx4U4yPEsyLecnqaCxVJEsN0a5MHKX3KufOvB6XmZgbNYtYxOSClW743OiPIU0uJCcg5bU5Oi6Y/vePpXMN8OKbgFDNJ9zfqrsQUlzthgnj2HNgg4OhcCQqf4nuh6AEg5wvKfPsddJnM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=6H+/rHWI; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1788869885; c=relaxed/simple;
+	bh=KzsdawDLxTRlnTCuQxp0McWfnQ4xiy/NYzw9ZRBEEoc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=NphT6K2CABI4c37dOpkmWMEYu+mY6i1o4QgsqQlwRYQ+FLuCWOFRiy8H+w5M+KBzrtp3gMxWM8ClcYrLXiSrjKhQkqDn7xFBUrDA0tWvcrJmBqlhYyC5YS4raqChh3LAkNY90ip1b/jBFk7OhYB950QYIiZOSoAVGEOsPEfrDiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f296w9/q; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="6H+/rHWI"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=QRgLDIKiB+9Awq0KyO7EgBwdPwQyrHHXRPZ1aYnv8w8=; b=6H+/rHWICEjmPSa/znlZBSFfHi
-	ir79TOdkyzSFNS/wilSMtJxU3+Ymlxi4wtNue1aE82xdBGDooqJBN3lT4eu4M+cpw/xybhra7vy1u
-	BsowDMg+5CJWpFlue7krAuIGyQjEHsrOz5GcNx+p8oTxIVde0PuUkBjC+O5L7B83GDiw=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1x3ufa-003sje-GZ; Tue, 08 Sep 2026 14:11:22 +0200
-Date: Tue, 8 Sep 2026 14:11:22 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>
-Cc: Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Komal Bajaj <komal.bajaj@oss.qualcomm.com>,
-	Anurag Pateriya <apateriy@qti.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH PRELIMINARY 1/5] arm64: dts: qcom: shikra-iqs-som: fix
- GPIO138 reservation
-Message-ID: <169b2cd5-d0d8-4682-8756-bacf545a95a0@lunn.ch>
-References: <20260908-shikra_ethernet_dts-v1-0-69c0c5c7c124@oss.qualcomm.com>
- <20260908-shikra_ethernet_dts-v1-1-69c0c5c7c124@oss.qualcomm.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f296w9/q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFF7E1F00A3A;
+	Tue,  8 Sep 2026 12:17:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788869879;
+	bh=66ooEKVLbtl0ky7Wg+6hd1bobdHtjV4SER9G4/VGnLY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=f296w9/qgQrLsZ2LDV5XUecyQD8yhrxnpQiC8SULUCZF54XsCwpH668rpA6xgX7zw
+	 PVal9tljne/UMSMDdeylNSDuNVpUJVFdLXDMo2mc3RVPB1uXrzAgTDlfDOFvroTWdR
+	 RYFLrVBMdGRmLbyCgzCsGaRj0eopCP2DWdU1rn9KaQF+tNHfaUPpjW4Fpyu4tJvnFD
+	 /1r2I2XeETIscEsU/xIm07gIM+nVZXXNyJ9e3kO8SAEsxVsrOEVWWxYM/cxCnGIDJn
+	 rwqR5TXeKiSQrXsDruRoBOp2XmSEZ0hZ7yNKiL3bbLXnKbfnHLPScfQZc826iL7RUP
+	 6UTHsolkGM7nA==
+From: Simon Horman <horms@kernel.org>
+To: zihanx@nebusec.ai
+Cc: Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	dhowells@redhat.com,
+	marc.dionne@auristor.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-afs@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net v3 1/1] rxrpc: fix encap_rcv skb accounting exhaustion
+Date: Tue,  8 Sep 2026 13:17:40 +0100
+Message-ID: <20260908121740.432088-1-horms@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <a2bd6f3ed29919a7328363b548299ae583f052b0.1788539302.git.zihanx@nebusec.ai>
+References: <a2bd6f3ed29919a7328363b548299ae583f052b0.1788539302.git.zihanx@nebusec.ai>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260908-shikra_ethernet_dts-v1-1-69c0c5c7c124@oss.qualcomm.com>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Sep 08, 2026 at 11:53:30AM +0530, Mohd Ayaan Anwar wrote:
-> The GPIO mappings on the IQS variant differ from the CQ variants.
-> GPIO138 is connected to the RGMII1_RX_CTL pin rather than the NFC ESE
-> Secure IO pin; the latter is connected to GPIO49. This incorrect
-> reservation causes the probe of the second Ethernet port to fail:
-> 
->   shikra-tlmm 500000.pinctrl: error -EINVAL: pin-138 (5d20000.ethernet)
->   shikra-tlmm 500000.pinctrl: error -EINVAL: could not request pin 138
->   (GPIO_138) from group gpio138 on device 500000.pinctrl
->   qcom-ethqos 5d20000.ethernet: Error applying setting, reverse things back
-> 
-> Replace gpio138 with gpio49 in the reserved list.
-> 
-> Fixes: 779aead2dace ("arm64: dts: qcom: shikra: Add gpio-reserved-ranges to tlmm")
-> Signed-off-by: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
+Full review at: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/a2bd6f3ed29919a7328363b548299ae583f052b0.1788539302.git.zihanx@nebusec.ai?part=1
+---
+> diff --git a/net/rxrpc/io_thread.c b/net/rxrpc/io_thread.c
+> --- a/net/rxrpc/io_thread.c
+> +++ b/net/rxrpc/io_thread.c
+> @@ -52,6 +50,19 @@ int rxrpc_encap_rcv(struct sock *udp_sk, struct sk_buff *skb)
+>  	}
+>  #endif
+>  
+> +	if (atomic_read(&udp_sk->sk_rmem_alloc) >= READ_ONCE(udp_sk->sk_rcvbuf) ||
+> +	    !sk_rmem_schedule(udp_sk, skb, skb->truesize)) {
+> +		sk_drops_inc(udp_sk);
+> +		kfree_skb(skb);
+> +		return 0;
+> +	}
+> +
+> +	skb->dev = NULL;
+> +	skb_set_owner_r(skb, udp_sk);
+> +	skb_dst_force(skb);
+> +
+> +	skb->mark = RXRPC_SKB_MARK_PACKET;
+> +	rxrpc_new_skb(skb, rxrpc_skb_new_encap_rcv);
+>  	skb_queue_tail(rx_queue, skb);
+>  	wake_up_process(io_thread);
+>  	return 0;
 
-If this is a fix, should it be posted for a different tree, so it
-makes it way to stable?
+[Severity: High]
+This borrows UDP's rmem accounting without borrowing the lock that
+protects it.
 
-You don't normally mix fixes and on going development work.
+rxrpc_encap_rcv() is called from the UDP receive path in softirq
+context with neither lock_sock(udp_sk) nor
+udp_sk->sk_receive_queue.lock held, and nothing serialises two CPUs
+delivering to the same local endpoint. Both new accounting calls in
+this hunk perform an unsynchronised read-modify-write on
+udp_sk->sk_forward_alloc: sk_rmem_schedule() reaches
+__sk_mem_schedule()/sk_forward_alloc_add(), and skb_set_owner_r()
+calls sk_mem_charge(), which is the same non-atomic
+WRITE_ONCE(sk->sk_forward_alloc, ...) update. The newly added
+skb_orphan() in rxrpc_io_thread() closes the loop from the kthread
+side: sock_rfree() -> sk_mem_uncharge() does the same non-atomic
+update concurrently with softirq enqueues on other CPUs. Note that
+only sk_rmem_alloc is atomic_t here; sk_forward_alloc is not, so the
+atomic_read() guard at the top of the hunk does not make any of this
+safe.
 
-    Andrew
+The normal UDP path does not have this problem because
+__udp_enqueue_schedule_skb() performs the forward-alloc bookkeeping
+and the skb_set_owner_r() under sk->sk_receive_queue.lock, and
+udp_rmem_release() takes the same lock before reclaiming. The
+consequence of losing that serialisation is not confined to this
+socket: the drifted sk_forward_alloc is eventually handed to
+__sk_mem_reduce_allocated(), which subtracts it from the protocol-wide
+udp_prot memory_allocated counter, so a flood of RxRPC-shaped packets
+can skew global UDP memory accounting for every UDP socket on the
+machine. That is a worse failure mode than the unbounded rx_queue this
+patch is trying to fix.
+
+How do you want to serialise this? Options I can see are enqueueing
+via the existing UDP receive-queue locking rather than open-coding the
+charge, or holding local->rx_queue.lock across both the charge in
+rxrpc_encap_rcv() and the skb_orphan() in rxrpc_io_thread() so the
+charge and uncharge sides are mutually exclusive. Please say which you
+intend, and make sure the answer covers the I/O-thread uncharge path
+too, not just the two enqueue-side calls.
