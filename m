@@ -1,135 +1,90 @@
-Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB5F05921EB
-	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 17:26:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4538357C72A;
+	Tue,  8 Sep 2026 17:33:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788888408; cv=none; b=emlEQlwl2IWWn/XL82DCAtZ6ng3lzGzWzt0GHOxZQiWrG8ZuncNa6m6HmljK8kTLmK0qy9fSlR/ec+EpitwrhsaLcTlSsJ/2jWWgcC6l0QLNPSQ3uodF7BR5QdVH8csyCNnVUONKch1FIIY6FWgAcml/nIXZPZ13L3drzpEWr5Q=
+	t=1788888809; cv=none; b=AdSPLKIhfqyHozERdbp8SvFkwb9W+82YMBa2mM1rOHrXNvEHMEkCOYPg/sAnTaFuKNhdLZqcQYpjhGOvMlA+sEJRMzBOQ64sQs0EMORWC/tfR45yCGf14bs/dR8Vr+TMG70PaHjuGSvSH2Dzw/d19c/rwcdZ59DTMTA1j/o/9W8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788888408; c=relaxed/simple;
-	bh=62Hs5rHErbWxEAtgw0qJ/GzLICsmtaHK6cNubZHVXvA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KiGa7mD/j6E5sg1HIUEzOKFV00/28a//FFp3DeIaeP+jgYgiInBDgg6HRTUuhDjif0W+54sjX3Xr5+6sYWzU6uRn/3vVc2zbeZP48uDLf6om71ycThaQcrEeGxpzE2Xs4nXJjSvGMny6JcDxsWalh0gN/jCwNvecnxoXCf/MDyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=NbJXeKrJ; arc=none smtp.client-ip=213.160.73.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
+	s=arc-20240116; t=1788888809; c=relaxed/simple;
+	bh=riLQM3jCIOgbEO5KBT4ODeM6PgUKNGMntzBwTchICro=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=t5hgsZM62hdMbd6xC0nPOZeTvvudONAdyL52YMfzqGzadhtIgwPZjM7/uGzpLmBetK7nEX8t6H33kvkXDNi1Sxy/HtfKtBv8ehZSU8ys4lGhwNKgUMwKCEYoCNPmJVipjjvvqPRB4ItPpQQ1HGgcfq5aX4BPSwGpT2idTbDaINg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PXmxoRyR; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="NbJXeKrJ"
-Received: by dvalin.narfation.org (Postfix) id 28B971FE4D;
-	Tue, 08 Sep 2026 17:26:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-	s=20121; t=1788888404;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=O1WEMwLwpC0O2fnWxbqM0WCToy+BcA1jN5S4hrQvxk0=;
-	b=NbJXeKrJOsBsi/Oe48DKBkbH+cN+af/Q9dDEzNIokHwcdNtQJwncgXw8zWONbiwnhCTTwz
-	G7rRLL/npG/cj3D7Sxo2/5Yi03LIF0S/cl+AxraBNRbjH/BX0HAvLjR0RAsg+yY3FoqxAu
-	jenlP1zaCOC32IyJ+RoPIg20OMUaOgU=
-From: Sven Eckelmann <sven@narfation.org>
-To: netdev@vger.kernel.org, Simon Wunderlich <sw@simonwunderlich.de>
-Cc: "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- b.a.t.m.a.n@lists.open-mesh.org, Simon Wunderlich <sw@simonwunderlich.de>
-Subject:
- Re: [PATCH net-next 11/15] batman-adv: tt: extract immediate purge of a local
- entry
-Date: Tue, 08 Sep 2026 19:26:41 +0200
-Message-ID: <7996121.EvYhyI6sBW@sven-desktop>
-In-Reply-To: <20260907081824.2474040-12-sw@simonwunderlich.de>
-References:
- <20260907081824.2474040-1-sw@simonwunderlich.de>
- <20260907081824.2474040-12-sw@simonwunderlich.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PXmxoRyR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 448A91F00A3A;
+	Tue,  8 Sep 2026 17:33:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788888807;
+	bh=gSEqPWuWBmJeAqSai2THiLWUXlpw8Oc1Y/w0Xu2Fv2k=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=PXmxoRyRIS4G0lsCUZSlW69zAipYeJ1iW0foLItYUp9vnnoBXRpEj0mC8waUUuWE9
+	 EH/7sZbwoyBFc+S7fwbliYn9Lit7JBN8M4E3Xx7jtx1edRjeV2QTWcSOdjbpV3ijhJ
+	 mCa6rkk60LPKoF2q0Lp6u8uONLS/E+HpYXT55SHjs7+u8mSXVKQ7hui9em05NTgru6
+	 bSTJBLkGfGPXGUs4I6IbvEYtOAaWUs/xHScXU7bmmuv0xG095ERRHPVF/kp24E3Swv
+	 jrjnwz10S5GenAGAnQGhmE0Ha30OLTq6amUYl13aqToRJB+POefMu5klqlmKILOhoG
+	 XK3309awkivng==
+Date: Tue, 8 Sep 2026 10:33:26 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: "Daniel Zahka" <daniel.zahka@gmail.com>
+Cc: <patchwork-bot+netdevbpf@kernel.org>, <willemdebruijn.kernel@gmail.com>,
+ <davem@davemloft.net>, <edumazet@google.com>, <pabeni@redhat.com>,
+ <horms@kernel.org>, <andrew+netdev@lunn.ch>, <netdev@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net-next 0/4] psp: make tx key ops optional for drivers
+Message-ID: <20260908103326.7b240216@kernel.org>
+In-Reply-To: <DL9ZTV87UI2A.2QIEPTDS2ROKA@gmail.com>
+References: <20260903-psp-prep-v1-0-d47e9c4c375d@gmail.com>
+	<178882561539.3212362.10949911837502586488.git-patchwork-notify@kernel.org>
+	<DL9ZTV87UI2A.2QIEPTDS2ROKA@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart3976506.kQq0lBPeGt";
- micalg="pgp-sha512"; protocol="application/pgp-signature"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
---nextPart3976506.kQq0lBPeGt
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"; protected-headers="v1"
-From: Sven Eckelmann <sven@narfation.org>
-To: netdev@vger.kernel.org, Simon Wunderlich <sw@simonwunderlich.de>
-Date: Tue, 08 Sep 2026 19:26:41 +0200
-Message-ID: <7996121.EvYhyI6sBW@sven-desktop>
-In-Reply-To: <20260907081824.2474040-12-sw@simonwunderlich.de>
-MIME-Version: 1.0
+On Tue, 08 Sep 2026 10:09:56 -0400 Daniel Zahka wrote:
+> On Mon Sep 7, 2026 at 8:00 PM EDT, patchwork-bot+netdevbpf wrote:
+> > On Thu, 03 Sep 2026 18:33:58 -0700 you wrote:  
+> >> This is the first of two series which together implement rekeying PSP
+> >> protected tcp connections. Here are both series together on github:
+> >> https://github.com/danieldzahka/linux/commits/psp-rekey-split/
+> >> 
+> >> This first series is mostly non-functional changes, except for the minor
+> >> difference that netdevsim driver implements tx key ops. Its tx key ops
+> >> were basically NOPs, and in the future PSP core can subsume the assoc
+> >> counting that it was doing.
+>
+> Thanks. I think applying was the right move, but I would like to
+> highlight something that sashiko flagged on patch 4, as I think it will
+> need to be addressed with its own series. The hazard is preexisting and
+> much broader than the way sashiko talks about it. 
 
-https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260907081824.2474040-=
-1-sw%40simonwunderlich.de?part=3D11
+Ugh, yes, the complaint was sort of besides the point so Clashiko
+has dropped it. But the problem behind it is real.
 
+> The high level idea is that netdev core should probably take extra care
+> to make sure users of sk_validate_xmit_skb (psp and ktls) cannot clobber
+> what each other has set for that callback. In the case of psp vs. ktls,
+> there are probably fundamental reasons why these should be kept mutually
+> exclusive and their uapis should reject attempts to transition between
+> them.
+> 
+> More generally however, any offloads wishing to claim
+> sk_validate_xmit_skb should be considered mutually exclusive, and netdev
+> core may benefit from a generic system to enforce ownership. That would
+> help in case another user of sk_validate_xmit_skb comes along later.
 
-[...]
-> Discovered by: opus-5 =C2=B7 Missed by: opus-4-7, gpt-5-6-sol, sashiko-ge=
-mini =C2=B7 Confirmed by: gpt-5-6-sol
-> Is the "was never announced" wording in this new kernel doc a bit too
-> strong?  The body of the same function documents the opposite case a few
-> lines later:
->=20
-> net/batman-adv/translation-table.c:batadv_tt_local_remove_now() {
-> 	/* batadv_tt_local_transition_new() may have committed the entry and
-> 	 * thus counted it in the local table size since the
-> 	 * BATADV_TT_CLIENT_NEW check in batadv_tt_local_mark_removed().
-> 	 */
-> 	if (!(batadv_tt_flags_get(common) & BATADV_TT_CLIENT_NEW))
-> 		batadv_tt_local_size_dec(bat_priv, common->vid);
-> }
->=20
-> batadv_tt_local_mark_removed() drops common->flags_lock before returning
-> and batadv_tt_local_remove() holds no other lock, while
-> batadv_tt_local_transition_new() only holds the local list_lock and
-> flags_lock:
->=20
-> batadv_tt_local_commit_changes_nolock()
->   batadv_tt_local_transition_new()   /* clears BATADV_TT_CLIENT_NEW,
->                                         batadv_tt_local_size_inc() */
->   batadv_tt_local_update_crc()
->   atomic_inc(&bat_priv->tt.vn)
->=20
-> So in that window the entry can be committed, counted and announced under
-> the current ttvn, and batadv_tt_local_remove_now() still unlinks it from
-> bat_priv->tt.local_hash instead of leaving it BATADV_TT_CLIENT_PENDING
-> until the next ttvn increment, as described by
-> batadv_tt_local_set_pending_event():
->=20
->  * Schedule the TT change announcement for the entry. The entry is kept i=
-n the
->  * local table until the next TTVN increment so that a consistency-check
->  * response can still be answered.
->=20
-> Would it make sense either to soften the new kernel doc (and the matching
-> sentence in the commit message, "A client which was added after the last
-> ttvn increment was never announced and can be dropped from the local table
-> right away") to mention that the entry may already have been committed, or
-> to fall back to the pending path when the NEW flag turns out to be cleare=
-d?
+There could also be confusion about the meaning of the decrypted bit in
+the skb. Off the top of my head Rx TLS is shared between offload and
+non-offload so SW TLS Rx ingesting a PSP packet may think that it was
+TLS decrypted today. We should reject any TLS+PSP, not just
+validate_xmit.
 
-See https://patchwork.open-mesh.org/project/b.a.t.m.a.n./patch/20260908-sas=
-hiko-kdoc-v1-3-535b498f2519@narfation.org/
-
-Regards,
-	Sven
-
---nextPart3976506.kQq0lBPeGt
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQS81G/PswftH/OW8cVND3cr0xT1ywUCaqBFUQAKCRBND3cr0xT1
-y5seAQCZYvOU4AIYF3w0R7bW952r3l9YtRIYnYMADqpfKWJebwEA+pTpEAWEZDxH
-KuKzsnlu2gddfoimFMEPOXVk8k9rkQ0=
-=3jo+
------END PGP SIGNATURE-----
-
---nextPart3976506.kQq0lBPeGt--
-
-
-
+Both setup paths are under socket lock so it's a relatively
+straightforward fix? 
