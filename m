@@ -1,85 +1,85 @@
 Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D98B5947E8
-	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 17:10:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 706785947FE
+	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 17:10:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788887420; cv=none; b=Lb4rz7g2K1GvEI/aAGacU+7fRSKTKhqdxtF6ooKhs1fEUOLqRJHIHnh5XR86JjIVwR0OSNNzOOdhF3GLQhJqm8lGEZtz36NfbO+SArOtnSJbORzYtdShhtRpWPWu8ap2vcRTyPsokAjpmjUX7WqtThBZU2Wm7fJTs/tSjBfjOxQ=
+	t=1788887422; cv=none; b=q25SLabOC1VzuWgIoU3mOurIpxJN1CMXdenMvgLa1uoYhpnv6gAZiQhKs9n8P4+XquYUR28JWgmSA2UobDgisHt9mxaJdlDGMj1XJCEthyHXQZbatxaBabFqwCcA0WbKsVFEW+Iel66+n7qUsWeMRl792XGsESMrgOYVag+MIds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788887420; c=relaxed/simple;
-	bh=vGFJQ6aAodKhtzS21oPWEsRImbjCMwfBF99koJOYdiM=;
+	s=arc-20240116; t=1788887422; c=relaxed/simple;
+	bh=BdDhSKqvE4bR6i94Z4PzJjpFNgCG9vS4dOfg0BJDMsA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tZDv1aXZGpCVpJxPebCAS2Q2ZEg3mgGN+ciooh16yyAI+ZDJjDWl82h/VM5Id6NvPIWR3X9XgbVaz598d9OtQzFe3fhFo024cBKcTubrHz6ehxqJMz/VJ1/UbzcKET2EJIoUKZCWew2SKH38eqsMmOjf4e50772nsA7274z070g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=GvTpwNkj; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=em9L3VXJ; arc=none smtp.client-ip=205.220.168.131
+	 MIME-Version:Content-Type; b=mbZ3qv183/Y8nEgujo2iXAF9IeIIa+jxAjnlQSUGVjbADpQhaJ9Tzh0v7M3gc2n8Wt91FIb99KpMzdgVMQeiBk2LsOrl+rt+K5yt6SQvbp5z1GzobS9MEfEEU75NJImOR07+PYwva6wAsNvwMlmsvRMfekQUzlq/zIqEFrcOOu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=YJh2tyZD; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=YQRvW5tr; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="GvTpwNkj";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="em9L3VXJ"
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 688FdX4X2737509
-	for <netdev@vger.kernel.org>; Tue, 8 Sep 2026 17:10:17 GMT
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="YJh2tyZD";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="YQRvW5tr"
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 688FdaU22899286
+	for <netdev@vger.kernel.org>; Tue, 8 Sep 2026 17:10:18 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	tmSBOtvSp+Gmy3pqLBjim1lUAAw6sE0lZZQQfu5q2wE=; b=GvTpwNkjRPblAZV3
-	wBYl4geZZJBHmih1Ts5hQwRvDRzRXpwkLEb/P+IDEeWv7GF9EKwlgR0LWbihzPgh
-	VgrdwdwvWq1mlyM2oNSuws9yRJqJeXmDmE82T8s+6y7D8BXmW22YxpXtP+BXT9IM
-	kL54lHzOhZgye0vJVV2ipuFgwNkaGDE153uVUPXDwF3b2T7WNLTk8uCk0POnkrEf
-	ltYzMXvi/pYRcihNwh9PkCgaTVMuWVw/JXh1KcpI37Qv6MBrZOekgYhS/wQ1Df0+
-	DPdmN/F4tVhwxi0TpWLGTGJZqLCB64NPM7l7yOqHS8FtASYkFLF16MlZAeC7nLGe
-	NmPdiA==
+	VQNR1mlZBEy+Xn7d0FfH0MwnsJQZNZ8utWBVHbu9Dpk=; b=YJh2tyZDV4+4QIsc
+	f/a72uwTDIpYdXsz+YbrhiPs83btOx1iL5vX5HYWTjxB4KSPnfWyLVOfWjqu/WSD
+	epSWSRf4W5G0IwHCPKc+nTCX7Tk7SgfbpkFfLScSvUzRAlPHJwB7bLwSfVVC0Efz
+	h9U0lYx9F/LsIfjgwW1enkxN+Zxl2y/nw4W14jsakKoTD2Bqr32wRZJZtRN61boT
+	GNFZXhD9eaGGZR8U3vz5bpNANzRVlTtSi0Y7LUuj8EjtBzzsjznEr8xcxLbKCWT0
+	/eEpfSGjoWADI9XhHmOjPtvjwfOHeMoh6jK4bQayBQUq1JBlYGat6QPXVWpqscP3
+	26QRKg==
 Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gjatjkde6-1
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gjcvujvcn-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 17:10:17 +0000 (GMT)
-Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cc1bbd7d6e6so5194791a12.3
-        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 10:10:17 -0700 (PDT)
+	for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 17:10:18 +0000 (GMT)
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-c89704da8c7so6043727a12.0
+        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 10:10:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1788887417; x=1789492217; darn=vger.kernel.org;
+        d=oss.qualcomm.com; s=google; t=1788887413; x=1789492213; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:mime-version:references
          :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=tmSBOtvSp+Gmy3pqLBjim1lUAAw6sE0lZZQQfu5q2wE=;
-        b=em9L3VXJR0AA7t0HKCixms3+990j4ly9vCT3R3KAYbzcAa33uCPUEibcV3dwIbyeam
-         8htzFfPjoZqNFqgXGeAlH64id+/03btyIvZhfaIGbl3+QAfb1DwyJ06dfDbLs3Ml4uV8
-         zvXC68LoGI7pCFsO7TF3ssbbRW8gYt1MnvEDwfrFNNONLAiVNvNhvsQAOeqyjnk5Xk4e
-         fn8M3d2JtjUqQCwNS9fe6LDmuPIvpYHpf+dELfccolEetFDK+rsdT6QSPcfsmrajkkSd
-         oHnLohWRieifFxK9X3/wRfcxxg/Sr9TEK4SGJeBxE0jWGUMFYZ2OxucE9AvCF6onGQ/E
-         tMeQ==
+        bh=VQNR1mlZBEy+Xn7d0FfH0MwnsJQZNZ8utWBVHbu9Dpk=;
+        b=YQRvW5tr9JBb73ShIlCNVeUwX28Dy4miUpk4iER+4T0YH4/PWQJEU1/8LmK/7GqFdw
+         MEIi5duELwDliQw5wIvtf6mG7lsq/To+IptPp3xRNY787Fuz33cwwaAba/Vt3VNcDZhd
+         hpekUjwMTm8trTSGtu8sEnoohGMUdYRqkTmt/FXNOE61xIwi2rakw9b43pl3cSXc2FCg
+         DQ5jMsHBiN5QK8EuSiEviLlb9L+g9IdagTaz7CY3Xg/ArndEf8CAJyPk86/2v4MNbbE9
+         kEW33UVlLAhK1DAoPkGvfSiSZEs/E1uj0oxcd7kibfmyScUUwj9sCLnMIvyAPI3Op+5K
+         aSWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788887417; x=1789492217;
+        d=1e100.net; s=20251104; t=1788887413; x=1789492213;
         h=content-transfer-encoding:content-type:mime-version:references
          :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=tmSBOtvSp+Gmy3pqLBjim1lUAAw6sE0lZZQQfu5q2wE=;
-        b=mCe6LxkGDFJ6MeOWfg/fdWDvcT+MEYZG9naGGJ9u229a/XNj6i7Yz/kJvKp7VBXESJ
-         /t/vd2az9VkWJYziCs/VOmKpDB83frMDvU/ElAT9rTefm/UfDmxy8jsqFMn5pQmKIdQU
-         O/pf33a7nsS0BOsUhGqYfBb5nN2LPd5hS7namHwmqzL8qQP60+cM8T3ZE2NoAwUD/UkM
-         qo8Z8zcyHCO4S4rDoWGROhVVxyWVUhsI3v2IQMkzTuXMa0jXGh/xdG6kbQCOYkea3oGz
-         4nc360Yb7sjDqlG36X85Wp0Au8LBX8AWPkuWUtVkma5nS6pb4AjfEt1+ivxiUhtzM25g
-         qYdg==
-X-Forwarded-Encrypted: i=1; AKwUvBxjbCSMBuCu8IeMfwTrveoEOPI02osrFJZCc/WGO8TWDzwSX6cljddLzz011+8AaFEmjZnDgVI=@vger.kernel.org
-X-Gm-Message-State: AFuF++m30Uwh+2MZSpkK7z2hus4dNRtGqJJMxtgiMdX5JxFGdTWVqmR/
-	TtByDOltlHYDmCs+2wgemTws6sAercFURYe+Cp52V52Qfsp3H+nCYnMQOCUE8CNx03gMS9PKGqL
-	yX+WlUggt5AeDrZhGj29bBRZ8zQMkuKdgKCHRVU1TYUQUmqKzs5TETEcuZw==
-X-Gm-Gg: AYBFou0EDeSABFSGVtSV+QDBYhkQm1zlIaZVz3Hs7dRje02srpjAY9lxcM+asfpQWvB
-	J2NLBEggNjqc+2lyHjC8HaBBCpUUKU98G6coG7kuRuP/kfiyyagH0aY8W1zH+D+C6DpNNMb9lIv
-	jCPYpwnQ3pFxMDTbkJ0iLlIkJeOA7ot18yGUQZFCFZd1MxEnLD0tsdUvt3Km+x72HsB4h/lthD2
-	i0tEO/cHMiR4xu1AzYQys7wG8s6aV7m5E2azpBZ1iddYEOj3ET/UtzmUaaYzqwtFFN33UtUQfIZ
-	o7z3iVzskLefCd4EzRx8GsFzgj1fZy+F9HEiWowLAcTuA0I/NtniyejWBtQ1uaYHjIlW5yBlzPB
-	QCUrqcyRU2TzfrkMXT3F3apCbkXBcCO1ri9Gs9Vfhti7qngtS3ub59+BuoqK3sf2jSKuotrA6vE
-	SEnPOfSmv+s6T3479/9VZFhg==
-X-Received: by 2002:a05:6a20:db91:b0:3d3:ae1f:d7f5 with SMTP id adf61e73a8af0-3da3a0b9eecmr47536189637.21.1788887416828;
-        Tue, 08 Sep 2026 10:10:16 -0700 (PDT)
-X-Received: by 2002:a05:6a20:db91:b0:3d3:ae1f:d7f5 with SMTP id adf61e73a8af0-3da3a0b9eecmr47536097637.21.1788887416272;
-        Tue, 08 Sep 2026 10:10:16 -0700 (PDT)
+        bh=VQNR1mlZBEy+Xn7d0FfH0MwnsJQZNZ8utWBVHbu9Dpk=;
+        b=q6KrhzOlPEVAvyJi15bIsQlu/hqhezzPWhHi2c65B5mxBJ0bhB8RHbp9aX1XrpY06B
+         Wkgv7CWGE3A5JQKpM/bGMWiO0jhqZuFJmFGJGHivj5oFHAo8FlGLkocH6d9nnWjoQfhb
+         HURI4laZUgdHToKIGkDUCVKEFvHy6CVLeD/OxWGtKwgcc3KIIrK5OHteapMU1wmMpmm8
+         qYJK/OLKH1tYDygjZ5TymO/Ta9GcAqyttHQwk7m0964RqOyZewu2gsm2EbxZC6f5uC+Y
+         EYDEsMoe8dH2rb7xfOJPTrp7Pt2pjHKtUmeJuDrjxgQbFZHOyReFfvAgn4/OGk18H95P
+         v+fw==
+X-Forwarded-Encrypted: i=1; AKwUvBz0OkZxWkbXkKd8DhNeHwH56B4y1YB+UMNw/yEDGedb39Q4TT78qGY7WEjggh/G9GlOKMV1Nxg=@vger.kernel.org
+X-Gm-Message-State: AFuF++mslXp8V3AcvfppHKsJv76Ty0tgANtQIwT3wWlr8japEcJHlzE8
+	gOxn0pewB6JGzWYl5P3u3BDEI064JZBmndVeaiA/ikRzYmPyHpMSIp/LmBWhRVx5aSQ5Va8wLQS
+	2G4QZbeUZg/VLM/GtgcL+ZrI/fxZ5BTqqBbS2CiTZbqP9yhclvwHshq05lQ==
+X-Gm-Gg: AYBFou3tKoQhnQtvP6JkoV3EKKf54n83Xe3zM0IYS443m2YQ8X36TkXoQr3N6ydNa8S
+	UQwSL2EttIeLq9Qht9SY6a89cOOBsNCjI07pE3LZoaN/IbfHjNDR/wGvrMynprZ2jMeFwRUEFcu
+	+n0XgwsW+S8aU6meQ2WgItYFvHhOyrGTWKcNzNKAXADKLhiHIChnu5Fid0UoadSbbvwx4sxj9cQ
+	exe7fHIb/s+QyZDhyOnI8OBfBVwcacNJWNHSfqZ1Gjd0c0eksy32VQf4M7SB4bh/hybCaj6F357
+	7tFZNLrwtawVs420yEGwT43yooS0XgZzMd/Uxxk4zdAA0FZ7F+kMXpRj09Bet2LxJFq3Qlxcno/
+	SYHpsfHbwp1QuDGjJbFoKT7jFaBuz9FihTM7SpWjSAa/ol6DT0zbTRJ7pw/WdKcQDnbMFmmhhs2
+	vEzyCgzq+iuIjTQwa3FpHTTQ==
+X-Received: by 2002:a05:6a21:e081:b0:3b4:61f:1fec with SMTP id adf61e73a8af0-3da39bb593dmr47007579637.2.1788887412689;
+        Tue, 08 Sep 2026 10:10:12 -0700 (PDT)
+X-Received: by 2002:a05:6a21:e081:b0:3b4:61f:1fec with SMTP id adf61e73a8af0-3da39bb593dmr47007494637.2.1788887412057;
+        Tue, 08 Sep 2026 10:10:12 -0700 (PDT)
 Received: from hu-pooventh-blr.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com. [103.229.18.19])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33450e140d3sm31773675eec.4.2026.09.08.10.10.12
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33450e140d3sm31773675eec.4.2026.09.08.10.10.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Sep 2026 10:10:15 -0700 (PDT)
+        Tue, 08 Sep 2026 10:10:11 -0700 (PDT)
 From: Pooventhiran G <pooventhiran.g@oss.qualcomm.com>
 To: "David S . Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
@@ -88,9 +88,9 @@ To: "David S . Miller" <davem@davemloft.net>,
 Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
         linux-wireless@vger.kernel.org,
         Pooventhiran G <pooventhiran.g@oss.qualcomm.com>
-Subject: [PATCH RESEND wireless-next 04/18] wifi: cfg80211/mac80211: Configure AP with SMD capabilities
-Date: Tue,  8 Sep 2026 22:39:32 +0530
-Message-Id: <20260908-smd-v1-4-9fd2d876a1fb@oss.qualcomm.com>
+Subject: [PATCH RESEND wireless-next 03/18] wifi: nl80211: Add kernel interfaces for Seamless Mobility Domain setup
+Date: Tue,  8 Sep 2026 22:39:31 +0530
+Message-Id: <20260908-smd-v1-3-9fd2d876a1fb@oss.qualcomm.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260908-smd-v1-0-9fd2d876a1fb@oss.qualcomm.com>
 References: <20260908-smd-v1-0-9fd2d876a1fb@oss.qualcomm.com>
@@ -103,247 +103,221 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.14.3
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTA4MDE4NSBTYWx0ZWRfXzGbIQqIOJO/Y
- qSswWLt4pSLlSZfX7+jodc53U5VdkleZzLkDSnx2H7GjC/BZMpyX4nGdA9oYkYtaMJUpdFlQagb
- pCrlR+Dc3r1Tv93n/7p1TRShmk8yDMk=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA4MDE4NSBTYWx0ZWRfX0Wswq2i2bk+U
- CXqH9Ykd1hVUhuPK6z0TEkhr0rdg0QBI3Zy4szEhmRX4MFoqdn7gWLLKlUG4bfrTmLfo4Z77Gib
- D2LwWHj47aUsIAFjAFPimxfHE+tsJ51/bMWOoFdYLE0tVh793zcecVNREM2wJb9W0sKi0ZEptGA
- g2QeMZcswG6naD6D/YfB74XDxR9GN2lHYTZ1cztWIXRwfICdzRjC8nFgSSmHkJr97pxHxE2nZxl
- PRRjRGslDPvUDMUSeVjUyJcFTE1ujDFxGIwlZ9lrlXzMTy0DyW86yjY3P3oTy+Dr60pmCZ2q2at
- scVnxx3o6THxGjM1yDnxydxr0XmGHSONsZ6dG24HH3kWlQraMs6lmB9X4evkntnchxnMNfSwRLz
- rc4xhEF99Pxjf3UyVdtgLyuN0id5o6/J0PtmaZeSwBNB57Z02sYLDrb7L1mgun64ZA7AlIUy+EA
- J9/++xrZsUp07Kh2Dbg==
-X-Proofpoint-ORIG-GUID: XmtLqDkZoJdAFP4g5v-vHR4C9TWWJVMr
-X-Authority-Analysis: v=2.4 cv=QrduG1yd c=1 sm=1 tr=0 ts=6aa04179 cx=c_pps
+X-Authority-Analysis: v=2.4 cv=ePkjSnp1 c=1 sm=1 tr=0 ts=6aa0417a cx=c_pps
  a=oF/VQ+ItUULfLr/lQ2/icg==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
  a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=YMgV9FUhrdKAYTUUvYB2:22
- a=EUspDBNiAAAA:8 a=56q9xwJp3_aMvtWITrUA:9 a=QEXdDO2ut3YA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_K5XuSEh1TEqbUxoQ0s3:22
+ a=EUspDBNiAAAA:8 a=WqWJlBuMtEtNw8dGTc8A:9 a=QEXdDO2ut3YA:10
  a=3WC7DwWrALyhR5TkjVHa:22
-X-Proofpoint-GUID: XmtLqDkZoJdAFP4g5v-vHR4C9TWWJVMr
+X-Proofpoint-GUID: q8s93JBr28CDCZKkozrxyjZb-w9RiMxq
+X-Proofpoint-ORIG-GUID: q8s93JBr28CDCZKkozrxyjZb-w9RiMxq
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA4MDE4NSBTYWx0ZWRfX4ary1y1e/v94
+ 1x3tsnMtOfY5hL7bZMJ8q5Xq15ZC7tXriF2aSGxOZpVBVs0d3/NSRRPmogPQmK2AjnLiFH4MjkE
+ 8KsPH24MR3S9XhKcHd2srny5lJUYljhT0JWv5cekNOABgNUGubhKYwzfWPnCo6pYPs81osAPqg2
+ YS+Jmi2rHjS7xM1WT75wq9TCzjb5yfPfEyYykDnjyg3dSU9n9pt/F6OjX0DMQBJjPKdJYIlHdpf
+ 74gZQlweuS8vKjhk11voE8MzmAHvhSw1qp6GBteYF4AOQ2U/4LN7EFRzRc0KHmbHHPSBEWP/LuF
+ 2AhG1erKSPYgIHebeouCGCocAISqdXEGPSzZZ5iSSgLP5GOC58QtvazLghx6GpZSEhiuOwlT7/2
+ cMhuhQk2Hr8pa1ktwahsn+BhnAK6QNUgr0bpCIK0pQfMM+xF0jOLc400llVPntEV5842RG0FuNB
+ IqXjJ0RnNgl6TTrhZWA==
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTA4MDE4NSBTYWx0ZWRfX+Yd2NEbwGT7T
+ HcugGuocubjX5QOE5/xvRKhAdKqp1N0Qpbjnwn9S91NWYjJ8CPPhLv5gyHS5aAXHhXOnci7UCjV
+ 3ivYYew7MYf01nOuie8enObaO4l40vY=
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-09-08_03,2026-09-08_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 bulkscore=0 adultscore=0 malwarescore=0 lowpriorityscore=0
- impostorscore=0 spamscore=0 priorityscore=1501 phishscore=0 suspectscore=0
+ spamscore=0 malwarescore=0 clxscore=1015 suspectscore=0 priorityscore=1501
+ impostorscore=0 phishscore=0 adultscore=0 lowpriorityscore=0 bulkscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2609080185
 
-From: Rohan Dutta <drohan@qti.qualcomm.com>
+From: Aditya Sathish <asathish@qti.qualcomm.com>
 
-When an AP is getting started, configure the AP as SMD-enabled if
-userspace defines configuration for the Seamless Mobility Domain (SMD).
+An AP MLD managed by an SMD-ME must advertise its SMD parameters in
+Beacon and Probe Response frames so that an SMD-capable non-AP MLD can
+negotiate SMD during association and may choose to later perform SMD BSS
+Transition. Add nl80211 kernel interfaces for userspace to configure
+these parameters in nl80211_start_ap() so that the driver and lower
+layers can be configured with appropriate parameters.
 
-The SMD parameters are:
- - SMD Identifier: unique identifier of the SMD
- - SMD Preparation Timeout: Valid duration for a prepared target AP MLD
- - Downlink Data Forwarding: Forwarding support for buffered DL packets
- - Max number of Peer AP MLDs: Number of target AP MLDs a non-AP MLD can
-       prepare with
- - SMD Type: Type of SMD
- - SMD PTK Mode: PTK mode used in the SMD
- - Neighbor Probing: UHR Neighboring AP Probing
-
-Without these parameters configured, drivers and lower layers cannot be
-able to support SMD BSS Transition.
-
-Signed-off-by: Rohan Dutta <drohan@qti.qualcomm.com>
-Co-developed-by: Aditya Sathish <asathish@qti.qualcomm.com>
 Signed-off-by: Aditya Sathish <asathish@qti.qualcomm.com>
-Co-developed-by: Sidhanta Sahu <sidhanta.sahu@oss.qualcomm.com>
-Signed-off-by: Sidhanta Sahu <sidhanta.sahu@oss.qualcomm.com>
+Co-developed-by: Rohan Dutta <drohan@qti.qualcomm.com>
+Signed-off-by: Rohan Dutta <drohan@qti.qualcomm.com>
 Signed-off-by: Pooventhiran G <pooventhiran.g@oss.qualcomm.com>
 ---
- include/net/cfg80211.h | 25 ++++++++++++++++
- include/net/mac80211.h |  2 ++
- net/mac80211/cfg.c     |  5 ++++
- net/wireless/nl80211.c | 78 ++++++++++++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 110 insertions(+)
+ include/linux/ieee80211-uhr.h |  4 ++
+ include/uapi/linux/nl80211.h  | 95 +++++++++++++++++++++++++++++++++++++++++++
+ net/wireless/nl80211.c        | 17 ++++++++
+ 3 files changed, 116 insertions(+)
 
-diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
-index 6461a7bd0169..d0a269f4c711 100644
---- a/include/net/cfg80211.h
-+++ b/include/net/cfg80211.h
-@@ -1587,6 +1587,29 @@ struct cfg80211_s1g_short_beacon {
- 	size_t short_tail_len;
- };
+diff --git a/include/linux/ieee80211-uhr.h b/include/linux/ieee80211-uhr.h
+index 19e9260d0db8..c3f87d4c8bec 100644
+--- a/include/linux/ieee80211-uhr.h
++++ b/include/linux/ieee80211-uhr.h
+@@ -589,6 +589,10 @@ ieee80211_uhr_dbe_cap(const struct ieee80211_uhr_cap *cap)
+ #define IEEE80211_SMD_INFO_CAPA_TYPE			0x10
+ #define IEEE80211_SMD_INFO_CAPA_PTK_PER_AP_MLD		0x20
+ 
++/* IEEE P802.11bn/D2.0, Aug 2026, subclause 9.4.2.363 */
++#define IEEE80211_SMD_INFO_PREP_TIMEOUT_MIN		2 /* in 64 TUs */
++#define IEEE80211_SMD_INFO_NUM_PREP_AP_MAX		7
++
+ struct ieee80211_smd_info {
+ 	u8 id[ETH_ALEN];
+ 	u8 capa;
+diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
+index d9ce185b0ef1..f5c8dbe5f26a 100644
+--- a/include/uapi/linux/nl80211.h
++++ b/include/uapi/linux/nl80211.h
+@@ -3185,6 +3185,12 @@ enum nl80211_commands {
+  *	The aggregated message always precedes the per-link messages for the
+  *	same station within a dump sequence.
+  *
++ * @NL80211_ATTR_SMD_PARAMS: Nested attribute to indicate support for Seamless
++ *	Mobility Domain (SMD); it contains parameters to define capabilities of
++ *	an AP managed by an SMD-ME. Valid if the driver supports
++ *	%NL80211_EXT_FEATURE_SMD.
++ *	Used with %NL80211_CMD_START_AP. See &enum nl80211_smd_params_attrs.
++ *
+  * @NUM_NL80211_ATTR: total number of nl80211_attrs available
+  * @NL80211_ATTR_MAX: highest attribute number currently defined
+  * @__NL80211_ATTR_AFTER_LAST: internal use
+@@ -3785,6 +3791,8 @@ enum nl80211_attrs {
+ 
+ 	NL80211_ATTR_STA_DUMP_LINK_STATS,
+ 
++	NL80211_ATTR_SMD_PARAMS,
++
+ 	/* add attributes here, update the policy in nl80211.c */
+ 
+ 	__NL80211_ATTR_AFTER_LAST,
+@@ -9118,4 +9126,91 @@ enum nl80211_nan_peer_map_attrs {
+ 
+ #define NL80211_NAN_SCHED_NOT_AVAIL_SLOT 0xff
  
 +/**
-+ * struct cfg80211_smd_params - Seamless Mobility Domain parameters
++ * enum nl80211_smd_type - Type of the SMD
 + *
-+ * @smd_enabled: SMD is enabled on this device
-+ * @smd_identifier: SMD ID (ETH_ALEN bytes)
-+ * @smd_timeout: timeout in 64 TUs for ST preparation
-+ * @dl_data_fwd: MSDU forwarding supported
-+ * @max_num_of_peer_apmlds: max prepared AP MLDs supported (0-7)
-+ * @smd_type: SMD type
-+ * @ptk_mode: PTK mode
-+ * @neighbor_probing: UHR Neighboring AP Probing supported
++ * @NL80211_SMD_TYPE_PER_AP_MLD_MAC_SAP: Separate MAC SAP is used per AP MLD.
++ * @NL80211_SMD_TYPE_PER_SMD_MAC_SAP: one MAC SAP is used in the SMD.
++ * @NUM_NL80211_SMD_TYPES: internal.
++ * @NL80211_SMD_TYPE_MAX: Max type of the SMD.
++ *
++ * This value represents the data path models between the non-AP MLD and DS.
++ * DS mapping for the non-AP MLD is updated if
++ * %NL80211_SMD_TYPE_PER_AP_MLD_MAC_SAP is used.
++ *
++ * All AP MLDs within an SMD shall indicate the same SMD type (refer
++ * IEEE P802.11bn/D2.0, Aug 2026, subclause 37.16.1.2).
 + */
-+struct cfg80211_smd_params {
-+	bool smd_enabled;
-+	u8 smd_identifier[ETH_ALEN];
-+	u16 smd_timeout;
-+	bool dl_data_fwd;
-+	u8 max_num_of_peer_apmlds;
-+	enum nl80211_smd_type smd_type;
-+	enum nl80211_smd_ptk_mode ptk_mode;
-+	bool neighbor_probing;
++enum nl80211_smd_type {
++	NL80211_SMD_TYPE_PER_AP_MLD_MAC_SAP,
++	NL80211_SMD_TYPE_PER_SMD_MAC_SAP,
++
++	NUM_NL80211_SMD_TYPES,
++	NL80211_SMD_TYPE_MAX = NUM_NL80211_SMD_TYPES - 1,
 +};
 +
- /**
-  * struct cfg80211_ap_settings - AP configuration
-  *
-@@ -1623,6 +1646,7 @@ struct cfg80211_s1g_short_beacon {
-  * @mbssid_config: AP settings for multiple bssid
-  * @s1g_long_beacon_period: S1G long beacon period
-  * @s1g_short_beacon: S1G short beacon data
-+ * @smd_params: Seamless Mobility Domain (SMD) parameters
-  */
- struct cfg80211_ap_settings {
- 	struct cfg80211_chan_def chandef;
-@@ -1655,6 +1679,7 @@ struct cfg80211_ap_settings {
- 	struct cfg80211_mbssid_config mbssid_config;
- 	u8 s1g_long_beacon_period;
- 	struct cfg80211_s1g_short_beacon s1g_short_beacon;
-+	struct cfg80211_smd_params smd_params;
- };
- 
- 
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index 7bb4618065b6..6b82ca07fbf0 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -797,6 +797,7 @@ struct ieee80211_bss_npca_params {
-  * @s1g_long_beacon_period: number of beacon intervals between each long
-  *	beacon transmission.
-  * @npca: NPCA parameters
-+ * @smd_params: SMD parameters
-  */
- struct ieee80211_bss_conf {
- 	struct ieee80211_vif *vif;
-@@ -904,6 +905,7 @@ struct ieee80211_bss_conf {
- 	u8 s1g_long_beacon_period;
- 
- 	struct ieee80211_bss_npca_params npca;
-+	struct cfg80211_smd_params smd_params;
- };
- 
- #define IEEE80211_NAN_MAX_CHANNELS 3
-diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
-index 23f4f9ec86d0..b4b42790c5d7 100644
---- a/net/mac80211/cfg.c
-+++ b/net/mac80211/cfg.c
-@@ -1796,6 +1796,11 @@ static int ieee80211_start_ap(struct wiphy *wiphy, struct net_device *dev,
- 		}
- 	}
- 
-+	if (params->smd_params.smd_enabled)
-+		link_conf->smd_params = params->smd_params;
-+	else
-+		link_conf->smd_params.smd_enabled = false;
++/**
++ * enum nl80211_smd_ptk_mode - PTK Mode used in the SMD
++ *
++ * @NL80211_SMD_PTK_MODE_PER_SMD_PTK: one PTK is used by all AP MLDs in the SMD.
++ * @NL80211_SMD_PTK_MODE_PER_AP_MLD_PTK: Separate PTK is used per AP MLD.
++ * @NUM_NL80211_SMD_PTK_MODES: internal.
++ * @NL80211_SMD_PTK_MODE_MAX: Max type of PTK mode.
++ *
++ * This value represents the security mode of the SMD that dictates the PTK used
++ * in current and target AP MLDs to protect communications with the non-AP MLD
++ * (refer IEEE P802.11bn/D2.0, Aug 2026, subclause 37.16.1.3.2)
++ */
++enum nl80211_smd_ptk_mode {
++	NL80211_SMD_PTK_MODE_PER_SMD_PTK,
++	NL80211_SMD_PTK_MODE_PER_AP_MLD_PTK,
 +
- 	if (sdata->vif.type == NL80211_IFTYPE_AP &&
- 	    params->mbssid_config.tx_wdev) {
- 		err = ieee80211_set_ap_mbssid_options(sdata,
++	NUM_NL80211_SMD_PTK_MODES,
++	NL80211_SMD_PTK_MODE_MAX = NUM_NL80211_SMD_PTK_MODES - 1,
++};
++
++/**
++ * enum nl80211_smd_params_attrs - SMD Domain parameters
++ *
++ * @NL80211_SMD_PARAMS_ATTR_UNSPEC: Invalid attribute.
++ * @NL80211_SMD_PARAMS_ATTR_IDENTIFIER: Required (binary) attribute of ETH_ALEN
++ *	bytes used to define the unique identifier for the SMD.
++ * @NL80211_SMD_PARAMS_ATTR_TIMEOUT: Required (u16) attribute to define the SMD
++ *	Preparation timeout (in 64 TUs, values 0 and 1 are reserved) for
++ *	the target AP MLD.
++ * @NL80211_SMD_PARAMS_ATTR_DL_DATA_FORWARDING: Flag attribute to indicate that
++ *	the device supports forwarding of buffered DL data packets.
++ * @NL80211_SMD_PARAMS_ATTR_MAX_PEER_APMLDS: Required (u8) attribute to define
++ *	the maximum number of AP MLDs a non-AP MLD can prepare with. Value is
++ *	the maximum number of AP MLDs - 1. A value of 0 means that the non-AP
++ *	MLD can prepare with 1 AP MLD.
++ * @NL80211_SMD_PARAMS_ATTR_TYPE: Required (u8) attribute to indicate the
++ *	SMD Type (&enum nl80211_smd_type).
++ * @NL80211_SMD_PARAMS_ATTR_PTK_MODE: Required (u8) attribute to indicate the
++ *	PTK mode used for protection (&enum nl80211_smd_ptk_mode).
++ * @NL80211_SMD_PARAMS_ATTR_NEIGHBOR_PROBING: Flag attribute to indicate that
++ *	the device supports UHR Neighboring AP Probing.
++ * @__NL80211_SMD_PARAMS_ATTR_LAST: Last attribute, used internally.
++ * @NL80211_SMD_PARAMS_ATTR_MAX: Max attribute.
++ *
++ * Nested attributes carried in %NL80211_ATTR_SMD_PARAMS to define
++ * device capabilities that is part of an SMD (refer IEEE P802.11bn/D2.0,
++ * Aug 2026, subclause 9.4.2.363, Figure 9-aa43 and Figure 9-aa44).
++ *
++ */
++enum nl80211_smd_params_attrs {
++	NL80211_SMD_PARAMS_ATTR_UNSPEC,
++	NL80211_SMD_PARAMS_ATTR_IDENTIFIER,
++	NL80211_SMD_PARAMS_ATTR_TIMEOUT,
++	NL80211_SMD_PARAMS_ATTR_DL_DATA_FORWARDING,
++	NL80211_SMD_PARAMS_ATTR_MAX_PEER_APMLDS,
++	NL80211_SMD_PARAMS_ATTR_TYPE,
++	NL80211_SMD_PARAMS_ATTR_PTK_MODE,
++	NL80211_SMD_PARAMS_ATTR_NEIGHBOR_PROBING,
++
++	/* keep last */
++	__NL80211_SMD_PARAMS_ATTR_LAST,
++	NL80211_SMD_PARAMS_ATTR_MAX = __NL80211_SMD_PARAMS_ATTR_LAST - 1
++};
++
+ #endif /* __LINUX_NL80211_H */
 diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 22d71f32815f..aa7aa70a5b41 100644
+index e585da1d79c9..22d71f32815f 100644
 --- a/net/wireless/nl80211.c
 +++ b/net/wireless/nl80211.c
-@@ -7224,6 +7224,78 @@ static int nl80211_check_npca(struct cfg80211_registered_device *rdev,
- 	return -EINVAL;
- }
+@@ -689,6 +689,21 @@ nl80211_nan_conf_policy[NL80211_NAN_CONF_ATTR_MAX + 1] = {
+ 	[NL80211_NAN_CONF_NOTIFY_DW] = { .type = NLA_FLAG },
+ };
  
-+static int nl80211_parse_smd_params(struct genl_info *info,
-+				    struct cfg80211_smd_params *smd_params)
-+{
-+	struct nlattr *smd_params_attr = info->attrs[NL80211_ATTR_SMD_PARAMS];
-+	struct cfg80211_registered_device *rdev = info->user_ptr[0];
-+	struct net_device *dev = info->user_ptr[1];
-+	struct wireless_dev *wdev = dev->ieee80211_ptr;
-+	struct nlattr *tb[NL80211_SMD_PARAMS_ATTR_MAX + 1];
-+	int err;
++static const struct nla_policy
++nl80211_smd_params_policy[NL80211_SMD_PARAMS_ATTR_MAX + 1] = {
++	[NL80211_SMD_PARAMS_ATTR_IDENTIFIER] = NLA_POLICY_ETH_ADDR,
++	[NL80211_SMD_PARAMS_ATTR_TIMEOUT] =
++		NLA_POLICY_MIN(NLA_U16, IEEE80211_SMD_INFO_PREP_TIMEOUT_MIN),
++	[NL80211_SMD_PARAMS_ATTR_DL_DATA_FORWARDING] = { .type = NLA_FLAG },
++	[NL80211_SMD_PARAMS_ATTR_MAX_PEER_APMLDS] =
++		NLA_POLICY_MAX(NLA_U8, IEEE80211_SMD_INFO_NUM_PREP_AP_MAX),
++	[NL80211_SMD_PARAMS_ATTR_TYPE] =
++		NLA_POLICY_MAX(NLA_U8, NL80211_SMD_TYPE_MAX),
++	[NL80211_SMD_PARAMS_ATTR_PTK_MODE] =
++		NLA_POLICY_MAX(NLA_U8, NL80211_SMD_PTK_MODE_MAX),
++	[NL80211_SMD_PARAMS_ATTR_NEIGHBOR_PROBING] = { .type = NLA_FLAG },
++};
 +
-+	if (!wiphy_ext_feature_isset(&rdev->wiphy,
-+				     NL80211_EXT_FEATURE_SMD)) {
-+		GENL_SET_ERR_MSG(info, "SMD is not supported");
-+		return -EOPNOTSUPP;
-+	}
-+
-+	if (!wdev->valid_links) {
-+		GENL_SET_ERR_MSG(info, "SMD is not allowed without MLO");
-+		return -EINVAL;
-+	}
-+
-+	err = nla_parse_nested(tb, NL80211_SMD_PARAMS_ATTR_MAX,
-+			       smd_params_attr, nl80211_smd_params_policy,
-+			       NULL);
-+	if (err) {
-+		GENL_SET_ERR_MSG(info, "failed to parse SMD parameters");
-+		return err;
-+	}
-+
-+	if (!tb[NL80211_SMD_PARAMS_ATTR_IDENTIFIER] ||
-+	    !tb[NL80211_SMD_PARAMS_ATTR_TIMEOUT] ||
-+	    !tb[NL80211_SMD_PARAMS_ATTR_MAX_PEER_APMLDS] ||
-+	    !tb[NL80211_SMD_PARAMS_ATTR_TYPE] ||
-+	    !tb[NL80211_SMD_PARAMS_ATTR_PTK_MODE]) {
-+		GENL_SET_ERR_MSG(info, "required SMD parameters are missing");
-+		return -EINVAL;
-+	}
-+
-+	memcpy(smd_params->smd_identifier,
-+	       nla_data(tb[NL80211_SMD_PARAMS_ATTR_IDENTIFIER]),
-+	       ETH_ALEN);
-+
-+	smd_params->smd_timeout =
-+		nla_get_u16(tb[NL80211_SMD_PARAMS_ATTR_TIMEOUT]);
-+
-+	smd_params->dl_data_fwd =
-+		!!tb[NL80211_SMD_PARAMS_ATTR_DL_DATA_FORWARDING];
-+	if (smd_params->dl_data_fwd &&
-+	    !wiphy_ext_feature_isset(&rdev->wiphy,
-+				     NL80211_EXT_FEATURE_SMD_DL_PKT_FORWARDING)) {
-+		GENL_SET_ERR_MSG(info,
-+				 "SMD DL packet forwarding is not supported");
-+		return -EOPNOTSUPP;
-+	}
-+
-+	smd_params->max_num_of_peer_apmlds =
-+		nla_get_u8(tb[NL80211_SMD_PARAMS_ATTR_MAX_PEER_APMLDS]);
-+
-+	smd_params->smd_type =
-+		nla_get_u8(tb[NL80211_SMD_PARAMS_ATTR_TYPE]);
-+
-+	smd_params->ptk_mode =
-+		nla_get_u8(tb[NL80211_SMD_PARAMS_ATTR_PTK_MODE]);
-+
-+	smd_params->neighbor_probing =
-+		!!tb[NL80211_SMD_PARAMS_ATTR_NEIGHBOR_PROBING];
-+
-+	smd_params->smd_enabled = true;
-+
-+	return 0;
-+}
-+
- static int nl80211_start_ap(struct sk_buff *skb, struct genl_info *info)
- {
- 	struct cfg80211_registered_device *rdev = info->user_ptr[0];
-@@ -7505,6 +7577,12 @@ static int nl80211_start_ap(struct sk_buff *skb, struct genl_info *info)
+ static const struct netlink_range_validation nl80211_punct_bitmap_range = {
+ 	.min = 0,
+ 	.max = 0xffff,
+@@ -1097,6 +1112,8 @@ static const struct nla_policy nl80211_policy[NUM_NL80211_ATTR] = {
+ 	[NL80211_ATTR_NPCA_PUNCT_BITMAP] =
+ 		NLA_POLICY_FULL_RANGE(NLA_U32, &nl80211_punct_bitmap_range),
+ 	[NL80211_ATTR_STA_DUMP_LINK_STATS] = { .type = NLA_FLAG },
++	[NL80211_ATTR_SMD_PARAMS] =
++		NLA_POLICY_NESTED(nl80211_smd_params_policy),
+ };
  
- 	/* FIXME: validate MLO/link-id against driver capabilities */
- 
-+	if (info->attrs[NL80211_ATTR_SMD_PARAMS]) {
-+		err = nl80211_parse_smd_params(info, &params->smd_params);
-+		if (err)
-+			goto out;
-+	}
-+
- 	err = rdev_start_ap(rdev, dev, params);
- 	if (!err) {
- 		wdev->links[link_id].ap.beacon_interval = params->beacon_interval;
+ /* policy for the key attributes */
 
 -- 
 2.34.1
