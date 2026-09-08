@@ -1,500 +1,150 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D3783AAF64
-	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 07:28:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6B1B394492;
+	Tue,  8 Sep 2026 07:29:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788852504; cv=none; b=hDn5HMFmzRnq6QMB2gA6ac2DUShE82D01ShLLWxjeE1manCdwDXNLrnGgD+fBUz1wrCBszJkLsGl0F8xff2+VlMTSs+s/bMEqdVarsCOs4KiaYgoLLGF0ErfFR836r4RfrQTfGJELhYh8J3ZqFjnxG9cS18BfZTpYFAM+qcxEZc=
+	t=1788852559; cv=none; b=S4tNk8v7du2rANof/YGe0u1fcQa2em4a+UcUUS6YZ/1Fb5TZjy4sDFtVpPSXwHWhSjoaG6R+N/6BjfPoIUuOpQ+iAHJDsc3DKFRBvLi6oFYlNbTCzkA2KmPu5do/6S7bPhgFULc5uAa0gAH/Vmf1acOYsLI3Mjbpib4AYsbJNSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788852504; c=relaxed/simple;
-	bh=gzZ60OibHMwUaCGZMk7HwWhgZ6+13iVIykycFtO1hW4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=QDLuQKvZVON2pUbct3Gm3HWbIsLNNvw+rgjpsgiwgV+jXGmr+mYnHQBlmcV3rN7xTqofg1ruan7NNGD4Dev7w/YWG9FgKBEx16IFPc9QqPR6Xx1EYf7Q9OTdCZgqRpeI5B9dcMNFbbagtCGb4cZxK63gZfO16Tesx/woR/lTjoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=2G3XWXH2; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1788852559; c=relaxed/simple;
+	bh=tJkqs30o+i74kwpbgxSRT2kQNjeQe8YkmKgxdoAHZDs=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=slIQYKBXDbY2sV0t8FzjInyjLFqu+o7GaVHny1HjcBV7x5yYFf1hAs6bGp62epkq0XmZJjeasoLpezI4v2gnDuxa79vVLUwASqu6JMNmDYDxcSBCCo0VhyuqHfpnAv+G6sUU1SeCfnwVe1dXd5MD6rjRepnWm9ojMWEWTJvP9RA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cMKYyM1i; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="2G3XWXH2"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 12F1E4E4158D;
-	Tue,  8 Sep 2026 07:28:21 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id DB173603C4;
-	Tue,  8 Sep 2026 07:28:20 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A84EF11C7AF36;
-	Tue,  8 Sep 2026 09:28:18 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1788852500; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=39nZrXNSy6RAB1Z0YrdFqWLEeouplASL5OtMjMuD8DA=;
-	b=2G3XWXH2D1DfuEVWGfvzvEp7FyHdN+IcKFy8Hv2jx+7n/Q4ndi6lk0LtP8GUp1Iu6p1BNu
-	2N7bu/65VlnsAU9WekwX8ji5L+cCN7bWybkBUuOEjChabqrI/H9+//q6DvU9a1NDKokDvy
-	gSWxYNTf+YxhTkDdVmlPqJVqMT+62VSAz2Q9FlpGgxyVAh/8fuElgQjePSZVy1xI4Df0It
-	LtFSI4eJQQGXy1rNeLlVA3ADZTnsxmphOaF5wrg8UntYbg5xXtpETu7KAvw0byP2egHSk1
-	7Kyjw6JhiLpfjY/bFoBFvzWwszsS2uAKKGaz7CLQ8kUc+6gqQyUZ4qdF1fT+8w==
-From: "Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>
-Date: Tue, 08 Sep 2026 09:27:50 +0200
-Subject: [PATCH net-next v3 10/10] net: dsa: microchip: add periodic output
- support for the KSZ8463
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cMKYyM1i"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76A141F00A3A;
+	Tue,  8 Sep 2026 07:29:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788852557;
+	bh=ElAtuWbE+yqcbTjG45DzqB3eCUQaFOtLYoirm4N9njk=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=cMKYyM1iPpJIY5N6wDCaWQhjQkC1WRPngk87DJYRxZr/ecjFYMB9fH71AUIc565tz
+	 Qc0n8aKI8aygMWxLeRgSTyUU2Md64eazmD37u+Krw8pKRsM8gfZkmXlFGxJtENH6LH
+	 nsJA4ndWPwoKkxQLOrvEmGKOFbhJtLZBnvUDiadSGORtXI8sWU4GLrO35PfTBjorHK
+	 jhYoMvmbpzgKNofgx7WOgeKfsfBelPMRwifVBUtg4Wum03OAbPB9N48JK+MFx0jVRI
+	 nKrTdQUMo9/Sj+0LpPkP4V/+eCyAbmIPjmiQOf4MZ2iYJMtz5raHLy++60Lhz+1JEO
+	 01YWQ++LbRAbQ==
+Subject: Re: [PATCH net] selftests/drivers/net: include lib/sh/*.sh
+From: netdev-bot+sashiko@kernel.org
+To: hangbin.liu@linux.dev
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, shuah@kernel.org, jv@jvosburgh.net,
+ olteanv@gmail.com, leitao@debian.org, jiri@resnulli.us, mst@redhat.com,
+ jasowangio@gmail.com, xuanzhuo@linux.alibaba.com, eperezma@redhat.com,
+ petrm@nvidia.com, matttbe@kernel.org, netdev@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+ virtualization@lists.linux.dev, liuhangbin@kylinos.cn
+Date: Tue, 08 Sep 2026 07:29:16 +0000
+Message-ID: <178885255602.219967.561231920123759325@kernel.org>
+In-Reply-To: <20260907-selftest_lib_defer-v1-1-8af94645aaa3@kylinos.cn>
+References: <20260907-selftest_lib_defer-v1-1-8af94645aaa3@kylinos.cn>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260908-ksz-perout-v3-10-6722a3f1ca75@bootlin.com>
-References: <20260908-ksz-perout-v3-0-6722a3f1ca75@bootlin.com>
-In-Reply-To: <20260908-ksz-perout-v3-0-6722a3f1ca75@bootlin.com>
-To: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com, 
- Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Richard Cochran <richardcochran@gmail.com>
-Cc: Pascal Eberhard <pascal.eberhard@se.com>, 
- =?utf-8?q?Miqu=C3=A8l_Raynal?= <miquel.raynal@bootlin.com>, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- "Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>
-X-Mailer: b4 0.14.3
-X-Last-TLS-Session-Version: TLSv1.3
 
-KSZ8463 has several periodic outputs. The way it handles them differ
-from the other KSZ switches:
- - KSZ8463 has one set of registers for each of its 12 units while others
-   switches share on set of configuration registers for all their units.
- - Maximum size of the KSZ8463 pulse width is smaller
- - KSZ8463 has 12 outputs while others only have 2
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider:
 
-Add support for the KSZ8463 periodics outputs through a set of KSZ8463
-specific functions.
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-Signed-off-by: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
----
- drivers/net/dsa/microchip/ksz8.c        |   2 +-
- drivers/net/dsa/microchip/ksz_common.c  |   2 +
- drivers/net/dsa/microchip/ksz_ptp.c     | 258 ++++++++++++++++++++++++++++++++
- drivers/net/dsa/microchip/ksz_ptp.h     |   4 +-
- drivers/net/dsa/microchip/ksz_ptp_reg.h |  16 ++
- 5 files changed, 280 insertions(+), 2 deletions(-)
+- [Medium] Incomplete fix:
+  `tools/testing/selftests/drivers/net/netdevsim/Makefile` is the only…
 
-diff --git a/drivers/net/dsa/microchip/ksz8.c b/drivers/net/dsa/microchip/ksz8.c
-index f2a23e2e474a..6b08bb8fed5b 100644
---- a/drivers/net/dsa/microchip/ksz8.c
-+++ b/drivers/net/dsa/microchip/ksz8.c
-@@ -2478,7 +2478,7 @@ static int ksz8463_setup(struct dsa_switch *ds)
- 		if (ret)
- 			goto free_girq;
- 
--		ksz_ptp_set_caps(ds);
-+		ksz8463_ptp_set_caps(ds);
- 		ret = ksz_ptp_clock_register(ds);
- 		if (ret) {
- 			dev_err(dev->dev, "Failed to register PTP clock: %d\n",
-diff --git a/drivers/net/dsa/microchip/ksz_common.c b/drivers/net/dsa/microchip/ksz_common.c
-index 041bb4f96365..9e234ad71b72 100644
---- a/drivers/net/dsa/microchip/ksz_common.c
-+++ b/drivers/net/dsa/microchip/ksz_common.c
-@@ -1161,6 +1161,8 @@ const struct ksz_chip_data ksz_switch_chips[] = {
- 		.supports_mii = {false, false, true},
- 		.supports_rmii = {false, false, true},
- 		.internal_phy = {true, true, false},
-+		.n_pins = 12,
-+		.n_per_out = 12,
- 	},
- 
- 	[KSZ8563] = {
-diff --git a/drivers/net/dsa/microchip/ksz_ptp.c b/drivers/net/dsa/microchip/ksz_ptp.c
-index 0a77b46cfad2..d33034892a8f 100644
---- a/drivers/net/dsa/microchip/ksz_ptp.c
-+++ b/drivers/net/dsa/microchip/ksz_ptp.c
-@@ -26,6 +26,7 @@
-  */
- #define KSZ_MAX_DRIFT_CORR 6249999
- #define KSZ_MAX_PULSE_WIDTH 125000000LL
-+#define KSZ8463_MAX_PULSE_WIDTH 500000LL
- 
- #define KSZ_PTP_INC_NS 40ULL  /* HW clock is incremented every 40 ns (by 40) */
- #define KSZ_PTP_SUBNS_BITS 32
-@@ -63,6 +64,17 @@ static int ksz_ptp_tou_gpio(struct ksz_device *dev)
- 			 LED_SRC_PTP_GPIO_1 | LED_SRC_PTP_GPIO_2);
- }
- 
-+static int ksz8463_ptp_tou_reset(struct ksz_device *dev, u8 unit)
-+{
-+	int ret;
-+
-+	ret = ksz_rmw16(dev, KSZ8463_TOU_SW_RST, BIT(unit), BIT(unit));
-+	if (ret)
-+		return ret;
-+
-+	return ksz_rmw16(dev, KSZ8463_TOU_SW_RST, BIT(unit), 0);
-+}
-+
- static int ksz_ptp_tou_reset(struct ksz_device *dev, u8 unit)
- {
- 	u32 data;
-@@ -120,6 +132,28 @@ static int ksz_ptp_tou_target_time_set(struct ksz_device *dev,
- 	return 0;
- }
- 
-+static int ksz8463_ptp_tou_start(struct ksz_device *dev, u8 unit)
-+{
-+	u16 data;
-+	int ret;
-+
-+	ret = ksz_rmw16(dev, KSZ8463_TOU_EN, BIT(unit), BIT(unit));
-+	if (ret)
-+		return ret;
-+
-+	ret = ksz_read16(dev, KSZ8463_TOU_ACTIVE, &data);
-+	if (ret)
-+		return ret;
-+
-+	if (!(data & BIT(unit))) {
-+		dev_err(dev->dev, "%s: Trigger unit%d error!\n", __func__,
-+			unit);
-+		return -EIO;
-+	}
-+
-+	return 0;
-+}
-+
- static int ksz_ptp_tou_start(struct ksz_device *dev, u8 unit)
- {
- 	u32 data;
-@@ -147,6 +181,56 @@ static int ksz_ptp_tou_start(struct ksz_device *dev, u8 unit)
- 	return 0;
- }
- 
-+static int ksz8463_ptp_configure_perout(struct ksz_device *dev,
-+					u32 cycle_width_ns, u32 pulse_width_ns,
-+					struct timespec64 const *target_time,
-+					u8 index)
-+{
-+	struct ptp_pin_desc *pin = &dev->ptp_data.pin_config[index];
-+	u16 cfg_base = KSZ8463_TRIG1_CFG + KSZ8463_TRIGN_CFG_SIZE * pin->chan;
-+	u16 data;
-+	int ret;
-+
-+	/* Hardware has only 32 bit */
-+	if ((target_time->tv_sec & 0xffffffff) != target_time->tv_sec)
-+		return -EINVAL;
-+
-+	data = KSZ8463_NOTIFY_BIT |
-+	       FIELD_PREP(KSZ8463_PATTERN_M, TRIG_POS_PERIOD) |
-+	       pin->index;
-+	ret = ksz_write16(dev, cfg_base + KSZ8463_PATTERN_OFF, data);
-+	if (ret)
-+		return ret;
-+
-+	ret = ksz_write32(dev, cfg_base + KSZ8463_CYCLE_WIDTH_OFF,
-+			  cycle_width_ns);
-+	if (ret)
-+		return ret;
-+
-+	/* Set cycle count 0 - Infinite */
-+	ret = ksz_write16(dev, cfg_base + KSZ8463_CYCLE_CNT_OFF, 0);
-+	if (ret)
-+		return ret;
-+
-+	/* KSZ8463 uses a 8 ns unit value to compute the pulse width */
-+	data = (pulse_width_ns / 8);
-+	ret = ksz_write16(dev, cfg_base + KSZ8463_PULSE_WIDTH_OFF, data);
-+	if (ret)
-+		return ret;
-+
-+	ret = ksz_write32(dev, cfg_base + KSZ8463_TARGET_NSEC,
-+			  target_time->tv_nsec);
-+	if (ret)
-+		return ret;
-+
-+	ret = ksz_write32(dev, cfg_base + KSZ8463_TARGET_SEC,
-+			  target_time->tv_sec);
-+	if (ret)
-+		return ret;
-+
-+	return 0;
-+}
-+
- static int ksz_ptp_configure_perout(struct ksz_device *dev,
- 				    u32 cycle_width_ns, u32 pulse_width_ns,
- 				    struct timespec64 const *target_time,
-@@ -241,6 +325,58 @@ static u64 ksz_ptp_compute_perout_pulse(struct ksz_device *dev,
- 	return min_t(u64, req_pulse_width_ns, max_pulse_width);
- }
- 
-+static int ksz8463_ptp_enable_perout(struct ksz_device *dev,
-+				     struct ptp_perout_request const *request,
-+				     int on)
-+{
-+	struct ksz_ptp_data *ptp_data = &dev->ptp_data;
-+	u64 cycle_width_ns;
-+	u64 pulse_width_ns;
-+	int pin;
-+	int ret;
-+
-+	pin = ksz_ptp_get_pin(dev, request);
-+	if (pin < 0)
-+		return pin;
-+
-+	ret = ksz8463_ptp_tou_reset(dev, request->index);
-+	if (ret)
-+		return ret;
-+
-+	if (!on) {
-+		ptp_data->tou_mode = KSZ_PTP_TOU_IDLE;
-+		return 0;
-+	}
-+	ret = ksz_ptp_compute_perout_cycle(dev, request, &cycle_width_ns);
-+	if (ret)
-+		return ret;
-+	pulse_width_ns = ksz_ptp_compute_perout_pulse(dev, request,
-+						      KSZ8463_MAX_PULSE_WIDTH);
-+
-+	ret = ksz_ptp_tou_pulse_verify(pulse_width_ns,
-+				       KSZ8463_TRIG_PULSE_WIDTH_M);
-+	if (ret)
-+		return ret;
-+
-+	ret = ksz8463_ptp_configure_perout(dev, cycle_width_ns, pulse_width_ns,
-+					   &ptp_data->perout_target_time_first,
-+					   pin);
-+	if (ret)
-+		return ret;
-+
-+	ret = ksz_ptp_tou_gpio(dev);
-+	if (ret)
-+		return ret;
-+
-+	ret = ksz8463_ptp_tou_start(dev, request->index);
-+	if (ret)
-+		return ret;
-+
-+	ptp_data->tou_mode = KSZ_PTP_TOU_PEROUT;
-+
-+	return 0;
-+}
-+
- static int ksz_ptp_enable_perout(struct ksz_device *dev,
- 				 struct ptp_perout_request const *request,
- 				 int on)
-@@ -845,6 +981,18 @@ static int ksz_ptp_restart_perout(struct ksz_device *dev)
- 	return ksz_ptp_enable_perout(dev, &request, 1);
- }
- 
-+static int ksz8463_ptp_restart_perout(struct ksz_device *dev)
-+{
-+	struct ptp_perout_request request;
-+	int ret;
-+
-+	ret = ksz_ptp_prepare_restart_perout(dev, &request);
-+	if (ret)
-+		return ret;
-+
-+	return ksz8463_ptp_enable_perout(dev, &request, 1);
-+}
-+
- static int __ksz_ptp_settime(struct ksz_device *dev,
- 			     const struct timespec64 *ts)
- {
-@@ -871,6 +1019,41 @@ static int __ksz_ptp_settime(struct ksz_device *dev,
- 	return 0;
- }
- 
-+static int ksz8463_ptp_settime(struct ptp_clock_info *ptp,
-+			       const struct timespec64 *ts)
-+{
-+	struct ksz_ptp_data *ptp_data = ptp_caps_to_data(ptp);
-+	struct ksz_device *dev = ptp_data_to_ksz_dev(ptp_data);
-+	int ret;
-+
-+	mutex_lock(&ptp_data->lock);
-+
-+	ret = __ksz_ptp_settime(dev, ts);
-+	if (ret)
-+		goto unlock;
-+
-+	switch (ptp_data->tou_mode) {
-+	case KSZ_PTP_TOU_IDLE:
-+		break;
-+
-+	case KSZ_PTP_TOU_PEROUT:
-+		ret = ksz8463_ptp_restart_perout(dev);
-+		if (ret)
-+			goto unlock;
-+
-+		break;
-+	}
-+
-+	spin_lock_bh(&ptp_data->clock_lock);
-+	ptp_data->clock_time = *ts;
-+	spin_unlock_bh(&ptp_data->clock_lock);
-+
-+unlock:
-+	mutex_unlock(&ptp_data->lock);
-+
-+	return ret;
-+}
-+
- static int ksz_ptp_settime(struct ptp_clock_info *ptp,
- 			   const struct timespec64 *ts)
- {
-@@ -985,6 +1168,40 @@ static int __ksz_ptp_adjtime(struct ksz_device *dev, s64 delta)
- 	return 0;
- }
- 
-+static int ksz8463_ptp_adjtime(struct ptp_clock_info *ptp, s64 delta)
-+{
-+	struct ksz_ptp_data *ptp_data = ptp_caps_to_data(ptp);
-+	struct ksz_device *dev = ptp_data_to_ksz_dev(ptp_data);
-+	struct timespec64 delta64 = ns_to_timespec64(delta);
-+	int ret;
-+
-+	mutex_lock(&ptp_data->lock);
-+
-+	ret = __ksz_ptp_adjtime(dev, delta);
-+	if (ret)
-+		goto unlock;
-+
-+	switch (ptp_data->tou_mode) {
-+	case KSZ_PTP_TOU_IDLE:
-+		break;
-+
-+	case KSZ_PTP_TOU_PEROUT:
-+		ret = ksz8463_ptp_restart_perout(dev);
-+		if (ret)
-+			goto unlock;
-+
-+		break;
-+	}
-+
-+	spin_lock_bh(&ptp_data->clock_lock);
-+	ptp_data->clock_time = timespec64_add(ptp_data->clock_time, delta64);
-+	spin_unlock_bh(&ptp_data->clock_lock);
-+
-+unlock:
-+	mutex_unlock(&ptp_data->lock);
-+	return ret;
-+}
-+
- static int ksz_ptp_adjtime(struct ptp_clock_info *ptp, s64 delta)
- {
- 	struct ksz_ptp_data *ptp_data = ptp_caps_to_data(ptp);
-@@ -1019,6 +1236,26 @@ static int ksz_ptp_adjtime(struct ptp_clock_info *ptp, s64 delta)
- 	return ret;
- }
- 
-+static int ksz8463_ptp_enable(struct ptp_clock_info *ptp,
-+			      struct ptp_clock_request *req, int on)
-+{
-+	struct ksz_ptp_data *ptp_data = ptp_caps_to_data(ptp);
-+	struct ksz_device *dev = ptp_data_to_ksz_dev(ptp_data);
-+	int ret;
-+
-+	switch (req->type) {
-+	case PTP_CLK_REQ_PEROUT:
-+		mutex_lock(&ptp_data->lock);
-+		ret = ksz8463_ptp_enable_perout(dev, &req->perout, on);
-+		mutex_unlock(&ptp_data->lock);
-+		break;
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+
-+	return ret;
-+}
-+
- static int ksz_ptp_enable(struct ptp_clock_info *ptp,
- 			  struct ptp_clock_request *req, int on)
- {
-@@ -1095,6 +1332,27 @@ static int ksz_ptp_start_clock(struct ksz_device *dev)
- 	return 0;
- }
- 
-+void ksz8463_ptp_set_caps(struct dsa_switch *ds)
-+{
-+	struct ksz_device *dev = ds->priv;
-+	struct ksz_ptp_data *ptp_data;
-+
-+	ptp_data = &dev->ptp_data;
-+
-+	ptp_data->caps.owner		= THIS_MODULE;
-+	snprintf(ptp_data->caps.name, 16, "Microchip Clock");
-+	ptp_data->caps.max_adj		= KSZ_MAX_DRIFT_CORR;
-+	ptp_data->caps.gettime64	= ksz_ptp_gettime;
-+	ptp_data->caps.settime64	= ksz8463_ptp_settime;
-+	ptp_data->caps.adjfine		= ksz_ptp_adjfine;
-+	ptp_data->caps.adjtime		= ksz8463_ptp_adjtime;
-+	ptp_data->caps.do_aux_work	= ksz_ptp_do_aux_work;
-+	ptp_data->caps.enable		= ksz8463_ptp_enable;
-+	ptp_data->caps.verify		= ksz_ptp_verify_pin;
-+	ptp_data->caps.n_pins		= dev->info->n_pins;
-+	ptp_data->caps.n_per_out	= dev->info->n_per_out;
-+}
-+
- void ksz_ptp_set_caps(struct dsa_switch *ds)
- {
- 	struct ksz_device *dev = ds->priv;
-diff --git a/drivers/net/dsa/microchip/ksz_ptp.h b/drivers/net/dsa/microchip/ksz_ptp.h
-index 89716b31596b..3838a73a8302 100644
---- a/drivers/net/dsa/microchip/ksz_ptp.h
-+++ b/drivers/net/dsa/microchip/ksz_ptp.h
-@@ -12,7 +12,7 @@
- 
- #include <linux/ptp_clock_kernel.h>
- 
--#define KSZ_PTP_N_GPIO		2
-+#define KSZ_PTP_N_GPIO		12
- 
- enum ksz_ptp_tou_mode {
- 	KSZ_PTP_TOU_IDLE,
-@@ -34,6 +34,7 @@ struct ksz_ptp_data {
- };
- 
- void ksz_ptp_set_caps(struct dsa_switch *ds);
-+void ksz8463_ptp_set_caps(struct dsa_switch *ds);
- int ksz_ptp_clock_register(struct dsa_switch *ds);
- 
- void ksz_ptp_clock_unregister(struct dsa_switch *ds);
-@@ -67,6 +68,7 @@ struct ksz_ptp_data {
- };
- 
- static inline void ksz_ptp_set_caps(struct dsa_switch *ds) { }
-+static inline void ksz8463_ptp_set_caps(struct dsa_switch *ds) { }
- static inline int ksz_ptp_clock_register(struct dsa_switch *ds)
- {
- 	return 0;
-diff --git a/drivers/net/dsa/microchip/ksz_ptp_reg.h b/drivers/net/dsa/microchip/ksz_ptp_reg.h
-index 65ea8577af75..16f117fa5d49 100644
---- a/drivers/net/dsa/microchip/ksz_ptp_reg.h
-+++ b/drivers/net/dsa/microchip/ksz_ptp_reg.h
-@@ -51,6 +51,22 @@
- 
- #define REG_PTP_UNIT_INDEX__4		0x0520
- 
-+#define KSZ8463_TOU_ACTIVE		0x202
-+#define KSZ8463_TOU_EN			0x206
-+#define KSZ8463_TOU_SW_RST		0x208
-+
-+#define KSZ8463_TRIGN_CFG_SIZE		0x20
-+#define KSZ8463_TRIG1_CFG		0x220
-+#define KSZ8463_TARGET_NSEC		0x000
-+#define KSZ8463_TARGET_SEC		0x004
-+#define KSZ8463_PATTERN_OFF		0x008
-+#define KSZ8463_NOTIFY_BIT		BIT(8)
-+#define KSZ8463_PATTERN_M		GENMASK(6, 4)
-+#define KSZ8463_PULSE_WIDTH_OFF		0x00A
-+#define KSZ8463_TRIG_PULSE_WIDTH_M	GENMASK(15, 0)
-+#define KSZ8463_CYCLE_WIDTH_OFF		0x00C
-+#define KSZ8463_CYCLE_CNT_OFF		0x010
-+
- #define PTP_GPIO_INDEX			GENMASK(19, 16)
- #define PTP_TSI_INDEX			BIT(8)
- #define PTP_TOU_INDEX			GENMASK(1, 0)
+--
+
+selftests/drivers/net: include lib/sh/*.sh
+
+This adds $(wildcard ../../net/lib/sh/*.sh) to TEST_INCLUDES in the
+drivers/net selftest Makefiles so that net/lib/sh/defer.sh gets installed
+by "make install", and sorts the TEST_INCLUDES lists while at it.
+
+> diff --git a/tools/testing/selftests/drivers/net/Makefile b/tools/testing/selftests/drivers/net/Makefile
+> index d5bf4cb638a8c..ab39c2e508f0a 100644
+> --- a/tools/testing/selftests/drivers/net/Makefile
+> +++ b/tools/testing/selftests/drivers/net/Makefile
+> @@ -3,6 +3,7 @@ CFLAGS += $(KHDR_INCLUDES)
+>  
+>  TEST_INCLUDES := $(wildcard lib/py/*.py) \
+>  		 $(wildcard lib/sh/*.sh) \
+> +		 $(wildcard ../../net/lib/sh/*.sh) \
+>  		 ../../net/lib.sh \
+>  
+>  TEST_GEN_FILES := \
+
+[Severity: Medium]
+Was drivers/net/netdevsim intentionally left out?  It is the only Makefile
+under tools/testing/selftests/drivers/net/ that this patch does not touch,
+and it defines no TEST_INCLUDES at all:
+
+tools/testing/selftests/drivers/net/netdevsim/Makefile:
+	TEST_PROGS := \
+		devlink.sh \
+		...
+		peer.sh \
+		...
+	# end of TEST_PROGS
+
+	TEST_FILES := \
+		ethtool-common.sh
+	# end of TEST_FILES
+
+	include ../../../lib.mk
+
+Its installed scripts do consume the net shell libraries.  peer.sh does:
+
+	lib_dir=$(dirname $0)/../../../net
+	source $lib_dir/lib.sh
+
+and devlink.sh, devlink_in_netns.sh, devlink_trap.sh, fib.sh,
+fib_notifications.sh, hw_stats_l3.sh, nexthop.sh and psample.sh do:
+
+	lib_dir=$(dirname $0)/../../../net/forwarding
+	source $lib_dir/lib.sh
+
+which reaches net/lib.sh, and that unconditionally sources defer.sh:
+
+tools/testing/selftests/net/lib.sh:
+	net_dir=$(dirname "$(readlink -e "${BASH_SOURCE[0]}")")
+	source "$net_dir/lib/sh/defer.sh"
+
+There is also no automatic fallback for this target, since the top-level
+Makefile only matches the exact strings net, drivers/net and
+drivers/net/hw:
+
+tools/testing/selftests/Makefile:
+	# Networking tests want the net/lib target, include it automatically
+	ifneq ($(filter net drivers/net drivers/net/hw,$(TARGETS)),)
+	ifeq ($(filter net/lib,$(TARGETS)),)
+		INSTALL_DEP_TARGETS := net/lib
+	endif
+	endif
+
+So does the failure quoted in the changelog still reproduce with:
+
+	make INSTALL_PATH=/tmp/kself TARGETS=drivers/net/netdevsim \
+		-C tools/testing/selftests install
+
+The commit message says the patch "adds a wildcard to include all shell
+files for drivers/net tests that consume net lib.sh" — should that claim be
+narrowed, or netdevsim covered too?
+
+Note the gap in netdevsim is wider than defer.sh: adding only
+$(wildcard ../../../net/lib/sh/*.sh) would not be enough, since
+../../../net/lib.sh and ../../../net/forwarding/lib.sh are not installed
+either (plus devlink_lib.sh, fib_offload_lib.sh and tc_common.sh, which
+several of those scripts source).
+
+For reference, drivers/net/dsa is also not in the default TARGETS list and
+this patch does cover it, and drivers/net/{mlxsw,ocelot,microchip} have no
+Makefile so they are not installable targets at all.
 
 -- 
-2.55.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260907-selftest_lib_defer-v1-1-8af94645aaa3%40kylinos.cn
