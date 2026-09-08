@@ -1,142 +1,106 @@
-Received: from mail-qk2-f3.google.com (mail-qk2-f3.google.com [74.125.230.195])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 391A54A3D25
-	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 08:50:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.195
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788857460; cv=pass; b=OuJCydXoD0Z4ThypSnsrAjjndRhwtYjqKvOHyGZEemRYRz/NO+8mEvdPVDUt8pwghBJH/g0qLfuVy5qrwV8vj9tKs7LaJV2B1vPko/1bcVR415UICCINguqG14TJmO/WuKWdMn1iD3trh5gsnSSvA14bp98NtntjsgGFS++xIOU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788857460; c=relaxed/simple;
-	bh=CGqXD/HGmKRCkAcVzchiZAmsA+ENuFZGucxFrmkngpE=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD2C74B0483
+	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 08:52:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788857573; cv=none; b=G9LRvqz0QyQWr73czX+jqaGgjP3O0tTTDPN6EEN7sTeWSB41NYojsdZZiKm+kQgx7hAPIECpS7F4CLD4HZNxDaXIbl2ZuaIg7Plg7ebL0KBtHA20jO8aAS3KgSsXM1F9G7Ztvjqs7QHxobIhXTrniPq2AnnmwsZ1MzKC8QCBMuU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788857573; c=relaxed/simple;
+	bh=je+F0OPWeTZLgdJRJufyWIP+kwQe++5kqut9YBkrXVQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZvxBJIPx33lJGpvBmthjYZdDi9ndAHwQz8DC+Z46RBz6k9npI6j+VQ2vSePssnazxv/VnKpswXTiEwcFavJ2fhFt7DbqZwZmHi6DnKTPdVmxJV7MdNJJBOUWYas41xLjeySp+lVV/0El6JqYFBsvRIdk2vMawoAsytvz/4vCrVE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ni59OuiV; arc=pass smtp.client-ip=74.125.230.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=ot75UmdUjEk+DhKr76BqdIyA1RCADN1N4+9jzvgCcxWsq4wQrw1XyPx/t27vp0z98/k31TM5MI+/GkP5VDlVcyldI+HuyWknbE0dUHxw9PI7p96iVzNdMCGdXjKcUwd2FhJl3QDFtoPOplDRzdAnDN4qlBXtBa8chHgGz2BgeOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N5k5/0p2; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ni59OuiV"
-Received: by mail-qk2-f3.google.com with SMTP id d75a77b69052e-51bfda2cd53so30895301cf.0
-        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 01:50:53 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788857446; cv=none;
-        d=google.com; s=arc-20260327;
-        b=RzEOZp5ROOM6YBQL6Shr6ltZQxw0xzIgyGRVyKEwgKfKZ8ynzrax0fU/djnybyWDCO
-         py9BqLfv30ccwLBK8ImhUG15O+2RCkCdGcpJT0k1l508zfoql4OJVYO7fcHhmleDVNce
-         fdqa7jb124fRAF98pAhS09XiLmByhfGf9xSYXVFz7rv7/2OULfn9VARGTiZ3qKKfc20z
-         TEtDG/uqSTqylh3iIHxRjNDRBY3s+uDc4/wzHkY9pDjDqDqZz8q3HJE9kUwR63Bot3eo
-         IIGDsTTDZ9SefHlj6Lv3dCa4Zd+Q5mm71iE4o8841ogQ3eE77RTmN3n8cQeGN2K07XN2
-         kbew==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=9cEtLfffg/kw3sWTeXa6T8mgAqOFBiKyBtqY3VJ3nng=;
-        fh=bUPsMGTAilBoy8+BbQeORnzwMfTleRjmho55PvHeEbE=;
-        b=XsedDvUYcW6cJ74tFhTEa8EVNulq4IDuEU0uw0Q6RV2eiqce5D37HpXZS0mrPocyUP
-         pDT/0rnoHbpwJepZMwWujLtKtVIjwt1YGrq9bWWrvGJzBLL1Z1d8HpmWnXOqednaPISy
-         rXTWxcfi/940IEwZn2z0m/iY2RuuhH4Fm7YQTuR9P206V1xb4EPjfuRzOx1PrW7YIgI8
-         8CYdQ91re5K2CQ1f9SkVdj3vYNL4z7vz0rzrn3uP79Ij5EqisFlDl8Z56uVYdqHJujgE
-         frJXdGyJB4nDI4vKl8rb0/6JJ+vQanUE9LzpwufpERr5zFtKp7MrhNCd4lP1eul/d5Rj
-         Y4Rw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788857446; x=1789462246; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=9cEtLfffg/kw3sWTeXa6T8mgAqOFBiKyBtqY3VJ3nng=;
-        b=Ni59OuiVemW76Sb6I/FErsEX0AT9eHkyJGKVkRBF4gOrTgYLZTR3KNZDfkwVmblfzH
-         3TXqVoxIb9z7rbpu0uNqI+/vu8Nlv5o2g5+iyWq2pkZka8MpZdFgP2DlMZD2d2ICOOcG
-         QjQVcG7fPynE+/QeMhs1PicIBy20ppv3jxckmGqaWAGuRG4JUlEGHp/vpeZZZevDBG8N
-         P1oo/TdHM74SVpv6q4PMiF4EKdQdiA73b3uuO5UH58NBur4rc5AFiqxX1Fp1Du2lJiJf
-         F0Ezzej4ln61Or0h0DVdF7rOhC83nB+Y1b+Y+hfdKzm7Av9skqRHFovfjrCseUPIIuMx
-         pu1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788857446; x=1789462246;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=9cEtLfffg/kw3sWTeXa6T8mgAqOFBiKyBtqY3VJ3nng=;
-        b=BxUhdU1Yypo6WNzvuVSJCYcfaROLNqTejBUyI/R8ITVuC7DRvDEtFFdskiWvnMQneD
-         dDM6vB9V600/8VoqwSjmQ86drCUzJoheCMXcgrp/nPhjPWBRMdhkAIf+X3OdPaYmO0yH
-         ZdkkxKfamZiMvqNv9lj9G4wjwoEKzqoBYSPKAUnHM8eEa9QxuXVyPjHe0mWuxmgO/dXj
-         aBEQsg+x9QDs1l4YWQsiyhmpJyYW7zEq1ed4OkP3WVHDnyKIXOQ/HTG099b3EDxpuwLm
-         Qib2PtuIIgT770FVdpyuT0WT/W+g/bKBKWiN3We0WeMO0O0z66d0CReZfRAe/68PS91f
-         XW0g==
-X-Forwarded-Encrypted: i=1; AKwUvBxQD96kPmkXB7C1+LONyoe73r3hZ8aH6Ub4hKxmWmlwe86gNbFu3YNGVNnMyz3z09bvr9/3Hjg=@vger.kernel.org
-X-Gm-Message-State: AFuF++kA9KKdzOuk0cVadiHULk/HtkHCDKJC4B/JLxXRx0MNRrrAGpHp
-	CvlrF4MjDUNlkW/QonVfENvbALcNF0Z+oRNif1Qk9A3um7UsGpWkl2VDBh1GrW2AUL/kfH1qqmg
-	l4H66Mc9jLgsHTnsm6y+808N6G4k9y4w=
-X-Gm-Gg: AYBFou0j4RSg49p/4JykP37lw/aB/2kL9+4/+ATPtX/jPD2eD3clN6SJd6Csu0Erkl7
-	PpSkwhedrT8/oILG8kCiBNTVQ0/Ay4RugStnL9pLz2I7hlkCU5uj/mmQ330QWMQPkRkyEqISVsb
-	lVBYzVr7Q4GYC3lBCVpPvvmzO0icE+ZhB/aJltYeCNRLxAlz3xf4AhF5cUK8BuzgB88AlNhvX//
-	gGV5VN/F9gJCQDsy96WUs0Kex8m1jN9D7X2mtpRT4MXeGGwpjdvvCHvoURAOznBTg0m33U/iyDw
-	eUTWar+yhvhVn26qk/YwoT42ewCQ661Dw888DC25gEdPtIiA0pTs11GD
-X-Received: by 2002:a05:622a:1a81:b0:51c:d52:6049 with SMTP id
- d75a77b69052e-530548e0cb2mr324384441cf.28.1788857445984; Tue, 08 Sep 2026
- 01:50:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N5k5/0p2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EECCD1F00A3A
+	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 08:52:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788857556;
+	bh=3W4oOrZck+N1ptGY2moPSlp11dOJcmwzEUDKOztwOHQ=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=N5k5/0p2shm2MZCybuh/C0nfPum5JdsOxFVEwkZs4ux6K21wfSD6atSXWHng/4NuP
+	 xa7CKijYwIQR94Qm49dEYJXbYnI5fGW0nXYGJSPh64YbPJr2YceW9lh2Ts/2cmpuw7
+	 Xusl4WjXeDLcxe3hYriKRBkOErLozYwayWiDgfXCrubwF+pGa7+kSpIua5Z5qi7Ej4
+	 Rx1GvH+N24WdW5Ri4UJa6c63Qvxn/b2KCCNgjZ2U6swJ4MaB6YEfSZOt9gUQElZ+8P
+	 +wIUpunu57d0D27b8cFbtNd7r8Ve74ozGkCsVhY7lRTpiPg7Vn8dS+8p5FbI3jZAU3
+	 kZj9aiG+hOgKw==
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-5b5e5ab03afso3580553e87.3
+        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 01:52:35 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBzPc6ST8F0OOzmHHiwWncX/9R54IxWi9rv+HfgO1rz6MLq/LdftM32+q1zBR8dZRchYW+ZivE4=@vger.kernel.org
+X-Gm-Message-State: AFuF++kq8xjmh7HnLvGsnOK7IXhl+8nJv4jrh75cTLxT4FJnWnI22BHo
+	Lh7FW8Zw8BmzVacBImkLDhcQ39NUy+AP5NsqvSL9qlxSF1fguR/0kvBex1as+6k/MWEUtd/QRns
+	ftWLjFMDPVoCeSlnfwwKV32wN8/m28jY=
+X-Received: by 2002:a05:6512:108e:b0:5b5:e517:9cb9 with SMTP id
+ 2adb3069b0e04-5b616f15c32mr4513436e87.11.1788857552575; Tue, 08 Sep 2026
+ 01:52:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1788262122.git.petalzu987@gmail.com> <2ce8f3e4bbed6060afb0aee33dc4e1d9ae021280.1788262122.git.petalzu987@gmail.com>
- <ap2ksmdL1FFulLnF@lore-desk> <CANn89iKeNgRxhkUvxeMmyAJGcT+3hpbWaM+VubQ2sBVGSDeouw@mail.gmail.com>
- <20260906224300.21884-1-iprintercanon@gmail.com> <CANn89iLjMMsKLYkv8J3uX-FvzfMvkzi5wtLfY4pZYW2G9C601Q@mail.gmail.com>
-In-Reply-To: <CANn89iLjMMsKLYkv8J3uX-FvzfMvkzi5wtLfY4pZYW2G9C601Q@mail.gmail.com>
-From: Zixuan Chai <petalzu987@gmail.com>
-Date: Tue, 8 Sep 2026 16:50:33 +0800
-X-Gm-Features: AcwNN1WeS4iFq3lXexGjuviPPr6gR7f1GhJaAw3tlggAZtAVtoDnTlyVgWhCCmM
-Message-ID: <CADTzad+RD6z0C+0xCoDx8QCm_UztuPncjfPH_87Ce2QJzE8Naw@mail.gmail.com>
-Subject: Re: [PATCH net v4 1/1] ip6_tunnel: snapshot encap in xmit
-To: Eric Dumazet <edumazet@google.com>
-Cc: Artem Lytkin <iprintercanon@gmail.com>, Ido Schimmel <idosch@nvidia.com>, 
-	David Ahern <dsahern@kernel.org>, Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>, 
-	Ren Wei <weir@nebusec.ai>, Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org
+References: <20260906-ks8995-to-ksz8-v9-3-8d8815a91bd8@kernel.org> <178883938573.219967.4602720623318150522@kernel.org>
+In-Reply-To: <178883938573.219967.4602720623318150522@kernel.org>
+From: Linus Walleij <linusw@kernel.org>
+Date: Tue, 8 Sep 2026 10:52:19 +0200
+X-Gmail-Original-Message-ID: <CAD++jL=Dz1vtyH=0Zm6EE6zxj8TV1avNW9PSVE8voFmRhd=fMg@mail.gmail.com>
+X-Gm-Features: AcwNN1XD2YrjahEhw2Vin4QwxDua85jBaifRMSNbHO2gd8mgyUN2y_LDN5Tr_Jk
+Message-ID: <CAD++jL=Dz1vtyH=0Zm6EE6zxj8TV1avNW9PSVE8voFmRhd=fMg@mail.gmail.com>
+Subject: Re: [PATCH net-next v9 3/4] net: dsa: microchip: Support Microchip
+ KSZ8995XA / KS8995XA
+To: netdev-bot+sashiko@kernel.org
+Cc: woojung.huh@microchip.com, UNGLinuxDriver@microchip.com, andrew@lunn.ch, 
+	olteanv@gmail.com, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
+	marex@denx.de, horms@kernel.org, linux@armlinux.org.uk, nb@tipi-net.de, 
+	netdev@vger.kernel.org, devicetree@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi Eric,
+Hi netdev-Sashiko,
 
-Thanks for the update.
+new stuff every day! I like it :D
 
-Does your SIT tunnel series also cover the ip6_tunnel encap/headroom race
-reported here, or is this still a separate issue?
+On Tue, Sep 8, 2026 at 5:49=E2=80=AFAM <netdev-bot+sashiko@kernel.org> wrot=
+e:
 
-If it is not covered by your series, I will prepare v5 with the fixes
-Ido requested.
+> [Severity: Low]
+> This isn't a bug, but should this loop use dev->phy_port_cnt rather than
+> dev->info->port_cnt?
 
-Thanks,
-Zixuan
+Actually no. The boot loaders reset also the CPU port.
 
-Eric Dumazet <edumazet@google.com> =E4=BA=8E2026=E5=B9=B49=E6=9C=887=E6=97=
-=A5=E5=91=A8=E4=B8=80 14:32=E5=86=99=E9=81=93=EF=BC=9A
+> [Severity: Medium]
+> The commit message says:
 >
-> On Mon, Sep 7, 2026 at 12:43=E2=80=AFAM Artem Lytkin <iprintercanon@gmail=
-.com> wrote:
-> >
-> > On Sun, Sep 06, 2026 at 07:54:34PM +0200, Eric Dumazet wrote:
-> > > The general answer is : convert tunnels to RCU based configuration.
-> > > In my quest for RTNL-less ip link dumps, I converted SIT tunnels to
-> > > RCU configuration.
-> >
-> > I have ip6_tunnel and ip6_gre done the same way, after your geneve
-> > conversion: the encap and header lengths in a config under an __rcu
-> > pointer, changelink validates and then publishes, fill_info without
-> > RTNL. Seven patches, built and sparse clean, waiting for the nebusec
-> > fix to reach net-next so I can rebase on it. I mentioned it on the v2
-> > thread two weeks ago:
-> >
-> >   https://lore.kernel.org/netdev/20260824194741.215979-1-iprintercanon@=
-gmail.com/
-> >
-> > Two things I'd like to line up with your sit series. Your patch 2 and
-> > my first one both touch ip_tunnel_encap_setup() and the encap ops in
-> > ip_tunnels.h, so I'd rather rebase on yours; is it close to posting?
-> > And you put sit_parms under RCU as well, while I kept parms out of the
-> > first round because it keys the hash. If you'd rather have parms in
-> > from the start, I'll do that instead of a second series.
+>   "Notice: there are also KSZ8995E and KSZ8995MA. These are BOTH
+>    different from the KSZ8995XA."
 >
-> It was ready last week, I can post the series right away.
+> Given that, is it safe for family 0x95 with chip ID nibble 0x0 to be
+> mapped unconditionally to KSZ8995XA_CHIP_ID here?
+
+Actually yes, all known users are the XA variant.
+
+Whenever/if an MA user appear, we will deal with that then.
+We have no hardware to test this as things are today.
+
+> Two in-tree device trees use the generic string today,
+> arch/arm/boot/dts/intel/ixp/intel-ixp42x-linksys-wrv54g.dts and
+> intel-ixp42x-actiontec-mi424wr.dtsi, so if MA behaves differently in
+> special-tag mode those boards would lose CPU-port traffic.
+
+Those in-tree users are the XA variant, so this is a non-issue.
+
+> [Severity: Low]
+> Should the three Micrel strings also be added to the compatible enum in
+> Documentation/devicetree/bindings/net/dsa/microchip,ksz.yaml?
+
+No. Device tree bindings are OS-neutral and do not change
+because of Linux internal driver changes.
+
+I will address the rest in v10.
+
+Yours,
+Linus Walleij
