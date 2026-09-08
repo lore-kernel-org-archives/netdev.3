@@ -1,129 +1,129 @@
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1070F4A4409
-	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 09:05:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 069452E06E6;
+	Tue,  8 Sep 2026 09:08:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788858323; cv=none; b=QeNtujOn0kO64TdkvXIRpYTnVpNK9pBQ4h18FHG3wYmlhTp6pVtoSqBrPAu2mFngtOTPcxAWG8YfWeE7kFIexapDe7x/EXz6iWwGSS1EmvERrNdBePq85lof262/Z4E9DfYFHjBwFZRDOK4yA5aws6kNuDSgUIsLY4tfCVSFtnc=
+	t=1788858528; cv=none; b=qbyN2ZikW1uJab0FhT+Nfv6YUYBdobQOxkkUaOPgUUFIdStFraSHktjUzcrAZWun5i9NDCpC4M78KY2BuHWfpT1XPXqfqCEgh43Mk2/d2/kXWAdAPjGATwliQ0xQdHcHqmP2lT579wi15n433o4+6i9KdBwVfpvBO9vkpp9q82w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788858323; c=relaxed/simple;
-	bh=sNNBBct0nwB5FmYU4k8mGBGAI21QrDEgejmZXPmM0z8=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Dd9htEU+/4dmXat+DrkqPWrtmDaSw0XISXv91e8bzH94vibMyiLgQxYA2h+mPtbOLGTcAwlqTYYUrfAYTknUQdpwFMT1dLEtngt62SkBbWYI3IBdTf1rJQEFeKg5LnybB0rT/KFeAGz9ZfxpzpB42FcoJfEjudDfDnXMqZgZzLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FpUCDpAr; arc=none smtp.client-ip=209.85.160.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+	s=arc-20240116; t=1788858528; c=relaxed/simple;
+	bh=0AKA7sAAY833FNXh8DXKEJIjfLHc6DFUVIEt+bQDIi4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dRPaB/ckV9cltmwa49691e2WDxGbYOLkHnY/VJkeIIZFn49971i/YfY+VAVQqQP/dzgP+Ion5oGWCGDZma0r2xRK1s4j92CsfRG5mxQ9PjhEaCBTD0v7RcZ5u2lDjq6sBgcAxxUrVVRKiyv1HiRXuXt5WN3ZfNmCNb8C7ywxb/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hr5tcHSF; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FpUCDpAr"
-Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-51c1d137a68so54561831cf.3
-        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 02:05:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788858321; x=1789463121; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=d0akboqw8M9ZArGnEU4CANneJLg/jHZe5Hbjuj3SNUs=;
-        b=FpUCDpArKKcSMWpWX0tc3h9fQ48KVVyLbyUNohTR2MeTCWb9PP4uvCMyXOWGIj8l8k
-         xQHodAy+cxnaZ/v+V1KmUtAcpDTfK+87Or4GLsSJOCwIEzlMRxVV5vGECdSot1XumaA1
-         bT7GdDH8lPAS0NwBr2esQscS/jjrhLlUTsQjNZcpAl6hSt9mzW9Fr5BmwSjQTXGIMJZB
-         l74c077EXSDFbNWhzkVPI+CRlvVN10wTLZUh9Hk0v9vfj5tu46vDbszq9yF2163UYDPr
-         srMwC5KU8XDKlMJJyLCVyDVWeF0dGWNOl0Fm4lxMBN65nUGBtZQ0iRHu6HNsrnqOqNkb
-         2aAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788858321; x=1789463121;
-        h=content-type:cc:to:from:subject:message-id:mime-version:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=d0akboqw8M9ZArGnEU4CANneJLg/jHZe5Hbjuj3SNUs=;
-        b=bJ/2LYaluP/aOUReDTCrMTMLCFSdXeLZsYbV9lXd7Nc0Im4KXBtmzo27VeyCM/nSTt
-         EFChzXrmf8czqUX3ra3SsFJ45GX/cDC9aUSCZYQ/yL85TQSDkYuRVZGAsKut/PlSOvr2
-         5Y2LNS/VVOu2BFTGvbThfaJftgABKBp+YvXNzkAGE7KnoE3iVCU74VSjqSE5LSRXVoTJ
-         4FYcSq0cMFVjC9FzGNa/p2uQCtsh7l9Mg8UrZuV3Lvd7lU1OXihKCQrwiOnU7Fm1f+Iq
-         zZ+BBDZTcNKoGwyi1aPuFleeCOhZrXYh4xmFFZrcNcvQ4iaCwNsBNhB1wZpdZF1FGuw9
-         cZqg==
-X-Forwarded-Encrypted: i=1; AKwUvBx3vYDDZ2I5nlIFochOGqbM8q/5Lwty/S2brNAKVuJr1LGbyBnad7BAQl4m11bEFIyYKq2fff0=@vger.kernel.org
-X-Gm-Message-State: AFuF++lceaMEvnCgi8fVX9sySf8WdpMWEKbMogeioJR/kZkRpboM1Oad
-	RAjt4yudd+LPYcU28Uyza4Blq8B8vco24x7Z4O2BdH1Xo+FdNji0N7E1I5S1CnT8JCTgZWemxvn
-	RCSEpjEIo7sVMWA==
-X-Received: from qtbs5-n1.prod.google.com ([2002:a05:622a:e485:10b0:530:820d:19ce])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:622a:e484:10b0:530:7fd6:f87e with SMTP id d75a77b69052e-5307fd6fbbfmr88702941cf.11.1788858319858;
- Tue, 08 Sep 2026 02:05:19 -0700 (PDT)
-Date: Tue,  8 Sep 2026 09:05:18 +0000
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hr5tcHSF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B4871F00A3A;
+	Tue,  8 Sep 2026 09:08:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788858526;
+	bh=6N5S6KBO5Uk5jykSQfX8s36EUx9Bv2AGM83B6wzlFHQ=;
+	h=From:To:Cc:Subject:Date;
+	b=Hr5tcHSFsGg23DSdHVZaY07yZz6gBb/Y1HDFWN/yVKJj/I4r2J3UsWfv7rm5rA1Lo
+	 OsOG6Q0XiM+BS9XnbPo45Lq2I3LjlnMsDkC5+OYl23NJnzvo01X2cTQKr9ohKqRxwu
+	 FRkVxiIl+0Ka2wHh2dL3WGhrGQnG8I2g+tU9mS3mCSDaO4dMaGrmETMcTIELXNEtYW
+	 /UcdVbsI8Qtl+Im9MPtaG7XcRdyGmj5dwLJ1u9WH1My63MC4ZY+n6crDfIGP7RuA0/
+	 KArsTQo4Vpwgim+ZgK3kpK4gCjZ3DZfkJx56ATCs+JErDJHMrYJs8fn2wkHljqZdZ9
+	 T1sgEeUQTXadA==
+From: Geliang Tang <geliang@kernel.org>
+To: John Fastabend <john.fastabend@gmail.com>,
+	Jakub Sitnicki <jakub@cloudflare.com>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>
+Cc: Geliang Tang <tanggeliang@kylinos.cn>,
+	netdev@vger.kernel.org,
+	bpf@vger.kernel.org
+Subject: [PATCH bpf v3] bpf, sockmap: Fix self-redirect copied_seq double-counting
+Date: Tue,  8 Sep 2026 17:08:32 +0800
+Message-ID: <1a8e797a1b26e2f695aaac22ac644c2862f63466.1788858299.git.tanggeliang@kylinos.cn>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.55.0.979.g7e5102b832-goog
-Message-ID: <20260908090519.339696-1-edumazet@google.com>
-Subject: [PATCH net] pppoatm: ensure a writable skb header
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
-	eric.dumazet@gmail.com, Eric Dumazet <edumazet@google.com>, 
-	Mitchell Blank Jr <mitch@sfgoth.com>, Chas Williams <3chas3@gmail.com>, 
-	Qingfang Deng <qingfang.deng@linux.dev>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-In pppoatm_send(), LLC encapsulation checks whether there is sufficient
-headroom for the 4-byte LLC header, but does not ensure that the skb header
-is writable.
+From: Geliang Tang <tanggeliang@kylinos.cn>
 
-Normal transmit packets passing through ppp_start_xmit() have their header
-unshared via skb_cow_head(). However, packets can also reach pppoatm_send()
-via PPP channel bridging (PPPIOCBRIDGECHAN) without going through
-ppp_start_xmit().
+When a BPF stream_verdict program redirects an skb back to the same
+socket (self-redirect with BPF_F_INGRESS), sk_psock_verdict_apply()
+calls tcp_eat_skb() which advances tcp_sk->copied_seq. However, the
+skb is then delivered to the socket's psock ingress queue and later
+read by tcp_bpf_recvmsg_parser(), which also advances copied_seq via
+the copied_from_self accounting path. This double-counting causes
+copied_seq to advance by 2x the actual data length, triggering:
 
-Use skb_cow_head() to ensure both sufficient headroom and a writable
-header before pushing the LLC header.
+  TCP recvmsg seq # bug 2: copied BF2E806, seq BF2E7FD, \
+			   rcvnxt BF2E806, fl 0
+  WARNING: net/ipv4/tcp.c:2745 at tcp_recvmsg_locked+0x72b/0x2640
+  Call Trace:
+   tcp_recvmsg+0x10a/0x500
+   sock_recvmsg+0x168/0x1d0
+   __sys_recvfrom+0x19a/0x2a0
+   __x64_sys_recvfrom+0xe4/0x1f0
+   do_syscall_64+0xf7/0x530
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-While at it, this also simplifies the code and avoids allocating and
-freeing a temporary skb when the ATM socket buffer is full.
+  cleanup rbuf bug: copied BF2E806 seq BF2E806 rcvnxt BF2E806
+  WARNING: net/ipv4/tcp.c:1609 at tcp_cleanup_rbuf+0xf2/0x1c0
+  Call Trace:
+   tcp_recvmsg_locked+0x8d1/0x2640
+   tcp_recvmsg+0x10a/0x500
+   sock_recvmsg+0x168/0x1d0
+   __sys_recvfrom+0x19a/0x2a0
+   __x64_sys_recvfrom+0xe4/0x1f0
+   do_syscall_64+0xf7/0x530
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-Fixes: 4cf476ced45d ("ppp: add PPPIOCBRIDGECHAN and PPPIOCUNBRIDGECHAN ioctls")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
+Fix this by converting self-redirect verdict to __SK_PASS at the
+beginning of sk_psock_verdict_apply(). This bypasses the
+__SK_REDIRECT case entirely (which calls sk_psock_eat_skb), letting
+the __SK_PASS path queue the skb to the psock ingress queue. The
+data is then read via tcp_bpf_recvmsg_parser(), which advances
+copied_seq exactly once through copied_from_self. Cross-socket
+redirects continue through __SK_REDIRECT with sk_psock_eat_skb()
+unchanged.
+
+Fixes: e5c6de5fa025 ("bpf, sockmap: Incorrectly handling copied_seq")
+Suggested-by: Jakub Sitnicki <jakub@cloudflare.com>
+Suggested-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
 ---
-Cc: Mitchell Blank Jr <mitch@sfgoth.com>
-Cc: Chas Williams <3chas3@gmail.com>
-Cc: Qingfang Deng <qingfang.deng@linux.dev>
----
- net/atm/pppoatm.c | 21 ++++++---------------
- 1 file changed, 6 insertions(+), 15 deletions(-)
+v3:
+- add "bpf" prefix.
 
-diff --git a/net/atm/pppoatm.c b/net/atm/pppoatm.c
-index 6da52d12df68e493b03f57edc46c3b5255956893..4ce7fa6e493e95d64909b72fd123a517c0befb12 100644
---- a/net/atm/pppoatm.c
-+++ b/net/atm/pppoatm.c
-@@ -317,21 +317,12 @@ static int pppoatm_send(struct ppp_channel *chan, struct sk_buff *skb)
+v2:
+ - fixup the verdict as Jakub and Jiayuan suggested.
+ - https://patchwork.kernel.org/project/netdevbpf/patch/1d2370f4c81f10834b8dd77524924575c629a464.1788591198.git.tanggeliang@kylinos.cn/
+
+v1:
+ - https://patchwork.kernel.org/project/netdevbpf/patch/b840c35fdfdf36e9fddedfa645b12699bc51aa34.1787968065.git.tanggeliang@kylinos.cn/
+---
+ net/core/skmsg.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/net/core/skmsg.c b/net/core/skmsg.c
+index 2521b643fa05..df385a5a961e 100644
+--- a/net/core/skmsg.c
++++ b/net/core/skmsg.c
+@@ -1000,6 +1000,10 @@ static int sk_psock_verdict_apply(struct sk_psock *psock, struct sk_buff *skb,
+ 	int err = 0;
+ 	u32 len, off;
  
- 	switch (pvcc->encaps) {		/* LLC encapsulation needed */
- 	case e_llc:
--		if (skb_headroom(skb) < LLC_LEN) {
--			struct sk_buff *n;
--			n = skb_realloc_headroom(skb, LLC_LEN);
--			if (n != NULL &&
--			    !pppoatm_may_send(pvcc, n->truesize)) {
--				kfree_skb(n);
--				goto nospace;
--			}
--			consume_skb(skb);
--			skb = n;
--			if (skb == NULL) {
--				bh_unlock_sock(sk_atm(vcc));
--				return DROP_PACKET;
--			}
--		} else if (!pppoatm_may_send(pvcc, skb->truesize))
-+		if (skb_cow_head(skb, LLC_LEN)) {
-+			bh_unlock_sock(sk_atm(vcc));
-+			kfree_skb(skb);
-+			return DROP_PACKET;
-+		}
-+		if (!pppoatm_may_send(pvcc, skb->truesize))
- 			goto nospace;
- 		memcpy(skb_push(skb, LLC_LEN), pppllc, LLC_LEN);
- 		break;
++	if (verdict == __SK_REDIRECT && skb_bpf_ingress(skb) &&
++	    skb_bpf_redirect_fetch(skb) == psock->sk)
++		verdict = __SK_PASS;
++
+ 	switch (verdict) {
+ 	case __SK_PASS:
+ 		err = -EIO;
 -- 
-2.55.0.979.g7e5102b832-goog
+2.53.0
 
