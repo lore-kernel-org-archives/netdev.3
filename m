@@ -1,33 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D9191F8755;
-	Tue,  8 Sep 2026 03:49:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9B053C1A;
+	Tue,  8 Sep 2026 03:49:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788839391; cv=none; b=U4cyvSmsk/sZrF8LcxO3ECMy+JhmaRVSMWapbuN4c3sbmg0xbwpxq/GdO/UqlginqtiKUCb4WojC5X1NXzNQka7pMWFYqrc3uNlDLoRhoLwkB/ZmA7D4+vjWV/3Fv1KM0egpv3eLWtJI4bfIgfFyD3PX4/NK16KRf8QK4yKKtbk=
+	t=1788839393; cv=none; b=UKIWUOHbLMW9HWaCnIBMvY2SErhjoKiAubq2UVrWtDrUQvqSy57eYfIMVWe+j3Dr+dNfju6XBkrFVLt5BRlxsSKadh+0ONK4duB+D/T90e9OQ0T9bzwCg6X5yBuC/7LmTWo8DKCF/KrMf/rNcjY/MFBI+Oo1O9jW7rRsYzSCs94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788839391; c=relaxed/simple;
-	bh=sGR1Gu5iwje3TBWUznuu5syp3/Y9LMYYiqGtEwAry/Q=;
+	s=arc-20240116; t=1788839393; c=relaxed/simple;
+	bh=J7gSVQ50zSTgz0M9d6E9TBC5PgylRRg1sqSjkBgar0w=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=U++PthNXgOMAHL9QnWkvL1aBkC/StJQHKrhBt1IKN2YHrKYQitbWAL4S23vH06cpwwwHQghO5KcN1JQKSoL+3nHNQYPkc8el5m1TK4sdY4RXj3x4gmOcEpQJL057ZJv1zxsGJibPpRTu+QQITzAAK3Xd8lehoZHCT/VPsoVgF9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Twaek6w7; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=UVjUCDUhTwBK199Egv4hJ6l2h0p3nrAyxdcDq38ulmGe1lFh4IvufsUoZ7VS/Uz2Vn8RCOSuRGqXK66+AFvZb134XJ/Z5CQz3C5HJNJyahLPgSP2DmDFr12gVV9CawOZgEL3BA3wCXuyZ+5rUG0HkRy15jPKXkITk1YFfwHoxfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A919xKv2; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Twaek6w7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 394921F00A3E;
-	Tue,  8 Sep 2026 03:49:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A919xKv2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDFB41F00A3A;
+	Tue,  8 Sep 2026 03:49:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788839387;
-	bh=GQhY6Jtw+ORcrf/pi5HKqntdkIpzlaubgkFQ4MC5nYM=;
+	s=k20260515; t=1788839388;
+	bh=PvwgdqOq/o16bPAZXWMfhyGsJc4zPGN4eic3geCCrk8=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Twaek6w7QypzgGLMV5ApGnfy9fuq7Y8zgHqVkah2KTbHBFLd760X51hNJdvmJT0gw
-	 oRZrIOdKTcBpuWy/3KeDvNEqhmKHI+pkwY4ktyKB4DIN+Ye2c7E7/j2V4U1C1mjTBm
-	 ose+q6y3zJ2IjJlzNCkJtnHO9Or5IKZs7dHIwWmZ2V05gwah/HtarteiGo8OZiwjv2
-	 aJX1srKtVlimuOs4NrwOt64l9uQp4s1w+Ysbg4YMHzjm1EMmbC4lyA8W2sdgpa5bMy
-	 pKLySB9UVgfOZ6iDTbxxTXTC82YaRt0e7VC62jad8L8kRJTgdoNSNT6u2dMT/7z2HN
-	 Ts7GZwvhUYc0A==
-Subject: Re: [PATCH net-next v9 3/4] net: dsa: microchip: Support Microchip
- KSZ8995XA / KS8995XA
+	b=A919xKv2kiSqbuD4sqVmVz3NXrQVVWid/ZgM1SP2SyvQ/N/n8Iueqc5bmraMGQHRL
+	 NzMSCGz2hyirQooBQcpCGvcqDKtZp2YV4qLF26qkxa7zUjXIuektYUFH4Z8jcDNMBM
+	 oTvdsgPPIU1oKUyz5zGEt4USVES8NKp3pnKGAIFV4kOKBDA3HlVxJgELJLplZPMUbA
+	 jUR8WUsOGDvOLOJXMytzPUCvzzgOtprwb0dLtjD2mkw+C/9d0nsgEsARKzaAe52xt6
+	 Nl6WPPD2NjSai6SBWPn/5ch4khVW4XCQVFVe1BW+i5jRdajSUXbyGTLEreVJRXcQ9O
+	 vs30iLeZdHW5w==
+Subject: Re: [PATCH net-next v9 4/4] net: dsa: ks8995: Delete surplus driver
 From: netdev-bot+sashiko@kernel.org
 To: linusw@kernel.org
 Cc: woojung.huh@microchip.com, UNGLinuxDriver@microchip.com, andrew@lunn.ch,
@@ -35,10 +34,10 @@ Cc: woojung.huh@microchip.com, UNGLinuxDriver@microchip.com, andrew@lunn.ch,
  pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
  marex@denx.de, horms@kernel.org, linux@armlinux.org.uk, nb@tipi-net.de,
  netdev@vger.kernel.org, devicetree@vger.kernel.org
-Date: Tue, 08 Sep 2026 03:49:45 +0000
-Message-ID: <178883938573.219967.4602720623318150522@kernel.org>
-In-Reply-To: <20260906-ks8995-to-ksz8-v9-3-8d8815a91bd8@kernel.org>
-References: <20260906-ks8995-to-ksz8-v9-3-8d8815a91bd8@kernel.org>
+Date: Tue, 08 Sep 2026 03:49:47 +0000
+Message-ID: <178883938748.219967.12302213755391446012@kernel.org>
+In-Reply-To: <20260906-ks8995-to-ksz8-v9-4-8d8815a91bd8@kernel.org>
+References: <20260906-ks8995-to-ksz8-v9-4-8d8815a91bd8@kernel.org>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -49,254 +48,153 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 4 potential
+Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider:
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 3
+Critical: 0 · High: 0 · Medium: 2 · Low: 1
 
-- [Medium] The generic legacy compatible "micrel,ks8995" is newly bound
-  to ksz_switch_chips[KSZ8995XA] in drivers/net/dsa/microchip/ksz_spi.c,…
-- [Low] ksz_spi.c now matches three compatible strings —
-  "micrel,ksz8864", "micrel,ksz8795" and "micrel,ks8995" — that do not…
-- [Low] The new KSZ8995XA branch of ksz8_reset_switch() iterates ports
-  0..dev->info->port_cnt-1 (5 ports) writing PORT_PHY_SOFT_RESET…
-- [Low] ksz8_port_vlan_filtering() gained a special case `if
-  (ksz_is_ksz88x3(dev) || ksz_is_ksz8995xa(dev)) return -ENOTSUPP;`,…
+- [Medium] Deleting drivers/net/dsa/ks8995.c leaves the ambiguous legacy
+  compatible "micrel,ks8995" handled unconditionally as a KSZ8995XA by…
+- [Medium] The SPI ID table entries added for the KS8995 migration do not
+  line up with the DT compatibles they are supposed to cover.
+- [Low] The transitional stub added by this patch
+  (drivers/net/dsa/Kconfig:110-119) tells KS8995 users that…
 
 --
 
-net: dsa: microchip: Support Microchip KSZ8995XA / KS8995XA
+net: dsa: ks8995: Delete surplus driver
 
-This adds KSZ8995XA (Micrel KS8995XA) support to the KSZ driver, with a
-restricted set of dev/switch ops, a header-tag protocol, one-bit-per-DSCP
-priority registers and reworked DCB register helpers.  It also moves the
-legacy Micrel compatibles over to the KSZ SPI driver and makes the old
-ks8995 driver mutually exclusive with it in Kconfig.
+This removes drivers/net/dsa/ks8995.c and its Makefile entry, and turns
+NET_DSA_KS8995 into a transitional Kconfig stub that selects the Microchip
+KSZ SPI driver instead. Users of the old driver are expected to be phased
+over to NET_DSA_MICROCHIP_KSZ_SPI when they migrate their configs.
 
 > diff --git a/drivers/net/dsa/Kconfig b/drivers/net/dsa/Kconfig
-> index 676fb7dffe14f..e309e4c1ee3a9 100644
+> index e309e4c1ee3a9..55a9714033a6f 100644
 > --- a/drivers/net/dsa/Kconfig
 > +++ b/drivers/net/dsa/Kconfig
-> @@ -110,6 +110,7 @@ config NET_DSA_RZN1_A5PSW
+> @@ -110,11 +110,13 @@ config NET_DSA_RZN1_A5PSW
 >  config NET_DSA_KS8995
 >  	tristate "Micrel KS8995 family 5-ports 10/100 Ethernet switches"
 >  	depends on SPI
-> +	depends on NET_DSA_MICROCHIP_KSZ_SPI = n
->  	select NET_DSA_TAG_NONE
->  	help
->  	  This driver supports the Micrel KS8995 family of 10/100 Mbit ethernet
-
-[ ... ]
-
-> diff --git a/drivers/net/dsa/microchip/ksz8.c b/drivers/net/dsa/microchip/ksz8.c
-> index 941ae9f66f70b..f9272d1b7bf47 100644
-> --- a/drivers/net/dsa/microchip/ksz8.c
-> +++ b/drivers/net/dsa/microchip/ksz8.c
-> @@ -253,7 +254,17 @@ static int ksz8463_reset_switch(struct ksz_device *dev)
->  
->  static int ksz8_reset_switch(struct ksz_device *dev)
->  {
-> -	if (ksz_is_ksz88x3(dev)) {
-> +	if (ksz_is_ksz8995xa(dev)) {
-> +		unsigned int port;
-> +
-> +		/* The KSZ8995XA switch itself cannot be reset by software, but
-> +		 * often boot loaders have fun with ports, so reset them. This
-> +		 * reset bit is self-clearing.
-> +		 */
-> +		for (port = 0; port < dev->info->port_cnt; port++)
-> +			ksz_port_cfg(dev, port, REG_PORT_STATUS_3,
-> +				     PORT_PHY_SOFT_RESET, true);
-
-[Severity: Low]
-This isn't a bug, but should this loop use dev->phy_port_cnt rather than
-dev->info->port_cnt?
-
-The chip data for KSZ8995XA has .port_cnt = 5 and
-.internal_phy = {true, true, true, true, false}, so the last iteration
-writes PORT_PHY_SOFT_RESET to the port 5 register block, and ksz8_reg.h
-only names REG_PORT_1..4_STATUS_3.  Other PHY-oriented loops in ksz8.c
-bound on dev->phy_port_cnt.
-
-The legacy driver does define KS8995_GC0_P5_PHY BIT(3) /* Port 5 PHY
-enabled */ and its KS8995_REG_PS(p, r) macro is valid for p = 0..4, so
-this register does appear to exist on the hardware; it is just
-inconsistent with how internal_phy[] is declared here.
-
-> +	} else if (ksz_is_ksz88x3(dev)) {
->  		/* reset switch */
->  		ksz_cfg(dev, KSZ8863_REG_SW_RESET,
->  			KSZ8863_GLOBAL_SOFTWARE_RESET | KSZ8863_PCS_RESET, true);
-
-[ ... ]
-
-> @@ -1672,7 +1731,7 @@ static int ksz8_port_vlan_filtering(struct dsa_switch *ds, int port, bool flag,
->  {
->  	struct ksz_device *dev = ds->priv;
->  
-> -	if (ksz_is_ksz88x3(dev))
-> +	if (ksz_is_ksz88x3(dev) || ksz_is_ksz8995xa(dev))
->  		return -ENOTSUPP;
-
-[Severity: Low]
-Can this new ksz_is_ksz8995xa() branch ever be reached?
-
-ksz8995xa_switch_ops (added further down in this patch) does not set
-.port_vlan_filtering, and the core checks that first:
-
-net/dsa/port.c:dsa_port_vlan_filtering() {
-	...
-	if (!ds->ops->port_vlan_filtering)
-		return -EOPNOTSUPP;
-	...
-}
-
-So for a KSZ8995XA device ksz8_port_vlan_filtering() is never entered and
-the added condition looks like dead code that suggests the op is wired up.
-As a side note, the existing return here is -ENOTSUPP while the core path
-already returns the canonical -EOPNOTSUPP.
-
-[ ... ]
-
-> @@ -3111,6 +3220,38 @@ const struct ksz_dev_ops ksz88xx_dev_ops = {
-> +/*
-> + * Restricted operations for KSZ8995XA, so many things are not supported
-> + * by this old switch that we need diet DSA operations.
-> + */
-> +const struct dsa_switch_ops ksz8995xa_switch_ops = {
-> +	.get_tag_protocol	= ksz8995xa_get_tag_protocol,
-> +	.setup			= ksz8_setup,
-> +	.teardown		= ksz_teardown,
-[ ... ]
-> +	.port_get_apptrust	= ksz_port_get_apptrust,
-> +	.port_set_apptrust	= ksz_port_set_apptrust,
-> +};
-
-> diff --git a/drivers/net/dsa/microchip/ksz_common.c b/drivers/net/dsa/microchip/ksz_common.c
-> index 1a9d6f83a0232..6c15ac97a7e3f 100644
-> --- a/drivers/net/dsa/microchip/ksz_common.c
-> +++ b/drivers/net/dsa/microchip/ksz_common.c
-> @@ -2944,11 +2977,15 @@ static int ksz_switch_detect(struct ksz_device *dev)
->  			return -ENODEV;
->  		break;
->  	case KSZ8895_FAMILY_ID:
-> -		if (id2 == KSZ8895_CHIP_ID_95 ||
-> -		    id2 == KSZ8895_CHIP_ID_95R)
-> +		if (id2 == KSZ8895_CHIP_ID_95XA) {
-> +			dev->chip_id = KSZ8995XA_CHIP_ID;
-> +			break;
-> +		} else if (id2 == KSZ8895_CHIP_ID_95 ||
-> +			   id2 == KSZ8895_CHIP_ID_95R) {
->  			dev->chip_id = KSZ8895_CHIP_ID;
-> -		else
-> +		} else {
->  			return -ENODEV;
-> +		}
+> -	depends on NET_DSA_MICROCHIP_KSZ_SPI = n
+> -	select NET_DSA_TAG_NONE
+> +	select NET_DSA_MICROCHIP_KSZ_COMMON
+> +	select NET_DSA_MICROCHIP_KSZ_SPI
 
 [Severity: Medium]
-The commit message says:
+After this deletion, is the ambiguous "micrel,ks8995" compatible handled
+only as a KSZ8995XA?  In ksz_spi.c the ksz_dt_ids table has:
 
-  "Notice: there are also KSZ8995E and KSZ8995MA. These are BOTH
-   different from the KSZ8995XA."
+	{
+		.compatible = "micrel,ks8995",
+		.data = &ksz_switch_chips[KSZ8995XA]
+	},
 
-Given that, is it safe for family 0x95 with chip ID nibble 0x0 to be
-mapped unconditionally to KSZ8995XA_CHIP_ID here?
+and ksz_switch_detect() keeps that classification for the shared ID:
 
-The legacy driver attributes that same ID to KS8995MA:
+	case KSZ8895_FAMILY_ID:
+		if (id2 == KSZ8895_CHIP_ID_95XA) {
+			dev->chip_id = KSZ8995XA_CHIP_ID;
 
-drivers/net/dsa/ks8995.c:
-	[ks8995] = {
-		.name		= "KS8995MA",
-		.family_id	= FAMILY_KS8995,
-		.chip_id	= KS8995_CHIP_ID,
+KSZ8895_CHIP_ID_95XA is 0x0, which is the 0x95/0x0 pair the commit message
+describes as unable to distinguish MA from XA.
 
-and the new define in this patch is:
+Does that mean MA silicon now gets programmed on the XA path?
+ksz8_setup() does:
 
-	#define KSZ8895_CHIP_ID_95XA		0x0
+	if (ksz_is_ksz8995xa(dev))
+		ksz_cfg(dev, REG_SW_CTRL_9, SW_SPECIAL_TAG, true);
 
-Combined with the new "micrel,ks8995" entry in ksz_dt_ids pointing at
-ksz_switch_chips[KSZ8995XA], and with NET_DSA_KS8995 now disabled
-whenever NET_DSA_MICROCHIP_KSZ_SPI is enabled, an MA part behind the
-generic compatible would be probed and programmed as XA hardware:
-SW_SPECIAL_TAG in REG_SW_CTRL_9, per-port PORT_INSERT_TAG /
-PORT_REMOVE_TAG, PVID 0, the descending one-bit-per-DSCP registers, the
-single-bit port-based priority and the inverted packet-size polarity,
-plus DSA_TAG_PROTO_KS8995 from ksz8995xa_get_tag_protocol().
+and ksz8_port_setup() writes the per-port tag bits:
 
-Two in-tree device trees use the generic string today,
-arch/arm/boot/dts/intel/ixp/intel-ixp42x-linksys-wrv54g.dts and
-intel-ixp42x-actiontec-mi424wr.dtsi, so if MA behaves differently in
-special-tag mode those boards would lose CPU-port traffic.
+		if (cpu_port)
+			ksz_port_cfg(dev, port, REG_PORT_CTRL_0, PORT_INSERT_TAG, true);
+		else
+			ksz_port_cfg(dev, port, REG_PORT_CTRL_0, PORT_REMOVE_TAG, true);
 
-For context, the later "net: dsa: ks8995: Delete surplus driver" patch in
-the series records that this ID cannot distinguish MA from XA, that no
-KS8995MA users are known and that neither variant has been verified, but
-it does not change this mapping.  Could this detection either reject the
-ambiguous case or at least warn?
+The tagging model also changes for these DT nodes: the deleted driver's
+ks8995_get_tag_protocol() returned DSA_TAG_PROTO_NONE, while
+ksz8995xa_get_tag_protocol() returns DSA_TAG_PROTO_KS8995.
 
-> +		ret = ksz_read8(dev, REG_KSZ8864_CHIP_ID, &id4);
-> +		if (ret)
-> +			return ret;
+Two in-tree device trees instantiate exactly this compatible:
 
-[ ... ]
+	arch/arm/boot/dts/intel/ixp/intel-ixp42x-linksys-wrv54g.dts
+	arch/arm/boot/dts/intel/ixp/intel-ixp42x-actiontec-mi424wr.dtsi
 
-> diff --git a/drivers/net/dsa/microchip/ksz_common.h b/drivers/net/dsa/microchip/ksz_common.h
-> index cbe98494578c3..93be74f7a2658 100644
-> --- a/drivers/net/dsa/microchip/ksz_common.h
-> +++ b/drivers/net/dsa/microchip/ksz_common.h
-> @@ -860,6 +867,7 @@ static inline bool ksz_is_sgmii_port(struct ksz_device *dev, int port)
->  #define KSZ87_CHIP_ID_94		0x6
->  #define KSZ87_CHIP_ID_95		0x9
->  #define KSZ88_CHIP_ID_63		0x3
-> +#define KSZ8895_CHIP_ID_95XA		0x0
->  #define KSZ8895_CHIP_ID_95		0x4
->  #define KSZ8895_CHIP_ID_95R		0x6
+			compatible = "micrel,ks8995";
 
-[ ... ]
+so both boards move to the XA path and to a different tagger.  Since the
+commit message only says "No KS8995MA users are known" and "Neither variant
+has been verified with the replacement driver", could it also mention these
+two boards and the DSA_TAG_PROTO_NONE to DSA_TAG_PROTO_KS8995 change?
 
-> diff --git a/drivers/net/dsa/microchip/ksz_spi.c b/drivers/net/dsa/microchip/ksz_spi.c
-> index 373e9054947cb..2c55014246e5f 100644
-> --- a/drivers/net/dsa/microchip/ksz_spi.c
-> +++ b/drivers/net/dsa/microchip/ksz_spi.c
-> @@ -224,6 +228,25 @@ static void ksz_spi_shutdown(struct spi_device *spi)
->  }
->  
->  static const struct of_device_id ksz_dt_ids[] = {
-> +	/*
-> +	 * Legacy Micrel bindings. In 2015 Microchip acquired
-> +	 * Micrel which is the originator of the KSZ series, and
-> +	 * devices branded for Micrel already existed, as well as
-> +	 * some device tree bindings. These two products are identical
-> +	 * to the same Microchip products.
-> +	 */
-> +	{
-> +		.compatible = "micrel,ksz8864",
-> +		.data = &ksz_switch_chips[KSZ8864]
-> +	},
-> +	{
-> +		.compatible = "micrel,ksz8795",
-> +		.data = &ksz_switch_chips[KSZ8795]
-> +	},
-> +	{
-> +		.compatible = "micrel,ks8995",
-> +		.data = &ksz_switch_chips[KSZ8995XA]
-> +	},
+[Severity: Medium]
+With all old KS8995 configurations now routed to ksz_spi.c, do the SPI ID
+table and the compatible list there line up?  ksz_spi_ids contains:
+
+	{ "ksz8995" },
+
+but the compatible added for this part in ksz_dt_ids is:
+
+	{
+		.compatible = "microchip,ksz8995xa",
+		.data = &ksz_switch_chips[KSZ8995XA]
+	},
+
+__spi_register_driver() strips the vendor prefix and looks up the remainder
+with spi_match_id():
+
+	drivers/spi/spi.c:__spi_register_driver() {
+		...
+			pr_warn("SPI driver %s has no spi_device_id for %s\n",
+				sdrv->driver.name, of_id->compatible);
+		...
+	}
+
+Does this print a warning on every registration of the ksz-switch driver,
+and does module autoloading fail for a DT using "microchip,ksz8995xa"
+because the uevent carries MODALIAS=spi:ksz8995xa while the module only
+exports spi:ksz8995?  Renaming the entry to "ksz8995xa" would seem to cover
+both.
+
+Separately, the new "ks8995" ID carries no driver_data, and ksz_spi_probe()
+takes the chip description only from the firmware node:
+
+	chip = device_get_match_data(ddev);
+	if (!chip)
+		return -EINVAL;
+
+so a board-file SPI device named "ks8995" cannot probe.  This part matches
+the pre-existing convention of the whole ksz_spi ID table (none of the
+entries carry driver_data) and the commit message's statement that nothing
+in tree uses that mechanism, which does hold for the current tree.
 
 [Severity: Low]
-Should the three Micrel strings also be added to the compatible enum in
-Documentation/devicetree/bindings/net/dsa/microchip,ksz.yaml?
+This isn't a bug, but the help text below points migrating users at
+NET_DSA_MICROCHIP_KSZ_SPI, whose chip enumeration lives in the parent
+menuconfig NET_DSA_MICROCHIP_KSZ_COMMON in drivers/net/dsa/microchip/Kconfig:
 
-The series adds "microchip,ksz8995xa" to that enum, but "micrel,ksz8864",
-"micrel,ksz8795" and "micrel,ks8995" are not listed anywhere under
-Documentation/, and the legacy ks8995 driver is removed later in the
-series, so the KSZ schema becomes the only place that could describe
-them.  As a result the two ixp42x device trees using "micrel,ks8995"
-stay unvalidated by dt_binding_check / dtbs_check.  Listing them (for
-instance as deprecated) would close that gap.
+	  This driver adds support for Microchip KSZ8, KSZ9 and
+	  LAN937X series switch chips, being KSZ8863/8873,
+	  KSZ8895/8864, KSZ8794/8795/8765,
+	  KSZ9477/9897/9896/9567/8567, KSZ9893/9563/8563 and
+	  LAN9370/9371/9372/9373/9374.
 
-> +	{
-> +		.compatible = "microchip,ksz8463",
-> +		.data = &ksz_switch_chips[KSZ8463]
+That list does not mention KS8995 or KSZ8995XA, even though ksz_dt_ids has
+both "micrel,ks8995" and "microchip,ksz8995xa" entries.  Could the chip list
+be updated so users landing there find their device?
+
+>  	help
+> -	  This driver supports the Micrel KS8995 family of 10/100 Mbit ethernet
+> -	  switches, managed over SPI.
+> +	  This is a transitional option for users who had NET_DSA_KS8995
+> +	  enabled. It automatically enables the new NET_DSA_MICROCHIP_KSZ_SPI
+> +	  driver which supersedes it. This option will be removed in a future
+> +	  kernel release.
+>  
+>  config NET_DSA_SMSC_LAN9303
+>  	tristate
 
 [ ... ]
 
