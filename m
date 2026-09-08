@@ -1,64 +1,64 @@
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 617F82EEE7E
-	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 22:57:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B433E5908D8
+	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 22:57:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788908271; cv=none; b=H1VjPsJa4ssFa0+ckTUCl3dQOs9MnE4Oa5vF3BSjvfpYLLpIOPzNax4IodhzQiIwfYr31Z+SQd1yKu9gV9BpM6fXQ3FSE61cTmuPHA4V5ZSJehx2jdT8G5mmca0hJMadeKdOSG+uLixidpqHhW7pEq5B/PVv4EQjAqn6FuleM5s=
+	t=1788908271; cv=none; b=auF3948sAJkXgjoRSBllZ6ijTn0gm5HG4xYGbRpDPYuTZeklPkxm7wjVKxjrWgFTRw9oqzuLjUGVC77uzmLfLSy6J7bPnzwxus2btY/WFTM1jDLwHZkGw/In8I+tsY4lidOYjj/km7NzmR0RVvOYeMAKuxd+0W1+zYdbR+7+QFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1788908271; c=relaxed/simple;
-	bh=8cAkOwgZLh+Oy0k1bQ/t56TdjDf/iePq+1QdF6j4UE4=;
+	bh=DQmWpiiP+cD4WOs/XMACwGLUuwq7F0q+Wq6Ld9uy2Lg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J3TaUYUyU3w3cQjQFxwmFQj5ACyYGP+7ylgNF774KQ71zpN8YDugCaMUGLlob/gzBrncdkw6pz2v9Dz0q03bCuEX/oJ4hNZLPu+4hAfb4IqmESNmaMogLPbC15MjcLcENKfgIr7YQOzG7JE+i8Nu4aflyf3zBJ0JqvG/fR7PEmo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KUmioN+1; arc=none smtp.client-ip=209.85.216.51
+	 MIME-Version; b=qZ3Ke2wpPCguzS9tI7X9Qvln32SyggDvfjF+a2+OplpPHUv5NGP5TQ10DWcZE4Nc+4AzTpa0pQwZSJjjfOTLVjqtLvPPGRNBY22QbUk8DEGStVhDMePf2ryeVRzeJZYHIuereUBT5rNVV07kEHVN+A5D9h4GViZvlWdOikSz6/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mmpF6IUC; arc=none smtp.client-ip=209.85.216.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KUmioN+1"
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-39682983a0fso5664340a91.3
-        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 15:57:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mmpF6IUC"
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-3964e480f76so5996307a91.1
+        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 15:57:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788908266; x=1789513066; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1788908265; x=1789513065; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=26WqabfkuJ8OYIP/GyL3+m+5meAcn0wewttg1o1KS5o=;
-        b=KUmioN+17JhydA/66SyV8sG8Lo9LGiERzsmiOcP+CwquOq8EDMC2wGB+x2Jjdkk30r
-         4zbHCQLx5EIgy6fWTBMBD0mqGcbXURuSSIEzzuHwXRKzMtzzQJN6IFIz/ZFn6FTFRnl+
-         LQ343OEAXSPULi5dbfmzBUHbs2ZQ1zG4KCGMBvywF17FxqyqZywvN5nxWszLrllornYL
-         inNdbB3ah6G9nxLNuvPblbDWoFAi2C8cfAleCQPU83K5jeYA1+3po+wxz51QhQ2ARm1o
-         kuYaWK3rOoeo6EN+INhdXWMajmUDzp5zBt2HjxysDg5FYYycFuuV4IsWp4TZzkiOXOwj
-         a4MQ==
+        bh=wumeOXgAu9H0Kp97qaCmHzt/GpEB2ltmfWp7a6Ii+u8=;
+        b=mmpF6IUCM7VAx/+T0HKOxspCt5wTL6l3DBH1qE0kFMamRLzsk1/q1FZ7WazcbNfllG
+         9ujr5jSZAeclJVXXgd9btNs/9DDa0sDGcnp52koT+04HQAIeYZrFSJDbCV2kZ+NZeh+z
+         9mMEiXmviEO3YQ/qPCl4/g4ZeFiXvY3f52+NFAnyn4zu+Kojd/Pk/SXoaJp+rYKuLhAO
+         4WBVveJglt203np0sidV/zQCS9VGqskgNlx5v6/ecoxlGPDoNC+b2HYcZlUoLZyBzFvK
+         8XyUR9U9biWQrbdQlfyGr9SZnoBBjyDBuDg0UUTjzY6a1IJFrg2GZmyVDgrepMv+JNYM
+         P16A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788908266; x=1789513066;
+        d=1e100.net; s=20251104; t=1788908265; x=1789513065;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=26WqabfkuJ8OYIP/GyL3+m+5meAcn0wewttg1o1KS5o=;
-        b=mhYsnPTVIocfhjfZT81C//rXWjLfX7wN+3KYMcp5blbw3MKSwMAHXgvRd9/o7AoyeJ
-         BLd3H8bOJXXowp05zo4gZHaf1sLhlUtmzaGfz9fVzcOYDHwmuVgedDY3ORGc3O67pH3l
-         i9BLp1PvUi2VHYO6HgX8SRtptF8ZJhmgMIGsmuSw1RZARm/LExeS+Elc6KN0elrWDWRw
-         msB8SGMFO6so+Y/lKnmUkh0+1Sc479IMcrUoUXERFc1t+4gKLuFUdmLoB44NRelj8tZp
-         F1KVNv5KOqYQM4IYeaMARxkzEeanhJRfJEBlFXZdtD5N1pPZYOdvGJh9QKbVgP5zxFzG
-         K33g==
-X-Forwarded-Encrypted: i=1; AKwUvBzIbygv7UnaK5iTGGh1rPbMT/h4JmCRW2syXgGsvEkWoelZQURC/aiZa/b/GyIeJDvxyyUO5tQ=@vger.kernel.org
-X-Gm-Message-State: AFuF++nUDjwxoCUY9WWblm3Dl86PdMJ09jiDzE6Tw++uOWmQykqGdDHX
-	gjdCDFFTROMKAHOATuWS98OF+6twGWCVn1y5rymHftmbIfsKicxo5zga
-X-Gm-Gg: AYBFou1xyXJmBBJ+UMUf6cjF98BZ/frviTDxx/Cn2VJvBAawHvTRlhoGAKoBrMfGID7
-	So/Y8FEaSm/V+wf67kDu1P82JsfNu2qXa/fWsXdGFSlHhkuiHGpDCZmx53UCZiSATSxbxFP0RwE
-	VrZWH5VwzN3Ad2MvQVAbNrcX1GOXTcOPPYDcR/4pIrfJosR0yxgd5NOUKfVlwvaL2P7iLpuyqDu
-	d3c657S92OWgKDp4CtCi/sKFI8Wj4rfgKh65dV4qkQiDypcqywIOuly6xt/xRoLFQLJkUdz4Jm2
-	ogTCmr1ZjV83fzIOVftubzAYq6L5WpIsC0k2Ozs57qVJXz1YIh6EFjw//OTYt0G+gtKmW2HcI6K
-	Lgb+rtYifqQRHFExT+Vp4qowNNKrBkmHoy0ugIHaUhBTzxwjBdTzfOYMDn9kLpPq3XEK2Hd5okq
-	zCenP/+LvmX7N8XKw6Pi7iWxMqoGmeWz+RxILk7r6/zYLMF4BxumYOUe7UmT9Mwuk2iWOGMxG8W
-	YOxfA==
-X-Received: by 2002:a17:90a:e7d2:b0:381:1c96:829b with SMTP id 98e67ed59e1d1-39b260d296cmr43935572a91.3.1788908265997;
-        Tue, 08 Sep 2026 15:57:45 -0700 (PDT)
+        bh=wumeOXgAu9H0Kp97qaCmHzt/GpEB2ltmfWp7a6Ii+u8=;
+        b=ThiTyXLKItZc8XEnAMSWWi/Xb+dOwVBdqBhjYeYP+0h8me5OtFpawyBaErl0YxjiYl
+         WrymY16hFjweS0z8+Hv/rJJLHQmditIFMOKvR5wSzjyS/8xOjlNznbqfNUwYSAJ+I3G6
+         P7VT4smHWKd8orsoPbtbzCHz3A2TKLf3WZtVKd4qtkLE8g55pFofcEDl25XXx/VfGZQg
+         iDhF3HOHcKOyYcvqPK2aDYRxrjYOWuYjSHcvFwFk5XSl9IlqxX0AA/VB7dM/YQDx25LS
+         qZEUPaFZPPDkjZuEcUQ+ahhuGcNfdsaCIbT82qlc48edZjLg64PSUFoN5T/wtz1BLu50
+         V3ng==
+X-Forwarded-Encrypted: i=1; AKwUvByIUZX4N0hh0aid9RHxYUirn3aLkwD/kjVrc2p5Utjf7EFu6PKMhb4irVngUeXZ2nex9rX1XyY=@vger.kernel.org
+X-Gm-Message-State: AFuF++nEqPhiLDhiEM+reNdnc/rToZ0eMtZnAojeWb64F43QH/PNi93u
+	Oze+Lir2zcPTvJqLJnBqTUjyHOrKTqgKnhCKRe7uoRpmSL/p6iM7iTOm
+X-Gm-Gg: AYBFou04gxywWz91hJVSzrMES8D0vpQ8r0xtCJdlsorL81xhhS1sO+7wnG/Bi+BYtbr
+	RsXUNUDdDGJYv2Z04g8X3Jl8iQBbOeYUQuYiGkHzXezzUz7iU4dyF0jLE59oYnxkflSf/3yTiuP
+	T47LSQGcdX8TlU/PrJUW9arvlwuJajmJWsYSIoHzYduKaCvHGCoECcI+vZbJHXTFUJMR8R6irMI
+	UzAHDZ41a1IzBCD1Alp+XVZATsz3HEN/hYnWq7MpvxtvpMKDsipTQvjs6QxgQBJz1/D5aCRf8Ls
+	8VNncPrZ5wSvx33l/iWoahMRktUoDkUJF8UkkNIygLt0kkJfCns8a2k/TU0+P+N3m2lSG+GAeh8
+	3HaFVjLpx0GboAvv6Dj4//bnFI/pAsgAhJE4CRHwwwKyoW7FSDwSNEJcbv42DFa2RZr0vn6G8d+
+	BeR9eHPt/RNNfVF3+BcRt+2wnqEaYz6MRJosBetFw9oGL10CbM5Vv9RPqqieq8RvYoM5oG3Wh/3
+	9sq3w==
+X-Received: by 2002:a17:90b:274e:b0:398:b1eb:136c with SMTP id 98e67ed59e1d1-39b2610fe62mr47435731a91.9.1788908264615;
+        Tue, 08 Sep 2026 15:57:44 -0700 (PDT)
 Received: from localhost ([2620:10d:c090:500::6:91c1])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-333c9db92b1sm39279476eec.9.2026.09.08.15.57.45
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3339a534df1sm45266746eec.7.2026.09.08.15.57.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Sep 2026 15:57:45 -0700 (PDT)
+        Tue, 08 Sep 2026 15:57:44 -0700 (PDT)
 From: Zinc Lim <limzhineng2@gmail.com>
 To: alexanderduyck@fb.com,
 	kuba@kernel.org,
@@ -75,9 +75,9 @@ Cc: kernel-team@meta.com,
 	linux-hwmon@vger.kernel.org,
 	zinclim@meta.com,
 	limzhineng2@gmail.com
-Subject: [PATCH net-next v3 4/6] eth: fbnic: report temperature and voltage thresholds via hwmon
-Date: Tue,  8 Sep 2026 15:57:35 -0700
-Message-ID: <20260908225737.3034403-5-limzhineng2@gmail.com>
+Subject: [PATCH net-next v3 3/6] eth: fbnic: cache hwmon sensor readings
+Date: Tue,  8 Sep 2026 15:57:34 -0700
+Message-ID: <20260908225737.3034403-4-limzhineng2@gmail.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260908225737.3034403-1-limzhineng2@gmail.com>
 References: <20260908225737.3034403-1-limzhineng2@gmail.com>
@@ -89,197 +89,151 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The firmware capability response carries per-board temperature
-(min/max/crit) and voltage (min/max) thresholds. Parse and store them in
-fbnic_fw_cap, and expose them through the hwmon interface as
-temp1_{min,max,crit} and in0_{min,max}.
+Each hwmon attribute access triggers its own TSENE firmware mailbox
+round-trip, so reading the full set of attributes or polling them at a
+high rate floods the firmware mailbox with quick, successive IPC messages
+for data that barely changes between ticks.
 
-The thresholds are always exposed. Values the firmware did not report are
-stored as the FBNIC_SENSOR_NO_DATA sentinel in the capability response
-parser, and a read of such an attribute returns -ENODATA.
+Cache the last temperature and voltage reading and serve reads from it
+for the remainder of the current jiffy. A single TSENE response carries
+both readings, so one transaction on a miss refreshes both and satisfies
+a whole batch of reads. The cache is seeded with the FBNIC_SENSOR_NO_DATA
+sentinel at registration so the first read always refreshes, and
+concurrent reads are serialized by the hwmon core so no additional
+locking is required.
 
 Signed-off-by: Zinc Lim <limzhineng2@gmail.com>
 ---
- drivers/net/ethernet/meta/fbnic/fbnic_fw.c    | 21 ++++++
- drivers/net/ethernet/meta/fbnic/fbnic_fw.h    | 14 ++++
- drivers/net/ethernet/meta/fbnic/fbnic_hwmon.c | 67 ++++++++++++++-----
- 3 files changed, 87 insertions(+), 15 deletions(-)
+ drivers/net/ethernet/meta/fbnic/fbnic.h       |  7 ++++
+ drivers/net/ethernet/meta/fbnic/fbnic_fw.h    |  7 ++++
+ drivers/net/ethernet/meta/fbnic/fbnic_hwmon.c | 35 +++++++++++++------
+ 3 files changed, 39 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_fw.c b/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
-index ff1674eff7ad..e5669dfd9790 100644
---- a/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
-+++ b/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
-@@ -575,6 +575,11 @@ static const struct fbnic_tlv_index fbnic_fw_cap_resp_index[] = {
- 	FBNIC_TLV_ATTR_STRING(FBNIC_FW_CAP_RESP_UEFI_COMMIT_STR,
- 			      FBNIC_FW_CAP_RESP_COMMIT_MAX_SIZE),
- 	FBNIC_TLV_ATTR_U32(FBNIC_FW_CAP_RESP_ANTI_ROLLBACK_VERSION),
-+	FBNIC_TLV_ATTR_S32(FBNIC_FW_CAP_RESP_TEMP_MIN),
-+	FBNIC_TLV_ATTR_S32(FBNIC_FW_CAP_RESP_TEMP_MAX),
-+	FBNIC_TLV_ATTR_S32(FBNIC_FW_CAP_RESP_TEMP_CRIT),
-+	FBNIC_TLV_ATTR_S32(FBNIC_FW_CAP_RESP_VOLT_MIN),
-+	FBNIC_TLV_ATTR_S32(FBNIC_FW_CAP_RESP_VOLT_MAX),
- 	FBNIC_TLV_ATTR_LAST
- };
- 
-@@ -702,6 +707,22 @@ static int fbnic_fw_parse_cap_resp(void *opaque, struct fbnic_tlv_msg **results)
- 	/* Always assume we need a BMC reinit */
- 	fbd->fw_cap.need_bmc_tcam_reinit = true;
- 
-+	fbd->fw_cap.temp.min =
-+		fbnic_tlv_attr_get_signed(results[FBNIC_FW_CAP_RESP_TEMP_MIN],
-+					  FBNIC_SENSOR_NO_DATA);
-+	fbd->fw_cap.temp.max =
-+		fbnic_tlv_attr_get_signed(results[FBNIC_FW_CAP_RESP_TEMP_MAX],
-+					  FBNIC_SENSOR_NO_DATA);
-+	fbd->fw_cap.temp.crit =
-+		fbnic_tlv_attr_get_signed(results[FBNIC_FW_CAP_RESP_TEMP_CRIT],
-+					  FBNIC_SENSOR_NO_DATA);
-+	fbd->fw_cap.volt.min =
-+		fbnic_tlv_attr_get_signed(results[FBNIC_FW_CAP_RESP_VOLT_MIN],
-+					  FBNIC_SENSOR_NO_DATA);
-+	fbd->fw_cap.volt.max =
-+		fbnic_tlv_attr_get_signed(results[FBNIC_FW_CAP_RESP_VOLT_MAX],
-+					  FBNIC_SENSOR_NO_DATA);
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic.h b/drivers/net/ethernet/meta/fbnic/fbnic.h
+index d0715695c43e..f647ef07704b 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic.h
++++ b/drivers/net/ethernet/meta/fbnic/fbnic.h
+@@ -22,11 +22,18 @@ struct fbnic_napi_vector;
+ #define FBNIC_MAX_NAPI_VECTORS		128u
+ #define FBNIC_MBX_CMPL_SLOTS		4
+
++struct fbnic_hwmon_cache {
++	unsigned long last_read;
++	s32 temp_mdeg;
++	s32 volt_mv;
++};
 +
- 	return 0;
- }
- 
+ struct fbnic_dev {
+ 	struct device *dev;
+ 	struct net_device *netdev;
+ 	struct dentry *dbg_fbd;
+ 	struct device *hwmon;
++	struct fbnic_hwmon_cache hwmon_cache;
+ 	struct devlink_health_reporter *fw_reporter;
+ 	struct devlink_health_reporter *otp_reporter;
+
 diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_fw.h b/drivers/net/ethernet/meta/fbnic/fbnic_fw.h
-index 42a5f83ddb45..68ffd49e0cdd 100644
+index d84723e4cfa3..42a5f83ddb45 100644
 --- a/drivers/net/ethernet/meta/fbnic/fbnic_fw.h
 +++ b/drivers/net/ethernet/meta/fbnic/fbnic_fw.h
-@@ -51,6 +51,12 @@ struct fbnic_fw_ver {
-  */
- #define FBNIC_SENSOR_NO_DATA			S32_MIN
- 
-+struct fbnic_threshold {
-+	s32 min;
-+	s32 max;
-+	s32 crit;
-+};
+@@ -6,6 +6,7 @@
+
+ #include <linux/completion.h>
+ #include <linux/if_ether.h>
++#include <linux/limits.h>
+ #include <linux/types.h>
+
+ struct fbnic_dev;
+@@ -44,6 +45,12 @@ struct fbnic_fw_ver {
+ 	char commit[FBNIC_FW_CAP_RESP_COMMIT_MAX_SIZE];
+ };
+
++/* Sentinel for a sensor value the driver does not have: a threshold the
++ * firmware never populated (older firmware) or a cache entry not yet
++ * refreshed.
++ */
++#define FBNIC_SENSOR_NO_DATA			S32_MIN
 +
  struct fbnic_fw_cap {
  	struct {
  		struct fbnic_fw_ver mgmt, bootloader;
-@@ -67,6 +73,8 @@ struct fbnic_fw_cap {
- 	u8	link_speed;
- 	u8	link_fec;
- 	u32	anti_rollback_version;
-+	struct fbnic_threshold temp;
-+	struct fbnic_threshold volt;
- };
- 
- struct fbnic_fw_completion {
-@@ -249,6 +257,12 @@ enum {
- 	FBNIC_FW_CAP_RESP_UEFI_VERSION			= 0x11,
- 	FBNIC_FW_CAP_RESP_UEFI_COMMIT_STR		= 0x12,
- 	FBNIC_FW_CAP_RESP_ANTI_ROLLBACK_VERSION		= 0x15,
-+	/* 0x16 and 0x17 are reserved for future use */
-+	FBNIC_FW_CAP_RESP_TEMP_MIN			= 0x18,
-+	FBNIC_FW_CAP_RESP_TEMP_MAX			= 0x19,
-+	FBNIC_FW_CAP_RESP_TEMP_CRIT			= 0x1a,
-+	FBNIC_FW_CAP_RESP_VOLT_MIN			= 0x1b,
-+	FBNIC_FW_CAP_RESP_VOLT_MAX			= 0x1c,
- 	FBNIC_FW_CAP_RESP_MSG_MAX
- };
- 
 diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_hwmon.c b/drivers/net/ethernet/meta/fbnic/fbnic_hwmon.c
-index c8e7ff1d36fc..7dc4d705f566 100644
+index 38bb26cb8e6c..c8e7ff1d36fc 100644
 --- a/drivers/net/ethernet/meta/fbnic/fbnic_hwmon.c
 +++ b/drivers/net/ethernet/meta/fbnic/fbnic_hwmon.c
-@@ -7,16 +7,6 @@
+@@ -2,6 +2,7 @@
+ /* Copyright (c) Meta Platforms, Inc. and affiliates. */
+
+ #include <linux/hwmon.h>
++#include <linux/jiffies.h>
+
  #include "fbnic.h"
  #include "fbnic_mac.h"
- 
--static int fbnic_hwmon_sensor_id(enum hwmon_sensor_types type)
--{
--	if (type == hwmon_temp)
--		return FBNIC_SENSOR_TEMP;
--	if (type == hwmon_in)
--		return FBNIC_SENSOR_VOLTAGE;
--
--	return -EOPNOTSUPP;
--}
--
- static umode_t fbnic_hwmon_is_visible(const void *drvdata,
- 				      enum hwmon_sensor_types type,
- 				      u32 attr, int channel)
-@@ -87,14 +77,58 @@ static int fbnic_hwmon_sensor_read(struct fbnic_dev *fbd, int id, long *val)
- 	return err;
- }
- 
-+static int fbnic_hwmon_read_threshold(long thr, long *val)
-+{
-+	if (thr == FBNIC_SENSOR_NO_DATA)
-+		return -ENODATA;
-+
-+	*val = thr;
-+	return 0;
-+}
-+
-+static int fbnic_hwmon_temp_read(struct fbnic_dev *fbd, u32 attr, long *val)
-+{
-+	switch (attr) {
-+	case hwmon_temp_input:
-+		return fbnic_hwmon_sensor_read(fbd, FBNIC_SENSOR_TEMP, val);
-+	case hwmon_temp_min:
-+		return fbnic_hwmon_read_threshold(fbd->fw_cap.temp.min, val);
-+	case hwmon_temp_max:
-+		return fbnic_hwmon_read_threshold(fbd->fw_cap.temp.max, val);
-+	case hwmon_temp_crit:
-+		return fbnic_hwmon_read_threshold(fbd->fw_cap.temp.crit, val);
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+}
-+
-+static int fbnic_hwmon_in_read(struct fbnic_dev *fbd, u32 attr, long *val)
-+{
-+	switch (attr) {
-+	case hwmon_in_input:
-+		return fbnic_hwmon_sensor_read(fbd, FBNIC_SENSOR_VOLTAGE, val);
-+	case hwmon_in_min:
-+		return fbnic_hwmon_read_threshold(fbd->fw_cap.volt.min, val);
-+	case hwmon_in_max:
-+		return fbnic_hwmon_read_threshold(fbd->fw_cap.volt.max, val);
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+}
-+
- static int fbnic_hwmon_read(struct device *dev, enum hwmon_sensor_types type,
- 			    u32 attr, int channel, long *val)
- {
- 	struct fbnic_dev *fbd = dev_get_drvdata(dev);
--	int id;
- 
--	id = fbnic_hwmon_sensor_id(type);
--	return id < 0 ? id : fbnic_hwmon_sensor_read(fbd, id, val);
-+	switch (type) {
-+	case hwmon_temp:
-+		return fbnic_hwmon_temp_read(fbd, attr, val);
-+	case hwmon_in:
-+		return fbnic_hwmon_in_read(fbd, attr, val);
-+	default:
-+		return -EOPNOTSUPP;
-+	}
- }
- 
- static const struct hwmon_ops fbnic_hwmon_ops = {
-@@ -103,8 +137,11 @@ static const struct hwmon_ops fbnic_hwmon_ops = {
- };
- 
- static const struct hwmon_channel_info *fbnic_hwmon_info[] = {
--	HWMON_CHANNEL_INFO(temp, HWMON_T_INPUT),
--	HWMON_CHANNEL_INFO(in, HWMON_I_INPUT),
-+	HWMON_CHANNEL_INFO(temp,
-+			   HWMON_T_INPUT | HWMON_T_MIN | HWMON_T_MAX |
-+			   HWMON_T_CRIT),
-+	HWMON_CHANNEL_INFO(in,
-+			   HWMON_I_INPUT | HWMON_I_MIN | HWMON_I_MAX),
- 	NULL
- };
- 
--- 
-2.53.0-Meta
+@@ -25,26 +26,31 @@ static umode_t fbnic_hwmon_is_visible(const void *drvdata,
 
+ static int fbnic_hwmon_sensor_read(struct fbnic_dev *fbd, int id, long *val)
+ {
++	struct fbnic_hwmon_cache *cache = &fbd->hwmon_cache;
+ 	struct fbnic_fw_completion *fw_cmpl;
+ 	int err = 0;
+-	s32 *sensor;
+-
+-	fw_cmpl = fbnic_fw_alloc_cmpl(FBNIC_TLV_MSG_ID_TSENE_READ_RESP);
+-	if (!fw_cmpl)
+-		return -ENOMEM;
++	s32 *cached;
+
+ 	switch (id) {
+ 	case FBNIC_SENSOR_TEMP:
+-		sensor = &fw_cmpl->u.tsene.millidegrees;
++		cached = &cache->temp_mdeg;
+ 		break;
+ 	case FBNIC_SENSOR_VOLTAGE:
+-		sensor = &fw_cmpl->u.tsene.millivolts;
++		cached = &cache->volt_mv;
+ 		break;
+ 	default:
+-		err = -EINVAL;
+-		goto exit_free;
++		return -EINVAL;
++	}
++
++	if (*cached != FBNIC_SENSOR_NO_DATA && cache->last_read == jiffies) {
++		*val = *cached;
++		return 0;
+ 	}
+
++	fw_cmpl = fbnic_fw_alloc_cmpl(FBNIC_TLV_MSG_ID_TSENE_READ_RESP);
++	if (!fw_cmpl)
++		return -ENOMEM;
++
+ 	err = fbnic_fw_xmit_tsene_read_msg(fbd, fw_cmpl);
+ 	if (err) {
+ 		dev_err(fbd->dev,
+@@ -67,7 +73,12 @@ static int fbnic_hwmon_sensor_read(struct fbnic_dev *fbd, int id, long *val)
+ 		goto exit_cleanup;
+ 	}
+
+-	*val = *sensor;
++	/* FW returns both readings in one response, cache both. */
++	cache->temp_mdeg = fw_cmpl->u.tsene.millidegrees;
++	cache->volt_mv = fw_cmpl->u.tsene.millivolts;
++	cache->last_read = jiffies;
++
++	*val = *cached;
+ exit_cleanup:
+ 	fbnic_mbx_clear_cmpl(fbd, fw_cmpl);
+ exit_free:
+@@ -107,6 +118,10 @@ void fbnic_hwmon_register(struct fbnic_dev *fbd)
+ 	if (!IS_REACHABLE(CONFIG_HWMON))
+ 		return;
+
++	/* Seed cache with sentinel so the first read always refreshes. */
++	fbd->hwmon_cache.temp_mdeg = FBNIC_SENSOR_NO_DATA;
++	fbd->hwmon_cache.volt_mv = FBNIC_SENSOR_NO_DATA;
++
+ 	fbd->hwmon = hwmon_device_register_with_info(fbd->dev, "fbnic",
+ 						     fbd, &fbnic_chip_info,
+ 						     NULL);
+--
+2.53.0-Meta
