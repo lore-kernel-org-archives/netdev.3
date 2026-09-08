@@ -1,32 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E8CB53ED05;
-	Tue,  8 Sep 2026 12:45:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D131B53ED12;
+	Tue,  8 Sep 2026 12:45:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788871512; cv=none; b=azwJUyaVL/V5oxa58AWka86wA0Smwc7c94l/Smpa1aA/nJYlzW16z4JaHX1AOsCt1lhBo+qNyHzrSrz1DOolPs9v5zL2v01vkpW8WpLY9sHqA0sOxQQE0gBzcKDl83u1S1gB6CKkjY25o+W5a6WQ8GZulYWElJAp7kgRyQ6m+kE=
+	t=1788871514; cv=none; b=uvoA0XJXxCfD027FSorPoNeyOHH41PWv67IUEG+9/hEC+qxqPoIPXHkGJAFLHpUN67laijIeFxgdeRLL9H7PlL6IAK7OT6hLWgWnv0KXeafZ6xzNJVawGmKbfkYig1A/PsM8rk3Ety1Be5g8Xmq8n5ivLdV4XLlSYSJIK//UkGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788871512; c=relaxed/simple;
-	bh=gTJ9TAWLbdvyZj/BP6wl6ZmdUcvj9W+KiE4Oma8ekRE=;
+	s=arc-20240116; t=1788871514; c=relaxed/simple;
+	bh=qg1plquA/M8Ep3+XJ2amnCoXXie9lZd40uU/xVdyCbY=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=dQT0LBCdKUn26J9A6Q8j+RtCeAA/aIrozH361MTu7yiVWab2Uu1DZchRwHfap4KUWMEd8qiDBlnSkHlgCLM8fkzDsYk4q+8HbvJim+lIlT24iR/j7dr7hJuRk5D6eF9gdgL5RdHMKXq06XEKRts/7vYR6P0okjnK8pT7XsXli5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HG1ICh2O; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=DjH/vU7CsudilDhRr/uMRwWQvQXZMqPN6uyRZinTgFrfquHg05KBWegF3tYMe6fVxhiwoxt+18IIesv3kfReQhiFzbsxHypKrhCrNYOnUpmZLIB/NYJgIY21IM3rnVZgZVeZTRB888CKpS0771zgmzAIB02e9TcX3b0mXDnOrqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PZAQEavk; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HG1ICh2O"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87CD51F00A3A;
-	Tue,  8 Sep 2026 12:45:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PZAQEavk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D01BD1F00A3D;
+	Tue,  8 Sep 2026 12:45:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788871511;
-	bh=LQVytSftYxd09iH3+y3+/WJxm3kNzisXB5swAaixbwQ=;
+	s=k20260515; t=1788871512;
+	bh=GDo4O8+B6vl62BXA4gTkCy9xHd3LZSyL63ObpvTH1I8=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=HG1ICh2ONyaaajhlyubCViOgbkMcYGox7trdugIb0+rP9q3UME3eWwbvbGNgTORja
-	 9dHaA9uAfHgI3apnKoCqBWLwQYUGxJDMIPLyIqae3XPpqQLHEbc5FasW+oT55HMVW9
-	 zN4hTxa3rlHZEV7h7hq6Bgth4Owd0VBwa7THo+uYuoEVV3p9WNLIihvieyrAJd9sfJ
-	 R2yR/Tt3MsRevIKcPmeDOeFcPI7+kXYHUKK6X6NuIclYwhrFI4wInB2641V4glPz4b
-	 sq61lhAaOWl9PBUO7kF5MiSnaQcDSSqtuw7c9Yvz36zYxiO2qjC3SqSfg9EvOXsv6C
-	 mjB9jtLoHM8NA==
-Subject: Re: [PATCH net-next v8 03/15] dpll: add basic SiTime SiT9531x support
+	b=PZAQEavkkUAhWDoKYXKraPIL/+1H2TKRk2u/04hH0H05k1BnAXlKAwkH/QwjQTwi9
+	 v20QKaEFlgAlbJGyPhSz9OKw3nZaAsRc+ZP5ZJaT9diaAYHgsexhIPT9jl9EX9s7Sb
+	 fw8jM+xUYDoUdbm69EZRhWXWpfuaKIT8NLAhF58WrvBrWlbXiIyizefLa/OrSV5y8X
+	 wFGL4bjf5MpiH5N098WcRgUUuEHVJcE6QrRsY1wsGvV2KaFkJIjumtvz1+E/Q9NYtV
+	 s8GPd6pS7IDuJAyD1kweGtD2cEdkvUxV1kAKH5BFBrVLM8TzyRwyuJAXKywsydjKJx
+	 /8zbw2La/3vnw==
+Subject: Re: [PATCH net-next v8 02/15] dt-bindings: dpll: add SiTime SiT95316
+ clock generator
 From: netdev-bot+sashiko@kernel.org
 To: arouhi@sitime.com
 Cc: jiri@resnulli.us, vadim.fedorenko@linux.dev,
@@ -34,11 +35,11 @@ Cc: jiri@resnulli.us, vadim.fedorenko@linux.dev,
  krzk+dt@kernel.org, conor+dt@kernel.org, cjubran@nvidia.com,
  Oleg.Zadorozhnyi@devoxsoftware.com, devicetree@vger.kernel.org,
  netdev@vger.kernel.org, linux-kernel@vger.kernel.org, kuba@kernel.org
-Date: Tue, 08 Sep 2026 12:45:10 +0000
-Message-ID: <178887151007.219967.1063342347409203849@kernel.org>
-In-Reply-To: <20260902214030.20955-4-arouhi@sitime.com>
-References: <20260902214030.20955-4-arouhi@sitime.com>
-X-sashiko-severity: Low
+Date: Tue, 08 Sep 2026 12:45:11 +0000
+Message-ID: <178887151142.219967.9831378889406001382@kernel.org>
+In-Reply-To: <20260902214030.20955-3-arouhi@sitime.com>
+References: <20260902214030.20955-3-arouhi@sitime.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -48,102 +49,83 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
+Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider:
 
-Critical: 0 · High: 0 · Medium: 0 · Low: 2
+Critical: 0 · High: 0 · Medium: 1 · Low: 2
 
-- [Low] Orphan kernel-doc-style block for `sit9531x_input_get_regs()` in
-  drivers/dpll/sit9531x/core.c (lines 147-155) documents a function that…
-- [Low] The Kconfig help for SIT9531X_DPLL advertises DPLL device
-  registration, DPLL pin exposure and Generic Netlink configuration, and…
+- [Medium] New DT property `sitime,pll-fvco`
+  (Documentation/devicetree/bindings/dpll/sitime,sit95316.yaml:51) omits…
+- [Low] Concern (assessed invalid): the MAINTAINERS section "SITIME
+  SIT9531X DPLL DRIVER" added at MAINTAINERS:25160 lists only the…
+- [Low] Concern (assessed invalid): the schema does not bound DPLL
+  channel count (`dpll-types` has no maxItems: 4) nor per-variant…
 
 --
 
-dpll: add basic SiTime SiT9531x support
+dt-bindings: dpll: add SiTime SiT95316 clock generator
 
-This adds the initial SiTime SiT9531x I2C clock generator driver: a paged
-regmap configuration for the 32x256 register space selected through offset
-0xFF, page/offset register access helpers, and a probe that fetches the
-xtal rate, takes the optional reset line and identifies the chip variant.
+Adds a new DT binding for the SiTime SiT95316/SiT95317 I2C clock
+generators, described as a DPLL provider with four PLLs, eight
+selectable inputs and up to twelve outputs, plus two vendor properties
+(sitime,pll-fvco and sitime,output-pll-map).  Also adds a MAINTAINERS
+entry for the new binding.
 
-Two small observations below, both cosmetic.
-
-> diff --git a/drivers/dpll/sit9531x/Kconfig b/drivers/dpll/sit9531x/Kconfig
+> diff --git a/Documentation/devicetree/bindings/dpll/sitime,sit95316.yaml b/Documentation/devicetree/bindings/dpll/sitime,sit95316.yaml
 > new file mode 100644
-> index 000000000000..47aea8674327
+> index 000000000000..b3cf9d5a8267
 > --- /dev/null
-> +++ b/drivers/dpll/sit9531x/Kconfig
-> @@ -0,0 +1,17 @@
-> +# SPDX-License-Identifier: GPL-2.0-only
-> +
-> +config SIT9531X_DPLL
-> +	tristate "SiTime SiT9531x DPLL driver"
-> +	depends on I2C && NET
-> +	select DPLL
-> +	select REGMAP_I2C
-> +	help
-> +	  Driver for SiTime SiT9531x family clock generators
-> +	  (SiT95317, SiT95316).
-> +
-> +	  This driver registers each on-chip PLL as a DPLL device
-> +	  and exposes input/output clocks as DPLL pins, providing
-> +	  runtime configuration via Generic Netlink.
-
-[Severity: Low]
-This isn't a bug, but the help text describes behaviour that only arrives
-later in the series.  At this commit sit9531x_dev_probe() stops after
-identifying the variant:
-
-	dev_info(sitdev->dev, "%s detected, %u inputs, %u outputs\n",
-		 sitdev->info->name, sitdev->info->num_inputs,
-		 sitdev->info->num_outputs);
-
-	return 0;
-
-There is no dpll_device_register() or dpll_pin_register() call yet, and
-select DPLL has no consumer, so enabling CONFIG_SIT9531X_DPLL at this point
-in the series binds the I2C node without exposing any DPLL object.
-
-The later patches in this series do add the DPLL device and pin
-registration, so the help text matches the final state of the series;
-should the Kconfig entry land with the patch that implements it instead?
+> +++ b/Documentation/devicetree/bindings/dpll/sitime,sit95316.yaml
+> @@ -0,0 +1,171 @@
 
 [ ... ]
 
-> diff --git a/drivers/dpll/sit9531x/core.c b/drivers/dpll/sit9531x/core.c
-> new file mode 100644
-> index 000000000000..f355b08aebca
-> --- /dev/null
-> +++ b/drivers/dpll/sit9531x/core.c
+> +  sitime,pll-fvco:
+> +    $ref: /schemas/types.yaml#/definitions/uint64-array
+> +    minItems: 4
+> +    maxItems: 4
+> +    description:
+> +      Per-PLL VCO frequency in Hz for PLLA, PLLB, PLLC, PLLD.  Neither
+> +      standard frequency suffix fits.  The VCO bands are 4915.2 MHz to
+> +      5898.24 MHz and 6875 MHz to 7812.5 MHz, so every valid value
+> +      exceeds the 32 bits "-hz" allows, and the band edges are not
+> +      whole megahertz either, so "-mhz" cannot express them.  Hence a
+> +      plain uint64-array.  Override where the standard
+
+[Severity: Medium]
+Is the statement that "every valid value exceeds the 32 bits "-hz" allows"
+correct?  A "-hz" property can carry 64-bit values, so the stated reason for
+dropping the unit suffix does not seem to hold.
+
+The peer binding in the same directory does exactly that:
+
+Documentation/devicetree/bindings/dpll/microchip,zl30731.yaml
+            supported-frequencies-hz = /bits/ 64 <10000 10000000>;
+
+And this very file does it too, in its own examples:
+
+                    supported-frequencies-hz = /bits/ 64 <156250000>;
+
+Documentation/devicetree/bindings/opp/opp-v2-base.yaml also documents this
+explicitly:
+
+      opp-hz:
+        description:
+          Frequency in Hz, expressed as a 64-bit big-endian integer.
+
+Since the values are already in Hz, could the property be named
+sitime,pll-fvco-hz while keeping
+
+    $ref: /schemas/types.yaml#/definitions/uint64-array
+
+and the 32-bit rationale dropped from the description?  Once merged, the
+suffix-less spelling becomes DT ABI and cannot be renamed later.
+
+> +      Fvco = Fref * DIVN derivation does not match the running VCO --
+> +      for example a PLL operating in INTSYNC mode.  A value of 0 keeps
+> +      the register-derived computation for that PLL.
 
 [ ... ]
-
-> +/*
-> + * sit9531x_input_get_regs - get force mask and state register addresses
-> + * @index:	logical input index
-> + * @force_reg:	output force mask register address
-> + * @state_reg:	output state register address
-> + *
-> + * Selects the correct Page 0x02 register pair based on the pair's
-> + * signal mode and the lane (P/N) the index refers to.
-> + */
-> +
-> +static int sit9531x_read_variant_id(struct sit9531x_dev *sitdev, u8 *id)
-> +{
-> +	return sit9531x_read_u8(sitdev, SIT9531X_REG_VARIANT_ID, id);
-> +}
-
-[Severity: Low]
-This isn't a bug, but the comment block for sit9531x_input_get_regs()
-describes a function that does not exist in this patch, and it sits
-directly above the unrelated sit9531x_read_variant_id().  A reader here
-would attribute the Page 0x02 register-pair semantics to the variant-ID
-helper.
-
-The function it documents is added later in the series, by "dpll:
-sit9531x: implement input pin state on a DPLL", where it appears right
-under this same comment.  Could the comment move to that patch?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260902214030.20955-1-arouhi%40sitime.com
