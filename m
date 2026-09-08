@@ -1,68 +1,91 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F2CE3A3E7A;
-	Tue,  8 Sep 2026 20:20:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 819A047C0FB;
+	Tue,  8 Sep 2026 20:22:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788898807; cv=none; b=BDCQAl/FKUsEgOcA1FyA+oRSKdJKMD+I7JUIFiMNa/x4B/0F/H4FWxziIRWWNgT8H3YMZKTWHDZB7hWvvp8YW2Vzl2boTUYVht929SLmerXHdJtfaI2rVhEtrAkoctml2NqFnLyPzYy5i9/IP0AvsvEHotzU7fX5asBe7ZItHow=
+	t=1788898948; cv=none; b=TIzAuDcAcpEe6eSTPemG9P2ZKU1nW0nmOvgz2fQPHxW4IoEceg2hlidj7iH41E4fpfjxGcrPLUYdbTnMeAWVZyDT3qO/m+wFPQh7aPdBO4lkS+AhVwR7huqwcOIAVTV/MakddPJCqRdTxZEdjNBz41cYM4W+pWsIdBlqOZ7WLLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788898807; c=relaxed/simple;
-	bh=wmMHnqxk8q60AJnJVVj3zTZJVm/HnV6zv0pQLk9pmgM=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Hfr4naVDAFfOS0sD6wE0u539pWr+bNT1evvBCIaGZOjKyJPlqYxLw3UifX5EykAvwVyzX0npxNmvTt+ZBA3eygvBvnJSCvFsw3Ee5TizwZCiLiMcr81YrHXAt5+tH2y9kd5k8k78Lrxa7mhHMA2quzLjkA6b1r7/0Ty06WKepBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OOabZrJQ; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788898948; c=relaxed/simple;
+	bh=kbcJM10vswzb01MGh03wm8TBWwgp09kILK4FwARAnBo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HM/fBmg/TvPTIh4oYddgH9xut+vsOV2HysXMj65j5yXwWPBMmV9h9RutTo9nr9eZRKcA54taqe7eJctb1EeKrWc6bJlY16NzWVvtpiF/T8a40q/Hr/K6+mJBCTWszoJcmosAYHH1cQU90bZjeGtFxPL3Wu3vLDuw+OYUZ1wPKHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=euhQcsuF; arc=none smtp.client-ip=217.70.190.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OOabZrJQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA45E1F00A3E;
-	Tue,  8 Sep 2026 20:20:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788898806;
-	bh=YtM6ZBb5h2CRolygbcwA6f3pnESQ99pbKeVUhF3gqXo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=OOabZrJQsOKcJEig2RJSsKwpur8+CO5YXZBKOvoFn4TeoZU1vRazWZD4F5bVZzD4W
-	 mtX/5k+5VhjogmyQlbUhbrlGTDp3GGlZWGgw1z5LKv4adNYx/J1h/k1DUHtFmBacvK
-	 E2g/2xi5nmszOZSnbrJ48RiGRcZTBI5ISkmR6qHBCKXW+MTxxh1XWkd0VRAmNewnej
-	 kmeza6JjaGeIkAVfW1LP1siGMjiiRMS1EJ6yfQOXBdGg/ktqkT4HmHJhjfhYRIxTuk
-	 KgTE8a8a6zAPapIA82T8DTaMAoUWBD4knb8g3qESHrwemWVo7ZaUrDtYFjgT2rd3Ve
-	 BjcMyA2rFo1zg==
-Date: Tue, 8 Sep 2026 13:20:04 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: Pooventhiran G  <pooventhiran.g@oss.qualcomm.com>, "David S . Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- linux-wireless@vger.kernel.org
-Subject: Re: [PATCH RESEND wireless-next 00/18] wifi: Add Seamless Mobility
- Domain (SMD) AP support
-Message-ID: <20260908132004.29176fec@kernel.org>
-In-Reply-To: <80266eb9666d6106110d998cb6330868da55bf59.camel@sipsolutions.net>
-References: <20260908-smd-v1-0-9fd2d876a1fb@oss.qualcomm.com>
-	<20260908125017.0fb226c5@kernel.org>
-	<404004c4c97bf776077685b7ec33a14fa777cd70.camel@sipsolutions.net>
-	<80266eb9666d6106110d998cb6330868da55bf59.camel@sipsolutions.net>
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="euhQcsuF"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1788898936;
+	bh=YuL7eguvenr6cY8dYQV22pUh1OvPbx22hujU7gbJsnQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=euhQcsuFsldjDV0gGv29FSG+u78wMvdroeQHNSKkr8DPl7ignwU+PIMfZYjNF/NZv
+	 Y9nQzpN2R6q4fGTAv3pweuHHjeBMwv6rdwjC5U3uCcxN6diVQ9YL3bhzsHJMPFf1px
+	 MlNH5YfFmRw+2E1B+E+CyMmgSl2Wl1rjqZV9A7WyorZUEQQxhJhzaLmZ/t+6vvkO4u
+	 8lPIY9uIe/VD7kmOwjhPqdWgA7vftVz45XlxCD4UawzodwZk3z88r0Y4SjyQDgqzUK
+	 GPQi7e4V+qWkKQmYiseGv8BXnPfi4qSRO+1Lklngu2IacUrDfSjSpYPEom/TGdKDZt
+	 8klAzHwMLAOuQ==
+Received: from netfilter.org (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 439716008A;
+	Tue,  8 Sep 2026 22:22:16 +0200 (CEST)
+Date: Tue, 8 Sep 2026 22:22:13 +0200
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: netdev-bot+sashiko@kernel.org
+Cc: netfilter-devel@vger.kernel.org, davem@davemloft.net,
+	netdev@vger.kernel.org, kuba@kernel.org, pabeni@redhat.com,
+	edumazet@google.com, horms@kernel.org, fw@strlen.de, ja@ssi.bg
+Subject: Re: [PATCH net 8/9] netfilter: ip6_tables: set F_PROTO when proto
+ value is nonzero
+Message-ID: <aqBudRLv4ogTqUEc@chamomile>
+References: <20260907171732.1407739-9-pablo@netfilter.org>
+ <178889064403.219967.3259522251975828189@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <178889064403.219967.3259522251975828189@kernel.org>
 
-On Tue, 08 Sep 2026 21:57:52 +0200 Johannes Berg wrote:
-> On Tue, 2026-09-08 at 21:51 +0200, Johannes Berg wrote:
-> > On Tue, 2026-09-08 at 12:50 -0700, Jakub Kicinski wrote:  
-> > > On Tue,  8 Sep 2026 22:39:28 +0530 Pooventhiran G wrote:  
-> > > Why are you sending this To: core networking maintainers.
-> > > This is wireless code, what do we know.
-> > > Drop the core maintainers and netdev@ going forward please.  
-> > 
-> > They have patch 1 but I already told them a long time ago that was
-> > completely broken, I don't know why this is happening ...  
+On Tue, Sep 08, 2026 at 06:04:04PM +0000, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider:
+> 
+> Critical: 0 · High: 0 · Medium: 0 · Low: 1
+> 
+> - [Low] Stale/contradicted UAPI documentation for `struct
+>   ip6t_ip6::proto`.
+> 
+> --
+> 
+> netfilter: ip6_tables: set F_PROTO when proto value is nonzero
+> 
+> This makes the kernel set IP6T_F_PROTO for any rule that carries a nonzero
+> ipv6.proto, so ip6_packet_match() always performs the protocol comparison
+> and extension header walk instead of skipping it when userspace left the
+> flag clear. It mirrors the normalisation already done in nft_compat.c.
+> 
+> > diff --git a/net/ipv6/netfilter/ip6_tables.c b/net/ipv6/netfilter/ip6_tables.c
+> > index f42fb96ef64b6..313c4aac377aa 100644
+> > --- a/net/ipv6/netfilter/ip6_tables.c
+> > +++ b/net/ipv6/netfilter/ip6_tables.c
+> > @@ -647,6 +647,11 @@ check_entry_size_and_hooks(struct ip6t_entry *e,
+> >  	/* Clear counters and comefrom */
+> >  	e->counters = ((struct xt_counters) { 0, 0 });
+> >  	e->comefrom = 0;
+> > +
+> > +	/* set F_PROTO, else ip6_packet_match won't do the right thing. */
+> > +	if (e->ipv6.proto)
+> > +		e->ipv6.flags |= IP6T_F_PROTO;
+> > +
+> >  	return 0;
+> >  }
+> 
+> [Severity: Low]
+> Should the uapi header comment be updated in the same patch?
 
-Ah, missed the skb extension. Obvious AI slop. Fun times.
-
-> Actually, they did fix the free issue in there, but ... dunno. I guess
-> I'll discuss it with them tomorrow.
+No.
