@@ -1,93 +1,88 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01D81503BD3;
-	Tue,  8 Sep 2026 10:16:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FE524C77A0;
+	Tue,  8 Sep 2026 10:21:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788862600; cv=none; b=VigAGZWNVwFtZDNUb5xgGpAac+96m5Rzj3m1xpe3eb7CRHCuC2Eb2dep702LT6BCxad9fJT37umn8O+1eJv6VNnSD3jwyrd5pM7XT47kwR7Zd8iQos7/wjbovZvvPn4AF3IrCE4gkmNKFXifWXK9E2W1ND3DdQ6HBN63i3C6a5k=
+	t=1788862868; cv=none; b=LgJEeBAIJVSMFwC8aKGxtm+SZfMzsZ46e1ATLNEGs+FGlFZ5iRKvJZO1cnhwZ34meurlHnQm393S/G4UlGdbOBdksNfzQ6rTmEPH6CivSM/Upfpm4SYQt1bVt/K6N3SRQSYRr/bkBrdB0ZuB0lID99CzMEeVn6SDp3eUkFDMH2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788862600; c=relaxed/simple;
-	bh=DjboxyyhcZpTbpDaKMgn5L7lBy9Q6jXJE2/Ais/0SX4=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ZK8Wiy9Q55pHHJvemzkkpsPZ4z90oEnYTnMzxz00rX/P0QnGYh88lNDmHgdPesFJysDbiOWjG75diE0vcAvMK4FJJr5zy4w/u3bSkMTBYrxfLYyIpF7Rv3J0bT/BVddzaA7YK7tdOpf5+/GrAm/N6osF5E8p5b0Bd1T3IKWu7bI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=kqq9KQ8R; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=EkshkgsY; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1788862868; c=relaxed/simple;
+	bh=ZHIgJ3S8Q8RJ9GB90CO93chXrJG8bKGqZvNs9SQZuU0=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=NgqAH2YPbENCc6wywbroAmx1qIVZOFii6Ts6/6YIKF/zFPZ/ATIq9PNjAALh3GfxCVGb4ktMuEZQ+opz+o1F3e/6or7mfEw098kmnGH1lX9gqlP+PZR0yxv8QreESucTYDw7EwbJQLVh+qZY0Iz6rtpd9ryO1FLnbT7tbpI58yY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FDr4rG1j; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="kqq9KQ8R";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="EkshkgsY"
-Message-ID: <4096c8ea58f0ab600b991d8742ed565ab84fb24c.camel@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1788862597;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=67xHPOdRg6Md3IYmYXDCVQ2pUGm9kQLicmtON3YiCpY=;
-	b=kqq9KQ8RaeCFpW6Gqyy+RWggJUqmqAwIjhKZVmpeWgLQKIDKXjKe/KtxHfxfI4bpee05jP
-	DMyuGAWcuSM5S23LStBlVrN+zGJXrTAJM5bNsx5Wlyvh8MzGtDbmizf6DFnJPyOPBj9mwZ
-	/6eB0TgvRWj4rk67Y8GX0/g3P/Bx+WpdB5jraa4HyLI0au0Do0sJDYzotd0fi8YCLSUi9e
-	5Y5ObsylCciYP7G6nlosHAkoLiX5RioFQhqDdnxmtfMHKUANSa8zQX0+YHXH/FXW29b59o
-	0HWF9/au2Hju3AkOSZKvtyjnlk/rE/LQO6sAmX9W4RezqG3HRwYC0lHQYt4lsw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1788862597;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=67xHPOdRg6Md3IYmYXDCVQ2pUGm9kQLicmtON3YiCpY=;
-	b=EkshkgsYjeEIHpzUPdBmGY6rSRNKdM9CDsI8tK8lemoCAMIeB34IdxXGRPZJDsyxWmA3zB
-	DqFD7aqDIemutCAw==
-Subject: Re: [PATCH net-next v2 2/4] dt-bindings: net: dsa: Add SoC-e SWIP
- switch
-From: Vasilij Strassheim <v.strassheim@linutronix.de>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Vladimir Oltean <olteanv@gmail.com>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
- Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
- <horms@kernel.org>, Russell King <linux@armlinux.org.uk>,
- devicetree@vger.kernel.org,  linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, Martin Kaistra <martin.kaistra@linutronix.de>,
- Benedikt Spranger <b.spranger@linutronix.de>
-Date: Tue, 08 Sep 2026 12:16:36 +0200
-In-Reply-To: <85b4b052-e97c-40b8-b434-de1b6e3af1b5@lunn.ch>
-References: 
-	<20260903-devel-vstrassheim-soce-dsa-ml-v2-0-fb0587cb466b@linutronix.de>
-	 <20260903-devel-vstrassheim-soce-dsa-ml-v2-2-fb0587cb466b@linutronix.de>
-	 <20260907-petite-pillbug-from-atlantis-dd3ea4@quoll>
-	 <9751fadc03ab555327f5baf1d2adc10821f13b1e.camel@linutronix.de>
-	 <85b4b052-e97c-40b8-b434-de1b6e3af1b5@lunn.ch>
-Organization: Linutronix GmbH
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FDr4rG1j"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22EE11F00A3A;
+	Tue,  8 Sep 2026 10:21:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788862867;
+	bh=d0RVUKGzQViRfhpTWiTrG2gQKE1cWfQApfz0Noa/nxQ=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=FDr4rG1jykxjH42fVaoN3noXPX3ildn87M7q7ySMDJV9Uto2rD25ishapl9v/Tp/S
+	 rcrM6B5Uf9+PXJLuvpv9rYpa6YCKVMLHfFaF1lZ4mCDxzo7DnZeMt7ZGbeNe+/Ez7S
+	 4WuEKlQZRMWMVvPDi1mb+8JkrqOadPHvtt+x2F/QaGZzkqpp9I7J+BtGRe2hMPMb5V
+	 QT2b8qFNojxEp6ZYsN5jlm4v3AYIJ2ps5m8Dwsuf8d+WoWc5FMogEEHlQjBVq1SX+Q
+	 nRcekTtBEl5Wm5PQcFkuqfsFOB/OM9Lb9E7Z9nsrbKdNKzR9zGXX19o4jEl0qZ84uu
+	 3D0Mp5QpoCqZw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 1983539E9602;
+	Tue,  8 Sep 2026 10:20:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next v2 0/3] net: Make sure clk_init_data is fully
+ initialized
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178886280589.3447437.8919325096369252990.git-patchwork-notify@kernel.org>
+Date: Tue, 08 Sep 2026 10:20:05 +0000
+References: <cover.1788425654.git.geert+renesas@glider.be>
+In-Reply-To: <cover.1788425654.git.geert+renesas@glider.be>
+To: Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: theo.lebrun@bootlin.com, conor.dooley@microchip.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, hkallweit1@gmail.com,
+ linux@armlinux.org.uk, neil.armstrong@linaro.org, khilman@baylibre.com,
+ jbrunet@baylibre.com, martin.blumenstingl@googlemail.com,
+ netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-amlogic@lists.infradead.org, linux-clk@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 
-On Mon, 2026-09-07 at 20:56 +0200, Andrew Lunn wrote:
-> > > ethernet-ports
-> > >=20
-> > > > +    patternProperties:
-> > > > +      '^(ethernet-)?port@[0-9a-f]+$':
-> > >=20
-> > > ethernet-port
-> > >=20
-> >=20
-> > Is there a reason for such a restriction?
-> > The pattern intentionally follows the generic DSA binding in dsa.yaml,
->=20
-> You need to be careful with the DSA binding. It is old, and uses some
-> things which are not considered best practices today. But they cannot
-> be removed because of backwards compatibility.
->=20
+Hello:
 
-Got it. Technically, it makes no difference, so I will just fix it.
+This series was applied to netdev/net-next.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-Thanks,
-Vasilij
+On Thu,  3 Sep 2026 11:00:38 +0200 you wrote:
+> Hi all,
+> 
+> The clk_init_data structure contains several mutually-exclusive members
+> for different methods to specify the possible parents of a clock,
+> prompting drivers to initialize only the members they need.  However,
+> not initializing all members may cause subtle issues, which are only
+> exposed when CONFIG_INIT_STACK_ALL_PATTERN or CONFIG_INIT_STACK_NONE is
+> enabled.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net-next,v2,1/3] net: macb: Make sure clk_init_data is fully initialized
+    https://git.kernel.org/netdev/net-next/c/83e6bb28644a
+  - [net-next,v2,2/3] net: mdio: mux-meson-g12a: Make sure clk_init_data is fully initialized
+    https://git.kernel.org/netdev/net-next/c/4bee840c7e43
+  - [net-next,v2,3/3] net: phy: air_en8811h: Make sure clk_init_data is fully initialized
+    https://git.kernel.org/netdev/net-next/c/64adb67e4568
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
