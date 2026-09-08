@@ -1,64 +1,64 @@
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 252AD379991
-	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 05:27:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7A2B379ED7
+	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 05:27:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788845253; cv=none; b=Mtb3SaZgah/YkYP5fayQFnWSExZX2tbrNJpa8RSc6LV/3u4Nhsuj1tOW09S99sqpOx8R8Aa+Aw7c+nWuc5L7HTYjSB5JQHMfaURlB5PEuy/v/kE6GNqE1orjBVu8F/Fgd0Bp2jaY7zL0yYPmcYGkUcKycAxwRz1uDVuQ/4kDaX0=
+	t=1788845261; cv=none; b=TKYBcwRWB7qOFlKd0i5dYSQQSen7FRIp4kaBXxpXsDUWoI30HSzaOojFFm1YzD1hgwg0Xun0GtKXmXpavqRtbPX/EMYQe3MTnzGjrX4J2HRzEtqAnJlUHt+OHOaP1rmwFaoQwuVZgJ90ER7sDDVyGbxZ1HFTwFSs7s0ZpsG5SwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788845253; c=relaxed/simple;
-	bh=fjyYAKrA9xZ3oFHLIxjUPnbIcj2DikHpK634Qm6CIMw=;
+	s=arc-20240116; t=1788845261; c=relaxed/simple;
+	bh=Og17tNfr1MSjCFANiTkltISsVC58pPAzd5pXj79CkxU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lFsBRfBZ9cBXkcEvmwKkDmFQiRkfYpYL7NjZaJaVCeqSnLv6AlL8aXJfqzw+wzE/fUWMri88wKN2/MZLsFvhDK2eRx4XptIS4AYo1WliYpsm0Ml2R10N1AoICP8pQYElnPeDC2eGMqYCIslPj7lp2hPVqyySB5KIKnPJKI+YDWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZAPxwCQ7; arc=none smtp.client-ip=209.85.215.180
+	 MIME-Version; b=us0deYUEjPmyuxfIAgHRSnuhBurkVmEZEh/z2mVLk2YfdkG3DXGv8EpBmRdutNpRmeb5cRcAy2YA/hj38j3lohECRWplpZyIqx9T7WAQJxvgq0/5rkgWBMlRqDe4siH8nGKnxY0EXNvrkBRyQJjL2BdHtkEnaoFaXe5cMEHZW7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l7JpBQHP; arc=none smtp.client-ip=209.85.210.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZAPxwCQ7"
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-c9b373d5af0so3197471a12.2
-        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 22:27:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l7JpBQHP"
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-84e04df8c46so4594491b3a.2
+        for <netdev@vger.kernel.org>; Mon, 07 Sep 2026 22:27:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788845250; x=1789450050; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1788845259; x=1789450059; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=qMXY7RVPMRlOGVUE1GxTzGvnZE4FGesxKUeRlJf9LaQ=;
-        b=ZAPxwCQ7dy1j2j5YzaKqu8G8ne/0AC5OUjagEGvTs505gPC/512dH+ugOz4sC4KxH5
-         8gD8J1Aqwt2cZ2tuVzKwlCenN6NWdHbX5Yv2c17Kjb1miPQ16boIzwGRro0ixe6l7ge4
-         eVrDMfMrIVKjzOkW8p2dK84C6StKzXgjI7EY5Ge3OKQsNQoApOjakWFeMLQp8ovDChxe
-         i6abU+Ri7+UkufdsPocMyFSJGvL4OotdDL9S2rkcBqTvX3VYwXMY6Yy/2DrMGKPZ11cC
-         I77muEnDBl/U7QFLWBgDRe5WfVREgHNi9rbXmrvkMeMnSuA3YL5dHOOZ4zYk6BOw+zad
-         i7Ig==
+        bh=8ThgDhRyE+Y72EBv7/U4oxOtCi6RtEmzsslCG/DRcvA=;
+        b=l7JpBQHP2vk6WBDHMcRbNgK6J/qmwni0n9s+ftc/g6ut/zo6aUSEQ4S0AD35ywi5hs
+         LvklrhDE3M7Exzsxn4UCAn2TT4M6PtYdfk9F4klqmOJaEJMj/Beo5pX5l1P9AmuJEZdF
+         MyapI0DL6iWZlTzYC3McI2BOC3BcwrE5tZLHvM3gulpTGYmryDW7UReN9jkYqpu861H9
+         Kzw5JSQ/h9ewM1fi6bOYl/dEyExm9d9SDnKp9an3FWlxmDsNCWl9/HIB3LRvBxQUODxc
+         bVxjvabZoyeJYVe0+c1loOwPl1IpyGZG9tytk/C8+ZiF4ZI3teiHjOoRDpPwR844lhjr
+         aawg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788845250; x=1789450050;
+        d=1e100.net; s=20251104; t=1788845259; x=1789450059;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=qMXY7RVPMRlOGVUE1GxTzGvnZE4FGesxKUeRlJf9LaQ=;
-        b=DYBmqwriWEP7fRaJryR0NVngae1NXuvKKJse9aqDXtWujmP4TPHGmWM0WSQczQ1EVg
-         3nbZQ1Pe0udX6pLK1tFLSNHJh/j/A6z2dYCJPi6gHqrCIhKeqZBCcnZh49rUBaDgUWQM
-         LfyWxnBkP14E5qnNhPNHZ4WnlXfBWWuko+BCoo0N+xnsxwa2siSe1zBpcvXy2WPaJMSf
-         rgaIT61I0JuiwFVx6XPEK5EHd8dxrLOk8IlFtyGtVNCqgaBGwooQ4cIkBgLYaBaA6EeG
-         3yQFf5E02TnGdijl96LL/lnuD+L/Lu123JbhnMFSPpH7f+Yl3l91u5u2NVowGdOrYHgY
-         Qz0g==
-X-Forwarded-Encrypted: i=1; AKwUvBxkxz3K/hBMCjLIe6UrBV++4yMdFTjmpmvQk7h2gN/mqbkotByuqckuuNEzdibt3oxH2/8545I=@vger.kernel.org
-X-Gm-Message-State: AFuF++kkJc5xGwD8MIsJm77Obc4Rl/leIBfT0VcrOrpUabViwxmlLUpH
-	78ZP0UldQwhEGptcQUAGfudMTCFgrMWTayPWnTyUvlv/9Y5xG+GUSt3/iLt0f4x6t+8=
-X-Gm-Gg: AYBFou20Z9/rrTJc3hWzXNkJBBe4IgPDfwD298LSZke7iwbetZAuvA0wODLO/atrKca
-	HgW/EuhjH4D9IqgmgSD+oObc0NaS8aaywHc//gZfA3JYGRSE0uIkKQo+rJukbHd/QDcV3nRbhtj
-	3LviCyXRDA2H9jzEUk5MNYvBvqJKUG15q23A1tyyQo0rb+FlWNfk5EBvYKepPSmeQ91NIOFfVcR
-	jZyhiPnZ+4z7wb3fs1Xk5vYlkSs5IgHDsMUsJPmUZJ7Xo91gJeic4BkfDi0mZWT1WuibmdfpjQ7
-	jGpoJb8jacvTDqn11BOefetEycKMNFQT3QqJ/H1VNlHI9y0vYP3jUh2En3evv4+DnTfpi7qKNNc
-	Uucz3ESV6ZYQQMcbfm/Hy8rTv1YvB0iJIqyw2hygXBlM6R6TWiky4VDU1qt7cvrJqgXRQC5GP/N
-	/e9elVwT3lKhdmfwL/VA/DgmvJM+e3aQOhkXSi3jKtwaEA0O+BOG+2y6Fa9HoewdGKn7hdn/p35
-	hVgqio6gXTmZQ==
-X-Received: by 2002:a17:90a:d44b:b0:396:4cbf:45bc with SMTP id 98e67ed59e1d1-39b26203f11mr43064219a91.16.1788845250288;
-        Mon, 07 Sep 2026 22:27:30 -0700 (PDT)
+        bh=8ThgDhRyE+Y72EBv7/U4oxOtCi6RtEmzsslCG/DRcvA=;
+        b=jnKtVm/DMtrK8rd+MvBkR4VNL1uJvbdjVGIfpy3E2l93mz7aWvIWjLp9vXOLhQZK34
+         5vGpDkIvTKDw8outgh5nmSyx6ZIFVirDa4Zn8jHw+v2t5oue5VLlkc7SKvnzXzAf6tln
+         tg4fd4hzb3YU8UEHnJhJFzr80zMp3aCnaJ2d0mG56gD5pZCQQHzf8k0o+ZoSF3HWwFHz
+         YI9GK8hwVq8zevbINwODXTCe0yVWKHPZcLHOWV5ZkLehoiAGZi+dvKx3zqg8t7SCHEUa
+         UGOglE4lk/5jTVm0eR4BwkzKxmkaJf0Iog+YP4R8shOUL6nlFmgWYM7FAVvQKc9cHho/
+         U+sg==
+X-Forwarded-Encrypted: i=1; AKwUvBxUiqaNdpGL2ax2De8y7y4UYsOqSdHG3GEdU3XIk7V/OqOLe8CetOEWOL5+Cp99CCr7msJ4uu0=@vger.kernel.org
+X-Gm-Message-State: AFuF++k6abXUxi0vffnkuJWxJACWl5JrwRRKsFJVnB3jvBV0N3FfGkIG
+	OyYyZGSaoKPlzqnhT+4J8jMMo6e/oaeL45dIAilV43auF7JR9ZpAEMaa
+X-Gm-Gg: AYBFou22eWOrIpWAADQBs/IO0A22f9WqH6WyrQVLivnqYbXyqsNxSunA3gBgXEmUwnf
+	I2NfKBk6MtuYF8y73iHUif7pLlr3q4OHxrOjhhZ5BW8s8n/2xfFTI+tnzWA9wocYO1jtCDOvqRn
+	nRxfwmaR6bdB7TuU7/tYgk7t0Km1VsFQra4LPGOho1IuwFFN4aW0C4hLgnBIn+eySozKjF1CKBa
+	ya82c5TIMTTvv13V3buHivto+SB7Ad5abxROcjcpUxqoyJA5+AV/jKGUVZ3bOM5hEzCYT369yFq
+	wXzCcfplLb8rYyb6IAADBKm0eGIUp0343+2DetfEFMac6Eo2CrmvEQME+9Y6Xs2NoqiA8xRsZbY
+	b6+7udELAgWAkay/S4Rv/vbNNhcErIfiHAeP6z6YlXF8qBDSiHMXV+jtTi+aA/p+U61jPhF9Mjx
+	Q4SumFMKG1Vg7l50AEn03F6eSatJ8wsQA9s9YTCSXD5ZYeLIGrWCLWb1jMgq487GCLCkdIJtMbC
+	Bbx7tBsnT5Xuw==
+X-Received: by 2002:a05:6a21:3943:b0:3c4:1493:6822 with SMTP id adf61e73a8af0-3da3a0aa8cbmr44065672637.18.1788845258816;
+        Mon, 07 Sep 2026 22:27:38 -0700 (PDT)
 Received: from volcano9f6e-hostos.amd.com ([165.204.217.251])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-14340a69666sm11720586c88.9.2026.09.07.22.27.22
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-14340a69666sm11720586c88.9.2026.09.07.22.27.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Sep 2026 22:27:29 -0700 (PDT)
+        Mon, 07 Sep 2026 22:27:38 -0700 (PDT)
 From: Hemanth Selam <hemanth.selam@gmail.com>
 To: "David S. Miller" <davem@davemloft.net>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
@@ -89,9 +89,9 @@ Cc: linux-arm-kernel@lists.infradead.org,
 	linux-kselftest@vger.kernel.org,
 	linux-parisc@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH net-next v3 09/10] net: atheros: fix typos in comments
-Date: Tue,  8 Sep 2026 10:56:01 +0530
-Message-ID: <20260908052602.27497-10-hemanth.selam@gmail.com>
+Subject: [PATCH net-next v3 10/10] net: dec: fix typos in comments
+Date: Tue,  8 Sep 2026 10:56:02 +0530
+Message-ID: <20260908052602.27497-11-hemanth.selam@gmail.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20260908052602.27497-1-hemanth.selam@gmail.com>
 References: <20260908052602.27497-1-hemanth.selam@gmail.com>
@@ -110,92 +110,96 @@ changes.
 Assisted-by: Cursor:claude-opus-5
 Signed-off-by: Hemanth Selam <hemanth.selam@gmail.com>
 ---
- drivers/net/ethernet/atheros/atl1c/atl1c_hw.h   | 2 +-
- drivers/net/ethernet/atheros/atl1e/atl1e.h      | 2 +-
- drivers/net/ethernet/atheros/atl1e/atl1e_hw.c   | 2 +-
- drivers/net/ethernet/atheros/atl1e/atl1e_main.c | 2 +-
- drivers/net/ethernet/atheros/atlx/atl1.c        | 2 +-
- drivers/net/ethernet/atheros/atlx/atl2.c        | 2 +-
- 6 files changed, 6 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/dec/tulip/de2104x.c     | 2 +-
+ drivers/net/ethernet/dec/tulip/interrupt.c   | 4 ++--
+ drivers/net/ethernet/dec/tulip/media.c       | 2 +-
+ drivers/net/ethernet/dec/tulip/tulip.h       | 4 ++--
+ drivers/net/ethernet/dec/tulip/winbond-840.c | 2 +-
+ 5 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/atheros/atl1c/atl1c_hw.h b/drivers/net/ethernet/atheros/atl1c/atl1c_hw.h
-index c567c920628f..8f03bb561d44 100644
---- a/drivers/net/ethernet/atheros/atl1c/atl1c_hw.h
-+++ b/drivers/net/ethernet/atheros/atl1c/atl1c_hw.h
-@@ -659,7 +659,7 @@ void atl1c_post_phy_linkchg(struct atl1c_hw *hw, u16 link_speed);
- /* INT-triggle/SMB Control Register */
- #define REG_SMB_STAT_TIMER		0x15C4	/* 2us resolution */
- #define SMB_STAT_TIMER_MASK		0xFFFFFF
--#define REG_TINT_TPD_THRESH             0x15C8 /* tpd th to trig intrrupt */
-+#define REG_TINT_TPD_THRESH             0x15C8 /* tpd th to trig interrupt */
+diff --git a/drivers/net/ethernet/dec/tulip/de2104x.c b/drivers/net/ethernet/dec/tulip/de2104x.c
+index f38a10c79907..fa52e099409c 100644
+--- a/drivers/net/ethernet/dec/tulip/de2104x.c
++++ b/drivers/net/ethernet/dec/tulip/de2104x.c
+@@ -373,7 +373,7 @@ static void de_rx_err_acct (struct de_private *de, unsigned rx_tail,
+ 		  rx_tail, status, len);
  
- /* Mail box */
- #define MB_RFDX_PROD_IDX_MASK		0xFFFF
-diff --git a/drivers/net/ethernet/atheros/atl1e/atl1e.h b/drivers/net/ethernet/atheros/atl1e/atl1e.h
-index 9fcad783c939..6b0066f47e9e 100644
---- a/drivers/net/ethernet/atheros/atl1e/atl1e.h
-+++ b/drivers/net/ethernet/atheros/atl1e/atl1e.h
-@@ -381,7 +381,7 @@ struct atl1e_rx_page {
- 	u8		*addr;   /* receive rage virtual address */
- 	dma_addr_t	write_offset_dma;  /* the DMA address which contain the
- 					      receive data offset in the page */
--	u32		*write_offset_addr; /* the virtaul address which contain
-+	u32		*write_offset_addr; /* the virtual address which contain
- 					     the receive data offset in the page */
- 	u32		read_offset;       /* the offset where we have read */
- };
-diff --git a/drivers/net/ethernet/atheros/atl1e/atl1e_hw.c b/drivers/net/ethernet/atheros/atl1e/atl1e_hw.c
-index fa89bc27f62d..25d3e7469058 100644
---- a/drivers/net/ethernet/atheros/atl1e/atl1e_hw.c
-+++ b/drivers/net/ethernet/atheros/atl1e/atl1e_hw.c
-@@ -369,7 +369,7 @@ static int atl1e_phy_setup_autoneg_adv(struct atl1e_hw *hw)
-  *
-  * hw - Struct containing variables accessed by shared code
-  *
-- * Sets bit 15 and 12 of the MII control regiser (for F001 bug)
-+ * Sets bit 15 and 12 of the MII control register (for F001 bug)
-  */
- int atl1e_phy_commit(struct atl1e_hw *hw)
- {
-diff --git a/drivers/net/ethernet/atheros/atl1e/atl1e_main.c b/drivers/net/ethernet/atheros/atl1e/atl1e_main.c
-index 40290028580b..cc6c262868a5 100644
---- a/drivers/net/ethernet/atheros/atl1e/atl1e_main.c
-+++ b/drivers/net/ethernet/atheros/atl1e/atl1e_main.c
-@@ -2117,7 +2117,7 @@ static int atl1e_suspend(struct pci_dev *pdev, pm_message_t state)
- 			wol_ctrl_data |= WOL_MAGIC_EN | WOL_MAGIC_PME_EN;
+ 	if ((status & 0x38000300) != 0x0300) {
+-		/* Ingore earlier buffers. */
++		/* Ignore earlier buffers. */
+ 		if ((status & 0xffff) != 0x7fff) {
+ 			netif_warn(de, rx_err, de->dev,
+ 				   "Oversized Ethernet frame spanned multiple buffers, status %08x!\n",
+diff --git a/drivers/net/ethernet/dec/tulip/interrupt.c b/drivers/net/ethernet/dec/tulip/interrupt.c
+index 0a12cb9b3ba7..8c02771b28e4 100644
+--- a/drivers/net/ethernet/dec/tulip/interrupt.c
++++ b/drivers/net/ethernet/dec/tulip/interrupt.c
+@@ -177,7 +177,7 @@ int tulip_poll(struct napi_struct *napi, int budget)
+ 			   pkt_len > 1518) {
+ 			       if ((status & (RxLengthOver2047 |
+ 					      RxWholePkt)) != RxWholePkt) {
+-                                /* Ingore earlier buffers. */
++                                /* Ignore earlier buffers. */
+                                        if ((status & 0xffff) != 0x7fff) {
+                                                if (tulip_debug > 1)
+                                                        dev_warn(&dev->dev,
+@@ -408,7 +408,7 @@ static int tulip_rx(struct net_device *dev)
+ 		    pkt_len > 1518) {
+ 			if ((status & (RxLengthOver2047 |
+ 			     RxWholePkt))         != RxWholePkt) {
+-				/* Ingore earlier buffers. */
++				/* Ignore earlier buffers. */
+ 				if ((status & 0xffff) != 0x7fff) {
+ 					if (tulip_debug > 1)
+ 						netdev_warn(dev,
+diff --git a/drivers/net/ethernet/dec/tulip/media.c b/drivers/net/ethernet/dec/tulip/media.c
+index 55d6fc99f40b..0c9694d2b38a 100644
+--- a/drivers/net/ethernet/dec/tulip/media.c
++++ b/drivers/net/ethernet/dec/tulip/media.c
+@@ -24,7 +24,7 @@
  
- 		if (wufc & AT_WUFC_LNKC) {
--		/* if orignal link status is link, just wait for retrive link */
-+		/* if original link status is link, just wait for retrieve link */
- 			if (mii_bmsr_data & BMSR_LSTATUS) {
- 				for (i = 0; i < AT_SUSPEND_LINK_TIMEOUT; i++) {
- 					msleep(100);
-diff --git a/drivers/net/ethernet/atheros/atlx/atl1.c b/drivers/net/ethernet/atheros/atlx/atl1.c
-index 98a4d089270e..179d74e93efd 100644
---- a/drivers/net/ethernet/atheros/atlx/atl1.c
-+++ b/drivers/net/ethernet/atheros/atlx/atl1.c
-@@ -628,7 +628,7 @@ static s32 atl1_phy_leave_power_saving(struct atl1_hw *hw)
-  * Resets the PHY and make all config validate
-  * hw - Struct containing variables accessed by shared code
-  *
-- * Sets bit 15 and 12 of the MII Control regiser (for F001 bug)
-+ * Sets bit 15 and 12 of the MII Control register (for F001 bug)
-  */
- static s32 atl1_phy_reset(struct atl1_hw *hw)
- {
-diff --git a/drivers/net/ethernet/atheros/atlx/atl2.c b/drivers/net/ethernet/atheros/atlx/atl2.c
-index 5560d5cc3169..c9aca219ec9c 100644
---- a/drivers/net/ethernet/atheros/atlx/atl2.c
-+++ b/drivers/net/ethernet/atheros/atlx/atl2.c
-@@ -2591,7 +2591,7 @@ static s32 atl2_phy_setup_autoneg_adv(struct atl2_hw *hw)
-  *
-  * hw - Struct containing variables accessed by shared code
-  *
-- * Sets bit 15 and 12 of the MII Control regiser (for F001 bug)
-+ * Sets bit 15 and 12 of the MII Control register (for F001 bug)
-  */
- static s32 atl2_phy_commit(struct atl2_hw *hw)
- {
+ /* Read and write the MII registers using software-generated serial
+    MDIO protocol.  It is just different enough from the EEPROM protocol
+-   to not share code.  The maxium data clock rate is 2.5 Mhz. */
++   to not share code.  The maximum data clock rate is 2.5 Mhz. */
+ #define MDIO_SHIFT_CLK		0x10000
+ #define MDIO_DATA_WRITE0	0x00000
+ #define MDIO_DATA_WRITE1	0x20000
+diff --git a/drivers/net/ethernet/dec/tulip/tulip.h b/drivers/net/ethernet/dec/tulip/tulip.h
+index 5e010e1fa6f7..e39e5c78d4cc 100644
+--- a/drivers/net/ethernet/dec/tulip/tulip.h
++++ b/drivers/net/ethernet/dec/tulip/tulip.h
+@@ -250,7 +250,7 @@ enum t21143_csr6_bits {
+ 	csr6_ttm = (1<<22),  /* Transmit Threshold Mode, set for 10baseT, 0 for 100BaseTX */
+ 	csr6_sf = (1<<21),   /* Store and forward. If set ignores TR bits */
+ 	csr6_hbd = (1<<19),  /* Heart beat disable. Disables SQE function in 10baseT */
+-	csr6_ps = (1<<18),   /* Port Select. 0 (defualt) = 10baseT, 1 = 100baseTX: can't be set */
++	csr6_ps = (1<<18),   /* Port Select. 0 (default) = 10baseT, 1 = 100baseTX: can't be set */
+ 	csr6_ca = (1<<17),   /* Collision Offset Enable. If set uses special algorithm in low collision situations */
+ 	csr6_trh = (1<<15),  /* Transmit Threshold high bit */
+ 	csr6_trl = (1<<14),  /* Transmit Threshold low bit */
+@@ -274,7 +274,7 @@ enum t21143_csr6_bits {
+ 	csr6_om_int_loop = (1<<10), /* internal (FIFO) loopback flag */
+ 	csr6_om_ext_loop = (1<<11), /* external (PMD) loopback flag */
+ 	/* set both and you get (PHY) loopback */
+-	csr6_fd = (1<<9),    /* Full duplex mode, disables hearbeat, no loopback */
++	csr6_fd = (1<<9),    /* Full duplex mode, disables heartbeat, no loopback */
+ 	csr6_pm = (1<<7),    /* Pass All Multicast */
+ 	csr6_pr = (1<<6),    /* Promiscuous mode */
+ 	csr6_sb = (1<<5),    /* Start(1)/Stop(0) backoff counter */
+diff --git a/drivers/net/ethernet/dec/tulip/winbond-840.c b/drivers/net/ethernet/dec/tulip/winbond-840.c
+index a5581f1d0141..be9199f55a8a 100644
+--- a/drivers/net/ethernet/dec/tulip/winbond-840.c
++++ b/drivers/net/ethernet/dec/tulip/winbond-840.c
+@@ -1188,7 +1188,7 @@ static int netdev_rx(struct net_device *dev)
+ 			break;
+ 		if ((status & 0x38008300) != 0x0300) {
+ 			if ((status & 0x38000300) != 0x0300) {
+-				/* Ingore earlier buffers. */
++				/* Ignore earlier buffers. */
+ 				if ((status & 0xffff) != 0x7fff) {
+ 					dev_warn(&dev->dev,
+ 						 "Oversized Ethernet frame spanned multiple buffers, entry %#x status %04x!\n",
 -- 
 2.48.1
 
