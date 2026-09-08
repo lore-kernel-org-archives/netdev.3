@@ -1,42 +1,50 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B248623507B;
-	Tue,  8 Sep 2026 20:40:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 645344B4879;
+	Tue,  8 Sep 2026 20:44:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788900037; cv=none; b=QRLxkDT/O0X+WP4rM0UUaulzcUBXvvlsK0SvZiXd5ij7eFkNJUrW3eN+NGHjLHfKciyadtG0epDqrxe9ZlvIcXdXNm0VkAhJQUxl2sLBzrjYX3IhxTE4G23sjIOVaMab/UDeXrV4LuMjs3zXPTtv+MeQCWY+BMK4JihFxn6TBWk=
+	t=1788900289; cv=none; b=TCK0/tZckjwDPyvw1gWUHhm3cQLAW/4cXqvk6BtVujhkI8NuCFcmNaGXyy4pEqUvjH13hz55/q2Q6RMmJVXXmYz6WlsVUSKCPBs/c/afIakvNP82FStRnX9QbQNqML0QkW46HQU1x4MusKROOUgupNnCtn7dH9w62XHJnYP3OEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788900037; c=relaxed/simple;
-	bh=Ss93J/8EbMVt2vkJwkChegaPEjEjz4i+QNqfsSn9gS4=;
+	s=arc-20240116; t=1788900289; c=relaxed/simple;
+	bh=IAx4DAYCGqMT4FZpmvXqersF/0q0U6q+bWhfa4I2PcM=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AMSL2vdsLnt5GC3IT9XV2vmXy7Y//Z2tta6gwT04mLD+jPlf5DGqaCZb8bx3FvrVCLY6UyI7IJ0BLDgvUU8M0r2NCiJ7dfoN3kJwc/pw1T8ziDVwJKgJdW2RlDBm8jmkIi5FScY0y1ZBjgQnn2JgSLjUM5Lf6PKs8em2/KDu3k0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Evdo/wa+; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=s7KIXja5u5AOUrDpf/qIGpP/kBYo65JZrgCaNyX09hI2ygb2nCJUAgWnvRXz95aEZEx6as01blNeyF9PTRNRPBm8UJA9pkbVOZMOG2AShRTGpguap0cLm4ZdxwOzpXK1JBbqtHe95Ht1hVI+h2HT1lmosI9hWJpP6CdXJu7JSA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j1FybzVZ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Evdo/wa+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C6901F00A3A;
-	Tue,  8 Sep 2026 20:40:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j1FybzVZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEDF61F00A3A;
+	Tue,  8 Sep 2026 20:44:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788900035;
-	bh=+nL20GL20N0hmfHYzmA3AYONzYIM2k86Zkd55y524x4=;
+	s=k20260515; t=1788900288;
+	bh=JXLwFnkqdE6J67EAMoGXafcMkRcYwlwH8UH+rj+BfS8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Evdo/wa+YMPnE1CPNuNIMJ2OYDKlKtod81MrMeARVK3RS0vFqs7FuD2SI4Kun8pyL
-	 hQjnG/mAZmIL9hMLtSFJnxXf5uf2yOB3m2YP3+e0R6fnN7D4ZTAYUzKow8FoScvCMt
-	 l9A/taFk2bMzTcOKurpwdtG9IN1HT22//jG/zBB1HTr1VDNbkMImTYKcJ5x57oBmzX
-	 Mppr3aFckiQeNNTTOQpyPD7d7SYgISlYZGsUWIYIqpc0EE9wpinesXnStBYbgcNlbq
-	 dQj6QtX5Z0Oxz3BdxB4V3oM/H6sbCSr5Eqj5vL4jvR7w4ro5+h7RDOI4TpzzxB+/Ah
-	 /TO7PFPbZvm8w==
-Date: Tue, 8 Sep 2026 13:40:34 -0700
+	b=j1FybzVZ62PixgCpdcAMz2Eb68ClkUs8u85JeRschAdcYNfcOFlHlvCMm+oBBf7p1
+	 FpgS993NQDQ/DnxPrSseFszqSIEuVfyRz1KEQPrF77WLVrsQ3T9H9bsTZTzablQ1i6
+	 nDO4QCIfeM8BC6VqAygbdUGzsFCZmDxBYxLTf7975UN185zu18e0+BcZSipcFVU9Ra
+	 jhzxkqONrT69Omfq2MXVc7x544gEqjCLsuurOJ1ppPU3iw/walG2nSlRmpP6M6Z7Ak
+	 Xye0DTHnB2mqGsiTztUmrR3I5GfETqk4ItSliAlX8in75V63FZ+VBC/zZmGJGPpNVp
+	 UzH0bL8un4CjA==
+Date: Tue, 8 Sep 2026 13:44:46 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: David Carlier <devnexen@gmail.com>
-Cc: Simon Horman <horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
- oss-drivers@corigine.com, "David S . Miller" <davem@davemloft.net>, Eric
+To: Yury Norov <yury.norov@gmail.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+ Russell King <linux@armlinux.org.uk>, Raju Rangoju <Raju.Rangoju@amd.com>,
+ Prashanth Kumar K R <PrashanthKumar.K.R@amd.com>, Tony Nguyen
+ <anthony.l.nguyen@intel.com>, Przemek Kitszel
+ <przemyslaw.kitszel@intel.com>, Jian Shen <shenjian15@huawei.com>, Jijie
+ Shao <shaojijie@huawei.com>, "David S. Miller" <davem@davemloft.net>, Eric
  Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] nfp: reject truncated hwinfo table
-Message-ID: <20260908134034.792ea77f@kernel.org>
-In-Reply-To: <20260908005437.11004-1-devnexen@gmail.com>
-References: <20260908005437.11004-1-devnexen@gmail.com>
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ intel-wired-lan@lists.osuosl.org, linux-usb@vger.kernel.org, Yury Norov
+ <ynorov@nvidia.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, Andrew
+ Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH 9/9] MAINTAINERS: co-maintain linkmode.h under BITMAP
+Message-ID: <20260908134446.58796a05@kernel.org>
+In-Reply-To: <20260907215439.409858-10-ynorov@nvidia.com>
+References: <20260907215439.409858-1-ynorov@nvidia.com>
+	<20260907215439.409858-10-ynorov@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -46,13 +54,9 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue,  8 Sep 2026 01:54:37 +0100 David Carlier wrote:
-> hwinfo_db_validate() only bounds db->size from above, so a firmware
-> table advertising size < sizeof(*db) + sizeof(u32) makes the following
-> "size -= sizeof(u32)" underflow and crc32_posix() read far out of
-> bounds. Reject such tables before the subtraction.
+On Mon,  7 Sep 2026 17:54:38 -0400 Yury Norov wrote:
+> The file is largely a wrapper around bitmap.h. List it under BITMAP
+> section for co-maintenance.
 
-AFAIU it's okay to assume that PCIe devices are not malicious
-Let's not waste time with these sort of "fixes"
--- 
-pw-bot: reject
+I don't think this is appropriate, configure lore+lei if you want 
+to see the changes.
