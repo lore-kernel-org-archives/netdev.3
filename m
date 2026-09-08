@@ -1,90 +1,104 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28A29424D46
-	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 08:25:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45EFB42589D;
+	Tue,  8 Sep 2026 08:25:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788855924; cv=none; b=gfbalC/ECAUOLb9qHe4v+kXEtKzY026NMIsgtTwIoff4/Tht+fM22zQcIfL1XovWON2wFgp851uZuU3lCKq30nO5ETvTEFreLHduf+n/IkFTGUoTTUQ6dgDEuCRraEiRifa7zME+oVFOx1Izryj/eDgg15Pv9ETgi3Mxe2MbrjY=
+	t=1788855928; cv=none; b=Vb2uwm/vwxXnCVfh2r2WRs3fI4JZyXLJDA1/jTzeXXEEWww1aplnmHSWHqCBRMVeRL6JxjGLXKABqXZgi4KqYd28UfdRJtoX74730GUdVK1AX+VGRW9IyYpot7SqBOzEQHiheKbx+9XyMXtbg9tA/CJUAGpyaxgOK83H1Wr87hY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788855924; c=relaxed/simple;
-	bh=rhFRpVS9EmLd8rd6IQ30xW4lLZ1/9O5lMThVxUcu15A=;
-	h=From:In-Reply-To:References:To:Cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=tQrk89CvLqKhLlg6curIQc7VmmQpsT2ElyCaNrYFGN9cLkzmLRzu5K7GpLw9fQcP3qd4oUcyf/Tjt9I/P7SmU/KYFvkan4+81s0WUgQNSNiU/2TMP7Ftp6TMaeyvz1dZUF2hRn2DEREEJLIVMzp7yjpjZ9izlqHcEYZJySjPKZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bcrErUyM; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1788855928; c=relaxed/simple;
+	bh=P+yhYIZi4xMF5qmM81V+uLOr+7qdxXkcnjxr0ACEknI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=hLnuObOXi1XRj/7G4+GSm+Tvg+j47/vjUE5WhcwYJp2/wAEqf4bWXR4I0yFtf3OrgGqTmjVwlTerqrMQyYSbCopzB8KqHITPV7QIW+jF6M4hhYIiev3B75WMFiMHlshQPUTp/wZTR5Qo8+6JWYk3tezsqIkvIt1+oOHXV9UA2vU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=UH/Xlal0; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=xVFxmMcx; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bcrErUyM"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1788855918;
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="UH/Xlal0";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="xVFxmMcx"
+From: Kurt Kanzenbach <kurt@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1788855917;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=OVXrGUg5TW2gZ5wAfIAON6+TG4JNqpvGjztTjnmPorQ=;
-	b=bcrErUyMDyKCyMf73EpOLSuW8TnERpXmC9Tqe5Ts4LfFbGX9tdrYyYvdTqnSde7V9NSnF4
-	Lg7YWp04auWpR2QIiWw5HTfp84I6oMcSxpWWEhumZ/wsWchUb/asU6fj0uxt8BLcJZN4Bh
-	Xb3UxGXJntpwmHn6tyYxaNL1IUa7+FE=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-528-tu3mrcHjMLCFpPWz0iFacw-1; Tue,
- 08 Sep 2026 04:25:15 -0400
-X-MC-Unique: tu3mrcHjMLCFpPWz0iFacw-1
-X-Mimecast-MFC-AGG-ID: tu3mrcHjMLCFpPWz0iFacw_1788855913
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E2EA41954B23;
-	Tue,  8 Sep 2026 08:25:12 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.44.32.158])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id AE69D30001A2;
-	Tue,  8 Sep 2026 08:25:08 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <a2bd6f3ed29919a7328363b548299ae583f052b0.1788539302.git.zihanx@nebusec.ai>
-References: <a2bd6f3ed29919a7328363b548299ae583f052b0.1788539302.git.zihanx@nebusec.ai> <cover.1788539302.git.zihanx@nebusec.ai>
-To: Zihan Xi <zihanx@nebusec.ai>
-Cc: dhowells@redhat.com, netdev@vger.kernel.org,
-    Marc Dionne <marc.dionne@auristor.com>,
-    "David S . Miller" <davem@davemloft.net>,
-    Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-    Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-    linux-afs@lists.infradead.org, linux-kernel@vger.kernel.org,
-    stable@vger.kernel.org
-Subject: Re: [PATCH net v3 1/1] rxrpc: fix encap_rcv skb accounting exhaustion
+	bh=obyn9B+WHvsBPD5qGfnZHr72VXetk3OXFfz903w099c=;
+	b=UH/Xlal08lVcP4t0U48SAylZSbQjA4YGGni6A56R1oXi9dlB24AoUT9n0yuLdaV9Pg4GwA
+	rJ4kR1e3HfYwPlfJ00mWZkJalREYqy0Idki7aqZ45xjGi6hs5G6k9MksnxEO4NOoz6ZJBm
+	eKRxX1e+xvnF/FUaYPTNIrdGd4paUiMxQ/g1zTsTlJYvCpHLvtsJM7J/bldvVjzClU2kwE
+	Iq95oKDdmIfKCJ7tbMOQz4gc6vBEIHkAk8E4ftjfh7dLRFyh+SL9wLAfgQe+PmigU9yjRw
+	lnjOFmssbp2A4xeLujsHEEiAcewsPTZMGjuvRexZUw/EcRF0msrs2W0Ls9s+dQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1788855917;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=obyn9B+WHvsBPD5qGfnZHr72VXetk3OXFfz903w099c=;
+	b=xVFxmMcxnZQgXIdbpHnUpwpcbvTbSag47f4NuANx3BMPYExHYZ/eUVEyo0YCwbsZhch5MC
+	YUAt66CXBpPyjBAA==
+To: Vasilij Strassheim <v.strassheim@linutronix.de>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean
+ <olteanv@gmail.com>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Russell King
+ <linux@armlinux.org.uk>
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, Martin Kaistra <martin.kaistra@linutronix.de>,
+ Benedikt Spranger <b.spranger@linutronix.de>, Vasilij Strassheim
+ <v.strassheim@linutronix.de>
+Subject: Re: [PATCH net-next v2 4/4] net: dsa: soce: Add basic support for
+ SoC-e switch IP cores
+In-Reply-To: <20260903-devel-vstrassheim-soce-dsa-ml-v2-4-fb0587cb466b@linutronix.de>
+References: <20260903-devel-vstrassheim-soce-dsa-ml-v2-0-fb0587cb466b@linutronix.de>
+ <20260903-devel-vstrassheim-soce-dsa-ml-v2-4-fb0587cb466b@linutronix.de>
+Date: Tue, 08 Sep 2026 10:25:15 +0200
+Message-ID: <877bkwgnf8.fsf@jax.kurt.home>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <1502560.1788855907.1@warthog.procyon.org.uk>
-Date: Tue, 08 Sep 2026 09:25:07 +0100
-Message-ID: <1502561.1788855907@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Content-Type: multipart/signed; boundary="=-=-=";
+	micalg=pgp-sha512; protocol="application/pgp-signature"
 
-Zihan Xi <zihanx@nebusec.ai> wrote:
+--=-=-=
+Content-Type: text/plain
 
-> Reaccount encapsulated packets against the UDP socket before queueing
-> them on the RxRPC local queue and drop packets once the socket rcvbuf
-> limit is reached.
+On Thu Sep 03 2026, Vasilij Strassheim wrote:
+> +static const struct of_device_id soce_of_match[] = {
+> +	{ .compatible = "soce,swip-00-04-0c-10",
+> +	  .data = &soce_probe_desc_swip_00_04_0c_10 },
+> +	{ /* sentinel */ },
+> +};
 
-This seems reasonable.  I do really need to add separate accounting for
-buffered incoming DATA packets and for all other incoming packets (especially
-ACKs), but I think that can be done after the skb_orphan() point you add.
+In case you repost, remove the comma ;-). See
 
-> Clear sk_user_data under RCU protection and release the socket only after
-> the local queues are purged.
+ https://lore.kernel.org/netdev/20260904043724.2955444-1-s-vadapalli@ti.com/
 
-Is this actually a fix for a separate issue?
+Thanks,
+Kurt
 
-Anyway:
+--=-=-=
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Acked-by: David Howells <dhowells@redhat.com>
+-----BEGIN PGP SIGNATURE-----
 
+iQJHBAEBCgAxFiEEvLm/ssjDfdPf21mSwZPR8qpGc4IFAmqfxmsTHGt1cnRAbGlu
+dXRyb25peC5kZQAKCRDBk9HyqkZzgtHWD/0alMenNi3k3jvtTkUGLPR/gN9FrAud
+X74HMLt7k3MvtdZNE8UTy7kBlGBX2Pw4DOypMcy70v+A8K1EViEn1uPEkjLymKXk
+Yk6IJ2MFmH4XoohmoYbcU7xNvzkbIjzBOWxg6hfrZkEnoU5139m/lqt9gxsBiOme
+mJjE86njuVDbruJvWHZ/BcWAi7wD/ceuuYkcXqL4s7o0k8oN6c8EQrXs2QRVKBUV
+5Iv14yW3GgRl7b2ktN60ZMjugGEgVXB8xLe7yV82DNByZ/d0ykeRR0c23mKQff+G
+2HuL6df3Iy27+tt2pLi6OeI0P6S+MNVT7VPX1DReS4/oM09WlMtd1J5zDcfJ6TkL
+j5czEIozdGk7fEy3NgFJdBQY0jQ7VBbhRnybrGnfm4BxobKQMGOkx5mXCpDfbuMs
+PD42Qqcdfco3fDsyNae3EGcPHAOpP43n601BeVG/hnH6IgE+DiJFCdJKAeCVVMPn
+Gfq5Gt3WFzatDxf9us8d89fZMPEZD5vnIdI2TKe1StiQIMmn/PGfh+mX5USgGXmt
+hhdQvT9RooNHW2g0mihAwXSFRIpIudHqETTDA0aLJH9ouE2bBikrprouH3AooQAT
+Za9s3cWv7Ew/gUg0NfLkP4e60mEe7d7idc7D7pLB7ypXmPdKCDGSh1fT+KKe8eny
+h6jetx49W0fhJQ==
+=g4BB
+-----END PGP SIGNATURE-----
+--=-=-=--
