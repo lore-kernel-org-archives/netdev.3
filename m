@@ -1,250 +1,130 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9266857F747;
-	Tue,  8 Sep 2026 18:44:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C27A67E105
+	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 18:58:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788893101; cv=none; b=Os/vdpzy6/ZdEFkq2xCH8Q61QzT31IUj5KKpl4YJwjuk0gxL82+bCYSBQw0V8JtWuwBf7BnwtO1zGlmnDBejB4aEiDLSJo5aCbzKIRTsoingywqHoF/GJwV2xJ0xpHOXHqFFJcMEUsLnsBi+AsioBkUJKAxSH85xzxKtAFY6DtA=
+	t=1788893896; cv=none; b=paGTGqhkdQl6YTaCXjsDJcDyW/DmhhHyKfrEvj8TqgSIwk1MmerML1q9uy3SkzsmtjbHIQiXYbZOFqeHhF6gHLlOnz5Y4sSxCNU6nWv0+aKz+5C03i4VKx8DfbNnXu43QFlBTLzVnNrIprf9jtNhlw3R/9VnmY3q35j2HU3/2XQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788893101; c=relaxed/simple;
-	bh=N5co+aE8e2LydOe+1tYMAvS47BmQhi/QQTky/RR2Jxc=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=F7qf/k2wXf+HYxrjNmSjyMqdcuvEZeJjPfNNvW0EJ4tFXD9YMEJ/Dr/tAwzUcRQquQbfIyM0734fh1UAfg2MmuWwMZ8FvgmWgOCuUHDjvKYUJYDP/qkxDNauyLY4rblLIb0Mxc+VIWhUSKFBA5RQtl6vx91otAZs6XHTsjo3Ffc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=NEzzRmrw; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=mX7e79/D; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1788893896; c=relaxed/simple;
+	bh=gqkuU84b8kPfsWpTSDmU6qwxuQ/o0bHVzk4L84MkgEM=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=AA/lNa7+Ck5D7fyqg6yvo6q1RHE9n4ItlpQ0q/QxAJdDv5YUBkda1VG7ut5q+cjMKfWmb1UhTkqJbKQ8qThl4/6V41qz4mpQTxL/MBndspEFbrtIvLXsHeY2sEzZpF926tkPgku+VrJjKlBq5jgT66Zt9QEM17I2VzUh7+IpMns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Tkzv5ouC; arc=none smtp.client-ip=209.85.219.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="NEzzRmrw";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="mX7e79/D"
-Message-ID: <db26d5c9262069a11e5cbe00e176b81e40baebeb.camel@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1788893094;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kvq7ebmlb9noJ+zywPDpf0+rQyqEU+rhaZi6VKfJDDs=;
-	b=NEzzRmrwtLrq0ba5Q4a+ggYdKtJ1gBZXuNws6d1zU2RennDIktYlM9k5hAyWGEI6kmFWyE
-	cAPgIMKgUgSv1X4DSlJUjfmngYLqR1yc5Z2bax1/J4Xn+BetRmj90qKpLMPOPSpl/7x8fY
-	NA6bjRTDDvxVkDFq1uRrz0RrkR2DUyTwa5F7xU/MSRGIf8N9uquO6Phg9Wn2H5I7yEZ8LB
-	OhRy5BJxnQVuktWoyRbZaFim7Y3MuJaax4+/AfIo82wAAEDSqoRcWYGEBuOPS6+kUyVMB6
-	wGKxU8KZA8UGmQaScis3r0DPHOEi2xQA/bQf+4db1JPSRbPHvhkeNOE8nhckJw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1788893094;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kvq7ebmlb9noJ+zywPDpf0+rQyqEU+rhaZi6VKfJDDs=;
-	b=mX7e79/Diyb1yoBxFcfBImw2V/tV+D8nzcoHG9A+7D3A6OTWx+pC9C9nWAz4s0SlQi1esp
-	ZsQ+gknTtUsSrbBw==
-Subject: Re: [PATCH net-next v2 4/4] net: dsa: soce: Add basic support for
- SoC-e switch IP cores
-From: Vasilij Strassheim <v.strassheim@linutronix.de>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-  Conor Dooley <conor+dt@kernel.org>, Vladimir Oltean <olteanv@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Russell King
- <linux@armlinux.org.uk>,  devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org,  Martin Kaistra
- <martin.kaistra@linutronix.de>, Benedikt Spranger <b.spranger@linutronix.de>
-Date: Tue, 08 Sep 2026 20:44:53 +0200
-In-Reply-To: <3c2c5b39-6a7d-4cb2-af1c-b5015b6bf1e8@lunn.ch>
-References: 
-	<20260903-devel-vstrassheim-soce-dsa-ml-v2-0-fb0587cb466b@linutronix.de>
-	 <20260903-devel-vstrassheim-soce-dsa-ml-v2-4-fb0587cb466b@linutronix.de>
-	 <3c2c5b39-6a7d-4cb2-af1c-b5015b6bf1e8@lunn.ch>
-Organization: Linutronix GmbH
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Tkzv5ouC"
+Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-91034716d1dso76440296d6.2
+        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 11:58:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788893893; x=1789498693; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=gqkuU84b8kPfsWpTSDmU6qwxuQ/o0bHVzk4L84MkgEM=;
+        b=Tkzv5ouC3f0Wmaxj3dlgs3YUuOxaEzWhoLI9hcqEQt91YA6AcV/CKXjdLb15VNDnpH
+         8IoTfGMeNjZHUDhW/3Viq/0qdoV1z0e2b0WMTt4ZTs4tlq/J5LkhKgfiNtsdgvURturX
+         3daznP/ewNtg5vadnApFsXDvy6OzpraxNQLwQNfho5kyVRmj26lZG8qCmsDXeeEkz99A
+         vNSRaF8XQP3M4uHVGw/rcVH1YsvF7TpjSA2zqttt2/0Y7RR1ewm2qM29CI9qphrYrTPO
+         XCXpV2ljZV5Y61T9EAMLcZcbKFqcDiPu0c4qsPa3QSpiZl9dhevqF4uArOCCblAF9s7X
+         DlhQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788893893; x=1789498693;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=gqkuU84b8kPfsWpTSDmU6qwxuQ/o0bHVzk4L84MkgEM=;
+        b=rWv4LGQ2Le2NJJkjKSef+snnzOfuIIwfRRYHGJjpAZ/ifqHnI+oYUSpM0WpB7dKp8u
+         viYpLBb1epkxCVsxL1oe0ihcEZSl3RrG4yuLpQdjD7gUzcft+o/BkIQ6MvZhDAyJVF/o
+         BTcvvTUjt1nHU/X4PJRqyr9kaultmb1HFs492grHkVdUI20cFDI0Vvdp3HWST3YPicHK
+         RmaJq7CQeZqUZJ6CCTUvcZFYl7omE+L44zI74ZpX/97xZ1NRohi5f9TlPGDk5a6m+AbC
+         A3qfG7zJ1/F9lMWzaEvsupJQtXsyViWO3xJMNpopZmNZM2n3iMznDVSCMOazCxQMJ7MA
+         0ktw==
+X-Forwarded-Encrypted: i=1; AKwUvBzr8wKjSr45DKoU+vl37siDPVhrkD3MQ9RPZyhRmT3SGDFFKoU+1obIEXAynVGuLqET4633ygQ=@vger.kernel.org
+X-Gm-Message-State: AFuF++n0yN6OHBD4dosIk9GahrjyV7s+BDKgbGBOKOJMXO9CQpUP+Vsw
+	6Als1krDViMt9B72hiP+PIBVsLWiARigBsb+S7buur6cKeBK7mLdx3O5
+X-Gm-Gg: AYBFou2I6WezMQt7kn0fi4cpBVtMaQrQN1UxS3wgju3UYSoq6eUtH/v84HyaJn1sGN/
+	EeQEIp4cCVYhOelDS791QUuHpV7oH3CNJJZqK7I8K32RdrJwAlAgWotv1w6zRSZJLRJ+9iH/sxK
+	sttCygKMP1r9P+umN073HPuZtEH6iJk7yjJMOIeoIZQW4iKGZD+xng1+FL8TIo23cnA12rcWbs8
+	X/J/T/NTAHCKLPoN6+z7Zad1V7Fo3v3ZMLokrjvVqT+g0SLeCB+qpi3ZsaEQlf3b3NaK9wObCUP
+	RyMGfbho6TB4X/udsxpkbQ8IA6eGj4MwlwT/IprCAO9bqPe8f0ajCW5uFw2ruk0CiJ7LF6DpGnp
+	tBSnRzsguxbZbHxDeHseTQCqMTDDDFDxdYvjwf+hICLXlx8Q/kJdxJDPqH3BEDfJTmSNYOwOFrn
+	okU7PxDlVJRRygYXj/3v0upusVFIwSjnkdSOWGSfmxyC9OWVv91NJZhwlknQZX4aE5OA==
+X-Received: by 2002:a05:6214:2b89:b0:90e:8424:4068 with SMTP id 6a1803df08f44-9103f01236emr374454066d6.24.1788893893267;
+        Tue, 08 Sep 2026 11:58:13 -0700 (PDT)
+Received: from localhost ([2600:4040:9399:4000:e553:72e5:7d37:c7ef])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-910406b0f51sm123602326d6.42.2026.09.08.11.58.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 08 Sep 2026 11:58:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 08 Sep 2026 14:58:11 -0400
+Message-Id: <DLA5YKSPNN9K.1P59JIGVRUNK3@gmail.com>
+Cc: <patchwork-bot+netdevbpf@kernel.org>, <willemdebruijn.kernel@gmail.com>,
+ <davem@davemloft.net>, <edumazet@google.com>, <pabeni@redhat.com>,
+ <horms@kernel.org>, <andrew+netdev@lunn.ch>, <netdev@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net-next 0/4] psp: make tx key ops optional for drivers
+From: "Daniel Zahka" <daniel.zahka@gmail.com>
+To: "Jakub Kicinski" <kuba@kernel.org>, "Daniel Zahka"
+ <daniel.zahka@gmail.com>
+X-Mailer: aerc 0.21.0-threadmapfix
+References: <20260903-psp-prep-v1-0-d47e9c4c375d@gmail.com>
+ <178882561539.3212362.10949911837502586488.git-patchwork-notify@kernel.org>
+ <DL9ZTV87UI2A.2QIEPTDS2ROKA@gmail.com> <20260908103326.7b240216@kernel.org>
+In-Reply-To: <20260908103326.7b240216@kernel.org>
 
-On Mon, 2026-09-07 at 21:28 +0200, Andrew Lunn wrote:
-> > +#define SOCE_MAX_NUM_PORTS 31
-> > +#define SOCE_MAX_MDIO_ADDR 32
->=20
-> Given what the binding says, that looks odd.
->=20
+On Tue Sep 8, 2026 at 1:33 PM EDT, Jakub Kicinski wrote:
+> On Tue, 08 Sep 2026 10:09:56 -0400 Daniel Zahka wrote:
+>> On Mon Sep 7, 2026 at 8:00 PM EDT, patchwork-bot+netdevbpf wrote:
+>> > On Thu, 03 Sep 2026 18:33:58 -0700 you wrote: =20
+>> >> This is the first of two series which together implement rekeying PSP
+>> >> protected tcp connections. Here are both series together on github:
+>> >> https://github.com/danieldzahka/linux/commits/psp-rekey-split/
+>> >>=20
+>> >> This first series is mostly non-functional changes, except for the mi=
+nor
+>> >> difference that netdevsim driver implements tx key ops. Its tx key op=
+s
+>> >> were basically NOPs, and in the future PSP core can subsume the assoc
+>> >> counting that it was doing.
+>>
+>> Thanks. I think applying was the right move, but I would like to
+>> highlight something that sashiko flagged on patch 4, as I think it will
+>> need to be addressed with its own series. The hazard is preexisting and
+>> much broader than the way sashiko talks about it.=20
+>
+> Ugh, yes, the complaint was sort of besides the point so Clashiko
+> has dropped it. But the problem behind it is real.
+>
+>> The high level idea is that netdev core should probably take extra care
+>> to make sure users of sk_validate_xmit_skb (psp and ktls) cannot clobber
+>> what each other has set for that callback. In the case of psp vs. ktls,
+>> there are probably fundamental reasons why these should be kept mutually
+>> exclusive and their uapis should reject attempts to transition between
+>> them.
+>>=20
+>> More generally however, any offloads wishing to claim
+>> sk_validate_xmit_skb should be considered mutually exclusive, and netdev
+>> core may benefit from a generic system to enforce ownership. That would
+>> help in case another user of sk_validate_xmit_skb comes along later.
+>
+> There could also be confusion about the meaning of the decrypted bit in
+> the skb. Off the top of my head Rx TLS is shared between offload and
+> non-offload so SW TLS Rx ingesting a PSP packet may think that it was
+> TLS decrypted today. We should reject any TLS+PSP, not just
+> validate_xmit.
+>
+> Both setup paths are under socket lock so it's a relatively
+> straightforward fix?=20
 
-The checks using these constants are unnecessary. I will remove them and
-clarify the 31-port hardware limit.
-
-> > +#define SOCE_MAX_MDIO_OUTPUTS SOCE_MAX_NUM_PORTS
-> > +
-> > +struct dsa_switch;
-> > +
-> > +struct soce_mdio_ops {
-> > +	int (*phy_read)(struct dsa_switch *ds, int mdio_output, int phy_addr,
-> > +			int regnum);
-> > +	int (*phy_write)(struct dsa_switch *ds, int mdio_output, int phy_addr=
-,
-> > +			 int regnum, u16 val);
-> > +	int (*phy_read_c45)(struct dsa_switch *ds, int mdio_output, int phy_a=
-ddr,
-> > +			    int devad, int regnum);
-> > +	int (*phy_write_c45)(struct dsa_switch *ds, int mdio_output, int phy_=
-addr,
-> > +			     int devad, int regnum, u16 val);
-> > +};
-> > +
-> > +struct soce_dsa_local {
-> > +	void __iomem *base_addr;
-> > +	void __iomem *mdio_master_addr;
-> > +	/* Serializes all logical buses sharing the MDIO master. */
-> > +	struct mutex mdio_lock;
->=20
-> What is the MDIO master?
-
-It refers to the switch-integrated MDIO controller: one shared set of
-MMIO transaction registers serving multiple selectable MDIO buses. The
-switch documentation calls it an MDIO bridge. I will rename "master" to
-"controller".
-
->=20
-> > +static const struct soce_mdio_ops soce_mdio_ops_c22_c45 =3D {
-> > +	.phy_read	=3D soce_mdio_23_02_read,
-> > +	.phy_write	=3D soce_mdio_23_02_write,
-> > +	.phy_read_c45	=3D soce_mdio_23_02_read_c45,
-> > +	.phy_write_c45	=3D soce_mdio_23_02_write_c45,
-> > +};
->=20
-> It seems like this is the only struct soce_mdio_ops. Does the IP
-> support different MDIO buses? Is this level of abstraction actually
-> needed?
->=20
-
-Older IP versions used a different register layout. Since this driver
-currently supports only one variant, I will remove the abstraction. It
-can be added back when another variant is supported.
-
-> > +static inline bool soce_mdio_output_valid(int mdio_output)
-> > +{
-> > +	return mdio_output >=3D 0 && mdio_output < SOCE_MAX_MDIO_OUTPUTS;
-> > +}
->=20
-> No inline functions in .c files. Let the compile decide.
-
-Yes, I will fix this along with some other issues reported by the
-patchwork checks.
-
->=20
-> > +static inline bool soce_mdio_addr_valid(int phy_addr)
-> > +{
-> > +	return phy_addr >=3D 0 && phy_addr < SOCE_MAX_MDIO_ADDR;
-> > +}
-> > +
-> > +static inline bool soce_mdio_c22_reg_valid(int regnum)
-> > +{
-> > +	return regnum >=3D 0 && regnum <=3D SOCE_MDIO_C22_REG_MAX;
-> > +}
-> > +
-> > +static inline bool soce_mdio_c45_params_valid(int devad, int regnum)
-> > +{
-> > +	return devad >=3D 0 && devad <=3D SOCE_MDIO_C45_DEVAD_MAX &&
-> > +	       regnum >=3D 0 && regnum <=3D SOCE_MDIO_C45_REG_MAX;
-> > +}
->=20
-> Do you see any other MDIO driver doing this sort of checking?
-
-No. I will remove all redundant checks.=20
-
->=20
-> > +static int soce_mdio_read(struct mii_bus *bus, int addr, int reg)
-> > +{
-> > +	struct soce_mdio_bus *state =3D bus->priv;
-> > +	struct soce_dsa_local *local;
-> > +	struct soce_priv *priv;
-> > +	int ret;
-> > +
-> > +	priv =3D state->ds->priv;
-> > +	local =3D &priv->local;
-> > +
-> > +	if (!local->mdio_ops || !local->mdio_ops->phy_read)
-> > +		return -EOPNOTSUPP;
-> > +
-> > +	if (!soce_mdio_addr_valid(addr))
-> > +		return -EINVAL;
-> > +
-> > +	mutex_lock(&local->mdio_lock);
-> > +	ret =3D local->mdio_ops->phy_read(state->ds, state->mdio_output, addr=
-,
-> > +					reg);
-> > +	mutex_unlock(&local->mdio_lock);
->=20
-> What is the lock protecting?
-
-It serializes accesses to the shared MDIO controller transaction
-registers across all MDIO buses.
-
->=20
-> > +static int soce_register_mdio_bus(struct soce_priv *priv, struct devic=
-e *dev,
-> > +				  struct device_node *mdio_np,
-> > +				  u32 mdio_output)
-> > +{
-> > +	struct soce_mdio_bus *state;
-> > +	struct mii_bus *bus;
-> > +
-> > +	bus =3D devm_mdiobus_alloc(dev);
-> > +	if (!bus)
-> > +		return -ENOMEM;
-> > +
-> > +	state =3D devm_kzalloc(dev, sizeof(*state), GFP_KERNEL);
-> > +	if (!state)
-> > +		return -ENOMEM;
-> > +
-> > +	state->ds =3D priv->ds;
-> > +	state->mdio_output =3D mdio_output;
->=20
-> Can you think of a better name than mdio_output. It seems to be the
-> bus number?
->=20
-
-Yes, it is the bus selector. I will rename it to mdio_bus_id.
-
-> > +
-> > +	bus->priv =3D state;
-> > +	bus->name =3D "soce mdio";
-> > +	bus->read =3D soce_mdio_read;
-> > +	bus->write =3D soce_mdio_write;
-> > +	bus->read_c45 =3D soce_mdio_read_c45;
-> > +	bus->write_c45 =3D soce_mdio_write_c45;
-> > +	/* ds->dst can be NULL during probe, before dsa_register_switch() */
-> > +	snprintf(bus->id, MII_BUS_ID_SIZE, "%s-mdio-%u", dev_name(dev),
-> > +		 mdio_output);
-> > +	bus->parent =3D dev;
-> > +
-> > +	return devm_of_mdiobus_register(dev, bus, mdio_np);
-> > +}
-> > +int soce_mdio_23_02_read_c45(struct dsa_switch *ds, int mdio_output,
-> > +			     int phy_addr, int devad, int regnum)
-> > +{
-> > +	void __iomem *ctrl, *params, *read_reg, *write_reg;
-> > +	struct soce_priv *priv =3D ds->priv;
-> > +	struct soce_dsa_local *local;
-> > +	u32 regvalue;
-> > +	int ret;
-> > +
-> > +	if (!soce_mdio_output_valid(mdio_output) ||
-> > +	    !soce_mdio_addr_valid(phy_addr) ||
-> > +	    !soce_mdio_c45_params_valid(devad, regnum))
-> > +		return -EINVAL;
->=20
-> Hasn't this already been checked once?
-
-Yes, I will remove this and other redundant checks.=20
-
->=20
-> 	Andrew
-
-Thanks,
-Vasilij
-
+Yes. I'll put a fix together.
