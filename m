@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4929F59D625
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96B5C582B93
 	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 22:49:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788907750; cv=none; b=Ikvv2yIY9MMUfj+wW5f/avPu0Qh4jj7N9mKPFvZvXl+eRP8v/B+K3FfePIPSnXCSHICL3tmpFj0PoHova0jxYHgWw6m5rpvl811vSPwxg5iMcpMC7T0FR/+k2TRWyvO2AFdKgZzq955CFEgQCLRrGacOpTx1qMbIvwuodzB/fIs=
+	t=1788907750; cv=none; b=ZDJ5jrWdXzGHmuDKZEDjgokmR9DanycZAIuoZljqlG5XbL4FKyx0GjH1zbWv7hoBcjjWhxNc9XnHq9pmrObvypGSucFIr+Xh5+YS4O8wv6IHibTcBISjBgxn0U0HozvKmvv/LFjzZ88Svz9mij3GBX30lm2S3I7rYaxvbf8V1co=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1788907750; c=relaxed/simple;
-	bh=7AMJfBhCWUs0PJPMngZINcs681MAZ7tdcrpycdoNJ2k=;
+	bh=ku+e3bL4x+lBaR38skWN9xOr6YJV5nqgmOXTqVqgzr0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=My9yznvaRTkq8qHjAwDz1EKHPAjRjZsjN8MGT+xs1KWDlfmaSOcqYHRSZwjUZb+XiM5Ak66jSm9lB5rzw1AZ9ZBARC0imcesMihsqKvOShOnx/9gEjWdzfn1xf8B2u5QmLTPc4t9q0MeA80rrvYXYBfRqSIZ8Bx0v34J1CCm960=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gvYtSHus; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=IJ4BSNQy7XQhwXDkxC8uSzQbuk2L0y1uP2igKb3/gDdE69mM28Y/WUhggu0LSMhDNAmvaXsnE05vEM6R801CwStPXstGiC92s0jqLqF5ItZU30kJGzvPNSsb44B4OTW3jxvC6yXEX8qwxQG7IF4ze8P8CF3RwK2T7F9SUhNgGrQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aEg/RN3d; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gvYtSHus"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B196E1F00ADB;
-	Tue,  8 Sep 2026 22:49:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aEg/RN3d"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5C191F00ACF;
+	Tue,  8 Sep 2026 22:49:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788907742;
-	bh=+L+nPtt7tbUsJ52z6dbQ6ZjHQXA5H/cCKKJXfBSrQDM=;
+	s=k20260515; t=1788907740;
+	bh=rNFZWPUX7VzhiE7GiFS3Bc2KDOzjY6DHV7+CQNRJXyY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gvYtSHusnT7u8fHFzoi3+ddZPs42hSBlsHrWkHOpJ/ql27ahKWh7MstMBiIbuALcU
-	 n2vRWNwhznhDWUol1rKV9Lbv36dGSqpNP9udNH7HmCswPqXchTeunuKhBkCf/6CPn+
-	 9e2QZF+I0JkqgWi/dJMLvCMEuGK7U1oSBWD3grqqbjdpOXBgqJxCzvgeFRGMn2dS8m
-	 AL/DZnvonOyczYaS2DMX99PUPGX0VgjdQ8UsW06jCC9FUYkDZ0NdBPZKz+m7HqPVyL
-	 flCdHaDpNXTxxXcy92DkEdD/4G+oVlll7LyCzXv1aCEYpyZOdPFCidZTujD5IWduK0
-	 NsBYkzkkbS2Wg==
+	b=aEg/RN3d97Op9GBwrscRBC46boXETZgiFI4vHRGQ1jGNUHS0yvJ6qMiySVS8lx565
+	 1H4MuuzYXoySh/FHndngs31/ek/HSYli4OjOxyT6CtrBNearqfDfKqOPp0ulyx6P1O
+	 UG5iCXaT1eif/RrQvkjQaBAjGZVeWZj8brxjPpV853czfZXJHbh8ccWltOwkuCgB8r
+	 TI9+cfNeX3Ci+/XL3SKPPOhXEHtdUqLodPl6HGvFNdPfu2NJOceXzMHoLp++ii60aR
+	 wcSA8mXiJIL9PQjdR5CmmD18hzoyYC9CB8Gt5O4/zFJ1Kys9thu4ivR7baIqC10Ahx
+	 8GjSmiIxmSwQA==
 From: Jakub Kicinski <kuba@kernel.org>
 To: steffen.klassert@secunet.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
 	davem@davemloft.net,
 	herbert@gondor.apana.org.au,
 	netdev@vger.kernel.org
-Subject: Re: [PATCH 10/12] xfrm: hold net_device reference under RCU in bundle creation
-Date: Tue,  8 Sep 2026 15:49:01 -0700
-Message-ID: <20260908224901.1591334-1-kuba@kernel.org>
+Subject: Re: [PATCH 09/12] esp: downgrade zerocopy managed frags before mutating skb frags
+Date: Tue,  8 Sep 2026 15:49:00 -0700
+Message-ID: <20260908224900.1591301-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260907093020.2228346-11-steffen.klassert@secunet.com>
-References: <20260907093020.2228346-11-steffen.klassert@secunet.com>
+In-Reply-To: <20260907093020.2228346-10-steffen.klassert@secunet.com>
+References: <20260907093020.2228346-10-steffen.klassert@secunet.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,89 +49,175 @@ Content-Transfer-Encoding: 8bit
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
-xfrm: hold net_device reference under RCU in bundle creation
+esp: downgrade zerocopy managed frags before mutating skb frags
 
-This converts the dst->dev reads in xfrm_bundle_create() and
-xfrm_create_dummy_bundle() to dst_dev_rcu() and keeps the RCU read-side
-critical section open until xfrm_fill_dst() has taken the device
-references, closing a use-after-free when a concurrent RTM_DELLINK runs
-dst_dev_put().
+This adds a skb_zcopy_downgrade_managed() call to the out-of-place ESP
+output path in esp_output_head() and esp6_output_head(), so that the frag
+array is no longer mutated while SKBFL_MANAGED_FRAG_REFS is set.  Real
+page references are taken on the existing frags before ESP appends its
+trailer frag.
 
-Link: https://lore.kernel.org/all/20260820200245.44312-1-blbllhy@gmail.com/
-
-> diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
-> index 932a313b9460a..513c9f2283347 100644
-> --- a/net/xfrm/xfrm_policy.c
-> +++ b/net/xfrm/xfrm_policy.c
-> @@ -2770,9 +2770,12 @@ static struct dst_entry *xfrm_bundle_create(struct xfrm_policy *policy,
->  	xdst0->path = dst;
+> diff --git a/net/ipv4/esp4.c b/net/ipv4/esp4.c
+> index a6c18aea7498d..e76db5817e78e 100644
+> --- a/net/ipv4/esp4.c
+> +++ b/net/ipv4/esp4.c
+> @@ -441,6 +441,12 @@ int esp_output_head(struct xfrm_state *x, struct sk_buff *skb, struct esp_info *
 >  
->  	err = -ENODEV;
-> -	dev = dst->dev;
-> -	if (!dev)
-> +	rcu_read_lock();
-> +	dev = dst_dev_rcu(dst);
-> +	if (!dev) {
-> +		rcu_read_unlock();
->  		goto free_dst;
-> +	}
+>  			esp->inplace = false;
+>  
+> +			/* Take real page refs and clear SKBFL_MANAGED_FRAG_REFS before
+> +			 * we mutate the frag array, so the per-frag unref stays balanced
+> +			 * for zerocopy managed frags (see __ip_append_data()).
+> +			 */
+> +			skb_zcopy_downgrade_managed(skb);
+> +
 
 [Severity: High]
-This isn't a bug introduced by this patch, but should the same treatment be
-applied to the other dst->dev reads in this file?  The caller in the reported
-stack trace, xfrm_lookup_with_ifid(), still reads dst_orig->dev twice and
-dereferences it on the nopol path with no rcu_read_lock() held:
+This isn't a bug introduced by this patch, but does the sibling xfrm
+transform need the same treatment?  ipcomp_post_acomp() in
+net/xfrm/xfrm_ipcomp.c rewrites the frag array too, and there is no
+skb_zcopy_downgrade_managed() anywhere under net/xfrm/.
 
-net/xfrm/xfrm_policy.c:xfrm_lookup_with_ifid() {
+ipcomp_setup_req() has a fast path that deliberately avoids any cow, so
+the implicit downgrade inside pskb_expand_head() never runs:
+
+net/xfrm/xfrm_ipcomp.c:ipcomp_setup_req() {
 	...
-nopol:
-	if ((!dst_orig->dev || !(dst_orig->dev->flags & IFF_LOOPBACK)) &&
-	    READ_ONCE(net->xfrm.policy_default[dir]) == XFRM_USERPOLICY_BLOCK) {
-		err = -EPERM;
-		goto error;
+	if (!skb_cloned(skb) && skb_headlen(skb) >= minhead) {
+		if (!skb_is_nonlinear(skb)) {
+			nfrags = 1;
+			break;
+		} else if (!skb_has_frag_list(skb)) {
+			nfrags = skb_shinfo(skb)->nr_frags;
+			nfrags++;
+			break;
+		}
 	}
 	...
 }
 
-dst_orig here is a plain route dst that the caller only holds a dst
-reference on, and a dst reference does not pin dst->dev.  The writer side
-publishes the replacement and drops the device reference together:
+ipcomp_post_acomp() then drops the old frags and installs its own pages:
 
-net/core/dst.c:dst_dev_put() {
+net/xfrm/xfrm_ipcomp.c:ipcomp_post_acomp() {
 	...
-	rcu_assign_pointer(dst->dev_rcu, blackhole_netdev);
-	netdev_ref_replace(dev, blackhole_netdev, &dst->dev_tracker,
-			   GFP_ATOMIC);
+	pskb_trim_unique(skb, 0);
+	__skb_put(skb, hlen);
 	...
-}
+		skb_frag_fill_page_desc(frag, page, 0, len);
 
-The old device is then freed after the synchronize_net() in
-unregister_netdevice_many(), which only waits for readers inside an RCU
-read-side critical section.  If this thread is preempted between the NULL
-test on dst_orig->dev and the dev->flags load, can it read a freed
-net_device the same way xfrm6_fill_dst() did?  The entry path is the one in
-the commit message, udpv6_sendmsg() -> ip6_dst_lookup_flow() ->
-xfrm_lookup_route() -> xfrm_lookup_with_ifid(), reaching nopol when
-DST_NOXFRM is set or policy_count is zero.
-
-Would dst_dev_rcu() under an rcu_read_lock() be appropriate here as well?
-
-There is a second unannotated read of the same __rcu published pointer in
-__xfrm_decode_session():
-
-net/xfrm/xfrm_policy.c:__xfrm_decode_session() {
-	...
-		if (skb_dst(skb) && skb_dst(skb)->dev)
-			oif = skb_dst(skb)->dev->ifindex;
+		skb_shinfo(skb)->nr_frags++;
+	} while ((dlen -= len));
 	...
 }
 
-This bypasses the skb_dst_dev_rcu()/dst_dev_rcu() accessor contract and its
-RCU coverage depends entirely on the caller.  Is that read guaranteed to run
-inside an RCU read-side critical section on every path into
-__xfrm_decode_session()?
+Since the skb is not cloned here, ___pskb_trim() takes the drop_pages
+path, and skb_frag_unref() is a no-op while SKBFL_MANAGED_FRAG_REFS is
+set, so the flag survives the trim.  The pages installed afterwards come
+from alloc_page() in ipcomp_setup_req(), i.e. they carry real references.
 
-For what it is worth, the dst->dev read in xfrm_bundle_ok() looks fine: the
-dst there is an xfrm_dst whose ->dev holds its own tracked reference taken
-by xfrm4_fill_dst()/xfrm6_fill_dst() via netdev_hold(), so it cannot be
-freed while that xfrm dst is alive.
+At release time skb_release_data() then skips the unref loop:
+
+net/core/skbuff.c:skb_release_data() {
+	...
+	if (skb_zcopy(skb)) {
+		bool skip_unref = shinfo->flags & SKBFL_MANAGED_FRAG_REFS;
+
+		skb_zcopy_clear(skb, true);
+		if (skip_unref)
+			goto free_head;
+	}
+	...
+}
+
+Does this leak the compression output pages, one or more order-0 pages per
+transmitted IPComp packet?  That looks like the same failure mode the
+commit message describes for ESP ("leaking the x->xfrag page at packet
+rate"), just reached through IPComp instead.
+
+[Severity: Medium]
+This is a pre-existing issue, but the patch adds a second irreversible
+side effect at the same point, so it may be worth handling here.
+
+esp->inplace = false is committed (and now the downgrade as well) before
+the allocation that can fail:
+
+net/ipv4/esp4.c:esp_output_head() {
+	...
+			esp->inplace = false;
+	...
+			skb_zcopy_downgrade_managed(skb);
+
+			allocsize = ALIGN(tailen, L1_CACHE_BYTES);
+
+			spin_lock_bh(&x->lock);
+
+			if (unlikely(!skb_page_frag_refill(allocsize, pfrag, GFP_ATOMIC))) {
+				spin_unlock_bh(&x->lock);
+				goto cow;
+			}
+	...
+}
+
+On the refill failure, should esp->inplace be restored to true before the
+goto cow?
+
+The cow path calls skb_cow_data(), which pulls all paged data into the
+linear area via __pskb_pull_tail(), and since the branch required
+!skb_has_frag_list(skb) it returns with *trailer == skb.  pskb_put() then
+only extends the linear region, so the skb leaves esp_output_head() with
+nr_frags == 0 and data_len == 0.
+
+esp_output_tail() still branches only on esp->inplace:
+
+net/ipv4/esp4.c:esp_output_tail() {
+	...
+	if (!esp->inplace) {
+		int allocsize;
+		struct page_frag *pfrag = &x->xfrag;
+
+		allocsize = ALIGN(skb->data_len, L1_CACHE_BYTES);
+	...
+		skb_shinfo(skb)->nr_frags = 1;
+		page = pfrag->page;
+		get_page(page);
+		__skb_fill_page_desc(skb, 0, page, pfrag->offset, skb->data_len);
+	...
+}
+
+With data_len == 0 the refill of size 0 succeeds trivially, nr_frags is
+forced to 1 and a zero-length frag is installed with an extra page
+reference, while pfrag->offset is not advanced.  Can this hand a zero
+length fragment to the driver, and issue the out-of-place AEAD request
+with src and dst scatterlists that both describe the same linear buffer?
+
+>  			allocsize = ALIGN(tailen, L1_CACHE_BYTES);
+>  
+>  			spin_lock_bh(&x->lock);
+> diff --git a/net/ipv6/esp6.c b/net/ipv6/esp6.c
+> index 72ec0d7d11209..b1c9b36f76dc4 100644
+> --- a/net/ipv6/esp6.c
+> +++ b/net/ipv6/esp6.c
+> @@ -471,6 +471,12 @@ int esp6_output_head(struct xfrm_state *x, struct sk_buff *skb, struct esp_info
+>  
+>  			esp->inplace = false;
+>  
+> +			/* Take real page refs and clear SKBFL_MANAGED_FRAG_REFS before
+> +			 * we mutate the frag array, so the per-frag unref stays balanced
+> +			 * for zerocopy managed frags (see __ip_append_data()).
+> +			 */
+> +			skb_zcopy_downgrade_managed(skb);
+> +
+
+[Severity: Medium]
+This is a pre-existing issue, but the same missing esp->inplace rollback
+applies to the IPv6 path: esp6_output_head() commits esp->inplace = false
+before the skb_page_frag_refill() that can goto cow, and esp6_output_tail()
+branches only on esp->inplace.
+
+For reference, net/ipv4/esp4.c and net/ipv6/esp6.c are unchanged in the
+rest of this series, so the stale esp->inplace behaviour is still present
+at its end.
+
+>  			allocsize = ALIGN(tailen, L1_CACHE_BYTES);
+>  
+>  			spin_lock_bh(&x->lock);
