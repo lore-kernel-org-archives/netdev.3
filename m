@@ -1,124 +1,159 @@
-Received: from mail-vk1-f172.google.com (mail-vk1-f172.google.com [209.85.221.172])
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5E6658F066
-	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 16:54:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788886463; cv=none; b=mDWgLejf4dQXQOCj4FoAw1aIK/GeGzQyoLALiXCfDvN8wWsI8+sA1bA98KiEemU11YH/u9E8epIyf2VNlVhJ114dkSysiPpljQEgFcSP+BQQzccRVx+zW9DRSnEklIH+sKkrNEl7hHYt+8knwnSlbwWbALTxk9MOo3ECsXdm/T4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788886463; c=relaxed/simple;
-	bh=vcvOvb7CfSolquWCtsTU/Hekl6HvtR3StQ5xpcRfncw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tY/PxA2gjQX5M4ZE5zLLhQKPD8GjD4qnxhvvMdXNpZ2qo+qsARrP5wB/t0haiTefk5EDFLf3/mn1Lcfb536mU2KHpFwv/PLSpXfp3toi4i6hNPqaJNOWp5MdNgWCgowMgKm/CMD1URuuCx0vpWL65C/ulu0WyBBOY6yUwZRx9us=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UXgQhtcW; arc=none smtp.client-ip=209.85.221.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D16557C729
+	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 16:55:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.178
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788886543; cv=pass; b=oJlN7b7FlTnvJsojgwqJLWJvsupHFoDpeh3bamZoeEKBvCmwEKfi+BJbH8ra/ICOvhYnlj5FkH1PK6a5OM4uCif1XEWOMByUDk9HSc3oYIFyFR/KaCjs+ArEpDI0z1zN1car59O0uNO1i+f8RIViHSnOGA/LNzVA4s3ip5wCkUo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788886543; c=relaxed/simple;
+	bh=wqfbKZYO9T6s7SK5bHBj3gImP672/Xrc97fe6qPVVic=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=P7HTEh2ZpawKw+1pkb490yTLuGsa54oRdiABsVixpqaognoGa/dXX65u2A1T6X881CUIQdcNB9XXkOtNRqKloP7MBgl/DdVCGz2ntVsu3oYNZ4ZqTzfKy6WzLx5e4s6xTQxCAnoaldSoFWA01fYXS63ccZplxlB5WijFCAvUdcs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V01kEifl; arc=pass smtp.client-ip=209.85.215.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UXgQhtcW"
-Received: by mail-vk1-f172.google.com with SMTP id 71dfb90a1353d-5c79c9f7b54so2595600e0c.3
-        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 09:54:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V01kEifl"
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-cc1c8d4a959so3260147a12.3
+        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 09:55:42 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788886542; cv=none;
+        d=google.com; s=arc-20260327;
+        b=LQU47NmCxLrFyv+TuY8nJO41LA6Smt+yG3OCG3HDwvcgN0VTi7ZUt3EX1CEJYVbDIK
+         4s9OFHaSjvhyJXJdPp85JAorsoglIJ5BXPGEO6iV7URPoPGuQ02Xsld+KCPe6yMee7d5
+         XH9rhV5WrVGM3uextyWMRPr3vGMJe5agLJhUpnmjSRxx6bQxi+gzh86IIQcqnMLzwTIC
+         0yrEyKbWij/8uzAbqWOLwA6MEYMCN5UU/PbBtZECZ9Bc2uZ0SKZoqS1LeoI3nQlW2awM
+         xrat325nfv96fV3O8QriMOgcaa3tzhUhswjunTCI9IMkBSe76mCpAzUO1LMNsg7hqLnK
+         Gp0w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=4X/heUJyU+AbJij09DYXBKeBkh36gMwincsy8BAmf6E=;
+        fh=F72ir7+YtdsDFJWNhSsrZIyndSoEe9NfWwT3WwmxHiM=;
+        b=hxdD25IdgwTJk7Flr8zN9pgdTE1yacEzP9eTOU079b34ROrhOJ06WKv3Vyr48VTi9T
+         1eOx//4SQq3i7EGtfa3i1UkgUUZV7LoKWCu3EIMWC9Hwbf3LeK5ELs7NyikS9YPWrGC8
+         9HKhOMxI/tPPPuw6pBkTf39Y+KNouQ3Vux0b+rJVEaHo+G+s2lKJlX3fu7LQGeknfBSR
+         Q3+BOjAui8VT3QUWazn3LduIsXHGbuBc0mGUOXXWToAnqzigKLbMejcy+B/CJdUAmzor
+         OBu3zn4ENapQwCoiwMyIBSHntw7lGlk4wamKMUkum6JdS8wOLhxfOSiJbmoEYRkmP3F6
+         xYYg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788886460; x=1789491260; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=AFZiJhCz1KLVTjd7DyHosxf2D5OIZoZsQdKvW5PZrSo=;
-        b=UXgQhtcWV3gGTC6N/2A0ccnvmD8cwsYx7wapTYHiVwhbYbVH7QS3s7SYQoRdKTDHJr
-         kQ0QP1TsaxewZN3kh/J4hmJzWck0NNyLeVJMdFFkf3PszlPW8c45Y7xeCM1+wAyBSifl
-         SBMkJvqMG0txbbXouZXafAX0n39fdv6eSVslOGRBKfYNL1rhOXlUgzEzPbalHsDeygj5
-         hFFdSjKX+WF2FVUIOvjVxiZkgz5wDg8Qv6rE8Yvh6hCpdU9jWvuuzuR1CXjCwsVG25R4
-         mFJM4IRKJqpVIcFdDE4HkqqZLxqUuUxQbpzhpCq4CfWde+mlITeXfh1vMvPYl3WsLg6M
-         txvg==
+        d=gmail.com; s=20251104; t=1788886542; x=1789491342; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=4X/heUJyU+AbJij09DYXBKeBkh36gMwincsy8BAmf6E=;
+        b=V01kEiflG9oEN/H+CQPqSSunv+sowUG3HNrok+4YJMwhLwr5SsOibbKtdEIRTBpZeM
+         OfDkfXS0YBRmNKqXFE2fzhNBV4hiDCsevCJxxHE1onHeVGMteZWqNVtSOOn/lwD+lo7H
+         9Ut8LSqOm7Kd0sgs1e3rE1sJT839rw+Aj2ZmKUOrK8f4V/4m/F+R2kDQk45SOWV8gRmC
+         8kw0jGbyaSgl8XKptnpgF2LhZWrW7JhOl9z64eRwz05J1f89jXDB7lHiimdmMMNq+qkt
+         zNfc/OQT5MKuTgGP6LOAduOBvyc8+TaD8s1xpDX97vJWa16HQZAmRVOeOmNlhBh/2bn7
+         gFow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788886460; x=1789491260;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=AFZiJhCz1KLVTjd7DyHosxf2D5OIZoZsQdKvW5PZrSo=;
-        b=G/W10AgcU8u/H8DNhAhoMK0PZmOkAMbu6aPBJgBJByOOtn1wlKrUlazMzmf6uZprGf
-         xcbQz4hwyMspFDqUO3+zfMvGJxadPMsS9a1sh10ec+OepIJo8Kd0eZuWoeIqULG9JXq4
-         sWuifBzfxj0w8dERal1UmUPjScdWHb1Ytoya1V478G6gZnuXyUNOXevhQPLPGVvvvryn
-         ts6Ay5FliMTtPcZoW+YhpQa5mGv7uvpnS6vvtvlDsRK3K6LBTYOlJBZNUBa+qOTMgRm3
-         YaVEPsoh8Ja1QIyArmZEMSwKABs2nVg0hbSXcMK6VtZyxXO4TzgoGcHWgHAR2r6/WXJ+
-         njdg==
-X-Gm-Message-State: AFuF++mT8o8ad76eKAwrR0xAjXf1JjlPOs9o9Entvx+l9zYZw8+EoBqD
-	N6h599ADAmVdwvSNvoVgXJ+VAgJE1mQUneQ1PekI3JQkYPJCJ2/f8LSM
-X-Gm-Gg: AYBFou1LwXiZQes/CDMH4IGQjijMjLmVqbP3PrBD/25Z1LyMqvnp+7R6SftMojwSCgz
-	X4lPJclbmU1PSbfiU4+o+nO0gbr6CmptJQoi83gNc4MdH6txfWR9GdlkoBMRagua1aEOZNqrhsi
-	ttc5PjUPnVuDHhLWZEqXi/TCIk5NidfrXlgpMeUpCo6nkQRKHrwrUm5VBm89dmSnk8VtfIaifo0
-	cwwYWhLeEsYnrERHODTn/Ge+7DNbvBoJn5Ae6s7hncGfXf+E9aFgtM8INgt5ydneyCSDJDiG8Bz
-	cz0xClRON11RpTLbKVnLWi80jmbRDdU5aLFaEKFrhETGO8tXJ882yY+/Fo1+JPZi7ZvWIyBn6Cd
-	GBW3QM0WfzyN0Eqn9gKX6Q2tTfGoqiQCodH/x+jmxxUhAFDbaSdZb1lo2cdb38V05A3ioMsYP4z
-	AJ4YKBvBCS25okudwOfcXYLfSJAPOvuGYC1XGS6/cYWMwN7m44o3dqqKOjCz5a5w==
-X-Received: by 2002:a05:6122:e189:b0:5c7:a9ee:dcfb with SMTP id 71dfb90a1353d-5c7ed3d6e42mr360785e0c.5.1788886460411;
-        Tue, 08 Sep 2026 09:54:20 -0700 (PDT)
-Received: from adriano.lan ([2803:9810:3d22:1608:9be0:137d:43c4:cc14])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5c81c506f31sm2668280e0c.11.2026.09.08.09.54.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Sep 2026 09:54:20 -0700 (PDT)
-From: Adriano Cordova <adrianox@gmail.com>
-To: Marcel Holtmann <marcel@holtmann.org>,
-	Johan Hedberg <johan.hedberg@gmail.com>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	linux-bluetooth@vger.kernel.org
-Cc: netdev@vger.kernel.org,
-	Adriano Cordova <adrianox@gmail.com>
-Subject: [PATCH v2] Bluetooth: bnep: linearize skb before sending
-Date: Tue,  8 Sep 2026 13:54:13 -0300
-Message-ID: <20260908165413.75026-1-adrianox@gmail.com>
-X-Mailer: git-send-email 2.51.0
+        d=1e100.net; s=20251104; t=1788886542; x=1789491342;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=4X/heUJyU+AbJij09DYXBKeBkh36gMwincsy8BAmf6E=;
+        b=BEVqjI0WWwtTdjqE750rvpAZC59zkQi9P+BEL/olePFQJjm3ruqUeGBmNnea/aOUcQ
+         sDxx/rjrVqYliqCKsKMRBoba5Aye4vKdn54cJIJ9WCke8Vy0SG2Ibz6/jmZHM8bLnHts
+         ozwZsdgE/6EN9uyLw8nIPolJ+XBmeFJjZ8H4EtG8QjDLIOxILxm3ucm3SbYLcJ7O6eoC
+         eS7uEl7jD1SfYptC6ScuTjE/Iag8CssW/7Qd4JJQagudAU8U6eO2ZU9fMzTDr6MPtkmg
+         SvkLlZaS0VKqf7KI6JqQTb+947D9y15N1W3lARWfBVRyj3e9Y9u//hAtmy9L1OHed4X0
+         Fd9g==
+X-Forwarded-Encrypted: i=1; AKwUvBxNCYHo/hTl9hExneIkScfNjluwjjb9WdSJ5Q2Zsaxs0w5j8/dE7HPUx1DzOQsC+0YKTnFUTLo=@vger.kernel.org
+X-Gm-Message-State: AFuF++kJ4YnO/43Mk2FDlIpeET/WzOMfa1ic/vrRk/H6w9a2u+jaXTzq
+	eZrSjpzW2t4sFkT3QhzBYurpPxjCjTIhEhJd4XbEgje5tY1jnxQdG5riCx39TKnL1MqUCS5C0Rc
+	HMUj8SEqSLTtO2HI3ZWwD8O7yHGQCH/w=
+X-Gm-Gg: AYBFou28pvaYxt4Kw6DkZZs+S7G/jkY2qyy1fjJTHJK4IGCkb65emWYtJNzLB5EHw7X
+	k+jucXhFaHsywAxr1yDopGRmLUWwJoKj7qTaxegnVGCWExSyCrJ1RRA1toqKOJswT7VwhhSpDp4
+	QFKPbTGKy2LDo6/g8NW1QP+4U0zEgdjA9kSHt+gAXSuVuTS2CNTFYbqPox4NwKsQI/3CKqpknpw
+	5FlVxxMFBq9UYjwp7D7RqIgJhceBcUj32nN41hlRsNdRCF/9+7ykYEDPZNzRqCrPhfJO0sn+Jtw
+	B1aG6hUQKk3L39jKjHgF0eekcdiWd00bKr9K1G4Z8+jr20Uv2FWhCW9O94nOwbVH3yyEJ4K1X52
+	28xqQ
+X-Received: by 2002:a05:6a21:6110:b0:3d1:39e9:b269 with SMTP id
+ adf61e73a8af0-3da39b5cfc5mr49040879637.4.1788886541658; Tue, 08 Sep 2026
+ 09:55:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260905194725.284347-1-adrianox@gmail.com> <CABBYNZ+_KZXEz2210xPShKy=baN2Xrd4T7YijdCn9y3h-t5V8A@mail.gmail.com>
+In-Reply-To: <CABBYNZ+_KZXEz2210xPShKy=baN2Xrd4T7YijdCn9y3h-t5V8A@mail.gmail.com>
+From: =?UTF-8?Q?Adriano_C=C3=B3rdova?= <adrianox@gmail.com>
+Date: Tue, 8 Sep 2026 13:55:28 -0300
+X-Gm-Features: AcwNN1XaC2U3kdCp8dxKL8VeVUqbrduVW0Lqh5YW6C9HLUaKhl91MEg9ANX2ioI
+Message-ID: <CAMGU2hWQYMihNkc=JeH3b4G4y0a5Q+HhsvTEpy939EJYW=8g+Q@mail.gmail.com>
+Subject: Re: [PATCH] Bluetooth: bnep: linearize skb before sending
+To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Cc: Marcel Holtmann <marcel@holtmann.org>, Johan Hedberg <johan.hedberg@gmail.com>, 
+	linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-kernel_sendmsg expects contiguous data. Linearize the skb in the
-bnep_session() loop, before bnep_tx_frame builds its kvec, so it
-is not split across non-linear pages. Drop the dead block and
-FIXME.
+Hi Luiz,
 
-Signed-off-by: Adriano Cordova <adrianox@gmail.com>
----
-Changes since v1:
-		- Move linearization to bnep_session loop, before
-		  bnep_tx_frame builds its kvec
+Right, thanks, I will send a v2.
 
- net/bluetooth/bnep/core.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+Adriano
 
-diff --git a/net/bluetooth/bnep/core.c b/net/bluetooth/bnep/core.c
-index 0dde82e9a085..e8b4672628dd 100644
---- a/net/bluetooth/bnep/core.c
-+++ b/net/bluetooth/bnep/core.c
-@@ -480,10 +480,7 @@ static int bnep_tx_frame(struct bnep_session *s, struct sk_buff *skb)
- 	iv[il++] = (struct kvec) { skb->data, skb->len };
- 	len += skb->len;
- 
--	/* FIXME: linearize skb */
--	{
--		len = kernel_sendmsg(sock, &s->msg, iv, il, len);
--	}
-+	len = kernel_sendmsg(sock, &s->msg, iv, il, len);
- 	kfree_skb(skb);
- 
- 	if (len > 0) {
-@@ -524,9 +521,12 @@ static int bnep_session(void *arg)
- 			break;
- 
- 		/* TX */
--		while ((skb = skb_dequeue(&sk->sk_write_queue)))
--			if (bnep_tx_frame(s, skb))
-+		while ((skb = skb_dequeue(&sk->sk_write_queue))) {
-+			if (skb_linearize(skb))
-+				kfree_skb(skb);
-+			else if (bnep_tx_frame(s, skb))
- 				break;
-+		}
- 		netif_wake_queue(dev);
- 
- 		/*
--- 
-2.51.0
-
+El mar, 8 sept 2026 a las 12:50, Luiz Augusto von Dentz
+(<luiz.dentz@gmail.com>) escribi=C3=B3:
+>
+> Hi Adriano,
+>
+> On Sat, Sep 5, 2026 at 3:48=E2=80=AFPM Adriano Cordova <adrianox@gmail.co=
+m> wrote:
+> >
+> > kernel_sendmsg expects contiguous data. Check the skb is linear
+> > before building its kvec. Should be already linearized by the
+> > stack, so this is defensive, but drops the dead block and the
+> > FIXME.
+> >
+> > Signed-off-by: Adriano Cordova <adrianox@gmail.com>
+> > ---
+> >  net/bluetooth/bnep/core.c | 10 ++++++----
+> >  1 file changed, 6 insertions(+), 4 deletions(-)
+> >
+> > diff --git a/net/bluetooth/bnep/core.c b/net/bluetooth/bnep/core.c
+> > index 5a6a49885ab6..497eb1d2d6ee 100644
+> > --- a/net/bluetooth/bnep/core.c
+> > +++ b/net/bluetooth/bnep/core.c
+> > @@ -457,13 +457,15 @@ static int bnep_tx_frame(struct bnep_session *s, =
+struct sk_buff *skb)
+> >         }
+> >
+> >  send:
+> > +       if (skb_linearize(skb)) {
+> > +               kfree_skb(skb);
+> > +               return -ENOMEM;
+> > +       }
+>
+> Looks like we should be linearizing earlier:
+>
+> https://sashiko.dev/#/patchset/20260905194725.284347-1-adrianox%40gmail.c=
+om
+>
+> >         iv[il++] =3D (struct kvec) { skb->data, skb->len };
+> >         len +=3D skb->len;
+> >
+> > -       /* FIXME: linearize skb */
+> > -       {
+> > -               len =3D kernel_sendmsg(sock, &s->msg, iv, il, len);
+> > -       }
+> > +       len =3D kernel_sendmsg(sock, &s->msg, iv, il, len);
+> >         kfree_skb(skb);
+> >
+> >         if (len > 0) {
+> > --
+> > 2.51.0
+> >
+>
+>
+> --
+> Luiz Augusto von Dentz
