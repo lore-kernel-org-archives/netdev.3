@@ -1,167 +1,156 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com [209.85.222.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4C2041D228;
-	Tue,  8 Sep 2026 09:12:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 145754F796E
+	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 09:13:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788858769; cv=none; b=X7ChnqCy0PGTIYDmxjDNEGPt+agnDdSoLOPJ7tCbx+4dveHZy2lPKDsGk2fF95xVvT6/06QnOrDmjsVMekLvNgd+5AqIGl+Z99/YfcbIbNApnj2ToxeXtizcHwrZFWRP05APOXy0rcQDx2UDcSEd5BA60sGOhmKAySuaU8YC9AY=
+	t=1788858811; cv=none; b=J259sQ/F27ovvH7Jdmw5K+IM5lWmNhNi6z3EiY4JPXUuaqhpIX3JtUd9TTkdEsrcsJ692m5O+e3+9HU4hJ4ncdal73wt1CvbtzD0Gnn68kBXAMgmENYKNAemMx+aoPcMj0XTBnqm/CzcdTPrRZOg5lyzXQ3XmKrMX7khNCYsDDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788858769; c=relaxed/simple;
-	bh=2VYm5IC7nuJ6OknmMvYKwB3JYyLeLDeJ7e8jb90oMIc=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=ZVchFrVo2GoqIFF2K/K3mOaMBD0Zejho8oNTCzXCVeiRNr1ovMsiF1yV6EYURapr5rj6uVuPZ28zROYe17h4OJpe1xrIi6kLisLRrTxY4NbmRFiYaofBDafpPE+1MCJbmDPitX7exE66vm0Z0b9I+VpXvhwrmGFXUoNDIaZ2YZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=YT9tXJlI; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	s=arc-20240116; t=1788858811; c=relaxed/simple;
+	bh=NZBdoN+D7sICHUIqxIogYo7N8AlMydY+2Xt2KvyagKc=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=FrAXGaUnXRW81RLpmfYN663eYaEzFNmmaNyw5lEaITFoa69PgZaCX2QQ3E+UrlQ5h9TSTJBKhpszH086Rmk8nhRkyRMJmnZgJpFLMWlDZS1CW4iy5hZkc6RCShNaVgOxErGPgb3dccXb/CMrKOTP4WWiThuSchAHQSxIJ1NPtGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=iUoOenDr; arc=none smtp.client-ip=209.85.222.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="YT9tXJlI"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 52F7DA900F;
-	Tue,  8 Sep 2026 11:12:38 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1788858761; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=Sc/cb0D1NeF0QIYQrpnHf0R8EKpxNCtbo752/2TJJzo=;
-	b=YT9tXJlI2CsJIPw32viEZbbPRsbRQ79zfxRTQtauYyDc3Ju/de/5V3TboTnIKFDzmYn6g+
-	lqMFBTeEXCuxhWdltN/a2ULsCkNRc5p+T9/KKLH07ORF3okn29OdSAjxjtlpSg76NIHkXB
-	9XuIY0X6uCU3Wf5dKj8FNy1zCAC+u5PPQeorlCl6B6WvNix5zQnoW0Nd9pPUkZE7iYGZdg
-	OWqzti6z/TLmFit1ahJtd9AyQ2QJp5EI4fO+1OdSp+y1oWweoom8s3QerxXKJW5K7wOp7Y
-	UI8sk85o7mmVdmCZCNOgk8gKusixMXg492YAg2yW3Lpyr/LXRsWG8LwyVyQCEQ==
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="iUoOenDr"
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-930b571432fso665985285a.0
+        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 02:13:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1788858809; x=1789463609; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=HshKLMaTr0KDEShsC00Zg99tlRqzwF2XWNzn73Z50Dc=;
+        b=iUoOenDr5wdhR/gQWBghnWwvFbPmhgrbsdaJkhWrKsTkiLnQzcE4pX4W75seh3T6K9
+         xj3uo16ll8g6uDUrJa/9QpVfZ1ZtSnP/9Gdyr7ioB/LU6+o4+CHPC1kgSSBHJQ056cOx
+         6vQURRlKoiFmBFyjXTz0L65M7YBGSldWvylF7ZWFooUnj7uCHKsDJVvfYV65qyEyI7lP
+         xuXCesCZtxLOlpguxebclCquD+5fvtxYt+UkajGspgVetBjy18Tnk63/KlnHpQ3Cc2lt
+         NGUd4B4rupcMBO92GxAMsBRWRmGqVOgA/tpY7kUUamBMdSWjBCkPOTbdh4aAUekkY2+v
+         v6lg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788858809; x=1789463609;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=HshKLMaTr0KDEShsC00Zg99tlRqzwF2XWNzn73Z50Dc=;
+        b=F7RVRyUoME/TfWW/1Mh4eIpHLvSomdQXlCBpN3Eb/DA+yiJTQu0H1eJ0dCodY83PZx
+         uLV3z8HNRew6oiglD/iZFbKb16hPB5nmy7cW0aFB5ajHju60IRpnnl7126bTk2vYsptH
+         BieGrDbWn+v1NM9A6dD8kl9hUWKa77G+SBGI4e0RVzq1JppQ+mcxGAIO51lNQMqcKrFC
+         Y7nTjjDngLbVz0OCERFbZnNYeiW1R/+v6grbOAWKoRsAM/nnG6pWy0jylZIQfUKnudL0
+         NGLW/0lO7abo0Yf1WzKKfjJy/BnjUxITt7qlt56JuI31wKLDwYonEuX26GO0WjRM1Oyk
+         UqtA==
+X-Forwarded-Encrypted: i=1; AKwUvBz6vhst0r7+8kVwe4ZGYPkf2hzaaz0CA3XOf1HZ2hDAKbRU6gAbWDhwc2waZJm7LcdhzzUej78=@vger.kernel.org
+X-Gm-Message-State: AFuF++n4DD5kgj0eTJHhhyYvXaB3CvblB1QSLCVC7FAHy4qXJZdzwiKu
+	vPDL6Vc8gtNoaaTrdE6nCrbfZFjX9l1OKop8z3/4RDzGurq2/+DRzPIzo/zGkCSUD9uL4ov7Jom
+	OC1c9Tc4szJ3OtQ==
+X-Received: from qkoz12.prod.google.com ([2002:a05:620a:260c:b0:934:b322:8e9f])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:620a:2990:b0:939:a5a0:4a08 with SMTP id af79cd13be357-939a5a0627dmr990828785a.8.1788858808511;
+ Tue, 08 Sep 2026 02:13:28 -0700 (PDT)
+Date: Tue,  8 Sep 2026 09:13:27 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Date: Tue, 08 Sep 2026 11:12:37 +0200
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: James Clark <jjc@jclark.com>
-Cc: =?UTF-8?Q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>,
- netdev@vger.kernel.org, Richard Cochran <richardcochran@gmail.com>, Conor
- Dooley <conor.dooley@microchip.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH net] net: macb: fix ordering around PTP timestamp read
-In-Reply-To: <20260908053150.28694-1-jjc@jclark.com>
-References: <20260908053150.28694-1-jjc@jclark.com>
-Message-ID: <efc8c860b90e8f55882241267b0e242d@tipi-net.de>
-X-Sender: nb@tipi-net.de
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.979.g7e5102b832-goog
+Message-ID: <20260908091327.349091-1-edumazet@google.com>
+Subject: [PATCH v2 net-next] selftests: icmp_redirect: remove xfail support
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Hi James
+Commit 0a36a75c6818 ("selftests: icmp_redirect: support expected failures")
+added xfail support to icmp_redirect.sh because the test "IPv6: mtu
+exception plus redirect" was failing at the time due to a perceived
+kernel bug described in commit 99513cfa16c6 ("selftest: Fixes for
+icmp_redirect test").
 
-On 8.9.2026 07:31, James Clark wrote:
-> PTP_SYS_OFFSET_EXTENDED returns system timestamps that do not correctly
-> bracket the PHC register read on MACB/GEM. On a Raspberry Pi 5, the
-> returned interval can be as short as 37 ns, while an ordered register
-> read takes approximately 1 us. This biases the midpoint used by 
-> phc2sys,
-> causing CLOCK_REALTIME to run approximately 0.5 us ahead when 
-> synchronized
-> to the PHC.
-> 
-> gem_tsu_get_time() reads the nanoseconds register using the driver's
-> relaxed MMIO accessor. On weakly ordered systems, the subsequent system
-> timestamp can be taken before the register read completes.
-> 
-> Add rmb() after the bracketed nanoseconds read in both the normal and
-> seconds rollover paths, ensuring that the read completes before the 
-> post
-> timestamp is taken. With the fix, the minimum interval on the same
-> Raspberry Pi 5 increases to approximately 1 us.
-> 
-> Fixes: e51bb5c2784c ("net: macb: ptp: Switch to gettimex64() 
-> interface")
-> Signed-off-by: James Clark <jjc@jclark.com>
-> ---
-> This uses rmb() to preserve the existing accessor and endianness 
-> handling.
-> Would an ordered MMIO accessor be preferable for these two reads?
+However, commit 0e02bf5de46a ("selftests: icmp_redirect: IPv6 PMTU info
+should be cleared after redirect") subsequently fixed the test logic:
+after redirecting to a new path, the old PMTU information should indeed
+be cleared, so the test was adjusted to verify the redirect without the
+old PMTU.
 
-AFAIU rmb() fits better here. Switching to readl() would also order the 
-read
-on arm64, but only for hw_readl(). hw_readl_native() uses __raw_readl(), 
-which
-has no ordered version, so that path would still need a barrier.
+Since that fix, the test has been passing and is no longer expected to
+fail.
 
-> 
-> Reproducer:
-> 
-> #include <fcntl.h>
-> #include <linux/ptp_clock.h>
-> #include <stdio.h>
-> #include <sys/ioctl.h>
-> 
-> #define DEVICE "/dev/ptp0"
-> 
-> int main(void)
-> {
-> 	struct ptp_sys_offset_extended ex = { .n_samples = 25 };
-> 	long long min = -1;
-> 	int fd = open(DEVICE, O_RDONLY);
-> 
-> 	if (fd < 0) {
-> 		perror(DEVICE);
-> 		return 1;
-> 	}
-> 	for (int batch = 0; batch < 40; batch++) {
-> 		if (ioctl(fd, PTP_SYS_OFFSET_EXTENDED, &ex) < 0) {
-> 			perror("PTP_SYS_OFFSET_EXTENDED");
-> 			return 1;
-> 		}
-> 		for (unsigned int i = 0; i < ex.n_samples; i++) {
-> 			long long bracket = (ex.ts[i][2].sec - ex.ts[i][0].sec) * 
-> 1000000000LL
-> 				+ (long long)ex.ts[i][2].nsec - ex.ts[i][0].nsec;
-> 			if (min < 0 || bracket < min)
-> 				min = bracket;
-> 		}
-> 	}
-> 	printf("min bracket: %lld ns\n", min);
-> 	return 0;
-> }
-> 
->  drivers/net/ethernet/cadence/macb_ptp.c | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/drivers/net/ethernet/cadence/macb_ptp.c 
-> b/drivers/net/ethernet/cadence/macb_ptp.c
-> index e5195d7da..8209ec190 100644
-> --- a/drivers/net/ethernet/cadence/macb_ptp.c
-> +++ b/drivers/net/ethernet/cadence/macb_ptp.c
-> @@ -51,6 +51,8 @@ static int gem_tsu_get_time(struct ptp_clock_info 
-> *ptp, struct timespec64 *ts,
->  	spin_lock_irqsave(&bp->tsu_clk_lock, flags);
->  	ptp_read_system_prets(sts);
->  	first = gem_readl(bp, TN);
-> +	/* Ensure the PHC read completes before taking the post timestamp. */
-> +	rmb();
->  	ptp_read_system_postts(sts);
->  	secl = gem_readl(bp, TSL);
->  	sech = gem_readl(bp, TSH);
-> @@ -63,6 +65,8 @@ static int gem_tsu_get_time(struct ptp_clock_info 
-> *ptp, struct timespec64 *ts,
->  		 */
->  		ptp_read_system_prets(sts);
->  		ts->tv_nsec = gem_readl(bp, TN);
-> +		/* Ensure the PHC read completes before taking the post timestamp. 
-> */
+Leaving xfail=1 in log_test() for all IPv6 tests was not only obsolete,
+but had the undesirable side effect of masking any future IPv6 failure
+as XFAIL instead of FAIL. Furthermore, commit 3748939bce3f ("selftests:
+icmp_redirect: pass xfail=0 to log_test()") had to work around a bash
+syntax error caused by the empty xfail argument on IPv4 tests.
 
-nit: comment should be wrapped, to fit in the usual line length
+Remove the obsolete xfail support from log_test() and restore standard
+pass/fail reporting across all tests.
 
-> +		rmb();
->  		ptp_read_system_postts(sts);
->  		secl = gem_readl(bp, TSL);
->  		sech = gem_readl(bp, TSH);
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+---
+v2: more accurate changelog (Ido)
+v1: https://lore.kernel.org/netdev/20260907132423.3353361-1-edumazet@google.com/
 
+ tools/testing/selftests/net/icmp_redirect.sh | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
-Tested-by: Nicolai Buchwitz <nb@tipi-net.de> # Raspberry Pi CM5, min 
-bracket 37 ns -> 981 ns
-Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
+diff --git a/tools/testing/selftests/net/icmp_redirect.sh b/tools/testing/selftests/net/icmp_redirect.sh
+index b13c89a99ecbaa37638c39b12818d2d59a97ec50..35357d02e823bcad7106cd7d628824d1787af4e7 100755
+--- a/tools/testing/selftests/net/icmp_redirect.sh
++++ b/tools/testing/selftests/net/icmp_redirect.sh
+@@ -64,14 +64,10 @@ log_test()
+ 	local rc=$1
+ 	local expected=$2
+ 	local msg="$3"
+-	local xfail=$4
+ 
+ 	if [ ${rc} -eq ${expected} ]; then
+ 		printf "TEST: %-60s  [ OK ]\n" "${msg}"
+ 		nsuccess=$((nsuccess+1))
+-	elif [ ${rc} -eq ${xfail} ]; then
+-		printf "TEST: %-60s  [XFAIL]\n" "${msg}"
+-		nxfail=$((nxfail+1))
+ 	else
+ 		ret=1
+ 		nfail=$((nfail+1))
+@@ -303,7 +299,7 @@ check_exception()
+ 		ip -netns $h1 ro get ${H1_VRF_ARG} ${H2_N2_IP} | \
+ 		grep -E -v 'mtu|redirected' | grep -q "cache"
+ 	fi
+-	log_test $? 0 "IPv4: ${desc}" 0
++	log_test $? 0 "IPv4: ${desc}"
+ 
+ 	# No PMTU info for test "redirect" and "mtu exception plus redirect"
+ 	if [ "$with_redirect" = "yes" ] && [ "$desc" != "redirect exception plus mtu" ]; then
+@@ -319,7 +315,7 @@ check_exception()
+ 		ip -netns $h1 -6 ro get ${H1_VRF_ARG} ${H2_N2_IP6} | \
+ 		grep -v "mtu" | grep -q "${R1_LLADDR}"
+ 	fi
+-	log_test $? 0 "IPv6: ${desc}" 1
++	log_test $? 0 "IPv6: ${desc}"
+ }
+ 
+ run_ping()
+@@ -485,7 +481,6 @@ which ping6 > /dev/null 2>&1 && ping6=$(which ping6) || ping6=$(which ping)
+ ret=0
+ nsuccess=0
+ nfail=0
+-nxfail=0
+ 
+ while getopts :pv o
+ do
+@@ -530,6 +525,5 @@ fi
+ 
+ printf "\nTests passed: %3d\n" ${nsuccess}
+ printf "Tests failed: %3d\n"   ${nfail}
+-printf "Tests xfailed: %3d\n"  ${nxfail}
+ 
+ exit $ret
+-- 
+2.55.0.979.g7e5102b832-goog
 
-Thanks
-Nicolai
