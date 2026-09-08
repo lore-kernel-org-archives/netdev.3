@@ -1,44 +1,98 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f227.google.com (mail-vk1-f227.google.com [209.85.221.227])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EFB15013C4
-	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 09:27:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B571C4B0483
+	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 09:31:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.227
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788859649; cv=none; b=OtWDSO5n9+pBYpRYMIMs0BiALpIh6/VWg0ZI7D67mT1d1qmzFLvutak3ZF7CCk1Z4qQe6ngHZm/FI4fI4KyGqJoMdLczdurs96UXQODifOVBvyUSdtjOf6vqqq2NHLpr/xDTocLxQqr3whakUSIIvf0n02H3AsgYYzdVfPka26k=
+	t=1788859882; cv=none; b=RSYVorgdQIAOj3cHfkYwdYqpmuX6RCrjIl+azO9Scf8uouaxS19ztggRw1aHsE8z2M77p3L9nt1w0Af164k2d1iU9NPR4iNHdtx8lG3KI+qeRSuVowLlkZpGgftnEiTAHWDNpqa9jkh2mV8YlAUvkwaIdSWrqNucwbwFBBkEA7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788859649; c=relaxed/simple;
-	bh=OIG3IUM0wvbjm9h+z19we3kd6TZt23Vrw6bYwWsgKwQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Wnz1wgDNvddOe1Q/eq87EIOcK3r5ArJqya34absT04ZfG7E6zAl5yv2mKqr2gF8bTtc/QEdwkxAZQukzRBDN+lbGDqQ6hJkYH6v2CnC5K+9QH2V5aBSAqE9Ds8JHSrs2h6wopzhApln9LE+WmEpVRW4T7a9LBrfWF79+fqHfq7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=Lpj8q9Qy; arc=none smtp.client-ip=117.135.210.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1788859882; c=relaxed/simple;
+	bh=zcmVR3l7ahMlydcfRMN+yimigUnP6+v+XWW+V3r93/0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=fTy46lcUHUqe5GMOPt0qD81eLKfLEJ066PEfPSzFsVO7Vg1BJhjZjjrLxYwKTAUVQLJghkyxo5ZYWH4Hq0PY1ktcrhEfICZpJE7R8T4SOpRhobtkCiit6XAgUW+2OqTpqb1dWAIWNvSDb1mf4ssnN+3clPnZx5HKaxELHkGKWlo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=GDEYAHH1; arc=none smtp.client-ip=209.85.221.227
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="Lpj8q9Qy"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=qB
-	nyWjv/850mGGrhNeeIMuqmu642ZeWUMG+CXj8caEY=; b=Lpj8q9Qy1sTFQHfpwB
-	ykiFr4WCqdNbqkOy4+i7ywILQVjm56RG4rrHZprTPsYOtD5XC9bWZd/Y5zYoyIhC
-	9Oz/oPmvemzXsp4apKCfmqyzDURRRLlBoh9dfZfdbSaprKzLUelIrUzgiPkqH/P4
-	6SLdPGNgY5Hfo7EuVQ3y33HzI=
-Received: from localhost.localdomain (unknown [])
-	by gzsmtp3 (Coremail) with SMTP id PigvCgD3Bf3X1J9qaBRdRg--.18019S5;
-	Tue, 08 Sep 2026 17:26:51 +0800 (CST)
-From: Longjun Tang <lange_tang@163.com>
-To: mst@redhat.com,
-	kuba@kernel.org
-Cc: jasowangio@gmail.com,
-	xuanzhuo@linux.alibaba.com,
-	virtualization@lists.linux.dev,
-	netdev@vger.kernel.org,
-	tanglongjun@kylinos.cn
-Subject: [RFC RESEND 3/3] virtio_net: add rx_timeouts per-queue statistic
-Date: Tue,  8 Sep 2026 17:26:46 +0800
-Message-Id: <20260908092646.108865-4-lange_tang@163.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260908092646.108865-1-lange_tang@163.com>
-References: <20260908092646.108865-1-lange_tang@163.com>
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="GDEYAHH1"
+Received: by mail-vk1-f227.google.com with SMTP id 71dfb90a1353d-5bfa4c51c2aso1783886e0c.0
+        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 02:31:20 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788859879; x=1789464679;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=7KXCfAs7P0Tud1PL6Pg08rfFWzncvU2RIhOfNbNzN5E=;
+        b=o/kL69nsC2n7OzAxQdfYkxyqRqvVFnXcSwsp+QT9ZN6idSfMdTMLf5PrOdWrDxEvlr
+         AGmdT2TuyqBVfnHL8Wp2Be+s6f3K2j4boBx+4PU+ysadIhWWxwU1u/+zRf15DghfjhiB
+         szHi7M/nGEtHf7/DQn8oQMs/gJIA6rbwh1FWP2Uk8r4B1Uf3JPm16SmEvUQP90bRe3Oo
+         ukN+hSRvCXlvXhpSBhnAdlWAYl62r3/lAOaqimdgHyNsxCyXx6f9pJABC2gnDZ/dTQI2
+         9MeYZIFsqo0i7NhNgpaJISc4o/byOOCk1wo9ewaVUbRr1mRiqo7duH2svzbEfYFZrg2p
+         pZtA==
+X-Gm-Message-State: AFuF++nClvyZaP3I4HR0FQX+5dD1uvUE2mJ1hipTo/DUaTlSd6btcW4k
+	vWaTuyJFvQ4SS4uN8q7R9w3bxMELCYbyBlrBBREhhieK5QQudsaTii+2ffrc1GSsmGdzuWSpRDl
+	7ezNviThcLJAV8WeqwfYrUcDfScLJEi1BKI8GtiLIfNk9zhadwqnoKb0cjkImT9+eDIaXFvsvbY
+	tQqMDPo+HUXfXjr1tWR+nWPlLxXA6KMagHPmuGedR1/9l2g1vfAXrXQYpAU+AXfFgOFxE1wgVnh
+	fOWT1eIlQ==
+X-Gm-Gg: AYBFou1BOuYtY+870ENSLuewfrydwWEPUjWHWumFpz6vWKGtIQroWT9wc97KACMTfXV
+	H4+gZZnN5lPZO5imZ8GYE3TP1EmbpDStRXTUpPGFtYVvG68onjAtO2ZXH13eSftJ8f6TRID+JYy
+	Yms/1t2LT0dHW/CfyNQcrE602ijOw5Iu2HROlW1WmwyiWxjhdKo/wy/a2dwqbSCmG+e69ssidiz
+	R3JlPUlwRPBE9VcRMoMDfCF+7X8fw1nURmyeO9VAxPZ+Na7CnNc+IQLqAdvSDPkhJc8QtD0VPr/
+	AHw//LGweyQTgN+t8PZZQXshqv9PCUANDM7cWfTnTsZ8f1DyalE5lKxDesS5ufOM7NjfPoH/me0
+	pYnzH+SldbtlgyrXtVCjWa+7QZT05VVy/B35mfKiGwizg2O7uSySiq3dHjswSgT0iYiOi1CvFSF
+	rut1JEGbB0AZRcuNHAp1wR9be478pti7z7OQ==
+X-Received: by 2002:a05:6122:8f8d:b0:5c3:61c2:9ec6 with SMTP id 71dfb90a1353d-5c7ed456d8bmr12784838e0c.7.1788859879277;
+        Tue, 08 Sep 2026 02:31:19 -0700 (PDT)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-25.dlp.protect.broadcom.com. [144.49.247.25])
+        by smtp-relay.gmail.com with ESMTPS id 71dfb90a1353d-5c7ebf6adbdsm6377143e0c.0.2026.09.08.02.31.18
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 08 Sep 2026 02:31:19 -0700 (PDT)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-39aee9b4cf2so6916057a91.0
+        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 02:31:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1788859878; x=1789464678; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=7KXCfAs7P0Tud1PL6Pg08rfFWzncvU2RIhOfNbNzN5E=;
+        b=GDEYAHH1BtasqbpU5ntQVFsXbnUBQ0iwFBPoWvJCsH/dJSFn5w8T/EfPSjD0sTdcML
+         XzNjov8K3BrolX1aNtMJB9GCrbmxvTMsJLz8YNifI5oS56UX8SGaoOqy6Aq+gM9Y99jE
+         njT1hda9krmhfy78yI0OX+f2hS0f56h6eeUIA=
+X-Received: by 2002:a17:90b:1d45:b0:398:9bd4:d1a with SMTP id 98e67ed59e1d1-39b262995b8mr41739918a91.25.1788859877992;
+        Tue, 08 Sep 2026 02:31:17 -0700 (PDT)
+X-Received: by 2002:a17:90b:1d45:b0:398:9bd4:d1a with SMTP id 98e67ed59e1d1-39b262995b8mr41739837a91.25.1788859877535;
+        Tue, 08 Sep 2026 02:31:17 -0700 (PDT)
+Received: from localhost.localdomain ([192.19.203.250])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b08ca63b3sm31493316a91.11.2026.09.08.02.31.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Sep 2026 02:31:17 -0700 (PDT)
+From: Vikas Gupta <vikas.gupta@broadcom.com>
+To: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	horms@kernel.org
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	bhargava.marreddy@broadcom.com,
+	rahul-rg.gupta@broadcom.com,
+	vsrama-krishna.nemani@broadcom.com,
+	rajashekar.hudumula@broadcom.com,
+	dharmender.garg@broadcom.com,
+	ajit.khaparde@broadcom.com,
+	Vikas Gupta <vikas.gupta@broadcom.com>
+Subject: [net-next, v2 01/11] bnge: update HSI
+Date: Tue,  8 Sep 2026 15:00:43 +0530
+Message-ID: <20260908093053.2596020-2-vikas.gupta@broadcom.com>
+X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20260908093053.2596020-1-vikas.gupta@broadcom.com>
+References: <20260908093053.2596020-1-vikas.gupta@broadcom.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -46,68 +100,185 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:PigvCgD3Bf3X1J9qaBRdRg--.18019S5
-X-Coremail-Antispam: 1Uf129KBjvJXoW7Kr4fXryDCr45Ary7Zw1UKFg_yoW8uFWDpF
-	4Yy3ZFyFyrXw47Xa4xJ3yDZF15K3s3JrW7Gry7K34rCFn8KrnYyr10grWUKF9IvFZ5Zr1j
-	vw4Fv398G3yUuF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jaE_NUUUUU=
-X-CM-SenderInfo: 5odqwvxbwd0wi6rwjhhfrp/xtbC4RvtHGqf1NuicQAA3i
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-From: Longjun Tang <tanglongjun@kylinos.cn>
+Update HSI to support future patches implementing multi-RSS and
+NTUPLE-related features.
 
-Add an rx_timeouts field to the per-queue RX statistics, expose
-it via ethtool and increment it when the RX watchdog fires,
-so RX watchdog timeouts can be observed per queue.
-
-Assisted-by: Kilo:deepseek-v4-pro
-Signed-off-by: Longjun Tang <tanglongjun@kylinos.cn>
+Signed-off-by: Vikas Gupta <vikas.gupta@broadcom.com>
+Reviewed-by: Dharmender Garg <dharmender.garg@broadcom.com>
 ---
- drivers/net/virtio_net.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ include/linux/bnge/hsi.h | 136 ++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 135 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index c28de03c177b..a898e8e8fe53 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -134,6 +134,7 @@ struct virtnet_rq_stats {
- 	u64_stats_t xdp_redirects;
- 	u64_stats_t xdp_drops;
- 	u64_stats_t kicks;
-+	u64_stats_t rx_timeouts;
+diff --git a/include/linux/bnge/hsi.h b/include/linux/bnge/hsi.h
+index 1f7bd96415a5..d4fe662d60b1 100644
+--- a/include/linux/bnge/hsi.h
++++ b/include/linux/bnge/hsi.h
+@@ -8607,6 +8607,7 @@ struct hwrm_cfa_l2_filter_alloc_input {
+ 	#define CFA_L2_FILTER_ALLOC_REQ_ENABLES_MIRROR_VNIC_ID      0x10000UL
+ 	#define CFA_L2_FILTER_ALLOC_REQ_ENABLES_NUM_VLANS           0x20000UL
+ 	#define CFA_L2_FILTER_ALLOC_REQ_ENABLES_T_NUM_VLANS         0x40000UL
++	#define CFA_L2_FILTER_ALLOC_REQ_ENABLES_RFS_RING_TBL_IDX    0x80000UL
+ 	u8	l2_addr[6];
+ 	u8	num_vlans;
+ 	u8	t_num_vlans;
+@@ -8663,7 +8664,8 @@ struct hwrm_cfa_l2_filter_alloc_input {
+ 	#define CFA_L2_FILTER_ALLOC_REQ_PRI_HINT_MIN          0x4UL
+ 	#define CFA_L2_FILTER_ALLOC_REQ_PRI_HINT_LAST        CFA_L2_FILTER_ALLOC_REQ_PRI_HINT_MIN
+ 	u8	unused_5;
+-	__le32	unused_6;
++	__le16	rfs_ring_tbl_idx;
++	__le16	unused_6;
+ 	__le64	l2_filter_id_hint;
  };
  
- #define VIRTNET_SQ_STAT(name, m) {name, offsetof(struct virtnet_sq_stats, m), -1}
-@@ -167,6 +168,7 @@ static const struct virtnet_stat_desc virtnet_rq_stats_desc[] = {
- 	VIRTNET_RQ_STAT("xdp_redirects", xdp_redirects),
- 	VIRTNET_RQ_STAT("xdp_drops",     xdp_drops),
- 	VIRTNET_RQ_STAT("kicks",         kicks),
-+	VIRTNET_RQ_STAT("rx_timeouts",   rx_timeouts),
+@@ -8900,6 +8902,95 @@ struct hwrm_cfa_tunnel_filter_free_output {
+ 	u8	valid;
  };
  
- static const struct virtnet_stat_desc virtnet_sq_stats_desc_qstat[] = {
-@@ -3061,8 +3063,9 @@ static int virtnet_poll(struct napi_struct *napi, int budget)
- /*
-  * This watchdog detects that state: a queue is considered stalled when
-  * it has a non-zero backlog, makes no consumption progress and receives
-- * no new interrupt for rx_watchdog_timeo seconds. On detection it logs
-- * a warning.
-+ * no new interrupt for rx_watchdog_timeo seconds. On detection it
-+ * records the event in the per-queue rx_timeouts statistic and logs a
-+ * warning.
-  */
- static void virtnet_rx_watchdog(struct timer_list *t)
- {
-@@ -3094,6 +3097,10 @@ static void virtnet_rx_watchdog(struct timer_list *t)
- 			unsigned int stall_ms =
- 				jiffies_to_msecs(jiffies - rq->watchdog_jiffies);
- 
-+			u64_stats_update_begin(&rq->stats.syncp);
-+			u64_stats_inc(&rq->stats.rx_timeouts);
-+			u64_stats_update_end(&rq->stats.syncp);
++/* hwrm_cfa_ntuple_filter_alloc_input (size:1024b/128B) */
++struct hwrm_cfa_ntuple_filter_alloc_input {
++	__le16	req_type;
++	__le16	cmpl_ring;
++	__le16	seq_id;
++	__le16	target_id;
++	__le64	resp_addr;
++	__le32	flags;
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_FLAGS_LOOPBACK              0x1UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_FLAGS_DROP                  0x2UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_FLAGS_METER                 0x4UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_FLAGS_DEST_FID              0x8UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_FLAGS_ARP_REPLY             0x10UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_FLAGS_DEST_RFS_RING_IDX     0x20UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_FLAGS_NO_L2_CONTEXT         0x40UL
++	__le32	enables;
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_ENABLES_L2_FILTER_ID         0x1UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_ENABLES_ETHERTYPE            0x2UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_ENABLES_TUNNEL_TYPE          0x4UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_ENABLES_SRC_MACADDR          0x8UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_ENABLES_IPADDR_TYPE          0x10UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_ENABLES_SRC_IPADDR           0x20UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_ENABLES_SRC_IPADDR_MASK      0x40UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_ENABLES_DST_IPADDR           0x80UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_ENABLES_DST_IPADDR_MASK      0x100UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_ENABLES_IP_PROTOCOL          0x200UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_ENABLES_SRC_PORT             0x400UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_ENABLES_SRC_PORT_MASK        0x800UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_ENABLES_DST_PORT             0x1000UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_ENABLES_DST_PORT_MASK        0x2000UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_ENABLES_PRI_HINT             0x4000UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_ENABLES_NTUPLE_FILTER_ID     0x8000UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_ENABLES_DST_ID               0x10000UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_ENABLES_MIRROR_VNIC_ID       0x20000UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_ENABLES_DST_MACADDR          0x40000UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_ENABLES_RFS_RING_TBL_IDX     0x80000UL
++	__le64	l2_filter_id;
++	u8	src_macaddr[6];
++	__be16	ethertype;
++	u8	ip_addr_type;
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_IP_ADDR_TYPE_UNKNOWN 0x0UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_IP_ADDR_TYPE_IPV4    0x4UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_IP_ADDR_TYPE_IPV6    0x6UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_IP_ADDR_TYPE_LAST   CFA_NTUPLE_FILTER_ALLOC_REQ_IP_ADDR_TYPE_IPV6
++	u8	ip_protocol;
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_IP_PROTOCOL_UNKNOWN 0x0UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_IP_PROTOCOL_TCP     0x6UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_IP_PROTOCOL_UDP     0x11UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_IP_PROTOCOL_ICMP    0x1UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_IP_PROTOCOL_ICMPV6  0x3aUL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_IP_PROTOCOL_RSVD    0xffUL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_IP_PROTOCOL_LAST   CFA_NTUPLE_FILTER_ALLOC_REQ_IP_PROTOCOL_RSVD
++	__le16	dst_id;
++	__le16	rfs_ring_tbl_idx;
++	u8	tunnel_type;
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_TUNNEL_TYPE_NONTUNNEL    0x0UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_TUNNEL_TYPE_VXLAN        0x1UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_TUNNEL_TYPE_NVGRE        0x2UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_TUNNEL_TYPE_L2GRE        0x3UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_TUNNEL_TYPE_IPIP         0x4UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_TUNNEL_TYPE_GENEVE       0x5UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_TUNNEL_TYPE_MPLS         0x6UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_TUNNEL_TYPE_STT          0x7UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_TUNNEL_TYPE_IPGRE        0x8UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_TUNNEL_TYPE_VXLAN_V4     0x9UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_TUNNEL_TYPE_IPGRE_V1     0xaUL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_TUNNEL_TYPE_L2_ETYPE     0xbUL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_TUNNEL_TYPE_VXLAN_GPE_V6 0xcUL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_TUNNEL_TYPE_VXLAN_GPE    0x10UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_TUNNEL_TYPE_ANYTUNNEL    0xffUL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_TUNNEL_TYPE_LAST        CFA_NTUPLE_FILTER_ALLOC_REQ_TUNNEL_TYPE_ANYTUNNEL
++	u8	pri_hint;
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_PRI_HINT_NO_PREFER 0x0UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_PRI_HINT_ABOVE     0x1UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_PRI_HINT_BELOW     0x2UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_PRI_HINT_HIGHEST   0x3UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_PRI_HINT_LOWEST    0x4UL
++	#define CFA_NTUPLE_FILTER_ALLOC_REQ_PRI_HINT_LAST     CFA_NTUPLE_FILTER_ALLOC_REQ_PRI_HINT_LOWEST
++	__be32	src_ipaddr[4];
++	__be32	src_ipaddr_mask[4];
++	__be32	dst_ipaddr[4];
++	__be32	dst_ipaddr_mask[4];
++	__be16	src_port;
++	__be16	src_port_mask;
++	__be16	dst_port;
++	__be16	dst_port_mask;
++	__le64	ntuple_filter_id_hint;
++};
 +
- 			netdev_warn(vi->dev, "RX queue %u stalled for %u ms\n",
- 				    i, stall_ms);
+ /* hwrm_cfa_ntuple_filter_alloc_output (size:192b/24B) */
+ struct hwrm_cfa_ntuple_filter_alloc_output {
+ 	__le16	error_code;
+@@ -9014,6 +9105,49 @@ struct hwrm_cfa_ntuple_filter_cfg_output {
+ 	u8	valid;
+ };
  
++/* hwrm_cfa_adv_flow_mgnt_qcaps_input (size:256b/32B) */
++struct hwrm_cfa_adv_flow_mgnt_qcaps_input {
++	__le16	req_type;
++	__le16	cmpl_ring;
++	__le16	seq_id;
++	__le16	target_id;
++	__le64	resp_addr;
++	__le32	unused_0[4];
++};
++
++/* hwrm_cfa_adv_flow_mgnt_qcaps_output (size:128b/16B) */
++struct hwrm_cfa_adv_flow_mgnt_qcaps_output {
++	__le16	error_code;
++	__le16	req_type;
++	__le16	seq_id;
++	__le16	resp_len;
++	__le32	flags;
++	#define CFA_ADV_FLOW_MGNT_QCAPS_RESP_FLAGS_FLOW_HND_16BIT_SUPPORTED                     0x1UL
++	#define CFA_ADV_FLOW_MGNT_QCAPS_RESP_FLAGS_FLOW_HND_64BIT_SUPPORTED                     0x2UL
++	#define CFA_ADV_FLOW_MGNT_QCAPS_RESP_FLAGS_FLOW_BATCH_DELETE_SUPPORTED                  0x4UL
++	#define CFA_ADV_FLOW_MGNT_QCAPS_RESP_FLAGS_FLOW_RESET_ALL_SUPPORTED                     0x8UL
++	#define CFA_ADV_FLOW_MGNT_QCAPS_RESP_FLAGS_NTUPLE_FLOW_DEST_FUNC_SUPPORTED              0x10UL
++	#define CFA_ADV_FLOW_MGNT_QCAPS_RESP_FLAGS_TX_EEM_FLOW_SUPPORTED                        0x20UL
++	#define CFA_ADV_FLOW_MGNT_QCAPS_RESP_FLAGS_RX_EEM_FLOW_SUPPORTED                        0x40UL
++	#define CFA_ADV_FLOW_MGNT_QCAPS_RESP_FLAGS_FLOW_COUNTER_ALLOC_SUPPORTED                 0x80UL
++	#define CFA_ADV_FLOW_MGNT_QCAPS_RESP_FLAGS_RFS_RING_TBL_IDX_SUPPORTED                   0x100UL
++	#define CFA_ADV_FLOW_MGNT_QCAPS_RESP_FLAGS_UNTAGGED_VLAN_SUPPORTED                      0x200UL
++	#define CFA_ADV_FLOW_MGNT_QCAPS_RESP_FLAGS_XDP_SUPPORTED                                0x400UL
++	#define CFA_ADV_FLOW_MGNT_QCAPS_RESP_FLAGS_L2_HEADER_SOURCE_FIELDS_SUPPORTED            0x800UL
++	#define CFA_ADV_FLOW_MGNT_QCAPS_RESP_FLAGS_NTUPLE_FLOW_RX_ARP_SUPPORTED                 0x1000UL
++	#define CFA_ADV_FLOW_MGNT_QCAPS_RESP_FLAGS_RFS_RING_TBL_IDX_V2_SUPPORTED                0x2000UL
++	#define CFA_ADV_FLOW_MGNT_QCAPS_RESP_FLAGS_NTUPLE_FLOW_RX_ETHERTYPE_IP_SUPPORTED        0x4000UL
++	#define CFA_ADV_FLOW_MGNT_QCAPS_RESP_FLAGS_TRUFLOW_CAPABLE                              0x8000UL
++	#define CFA_ADV_FLOW_MGNT_QCAPS_RESP_FLAGS_L2_FILTER_TRAFFIC_TYPE_L2_ROCE_SUPPORTED     0x10000UL
++	#define CFA_ADV_FLOW_MGNT_QCAPS_RESP_FLAGS_LAG_SUPPORTED                                0x20000UL
++	#define CFA_ADV_FLOW_MGNT_QCAPS_RESP_FLAGS_NTUPLE_FLOW_NO_L2CTX_SUPPORTED               0x40000UL
++	#define CFA_ADV_FLOW_MGNT_QCAPS_RESP_FLAGS_NIC_FLOW_STATS_SUPPORTED                     0x80000UL
++	#define CFA_ADV_FLOW_MGNT_QCAPS_RESP_FLAGS_NTUPLE_FLOW_RX_EXT_IP_PROTO_SUPPORTED        0x100000UL
++	#define CFA_ADV_FLOW_MGNT_QCAPS_RESP_FLAGS_RFS_RING_TBL_IDX_V3_SUPPORTED                0x200000UL
++	u8	unused_0[3];
++	u8	valid;
++};
++
+ /* hwrm_tunnel_dst_port_alloc_input (size:192b/24B) */
+ struct hwrm_tunnel_dst_port_alloc_input {
+ 	__le16	req_type;
 -- 
-2.25.1
+2.47.1
 
