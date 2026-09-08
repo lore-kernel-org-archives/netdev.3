@@ -1,115 +1,169 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-124.mta0.migadu.com [91.218.175.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A725E53A886;
-	Tue,  8 Sep 2026 12:20:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AA5B53446A
+	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 12:22:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788870054; cv=none; b=gHMKjus8fU3DT8tpr27DilKjxNEf3LOar71NvOSDnStGcnrLLVGSPoSAEtO5subJd0aiG1YnrMQaQ4JCXqD4gOK3tfwDnbFe+EXAf9IQHCV0HhmHccN77SjSEPr2ZD05mnjGXGKFl6ZEmX/xXaDnMrmmKpfg+tXAr09xwFMgans=
+	t=1788870139; cv=none; b=rDHDwEdn+/IM11Q/jnmnI1OyMS+vW6jvmPK+6kgWkSe72AUuapGQPxU8MRYIiiAJsqauRaxu5HtvliwuGWk58MGQoPcF2CcMKtsp0jFGyEg+TaYfBVO0Q8OB7zDIfPqf9W5nFLkFfh1TeunfIVxWgS9f/i1mjkZAISxr2kC8tdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788870054; c=relaxed/simple;
-	bh=3fif8XXnfu86Trd6k3leQLNw8UkFq6hVdLqyTdGHB1M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Jtv9IU7UZzSPXre7kwbwUd5Up6qjJYMlyozNqdSui1nByP1/R5kzNNgVDdsXnFQP3D03cGOdixiey56FVUOagJet9cEolzFAQFnj62j8wyhrVfWZlUNzoDZPeLEbUXvjNU/ak+zGtVeTBp+x5B7h3OpQuexfNMdUtSe+OH5c4zY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IXZG2LvN; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788870139; c=relaxed/simple;
+	bh=k/IHifKCS20JBL4khmFjrFg5h30C+16o1SAyAAe7yD8=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=hCmtJrdCLHSBi9SP8FoqBBKrd/sT8lQx/Ye0eqjq2WEiwE/R8L2Hm0PhwPl2Bo6Xx9QKjdOO88XnYqKyj8iF+9mDe0dhVBwA9WRKkRg1/Nw+k9ZqPqUmSGeUJUpnxx0WXYtJYaajqJOeT59MrBFIMaqkxrjjugFEcYJYG9FPHiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=hP0neyFS; arc=none smtp.client-ip=91.218.175.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IXZG2LvN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA3981F00A3D;
-	Tue,  8 Sep 2026 12:20:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788870049;
-	bh=cWvpOXyjjZrhIetQiwdMhEUgIE2tbl5vXLToXqUCVRc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=IXZG2LvNeocHOQVTxDTDAErRRrlRN46C/5PV2WAfWlyj+j9UYwNHXgxJKiCySZNNo
-	 O7CrFoUhVsyWJaqaucuMC98xswl6QO8zmMCmPRUv7eqbeggKimmI9KLX0WpYAu1t6L
-	 AEjHsU8BOvOi+RBoMnV1dmdtc0PtKvprENYzIR0ojalB3HF8ZtrVXuYRNE8iJaL2MU
-	 r9WYetbK8pfI6DJW//4YUJJsEf3j33XoQyrUxe7anWtUBhdVyE5S0Pwb3EaFyCU18k
-	 YwnAlCn0QZaqBORJYmKp/xapXUnu/2OuLju/oY+jqhQxvy4A++SyXtun+M00QD9JAC
-	 zbv7ilSwlLqmA==
-Date: Tue, 8 Sep 2026 13:20:45 +0100
-From: Simon Horman <horms@kernel.org>
-To: Yury Norov <ynorov@nvidia.com>
-Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 2/2] ice: drop pf == NULL check in
- ice_pf_state_is_nominal()
-Message-ID: <20260908122045.GV40544@horms.kernel.org>
-References: <20260903132037.81346-1-ynorov@nvidia.com>
- <20260903132037.81346-3-ynorov@nvidia.com>
- <20260905183245.GD40544@horms.kernel.org>
- <apyrTFlAsrifzqzB@yury>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="hP0neyFS"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=k/IHifKCS20JBL4khmFjrFg5h30C+16o1SAyAAe7yD8=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788870132; v=1; x=1789474932;
+ b=hP0neyFS6PhRYDaYjbwef6m8kg60FR8gWtm174W2znoCF20FPFxYz2l4t15h+H05ZJRIL7Ko
+ EcYw0gew4UDwgQWw8EdCe8pPHAIVvs61jiyeNSotyrSqUEt43Zjajmd5wJ0uWoePCKwdCjykKd8
+ uM7cKFLM0wzYuHLVpkmmJFZM=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 05ba60e156225361;
+	Tue, 08 Sep 2026 12:22:12 +0000
+X-Mizu-Trace-ID: 05ba60e156225361
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <c6c4fd69-3074-4d6d-804b-cf8ff62359da@linux.dev>
+Date: Tue, 8 Sep 2026 20:22:02 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <apyrTFlAsrifzqzB@yury>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH bpf v2 2/3] tcp: Skip cond_resched() in
+ inet_csk_listen_stop() under BPF context
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+To: Kuniyuki Iwashima <kuniyu@google.com>, bot+bpf-ci@kernel.org
+Cc: bpf@vger.kernel.org, daniel@iogearbox.net, john.fastabend@gmail.com,
+ sdf@fomichev.me, martin.lau@linux.dev, ast@kernel.org, andrii@kernel.org,
+ eddyz87@gmail.com, memxor@gmail.com, song@kernel.org,
+ yonghong.song@linux.dev, jolsa@kernel.org, emil@etsalapatis.com,
+ ihor.solodrai@linux.dev, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, ncardwell@google.com,
+ shuah@kernel.org, aditi.ghag@isovalent.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ martin.lau@kernel.org, mason@kernel.org
+References: <20260906074135.185212-3-jiayuan.chen@linux.dev>
+ <0aa6425f9e8f32705ae827f6325b29079234c3f3d0c7b2cdefba3e5b50432766@mail.kernel.org>
+ <CAAVpQUBztYDHyiCN1fnhdxCPv_5AZ09yCMQfNW96SzZyw0LhHA@mail.gmail.com>
+ <a44c1e4d-e9a8-4df3-aa25-20875cd4d30e@linux.dev>
+In-Reply-To: <a44c1e4d-e9a8-4df3-aa25-20875cd4d30e@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Sat, Sep 05, 2026 at 07:52:44PM -0400, Yury Norov wrote:
-> On Sat, Sep 05, 2026 at 07:32:45PM +0100, Simon Horman wrote:
-> > On Thu, Sep 03, 2026 at 09:20:36AM -0400, Yury Norov wrote:
-> > > The function has 3 callers, all except one explicitly require
-> > > pf != NULL. Add the corresponding check to the remaining caller,
-> > > and remove it from the ice_pf_state_is_nominal(). It makse the
-> > > fun function a one-liner.
-> > > 
-> > > Signed-off-by: Yury Norov <ynorov@nvidia.com>
-> > > ---
-> > >  drivers/net/ethernet/intel/ice/ice_lib.c  | 3 ---
-> > >  drivers/net/ethernet/intel/ice/ice_main.c | 2 +-
-> > >  2 files changed, 1 insertion(+), 4 deletions(-)
-> > > 
-> > > diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
-> > > index 73996e3022ef..6d5b8acc4764 100644
-> > > --- a/drivers/net/ethernet/intel/ice/ice_lib.c
-> > > +++ b/drivers/net/ethernet/intel/ice/ice_lib.c
-> > > @@ -1705,9 +1705,6 @@ static void ice_vsi_set_rss_flow_fld(struct ice_vsi *vsi)
-> > >   */
-> > >  bool ice_pf_state_is_nominal(struct ice_pf *pf)
-> > >  {
-> > > -	if (!pf)
-> > > -		return false;
-> > > -
-> > >  	return bitmap_empty(pf->state, ICE_STATE_NOMINAL_CHECK_BITS);
-> > >  }
-> > >  
-> > > diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-> > > index d88835482d3a..168d85f9477f 100644
-> > > --- a/drivers/net/ethernet/intel/ice/ice_main.c
-> > > +++ b/drivers/net/ethernet/intel/ice/ice_main.c
-> > > @@ -5521,7 +5521,7 @@ static int ice_suspend(struct device *dev)
-> > >  
-> > >  	pf = pci_get_drvdata(pdev);
-> > >  
-> > > -	if (!ice_pf_state_is_nominal(pf)) {
-> > > +	if (!pf || !ice_pf_state_is_nominal(pf)) {
-> > >  		dev_err(dev, "Device is not ready, no need to suspend it\n");
-> > >  		return -EBUSY;
-> > >  	}
-> > 
-> > Is the new condition necessary in ice_suspend?
-> 
-> IDK. I'm just trying to stay on the safe side. The
-> ice_pf_state_is_nominal() was safe against pf == NULL,
-> so I'm trying to preserve the invariant.
-> 
-> If it's impossible, I can do:
-> 
->         if (WARN_ON(!pf) || !ice_pf_state_is_nominal(pf)) 
-> 
-> This would imply unlikely(), and more verbose than an implied
-> assumption that pf is never uninitialized.
 
-Let's stick with what you've got.
+On 9/8/26 4:07 PM, Jiayuan Chen wrote:
+>
+> On 9/8/26 7:34 AM, Kuniyuki Iwashima wrote:
+>> On Sun, Sep 6, 2026 at 1:23 AM <bot+bpf-ci@kernel.org> wrote:
+>>>> tcp: Skip cond_resched() in inet_csk_listen_stop() under BPF context
+>>>>
+>>>> bpf_sock_destroy() runs from the tcp iterator, under 
+>>>> rcu_read_lock(). If
+>>>> the sock is a listener that still has children in its accept queue,
+>>>> tcp_abort() ends up in inet_csk_listen_stop() and the cond_resched()
+>>>> there trips the debug check:
+>>>>
+>>>> BUG: sleeping function called from invalid context at 
+>>>> net/ipv4/inet_connection_sock.c:1523
+>>>> in_atomic(): 0, irqs_disabled(): 0, non_block: 0, pid: 628, name: 
+>>>> test_progs
+>>>> preempt_count: 0, expected: 0
+>>>> RCU nest depth: 1, expected: 0
+>>>> locks held by test_progs/628: 3, last CPU#3:
+>>>>   #0: ffff8881158cee18 (&p->lock){+.+.}-{4:4}, at: 
+>>>> bpf_seq_read+0x56/0x1210
+>>>>   #1: ffff8881106bb858 (sk_lock-AF_INET6){+.+.}-{0:0}, at: 
+>>>> bpf_iter_tcp_seq_show+0x32b/0x4b0
+>>>>   #2: ffffffffb435af20 (rcu_read_lock){....}-{1:3}, at: 
+>>>> bpf_iter_run_prog+0x46b/0xde0
+>>>> CPU: 3 UID: 0 PID: 628 Comm: test_progs Tainted: G W           
+>>>> 7.2.0+ #65 PREEMPT
+>>>> Tainted: [W]=WARN
+>>>> Call Trace:
+>>>>   <TASK>
+>>>>   dump_stack_lvl+0xc1/0xf0
+>>>>   dump_stack+0x10/0x20
+>>>>   __might_resched+0x3d2/0x610
+>>>>   inet_csk_listen_stop+0x7b/0xbf0
+>>>>   tcp_abort+0x23b/0x3b0
+>>>>   bpf_sock_destroy+0xfc/0x140
+>>>>   bpf_prog_448133d24601754f_iter_tcp6_server+0x81/0x8a
+>>>>   bpf_iter_run_prog+0x538/0xde0
+>>>>   bpf_iter_tcp_seq_show+0x26b/0x4b0
+>>>>   bpf_seq_read+0x424/0x1210
+>>>>   vfs_read+0x197/0xe40
+>>>>   ksys_read+0x119/0x240
+>>>>   __x64_sys_read+0x72/0xc0
+>>>>   x64_sys_call+0x647/0x27e0
+>>>>   do_syscall_64+0xe5/0x610
+>>>>   entry_SYSCALL_64_after_hwframe+0x76/0x7e
+>>>> RIP: 0033:0x7fad39b28aca
+>>>> RSP: 002b:00007ffc381c61c0 EFLAGS: 00000246 ORIG_RAX: 0000000000000000
+>>>> RAX: ffffffffffffffda RBX: 00007ffc381c6a88 RCX: 00007fad39b28aca
+>>>> RDX: 0000000000000032 RSI: 00007ffc381c6250 RDI: 0000000000000014
+>>>> RBP: 00007ffc381c61e0 R08: 0000000000000000 R09: 0000000000000000
+>>>> R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000003
+>>>> R13: 0000000000000000 R14: 000055f077c1bbb0 R15: 00007fad3a0f3000
+>>>>   </TASK>
+>>>>
+>>>> The commit that added the kfunc already guards lock_sock() in 
+>>>> tcp_abort()
+>>>> and udp_abort() with has_current_bpf_ctx(), but missed the listener 
+>>>> path.
+>>>> Do the same for the cond_resched(), it can't reschedule there anyway.
+>>>>
+>>>> Fixes: 4ddbcb886268 ("bpf: Add bpf_sock_destroy kfunc")
+>>>> Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+>>> Is the justification "it can't reschedule there anyway" accurate?
+>>>
+>>> With CONFIG_PREEMPT_DYNAMIC=y booted with preempt=none or 
+>>> preempt=voluntary,
+>>> cond_resched() expands to __cond_resched() which can actually 
+>>> reschedule.
+>>> The splat in the commit message confirms preempt_count is 0 while 
+>>> RCU nest
+>>> depth is 1. With preempt_count==0, should_resched(0) can be true and
+>>> __cond_resched() will call preempt_schedule_common() for a real 
+>>> reschedule.
+>>>
+>>> Additionally, in configurations with CONFIG_PREEMPT_RCU=n where
+>>> rcu_read_lock() is preempt_disable(), __cond_resched() falls through to
+>>> rcu_all_qs() which calls rcu_qs() to report a quiescent state from 
+>>> inside
+>>> an RCU read-side critical section. That's a correctness problem 
+>>> beyond just
+>>> the debug check.
+>>>
+>>> So the call can either reschedule (PREEMPT_DYNAMIC none/voluntary) 
+>>> or report
+>>> a bogus quiescent state (non-preemptible RCU). Could the 
+>>> justification be
+>>> reworded to explain that the loop runs inside the iterator's RCU 
+>>> read-side
+>>> critical section and must not reschedule or report a quiescent state 
+>>> there?
+>>> The code change itself is correct and matches the existing pattern in
+>>> tcp_abort() and udp_abort().
+>> or maybe simply remove cond_resched(), hoping 7dadeaa6e851 would
+>> resolve the scheduling issue.
+>>
+>
+> Good suggestion. cond_resched has become old practice under 
+> CONFIG_PREEMPT_LAZY
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+
+After reconsideration, I think it's not a good idea to remove it if we 
+treat it as a fix and the fix will be backported to LTS.
+
+Or we just drop both cond_resched and Fixes tag.
+
 
