@@ -1,77 +1,83 @@
-Received: from mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0739F330307
-	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 02:40:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ACA1242D89;
+	Tue,  8 Sep 2026 02:41:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788835238; cv=none; b=E8FU/eIL8zx/gX4thHTHufjgrKkS8KPzPJuwHMjwbcg+Q4rohro25Dn4H+12pvMM9D8BVNueZoS7OYz3h/ax7AJYCG/aE/UoJMZxOipL5BtNTWsq6+Jrh5dOcn/Sxo77AKLgKijGpIiUhiZnl3pClRT8tZUwWpv32E4yg3N59PA=
+	t=1788835267; cv=none; b=CL45P38gtusb7uJOhQqma7/haU4DIgD7VKYB/OHMYOLwPf5rR0IVc8SiB+wGtYajuxHWrDY3vFtxnfSt4RykmDEkligiy2IY+MOXsJ6Ch3zg5tfH0Ryhc6hTyW4t7P4hr89GjF4BHvqphff5BxoYchnHp0sEZ2Wp46ADW4QTEzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788835238; c=relaxed/simple;
-	bh=qqephO7MiF3EglduJF8KB9YgLfHVQKCikHF2v/k+K8k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=L9gbjYYy+tocRK8yK3vKSnOpJVlEYmuKrX4tL1uNzyXol8yze4Av//ohLDfXFZ0fvr/QeaA89i22QqSo802o9i7hLmzJzSplaUdBMR+iU7qRj06e7wd0bXV2T529j5bXQFJXrrNp2yTVnSY4GCxADpWfOPF9h++P5ZlETxChWoo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Oof97gRd; arc=none smtp.client-ip=95.215.58.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1788835267; c=relaxed/simple;
+	bh=ZXqt+wy1ky6ZkROxbET0sqVfnQl0tHsSIP4qR52I/FQ=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=N39VBs2PD2aYNm3EmjxXL6qcu8vqE20NEBwvgnr50Hwki2yNByvwHSoIltF1B1zBtTATVulG1qiLV1THfphEI4laa5IOMtrCh1G30heFKAhdmmH5Pjvil0lKC+hU7mZDDs7kjxcoCWRtxQe4U6kO1YM8oM34gwf5z9LC/OQqI5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DyUcpSHc; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Oof97gRd"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=qqephO7MiF3EglduJF8KB9YgLfHVQKCikHF2v/k+K8k=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788835231; v=1; x=1789440031;
- b=Oof97gRdkVjqLj/3tFS4dj2oyFRw+nbNQuDNctEHUFY+99rt0FwEVyn7xqvjxpsHvi5yOQ8y
- bRP0PnkrIDdgZTpRMC+Nc1+/cfF5VTwtdPXWE6f/F0PDgckygIKxYcs5heNTI01RtvIVF98VWe+
- 0EKz8WMpYWEYSx/QC+VCzh+I=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta11.migadu.com with ESMTPS id d4164907f45634ec;
-	Tue, 08 Sep 2026 02:40:31 +0000
-X-Mizu-Trace-ID: d4164907f45634ec
-X-Migadu-Flow: FLOW_OUT
-Date: Tue, 8 Sep 2026 10:40:16 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: Eric Dumazet <edumazet@google.com>
-Cc: Ido Schimmel <idosch@nvidia.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>,
-	netdev@vger.kernel.org, eric.dumazet@gmail.com
-Subject: Re: [PATCH net-next] selftests: icmp_redirect: remove xfail support
-Message-ID: <ap91kK58_DL2P9DH@fedora>
-References: <20260907132423.3353361-1-edumazet@google.com>
- <20260907153733.GA755346@shredder>
- <CANn89iKAFuAKgR=pZSfNWtNj9aT_PgmZzfu04mt14S1UFfeN=Q@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DyUcpSHc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED9C11F00A3A;
+	Tue,  8 Sep 2026 02:41:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788835266;
+	bh=tvhK03jSmFF/rODjpwj0Aw9zx73Sq3WpGLz8+mDMcYk=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=DyUcpSHcf00sQZ9081E0Rx2GtFR7Mdsd0Vp2WYvAbibs7CO6kde6AWnGfkCluiIL+
+	 vIk7oAK4WDmp0jFeXoVaaOWeFhGvm34cnJtH4hkH2B5anjtItgoJS6d0z5VjGBEjMI
+	 jIN4sOSDHnvMkBI7jQsGtb3YHAzFM5EoiX8FaczGODhxZbOvk3XawgBnDqrFP1N7La
+	 J1bQDtEm1oRrEw74JFCZIkZu8d1vsyFIDsHaNShZrEuup8h2V4IPzj/OeU9PEX/VTe
+	 4nnNCS2PFNVUV2LG7JubgHxhDyyhmryJ6dGzAnlOZbLbtsxXocKkoDHESkbL1V5mhC
+	 CkdWw9dT9HPHA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 197AD39E8A5D;
+	Tue,  8 Sep 2026 02:40:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANn89iKAFuAKgR=pZSfNWtNj9aT_PgmZzfu04mt14S1UFfeN=Q@mail.gmail.com>
+Subject: Re: [PATCH bpf 1/2] bpf: Fix bpf_skb_change_tail wrt csum partial
+ skbs
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178883520489.3252445.12614070456129437426.git-patchwork-notify@kernel.org>
+Date: Tue, 08 Sep 2026 02:40:04 +0000
+References: <20260907121025.1923656-1-daniel@iogearbox.net>
+In-Reply-To: <20260907121025.1923656-1-daniel@iogearbox.net>
+To: Daniel Borkmann <daniel@iogearbox.net>
+Cc: ast@kernel.org, memxor@gmail.com, yusuke.suzuki@isovalent.com,
+ tom.hadlaw@isovalent.com, bpf@vger.kernel.org, netdev@vger.kernel.org
 
-On Mon, Sep 07, 2026 at 05:52:13PM +0200, Eric Dumazet wrote:
-> On Mon, Sep 7, 2026 at 5:37 PM Ido Schimmel <idosch@nvidia.com> wrote:
+Hello:
+
+This series was applied to bpf/bpf.git (master)
+by Alexei Starovoitov <ast@kernel.org>:
+
+On Mon,  7 Sep 2026 14:10:24 +0200 you wrote:
+> Cilium generates ICMP "frag needed" replies from BPF when a LB DSR
+> packet exceeds the egress MTU. The reply is built by first trimming the
+> packet down to target size via bpf_skb_change_tail(), and then pushing
+> the ICMP error headers in front of it.
 > 
-> > Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-> >
-> > FTR, I don't think cd51b74bdd0b ("ipv6: Fix redirect exception creation
-> > for UDP/RAW sockets") is what fixed the xfail (I never saw xfail, even
-> > before my patch). It's more likely that it was fixed by commit
-> > 0e02bf5de46a ("selftests: icmp_redirect: IPv6 PMTU info should be
-> > cleared after redirect"):
-> >
-> > 1. The redirect message quotes an echo request, so it's going through
-> > icmpv6_err() which calls ip6_redirect() using the correct oif. It's
-> > possible that rawv6_err() later called ip6_sk_redirect(), but by then
-> > the exception was already present / populated.
+> The trim is rejected for skbs which carry a checksum offload, e.g. TCP
+> packets aggregated by GRO on ingress where tcp_gro_complete() leaves
+> the skb as CHECKSUM_PARTIAL. __bpf_skb_min_len() raises the minimum
+> length to the end of the L4 checksum field, so a trim to 42 bytes bails
+> out with -EINVAL given a min_len of 52 in this case, and due to that
+> the ICMP generator fails. This is not the case if GRO is turned off.
 > 
-> Ah right,  I will send a V2 with an updated changelog, thanks!
+> [...]
 
-Good, I will rebase my log_test() cleanup on your patch.
+Here is the summary with links:
+  - [bpf,1/2] bpf: Fix bpf_skb_change_tail wrt csum partial skbs
+    https://git.kernel.org/bpf/bpf/c/3b55f350c68a
+  - [bpf,2/2] selftests/bpf: Add test for bpf_skb_change_tail on csum partial skbs
+    https://git.kernel.org/bpf/bpf/c/15e2565f1c43
 
-Thanks
-Hangbin
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
