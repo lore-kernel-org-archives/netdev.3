@@ -1,68 +1,68 @@
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63FA4545DBD
-	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 13:04:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B9EB54CF41
+	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 13:04:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788872655; cv=none; b=tWOewKJxrXIzLDcOmwHJRGzBJfXd48NhzSOXbBDuZqLv7TADvUDInkqA03piugIU/Oi0XvkVJnMcKiqKgj1ACNi+qLkeyakeaiwS8m9/DpOrn9/GATC8o7Qr+2IxKD8RK8JtjRCqUQrG8tlM/uBKeBQXFFRtalcSVaijOzbFY+E=
+	t=1788872659; cv=none; b=NZCA2auIJob6ldPDFJt6Q478snRHmGbpD74oVXzQBEvk3hVOFnTj3WGyNaBbZZ1walrt39IwwySttLEFLnvhemwaUf6ahMgkQHzEf6Oi+z9bJfQH+s5XUH3vRB7duCriYECKIB602wce+qZCEDb1arw3hNXwS7pv1ZQORPMYJiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788872655; c=relaxed/simple;
-	bh=2es4HxF/abUxtlRl5dW+lcYpAaZ0CFbVJ7S/IMs1s6I=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=rjyMSxi+MLtrTqr5SZZFvm2s1wwbSjPfW4c+sIXdLN7S/6zSyNQ+Yds+DRITdxb0N13PavHRk/0ZWSax9HJbmfVZgz2AejZquGcirCD650dgE9no2TArfcOoYOYofnCgDA7qNYzqjcg9lQghgOuq3zafmtFTrSk1hbZ9Ua+i6hk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EGgGu9rG; arc=none smtp.client-ip=209.85.210.177
+	s=arc-20240116; t=1788872659; c=relaxed/simple;
+	bh=X6V7sokbB0cLy8xh2qoOtiyZEfAHNXyI//EhGCTX1U0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=uNIabsI9jDZgw/IAezb2pgimeJ1tqVnaxI8UORqhXE8OyMZHQ1fKEvsPMjiwyj+csX5QBfzN8sK1HDfeCOg83GuFbHVImI6jmYU4W5dBWnb44ZDLqkJ45LtLccrFR5Tv0JchT7dJQT9+1XzwTL3eHgfnngV6+S5gvi7e6NNlTqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LG0F9gNm; arc=none smtp.client-ip=209.85.210.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EGgGu9rG"
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-8556ec44e9aso3884921b3a.3
-        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 06:04:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LG0F9gNm"
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-84e84a6c4bfso3903119b3a.1
+        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 06:04:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788872646; x=1789477446; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=aode32HLzZqgIxPJF5MYdaNUCyCQFBptY8B/uClxA8Q=;
-        b=EGgGu9rGpVOFFNFLCeAhnuGZpoLkiWUb4i9TlVNQEV/pR+PhlHaCGu/auXtMlF7Q9i
-         VvQovNvWQ6R4Q0egzJsDSEAOTao/V3VzwuwHJhGDQNjp3cnk755MPzNxPUwLq+1LxAVe
-         5oEVZgk1IGdRidFY/CSn1RM+pnSKdt8mWHvybggi5RVR25IgNZ4PB0JJxTyyb1X14FUK
-         C6SdhaZ3vPDRCz90KEwo31xOR58pdSQGn99a9T+nvql2eOti4z6diK99oJc8OV6dFHYY
-         rv7h3v+bAxrF3NYHFKbiP9c43HPs+tErAzoMauoYQ+akZkiJdFUrTYfbW/Htvo2ncaqj
-         dkdg==
+        d=gmail.com; s=20251104; t=1788872649; x=1789477449; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=xeLNyhcOR1j1888DGQp/Ixbu2kpSiIXu9jd7Jj8fJWs=;
+        b=LG0F9gNmIqtOQ+Lii76rIuhXhPaOnw//wQ5VaX4S+Oy9bkkRAkWC+FpMIf40Nw0L37
+         xIuGTeZVBahclxGTnN3diGLDdGKbdQPBHRX7U+pocklyXRK8enWsQM6JUmfelJqk0TCg
+         P7/2ubY7e/tFgsxye8HnwM7e9S5aFnyF1ymVXRVR2W9b+NV4b0NLjE1KPRJ9MpaJrqLv
+         Xu4+VUcGvTderZVA3UW3HFQS+iNKv2cKBfATxqdmjeaFlYF1GLnPf2jxuMSkExOfkpJ4
+         932SLEBqzOLEy3gzu9HHdy8pEr6r+voLs7CuFeBLBGr+fXw+mHqqCKO8u/TawJYhjwjb
+         BR5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788872646; x=1789477446;
-        h=cc:to:content-transfer-encoding:content-type:mime-version
-         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=aode32HLzZqgIxPJF5MYdaNUCyCQFBptY8B/uClxA8Q=;
-        b=XAFqMUSlbVxi9DXD66sSGJ50ex2Z0tcQRXFBCsoo+gyFa8T5iwro+GJ2W96uxSOy5/
-         uADYeZ+sUEvsWyEl3TIG7k+Qe1288IYfl+jyIukeduf/hTMt3B2WKoCl8hNTGib3gp1t
-         6KuaojGD4H99ydEWzV9cpfGcLAcUGsuSheLZlhxDo0xuYH2+0LNgE8rSxqbdPu1ahsdA
-         uXyBhrgDRv3UcvBchr2AjgCCnQ7tnksGkrUuBgQQ7UxczjXjDCqNyimsaTQcfPc/jRlu
-         jBOnfItHYRwXafMzdd6xDMVoxzpPF4lb/84nhVUksyWpkLsH04QwLLOgwbwcCG9VTTkN
-         GcJg==
-X-Forwarded-Encrypted: i=1; AKwUvBzD8MdMrqXmK8gwm1HbZqmHjwawNzySE/RreS78AxHs6UJUvl2Ne5wbzJTGmAvyvO/m2b6crmE=@vger.kernel.org
-X-Gm-Message-State: AFuF++nlC56xNBy09gph/zioBu5HqLSdh42OnxsijQKTT5fzuvrI8G5Z
-	wLFNRrHOHGsLtnRBJq30QpYO2T8j/Qdz/QjMFg71pdaQBuaptOaDjfjU
-X-Gm-Gg: AYBFou2SLuRJeFn3zxH/KAwtJY2MJLM6vuKoNRWPhBbT8JFxh93h44+EzuInTh2A8Ck
-	FaYg3c5hh9MW9xRo2vjbTgvSzhDYXXMBV8VQrykD/0VNhSXBtLUYJPiQ1zEh5rCbIHG1/ZtRAjR
-	jb88L1PeqPnC+oAe0JtNwAIhNKbOI56P6xn9vC/v33iAJkZ1u9SySvx3TddHDlFbYLzcD9L/G62
-	xJFXYFjCAzhyayEGtr5dOwmm1SsF7dXKsuVaBPEZ2jjebfekuu7cJXelmn0koB7T2eIn0otJm/T
-	e/KqeNxT9o7FXJaqaZydu18fONEcuCyaOgvBZSQ93y9gzeYllLH/FehbHXNuixcW1ijnaPADDQa
-	2ztHbVtusxpEd7oBT66H198p/Gy/auC17eUJ0MP/t44glycH2f71tHdofJXZnJoPccZsrhRBliT
-	bRbtCOjMzESdpp1CRvwtgXAQGCf9Qlu3xftG0Q+q4NVQ0+/Jsx5aY2EfOaJRZUdjmHFa2UQmxA7
-	KH1rM71oNejYVvc4sN4A1KEghTArg==
-X-Received: by 2002:a05:6a00:4c10:b0:857:72ba:ff0a with SMTP id d2e1a72fcca58-8616ae51d10mr46313242b3a.18.1788872644514;
-        Tue, 08 Sep 2026 06:04:04 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1788872649; x=1789477449;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :content-type:mime-version:subject:date:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=xeLNyhcOR1j1888DGQp/Ixbu2kpSiIXu9jd7Jj8fJWs=;
+        b=HJduD7/m3krkPE7PR7RLQZ5rI0APuddT7mafCLB6UjW/arvzjfJXTt0dc6K4vTWfpT
+         jvnlht4QdCV3odRaWkWvmFA/aRE8P1OzXnfzrGs6gj8h8sEBJxYYhHR2AA5uyMBmK/e+
+         iu68T38MgWhhloUAxZnmxD0jD4bUPy2Mma4Hgo8NBuFKSOHNa2KfmDuhOwtwPN2ZZwH2
+         MGZ1i6p74zK6vMEdTB4nsZFPHjwcqYEQHEidqex6N/+e63f5GlyC8QMNkd/yT3HOVyih
+         MMQym4GfBYBup3KEX66h5IePflsMw9s8SmQtYJai3t/wF2UkptCg96v9VcTs+UURjpGQ
+         8nGw==
+X-Forwarded-Encrypted: i=1; AKwUvBwIiE743Sa7kXddjljyi5EdOPoIjJDW7p04iE0lKX3tacwQg5EU365nljnVUaN5Ne2olMz2m5Y=@vger.kernel.org
+X-Gm-Message-State: AFuF++mOJRysCLVSI7K6kHMXPB3kev6ysBWFmpT5evloMmSg8fbsxl1q
+	Y8bEFtsiYWYD+NPSlfY243Hc45VBA/4I6Z92g0egEFSF73d3w7RWYyLe
+X-Gm-Gg: AYBFou3NHDOLYhWsYqlqklcojR/oBlhjKT/IQdUyT5ymILzRiHX0cB/66B5IB86RJr0
+	8BnrT1Rbwm0rRQv22Fw6HIN1kmRRqUBKuq5YQWKxIj1GJ+67rvPsyfE0laQ2OrCC/h5JsDoUsac
+	GoS84ZmwmxcXRgGg9NlLw2rVXyWiaoRPnGkKYH3ruaVo9JmP8iug488hihb6oXPxR310n0JYcNE
+	SB0C1+lomQWb3Czymg4RQsVrw5zR+JcnDv3dSVO9Q5tVrRaArZRjp4DZ0T3hJHor58nMDO54Q5c
+	4iXuZ99/4Jl5wFHERu4GKnIyOGBd7WcuaZjXeO43XTEaaoFRY9jdL+GsXpQTUbA0XdYN1fRmVwq
+	itV8GjP5T0+eXUDDX5jPW3yCirHw5rU+pqNob+NlhC6Vv8XYYMV1dZEIQM+y4cVoikLkFihbgNN
+	l2JuRX0jx3KxmBxtzkFLIHveZfksBk4WnKH/MqJvtL41BPPXdWaIcpTJtZ2EyG9Z8MHIds0P6cl
+	qmRxT09hnF0u/X1ApC1KwOCSciJ4Q==
+X-Received: by 2002:a05:6a00:a1d:b0:857:73c3:446d with SMTP id d2e1a72fcca58-85fff3c57c4mr30321255b3a.28.1788872648581;
+        Tue, 08 Sep 2026 06:04:08 -0700 (PDT)
 Received: from [10.10.15.228] (61-220-246-151.hinet-ip.hinet.net. [61.220.246.151])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8614f874e9csm5652398b3a.8.2026.09.08.06.04.00
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8614f874e9csm5652398b3a.8.2026.09.08.06.04.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Sep 2026 06:04:03 -0700 (PDT)
+        Tue, 08 Sep 2026 06:04:07 -0700 (PDT)
 From: Potin Lai <potin.lai.pt@gmail.com>
-Subject: [PATCH v2 0/2] net: add USB CDC Ethernet NCSI support and fix
- unregister UAF
-Date: Tue, 08 Sep 2026 21:01:30 +0800
-Message-Id: <20260908-ncsi-over-usb-v2-0-92dd78272fbd@gmail.com>
+Date: Tue, 08 Sep 2026 21:01:31 +0800
+Subject: [PATCH v2 1/2] net: usb: cdc_ether: add NCSI passthrough support
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -71,11 +71,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIACoHoGoC/3WNQQ6CMBBFr0Jm7Zi2kgKuvIdhAWWAMUJNBxoN4
- e4Crl2+5P33FxAKTALXZIFAkYX9uIE5JeD6auwIudkYjDJWFSrD0QmjjxRwlhovlOW2TW1uXQ7
- b5hWo5ffRu5c/lrl+kJv2yG70LJMPn+Mw6t37144aFdo6SxvTal1Yd+uGip9n5wco13X9AmOfs
- uy8AAAA
-X-Change-ID: 20260907-ncsi-over-usb-3e786f4686c8
+Message-Id: <20260908-ncsi-over-usb-v2-1-92dd78272fbd@gmail.com>
+References: <20260908-ncsi-over-usb-v2-0-92dd78272fbd@gmail.com>
+In-Reply-To: <20260908-ncsi-over-usb-v2-0-92dd78272fbd@gmail.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
@@ -88,77 +86,290 @@ Cc: Potin Lai <potin.lai.pt@gmail.com>, linux-usb@vger.kernel.org,
  Mik Lin <Mik.Lin@quantatw.com>, Potin Lai <potin.lai@quantatw.com>, 
  Adrian Ambrozewicz <aambrozewicz@nvidia.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1788872639; l=2709;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788872639; l=9047;
  i=potin.lai.pt@gmail.com; s=20260522; h=from:subject:message-id;
- bh=2es4HxF/abUxtlRl5dW+lcYpAaZ0CFbVJ7S/IMs1s6I=;
- b=E30+KtS1NVrrIl/Y4ZwvQTMyeUvW4cY37JQ2VbG6WbNTWTgWGrCu55Nmewj5a7rskRmpof2Px
- 8f+/y5kn6HaBJHESOWnZUAdo0RylMv44FfrSjzliEI1xqC0bXD+xBU2
+ bh=qjf95BTc1sghUlnjSm3ZFIqeXFbo59xa5h6mb79MWJc=;
+ b=yOgs2BN1lz5sbeyir6roMntH97LOb8W0VUzRxl9mFG2fkSC+tbqX5Wi3w7VFQwpl8iI1jtBVH
+ LEWveYdU80GDDpCrY60S9c4esYuEkS9slnSQ+LFv3jC0RZdEaWguiS2
 X-Developer-Key: i=potin.lai.pt@gmail.com; a=ed25519;
  pk=j3/nMxzz1ZPpp1revghyZ8IqOnwi6RWfuxXN2XrNMRE=
 
-This series introduces NCSI (Network Controller Sideband Interface)
-passthrough support for USB CDC Ethernet devices and fixes a
-use-after-free race condition in the NCSI core unregistration path.
+From: Adrian Ambrozewicz <aambrozewicz@nvidia.com>
 
-In DPU (Data Processing Unit) platforms such as the NVIDIA BlueField
-series, the Baseboard Management Controller (BMC) communicates with the
-host or DPU via a dedicated USB CDC Ethernet connection for out-of-band
-management traffic.
+Add NCSI (Network Controller Sideband Interface) passthrough support for
+USB CDC Ethernet devices. This enables BMC-to-host sideband management
+over USB, typically used in DPU platforms where the BMC communicates
+with the DPU via a dedicated USB connection.
 
-Unlike traditional platform Ethernet devices where NCSI is initialized
-statically at probe time, USB devices require dynamic lifecycle
-management within ndo_open() and ndo_stop():
+Key implementation details:
 
-1. NCSI control packets share the USB data path, requiring the link
-   carrier to remain enabled while the interface is up.
-2. In USB drivers, usbnet_disconnect() invokes unregister_netdev()
-   before unbind(). Performing NCSI registration in ndo_open() and
-   cleanup in ndo_stop() ensures NCSI packet handlers are removed before
-   netdevice teardown occurs.
-3. Dynamic unregistration of NCSI devices revealed a race in the NCSI
-   core: ncsi_unregister_dev() freed the ncsi_dev_priv structure while
-   asynchronous request timers and workqueue items were still active.
+- Register with NCSI subsystem in ndo_open, unregister in ndo_stop
+- Override netdev_ops to hook open/stop for NCSI lifecycle management
+- Keep carrier always on while interface is up, as NCSI control traffic
+  shares the USB data path (unlike PHY-based drivers)
+- Ignore CDC status notifications since NCSI manages link state
+- Forward VLAN operations to NCSI subsystem
 
+The symmetric open/stop lifecycle is critical for USB drivers:
+
+    open()  -> ncsi_register_dev() + ncsi_start_dev()
+    stop()  -> ncsi_stop_dev() + ncsi_unregister_dev()
+
+This ensures NCSI packet handlers are removed BEFORE unregister_netdev()
+checks for them during USB disconnect, avoiding kernel crashes. Unlike
+platform drivers where unbind() runs before unregister_netdev(), USB
+drivers have the opposite order:
+
+    usbnet_disconnect() -> unregister_netdev() -> unbind()
+
+Placing NCSI cleanup in unbind() would be too late.
+
+Supported hardware: NVIDIA DPU USB CDC Ethernet (VID:PID 0955:cf11)
+
+Signed-off-by: Adrian Ambrozewicz <aambrozewicz@nvidia.com>
 Signed-off-by: Potin Lai <potin.lai.pt@gmail.com>
 ---
-Changes in v2:
-- Rearrange cdc_ncsi_open() and cdc_ncsi_stop() to avoid forward
-  declarations. 
-- Use timer_delete_sync() instead of del_timer_sync() to fix build
-  errors on newer kernels.
-- Link to v1: https://patch.msgid.link/20260907-ncsi-over-usb-v1-0-6b74d2f1196c@gmail.com
-
-To: Andrew Lunn <andrew+netdev@lunn.ch>
-To: "David S. Miller" <davem@davemloft.net>
-To: Eric Dumazet <edumazet@google.com>
-To: Jakub Kicinski <kuba@kernel.org>
-To: Paolo Abeni <pabeni@redhat.com>
-To: Oliver Neukum <oliver@neukum.org>
-To: Samuel Mendoza-Jonas <sam@mendozajonas.com>
-To: Paul Fertser <fercerpav@gmail.com>
-To: Simon Horman <horms@kernel.org>
-Cc: linux-usb@vger.kernel.org
-Cc: netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Cc: Cosmo Chou <cosmo.chou@quantatw.com>
-Cc: Mike Hsieh <Mike_Hsieh@quantatw.com>
-Cc: Mik Lin <Mik.Lin@quantatw.com>
-Cc: Potin Lai <potin.lai@quantatw.com>
-
----
-Adrian Ambrozewicz (2):
-      net: usb: cdc_ether: add NCSI passthrough support
-      net/ncsi: fix use-after-free in ncsi_unregister_dev()
-
  drivers/net/usb/Kconfig     |  20 +++++
  drivers/net/usb/cdc_ether.c | 187 +++++++++++++++++++++++++++++++++++++++++++-
- net/ncsi/ncsi-manage.c      |  19 +++++
- 3 files changed, 225 insertions(+), 1 deletion(-)
----
-base-commit: 8d3ae59288f1e7d58d76558a6ee96d533bc5019f
-change-id: 20260907-ncsi-over-usb-3e786f4686c8
+ 2 files changed, 206 insertions(+), 1 deletion(-)
 
-Best regards,
---  
-Potin Lai <potin.lai.pt@gmail.com>
+diff --git a/drivers/net/usb/Kconfig b/drivers/net/usb/Kconfig
+index 52a5c0922c79..00757392128f 100644
+--- a/drivers/net/usb/Kconfig
++++ b/drivers/net/usb/Kconfig
+@@ -241,6 +241,26 @@ config USB_NET_CDCETHER
+ 	  IEEE 802 "local assignment" bit is set in the address, a "usbX"
+ 	  name is used instead.
+ 
++config USB_NET_CDCETHER_NCSI
++	bool "NCSI passthrough support for CDC Ethernet"
++	depends on USB_NET_CDCETHER
++	depends on NET_NCSI
++	help
++	  This option enables NCSI (Network Controller Sideband Interface)
++	  passthrough support for specific USB CDC Ethernet devices.
++
++	  NCSI allows a BMC (Baseboard Management Controller) to share a
++	  network interface with the host system for out-of-band management.
++	  This is typically used in DPU (Data Processing Unit) platforms
++	  where the BMC communicates with the DPU via a dedicated USB
++	  connection.
++
++	  Currently supported devices:
++	    * NVIDIA BlueField DPU (VID:PID 0955:cf11)
++
++	  Say Y here if you have a system with USB-based NCSI connectivity
++	  between BMC and host. If unsure, say N.
++
+ config USB_NET_CDC_EEM
+ 	tristate "CDC EEM support"
+ 	depends on USB_USBNET
+diff --git a/drivers/net/usb/cdc_ether.c b/drivers/net/usb/cdc_ether.c
+index a0a5740590b9..0a0eb9e0575e 100644
+--- a/drivers/net/usb/cdc_ether.c
++++ b/drivers/net/usb/cdc_ether.c
+@@ -538,6 +538,165 @@ static const struct driver_info	cdc_info = {
+ 	.manage_power =	usbnet_manage_power,
+ };
+ 
++/*
++ * NCSI passthrough support for USB CDC Ethernet devices.
++ *
++ * Enables BMC-to-host sideband management over USB, typically used in
++ * DPU (Data Processing Unit) platforms where the BMC communicates with
++ * the DPU via a dedicated USB connection.
++ */
++#ifdef CONFIG_USB_NET_CDCETHER_NCSI
++#include <net/ncsi.h>
++
++/* NCSI operates at 100 Mbps */
++#define NCSI_SPEED_BPS		(100 * 1000000)
++
++struct cdc_ncsi_priv {
++	struct ncsi_dev *ndev;
++	struct net_device_ops netdev_ops;
++	const struct net_device_ops *orig_netdev_ops;
++};
++
++static void cdc_ncsi_handler(struct ncsi_dev *nd)
++{
++	if (unlikely(nd->state != ncsi_dev_state_functional))
++		return;
++
++	netdev_dbg(nd->dev, "NCSI interface %s\n",
++		   nd->link_up ? "up" : "down");
++
++	/* Don't toggle carrier here - it must stay on for NCSI to
++	 * communicate over USB. Carrier was enabled in cdc_ncsi_open().
++	 */
++}
++
++static int cdc_ncsi_open(struct net_device *net)
++{
++	struct usbnet *dev = netdev_priv(net);
++	struct cdc_ncsi_priv *priv = dev->driver_priv;
++	int ret;
++
++	ret = usbnet_open(net);
++	if (ret)
++		return ret;
++
++	priv->ndev = ncsi_register_dev(net, cdc_ncsi_handler);
++	if (!priv->ndev) {
++		netdev_err(net, "failed to register NCSI device\n");
++		usbnet_stop(net);
++		return -ENODEV;
++	}
++
++	/* Carrier must stay on for NCSI to transmit/receive its control
++	 * packets over USB. Unlike PHY-based drivers, we cannot toggle
++	 * carrier based on NCSI link state without breaking USB I/O.
++	 */
++	netif_carrier_on(net);
++	ret = ncsi_start_dev(priv->ndev);
++	if (ret) {
++		netdev_err(net, "failed to start NCSI: %d\n", ret);
++		ncsi_unregister_dev(priv->ndev);
++		priv->ndev = NULL;
++		netif_carrier_off(net);
++		usbnet_stop(net);
++		return ret;
++	}
++
++	return 0;
++}
++
++static int cdc_ncsi_stop(struct net_device *net)
++{
++	struct usbnet *dev = netdev_priv(net);
++	struct cdc_ncsi_priv *priv = dev->driver_priv;
++
++	if (priv->ndev) {
++		ncsi_stop_dev(priv->ndev);
++		ncsi_unregister_dev(priv->ndev);
++		priv->ndev = NULL;
++	}
++
++	netif_carrier_off(net);
++	return usbnet_stop(net);
++}
++
++static int cdc_ncsi_bind(struct usbnet *dev, struct usb_interface *intf)
++{
++	struct cdc_ncsi_priv *priv;
++	struct cdc_state *info;
++	int status;
++
++	status = usbnet_ether_cdc_bind(dev, intf);
++	if (status < 0)
++		return status;
++
++	info = (void *)&dev->data;
++	status = usbnet_get_ethernet_addr(dev, info->ether->iMACAddress);
++	if (status < 0)
++		goto err_unbind;
++
++	priv = kzalloc(sizeof(*priv), GFP_KERNEL);
++	if (!priv) {
++		status = -ENOMEM;
++		goto err_unbind;
++	}
++
++	dev->driver_priv = priv;
++
++	/* Override netdev_ops for NCSI lifecycle management */
++	priv->orig_netdev_ops = dev->net->netdev_ops;
++	priv->netdev_ops = *dev->net->netdev_ops;
++	priv->netdev_ops.ndo_open = cdc_ncsi_open;
++	priv->netdev_ops.ndo_stop = cdc_ncsi_stop;
++	priv->netdev_ops.ndo_vlan_rx_add_vid = ncsi_vlan_rx_add_vid;
++	priv->netdev_ops.ndo_vlan_rx_kill_vid = ncsi_vlan_rx_kill_vid;
++	dev->net->netdev_ops = &priv->netdev_ops;
++
++	dev->net->hw_features |= NETIF_F_HW_VLAN_CTAG_FILTER;
++	dev->net->features |= NETIF_F_HW_VLAN_CTAG_FILTER;
++
++	dev->rx_speed = NCSI_SPEED_BPS;
++	dev->tx_speed = NCSI_SPEED_BPS;
++
++	netdev_info(dev->net, "NCSI passthrough enabled\n");
++	return 0;
++
++err_unbind:
++	usb_set_intfdata(info->data, NULL);
++	usb_driver_release_interface(driver_of(intf), info->data);
++	return status;
++}
++
++static void cdc_ncsi_unbind(struct usbnet *dev, struct usb_interface *intf)
++{
++	struct cdc_ncsi_priv *priv = dev->driver_priv;
++
++	if (priv) {
++		/* Restore original netdev_ops before freeing priv */
++		dev->net->netdev_ops = priv->orig_netdev_ops;
++		kfree(priv);
++		dev->driver_priv = NULL;
++	}
++
++	usbnet_cdc_unbind(dev, intf);
++}
++
++static void cdc_ncsi_status(struct usbnet *dev, struct urb *urb)
++{
++	/* NCSI manages link state, ignore CDC status notifications */
++}
++
++static const struct driver_info cdc_ncsi_info = {
++	.description =	"CDC Ethernet Device (NCSI)",
++	.flags =	FLAG_ETHER | FLAG_POINTTOPOINT,
++	.bind =		cdc_ncsi_bind,
++	.unbind =	cdc_ncsi_unbind,
++	.status =	cdc_ncsi_status,
++	.set_rx_mode =	usbnet_cdc_update_filter,
++	.manage_power =	usbnet_manage_power,
++};
++#endif /* CONFIG_USB_NET_CDCETHER_NCSI */
++
+ static const struct driver_info	zte_cdc_info = {
+ 	.description =	"ZTE CDC Ethernet Device",
+ 	.flags =	FLAG_ETHER | FLAG_POINTTOPOINT,
+@@ -946,7 +1105,33 @@ static const struct usb_device_id	products[] = {
+ 				      USB_CDC_SUBCLASS_ETHERNET,
+ 				      USB_CDC_PROTO_NONE),
+ 	.driver_info = (unsigned long)&wwan_info,
+-}, {
++},
++/*
++ * NCSI passthrough support.
++ *
++ * This implementation enables NCSI unconditionally for matching VID/PID.
++ * Per-driver integration is required because the NCSI subsystem mandates
++ * explicit lifecycle calls (ncsi_register/start/stop/unregister_dev).
++ *
++ * OPEN QUESTION: An alternative approach using DTS "use-ncsi" property
++ * for conditional enablement was considered. This is viable only when
++ * USB topology is fixed and known at build time. Whether DPU deployments
++ * have fixed topologies remains to be determined. Note that DTS-based
++ * control would still require per-driver integration.
++ *
++ * A future generic solution could eliminate per-driver modifications by
++ * extending the NCSI subsystem to hook netdev lifecycle events directly,
++ * with interface selection configured via DTS or sysfs.
++ */
++#ifdef CONFIG_USB_NET_CDCETHER_NCSI
++{
++	USB_DEVICE_AND_INTERFACE_INFO(NVIDIA_VENDOR_ID, 0xcf11,
++				      USB_CLASS_COMM, USB_CDC_SUBCLASS_ETHERNET,
++				      USB_CDC_PROTO_NONE),
++	.driver_info = (unsigned long)&cdc_ncsi_info,
++},
++#endif /* CONFIG_USB_NET_CDCETHER_NCSI */
++{
+ 	USB_INTERFACE_INFO(USB_CLASS_COMM, USB_CDC_SUBCLASS_ETHERNET,
+ 			USB_CDC_PROTO_NONE),
+ 	.driver_info = (unsigned long) &cdc_info,
+
+-- 
+2.52.0
 
