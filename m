@@ -1,202 +1,221 @@
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AEB254A7E8
-	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 13:04:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788872661; cv=none; b=Ng/W6a1+i1CSp5ZMyHGQ4WR6i7NjF6UTtxcpi3pZvD8TKaiEkZ5EHARzghnNx2oSQ5xVYvrIeMb2goGrzrpbMGdWVGApsSbN1ae/u7sc4wCXJ5kyWTGrsVM4+efdNmDshcveDx9Xz5+9jJu+DvRTVLfjwAsGXZ+LHQeS1VIxffQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788872661; c=relaxed/simple;
-	bh=/aCr8hgeVMYJ3KiqUNQsu2gK8nS3HDQMoxXqYTGMnYo=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=L3+zyT14RhoIJKaI9WzZOXKO9kbooNgy427hflWqhRc4DcHrLE2tol5ayjJN7l2GCp8HWCoFMLkKZrhpwYfDi0r8ep5RTDmQmJ6Inc3SQAfA6F4HTLhmGskTBHcMfWM9xxZzCdVg+Su99dcI6k6+rlwALnbRDFyYmULUvtK7HkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jGWAbDew; arc=none smtp.client-ip=209.85.210.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74EA254CF7D;
+	Tue,  8 Sep 2026 13:04:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.11
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788872669; cv=fail; b=VBTMx1fvZ8iKIbhIYuoPSfYwfuZ7g/Dr6Abmna0vrNkfnEIEROUk0lbBJCjbewQo6RIa0bgCear90Vob+ZQEryy0j5N2FIrtzbMHIT4fzD7Wq9dF9hOwlJOcPGDrYZMR8ubUltGHRMOvp1eEBZhGdLi0xuWmqZirXeDuDS2//b4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788872669; c=relaxed/simple;
+	bh=Sps9f0FuUjFlDy3DFN05M3d94Dlzi7NE1RV3STEZ8Mo=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=IFFxkt06Qeq7aHVxOJd1zZfHPv/u8p3mtW2npqxnw1N57Oajoq31IZTjYE0EK+5hys9BNL+8cfxiivrYoVg9jzlBH0foHdyY/kbDEv2vgxvzlgkzC0Ru2jeAP4YKThC2HxfjqF2+4gH9Q+l/fsM70ft8BhfftP1zRpcdiwyHUXQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HsTeWkG3; arc=fail smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jGWAbDew"
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-853c947bfefso3307817b3a.0
-        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 06:04:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788872653; x=1789477453; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=vu62D3vv0YYC5WBDVTSBuHunsO24noZas55Sfn0ORyc=;
-        b=jGWAbDew/9C4ntzHTKiEA4Jfgy5TZI9/+w2iobKSmsiBuYPy7ArgOHQYUQ7dty7e+m
-         1SNSU2cC1lGG8h3nFVCPA6v3iZe8mNBc1gumwRATZwg1PYcXI2SqZBlbXF0GL5cjijeX
-         qBig2Zc9j5Ya1hzjC0svme++z19I3/l8+K5yNy3d3kFobVRRWakNLOfngmMef8u2zwPS
-         Y5m/qUqFP2Mn5eGFzlD54aUR0+/BAKg+bNAXJxc5ZRmh1yV75XFBlbZ7pgnolaONCtUE
-         Kx4uB4uWeEGcB8GI7N5KmSkFWBMI4C05oHKtN3gKetSCYoxN7mmXoUEoD3+hkfI9cnK/
-         CqCw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788872653; x=1789477453;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=vu62D3vv0YYC5WBDVTSBuHunsO24noZas55Sfn0ORyc=;
-        b=WIVfHDr7ASh6tNlzIybDrn+hORYeb5TQjZuQQ+/7H25g3OSIdgFNy9OWlnXqLGNYAx
-         MKVDYKe5+seqTZOoOG/sk5NwsDYE0aNcasuLSTX/rKhSSkK4mRH2zmUGrtiMXbG1taXW
-         PhqzZNuHcLkbi4Cxom6pvsh33VPLdTS0P2FZvfOD+xwBKqKbKRZMhwgEIPHzMpz37KrH
-         832z0BBhJFl+Mma+92Gr1gFnS2VjwrEjYkCKgJwl6E7mq9rqlaWsHjLREERJXmfU0uDY
-         KNIrDkg9Xswb/ROjCSQ9J8Z1SGg0DrBiFbmovQZ4Uf8ouHJO0llvtiAAoHSzDk6N6QWf
-         JGUA==
-X-Forwarded-Encrypted: i=1; AKwUvByz2vuKvPASBR2u28Iac57kTuEuUdO49sa/UbTnqmg7gRLnlFDPHdfjns4LPBzcLJAMwF7sVYI=@vger.kernel.org
-X-Gm-Message-State: AFuF++nRmvSWNuKi+Ika4oj2LlFpX3NaIlDPrzJyB6XDkoc2YevpNYBP
-	BJM9stWa7K8e+CdKroIDD1t4VBRIDki7rNorJMM4pO+o94vEuacZLdc7
-X-Gm-Gg: AYBFou39GZ7yip4f+kAi476+8iK8XS0nvmCVWZ3OlA/S4l3jT44DznLbvDXLse5jeJc
-	m5fQEscfEII/V/ME4GfAPQHqm1YJtmyZIk594Uzx0av+P/FrBQxl0s/uavWOEK1HfOV22chGoOU
-	/mCOTuJlcCY572qOZUOXe/A29IjudKhOhvimwwNLfRWmRSAaIoDVdkFXWfw8/pVpYSK7ktSvYvt
-	1THg3GxTHDd9p5WBJFD23yYoL5oT/vQT2WfBbLScHWWZbJyhVNhNkpYWj8O1wnu3NaKJf7WgZci
-	+dAhxO19rm5PIGGcBiqgrrnenfio5LqxxqWWQZZpsMLDb1UmTC4pXT7XkzQZtdSSdK5Kxk/Xrum
-	LsMQ6pUzZ+7SgDQDeSxg+lFMGrublvBYp5dA+uWlU48xoCOXbKgjlRf5jVqR3pWSWk3IMM9+F4I
-	ekpW/RspJEvsJhOrOTaL8ePYbjKqNj7Q74cxJ+7kzN+g3anVcI87NwLcWH8eD/dl1HM8oTjL40G
-	c7+aOpgToA6186yWVeITtNNaYvDOw==
-X-Received: by 2002:a05:6a00:987:b0:857:73c3:446c with SMTP id d2e1a72fcca58-85fff3c461fmr31073167b3a.27.1788872652526;
-        Tue, 08 Sep 2026 06:04:12 -0700 (PDT)
-Received: from [10.10.15.228] (61-220-246-151.hinet-ip.hinet.net. [61.220.246.151])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8614f874e9csm5652398b3a.8.2026.09.08.06.04.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Sep 2026 06:04:12 -0700 (PDT)
-From: Potin Lai <potin.lai.pt@gmail.com>
-Date: Tue, 08 Sep 2026 21:01:32 +0800
-Subject: [PATCH v2 2/2] net/ncsi: fix use-after-free in
- ncsi_unregister_dev()
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HsTeWkG3"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1788872666; x=1820408666;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=Sps9f0FuUjFlDy3DFN05M3d94Dlzi7NE1RV3STEZ8Mo=;
+  b=HsTeWkG3yZfEapZGrfoZguivAhZcmiOLuMJHXXTeO2lk8AY37DZdAL5x
+   ugOlEl6JuQSetSxy6JLPsDOK4rlDX/HAqwVvpmHOlTvJ5XGo49R6JDPuW
+   ZQ2CKWIcE566ZNc2zE7P0IeO2qjhg47tbFpWIZKcE8YV+WRIV/NvZmS/6
+   sPe+g7KYdBoPQfOZcXxTon2CmHJzX5s7US5kbKcO8ZJ0pJu0ZwMZL7HcZ
+   5v/y4iKll8WpH5vSMwVlfbC1UksC+JN35jithfzlyZqcBfiWjfkBAbkC4
+   J2xLB7vWD0RjIWCkSiXK7lzcLJ4SrwfurCS/YPeY89XJFpSxCmd+x9JWY
+   A==;
+X-CSE-ConnectionGUID: tr/AZwacSLKeOe3PTXZvag==
+X-CSE-MsgGUID: 9o2t8XbLTJGsGqEU0Wrfvw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11899"; a="99865983"
+X-IronPort-AV: E=Sophos;i="6.25,268,1779174000"; 
+   d="scan'208";a="99865983"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2026 06:04:23 -0700
+X-CSE-ConnectionGUID: rkDbqRpqRI2X8OgdVt2Rag==
+X-CSE-MsgGUID: P9a2S7W9Qz658hbiVbNIyg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,268,1779174000"; 
+   d="scan'208";a="300877968"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2026 06:04:22 -0700
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Tue, 8 Sep 2026 06:04:21 -0700
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46 via Frontend Transport; Tue, 8 Sep 2026 06:04:21 -0700
+Received: from DM5PR21CU001.outbound.protection.outlook.com (52.101.62.7) by
+ edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Tue, 8 Sep 2026 06:04:21 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=f228g01VwRqjtNqwIwgWZqTMd+oQ6oyITQRFPD0r1fknlTPhEp553qe/ZNLnkjRSECHhtTOynLYhYEwb20VrfcsWVjGZgkpkLoYgHt8Ygboffdyj1yE+gqoXdZW22FwB+bcmAHpbr/F1AAAWW55IaZXTi91qDjjS0uZPDnBm1CbpBZunR7Z76xpj+YAcM47NVdYRT+LnP/l6iSHrtgpdDjGVljjzP84TBKiswqsur5ywNE067tm4CyTGRX1N4NfefnNdESRbv8YM5Q+qZIsFTd/opTWNMlYtUPQaI+zLIB85QWj8fCCz3aj30s3L6eIHD8tr/PR7gqbfvVoW1bv8Uw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=hc6LsVDSw3ItYVXLZ//GSmHA54g6L+/epa9TwWrPhUE=;
+ b=SdALNzmWjMfwHhY5SHYfxvVhXdaXyEZWvZdjNPTJEtbzEmisY64gf8qsrvkYq/3/PUDOD82xKLr6je/mABO0RHapbOuItjY1KotOS+kMNsYktKQLlmd+fTWvd5cXQEYqVovgWYSIX5iyeXOhCNjXgu72u8YpSeGbqp4SXuJED4qQxOnWH5ZlkrRDMfkPbkMaNcxdNCPwD9D628DtpYgCqBeu/r9glnJnyxichO+mJ73ArcrwJWd6Z29wJy9W80AthMI52w4AXBIKH8ES07NQ9wzlzxahJ/06mkKEFBOKPhQ+dnEnmQ8+7TskgTvvp/nyGZJSofd9U93e6T6nLOYg6Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from IA3PR11MB8986.namprd11.prod.outlook.com (2603:10b6:208:577::21)
+ by PH0PR11MB7658.namprd11.prod.outlook.com (2603:10b6:510:28d::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.382.15; Tue, 8 Sep
+ 2026 13:04:18 +0000
+Received: from IA3PR11MB8986.namprd11.prod.outlook.com
+ ([fe80::e6f0:6afb:6ef9:ab5c]) by IA3PR11MB8986.namprd11.prod.outlook.com
+ ([fe80::e6f0:6afb:6ef9:ab5c%6]) with mapi id 15.21.0406.005; Tue, 8 Sep 2026
+ 13:04:18 +0000
+From: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>
+To: Yury Norov <yury.norov@gmail.com>, Andrew Lunn <andrew@lunn.ch>, "Heiner
+ Kallweit" <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, "Raju
+ Rangoju" <Raju.Rangoju@amd.com>, Prashanth Kumar K R
+	<PrashanthKumar.K.R@amd.com>, "Nguyen, Anthony L"
+	<anthony.l.nguyen@intel.com>, "Kitszel, Przemyslaw"
+	<przemyslaw.kitszel@intel.com>, Jian Shen <shenjian15@huawei.com>, Jijie Shao
+	<shaojijie@huawei.com>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "intel-wired-lan@lists.osuosl.org"
+	<intel-wired-lan@lists.osuosl.org>, "linux-usb@vger.kernel.org"
+	<linux-usb@vger.kernel.org>
+CC: Yury Norov <ynorov@nvidia.com>, Rasmus Villemoes
+	<linux@rasmusvillemoes.dk>, Andrew Morton <akpm@linux-foundation.org>
+Subject: RE: [PATCH 2/9] linkmode: make linkmode_and() return boolean
+Thread-Topic: [PATCH 2/9] linkmode: make linkmode_and() return boolean
+Thread-Index: AQHdPxOKeTD4TQUTT0itXugHvo0DSLbEptmA
+Date: Tue, 8 Sep 2026 13:04:18 +0000
+Message-ID: <IA3PR11MB89865B9A21B9F74F3E179F15E5B12@IA3PR11MB8986.namprd11.prod.outlook.com>
+References: <20260907215439.409858-1-ynorov@nvidia.com>
+ <20260907215439.409858-3-ynorov@nvidia.com>
+In-Reply-To: <20260907215439.409858-3-ynorov@nvidia.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: IA3PR11MB8986:EE_|PH0PR11MB7658:EE_
+x-ms-office365-filtering-correlation-id: 49d53f91-3d10-494d-654e-08df0da9b15c
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|366016|23010399003|376014|7416014|1800799024|921020|22082099003|18002099003|38070700021|56012099006|11063799006|4143699003|10067099003;
+x-microsoft-antispam-message-info: FvGtCyMD+tcBCwkezCtwfNJSJ6QZfrH86On2Jidq4e80dWPdpmsieNHDeR2ezwVCMpbj6NveIW5f0eT4sXsy+bfVFHij8seAHqz1CiwBoMs8zzfsVyfIkZM6XIdKRBrLZmOHZn3P7Zcm+WFWccFTyOCGR/Ns5ZxR3IIs84sblqPj9I/iZclrWKAg0VOs67Z7D4kmKaRMONGTkvZ5IO6gEn7BqNGliwdy3JQkG38PvUL6hizgoREpj7DQBeRod4DT5YI18Zk6Yu3zx0IANGjljrMGpTi9i+EAPM+g9MXxhwyoRfvin+SiROnHriW6HbwTMSYhXjceFp1R72yoXs7yBQmOUUGNwcMzV9zHLCav9drRDR/UBKFNOb2fQB0sZi49s15+vCehuQ8cT9v0N8WOkAkDmutxFvRpL8cgQXkg3hvejfS5XZzE0rmYAJ8T+k54oOfh2YiqkEJmpbsW7v2DQYccAjEs1fqLFS1TFuNNqUGCaLZzN/svpajFM3OpkmDsUHnIQPm93w+n5Bw2ih1EU/eyIohODiSiSp/AyHNHyB5ZI0kOvt42+hhDZFNQ8S3wBDvdzLb0MxfpruaGqIlhXYQQzX40hOmDwDClvfLm8rMNG6zgqK8I/SPlIX5SkITHahwpmpCcKGTfGlnxLK6HiCeJubR1GL3zLSsVg+J6eAgF/VP78Pj/XKYP0hUx+L7gxq5Hx1S/fjrwgo32Zsh0W3EvFNycqGfKS13OVWPyev2hdN1/F7Ust1kxpMcAn3wH
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA3PR11MB8986.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(23010399003)(376014)(7416014)(1800799024)(921020)(22082099003)(18002099003)(38070700021)(56012099006)(11063799006)(4143699003)(10067099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?Z3ODruO0ENBKS/uwlYXVWVAxyEQZTKj9zSZnExxywmvfuuIUlh1RCObB1VKY?=
+ =?us-ascii?Q?biE2xcrFhxoZsSkwiPyWnCXJV++taegt9aReQHWSClGS8+968phm0+vNqukl?=
+ =?us-ascii?Q?KDnzOpd/u75yne+J/SLQRS6G2xW1lpNgudXj1ndMcIcHy7+NUE5ty6Q/t8Zn?=
+ =?us-ascii?Q?+9ZlOB36tmbaV7Od/aHjmVEbzDWpMBAO535FYglw/K5K17IvB/WEWJCyiihZ?=
+ =?us-ascii?Q?6TDfgP0rvKGeuK+nvfMJuhcDcr7dxPcjsQJeONODY6Rbwg4nJdCGiCsUGKdK?=
+ =?us-ascii?Q?4H0ofMy0tlKhu0lwvj9yWKIK0clclVaG7vumQ9pOf5qcqw7L9QvEWATcqdY9?=
+ =?us-ascii?Q?DR9WeifDCL4B2tRMFewd53e4OzxzXxLILfnDupWUxXuxHVEw7HeeDDLAS4LG?=
+ =?us-ascii?Q?HJmRKw6Qw3mrtTt6idzCu0mSsLTpOeE23JJ1ikST2cru3RUXwHtgvzJNL7HW?=
+ =?us-ascii?Q?KlJnB6Kcw+nZaomYyHhE4E45ROj8CFB40BoHOhUvrkjx1lmaMHDfWBx/dsY0?=
+ =?us-ascii?Q?MFLOcloymCEd3sCwXyraTMikOWjqKKkMRb/SFnZWGd1oz5lQt3WzSe+6Hzad?=
+ =?us-ascii?Q?Rht+qQ1JXgqsRY1czptWt6URlE/A1YYPPjVAB+pc8r07Wjfc1W+VmBQ18Qex?=
+ =?us-ascii?Q?skh7xC1ZVFivOwb89d7fEaSKI8U5sb52/gQjUxKDZQjkQRxFM5I2rsN7OHe8?=
+ =?us-ascii?Q?anrUetRqhFtzmdfgmH8meo4lz+cD7P+3v5gY71nTTsPnrvHcBpAKwCJtxzVh?=
+ =?us-ascii?Q?Ok2+SLRUwF9RE+pCt2GBPTYeB65tbm1ihAdMwOKW4UOZMDBhXi0nBDNcqYuC?=
+ =?us-ascii?Q?qfUwiJTWv1yW/n0gGoou8XYw85bpQa/cEDzL9E+aUPHuXQPkc65XjGGFdBXp?=
+ =?us-ascii?Q?psze+oDQMo7bTd2Ep3Em3MXPGspcH8bg/qggnZqnftTOjNnkBM7ugA3wiKkA?=
+ =?us-ascii?Q?xi97/wRtTVKJM2/eMUxv2vELmdYw0/BooW+ZQ8UADizlhHXnz4WLzPGFehty?=
+ =?us-ascii?Q?/0T6U6A6QgFk5LSHCXyfVR4JfbWNgCLlfFRTisQYStmtEDxtPXlpJ3EtQYsD?=
+ =?us-ascii?Q?uT/pVBRkhABsR/S6AP/272OoBhplvEwGBAUTzXV65JE53U0RfeNnxuXt6/8C?=
+ =?us-ascii?Q?+ru6Sp4ye2t0YofZIfjWoXxVwbOa7WCmfSt+kdcg6oP829DzRxtbUNrFwIzK?=
+ =?us-ascii?Q?BsZqeslZedGu0ilcVbhWUTKfGv9J7Gi3QHakbFmhp0q/QXQVDaHKRJN5Aumi?=
+ =?us-ascii?Q?l65YnfBwi22fm9rE3/kKp7zu772fRHVaqHEEbXhnqndjt5LFrtJzf+bF1Zf+?=
+ =?us-ascii?Q?svpiUB2xtPlnDfAdvkxFxjwY86HijXXV+zlP9S15fUZHddtiAMwvBQn9jH16?=
+ =?us-ascii?Q?vwcJFyqQbHXwyC/hS7Y22ZF1yUkK9jJbfzxWTiIEvBRODrnDlqFpNffWIwhx?=
+ =?us-ascii?Q?c0xShqaAnt/AhKhAS/NC02KqaeH+BewocICut75M2wrbsmNZqBLCfpyqA4Kn?=
+ =?us-ascii?Q?qvcTW5kmkqUSxCr2Jg5Ouw0blXCxbKX1jNKGLtD7Nj7PwmIf7Km3ka0AGTkj?=
+ =?us-ascii?Q?gvSGbfX8DDnI9lyrn+eZZQHnL/TayOQ1Xwl7DbfjsQ5kX7RlRc3B89tMmCwX?=
+ =?us-ascii?Q?Bx6CXIyMsrdeD49CrvTGkEe+d1G2Z5nYKDvxUZK9PBzO0Fl9Oz1ckQxOBUoQ?=
+ =?us-ascii?Q?DvXUKMGsxB3C7SD/GP67AcQkaz3Xpx8QIefwyOjV6EVkXKjPlDE6VKb+BkF7?=
+ =?us-ascii?Q?eEwIDNVkGl2lgWH9JCroJgllT3KDjHM=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260908-ncsi-over-usb-v2-2-92dd78272fbd@gmail.com>
-References: <20260908-ncsi-over-usb-v2-0-92dd78272fbd@gmail.com>
-In-Reply-To: <20260908-ncsi-over-usb-v2-0-92dd78272fbd@gmail.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Oliver Neukum <oliver@neukum.org>, 
- Samuel Mendoza-Jonas <sam@mendozajonas.com>, 
- Paul Fertser <fercerpav@gmail.com>, Simon Horman <horms@kernel.org>
-Cc: Potin Lai <potin.lai.pt@gmail.com>, linux-usb@vger.kernel.org, 
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Cosmo Chou <cosmo.chou@quantatw.com>, Mike Hsieh <Mike_Hsieh@quantatw.com>, 
- Mik Lin <Mik.Lin@quantatw.com>, Potin Lai <potin.lai@quantatw.com>, 
- Adrian Ambrozewicz <aambrozewicz@nvidia.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1788872639; l=3964;
- i=potin.lai.pt@gmail.com; s=20260522; h=from:subject:message-id;
- bh=bKp+fXghJ6cQJaZb9/dKdTBINAk3RYvGYETZo/GwPjY=;
- b=zdJASea/GkvdKgFd9ycSXVpHjAiOck4Qf6FmC5wriN7PkcPVxeK0Of7uZPoxbxIv9lDiuHaMb
- bpOB7UgUOsMBEZNJ8JbUC7iTw3mBtga44fuYe9Mf5IH7tK/XUP9JmwV
-X-Developer-Key: i=potin.lai.pt@gmail.com; a=ed25519;
- pk=j3/nMxzz1ZPpp1revghyZ8IqOnwi6RWfuxXN2XrNMRE=
+X-Exchange-RoutingPolicyChecked: VtwKy5qXAbS6/KcRU6xdr4o/vKFhTKJCVBvbK4w4BKx98vOUjPsbEQR4sNH7eOVr8FGKuz9OYQuz1fb92QKEC4jR6oQbFRrbzpGhXukB707vtRocg0QnxEegzEmL7ZBL5SPgdGnrqJA0BGCzQPCL+QiUz/zbwrILj8Cf4NOHyImriJN2hbL+TrURZ7XS4sYut2kI91BokJOXFNfgu7pTRg9maYdPQqTiAOZFJSvmEBdkV/ZkVdpbx3kR/6CboAIgHjK0Op4j8HaXtnxFHncxc5JdTRzO3yCBLbAGoxRwnctZqn/TqEqEaG8B2Z7WqlecfR/nIV1WNav4PXu0EOTFlw==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: IA3PR11MB8986.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 49d53f91-3d10-494d-654e-08df0da9b15c
+X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Sep 2026 13:04:18.5573
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: pMb7syCYxtNIE3emiGwRv9c4F7eKt7cb/NhC0CEWhgq72QWjOZTA+IRadgmA5VjdEdQUE3Ux6u29iFvUADTC86ATfZwogGqFxQRsQ0bdIxY=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB7658
+X-OriginatorOrg: intel.com
 
-From: Adrian Ambrozewicz <aambrozewicz@nvidia.com>
 
-ncsi_unregister_dev() frees the ncsi_dev_priv structure while timers
-and workqueue may still be accessing it, causing use-after-free.
 
-The problem involves two async mechanisms:
-1. Request timers (ncsi_request_timeout) - fire when NCSI responses
-   are not received in time
-2. Workqueue (ncsi_dev_work) - processes NCSI state machine
+> -----Original Message-----
+> From: Yury Norov <yury.norov@gmail.com>
+> Sent: Monday, September 7, 2026 11:55 PM
+> To: Andrew Lunn <andrew@lunn.ch>; Heiner Kallweit
+> <hkallweit1@gmail.com>; Russell King <linux@armlinux.org.uk>; Raju
+> Rangoju <Raju.Rangoju@amd.com>; Prashanth Kumar K R
+> <PrashanthKumar.K.R@amd.com>; Nguyen, Anthony L
+> <anthony.l.nguyen@intel.com>; Kitszel, Przemyslaw
+> <przemyslaw.kitszel@intel.com>; Jian Shen <shenjian15@huawei.com>;
+> Jijie Shao <shaojijie@huawei.com>; David S. Miller
+> <davem@davemloft.net>; Eric Dumazet <edumazet@google.com>; Jakub
+> Kicinski <kuba@kernel.org>; Paolo Abeni <pabeni@redhat.com>; linux-
+> kernel@vger.kernel.org; netdev@vger.kernel.org; intel-wired-
+> lan@lists.osuosl.org; linux-usb@vger.kernel.org
+> Cc: Yury Norov <ynorov@nvidia.com>; Yury Norov <yury.norov@gmail.com>;
+> Rasmus Villemoes <linux@rasmusvillemoes.dk>; Andrew Morton
+> <akpm@linux-foundation.org>
+> Subject: [PATCH 2/9] linkmode: make linkmode_and() return boolean
+>=20
+> bitmap_and() returns true if the resulting bitmap is not empty.
+> Propagate that return value through linkmode_and() so callers can use
+> it where applicable.
+>=20
+> Signed-off-by: Yury Norov <ynorov@nvidia.com>
+> ---
+>  include/linux/linkmode.h | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/include/linux/linkmode.h b/include/linux/linkmode.h index
+> 3b9de09871f6..c08632c10c3d 100644
+> --- a/include/linux/linkmode.h
+> +++ b/include/linux/linkmode.h
+> @@ -20,10 +20,10 @@ static inline void linkmode_copy(unsigned long
+> *dst, const unsigned long *src)
+>  	bitmap_copy(dst, src, __ETHTOOL_LINK_MODE_MASK_NBITS);  }
+>=20
+> -static inline void linkmode_and(unsigned long *dst, const unsigned
+> long *a,
+> +static inline bool linkmode_and(unsigned long *dst, const unsigned
+> long
+> +*a,
+>  				const unsigned long *b)
+>  {
+> -	bitmap_and(dst, a, b, __ETHTOOL_LINK_MODE_MASK_NBITS);
+> +	return bitmap_and(dst, a, b, __ETHTOOL_LINK_MODE_MASK_NBITS);
+>  }
+>=20
+>  static inline void linkmode_or(unsigned long *dst, const unsigned
+> long *a,
+> --
+> 2.53.0
 
-These can cascade: timer handlers call ncsi_free_request() which may
-call schedule_work(), and work can send commands that arm new timers.
-
-The fix adds proper synchronization before kfree():
-
-  dev_remove_pack()         - stop packet reception
-  timer_delete_sync() x 256 - cancel all request timers
-  cancel_work_sync()        - wait for workqueue to complete
-  kfree(ndp)
-
-Order matters: timers must be cancelled before work because timer
-handlers may schedule new work via ncsi_free_request().
-
-Note: ncsi_dev_work() is non-blocking - it sends a command, arms a
-timer, and returns immediately. It does not wait for timer completion.
-The timer firing later triggers schedule_work() for the next state.
-So cancel_work_sync() will not hang waiting for cancelled timers.
-
-This relies on ncsi_stop_dev() being called first (guaranteed by the
-network device lifecycle). ncsi_stop_dev() sets state to
-ncsi_dev_state_functional, which causes ncsi_dev_work() to exit
-immediately without sending commands or arming timers. This breaks
-the timer<->work cycle and ensures the synchronization terminates.
-
-Timeline showing the race (without fix):
-
-  CPU 0 (unregister)            CPU 1 (async)
-  ------------------            -------------
-  ncsi_unregister_dev()
-    dev_remove_pack()
-                                ncsi_request_timeout()
-                                  ncsi_free_request()
-                                    schedule_work()
-    kfree(ndp)
-                                ncsi_dev_work()
-                                  ndp->...         <- UAF!
-
-With fix:
-
-  CPU 0 (unregister)            CPU 1 (async)
-  ------------------            -------------
-  ncsi_unregister_dev()
-    dev_remove_pack()
-    timer_delete_sync() x 256   <- waits for timer handlers
-                                ncsi_request_timeout()
-                                  ncsi_free_request()
-                                    schedule_work()
-    cancel_work_sync()          <- waits for work
-                                ncsi_dev_work()
-                                  state=0x100, exits immediately
-    kfree(ndp)                  <- safe
-
-Signed-off-by: Adrian Ambrozewicz <aambrozewicz@nvidia.com>
-Signed-off-by: Potin Lai <potin.lai.pt@gmail.com>
----
- net/ncsi/ncsi-manage.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
-
-diff --git a/net/ncsi/ncsi-manage.c b/net/ncsi/ncsi-manage.c
-index 54d0df0a9efe..15d7e4cabf4f 100644
---- a/net/ncsi/ncsi-manage.c
-+++ b/net/ncsi/ncsi-manage.c
-@@ -1957,9 +1957,28 @@ void ncsi_unregister_dev(struct ncsi_dev *nd)
- 	struct ncsi_dev_priv *ndp = TO_NCSI_DEV_PRIV(nd);
- 	struct ncsi_package *np, *tmp;
- 	unsigned long flags;
-+	int i;
- 
- 	dev_remove_pack(&ndp->ptype);
- 
-+	/*
-+	 * Synchronize with async operations before freeing ndp.
-+	 *
-+	 * Note: The caller must have called ncsi_stop_dev() first, which
-+	 * sets nd->state to ncsi_dev_state_functional (0x100). This causes
-+	 * any running or scheduled ncsi_dev_work() to exit immediately
-+	 * without sending commands or arming new timers, breaking the
-+	 * potential cycle of: work -> arm timer -> timer -> schedule work.
-+	 *
-+	 * Order matters:
-+	 * 1. timer_delete_sync() - cancel timers, handlers may schedule work
-+	 * 2. cancel_work_sync() - cancel work scheduled by timer handlers
-+	 */
-+	for (i = 0; i < ARRAY_SIZE(ndp->requests); i++)
-+		timer_delete_sync(&ndp->requests[i].timer);
-+
-+	cancel_work_sync(&ndp->work);
-+
- 	list_for_each_entry_safe(np, tmp, &ndp->packages, node)
- 		ncsi_remove_package(np);
- 
-
--- 
-2.52.0
-
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
