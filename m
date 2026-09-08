@@ -1,131 +1,84 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB2FB572686
-	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 16:25:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A83B57ED8E;
+	Tue,  8 Sep 2026 16:31:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788884710; cv=none; b=E1RMD8dZSQsrlaqrsGOgDjxWzb9n0CQR1V+ZRW4OJ7lpvqCBZ2P8AebyhxXJ01pRvwBt18vecy3qV9BIYihiwqCy3pCJnBMgmjGT3Q26i79H+N3u2kQZk1rPQENnbykCU/lbULQggPC7VuUczt7Am1YconmjnA+HmkxJm8bF+m8=
+	t=1788885071; cv=none; b=vACQ9r/ByoRotqvDU8f0hYL2hU8SBrMtv9mYZwz13PB5D5qsNtvRv4RYQk7fHvurTgrEXYHfjsnxsTz18QUOudAJIY00dmhRDH4jtrv42tWgCUzFdHlUIfhaiJqI0QAcjlBKWm4bKdaHBVeBaApm7NqgQatLpjEHBSKKluRnmuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788884710; c=relaxed/simple;
-	bh=9Hilu/cH9FAmkn/MttDlvr1Zm+hx/uNB9lbDz8S0aXE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lVQrN+NXVfXgEmF+9itcx8w3/UDIc5tB8Daz5bUfncygrQyyH3/W75FQQWJnSLNP/bOf3i+LFiSxCtc0GI0orhSbtop9aWn7p799rgkNXAenF0MkWYfZQexnNkx9OsP04kBeU9q6KiyBvjJWYhwYhEdMbjK07wTZXjJID8+wZcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q+Q1LOYp; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788885071; c=relaxed/simple;
+	bh=gh3rh119QoBt2gXgqc0CxzBxWdAhxRu4oIkIUAYgRRg=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=hvcnzesIbQzIn/RnqDgnY5Cb77FmQLIkG2zYTcyzM7/0CrJvzHQx0j42F3vbN12e5JoQOeTZU80yTK1+i2RIRJ5HCYG3HvBabHZBrhXVcs2SRnR69fRgUW3efWCj4Ci81B4zUPMdwcBHuNBCmqidIdydFdC2C9kh7vmh7llBCek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MhfLBNT7; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q+Q1LOYp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0843F1F00A3A;
-	Tue,  8 Sep 2026 16:25:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MhfLBNT7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0810D1F00A3A;
+	Tue,  8 Sep 2026 16:31:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788884708;
-	bh=XwIxvW5GuqASelB5rCl2aivDOm2wTbIM5X1W4bCD06I=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Q+Q1LOYpS0jvRQ3P8GGee2ycyAZEqOnwa9bMJ8lslB6pGbbrk8tODX9npXniCCtHa
-	 IlGeYFrCaTOY6yzumasO7EgSBcBopi3JTHOWdy23obOs8NpRxRerlDpkkDTcV0Qr3x
-	 p9rvgrrm1KWdc+QjCwvBdurQ/qkmEfzCaSMTfZeQdZnAhC5z6e2D6tT40KMCw4lRHd
-	 f6jgzS/3XgGv10VT3a6LGs23oGcU5f8kvUUjpZFgyBjD2HPCxhLKqo1hoGGCOZgptq
-	 2cMWvjloDVD61rPoKQNhoBgUQzP0ENl9bvoGDJbXflqyC7sZdxlNdV/uH6hrd3A7pK
-	 wYBVKrZzboCWw==
-Message-ID: <58bb5bc7-3ce2-4a9c-a824-5ff37291137f@kernel.org>
-Date: Tue, 8 Sep 2026 18:25:05 +0200
+	s=k20260515; t=1788885070;
+	bh=0l+8CLev5DKAcAbpMFnU9gJCwMsXufocnc37HiEjWiw=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=MhfLBNT7HwSP8/Fx3+mo7xplBcCPVO7QON41DGo+f07/vvhJiwwBealzMRHlU1uI0
+	 ++O4CmmbJ+5DvYctMqaSmjLVFRemNm1g4IErcYSAYboQjzBXQNX75H2GKQ1iaiYo0u
+	 j0vsJ+Tidw9FPS6+9RIDbHQ2PfUDfuaDUr6Y4GYfA67jyAeCI/uyUOWgcxCTPG2wzb
+	 +mWR5GUESAhpwiSP7rgXdEnATCJ6YDrvElus4q+xhB35k0dYkmEzCSJG4IVyQfZSGM
+	 fIYlWwAxgyHRFeCugUY081BYHW6Z/BcYYuM/iuVVEksIMCO9CGfL8e2fAwteV5CZrd
+	 ofc0ICirDXR4A==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0E0339EAF6D;
+	Tue,  8 Sep 2026 16:30:09 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [ANN] Containers to run Netdev CI tests locally
-Content-Language: fr
-To: Stanislav Fomichev <sdf.kernel@gmail.com>
-Cc: Netdev <netdev@vger.kernel.org>
-References: <9c66a2b4-2787-4421-bc9b-627de2f708bd@kernel.org>
- <aqAvrZhltKTjlKe7@devvm7509.cco0.facebook.com>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- xsFNBFXj+ekBEADxVr99p2guPcqHFeI/JcFxls6KibzyZD5TQTyfuYlzEp7C7A9swoK5iCvf
- YBNdx5Xl74NLSgx6y/1NiMQGuKeu+2BmtnkiGxBNanfXcnl4L4Lzz+iXBvvbtCbynnnqDDqU
- c7SPFMpMesgpcu1xFt0F6bcxE+0ojRtSCZ5HDElKlHJNYtD1uwY4UYVGWUGCF/+cY1YLmtfb
- WdNb/SFo+Mp0HItfBC12qtDIXYvbfNUGVnA5jXeWMEyYhSNktLnpDL2gBUCsdbkov5VjiOX7
- CRTkX0UgNWRjyFZwThaZADEvAOo12M5uSBk7h07yJ97gqvBtcx45IsJwfUJE4hy8qZqsA62A
- nTRflBvp647IXAiCcwWsEgE5AXKwA3aL6dcpVR17JXJ6nwHHnslVi8WesiqzUI9sbO/hXeXw
- TDSB+YhErbNOxvHqCzZEnGAAFf6ges26fRVyuU119AzO40sjdLV0l6LE7GshddyazWZf0iac
- nEhX9NKxGnuhMu5SXmo2poIQttJuYAvTVUNwQVEx/0yY5xmiuyqvXa+XT7NKJkOZSiAPlNt6
- VffjgOP62S7M9wDShUghN3F7CPOrrRsOHWO/l6I/qJdUMW+MHSFYPfYiFXoLUZyPvNVCYSgs
- 3oQaFhHapq1f345XBtfG3fOYp1K2wTXd4ThFraTLl8PHxCn4ywARAQABzSRNYXR0aGlldSBC
- YWVydHMgPG1hdHR0YmVAa2VybmVsLm9yZz7CwZEEEwEIADsCGwMFCwkIBwIGFQoJCAsCBBYC
- AwECHgECF4AWIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZUDpDAIZAQAKCRD2t4JPQmmgcz33
- EACjROM3nj9FGclR5AlyPUbAq/txEX7E0EFQCDtdLPrjBcLAoaYJIQUV8IDCcPjZMJy2ADp7
- /zSwYba2rE2C9vRgjXZJNt21mySvKnnkPbNQGkNRl3TZAinO1Ddq3fp2c/GmYaW1NWFSfOmw
- MvB5CJaN0UK5l0/drnaA6Hxsu62V5UnpvxWgexqDuo0wfpEeP1PEqMNzyiVPvJ8bJxgM8qoC
- cpXLp1Rq/jq7pbUycY8GeYw2j+FVZJHlhL0w0Zm9CFHThHxRAm1tsIPc+oTorx7haXP+nN0J
- iqBXVAxLK2KxrHtMygim50xk2QpUotWYfZpRRv8dMygEPIB3f1Vi5JMwP4M47NZNdpqVkHrm
- jvcNuLfDgf/vqUvuXs2eA2/BkIHcOuAAbsvreX1WX1rTHmx5ud3OhsWQQRVL2rt+0p1DpROI
- 3Ob8F78W5rKr4HYvjX2Inpy3WahAm7FzUY184OyfPO/2zadKCqg8n01mWA9PXxs84bFEV2mP
- VzC5j6K8U3RNA6cb9bpE5bzXut6T2gxj6j+7TsgMQFhbyH/tZgpDjWvAiPZHb3sV29t8XaOF
- BwzqiI2AEkiWMySiHwCCMsIH9WUH7r7vpwROko89Tk+InpEbiphPjd7qAkyJ+tNIEWd1+MlX
- ZPtOaFLVHhLQ3PLFLkrU3+Yi3tXqpvLE3gO3LM7BTQRV4/npARAA5+u/Sx1n9anIqcgHpA7l
- 5SUCP1e/qF7n5DK8LiM10gYglgY0XHOBi0S7vHppH8hrtpizx+7t5DBdPJgVtR6SilyK0/mp
- 9nWHDhc9rwU3KmHYgFFsnX58eEmZxz2qsIY8juFor5r7kpcM5dRR9aB+HjlOOJJgyDxcJTwM
- 1ey4L/79P72wuXRhMibN14SX6TZzf+/XIOrM6TsULVJEIv1+NdczQbs6pBTpEK/G2apME7vf
- mjTsZU26Ezn+LDMX16lHTmIJi7Hlh7eifCGGM+g/AlDV6aWKFS+sBbwy+YoS0Zc3Yz8zrdbi
- Kzn3kbKd+99//mysSVsHaekQYyVvO0KD2KPKBs1S/ImrBb6XecqxGy/y/3HWHdngGEY2v2IP
- Qox7mAPznyKyXEfG+0rrVseZSEssKmY01IsgwwbmN9ZcqUKYNhjv67WMX7tNwiVbSrGLZoqf
- Xlgw4aAdnIMQyTW8nE6hH/Iwqay4S2str4HZtWwyWLitk7N+e+vxuK5qto4AxtB7VdimvKUs
- x6kQO5F3YWcC3vCXCgPwyV8133+fIR2L81R1L1q3swaEuh95vWj6iskxeNWSTyFAVKYYVskG
- V+OTtB71P1XCnb6AJCW9cKpC25+zxQqD2Zy0dK3u2RuKErajKBa/YWzuSaKAOkneFxG3LJIv
- Hl7iqPF+JDCjB5sAEQEAAcLBXwQYAQIACQUCVeP56QIbDAAKCRD2t4JPQmmgc5VnD/9YgbCr
- HR1FbMbm7td54UrYvZV/i7m3dIQNXK2e+Cbv5PXf19ce3XluaE+wA8D+vnIW5mbAAiojt3Mb
- 6p0WJS3QzbObzHNgAp3zy/L4lXwc6WW5vnpWAzqXFHP8D9PTpqvBALbXqL06smP47JqbyQxj
- Xf7D2rrPeIqbYmVY9da1KzMOVf3gReazYa89zZSdVkMojfWsbq05zwYU+SCWS3NiyF6QghbW
- voxbFwX1i/0xRwJiX9NNbRj1huVKQuS4W7rbWA87TrVQPXUAdkyd7FRYICNW+0gddysIwPoa
- KrLfx3Ba6Rpx0JznbrVOtXlihjl4KV8mtOPjYDY9u+8x412xXnlGl6AC4HLu2F3ECkamY4G6
- UxejX+E6vW6Xe4n7H+rEX5UFgPRdYkS1TA/X3nMen9bouxNsvIJv7C6adZmMHqu/2azX7S7I
- vrxxySzOw9GxjoVTuzWMKWpDGP8n71IFeOot8JuPZtJ8omz+DZel+WCNZMVdVNLPOd5frqOv
- mpz0VhFAlNTjU1Vy0CnuxX3AM51J8dpdNyG0S8rADh6C8AKCDOfUstpq28/6oTaQv7QZdge0
- JY6dglzGKnCi/zsmp2+1w559frz4+IC7j/igvJGX4KDDKUs0mlld8J2u2sBXv7CGxdzQoHaz
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <aqAvrZhltKTjlKe7@devvm7509.cco0.facebook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH v3 bluetooth] Bluetooth: coredump: Quiesce dump work on
+ unregister
+From: patchwork-bot+bluetooth@kernel.org
+Message-Id: 
+ <178888500873.3627954.10684835097412320189.git-patchwork-notify@kernel.org>
+Date: Tue, 08 Sep 2026 16:30:08 +0000
+References: <20260906154332.763402-1-bestswngs@gmail.com>
+In-Reply-To: <20260906154332.763402-1-bestswngs@gmail.com>
+To: Weiming Shi <bestswngs@gmail.com>
+Cc: marcel@holtmann.org, johan.hedberg@gmail.com, luiz.dentz@gmail.com,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, abhishekpandit@chromium.org,
+ mmandlik@google.com, syzbot+b170dbf55520ebf5969a@syzkaller.appspotmail.com,
+ abysamross@gmail.com, tristan@talencesecurity.com, xmei5@asu.edu
 
-Hi Stanislav,
+Hello:
 
-On 08/09/2026 17:56, Stanislav Fomichev wrote:
-> On 09/03, Matthieu Baerts wrote:
->> Hello,
->>
->> TL;DR: containers are now available with all dependencies to easily
->> execute all static, unit, and functional tests in an environment closed
->> to the Netdev CI one:
->>
->> - https://github.com/orgs/linux-netdev/packages
+This patch was applied to bluetooth/bluetooth-next.git (master)
+by Luiz Augusto von Dentz <luiz.von.dentz@intel.com>:
+
+On Sun,  6 Sep 2026 23:43:32 +0800 you wrote:
+> hci_devcd_handle_pkt_init() arms dump_timeout and coredump producers
+> queue dump_rx without holding an hdev reference. Unregister leaves both
+> works live, so disconnecting during an active dump lets them access hdev
+> after hci_release_dev() frees it.
 > 
-> Are these public/published? I don't see any packages when I go
-> to that page in the browser.
-
-Oops, I just noticed the small label saying they were private by
-default... That should be fixed now.
-
-> Also:
+> Shut down coredump processing during unregister. Close the producer gate
+> under dump_q.lock before disabling both works, then free the active buffer
+> and queued packets under hci_dev_lock. Serializing the gate with enqueue
+> prevents controller-specific workers from adding packets after the final
+> purge.
 > 
-> $ ./docker/selftests/run.sh --pull
-> Using ghcr.io/linux-netdev/nipa-selftests:latest image
-> Emulate Docker CLI using podman. Create /etc/containers/nodocker to quiet msg.
+> [...]
 
-I didn't try this mode. Please tell me if I need to fix stuff.
+Here is the summary with links:
+  - [v3] Bluetooth: coredump: Quiesce dump work on unregister
+    https://git.kernel.org/bluetooth/bluetooth-next/c/701ca71884b3
 
-> Trying to pull ghcr.io/linux-netdev/nipa-selftests:latest...
-> Error: unable to copy from source docker://ghcr.io/linux-netdev/nipa-selftests:latest: initializing source docker://ghcr.io/linux-netdev/nipa-selftests:latest: unable to retrieve auth token: invalid username/password: unauthorized
-> 
-> (and it's the same 'unauthorized' on another machine with real docker
-> instead of podman)
-> 
-> What am I missing?
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-My bad, it looks like when I tested, I had a valid token... Is it better
-now?
 
-Cheers,
-Matt
