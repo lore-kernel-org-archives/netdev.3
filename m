@@ -1,169 +1,174 @@
-Received: from mta0.migadu.com (out-124.mta0.migadu.com [91.218.175.124])
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AA5B53446A
-	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 12:22:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 812DD4ADD81
+	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 12:23:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788870139; cv=none; b=rDHDwEdn+/IM11Q/jnmnI1OyMS+vW6jvmPK+6kgWkSe72AUuapGQPxU8MRYIiiAJsqauRaxu5HtvliwuGWk58MGQoPcF2CcMKtsp0jFGyEg+TaYfBVO0Q8OB7zDIfPqf9W5nFLkFfh1TeunfIVxWgS9f/i1mjkZAISxr2kC8tdY=
+	t=1788870234; cv=none; b=nTrEyCXetloQIlMTn9vGWDAdUjTBu14/1kNzLKNva8bxQlyZCbB4sUGXjg4Eo0vt7fGxGXHP28oNknKL5D+Yb//LjzeFYu3GtJFA/U2fZMj4oXwPwQ/Yx5fCDmtCPgzGrS1/M/cWYKCIXKnpdF1J/P036dv2SD1/8+YBQ+6uBEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788870139; c=relaxed/simple;
-	bh=k/IHifKCS20JBL4khmFjrFg5h30C+16o1SAyAAe7yD8=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=hCmtJrdCLHSBi9SP8FoqBBKrd/sT8lQx/Ye0eqjq2WEiwE/R8L2Hm0PhwPl2Bo6Xx9QKjdOO88XnYqKyj8iF+9mDe0dhVBwA9WRKkRg1/Nw+k9ZqPqUmSGeUJUpnxx0WXYtJYaajqJOeT59MrBFIMaqkxrjjugFEcYJYG9FPHiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=hP0neyFS; arc=none smtp.client-ip=91.218.175.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1788870234; c=relaxed/simple;
+	bh=QGDd+Wf5YTS54FG8U77vN5sHZpKZ7uQB3OGWdhKUJ58=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=K1D3gTukdCGaFy9ujHfLaukouiamXvug+o315g45bNbTc6aFTY8VvvwGdTJBqKU0bsrg72AGWEvX/cDp9p/sC3YcVySH+sgfXLC3r2kWmn3Kp5lvFdhKnBPw7vdMCHCsd/aCT6Df2hQM3XyApLkRIgnQel/ioxA0rIjHBAbVR1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IRcsM8Ky; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="hP0neyFS"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=k/IHifKCS20JBL4khmFjrFg5h30C+16o1SAyAAe7yD8=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788870132; v=1; x=1789474932;
- b=hP0neyFS6PhRYDaYjbwef6m8kg60FR8gWtm174W2znoCF20FPFxYz2l4t15h+H05ZJRIL7Ko
- EcYw0gew4UDwgQWw8EdCe8pPHAIVvs61jiyeNSotyrSqUEt43Zjajmd5wJ0uWoePCKwdCjykKd8
- uM7cKFLM0wzYuHLVpkmmJFZM=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 05ba60e156225361;
-	Tue, 08 Sep 2026 12:22:12 +0000
-X-Mizu-Trace-ID: 05ba60e156225361
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <c6c4fd69-3074-4d6d-804b-cf8ff62359da@linux.dev>
-Date: Tue, 8 Sep 2026 20:22:02 +0800
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IRcsM8Ky"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-49b0d78a801so45947655e9.2
+        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 05:23:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788870231; x=1789475031; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=wy1gR36S2TG5IgHxj5GTNM1vyU6VarOdbRnTBOfTjOQ=;
+        b=IRcsM8KyY5cX8OXyyoXDY+cIPc6ZqfEO4AKqNt8OVGYfKZAzc569mCuQeSxRDS0Cgt
+         I7SRTLv66Y3aXnElsJmZkKb93DGYUIQhoE/36qJapAwiNLdUYyo5KbCRfgEQx8rGFugh
+         zY5JxCvJXtBlWBv6D8SEMVin/gVRKvtbDkAz3Oj9RrNYdSu8XIkBFH/0jAVVQAvBHKWz
+         0MaNcPNZgdmsa9oKLagkxo6p/0UGBlioxXsNMmftmBw1BqNRz+eICPhZdM79kXMuulBS
+         uhLH7qFvmOoHwuL//X4L86QHxaGzWklTu1zIMU1ohJG8IoH3ingQu1q4MtVLZ7yaQlnG
+         xH/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788870231; x=1789475031;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=wy1gR36S2TG5IgHxj5GTNM1vyU6VarOdbRnTBOfTjOQ=;
+        b=qPJqGSYS4xJxYLvgzrEvTCRu0hq3B4a6rwICJej3wVVSk9G+5wzVnz5P4OJHUQ3b3x
+         r33nrJjGYNKYbyMcLPFjwKdRLaX/H8BiX0Rah+BAf4gmawqXMXVD2ZwT8whaZtwjBqjq
+         PvP6EB3Y5Fuc53JEOt/xjM5pHmXtYaKtaMuJgpwGj4w7KD+79M49qt1o347ZCyX5O55l
+         89X1iw/Z4t+e/gzwbIqa84fir6mnYpf6rGrz4nL2JTdXBY3E9Rl/bnSzDLQzW0U+clmo
+         M2GRo7DJVLztRZnnwqPxYs55A5Rqnq1rLxylH9dLuxX3XyzwR5ZlodTk4dqWNPKSr6KR
+         RE3g==
+X-Gm-Message-State: AFuF++kE3Rk+a2bXCPQIq16IePan1WTFHWuqAbcEh06SpmbufJodU/3G
+	UCO76DuWCArlb1gAzMBpDvTwrUJkdiONHY/tOaDMXZCFyfMhEpuCCXXPnAJyKXuL
+X-Gm-Gg: AYBFou3wKgbmOpday8o6+RVeci7lAz68O6wa16FR4hcg3iWdcB+Ixwb8aVWUU/8OL+r
+	ts2QT8lI7SMojIt00VYG2uzZF1WpTN1KwROzJ1Q2YHGeSc5ZILCXvW+Z2wReFGegZ45nGrSxAh+
+	n2KFUHHkcPcOGhz7AtZ63UOAHHbXdDvWQqHx15X8jRafhfbO5E1ZVQUcUyVNns+6MAtUiAiCn3s
+	m5kk2iAKdpBJR9flq0QV63VrheMGdW+lSzrZYe2E0B4aj5NvAGrSxJ0UpLEZkGHg3TU0faspZNQ
+	sLzQGrcC6/fgywc1pZr/efnHvZdHKQ8poUVvoNLGBQZk5tA74BRSSjInZEFhMdKYgy+4ruk8mQp
+	7sBEJRSmHUpgemC1JoKpaNJF0guiFNhNTZIG9vZF3QLT4KqYp2baF9e//X5kejay+0atYCK6XnB
+	g5ve7q3oj8H9W0H7V2B1CmLWbyxM9tliffAHHv73Mj+EMvrTMOeHtTX+9I4hVurXLYfKGHLB8aN
+	9PGZK+h9AWwkCwqzMnAHdjJhnJfpbihQN+VvlzIoi7Cb0mU+DrEFRjCnLYXn1ukGmFaZ+0hszVq
+	edA=
+X-Received: by 2002:a05:600c:4e46:b0:49b:910c:7703 with SMTP id 5b1f17b1804b1-49cf823f160mr280175115e9.9.1788870230385;
+        Tue, 08 Sep 2026 05:23:50 -0700 (PDT)
+Received: from fedora-tap.advaoptical.com (bzq-84-110-212-205.static-ip.bezeqint.net. [84.110.212.205])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cee6024a8sm496744995e9.6.2026.09.08.05.23.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Sep 2026 05:23:50 -0700 (PDT)
+From: Sagi Maimon <maimon.sagi@gmail.com>
+To: netdev@vger.kernel.org
+Cc: vadim.fedorenko@linux.dev,
+	richardcochran@gmail.com,
+	kuba@kernel.org,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	linux-kernel@vger.kernel.org,
+	Sagi Maimon <maimon.sagi@gmail.com>
+Subject: [PATCH net-next v13 0/2] ptp: ocp: add TAP CPLD support for ADVA TimeCard X1
+Date: Tue,  8 Sep 2026 15:23:26 +0300
+Message-ID: <20260908122328.52641-1-maimon.sagi@gmail.com>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH bpf v2 2/3] tcp: Skip cond_resched() in
- inet_csk_listen_stop() under BPF context
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-To: Kuniyuki Iwashima <kuniyu@google.com>, bot+bpf-ci@kernel.org
-Cc: bpf@vger.kernel.org, daniel@iogearbox.net, john.fastabend@gmail.com,
- sdf@fomichev.me, martin.lau@linux.dev, ast@kernel.org, andrii@kernel.org,
- eddyz87@gmail.com, memxor@gmail.com, song@kernel.org,
- yonghong.song@linux.dev, jolsa@kernel.org, emil@etsalapatis.com,
- ihor.solodrai@linux.dev, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, ncardwell@google.com,
- shuah@kernel.org, aditi.ghag@isovalent.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- martin.lau@kernel.org, mason@kernel.org
-References: <20260906074135.185212-3-jiayuan.chen@linux.dev>
- <0aa6425f9e8f32705ae827f6325b29079234c3f3d0c7b2cdefba3e5b50432766@mail.kernel.org>
- <CAAVpQUBztYDHyiCN1fnhdxCPv_5AZ09yCMQfNW96SzZyw0LhHA@mail.gmail.com>
- <a44c1e4d-e9a8-4df3-aa25-20875cd4d30e@linux.dev>
-In-Reply-To: <a44c1e4d-e9a8-4df3-aa25-20875cd4d30e@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
+The ADVA TimeCard X1 (PCI device 0x0410) carries a Lattice MachXO3 CPLD
+on the TMC I2C bus.  This series adds access to it and an update path
+through the kernel firmware-upload subsystem.
 
-On 9/8/26 4:07 PM, Jiayuan Chen wrote:
->
-> On 9/8/26 7:34 AM, Kuniyuki Iwashima wrote:
->> On Sun, Sep 6, 2026 at 1:23 AM <bot+bpf-ci@kernel.org> wrote:
->>>> tcp: Skip cond_resched() in inet_csk_listen_stop() under BPF context
->>>>
->>>> bpf_sock_destroy() runs from the tcp iterator, under 
->>>> rcu_read_lock(). If
->>>> the sock is a listener that still has children in its accept queue,
->>>> tcp_abort() ends up in inet_csk_listen_stop() and the cond_resched()
->>>> there trips the debug check:
->>>>
->>>> BUG: sleeping function called from invalid context at 
->>>> net/ipv4/inet_connection_sock.c:1523
->>>> in_atomic(): 0, irqs_disabled(): 0, non_block: 0, pid: 628, name: 
->>>> test_progs
->>>> preempt_count: 0, expected: 0
->>>> RCU nest depth: 1, expected: 0
->>>> locks held by test_progs/628: 3, last CPU#3:
->>>>   #0: ffff8881158cee18 (&p->lock){+.+.}-{4:4}, at: 
->>>> bpf_seq_read+0x56/0x1210
->>>>   #1: ffff8881106bb858 (sk_lock-AF_INET6){+.+.}-{0:0}, at: 
->>>> bpf_iter_tcp_seq_show+0x32b/0x4b0
->>>>   #2: ffffffffb435af20 (rcu_read_lock){....}-{1:3}, at: 
->>>> bpf_iter_run_prog+0x46b/0xde0
->>>> CPU: 3 UID: 0 PID: 628 Comm: test_progs Tainted: G W           
->>>> 7.2.0+ #65 PREEMPT
->>>> Tainted: [W]=WARN
->>>> Call Trace:
->>>>   <TASK>
->>>>   dump_stack_lvl+0xc1/0xf0
->>>>   dump_stack+0x10/0x20
->>>>   __might_resched+0x3d2/0x610
->>>>   inet_csk_listen_stop+0x7b/0xbf0
->>>>   tcp_abort+0x23b/0x3b0
->>>>   bpf_sock_destroy+0xfc/0x140
->>>>   bpf_prog_448133d24601754f_iter_tcp6_server+0x81/0x8a
->>>>   bpf_iter_run_prog+0x538/0xde0
->>>>   bpf_iter_tcp_seq_show+0x26b/0x4b0
->>>>   bpf_seq_read+0x424/0x1210
->>>>   vfs_read+0x197/0xe40
->>>>   ksys_read+0x119/0x240
->>>>   __x64_sys_read+0x72/0xc0
->>>>   x64_sys_call+0x647/0x27e0
->>>>   do_syscall_64+0xe5/0x610
->>>>   entry_SYSCALL_64_after_hwframe+0x76/0x7e
->>>> RIP: 0033:0x7fad39b28aca
->>>> RSP: 002b:00007ffc381c61c0 EFLAGS: 00000246 ORIG_RAX: 0000000000000000
->>>> RAX: ffffffffffffffda RBX: 00007ffc381c6a88 RCX: 00007fad39b28aca
->>>> RDX: 0000000000000032 RSI: 00007ffc381c6250 RDI: 0000000000000014
->>>> RBP: 00007ffc381c61e0 R08: 0000000000000000 R09: 0000000000000000
->>>> R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000003
->>>> R13: 0000000000000000 R14: 000055f077c1bbb0 R15: 00007fad3a0f3000
->>>>   </TASK>
->>>>
->>>> The commit that added the kfunc already guards lock_sock() in 
->>>> tcp_abort()
->>>> and udp_abort() with has_current_bpf_ctx(), but missed the listener 
->>>> path.
->>>> Do the same for the cond_resched(), it can't reschedule there anyway.
->>>>
->>>> Fixes: 4ddbcb886268 ("bpf: Add bpf_sock_destroy kfunc")
->>>> Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
->>> Is the justification "it can't reschedule there anyway" accurate?
->>>
->>> With CONFIG_PREEMPT_DYNAMIC=y booted with preempt=none or 
->>> preempt=voluntary,
->>> cond_resched() expands to __cond_resched() which can actually 
->>> reschedule.
->>> The splat in the commit message confirms preempt_count is 0 while 
->>> RCU nest
->>> depth is 1. With preempt_count==0, should_resched(0) can be true and
->>> __cond_resched() will call preempt_schedule_common() for a real 
->>> reschedule.
->>>
->>> Additionally, in configurations with CONFIG_PREEMPT_RCU=n where
->>> rcu_read_lock() is preempt_disable(), __cond_resched() falls through to
->>> rcu_all_qs() which calls rcu_qs() to report a quiescent state from 
->>> inside
->>> an RCU read-side critical section. That's a correctness problem 
->>> beyond just
->>> the debug check.
->>>
->>> So the call can either reschedule (PREEMPT_DYNAMIC none/voluntary) 
->>> or report
->>> a bogus quiescent state (non-preemptible RCU). Could the 
->>> justification be
->>> reworded to explain that the loop runs inside the iterator's RCU 
->>> read-side
->>> critical section and must not reschedule or report a quiescent state 
->>> there?
->>> The code change itself is correct and matches the existing pattern in
->>> tcp_abort() and udp_abort().
->> or maybe simply remove cond_resched(), hoping 7dadeaa6e851 would
->> resolve the scheduling issue.
->>
->
-> Good suggestion. cond_resched has become old practice under 
-> CONFIG_PREEMPT_LAZY
+The card has two I2C controllers.  Linux registers only the one at
+0x00150000, normally routed to the config EEPROMs; the one at 0x00120000
+belongs to the on-card MicroBlaze and is routed to the TMC or M.2 bus as
+its firmware selects.  A request/grant handshake re-routes the host
+controller onto the TMC bus, where the PCA9548 and the CPLD behind its
+channel 0 live.  Everything here is built on that handshake.
+
+Patch 1 adds the arbitration and the read-only interfaces on top of it.
+Patch 2 adds the flashing.
+
+v12: https://lore.kernel.org/netdev/20260902044232.21188-1-maimon.sagi@gmail.com/T/#u
+
+Changes since v12 - all from the automated review of v12:
+
+ - The CPLD device ID is no longer read from ptp_ocp_devlink_info_get().
+   DEVLINK_CMD_INFO_GET carries no GENL_ADMIN_PERM, and that read claims
+   the i2c adapter and drives the on-card mux for up to two seconds,
+   which any user could have repeated to keep the EEPROM, nvmem and at24
+   paths off the controller.  The same operation is root-only through
+   cpld_status.  The driver now reads the ID once from its own worker,
+   as soon as the i2c adapter has registered, and info_get() reports the
+   cached value.  Patch 1.
+ - As a result info_get() can no longer fail because of the CPLD: it
+   skips cpld.id when the value is not available.  Returning an error
+   there made devlink discard the whole reply, and -ENODEV was reachable
+   on any card where the i2c adapter never bound, which also aborted
+   'devlink dev info' for every other instance on the host.  Patch 1.
+ - cpld.id is now reported before the EEPROM data rather than after its
+   early return, so it no longer depends on the EEPROM having been read.
+   Patch 1.
+ - adva_x1_bus_claim() re-checks that the adapter it just took a
+   reference to is still this card's: i2c_del_adapter() frees the idr
+   slot before the bus notifier clears the cached number, so the number
+   could already have been recycled.  Patch 1.
+ - The probe error paths unregister devlink before ptp_ocp_detach(),
+   which destroys cpld_lock and releases the i2c controller.  Patch 1.
+ - I2C_M_DMA_SAFE is no longer set.  No adapter that can bind here does
+   DMA, and the read half of the scratch buffer is an interior pointer
+   that does not satisfy the flag's alignment contract; the core is left
+   free to bounce.  Patch 1.
+ - The firmware-upload callbacks map errnos onto the documented
+   fw_upload_err categories: -ENODEV and a failed transfer are no longer
+   reported as a timeout, and a CPLD FAILED status is no longer reported
+   as one either.  Patch 2.
+ - adva_cpld_prepare() checks for a cancellation on entry, as its own
+   comment promised, instead of cycling the CPLD into configuration mode
+   for an upload that was already aborted.  Patch 2.
+ - Added Documentation/networking/devlink/ptp_ocp.rst describing the
+   driver-specific cpld.id version, with the index and MAINTAINERS
+   entries.  Patch 1.
+ - Comments in patch 1 no longer describe the firmware-upload path that
+   only patch 2 adds, and the lines that exceeded 80 columns are wrapped.
+
+Three points from that review are deliberately not addressed here,
+because changing them needs a full programming cycle on the card to
+validate and I would rather not fold untested changes into a respin:
+
+ - poll_complete() samples DONE before REFRESH only, and does not check
+   the sysCONFIG error field the way drivers/fpga/lattice-sysconfig.c
+   does.
+ - adva_x1_mblaze_release() does not wait for the firmware to route the
+   controller back before the adapter lock is dropped.
+ - A cancel arriving between cleanup() and fw_upload_prog_complete()
+   stays set and aborts the next upload.
+
+Tested on an ADVA TimeCard X1: the driver loads with the i2c adapter
+registering after probe, cpld.id and cpld_status read back correctly,
+and the wire byte sequences are unchanged from v12, which programmed the
+part successfully.
+
+Sagi Maimon (2):
+  ptp: ocp: add TAP CPLD access for ADVA TimeCard X1
+  ptp: ocp: add TAP CPLD firmware upload for ADVA TimeCard X1
+
+ Documentation/ABI/testing/sysfs-timecard     |  24 +
+ Documentation/networking/devlink/index.rst   |   1 +
+ Documentation/networking/devlink/ptp_ocp.rst |  35 +
+ MAINTAINERS                                  |   1 +
+ drivers/ptp/Kconfig                          |   2 +
+ drivers/ptp/ptp_ocp.c                        | 761 ++++++++++++++++++-
+ 6 files changed, 818 insertions(+), 6 deletions(-)
+ create mode 100644 Documentation/networking/devlink/ptp_ocp.rst
 
 
-After reconsideration, I think it's not a good idea to remove it if we 
-treat it as a fix and the fix will be backported to LTS.
-
-Or we just drop both cond_resched and Fixes tag.
-
+base-commit: c29b37ed7a4d9856ed758a82282456d69cee2ed1
+-- 
+2.47.0
 
