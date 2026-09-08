@@ -1,134 +1,160 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1ADB299A82;
-	Tue,  8 Sep 2026 07:14:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECCE834F270;
+	Tue,  8 Sep 2026 07:16:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788851695; cv=none; b=eSC+XWnRckokcaF7YPGePhFWgbcKBQ3Ggk24Y6PtXmen+eXgAta+CxxuQyJE5vOVpjbBTG5XxxAxgmRq8t31bIhbUqcoUEaiTjSaHplenAR9GRiXG44DsRmWOJj/ZmX3HVTrPQ+ZxNAU+0VDp8yPT+Ve/liJeBDzyIrsTA8rakQ=
+	t=1788851766; cv=none; b=KLY782t8WZM0gpK6uVT+GrhpLC6QcKWGL1F2cnUmawtMXuDTdwF4vEQNgrZeBRq6xGzNlZbOCljLAJnpCxgiyFSlCMuL94poJtOjtwowY0T/4ZqGPymMn3NXLRn1L3W0XijKgdtFmN8V9l265bUuM1rgDnXsJ/3M2kODaELVYJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788851695; c=relaxed/simple;
-	bh=L1abuY3vdaatUdCy/1hnjw9C1jyNq/ZONBjvuWEGH48=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IVEiM7IK+SPydQo5Y+UXrUnPjf42k5lXxyOiaOmYuIcOmnnnBtS1aT0HxLjJR0GzCDYK6O3B2n7+nb5S9/hEop9ik+bw5guBkeK6tuMMNi2aD+aULgCku5ARVgT6kSqzpQt8L6TkD890s/X6hMu6hkNL3/x8eYTqSIVGpnTJxFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PAjI5PD9; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788851766; c=relaxed/simple;
+	bh=qI6Ayf5wPgUTQ4/qNmGJZJVRLZrlzPExqwImPy4y9sc=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=AAlJyJa9m9J1iYtsoLisR+IDSXVnQO9UMz0ELGtqkwK/2hBUJCNQ1TsI6Xt+RPN/usECY8cqQVGCcbe1BEwvYY/8K3XWsAvDbY1xEBRd31FENmmYetkLOgZshlinwtVbd0MyXPyJjvtOcq9oZvavBfvE2pbkBSNHyE1O7poXiUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=E6FZnP5S; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PAjI5PD9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 600D91F00A3A;
-	Tue,  8 Sep 2026 07:14:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788851694;
-	bh=/AIulGT3ycleuvnBA5jEnmQev+sRAPyhLi3NapowNKY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=PAjI5PD9pRtWU2hh1v/C2DYCjCtsXRSBUryFFwuZtcAzUIdLxH419IjSoLcG/9onW
-	 0KIZeTQW0OE66acO1qY/9ukIDTbACl+U381KN1h7zp523xUC9D8BrxxjH4eD8PV0td
-	 fiPYOYXeI0vChXqLGbzvJV7+NJS+j/KUdf9cARr6nl7Tpuk0235RcTOfuOU9pTXJJE
-	 8zx6qKIns8yq3KI5cGreyI+YhKs3W5fkwGz8viYWrDPOfaChInQNGishqrzjGQi/j/
-	 Q2AmhtOfeoDcsfzo2M/f7IqvUmAil2Kugh8RdZ7KI5P8LEbqDCCGN4Il5XPMzyJYyY
-	 PZXjXArJf2ssg==
-Message-ID: <c23369fc-84ff-4881-8327-c18fc3692306@kernel.org>
-Date: Tue, 8 Sep 2026 09:14:45 +0200
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="E6FZnP5S"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1788851764; x=1820387764;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=qI6Ayf5wPgUTQ4/qNmGJZJVRLZrlzPExqwImPy4y9sc=;
+  b=E6FZnP5SzB9SwamCMvmiSNyPjnWzeSQwUrVMTK2o4RY/MbNr62s9Md+w
+   rzBnuNMDCZ1WbrvS7q3vKAX5qlXyU+C/lvMVTO93kOiRuyIUZtNmnBQmq
+   OXO8uPTMfO/SnR3Y8CxCPp01v9BljN0XVk3x8MpJzeXKAzLkOnP1EdLgf
+   3j8emcCJ/c7t2wT2qFdOA38wpmqS1CJp0egTJ4Mk97U1oAwh7YB05XvSO
+   MSMLqt03OkGscUJHRXkkrfl0zWBfi5iZNE22KZqsSpCfuEWZzvGp/d8rY
+   2pPdwlVa+NFd33OtmceL7E3NLqYW7bTobo6bp1r/lu1T/PWgoqkiEO5Dr
+   A==;
+X-CSE-ConnectionGUID: FOEJGA3ySDKd9xYYBb7jzg==
+X-CSE-MsgGUID: jKJNh/vpQZC+TLqBiSW2Lg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11899"; a="106760034"
+X-IronPort-AV: E=Sophos;i="6.25,268,1779174000"; 
+   d="scan'208";a="106760034"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2026 00:16:03 -0700
+X-CSE-ConnectionGUID: y6PbfSSUQ82qjZZlHsLGmQ==
+X-CSE-MsgGUID: CrhCmLDgRvasFm0K9a323A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,268,1779174000"; 
+   d="scan'208";a="274699573"
+Received: from qat-server-366.sh.intel.com ([10.239.92.87])
+  by orviesa004.jf.intel.com with ESMTP; 08 Sep 2026 00:16:01 -0700
+From: Jie Wang <jie.wang@intel.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Chas Williams <3chas3@gmail.com>
+Cc: linux-usb@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-atm-general@lists.sourceforge.net,
+	accessrunner-general@lists.sourceforge.net,
+	syzbot+9b195c4f412ea5c4e56a@syzkaller.appspotmail.com,
+	Jie Wang <jie.wang@intel.com>
+Subject: [PATCH v2] usb: atm: cxacru: fix NULL deref of atm_dev on sysfs writes
+Date: Tue,  8 Sep 2026 15:02:03 +0000
+Message-Id: <20260908150203.2119844-1-jie.wang@intel.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <f3ef0a67-79d7-47da-be6e-7e82d92e68fe@mail.kernel.org>
+References: <f3ef0a67-79d7-47da-be6e-7e82d92e68fe@mail.kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH PRELIMINARY 0/5] arm64: dts: qcom: shikra: add Ethernet
- support
-To: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>
-Cc: Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Komal Bajaj <komal.bajaj@oss.qualcomm.com>,
- Anurag Pateriya <apateriy@qti.qualcomm.com>,
- Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
- Richard Cochran <richardcochran@gmail.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>,
- Maxime Chevallier <maxime.chevallier@bootlin.com>,
- Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
- linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-References: <20260908-shikra_ethernet_dts-v1-0-69c0c5c7c124@oss.qualcomm.com>
- <e9388ffc-ddc8-456f-ad7f-1d185d35ab69@kernel.org>
- <ap+zd/2QmerMwi0o@oss.qualcomm.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
- cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
- JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
- gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
- J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
- NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
- BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
- vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
- Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
- TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzSVLcnp5c3p0b2Yg
- S296bG93c2tpIDxrcnprQGtlcm5lbC5vcmc+wsGPBBMBCgA5AhsDBgsJCAcDAgYVCAIJCgsE
- FgIDAQIeAQIXgBYhBJvQfg4MUfjVlne3VBuTQ307QWKbBQJp2mE8AAoJEBuTQ307QWKbeaIP
- /ihHTkTW4KsN/DQ945JJbyu5tI0J80Wue7QyyLPglyKfhgb5cLLNPpOC8cCIJsc7+W3i2P38
- s2c1cOH6CYGE7E9ur3Vfme8NW2S2I/Z8VC7bZnzyS23wT17LrsdS/qCpx4o8U+pt/xdXDKph
- EGRYrIEmMpUWvyYzyYKGIe25FtaayIIKpq8eZYyFcp2f/sG5IkOW5uZzHPMPdcm87jU7fyuQ
- rAU2vx9r+ulUfQ/q9Z2roC/ode3l7t2pN7BCBCsUDp6JCrUyZrtT1e7EbA0ZRP3aOBNk2P2E
- DQOgJGjGdO5Yx2Y9LFtltu6JbsBJHi1syGRX3AtQYOMc4Y1WGoeZJmMlvKj2ZqqXNkcWi2DS
- IQEWB0uW6CqFsBBIMGDa+6OzdaVO/uAVXWDWml02Men3CILdI1MbVjoh8ECqYUY7OQ+JJvNN
- vnliuq5WM3Ghd3jg/LZZrxXjdIginRHFQCjIJYLKpLZWm1/iDFedcfzqRNYmTtqscdCNHW41
- oT3Z7BmO9xwdjuwBS6nmS6JJwkbf5Ot2QR4pB/DRU7ZwjT1qHe+9r9gF32wXVQatHNGK/VVu
- sfwOnkdxCWkp/qb2gdQRmZh+SedStWshigH6sNfuHBloF/q+hjMRc8b2m326OZdrbSHwY1Sz
- vti8Hn7n8NjdHO9LKB7BIdjkA9DA5WsqOuVCzsFNBFVDXDQBEADNkrQYSREUL4D3Gws46JEo
- Z9HEQOKtkrwjrzlw/tCmqVzERRPvz2Xg8n7+HRCrgqnodIYoUh5WsU84N03KlLueMNsWLJBv
- BaubYN4JuJIdRr4dS4oyF1/fQAQPHh8Thpiz0SAZFx6iWKB7Qrz3OrGCjTPcW6eiOMheesVS
- 5hxietSmlin+SilmIAPZHx7n242u6kdHOh+/SyLImKn/dh9RzatVpUKbv34eP1wAGldWsRxb
- f3WP9pFNObSzI/Bo3kA89Xx2rO2roC+Gq4LeHvo7ptzcLcrqaHUAcZ3CgFG88CnA6z6lBZn0
- WyewEcPOPdcUB2Q7D/NiUY+HDiV99rAYPJztjeTrBSTnHeSBPb+qn5ZZGQwIdUW9YegxWKvX
- XHTwB5eMzo/RB6vffwqcnHDoe0q7VgzRRZJwpi6aMIXLfeWZ5Wrwaw2zldFuO4Dt91pFzBSO
- IpeMtfgb/Pfe/a1WJ/GgaIRIBE+NUqckM+3zJHGmVPqJP/h2Iwv6nw8U+7Yyl6gUBLHFTg2h
- YnLFJI4Xjg+AX1hHFVKmvl3VBHIsBv0oDcsQWXqY+NaFahT0lRPjYtrTa1v3tem/JoFzZ4B0
- p27K+qQCF2R96hVvuEyjzBmdq2esyE6zIqftdo4MOJho8uctOiWbwNNq2U9pPWmu4vXVFBYI
- GmpyNPYzRm0QPwARAQABwsF2BBgBCgAgAhsMFiEEm9B+DgxR+NWWd7dUG5NDfTtBYpsFAmna
- YUkACgkQG5NDfTtBYptX+BAApg32CkxwNucNEi8WfWA8oKkW0y8YDuY6ORMo9FWNGiT/OTy0
- vyJrLocrpn86zwfjVp+eCrssPYh8eqJfnWqmYv6ACQtHPYzPZQ3mSo8H97Z01oUxITzCxpXm
- ZkLgPIqtDPcC2E3dPM/fVxcyowM8XsaMA9wcsaUYrta8toOq2b9tKcjleKMfMrm0gQ9u7wUc
- QbLkwj6TCLOwucb07GXzLTNF9PZmaDUpKAZjMjmrW+le+SFvQbhamx0rxLWPR0NWntXpbCn+
- +ACch03p/JyTBVktxFsFyCt7pTPE1kEaeuXBTe/a2D9iQvRxRW19LvuO2e59/u1wYUiH/orz
- wbIC2S4dBsPAPihL3ztOU1yE86GPyQtSE0kU+/7snnLt4QGi6PChf3t5gnNjAzjUUovO8rgI
- c+5yN5heq5loYHgK6OQ9OlHzsPHO9e9MOQcKlFycs1pyijFGzDwdNUm/SchK8iWT2QApTx4A
- K9bCVaboTA2T77QYkRcRJYSsO1alGX0ome/hMLD1daXlkrNUp1HWa3K4iytLRXjCSIorWiGs
- n+q3krnpXu3TFkA8qtOFZMdnIiFuiq1yLT8hptsV5xh1TA2nsVvSYiaCr3q4s4BKjS/KrLDb
- qoxzw8ISjdUp4pA85vb6YLCmb39NgidD+7PmAr65lBNveIFynTgsja1rRQ4=
-In-Reply-To: <ap+zd/2QmerMwi0o@oss.qualcomm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 08/09/2026 09:04, Mohd Ayaan Anwar wrote:
-> On Tue, Sep 08, 2026 at 08:56:39AM +0200, Krzysztof Kozlowski wrote:
->> On 08/09/2026 08:23, Mohd Ayaan Anwar wrote:
->>> Hi,
->>>
->>> This preliminary series adds the DTS changes required to enable
->>> Ethernet on the Qualcomm Shikra CQM, CQS, and IQS EVKs.
->>
->> What is "PRELIMINARY" patch in upstream? Where is this process
->> documented or expressed?
->>
-> 
-> My apologies. The code is ready, and I was hoping that sharing the DTS
-> changes would make reviewing the driver and dt-bindings a bit easier.
-> The original RFC had them together, and I split it out for net-next
-> and linux-next.
+The adsl_state and adsl_config sysfs attributes are created via
+dev_groups, so the driver core exposes them as soon as ->probe()
+returns. At that point instance->atm_dev can still be NULL:
+usbatm_heavy_init() only waits for the heavy-init kthread to start, not
+to finish, and instance->atm_dev is assigned later, in usbatm_atm_init().
 
-Yeah, but why calling it completely different than every other patchset?
-Why coming with different style? Why this cannot be RFC?
+A write to either attribute in that window passes the existing
+"instance == NULL" check and reaches atm_err()/atm_info() on the error
+path (and, for adsl_config, on the success path). Both expand to
+instance->atm_dev->number and dereference the NULL atm_dev.
 
-> 
-> The only reason I added a PRELIMINARY tag was because these DTS changes
-> should go in after the driver changes and dt-bindings.
-> 
+Fix this by logging with usb_err()/usb_info() instead. They reference the
+USB interface device, which stays valid for the whole write, and
+usbatm_atm_init() already logs this way before atm_dev exists.
 
-DTS cannot go after the driver changes. If that is your requirement,
-then original work is broken and needs to be fixed.
+adsl_state_store() also calls cxacru_poll_status() directly, which
+dereferences atm_dev via atm_dev_signal_change() and atm_dev->link_rate.
+Return early from the poll when atm_dev is not yet set.
 
-Best regards,
-Krzysztof
+Fixes: e605c30977bb ("USB: atm: cxacru: convert to use dev_groups")
+Reported-by: syzbot+9b195c4f412ea5c4e56a@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=9b195c4f412ea5c4e56a
+Tested-by: syzbot+9b195c4f412ea5c4e56a@syzkaller.appspotmail.com
+Signed-off-by: Jie Wang <jie.wang@intel.com>
+---
+Changes since v1 [1]:
+ - v1 gated on ->atm_dev at handler entry, but that check is an
+   unsynchronized TOCTOU; remove the ->atm_dev dereference from these
+   paths instead.
+
+[1] https://lore.kernel.org/all/f3ef0a67-79d7-47da-be6e-7e82d92e68fe@mail.kernel.org/
+
+ drivers/usb/atm/cxacru.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/usb/atm/cxacru.c b/drivers/usb/atm/cxacru.c
+index 75d87c31e81f4..4322553f2902c 100644
+--- a/drivers/usb/atm/cxacru.c
++++ b/drivers/usb/atm/cxacru.c
+@@ -356,7 +356,7 @@ static ssize_t adsl_state_store(struct device *dev,
+ 	if (!strcmp(str_cmd, "stop") || !strcmp(str_cmd, "restart")) {
+ 		ret = cxacru_cm(instance, CM_REQUEST_CHIP_ADSL_LINE_STOP, NULL, 0, NULL, 0);
+ 		if (ret < 0) {
+-			atm_err(instance->usbatm, "change adsl state:"
++			usb_err(instance->usbatm, "change adsl state:"
+ 				" CHIP_ADSL_LINE_STOP returned %d\n", ret);
+ 
+ 			ret = -EIO;
+@@ -376,7 +376,7 @@ static ssize_t adsl_state_store(struct device *dev,
+ 	if (!strcmp(str_cmd, "start") || !strcmp(str_cmd, "restart")) {
+ 		ret = cxacru_cm(instance, CM_REQUEST_CHIP_ADSL_LINE_START, NULL, 0, NULL, 0);
+ 		if (ret < 0) {
+-			atm_err(instance->usbatm, "change adsl state:"
++			usb_err(instance->usbatm, "change adsl state:"
+ 				" CHIP_ADSL_LINE_START returned %d\n", ret);
+ 
+ 			ret = -EIO;
+@@ -481,7 +481,7 @@ static ssize_t adsl_config_store(struct device *dev,
+ 			ret = cxacru_cm(instance, CM_REQUEST_CARD_DATA_SET,
+ 				(u8 *) data, 4 + num * 8, NULL, 0);
+ 			if (ret < 0) {
+-				atm_err(instance->usbatm,
++				usb_err(instance->usbatm,
+ 					"set card data returned %d\n", ret);
+ 				return -EIO;
+ 			}
+@@ -490,7 +490,7 @@ static ssize_t adsl_config_store(struct device *dev,
+ 				snprintf(log + tmp*12, 13, " %02x=%08x",
+ 					le32_to_cpu(data[tmp * 2 + 1]),
+ 					le32_to_cpu(data[tmp * 2 + 2]));
+-			atm_info(instance->usbatm, "config%s\n", log);
++			usb_info(instance->usbatm, "config%s\n", log);
+ 			num = 0;
+ 		}
+ 	}
+@@ -827,6 +827,12 @@ static void cxacru_poll_status(struct work_struct *work)
+ 	int keep_polling = 1;
+ 	int ret;
+ 
++	/* adsl_state_store() calls this directly, before the heavy-init thread
++	 * has set up atm_dev; bail out rather than dereference NULL below.
++	 */
++	if (!atm_dev)
++		return;
++
+ 	ret = cxacru_cm_get_array(instance, CM_REQUEST_CARD_INFO_GET, buf, CXINF_MAX);
+ 	if (ret < 0) {
+ 		if (ret != -ESHUTDOWN)
+-- 
+2.43.0
+
