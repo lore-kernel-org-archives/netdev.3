@@ -1,73 +1,75 @@
-Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
+Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97B0C5505E5
-	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 14:04:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.122
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4628E54CF50
+	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 14:04:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788876250; cv=none; b=cuKVEarGM19KfDllJekBMYmp2I0PGcoM0NBz1nqc8OGn4pYrXp3ZwheHZANofuOfXWrp/bXzwDb2S2+GBCLkAjesN5NWfNAR4Kh9t1NIIU6sp7aJEeImj+MoatnNI9PccTqZwm3z1uyIe0NPvAJppyYHDA44dXTLLLijsmDzz0o=
+	t=1788876251; cv=none; b=Qh9owqBBQMumwJEHZCzYpWU/HCQHMBPmGpkrueuPzkkE8ICLBJN9vXkiFvUoSSqAVbD20ms4NOFg6GzJ2iQzXzLUBG3iPfRDbk98zd/fzKZgruP2M8+1tdWWXqHoGhh7dARs1XRrE+Lw1R/6zwlMv8IrXKytUwZyV8pORkIy17c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788876250; c=relaxed/simple;
-	bh=/hf+JaN80kkUeIvT9savcMWGneOYjndNEDsyR1nSTpY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Y5a/VjgiYTewKxBmwElNxtSBt67pFiz+EgavOJlx30pMxjO7XWu1bmDSm7xqLg1079huy+P8/gkvQE2mlZrmV2eV17lCrlyf/ysiUiYxmMSEj8V4VgxAttXqzpHgupZ+26k/SgSmogdXivBOwnwgPwcIgVXCgDDj/MOhtWGzwJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b=MpAwRV9j; arc=none smtp.client-ip=185.125.188.122
+	s=arc-20240116; t=1788876251; c=relaxed/simple;
+	bh=o8OJDUsi1EblG4IemLkpTLGA2t32bXV44ss9aRsOqrY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=qB7+4M7goYGxddjYGIdlGepBo5OgVhO5k3jIpOkhiLM+kGGWXrgopPaw2+MH/Bh6I6wS63gvmXISNOGE4do/QohBkWTOKQutfmsPuL52WASqPXMIr3VhmfoHVuvLWhFbf5czy3puWEC17n0G/UTSZyt5RAGG0JQG/YluDNrtaxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b=EsK1dTB3; arc=none smtp.client-ip=185.125.188.123
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b="MpAwRV9j"
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com [209.85.218.70])
+	dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b="EsK1dTB3"
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com [209.85.218.69])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 09BC43F4E7
-	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 14:03:52 +0000 (UTC)
+	by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 5C2EF3F601
+	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 14:03:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20251003; t=1788876232;
-	bh=SXIMe4oMHTuXDpcB4oft04tFKxq0tl8ji9Vspwz0rd0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version;
-	b=MpAwRV9jc9+EBdHYjU7mVVJ6N6GJOuwhNGOW200+1i7B7l+Z0F4kbVRuT+lZG6VgF
-	 293qVLsq3LqkkNJqbbsrrx2ULr3E2NvOv/Tw+5CrB+zDROoSJUXsx/WEulgjf27YuO
-	 YGM8MA7iiw0+somTIIqPuDvoSvO/XlTPeBZ0V2MYsB5r4Y7iwhWf5L31ltzbsZ7Cmu
-	 8OHyzh+UnQq8b7ukv0GDJsEc7cUNJZPpnApAA+UckCAmFIgOThNfRXJ7X39FbPxpRZ
-	 QKjr5Y8TGrwcvSzWSDRe9827g0yS/u+QfasxlUoucjxZWDt7/FB+HCI1GVKIMKv4ag
-	 FCSxcrDqYq1TzC7RBguYpVHfkARKEYPO+nVUPOBDtbX/7LVP32F0IHOY9ACfZceV5C
-	 qJkpgOLdN0ME1BvkqJiCHJnNUcrOYaehiNLN0EFFfBRBC+PKIRd+uqwVyuhXAZjqSN
-	 Bw4ps7vjZJoMJG+1LG+S7qA5U/WtBTUhSkCILaVPE+dnkPe4Llyffet4k7TwoyshTU
-	 53SRRnOO0aIu4VRQTgarMdWyXLZOqLJN2OCNgEq66uFatN0O1u+ggq97a/Ahf4KVMo
-	 oH6Q0iTPXgy2VH/RJtTET3wg5gvQiSaqjjw65uGajtwbtO8UmsNnm3FTj+71askfkr
-	 xoiNku/T8+ZeS8tIsQMxbYSQ=
-Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-c1c232fa136so591238666b.0
-        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 07:03:52 -0700 (PDT)
+	s=20251003; t=1788876236;
+	bh=widqTYp4xzFs2TnDgQ6LHpL+FeDKARGSWMUbVfZCj5g=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version;
+	b=EsK1dTB331kJ0nIWoKytpCmZCJYOzFY9znTHubt/bCDtFJ+E7l4mExKKspnm3pRZy
+	 dCYchISt1xgleMUgwnufT9D8Er3c4rido+APkLQRNmr2sHDGfamulyx3FB2o3tD7Za
+	 eKnM1iUK8kEuKvqMKwLlIRBZySGQfsEOlzgbG4a5Q2ruhUJWdsiiWFj+GEdxodQMpb
+	 wpkcKObGXNRKADKpJZmaAKAGNejXpLEsnx35dP91/2cAO0dkDsntJqmGqj7T33bWAd
+	 l30GsHeK5wUwlhRyzjmhuxbVoNiDeEkSWFAFvtX6k6kvMQaIdK/kp8+DiKJmXiJ/UF
+	 /eJLIX2OyrfFitzHpThNZSEaCta+I/X5Nmtu+mwZxTsEl9QSsWivaTkrrnG6ivcnXj
+	 GqixaMW8kv0aNkAeWwibihEfk4uLRQDJ/V/kx4hFx2DBRJjd5EcD9hOHEEoqOCf7EB
+	 hyMr3hGmtdi/ryHSbv2lBWvJPEtZyS7QFlgTDljL4t6mt7TGt2WEmjPotXzECE2zyk
+	 hEvlBC7pDJ7EweRMSuwem1K+OUBqD/elV6D0xYVO979WrPboedEBMtDB6nL3lruHuY
+	 8TFp2RF8bT3arfw+NFbgdBu/rgURgRxETTeh1VqlqR+UZLpc/fVCpZBz4FVnLcr0j3
+	 ZodoeRqxKdB1MpWqvzjTwzJ4=
+Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-c2531b5afe6so566615866b.1
+        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 07:03:56 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788876231; x=1789481031;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=SXIMe4oMHTuXDpcB4oft04tFKxq0tl8ji9Vspwz0rd0=;
-        b=PJjmm9pe73zaiwPnQ+67syE3ZqcklbeQaM4lZRjSV3nNDvlZoRktn/yyCyLmWQPCvY
-         J5Ss6VIWnLB6YXI/Ecf5x2q06Nt8m8d4Qv2VFWvlJdOvSWLRAf/tAWkgUa/88eWADhLZ
-         vAPsxXFSPFieJOC49U+8dVQBH/EZEV1+YlP4HHPJMBUPhwSaHNHeAYysQt4CVBeqe8nu
-         ZV1jUrg0PPW3tNbFmwpozpmg6arqkPzBMWaP7EjTnq/GBjn+JQo39PNMRpL6+Iip/u+1
-         JU0RX660qinIG1gymLs+y5k95XYbuFdBayiixzhUHxBzQOGG2bfDLCpZgZ1YT6BuhiEU
-         e6yg==
-X-Gm-Message-State: AFuF++nBHRqmIaIEk0farHZYTC1eRmuSXOQaF8edJlhNj/mbEHGzGgE4
-	viXvfowcJfqh+mH0JgXk0/WvYzaede2stuOY5AUVseEoxYrt5lSAy6S4q3CqyCLy446j876KyZl
-	PTW6PsCm5xAdggIFnkgGN1fnZ4AWWkBoQmMfWtW+8bzzQLBNoAjkfNydBpFN9O2l4sgn9xvuifw
+        d=1e100.net; s=20251104; t=1788876236; x=1789481036;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=widqTYp4xzFs2TnDgQ6LHpL+FeDKARGSWMUbVfZCj5g=;
+        b=CCKgMPCoOGvidmXaRMLb5X7E3jFL2CVZ7rDgiD+QidVhhsJp22/0uYPOWCCtKerkS8
+         ZLBRHSH0FmU9rZ/i9Z7b1ntswfWLbeRXPf8mIPRSFYq2uMxnzhEoyooXJ30r+AK0Sp0k
+         Ur3Gf10ZXCsG8J7n53VBBxERw15AMBLzAypEYr6QlQyme2au5ZaHeveX5GxDk+na/paq
+         D1+uxiL3Avz2zAI4REf7vMKOO7Ses+LKkYq6V6/UweJMZNMOQz49lAAF7beVbQgdLQ2B
+         wR2N99/VxjCZErh9zXNWV26FBqn1tT+amnfKFT88R0tLCytXX/XjOjMeFLH0SZFWjoro
+         AxIQ==
+X-Gm-Message-State: AFuF++kenIPN7BfdatXGmdHF0EPIVqAUK4HEL30ZiSsUxgzF6iq64MCE
+	NZ15Jkpl2Um9mdpvJdX7FU1nOfGkZBhc5Y6pgpYbeGaDvR3HYqr3glutKHmWI/pfriGaOVrJosm
+	iZ25hT6Fc4j9IQsap7kQzx1k+qpLmrK9tC63LE5lDdkOsHY7tcIY3H5uokGSve+10KK+/Lma5ww
 	==
-X-Gm-Gg: AYBFou0u4emmKg3d6h6R/wVOqmKopC/O5HgppGhSRETWur3ZB2yCCFh8Q13xGERl4T3
-	xGgxfd19q+AUGl7ZmA3SjB/OYL1OqqATo2f5GFJ70zvpKyctD49mYrqpuWcWnoo9XA16mzHnC3K
-	ktCUPWFddQ6tzEzOo3k/sVR4gBHz0JC9RT9TkzMxihYnSBMDePjqE2DLIaQnVr0hG+sBJBn+clJ
-	PEQ7p0Ryj/TTUcuVBF0QcyxO9XlbAL9jOkTeygvrytcys5inLH0qyCqKpCadB1WuZBDP4XhnubT
-	aaY0l7pmluuprh/cQkpP1pN+rxEXnRN4yQ97BIiwNbYJVz9XBD6c68sEU8hV0gh5qBkXFyRIkco
-	IeAXeEufVXPbbJa8V3uZNEmFHgsRNZePE51bgUFoCnFcTsXL1utUL3NIxyHEMBkUkog==
-X-Received: by 2002:a17:907:c48b:b0:c25:f7dc:2dd with SMTP id a640c23a62f3a-c25f7dc091fmr1249500466b.30.1788876231440;
-        Tue, 08 Sep 2026 07:03:51 -0700 (PDT)
-X-Received: by 2002:a17:907:c48b:b0:c25:f7dc:2dd with SMTP id a640c23a62f3a-c25f7dc091fmr1249496266b.30.1788876230905;
-        Tue, 08 Sep 2026 07:03:50 -0700 (PDT)
+X-Gm-Gg: AYBFou1duF13gn0NlxDkcthDheXAglzAhUVk3gX75kSTV2cszVcTq9O7apNhfkj2HjU
+	eYUHCMYMduWH0U6keXf+RUMLXYyJjdJDnIqx1xlMwVu44bfIZd2tvyszlOf9Vgp7W9RJ9NjPOjl
+	JlZzKSsIvH7lC1rsUXBcb0cX99vq/VFEnorock15AZDb3NdIhU4yLhDB0N1dQBqPZ8jmFqryzLC
+	mKlIlfTXxTw9q6gUQYxmYMG5wvV3NWpmYYT0xmrX9DtLf4PsyUmE/+PEGbGx9MWYk8m/cvm/pYv
+	6FhhB8HHuI5cTy9tJLW3W3QnZhPSNCjyTcC7MixPyYu5gcv8fGi7DMZaXz2tCSYF+rlC3jyN+d3
+	XMlTAV3cYqMDe97TnKJMzwqrq7CaWuuZN+Rtt61+aqeqtS7B9+Fwp3yapM0/NCMatyQ==
+X-Received: by 2002:a17:907:9288:b0:c25:3e36:acc8 with SMTP id a640c23a62f3a-c25efbe1685mr1400565266b.4.1788876235919;
+        Tue, 08 Sep 2026 07:03:55 -0700 (PDT)
+X-Received: by 2002:a17:907:9288:b0:c25:3e36:acc8 with SMTP id a640c23a62f3a-c25efbe1685mr1400562466b.4.1788876235454;
+        Tue, 08 Sep 2026 07:03:55 -0700 (PDT)
 Received: from localhost ([154.62.191.154])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c260d5768c2sm616647866b.39.2026.09.08.07.03.48
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2622a7c677sm522959766b.9.2026.09.08.07.03.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Sep 2026 07:03:49 -0700 (PDT)
+        Tue, 08 Sep 2026 07:03:53 -0700 (PDT)
 From: Andrei Gherzan <andrei.gherzan@canonical.com>
 To: Jakub Kicinski <kuba@kernel.org>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
@@ -82,10 +84,12 @@ Cc: netdev@vger.kernel.org,
 	Kleber Sacilotto de Souza <kleber.souza@canonical.com>,
 	Hangbin Liu <liuhangbin@gmail.com>,
 	Andrei Gherzan <andrei.gherzan@canonical.com>
-Subject: [PATCH net 0/2] netdevsim: fix IPsec debugfs byte order
-Date: Tue,  8 Sep 2026 15:03:23 +0100
-Message-ID: <20260908140325.13367-1-andrei.gherzan@canonical.com>
+Subject: [PATCH net 1/2] netdevsim: print IPsec salt/key in network byte order
+Date: Tue,  8 Sep 2026 15:03:24 +0100
+Message-ID: <20260908140325.13367-2-andrei.gherzan@canonical.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260908140325.13367-1-andrei.gherzan@canonical.com>
+References: <20260908140325.13367-1-andrei.gherzan@canonical.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -94,48 +98,89 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The netdevsim IPsec debugfs file (used by selftests/net/rtnetlink.sh's
-ipsec_offload subtest) prints the SA salt and key in host CPU byte
-order instead of network byte order, because nsim_sa.key[]/salt are
-typed as plain u32 and printed directly with "%08x". This makes the
-reported values differ between little-endian and big-endian hosts for
-the same underlying key material, and breaks the selftest on
+nsim_sa.key[] and nsim_sa.salt hold raw key material in network byte
+order, but are typed as plain u32 and printed with "%08x" in the
+debugfs read handler. This prints host-endian, so output differs
+between little- and big-endian hosts for the same key:
+
+  little-endian: salt=0x61626364 key=0x34333231 38373635 32313039 36353433
+  big-endian:    salt=0x64636261 key=0x31323334 35363738 39303132 33343536
+
+This breaks selftests/net/rtnetlink.sh's ipsec_offload subtest on
 big-endian (e.g. s390x), which hardcodes the little-endian output.
 
-A driver-side fix was proposed in 2022 but stalled in review: keeping
-the fields as plain u32 meant sparse could not validate the added
-ntohl()/be32_to_cpu() conversions.
+Retype key[]/salt to __be32, matching ipaddr[], and convert with
+be32_to_cpu() before printing. Output is now network-order on every
+host, independent of endianness.
 
-  https://lore.kernel.org/netdev/20220308135106.890270-1-kleber.souza@canonical.com/
+A similar fix was proposed in 2022 but kept the u32 typing, so sparse
+couldn't validate the added ntohl() calls and it stalled in review.
+Retyping first avoids that problem. `make C=2` on netdevsim reports
+the same zero warnings as before this change.
 
-This series:
+Selftest update follows in the next patch.
 
-  1/2 retypes nsim_sa.key[]/salt to __be32 (matching the existing
-      __be32 ipaddr[] field) and converts with be32_to_cpu() before
-      printing, so the debugfs output is now network-order on every
-      host, independent of endianness.
+Fixes: 7699353da875 ("netdevsim: add ipsec offload testing")
+Reported-by: Kleber Sacilotto de Souza <kleber.souza@canonical.com>
+Link: https://lore.kernel.org/netdev/20220308135106.890270-1-kleber.souza@canonical.com/
+Signed-off-by: Andrei Gherzan <andrei.gherzan@canonical.com>
+---
+ drivers/net/netdevsim/ipsec.c     | 10 +++++-----
+ drivers/net/netdevsim/netdevsim.h |  4 ++--
+ 2 files changed, 7 insertions(+), 7 deletions(-)
 
-  2/2 updates the selftest's expected output to match the new,
-      endianness-independent values. It depends on 1/2: applied on
-      its own it would regress little-endian hosts (though it happens
-      to have no effect on big-endian hosts, whose old host-order
-      output already matched the new expected values).
-
-Tested on real booted kernels, both patches applied:
-  - x86_64 (little-endian): PASS: ipsec_offload
-  - s390x (big-endian):     PASS: ipsec_offload
-
-checkpatch.pl --strict and sparse (make C=2) are clean on both patches.
-
-Andrei Gherzan (2):
-  netdevsim: print IPsec salt/key in network byte order
-  selftests: rtnetlink: update ipsec_offload expected output
-
- drivers/net/netdevsim/ipsec.c            | 10 +++++-----
- drivers/net/netdevsim/netdevsim.h        |  4 ++--
- tools/testing/selftests/net/rtnetlink.sh |  8 ++++----
- 3 files changed, 11 insertions(+), 11 deletions(-)
-
+diff --git a/drivers/net/netdevsim/ipsec.c b/drivers/net/netdevsim/ipsec.c
+index 36a1be4923d61..5722837bcda36 100644
+--- a/drivers/net/netdevsim/ipsec.c
++++ b/drivers/net/netdevsim/ipsec.c
+@@ -50,11 +50,11 @@ static ssize_t nsim_dbg_netdev_ops_read(struct file *filp,
+ 		p += scnprintf(p, bufsize - (p - buf),
+ 			       "sa[%i]    spi=0x%08x proto=0x%x salt=0x%08x crypt=%d\n",
+ 			       i, be32_to_cpu(sap->xs->id.spi),
+-			       sap->xs->id.proto, sap->salt, sap->crypt);
++			       sap->xs->id.proto, be32_to_cpu(sap->salt), sap->crypt);
+ 		p += scnprintf(p, bufsize - (p - buf),
+ 			       "sa[%i]    key=0x%08x %08x %08x %08x\n",
+-			       i, sap->key[0], sap->key[1],
+-			       sap->key[2], sap->key[3]);
++			       i, be32_to_cpu(sap->key[0]), be32_to_cpu(sap->key[1]),
++			       be32_to_cpu(sap->key[2]), be32_to_cpu(sap->key[3]));
+ 	}
+ 
+ 	len = simple_read_from_buffer(buffer, count, ppos, buf, p - buf);
+@@ -87,7 +87,7 @@ static int nsim_ipsec_find_empty_idx(struct nsim_ipsec *ipsec)
+ 
+ static int nsim_ipsec_parse_proto_keys(struct net_device *dev,
+ 				       struct xfrm_state *xs,
+-				       u32 *mykey, u32 *mysalt)
++				       __be32 *mykey, __be32 *mysalt)
+ {
+ 	const char aes_gcm_name[] = "rfc4106(gcm(aes))";
+ 	unsigned char *key_data;
+@@ -117,7 +117,7 @@ static int nsim_ipsec_parse_proto_keys(struct net_device *dev,
+ 
+ 	/* 160 accounts for 16 byte key and 4 byte salt */
+ 	if (key_len > NSIM_IPSEC_AUTH_BITS) {
+-		*mysalt = ((u32 *)key_data)[4];
++		*mysalt = ((__be32 *)key_data)[4];
+ 	} else if (key_len == NSIM_IPSEC_AUTH_BITS) {
+ 		*mysalt = 0;
+ 	} else {
+diff --git a/drivers/net/netdevsim/netdevsim.h b/drivers/net/netdevsim/netdevsim.h
+index 55aec41237b9b..a82a685384e6d 100644
+--- a/drivers/net/netdevsim/netdevsim.h
++++ b/drivers/net/netdevsim/netdevsim.h
+@@ -42,8 +42,8 @@
+ struct nsim_sa {
+ 	struct xfrm_state *xs;
+ 	__be32 ipaddr[4];
+-	u32 key[4];
+-	u32 salt;
++	__be32 key[4];
++	__be32 salt;
+ 	bool used;
+ 	bool crypt;
+ 	bool rx;
 -- 
 2.43.0
 
