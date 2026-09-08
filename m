@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E4B34B0496
-	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 22:49:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4929F59D625
+	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 22:49:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788907748; cv=none; b=IKJ9UETEGWlO5a2OPhJhcpIIz5xRvCTcJPUcQ7SNR3h8oGc1c7zeJqvKw4O6PqfRtC8bL+ZUjsZtQ1opUOFiSTsVhrcH1bYQ6Fxtw+kOsCvSPN5IjBaMVDs81W+Nkl3bFtREeHvUVnPkBuRxrodAllUZwWS4ddhnW8ndGJj1WY8=
+	t=1788907750; cv=none; b=Ikvv2yIY9MMUfj+wW5f/avPu0Qh4jj7N9mKPFvZvXl+eRP8v/B+K3FfePIPSnXCSHICL3tmpFj0PoHova0jxYHgWw6m5rpvl811vSPwxg5iMcpMC7T0FR/+k2TRWyvO2AFdKgZzq955CFEgQCLRrGacOpTx1qMbIvwuodzB/fIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788907748; c=relaxed/simple;
-	bh=jL+aQOqgHPCDRYvDxQ2LfO6RNt+ndVGH78i7XzchLD0=;
+	s=arc-20240116; t=1788907750; c=relaxed/simple;
+	bh=7AMJfBhCWUs0PJPMngZINcs681MAZ7tdcrpycdoNJ2k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CVm5m9lbwa76rvydWR8YwU6IRa8319w2Pv7G8pw7kPCFpGHSQ0KrzHVSecn+s1cDTon3+mYiTK1X3m29W6w2beDeI/In3yEFZiKdiTBxUffDoyjNMLHdB6QWVyf6NVAa3G7i6ahHgsXKf3qve56sDb9Th0FD7rpSQzE8nfjNVLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R5z0Sjxp; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=My9yznvaRTkq8qHjAwDz1EKHPAjRjZsjN8MGT+xs1KWDlfmaSOcqYHRSZwjUZb+XiM5Ak66jSm9lB5rzw1AZ9ZBARC0imcesMihsqKvOShOnx/9gEjWdzfn1xf8B2u5QmLTPc4t9q0MeA80rrvYXYBfRqSIZ8Bx0v34J1CCm960=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gvYtSHus; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R5z0Sjxp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B4261F00A3E;
-	Tue,  8 Sep 2026 22:48:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gvYtSHus"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B196E1F00ADB;
+	Tue,  8 Sep 2026 22:49:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788907736;
-	bh=9VYPeGD/e4GRNiwluAz8JywV2SAWKYvx4UzVTD1hpSI=;
+	s=k20260515; t=1788907742;
+	bh=+L+nPtt7tbUsJ52z6dbQ6ZjHQXA5H/cCKKJXfBSrQDM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=R5z0SjxpzjgU4Wg8Nr+8m4KmIGMPPHeMHaFC2fWS4/z+DsRXUSlEBQgkINJAd0oBR
-	 mw0jWkXC9Eav7R8gDJQEj7YuDLeZRxLKUxiBJOidkxq/DHtJr05Xjla0nxSVEh0Y/t
-	 +5A1+sJ5KzfmUbz1JheTPgw0W7nKMTppNFTVIKuBmq5IwWyhrGfG4FN/+DsoG7gsJK
-	 A7VGaHyHYnnBZwuz8uA6LEdz2foV9cTj3X0+P9VVaUzEIaaMRBoDjo+M3e7znqnlnx
-	 v0yCN0KLKlbL/3v0XIgZXv6/ZVMXVibggYVGNQpYeH4Xz0LBWLlObpdGqGdoBlt3n7
-	 7JCxBAJUirkQg==
+	b=gvYtSHusnT7u8fHFzoi3+ddZPs42hSBlsHrWkHOpJ/ql27ahKWh7MstMBiIbuALcU
+	 n2vRWNwhznhDWUol1rKV9Lbv36dGSqpNP9udNH7HmCswPqXchTeunuKhBkCf/6CPn+
+	 9e2QZF+I0JkqgWi/dJMLvCMEuGK7U1oSBWD3grqqbjdpOXBgqJxCzvgeFRGMn2dS8m
+	 AL/DZnvonOyczYaS2DMX99PUPGX0VgjdQ8UsW06jCC9FUYkDZ0NdBPZKz+m7HqPVyL
+	 flCdHaDpNXTxxXcy92DkEdD/4G+oVlll7LyCzXv1aCEYpyZOdPFCidZTujD5IWduK0
+	 NsBYkzkkbS2Wg==
 From: Jakub Kicinski <kuba@kernel.org>
 To: steffen.klassert@secunet.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
 	davem@davemloft.net,
 	herbert@gondor.apana.org.au,
 	netdev@vger.kernel.org
-Subject: Re: [PATCH 04/12] xfrm: iptfs: fix runt reassembly panic from short inner tot_len
-Date: Tue,  8 Sep 2026 15:48:55 -0700
-Message-ID: <20260908224855.1591147-1-kuba@kernel.org>
+Subject: Re: [PATCH 10/12] xfrm: hold net_device reference under RCU in bundle creation
+Date: Tue,  8 Sep 2026 15:49:01 -0700
+Message-ID: <20260908224901.1591334-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260907093020.2228346-5-steffen.klassert@secunet.com>
-References: <20260907093020.2228346-5-steffen.klassert@secunet.com>
+In-Reply-To: <20260907093020.2228346-11-steffen.klassert@secunet.com>
+References: <20260907093020.2228346-11-steffen.klassert@secunet.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,183 +49,89 @@ Content-Transfer-Encoding: 8bit
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
-xfrm: iptfs: fix runt reassembly panic from short inner tot_len
+xfrm: hold net_device reference under RCU in bundle creation
 
-This tightens the runt continuation path in iptfs_reassem_cont() so the
-declared inner IP length must cover at least the IP header size before the
-in-progress reassembly skb is allocated, replacing the old check against
-sizeof(xtfs->ra_runt). A few questions below on how completely this matches
-the in-place validation, plus two pre-existing observations in the same
-function.
+This converts the dst->dev reads in xfrm_bundle_create() and
+xfrm_create_dummy_bundle() to dst_dev_rcu() and keeps the RCU read-side
+critical section open until xfrm_fill_dst() has taken the device
+references, closing a use-after-free when a concurrent RTM_DELLINK runs
+dst_dev_put().
 
-> diff --git a/net/xfrm/xfrm_iptfs.c b/net/xfrm/xfrm_iptfs.c
-> index 2ce15c472cc4d..6920940a35b49 100644
-> --- a/net/xfrm/xfrm_iptfs.c
-> +++ b/net/xfrm/xfrm_iptfs.c
-> @@ -828,8 +828,8 @@ static u32 iptfs_reassem_cont(struct xfrm_iptfs_data *xtfs, u64 seq,
->  		 * allocate an in progress skb
->  		 */
->  		ipremain = __iptfs_iplen(xtfs->ra_runt);
-> -		if (ipremain < sizeof(xtfs->ra_runt)) {
-> -			/* length has to be at least runtsize large */
-> +		if (ipremain < __iptfs_iphlen(xtfs->ra_runt)) {
-> +			/* length has to be at least the IP header size */
+Link: https://lore.kernel.org/all/20260820200245.44312-1-blbllhy@gmail.com/
 
-[Severity: Medium]
-The changelog says this will "Align the runt path with the normal path by
-requiring the declared inner length to cover at least the IP header size."
-Is that alignment complete for IPv4 with options?
-
-__iptfs_iphlen() never looks at iph->ihl:
-
-net/xfrm/xfrm_iptfs.c:__iptfs_iphlen() {
-	if (iph->version == 0x4)
-		return sizeof(*iph);
-	return sizeof(struct ipv6hdr);
-}
-
-The in-place parser uses the declared header length instead:
-
-net/xfrm/xfrm_iptfs.c:__input_process_payload() {
-	...
-	iplen = be16_to_cpu(iph->tot_len);
-	iphlen = iph->ihl << 2;
-	if (iplen < iphlen || iphlen < sizeof(*iph)) {
-		XFRM_INC_STATS(net, LINUX_MIB_XFRMINHDRERROR);
-	...
-}
-
-So a runt-started inner IPv4 packet declaring ihl < 5, or ihl * 4 greater
-than tot_len (for example tot_len 20 with ihl 15), passes the new check,
-gets a 20 byte allocation, is treated as completely reassembled and is
-handed to iptfs_complete_inner_skb() and xfrm_input(), while byte-identical
-input arriving wholly inside one outer payload is rejected with
-LINUX_MIB_XFRMINHDRERROR. Should the runt path also test iph->ihl so the
-two parsers agree on both acceptance and MIB accounting?
-
-As far as I can tell the residual effect is bounded, since ip_rcv_core()
-drops such a packet:
-
-net/ipv4/ip_input.c:ip_rcv_core() {
-	if (iph->ihl < 5 || iph->version != 4)
-		goto inhdr_error;
-	...
-	if (!pskb_may_pull(skb, iph->ihl*4))
-		goto inhdr_error;
-}
-
-The panic class described in the changelog (tot_len in [6, 19] making
-"ipremain -= copylen" underflow) does look closed by this change for the
-runt path.
-
-Also, the kernel-doc on __iptfs_iphlen() says it returns "the IP header
-size based on the IP version", and the new comment here says "length has to
-be at least the IP header size". For IPv4 with options that is the minimum
-header size rather than the header size. Would it be worth rewording either
-the comment or the helper's kernel-doc?
-
->  			XFRM_INC_STATS(xs_net(xtfs->x),
->  				       LINUX_MIB_XFRMINIPTFSERROR);
->  			goto abandon;
-
-Two further observations in this same function, both outside the hunk.
+> diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
+> index 932a313b9460a..513c9f2283347 100644
+> --- a/net/xfrm/xfrm_policy.c
+> +++ b/net/xfrm/xfrm_policy.c
+> @@ -2770,9 +2770,12 @@ static struct dst_entry *xfrm_bundle_create(struct xfrm_policy *policy,
+>  	xdst0->path = dst;
+>  
+>  	err = -ENODEV;
+> -	dev = dst->dev;
+> -	if (!dev)
+> +	rcu_read_lock();
+> +	dev = dst_dev_rcu(dst);
+> +	if (!dev) {
+> +		rcu_read_unlock();
+>  		goto free_dst;
+> +	}
 
 [Severity: High]
-This isn't a bug introduced by this patch, but can the copy fallback later
-in iptfs_reassem_cont() still reach skb_over_panic() on the normal
-(non-runt) path?
+This isn't a bug introduced by this patch, but should the same treatment be
+applied to the other dst->dev reads in this file?  The caller in the reported
+stack trace, xfrm_lookup_with_ifid(), still reads dst_orig->dev twice and
+dereferences it on the nopol path with no rcu_read_lock() held:
 
-net/xfrm/xfrm_iptfs.c:iptfs_reassem_cont() {
-	} else {
-		if (skb_linearize(newskb)) {
-			XFRM_INC_STATS(xs_net(xtfs->x),
-				       LINUX_MIB_XFRMINBUFFERERROR);
-			goto abandon;
-		}
-
-		/* copy fragment data into newskb */
-		if (skb_copy_seq_read(st, data, skb_put(newskb, copylen),
-				      copylen)) {
+net/xfrm/xfrm_policy.c:xfrm_lookup_with_ifid() {
+	...
+nopol:
+	if ((!dst_orig->dev || !(dst_orig->dev->flags & IFF_LOOPBACK)) &&
+	    READ_ONCE(net->xfrm.policy_default[dir]) == XFRM_USERPOLICY_BLOCK) {
+		err = -EPERM;
+		goto error;
+	}
 	...
 }
 
-There is no tailroom check before skb_put(newskb, copylen), and copylen is
-min(min(blkoff, remaining), ipremain), so it is bounded only by the outer
-payload length and the declared inner IP length.
+dst_orig here is a plain route dst that the caller only holds a dst
+reference on, and a dst reference does not pin dst->dev.  The writer side
+publishes the replacement and drops the device reference together:
 
-When the in-progress skb came from the frag-sharing path, its linear head
-is only iphlen plus XFRM_IPTFS_MIN_L2HEADROOM:
-
-net/xfrm/xfrm_iptfs.c:iptfs_pskb_add_frags() {
-	skb = iptfs_alloc_skb(tpl, copy_len, false);
+net/core/dst.c:dst_dev_put() {
+	...
+	rcu_assign_pointer(dst->dev_rcu, blackhole_netdev);
+	netdev_ref_replace(dev, blackhole_netdev, &dst->dev_tracker,
+			   GFP_ATOMIC);
 	...
 }
 
-reached from __input_process_payload():
+The old device is then freed after the synchronize_net() in
+unregister_netdevice_many(), which only waits for readers inside an RCU
+read-side critical section.  If this thread is preempted between the NULL
+test on dst_orig->dev and the dev->flags load, can it read a freed
+net_device the same way xfrm6_fill_dst() did?  The entry path is the one in
+the commit message, udpv6_sendmsg() -> ip6_dst_lookup_flow() ->
+xfrm_lookup_route() -> xfrm_lookup_with_ifid(), reaching nopol when
+DST_NOXFRM is set or policy_count is zero.
 
-			    !(skb = iptfs_pskb_add_frags(first_skb, fragwalk,
-							 data, capturelen,
-							 skbseq, iphlen))) {
+Would dst_dev_rcu() under an rcu_read_lock() be appropriate here as well?
 
-and skb_linearize() only adds about 128 bytes of tailroom:
+There is a second unannotated read of the same __rcu published pointer in
+__xfrm_decode_session():
 
-net/core/skbuff.c:__pskb_pull_tail() {
-	int i, k, eat = (skb->tail + delta) - skb->end;
+net/xfrm/xfrm_policy.c:__xfrm_decode_session() {
 	...
-	if (eat > 0 || skb_cloned(skb)) {
-		if (pskb_expand_head(skb, 0, eat > 0 ? eat + 128 : 0,
-				     GFP_ATOMIC))
-	...
-}
-
-A continuation outer packet that is a plain kmalloc'd linear skb fails the
-sharing precondition (head_frag is 0 and skb->len != skb->data_len), so it
-lands in this fallback. With a roughly 1420 byte reassembly the head ends
-up with a couple of hundred bytes of tailroom, and a continuation carrying
-several hundred bytes more makes skb->tail exceed skb->end, which
-skb_put() turns into skb_over_panic() and BUG(). Would guaranteeing the
-tailroom (pskb_expand_head() or a skb_tailroom() test against ipremain)
-before the skb_put() be appropriate here? This path still appears to be
-present at the tip of the series.
-
-[Severity: Low]
-This is a pre-existing asymmetry rather than something this patch changes,
-but should the runt path also arm the drop timer when it publishes
-xtfs->ra_newskb?
-
-net/xfrm/xfrm_iptfs.c:iptfs_reassem_cont() {
-		newskb = iptfs_alloc_skb(skb, ipremain, false);
-		if (!newskb) {
-			XFRM_INC_STATS(xs_net(xtfs->x), LINUX_MIB_XFRMINERROR);
-			goto abandon;
-		}
-		xtfs->ra_newskb = newskb;
+		if (skb_dst(skb) && skb_dst(skb)->dev)
+			oif = skb_dst(skb)->dev->ifindex;
 	...
 }
 
-The reassembly-start site in __input_process_payload() does arm it:
+This bypasses the skb_dst_dev_rcu()/dst_dev_rcu() accessor contract and its
+RCU coverage depends entirely on the caller.  Is that read guaranteed to run
+inside an RCU read-side critical section on every path into
+__xfrm_decode_session()?
 
-			xtfs->ra_newskb = skb;
-			xtfs->ra_wantseq = seq + 1;
-			if (!hrtimer_is_queued(&xtfs->drop_timer)) {
-				hrtimer_start(&xtfs->drop_timer,
-					      xtfs->drop_time_ns,
-					      IPTFS_HRTIMER_MODE);
-			}
-
-So a reassembly started from the runt path has no expiry, and if the peer
-never sends the next sequence the skb (sized by the declared inner length,
-up to about 64KB) stays pinned on the SA until another packet arrives or
-the state goes away. The memory is reclaimed at teardown:
-
-net/xfrm/xfrm_iptfs.c:iptfs_destroy_state() {
-	hrtimer_cancel(&xtfs->drop_timer);
-
-	if (xtfs->ra_newskb)
-		kfree_skb(xtfs->ra_newskb);
-	...
-}
-
-so this looks like retention past the intended drop time rather than a
-leak. The publication itself is serialized, since iptfs_input_ordered()
-holds xtfs->drop_lock across the iptfs_reassem_cont() call.
+For what it is worth, the dst->dev read in xfrm_bundle_ok() looks fine: the
+dst there is an xfrm_dst whose ->dev holds its own tracked reference taken
+by xfrm4_fill_dst()/xfrm6_fill_dst() via netdev_hold(), so it cannot be
+freed while that xfrm dst is alive.
