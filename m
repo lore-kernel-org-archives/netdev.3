@@ -1,107 +1,120 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44834530DF8
-	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 21:48:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A91748F03E
+	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 22:24:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788904101; cv=none; b=jazx4wpVhMz0vkI/subRLw+4lqwCBMU2lFUBODc6xLwS6T44RO6B3CGL4CrtXqbGUDGuaDxCgKmr29LY5xJxGe4LB461RNFkGIjS26lTOXNGo/GogF4H/abkzt5CUHgpltZDc6zWbY8z0OXWk7FIfWy1UNGLqOTYpi2n0zBK6Bc=
+	t=1788906280; cv=none; b=GiYOP6YbMne5CxPD1vQFibb45u5kockBcOhjoeNTfipSwQB5/tzKTZshrJ63/1Ccil7QQnF3ibil9idxHFRMo+5LICMUEuAOC0EDbX5lClZbxPdHYQ0TlhxA+iMCd77ngmcEp7NdiGWh353LutBfPLwlOlo6fRq8sfL7FAmkQvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788904101; c=relaxed/simple;
-	bh=VVpdyqkViBP2JD+DjR5sCsYQ8pHYay0ZPhjhfyNtQLg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QRpQCp1oYoabAIrhnfRRomVqJ3sv23yn+rVVtQ+MoXIbgkNVhTd7qhj1UDsvKh8XaqfipG7Vkv30U4pdKHk/ZBieTygsi5oCc2FF2c+U9DHe7dRYd/fHtfjZm0lo1wP9FpyqjePClUlMmzPhawlWx4UDZLLrzXD/OZM/ScZ0jxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PZhpShxe; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788906280; c=relaxed/simple;
+	bh=YW32eYhsbVhBNMr4BPJWiGP/2hveBWDbi/l2t0WKqus=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MXDIAmK0RoWmdsZrrO7dBEY0MX6IJEgxADtZOa5Y/Ydnp/xZx83n9rOUkMl87X5Qdr6y5+yeqvSSunPMOT/56mKxpQYEc5uwrSSGPe1CCbTIee/zsfiNcXTCfdScWcdjeEkj5dKbwNG1SPOm9mh+VY2wyPnhI4YkCN9rA/Kt4LI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kd0Rki1Q; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PZhpShxe"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCC2B1F00A3D;
-	Tue,  8 Sep 2026 21:48:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788904100;
-	bh=8pKp+anWrtl0kfyiHD7DZKSasgBoZYOdvU6eGBsmhEY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=PZhpShxe3HBnQaNMMKxJHJ4c2M2RgyYE6dzvlPwDRv6jKWmpCu5hRHEawOYkKj+1o
-	 qMkwo0GdRCkk2ZK+cK7mEETVfsQTEnEhPzei/N/7K8E4uRiUX3HrSA3mRjGTSyyN9Z
-	 XpxQXVIkAFB1QD5ZQd0U26Z5/wKgWHsb11e0+7BdutqaJdmzY/UM5xQYkV5HCt2VV5
-	 N6xTfJxS3ufuAw3HJS7Hls/wJds+yjvTO9Xa5frqFkLyYehO5OT+SChS9rQcySgTQx
-	 3BcJNzKI3ECSCYTe6mj8wCEvzpXezMP8UP2gIkIsYePbH402vaGsAlTQQh77bJBgVA
-	 8VAvueJ8wG6Hw==
-Date: Tue, 8 Sep 2026 14:48:19 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: edumazet@google.com, netdev@vger.kernel.org, davem@davemloft.net,
- pabeni@redhat.com, horms@kernel.org, andrew+netdev@lunn.ch, Willem de
- Bruijn <willemb@google.com>
-Subject: Re: [PATCH net-next v8 1/6] net: rtnetlink: add
- pacing_offload_horizon attribute to net_device
-Message-ID: <20260908144819.16313dd9@kernel.org>
-In-Reply-To: <CAF=yD-JSieHiaWVD9OWnFNiDaM2Y9r52S5cn=aFYYXT=DT0wmQ@mail.gmail.com>
-References: <20260902181747.2483351-1-willemdebruijn.kernel@gmail.com>
-	<20260902181747.2483351-2-willemdebruijn.kernel@gmail.com>
-	<20260904160106.08acccb5@kernel.org>
-	<willemdebruijn.kernel.173115664f973@gmail.com>
-	<20260907161258.2b0b421d@kernel.org>
-	<willemdebruijn.kernel.19b10eb6885cf@gmail.com>
-	<CAF=yD-JSieHiaWVD9OWnFNiDaM2Y9r52S5cn=aFYYXT=DT0wmQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kd0Rki1Q"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1788906279; x=1820442279;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=YW32eYhsbVhBNMr4BPJWiGP/2hveBWDbi/l2t0WKqus=;
+  b=kd0Rki1Q8/i/uvJZwY54LMMtxZ5MRJywOwZ7hxvJNol9ggEGhgcJgglu
+   Q/fBS+LC1BJ14FhU6Y2zjFJmvmpFQt8ER+fOmR+Pza08rbPKmMJ/lgsia
+   SV1dqIFilFU9UAtoGOUy3Y2bCF23/1UrrlO8x5+ZNEwbQnrEDFovbes52
+   BIzheHSyUrR5bp7Mzv5aAC4dBo5SyTAhlMDzKP+sP3Nxff9nfTDXi7p2x
+   1W3wXWvJP4IWhhqz1Wyz9IyFNarQ2fgH2Y0t08Cgu8B6b8TubG6LvA+Se
+   waGN7RyKsnT2jsWQT8KXuhGjcuaewg46uik8kBIgDJ4suZoe4/NDrdemi
+   g==;
+X-CSE-ConnectionGUID: pghn5DQGSneb5tSSox5i1g==
+X-CSE-MsgGUID: WRvqdWD5RpyL66a3k/bObw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11900"; a="89354866"
+X-IronPort-AV: E=Sophos;i="6.25,269,1779174000"; 
+   d="scan'208";a="89354866"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2026 15:24:38 -0700
+X-CSE-ConnectionGUID: kG8qzRjLTyGYZMopIBxV1w==
+X-CSE-MsgGUID: MxjkAGd8Rc+6yXvTYPw8sg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,269,1779174000"; 
+   d="scan'208";a="274660826"
+Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
+  by orviesa003.jf.intel.com with ESMTP; 08 Sep 2026 15:24:38 -0700
+From: Tony Nguyen <anthony.l.nguyen@intel.com>
+To: davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	andrew+netdev@lunn.ch,
+	netdev@vger.kernel.org
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
+	grzegorz.nitka@intel.com,
+	arkadiusz.kubalewski@intel.com,
+	przemyslaw.korba@intel.com,
+	richardcochran@gmail.com
+Subject: [PATCH net-next 0/3][pull request] ice: expose TSPLL state on E825 through dpll subsystem
+Date: Tue,  8 Sep 2026 15:24:23 -0700
+Message-ID: <20260908222428.872254-1-anthony.l.nguyen@intel.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Tue, 8 Sep 2026 16:48:03 -0400 Willem de Bruijn wrote:
-> > > From the name I suspect you mean a feature / ethtool (-k/-K) ?
-> > > That would do, but presumably not as a real low bit within
-> > > dev->features ? I guess it is a datapath feature but somehow
-> > > those bits feel too precious.  
-> >
-> > Makes sense.
-> >
-> > An ethtool -K that does not use dev->features seems like a hack.
+Grzegorz Nitka says:
 
-It's just a way of avoiding netdev_features_t becoming larger than 64b.
-At the uAPI level we have a bitmap so we can express any number of bits.
-But in the kernel dev->features is u64 / ull so if we run out of bits
-the refactor will be rather painful.
+On E825 devices that own the source timer, the TSPLL can lose lock when
+the TCXO or TIME_REF signal is disrupted. This series adds monitoring
+and recovery for that condition, then surfaces the lock status and clock
+source selection through the dpll subsystem. It also fixes the clock_id
+generation for E825 generic DPLL devices so userspace can unambiguously
+map each DPLL device to its owning interface.
 
-Is it really that much worse to add the support for "high feature bits"
-which don't go thru netdev_features_t to ethtool, than sprinkling extra
-one off booleans into already bloated RTM_SETLINK? Not sure.
+Patch 1 adds TSPLL lock monitoring to ice_ptp_periodic_work(). Placing it
+there ensures recovery runs regardless of whether DPLL init succeeded or
+CONFIG_DPLL is enabled. Lock state is cached in pf->ptp.tspll_locked via
+WRITE_ONCE()/READ_ONCE() for consumption by the DPLL worker.
 
-> > Keep the existing ip link attribute and make that settable only to
-> > zero or max_pacing_offload_horizon?  
-> 
-> I've updated to a simple boolean pacing_offload in ip link.
-> Let me know if you had something else specific in mind.
-> 
-> +++ b/Documentation/netlink/specs/rt-link.yaml
-> @@ -1089,6 +1089,10 @@ attribute-sets:
-> +      -
-> +        name: pacing-offload
-> +        type: u8
+Patch 2 registers the TSPLL as a DPLL_TYPE_GENERIC device for E825 owner
+PFs, with a fwnode-backed "time_ref" input pin. The pin state_on_dpll_set
+callback switches the clock source between TIME_REF and TCXO. Lock status
+is read from pf->ptp.tspll_locked; UNLOCKED is reported unconditionally
+when the clock source is TCXO to reflect the free-running oscillator state.
 
-Netlink pads very value to 4B so just make it a u32
+Patch 3 changes the clock_id generation for E825 TX-CLK and TSPLL DPLLs.
+Previously they used the board-level PCIe DSN, which is identical for
+all interfaces sharing the same NAC/quad, so userspace could not tell
+them apart. The new scheme derives the clock_id from the permanent port
+MAC (with a dedicated tag bit distinguishing TSPLL from TX-CLK), while
+other DPLL objects (EEC/PPS and non-E825 paths) keep the board-level
+DSN-derived clock_id.
+---
+IWL: https://lore.kernel.org/all/20260803113507.1858083-1-grzegorz.nitka@intel.com/
 
-> +        doc: Enable EDT pacing offload (0 - disabled, 1 - enabled).
+The following are changes since commit ab217fbb9b2169ce677b09a66558d5c3adcfbb76:
+  Merge branch 'net-sysfs-use-ops-lock-for-speed-and-duplex'
+and are available in the git repository at:
+  git://git.kernel.org/pub/scm/linux/kernel/git/tnguy/next-queue 100GbE
 
-> > > Not sure if we should be clearing user config or rejecting
-> > > the feature change if currently in use.  
-> >
-> > We cannot reject the feature change
+Grzegorz Nitka (3):
+  ice: monitor TSPLL lock from PTP periodic worker
+  ice: add TSPLL DPLL device and TIME_REF pin for E825
+  ice: use per-interface clock_id for E825 generic DPLLs
 
-Feature change means user requesting the feature to be disabled.
+ drivers/net/ethernet/intel/ice/ice_dpll.c  | 493 ++++++++++++++++++---
+ drivers/net/ethernet/intel/ice/ice_dpll.h  |   4 +
+ drivers/net/ethernet/intel/ice/ice_main.c  |   9 +
+ drivers/net/ethernet/intel/ice/ice_ptp.c   |  82 ++++
+ drivers/net/ethernet/intel/ice/ice_ptp.h   |  11 +
+ drivers/net/ethernet/intel/ice/ice_tspll.c | 120 ++++-
+ drivers/net/ethernet/intel/ice/ice_tspll.h |   6 +
+ 7 files changed, 669 insertions(+), 56 deletions(-)
 
-> > if it's a device reset and on re-negotiation the device capability
-> > changed. E.g., from a firmware rollout.  
-> 
-> I added a separate patch that adds a netdevice notifier to FQ.
-> To reset offload_horizon on device feature change if needed.
-> Or any qdisc feature that depends on device state in principle.
+-- 
+2.47.1
 
-I hate both notifiers everywhere and the idea that we have to be able
-to quietly revoke device features "on firmware rollout". It leads to
-unmaintainable code which almost never runs so it's buggy half of the
-time. Whatever.
