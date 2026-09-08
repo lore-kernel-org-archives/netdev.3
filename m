@@ -1,133 +1,209 @@
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F4042525A62
-	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 11:00:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79EFF524AFD
+	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 11:00:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788865236; cv=none; b=ZBZMx9NGUMHe+AKtGFsMOsjmdIB7fZvm2PliNBJIh3P8f/ke0ZFDmQzZfH9eLDvFT+JDd9vLFznQiSfvSFHUpYM2Veunq8OLd/PStNJmTUvQwTmCO4xtzVxD3E4BwAoNIHr5pMoAOGSy7J7QMaEKjxvpF/H7gobc4VF4nP+s5kY=
+	t=1788865257; cv=none; b=rg11tWe6KoTqheEmihJmoFfNU8pSha124zhUs4w2vxB6BlgkpDrvXp7591onvAe9PSgpTqgy7tAbdIjaOqtUWvbNRuYWxVi2br8eduf+RKucQNu/CQHkfAyfwGZCjjDUYxViVK4RRmcr8RIxOUkOY2Nc5Rb8pJuPHolVAeymYRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788865236; c=relaxed/simple;
-	bh=7YonU+3U3Csgg7NVd1AGIrmwK8SsFgirVwtU4hC2YHk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iBs/lHDqC08gA0GdoPcjTruWzJlxkIGBhGSJOPuMHmR0kIJ8Pj3RWMNsgIz4lE+U13AureJpesuuvuaWEkImzBQMn0IquTy5HhM9nI2mcma3XHlQ02XFqa2IpX6TOAoC3As1x8KViM0ueT2ScU6c0spqlH9lw2zQvOW+f1V9Sz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hw52+2Js; arc=none smtp.client-ip=209.85.216.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788865257; c=relaxed/simple;
+	bh=2WYa+70zipbJmwLAYdIgl1t9QXrMVetzHFv8RvSLBN0=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=pBGYmkhNHUOtEDck9qLt9CREzpkHD4sXxzgR0QIlUMrNbRcL8S4/en+vsi5C6Vl43ACUGUmcYVSTay2mngEIR7tot5ftKpPNYbq3PhxvearIQ84OOe0wRVqf5i2xiRWxj3UuUcs8eK9pLu566zx6EpZ4VlMxkdrOAh1Vxmnxyug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lMmGLG5X; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hw52+2Js"
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-383b4a3755fso4215593a91.3
-        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 04:00:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788865234; x=1789470034; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=1LQOiRmCK+7QjsHZ0o37HxXuGfkjXxAF0goXiA50ma4=;
-        b=hw52+2JsO+1UNjgLYqHy1Lt3O63eTH+P6uwOEoHrK/shkV+itUIFZGuSm4oKEFAmkt
-         GyIFL5GhgGAwcAnF4a3FdPJuMMlMqEl93/rzbBpBoDfQHf7wotgkIIKQrJWXoHO1bxbW
-         cVTIzkclE0RzOEI6f3lUKSycSC/gSua7XGZ+IWRaNAn1rjvnVGerxnfoXibljnvxdXWV
-         IaBjn9cflhrxLhj+X2VzvKBDX+kAa+cN2dGpN5oiID+TymDLi2HlVRmMBs0tV5HOkBsg
-         A+NsZ9T+mM9HSDqG69o68xqnhkD7YWHwbgROaeHV+TznHELZ8R7IwsbLN2reqK4RyCWQ
-         qfQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788865234; x=1789470034;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=1LQOiRmCK+7QjsHZ0o37HxXuGfkjXxAF0goXiA50ma4=;
-        b=Vp817NL3wqic36ivyiggde/SjHIeiMyfgQ3JEb6p5Ya0+ZDM+NjngiW2W4Nb5GUVT/
-         XcM1vJVqshaUqLfNyX4Oyg7w5BYp9ou50nV8rHqFckEXPiaKCO7vNevKeVHFAUTItARr
-         y7zMnAoc7EPbuhxrboA/B5W2CGOFtW5uxE5wycmSmFvD1XCHBHH44hM8A4ifpadYBE3H
-         Z0dxyK8+2xzwWytundFMpA98vVDiZojOVQW1NslWDsMOL9jq6/mfGg/71F3V3KMMsBcO
-         t6ilf9PvBW90XjJwPtUJlSHHdE8tp5jlurg/H1DtjFkmWy35bXqexLfJWaate6kBHfpu
-         qxlQ==
-X-Forwarded-Encrypted: i=1; AKwUvByBSmLeD5KklnyhaV7vP0eSAW57epfFFcjxpMbES8gNeFFEmTPJWC4r0OQZ2g6JodAF4wCArxc=@vger.kernel.org
-X-Gm-Message-State: AFuF++lqkuDRMCSQVrJEKInos2ZS0GBNwlVUKLaO5RmJJeFNYRfLUXYq
-	CLvbnWpgLqsFphFUVmXoXbtJaWSiqSjE+PQfdYZUjO6hgSGaKU3+J1M=
-X-Gm-Gg: AYBFou0AoB7fUbxXasxoRGew1FhG3zmBq27kthBKzirYpnAbcMy+91N6UytmRRABAJm
-	2E1oXELUAO0IubVTfOJEobtXg5kx74PRWzZOdeHTJKlJ0mz3woVa+Y6v567uW3878KE5vNj52/T
-	KGottpw1CQ/zWZqnAMnr3HjRtZSltlqmXNLvSvrTbw+Z/qG5CnkmhhBI4PhI51iLKaoQLrY2V+G
-	dbuOkqeTMHO6aJ8y6+4d533il/JlrxjxkI/2UPfaFF6SvKsq93UKfqWzEzHeSeCaBsXGmFkTNx7
-	FyS8YdBpHtB6NuXJXhtWQMVs8p+U6P3fq8Io0zXDzBQMeUBpQk9aWAzvCjZH6tLGmF//sasnEHq
-	5XcO/hZVXTNeLFTcrDV9UMblOODIkblKBvHTepmkRtmmlbZ8TEo97wBZ/qHD7lujLga/d3SGled
-	3W6Eq2uuGqSlxL/Shf0LqiNAekL4rLCxPeX2xlMWCsO2h+N3jG1AMgDcuw5hRP2DNDvN0ZYGEP9
-	P9h8S/FLEyjsGgp
-X-Received: by 2002:a17:90b:440e:b0:380:fead:448d with SMTP id 98e67ed59e1d1-39b261e1011mr40346945a91.13.1788865224500;
-        Tue, 08 Sep 2026 04:00:24 -0700 (PDT)
-Received: from ydg-Zenbook-14-UM3406GA ([2001:2d8:6467:d689:f6ea:9d29:b387:9ed5])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b08cacbb0sm32429842a91.13.2026.09.08.04.00.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Sep 2026 04:00:23 -0700 (PDT)
-From: Donggeun Yoo <donggeunyoo.kernel@gmail.com>
-To: andrew@lunn.ch,
-	hkallweit1@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: linux@armlinux.org.uk,
-	daniel@makrotopia.org,
-	o.rempel@pengutronix.de,
-	netdev@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	donggeunyoo.kernel@gmail.com,
-	stable@vger.kernel.org
-Subject: [PATCH net v3 3/3] net: phy: qca808x: handle the active-high LED polarity mode
-Date: Tue,  8 Sep 2026 19:59:59 +0900
-Message-ID: <20260908105959.70453-4-donggeunyoo.kernel@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260908105959.70453-1-donggeunyoo.kernel@gmail.com>
-References: <20260908105959.70453-1-donggeunyoo.kernel@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lMmGLG5X"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C9121F00A3D;
+	Tue,  8 Sep 2026 11:00:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788865255;
+	bh=1pnczMZRvepZTmBqV77S/5s+cBlfFiVKME0NQnP8GsE=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=lMmGLG5Xb5jcevPgQA8YLXTaNS3zjl1h3M0CFwTcM+DjunFb74g6tc+aT1WUS50r8
+	 Q+kCllRdNZjrlC59jQ52qyCMTcZ+G8OocePJzNS+An+XUPNwOIw4E/1noZx3RBhev8
+	 +TtMzjS7TDsgULrJ+WbKt0UrQ8Remrskt4qT09fwpMekCKxfSIAdbQCTmVn7+jZ0iE
+	 KSGFHpQOoM3mvdR1bUzdli1XSPIUADrMGZ/JBkFc0ffqvcjamo2HaQLb+gNR1asPBv
+	 ZrP1i1yAa5zq1rid+dO5kEbjMEt8WLh7ubCSRwP6mCt7sgA8bnLE6e24D5xx7vN3WY
+	 JOuwyihuMpusg==
+Subject:
+ Re: [PATCH net-next 3/9] ip_tunnel: use WRITE_ONCE in ip_tunnel_encap_setup
+From: netdev-bot+sashiko@kernel.org
+To: edumazet@google.com
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ andrew+netdev@lunn.ch, idosch@nvidia.com, kuniyu@google.com,
+ lorenzo.bianconi@oss.qualcomm.com, iprintercanon@gmail.com,
+ netdev@vger.kernel.org, eric.dumazet@gmail.com
+Date: Tue, 08 Sep 2026 11:00:53 +0000
+Message-ID: <178886525392.219967.1699334103836779845@kernel.org>
+In-Reply-To: <20260907075846.2913645-4-edumazet@google.com>
+References: <20260907075846.2913645-4-edumazet@google.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Commit a274465cc3be ("net: phy: support 'active-high' property for PHY
-LEDs") added PHY_LED_ACTIVE_HIGH and made of_phy_led() set the matching
-bit in the modes mask when a LED node carries the 'active-high' property.
-qca808x was not part of that series.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider:
 
-qca808x_led_polarity_set() only recognizes PHY_LED_ACTIVE_LOW, so
-PHY_LED_ACTIVE_HIGH falls through to the default case and returns -EINVAL.
-of_phy_led() propagates the error, of_phy_leds() drops the LEDs registered
-so far and passes it on, and phy_probe() returns it. A device tree marking
-a QCA808x LED as 'active-high', which leds/common.yaml allows and
-ethernet-phy.yaml references for led@N nodes, thus leaves the mdio device
-unbound, so phy_attach_direct() falls back to the genphy driver and the
-PHY loses its QCA808x-specific configuration.
+Critical: 0 · High: 0 · Medium: 1 (2) · Low: 0
 
-active_low is already false when no polarity mode is requested, which
-programs QCA808X_LED_ACTIVE_HIGH, so the request is already satisfied and
-only the case label is missing.
+- [Medium] The mirror helper ip6_tnl_encap_setup()
+  (net/ipv6/ip6_tunnel.c:1816) is left unconverted, so the exact bug…
 
-Cc: stable@vger.kernel.org
-Fixes: a274465cc3be ("net: phy: support 'active-high' property for PHY LEDs")
-Assisted-by: Claude:claude-fable-5
-Signed-off-by: Donggeun Yoo <donggeunyoo.kernel@gmail.com>
----
- drivers/net/phy/qcom/qca808x.c | 3 +++
- 1 file changed, 3 insertions(+)
+Pre-existing issues:
+- [Medium] ip_tunnel_encap_setup() recomputes t->hlen as 'hlen +
+  t->tun_hlen' (net/ipv4/ip_tunnel.c:504), which disagrees with the…
+- [Medium] The six encap/hlen fields are published as independent
+  WRITE_ONCE() stores with no seqcount, RCU pointer swap or release…
 
-diff --git a/drivers/net/phy/qcom/qca808x.c b/drivers/net/phy/qcom/qca808x.c
-index 8eb51b1a006c..3ba58f14e248 100644
---- a/drivers/net/phy/qcom/qca808x.c
-+++ b/drivers/net/phy/qcom/qca808x.c
-@@ -603,6 +603,9 @@ static int qca808x_led_polarity_set(struct phy_device *phydev, int index,
- 		case PHY_LED_ACTIVE_LOW:
- 			active_low = true;
- 			break;
-+		case PHY_LED_ACTIVE_HIGH:
-+			active_low = false;
-+			break;
- 		default:
- 			return -EINVAL;
- 		}
+--
+
+ip_tunnel: use WRITE_ONCE in ip_tunnel_encap_setup
+
+This converts the encap field and hlen stores in ip_tunnel_encap_setup()
+to WRITE_ONCE() so lockless readers such as fill_info cannot observe torn
+values.  It also drops the memset() of t->encap, which both removed a
+transient all-zero window for readers and stopped leaving t->encap cleared
+when ip_encap_hlen() fails.
+
+No Link: tags present in the commit header.
+
+> diff --git a/net/ipv4/ip_tunnel.c b/net/ipv4/ip_tunnel.c
+> index e6bcf01411d0b..13b5e35e8790b 100644
+> --- a/net/ipv4/ip_tunnel.c
+> +++ b/net/ipv4/ip_tunnel.c
+> @@ -491,19 +491,17 @@ int ip_tunnel_encap_setup(struct ip_tunnel *t,
+>  {
+>  	int hlen;
+>  
+> -	memset(&t->encap, 0, sizeof(t->encap));
+> -
+>  	hlen = ip_encap_hlen(ipencap);
+>  	if (hlen < 0)
+>  		return hlen;
+
+[Severity: Medium]
+Should the IPv6 twin get the same treatment?  ip6_tnl_encap_setup() in
+net/ipv6/ip6_tunnel.c still has the original shape at this commit:
+
+net/ipv6/ip6_tunnel.c:ip6_tnl_encap_setup() {
+	memset(&t->encap, 0, sizeof(t->encap));
+
+	hlen = ip6_encap_hlen(ipencap);
+	if (hlen < 0)
+		return hlen;
+
+	t->encap.type = ipencap->type;
+	t->encap.sport = ipencap->sport;
+	t->encap.dport = ipencap->dport;
+	t->encap.flags = ipencap->flags;
+
+	t->encap_hlen = hlen;
+	t->hlen = t->encap_hlen + t->tun_hlen;
+}
+
+So the "t->encap was left cleared even if ip_encap_hlen() failed" case
+described in the changelog is still reachable for ip6tnl and ip6gre, on
+already configured tunnels:
+
+ip6_tnl_changelink()
+    ip6_tnl_encap_setup(t, &ipencap)   /* t is live */
+        memset(&t->encap, 0, ...)
+        ip6_encap_hlen() returns -EINVAL   /* e.g. fou6 ops not registered,
+                                              or type >= MAX_IPTUN_ENCAP_OPS */
+        return hlen
+
+ip6gre_changelink_common() reaches the same helper the same way.  The
+netlink command fails, but the live tunnel's encapsulation configuration
+has already been wiped.
+
+The plain stores after the memset in ip6_tnl_encap_setup() also leave the
+transient all-zero encap visible to ip6_tnl_fill_info()/ip6gre_fill_info(),
+which run without RTNL since RTM_GETLINK is registered with
+RTNL_FLAG_DOIT_UNLOCKED | RTNL_FLAG_DUMP_UNLOCKED in
+net/core/rtnetlink.c, and to the ip6 xmit path.
+
+>  
+> -	t->encap.type = ipencap->type;
+> -	t->encap.sport = ipencap->sport;
+> -	t->encap.dport = ipencap->dport;
+> -	t->encap.flags = ipencap->flags;
+> +	WRITE_ONCE(t->encap.type, ipencap->type);
+> +	WRITE_ONCE(t->encap.sport, ipencap->sport);
+> +	WRITE_ONCE(t->encap.dport, ipencap->dport);
+> +	WRITE_ONCE(t->encap.flags, ipencap->flags);
+
+[Severity: Medium]
+This is a pre-existing issue, not something this patch introduces, but is
+it worth noting in the changelog that WRITE_ONCE() only removes torn reads
+and does not give readers a coherent snapshot?
+
+encap.type, the field that gates encapsulation, is still published first,
+with no seqcount or RCU pointer swap, so a reader can pair the new type
+with the stale sport/dport/flags or with the stale (smaller) encap_hlen and
+hlen.  The same ordering existed before the patch (with zeroes instead of
+stale values), so nothing gets worse here.
+
+On the transmit side the two reads are separated:
+
+net/ipv6/sit.c:ipip6_tunnel_xmit() {
+	int t_hlen = tunnel->hlen + sizeof(struct iphdr);
+	...
+	max_headroom = LL_RESERVED_SPACE(tdev) + t_hlen;
+	if (skb_headroom(skb) < max_headroom || ...)
+		new_skb = skb_realloc_headroom(skb, max_headroom);
+	...
+	if (ip_tunnel_encap(skb, &tunnel->encap, &protocol, &fl4) < 0) {
+}
+
+The headroom comes from the earlier hlen snapshot while ip_tunnel_encap()
+reads the live tunnel->encap, and fou_build_udp()/__gue_build_header() use
+skb_push().  I could not show that the reserved headroom is actually
+exceeded, since skb_realloc_headroom()/__skb_cow() round expansions up, so
+this part is speculative.
+
+>  
+> -	t->encap_hlen = hlen;
+> -	t->hlen = t->encap_hlen + t->tun_hlen;
+> +	WRITE_ONCE(t->encap_hlen, hlen);
+> +	WRITE_ONCE(t->hlen, hlen + t->tun_hlen);
+
+[Severity: Medium]
+This isn't a bug introduced by this patch, since the formula is unchanged
+(t->encap_hlen + t->tun_hlen before, hlen + t->tun_hlen after), but does
+this hlen formula disagree with the ERSPAN one?
+
+net/ipv4/ip_gre.c:erspan_tunnel_init() {
+	tunnel->hlen = tunnel->tun_hlen + tunnel->encap_hlen +
+		       erspan_hdr_len(tunnel->erspan_ver);
+}
+
+erspan_changelink() reaches this helper on an already initialised device:
+
+erspan_changelink()
+    ipgre_newlink_encap_setup()
+        ip_tunnel_encap_setup()      /* last writer of t->hlen */
+
+ndo_init does not run again on that path, so an
+"ip link set <erspan> type erspan encap ..." command appears to drop
+erspan_hdr_len() (12 bytes for v1, 16 for v2) from t->hlen.
+ip_tunnel_bind_dev() then derives both the MTU and
+
+	dev->needed_headroom = ip_tunnel_limit_headroom(t_hlen + hlen);
+
+from the smaller value, while erspan_xmit() only does
+skb_cow_head(skb, dev->needed_headroom) before pushing the erspan header,
+the GRE header, the encap header and the outer IPv4 header.
+
+>  
+>  	return 0;
+>  }
+
 -- 
-2.53.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260907075846.2913645-1-edumazet%40google.com
