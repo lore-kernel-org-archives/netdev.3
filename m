@@ -1,156 +1,303 @@
-Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
+Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60E83559C8C
-	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 15:12:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.227.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5041B3955F1
+	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 15:15:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.170
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788880379; cv=pass; b=FNlI0/YEBA894mQccL4j9XEhi5M/WC7gTenmV3HOms0hqXDiNLvEA1Fr9DtNugkSDJqOmzomPQkdZG/GZgp0DwUvOuX/DV5CdBFl/F8dFv8vHpZdC7+mOmLkII3FAHBZEohOtTdQZWc1RnKhO+3vIJ89bJhjpif24qUeilCTD3k=
+	t=1788880510; cv=pass; b=D0l2U1EHyiInPYnUOCD8DUK5w/x27dOGCX89czFadQESq2+9VxP6CRnM+qqULVU9AgYFGyvQnIrdfS6z5qQ8/XZ8OQ1YhsoGOobls7417T7dMria7365ACZOc2uBh/iiAUR8dKlxMy5YttvymGh75OAj5yBWLu/2lMO8cDXizkw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788880379; c=relaxed/simple;
-	bh=h4V3qmSg9Cl3SBicqioBkg1pZFXj8Z00HAErU9xLdic=;
+	s=arc-20240116; t=1788880510; c=relaxed/simple;
+	bh=pBdJ57ON/qFDUsOE7VZli4VSyyMWeePsEoC07w8ygoU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EIJNC2Zy3xRggS3bzDOKpKvZ1F/3cTVtEWpgBVXdX950Ibr7qY73mNxOrXWjWymrD5lutsZb0bFPeV2bvyW+PAzSt5r9HZtes5Ni9TkZVHtnd8D99D6uHQWSm888ZNxa/GYWCPMhWJCsFt5oh8qH0c1G1iv5MJw4kyywySQlEOM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=C8hA5CSV; arc=pass smtp.client-ip=74.125.227.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=pTdzjslJp/3GoLdPx7RL4MGUpqyreqFBxu9GfvsHJC5ipDo6hPLwE8dSu4ScPDX9/EN3B1X6qnjn8ygWGO8japq/mRzhLZdLDvWy9W6ISnJS9jCypjcV1yZXf2NvWfAHN1crX3oOWLGXcNag2L1mAPMRldUcLdbleACGIwW1+lU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I5nSK6XS; arc=pass smtp.client-ip=209.85.215.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="C8hA5CSV"
-Received: by mail-pj2-f12.google.com with SMTP id d9443c01a7336-2d6ff3aca06so244405ad.0
-        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 08:12:55 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788880372; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I5nSK6XS"
+Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-cbb8b54fcf8so4946642a12.0
+        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 08:15:01 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788880499; cv=none;
         d=google.com; s=arc-20260327;
-        b=m4kFVYLryhcPtk89ChA7ZCGUgAoumd1Plv3sNsZOkTwYA+km01iWUk9f10mqgT4rvJ
-         rjrssvI8IthVPLmo8sdTFt1dWMIP0u2K7SRYb8QC1TBLRrc16LBu5oO+i+pbtd7xRUoS
-         OoBJe12fy7zHAi7fXqjtPNd7DT9+HrFSlleEwp0vy9mcjZQAYiYjoU2CidX55Ki8JZK7
-         l5/ZANng0Pg5mYizdnI9GiH5EIfeqcNxBBBjyDQtSaJwQq+u2qAv+nLblEUu6Di58qKI
-         6kNCROvFNkWXssRIQ87VwVIzvQXUBYlykusqbl/IAkB1kDhdpNcd8qXoL7DdCQP/Fj28
-         Ducw==
+        b=bLyh2oGLKZ7kqeFQCNsCf/l/FhNsxFqg6kEMK6HR11D1DhoOJ8Yf/CMElAYXYXRHTm
+         kNn9joiqBGqIERh5M03CfzKLySS6yV4fHwyMG7yfc5cKzO+u4Cj1ulctLZNWq3+Mcly8
+         6j0vCSZWE5UZ/W+PX9sdRUjJWz/HcS8QTb61bzwwWBgXi428LZSbIay3Tuk8CRO9wRtP
+         qIprFv4//FF7hDMz0lGYQiDkypcQ571B4a5oqc7uVlA7hdCk4FIAZXCS6rbOnLGoMN2x
+         8X1/3JsD7acajCasQEu9tRNCW/6IjZjEENHjeQ9lh1xxNVon3YcKp+hBnhyHlFlwBu+t
+         Rk8A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=BouDQyseTpgBscOBCF3a6wtMXmz3CzisSn6GhPbdwBA=;
-        fh=X8vZunwKv7nAygvNJgm51mg5sF1UwAKg+cZz7N8n0oY=;
-        b=ITxRDxg7qMH3weYpg/e9BjIWjF9YiaouJmArpFXGZMcG07jBLO4G0Ys5ztSfgRdv/I
-         Of80ES+Kdx0VCimKnfjb73tMn3V7r8lXDCDUNOzMscg8ahOphG8/3WrblYeDY5Mjoh7L
-         RIiAp3Q7MKNhSBSi/EF+SYGFk1aGzlEEJX1b7KYWZBJr1Qsjhzytni73xkYKQAT/k3wY
-         G06p8sZN4iSLDTfY4ud07faUBE2D1+UDPbtIxO5BCt+IpDSBRV6eNiQ4NLNLUc2pdXO1
-         FEo12CnkWKF/FHRjOqm9qptHSfKYiIPXpAAbtHk9h0DrlgqTdeyFw80EQYAZ9ujZ4cHm
-         e31w==;
+        bh=CgYQMTATtyJWpk9CvcV0pYNidzQnxU/fkxOhjlNLIRE=;
+        fh=xB11myxO4D0nViGT+hXYMSUxvH7dNIl2JCJadc9otKE=;
+        b=l0DnyQKcWJxJneh/zauZxVGqPharUizmuyO7z4qhIx+XhxTqgvT0IIcssVNkEUb4kz
+         a9c9c0aqBnJThw/gBjXWyEXyx01JTOjxI2l1UcbrO9H+RlPFBaXGyI2819PtDGZsEF5X
+         yOVOSDgCG3WTp8FLe1ymBQnKsFh+PNGRf6TUHaD6iVVL+8N2HH6eASEdh7KyGzz6QGuY
+         Rt9dBzOFpxDNglxSlZefKubbQaXRz6d1I80pnWrhdzSZ4AyKlC+rHohaO8dd6WLm+9d6
+         48eBdimEzsp+bJ195QGApvCaFIcZAoL7lre+2K3SDvcZaKQIalMOfUXd0k54nM1akVAu
+         146A==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788880372; x=1789485172; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1788880499; x=1789485299; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=BouDQyseTpgBscOBCF3a6wtMXmz3CzisSn6GhPbdwBA=;
-        b=C8hA5CSVxM/Z74ufDl36ekUeNsEHH0WhC055seX39waYfrIjxLVZ4VhECPL9nMmD/K
-         wLdIm0FQyh/deMhjU8aIUom//KEOY82WrXpdUbM7PBWESChmWZNeTyh8FOIkFGCQRHnH
-         V+QjdSgJVP6wZaBVd28laxSh8PhhsWvJvsV1HHj6qpe87nj4gtmmTAyZr3inkbnv59dk
-         wOlegio/ZYU86wJwwQ+16BwGPyXrbgX2sA2hLTvUfeuEIsqb2ZeILbC/KkOzbkRi7UCN
-         9IPPJlDqQt0j4OnW4uSgA5mN04rCsNt5IhBF0P9BZnrGSF/ksjVmbDiLioj2EAV5ji1F
-         g6Og==
+        bh=CgYQMTATtyJWpk9CvcV0pYNidzQnxU/fkxOhjlNLIRE=;
+        b=I5nSK6XSvYkaRoyt+bE2w2/h9d3lkWwaZzEKtzcVTKHTTBQh1104S9Jfvn1K6UDFZK
+         EzzXvV+BCrjybujV4RfHnvyAR/ZjOxqCGwg0cAECEZpWmrp6XLVQ3S+gm231fcTWAlAs
+         YTwIr3z73UlID2JpyyU3XhzCfR7lyQ9G8FifYHvupEQQpQRhFzdq+7TPFy0Lhb6RzMg8
+         CSEk1q9Z9v2IQZsn0yfVlBX+DGxsCgfPqg81RA9xd1oe8POp79YxUXx8tCFMLiIdk34b
+         VHgs7Ab2ZfLxHXY7hTbJDklWaOs3ZG8vkfqSSpfTCPP+A6gtIxiF/OtoHGcSEEpBuFer
+         M4Sw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788880372; x=1789485172;
+        d=1e100.net; s=20251104; t=1788880499; x=1789485299;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=BouDQyseTpgBscOBCF3a6wtMXmz3CzisSn6GhPbdwBA=;
-        b=D1vBfyEYEy0oJjkaWy+7MyVzKBaH7cYrzQVl0Z1nFV4rHNHHjzOIUDre035tt8QH1h
-         0jp/eypbpslxenf6yOWDN/uhz/5wVgBsjs2bgtzvsKNy1/cBJTM8ExKcVA1PsFFo4Opi
-         CMR7FVP8tjzVMq22OhAin3itGfFFYeff6esR+9aT4v57SLCMgLdbWPK2uyYVLCENHBt9
-         ThRF8v/OJfFkOKA3LYxgo2FRgsQ3OqziFqceEP67N0/YAtZc8QHJKnb56jL9EPBP6KqY
-         XeoFh6sa9TD7Xm10pTwedARQF83hOU7zBn3qX7PiTHgUJk9L4sLrFtYuLMFK8qYAmu7H
-         oX6w==
-X-Gm-Message-State: AFuF++miZ0kUqbcLy+TwkWytNa9hxl2GIkdst1uh1lbhcHECpIEmLqMC
-	4i4SHTE5XHCjBUYsJxKjn3wmx1aKknZMWKnPaoAKz50eJg252GjIclPdjVkG3xwodEHALdDeSCu
-	/DSuVMFt8zwxdzmToKOn6vEm288bjKRLvd9tmlvQ5
-X-Gm-Gg: AYBFou0YDUf5DJjFjBQMYDy/HJ1CuDVASVRImtjZpZAtKRjwv1qvbbaZQ7YFZogn/Bi
-	xMLHWL/9V5YZcPWN51ar6lRbJoza2auJG6mTMU2zTba6IqRuWCn7/f29hBP8wWuMCSCd/DcnIy8
-	6WxnJBoBM+B/zUuQHJk/7s7zawVvEphF40+Te4PPr830dHdc6Cb2VUcZQ9R+5ckQPV2jF9edfJs
-	T1eeaFamnKzegaHEAc0dons063sFixMm4nqwTJ6lQw+cZREl7VXOqGH5jf1z1BXt7Nvgz+tuCj6
-	MXbmsVE74psv6+boq8o4+EdQryDgtf9SXYcmsni3rxa5LtRs1LmgDChM/uzdAQUsVoPijfs3mWq
-	AEYVUYaciBI8nBA==
-X-Received: by 2002:a17:902:c102:b0:2ca:4bb4:4bd with SMTP id
- d9443c01a7336-2db294d1416mr11909045ad.5.1788880371498; Tue, 08 Sep 2026
- 08:12:51 -0700 (PDT)
+        bh=CgYQMTATtyJWpk9CvcV0pYNidzQnxU/fkxOhjlNLIRE=;
+        b=oREuAFNRgQzWdxZiI3AcNTXrJOFWdp+aQuGtWpzB5DZpqLh5vxp0oSmuLGWKq9pkIy
+         0pXYAvcNZBnkK3mzcXaJqkpN++dQp3GafLoHu1jDHKXJURvFg5c0MLYXaLIzD1HiRClq
+         rxknzAuPBwzImheWZze8hy0/+ZqnHPipC2/GFGQ9kHnhwretpAJw2rYlzU4TW7/D0whw
+         CDEmEo4cvvSEj5Tp+/kvMu9RTXUqf961KkyVPiiBLTvzXFfBBPoUVPJAdQl3ziZ1UYKI
+         GkqeYrYSUA2jZiSL2BtoQwkDvsnrhyFw86by/duQ0Os04QOVvMGunr8++BNM4ft5LHa/
+         25jw==
+X-Gm-Message-State: AFuF++noNPBR19sI0mSULxM1cI6pqURsA5ueZH3Zl0yyNcAwrXTqBPLX
+	PpK5FCWTmrqgiLLR6OCkbVmpCVFp0kM1A3/0ygCXx6Pxeqv9n243Z+FqnbJv9Cn/Egui/b+7nJj
+	rkU0Xi+0WCpyYD10jwFtEqpVv+8Q3Pg==
+X-Gm-Gg: AYBFou3Q+lEfEkTJcYRDQ5Js24TD9HagLQweNJWxfoh01a8MqQnEVQM1ol4VDs9hzTD
+	/Y0OYzHXpg+Wy5JLfUl521EXGH/QVRIMLsM8t8lRV0FhvXY8srSJbfGTnP8d/Qplf8j+PQVPaHX
+	3fkbge3VRRlSUs5Ool2KYlvuSJq8xrg6bNTD8aorui3LKc7fheqFnlcqZ3xZ3PcXPILAKvCuodW
+	gnWNwlC+ftgOE05k2fezfbBEQbYO6kgHpJPGl9gWew/HJn4SS3eT+hMj1qQqNeOP7EpD80OdIW+
+	R3n2d8x9E4XdUH9cNgefmRIJSfGd8CfOCKCRg67IGjg=
+X-Received: by 2002:a17:903:26cc:b0:2db:56da:6a0b with SMTP id
+ d9443c01a7336-2db56da6ebbmr216182465ad.13.1788880499195; Tue, 08 Sep 2026
+ 08:14:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260903215606.31633-1-hramamurthy@google.com> <923eefe9-141a-47b7-94c5-c91df94e66f6@redhat.com>
-In-Reply-To: <923eefe9-141a-47b7-94c5-c91df94e66f6@redhat.com>
-From: Harshitha Ramamurthy <hramamurthy@google.com>
-Date: Tue, 8 Sep 2026 08:12:40 -0700
-X-Gm-Features: AcwNN1W-djDon6i2Oxz6RcG_IKMBsvPvG6L-ePIXfRp75VFE_wdPCqR4Vyc6SXM
-Message-ID: <CAEAWyHdvav2Yd1qjt9Z+O0f5OAN3OKd1y9OPV=VuASLXYbUdpQ@mail.gmail.com>
-Subject: Re: [PATCH net-next v5 00/12] gve: AdminQ mode related refactors
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, joshwash@google.com, andrew+netdev@lunn.ch, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, ast@kernel.org, 
-	daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com, 
-	sdf@fomichev.me, jordanrhee@google.com, willemb@google.com, nktgrg@google.com, 
-	maolson@google.com, thostet@google.com, jacob.e.keller@intel.com, 
-	debarghyak@google.com, kees@kernel.org, bpf@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, przemyslaw.kitszel@intel.com
+References: <20260904202800.3410838-1-vladislav.karmanov.dev@gmail.com> <178885625700.219967.7168072838761125406@kernel.org>
+In-Reply-To: <178885625700.219967.7168072838761125406@kernel.org>
+From: Vladislav Karmanov <vladislav.karmanov.dev@gmail.com>
+Date: Tue, 8 Sep 2026 18:14:46 +0300
+X-Gm-Features: AcwNN1XB_kJovrt7RM82lErwqtpd0arCb5Y1gSidn9sAEhYEVo0spZm52sfv7_Y
+Message-ID: <CADDoYm6gVeXpEdQJNzqBfBXXGSqg7TTZeyyqka7nShE=Aw6Rcw@mail.gmail.com>
+Subject: Re: [PATCH net v3] net: phy: mediatek-ge: disable EEE on the MT7530 PHY
+To: netdev-bot+sashiko@kernel.org
+Cc: netdev@vger.kernel.org, andrew@lunn.ch, daniel@makrotopia.org, 
+	dqfext@gmail.com, SkyLake.Huang@mediatek.com, hkallweit1@gmail.com, 
+	linux@armlinux.org.uk, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, matthias.bgg@gmail.com, 
+	angelogioacchino.delregno@collabora.com, chester.a.unal@arinc9.com, 
+	sean.wang@mediatek.com, olteanv@gmail.com, yangshiji66@outlook.com, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-mediatek@lists.infradead.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 8, 2026 at 3:09=E2=80=AFAM Paolo Abeni <pabeni@redhat.com> wrot=
-e:
+Both findings confirmed against current sources -- thank you, the
+analysis is spot on.
+
+v4 keeps the probe()-time advertisement clear, which also feeds an
+empty advertisement back into genphy_c45_read_eee_adv() during
+phy_probe(), and moves the durable disable to config_init(), the
+dp83867 placement: config_init() runs after of_set_phy_eee_broken() in
+phy_probe(), so the eee_disabled_modes fill is not undone, and it is
+the callback phy_init_hw() replays after a PHY reset, so the register
+clear is restored as well. The register is also written again there
+for the reset path.
+
+v4 follows as a fresh thread.
+https://lore.kernel.org/netdev/20260908145213.3976508-1-vladislav.karmanov.=
+dev@gmail.com/
+
+Tested on the affected hardware (ASUS RT-AX53U, MT7621): single clean
+100 Mbps WAN link + DHCP lease over a 2-pair cable, no flapping. The
+ethtool re-enable path is not reachable on this board (phylink rejects
+EEE ops at the MAC layer), so that part is verified at the code level
+for standalone use of the PHY.
+
+=D0=B2=D1=82, 8 =D1=81=D0=B5=D0=BD=D1=82. 2026=E2=80=AF=D0=B3. =D0=B2 11:30=
+, <netdev-bot+sashiko@kernel.org>:
 >
-> On 9/3/26 11:55 PM, Harshitha Ramamurthy wrote:
-> > This series is preparing the driver for the addition of a new control
-> > plane mode(MailboxQ) by commonizing and reusing as much code as possibl=
-e.
-> > MailboxQ is a new control plane infrastructure which uses mailbox queue=
-s.
-> > This is a new control plane to communicate with the device when the dri=
-ver
-> > is running on bare-metal instances as well as newer versions of the dev=
-ice.
-> >
-> > This series contains 2 main changes to the gve driver's existing contro=
-l
-> > plane(AdminQ):
-> > 1) refactor some initialization/teardown path methods to make it work f=
-or
-> >    both control planes.
-> > 2) add gve_ctrl_ops structure to the driver for various control plane
-> >    operations
-> >
-> > The refactors are mainly around the init, reset and recover paths so th=
-at
-> > functionalities could be moved into the control ops like 'set_num_queue=
-s',
-> > 'set_num_ntfy_blks' etc.
-> >
-> > This patch series only sets the control ops for AdminQ mode. This is
-> > intended as a preparation for adding MailboxQ mode in upcoming series
-> > which will add the new control plane infrastructure and then introduce
-> > the corresponding control ops for MailboxQ mode.
-> >
-> > The entire list of future patches can be found here for reference:
-> > https://github.com/hramamurthy12/linux/commits/gve-mailbox-queues/
-> Imho the 'medium' severity issues raised by clashiko on patches 1 should
-> be addressed in this same series.
+> Thank you for your contribution! Sashiko AI review found 2 potential
+> issue(s) to consider:
 >
-
-Will fix in v6.
-
-> Please note that you are supposed to act on sashiko reviews, see commit
-> c82ff94592fb68f529afe63ca7f5ddb7dae4ba83. Lacking such feedback, I'll
-> tend to err on the safe side - i.e. requesting a new revision.
-
-Acknowledged.
-
-Thanks,
-Harshitha
-
+> Critical: 0 =C2=B7 High: 1 =C2=B7 Medium: 1 =C2=B7 Low: 0
 >
-> /P
+> - [High] mt7530_phy_probe() (drivers/net/phy/mediatek/mtk-ge.c:65-84)
+>   calls phy_disable_eee() from the driver's .probe callback, but phylib=
+=E2=80=A6
+> - [Medium] The hardware write that clears the EEE advertisement,
+>   phy_write_mmd(phydev, MDIO_MMD_AN, MDIO_AN_EEE_ADV, 0) at=E2=80=A6
 >
+> --
+>
+> net: phy: mediatek-ge: disable EEE on the MT7530 PHY
+>
+> This adds an mt7530_phy_probe() callback to the mediatek-ge driver which
+> clears MDIO_AN_EEE_ADV in hardware and then calls phy_disable_eee(), with
+> the stated goal that neither phylib nor userspace can re-enable EEE on th=
+e
+> MT7530 internal GE PHY.
+>
+> > diff --git a/drivers/net/phy/mediatek/mtk-ge.c b/drivers/net/phy/mediat=
+ek/mtk-ge.c
+> > index 73d9b72f9d9e2..35600c70cab90 100644
+> > --- a/drivers/net/phy/mediatek/mtk-ge.c
+> > +++ b/drivers/net/phy/mediatek/mtk-ge.c
+> > @@ -62,6 +62,27 @@ static void mtk_gephy_config_init(struct phy_device =
+*phydev)
+> >                      FIELD_PREP(MTK_MCC_NEARECHO_OFFSET_MASK, 0x3));
+> >  }
+> >
+> > +static int mt7530_phy_probe(struct phy_device *phydev)
+> > +{
+> > +     int ret;
+> > +
+> > +     /* The MT7530 internal GE PHY has broken EEE: with EEE advertised=
+,
+> > +      * some link partners fail to establish a stable link (on a 2-pai=
+r
+> > +      * cable, 1000BASE-T training fails and the port loops instead of
+> > +      * falling back). MediaTek recommends disabling EEE on this PHY.
+> > +      * Clear the EEE advertisement early and mark EEE disabled, so
+> > +      * that neither phylib nor userspace can re-enable it.
+> > +      */
+> > +
+> > +     ret =3D phy_write_mmd(phydev, MDIO_MMD_AN, MDIO_AN_EEE_ADV, 0);
+> > +     if (ret)
+> > +             return ret;
+>
+> [Severity: Medium]
+> Should this register write also live in mt7530_phy_config_init()?  This i=
+s
+> the only place where MDIO_AN_EEE_ADV is cleared in hardware, and ->probe =
+is
+> the one callback phylib never replays.  phy_init_hw() deasserts the reset
+> line, optionally soft-resets, and then re-runs only ->config_init and
+> ->config_intr:
+>
+> drivers/net/phy/phy_device.c:phy_init_hw() {
+>         ...
+>         if (phydev->drv->config_init) {
+>                 ret =3D phydev->drv->config_init(phydev);
+>                 if (ret < 0)
+>                         return ret;
+>         }
+>         ...
+> }
+>
+> mt7530_phy_config_init() does not touch MDIO_AN_EEE_ADV, so after a PHY
+> register reset the register is back at its EEE-advertising hardware defau=
+lt
+> while phydev->advertising_eee stays empty and eee_cfg.eee_enabled stays
+> false, i.e. software and hardware state disagree.
+>
+> Two paths that re-init without ->probe:
+>
+>   - phy_detach() asserts the PHY reset signal and a later
+>     phy_attach_direct() -> phy_init_hw() only replays config_init.
+>   - the SIOCSMIIREG BMCR_RESET case in phy_mii_ioctl():
+>
+> drivers/net/phy/phy.c:phy_mii_ioctl() {
+>         ...
+>                 if (prtad =3D=3D phydev->mdio.addr &&
+>                     devad =3D=3D MII_BMCR &&
+>                     val & BMCR_RESET)
+>                         return phy_init_hw(phydev);
+>         ...
+> }
+>
+> which returns without any aneg reconfiguration, so nothing rewrites the
+> advertisement to zero.  __genphy_config_aneg() ->
+> genphy_c45_an_config_eee_aneg() covers the usual renegotiation case, but =
+it
+> returns early without writing when phydev->autoneg =3D=3D AUTONEG_DISABLE=
+.  The
+> equivalent in-tree quirk issues the disable from the replayed callback,
+> dp83867_config_init() -> phy_disable_eee().
+>
+> > +
+> > +     phy_disable_eee(phydev);
+>
+> [Severity: High]
+> Does the phy_disable_eee() state survive the rest of phy_probe()?  The
+> linkmode_fill(phydev->eee_disabled_modes) done inside phy_disable_eee() i=
+s
+> what makes the disable permanent, but phylib clears that set later in the
+> same probe flow:
+>
+> drivers/net/phy/phy_device.c:phy_probe() {
+>         ...
+>         if (phydev->drv->probe) {
+>                 err =3D phydev->drv->probe(phydev);
+>         ...
+>         /* Get the EEE modes we want to prohibit. */
+>         of_set_phy_eee_broken(phydev);
+>         ...
+> }
+>
+> drivers/net/phy/phy-core.c:of_set_phy_eee_broken() {
+>         struct device_node *node =3D phydev->mdio.dev.of_node;
+>         unsigned long *modes =3D phydev->eee_disabled_modes;
+>
+>         if (!IS_ENABLED(CONFIG_OF_MDIO) || !node)
+>                 return;
+>
+>         linkmode_zero(modes);
+>         ...
+> }
+>
+> So for any MT7530 PHY that has an of_node, eee_disabled_modes ends up emp=
+ty
+> again unless the DT carries eee-broken-* properties.  An of_node is prese=
+nt
+> in a documented configuration: mt7530_setup_mdio() registers the internal
+> bus with the switch's "mdio" child node,
+>
+> drivers/net/dsa/mt7530.c:mt7530_setup_mdio() {
+>         ...
+>         mnp =3D of_get_child_by_name(np, "mdio");
+>         ...
+>         ret =3D devm_of_mdiobus_register(dev, bus, mnp);
+>         ...
+> }
+>
+> and mediatek,mt7530.yaml documents that node, so ethernet-phy children
+> described there get an of_node.
+>
+> With eee_disabled_modes empty, can userspace re-enable EEE again through
+> dsa_user_set_eee() -> phylink_ethtool_set_eee() -> phy_ethtool_set_eee() =
+->
+> genphy_c45_ethtool_set_eee()?
+>
+> drivers/net/phy/phy-c45.c:genphy_c45_ethtool_set_eee() {
+>         ...
+>                 } else if (linkmode_empty(phydev->advertising_eee)) {
+>                         phy_advertise_eee_all(phydev);
+>                 }
+>         ...
+> }
+>
+> That repopulates advertising_eee with supported_eee, then
+> genphy_c45_an_config_eee_aneg() rewrites MDIO_AN_EEE_ADV and
+> phy_restart_aneg() renegotiates, which looks like it brings back exactly =
+the
+> 1000BASE-T training loop described in the commit message.
+>
+> Would moving the disable into mt7530_phy_config_init(), which runs after
+> of_set_phy_eee_broken(), address both this and the reset case above?  Tha=
+t
+> is the placement dp83867_config_init() uses for the same kind of quirk.
+>
+> [ ... ]
+>
+> --
+> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
+set/20260904202800.3410838-1-vladislav.karmanov.dev%40gmail.com
