@@ -1,160 +1,160 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECCE834F270;
-	Tue,  8 Sep 2026 07:16:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A384C3955D0
+	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 07:19:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788851766; cv=none; b=KLY782t8WZM0gpK6uVT+GrhpLC6QcKWGL1F2cnUmawtMXuDTdwF4vEQNgrZeBRq6xGzNlZbOCljLAJnpCxgiyFSlCMuL94poJtOjtwowY0T/4ZqGPymMn3NXLRn1L3W0XijKgdtFmN8V9l265bUuM1rgDnXsJ/3M2kODaELVYJc=
+	t=1788851984; cv=none; b=tXNqaX12qbx6RLvY3AxIyJ6cJuLr2Yx3khKSkqnHmCt0WkLGhkdkUSkpSBCbxYjGtPT4ooIEgdu1mInPcndbLJLy2OhPhrysyUBrXQXXDELVZcwvsoZ0nDjQ3IxSEEUSyFJhnVLxiuueDKQ/314yV+WmCBtZ4C3Fd4yyPUbhtYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788851766; c=relaxed/simple;
-	bh=qI6Ayf5wPgUTQ4/qNmGJZJVRLZrlzPExqwImPy4y9sc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=AAlJyJa9m9J1iYtsoLisR+IDSXVnQO9UMz0ELGtqkwK/2hBUJCNQ1TsI6Xt+RPN/usECY8cqQVGCcbe1BEwvYY/8K3XWsAvDbY1xEBRd31FENmmYetkLOgZshlinwtVbd0MyXPyJjvtOcq9oZvavBfvE2pbkBSNHyE1O7poXiUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=E6FZnP5S; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1788851984; c=relaxed/simple;
+	bh=cB5vGEzXCWOej9U56bH7r2afRVTc9aUEK2BeCbcmu2o=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=KmidKLTR+tnPjZx2VUlzcmnKHXseI1ClpfUvKJmeeUmf2BbroS3AXI7Q5qQS6JD9jUb30I/Okd2fmCoLl4PqzTWDBhxT1S3xIq/7FYdfoGMUtrnlwpHXqRbRj+6tHJjeu/pWkq4Pctv8Uhve/M3qvTn25BQzwy2UjOpVSFk18wE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=iLVu6hHZ; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=csL/24Y3; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="E6FZnP5S"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788851764; x=1820387764;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=qI6Ayf5wPgUTQ4/qNmGJZJVRLZrlzPExqwImPy4y9sc=;
-  b=E6FZnP5SzB9SwamCMvmiSNyPjnWzeSQwUrVMTK2o4RY/MbNr62s9Md+w
-   rzBnuNMDCZ1WbrvS7q3vKAX5qlXyU+C/lvMVTO93kOiRuyIUZtNmnBQmq
-   OXO8uPTMfO/SnR3Y8CxCPp01v9BljN0XVk3x8MpJzeXKAzLkOnP1EdLgf
-   3j8emcCJ/c7t2wT2qFdOA38wpmqS1CJp0egTJ4Mk97U1oAwh7YB05XvSO
-   MSMLqt03OkGscUJHRXkkrfl0zWBfi5iZNE22KZqsSpCfuEWZzvGp/d8rY
-   2pPdwlVa+NFd33OtmceL7E3NLqYW7bTobo6bp1r/lu1T/PWgoqkiEO5Dr
-   A==;
-X-CSE-ConnectionGUID: FOEJGA3ySDKd9xYYBb7jzg==
-X-CSE-MsgGUID: jKJNh/vpQZC+TLqBiSW2Lg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11899"; a="106760034"
-X-IronPort-AV: E=Sophos;i="6.25,268,1779174000"; 
-   d="scan'208";a="106760034"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2026 00:16:03 -0700
-X-CSE-ConnectionGUID: y6PbfSSUQ82qjZZlHsLGmQ==
-X-CSE-MsgGUID: CrhCmLDgRvasFm0K9a323A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,268,1779174000"; 
-   d="scan'208";a="274699573"
-Received: from qat-server-366.sh.intel.com ([10.239.92.87])
-  by orviesa004.jf.intel.com with ESMTP; 08 Sep 2026 00:16:01 -0700
-From: Jie Wang <jie.wang@intel.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Chas Williams <3chas3@gmail.com>
-Cc: linux-usb@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-atm-general@lists.sourceforge.net,
-	accessrunner-general@lists.sourceforge.net,
-	syzbot+9b195c4f412ea5c4e56a@syzkaller.appspotmail.com,
-	Jie Wang <jie.wang@intel.com>
-Subject: [PATCH v2] usb: atm: cxacru: fix NULL deref of atm_dev on sysfs writes
-Date: Tue,  8 Sep 2026 15:02:03 +0000
-Message-Id: <20260908150203.2119844-1-jie.wang@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <f3ef0a67-79d7-47da-be6e-7e82d92e68fe@mail.kernel.org>
-References: <f3ef0a67-79d7-47da-be6e-7e82d92e68fe@mail.kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="iLVu6hHZ";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="csL/24Y3"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1788851981;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PJerBhWmN70q2A8Z21gwtlh6e4xQWjvU+KQeKRQlFIU=;
+	b=iLVu6hHZ1dTpApwGq7Jd8Nn54FDTNOipyxY+kmaUQRDyFzqZ/CFawDXvKdO8JUdmvrosIw
+	dhzpVwhYLux4k6+yLQ6wBEh0k/3ADYhRb9UsUtSxTpwOM/qq8ugH9KzHPMaf/DKWLj62VC
+	/PVREwRctqjfTJbdegFVNzx5WOSrDGg=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-614-O9qZwEwpMtipP5MW6gFT_w-1; Tue, 08 Sep 2026 03:19:40 -0400
+X-MC-Unique: O9qZwEwpMtipP5MW6gFT_w-1
+X-Mimecast-MFC-AGG-ID: O9qZwEwpMtipP5MW6gFT_w_1788851979
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-499913d1a79so28600825e9.0
+        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 00:19:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1788851979; x=1789456779; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=PJerBhWmN70q2A8Z21gwtlh6e4xQWjvU+KQeKRQlFIU=;
+        b=csL/24Y3lc7to/wL5MBkz3uBVY6WlhnYbApMGwJanDkR+ekR9PHReo1opgNsLRn1px
+         B+94C1WLVAZQEyC6q9j73J3lM7I4LwJBfSNETEoMcSQ5BOn6F/c8NV6r6L34hb7MohjL
+         X4EXmwjUsq4BA/c66cWz/P7uMDv6S/iMLt6eh0jAoBGpdBWsbnqYYTlK2d29t45/CS84
+         DXk1LEqChVWKGzQ6QjkZpUyqJjRvu4IlKkjhiyIcvdrbytSMNKZyH/nnWpkdNsK/G79z
+         r4sAQXdkEhAXQU0xQcydT9ggq9b/z8dkxQzbH1D62SXtzAEGWIIVzkjwYZPC6Q2982zs
+         +A/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788851979; x=1789456779;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=PJerBhWmN70q2A8Z21gwtlh6e4xQWjvU+KQeKRQlFIU=;
+        b=JlM5aA+eniOKE2VUWTILL2CwuBNU7Dq6R4aJdtEeY3JHeFBNYdD2Z9PTTBhb3rZI87
+         mDcFcK9Zr/0qNSeSf+FNBXHGntsX5NozX/i5046IO80Zgb574VuYMjZZeNtKsbWkdMMc
+         yXYstuoJRAloseK2QCsVtUXBGrzCJvVcmaE73qVYFfhwbnwpT2Hr5n3qtWPaEG81HPE1
+         mS96pUwcprIK2GjcN9Pp2yxhWN/kSe9N1JRYzHYOn25vx1XUj/wT6fVGnKnJRZgAzF4M
+         DfWq84vhBfNdhpnyVTKT3WV/TXJUCLLE6vtARxEbvVasNwb1i8wJzRpijCQE3oalfjYS
+         5vTw==
+X-Gm-Message-State: AFuF++mZUiHj4rEk1EHZwFqKU/kdv75musJ32SjzygnJ9UEbN13FyDYN
+	u/lOtk8qK1z7K9I2W8C2rY4/fGyA9Xf9DIAjqoyobaL6sZFsvZpDd2EBW/e7ra8+fiuv67sbBnw
+	Cebm/MbUs1MEpLKt8ApZBo/OfLf2C9bOeoJ2c4FLVx0aOMbhUEF6SXiGyzzeAcF3scg==
+X-Gm-Gg: AYBFou3ZDOf3qvlSKalMb0IOXKsTi8KT1+kntLVFDVkeAZgXBQDgvhHYLRvAaMZuOm6
+	7R+1vpYcxgMTnT/zQOid+x+264F58WrsvRTQvaMMm4fT9tB/kFxoPRU/OycUaDR8g4j7RdJ28MS
+	iS9pSsmHOLZ7GpfftX83XNuuT5ppZsT6/pJioO2K3pWaR+5jKFyfX4RenPC2eU2Cm1wz03V085Z
+	1+24UG3maeVBmnKthks8RoYgzvrfVXRlt8BLB+WqhuPyE4lrrhErAgwXvGnQkdmPge2bVgCgcso
+	1C0omTSnN4ZyjzVNm2GBBDfNKNiapHY8x3a/34/vhqsd2TQ9zYB53tH6TJODSA0eYMH2Asu1uJR
+	uVdqoMFJqVUv35/HECbY4WEEGyVE5HYclQzquZgsPv1x1N3fAEnaL
+X-Received: by 2002:a05:600c:1c29:b0:49d:5ff:f408 with SMTP id 5b1f17b1804b1-49d05fff5bbmr284794535e9.15.1788851979072;
+        Tue, 08 Sep 2026 00:19:39 -0700 (PDT)
+X-Received: by 2002:a05:600c:1c29:b0:49d:5ff:f408 with SMTP id 5b1f17b1804b1-49d05fff5bbmr284793925e9.15.1788851978584;
+        Tue, 08 Sep 2026 00:19:38 -0700 (PDT)
+Received: from [100.90.169.165] (5920ab7b.static.cust.trined.nl. [89.32.171.123])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49d057f4778sm269094115e9.8.2026.09.08.00.19.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Sep 2026 00:19:37 -0700 (PDT)
+From: Eelco Chaudron <echaudro@redhat.com>
+To: Norbert Szetei <norbert@doyensec.com>
+Cc: netdev@vger.kernel.org, Aaron Conole <aconole@redhat.com>,
+ Ilya Maximets <i.maximets@ovn.org>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ dev@openvswitch.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] net: openvswitch: fix use-after-free of the flow
+ table mask array
+Date: Tue, 08 Sep 2026 09:19:36 +0200
+X-Mailer: MailMate (3.0r7030)
+Message-ID: <FD8A4D46-E107-455C-8F3F-0F52D3CBAA74@redhat.com>
+In-Reply-To: <DE115F9C-2545-423E-A702-986FC952FD62@doyensec.com>
+References: <DE115F9C-2545-423E-A702-986FC952FD62@doyensec.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
+X-MS-Reactions: disallow
 
-The adsl_state and adsl_config sysfs attributes are created via
-dev_groups, so the driver core exposes them as soon as ->probe()
-returns. At that point instance->atm_dev can still be NULL:
-usbatm_heavy_init() only waits for the heavy-init kthread to start, not
-to finish, and instance->atm_dev is assigned later, in usbatm_atm_init().
 
-A write to either attribute in that window passes the existing
-"instance == NULL" check and reaches atm_err()/atm_info() on the error
-path (and, for adsl_config, on the success path). Both expand to
-instance->atm_dev->number and dereference the NULL atm_dev.
 
-Fix this by logging with usb_err()/usb_info() instead. They reference the
-USB interface device, which stays valid for the whole write, and
-usbatm_atm_init() already logs this way before atm_dev exists.
+On 6 Sep 2026, at 10:21, Norbert Szetei wrote:
 
-adsl_state_store() also calls cxacru_poll_status() directly, which
-dereferences atm_dev via atm_dev_signal_change() and atm_dev->link_rate.
-Return early from the poll when atm_dev is not yet set.
+> tbl_mask_array_realloc() retires the old mask_array before it stops bei=
+ng
+> reachable:
+>
+> 	old =3D ovsl_dereference(tbl->mask_array);
+> 	if (old) {
+> 		...
+> 		call_rcu(&old->rcu, mask_array_rcu_cb);
+> 	}
+>
+> 	rcu_assign_pointer(tbl->mask_array, new);
+>
+> call_rcu() only waits for read-side critical sections already in flight=
+=2E
+> tbl->mask_array still points at old between the call_rcu() and the
+> rcu_assign_pointer(), so a reader entering ovs_flow_tbl_lookup_stats() =
+in
+> that window picks up old in a fresh critical section that the pending
+> grace period does not cover.
+>
+> tbl_mask_array_realloc() runs in process context under ovs_mutex, so th=
+e
+> window is preemptible and can outlast the grace period. Then
+> mask_array_rcu_cb() frees old before the swap runs:
+>
+>   BUG: KASAN: slab-use-after-free in flow_lookup.constprop.0+0x2bf/0x2f=
+0
+>   Read of size 8 at addr ffff888020b3e018 by task poc/741
+>    flow_lookup.constprop.0+0x2bf/0x2f0
+>    ovs_flow_tbl_lookup_stats+0x4a3/0x5c0
+>    ovs_dp_process_packet+0x19c/0x710
+>    ovs_vport_receive+0x243/0x390
+>    internal_dev_xmit+0x81/0x170
+>   Freed by task 728:
+>    kfree+0x16a/0x4e0
+>    rcu_core+0x853/0x1030
+>
+> Publish the new array before retiring the old one. The kfree_rcu() that=
 
-Fixes: e605c30977bb ("USB: atm: cxacru: convert to use dev_groups")
-Reported-by: syzbot+9b195c4f412ea5c4e56a@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=9b195c4f412ea5c4e56a
-Tested-by: syzbot+9b195c4f412ea5c4e56a@syzkaller.appspotmail.com
-Signed-off-by: Jie Wang <jie.wang@intel.com>
----
-Changes since v1 [1]:
- - v1 gated on ->atm_dev at handler entry, but that check is an
-   unsynchronized TOCTOU; remove the ->atm_dev dereference from these
-   paths instead.
+> call_rcu() replaced ran after the swap.
+>
+> Fixes: eac87c413bf9 ("net: openvswitch: reorder masks array based on us=
+age")
+> Cc: stable@vger.kernel.org
+> Assisted-by: Claude:claude-opus-5
+> Signed-off-by: Norbert Szetei <norbert@doyensec.com>
+> ---
 
-[1] https://lore.kernel.org/all/f3ef0a67-79d7-47da-be6e-7e82d92e68fe@mail.kernel.org/
+Changes look good to me. Although not really necessary, I did run all the=
+ kernel userspace tests, and they pass.
 
- drivers/usb/atm/cxacru.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/usb/atm/cxacru.c b/drivers/usb/atm/cxacru.c
-index 75d87c31e81f4..4322553f2902c 100644
---- a/drivers/usb/atm/cxacru.c
-+++ b/drivers/usb/atm/cxacru.c
-@@ -356,7 +356,7 @@ static ssize_t adsl_state_store(struct device *dev,
- 	if (!strcmp(str_cmd, "stop") || !strcmp(str_cmd, "restart")) {
- 		ret = cxacru_cm(instance, CM_REQUEST_CHIP_ADSL_LINE_STOP, NULL, 0, NULL, 0);
- 		if (ret < 0) {
--			atm_err(instance->usbatm, "change adsl state:"
-+			usb_err(instance->usbatm, "change adsl state:"
- 				" CHIP_ADSL_LINE_STOP returned %d\n", ret);
- 
- 			ret = -EIO;
-@@ -376,7 +376,7 @@ static ssize_t adsl_state_store(struct device *dev,
- 	if (!strcmp(str_cmd, "start") || !strcmp(str_cmd, "restart")) {
- 		ret = cxacru_cm(instance, CM_REQUEST_CHIP_ADSL_LINE_START, NULL, 0, NULL, 0);
- 		if (ret < 0) {
--			atm_err(instance->usbatm, "change adsl state:"
-+			usb_err(instance->usbatm, "change adsl state:"
- 				" CHIP_ADSL_LINE_START returned %d\n", ret);
- 
- 			ret = -EIO;
-@@ -481,7 +481,7 @@ static ssize_t adsl_config_store(struct device *dev,
- 			ret = cxacru_cm(instance, CM_REQUEST_CARD_DATA_SET,
- 				(u8 *) data, 4 + num * 8, NULL, 0);
- 			if (ret < 0) {
--				atm_err(instance->usbatm,
-+				usb_err(instance->usbatm,
- 					"set card data returned %d\n", ret);
- 				return -EIO;
- 			}
-@@ -490,7 +490,7 @@ static ssize_t adsl_config_store(struct device *dev,
- 				snprintf(log + tmp*12, 13, " %02x=%08x",
- 					le32_to_cpu(data[tmp * 2 + 1]),
- 					le32_to_cpu(data[tmp * 2 + 2]));
--			atm_info(instance->usbatm, "config%s\n", log);
-+			usb_info(instance->usbatm, "config%s\n", log);
- 			num = 0;
- 		}
- 	}
-@@ -827,6 +827,12 @@ static void cxacru_poll_status(struct work_struct *work)
- 	int keep_polling = 1;
- 	int ret;
- 
-+	/* adsl_state_store() calls this directly, before the heavy-init thread
-+	 * has set up atm_dev; bail out rather than dereference NULL below.
-+	 */
-+	if (!atm_dev)
-+		return;
-+
- 	ret = cxacru_cm_get_array(instance, CM_REQUEST_CARD_INFO_GET, buf, CXINF_MAX);
- 	if (ret < 0) {
- 		if (ret != -ESHUTDOWN)
--- 
-2.43.0
+Acked-by: Eelco Chaudron echaudro@redhat.com
 
