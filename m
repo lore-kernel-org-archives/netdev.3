@@ -1,85 +1,85 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B856592203
-	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 17:10:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D98B5947E8
+	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 17:10:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788887413; cv=none; b=KGVuDJ4ClWfTWRu6CcTC/IxnUwKgrBpbVcQ8/Xeya7CxRlreECVkTPQjb1WQ1cFpDuKYeO2XoqsF6DxudKKESxZ3o2rBiCiCiT/sBI05iEQYx/3mnmVr0zUSdnTL8KXpg2xmHhCuaJWNj6tz9CORGJ4QySqHpRVqPCmA7PJDhzo=
+	t=1788887420; cv=none; b=Lb4rz7g2K1GvEI/aAGacU+7fRSKTKhqdxtF6ooKhs1fEUOLqRJHIHnh5XR86JjIVwR0OSNNzOOdhF3GLQhJqm8lGEZtz36NfbO+SArOtnSJbORzYtdShhtRpWPWu8ap2vcRTyPsokAjpmjUX7WqtThBZU2Wm7fJTs/tSjBfjOxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788887413; c=relaxed/simple;
-	bh=ODuW2nybW3REfD8SbUhi8QOhAYOU2HQqcQkaxRn64Q8=;
+	s=arc-20240116; t=1788887420; c=relaxed/simple;
+	bh=vGFJQ6aAodKhtzS21oPWEsRImbjCMwfBF99koJOYdiM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NxyvyuRDFi+Z9z8jPXT+OGa090ulvStvmcYBbDkzbcXqonRC+ZQxooe3E/ANLzKDJeD3zKzDTgEatK2cSd/qLLlL6BcjcMgYDm7VBWWUBOpeOkTDBbl2R+Eb/60KjiiYVaCIHLLc4d76ZadKJOkk5n0QpahlpJt1/jurf7E4Jn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=fmeleVvc; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=K/XnQMc9; arc=none smtp.client-ip=205.220.180.131
+	 MIME-Version:Content-Type; b=tZDv1aXZGpCVpJxPebCAS2Q2ZEg3mgGN+ciooh16yyAI+ZDJjDWl82h/VM5Id6NvPIWR3X9XgbVaz598d9OtQzFe3fhFo024cBKcTubrHz6ehxqJMz/VJ1/UbzcKET2EJIoUKZCWew2SKH38eqsMmOjf4e50772nsA7274z070g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=GvTpwNkj; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=em9L3VXJ; arc=none smtp.client-ip=205.220.168.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="fmeleVvc";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="K/XnQMc9"
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 688FdYtT3612188
-	for <netdev@vger.kernel.org>; Tue, 8 Sep 2026 17:10:09 GMT
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="GvTpwNkj";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="em9L3VXJ"
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 688FdX4X2737509
+	for <netdev@vger.kernel.org>; Tue, 8 Sep 2026 17:10:17 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	s4tTeUVXrP8PDX4fDGv3MD0jVy8bbBgnnC6+ayxYRRA=; b=fmeleVvcLmVg/F+L
-	67ClZFMqSQOuWGLlkj0g/0Y2g6VTbZltqahkldxXSwRv7UPzf3qAsrroIYSmUONx
-	sOYg5wntLKNSdlv0q3Kuf/f28AtfIY0m7OVMQ3QtsLJmSA2VovpoapJYcwFVHnFz
-	EKiIWJeJLd/GDO5HJztDlN8YQQWNPssd8dPqIsz4YD0CJsU/6BK1+PdFWz28TePE
-	meubVXNpG6YR7KKTgUjLrKXt37UPuUyryudKKk4HbLK1sCaM2o57AreZDtckJSe9
-	Qw6TnzRoAAY4AjlpUa2jYo5KJS4EAFeft3NxvEjGcI0jamiW2DMYR0auwVPlk99m
-	TdeJ3w==
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com [209.85.215.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gjagukdtc-1
+	tmSBOtvSp+Gmy3pqLBjim1lUAAw6sE0lZZQQfu5q2wE=; b=GvTpwNkjRPblAZV3
+	wBYl4geZZJBHmih1Ts5hQwRvDRzRXpwkLEb/P+IDEeWv7GF9EKwlgR0LWbihzPgh
+	VgrdwdwvWq1mlyM2oNSuws9yRJqJeXmDmE82T8s+6y7D8BXmW22YxpXtP+BXT9IM
+	kL54lHzOhZgye0vJVV2ipuFgwNkaGDE153uVUPXDwF3b2T7WNLTk8uCk0POnkrEf
+	ltYzMXvi/pYRcihNwh9PkCgaTVMuWVw/JXh1KcpI37Qv6MBrZOekgYhS/wQ1Df0+
+	DPdmN/F4tVhwxi0TpWLGTGJZqLCB64NPM7l7yOqHS8FtASYkFLF16MlZAeC7nLGe
+	NmPdiA==
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gjatjkde6-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 17:10:09 +0000 (GMT)
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-cc132709c76so6600062a12.3
-        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 10:10:09 -0700 (PDT)
+	for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 17:10:17 +0000 (GMT)
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cc1bbd7d6e6so5194791a12.3
+        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 10:10:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1788887409; x=1789492209; darn=vger.kernel.org;
+        d=oss.qualcomm.com; s=google; t=1788887417; x=1789492217; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:mime-version:references
          :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=s4tTeUVXrP8PDX4fDGv3MD0jVy8bbBgnnC6+ayxYRRA=;
-        b=K/XnQMc9rgRl7joP93ljiR2BWjB0GkD6ai+rkz3wBOGwONnx0OQAG27VYwNZ+18oMw
-         x97MSTqn5mQvPLgsANJknRfEGk/1ov7Oek8Vx7PcSgVX3kH6bYJFiNBz4BshflIBZHvJ
-         Teeq6/ClyB8Fj+TPMSqYyV8uZQgTMbBbbSuMV4Rtrkynpu16CddSDKeWQWWG9fSYnPem
-         9OaInGJ3ohLJIQVsdNJReL90K+NJCgtUQXOiJxQRf1FChaaS5E5lMSohq1WTwzsrrk3b
-         ZtoPZZxjaGao6cPAwAt8qYjtZEKJ3IDtqhCvKX1QfnAczyq6BLe5YZY6M+zLxNwylbNY
-         uz+Q==
+        bh=tmSBOtvSp+Gmy3pqLBjim1lUAAw6sE0lZZQQfu5q2wE=;
+        b=em9L3VXJR0AA7t0HKCixms3+990j4ly9vCT3R3KAYbzcAa33uCPUEibcV3dwIbyeam
+         8htzFfPjoZqNFqgXGeAlH64id+/03btyIvZhfaIGbl3+QAfb1DwyJ06dfDbLs3Ml4uV8
+         zvXC68LoGI7pCFsO7TF3ssbbRW8gYt1MnvEDwfrFNNONLAiVNvNhvsQAOeqyjnk5Xk4e
+         fn8M3d2JtjUqQCwNS9fe6LDmuPIvpYHpf+dELfccolEetFDK+rsdT6QSPcfsmrajkkSd
+         oHnLohWRieifFxK9X3/wRfcxxg/Sr9TEK4SGJeBxE0jWGUMFYZ2OxucE9AvCF6onGQ/E
+         tMeQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788887409; x=1789492209;
+        d=1e100.net; s=20251104; t=1788887417; x=1789492217;
         h=content-transfer-encoding:content-type:mime-version:references
          :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=s4tTeUVXrP8PDX4fDGv3MD0jVy8bbBgnnC6+ayxYRRA=;
-        b=kq0KM/AB7p8wjt2YO0GYEYU1YoLXkEVyF1NM3vxkGAvUGnbUbO/BYRcn1Crokr/V7u
-         8qyAS3CtgJfkSPEqwaqIZKYV1f4e+CDrXwu84cAQc0y3YQhRPVWdNgG/lJdSyRJa99Jc
-         oh0ntlTbKiYdc5/wArRf8k9Fy/RYo0zxwtTtd2EuYYe8sP1dOjSdj4hEyMzLFQDupfJm
-         F1NDS7/KjClD5S8EdM44dwINxN1tHxnyjyCBH8HFbSYz7u2esu0fJZQsjYOhM4IdhDHf
-         yRG4AHoAW/uqdw4PvoV45Krwz8VQG/Ej8PMMr0ss2ZIYG75icdx2BjEHjkvmqA/qT6c6
-         jKPg==
-X-Forwarded-Encrypted: i=1; AKwUvBz3hDDDlg+B0dgeJ5uCexow5c5FiGD6DMKmkKY4hNwGKZVTpleTKIidc0MkQRiBfZ1UqBGuZGk=@vger.kernel.org
-X-Gm-Message-State: AFuF++lnLLLI7D0Z1J/qZn8T8VwGzFSWgSlxWsFOo2URuiyEzaCmpQ44
-	bGF1gPqe509gVeIJfW6MRpbLtsZoj2H/4Zgz9+Jwc5dOoQtEU7RXSc6asItj5fjrtxO30nB5Jge
-	wGX8IT5hXGOeZE0cE4GCYCU+BdROsCP8KxhqxOc50QfSRDGe6UE3KHNNG0g==
-X-Gm-Gg: AYBFou2Ptsmpca0Vv9YcktQDoOs75em1oT0MfTlZpRrLHe3hcdrvEXz+z0/f5Op/0Aw
-	d/9KRqHXM3IvHPV3n7VyA5AyZ4wsnXZDsCq6EOeH1eu8DWQcVA+6pmf+K9sCjX6zuaC8GN9sfCZ
-	3D+0WdweJ+Esrd2yUYlY7u71azQjGUV9t0HfBRxkV0JQzGIHkQ5ip5tKO6Oj8qBYsP/Rzz5YY5l
-	JnyqAWt+Z49c0jdG6iRSeoSMqt+aFFa8We4sRjlW6/JHrcYxG1dHJLb0FOE3fBHNYooxEuVzOJU
-	tR9FIO29dW6C6Efdu9uosfWLAQT8npMnO++vCMY+XdVxoCMop/Kj8qAbMNzzY5E4KeEOcZlKxkJ
-	CAlQuadYuukTCV9uL4ykllNJPF7t4XrmcSbuX6LO9a7mfqsN2Jp9Q/OvAlyJxMG+ibXDkWmVRHt
-	aVFI0sxlgyAhUkGE5bhBGYKQ==
-X-Received: by 2002:a05:6a21:2983:b0:3cc:8f53:26c0 with SMTP id adf61e73a8af0-3da3a03ccf1mr51867750637.17.1788887408423;
-        Tue, 08 Sep 2026 10:10:08 -0700 (PDT)
-X-Received: by 2002:a05:6a21:2983:b0:3cc:8f53:26c0 with SMTP id adf61e73a8af0-3da3a03ccf1mr51867662637.17.1788887407858;
-        Tue, 08 Sep 2026 10:10:07 -0700 (PDT)
+        bh=tmSBOtvSp+Gmy3pqLBjim1lUAAw6sE0lZZQQfu5q2wE=;
+        b=mCe6LxkGDFJ6MeOWfg/fdWDvcT+MEYZG9naGGJ9u229a/XNj6i7Yz/kJvKp7VBXESJ
+         /t/vd2az9VkWJYziCs/VOmKpDB83frMDvU/ElAT9rTefm/UfDmxy8jsqFMn5pQmKIdQU
+         O/pf33a7nsS0BOsUhGqYfBb5nN2LPd5hS7namHwmqzL8qQP60+cM8T3ZE2NoAwUD/UkM
+         qo8Z8zcyHCO4S4rDoWGROhVVxyWVUhsI3v2IQMkzTuXMa0jXGh/xdG6kbQCOYkea3oGz
+         4nc360Yb7sjDqlG36X85Wp0Au8LBX8AWPkuWUtVkma5nS6pb4AjfEt1+ivxiUhtzM25g
+         qYdg==
+X-Forwarded-Encrypted: i=1; AKwUvBxjbCSMBuCu8IeMfwTrveoEOPI02osrFJZCc/WGO8TWDzwSX6cljddLzz011+8AaFEmjZnDgVI=@vger.kernel.org
+X-Gm-Message-State: AFuF++m30Uwh+2MZSpkK7z2hus4dNRtGqJJMxtgiMdX5JxFGdTWVqmR/
+	TtByDOltlHYDmCs+2wgemTws6sAercFURYe+Cp52V52Qfsp3H+nCYnMQOCUE8CNx03gMS9PKGqL
+	yX+WlUggt5AeDrZhGj29bBRZ8zQMkuKdgKCHRVU1TYUQUmqKzs5TETEcuZw==
+X-Gm-Gg: AYBFou0EDeSABFSGVtSV+QDBYhkQm1zlIaZVz3Hs7dRje02srpjAY9lxcM+asfpQWvB
+	J2NLBEggNjqc+2lyHjC8HaBBCpUUKU98G6coG7kuRuP/kfiyyagH0aY8W1zH+D+C6DpNNMb9lIv
+	jCPYpwnQ3pFxMDTbkJ0iLlIkJeOA7ot18yGUQZFCFZd1MxEnLD0tsdUvt3Km+x72HsB4h/lthD2
+	i0tEO/cHMiR4xu1AzYQys7wG8s6aV7m5E2azpBZ1iddYEOj3ET/UtzmUaaYzqwtFFN33UtUQfIZ
+	o7z3iVzskLefCd4EzRx8GsFzgj1fZy+F9HEiWowLAcTuA0I/NtniyejWBtQ1uaYHjIlW5yBlzPB
+	QCUrqcyRU2TzfrkMXT3F3apCbkXBcCO1ri9Gs9Vfhti7qngtS3ub59+BuoqK3sf2jSKuotrA6vE
+	SEnPOfSmv+s6T3479/9VZFhg==
+X-Received: by 2002:a05:6a20:db91:b0:3d3:ae1f:d7f5 with SMTP id adf61e73a8af0-3da3a0b9eecmr47536189637.21.1788887416828;
+        Tue, 08 Sep 2026 10:10:16 -0700 (PDT)
+X-Received: by 2002:a05:6a20:db91:b0:3d3:ae1f:d7f5 with SMTP id adf61e73a8af0-3da3a0b9eecmr47536097637.21.1788887416272;
+        Tue, 08 Sep 2026 10:10:16 -0700 (PDT)
 Received: from hu-pooventh-blr.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com. [103.229.18.19])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33450e140d3sm31773675eec.4.2026.09.08.10.10.04
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33450e140d3sm31773675eec.4.2026.09.08.10.10.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Sep 2026 10:10:07 -0700 (PDT)
+        Tue, 08 Sep 2026 10:10:15 -0700 (PDT)
 From: Pooventhiran G <pooventhiran.g@oss.qualcomm.com>
 To: "David S . Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
@@ -88,9 +88,9 @@ To: "David S . Miller" <davem@davemloft.net>,
 Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
         linux-wireless@vger.kernel.org,
         Pooventhiran G <pooventhiran.g@oss.qualcomm.com>
-Subject: [PATCH RESEND wireless-next 02/18] wifi: nl80211: Define Seamless Mobility Domain (SMD) device capability
-Date: Tue,  8 Sep 2026 22:39:30 +0530
-Message-Id: <20260908-smd-v1-2-9fd2d876a1fb@oss.qualcomm.com>
+Subject: [PATCH RESEND wireless-next 04/18] wifi: cfg80211/mac80211: Configure AP with SMD capabilities
+Date: Tue,  8 Sep 2026 22:39:32 +0530
+Message-Id: <20260908-smd-v1-4-9fd2d876a1fb@oss.qualcomm.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260908-smd-v1-0-9fd2d876a1fb@oss.qualcomm.com>
 References: <20260908-smd-v1-0-9fd2d876a1fb@oss.qualcomm.com>
@@ -103,94 +103,247 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.14.3
 Content-Transfer-Encoding: 8bit
-X-Authority-Analysis: v=2.4 cv=TqLWQjXh c=1 sm=1 tr=0 ts=6aa04171 cx=c_pps
- a=rz3CxIlbcmazkYymdCej/Q==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTA4MDE4NSBTYWx0ZWRfXzGbIQqIOJO/Y
+ qSswWLt4pSLlSZfX7+jodc53U5VdkleZzLkDSnx2H7GjC/BZMpyX4nGdA9oYkYtaMJUpdFlQagb
+ pCrlR+Dc3r1Tv93n/7p1TRShmk8yDMk=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA4MDE4NSBTYWx0ZWRfX0Wswq2i2bk+U
+ CXqH9Ykd1hVUhuPK6z0TEkhr0rdg0QBI3Zy4szEhmRX4MFoqdn7gWLLKlUG4bfrTmLfo4Z77Gib
+ D2LwWHj47aUsIAFjAFPimxfHE+tsJ51/bMWOoFdYLE0tVh793zcecVNREM2wJb9W0sKi0ZEptGA
+ g2QeMZcswG6naD6D/YfB74XDxR9GN2lHYTZ1cztWIXRwfICdzRjC8nFgSSmHkJr97pxHxE2nZxl
+ PRRjRGslDPvUDMUSeVjUyJcFTE1ujDFxGIwlZ9lrlXzMTy0DyW86yjY3P3oTy+Dr60pmCZ2q2at
+ scVnxx3o6THxGjM1yDnxydxr0XmGHSONsZ6dG24HH3kWlQraMs6lmB9X4evkntnchxnMNfSwRLz
+ rc4xhEF99Pxjf3UyVdtgLyuN0id5o6/J0PtmaZeSwBNB57Z02sYLDrb7L1mgun64ZA7AlIUy+EA
+ J9/++xrZsUp07Kh2Dbg==
+X-Proofpoint-ORIG-GUID: XmtLqDkZoJdAFP4g5v-vHR4C9TWWJVMr
+X-Authority-Analysis: v=2.4 cv=QrduG1yd c=1 sm=1 tr=0 ts=6aa04179 cx=c_pps
+ a=oF/VQ+ItUULfLr/lQ2/icg==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
  a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=gowsoOTTUOVcmtlkKump:22
- a=EUspDBNiAAAA:8 a=-9rhnhb8Ej--qkh-m00A:9 a=QEXdDO2ut3YA:10
- a=bFCP_H2QrGi7Okbo017w:22
-X-Proofpoint-GUID: tl3108sUdcfZuuCwVYTIQ4aTDtJ5qArS
-X-Proofpoint-ORIG-GUID: tl3108sUdcfZuuCwVYTIQ4aTDtJ5qArS
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTA4MDE4NSBTYWx0ZWRfXxWnIXb7ZDBJq
- 9fHZ+iz7lSWLl+DQ86hfKET74scTfKqfUxiB2TZTs8+UT/gLhCpnJFWL8KhRh9xjafJAMPEIDR3
- 2mIfNfX7XVeFaMZjzb3GuXbrDCYAWJk=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA4MDE4NSBTYWx0ZWRfXxIMoSiFF/YnQ
- Fic5vYDcKwQyciNn1z0W6h2+sIIH510xUuW46LcupTYCNtv8O0x9lferiHQZ/B4ZLIMEbZcW7gC
- o7f0Ygo7bJ+GJ+5gnkBQgshXjVg5/rhCilGicPpW4etg75TNLRX+GlHVkNPYqtoa0Kh+qZtobX/
- UtkQqGjfJsT4HHZBIOkneHxf/wwhuu3rbVKkY876RyyzzKF4G0YxqHrBAJL7NTEDLnzbdY+zKMv
- LppknRcG56Em8tH+2NyfuQcjppoIFEoLRsHSvaqdBhAMnn88Ah9z01A1u5sx3ULxGm9pfHQyEmh
- O2UgpHwUA6yu9lmGv69NJ79mlWAU/dl0Ap9hXpr2GSx/lW1aok6W7NZXNIhAZJQMUuaKVodkQYB
- gktpjXJckbshKEss3RJNU43BHhcKVyeTYoV4EZ6Kh3t1DJXjm1QcJQul/BHpqmJvc4jkPJocmAk
- q+5wNwhCiwRigBpvMhg==
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=YMgV9FUhrdKAYTUUvYB2:22
+ a=EUspDBNiAAAA:8 a=56q9xwJp3_aMvtWITrUA:9 a=QEXdDO2ut3YA:10
+ a=3WC7DwWrALyhR5TkjVHa:22
+X-Proofpoint-GUID: XmtLqDkZoJdAFP4g5v-vHR4C9TWWJVMr
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
  definitions=2026-09-08_03,2026-09-08_02,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 adultscore=0 bulkscore=0 lowpriorityscore=0 spamscore=0
- phishscore=0 malwarescore=0 clxscore=1015 impostorscore=0 suspectscore=0
+ clxscore=1015 bulkscore=0 adultscore=0 malwarescore=0 lowpriorityscore=0
+ impostorscore=0 spamscore=0 priorityscore=1501 phishscore=0 suspectscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2609080185
 
-From: Sidhanta Sahu <sidhanta.sahu@oss.qualcomm.com>
+From: Rohan Dutta <drohan@qti.qualcomm.com>
 
-Per IEEE P802.11bn/D2.0, Aug 2026, subclause 37.16, an AP MLD can be
-managed by a Seamless Mobility Domain Management Entity (SMD-ME) along
-with partner AP MLDs to enable seamless transition of an associated
-non-AP MLD from the current AP MLD to a target AP MLD. A non-AP MLD
-advertising SMD supports association to an SMD-ME and SMD BSS
-Transition between AP MLDs within an SMD.
+When an AP is getting started, configure the AP as SMD-enabled if
+userspace defines configuration for the Seamless Mobility Domain (SMD).
 
-Subclause 37.16.11 defines an optional capability for the current AP
-MLD to forward buffered downlink (DL) data frames for the non-AP MLD to
-the target AP MLD.
+The SMD parameters are:
+ - SMD Identifier: unique identifier of the SMD
+ - SMD Preparation Timeout: Valid duration for a prepared target AP MLD
+ - Downlink Data Forwarding: Forwarding support for buffered DL packets
+ - Max number of Peer AP MLDs: Number of target AP MLDs a non-AP MLD can
+       prepare with
+ - SMD Type: Type of SMD
+ - SMD PTK Mode: PTK mode used in the SMD
+ - Neighbor Probing: UHR Neighboring AP Probing
 
-Userspace needs a way to be aware of the driver's SMD capabilities so that
-it can enable SMD configuration and operation only on capable devices.
+Without these parameters configured, drivers and lower layers cannot be
+able to support SMD BSS Transition.
 
-Define two extended feature flags
- - NL80211_EXT_FEATURE_SMD for SMD management and BSS Transition
-   capability
- - NL80211_EXT_FEATURE_SMD_DL_PKT_FORWARDING for DL data forwarding
-   capability
-
-so that userspace can gate SMD setup and data forwarding configuration
-on driver support.
-
+Signed-off-by: Rohan Dutta <drohan@qti.qualcomm.com>
+Co-developed-by: Aditya Sathish <asathish@qti.qualcomm.com>
+Signed-off-by: Aditya Sathish <asathish@qti.qualcomm.com>
+Co-developed-by: Sidhanta Sahu <sidhanta.sahu@oss.qualcomm.com>
 Signed-off-by: Sidhanta Sahu <sidhanta.sahu@oss.qualcomm.com>
 Signed-off-by: Pooventhiran G <pooventhiran.g@oss.qualcomm.com>
 ---
- include/uapi/linux/nl80211.h | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ include/net/cfg80211.h | 25 ++++++++++++++++
+ include/net/mac80211.h |  2 ++
+ net/mac80211/cfg.c     |  5 ++++
+ net/wireless/nl80211.c | 78 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 110 insertions(+)
 
-diff --git a/include/uapi/linux/nl80211.h b/include/uapi/linux/nl80211.h
-index d8fefefc11a9..d9ce185b0ef1 100644
---- a/include/uapi/linux/nl80211.h
-+++ b/include/uapi/linux/nl80211.h
-@@ -7114,6 +7114,15 @@ enum nl80211_feature_flags {
-  * @NL80211_EXT_FEATURE_PROBE_AP: Driver supports probing the associated AP
-  *	in STA mode using @NL80211_CMD_PROBE_PEER.
-  *
-+ * @NL80211_EXT_FEATURE_SMD: Driver supports Seamless Mobility Domain (SMD)
-+ *	and is managed by an SMD-ME to support SMD BSS Transition in AP mode
-+ *	and supports association to an SMD-ME and SMD BSS transition in
-+ *	non-AP STA mode.
-+ *
-+ * @NL80211_EXT_FEATURE_SMD_DL_PKT_FORWARDING: Driver supports forwarding of
-+ *	buffered downlink (DL) data packets in AP mode to the non-AP STA during
-+ *	SMD BSS Transition.
-+ *
-  * @NUM_NL80211_EXT_FEATURES: number of extended features.
-  * @MAX_NL80211_EXT_FEATURES: highest extended feature index.
-  */
-@@ -7196,6 +7205,8 @@ enum nl80211_ext_feature_index {
- 	NL80211_EXT_FEATURE_ROC_ADDR_FILTER,
- 	NL80211_EXT_FEATURE_SET_KEY_LTF_SEED,
- 	NL80211_EXT_FEATURE_PROBE_AP,
-+	NL80211_EXT_FEATURE_SMD,
-+	NL80211_EXT_FEATURE_SMD_DL_PKT_FORWARDING,
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index 6461a7bd0169..d0a269f4c711 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -1587,6 +1587,29 @@ struct cfg80211_s1g_short_beacon {
+ 	size_t short_tail_len;
+ };
  
- 	/* add new features before the definition below */
- 	NUM_NL80211_EXT_FEATURES,
++/**
++ * struct cfg80211_smd_params - Seamless Mobility Domain parameters
++ *
++ * @smd_enabled: SMD is enabled on this device
++ * @smd_identifier: SMD ID (ETH_ALEN bytes)
++ * @smd_timeout: timeout in 64 TUs for ST preparation
++ * @dl_data_fwd: MSDU forwarding supported
++ * @max_num_of_peer_apmlds: max prepared AP MLDs supported (0-7)
++ * @smd_type: SMD type
++ * @ptk_mode: PTK mode
++ * @neighbor_probing: UHR Neighboring AP Probing supported
++ */
++struct cfg80211_smd_params {
++	bool smd_enabled;
++	u8 smd_identifier[ETH_ALEN];
++	u16 smd_timeout;
++	bool dl_data_fwd;
++	u8 max_num_of_peer_apmlds;
++	enum nl80211_smd_type smd_type;
++	enum nl80211_smd_ptk_mode ptk_mode;
++	bool neighbor_probing;
++};
++
+ /**
+  * struct cfg80211_ap_settings - AP configuration
+  *
+@@ -1623,6 +1646,7 @@ struct cfg80211_s1g_short_beacon {
+  * @mbssid_config: AP settings for multiple bssid
+  * @s1g_long_beacon_period: S1G long beacon period
+  * @s1g_short_beacon: S1G short beacon data
++ * @smd_params: Seamless Mobility Domain (SMD) parameters
+  */
+ struct cfg80211_ap_settings {
+ 	struct cfg80211_chan_def chandef;
+@@ -1655,6 +1679,7 @@ struct cfg80211_ap_settings {
+ 	struct cfg80211_mbssid_config mbssid_config;
+ 	u8 s1g_long_beacon_period;
+ 	struct cfg80211_s1g_short_beacon s1g_short_beacon;
++	struct cfg80211_smd_params smd_params;
+ };
+ 
+ 
+diff --git a/include/net/mac80211.h b/include/net/mac80211.h
+index 7bb4618065b6..6b82ca07fbf0 100644
+--- a/include/net/mac80211.h
++++ b/include/net/mac80211.h
+@@ -797,6 +797,7 @@ struct ieee80211_bss_npca_params {
+  * @s1g_long_beacon_period: number of beacon intervals between each long
+  *	beacon transmission.
+  * @npca: NPCA parameters
++ * @smd_params: SMD parameters
+  */
+ struct ieee80211_bss_conf {
+ 	struct ieee80211_vif *vif;
+@@ -904,6 +905,7 @@ struct ieee80211_bss_conf {
+ 	u8 s1g_long_beacon_period;
+ 
+ 	struct ieee80211_bss_npca_params npca;
++	struct cfg80211_smd_params smd_params;
+ };
+ 
+ #define IEEE80211_NAN_MAX_CHANNELS 3
+diff --git a/net/mac80211/cfg.c b/net/mac80211/cfg.c
+index 23f4f9ec86d0..b4b42790c5d7 100644
+--- a/net/mac80211/cfg.c
++++ b/net/mac80211/cfg.c
+@@ -1796,6 +1796,11 @@ static int ieee80211_start_ap(struct wiphy *wiphy, struct net_device *dev,
+ 		}
+ 	}
+ 
++	if (params->smd_params.smd_enabled)
++		link_conf->smd_params = params->smd_params;
++	else
++		link_conf->smd_params.smd_enabled = false;
++
+ 	if (sdata->vif.type == NL80211_IFTYPE_AP &&
+ 	    params->mbssid_config.tx_wdev) {
+ 		err = ieee80211_set_ap_mbssid_options(sdata,
+diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
+index 22d71f32815f..aa7aa70a5b41 100644
+--- a/net/wireless/nl80211.c
++++ b/net/wireless/nl80211.c
+@@ -7224,6 +7224,78 @@ static int nl80211_check_npca(struct cfg80211_registered_device *rdev,
+ 	return -EINVAL;
+ }
+ 
++static int nl80211_parse_smd_params(struct genl_info *info,
++				    struct cfg80211_smd_params *smd_params)
++{
++	struct nlattr *smd_params_attr = info->attrs[NL80211_ATTR_SMD_PARAMS];
++	struct cfg80211_registered_device *rdev = info->user_ptr[0];
++	struct net_device *dev = info->user_ptr[1];
++	struct wireless_dev *wdev = dev->ieee80211_ptr;
++	struct nlattr *tb[NL80211_SMD_PARAMS_ATTR_MAX + 1];
++	int err;
++
++	if (!wiphy_ext_feature_isset(&rdev->wiphy,
++				     NL80211_EXT_FEATURE_SMD)) {
++		GENL_SET_ERR_MSG(info, "SMD is not supported");
++		return -EOPNOTSUPP;
++	}
++
++	if (!wdev->valid_links) {
++		GENL_SET_ERR_MSG(info, "SMD is not allowed without MLO");
++		return -EINVAL;
++	}
++
++	err = nla_parse_nested(tb, NL80211_SMD_PARAMS_ATTR_MAX,
++			       smd_params_attr, nl80211_smd_params_policy,
++			       NULL);
++	if (err) {
++		GENL_SET_ERR_MSG(info, "failed to parse SMD parameters");
++		return err;
++	}
++
++	if (!tb[NL80211_SMD_PARAMS_ATTR_IDENTIFIER] ||
++	    !tb[NL80211_SMD_PARAMS_ATTR_TIMEOUT] ||
++	    !tb[NL80211_SMD_PARAMS_ATTR_MAX_PEER_APMLDS] ||
++	    !tb[NL80211_SMD_PARAMS_ATTR_TYPE] ||
++	    !tb[NL80211_SMD_PARAMS_ATTR_PTK_MODE]) {
++		GENL_SET_ERR_MSG(info, "required SMD parameters are missing");
++		return -EINVAL;
++	}
++
++	memcpy(smd_params->smd_identifier,
++	       nla_data(tb[NL80211_SMD_PARAMS_ATTR_IDENTIFIER]),
++	       ETH_ALEN);
++
++	smd_params->smd_timeout =
++		nla_get_u16(tb[NL80211_SMD_PARAMS_ATTR_TIMEOUT]);
++
++	smd_params->dl_data_fwd =
++		!!tb[NL80211_SMD_PARAMS_ATTR_DL_DATA_FORWARDING];
++	if (smd_params->dl_data_fwd &&
++	    !wiphy_ext_feature_isset(&rdev->wiphy,
++				     NL80211_EXT_FEATURE_SMD_DL_PKT_FORWARDING)) {
++		GENL_SET_ERR_MSG(info,
++				 "SMD DL packet forwarding is not supported");
++		return -EOPNOTSUPP;
++	}
++
++	smd_params->max_num_of_peer_apmlds =
++		nla_get_u8(tb[NL80211_SMD_PARAMS_ATTR_MAX_PEER_APMLDS]);
++
++	smd_params->smd_type =
++		nla_get_u8(tb[NL80211_SMD_PARAMS_ATTR_TYPE]);
++
++	smd_params->ptk_mode =
++		nla_get_u8(tb[NL80211_SMD_PARAMS_ATTR_PTK_MODE]);
++
++	smd_params->neighbor_probing =
++		!!tb[NL80211_SMD_PARAMS_ATTR_NEIGHBOR_PROBING];
++
++	smd_params->smd_enabled = true;
++
++	return 0;
++}
++
+ static int nl80211_start_ap(struct sk_buff *skb, struct genl_info *info)
+ {
+ 	struct cfg80211_registered_device *rdev = info->user_ptr[0];
+@@ -7505,6 +7577,12 @@ static int nl80211_start_ap(struct sk_buff *skb, struct genl_info *info)
+ 
+ 	/* FIXME: validate MLO/link-id against driver capabilities */
+ 
++	if (info->attrs[NL80211_ATTR_SMD_PARAMS]) {
++		err = nl80211_parse_smd_params(info, &params->smd_params);
++		if (err)
++			goto out;
++	}
++
+ 	err = rdev_start_ap(rdev, dev, params);
+ 	if (!err) {
+ 		wdev->links[link_id].ap.beacon_interval = params->beacon_interval;
 
 -- 
 2.34.1
