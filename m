@@ -1,173 +1,103 @@
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+Received: from mail-vs2-f9.google.com (mail-vs2-f9.google.com [74.125.227.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BD0156B863
-	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 15:50:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788882634; cv=none; b=mnMsPeSC1X585A1HvI10Wn6dXKVNRiVSiGYHgmHC+G69rUwg52AwFDCJ+lGEPSDmVGOlaVCKaH+L0dzMC2Wkr+MqnmQ82m1auuR4xKFVnBw2GudAe30/9aELot1moiYu9ggUNHFUkbt6588LjJ/mpr4LL3QqKnovYrkJU29khnY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788882634; c=relaxed/simple;
-	bh=gtbtPei26NBxwIm4I+X5O9DzXMAMA3I9C/Tm0Yf9Ykk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E5IGhq07yWZAISwT6eD6OTRajzc/ML4/Jvt6Jse9QeVd3e6+TeD2wWG7HRb9ldTjmktwwq8FqXqqHSuzXNBZu9id+srp74eCncBDvIP/3jtOT/ix37MLNBXHvyR8ju7wVtLU5jWIUZeyLj1EiZb5+bijY4g0uDHLxoHPp9JzrVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la; spf=pass smtp.mailfrom=lex.la; dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b=NQoQsYM4; arc=none smtp.client-ip=209.85.221.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lex.la
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29CF4572685
+	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 15:54:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.227.9
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788882884; cv=pass; b=gLne2oftx6Wgt1+BuusN6LSzGaJKK4yc5PkonJfwx6Vvv/GGzvq7hbFQrqovDUxT7Q2D76JmhFkDKn0OQr0HfI4n+YDQqdqCFDAVJAbXFVWXgdO5I+RTyQEO6WRAVoS2TyJB/IBOhfnGPLRhVvxJe/eKK6EBRPsPbCSOyhdit/c=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788882884; c=relaxed/simple;
+	bh=m8naGFUUK15OK7RhREJs9bWygJEJ6IkQJ0hS9/AKPmg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=tgbLvOR7mTtfTYSbaK05fcvEcqblwffPKu5Vt60iqWx7CpdtiwuCX3PC/d6lP+15Wv1LyQkcbK7tph95Ayj3Rxrwp1zscvdgjbDBmu2g6vjXKDDMXTb8zkIqdx1/pQjSGof+u0hluYem96KNaXWkf1xbHRv4fVfwwad83CCulW8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=peXBH2a2; arc=pass smtp.client-ip=74.125.227.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b="NQoQsYM4"
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-485888b3c3dso4866638f8f.2
-        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 08:50:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="peXBH2a2"
+Received: by mail-vs2-f9.google.com with SMTP id ada2fe7eead31-7860d691997so802337137.1
+        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 08:54:41 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788882881; cv=none;
+        d=google.com; s=arc-20260327;
+        b=A2J3UIjlw/lweT6VQPDZkZBgdcYeZiJUdwFkQ0VOesG0G9PcjZycMxbtsfahOPHrI6
+         aBtCSgLRnUXFhC/pjeD1DLLZnx84AlK2yP7fmy+Ek+Yq3aEnk5Bnj1oHKRA9sbi6ayla
+         KPs7pzf3xgSGPs1O5Yu6KqRDZvy+44qQYfBjIwVS/ZNSsikEh6/rTKwUI2KkrCLcowjr
+         5yCVrsm7V2YilKI5sXnmdiNQFH2aMVXwvyzC0bQGOncaJmd8R/9g2Ol8Uiia2fta9ZfP
+         8IrcT2YIeffjBVM+qFyRQycg0Orr4INdjSO5BC7qn80aA4gKzo6aQTdmVe30ij2vM+oU
+         TI7A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=m8naGFUUK15OK7RhREJs9bWygJEJ6IkQJ0hS9/AKPmg=;
+        fh=gfWd0mJQm5lfyp272QybPbqOGwfK0bNqrKkrvUR9P1s=;
+        b=ZtXVVYK98aJlFo60g/dR4dvXfr25+pSWOIpbLvXjRBKn5CztHCFwYvsxzaMv+ar6EH
+         PT5axDhQshzaaULqgnuX2tcd21xlq38nSnNDQ4MKj/bsuUHQ7uEkz4Ajihwea191bmqd
+         n9h8Y/IKW3TM4vVt6qCr5IRDIXvZrsnTmoOcAhfvvARIEoYQvH8XC0ssUSwdr3Kb6nz7
+         OAqfAP4pqQNla/DSqEPHu83hxEFvV//BnY0b8Jd64j9YYNBwUg2t1cDmMS+lHobmPBCf
+         lF/hy5uATZM7PZFtX2LJ0gQtTAfd9nqjPg1EoNmue3A0KmlTYQ2AMa03JwiRN5VRZfcq
+         Jhaw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=lex.la; s=google; t=1788882630; x=1789487430; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=bO7Bfy8ufcVVG4fz4/9HKHFZXDmM8/J+B/IYDh0YeSI=;
-        b=NQoQsYM4VjFIwCULM3VfNZaWczcaZf9RWUA25AdXuHKK/PXvp36NeXSzPepkp8tWAi
-         GTbPW4/QR2FpwAsrXz5f3sU2/GLPw1QNjwjEoKeRqIgE8c3FYMoPVNYpDRwhie1CyYdb
-         58S5LVp/c7UDtKNyNdvlESBnnLH4qG0+B8GoiIQ9RACp1LX3xxUCVAYzqAVXoMnytTZk
-         hqO99QoK8rzMmSuYuGm3V8+uIV1VK4GABMQ8Lv7UiFoiLH476kEKrW9NPx2Wb9+2Zwxk
-         TPCrXvC3TkKDNacftuGJD9CvDSaN0wYbXkC4bnZqD7jge4vPUrC29sjBI7gPD9YFyJSY
-         SVzw==
+        d=gmail.com; s=20251104; t=1788882881; x=1789487681; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=m8naGFUUK15OK7RhREJs9bWygJEJ6IkQJ0hS9/AKPmg=;
+        b=peXBH2a23fSed/p+ckB1kajRvnn60mDjJi7RJiS7nFs97gWq/6m66ODfJnFPFrXkvi
+         Rsx1Wp0OQFM+zaQ1Z5s8/eNBEhHkQFqEON4+ODNyREVmVvSIHsjdLPjz2CJ41GrsqVBH
+         J8qiQj2wDk3flVW36QwyuVSUG7ywKXFAAlY0rDSiJrSZNctOL/Zrjd3HPx6S7QeO7AuF
+         MCRfuI0EAlgxbX16R/JnwgTv6g6MY5pfhr8IzpNLjOE/Tpy21viLrqoDeVTPEasD+nbS
+         zTGMF6Km3EvbttKwc63XqjnfLv/8+SZhPODhHHc3c9NXeUmuUOQx8NdqxeSZpVv2GhlX
+         VcAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788882630; x=1789487430;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=bO7Bfy8ufcVVG4fz4/9HKHFZXDmM8/J+B/IYDh0YeSI=;
-        b=JIwGwQIN/1t8T1/SrAc3d6TAMWVfk5BLwMkx9KXbNREIMAx6Jhy56xNDPKxCsH++21
-         xQeE13DG7ypeABLflk/WoS5SR/bzpmpNQz2aC8aj3H/8vQfpd7I3NHCqOU0jhKW77EQ+
-         7/vjN4eLmb1NaVeC210a+4+uv2jP2tuVZThsnvdG9P3V/POBp+cu6hVJ+elTWV6wTf+7
-         EaF+pnplNByl23FpJDzqv+V+dRVunwaup8u19inUP4ixmqdpzCtcWDwJdecYcEnIeoCj
-         Lag2d1t5F2bUfDAfO0ds0OHr2Xm/mTgJt8ZQbhgt27XyyTU06HwEnuTDMIwjso1/ws6Y
-         4XWQ==
-X-Forwarded-Encrypted: i=1; AKwUvBz0zUafg8adFSyU4YdHrMw/+Gy1rVk/jVEL/1p1M6MKGJXwadU37MR6AeCTwcCFg/81k0cRrr8=@vger.kernel.org
-X-Gm-Message-State: AFuF++nzd3cXFg+Ax+bmWpnjNGFteO+/ydQHmfRLIyZH6MQFfRj/J2Ng
-	FdrCzcQe5cGBLYVmA+7BsLD9zavL8i7v5SbgZDv+rfujfjFSy5oeceFGGDoyUuAv8mI=
-X-Gm-Gg: AYBFou0Bh6UkvGCLQJrf4UwCNDjhJStWvwO/L/3KLQGSb2naWvH1ZXcxepr5OMA6MGH
-	bJhbWomOMTQRekOZCKPBau7OyKOuY5F+pZY+yLQVuLOpilAg/wUV2td7WIvwSTU5s9YNEhbcYjD
-	j45tjRSGBanAWTPHD9TYeflwJccKZq4CF3dutFDFiAVS+hFh6LPYOz19GSWHtuM2OmTCjYbB3XD
-	Sf/neBEHFtH7iY1v/0jC20QIKmLO8lmQVvl6x7z8a8EbqIyC4qZaowR6LAoyl5zDqWKu1yjYWaA
-	97It4fpWAlfqPhM5avq4Lq088DYmnq5dED5+c4U204oO6GZeYlsA4tyYEMyl+QzXfYZq/uKmWnX
-	5kmUzOZw25JYoqSL8nLsfLWol/mrVJYg0/eOByjHIYqI5242oRpWssGjPIeYO8Xvk6JVOVfuXAB
-	s7mLqkzxY97mAQsKpbRZ4QwxojENEqEkDcDo9rvLA=
-X-Received: by 2002:a05:6000:658:b0:482:e1b0:8a1a with SMTP id ffacd0b85a97d-485872addd6mr29202076f8f.15.1788882630229;
-        Tue, 08 Sep 2026 08:50:30 -0700 (PDT)
-Received: from remote-01 ([84.17.55.227])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-485885bf3f0sm40869652f8f.33.2026.09.08.08.50.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Sep 2026 08:50:30 -0700 (PDT)
-From: Aleksei Sviridkin <f@lex.la>
-To: andrew@lunn.ch,
-	hkallweit1@gmail.com,
-	linux@armlinux.org.uk
-Cc: olteanv@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Aleksei Sviridkin <f@lex.la>
-Subject: [PATCH net v6 2/2] net: phy: restore the interrupt the bus gave a PHY
-Date: Tue,  8 Sep 2026 15:50:25 +0000
-Message-ID: <20260908155025.4155289-3-f@lex.la>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260908155025.4155289-1-f@lex.la>
-References: <20260908155025.4155289-1-f@lex.la>
+        d=1e100.net; s=20251104; t=1788882881; x=1789487681;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=m8naGFUUK15OK7RhREJs9bWygJEJ6IkQJ0hS9/AKPmg=;
+        b=E3yl7aliS4EphSmjXD7G2UMym/2HyItPJWdaQoQAnl3ZEkLJU8fyAGXMLr3FEzBVUR
+         cNluxHcpqieeq5CoLWO/2UpsvSBORZDassd6t6B4SXQfEVujocf2T/e8yMUfMLvtiTft
+         Dv8JQElp0RND1JbgQ3zxmWIJEEAyZpMiKYZL8d4WrC4FwPQesieFG90LW1ZVCFP/lh/l
+         K34TQP8rlmxKcm8atmzgY7YfcFLMDNY+Mo9xqdBpC9jqXxvJiXE8n/pp2wbqhDVYY8XM
+         8AnHSbRS/akHcVXcNWHdguR0wb8Yhprwb+ohiYZc1dYtzo4zXfLyV0GqJ915d+sMZS8J
+         GsqA==
+X-Gm-Message-State: AFuF++l8NoLey1aOXEkejqhPAg+upp/fylxFszr7wlHUjtClA5JnenkV
+	wF7n/wa39VoyBFzkRILIXSwA8wIqnvxczYEzCtppMzXIzrzVuQ8gfYQf3i3+XI0oZqVMGOTGz3C
+	vi0lCi+IcUXO50q8ASzigCdWsKW430F4=
+X-Gm-Gg: AYBFou2+PErFHywFfxlOHWIo2bzr5hmyAQli7y/8tXhfNT8FDJRuivZKjwnoh89DuBd
+	aRb65HSZ88FyERF8PU1nYqWAPO1ewQ7JSBIQo4uj2cKPgjucGRe18b2qpnEAirG/rBbtkGt+Grt
+	e+zxZsi8SOY3hmnQ45rENJiHOP1SV4LndDfZ8cNO1LR7u2blK6Ygl0QYVCssrW75qljJyW556ct
+	QHJOtF+XATVa2YM/g4El7SgoIeatGtVb0eh9NEPg6RuuIJ+4OxAW7R06oY8xO4wRlJFU65mmeNq
+	xj57sr6mw52nUHtkDN0T+N0t3ydnRbOsB0kQCp8xnMAXIbs=
+X-Received: by 2002:a05:6122:338b:b0:5c6:5fff:f2c9 with SMTP id
+ 71dfb90a1353d-5c7ed41c953mr14439622e0c.4.1788882880956; Tue, 08 Sep 2026
+ 08:54:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260823142620.126424-1-shlomojune6@gmail.com>
+ <CANn89i+5o16tSTk9MpLE24nCAn+SkMeZvHv0W=MqxnXGZDBBiQ@mail.gmail.com> <CANn89iKck9W0KB8Sp7OFDQ+OTFJnBpy=jsmQbZ+VYhrm8yOUgw@mail.gmail.com>
+In-Reply-To: <CANn89iKck9W0KB8Sp7OFDQ+OTFJnBpy=jsmQbZ+VYhrm8yOUgw@mail.gmail.com>
+From: J4f J4f <shlomojune6@gmail.com>
+Date: Tue, 8 Sep 2026 23:54:28 +0800
+X-Gm-Features: AcwNN1XPIJ_-7f0UpmEHZhNDAtBZArjkgFp-nC_du6g8-qb2zRaLlPZ5d23i7Vs
+Message-ID: <CAE_LbwkoQMYLXzOi_RwMcxuNy=tMo256+Xj2Ac+0W7MbAv2yLg@mail.gmail.com>
+Subject: Re: [PATCH net] net: skbuff: reject invalid pull bounds
+To: Eric Dumazet <edumazet@google.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org, 
+	pabeni@redhat.com, horms@kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-phy_probe() replaces phydev->irq with PHY_POLL when the driver that is
-binding has no interrupt support, and nothing puts it back. A PHY whose
-own driver is a module on a filesystem that is not mounted yet gets the
-generic driver first, loses the number there, and polls for the rest of
-the uptime once the real driver takes over.
+> Following up on this, are you planning to send a V2?
 
-Put it back from mdiobus->irq[], which is where the number came from:
-phy_device_create() seeds phydev->irq out of that table, so the bus that
-described the interrupt still holds it. Restore at the three points the
-bind cycle can end, phy_remove(), phy_probe()'s own error exit and the
-unwind in phy_attach_direct(), so a bind that is undone by any path
-leaves the PHY as it was found.
+Yes, hopefully next week. I have a few other things to take care of
+first. Sorry for the delay.
 
-Skip it while phy_link_change marks an attached consumer. That consumer
-called phy_request_interrupt() on the PHY_POLL it saw and would free an
-interrupt it never requested.
-
-A bus whose driver writes only phydev->irq and never the table is not
-covered, because the table then holds PHY_POLL and there is nothing to
-give back; lan78xx, smsc95xx and sxgbe are in that position today and
-registering the interrupt with the bus is theirs to do.
-
-This needs commit e0d1c55501d3 ("net: phy: fix
-phy_uses_state_machine()") to be of any use: without it the mark this
-skips on is never cleared once a consumer has attached, and the restore
-never runs.
-
-Assisted-by: LLM
-Signed-off-by: Aleksei Sviridkin <f@lex.la>
----
- drivers/net/phy/phy_device.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
-
-diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-index 94b2e85e00a3..b55402569300 100644
---- a/drivers/net/phy/phy_device.c
-+++ b/drivers/net/phy/phy_device.c
-@@ -1734,6 +1734,19 @@ static bool phy_drv_supports_irq(const struct phy_driver *phydrv)
- 	return phydrv->config_intr && phydrv->handle_interrupt;
- }
- 
-+/* Give back what phy_probe() took, from the bus that owns the number, but
-+ * not while phy_link_change marks a consumer: it skipped
-+ * phy_request_interrupt() on the value it saw, so phy_disconnect() would
-+ * free an interrupt nobody requested.
-+ */
-+static void phy_restore_probe_irq(struct phy_device *phydev)
-+{
-+	if (phydev->phy_link_change || phydev->irq != PHY_POLL)
-+		return;
-+
-+	phydev->irq = phydev->mdio.bus->irq[phydev->mdio.addr];
-+}
-+
- /**
-  * phy_attach_direct - attach a network device to a given PHY device pointer
-  * @dev: network device to attach
-@@ -1896,6 +1909,7 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
- 
- error_module_put:
- 	module_put(d->driver->owner);
-+	phy_restore_probe_irq(phydev);
- 	phydev->is_genphy_driven = 0;
- 	d->driver = NULL;
- error_put_device:
-@@ -3820,6 +3834,8 @@ static int phy_probe(struct device *dev)
- 	if (!phydev->is_on_sfp_module)
- 		phy_led_triggers_unregister(phydev);
- 
-+	phy_restore_probe_irq(phydev);
-+
- 	/* Re-assert the reset signal on error */
- 	phy_device_reset(phydev, 1);
- 
-@@ -3848,6 +3864,8 @@ static int phy_remove(struct device *dev)
- 	if (phydev->drv && phydev->drv->remove)
- 		phydev->drv->remove(phydev);
- 
-+	phy_restore_probe_irq(phydev);
-+
- 	/* Assert the reset signal */
- 	phy_device_reset(phydev, 1);
- 
--- 
-2.53.0
-
+Thanks,
+Shihuang
