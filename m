@@ -1,157 +1,194 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012054.outbound.protection.outlook.com [52.101.53.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC8663812F6
-	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 07:04:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788851075; cv=none; b=EDVCo1f30mYEFTetkjYjQtkdoMpjnUR8cyoePg24YDPbMpQ5ERMz/8/Zjfq4eUiTemPG/WQHXszm8bNvF4JYA9/tLWrGqthGGgXiWFv3ANYtzUy8pMzPStuPrNl1fQZRvT1khd8UG6+HuJzdOxeTgTVYQyvoDh4s8jCpjLZskoY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788851075; c=relaxed/simple;
-	bh=QzWEww27danke6pVuKQ865QkKlQ6qEvVrB1nT2Ssj5w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UqE0j8MLmAdl/rLGgzBysE1Rdyydh7CffzNKEgtpsxvHt6CIiyzaJfEAtJIR+GKvtQf2pjps+CYl1VeGeSpTx3uZy8vWgUYGjOmpQaMx6hVlVtxq3N2FWbFzEbyuc3pFAB0gRE1hdlHaoWMo5d68l5/2gnOMXPzhrfU4xr7XWgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=LS9eJkNV; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Xh2Mo0hg; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA289377A93;
+	Tue,  8 Sep 2026 07:06:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788851217; cv=fail; b=JOAMmkKuhkY1drERrBzk1DFvAvPRDpuKEu7tVvNYxLy8ZOC1N6/0llTqLWW5d41g1ISAuzM7xduS6ODcTn45ZXkzy4+bFc5Ub19IWf71pf6dU+isZPRuFcTaCz+RaldhCWhlXR80PpAHl1Qv0Iik+1b+gWFKxWYARlUtP19F2Sc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788851217; c=relaxed/simple;
+	bh=uQSufbqfsFOUQQtwcw2JjQ4CE4hEiFL6q9nO7aGXVt0=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=McVl6x66nlJBgHdUHl+gXTUtpP6YDdhk6s+MjkaG7N0JnhbdIxsXyWE2K39TZWTNoycvN5PNK0d8IlcuD90LpqbA09itlOHNKDnBvwtQWyZhcYUU4uj27Y1jLqP4fQMEKWZhgjAHMssq6o3Ramsc5rCVr2O5odOOBZ3j74Os5bQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=altera.com; spf=pass smtp.mailfrom=altera.com; dkim=pass (2048-bit key) header.d=altera.com header.i=@altera.com header.b=LDjA+Ooh; arc=fail smtp.client-ip=52.101.53.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=altera.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altera.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="LS9eJkNV";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Xh2Mo0hg"
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6886M3P12072795
-	for <netdev@vger.kernel.org>; Tue, 8 Sep 2026 07:04:33 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=qb33tFd7B0AHkg7R+dCmJclp
-	qBJUbuxxgUYmiEyjnXs=; b=LS9eJkNVCxJeORL+Pr1WijtqzIvBVlEeDFJyJi2U
-	p3gIZiASmuTQmAmY3ZmqyHwSu04egCxuGP4237LeLhc2e7V8L40wfYyvNy8vRIZJ
-	5phGl4FpbTPUtsOgv7YSwIx7WIKcNFq6o0lwb2WORIHaxl99gFZ+g9jqoMpoyVDC
-	kdenPZ+lgV4WktmMq2U/IogggEEQgaHRTdIpS2R2kyGdEiR8gC0sXS+EzefbLZ3g
-	OXlPWNclU0oUgwr6VkxCCrh1Ia5OkE5j8ZvDqZ0EKykftdj3FThaFhrWXb6n1LrM
-	dkMnkECQsm607OGnH8gc80GdHPw5W2Np8JMdW3yrjY+7gQ==
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ghsfym853-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 07:04:32 +0000 (GMT)
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2d6f75c1219so15925915ad.3
-        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 00:04:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1788851072; x=1789455872; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=qb33tFd7B0AHkg7R+dCmJclpqBJUbuxxgUYmiEyjnXs=;
-        b=Xh2Mo0hg6C8aXqwAA01OzK2yZvb4zQYEPetkOhf1qKLhVTYKm1yUB2g8UByzgDRNzl
-         kGjhVPzXTdbXL8oitS/o91DX0f/t4mwp1hmVj7fwsIeGBhT6gWQe3TNLZcY/n8Y5Xtov
-         Aig9mEPYwTUuYX3PFKKTT9vXvWN2OCmcfUX21C+8fIrI8+Dp1mZDBNA0cHDqTUCrg7sR
-         uhUtIJLMBh2OuXBtfI0NxSoP6Hk2nRxEAJaGm1bsLsWM2Kulebuz1KhGtKqOvwQ5sxYM
-         LFvFGYWjHcLg/lqgZD6RRNdm2DJ/i2ocopAw20KoRz7HHrigzUIKsRTOwKiuIyhQPTiN
-         jaqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788851072; x=1789455872;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=qb33tFd7B0AHkg7R+dCmJclpqBJUbuxxgUYmiEyjnXs=;
-        b=o+PpFNjLGafEnYb628GSrEXQhZfLvmShyPpldTLOWD1ryG2y2S0X4v8RVk9hOKtpCz
-         yclOOGjdeSyojvsKW3imblynFzrfEsAIOLNf+dn7hzvdd+Nc6Gat0vjlTUNe/dKFIaBY
-         v/irv2dUG9kS5NC9lMDazjAVrG/MT4TwpChovKcIJ2uWm0d36BFTo3vagWUyB3lvby76
-         E4MbzPZTM7vNQ9cS5VLClnFcxd75UD3wJeqyu7YUkjbCj1mu/HJau0TPg1UuZ2oUI2KW
-         LwSfYxXj5ebm3+4wJoaeKl53dtRN3qTCB7Pck6/9sUDSV4OzJ9R82yavneeE6uov1Rv9
-         f4Kw==
-X-Forwarded-Encrypted: i=1; AKwUvByO4y/uwGnoK1wNhc/PpP5LQ6d6p689kzL+vKz1zZeJgtSfk0arWHjNVazjOziQb7ACzKl7cdo=@vger.kernel.org
-X-Gm-Message-State: AFuF++mW6FrufjbS8VMrA3Z6ZXQRV8ji/6TtI6BlR3cvcjvv3CsZIse9
-	G78Pz0hNhCizbp2rwZT50s86E/FeEDdIg/11V+SEc/EiIXCOIc9LgSbIMgyoSiuqdIrOMDIgbIi
-	y3b8LKJZv7Lu+Dxz5p8mbvm4EEfnWgYl8vZS+YAC7sBV+80uIKfkxPIsLIQQ=
-X-Gm-Gg: AYBFou3w1ZrZT0fHy1hzf/aV6xanASlErkFd6A6p0LL0IZVmoapilMaU9bNA4HQoL3A
-	rSBVYkSy+xtFAIDMF10EuRwgxv0Z8Ci55/oMD4eOWWTGKG1OGt+kh8GTPI+DKztP5SWY0faQzOB
-	tRGVRAN1eZR6N1EceBpgFUffI7m5SEp9AWAucI/TB3VoWOcCAYLgvXRWweyfzlCHP8qOWnNM1L4
-	eqtHQ6nXvAaARZypoKkqicb/ME9Fd/YdRrbwXV6ITn63R3Ej23mDq4sbCQoc8XCXq0/QbRldZJf
-	Rdyf9crRCBuS10w5XYMR6hL6bYTVF7FS9987GX99LnRXrjIyh0Rcl1sbMCjNRMGHDQ2bl1RGwR9
-	zzlFI7Xpz9463UQ==
-X-Received: by 2002:a17:90b:4b90:b0:38e:49c0:75a7 with SMTP id 98e67ed59e1d1-39b2610f2fbmr38627640a91.8.1788851071184;
-        Tue, 08 Sep 2026 00:04:31 -0700 (PDT)
-X-Received: by 2002:a17:90b:4b90:b0:38e:49c0:75a7 with SMTP id 98e67ed59e1d1-39b2610f2fbmr38627601a91.8.1788851070748;
-        Tue, 08 Sep 2026 00:04:30 -0700 (PDT)
-Received: from oss.qualcomm.com ([202.46.23.25])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3339b8f44d7sm32734467eec.22.2026.09.08.00.04.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Sep 2026 00:04:30 -0700 (PDT)
-Date: Tue, 8 Sep 2026 12:34:23 +0530
-From: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Komal Bajaj <komal.bajaj@oss.qualcomm.com>,
-        Anurag Pateriya <apateriy@qti.qualcomm.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-        Richard Cochran <richardcochran@gmail.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        Maxime Chevallier <maxime.chevallier@bootlin.com>,
-        Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH PRELIMINARY 0/5] arm64: dts: qcom: shikra: add Ethernet
- support
-Message-ID: <ap+zd/2QmerMwi0o@oss.qualcomm.com>
-References: <20260908-shikra_ethernet_dts-v1-0-69c0c5c7c124@oss.qualcomm.com>
- <e9388ffc-ddc8-456f-ad7f-1d185d35ab69@kernel.org>
+	dkim=pass (2048-bit key) header.d=altera.com header.i=@altera.com header.b="LDjA+Ooh"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=IWacxt9dMJrTtld7huh0+9hI2SCQCAlDp660eG+8EKddsnceWV8zHtqAYFocc1cOU56IUPRdhfP++/U/kgrf15wh/eeezSwW/oUIF50K8Y+gCDWrk8GA+prhbZWVtLdt8aWNMALHJA9y8daWvAFhMaI2uz0hzfU0MS70W5v8xYwTaiFSHfiX4AOLQ6m+Dxwl5dP41b48sTjA3dCGJ89hge+7odPUkoVr9fYDfIJ66S7l/ievvX4p2potrTcFVFGoniLpuHtgOapG37eXp2qzkSxgb2MOTCNA63Tf3Nv/07hYBtc+P9X2X+iGDwEwUX6lIa1kfmjn68t0CQkhZ/7v0w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Q2oMaMZ1a6AtRZU2CmskcOYkI9VKf+vgW1uBa82IK2Q=;
+ b=B3pn8n8o4cCh4GJ+uk85ANlsuJNw+b3WXiUhMq3vO/LbI7UQlsrGP5JHI4I2WZ3FQuPHe8kur19vHHyVjpxu2nc2QIv675AP/ZqR6M2MY0RVJ9J9d3WZnLnQfJ1OOThWddhj2JbOFFqJNU5RWBCJyqM3IOsdnU7C4lyG+nF+/zik3TzgS726clBqFU8vDez3uwGjkx415Z8qH40GznEaCJRod/2L12q9o33g8Bu1AhIDrmS4xtB3fkj6nmpXcL7m5MaHOXRkwxDr+g8LXUg2IB27BciRw5sTt1FBESMIuiWBiOy4JrGESGRW9FLTKKCS+TqGOdODCjKP7NKzv+R4Wg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=altera.com; dmarc=pass action=none header.from=altera.com;
+ dkim=pass header.d=altera.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=altera.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Q2oMaMZ1a6AtRZU2CmskcOYkI9VKf+vgW1uBa82IK2Q=;
+ b=LDjA+OohSoIfnFWDBXgoj1tzAuiT0EjcjNzXXMpaBXpFHqZuzn8YQs8rHS1HtBNEbWB/LZvCzISgsBq6ardyoyTblaX/rqmwbxUFUHgUFf8zmAhLdgJpmTcT36/taF7kFwujJ5gZWbz/c8BAcOg2gOgKs/FUknHeaNoHOeYlZui8w0l7tgvZN2S+nsV7VY4bw1h7umgTB+OqXoMsgwzZCSLpunbHAnNk25g8ZX9s0S3v1na9IOzbkhtdfV4Na0I4c5L0vEkmqDgR83wGGjlxIncS5jH8zpJ5GhUBUvUK/lxkxCikkd6DLZDrTprqjRwFVxuiy8in5+Z53iadM0sU3w==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=altera.com;
+Received: from SJ0PR03MB6964.namprd03.prod.outlook.com (2603:10b6:a03:432::18)
+ by PH0PR03MB6397.namprd03.prod.outlook.com (2603:10b6:510:aa::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.382.15; Tue, 8 Sep
+ 2026 07:06:52 +0000
+Received: from SJ0PR03MB6964.namprd03.prod.outlook.com
+ ([fe80::b965:bfa8:58fb:e775]) by SJ0PR03MB6964.namprd03.prod.outlook.com
+ ([fe80::b965:bfa8:58fb:e775%4]) with mapi id 15.21.0382.014; Tue, 8 Sep 2026
+ 07:06:52 +0000
+From: muhammad.nazim.amirul.nazle.asmade@altera.com
+To: dinguyen@kernel.org,
+	maxime.chevallier@bootlin.com
+Cc: rmk+kernel@armlinux.org.uk,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	robh@kernel.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v6 0/4] Add Agilex5 SoCDK TSN Config2 board support
+Date: Tue,  8 Sep 2026 00:05:53 -0700
+Message-ID: <20260908070557.3585-1-muhammad.nazim.amirul.nazle.asmade@altera.com>
+X-Mailer: git-send-email 2.43.7
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SJ0PR13CA0008.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c0::13) To SJ0PR03MB6964.namprd03.prod.outlook.com
+ (2603:10b6:a03:432::18)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e9388ffc-ddc8-456f-ad7f-1d185d35ab69@kernel.org>
-X-Proofpoint-ORIG-GUID: imHLs-LH0B6qrwxjlFrSi3zGlxJ7S6L8
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA4MDA3MSBTYWx0ZWRfX0/b8DnbV3xXj
- LDdbVMGxji6IcGKMh+PASYrwBYrDNXMxeFEVk4jXKSLCVLggbXhgHWch5ZM0X1orgBKQ+S/FLeg
- DurNoC011VJjXWb2DZwfNefKMPY85V4zZ50LQt8Wafv6j1/6BJs2QmhcRshw1fMdRYxM+EjjusI
- F86c9LogzQjpywJJYSUuSux5vtN3v/8wrRt+ovtoBXyF9nGq1YStFsxgc+7RNrsC7J3NjTleEyt
- 2nWzYm+xzVETeTDBgd6k5AoCLE6Js6RyVlbgGtd5yL/tPiuVMoAkGmOsPPDXfZXJsVkicjWGcOJ
- TOnabsKLElDlf5nWLWTuSflQK3Jrvlynwijl+pUwwNm01uBpCzpIt/a+hBQJTFvP9Qkl4EtTClm
- h3Xk7saC04EIfKzV7Pw4j0HajivTGMEwCDppLpZCqMvOyy6IWB5/3ng4ITLeholjfNjspTMiZcB
- H2BCCJXeCA3BbmMNQIg==
-X-Proofpoint-GUID: imHLs-LH0B6qrwxjlFrSi3zGlxJ7S6L8
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTA4MDA3MSBTYWx0ZWRfXz7n6CkCAmDTZ
- +U9+FUahlPtI+XUsyXXlxxwuSJ/1tapikfiToLcL0ub85BgFEydziZa0UJ7jhmj9gvFlMAq9M49
- 9x+L2gCC2VjJGHVuwClvOT+d+WiHo3E=
-X-Authority-Analysis: v=2.4 cv=AduB2XXG c=1 sm=1 tr=0 ts=6a9fb380 cx=c_pps
- a=MTSHoo12Qbhz2p7MsH1ifg==:117 a=ZePRamnt/+rB5gQjfz0u9A==:17
- a=kj9zAlcOel0A:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=ZpdpYltYx_vBUK5n70dp:22
- a=K0Q-0DoUKIFXmulf0hMA:9 a=CjuIK1q_8ugA:10 a=GvdueXVYPmCkWapjIL-Q:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-08_01,2026-09-07_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 lowpriorityscore=0 spamscore=0 bulkscore=0 adultscore=0
- phishscore=0 clxscore=1015 suspectscore=0 priorityscore=1501 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2609080071
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ0PR03MB6964:EE_|PH0PR03MB6397:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3c1fc4ab-1f30-48a8-5d1c-08df0d77c21f
+X-MS-Exchange-AtpMessageProperties: SA
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|376014|7416014|366016|1800799024|10067099003|11063799006|56012099006|3023799007|18002099003|55112099003;
+X-Microsoft-Antispam-Message-Info:
+	hljhAtQpNgcExCm3+pVpUzcCmZCI3yjRPfJJhnwq7ZIhcj7GxzdxZWHoemsX4w8L9tcY3TZb2rlufhWi4nN8mjtOSZB6uLMyn8wFwtVyiBuMFHaLwo1h2e6LipKDRt4gjV6qCX0qAhNk/BabwZx8DmCF4lV4wi7kDnEvXpmCnFoF2tVLmJtpvFqgcrzaQnJ1Md3H+zpylrgvVxKqONn/4cI3LlRu54iQTJSfZ5l8nJFsxKPALzPz5u9ZmXVO5YalZXkuZnlXwnsJZEevP+wTwFKZMAtWPkLRE4hMQUD1agW0jlhPdNdXPu5AbWu/gG5rKlxTj74GpNDoQIa80uYO48hkEqMSwtiWthkkGf2gyQjxlc3zZb8wqGIFdWbxd0h1eo91w9R3g7toI/d2+soRudu8XRPyEblNqdO1qi7i30nfWEDXS7y0jBKGKBXSrodG5nFMmwoVR2amKjOqugyQx5Ykjyb4+82k2FFsOhqybBWRv5w0MWjPyXan0wE1fHWQgZpgbPy+6sL40eyDi6rEvV5hpaQN5tRsJjmRogd0GnNFKQwJHpfyeAtcAw0xa2LfQxAvnsaldjSFROwaw8+7az0Oi8zZyockIu4QCh1Vn6XDIbGzGROhqxPM+Uv7Wgb2VsDIv87DtDkip2gai1ic6YBYXNMUbFIfWwJBjWAVyjg=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR03MB6964.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(366016)(1800799024)(10067099003)(11063799006)(56012099006)(3023799007)(18002099003)(55112099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?291Sr5udvEa8eyZT7pBhPvplBIcv/sETBDasBselxau5ARecItgQ1ZvjdNNs?=
+ =?us-ascii?Q?kk11lyD+gdZMLpXyzFK3yxyRcTgriSW6dUpGHXXxaUh6fqQxdcNoGtbxD7O7?=
+ =?us-ascii?Q?YCSfXMZCkd7Wcsy770SRYrZcyoe5w1TWQfJ7zcROGK/+Ud6v+gXAnCNrjHYD?=
+ =?us-ascii?Q?vzc/H+z3iJIADYFz63upBcWgmeww4eBt3+fafsLv50j2AAPzV+cFePf7HZoA?=
+ =?us-ascii?Q?AxyriXfp/zZflRIM/0DL2Eiv5To4RRSX1GmVKAp+d152OZ6T4kfUwPkC+04X?=
+ =?us-ascii?Q?iN3yxa6lYUFLAc8iWoF1pR5mdCc3lbAUjLGNMtyvbi++NjrpyKQR2FU0ogJY?=
+ =?us-ascii?Q?xXGUwxulHWkwqt0jUQinIPfnGNFHMq8xds3ikNAj6XuHnc3dohdI95fpimaq?=
+ =?us-ascii?Q?6IDg2xp3wFzqeR8ao+Oyhmbnv9H95bF8E3Jxf46/LAXbzruv0c+9+oHQwZWf?=
+ =?us-ascii?Q?P6dU/DHghpZIGpZdV3iy7cQerWbvvYlDDV01U8fI8GD6Ep40Zrr+ppNLp1J5?=
+ =?us-ascii?Q?Wtk7uA6wYmpF0K331W9AH/+wQsfOVz9l9527OiHbwL4eNFQ456ZzYC9HzJO/?=
+ =?us-ascii?Q?ic8YkmeJBWA/IIjoa2M7LJp5xdVtPmFWKIqCKz2G86XViY24Bq0vrCNfBfiS?=
+ =?us-ascii?Q?nIb2CHQEzUfSALpViS5SEWeMezJvNpIq8WeldM3P87qkhwXQ6ce1+bPEh5lP?=
+ =?us-ascii?Q?0hoxYL/+UDXzNK4jAMpyKR39h5dC0WH417Q9Mr1BV2gWRLR6up2ESLyIkTev?=
+ =?us-ascii?Q?ooQ4KkrY4RAKlvLjLeqac8Xvx3GTYezn7Rp741CITpiqXzmDXMQcmMHsI1DH?=
+ =?us-ascii?Q?lWm3io2XudZn6oPfbYiBaJO6sGuc2EJH5Rvh3vMCYRLXEdeVYhcEd81k0IvT?=
+ =?us-ascii?Q?LgsenvQl1C5T/PudgObozY5jyaWT6bT+bl8c/O4Nv6/aR7vHFTwQg2pZ7cmx?=
+ =?us-ascii?Q?nhuLc0HUR7hMcrgxyiUFKbv5ikzpV5Xd3ONM5MMLyfzRBSgFEWpsXqyQnFqg?=
+ =?us-ascii?Q?huNEV+2fcMxIoFAMLjPKgEcMvQMVUsz/TqM6vNFJccMUNoW4zu1ZNmK3sjCL?=
+ =?us-ascii?Q?FcZJm8GNpaLsOeeoAsyyJEbReQcVORp+SCyF4yposEX2qJXzQP7+bENoyw6K?=
+ =?us-ascii?Q?deAcbV1+z1YJNcFCc5+CzgLGB7P1RqDJ9pszF1uYWTtNcl/wSbRoj+Q7zi0V?=
+ =?us-ascii?Q?AJSMfUNgSYl/whWrWf+iF2oiR3cZsvZziQxKEPX+JefYaT9DfvmtpIiwqI7I?=
+ =?us-ascii?Q?UlQt0cdfRyB3G3hD3NY7KCe8jQjtgQw5qQFu+o5tzaSNdr9PoSX+1l5N6LmW?=
+ =?us-ascii?Q?8mrI+iUAH3XDdLhfyXV8D10O+MnOszN8AInIBUhjvS2YMZB3G45KklhP4BxH?=
+ =?us-ascii?Q?AMxQrU2Ry084qtvo7R6XmuPEXDovPArvujzrkY02XWA4ouDPWfDfqK78ViOP?=
+ =?us-ascii?Q?njDb0d+n2zQzLs6TQqk5JEtwLfDUtRQWfqyxUoY/p/lPK/tGKOVJ+RPwIthH?=
+ =?us-ascii?Q?rXNQO4Nl9ZS9XfE9edFGB7F2jgU8b+kUImCE7dd4Q7cAKnkZuG+N70LoHIsM?=
+ =?us-ascii?Q?Trox5as2j/B1fh++EbsJb3lGybughO9GFTIApE40rqWHZgcDHzer8UNjaery?=
+ =?us-ascii?Q?QfeH+CdEFtVkiTjZFVaTgNcEPo9eOvSkFhLepb2CulHIQrXn4wnt+tIht02l?=
+ =?us-ascii?Q?sYYmHLGwFadnq8C4eFUZ9rNcE68LR0GW+0ZbOto3J4G6+VkBguvnWphOO5kb?=
+ =?us-ascii?Q?FYEDlVsbnzx7OWbaFHjiz7GRQPq+R+qiY2pFzXAtSANkeHrMHSzKFvp3cGPT?=
+X-MS-Exchange-AntiSpam-MessageData-1: 6IG58H/ALM6U7Q==
+X-OriginatorOrg: altera.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3c1fc4ab-1f30-48a8-5d1c-08df0d77c21f
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR03MB6964.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Sep 2026 07:06:52.3456
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: fbd72e03-d4a5-4110-adce-614d51f2077a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: mB6YaCdU08VDfPSgfAcFDUPrf7pMr3o0tuVI/SqPrS0nKpfF0t+ZONcM0HUnqkxsJ49YqGfUdOpwO06kVrzl6c2iibvzIEiUXXLVSZEgeAfH2EK7rwCyT/5dRzY5Zhv4arSMHknV+f75jElljCIn4A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR03MB6397
 
-On Tue, Sep 08, 2026 at 08:56:39AM +0200, Krzysztof Kozlowski wrote:
-> On 08/09/2026 08:23, Mohd Ayaan Anwar wrote:
-> > Hi,
-> > 
-> > This preliminary series adds the DTS changes required to enable
-> > Ethernet on the Qualcomm Shikra CQM, CQS, and IQS EVKs.
-> 
-> What is "PRELIMINARY" patch in upstream? Where is this process
-> documented or expressed?
-> 
+From: Nazim Amirul <muhammad.nazim.amirul.nazle.asmade@altera.com>
 
-My apologies. The code is ready, and I was hoping that sharing the DTS
-changes would make reviewing the driver and dt-bindings a bit easier.
-The original RFC had them together, and I split it out for net-next
-and linux-next.
+This series adds support for the Intel SoCFPGA Agilex5 SoCDK TSN Config2
+board variant, which enables gmac1 as a TSN Ethernet port alongside the
+standard gmac2 port.
 
-The only reason I added a PRELIMINARY tag was because these DTS changes
-should go in after the driver changes and dt-bindings.
+The TSN port (gmac1) connects to its PHY through a GMII-to-RGMII converter
+implemented as FPGA soft IP. This converter provides the RGMII TX/RX clock
+delays, requiring the MAC interface selector to be configured for GMII while
+the PHY-facing interface is configured as RGMII without delay duplication.
 
-	Ayaan
+Add altr,socfpga-stmmac-agilex5-tsn for that integration. It is not listed
+as a DT fallback of altr,socfpga-stmmac-agilex5 because that port has no such
+converter. Patch 4 adds dedicated match .data ops for the required
+interface setup.
+
+v6:
+  - Put altr,socfpga-stmmac-agilex5-tsn in the same compatible enum as
+    altr,socfpga-stmmac-agilex5 in the net binding, per Krzysztof Kozlowski.
+
+v5:
+  - Replace of_device_is_compatible() probe check with dedicated
+    socfpga_agilex5_tsn_gmac_ops via match .data, per Krzysztof Kozlowski
+    and Dinh Nguyen.
+  - Drop altr,socfpga-stmmac-agilex5 fallback from the TSN compatible list
+    and rewrite the net binding commit message to explain the hardware
+    difference, per Krzysztof Kozlowski.
+
+v4:
+  - Fix wrong email address in Acked-by tag from Krzysztof Kozlowski on patch 1.
+  - Add Reviewed-by from Andrew Lunn on patch 4.
+
+v3:
+  - Add missing Acked-by from Krzysztof Kozlowski on patch 1, inadvertently
+    dropped in v2.
+
+v2:
+  - Replace mac-mode DT property with compatible string-based detection per
+    Andrew Lunn's feedback.
+  - Use phy-mode = "rgmii-id" to correctly reflect MAC-side delay handling.
+  - Rename compatible string to altr,socfpga-stmmac-agilex5-tsn for
+    consistency with existing altr,socfpga-stmmac-* compatibles.
+  - Fix Makefile indentation reported by Krzysztof Kozlowski.
+  - Add DT binding documentation for new net compatible string (new patch).
+
+Nazim Amirul (4):
+  dt-bindings: arm: altera: Add Agilex5 SoCDK TSN Config2 board
+  arm64: dts: socfpga: agilex5: Add SoCDK TSN Config2 board
+  dt-bindings: net: altr,socfpga-stmmac: Add
+    altr,socfpga-stmmac-agilex5-tsn compatible
+  net: stmmac: dwmac-socfpga: Add support for Agilex5 TSN GMAC with FPGA
+    converter
+
+ .../devicetree/bindings/arm/altera.yaml       |   1 +
+ .../bindings/net/altr,socfpga-stmmac.yaml     |   5 +-
+ arch/arm64/boot/dts/intel/Makefile            |   1 +
+ .../intel/socfpga_agilex5_socdk_tsn_cfg2.dts  | 130 ++++++++++++++++++
+ .../ethernet/stmicro/stmmac/dwmac-socfpga.c   |  23 +-
+ 5 files changed, 158 insertions(+), 1 deletion(-)
+ create mode 100644 arch/arm64/boot/dts/intel/socfpga_agilex5_socdk_tsn_cfg2.dts
+
+-- 
+2.43.7
