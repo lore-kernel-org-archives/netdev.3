@@ -1,194 +1,81 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B19F52B1DF
-	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 11:01:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 992D9526AB4
+	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 11:01:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788865262; cv=none; b=Id9oBoMCA721em1pe+dBN8TIAmzVxLO982gW3bIrNsoIA/JR8iGi8pxSgL3rd1j70krJt/89QI44KMefAduvOyODf5ptYKsy/VGQoUTKHYhBSuqvESo6pj2Wi4JIUU9tdWvG5ThEcRjltO781x7aaKVRB8PDfygzkl5pmI8fXuA=
+	t=1788865270; cv=none; b=mrx3105E2n1aI2k60RyEJ6X/7HfJRQBqM3PhygisGpZmJDCNydrwcES8Y2RJSCE/AyIxVKb+mw0wdE2WIyxXpTXXca38c/TbL8zAdF8fQX8UHqPxBOWwURSfL+TJZnmNs1mPkh2LQitkYMjehd0xb3I5FxXbEZDYCxe2PJcP+20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788865262; c=relaxed/simple;
-	bh=sYa4uRk0cc2fOiYzCY8tWZJe6l9+ABP+CuAwygOVd3s=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=pwZP8VF6AhwhDRl4o+PRe9wLyg+IP+HNrGAbzyVIklExmX0IqLAwEGwXef5RAeuNMQW0fLKicxns8jbtMul0X4wwelisAhB+UPdLrELNhWdsPNPfH4JaV1RjrEu2HHohrduOib5wrmx/ts5KlP8Eems0jENZVoIHr2k5nvGDZf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QUmblF8I; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788865270; c=relaxed/simple;
+	bh=UWuEqYwGE5MmpL5zjis4FxNrXwupnArLEqMDE7rLU/4=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=Eb6n8HqwKhK+0sAaMBmYQyzrTf7sZnGY/R0Q1G3RByxJ62zwA9MBAPcjDB/t7rpe2BheHWJrm5h0jjcX9CNEeKKw+1lTseqhUtqrtJ70ST9BzhD1DTqycd86OxtngqcYQjzy5Ga11nkARWlK5txB49QityfJhF+64+zvA8hFpEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lpO6epjz; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QUmblF8I"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F3841F00A3E;
-	Tue,  8 Sep 2026 11:00:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lpO6epjz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25D9A1F00A3A;
+	Tue,  8 Sep 2026 11:01:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788865260;
-	bh=+05QaMx6gjaGpTczhFpPMckLS7UGjLEZYKCyVcaYVmw=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=QUmblF8IEspWRytlJKNc3PD6P6QmcjwDf4NK3EiDBTMRVgeBGsnTdiEkzd1y9waRp
-	 4VSHcPMyb07fNqMx5WXHgsu19pIgO7OurZ6M+zPbDD43d6UNjhLY8oa1Z62d/KcD9X
-	 5rdTfHOV7RRiSazHHVmOMTPAMJRLBCtGOuLRWvOiZoqHe+XautRRvagExyz7PD30Yg
-	 O+IuNR5UWiC0M+oJLP2mZ7kBzxl9IDh63LrIWM6ocYhouVQJvIOjYuO4UNXVe6sDnM
-	 ksHaFsTS1JiHGUk7PM29qB7y8Ny2G7U+M4INOvgprLCJAu6ypq7ruC79c6ksEyHd8j
-	 QulDhg7VTplMA==
-Subject: Re: [PATCH net-next 8/9] sit: convert configuration to RCU protection
-From: netdev-bot+sashiko@kernel.org
-To: edumazet@google.com
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- andrew+netdev@lunn.ch, idosch@nvidia.com, kuniyu@google.com,
- lorenzo.bianconi@oss.qualcomm.com, iprintercanon@gmail.com,
- netdev@vger.kernel.org, eric.dumazet@gmail.com
-Date: Tue, 08 Sep 2026 11:00:59 +0000
-Message-ID: <178886525919.219967.16743451973276511375@kernel.org>
-In-Reply-To: <20260907075846.2913645-9-edumazet@google.com>
-References: <20260907075846.2913645-9-edumazet@google.com>
-X-sashiko-severity: Medium
+	s=k20260515; t=1788865268;
+	bh=Pq7F95RS2Hq1xpGa/UY6lYyjF2oMExbFptXccdsKl8E=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=lpO6epjz0hyNXBj9Zx1VJsJaUWm8Nb+LRVsthTrsZva66cpVtSoCPGiDfcXCgNZRR
+	 zT7d4YxPYCX9fQrbNyAvFBeujNDp8araYV/vzHk5bRPfSXqg4glwcU2UXP1z9boKFG
+	 Q3BucHbTmBv0fStjBNNDg3mwZYg44sDP0htBnnFxni2NBl1X5NDYLOSRED1lU+tMxT
+	 rssOerZU9cx5T8VO+pGchXMqEGNwyxoiSW7lr0Dpl5mzhBaeE5sFTu/vu5EW2puk/3
+	 ece971G1CLOHvgPCLLHdUAalLxDZWLUd3SYG0NSgtAHgF/F3yOUUfEpucX4rV3zvjq
+	 5qw17M3hAi84w==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 198D239E960E;
+	Tue,  8 Sep 2026 11:00:08 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next 0/3] netlink: specs: fou: spec tweaks
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178886520663.3465195.10699530926011428253.git-patchwork-notify@kernel.org>
+Date: Tue, 08 Sep 2026 11:00:06 +0000
+References: <20260904191412.3872344-1-kuba@kernel.org>
+In-Reply-To: <20260904191412.3872344-1-kuba@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
+ donald.hunter@gmail.com, kuniyu@google.com
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider:
+Hello:
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+This series was applied to netdev/net-next.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-- [Medium] SIT tunnel parameters are now read from two objects that live
-  in different synchronization domains, and ipip6_tunnel_update()…
+On Fri,  4 Sep 2026 12:14:09 -0700 you wrote:
+> FOU was one of the initial families I used to develop YNL against.
+> It's not using YNL features which were added later, fill in the gaps.
+> 
+> Jakub Kicinski (3):
+>   netlink: specs: fou: add af to the shared attribute list
+>   netlink: specs: fou: local-v4 and peer-v4 are big endian
+>   netlink: specs: fou: link the type attribute to the encap-type enum
+> 
+> [...]
 
---
+Here is the summary with links:
+  - [net-next,1/3] netlink: specs: fou: add af to the shared attribute list
+    https://git.kernel.org/netdev/net-next/c/fc7aa4b30acf
+  - [net-next,2/3] netlink: specs: fou: local-v4 and peer-v4 are big endian
+    https://git.kernel.org/netdev/net-next/c/3f4285d741b4
+  - [net-next,3/3] netlink: specs: fou: link the type attribute to the encap-type enum
+    https://git.kernel.org/netdev/net-next/c/1859a0cc3adb
 
-sit: convert configuration to RCU protection
-
-This converts tunnel->sit_parms into an RCU-protected pointer, so that
-ipip6_tunnel_update() publishes a freshly allocated parameter block with
-rcu_assign_pointer() and frees the old one with kfree_rcu(). The unlink /
-re-link plus synchronize_net() are now skipped when neither saddr nor daddr
-changed.
-
-> diff --git a/net/ipv6/sit.c b/net/ipv6/sit.c
-> index dc37c7109af53..c9049ab87e010 100644
-> --- a/net/ipv6/sit.c
-> +++ b/net/ipv6/sit.c
-
-[ ... ]
-
-> @@ -1087,13 +1119,17 @@ static netdev_tx_t sit_tunnel_xmit__(struct sk_buff *skb,
->  				     struct net_device *dev, u8 ipproto)
->  {
->  	struct ip_tunnel *tunnel = netdev_priv(dev);
-> -	const struct iphdr  *tiph = &tunnel->sit_parms->iph;
-> +	const struct ip_tunnel_parm_kern *parms;
-> +	const struct iphdr  *tiph;
->  
->  	if (iptunnel_handle_offloads(skb, SKB_GSO_IPXIP4))
->  		goto tx_error;
->  
->  	skb_set_inner_ipproto(skb, ipproto);
->  
-> +	parms = rcu_dereference(tunnel->sit_parms);
-> +	tiph = &parms->iph;
-> +
->  	ip_tunnel_xmit(skb, dev, tiph, ipproto);
->  	return NETDEV_TX_OK;
->  tx_error:
-
-[ ... ]
-
-> @@ -1194,21 +1235,29 @@ static int ipip6_tunnel_update(struct ip_tunnel *t,
->  	new_p->iph.tos = p->iph.tos;
->  	new_p->iph.frag_off = p->iph.frag_off;
->  	new_p->link = p->link;
-> -	ipip6_tunnel_unlink(sitn, t);
-> -	synchronize_net();
-> -	t->sit_parms = new_p;
-> +	move = old_p->iph.saddr != p->iph.saddr ||
-> +	       old_p->iph.daddr != p->iph.daddr;
-> +
-> +	if (move)
-> +		ipip6_tunnel_unlink(sitn, t);
-> +
->  	t->parms.iph = new_p->iph;
->  	WRITE_ONCE(t->parms.link, new_p->link);
-> -	__dev_addr_set(t->dev, &p->iph.saddr, 4);
-> -	memcpy(t->dev->broadcast, &p->iph.daddr, 4);
-> -	ipip6_tunnel_link(sitn, t);
-> +	rcu_assign_pointer(t->sit_parms, new_p);
-
-[Severity: Medium]
-After this change, are the SIT transmit parameters read from two objects
-that are no longer updated together?
-
-ipip6_tunnel_update() now performs two separate stores here:
-
-	t->parms.iph = new_p->iph;		/* plain struct copy */
-	WRITE_ONCE(t->parms.link, new_p->link);
-	rcu_assign_pointer(t->sit_parms, new_p);	/* published */
-
-On the transmit side, sit_tunnel_xmit__() takes the header out of the
-RCU-published block:
-
-	parms = rcu_dereference(tunnel->sit_parms);
-	tiph = &parms->iph;
-
-	ip_tunnel_xmit(skb, dev, tiph, ipproto);
-
-but ip_tunnel_xmit() in net/ipv4/ip_tunnel.c mixes that with the shadow
-copy that is not RCU protected:
-
-	connected = (tunnel->parms.iph.daddr != 0);
-	...
-	dst = tnl_params->daddr;
-	...
-		rt = connected ? dst_cache_get_ip4(&tunnel->dst_cache,
-						&fl4.saddr) : NULL;
-	...
-		else if (!md && connected)
-			dst_cache_set_ip4(&tunnel->dst_cache, &rt->dst,
-					  fl4.saddr);
-
-Since sit_tunnel_xmit() runs locklessly, can it observe the two objects
-from different generations, e.g. sit_parms with daddr == 0 (so dst is
-derived per packet from the skb/neighbour) while tunnel->parms.iph.daddr
-already holds the new address, making connected true?  In that case
-ip_tunnel_xmit() would consult and populate tunnel->dst_cache for a
-destination-specific route on a tunnel that the header says is NBMA, so a
-burst of packets could be routed via the cached entry.  The reverse pairing
-(old shadow daddr, new sit_parms daddr) looks possible too where the plain
-tunnel->parms.iph.daddr load can be reordered against the rcu_dereference().
-
-Independently of the ordering question, is the plain struct assignment
-t->parms.iph = new_p->iph a data race?  It writes roughly twenty bytes
-without any annotation while the xmit path is reading ttl, tos, frag_off
-and daddr from tunnel->parms, which KCSAN should flag and which can hand
-the transmit path a mixture of old and new field values.
-
-The synchronize_net() in the move case only runs after publication, so it
-bounds but does not close the window for a reader that entered right at the
-grace period boundary.
-
-Would it make sense for ip_tunnel_xmit() to derive connected and link from
-the same parameter block that tiph came from, so that only one object is
-consulted per packet?
-
->  
-> +	if (move) {
-> +		synchronize_net();
-> +		__dev_addr_set(t->dev, &p->iph.saddr, 4);
-> +		memcpy(t->dev->broadcast, &p->iph.daddr, 4);
-> +		ipip6_tunnel_link(sitn, t);
-> +	}
->  	if (old_p->link != p->link || t->fwmark != fwmark) {
->  		WRITE_ONCE(t->fwmark, fwmark);
->  		ipip6_tunnel_bind_dev(t->dev);
->  	}
->  	dst_cache_reset(&t->dst_cache);
->  	netdev_state_change(t->dev);
-> -	kfree(old_p);
-> +	kfree_rcu(old_p, rcu);
->  	return 0;
->  }
-
-[ ... ]
-
+You are awesome, thank you!
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260907075846.2913645-1-edumazet%40google.com
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
