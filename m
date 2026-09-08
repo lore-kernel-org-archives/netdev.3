@@ -1,79 +1,75 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A168454CF5A;
-	Tue,  8 Sep 2026 13:55:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53D3A552922;
+	Tue,  8 Sep 2026 13:57:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788875738; cv=none; b=XD210k4V3a+UQdWtmxTJTfGL9vSTeeVOBxn+sOgKfHWIs4qkuUYg71lF4WKsdmyfkeW0pA0BX65qVhC7GhEeDFCewu7WpX1AHggsgjZy5GT14/6SQj7//iyqDHeRciASpRvNwEVU+ha3FnXztM1ftHKM99uqWXZhQFmLJOr9c9w=
+	t=1788875860; cv=none; b=OuVUdz2zzjRUHZkh6hJG4K8jTsuwZrifpLqhx8ezJOo4DwbVBxeaJx/C1xotjJEWJOfICM7NyqnRe8reg/b7aRndK+y1qcOr1cdBM5CC9AgjpXnTTjVjTigSOqnyLuV5Gh9h4Sq+MW2vvuQdl2knjMD1YUpxAp2bKE+rY066ftQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788875738; c=relaxed/simple;
-	bh=gRCn3+YDyLRrz1q17xa+w8RvUKk71+uNLnSqxsscRvM=;
+	s=arc-20240116; t=1788875860; c=relaxed/simple;
+	bh=NzOqW4pt1ajz4dkof3dvngKvosflxIFCUNOB+eH1C0c=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Vj5fOCOS6c8PugMrSPwsB96vHHuvE8W4YwbLFpsVfYoCLc44fXvLNSBzvwN43eSz/jTPavD5zC/MkPsoNYFJdITtEfXz7AAhucAcclqtwD6pLdA15gWsOLa1dzIKbhEQ0Cr8q9E+yQSiWJq6T/n1RAyv1qo2OxNsthOafYh/01w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=D3rUuibF; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=aD1pCnyxMgIpdThysdBGWUqFPj/pSAnQvSv02KrdgYz+6ZSlyPqYD/JtVRE5lfF+Vsclt2tyVUHmeHowAbFxqbSiuJYkt5MUm6ry/Hvej13fI/yys9ua4+Uuo05Uqyn4eY6vAuzcauqcn92xXokCxhMZXzcXbOw+J68Zxe2byIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=ZVSmAlVj; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="D3rUuibF"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="ZVSmAlVj"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=e8c+U2YARm2oC1guPl0swGVCIkIvkFhElMlfvGpbdAw=; b=D3
-	rUuibFuYcn0Rqs2FOYiJVKY1soksmz9W2uaWWbwMS0NiNtvMqd23cAMdZS1WnV9EHwkwyw5LQUD6t
-	o7Z68boAfNqJvcaVqio1Rhnv9Tqi12bTCX6a4ZaeO6EW84Owvq5Ue/JdRcrQU2nzPGPefCGgmjNTL
-	ROyKOmgEvbSehEM=;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=XSHjoqKZS76dua77JkRtMPbt7wmbUOwxQGX1OskVqgY=; b=ZVSmAlVjfi7BqYY3PRBrVxPHxD
+	sS5JSfpvLfTbVO26Z99zuuD5k90FELrsTyZ4Nl/bsWXlf6e9F9WwuMBlngO5JdANENGcmVw64gseh
+	F+7ENanw2owYL/FxvudbgCfsXoakPB8z+nI0QAZ4ErnRPZMH537uVzrUhMPf1yf24SxY=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1x3wHr-003uFS-AG; Tue, 08 Sep 2026 15:54:59 +0200
-Date: Tue, 8 Sep 2026 15:54:59 +0200
+	id 1x3wK8-003uHO-Cv; Tue, 08 Sep 2026 15:57:20 +0200
+Date: Tue, 8 Sep 2026 15:57:20 +0200
 From: Andrew Lunn <andrew@lunn.ch>
-To: Potin Lai <potin.lai.pt@gmail.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Oliver Neukum <oliver@neukum.org>,
-	Samuel Mendoza-Jonas <sam@mendozajonas.com>,
-	Paul Fertser <fercerpav@gmail.com>, Simon Horman <horms@kernel.org>,
-	linux-usb@vger.kernel.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Cosmo Chou <cosmo.chou@quantatw.com>,
-	Mike Hsieh <Mike_Hsieh@quantatw.com>,
-	Mik Lin <Mik.Lin@quantatw.com>, Potin Lai <potin.lai@quantatw.com>,
-	Adrian Ambrozewicz <aambrozewicz@nvidia.com>
-Subject: Re: [PATCH 1/2] net: usb: cdc_ether: add NCSI passthrough support
-Message-ID: <8414bb12-1b9a-4d41-b9a5-20b60d5f9ce2@lunn.ch>
-References: <20260907-ncsi-over-usb-v1-0-6b74d2f1196c@gmail.com>
- <20260907-ncsi-over-usb-v1-1-6b74d2f1196c@gmail.com>
- <08083379-6eb9-441e-a656-0066c9006dd7@lunn.ch>
- <CAGfYmwUTsqgDQCP1q=XxCyW=R+a61urg_Jnnw_3-oJfw_BU38Q@mail.gmail.com>
+To: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>
+Cc: Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Komal Bajaj <komal.bajaj@oss.qualcomm.com>,
+	Anurag Pateriya <apateriy@qti.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH PRELIMINARY 1/5] arm64: dts: qcom: shikra-iqs-som: fix
+ GPIO138 reservation
+Message-ID: <6e5624f5-410e-4413-82de-84cf864fd654@lunn.ch>
+References: <20260908-shikra_ethernet_dts-v1-0-69c0c5c7c124@oss.qualcomm.com>
+ <20260908-shikra_ethernet_dts-v1-1-69c0c5c7c124@oss.qualcomm.com>
+ <169b2cd5-d0d8-4682-8756-bacf545a95a0@lunn.ch>
+ <aqAQ+BxwJstTlnU3@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAGfYmwUTsqgDQCP1q=XxCyW=R+a61urg_Jnnw_3-oJfw_BU38Q@mail.gmail.com>
+In-Reply-To: <aqAQ+BxwJstTlnU3@oss.qualcomm.com>
 
-On Tue, Sep 08, 2026 at 08:45:36PM +0800, Potin Lai wrote:
-> On Tue, Sep 8, 2026 at 2:17 AM Andrew Lunn <andrew@lunn.ch> wrote:
-> >
-> > > +/* NCSI operates at 100 Mbps */
-> > > +#define NCSI_SPEED_BPS               (100 * 1000000)
-> >
-> > Why 100Mbps? RGMII is often used, running at 1G.
-> >
+> You're right that it reads like a standalone fix, and that's on me for
+> the commit message. There's no functional impact on current users: the
+> reserved GPIO (138) is unused today, so applying this on a released
+> kernel produces no error and there's nothing to backport to stable.
 > 
-> Since the original NC-SI specification was designed based on the
-> RMII protocol, simply set the speed to 100 Mbps as the default
-> for this virtual USB link.
+> I'll reword the commit message so it reads as a prerequisite for
+> enabling Ethernet rather than implying a current break.
 
-How is this used? You could look at the USB link and return 1.5Mbps,
-12Mbps, 480MBps, 5Gbps, 10Gbps, ...
+And drop the Fixes: tag. It is that which draws the eye and makes the
+Reviewer ask the question.
 
-	Andrew
+    Andrew
