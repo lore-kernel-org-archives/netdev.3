@@ -1,64 +1,64 @@
-Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
+Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D0EA599A2F
-	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 23:22:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8372B49DB98
+	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 23:31:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788909775; cv=none; b=bV64z4WVQR+5ZLrMyvqgD9lO1kOmMi3xRv3a0DI43h7sNoQmvn270L3FXRiSLjmLipKgFhoHoJPA3IcjNagNiYEry/kwRxHPPlvNPyQjevx8HZvw1BevO0Gxu7vM/6txLeRToV8V657h2dKgPI4c70qBZe84c0leksjRoegWKe4=
+	t=1788910283; cv=none; b=fRioJUencyJD8BxvFw9cWWmryo8iSWYSNgK6799cOPQ5oVUBcdzkOtLlEJ4TLuvU19rJCNgT+cRb0Wzj4E2x5LZ1kQTP82DeefHUqsN40f0R9LzKFWFPPJ2BfBIJcug3WSBRqIWGPrxAWTQq/KPRWHvAcjIcBzjgcdmePrq7zds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788909775; c=relaxed/simple;
-	bh=igRLaNLKATsv/xrFKZo/2BMOVmf77KFzzmgZ9es4sLw=;
+	s=arc-20240116; t=1788910283; c=relaxed/simple;
+	bh=lgK52YWEbmOHlLC5XhevTS6kX/pGRh0yPlV7xZbQ1f0=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=ORzoOgzZfWKvt6OmeULj4nAw2khZXEuq3pKaVEaB2+G7x7w0H3nJ0RbM8q9CLhIfiGv/ntHBmNt8PZj6dKlcuymjRDg5XnNYL38FRJsm7e0vNn6zw14echTzuKxVoiHZJeic9Q+72FMbc54d+WssjNgF2gsmiaBPRBDhx3hCkkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fffKPUp+; arc=none smtp.client-ip=209.85.219.53
+	 References:In-Reply-To; b=QKpHnrb499/N0duvxrCEfgr7U8qrOIZQ/qSSADdXtVsk+vXH/KubJL63mmfL3nVpj9TsNg/H9Ez2VfukxSbAt/gezlvp4cDxuJo4Wd6ZP2V++irTfHDRkt4sf0RHlQX5uK7r9+4SlHSLbdHPZ+We/97BcxnW31HJ06yUV3mh2go=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a8i4RLV1; arc=none smtp.client-ip=209.85.219.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fffKPUp+"
-Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-91041ee9230so56156916d6.2
-        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 16:22:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a8i4RLV1"
+Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-90e7c71f86eso36989266d6.1
+        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 16:31:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788909770; x=1789514570; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1788910281; x=1789515081; darn=vger.kernel.org;
         h=in-reply-to:references:to:from:subject:cc:message-id:date
          :content-type:content-transfer-encoding:mime-version:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=1ZsRUEYFwJyfqiHg/NlJRFQE2q1GaX7lbKCnVamDOJQ=;
-        b=fffKPUp+eqhcs644J1qFagKow4sBFSAbNUFWT5W7+9zaYvFy3l9ignd8fSrQtK9Wze
-         GjeyrBGZpepn4eT/2hQTyQxFXNNTP4WgModLT+DPVfXd1Zsk99UjCH6VY3gjUac5d7su
-         YrmbAekf5ulIpd8VA5JjCE7bnkhRd5G2J98IZmKjGjIbZkXbzWLDIiZMuiD8e5f0jaWn
-         SmiJ2t61NyKl5JDrelX9kTAZWYflwnn9n3h5g0kQQorucRNj3O1G3oDAeeDimaDbHrua
-         VzwTIXg1GbrNBoOOCFe3QkfFmN87poq+/hmkVmHciNZXSJ/as9hft8LuT7Npf2C9HRdr
-         mlJQ==
+        bh=Yq7lXkoWC5jfEWJMNBS6tBwhDj/bbJjyiLJq/Z7eNiQ=;
+        b=a8i4RLV1pifuM++BymVVYhMaH0AdhH/xLDGup7aZ6IlEPRIwxlfnQpkUQ56dZBmVbS
+         txpSL4mTMqPsJKXmxi3PYxf+Ua1IlW9pXqvM/VAyNVtEAZj/Qp3iXAt1ZOtGbjGFQ1oA
+         2uXFcotFa9pnuMQOAI9juTQas/wV39y67P7IPsca+LSgnRKP9ZiQCbOscBdZVOALKhrP
+         dbZuB78tfy00nzLF0nmd6ZvNs+FRX4I47RTeLNooVg2349Eum25A2+WVACsbjPxq54mu
+         kmhTj4QlgFlEEivseQTrU8tLSs8WKZE1ykn+BFw8siruaFVjHO/DNn4GOW16abW1SbHi
+         OmBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788909770; x=1789514570;
+        d=1e100.net; s=20251104; t=1788910281; x=1789515081;
         h=in-reply-to:references:to:from:subject:cc:message-id:date
          :content-type:content-transfer-encoding:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=1ZsRUEYFwJyfqiHg/NlJRFQE2q1GaX7lbKCnVamDOJQ=;
-        b=A7AE6IsCYUXQUjj3wBIMHCBq1KHMXcPVyn0xwkw/pviWXj2xc3VLMZfX/uXanJO3hl
-         VebECbFC7wVg6KhnfcfRiHhYMVFZTf8dXn+th9hEfDJDLksUnLBIbCEa0EQ3AJEpk7S7
-         w4jmCB+fLw2e+OGBTKs7cI5H+77tzg/UVVdSbmdhtM19SdT+/jqd7WuxGcGerfx2wZwP
-         4+s8Dt+MEa5aq6aV9z4hxhKPYbswBAoQRaO0n3TCidTj0C38+LylWso2Uk0AVzxHH2Wn
-         WDC/3qfV999M183ICxikk5LhIbJjAhkzWaerD5USgcYAWkEbjpKGHR6eT5hKDO+ColEy
-         4ypg==
-X-Forwarded-Encrypted: i=1; AKwUvBzVbEQsDnGR7zUj+eercdxzMdNdwCTUL4uI0nr6hUFEdDKa9pj/qlA69mhL2zjuetn2tVY03Tc=@vger.kernel.org
-X-Gm-Message-State: AFuF++nnI7QbIFkwNuKlf2TO/dn6qZfanu99Bnf6b1fuiaQ/nxFxYjvA
-	tN35tceP/+nzgJ8SFDAhYE4oPJ1VMQQcbwSkm8ccBHIzDDfikxPpiXf8
-X-Gm-Gg: AYBFou0vex3SwQ+KhN9KQRb99JsQDNqvWGMadvZB20bGg6RbuJIvA5GuemfCQCkm9Xy
-	yh5AEVcYl6GmKscEHxn196q9tg1ykR+eIyEi73+0K7gSILoddce80jvpp8+6XVQeF0fUSITtyFd
-	LOl4pe+1np1YuNfV9hLnMS0xCUNbQPnRE4U1qCl07LY/nXNpOoXVNYTN0WpvhIYBwauHfy02MOP
-	+6vasC2sGGpIUEV33QDZSuNEsSRcpdAv/mDp0tSNf1tb0tujCjyFHwlMQRSRIrM/HevVpEH8mTE
-	CyZ0WAl4ZJvvlzDA/QTXkSkBnko0hr3f8IDwT1hUjhjbiHogIr0IdrW0tSlqU7SUvGCArKLRpiH
-	TQ/U8dmrLFiHyuIQmvaKpLHS/oL4+L2i1qh2M4+lgOo4YpkgbJN2xgn840GbTqOB0Otbn+cXWI0
-	Pjp0rk73++VuoZwuFjMuHbtnBEvcKWN+qu83pVsHddsYKFFp7Ye3f4ojQ/BEQKKBHJMQ==
-X-Received: by 2002:a05:6214:84cf:b0:90c:e685:d0ef with SMTP id 6a1803df08f44-9103eff8ca6mr419740676d6.23.1788909770512;
-        Tue, 08 Sep 2026 16:22:50 -0700 (PDT)
+        bh=Yq7lXkoWC5jfEWJMNBS6tBwhDj/bbJjyiLJq/Z7eNiQ=;
+        b=gv4aBcNlg+z9iAJbO+mjq3juBkEe9Dq/rAzoHxrtzths7lT/qakHyaPw8qa9u4uqou
+         9WQ5JJuxav0kGhnQ4L8y/D+26SUniwyvb822BI+YSjJljAjHXADUlV//a/vW7tjVK9JP
+         5sbP+ArtkRJabjsqMlJlsAlqcAE+NlTeklw/sWMOaI3Ivxt0nE+nGATUQjBx9NDAIN+/
+         i6Y7fNsE4H7YTBUxPfIb0+Ta3Bx8gjLSqxBToo2Yx4EE1d8q0FfPvomsU5Oz5pQ/CBS1
+         cnDs3raGq586mLKhd9D4kSfLLS5HNdq1Ig5iyDuY3vgpBTIjamJtxDO8tznBI7+QXe9F
+         H3AA==
+X-Forwarded-Encrypted: i=1; AKwUvBwEf1jH8jRtEZ0mymlfrQss+XwEEvACPLTGnClEMp+ZbFw7ewdVnpgZx8/c8Qfx2LueMrHB6Bo=@vger.kernel.org
+X-Gm-Message-State: AFuF++leTZlAQMbUGKhu7GGRYDruzUVRLWVKxoksM8JzBEuNrQEwms9u
+	0PtNCYXs3KfXUIT+iStBjRroXkfz8I6VBrsQQDuoX0mcgIiAL5w+VMte
+X-Gm-Gg: AYBFou2bn1UtJ+3vK+SFt6WQ8dHlEbxSPrDO/avz8IOxQE9EwVBsX7EOFL6FIgmh6AY
+	nc4Jvp3v+npKHKaSWhsh9Cm90MnRdagoHlnjSEMRNOPBeBsXk1Ewjv3e2rBMVtr+fXpXlw+Q7Uo
+	dYnMKaculeuna9T1UfbR00n7gfn1AacSqzUyzwR0IKbxFTNAXdgXb+6Kpwrkqjpj3iNYWNzhqtZ
+	6Sg6wmHS1VxPspq6MayVlkQ8zihROUcuYOV4/QSkc5LcPv4yRMhg0UpPCIT834Ts/XGUO4NGIPM
+	hfSTgZqFXmVgGmpiuyG+CWbfEIpRJD/tjOr7O1l8OnRq1aQQvU+iY00ZDSD5t+ZUt/qSW7GaC+u
+	J28WCxPWZ0bbHqup/7cmZVAgHyzOiLSFm/8OdUf089gslLTrRKv2LUc6j4feh1BFM8BwyMqvgQE
+	MAFoC5dmJyLvuc3Q9+aFVKYDWk9v3S63NBsLNDgRA3fKgWrtw8tSWzLPXF6xpt8ZzRJA==
+X-Received: by 2002:ad4:5ce2:0:b0:908:958f:4db with SMTP id 6a1803df08f44-9103eefd24fmr369191086d6.3.1788910276570;
+        Tue, 08 Sep 2026 16:31:16 -0700 (PDT)
 Received: from localhost ([2600:4040:9399:4000:e553:72e5:7d37:c7ef])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-910406b0f51sm128531996d6.42.2026.09.08.16.22.49
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91040694c35sm129077696d6.36.2026.09.08.16.31.15
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 08 Sep 2026 16:22:49 -0700 (PDT)
+        Tue, 08 Sep 2026 16:31:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -67,8 +67,8 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 08 Sep 2026 19:22:48 -0400
-Message-Id: <DLABL6GQC9HK.2P8KU1JJRO1XV@gmail.com>
+Date: Tue, 08 Sep 2026 19:31:14 -0400
+Message-Id: <DLABRMYUL6Y5.2AH8IHHONR58N@gmail.com>
 Cc: "Bobby Eshleman" <bobbyeshleman@meta.com>, "Boris Pismenny"
  <borisp@nvidia.com>, "Carolina Jubran" <cjubran@nvidia.com>, "Cosmin Ratiu"
  <cratiu@nvidia.com>, "Daniel Zahka" <daniel.zahka@gmail.com>, "Doruk Tan
@@ -82,8 +82,8 @@ Cc: "Bobby Eshleman" <bobbyeshleman@meta.com>, "Boris Pismenny"
  "Shuah Khan" <shuah@kernel.org>, "Shuah Khan" <skhan@linuxfoundation.org>,
  "Simon Horman" <horms@kernel.org>, "Willem de Bruijn" <willemb@google.com>,
  "Willem de Bruijn" <willemdebruijn.kernel@gmail.com>
-Subject: Re: [PATCH net-next V4 14/14] selftests: drv-net: Add PSP HW GRO
- conformance tests
+Subject: Re: [PATCH net-next V4 09/14] net/mlx5e: psp: Add an rx_decap
+ steering table
 From: "Daniel Zahka" <daniel.zahka@gmail.com>
 To: "Tariq Toukan" <tariqt@nvidia.com>, "Andrew Lunn"
  <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
@@ -92,62 +92,53 @@ To: "Tariq Toukan" <tariqt@nvidia.com>, "Andrew Lunn"
  Dubroca" <sd@queasysnail.net>
 X-Mailer: aerc 0.21.0-threadmapfix
 References: <20260908065244.3799142-1-tariqt@nvidia.com>
- <20260908065244.3799142-15-tariqt@nvidia.com>
-In-Reply-To: <20260908065244.3799142-15-tariqt@nvidia.com>
+ <20260908065244.3799142-10-tariqt@nvidia.com>
+In-Reply-To: <20260908065244.3799142-10-tariqt@nvidia.com>
 
 On Tue Sep 8, 2026 at 2:52 AM EDT, Tariq Toukan wrote:
 > From: Cosmin Ratiu <cratiu@nvidia.com>
->
-> Add PSP conformance tests using the same gro helper binary as other gro
-> tests , but in --psp mode. SPIs are procured by psp_gro.py from a real
-> PSP device and handed off to the gro sender & receiver. The sender
-> crafts and encrypts packets in software, the receiver relies fully on
-> the HW to decrypt, decapsulate and do HW GRO.
->
-> Because the NIC decrypts and decapsulates before the frames reach the
-> receiver AF_PACKET tap, the gro receiver sees the plain frames and the
-> assertions remain exactly the same as other gro tests.
->
-> So these tests verify, at length, that the device does PSP HW-GRO the
-> same way as plain TCP.
->
-> Additional PSP-specific tests are defined to check that GRO doesn't
-> merge packets across PSP versions, SPIs, encryption-status, etc.
->
-> Some gro tests are not included because they don't work:
-> - ip_csum: the checksum is recomputed by psp_dev_rcv().
+> =20
+> +static void accel_psp_fs_rx_reconfigure(struct mlx5e_psp_fs *fs,
+> +					bool decap_wanted)
+> +{
+> +	bool decap_supported =3D
+> +		MLX5_CAP_FLOWTABLE(fs->mdev,
+> +				   flow_table_properties_nic_receive.reformat_del_psp_transport);
 
-psp_dev_rcv() isn't on the hw gro path for mlx5, right?
+not for this series, but this makes me think having some way of letting
+the user know whether or not psp with hw gro is enabled would be nice,
+so that they don't wonder why stuff isn't coalescing when they have old
+fw like I do :) I could see a similar thing being useful for gso
+features if the psp device can't segment something that it otherwise can
+for non-psp.
 
-> - tcp_csum: packets are marked with CHECKSUM_UNNECESSARY.
-
-this also seems strange to me as the hw gro engine and its decision to
-coalesce two packets sits upstream of this skb->ip_summed determination
-in the driver, right?
-
-> - ip_frag4/ip_frag6: PSP is incompatible with IP fragmentation.
-> - IPv6 extension header tests: PSP doesn't deal with IPv6 ext headers.
->
-> Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
-> Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-> Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-> ---
-...
+> +	bool decap_enable =3D decap_wanted && decap_supported;
+> +	struct mlx5_flow_destination dest =3D {};
+> +	int err;
 > +
-> +@ksft_variants(_ip_variants())
-> +def test_psp_ver_diff(cfg, protocol):
-> +    """Frames from two different PSP versions must not coalesce."""
-> +    init_psp_dev(cfg)
-> +    if len(cfg.psp_info['psp-versions-cap']) < 2:
-
-nit: what the above checks is slightly different than what the _run()
-below uses, e.g. dev supports versions 0 and 2.
-
-> +        raise KsftSkipEx("Device supports a single PSP version")
+> +	if (decap_enable =3D=3D fs->decap_enabled)
+> +		return;
 > +
-> +    _run(cfg, "psp_ver_diff", protocol, [0, 1])
+> +	/* Create the decap table if needed. */
+> +	if (decap_enable && !fs->decap.ft) {
+> +		err =3D accel_psp_fs_rx_decap_ft_create(fs, &fs->decap);
+> +		if (err)
+> +			goto out_err;
+> +	}
 > +
-
-couple of minor comments:
-
-Reviewed-by: Daniel Zahka <daniel.zahka@gmail.com>
+> +	/* Redirect traffic to the correct table. */
+> +	dest.type =3D MLX5_FLOW_DESTINATION_TYPE_FLOW_TABLE;
+> +	dest.ft =3D decap_enable ? fs->decap.ft : fs->rx.ft;
+> +	err =3D mlx5_modify_rule_destination(fs->check.rule, &dest, NULL);
+> +	if (err)
+> +		goto out_err;
+> +
+> +	fs->decap_enabled =3D decap_enable;
+> +	return;
+> +
+> +out_err:
+> +	mlx5_core_warn(fs->mdev,
+> +		       "Failed to create/modify PSP decapsulation rules (err %d), HW G=
+RO for PSP unavailable\n",
+> +		       err);
+> +}
