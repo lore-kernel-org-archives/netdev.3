@@ -1,105 +1,87 @@
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAFFB47C0F6;
-	Tue,  8 Sep 2026 20:24:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03C3D3AC0FA;
+	Tue,  8 Sep 2026 20:27:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788899096; cv=none; b=qz1dfbitfP4bMiTK5qVBVliq3uaVRsh7lQszqDjH5YRjRGxMZboip9k7vDQkpYcMEaaZt6lX8mZgvmKJhHdgXeKJxLV0+JiAhy3wluW881RL/nv1OG0TnW3Bmz85vB5YwF5Mqtz5Lh+1DmYx0z41aDWNxEk9ZgZwqZwQhSlDe60=
+	t=1788899281; cv=none; b=HJ39ExWM0qkU0KCpUabYnkA2dcuE92DCxN1OAMqfsuZ/MgxLVwy3vTM9cebM1ATEBTNsZW+COTUOwl1Kykat/i93WSQ5p6K3db1VSKT15si8hzZlfkjfkMnD01RTpKUNZVEPYsm49ZGzXB2WPQSP0ZWJtZK3cxRy8r9R95nyUU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788899096; c=relaxed/simple;
-	bh=JAnf0/QKxIy/4pYio9ChJmvFrA6akr8eqhLh/IIXslQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sfbGnYZmdibU1wdsbje5kdK8CiPmk5PaCkDQwh2zmNMbISeOvLUBkofmXd0sd6HOIq4sxunoXBEUdBYHmiHvHdT93HB1pB/farEj8MNlMIrrh9jg+3GeIhOK88XemNQ9JcdMN7KRsmYi0R9oWF5IA9tNrD4stXFoG3mUaCdpmuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=ZUZAh5rZ; arc=none smtp.client-ip=217.70.190.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+	s=arc-20240116; t=1788899281; c=relaxed/simple;
+	bh=6PGUsdWAJ5itb1tBxcAZFkYjuulVrO26ZhmGSsf2HB0=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=H25vD3ABIgJVtLybd5HouinF84uyD48IjBHuJbgAOj30IAuuw4KJ27Hf3kiA70XqpkHZyQWK0HICKfOfVgHnTwPXYacsDUfKmiLdl/E+Obi/deMJpye71oH+Zv9ui2PIn7Bd/QWiEOnNvY/cfKPXQupKlLFruopGhwTExSk3mJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=bC/+sGBY; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="ZUZAh5rZ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1788899092;
-	bh=9w/hp6IqASEh10N66WRbnqR28Hnd4b4Oi5v1ZPZ6Az4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZUZAh5rZz2JXri6ho3CHcY/lH2P0W59ae1jAqE7Cks/5nyoC5uId+3kMwrOL8+c+x
-	 jxXwT3akAWltv80Q09+2rmjCGc+HCJD+BrI8WhafB7HgQXT2L9ui9ZguWfXcsfsVXT
-	 ivpcqpkDuyD4jjevwfFR0tp3QLLruUPBJ28/T7bzfrM44/B6diG7gC8B4hnRRnhoR/
-	 vUV4e9X6Fx/kcen1sT4uMs5BLf5sU0Zg+zCzvBNige5HurCLL0DkAXGKYVT4aYNoAI
-	 glyFgXN8PEhO1dwrFsjJXqdBoaFZj8S3JH9MQrcWUhzrL3zys+BHQHZ1wNIEd0yDC9
-	 2yzWylsbnwO7A==
-Received: from netfilter.org (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 6A9B66008A;
-	Tue,  8 Sep 2026 22:24:52 +0200 (CEST)
-Date: Tue, 8 Sep 2026 22:24:50 +0200
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: netdev-bot+sashiko@kernel.org
-Cc: netfilter-devel@vger.kernel.org, davem@davemloft.net,
-	netdev@vger.kernel.org, kuba@kernel.org, pabeni@redhat.com,
-	edumazet@google.com, horms@kernel.org, fw@strlen.de, ja@ssi.bg
-Subject: Re: [PATCH net 4/9] netfilter: cttimeout: prevent UAF during module
- unload
-Message-ID: <aqBvEkkkm11rIqwT@chamomile>
-References: <20260907171732.1407739-5-pablo@netfilter.org>
- <178889064168.219967.15151233151602486944@kernel.org>
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="bC/+sGBY"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=E339hku+nsXigG6xS5eAMnOglg7j43G8fXIZZLMCQvc=;
+	t=1788899280; x=1790108880; b=bC/+sGBYJcC3JnGbZeJFdGMDFD9qB04n05Jd2lVEFsQwvwj
+	RhLMWZB1Ab82MuISeIBpRWKErVV+0yqSu8Qn/+db3yS+8Fx0LI3WTjj0OvVNVUQuCEGp7LoFHBk4R
+	bqjOqYfqL7Lzr83F3kI7+Pc0SHNoVbbY2Na4IzzLf02WcurnbhbDS5LQ1tzZn8Y/Vc1b8zl/QxnhF
+	6kxW8uY9zLjjcRNSEKb8+tKBOxHj+LmTiSdNLJ3inXDtaD3WO/dP5BeHt/13PMgGqiXb1FN25akWN
+	lwVpXlZq9eNJAtWop3fTZuIzymd/kCI1e23ih4ocVMRvYzDmO7jFyAcqh7ncSkLA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__ECDSA_SECP256R1_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1x42Q5-00000006dMP-1QZK;
+	Tue, 08 Sep 2026 22:27:53 +0200
+Message-ID: <0e950f7f0c3f5a2c1f6476e255716b09876624f4.camel@sipsolutions.net>
+Subject: Re: [PATCH RESEND wireless-next 00/18] wifi: Add Seamless Mobility
+ Domain (SMD) AP support
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Pooventhiran G <pooventhiran.g@oss.qualcomm.com>, "David S . Miller"
+	 <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+	 <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-wireless@vger.kernel.org
+Date: Tue, 08 Sep 2026 22:27:52 +0200
+In-Reply-To: <20260908132004.29176fec@kernel.org>
+References: <20260908-smd-v1-0-9fd2d876a1fb@oss.qualcomm.com>
+		<20260908125017.0fb226c5@kernel.org>
+		<404004c4c97bf776077685b7ec33a14fa777cd70.camel@sipsolutions.net>
+		<80266eb9666d6106110d998cb6330868da55bf59.camel@sipsolutions.net>
+	 <20260908132004.29176fec@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <178889064168.219967.15151233151602486944@kernel.org>
+X-malware-bazaar: not-scanned
 
-On Tue, Sep 08, 2026 at 06:04:01PM +0000, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider:
-> 
-> Critical: 0 · High: 1 · Medium: 0 · Low: 0
-> 
-> - [High] cttimeout_exit() only drains RCU readers that reach the per-net
->   timeout storage through nf_ct_timeout_hook.
-> 
-> --
-> 
-> netfilter: cttimeout: prevent UAF during module unload
-> 
-> This reorders cttimeout_exit() so that nf_ct_timeout_hook is cleared and
-> synchronize_net() is called before unregister_pernet_subsys() frees the
-> per-net timeout storage.  That closes the window where nf_ct_set_timeout()
-> could still reach the freed nfct_timeout_pernet blob through the hook.
-> 
-> > diff --git a/net/netfilter/nfnetlink_cttimeout.c b/net/netfilter/nfnetlink_cttimeout.c
-> > index 66c2016f6049d..132c02ac7c4ea 100644
-> > --- a/net/netfilter/nfnetlink_cttimeout.c
-> > +++ b/net/netfilter/nfnetlink_cttimeout.c
-> > @@ -652,9 +652,9 @@ static void __exit cttimeout_exit(void)
-> >  {
-> >  	nfnetlink_subsys_unregister(&cttimeout_subsys);
-> >  
-> > -	unregister_pernet_subsys(&cttimeout_ops);
-> >  	RCU_INIT_POINTER(nf_ct_timeout_hook, NULL);
-> >  	synchronize_net();
-> > +	unregister_pernet_subsys(&cttimeout_ops);
-> >  }
-> 
-> [Severity: High]
-> Does this leave the same per-net object reachable from the netlink dump
-> path during unload?
-> 
-> cttimeout_get_timeout() starts the dump without a module reference:
-> 
-> net/netfilter/nfnetlink_cttimeout.c:cttimeout_get_timeout() {
-> 	if (info->nlh->nlmsg_flags & NLM_F_DUMP) {
-> 		struct netlink_dump_control c = {
-> 			.dump = ctnl_timeout_dump,
-> 		};
-> 		return netlink_dump_start(info->sk, skb, info->nlh, &c);
-> 	}
-> 
-> With no .module set, __netlink_dump_start()'s try_module_get(control->module)
-> is try_module_get(NULL), which succeeds without taking anything, and
-> cb->module stays NULL.  nf_tables_api.c and nfnetlink_hook.c pass
-> .module = THIS_MODULE in their netlink_dump_control for comparison.
+On Tue, 2026-09-08 at 13:20 -0700, Jakub Kicinski wrote:
+> On Tue, 08 Sep 2026 21:57:52 +0200 Johannes Berg wrote:
+> > On Tue, 2026-09-08 at 21:51 +0200, Johannes Berg wrote:
+> > > On Tue, 2026-09-08 at 12:50 -0700, Jakub Kicinski wrote: =20
+> > > > On Tue,  8 Sep 2026 22:39:28 +0530 Pooventhiran G wrote: =20
+> > > > Why are you sending this To: core networking maintainers.
+> > > > This is wireless code, what do we know.
+> > > > Drop the core maintainers and netdev@ going forward please. =20
+> > >=20
+> > > They have patch 1 but I already told them a long time ago that was
+> > > completely broken, I don't know why this is happening ... =20
+>=20
+> Ah, missed the skb extension. Obvious AI slop. Fun times.
 
-This is a pre-existing issue. I can follow up on this.
+"Look Mom, I can push a button, I'm an engineer now!"
+
+Do we have rules? I'm currently refusing to read anything that has an AI
+written commit message ... at the very least.
+
+While I was on vacation the AI sloperators were arguing with each other
+on the wireless list:
+https://lore.kernel.org/linux-wireless/20260827074442.826644@enxio.de/
+
+Can I ban those email addresses somehow?
+
+johannes
