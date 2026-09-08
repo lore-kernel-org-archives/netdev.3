@@ -1,81 +1,129 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7819653447C;
-	Tue,  8 Sep 2026 12:28:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6072853B61A
+	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 12:34:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788870521; cv=none; b=DdM9b6cq65cGNhvrxyOLYv2rkWAlXyiqQQgUjjkXv8T7ecgWEVosoEEo0qxjrFIa9TvIzsEDOvaLmLUKbg9ZojUOmesTzbmhSwGwKCsTlcq6yZ1OJ7iLWeyzILLlEaDhD8yZNh4w5WQVxrq6fGeDmYibc11cYpctOoNb+b99h94=
+	t=1788870847; cv=none; b=cZJRWrVZZNPjtYA0YjyVysYRhOauRSIQxH5hLwxu81FptNpRIeq6mplFqp8MrwwYKhioOAU2QujH6eHxhtzShwLOW5a06tqZWETRFbSyLqP1cPc8lbPuOaE/lAo2SzAmZ2OcdQMcf8qgaQc41G77bgrzWw+XojDK5dUn0tcYH7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788870521; c=relaxed/simple;
-	bh=s+Y2stGxRurK4pAcopFsEGKF4ANNUugOxT52sCLvlGI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SvXOSiNi6Pa0YFbfBIKZRanwCoXj3EViafFdZ+San2q/cis4WGcapXcIqYNtti6bAYuqkWYLdsROG3GPY72+9CjSksVU3WvTTpr0/+BVhPDXBlzQmwfWmjZ0/I0CvAC0S7s08+AMLkwVFe6+OxloNzmjHHLmb9wg6Ilc4Yi1H4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=PARWB6Uq; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1788870847; c=relaxed/simple;
+	bh=Z2b/QRv1h7ZKhOM194yWbvCAjPpxBOzc0ydTG9K6t8o=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nUG+Lv+wTdvMdQPHj+S9GMh9UAzuOn9PyAhZivQktr5rdGEIkYy2bpVnP1vn1fGlGTh7TNiSzB0LV8O9F//6UMn6vrAOPaBD1h+n76XFoXasUheRtDoj63NfqAgTioUnSWz4NRHE4o1vXhXzOOMFyKDq6cZyQPRqbO1CMaxqDL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QOooWV10; arc=none smtp.client-ip=209.85.210.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="PARWB6Uq"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=72D24EU3D896jK8KCZiPhgeRJp19b5trtsxelYw82pk=; b=PARWB6UqovKI1nx3IF5PREzsqV
-	Qgyj8HJVqIRIlX8LgJLwVddYi2Oc1CWXoChEm6QOYLKk0D5oWpZ9XG3FF6svqTKA9LgYLPIJyQXqT
-	3np6xjnWGHXJBjwb1MvBGcTLHXTWElz/75XpuI5OD53WREvyhPj3Kge8m72uZIVd5vZg=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1x3uvz-003t72-NG; Tue, 08 Sep 2026 14:28:19 +0200
-Date: Tue, 8 Sep 2026 14:28:19 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Daniel Golle <daniel@makrotopia.org>
-Cc: Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	Frank Wunderlich <frank.wunderlich@linux.dev>,
-	John Crispin <john@phrozen.org>,
-	"Benny (Ying-Tsan) Weng" <yweng@maxlinear.com>,
-	netdev@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, driver-core@lists.linux.dev
-Subject: Re: [PATCH net-next v13 1/6] net: dsa: add devlink flash_update
- callback to dsa_switch_ops
-Message-ID: <39ce1c25-55d8-4bd0-80a7-72ac881161ad@lunn.ch>
-References: <cover.1788783126.git.daniel@makrotopia.org>
- <ca7ce5efa19afc93bede2b5bf6841b0b47eba4ba.1788783126.git.daniel@makrotopia.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QOooWV10"
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-86309e1a213so926496b3a.0
+        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 05:34:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788870846; x=1789475646; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=k+Chw6eYmS7cFDPWI/6rE8MBVC/cNonnlx5K113ikQA=;
+        b=QOooWV10hWpankMQNjo7se40zz9jFVKKaH0spAI/xuQUOaip7EMNkCsU3GziFWN1K1
+         nxCLXvcJlA9YIPxnwIl4Ab/CVB6dEj3IX7fJh2jhspaVH1jMYMY4MkcHT/2lrf80a2VS
+         BE7sxZyWI80Ye30H8yulmBHrowhY3rVynZAe/NvQGwcIAbGcmKzwgr2dUd0a/OM9y6lO
+         oY661MRazjTbDiPiBziqeRxTg8rLHhOMcDmBGBP5wCnzeTjCbtxq0QCbBZspNUTOkUjL
+         aVoXRZlQ4LS+zHNXtKUvILudvi4Y/dWisbGQ+JIaoyCGlbcGAV0Wyh/QR9HD6a+UfclD
+         qWTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788870846; x=1789475646;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=k+Chw6eYmS7cFDPWI/6rE8MBVC/cNonnlx5K113ikQA=;
+        b=b0HIxrM8YvyhI8493G71K0zur1CyKQi/6Anwu3Srvbf9PdzLUtFhBYP/+8qKeQutA7
+         eOZVonsbTsyBJMKY4amWB8RXkPd2QYnSDjtplFkRpzxySRRojdTAEspwQBd2E3DSr0/A
+         CjjQ13EWJA+H9J3lYg2gw1A+YKPtsPHuP2bA5a0OHjmfpQmX/WtsIq7h5IrISU4SctRf
+         RWo3RqH8wAfv7zBy4h37gVEoBYJFAQF3qz2B5MGQoMuk5EK1SWeYBEKh5vX4v0+bnOma
+         vDCXYLWXp55FlPlZIqas84Jo0Zw3fL/dek9CZb4p3LLo3LXqiK78yx7jCjJrr9DNmSyF
+         fbPQ==
+X-Gm-Message-State: AFuF++kUwpP8Nsdz1WYVneMT6Z2hrZ+8XhJ6npW2r70FgEK65Ypn3ZCR
+	+rkq3bwZu5G/0helyS5ma8spycas0dN7VfTA82ws7KVhcWCL/ijt9NJn32x3ebJ4tI4=
+X-Gm-Gg: AYBFou0oUFrp1RC7Mw3ARDQb5pVyeaHv9M75k5qmNmiZSM2Ks37fL9jqTvcVsQXrm6g
+	9akbNGKVdT+okmDQTmvW7/5HU2HiQDWUit/CtKym9ldfCdsTL1vcW82RfC64cyAc2HLZ1LfbaTO
+	Ap4zGgf2gk++VWoAz/wn1rIWvkb3etAVLF8a8v4gLTbf7qGQ2edUn2/JbEgOA0NnZ18li+6cmO/
+	6mGbQmPgl7VcFpuJsQbgv8IoCR+e1EEjKjk1c8qNh9Pw4Vk/k2HaISKPw7++eKcLnB/L9b961VT
+	Tf7ri/EmNH0tWKc/XIcVjWDigoBEMYXcr+y2esczU942FCM4hJXjnJAVo5+kDcTwDzfOrqxukiI
+	4TUagU+a76zrxgivQi3DmSbVjaBmZQBTug64fr0BTEG/L3B7YlKvfpoLYWC4rWQECMtdnovh/oc
+	/4nwW0T67yRzge8UzSrZor8YO9ORDxhCa/d1KnXDg9AW4Ck/QpW4n44sWg/2UybX62sNX6hltLg
+	fMATgdtKc6Udt02vj/mew==
+X-Received: by 2002:a05:6a00:3313:b0:84e:f90e:492f with SMTP id d2e1a72fcca58-86167f9be1emr41453148b3a.7.1788870845621;
+        Tue, 08 Sep 2026 05:34:05 -0700 (PDT)
+Received: from localhost.localdomain ([117.88.121.64])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-86152045f8bsm5763571b3a.15.2026.09.08.05.34.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Sep 2026 05:34:05 -0700 (PDT)
+From: henrymei <ljp1205831794@gmail.com>
+X-Google-Original-From: henrymei <henrymei@tencent.com>
+To: netdev@vger.kernel.org
+Cc: achender@kernel.org,
+	linux-rdma@vger.kernel.org,
+	rds-devel@oss.oracle.com,
+	santosh.shilimkar@oracle.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	Aohan Mei <henrymei@tencent.com>,
+	TencentOS Corvus AI <corvus@tencent.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net] rds: ib: use rds_conn_drop() on protocol version mismatch
+Date: Tue,  8 Sep 2026 20:33:56 +0800
+Message-ID: <20260908123356.1163970-1-henrymei@tencent.com>
+X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ca7ce5efa19afc93bede2b5bf6841b0b47eba4ba.1788783126.git.daniel@makrotopia.org>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Sep 07, 2026 at 07:37:37PM +0100, Daniel Golle wrote:
-> Add a devlink_flash_update callback to dsa_switch_ops so that DSA
-> drivers can support devlink dev flash without open-coding the devlink
-> plumbing. Like the other trampolines in net/dsa/devlink.c, the op
-> returns -EOPNOTSUPP when the driver does not implement the callback;
-> the devlink core will then have fetched the firmware file from
-> userspace before the request fails, which is acceptable for an
-> operation as infrequent as a firmware update.
-> 
-> The devlink core calls the op with the devlink instance lock held and
-> without rtnl_lock, whereas DSA serialises its switch and port ops
-> under rtnl_lock, so a driver has to serialise a flash against its own
-> ops itself.
-> 
-> Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+From: Aohan Mei <henrymei@tencent.com>
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+rds_ib_cm_connect_complete() runs from the RDMA-CM event handler with
+conn->c_cm_lock held.  When the peer negotiates a protocol version
+older than RDS_PROTOCOL_COMPAT_VERSION, the handler calls
+rds_conn_destroy(), which is only safe in the rmmod path: it
+synchronously tears the connection down and flush_work()es the
+shutdown work cp_down_w.
 
-    Andrew
+That shutdown work (rds_conn_shutdown()) needs cp_cm_lock, which is
+the very lock the event handler still holds, so the flush never
+completes: the two workers wait on each other and the RDS connection
+workqueues stall for good.
+
+All other RDMA-CM failure paths (REJECTED, CONNECT_ERROR,
+DISCONNECTED) use rds_conn_drop(), which marks the connection
+RDS_CONN_ERROR and schedules the shutdown work asynchronously.  Use
+it here as well.
+
+Fixes: cdc306a5c9cd ("rds: make v3.1 as compat version")
+Reported-by: TencentOS Corvus AI <corvus@tencent.com>
+Cc: stable@vger.kernel.org
+Assisted-by: CodeBuddy:Kimi-K3
+Signed-off-by: Aohan Mei <henrymei@tencent.com>
+---
+ net/rds/ib_cm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/net/rds/ib_cm.c b/net/rds/ib_cm.c
+index d46146887ba4..2909da8363f3 100644
+--- a/net/rds/ib_cm.c
++++ b/net/rds/ib_cm.c
+@@ -115,7 +115,7 @@ void rds_ib_cm_connect_complete(struct rds_connection *conn, struct rdma_cm_even
+ 				  &conn->c_laddr, &conn->c_faddr,
+ 				  RDS_PROTOCOL_MAJOR(conn->c_version),
+ 				  RDS_PROTOCOL_MINOR(conn->c_version));
+-			rds_conn_destroy(conn);
++			rds_conn_drop(conn);
+ 			return;
+ 		}
+ 	}
+-- 
+2.43.7
+
