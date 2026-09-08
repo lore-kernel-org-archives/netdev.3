@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2723134D398;
-	Tue,  8 Sep 2026 03:49:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F06D34388E;
+	Tue,  8 Sep 2026 03:49:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788839387; cv=none; b=Wi/5qgwV/Ys8jLoqNIK+GvgIppCfr6EM3xn+rWdtfveGDCjwth2pMg5k1bpHsXpzL5Qco6KLQTteoQtWIbwoCA5C4FF+Q7WSXi/rVSvKgxMZ90IDI/Jj8vAzJqrR+CQ1+YABTB0hc716oUdlRxUSxxnOD1SZUz201AYbOwYlOcY=
+	t=1788839389; cv=none; b=HJCEe0j54p6zkiTuSTpQmHY0+p1EUvpRq9IIndTTP1XkX3dO3IS9YhV+B85Cv78SRyjzKJ+HHeR5/2GW2ccemrOzAphxpfO+/2spgF+lwUSAnbKdM70nA9IZU38Q3/0vYIBEdGxLBQmbJphIqHJgyyYtbRS1nWmNLz9mZtP/cOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788839387; c=relaxed/simple;
-	bh=aqABLQVcml+k4ScuvnSqlRQXZYZICv/JKahUkmL11Xc=;
+	s=arc-20240116; t=1788839389; c=relaxed/simple;
+	bh=SaxA8NTcMnN4aUqtXFKx924TsyJxhccSlqDp57WiD4s=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=nNFIQ5Hb+hO4vowkrpTprMP4MrrzWLBB/2Wj+E0LMsI6Tc0q4j3wN0RhBgf/DG0cZNX4rNY/uMnWywd2jn64jIKk0v/8IVfl+gh9E/OvH3pNa6QRPVvF17Hh860NQj1oDw4XPVkWx5SwS51kLhksmUpK/D0+MozNUW+RoL3P3co=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ORIbuRBh; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=JKQzkJKKFuh0DfJRGKjRDd95SbJ5u2quGdMYQfilvzIKUXw4KdEu8A0aJwc+tEIQVIDnk6SFOv0b0t/Mipx+GzNlYQa99q13A/fVO3C4rF64ps95I/o4jZNrvEWwMbNaQDXFc7OrBRkTGDc01sPShPvsJsH5fwgHDj510EDwUyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AC8nYZZI; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ORIbuRBh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1A8C1F00A3A;
-	Tue,  8 Sep 2026 03:49:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AC8nYZZI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 848341F00A3D;
+	Tue,  8 Sep 2026 03:49:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788839383;
-	bh=OZUZ6EGQg9Z3jxk91Xs6CzHbDEbXdioMLzt3VtnITbc=;
+	s=k20260515; t=1788839385;
+	bh=2MOgnMmbsysM5Nvvt4fQRefJMihXzhZ5xrwgYiluytU=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=ORIbuRBhW6OiTW+MrFk4uuGjMiUedBXb09pR0NwDRAfH4CoQaSg+BZEp2n6tRR24T
-	 +a9Faf7OHxxt9h4uMLtinqkToWt7K3n3gwWWcfjvKWoVlmS8soxhU89NzxaKsLxqpS
-	 JfYnUeApS0InRdqwVwJjPv+vshGXPJXIndJ2BjZUgJTW3JD1ytgEFt8Ze3legzNxIv
-	 1EdM9JmFGn5WH/jmoFTs1Q25ejF77KVdNMcv9yZKrWIu6KhqKcvItvGCzSYKKYrrS0
-	 +81id1yW+Qrz+ehPTTjxtBQdIVMwiuiAt7f8Z+FEjKYXnB3rPjflXpQWerDdlmRD5r
-	 p4wJ9/FqR9BaA==
+	b=AC8nYZZI49Bm4Ym83WdlzNAWJd74Ppk0QqxTTHp2+QOGbeULhfX9QmjAAblm/1Vzb
+	 SHuDD5OA++EllGrggXkNamyu8udl9+mYXAji60zNvkaPqnijB+kf8n44rD6HVAL7z1
+	 aOt8ZF7owPhhYz+r7d3pyfcoy8MxxZIBCeNvV3lTvjX1MlLhKJpCFlHStTXN5hKkO9
+	 s336Xc5EE1Q7+qmFaD/EUxmy/+vcriqHHGL+O/JtOUc6yXOoRk1xm3kZtHjL8SdMqt
+	 ZOnSOjdkw1f2vbajukmhgPwVLOF1qed0Dxv4rOoJroxgb32Xfxt62LrXv1BRWm4G/Z
+	 OjrTQAcP21XPA==
 Subject:
- Re: [PATCH net-next v9 1/4] dt-bindings: net: dsa: microchip: Add KSZ8995XA
+ Re: [PATCH net-next v9 2/4] net: dsa: tag_ks8995: Add the KS8995 tag handling
 From: netdev-bot+sashiko@kernel.org
 To: linusw@kernel.org
 Cc: woojung.huh@microchip.com, UNGLinuxDriver@microchip.com, andrew@lunn.ch,
@@ -35,10 +35,10 @@ Cc: woojung.huh@microchip.com, UNGLinuxDriver@microchip.com, andrew@lunn.ch,
  pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
  marex@denx.de, horms@kernel.org, linux@armlinux.org.uk, nb@tipi-net.de,
  netdev@vger.kernel.org, devicetree@vger.kernel.org
-Date: Tue, 08 Sep 2026 03:49:42 +0000
-Message-ID: <178883938242.219967.204339124922803087@kernel.org>
-In-Reply-To: <20260906-ks8995-to-ksz8-v9-1-8d8815a91bd8@kernel.org>
-References: <20260906-ks8995-to-ksz8-v9-1-8d8815a91bd8@kernel.org>
+Date: Tue, 08 Sep 2026 03:49:44 +0000
+Message-ID: <178883938406.219967.6481809293994424099@kernel.org>
+In-Reply-To: <20260906-ks8995-to-ksz8-v9-2-8d8815a91bd8@kernel.org>
+References: <20260906-ks8995-to-ksz8-v9-2-8d8815a91bd8@kernel.org>
 X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -49,55 +49,113 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
+Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider:
 
-Critical: 0 · High: 0 · Medium: 0 · Low: 1
+Critical: 0 · High: 0 · Medium: 0 · Low: 2
 
-- [Low] Concern (verified as a FALSE POSITIVE by series validation): the
-  new compatible `microchip,ksz8995xa` added to…
+- [Low] Claimed incomplete submission: the new tag protocol
+  DSA_TAG_PROTO_KS8995 / CONFIG_NET_DSA_TAG_KS8995 /…
+- [Low] In ks8995_xmit() (net/dsa/tag_ks8995.c:52-54) the debug print
+  passes the big-endian struct members hdr->h_vlan_proto and…
 
 --
 
-dt-bindings: net: dsa: microchip: Add KSZ8995XA
+net: dsa: tag_ks8995: Add the KS8995 tag handling
 
-This adds a new compatible string microchip,ksz8995xa to the Microchip
-KSZ switch family binding, described as having the same properties as
-the older KS8995XA part. No other schema constraints are changed.
+This adds a new DSA tagger for the Micrel KS8995 / Microchip KSZ8995XA
+switch, which carries its special tag in a modified 802.1Q header whose
+last nybble holds the destination port mask.  The tagger inserts the
+outer switch tag on xmit and moves the tag into the hwaccel VLAN area on
+receive.
 
-> diff --git a/Documentation/devicetree/bindings/net/dsa/microchip,ksz.yaml b/Documentation/devicetree/bindings/net/dsa/microchip,ksz.yaml
-> index 8d4a3a9a33fcc..4ed13870ed3ac 100644
-> --- a/Documentation/devicetree/bindings/net/dsa/microchip,ksz.yaml
-> +++ b/Documentation/devicetree/bindings/net/dsa/microchip,ksz.yaml
-> @@ -23,6 +23,7 @@ properties:
->        - microchip,ksz8864  # 4-port version of KSZ8895 family switch
->        - microchip,ksz8873
->        - microchip,ksz8895  # 5-port version of KSZ8895 family switch
-> +      - microchip,ksz8995xa
+Two small observations below.
+
+> diff --git a/net/dsa/Kconfig b/net/dsa/Kconfig
+> index 23b4b74004ed5..4f44bf3ede238 100644
+> --- a/net/dsa/Kconfig
+> +++ b/net/dsa/Kconfig
+> @@ -125,6 +125,12 @@ config NET_DSA_TAG_MXL_GSW1XX
+>  	  Say Y or M if you want to enable support for tagging frames for
+>  	  MaxLinear GSW1xx switches.
+>  
+> +config NET_DSA_TAG_KS8995
+> +	tristate "Tag driver for Micrel KS8995 switch"
+> +	help
+> +	  Say Y if you want to enable support for tagging frames for the
+> +	  Micrel KS8995 switch.
+> +
 
 [Severity: Low]
-At this commit alone, is there any driver in tree that matches
-microchip,ksz8995xa?  The existing part appears to be handled by the older
-micrel,ks8995 binding and drivers/net/dsa/ks8995.c, so a device tree using
-the new string would document a compatible that nothing binds to yet.
+At this commit nothing in the tree selects NET_DSA_TAG_KS8995 and no
+driver returns DSA_TAG_PROTO_KS8995, so the module can be built but never
+bound.  The existing drivers/net/dsa/ks8995.c still returns
+DSA_TAG_PROTO_NONE from ks8995_get_tag_protocol().
 
-Checking the rest of the series, this looks already answered: the later
-commit "net: dsa: microchip: Support Microchip KSZ8995XA / KS8995XA" adds
+Looking further in the series this resolves itself: the following patch
+adds ksz8995xa_get_tag_protocol() in drivers/net/dsa/microchip/ksz8.c
+returning DSA_TAG_PROTO_KS8995 and makes
+drivers/net/dsa/microchip/Kconfig select NET_DSA_TAG_KS8995, and the last
+patch deletes the legacy drivers/net/dsa/ks8995.c.  Each patch still
+compiles on its own.
 
-  drivers/net/dsa/microchip/ksz_spi.c:ksz_dt_ids
-    { .compatible = "microchip,ksz8995xa",
-      .data = &ksz_switch_chips[KSZ8995XA] },
+Would it be worth mentioning in the commit message that the switch driver
+side arrives in the next patch, so the tagger is intentionally without a
+consumer for one commit?
 
-along with ksz8995xa_regs[], ksz8995xa_dev_ops and ksz8995xa_switch_ops in
-ksz_common.c, and "net: dsa: ks8995: Delete surplus driver" removes the
-legacy driver and its micrel,* match table.  Documenting the binding one
-patch ahead of the driver match entry is normal series ordering, so no
-functional change results.
+>  config NET_DSA_TAG_KSZ
+>  	tristate "Tag driver for Microchip 8795/937x/9477/9893 families of switches"
+>  	help
 
-For completeness, the two if-then blocks in microchip,ksz.yaml (the
-ksz8863/ksz8873 three-port block and the ksz8463 pinctrl/straps block) do
-not appear to apply to this five-port part, so is it correct that neither
-needs the new string added?
+[ ... ]
+
+> diff --git a/net/dsa/tag_ks8995.c b/net/dsa/tag_ks8995.c
+> new file mode 100644
+> index 0000000000000..db90b3165a853
+> --- /dev/null
+> +++ b/net/dsa/tag_ks8995.c
+> @@ -0,0 +1,134 @@
+
+[ ... ]
+
+> +	/* Always add a distinct outer tag. The user port removes this field on
+> +	 * egress, so reusing an existing 802.1Q tag would consume that VLAN tag.
+> +	 */
+> +	skb = vlan_insert_tag(skb, KS8995M_STPID(portmask), 0);
+> +	/* vlan_insert_tag() drops the skb on failure */
+> +	if (!skb)
+> +		return NULL;
+> +	hdr = skb_vlan_eth_hdr(skb);
+> +	netdev_dbg(dev, "%s: inserted VLAN TAG %04x TCI %04x\n",
+> +		   __func__, hdr->h_vlan_proto, hdr->h_vlan_TCI);
+
+[Severity: Low]
+This isn't a bug in the packet path, but should these two values go
+through ntohs() first?
+
+Both members are big-endian in struct vlan_ethhdr (include/linux/if_vlan.h):
+
+	__be16		h_vlan_proto;
+	__be16		h_vlan_TCI;
+
+On a little-endian host the tag just inserted (0x8101..0x810f) prints as
+0x0181..0x0f81, which is not the value that goes on the wire, and sparse
+with C=1 will complain about a restricted __be16 degrading to integer.
+
+ks8995_rcv() in the same file converts before logging:
+
+	etype = ntohs(*(__be16 *)dsa_etype_header_pos_rx(skb));
+	...
+	netdev_dbg(dev, "%s: received ethertype %04x\n", __func__, etype);
+
+so printing ntohs(hdr->h_vlan_proto) / ntohs(hdr->h_vlan_TCI) here would
+also make the two prints consistent.
+
+> +
+> +	return skb;
+> +}
+
+[ ... ]
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260906-ks8995-to-ksz8-v9-0-8d8815a91bd8%40kernel.org
