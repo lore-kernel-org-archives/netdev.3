@@ -1,209 +1,192 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011051.outbound.protection.outlook.com [40.107.208.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96AF5556BA2;
-	Tue,  8 Sep 2026 14:16:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788877012; cv=none; b=dDzZFp1mS7sdA+0sVKryv8Ta3Y6WeV5pdLdFNFSVd/gm5a37TslW8w4rmvyXe+xG/Y4xXy53HwN+qZTBpDKLh42bRMg5L4QtUO40Two1LKiMlulnQSYPz0hrpvXsaTWw0FleTfrwb6lh+hUIDjRvZYCSVXwsi4d1B9NiVkgKlQ8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788877012; c=relaxed/simple;
-	bh=VDRM8K7mCJqWUg8bWEfaw3p5qwPTeCOkvPoV0/Kj36Q=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=BmtZEJAVcL0JNDPoU81XWnwjwVnlJm4EnocxpMI/CSSiNOynwxOgkkr53oQyF05yO3gqN+GqmgA50XeV16/CYCnEMqmzX8TwTPfsunXgwWH9oDgufKzZYqUfdcIfNbivjOAv9Bsm1uNZH5mLjehBS5YNkI2svpg3gbNIj+BKS/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WYBOrEMZ; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E050B529412;
+	Tue,  8 Sep 2026 14:17:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.51
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788877062; cv=fail; b=Xqih61hsRK6eozhW9yctcVnSSN/Zx7U/m7i8LQyVM/VIQdJMtoXKGh2EGBJOH8HGUfukyM72QiegOgYetVH5aXFXCtHR0oL4ha9NVAE0obqKv5O0U9rbQ6BIxVrOLCHY5a70n2GDMXZyuUXjbcNe7wZlGeOWgfZyeYPwhMT69LU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788877062; c=relaxed/simple;
+	bh=2Y67zrmRvfpTevotoBoql7/a4j4u9eXs4GID0y8TBZU=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=rHvaXzrn5BoUP79OhPVrZXMfKqggwk1vvM10p1ayALTtSy3WqoVwiOEInThXsKsmKh320GASLYGQkeQy7GAKg/Tx2iYPV9fsbOhNLN/kUd+dAqynnqRzcqG4oDvhvo6rH3xejd4aMkBOTrRtbrsDY0Bx3bFHeaFolK+Sjjkk9Rw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=gcouUaCv; arc=fail smtp.client-ip=40.107.208.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WYBOrEMZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D2821F00A3A;
-	Tue,  8 Sep 2026 14:16:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788876997;
-	bh=dDl8k28BkqvUuj5SycjiaptxKSJ1KL7RReFMsthC/x8=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=WYBOrEMZVYfvRp2bTElT91tWP2w3mjQ3DqLFuy9ywhTGVS7MAdJlnog8r9vzj1oXC
-	 HmF8jHs+rv+2Nul3Ff/XZPMj22psFPyOcl/Y1Ekwc+FNi4lW+pYD9ShqpZAIPFKgCm
-	 0AybiXqH0NhftgZuaAJhKrR6fl59IjsWePSeFRR90/f2IyFxwcaF4lnqvhsDdHndEy
-	 DoEIwN4xwWZT7UW6PWfD8e3lSC0+88c4iZth1xVA3AVC9XrZ1JzmQPHSY0z5KEwHUV
-	 G/iVeUwB2ujK1xc/3XbbHBKbE5DMnUi0gBCaw5nVABDS3lj9nERYA5KN4RRonWcXt2
-	 aniVxj1iUtl3Q==
-Subject:
- Re: [PATCH net v3] net: pin protocol module before inet socket allocation
-From: netdev-bot+sashiko@kernel.org
-To: nicoyip.dev@gmail.com
-Cc: edumazet@google.com, kuniyu@google.com, pabeni@redhat.com,
- willemb@google.com, davem@davemloft.net, kuba@kernel.org, horms@kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Date: Tue, 08 Sep 2026 14:16:36 +0000
-Message-ID: <178887699602.219967.13594894510710999619@kernel.org>
-In-Reply-To: <20260904111514.584264-1-nicoyip.dev@gmail.com>
-References: <20260904111514.584264-1-nicoyip.dev@gmail.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="gcouUaCv"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=c+t0nDx1YQxoyRdEN/9miL/0w2vs9lzV/tJAVZtwfwvPJFKCZFTTufSVGqYC+EApfaw93cI+CrpRdZfvnkKXeYx538iiWh2hlPkixP5nUsjr7mlNLGDsytpBiD8Uu6BPKDLv9DtoWKj56HXC2yygjoi6O21o0Q9aaYK7Gbcb0v25babV4ZnVBp+FNhmdMUzqT9Z85zu9dO5Q9WT6Rgy/+RspkrUGVbs6ddPYtXSEon450W2XaYyn3LUzBUj2fbeKUMTD7Ti4IWjg++EP4LAG2lwT7rL1ruGVVDhMLAiTjrd3ISs88kV5TBZ1bAlHFCqIHvkFAHyXpaktAxMO5Aquag==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=dP2UwtAiTtz8zbgE+UurznTtTK0B5CJ9mFa9nTXLA40=;
+ b=WP02yR6bugZ4EDXlTpUHffCV4RO0V2xbCncdB891bkRhSCVJiLPmOQjpyE9je9VgQ8sjysdHDQserBq65rvDGF4y09yiBLWAq1BDsuFwQYfRlmLuTa3GBRuo52oGgPdL8APTjgS45dlRLNMXGXh5Do/5QGjOTPt8p63dnoeqzNggf/d40vMb15T7/xKqyDHdcX8zbjs8Y/tjclCSdBgmLz7WirMP4zXVZenORYJYMr8gOsjUMku8aqIc3cVFQva8w3dNKNBrI7QsUSJY4EFQgARbhnfoKbH4BnNDNtZA5OmeuHEoaRjAdMjR+dFI+ab5pUp0j0I7YMmQl7X9/4iTnw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dP2UwtAiTtz8zbgE+UurznTtTK0B5CJ9mFa9nTXLA40=;
+ b=gcouUaCvHrKz0xJDtajqFo7GcL3MX1QVNJs9f4FTQdhISiIz/SIGdlhVObIW8zuyJJGjRxDT5T6wyq7NKsarmCDYwkeJZPasGcg8TQSoedo6TwaD77hRTJCGLBDONr1AlLlk1qhJvqn3Fc50zITp9ZZociuVmQwnHEtflH9Djvo=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from SJ2PR12MB8953.namprd12.prod.outlook.com (2603:10b6:a03:544::14)
+ by DS7PR12MB6240.namprd12.prod.outlook.com (2603:10b6:8:94::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.382.15; Tue, 8 Sep
+ 2026 14:17:25 +0000
+Received: from SJ2PR12MB8953.namprd12.prod.outlook.com
+ ([fe80::f3b5:fc98:8973:5c0b]) by SJ2PR12MB8953.namprd12.prod.outlook.com
+ ([fe80::f3b5:fc98:8973:5c0b%2]) with mapi id 15.21.0406.005; Tue, 8 Sep 2026
+ 14:17:25 +0000
+Message-ID: <afeccf78-8e2d-4103-910d-277bf052d74f@amd.com>
+Date: Tue, 8 Sep 2026 19:47:17 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next] net: macb: detach netdev before closing on
+ shutdown
+To: Jakub Kicinski <kuba@kernel.org>,
+ Vineeth Karumanchi <vineeth.karumanchi@amd.com>
+Cc: theo.lebrun@bootlin.com, conor.dooley@microchip.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, git@amd.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260901142541.1469544-1-vineeth.karumanchi@amd.com>
+ <20260904184432.02fd59a1@kernel.org>
+Content-Language: en-US
+From: "Karumanchi, Vineeth" <vineeth@amd.com>
+In-Reply-To: <20260904184432.02fd59a1@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: PNYPR01CA0064.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:c01:2b7::9) To SJ2PR12MB8953.namprd12.prod.outlook.com
+ (2603:10b6:a03:544::14)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ2PR12MB8953:EE_|DS7PR12MB6240:EE_
+X-MS-Office365-Filtering-Correlation-Id: 89e5fe1d-b030-489f-dfc2-08df0db3e794
+X-LD-Processed: 3dd8961f-e488-4e60-8e11-a82d994e183d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|23010399003|366016|376014|10067099003|56012099006|11063799006|4143699003|6133799003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	brCW98zR/tW1Vxv+nVaPCAhBZspyTvKlJBl/fMy23XB8Xh28cErofsslKZHxMDp+YDCL9NJ56lcr7Q4sVNyy5tuBjKiBzdID0Bg7lgkF5exSwv2d+7bVOWokJgYVgnyTePV4edEGyhQ//aLGVPC0DA7b8SGk1LHd3PWPXvP7tR18/p3zueUgaxlf0ANVN7cyYboNnmf1E6x+Clg6oI4zpDCbSmgRoQ/xEGXhf5/XxYOwjftpqYv2STPrvCIXIePXNzhPAGadsBv8ZXHkqza/yyykR7vYgFsjhvfYlaX1e1709uWG1rfswiVX2kmvfiGu8WwoOBG3qoT+g0GqU7cuNbZyfEssWS3TwFRS54Hm2AkF6322aj/lnVNjNXVmlq9dA0OviqQvNRLKfGl8bcoId0W+cpTmE1I1BiCJRvCMJwoLhP69Uih61X9ETmZZNFU9d990eZXmSaQGlNZYaHjV1lPR5Hd1ClE6pYhJpJDHUxcPSlIURroqGxYu5/RG94omn1/f0c5zk9aLzKH/8tRRrAlmWqBtf6QT9Wns2Auyg12CbUllcC1l8OpfvqFG94So0zvwTH4JHh59vezpD2QilNv5EOB4C1jQQkWqpoyfus4zDzC3VuIHAKQhbiarxEi74mfb7mNiRRbR0VqF8Ex7zqO7B73SMcKL3ehudHYNgck=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ2PR12MB8953.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(23010399003)(366016)(376014)(10067099003)(56012099006)(11063799006)(4143699003)(6133799003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Mnd1eWk2dENVWHZvVUF3eURuV3Z5RHBQNm1oTjR5TUFsNDNkYTdFdUlCN1Zj?=
+ =?utf-8?B?MWlHM1pGZ0crUlF3ZlF0Tm9UR3Q1WGRmclFnb1NJeC8yYXo0eURFSVdWc08v?=
+ =?utf-8?B?RG4vdTArbDhxdythYklJZmprUFh4YXMzTnZiemRDV20weUc2NjVPQnFvb2dZ?=
+ =?utf-8?B?WU8vRDFQNlROR3E5UGFXeHp2RXJEa2k4VlJwd3hKcG9ZcXFmQVdGZWVpV043?=
+ =?utf-8?B?K2pDSmFhY003QWM2cGtiTEhvT3VSTDdoSmI5cFJ5dmswSjE1Wmd3RUZ2ZGJF?=
+ =?utf-8?B?b3dVbUsxWmNZWk9WbTJzQkNWa3hQNEZVd2dlRndWb2s5SnBkbGh3c3ZCUmtT?=
+ =?utf-8?B?QWVHdTZkQ2JtcmxaTFBReEFIRFpNL3RXOUl5VldpOVNUR0NYU05hTm9RekhL?=
+ =?utf-8?B?bG5EMStNRDZzRmJGUEEvenJwN1ozRzVoT3BVWkZ5WVdLSG9MVTlEaHV6Q0hJ?=
+ =?utf-8?B?MElFVUFwLzROUG9ZaGUzUnh6eGRBN3Y4SkN1bkxnQ0lZb0JUVlNGNDBKUGVz?=
+ =?utf-8?B?M0lPMEp1U0pNalh0Vk1tckwwMTZrQlQ1UTBsZGMxcUFuVnFGdEpMMDYyTkph?=
+ =?utf-8?B?amVLZ3laU0hFVmVWbFN4WW4yNVhpOUppTjlpeXNmY1QwV2F3S1VadThTbHRI?=
+ =?utf-8?B?eXhDRVJLSmRDbEZjeEhOSlAzc1J1blBFNXA4aWZkemhUQjEvZlU4MElJekJl?=
+ =?utf-8?B?MHcxNThTckZMUkgxUVUwZzZ2WTUvNENka3JabzFyanQ1aGNaKzNhUS8xSzJ5?=
+ =?utf-8?B?UUJ0MlZDNy9uajJmQXRJTXdYNi9QS0FaOGp4MXF3UDV0R0JNRTNYSXIwQTdI?=
+ =?utf-8?B?Z28yVHplaXR5aVZsb2IxM2hZWlM1M1J5bUE4WFR6ZDVOK2dNdzgxYVV2TlBi?=
+ =?utf-8?B?blI5REd3amRRektnWjN4dWtPWXZUT255ODV1Z3pWcEppbTVGeXRXTk1oL05z?=
+ =?utf-8?B?T3Y2VjRRM211aWRtR00yUEIzbVdSZjFnZmtmb29ZZGpEMElTSHdRaXJBVGw5?=
+ =?utf-8?B?R2ZMS3pVU2FVaXN5Yk00WUlkZXB3Vy9NM01YMjltU2Jyd0R1Vmxic2FEY2Rt?=
+ =?utf-8?B?d1ZCbVF3WWRZYXN3M2R4b3Y3MUVtb3pQRjYwUzhTNnU4djhHM2R4L0RlS2RP?=
+ =?utf-8?B?eTJBN2EzUjVmMmNnOVcwNktzY0FIbkRoR0p5WDhWRU9oTHd0dWpTZ3NUWEhh?=
+ =?utf-8?B?WGxFb3Q4TWpRSkhseUR3d1k5YkErUGRHaTBQL1pzbVdKNzZOS0xDU01YcGFa?=
+ =?utf-8?B?T2kwMFZaU0JVbDZoRHhYRFgySUJYWVp2QWlFa2ljV2NDcXU5dUtkd2NERXdp?=
+ =?utf-8?B?anVHNUJ4SjRKaktqVytkK0ZYNTY3ekdNTCtWc1JVY1BhUFEvdkJDQlJzWWJV?=
+ =?utf-8?B?Q2JIUlNDWFE3T1JTbEFCR2x2cXk0am81TlI4Y0NFQTRrV09PNTlDWkhrSEMw?=
+ =?utf-8?B?ZjI2ME5LcXNvNzF5T1RmQ0E1dk9DOUJHZ0I2NzJWV3R5NndXcTdMclhkdTdv?=
+ =?utf-8?B?R0dqVmdXdW5kODJ1dGh2T0JXVURraWEwM0RYYTJhbmNtTTU1Q3gwdUlxRUJO?=
+ =?utf-8?B?eE0yZWk3REdIQllRUVczNkJ3WklRcUp2eHkyZHlVK1dhQThGeTgvNzQvWktH?=
+ =?utf-8?B?U0cwamRVK21jOVAxcjhpaUdRMGRXN3BCK3Q1WWhkQ0p2V2dQNXZ4WWxuMS9k?=
+ =?utf-8?B?cWVCVU5UYkZUNTJiZHQ0T2pwTm5zUUx5WXpPMVJPblFsV3pubG9HbGVQWisv?=
+ =?utf-8?B?a29qRHE2NHdJVlYzelIvcE1PbmNJdnlEL2hURmdaMzQ1c3d6dmF6QStiSUdS?=
+ =?utf-8?B?OGw2Q2h1N1FwT21nY3VWUmxyNmp0VDFZUC9DbDkxZHlQMHJhaWdxUUhzcTQ4?=
+ =?utf-8?B?QXFYc1g0bFJLckVmUnF1OWxjYlA5TmlWTEN0WUVEZjJSMUIzVjZhbnA0UXZP?=
+ =?utf-8?B?QU0zR2dOOTBEVnI4YXl4Ym5RT3YxRUhKdzdmUHc2L2ZabzVSRWRiWUEyT2lO?=
+ =?utf-8?B?aTVaU3lzQWFIdml1S3lMdkJGZlVoU1lzaWRLTE45N2p2YzcyQmVGVlRpc3pw?=
+ =?utf-8?B?R2d4TDZENGx3d2dzb29KbzFoajhsMk1MbjUrNzFtNmg0bEZTRWp3eXJKdDRz?=
+ =?utf-8?B?WjZtTittckMzVzJYdERBTVI0RnBqVmdzaU9PRWNyK2k1US9zNWY4dEV2RmNm?=
+ =?utf-8?B?cmh3bTNCYVQ3Zk1HeEVHK0U4Z04yZ21GUGxCODliTVdDUDZQb1pxbDhhSWM3?=
+ =?utf-8?B?dXdnTGRRcmp5TmlhSHdWcERCVHRnTTZsNFhWRHVhWG5TUGcrc3VZN1UzRUxx?=
+ =?utf-8?B?UTh6YTkwWHEvYk9WU3FObkJFeVdiWFE2Q0tROHRuWis4QVE0UkM3dz09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 89e5fe1d-b030-489f-dfc2-08df0db3e794
+X-MS-Exchange-CrossTenant-AuthSource: SJ2PR12MB8953.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Sep 2026 14:17:24.7607
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2HHESrS+g1z0fc/0AF/kIg4dnVlGBXp7itdJg3E9uSkM0uuyQiG+213/9x+tcRqR
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6240
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider:
+Hi Jakub,
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 0
+On 9/5/2026 7:14 AM, Jakub Kicinski wrote:
+> On Tue, 1 Sep 2026 19:55:40 +0530 Vineeth Karumanchi wrote:
+>> macb_shutdown() calls netif_device_detach() after dev_close().
+>> netif_device_detach() only stops the TX queues when the device is
+>> still running:
+>>
+>> 	if (test_and_clear_bit(__LINK_STATE_PRESENT, &dev->state) &&
+>> 	    netif_running(dev))
+>> 		netif_tx_stop_all_queues(dev);
+>>
+>> By that point dev_close() has already cleared the running state, so the
+>> detach only clears __LINK_STATE_PRESENT and the netif_tx_stop_all_queues()
+>> step is skipped.
+>>
+>> Reorder so the device is detached while still running, letting
+>> netif_device_detach() mark it absent and stop the TX queues as intended,
+>> before dev_close() tears the interface down.
+>>
+>> This is a cleanup with no functional change: dev_close() stops the queues
+>> and quiesces the DMA/HW via macb_close() regardless of ordering, so the
+>> reboot/kexec safety path is unaffected.
+> 
+> I'd guess the driver is trying to clear PRESENT so that the device
+> can't be opened again. It's not about stopping queues.
+> The patches doesn't make sense to me as is. You say yourself that
+> the move is a nop.
+> 
 
-- [High] The newly added `module_is_coming(answer_owner)` rejection in
-  `inet_create()` (net/ipv4/af_inet.c) and `inet6_create()`…
+You are right, I will drop this patch.
+Thanks for the clarification.
 
---
-
-net: pin protocol module before inet socket allocation
-
-The patch caches answer->prot and its owner module while still under
-rcu_read_lock() in inet_create() and inet6_create(), rejects an owner that
-is in MODULE_STATE_COMING, and otherwise pins the module with
-try_module_get() before dropping RCU. The temporary reference is dropped
-after sk_alloc() via a new out_module_put label.
-
-Link: https://lore.kernel.org/netdev/20260825172349.232794-1-nicoyip.dev@gmail.com/ [v2]
-Link: https://lore.kernel.org/netdev/20260823171311.3857087-1-nicoyip.dev@gmail.com/ [v1]
-
-> diff --git a/net/ipv4/af_inet.c b/net/ipv4/af_inet.c
-> index 32d006c1a8eed..6b87f0b6cc222 100644
-> --- a/net/ipv4/af_inet.c
-> +++ b/net/ipv4/af_inet.c
-
-[ ... ]
-
-> @@ -322,9 +323,16 @@ static int inet_create(struct net *net, struct socket *sock, int protocol,
->  	    !ns_capable(net->user_ns, CAP_NET_RAW))
->  		goto out_rcu_unlock;
->  
-> -	sock->ops = answer->ops;
->  	answer_prot = answer->prot;
-> +	answer_owner = answer_prot->owner;
->  	answer_flags = answer->flags;
-> +	if (answer_owner &&
-> +	    (module_is_coming(answer_owner) ||
-> +	     !try_module_get(answer_owner))) {
-> +		err = -EPROTONOSUPPORT;
-> +		goto out_rcu_unlock;
-> +	}
-> +	sock->ops = answer->ops;
->  	rcu_read_unlock();
-
-[Severity: High]
-Can this module_is_coming() rejection break modular protocols that create
-a socket for their own protosw from their own module init path?
-
-module_is_coming() is true for the whole duration of the owner module's
-init function:
-
-include/linux/module.h:
-static inline bool module_is_coming(struct module *mod)
-{
-        return mod->state == MODULE_STATE_COMING;
-}
-
-kernel/module/main.c sets MODULE_STATE_COMING before calling
-do_init_module(), and only sets MODULE_STATE_LIVE after mod->init()
-returns.
-
-SCTP (CONFIG_IP_SCTP=m) looks like it hits this. sctp_init() publishes the
-protosws first and then calls register_pernet_subsys(), which runs the
-.init hook immediately for existing net namespaces:
-
-net/sctp/protocol.c:sctp_init() {
-	...
-	status = sctp_v4_protosw_init();
-	...
-	status = sctp_v6_protosw_init();
-	...
-	status = register_pernet_subsys(&sctp_ctrlsock_ops);
-	if (status)
-		goto err_register_ctrlsock;
-	...
-}
-
-so sctp_ctrlsock_init() -> sctp_ctl_sock_init() runs inside sctp_init(),
-while sctp.ko is still MODULE_STATE_COMING:
-
-net/sctp/protocol.c:sctp_ctl_sock_init() {
-	...
-	err = inet_ctl_sock_create(&net->sctp.ctl_sock, family,
-				   SOCK_SEQPACKET, IPPROTO_SCTP, net);
-
-	/* If IPv6 socket could not be created, try the IPv4 socket */
-	if (err < 0 && family == PF_INET6)
-		err = inet_ctl_sock_create(&net->sctp.ctl_sock, AF_INET,
-					   SOCK_SEQPACKET, IPPROTO_SCTP,
-					   net);
-	...
-}
-
-inet_ctl_sock_create() goes through sock_create_kern() -> __sock_create()
--> inet6_create()/inet_create(), and the new check does not exempt kern
-sockets. sctp_prot.owner and sctpv6_prot.owner are THIS_MODULE, which is
-non-NULL for a modular build, so both attempts would return
--EPROTONOSUPPORT, sctp_ctrlsock_init() would print "Failed to initialize
-the SCTP control sock", register_pernet_subsys() would propagate the
-error, and sctp_init() would unwind. Would modprobe sctp then fail
-outright?
-
-There is a note about exactly this pattern above module_is_coming():
-
-include/linux/module.h:
-/* FIXME: It'd be nice to isolate modules during init, too, so they
-   aren't used before they (may) fail.  But presently too much code
-   (IDE & SCSI) require entry into the module during init.*/
-
-Separately, for tasks that are not the loading task: once a modular
-protocol has published its protosw but has not finished init, a concurrent
-socket() finds the protosw, so the existing try_loading_module /
-request_module() retry loop is not entered (the lookup succeeded), and the
-caller gets -EPROTONOSUPPORT for what is a transient state. Should that
-window either succeed or wait rather than returning a user-visible error?
-
-One correction to the reasoning behind this concern: the ipv6 module case
-does not apply in this tree. menuconfig IPV6 in net/ipv6/Kconfig is bool
-and inet6_init is registered with device_initcall(), so rawv6_prot.owner is
-NULL and the answer_owner && test short-circuits. The inet6_create() site
-below is still reached by SCTP's first PF_INET6 control-socket attempt,
-whose proto owner is the still-coming sctp module.
-
-> diff --git a/net/ipv6/af_inet6.c b/net/ipv6/af_inet6.c
-> index 282912a119999..1df8b2e7e2437 100644
-> --- a/net/ipv6/af_inet6.c
-> +++ b/net/ipv6/af_inet6.c
-
-[ ... ]
-
-> @@ -167,9 +168,16 @@ static int inet6_create(struct net *net, struct socket *sock, int protocol,
->  	    !ns_capable(net->user_ns, CAP_NET_RAW))
->  		goto out_rcu_unlock;
->  
-> -	sock->ops = answer->ops;
->  	answer_prot = answer->prot;
-> +	answer_owner = answer_prot->owner;
->  	answer_flags = answer->flags;
-> +	if (answer_owner &&
-> +	    (module_is_coming(answer_owner) ||
-> +	     !try_module_get(answer_owner))) {
-> +		err = -EPROTONOSUPPORT;
-> +		goto out_rcu_unlock;
-> +	}
-> +	sock->ops = answer->ops;
->  	rcu_read_unlock();
-
-[Severity: High]
-Same question here for the IPv6 path: this is the site reached by
-sctp_ctl_sock_init()'s first attempt, inet_ctl_sock_create(..., PF_INET6,
-SOCK_SEQPACKET, IPPROTO_SCTP, net), where sctpv6_prot.owner is the sctp
-module in MODULE_STATE_COMING. Does that attempt now return
--EPROTONOSUPPORT before the AF_INET fallback, which then fails for the same
-reason?
-
-[ ... ]
+Thanks,
+>> diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+>> index 76ee4f506033..21ebaee00f9e 100644
+>> --- a/drivers/net/ethernet/cadence/macb_main.c
+>> +++ b/drivers/net/ethernet/cadence/macb_main.c
+>> @@ -6246,12 +6246,11 @@ static void macb_shutdown(struct platform_device *pdev)
+>>  	struct net_device *netdev = platform_get_drvdata(pdev);
+>>  
+>>  	rtnl_lock();
+>> +	netif_device_detach(netdev);
+>>  
+>>  	if (netif_running(netdev))
+>>  		dev_close(netdev);
+>>  
+>> -	netif_device_detach(netdev);
+>> -
+>>  	rtnl_unlock();
+>>  }
+>>  
+> 
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260904111514.584264-1-nicoyip.dev%40gmail.com
+🙏 Vineeth
+
