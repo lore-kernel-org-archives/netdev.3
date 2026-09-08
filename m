@@ -1,149 +1,188 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC4DC5A0AB1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 952983B19A0
 	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 22:49:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788907750; cv=none; b=LXBk/TuGMlShG3vkaqjT7gOQPen06VtJWPmDhbiFZdNLJv54YJeJd6o22WoGG6tsvyfklC4YQzDu7qgNX4vqR2TaaTTSdFAiKu6msFxpf5hvK5wGLEespJx2RvHVlAf9/dySu9E4KKwpYMeheK5yb5ZlV7iQddqt/t2cOkUKLNQ=
+	t=1788907751; cv=none; b=kQxTH4BKZc+qa8gZhfEvzgIo0Sdrz0tXEJOqTcDpG3MsHilkco2uZ2H2A3tRnKePbpQ4a1GzvxUhiqAe4ul7w1szFBEdjqNxvll4y6xvAqU8W6CBc/BkBGXinc9yM1qV3RJfROG8ZCfeg7aKJ7IRGP/gwoNrCObxj9t9m56jK30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788907750; c=relaxed/simple;
-	bh=qYsNO/+TmUmp3+Ik0iy0jtg18VD9qGv/wetLorl+rCk=;
+	s=arc-20240116; t=1788907751; c=relaxed/simple;
+	bh=MfOO+UXDkh4iMfhQ4pePWebky/zrnhsjByYn+uQzklU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZEBEmLiJUXFqraPE9zv3kDA2hIbvJbRQlEz/aRYtgJQKLQN9Ft3vrZbJ6oeiNcgWtXDg/Bq2IF1+n0Kz/pwthNjcvZe1GVDtGM1kAy99VvZtNqgu74qN6SxOWhBHXg5MfNhSyX4VxcYfjnL4k2Jy3T69wILB2lU5sd8NxiW53I8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V4pxmOyl; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=Jvfq9X0pxH2z+w7xoLqjdN00U4hjojKrMaTKnSmUZP9hZc7n0mI/JxtJs7Ag8iblhIM6KLa17E3YHtW4OyRftnT+53BluouZtAYZqo8Ty4PIDCIRoiMV908vZZHEj8seF6Q1EVXZSeqZKVg5Td3gUWpX5ZV6BzM3W08eAzX5hEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OLwXVfV2; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V4pxmOyl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3BF21F00ADE;
-	Tue,  8 Sep 2026 22:49:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OLwXVfV2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D49AD1F00ACA;
+	Tue,  8 Sep 2026 22:48:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788907743;
-	bh=F86Gqnnwz2ciidQz9vIXkzObIJ/8A5v3n6RJnUUYkyc=;
+	s=k20260515; t=1788907740;
+	bh=CyA7n2nyP/zDFuq0KjKtktHZ2WYOVDgXX6fc4adJLOI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=V4pxmOylSFiSNAdrjofkmbEihOaAQBqOOODQ1nhxjw8zWsdsrgSCjilan0xwLQnnM
-	 oTI4yAw8w9ZFPN5fplOOluUrm1IrhxlvE7dyMsDYpcL+6NPP7xdNvyWhQ1Wf90U3l4
-	 eI16rE1e9oEkPlL5uUpmnknerTTVW/Z8mlIlZFaNKZlZhH+9teI2vMT4Odx4pYGw6p
-	 BxVGQDC9kae8OgsLFzXlFlR5MJgVGTZmvDbVz6dGTTSn/hzFt0UjM81z0UG+5pDyxf
-	 QbSP3/aLjsiaSQrCzs7lDKNVEYyz7meukHCXSU/Emme+YWX8xwjZ0HuW0SGzC4r3FI
-	 0dh63PYeO5ETg==
+	b=OLwXVfV276r80VN3avC/XxdxpEAooXro5ZKOBIRwugyFbqoV3fWBcuvcxzeh97wiH
+	 S67l9sL4Sqia1n3dNeFsTC1t7b/UjFQTKpEhJ1N9OsjYO2LauAkzyubqu55I4DDDQ8
+	 OdlXSX5kpogwVPS5Q55VLyDvAX/gu8D7peWArd27D5aGwu44vTyUVyD09ezITYMk+S
+	 87UvFiMZ/349Yu/cxssIPOZDdN6QpGD3UCGSQGaiaJhpRfgaR/N0zses8BZijS5RdU
+	 qMRlpGkslc1+duG50CQ7kCBea3JOS+KU6j57e3FCgIUjiNb00rwuD8O8ZBtIW87lCN
+	 5ElI0c7iYPDrA==
 From: Jakub Kicinski <kuba@kernel.org>
 To: steffen.klassert@secunet.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
 	davem@davemloft.net,
 	herbert@gondor.apana.org.au,
 	netdev@vger.kernel.org
-Subject: Re: [PATCH 12/12] net: xfrm: reject unrepresentable espintcp transport headers
-Date: Tue,  8 Sep 2026 15:49:02 -0700
-Message-ID: <20260908224902.1591378-1-kuba@kernel.org>
+Subject: Re: [PATCH 08/12] xfrm: use hlist_del_init_rcu for state_cache and state_cache_input
+Date: Tue,  8 Sep 2026 15:48:58 -0700
+Message-ID: <20260908224858.1591267-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260907093020.2228346-13-steffen.klassert@secunet.com>
-References: <20260907093020.2228346-13-steffen.klassert@secunet.com>
+In-Reply-To: <20260907093020.2228346-9-steffen.klassert@secunet.com>
+References: <20260907093020.2228346-9-steffen.klassert@secunet.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
-net: xfrm: reject unrepresentable espintcp transport headers
+xfrm: use hlist_del_init_rcu for state_cache and state_cache_input
 
-handle_esp() in net/xfrm/espintcp.c switches from the plain transport
-header reset to skb_reset_transport_header_careful(), and drops the skb
-with LINUX_MIB_XFRMINERROR when the offset does not fit in
-skb->transport_header.
+This switches the two remaining hlist_del_rcu() calls in
+__xfrm_state_delete() (state_cache and state_cache_input) to
+hlist_del_init_rcu(), so that all six unhash sites in that function leave
+pprev == NULL.  The changelog describes this as closing a write
+use-after-free that in turn produces a read use-after-free in
+xfrm_input_state_lookup().
 
-> diff --git a/net/xfrm/espintcp.c b/net/xfrm/espintcp.c
-> index 674aedc5af5a2..3e72b9f067b9b 100644
-> --- a/net/xfrm/espintcp.c
-> +++ b/net/xfrm/espintcp.c
-> @@ -30,7 +30,11 @@ static void handle_esp(struct sk_buff *skb, struct sock *sk)
->  {
->  	struct tcp_skb_cb *tcp_cb = (struct tcp_skb_cb *)skb->cb;
->  
-> -	skb_reset_transport_header(skb);
-> +	if (!skb_reset_transport_header_careful(skb)) {
-> +		XFRM_INC_STATS(sock_net(sk), LINUX_MIB_XFRMINERROR);
-> +		kfree_skb(skb);
-> +		return;
-> +	}
+There are no Link: tags in the commit header.
+
+Two questions below, one about the changelog and one about whether the
+state_cache half of the change can have any effect.
+
+> A second __xfrm_state_delete() therefore enters __hlist_del() on the
+> already-deleted state_cache/state_cache_input nodes and does
+> WRITE_ONCE(*pprev, next) through LIST_POISON2 — a write use-after-free
+> once the slab is reused. The corruption can in turn cause a subsequent
+> hlist_for_each_entry_rcu traversal to follow a dangling next pointer,
+> producing the read use-after-free reported in xfrm_input_state_lookup().
 
 [Severity: High]
-Is this gate placed early enough to cover the pulls that the ESP input
-path performs on the same skb afterwards?
+Can a second __xfrm_state_delete() reach the unhash block at all?  The
+whole body is gated on km.state, and the gate sets DEAD as its first
+action:
 
-skb_reset_transport_header_careful() in include/linux/skbuff.h only
-rejects offsets that are already unrepresentable:
+net/xfrm/xfrm_state.c:__xfrm_state_delete() {
+	if (x->km.state != XFRM_STATE_DEAD) {
+		x->km.state = XFRM_STATE_DEAD;
 
-	long offset = skb->data - skb->head;
-
-	if (unlikely(offset != (typeof(skb->transport_header))offset))
-		return false;
-
-	if (unlikely(offset == (typeof(skb->transport_header))~0U))
-		return false;
-
-so any offset up to 65534 is accepted here with no margin left.
-
-handle_esp() then calls xfrm4_rcv_encap()/xfrm6_rcv_encap(), and the
-chain xfrm_input() -> esp_input() -> esp_input_done2() pulls the ESP
-header and IV off the very same skb and resets the transport header with
-the unhardened helpers, in net/ipv4/esp4.c:
-
-	skb_pull_rcsum(skb, hlen);
-	if (x->props.mode == XFRM_MODE_TUNNEL ||
-	    x->props.mode == XFRM_MODE_IPTFS)
-		skb_reset_transport_header(skb);
-	else
-		skb_set_transport_header(skb, -ihl);
-
-with hlen = sizeof(struct ip_esp_hdr) + crypto_aead_ivsize(aead).
-esp6_input_done2() in net/ipv6/esp6.c has the same shape for the
-AF_INET6 branch of handle_esp().
-
-For an skb whose head offset lands in the window [65536 - hlen, 65534],
-the new check passes but the offset after skb_pull_rcsum() no longer
-fits, so doesn't the truncation the changelog wants to eliminate simply
-move downstream, now on a partially decrypted packet instead of a clean
-drop?
-
-Can such near-limit offsets be reached in practice?  espintcp_rcv() does:
-
-	/* remove header, leave non-ESP marker/SPI */
-	if (!pskb_pull(skb, rxm->offset + 2)) {
-
-which makes skb->data - skb->head equal to the initial payload offset
-plus rxm->offset + 2, and rxm->offset is bounded only by the size of one
-coalesced TCP receive-queue skb.  If offsets at or above 65535 are
-reachable (which is the premise of this patch), offsets a few bytes below
-65536 look equally reachable, and the peer selects them at byte
-granularity through the 16-bit espintcp length prefix.
-
-For ESP transport mode there also seems to be a second-order effect.  With
-k = (offset + hlen) - 65536 and k >= ihl, esp_input_done2() leaves
-transport_header at (k - ihl), i.e. wrapped, and
-xfrm4_transport_input()/xfrm6_transport_input() in net/xfrm/xfrm_input.c
-consume it directly:
-
-	int ihl = skb->data - skb_transport_header(skb);
-
-	if (skb->transport_header != skb->network_header) {
-		memmove(skb_transport_header(skb),
-			skb_network_header(skb), ihl);
+		spin_lock(&net->xfrm.xfrm_state_lock);
+		list_del(&x->km.all);
+		hlist_del_init_rcu(&x->bydst);
 		...
-	skb_reset_transport_header(skb);
+}
 
-Can ihl here become roughly 64 KiB and turn that memmove() into a copy
-that runs past the packet data into the trailing skb_shared_info?  With
-AES-CBC (ivsize 16, hlen 24) k can be 20..23, which is >= a 20-byte ihl.
+All four callers hold x->lock across that test-and-set:
 
-Would it make sense either to give the espintcp check a margin covering
-the largest downstream ESP header plus IV pull (or avoid the large linear
-pull in espintcp_rcv() altogether), or to convert the esp4/esp6 and
-xfrm_input transport-mode reset sites to the careful helpers as well?
+	xfrm_state_delete()      spin_lock_bh(&x->lock) ... spin_unlock_bh()
+	xfrm_timer_handler()     spin_lock(&x->lock), and also returns early
+	                         on x->km.state == XFRM_STATE_DEAD
+	xfrm_add_sa_expire()     spin_lock_bh(&x->lock) (net/xfrm/xfrm_user.c)
+	xfrm_do_migrate_state()  spin_lock_bh(&x->lock) (net/xfrm/xfrm_user.c)
 
-Conversely, if offsets in that window cannot occur, what makes the check
-added here reachable at all?
+and no path resets km.state away from DEAD.  Wouldn't a second call
+therefore return -ESRCH before touching any hlist?
+
+Separately, is the described mechanism the one that would occur?  If the
+gate were somehow bypassed, __hlist_del()'s very first store goes through
+the poisoned pprev:
+
+include/linux/list.h:__hlist_del() {
+	struct hlist_node *next = n->next;
+	struct hlist_node **pprev = n->pprev;
+
+	WRITE_ONCE(*pprev, next);
+	if (next)
+		WRITE_ONCE(next->pprev, pprev);
+}
+
+Since hlist_del_rcu() leaves pprev == LIST_POISON2, which is a fixed
+illegal address, isn't the result an immediate oops rather than "a write
+use-after-free once the slab is reused"?  And as the store to
+next->pprev is never reached, how would this corrupt a live chain so that
+a later hlist_for_each_entry_rcu() follows a dangling next pointer?
+
+If the read use-after-free in xfrm_input_state_lookup() is real, it looks
+like it has some other cause (an xfrm_state still reachable from an RCU
+list after being freed), which this change does not address.  Given the
+two Fixes: tags and Cc: stable, could the changelog be reworded to
+describe the change as consistency hardening, and could a Reported-by:,
+Closes: or the KASAN splat/reproducer be included so the actual lifetime
+bug can be tracked?
+
+One more note on the stated threat model: if a double
+__xfrm_state_delete() were possible, list_del(&x->km.all),
+net->xfrm.state_num-- and xfrm_state_put(x) in the same body are still
+non-idempotent, so would making only the hlist removals idempotent be
+sufficient?  Turning the poisoned-pprev write into a silent no-op also
+removes the oops that would point at the real problem.
+
+> diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
+> index de097bba803b7..e45aa1ed5b965 100644
+> --- a/net/xfrm/xfrm_state.c
+> +++ b/net/xfrm/xfrm_state.c
+> @@ -826,9 +826,9 @@ int __xfrm_state_delete(struct xfrm_state *x)
+>  		if (!hlist_unhashed(&x->byseq))
+>  			hlist_del_init_rcu(&x->byseq);
+>  		if (!hlist_unhashed(&x->state_cache))
+> -			hlist_del_rcu(&x->state_cache);
+> +			hlist_del_init_rcu(&x->state_cache);
+
+[Severity: Medium]
+Can !hlist_unhashed(&x->state_cache) ever be true here?  The only site in
+the tree that hashes x->state_cache is at the tail of xfrm_state_find():
+
+net/xfrm/xfrm_state.c:xfrm_state_find() {
+	if (x && x->km.state == XFRM_STATE_VALID && !cached &&
+	    (!(pol->flags & XFRM_POLICY_CPU_ACQUIRE) || x->pcpu_num == pcpu_id)) {
+		spin_lock_bh(&net->xfrm.xfrm_state_lock);
+		if (hlist_unhashed(&x->state_cache))
+			hlist_add_head_rcu(&x->state_cache, &pol->state_cache_list);
+		spin_unlock_bh(&net->xfrm.xfrm_state_lock);
+	}
+
+but cached is set at a label that is also the fall-through of the second
+state_cache_list loop:
+
+cached:
+	cached = true;
+	if (best)
+		goto found;
+	else if (error)
+		best = NULL;
+
+The only jump to that label is the cache-hit case "if (best) goto cached;"
+after the first loop, and all other paths simply fall into it, so isn't
+cached unconditionally true by the time the tail check runs?  That would
+make the hlist_add_head_rcu(&x->state_cache, &pol->state_cache_list) call
+unreachable, leave pol->state_cache_list permanently empty (the loop in
+xfrm_policy_kill() then also always walks an empty list), and mean the
+guard above can never be true.
+
+The cached = true placement comes from 0045e3d80613 ("xfrm: Cache used
+outbound xfrm states at the policy.") rather than from this patch, but it
+appears to make the state_cache half of this change inert and contradicts
+the changelog's claim that the state_cache node can be double-deleted.
+Would setting cached = true only on the cache-hit branch, instead of at a
+label that is also fallen into, be the right fix?
+
+>  		if (!hlist_unhashed(&x->state_cache_input))
+> -			hlist_del_rcu(&x->state_cache_input);
+> +			hlist_del_init_rcu(&x->state_cache_input);
+>  
+>  		if (!hlist_unhashed(&x->byspi))
+>  			hlist_del_init_rcu(&x->byspi);
