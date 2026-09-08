@@ -1,166 +1,143 @@
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
+Received: from mail-ua2-f12.google.com (mail-ua2-f12.google.com [74.125.226.204])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6E9D3F104F
-	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 21:14:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA8F93B47FA
+	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 21:21:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.226.204
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788902067; cv=none; b=lPgrqc1fIU24jecpcwvqc5lCsHtna2cQ+8EjL9ubWm7Rdvjse0okrs90JqqEg0plI0CorESaq81Y3+H+r2hHJgZgySZKwUWC96aNnRlT8LyYsnYmEH1wl6EwqDxUMh6Jpvq2iEtrwrfbx9Jcc/Y3KEWDVnc3Yn6HQcVtd0z+ekA=
+	t=1788902497; cv=none; b=qu5L2zVOXFsGIElFBf4sLPDN7DvNNW1pOXXotlaaR8y0JAxRsDARONczICJkNAfs1P0zkk8kiEu1AxztvG9UYwHOqTObiS7MI009mrs/C5V8MhE2xiPrELp1lLJvb5pO1CMpjQeDFxQ5bwh9sYtm/77s2EM8i9LNn5EInz83d+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788902067; c=relaxed/simple;
-	bh=Y8AQPi/TGjAZLl3OY0ovA2Q60/csx6QG02Amny09PXA=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=aaO1puvaAMfAZourbmdVrhU++T0IZAIWzGmqI/mA56L3NZjcAVn+Tz0QXLrDFnslkYDx7hqjX6k6z8wV4zF08HXwfTPJ4Mic7Yn0t8x48G4eAnN98+Zp2CILeK3V4GKZenUWscfHHzGfkL36Tl4A5Q8uDjx2EB7/XuO1iOyWXZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LwRSVGOL; arc=none smtp.client-ip=209.85.210.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
+	s=arc-20240116; t=1788902497; c=relaxed/simple;
+	bh=n0Be36ddKhDCk//9AN4Jf3YbaVHvs4EP8JCDUD3CJE4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qZt5l6Pn9yfiopZvXUbZBKjuVkjjY7ALaua0UIRgFf/+7Lnp2pfx63WZWHft+DxzxM+Ac2R/ea3JaUFJfDv73X3y5Ji3TyOURIpdpIKRIQGZ1YjDsSb+FKDynyfHX7PljQIdkGluKTCoqhuAetmAd1+aB//NIqDB+YKs58281lA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=o4z33yHi; arc=none smtp.client-ip=74.125.226.204
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LwRSVGOL"
-Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-85321e37104so5318592b3a.3
-        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 14:14:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="o4z33yHi"
+Received: by mail-ua2-f12.google.com with SMTP id a1e0cc1a2514c-97e80579b7dso113782241.1
+        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 14:21:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788902065; x=1789506865; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=dYz+iWBBIDMB1Ze9ZKdjAsZuBd2+bxi/DM65aoj1Apg=;
-        b=LwRSVGOLLNk91hFFEfKAsR0Up5y+9TCPxE7iqHhQRgUG++Sg7ENT/rA+0QIWInlmkE
-         NmlOogSqG5n8qWbhjVDkFsK0K2Ce11i8EWtspdzDKyegI8Vqa64qqDxgYhcdGOWrY9Qq
-         hORze9mak6BardVXfuubzXFUUlABJaDUpV7yp12SnhOqzEA/daDTdOGfI5A7uwSaViXN
-         ycoEO6cFHZZQlH4SQeqLK7fz1PSajUep/M/YUerMOOYCEwHZxVJamTxCBHCkvfkLg7Uq
-         CQkP2mxRory7A70tOFmzpbRo2o5Qp2Aq4L10T886XvJ84g0grWHswI6a8urSNokyMPp3
-         VMTg==
+        d=gmail.com; s=20251104; t=1788902494; x=1789507294; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=I/dQygOaKFFI7MqzO8ZJqXyglgwUJKtOP4ihAnFyxvE=;
+        b=o4z33yHiyLSKfC3mNgIxrJIIFQrcpBnnQ9nf+IxZgwto5wbUQeAg6/a/42v+N914jo
+         n15ArRh1kCuEp2FEenZ7GozNDxZaYlmux4m4EkN9dwgHrujaeYPHeIUB9ukM7UgxWkMG
+         OqpQYYVNJZLQl+WjWmo1PhS0T4jDoPvTMvKfLojjNHpnxyRvlJ3nboOwnOJ0RwN93dTa
+         oaSwe7onSitS5Y6ISjDQ/qZvwEMUxJzcqX2Q7TvXgbzR9mcDHNnNexLqy06gKsMTF5bq
+         LBECXhCz/qG1ma8jPBjd7gzzTgdhghXuYVu8V7r61H5URmFtpLp+tCyVbL2Et5C6Ljfw
+         uioQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788902065; x=1789506865;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1788902494; x=1789507294;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=dYz+iWBBIDMB1Ze9ZKdjAsZuBd2+bxi/DM65aoj1Apg=;
-        b=DMW0aAKF9NyTQnMs+/a87kJWvL0R1NvlInzsXrspJev7AjsY94f+6/cXwUrjrlpasC
-         CzyXi3FpV+Yqt1YWX9mGVnzf75efzqWrUeqjklC7+jlc7jCDQJqkz71dQ9rrtLM1nI7g
-         DWimY0PmaO4V+LjCt5oOhBVTfEl7q53b0cMUymSjd3r46eSoUf0LnAPebg+Vg4pKV5TQ
-         VeousJp+H+9SzXcWg9P6JqjUvDWkax/rmP/dLn1U/Jy9eMzOgdcAgTum/GqtO274xkOr
-         UnIQSb2LKcwC8HzFOPOeOVo0/wbkCPFZGo7g/qxYcQT8CTfCxkE/Qr3LAVDiY2+knp4z
-         6EiQ==
-X-Forwarded-Encrypted: i=1; AKwUvBymxCfuX8USIrmYQJKtsOIeRjNSb+BYdjPZnr0W6s2kAV/YaW3RMCFRGHLgadeE8kWv0OMhM0g=@vger.kernel.org
-X-Gm-Message-State: AFuF++lSQtxjIUquwQGzROFw6KygbHGfWyEieDaZocTRG3pfGn4q9zXG
-	vCKELHUG5war09L/0zl2B3Imkt2sB9/45HVVJA2oHsx17mZMX1wYjc+I3OJgv9SEjS0v0yH513N
-	fK7fYGg==
-X-Received: from pgkb16.prod.google.com ([2002:a63:eb50:0:b0:cc1:ca15:6d9e])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:7109:b0:3d0:d933:af97
- with SMTP id adf61e73a8af0-3da3a0aa8b2mr48566378637.15.1788902065055; Tue, 08
- Sep 2026 14:14:25 -0700 (PDT)
-Date: Tue,  8 Sep 2026 21:12:48 +0000
-In-Reply-To: <20260908211419.882954-1-kuniyu@google.com>
+        bh=I/dQygOaKFFI7MqzO8ZJqXyglgwUJKtOP4ihAnFyxvE=;
+        b=haeeqGIN1NmYW3U3URqf7eTYv8pKO8X4WRSNv+8RmTFxRBLCjCncS5/33+sTp0EdkM
+         iQgFpFL/ZEKKkEdX/rrXpxi9EfEUw29KuH7abnysiscCE7DVoSJ8+g90ZVfDuATFWZ/C
+         dzp2zDFjEz43XuiD2vjf/SN4i8uou4kYBNZSt4lCbPsBeCljB9QaTkRuaRLCn4iZwv+v
+         4KRhezSH+7Nm5HWwhkKQUrnPuePJul/5YNI0l6uh+l0sMJTH44Wqy3DUXdlkv7+9CwAT
+         qn26xQACj1aaEvOog9pkFaFcKwI24bwpTjIy9OB+prbSH6Ypn4J/pkQ0vauWxnKTOSb8
+         6SFA==
+X-Forwarded-Encrypted: i=1; AKwUvBzrXhWHmZlVjQS/Id1N2wLSapnDN/rmWLQf/CYJIY/Yj3pGttRWlkUJze8HWogW3lL5fAWaxjU=@vger.kernel.org
+X-Gm-Message-State: AFuF++lGBKesdURNkZxsdPPGvn02aUmYgkhuMwZFCtf2+reTXcpc7SLr
+	ZLGsMJOStNt90v+eh7REhw+rctrUExkM4U7fyvGjHnOirNnktDvg3b9G
+X-Gm-Gg: AYBFou0FcLA0yNsg71xnLEComk8rfPvlgtFRIv63aKgJmdW4ZBZTKgV56i/esHUXvSp
+	IIHJ/pawqz+CPBdSG02ja59+K8dHj0fh3jRxfjDap8ACI5Tn2lpjiA+XRgPapcS7cN8W096NZxM
+	ALkm88ooDDzlozJglBRmD+eZtpVsQAsd0SH5HzlkODpDnZdQN3HZuvkEXxGGvtOOLycRDvg2v+P
+	nYo55tAavTMqTtjvuu1SKVLALXmj7Zj8wj9YDTDLL75FDccG/AAeIxSDv7r+49w7zIiVVsJDhSY
+	BE83c1prkej2wGFFdyadZ3/Eyw+mJXmQ2CgjeoIcHxtttu5GDYtUqvq4sINxXwaHqwa4Ss26RO7
+	c37atmfyPRHuhPkpv7LAxxKaz5UkSKoiZHXyKahWRy7ybD+FwyxbkvruJElGk6f0Wa7phJRpqqN
+	TaCgQQCvgcodTYGQY+sCuqoKL7BxI6UIAEQnXzSCj/myD9IGYDU+ORQG4cgqznhczWhaT6dhI7V
+	1ksd/JtgIu7fqhql5TBvi3yyuBwSczsvepMV48YXJ+Q/MPdilvvQb3Nd5ovzS3m9A==
+X-Received: by 2002:a05:6102:3f87:b0:780:7e65:f0ab with SMTP id ada2fe7eead31-78f7380daa6mr871901137.1.1788902494402;
+        Tue, 08 Sep 2026 14:21:34 -0700 (PDT)
+Received: from lvondent-mobl5 ([72.188.211.115])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-78a47a76aaasm9508030137.3.2026.09.08.14.21.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Sep 2026 14:21:34 -0700 (PDT)
+From: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+To: davem@davemloft.net,
+	kuba@kernel.org
+Cc: linux-bluetooth@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [GIT PULL] bluetooth 2026-09-08
+Date: Tue,  8 Sep 2026 17:21:27 -0400
+Message-ID: <20260908212127.1022197-1-luiz.dentz@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260908211419.882954-1-kuniyu@google.com>
-X-Mailer: git-send-email 2.55.0.979.g7e5102b832-goog
-Message-ID: <20260908211419.882954-5-kuniyu@google.com>
-Subject: [PATCH v2 net 4/4] neighbour: Skip default parms when resumed in neightbl_dump_info().
-From: Kuniyuki Iwashima <kuniyu@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: Ido Schimmel <idosch@nvidia.com>, Simon Horman <horms@kernel.org>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, 
-	Thomas Graf <tgraf@suug.ch>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-neightbl_dump_info() calls neightbl_fill_info() in each loop
-to render the default parms.
+The following changes since commit 38b6be101006d3e7af972999f45d4f1e8250587a:
 
-If there are many devices and neightbl_fill_param_info() failed,
-neightbl_fill_info() is called again when the dump resumes:
+  net: macb: fix NULL pointer dereference on unbind with fixed-link (2026-09-05 13:58:52 -0700)
 
-  # ynl --family rt-neigh --dump getneightbl --output-json |
-    jq '.[] | {name: .name, ifindex: .parms.ifindex}'
-  ...
-  {
-    "name": "ndisc_cache",
-    "ifindex": null
-  }
-  ...
-  {
-    "name": "ndisc_cache",
-    "ifindex": 6
-  }
-  {
-    "name": "ndisc_cache",
-    "ifindex": null
-  }
-  {
-    "name": "ndisc_cache",
-    "ifindex": 5
-  }
+are available in the Git repository at:
 
-Let's skip neightbl_fill_info() if it is already called in
-neightbl_dump_info().
+  git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth.git tags/for-net-2026-09-08
 
-Note that we cannot use !neigh_skip instead of !default_skip
-because default_skip == 1 && neigh_skip == 0 could be true
-if the first neightbl_fill_param_info() fails.
+for you to fetch changes up to c93922dd316b7273a8667d29084632066fa8a2d3:
 
-Fixes: c7fb64db001f ("[NETLINK]: Neighbour table configuration and statistics via rtnetlink")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
----
-Cc: Thomas Graf <tgraf@suug.ch>
----
- net/core/neighbour.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+  Bluetooth: btusb: Fix leaked runtime PM reference in btusb_reset (2026-09-08 17:18:47 -0400)
 
-diff --git a/net/core/neighbour.c b/net/core/neighbour.c
-index 02bf940ce00a..7448320f7ad5 100644
---- a/net/core/neighbour.c
-+++ b/net/core/neighbour.c
-@@ -2587,9 +2587,10 @@ static int neightbl_dump_info(struct sk_buff *skb, struct netlink_callback *cb)
- {
- 	const struct nlmsghdr *nlh = cb->nlh;
- 	struct net *net = sock_net(skb->sk);
-+	int default_skip = cb->args[2];
-+	int neigh_skip = cb->args[1];
- 	int family, tidx, nidx = 0;
- 	int tbl_skip = cb->args[0];
--	int neigh_skip = cb->args[1];
- 	struct neigh_table *tbl;
- 
- 	if (cb->strict_check) {
-@@ -2613,12 +2614,13 @@ static int neightbl_dump_info(struct sk_buff *skb, struct netlink_callback *cb)
- 		if (tidx < tbl_skip || (family && tbl->family != family))
- 			continue;
- 
--		if (neightbl_fill_info(skb, tbl, NETLINK_CB(cb->skb).portid,
-+		if (!default_skip &&
-+		    neightbl_fill_info(skb, tbl, NETLINK_CB(cb->skb).portid,
- 				       nlh->nlmsg_seq, RTM_NEWNEIGHTBL,
- 				       NLM_F_MULTI) < 0)
- 			break;
- 
--		nidx = 0;
-+		default_skip = 1;
- 
- 		list_for_each_entry_rcu(p, &tbl->parms_list, list) {
- 			if (!net_eq(neigh_parms_net(p), net))
-@@ -2641,12 +2643,15 @@ static int neightbl_dump_info(struct sk_buff *skb, struct netlink_callback *cb)
- 		}
- 
- 		neigh_skip = 0;
-+		nidx = 0;
-+		default_skip = 0;
- 	}
- out:
- 	rcu_read_unlock();
- 
- 	cb->args[0] = tidx;
- 	cb->args[1] = nidx;
-+	cb->args[2] = default_skip;
- 
- 	return skb->len;
- }
--- 
-2.55.0.979.g7e5102b832-goog
+----------------------------------------------------------------
+bluetooth pull request for net:
 
+Core:
+
+ - hci_sysfs: Fix NULL pointer dereference in device_del()
+ - hci_sync: Fix not setting CE length properly
+ - btqcomsmd: destroy RPMsg endpoints before freeing hci_dev
+
+Drivers:
+
+ - btmtk: Declare MT7920 (MT7961 1a) Bluetooth firmware
+ - btusb: mediatek: Fix leaked runtime PM reference in reset
+ - btusb: Fix leaked runtime PM reference in btusb_reset
+ - btusb: Fix UAF of btusb_data by rx_work
+ - btusb: Properly disable remote wakeup for MT7922/MT7925 on Ryzen platform
+ - btintel_pcie: validate packet_len before skb_put_data
+ - btintel_pcie: fix tx_handle bounds off-by-one
+ - btrtl: Don't leak return code when parsing firmware format v2
+
+----------------------------------------------------------------
+Ivan Hu (1):
+      Bluetooth: btmtk: Declare MT7920 (MT7961 1a) Bluetooth firmware
+
+Jiajia Liu (2):
+      Bluetooth: btusb: mediatek: Fix leaked runtime PM reference in reset
+      Bluetooth: btusb: Fix leaked runtime PM reference in btusb_reset
+
+Kiran K (2):
+      Bluetooth: btintel_pcie: validate packet_len before skb_put_data
+      Bluetooth: btintel_pcie: fix tx_handle bounds off-by-one
+
+Krystian Kaniewski (1):
+      Bluetooth: hci_sysfs: Fix NULL pointer dereference in device_del()
+
+Luiz Augusto von Dentz (2):
+      Bluetooth: btusb: Fix UAF of btusb_data by rx_work
+      Bluetooth: hci_sync: Fix not setting CE length properly
+
+Rong Zhang (2):
+      Bluetooth: Properly disable remote wakeup for MT7922/MT7925 on Ryzen platform
+      Bluetooth: btrtl: Don't leak return code when parsing firmware format v2
+
+Xu Rao (1):
+      Bluetooth: btqcomsmd: destroy RPMsg endpoints before freeing hci_dev
+
+ drivers/bluetooth/btintel_pcie.c |   6 ++-
+ drivers/bluetooth/btmtk.c        |  11 +---
+ drivers/bluetooth/btmtk.h        |   1 +
+ drivers/bluetooth/btqcomsmd.c    |   6 ++-
+ drivers/bluetooth/btrtl.c        |   5 +-
+ drivers/bluetooth/btusb.c        | 105 +++++++++++++++++++++++++++++++++++----
+ net/bluetooth/hci_sync.c         |  38 +++++++++++++-
+ net/bluetooth/hci_sysfs.c        |  17 ++++++-
+ 8 files changed, 159 insertions(+), 30 deletions(-)
