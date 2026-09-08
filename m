@@ -1,587 +1,141 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C1E54B0496;
-	Tue,  8 Sep 2026 22:51:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AA2959C984
+	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 22:56:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788907879; cv=none; b=CqlHP8fplq6ypkgUa4JR2Rp0iSLWuFatZ1GUpOciVll41rlH6Gsob3RSCCbQdVm5djwbc+G5/2hm/HgJXHnknhmcmLzG4S2GlvHAUBveujNwADwMKRCqLoVWHDlOpKONEbOodk5MOV+282hywaQEsiBnJwes4mQy2jLdwzpozzg=
+	t=1788908168; cv=none; b=PFp7OG7HX3VS1AoEbf/c1FW36/jzUcUPOOedzE+q4YskfR4lyHz4grzoOJ1Obv5kCkhyLUi589sVSkfh0c59y0AdTvnlnVjTGJS58Owdx0hKeY2NBbZEsQH7XQnhXqC86JzLqVpuTRbmBJcFgnj+LPXmrnw8wHZHo+LY1Sa1gb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788907879; c=relaxed/simple;
-	bh=Wbt5cdPNmJX+4p/H3NeyMfK8R40kdM/p8CglW2/sBrs=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Zc6ssz0RI7drY4cM8E+nshOTX/AORYvZeJ0ALXLroXV4NaYtj87lHIlqpTqnlS3MGXEPwWYe7rolZIxX7zzUEk/Z1gQGWAMiYmGOCBgzBk+R330CKNV9B2ogdB1n9aWdGEpJbbrDI4yZrxihumE6qG0pUzMVrZj+7iv3rHspbJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zc4g44NA; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788908168; c=relaxed/simple;
+	bh=vsBDx43bAIddb0gfmnVkap80n2BUxIXNwZDCRSqU0zw=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:Cc:
+	 References:In-Reply-To; b=ZFEaRBgdKYfKWPozDjvIFwdrAcs3A0b4ZU4rT0eSTwHLJIipRLPr18yQF0VK6h1oDFvkA6T4h9xkLhMomIr26W82w3wl4sAe3y0q/gZE/NhBDmSc3fkxlGOex7J5UxwvwHF4xM1xnnPOmVlmiSqy8HBuIy5GAyLVXKwWvyoQk8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O8agsmbs; arc=none smtp.client-ip=209.85.160.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zc4g44NA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD4581F00A3A;
-	Tue,  8 Sep 2026 22:51:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788907876;
-	bh=kvRDMXf4tRtU6mRV46EJyC5lFRk+kTLf2aXiOLtLqJc=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Zc4g44NADBp1HQzWgAlc9Zob3QTYisqPoJoaUGBcz/6eamwFYxzGPSBm3IFIGh0ON
-	 ENYVK3kSCgZK2tu4X1VDDlSInbLCsXQ7ssTxy8tI2tMSXcjL7C1uwKb3TScOF8HN5G
-	 3RgW8rrpwkPeEgA/pW3nwEPKBul6I8GiPN6ocMM+XRhnhkPEGYvKbCOlZvTVEIUCq1
-	 rZNXJIPlCOXl83LwhQuJp5ifuMuUH7Mock3Bk/eayO9/TtoCxDX+MrPU5lLOXu+lER
-	 5tj/uWWt3ehthFHW+MUeDkOxb8JT47FiQ+KlMFAY1M4zy6L0RL0dVmt1vGl/vyDopY
-	 n8uZCE8wJ/VbQ==
-Subject:
- Re: [PATCH net v3] octeontx2-af: Fix rep link state sync and workqueue races
-From: netdev-bot+sashiko@kernel.org
-To: nshettyj@marvell.com
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, gakula@marvell.com,
- sgoutham@marvell.com, rkannoth@marvell.com, sbhatta@marvell.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, bbhushan2@marvell.com, horms@kernel.org,
- hkalra@marvell.com
-Date: Tue, 08 Sep 2026 22:51:15 +0000
-Message-ID: <178890787528.219967.1188602497819520152@kernel.org>
-In-Reply-To: <20260903074840.2373506-1-nshettyj@marvell.com>
-References: <20260903074840.2373506-1-nshettyj@marvell.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O8agsmbs"
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-52d7a3defe8so51412891cf.0
+        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 15:56:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788908163; x=1789512963; darn=vger.kernel.org;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=UviIj0mAB9dLNORxdxu0OPN9iCyl2WihzfLAQT9a7wo=;
+        b=O8agsmbsZWP0vIWWvG1/AT2jYZeC0zXoctb2/Cg0+eIsidsXQT/WkZs6H+V7vxDA9t
+         AuoVBht/vgsGsDpmUx0ijF9CO0EBJUbIo3/2JSx7tJtwvP5ZzUTdOaGFZPHnegHhf/d2
+         j1yRyyw0gb4LB5E6GtcTmUss+pJKywXHltXEy+IicxpxHd8Tbb7Z/s3y7gTd67Yq3x1J
+         Gs3o574yZSp4m/zxF/BKN8r9fxzGaB8nnNWHAhfqRmUKTICh1OwN6gUEE7hr9hDePSp4
+         D6v1na1vitV8Gjsh6roGjx4eNbvToIBim7z81oaVyd62XgSDph+C6U/VRQKz2JZKE+L7
+         ID0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788908163; x=1789512963;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=UviIj0mAB9dLNORxdxu0OPN9iCyl2WihzfLAQT9a7wo=;
+        b=MjPwcSxk39LEPY44T6VVopenYyfJLIQ7AcsHhO45a1HNdt41mbhc0GRYqMs+Rsf/io
+         9Ep+mX1aApV3BFI9cqiaKgwB4hntj0bR6/GURn72Z7au89m/dB7EXbVOWrTlKkUZeIvO
+         wsyz1g8M75rHGvcZtbom2L4p6VlJX/3gXuUegbzS2V9j9Lw2U2b8SNWSL4oQmbXUtvN3
+         KbF8Y3IKpPZEU4YrtHQxWfWZbeeg0Ceg6MsRkZwkrJrToy0BRsME78ZQ2x/WwyYCGmMm
+         nxE5tKc3cH0BotUWhMmGTNCAok1NfgcfWS+/Z81TCqBcO+ft8Ii4mxvE2J5V1VZWWwUj
+         XHkg==
+X-Forwarded-Encrypted: i=1; AKwUvBzpkwdcX3fwNeu2BWpoYLsoWVKMKu8R/nT+TZWyj3DIDEmzf6Au0hxfnBQZiAL5wi647tYs+R4=@vger.kernel.org
+X-Gm-Message-State: AFuF++mVjAfRSW0FWkUuCpVrdvxIr5xCUwFt5obHP5UlBdm7rZLnVYRT
+	7MJFUt2DRMpuhyO2XOVcQc6mQoCi/JH/fo0+21p4rp/aVBSfWPrReUHd
+X-Gm-Gg: AYBFou2di8UiucesbeCmh7JavXnchu9C6KvggwLX7F5HhssHtZTA50xviDFXRq52+6G
+	xMqGWUZjwnUb5hEdUpkCQgQSOeilKEefko2WavX0ino22+w6UuChJkewb3Imhtk15Y6Pu2VYiJ9
+	/W+P1i0eT6/7d3HKVbzV33IW811itSAIKBdsOa65b9gh8bvo5eD3YR8nVMzs4Cg6L1TXO7/zBeC
+	A+ho0kZTNJjNF7gO7afnA8CJUGHw2+5nwOkSqRIlIfa8kYOqijK3AmYSsI+p7/Feu4aTgFHXIJO
+	+JZa4QkQwV1+lcPnFk8urVo4tLFXV5uVPmi3lYdqTdflUmcBO5b2yXyKoc0fKCfrAwcd0tJP8OW
+	FowJQf/pXElQDFCXy4U8glyKxHu/D/AsOlu9wi3vjxpuCVyOSQ8KAdWpTAojW2Usyw7p8AcmTQL
+	AFkuh3zgXYoum20wF2OPOTmcK421/NDTqy68gEs4Sv+rdWvNXHKoQTBskzavLfRQkoFg==
+X-Received: by 2002:a05:622a:551b:b0:530:5418:92be with SMTP id d75a77b69052e-53054989290mr42134121cf.28.1788908158185;
+        Tue, 08 Sep 2026 15:55:58 -0700 (PDT)
+Received: from localhost ([2600:4040:9399:4000:e553:72e5:7d37:c7ef])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-9106ba5b95dsm7172286d6.21.2026.09.08.15.55.56
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 08 Sep 2026 15:55:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-
-Thank you for your contribution! Sashiko AI review found 10 potential
-issue(s) to consider:
-
-Critical: 0 · High: 2 (1) · Medium: 7 (1) · Low: 1
-
-- [High] The new authorization gates added by this patch
-  (`req->hdr.pcifunc != rvu->rep_pcifunc -> -EPERM` in…
-- [High] rvu_mbox_handler_get_rep_cnt() now truncates rvu->rep_cnt /
-  rep2pfvf_map to RVU_MAX_REP (64) entries, but every consumer in the AF…
-- [Medium] rvu_rep_open() and rvu_rep_stop() in nic/rep.c now return
-  early for every VF representor (`if (rep->pcifunc &…
-- [Medium] The new teardown barrier in rvu_remove() only flushes
-  rvu->afpf_wq_info.mbox_wq before destroy_workqueue(rep_wq), and its…
-- [Medium] The representor PF's own TL2->LBK link enable performed by
-  rvu_rep_pf_init() (rvu_rep.c:445-451, rvu_switch_enable_lbk_link(rvu,…
-- [Medium] rvu_remove() decides whether to destroy rvu->rep_evt_wq, and
-  clears the pointer, without holding rvu->rsrc_lock, whereas…
-- [Medium] The patch introduces a lockless publish/consume protocol for
-  rvu->rep_evt_wq (rvu_remove() uses WRITE_ONCE(),…
-- [Medium] rvu_rep_install_mcam_rules() tests test_bit(NIXLF_INITIALIZED,
-  &pfvf->flags) outside any lock and then calls…
-- [Medium] Draining the representor event workqueue after unregistering
-  interrupts causes mailbox communication timeouts.
-- [Low] In the first-time GET_REP_CNT path, `rvu->rep_pcifunc =
-  req->hdr.pcifunc;` (rvu_rep.c:504) executes before both -ENOMEM exits…
-
-Pre-existing issues:
-- [High] When rvu_rep_install_mcam_rules() fails (the new err_disable_lbk
-  path still returns err), rvu_switch_enable()'s uninstall_rules label…
-- [Medium] rvu_rep_install_tx_rule() first calls rvu_rep_tx_vlan_cfg(),
-  which allocates a NIX TX VTAG definition entry and programs…
-
---
-
-octeontx2-af: Fix rep link state sync and workqueue races
-
-This moves the representor event workqueue creation from
-rvu_rep_install_mcam_rules() into rvu_mbox_handler_get_rep_cnt(), adds
-sender and bounds validation to the REP mailbox handlers, and makes LBK
-link configuration take rsrc_lock.  A few questions below about the new
-validation and teardown paths.
-
-> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-> index 937b085582b5..dc4e1fa900b7 100644
-> --- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-> +++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
-> @@ -3721,6 +3721,20 @@ static void rvu_remove(struct pci_dev *pdev)
->  	rvu_unregister_dl(rvu);
->  	rvu_unregister_interrupts(rvu);
->  	rvu_flr_wq_destroy(rvu);
-> +	if (rvu->rep_evt_wq) {
-> +		struct workqueue_struct *rep_wq = rvu->rep_evt_wq;
-> +
-> +		/* NULL the pointer before flushing mbox_wq.  Any mbox handler
-> +		 * still in flight will snapshot NULL via READ_ONCE() and return
-> +		 * -EINVAL without calling queue_work(), so no new items can be
-> +		 * added to rep_wq after flush_workqueue(mbox_wq) returns.
-> +		 */
-> +		WRITE_ONCE(rvu->rep_evt_wq, NULL);
-> +		flush_workqueue(rvu->afpf_wq_info.mbox_wq);
-> +		destroy_workqueue(rep_wq);
-> +	} else {
-> +		flush_workqueue(rvu->afpf_wq_info.mbox_wq);
-> +	}
-
-[Severity: Medium]
-This teardown sits after rvu_unregister_interrupts(), which has
-already disabled the AF-PF mailbox interrupt (RVU_AF_PFAF_MBOX_INT_ENA_W1C,
-or cn20k_rvu_unregister_interrupts()).  destroy_workqueue() calls
-drain_workqueue(), so any rep_evt_work still queued now runs to
-completion here, and rvu_rep_wq_handler() -> rvu_rep_up_notify() does
-otx2_mbox_msg_send_up() followed by otx2_mbox_wait_for_zero() and
-otx2_mbox_wait_for_rsp() on rvu->afpf_wq_info.mbox_up.
-
-With the mailbox interrupt already gone, the PF's reply is never
-processed by the AF, so each of those waits has to time out rather
-than complete.  With a non-empty rep_evtq_head that is paid per
-queued event, all while holding rvu->mbox_lock, which stretches
-rvu_remove() out by seconds at a time on a path userspace is
-blocked on.
-
-Would it be better to move this block ahead of
-rvu_unregister_interrupts() so the pending up-notifies can still be
-acknowledged, or alternatively to stop rvu_rep_wq_handler() from
-sending anything once removal has started (a teardown flag checked
-before otx2_mbox_msg_send_up(), or draining rep_evtq_head and
-freeing the qentries without notifying)?  Note the same question
-applies to the qentry list itself: nothing appears to free the
-entries that are still on rvu->rep_evtq_head if the handler is not
-allowed to consume them.
-
-[Severity: Medium]
-Is flushing only rvu->afpf_wq_info.mbox_wq enough to close the
-queue_work() window the comment describes?
-
-The same rvu_mbox_handler_* dispatch also runs on
-rvu->afvf_wq_info.mbox_wq via rvu_afvf_mbox_handler(), and that
-workqueue is destroyed much later, inside rvu_disable_sriov() ->
-rvu_mbox_destroy().  For AF-VF messages the dispatcher clears only the
-func bits and keeps the sender-supplied PF field, so
-rvu_mbox_handler_nix_lf_start_rx()/nix_lf_stop_rx()/rvu_nix_lf_teardown()
-can reach rvu_rep_notify_pfvf_state(), which sets
-req.hdr.pcifunc = rvu->rep_pcifunc and therefore passes the new -EPERM
-gate:
-
-CPU0 (afvf mbox work)               CPU1 (rvu_remove)
-  wq = READ_ONCE(rvu->rep_evt_wq);  /* non-NULL */
-                                    WRITE_ONCE(rvu->rep_evt_wq, NULL);
-                                    flush_workqueue(afpf mbox_wq);
-                                    destroy_workqueue(rep_wq);
-  queue_work(wq, &rvu->rep_evt_work);  /* freed wq */
-
-Should the afvf mailbox workqueue be flushed here too (or the VF mailbox
-torn down before this point)?  The qentry that handler already kmalloc'd
-and put on rep_evtq_head is leaked in that case as well.
-
-[Severity: Medium]
-Can rvu->rep_evt_wq become non-NULL after this if () test?  The
-producer, rvu_mbox_handler_get_rep_cnt(), now publishes the pointer
-under rvu->rsrc_lock, while this teardown reads and clears it with no
-lock and never re-checks:
-
-CPU0 (get_rep_cnt work on mbox_wq)   CPU1 (rvu_remove)
-                                     if (rvu->rep_evt_wq)  /* NULL */
-                                     else
-                                       flush_workqueue(mbox_wq);
-  mutex_lock(&rvu->rsrc_lock);
-  rvu->rep_evt_wq = alloc_workqueue(...);
-
-The freshly created workqueue and its worker pool are then never
-destroyed, and a REP_EVENT_NOTIFY message processed later in the same
-drained batch can queue_work(&rvu->rep_evt_work) on a workqueue nothing
-waits for, so rvu_rep_wq_handler() may touch rvu after
-devm_kfree(&pdev->dev, rvu).  Would taking rsrc_lock here (or a
-"removing" flag checked by the handler) close that?
-
-> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_rep.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_rep.c
-> index a2781e0f504e..69b260fdd52d 100644
-> --- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_rep.c
-> +++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_rep.c
-
-[ ... ]
-
-> @@ -95,8 +101,17 @@ static void rvu_rep_wq_handler(struct work_struct *work)
->  int rvu_mbox_handler_rep_event_notify(struct rvu *rvu, struct rep_event *req,
->  				      struct msg_rsp *rsp)
->  {
-> +	struct workqueue_struct *wq;
->  	struct rep_evtq_ent *qentry;
->  
-> +	wq = READ_ONCE(rvu->rep_evt_wq);
-> +	if (!wq)
-> +		return -EINVAL;
-> +
-> +	/* Only the registered representor PF may send REP_EVENT_NOTIFY. */
-> +	if (req->hdr.pcifunc != rvu->rep_pcifunc)
-> +		return -EPERM;
-
-[Severity: High]
-How much does this gate actually restrict, given that rvu->rep_pcifunc
-is whatever function sent MBOX_MSG_GET_REP_CNT first?
-
-rvu_mbox_handler_get_rep_cnt() still does an unconditional
-rvu->rep_pcifunc = req->hdr.pcifunc with no check that the sender is the
-representor function (PCI_DEVID_RVU_REP), no capability check and no
-rep_mode gating.  The PF driver forwards VF mailbox messages to the AF
-verbatim - otx2_pfvf_mbox_handler() only rewrites the func bits and does
-no message-ID filtering:
-
-	msg->pcifunc &= ~RVU_PFVF_FUNC_MASK;
-	msg->pcifunc |= (vf_idx + 1) & RVU_PFVF_FUNC_MASK;
-
-So can a guest VF send GET_REP_CNT before the representor driver probes,
-become rvu->rep_pcifunc, and then satisfy both new -EPERM checks?  From
-there REP_EVENT_NOTIFY with req->pcifunc pointing at any other
-CGX-mapped function passes is_pf_func_valid()/is_pf_cgxmapped() (those
-only confirm the victim exists), and rvu_rep_up_notify() then does:
-
-	if (event->event & RVU_EVENT_MAC_ADDR_CHANGE)
-		ether_addr_copy(pfvf->mac_addr, event->evt_data.mac);
-
-overwriting the victim's AF-side MAC and sending a forged up-notify to
-the victim's PF.  is_rep_dev() is just a pcifunc comparison against
-rvu->rep_pcifunc, so the same caller also gets representor treatment in
-rvu_nix.c / rvu_npc_fs.c, and the real representor driver is locked out
-afterwards because its GET_REP_CNT now returns -EPERM.  Should the
-registration itself authenticate the representor rather than trusting
-the first mailbox caller?
-
-[ ... ]
-
->  int rvu_rep_notify_pfvf_state(struct rvu *rvu, u16 pcifunc, bool enable)
->  {
-> -	struct rep_event *req;
-> -	int pf;
-> +	struct rep_event req = { 0 };
-> +	struct msg_rsp rsp;
->  
->  	if (!is_pf_cgxmapped(rvu, rvu_get_pf(rvu->pdev, pcifunc)))
->  		return 0;
->  
-> -	pf = rvu_get_pf(rvu->pdev, rvu->rep_pcifunc);
-> -
-> -	mutex_lock(&rvu->mbox_lock);
-> -	req = otx2_mbox_alloc_msg_rep_event_up_notify(rvu, pf);
-
-[ ... ]
-
-> +	req.hdr.pcifunc = rvu->rep_pcifunc;
-> +	req.event = RVU_EVENT_PFVF_STATE;
-> +	req.pcifunc = pcifunc;
-> +	req.evt_data.vf_state = enable;
-> +	return rvu_mbox_handler_rep_event_notify(rvu, &req, &rsp);
->  }
-
-[ ... ]
-
-> @@ -334,19 +344,22 @@ int rvu_rep_install_mcam_rules(struct rvu *rvu)
->  			continue;
->  
->  		pcifunc = rvu_make_pcifunc(rvu->pdev, pf, 0);
-> +		pfvf = rvu_get_pfvf(rvu, pcifunc);
->  		rvu_get_nix_blkaddr(rvu, pcifunc);
-> +		if (test_bit(NIXLF_INITIALIZED, &pfvf->flags))
-> +			rvu_switch_enable_lbk_link(rvu, pcifunc, true);
-
-[Severity: Medium]
-Does moving rsrc_lock inside rvu_switch_enable_lbk_link() serialize
-anything useful here?  The NIXLF_INITIALIZED test is outside the lock,
-and the flag is set in rvu_mbox_handler_nix_lf_start_rx() and cleared in
-rvu_mbox_handler_nix_lf_stop_rx()/rvu_nix_lf_teardown() with no lock at
-all.  rvu_rep_install_mcam_rules() runs from
-rvu_devlink_eswitch_mode_set() -> rvu_switch_enable(), which holds no
-RVU lock:
-
-CPU0 (devlink switchdev)              CPU1 (mbox NIX_LF_STOP_RX)
-  test_bit(NIXLF_INITIALIZED) /* 1 */
-                                      clear_bit(NIXLF_INITIALIZED);
-                                      rvu_switch_update_rules(false)
-                                        rvu_rep_update_rules()
-                                          lbk_link(..., false); /* lock */
-  rvu_switch_enable_lbk_link(true);
-    /* lock, writes enable */
-
-Doesn't that leave the TL2 LBK link on channel 63 enabled for a function
-whose NIXLF was stopped or freed?  The new err_disable_lbk rollback and
-the new rep_mode loop in rvu_switch_disable() can lose the same race
-against a concurrent LF start.
-
-[ ... ]
-
-> @@ -366,30 +382,37 @@ int rvu_rep_install_mcam_rules(struct rvu *rvu)
->  		}
->  	}
-> +	return 0;
->  
-> -	/* Initialize the wq for handling REP events */
-> -	spin_lock_init(&rvu->rep_evtq_lock);
-> -	INIT_LIST_HEAD(&rvu->rep_evtq_head);
-> -	INIT_WORK(&rvu->rep_evt_work, rvu_rep_wq_handler);
-> -	rvu->rep_evt_wq = alloc_workqueue("rep_evt_wq", WQ_PERCPU, 0);
-> -	if (!rvu->rep_evt_wq) {
-> -		dev_err(rvu->dev, "REP workqueue allocation failed\n");
-> -		return -ENOMEM;
-> +err_disable_lbk:
-> +	/* Undo any LBK links enabled above before the MCAM rule failure.
-> +	 * Disabling a link that was never enabled is a safe no-op.
-> +	 */
-> +	for (pf = 1; pf < hw->total_pfs; pf++) {
-> +		if (!is_pf_cgxmapped(rvu, pf))
-> +			continue;
-> +		pcifunc = rvu_make_pcifunc(rvu->pdev, pf, 0);
-> +		rvu_switch_enable_lbk_link(rvu, pcifunc, false);
-> +		rvu_get_pf_numvfs(rvu, pf, &numvfs, NULL);
-> +		for (vf = 0; vf < numvfs; vf++) {
-> +			pcifunc = rvu_make_pcifunc(rvu->pdev, pf, vf + 1);
-> +			rvu_switch_enable_lbk_link(rvu, pcifunc, false);
-> +		}
->  	}
-> -	return 0;
-> +	return err;
->  }
-
-[Severity: Medium]
-Does this rollback miss the representor function itself?
-rvu_rep_pf_init() enables the LBK link for rvu->rep_pcifunc:
-
-	set_bit(NIXLF_INITIALIZED, &pfvf->flags);
-	rvu_switch_enable_lbk_link(rvu, pcifunc, true);
-
-but this loop, and the new rep_mode loop in rvu_switch_disable(), both
-skip anything that is not CGX-mapped, and the representor is a separate
-non-CGX-mapped function (PCI_DEVID_RVU_REP).  rvu_nix_tx_tl2_cfg()
-explicitly allows the write for it:
-
-	if (!is_pf_cgxmapped(rvu, pf) && !is_rep_dev(rvu, pcifunc))
-		return;
-
-So after a failed install, or after "devlink dev eswitch set mode
-legacy", does the representor PF keep its TL2 nodes pointed at LBK
-channel 63 with all matching NPC entries deleted?  Nothing re-evaluates
-it either, since rvu_rep_pf_init() leaves NIXLF_INITIALIZED set on the
-rep pfvf.
-
-[Severity: High]
-This isn't a bug introduced by this patch, but every rule-installation
-failure now routes through this return err, so it may be worth fixing
-alongside.  rvu_switch_enable()'s uninstall_rules label does
-kfree(rswitch->entry2pcifunc) without clearing the pointer or resetting
-rswitch->used_entries, and rvu_devlink_eswitch_mode_set() has already
-committed rswitch->mode.  A following "devlink dev eswitch set mode
-legacy" reaches rvu_switch_disable(), whose only guard is:
-
-	if (!rswitch->used_entries)
-		return;
-	...
-free_ents:
-	...
-	kfree(rswitch->entry2pcifunc);
-
-which frees the same pointer a second time.  rvu_rep_update_rules() and
-rvu_switch_update_rules(), reachable from NIX_LF_START_RX/STOP_RX
-mailbox messages, are gated only on used_entries as well and then read
-rswitch->entry2pcifunc[entry].  Should the failure path also clear
-rswitch->entry2pcifunc and rswitch->used_entries?
-
-[Severity: Medium]
-This is a pre-existing issue, but does the new cleanup also need to
-release TX VTAG definitions?  rvu_rep_install_tx_rule() calls
-rvu_rep_tx_vlan_cfg() first, which allocates a NIX TX VTAG definition
-entry and programs NIX_AF_TX_VTAG_DEFX_DATA/CTL, and only then calls
-rvu_mbox_handler_npc_install_flow().  When the MCAM install fails the
-returned vtag0_idx is dropped: err_disable_lbk only touches LBK links,
-and rvu_switch_enable()'s uninstall_rules/free_entries labels only
-delete NPC flows and free MCAM entries, while VTAG entries live in
-nix_hw->txvlan and need nix_tx_vtag_free().  Do repeated failed
-switchdev enables then consume the hardware VTAG definition table?
-
-[ ... ]
-
-> @@ -443,35 +466,92 @@ int rvu_mbox_handler_esw_cfg(struct rvu *rvu, struct esw_cfg_req *req,
-
-[ ... ]
-
->  int rvu_mbox_handler_get_rep_cnt(struct rvu *rvu, struct msg_req *req,
->  				 struct get_rep_cnt_rsp *rsp)
->  {
-> -	int pf, vf, numvfs, hwvf, rep = 0;
-> +	int pf, vf, numvfs, hwvf, rep = 0, cnt;
-> +	int ret = 0;
->  	u16 pcifunc;
-> +	u16 *map;
-> +
-> +	/* Serialize first-time initialization. mbox_wq is WQ_PERCPU so
-> +	 * handlers for different PFs can run concurrently; without this
-> +	 * lock two callers could both observe rep2pfvf_map == NULL and
-> +	 * double-allocate the workqueue, leaking one permanently.
-> +	 */
-> +	mutex_lock(&rvu->rsrc_lock);
-> +
-> +	if (rvu->rep2pfvf_map) {
-> +		ret = rvu_rep_get_rep_map(rvu, req, rsp);
-> +		goto unlock;
-> +	}
->  
->  	rvu->rep_pcifunc = req->hdr.pcifunc;
-
-[Severity: Low]
-Is it intentional that rvu->rep_pcifunc is published before both -ENOMEM
-exits below?  On either failure rvu->rep2pfvf_map stays NULL, so the
-fast-path guard above does not fire for the next caller, which re-enters
-this branch and overwrites rvu->rep_pcifunc.  Meanwhile the failed
-caller already has is_rep_dev() true, and its pcifunc is consumed by
-rvu_rep_install_rx_rule()/rvu_rep_install_tx_rule() (req.vf =
-rvu->rep_pcifunc) and by rvu_rep_pf_init(), which sets
-NIXLF_INITIALIZED and enables the LBK link for it.  Would assigning
-rep_pcifunc only on the success path avoid that stale state?
-
-> -	rsp->rep_cnt = rvu->cgx_mapped_pfs + rvu->cgx_mapped_vfs;
-> -	rvu->rep_cnt = rsp->rep_cnt;
-> +	cnt = min_t(int, rvu->cgx_mapped_pfs + rvu->cgx_mapped_vfs,
-> +		    RVU_MAX_REP);
-
-[Severity: High]
-What happens on a part where rvu->cgx_mapped_pfs + rvu->cgx_mapped_vfs
-exceeds RVU_MAX_REP?  The map is capped here, but the consumers are not:
-rvu_switch_enable() still sizes the MCAM allocation from the uncapped
-sum (times 4 in rep mode), and rvu_rep_install_mcam_rules() still loops
-pf = 1..hw->total_pfs and vf = 0..numvfs with no bound tied to
-rvu->rep_cnt.
-
-Both rule installers take their VLAN/index from rvu_rep_get_vlan_id(),
-which falls off its loop and returns the identifier of representor 0
-when the pcifunc is not in the map:
-
-	for (id = 0; id < rvu->rep_cnt; id++)
-		if (rvu->rep2pfvf_map[id] == pcifunc)
-			return id;
-	return 0;
-
-So for every function past the cap, does rvu_rep_install_rx_rule()
-program a rule identical to representor 0's -
-
-	vlan_tci = rep_id | BIT_ULL(8);
-	req.vf = rvu->rep_pcifunc;
-	req.index = rep_id;
-
-- and steer that traffic to the wrong representor?  Their state events
-are dropped on the peer side as well, since rvu_rep_get_repid() returns
--EINVAL and only the new warning fires.  Since numvfs is an 8-bit
-per-PF field summed over all CGX PFs, 8 PFs with 8 VFs each already
-passes 64.  Would rejecting such a configuration with a diagnostic here,
-or applying the same cap in the rule installer and event producers, be
-preferable to silent truncation?
-
-[ ... ]
-
-> +	/* Initialize the wq for handling REP events */
-> +	spin_lock_init(&rvu->rep_evtq_lock);
-> +	INIT_LIST_HEAD(&rvu->rep_evtq_head);
-> +	INIT_WORK(&rvu->rep_evt_work, rvu_rep_wq_handler);
-> +	rvu->rep_evt_wq = alloc_workqueue("rep_evt_wq", WQ_UNBOUND, 0);
-
-[Severity: Medium]
-The consumer side uses READ_ONCE(rvu->rep_evt_wq) as the gate for
-touching rep_evtq_lock, rep_evtq_head and rep_evt_work, but the
-publication here is a plain store with no smp_store_release() and the
-reader has no acquire.  On a weakly ordered machine, can a consumer that
-is not serialized with this function by rvu->mbox_lock - for example
-rvu_mbox_handler_rep_event_notify() reached from an AF-VF mailbox work
-item, since rvu_afvf_mbox_handler() does not take mbox_lock - see
-rep_evt_wq non-NULL before the spin_lock_init()/INIT_LIST_HEAD()/
-INIT_WORK() stores are visible, and then run spin_lock() and
-list_add_tail() on uninitialized state?  The same ordering question
-applies to rvu->rep_pcifunc, which now gates the -EPERM check.
-
-> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_switch.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_switch.c
-> index 49ce38685a7e..8c2c98403507 100644
-> --- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_switch.c
-> +++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_switch.c
-> @@ -12,11 +12,18 @@ void rvu_switch_enable_lbk_link(struct rvu *rvu, u16 pcifunc, bool enable)
->  {
->  	struct rvu_pfvf *pfvf = rvu_get_pfvf(rvu, pcifunc);
->  	struct nix_hw *nix_hw;
-> +	int blkaddr;
->  
-> -	nix_hw = get_nix_hw(rvu->hw, pfvf->nix_blkaddr);
-> +	mutex_lock(&rvu->rsrc_lock);
-> +	blkaddr = pfvf->nix_blkaddr;
-> +	nix_hw = get_nix_hw(rvu->hw, blkaddr);
->  	/* Enable LBK links with channel 63 for TX MCAM rule */
-> -	rvu_nix_tx_tl2_cfg(rvu, pfvf->nix_blkaddr, pcifunc,
-> +	if (!nix_hw)
-> +		goto unlock;
-> +	rvu_nix_tx_tl2_cfg(rvu, blkaddr, pcifunc,
->  			   &nix_hw->txsch[NIX_TXSCH_LVL_TL2], enable);
-> +unlock:
-> +	mutex_unlock(&rvu->rsrc_lock);
->  }
-
-[ ... ]
-
-> @@ -229,8 +236,20 @@ void rvu_switch_disable(struct rvu *rvu)
->  	if (!rswitch->used_entries)
->  		return;
->  
-> -	if (rvu->rep_mode)
-> +	if (rvu->rep_mode) {
-> +		for (pf = 1; pf < hw->total_pfs; pf++) {
-> +			if (!is_pf_cgxmapped(rvu, pf))
-> +				continue;
-> +			pcifunc = rvu_make_pcifunc(rvu->pdev, pf, 0);
-> +			rvu_switch_enable_lbk_link(rvu, pcifunc, false);
-> +			rvu_get_pf_numvfs(rvu, pf, &numvfs, NULL);
-> +			for (vf = 0; vf < numvfs; vf++) {
-> +				pcifunc = rvu_make_pcifunc(rvu->pdev, pf, vf + 1);
-> +				rvu_switch_enable_lbk_link(rvu, pcifunc, false);
-> +			}
-> +		}
->  		goto free_ents;
-> +	}
-
-> diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/rep.c b/drivers/net/ethernet/marvell/octeontx2/nic/rep.c
-> index 0f5d5642d3f7..ef47e7e21901 100644
-> --- a/drivers/net/ethernet/marvell/octeontx2/nic/rep.c
-> +++ b/drivers/net/ethernet/marvell/octeontx2/nic/rep.c
-
-[ ... ]
-
-> @@ -459,6 +465,9 @@ static int rvu_rep_open(struct net_device *dev)
->  	netif_carrier_on(dev);
->  	netif_tx_start_all_queues(dev);
->  
-> +	if (rep->pcifunc & RVU_PFVF_FUNC_MASK)
-> +		return 0;
-> +
->  	evt.event = RVU_EVENT_PORT_STATE;
->  	evt.evt_data.port_state = 1;
->  	evt.pcifunc = rep->pcifunc;
-
-[Severity: Medium]
-These two early returns in rvu_rep_open() and rvu_rep_stop() skip the
-RVU_EVENT_PORT_STATE notification for every VF representor, which is the
-representor-to-representee link state propagation added by the commit in
-the Fixes: tag (b8fea84a0468).  After this, does "ip link set <vf-rep>
-up/down" still affect the representee?
-
-The reason the notification does not work today looks like the missing
-handler on the VF side - otx2vf_process_mbox_msg_up() only handles
-MBOX_MSG_CGX_LINK_EVENT and answers everything else with:
-
-	default:
-		otx2_reply_invalid_msg(&vf->mbox.mbox_up, 0, 0, req->id);
-		return -ENODEV;
-
-while the PF side does implement
-otx2_mbox_up_handler_rep_event_up_notify().  Would adding
-MBOX_MSG_REP_EVENT_UP_NOTIFY to otx2vf_process_mbox_msg_up() be the fix
-instead?  Neither the commit message nor the changelog mentions these
-two hunks.
-
-> @@ -478,6 +487,9 @@ static int rvu_rep_stop(struct net_device *dev)
->  	netif_carrier_off(dev);
->  	netif_tx_disable(dev);
->  
-> +	if (rep->pcifunc & RVU_PFVF_FUNC_MASK)
-> +		return 0;
-> +
->  	evt.event = RVU_EVENT_PORT_STATE;
->  	evt.pcifunc = rep->pcifunc;
->  	rvu_rep_notify_pfvf(priv, RVU_EVENT_PORT_STATE, &evt);
-
-Thanks for looking at these.
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260903074840.2373506-1-nshettyj%40marvell.com
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 08 Sep 2026 18:55:56 -0400
+Message-Id: <DLAB0LQ7WDE9.1IUD2U6BQCRKS@gmail.com>
+Subject: Re: [PATCH net-next V4 13/14] selftests: net: gro: Add PSP
+ encapsulation and encryption
+From: "Daniel Zahka" <daniel.zahka@gmail.com>
+To: "Tariq Toukan" <tariqt@nvidia.com>, "Andrew Lunn"
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
+ Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>,
+ <netdev@vger.kernel.org>, "Paolo Abeni" <pabeni@redhat.com>, "Sabrina
+ Dubroca" <sd@queasysnail.net>
+Cc: "Bobby Eshleman" <bobbyeshleman@meta.com>, "Boris Pismenny"
+ <borisp@nvidia.com>, "Carolina Jubran" <cjubran@nvidia.com>, "Cosmin Ratiu"
+ <cratiu@nvidia.com>, "Daniel Zahka" <daniel.zahka@gmail.com>, "Doruk Tan
+ Ozturk" <doruk@0sec.ai>, "Dragos Tatulea" <dtatulea@nvidia.com>, "Gal
+ Pressman" <gal@nvidia.com>, "Jianbo Liu" <jianbol@nvidia.com>, "Kees Cook"
+ <kees@kernel.org>, "Leon Romanovsky" <leon@kernel.org>, "open list"
+ <linux-kernel@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
+ <linux-rdma@vger.kernel.org>, "Mark Bloch" <mbloch@nvidia.com>, "Petr
+ Machata" <petrm@nvidia.com>, "Raed Salem" <raeds@nvidia.com>, "Rahul
+ Rameshbabu" <rrameshbabu@nvidia.com>, "Saeed Mahameed" <saeedm@nvidia.com>,
+ "Shuah Khan" <shuah@kernel.org>, "Shuah Khan" <skhan@linuxfoundation.org>,
+ "Simon Horman" <horms@kernel.org>, "Willem de Bruijn" <willemb@google.com>,
+ "Willem de Bruijn" <willemdebruijn.kernel@gmail.com>
+X-Mailer: aerc 0.21.0-threadmapfix
+References: <20260908065244.3799142-1-tariqt@nvidia.com>
+ <20260908065244.3799142-14-tariqt@nvidia.com>
+In-Reply-To: <20260908065244.3799142-14-tariqt@nvidia.com>
+
+On Tue Sep 8, 2026 at 2:52 AM EDT, Tariq Toukan wrote:
+> From: Cosmin Ratiu <cratiu@nvidia.com>
+>
+> Add a PSP mode which wraps every transmitted frame in PSP transport
+> mode and encrypts them in SW with the help of OpenSSL.
+> The receiving NIC decrypts and decapsulates, so the frames seen on the
+> receiver on its AF_PACKET socket are identical to the non-PSP ones and
+> every geometry assertion in this file applies unchanged.
+>
+> Sender packet construction is unchanged, PSP uses a different buffer to
+> avoid double encryption.
+>
+> A few PSP-only cases are added: psp_spi_diff, psp_ver_diff, psp_mixed,
+> to cover coalescing scenarios which only exist for PSP.
+>
+> OpenSSL is optional and scoped to this binary: gro is deployed by
+> several suites, so a missing libcrypto costs only the PSP mode.
+>
+> Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
+> Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+> Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+> ---
+...
+> +/* PSP transport mode encapsulation, as built by the sender:
+> + *
+> + *	[eth][IP][UDP dport=3D1000][PSP hdr][encrypted L4][ICV]
+> + *
+> + * Can't use the kernel-only include/net/psp/types.h header, so copy the
+> + * encoding here.
+> + */
+> +struct psphdr {
+> +	uint8_t		nexthdr;
+> +	uint8_t		hdrlen;
+> +	uint8_t		crypt_offset;
+> +	uint8_t		verfl;
+> +	uint32_t	spi;		/* big endian */
+> +	uint64_t	iv;		/* big endian */
+> +} __packed;
+
+My llm is complaining that it thinks __packed is not defined for
+userspace code and being used as the name of an object being declared,
+instead of an attribute. Otherwise:
+
+Reviewed-by: Daniel Zahka <daniel.zahka@gmail.com>
