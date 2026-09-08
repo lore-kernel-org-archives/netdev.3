@@ -1,120 +1,60 @@
-Received: from mail-yx1-f44.google.com (mail-yx1-f44.google.com [74.125.224.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D9BF3BAD95
-	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 20:35:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 025273B7B72;
+	Tue,  8 Sep 2026 20:36:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788899742; cv=none; b=OlCqcd9npZ9kHXxWN31FLLrnkr8SClSEsYijHZwqKUZIgmaDmZmCm6kMxhuMPj9kQI8RiQ71zikZL1+svBDTBDm1kWbOT21rDGLv2hPfyMYiQQ0c/+R5ixOXITzjRg069KyfbdS4eeUsiWFBnnjvbg/V5VqwP02t0btTsoXSGy0=
+	t=1788899799; cv=none; b=dYmTWRDzdEchOIx3XsFJea3qdNkgU2GxswE/FmH2b+qMHoHnEW0NAvziYPEGhKyWaf4hFS2JrM0cS7fOQRiq5LgIePLP7qXc0tbP74ndlzYFiT7EHifpzq7UxBRq6DFMKKTK4qboDiSKs2ukRwWLZVuAmKCj8WHokmnkjJ2zOeY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788899742; c=relaxed/simple;
-	bh=zS3hlDe8zdW+NniVS5ayneJKsmwbKLD+epFUF+wu3Uw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=h9Q/qbKzyZxwDThz2x//phICGCA2UkkgE3aomUZImHxdyr6uvSnchh3Z+qzqh0eXtNgEpbmevK49YX0YPjuHezG+bjZk3lUHTSbQ5lp2HNNwyCM22XpKcTyL3itIaENmEMeijs4FWDupevrPXhrVkheDZnE+GUyeg5VuHZjjWgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xtaz/lC3; arc=none smtp.client-ip=74.125.224.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788899799; c=relaxed/simple;
+	bh=En3L5stSUiDxr4u14JrrhR3Td47pg5j0HIDk/Se9pRY=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=pCsMYfXyPh9R2Swj7pJbMGd/5QWdpfq2nrzLmhBv60G7tnhgzhJUyjmBJcH+Ef0kidEQK6gIS3wtU6/3V4me6J1YuxzYON25eoRSxt/YnSCNygcCxdzWK7A6naAmuoHJah1Pof2us6Y4P1hcEKZEBPrhVR7jfs0p8TTAQMEXfp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dwu5NVJx; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xtaz/lC3"
-Received: by mail-yx1-f44.google.com with SMTP id 956f58d0204a3-670f572e814so1149868d50.1
-        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 13:35:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788899740; x=1789504540; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=7xQ0HwNDCfKaKji8f8/iqu0nYfYxv8RPQ9lEtsdIzJA=;
-        b=Xtaz/lC3EaIKe2+lr3OZgb7Dor+WnEU1i1iX8a8CwRv9RTEJGvdaKrAwOmPh4DCZLA
-         Ars8aVDGUvc2r1bEG+ZpXNl4FODUOfB0WJamiOTprKF6+6O2sXw6Kd2dZRxQi7IzeweX
-         7A7rpZ/fXVZ2sroBFxmh/sxWCIJAeeDEAdqSsaAH2mSnCjkkyCSIrG56hbMhJCBed8Rp
-         JsAbNLlE0MRBpYYNl4IGW5xhkmf4K/z5hflUbd83TekJa58AbhbeXs/7Qmyq3f0go7c7
-         OeFiLLWa8xwREgFX80sXco+teEQZ90oKEQADdz5GeqNMUgw5O4VKJDilEhQNjGHRST+o
-         Vgig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788899740; x=1789504540;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=7xQ0HwNDCfKaKji8f8/iqu0nYfYxv8RPQ9lEtsdIzJA=;
-        b=Ahxej7iw6CF2pEgyb0MuTcldDJ1ONxyDEBDiN9UPwaenJWhRrhpvnaK3C7FTT2I0or
-         i22yO4f7ps5j23hq9o+DwfLve41Del0cImxX1E8NxQaXUxoNiSeL3Hbf62XZWOkfA7h9
-         3I+55Fr9o5reEv5ImpZUF1n8iH9Ng6Mwm6ujKJdPwtHh3vorctvY9lXyDdPqiFW8lpLh
-         ZpQpC8M4AFOzH6shC6AddBh6UYDBefrsOaMxxP9EAdTnNL2HCvnIdriYfMO15uh6bncI
-         oXzAuAFXJi1kV+JiOZJfqp7XP3SBcHsDpyyueXTJCoLzSurRGEIzuDWdq+G86Vki4t8A
-         V39w==
-X-Forwarded-Encrypted: i=1; AKwUvByeIEkwVD6Y2egRaM1z3OfBCCGVAGAJ4akwwFQWjgQnq2os2ykATvInrgDdUXbdA6eG+njDHhI=@vger.kernel.org
-X-Gm-Message-State: AFuF++lwfnlgb9oywqcLFYJLYuBcIO+IJ7H/oAMYA4T1qPgCffk5ByXh
-	WkctG+VaiBzm+5F319DSuo9A8Ep8FKxwwzf/2ve6D77+o8GnGu7UO0JC
-X-Gm-Gg: AYBFou2pfzMsbgMdNSU29bQWIto+mxUSMYIA3AsnaNH4l63O+msQXwv4HjVyBhADzJd
-	LedADAlPdqexRTA1WrU0BrZun/RZuGv8Kqu9lB953qOOepnOY6HvZYknq2DKTEXB2EWN3h2tjrM
-	Uso0ZxahcU50Bd5AKO6+R4fPWEOrdfovEgAISvWJ6CHRO2HH7InMLEVb7ygMHuhw1JRyDD03+UA
-	EUCJWvj/TaFajgNIZmIl61wlGzhqoi/rlTnG8lz6ZkY0gKazbbkQSosCuUuqOAyeREQbjM6h6jP
-	IDJgDhhhCvSWfBD9csHKj1K6oWbFheOpJPkzmZs+fqjHnvIhP8pTRL7ApX4DINdJfXu4dU8ruVC
-	IxXTmhfV6PjNKinxNTGTNM7fcM6llWQ4bMBGseyjliJzXdf0L1mZaB59kg+A8JueBHjWt0smVrF
-	O4bv2vsboAu84qz+/VkbwdcKPEsUa3Jjz0AjgHvV1opDOzEosdmnCDVJZwhnIFSjqYa0hrRbjrd
-	Q==
-X-Received: by 2002:a53:d01c:0:b0:66f:c1bc:4054 with SMTP id 956f58d0204a3-66fc1bc4206mr3492966d50.28.1788899739983;
-        Tue, 08 Sep 2026 13:35:39 -0700 (PDT)
-Received: from adriano.lan ([2803:9810:3d22:1608:9be0:137d:43c4:cc14])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8714ab6fabfsm98442907b3.30.2026.09.08.13.35.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Sep 2026 13:35:39 -0700 (PDT)
-From: Adriano Cordova <adrianox@gmail.com>
-To: Alexander Aring <alex.aring@gmail.com>,
-	Stefan Schmidt <stefan@datenfreihafen.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Cc: linux-wpan@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Adriano Cordova <adrianox@gmail.com>
-Subject: [PATCH v2] ieee802154: register a device type for the wpan dev
-Date: Tue,  8 Sep 2026 17:35:33 -0300
-Message-ID: <20260908203533.102378-1-adrianox@gmail.com>
-X-Mailer: git-send-email 2.51.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dwu5NVJx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FEBD1F00A3A;
+	Tue,  8 Sep 2026 20:36:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788899797;
+	bh=YkhrU60lkYWjMLRg+mcGdBRBDPjCQKJlQBVqkc+X7WQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=dwu5NVJxjcHSqMaqfJ3os9XJhEutBGyaKU7vqO3/bUhLSDwD18WQc8Rv2pNMFLUOX
+	 qJM5S3EPHDpJh1b4yXWXRiAXkH/ZDyVWJZn00UIgDitK5AmOHcztzbcPczH5mlFpmW
+	 DjeaBKtE1qo74fRUAJi6p4jHJEV9kzKC2hwOzzK3U5NTxJoaCkxddDm9NP3HORPBVX
+	 uHDw9STfNIFr++wVFWNRb4HqguzbDvTXuk4UFHW6v2rJCqgjEYabvJ11HBS1XVk71e
+	 s7r66mt7HtcH6BCZWZA5jBcStQMJ5nKXiUI0YQrhJv/RgtydYbcXTLFRAoC9fGWPFJ
+	 WyA5ioHx2OiKA==
+Date: Tue, 8 Sep 2026 13:36:36 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Chuang Wang <nashuiliang@gmail.com>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, Willem de Bruijn
+ <willemb@google.com>, Stanislav Fomichev <sdf.kernel@gmail.com>, Hangbin
+ Liu <liuhangbin@gmail.com>, Samiullah Khawaja <skhawaja@google.com>, Neal
+ Cardwell <ncardwell@google.com>, Roman Gushchin <roman.gushchin@linux.dev>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v9] net: reduce RFS/ARFS flow updates by
+ checking LLC affinity
+Message-ID: <20260908133636.2ea807d9@kernel.org>
+In-Reply-To: <20260908060410.3982-1-nashuiliang@gmail.com>
+References: <20260908060410.3982-1-nashuiliang@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-cfg802154 never assigns a device type to wpan interfaces, so their
-netdev uevent carries no DEVTYPE key. Mirror cfg80211, which calls
-SET_NETDEV_DEVTYPE() from a NETDEV_POST_INIT case, and set a new
-wpan_dev_type so the device is typed DEVTYPE=wpan.
+On Tue,  8 Sep 2026 14:04:00 +0800 Chuang Wang wrote:
+> v8 -> v9:
+> - fix errors in AI submissions by Simon Horman
 
-Signed-off-by: Adriano Cordova <adrianox@gmail.com>
----
-v1: https://lore.kernel.org/linux-wpan/178889163770.219967.16467487407776248344@kernel.org/T/
-Changes since v1:
-		- Drop WARN_ON patch as it was a dead check.
- net/ieee802154/core.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
-
-diff --git a/net/ieee802154/core.c b/net/ieee802154/core.c
-index c0b8712018a1..c6213412d291 100644
---- a/net/ieee802154/core.c
-+++ b/net/ieee802154/core.c
-@@ -272,6 +272,10 @@ void cfg802154_dev_free(struct cfg802154_registered_device *rdev)
- 	kfree(rdev);
- }
- 
-+static const struct device_type wpan_dev_type = {
-+	.name	= "wpan",
-+};
-+
- static void
- cfg802154_update_iface_num(struct cfg802154_registered_device *rdev,
- 			   int iftype, int num)
-@@ -296,7 +300,9 @@ static int cfg802154_netdev_notifier_call(struct notifier_block *nb,
- 	/* TODO WARN_ON unspec type */
- 
- 	switch (state) {
--		/* TODO NETDEV_DEVTYPE */
-+	case NETDEV_POST_INIT:
-+		SET_NETDEV_DEVTYPE(dev, &wpan_dev_type);
-+		break;
- 	case NETDEV_REGISTER:
- 		dev->netns_immutable = true;
- 		wpan_dev->identifier = ++rdev->wpan_dev_id;
+I commented on v8 6 hours before you sent this.
+Please pay more attention to what you're doing.
 -- 
-2.51.0
-
+pw-bot: cr
