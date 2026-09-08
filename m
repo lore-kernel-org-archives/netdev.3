@@ -1,65 +1,66 @@
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11012013.outbound.protection.outlook.com [40.93.195.13])
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012052.outbound.protection.outlook.com [40.107.209.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ECB147A892
-	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 10:05:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6EBB4EE847
+	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 10:06:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.52
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788861939; cv=fail; b=HwkNIEGpsQCw3is70S8M5XDe3SJZq4wDfc5BCz79nSkpmZ4LuBmE/wE3bE9V/Tfi3NmxJcAHsEXysa30Akr3Xm0s9YTWAoQY0d7YiLWzdt1o/tQItTdH9Bbcyt37G4BE4ptYVoFzqPVgZqVVtf7kh1+CuK77E6x9m/0K3OUC2no=
+	t=1788861968; cv=fail; b=VF1avsaKVxys3DrFmBGsGjvHDa8HHvx+Ev3Lfdf3mjYh+bRD5E7DC1R3l/dBjbBozuiv9o1yrvLva06t0eLBe2xgn19+p8WiByngQKBGUAtD5cyKDmqMNgL6uOtXb92hu4Z14B7/FAtypsWkZV/+oJ81dvq/zdfbPhr2MUMHuOo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788861939; c=relaxed/simple;
-	bh=yQAi1PLss2YCyh7voiIRTY21p8+xhwJ0Fjx9zu0YBCE=;
+	s=arc-20240116; t=1788861968; c=relaxed/simple;
+	bh=24d8x5loyn1EvP4KzOjEKNLfxUSrAx+YwNtwudus3lQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=YoIkkbpV+lrAKG+QsB2OgYJVb/eTpCDVFZx5D6ErwmIEhaAshLq+DMs/cxcaqvPQla83CcdvijMSs8n9SbRkhXmATLzrEJE3/vPt6/CPHH2sKHPU1rMsFjS7RoWI6s0nAaKtGEcYC3ABme7iWnCMVNIe7dhVuPY9rzV2yWfKNUM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=KNffyc/3; arc=fail smtp.client-ip=40.93.195.13
+	 Content-Disposition:In-Reply-To:MIME-Version; b=mRdVUp2SI+I5TBZ1VlyqfiY1Fz6LbrHUZ38rm7YwrVKYhaFZJ7dNwoA14mmqQ9y3v5lVlfVBHUC7N462yle52Ot8OXglkKG6tx+eaYVmkwxmlL5fVoB9hsIAckrPP0Ytmv0g8G8wmQLpLZetQ01X51Nb1TCWP5V8qCLgHdDfluQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=HUY1s2jq; arc=fail smtp.client-ip=40.107.209.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="KNffyc/3"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="HUY1s2jq"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=IurZYnD8MB1IMlgMb9l8S1kqM5/nGqdRpPiucuerP9At+Y1WZMG1ztF7yemOOWxfloLvurkfL4bNzlgYRbUWmH/GiKTkiqFg+OixfIwLidMw4oW9jY5xnLAAZT9jWuLepuTfl/3oZM64gSzYHF8NbGFfujYLsf1ZGLQ4dgLodzb4Be09HAx65hkxGPLx8y/wpyLGC7EVddMEHfZOD9QSdzBmhnwPQMqghgzk3SMHHIqJvqQlhIa/6ariHWjZaqy99MIp8ZQkWY/8qiQGfY8cPe3CG5mbrWr5/14kOGZ0Nb4VmXaxopGMYvUjnPPRal3w9xhcohcnduymYb3tPBG46g==
+ b=F6up/v9N+vFjD5AbDrFI6go26NSL0PoxWxArcnsj8rzUGGocjxNDKIbPlYnA4jOnftak73F2rJ4tvL+o3UTxeE78hm0MJ7TyH82NJ7HZWyFROcGjAjrwXxXkrSw254eK22aD/EVsy2xKMP/RDnX0cA2M7pDPWrRUhjjdoG6nqihF8R6uwzJZ9HFwTR9cak4sgYG7/dphgGbyccT9esYltxb9tcfOYuN44D5BVk49XE9cFqbqiKjRX57U7C4AwQYlAO3DHp5/HiW2qmtbOy1yAiHid6Le0sE+x7IUy/uOJh0I/HOEtZqwqu+qierqzhee+41RB6ROWcES5gwTV0Spfg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OLyaCTuf3PFuge/CeklexN0hJN51lt3CHUUwDTOEUHQ=;
- b=jnpCk0uw68pSPREcA4zohezqU0GywT0wN9ebXvxrvgelwltZK3ItIMerCAryDnqLTEvyfEByDjxP2QQaZnteUdWV9D7uoTNdDcTRja6QiimMlf8iV/dkKWMo7GKHA+fICC5R4qsF5HWKe1+Byv/oHyo7bno93mBQY7kf95NWAJeOeW0ftPl26Tx73l6mlpmIzjaTtVpQl0luyzLIk3ljo8DrwHe0w5qUWdIFQFomsT4lUiLGvSZ8leKXP3fqUGIT/0rcbLvxOp/XhYenVVyfwc/v5c0wHok/ysSmUePA2t8OMLeLIRIRdeIzbvy38XCUtLbGox40x8IH+hGb0Xlhyg==
+ bh=D2X+nQCM4tHYiIhNG6VDUC7SOsGKJaZhWdEigngqrM4=;
+ b=m8SVMXAIBJiP81migdynDDPNccdisfrDPGL+dUUG/Ey4h8X7x/3vhrL2AtRLB1g1sosqXP5VW/p0NT7vwVQrSfprCwvtouzXgL/ynCaKO/u4FrNvCEL9lcOcpK7Iu5et3kg0VuW79KhqkNXE58vuYlfItYYYabIip6iVyPRTKAX/WeQw2USAeMgXtf2wNgalR7TZBmKEOVOogEyx5+f3S7JqH40DKQXdPRVOrIEODn9WR02Fa8ZYPdxa8zPZO4UKYNMZJckOZ/g8P086VIV3A8rLfCz+eOEmPN/Y8cbhbfQVE1RL9j3Eqsw/3nXs1s4MOCDPK7AH0ceAU/dUjnQlfA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OLyaCTuf3PFuge/CeklexN0hJN51lt3CHUUwDTOEUHQ=;
- b=KNffyc/3Syf2XfktZI6ENiZfEwy3ACFv/1CxgAR6Qdb1ESWtdzSyKwdCybryRgMT7KxD80s1IYcCV9nmADaJB4Du/wHbnFCQ4wFKYuQ2Cj7X9dOlSaVLc54EEa/65xQiD4Kp93+PyKbn7Z1gVjOjyaB0PtDpVKG0PlNzTHQ95N9/HmZ3Vf+H6Q5NQlxeOD9b/jK5857kiHYFWt92jqq/P9QZ7fm3AN9bdbTE4jhIADqW1P0G5fdsLDgru6tJaAhuqeZzwYOdPjntnH1kKqQB2FJZ3UYWpmY68C14BMil9CdcFEHGSQjSYmPO/5pgTEFs9frElRlmMMmX2wtv5xmXXA==
+ bh=D2X+nQCM4tHYiIhNG6VDUC7SOsGKJaZhWdEigngqrM4=;
+ b=HUY1s2jqxPwVzO3vuCEG4hNqqXrKM0WS6qG6XC+sDW/aUl/i5CjjlR9EXvUPbXdWdsM/raReGke8L8tvW1QqNi8lXwR6Acpun2+Q6JAkv+t/AelPmUBSD8vM4U7qEuIokQDu1ZFLKZ2k4xEaoijMGW/0NX4WQMxVNus5j+hNKVtIk0oT7UOnB5p10aoFPRsTZ4PQ3xIJJQQDwmnxkmnEZYcQazHxz2v2j3/rJ9DpHDZMtLSmAmHPZeMauYwhkf9ntfwEscO+bWwwWXwroC4C8iBDWZ8EFEIjp45lSVFr4+dGCUZtSs3GeZOVVcjeLZhMarnfRoOWwIQtMK4bgRNV5A==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from PH0PR12MB7957.namprd12.prod.outlook.com (2603:10b6:510:281::22)
  by CH1PR12MB9599.namprd12.prod.outlook.com (2603:10b6:610:2ae::14) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.382.14; Tue, 8 Sep
- 2026 10:05:32 +0000
+ 2026 10:05:58 +0000
 Received: from PH0PR12MB7957.namprd12.prod.outlook.com
  ([fe80::9251:acc2:cc63:3499]) by PH0PR12MB7957.namprd12.prod.outlook.com
  ([fe80::9251:acc2:cc63:3499%3]) with mapi id 15.21.0382.014; Tue, 8 Sep 2026
- 10:05:31 +0000
-Date: Tue, 8 Sep 2026 13:05:22 +0300
+ 10:05:58 +0000
+Date: Tue, 8 Sep 2026 13:05:48 +0300
 From: Ido Schimmel <idosch@nvidia.com>
 To: Kuniyuki Iwashima <kuniyu@google.com>
 Cc: "David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
-	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
-Subject: Re: [PATCH v1 net 1/4] neighbour: Add missing RCU annotation for
- neightbl_dump_info().
-Message-ID: <20260908100522.GA903218@shredder>
+	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org,
+	Yuwei Wang <wangyuweihx@gmail.com>
+Subject: Re: [PATCH v1 net 2/4] neighbour: Enforce min/max to
+ NDTPA_INTERVAL_PROBE_TIME_MS.
+Message-ID: <20260908100548.GB903218@shredder>
 References: <20260907215853.3709987-1-kuniyu@google.com>
- <20260907215853.3709987-2-kuniyu@google.com>
+ <20260907215853.3709987-3-kuniyu@google.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260907215853.3709987-2-kuniyu@google.com>
-X-ClientProxiedBy: FR3P281CA0202.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:a5::6) To PH0PR12MB7957.namprd12.prod.outlook.com
+In-Reply-To: <20260907215853.3709987-3-kuniyu@google.com>
+X-ClientProxiedBy: FR3P281CA0133.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:94::20) To PH0PR12MB7957.namprd12.prod.outlook.com
  (2603:10b6:510:281::22)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -69,127 +70,126 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: PH0PR12MB7957:EE_|CH1PR12MB9599:EE_
-X-MS-Office365-Filtering-Correlation-Id: ef68d699-581e-4073-c1f5-08df0d90b745
+X-MS-Office365-Filtering-Correlation-Id: 30287001-1e02-4c59-1d3e-08df0d90c766
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|23010399003|6133799003|10067099003|4143699003|11063799006|56012099006|22082099003|18002099003;
+	BCL:0;ARA:13230040|1800799024|366016|376014|23010399003|6133799003|3023799007|10067099003|4143699003|11063799006|56012099006|22082099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	Jfb8IX9U4Y4BpCTRxONA6NvcFqd0gsQ+A5Qa9UzUX8tXGQZoHG9uvqSXgI+Rg4pGZsOxp6crwnzWndxkkfbhw66DKE06ANqiqaRsQ61lzRiGWvpDqxD36PB+O3TmSWbVmQEUxsHwKi/OhSRrf4U/jxpjcFtTkOXect+kBkdbCtM63CFrxDIn38LrdQ7TQMK2i1VjeLzoyu7de7FnmnVCSaaZewXtu1JU7L4Verc2giFVNbikhUztPrOJJdnurJ6hGeXD2s4BxCAceAoScHM3UhzHc928tYXOgBgGLRkr3KY38PWLbf1fURAA/06SRQYYCdr79KWtx55wmsHQgDHxe8TCURGMexi6Q7bwi8zD9DZ/wSfQmYzcJ2QQsU97i5JE0Apl2Fm7iJjKyj+Ic465KyDAkEzjfJWE5TxLFEjb5PxBq4Bi4BzeBcNlx5I5LiTh/F7E7YfcNZ7Szfm3r0PRv7xCjL/0cabmZmO8oSN0DkbXSBf2hqAuwUJ/dH9OHCPrFy0AhYUYSYNU84ncQ93UPAhMMSai6sS1Hjj/F30n4OCHncZNXKqZc9DR65HuYFGx6g0G5ncGIcdny3zLD/WQbotj+iPKSt94yNusedj+fa+t8Z5JtMXYp0DlA72qD1XzFIM2TaI1LVv5b8pDNPi9LFan/hPuDUITE/avxXCAA5k=
+	2+Xa/9XCTvpdWqcuHpmd18p+Rs+YnKnv/bdnxAiCy+B4X2tDjEhc+cOtDIuutqf79u5nklB18Sw4lxmUZBBvv6Gv7frgG3kUjKOa49jvsZOZlN1XctBaE3aTH93l3eRpyMMTK2nwibJdYWo9qrUQvJHwIQcAG43zWlUM4MBmLH34286zf3heuqsvbT4iVtm64vC+KCv/sex3MLF8/67P5iA8OlYZHKgTBTsVY21NwX6kFStPUCp+fla/y6KpeE3mg0VB4FD7CXt+V+IOxcms3wKanAN+Mhn8gRM4/QtbrjXFWJV/e/YgneTHidV9osehwJS6sWFhhheLjAO1e96vzmSK9ZDDI8yOwazJGNREB52yJUEH0ufm24SOSB2uQlGdAWYDyShlW01nrh9GLrMZJq3D123nRXSf/vNF2kc/Dl/g/3F61fyHQBWOmUrIyQiOVMEaINKLO51Cr6TheGYKhMmJd6UHKkcePj5wM50Vb+JDsIA6K+BlneJJELNikOMnyrx/KhaICG6/Ql5InEw+mqFZd7IW41CbyI1Lo2QH3AD3zUtbFaaU9IO6oJzqZ4w5fiFT2tjxpeSSS6FSLJEeOLB2RaJHSHcmN7otu2gcbcIUn9i0yEBztRPJfm/cNAEHyyK7/ZFrShGLIXL6YJ2OLLSE/ycDBhDw2L2z0TOrlMo=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(23010399003)(6133799003)(10067099003)(4143699003)(11063799006)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR12MB7957.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(23010399003)(6133799003)(3023799007)(10067099003)(4143699003)(11063799006)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?mtGUKD03wYvNJZPEaLIxY5yUnzLQ96TgP2AYSBUOyB3V6zX+RhHOH+bnODZW?=
- =?us-ascii?Q?nsrk1EnyZ+A+vZmkuIZDSjB6fP/KdKhkNUUu5cVss6Riu8Ex5CjlZ7NAsT9/?=
- =?us-ascii?Q?Nal+Rifn6SlP+OxejsCKMdis66PnhFpbHpeBPVdQ2Zj7ttfmQPjMa2hAEwIL?=
- =?us-ascii?Q?ZovrH/f69WUzy2WvCnVy0u0bNuf2389ViFJbPSGprYxq1yMGGuBvWDJDcBJk?=
- =?us-ascii?Q?/BlPbPD+Njyy1M2OFFaHgFY4okJ1FDbeEn4DNIXaf1lp0oxCHuQuRUveIJ3g?=
- =?us-ascii?Q?yUg7NdxTJ+HblZI46D4DosoMmjdv9ofD/WTMieoE2ge3Emp7kjxNj55p0WlY?=
- =?us-ascii?Q?tEPGTU6Sw1OhPaSMBYrf961Kdyh6OUjB1KCuBR9ozGCFRl8Y9YXPXKe01R/Y?=
- =?us-ascii?Q?xdbGdX96ln/WLPbdqdGdkKJ5nAmPaAvaTJxR/mYEAcXoEGQxywgXTELuLvJN?=
- =?us-ascii?Q?ihZyO561pu4q1QErqEeBvFPyLp3YI+0zsLQmcdtv5LJVQjBSrFm1WBiLO/Vm?=
- =?us-ascii?Q?fOqthpkdr3dH/e7QTtLQglwulyH0fBn9D0ykKSlgeL9jG9fStMWN5YmGchnE?=
- =?us-ascii?Q?qMtBZ7r3oDU8baO730UgOgi/g+j6wAPTbfZWX2RZir+bHelEPhySp1gz1dmh?=
- =?us-ascii?Q?Z/5Kmu/S0AdTXqGG7m9O8/K7hKTDfEg/zFeymwWOnv5k8efPvBmY2RQ0uT13?=
- =?us-ascii?Q?KhasR4ZZZUj/tkg6slAmkcNYh+tvg4AO//wDKZPBsck03kCrvEEyyUD+F686?=
- =?us-ascii?Q?EOwOYiKMYnlBr1pVoRwktWMnb+HX+PXvuVnvE/zkYgMkhKkhUvHCEcghmWZP?=
- =?us-ascii?Q?X4G8PeT9/cbk3oY9qnkU21JhqTR/FpinQSwU/uBLtGTcqI1dDESt2cBrZ+qx?=
- =?us-ascii?Q?h1U93R2/TnkYdwZTTtVtuAAlQyP5dBQuuMyI5hg2fTE+LeukDj+8jVdmDBgx?=
- =?us-ascii?Q?f0A4tMwJUxuF7M74XlLWjUlqufgks3B7Zc8IkObp+k8Z/SQN29WDyBOe++Dr?=
- =?us-ascii?Q?2AHO5oTnpih7178J97A2afOHjUE0plewCYvM4wHN40boF1FePvajQfqZypNT?=
- =?us-ascii?Q?Xp6ZIDeuErao6Pgb510m2fIJgImTZH73QjaOcl5PvFc7AhYD9WDwfAc5S51X?=
- =?us-ascii?Q?Ox2PWOTxQSwidzEEAnjznm7rA56yELLQyZF+nsnLn3nZJbvR6sDcWLIyVsiY?=
- =?us-ascii?Q?NkvV8pzP23SGy4uSnoj0yLK7oENje6RJBSnXwX6CqVwitYb+ji11TUuohxgQ?=
- =?us-ascii?Q?yYi1wmXwz2dg0UPg7D9xqGf4ZkMCtoLGdzaLWATdB7LR2QhonQi5BYrnCavn?=
- =?us-ascii?Q?6A9jwHiulflHzE0N4pH/PuGtFuOBz7z2ujpbuJ0ofmTDcMNDyIT8rIVDlCQt?=
- =?us-ascii?Q?uLJoi3LCqPsLekdOsStGjkpB3eUh0tox7yTZWEZuv3l73QCv/8F6gVMzjxH1?=
- =?us-ascii?Q?U6ub9LySmuC5FaG2/rpNwuLnvoeaqomxaOXnZJLD19A2FgMkDff+/fT8rzaY?=
- =?us-ascii?Q?zQm6hk/s4eHTKRSlK2erg0WwavXMHKUtdmQOYFZ+7DLYAMWlx/L05YFi1SZW?=
- =?us-ascii?Q?ccoNSQqYee+XebpUlYZpFAb1cEgl8zlDIrYHft4du9Myjve8+W+jEkZ0OqqX?=
- =?us-ascii?Q?v0jS/w8ktNdE0cCjgbsQ4IBDdG0V3OC0Ei0oz+hjBerkRYCHyaBDMKd7DR8+?=
- =?us-ascii?Q?qNWskZds6FE6dG2OV6vmeGzcNURxLiNwOx732iD3jFFPYVCF?=
+	=?us-ascii?Q?d1aRmIPV1Kr1nDvhmpurbCpGCJbqB6ua6Y9DSnE1m/y3miOvCVpbKiAnslAD?=
+ =?us-ascii?Q?nMLKVZMNLD/V+T8coVUsQQ7397n0SH8WeL8Gk2x8assXjyvU8CaB/BywpCMV?=
+ =?us-ascii?Q?IR2GU0NU3uE+QTDXDfQWWSaEi8B53N8JmTKd9MAQoZzFw5zjUvPsc2JEsK3R?=
+ =?us-ascii?Q?iij133KEwWKZZgQ0bqLiR8CeC5goP1J53NMCEGS+qoZj+kYDsmzJG69mBNPm?=
+ =?us-ascii?Q?D1EJQWu2wlVfC6vCNoOTNxSGck1cZvBWCXTRF7Eg/rFGtPrO6iIM4Le6fkjd?=
+ =?us-ascii?Q?2g/tX9GTDOusU1mFsEJG0PUWRZrSKOu4kihv57etbiGVzvCYH0UA9xHySV6X?=
+ =?us-ascii?Q?gkaQJgXPX/kiRI2j1gegObKySHvlP83CeQs8keZ6LaAc+MvldJtqMnPh76Mg?=
+ =?us-ascii?Q?ctB5smVFeU7hS9VmDRMJR672DzC1GirayzZsj8ArD10lwxOk1zHqDd/l2BLE?=
+ =?us-ascii?Q?aCPY2eP1vhxWNAOkWWhbAMdt7dKrsDRm4h4aFCraaHe8sQ/W9DSNASHB2Fi0?=
+ =?us-ascii?Q?YoWa7KwdUULC1ojlM9H6U7qfOMs7Y/jCV75bozZ35M9ZE+1m0EUoPY4fAntA?=
+ =?us-ascii?Q?Xr9tP6EPzGJBB1y1tgUwa6aorKq7O73zIvCaLm73iPP/xVkes4qCBm1z7eaO?=
+ =?us-ascii?Q?4Qn0Aea8fsXY2q2RktaaImQZEGkaIuNG5L8g0YurBs+1YmirHrqXwpu30vJB?=
+ =?us-ascii?Q?iNPULu9E5eX2qOkP7gSbMMDU7MhakGs27n/dBu9LkwM9x7pQptZ3R5lfmZgm?=
+ =?us-ascii?Q?SVV1GXXUe7lMLdm4RTpSshJGXQKBQ3PJeLAFf0c1EjRY/VyTCp+AAzrctXKS?=
+ =?us-ascii?Q?k728uXS/DHBe5Pjgysz4laZmg5bBCRjOCj5ERzuej/BEybkiVYt176Moc5gP?=
+ =?us-ascii?Q?LfEEwQXJDIjv8AIitXbkiKbqlxk68wzL/gwTQdjo+l1VZyxgAOEg0JkfvkSC?=
+ =?us-ascii?Q?yCsvzc5RdCcM0AevKrNNph2fF+uwqwtDpQWufYkxHXNRY+wGLcew96UfyRUt?=
+ =?us-ascii?Q?MkdmNwiQfJfy+dRVphOj23jlukYcFO1Z9CPSSNi1MaqVUhwy4E4nzixMvbs9?=
+ =?us-ascii?Q?AGHy5pSsAtMp4aBfBXadIfQEATjvn8qAESeG7MTH2F5P9CJKBXXUC8h6/ZSm?=
+ =?us-ascii?Q?S8/wOZpZhAOqw4ujd/6qiEKMyyBCCmSqHM83TTtFgewL0vXzj7ZzW44WpWa4?=
+ =?us-ascii?Q?2vdq/ihII0PSP3VFekKyPeSooXTOdjmwwtZEf4/UffhM4qSUhQAipyc619Dy?=
+ =?us-ascii?Q?Ar2H9RkvxiHl+luF3V/Q9R/IDlg7mZa9G5cY0FFtJ2F+iWMAQpAVLlNogoxJ?=
+ =?us-ascii?Q?Lzf9i7kTit8WD1HYpv8kQQ8g+jE/cgz3HQEkn7mK3rDX00E9pLsmyIJkRuLr?=
+ =?us-ascii?Q?Y9FEhMuXZaEPGAqEYph33s7bj5ux/jTcj1/ZtrEb53iMRpq7zMmHaxBXyoRF?=
+ =?us-ascii?Q?0i7j+Dmzjd/tO1M7GE0WQaAo63lfBJzra/ceZefB+dYNOLHUGQsYx6bkeiv6?=
+ =?us-ascii?Q?7t9zZrWpaP1PakHWRIHyzWJ+ufCnJLcmDYalqS05Qz+DfbKkIbphxZt1i7xq?=
+ =?us-ascii?Q?/Zs4tABItoangU1S3eUcBBGJtrTM9hTLnmdK1b5eU2tSxehl6nX8M/QEbE6j?=
+ =?us-ascii?Q?RHRAnbOp8FRE+nyEVlsg1PM+l1iwumtRUkBjb1u0XOTW9x+JHwbLAHsXgnFc?=
+ =?us-ascii?Q?HHqh8bGzstzvQkXzig/TioFb7t9UEA1JaPpWnBEHCDQKBxEI?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ef68d699-581e-4073-c1f5-08df0d90b745
+X-MS-Exchange-CrossTenant-Network-Message-Id: 30287001-1e02-4c59-1d3e-08df0d90c766
 X-MS-Exchange-CrossTenant-AuthSource: PH0PR12MB7957.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Sep 2026 10:05:31.2512
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Sep 2026 10:05:58.3539
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Vwa4xITw5MgFzv13w7wbs49IydGJMlpXF/0mmsCRPR2VMK+u4PQFeHK7VabX4sAKCdTlX/fi2ytV/OtdxV7Csg==
+X-MS-Exchange-CrossTenant-UserPrincipalName: XE2AGCac1pboT++BJVDj/jwUSkbIuDf8Kd92wVa/LXjvf2n9460odJITsQBFJNcb0NgV2T4pDEDm5Q8kYRZ7Fg==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH1PR12MB9599
 
-On Mon, Sep 07, 2026 at 09:57:52PM +0000, Kuniyuki Iwashima wrote:
-> neightbl_dump_info() fetches the first non-default neigh_parms
-> with list_next_entry(&tbl->parms, ...) and iterates through the
-> list with list_for_each_entry_from_rcu().
+On Mon, Sep 07, 2026 at 09:57:53PM +0000, Kuniyuki Iwashima wrote:
+> NDTPA_INTERVAL_PROBE_TIME_MS sets .type and .min but misses
+> .validation_type, so no validation is applied:
 > 
-> However, list_next_entry() does not use RCU helper.
+>   # ynl --family rt-neigh --do setneightbl \
+>   --json '{"name": "arp_cache", "parms": {"interval-probe-time-ms": 0}}'
 > 
-> Let's fetch the default parms with list_first_entry() and
-> use list_for_each_entry_continue_rcu() for iteration.
+>   # ynl --family rt-neigh --dump getneightbl --output-json | \
+>   jq '.[] | select(.name == "arp_cache" and has("config"))
+>           | .parms["interval-probe-time-ms"]'
+>   0
 > 
-> Note that the first entry is always tbl->parms, which never goes
-> away, so list_first_entry(&tbl->parms_list, ...) is safe.
+> Moreover, nla_get_msecs() uses msecs_to_jiffies(), and u64 is
+> silently cast to u32, so a larger value can bypass the min check:
 > 
-> Fixes: 4ae34be50064 ("neighbour: Convert RTM_GETNEIGHTBL to RCU.")
+>   e.g. 4294967296 == 0x100000000
+> 
+>   # ynl --family rt-neigh --do setneightbl \
+>   --json '{"name": "arp_cache", "parms": {"interval-probe-time-ms": 4294967296}}'
+> 
+>   # ynl --family rt-neigh --dump getneightbl --output-json | \
+>   jq '.[] | select(.name == "arp_cache" and has("config"))
+>           | .parms["interval-probe-time-ms"]'
+>   0
+> 
+> msecs_to_jiffies() returns MAX_JIFFY_OFFSET if the value is
+> larger than INT_MAX.  Also, INT_MAX ms overflows int NEIGH_VAR()
+> when HZ > 1000 (Alpha, MIPS), and passing a negative integer to
+> queue_delayed_work(unsigned long delay) causes sign extension,
+> which wraps around the expiry time to the past, resulting in it
+> being handled as 0 delay in the timer wheel.
+> 
+> Let's use NLA_POLICY_FULL_RANGE() and limit the max to 1 day.
+
+Please add a note that this controls the probe interval for "managed"
+entries and therefore a max of 1 day is unlikely to break any
+deployments.
+
+> 
+> The same max check is applied to sysctl as well.
+> 
+> Fixes: 211da42eaa45 ("net, neigh: introduce interval_probe_time_ms for periodic probe")
 > Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 > ---
->  net/core/neighbour.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
+> Currently, the sysctl range check is not applied to
+> interval_probe_time_ms, which needs this fix:
+> https://lore.kernel.org/linux-fsdevel/20260905233819.1064529-2-kuniyu@google.com/
 > 
-> diff --git a/net/core/neighbour.c b/net/core/neighbour.c
-> index 1349c0eedb64..4b17c2a15594 100644
-> --- a/net/core/neighbour.c
-> +++ b/net/core/neighbour.c
-> @@ -2611,8 +2611,9 @@ static int neightbl_dump_info(struct sk_buff *skb, struct netlink_callback *cb)
->  			break;
->  
->  		nidx = 0;
-> -		p = list_next_entry(&tbl->parms, list);
-> -		list_for_each_entry_from_rcu(p, &tbl->parms_list, list) {
-> +
-> +		p = list_first_entry(&tbl->parms_list, struct neigh_parms, list);
-> +		list_for_each_entry_continue_rcu(p, &tbl->parms_list, list) {
->  			if (!net_eq(neigh_parms_net(p), net))
->  				continue;
+> Cc: Yuwei Wang <wangyuweihx@gmail.com>
+> ---
+>  net/core/neighbour.c | 17 +++++++++++++----
+>  1 file changed, 13 insertions(+), 4 deletions(-)
 
-I find this more readable:
+The maximum value should be documented in Documentation/networking/ip-sysctl.rst
 
-diff --git a/net/core/neighbour.c b/net/core/neighbour.c
-index 1349c0eedb64..3af539f5fd4b 100644
---- a/net/core/neighbour.c
-+++ b/net/core/neighbour.c
-@@ -2611,11 +2611,13 @@ static int neightbl_dump_info(struct sk_buff *skb, struct netlink_callback *cb)
- 			break;
- 
- 		nidx = 0;
--		p = list_next_entry(&tbl->parms, list);
--		list_for_each_entry_from_rcu(p, &tbl->parms_list, list) {
-+		list_for_each_entry_rcu(p, &tbl->parms_list, list) {
- 			if (!net_eq(neigh_parms_net(p), net))
- 				continue;
- 
-+			if (!p->dev)
-+				continue;
-+
- 			if (nidx < neigh_skip)
- 				goto next;
- 
-Then patch #3 becomes:
+Also in Documentation/netlink/specs/rt-neigh.yaml:
 
-diff --git a/net/core/neighbour.c b/net/core/neighbour.c
-index 3af539f5fd4b..b4d8e5b6832c 100644
---- a/net/core/neighbour.c
-+++ b/net/core/neighbour.c
-@@ -2615,7 +2615,7 @@ static int neightbl_dump_info(struct sk_buff *skb, struct netlink_callback *cb)
- 			if (!net_eq(neigh_parms_net(p), net))
- 				continue;
+diff --git a/Documentation/netlink/specs/rt-neigh.yaml b/Documentation/netlink/specs/rt-neigh.yaml
+index 0f46ef313590..c8e55c98d564 100644
+--- a/Documentation/netlink/specs/rt-neigh.yaml
++++ b/Documentation/netlink/specs/rt-neigh.yaml
+@@ -341,6 +341,9 @@ attribute-sets:
+       -
+         name: interval-probe-time-ms
+         type: u64
++        checks:
++          min: 1
++          max: 86400000
  
--			if (!p->dev)
-+			if (!p->dev || p->dev == blackhole_netdev)
- 				continue;
- 
- 			if (nidx < neigh_skip)
+ operations:
+   enum-model: directional
