@@ -1,85 +1,130 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14AED5908BF;
-	Tue,  8 Sep 2026 18:32:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91A3459D626
+	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 18:32:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788892333; cv=none; b=awxmRyEFV75oXkT05wN8+Cv5N+42LkXBlWirEjMHK1S1rvd5zjn9SH9LVCgfAlNF++Qk0XyQWSAIHaZUaXUDMaQwn13oox5pbEmOyG9EbmQGb+fpqLpbDrDvGv9ZlCSV7YOumRyAhRnyBv4IpZyY/9c2rMK/B70TuZ0zE4Kv/3I=
+	t=1788892338; cv=none; b=th9R859pEoLe5SfLJC4x/bDVZy//sOSvELAbRszxDmRdoHqwwX49//StlvlkE8T3t6Bhe3upX3N6mlA+h8bWKAREpb6x8E9V1OIiiKuw1zK97FDINReX6n8tjG2PDcgLmZQ2NpkXouIofUo91+OJ8co05LDnZnOpESTx8iMnGUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788892333; c=relaxed/simple;
-	bh=liWYTw1gFaWCOc3lsNTkoVeARu8vtlTsM0Gf7Ryge7o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S1lXELJQyW1mPzkuieZkHfKttjkrI+3y26gknNLxwby0G3e/79z7RWPGnBjvSSSHI81eoTBLNR1flv/oV7p7P6SbImyr+/fX978oQNLm74OmoBgWds0f1ETwf/dHk5iQlrlv0BnV2rZvjpak8dG9leJO3hBA/a9MnTAcDV7gzgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=crBidmcr; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788892338; c=relaxed/simple;
+	bh=l98TkAgeRUcUVIdXQumhCofyR0H2mlGjy0nRUh6qV0Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=TZJQSClt38bzHvl3z+thmW5K8T5tZoceZ6mWFPb0Kv9JNp+xPYpjq8GP34HIfZCUoD/QfJ0Ah9Gmdttb25HnAVUDIz30tBFcTQrqR+M1Ibm93MMWY/Oh3YuM8VGsSm5E/PUPWtu4IGedbQ9LD7XfHo88Dn/Ol9j0YELHG6bI4Jc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=edQlpvki; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="crBidmcr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8635D1F00A3A;
-	Tue,  8 Sep 2026 18:32:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="edQlpvki"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAE071F00A3A;
+	Tue,  8 Sep 2026 18:32:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788892331;
-	bh=l0CggrwevG1xFJXWU9JWMqvoGtAQryeGoT9XLBo0uuI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=crBidmcrpEcnBr67Ljy1VrLxiB9GDPbc+oVD+aJxu0WBgWe0tftkVIQr09iuviLxT
-	 5AjjKhYWInCjEnlJ6m/iPoeRccV6tD6azBT6MZh3/QGYhU6d/BdYzKxJAOlf89dgP4
-	 xGXh3tY9T1LYnMX5SvS1O0ttI6WhL8y/Ihq7HqM7p90/QwRt8CFNxWJh++liFe8IxR
-	 YVOs16jX3OWQ3emsqekKdjrqSmqFyLMSH2UM219oUtf1ww6Oto+lFY0AMD5ER1rQcd
-	 2JSzAr49CaPe6HlgxWELVMqIkMwF/FmrpCF+GHd965t5kFXyvnuSNj3Lqfq2fmMJqd
-	 FI06m+DSNAYVA==
-Date: Tue, 8 Sep 2026 19:32:07 +0100
-From: Simon Horman <horms@kernel.org>
-To: Aaron Ma <aaron.ma@canonical.com>
-Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Henry Tieman <henry.w.tieman@intel.com>,
-	"moderated list:INTEL ETHERNET DRIVERS" <intel-wired-lan@lists.osuosl.org>
-Subject: Re: [PATCH v2 2/2] ice: clear Flow Director entries before reset
- cleanup
-Message-ID: <20260908183207.GE40544@horms.kernel.org>
-References: <20260907115221.926007-1-aaron.ma@canonical.com>
- <20260907115221.926007-2-aaron.ma@canonical.com>
+	s=k20260515; t=1788892337;
+	bh=nAlSDVQ2myqePZnyqmMiMzeXJ5hT0zXso8AsNDRd2xo=;
+	h=From:To:Cc:Subject:Date;
+	b=edQlpvkidMbMD92TqSeZ0U+XWyAJdnbMJlqSKLXeqZqc48Lr1GB709pakzqClYzoh
+	 /vdJDMPCZzrZTcHpOr7U70PDeECfxhMDgQpdJu4lWo17wMOl0iwXBbZXvwb3O0+N0x
+	 fpTJSfk+uskqFhQIqosEyI1+QAQTpd4OrriJ7Wg7/wBhQeVkqQH5uxq4tJFlmI6yJo
+	 I3kS5ayMeGH/3ebHQEGcQcg17Lxm5mFA6Kpup0p6LtYyg908WBG2up/zw6D7kCpFLh
+	 Zlq1W2cwB8JjxNV95PIvnMxfZML+emQNhI2zKh/F0ZhumIrxt5doOi6khZfuh1lZEF
+	 jGrTuqnY4u89Q==
+From: Jakub Kicinski <kuba@kernel.org>
+To: davem@davemloft.net
+Cc: netdev@vger.kernel.org,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	horms@kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	john.fastabend@gmail.com,
+	sdf@fomichev.me
+Subject: [PATCH iwl-next] eth: i40e: sync MAC filters before restarting queues after a reset
+Date: Tue,  8 Sep 2026 11:32:14 -0700
+Message-ID: <20260908183214.1367355-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260907115221.926007-2-aaron.ma@canonical.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon, Sep 07, 2026 at 07:52:21PM +0800, Aaron Ma wrote:
-> Flow Director profiles retain handles to generic flow entries. Reset calls
-> ice_clear_hw_tbls() to free those entries, but leaves the Flow Director
-> handles unchanged until replay replaces them.
-> 
-> If rebuild fails before replay completes, later driver removal follows a
-> stale handle and dereferences a freed flow entry in ice_flow_rem_entry().
-> KASAN reports a wild access to list poison from
-> ice_fdir_erase_flow_from_hw().
-> 
-> The failure is reported as:
-> 
->   KASAN: maybe wild-memory-access in range [0xdead000000000108-...]
->   RIP: ice_flow_rem_entry+0xaf/0x170 [ice]
->   ice_fdir_erase_flow_from_hw+0x1ee/0x420 [ice]
-> 
-> Clear the Flow Director handles while holding hw->fdir_fltr_lock before
-> the hardware tables free their entries. A successful replay installs new
-> handles, while a failed rebuild leaves them invalid for later cleanup.
-> 
-> Fixes: 148beb612031 ("ice: Initialize Flow Director resources")
-> Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-> Signed-off-by: Aaron Ma <aaron.ma@canonical.com>
-> ---
-> v1 -> v2:
-> - Acquire hw->fdir_fltr_lock in ice_fdir_clear_flow_handles() to
->   synchronize with concurrent ethtool filter add/del.
+A PF reset clears the VSI's MAC/VLAN filter table. i40e_add_vsi() only
+re-marks the software filters as I40E_FILTER_NEW and lets async
+i40e_sync_filters_subtask() in the service task program them.
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+That works for resets driven by the service task, which reruns
+i40e_sync_filters_subtask() right after i40e_reset_subtask(). Synchronous
+callers - i40e_xdp_setup(), the ethtool private flag and ring paths,
+i40e_setup_tc() - return to user space with the rings running and
+the carrier up, but no unicast filter and no broadcast promiscuous bit,
+so the interface drops all Rx.
+
+i40e_rebuild() does reach i40e_service_event_schedule():
+
+ i40e_rebuild()
+ └─ i40e_pf_unquiesce_all_vsi(pf)          (for each VSI on the PF)
+    └─ i40e_unquiesce_vsi(vsi)             (only if __I40E_VSI_NEEDS_RESTART set)
+       └─ ndo_open(vsi->netdev)            (netdev && netif_running())
+          └─ i40e_open()
+             └─ i40e_vsi_open()
+                └─ i40e_up_complete()
+                   └─ i40e_service_event_schedule()
+
+but __I40E_RESET_RECOVERY_PENDING is still set at that point,
+which makes it a noop, so the filters are restored during next
+periodic run (1 sec later).
+
+This causes ~20% failure rate in XDP sub-tests in NIPA (meaning
+that the full test is almost never fully clean). After the fix
+I run the test 6 times in a row without a failure.
+
+Push the main VSI's filters to the HW before the queues restart, and kick
+the service task once the reset state is clear to pick up what the
+rebuild deferred.
+
+No Fixes tag, this only matters to workloads which reconfigure the device
+and immediately expect traffic, i.e. CI rather than anything real.
+
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+---
+CC: anthony.l.nguyen@intel.com
+CC: przemyslaw.kitszel@intel.com
+CC: john.fastabend@gmail.com
+CC: sdf@fomichev.me
+---
+ drivers/net/ethernet/intel/i40e/i40e_main.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
+index abbc71e815ae..9215bcaecc4b 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_main.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
+@@ -11084,6 +11084,11 @@ static void i40e_rebuild(struct i40e_pf *pf, bool reinit, bool lock_acquired)
+ 	i40e_add_filter_to_drop_tx_flow_control_frames(&pf->hw,
+ 						       pf->main_vsi_seid);
+ 
++	/* Reprogram the filters the reset cleared before the queues start.
++	 * Avoid the wait for the service task, best effort.
++	 */
++	i40e_sync_vsi_filters(vsi);
++
+ 	/* restart the VSIs that were rebuilt and running before the reset */
+ 	i40e_pf_unquiesce_all_vsi(pf);
+ 
+@@ -11115,6 +11120,11 @@ static void i40e_rebuild(struct i40e_pf *pf, bool reinit, bool lock_acquired)
+ clear_recovery:
+ 	clear_bit(__I40E_RESET_RECOVERY_PENDING, pf->state);
+ 	clear_bit(__I40E_TIMEOUT_RECOVERY_PENDING, pf->state);
++
++	/* i40e_service_event_schedule() may have been called with
++	 * the RESET bits still set, requeue now that we cleared them.
++	 */
++	i40e_service_event_schedule(pf);
+ }
+ 
+ /**
+-- 
+2.55.0
 
