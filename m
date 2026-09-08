@@ -1,46 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AEA14E8DED;
-	Tue,  8 Sep 2026 21:45:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DE4252FE4D
+	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 21:45:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788903914; cv=none; b=JB36N7T+aNU6hqymAPMyjondHiBuUW5Tw/GMcsZOiWVKp3Ji6YQdEGVIrA6i9MPNoXxRNZin8s+S4OTYOy7uGtP8ci/MpmPfJyTANKlMVR+JqHebWQ/ZUN3dbm7umsvE3+akYwtPK8srv9eoesSWXc53wmj9mKupg8QZ73NquLM=
+	t=1788903916; cv=none; b=MG/ImxDRmvF/wMppGHWszBSSgoZ/diBFaZ9fUApaH0kXw8o8FBXCfpX8PsPCypZdf06Vlc0cVB5ag6ViJt/yttbSakdCjLWHUNYCYeY42qbft60Q3sbc7Yhg4PSVn9GHJE7L1ofNNzUM5B57ec2cCO3qowZg7ChVf4f9DpxPwgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788903914; c=relaxed/simple;
-	bh=FfR0aWZBhU/wTv65AvoItant66VOF26Dmn1lIGg+fGo=;
+	s=arc-20240116; t=1788903916; c=relaxed/simple;
+	bh=IJKoGRmI/1PJ2oPeAQuFfw/3bUr0QU85KU5pe48U6BA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rydUZb5SfEhNxNos+QFEE8yq3p/bWtVUUeOxR1TMWhWMLlleTvFjzlEyh91pIBtDpZf3yXCYiUzVvX+a2oswLeUa41jyZH9CS0n0ByNv0npmJtW80baD6ITyxNF3Y+zGanTysZWg9yRRmA2jwTUptNDwKmsKUlXRuVNnHVpPlsw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=d8gf9wx9; arc=none smtp.client-ip=192.198.163.8
+	 MIME-Version; b=oq1eD0osqUNXjUhbm6L2mt9ibTeDV2dTjl2SkFdlOD9Gpw9RYXkrFcqHxAMaKUyuFJVbawOPEUwY4mQl83AaI+2/x5GK97Qc6pBgqPLuW8LN5lStml9d1jy7oLaRFgQZV17id7kfnglLlrIgGG6EjWMF0O1zg0LQKpHItI6KydI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FEFa2uWz; arc=none smtp.client-ip=192.198.163.8
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="d8gf9wx9"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FEFa2uWz"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1788903912; x=1820439912;
+  t=1788903914; x=1820439914;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=FfR0aWZBhU/wTv65AvoItant66VOF26Dmn1lIGg+fGo=;
-  b=d8gf9wx9e/TP829SOH48ABk4T579Jrtsmwb9Iu9dEPH1drCgV8W6188y
-   LDkcZYsGbNILOEfQYv9r+mjWLP0zoY2pO34sDLE9KQXdj059VCBATbSRn
-   j6KnZfXMyHTOXJeD3wzL2TH1uPgv62ouvbD4Nzm5pHzAJ+LdXUaU793/P
-   9CmYqraBrZzmYhR3GlfV6zCO65r9z7sw+N8rj9M5EU7Ta27we1xeSVXN2
-   Get7st3maQU+UDL+amsyhfDmk0bUJlVZUMyoks6Cq5Y1hxYnCRc4y+Pc2
-   Lo/FEjuMnrvAnk6ej3j0Yl/euSFD5lhgyorjz+kqnkNNbGqR9olyQVQ64
-   A==;
-X-CSE-ConnectionGUID: ma7m7GbwQuaHrem3dJr1XQ==
-X-CSE-MsgGUID: iFwyeitzTbCmawEDO/8uRA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11900"; a="106836220"
+  bh=IJKoGRmI/1PJ2oPeAQuFfw/3bUr0QU85KU5pe48U6BA=;
+  b=FEFa2uWzbLxOSf6jEplLxLq9Pb5qqUNvZ3fKKIacMHCr54fi3h/yc6vD
+   5PR8EYiv2q4OIvwFcFoKpS8Kx1bj7S1nndSwerJnpXU9xlgmJhGBMfs4E
+   5MnqRaCkHZr8o2OUsQTh5FTVvV4AlM1UtF+h1s/xQnqiyriOc0XJKc3Kt
+   0WtvK4cLVcH6BFeL1waEVmrOw/i90akewar5VSj0LI3MYSkbsKTsW2GPc
+   l6WwuhhjvRXbDtPb6ZmqP6wh2LzLQcvPnGt+XJNE5m96OBsa5sapnMOLL
+   kiigLGtnQC7moKv4ZaeB5ErlXU7zOuewKTH7MnHuS0sfnafUuJa4rI3gM
+   Q==;
+X-CSE-ConnectionGUID: gqXCGJjpRJ6r3TW3lRRD+Q==
+X-CSE-MsgGUID: +mz92zVQQJiOBQP+U/pPAQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11900"; a="106836235"
 X-IronPort-AV: E=Sophos;i="6.25,269,1779174000"; 
-   d="scan'208";a="106836220"
+   d="scan'208";a="106836235"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
   by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2026 14:45:09 -0700
-X-CSE-ConnectionGUID: 96lnYt9nS1G+qAJogwSa5g==
-X-CSE-MsgGUID: axy68LGRQXCNTcZAN+vsDg==
+X-CSE-ConnectionGUID: 2YAMqKuKRqC4hWLOwZedXg==
+X-CSE-MsgGUID: +qcK5cOARiiDrO2I/UJ6gQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.25,269,1779174000"; 
-   d="scan'208";a="269782504"
+   d="scan'208";a="269782515"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
   by orviesa010.jf.intel.com with ESMTP; 08 Sep 2026 14:45:08 -0700
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
@@ -50,10 +50,10 @@ To: davem@davemloft.net,
 	edumazet@google.com,
 	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org
-Cc: Myeonghun Pak <mhun512@gmail.com>,
+Cc: Joshua Hay <joshua.a.hay@intel.com>,
 	anthony.l.nguyen@intel.com,
 	ae878000@gmail.com,
-	joshua.a.hay@intel.com,
+	mhun512@gmail.com,
 	sridhar.samudrala@intel.com,
 	milena.olech@intel.com,
 	vadim.fedorenko@linux.dev,
@@ -61,11 +61,12 @@ Cc: Myeonghun Pak <mhun512@gmail.com>,
 	jacob.e.keller@intel.com,
 	przemyslaw.kitszel@intel.com,
 	jbrandeb@kernel.org,
-	stable@vger.kernel.org,
+	Emil Tantilov <emil.s.tantilov@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
 	Samuel Salin <Samuel.salin@intel.com>
-Subject: [PATCH net 1/5] idpf: disable DIM work before freeing q_vectors
-Date: Tue,  8 Sep 2026 14:44:56 -0700
-Message-ID: <20260908214502.528440-2-anthony.l.nguyen@intel.com>
+Subject: [PATCH net 3/5] idpf: account for VLAN header when parsing RSC packet header
+Date: Tue,  8 Sep 2026 14:44:58 -0700
+Message-ID: <20260908214502.528440-4-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20260908214502.528440-1-anthony.l.nguyen@intel.com>
 References: <20260908214502.528440-1-anthony.l.nguyen@intel.com>
@@ -77,113 +78,68 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Myeonghun Pak <mhun512@gmail.com>
+From: Joshua Hay <joshua.a.hay@intel.com>
 
-idpf never drains the Tx/Rx DIM works before freeing the memory they
-live in.  tx_dim and rx_dim are embedded in struct idpf_q_vector, they
-are queued from the NAPI poll via net_dim(), and idpf_vport_intr_rel()
-ends with kfree(rsrc->q_vectors).  Nothing in the driver cancels them.
+While parsing the header of a Receive Side Coalesced (RSC) packet, check
+if a VLAN tag is present and adjust the header parsing accordingly.
+Otherwise, Rx TCP traffic is completely broken for any VLAN interface
+whose underlying interface has RSC (rx-gro-hw) enabled.
 
-idpf_tx_dim_work() and idpf_rx_dim_work() then run on freed memory:
-idpf_vport_intr_write_itr() writes the ITR register through
-q_vector->intr_reg.tx_itr / rx_itr, void __iomem pointers loaded out of
-the freed q_vector.  No configuration is needed to get there --
-IDPF_ITR_IS_DYNAMIC() is defined as (itr_mode) and idpf_vport_alloc()
-initialises both modes to IDPF_ITR_DYNAMIC.
+We only need to worry about one VLAN header since Rx packets with
+multiple VLAN headers are not candidates for RSC.
 
-Draining after idpf_vport_intr_napi_dis_all() is not enough on its own.
-idpf_net_dim() is called from inside the
-"if (napi_complete_done(napi, work_done))" branch of the poll, and
-napi_complete_done() has already cleared NAPIF_STATE_SCHED by then.
-napi_disable_locked() waits only while (val & (NAPIF_STATE_SCHED |
-NAPIF_STATE_NPSVC)), so napi_disable() can return while the poll tail is
-still queueing the work, and a plain cancel_work_sync() would be
-re-armed behind the drain.
-
-Use disable_work_sync(): schedule_work() on a work with a non-zero
-disable count is dropped by clear_pending_if_disabled() before
-__queue_work() is reached.
-
-Move idpf_init_dim() to idpf_vport_intr_alloc() so the works are
-initialised on every path that can reach the drain -- the three
-"goto intr_deinit" sites between idpf_vport_intr_init() and
-idpf_vport_intr_ena() get there without the enable side having run.
-Nothing re-enables them: rsrc->q_vectors is freed on every exit from
-idpf_vport_open() and on every idpf_vport_stop(), so the count dies with
-the object.
-
-It is a race, not a deterministic failure -- net_dim() only schedules
-once DIM_NEVENTS events have accumulated and the profile index changes.
-A KASAN ifup/ifdown loop under load is the way to see it.
-
-Fixes: c2d548cad150 ("idpf: add TX splitq napi poll support")
-Fixes: 3a8845af66ed ("idpf: add RX splitq napi poll support")
-Cc: <stable@vger.kernel.org> # see patch description, needs adjustments for <= 6.9
-Co-developed-by: Ijae Kim <ae878000@gmail.com>
-Signed-off-by: Ijae Kim <ae878000@gmail.com>
-Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
+Fixes: 3a8845af66edb ("idpf: add RX splitq napi poll support")
+Signed-off-by: Joshua Hay <joshua.a.hay@intel.com>
+Reviewed-by: Emil Tantilov <emil.s.tantilov@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 Tested-by: Samuel Salin <Samuel.salin@intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/idpf/idpf_txrx.c | 24 ++++++++++++++++++++-
- 1 file changed, 23 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/idpf/idpf_txrx.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-index 24b91be25676..9ba9c2952d78 100644
+index 9ba9c2952d78..4311ffa30bb1 100644
 --- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
 +++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-@@ -4145,6 +4145,26 @@ static void idpf_vport_intr_ena_irq_all(struct idpf_vport *vport,
- 	writel(rsrc->noirq_dyn_ctl_ena, rsrc->noirq_dyn_ctl);
- }
- 
-+/**
-+ * idpf_vport_intr_dis_dim_all - Disable DIM work for all q_vectors
-+ * @rsrc: pointer to queue and vector resources
-+ *
-+ * The DIM works are embedded in the q_vector array that
-+ * idpf_vport_intr_rel() frees, and the poll arms them after
-+ * napi_complete_done() has already cleared NAPI_STATE_SCHED.  Disable
-+ * rather than just cancel, so that a poll tail still running past
-+ * napi_disable() cannot queue them again behind the drain.
-+ */
-+static void idpf_vport_intr_dis_dim_all(struct idpf_q_vec_rsrc *rsrc)
-+{
-+	for (u16 v_idx = 0; v_idx < rsrc->num_q_vectors; v_idx++) {
-+		struct idpf_q_vector *q_vector = &rsrc->q_vectors[v_idx];
-+
-+		disable_work_sync(&q_vector->tx_dim.work);
-+		disable_work_sync(&q_vector->rx_dim.work);
-+	}
-+}
-+
- /**
-  * idpf_vport_intr_deinit - Release all vector associations for the vport
-  * @vport: main vport structure
-@@ -4155,6 +4175,7 @@ void idpf_vport_intr_deinit(struct idpf_vport *vport,
+@@ -3299,6 +3299,7 @@ static int idpf_rx_rsc(struct idpf_rx_queue *rxq, struct sk_buff *skb,
+ 		       struct libeth_rx_pt decoded)
  {
- 	idpf_vport_intr_dis_irq_all(rsrc);
- 	idpf_vport_intr_napi_dis_all(rsrc);
-+	idpf_vport_intr_dis_dim_all(rsrc);
- 	idpf_vport_intr_napi_del_all(rsrc);
- 	idpf_vport_intr_rel_irq(vport, rsrc);
- }
-@@ -4235,7 +4256,6 @@ static void idpf_vport_intr_napi_ena_all(struct idpf_q_vec_rsrc *rsrc)
- 	for (u16 q_idx = 0; q_idx < rsrc->num_q_vectors; q_idx++) {
- 		struct idpf_q_vector *q_vector = &rsrc->q_vectors[q_idx];
+ 	u16 rsc_segments, rsc_seg_len;
++	u16 l3_start = 0;
+ 	bool ipv4, ipv6;
+ 	int len;
  
--		idpf_init_dim(q_vector);
- 		napi_enable(&q_vector->napi);
- 	}
- }
-@@ -4578,6 +4598,8 @@ int idpf_vport_intr_alloc(struct idpf_vport *vport,
- 		q_coal = &user_config->q_coalesce[v_idx];
- 		q_vector->vport = vport;
+@@ -3321,7 +3322,10 @@ static int idpf_rx_rsc(struct idpf_rx_queue *rxq, struct sk_buff *skb,
+ 	NAPI_GRO_CB(skb)->count = rsc_segments;
+ 	skb_shinfo(skb)->gso_size = rsc_seg_len;
  
-+		idpf_init_dim(q_vector);
+-	skb_reset_network_header(skb);
++	if (unlikely(eth_type_vlan(skb->protocol)))
++		l3_start = VLAN_HLEN;
 +
- 		q_vector->tx_itr_value = q_coal->tx_coalesce_usecs;
- 		q_vector->tx_intr_mode = q_coal->tx_intr_mode;
- 		q_vector->tx_itr_idx = VIRTCHNL2_ITR_IDX_1;
++	skb_set_network_header(skb, l3_start);
+ 
+ 	if (ipv4) {
+ 		struct iphdr *ipv4h = ip_hdr(skb);
+@@ -3329,7 +3333,7 @@ static int idpf_rx_rsc(struct idpf_rx_queue *rxq, struct sk_buff *skb,
+ 		skb_shinfo(skb)->gso_type = SKB_GSO_TCPV4;
+ 
+ 		/* Reset and set transport header offset in skb */
+-		skb_set_transport_header(skb, sizeof(struct iphdr));
++		skb_set_transport_header(skb, l3_start + sizeof(struct iphdr));
+ 		len = skb->len - skb_transport_offset(skb);
+ 
+ 		/* Compute the TCP pseudo header checksum*/
+@@ -3339,7 +3343,7 @@ static int idpf_rx_rsc(struct idpf_rx_queue *rxq, struct sk_buff *skb,
+ 		struct ipv6hdr *ipv6h = ipv6_hdr(skb);
+ 
+ 		skb_shinfo(skb)->gso_type = SKB_GSO_TCPV6;
+-		skb_set_transport_header(skb, sizeof(struct ipv6hdr));
++		skb_set_transport_header(skb, l3_start + sizeof(struct ipv6hdr));
+ 		len = skb->len - skb_transport_offset(skb);
+ 		tcp_hdr(skb)->check =
+ 			~tcp_v6_check(len, &ipv6h->saddr, &ipv6h->daddr, 0);
 -- 
 2.47.1
 
