@@ -1,160 +1,166 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37972531B09;
-	Tue,  8 Sep 2026 11:46:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C962838CFE1
+	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 11:49:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788867998; cv=none; b=vFKMuYp2Bcs/ocf0GCOZbpyNFrnVCKMk5xbObc2Swi03q9sF+3RikvXrKmnnG93r8p0LEzZfNMlqigKiMyjKN6PBORBBdbeIKwRrtk5zgI7USkXasK9ZOuKpSq+Jqs6EeYr3dftT0QJiD34AVCx3iOjzH1Jiz8EuZJKBveOi4AY=
+	t=1788868166; cv=none; b=MuJFzb5RoNhdC5ivt+PEVoUCGtgCYUR0W2x+RILLnD1COJ/MOa3OPtvtfIPxtL4tUZZCGuk+ruB0tVMCFv+ku4oVrs8LgSEyThivX+U7JU6c2Z7q4JFr62ACz1vCmqbsZPO4E1Xi3a8ltl4lt/pzzfqKJg47FyrS51BD3TK/VEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788867998; c=relaxed/simple;
-	bh=udaUPos8qeX6niqQOjR7IRAqpmdcwnEyvXML18aAfjA=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=nssrIRM3RYhTDlKLnck/gi6UYNHhFSYKsJo0iU7COtwTEZdI96wvBx21jsIY0rSzEUOdTS6f2sMdF82GAQowVRZedmclt1eHhcfIasZuOiiJqwx/vA0vHd7zTKdpdzH/X4VJ64oAm9hKhnu6eoQpbueA1z+eB4zEO3+OltQ1dOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B5HgeJdS; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788868166; c=relaxed/simple;
+	bh=pPkX4ZCSOgGVsg5wOyPs3LJcvlwM6gg2e2JrTSH5rCU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WP7rPkcLB3tZZQyXhVs0p7wMZq9gMQtvCXFB8XH2K/i2zr73cpZA88I0kjArZ8+UGSuBdCzC3xADDMBf+aP5MxELs6UYokj7ujNGncJ1acA4SFn3oe2tDIe/jg+lCIZjwz1fi9qy3hyG8W0ZpnIKIABiE+ce9zdc/s71y8s/dl0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=njWvoyXs; arc=none smtp.client-ip=209.85.210.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B5HgeJdS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 936B21F00A3A;
-	Tue,  8 Sep 2026 11:46:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788867991;
-	bh=ouzEKVJXsfjO99UBVwzaAPFaYYY6ZMo1TvSb3eu46gI=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=B5HgeJdSGLv9pAPw3eCiPdkFs/5qosc8MpC4nBAMot24HG8ijoKEMuIAnGTIlUrlH
-	 ORghexK5Wlm2T9vYhI34XGIg2Yq+egSGdj+06c7RDrEF9gDNuLb/715KC5wqwn38lB
-	 jkUhyLf69IOnHG+qOwFa01OpI6fq0gwaoNhnS8pdbHvFmG9s4x3HZFlZliYmFEFwTP
-	 zU6YV5OWdYEzDRAS3cDKCg2QVDpC9tGRM9auy+cUJ4ao3oT4PLPdtQ6/aAkL4MKbml
-	 oMTG9JpW8wbwvkHHYgin9BTQgvR5vHLUWyYSEe1zDk+p1WPr1b1GEYKJyrSAFT57Tl
-	 FTQzFep6N2CjQ==
-Subject: Re: [PATCH net-next 12/14] net: pch_gbe: Remove obsolete 32-bit DMA
- mask fallback
-From: netdev-bot+sashiko@kernel.org
-To: zhouruizhe@resnics.com
-Cc: michael.chan@broadcom.com, pavan.chebbi@broadcom.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Tue, 08 Sep 2026 11:46:30 +0000
-Message-ID: <178886799012.219967.9931005997243012418@kernel.org>
-In-Reply-To: <20260903084339.870562-13-zhouruizhe@resnics.com>
-References: <20260903084339.870562-13-zhouruizhe@resnics.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="njWvoyXs"
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-855d2bfae95so5509274b3a.1
+        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 04:49:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788868150; x=1789472950; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=FWahjOLZeOuA8y53+RJiiKikhM2zkWT0npxwrvNlESQ=;
+        b=njWvoyXsy++OblNaNx2XgOVj+mC7Wzrphy673SpgN4TjO5xhqdinr9oDqAblXsjm4Q
+         sEJvnLBcZ/XS1OVx9KlJBLb10s5xBF3RX43p46AmK4l9DONpOHjY5SyM8mFX1++U6AW2
+         SGcLTOiAupYSZjW14GPCopvDYKCLdbvOkrBwxM9lr8ElAQP2GoSshbhFERaprr3MTML9
+         az2p0sNkylNbKl9McvbW42rH1J9IFScSNR/Cc7XCD5o6i1D5mD6U4nsbI/4HtiK5jA7h
+         ugTcSDXcgZEQ9tkQLg9ZUYwD1SyM8NLmsXiZY7b5hBLDM7XENYGQpitPSgXj0qzv1TwJ
+         b8HA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788868150; x=1789472950;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=FWahjOLZeOuA8y53+RJiiKikhM2zkWT0npxwrvNlESQ=;
+        b=bPvRDF8C5fOakwq48tRaO/Fv528RjpG784iZWDtA+TstChF4hrl0SvV15vVdl9rUzP
+         O2ivbIvHCuuBMO7MJ0lxsDe+ad7pQ+cwgKpCGYNVlEyEOh/q/Vj+SlF8gINx4f7oIhQs
+         74xQsBPi8nPip0nBFxryFmMFZ/Ug2CLgSg3ldljG46VU6uRvl4A0VOqTSydA/tfoUnMb
+         I7bKDFPf3w/nX4A4AKGRgTi3neI7vR71L8xz386v8UR8PfaFhntlN2pSLd+OuLObfDRx
+         R3GZAvdlp++rTSTcVvDZtW+D3xVkJo4ZcjkvdCG2kkjaC8IcWpzIiMCAyGz8OuYp3f4K
+         bLPg==
+X-Forwarded-Encrypted: i=1; AKwUvBwChRWBmw5gXKxl+BvzmHrLh4d5buwr8JqZRgAIE1keDxvfXspqobZDSZFfg9aTHry2ipGNdHw=@vger.kernel.org
+X-Gm-Message-State: AFuF++lSVhbtOj7mOmKXMswUWU09YC4IJB/ii8uZYb6murpwzhV92fOz
+	gX0gA85DGYEURqDUbW0uPTuIDI3tAw0IlIG58it1BgTHnFgKS8gaR7U=
+X-Gm-Gg: AYBFou2H3uJN8RPjeROM9GPbLPilF3qWH8hrjbVmFiJa9Pmbbp+MQML/7vTNMhzUKIK
+	PDXGl6Q4Mx3x0Cngolib7TeC4wp6G3a1K/JrxZUTm3XECWy7QJHydi/NEtkBt/LAuRFOkrFOEX7
+	9KNpVPJjD1WrBsRUjrr/ivA0HhYsxyoU0XJBXFOD/8AiiWn4o8mvJbVIH6NtzgdjqywKrIe5qsl
+	lCaTgAIQXx2FsRZRbzf3qeZ2lw29Sn2NDlxlP5F+aKSHOQIBl5xd+z+QlKrD/LvL8gJ3Zr2LJu6
+	eSFSjgAbQmbxMVI8PdCFpnrsriLmMW+U83WuueQ70pny05hLx4fBS8H6faHPvkHSJBcQKbFF5bD
+	9SShjXL3E5WUpJCYUKWacBmZAoatRMo3ZNh6BU36d7h9uACz89M2iACP3032jos8lkkAPr498IU
+	pnvavpft3HGMsktOi0j8dfSZ6Gfp/XknH1gVRulMbu5i/img0MXfz/dZFr96Q4qnNF6T5Zy4JBf
+	oPEe2EL+qZSLpAZRhS5zbGPDPM=
+X-Received: by 2002:a05:6a00:159a:b0:84a:65e8:137e with SMTP id d2e1a72fcca58-85ffe1099ecmr24926151b3a.17.1788868149800;
+        Tue, 08 Sep 2026 04:49:09 -0700 (PDT)
+Received: from ydg-Zenbook-14-UM3406GA ([2001:2d8:6467:d689:f6ea:9d29:b387:9ed5])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-86152d2ff5bsm5330169b3a.35.2026.09.08.04.49.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Sep 2026 04:49:07 -0700 (PDT)
+From: Donggeun Yoo <donggeunyoo.kernel@gmail.com>
+To: Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Russell King <linux@armlinux.org.uk>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	donggeunyoo.kernel@gmail.com
+Subject: [PATCH net] net: phy: dp83867: restore the LED polarity after a soft reset
+Date: Tue,  8 Sep 2026 20:49:01 +0900
+Message-ID: <20260908114901.74637-1-donggeunyoo.kernel@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider:
+dp83867_led_polarity_set() programs the LEDCR2 polarity bit for a
+DT-configured LED. It runs once, from phy_probe() via of_phy_leds().
+Every phy_init_hw() afterwards (phy_attach_direct(), mdio_bus_phy_resume(),
+and MAC drivers such as fec_main.c) calls .soft_reset first, and
+dp83867_phy_reset() issues DP83867_SW_RESET, which restores register
+defaults. config_init does not touch LEDCR2 and the requested value is
+not cached, so a DT-configured LED polarity is lost from the first
+attach onward.
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 0
+The soft reset is the only path that clears LEDCR2, and phy_init_hw()
+always follows it with config_init. Cache the requested bits and reapply
+them from dp83867_config_init(). aqr_gen1_config_init() recovers from the
+same reset the same way (61578f679378).
 
-- [High] pch_gbe (Intel EG20T / OKI ML7223/ML7831 GbE) is a 32-bit-DMA-
-  only controller, but after this patch `pch_gbe_probe()` requests…
+Fixes: 447b80a9330e ("net: phy: dp83867: Add support for active-low LEDs")
+Assisted-by: Claude:claude-fable-5
+Signed-off-by: Donggeun Yoo <donggeunyoo.kernel@gmail.com>
+---
+The soft-reset regression was flagged by an automated analysis of an
+earlier posting of the active-high series. Compile-tested and
+call-chain-traced only; I have no affected hardware.
 
---
+ drivers/net/phy/dp83867.c | 22 +++++++++++++++++++---
+ 1 file changed, 19 insertions(+), 3 deletions(-)
 
-net: pch_gbe: Remove obsolete 32-bit DMA mask fallback
-
-This removes the DMA_BIT_MASK(32) retry in pch_gbe_probe() and keeps only
-the DMA_BIT_MASK(64) request, on the grounds that the DMA API guarantees
-masks of 32 bits or wider and that retrying a narrower mask is incorrect.
-The error check and dev_err() are retained.
-
-> diff --git a/drivers/net/ethernet/oki-semi/pch_gbe/pch_gbe_main.c b/drivers/net/ethernet/oki-semi/pch_gbe/pch_gbe_main.c
-> index 88c5c52e0e38..ba3d10f9aec6 100644
-> --- a/drivers/net/ethernet/oki-semi/pch_gbe/pch_gbe_main.c
-> +++ b/drivers/net/ethernet/oki-semi/pch_gbe/pch_gbe_main.c
-> @@ -2504,12 +2504,10 @@ static int pch_gbe_probe(struct pci_dev *pdev,
->  	if (ret)
->  		return ret;
->  
-> -	if (dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(64))) {
-> -		ret = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(32));
-> -		if (ret) {
-> -			dev_err(&pdev->dev, "ERR: No usable DMA configuration, aborting\n");
-> -			return ret;
-> -		}
-> +	ret = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(64));
-> +	if (ret) {
-> +		dev_err(&pdev->dev, "ERR: No usable DMA configuration, aborting\n");
-> +		return ret;
->  	}
-
-[Severity: High]
-Can this device actually address 64 bits?  After this change the 64-bit
-request is the only mask pch_gbe_probe() ever installs, and the fallback
-that used to leave the device with a 32-bit mask is gone.
-
-The descriptors in pch_gbe.h only carry a 32-bit address:
-
-	struct pch_gbe_rx_desc {
-		u32 buffer_addr;
-		...
-	};
-
-	struct pch_gbe_tx_desc {
-		u32 buffer_addr;
-		...
-	};
-
-and the ring registers in struct pch_gbe_regs are 32-bit with no
-companion high-address register:
-
-	u32 RX_DSC_BASE;
-	u32 RX_DSC_SIZE;
-	...
-	u32 TX_DSC_BASE;
-
-pch_gbe_configure_tx() narrows the coherent ring address into a u32 local
-and programs it with one iowrite32():
-
-	u32 tdba, tdlen, dctrl;
-	...
-	tdba = adapter->tx_ring->dma;
-	tdlen = adapter->tx_ring->size - 0x10;
-	iowrite32(tdba, &hw->reg->TX_DSC_BASE);
-	iowrite32(tdlen, &hw->reg->TX_DSC_SIZE);
-	iowrite32(tdba, &hw->reg->TX_DSC_SW_P);
-
-pch_gbe_configure_rx() does the same with rdba, and the per-packet paths
-store dma_addr_t straight into the u32 descriptor fields:
-
-	pch_gbe_tx_queue():
-		tx_desc->buffer_addr = (buffer_info->dma);
-
-	pch_gbe_alloc_rx_buffers():
-		rx_desc->buffer_addr = (buffer_info->dma);
-
-There is no lower_32_bits()/upper_32_bits() handling anywhere in the
-driver.  With a 64-bit mask declared, dma_alloc_coherent() and
-dma_map_single() may return addresses above 4 GB, which are then silently
-truncated into these u32 fields and registers.  Does that leave the MAC
-bus-mastering to the truncated address, writing received frames into
-unrelated memory, transmitting unrelated memory, or walking a bogus
-descriptor ring, with nothing reported?
-
-Since dma_direct_supported() accepts any mask of 32 bits or wider, the
-64-bit request always succeeds under direct mapping, so this looks like
-the live path rather than a theoretical one.  The driver is buildable for
-MIPS_GENERIC and X86_32 (dma_addr_t is 64-bit with PAE) as well as
-COMPILE_TEST:
-
-	depends on PCI && (MIPS_GENERIC || X86_32 || COMPILE_TEST)
-
-Would requesting DMA_BIT_MASK(32) here, i.e. the width the hardware
-actually implements, be the right way to apply the cited
-dma-api-howto guidance instead of keeping the 64-bit request?
-
-One smaller point on the changelog.  It says the error check is retained
-"so that a genuine DMA setup failure is still reported and aborts
-initialization", but by the same premise quoted just above it ("The DMA
-API guarantees support for masks of 32 bits or wider"), can that
-dev_err()/return ret branch ever be taken for a mask of 32 bits or wider?
-
+diff --git a/drivers/net/phy/dp83867.c b/drivers/net/phy/dp83867.c
+index 88255e92b4cd..c9c3b0062cc7 100644
+--- a/drivers/net/phy/dp83867.c
++++ b/drivers/net/phy/dp83867.c
+@@ -196,6 +196,8 @@ struct dp83867_private {
+ 	bool set_clk_output;
+ 	u32 clk_output_sel;
+ 	bool sgmii_ref_clk_en;
++	u16 led_polarity;
++	u16 led_polarity_mask;
+ };
+ 
+ static int dp83867_ack_interrupt(struct phy_device *phydev)
+@@ -896,6 +898,15 @@ static int dp83867_config_init(struct phy_device *phydev)
+ 			       mask, val);
+ 	}
+ 
++	/* Restore the LED polarity dropped by the soft reset in phy_init_hw() */
++	if (dp83867->led_polarity_mask) {
++		ret = phy_modify(phydev, DP83867_LEDCR2,
++				 dp83867->led_polarity_mask,
++				 dp83867->led_polarity);
++		if (ret)
++			return ret;
++	}
++
+ 	return 0;
+ }
+ 
+@@ -1141,8 +1152,10 @@ static int dp83867_led_hw_control_get(struct phy_device *phydev, u8 index,
+ static int dp83867_led_polarity_set(struct phy_device *phydev, int index,
+ 				    unsigned long modes)
+ {
++	struct dp83867_private *dp83867 = phydev->priv;
++	u16 mask = DP83867_LED_POLARITY(index);
+ 	/* Default active high */
+-	u16 polarity = DP83867_LED_POLARITY(index);
++	u16 polarity = mask;
+ 	u32 mode;
+ 
+ 	for_each_set_bit(mode, &modes, __PHY_LED_MODES_NUM) {
+@@ -1154,8 +1167,11 @@ static int dp83867_led_polarity_set(struct phy_device *phydev, int index,
+ 			return -EINVAL;
+ 		}
+ 	}
+-	return phy_modify(phydev, DP83867_LEDCR2,
+-			  DP83867_LED_POLARITY(index), polarity);
++
++	dp83867->led_polarity_mask |= mask;
++	dp83867->led_polarity = (dp83867->led_polarity & ~mask) | polarity;
++
++	return phy_modify(phydev, DP83867_LEDCR2, mask, polarity);
+ }
+ 
+ static unsigned int dp83867_inband_caps(struct phy_device *phydev,
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260903084339.870562-1-zhouruizhe%40resnics.com
+2.53.0
+
