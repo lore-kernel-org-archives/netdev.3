@@ -1,463 +1,140 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-22.mta0.migadu.com [91.218.175.22])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5EDD3A961B;
-	Tue,  8 Sep 2026 08:06:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DF233A9872
+	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 08:08:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788854805; cv=none; b=aZR+z4Iw/mDvwQrFpoLmymNif77rLpWOAIpDkuMkygUNM9RD9DdNlDZQJIvio7V2g9djPepyeuLjvZLtu7m2dbongpw9Z00vxrpb7Xysje9LEGDHwwwVJepKfGKm2jHgUwzG4cPBuo4HORZdaVKwbXkULQTxfAkU2O0JyuwnbVg=
+	t=1788854891; cv=none; b=sqX9lcuYD1/zyjg790wikwMeEPI7xXaChyQYVPUgZjkJHhQgjIOAWmmfvjtl/JKSSuX1xJWNjWCkJVS+h4KewVXLvJjDfizWi0zgm9ZNSjSjHbwKi1Np++kJkTdwvW2XU6F2gEz4HoSP6x9evMoa/C4GtUDc7RSPvNd0K9NPSjo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788854805; c=relaxed/simple;
-	bh=RMtCmZMdqd93NFPSVJln6yKON1M6pgpj31CMw55qoGQ=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fQCtOq7lFVB8BYLn6iyRIwrOoUTZDiVI6SPVf5rw0a/8ARTP2SNLTw3MLKCRP5a7QE0jieZwpvdDllFPHoAfIKLkDN9idmlPwaks9G27Fcg0JC7rl4LICeFnIoZP6NHvmRLVlCFvl/0WmM9ytSkG8Yg3Zk+y4NE8vzLkBeZ0md4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gP9F/IXc; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788854891; c=relaxed/simple;
+	bh=17Qpr2HZAfjTf+fUY0bEYiBsyBtJXKQkXqw9F9jXj84=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ob6uTsoe3lhXEDerOKnJrGaS6qXomvqI//wgbAJmxkPrgdwMG/08LMxauTYcyPG5aSgWx2/6Jvw4FcA6cbJDKcyysC45KJaI/w0zO82w3RkH0QbegQwL6zgtlQ8A90la+k8JM9PlKQbX6/HdOVlzkdkca4KL56j/W2lmqAMKpA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=YhKPa69D; arc=none smtp.client-ip=91.218.175.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gP9F/IXc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 218911F00AC4;
-	Tue,  8 Sep 2026 08:06:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788854803;
-	bh=C3dWyP1ymdYwK1JXfnr4eAjaAOB1e8b+TA8TtFWQc3M=;
-	h=Date:From:To:Subject:References:In-Reply-To;
-	b=gP9F/IXcHf8PLJ2OavhQ+dP/Anj7MwFEuIo9jdFzehmluUfnNpNdl7+2kqwVKW8TJ
-	 iULVRwwee7jHpX+bBcRvL9/gKoGtTqXw6jwMetQukwxYYLxqEdpm2BH6YBZFmApDLq
-	 3edQcJ75PiTdHPoinG8EYPNWi5FF0fK+01RRb4ADr1/ePNY9V+Ta1PJrkVdQrYh8iP
-	 VZPVdo3gH2k1yl+dCoLgRLiJaKXoCtNwHpq2UTw7YahYmAeG3AXxq3o2okiq34C1H5
-	 nQQwknlzw19ggNRZu0PFxAq/BEjdh8fxmoGUEA3Mu+59eGH5iu+KypX/XUSRT7qaWs
-	 L1Il/aWRQm8pA==
-Date: Tue, 8 Sep 2026 09:06:38 +0100
-From: Lee Jones <lee@kernel.org>
-To: David Heidelberg <david@ixit.cz>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Samuel Ortiz <sameo@linux.intel.com>,
-	Szymon Janc <szymon.janc@tieto.com>, oe-linux-nfc@lists.linux.dev,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 1/1] nfc: llcp: Fix race condition in accept_queue
- lifecycle
-Message-ID: <20260908080638.GY2133376@google.com>
-References: <20260902123033.1169067-1-lee@kernel.org>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="YhKPa69D"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=17Qpr2HZAfjTf+fUY0bEYiBsyBtJXKQkXqw9F9jXj84=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788854886; v=1; x=1789459686;
+ b=YhKPa69DdS5qZIl1G+SGZx4cR2YVxx0k6mS3QpgPwciPPwYelLamurWlQsD5W+ZQZsA6u7g1
+ IrmvqGHkQNvFrE/Bum+vIYjfi6jVrBlqGmZYwySvi8xOekOZMLm8guERo+N5LfGFU7f0zQoNeR8
+ M36VdzpZO26Hl6or04k7N/xM=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id f75abea937d6cb6f;
+	Tue, 08 Sep 2026 08:08:06 +0000
+X-Mizu-Trace-ID: f75abea937d6cb6f
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <a44c1e4d-e9a8-4df3-aa25-20875cd4d30e@linux.dev>
+Date: Tue, 8 Sep 2026 16:07:48 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260902123033.1169067-1-lee@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH bpf v2 2/3] tcp: Skip cond_resched() in
+ inet_csk_listen_stop() under BPF context
+To: Kuniyuki Iwashima <kuniyu@google.com>, bot+bpf-ci@kernel.org
+Cc: bpf@vger.kernel.org, daniel@iogearbox.net, john.fastabend@gmail.com,
+ sdf@fomichev.me, martin.lau@linux.dev, ast@kernel.org, andrii@kernel.org,
+ eddyz87@gmail.com, memxor@gmail.com, song@kernel.org,
+ yonghong.song@linux.dev, jolsa@kernel.org, emil@etsalapatis.com,
+ ihor.solodrai@linux.dev, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, ncardwell@google.com,
+ shuah@kernel.org, aditi.ghag@isovalent.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ martin.lau@kernel.org, mason@kernel.org
+References: <20260906074135.185212-3-jiayuan.chen@linux.dev>
+ <0aa6425f9e8f32705ae827f6325b29079234c3f3d0c7b2cdefba3e5b50432766@mail.kernel.org>
+ <CAAVpQUBztYDHyiCN1fnhdxCPv_5AZ09yCMQfNW96SzZyw0LhHA@mail.gmail.com>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+In-Reply-To: <CAAVpQUBztYDHyiCN1fnhdxCPv_5AZ09yCMQfNW96SzZyw0LhHA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-[INTENTIONAL TOP-POST]
 
-Good morning David,
+On 9/8/26 7:34 AM, Kuniyuki Iwashima wrote:
+> On Sun, Sep 6, 2026 at 1:23 AM <bot+bpf-ci@kernel.org> wrote:
+>>> tcp: Skip cond_resched() in inet_csk_listen_stop() under BPF context
+>>>
+>>> bpf_sock_destroy() runs from the tcp iterator, under rcu_read_lock(). If
+>>> the sock is a listener that still has children in its accept queue,
+>>> tcp_abort() ends up in inet_csk_listen_stop() and the cond_resched()
+>>> there trips the debug check:
+>>>
+>>> BUG: sleeping function called from invalid context at net/ipv4/inet_connection_sock.c:1523
+>>> in_atomic(): 0, irqs_disabled(): 0, non_block: 0, pid: 628, name: test_progs
+>>> preempt_count: 0, expected: 0
+>>> RCU nest depth: 1, expected: 0
+>>> locks held by test_progs/628: 3, last CPU#3:
+>>>   #0: ffff8881158cee18 (&p->lock){+.+.}-{4:4}, at: bpf_seq_read+0x56/0x1210
+>>>   #1: ffff8881106bb858 (sk_lock-AF_INET6){+.+.}-{0:0}, at: bpf_iter_tcp_seq_show+0x32b/0x4b0
+>>>   #2: ffffffffb435af20 (rcu_read_lock){....}-{1:3}, at: bpf_iter_run_prog+0x46b/0xde0
+>>> CPU: 3 UID: 0 PID: 628 Comm: test_progs Tainted: G        W           7.2.0+ #65 PREEMPT
+>>> Tainted: [W]=WARN
+>>> Call Trace:
+>>>   <TASK>
+>>>   dump_stack_lvl+0xc1/0xf0
+>>>   dump_stack+0x10/0x20
+>>>   __might_resched+0x3d2/0x610
+>>>   inet_csk_listen_stop+0x7b/0xbf0
+>>>   tcp_abort+0x23b/0x3b0
+>>>   bpf_sock_destroy+0xfc/0x140
+>>>   bpf_prog_448133d24601754f_iter_tcp6_server+0x81/0x8a
+>>>   bpf_iter_run_prog+0x538/0xde0
+>>>   bpf_iter_tcp_seq_show+0x26b/0x4b0
+>>>   bpf_seq_read+0x424/0x1210
+>>>   vfs_read+0x197/0xe40
+>>>   ksys_read+0x119/0x240
+>>>   __x64_sys_read+0x72/0xc0
+>>>   x64_sys_call+0x647/0x27e0
+>>>   do_syscall_64+0xe5/0x610
+>>>   entry_SYSCALL_64_after_hwframe+0x76/0x7e
+>>> RIP: 0033:0x7fad39b28aca
+>>> RSP: 002b:00007ffc381c61c0 EFLAGS: 00000246 ORIG_RAX: 0000000000000000
+>>> RAX: ffffffffffffffda RBX: 00007ffc381c6a88 RCX: 00007fad39b28aca
+>>> RDX: 0000000000000032 RSI: 00007ffc381c6250 RDI: 0000000000000014
+>>> RBP: 00007ffc381c61e0 R08: 0000000000000000 R09: 0000000000000000
+>>> R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000003
+>>> R13: 0000000000000000 R14: 000055f077c1bbb0 R15: 00007fad3a0f3000
+>>>   </TASK>
+>>>
+>>> The commit that added the kfunc already guards lock_sock() in tcp_abort()
+>>> and udp_abort() with has_current_bpf_ctx(), but missed the listener path.
+>>> Do the same for the cond_resched(), it can't reschedule there anyway.
+>>>
+>>> Fixes: 4ddbcb886268 ("bpf: Add bpf_sock_destroy kfunc")
+>>> Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+>> Is the justification "it can't reschedule there anyway" accurate?
+>>
+>> With CONFIG_PREEMPT_DYNAMIC=y booted with preempt=none or preempt=voluntary,
+>> cond_resched() expands to __cond_resched() which can actually reschedule.
+>> The splat in the commit message confirms preempt_count is 0 while RCU nest
+>> depth is 1. With preempt_count==0, should_resched(0) can be true and
+>> __cond_resched() will call preempt_schedule_common() for a real reschedule.
+>>
+>> Additionally, in configurations with CONFIG_PREEMPT_RCU=n where
+>> rcu_read_lock() is preempt_disable(), __cond_resched() falls through to
+>> rcu_all_qs() which calls rcu_qs() to report a quiescent state from inside
+>> an RCU read-side critical section. That's a correctness problem beyond just
+>> the debug check.
+>>
+>> So the call can either reschedule (PREEMPT_DYNAMIC none/voluntary) or report
+>> a bogus quiescent state (non-preemptible RCU). Could the justification be
+>> reworded to explain that the loop runs inside the iterator's RCU read-side
+>> critical section and must not reschedule or report a quiescent state there?
+>> The code change itself is correct and matches the existing pattern in
+>> tcp_abort() and udp_abort().
+> or maybe simply remove cond_resched(), hoping 7dadeaa6e851 would
+> resolve the scheduling issue.
+>
 
-Just checking that this is on your radar this time [0].
+Good suggestion. cond_resched has become old practice under 
+CONFIG_PREEMPT_LAZY
 
-Please let me know if you'd prefer a [RESEND].
-
-[0] https://lore.kernel.org/all/016b7162-b633-4561-a003-526c9d9c5f21@ixit.cz/
-
-Kind regards,
-Lee
-
-> In nfc_llcp_socket_release(), sockets and listener accept queues are
-> walked under the local sockets rwlock and bh_lock_sock().  However,
-> bh_lock_sock() does not synchronise against process-context lock_sock()
-> held by nfc_llcp_accept_dequeue() during accept().  Because
-> socket_release() does not check sock_owned_by_user(), both paths can
-> concurrently unlink and release the same child socket, resulting in
-> use-after-free or a NULL pointer dereference of child->parent in
-> nfc_llcp_accept_unlink().
-> 
-> Fix this synchronisation race by having nfc_llcp_socket_release() use
-> process-context lock_sock() instead of bh_lock_sock():
-> 
-> 1. Pop sockets from the local sockets list under the write lock using
->    nfc_llcp_sock_list_pop() so lock_sock() can be acquired without
->    holding the rwlock.
-> 
-> 2. Because lock_sock() can sleep, defer the final release of the
->    nfc_llcp_local structure to a workqueue (release_work).  This avoids
->    a sleeping-in-atomic bug when the last local reference is dropped
->    from softirq context.  Additionally, hold a single device reference
->    on local from registration until final destruction.
-> 
-> 3. In nfc_llcp_local_get(), use kref_get_unless_zero() to prevent
->    resurrecting a local object whose teardown has been scheduled.
-> 
-> 4. In llcp_sock_accept(), verify that the listener socket state is still
->    LLCP_LISTEN after waking from schedule_timeout() to prevent hangs if
->    the listener is closed concurrently.
-> 
-> 5. When unlinking unaccepted child sockets during listener release,
->    unlink them from local->sockets, call sock_orphan(), and drop their
->    initial sk_alloc creation reference via sock_put().
-> 
-> 6. Make nfc_llcp_accept_unlink() idempotent by guarding parent access with
->    a NULL check.
-> 
-> Fixes: 50b78b2a6500 ("NFC: Fix sleeping in atomic when releasing socket")
-> Signed-off-by: Lee Jones <lee@kernel.org>
-> ---
-> 
-> v1 -> v2:
-> - Defer local release to dedicated workqueue (llcp_wq) to avoid sleeping in atomic
-> - Drain and destroy llcp_wq on module unload to prevent module exit race
-> - Drop initial sk_alloc creation ref on unaccepted child sockets across all teardown paths
-> - Use kref_get_unless_zero() in local_get to prevent resurrecting dying local objects
-> - Check listener socket state after waking in llcp_sock_accept() to avoid hangs
-> - Standardise Parent (0) -> Child (1) lockdep subclass nesting
-> 
-> v2 -> v3:
-> - Allocate dedicated workqueue (llcp_wq) with WQ_UNBOUND to fix syzbot warning
-> 
->  net/nfc/llcp.h      |   1 +
->  net/nfc/llcp_core.c | 123 +++++++++++++++++++++++++++-----------------
->  net/nfc/llcp_sock.c |  49 +++++++++++++-----
->  3 files changed, 115 insertions(+), 58 deletions(-)
-> 
-> diff --git a/net/nfc/llcp.h b/net/nfc/llcp.h
-> index d8345ed57c95..23ae7a0112d3 100644
-> --- a/net/nfc/llcp.h
-> +++ b/net/nfc/llcp.h
-> @@ -91,6 +91,7 @@ struct nfc_llcp_local {
->  	struct hlist_head pending_sdreqs;
->  	struct timer_list sdreq_timer;
->  	struct work_struct sdreq_timeout_work;
-> +	struct work_struct release_work;
->  	u8 sdreq_next_tid;
->  
->  	/* sockets array */
-> diff --git a/net/nfc/llcp_core.c b/net/nfc/llcp_core.c
-> index bd6361e2efa4..23553e7426ec 100644
-> --- a/net/nfc/llcp_core.c
-> +++ b/net/nfc/llcp_core.c
-> @@ -20,6 +20,8 @@ static LIST_HEAD(llcp_devices);
->  /* Protects llcp_devices list */
->  static DEFINE_SPINLOCK(llcp_devices_lock);
->  
-> +static struct workqueue_struct *llcp_wq;
-> +
->  static void nfc_llcp_rx_skb(struct nfc_llcp_local *local, struct sk_buff *skb);
->  
->  void nfc_llcp_sock_link(struct llcp_sock_list *l, struct sock *sk)
-> @@ -63,21 +65,33 @@ static void nfc_llcp_socket_purge(struct nfc_llcp_sock *sock)
->  	}
->  }
->  
-> +static struct sock *nfc_llcp_sock_list_pop(struct llcp_sock_list *l)
-> +{
-> +	struct sock *sk;
-> +
-> +	write_lock(&l->lock);
-> +	sk = sk_head(&l->head);
-> +	if (sk) {
-> +		sock_hold(sk);
-> +		sk_del_node_init(sk);
-> +	}
-> +	write_unlock(&l->lock);
-> +
-> +	return sk;
-> +}
-> +
->  static void nfc_llcp_socket_release(struct nfc_llcp_local *local, bool device,
->  				    int err)
->  {
->  	struct sock *sk;
-> -	struct hlist_node *tmp;
->  	struct nfc_llcp_sock *llcp_sock;
->  
->  	skb_queue_purge(&local->tx_queue);
->  
-> -	write_lock(&local->sockets.lock);
-> -
-> -	sk_for_each_safe(sk, tmp, &local->sockets.head) {
-> +	while ((sk = nfc_llcp_sock_list_pop(&local->sockets))) {
->  		llcp_sock = nfc_llcp_sock(sk);
->  
-> -		bh_lock_sock(sk);
-> +		lock_sock(sk);
->  
->  		nfc_llcp_socket_purge(llcp_sock);
->  
-> @@ -91,17 +105,27 @@ static void nfc_llcp_socket_release(struct nfc_llcp_local *local, bool device,
->  			list_for_each_entry_safe(lsk, n,
->  						 &llcp_sock->accept_queue,
->  						 accept_queue) {
-> +				bool put_creation = false;
-> +
->  				accept_sk = &lsk->sk;
-> -				bh_lock_sock(accept_sk);
-> +				lock_sock_nested(accept_sk,
-> +						 SINGLE_DEPTH_NESTING);
->  
-> -				nfc_llcp_accept_unlink(accept_sk);
-> +				if (nfc_llcp_sock(accept_sk)->parent == sk) {
-> +					nfc_llcp_accept_unlink(accept_sk);
-> +					nfc_llcp_sock_unlink(&local->sockets, accept_sk);
->  
-> -				if (err)
-> -					accept_sk->sk_err = err;
-> -				accept_sk->sk_state = LLCP_CLOSED;
-> -				accept_sk->sk_state_change(sk);
-> +					if (err)
-> +						accept_sk->sk_err = err;
-> +					accept_sk->sk_state = LLCP_CLOSED;
-> +					accept_sk->sk_state_change(accept_sk);
-> +					sock_orphan(accept_sk);
-> +					put_creation = true;
-> +				}
->  
-> -				bh_unlock_sock(accept_sk);
-> +				release_sock(accept_sk);
-> +				if (put_creation)
-> +					sock_put(accept_sk); /* creation ref */
->  			}
->  		}
->  
-> @@ -110,23 +134,18 @@ static void nfc_llcp_socket_release(struct nfc_llcp_local *local, bool device,
->  		sk->sk_state = LLCP_CLOSED;
->  		sk->sk_state_change(sk);
->  
-> -		bh_unlock_sock(sk);
-> -
-> -		sk_del_node_init(sk);
-> +		release_sock(sk);
-> +		sock_put(sk);
->  	}
->  
-> -	write_unlock(&local->sockets.lock);
-> -
->  	/* If we still have a device, we keep the RAW sockets alive */
->  	if (device == true)
->  		return;
->  
-> -	write_lock(&local->raw_sockets.lock);
-> -
-> -	sk_for_each_safe(sk, tmp, &local->raw_sockets.head) {
-> +	while ((sk = nfc_llcp_sock_list_pop(&local->raw_sockets))) {
->  		llcp_sock = nfc_llcp_sock(sk);
->  
-> -		bh_lock_sock(sk);
-> +		lock_sock(sk);
->  
->  		nfc_llcp_socket_purge(llcp_sock);
->  
-> @@ -135,26 +154,20 @@ static void nfc_llcp_socket_release(struct nfc_llcp_local *local, bool device,
->  		sk->sk_state = LLCP_CLOSED;
->  		sk->sk_state_change(sk);
->  
-> -		bh_unlock_sock(sk);
-> -
-> -		sk_del_node_init(sk);
-> +		release_sock(sk);
-> +		sock_put(sk);
->  	}
-> -
-> -	write_unlock(&local->raw_sockets.lock);
->  }
->  
->  static struct nfc_llcp_local *nfc_llcp_local_get(struct nfc_llcp_local *local)
->  {
-> -	/* Since using nfc_llcp_local may result in usage of nfc_dev, whenever
-> -	 * we hold a reference to local, we also need to hold a reference to
-> -	 * the device to avoid UAF.
-> -	 */
-> -	if (!nfc_get_device(local->dev->idx))
-> +	if (!local)
->  		return NULL;
->  
-> -	kref_get(&local->ref);
-> +	if (kref_get_unless_zero(&local->ref))
-> +		return local;
->  
-> -	return local;
-> +	return NULL;
->  }
->  
->  static void local_cleanup(struct nfc_llcp_local *local)
-> @@ -172,30 +185,34 @@ static void local_cleanup(struct nfc_llcp_local *local)
->  	nfc_llcp_free_sdp_tlv_list(&local->pending_sdreqs);
->  }
->  
-> +static void local_release_work(struct work_struct *work)
-> +{
-> +	struct nfc_llcp_local *local;
-> +	struct nfc_dev *dev;
-> +
-> +	local = container_of(work, struct nfc_llcp_local, release_work);
-> +	dev = local->dev;
-> +
-> +	local_cleanup(local);
-> +	kfree(local);
-> +	nfc_put_device(dev);
-> +}
-> +
->  static void local_release(struct kref *ref)
->  {
->  	struct nfc_llcp_local *local;
->  
->  	local = container_of(ref, struct nfc_llcp_local, ref);
->  
-> -	local_cleanup(local);
-> -	kfree(local);
-> +	queue_work(llcp_wq, &local->release_work);
->  }
->  
->  int nfc_llcp_local_put(struct nfc_llcp_local *local)
->  {
-> -	struct nfc_dev *dev;
-> -	int ret;
-> -
-> -	if (local == NULL)
-> +	if (!local)
->  		return 0;
->  
-> -	dev = local->dev;
-> -
-> -	ret = kref_put(&local->ref, local_release);
-> -	nfc_put_device(dev);
-> -
-> -	return ret;
-> +	return kref_put(&local->ref, local_release);
->  }
->  
->  static struct nfc_llcp_sock *nfc_llcp_sock_get(struct nfc_llcp_local *local,
-> @@ -1705,6 +1722,7 @@ int nfc_llcp_register_device(struct nfc_dev *ndev)
->  	INIT_WORK(&local->rx_work, nfc_llcp_rx_work);
->  
->  	INIT_WORK(&local->timeout_work, nfc_llcp_timeout_work);
-> +	INIT_WORK(&local->release_work, local_release_work);
->  
->  	rwlock_init(&local->sockets.lock);
->  	rwlock_init(&local->connecting_sockets.lock);
-> @@ -1748,10 +1766,23 @@ void nfc_llcp_unregister_device(struct nfc_dev *dev)
->  
->  int __init nfc_llcp_init(void)
->  {
-> -	return nfc_llcp_sock_init();
-> +	int ret;
-> +
-> +	llcp_wq = alloc_workqueue("nfc_llcp_wq", WQ_UNBOUND, 0);
-> +	if (!llcp_wq)
-> +		return -ENOMEM;
-> +
-> +	ret = nfc_llcp_sock_init();
-> +	if (ret) {
-> +		destroy_workqueue(llcp_wq);
-> +		return ret;
-> +	}
-> +
-> +	return 0;
->  }
->  
->  void nfc_llcp_exit(void)
->  {
->  	nfc_llcp_sock_exit();
-> +	destroy_workqueue(llcp_wq);
->  }
-> diff --git a/net/nfc/llcp_sock.c b/net/nfc/llcp_sock.c
-> index 5558d8a4d48b..ce6875eb58fb 100644
-> --- a/net/nfc/llcp_sock.c
-> +++ b/net/nfc/llcp_sock.c
-> @@ -392,11 +392,12 @@ void nfc_llcp_accept_unlink(struct sock *sk)
->  
->  	pr_debug("state %d\n", sk->sk_state);
->  
-> -	list_del_init(&llcp_sock->accept_queue);
-> -	sk_acceptq_removed(llcp_sock->parent);
-> -	llcp_sock->parent = NULL;
-> -
-> -	sock_put(sk);
-> +	if (llcp_sock->parent) {
-> +		list_del_init(&llcp_sock->accept_queue);
-> +		sk_acceptq_removed(llcp_sock->parent);
-> +		llcp_sock->parent = NULL;
-> +		sock_put(sk);
-> +	}
->  }
->  
->  void nfc_llcp_accept_enqueue(struct sock *parent, struct sock *sk)
-> @@ -423,12 +424,20 @@ struct sock *nfc_llcp_accept_dequeue(struct sock *parent,
->  
->  	list_for_each_entry_safe(lsk, n, &llcp_parent->accept_queue,
->  				 accept_queue) {
-> +		struct nfc_llcp_local *local;
-> +
->  		sk = &lsk->sk;
-> -		lock_sock(sk);
-> +		lock_sock_nested(sk, SINGLE_DEPTH_NESTING);
->  
->  		if (sk->sk_state == LLCP_CLOSED) {
-> -			release_sock(sk);
-> +			local = nfc_llcp_sock(sk)->local;
-> +
->  			nfc_llcp_accept_unlink(sk);
-> +			if (local)
-> +				nfc_llcp_sock_unlink(&local->sockets, sk);
-> +			sock_orphan(sk);
-> +			release_sock(sk);
-> +			sock_put(sk);
->  			continue;
->  		}
->  
-> @@ -464,7 +473,7 @@ static int llcp_sock_accept(struct socket *sock, struct socket *newsock,
->  
->  	pr_debug("parent %p\n", sk);
->  
-> -	lock_sock_nested(sk, SINGLE_DEPTH_NESTING);
-> +	lock_sock(sk);
->  
->  	if (sk->sk_state != LLCP_LISTEN) {
->  		ret = -EBADFD;
-> @@ -490,7 +499,12 @@ static int llcp_sock_accept(struct socket *sock, struct socket *newsock,
->  
->  		release_sock(sk);
->  		timeo = schedule_timeout(timeo);
-> -		lock_sock_nested(sk, SINGLE_DEPTH_NESTING);
-> +		lock_sock(sk);
-> +
-> +		if (sk->sk_state != LLCP_LISTEN) {
-> +			ret = -EBADFD;
-> +			break;
-> +		}
->  	}
->  	__set_current_state(TASK_RUNNING);
->  	remove_wait_queue(sk_sleep(sk), &wait);
-> @@ -629,13 +643,24 @@ static int llcp_sock_release(struct socket *sock)
->  
->  		list_for_each_entry_safe(lsk, n, &llcp_sock->accept_queue,
->  					 accept_queue) {
-> +			bool put_creation = false;
-> +
->  			accept_sk = &lsk->sk;
-> -			lock_sock(accept_sk);
-> +			lock_sock_nested(accept_sk, SINGLE_DEPTH_NESTING);
->  
-> -			nfc_llcp_send_disconnect(lsk);
-> -			nfc_llcp_accept_unlink(accept_sk);
-> +			if (nfc_llcp_sock(accept_sk)->parent == sk) {
-> +				nfc_llcp_send_disconnect(lsk);
-> +				nfc_llcp_accept_unlink(accept_sk);
-> +				nfc_llcp_sock_unlink(&local->sockets, accept_sk);
-> +
-> +				accept_sk->sk_state = LLCP_CLOSED;
-> +				sock_orphan(accept_sk);
-> +				put_creation = true;
-> +			}
->  
->  			release_sock(accept_sk);
-> +			if (put_creation)
-> +				sock_put(accept_sk); /* creation ref */
->  		}
->  	}
->  
-> -- 
-> 2.55.0.966.g6673acef38-goog
-> 
-
--- 
-Lee Jones
