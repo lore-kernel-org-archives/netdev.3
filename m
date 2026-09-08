@@ -1,120 +1,128 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6932D52ED35
-	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 17:18:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91FDE55D869
+	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 17:19:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788887920; cv=none; b=eFFuMmuxzWj1NSQls7UAN8jL40u4oBIKXOxm/QUKEpiBDu5pY8LdDmPGOkk1KsWWMNbSKEqfkrLq3hOvaRIgqwkInZZW3cbTeYVgOaUR+94Edddnk9NJSPyE7r/OIsyp2iHrVP3LaC9V+Qql10l051R3YEt8JiIlfZHjJEbSfLA=
+	t=1788887952; cv=none; b=NpbMFNc93dn34jHcjjYLCLT6eWwSXlejEuZ7Kkn84cVYK5Bpjio4Wa4bmYZTVAvPAZmP3NUgTmNshVqmRjme2w8uEsuTDO+S9Z9x2fN2XZPi0g1GweoLKd/3SRxc5AqNGi7i2WAGOB4XZYorjTcjzvi6F1daPVvDO1+61KOEibE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788887920; c=relaxed/simple;
-	bh=pK3v8GX0nntcLuATnAiIxLnfZjvCqyZw+OLGxqqCRRU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GoMWdN2DkaBY4eqiRNeFB9zaHu0upvXcSKsZ6zoutusrcrOL0PpjuCNirDFpZ44cS9jRck9yo5f9+wgOrL7VGXAPK6d1MyfGKNuY1vEHSWG3w/aZmU9vm4qEC+JjaQDYyeCNlqbJ8xZc768hV7Bd2mtHa81cqzJe4/18j6EWduU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Xm5+4Eea; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=sPvVFoxq; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1788887952; c=relaxed/simple;
+	bh=pSBJ0wuxuKY2n7MkyYRk/Tilh69ZMtqLinFYVMSY9U4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=H0iAvAxnMnbxCmRYNhRI/hCPb0yUyjpOuoYwFXhkn/3JgH4YAZ5/BlMGM4OCLz/ro04odAbWnhcL23AHTy/6Ko8dkXwwR8GR6BDCCEjfLt8WG+3L6OnEDk4AWbDACVHmeyQV9ReKJ0AwF5b0P3rYMjeGySijM7NDOzJtB4SMe/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BbkgEb55; arc=none smtp.client-ip=209.85.128.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Xm5+4Eea";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="sPvVFoxq"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1788887917;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9kXXbhFtHbfVoqpSVY8nkO11mcdqTbDX0R7Npj3gEJs=;
-	b=Xm5+4Eea/lqSvojEPRDZWvrJ4z0nf5F+BorbByJsfY6OGsGNQ9NvKApuIq1tFYjw1B5h5k
-	GEk6oiw7GwK24VIrtRUYchtWhxL5r0Ulfm3ONAH2HrMRRpN4Z6Zk5UqHFSUmxbPxj3REbc
-	CmhjJPqHIqr+V4FQgH3njpxCtbalD2k=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-78-5S90RvpDMT64u9f5Shp0hQ-1; Tue, 08 Sep 2026 13:18:35 -0400
-X-MC-Unique: 5S90RvpDMT64u9f5Shp0hQ-1
-X-Mimecast-MFC-AGG-ID: 5S90RvpDMT64u9f5Shp0hQ_1788887914
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-49cd55ee2f7so41804335e9.0
-        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 10:18:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BbkgEb55"
+Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-7dbcb505578so48893177b3.3
+        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 10:19:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1788887914; x=1789492714; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=9kXXbhFtHbfVoqpSVY8nkO11mcdqTbDX0R7Npj3gEJs=;
-        b=sPvVFoxqQfdmsks/4smubW4dDAcnNH2QFw2/4KOkIiP5CJzk5iiyTk9IwSkYzkU2dD
-         vkgZ93b7MS1KixzJxA+PfVTG0BS2afwHFL3kVhe06OO4tupCiHqCDs7cNbT5yrfNvFbp
-         1Hq7b5yilHZTProhJflqR0ZsGxqeAmosNOPwi5mqrxc5CAByRKs/qOQhX8RnoP2D+PlE
-         IWpr4MNzgQgeMGjae/FgKd0WpWAEaSrJt7xCsHudLZ5CkK8EhfkYFELZz3KmNsA+pB4Z
-         ZnFvX7Mmzs4eBSq40sw88IfgxGzWzxYZzKevGJCaCXRQnnoNIMkBEoQDMXwEX2UJ5pRF
-         GemQ==
+        d=gmail.com; s=20251104; t=1788887949; x=1789492749; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=5aDG6sDgF0mv/hfmJI710/QSKPFn+zrHlrTu7ob1YyU=;
+        b=BbkgEb551OgcNtzwN+3h1Jfv9yaCeraLNcNDOIMuhteOxZ2Vebep11rHJmscl9JWAr
+         x4wvJPEw/qyFeSQn1xqxQJMh5c5fagiIkHhJMfXGQxPOM4rg98jg1MGCAJgejFe0odlP
+         vQCPFsv64gIelzhVIqgJ+IWY+vYJkE1De/4NF7goKCf7rQ47Y8mX22CHYDvXXd3fCHs/
+         +zdoeNdolnTb0ZCubqkoT3biJ4o2xZ5rQ2O2lGVrd1lNqyvOzFBU6Nqab1Qh1iMqOgIC
+         n38osTznOQ7atcrmg3w74kD9tuKl6NGUcAOGs91+b6ZXklqb9kxYn14ouDwI1AdCDSA6
+         Kiag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788887914; x=1789492714;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1788887949; x=1789492749;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=9kXXbhFtHbfVoqpSVY8nkO11mcdqTbDX0R7Npj3gEJs=;
-        b=UtW5JMyVv7repwvmmMpRYKgU+ZotAMGQ8o9kFCGDeKWDPVg89b9SGPE7iTq0CTSwcc
-         vCrkEG4GMjH6az2f2uF8SCEfYRHM6CvMRybmG/eyDr/EjO/eF6cHa6CIXOucIcRY1aVU
-         PXmvlCFcmTnynIg9r7v8yjXwchz5rlr780Mr/55tqaUIYai43Cg9Xe3QVjRBeECrLrGK
-         9UxJJIC2knmbWOAHSNQm33PmnHFZec7jYACYclxvivtsf2y7jpB+CLp3p594nLdXKHuR
-         GBWPn7tIDKOJMJM/4ym6I8eTVzjtb2y5+KUzckCDErJC0irqZnWJ2HHajqWRBDfQOKwX
-         GptQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzzHMQhCWCiW0VraG7reUK3lZHZEHY/9Hd6f3bJddGYS5SMlr0nAys4uTAGxD6LPipsBlG+0sM=@vger.kernel.org
-X-Gm-Message-State: AFuF++lzdxeBGZ7PHG6+vuLw1+dmnq9sU1HKbD1srzmQY8j3TKvNoJcF
-	YfH+qY8+33VGpA61qAPQE3ear5Z0L4SGFTJZbFHJW1FFbDepLovkdPV+WUk7rXqtX4NUqI8xrAa
-	sCasci1W+AjoO27lRECHlbbSaeBzS0y3snZV+X7ob9uHfBOHfam0+ETRJ0/HSEpZXGQ==
-X-Gm-Gg: AYBFou00Gsl183poQl0Wcqmlq5LYXyulzxi5Xeo/apK8cKKmE1o+W2qpnR0hQuofrjp
-	3UEy2qWHztStziRA+wDwVGUMo284bjoxgnYaj9i5n1et+2D7meB2k04wq8TlN/fsCjrmgyoRHm3
-	MRZ+ghr+M2NfGBQU9dP+2fF8iJVpf0bYWzd9kK0hPlh6Y6KjAlkQwSqMWNEqfTo6AjNG2V3umfB
-	Q7X3+D2sh1wWydusDvQrnv+RIrgEsgyKKX8/uuXRdOWnASvZsBwzmwAFqR6xHrNFT8LKFuw3AeG
-	J7JYqzhxTySncxlCveU9wdKF4SVF/WxlRm6ewZGEDJhKAgXb4CehU3Hiiy14gV6ZqhSK6aoeSOc
-	fpPLB5MM3rXdSaPkCRYhF7NvkrhZ1lVneyUu6yWUMz15BnXaIpm8MEl+Qbn3EPNrbPjp5Gzy2kg
-	==
-X-Received: by 2002:a05:600c:198d:b0:49c:fa21:1c7c with SMTP id 5b1f17b1804b1-49d1ed0b452mr11152325e9.17.1788887914421;
-        Tue, 08 Sep 2026 10:18:34 -0700 (PDT)
-X-Received: by 2002:a05:600c:198d:b0:49c:fa21:1c7c with SMTP id 5b1f17b1804b1-49d1ed0b452mr11151945e9.17.1788887913941;
-        Tue, 08 Sep 2026 10:18:33 -0700 (PDT)
-Received: from [192.168.188.218] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cff81c9b5sm283339925e9.4.2026.09.08.10.18.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 08 Sep 2026 10:18:32 -0700 (PDT)
-Message-ID: <f3ac2cb2-7ef9-4faa-8c55-a898dc1f57cc@redhat.com>
-Date: Tue, 8 Sep 2026 19:18:31 +0200
+        bh=5aDG6sDgF0mv/hfmJI710/QSKPFn+zrHlrTu7ob1YyU=;
+        b=TBtNx+ieyZ4bl0khyxwmgX5/K5K9Sg+QScfuefTb+ShTqgF34CM61SZJblZU9LvaGo
+         oGMxFTycZ3KinucsSD0O1df4MHXR7RCGBmPzfqEUye2ZgC8eY46Ww+npvZAv84RRXr1n
+         gODhZ1U0Jt/aQkFiXdnKkr3GLu8R8/w1a0o8+rjNbToCd74TYmODFX8HpBUN3f+kxzfI
+         dAjT2ytmYw2456QMuuIpsNTl5jGyyAbI/uGAONeolGQSsJnwY3tjBLDGU/YOWyYgwdGO
+         v5sZ+L5QdHgjF5PwyKi4K6yKs9BAx8kI+GCbKybF77ePoR20ukmUGs8W+AXjGYlULWq+
+         a8Gw==
+X-Gm-Message-State: AFuF++mXOQ03CRM/+dj/0z0jIDFal31r5SUXYqGc6UKxElQvCKZfcBJt
+	wzO17Nq7KccfYkrZ2Afy9vMcPLP8hI2xBzpgfLBMi2aeb2Mo/tZHQD2EjPfu4oiV
+X-Gm-Gg: AYBFou3B7HWm+eb/7nhoy4PIpf89x7l2zlNX5WDiO40ofRPOARPsc7KPGafn1Gj6Ho+
+	624FnCtEgdrcptHMsMWdmrfcNPb/ByChTI7xp1eOWLkgPsGjByYU6y0zKJ/IH5/XxcSpcjVciso
+	FMY/+7+MXB/iiLEKCiSHFYYPJbOUP8CQlUSAfjE3GrBJ8tAd977tL1hbKI4jrCTQhCawNneH0aF
+	the6Z6igJgtRcOk0gfIB5jMK7XO0VHHhG5pOfZ9+r64CfR1MBXwThyo5ls9s9kwAEcc3ciyEY4d
+	SX5koGGiOCSFjQ0m2yQEwhOVebMebYHfIkmB8YeujOAYfZb+ifV+C6Xj+86+lq0wjwtVw2qNgXB
+	evLRkyV/BihBR2R7EmsGG4CFKulzaS6jqfWlPfRQchgY+usY+cImGcjX+iTvThXqqsFuy2gx1ow
+	bR0qAEN2HikExyyZ9xbl2MjAHtBIzguWBfO/do0kEA0avjcRRDNCENAzI0rrmj4LrH5g==
+X-Received: by 2002:a05:690c:88f:b0:823:2ad3:d392 with SMTP id 00721157ae682-871290a54d7mr102670407b3.31.1788887949335;
+        Tue, 08 Sep 2026 10:19:09 -0700 (PDT)
+Received: from houminxi ([104.167.197.198])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-530541c94ddsm120081361cf.23.2026.09.08.10.19.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Sep 2026 10:19:08 -0700 (PDT)
+From: Minxi Hou <houminxi@gmail.com>
+To: netdev@vger.kernel.org
+Cc: aconole@redhat.com,
+	echaudro@redhat.com,
+	i.maximets@ovn.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	shuah@kernel.org,
+	dev@openvswitch.org,
+	linux-kselftest@vger.kernel.org,
+	Minxi Hou <houminxi@gmail.com>
+Subject: [PATCH net-next v3 0/4] selftests: openvswitch: pylint cleanup of ovs-dpctl.py
+Date: Tue,  8 Sep 2026 13:18:55 -0400
+Message-ID: <20260908171859.1967327-1-houminxi@gmail.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2 1/2] net: macb: zero the link settings taprio reads
- back
-To: Aleksei Sviridkin <f@lex.la>
-Cc: theo.lebrun@bootlin.com, conor.dooley@microchip.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, linux@armlinux.org.uk, vineeth.karumanchi@amd.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260903123652.23900-1-f@lex.la>
- <20260903123652.23900-2-f@lex.la>
- <6cfd72f7-b6da-45ef-886a-7703027a55f9@redhat.com>
- <20260908153253.4144665-1-f@lex.la>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20260908153253.4144665-1-f@lex.la>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 9/8/26 5:32 PM, Aleksei Sviridkin wrote:
-> On Tue, Sep 08, 2026 at 11:44:55AM +0200, Paolo Abeni wrote:
->> Not blocking the series for this, but note that you should actually
->> specify the model you used.
-> 
-> I took the bare form from coding-assistants.rst, which asks for
-> "Assisted-by: LLM" since 816d9992d9ed ("coding-assistants: simplify
-> attribution"). 
-I actually I had to sync-up my own knowledge, sorry for the noise.
+Hi,
 
-/P
+This is a respin of the ovs-dpctl.py pylint cleanup series. The series
+raises the pylint score of ovs-dpctl.py from 7.69 to 10.00. Each patch
+targets one warning class and makes no behavior change.
+
+v2 -> v3:
+- Rewrote patch 3/4 (docstrings). In v2 many of the added docstrings
+  were shifted by one method and described the wrong operation (e.g.
+  OvsDatapath.create carried "Destroy a datapath."). Every docstring
+  is now derived from the method it documents.
+- Dropped the ctact -> CtAct class rename and the parsed_len ->
+  parsedLen variable rename that had leaked into patches 2/4 and 3/4.
+  Class and variable names now stay as upstream has them; the
+  corresponding invalid-name warnings are covered by the module-level
+  disable in patch 4/4 instead.
+- Moved three hunks to the patches they belong to: one f-string
+  conversion went to patch 1/4, the bare-except fix and the two
+  @staticmethod decorators went to patch 2/4 (the v2 patch 2/4
+  changelog claimed the except fix but the hunk itself sat in 3/4).
+- Rebased onto ab217fbb9b21 ("Merge branch 'net-sysfs-use-ops-lock-
+  for-speed-and-duplex'") to resolve the pw-ci contest conflict.
+
+v2: https://lore.kernel.org/netdev/20260905104026.3776396-1-houminxi@gmail.com/
+v1: https://lore.kernel.org/netdev/20260513121240.2590767-1-houminxi@gmail.com/
+
+Thanks,
+Minxi
+
+Signed-off-by: Minxi Hou <houminxi@gmail.com>
+
+Minxi Hou (4):
+  selftests: openvswitch: convert %-formatting to f-strings
+  selftests: openvswitch: fix misc pylint warnings in ovs-dpctl.py
+  selftests: openvswitch: add missing docstrings in ovs-dpctl.py
+  selftests: openvswitch: suppress pylint complexity warnings
+
+ .../selftests/net/openvswitch/ovs-dpctl.py    | 408 ++++++++++--------
+ 1 file changed, 236 insertions(+), 172 deletions(-)
+
+
+base-commit: ab217fbb9b2169ce677b09a66558d5c3adcfbb76
+-- 
+2.55.0
 
