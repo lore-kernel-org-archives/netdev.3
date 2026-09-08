@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8C0549AA4B
-	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 23:51:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7820509EE0;
+	Tue,  8 Sep 2026 23:51:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788911467; cv=none; b=GwQeKM/pcDAcjvIOKe4EbVk5ig4Vvi1Xxf+135aI9SfEItdRB38cSnxjrg18w3GijMu8EnZvEx08g2umnWIlpIIkNejaW3C8Dz5FVWPGUeXeoKFYm+DoFVbWx1dEpzVT2eQJlN8+QjgpngmkeNN6H7Wa20/0pa87VV4Wb9HN3j0=
+	t=1788911468; cv=none; b=CDmMcl6pDuB4pxuQYrwcjeLYTL2j2ale+eYFhL5BAotcalBw4NWSQx41/3xZbP8RhKYuMApvfMggE+WTaq7bedPFsWkdw1TkvXf2NCMOEC83lamNJTNr6HmqXtzkdFcxTjo11OdX7fw4e2Ol0BJd8ElvsURwlRBYwY5kJ/pdK7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788911467; c=relaxed/simple;
-	bh=zX5I4dNSZ7ByZCHqy7dBt6BRGEmuEvyp74sPlvf8fa0=;
+	s=arc-20240116; t=1788911468; c=relaxed/simple;
+	bh=KLY4LF5YZd6+yQU21/U3WUKhrQGJysjDLn38TLLba3k=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=UCNLVwvBzl97Zpn0+IvkteDzU/aDjoLzLL+euWcq211vMXeTrNoTvw2Yk5d1eUrjh8d2Nezndw89fAUnSksoAhEu7zUNstUc5qZXNr6VjyU/s8OLo01OXjxTZ+ZY+T0WMFeqVnNvGQvGimywYQG67qyjIxHpM+qbDgPUfLgiIeg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hBAee9rR; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=mll/XUB6/Ee5fbQgayXfXtdo6iPXLA0OmN1YPZWC9UT9MzpU64eIGqAbewsSwjaHDr2glS+FIAFfUv+S7cNxVHfVlyvtP7AwPTYSO7HyX3+5VCgbALmKtAxs4cZ67NBRcSleWr4Dcfu3JoSAArH9Jm1IK7+QvM9DrpYxI7/tIjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IuQ8XXmy; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hBAee9rR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DE051F00A3A;
-	Tue,  8 Sep 2026 23:51:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IuQ8XXmy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADFCC1F00A3D;
+	Tue,  8 Sep 2026 23:51:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788911466;
-	bh=a6E29Wk5rNL66HKJaOgcYVmnbWg+rDHI5NAB9voBUbE=;
+	s=k20260515; t=1788911467;
+	bh=yMZdjIz/dPDVcdH6DM9Zb7vcMNNoEgWTc1vXlEKmwVw=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=hBAee9rRDqjp13uHRGUX0ozzOOEmaYJYeHJbhYsRP/BL6eJscdCqsBADjDGOPKuPC
-	 vl7HePxGC0SdcTh3S3v0VBsCDeTlabP1Sl4WVE/CfhOiqKOkzQwuBbk9ueID18QGBj
-	 f2mZ01Prm2/i8GJ+/jbttKSlgxLlDi22NBZ5GwVOVW9HnEv1VZa8ZCZYripAEaSHoS
-	 /2jcVEOnkuAogPt9DF/f0y1o20AFX1XsvxCCnW6RAgYInl9Yu+GZffVih6m8ac7Rp8
-	 go48+JZiGjpfkuzY09+2HDLTTloMcBJWNCf+mrVTZ+y+jM/zWPkzULe384A4FnkHlP
-	 5UA6yR/sSfDSg==
+	b=IuQ8XXmy2J5qgGPdk/SAQvmZXcacR0ZNWB9qTQUReg0mxf463bk1ts4dZSMnfX34I
+	 jB8+0meR3aOlpNNrEhwPYZX/B5b2gKjJ2q7VyuOb3SI1RxStS6iZ2oFF8sECSX+Ws+
+	 ld2v8GHUX7Ffj6jvs48ci1+1tPjAR5uN+V8VX/lSOsWbPl23eYMT0OvGFM8A7RIphq
+	 R27Cb2yw6+mGETZsHGUZh5s9Cz3KTK4j+OBR3kQHk6m7NUTSBTvzKwvGqB4gzusR88
+	 HrFmnzFsEhIvfV2VpfBO89j8UP2lGCthbi8qEl9/7eNYQdlBcj7GzhKiYBd8o1WtbA
+	 wjA0LbTgVYsgg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 198AD380820D;
-	Tue,  8 Sep 2026 23:50:06 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 5677F380820D;
+	Tue,  8 Sep 2026 23:50:07 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,37 +37,40 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] MAINTAINERS: Update the so_txtime selftest path in SOCKET
- TIMESTAMPING
+Subject: Re: [PATCH net v2] ppp_async: drop the errored frame instead of
+ resetting its headroom
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178891140489.68202.14683668049218705518.git-patchwork-notify@kernel.org>
-Date: Tue, 08 Sep 2026 23:50:04 +0000
-References: <20260905100608.42539-1-kmehltretter@gmail.com>
-In-Reply-To: <20260905100608.42539-1-kmehltretter@gmail.com>
-To: Karl Mehltretter <kmehltretter@gmail.com>
-Cc: willemdebruijn.kernel@gmail.com, kernelxing@tencent.com,
- netdev@vger.kernel.org, akpm@linux-foundation.org
+ <178891140613.68202.2930909992157007487.git-patchwork-notify@kernel.org>
+Date: Tue, 08 Sep 2026 23:50:06 +0000
+References: <apkR6ZU+tqP2C3Fl@griffin.linux.hr>
+In-Reply-To: <apkR6ZU+tqP2C3Fl@griffin.linux.hr>
+To: Vlatko Kosturjak <kost@linux.hr>
+Cc: linux-ppp@vger.kernel.org, netdev@vger.kernel.org, edumazet@google.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, kuba@kernel.org,
+ pabeni@redhat.com, linux-kernel@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Sat,  5 Sep 2026 12:06:08 +0200 you wrote:
-> Commit 5c6baef3885c ("selftests: drv-net: convert so_txtime to
-> drv-net") moved the test to tools/testing/selftests/drivers/net/, but
-> the SOCKET TIMESTAMPING entry still lists the old path and
-> scripts/get_maintainer.pl --self-test=patterns reports it as matching
-> nothing.
+On Thu, 3 Sep 2026 08:21:29 +0200 you wrote:
+> ppp_receive_nonmp_frame() prepends a two-byte direction tag before running
+> the pass/active BPF filters:
 > 
-> Point the pattern at the new location.
+> 	*(__be16 *)skb_push(skb, 2) = htons(PPP_FILTER_INBOUND_TAG);
+> 
+> Nothing on the receive path guarantees those two bytes of headroom. The
+> frame-error path in ppp_async's process_input_packet() resets a reused skb's
+> headroom to zero while claiming to restore it to a freshly allocated state -
+> but a fresh skb from dev_alloc_skb() carries NET_SKB_PAD:
 > 
 > [...]
 
 Here is the summary with links:
-  - MAINTAINERS: Update the so_txtime selftest path in SOCKET TIMESTAMPING
-    https://git.kernel.org/netdev/net/c/e24279bffec6
+  - [net,v2] ppp_async: drop the errored frame instead of resetting its headroom
+    https://git.kernel.org/netdev/net/c/8dc5d98a16fa
 
 You are awesome, thank you!
 -- 
