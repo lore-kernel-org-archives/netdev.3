@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22D2B5448A9;
-	Tue,  8 Sep 2026 12:45:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 448B24B5CA2;
+	Tue,  8 Sep 2026 12:45:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788871523; cv=none; b=TbQcJ9RiwYwN40AoewzkE9mnWf9aDShHphaI5haAFgI688nLcy2U7gCwatkM884FEmGZ9Wv8m/vG3WVjsbySmWlf1ov6+3FhzLufBY7WNLUvi7QQitBztDwaTlwsdYEETTFdYn+dgl0/cux71DAXMnU4WH9dQ4FxDwkkCnWH8UU=
+	t=1788871523; cv=none; b=JoQ33seJ1qSq6Q/v5zZL/F6x2Q/2Jm1i8sk4gcNa+PAsDxgxK0oVxc1h2alhj6gzlv10ZHOR5ZxSkHFvBRea4rAvW1ZdyEM2mnJa7ENYds6KB9rCofCTwC8t55M/q6t+OybWvcnGMV2/zs/5/EgQk6Bv5gElgpnMLFZceduBJvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1788871523; c=relaxed/simple;
-	bh=FNY6Xtv2r3cF7nhHudjOVJcO4xwrI+gmxNTSeNL1GFQ=;
+	bh=QYOWXz19o9E5ZhwYIRZHnj+UTpryOctRSpqLn6x2Qfw=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Oe97CLOhg3t9xMO3kXGXWJ9gbBTU9BdcFwp5OT06dykv6j3qJfxc5AazC9nN31TI4h5v3y9vS/StygBJemy/1nQNz4M7yyXwdeZn1lJKpnnlJcrIUotl2E3BCqmT/oAYXpap1+W1wdaF7y4H4TFG5vHHbPl+jq9OOBQI0/jy04s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kVI3uzAf; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=bxyFxn8AJIqB1dUkv6A3NXs0K97lxlMYNJUS43Bn8dvwHU3lP3aJp+tsT/zz0QNiiXY/vMES9DGmTt5YjkqbQ2G9gHwka1ExNHXSeiXqlw4Fo0Vi4axtu4QX/NIUe7u8YjhrswOnQYocQ//FzF4VRG+R+bLXSkJjIut/9K5OIHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UJuDXXW4; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kVI3uzAf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F31E1F00A3E;
-	Tue,  8 Sep 2026 12:45:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UJuDXXW4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 647081F00A3A;
+	Tue,  8 Sep 2026 12:45:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788871519;
-	bh=fVNriULkyeIZbaipzV0Cqx5ilBmt/7Q6U02mWL8eUOg=;
+	s=k20260515; t=1788871521;
+	bh=0ZFyRXWQqOp7m0JjVb9Iy94cy0RvPUZKccfTTHE9SyA=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=kVI3uzAfi5iPVOWrsE0cnyTwQnfOpWX8RlIJXAPLxXUnYUgh4LDsyGsKk31xZf0I7
-	 wcQ4/njBxkvTUWHvdUDizeXdlmwTdhei1IQ3a2lcYGjod1CyVlhzTmRqgt/gCy74cX
-	 iV9fz9YK2QAFDFrAa1oTvK3UURZgSZQooOhRo2i5wSk71JFwjXlwN+rDuppR6plBZP
-	 RDl9hnV2FY+C65bkpSEOS1CQEHUN681vcmfGGw3QIIjVms3+TLGBU6umEGqX6uY92F
-	 d8jE1BIW/J+zX0mE6SWPYT1vyt5oxvwBmzDoQFmyUIsA+o+EomgVFW7qF5hZ0YrOER
-	 BhXH8kRWQIGtg==
-Subject: Re: [PATCH net-next v8 08/15] dpll: sit9531x: add support to get and
- set frequency on pins
+	b=UJuDXXW4GS4S0tH+3+cBOfr9dqd/ejfFnjq/U4Rb05Bysqq3YwYxo4E9bxynmVZzC
+	 iFE/0qU7UPYbxYoh2BdcsmQyyGQZ0Tj1yqL4tcZ9IVo+ThruoyYe/AedD7NCkLHvT4
+	 sJe8+nLCF0bH00t3AtppCWKmjM1hWvt2mJyxsyLw8FGVPkAg0w7RjFZ5QfCJ0l1fUD
+	 d4YySlbW2ESDjtGrp5QLTiD2hMiMOYZCLQKkP5hhBQzjUl/bxmd6VN8vjZNBj/mVem
+	 AQzGAxnG3+lxroelnoSpldgs0sC3xu+9h3/OaKGUacmanFOO0zthm3WO7nd7Aauhvc
+	 dLHrtOpY6Yi5A==
+Subject: Re: [PATCH net-next v8 09/15] dpll: sit9531x: implement output pin
+ state on a DPLL
 From: netdev-bot+sashiko@kernel.org
 To: arouhi@sitime.com
 Cc: jiri@resnulli.us, vadim.fedorenko@linux.dev,
@@ -35,10 +35,10 @@ Cc: jiri@resnulli.us, vadim.fedorenko@linux.dev,
  krzk+dt@kernel.org, conor+dt@kernel.org, cjubran@nvidia.com,
  Oleg.Zadorozhnyi@devoxsoftware.com, devicetree@vger.kernel.org,
  netdev@vger.kernel.org, linux-kernel@vger.kernel.org, kuba@kernel.org
-Date: Tue, 08 Sep 2026 12:45:18 +0000
-Message-ID: <178887151864.219967.4978978194985471898@kernel.org>
-In-Reply-To: <20260902214030.20955-9-arouhi@sitime.com>
-References: <20260902214030.20955-9-arouhi@sitime.com>
+Date: Tue, 08 Sep 2026 12:45:19 +0000
+Message-ID: <178887151995.219967.3640152255355236600@kernel.org>
+In-Reply-To: <20260902214030.20955-10-arouhi@sitime.com>
+References: <20260902214030.20955-10-arouhi@sitime.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -49,523 +49,262 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 12 potential
+Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider:
 
-Critical: 0 · High: 0 · Medium: 9 · Low: 3
+Critical: 0 · High: 0 · Medium: 2 · Low: 1
 
-- [Medium] sit9531x_get_fvco() returns 0 both for a register-read failure
-  (DIVN registers on the PLL page, or the XO-doubler bit at page 0 reg…
-- [Medium] A per-pin frequency set has PLL-wide and NVM side effects that
-  the commit message does not disclose: sit9531x_prg_commit() writes…
-- [Medium] sit9531x_dpll_output_pin_frequency_get() converts every
-  failure of sit9531x_output_freq_get() into success with the stale…
-- [Medium] The new input .frequency_get reports sitdev->ref[].freq, which
-  prop.c seeds with the *first* entry of the DT 'supported-frequencies-…
-- [Medium] prop.c appends an unconditional catch-all supported-frequency
-  range of 1 Hz..1 GHz to every ordinary pin, so the freq_supported set…
-- [Medium] The new output frequency setter is reachable with values it
-  never advertised, because the DPLL core narrows the u64 netlink…
-- [Medium] sit9531x_output_phase_flush() sets
-  SIT9531X_PLL_PHFL_ON_DEMAND_EN (PLL page reg 0x3D bit 7) and latches…
-- [Medium] An I2C failure partway through the five-byte DIVO write leaves
-  a mixed old/new 34-bit divider staged, and the common `goto commit`…
-- [Medium] Truncation of computed output frequency to `u32` without
-  bounds checking.
-- [Low] DISCARDED (fixed later in the series).
-- [Low] The kernel-doc block of the newly added sit9531x_get_fvco()
-  explains it as a fix for 'the previous split between free-run and sync…
-- [Low] sit9531x_output_freq_get()'s kernel-doc documents only '0 on
-  success, -ENODEV when the output divider or VCO rate is not…
+- [Medium] The new `.state_on_dpll_get`/`.state_on_dpll_set` callbacks
+  are installed into `sit9531x_dpll_output_pin_ops`, which…
+- [Medium] `sit9531x_output_disable()` and `sit9531x_output_enable()`
+  program the Page-0x03 Hi-Z force/state banks with a sequence of read-…
+- [Low] The banner comment on `sit9531x_output_disable()`
+  (drivers/dpll/sit9531x/core.c:409) states it "Sets MASK+STATE on BOTH…
 
 --
 
-dpll: sit9531x: add support to get and set frequency on pins
+dpll: sit9531x: implement output pin state on a DPLL
 
-This adds .frequency_get for input, XO and output pins and .frequency_set
-for output pins.  Input frequencies are reported from the cached firmware
-description, while output frequencies are computed from the DIVO divider
-read back from the chip and programmed by writing a new divider inside the
-chip's programming state.
-
-A few questions about the new code below.
+This adds .state_on_dpll_get / .state_on_dpll_set for output pins, mapping
+CONNECTED and DISCONNECTED onto the Page 0x03 Hi-Z force/state register
+pairs.  New core helpers sit9531x_output_enable() and
+sit9531x_output_disable() wrap the register writes in the PRG_CMD / NVM
+update / loop lock sequence and update the cached out[].enabled flag.
 
 > diff --git a/drivers/dpll/sit9531x/core.c b/drivers/dpll/sit9531x/core.c
-> index e706f6942f65..721b2c451d59 100644
+> index 721b2c451d59..0f886cfd1401 100644
 > --- a/drivers/dpll/sit9531x/core.c
 > +++ b/drivers/dpll/sit9531x/core.c
-> @@ -339,6 +339,35 @@ static int sit9531x_output_forced_hiz(struct sit9531x_dev *sitdev, u8 slot,
->  	return 0;
+
+[ ... ]
+
+> @@ -368,6 +402,115 @@ static int sit9531x_prg_commit(struct sit9531x_dev *sitdev)
+>  	return rc ? rc : rc2;
 >  }
->  
+>
 > +/*
-> + * Commit a programming sequence started by sit9531x_prg_enter():
-> + * update the NVM shadow and re-lock the loops.  The sleep gives the
-> + * hardware its required settling time after the loop-lock command;
-> + * it is intentional despite the caller holding multiop_lock, as the
-> + * whole NVM + lock sequence must be atomic.
-> + */
-> +static int sit9531x_prg_commit(struct sit9531x_dev *sitdev)
-> +{
-> +	int rc, rc2;
-> +
-> +	rc = sit9531x_write_u8(sitdev, SIT9531X_REG_PRG_DIR_GEN,
-> +			       SIT9531X_UPDATE_NVM);
-
-[Severity: Medium]
-The commit message describes an output frequency set only as "computed from
-the divider read back from the chip and set by writing a new one".  Does a
-single pin set also carry two side effects the message does not mention?
-
-sit9531x_dpll_output_pin_frequency_set()
-  sit9531x_output_freq_set()
-    sit9531x_prg_commit()            /* SIT9531X_UPDATE_NVM + msleep(100) */
-    sit9531x_output_phase_flush(pll_idx)
-
-The NVM shadow update and the unconditional 100 ms sleep run on every
-successful set, and the flush comment states that it makes "every output
-divider of @pll_idx restart aligned to the PLL phase".
-
-Does that mean setting the frequency of one output phase-steps every other
-output driven by the same PLL, discarding whatever per-output phase adjust
-was previously programmed on those siblings?  Could the changelog say that
-a per-pin set is PLL-wide and touches the NVM shadow?
-
-> +
-> +	/*
-> +	 * Issue the loop lock even if the update failed.  Callers reach
-> +	 * this function through a goto so that the chip never stays in
-> +	 * the PRG_CMD state with its loops open; returning early here
-> +	 * would defeat that and leave the outputs unlocked until the
-> +	 * next successful commit.
-> +	 */
-> +	rc2 = sit9531x_write_u8(sitdev, SIT9531X_REG_PRG_DIR_GEN,
-> +				SIT9531X_LOOP_LOCK);
-> +
-> +	msleep(100);
-> +
-> +	return rc ? rc : rc2;
-> +}
-> +
->  /*
->   * Input priority selection
->   *
-
-[ ... ]
-
-> @@ -735,6 +769,414 @@ int sit9531x_input_prio_add(struct sit9531x_dev *sitdev, u8 pll_idx,
->  #define SIT9531X_FVCO_HIGHBAND_MIN		6875000000ULL
->  #define SIT9531X_FVCO_HIGHBAND_MAX		7812500000ULL
->  
-
-[ ... ]
-
-> +/*
-> + * sit9531x_get_fvco - read VCO frequency from chip's DIVN registers
+> + * sit9531x_output_disable - mute an output (force Hi-Z)
+> + * @index:	logical output index (0..info->num_outputs-1)
 > + *
-> + * Fvco = Fref * DIVN, where DIVN comes from sit9531x_divn_static() and
-> + * Fref = xtal_freq << doubler.  DIVN is the
-> + * steady-state Fvco/Fref target programmed by the NVM blob and is
-> + * authoritative in both free-run and sync modes; the previous split
-> + * between free-run and sync formulas returned 0 on chips that didn't
-> + * have a sync input populated, which broke the TDC phase readback.
-> + *
-> + * Return: Fvco in Hz, or 0 on error
-> + */
+> + * Sets MASK+STATE on BOTH the DIFF and SE register pairs so that the
+> + * output is muted regardless of its electrical configuration.  The
 
 [Severity: Low]
-This comment describes "the previous split between free-run and sync
-formulas returned 0 on chips that didn't have a sync input populated, which
-broke the TDC phase readback".  Which upstream code is that referring to?
+This isn't a bug, but does the banner describe the wrong polarity?  It says
+MASK+STATE are set to mute, while the body sets MASK and clears STATE:
 
-This patch adds the first Fvco computation in the driver, so there is no
-previous split to have been replaced.  There is also no TDC phase readback
-at this point in the series: sit9531x_phase_offset_read() is only declared
-in core.h, with no definition in any .c file yet.
+	/* Take control (MASK=1) and mute (STATE=0) on both DIFF and SE */
+	rc = sit9531x_hiz_set_bit(sitdev, r.diff_mask, r.bit, true);
+	...
+	rc = sit9531x_hiz_set_bit(sitdev, r.diff_state, r.bit, false);
 
-Could the paragraph be dropped, or reworded so it does not read as a fix
-for a regression that never existed in tree?
+The register description above sit9531x_output_get_hiz_regs() agrees with the
+body:
 
-> +static u64 sit9531x_get_fvco(struct sit9531x_dev *sitdev, u8 pll_idx)
+ * MASK bit = 1  -> driver takes control of that output's Hi-Z state
+ * STATE bit = 0 -> output is forced to Hi-Z (muted)
+
+and so does the reader sit9531x_output_forced_hiz():
+
+	*muted = (mask & BIT(r.bit)) && !(state & BIT(r.bit));
+
+Could the banner be reworded to say "sets MASK and clears STATE"?
+
+> + * writes are wrapped in the PRG_CMD / NVM update / loop lock sequence
+> + * so the new state is applied by the hardware.
+> + *
+> + * Caller must hold sitdev->multiop_lock.
+> + */
+> +int sit9531x_output_disable(struct sit9531x_dev *sitdev, u8 index)
 > +{
-> +	int doubler, rc;
-> +	s64 divn;
-> +	u64 fref;
-> +
-> +	/*
-> +	 * DT board-config override: some configs (e.g. an INTSYNC PLL)
-> +	 * run a VCO that Fref*DIVN does not reproduce.  When the board
-> +	 * supplies the measured VCO, use it verbatim.
-> +	 */
-> +	if (pll_idx < SIT9531X_NUM_PLLS && sitdev->pll_fvco[pll_idx])
-> +		return sitdev->pll_fvco[pll_idx];
-> +
-> +	rc = sit9531x_divn_static(sitdev, pll_idx, &divn);
-> +	if (rc || divn <= 0)
-> +		return 0;
-> +
-> +	doubler = sit9531x_is_xo_doubler_enabled(sitdev);
-> +	if (doubler < 0)
-> +		return 0;
-> +
-> +	fref = (u64)sitdev->xtal_freq << doubler;
-> +
-> +	return mul_u64_u64_div_u64(fref, (u64)divn, SIT9531X_DIVN_SCALE);
-> +}
-> +
-> +/*
-> + * sit9531x_output_phase_flush - flush the output phase of a PLL
-
-[ ... ]
-
-> +static int sit9531x_output_phase_flush(struct sit9531x_dev *sitdev, u8 pll_idx)
-> +{
-> +	u8 ctrl, orig;
+> +	const struct sit9531x_chip_info *info = sitdev->info;
+> +	struct sit9531x_hiz_regs r;
+> +	u8 slot;
 > +	int rc, ret;
 > +
-> +	/* Arm the on-demand phase-flush on the PLL page. */
-> +	rc = sit9531x_update_pll_u8(sitdev, pll_idx,
-> +				    SIT9531X_PLL_REG_PHFL_CTRL,
-> +				    SIT9531X_PLL_PHFL_ON_DEMAND_EN,
-> +				    SIT9531X_PLL_PHFL_ON_DEMAND_EN);
-> +	if (rc)
-> +		return rc;
-
-[Severity: Medium]
-Is SIT9531X_PLL_PHFL_ON_DEMAND_EN meant to stay set after the flush?
-
-sit9531x_output_phase_flush() sets it on the PLL page and latches it with
-the small-change update, but no path in the driver clears it again -- a grep
-for PHFL in drivers/dpll/sit9531x/ finds only this write site.  Only the
-Page 0 trigger-source select is restored to orig at the end.
-
-That leaves the PLL permanently armed, so a later assertion of the restored
-(possibly GPIO-sourced) DIVO phase trigger re-flushes every output divider
-of that PLL, which is the persistent output phase offset the flush was added
-to avoid.
-
-The function's own comment argues the trigger source must not stay pinned
-after a one-shot flush; should the other half of the same one-shot sequence
-be unwound too, or is the enable intentionally sticky and just missing a
-comment saying so?
-
+> +	lockdep_assert_held(&sitdev->multiop_lock);
 > +
-> +	/* Latch it with the PLL small-change update. */
-> +	rc = sit9531x_update_pll_u8(sitdev, pll_idx,
-> +				    SIT9531X_PLL_REG_SMALL_UPDATE,
-> +				    SIT9531X_SMALL_UPDATE_CMD,
-> +				    SIT9531X_SMALL_UPDATE_CMD);
-> +	if (rc)
-> +		return rc;
-
-[ ... ]
-
-> +	ret = sit9531x_write_u8(sitdev, SIT9531X_REG_GPIO_FUNC_CTRL1, orig);
-> +	if (ret && !rc)
-> +		rc = ret;
-> +
-> +	return rc;
-> +}
-> +
-> +/*
-> + * sit9531x_output_freq_set - set output clock frequency
-
-[ ... ]
-
-> +int sit9531x_output_freq_set(struct sit9531x_dev *sitdev, u8 out_idx,
-> +			     u8 pll_idx, u64 frequency)
-> +{
-
-[ ... ]
-
-> +	fvco = sit9531x_get_fvco(sitdev, pll_idx);
-> +	if (!fvco) {
-> +		fvco = fvco_min;
-> +	} else if (!sitdev->pll_fvco[pll_idx]) {
-> +		if (fvco < fvco_min)
-> +			fvco = fvco_min;
-> +		else if (fvco > fvco_max)
-> +			fvco = fvco_max;
-> +	}
-
-[Severity: Medium]
-Is it safe to program a real divider from a guessed VCO rate here?
-
-sit9531x_get_fvco() returns 0 for two very different situations:
-
-	rc = sit9531x_divn_static(sitdev, pll_idx, &divn);
-	if (rc || divn <= 0)
-		return 0;
-
-	doubler = sit9531x_is_xo_doubler_enabled(sitdev);
-	if (doubler < 0)
-		return 0;
-
-so an unprogrammed DIVN and a failed regmap read of the DIVN registers or
-of the doubler bit are indistinguishable.
-
-In either case this code substitutes the band-edge constant fvco_min, then
-DIVO is computed from it, written to the chip, committed to the NVM shadow
-and the loops re-locked, and 0 is returned.  For a low-band PLL whose real
-VCO is near 5.89824 GHz but whose readback failed, does that not put the
-output roughly 20% away from what user space asked for while reporting
-success?
-
-The clamp path has the same question: an out-of-band readback is silently
-pulled to the band edge rather than reported.
-
-Would returning an error when the VCO cannot be read be preferable, and
-should sit9531x_get_fvco() distinguish a bus error from a dormant PLL?
-
-> +
-> +	divo = div64_u64(fvco, frequency);
-> +	if (!divo)
+> +	if (index >= info->num_outputs)
 > +		return -EINVAL;
-
-[Severity: Medium]
-Can a request that the driver advertised as supported be satisfied at a
-materially different rate here?
-
-sit9531x_pin_props_get() in prop.c appends a catch-all range to every
-ordinary pin:
-
-	/* Always append a wide catch-all range */
-	ranges[j].min = 1;
-	ranges[j].max = 1000000000ULL; /* 1 GHz */
-
-dpll_pin_freq_set() accepts anything inside prop.freq_supported, and this
-code only rejects a zero DIVO.  With a low-band Fvco of 4915200000 Hz, a
-request for 1 GHz gives DIVO = 4, so the pin emits 1228800000 Hz -- neither
-the requested value nor inside the advertised range -- and the call returns
-success.  Smaller residues appear everywhere else, e.g. 156250000 Hz becomes
-158554838 Hz on the same VCO.
-
-Should either the advertised ranges describe rates the divider can actually
-produce, or the setter reject requests it cannot hit exactly?
-
 > +
-> +	dev_dbg(sitdev->dev,
-> +		"out%u: Fvco=%llu freq=%llu DIVO=%llu (effective %llu Hz)\n",
-> +		out_idx, fvco, frequency, divo, div64_u64(fvco, divo));
-
-[ ... ]
-
-> +	divo_bytes[0] = (divo >>  0) & 0xFF;
-> +	divo_bytes[1] = (divo >>  8) & 0xFF;
-> +	divo_bytes[2] = (divo >> 16) & 0xFF;
-> +	divo_bytes[3] = (divo >> 24) & 0xFF;
-> +	divo_bytes[4] = (divo >> 32) & 0x03;  /* only bits [1:0] */
+> +	slot = info->clkout_map[index];
+> +	sit9531x_output_get_hiz_regs(slot, &r);
 > +
-> +	rc = sit9531x_read_u8(sitdev,
-> +			      SIT9531X_REG(page, base_reg - 4), &msb_old);
+> +	rc = sit9531x_prg_enter(sitdev);
+> +	if (rc)
+> +		return rc;
+> +
+> +	/* Take control (MASK=1) and mute (STATE=0) on both DIFF and SE */
+> +	rc = sit9531x_hiz_set_bit(sitdev, r.diff_mask, r.bit, true);
 > +	if (rc)
 > +		goto commit;
-> +	divo_bytes[4] |= msb_old & 0xFC;
-> +
-> +	for (j = 0; j < 5; j++) {
-> +		rc = sit9531x_write_u8(sitdev,
-> +				       SIT9531X_REG(page, base_reg - j),
-> +				       divo_bytes[j]);
-> +		if (rc)
-> +			goto commit;
-> +	}
+> +	rc = sit9531x_hiz_set_bit(sitdev, r.diff_state, r.bit, false);
+> +	if (rc)
+> +		goto commit;
+> +	rc = sit9531x_hiz_set_bit(sitdev, r.se_mask, r.bit, true);
+> +	if (rc)
+> +		goto commit;
+> +	rc = sit9531x_hiz_set_bit(sitdev, r.se_state, r.bit, false);
 > +
 > +commit:
-
-[Severity: Medium]
-What happens to the 34-bit divider when one of these five writes fails
-partway through?
-
-The bytes are written one register at a time, so a failure at j > 0 leaves a
-mixed old/new DIVO staged, and the shared exit then applies it:
-
-commit:
-	ret = sit9531x_prg_commit(sitdev);   /* UPDATE_NVM then LOOP_LOCK */
-
-Does that leave the output running at a frequency nobody requested, with the
-NVM shadow updated to match, while the function returns an error and
-sitdev->out[out_idx].freq still describes the old rate?
-
-The commit message covers the exit running on failure ("the exit runs even
-when a write in the middle failed and the first error is the one returned"),
-but not the half-written field.  Would saving and restoring the five
-pre-write bytes on the failure path, or abandoning the staged update, be
-possible here?
-
 > +	/*
-> +	 * Step 4: NVM update + loop lock.  Always run prg_commit() so the chip
-> +	 * leaves the PRG_CMD state with the output loops re-locked, even when a
-> +	 * write above failed; keep the first error to return.  It also carries
-> +	 * the required post-lock settling sleep.
+> +	 * Always leave the PRG_CMD programming state, even on a mid-sequence
+> +	 * write failure: prg_enter() unlocked the output loops, so returning
+> +	 * without prg_commit() would strand the chip in the programming state
+> +	 * with the loops unlocked.  Best effort -- keep the first error.
 > +	 */
 > +	ret = sit9531x_prg_commit(sitdev);
 > +	if (ret && !rc)
 > +		rc = ret;
-> +	if (rc)
-> +		return rc;
-
-[ ... ]
-
-> +	sitdev->out[out_idx].freq = (u32)div64_u64(fvco, divo);
+> +	if (!rc)
+> +		sitdev->out[index].enabled = false;
 > +
-> +	return 0;
+> +	return rc;
 > +}
-> +
-> +/*
-> + * sit9531x_output_freq_get - read output clock frequency from hardware
-> + * @out_idx:	output index (0-N for this chip variant)
-> + * @frequency:	output frequency in Hz
 
 [Severity: Medium]
-Is a u32 wide enough for the effective rate this line caches?
+Can a partial register sequence here leave sitdev->out[index].enabled
+permanently disagreeing with the hardware?
 
-struct sit9531x_out.freq is a u32, but the value stored here is
-fvco / divo, and divo is only rejected when it is zero.  With divo == 1
-the effective rate is the raw VCO, 4.9-5.9 GHz on a low-band PLL and
-6.9-7.8 GHz on a high-band one, all above U32_MAX (~4.29 GHz), so the
-cast silently wraps: a 4915200000 Hz output would be cached as
-620232704 Hz.  sit9531x_output_freq_get() does the same thing one
-function below with (u32)*frequency, so a read-back of such an output
-overwrites the cache with the same wrapped value even though
-*frequency itself is correct.
+Suppose the diff_mask write succeeds and the diff_state write returns an I2C
+error:
 
-That matters because sit9531x_dpll_output_pin_frequency_get() falls
-back to sit9531x_out_state_get(sitdev, dpin->id)->freq whenever the
-register read path returns an error, so user space can be handed the
-wrapped rate as a live frequency, and dpll_pin_freq_set() compares its
-request against that same value.
+	rc = sit9531x_hiz_set_bit(sitdev, r.diff_mask, r.bit, true);	/* ok */
+	if (rc)
+		goto commit;
+	rc = sit9531x_hiz_set_bit(sitdev, r.diff_state, r.bit, false);	/* -EIO */
+	if (rc)
+		goto commit;
 
-Would widening sit9531x_out.freq to u64 be the intended fix, or should
-sit9531x_output_freq_set() reject requests whose divider would come out
-below the smallest DIVO the hardware supports, so a rate the field
-cannot represent is never programmed in the first place?
+MASK=1 with STATE still 0 from the loaded configuration is the muted encoding
+per the register notes ("STATE bit = 0 -> output is forced to Hi-Z"), and
+sit9531x_prg_commit() then issues UPDATE_NVM + LOOP_LOCK so the partial
+programming is applied.  But rc is nonzero, so:
+
+	if (!rc)
+		sitdev->out[index].enabled = false;
+
+is skipped and enabled stays true.
+
+The mirror case in sit9531x_output_enable() is the same: if the diff_mask
+clear succeeds and the se_mask clear fails, a DIFF-configured pad is already
+released and driving while enabled stays false.
+
+Is there anything that later reconciles the cache?  The hardware readback
+sit9531x_output_forced_hiz() is reached only via sit9531x_out_state_fetch(),
+whose only caller is sit9531x_dev_state_fetch() on the probe/start path:
+
+	for (i = 0; i < sitdev->info->num_outputs; i++) {
+		rc = sit9531x_out_state_fetch(sitdev, i);
+
+The periodic worker refreshes only ref and chan state, and the new getter
+reads only the cached flag, so the wrong state would be reported over netlink
+for the life of the bound device.
+
+Would it be better to record the intended state (or mark it unknown and
+re-read the force/state registers) even when rc is nonzero?
+
+> +
+> +/*
+> + * sit9531x_output_enable - un-mute an output (active state)
+> + * @index:	logical output index (0..info->num_outputs-1)
+> + *
+> + * Releases MASK on BOTH register pairs so the output returns to
+> + * whatever the initial_config blob programmed.  The writes are wrapped
+> + * in the PRG_CMD / NVM update / loop lock sequence so the new state is
+> + * applied by the hardware.
+> + *
+> + * Caller must hold sitdev->multiop_lock.
+> + */
+> +int sit9531x_output_enable(struct sit9531x_dev *sitdev, u8 index)
+> +{
 
 [ ... ]
 
-> + * Return: 0 on success, -ENODEV when the output divider or VCO rate
-> + *	   is not resolvable, <0 on register access error
-> + */
-> +int sit9531x_output_freq_get(struct sit9531x_dev *sitdev, u8 out_idx,
-> +			     u64 *frequency)
-> +{
-> +	const struct sit9531x_chip_info *info = sitdev->info;
-> +	u8 slot, page, base_reg, pll_idx, v;
-> +	u64 fvco, divo = 0;
-> +	int rc, j;
+> +	rc = sit9531x_hiz_set_bit(sitdev, r.diff_mask, r.bit, false);
+> +	if (rc)
+> +		goto commit;
+> +	rc = sit9531x_hiz_set_bit(sitdev, r.se_mask, r.bit, false);
 > +
-> +	lockdep_assert_held(&sitdev->multiop_lock);
-> +
-> +	if (out_idx >= info->num_outputs)
-> +		return -EINVAL;
-
-[Severity: Low]
-The Return: block lists 0, -ENODEV and register access errors, but this
--EINVAL for an out-of-range out_idx is not among them.  Could it be added?
-
-In the same area, the doc block of sit9531x_output_freq_set() numbers a
-seven-step write sequence while the in-body comments label the same points
-"Step 4" and "Step 5", so the two numberings do not line up.
-
-> +
-> +	pll_idx = sitdev->out[out_idx].pll_idx;
-> +	if (pll_idx >= SIT9531X_NUM_PLLS)
-> +		return -ENODEV;
-> +
-> +	fvco = sit9531x_get_fvco(sitdev, pll_idx);
-> +	if (!fvco)
-> +		return -ENODEV;
+> +commit:
 
 [ ... ]
 
 > diff --git a/drivers/dpll/sit9531x/dpll.c b/drivers/dpll/sit9531x/dpll.c
-> index 67b9fbba9f2e..a7510ca721b6 100644
+> index a7510ca721b6..6365a83e4c52 100644
 > --- a/drivers/dpll/sit9531x/dpll.c
 > +++ b/drivers/dpll/sit9531x/dpll.c
-> @@ -302,6 +302,28 @@ sit9531x_dpll_input_pin_direction_get(const struct dpll_pin *pin,
->  	return 0;
+> @@ -669,10 +669,79 @@ sit9531x_dpll_output_pin_frequency_set(const struct dpll_pin *pin,
+>  	return rc;
 >  }
->  
+>
 > +/*
-> + * sit9531x_dpll_input_pin_frequency_get - read input pin frequency
+> + * sit9531x_dpll_output_pin_state_on_dpll_get - get output pin state
 > + *
-> + * returns cached frequency from DT or last set.
+> + * reports CONNECTED when the output is driven and
+> + * DISCONNECTED when it has been muted via sit9531x_output_disable().
 > + */
 > +static int
-> +sit9531x_dpll_input_pin_frequency_get(const struct dpll_pin *pin,
-> +				      void *pin_priv,
-> +				      const struct dpll_device *dpll,
-> +				      void *dpll_priv, u64 *frequency,
-> +				      struct netlink_ext_ack *extack)
+> +sit9531x_dpll_output_pin_state_on_dpll_get(const struct dpll_pin *pin,
+> +					   void *pin_priv,
+> +					   const struct dpll_device *dpll,
+> +					   void *dpll_priv,
+> +					   enum dpll_pin_state *state,
+> +					   struct netlink_ext_ack *extack)
 > +{
 > +	struct sit9531x_dpll_pin *dpin = pin_priv;
 > +	struct sit9531x_dpll *sitdpll = dpll_priv;
-> +	const struct sit9531x_ref *ref;
+> +	const struct sit9531x_out *out;
 > +
-> +	ref = sit9531x_ref_state_get(sitdpll->dev, dpin->id);
-> +	*frequency = ref->freq;
-> +
+> +	out = sit9531x_out_state_get(sitdpll->dev, dpin->id);
+> +	*state = out->enabled ? DPLL_PIN_STATE_CONNECTED
+> +			      : DPLL_PIN_STATE_DISCONNECTED;
 > +	return 0;
 > +}
 
 [Severity: Medium]
-The changelog says "An input's frequency is what the board presents".  Is
-ref->freq actually that value when a board lists several rates?
+Does this read past sitdev->out[] for the internal INTSYNC source pin?
 
-sit9531x_pin_props_get() in prop.c seeds it with the first list entry:
+sit9531x_dpll_pin_ops_get() hands this ops table to every non-input pin, with
+no id filtering:
 
-	if (num_freqs > 0) {
-		if (dir == DPLL_PIN_DIRECTION_INPUT)
-			sitdev->ref[index].freq = (u32)freqs[0];
+	if (!sit9531x_dpll_is_input_pin(pin))
+		return &sit9531x_dpll_output_pin_ops;
 
-The generic binding in Documentation/devicetree/bindings/dpll/dpll-pin.yaml
-describes supported-frequencies-hz only as a "List of supported frequencies
-for this pin, expressed in Hz", so list order carries no current-rate
-meaning.
+and sit9531x_dpll_pin_is_registrable() always registers a pin whose id is
+SIT9531X_INTSYNC_OUT_PIN_ID:
 
-With no input .frequency_set and no hardware measurement, does this report
-an arbitrary entry of the supported list as the pin's live frequency, with
-no way for user space to correct it?
+	/* The internal INTSYNC source pin is always registrable */
+	if (index == SIT9531X_INTSYNC_OUT_PIN_ID)
+		return true;
 
-[Severity: Low]
-Separately, does this read past ref[] for the INTSYNC pin at this point in
-the series?
+core.h defines that id as the array size:
 
-sit9531x_dpll_pin_ops_get() returns sit9531x_dpll_input_pin_ops for the
-INTSYNC destination pin, whose dpin->id is SIT9531X_INTSYNC_PIN_ID (9),
-while sitdev->ref[] is dimensioned SIT9531X_MAX_INPUTS + 1 (9 entries), so
-ref[9] aliases out[0].  The error fallback in the output getter below has
-the same shape with out[12] aliasing chan[0].
+	#define SIT9531X_INTSYNC_OUT_PIN_ID	SIT9531X_MAX_OUTPUTS
+	...
+	struct sit9531x_out	out[SIT9531X_MAX_OUTPUTS];
 
-The later series patch "dpll: sit9531x: model the inter-PLL sync net as a
-pair of pins" adds dedicated INTSYNC ops tables with no frequency callbacks
-and a comment saying exactly this, so the path is gone by the end of the
-series -- would it be worth ordering that patch before this one so no commit
-in between exposes ref[9] and out[12] as pin frequencies?
+so sit9531x_out_state_get(sitdev, 12) resolves to &sitdev->out[12], one
+element past the end, and ->enabled is read from whatever follows in struct
+sit9531x_dev (chan[0]).  That value is then reported to user space as the pin
+state on every DPLL_CMD_PIN_GET dump.
 
->  /*
->   * sit9531x_dpll_input_pin_state_on_dpll_get - get input pin DPLL state
->   *
-
-[ ... ]
-
-> @@ -576,8 +600,79 @@ sit9531x_dpll_output_pin_direction_get(const struct dpll_pin *pin,
->  	return 0;
->  }
->  
+> +
 > +/*
-> + * sit9531x_dpll_output_pin_frequency_get - read output pin frequency
+> + * sit9531x_dpll_output_pin_state_on_dpll_set - mute/un-mute an output
 > + *
-> + * Reads the DIVO divider back from the chip and computes the live
-> + * frequency as Fvco / DIVO.  Falls back to the cached value when the
-> + * output is not resolvable through the divider chain (e.g. not mapped
-> + * to a PLL), so a netlink dump never fails on such pins.
+> + * forces Hi-Z on the output pin via the Page 0x03
+> + * force/state register pair.
+> + *   CONNECTED    -> enable (release force, back to factory default)
+> + *   DISCONNECTED -> disable (force Hi-Z)
 > + */
 > +static int
-> +sit9531x_dpll_output_pin_frequency_get(const struct dpll_pin *pin,
-> +				       void *pin_priv,
-> +				       const struct dpll_device *dpll,
-> +				       void *dpll_priv, u64 *frequency,
-> +				       struct netlink_ext_ack *extack)
+> +sit9531x_dpll_output_pin_state_on_dpll_set(const struct dpll_pin *pin,
+> +					   void *pin_priv,
+> +					   const struct dpll_device *dpll,
+> +					   void *dpll_priv,
+> +					   enum dpll_pin_state state,
+> +					   struct netlink_ext_ack *extack)
 > +{
 > +	struct sit9531x_dpll_pin *dpin = pin_priv;
 > +	struct sit9531x_dpll *sitdpll = dpll_priv;
@@ -573,96 +312,60 @@ in between exposes ref[9] and out[12] as pin frequencies?
 > +	int rc;
 > +
 > +	mutex_lock(&sitdev->multiop_lock);
-> +	rc = sit9531x_output_freq_get(sitdev, dpin->id, frequency);
+> +
+> +	switch (state) {
+> +	case DPLL_PIN_STATE_CONNECTED:
+> +		rc = sit9531x_output_enable(sitdev, dpin->id);
+> +		break;
+> +	case DPLL_PIN_STATE_DISCONNECTED:
+> +		rc = sit9531x_output_disable(sitdev, dpin->id);
+> +		break;
+
+The same pin reaches the setter with dpin->id == 12, which both helpers reject
+because 12 >= info->num_outputs:
+
+	if (index >= info->num_outputs)
+		return -EINVAL;
+
+yet sit9531x_pin_props_get() advertises that pin as changeable:
+
+	} else if (dir == DPLL_PIN_DIRECTION_OUTPUT &&
+		   index == SIT9531X_INTSYNC_OUT_PIN_ID) {
+		...
+		props->dpll_props.capabilities =
+			DPLL_PIN_CAPABILITIES_STATE_CAN_CHANGE;
+
+so user space is told the state can change but always gets -EINVAL.  Would it
+make sense to route the INTSYNC source pin to its own ops table, or at least
+bound-check dpin->id against info->num_outputs in the getter?
+
+For what it is worth, a later patch in this series, "dpll: sit9531x: model the
+inter-PLL sync net as a pair of pins", adds sit9531x_dpll_intsync_src_pin_ops
+and dispatches the INTSYNC source pin to it in sit9531x_dpll_pin_ops_get(),
+which removes both problems.  Could that dispatch be folded in here, or this
+patch ordered after it, so no intermediate commit exposes the out-of-range
+access?
+
+> +	default:
+> +		rc = -EINVAL;
+> +		break;
+> +	}
+> +
 > +	mutex_unlock(&sitdev->multiop_lock);
 > +
 > +	if (rc)
-> +		*frequency = sit9531x_out_state_get(sitdev, dpin->id)->freq;
+> +		NL_SET_ERR_MSG(extack, "Failed to set output pin state");
 > +
-> +	return 0;
+> +	return rc;
 > +}
-
-[Severity: Medium]
-The comment justifies the fallback for outputs "not resolvable through the
-divider chain (e.g. not mapped to a PLL)", but does this also swallow I2C
-and regmap errors?
-
-sit9531x_output_freq_get() propagates the error of sit9531x_read_u8() for
-each of the five DIVO byte reads, and sit9531x_get_fvco() reads the DIVN
-registers and the doubler bit as well:
-
-		rc = sit9531x_read_u8(sitdev,
-				      SIT9531X_REG(page, base_reg - j), &v);
-		if (rc)
-			return rc;
-
-With every non-zero rc turned into "return 0" plus the stale cached value,
-a transient bus failure is reported to user space as a valid live frequency.
-
-Does it also affect the set path?  dpll_pin_freq_set() calls
-ops->frequency_get() first and then:
-
-	if (freq == old_freq)
-		return 0;
-
-so if the stale cache happens to equal the requested frequency, the set is
-reported as successful without frequency_set() ever running.
-
-Would distinguishing -ENODEV (the unresolvable case the comment describes)
-from register access errors work here?
-
 > +
-> +/*
-> + * sit9531x_dpll_output_pin_frequency_set - set output pin frequency
-> + *
-> + * computes DIVO = Fvco / frequency and writes the
-> + * 34-bit output divider to the output system registers via
-> + * sit9531x_output_freq_set().
-> + */
-> +static int
-> +sit9531x_dpll_output_pin_frequency_set(const struct dpll_pin *pin,
-> +				       void *pin_priv,
-> +				       const struct dpll_device *dpll,
-> +				       void *dpll_priv, u64 frequency,
-> +				       struct netlink_ext_ack *extack)
-> +{
-
-[ ... ]
-
-> +	mutex_lock(&sitdev->multiop_lock);
-> +	rc = sit9531x_output_freq_set(sitdev, dpin->id, actual_pll,
-> +				      frequency);
-> +	mutex_unlock(&sitdev->multiop_lock);
-
-[Severity: Medium]
-Should this setter sanity-check the upper bound of frequency itself?
-
-The core validates the request narrowed to 32 bits before handing over the
-full 64-bit value:
-
-drivers/dpll/dpll_netlink.c:dpll_pin_freq_set() {
-	u64 freq = nla_get_u64(a), old_freq;
-	...
-	if (!dpll_pin_is_freq_supported(pin, freq)) {
-	...
-	ret = ops->frequency_set(pin, ..., freq, extack);
-}
-
-with
-
-static bool dpll_pin_is_freq_supported(struct dpll_pin *pin, u32 freq)
-
-Combined with the 1 Hz..1 GHz catch-all range this driver advertises, does a
-request of 4294967297 Hz validate as 1 Hz and then arrive here at full
-width?  sit9531x_output_freq_set() only rejects a zero DIVO, so for a
-documented band VCO it would compute DIVO = 1 and program the output at the
-raw VCO rate of 4.9-7.8 GHz while returning success, and the u32 cache
-update would wrap.
-
-The narrowing helper predates this series, but this is the first driver
-callback that can act on it.
-
-[ ... ]
+>  static const struct dpll_pin_ops sit9531x_dpll_output_pin_ops = {
+>  	.direction_get		= sit9531x_dpll_output_pin_direction_get,
+>  	.frequency_get		= sit9531x_dpll_output_pin_frequency_get,
+>  	.frequency_set		= sit9531x_dpll_output_pin_frequency_set,
+> +	.state_on_dpll_get	= sit9531x_dpll_output_pin_state_on_dpll_get,
+> +	.state_on_dpll_set	= sit9531x_dpll_output_pin_state_on_dpll_set,
+>  };
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260902214030.20955-1-arouhi%40sitime.com
