@@ -1,188 +1,238 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82AF033A9F8;
-	Tue,  8 Sep 2026 17:04:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0502A5908CB;
+	Tue,  8 Sep 2026 17:07:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788887091; cv=none; b=PdsoArj1YIpBsxruNYJMsF8qRaDfpKy7Nd8FlNzCSy5XiPUK0M6eLHfkITIPgq44vGnKoP+efXCG9bgdwZBg4zPYNkYLV9UURORsGziT3RKcOQ2BkVXzQR7n43VGLz9iqlCy8h84913iBOvwQm2bmst5jDIDbJ+e7zKJlUA2Ick=
+	t=1788887263; cv=none; b=uCaNRVUFxVH9jV8na94uw/KyjpoB84JnX7IkeZED+OqCMifQNqLAy2g+on3wCGX1HLI6663qfNky2LoYThKPr7dnnDnjxUt/VoPSeQTDPbrjw9Kovvt2SUspnbYFw6+gS7iSfqvYqHNrJDqzZsBKiRvJ02jSfEXF1wbbIsqyNrE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788887091; c=relaxed/simple;
-	bh=cgxvIR7KZyvUD/UIdueV6Tb4z6fUOJZHD/riDvwewmE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UYmQJmKcZa2ARKrr1GJkj7U8rSh6HfXTFAMvBg+NgZ/OjeYKAKrpGRJmgxI2m/5JfYt9gYeUb2E6muZ3keDa3od7UW5yfP0aypfKW9neGLiIuD1W1rylv1dZUtmSRTPLjE6YPrRbQGNUOAan+OzTk6VHU49denT5LcY8NOxTsYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=tYLI6ixx; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1788887263; c=relaxed/simple;
+	bh=7jybtTARDbLiDN7g47KofFv0D/a1zezV6RwS8xfnTWk=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=UFLNWI/lDDWV5YLLPNmKbVAogD5ELvHwBA2fsU8Qbw1uR9qZyHnQiSb2Ux3LLtONrbZLYRwwFiXbXmR2xiLXgrPtQrMS+fy09YpkeiwHsV6J723yusAHdOpfnnKKz0dIe88NtoAXKaC5SuGNSV6/FFla/EMGF7JD/W0PUVamRvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TgnlZN/o; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="tYLI6ixx"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 688F1eJY1268563;
-	Tue, 8 Sep 2026 17:04:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=U1n6Rq
-	vtplt2mS9BVm+Dv4IDALJSJUvvoeyVX9qlr8Q=; b=tYLI6ixxhf+yeh0BrLhno9
-	doRKfHN/RcsdIN5G5GpX08o74dQaPjw9IlrGdlK2Tt5pef+8b9ITp/OXmLCIEkHu
-	wxFgPsSa9JNf+dHe5ttq7BB00kGDF+uWIGOaV0ilwsZZivU5I+kC0mkYYef/UKmb
-	iFD9Adi8lDyBvGjF+P+d47aOynygzbDzZXHos91f4rl8QJWLRVQxxSC61Ea5ek2h
-	7pREcpUUofFZb9ypDSJiW0ExGEUc00a31Xm2JvzvJnjmANLlk3sEjlQHS3/zWwFg
-	XgTCpBloS5w52Lbm0x9olNq2nNwKZ8646TGVurniLtNmCJa2AT1ODeuypiscnPFg
-	==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ggbhf0bss-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 08 Sep 2026 17:04:42 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 688GuKrL008756;
-	Tue, 8 Sep 2026 17:04:42 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4ggxwh55ty-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 08 Sep 2026 17:04:41 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 688H4bSE43581938
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 8 Sep 2026 17:04:37 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A46E32004B;
-	Tue,  8 Sep 2026 17:04:37 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 102C020040;
-	Tue,  8 Sep 2026 17:04:37 +0000 (GMT)
-Received: from [9.111.167.236] (unknown [9.111.167.236])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue,  8 Sep 2026 17:04:36 +0000 (GMT)
-Message-ID: <a5ffb5d2-4509-4e73-af0d-aad4b1cc9412@linux.ibm.com>
-Date: Tue, 8 Sep 2026 19:04:36 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TgnlZN/o"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 268BD1F00A3A;
+	Tue,  8 Sep 2026 17:07:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788887261;
+	bh=zdNtkBOLC/SAMyuh+w73NAqwDKO7Dz8z8s85TF2kyro=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=TgnlZN/ok5ROunEpXsd9pVV6ur12Pl/ioBV5q9Y859TM6QGlXGVyitkXPsUmVKr81
+	 zIh/oQlEn+iFBeNHgkMnPifdZHegN5Ey8aNw77V5E7/gxVPKd7pfEidK+cb0R/FJs/
+	 dQzuWFTjoB3wWSTlW+yzTnN261+kzy8gn6xm//dEOuayV8CCPizY/TTMXqGtlcacOO
+	 Yrp6OGxw2tJrDszKfpllBWKJdmBc8vmgEHfalIvLU0Ysuiqx9cxPguEpi/thqtPNvK
+	 BdBwdsZ1bdYkXq+pxEpWMK3UKygz/lvk3tbV3zRxFAOOzsltDswPngEyTy+Xwn2T6m
+	 ycAGQ1MLcUpXQ==
+Subject: Re: [PATCH v4 net] octeontx2-pf: reset HTB scheduler topology before
+ freeing queues
+From: netdev-bot+sashiko@kernel.org
+To: rkannoth@marvell.com
+Cc: davem@davemloft.net, hkelam@marvell.com, linux-kernel@vger.kernel.org,
+ naveenm@marvell.com, netdev@vger.kernel.org, sgoutham@marvell.com,
+ andrew+netdev@lunn.ch, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com
+Date: Tue, 08 Sep 2026 17:07:40 +0000
+Message-ID: <178888726063.219967.8664029829834628993@kernel.org>
+In-Reply-To: <20260903020533.3068041-1-rkannoth@marvell.com>
+References: <20260903020533.3068041-1-rkannoth@marvell.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] dibs: Avoid inconsistent lockstate warning in
- dibs_lo_move_data()
-To: netdev-bot+sashiko@kernel.org
-Cc: alibuda@linux.alibaba.com, dust.li@linux.alibaba.com,
-        sidraya@linux.ibm.com, mjambigi@linux.ibm.com, davem@davemloft.net,
-        kuba@kernel.org, pabeni@redhat.com, edumazet@google.com,
-        andrew+netdev@lunn.ch, tonylu@linux.alibaba.com,
-        guwen@linux.alibaba.com, netdev@vger.kernel.org,
-        linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
-        hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
-        borntraeger@linux.ibm.com, svens@linux.ibm.com, horms@kernel.org
-References: <20260904094446.1342654-1-wintera@linux.ibm.com>
- <178887153533.219967.1817289806507440884@kernel.org>
-Content-Language: en-US
-From: Alexandra Winter <wintera@linux.ibm.com>
-In-Reply-To: <178887153533.219967.1817289806507440884@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-GUID: pJJv20tp77M_bMt11DmhNNlHpvFwY-G-
-X-Authority-Analysis: v=2.4 cv=RIaD2Yi+ c=1 sm=1 tr=0 ts=6aa0402b cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VwQbUJbxAAAA:8
- a=TqvEKpW1L8R4wEG_ojMA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTA4MDE4NCBTYWx0ZWRfX6G106RzS9tju
- u6w/DJdzvyoUtIzGCQZWsijUECbDPHuFhWTrkqdaPRsDg4ZWcY07lHfUMF4YjT/Hs36h7PkVOmY
- 4QcIKAlFMvgAw+qM/tuXKumQeN3WLAQ=
-X-Proofpoint-ORIG-GUID: ghIgFFWfwLroN4Lmvm957VMglJKA_8sH
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA4MDE4NCBTYWx0ZWRfXxckbs15pHi8s
- kCdpgwCmLWuYJH5cqaVhG8wPPimyM/1HxIv/9AB5R/KYko/zKpm4stK2vAOCZ2/o3i++0AG4rjQ
- cY+86PgIPdS78ZWIZSv9o3BH2kPT7URDUNyR0kEHxaI0kszHd4fOJLkB4Bn539BCnq8CADxBNaz
- 8jIQbYSo7bmMgYxOCpyBT/Tc8Tv6ju2/gE38p7nMNxppWJqNCAnx9V5i1na5QpSVU3t31ahpRlt
- vVPFZTB+UJPVJuUCI7dIIz0n7v4B3sID5bKPfATNjgthAtDUj4FwZAbwDXuDt+QzKBBKUPuxioO
- n3B/GuDtJEP/sG+JZFYFCB7BUmp010phXImiv3Rluc9N7YyPepkH15QEk61redswI67Gh9cKYsZ
- pptdBdBNggacQjFxirZlyRyn8G6zv2g8z3PzAl7ukH8gDulL0VtnhNl7rBYYCeaMawWJYl/OOus
- gUEcf7PioKWC9n6AWZw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-08_03,2026-09-08_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 suspectscore=0 malwarescore=0 priorityscore=1501 bulkscore=0
- adultscore=0 phishscore=0 clxscore=1011 impostorscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2609080184
 
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider:
 
+Critical: 0 · High: 1 · Medium: 1 · Low: 0
 
-On 08.09.26 14:45, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider:
-> 
-> Critical: 0 · High: 0 · Medium: 1 · Low: 0
-> 
-> - [Medium] The patch fixes an observable lockdep "inconsistent lock
->   state" splat produced by the plain spin_lock(&dibs->lock) in…
-> 
-> --
-> 
-> Here is the report.
-> 
-> dibs: Avoid inconsistent lockstate warning in dibs_lo_move_data()
-> 
-> This converts the plain spin_lock()/spin_unlock() around the
-> dibs->subs[]->ops->handle_irq() call in dibs_lo_move_data() to
-> spin_lock_irqsave()/spin_unlock_irqrestore(), because the same lock is
-> also taken from hardirq context in ism_handle_irq().  The commit message
-> notes this is not a real deadlock since dibs_lo devices have no interrupt
-> context.
-> 
->> diff --git a/drivers/dibs/dibs_loopback.c b/drivers/dibs/dibs_loopback.c
->> index 649e4e375be33..44a2e74c2efcb 100644
->> --- a/drivers/dibs/dibs_loopback.c
->> +++ b/drivers/dibs/dibs_loopback.c
-> 
-> [ ... ]
-> 
->> @@ -267,12 +268,12 @@ static int dibs_lo_move_data(struct dibs_dev *dibs, u64 dmb_tok,
->>  	if (!sf)
->>  		return 0;
->>  
->> -	spin_lock(&dibs->lock);
->> +	spin_lock_irqsave(&dibs->lock, flags);
->>  	client_id = dibs->dmb_clientid_arr[sba_idx];
->>  	s_mask = ror16(0x1000, idx);
->>  	if (likely(client_id != NO_DIBS_CLIENT && dibs->subs[client_id]))
->>  		dibs->subs[client_id]->ops->handle_irq(dibs, sba_idx, s_mask);
->> -	spin_unlock(&dibs->lock);
->> +	spin_unlock_irqrestore(&dibs->lock, flags);
-> 
-> [Severity: Medium]
-> Should this carry a Fixes: tag?  The lockdep splat quoted in the commit
-> message is reproducible on shipped kernels, and git blame attributes the
-> converted spin_lock()/spin_unlock() pair in dibs_lo_move_data() to:
-> 
-> cc21191b584c6f ("dibs: Move data path to dibs layer")
-> 
-> The hardirq-side acquisition of the same lock is in ism_handle_irq()
-> (drivers/s390/net/ism_drv.c):
-> 
-> 	spin_lock(&dibs->lock);
-> 
-> which matches the {IN-HARDIRQ-W} registration in the report, so the
-> warning can be hit by ordinary SMC traffic through
-> smc_close_active()->smcd_cdc_msg_send()->smcd_tx_ism_write()->dibs_lo_move_data()
-> on a lockdep-enabled kernel.
-> 
-> The splat also ends with "INFO: lockdep is turned off", so further lock
-> checking is lost for the rest of that boot on affected kernels.
-> 
-> Would adding the following help backporters and stable tooling identify
-> which trees need this change?
-> 
-> Fixes: cc21191b584c6f ("dibs: Move data path to dibs layer")
-> 
+- [High] Incomplete fix: the stale-TOPOLOGY bug class the commit claims
+  to close stays reachable through the AF's bulk release path.
+- [Medium] Set/reset asymmetry at the aggregation level: HTB offload
+  programs NIX_AF_TL1X_TOPOLOGY (PRIO_ANCHOR/RR_PRIO) on the shared per-…
 
+--
 
-As mentioned in the commit message the paths reported by lockdep belong to two
-different device types (dibs-lo and ism). So not a real deadlock.
-So unless lockdep-warnings by themselves warrant a Fixes-tag (?), I think net-next is correct here.
+octeontx2-pf: reset HTB scheduler topology before freeing queues
 
-Paolo applied this already to net-next.
-For the records: Sahiko identified the right patch to blame.
+This adds otx2_qos_reset_schq_topology() and otx2_qos_free_hw_schq() so
+that NIX_AF_TL{4,3,2}X_TOPOLOGY is zeroed before each QoS scheduler queue
+is handed back to the AF during HTB hierarchy teardown and cfg rollback.
+The aggregation level (TL1) is intentionally skipped.
+
+> diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/qos.c b/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
+> index 69c0911e28e9..f160b1618efa 100644
+> --- a/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
+> +++ b/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
+> @@ -235,13 +235,63 @@ static int otx2_qos_txschq_set_parent_topology(struct otx2_nic *pfvf,
+>  	return rc;
+>  }
+>  
+> +static int otx2_qos_reset_schq_topology(struct otx2_nic *pfvf, u16 lvl,
+> +					u16 schq)
+> +{
+> +	struct mbox *mbox = &pfvf->mbox;
+> +	struct nix_txschq_config *cfg;
+> +	int rc;
+> +
+> +	if (lvl < NIX_TXSCH_LVL_TL4 || lvl >= NIX_TXSCH_LVL_TL1)
+> +		return 0;
+
+[Severity: Medium]
+Should the TL1 case be handled here too, or at least commented in the
+code?  otx2_qos_txschq_set_parent_topology() does program TL1:
+
+	else if (parent->level == NIX_TXSCH_LVL_TL1)
+		cfg->reg[0] = NIX_AF_TL1X_TOPOLOGY(parent->schq);
+
+	cfg->regval[0] = (u64)parent->prio_anchor << 32;
+	cfg->regval[0] |= ((parent->child_dwrr_prio != OTX2_QOS_DEFAULT_PRIO) ?
+			    parent->child_dwrr_prio : 0)  << 1;
+
+and for a PF the HTB root sits at that level, in otx2_qos_alloc_root():
+
+	if (!is_otx2_vf(pfvf->pcifunc)) {
+		node->level = NIX_TXSCH_LVL_TL1;
+
+so otx2_qos_txschq_push_cfg_tl() -> otx2_qos_txschq_set_parent_topology()
+writes NIX_AF_TL1X_TOPOLOGY with the HTB prio_anchor, which is the base
+index of the contiguous TL2 child block.
+
+On tc qdisc del, otx2_qos_root_destroy() -> otx2_qos_destroy_node() ->
+otx2_qos_free_hw_cfg() calls otx2_qos_free_hw_schq(pfvf, node->level,
+node->schq) with node->level == NIX_TXSCH_LVL_TL1, which takes the early
+return above.
+
+Does anything else restore the default TL1 topology while the interface
+stays up?  nix_txschq_free_one() early-returns for lvl >=
+hw->cap.nix_tx_aggr_lvl, nix_reset_tx_schedule() has no TL1 case, and
+nix_tl1_default_cfg() declines to reprogram once the PF has configured
+TL1:
+
+	/* Skip if PF has already done the config */
+	if (TXSCH_MAP_FLAGS(pfvf_map[schq]) & NIX_TXSCHQ_CFG_DONE)
+		return;
+	rvu_write64(rvu, blkaddr, NIX_AF_TL1X_TOPOLOGY(schq),
+		    (TXSCH_TL1_DFLT_RR_PRIO << 1));
+
+The only writer of the default TL1 value appears to be
+otx2_txschq_config():
+
+	req->reg[1] = NIX_AF_TL1X_TOPOLOGY(schq);
+	req->regval[1] = hw->txschq_aggr_lvl_rr_prio << 1;
+
+which runs at interface open rather than on TC_HTB_DESTROY.  So after HTB
+teardown with the link up, the shared TL1 keeps a PRIO_ANCHOR pointing at
+TL2 indices that were just returned to the AF's block-wide TL2 pool and
+may be re-allocated to another function.
+
+The commit message says TL1 "is not freed back to the AF by
+nix_txschq_free_one()", which rules out re-allocating TL1 itself, but does
+it cover the residual anchor pointing into recycled TL2 indices?  Whether
+the TL1 arbiter can act on such a stale anchor depends on hardware
+semantics that are not visible from the tree, so this may be harmless in
+practice, but the set/reset asymmetry looks worth spelling out in the code
+rather than only in the changelog.
+
+> +
+> +	mutex_lock(&mbox->lock);
+> +
+> +	cfg = otx2_mbox_alloc_msg_nix_txschq_cfg(mbox);
+> +	if (!cfg) {
+> +		mutex_unlock(&mbox->lock);
+> +		return -ENOMEM;
+> +	}
+> +
+> +	cfg->lvl = lvl;
+> +	cfg->num_regs = 1;
+> +
+> +	if (lvl == NIX_TXSCH_LVL_TL4)
+> +		cfg->reg[0] = NIX_AF_TL4X_TOPOLOGY(schq);
+> +	else if (lvl == NIX_TXSCH_LVL_TL3)
+> +		cfg->reg[0] = NIX_AF_TL3X_TOPOLOGY(schq);
+> +	else if (lvl == NIX_TXSCH_LVL_TL2)
+> +		cfg->reg[0] = NIX_AF_TL2X_TOPOLOGY(schq);
+> +
+> +	cfg->regval[0] = 0;
+> +
+> +	rc = otx2_sync_mbox_msg(mbox);
+> +
+> +	mutex_unlock(&mbox->lock);
+> +
+> +	return rc;
+> +}
+> +
+> +static void otx2_qos_free_hw_schq(struct otx2_nic *pfvf, u16 lvl, u16 schq)
+> +{
+> +	int err;
+> +
+> +	err = otx2_qos_reset_schq_topology(pfvf, lvl, schq);
+
+[Severity: High]
+Does this cover the case where the AF, not the driver, releases the QoS
+queues?  The reset only runs on the driver's explicit per-schq frees, but
+nix_txschq_free() in af/rvu_nix.c returns the same TL4/TL3/TL2 indices to
+the shared pool with only PARENT and SCHEDULE cleared:
+
+	nix_reset_tx_schedule(rvu, blkaddr, lvl, schq);
+	rvu_free_rsrc(&txsch->schq, schq);
+	txsch->pfvf_map[schq] = TXSCH_MAP(0, NIX_TXSCHQ_FREE);
+
+and nix_reset_tx_schedule() writes TLxX_PARENT and TLxX_SCHEDULE only, so
+TOPOLOGY (PRIO_ANCHOR/RR_PRIO) stays programmed.
+
+That path is reachable while an HTB qdisc is still offloaded, for example
+on a function reset (echo 1 > /sys/bus/pci/devices/<bdf>/reset) or a VF
+FLR from a passthrough guest:
+
+rvu_flr_handler() -> rvu_blklf_teardown() -> rvu_nix_lf_teardown() ->
+nix_txschq_free()
+
+In that case otx2_qos_free_hw_schq() never runs, so the state the commit
+message describes ("PRIO_ANCHOR/RR_PRIO settings can survive in the
+shared scheduler pool and affect later allocations") is unchanged.
+
+The allocation side also looks unsanitized.  nix_txschq_alloc() resets
+linkcfg, shaping and schedule for every newly allocated schq:
+
+	nix_reset_tx_linkcfg(rvu, blkaddr, lvl, schq);
+	nix_reset_tx_shaping(rvu, blkaddr, nixlf, lvl, schq);
+	nix_reset_tx_schedule(rvu, blkaddr, lvl, schq);
+
+but not TOPOLOGY, and otx2_txschq_config() never writes TOPOLOGY for
+TL2/TL3/TL4, so a new owner inherits whatever anchor was left behind.
+
+Would adding the TLxX_TOPOLOGY register to nix_reset_tx_schedule() be a
+better place for this?  That would cover free_one, TXSCHQ_FREE_ALL, FLR
+and allocation-time inheritance for all AF clients under rvu->rsrc_lock,
+and the driver-side helper added here would not be needed.
+
+> +	if (err)
+> +		netdev_warn(pfvf->netdev,
+> +			    "QoS: failed to reset topology for schq %u at level %u: %d\n",
+> +			    schq, lvl, err);
+> +
+> +	otx2_txschq_free_one(pfvf, lvl, schq);
+> +}
+> +
+>  static void otx2_qos_free_hw_node_schq(struct otx2_nic *pfvf,
+>  				       struct otx2_qos_node *parent)
+>  {
+>  	struct otx2_qos_node *node;
+>  
+>  	list_for_each_entry_reverse(node, &parent->child_schq_list, list)
+> -		otx2_txschq_free_one(pfvf, node->level, node->schq);
+> +		otx2_qos_free_hw_schq(pfvf, node->level, node->schq);
+>  }
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260903020533.3068041-1-rkannoth%40marvell.com
