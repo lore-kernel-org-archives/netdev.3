@@ -1,152 +1,114 @@
-Received: from mail-yx1-f51.google.com (mail-yx1-f51.google.com [74.125.224.51])
+Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FE495540A8
-	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 15:19:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.51
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788880772; cv=none; b=dl3vCWpOd3OGYT+C1jCWDcQgWZLCzeNxsXjPM4BjyyL47IvOgRnYbn4rT4KJqDOZMEe5uzKt/GSNd3N4NDOVBT1Ls9b1lY7W1bRSS7CL4Vp7HBTTknhbrIyxdXPEYSnLHJD/4g5tiBI01vlGAg3zWbNUBiiTBAeBbmJX9/+W1iA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788880772; c=relaxed/simple;
-	bh=2E2paIhVSecgEqjIXBb7PZzzAn2OOgH65j7qNTEeMiY=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Wm4LYRGxB6jryTumgCVPiqFuU7w/EcqiLOxVDmzp+CHhv4xG2fdPf5TKZaQJv34vA8PQH/G2/rC4iCJhE/1tmzkTM9Sc7sKyCszz2jqUaia3wnHo/Bnh8lfmE5Q9Ya94wo99Ls90TVMy8Cs+WGw31fz9C3wymU0upQVZc1eDcbw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CFBxOYKB; arc=none smtp.client-ip=74.125.224.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CFA5558201
+	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 15:25:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.178
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788881139; cv=pass; b=F3neKxMt7+Ff0bUodGoVZgXoTuAPheaktkcijxxUK5bPghcY3/SWO+XazUwtuBKiC9g9k5nIZoFjHqavY12hvICUzgnsMYPR9rLbV243W9H69sgKLSbtrIRqbSlMx7po1dOBMzOEapEdLkOHuCfOF5bWlDS/3YJMSrihhF/X9GU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788881139; c=relaxed/simple;
+	bh=t8WImo7+n9dGHNNYXwp0YcVyTAGR3nfBD1HSrw1H4DE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qkJCWb3L4WQ2z0ApZtzogcj1XzJI/HOYfjUuMDLlZYxX779iurMiTy8gJwG7JnB9iZRSGk6yhsHBEkBvqD17MtLKAbCV+b0AiA8Gtm+Q2u2EUVvJz0VgNVzh+UVeIwvQ9KN7kF1BN3lGtRAx75uguEp0ApTwNeFy385Vnu2mGOo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bairaktaris.de; spf=pass smtp.mailfrom=bairaktaris.de; dkim=pass (2048-bit key) header.d=bairaktaris.de header.i=@bairaktaris.de header.b=Ep4K5zJr; arc=pass smtp.client-ip=209.85.128.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bairaktaris.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bairaktaris.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CFBxOYKB"
-Received: by mail-yx1-f51.google.com with SMTP id 956f58d0204a3-66c7e3a2332so3458840d50.2
-        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 08:19:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=bairaktaris.de header.i=@bairaktaris.de header.b="Ep4K5zJr"
+Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-867a943b149so72955027b3.1
+        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 08:25:35 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788881132; cv=none;
+        d=google.com; s=arc-20260327;
+        b=KUgJl8yuS1mAe0E8NDuDBhmr7mqJ2w7WpYJ7bznREGE0BuTs3uwEEr5cDOsEcdvPb3
+         MB0WDhZqgso6+OgvdJZgS1sJsVWk/89i4C+vhAzCaC3OanLVZjpAyuKsBSJAe28n0/qd
+         eb0mu3apq3+RyqYR41MlLXl6eksmPtT0Ac5N0GKvZIR2aj8u3THNeRv2bHD/PjFPNACG
+         zVxq9KiRlxGgdFx8CYrTVrQ8/1n5H4YTxviZAyBaGDvcIMBk38umWsSwJ+WlSRxpwb8E
+         VDeTUF8/oPalv0FjlldqCGD8rnKc3ewFzwQA+x2d3kqjvcOLSl5ZE4UnhuVsKmfp2T/C
+         NhWg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=RwEMdhR+FDlWteOIcA0A0fiMGSIsY8o0hBxKa8vWjn4=;
+        fh=XC4/h6qn3vySoxvoX6j6bunf0mZ4SIS6Hu17N5QD1Eo=;
+        b=R7t079M9eAeF4LZvdxUEHtT1vjoC78p7bYoQgg6lrA34PfpmrrHefDUKnXYrCf1UZr
+         B7d5Ptzlsnmr7gszVe422/Few7IWOIRzbI/pOojKaJr+NJnJxaHsx4xDUE9Ko0RuwrwA
+         zmuzfd+aN+G7QhKV8jZIC4ybV5Xi6loNIK24ZUf5cHB8J9fSwDfP4T2tIJ0sS9H+MVPN
+         jnoGKpDNS0QVZBS4cNWmi2b80U/J9hgWci/gV5T9s6v6TFN8NDpbsEgYo7KAaIa4m8OD
+         WgjZz8DKBW4NtNmiluK5iXcDYP5c0W026xsO2d/T5HyV56MPmNAuULlCtHkr1BIUZi8J
+         XbkA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788880761; x=1789485561; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:date:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=QhdCOmP4zDl1C4qG/vDZ2J5jFE+DMqbe+H/tbxij/K4=;
-        b=CFBxOYKB3iRfvLbButzgKpzs1fOoQywfEeAYQVEyRRu0uRJHy9btNUKKy6vQ/FYDlf
-         KY0X7JPm+TPmkMLm4oXmTnri693RhMPrR+MSsie4WAgAzLJFtcMZDR645ARELlf/eONu
-         b1LQbzBGi6u7leRHYiZ0Mi03+3C7Hl66lYz9s785Dzu9oY1HWjaDlhkD72A6cZT7bs7o
-         m7vF/XYi6N13hl8kkbL4m/R2/bKZ/szzUFGIFPXWDHA25l33JiiaDHCLkn2zT6oIYTBn
-         DdepwaZ50w2KKo33Enz1rdxsF6J1VJULQol2YAhDOzoIQkjPKq8QfOr5xDCnET0ENzst
-         MwWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788880761; x=1789485561;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=bairaktaris.de; s=google; t=1788881132; x=1789485932; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=QhdCOmP4zDl1C4qG/vDZ2J5jFE+DMqbe+H/tbxij/K4=;
-        b=R/CQyw5hwE14p+ffm5ODesFkJf3XWsllaPpMyk60F3QiA8f8bfG1wJEY4pHr7pArMn
-         P0jftaLmtZJiNh0mVqyPk1z1CNJvZbpFxGzmqSeZVKwKELv+iroK6QmwZkSry0sMfMIg
-         F4evwlDOk6E0XJyKQmbxzFbhn8N9enyZoeiGyzvTGZ5XgyhG8zxCxiLZWf7Peslcn2qI
-         /uFK2ONMe/e9XY254E3ZxIthrrgc5zyu5eqga1THAoYFpZMZK8i9tSoxRWDKbKlAIS3l
-         BaCJDXy1zsE1z27zaS6/x4iOJqOSt/+/zgnkLO1DXOSXGJQQEPjewPltoueDwH+EDl3u
-         XpFg==
-X-Forwarded-Encrypted: i=1; AKwUvBw6/rygFWqYM2piCYwgtSVWbgcxCtzpMUnP00vZl1OuEB9d3CHFoW12BRhsn1wOQVW5EYnHDPY=@vger.kernel.org
-X-Gm-Message-State: AFuF++kYpoavOzrORiWvMp94bUpu6ymYTUFwXTufAm1mu9PGoQpJS5HU
-	i30X73G0yjgomDW33RVY5sBFIKuoj1ytCw1icyFPDJCSS1ZMa5mI4cg3
-X-Gm-Gg: AYBFou1wcfWp2ErvmeCn9IxjV5EXxFuUUm1HLZptRU2/XF/4evO9v9nXVz78SE2iuXW
-	kpA2V+VQBiMEKioOUP5zu6sswqcXAnf8On8EgPQj5d8MaSuycwHmqVVqoWSuFOo/JJh19c6Xdql
-	weIZK5/7GKBr+vHTwc4w1QaeL9TRGAMIVXcGjIA5WJHWXiHj/5aogT4RvdO78GTyONgdvmHzane
-	OW74yYRTJD/ADeyrbU5zsPASL1n4Y+GpNOWa0GSPNQwFi8EWpjAd5VY2aTmFWM7tdiGcKse82s9
-	6E+WMv/Nc9C2y9etyff390HKn5HmKHl22bY5zzjYG4bMAyMO+1L2fU4/SKGY+wF7EKXiPzEv/l7
-	nxbLVFiF7aa6xsTseHmt8tFOL+9JcFl/uOGoKCwDFUy7ZNjyQ6XxhBLiwJABksYs55eh/mpHKnT
-	zQ/vBn8v+Ut8xuMysQtHruw6ZcUlaEPXRdDBrBfRuUoy/VVNofvwEF1UOolxOPU/jghPVQZ91TN
-	yRr9ugZVYuj6AKsaw==
-X-Received: by 2002:a05:690e:4893:10b0:66f:c6b0:e10b with SMTP id 956f58d0204a3-670f63fcd8fmr2064936d50.68.1788880760843;
-        Tue, 08 Sep 2026 08:19:20 -0700 (PDT)
-Received: from localhost (c-73-105-0-191.hsd1.fl.comcast.net. [73.105.0.191])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-670febedc44sm1035024d50.11.2026.09.08.08.19.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Sep 2026 08:19:19 -0700 (PDT)
-From: Yury Norov <yury.norov@gmail.com>
-X-Google-Original-From: Yury Norov <ynorov@nvidia.com>
-Date: Tue, 8 Sep 2026 11:19:19 -0400
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Yury Norov <yury.norov@gmail.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Raju Rangoju <Raju.Rangoju@amd.com>,
-	Prashanth Kumar K R <PrashanthKumar.K.R@amd.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Jian Shen <shenjian15@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	intel-wired-lan@lists.osuosl.org, linux-usb@vger.kernel.org,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH 7/9] net: phy: use linkmode operation return values in
- phy_device.c
-Message-ID: <aqAnd1gpXne2lqCT@yury>
-References: <20260907215439.409858-1-ynorov@nvidia.com>
- <20260907215439.409858-8-ynorov@nvidia.com>
- <67ed1522-cec8-4137-85df-ffbae654e07c@lunn.ch>
+        bh=RwEMdhR+FDlWteOIcA0A0fiMGSIsY8o0hBxKa8vWjn4=;
+        b=Ep4K5zJrgqeywwGudHXAJoGRwWe1rx+4tlaK+D8EIvNrRAHzH7Rli5rtu/rfBvqWbA
+         vqqEyQsJNNH/SF5NfIahTFM153sLAruHrQ79lQP836IzzF922nwlgQR1+J9jjsDga15I
+         S2Z6IQYiDiI2T23vs2c8r26S9ozfWHh7T0+WOGmbx1Ia6Ud1mPaHkhb+D77tphm8NWeg
+         5yNayhkdzP5ok8afn25YG4Ow/ILgG7V40y+K2xynsAQUGXuJwxjsbIHl+Eq2KLwHxoOI
+         zaOs9zMVnKrfQ22OyX6FaZ9ZdehYD6EdOtE3wkvcmYzyCX2iPICIf3I2qGcYyR8BmEZw
+         F6Og==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788881132; x=1789485932;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=RwEMdhR+FDlWteOIcA0A0fiMGSIsY8o0hBxKa8vWjn4=;
+        b=nqK2+hl2C713Z6J0DsGKpdNjoz2NSjhY4jGhT3Jme8noWkTs41CQszMfInKGl2IHWE
+         WLYk+QKthmX5vW6juPWppwV3gi3dx2lUZi8Y2EKQIOi3NspKYAeKbn3MTQgck4HCEQsY
+         qAi55BgI460h7SUq4wahunqZCq3Ou+SOsoXnczsVZ80LEX0DxzvLLCHHbfwFWXWPCEEP
+         UdzNl0ol6IL2bWoOiLsS4NCa3sFNnKVqiQmFwTfPvrMInYwcBpjf/DQlMJVaWc0kkvWz
+         eQFBRMjOjvSF1AcP4KTuQDQpvARLGMtU6XNY5nDidm0Ti/jUcROYkFi/Z2tM8qvyAdCF
+         T9Jg==
+X-Forwarded-Encrypted: i=1; AKwUvBzBy65iwUToFGXGQfUzwBp62CTEHEooFfV2uUHF1s5wuvfgaBCBFTNMn4+6vWvg3RMWCbdgBuk=@vger.kernel.org
+X-Gm-Message-State: AFuF++nygncYc0V9RnOHWnVbKCuocM/8Vvbql64l3XKzPCFW9mLqZreP
+	i0FNA4dbM3qpw9w7oB2bjyoLvFmXlkrKrZxDRAUIQ0FXP0dHX0ui/CQXLvtn4AtuGIgn3OhgA8a
+	Y09hal69+2pAu8vyI9xIr+Ghi4eVsD13NxmVtNpHY
+X-Gm-Gg: AYBFou3ghlJgKdgWQa4d4qFU2muUCD8+0RNvsMHVvB66r+OjM1VuBjcgCr3DUfzfdlg
+	FKs20d9/eQnyeSSSDoelOgdQC1UldlPM9gLxNc0UGfFx90L2g9any7wwMO9x0JfSsHjbfr6+shE
+	OoG7zrSsos1XfCInjCrdLW4MqDm9z7P8J/eZxIgEp7gmNzjPQMi47OGqWrCZN6nAjgn9X9hty4g
+	C5zdwgTrsPApZ7oFh4elYascZTHmkbAUgCq7l4UIBAI9ygreBTrUFqSimupI+x+doH22/3U5Qwy
+	ueMjzC5s+RqTUj/OukeILJmv09dcWlbqdGa6LlFNuVTv7KqQMjQmugdg1v6N9KGIYTE0hSAC+2T
+	Oaf4Jp01B+3ycG8c0go9p7M/KnZYAMEapsmOvNLbkQRVBcRB0XsuONOPX7UrM5oRW4EdOdKJ7N0
+	X67vFXJiynKwtDihQKm0fc6CSYPaYRlLQSlfOOHmyz+0+TujKcJC7Q5BR7Txpex3nZwMa2wr85j
+	C4FBGJzAqSBrDzWknCR3ika88WHC/GVqQSNgi/vNUy/lKUdjFhZv+mMCYb7+7x5EHCr9K3OMqzK
+	pg==
+X-Received: by 2002:a53:ac95:0:b0:668:43f8:a83a with SMTP id
+ 956f58d0204a3-66fc1b62c21mr6813732d50.15.1788881131797; Tue, 08 Sep 2026
+ 08:25:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <67ed1522-cec8-4137-85df-ffbae654e07c@lunn.ch>
+References: <20260904092719.534318-1-julius@bairaktaris.de> <20260904182346.2940a049@kernel.org>
+In-Reply-To: <20260904182346.2940a049@kernel.org>
+From: Julius Bairaktaris <julius@bairaktaris.de>
+Date: Tue, 8 Sep 2026 15:24:56 +0000
+X-Gm-Features: AcwNN1Uxb4FTuLJKMrbi2XtU7zrpLGVjqqtccUjPX_JwkWYzN9-bh9N8pzPGpN8
+Message-ID: <CAC1t37KdqVbSuKy5yR2OwKKTMDbQGNGzev_nHyhcndBKc3zFhg@mail.gmail.com>
+Subject: Re: [PATCH net-next v2] net: dsa: offer a flowtable to the switch
+ before the conduit
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Pablo Neira Ayuso <pablo@netfilter.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Sep 08, 2026 at 03:52:09PM +0200, Andrew Lunn wrote:
-> > -	linkmode_and(sfp_support, port->supported, caps->link_modes);
-> > -	if (linkmode_empty(sfp_support)) {
-> > +	if (!linkmode_and(sfp_support, port->supported, caps->link_modes)) {
-> >  		dev_err(&phydev->mdio.dev, "incompatible SFP module inserted, no common linkmode\n");
-> 
-> From a readability perspective, i like linkmode_empty(). It is more
-> obvious than !linkmode_and().
+Understood. Thanks!
 
-OK, a function returning 2 values is not something obvious in C. What
-about this?
+Julius
 
-        
-	sfp_supported = linkmode_and(sfp_support, port->supported, caps->link_modes);
-        if (!sfp_supported)
-		dev_err(&phydev->mdio.dev, "incompatible SFP module inserted, no common linkmode\n");
-
-> None of this code is in the hot path. So we should put readability
-> above performance. 
-> 
-> >  	/* Some PHYs may advertise, by default, not support EEE modes. So,
-> >  	 * we need to clean them. In addition remove all disabled EEE modes.
-> >  	 */
-> > -	linkmode_and(phydev->advertising_eee, phydev->supported_eee,
-> > -		     phydev->advertising_eee);
-> > -	linkmode_andnot(phydev->advertising_eee, phydev->advertising_eee,
-> > -			phydev->eee_disabled_modes);
-> > -
-> >  	/* There is no "enabled" flag. If PHY is advertising, assume it is
-> >  	 * kind of enabled.
-> >  	 */
-> > -	phydev->eee_cfg.eee_enabled = !linkmode_empty(phydev->advertising_eee);
-> > +	phydev->eee_cfg.eee_enabled =
-> > +		linkmode_and_andnot(phydev->advertising_eee,
-> > +				    phydev->advertising_eee,
-> > +				    phydev->supported_eee,
-> > +				    phydev->eee_disabled_modes);
-> 
-> So, which is more readable, the original or this?
-
-The new version is more readable to me. What about this:
-        
-        eee_advertised = linkmode_and_andnot(phydev->advertising_eee,
-	                                     phydev->advertising_eee,
-                                             phydev->supported_eee,
-		                             phydev->eee_disabled_modes);
-
-  	/* There is no "enabled" flag. If PHY is advertising, assume it is
-  	 * kind of enabled.
-  	 */
-	phydev->eee_cfg.eee_enabled = eee_advertised;
-
-Thanks,
-Yury
+Am Sa., 5. Sept. 2026 um 01:23 Uhr schrieb Jakub Kicinski <kuba@kernel.org>:
+>
+> On Fri,  4 Sep 2026 11:27:18 +0200 Julius Bairaktaris wrote:
+> > Tested on IPQ8074 with an out-of-tree DSA switch driver that handles
+> > TC_SETUP_FT (openwrt/openwrt#24806): three flowtable unbind/bind cycles,
+> > hardware offload of routed flows after each.
+>
+> We don't accept patches without an in-tree user.
