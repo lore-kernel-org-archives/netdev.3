@@ -1,96 +1,113 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7933A3E5577;
-	Tue,  8 Sep 2026 21:01:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 864F03B6C14
+	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 21:14:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788901274; cv=none; b=b98sFKDZ4/E+qvVZ8VEYFSFNISUcRH4/RYu+sedZ/3b+65+WcixB05AIiXmXQQPhx5/zZlsUujrmG0em1vyzvtHKLzw/8PKCghfnZfYeeTqwM1X/U+SYn8CwZKEyJPq8dA9Tryk6vL0XYAAzLI21v+DuEsnRbyMEU37kv+f+qCM=
+	t=1788902063; cv=none; b=HChaT4igf0pBiI6jTmvRey+6hVkPrSQ9mLxy5gs/f75iOugb/wQd6qSP6sxp3kY4sp+flb442JvgWPyhstQ4CpRfIgRiVd/nY1SiGAxApuYdvHaxA/Je6lCsvjjosTChPo+3GXcyU1dg4HHPOIsbZEti/LMvTuyd9g1+sdxdW6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788901274; c=relaxed/simple;
-	bh=z5U6wbiPwtoaP/AkrT6DTGYDY6ya46MOiTGTstGuOZw=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=bfIjaHOvdonbY8FdG2w18nPmD3e4Rx8p92fn5th//ce3MMc4y5pZ3UeBANnXrCI2N08X/bDc0jHpkYylNhFEBU6K188zQmMCYhqUb0GcITOj6X4AFiYeKIxFdnWfXiAeflsyMQOMlbnqaCg9SkECTeDmf2b6lsjAz7KETz0ZTtY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WjOVYhFx; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788902063; c=relaxed/simple;
+	bh=kRkX1TsdKfCdxIJcvBZwYflDUuM2TlFp1nVBqxRZxcw=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=pcqPUPXHkwY4s5WBNpINLgwSMa+gaCVtvCO0oLrr7NlZaO4CoGGP9KzZZbPNuw3WAKWToK/3SUMLPw1BI+X3o4j2fbXw9f6SA8xv9baeMPZGBnBz1M6SQ4qQrn0sCt823+cj6/g4kQ3O/hVl22nuVJ4zjbfNvIyRDfBjFc2eSUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=H+y6Cm0O; arc=none smtp.client-ip=209.85.210.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WjOVYhFx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E7DE1F00A3A;
-	Tue,  8 Sep 2026 21:01:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788901269;
-	bh=ri2PULpietH3vpI8AOL4JNOQHG8SmDJmaWGd1kUS6T8=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=WjOVYhFxQAgN4vfKTlngor4mU6LvUnPzdIqxQb365dzi1qUghfZ8buHbLBQ0MVMo+
-	 4l/omzKJMhiZWaw54MF7CWsb19aftOLcUNIyX7ylncPaZigYrIFsE1clCo1nG21ndF
-	 7O2XxnoHFD/KZOaX7FEjyywrnD19igKyq1S+3BhO+gKFADg3K2n9wT5zmdXAHPdUhl
-	 EMNp/2dFFn+cTGgSLe9YBq5MKuqefhpYcoxsAzZ3g0IcL76LhmqdERHkwRx4zfIcg/
-	 R1JAqI6CpnzRIG/d6vF6PNTFTyWCY2n28XGFvQhehyAtxsuT8lih21ZzBuA7RFKiqe
-	 6sfl3sJKR1P5w==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 198F3380820D;
-	Tue,  8 Sep 2026 21:00:09 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="H+y6Cm0O"
+Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-8623e5d4279so5536954b3a.1
+        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 14:14:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1788902062; x=1789506862; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=kj6xvT1oIm0zWKEFlXujuUDX/E9SiW0kKjkVxz1hGT8=;
+        b=H+y6Cm0OcUvRKx0B/T/HWHiTmB9nJ8ikKQH0YiuQ5YUbNyckDfmGbyvmuRQIZOIchN
+         wtJtPHsVE93BE6sVrAu/hS08JN3g2jIkk/gl0sxHuSrFhBytXjapEyS7vvETOObbl1cx
+         ptli5zMi6rIeKmjI8DEi+ShQirUtGQ5OLfXO3Tv1pXsh7sfoyuusF5L6t5sX0fif6r1h
+         7H4WBgpiehUgP0MB3GiE43FGTOKT4cd/ULbso83/Tt1XDtWfCcHNSt8NxL7oIfCR/Aig
+         dC12+huRf01gugGu5H7JHHoyqaap+BMcpdiiAhegh9NxdyTFvxOLdkkFI7+qVBnGuUgn
+         fAug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788902062; x=1789506862;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=kj6xvT1oIm0zWKEFlXujuUDX/E9SiW0kKjkVxz1hGT8=;
+        b=MBFNBUGjFDdtDmGSu5qljRwxE0BYoqlgAiT9Hy4+yxrByWOrVblHgEq1sLYIfD3urX
+         nEnRf1i8RIM9EhyyrIgkjV0xHbL6JR/67daz0zJzi/t0z+QfrCxFlCxi0RLKxvwKOUdX
+         9DRhpGyFi/0LOJDQA5rfgi7ZhNJpeOGKkqEZIGtnOGXBEHSfNUTfyp7QEsC6UE4OX+hD
+         Z6fhxnM4Itdp1Tp02BTUxMNeTJUSQUwJ0Jn6YLJTgJGtwdqHtqvyy9z77JYBfAoqUi+T
+         ElskxIhLPrOLJmRd5CJNRnC+SCjIsuawAPUxdyyaTsKFvb2JDn+if0gH4t0uIDC+NPrb
+         8ZDw==
+X-Forwarded-Encrypted: i=1; AKwUvBzd2kNL2jogGOf0jHdSDiko2OMmm2uGMrQoXjuXryU255hSSaRPlM21uJNSxGWKCowsRFWsxBM=@vger.kernel.org
+X-Gm-Message-State: AFuF++n1pUb3MwOLZxWeKUUyusVxyb+1l9U0caTsbbcxdQ4/0XJHPtIE
+	mPITuyPVDT+1Jsq9gg4jf/GbIuMgE7l9sQjsXO/o5e0qjHkqUBpVPpsyIgetLBzp4BcsohpLIDX
+	aVIOs2A==
+X-Received: from pfx23.prod.google.com ([2002:a05:6a00:a457:b0:85f:41e7:1264])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:a228:b0:848:62ab:7b7
+ with SMTP id d2e1a72fcca58-86169b6e746mr39616370b3a.16.1788902061435; Tue, 08
+ Sep 2026 14:14:21 -0700 (PDT)
+Date: Tue,  8 Sep 2026 21:12:44 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 1/9] ipvs: reject invalid states in connection
- template
- sync records
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178890120764.4166699.5576956918061082530.git-patchwork-notify@kernel.org>
-Date: Tue, 08 Sep 2026 21:00:07 +0000
-References: <20260907171732.1407739-2-pablo@netfilter.org>
-In-Reply-To: <20260907171732.1407739-2-pablo@netfilter.org>
-To: Pablo Neira Ayuso <pablo@netfilter.org>
-Cc: netfilter-devel@vger.kernel.org, davem@davemloft.net,
- netdev@vger.kernel.org, kuba@kernel.org, pabeni@redhat.com,
- edumazet@google.com, horms@kernel.org, fw@strlen.de, ja@ssi.bg
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.979.g7e5102b832-goog
+Message-ID: <20260908211419.882954-1-kuniyu@google.com>
+Subject: [PATCH v2 net 0/4] neighbour: Small fixes for RTM_{GET,SET}NEIGHTBL.
+From: Kuniyuki Iwashima <kuniyu@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: Ido Schimmel <idosch@nvidia.com>, Simon Horman <horms@kernel.org>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Hello:
+While working on the follow-up suggested here,
 
-This series was applied to netdev/net.git (main)
-by Pablo Neira Ayuso <pablo@netfilter.org>:
+  https://lore.kernel.org/netdev/20260902143023.GA3966681@shredder/
 
-On Mon,  7 Sep 2026 19:17:24 +0200 you wrote:
-> From: Kyle Zeng <kylebot@openai.com>
-> 
-> IPVS sync receivers validate protocol states before creating or updating a
-> connection. For connection templates, however, they only log states outside
-> the template state range and still store the value in the connection.
-> 
-> A template can be returned by ordinary connection lookup. TCP and SCTP then
-> use the invalid state as an index into their transition tables.
-> 
-> [...]
+I found a few bugs in RTM_GETNEIGHTBL and RTM_SETNEIGHTBL,
+which this series fixes.
 
-Here is the summary with links:
-  - [net,1/9] ipvs: reject invalid states in connection template sync records
-    https://git.kernel.org/netdev/net/c/74cb39735b6c
-  - [net,2/9] ipvs: fix reversed sequence option serialization
-    https://git.kernel.org/netdev/net/c/b04578b74f2d
-  - [net,3/9] netfilter: nf_conntrack_sip: fix OOB read in sip_skip_whitespace()
-    https://git.kernel.org/netdev/net/c/e8f8231824b5
-  - [net,4/9] netfilter: cttimeout: prevent UAF during module unload
-    https://git.kernel.org/netdev/net/c/fec9b1de0d02
-  - [net,5/9] netfilter: nf_log: unregister loggers before per-net teardown
-    https://git.kernel.org/netdev/net/c/2c018cc4842c
-  - [net,6/9] netfilter: nfnetlink_log: cope with concurrent instance destruction
-    https://git.kernel.org/netdev/net/c/387d744fa7e4
-  - [net,7/9] netfilter: arp_tables: remove the 32bit compat interface
-    https://git.kernel.org/netdev/net/c/0bd7ed1a3263
-  - [net,8/9] netfilter: ip6_tables: set F_PROTO when proto value is nonzero
-    https://git.kernel.org/netdev/net/c/da4afc5a956d
-  - [net,9/9] netfilter: report NLM_F_DUMP_FILTERED when all is filtered out
-    https://git.kernel.org/netdev/net/c/7a099b347fef
+Patch 1, 3, 4 will conflict with net-next in neightbl_dump_info()
+due to removal of net_eq() below:
 
-You are awesome, thank you!
+	p = list_next_entry(&tbl->parms, list);
+	list_for_each_entry_from_rcu(p, &tbl->parms_list, list) {
+		if (!net_eq(neigh_parms_net(p), net))
+			continue;
+
+Note also that currently neigh_proc_dointvec_ms_jiffies_positive()
+is buggy and does not enforce min/max, and it needs this fix:
+
+  https://lore.kernel.org/linux-fsdevel/20260905233819.1064529-2-kuniyu@google.com/
+
+
+Changes:
+  v2:
+    * Patch 1
+      * Use list_for_each_entry_rcu() and skip the default parms
+    * Patch 2
+      * Clarify the attribute is for NTF_MANAGED
+      * Update docs, rt-neigh.yaml and ip-sysctl.rst
+
+  v1: https://lore.kernel.org/netdev/20260907215853.3709987-1-kuniyu@google.com/
+
+
+Kuniyuki Iwashima (4):
+  neighbour: Add missing RCU annotation for neightbl_dump_info().
+  neighbour: Enforce min/max to NDTPA_INTERVAL_PROBE_TIME_MS.
+  neighbour: Don't render blackhole_netdev via RTM_GETNEIGHTBL.
+  neighbour: Skip default parms when resumed in neightbl_dump_info().
+
+ Documentation/netlink/specs/rt-neigh.yaml |  2 ++
+ Documentation/networking/ip-sysctl.rst    |  2 +-
+ net/core/neighbour.c                      | 35 +++++++++++++++++------
+ 3 files changed, 29 insertions(+), 10 deletions(-)
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.55.0.979.g7e5102b832-goog
 
