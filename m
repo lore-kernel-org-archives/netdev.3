@@ -1,81 +1,71 @@
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+Received: from mail-vk1-f172.google.com (mail-vk1-f172.google.com [209.85.221.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3463858B6D4
-	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 16:51:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5E6658F066
+	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 16:54:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788886284; cv=none; b=rFEw2POXw+eNDa6IpwSBcnoJp1Yai2Yyx5mcDA0Bki+ir8XmizXCxLNVJA9+IUSmNvpE0iPEuURrf5wy74srdZE5Or79iXkIOzBBxh9rLTOx9NX4pXepJwSE27dzdCF6yxUbzjEHolvMr2Rn8rm+IJHVeNJ0IEHfKJsGKXjZ93Q=
+	t=1788886463; cv=none; b=mDWgLejf4dQXQOCj4FoAw1aIK/GeGzQyoLALiXCfDvN8wWsI8+sA1bA98KiEemU11YH/u9E8epIyf2VNlVhJ114dkSysiPpljQEgFcSP+BQQzccRVx+zW9DRSnEklIH+sKkrNEl7hHYt+8knwnSlbwWbALTxk9MOo3ECsXdm/T4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788886284; c=relaxed/simple;
-	bh=UfQvBvSuxFTjQyo4ge7nD5KznVnWw+/9dkfp9bppCVY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fkDBm1UQRZP05lwSdyakcE8fvmj7p7UN9+UjGobM1A2Py+6IjujTjCkKU6NAEgp5uBqGDWwCEtZm+c3dvq4x2La+MxcTNVPGxfgiwW2eNdLsJCsKS78JocJ+N+Ps/AxjSDyUOovQICa3jl5yAeOEpbvuaErPjBdoHqPfgdgVT3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=L+C5l1zo; arc=none smtp.client-ip=209.85.210.171
+	s=arc-20240116; t=1788886463; c=relaxed/simple;
+	bh=vcvOvb7CfSolquWCtsTU/Hekl6HvtR3StQ5xpcRfncw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tY/PxA2gjQX5M4ZE5zLLhQKPD8GjD4qnxhvvMdXNpZ2qo+qsARrP5wB/t0haiTefk5EDFLf3/mn1Lcfb536mU2KHpFwv/PLSpXfp3toi4i6hNPqaJNOWp5MdNgWCgowMgKm/CMD1URuuCx0vpWL65C/ulu0WyBBOY6yUwZRx9us=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UXgQhtcW; arc=none smtp.client-ip=209.85.221.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L+C5l1zo"
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-855d2bfae95so5816118b3a.1
-        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 09:51:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UXgQhtcW"
+Received: by mail-vk1-f172.google.com with SMTP id 71dfb90a1353d-5c79c9f7b54so2595600e0c.3
+        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 09:54:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788886282; x=1789491082; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1788886460; x=1789491260; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=llq/+G51IPyNePo3r5tJVqAdU0RXFNXMCuQq3OACrvE=;
-        b=L+C5l1zo0hlH7lW+ewtEA7Bl/X41puccls3vD4KXP4PTteMTnAKdvEgXBF+yyeAdc7
-         kgvBOF4VueGQZXDuT17ZKm3MwyA7t07zECLeFWw0yo0c6tup5EGG8Wi+RDsV+trwhDD8
-         /don2ozN9KwpTBDO95zO3w7VDSjIn7xM+cNWmW23a2pmb7Y5VqhIJ8BF+VAyv3Hlxe9t
-         1AZ0GKWeqcr7DuSjhDid6TsDoQeM2KpW/GrVsreXYCzWE1erEuvt2s1R/h/Lp8i/+12/
-         YK1bSfGkg4okeUZTZotEW1DrQ9+noqHaWOwsjNEc7yJksBT8CnuPw7KRv5ShxIbMTU6k
-         oRdQ==
+        bh=AFZiJhCz1KLVTjd7DyHosxf2D5OIZoZsQdKvW5PZrSo=;
+        b=UXgQhtcWV3gGTC6N/2A0ccnvmD8cwsYx7wapTYHiVwhbYbVH7QS3s7SYQoRdKTDHJr
+         kQ0QP1TsaxewZN3kh/J4hmJzWck0NNyLeVJMdFFkf3PszlPW8c45Y7xeCM1+wAyBSifl
+         SBMkJvqMG0txbbXouZXafAX0n39fdv6eSVslOGRBKfYNL1rhOXlUgzEzPbalHsDeygj5
+         hFFdSjKX+WF2FVUIOvjVxiZkgz5wDg8Qv6rE8Yvh6hCpdU9jWvuuzuR1CXjCwsVG25R4
+         mFJM4IRKJqpVIcFdDE4HkqqZLxqUuUxQbpzhpCq4CfWde+mlITeXfh1vMvPYl3WsLg6M
+         txvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788886282; x=1789491082;
+        d=1e100.net; s=20251104; t=1788886460; x=1789491260;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=llq/+G51IPyNePo3r5tJVqAdU0RXFNXMCuQq3OACrvE=;
-        b=MQLndpF41w8ZLv6yTnv0oMuuNkk9hbO8fy4myw3gYPrYJonOK0j4AATs72fo7OJjis
-         dG5YS5BA/jVGGckY6fr17lgCEMENlHJRumonChuuzj8LQI2fav2PBZSK1FJ9aXyOVdwZ
-         12jfy3wDuDxKTjdbf4jALSV8pQ1VZkWH1iFbCqnTkYUw5KDpzjsJ3UsrtYq4HfzojHpU
-         r1xmgcMrwxarLbMA3PWuJmyHrUQiJ+tOzXAA/MUE3ehucU5IAsF9K3sogx594SBahE1l
-         AR1QT5cnJQEAN1+21mq5+UTRLwi0Fmu1MigSgfvlew+vrAkUO2tAZ/5CFuTD83u90UfF
-         bErA==
-X-Gm-Message-State: AFuF++neyo1krLkBfzOwkZ1TAoWJNRN0ypkGzYVnMjSioWL0uDc1jwlK
-	APrpTcYb04FOvZVRJYBAIiIRkompMud1he3cGcoBT9uUcwR5VamF8+pf
-X-Gm-Gg: AYBFou0aXyEa8qRtTl3It5qF2h/WB5qJMeEPiBd+Lycnsmmj3olqgW1vSpo6TeBQJTf
-	HGC/ehm2EK4wmKaGV9s1q4RMJ09Bz4yxmEarBWsmuulcwc5lNpK/UVnYZZEGkiJfPmrZ430A7Zv
-	8OodFBe0y/bBGVl2520VnN7OTemHPvQ//Ph4IY4/R8yeSKmGsSTo6TkYUlL9Nwcm4q/IqHBcWa6
-	ibcscV+kYeCr6GfvwZArWWIzE551z433fjKLjI9VxkbeDgIYNSn7/c40yCFcj7478IEEhme17+W
-	dMMvE7eHOIkcoav4gMsM0aen4rZ2+YulRq7pmsO9EZTVhLhkafE5ZX4qud/cp1kk6pv92GSCRvq
-	iUVkdYxPRvUOAaA+BuS/sHTeAFgZizs6cFeZoNa28a/YPdcveUNRfC6AS6PgPOKPaPPhcCBQfxV
-	OiIZBb93kIpn2FIfJu5xfFfeJXQCH3Uxv4LCiRePLXwl7GIgUj2mqveydo0xQ9Ajfz1nHf+2eNs
-	64krG3qqzm7+e7P/ABL
-X-Received: by 2002:a05:6a20:cf83:b0:3d2:ee7a:eba9 with SMTP id adf61e73a8af0-3da213cae76mr40530496637.4.1788886282481;
-        Tue, 08 Sep 2026 09:51:22 -0700 (PDT)
-Received: from 192.168.50.3 ([183.193.115.0])
-        by smtp.googlemail.com with ESMTPSA id 41be03b00d2f7-cc455451bc0sm5851334a12.19.2026.09.08.09.51.17
+        bh=AFZiJhCz1KLVTjd7DyHosxf2D5OIZoZsQdKvW5PZrSo=;
+        b=G/W10AgcU8u/H8DNhAhoMK0PZmOkAMbu6aPBJgBJByOOtn1wlKrUlazMzmf6uZprGf
+         xcbQz4hwyMspFDqUO3+zfMvGJxadPMsS9a1sh10ec+OepIJo8Kd0eZuWoeIqULG9JXq4
+         sWuifBzfxj0w8dERal1UmUPjScdWHb1Ytoya1V478G6gZnuXyUNOXevhQPLPGVvvvryn
+         ts6Ay5FliMTtPcZoW+YhpQa5mGv7uvpnS6vvtvlDsRK3K6LBTYOlJBZNUBa+qOTMgRm3
+         YaVEPsoh8Ja1QIyArmZEMSwKABs2nVg0hbSXcMK6VtZyxXO4TzgoGcHWgHAR2r6/WXJ+
+         njdg==
+X-Gm-Message-State: AFuF++mT8o8ad76eKAwrR0xAjXf1JjlPOs9o9Entvx+l9zYZw8+EoBqD
+	N6h599ADAmVdwvSNvoVgXJ+VAgJE1mQUneQ1PekI3JQkYPJCJ2/f8LSM
+X-Gm-Gg: AYBFou1LwXiZQes/CDMH4IGQjijMjLmVqbP3PrBD/25Z1LyMqvnp+7R6SftMojwSCgz
+	X4lPJclbmU1PSbfiU4+o+nO0gbr6CmptJQoi83gNc4MdH6txfWR9GdlkoBMRagua1aEOZNqrhsi
+	ttc5PjUPnVuDHhLWZEqXi/TCIk5NidfrXlgpMeUpCo6nkQRKHrwrUm5VBm89dmSnk8VtfIaifo0
+	cwwYWhLeEsYnrERHODTn/Ge+7DNbvBoJn5Ae6s7hncGfXf+E9aFgtM8INgt5ydneyCSDJDiG8Bz
+	cz0xClRON11RpTLbKVnLWi80jmbRDdU5aLFaEKFrhETGO8tXJ882yY+/Fo1+JPZi7ZvWIyBn6Cd
+	GBW3QM0WfzyN0Eqn9gKX6Q2tTfGoqiQCodH/x+jmxxUhAFDbaSdZb1lo2cdb38V05A3ioMsYP4z
+	AJ4YKBvBCS25okudwOfcXYLfSJAPOvuGYC1XGS6/cYWMwN7m44o3dqqKOjCz5a5w==
+X-Received: by 2002:a05:6122:e189:b0:5c7:a9ee:dcfb with SMTP id 71dfb90a1353d-5c7ed3d6e42mr360785e0c.5.1788886460411;
+        Tue, 08 Sep 2026 09:54:20 -0700 (PDT)
+Received: from adriano.lan ([2803:9810:3d22:1608:9be0:137d:43c4:cc14])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5c81c506f31sm2668280e0c.11.2026.09.08.09.54.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Sep 2026 09:51:21 -0700 (PDT)
-From: Weiming Shi <bestswngs@gmail.com>
-To: Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
+        Tue, 08 Sep 2026 09:54:20 -0700 (PDT)
+From: Adriano Cordova <adrianox@gmail.com>
+To: Marcel Holtmann <marcel@holtmann.org>,
+	Johan Hedberg <johan.hedberg@gmail.com>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	linux-bluetooth@vger.kernel.org
 Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
-	Xiang Mei <xmei5@asu.edu>,
-	co+28eef7d8af9428e6@bugs.sh,
-	stable@vger.kernel.org
-Subject: [PATCH net] net: dsa: tag_brcm: legacy FCS: request needed tailroom
-Date: Wed,  9 Sep 2026 00:50:47 +0800
-Message-ID: <20260908165047.2786340-1-bestswngs@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	Adriano Cordova <adrianox@gmail.com>
+Subject: [PATCH v2] Bluetooth: bnep: linearize skb before sending
+Date: Tue,  8 Sep 2026 13:54:13 -0300
+Message-ID: <20260908165413.75026-1-adrianox@gmail.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -84,58 +74,51 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The legacy FCS tagger calculates the CRC over skb->len bytes starting at
-skb->data. When a nonlinear skb reaches the tagger, this reads past the
-linear head into unrelated slab memory.
+kernel_sendmsg expects contiguous data. Linearize the skb in the
+bnep_session() loop, before bnep_tx_frame builds its kvec, so it
+is not split across non-linear pages. Drop the dead block and
+FIXME.
 
-The tagger appends an Ethernet FCS but does not declare that tailroom. As a
-result, DSA leaves NETIF_F_SG and NETIF_F_FRAGLIST enabled on the user
-port, and nonlinear skbs can reach the CRC calculation.
-
-Declare the required tailroom. DSA will then clear those features and the
-networking core will linearize skbs before the tagger runs.
-
-A KASAN-enabled dsa_loop test using this tagger reports:
-
-  BUG: KASAN: slab-out-of-bounds in crc32_le
-  Read of size 1 at addr ffff8880397086c0 by task exp/135
-
-  Call Trace:
-   crc32_le (lib/crc/crc32-main.c:38)
-   brcm_leg_fcs_tag_xmit (net/dsa/tag_brcm.c:343)
-   dsa_user_xmit (net/dsa/user.c:942)
-   dev_hard_start_xmit (net/core/dev.c:3937)
-   __dev_queue_xmit (net/core/dev.c:4926)
-   packet_sendmsg (net/packet/af_packet.c:3110)
-   __sys_sendto (net/socket.c:2281)
-
-  The buggy address belongs to the object at ffff888039708400
-   which belongs to the cache skbuff_small_head of size 704
-  The buggy address is located 0 bytes to the right of
-   allocated 704-byte region [ffff888039708400, ffff8880397086c0)
-
-Fixes: ef07df397a62 ("net: dsa: tag_brcm: add support for legacy FCS tags")
-Cc: stable@vger.kernel.org
-Reported-by: co+28eef7d8af9428e6@bugs.sh
-Closes: https://lore.kernel.org/all/jH6u350kaBRuqklDjd3k3BW4nWzp0tYRjq3p%40bugs.sh/
-Assisted-by: Claude:gpt-5
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+Signed-off-by: Adriano Cordova <adrianox@gmail.com>
 ---
- net/dsa/tag_brcm.c | 1 +
- 1 file changed, 1 insertion(+)
+Changes since v1:
+		- Move linearization to bnep_session loop, before
+		  bnep_tx_frame builds its kvec
 
-diff --git a/net/dsa/tag_brcm.c b/net/dsa/tag_brcm.c
-index 411e3b57d16af..b7c49822ca888 100644
---- a/net/dsa/tag_brcm.c
-+++ b/net/dsa/tag_brcm.c
-@@ -373,6 +373,7 @@ static const struct dsa_device_ops brcm_legacy_fcs_netdev_ops = {
- 	.xmit = brcm_leg_fcs_tag_xmit,
- 	.rcv = brcm_leg_tag_rcv,
- 	.needed_headroom = BRCM_LEG_TAG_LEN,
-+	.needed_tailroom = ETH_FCS_LEN,
- };
+ net/bluetooth/bnep/core.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/net/bluetooth/bnep/core.c b/net/bluetooth/bnep/core.c
+index 0dde82e9a085..e8b4672628dd 100644
+--- a/net/bluetooth/bnep/core.c
++++ b/net/bluetooth/bnep/core.c
+@@ -480,10 +480,7 @@ static int bnep_tx_frame(struct bnep_session *s, struct sk_buff *skb)
+ 	iv[il++] = (struct kvec) { skb->data, skb->len };
+ 	len += skb->len;
  
- DSA_TAG_DRIVER(brcm_legacy_fcs_netdev_ops);
+-	/* FIXME: linearize skb */
+-	{
+-		len = kernel_sendmsg(sock, &s->msg, iv, il, len);
+-	}
++	len = kernel_sendmsg(sock, &s->msg, iv, il, len);
+ 	kfree_skb(skb);
+ 
+ 	if (len > 0) {
+@@ -524,9 +521,12 @@ static int bnep_session(void *arg)
+ 			break;
+ 
+ 		/* TX */
+-		while ((skb = skb_dequeue(&sk->sk_write_queue)))
+-			if (bnep_tx_frame(s, skb))
++		while ((skb = skb_dequeue(&sk->sk_write_queue))) {
++			if (skb_linearize(skb))
++				kfree_skb(skb);
++			else if (bnep_tx_frame(s, skb))
+ 				break;
++		}
+ 		netif_wake_queue(dev);
+ 
+ 		/*
 -- 
-2.55.0
+2.51.0
 
