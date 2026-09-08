@@ -1,56 +1,56 @@
-Received: from mail-pj1-f69.google.com (mail-pj1-f69.google.com [209.85.216.69])
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 465673D954E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15C713DB63D
 	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 21:14:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.69
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788902065; cv=none; b=F/Lhi0IAryNq41+I5gN9z6ynEbyOHPbp/6z0r8FUK8esFuywWvTpDq0wWb3y0EPiOe/tv4sCIRTF0XOQkjiGlLGmxcpzV/pgf8n6/Kyumj6q4MYUIk5WjGdU++HL+4KMv5iBQrmYkynlZa8B9+edrTeJB/FNug+oPeOyMEI+kx4=
+	t=1788902066; cv=none; b=c3dR+tNkiFYrFCuJT5mNFBom4YgslJlUdt+nLs0WFiq72Iemn0kLYbQH23ZCy9J/Ptbl8dVZoyV63H9fV4C8tx+t4LaD7go3L4dIJhUYy/J2FEnrOiTHcXCegPUozJQbL7Qf3brwuWHHRJ8N8zosriqcGs5jIaKuTpi1nl519bk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788902065; c=relaxed/simple;
-	bh=G0+NgtQU/CJ7H3hxZj+VkX4dCf1sn6ogQd97DbdmCY0=;
+	s=arc-20240116; t=1788902066; c=relaxed/simple;
+	bh=zRdhCI7ZmpwZsu3DsiJe/Rdz6orJDWlJ0MYUng5TSio=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Hkv9A+OGIz3mV24dRHJvlgsa9D1Q9Y6aovrvIQ1X5Ain6y1qvXpzNkczP5e99f48EwzWar422vX4x2wJTaY5RWCmBXzF2mzzkYHHlFxIcRwC1izTs+jgo5Sf+V8+gU18P6TXDMsRMHhr1C2LISDbQW7sXSGSXhRLLapRMCIDe5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GA8yTOpz; arc=none smtp.client-ip=209.85.216.69
+	 To:Cc:Content-Type; b=r9O1NpNXHafRYRSZN/m+fdiF655U83Dw3ByTzVzItMWMLptS6W1Knj3XiTqYeCk3Av42qXGwoYTdVLYj4TG1Sy35y9IR0BKgfFzH11+GqQWo/kdY8aRhD25K0R9dQGGmuYkam7MVfYFUR61ULC892Q9QjnTyQ+Ezo125i7svqE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=G+Pz8syw; arc=none smtp.client-ip=209.85.214.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GA8yTOpz"
-Received: by mail-pj1-f69.google.com with SMTP id 98e67ed59e1d1-381250979d5so6244009a91.0
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="G+Pz8syw"
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2d55d8cd938so83913645ad.1
         for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 14:14:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20251104; t=1788902064; x=1789506864; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=/sUOSZczDY9Xc5l6d/FcCKkpTpL8hZTISac6ljFmXFg=;
-        b=GA8yTOpz2uE8dr+vzq/lCFsOzteq/4i532ue35sqmmsYVGiXmdaE9OeTaiMvlW1Kd0
-         K3kmrh4msUC3XIqY+ZJ7DSlViuZJj1xZU731781nNZExSDIUqAfboVzKjy6kJrW+/yld
-         f65N0W4A7nY5urDER1tzGV49AogP7axgBSQAEok6OA3/4rJI8HuYLowXCTUfdxxiJ/j0
-         skbeovIFX0yABHZp/KHWkE2dCbFvPkFHCqOETrY04IFQLdlwQg/bs3pQBsdPeZjggSvU
-         IioTmos3/QZDQo7h/bsaBp9tyvSRhQJg5zChCFGuQAtvbmiIXAi28iK3jwhYsZe5Ykvv
-         8H9g==
+        bh=tNmXwy74a0wCRfv7+569hLUvGoECmTyrUxdRigZ6xQ8=;
+        b=G+Pz8sywWi7iCZ7nkVPTB7yA76jhKmhKKwu1i/OQnWaL3lyDLa0KfBlXHh0ow9w6VS
+         1L17fq8RV9R/v06EFeGdve5plMIvkvW8Xn7McbSkVgVwh9p9yfKskYFx0OcD/MoxVpLQ
+         2CxCWceLvOEvN611rfEFnDNJI3WJyMJY5e7pNKzoJFtaI/CtIs7FzUsy1fHcC+AXzdg2
+         PpgKClEBN7IgPnijlAdVMgsEioy7MmWnqi4QiWlEcELNqXyJs5JpvRmN7S2yPs3bZyzU
+         RaOk1vi630bdOjCqgq6SG5ra45e9bmKuWD1nDS1g78Mc9oe1BNLu61UqCY3cwtPD4XQM
+         jRdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20251104; t=1788902064; x=1789506864;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=/sUOSZczDY9Xc5l6d/FcCKkpTpL8hZTISac6ljFmXFg=;
-        b=Kd5nUA+BBDXcIid2RV4fqsMeqxw+06cesS9T4hd7kBUp3I4rFSNujmzC3gdBk/7+Ne
-         AcxWEZ7B0b3NQxwZvzIAkPKgvj9apHzFkcKuM0ngQ+aGYLndHZihtdNfBZLmQouTZv0r
-         6ryxcp2w6/jIyrNMVnNZZX/1Go3DAnZzkwHiOgMODytkQSrcM3ntgYz8/d2DK8WvyWCG
-         F5OBC4EieOhnkkwkJQDS+ZsUr9Ac8zC82XMBUv7NKed+CrdX07aGHqoYcCGm4kCJJzc0
-         0oamcXtG0JL3vNFO6iz5VPa3a8n0WcQxwwdflD1K4W2njb7azASXCY5GR+rKjHTuPmza
-         wiCQ==
-X-Forwarded-Encrypted: i=1; AKwUvBw0d6Bw18O3K9mWoDl8AAnBFnsLIdHo5nXxyelyf/JM+qh8PmUvHgp4BxvPtXgEqwP+JAD1gsY=@vger.kernel.org
-X-Gm-Message-State: AFuF++nIbxlyRKHprGs73SENz30b2lKXQxksxX2DbrYuiOPF8PGA8Ah8
-	pfBp4sf+P2vQP3quB6ROBDxE958TJZ9aTyITrzBCD8K8xxpevLhHL+HXbI5I0yXatUiLKM3JLhJ
-	Ub3YK8Q==
-X-Received: from pjbrm1.prod.google.com ([2002:a17:90b:3ec1:b0:398:b3a8:ed43])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2ccf:b0:398:a2a3:b631
- with SMTP id 98e67ed59e1d1-39b262aaf3dmr49402292a91.19.1788902063336; Tue, 08
- Sep 2026 14:14:23 -0700 (PDT)
-Date: Tue,  8 Sep 2026 21:12:46 +0000
+        bh=tNmXwy74a0wCRfv7+569hLUvGoECmTyrUxdRigZ6xQ8=;
+        b=qlCqc9yacG4SO+roj0L1qwQjrAxK7HhAt95VSss6QUxKlb0wMfshbJy5yh4+UHkgqj
+         ie9xTRI32GHF/zd/bWpo26sNJEjGvYNgoDDRQvCvFoY/5amQzVp84dA6OBguFPXREyLX
+         YJ32ctyREKmGrl3QiJN3yFTfs9/q6KZ0P7sybtBXcodyW1RqchROVWZ0K5DBWau3HSdY
+         DVWVK4xjIKp7x4q5/5DaNipfX6tRhciw63Xuquw+XyOs6ten5bbjsUe/rQEsYlCvxOZy
+         oIzprk6dLDYK2DXUEKEllmCL5vqkD5l1naKNtQkI/+1BnCt9tex+eaIm0RcA7slAYb1S
+         XktQ==
+X-Forwarded-Encrypted: i=1; AKwUvBw2H2lUFTMDgq7xDnBxjFPvDm74vD+VHtVNM9cbcTnlNNd6OrPnI+0vo/0SrO5D1SCTyaCKjWQ=@vger.kernel.org
+X-Gm-Message-State: AFuF++lrYqscKakb6PoAm/xJSZ54jKxV4FfmdnXLCgjyp4NQW/pOhhHq
+	bW4uURkiRtWJZfau1uRa7tGFjZC9uvzo5K0INN/ipMSv0xI7B6tJd0osaPLaVFinJkosszc9+x4
+	nJs3ZxQ==
+X-Received: from pltt1.prod.google.com ([2002:a17:902:d141:b0:2db:1aef:28b4])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:3c47:b0:2db:eb5:47ea
+ with SMTP id d9443c01a7336-2db12106896mr471595185ad.0.1788902064223; Tue, 08
+ Sep 2026 14:14:24 -0700 (PDT)
+Date: Tue,  8 Sep 2026 21:12:47 +0000
 In-Reply-To: <20260908211419.882954-1-kuniyu@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -60,144 +60,64 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260908211419.882954-1-kuniyu@google.com>
 X-Mailer: git-send-email 2.55.0.979.g7e5102b832-goog
-Message-ID: <20260908211419.882954-3-kuniyu@google.com>
-Subject: [PATCH v2 net 2/4] neighbour: Enforce min/max to NDTPA_INTERVAL_PROBE_TIME_MS.
+Message-ID: <20260908211419.882954-4-kuniyu@google.com>
+Subject: [PATCH v2 net 3/4] neighbour: Don't render blackhole_netdev via RTM_GETNEIGHTBL.
 From: Kuniyuki Iwashima <kuniyu@google.com>
 To: "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
 Cc: Ido Schimmel <idosch@nvidia.com>, Simon Horman <horms@kernel.org>, 
 	Kuniyuki Iwashima <kuniyu@google.com>, Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, 
-	Yuwei Wang <wangyuweihx@gmail.com>
+	Xin Long <lucien.xin@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 
-NDTPA_INTERVAL_PROBE_TIME_MS sets .type and .min but misses
-.validation_type, so no validation is applied:
+The cited commits started to initialise blackhole_netdev with
+neigh_parms_alloc().
 
-  # ynl --family rt-neigh --do setneightbl \
-  --json '{"name": "arp_cache", "parms": {"interval-probe-time-ms": 0}}'
+This is visible in init_net as the ifindex==0 entries via
+RTM_GETNEIGHTBL:
 
-  # ynl --family rt-neigh --dump getneightbl --output-json | \
-  jq '.[] | select(.name == "arp_cache" and has("config"))
-          | .parms["interval-probe-time-ms"]'
-  0
+  # ynl --family rt-neigh --dump getneightbl --output-json \
+    | jq '.[] | select(.parms.ifindex == 0)
+              | {name: .name, ifindex: .parms.ifindex}'
+  {
+    "name": "arp_cache",
+    "ifindex": 0
+  }
+  {
+    "name": "ndisc_cache",
+    "ifindex": 0
+  }
 
-Moreover, nla_get_msecs() uses msecs_to_jiffies(), and u64 is
-silently cast to u32, so a larger value can bypass the min check:
+For RTM_SETNEIGHTBL, ifindex being 0 means wildcard.
 
-  e.g. 4294967296 == 0x100000000
+Let's skip blackhole_netdev's parms in neightbl_dump_info().
 
-  # ynl --family rt-neigh --do setneightbl \
-  --json '{"name": "arp_cache", "parms": {"interval-probe-time-ms": 4294967296}}'
+Note that lookup_neigh_parms() does not need the same change
+because the default parms is always the first entry and matches
+with ifindex == 0.
 
-  # ynl --family rt-neigh --dump getneightbl --output-json | \
-  jq '.[] | select(.name == "arp_cache" and has("config"))
-          | .parms["interval-probe-time-ms"]'
-  0
-
-msecs_to_jiffies() returns MAX_JIFFY_OFFSET if the value is
-larger than INT_MAX.  Also, INT_MAX ms overflows int NEIGH_VAR()
-when HZ > 1000 (Alpha, MIPS), and passing a negative integer to
-queue_delayed_work(unsigned long delay) causes sign extension,
-which wraps around the expiry time to the past, resulting in it
-being handled as 0 delay in the timer wheel.
-
-Let's use NLA_POLICY_FULL_RANGE() and limit the max to 1 day.
-
-The same max check is applied to sysctl as well.
-
-Note that this controls the probe interval for NTF_MANAGED
-entries, and therefore the max of 1 day is unlikely to break
-any deployments.
-
-Fixes: 211da42eaa45 ("net, neigh: introduce interval_probe_time_ms for periodic probe")
+Fixes: e5f80fcf869a ("ipv6: give an IPv6 dev to blackhole_netdev")
+Fixes: 22600596b675 ("ipv4: give an IPv4 dev to blackhole_netdev")
 Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 ---
-Currently, the sysctl range check is not applied to
-interval_probe_time_ms, which needs this fix:
-https://lore.kernel.org/linux-fsdevel/20260905233819.1064529-2-kuniyu@google.com/
-
-Cc: Yuwei Wang <wangyuweihx@gmail.com>
-
-v2:
-  * Clarify the attribute is for NTF_MANAGED
-  * Update docs, rt-neigh.yaml and ip-sysctl.rst
+Cc: Xin Long <lucien.xin@gmail.com>
 ---
- Documentation/netlink/specs/rt-neigh.yaml |  2 ++
- Documentation/networking/ip-sysctl.rst    |  2 +-
- net/core/neighbour.c                      | 17 +++++++++++++----
- 3 files changed, 16 insertions(+), 5 deletions(-)
+ net/core/neighbour.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/netlink/specs/rt-neigh.yaml b/Documentation/netlink/specs/rt-neigh.yaml
-index 0f46ef313590..5ec57d95d7f6 100644
---- a/Documentation/netlink/specs/rt-neigh.yaml
-+++ b/Documentation/netlink/specs/rt-neigh.yaml
-@@ -341,6 +341,8 @@ attribute-sets:
-       -
-         name: interval-probe-time-ms
-         type: u64
-+        min: 1
-+        max: 86400000
- 
- operations:
-   enum-model: directional
-diff --git a/Documentation/networking/ip-sysctl.rst b/Documentation/networking/ip-sysctl.rst
-index 208f46967ee5..b05829e44d8f 100644
---- a/Documentation/networking/ip-sysctl.rst
-+++ b/Documentation/networking/ip-sysctl.rst
-@@ -248,7 +248,7 @@ neigh/default/unres_qlen - INTEGER
- 
- neigh/default/interval_probe_time_ms - INTEGER
- 	The probe interval for neighbor entries with NTF_MANAGED flag,
--	the min value is 1.
-+	the min value is 1, and the max value is 86400000 (1 day).
- 
- 	Default: 5000
- 
 diff --git a/net/core/neighbour.c b/net/core/neighbour.c
-index 49dd7df149ef..0db78a0dfb51 100644
+index 0db78a0dfb51..02bf940ce00a 100644
 --- a/net/core/neighbour.c
 +++ b/net/core/neighbour.c
-@@ -2359,6 +2359,13 @@ static const struct nla_policy nl_neightbl_policy[NDTA_MAX+1] = {
- 	[NDTA_PARMS]		= { .type = NLA_NESTED },
- };
+@@ -2624,7 +2624,7 @@ static int neightbl_dump_info(struct sk_buff *skb, struct netlink_callback *cb)
+ 			if (!net_eq(neigh_parms_net(p), net))
+ 				continue;
  
-+#define NTBL_PARM_MS_MAX	(24 * 60 * 60 * MSEC_PER_SEC)
-+
-+static const struct netlink_range_validation nl_ntbl_parm_ms_range = {
-+	.min = 1,
-+	.max = NTBL_PARM_MS_MAX,
-+};
-+
- static const struct nla_policy nl_ntbl_parm_policy[NDTPA_MAX+1] = {
- 	[NDTPA_IFINDEX]			= { .type = NLA_U32 },
- 	[NDTPA_QUEUE_LEN]		= { .type = NLA_U32 },
-@@ -2375,7 +2382,8 @@ static const struct nla_policy nl_ntbl_parm_policy[NDTPA_MAX+1] = {
- 	[NDTPA_ANYCAST_DELAY]		= { .type = NLA_U64 },
- 	[NDTPA_PROXY_DELAY]		= { .type = NLA_U64 },
- 	[NDTPA_LOCKTIME]		= { .type = NLA_U64 },
--	[NDTPA_INTERVAL_PROBE_TIME_MS]	= { .type = NLA_U64, .min = 1 },
-+	[NDTPA_INTERVAL_PROBE_TIME_MS]	= NLA_POLICY_FULL_RANGE(NLA_U64,
-+								&nl_ntbl_parm_ms_range),
- };
+-			if (!p->dev)
++			if (!p->dev || p->dev == blackhole_netdev)
+ 				continue;
  
- static int neightbl_set(struct sk_buff *skb, struct nlmsghdr *nlh,
-@@ -3672,12 +3680,13 @@ static int neigh_proc_dointvec_ms_jiffies_positive(const struct ctl_table *ctl,
- 						   void *buffer, size_t *lenp, loff_t *ppos)
- {
- 	struct ctl_table tmp = *ctl;
--	int ret;
-+	int ret, min, max;
- 
--	int min = msecs_to_jiffies(1);
-+	min = msecs_to_jiffies(1);
-+	max = msecs_to_jiffies(NTBL_PARM_MS_MAX);
- 
- 	tmp.extra1 = &min;
--	tmp.extra2 = NULL;
-+	tmp.extra2 = &max;
- 
- 	ret = proc_dointvec_ms_jiffies_minmax(&tmp, write, buffer, lenp, ppos);
- 	neigh_proc_update(ctl, write);
+ 			if (nidx < neigh_skip)
 -- 
 2.55.0.979.g7e5102b832-goog
 
