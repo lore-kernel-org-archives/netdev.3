@@ -1,139 +1,128 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58AD54F6463
-	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 09:41:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA4594CA77E;
+	Tue,  8 Sep 2026 09:41:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=124.126.103.232
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788860472; cv=none; b=MqFq9hQdG9YnsmoCwAaABKFSPVf6HXYz478mtkQN8HZW99NW10G0xwcDYo75dmLbMGAD/xeUc4KAdtaj2fOtrlzYVHQ/cEDEQMs0pfPLrjgjZzR6JLDP5FFbXeAUEkFHEGkLnpLB8ioDvlTaf5vUaTNWfSRgzwyScSe1r0SdDz4=
+	t=1788860487; cv=none; b=IiYLePDMVzpSWJGOvJSOE1zmHAh5jQVZMZ4/hzoUfvJ0vct+6zvWjPklAQw0GRYpwQqnmgImaSGJ2upbw2TZz2y13WBqfPAxhd6gU+iBBX11eIsRGSWTuq5SpCJZyaqm1wPqKDwbRM6D67bhLPKrwuIRb9BRriIUAOhVQfEJ1Ig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788860472; c=relaxed/simple;
-	bh=DTDuPiPpm6rdRyHKJPIMLZWiMdIa8IPYFpClFyVz7UQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Bqkcxui7DHsV7dTa9eWsycrGt56kAW+/p1QmfwDtA7RyJjRdp5Fop9xnU4Zp3vTT9Bgg4vRIDQIgTDxQP2zek9CJzkfcxZEAmWcayp2eMvcbR6HYvvr8+NvosNvlLbrbJB5lf0AgB7BeTSi+Ik4pOUSr7y6JwyutzX42DOENyWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WuzkAuaP; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=O79vUxUy; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WuzkAuaP";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="O79vUxUy"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1788860470;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6tOd0ojv4D8fJX0idO1L7vxijS7nq4b/TbHiud0PGeA=;
-	b=WuzkAuaPqXD/L7GMGIAcj7BdgXDFkLMT8pDVq6XHQt8rYpm6LEeNLpaJkxi6gbJoES3Kjf
-	YEJQ3WplzSyDAMZp0QQUy1cfPJQ6hpxzZBOiBXxqGOIVW6r7PrHJAlK3aV6cFX7pp5e2ZE
-	QOqEG3Nh5iCWkblNcphmc8CFazC3slI=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-664-5i_nV_ZLM0-23nSf9dBuEg-1; Tue, 08 Sep 2026 05:41:09 -0400
-X-MC-Unique: 5i_nV_ZLM0-23nSf9dBuEg-1
-X-Mimecast-MFC-AGG-ID: 5i_nV_ZLM0-23nSf9dBuEg_1788860468
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-4843e59c32dso2845043f8f.3
-        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 02:41:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1788860468; x=1789465268; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=6tOd0ojv4D8fJX0idO1L7vxijS7nq4b/TbHiud0PGeA=;
-        b=O79vUxUyidbL3XDG8IBpmX3+KzvdPjceWIYsk9YGDxTmORVZG/dgCnStmufvfFb0zk
-         oEst/S2l+XGZlQ44au9yR9P563gfq22u4nkAbtaV351nVgEQVjxEgiBVJj8FlAZDnr8d
-         p5vICD2+MVrL2ZvBGKwdMuDwX6o+Vp4ZBinIMDvkoSDakvER6Brgv9v4AWYGrhAkoEeW
-         BrPy3wdsSz5lv88TnqKSzA6AWE9vhbcmE7b6AviYGvQ9l9QCCttEKrKx+X+aUijNgX5p
-         ruOGpwscQurIl30TUQk/l2qJqITJpmjbVx+TMlGTg2hStHGGZbWgDP4eVkQBVAfvpRWx
-         EAoA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788860468; x=1789465268;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=6tOd0ojv4D8fJX0idO1L7vxijS7nq4b/TbHiud0PGeA=;
-        b=l49/2aMdsTijP2/Hm5qAW9vQoir8o1p9gLw8Vdg73m3mT/+trTQBtg7kKPjpMIZTSI
-         xu2nJAWxjvCRUkz8S+yq155odwmdb9rT56MhQOekJLQIpmNbZVpzn868wwt1q35EKZcC
-         OpYdCHVqVQhT5QRQbtknzK1BHo5u74H7FMHYTRVTVRqHo7nmAyjadIgZUCh+iHKqbtSh
-         QfHiV/6sLkM/2dKIBmEfoe+K9sJd/Cmkeg0mbN4ziUg/fAibcMhAFXeOEppKwwYTachp
-         fuaw0uGJmRkeGiNzjXxOUH+NQ3RLe383DbPuH21/2dvyKv/W3KyZNiV/rCVtdzUAV5jg
-         9oUg==
-X-Forwarded-Encrypted: i=1; AKwUvBzQMMUBuCTymvIX7MM2wXKUtAagDX8uEHn7KGljIb4lxqLcZ7cNP7rDvaYJx2nIdSBXXqqu8pI=@vger.kernel.org
-X-Gm-Message-State: AFuF++nzE5X3Y0kDKjPNMNnOHI2OXKH8RUleVaxHPXlZBpADFz5QCZqj
-	mBtJZm+qfeBxZLH+9iGaN3wAkJOY21yyhkvQT3e2qBEBtkuIhggsZJ3c8mLn/ph5MvDk+1VIjb9
-	TtYMec28UXvzPQib/58lXJ1TuGqSTqIlMtQaFzRQShSY8Nt0UzZSl3ade7w==
-X-Gm-Gg: AYBFou3C2+AmuCxS9CWlEn4cIWTeK8L9rC0povkr+nNWCLL2QCD4iwvvRDj5YFFABJS
-	YS0vh3CRSEy6FYtF0W7yqMTIhZ9f0ZLDvhccE+dlEUvVnrLBRcO2DjizgCQMFfk77w7o2zSirMo
-	dNsWK5bFnmz1EtV8A+7wnuLF/vFDHtouSvHFsmRZjeWR1f+uFu5RKcNMVprzQIwV69H58PRiMEO
-	E9i/v6t5FGhi5Rg4E0TlEhk/h8ZKHB0ipSjAS7qCqNLziTrTIVJwzYTYAP2sl4KA1CP7UYujEMr
-	D4Gq9dHo+Cy1VyloPo0xWqMtrW0WXx1HUrc4y2nQ7KjNkRYEiinn0GdmoU6weH21P/G82ifuUVe
-	EACV+hS7hYZ0d/sUvuvTTaign0qJC2b+AtNRhqyqBRJdG5x6MYrlrDagabajLHKHV/oaflkRrwA
-	==
-X-Received: by 2002:a05:600c:3551:b0:499:8b13:3a98 with SMTP id 5b1f17b1804b1-49cf8224cd8mr280698215e9.4.1788860467970;
-        Tue, 08 Sep 2026 02:41:07 -0700 (PDT)
-X-Received: by 2002:a05:600c:3551:b0:499:8b13:3a98 with SMTP id 5b1f17b1804b1-49cf8224cd8mr280697815e9.4.1788860467498;
-        Tue, 08 Sep 2026 02:41:07 -0700 (PDT)
-Received: from [192.168.188.218] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49d00a5b19dsm312299465e9.2.2026.09.08.02.41.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 08 Sep 2026 02:41:06 -0700 (PDT)
-Message-ID: <97beb3b1-95ce-4cfe-83b3-cbef9cd514cc@redhat.com>
-Date: Tue, 8 Sep 2026 11:41:05 +0200
+	s=arc-20240116; t=1788860487; c=relaxed/simple;
+	bh=927i0POuteXLSBNVLgMU73J3Nczar0uXhikC4tx4xKg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=WPjKJslGHUVGDpXmoov2ftLGJyK9PrSo9g/6osDQX1UqUab2MVn+ertNLcpuDK+zN6fdLz+NhQqq12eNSzH0Rhmyp7O+7FAAiXxguyCUOyLZMQ9V1U/pO/TqbCSFcRqiDUCEomn19vT6+3Qb1bZEmdAna43tSi6mAGPUdrJpBB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=kylinos.cn; arc=none smtp.client-ip=124.126.103.232
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kylinos.cn
+X-UUID: 714da566ab6911f19a56ed5b684f684d-20260908
+X-CTIC-Tags:
+	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
+	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
+	HR_SJ_DIGIT_LEN, HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM
+	HR_SJ_PHRASE, HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT
+	HR_TO_NO_NAME, IP_TRUSTED, SRC_TRUSTED, DN_TRUSTED, SA_TRUSTED
+	SA_EXISTED, SN_TRUSTED, SN_EXISTED, SPF_NOPASS, DKIM_NOPASS
+	DMARC_NOPASS, CIE_BAD, CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS
+	GTI_RG_INFO, GTI_C_BU, AMN_GOOD, ABX_MISS_RDNS
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.19,REQID:b223f7a6-611b-4a2b-9651-2e2074a52760,IP:15,
+	URL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:10
+X-CID-INFO: VERSION:1.3.19,REQID:b223f7a6-611b-4a2b-9651-2e2074a52760,IP:15,UR
+	L:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:10
+X-CID-META: VersionHash:7db8b62,CLOUDID:4f6c2ac63aeba85c8c7c42e1d1963a5c,BulkI
+	D:260908174120EI0IXWZC,BulkQuantity:0,SF:10|38|66|78|102|127|850|865|898,T
+	C:nil,Content:0|15|50|99,EDM:-3,IP:-2,URL:0,File:nil,RT:nil,Bulk:nil,QS:ni
+	l,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:
+	0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: 714da566ab6911f19a56ed5b684f684d-20260908
+X-User: yijiangshan@kylinos.cn
+Received: from localhost.localdomain [(116.128.244.171)] by mailgw.kylinos.cn
+	(envelope-from <yijiangshan@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 894235165; Tue, 08 Sep 2026 17:41:18 +0800
+From: Jiangshan Yi <yijiangshan@kylinos.cn>
+To: sgoutham@marvell.com,
+	rkannoth@marvell.com,
+	gakula@marvell.com,
+	sbhatta@marvell.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	13667453960@163.com,
+	Jiangshan Yi <yijiangshan@kylinos.cn>
+Subject: [PATCH net-next] octeontx2-af: consolidate RVU AFVF device id definitions
+Date: Tue,  8 Sep 2026 17:40:51 +0800
+Message-Id: <20260908094051.666769-1-yijiangshan@kylinos.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [net PATCH 0/4] eth: fbnic: a collection of fixes
-To: Alexander Duyck <alexander.duyck@gmail.com>, netdev@vger.kernel.org
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, kernel-team@meta.com,
- Simon Horman <horms@kernel.org>
-References: <178838795612.11136.15512516427273655916.stgit@ahduyck-xeon-server.home.arpa>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <178838795612.11136.15512516427273655916.stgit@ahduyck-xeon-server.home.arpa>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 9/3/26 12:31 AM, Alexander Duyck wrote:
-> This series collects a handful of independent fbnic fixes for issues on
-> released kernels, plus one core ethtool fix needed by the fbnic offline
-> self test.
-> 
-> The first patch fixes a NULL pointer dereference on unbind after a failed
-> PCIe error recovery: fbnic_pm_suspend() frees the napi vectors via a
-> direct ndo_stop() while leaving netif_running() true, and when slot_reset
-> -> resume fails the data path is never re-allocated. To prevent the panic
-> we reset num_napi to 0 before we free the IRQs which prevents walking the
-> unallocated napi vectors when we unbind the interface later.
-> 
-> The next two patches address the FW mailbox. One sets AW_FLUSH_MODE
-> alongside AW_FLUSH when tearing down the Rx ring, so the write pipeline
-> actually drains the staged requests instead of hanging on the BME halt.
-> The other handles completions flagged with FW_ERR on both mailboxes,
-> which the driver previously ignored. This resulted in us parsing a stale Rx
-> page, and spinning the capabilities poll to a timeout on a healthy ring.
-> 
-> The last patch keeps rtnl_lock held on the ethtool ioctl path for the
-> self test. Since the ioctl path became rtnl-optional for ops-locked
-> drivers, fbnic's offline self test (which brings the interface down and
-> up via netif_close()/netif_open()) runs holding only the instance lock,
-> tripping a lockdep splat / ASSERT_RTNL and reconfiguring the device
-> without the lock it requires. An opt-in flag restores rtnl_lock for
-> drivers that need it.
-I think some of the comments from sashiko (the high ones on patch 2 and
-3) should be addressed in the same series.
+commit f695390ea639 ("octeontx2-af: Fix limiting SRIOV VF count logic")
+added a local PCI_DEVID_OCTEONTX2_RVU_AFVF define in rvu.c, duplicating
+RVU_LBK_VF_DEVID in rvu.h.  Move the definition into the "PCI device
+IDs" block in rvu.h, rename RVU_LBK_VF_DEVID to match the PCI_DEVID_*
+naming convention of its peers, and drop the local define.
 
-Alex, please note that the current expectation is for the submitter to
-treat sashiko comments alike to human reviewer's one, see commit
-c82ff94592fb68f529afe63ca7f5ddb7dae4ba83.
+No functional change.
 
-/P
+Signed-off-by: Jiangshan Yi <yijiangshan@kylinos.cn>
+---
+ drivers/net/ethernet/marvell/octeontx2/af/rvu.c | 2 --
+ drivers/net/ethernet/marvell/octeontx2/af/rvu.h | 4 ++--
+ 2 files changed, 2 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
+index 937b085582b5..65e08ad9d82e 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.c
+@@ -3468,8 +3468,6 @@ int rvu_get_num_lbk_chans(void)
+ 	return ret;
+ }
+ 
+-#define PCI_DEVID_OCTEONTX2_RVU_AFVF	0xA0F8
+-
+ static int rvu_enable_sriov(struct rvu *rvu)
+ {
+ 	struct pci_dev *pdev = rvu->pdev;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.h b/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
+index 094227404ef9..16846eeb793d 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
+@@ -22,6 +22,7 @@
+ 
+ /* PCI device IDs */
+ #define	PCI_DEVID_OCTEONTX2_RVU_AF		0xA065
++#define	PCI_DEVID_OCTEONTX2_RVU_AFVF		0xA0F8
+ #define	PCI_DEVID_OCTEONTX2_LBK			0xA061
+ 
+ /* Subsystem Device ID */
+@@ -882,11 +883,10 @@ static inline bool is_rvu_supports_nix1(struct rvu *rvu)
+ /* Function Prototypes
+  * RVU
+  */
+-#define	RVU_LBK_VF_DEVID	0xA0F8
+ static inline bool is_lbk_vf(struct rvu *rvu, u16 pcifunc)
+ {
+ 	return (!(pcifunc & ~RVU_PFVF_FUNC_MASK) &&
+-		(rvu->vf_devid == RVU_LBK_VF_DEVID));
++		(rvu->vf_devid == PCI_DEVID_OCTEONTX2_RVU_AFVF));
+ }
+ 
+ static inline bool is_vf(u16 pcifunc)
+-- 
+2.25.1
 
