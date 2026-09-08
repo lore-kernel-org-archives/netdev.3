@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A15AF3B14D4
-	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 22:48:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30E4D37A494
+	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 22:49:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788907744; cv=none; b=Jvw71yJpW1KlEygiD9ZPybrviLiIXuBXJIjUIoX0EfEOAzUSw4gABKb2cLpC/wrre46mduQ8ncjrirJ2xFAK+bx7bHWXR5I/l4/LI5LmjZCzXn5UmcWHeiy7Gn31ywMDwCvrv+bFxh8sCuxrrzVSl7d9o4M5GqVOEjzZlQ2QIkc=
+	t=1788907746; cv=none; b=t3TtaVZEXgxzgtuJ36Ojc6G7vgBPRsLRTtA/fNfEaDzrlWmndAePJr/zFl6jSEc4pQIsTtQWRk9pZ8WkERTn2JGKjGrQoTGwDeWQ2EaEFzVIlx804RIAKFxckU8/SLUs6/TUBKqN28ZFsC6752JudkhYyWEFASStkbOiRwo6DxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788907744; c=relaxed/simple;
-	bh=Xf+vcN4BzZJYWyCCg+IHSp7N2pgZE3yTia8lmOH+2Lw=;
+	s=arc-20240116; t=1788907746; c=relaxed/simple;
+	bh=htn/h+ofYPgzTt9tjHPvIdzzgLxAwik/dJEUhgv9q1M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DXyl4IWAazN9UsegGX6o4DvS0DjkgSP5QvVqDTbVi6nkMC6YxToiVzgFdjBGU1O9UVvat6UGvGLrkFjqL/wMQBTf94Uuk0g9lllMhtOwEFLsz8qWwggWXdN89kP4IuHT7q9u19ZT3A7Xx0Y/RxwuKNaEuWGRe9m3UGBM4W+5YbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Of/PafQX; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=n9IIq/+xmL5MMydrjrdEZ9qkUFCpU5BnEknELHBziXhJ4OgF4QHugt0i450UEPnD7rQ/eA+aXmHZPlHEDGtHo769vaU/lINQ/VDX0JSjZ4jR4a/GUHIcDJh8wndE9LTZDhId8uhTc/TN8oJR8U5lFTFfxqWH1DiJJYUOAA1lE2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AdWsXdgt; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Of/PafQX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8B3D1F00A3A;
-	Tue,  8 Sep 2026 22:48:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AdWsXdgt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42EF51F00AC4;
+	Tue,  8 Sep 2026 22:48:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788907733;
-	bh=Il8UIHJC/7UbD1enFL8myjYOeOo48gkLLAOCJErYPhc=;
+	s=k20260515; t=1788907738;
+	bh=cFUEH6zwwQjoXsbUDkwhCzcZHl7MSu+XQeKuWVyfFNY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Of/PafQX5fgNU7VN7GcgmI+9ij0Vz9WWqEpVXSgex0RVsaXLD2Ex8oKV9Aj0tMhOk
-	 12PGBlMMNjrmijszMPutJaKeeoLjqzPAp0SKM1pB20qg4zW34aGKtOWNnhJVeU28SA
-	 wC+FB+GMfLMc7bR5MTM6S0m92z0p58CfttKBR0dozVxhnDOF8OPVmehz4J6xE4d+Sx
-	 epAUGtv0ye9V8TLjNoY7btlCWPYKFAGSSbqty0UOiakOYbC74/MiySFOySmatk79XU
-	 srLa9T0MJwcYBbParbgZzrOgax+Tiu1XPMRbrNo1JJm93iQuAaaifIf7iMTuxJIVsK
-	 x8ga0za46n+2g==
+	b=AdWsXdgtgWAtbajJ/GeVQaOuRnPb402DFjU1H0K1NcaCbgd22XeVgRvpdZDVuYW9B
+	 PR6ZlEe5j1sFbh6EDamL6LArHasXEVveKYtASpfzSdUbKF2E9yDPYpQCNPBtT3AhpH
+	 OQ3sJ7fIuYgUSXMmEGurWU6fBRLECi66v3FPiAhrFvRzlPQ6s3mFnvt5kajbDtqVu6
+	 44bSHpZ1Ebh7b/I8ATXiNouHtAvDToD2Oq5yUbfnBC8QcTXeYNiNQ7hGPEV7begHhr
+	 Sluy6fO9VJocq4YJdPTsxooLI7u1XIaNHde0SbiW9VRivW9z75UH4TxXICFgvhZqyE
+	 wB9tYG/QnQaww==
 From: Jakub Kicinski <kuba@kernel.org>
 To: steffen.klassert@secunet.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
 	davem@davemloft.net,
 	herbert@gondor.apana.org.au,
 	netdev@vger.kernel.org
-Subject: Re: [PATCH 01/12] xfrm: iptfs: fix stack OOB read in iptfs_skb_reset_frag_walk()
-Date: Tue,  8 Sep 2026 15:48:02 -0700
-Message-ID: <20260908224803.1587019-1-kuba@kernel.org>
+Subject: Re: [PATCH 07/12] xfrm: add missing rcu_read_lock(), skb_dst_force() and dev_hold() for xfrm_trans_reinject()
+Date: Tue,  8 Sep 2026 15:48:57 -0700
+Message-ID: <20260908224857.1591225-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260907093020.2228346-2-steffen.klassert@secunet.com>
-References: <20260907093020.2228346-2-steffen.klassert@secunet.com>
+In-Reply-To: <20260907093020.2228346-8-steffen.klassert@secunet.com>
+References: <20260907093020.2228346-8-steffen.klassert@secunet.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,114 +49,101 @@ Content-Transfer-Encoding: 8bit
 This is an AI-generated review of your patch. The human sending this
 email has considered the AI review valid, or at least plausible.
 ---
-xfrm: iptfs: fix stack OOB read in iptfs_skb_reset_frag_walk()
+xfrm: add missing rcu_read_lock(), skb_dst_force() and dev_hold() for xfrm_trans_reinject()
 
-This adds an up-front range check to iptfs_skb_can_add_frags() so that
-iptfs_skb_reset_frag_walk() is never entered with an offset at or beyond
-the end of the walk's fragment data, where its unbounded advance loop
-would read past walk->frags[]. The guard mirrors the one already present
-in iptfs_skb_add_frags().
+This adds rcu_read_lock() around the finish() callback loop in
+xfrm_trans_reinject(), forces the dst to be refcounted in
+xfrm_trans_queue_net(), and takes a reference on skb->dev across the
+workqueue deferral.
 
-> diff --git a/net/xfrm/xfrm_iptfs.c b/net/xfrm/xfrm_iptfs.c
-> index 597aedeac26eb..2ce15c472cc4d 100644
-> --- a/net/xfrm/xfrm_iptfs.c
-> +++ b/net/xfrm/xfrm_iptfs.c
-> @@ -416,6 +416,14 @@ static bool iptfs_skb_can_add_frags(const struct sk_buff *skb,
->  	if (skb_has_frag_list(skb) || skb->pp_recycle != walk->pp_recycle)
->  		return false;
+> diff --git a/net/xfrm/xfrm_input.c b/net/xfrm/xfrm_input.c
+> index eecab337bd0a7..8f6109eada7ea 100644
+> --- a/net/xfrm/xfrm_input.c
+> +++ b/net/xfrm/xfrm_input.c
+> @@ -800,12 +800,17 @@ static void xfrm_trans_reinject(struct work_struct *work)
+>  	spin_unlock_bh(&trans->queue_lock);
 >  
-> +	/* Reject an @offset that is at or beyond the end of the walk's data
-> +	 * before calling iptfs_skb_reset_frag_walk(), whose fragment-advance
-> +	 * loop is otherwise unbounded and would index past walk->frags[].
-> +	 * This mirrors the guard already present in iptfs_skb_add_frags().
-> +	 */
-> +	if (!walk->nr_frags || offset >= walk->total + walk->initial_offset)
-> +		return false;
+>  	local_bh_disable();
+> +	rcu_read_lock();
+>  	while ((skb = __skb_dequeue(&queue))) {
+>  		struct net *net = XFRM_TRANS_SKB_CB(skb)->net;
+> +		struct net_device *dev = skb->dev;
+>  
+>  		XFRM_TRANS_SKB_CB(skb)->finish(net, NULL, skb);
+> +		if (dev)
+> +			dev_put(dev);
+>  		put_net(net);
+>  	}
+> +	rcu_read_unlock();
+>  	local_bh_enable();
+>  }
+>  
+> @@ -821,12 +826,18 @@ int xfrm_trans_queue_net(struct net *net, struct sk_buff *skb,
+>  	if (skb_queue_len(&trans->queue) >= READ_ONCE(net_hotdata.max_backlog))
+>  		return -ENOBUFS;
+>  
+> +	if (skb_dst(skb) && !skb_dst_force(skb))
+> +		return -EHOSTUNREACH;
 > +
+>  	BUILD_BUG_ON(sizeof(struct xfrm_trans_cb) > sizeof(skb->cb));
+>  
+>  	hold_net = maybe_get_net(net);
+>  	if (!hold_net)
+>  		return -ENODEV;
+>  
+> +	if (skb->dev)
+> +		dev_hold(skb->dev);
 
-[Severity: Medium]
+[Severity: High]
+Is skb->dev guaranteed to be alive here for every caller of
+xfrm_trans_queue_net()?
 
-Should this return true (or be conditioned on len) instead of false?
+The three transport-input callers look fine: xfrm_input() holds
+rcu_read_lock() around afinfo->transport_finish(), and espintcp_rcv()
+sets skb->dev via dev_get_by_index_rcu() inside the same RCU section.
 
-In the iptfs_reassem_cont() path the walk is prepared and then queried
-with the same offset:
+The ESPinTCP output caller looks different. esp_output_tail_tcp() in
+net/ipv4/esp4.c (and its net/ipv6/esp6.c twin) only does:
 
-net/xfrm/xfrm_iptfs.c:iptfs_reassem_cont() {
+	local_bh_disable();
+	err = xfrm_trans_queue_net(xs_net(x), skb, esp_output_tcp_encap_cb);
+	local_bh_enable();
+
+There is no rcu_read_lock() here, and per this patch's own commit message
+local_bh_disable() is not an RCU read-side critical section under
+CONFIG_PREEMPT_RCU.
+
+That path is also reachable asynchronously. esp_output_tail() registers
+the completion with aead_request_set_callback(req, 0, esp_output_done,
+skb), and when crypto_aead_encrypt() returns -EINPROGRESS,
+esp_output_done() later calls esp_output_tail_tcp() from a cryptd worker
+or driver completion context, long after the receive-side RCU section
+ended.
+
+For a forwarded packet, what is skb->dev at that point? ip_forward() ->
+NF_HOOK(..., ip_forward_finish) -> dst_output() enters the xfrm bundle
+output with skb->dev still pointing at the ingress netdevice:
+
+net/ipv4/ip_forward.c:ip_forward_finish() {
 	...
-	fraglen = min(blkoff, remaining);
-	copylen = min(fraglen, ipremain);
-
-	if (!skb_has_frag_list(skb) && !skb_has_frag_list(newskb) &&
-	    (skb->head_frag || skb->len == skb->data_len) &&
-	    skb->pp_recycle == newskb->pp_recycle) {
-		fragwalk = &_fragwalk;
-		iptfs_skb_prepare_frag_walk(skb, data, fragwalk);
-	}
-
-	if (fragwalk &&
-	    iptfs_skb_can_add_frags(newskb, fragwalk, data, copylen)) {
-	...
+	skb_clear_tstamp(skb);
+	return dst_output(net, sk, skb);
 }
 
-Since offset == walk->initial_offset == data here, the new clause reduces
-to walk->total == 0, and iptfs_skb_prepare_frag_walk() sums exactly
-skb->len - data, so it only fires when data == skb->len, i.e. when
-remaining == 0 and therefore copylen == 0 as well.
+Nothing on that path resets skb->dev (net/xfrm/xfrm_output.c only assigns
+skb->dev on the HW-offload xmit path and in the IPv6 pmtu error path), and
+nothing holds a reference on the ingress device - the skb only records
+skb_iif, and the bundle dst references the egress device.
 
-For that case the guard now sends control into the else branch:
+So if the ingress device is unregistered and freed while the request sits
+in the crypto queue, does dev_hold(skb->dev) here increment a refcount in
+freed memory, with the matching dev_put() in xfrm_trans_reinject() writing
+to it a second time? With CONFIG_PCPU_DEV_REFCNT=n this would also hit
+refcount_warn_saturate() on increment-from-zero.
 
-	} else {
-		if (skb_linearize(newskb)) {
-			...
-		}
-
-		/* copy fragment data into newskb */
-		if (skb_copy_seq_read(st, data, skb_put(newskb, copylen),
-				      copylen)) {
-			XFRM_INC_STATS(xs_net(xtfs->x),
-				       LINUX_MIB_XFRMINBUFFERERROR);
-			goto abandon;
-		}
-	}
-
-with copylen == 0 and data == skb->len.  skb_copy_seq_read() calls
-skb_seq_read() before it looks at len:
-
-net/core/skbuff.c:skb_copy_seq_read() {
-	for (;;) {
-		sqlen = skb_seq_read(offset, &data, st);
-		if (sqlen == 0)
-			return -EINVAL;
-		if (sqlen >= len) {
-	...
-}
-
-and skb_seq_read() returns 0 once abs_offset >= st->upper_offset, so the
-zero-length copy returns -EINVAL and iptfs_reassem_cont() takes the
-abandon label, where iptfs_reassem_abort() frees xtfs->ra_newskb and
-destroys the in-progress inner packet reassembly.
-
-Before this patch the same input took the sharing branch: can_add_frags()
-fell through its "while (len && fragi < walk->nr_frags)" loop with len == 0
-and returned true, iptfs_skb_add_frags() returned immediately via its own
-!walk->nr_frags check, and reassembly continued via
-"if (copylen < ipremain) xtfs->ra_wantseq++;".
-
-Two inputs from a peer on an IPTFS SA appear to reach this: an AGGFRAG
-payload carrying only the basic/CC header with block_offset >= ipremain
-while a reassembly is in progress, and the "newskb->len < iphlen" block
-copying exactly iphremain == remaining bytes so that "data += copylen"
-leaves data == skb->len.
-
-Would a guard on len, for example returning true when len == 0 and only
-rejecting when there is data left to add, close the stack out-of-bounds
-read without changing the reassembly outcome?
-
-The other caller, iptfs_pskb_add_frags() in __input_process_payload(), is
-only reached when capturelen > iphlen and remaining >= iphlen, so it does
-not appear to be able to hit the new guard.
-
-For reference, this behaviour is unchanged through the rest of the series:
-the only later change to net/xfrm/xfrm_iptfs.c is the ra_runt iplen check
-in "xfrm: iptfs: fix runt reassembly panic from short inner tot_len", and
-iptfs_skb_can_add_frags() is the same at the end of the series.
+There is a second aspect: esp_output_tcp_encap_cb() only uses
+skb_dst(skb)->xfrm and never touches skb->dev, so the hold seems to be
+unnecessary for that caller. Would it make sense to take the reference
+only in the callers where skb->dev is provably live and the finish()
+callback needs it - for example recording the held device in struct
+xfrm_trans_cb - rather than holding unconditionally in the shared helper?
