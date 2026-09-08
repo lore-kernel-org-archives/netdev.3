@@ -1,232 +1,216 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAD3A3CD8C5;
-	Tue,  8 Sep 2026 21:29:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788902970; cv=none; b=ZD8OB/BK8HIuYSLZvKvSgfPRYvO23Z9bMFqjaRXG0CVMIi4P7ALDcRCJOZ6e/Nm2ANUrnOcxRqlnZga21qEeTh9MYUmry3arZIwmguujzO+8InK799xGgi3eUFNJ1c/N9ZQ1J8bUemmfSXOiXeUmImmod8YLfSV1GT0tdv9avJc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788902970; c=relaxed/simple;
-	bh=qfbMHYA1rnsnS+wCwHK4hA78rkF64Le4RDDZQqsQO3I=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=qDdv0e+ykN+L8xytJDi1RaWsixkQi9FlHDlKV6Q0S4/xR8tNgy3bZjMsp7ihDy94KVGzvv9d2AU2mLMS/jqJoh4kbFU00vGMbMh3XvIbAOYupgsnzBzFZ9jLF4MKL/ADDPkYPBDrk4dAioneNLnnn/syFcYBbpgYHTxDnzkiit8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IgMWmSbg; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E328498934
+	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 21:36:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788903383; cv=pass; b=s10+LPeVdNGmyeN+Dz4SIvNA51pkYapQ6I+WhMNbJBgkeGlUIfR5Z5AkGxCc2JzUtJJYzRM61NnoY14J5RjytsFCACUPk4cf5edN90eWxkJVp5QjKJ2YdeFTkMYA0mvA8tJ0yUMnwzefueAgZSr4pZDDxAkQxUvlmVkZt+wGgEo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788903383; c=relaxed/simple;
+	bh=qjKcOPAlp+8eJmChwXBbe8T1KsBa8X+4IN5bxjb+zFI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Y2iaT0YdxW+o4hfADvHCZheMaKRqXrLMNXqF60LMDupOcI2LMaYgSJJU68MYVufNmr9KfXUSkgs505cvCUhf8Z9yKjq6dDwUT15zxU9ulw4+N4wigSTQuwxjuwDHBrHBV9O/+bajkXv7TZKR7chMp1+cBISc7vEzCDkxh/s8mnc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N+KOgglI; arc=pass smtp.client-ip=209.85.218.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IgMWmSbg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BAA81F00A3A;
-	Tue,  8 Sep 2026 21:29:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788902968;
-	bh=2NCnbVVA50ISfSgF6TALpBu2EUqliYaoDQ5hYa1n6eo=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=IgMWmSbgRLYcAUThX3rqvn4q8pmFu4XDgloLUmXqx39N92bcdM4HWZQJ60RmzTTjI
-	 PtEuhr/RX8hHnEq6LqA1NIzWrsahRMI0H/+iCtwfjiOc7Zn0eeWbNnS932YJXDFhQ2
-	 ssw6kSqPOaEwhQ3VP7w3P+o6pVgKdftdXOK/YAop7kD2Sb4rhumC0F7YalDsA3LYyg
-	 UEV7xhmJ7hXcodjyexOiyfK+p3zox6sZRXsIetsLx8U90FD9wuE3tmc1lvNfo/N63c
-	 FuksSbpLzYqRZYNlZDvbgIfDb7aO8dQGvpJi+C6PB5xQ1TID/X+cFb2ea8BR2BpkoB
-	 PfULEZ1DFGWuQ==
-Subject: Re: [PATCH net-next v2] net: dsa: offer a flowtable to the switch
- before the conduit
-From: netdev-bot+sashiko@kernel.org
-To: julius@bairaktaris.de
-Cc: andrew@lunn.ch, olteanv@gmail.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, pablo@netfilter.org
-Date: Tue, 08 Sep 2026 21:29:27 +0000
-Message-ID: <178890296755.219967.950265760360964191@kernel.org>
-In-Reply-To: <20260904092719.534318-1-julius@bairaktaris.de>
-References: <20260904092719.534318-1-julius@bairaktaris.de>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N+KOgglI"
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-c1677c91969so533687166b.1
+        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 14:36:20 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788903377; cv=none;
+        d=google.com; s=arc-20260327;
+        b=kNej8PJEzwdtZ4UR62Eu8xjC9njv/8okwHQwFOaxJ0DUvOU+gdcXMVJDgirHfwQ3rM
+         wiOMrhzuCeVHsc5/srrdT7p4ymZTAAi9uvsKTlHpQ8+16wqCxDSBHMVngjQjVLKJ2c1y
+         X+7Gi2y8I8a96O0BGa4sCJta7tVF+hC8XrgmgWooX3angEGG47fyeZjAloleke1CmQVW
+         CgxEVdmWxr5N2QI0DxgMD2yklWrD886FmVRF/4J01JaBbv8c5aULVJ3U7lBglm+uIRZE
+         xqzMYSkhFj3CulHe7LryVWvIyAZr4IGpzPkl/HiJkLjlkDTt5ZHJAKDbNcbh8bFJSvIt
+         /3Mg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=WG1VPckZ7Ce+e/KvSNnfhiB/dB7b4M7rtu6QCvD8h8c=;
+        fh=L/ewCj9jEwGeM3QlN7KKaKXk6K2wOnVa49Ohg2ymJtc=;
+        b=FhL4G4VyTqDuhUZKneuTKYbEdqCfy24TWyoQtI0t+/i45pnXJld9dPj9x5bvaDez1y
+         CAXPXk7AmVeYlOli77jlAV5aHofPYffuRuYOVDWGmfjqkyozMjKHDifOV+txPpp3YK1J
+         v0O0pmqB48VC1RLK5iXvuoTN5aHL+2Qf+I6Rq1BvrqVjjAFSSXbpAnjY/2YZ1Iqg/0i8
+         w+QJM+IHUyiVs6MAfKOpVT19nJIsNIIQ3QkUCO0yRX548ZLj8wsZ7n8RwRLzztGH1q7I
+         PxFowaCTlto55B5VwKvhkRoP/DZPa2l+s0Oc6t9YjdULmqKFKn1AXKsArKwIcHOTO6f4
+         EiMQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788903377; x=1789508177; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=WG1VPckZ7Ce+e/KvSNnfhiB/dB7b4M7rtu6QCvD8h8c=;
+        b=N+KOgglIsp4dXSVBji40pIGhK7nTvXbC/sdg9tES56NPBA1vl/bT/lDlUViAHxAHPx
+         EI8uBSEdNPR+a7Y2j7VDn9xw/4bim396ATOi/j8YujZ7OD63Cd2QkrinshLreebOPfTy
+         HC/jjRwooAPKADrO78lyZzrig9UKVUc2hyuaKRKUrj+17zutFbh7WrF8rK94LSP4gfUL
+         8C518x8rVFkZJLgGqgSU0X6ToV8j1S24UB1lhce1lOBxc4W53Z0CQyI3ceXSHX9qv21Q
+         p2GOBJKOxcNGmbzEM1sdjyhq9dTqGt/ABJnMzopTdmFBEblgvApQJ2Lw1TH/oj0ccSj7
+         wZ8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788903377; x=1789508177;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=WG1VPckZ7Ce+e/KvSNnfhiB/dB7b4M7rtu6QCvD8h8c=;
+        b=hkPCdNaOZK00WkzD/IB0IE31wNCbonS8WgVL1+vBe0JVTXKfLkRCZiEBvWUjlZd39T
+         C23TzxGmgldWvtJ8XL+vsqlhkbxrTe72Zgmltq3lxIRmShInxpIOd9mi84IEi5sP+KVG
+         p4dVNt8slBUB6ilJ26nzlzfN1vnuerG4ZoK4EccJGU6KXw+epJMUTD+GSuDxgnkZ0Ku4
+         Axk6PEuy1tOq3TWNw89sAiw1hdpWtrMDdoQSSGIPc6eRRuP7D/L7WUIGHDAjMWmnHrHP
+         3KdxxUQF+pZLhPLfGg/NYUTmHPHqDsp7rN337xl6LknHObqsq8bOBiZQNEMggVKz2pRf
+         RsbA==
+X-Forwarded-Encrypted: i=1; AKwUvBzhxNDxHeFoAqWRprOCMDBxs2YgnMdfGcaN1M2AW7BVBjAen1t/M2ik0jHMpnOGA/ezk5NZfQw=@vger.kernel.org
+X-Gm-Message-State: AFuF++lNcbqeWDSTfekibI7VA3HrW8y1MHPJdWq+vqfgmvu+ik7BV2pm
+	yTOz+GJbBcv3Ggho26Ynd4AunK9WHO6WMrrmtaHJrWrxCa72A/O/UXdF09z2kAqKUuex0RSaIh3
+	BdOQFhQgqV1M+xvgGbDlpVdgVHe03c3Y=
+X-Gm-Gg: AYBFou0odD7na0j68W3P0IJh9qIINEWo2WzV8gD0e81TMNfiNv9W7CZB/93r6y39r2z
+	xKC0e8ZXHR6Gfb/Xy9TjNlWZpsriRpo3zM1uIiVuQ3K9GOFOGsiGfIW5AAsRRuMd+xpoW0ccpFm
+	Kegq9NDhpIe8LnvYdjufuuhaxaOGzIDzrrYgWUA9E+ZL40Q4QpBKTZoYRbHWw9L4GMn7zwXHMr3
+	ii5wzB0c/+AgwMklnZ5tx1KOIxHVcvGuCTh4v5W2fWfW/c+qBPvi+tKpVKb543YlsYhStobookn
+	M69Okp6B/0Ss0SwiIOFtLqUvXJ6GO8h1sAlrF+ph9EIk/g==
+X-Received: by 2002:a17:907:e1c9:20b0:c26:2b63:a746 with SMTP id
+ a640c23a62f3a-c262b63cb83mr575305766b.49.1788903376801; Tue, 08 Sep 2026
+ 14:36:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20260908174403.420507-1-kuncy7@gmail.com>
+In-Reply-To: <20260908174403.420507-1-kuncy7@gmail.com>
+From: Luiz Angelo Daros de Luca <luizluca@gmail.com>
+Date: Tue, 8 Sep 2026 18:36:04 -0300
+X-Gm-Features: AcwNN1UWf30J8IomIqOvbTRO5fh6YZcxqzHw5584rMEkSkibF6iw45t74e_SvV4
+Message-ID: <CAJq09z4qBz+poVQR3tEQzB-_4se5ka76Xq1mwEM0RvEnTuGLNw@mail.gmail.com>
+Subject: Re: [PATCH net v2] net: dsa: realtek: rtl8365mb: wait out the full
+ chip reset time
+To: Stanislaw Pal <kuncy7@gmail.com>
+Cc: Linus Walleij <linus.walleij@linaro.org>, Andrew Lunn <andrew@lunn.ch>, 
+	Vladimir Oltean <olteanv@gmail.com>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	=?UTF-8?Q?Alvin_=C5=A0ipraga?= <alvin.sipraga@analog.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider:
+Hi Stanislaw,
 
-Critical: 0 · High: 1 · Medium: 1 · Low: 0
+Thanks for your patch.
 
-- [High] dsa_user_setup_ft_block() (net/dsa/user.c:1721) records which
-  side accepted a flowtable bind in a single per-port boolean,…
-- [Medium] In dsa_user_setup_ft_block() (net/dsa/user.c:1734) the
-  ownership record is computed as `dp->ft_on_switch = err !=…
+> The reset bit clears well before the RTL8365MB/RTL8367S has finished its
+> internal bring-up, so configuring it right away makes register writes to
+> blocks that are not up yet get lost. The switch is then left half
+> configured: the CPU port link comes up and the switch still transmits
+> towards the CPU, but nothing the CPU sends is ever forwarded - no MIB TX
+> counter moves on any user port, while the MAC reports every frame as
+> transmitted without errors.
+>
+> The driver already documents the 1 s reset time the chip needs and polls
+> with a 1 s timeout, but stops waiting as soon as the bit clears. Sleep
+> out the remainder of that second instead, measured from the reset write,
+> so the total wait stays at 1 s regardless of how long the poll took.
+>
+> Seen on a TP-Link Archer AX55 v1 (IPQ5018 + RTL8367S, 2.5G HSGMII trunk)
+> on roughly three out of four boots.
 
---
+We discussed a similar issue previously:
+https://lore.kernel.org/all/20260721115306.15144-1-kuncy7@gmail.com/
 
-net: dsa: offer a flowtable to the switch before the conduit
+In that thread, you mentioned it might have been caused by a bad power
+supply. Are there any updates or new findings regarding that?
 
-TC_SETUP_FT on a DSA user port is now offered to the switch driver via
-ds->ops->port_setup_tc first, and only forwarded to the conduit netdev when
-the switch answers -EOPNOTSUPP.  The side that accepted the bind is recorded
-in a new per-port boolean, dp->ft_on_switch, so that the matching unbind is
-sent to the same side.
+>  Unbinding and rebinding the driver
+> always fixed it at runtime. With this patch: 6 out of 6 clean boots.
 
-> diff --git a/include/net/dsa.h b/include/net/dsa.h
-> index 7507d632e7c6d..dbcb02de06fce 100644
-> --- a/include/net/dsa.h
-> +++ b/include/net/dsa.h
-> @@ -297,6 +297,12 @@ struct dsa_port {
->  
->  	u8			setup:1;
->  
-> +	/* Flowtable blocks on this user port go to the switch, not the
-> +	 * conduit; decided at bind time. Written without rtnl, so not one of
-> +	 * the bit fields above.
-> +	 */
-> +	bool			ft_on_switch;
+This part is still puzzling. Why does an unbind/rebind cycle work
+every time if a cold boot fails without the extra delay? After the
+reset write, both execution paths should behave identically. Perhaps
+the interface state during an unbind/rebind cycle slows down the
+probe/setup path enough to give the chip the time it needs?
+
+> Fixes: 4af2950c50c8 ("net: dsa: realtek-smi: add rtl8365mb subdriver for RTL8365MB-VC")
+> Signed-off-by: Stanislaw Pal <kuncy7@gmail.com>
+> ---
+> Changes in v2:
+> - Declare "remaining" as long instead of unsigned long and drop the cast
+>   from the comparison, so the sign is carried by the type (Andrew Lunn).
+> - Name the affected parts in the opening sentence instead of "the chip".
+> - Link to v1: https://lore.kernel.org/all/20260907191940.806734-1-kuncy7@gmail.com/
+> ---
+> --- a/drivers/net/dsa/realtek/rtl8365mb_main.c
+> +++ b/drivers/net/dsa/realtek/rtl8365mb_main.c
+> @@ -136,6 +136,9 @@
+>  #define RTL8365MB_CHIP_RESET_SW_MASK   0x0002
+>  #define RTL8365MB_CHIP_RESET_HW_MASK   0x0001
+>
+> +/* Time the chip needs to complete a reset, per Realtek documentation */
+> +#define RTL8365MB_CHIP_RESET_TIME_MS   1000
 > +
-
-[Severity: High]
-Can a single boolean per dsa_port track something the flow block API keys
-per block?
-
-nf_flow_table_block_offload_init() sets bo->block = &flowtable->flow_block,
-so each flowtable is a distinct binding.  And more than one flowtable can
-bind the same DSA user netdev, because the duplicate device check in
-nft_register_flowtable_net_hooks() only looks at flowtables of the same nft
-table:
-
-net/netfilter/nf_tables_api.c:nft_register_flowtable_net_hooks() {
-	list_for_each_entry(ft, &table->flowtables, list) {
-		if (!nft_is_active_next(net, ft))
-			continue;
-		if (nft_hook_list_find(&ft->hook_list, hook)) {
-			err = -EEXIST;
-			...
-}
-
-Two flowtables in two different nft tables therefore produce two independent
-FLOW_BLOCK_BINDs on the same port, and both write the one flag.  Compare
-with dsa_user_setup_tc_block(), which keys the block on f->block via
-flow_block_cb_lookup().
-
->  	struct device_node	*dn;
->  	unsigned int		ageing_time;
->  
-> diff --git a/net/dsa/user.c b/net/dsa/user.c
-> index 041f9060c8ef0..f4cd48df2519d 100644
-> --- a/net/dsa/user.c
-> +++ b/net/dsa/user.c
-> @@ -1718,15 +1718,30 @@ static int dsa_user_setup_tc_block(struct net_device *dev,
->  	}
->  }
->  
-> -static int dsa_user_setup_ft_block(struct dsa_switch *ds, int port,
-> -				   void *type_data)
-> +static int dsa_user_setup_ft_block(struct dsa_port *dp,
-> +				   struct flow_block_offload *bo)
+>  /* Interrupt polarity register */
+>  #define RTL8365MB_INTR_POLARITY_REG    0x1100
+>  #define   RTL8365MB_INTR_POLARITY_MASK 0x0001
+> @@ -2980,18 +2983,38 @@
+>
+>  static int rtl8365mb_reset_chip(struct realtek_priv *priv)
 >  {
-> -	struct net_device *conduit = dsa_port_to_conduit(dsa_to_port(ds, port));
-> +	struct net_device *conduit = dsa_port_to_conduit(dp);
-> +	struct dsa_switch *ds = dp->ds;
-> +	int err;
+> +       unsigned long deadline;
+> +       long remaining;
+>         u32 val;
+> +       int ret;
+>
+>         priv->write_reg_noack(priv, RTL8365MB_CHIP_RESET_REG,
+>                               FIELD_PREP(RTL8365MB_CHIP_RESET_HW_MASK, 1));
+>
+> +       deadline = jiffies + msecs_to_jiffies(RTL8365MB_CHIP_RESET_TIME_MS);
 > +
-> +	/* The unbind goes to the side that took the bind. */
-> +	if (bo->command == FLOW_BLOCK_BIND) {
-> +		err = -EOPNOTSUPP;
-> +		if (ds->ops->port_setup_tc)
-> +			err = ds->ops->port_setup_tc(ds, dp->index, TC_SETUP_FT,
-> +						     bo);
-> +		dp->ft_on_switch = err != -EOPNOTSUPP;
-> +		if (dp->ft_on_switch)
-> +			return err;
-> +	} else if (dp->ft_on_switch) {
-> +		return ds->ops->port_setup_tc(ds, dp->index, TC_SETUP_FT, bo);
-> +	}
+>         /* Realtek documentation says the chip needs 1 second to reset. Sleep
+>          * for 100 ms before accessing any registers to prevent ACK timeouts.
+>          */
+>         msleep(100);
+> -       return regmap_read_poll_timeout(priv->map, RTL8365MB_CHIP_RESET_REG, val,
+> -                                       !(val & RTL8365MB_CHIP_RESET_HW_MASK),
+> -                                       20000, 1e6);
+> +       ret = regmap_read_poll_timeout(priv->map, RTL8365MB_CHIP_RESET_REG, val,
+> +                                      !(val & RTL8365MB_CHIP_RESET_HW_MASK),
+> +                                      20000, 1e6);
+> +       if (ret)
+> +               return ret;
+> +
+> +       /* The bit clearing only means the reset was accepted, not that the
+> +        * chip is ready: register writes issued before the documented reset
+> +        * time has elapsed are silently dropped by blocks that are still
+> +        * coming up, which leaves the switch half configured. Wait out
+> +        * whatever is left of that second, measured from the reset write, so
+> +        * the poll above does not add to the total.
+> +        */
+> +       remaining = (long)(deadline - jiffies);
+> +       if (remaining > 0)
+> +               msleep(jiffies_to_msecs(remaining));
 
-[Severity: High]
-Following on from the per-block question above: since each
-FLOW_BLOCK_BIND overwrites dp->ft_on_switch, and the FLOW_BLOCK_UNBIND
-routing decision reads only that flag and never looks at bo->block, can an
-unbind reach the side that never took the bind?
+Tracking deadline math across regmap_read_poll_timeout() adds
+unnecessary complexity. If the chip reliably requires a full 1-second
+delay, why not simply msleep(RTL8365MB_CHIP_RESET_TIME_MS) upfront? We
+could perform a single regmap_read() check afterward to verify
+RTL8365MB_CHIP_RESET_HW_MASK cleared, though even that might be overly
+cautious.
 
-	BIND(FT_A)   switch returns 0            -> ft_on_switch = true
-	BIND(FT_B)   switch has no room for a
-	             second block, -EOPNOTSUPP   -> ft_on_switch = false,
-	                                            conduit takes FT_B
-	UNBIND(FT_A) reads false                 -> goes to the conduit
+FWIW, I noticed that older chips (like the RTL8367R) do require extra
+time after the reset bit clears, whereas I haven't seen that on
+RTL8367C devices. Checking if RTL8365MB_CHIP_RESET_HW_MASK was cleared
+simply might not indicate that the chip has finished booting
+internally.
 
-The conduit provider looks its block up by bo->block, so it simply fails:
-
-drivers/net/ethernet/mediatek/mtk_ppe_offload.c:mtk_eth_setup_tc_block() {
-	...
-	block_cb = flow_block_cb_lookup(f->block, cb, dev);
-	if (!block_cb)
-		return -ENOENT;
-	...
-}
-
-nft_unregister_flowtable_ops() discards that error, and
-nf_flow_table_offload_setup() returns before reaching the freeing loop in
-nf_flow_table_block_setup():
-
-net/netfilter/nf_flow_table_offload.c:nf_flow_table_block_setup() {
-	...
-	case FLOW_BLOCK_UNBIND:
-		list_for_each_entry_safe(block_cb, next, &bo->cb_list, list) {
-			list_del(&block_cb->list);
-			flow_block_cb_free(block_cb);
-	...
-}
-
-nf_flow_table_free() has no leftover-cb cleanup either.  Does the switch's
-flow_block_cb then stay linked on the driver's block list with ->block
-pointing into the freed nf_flowtable, with the hardware offload entries
-never torn down, so that a later flow_block_cb_lookup() can match a stale
-cb if a new flowtable is allocated at the same address?  The mirrored
-ordering (switch answers -EOPNOTSUPP for FT_A, accepts FT_B) sends a
-conduit-owned unbind to the switch instead.
-
-Would keying the ownership on bo->block, the way dsa_user_setup_tc_block()
-does, avoid this?
-
-[Severity: Medium]
-Separately, should ft_on_switch be set for a bind that failed?
-
-	dp->ft_on_switch = err != -EOPNOTSUPP;
-	if (dp->ft_on_switch)
-		return err;
-
-Any hard error from ds->ops->port_setup_tc() (-ENOMEM, -EBUSY, -ENOSPC)
-also satisfies err != -EOPNOTSUPP, so the port is latched as "the switch
-owns the flowtable block" although nothing was bound anywhere -- the switch
-failed, and the conduit was never offered the bind because of the early
-return.  Nothing clears the flag afterwards; it is only recomputed on the
-next FLOW_BLOCK_BIND, never on unbind.
-
-An unbind for a different block that the conduit genuinely holds on the
-same port then takes the else-if branch and is delivered to the switch:
-
-	BIND(FT_A)   switch -EOPNOTSUPP     -> conduit takes FT_A
-	BIND(FT_B)   switch -ENOMEM         -> ft_on_switch = true, err
-	                                       returned, nothing bound
-	UNBIND(FT_A) reads true             -> goes to the switch
-
-The conduit's flow_block_cb for FT_A is then never removed and keeps a
-->block pointer into the freed flowtable.  Should the flag only be set when
-the switch actually accepted the bind, that is err == 0?
-
->  
->  	if (!conduit->netdev_ops->ndo_setup_tc)
->  		return -EOPNOTSUPP;
->  
-> -	return conduit->netdev_ops->ndo_setup_tc(conduit, TC_SETUP_FT, type_data);
-> +	return conduit->netdev_ops->ndo_setup_tc(conduit, TC_SETUP_FT, bo);
+> +
+> +       return 0;
 >  }
->  
+>
+>  static int rtl8365mb_setup(struct dsa_switch *ds)
+>
 
-[ ... ]
+Best regards,
 
-For both of the above: no in-tree .port_setup_tc handles TC_SETUP_FT today
-(hellcreek, ksz, yt921x, mt753x, felix/vsc9959 and sja1105 all return
--EOPNOTSUPP), so the switch branch is not reachable in mainline yet, but
-this patch is what enables such drivers.
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260904092719.534318-1-julius%40bairaktaris.de
+Luiz
