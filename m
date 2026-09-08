@@ -1,143 +1,232 @@
-Received: from mail-ua2-f12.google.com (mail-ua2-f12.google.com [74.125.226.204])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA8F93B47FA
-	for <netdev@vger.kernel.org>; Tue,  8 Sep 2026 21:21:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.226.204
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAD3A3CD8C5;
+	Tue,  8 Sep 2026 21:29:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788902497; cv=none; b=qu5L2zVOXFsGIElFBf4sLPDN7DvNNW1pOXXotlaaR8y0JAxRsDARONczICJkNAfs1P0zkk8kiEu1AxztvG9UYwHOqTObiS7MI009mrs/C5V8MhE2xiPrELp1lLJvb5pO1CMpjQeDFxQ5bwh9sYtm/77s2EM8i9LNn5EInz83d+c=
+	t=1788902970; cv=none; b=ZD8OB/BK8HIuYSLZvKvSgfPRYvO23Z9bMFqjaRXG0CVMIi4P7ALDcRCJOZ6e/Nm2ANUrnOcxRqlnZga21qEeTh9MYUmry3arZIwmguujzO+8InK799xGgi3eUFNJ1c/N9ZQ1J8bUemmfSXOiXeUmImmod8YLfSV1GT0tdv9avJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788902497; c=relaxed/simple;
-	bh=n0Be36ddKhDCk//9AN4Jf3YbaVHvs4EP8JCDUD3CJE4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qZt5l6Pn9yfiopZvXUbZBKjuVkjjY7ALaua0UIRgFf/+7Lnp2pfx63WZWHft+DxzxM+Ac2R/ea3JaUFJfDv73X3y5Ji3TyOURIpdpIKRIQGZ1YjDsSb+FKDynyfHX7PljQIdkGluKTCoqhuAetmAd1+aB//NIqDB+YKs58281lA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=o4z33yHi; arc=none smtp.client-ip=74.125.226.204
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788902970; c=relaxed/simple;
+	bh=qfbMHYA1rnsnS+wCwHK4hA78rkF64Le4RDDZQqsQO3I=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=qDdv0e+ykN+L8xytJDi1RaWsixkQi9FlHDlKV6Q0S4/xR8tNgy3bZjMsp7ihDy94KVGzvv9d2AU2mLMS/jqJoh4kbFU00vGMbMh3XvIbAOYupgsnzBzFZ9jLF4MKL/ADDPkYPBDrk4dAioneNLnnn/syFcYBbpgYHTxDnzkiit8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IgMWmSbg; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="o4z33yHi"
-Received: by mail-ua2-f12.google.com with SMTP id a1e0cc1a2514c-97e80579b7dso113782241.1
-        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 14:21:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788902494; x=1789507294; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=I/dQygOaKFFI7MqzO8ZJqXyglgwUJKtOP4ihAnFyxvE=;
-        b=o4z33yHiyLSKfC3mNgIxrJIIFQrcpBnnQ9nf+IxZgwto5wbUQeAg6/a/42v+N914jo
-         n15ArRh1kCuEp2FEenZ7GozNDxZaYlmux4m4EkN9dwgHrujaeYPHeIUB9ukM7UgxWkMG
-         OqpQYYVNJZLQl+WjWmo1PhS0T4jDoPvTMvKfLojjNHpnxyRvlJ3nboOwnOJ0RwN93dTa
-         oaSwe7onSitS5Y6ISjDQ/qZvwEMUxJzcqX2Q7TvXgbzR9mcDHNnNexLqy06gKsMTF5bq
-         LBECXhCz/qG1ma8jPBjd7gzzTgdhghXuYVu8V7r61H5URmFtpLp+tCyVbL2Et5C6Ljfw
-         uioQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788902494; x=1789507294;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=I/dQygOaKFFI7MqzO8ZJqXyglgwUJKtOP4ihAnFyxvE=;
-        b=haeeqGIN1NmYW3U3URqf7eTYv8pKO8X4WRSNv+8RmTFxRBLCjCncS5/33+sTp0EdkM
-         iQgFpFL/ZEKKkEdX/rrXpxi9EfEUw29KuH7abnysiscCE7DVoSJ8+g90ZVfDuATFWZ/C
-         dzp2zDFjEz43XuiD2vjf/SN4i8uou4kYBNZSt4lCbPsBeCljB9QaTkRuaRLCn4iZwv+v
-         4KRhezSH+7Nm5HWwhkKQUrnPuePJul/5YNI0l6uh+l0sMJTH44Wqy3DUXdlkv7+9CwAT
-         qn26xQACj1aaEvOog9pkFaFcKwI24bwpTjIy9OB+prbSH6Ypn4J/pkQ0vauWxnKTOSb8
-         6SFA==
-X-Forwarded-Encrypted: i=1; AKwUvBzrXhWHmZlVjQS/Id1N2wLSapnDN/rmWLQf/CYJIY/Yj3pGttRWlkUJze8HWogW3lL5fAWaxjU=@vger.kernel.org
-X-Gm-Message-State: AFuF++lGBKesdURNkZxsdPPGvn02aUmYgkhuMwZFCtf2+reTXcpc7SLr
-	ZLGsMJOStNt90v+eh7REhw+rctrUExkM4U7fyvGjHnOirNnktDvg3b9G
-X-Gm-Gg: AYBFou0FcLA0yNsg71xnLEComk8rfPvlgtFRIv63aKgJmdW4ZBZTKgV56i/esHUXvSp
-	IIHJ/pawqz+CPBdSG02ja59+K8dHj0fh3jRxfjDap8ACI5Tn2lpjiA+XRgPapcS7cN8W096NZxM
-	ALkm88ooDDzlozJglBRmD+eZtpVsQAsd0SH5HzlkODpDnZdQN3HZuvkEXxGGvtOOLycRDvg2v+P
-	nYo55tAavTMqTtjvuu1SKVLALXmj7Zj8wj9YDTDLL75FDccG/AAeIxSDv7r+49w7zIiVVsJDhSY
-	BE83c1prkej2wGFFdyadZ3/Eyw+mJXmQ2CgjeoIcHxtttu5GDYtUqvq4sINxXwaHqwa4Ss26RO7
-	c37atmfyPRHuhPkpv7LAxxKaz5UkSKoiZHXyKahWRy7ybD+FwyxbkvruJElGk6f0Wa7phJRpqqN
-	TaCgQQCvgcodTYGQY+sCuqoKL7BxI6UIAEQnXzSCj/myD9IGYDU+ORQG4cgqznhczWhaT6dhI7V
-	1ksd/JtgIu7fqhql5TBvi3yyuBwSczsvepMV48YXJ+Q/MPdilvvQb3Nd5ovzS3m9A==
-X-Received: by 2002:a05:6102:3f87:b0:780:7e65:f0ab with SMTP id ada2fe7eead31-78f7380daa6mr871901137.1.1788902494402;
-        Tue, 08 Sep 2026 14:21:34 -0700 (PDT)
-Received: from lvondent-mobl5 ([72.188.211.115])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-78a47a76aaasm9508030137.3.2026.09.08.14.21.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Sep 2026 14:21:34 -0700 (PDT)
-From: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-To: davem@davemloft.net,
-	kuba@kernel.org
-Cc: linux-bluetooth@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [GIT PULL] bluetooth 2026-09-08
-Date: Tue,  8 Sep 2026 17:21:27 -0400
-Message-ID: <20260908212127.1022197-1-luiz.dentz@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IgMWmSbg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BAA81F00A3A;
+	Tue,  8 Sep 2026 21:29:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788902968;
+	bh=2NCnbVVA50ISfSgF6TALpBu2EUqliYaoDQ5hYa1n6eo=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=IgMWmSbgRLYcAUThX3rqvn4q8pmFu4XDgloLUmXqx39N92bcdM4HWZQJ60RmzTTjI
+	 PtEuhr/RX8hHnEq6LqA1NIzWrsahRMI0H/+iCtwfjiOc7Zn0eeWbNnS932YJXDFhQ2
+	 ssw6kSqPOaEwhQ3VP7w3P+o6pVgKdftdXOK/YAop7kD2Sb4rhumC0F7YalDsA3LYyg
+	 UEV7xhmJ7hXcodjyexOiyfK+p3zox6sZRXsIetsLx8U90FD9wuE3tmc1lvNfo/N63c
+	 FuksSbpLzYqRZYNlZDvbgIfDb7aO8dQGvpJi+C6PB5xQ1TID/X+cFb2ea8BR2BpkoB
+	 PfULEZ1DFGWuQ==
+Subject: Re: [PATCH net-next v2] net: dsa: offer a flowtable to the switch
+ before the conduit
+From: netdev-bot+sashiko@kernel.org
+To: julius@bairaktaris.de
+Cc: andrew@lunn.ch, olteanv@gmail.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, pablo@netfilter.org
+Date: Tue, 08 Sep 2026 21:29:27 +0000
+Message-ID: <178890296755.219967.950265760360964191@kernel.org>
+In-Reply-To: <20260904092719.534318-1-julius@bairaktaris.de>
+References: <20260904092719.534318-1-julius@bairaktaris.de>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-The following changes since commit 38b6be101006d3e7af972999f45d4f1e8250587a:
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider:
 
-  net: macb: fix NULL pointer dereference on unbind with fixed-link (2026-09-05 13:58:52 -0700)
+Critical: 0 · High: 1 · Medium: 1 · Low: 0
 
-are available in the Git repository at:
+- [High] dsa_user_setup_ft_block() (net/dsa/user.c:1721) records which
+  side accepted a flowtable bind in a single per-port boolean,…
+- [Medium] In dsa_user_setup_ft_block() (net/dsa/user.c:1734) the
+  ownership record is computed as `dp->ft_on_switch = err !=…
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth.git tags/for-net-2026-09-08
+--
 
-for you to fetch changes up to c93922dd316b7273a8667d29084632066fa8a2d3:
+net: dsa: offer a flowtable to the switch before the conduit
 
-  Bluetooth: btusb: Fix leaked runtime PM reference in btusb_reset (2026-09-08 17:18:47 -0400)
+TC_SETUP_FT on a DSA user port is now offered to the switch driver via
+ds->ops->port_setup_tc first, and only forwarded to the conduit netdev when
+the switch answers -EOPNOTSUPP.  The side that accepted the bind is recorded
+in a new per-port boolean, dp->ft_on_switch, so that the matching unbind is
+sent to the same side.
 
-----------------------------------------------------------------
-bluetooth pull request for net:
+> diff --git a/include/net/dsa.h b/include/net/dsa.h
+> index 7507d632e7c6d..dbcb02de06fce 100644
+> --- a/include/net/dsa.h
+> +++ b/include/net/dsa.h
+> @@ -297,6 +297,12 @@ struct dsa_port {
+>  
+>  	u8			setup:1;
+>  
+> +	/* Flowtable blocks on this user port go to the switch, not the
+> +	 * conduit; decided at bind time. Written without rtnl, so not one of
+> +	 * the bit fields above.
+> +	 */
+> +	bool			ft_on_switch;
+> +
 
-Core:
+[Severity: High]
+Can a single boolean per dsa_port track something the flow block API keys
+per block?
 
- - hci_sysfs: Fix NULL pointer dereference in device_del()
- - hci_sync: Fix not setting CE length properly
- - btqcomsmd: destroy RPMsg endpoints before freeing hci_dev
+nf_flow_table_block_offload_init() sets bo->block = &flowtable->flow_block,
+so each flowtable is a distinct binding.  And more than one flowtable can
+bind the same DSA user netdev, because the duplicate device check in
+nft_register_flowtable_net_hooks() only looks at flowtables of the same nft
+table:
 
-Drivers:
+net/netfilter/nf_tables_api.c:nft_register_flowtable_net_hooks() {
+	list_for_each_entry(ft, &table->flowtables, list) {
+		if (!nft_is_active_next(net, ft))
+			continue;
+		if (nft_hook_list_find(&ft->hook_list, hook)) {
+			err = -EEXIST;
+			...
+}
 
- - btmtk: Declare MT7920 (MT7961 1a) Bluetooth firmware
- - btusb: mediatek: Fix leaked runtime PM reference in reset
- - btusb: Fix leaked runtime PM reference in btusb_reset
- - btusb: Fix UAF of btusb_data by rx_work
- - btusb: Properly disable remote wakeup for MT7922/MT7925 on Ryzen platform
- - btintel_pcie: validate packet_len before skb_put_data
- - btintel_pcie: fix tx_handle bounds off-by-one
- - btrtl: Don't leak return code when parsing firmware format v2
+Two flowtables in two different nft tables therefore produce two independent
+FLOW_BLOCK_BINDs on the same port, and both write the one flag.  Compare
+with dsa_user_setup_tc_block(), which keys the block on f->block via
+flow_block_cb_lookup().
 
-----------------------------------------------------------------
-Ivan Hu (1):
-      Bluetooth: btmtk: Declare MT7920 (MT7961 1a) Bluetooth firmware
+>  	struct device_node	*dn;
+>  	unsigned int		ageing_time;
+>  
+> diff --git a/net/dsa/user.c b/net/dsa/user.c
+> index 041f9060c8ef0..f4cd48df2519d 100644
+> --- a/net/dsa/user.c
+> +++ b/net/dsa/user.c
+> @@ -1718,15 +1718,30 @@ static int dsa_user_setup_tc_block(struct net_device *dev,
+>  	}
+>  }
+>  
+> -static int dsa_user_setup_ft_block(struct dsa_switch *ds, int port,
+> -				   void *type_data)
+> +static int dsa_user_setup_ft_block(struct dsa_port *dp,
+> +				   struct flow_block_offload *bo)
+>  {
+> -	struct net_device *conduit = dsa_port_to_conduit(dsa_to_port(ds, port));
+> +	struct net_device *conduit = dsa_port_to_conduit(dp);
+> +	struct dsa_switch *ds = dp->ds;
+> +	int err;
+> +
+> +	/* The unbind goes to the side that took the bind. */
+> +	if (bo->command == FLOW_BLOCK_BIND) {
+> +		err = -EOPNOTSUPP;
+> +		if (ds->ops->port_setup_tc)
+> +			err = ds->ops->port_setup_tc(ds, dp->index, TC_SETUP_FT,
+> +						     bo);
+> +		dp->ft_on_switch = err != -EOPNOTSUPP;
+> +		if (dp->ft_on_switch)
+> +			return err;
+> +	} else if (dp->ft_on_switch) {
+> +		return ds->ops->port_setup_tc(ds, dp->index, TC_SETUP_FT, bo);
+> +	}
 
-Jiajia Liu (2):
-      Bluetooth: btusb: mediatek: Fix leaked runtime PM reference in reset
-      Bluetooth: btusb: Fix leaked runtime PM reference in btusb_reset
+[Severity: High]
+Following on from the per-block question above: since each
+FLOW_BLOCK_BIND overwrites dp->ft_on_switch, and the FLOW_BLOCK_UNBIND
+routing decision reads only that flag and never looks at bo->block, can an
+unbind reach the side that never took the bind?
 
-Kiran K (2):
-      Bluetooth: btintel_pcie: validate packet_len before skb_put_data
-      Bluetooth: btintel_pcie: fix tx_handle bounds off-by-one
+	BIND(FT_A)   switch returns 0            -> ft_on_switch = true
+	BIND(FT_B)   switch has no room for a
+	             second block, -EOPNOTSUPP   -> ft_on_switch = false,
+	                                            conduit takes FT_B
+	UNBIND(FT_A) reads false                 -> goes to the conduit
 
-Krystian Kaniewski (1):
-      Bluetooth: hci_sysfs: Fix NULL pointer dereference in device_del()
+The conduit provider looks its block up by bo->block, so it simply fails:
 
-Luiz Augusto von Dentz (2):
-      Bluetooth: btusb: Fix UAF of btusb_data by rx_work
-      Bluetooth: hci_sync: Fix not setting CE length properly
+drivers/net/ethernet/mediatek/mtk_ppe_offload.c:mtk_eth_setup_tc_block() {
+	...
+	block_cb = flow_block_cb_lookup(f->block, cb, dev);
+	if (!block_cb)
+		return -ENOENT;
+	...
+}
 
-Rong Zhang (2):
-      Bluetooth: Properly disable remote wakeup for MT7922/MT7925 on Ryzen platform
-      Bluetooth: btrtl: Don't leak return code when parsing firmware format v2
+nft_unregister_flowtable_ops() discards that error, and
+nf_flow_table_offload_setup() returns before reaching the freeing loop in
+nf_flow_table_block_setup():
 
-Xu Rao (1):
-      Bluetooth: btqcomsmd: destroy RPMsg endpoints before freeing hci_dev
+net/netfilter/nf_flow_table_offload.c:nf_flow_table_block_setup() {
+	...
+	case FLOW_BLOCK_UNBIND:
+		list_for_each_entry_safe(block_cb, next, &bo->cb_list, list) {
+			list_del(&block_cb->list);
+			flow_block_cb_free(block_cb);
+	...
+}
 
- drivers/bluetooth/btintel_pcie.c |   6 ++-
- drivers/bluetooth/btmtk.c        |  11 +---
- drivers/bluetooth/btmtk.h        |   1 +
- drivers/bluetooth/btqcomsmd.c    |   6 ++-
- drivers/bluetooth/btrtl.c        |   5 +-
- drivers/bluetooth/btusb.c        | 105 +++++++++++++++++++++++++++++++++++----
- net/bluetooth/hci_sync.c         |  38 +++++++++++++-
- net/bluetooth/hci_sysfs.c        |  17 ++++++-
- 8 files changed, 159 insertions(+), 30 deletions(-)
+nf_flow_table_free() has no leftover-cb cleanup either.  Does the switch's
+flow_block_cb then stay linked on the driver's block list with ->block
+pointing into the freed nf_flowtable, with the hardware offload entries
+never torn down, so that a later flow_block_cb_lookup() can match a stale
+cb if a new flowtable is allocated at the same address?  The mirrored
+ordering (switch answers -EOPNOTSUPP for FT_A, accepts FT_B) sends a
+conduit-owned unbind to the switch instead.
+
+Would keying the ownership on bo->block, the way dsa_user_setup_tc_block()
+does, avoid this?
+
+[Severity: Medium]
+Separately, should ft_on_switch be set for a bind that failed?
+
+	dp->ft_on_switch = err != -EOPNOTSUPP;
+	if (dp->ft_on_switch)
+		return err;
+
+Any hard error from ds->ops->port_setup_tc() (-ENOMEM, -EBUSY, -ENOSPC)
+also satisfies err != -EOPNOTSUPP, so the port is latched as "the switch
+owns the flowtable block" although nothing was bound anywhere -- the switch
+failed, and the conduit was never offered the bind because of the early
+return.  Nothing clears the flag afterwards; it is only recomputed on the
+next FLOW_BLOCK_BIND, never on unbind.
+
+An unbind for a different block that the conduit genuinely holds on the
+same port then takes the else-if branch and is delivered to the switch:
+
+	BIND(FT_A)   switch -EOPNOTSUPP     -> conduit takes FT_A
+	BIND(FT_B)   switch -ENOMEM         -> ft_on_switch = true, err
+	                                       returned, nothing bound
+	UNBIND(FT_A) reads true             -> goes to the switch
+
+The conduit's flow_block_cb for FT_A is then never removed and keeps a
+->block pointer into the freed flowtable.  Should the flag only be set when
+the switch actually accepted the bind, that is err == 0?
+
+>  
+>  	if (!conduit->netdev_ops->ndo_setup_tc)
+>  		return -EOPNOTSUPP;
+>  
+> -	return conduit->netdev_ops->ndo_setup_tc(conduit, TC_SETUP_FT, type_data);
+> +	return conduit->netdev_ops->ndo_setup_tc(conduit, TC_SETUP_FT, bo);
+>  }
+>  
+
+[ ... ]
+
+For both of the above: no in-tree .port_setup_tc handles TC_SETUP_FT today
+(hellcreek, ksz, yt921x, mt753x, felix/vsc9959 and sja1105 all return
+-EOPNOTSUPP), so the switch branch is not reachable in mainline yet, but
+this patch is what enables such drivers.
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260904092719.534318-1-julius%40bairaktaris.de
