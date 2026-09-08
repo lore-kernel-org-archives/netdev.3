@@ -1,40 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66B1D3A6407;
-	Tue,  8 Sep 2026 20:57:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07AD4446066;
+	Tue,  8 Sep 2026 20:59:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788901030; cv=none; b=XmDVfdETWyT/amKz+fdDZ+py4CBrINqP5qVBqIkeGBk0cSlqN1x3s8zCRca4QIdOopDL6m6Hh5Xr9OK9fxb6RtCtyaptJLcWktY1skEOdebTaSo1Mo4qWtNa1+8mOOV1os8vRKEOiIGauFKE1YU2HRawIG6RQa0tRyJg1AUwRPI=
+	t=1788901198; cv=none; b=eSzkcGRnK+AF+OvxSJeRmKleVbV+2SCO6cP8T9pw5jpjUGiC/bAGe7luQZvhlA8jzmYAQJKOl02ceFJBfy1eUgGgmziSL20zC1Y3k8Ixa4RVcffQaEwIVVVf5gpN24SDy7JiT0PA2auARAPg9We6/A1cAEsuMDFfBAYZcSaYf0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788901030; c=relaxed/simple;
-	bh=tgUzFVUfbuuoPe5hu9WjjVvaItyNFSr3ry58Nz6BJak=;
+	s=arc-20240116; t=1788901198; c=relaxed/simple;
+	bh=R0OsQt1ajkSW6MIkNcmWF2QIdbD/km/yG98zNwZUSFc=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Zdn2MA6JoWjyQT8WwkuRqXkdSj5GeF9zfZOK1tGaCtDPo/EH+THo13zkGRciYOMgGMnDr3oruWZklGVs4bqqm858cK76kYwHddqzZyP+1zTjsvgH90iTlZjMZf8ePAVRqbBCPTwzqYUJ6swfDX6iUWHIrjpOhaXGC2vLwDSE4YY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OWH5M8S0; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=YIDiE6qJIdKksqcR/MFGGXSPZQz8OuscJl5vbWGl0ehHbGAj1M3zQtxAsivqFqwNJVUDCKuGAyvK4Dqh4mKuSM+92LPzPI/vsCT+zhVmvtR5JhfSZKw9pcAQnpvHHB8KkP56SFLZhpriMQ5muxi7rorIF9F41Hxbs5Hc1MC59IE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KgAeG7cw; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OWH5M8S0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC6E71F00A3A;
-	Tue,  8 Sep 2026 20:57:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KgAeG7cw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8913B1F00A3A;
+	Tue,  8 Sep 2026 20:59:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788901029;
-	bh=sAaPG5zRAKSsvN18OWek38Yk2K13JLkcId+D90NVXl8=;
+	s=k20260515; t=1788901196;
+	bh=mKvO/MlOzqKg36Pp0xw7ztTPKjQgRFh0aG04rGmqg+o=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=OWH5M8S00SpFu8YrQkRMxB02KAPTmX5gzvJ6a7LdDfwDGWwNpxNlAYoIr0gYV8/bz
-	 YuEF6GFySIUXZd1/QreJEmhFYMs8sXCrxA0IgZZvULmspHox+kmogy2/f+S5zXGXCl
-	 fCmcmVa/PspBK5dlSWHD+rMF7+A0Kd1+Ti3FdP/m+lNyWnEFAZJfm3RNPfCv8V4E5n
-	 uINbeFrIokVe30ArLxkFIY8x/tdDU2MXdoU8vbUYVvgs2++NzmncKJRQ3Ugji+4POy
-	 t5nRl91mX4JRByQiF1+mjYK6sMjA9Z6zM6KRPF34uakzk7MwLBhzvtaCblHdRj7wWX
-	 h8Q8LSUrIEJDw==
-Date: Tue, 8 Sep 2026 13:57:08 -0700
+	b=KgAeG7cwqx93gtPOVRBL2HJsyfSMFA7PLwhvQg4RX/6e0DZx8wPBc7p+6aMZS7fxP
+	 Lr8W9OInJcwl1/bSY/Nw1GA9Ce1JvJA9PIyGx2ZvXLru3/HTc0lPgiFnyFG2f/wUyS
+	 zmts1lEUU0SpdY13eoxj98e7iSkRcpUoan4MwOiuJSgGPogs1ReKb7HfnOOGRD+2Pl
+	 1zqCPd1G3GGJB+QKmkDB6SbSPtPBC5eP6aJiRWX0J82fUU5EF1/NOKw/FvbZurzaBY
+	 hW4O1nvMI7LqOCGCwWx0QVb8Meqatq7Qpkvd2dO3k2mIApOHtL3+CaaAQ+9h5+XhBE
+	 6T1fGjNLy0FIg==
+Date: Tue, 8 Sep 2026 13:59:56 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Cc: davem@davemloft.net, linux-bluetooth@vger.kernel.org,
- netdev@vger.kernel.org
-Subject: Re: [GIT PULL] bluetooth 2026-09-07
-Message-ID: <20260908135708.552fcead@kernel.org>
-In-Reply-To: <20260907172648.457103-1-luiz.dentz@gmail.com>
-References: <20260907172648.457103-1-luiz.dentz@gmail.com>
+To: Ratheesh Kannoth <rkannoth@marvell.com>
+Cc: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
+ <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+ <pabeni@redhat.com>, <sgoutham@marvell.com>, Hariprasad Kelam
+ <hkelam@marvell.com>, Leon Romanovsky <leon@kernel.org>
+Subject: Re: [PATCH v2 net-next] octeontx2-pf: report port connector type in
+ ethtool link ksettings
+Message-ID: <20260908135956.57f2783d@kernel.org>
+In-Reply-To: <ap9zm3g92LgXyAcE@rkannoth-OptiPlex-7090>
+References: <20260907042827.4077114-1-rkannoth@marvell.com>
+	<20260907144038.0937d6ff@kernel.org>
+	<ap9zm3g92LgXyAcE@rkannoth-OptiPlex-7090>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -44,24 +49,22 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon,  7 Sep 2026 13:26:48 -0400 Luiz Augusto von Dentz wrote:
-> bluetooth pull request for net:
+On Tue, 8 Sep 2026 08:01:55 +0530 Ratheesh Kannoth wrote:
+> > I said:
+> >
+> >   drivers should not blindly pass values between uAPI and the FW.
+> >
+> > That means you have to add some explicit validation/translation
+> > for each value even if they are numerically identical.  
 > 
-> Core:
+> A field_get() would be OK to satisfy this translation ?
 > 
->  - hci_sysfs: Fix NULL pointer dereference in device_del()
->  - hci_sync: Fix not setting CE length properly
->  - btqcomsmd: destroy RPMsg endpoints before freeing hci_dev
-> 
-> Drivers:
-> 
->  - btmtk: Declare MT7920 (MT7961 1a) Bluetooth firmware
->  - btusb: mediatek: Fix leaked runtime PM reference in reset
->  - btusb: Fix leaked runtime PM reference in btusb_reset
->  - btusb: Fix UAF of btusb_data by rx_work
->  - btusb: Properly disable remote wakeup for MT7922/MT7925 on Ryzen platform
->  - btintel_pcie: validate packet_len before skb_put_data
->  - btintel_pcie: fix tx_handle bounds off-by-one
->  - btrtl: Don't leak return code when parsing firmware format v2
+> cmd->base.port = FIELD_GET(GENMASK(7, 0), rsp->fwdata.port);
 
-You're missing a bunch of your own sign-off tags.
+switch (fw_value) {
+	case X:
+	case Y:
+		return fw_value;
+	default:
+		return -EINVAL;
+}
