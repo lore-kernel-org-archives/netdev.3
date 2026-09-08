@@ -1,54 +1,84 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6F6F49AA3F;
-	Tue,  8 Sep 2026 23:40:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE63A2853FD;
+	Tue,  8 Sep 2026 23:41:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788910835; cv=none; b=mTiRdvDWaQTACa8+qUFEGj6TEbMmH6MAat1hHO1YsR34UuQ7l0QSlXNiXCvQAKH+MAHisqwTOxtAaSo9fFiS4Hu+x8xIHTdQI7HnPC9jA+HIk6QXh+k0M1djPlHf0rNlIxeo5aPo7UpFl8XSQ7eAZOYKLKL0DtpOOylu/E0YmGs=
+	t=1788910871; cv=none; b=JgVaxCI11hwnvK6/PZ1t7+8w6/DtU//ySblKFzZnTuHywsUGpcDPVSpyN+Hx/9XwILjXF9mp6Wp1UUNDusHLxIJAqSy7hP8wf8wTtweXGf/zxoYeMZvEYDqKErotGNDGTz2Sz5+ZIzez00cWfHY0+RAtve6bM7XNK7RNcnChb1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788910835; c=relaxed/simple;
-	bh=ILYC1SUlaRoM1eZEdrxCH1DxIstltUXyS3si+buDvqg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NbBn94OiaLUFXM7VhTr4hQviclAkhuK6csMbXtUISPsjoskoc5htlVdREouBipX+xes7bnBcYe4Dj0ae3pTGUNS/14HNYXcIvLYa4nOU6EGL2RgIM5WMoIdFc8uzrTNrvjzmV7bQsHCjJPH0z/40XopdxC9NMLzV6sKUNrN9b2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KnB8q1Sc; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788910871; c=relaxed/simple;
+	bh=4FAZAPBSakihwQpbKH+2G2BWQM0JSzuSQhyj/LbVPEk=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=qDC3VkINDYDCU97IGwMkmDnyKPRqzSh73iu3hlhHi4czf5uisKUF33YyXUUl73hBDZZdXxqtNA7U3o45x+XDfGmbD10CCBF/e2bYDF8pzFoKI/QnWn/VIQHMtUcSzs0eyDBKfMQXjGdi2LXRkSk3aX1ar+fsbgTfSlJOO8vBgoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZxxpPckl; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KnB8q1Sc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F1591F00A3D;
-	Tue,  8 Sep 2026 23:40:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZxxpPckl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC0CE1F00A3A;
+	Tue,  8 Sep 2026 23:41:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788910834;
-	bh=fcZJXlYhDWD615p4JT5PC3pufjpYwSICP6q31pEFAmY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=KnB8q1Sc0PgxFQDK6Y73g1x9HgV4XcXzdwBhJticMiHitAo/DF4EZxTa949hxTEgf
-	 w7qpJfuFnxjAEEp183l/rhc16oS6MnFpvZS4GXFpZgBUxE5eqcF6QCl1qCcyM9baHD
-	 ouchSouYJ6LKbEhb8A4e3qJ2n/B78IaygKuXqSQAeFaAzvCiIE47r/OusrL+9NQEQv
-	 Al3wJsx4fuWdITDbQ8MfohxGiSStL8w6px0qPb7BmEAFaPLSR6fagv5A9e4Vl766vd
-	 mBH0Cac+qTwLFZdBAxuJQxm72GbAMIzgSgPZX0Tl4TN3fo7ZqOtY028crTXyaWgj4L
-	 NZ76kYvT+dz7w==
-Date: Tue, 8 Sep 2026 16:40:33 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: "hpp.iscas" <hppiscas@163.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] net: dsa: mv88e6060: Publish the OF module alias
-Message-ID: <20260908164033.5e995dd2@kernel.org>
-In-Reply-To: <20260905134131.66680-1-hppiscas@163.com>
-References: <20260905134131.66680-1-hppiscas@163.com>
+	s=k20260515; t=1788910870;
+	bh=fjCOS4RTI31O9xBBv4SvyfkbLF/qGnIFX38EGfGx350=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=ZxxpPcklkEGI9HTIqa+zDv3LXse+4oEylcMra6jeAwmVrGtV3Ix18p6EHULOuZGYG
+	 1/gwSn2Ex0s5VPS4FdimmptExVRQg7EPKqxXBDR+ysN/JI6+csD3KZqJjdSiQYu9ZF
+	 2YKXbwxK6An2kJ7D53C596LRqXTqXFRhH+Xe+JzmA99oBehV7kLNF4tbgrLytfzXPI
+	 OijnzW3S+hLCWvUKy2dpxUTyAgD1OXghJ21bjYxaHyW4vlCtJo3LopIHHNCnG0e4R+
+	 3mYcjTeC2fyJw3s/9/HkvNVVMhsXghfKvMta/94+ChJF2TaLA/h5O+2kKZ8lCmkQeT
+	 /bSE9HYhgGRVQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93C6D380820D;
+	Tue,  8 Sep 2026 23:40:09 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v3] net: mana: Clear RDMA teardown and suspend state
+ in
+ mana_rdma_probe()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178891080813.64512.14455211971933232834.git-patchwork-notify@kernel.org>
+Date: Tue, 08 Sep 2026 23:40:08 +0000
+References: <20260902175153.3410560-1-longli@microsoft.com>
+In-Reply-To: <20260902175153.3410560-1-longli@microsoft.com>
+To: Long Li <longli@microsoft.com>
+Cc: kotaranov@microsoft.com, kuba@kernel.org, davem@davemloft.net,
+ pabeni@redhat.com, edumazet@google.com, andrew+netdev@lunn.ch, jgg@ziepe.ca,
+ leon@kernel.org, haiyangz@microsoft.com, kys@microsoft.com,
+ wei.liu@kernel.org, decui@microsoft.com, shradhagupta@linux.microsoft.com,
+ horms@kernel.org, ernis@linux.microsoft.com, stephen@networkplumber.org,
+ shirazsaleem@microsoft.com, netdev@vger.kernel.org,
+ linux-rdma@vger.kernel.org, linux-hyperv@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 
-On Sat,  5 Sep 2026 21:41:31 +0800 hpp.iscas wrote:
-> From: "hpp.iscas" <hppiscas@163.com>
+Hello:
 
-We need something resembling your real legal name.
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Wed,  2 Sep 2026 10:51:53 -0700 you wrote:
+> mana_rdma_remove() sets gd->rdma_teardown to stop
+> mana_rdma_service_handle() from acting on servicing events, but nothing
+> ever clears it. A hardware service reset (GDMA_EQE_HWC_RESET_REQUEST)
+> goes through mana_gd_suspend() -> mana_rdma_remove() and mana_gd_resume()
+> -> mana_rdma_probe(), so from the first reset onwards every
+> GDMA_EQE_HWC_SOC_SERVICE event returns early and RDMA suspend/resume
+> servicing is silently dropped for the life of the device.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net,v3] net: mana: Clear RDMA teardown and suspend state in mana_rdma_probe()
+    https://git.kernel.org/netdev/net/c/f6d61fe4c19c
+
+You are awesome, thank you!
 -- 
-pw-bot: cr
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
