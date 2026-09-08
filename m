@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85C4F8635D;
-	Tue,  8 Sep 2026 00:31:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1EEE1E9919;
+	Tue,  8 Sep 2026 00:31:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788827469; cv=none; b=cIlsRiwKDMuMT/RG3eCjZz+R6ruge400vHLIHFp7dq/ZZcajFuAG/t6mQJMzjEgLX8aHDaspyhz7u2L21c7vz1c651zyakz4pSul1RBh63kHrfCnaayRhMtKPTccufnzktqbL7r5FBFKvfNEOW5FsbU4yk9vMSqlVPJIGLmy7B4=
+	t=1788827470; cv=none; b=cueqawQcXHEwJ1gMztihiI7uB2eBZ53SvS2gxqUHqFSXShB9X45zoOsHNbIf+uCpZK69GGOifdvgxRJ1W4z1+keJdQyRprbzU086PJfV3excMjLmGeQEg0tjPc7sMSXUSANyPX1kBJkhQ+GFsKraiE4cQpFStgkfHNOQmR5zbgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788827469; c=relaxed/simple;
-	bh=syWCtcVOhHYaWiSY2r6xWRV8bi/kSeUCptT5uSzuy2I=;
+	s=arc-20240116; t=1788827470; c=relaxed/simple;
+	bh=3elVu73JVCNVQ45mmZkedKeCq4Wm6TJSv1pkF7XlsJo=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=D2LruHB63+Z5PjBnAeaHB10QdMAFRl6hpqgUKuoYndvYmT48++n1qD84DE6e4FEebuYK54/Om36O8m2PNv09vBC/s7DRsELB+MW3nv41f3i50dw7Tp8AH1jpnLvnGyuoHcPDdTb6g9gTDnTX+eZyPMJGkDZNFzPOtF2C1rHio7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LMM6SYId; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=r2m+KOE/tOHIclUW6FMMg3LWrHwxLhPg7DxpVzM4ru5wORuSVYxEZ5sccQUcAv4cwTZihpoCuR0xAieizNoHTRumwu7ks6nYwcwTycnzzWRy6hLi/qgyj5ILoVBFIkn9C6djLle5BiYu81s6ta1sJF3JHeKEbfuJ6SV7UAPtmts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UBumuRHJ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LMM6SYId"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 274C11F00A3A;
-	Tue,  8 Sep 2026 00:31:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UBumuRHJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A13201F00A3D;
+	Tue,  8 Sep 2026 00:31:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788827468;
-	bh=aTfpbWoPV5Ks8QvIcH2YktfVQ76DB2/MKstCU7iSUGU=;
+	s=k20260515; t=1788827469;
+	bh=zj4uIOsknu4mFc4QWbb5E+NrNKepcztoMg49+nbVDJ4=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=LMM6SYIdZ/1t3R6//X2B6bv4xVkzxPSqiUMT7qh+pyTtfbEZ+F5wpIoI+WDM/MQLU
-	 BDx2MX/ewDB9NetS7cgiyKi2OM9gbRdUhgud6Tf82U/66r12XA7G6ZJs+8F4Dd/ui7
-	 L9yS6QAf6pAT35I/kmjSx98yUSB9gJBC0AFKnCF9jxrjpCPiNNdqVuhuFRw7leYQBQ
-	 6uEtwouybGeLX9ThohQIxmPCP+hNUWhsTMeIRgwQaNKFBGm5UpdmSOYN6mjNokuy0m
-	 1rm6lr/ihcyD8TB5UbZv2hu6cdin3YdxF1jXJ0uakdnqMmNdkZwP5PercBG3YakaJP
-	 mm2+b/EcXcV5g==
+	b=UBumuRHJQM2idU/918ra5oUlcyif69v96nSip7JQXqFeFnwD0iQu4XjxeARHAsHau
+	 DMowL1/bMmPBedyr4Y0RUUzS43bBdiBAzUyd+lDRL6ZXCDg8Ih6dmUZ4YoegSS2yf5
+	 Ya4eQTLZ5cT5tjvhqanWOI6I8Ai2/cKTU2KlrZZoJkRuPuLEY2H0H/h4Kp+42zg305
+	 rZBimavGb0A10sXvmkejvLDpAK+CIxUmvjg1mcMeh/JDXZsy7vWWelVQSpYeHrvoL2
+	 d5Xm2N3Jiavz9mM1GxixxERbnCd9Nowrhn6g7ZmdpJD0py4e65PKSRz9+vPhpPzekm
+	 VbtHHk/vjJMMA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 569EE39E8A5B;
-	Tue,  8 Sep 2026 00:30:08 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0D4339E8A5B;
+	Tue,  8 Sep 2026 00:30:09 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,56 +37,39 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v2 0/9] net: bridge: vlan: minor cleanups and
- annotations
+Subject: Re: [PATCH] net: ethernet: ti: davinci_mdio: Drop commas after match
+ table sentinels
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178882740714.3220068.17125741698366920545.git-patchwork-notify@kernel.org>
-Date: Tue, 08 Sep 2026 00:30:07 +0000
-References: <20260903143138.1574598-1-razor@blackwall.org>
-In-Reply-To: <20260903143138.1574598-1-razor@blackwall.org>
-To: Nikolay Aleksandrov <razor@blackwall.org>
-Cc: netdev@vger.kernel.org, idosch@nvidia.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- bridge@lists.linux.dev
+ <178882740838.3220068.8746690241801565022.git-patchwork-notify@kernel.org>
+Date: Tue, 08 Sep 2026 00:30:08 +0000
+References: 
+ <e481b6de46cecc6ea604ae165272c667274cc621.1788437140.git.geert+renesas@glider.be>
+In-Reply-To: 
+ <e481b6de46cecc6ea604ae165272c667274cc621.1788437140.git.geert+renesas@glider.be>
+To: Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: s-vadapalli@ti.com, rogerq@kernel.org, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ linux-omap@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 
 Hello:
 
-This series was applied to netdev/net-next.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Thu,  3 Sep 2026 17:31:29 +0300 you wrote:
-> Hi,
-> In preparation for a complete vlan fast-path re-work, this set cleans up
-> a few minor things - removing legacy code barriers that don't help,
->                      annotating lockless accesses and using proper helpers.
-> No functional changes are intended. Sashiko will find many pre-existing
-> problems, none of them are related to this set. I will try to fix
-> everything pre-existing separately in -net, there will probably be a few
-> critical items. So if there are missed places to annotate, or if there're
-> actual functional changes, these obviously should be addressed in this set.
+On Thu,  3 Sep 2026 14:06:47 +0200 you wrote:
+> It does not make sense to have a comma after a sentinel, as any new
+> elements must be added before the sentinel.
 > 
-> [...]
+> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> ---
+>  drivers/net/ethernet/ti/davinci_mdio.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 
 Here is the summary with links:
-  - [net-next,v2,1/9] net: bridge: vlan: drop legacy memory barriers
-    https://git.kernel.org/netdev/net-next/c/581850fa732a
-  - [net-next,v2,2/9] net: bridge: vlan: annotate lockless pvid use
-    https://git.kernel.org/netdev/net-next/c/bd1aeca09823
-  - [net-next,v2,3/9] net: bridge: mst: use br_get_pvid helper
-    https://git.kernel.org/netdev/net-next/c/e46efd49e05f
-  - [net-next,v2,4/9] net: bridge: vlan: annotate lockless vlan flags use
-    https://git.kernel.org/netdev/net-next/c/2b1f8fd3118c
-  - [net-next,v2,5/9] net: bridge: vlan: annotate lockless use of private flags
-    https://git.kernel.org/netdev/net-next/c/b0bb0a45ce7e
-  - [net-next,v2,6/9] net: bridge: vlan: annotate lockless use of num_vlans
-    https://git.kernel.org/netdev/net-next/c/5bec8f861114
-  - [net-next,v2,7/9] net: bridge: vlan: annotate lockless use of msti
-    https://git.kernel.org/netdev/net-next/c/120207a08fc0
-  - [net-next,v2,8/9] net: bridge: vlan: add missing tinfo.tunnel_id annotations
-    https://git.kernel.org/netdev/net-next/c/f20c44811531
-  - [net-next,v2,9/9] net: bridge: use br_vlan_get_state to get vlan state
-    https://git.kernel.org/netdev/net-next/c/9ef138b168fd
+  - net: ethernet: ti: davinci_mdio: Drop commas after match table sentinels
+    https://git.kernel.org/netdev/net-next/c/615bcbb822cb
 
 You are awesome, thank you!
 -- 
