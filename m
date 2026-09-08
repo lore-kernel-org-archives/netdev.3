@@ -1,35 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EF5E549364;
-	Tue,  8 Sep 2026 14:14:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0393241CB7;
+	Tue,  8 Sep 2026 14:14:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788876869; cv=none; b=ed9e2gWfZsbEzSIpsmBVx5YLipOyFTf5JUwvpRXwc78C47NokN1o+SrM4pHjWxUJfrlhNV/eApj2t2krHS5iz9KPAi1xYvKl6feSToFh8our1hEEEnSSLlv87sSq5Spdwx4YdOMS2H3ccxeg1AIy/+aU8vInnVNtB+SbBAqE0wM=
+	t=1788876876; cv=none; b=NdeQzzVcHh6MOwzW+INy1WOBvYSBb2vQQl4ZQklfUIzAhTG5YVcLgIV6K2v/IrxPJd+t9zSDEQKcVfP50HikwGhWfmemeLI0WiOy8mwqQdxhH0+ncvbqlncM1arCyHajL3Fnjcne2zcZwGJXqF0Mn68ZlhaswGLQ5w5SCHM0W7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788876869; c=relaxed/simple;
-	bh=7draGfBDNZi29j/TLTT47mMEBWips5JH8cEIVxr4N7w=;
+	s=arc-20240116; t=1788876876; c=relaxed/simple;
+	bh=xGnuahGwPP4f82k0zQU436ZpG60wJ/aEuwZt7vnyH40=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=uVkf1+tenlNKw6EHcjA4v/Rg2Ak9hZA06cbd+QXvQogoYWgehHPGBOwhGnu1WY/FdIidnf060y/Rml9flGykJIyUgfIq07/WIP6JL9gmFyOuRVIk2rSBK9dwqxF9t3QDvlKSN6c1x7xAnASphNFQCiAf/RzH6ySUDRuPNXTaxzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oimtIBqS; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=JZMowbOyvbaJMgyEcJdSY8yHyvDzvm1srTkVqdecBgBvmfbMGSF/C06yaS+fPvjyrF1TRhMBk8gNz3KzY4oFGTpE2bXqoLTfs4nrPbFrJ9akpQxhocmTXx4yyjXnsIsoLgbYIHCQvSDu2CZnK5uVk/8usQCkUolRcTMEFe5WTPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HLmpwWLm; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oimtIBqS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5756E1F00A3D;
-	Tue,  8 Sep 2026 14:14:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HLmpwWLm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C2B81F00AC4;
+	Tue,  8 Sep 2026 14:14:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788876857;
-	bh=17seS13qk4JOZLGW6Qfu9f3yF9o8uUYcInlzEsS2S0Q=;
+	s=k20260515; t=1788876865;
+	bh=NqkLnNdB1iaPRZgzHgODWa8SlkXcWwYoiM8hBJRiEzc=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=oimtIBqS+hSoh7HEKX9BPZIPL+CGGLW4BjgFSV08G7k+unaA6I02tz40CCPDVIaTn
-	 CK8336vcLSesjXe53Xtj1jruFMXBSVOXaTN7Ybd0UlHdYoHMNHev6reTOhUaUBYBlq
-	 P/mVStZNArpQNoBT08t9YXObdiaCIiDsDjej3+7THJ1bcatYHf4MAczwBLoBZq5VE0
-	 5NDjnJ77om7NTz9no4uDXw4n5v9QAIEbPwd6giur2YOjd14albDyMaSudkrEw8W5sL
-	 cWFl685WM66HaRXaT+Yh05s3OalafYW8CZCwNdOaeYPEznE+k/u85akaI02SV4VsyH
-	 UtG/s/0CvJwvQ==
+	b=HLmpwWLmY3lKHL14XJaUCgEBnNq58yiKP83mpEFIqmWz6bCK4TKq2nH5sxqNhFb1Y
+	 RXF2lxMhMJZbEUGSzljRwYf6PZO9I17NCO+02uJyQuPszaZYUggDcldE1eUYrP5LEE
+	 cicSGXc7aKq/tiCZ3pY4KDt5Ub320fxgTxwfWYgcAS5aJynB7ws8a+W2nIfpCr/GSb
+	 e0CIObRQCMoT/HwyZ2XQz+ysKab2/w3h7Oz697/vfOZZUBlie1NqyH9GP4XPg3iile
+	 JcQqlibgQY2wMMoKKEEpkOCotM5vhFRaAZVRr93nvpDTHuripXqTM3EH3LRINpI3jE
+	 2T1qzMKkPaxWw==
 From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Tue, 08 Sep 2026 16:07:06 +0200
-Subject: [PATCH net v2 01/15] mptcp: do not reschedule the RTX timer for
- fallback sockets
+Date: Tue, 08 Sep 2026 16:07:09 +0200
+Subject: [PATCH net v2 04/15] mptcp: pm: kernel: drop pending ADD_ADDR when
+ removing ID0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -38,7 +38,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260908-net-mptcp-misc-fixes-7-3-rc1-v2-1-df1de70348b6@kernel.org>
+Message-Id: <20260908-net-mptcp-misc-fixes-7-3-rc1-v2-4-df1de70348b6@kernel.org>
 References: <20260908-net-mptcp-misc-fixes-7-3-rc1-v2-0-df1de70348b6@kernel.org>
 In-Reply-To: <20260908-net-mptcp-misc-fixes-7-3-rc1-v2-0-df1de70348b6@kernel.org>
 To: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, 
@@ -47,124 +47,85 @@ To: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>,
  Simon Horman <horms@kernel.org>
 Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev, 
  linux-kernel@vger.kernel.org, "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, 
- stable@vger.kernel.org
+ Kalpan Jani <kalpan.jani@mpiricsoftware.com>, stable@vger.kernel.org, 
+ syzbot+55c2a5c871441261ed14@syzkaller.appspotmail.com, 
+ Tao Cui <cuitao@kylinos.cn>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3878; i=matttbe@kernel.org;
- h=from:subject:message-id; bh=LyPa1XUh+30erF0yIMt1XvekC3KhkLs9mfYDTkKecY0=;
- b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGLIWSKgFP56WuIHlfKra+m39Pw7+XHb1zMuncv/9GywTI
- q94uB1x6ShlYRDjYpAVU2SRbovMn/m8irfEy88CZg4rE8gQBi5OAZiItDHDH07Bi06hOawdG7pq
- Fct+X+pp8GTUO9H8rJ/TuefD2ess+xkZDhhKqT4UuNHsc/bXhJxjyX2fWJY5nWT8IheUFmcs+1y
- QGwA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2746; i=matttbe@kernel.org;
+ h=from:subject:message-id; bh=BiUuBgq0c7aOBr6JJpkC2oZ8vE+NuO1ltFCd3RnPXgo=;
+ b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGLIWSGg+jpR9sNbqe1nXhsAXa379uDutLnXbovXn7/zav
+ 0b1X/4OpY5SFgYxLgZZMUUW6bbI/JnPq3hLvPwsYOawMoEMYeDiFICJ/Ndn+Gd0e9v1v9Fh1xOO
+ Vd13myd/YX9eZ2Xaaw/d9VUr1B41cisxMmzLNt0W/fz95528L7r9VhlP353YGSEjt/bf0ZqvZXr
+ +/7gB
 X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
  fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Kalpan Jani <kalpan.jani@mpiricsoftware.com>
 
-On fallback socket the retrans timer is a quite convoluted no-op, but
-currently nothing prevents the MPTCP core to keep rescheduling it.
+The in-kernel MPTCP path manager can leave a stale ADD_ADDR announcement
+entry alive when removing the id 0 endpoint. This happens because the id 0
+removal path does not tear down pending announcements, unlike the non-zero
+id path.
 
-Additionally gate RTX timer reset to the msk not being fallen back to
-TCP yet. To avoid adding multiple tests in fast-path, use a new flags
-bit for such condition.
+When the PM later reselects id 0 after adding another signal endpoint, it
+finds the stale anno_list entry and hits WARN_ON_ONCE(mptcp_pm_is_kernel())
+in mptcp_pm_announced_alloc().
 
-The RTX enable bit is clear at close time and set before the msk could
-start retransmitting, with a couple of caveats:
+Root cause: asymmetry between removal paths.
+- Non-zero id path: mptcp_nl_remove_subflow_and_signal_addr() calls
+  mptcp_pm_remove_announced() to clean up.
+- Id 0 path: mptcp_nl_remove_id_zero_address() skips cleanup entirely.
 
-- passive sockets inherit the bit from the listener msk; set the bit on
-  such socket to avoid flipping it in the fast-path, even if the
-  listener will obviously never retransmit.
+Fix by making the id 0 path symmetric: call mptcp_pm_announced_remove()
+and decrement add_addr_signaled before queuing the RM_ADDR.
 
-- while fastopening (MPTFO), mptcp_sendmsg_fastopen still ends-up
-  calling mptcp_connect via tcp_sendmsg_fastopen ->
-  __inet_stream_connect(ssk->sk_socket), and the first subflow's
-  sk_socket points to the msk one.
+Subtle detail: signal endpoints are stored in anno_list with port 0, but
+msk_local carries the connection's local port. In other words, entries
+linked to ID0 paths should have port == 0. A follow-up patch will ensure
+that. mptcp_pm_announced_remove() uses use_port=true for comparison. So
+clear the port before the lookup.
 
-Fixes: b51f9b80c032 ("mptcp: introduce MPTCP retransmission timer")
+Fixes: 740d798e8767 ("mptcp: remove id 0 address")
 Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reported-by: syzbot+55c2a5c871441261ed14@syzkaller.appspotmail.com
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/620
+Suggested-by: Tao Cui <cuitao@kylinos.cn>
+Signed-off-by: Kalpan Jani <kalpan.jani@mpiricsoftware.com>
 Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 ---
-v2:
- - Sashiko noted that the 'RTX disabled' status is carried over across
-   connect() failures, potentially to subsequent successful connect()
-   or listen().
-   Explicitly control the RTX enabling status across the whole msk
-   life-cycle. To make the code more straight forward switch the newly
-   introduced flag semantic.
+v2: use new helpers name, note about "port = 0".
 ---
- net/mptcp/protocol.c | 13 ++++++++++---
- net/mptcp/protocol.h |  1 +
- 2 files changed, 11 insertions(+), 3 deletions(-)
+ net/mptcp/pm_kernel.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
-index e1f08f71cdb1..be59651e708e 100644
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -95,6 +95,7 @@ bool __mptcp_try_fallback(struct mptcp_sock *msk, int fb_mib)
+diff --git a/net/mptcp/pm_kernel.c b/net/mptcp/pm_kernel.c
+index 424f1a7f9248..1a7750813235 100644
+--- a/net/mptcp/pm_kernel.c
++++ b/net/mptcp/pm_kernel.c
+@@ -1137,6 +1137,8 @@ static int mptcp_nl_remove_id_zero_address(struct net *net,
+ 	while ((msk = mptcp_token_iter_next(net, &s_slot, &s_num)) != NULL) {
+ 		struct sock *sk = (struct sock *)msk;
+ 		struct mptcp_addr_info msk_local;
++		struct mptcp_addr_info anno_addr;
++		bool announced;
  
- 	msk->allow_subflows = false;
- 	set_bit(MPTCP_FALLBACK_DONE, &msk->flags);
-+	clear_bit(MPTCP_RTX_ENABLED, &msk->flags);
- 	__MPTCP_INC_STATS(net, fb_mib);
- 	spin_unlock_bh(&msk->fallback_lock);
- 	return true;
-@@ -1084,13 +1085,14 @@ static bool mptcp_rtx_timer_pending(struct sock *sk)
+ 		if (list_empty(&msk->conn_list) || mptcp_pm_is_userspace(msk))
+ 			goto next;
+@@ -1146,7 +1148,13 @@ static int mptcp_nl_remove_id_zero_address(struct net *net,
+ 			goto next;
  
- static void mptcp_reset_rtx_timer(struct sock *sk)
- {
-+	struct mptcp_sock *msk = mptcp_sk(sk);
- 	unsigned long tout;
- 
--	/* prevent rescheduling on close */
--	if (unlikely(inet_sk_state_load(sk) == TCP_CLOSE))
-+	/* Prevent rescheduling on close and in case of fallback. */
-+	if (!test_bit(MPTCP_RTX_ENABLED, &msk->flags))
- 		return;
- 
--	tout = mptcp_sk(sk)->timer_ival;
-+	tout = msk->timer_ival;
- 	sk_reset_timer(sk, &sk->mptcp_retransmit_timer, jiffies + tout);
- }
- 
-@@ -3323,6 +3325,9 @@ void mptcp_set_state(struct sock *sk, int state)
- 		 * transition from TCP_SYN_RECV to TCP_CLOSE_WAIT.
- 		 */
- 		break;
-+	case TCP_CLOSE:
-+		clear_bit(MPTCP_RTX_ENABLED, &mptcp_sk(sk)->flags);
-+		fallthrough;
- 	default:
- 		if (oldstate == TCP_ESTABLISHED || oldstate == TCP_CLOSE_WAIT)
- 			MPTCP_DEC_STATS(sock_net(sk), MPTCP_MIB_CURRESTAB);
-@@ -4141,6 +4146,7 @@ static int mptcp_connect(struct sock *sk, struct sockaddr_unsized *uaddr,
- 	if (IS_ERR(ssk))
- 		return PTR_ERR(ssk);
- 
-+	set_bit(MPTCP_RTX_ENABLED, &msk->flags);
- 	mptcp_set_state(sk, TCP_SYN_SENT);
- 	subflow = mptcp_subflow_ctx(ssk);
- #ifdef CONFIG_TCP_MD5SIG
-@@ -4288,6 +4294,7 @@ static int mptcp_listen(struct socket *sock, int backlog)
- 		goto unlock;
- 	}
- 
-+	set_bit(MPTCP_RTX_ENABLED, &msk->flags);
- 	mptcp_set_state(sk, TCP_LISTEN);
- 	sock_set_flag(sk, SOCK_RCU_FREE);
- 
-diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
-index 87ccb84e9927..2b4c27426477 100644
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -116,6 +116,7 @@
- #define MPTCP_WORK_RTX		1
- #define MPTCP_FALLBACK_DONE	2
- #define MPTCP_WORK_CLOSE_SUBFLOW 3
-+#define MPTCP_RTX_ENABLED	4
- 
- /* MPTCP socket release cb flags */
- #define MPTCP_PUSH_PENDING	1
+ 		lock_sock(sk);
++		/* Drop a possibly pending ADD_ADDR for this address. */
++		anno_addr = msk_local;
++		anno_addr.port = 0;
++		announced = mptcp_pm_announced_remove(msk, &anno_addr);
+ 		spin_lock_bh(&msk->pm.lock);
++		if (announced)
++			msk->pm.add_addr_signaled--;
+ 		mptcp_pm_remove_addr(msk, &list);
+ 		mptcp_pm_rm_subflow(msk, &list);
+ 		__mark_subflow_endp_available(msk, 0);
 
 -- 
 2.55.0
