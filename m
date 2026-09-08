@@ -1,35 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87E765540A9;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80E865328AA;
 	Tue,  8 Sep 2026 14:14:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788876882; cv=none; b=RjDiW0k7LuOwl36Uz0akZeUEkfvJmBbSJDL11lBHauWGNB38u47yXD9A2bZA+3xSRxe11nP5VaYHRc6X3eTQ/MCBgDcWJGT5lPf6HggcacPF3IbHVJZ8kR+39CGAahh3UdjhOwK1GLxVMwBPy2wXdF9b2/QbENZvZrDgREWU38U=
+	t=1788876883; cv=none; b=TPSRv8puZAtlSSUHc4WOqLqsXg09eQPop+3Rs+jFLmDJrHANfozh4rqzZ5tg9lZQyxttglHbAmok8ryT4pJC46nq9Dl0NG95LhKEWz/elf4DgusaxFLPMy74Mz5VVocNbnQjsDwbC5t1v0lb7GNw7y2nVkcKkzj+aufO42uMS54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788876882; c=relaxed/simple;
-	bh=8JjDG2J3jEdCZkbqt3U//6l4ggwme3t78z+VOG5XkDk=;
+	s=arc-20240116; t=1788876883; c=relaxed/simple;
+	bh=m5RufpM1iGzPPvtzkD1eeKoMvpDBVtPor9gzhjsGBTA=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=InMbnZPTqBrTZXMYHGycwhzHkU1tKlLXAC/xFaGLjCPb0JWzwhf08D0wL6UaZu4Yu8eaMWXm9SIguk+XLue+UtjpJw/dWflPPY+I7GfJs6VuseHWjQPh5HjGsCoGhdT+22UzJ5OcaHNoUc4AAtvhsCTB05hnxKl0PNxJsry+vdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hLQWE+6t; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=SxjDt2SXKTnkhPKG0whrerBZy0riHAeGlnF9sW0rQ99LxSZFV8hzikV76CfifKckRAIqSJKw/ZLmdpGGPWPi0OoImHyMSdZDqCDrihDtJV5GfwOf1EcjunHMjbC1yvWaVnpC4k3m+eWZcR2pf8+G4vUXIJlss6uJbLOOHKAPnOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a79RyTtH; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hLQWE+6t"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7C9A1F00A3D;
-	Tue,  8 Sep 2026 14:14:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a79RyTtH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B536F1F00ACF;
+	Tue,  8 Sep 2026 14:14:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788876872;
-	bh=bI1QFqme7+lJ2wpHo1+LquJZx4pXgkY27jmIYw7Nq6E=;
+	s=k20260515; t=1788876869;
+	bh=krhneQzf+Kzuapre9jYZgnLcjei4TLyTo9eSa6exwl8=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=hLQWE+6tYqw8dRYth7l9ETFNf4PHqPHGwio52LkyvJp4WA1DvPuVl66scUUbcAuW3
-	 htYbBUVVFYRQcGJjXwkcgbErzmNMAGFLBqgdtex9tzEW6/88eVKni4JF8nk0ClIY0q
-	 UKUNaXg+baVlvj8wKYrFsNfI2kkDoItHwe3cl6n3VeUv3ONglLXux/ASJSUCC3b7Uw
-	 yDYMpDyV3JbeO8BJpIJt6Ur5TUUN6B2BHHxMzF+nAbqgqTY+UWzOn0YCXfneJEQzMy
-	 ZzWlL/uTIdbmHjqwRTYf1Vgd6lvdrqyxlG8AiOIN44D3lpSQViOICNHT9kIhaM9YnK
-	 BGxAaxBA9d+0g==
+	b=a79RyTtHhqOg65iEaM9wJ5D1nDxKV8eCD/wRfqnHevWLFcvpo7cN6KbP0YSxOmUWy
+	 +a/7JvY4jwR26hlycJl5wbegCKKdg9Hu/9Iwfz7Q4roo+xlnglXBqm4GVHt6msurSe
+	 oAx5FyqeozkoD53HB2+x12Xy2imoVGFpuME7SZQlkbwqFtzMbl5rvIGp739/2IFKXI
+	 p+xvUS5Vu28bPWRxWnPhLnHy0LT7x6QhLdKgzWZckzWMD6QPANxwiK1GNSrKx/RQFI
+	 aK7vd7kTEM7uxX8HaM9p887xN6RPVivbeX8KwrgxzCowVGoPDRcQmDNEyB3o9zOz+g
+	 DXDjgqSSMNATw==
 From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Tue, 08 Sep 2026 16:07:12 +0200
-Subject: [PATCH net v2 07/15] selftests: mptcp: fix an UAF in
- mptcp_connect.c
+Date: Tue, 08 Sep 2026 16:07:11 +0200
+Subject: [PATCH net v2 06/15] mptcp: prevent race between disconnect() and
+ rtx
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -38,7 +38,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260908-net-mptcp-misc-fixes-7-3-rc1-v2-7-df1de70348b6@kernel.org>
+Message-Id: <20260908-net-mptcp-misc-fixes-7-3-rc1-v2-6-df1de70348b6@kernel.org>
 References: <20260908-net-mptcp-misc-fixes-7-3-rc1-v2-0-df1de70348b6@kernel.org>
 In-Reply-To: <20260908-net-mptcp-misc-fixes-7-3-rc1-v2-0-df1de70348b6@kernel.org>
 To: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, 
@@ -46,66 +46,58 @@ To: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>,
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
  Simon Horman <horms@kernel.org>
 Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev, 
- linux-kernel@vger.kernel.org, "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, 
- Gang Yan <yangang@kylinos.cn>, stable@vger.kernel.org, 
- Shuah Khan <shuah@kernel.org>, linux-kselftest@vger.kernel.org
+ linux-kernel@vger.kernel.org, "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1876; i=matttbe@kernel.org;
- h=from:subject:message-id; bh=z1iJ73EI6mQ/ELE58y3y+0cCYyNXtjGYVHzqia9Z/wc=;
- b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGLIWSOikTO9ZY3HypsMioRjWrQ0SkvIss+8cDVz7+3ziZ
- XP3BW+MO0pZGMS4GGTFFFmk2yLzZz6v4i3x8rOAmcPKBDKEgYtTACYy5wYjw7QvD3b+NjqtVtTl
- /W9+XVN8YN2H4JltDNXfql1Vo/L29TMyzE8tOZx2Tv3FSafMrNiXAcrbOFlmXJr4PuFXT6rwIYN
- MDgA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1509; i=matttbe@kernel.org;
+ h=from:subject:message-id; bh=o7fd5Gfi6MDOTSu1e2H4WVQGRPh7XaVrocJErKh//+8=;
+ b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGLIWSGjbrDUsdNGMOPiByfKg/Wx2rZUbNHOYD19fWVtc9
+ OP1bZe6jlIWBjEuBlkxRRbptsj8mc+reEu8/Cxg5rAygQxh4OIUgIn8vMbw36l/oYFJ85ETG799
+ f9m9lcP0/IMU86d/X3AkznJi8Fj5nZfhn17R0euuFye4s2vL7TkQ2HlazPNIkOHn/xscs3fHt9n
+ kMQEA
 X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
  fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 
-From: Gang Yan <yangang@kylinos.cn>
+From: Paolo Abeni <pabeni@redhat.com>
 
-At the end of 'sock_connect_mptcp()', it calls 'freeaddrinfo(addr)',
-the 'peer' pointer (which points into 'addr') remains. Later, the main
-loop uses this peer pointer for reconnection attempts. If the memory has
-been freed and reused, the address data could be overwritten, resulting
-in an invalid remote address.
+Sashiko noted that the two event can race, leading to inconsistent
+status. Prevent the race using the synchronous timer stop operation.
 
-This patch keeps the addrinfo list allocated for the whole process
-lifetime so "peer" remains valid across reconnects; the memory will be
-released at exit() time.
-
-Fixes: 05be5e273c84 ("selftests: mptcp: add disconnect tests")
-Cc: stable@vger.kernel.org
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Gang Yan <yangang@kylinos.cn>
+Fixes: b29fcfb54cd7 ("mptcp: full disconnect implementation")
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 ---
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: linux-kselftest@vger.kernel.org
----
- tools/testing/selftests/net/mptcp/mptcp_connect.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/mptcp/protocol.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/net/mptcp/mptcp_connect.c b/tools/testing/selftests/net/mptcp/mptcp_connect.c
-index ea4cb6c1bd5e..178d98d91fea 100644
---- a/tools/testing/selftests/net/mptcp/mptcp_connect.c
-+++ b/tools/testing/selftests/net/mptcp/mptcp_connect.c
-@@ -381,6 +381,9 @@ static int sock_connect_mptcp(const char * const remoteaddr,
+diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+index be59651e708e..d611af2eb74f 100644
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -3588,6 +3588,7 @@ static void mptcp_destroy_common(struct mptcp_sock *msk)
  
- 	hints.ai_family = pf;
+ static int mptcp_disconnect(struct sock *sk, int flags)
+ {
++	struct inet_connection_sock *icsk = inet_csk(sk);
+ 	struct mptcp_sock *msk = mptcp_sk(sk);
  
-+	/* Keep the resolved address alive for the whole execution: it is
-+	 * used again when reconnecting, and will be released at exit time.
+ 	/* We are on the fastopen error path. We can't call straight into the
+@@ -3600,8 +3601,13 @@ static int mptcp_disconnect(struct sock *sk, int flags)
+ 	mptcp_check_listen_stop(sk);
+ 	mptcp_set_state(sk, TCP_CLOSE);
+ 
+-	mptcp_stop_rtx_timer(sk);
+-	mptcp_stop_tout_timer(sk);
++	/* The later subflow close can not kick again the tout timer,
++	 * as the msk is already in closed status.
 +	 */
- 	xgetaddrinfo(remoteaddr, port, &hints, &addr);
- 	for (a = addr; a; a = a->ai_next) {
- 		sock = socket(a->ai_family, a->ai_socktype, proto);
-@@ -421,7 +424,6 @@ static int sock_connect_mptcp(const char * const remoteaddr,
- 		sock = -1;
- 	}
++	msk->timer_ival = icsk->icsk_rto_min;
++	sk_stop_timer_sync(sk, &sk->mptcp_retransmit_timer);
++	icsk->icsk_mtup.probe_timestamp = 0;
++	sk_stop_timer_sync(sk, &icsk->mptcp_tout_timer);
  
--	freeaddrinfo(addr);
- 	if (sock != -1)
- 		SOCK_TEST_TCPULP(sock, proto);
- 	return sock;
+ 	mptcp_pm_connection_closed(msk);
+ 
 
 -- 
 2.55.0
