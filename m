@@ -1,87 +1,62 @@
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03C3D3AC0FA;
-	Tue,  8 Sep 2026 20:27:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E87AA3AFD17;
+	Tue,  8 Sep 2026 20:32:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788899281; cv=none; b=HJ39ExWM0qkU0KCpUabYnkA2dcuE92DCxN1OAMqfsuZ/MgxLVwy3vTM9cebM1ATEBTNsZW+COTUOwl1Kykat/i93WSQ5p6K3db1VSKT15si8hzZlfkjfkMnD01RTpKUNZVEPYsm49ZGzXB2WPQSP0ZWJtZK3cxRy8r9R95nyUU8=
+	t=1788899566; cv=none; b=aGcJUJeGkZZm1jI0OmZF/Fp+zjZrov1VsqASZkFgXc4HIUre5QSMR/Ng1+2qqzjPSOXhtMOwawP1hA+BWCPQ9wuKzI1HNg4b8fPTy2X/z8kTpuwkix1CcvkSTNSWyaTVzR8xWg1As6yMwH78njF41Qx+RHht4thqqE/8OTPvvMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788899281; c=relaxed/simple;
-	bh=6PGUsdWAJ5itb1tBxcAZFkYjuulVrO26ZhmGSsf2HB0=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=H25vD3ABIgJVtLybd5HouinF84uyD48IjBHuJbgAOj30IAuuw4KJ27Hf3kiA70XqpkHZyQWK0HICKfOfVgHnTwPXYacsDUfKmiLdl/E+Obi/deMJpye71oH+Zv9ui2PIn7Bd/QWiEOnNvY/cfKPXQupKlLFruopGhwTExSk3mJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=bC/+sGBY; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+	s=arc-20240116; t=1788899566; c=relaxed/simple;
+	bh=xLvaBK3xHpnvy2JCMFCaNQNgcU78b6QBE7GzP94VEmk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LyJ+aL8qFKl9iaxVNt7mrpGDXVHsxv4LB2RuOQz8+zVXdV6BOm/Z68oRtql1BXr4rvr7X5LMCr+zxLo3fvBSyQu3SodEVQDsX2/V3KYLcnswp/MlZe/ijCANt2iNwZjt+y8U4Q5kMwLM+TFUNHbfbxiSOuMH/kv6tXQcZaLv2wA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=gkv5vuS8; arc=none smtp.client-ip=217.70.190.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="bC/+sGBY"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=E339hku+nsXigG6xS5eAMnOglg7j43G8fXIZZLMCQvc=;
-	t=1788899280; x=1790108880; b=bC/+sGBYJcC3JnGbZeJFdGMDFD9qB04n05Jd2lVEFsQwvwj
-	RhLMWZB1Ab82MuISeIBpRWKErVV+0yqSu8Qn/+db3yS+8Fx0LI3WTjj0OvVNVUQuCEGp7LoFHBk4R
-	bqjOqYfqL7Lzr83F3kI7+Pc0SHNoVbbY2Na4IzzLf02WcurnbhbDS5LQ1tzZn8Y/Vc1b8zl/QxnhF
-	6kxW8uY9zLjjcRNSEKb8+tKBOxHj+LmTiSdNLJ3inXDtaD3WO/dP5BeHt/13PMgGqiXb1FN25akWN
-	lwVpXlZq9eNJAtWop3fTZuIzymd/kCI1e23ih4ocVMRvYzDmO7jFyAcqh7ncSkLA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__ECDSA_SECP256R1_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1x42Q5-00000006dMP-1QZK;
-	Tue, 08 Sep 2026 22:27:53 +0200
-Message-ID: <0e950f7f0c3f5a2c1f6476e255716b09876624f4.camel@sipsolutions.net>
-Subject: Re: [PATCH RESEND wireless-next 00/18] wifi: Add Seamless Mobility
- Domain (SMD) AP support
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Pooventhiran G <pooventhiran.g@oss.qualcomm.com>, "David S . Miller"
-	 <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
-	 <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-wireless@vger.kernel.org
-Date: Tue, 08 Sep 2026 22:27:52 +0200
-In-Reply-To: <20260908132004.29176fec@kernel.org>
-References: <20260908-smd-v1-0-9fd2d876a1fb@oss.qualcomm.com>
-		<20260908125017.0fb226c5@kernel.org>
-		<404004c4c97bf776077685b7ec33a14fa777cd70.camel@sipsolutions.net>
-		<80266eb9666d6106110d998cb6330868da55bf59.camel@sipsolutions.net>
-	 <20260908132004.29176fec@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="gkv5vuS8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1788899562;
+	bh=/fjal4Dx2esK25ZKPADi218K6qmyeSznYUSY/sYGPRw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=gkv5vuS8kMu7hvQMz3Lr8MJDHOiwb26uYaqrbKg030arj2+pt9M2wRkNkwJU7YRsh
+	 Sh+oCeSeQZJKXnan51kELMVWcMCRzIhIVQz2TEZ5+vWKY4pE4aK/mo7nFX8RvO2TrS
+	 KkcdyLR0xnisNVj21udwvbcxngqMHD3jq1LuULVWmM2pbYbu8bStV38Jz9bwetlcIV
+	 GkXN0lP5NkwM0Q5P0YiKQnBZ2nMIjo4OfS2+mdzVoZ335UFsNLlv8ISNTwfivWdzak
+	 WBDXy1a0sOeazz1Nc/Ien+QvTU5BtNQl0YDSFZipPYMqEudMhJdeRp+RuLUrzRe0eE
+	 m++Cru54JCZqw==
+Received: from netfilter.org (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 1B0B5606E7;
+	Tue,  8 Sep 2026 22:32:42 +0200 (CEST)
+Date: Tue, 8 Sep 2026 22:32:39 +0200
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: netdev-bot+sashiko@kernel.org
+Cc: netfilter-devel@vger.kernel.org, davem@davemloft.net,
+	netdev@vger.kernel.org, kuba@kernel.org, pabeni@redhat.com,
+	edumazet@google.com, horms@kernel.org, fw@strlen.de, ja@ssi.bg
+Subject: Re: [PATCH net 7/9] netfilter: arp_tables: remove the 32bit compat
+ interface
+Message-ID: <aqBw5ymelxVziuZl@chamomile>
+References: <20260907171732.1407739-8-pablo@netfilter.org>
+ <178889064289.219967.7333044974025476861@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <178889064289.219967.7333044974025476861@kernel.org>
 
-On Tue, 2026-09-08 at 13:20 -0700, Jakub Kicinski wrote:
-> On Tue, 08 Sep 2026 21:57:52 +0200 Johannes Berg wrote:
-> > On Tue, 2026-09-08 at 21:51 +0200, Johannes Berg wrote:
-> > > On Tue, 2026-09-08 at 12:50 -0700, Jakub Kicinski wrote: =20
-> > > > On Tue,  8 Sep 2026 22:39:28 +0530 Pooventhiran G wrote: =20
-> > > > Why are you sending this To: core networking maintainers.
-> > > > This is wireless code, what do we know.
-> > > > Drop the core maintainers and netdev@ going forward please. =20
-> > >=20
-> > > They have patch 1 but I already told them a long time ago that was
-> > > completely broken, I don't know why this is happening ... =20
->=20
-> Ah, missed the skb extension. Obvious AI slop. Fun times.
+On Tue, Sep 08, 2026 at 06:04:02PM +0000, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider:
+> 
+> Critical: 0 · High: 0 · Medium: 0 · Low: 1
 
-"Look Mom, I can push a button, I'm an engineer now!"
+This rising a lot of issues, because arptables 32bit gets broken.
 
-Do we have rules? I'm currently refusing to read anything that has an AI
-written commit message ... at the very least.
-
-While I was on vacation the AI sloperators were arguing with each other
-on the wireless list:
-https://lore.kernel.org/linux-wireless/20260827074442.826644@enxio.de/
-
-Can I ban those email addresses somehow?
-
-johannes
+We can follow up to break it more "nicely", but it is not a big issue.
