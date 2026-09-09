@@ -1,20 +1,20 @@
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F07DB3A7584;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1736493D29;
 	Wed,  9 Sep 2026 22:25:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788992714; cv=none; b=UQ9D4gXGjbaiHNGjWhKQtNOa0LceB+56feKly5tHOxW0yNFMrYXHkyvHTzgoUGmv4Rd0c9crCLoslmTjoup/K6rag0WaaAAyi3Edx8YBqrmCg5b6KdzBwCmN+QttERp53NsEx1uv5lOPMawRFb2rWAgf4jD0I+iWq/QawPZwQYY=
+	t=1788992716; cv=none; b=TXY7CDXwdsmwlZl0ARVGP2cNj0edNUtAlydhW8uTI+ziEO/0dFhpp6omad3/l0lY7l/NipFEwRr6WD8Vsu9IELF8E4JfuU2o3U2Hk6WRJiw97oIRhmoncXj1bSIX9WgxGG1i1delLTgBBMhCLRaTJJjLZmZ+B8ogWetn6xAc8gE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788992714; c=relaxed/simple;
-	bh=D2P6kuGtuUlDsQjagxOf+k3N4+zVUXR2UNPB1qrd0gQ=;
+	s=arc-20240116; t=1788992716; c=relaxed/simple;
+	bh=/gFBq7f+AwduFROHxq03vBdluC8K1h7rqXy4+n0Ut4A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ihATxEXhVzKusJ5ix0tqKltHDZKqffe1WfoPl2JIZtfadRuo3mS5/9UaKz7fU27gULQlTWKNCRVk4/1IEYenGgbjUN6hGcibLYt/mpUE2FA4NEkdnRpXelnrV5m86iC6PeEL1VBJyShVZ0DEHyxKlkBwiVu8le4STQC2k7WJqg4=
+	 MIME-Version; b=kNFTaywsv+rBOBx1MJ92BDuEnuh+nj49DGQbVk2FVb9qKIfGAEDxA91AquZ4foQNmqoBQdtz0xh2/KTALZI5jXJdGHLwV6j8u9WprUv7aXFa7FgOYDKWb9GyHHhxVe7yLz9x2mJlFddo9Cti0yz7q+lnESXp4aB6WMCDXFOx/rg=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; arc=none smtp.client-ip=13.77.154.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Received: by linux.microsoft.com (Postfix, from userid 1202)
-	id 6776A20B716D; Wed,  9 Sep 2026 15:24:29 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 6776A20B716D
+	id 4BD8520B716B; Wed,  9 Sep 2026 15:24:29 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 4BD8520B716B
 From: Long Li <longli@microsoft.com>
 To: Long Li <longli@microsoft.com>,
 	Long Li <longli@kernel.org>,
@@ -39,9 +39,9 @@ Cc: netdev@vger.kernel.org,
 	linux-rdma@vger.kernel.org,
 	linux-hyperv@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v5 04/13] net: mana: swap queue sets in mana_set_ringparam
-Date: Wed,  9 Sep 2026 15:24:07 -0700
-Message-ID: <20260909222416.884246-5-longli@microsoft.com>
+Subject: [PATCH net-next v5 02/13] net: mana: share the EQ pool across a queue-set swap
+Date: Wed,  9 Sep 2026 15:24:05 -0700
+Message-ID: <20260909222416.884246-3-longli@microsoft.com>
 X-Mailer: git-send-email 2.43.7
 In-Reply-To: <20260909222416.884246-1-longli@microsoft.com>
 References: <20260909222416.884246-1-longli@microsoft.com>
@@ -53,12 +53,12 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Replace detach/attach with queue-set allocation and publication. Failed
-allocation now leaves the running queues and ring sizes unchanged,
-rather than risking a detached port after attach failure.
+Make the EQ pool port-owned so overlapping queue sets share EQs instead
+of requiring old + new vector allocations. Allocate max_queues slots and
+track populated entries with num_eqs.
 
-Skip requests whose rounded sizes already match. Keep RDMA excluded
-through failure cleanup, which can release the vport.
+Grow the pool before creating replacement CQs. Additional EQs survive
+allocation failure in this patch and are released at port teardown.
 
 Signed-off-by: Long Li <longli@microsoft.com>
 ---
@@ -66,107 +66,245 @@ Changes in v5:
   - Rebased onto current net-next; no changes to this patch.
 
 Changes in v4:
-  - Describe the old failed-attach behaviour without the nonexistent
-    retry chain, and shorten comments.
+  - Clarify that allocation can grow the live, port-owned EQ pool and
+    that partial growth is retained at this stage of the series.
+  - Shorten the scratch-context ownership comments.
 
- .../ethernet/microsoft/mana/mana_ethtool.c    | 68 ++++++++++++-------
- 1 file changed, 45 insertions(+), 23 deletions(-)
+ drivers/net/ethernet/microsoft/mana/mana_en.c | 86 ++++++++++++++++---
+ include/net/mana/mana.h                       |  6 +-
+ 2 files changed, 76 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_ethtool.c b/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
-index 45031ca1254e327a9b129bd77c7a08fb8a240838..96f355de9779cc865a896f4834f780a158cdc058 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
-@@ -750,13 +750,11 @@ static int mana_set_ringparam(struct net_device *ndev,
- 			      struct netlink_ext_ack *extack)
+diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
+index 5ac3ae9fd7ea2f786dddbd21d340884c008e1020..fc80d4bcde6c453d61222371d7763cff90b2a26a 100644
+--- a/drivers/net/ethernet/microsoft/mana/mana_en.c
++++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+@@ -1733,7 +1733,7 @@ void mana_destroy_eq(struct mana_port_context *apc)
+ 	debugfs_remove_recursive(apc->mana_eqs_debugfs);
+ 	apc->mana_eqs_debugfs = NULL;
+ 
+-	for (i = 0; i < apc->num_queues; i++) {
++	for (i = 0; i < apc->num_eqs; i++) {
+ 		eq = apc->eqs[i].eq;
+ 		if (!eq)
+ 			continue;
+@@ -1745,6 +1745,7 @@ void mana_destroy_eq(struct mana_port_context *apc)
+ 
+ 	kfree(apc->eqs);
+ 	apc->eqs = NULL;
++	apc->num_eqs = 0;
+ }
+ EXPORT_SYMBOL_NS(mana_destroy_eq, "NET_MANA");
+ 
+@@ -1773,9 +1774,11 @@ int mana_create_eq(struct mana_port_context *apc)
+ 
+ 	if (WARN_ON(apc->eqs))
+ 		return -EEXIST;
+-	apc->eqs = kzalloc_objs(struct mana_eq, apc->num_queues);
++	/* Keep EQ array addresses stable while CQs reference them. */
++	apc->eqs = kzalloc_objs(struct mana_eq, apc->max_queues);
+ 	if (!apc->eqs)
+ 		return -ENOMEM;
++	apc->num_eqs = 0;
+ 
+ 	spec.type = GDMA_EQ;
+ 	spec.monitor_avl_buf = false;
+@@ -1805,6 +1808,7 @@ int mana_create_eq(struct mana_port_context *apc)
+ 		}
+ 		apc->eqs[i].eq->eq.irq = gic->irq;
+ 		mana_create_eq_debugfs(apc, i);
++		apc->num_eqs = i + 1;
+ 	}
+ 
+ 	return 0;
+@@ -1814,6 +1818,61 @@ int mana_create_eq(struct mana_port_context *apc)
+ }
+ EXPORT_SYMBOL_NS(mana_create_eq, "NET_MANA");
+ 
++/* Grow the shared EQ pool without replacing live entries. */
++static int mana_grow_eqs(struct mana_port_context *apc, unsigned int need)
++{
++	struct gdma_dev *gd = apc->ac->gdma_dev;
++	struct gdma_context *gc = gd->gdma_context;
++	struct gdma_queue_spec spec = {};
++	struct gdma_irq_context *gic;
++	unsigned int i;
++	int err;
++	int msi;
++
++	if (WARN_ON(!apc->eqs))
++		return -EINVAL;
++
++	if (need > apc->max_queues)
++		return -EINVAL;
++
++	if (need <= apc->num_eqs)
++		return 0;
++
++	spec.type = GDMA_EQ;
++	spec.monitor_avl_buf = false;
++	spec.queue_size = EQ_SIZE;
++	spec.eq.callback = NULL;
++	spec.eq.context = apc->eqs;
++	spec.eq.log2_throttle_limit = LOG2_EQ_THROTTLE;
++
++	for (i = apc->num_eqs; i < need; i++) {
++		msi = (i + 1) % gc->num_msix_usable;
++
++		gic = mana_gd_get_gic(gc, !gc->msi_sharing, &msi);
++		if (IS_ERR(gic)) {
++			err = PTR_ERR(gic);
++			goto out;
++		}
++		spec.eq.msix_index = msi;
++
++		err = mana_gd_create_mana_eq(gd, &spec, &apc->eqs[i].eq);
++		if (err) {
++			dev_err(gc->dev, "Failed to grow EQ %u : %d\n", i, err);
++			mana_gd_put_gic(gc, !gc->msi_sharing, msi);
++			goto out;
++		}
++		apc->eqs[i].eq->eq.irq = gic->irq;
++		mana_create_eq_debugfs(apc, i);
++		apc->num_eqs = i + 1;
++	}
++
++	return 0;
++out:
++	/* Retain partial growth for reuse; the live set still needs this pool.
++	 */
++	return err;
++}
++
+ static int mana_fence_rq(struct mana_port_context *apc, struct mana_rxq *rxq)
  {
- 	struct mana_port_context *apc = netdev_priv(ndev);
-+	struct mana_port_context *scratch;
-+	struct mana_qset newq, oldq;
- 	u32 new_tx, new_rx;
--	u32 old_tx, old_rx;
- 	int err;
- 
--	old_tx = apc->tx_queue_size;
--	old_rx = apc->rx_queue_size;
--
- 	if (ring->tx_pending < MIN_TX_BUFFERS_PER_QUEUE) {
- 		NL_SET_ERR_MSG_FMT(extack, "tx:%d less than the min:%d", ring->tx_pending,
- 				   MIN_TX_BUFFERS_PER_QUEUE);
-@@ -774,32 +772,56 @@ static int mana_set_ringparam(struct net_device *ndev,
- 	netdev_info(ndev, "Using nearest power of 2 values for Txq:%d Rxq:%d\n",
- 		    new_tx, new_rx);
- 
--	/* pre-allocating new buffers to prevent failures in mana_attach() later */
--	apc->rx_queue_size = new_rx;
--	err = mana_pre_alloc_rxbufs(apc, ndev->mtu, apc->num_queues);
--	apc->rx_queue_size = old_rx;
--	if (err) {
--		netdev_err(ndev, "Insufficient memory for new allocations\n");
--		return err;
-+	if (new_rx == apc->rx_queue_size && new_tx == apc->tx_queue_size)
-+		return 0;
-+
-+	if (!apc->port_is_up) {
-+		apc->rx_queue_size = new_rx;
-+		apc->tx_queue_size = new_tx;
-+		return 0;
- 	}
- 
--	err = mana_detach(ndev, false);
--	if (err) {
--		netdev_err(ndev, "mana_detach failed: %d\n", err);
--		goto out;
-+	/* Exclude RDMA through failure cleanup, which may release the vport. */
-+	mutex_lock(&apc->vport_mutex);
-+	if (apc->channel_changing) {
-+		mutex_unlock(&apc->vport_mutex);
-+		return -EBUSY;
-+	}
-+	apc->channel_changing = true;
-+	mutex_unlock(&apc->vport_mutex);
-+
-+	scratch = mana_qset_scratch_alloc(apc);
-+	if (!scratch) {
-+		err = -ENOMEM;
-+		goto clear_flag;
- 	}
- 
--	apc->tx_queue_size = new_tx;
--	apc->rx_queue_size = new_rx;
-+	err = mana_alloc_qset(apc, scratch, apc->num_queues, new_rx, new_tx,
-+			      apc->priv_flags, &newq);
-+	if (err) {
-+		NL_SET_ERR_MSG_FMT(extack, "failed to change ring params: %d",
-+				   err);
-+		goto free_scratch;
-+	}
- 
--	err = mana_attach(ndev);
-+	err = mana_publish_qset(apc, &newq, &oldq);
- 	if (err) {
--		netdev_err(ndev, "mana_attach failed: %d\n", err);
--		apc->tx_queue_size = old_tx;
--		apc->rx_queue_size = old_rx;
-+		NL_SET_ERR_MSG_FMT(extack, "failed to change ring params: %d",
-+				   err);
-+		mana_free_qset(scratch, &newq);
-+		goto free_scratch;
- 	}
--out:
--	mana_pre_dealloc_rxbufs(apc);
-+
-+	mana_free_qset(scratch, &oldq);
-+
-+free_scratch:
-+	/* Release unpublished queues before closing their shared EQ pool. */
-+	mana_publish_close_if_needed(apc);
-+	mana_qset_scratch_free(scratch);
-+clear_flag:
-+	mutex_lock(&apc->vport_mutex);
-+	apc->channel_changing = false;
-+	mutex_unlock(&apc->vport_mutex);
- 	return err;
+ 	struct mana_fence_rq_resp resp = {};
+@@ -3814,7 +3873,6 @@ static int mana_dealloc_queues(struct net_device *ndev)
+ static void mana_qset_snapshot(const struct mana_port_context *ctx,
+ 			       struct mana_qset *out)
+ {
+-	out->eqs		= ctx->eqs;
+ 	out->tx_qp		= ctx->tx_qp;
+ 	out->rxqs		= ctx->rxqs;
+ 	out->indir_table	= ctx->indir_table;
+@@ -3831,7 +3889,6 @@ static void mana_qset_snapshot(const struct mana_port_context *ctx,
+ static void mana_qset_install(struct mana_port_context *ctx,
+ 			      const struct mana_qset *qset)
+ {
+-	ctx->eqs		= qset->eqs;
+ 	ctx->tx_qp		= qset->tx_qp;
+ 	ctx->rxqs		= qset->rxqs;
+ 	ctx->indir_table	= qset->indir_table;
+@@ -3844,7 +3901,9 @@ static void mana_qset_install(struct mana_port_context *ctx,
+ 	ctx->priv_flags		= qset->priv_flags;
  }
  
+-/* Copy the vport identity without borrowing the live queues. */
++/* Scratch starts without SQs/RQs and borrows the port's EQ pool. Never call
++ * mana_destroy_eq() on it.
++ */
+ struct mana_port_context *mana_qset_scratch_alloc(struct mana_port_context *apc)
+ {
+ 	struct mana_port_context *scratch;
+@@ -3855,13 +3914,11 @@ struct mana_port_context *mana_qset_scratch_alloc(struct mana_port_context *apc)
+ 
+ 	*scratch = *apc;
+ 
+-	scratch->eqs		= NULL;
+ 	scratch->tx_qp		= NULL;
+ 	scratch->rxqs		= NULL;
+ 	scratch->indir_table	= NULL;
+ 	scratch->rxobj_table	= NULL;
+ 	scratch->default_rxobj	= INVALID_MANA_HANDLE;
+-	scratch->mana_eqs_debugfs = NULL;
+ 
+ 	/* Do not consume the live set's pre-allocated RX buffers. */
+ 	scratch->rxbufs_pre	= NULL;
+@@ -3879,7 +3936,8 @@ void mana_qset_scratch_free(struct mana_port_context *scratch)
+ 	kvfree(scratch);
+ }
+ 
+-int mana_alloc_qset(struct mana_port_context *scratch, unsigned int num_queues,
++int mana_alloc_qset(struct mana_port_context *apc,
++		    struct mana_port_context *scratch, unsigned int num_queues,
+ 		    unsigned int rx_queue_size, unsigned int tx_queue_size,
+ 		    u32 priv_flags, struct mana_qset *out)
+ {
+@@ -3901,13 +3959,16 @@ int mana_alloc_qset(struct mana_port_context *scratch, unsigned int num_queues,
+ 	if (err)
+ 		goto cleanup_rxq_array;
+ 
+-	err = mana_create_eq(scratch);
++	err = mana_grow_eqs(apc, num_queues);
+ 	if (err)
+ 		goto cleanup_rss;
+ 
++	scratch->eqs = apc->eqs;
++	scratch->num_eqs = apc->num_eqs;
++
+ 	err = mana_create_txq(scratch, ndev);
+ 	if (err)
+-		goto cleanup_eq;
++		goto cleanup_rss;
+ 
+ 	err = mana_add_rx_queues(scratch, ndev);
+ 	if (err)
+@@ -3921,8 +3982,6 @@ int mana_alloc_qset(struct mana_port_context *scratch, unsigned int num_queues,
+ cleanup_rxq:
+ 	mana_destroy_rxqs(scratch);
+ 	mana_destroy_txq(scratch);
+-cleanup_eq:
+-	mana_destroy_eq(scratch);
+ cleanup_rss:
+ 	mana_cleanup_indir_table(scratch);
+ cleanup_rxq_array:
+@@ -3942,7 +4001,7 @@ void mana_free_qset(struct mana_port_context *scratch, struct mana_qset *qset)
+ 
+ 	ASSERT_RTNL();
+ 
+-	if (!qset->rxqs && !qset->tx_qp && !qset->eqs)
++	if (!qset->rxqs && !qset->tx_qp)
+ 		return;
+ 
+ 	if (qset->tx_qp) {
+@@ -3995,7 +4054,6 @@ void mana_free_qset(struct mana_port_context *scratch, struct mana_qset *qset)
+ 	mana_chn_xdp_release(retiring_prog, retiring_queues);
+ 
+ 	mana_destroy_txq(scratch);
+-	mana_destroy_eq(scratch);
+ 	mana_cleanup_indir_table(scratch);
+ 	kfree(scratch->rxqs);
+ 	scratch->rxqs = NULL;
+diff --git a/include/net/mana/mana.h b/include/net/mana/mana.h
+index 4c00a98430262b6c8c25bc37c9d1c8b48d928629..de026eeb8fc25f80d3e0f9613fb277eae9ae19a9 100644
+--- a/include/net/mana/mana.h
++++ b/include/net/mana/mana.h
+@@ -570,7 +570,9 @@ struct mana_port_context {
+ 
+ 	u8 mac_addr[ETH_ALEN];
+ 
++	/* Port-owned EQ pool: max_queues slots, num_eqs populated. */
+ 	struct mana_eq *eqs;
++	unsigned int num_eqs;
+ 	struct dentry *mana_eqs_debugfs;
+ 
+ 	enum TRI_STATE rss_state;
+@@ -673,7 +675,6 @@ struct mana_port_context {
+ };
+ 
+ struct mana_qset {
+-	struct mana_eq		*eqs;
+ 	struct mana_tx_qp	**tx_qp;
+ 	struct mana_rxq		**rxqs;
+ 
+@@ -701,7 +702,8 @@ int mana_detach(struct net_device *ndev, bool from_close);
+ struct mana_port_context *
+ mana_qset_scratch_alloc(struct mana_port_context *apc);
+ void mana_qset_scratch_free(struct mana_port_context *scratch);
+-int mana_alloc_qset(struct mana_port_context *scratch, unsigned int num_queues,
++int mana_alloc_qset(struct mana_port_context *apc,
++		    struct mana_port_context *scratch, unsigned int num_queues,
+ 		    unsigned int rx_queue_size, unsigned int tx_queue_size,
+ 		    u32 priv_flags, struct mana_qset *out);
+ void mana_free_qset(struct mana_port_context *scratch, struct mana_qset *qset);
 -- 
 2.43.0
