@@ -1,43 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD3A7470126;
-	Wed,  9 Sep 2026 12:39:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3C1356261F;
+	Wed,  9 Sep 2026 12:39:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788957557; cv=none; b=cQrMcCd97S0+5SfGsFwqQa2+Omjn3R1C191pwc9aZe7AaaCyNxzcXGUH5w4FyVLGjfEumnxzXU4WcNJ6VRzl5/D3zS7DxtsEpoIV3zvZwVfb3gw6AZjgqA7VqwpoU26XH6S0l/3+wjf1UVM5fOJRT/AiMoZ05KSUMi/gaaHD2nw=
+	t=1788957560; cv=none; b=T33Pg5IiQQ0DwpPQCwUpvSpArFDIRe3IEAjK+Lge4GQTX4SGBkT7lAsuNf+CvsTQ46Z7Z4Oybf2fU3srmK0hU21c5CS/aVMCX38xu0DjpvhZblLT+Q/9pOtkmRvfQ8HFThoM07EDvbI4WO4s/uF1685JBFBktx/6573SbbbuJII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788957557; c=relaxed/simple;
-	bh=uYj6ej5PCBSHg2bRY7ej7atI8oNG+QWbxxknZ5hwxag=;
+	s=arc-20240116; t=1788957560; c=relaxed/simple;
+	bh=+05FvJJjwnHRYscYNxnxB2etPGCvnMkm4RfFqheONsM=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=sPggJJq40IGyuiE8tEvyadD7BLm4d0cMtIUNNml9L+sIripFpfJrRi+yIW2DN3xCngbLqxGGhxsSyJVDgxAXeCmU2Qg8XsjWWA+OxahoK3/WMkGTSEEim0q2RVIV/7ZTwfa4kfkyfwF6aHfXA6DfcK5APkRVOGY51KfJTTLhGsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eC9eqfsZ; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=DOaxkHrvz/Ux+PIm3QV7ycwEPVV8TyJFeafhiNB0YseBYoag5keFj8pCPTUm4fsV/Ug3shWAPUlj1PyirhYtMNuLRQzXfp+1B6x7i+OcaUfLN+cYQ2E93IOHmSHnResY2hDNqinfjfI/qOHaGBg+iG1bM5iIIjO21mVS6auAXNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cExm8Kq/; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eC9eqfsZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC2CE1F00A3A;
-	Wed,  9 Sep 2026 12:39:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cExm8Kq/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65F8A1F00A3D;
+	Wed,  9 Sep 2026 12:39:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788957555;
-	bh=Em3hrMz7az8HDcufhQiRa3PV0ozCCHRcFtxVaNVposQ=;
+	s=k20260515; t=1788957558;
+	bh=DnqHe56X31XVSlrCwlzo/Ft8NWQ3Cpoin39smqZWZXU=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=eC9eqfsZLUnN0anxs4swUIhdgUgveRQ7xcAhMJHLGC/PkwSeAJzSL0MGjLwubgUvW
-	 Sw6tJ7SKCkEGVkGpVVOnrhkfAhoPX+nib+aOfU2joDs9q749NZc5JASOEBhy5iDRpQ
-	 3mgzSRatFk7ieqhISzrQwsk+eXxL/W22tAYKicyN3IfIo9i0+0zhASSs2TMgcCvQsX
-	 MA0TTikOx/kkQ1ne1cXVHVCSyTaCpwB8itjR2pDpLLUMXUKtqBCPVTCCPsLuNgSZPs
-	 9lDT8pjhQbHvSIC5EzPoilUoo0zT2FLVW2hlHuJMkRqovwTJu7ocUOTaAQx5HgRLex
-	 ks10bcbwB186w==
-Subject: Re: [PATCH net] net/sched: cls_u32: take a reference on the hash
- table in u32_change()
+	b=cExm8Kq/8JNGtZJdQ0D/KdJpHaFJ0MrF25BV1Yfu17mOoAj+UdkCb6HpV+76FILwv
+	 Kn8u6ue7JIUyyhbiYFG52Eo/r3hWgmoHApotWS4/eLfnXspA5fxAyr6HvJsRu5jWes
+	 UOQUsOPQBLlaikBz06sztKmpi1/hjE8uVniW6hGDq29vLugk6PQHCdoB5OjnObbRai
+	 5BizdEkFkWeugtnFT1w2whTd8cufeAqgppmCQ8gntmR4Wq4cUymiKlY0q7JS6eYEah
+	 EFUSeEi06/NjyWi+juNtlM+MZohzVVUwAmOZ/KYvYMbO9ZIG7gHZdwF4rucA7hlcJo
+	 MCItS2VRisdVA==
+Subject:
+ Re: [PATCH net-next v10 1/4] dt-bindings: net: dsa: microchip: Add KSZ8995XA
 From: netdev-bot+sashiko@kernel.org
-To: norbert@doyensec.com
-Cc: netdev@vger.kernel.org, jhs@mojatatu.com, jiri@resnulli.us,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, xiyou.wangcong@gmail.com, linux-kernel@vger.kernel.org
-Date: Wed, 09 Sep 2026 12:39:14 +0000
-Message-ID: <178895755454.219967.8093907569129807456@kernel.org>
-In-Reply-To: <79DB27AC-0FC0-42B2-A795-A8B585B73CFB@doyensec.com>
-References: <79DB27AC-0FC0-42B2-A795-A8B585B73CFB@doyensec.com>
-X-sashiko-severity: High
+To: linusw@kernel.org
+Cc: woojung.huh@microchip.com, UNGLinuxDriver@microchip.com, andrew@lunn.ch,
+ olteanv@gmail.com, davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ marex@denx.de, horms@kernel.org, linux@armlinux.org.uk, nb@tipi-net.de,
+ netdev@vger.kernel.org, devicetree@vger.kernel.org
+Date: Wed, 09 Sep 2026 12:39:16 +0000
+Message-ID: <178895755698.219967.14487699742720379802@kernel.org>
+In-Reply-To: <20260908-ks8995-to-ksz8-v10-1-7379239eb65f@kernel.org>
+References: <20260908-ks8995-to-ksz8-v10-1-7379239eb65f@kernel.org>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -50,155 +52,102 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider:
 
-Critical: 0 · High: 1 · Medium: 1 · Low: 0
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
-- [High] The new pin in u32_change() (refcount_inc(&ht->refcnt) /
-  refcount_dec(&ht->refcnt) around u32_set_parms()) assumes every drop…
-- [Medium] Commit message understates the reachability of the bug being
-  fixed.
+- [Medium] In
+  Documentation/devicetree/bindings/net/dsa/microchip,ksz.yaml the new…
+- [Low] Reported concern (validated as NOT a defect):
+  `microchip,ksz8995xa` is documented in…
 
 --
 
-net/sched: cls_u32: take a reference on the hash table in u32_change()
+dt-bindings: net: dsa: microchip: Add KSZ8995XA
 
-u32_change() holds the target tc_u_hnode in a local variable while
-u32_set_parms() may drop rtnl to load an action module, so a concurrent
-RTM_DELTFILTER can free it.  The patch pins the hnode with
-refcount_inc()/refcount_dec() around the u32_set_parms() call.
+This adds the compatible microchip,ksz8995xa to the Microchip KSZ DSA
+switch binding, described as having the same properties as the KS8995XA
+and being like the KSZ8795 and KSZ8864.
 
-Two questions below, one on the changelog and one on the new pin itself.
-
->     u32_change() keeps the target hash table in a local variable without
->     taking a reference. u32_set_parms() may then drop rtnl to load an action
->     module, and on a failed load returns without asking the caller to
->     replay (-ENOENT). A concurrent RTM_DELTFILTER can free the table in
->     that window, and u32_change() then removes the node id it reserved from
->     the freed table.
+> diff --git a/Documentation/devicetree/bindings/net/dsa/microchip,ksz.yaml b/Documentation/devicetree/bindings/net/dsa/microchip,ksz.yaml
+> index 8d4a3a9a33fcc..ed39530b6cbbb 100644
+> --- a/Documentation/devicetree/bindings/net/dsa/microchip,ksz.yaml
+> +++ b/Documentation/devicetree/bindings/net/dsa/microchip,ksz.yaml
+> @@ -23,6 +23,7 @@ properties:
+>        - microchip,ksz8864  # 4-port version of KSZ8895 family switch
+>        - microchip,ksz8873
+>        - microchip,ksz8895  # 5-port version of KSZ8895 family switch
+> +      - microchip,ksz8995xa
+>        - microchip,ksz9477
+>        - microchip,ksz9897
+>        - microchip,ksz9896
+> @@ -122,6 +123,7 @@ allOf:
+>              enum:
+>                - microchip,ksz8863
+>                - microchip,ksz8873
+> +              - microchip,ksz8995xa
+>      then:
+>        $ref: dsa.yaml#/$defs/ethernet-ports
+>      else:
 
 [Severity: Medium]
-Is the race really limited to the "failed load" case?  tc_action_load_ops()
-in net/sched/act_api.c drops rtnl in both outcomes:
+Is this second hunk intentional?  The enum being extended here sits under
+a "not:", so adding a compatible to it selects the "else" branch rather
+than the "then" branch:
 
-net/sched/act_api.c:tc_action_load_ops() {
-	...
-		rtnl_unlock();
-		request_module("act_%s", act_name);
-		rtnl_lock();
-	...
-		if (a_o != NULL) {
-			module_put(a_o->owner);
-			return ERR_PTR(-EAGAIN);
-		}
-	#endif
-		NL_SET_ERR_MSG(extack, "Failed to load TC action module");
-		return ERR_PTR(-ENOENT);
-}
+  - if:
+      not:
+        properties:
+          compatible:
+            enum:
+              - microchip,ksz8863
+              - microchip,ksz8873
+              - microchip,ksz8995xa
+    then:
+      $ref: dsa.yaml#/$defs/ethernet-ports
+    else:
+      patternProperties:
+        "^(ethernet-)?ports$":
+          patternProperties:
+            "^(ethernet-)?port@[0-2]$":
 
-In u32_change() any non-zero err from u32_set_parms() skips the
-if (err == 0) block and falls through errunbind -> errout -> erridr, where
-idr_remove(&ht->handle_idr, handle) dereferences ht.  So the -EAGAIN path
-(module present and loaded successfully, request replayed afterwards) also
-touches ht after rtnl was dropped, and that is the common case on a normal
-system.
+The "else" branch is the hand-rolled KSZ88x3 schema.  It only matches
+port@0 through port@2, does not reference dsa.yaml#, and additionally
+allows the KSZ88x3/REFCLKO-only flag microchip,rmii-clk-internal.
 
-Would it be worth describing the window as "u32_set_parms() may drop rtnl"
-without tying it to -ENOENT, so backport triage sees the wider trigger?
+The KSZ8995XA is a 5-port part with the CPU port at index 4.  The chip
+data added later in this series, ksz_switch_chips[KSZ8995XA] in
+drivers/net/dsa/microchip/ksz_common.c, has:
 
-> diff --git a/net/sched/cls_u32.c b/net/sched/cls_u32.c
-> index a3e65c8cf29ef..0e9128f2f33e8 100644
-> --- a/net/sched/cls_u32.c
-> +++ b/net/sched/cls_u32.c
-> @@ -1180,8 +1180,11 @@ static int u32_change(struct net *net, struct sk_buff *in_skb,
->  	}
->  #endif
->  
-> +	/* u32_set_parms() may drop rtnl; keep ht alive across it */
-> +	refcount_inc(&ht->refcnt);
->  	err = u32_set_parms(net, tp, n, tb, tca[TCA_RATE],
->  			    flags, n->flags, extack);
-> +	refcount_dec(&ht->refcnt);
+	.cpu_ports = 0x10,	/* can be configured as cpu port */
+	.port_cnt = 5,		/* total cpu and user ports */
 
-[Severity: High]
-Does this pin hold when the hnode being pinned belongs to a different
-tcf_proto?
+So for microchip,ksz8995xa, would port@3 and port@4 (including the MII
+CPU port with ethernet/phy-mode/fixed-link) match no subschema and go
+unvalidated, and would a node with no ports/ethernet-ports at all also
+pass since the dsa.yaml base requirements are no longer applied?
 
-The changelog states that a racing deletion "fails its
-refcount_dec_if_one() and returns -EBUSY", which is true for u32_delete()
-of a non-root hnode.  But u32_destroy() drops the root hnode reference
-unconditionally:
+The same silicon is also described by
+Documentation/devicetree/bindings/net/dsa/micrel,ks8995.yaml, which
+drivers/net/dsa/microchip/ksz_spi.c maps to the same
+ksz_switch_chips[KSZ8995XA] entry.  That file uses:
 
-net/sched/cls_u32.c:u32_destroy() {
-	if (root_ht && refcount_dec_and_test(&root_ht->refcnt))
-		u32_destroy_hnode(tp, root_ht, extack);
-	...
-}
+  allOf:
+    - $ref: dsa.yaml#/$defs/ethernet-ports
 
-tc_u_common is shared by all cls_u32 tcf_protos on the same qdisc/block,
-and u32_change() resolves TCA_U32_HASH through the shared list without any
-is_root or owner check:
+and its example documents ethernet-port@0 through ethernet-port@4, which
+is the opposite of the 3-port constraint now applied to
+microchip,ksz8995xa.
 
-net/sched/cls_u32.c:u32_change() {
-	...
-		ht = u32_lookup_ht(tp->data, TC_U32_HTID(htid));
-		if (!ht) {
-			NL_SET_ERR_MSG_MOD(extack, "Specified hash table not found");
-			return -EINVAL;
-		}
-	...
-}
+This also seems to disagree with the commit message, which says the part
+is "just like the KSZ8795 and KSZ8864" and "has the same properties as
+the KS8995XA" - both microchip,ksz8795 and microchip,ksz8864 take the
+"then" branch and use the generic dsa.yaml ethernet-ports schema.
 
-net/sched/cls_u32.c:u32_lookup_ht() {
-	for (ht = rtnl_dereference(tp_c->hlist);
-	     ht;
-	     ht = rtnl_dereference(ht->next))
-		if (ht->handle == handle)
-			break;
-	...
-}
+Would dropping the second hunk and keeping only the top-level compatible
+enum addition give the described behaviour?
 
-So a filter added at prio 2 with "ht 800:" can pin prio 1's root hnode.
-If prio 1 is deleted in the rtnl-dropped window (RTM_DELTFILTER with
-tcm_handle == 0 -> tcf_chain_tp_remove() + tcf_proto_put() ->
-tcf_proto_destroy() -> u32_destroy()), the sequence looks like:
-
-	u32_change()	refcount_inc()			refcnt 1 -> 2
-	u32_destroy()	refcount_dec_and_test() false	refcnt 2 -> 1
-	u32_change()	refcount_dec()			refcnt 1 -> 0
-
-Two things follow.  First, u32_destroy_hnode() is skipped, so the hnode
-stays linked in tp_c->hlist with no owner and u32_clear_hnode(),
-u32_clear_hw_hnode(), idr_remove(&tp_c->handle_idr, ...), idr_destroy()
-and kfree_rcu() never run.
-
-Second, the trailing refcount_dec() takes the count 1 -> 0:
-
-include/linux/refcount.h:__refcount_dec() {
-	int old = atomic_fetch_sub_release(1, &r->refs);
-	...
-	if (unlikely(old <= 1))
-		refcount_warn_saturate(r, REFCOUNT_DEC_LEAK);
-}
-
-That warns and sets REFCOUNT_SATURATED without freeing anything, and once
-saturated no later refcount_dec_and_test() in u32_destroy() can reach zero:
-
-net/sched/cls_u32.c:u32_destroy() {
-	...
-			if (refcount_dec_and_test(&ht->refcnt))
-				kfree_rcu(ht, rcu);
-	...
-}
-
-Can this leak the hnode (plus its idr and any knodes later inserted into
-it) for the lifetime of the block, and splat under panic_on_warn?  Would
-handling the "we dropped the last reference" case, or re-looking up ht
-after u32_set_parms() instead of carrying a borrowed pointer, avoid this?
-
-As a smaller note on the same two lines: the reference is released before
-the remaining ht dereferences it is meant to cover, namely
-idr_remove(&ht->handle_idr, handle) at erridr and the
-&ht->ht[TC_U32_HASH(handle)] insertion, so it relies on u32_set_parms()
-always having re-acquired rtnl by the time it returns.
+The same negated enum entry is still present at the end of the series
+(c34290e766e1566f450a527435a9398d135e21d4), so no later patch appears to
+change it.
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/79DB27AC-0FC0-42B2-A795-A8B585B73CFB%40doyensec.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260908-ks8995-to-ksz8-v10-0-7379239eb65f%40kernel.org
