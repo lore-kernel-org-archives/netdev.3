@@ -1,140 +1,177 @@
-Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
+Received: from mail-ej2-f12.google.com (mail-ej2-f12.google.com [74.125.228.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 878E5538D97
-	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 11:06:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788951996; cv=none; b=Md9ulLAnA7Zn+bx0bOYNhaVd9A7q7nKXskxH06IzrHJDW/uE3wJt/rUoV8lHxucDXERrBghIW5Py/7sfBgPTDXwf3f8592Btbg0R6/tzO/3TelabqnLh/YrDE4/iV5PZE00GcuaTHXjtuki3bGyjMXVkTu3o1sUwsRC4b5NRVjs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788951996; c=relaxed/simple;
-	bh=rWAys0+HIWsiGqZtXhkqNKObTT9MbSHAj3J81e68H/Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=auQ/8ovBUb2Eb8UvkMW+nwZwCifuNTGtx4CwciHDk9Wkf222AI4fR8ZUEbB12DsAkgT7Y9iUVzEHXU5SQ0ug4KGVk/GbFgVkZxesifRhKO6cXcb76wXXr0RWXM2qXrvFqDy1IfJVyHK0KhZeLpH4tPnt6NKYP0ukCneb2JThpEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pMuyNdJ0; arc=none smtp.client-ip=74.125.227.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CED07345CA8
+	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 11:10:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.140
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788952226; cv=pass; b=AEYqRaBCaotEaY04BmHDRcrjXBnDFNkPpR9YAe7ZcMXGYPPycthP2jQwxojSFofM+r2PvAZ2ZNPxMaLEk/R5FFAcANGErwz28ifXVXoqw78WPBgh1N7BzhG9ZKJhpRRgAvNNfneYrpxHtDE8t53W9Jut+OxBLZCggDbUT1DU3vk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788952226; c=relaxed/simple;
+	bh=YkZ9FXYxom6GTJ696R1xgKPjABJ5NoWT2CU+7PuBHFQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CFpubITgRJCix6wd4R/5Al95IEkplS8a5LBmM+YXjWhYb22NdJ1pD9SwrEeOYJOINFQi43SlFiXv41fkznSjUao3mR4AdimSvkPxow2DyLsvoawhjq528/KSBbnMJdzCPTepFayrp85YnY6gwEpyYCsc5Nt02LagYi5OPcYxVQY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mihalicyn.com; spf=pass smtp.mailfrom=mihalicyn.com; dkim=pass (1024-bit key) header.d=mihalicyn.com header.i=@mihalicyn.com header.b=dX0q+oK6; arc=pass smtp.client-ip=74.125.228.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mihalicyn.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mihalicyn.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pMuyNdJ0"
-Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-396ccafb752so914227a91.0
-        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 04:06:31 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=mihalicyn.com header.i=@mihalicyn.com header.b="dX0q+oK6"
+Received: by mail-ej2-f12.google.com with SMTP id a640c23a62f3a-c254fa663bfso6620066b.1
+        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 04:10:23 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788952222; cv=none;
+        d=google.com; s=arc-20260327;
+        b=U3pprw6Ei5G7KXxs9CxOmyb6IICtOB4hHNNpn7BRG2UCwdUAckw+tvaTTd7udJQY76
+         VrZG0iiqvt34dKSqo4loglyXMd+253gXxQOgVM8BibaFTdM1iHIB8TpZ9YMicLmiHE0W
+         mVNhHkKG9WV0N6DCFf8f9h4kPvmiSXkTLC4c+7fOho/BMKxlr6Hf4hZwbgvo7P+gYOy2
+         2NJhN0U6iFwpZVwZrepk1b2QcMg6pTmnA7jG5uHRz2WBbHUCdTb2wXbeiaqdK1gtGy9P
+         H5YFHB5p0eQTA42fRivO/Jn3Roa/t2JTDhKUSCFUF7ThvbBbIVN7qIya4uGkkTSGO8OK
+         S5ZA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=Mgt8XRgHU0466zZJnQp3K3kwl0ZmrdZ791mHZpm+8k4=;
+        fh=/iOcqzcy0x9pRJ0jgza1EX91c/pyc2Vr5lJlIA4CgZ4=;
+        b=myPxqyiENPS5hUh4s6E9w9ClLc+XaGLdHMBZd3TNzZB+lXarWUKYjJGkxAgXDaVlcA
+         739koYJiLECSNiy1K1RN3F3pJBmrKKHtRXsgD8ZdIrpQKIW5VMYDVPAZuTGnXksnzzR8
+         l0wyce8EuTSv+NuLDDJ8dpYfq5I/jmAP6xmH/HgI5NPo4OMAJWIrpiDy8VXyViKg5Sxe
+         GvA++bm2tfGLmnZBtiHLPGZTu7q+AbxWoNXrD/LY+w/7NcfxyH2p0axAU2e7XH1NrHW9
+         RPhLcQtT4O7Ll8xmnY8y2Ze112ZASY1Hu7zCFxAkSRjemghmEc21oCZSpKLIOG8JstdQ
+         nQNQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788951990; x=1789556790; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=whHN3y9KIP6ye1VdRkpwr53aJIX9j72oYHTkN7oNo34=;
-        b=pMuyNdJ0n5VHYzHMsMM0imwb7Aw4Lv+s8E2k7SvMoHrPkh4X1K66pXeKW3m5hM70Wj
-         N2pm+8RA5V3Upr8/ltF/t3ABJHlGS0XAe5STISvK0h1tbPbd0JdE2k3sY9zO/FGjKl9x
-         b/tQyUCPw4hFzrBDrtnJTl8oVmoJEhitgPwWquhpYO9TAV0Utr/dlpWLQ4xin87AOm26
-         IUSf7n8NMElU78Nv9TeWV26Y4OiDcKJkj7DtS6dz4bzWBkWy4uIxwlUPMlr/ZdV496Uz
-         LCHZMTX5JJs5dipxoQvTk+k/xDv/6zqz3q5j1KUOiVg2FN9ciB3pGXE7061UqXdzEpvY
-         XB8Q==
+        d=mihalicyn.com; s=mihalicyn; t=1788952222; x=1789557022; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Mgt8XRgHU0466zZJnQp3K3kwl0ZmrdZ791mHZpm+8k4=;
+        b=dX0q+oK6psQKBVWpzPmJNAB/SUPsmrJYjWjuLSDb+yl4yOhVR75twv//YochFw3j4G
+         f1fgEdTt7HbsfDGgHZJWplKWqJcs8PvMGOKdA9sM0+Sksnc9ZjRmbk1FTI7+WN+FJyer
+         kZJ0GKY23pR7SOJ5QB3rJDr/KexOrL5QPQJp4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788951990; x=1789556790;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=whHN3y9KIP6ye1VdRkpwr53aJIX9j72oYHTkN7oNo34=;
-        b=clsaQ/HZ4Ch3OH3sheVfgLOWO2KPXCzl5MLa/t75v6fdssyFHyfbMyYjE5IJ8Qp4nQ
-         KXCVkF/XfNlIYrLhl2pTq5a2v+0IeyAuabjCNIiBGGFXy3ohvA7Nrty/22NZ5hX5UDOG
-         LaoAB0O3Bb3KbAYIbX18ruFSTYdyVv9CkXJISn7udXX+ik5b8V1s2ZALaEfIkaoq9Mnl
-         YQJ8vZNI2BTeBrLuKfg9bYw9XJ3546ep7KE+oatfdNG3Ho0Yo7R0vub1jtIdZxvGjV+o
-         iwHRbduyX3W/89VD8+mUa9J6Zqwr05t7x33FymUWVNx5YVoJN/8VD94JT0lemigEqb4n
-         LyYg==
-X-Forwarded-Encrypted: i=1; AKwUvByw4d599rRQeAcl/RGIBw9be7F3HyUvqlXwgISneISs/88Miv881lm12oms2+f9ush/2zI4f6I=@vger.kernel.org
-X-Gm-Message-State: AFuF++kPzKSQGMcuhefp3Mq8WwG6PxggRhjRWfFHJvGJ4egouApOOzID
-	WDP6TeOa1dFZ5/T1957wq0tk/TRFowzvVM6A/kJ8cMGhZ9XHXhAGOJRS
-X-Gm-Gg: AYBFou09tOV+DwWmgw0FgXZhEJyiCGYFM3xa4bpoV5FsZ67cEUPH1cvKJPMfyC408GE
-	g5A9/HFVYSkQywdJCtrtR1RnTlkUNNuF1KrwipnHMUmnaUIHV1oL5/+xxNpZoNhKe010tB5lQvQ
-	BTqkPMMqnbWExvKYz89ChbJZffqFrh5Y0mSXoMAF1cChMiqoO5bCcwUw7M5eeE0OU/3io456C2Y
-	Nn9c8zhr7x1eQobUQZ3HNCOJgpQSU4vHbxDIDvPQ1qAA6Zgf5xs9bD+sIPvmC75BYuCRajBesBl
-	xs4QWS4tRBigavEVVs7RaVjVGqnqcldmDLJT8rgCmw5WCVE2WzWOm5/nVb9vTB32XsI3+BPxUVc
-	GvJuX+uLJh1I2Or/cpN6e3KWziGMJ7FAFX9wfZRAgXE3QeP16jrc7PcUTdqOOjgo37x49AC+fiI
-	1j4s2wGa94N+NfAZRPqmjod0ERgRfdMWWuc9Df1FCubMoO33G3OK5XkEdajngZa4tQEa+iUFEQ8
-	tWYvQdiCCK9L7ecePiUb7dt
-X-Received: by 2002:a17:90b:5485:b0:396:b918:c2a with SMTP id 98e67ed59e1d1-39bac34a3cemr7994615a91.12.1788951989646;
-        Wed, 09 Sep 2026 04:06:29 -0700 (PDT)
-Received: from LAPTOP-450UDG4J ([223.185.135.143])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b25f88475sm31962556a91.1.2026.09.09.04.06.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Sep 2026 04:06:29 -0700 (PDT)
-From: Yogesh Gaur <yogeshgaur.83@gmail.com>
-To: Heiner Kallweit <hkallweit1@gmail.com>,
-	nic_swsd@realtek.com
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Javen Xu <javen_xu@realsil.com.cn>,
-	Yogesh Gaur <yogeshgaur.83@gmail.com>
-Subject: [PATCH net] r8169: don't enable chip LTR when the platform has not enabled LTR
-Date: Wed,  9 Sep 2026 16:35:54 +0530
-Message-ID: <20260909110554.1977-1-yogeshgaur.83@gmail.com>
-X-Mailer: git-send-email 2.55.0.windows.5
+        d=1e100.net; s=20251104; t=1788952222; x=1789557022;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=Mgt8XRgHU0466zZJnQp3K3kwl0ZmrdZ791mHZpm+8k4=;
+        b=CwX6TO4R2bejeI6aKoN1OLCdqkpx9MY6kjpFsZDdlmQz/xWT/LdL1Dus8UhQWPHnUA
+         Yuq/gI0WaQor31aBhORLPxC3i4tYIPphDCzfKcD8U/2d0UW2+NFuVz1n0MhCPgKZbmJb
+         mZuMS6RZKCtWymnpphsDARTVA+jWKMzW9XvWAcqMiy/++MQMx6MQF64xDU5QrwmjV3T3
+         q1vh57zR1tM4wkQ4NpF8yb2ctrjhY3JNH+4TGxOa8mJ+GHGGar+CkBtxUJ6UW9XCStBo
+         Xz77b7rh3b6lR2fgcDMmnMwdKgS2TaaGKxAFtaXnmJPtHvK+QZmQIYVmjPY/fHVBwosX
+         rBQA==
+X-Forwarded-Encrypted: i=1; AKwUvBzRYzV668hxbwh7yEip5VAfcNLoJdxF6gooqvv7O3g1RVk3NgLyp+yY611goA1TxYw3fzsMFpc=@vger.kernel.org
+X-Gm-Message-State: AFuF++mHMTXTjz2AB+YeUQiowjHzIqTsiZI36NVz9C92oB5y6pd/dPX/
+	AEw3y5CqAcYceCC9NTquPDoUrADM1Is0FYXTCk46J8k68tljYddWxnlFEaNf2nSIh8MU9U0A2ki
+	nGmKx4yUSu0h/oARM1g/2f7If7NtteNMojGo0CYJW0A==
+X-Gm-Gg: AYBFou2kvWqZ7WEof9mDHFNv3jkGno86u5BIPK7LxBuj6X7+vlu85txPN0CcNsy8SJ3
+	BlU1qkNe662QiQ5FyqG8RTgRCE8nYDByhIBToVyzH4hNSeSRsFOJj1fd/TrW1j45Lk/6dWy/52X
+	x70pTaQTlacoSnuiuYW0jdvHKi3TafXyPxECbRGLuB4U6JVkgrTjdI45U0xkWMIkckHdg7QW8YN
+	zRwSEaGcoy2Aqdc1UKG2+EYVXbGenfSiVJQbusWkrV+4GV2vtPvqMallO8kJEd1vWkp63Sy+o56
+	GDQUKzdC0U7mDzJpfhIOHCgXSNW8qiWyTLgcT016PrGTp3+VPyOg3EL99Cvq6SiG/qUyfulNciU
+	nMbFVW5OfS7fhlKq46scTEQ==
+X-Received: by 2002:a17:907:c09:b0:c25:c7a9:7b8a with SMTP id
+ a640c23a62f3a-c2941ae9193mr12751566b.12.1788952221639; Wed, 09 Sep 2026
+ 04:10:21 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260909-work-unix-passpidfd-v2-0-7bd342abb2d1@kernel.org>
+In-Reply-To: <20260909-work-unix-passpidfd-v2-0-7bd342abb2d1@kernel.org>
+From: Alexander Mikhalitsyn <alexander@mihalicyn.com>
+Date: Wed, 9 Sep 2026 13:10:10 +0200
+X-Gm-Features: AcwNN1XTgvzqLxcVf_sNNwgtEWfE868-Kflp519NXR5vjxPBUXSPcRZwXEOLDjc
+Message-ID: <CAJqdLroLH7x1Zrgaa2U=H5v9pFfdzJS4CCcAmSvqShS8Wh+0rw@mail.gmail.com>
+Subject: Re: [PATCH v2 00/10] net: support thread-specific pidfds for send and connect
+To: Christian Brauner <brauner@kernel.org>
+Cc: Jakub Kicinski <kuba@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, Oleg Nesterov <oleg@redhat.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Willem de Bruijn <willemb@google.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-rtl_enable_ltr() programs the MAC to generate LTR messages - ALDPS_LTR_EN,
-LTR_SNOOP_EN, LTR_OBFF_LOCK_EN, plus LINK_SPEED_CHANGE_EN on
-RTL8125/RTL8126/RTL8127 - and rtl_hw_aspm_clkreq_enable() calls it on
-every ASPM enable, then goes on to let the chip trigger L1.2.
+Am Mi., 9. Sept. 2026 um 12:43 Uhr schrieb Christian Brauner
+<brauner@kernel.org>:
+>
+> SO_PASSPIDFD/SCM_PIDFD and SO_PEERPIDFD allow to retrieve a pidfd for
+> the thread-group leader. The coredump server using the coredump socket
+> cannot get a handle on the task that took the signal and is writing the
+> coredump easily. Workloads interested in per-thread authentification
+> have similar problems.
+>
+> Add SO_PASSPIDFD_THREAD and SO_PEERPIDFD_THREAD. We record the sending
+> and the connecting thread in addition to the thread-group leader.
+>
+> SO_PASSPIDFD_THREAD functions like SO_PASSPIDFD but instead of an
+> SCM_PIDFD message for the thread-group leader, SCM_PIDFD sends a pidfd
+> for the specific thread. SO_PASSPIDFD_THREAD is mutually exclusive with
+> SO_PASSPIDFD. The last one set takes precedence and disables the other
+> one. Both SO_PASSCRED and SO_PASSPIDFD receivers see one writer per
+> process as before.
+>
+> SO_PEERPIDFD_THREAD allows to retrieve a pidfd for the specific thread
+> that called connect(), listen(), or socketpair().
+>
+> pidfs_coredump() now also stamps the dumping thread's struct pid so a
+> pidfd for that thread reports the coredump like the pidfd of the
+> thread-group leader does.
+>
+> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 
-The only gate is tp->aspm_manageable, which records that the OS is allowed
-to control ASPM. It says nothing about LTR. LTR is a separate PCIe
-capability that only works if every device on the path to the root port
-supports it. The PCI core determines that in pci_configure_ltr() and
-records the result by setting LTR Mechanism Enable in the endpoint's
-Device Control 2 register; per PCIe r6.0 sec 7.5.3.16 a function must not
-issue LTR messages while that bit is clear.
+Reviewed-by: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@futurfusion.io>
 
-So on a platform whose hierarchy has no LTR path, the driver now tells the
-chip to start sending LTR messages nothing will honour, and ties ALDPS -
-the PHY's link-down power saving - to them. A report against RTL8125B
-(rev 05, firmware rtl8125b-2_0.0.2) in a mini PC shows the effect: 291
-link down/up transitions in one eight-hour boot, with repeated downshifts
-to 100Mbps, against four transitions at boot and then a stable link on the
-kernel before the LTR change.
-
-Read the endpoint's LTR Mechanism Enable bit and leave the chip's LTR
-machinery alone when the platform did not enable it.
-pcie_capability_read_word() zeroes its output on error, so an unreadable
-capability takes the same safe path.
-
-Fixes: 9ab94a32af70 ("r8169: enable LTR support")
-Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2529752
-Signed-off-by: Yogesh Gaur <yogeshgaur.83@gmail.com>
----
- drivers/net/ethernet/realtek/r8169_main.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
-
-diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-index ec4fc21fa21f..c1ff4e898570 100644
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -3037,6 +3037,16 @@ static void rtl_disable_exit_l1(struct rtl8169_private *tp)
- 
- static void rtl_enable_ltr(struct rtl8169_private *tp)
- {
-+	u16 ctl2;
-+
-+	/* The chip must not issue LTR messages unless the platform enabled
-+	 * LTR on the whole path up to the root port. The PCI core discovers
-+	 * that in pci_configure_ltr() and reflects it in LTR Mechanism Enable.
-+	 */
-+	pcie_capability_read_word(tp->pci_dev, PCI_EXP_DEVCTL2, &ctl2);
-+	if (!(ctl2 & PCI_EXP_DEVCTL2_LTR_EN))
-+		return;
-+
- 	switch (tp->mac_version) {
- 	case RTL_GIGA_MAC_VER_80:
- 		r8168_mac_ocp_write(tp, 0xcdd0, 0x9003);
--- 
-2.55.0.windows.5
-
+> ---
+> Changes in v2:
+> - Fix a few documentation issues.
+> - Link to v1: https://patch.msgid.link/20260831-work-unix-passpidfd-v1-0-70cbfda0c7ba@kernel.org
+>
+> ---
+> Christian Brauner (10):
+>       pid: add helpers to operate on a struct pid array
+>       af_unix: record the pid of the sending thread
+>       net: add SO_PASSPIDFD_THREAD to get a thread-specific SCM_PIDFD
+>       selftests/net: SO_PASSPIDFD_THREAD
+>       net: turn sk_peer_pid into an array indexed by pid type
+>       af_unix: record the pid of the connecting thread
+>       net: add SO_PEERPIDFD_THREAD to get a thread-specific pidfd
+>       selftests/net: SO_PEERPIDFD_THREAD
+>       pidfs: record the coredump on the dumping thread's pid too
+>       selftests/coredump: check the dumping thread's pidfd
+>
+>  arch/alpha/include/uapi/asm/socket.h               |   4 +
+>  arch/mips/include/uapi/asm/socket.h                |   4 +
+>  arch/parisc/include/uapi/asm/socket.h              |   4 +
+>  arch/sparc/include/uapi/asm/socket.h               |   4 +
+>  fs/coredump.c                                      |  22 +-
+>  fs/pidfs.c                                         |  27 +-
+>  include/linux/coredump.h                           |   4 +-
+>  include/linux/pid.h                                |  53 +++
+>  include/linux/pid_types.h                          |   8 +
+>  include/linux/pidfs.h                              |   5 +
+>  include/linux/sched/signal.h                       |  18 +
+>  include/net/scm.h                                  |   7 +-
+>  include/net/sock.h                                 |  14 +-
+>  include/trace/events/landlock.h                    |   2 +-
+>  include/uapi/asm-generic/socket.h                  |   4 +
+>  net/bluetooth/af_bluetooth.c                       |   6 +-
+>  net/bluetooth/hci_sock.c                           |   8 +-
+>  net/bluetooth/l2cap_sock.c                         |   2 +-
+>  net/core/scm.c                                     |  36 +-
+>  net/core/sock.c                                    | 120 ++++---
+>  net/unix/af_unix.c                                 |  67 ++--
+>  net/unix/af_unix.h                                 |   3 +-
+>  tools/lib/python/kdoc/xforms_lists.py              |   1 +
+>  .../selftests/coredump/coredump_socket_test.c      | 175 ++++++++++
+>  tools/testing/selftests/coredump/coredump_test.h   |   2 +
+>  .../selftests/coredump/coredump_test_helpers.c     |  49 +++
+>  tools/testing/selftests/net/af_unix/Makefile       |   2 +
+>  tools/testing/selftests/net/af_unix/scm_pidfd.c    | 366 +++++++++++++++++++++
+>  28 files changed, 907 insertions(+), 110 deletions(-)
+> ---
+> base-commit: cee9395acd8043be0644b25c34bfa86623f2b935
+> change-id: 20260825-work-unix-passpidfd-086a1ec09e8a
+>
