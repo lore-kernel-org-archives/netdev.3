@@ -1,120 +1,161 @@
-Received: from mail-oi2-f13.google.com (mail-oi2-f13.google.com [74.125.231.205])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FEEE38C427
-	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 17:46:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.231.205
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788975992; cv=pass; b=JQSjG/u3aCIlfgzBhPpp7fNXGKQJbg7XUeBYVMQKB9blZb4bAHe/gg8PKi+aKlsiCSg7tKiM5biZ4/z+ieCOSfLcWo8gUlZg2ahHOux0BVoetxt4lObrGnCuvNRA6Q1ID+FvHLlDWMBgSKmIgg3JJdt28F0/8RUwhJ0ZL3hkCZA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788975992; c=relaxed/simple;
-	bh=UJGGMp/OrSs3NS/+SU1nVzly047peJCMppV7Ba9pMto=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZH/BVlRFEm343NKArshH07b88A5AseKKjdkK/vOh+vvatji3ijAS9/M4Kre8iq2AKfMCHpdYwzkqfGaytshdAji4zgWcz5flRMe6TDdS6TuxI8dUU+t+kxSSHI8VQUc7xUnEpgqQdfC0+f/QuIm/45UXwCNdJ9OcteWyF1Vfvik=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EuxHdGKf; arc=pass smtp.client-ip=74.125.231.205
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2A023932E3;
+	Wed,  9 Sep 2026 17:57:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788976669; cv=none; b=syg8sZmTld+sEWxVdnsRbGXcVXLSR+vTul50A824DeSxlKV1pPnFxbXuMqRMXXhLphWHuxWIngPzMcUKSOVUzQ0ybvWb56wKj4PntjLCvBq0AVmui8LFqSx6y9gPSpFosyT9k4uL2iM6qEa7Ne0ER2ppMOt02ohAvA15uB85Npk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788976669; c=relaxed/simple;
+	bh=RDcZ1N2of0hE/KEQ6YmRibGweUEaHd7NGJ3Ngz3ILKM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KOGtGuWidHVQu3Mi3b9+BHduVng0nYnkfzWOjeBNDVhOE9qwD4OF5L+nd0pSdi6WQlGHlIXbTxAgPuE8c/0Am/EM4Y4m1jjcs+AiadmEEUFVv8wyakOle3wo8+HC+EYye9sws/FHkcb36TrYkDYY5dkWP+85+AhM686KCUrnb1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O0M7TaBu; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EuxHdGKf"
-Received: by mail-oi2-f13.google.com with SMTP id 5614622812f47-4c112aaaf04so383755b6e.1
-        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 10:46:31 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788975990; cv=none;
-        d=google.com; s=arc-20260327;
-        b=kn5euoSwl1OuMYG4j6JIO7wT/2i+I8wKfrw2u3ZGu1iroI3Y6137I/XZrEpuwDncHT
-         nTSFmjCdMqTF2sLoONCdRhsjuTli1kQB8nkPoXYhCkJYIFVNm3yxtaI/haJm0xZvlljl
-         Qie2aFBbQUCQaOAno+6KvtJh7lUvKC6FJRxz7fQ2+G8S7J8XgIX03cbivWYRB/Svzn+F
-         8TG742Vyiujo2bJttIPkl1uzYweM+inwq4AK9ixY+7zoj2qunK8kfDmUddH1bWyqiTHO
-         k6TUQEVWhPHIKZLVbBZMLgOVKA4nBNEf8EqFiGCWwlky70mfmvcz/vU+uYpeL/ZQWGlN
-         /o3w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=EGxBHlYMfw2i6Wn1XBE9lhliUOi4k7OBEah5+qrJswM=;
-        fh=OsYXKoY2sSKBhNTThW9kucESC7dyZwg253Kp+7pxyN4=;
-        b=NV08gf99w2FTaFFL94u1D5rNr84lYlKOp7tnVYJCjvN6nxJ3GlWtQoIzRCbndR2yL4
-         Rw3opz8NYDqh7T1I1Q2K/MBSZ0rhiqmS/EMdujvewIRMvja0pqYoGKIGRrsU4hJYQuBb
-         PKLT/nuZBf9g0/6uarhOIdVPHjjmXrvbe+mSVocS2i44Mnxgf6cj8V9ZARmjGdMRHPkE
-         uIWRNpxUyxjnYRbp1MvzUXmdYMgfdGJ3/si4iSexySmPjrHNK8BVG/OrmuVFZvZbaShO
-         /I+RvhgHNLoc0Im65wB2yq2DY0S3+26OMi885zacQMZ5lGP+wNiDOYjIbpenwX2Ayjt3
-         TEbg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788975990; x=1789580790; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=EGxBHlYMfw2i6Wn1XBE9lhliUOi4k7OBEah5+qrJswM=;
-        b=EuxHdGKfpiC1H9knpgsuVeBfjytphq5Tx5oQKPUkVjTNoPTvafgdPMIeo+Uooh+te0
-         GgYvtMTnoOw+g+lKXCNNxJ3hQ4oQbxyfhXpZA3OpcSc+a2Jj/gphz//+RPhZ+tv3VuWr
-         Pz7q7Gnq5lFdDTQKhv0rBZrPCPXNzn9zBuuJ2l5C7GY15CsXpQ3ADTZfUrParQ873uAn
-         QBwhcRrtd1IsTgPA8+XAX5n472zixsqSDZHbad/zSrUI1Sob7hGb7lJDziwon5Y9Gh9t
-         hbxkf7YCJPM9qVqtmhaun5HpqHxHcDHW8rSbcNhYnYTZofjEadE1Oxg4VLU++xb7gDzC
-         ScoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788975990; x=1789580790;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=EGxBHlYMfw2i6Wn1XBE9lhliUOi4k7OBEah5+qrJswM=;
-        b=pfhe7YC9HUyN8HfoPIduOZ63zNN00bc7sNjLkBaA4BZI7llj+okqGDuSIDkw4xFPGP
-         WazDjS3fghHHruojKEF8slc2gU8DKES0qfB4HRGLZ6Xxs8rZnGo1/G8EEkC/ERzBTT3g
-         y1KX8HU/M5v6OIgeItsHOD//uE2fx90TBkhJJ4JpRlWU1ZBHtpJyBkDTR9CjRqGNady7
-         kKboZbn13I9fhnX+ZhXGt3Z2p7eEONBEpLQw9NidtKH+whXJYFEWCiEOaOcja9IBiyzJ
-         y8vt7foHVN+lPbsrqpnuYLT2hkOG6g24CKG6sjsbkqLlaGu87GoOWenaAOik50EXEJNE
-         rWBw==
-X-Gm-Message-State: AFuF++kBvkmdfIGGgfe0Kjn51c/FFPbmk7v+RY5D9X49ScZX0xQ8vPn4
-	pVHdkrWr/JFngKFsxKCtvFfGVLqB3yrmmQMUTP/6QmiETAUXMtGkavHWluzKcvaFSrkzzGOqaXD
-	zXZYpSYrWzTdiwE9x6QlO9MvW5MUWrJY=
-X-Gm-Gg: AYBFou0/Hxjyi8vGaX6/taZEN8+N+Mx8cTqSCpo/42kT6gQagXvz1VkGtXS/Mg3um+7
-	vf5cRo9W5R3d7PSh2cWbewY5JxYen/BVllX8Mm9eqhnXXfYVS+u5YKaVfvpUywVchfBcWbLzO6D
-	n0S9tjkfpAuQniYsB984NJR0GdIHe3xzeECXpUB509gpJ0i/iJXyhPe3YOSUYDHrZfi5g+etabS
-	e9jqIbKbLcR26uTG53ESuEggftiFJa8l8ruZSoVwoe7EUQtjQuPwxAyNoUL4r3imPf3oj3+sZsg
-	51PGGpgqdroiDbq4k8rK1c/ir/uWw7oPzK6fYZbi0SeYoGFR5rjkGe3XVosKHXvE4PVhCKG6pxi
-	lQNsmTomVi2d3
-X-Received: by 2002:a05:6820:2912:b0:6b3:b9d1:f629 with SMTP id
- 006d021491bc7-6bee5e98160mr2823187eaf.31.1788975987613; Wed, 09 Sep 2026
- 10:46:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O0M7TaBu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DADE81F000FF;
+	Wed,  9 Sep 2026 17:57:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788976667;
+	bh=bedgQLEmoSjapKQJt0LsEmsD0KkdBrnumX6yghAqwSk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=O0M7TaBuuIqeIHUOZyRrnOQaqBQIdb11hRbifgvv3Oo04KEluIYkgIs5eNKIyCmk7
+	 9R7sajMx7heh8mCNAlr8RBlvRhDVgv/ApQbDZbjKY+OqD+i05Zv4ux3UaJmXKqraJp
+	 flQtBNyvmsjjSXGs0lA9e2MmMC3bUvQVYCc9qhxiDbLFuR11YQxa2K2Wm1MJIPnsZa
+	 FLYqKRwkKLx/NpPlcLF2jqG6dFCtiCgQ1rdnD1plb8QSiKxKVkMIatuH7vDg1VLVXF
+	 NB2z0caRV5lW/50dI3O3wFbCaVZgGZVP/y5D3+A7d/cuaEGA2zgjklsKsQi6Lbl+jb
+	 Y1AnG5Tjd8MhQ==
+Message-ID: <8118ffe2-635f-40dc-98a6-d0bd1878e29e@kernel.org>
+Date: Wed, 9 Sep 2026 19:57:41 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260906131414.2683362-6-mmyangfl@gmail.com> <178896697703.219967.8447526738608779891@kernel.org>
-In-Reply-To: <178896697703.219967.8447526738608779891@kernel.org>
-From: David Yang <mmyangfl@gmail.com>
-Date: Thu, 10 Sep 2026 01:45:49 +0800
-X-Gm-Features: AcwNN1VxSFEObAOlS0oWuqxHPTQpRA1FtSHwEXKSDmt_D-rjyBcp-cftfMoT6sc
-Message-ID: <CAAXyoMM_uqu8z0jzTbNGGbOBW5UX3PGzJ-Tz3OZmyQxeYxTs0Q@mail.gmail.com>
-Subject: Re: [PATCH net-next v3 5/6] net: dsa: motorcomm: Fix MIB synchronization
+User-Agent: Thunderbird Daily
+Subject: Re: [PATCH net v2 04/15] mptcp: pm: kernel: drop pending ADD_ADDR
+ when removing ID0
+Content-Language: fr
 To: netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org, andrew@lunn.ch, olteanv@gmail.com, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	linux@armlinux.org.uk, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Cc: martineau@kernel.org, geliang@kernel.org, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ netdev@vger.kernel.org, mptcp@lists.linux.dev, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20260908-net-mptcp-misc-fixes-7-3-rc1-v2-4-df1de70348b6@kernel.org>
+ <178896537388.219967.5173915953995910937@kernel.org>
+From: Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <178896537388.219967.5173915953995910937@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Wed, Sep 9, 2026 at 11:16=E2=80=AFPM <netdev-bot+sashiko@kernel.org> wro=
-te:
+Hello,
 
-> [Severity: Medium]
-> Should this carry a Fixes: tag?  The unsynchronized 64-bit MIB accessors
-> and .get_stats64() came in with 186623f4aa724c ("net: dsa: yt921x: Add
-> support for Motorcomm YT921x"), so this is a fix to already-merged driver
-> code.
->
-> Related to that, the fix does not look self-contained: the counter type
-> conversion lives in the preceding patch "net: dsa: motorcomm: Use
-> u64_stats_t for MIB stats", whose changelog says "u64_stats_sync will be
-> equipped in the next commit", and this commit also builds on "Rename MIB
-> stuffs", "Split MIB buffers" and "Split MIB module".
->
-> Since neither commit alone closes the tearing window, how would a stable
-> backport of this fix be done without pulling in the whole refactor series=
-?
+On 09/09/2026 16:49, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 2 potential
+> issue(s) to consider:
+> 
+> Critical: 0 · High: 1 · Medium: 1 · Low: 0
+> 
+> - [High] Incomplete fix: in mptcp_nl_remove_id_zero_address()
+>   (net/mptcp/pm_kernel.c) the new cleanup forces `anno_addr.port = 0`…
+> - [Medium] Newly introduced wrong-entry teardown in
+>   mptcp_nl_remove_id_zero_address() (net/mptcp/pm_kernel.c:1152-1157):…
+> 
+> --
+> 
+> mptcp: pm: kernel: drop pending ADD_ADDR when removing ID0
+> 
+> This makes the in-kernel path manager's id 0 removal path symmetric with the
+> non-zero id path by dropping a pending ADD_ADDR announcement and decrementing
+> add_addr_signaled before queuing the RM_ADDR.  The lookup key is the msk local
+> address with the port forced to 0.
+> 
+> Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/620
+> 
+>> diff --git a/net/mptcp/pm_kernel.c b/net/mptcp/pm_kernel.c
+>> index 424f1a7f9248..1a7750813235 100644
+>> --- a/net/mptcp/pm_kernel.c
+>> +++ b/net/mptcp/pm_kernel.c
+>> @@ -1137,6 +1137,8 @@ static int mptcp_nl_remove_id_zero_address(struct net *net,
+>>  	while ((msk = mptcp_token_iter_next(net, &s_slot, &s_num)) != NULL) {
+>>  		struct sock *sk = (struct sock *)msk;
+>>  		struct mptcp_addr_info msk_local;
+>> +		struct mptcp_addr_info anno_addr;
+>> +		bool announced;
+>>  
+>>  		if (list_empty(&msk->conn_list) || mptcp_pm_is_userspace(msk))
+>>  			goto next;
+>> @@ -1146,7 +1148,13 @@ static int mptcp_nl_remove_id_zero_address(struct net *net,
+>>  			goto next;
+>>  
+>>  		lock_sock(sk);
+>> +		/* Drop a possibly pending ADD_ADDR for this address. */
+>> +		anno_addr = msk_local;
+>> +		anno_addr.port = 0;
+>> +		announced = mptcp_pm_announced_remove(msk, &anno_addr);
+> 
+> [Severity: High]
+> Does zeroing the port here make the lookup miss the announcements this
+> patch is meant to remove?
+> 
+> The commit message says:
+> 
+>     Subtle detail: signal endpoints are stored in anno_list with port 0, but
+>     msk_local carries the connection's local port. In other words, entries
+>     linked to ID0 paths should have port == 0. A follow-up patch will ensure
+>     that.
+As mentioned, a follow-up patch to fix this non-directly related issue
+is in preparation. The series was already 15 patches long, it has not
+been included and will be sent later on.
 
-This is a low-risk issue and does not affect control paths. Also it
-would be quite impossible to backport it since the whole series is to
-fix this and it would require major refactor on the struct.
+Cheers,
+Matt
+-- 
+Sponsored by the NGI0 Core fund.
+
