@@ -1,42 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05B48559C9A;
-	Wed,  9 Sep 2026 15:16:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 428F0563FC2;
+	Wed,  9 Sep 2026 15:16:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788966977; cv=none; b=oxPsWrCdU/1RHHsCqbyQWyuE4V3RjNyZm1IPeZzo5SUCjWSb39XkIy+UWGGAtKtCpSGNa3PyMd3xPfIegrqzbw19bTy7jMJR+kIRlOKcA1omw6BVC/Bt4BRtcCW0OCMNqJLMnhJgPOTdrod1b+LusLcIv88ScEfwiRjQrMfiB3k=
+	t=1788966978; cv=none; b=Z3eT43LXPFh6gpyr+6RPjekcvWcltwKjS6qVFx/Gbl3zmCsypq3PMAMqOdwRv7EvNtetGwS2kT37gtDf8KV7JxYsSvtcHzu1TB8/e8VUPh0oa5rVFAx0t8Veo7YX8DA9AuuaMYHQ2sIXtLLgYxDfstViuM7QhlnBwbywZqNDq3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788966977; c=relaxed/simple;
-	bh=Hqt8pMrgScs9o/prDc54Qc+QqwDXpPYCAVpK5lWOIu8=;
+	s=arc-20240116; t=1788966978; c=relaxed/simple;
+	bh=PlIIwNHA0v7X9g9ft1MO22gZgAkJnvS+0osWG+oR3Cw=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=D4RZns17IHnBY0FjKXLlQRnr/wnCNB3jlT0+nemBnrI7gGLI3gDrZn4qTa7dFauNnswQetgk8fx8EVbjguwx3DrAkHGUuBpLW1qzg+Nsgq7oOzQHPiODh7lfVwkwjySt6ry+UZup+v66P1Dq28BEqjZ9A2SKfXinWIwrrqZB/pk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hLihS9Tr; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=Uz5WKGerOb1h9p/cOL6onbu+WvblHU8mEhqmYkw1Y3JVkSLm3qCp9QgHYDZQnE11b9xtJLBeCwzql2ZY5oaedUPRagB5KZvu0d5XHcgxPzl30ZUI57EVzN3rlAhPkOescCuarlMHN4WR+DM/jp5RR6D2U6c3IN3cWIAT3K74Rvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lUZu8zxp; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hLihS9Tr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B3921F00A3E;
-	Wed,  9 Sep 2026 15:16:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lUZu8zxp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DCE51F00AC4;
+	Wed,  9 Sep 2026 15:16:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788966975;
-	bh=heYJUaP2q9Wh6AOZ0OFZIFgHVrN6J+Ev5xJ9qbx5sPs=;
+	s=k20260515; t=1788966976;
+	bh=I3sXLMfT37qvCEqbB2PXEkbVgC+jiZJoqyCvOaxW0WI=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=hLihS9Tre7WwCy/ceiOWfRy4i9dzgB/gL2dIQRfd3VKULqanNNdms8rjSJ+BVSA5e
-	 HbL0JZAt+l5i1OWpSwPBS1oDHU2pJPBdZYLp60EMNFFVb/WhR8SWbhUzYPeT5YfsEJ
-	 kqxp8vTkUpFK1XQBCEyWGHYdLfvw9pHqt3MtGKj7kP+iEQ1typYIbI+dwjfEG+bDBZ
-	 kuFy5V2lIAjkGc2L0hIo4viEX6j6xoSm/d4AMsdlao2w1SV8e9sRByFenyWukBCjZI
-	 8WZXFn41vW19VqkZTqHSl1QSRRyrXoScYk75V+iQeHfYjEeNZ3OWa+bP+fnMBSshmZ
-	 zHSQpmWSaiC2w==
-Subject: Re: [PATCH net-next v3 3/6] net: dsa: motorcomm: Split MIB module
+	b=lUZu8zxp1GHjJUR4bon+EJrfJoIo1syg8/2cBHu2c7pHp4aAlyhzKK10a1TuedtgW
+	 d79qNylhbsKzkIXpvOCxxwPVbqCuQAVDpPzEIVy2S1EGumj/twK4ZkgbiMQdFHAJcW
+	 lLXvpLMoX7bcfpD1J567ngWQsSnBrs+5VdWaU/9QTlGx3qo00AlIOfC2tvuECqGVVg
+	 RFQZHppfnqDK1LymPtm8t8ybxaXgv+XVljmVxIF+AqPneFqehrGE4QQ/an29fwuTf/
+	 XUGe8gUNxfPR5sQ8OJhXdxno+vFsY6vzL04muWksNjsKxGBSDWK2vnWqemwNwekWYh
+	 gF2OOS1GQPLuA==
+Subject: Re: [PATCH net-next v3 4/6] net: dsa: motorcomm: Use u64_stats_t for
+ MIB stats
 From: netdev-bot+sashiko@kernel.org
 To: mmyangfl@gmail.com
 Cc: netdev@vger.kernel.org, andrew@lunn.ch, olteanv@gmail.com,
  davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
  linux@armlinux.org.uk, linux-kernel@vger.kernel.org
-Date: Wed, 09 Sep 2026 15:16:14 +0000
-Message-ID: <178896697478.219967.17798090601969318390@kernel.org>
-In-Reply-To: <20260906131414.2683362-4-mmyangfl@gmail.com>
-References: <20260906131414.2683362-4-mmyangfl@gmail.com>
-X-sashiko-severity: Medium
+Date: Wed, 09 Sep 2026 15:16:15 +0000
+Message-ID: <178896697595.219967.18264990236877680061@kernel.org>
+In-Reply-To: <20260906131414.2683362-5-mmyangfl@gmail.com>
+References: <20260906131414.2683362-5-mmyangfl@gmail.com>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -49,243 +50,228 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider:
 
-Critical: 0 · High: 0 · Medium: 1 (2) · Low: 0
+Critical: 0 · High: 0 · Medium: 0 (1) · Low: 1 (1)
 
-- [Medium] MIB polling work is permanently disabled by
-  `yt921x_dsa_port_teardown()`…
+- [Low] In "net: dsa: motorcomm: Use u64_stats_t for MIB stats" the MIB
+  counters are converted from u64 to u64_stats_t while no `struct…
 
 Pre-existing issues:
-- [Medium] Unsynchronized access to the cached 64-bit MIB counters: at
-  this commit `yt921x_mib_read()` (drivers/net/dsa/motorcomm/mib.c)…
-- [Medium] Non-atomic read of the 64-bit MIB counter register pairs: for
-  descriptors with `size == 2` (RX_GOOD_BYTES 0x3c/0x40, RX_BAD_BYTES…
+- [Medium] For the 64-bit MIB counters (desc->size == 2: RX_GOOD_BYTES,
+  RX_BAD_BYTES, TX_GOOD_BYTES) yt921x_mib_read() performs two…
+- [Low] yt921x_dsa_get_stats64() (drivers/net/dsa/motorcomm/mib.c) reads
+  the shared MIB counters with no lock and, at the reviewed commit, no…
 
 --
 
-net: dsa: motorcomm: Split MIB module
+net: dsa: motorcomm: Use u64_stats_t for MIB stats
 
-This moves the yt921x MIB descriptor table, register definitions, stats
-structures and all of the ethtool/stats64 callbacks out of chip.c and
-chip.h into new mib.c and mib.h files, in preparation for yt922x using a
-different MIB scheme. The change is described as pure code motion.
+This converts every MIB counter in struct yt921x_mib_stats and the derived
+rx_frames/tx_frames fields from plain u64 to u64_stats_t, and updates all
+readers in mib.c to use u64_stats_read().  The changelog notes that
+u64_stats_sync is added in the next commit.
 
 > diff --git a/drivers/net/dsa/motorcomm/mib.c b/drivers/net/dsa/motorcomm/mib.c
-> new file mode 100644
-> index 0000000000000..b1296f224cf69
-> --- /dev/null
+> index b1296f224cf69..f5d39d22215d4 100644
+> --- a/drivers/net/dsa/motorcomm/mib.c
 > +++ b/drivers/net/dsa/motorcomm/mib.c
-> @@ -0,0 +1,408 @@
-
-[ ... ]
-
-> +/* Read and handle overflow of 32bit MIBs. MIB buffer must be zeroed before. */
-> +static int yt921x_mib_read(struct yt921x_priv *priv, int port)
-> +{
-
-[ ... ]
-
-> +	for (size_t i = 0; i < ARRAY_SIZE(yt921x_mib_descs); i++) {
-> +		const struct yt921x_mib_desc *desc = &yt921x_mib_descs[i];
-> +		u32 reg = YT921X_MIBn_DATA0(port) + desc->offset;
-> +		u64 *valp = &((u64 *)mib)[i];
-> +		u32 val0;
-> +		u64 val;
-> +
-> +		res = yt921x_reg_read(priv, reg, &val0);
-> +		if (res)
-> +			break;
-> +
-> +		if (desc->size <= 1) {
-> +			u64 old_val = *valp;
-> +
-> +			val = (old_val & ~(u64)U32_MAX) | val0;
-> +			if (val < old_val)
-> +				val += 1ull << 32;
-> +		} else {
-> +			u32 val1;
-> +
-> +			res = yt921x_reg_read(priv, reg + 4, &val1);
-> +			if (res)
-> +				break;
-> +			val = ((u64)val1 << 32) | val0;
-> +		}
-
-[Severity: Medium]
-This is a pre-existing issue carried over by the move, not something this
-patch introduces, but can the size == 2 path assemble a torn value?
-
-The two halves come from two independent SMI/MDIO transactions:
-
-	res = yt921x_reg_read(priv, reg, &val0);
-	...
-	res = yt921x_reg_read(priv, reg + 4, &val1);
-	...
-	val = ((u64)val1 << 32) | val0;
-
-If the low word wraps between the two reads, the combined value is off by
-2^32.  Unlike the size <= 1 branch there is no wraparound correction here,
-so the affected counters (RX_GOOD_BYTES, RX_BAD_BYTES, TX_GOOD_BYTES) can
-step backwards by about 4 GiB, and stats64 rx_bytes/tx_bytes can underflow
-once ETH_FCS_LEN * packets is subtracted.
-
-At 1 Gbps the low word of a byte counter wraps roughly every 34 seconds,
-while each register access over MDIO takes tens of microseconds, so the
-window is reachable in practice.
-
-For traceability: a later commit in this series, "net: dsa: motorcomm: Use
-safe 64-bit counter reader", replaces this open-coded pair read with
-yt921x_counter_read() in smi.c, which reads lo, then re-reads hi/lo and
-accepts the value only when lo >= old_lo (bounded to 16 attempts,
--ETIMEDOUT otherwise).
-
-> +
-> +		WRITE_ONCE(*valp, val);
-> +	}
-> +
-> +	pm->rx_frames = mib->rx_64byte + mib->rx_65_127byte +
-> +			mib->rx_128_255byte + mib->rx_256_511byte +
-> +			mib->rx_512_1023byte + mib->rx_1024_1518byte +
-> +			mib->rx_jumbo;
-> +	pm->tx_frames = mib->tx_64byte + mib->tx_65_127byte +
-> +			mib->tx_128_255byte + mib->tx_256_511byte +
-> +			mib->tx_512_1023byte + mib->tx_1024_1518byte +
-> +			mib->tx_jumbo;
-
-[ ... ]
-
-> +void yt921x_mib_poll(struct work_struct *work)
-> +{
-> +	struct yt921x_mib *pm = container_of_const(work, struct yt921x_mib,
-> +						   work.work);
-
-[ ... ]
-
-> +	schedule_delayed_work(&pm->work, delay);
-> +}
-
-[Severity: Medium]
-Now that yt921x_mib_poll() lives here, is the work item's disable count
-ever balanced for a re-used struct yt921x_mib?
-
-In chip.c, yt921x_dsa_port_teardown() does:
-
-	if (pm)
-		disable_delayed_work_sync(&pm->work);
-
-which is __cancel_work_sync(&dwork->work, WORK_CANCEL_DELAYED |
-WORK_CANCEL_DISABLE), so the disable count stays in work->data until a
-matching enable_delayed_work().
-
-On a later setup, yt921x_dsa_port_setup() only re-initialises the work when
-the allocation is fresh:
-
-	if (!pm && (BIT(port) & (priv->info->internal_mask |
-		    priv->info->external_mask))) {
-		pm = devm_kzalloc(dev, sizeof(*pm), GFP_KERNEL);
-		...
-		INIT_DELAYED_WORK(&pm->work, yt921x_mib_poll);
-	}
-
-pp->mib is a devm allocation that survives a DSA tree teardown/setup cycle,
-so pm is non-NULL the second time and neither INIT_DELAYED_WORK() nor
-enable_delayed_work() runs.
-
-The teardown callback is reached on ordinary port teardown, not just device
-removal: dsa_port_devlink_teardown() calls ds->ops->port_teardown, and
-dsa_switch_remove() tears down the whole tree, so a surviving switch's
-ports get torn down while its pp->mib stays alive.  A later
-dsa_tree_setup() then calls port_setup again on that switch.
-
-After that, the schedule_delayed_work(&pm->work, 0) in
-yt921x_phylink_mac_link_up() is silently dropped by
-clear_pending_if_disabled(), so MIB polling never resumes for the port and
-the 32-bit wraparound accumulation in yt921x_mib_read() stops happening.
-
-Would cancel_delayed_work_sync() in port_teardown, or a matching
-enable_delayed_work() in yt921x_dsa_port_setup(), be more appropriate for a
-re-usable object?
-
-[ ... ]
-
-> +void
-> +yt921x_dsa_get_stats64(struct dsa_switch *ds, int port,
-> +		       struct rtnl_link_stats64 *stats)
-> +{
-> +	struct yt921x_priv *priv = to_yt921x_priv(ds);
-> +	struct yt921x_port *pp = &priv->ports[port];
-> +	struct yt921x_mib *pm = pp->mib;
-> +	struct yt921x_mib_stats *mib;
-> +
-> +	if (!pm)
-> +		return;
-> +	mib = &pm->stats;
-
-[ ... ]
-
-> +	stats->rx_packets = pm->rx_frames;
-> +	stats->tx_packets = pm->tx_frames;
-> +	stats->rx_bytes = mib->rx_good_bytes - ETH_FCS_LEN * stats->rx_packets;
-> +	stats->tx_bytes = mib->tx_good_bytes - ETH_FCS_LEN * stats->tx_packets;
-
-[Severity: Medium]
-This isn't a bug introduced by this patch, but how are these cached 64-bit
-counters synchronized against the poll worker?
-
-yt921x_mib_read() writes each counter with WRITE_ONCE() on a plain u64 and
-stores pm->rx_frames / pm->tx_frames with plain assignments while holding
-priv->reg_lock.  yt921x_dsa_get_stats64() reads all of them with no lock at
-all, and the other callbacks release the lock before copying out, e.g.:
-
-	mutex_lock(&priv->reg_lock);
-	yt921x_mib_read(priv, port);
-	mutex_unlock(&priv->reg_lock);
-
-	mac_stats->FramesTransmittedOK = pm->tx_frames;
-
-and in yt921x_dsa_get_pause_stats():
-
-	mutex_unlock(&priv->reg_lock);
-
-	pause_stats->tx_pause_frames = mib->tx_pause;
-
-On 32-bit builds a u64 store is two stores, so a reader can observe
-mismatched halves, and derived values can mix fields from different
-snapshots.  Can rx_bytes underflow when rx_good_bytes comes from an older
-snapshot than rx_frames?
-
-For traceability: later commits in this series, "net: dsa: motorcomm: Use
-u64_stats_t for MIB stats" and "net: dsa: motorcomm: Fix MIB
-synchronization", convert the counters to u64_stats_t, wrap the write-back
-in u64_stats_update_begin()/u64_stats_update_end(), add a
-u64_stats_fetch_begin()/u64_stats_fetch_retry() loop in
-yt921x_dsa_get_stats64(), and move the remaining field copies inside the
-reg_lock section.
-
-> diff --git a/drivers/net/dsa/motorcomm/mib.h b/drivers/net/dsa/motorcomm/mib.h
-> new file mode 100644
-> index 0000000000000..cfad0665baaea
-> --- /dev/null
-> +++ b/drivers/net/dsa/motorcomm/mib.h
-> @@ -0,0 +1,159 @@
-
-[ ... ]
-
-> +struct yt921x_mib_stats {
-> +	u64 rx_broadcast;
-> +	u64 rx_pause;
-
-[ ... ]
-
-> +struct yt921x_mib {
-> +	struct yt921x_port *port;
-> +
-> +	struct delayed_work work;
-> +	struct yt921x_mib_stats stats;
+> @@ -92,22 +92,16 @@ static int yt921x_mib_read(struct yt921x_priv *priv, int port)
+>  	struct device *dev = to_device(priv);
+>  	struct yt921x_mib *pm = pp->mib;
+>  	struct yt921x_mib_stats *mib;
 > +	u64 rx_frames;
 > +	u64 tx_frames;
-> +};
+>  	int res = 0;
+>  
+>  	mib = &pm->stats;
+>  
+> -	/* Reading of yt921x_port::mib is not protected by a lock and it's vain
+> -	 * to keep its consistency, since we have to read registers one by one
+> -	 * and there is no way to make a snapshot of MIB stats.
+> -	 *
+> -	 * Writing (by this function only) is and should be protected by
+> -	 * reg_lock.
+> -	 */
+> -
+>  	for (size_t i = 0; i < ARRAY_SIZE(yt921x_mib_descs); i++) {
+>  		const struct yt921x_mib_desc *desc = &yt921x_mib_descs[i];
+>  		u32 reg = YT921X_MIBn_DATA0(port) + desc->offset;
+> -		u64 *valp = &((u64 *)mib)[i];
+> +		u64_stats_t *valp = &((u64_stats_t *)mib)[i];
+>  		u32 val0;
+>  		u64 val;
+>  
+> @@ -116,7 +110,7 @@ static int yt921x_mib_read(struct yt921x_priv *priv, int port)
+>  			break;
+>  
+>  		if (desc->size <= 1) {
+> -			u64 old_val = *valp;
+> +			u64 old_val = u64_stats_read(valp);
+>  
+>  			val = (old_val & ~(u64)U32_MAX) | val0;
+>  			if (val < old_val)
+
+[Severity: Low]
+The changelog says the change addresses the case where "64-bit variables
+might not be atomic on 32-bit architectures, and could lead to load/store
+tearing".  Does this commit on its own change anything on 32-bit?
+
+With BITS_PER_LONG == 32, u64_stats_read() and u64_stats_set() are plain
+accesses:
+
+	static inline u64 u64_stats_read(const u64_stats_t *p)
+	{
+		return p->v;
+	}
+
+	static inline void u64_stats_set(u64_stats_t *p, u64 val)
+	{
+		p->v = val;
+	}
+
+struct yt921x_mib gains no struct u64_stats_sync here, yt921x_mib_read()
+has no u64_stats_update_begin()/u64_stats_update_end() region, and
+yt921x_dsa_get_stats64() has no u64_stats_fetch_begin()/
+u64_stats_fetch_retry() loop, so the tearing named in the changelog is
+still there after this patch.
+
+Also, the writer store goes from WRITE_ONCE(*valp, val) to
+u64_stats_set(valp, val), which on 32-bit is a plain store, and the comment
+documenting the "written only here under reg_lock, read locklessly" rule is
+deleted with nothing replacing it.  Would it be preferable to fold this
+patch together with the follow-up, or at least keep the WRITE_ONCE()
+equivalent and the locking comment until the follow-up lands?
+
+For the record, the next patch in this series, "net: dsa: motorcomm: Fix MIB
+synchronization", does add struct u64_stats_sync syncp to struct yt921x_mib,
+wraps the write-back in u64_stats_update_begin()/u64_stats_update_end(),
+turns yt921x_dsa_get_stats64() into a fetch_begin()/fetch_retry() loop,
+moves mutex_unlock(&priv->reg_lock) to after the counter reads in
+yt921x_dsa_get_eth_mac_stats(), yt921x_dsa_get_eth_ctrl_stats(),
+yt921x_dsa_get_rmon_stats(), yt921x_dsa_get_pause_stats() and
+yt921x_dsa_get_ethtool_stats(), and restores the access documentation as
+/* protected by syncp OR priv->reg_lock */ in mib.h.
+
+> @@ -130,17 +124,25 @@ static int yt921x_mib_read(struct yt921x_priv *priv, int port)
+>  			val = ((u64)val1 << 32) | val0;
+        ^^^^
+
+[Severity: Medium]
+This is a pre-existing issue and not introduced by this patch, but while
+yt921x_mib_read() is being touched: for the desc->size == 2 counters
+(RX_GOOD_BYTES, RX_BAD_BYTES, TX_GOOD_BYTES) the low word at
+YT921X_MIBn_DATA0(port) + desc->offset and the high word at + 4 are fetched
+in two separate SMI transactions with nothing latching the pair.  If the low
+word wraps between the two reads, does the composed value end up about 4 GiB
+too high, and does that then get cached as the base for the 32-bit
+wraparound arithmetic above and exported as a non-monotonic rx_bytes/
+tx_bytes?
+
+The last patch of this series, "net: dsa: motorcomm: Use safe 64-bit counter
+reader", replaces this with yt921x_counter_read(), which re-reads hi and lo
+and accepts the pair only when lo >= old_lo, so the window is closed there.
+
+>  		}
+>  
+> -		WRITE_ONCE(*valp, val);
+> +		u64_stats_set(valp, val);
+>  	}
+>  
+> -	pm->rx_frames = mib->rx_64byte + mib->rx_65_127byte +
+> -			mib->rx_128_255byte + mib->rx_256_511byte +
+> -			mib->rx_512_1023byte + mib->rx_1024_1518byte +
+> -			mib->rx_jumbo;
+> -	pm->tx_frames = mib->tx_64byte + mib->tx_65_127byte +
+> -			mib->tx_128_255byte + mib->tx_256_511byte +
+> -			mib->tx_512_1023byte + mib->tx_1024_1518byte +
+> -			mib->tx_jumbo;
+> +	rx_frames = u64_stats_read(&mib->rx_64byte) +
+> +		    u64_stats_read(&mib->rx_65_127byte) +
+> +		    u64_stats_read(&mib->rx_128_255byte) +
+> +		    u64_stats_read(&mib->rx_256_511byte) +
+> +		    u64_stats_read(&mib->rx_512_1023byte) +
+> +		    u64_stats_read(&mib->rx_1024_1518byte) +
+> +		    u64_stats_read(&mib->rx_jumbo);
+> +	tx_frames = u64_stats_read(&mib->tx_64byte) +
+> +		    u64_stats_read(&mib->tx_65_127byte) +
+> +		    u64_stats_read(&mib->tx_128_255byte) +
+> +		    u64_stats_read(&mib->tx_256_511byte) +
+> +		    u64_stats_read(&mib->tx_512_1023byte) +
+> +		    u64_stats_read(&mib->tx_1024_1518byte) +
+> +		    u64_stats_read(&mib->tx_jumbo);
+> +	u64_stats_set(&pm->rx_frames, rx_frames);
+> +	u64_stats_set(&pm->tx_frames, tx_frames);
+>  
+>  	if (res)
+>  		dev_err(dev, "Failed to %s port %d: %i\n", "read stats for",
 
 [ ... ]
+
+> @@ -246,28 +248,28 @@ yt921x_dsa_get_eth_mac_stats(struct dsa_switch *ds, int port,
+>  	yt921x_mib_read(priv, port);
+>  	mutex_unlock(&priv->reg_lock);
+>  
+> -	mac_stats->FramesTransmittedOK = pm->tx_frames;
+> +	mac_stats->FramesTransmittedOK = u64_stats_read(&pm->tx_frames);
+
+[ ... ]
+
+> @@ -358,32 +360,34 @@ yt921x_dsa_get_stats64(struct dsa_switch *ds, int port,
+>  		return;
+>  	mib = &pm->stats;
+>  
+
+[ ... ]
+
+> +	stats->rx_packets = u64_stats_read(&pm->rx_frames);
+> +	stats->tx_packets = u64_stats_read(&pm->tx_frames);
+> +	stats->rx_bytes = u64_stats_read(&mib->rx_good_bytes) -
+> +			  ETH_FCS_LEN * stats->rx_packets;
+> +	stats->tx_bytes = u64_stats_read(&mib->tx_good_bytes) -
+> +			  ETH_FCS_LEN * stats->tx_packets;
+
+[Severity: Low]
+This is a pre-existing issue rather than something this patch introduces,
+but the derivation here mixes two independently loaded counters while
+yt921x_dsa_get_stats64() holds no lock:
+
+	CPU0 yt921x_dsa_get_stats64()
+	    stats->rx_packets = u64_stats_read(&pm->rx_frames);
+	    /* CPU1: yt921x_mib_poll() -> yt921x_mib_read() rewrites
+	     * all counters under priv->reg_lock */
+	    stats->rx_bytes = u64_stats_read(&mib->rx_good_bytes) -
+			      ETH_FCS_LEN * stats->rx_packets;
+
+If rx_packets is observed fresh and rx_good_bytes stale, can this unsigned
+subtraction wrap and report an rx_bytes value close to 2^64 through
+rtnl_link_stats64?
+
+The follow-up patch "net: dsa: motorcomm: Fix MIB synchronization" wraps
+this whole block in a u64_stats_fetch_begin()/u64_stats_fetch_retry() loop
+and publishes all counters plus rx_frames/tx_frames in one writer section,
+which gives a consistent snapshot on 32-bit.
+
+> diff --git a/drivers/net/dsa/motorcomm/mib.h b/drivers/net/dsa/motorcomm/mib.h
+> index cfad0665baaea..d84ae2f449ac8 100644
+> --- a/drivers/net/dsa/motorcomm/mib.h
+> +++ b/drivers/net/dsa/motorcomm/mib.h
+
+[ ... ]
+
+> @@ -128,8 +130,8 @@ struct yt921x_mib {
+>  
+>  	struct delayed_work work;
+>  	struct yt921x_mib_stats stats;
+> -	u64 rx_frames;
+> -	u64 tx_frames;
+> +	u64_stats_t rx_frames;
+> +	u64_stats_t tx_frames;
+>  };
+>  
+>  void yt921x_mib_poll(struct work_struct *work);
+
+Would it make sense to add struct u64_stats_sync syncp to struct yt921x_mib
+in this same patch, so the u64_stats_t fields are never present without
+their companion seqcount?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260906131414.2683362-1-mmyangfl%40gmail.com
