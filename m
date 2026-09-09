@@ -1,200 +1,134 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from mail.dspace.de (mail2.dspace.de [80.228.58.149])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 700364854FF;
-	Wed,  9 Sep 2026 08:56:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 096EE46C4A9;
+	Wed,  9 Sep 2026 08:58:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.228.58.149
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788944217; cv=none; b=nd8NuQxFvUDFm560OphXIwdaEl+gEZgrRQPgJrB4M23EUFGxT0xu/mBzZXCZ6Znd07cQzRh2u2ASnLzy6NdM+zz3jOQCnoHH9TTnpV7j3+XhlF7gQEzsdrTcTtER1xEk2uf1sUYvHOJ6F/jjjN4NXZ2w56OjDb0XL/POhIgkmF8=
+	t=1788944313; cv=none; b=Tue7lkfU7qzUmuNev/2j6EZaqTKrNw8wggfmmYOy2audjsUL4961xiv1G3qw2onPG8jTNkOHGCEJlf8YkleccFR988ojqvKciU0Ivi4GOyLXISOjD20s8I/iUaqx4EHlnRkXiNhMmkGS6jjvlwc5imGQl9b3J88+TkOPgLA6tUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788944217; c=relaxed/simple;
-	bh=JF3O1B0ruS2aFRTkmaSYRWic/aeA8sb9k9jvcclJdP4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=P0eZwx4zXKqgXMHLgfIbhn+ZWPU/JPngbRUW0AAKEj6bClRV2UzH4BabGVoTmJSgqU8kiMM23HnfmCUoSH0fpw2JkurR0mG+hmX1tWKEfv7fExMZPLN9R+PtB+6PpnVoOqdVHrNqMeWgSgRc76ySR5NscUy+5ILqmnHTDkWgsD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=CDwauWnB; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1788944313; c=relaxed/simple;
+	bh=VR5lz6e56CwLHQCzov/eaD5ZDxE3Nsomj2KxU1fy0aA=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=DYQ8Jot0m0CDs9p+H+kzIQWXohLQ664l83PwGRVWZg+4pZ4oLVhD38fC6c+jrIViy1gCNAjtRbVwgcw9KIebJHPrpgblrJgt3qmZXDIBwL2xSJmCBPmKded/M4gpx+kudFRPogq0z36iyamPQA9f4XeSUHlohSlgT593h3zHIO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dspace.de; spf=pass smtp.mailfrom=dspace.de; dkim=pass (1024-bit key) header.d=dspace.de header.i=@dspace.de header.b=ES3eO9xY; arc=none smtp.client-ip=80.228.58.149
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=dspace.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dspace.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="CDwauWnB"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 04A644E415A5;
-	Wed,  9 Sep 2026 08:56:54 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id CC74860448;
-	Wed,  9 Sep 2026 08:56:53 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 15E4811C7AF3D;
-	Wed,  9 Sep 2026 10:56:45 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1788944212; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=jhoGSO/XD6PN/mlAWTDEsoUz7/QkmzABQbv+weCnPbQ=;
-	b=CDwauWnBz/mg4WpauvZGTQIf9scebzssIXSfVY7H7aezZ8D4uWVbghayq85ua+HO12bjoV
-	ILLXuawZB+4SqB5jPgw8oKhUXgz9hVoXq1qle3uPVw1RKAdyPvJkZy8gpS3s+lEpuMya/F
-	1THW21vDMtY6iKQpn1DJUi4Q2B9NJINF18IzvxzSw/uf/jFwGxp8j4GNAup1asq1V+FUJ7
-	uZv+d33uOCVDFe+ReKNHBJR9sSeP+0EdTz3fJiRlFlGxDwhHs2xS+WN/z5wWg8iy8xxz3G
-	sXU5Arq2nT+68v6vamDU83SWddQDW96Vf8ULLMnFuDMgwwXOKh85cO/f2TDT8A==
-From: "Miguel Gazquez (Schneider Electric)" <miguel.gazquez@bootlin.com>
-Date: Wed, 09 Sep 2026 10:56:45 +0200
-Subject: [PATCH 5.10.y] tcp: clear sock_ops cb flags before force-closing a
- child socket
+	dkim=pass (1024-bit key) header.d=dspace.de header.i=@dspace.de header.b="ES3eO9xY"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=dspace.de; i=@dspace.de; q=dns/txt; s=dkim1;
+  t=1788944308;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=W64OfXJBTXrdEHn01dbecqbXkdcTLtQbrrsQRWJQMCY=;
+  b=ES3eO9xY69RiPQQ8Fep/5u2gqkeW29L/cA7LvOqYC268ILf+SkXOpuzx
+   UEJOZjMYNO7RZJlcxSSZ6uPZS3ZzG2SVi68veCM3kS1bNsRvt08FB9CSl
+   GZiG9ZmatiG/i5hWJSaAXp21aa6UmHtWSPjhCzpwGidpFglQfaFECpuhq
+   0=;
+X-CSE-ConnectionGUID: lesFjaISRZmDooY3588RlQ==
+X-CSE-MsgGUID: WwlpYq3GRcO/083IRCND2A==
+X-IronPort-AV: E=Sophos;i="6.25,270,1779141600"; 
+   d="scan'208";a="5430986"
+Received: from unknown (HELO Z1-1000) ([10.1.1.222])
+  by mail.dspace.de with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 09 Sep 2026 10:57:16 +0200
+Received: from VM-Z1-1000-LIVE.dspace.de (localhost [127.0.0.1])
+	by Z1-1000 (Postfix) with ESMTP id 50DDB60038;
+	Wed,  9 Sep 2026 10:57:16 +0200 (CEST)
+Received: from exchange.dspace.de (EX-DE-PAD-SE.dspace.de [10.100.196.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by Z1-1000 (Postfix) with ESMTPS id 41CED60036;
+	Wed,  9 Sep 2026 10:57:16 +0200 (CEST)
+Received: from PascalKW11-NB.dspace.de (10.71.5.241) by EX-DE-PAD-SE.dspace.de
+ (10.100.196.14) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Wed, 9 Sep
+ 2026 10:57:15 +0200
+From: Pascal Kneuper <PKneuper@dspace.de>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+CC: kuba@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, pabeni@redhat.com, mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com, rmk+kernel@armlinux.org.uk,
+	0x1207@gmail.com, si.yanteng@linux.dev, larysa.zaremba@intel.com,
+	aleksander.lobakin@intel.com, netdev@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	DBaldin@dspace.de
+Subject: Re: [PATCH net v2] net: stmmac: restore NET_IP_ALIGN in the RX DMA
+ offset
+Date: Wed, 9 Sep 2026 10:57:29 +0200 (CEST)
+Message-ID: <20260909085731.108922-1-PKneuper@dspace.de>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <5aeb6fd1-f1c3-426d-a2c4-1ad45ddc8572@bootlin.com>
+References: <20260813092923.284285-1-PKneuper@dspace.de>  <20260824125014.47862-1-PKneuper@dspace.de>  <09e7cd4b-b79c-47ea-95b6-1c1a96fe7657@bootlin.com>  <5aeb6fd1-f1c3-426d-a2c4-1ad45ddc8572@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260909-cve-2026-74268-5-10-v1-1-374ebc121b6d@bootlin.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMQQ6CMBCF4auQWTtk2tg69SrGBZYBxgWaFomGc
- HcLLL+XvH+BLEklw7VaIMmsWV9jgTlVEIdm7AW1LQZL1lMgxjgLbsDL2XpGh4bQ+YZDYGcCWyj
- Pd5JOv3v1Bq42VP/gfuz583hKnLYkrOsfX3KpH38AAAA=
-X-Change-ID: 20260908-cve-2026-74268-5-10-56a899851982
-To: stable@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, 
- Jakub Kicinski <kuba@kernel.org>, Eric Dumazet <edumazet@google.com>, 
- Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>, 
- Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>, 
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
- Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau <kafai@fb.com>, 
- Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>, 
- John Fastabend <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>, 
- Lawrence Brakmo <brakmo@fb.com>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, bpf@vger.kernel.org, 
- Sechang Lim <rhkrqnwk98@gmail.com>, Jiayuan Chen <jiayuan.chen@linux.dev>, 
- Kuniyuki Iwashima <kuniyu@google.com>, Sasha Levin <sashal@kernel.org>, 
- "Miguel Gazquez (Schneider Electric)" <miguel.gazquez@bootlin.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1788944205; l=4820;
- i=miguel.gazquez@bootlin.com; s=20250708; h=from:subject:message-id;
- bh=gfGs0ll/D/LmEzDWS0zeRunUGoOktjRYi4+zsANwh50=;
- b=RBJcJEeBsIokH9FWwAkHCPsE3jyGoCSdaKFJ6Z3FrnEfYoWKanpbyghHUJduIpbEGea5Ad3tN
- xIWjh1o9dj1Bu+CaL1CfwKDn/c7ETxpUcqAmRrsWrnUuS3eyE+5OTnv
-X-Developer-Key: i=miguel.gazquez@bootlin.com; a=ed25519;
- pk=k/2KI9jkmayaF0ghZ8QYUH9Wm/kFHDhl8QoZ0RHbr4w=
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: EX-DE-PAD-SE.dspace.de (10.100.196.14) To
+ EX-DE-PAD-SE.dspace.de (10.100.196.14)
+X-C2ProcessedOrg: 563f5800-21cf-4d8d-8aed-fddd1469e4ee
+X-TBoneOriginalFrom: Pascal Kneuper <PKneuper@dspace.de>
+X-TBoneOriginalTo: Maxime Chevallier <maxime.chevallier@bootlin.com>
+X-TBoneOriginalCC: kuba@kernel.org, andrew+netdev@lunn.ch,
+	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+	mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+	rmk+kernel@armlinux.org.uk, 0x1207@gmail.com, si.yanteng@linux.dev,
+	larysa.zaremba@intel.com, aleksander.lobakin@intel.com,
+	netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	DBaldin@dspace.de
+X-TBoneDomainSigned: false
 
-From: Sechang Lim <rhkrqnwk98@gmail.com>
-
-[ Upstream commit 990348e5bb457697c2f1f7f7b65154a3334d9d2b ]
-
-A child socket inherits the listener's bpf_sock_ops_cb_flags via
-sk_clone_lock(). If its setup fails in tcp_v4_syn_recv_sock() /
-tcp_v6_syn_recv_sock(), the child is freed through put_and_exit, where
-inet_csk_prepare_forced_close() drops the socket lock and tcp_done() runs
-without it.
-
-If BPF_SOCK_OPS_STATE_CB_FLAG was inherited, tcp_done() -> tcp_set_state()
-calls tcp_call_bpf(), which expects the lock and trips sock_owned_by_me():
-
-  WARNING: include/net/sock.h:1799 at tcp_set_state+0x433/0x550
-  RIP: 0010:tcp_set_state+0x433/0x550 include/net/sock.h:1799
-  Call Trace:
-   <IRQ>
-   tcp_done+0xba/0x250 net/ipv4/tcp.c:5095
-   tcp_v4_syn_recv_sock+0x850/0xa50 net/ipv4/tcp_ipv4.c:1787
-   tcp_check_req+0xf30/0x1360 net/ipv4/tcp_minisocks.c:926
-   tcp_v4_rcv+0x1047/0x1b50 net/ipv4/tcp_ipv4.c:2164
-   </IRQ>
-
-The child is freed before it is ever established, so it should run no
-sock_ops callback. Clear its cb flags in inet_csk_prepare_for_destroy_sock(),
-the common point for the IPv4, IPv6 and chtls forced-close paths and for the
-MPTCP ->syn_recv_sock() failure path (dispose_child), which reaches tcp_done()
-on a child that was never established too.
-
-Suggested-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Fixes: d44874910a26 ("bpf: Add BPF_SOCK_OPS_STATE_CB")
-Signed-off-by: Sechang Lim <rhkrqnwk98@gmail.com>
-Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260611092923.1895982-1-rhkrqnwk98@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-
-[ Moved inet_csk_prepare_for_destroy_sock() to inet_connection_sock.c due to header dependency,
-  Added a guard arount the call to tcp_clear_sock_ops_cb_flags to avoid
-  calling it for DDCP sockets.]
-
-Signed-off-by: Miguel Gazquez (Schneider Electric) <miguel.gazquez@bootlin.com>
----
- include/net/inet_connection_sock.h | 7 +------
- include/net/tcp.h                  | 9 +++++++++
- net/ipv4/inet_connection_sock.c    | 9 +++++++++
- 3 files changed, 19 insertions(+), 6 deletions(-)
-
-diff --git a/include/net/inet_connection_sock.h b/include/net/inet_connection_sock.h
-index cfb66f5a5076..5cc2b9658142 100644
---- a/include/net/inet_connection_sock.h
-+++ b/include/net/inet_connection_sock.h
-@@ -288,14 +288,9 @@ static inline int inet_csk_reqsk_queue_is_full(const struct sock *sk)
- bool inet_csk_reqsk_queue_drop(struct sock *sk, struct request_sock *req);
- void inet_csk_reqsk_queue_drop_and_put(struct sock *sk, struct request_sock *req);
- 
--static inline void inet_csk_prepare_for_destroy_sock(struct sock *sk)
--{
--	/* The below has to be done to allow calling inet_csk_destroy_sock */
--	sock_set_flag(sk, SOCK_DEAD);
--	this_cpu_inc(*sk->sk_prot->orphan_count);
--}
- 
- void inet_csk_destroy_sock(struct sock *sk);
-+void inet_csk_prepare_for_destroy_sock(struct sock *sk);
- void inet_csk_prepare_forced_close(struct sock *sk);
- 
- /*
-diff --git a/include/net/tcp.h b/include/net/tcp.h
-index 4c87936a33d6..f7a61e6f5ebd 100644
---- a/include/net/tcp.h
-+++ b/include/net/tcp.h
-@@ -2356,6 +2356,11 @@ static inline int tcp_call_bpf_3arg(struct sock *sk, int op, u32 arg1, u32 arg2,
- 	return tcp_call_bpf(sk, op, 3, args);
- }
- 
-+static inline void tcp_clear_sock_ops_cb_flags(struct sock *sk)
-+{
-+	tcp_sk(sk)->bpf_sock_ops_cb_flags = 0;
-+}
-+
- #else
- static inline int tcp_call_bpf(struct sock *sk, int op, u32 nargs, u32 *args)
- {
-@@ -2373,6 +2378,10 @@ static inline int tcp_call_bpf_3arg(struct sock *sk, int op, u32 arg1, u32 arg2,
- 	return -EPERM;
- }
- 
-+static inline void tcp_clear_sock_ops_cb_flags(struct sock *sk)
-+{
-+}
-+
- #endif
- 
- static inline u32 tcp_timeout_init(struct sock *sk)
-diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
-index 723aab818b52..3d5816a8894f 100644
---- a/net/ipv4/inet_connection_sock.c
-+++ b/net/ipv4/inet_connection_sock.c
-@@ -933,6 +933,15 @@ void inet_csk_destroy_sock(struct sock *sk)
- }
- EXPORT_SYMBOL(inet_csk_destroy_sock);
- 
-+void inet_csk_prepare_for_destroy_sock(struct sock *sk)
-+{
-+	/* The below has to be done to allow calling inet_csk_destroy_sock */
-+	if (sk->sk_protocol == IPPROTO_TCP)
-+		tcp_clear_sock_ops_cb_flags(sk);
-+	sock_set_flag(sk, SOCK_DEAD);
-+	this_cpu_inc(*sk->sk_prot->orphan_count);
-+}
-+
- /* This function allows to force a closure of a socket after the call to
-  * tcp/dccp_create_openreq_child().
-  */
-
----
-base-commit: be0af8204173441616d0775a54a95ca612a84ba8
-change-id: 20260908-cve-2026-74268-5-10-56a899851982
-
-Best regards,
---  
-Miguel Gazquez (Schneider Electric) <miguel.gazquez@bootlin.com>
-
+On Tue, 08 Sep 2026 22:58:05 +0200, Maxime Chevallier wrote:=0D
+> Hi again,=0D
+>=0D
+> On 9/8/26 10:16, Maxime Chevallier wrote:=0D
+> > Hi,=0D
+> >=0D
+> > On 8/24/26 14:50, Pascal Kneuper wrote:=0D
+> >> Since the RX path was converted to zero-copy, the page pool page is ha=
+nded=0D
+> >> to the stack directly as the skb head, and the offset the DMA engine w=
+rites=0D
+> >> at is what determines the alignment of the packet headers.=0D
+> >>=0D
+> >> Before the conversion the payload was copied into an skb obtained from=
+=0D
+> >> napi_alloc_skb(), which reserves NET_SKB_PAD + NET_IP_ALIGN. The=0D
+> >> conversion moved the headroom into stmmac_rx_offset() but did not carr=
+y=0D
+> >> over NET_IP_ALIGN, so on architectures where NET_IP_ALIGN is 2 the IP=
+=0D
+> >> header now lands misaligned:=0D
+> >>=0D
+> >>   64 (NET_SKB_PAD) + 14 (ethernet) + 20 (IP) =3D 98=0D
+> >>=0D
+> >> Same for the XDP branch:=0D
+> >>=0D
+> >>   256 (XDP_PACKET_HEADROOM) + 14 (ethernet) + 20 (IP) =3D 290=0D
+> >>=0D
+> >> On ARM32 this is fatal, because ldm and ldrd trap on unaligned address=
+es=0D
+> >> even when CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS is set.=0D
+>=0D
+> > This patch breaks the stmmac selftests for Jumbo Frames on dwmac1000 :(=
+=0D
+> So looks like the problem isn't this patch, but rather both the way we se=
+lect=0D
+> the bufsize, and the Jumbo test itself :)=0D
+>=0D
+> This merely surfaces existing problems, I have some fixes that I'll send =
+shortly.=0D
+>=0D
+> Maxime=0D
+>=0D
+=0D
+Great! Thanks for testing and keeping us posted :)=0D
+=0D
+Best=0D
+Pascal=0D
