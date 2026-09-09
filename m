@@ -1,159 +1,156 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 890423E7BB4;
-	Wed,  9 Sep 2026 09:39:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4B0E471429;
+	Wed,  9 Sep 2026 09:39:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788946773; cv=none; b=lSoA1AigVz/SwydhPmiT2CQBKENrfyukifqIR0H+LCFojVeIteHLK9LWMa0SzXzFpNak+pQ/Z/CS73ESrFADQUvD129YeApNaG1EwQYFRhh8LWjbE0atrolCvrgFE+3W7ZwzfqkUUH+CXpeprFIIoHL2qFLmYh1uwfvu5s4Zr2Q=
+	t=1788946777; cv=none; b=CXGoZ3QksaZgX7xekvtYIyhYW2o6GHZkkPg8buA0VL09jPtjGSifbEXVXkWuczyhJF5tCrOXpWQJzRvMU30BNKqVbW/w3EGKa3YbDlHq1FBg4xHiTt2ev275k2bxv2gozp8ItJjt599MfXTTA2cYi0zPqCuJ9gCGICo1Y+aoO00=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788946773; c=relaxed/simple;
-	bh=fjKhVmcr/EyK4vU6sArnT209Vzr1k4r+UlW7jCrishk=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=MZY2QTKttm0Lcj72otXDkzn2KuWKFvt4BbFG2k3d0XOuzv/hcV9v1QjmR2V1qOfhqtaHgumWWxTZSLLIl6HaRr4XRu3Ngt5j4VrR1NU25uzbUdMn0KELeehbmcT/gnXAqciKRSGXkij/+/ORC2IedCaIId0tMQgeJeRW8MC3asE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WiZItjS6; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788946777; c=relaxed/simple;
+	bh=aR88yGXb8m+RDNegNl2bSjWZuWI9VXP9qKakepuXmC8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=SmBvxLQ8wGo9Vwvj76iR+Pzxg13HiXTJLTmcVcTV9/ecKmCaHUuQxKr++au82e6IXZevxfu5L9XLSbK5+7FQbGeNSdsSfBERnoAd6oQJGny2dxELEIl134909jWmFxPjCZoBFWIOfwMb/WTS6ndGZRi5mdbnItYguZJNf1O1neQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=pGazbO1g; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WiZItjS6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 506081F00A3F;
-	Wed,  9 Sep 2026 09:39:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788946763;
-	bh=N3lXI2lCWgiKvFN9Nv+hgXcmmvBtqm5fZVQQwl0WoDM=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=WiZItjS6ZXCBi++sMU+hy7N9lVH9ifMOX5REnYAb91AF2Cn1jrQjNUOhykxucZnFP
-	 WMU9ijSCWyGbhtO0SNMmFscgqYkBr+XDo4T/s7T134wIkXiFJK/M6rZvuUinSm27ms
-	 LEprg2QDdAnYV678w90vUt1T/xNxeG4kzxz92K11oRPBiZin4icdz6u4e9Txmqie39
-	 kYPeqNqm1zLGxPgtYnQ18LMNmSltVyIHxOcv3+1zq6s8DvxsEl0vsrb3eMwnxTul+2
-	 ahRBKWzdOkkUjWjv0q8YI0MvB/zCroVNlxepPZ19RdksBcqdvFduLzUFy2O/zs6yT0
-	 77vtOfHDwosig==
-Subject: Re: [PATCH] netfilter: conntrack_amanda: fix port value truncation
-From: netdev-bot+sashiko@kernel.org
-To: elb12345@hotmail.co.uk
-Cc: pablo@netfilter.org, netfilter-devel@vger.kernel.org,
- coreteam@netfilter.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, kuba@kernel.org
-Date: Wed, 09 Sep 2026 09:39:22 +0000
-Message-ID: <178894676277.219967.1844924383954861310@kernel.org>
-In-Reply-To: =?utf-8?q?=3CAS8P251MB0001CCFE2A0F40637E5A366CC8B32=40AS8P251MB?=
- =?utf-8?q?0001=2EEURP251=2EPROD=2EOUTLOOK=2ECOM=3E?=
-References: =?utf-8?q?=3CAS8P251MB0001CCFE2A0F40637E5A366CC8B32=40AS8P251MB0?=
- =?utf-8?q?001=2EEURP251=2EPROD=2EOUTLOOK=2ECOM=3E?=
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="pGazbO1g"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 3FA244E415AE;
+	Wed,  9 Sep 2026 09:39:28 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 0B1A760448;
+	Wed,  9 Sep 2026 09:39:28 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6FA4611C7AF2B;
+	Wed,  9 Sep 2026 11:39:24 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1788946766; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=i7u5vnfAW2ylLe2wo9gGWBV8lXP+ErKzRVEoEc2JJpM=;
+	b=pGazbO1gViwJ1Eii3S+Y/heW/lPiWbIxCLiVZGXWZbFnEmxQNr6/M6RiU5qB7aAfOxDoRj
+	njRkv9Q9EJEWhVyiAoyA7UzLSHd7hhvFTPCudsF6XOmDGQbqrC1VU6qAJosMos4cpX2Reo
+	l/vizLvbjB9svhDMcZgwGdyKnVTH1yKhI0AN3rT8jAfUT1Ilg/FY1IKGtRJRRAtGRXcxBe
+	E/oT4TwfXf28iT2n++NMmspypXzbbBcQl5eaWptswhZURSDPWy432ngLEPJ8+Ho7KgQWCl
+	SXNDHLYc5jDdDX/2V0H2O1cO3KTCPriMzXb8hxOFscFdRbE7EfxpnC8+K1T3Vg==
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+To: davem@davemloft.net,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Heiner Kallweit <hkallweit1@gmail.com>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	thomas.petazzoni@bootlin.com,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Herve Codina <herve.codina@bootlin.com>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	=?UTF-8?q?K=C3=B6ry=20Maincent?= <kory.maincent@bootlin.com>,
+	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	=?UTF-8?q?Nicol=C3=B2=20Veronese?= <nicveronese@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	mwojtas@chromium.org,
+	Romain Gantois <romain.gantois@bootlin.com>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Dimitri Fedrau <dimitri.fedrau@liebherr.com>,
+	Frank Wunderlich <frank.wunderlich@linux.dev>,
+	Pietro Ameruoso <p.ameruoso@live.it>
+Subject: [PATCH net-next v17 01/10] net: phy: phy_link_topology: Add a helper for opportunistic alloc
+Date: Wed,  9 Sep 2026 11:39:02 +0200
+Message-ID: <20260909093912.1290810-2-maxime.chevallier@bootlin.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260909093912.1290810-1-maxime.chevallier@bootlin.com>
+References: <20260909093912.1290810-1-maxime.chevallier@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider:
+The phy_link_topology structure stores information about the PHY-related
+components connected to a net_device. It is opportunistically allocated,
+when we add the first item to the topology, as this is not relevant for
+all kinds of net_devices.
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 0
+In preparation for the addition of phy_port tracking in the topology,
+let's make a dedicated helper for that allocation sequence.
 
-- [High] net/netfilter/nf_conntrack_amanda.c:amanda_help() — the new
-  range check closes only the htons() truncation window for numbers that…
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+---
+ drivers/net/phy/phy_link_topology.c | 40 +++++++++++++++++++++++------
+ 1 file changed, 32 insertions(+), 8 deletions(-)
 
---
-
-netfilter: conntrack_amanda: fix port value truncation
-
-The patch parses the Amanda CONNECT port into an unsigned long and rejects
-values above 65535 before the htons() conversion, instead of relying on the
-old "port == 0 || len > 5" test.  A new tmp_port variable holds the
-simple_strtoul() result.
-
-> diff --git a/net/netfilter/nf_conntrack_amanda.c b/net/netfilter/nf_conntrack_amanda.c
-> index 14ae660491f36..057cef7e2a7ed 100644
-> --- a/net/netfilter/nf_conntrack_amanda.c
-> +++ b/net/netfilter/nf_conntrack_amanda.c
-> @@ -91,6 +91,7 @@ static int amanda_help(struct sk_buff *skb,
->  	char pbuf[sizeof("65535")], *tmp;
->  	u16 len;
->  	__be16 port;
-> +	unsigned long tmp_port;
->  	int ret = NF_ACCEPT;
->  	nf_nat_amanda_hook_fn *nf_nat_amanda;
->  
-> @@ -132,10 +133,11 @@ static int amanda_help(struct sk_buff *skb,
->  			break;
->  		pbuf[len] = '\0';
->  
-> -		port = htons(simple_strtoul(pbuf, &tmp, 10));
-> +		tmp_port = simple_strtoul(pbuf, &tmp, 10);
->  		len = tmp - pbuf;
-> -		if (port == 0 || len > 5)
-> +		if (tmp_port == 0 || tmp_port > 65535 || len > 5)
->  			break;
-> +		port = htons(tmp_port);
-
-[Severity: High]
-Can the new tmp_port > 65535 test ever fire, and does it close the case
-described in the changelog?
-
-In amanda_help(), the digit string is copied into a 6-byte buffer and the
-copy length is clamped before parsing:
-
-net/netfilter/nf_conntrack_amanda.c:amanda_help() {
-	char pbuf[sizeof("65535")], *tmp;
-	...
-		len = min_t(unsigned int, sizeof(pbuf) - 1, stop - off);
-		if (skb_copy_bits(skb, off, pbuf, len))
-			break;
-		pbuf[len] = '\0';
-}
-
-So simple_strtoul() sees at most 5 characters, which bounds tmp_port at
-99999 and bounds len = tmp - pbuf at 5.
-
-For a reply payload of "CONNECT DATA 123456\n", pbuf becomes "12345",
-tmp_port becomes 12345 and len becomes 5, so all three clauses of
-
-		if (tmp_port == 0 || tmp_port > 65535 || len > 5)
-
-pass and an expectation is installed for TCP port 12345 even though the
-advertised value was 123456.  Isn't that the same "conntrack expectation
-for an unintended port" the changelog is trying to eliminate, just via the
-fixed-size copy rather than the u16 narrowing?
-
-Would it make sense to also reject the token when the digit run is not
-terminated inside the examined region, for example bailing out when
-stop - off > sizeof(pbuf) - 1, or when the character following the parsed
-digits is still a digit, the way the FTP helper's parsers require an
-explicit terminator?
-
-There is also a NAT-side effect of the clamp.  amanda_help() hands len to
-the NAT hook as matchlen:
-
-			ret = nf_nat_amanda(skb, ct, ctinfo, protoff,
-					    off - dataoff, len, exp);
-
-and net/netfilter/nf_nat_amanda.c:help() replaces exactly matchlen bytes:
-
-	if (!nf_nat_mangle_udp_packet(skb, ct, ctinfo,
-				      protoff, matchoff, matchlen,
-				      buffer, strlen(buffer))) {
-
-With a 6-digit advertisement, matchlen is 5, so only 5 of the 6 digit bytes
-are rewritten and a trailing digit stays in the forwarded payload.  Should
-the over-long digit run be rejected before reaching the NAT hook?
-
-> +
->  		exp = nf_ct_expect_alloc(ct);
->  		if (exp == NULL) {
-
-Separately, the changelog states:
-
-  "The existing check "port == 0 || len > 5" is insufficient: it
-   catches values that truncate to zero (e.g. 65536) and strings longer
-   than 5 digits"
-
-Given the min_t() clamp above, len can never exceed 5, so the len > 5
-clause looks like it was already unreachable and cannot catch strings
-longer than 5 digits.  Could that sentence be reworded, and should the
-now-dead len > 5 clause be dropped or replaced by a real over-long check?
-
+diff --git a/drivers/net/phy/phy_link_topology.c b/drivers/net/phy/phy_link_topology.c
+index 4134de7ae313..0462283c8020 100644
+--- a/drivers/net/phy/phy_link_topology.c
++++ b/drivers/net/phy/phy_link_topology.c
+@@ -28,11 +28,39 @@ static int netdev_alloc_phy_link_topology(struct net_device *dev)
+ 	return 0;
+ }
+ 
++static struct phy_link_topology *phy_link_topo_get_or_alloc(struct net_device *dev)
++{
++	int ret;
++
++	if (dev->link_topo)
++		return dev->link_topo;
++
++	/* The topology is allocated the first time we add an object to it.
++	 * It is freed alongside the netdev. It can be called on multiple
++	 * contexts:
++	 *  - It can be called from .probe() : No rtnl, no netdev_lock
++	 *  - .ndo_open() : rtnl and possibly netdev_lock
++	 *  - SFP state machine : rtnl held or not
++	 *
++	 *  However, we can't really have races :
++	 *  - If we have a PHY, phy_link_topo_add_phy() will always run first
++	 *    and trigger the alloc. Only then the ports can be added through
++	 *    phylib or sfp.
++	 *  - If we don't, the SFP port for the cage is registered first, and
++	 *    only then other ports/PHYs can be registered.
++	 */
++	ret = netdev_alloc_phy_link_topology(dev);
++	if (ret)
++		return ERR_PTR(ret);
++
++	return dev->link_topo;
++}
++
+ int phy_link_topo_add_phy(struct net_device *dev,
+ 			  struct phy_device *phy,
+ 			  enum phy_upstream upt, void *upstream)
+ {
+-	struct phy_link_topology *topo = dev->link_topo;
++	struct phy_link_topology *topo;
+ 	struct phy_device_node *pdn;
+ 	int ret;
+ 
+@@ -45,13 +73,9 @@ int phy_link_topo_add_phy(struct net_device *dev,
+ 	if (WARN_ON_ONCE(netdev_need_ops_lock(dev)))
+ 		return -EOPNOTSUPP;
+ 
+-	if (!topo) {
+-		ret = netdev_alloc_phy_link_topology(dev);
+-		if (ret)
+-			return ret;
+-
+-		topo = dev->link_topo;
+-	}
++	topo = phy_link_topo_get_or_alloc(dev);
++	if (IS_ERR(topo))
++		return PTR_ERR(topo);
+ 
+ 	pdn = kzalloc_obj(*pdn);
+ 	if (!pdn)
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/AS8P251MB0001CCFE2A0F40637E5A366CC8B32%40AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
+2.55.0
+
