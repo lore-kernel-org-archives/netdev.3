@@ -1,43 +1,83 @@
-Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
+Received: from fout-b2-smtp.messagingengine.com (fout-b2-smtp.messagingengine.com [202.12.124.145])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B135439DBE4;
-	Wed,  9 Sep 2026 18:47:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2646448D18;
+	Wed,  9 Sep 2026 18:47:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.145
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788979627; cv=none; b=XA1qEe+1B6t7tfMu6F6hq89k5rY+pcxlpcqn6/V67tkZV4VP23b/75rwb8cB0gDozz8miWXeCE78XydMPPXfTeNPR/D2pktBe5NyTRdIirckwEI7YzkftLFcQLwjUN64bdurzLpIev2KrjjbI/Rz7Y3nQ+iEBSIUo4EWoNVzZew=
+	t=1788979646; cv=none; b=JHhGuIkxOKyDULS2zRfGzgmOqKYQ1PLcmx4GDb8j3R7slGHOswUUuPClTrlj7D7+FD+oDiqw4l30UOgEXp5tf8W+kE3S+5qpBhXyJhpo6pAtHVT/pwMdRwh8NWxvTHpb5Vsfdp5ZNH3T/7IIZ8/zQBfGy3yUEKTOzxacJfBRNkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788979627; c=relaxed/simple;
-	bh=U9tE2oKJTFRuqi0eV5f0bby2LAnn3+jF/4cdcLYztQQ=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aouCakYU9F08Xa2TDwPNzrFxxkg7Mq2ee8mO5fFPRjstaWTmkjx6dBmst+INwSNjNyIhXWZN1XjFhdsPJnFYa2eOHf/1waftyC+4ijvjNENFP8+k+zMYuxhe0dur/sAEYoY1ROfdKD2eUOeZgh1y/WGbh8iTinhZ39uzSgdy1jo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
-Received: from local
-	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256:X25519MLKEM768)
-	 (Exim 4.100)
-	(envelope-from <daniel@makrotopia.org>)
-	id 1x4NK0-00000000421-174O;
-	Wed, 09 Sep 2026 18:47:00 +0000
-Date: Wed, 9 Sep 2026 19:46:57 +0100
-From: Daniel Golle <daniel@makrotopia.org>
-To: Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>, Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>, netdev@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	driver-core@lists.linux.dev
-Subject: [PATCH net-next v14 3/6] driver core: add device_schedule_reprobe()
-Message-ID: <88efc948074a871d043f386c2623bd4af89ff671.1788976064.git.daniel@makrotopia.org>
-References: <cover.1788976064.git.daniel@makrotopia.org>
+	s=arc-20240116; t=1788979646; c=relaxed/simple;
+	bh=4hjOOWXKP/Z2RIl4zAUqiVgWHAB4EEVNfl4roXiWLyg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HCo3ZxrBPe0bSgxy5Bq324bWGTk9R7K28Ujkoxzu04ZmdTIGheXzQDJXNGZmEo3Vq4VaFdJbzRrdrFAaPMNeNFzdvTA2D0lFhZQvh/uaeG45Zxjjk2UHIkjKyXFofYowpr477CAhYaOnzPB0zdoMfcuxukxUXiw9e3z+JQrl/m8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.com; spf=pass smtp.mailfrom=fastmail.com; dkim=pass (2048-bit key) header.d=fastmail.com header.i=@fastmail.com header.b=beQ93UYl; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ehxgvOYk; arc=none smtp.client-ip=202.12.124.145
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=fastmail.com header.i=@fastmail.com header.b="beQ93UYl";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ehxgvOYk"
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfout.stl.internal (Postfix) with ESMTP id 9D6CD1D000F7;
+	Wed,  9 Sep 2026 14:47:23 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-06.internal (MEProxy); Wed, 09 Sep 2026 14:47:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fastmail.com; h=
+	cc:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm1; t=1788979643; x=1789066043; bh=/E8EUsi9XW
+	AeteeJp/t/J87SvqxmYV+vojsxbJ0Wxgw=; b=beQ93UYlN4l2A5SxQWIxjlKjAM
+	m9lwItz71BgA/08i447u2Kq/F6WrmbtOrI75g0ze52RYGXmy8p5agYfG219r4/f3
+	gl3gRN8zcaEB+zvxLSoaH4yZGIvwUEd6RPHkZJTpsZBsyco04OUMNhcleRQYuMSz
+	DxfIuLS6V5HvRFca2VrjteceXPltaxkK3kAX2TfKLEgurJXH0Kpdo0ZGZzQA8wSQ
+	Nhcsv2OTaPlexdCNClLQfCufjMOkiBHeIuvgA5lpZBxRKwxwN6xiUY5noxC8s4Ub
+	C7UKnGfJnwFjRALlcXnMzskp7jiorOGIOh6Ck5CvYggFES6V9DCt+7HKDW1A==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1788979643; x=1789066043; bh=/E8EUsi9XWAeteeJp/t/J87SvqxmYV+vojs
+	xbJ0Wxgw=; b=ehxgvOYkt8CiR94Lhp2sN3+vpWzVJTuOdVNgtg8tFdwDqerWEb6
+	fxZLml6MHXIMFeiMLKUz1QOk9lJJs9Me8O0/YGRgX+y2zdFQSfgK2p6/rcCTAX62
+	OpF/k2aeKcARr2wrCXJt8KWCG73oM17lvUO10J+kBzG4m4stmuHBRxfpHA68GUBZ
+	W1DVwv7oNK/hSpGaQjn5ECx7bRc6iJkvDbfP9RQWKuG6Ls+eE1LTDiBNSsDimb/1
+	yGN+jbCAQIfPCh+kk9/z08ClFKeU7n/kt3tYcMDZsXfhsjqeQf7zSjqdJc6TJPGn
+	fbt8jrX8j1CXLDgoS3urqAY8VUJK63PYSsw==
+X-ME-Sender: <xms:u6mhahK4HU0HPPn1GG7h_fzsRGki2JODvE0oJBVGH1Hv2plko7RztQ>
+    <xme:u6mhao_20JKy45ZSTHfNe64ILMxUvSjPMLrXt53Zbga8UFAs9iEEo__NG3EBL6mNU
+    3aKQ1_VTC8w7j7m6TDEltaUvragxIFTfbWiojy61HutH9zbF57voypv>
+X-ME-Received: <xmr:u6mhalGuolZ3CO8qDJbcP747jviPHDg2_yqLA8pLEvHSsMcowWtkb3kDnWfWPm6HXg>
+X-ME-Proxy-Cause: dmFkZTGt5cwZFEqRaLH3cikRR/hI/9HY9UJ/mJgqZ0vrjqAK0ARTrcB5WKoKL4iOa7nrPR
+    m6NPH4498FhZQnWWoEjUvxEqOSB/PxMEmZcvY7Grj8wflVHXapdJid7mhxwJHj8EIrfFfh
+    Fy9qfY4QE74B9KasvrvnO29H1mVk05zoXRhNypRI1cMouzjYn+bQov8/KFzWjoUtwWkyMI
+    Y69UReNU6HW8rbWDEYuf5+kyKJc6sGyeobZ4lTBEXEUbVJDEo+M80VP36EaxTHfVG2mxhs
+    4M03pymazud3loB01a2UA8zb3941tJJ6MDW/q+zEd6a6xDqrGIS0tNgRn9xKDWauqnIsUa
+    YZqhB+j0f/O4+iswV5DItjtalT8IsKMRYgJDwotSodn4/4SmRWH0i7cBnuxNXLcF5ygKrn
+    2ClJysrZqfbR+njeeHCa+ff0PZXV+P2oyp447cAAfZ/p6jLphOmZvceS6+oaOD6EA1w1S1
+    7dnUln/IBmRnk/tnC9lWw9jL/fEOY61B68o83a5Qb8OB3GZ72ZrT2hpdj1rgB7zjzA0Zf3
+    oAbfKUamf7/Z4pZLaaZ7IoDZxQTnulf/V3AgliFejh0u+7JC9Q6LU5xYOThdU4VMmqTQwS
+    6/m2DYfUIVVbTIEhwhwgj0IttLHMwuwkNl/+PzA43DLvox4QM3d6DJjQNIYg
+X-ME-Proxy: <xmx:u6mhar47Oy9kNhR_yPwykbmCyJZDwTNg8sXeTWoMtcOrpoZeT7e55A>
+    <xmx:u6mhama6l3GzEEUzpiD_SEVYpYmm67s56XMHtm9Vw5DkXPksVNGelQ>
+    <xmx:u6mhahjTGCRC82d20RH2Bn_HIdceqhAafyU1XKApY8z5sdfcmQYcsQ>
+    <xmx:u6mhagd_8t93rcdb1NJokKtk0PMtB3fOIv5U8XnazrV3ZK0Th2d-6g>
+    <xmx:u6mhav1DF-t142iWY4zLLnq3rFlaQUskhGmrvZVI1Lo4A-ddze0WKfd9>
+Feedback-ID: i80b64ba7:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 9 Sep 2026 14:47:22 -0400 (EDT)
+Date: Wed, 9 Sep 2026 13:47:21 -0500
+From: Juanlu Herrero <juanlu@fastmail.com>
+To: Bobby Eshleman <bobbyeshleman@gmail.com>
+Cc: netdev-bot+sashiko@kernel.org, dw@davidwei.uk, netdev@vger.kernel.org, 
+	io-uring@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	kuba@kernel.org, asml.silence@gmail.com, pabeni@redhat.com, shuah@kernel.org
+Subject: Re: [net-next,v6,5/6] selftests: net: add multithread server support
+ to iou-zcrx
+Message-ID: <aqGpOjOk_XJ-Nzmr@jlhe0197-mac>
+References: <20260831-iou-zcrx-v6-5-02d1d012f0fd@fastmail.com>
+ <178839229706.3394541.1555608492152892136@kernel.org>
+ <aqGGevrEG5+iZosZ@devvm29614.prn0.facebook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -46,328 +86,98 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <cover.1788976064.git.daniel@makrotopia.org>
+In-Reply-To: <aqGGevrEG5+iZosZ@devvm29614.prn0.facebook.com>
 
-Three in-tree drivers schedule a deferred re-probe of their own device
-from a work item whose work function lives in module text: iwlwifi
-(iwl_trans_schedule_reprobe(), firmware crash recovery when a lighter
-restart is not sufficient), hci_h5 (h5_btrtl_resume(), RTL devices
-lose their firmware state over suspend) and btintel_pcie (synchronous
-device_reprobe() from its own reset work, with a hand-rolled locking
-contract spanning several comments).
+On Wed, Sep 09, 2026 at 09:16:58AM -0600, Bobby Eshleman wrote:
+> On Wed, Sep 02, 2026 at 11:38:17PM +0000, netdev-bot+sashiko@kernel.org wrote:
+> > Thank you for your contribution! Sashiko AI review found 6 potential
+> > issue(s) to consider:
+> > 
+> 
+> [...]
+> 
+> > > @@ -356,29 +444,68 @@ static void run_server(void)
+> > >  	if (ret < 0)
+> > >  		error(1, 0, "bind()");
+> > >  
+> > > -	flags |= IORING_SETUP_COOP_TASKRUN;
+> > > -	flags |= IORING_SETUP_SINGLE_ISSUER;
+> > > -	flags |= IORING_SETUP_DEFER_TASKRUN;
+> > > -	flags |= IORING_SETUP_SUBMIT_ALL;
+> > > -	flags |= IORING_SETUP_CQE32;
+> > > +	pthread_barrier_init(&setup_done, NULL, cfg_num_threads + 1);
+> > > +	pthread_barrier_init(&dispatch_done, NULL, cfg_num_threads + 1);
+> > > +
+> > > +	for (i = 0; i < cfg_num_threads; i++) {
+> > > +		ctxs[i].queue_id = cfg_queue_id + i;
+> > > +		ctxs[i].setup_done = &setup_done;
+> > > +		ctxs[i].dispatch_done = &dispatch_done;
+> > > +	}
+> > >  
+> > > -	io_uring_queue_init(512, &ctx.ring, flags);
+> > > +	for (i = 0; i < cfg_num_threads; i++) {
+> > > +		ret = pthread_create(&threads[i], NULL,
+> > > +				     server_worker, &ctxs[i]);
+> > > +		if (ret)
+> > > +			error(1, ret, "pthread_create()");
+> > > +	}
+> > >  
+> > > -	setup_zcrx(&ctx);
+> > >  	if (cfg_dry_run)
+> > > -		return;
+> > > +		goto join;
+> > >  
+> > >  	if (listen(fd, 1024) < 0)
+> > >  		error(1, 0, "listen()");
+> > >  
+> > > -	add_accept(&ctx, fd);
+> > > +	pthread_barrier_wait(&setup_done);
+> > 
+> > [Severity: High]
+> > Is the listen() intentionally moved before the workers have registered
+> > their ifqs? The main thread creates the threads, calls listen(), and only
+> > then waits on setup_done, while the workers reach that barrier after
+> > io_uring_queue_init_params() plus setup_zcrx(), i.e. after
+> > io_uring_register_ifq() has restarted the device RX queue.
+> > 
+> > Before the patch the sequence was serialized in one thread:
+> > 
+> > 	io_uring_queue_init(512, &ctx.ring, flags);
+> > 	setup_zcrx(&ctx);
+> > 	...
+> > 	listen(fd, 1024);
+> > 
+> > so the port only became visible once the memory provider was installed.
+> > 
+> > Two existing tests depend on that ordering. wait_port_listen() in
+> > net/lib/py/utils.py polls every 5 ms, so it can now return while
+> > registration is still in flight:
+> > 
+> > iou-zcrx.py:test_zcrx_large_chunks() {
+> > 	wait_port_listen(cfg.port, proto="tcp")
+> > 
+> > 	check_iou_rx_buf_len(cfg, rx_buf_len)
+> > }
+> > 
+> > check_iou_rx_buf_len() raises "Expected 1 io-uring page pool, found 0",
+> > and nk_qlease.py:test_destroy() does queue_get() plus
+> > ksft_in("io-uring", queue_info) immediately after wait_port_listen() with
+> > no sleep.
+> > 
+> > Beyond the harness races, data delivered into the queue before the
+> > provider exists is serviced by the copy fallback rather than zero copy,
+> > and the queue restart during registration can drop in-flight frames.
+> > 
+> > Would moving listen() below pthread_barrier_wait(&setup_done) restore the
+> > previous guarantee?
+> 
+> Just a heads up that I tested this on BRCM and did find this listen()
+> ordering issue to cause genuine (but flaky) regression for
+> nk_qlease.test_destroy. Moving the listen() to after wait(setup_done)
+> indeed fixed it.
+> 
+> Best,
+> Bobby
 
-Two bug classes affect the hand-rolled implementations:
-
-1. The work function ends with put_device(); kfree();
-   module_put(THIS_MODULE); in module text. After the atomic decrement
-   a concurrent rmmod can free the module text before the function
-   epilogue has finished executing. This is exactly the race
-   module_put_and_kthread_exit() exists to close for kthreads; there
-   is no work-item equivalent.
-
-2. There is no synchronization between the deferred device_reprobe()
-   and device_shutdown() or a driver unbind. The drivers do not check
-   any bound state before calling device_reprobe(), so a stale
-   re-probe can undo an administrative unbind, and the detach half can
-   run against a device whose ->shutdown() callback has already run.
-   The core already blocks the attach half during shutdown
-   (device_shutdown() calls device_block_probing() before any
-   callback, and really_probe() honors defer_all_probes), but nothing
-   blocks the detach half. For drivers which clear their drvdata in
-   ->shutdown() so that a subsequent ->remove() becomes a no-op this
-   escalates to use-after-free of driver state which other subsystem
-   structures still reference.
-
-Both classes disappear when the driver core owns the deferred work.
-Add device_schedule_reprobe(), which schedules a detach and re-probe
-of a device after a caller-specified delay:
-
-- The work function is builtin text, so callers do not need to hold a
-  module reference. If the driver module is unloaded before the work
-  runs, driver_unregister() has already unbound the device, the bound
-  driver no longer matches the driver recorded at scheduling time and
-  the work does nothing.
-
-- The recorded driver pointer is only ever compared, never
-  dereferenced, so it may legitimately point to freed memory.
-
-- The bound-state check and __device_release_driver() run under a
-  single hold of the device lock and, where the bus needs it, the
-  parent lock, the same lock dance device_release_driver_internal()
-  uses. This closes the check-vs-detach TOCTOU that drivers cannot
-  close themselves, because device_reprobe() takes the device lock
-  internally. __device_release_driver() reports whether this call was
-  the one to release the driver, so an unbind that wins the race while
-  busy consumer links are being unbound is not followed by a re-attach.
-
-- Both @dev and its parent are pinned for the lifetime of the work, and
-  whether the parent needs locking is recorded at scheduling time. An
-  unregister of @dev drops @dev's reference to the parent, and a device
-  that was unregistered before the work runs may have outlived the
-  module providing its bus type, so neither dev->parent nor dev->bus is
-  read before the device is found live under the lock.
-
-- A new shutdown_done flag in struct device_private, set under the
-  device lock once device_shutdown() reaches a device, suppresses the
-  detach half during shutdown. It occupies a spare bit in an existing
-  byte, mirroring how kill_device() sets the dead flag.
-
-- The work is queued on system_freezable_wq. A re-probe pending across
-  system suspend therefore runs once the devices have resumed and
-  probing is unblocked again, instead of detaching a device the PM core
-  has already suspended or running concurrently with its late suspend
-  callbacks, which the PM core invokes without the device lock. The
-  attach half is plain device_attach(), which checks the dead flag, and
-  it takes the parent lock on buses that set need_parent_lock,
-  mirroring bus_rescan_devices_helper().
-
-One pre-existing window remains: __device_release_driver()
-transiently drops the locks while consumer device links are busy, so
-for devices with busy consumers a ->shutdown() can still interleave
-in the middle of the release. That window exists identically for
-every unbind path in the kernel, sysfs unbind included, and is not
-made worse by this helper.
-
-Assisted-by: LLM
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
----
-v14: no changes
-v13:
- - queue the work on system_freezable_wq, so a re-probe pending across
-   system suspend can neither detach a device the PM core has suspended
-   nor race its late suspend callbacks; it runs after resume instead
-   (found by Sashiko AI review)
- - record at scheduling time whether the parent needs locking, instead
-   of reading dev->bus in the work, which may be gone with its module
-   once the device has been unregistered (found by Sashiko AI review)
- - let __device_release_driver() report whether it released the driver,
-   so an administrative unbind that wins the race inside the device
-   links loop is not undone by the re-attach (found by Sashiko AI
-   review)
- - use dev_err_probe() for the re-probe error path, so a re-probe
-   deferred at resume no longer logs a spurious error (Hans de Goede,
-   on the standalone posting of this helper)
- - describe the parent pinning and locking in the commit message, as in
-   the standalone posting
-
-v12:
- - pin the parent device across the deferred work; a reference on the
-   child alone left device_reprobe_work_fn() dereferencing a freed
-   dev->parent under __device_driver_lock() when the device was
-   unregistered before the work ran (found by Sashiko AI review)
- - take the parent lock across device_attach() on buses that require
-   it, matching bus_rescan_devices_helper() (found by Sashiko AI review)
-
-v11: new patch: add device_schedule_reprobe() to the driver core (posted
-     earlier as an RFC) so mxl862xx can schedule its post-flash and
-     post-drain re-probe through the core instead of open-coding a work
-     item
-
- drivers/base/base.h    |   5 ++
- drivers/base/core.c    |   3 ++
- drivers/base/dd.c      | 120 ++++++++++++++++++++++++++++++++++++++++-
- include/linux/device.h |   2 +
- 4 files changed, 128 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/base/base.h b/drivers/base/base.h
-index a5b7abc10ff0..6234e37de7e9 100644
---- a/drivers/base/base.h
-+++ b/drivers/base/base.h
-@@ -106,6 +106,10 @@ struct driver_private {
-  * @dead: This device is currently either in the process of or has been
-  *	  removed from the system. Any asynchronous events scheduled for this
-  *	  device should exit without taking any action.
-+ * @shutdown_done: Set once device_shutdown() has reached this device, under
-+ *	  the device lock, before any shutdown callback runs. Read under the
-+ *	  device lock. A deferred re-probe scheduled with
-+ *	  device_schedule_reprobe() must not detach the device anymore.
-  *
-  * Nothing outside of the driver core should ever touch these fields.
-  */
-@@ -120,6 +124,7 @@ struct device_private {
- 	char *deferred_probe_reason;
- 	struct device *device;
- 	u8 dead:1;
-+	u8 shutdown_done:1;
- };
- #define to_device_private_parent(obj)	\
- 	container_of(obj, struct device_private, knode_parent)
-diff --git a/drivers/base/core.c b/drivers/base/core.c
-index 4c0c373998a1..3dcd8a3c3aa5 100644
---- a/drivers/base/core.c
-+++ b/drivers/base/core.c
-@@ -4910,6 +4910,9 @@ void device_shutdown(void)
- 			device_lock(parent);
- 		device_lock(dev);
- 
-+		if (dev->p)
-+			dev->p->shutdown_done = true;
-+
- 		/* Don't allow any more runtime suspends */
- 		pm_runtime_get_noresume(dev);
- 		pm_runtime_barrier(dev);
-diff --git a/drivers/base/dd.c b/drivers/base/dd.c
-index f6525a7ee8c5..81a3433f726e 100644
---- a/drivers/base/dd.c
-+++ b/drivers/base/dd.c
-@@ -1315,7 +1315,7 @@ EXPORT_SYMBOL_GPL(driver_attach);
-  * __device_release_driver() must be called with @dev lock held.
-  * When called for a USB interface, @dev->parent lock must be held as well.
-  */
--static void __device_release_driver(struct device *dev, struct device *parent)
-+static bool __device_release_driver(struct device *dev, struct device *parent)
- {
- 	struct device_driver *drv;
- 
-@@ -1336,7 +1336,7 @@ static void __device_release_driver(struct device *dev, struct device *parent)
- 			 */
- 			if (dev->driver != drv) {
- 				pm_runtime_put(dev);
--				return;
-+				return false;
- 			}
- 		}
- 
-@@ -1359,7 +1359,10 @@ static void __device_release_driver(struct device *dev, struct device *parent)
- 
- 		bus_notify(dev, BUS_NOTIFY_UNBOUND_DRIVER);
- 		kobject_uevent(&dev->kobj, KOBJ_UNBIND);
-+		return true;
- 	}
-+
-+	return false;
- }
- 
- void device_release_driver_internal(struct device *dev,
-@@ -1436,3 +1439,116 @@ void driver_detach(const struct device_driver *drv)
- 		put_device(dev);
- 	}
- }
-+
-+struct device_reprobe {
-+	struct delayed_work work;
-+	struct device *dev;
-+	struct device *parent;
-+	const struct device_driver *drv;
-+	bool parent_lock;
-+};
-+
-+static void device_reprobe_work_fn(struct work_struct *work)
-+{
-+	struct device_reprobe *rp = container_of(work, struct device_reprobe,
-+						 work.work);
-+	struct device *parent = rp->parent;
-+	struct device *dev = rp->dev;
-+	bool detached = false;
-+	int ret;
-+
-+	/*
-+	 * A device unregistered before the work runs may have outlived the
-+	 * module providing its bus type, so dev->bus is not read until the
-+	 * device is known to be live.
-+	 */
-+	if (rp->parent_lock)
-+		device_lock(parent);
-+	device_lock(dev);
-+	/*
-+	 * rp->drv is only ever compared, never dereferenced: the driver it
-+	 * points to may have been unregistered and freed by now.
-+	 */
-+	if (!dev->p->dead && !dev->p->shutdown_done && dev->driver == rp->drv)
-+		detached = __device_release_driver(dev, parent);
-+	device_unlock(dev);
-+	if (rp->parent_lock)
-+		device_unlock(parent);
-+
-+	if (detached) {
-+		/*
-+		 * device_attach() must run with the parent locked on buses
-+		 * that require it, mirroring bus_rescan_devices_helper().
-+		 */
-+		if (rp->parent_lock)
-+			device_lock(parent);
-+		ret = device_attach(dev);
-+		if (ret < 0)
-+			dev_err_probe(dev, ret,
-+				      "re-probe failed, device left unbound\n");
-+		if (rp->parent_lock)
-+			device_unlock(parent);
-+	}
-+
-+	put_device(dev);
-+	put_device(parent);
-+	kfree(rp);
-+}
-+
-+/**
-+ * device_schedule_reprobe - schedule a deferred detach and re-probe
-+ * @dev: device to detach and re-probe
-+ * @delay_ms: delay in milliseconds before the re-probe runs
-+ *
-+ * Schedule a detach and re-probe of @dev after @delay_ms milliseconds.
-+ * The re-probe is skipped if, by the time the scheduled work runs, the
-+ * device has been removed, the system shutdown sequence has reached the
-+ * device, or @dev is no longer bound to the driver that was bound at
-+ * scheduling time. In particular an administrative unbind is never
-+ * undone by a stale re-probe.
-+ *
-+ * The work function is built-in text, so the bound driver may call this
-+ * from its own code without holding a module reference. If the driver
-+ * module is unloaded before the work runs, driver unregistration unbinds
-+ * @dev first and the scheduled work does nothing.
-+ *
-+ * Multiple pending re-probes for the same device are individually safe;
-+ * a caller that wants at most one pending re-probe must gate scheduling
-+ * itself.
-+ *
-+ * The work is freezable: a re-probe pending across system suspend runs
-+ * once the system has resumed.
-+ *
-+ * May only be called from process context.
-+ *
-+ * Returns: 0 on success, -EINVAL if @dev is not a registered device
-+ * bound to a driver, -ENOMEM on allocation failure.
-+ */
-+int device_schedule_reprobe(struct device *dev, unsigned int delay_ms)
-+{
-+	struct device_reprobe *rp;
-+
-+	if (!dev->bus || !dev->p || !device_is_registered(dev))
-+		return -EINVAL;
-+	if (!dev->driver)
-+		return -EINVAL;
-+
-+	rp = kzalloc_obj(*rp);
-+	if (!rp)
-+		return -ENOMEM;
-+
-+	rp->dev = get_device(dev);
-+	/*
-+	 * Pin the parent too: the work locks it, and an unregister of @dev
-+	 * would otherwise drop the last reference before the work runs.
-+	 */
-+	rp->parent = get_device(dev->parent);
-+	rp->parent_lock = dev->parent && dev->bus->need_parent_lock;
-+	rp->drv = READ_ONCE(dev->driver);
-+	INIT_DELAYED_WORK(&rp->work, device_reprobe_work_fn);
-+	queue_delayed_work(system_freezable_wq, &rp->work,
-+			   msecs_to_jiffies(delay_ms));
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(device_schedule_reprobe);
-diff --git a/include/linux/device.h b/include/linux/device.h
-index aee79fd6b32b..7a9916950577 100644
---- a/include/linux/device.h
-+++ b/include/linux/device.h
-@@ -1314,6 +1314,8 @@ int  __must_check device_attach(struct device *dev);
- int __must_check driver_attach(const struct device_driver *drv);
- void device_initial_probe(struct device *dev);
- int __must_check device_reprobe(struct device *dev);
-+int __must_check device_schedule_reprobe(struct device *dev,
-+					 unsigned int delay_ms);
- 
- bool device_is_bound(struct device *dev);
- 
--- 
-2.55.0
+thanks for testing on BRCM and I will do the same as a venue to validate
+any fix I do for the listen() ordering issue in v7!
