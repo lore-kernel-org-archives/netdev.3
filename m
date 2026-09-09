@@ -1,57 +1,99 @@
-Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1240821CFE0;
-	Wed,  9 Sep 2026 04:06:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E42FF342151
+	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 04:08:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788926812; cv=none; b=dhxQU6IQb8abWmdC99bInBOlCSNiDuwdLzSBoX6CRPzcYAN3eeGHUDRw1afq+uH+YyXVLvQ72NC9hjt5jr1pX1mUS8jxXd+itBY0rtJWUimcpDdLNmMSDTxEvIQmK2sSst708iMC9bnpn/r9dK2Gm2YOGFLxUvMCgc/UdEEn3Pg=
+	t=1788926927; cv=none; b=WjycI5OO36IzEpY5cG0/wWQ9VbSjFreh6ao742feTELSqiT6xnQRmGwQSppdT4zdQtghRCce0E1bk/07zCumWkPME0y3vMImPuxM5q6uCmtDIBP/DYc3/8ZvBIiMYeTQI/cIn8Nx2OtDFhkapQwurcrBg5VOtzxqq7RyoAB6KW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788926812; c=relaxed/simple;
-	bh=3PgQLRSjU9bmk0YVmDNd7cf6rP2a1MX+VoQ+Zs+3iKQ=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Kp/tMHgMUqsYF40aMbcC4mSJDuDPGooz0hUVsrLsLQBPU9jnBm0zBJeYMmnVIs6IhX4zyo11d4ZsokpaxUKl/hWH9/zbLz1LOoMr/eKyX+kEvVmYEF3q9zC2qogcaYp5z0IcD9VrnO+8j02HSikhJ2aWsn1kAhWwt3L1k4/qKBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=CnL/gic9; arc=none smtp.client-ip=67.231.148.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	s=arc-20240116; t=1788926927; c=relaxed/simple;
+	bh=lHA65J/4a9O7FOIrwW3VPTBo9d0EBd8lH7ceA+nclpA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=dhkWaMK1v10u+rOxQxdF0+CnMQUmyIiyD+F4PSvSjtHQD9J0IVJiW9v0kuKUT7xsVRXkbsaE99/6NsAm6lL4wuacF72gFrOngV6WWaKIQ2fCy+y5Zas8088ECtYucHPC7LQnR6NIB7BCJgIwMYK0GvgPnbLHHSJJyJUOToPmql4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YfhKZ3kn; arc=none smtp.client-ip=209.85.216.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="CnL/gic9"
-Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
-	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6891M4GX2901567;
-	Tue, 8 Sep 2026 21:06:41 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pfpt0220; bh=DC3e4qC8uDH9YJcrIt5EREE
-	XtG2Ftvl6LxD0R8d6tL8=; b=CnL/gic9+/VxeNH0TLcx3KiMnccR62kJsOUD//3
-	KRkHevxH9OMQlPzsjjNPc/s8SjWtARtFHTX+L4MWn3O9kC6LaFzlty514BdRU2w5
-	+gpvqLBbymMVKRzzhu5vM2nlTxSFAgvBT5H652xxvfm34TrodzT0NeE6ch+OVbS7
-	TuaIDxULILc9LT3S05QilbkDgLLmSvJD5FV2+d4zaURHSniUxQ1dOXgL1OVvfOux
-	zDeXXOzMukeTo8YStS3jhwdQnDrz4g01je4hkacaIpFoGHVXCgxoRO//GzrW++Ac
-	wujRR0p1CNbJi0HQQkx3wln5pJzfywqR1w58aMe85XuUWLw==
-Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
-	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4gjwqwgbqq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 08 Sep 2026 21:06:41 -0700 (PDT)
-Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
- DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Tue, 8 Sep 2026 21:06:40 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
- (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Tue, 8 Sep 2026 21:06:40 -0700
-Received: from rkannoth-OptiPlex-7090.. (unknown [10.28.36.165])
-	by maili.marvell.com (Postfix) with ESMTP id CF2E73F7078;
-	Tue,  8 Sep 2026 21:06:36 -0700 (PDT)
-From: Ratheesh Kannoth <rkannoth@marvell.com>
-To: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>
-CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-        <kuba@kernel.org>, <pabeni@redhat.com>, <sgoutham@marvell.com>,
-        "Hariprasad
- Kelam" <hkelam@marvell.com>,
-        Ratheesh Kannoth <rkannoth@marvell.com>
-Subject: [PATCH v3 net-next] octeontx2-pf: report port connector type in ethtool link ksettings
-Date: Wed, 9 Sep 2026 09:36:20 +0530
-Message-ID: <20260909040621.397255-1-rkannoth@marvell.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YfhKZ3kn"
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-3969e82ff8fso5678836a91.0
+        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 21:08:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788926925; x=1789531725; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=G5OlD5gWWssUWDFczse9ZxRfKKog9YLB57/AAsUi+8E=;
+        b=YfhKZ3knOaU8utuUtRRGo0jkTw32ZrgnlsQSSMjSP2fPOKy9RJbELRrl6evuChmdO5
+         PoS3KMxfaI3oORtfK7U7fsI9LYS1JmhDymwF8z2xOE8YvCBASic2+QQilNqfpfFdd/I/
+         DpQ04F97xABd6+FndUrGcFNBwIXLMQhetNcFFueWpK/U3iA3GhYHtArhPx1jUgDSXCMS
+         D50zm8wDVoWy9WW2Mdr0wsb3gOt6Y7GNEXwLL24a8WzPo1T0W0r31UQWqLmWfoO4j10r
+         dDWQtzSKNOKkRfjQ5jiW0rnVAqmZP6j1xbg1Me8oHfyF4PjWQxQyETXVcsLAMtrZougy
+         RqJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788926925; x=1789531725;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=G5OlD5gWWssUWDFczse9ZxRfKKog9YLB57/AAsUi+8E=;
+        b=ik426ZOx4pnk/v57LfKloGEv69+c2Hp38/wiBFujWOj7dCxL0wDO9TtTnx/vquJQaM
+         ZforOu3SFyEMuLqvuK6lzOmsBibZgLpOnSgj+BbFZ9Btp4GdI1TCRR00golFBceXVSLW
+         k4abjJI1jCD93m+4sXGqc/xog3mycMls3mTT1z8LkCCWXtOp5bdEazv2j2x1/aTI01ia
+         qKUjukZzHtPD54DNZHYhuCvoPrWFlr5VnFVcLzqqynwGZjbwxSCGxnClxkL4N2b+QsmB
+         VMM9IUeJyr1zotL7WO+AqvnJID8KSljQQJtqbSTUlbBiTeRBT0zUulJcyec25tfPWlWR
+         aumg==
+X-Forwarded-Encrypted: i=1; AKwUvBw9VMBXwOKZw8iUk7PGJRT6aMqIRmU3qLhlM28PCcuBaHrxAHDxMq8L62+XllDStt/LnRDBMYY=@vger.kernel.org
+X-Gm-Message-State: AFuF++lzQj1HXKrD5mDwADWEU1uhR6P/uPqcC5O6frqPUPEnBga2CH04
+	zBhM7Rh1zoSPv9F1t3Afq91FqwwK/TXbNqyFEtubZYA1/wo4qMyPUFvb
+X-Gm-Gg: AYBFou0wR0dvU5siHWcEh6O3ZmU8Vwz4gQ29mZxosJr7z/BO81s138Pt58b35ZRqW04
+	p07aD0hVva/KQxZ857oXkuTYYSL046p6MNCpEFg5LKX9nzYGZ/lHiUYh5GRS8TY71tuiDgp8JVK
+	le6aptVl3rPvu7S3ghV9VOpFyg14n7StbL9ysH1TGaBezeWnTJaFYjXh1inJDb1I/G/PuWOOxsW
+	GTizqBW4pnhlRz8KEQy7gibjb4J87ZTjwshFnkTTEfdCFX4bTebYXQEwKdj1CFgORXR+JZpz8mW
+	JyLDyNYXq2TR3A/aXbZm5uxWOWN6MifFL9/4lGFdjR+sZ9Z0aoGsaTcafgFet/6AnM+BEXC/Yu8
+	ASvZZGRL+ZKHSwrc5sBCRL9uBenD4hR60TupFrK9VRN5Q/8IRn//CMkgCzF7rBZFD02o6eCkiBY
+	18xWvEih7sdRyaT/TjsdMWA9d0VtzrnSJDDhfj9Z3lWI/tnTS55b2dm3Sx7wkzkb5kGoH757Hst
+	/mGaTCEkkUGA8RGksy8I0mtYh3KcJCG
+X-Received: by 2002:a17:90b:4c03:b0:398:cb56:e92 with SMTP id 98e67ed59e1d1-39b26130698mr45997775a91.11.1788926924938;
+        Tue, 08 Sep 2026 21:08:44 -0700 (PDT)
+Received: from 192.168.50.3 ([198.176.50.208])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b2615039asm29766867a91.15.2026.09.08.21.08.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Sep 2026 21:08:44 -0700 (PDT)
+From: Weiming Shi <bestswngs@gmail.com>
+To: Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	Ihor Solodrai <ihor.solodrai@linux.dev>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Cc: bpf@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	David Lebrun <dlebrun@google.com>,
+	Mathieu Xhonneux <m.xhonneux@gmail.com>,
+	co+adfca3e91be95776@bugs.sh,
+	Xiang Mei <xmei5@asu.edu>,
+	Weiming Shi <bestswngs@gmail.com>,
+	Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH bpf v2] bpf: disallow bpf_skb_pull_data() for LWT_SEG6LOCAL
+Date: Wed,  9 Sep 2026 12:08:08 +0800
+Message-ID: <20260909040807.3885815-2-bestswngs@gmail.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260907192129.557377-2-bestswngs@gmail.com>
+References: <20260907192129.557377-2-bestswngs@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -59,97 +101,44 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA5MDA0MiBTYWx0ZWRfX20NpKd9zD1SY
- ZOrGWwQtcA7ijvV9ZGQxqdF0XO7ku7YiJ22R75//d02MwmNCL391DFSq3Qql980/O4tmMOLIHIH
- fLFaS1bTb4E7nbzjVJELhwF5ZjjcuhyVdngM+7Mi3ihuMb9+m5xPOxoeGsZx/4l+ZY3EvwZgAlZ
- 84hzaHBCiF4zf9VwjR1KZUzTr6nLz0+9HEAhw3MHfTqNyft4nBIXEkKJfan993or7qN7AwdqH1C
- pXBM3c4DpV3QXwBERqHdAbspUhDXhzNwD/6UlSWFCnAwx1L+cnHVt7/q1GdDaZ/65mfqDZ8igTE
- iH2qv7phoIDAjVJZ5iwV6PEUHgwIpSJ/8/3SUJHQhuHApF+AV7aRD8Jt93WlZxda77x3+7ScihH
- BKjflbrleTjnpc9p2PgIA8daEtpuSL6VHYh3h4X/xxTEQAPDgzji70q5ullwD3+ww1iCIwBAoJJ
- Qola7/w3J7jvo2aDQnw==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTA5MDA0MiBTYWx0ZWRfXwjrtK+UD0+Yj
- ojo3xJabMIRwKJCt33d4A21W6boiATYQeiIneBvyinAg3idZ7AXeP8GgKgKbfi96+Vgw9eupSO3
- qT2XdVE1jQDni+mpvHru3Y7G4Q9qCvI=
-X-Authority-Analysis: v=2.4 cv=XKEAjwhE c=1 sm=1 tr=0 ts=6aa0db51 cx=c_pps
- a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
- a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
- a=EAYMVhzMl8SCOHhVQcBL:22 a=VwQbUJbxAAAA:8 a=M5GUcnROAAAA:8
- a=GJ08_EToFyOulzXwadsA:9 a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-ORIG-GUID: iMDsnY1HbCq_Wty0J7Xe1qdmJWGWhTUd
-X-Proofpoint-GUID: iMDsnY1HbCq_Wty0J7Xe1qdmJWGWhTUd
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-08_03,2026-09-08_03,2025-10-01_01
 
-From: Hariprasad Kelam <hkelam@marvell.com>
+An LWT_SEG6LOCAL program can invalidate its cached SRH with
+bpf_lwt_seg6_adjust_srh() and then call bpf_skb_pull_data(). The latter
+may reallocate skb->head, leaving the per-CPU SRH pointer dangling.
+Post-program SRH validation then writes through that pointer.
 
-otx2_get_link_ksettings() already reports speed, duplex, autoneg, link
-modes and FEC from CGX firmware shared data, but never fills
-cmd->base.port.  As a result, ethtool does not show the physical
-connector type even though firmware provides it in fwdata.port.
+Disallow bpf_skb_pull_data() for LWT_SEG6LOCAL programs so the verifier
+rejects this unsafe helper combination. Other LWT program types continue
+to expose the helper through lwt_out_func_proto().
 
-Read the connector type from shared firmware data and expose it via
-ethtool.  Extract only the low 8 bits of the firmware field and
-validate the value against the standard ethtool PORT_* definitions
-before publishing it to userspace.
-
-Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
-Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
-
+Fixes: 004d4b274e2a ("ipv6: sr: Add seg6local action End.BPF")
+Reported-by: co+adfca3e91be95776@bugs.sh
+Closes: https://lore.kernel.org/all/GCy0KRM2IcQGoJQTjJEU9D0maBxXzEDHuQpq@bugs.sh/
+Suggested-by: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Link: https://lore.kernel.org/bpf/DL9COXZQXX4V.1FN45QO2Q77ZH@gmail.com/
+Cc: stable@vger.kernel.org
+Assisted-by: Claude:gpt-5
+Signed-off-by: Weiming Shi <bestswngs@gmail.com>
 ---
+Changes in v2:
+- Disallow bpf_skb_pull_data() for LWT_SEG6LOCAL instead of adding a
+  wrapper to refresh the cached SRH pointer, as suggested by Alexei.
 
-v2 -> v3:
-- Extract only the connector type bits with FIELD_GET(GENMASK(7, 0), ...)
-  instead of casting the full 64-bit firmware field to u8.
-- Validate firmware values against the ethtool PORT_* whitelist before
-  exposing them to userspace, per Jakub's review.
-- Map unrecognized firmware values to PORT_OTHER instead of passing
-  them through blindly.
+ net/core/filter.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-v1 -> v2:
-- Addressed Sashiko review comments.
-  https://lore.kernel.org/netdev/20260904154833.3b32ea6a@kernel.org/
----
- .../marvell/octeontx2/nic/otx2_ethtool.c       | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
-
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
-index 9bee1b91eeaa..a05dee0085a3 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
-@@ -1209,6 +1209,7 @@ static int otx2_get_link_ksettings(struct net_device *netdev,
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 8513167a858a8..2a84f9d011314 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -9044,6 +9044,8 @@ static const struct bpf_func_proto *
+ lwt_seg6local_func_proto(enum bpf_func_id func_id, const struct bpf_prog *prog)
  {
- 	struct otx2_nic *pfvf = netdev_priv(netdev);
- 	struct cgx_fw_data *rsp = NULL;
-+	u8 port;
- 
- 	cmd->base.duplex  = pfvf->linfo.full_duplex;
- 	cmd->base.speed   = pfvf->linfo.speed;
-@@ -1231,6 +1232,23 @@ static int otx2_get_link_ksettings(struct net_device *netdev,
- 				OTX2_MODE_SUPPORTED, cmd);
- 	otx2_get_fec_info(rsp->fwdata.supported_fec,
- 			  OTX2_MODE_SUPPORTED, cmd);
-+
-+	port = FIELD_GET(GENMASK(7, 0), rsp->fwdata.port);
-+	switch (port) {
-+	case PORT_TP:
-+	case PORT_AUI:
-+	case PORT_MII:
-+	case PORT_FIBRE:
-+	case PORT_BNC:
-+	case PORT_DA:
-+	case PORT_NONE:
-+		cmd->base.port = port;
-+		break;
-+	default:
-+		cmd->base.port = PORT_OTHER;
-+		break;
-+	}
-+
- 	return 0;
- }
- 
+ 	switch (func_id) {
++	case BPF_FUNC_skb_pull_data:
++		return NULL;
+ #if IS_ENABLED(CONFIG_IPV6_SEG6_BPF)
+ 	case BPF_FUNC_lwt_seg6_store_bytes:
+ 		return &bpf_lwt_seg6_store_bytes_proto;
 -- 
-2.43.0
-
+2.55.0
