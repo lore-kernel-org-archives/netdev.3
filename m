@@ -1,39 +1,39 @@
 Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1657492E2E;
-	Wed,  9 Sep 2026 03:07:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5629E314B8F;
+	Wed,  9 Sep 2026 03:10:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788923244; cv=none; b=ELWU18SRBOEzuisWRh9MZBOZrGvnIHUVBCdGIbDSXGKUJZJ4Wk9HQR+MGFDZtEfFQatl8Z/4V0mMgmqgG39RLES2pDBSaEMpkJZjPhcS13ARb7J7mKRNnacQaW6blhvskRmaZVeeKjlUWKteu1d4EvqRrwi6NS6BJhVrfoglf9M=
+	t=1788923463; cv=none; b=j3Q9tqOGGEd1uFuAtzkv708zqOJT4O1doQoK3a1Y0HuXzn7PsdW4sO3se/rasssoDZN5v9OlFXvqLwSDLz3ko7q0ToDclUV+O/V6dhTHUAu4jtSa3rAPPWVCdNoyjbPm5p7mvhOFt/I81uoVUqNKHKGSjUaqI5SGiU4qea837JM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788923244; c=relaxed/simple;
-	bh=tTl3ytbz+FbDgxH1UCG3yD1IJ7x5IKTL+TqRYjwXgko=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=VHGVMjD8+4j7wQJSDFfoCYCob5Wprbd7ih5rJIuVlWbBgNwX7i+Jf0ct73ownk5yel1SvcsymVIiV+KCo1WE0SEabWreBBSkvYCRMt1YtQTa8WYoJyIsaE1kztlZGssrlleiPeZUgVVWS8VC7ian9xtJU3VU6wEmqoz9VDbpbA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=T7255cD1; arc=none smtp.client-ip=185.70.43.22
+	s=arc-20240116; t=1788923463; c=relaxed/simple;
+	bh=SqGOECwVHFmocHLAkBrnfrFEMZkSNGwAm0dB2nZESwI=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=LVP5NtN1M2LAzQR06Dpnkw5My2L3geEVkm14Bt1nz+S+gYm6kUeIny8UQIcO34c4aLb1NyjIqDnW5X9SVnVb59BN9N7jrITsO2A7DvSXj/ObS1UvVNAIj8BGQL9tssnwexAl3OBh2fBqRWEV5FzKfIOgPEsw7h2sy+NhosNr1TI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=X0GGjrxA; arc=none smtp.client-ip=185.70.43.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="T7255cD1"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="X0GGjrxA"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1788923232; x=1789182432;
-	bh=tTl3ytbz+FbDgxH1UCG3yD1IJ7x5IKTL+TqRYjwXgko=;
+	s=protonmail; t=1788923453; x=1789182653;
+	bh=Ofh6fpcLN9XRqYRoCzFoB81MGxY2OaZ24p1y9iraXmw=;
 	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
 	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=T7255cD1xoMq4CMygasGjXkrkOO/KryOaM7m5xeMKdBoYQ9Bh/uYyun985Ig6zjRA
-	 rcyULcA6tPMNeiScgpgfMNQm/oAOyXRrKYI5bxO/Eaiedbienz22NbRsEflCi5zd7M
-	 AMPDbbwynRj3dHeaCCbH0pVEYLzDX1w77PtCiFIRsU5HoiOGKoa+haeQtH/okp0RXz
-	 6IK/QrexDZK9oMIf8H+woISUe2hKm/5kuJG9z2K5B0nzUWEdTBjKZurn/aShyD6A1c
-	 A1RzaxWtpD+v88KsD8wPSIhcbyEOl3NgAtfIG8fEQ6nuWidA46vV6lHekyKtSHCv+4
-	 dHrla5kHCwFfQ==
-Date: Wed, 09 Sep 2026 03:07:08 +0000
-To: Alex Elder <elder@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+	b=X0GGjrxAW2d14VA9LGukwDvxPsFRTqwXVZcuw6TsXeFk9iAkwaK5v2bmggdcYvVGx
+	 3HNU2hCSjtfxILNKqZElO/wrBt83pYlTsCIZ8GxypbEV55Wg0g2o5upW+8aUcmhsTo
+	 7cz2QJ2KFfGkQaedSK4hwqvIOCzbxJCEFiUFci7cWb6U/Iku5etu6qsSCxV0c9/tPt
+	 uMcIaRUrGfbjWJTB9OJt1soCQ8F1Jllzuhm8g0Ppq2+h3CcF3TZdJ/nPQaic01ZB+1
+	 u56aAB/28wEcG20RviWlleq/2M2vPvh2FiYevu67Axvp8ENhQMrPjKrRKL3AkISjWn
+	 Pqjv/4nt0HEOw==
+Date: Wed, 09 Sep 2026 03:10:48 +0000
+To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Alex Elder <elder@kernel.org>, Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>
 From: Esteban Urrutia <esteuwu@proton.me>
-Cc: Nazar Kompanets <xlie7669@gmail.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, Esteban Urrutia <esteuwu@proton.me>
-Subject: [PATCH] net: ipa: Add IPA_MEM_STATS_DROP_MODEM memory region
-Message-ID: <20260909-ipa-modem-drop-v1-1-0c9664f09c4a@proton.me>
+Cc: Esteban Urrutia <esteuwu@proton.me>, Nazar Kompanets <xlie7669@gmail.com>, linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org, devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, phone-devel@vger.kernel.org, Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Subject: [PATCH v2 0/3] SM8450 IPA support
+Message-ID: <20260909-sm8450-ipa-v2-0-2deb8b4e91a5@proton.me>
 Feedback-ID: 147889766:user:proton
-X-Pm-Message-ID: 80c038807791ee02e837e3f320076c110bdca1df
+X-Pm-Message-ID: 3b218d2646997f5d755b8356d77a73038258ec5f
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -43,52 +43,79 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-Add this memory region which is used in IPA v5.0 and higher.
+This series has been tested on the following SoCs:
+- SM7475
+- SM8450
+- SM8475
+In these the modem works as expected and no crashes occur.
 
-Link: https://github.com/LineageOS/android_kernel_qcom_sm8450-modules/commi=
-t/fc71d0972a2453cc29f873d723a355a902c6d69c
-Co-developed-by: Nazar Kompanets <xlie7669@gmail.com>
-Signed-off-by: Nazar Kompanets <xlie7669@gmail.com>
 Signed-off-by: Esteban Urrutia <esteuwu@proton.me>
 ---
-From IPA v5.0 onwards, two memory regions for drop stats exist: one for
-the AP (that is, the driver) and one for the modem (Q6).
-This patch declares this memory region and only allows its presence if
-the IPA version is >=3D5.0.
+Changes in v2:
+- Add missing resource limits for DMA and QDSS source groups.
+  - These are marked as unused downstream, but still have values written
+  to them.
+- Add Nazar as a co-developer.
+  - We developed independent implementations and are both working on
+  this series.
+- Add the IPA_MEM_MODEM_STATS_DROP memory region.
+- Pick tags.
+- Rebase against linux-next.
+- Remove comment in driver stating smem_size differences.
+  For both SM8450 and SM8475 SoCs:
+  - All devices based on these SoCs use an smem_size of 0x9000. [1]
+  - Specifying an smem_size of 0xb000 causes the modem to assert a
+  shared memory allocation failure. [2]
+- Remove overlapping optional memory regions.
+  - No comments from anyone regarding these, so remove them.
+- Reorder patches. (Dmitry, Krzysztof)
+- Sort iommus property in DT. (Krzysztof)
+- Specify actual IMEM base and size in DT. (Konrad)
+- Update commit messages and cover letter.
+- Link to v1: https://patch.msgid.link/20260622-sm8450-ipa-v1-0-532f0299f96=
+e@proton.me
+
+[1] https://github.com/sm8450-mainline/fdt
+[2] https://github.com/dopaemon/android_kernel_xiaomi_sm8450-devicetrees/co=
+mmit/0cff0b070363fb9a312ba6e66244898013e7038f
+
+To: Andrew Lunn <andrew+netdev@lunn.ch>
+To: "David S. Miller" <davem@davemloft.net>
+To: Eric Dumazet <edumazet@google.com>
+To: Jakub Kicinski <kuba@kernel.org>
+To: Paolo Abeni <pabeni@redhat.com>
+To: Rob Herring <robh@kernel.org>
+To: Krzysztof Kozlowski <krzk+dt@kernel.org>
+To: Conor Dooley <conor+dt@kernel.org>
+To: Alex Elder <elder@kernel.org>
+To: Bjorn Andersson <andersson@kernel.org>
+To: Konrad Dybcio <konradybcio@kernel.org>
+Cc: Nazar Kompanets <xlie7669@gmail.com>
+Cc: linux-arm-msm@vger.kernel.org
+Cc: netdev@vger.kernel.org
+Cc: devicetree@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: phone-devel@vger.kernel.org
+
 ---
- drivers/net/ipa/ipa_mem.c | 1 +
- drivers/net/ipa/ipa_mem.h | 1 +
- 2 files changed, 2 insertions(+)
+Esteban Urrutia (3):
+      dt-bindings: net: qcom,ipa: Add SM8450 compatible
+      net: ipa: Add IPA v5.1 configuration data
+      arm64: dts: qcom: sm8450: Add IPA node
 
-diff --git a/drivers/net/ipa/ipa_mem.c b/drivers/net/ipa/ipa_mem.c
-index 078d32a18dbf..3000aaa24530 100644
---- a/drivers/net/ipa/ipa_mem.c
-+++ b/drivers/net/ipa/ipa_mem.c
-@@ -166,6 +166,7 @@ static bool ipa_mem_id_valid(struct ipa *ipa, enum ipa_=
-mem_id mem_id)
- =09=09=09return false;
- =09=09break;
-=20
-+=09case IPA_MEM_MODEM_STATS_DROP:
- =09case IPA_MEM_AP_V4_FILTER:
- =09case IPA_MEM_AP_V6_FILTER:
- =09=09if (version < IPA_VERSION_5_0)
-diff --git a/drivers/net/ipa/ipa_mem.h b/drivers/net/ipa/ipa_mem.h
-index b25babade787..56703bada07c 100644
---- a/drivers/net/ipa/ipa_mem.h
-+++ b/drivers/net/ipa/ipa_mem.h
-@@ -68,6 +68,7 @@ enum ipa_mem_id {
- =09IPA_MEM_STATS_QUOTA_AP,=09=09/* 0 canaries, optional (IPA v4.0+) */
- =09IPA_MEM_STATS_TETHERING,=09/* 0 canaries, optional (IPA v4.0+) */
- =09IPA_MEM_STATS_DROP,=09=09/* 0 canaries, optional (IPA v4.0+) */
-+=09IPA_MEM_MODEM_STATS_DROP,=09/* 0 canaries, optional (IPA v5.0+) */
- =09/* The next 7 filter and route statistics regions are optional */
- =09IPA_MEM_STATS_V4_FILTER,=09/* 0 canaries (IPA v4.0-v4.2) */
- =09IPA_MEM_STATS_V6_FILTER,=09/* 0 canaries (IPA v4.0-v4.2) */
-
+ .../devicetree/bindings/net/qcom,ipa.yaml          |   1 +
+ arch/arm64/boot/dts/qcom/sm8450.dtsi               |  59 ++-
+ drivers/net/ipa/Makefile                           |   2 +-
+ drivers/net/ipa/data/ipa_data-v5.1.c               | 476 +++++++++++++++++=
+++++
+ drivers/net/ipa/gsi_reg.c                          |   1 +
+ drivers/net/ipa/ipa_data.h                         |   1 +
+ drivers/net/ipa/ipa_main.c                         |   4 +
+ drivers/net/ipa/ipa_reg.c                          |   1 +
+ 8 files changed, 537 insertions(+), 8 deletions(-)
 ---
 base-commit: a9d7ced84989ec05be09b4b8428759ef60450a0f
-change-id: 20260909-ipa-modem-drop-5fe77241c80f
+change-id: 20260908-sm8450-ipa-4dfc931c8ce0
 
 Best regards,
 -- =20
