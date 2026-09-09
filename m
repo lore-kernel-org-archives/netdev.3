@@ -1,58 +1,77 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6792D582B8D;
-	Wed,  9 Sep 2026 16:26:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A84F581250;
+	Wed,  9 Sep 2026 16:29:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788971212; cv=none; b=NI6VQ30FexE3OeVx0Bzf38FJ60qSB2pt8tt0qAMk7F4gELehgGA3SAsFRuvJwhGxyCOCpgdtU5ZQT+l2q6v5zS/2LxkxeVOATJSlQU+q6kfj21NRTo7QQyDC4fDuU7rYBAmZSd6EuELeSKZbIwlFYuYXd9LXnR76HVZjgOanoms=
+	t=1788971399; cv=none; b=WhC/2XMpRMus8StqUP09oSeW5z6fkduGr9sWHODLHUfHEW8iTC5KXQbeWeNnYLVofeQNOJsUVvPA/cc1x89mr60GWPmcxjg8LyLMLv5YluNfdbGKnEXlXDzpeSv5BbJdHvUdA+wtdVtSyPUH2bv3UOM7YvFMJVnqj59HlYLRdjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788971212; c=relaxed/simple;
-	bh=dDsAdRjf3J+qEjODaSBRponUlR/JCUjwm3jz2vQePxs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bxIGjoC1sdrYP44gT6bpfVmZ4wDicAflyehF8ydDrvoWBaaDcEXi25OtWFWX6ieXERXI8zpKKNDZUA+2vvNDuvVWAnilVAn4eySUFIMco8IU2XWRJQlFb8nPA6+Xfy2w/Nzbn09J4wfWqMI39D0dKva9iO9RImMgGwBAdDHciA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lRF2wjgl; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788971399; c=relaxed/simple;
+	bh=krwfMdiCMzFHmtZQPPfEjSMaKs13pUHMuJ/roEuywc0=;
+	h=Message-ID:Date:MIME-Version:From:To:Subject:Content-Type; b=d5k0GKPhydOvNP6MukEmf3b2yqMpxZt/o2avrjpIrXVanY8OYcGQM4QwIl1AUCVlcgn4aBranBiIX7Liuy06N8GAHNZc4ltTeLQ7whrOZdmLiCCUsaXfSraPl1ZHLn3gBjmZYohzq/n0M6PB6cW+/bSWosLvdkQxsWdn0OK3kEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hauke-m.de; spf=pass smtp.mailfrom=hauke-m.de; dkim=pass (2048-bit key) header.d=hauke-m.de header.i=@hauke-m.de header.b=ppFYb/AV; arc=none smtp.client-ip=80.241.56.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hauke-m.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hauke-m.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lRF2wjgl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53AE01F00893;
-	Wed,  9 Sep 2026 16:26:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788971211;
-	bh=GTQwmf9vw9fU9/7tf71N4P11nNyVn9slLycnGW5pH34=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=lRF2wjglAZupjNRH+EP5fiGrAiX9/GFjvfqFBV0ACr367nQ1NAkCxHjQ30Krt+7br
-	 nepBtMtKuJ5I3NUZEVEnFrzGEPhx8jrP1FwdZHV07rkP1ZiXp/95BEB2UwEOW3Hsm6
-	 38kkcLjsPBK7lWCUvjEmKeJW+O3oPfgkcnW0GuNfkjSCt5Qi3ylTJezTh/FNkrY15c
-	 JR0rPc/cNZLR7xuMkYRFhkRNLsTVIU4SaJoljLTvcL0HpEVoaD+1nvA0nWi5rYzUuO
-	 HO17ZSs0ScjCw9x5W/BL8qQcFuUXbNau545mOH70mpH6sdNApM8b60DDleFlBeadDy
-	 FvemsrHsXA7Bg==
-Date: Wed, 9 Sep 2026 17:26:47 +0100
-From: Simon Horman <horms@kernel.org>
-To: Ratheesh Kannoth <rkannoth@marvell.com>
-Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, sgoutham@marvell.com
-Subject: Re: [PATCH net-next] octeontx2: collapse consecutive blank lines in
- source files
-Message-ID: <20260909162647.GI40544@horms.kernel.org>
-References: <20260908061113.246837-1-rkannoth@marvell.com>
+	dkim=pass (2048-bit key) header.d=hauke-m.de header.i=@hauke-m.de header.b="ppFYb/AV"
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4hg5r14Yl6zMlH1;
+	Wed, 09 Sep 2026 18:29:53 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hauke-m.de; s=MBO0001;
+	t=1788971393;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=GijESrXrggs2Ng+WJhK7xqr1s12SqTgNBkqbolGvWN8=;
+	b=ppFYb/AV/USeUbcdcR29K2xJdq/CI8DWS0hMJ9UpxWWY1Z8ARX7DpcS2qtYaipyieYBb4B
+	HjCKJkkg4N1Ktu8goUFujHHJw6ArW5WutYQ2keWiiILQKA2VYKD4pPimbbYZiu/R5T9/w9
+	ll+RcxVfbQK3zK0NQnV86vqbQCpCI+0NkES5KGM9OtdGwlf33EIeInm7s0H02dKXNNQDf+
+	7S2MoNzq/WFj6bM0itWL6aIeXGH4KuYbA/HJqeZ2UAXz5DJdEcA9IIdDsDhJBjVP19FAdu
+	XyBnqAoRs383NTaUMzcnaQ5gExwsgK1SweDdc8mnSrNxCo6r/gy1j2CKDFr0/A==
+Authentication-Results: outgoing_mbo_mout;
+	dkim=none;
+	spf=pass (outgoing_mbo_mout: domain of hauke@hauke-m.de designates 2001:67c:2050:b231:465::2 as permitted sender) smtp.mailfrom=hauke@hauke-m.de
+Message-ID: <7dfa42f6-64c1-4084-bfea-d57500c245cf@hauke-m.de>
+Date: Wed, 9 Sep 2026 18:29:50 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260908061113.246837-1-rkannoth@marvell.com>
+From: Hauke Mehrtens <hauke@hauke-m.de>
+To: stable@vger.kernel.org, "netdev@vger.kernel.org"
+ <netdev@vger.kernel.org>, Pablo Neira Ayuso <pablo@netfilter.org>
+Content-Language: en-US
+Subject: network flow offloading broken in 6.18.45+
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 4hg5r14Yl6zMlH1
 
-On Tue, Sep 08, 2026 at 11:41:13AM +0530, Ratheesh Kannoth wrote:
-> Remove extra blank lines across the octeontx2 driver source.
-> 
-> Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
+Hi,
 
-As there are many non-trivial changes coming from you for this driver
-I think we can treat this as a clean-up in the context of that ongoing
-work.
+flow offloading is currently broken in Linux 6.18.45.
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+Since the backport of commit b5964aac51e0 ("netfilter: flowtable: 
+consolidate xmit path") to Linux 6.18.45. This is happening in a router 
+with traffic from wifi to the Ethernet device when mac80211 returns 
+-EOPNOTSUPP.
+
+Upstream fixed it in 871df5007eda ("netfilter: flowtable: bail out if 
+forward path cannot be discovered") by not offloading the flow at all. 
+backporting this change looks more complicated.
+
+This cam up in a discussion in an OpenWrt PR:
+https://github.com/openwrt/openwrt/pull/24800
+
+An LLM suggested this change: 
+https://github.com/openwrt/openwrt/pull/24800/changes/394d741e6e76ecd172dbbf1d9ba171e378211734
+
+It seams to work, but I do not understand this part of the code god 
+enough to judge if this is correct.
+
+Hauke
