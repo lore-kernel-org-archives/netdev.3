@@ -1,203 +1,164 @@
-Received: from mail-yx2-f12.google.com (mail-yx2-f12.google.com [74.125.224.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B538A5476DE
-	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 15:47:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8705568FD9
+	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 15:50:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788968837; cv=none; b=d7sEaVmDB5sYkPGEj4ZUBdzDJXiFevPXRGco1q+zPfhwCnyPoAaE8GDKmdaHlymPQvGkJPW2XhriM6c0XYGsxLJoZmi8wz9lRNy2FcW8oWE5Cy18SYQDrW6njtB2fTa+pZCc2rf/1Iku44z2wA164mMqY2RWd4DJDvBmApXs/A8=
+	t=1788969010; cv=none; b=TyESxkN8D/q8X/dCvjm7CALvTQfFN9UqNCyBlr4ilyJ289NP1NFebmfbnYgq6ug4+5nqcEjM5yreul4rouBL3Qo5Fo3SGd1VspxpGHXLjbVxrceaB/jv9QRU0XF8/rZOKIZnfl4hh3bbMndraHTEzLOT0f9ZwDH8aV1Q030oHEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788968837; c=relaxed/simple;
-	bh=N/WLAPFNniInJzbmPtmGyiWArtEDEu3rvWcZgtBBbjc=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=WqIqSEQeFQhI+Qt0sNLDwffIbAxj/mH9eLJwkw2l4i4y0LQUMgU6tphoUi9MK2lBDZ2pNp5E/vRxf+HAATZ6H2IPNUQFfw/QNi30KR8FNASRr7jF+jOkO3qw7hEbE3/imI9yaq75qhhOx26TgZxs1OHqEqnTvhtkL6Aty16i9cU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UrR8vaFk; arc=none smtp.client-ip=74.125.224.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788969010; c=relaxed/simple;
+	bh=nFE1mVHqzRhOWK279L/SKUnOy2Ov3lQzrqja+W6JOSU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=icu2+pbfw53tBdTi2ZKFsEOTA9o/uTf4zIF9qYqd9NIp/8Li1qdxPd5dPZTWHFdYCnoLoKOGRHUID8nqCVzsSM54vRoZ3MHf4UPyR/mV6giFMd4T1q/UDt7Gy9vp/5v4ceaHO/DUyuG19V6X7JD4PqI9MT5Dz+xHpMT77CM1lJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HvN6JkgE; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=dQx7zpw7; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UrR8vaFk"
-Received: by mail-yx2-f12.google.com with SMTP id 00721157ae682-85d4eb63f16so13716367b3.0
-        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 08:47:15 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HvN6JkgE";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="dQx7zpw7"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1788969008;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=A7Zn/OFO2zbwAV9G4cd03zWGTSa7F4U3l04SAQu/SgI=;
+	b=HvN6JkgEL6ck6MfD54zNXI47t67Fo3oAt7igArdXZmWk9F6C9T8sARa7WOMfjcIUH53uwG
+	tql/UXODdKRLGaCdyiF3x6Ri73K8hGmbx4XWD2INwdycnBxTZ0W4IremKJpj+FNpCAazdT
+	YaLtwvbYq9aJieWxLsPE2qvk503iZyY=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-633-rG8OI8ysM4CGpEFybOg9Vw-1; Wed, 09 Sep 2026 11:50:05 -0400
+X-MC-Unique: rG8OI8ysM4CGpEFybOg9Vw-1
+X-Mimecast-MFC-AGG-ID: rG8OI8ysM4CGpEFybOg9Vw_1788969005
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4994cf6cdb9so43185165e9.3
+        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 08:50:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788968834; x=1789573634; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=s5krVvgDpigTsB10TLunKhlSyS+RtOFpjYDXiSmULjs=;
-        b=UrR8vaFkoY51RMsmTTej2TkYStKXUoZjgS74T+2TOCnK1BiJpx086KTgn8SNg8qFk/
-         4Poeg3h+n0wUKW0+BjLnodbTrbWzjnxQ+uoOKKOdOCjNZwBKY3mqWrkQc9UT4qf5R5uV
-         Vh/O0Nyn79fL1rUOZEn5LxSozk+CHShp+l1meSsArQB9NtQ82SC/1N6KbPW5YyYIMINI
-         lgyWYDwXa0+e4yT59k/+lcR49aZVrpRjydDQd3tyyecyLabCvxbGbc8EvhxhJdkSgcK1
-         7eE7HmXe7/Eow4zvB3l8niLNiwsJwk3SdZiFKoZBScB7P3rJrDw2RPAlpaFyiT0Ofe/E
-         bj0Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788968834; x=1789573634;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=redhat.com; s=google; t=1788969004; x=1789573804; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=s5krVvgDpigTsB10TLunKhlSyS+RtOFpjYDXiSmULjs=;
-        b=RG3fJnZ+AFlFJSJmZ4ktTVJREJIIcydn6upZzD9EoKdN07tjSJdyMV3ek3ZGuQ2STJ
-         PSSijq+WvDamntzUzz+biZzi3N8ctGP763kdMYwGM0Vy2mjYwKUeZf4kKSdrJfSzawiZ
-         KgghhYI7AH3TzDLjtfntCJg0DWSSZe04SSZYD8DM62fwpA7MOrJeV2IrPI3018lsGLVD
-         8J0KKCYlJgTzGFz7k9PY7URXuIwQR5QZpneGMmSrQv4akyhGkVTWFb7zOM5ttSPH80gx
-         ROot3PmE8coO3MTWaxkTOBGpc/+SFgBGJGOO60b7AQRb2KCGW2Z1zyI2XGZJePW4GNJ2
-         zKOA==
-X-Forwarded-Encrypted: i=1; AKwUvBwwPiJYXEkO2QTymx3DGeAJQ9qcOcvAtHn+sN6P+g7m2cnEarZbKvCgDNnFuOp1FEqcAAMu7FM=@vger.kernel.org
-X-Gm-Message-State: AFuF++lPQ7khUUvC/1bPtPXDoNPWe1/yRLAf3rrN4PTqeeYk5K8+IZBt
-	l4b0EV/BG40DsxIIrbMDRyxSsyVJ8zncGO3B63WFuMOmbEnUSC52GpGo
-X-Gm-Gg: AYBFou1bFVpR2/I72IM9DCthjL0ngsNom2CSyalOUKeawbq2Z3rlinUozp7UF3P/u2c
-	11AQo27bqf4UH4ydKDZS7kTZV9EWkHgNKgCIgNVFokc9pwasUTc/cMdqdk6B2HlPfhhOb3FrHqO
-	q8n3erH/EDgOwTx1BMVWd6fImMfrefdbXe5dFGxNWvgQnoAwc7RA2qVoBkAFnDBYi7e/TA42GdC
-	Oif9QNSeCC+LwVV57WbpqZkAMTnFtOrXn6PM8lQ8X/u+tdBHm9G3IwBJs532eBvQjYgymgMVW1b
-	6f2FR5tUopJhmoZSNxBX1AS3MtJS+7QqQnDspht38cQ9sJV9TwzHzX6j51S8kFPH88KspV4rvtS
-	yn/jrUZU9xPHQuDOkL/ZTMTa8lv8qTc+1wrdE7CjBAvp3gMFESyI/vJUDg5d/Rg/nyU2Ryl4u/R
-	/3y35/stdVH72yVyWstprUN6n2NuhgUpg+6mAaZZ8zJZBcy11/HFaFU+xXiiScNL5Jm+yp4WkEv
-	cYyADT43hXk451YPc84H6GNzsgV0b/6ToalZoWjqngEGVzra0oM
-X-Received: by 2002:a05:690c:6e87:b0:87c:5161:32c9 with SMTP id 00721157ae682-87c517fb935mr37638777b3.29.1788968834275;
-        Wed, 09 Sep 2026 08:47:14 -0700 (PDT)
-Received: from gmail.com (234.207.85.34.bc.googleusercontent.com. [34.85.207.234])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-87149316347sm114285607b3.15.2026.09.09.08.47.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Sep 2026 08:47:13 -0700 (PDT)
-Date: Wed, 09 Sep 2026 11:47:13 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Jakub Kicinski <kuba@kernel.org>, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: edumazet@google.com, 
- netdev@vger.kernel.org, 
- davem@davemloft.net, 
- pabeni@redhat.com, 
- horms@kernel.org, 
- andrew+netdev@lunn.ch, 
- Willem de Bruijn <willemb@google.com>
-Message-ID: <willemdebruijn.kernel.123ac363ae937@gmail.com>
-In-Reply-To: <20260908163447.68d64e2d@kernel.org>
-References: <20260902181747.2483351-1-willemdebruijn.kernel@gmail.com>
- <20260902181747.2483351-2-willemdebruijn.kernel@gmail.com>
- <20260904160106.08acccb5@kernel.org>
- <willemdebruijn.kernel.173115664f973@gmail.com>
- <20260907161258.2b0b421d@kernel.org>
- <willemdebruijn.kernel.19b10eb6885cf@gmail.com>
- <CAF=yD-JSieHiaWVD9OWnFNiDaM2Y9r52S5cn=aFYYXT=DT0wmQ@mail.gmail.com>
- <20260908144819.16313dd9@kernel.org>
- <CAF=yD-J1puTzDQUaMAsTCuCm4dYYgOzYO7S3WV6rA_pWVLKRUQ@mail.gmail.com>
- <20260908163447.68d64e2d@kernel.org>
-Subject: Re: [PATCH net-next v8 1/6] net: rtnetlink: add
- pacing_offload_horizon attribute to net_device
+        bh=A7Zn/OFO2zbwAV9G4cd03zWGTSa7F4U3l04SAQu/SgI=;
+        b=dQx7zpw7sCZcpIlpbI1XuxMa78BUOcZL8yRmkqSSTlZisc927/IWi6xLwrflR7pP1D
+         qRvdWgrihWAKV6vGjfBLuJg0oIg58zuFWB5EccMn1dDc1mGZvMiKj26KNHRwTMJs4dZ6
+         Bcfxph64UqcY6OIz27UCB9g4N+RGmCzoIYXonkhsfkdcM3kdaEQymthlVOhSrrdBRvkt
+         OdXcLCPPb6haSxnDrtLVpQmwd90cxp0TiHcFNi622DHavSTgwGHXOA760B/btZMbOTpn
+         S39JJQPjb2Xs9DWZ9a+lhDF85FOtAf6POoMwwISoLt2LLrfHNgJLFjSq9qnB1lz6vqeT
+         aySQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788969004; x=1789573804;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=A7Zn/OFO2zbwAV9G4cd03zWGTSa7F4U3l04SAQu/SgI=;
+        b=L8S7AECAagcUpyRdTwg5VW2iPKbC4CVFUZiSCgGy+1FphZ5tc/x1MOVq6R3YdMj3bR
+         pMAm0ef98v8754coODjl8Y74JTSp27XwvEdCvYQy2+feNEoHuuUTIk5AFeozZScJ1BhL
+         skLsGRuCu5EZ80bD9h3wwcusbQrsaDIhK1qDAGklLDYqTVe2j0LXReN4MDypi8NsqIRn
+         1T8EinfXyUOkATqzsrNSWzx62nJTQQ7iikUxMjnXh2WB5NQlpoNxDrw8/MbenbUbtG/C
+         /SeZCpI2o16ya2ZNe7AHRzEvKlRqepyDz5Fa8FDnHleBjsFjcP0TCNQ/KrzOuOC7/CJc
+         +wTQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxRJkWDA5ArJMp4wtzc62qgX4TV00ujdU2PfO6/9Az2taoet0IlfuaSDOjZ6ckwFyhSV1/5bdM=@vger.kernel.org
+X-Gm-Message-State: AFuF++mwGL4oFAiccgtM9Y37HXtwwwxFQxslsN5QP/cKwhTxUdteO/Gq
+	7NHBypQ1qKx06T0iCDLaEKLawC2ncD1VBnuWfGz95uvxm5gyfefJZSkLjQ625zAdXvy23hTmLeW
+	tLf0pCuOIbx0DI0EfdKXVQITz1KQzM3nESf+cab+jyzvy9pzS9dglV/gKAA==
+X-Gm-Gg: AYBFou07+lB1Bf7Fqv3qzTIJYzFkGO5/ZegGkfEapLdijlYm69YEbCOXDo5ZT5+ECbk
+	iQT+sEIGNoCjxxhiO/w5DJ2T78mbqW25l12nLcTeH5QSNXPec7015+8bLLhGyhUVqvNOiTmzn/C
+	CVDmC7YX6pZyx683tYg14E4yL2vlVEvkLqmh5klFgQ9O+aTccbVCtmoApWJ+63NCN/iAQ4HFFD0
+	A2dzmdbMeo1uBpcDhNvyCxg4VMirYW5AJB+e/jAQrYF3hw2mWDHu8bAl/6Nwm8J9z0/JGuWIrnl
+	6PqD06KGUrBxBW+6iJPsRlRu1zV27YVyGYCs+QSJe6aFdB+4akEQ0fRXVxbhRwchbjZ7k2V/7oh
+	lXBmD7KGNAJMgGoCcRZi7vFLtdUZFDUbCub2HJMDUhkD+XqY3rPjqKBefahQPwYoO4A7yWGtBHQ
+	==
+X-Received: by 2002:a05:600c:8b05:b0:49c:edd2:855 with SMTP id 5b1f17b1804b1-49cf823c411mr387804165e9.6.1788969004573;
+        Wed, 09 Sep 2026 08:50:04 -0700 (PDT)
+X-Received: by 2002:a05:600c:8b05:b0:49c:edd2:855 with SMTP id 5b1f17b1804b1-49cf823c411mr387803645e9.6.1788969004052;
+        Wed, 09 Sep 2026 08:50:04 -0700 (PDT)
+Received: from [192.168.188.218] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49d20fce7a7sm137463835e9.4.2026.09.09.08.50.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 09 Sep 2026 08:50:02 -0700 (PDT)
+Message-ID: <121f90e5-a19c-4066-af03-8cf5594bb30f@redhat.com>
+Date: Wed, 9 Sep 2026 17:50:01 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2 15/15] mptcp: avoid pruning for OoW data
+To: netdev-bot+sashiko@kernel.org, matttbe@kernel.org
+Cc: martineau@kernel.org, geliang@kernel.org, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, horms@kernel.org,
+ netdev@vger.kernel.org, mptcp@lists.linux.dev, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20260908-net-mptcp-misc-fixes-7-3-rc1-v2-15-df1de70348b6@kernel.org>
+ <178896537782.219967.1022060629733006428@kernel.org>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <178896537782.219967.1022060629733006428@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Jakub Kicinski wrote:
-> On Tue, 8 Sep 2026 18:39:20 -0400 Willem de Bruijn wrote:
-> > On Tue, Sep 8, 2026 at 5:48=E2=80=AFPM Jakub Kicinski <kuba@kernel.or=
-g> wrote:
-> > > It's just a way of avoiding netdev_features_t becoming larger than =
-64b.
-> > > At the uAPI level we have a bitmap so we can express any number of =
-bits.
-> > > But in the kernel dev->features is u64 / ull so if we run out of bi=
-ts
-> > > the refactor will be rather painful.
-> > >
-> > > Is it really that much worse to add the support for "high feature b=
-its"
-> > > which don't go thru netdev_features_t to ethtool, than sprinkling e=
-xtra
-> > > one off booleans into already bloated RTM_SETLINK? Not sure.  =
+On 9/9/26 4:49 PM, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider:
+> 
+> Critical: 0 · High: 0 · Medium: 1 · Low: 0
+> 
+> - [Medium] Incomplete realization of the patch's stated principle ("do it
+>   only when we expect to accept the skb triggering the cleanup"): after…
+> 
+> --
+> 
+> mptcp: avoid pruning for OoW data
+> 
+> This moves the mptcp_try_rmem_schedule() call in mptcp_data_queue_ofo()
+> so that it runs after the out-of-window check instead of before it, which
+> avoids running the destructive OoO queue pruning for skbs that are going
+> to be dropped as out of window.
+> 
+>> diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+>> index 4309fca6b119..0098e2830931 100644
+>> --- a/net/mptcp/protocol.c
+>> +++ b/net/mptcp/protocol.c
+>> @@ -313,12 +313,6 @@ static void mptcp_data_queue_ofo(struct mptcp_sock *msk, struct sk_buff *skb)
+>>  	u64 seq, end_seq, max_seq;
+>>  	struct sk_buff *skb1;
+>>  
+>> -	if (!mptcp_try_rmem_schedule(sk, skb)) {
+>> -		MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_RCVPRUNED);
+>> -		mptcp_drop(sk, skb);
+>> -		return;
+>> -	}
+>> -
+>>  	seq = MPTCP_SKB_CB(skb)->map_seq;
+>>  	end_seq = MPTCP_SKB_CB(skb)->end_seq;
+>>  	max_seq = atomic64_read(&msk->rcv_wnd_sent);
+>> @@ -335,6 +329,12 @@ static void mptcp_data_queue_ofo(struct mptcp_sock *msk, struct sk_buff *skb)
+>>  		return;
+>>  	}
+>>  
+>> +	if (!mptcp_try_rmem_schedule(sk, skb)) {
+>> +		MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_RCVPRUNED);
+>> +		mptcp_drop(sk, skb);
+>> +		return;
+>> +	}
+>> +
+> 
+> [Severity: Medium]
+> The commit message says pruning should be done "only when we expect
+> to accept the skb triggering the cleanup".  Does the new placement
+> fully match that, given the duplicate-data check still happens later in
+> the rbtree walk of mptcp_data_queue_ofo()?
 
-> > =
+The change suggested here would add quite a bit of complexity for little
+gain, and would diverge MPTCP behavior from TCP. We learned the lesson
+the hard way we need very good reasons to do the latter. I'm pretty sure
+we are better off with the proposed code.
 
-> > How would this work with hw_features, wanted_features, vlan_features
-> > and other such feature masks?
-> > =
+/P
 
-> > There is potentially quite a bit of logic that needs to be duplicated=
-
-> > for a secondary set of features. Or, the risk that these features end=
-
-> > up not quite like normal features.
-> =
-
-> No different than a loose bit in SETLINK?
-
-At least then there is no expectation of netdev_features_t behavior.
- =
-
-> What I was wondering is - we don't want to implement full handling for
-> high feature bits, agreed, it doesn't seem needed today. But is it
-> better to add such a bit in ethtool regardless, even tho it doesn't get=
-
-> any infra for propagation to uppers etc. Or is it better to start addin=
-g
-> one-off bits in rt-link.
-> =
-
-> Think about it some more, since the max-horizon attr is already in
-> rt-link I guess putting this bit in rt-link does make more sense.
-
-Ok, I'll leave this in rt-link then.
-
-Even then, running out of feature bits will come back to haunt us
-soon enough. A good idea to look into it some more now.
-
-The main issue here is not wanting to grow netdev_features_t for
-hot cachelines, right? Which besides growing dev->features has a
-cascading effect on all the other fields of that type in net_device
-too.
-
-Extending struct net_device itself is fine, as long as it happens in
-some cold cacheline at the end.
-
-Perhaps something like what Paolo did for virtio features in the
-series of 3b17aa13015c ("virtio_net: add supports for extended
-offloads"). With non-contiguous bitmap fields. Everything beyond 64
-is mapped to a new field at the end of the struct. A thin API to
-avoid open-coding that check everywhere. And selective conversion
-only of code/drivers that need to access the extended features.
-
-> > > I hate both notifiers everywhere and the idea that we have to be ab=
-le
-> > > to quietly revoke device features "on firmware rollout". It leads t=
-o
-> > > unmaintainable code which almost never runs so it's buggy half of t=
-he
-> > > time. Whatever.  =
-
-> > =
-
-> > I don't like it, but firmware roll-outs that remove features
-> > unfortunately are a real thing. Especially roll-backs.
-> > =
-
-> > For pacing offload specifically, I considered the risk low enough to
-> > rely on the admin to manually revert the FQ settings when such an
-> > event happens. But the bots kept complaining. And in fairness a
-> > notifier based auto disable is indeed much more robust than a manual
-> > correlated roll-out. OTOH, it is rarely exercised code in practice an=
-d
-> > thus more prone to latent bugs.
-> =
-
-> TBH I'm not sure what you have in mind with the notifier.
-> What netdev event does the FW reset generate? =
-
->
-> > A simpler approach for pacing offload is to check the dev fields
-> > directly in fq. It is likely that that cacheline is warm.
-> =
-
-> Right, there's ~30b of unused flag space in the first cache line
-> of struct net_device. Should be warm.
-
-I can move dev->pacing_offload there.
-
-max_pacing_offload is in a cold line. Finding a way to squeeze that
-somewhere warm can perhaps be left for later.
