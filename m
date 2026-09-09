@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 380FE3AC0E6;
-	Wed,  9 Sep 2026 06:33:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 965923ACEF2;
+	Wed,  9 Sep 2026 06:33:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788935601; cv=none; b=rPH0z1DVku70y45fjQsMBYhkZTQnulYA5zREq/pehxSGrFti+vg2td9WaeWJ0vrwQuIn0b2wxQ53hbRKYvITqi678epb8E5uoK35ybNMjph/RhXfEkNldbIlff+8pFJYvlQtlgswucXviEaHhC5X5XBHkUm64DFObwDBXtdT+eU=
+	t=1788935603; cv=none; b=BoWPr9nZUyHq2DqHe3kgnPKXMLwpfVbQfwhWQ5mC6eQMejX6WkjXvnU6pfdFeXaeV1W3XV7YmgsPPy5blLZsR/3HMfw51FUOiW5WiBfxoE/ZGcZY2mbv7Lbu42j0/twes0xe1uqbD/K36xpdz2/gtLSIZUG5NbbT0s1ywb6cK6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788935601; c=relaxed/simple;
-	bh=0Yp2tDXqzgKfDblVbAR/F0GvL+QCAYXcZx++Hn8W19Q=;
+	s=arc-20240116; t=1788935603; c=relaxed/simple;
+	bh=2j9S89IC4Io1bxWzxIzxi4sBp4k+D8jvwhyBYB2aico=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=i8lZh52MzJfrlMnHY50wktTQfbtN0qJNJq0F7cnR3N8vpaH3kNJaA8gjA1wjtj0j79r0N9J+l+vDKInm7i3/YLB4UJZL4Q+CJauSc4hKxjIA+a173ArK/bOOvEbfft+eFtbe0N637lZRKBE0P8X0UR7YjNN2yfVlDwKed3ddQs0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LVMXX3DZ; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=DClXUb0iKdmpRUs6qGqddkosBWw99LUfAv+9uBZl4IdovPt8YCwDMKLkXsqlpJskIifwQewz++uuqpZW/qvXqAwhILCLQwUqcJZBkFKRcq6AP0ioK4Roa5ykJsuwvj6GetPEqRdablZT3QnhH9SNj/C1mDF1ku5SIDKFkUl5mPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R9+u+oTi; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LVMXX3DZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF17B1F00A3A;
-	Wed,  9 Sep 2026 06:33:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R9+u+oTi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72E111F00A3D;
+	Wed,  9 Sep 2026 06:33:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788935599;
-	bh=WYEXltSevrTooHvRjuD7s08FKOWZImYPvvtR+MzSfm4=;
+	s=k20260515; t=1788935601;
+	bh=ytmqSmnp9R4RxGIm+XkVA8eB7FsSO2RZHebgsD6NLsk=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=LVMXX3DZKF3R0r3VRIsZFroElp428FJ2BMmxwzw7b8PXSevw7q5Cet9z/D4OHk95K
-	 LfnbcIAs15J3yU+NpeX2t9vRAK3ilmS8dKsA8pdn9x8+itCgZv48ngumzkFtsoONXH
-	 c3TR6PQI3WigPzqrssUWh3p0gxkOjXTzzYQwJ53ad8eBE7VhEEW2IrY9CAlqOqGnLD
-	 XaH1WxDw+qYMT+nHaotOH7Tfi1pyMZasj/fRFpf/MulZc4WXGj0pFr+/vNG/Tx02Ft
-	 8YddKSgKycmW/RxLvchkPu1lQ5k+MsNCWg9QaHak9zDgdWc5qH4BCWxfDflcvbGPag
-	 u6LEhbM1/iIdA==
-Subject: Re: [PATCH net-next v6 3/5] net: phy: own phydev->psec via PSE
- notifier and remove fwnode_mdio hook
+	b=R9+u+oTi4zZI9sj/7sEaaPrdV14pNsaXXuodS+cNzcRwjZM+15K7EeyzXGKleFy8w
+	 FH2LA3UEZzT/MCB967QJswtULkK+iTQbMUH2nVM1AVdxE3D/rqcbnSQ7Msl/dz0uJj
+	 Kvs6NA4yj4nBCbMEL0dQzr6BfOOq8TLTXN+qKeh01yBIFE9QgPmfpWD46e5XqXKZtd
+	 dfX1rCqp04YEUH3xQ6dwa4x4PrFYZyj0k3txw1e5Cr6koKUXqDUSRjNJ4sF3YqCGxc
+	 lcaATOmApxfJfGWqfmOWXUBhNKoAF5tVIvy9ikOF5lQ7LJSbPpUT4/AmocsKrqWeCG
+	 DRnSA4ZiXZvsg==
+Subject: Re: [PATCH net-next v6 4/5] net: phy: use a dedicated mutex instead
+ of rtnl for PSE control attach
 From: netdev-bot+sashiko@kernel.org
 To: github@szelinsky.de
 Cc: o.rempel@pengutronix.de, kory.maincent@bootlin.com, andrew+netdev@lunn.ch,
@@ -35,10 +35,10 @@ Cc: o.rempel@pengutronix.de, kory.maincent@bootlin.com, andrew+netdev@lunn.ch,
  edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, corey@leavitt.info,
  jelonek.jonas@gmail.com, horms@kernel.org, olek2@wp.pl,
  netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Wed, 09 Sep 2026 06:33:18 +0000
-Message-ID: <178893559852.219967.17408171091451392990@kernel.org>
-In-Reply-To: <20260906153102.959217-4-github@szelinsky.de>
-References: <20260906153102.959217-4-github@szelinsky.de>
+Date: Wed, 09 Sep 2026 06:33:20 +0000
+Message-ID: <178893560000.219967.12262382469111881440@kernel.org>
+In-Reply-To: <20260906153102.959217-5-github@szelinsky.de>
+References: <20260906153102.959217-5-github@szelinsky.de>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -49,345 +49,270 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 6 potential
+Thank you for your contribution! Sashiko AI review found 4 potential
 issue(s) to consider:
 
-Critical: 0 · High: 2 · Medium: 2 · Low: 2
+Critical: 0 · High: 2 · Medium: 1 · Low: 1
 
-- [High] Deferred psec put vs. bus-walk-based detach: moving the final
-  pse_control_put(phydev->psec) from phy_device_remove() to…
-- [High] The PSE_UNREGISTERED detach walk does not actually close the
-  use-after-free class the commit claims to fix: the notifier callback…
-- [Medium] pse_controller_unregister() frees the PI storage before
-  quiescing the notification worker, and the new PSE_UNREGISTERED detach…
-- [Medium] phy_try_attach_pse() treats every of_pse_control_get() error
-  other than -ENOENT/-EPROBE_DEFER as permanent and warn-only, but that…
-- [Low] The commit message claims that without the new PSE_UNREGISTERED
-  detach walk "the PSE driver module could not finish unloading while…
-- [Low] The patch fixes a reported, user-visible regression (boot-time
-  probe-retry storm / PHYs failing to register when the PSE controller…
+- [High] At this commit, phydev->psec is released asynchronously and
+  without the new lock: phy_device_remove()…
+- [High] pse_phy_lock() only serialises the attach against the notifier
+  callback itself, not against the controller teardown that follows it.
+- [Medium] Commit message hides that the deadlock being fixed was
+  introduced two patches earlier in the same series.
+- [Low] The commit message wrongly lists netsec among the drivers that
+  deadlock ("so any such driver (lantiq_etop, sni_ave, netsec) deadlocks…
 
 --
 
-net: phy: own phydev->psec via PSE notifier and remove fwnode_mdio hook
+net: phy: use a dedicated mutex instead of rtnl for PSE control attach
 
-This moves ownership of phydev->psec from fwnode_mdio into phylib, which
-now subscribes to the pse-pd notifier chain and attaches/detaches psec on
-PSE controller register/unregister events. phy_device_register() is split
-into a public form that takes rtnl around the attach and a
-phy_device_register_locked() form for callers already holding rtnl, and
-the final pse_control_put() moves from phy_device_remove() to
-phy_device_release().
+This replaces the rtnl_lock() that phy_device_register() took around
+phy_try_attach_pse() with a new mutex living in pse_core, reached via
+pse_phy_lock() / pse_phy_unlock(), and uses it in the PSE notifier walks
+and in the ethtool PSE paths.  phy_device_register_locked() becomes
+identical to phy_device_register() and is folded back in.
 
-Closes: https://lore.kernel.org/netdev/e00048dd-1ed3-40c3-9912-59bccf015ad5@gmail.com/
+Link: https://lore.kernel.org/netdev/bac5e6e9-7358-4ccb-87fc-9c40baa33682@wp.pl/
 
-A couple of questions on the changelog first.
+A few questions on the changelog first.
 
-[Severity: Low]
+> phy_device_register() took rtnl_lock() around phy_try_attach_pse() to
+> serialise phydev->psec against the PSE controller notifier walk.
 
->       - On PSE_UNREGISTERED: an rtnl-guarded bus walk releases every
->         phydev->psec that targets the departing controller before
->         pse_release_pis() frees pcdev->pi. Without this, a phy still
->         holding a pse_control reference would cause a use-after-free in
->         __pse_control_release()'s pcdev->pi[psec->id] access, and the PSE
->         driver module could not finish unloading while any phy still held a
->         reference.
+[Severity: Medium]
+Should this say where that rtnl_lock() came from?  At the baseline commit
+cef9d6804030, drivers/net/phy/phy_device.c has no rtnl in
+phy_device_register() and no phy_device_register_locked() at all; both were
+added by the earlier patch in this same series ("net: phy: own phydev->psec
+via PSE notifier and remove fwnode_mdio hook").
 
-Is the module unload part of this rationale the right way round?
+As written the message reads as if the rtnl_lock() were pre-existing
+upstream behaviour, and there is no Fixes: tag or note that the deadlock is
+introduced inside this submission.
 
-pse_control_get_internal() pins the controller driver for every psec:
+That also leaves the series non-bisectable: with only the earlier patches
+applied, register_netdevice() holds rtnl and calls ltq_etop_init() ->
+ltq_etop_mdio_init() -> mdiobus_register() -> mdiobus_scan() ->
+phy_device_register() -> rtnl_lock(), and ave_init() -> of_mdiobus_register()
+reaches the same recursion, so those boards hang on probe at the
+intermediate commit.
 
-	if (!try_module_get(pcdev->owner)) {
-		ret = -ENODEV;
-		goto free_psec;
-	}
+Would it make sense to squash this patch (and the never-needed exported
+phy_device_register_locked() API that it removes again) into the patch that
+introduced the rtnl_lock()?
 
-and the matching module_put() only happens in __pse_control_release().
-While a phy holds a psec the module refcount is non-zero, so
-delete_module() fails with -EWOULDBLOCK before the module exit path (and
-therefore pse_controller_unregister(), the only emitter of
-PSE_UNREGISTERED) is ever entered.
-
-The detach walk does help for driver unbind and device removal, where
-pse_controller_unregister() is reached with the module still loaded, but
-it cannot make an rmmod that was already refused succeed. Could that
-sentence be reworded to talk about unbind/removal instead?
+> so any such driver (lantiq_etop, sni_ave, netsec) deadlocks on probe.
 
 [Severity: Low]
-
->     Reported-by: Jonas Jelonek <jelonek.jonas@gmail.com>
->     Closes: https://lore.kernel.org/netdev/e00048dd-1ed3-40c3-9912-59bccf015ad5@gmail.com/
-
-This carries Reported-by:, Closes: and Tested-by: for a user-visible
-regression (PHYs failing to register / probe-retry storm with a modular
-PSE controller driver), but there is no Fixes: tag and no indication of
-the target tree.
-
-git blame on the removed lookup in fwnode_mdiobus_register_phy() points at
-5e82147de1cbd7 for the original PSE lookup, later touched by
-fa2f0454174c2f, so the affected releases can be named. Could a Fixes: tag
-be added, and could the intended tree (net vs net-next) be stated given
-the size of the refactor and the new exported symbol?
+Does netsec belong in that list?  netsec_netdev_init(), its .ndo_init, only
+allocates the TX/RX descriptor rings and resets the hardware; the MDIO bus
+is registered from netsec_probe() via netsec_register_mdio(), before
+register_netdev() is called, so phy_device_register() runs without rtnl
+held there.  The lantiq_etop and sni_ave paths do match the described
+recursion.
 
 > diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-> index 0615228459ef4..f5febff4b00b8 100644
+> index f5febff4b00b8..e8d894bbfa7aa 100644
 > --- a/drivers/net/phy/phy_device.c
 > +++ b/drivers/net/phy/phy_device.c
-> @@ -223,8 +223,19 @@ static void phy_mdio_device_free(struct mdio_device *mdiodev)
->  
->  static void phy_device_release(struct device *dev)
+
+[ ... ]
+
+> @@ -1181,16 +1181,16 @@ static int phy_pse_notifier_event(struct notifier_block *nb,
 >  {
-> +	struct phy_device *phydev = to_phy_device(dev);
-> +
-> +	/* bus_for_each_dev() holds get_device() across each iteration
-> +	 * step, deferring this release callback until any in-flight PSE
-> +	 * notifier walk has advanced past this phy. pse_control_put()
-> +	 * takes pse_list_mutex, so this path must run in sleepable
-> +	 * context.
-> +	 */
-> +	might_sleep();
-> +	pse_control_put(phydev->psec);
-> +
->  	fwnode_handle_put(dev->fwnode);
-> -	kfree(to_phy_device(dev));
-> +	kfree(phydev);
->  }
+>  	switch (event) {
+>  	case PSE_REGISTERED:
+> -		rtnl_lock();
+> +		pse_phy_lock();
+>  		bus_for_each_dev(&mdio_bus_type, NULL, NULL,
+>  				 phy_pse_attach_one);
+> -		rtnl_unlock();
+> +		pse_phy_unlock();
+>  		return NOTIFY_OK;
+>  	case PSE_UNREGISTERED:
+> -		rtnl_lock();
+> +		pse_phy_lock();
+>  		bus_for_each_dev(&mdio_bus_type, NULL, data,
+>  				 phy_pse_detach_one);
+> -		rtnl_unlock();
+> +		pse_phy_unlock();
+>  		return NOTIFY_OK;
 
 [Severity: High]
+Can a phy that has already left mdio_bus_type keep its pse_control past the
+controller teardown?
 
-Can a psec survive here past the point where the detach walk can find it?
+The detach walk only reaches devices still on the bus, but at this commit
+phy_device_remove() does not touch phydev->psec:
 
-Once phy_device_remove() has run, device_del() -> bus_remove_device() ->
-klist_del() takes the phy off the mdio_bus_type klist, but the phy itself
-can still be pinned by a get_device() from phy_attach_direct() or
-of_phy_find_device(). The detach is driven only by the klist walk:
+drivers/net/phy/phy_device.c:phy_device_remove() {
+	unregister_mii_timestamper(phydev->mii_ts);
+	device_del(&phydev->mdio.dev);
+	...
+}
 
-	case PSE_UNREGISTERED:
-		rtnl_lock();
-		bus_for_each_dev(&mdio_bus_type, NULL, data,
-				 phy_pse_detach_one);
+and the put is deferred to the release callback, without the new lock:
 
-so an off-bus phy keeps its psec, while pse_controller_unregister()
-continues straight on:
+drivers/net/phy/phy_device.c:phy_device_release() {
+	...
+	might_sleep();
+	pse_control_put(phydev->psec);
+	...
+}
 
+So a phy that has been device_del()'d but is still pinned (an attached
+netdev holding a reference, or an SFP-module phy waiting for
+phy_device_free()) is invisible to the PSE_UNREGISTERED walk and keeps its
+psec across pse_controller_unregister().  That function then frees the pi
+array:
+
+drivers/net/pse-pd/pse_core.c:pse_controller_unregister() {
 	blocking_notifier_call_chain(&pse_controller_notifier,
 				     PSE_UNREGISTERED, pcdev);
 	pse_flush_pw_ds(pcdev);
 	pse_release_pis(pcdev);		/* kfree(pcdev->pi) */
+	...
+}
 
-When the last device reference finally drops and this release callback
-runs, __pse_control_release() does:
+and the later put reaches __pse_control_release(), which does
+"if (psec->pcdev->pi[psec->id].admin_state_enabled) regulator_disable(psec->ps);"
+on that freed memory.  This also runs outside pse_phy_lock(), which the new
+kernel-doc says every phydev->psec access must hold.
 
-	if (psec->pcdev->pi[psec->id].admin_state_enabled)
-		regulator_disable(psec->ps);
+The last patch of the series ("net: phy: release phydev->psec from
+phy_device_remove() again") does move the put into phy_device_remove()
+under pse_phy_lock() and strips it from phy_device_release(), so the end
+state is fine; the concern is only about this intermediate commit, which
+is also the one that documents the locking contract.
 
-which reads the freed pi array and may act on it.
+> @@ -1201,15 +1201,22 @@ static struct notifier_block phy_pse_notifier __read_mostly = {
 
-The last patch of this series ("net: phy: release phydev->psec from
-phy_device_remove() again") restores the put plus phydev->psec = NULL
-under pse_phy_lock() in phy_device_remove() before device_del(), which is
-the ordering that avoids this. Would it be better to keep the put in
-phy_device_remove() from this patch onwards so the intermediate tree is
-not left with the window open?
+[ ... ]
 
-> @@ -1102,11 +1113,103 @@ struct phy_device *get_phy_device(struct mii_bus *bus, int addr, bool is_c45)
->  }
->  EXPORT_SYMBOL(get_phy_device);
+> +int phy_device_register(struct phy_device *phydev)
+>  {
+>  	int err;
 >  
+> @@ -1233,6 +1240,10 @@ static int __phy_device_register(struct phy_device *phydev)
+>  		goto out;
+>  	}
+>  
+> +	pse_phy_lock();
+> +	phy_try_attach_pse(phydev);
+> +	pse_phy_unlock();
+> +
+>  	return 0;
+>  
+>   out:
+> @@ -1241,51 +1252,6 @@ static int __phy_device_register(struct phy_device *phydev)
+>  	mdiobus_unregister_device(&phydev->mdio);
+>  	return err;
+>  }
+> -
 > -/**
-> - * phy_device_register - Register the phy device on the MDIO bus
+> - * phy_device_register_locked - Register the phy device on the MDIO bus
 > - * @phydev: phy_device structure to be added to the MDIO bus
-> +/* Best-effort attach of phydev->psec from a DT `pses = <&...>` phandle.
-> + * Caller must hold rtnl. A missing phandle (-ENOENT) or a not-yet-registered
-> + * controller (-EPROBE_DEFER) is silent; the notifier retries the latter at
-> + * PSE_REGISTERED time. Any other error means a broken binding and is warned
-> + * about, but left non-fatal so the phy still registers.
->   */
-> -int phy_device_register(struct phy_device *phydev)
-> +static void phy_try_attach_pse(struct phy_device *phydev)
+> - *
+> - * Same as phy_device_register() but caller must already hold rtnl_lock().
+> - *
+> - * Return: 0 on success, negative error code on failure.
+> - */
+> -int phy_device_register_locked(struct phy_device *phydev)
+> -{
+> -	int err;
+> -
+> -	ASSERT_RTNL();
+> -
+> -	err = __phy_device_register(phydev);
+> -	if (err)
+> -		return err;
+> -
+> -	phy_try_attach_pse(phydev);
+> -
+> -	return 0;
+> -}
+> -EXPORT_SYMBOL(phy_device_register_locked);
+
+[ ... ]
+
+>  EXPORT_SYMBOL(phy_device_register);
+
+[ ... ]
+
+> diff --git a/drivers/net/pse-pd/pse_core.c b/drivers/net/pse-pd/pse_core.c
+> index 611540df43bb1..b771f5a2a83fc 100644
+> --- a/drivers/net/pse-pd/pse_core.c
+> +++ b/drivers/net/pse-pd/pse_core.c
+> @@ -24,8 +24,54 @@ static LIST_HEAD(pse_controller_list);
+>  static DEFINE_XARRAY_ALLOC(pse_pw_d_map);
+>  static DEFINE_MUTEX(pse_pw_d_mutex);
+>  
+> +/* Serialises phydev->psec against the PSE controller lifecycle notifier and
+> + * the ethtool PSE paths, in place of rtnl. The attach must not take rtnl: an
+
+[ ... ]
+
+> +static DEFINE_MUTEX(pse_phy_mutex);
+> +
+>  static BLOCKING_NOTIFIER_HEAD(pse_controller_notifier);
+>  
+> +/**
+> + * pse_phy_lock - hold phydev->psec stable against PSE controller teardown
+> + *
+> + * The PSE_UNREGISTERED notifier clears phydev->psec and drops the last
+> + * reference on the pse_control before the controller frees its state. Callers
+> + * that attach, detach or dereference phydev->psec must hold this lock across
+> + * the whole access so the detach cannot run underneath them.
+> + */
+> +void pse_phy_lock(void)
 > +{
-> +	struct pse_control *psec;
-> +	struct device_node *np;
-> +
-> +	ASSERT_RTNL();
-> +
-> +	np = phydev->mdio.dev.of_node;
-> +	if (!np)
-> +		return;
-> +
-> +	if (phydev->psec)
-> +		return;
-> +
-> +	psec = of_pse_control_get(np, phydev);
-> +	if (IS_ERR(psec)) {
-> +		if (PTR_ERR(psec) != -EPROBE_DEFER && PTR_ERR(psec) != -ENOENT)
-> +			phydev_warn(phydev, "failed to get PSE control: %pe\n",
-> +				    psec);
-> +		return;
-> +	}
-> +
-> +	phydev->psec = psec;
+> +	mutex_lock(&pse_phy_mutex);
 > +}
+> +EXPORT_SYMBOL_GPL(pse_phy_lock);
 
-[Severity: Medium]
+[Severity: High]
+Does this lock actually cover the teardown it claims to protect against?
 
-Is every error other than -ENOENT and -EPROBE_DEFER really a broken
-binding? of_pse_control_get() does hardware traffic on this path:
+phy_pse_notifier_event() drops pse_phy_mutex as soon as the detach walk
+returns, and pse_controller_unregister() does the rest of the teardown with
+the mutex no longer held:
 
-drivers/net/pse-pd/pse_core.c:pse_control_get_internal() {
-	...
-	ret = pse_pi_is_hw_enabled(pcdev, index);
-	if (ret < 0)
-		goto free_psec;
-	pcdev->pi[index].admin_state_enabled = ret;
-	...
-	psec->ps = devm_regulator_get_exclusive(...);
-}
-
-pse_pi_is_hw_enabled() calls pcdev->ops->pi_get_admin_state(), which is an
-I2C/SMBus read on tps23881, si3474 and pd692x0, so a transient -EIO,
--EBUSY or -ENOMEM is possible. Here that is only warned about, phydev->psec
-stays NULL, and the only retry left is a fresh PSE_REGISTERED event.
-
-That is aggravated by PSE_REGISTERED firing synchronously from the tail of
-pse_controller_register(), i.e. mid-probe of the controller driver:
-
-drivers/net/pse-pd/tps23881.c:tps23881_probe() {
-	...
-	ret = devm_pse_controller_register(dev, &priv->pcdev);
-	...
-	ret = tps23881_setup_irq(priv, client->irq);
-}
-
-Previously the same failure propagated out of fwnode_mdiobus_register_phy()
-and deferred probe retried it. With this change, does a single transient
-bus error permanently lose the PSE binding for that port, leaving the PI
-without a consumer and unreachable from ethtool even though
-admin_state_enabled may have been seeded from the chip?
-
-> +
-> +static int phy_pse_attach_one(struct device *dev, void *data __maybe_unused)
-> +{
-> +	ASSERT_RTNL();
-> +
-> +	if (dev->type != &mdio_bus_phy_type)
-> +		return 0;
-> +
-> +	phy_try_attach_pse(to_phy_device(dev));
-> +	return 0;
-> +}
-> +
-> +static int phy_pse_detach_one(struct device *dev, void *data)
-> +{
-> +	struct pse_controller_dev *pcdev = data;
-> +	struct phy_device *phydev;
-> +	struct pse_control *psec;
-> +
-> +	ASSERT_RTNL();
-> +
-> +	if (dev->type != &mdio_bus_phy_type)
-> +		return 0;
-> +
-> +	phydev = to_phy_device(dev);
-> +	psec = phydev->psec;
-> +	if (!psec || !pse_control_matches_pcdev(psec, pcdev))
-> +		return 0;
-> +
-> +	phydev->psec = NULL;
-> +	pse_control_put(psec);
-> +	return 0;
-> +}
-
-[Severity: Medium]
-
-Once this walk drops the phy's reference, can the notification worker end
-up being the last holder of the psec?
-
-pse_send_ntf_worker() takes its own reference and then blocks on rtnl:
-
-	psec = pse_control_find_by_id(pcdev, ntf.id);
-	rtnl_lock();
-	netdev = pse_control_get_netdev(psec);
-	...
-	rtnl_unlock();
-	pse_control_put(psec);
-
-The detach walk runs under rtnl, so it can complete in that window and the
-psec then survives only on the worker's reference. Meanwhile
-pse_controller_unregister() frees the PI storage before quiescing the
-worker:
-
+drivers/net/pse-pd/pse_core.c:pse_controller_unregister() {
+	blocking_notifier_call_chain(&pse_controller_notifier,
+				     PSE_UNREGISTERED, pcdev);
+	pse_flush_pw_ds(pcdev);
 	pse_release_pis(pcdev);		/* kfree(pcdev->pi) */
 	if (pcdev->irq)
 		disable_irq(pcdev->irq);
 	cancel_work_sync(&pcdev->ntf_work);
-
-so the worker's pse_control_put() reaches __pse_control_release() and reads
-psec->pcdev->pi[psec->id].admin_state_enabled after the array is gone. The
-still-enabled IRQ can also queue more notification work before
-cancel_work_sync(). Should disable_irq() and cancel_work_sync() move ahead
-of pse_flush_pw_ds()/pse_release_pis()?
-
-> +
-> +static int phy_pse_notifier_event(struct notifier_block *nb,
-> +				  unsigned long event, void *data)
-> +{
-> +	switch (event) {
-> +	case PSE_REGISTERED:
-> +		rtnl_lock();
-> +		bus_for_each_dev(&mdio_bus_type, NULL, NULL,
-> +				 phy_pse_attach_one);
-> +		rtnl_unlock();
-> +		return NOTIFY_OK;
-> +	case PSE_UNREGISTERED:
-> +		rtnl_lock();
-> +		bus_for_each_dev(&mdio_bus_type, NULL, data,
-> +				 phy_pse_detach_one);
-> +		rtnl_unlock();
-> +		return NOTIFY_OK;
-> +	default:
-> +		return NOTIFY_DONE;
-> +	}
-> +}
-
-[Severity: High]
-
-Does the detach walk actually close the use-after-free the changelog
-describes, given that rtnl is dropped before the notifier returns?
-
-pse_controller_unregister() unlinks the controller last:
-
-	blocking_notifier_call_chain(&pse_controller_notifier,
-				     PSE_UNREGISTERED, pcdev);
-	pse_flush_pw_ds(pcdev);
-	pse_release_pis(pcdev);		/* kfree(pcdev->pi) */
-	...
+	kfifo_free(&pcdev->ntf_fifo);
 	mutex_lock(&pse_list_mutex);
 	list_del(&pcdev->list);
+	mutex_unlock(&pse_list_mutex);
+}
 
-In the window after the notifier returns and before that list_del(), a phy
-registering on another CPU runs phy_device_register() ->
-phy_try_attach_pse() -> of_pse_control_get(), still finds the departing
-pcdev on pse_controller_list, and creates a fresh psec on it. That path
-touches the already freed pi array: of_pse_match_pi() reads
-pcdev->pi[i].np, and pse_control_get_internal() reads pcdev->pi[index].rdev
-and writes pcdev->pi[index].admin_state_enabled = ret.
+The controller stays on pse_controller_list until the very end, and the
+window spans cancel_work_sync(), which can block for a queued notification
+work item.
 
-Since the attach decision is taken under rtnl but the rest of the teardown
-is not, this looks like a check-then-attach race against controller
-teardown. Would unlinking pcdev from pse_controller_list before the
-notifier fires, or publishing a "dying" state under the same lock the
-attach uses, be needed here?
+Can a concurrent phy_device_register() -> pse_phy_lock() ->
+phy_try_attach_pse() -> of_pse_control_get() land in that window?
+of_pse_control_get() walks pse_controller_list under pse_list_mutex only,
+with no unregistering-state check, so of_pse_match_pi() reads the freed
+pcdev->pi[i].np and pse_control_get_internal() then writes
+pcdev->pi[index].admin_state_enabled and dereferences pcdev->pi[index].rdev.
 
-> @@ -1152,8 +1299,6 @@ EXPORT_SYMBOL(phy_device_register);
->  void phy_device_remove(struct phy_device *phydev)
->  {
->  	unregister_mii_timestamper(phydev->mii_ts);
-> -	pse_control_put(phydev->psec);
-> -
->  	device_del(&phydev->mdio.dev);
->  
->  	/* Assert the reset signal */
+The pse_control created that way can also never be detached, because the
+PSE_UNREGISTERED walk has already finished, so its eventual put re-enters
+__pse_control_release() on the freed pi array.
+
+Would moving the list_del() ahead of pse_release_pis(), or holding
+pse_phy_mutex across the whole of pse_controller_unregister(), close this?
+The list_del-last ordering predates the series, but the changelog states
+the new mutex protects "the phy<->controller binding against PSE controller
+teardown", and the series adds both new attach sites, so the case seems
+worth addressing here.  This is still present at the tip of the series.
 
 [ ... ]
 
