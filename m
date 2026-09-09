@@ -1,266 +1,133 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C35A493D2B;
-	Wed,  9 Sep 2026 22:25:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 959023B5847;
+	Wed,  9 Sep 2026 22:35:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788992720; cv=none; b=WOW79TqXXtom2dWr4guLhkpBnwYE/oRB5u/oUJRLKUUr39pZ+/ggV5Dejw818Us07yxr6dtMUN33E3sTBBP7rtStpSB3+J95C+htRhU4rmEmEVQTxWAsakBrmheSjwKuZ4eVL947QYqzVFtqSxy6BLD0qC/YwLZK32Zz0VNbMCI=
+	t=1788993329; cv=none; b=PLqKV+JRnudOuGkbz2KFGiD1NyCW3bU0b7+9ztGAnFQXVjVNBhCKIncSK1UOC6yLp+DfK+4OeC9W+yQFlV0ejNGr0+h00+e2wbR8PT5bDUps+rZ7nUSeKRuGOyXXxL9ZzmTFgir42SuO3rA/yxfq7F3fSFSszCwP/Zbj1syPX88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788992720; c=relaxed/simple;
-	bh=yXZ3aXwqpTELixRS16oHqcEN6vy6rvmTcz7J5tNe3Dk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VIkT6Y+qnWhJcyg3jAcpcKWUu5gnIZyL49RPjnS0oulGpcimocS/il3a0SrRBnMwM52JFm8CGOK0B7jPnktcRgFxs5HUnP9A13jPEbIDSVGbjYiBCcxCT3RWnoxklgiQ12QXHLksFl4qrbDuN31lVVzNKHEnoz9OJQg2QLDuDrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: by linux.microsoft.com (Postfix, from userid 1202)
-	id D6E3320B717A; Wed,  9 Sep 2026 15:24:29 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com D6E3320B717A
-From: Long Li <longli@microsoft.com>
-To: Long Li <longli@microsoft.com>,
-	Long Li <longli@kernel.org>,
-	Konstantin Taranov <kotaranov@microsoft.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Leon Romanovsky <leon@kernel.org>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	"K . Y . Srinivasan" <kys@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	shradhagupta@linux.microsoft.com,
-	Simon Horman <horms@kernel.org>,
-	ernis@linux.microsoft.com,
-	stephen@networkplumber.org,
-	shirazsaleem@microsoft.com
-Cc: netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	linux-hyperv@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v5 12/13] net: mana: keep the surviving queues when the channel count is reduced
-Date: Wed,  9 Sep 2026 15:24:15 -0700
-Message-ID: <20260909222416.884246-13-longli@microsoft.com>
-X-Mailer: git-send-email 2.43.7
-In-Reply-To: <20260909222416.884246-1-longli@microsoft.com>
-References: <20260909222416.884246-1-longli@microsoft.com>
+	s=arc-20240116; t=1788993329; c=relaxed/simple;
+	bh=yFtgdn+u2QJ1Xx1uvXp5xwY1qfcW+2HzWXNluZkkjKM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LuTT6/VTO7zLC2yDmSP1040DwwBJQ5pdPpFxV+PA0MryF6cUAfzmotpbQZpK5ZQoLxEVIuZFNNOyQMMl5vnqpyMcHJmEW7sJu82eEYTUfIUnGf1Unk0ZILYeJkxI0pG2uDoy0W8/Ggv7E0qi47INJTGpOsWioxeU8A/DX1ErQX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=jIdw1yvn; arc=none smtp.client-ip=217.70.190.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="jIdw1yvn"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1788993318;
+	bh=7+B9uj40SlmoB4IWZIg/g7aPg7FzqFLWgGp1K92U7LY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jIdw1yvneOkKzVRTn4phHmsJ+T2pDAWqVJAx2uNZdmU1Z+q4CwuY+GKhNDTVZY6zd
+	 /yJIQ0usYCdzQuBFFwwm64Ce5uHKniJo7zRbIiEjdLgKybiLfLqWmsTqypZBYAMQe+
+	 7SYXoQ7f8q2roD3dPneQh1zbAr2tK2xLPTqOF2cql03X9sOEuJZJ1J0q3k8woZJipj
+	 SOhXj4jGZaLpPV73Mt5vKUlGbDisMpn0VoMazcDC2mbgr9o5Fa2ZXl94AUXNvN6bSx
+	 40P+E5jPZJh4GSXD03NREgMB6Jc94et4G+bFlz5KiebVuJUWk8PDmJqd5kI94CFuJV
+	 Z6leevJ2br2pw==
+Received: from netfilter.org (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with UTF8SMTPSA id C952F607BE;
+	Thu, 10 Sep 2026 00:35:18 +0200 (CEST)
+Date: Thu, 10 Sep 2026 00:35:15 +0200
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: Alexandre Ferrieux <alexandre.ferrieux@gmail.com>
+Cc: coreteam@netfilter.org, netfilter-devel@vger.kernel.org,
+	edumazet@google.com, netdev@vger.kernel.org
+Subject: Re: [PATCH net] netfilter: nf_dup_netdev: scrub duplicates to
+ preserve the direct path
+Message-ID: <aqHfI6oUshVdFkR-@chamomile>
+References: <20260804201150.16364-1-alexandre.ferrieux@orange.com>
+ <anLzQeYulW2CQItC@chamomile>
+ <7b7fbe75-1531-49f9-8134-033c34fa13cb@orange.com>
+ <64228e38-b619-4836-aa41-1594567db082@orange.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <64228e38-b619-4836-aa41-1594567db082@orange.com>
 
-Split the live set into a kept prefix and a retiring tail. Reductions
-allocate only pointer arrays and steering tables, retaining the kept
-queues' page pools, buffers, NAPI state and XDP references.
+Hi,
 
-After publication, wait for TX-selection readers before freeing the old
-containers, then retire only the tail. Failed publication discards the
-new containers without freeing shared queues.
+On Wed, Aug 12, 2026 at 01:19:07AM +0200, Alexandre Ferrieux wrote:
+> Hi,
+> 
+> >> On Tue, Aug 04, 2026 at 10:11:50PM +0200, Alexandre Ferrieux wrote:
+> >>>
+> >>> In other words, the "dup" path has the potential to wreak havoc
+> >>> in the direct path as a consequence of secondary link failures. This
+> >>> is very bad behavior for a monitoring tool, which is the most
+> >>> obvious application of 'dup'.
+> >>
+> >> Can you describe your use-case a bit and how it breaks?
+> > Sure:
+> > 
+> >  - assume hosts A.eth0 and B.eth0 have active production traffic (say TCP)
+> >  - assume we have a monitoring tool on A that dups eth0's egress to some other
+> > interface $MON
+> > 
+> >     nft add chain netdev ta ch '{type filter hook egress device "eth0" priority
+> > filter ; policy accept ; }'
+> >     nft add rule netdev ta ch dup to $MON
+> > 
+> >  - assume something goes wrong on $MON generating link failures. In my case it
+> > was a GRETAP with L3 destination suddenly unreachable.
+> > 
+> >  - The next A->B packet goes through normally, but its duplicate hits
+> > ipv4_link_failure(), hence the dst (which is B) is expired.
+> > 
+> >  - As a result, (say) TCP disruptions occur. The thermometer killed the patient :)
+> > 
+> > Note: as a straightforward repro, you can simply witness "noise" in simple ping
+> > sessions, with ghost unreach reports muxed with normal measurement:
+> > 
+> >     ip link add gre1 type gretap remote 192.168.1.99 ;# on the LAN, nonexistent
+> > IP => will generate link failures
+> >     ip link set dev gre1 up
+> >     nft add table netdev ta
+> >     nft add chain netdev ta ch '{type filter hook egress device "eth0" priority
+> > filter ; policy accept ; }'
+> >     nft add rule netdev ta ch counter dup to gre1
+> >     ping -n 8.8.8.8
+> >  =>
+> >     PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
+> >     64 bytes from 8.8.8.8: icmp_seq=1 ttl=115 time=19.9 ms
+> >     64 bytes from 8.8.8.8: icmp_seq=2 ttl=115 time=12.8 ms
+> >     64 bytes from 8.8.8.8: icmp_seq=3 ttl=115 time=36.0 ms
+> >     64 bytes from 8.8.8.8: icmp_seq=4 ttl=115 time=30.3 ms
+> >     From 192.168.1.13 icmp_seq=5 Destination Host Unreachable
+> >     64 bytes from 8.8.8.8: icmp_seq=5 ttl=115 time=31.0 ms
+> >     From 192.168.1.13 icmp_seq=6 Destination Host Unreachable
+> >     64 bytes from 8.8.8.8: icmp_seq=6 ttl=115 time=38.0 ms
+> >     From 192.168.1.13 icmp_seq=7 Destination Host Unreachable
+> >     64 bytes from 8.8.8.8: icmp_seq=7 ttl=115 time=36.8 ms
+> >     From 192.168.1.13 icmp_seq=8 Destination Host Unreachable
+> >     64 bytes from 8.8.8.8: icmp_seq=8 ttl=115 time=23.5 ms
+> >     ^C
+> > 
+> > 
+> >>
+> >>> This patch fixes all similar scenarii by calling skb_scrub_pkt()
+> >>> on the clone, severing its link to precious direct-path state.
+> >>
+> >> This patch is targetted at the net tree, but nf.git is preferred.
+> > Okay, will retarget :)
+> > 
+> >> As for the conntrack and dst, you have to explain what it breaks on
+> >> your end.
+> > Dst as shown above. Conntrack is more speculation, but my take is that in any
+> > case the dup path should *never* have any kind of retroaction on the observed
+> > path, so any "complex state" attached to the direct path should be absolutely
+> > isolated from "whatever happens on the dup path". Am I mistaken ?
+>
+> What do you think ? Is the description of the problem satisfactory ? Is the
+> proposed solution acceptable ?
 
-Signed-off-by: Long Li <longli@microsoft.com>
----
-Changes in v5:
-  - Rebased onto current net-next; no changes to this patch.
+I think conntrack should be set to untracked for the dup.
 
-Changes in v4:
-  - Wait for TX-selection readers before freeing old containers.
-  - Correct the allocation and shared-queue ownership descriptions;
-    shorten comments and the commit message.
-
- drivers/net/ethernet/microsoft/mana/mana_en.c | 112 +++++++++++++++++-
- .../ethernet/microsoft/mana/mana_ethtool.c    |  30 +++++
- include/net/mana/mana.h                       |   4 +
- 3 files changed, 143 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-index 78be88b29c99ba2a349df6b43e13487db8c69be1..158f9a6ce42157ad7afd45ec642405fbd81f0bac 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -4146,6 +4146,114 @@ void mana_qset_scratch_free(struct mana_port_context *scratch)
- 	kvfree(scratch);
- }
- 
-+/* Split into kept queues and a retiring tail without changing live ownership.
-+ * Queue i retains EQ i.
-+ */
-+int mana_split_qset(struct mana_port_context *apc,
-+		    struct mana_port_context *scratch, unsigned int new_count,
-+		    struct mana_qset *out_new, struct mana_qset *out_tail)
-+{
-+	unsigned int old_count = apc->num_queues;
-+	struct mana_tx_qp **new_tx, **tail_tx;
-+	struct mana_rxq **new_rx, **tail_rx;
-+	unsigned int tail_count;
-+	bool indir_lost;
-+	unsigned int i;
-+	int err;
-+
-+	ASSERT_RTNL();
-+
-+	if (WARN_ON(new_count == 0 || new_count >= old_count))
-+		return -EINVAL;
-+	if (WARN_ON(!apc->tx_qp || !apc->rxqs))
-+		return -EINVAL;
-+
-+	tail_count = old_count - new_count;
-+
-+	/* Build steering separately so it cannot index beyond the shortened RX
-+	 * array.
-+	 */
-+	scratch->num_queues = new_count;
-+	err = mana_rss_table_alloc(scratch);
-+	if (err)
-+		return err;
-+
-+	if (mana_rss_table_keep(apc, new_count, &indir_lost))
-+		memcpy(scratch->indir_table, apc->indir_table,
-+		       apc->indir_table_sz * sizeof(*apc->indir_table));
-+	else
-+		mana_rss_table_init(scratch);
-+
-+	new_tx = kzalloc_objs(struct mana_tx_qp *, new_count);
-+	new_rx = kzalloc_objs(struct mana_rxq *, new_count);
-+	tail_tx = kzalloc_objs(struct mana_tx_qp *, tail_count);
-+	tail_rx = kzalloc_objs(struct mana_rxq *, tail_count);
-+	if (!new_tx || !new_rx || !tail_tx || !tail_rx) {
-+		err = -ENOMEM;
-+		goto free_arrays;
-+	}
-+
-+	for (i = 0; i < new_count; i++) {
-+		new_tx[i] = apc->tx_qp[i];
-+		new_rx[i] = apc->rxqs[i];
-+	}
-+	for (i = 0; i < tail_count; i++) {
-+		tail_tx[i] = apc->tx_qp[new_count + i];
-+		tail_rx[i] = apc->rxqs[new_count + i];
-+	}
-+
-+	out_new->tx_qp		= new_tx;
-+	out_new->rxqs		= new_rx;
-+	out_new->indir_table	= scratch->indir_table;
-+	out_new->indir_table_sz	= scratch->indir_table_sz;
-+	out_new->rxobj_table	= scratch->rxobj_table;
-+	out_new->default_rxobj	= apc->rxqs[0]->rxobj;
-+	out_new->num_queues	= new_count;
-+	out_new->rx_queue_size	= apc->rx_queue_size;
-+	out_new->tx_queue_size	= apc->tx_queue_size;
-+	out_new->priv_flags	= apc->priv_flags;
-+	out_new->mtu		= apc->configured_mtu;
-+	out_new->bpf_prog	= apc->bpf_prog;
-+	out_new->rxfh_indir_lost = indir_lost;
-+
-+	scratch->indir_table	= NULL;
-+	scratch->rxobj_table	= NULL;
-+
-+	memset(out_tail, 0, sizeof(*out_tail));
-+	out_tail->tx_qp		= tail_tx;
-+	out_tail->rxqs		= tail_rx;
-+	out_tail->default_rxobj	= INVALID_MANA_HANDLE;
-+	out_tail->num_queues	= tail_count;
-+	out_tail->rx_queue_size	= apc->rx_queue_size;
-+	out_tail->tx_queue_size	= apc->tx_queue_size;
-+	out_tail->priv_flags	= apc->priv_flags;
-+	out_tail->mtu		= apc->configured_mtu;
-+	out_tail->bpf_prog	= apc->bpf_prog;
-+
-+	return 0;
-+
-+free_arrays:
-+	kfree(new_tx);
-+	kfree(new_rx);
-+	kfree(tail_tx);
-+	kfree(tail_rx);
-+	mana_cleanup_indir_table(scratch);
-+	return err;
-+}
-+
-+/* Free containers only; the live port still owns the queues. */
-+void mana_discard_split(struct mana_qset *newq, struct mana_qset *tailq)
-+{
-+	kfree(newq->tx_qp);
-+	kfree(newq->rxqs);
-+	kfree(newq->indir_table);
-+	kfree(newq->rxobj_table);
-+	kfree(tailq->tx_qp);
-+	kfree(tailq->rxqs);
-+	memset(newq, 0, sizeof(*newq));
-+	memset(tailq, 0, sizeof(*tailq));
-+}
-+
- int mana_alloc_qset(struct mana_port_context *apc,
- 		    struct mana_port_context *scratch, unsigned int num_queues,
- 		    unsigned int rx_queue_size, unsigned int tx_queue_size,
-@@ -4351,9 +4459,7 @@ int mana_publish_qset(struct mana_port_context *apc, struct mana_qset *newq,
- 	if (err)
- 		goto rollback;
- 
--	/* Install XDP and per-RXQ references before steering reaches new
--	 * queues.
--	 */
-+	/* Install XDP before steering reaches the incoming RXQs. */
- 	mana_chn_setxdp(apc, mana_xdp_get(apc));
- 
- 	err = mana_config_rss(apc, TRI_STATE_TRUE, true, true);
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_ethtool.c b/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
-index acc82fa9f0057120920b5a09bbb2bc7185707e65..0b8c2f61d6263c65a8119b94426f794b218ad55f 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
-@@ -737,6 +737,36 @@ static int mana_set_channels(struct net_device *ndev,
- 		goto clear_flag;
- 	}
- 
-+	if (new_count < apc->num_queues) {
-+		struct mana_qset tailq;
-+
-+		err = mana_split_qset(apc, scratch, new_count, &newq, &tailq);
-+		if (err)
-+			goto free_scratch;
-+
-+		err = mana_publish_qset(apc, &newq, &oldq);
-+		if (err) {
-+			/* Discard containers only; their queues still belong to
-+			 * the old set.
-+			 */
-+			mana_discard_split(&newq, &tailq);
-+			goto free_scratch;
-+		}
-+
-+		/* Wait for ndo_select_queue() readers of oldq.indir_table. Free
-+		 * only containers; the queues belong to the kept set or tail.
-+		 */
-+		synchronize_net();
-+
-+		kfree(oldq.tx_qp);
-+		kfree(oldq.rxqs);
-+		kfree(oldq.indir_table);
-+		kfree(oldq.rxobj_table);
-+
-+		mana_free_qset(scratch, &tailq);
-+		goto free_scratch;
-+	}
-+
- 	err = mana_alloc_qset(apc, scratch, new_count, apc->rx_queue_size,
- 			      apc->tx_queue_size, apc->priv_flags,
- 			      apc->configured_mtu, apc->bpf_prog, &newq);
-diff --git a/include/net/mana/mana.h b/include/net/mana/mana.h
-index 84b8151f0693c7e7ef06a558c69e2d207b445921..5ec75de0b644569acdf697e997c262d999295a06 100644
---- a/include/net/mana/mana.h
-+++ b/include/net/mana/mana.h
-@@ -743,6 +743,10 @@ int mana_alloc_qset(struct mana_port_context *apc,
- 		    unsigned int rx_queue_size, unsigned int tx_queue_size,
- 		    u32 priv_flags, int mtu, struct bpf_prog *bpf_prog,
- 		    struct mana_qset *out);
-+int mana_split_qset(struct mana_port_context *apc,
-+		    struct mana_port_context *scratch, unsigned int new_count,
-+		    struct mana_qset *out_new, struct mana_qset *out_tail);
-+void mana_discard_split(struct mana_qset *newq, struct mana_qset *tailq);
- int mana_publish_qset(struct mana_port_context *apc, struct mana_qset *newq,
- 		      struct mana_qset *out_old);
- void mana_publish_close_if_needed(struct mana_port_context *apc);
--- 
-2.43.0
+And dst should be resetted if skb_valid_dst() returns true, so
+DST_METADATA can still be processed for duplicated packets.
