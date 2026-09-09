@@ -1,161 +1,120 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57B903B7B83;
-	Wed,  9 Sep 2026 23:34:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACF49511235
+	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 23:43:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788996887; cv=none; b=qoQ+whsmYjfWwpsllh/+ol+8FwlT6dLTlkmJ7bgd52X3mFlpKKe1pGm0OE1KlySvH4JeDeGQ2e/GxcYdQNOx4Oa4tOiVdAEyL+lB4AdRzjXyfto4eA2lcFhj3GBpP/Isinu+ohr9dpSdn9bgOHoUcC0BD+jsDDqArKSl89eDi+Y=
+	t=1788997428; cv=none; b=EpHo161ZfZFhP49e/Xof7IId1H0TpumLH1/ztENdTPYU0+P2kaFQLd0SHYOFRf6w34YGtJ0oymWml1z7bY5nuG4sN/+gAWRexOAWysta7rbookH45U0ARdJnro+6E7oWiYMjp9j7BL9a4+nnSjNPEduQf7EO/TCkH3yAg4SXQxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788996887; c=relaxed/simple;
-	bh=vkjff3u+/BYFRzHeF1tw/HRswIUOSNvB/lfFuVNbVmY=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=eKaw55a/iLhW3l/rCUxyzwYXlLTFsOxC3Y6A4FuLq7EB8ti50yeLLv1Rggvjk2/evCwYUlMXik0R92uUiBTZUldVmwi5q1A9RqVptmYWStl+giu1heJq+o8W78OchIO4oa3G7ebIhubfwD0MiZx7ROTB5fxSacWWJ6IrwpW5ZNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ikZWL/P8; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788997428; c=relaxed/simple;
+	bh=iQgKnqdFfC74cuoZof/tmRQHnjNDWB4QnkvrWQ4+DaE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=hNazgsTswMRlY2+jdFHBd2O2FK1SxcmSpLYmEg+mDJfq8P/DswuQCQLRsoX1yhyLMNutNv++inKqfm2o3r7onmaGJ78oeIBFeqs1l3nFtD1Xiw7dWSDhZj6DKhdKzubYeVhgjFpNCUbnKbXaiUkhqH7F7zRGL6Kky05CIypdd2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ryq+2TuC; arc=none smtp.client-ip=74.125.228.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ikZWL/P8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99F1C1F000FF;
-	Wed,  9 Sep 2026 23:34:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788996886;
-	bh=aQ2+QobUCEMWvg/09vvO7l8pVw231Ta9gbRBr+//V9M=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=ikZWL/P8qduQQngPfdmhvfs/UL3mkexPEEjOI9vL2zy0mVttHfcAQmyD4xMqmCS9z
-	 PQsOBvqu896Z2/XFB6K/7RTaCaP6l21qZ4HptzJ3SG5Gg+orLrAkjrRoMRBUro7H+V
-	 diDpVNUp9e43b493UsZsckfvDjeoC/c983M/ne+8yriSMfDqdZzLkWX2KmpJFtEHA9
-	 O247kNqqVwQrcZSeiYcKMG6opj9yED1/uPPH1lyH4WjeNfB/Y/CpTX1Vxcx9NIISC+
-	 6iv8A+qXIp78OakqOXjAuQkLieMxvOutdyytQ5o8RmoMudWq4C9E5DCC1BayzCZ+rx
-	 XueuFdCUcXU9A==
-Subject: Re: [PATCH] net: usb: net1080: fix out-of-bounds access in rx_fixup()
-From: netdev-bot+sashiko@kernel.org
-To: elb12345@hotmail.co.uk
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, xmei5@asu.edu, linux-usb@vger.kernel.org,
- netdev@vger.kernel.org, stable@vger.kernel.org
-Date: Wed, 09 Sep 2026 23:34:45 +0000
-Message-ID: <178899688516.219967.6073178823130755671@kernel.org>
-In-Reply-To: =?utf-8?q?=3CAS8P251MB0001E8B611B22B19AA882542C8B22=40AS8P251MB?=
- =?utf-8?q?0001=2EEURP251=2EPROD=2EOUTLOOK=2ECOM=3E?=
-References: =?utf-8?q?=3CAS8P251MB0001E8B611B22B19AA882542C8B22=40AS8P251MB0?=
- =?utf-8?q?001=2EEURP251=2EPROD=2EOUTLOOK=2ECOM=3E?=
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ryq+2TuC"
+Received: by mail-pz2-f12.google.com with SMTP id 41be03b00d2f7-cc1cea4aeb5so682146a12.2
+        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 16:43:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788997426; x=1789602226; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=k+ujgBnpldppc1WGTJUZWawg3lev00ws7zgSWhD2ufM=;
+        b=Ryq+2TuCP78E7C5M+is/maleyI+R/4UCzEIoYV1EUCqTjxHm7mN/9hYS15hBaK25UP
+         8CIMlD7GkZQo9HHu0/pnxywGSlMIoAfEsVpdiEO5/8UiNsn201GNPihJe1n8dMpXhq0z
+         vaYtQoibQRwskUqhs5XzULBnzaMchpJpm03pNYIKf4lCpgUPPGwWASHmScuOb+Tqbevo
+         M/Y84cZCLe8qIrjZqWnG8dxfFYr+hFFxWMGvU6b3o+q1uHxBEQWe0oKYcVoASOsWYFUa
+         VdSljJ+9WiYwWrpaml+nFMm2kQIDNuSBnsm5OqNmDrYyl1L2trfv4Rz1pLz5bQBjY3iv
+         7HYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788997426; x=1789602226;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=k+ujgBnpldppc1WGTJUZWawg3lev00ws7zgSWhD2ufM=;
+        b=bVE5vRPbVgXb2qvsbl+uecUbGO7xrA0h5S7fdQHtnc/3+VE3xU51TG6c4OmXfs2pIp
+         ThMBn98nTBl9v1vQY3tz15uG/nBRq+6axvnQznRlHYryJ0BBSNF0TR4sfUQXmZGzulrd
+         VL4znwbbMDLL+nepW/gV69nKxbuAhT7ERdz/rKId5AcYV3nmddlNT08/gKOrrPV+Ya5j
+         1Z/Ae8fNUVBuXfVHOHtnb1nCOQ++bSR3+sTjv5CJTaXQfw1atwehUgE6nycmMYg6Xe32
+         TFzx5XA0eD07eXq+fq4ZSNa8naTye7LPoegbRB5FuRHEp9mOK7hXAHylGyDEduCYi8jP
+         /ntQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwWTHqqA7akIe8Cttk4E2NBU9KsM7Kxfb0/PO3xKFY8/VNE0VqFmIQuo2Ohy7VJJIqoxd1dlo8=@vger.kernel.org
+X-Gm-Message-State: AFuF++kQ85q+U2rVmN8eDh2NzI9VTRHZnb04AzhSiId0s6aCtTYl6V/f
+	uRzn9ICNNh/JEp7zjidAaghm06l8eMQByyZmGRY6PwpRGTZeFrx/HsBR
+X-Gm-Gg: AYBFou1kFt8K0UhB46psbrSYWylWDk6N58IR2jPp6/ekUH0RkbwlvJyH49ZMNjZBBN+
+	SsJAA3pMmA/igXknqRHOLzeiZQU7kdv6IMs9NaklSrw2QOx7AfU9CpEhMlaz6byX6OKbj1SUXt+
+	yanHNcBg5cfeKh7kMz2jMH6RmY495BXlDnNGTq4DvfFUOAQYIuZBua5ilS1GAz4LZe/fs4HtCeg
+	SX4kKjP0drwpDe6DKdutL2v2w7xw/vSH7qpoWT4WPIzWJthmYiESWp+1JPADqgVyGyIaCMyawS0
+	+z0mU/OmcVItTlvGGUMlb/aLN3I3LDK+rrxwCbo6VtQA/otwSsNKCrPTxKb9EnlgEYz1b6ezBSy
+	PrloHLNG6uODecrKGeofeWX660TCMVuKwzp6M1p3VPnRkWeKsP8UJCIN4ufc2X8rEMcAX9TN6Iy
+	2mLGhzCOzxq6ZlYQZstrBzDOhfxNER8Y84l73OVKia750Q3X9EIQ+btiFETMp1KGUKT0qONI19K
+	ss=
+X-Received: by 2002:a17:90b:3fc3:b0:39a:e002:f192 with SMTP id 98e67ed59e1d1-39d70b57638mr5363794a91.22.1788997425904;
+        Wed, 09 Sep 2026 16:43:45 -0700 (PDT)
+Received: from dev ([163.43.103.131])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39cd20c2f75sm1832150a91.2.2026.09.09.16.43.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 09 Sep 2026 16:43:45 -0700 (PDT)
+From: Yuya Kusakabe <yuya.kusakabe@gmail.com>
+To: netdev-bot+sashiko@kernel.org
+Cc: Yuya Kusakabe <yuya.kusakabe@gmail.com>,
+	Andrea Mayer <andrea.mayer@uniroma2.it>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2] seg6: reallocate the skb head on L2 encapsulation only when needed
+Date: Thu, 10 Sep 2026 08:43:33 +0900
+Message-ID: <20260910084328.32338-1-yuya.kusakabe@gmail.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <178885587111.219967.14896644410984520593@kernel.org>
+References: <20260903-seg6-l2cow-v2-1-f37b3b35416f@gmail.com> <178885587111.219967.14896644410984520593@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider:
+On Tue, Sep 8, 2026 at 5:24 PM netdev-bot+sashiko@kernel.org wrote:
+> Can that wrap to roughly 65534 and make the following
+>
+> 	memmove(skb_mac_header(skb), old_mac, skb->mac_len);
+>
+> write skb->mac_len bytes about 64 KB past skb->head?
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+Yes.  Forwarding plain ping6 traffic through a VLAN device with
+reorder_hdr off on ingress reproduces it: skb->mac_header comes back as
+65534 on a 704-byte head, and skb_mac_header_rebuild() writes 26 bytes
+there.
 
-- [Medium] The commit message for net1080_rx_fixup()
-  (drivers/net/usb/net1080.c) misdescribes the bug it claims to fix.
+> A similarly shaped window existed before this change, since the
+> skb_cow_head() inside __seg6_do_srh_encap() never accounted for mac_len
+> either.  Given that this patch takes over sizing the whole encapsulation
+> up front, would it make sense to fix the amount here?
 
---
+The window is not specific to the L2 modes, so I would rather fix it in
+__seg6_do_srh_encap() and seg6_do_srh_encap_red() themselves.  Mode
+encap reproduces it too, on unpatched net-next.  40475b63761a ("net:
+ipv6: seg6_iptunnel: mitigate 2-realloc issue") replaced skb->mac_len
+with dst_dev_overhead() in those two skb_cow_head() requests, and
+dst_dev_overhead() is the smaller of the two whenever mac_len exceeds
+LL_RESERVED_SPACE() of the egress device.  Asking for the larger of them
+restores the guarantee without giving up the one 40475b63761a added.
 
-net: usb: net1080: fix out-of-bounds access in rx_fixup()
+I will send that against net, separately from this patch.
 
-This adds a length check in net1080_rx_fixup() so that frames whose
-device-supplied hdr_len does not leave room for the two byte nc_trailer
-are rejected before skb_pull() is called. The change is described as a
-fix for an out-of-bounds read reachable from a malicious USB device, and
-carries a Fixes: tag and Cc: stable.
+> This isn't a bug, but does this trailer match the form documented in
+> Documentation/process/coding-assistants.rst?
 
-> diff --git a/drivers/net/usb/net1080.c b/drivers/net/usb/net1080.c
-> index 19f6e1222d931..64477a4caa07b 100644
-> --- a/drivers/net/usb/net1080.c
-> +++ b/drivers/net/usb/net1080.c
-> @@ -374,6 +374,13 @@ static int net1080_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
->  		nc_ensure_sync(dev);
->  		// switch (vendor/product ids) { ... }
->  	}
-> +	if (hdr_len + sizeof(*trailer) > skb->len) {
-> +		dev->net->stats.rx_frame_errors++;
-> +		netdev_dbg(dev->net, "header too long for frame, %d\n",
-> +			   hdr_len);
-> +		nc_ensure_sync(dev);
-> +		return 0;
-> +	}
->  	skb_pull(skb, hdr_len);
->  
->  	trailer = (struct nc_trailer *)
-
-[Severity: Medium]
-Does the out-of-bounds read described in the changelog actually exist?
-The commit message says:
-
-  "the pointer arithmetic underflows, pointing before skb->data. The
-   subsequent read of trailer->packet_id accesses memory outside the skb
-   buffer."
-
-skb_pull() subtracts from skb->len exactly what it adds to skb->data:
-
-include/linux/skbuff.h:__skb_pull() {
-	skb->len -= len;
-	...
-	skb->data += len;
-}
-
-So the sum skb->data + skb->len is unchanged by the pull, and in
-net1080_rx_fixup():
-
-	trailer = (struct nc_trailer *)
-		(skb->data + skb->len - sizeof *trailer);
-
-always resolves to the last two bytes of the frame as it was received,
-regardless of hdr_len. The pointer can land inside the just-stripped
-header bytes, which is before the post-pull skb->data, but not before
-skb->head.
-
-The entry guard also bounds the minimum frame size:
-
-	/* This check is no longer done by usbnet */
-	if (skb->len < dev->net->hard_header_len)
-		return 0;
-
-with net1080_bind() setting
-
-	unsigned	extra = sizeof (struct nc_header)
-				+ 1
-				+ sizeof (struct nc_trailer);
-
-	dev->net->hard_header_len += extra;
-
-which gives hard_header_len = ETH_HLEN + 6 + 1 + 2 = 23, so skb->len is
-at least 23 whenever the trailer arithmetic runs and data + len - 2 stays
-well inside the linear area.
-
-For the hdr_len > skb->len case, skb_pull() returns NULL and leaves
-skb->data and skb->len untouched, so the trailer computation is again in
-bounds. And the following
-
-	skb_trim(skb, skb->len - sizeof *trailer);
-
-does wrap the unsigned argument when the post-pull skb->len is 0 or 1,
-but skb_trim() only shrinks:
-
-net/core/skbuff.c:skb_trim() {
-	if (skb->len > len)
-		__skb_trim(skb, len);
-}
-
-so that is a no-op rather than an overread.
-
-What the new check does change is that frames whose declared hdr_len
-leaves less than sizeof(nc_trailer) of payload are now rejected, which
-also covers the previously ignored NULL return from skb_pull() where the
-nc_header stayed un-stripped and a malformed frame could be passed up if
-packet_len and packet_id happened to match. That looks like a reasonable
-hardening, and real devices report hdr_len == MIN_HEADER == 6.
-
-Given that, could the subject and changelog be reworded to describe the
-robustness fix instead of an out-of-bounds access, and could the
-Fixes: tag and Cc: stable be re-evaluated on that basis?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/AS8P251MB0001E8B611B22B19AA882542C8B22%40AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
+No, it does not.  I will use "Assisted-by: LLM" from now on.
