@@ -1,276 +1,203 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx2-f12.google.com (mail-yx2-f12.google.com [74.125.224.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ED1633438F;
-	Wed,  9 Sep 2026 15:45:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B538A5476DE
+	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 15:47:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788968745; cv=none; b=XCpPkH/ASFU8nliHimOgqCm1uxIy9/IHMFllt9ZPyQEvlw9Ks4ymopzH7j/mw+qWq6ejeMNmsprXD+W+xxNs97vDmqb5AwScgbTJdrilcPHN25yxa4QoutA2P3yx33jGCderwpsEk0oUpzSzIt8w4x928TgllWqpou8mpJ3rUCE=
+	t=1788968837; cv=none; b=d7sEaVmDB5sYkPGEj4ZUBdzDJXiFevPXRGco1q+zPfhwCnyPoAaE8GDKmdaHlymPQvGkJPW2XhriM6c0XYGsxLJoZmi8wz9lRNy2FcW8oWE5Cy18SYQDrW6njtB2fTa+pZCc2rf/1Iku44z2wA164mMqY2RWd4DJDvBmApXs/A8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788968745; c=relaxed/simple;
-	bh=I2rle+zu/ri+CODGl/XdnfKTXVC90SKls9odin13bqs=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=LCPUicd6ZpNeYFFzz/nM6+VYykEYvMduJIytuCqb6xVQhjU2WxJJ0cU4LL/YM5qyR5Pu2KmRaeUWGq33kt0/M+CmoDsjvxiRU0oMP44go4Mlkktw6nJaH8Aw0NgGdySKtsBsvck9XNjdpzKQZyPTCMHmQUbTQbny3M9B/r7ahzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J21aYGhd; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788968837; c=relaxed/simple;
+	bh=N/WLAPFNniInJzbmPtmGyiWArtEDEu3rvWcZgtBBbjc=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=WqIqSEQeFQhI+Qt0sNLDwffIbAxj/mH9eLJwkw2l4i4y0LQUMgU6tphoUi9MK2lBDZ2pNp5E/vRxf+HAATZ6H2IPNUQFfw/QNi30KR8FNASRr7jF+jOkO3qw7hEbE3/imI9yaq75qhhOx26TgZxs1OHqEqnTvhtkL6Aty16i9cU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UrR8vaFk; arc=none smtp.client-ip=74.125.224.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J21aYGhd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20C9D1F00A3A;
-	Wed,  9 Sep 2026 15:45:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788968743;
-	bh=sakVHRs3/NQUtJQMSRKwg9fScIxwuZv64HPK97858Jk=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=J21aYGhdTBRlQ5DAhIgqkQQyWchCjk/EpO6vfuvdcusk6aBHCdPdjiJbaI1prqaO4
-	 fo7KG6Flt+LHGoSEcsZAONN3aCFxKsbO9c+vk4pY5RQmcHlSJz6nK8tNWk8bA+7uxN
-	 C1WVPP1gSrU5FOK5BLlPoWIVNwUw+9AZc9/kDzVG5uxQTqwBrwEZ0FikWailvsqAxO
-	 q4DWpv2mRqIxLOTkczY60R2EmNxwjeCfLMGHg7itRCdDd/pH7XpCq5L6iCv0HTf9Ys
-	 8GEBUKlKuiMhg8gHN+N2N+5qn7ynwno6YHq7Cy9RzWEAmGWA1s7tDBsD7o6gRbsU5c
-	 iZ3iWKhjYxRTw==
-Subject: Re: [PATCH] wifi: mm81x: bound response memcpy by actual skb length
-From: netdev-bot+sashiko@kernel.org
-To: elb12345@hotmail.co.uk
-Cc: lachlan.hodges@morsemicro.com, dan.callaghan@morsemicro.com,
- kvalo@kernel.org, arien.judge@morsemicro.com, johannes@sipsolutions.net,
- linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
- stable@vger.kernel.org, kuba@kernel.org
-Date: Wed, 09 Sep 2026 15:45:42 +0000
-Message-ID: <178896874260.219967.8962297974075267128@kernel.org>
-In-Reply-To: =?utf-8?q?=3CAS8P251MB0001B37B237975CAE6092B80C8B32=40AS8P251MB?=
- =?utf-8?q?0001=2EEURP251=2EPROD=2EOUTLOOK=2ECOM=3E?=
-References: =?utf-8?q?=3CAS8P251MB0001B37B237975CAE6092B80C8B32=40AS8P251MB0?=
- =?utf-8?q?001=2EEURP251=2EPROD=2EOUTLOOK=2ECOM=3E?=
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UrR8vaFk"
+Received: by mail-yx2-f12.google.com with SMTP id 00721157ae682-85d4eb63f16so13716367b3.0
+        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 08:47:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788968834; x=1789573634; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=s5krVvgDpigTsB10TLunKhlSyS+RtOFpjYDXiSmULjs=;
+        b=UrR8vaFkoY51RMsmTTej2TkYStKXUoZjgS74T+2TOCnK1BiJpx086KTgn8SNg8qFk/
+         4Poeg3h+n0wUKW0+BjLnodbTrbWzjnxQ+uoOKKOdOCjNZwBKY3mqWrkQc9UT4qf5R5uV
+         Vh/O0Nyn79fL1rUOZEn5LxSozk+CHShp+l1meSsArQB9NtQ82SC/1N6KbPW5YyYIMINI
+         lgyWYDwXa0+e4yT59k/+lcR49aZVrpRjydDQd3tyyecyLabCvxbGbc8EvhxhJdkSgcK1
+         7eE7HmXe7/Eow4zvB3l8niLNiwsJwk3SdZiFKoZBScB7P3rJrDw2RPAlpaFyiT0Ofe/E
+         bj0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788968834; x=1789573634;
+        h=content-transfer-encoding:content-type:mime-version:subject
+         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=s5krVvgDpigTsB10TLunKhlSyS+RtOFpjYDXiSmULjs=;
+        b=RG3fJnZ+AFlFJSJmZ4ktTVJREJIIcydn6upZzD9EoKdN07tjSJdyMV3ek3ZGuQ2STJ
+         PSSijq+WvDamntzUzz+biZzi3N8ctGP763kdMYwGM0Vy2mjYwKUeZf4kKSdrJfSzawiZ
+         KgghhYI7AH3TzDLjtfntCJg0DWSSZe04SSZYD8DM62fwpA7MOrJeV2IrPI3018lsGLVD
+         8J0KKCYlJgTzGFz7k9PY7URXuIwQR5QZpneGMmSrQv4akyhGkVTWFb7zOM5ttSPH80gx
+         ROot3PmE8coO3MTWaxkTOBGpc/+SFgBGJGOO60b7AQRb2KCGW2Z1zyI2XGZJePW4GNJ2
+         zKOA==
+X-Forwarded-Encrypted: i=1; AKwUvBwwPiJYXEkO2QTymx3DGeAJQ9qcOcvAtHn+sN6P+g7m2cnEarZbKvCgDNnFuOp1FEqcAAMu7FM=@vger.kernel.org
+X-Gm-Message-State: AFuF++lPQ7khUUvC/1bPtPXDoNPWe1/yRLAf3rrN4PTqeeYk5K8+IZBt
+	l4b0EV/BG40DsxIIrbMDRyxSsyVJ8zncGO3B63WFuMOmbEnUSC52GpGo
+X-Gm-Gg: AYBFou1bFVpR2/I72IM9DCthjL0ngsNom2CSyalOUKeawbq2Z3rlinUozp7UF3P/u2c
+	11AQo27bqf4UH4ydKDZS7kTZV9EWkHgNKgCIgNVFokc9pwasUTc/cMdqdk6B2HlPfhhOb3FrHqO
+	q8n3erH/EDgOwTx1BMVWd6fImMfrefdbXe5dFGxNWvgQnoAwc7RA2qVoBkAFnDBYi7e/TA42GdC
+	Oif9QNSeCC+LwVV57WbpqZkAMTnFtOrXn6PM8lQ8X/u+tdBHm9G3IwBJs532eBvQjYgymgMVW1b
+	6f2FR5tUopJhmoZSNxBX1AS3MtJS+7QqQnDspht38cQ9sJV9TwzHzX6j51S8kFPH88KspV4rvtS
+	yn/jrUZU9xPHQuDOkL/ZTMTa8lv8qTc+1wrdE7CjBAvp3gMFESyI/vJUDg5d/Rg/nyU2Ryl4u/R
+	/3y35/stdVH72yVyWstprUN6n2NuhgUpg+6mAaZZ8zJZBcy11/HFaFU+xXiiScNL5Jm+yp4WkEv
+	cYyADT43hXk451YPc84H6GNzsgV0b/6ToalZoWjqngEGVzra0oM
+X-Received: by 2002:a05:690c:6e87:b0:87c:5161:32c9 with SMTP id 00721157ae682-87c517fb935mr37638777b3.29.1788968834275;
+        Wed, 09 Sep 2026 08:47:14 -0700 (PDT)
+Received: from gmail.com (234.207.85.34.bc.googleusercontent.com. [34.85.207.234])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-87149316347sm114285607b3.15.2026.09.09.08.47.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 09 Sep 2026 08:47:13 -0700 (PDT)
+Date: Wed, 09 Sep 2026 11:47:13 -0400
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: edumazet@google.com, 
+ netdev@vger.kernel.org, 
+ davem@davemloft.net, 
+ pabeni@redhat.com, 
+ horms@kernel.org, 
+ andrew+netdev@lunn.ch, 
+ Willem de Bruijn <willemb@google.com>
+Message-ID: <willemdebruijn.kernel.123ac363ae937@gmail.com>
+In-Reply-To: <20260908163447.68d64e2d@kernel.org>
+References: <20260902181747.2483351-1-willemdebruijn.kernel@gmail.com>
+ <20260902181747.2483351-2-willemdebruijn.kernel@gmail.com>
+ <20260904160106.08acccb5@kernel.org>
+ <willemdebruijn.kernel.173115664f973@gmail.com>
+ <20260907161258.2b0b421d@kernel.org>
+ <willemdebruijn.kernel.19b10eb6885cf@gmail.com>
+ <CAF=yD-JSieHiaWVD9OWnFNiDaM2Y9r52S5cn=aFYYXT=DT0wmQ@mail.gmail.com>
+ <20260908144819.16313dd9@kernel.org>
+ <CAF=yD-J1puTzDQUaMAsTCuCm4dYYgOzYO7S3WV6rA_pWVLKRUQ@mail.gmail.com>
+ <20260908163447.68d64e2d@kernel.org>
+Subject: Re: [PATCH net-next v8 1/6] net: rtnetlink: add
+ pacing_offload_horizon attribute to net_device
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider:
+Jakub Kicinski wrote:
+> On Tue, 8 Sep 2026 18:39:20 -0400 Willem de Bruijn wrote:
+> > On Tue, Sep 8, 2026 at 5:48=E2=80=AFPM Jakub Kicinski <kuba@kernel.or=
+g> wrote:
+> > > It's just a way of avoiding netdev_features_t becoming larger than =
+64b.
+> > > At the uAPI level we have a bitmap so we can express any number of =
+bits.
+> > > But in the kernel dev->features is u64 / ull so if we run out of bi=
+ts
+> > > the refactor will be rather painful.
+> > >
+> > > Is it really that much worse to add the support for "high feature b=
+its"
+> > > which don't go thru netdev_features_t to ethtool, than sprinkling e=
+xtra
+> > > one off booleans into already bloated RTM_SETLINK? Not sure.  =
 
-Critical: 0 · High: 3 (1) · Medium: 0 · Low: 0
+> > =
 
-- [High] Incomplete fix: mm81x_cmd_resp_process() still dereferences the
-  device-supplied response header (and, in the else branch, the 4-byte…
-- [High] The patch adopts silent truncation as the malformed-response
-  policy: at command.c:207-213 `ret = 0` is set first, then the copy…
-- [High] The newly added `length = min_t(int, length, skb->len);`
-  (command.c:212) narrows the unsigned `skb->len` to `int`.
+> > How would this work with hw_features, wanted_features, vlan_features
+> > and other such feature masks?
+> > =
 
-Pre-existing issues:
-- [High] This problem wasn't introduced by this patch, but the memcpy the
-  patch hardens writes through `dest_resp`, read from…
+> > There is potentially quite a bit of logic that needs to be duplicated=
 
---
+> > for a secondary set of features. Or, the risk that these features end=
 
-wifi: mm81x: bound response memcpy by actual skb length
+> > up not quite like normal features.
+> =
 
-This adds a third min_t() clamp in mm81x_cmd_resp_process() so that the
-response memcpy is also limited by skb->len, in addition to the caller's
-expected length and the firmware-reported hdr.len.  The stated goal is to
-stop a malformed device response from making the copy read past the valid
-skb data.
+> No different than a loose bit in SETLINK?
 
-> diff --git a/drivers/net/wireless/morsemicro/mm81x/command.c b/drivers/net/wireless/morsemicro/mm81x/command.c
-> index afb7ee9bb236f..591e5ba107533 100644
-> --- a/drivers/net/wireless/morsemicro/mm81x/command.c
-> +++ b/drivers/net/wireless/morsemicro/mm81x/command.c
-> @@ -209,6 +209,7 @@ int mm81x_cmd_resp_process(struct mm81x *mors, struct sk_buff *skb)
->  		length = min_t(int, length,
->  			       le16_to_cpu(src_resp->hdr.len) +
->  				       sizeof(struct host_cmd_header));
-> +		length = min_t(int, length, skb->len);
+At least then there is no expectation of netdev_features_t behavior.
+ =
 
-[Severity: High]
-Should this clamp use an unsigned type instead of int?
+> What I was wondering is - we don't want to implement full handling for
+> high feature bits, agreed, it doesn't seem needed today. But is it
+> better to add such a bit in ethtool regardless, even tho it doesn't get=
 
-skb->len is unsigned int, and min_t() just assigns into the requested
-type with no signedness check:
+> any infra for propagation to uppers etc. Or is it better to start addin=
+g
+> one-off bits in rt-link.
+> =
 
-include/linux/minmax.h:
-    #define __cmp_once_unique(op, type, x, y, ux, uy) \
-        ({ type ux = (x); type uy = (y); __cmp(op, ux, uy); })
-    ...
-    #define min_t(type, x, y) __cmp_once(min, type, x, y)
+> Think about it some more, since the max-horizon attr is already in
+> rt-link I guess putting this bit in rt-link does make more sense.
 
-So for any skb->len above INT_MAX, "int uy = skb->len" is negative, always
-wins the min, and overrides the two correct bounds above it.  memcpy()
-then converts that negative length to a near-SIZE_MAX size_t.
+Ok, I'll leave this in rt-link then.
 
-Can skb->len get that large here?  mm81x_skbq_dispatch_work() in skbq.c
-pulls the outer header using device-supplied values without first checking
-them against the skb length:
+Even then, running out of feature bits will come back to haunt us
+soon enough. A good idea to look into it some more now.
 
-    __skb_pull(pfirst, sizeof(*hdr) + hdr->offset);
+The main issue here is not wanting to grow netdev_features_t for
+hot cachelines, right? Which besides growing dev->features has a
+cascading effect on all the other fields of that type in net_device
+too.
 
-and __skb_pull() in include/linux/skbuff.h only does:
+Extending struct net_device itself is fine, as long as it happens in
+some cold cacheline at the end.
 
-    skb->len -= len;
-    if (unlikely(skb->len < skb->data_len)) {
-        ...
-        BUG();
-    }
+Perhaps something like what Paolo did for virtio features in the
+series of 3b17aa13015c ("virtio_net: add supports for extended
+offloads"). With non-contiguous bitmap fields. Everything beyond 64
+is mapped to a new field at the end of the struct. A thin API to
+avoid open-coding that check everywhere. And selective conversion
+only of code/drivers that need to access the extended features.
 
-With data_len == 0 for these linear RX skbs, the subtraction wraps
-silently.  The precondition looks device controlled: mm81x_yaps_hw_read_pkts()
-sizes the skb purely from the chip delimiter (dev_alloc_skb(pkt_size)
-followed by skb_put(pkts[i].skb, pkt_size)), and the only later adjustment
-in mm81x_yaps_read_pkt() is
+> > > I hate both notifiers everywhere and the idea that we have to be ab=
+le
+> > > to quietly revoke device features "on firmware rollout". It leads t=
+o
+> > > unmaintainable code which almost never runs so it's buggy half of t=
+he
+> > > time. Whatever.  =
 
-    skb_len = sizeof(*hdr) + hdr->offset + le16_to_cpu(hdr->len);
-    ...
-    skb_trim(skb, skb_len);
+> > =
 
-which can only shrink.  A small pkt_size combined with a large u8
-hdr->offset therefore leaves skb->len wrapped.
+> > I don't like it, but firmware roll-outs that remove features
+> > unfortunately are a real thing. Especially roll-backs.
+> > =
 
-Before this patch the copy length was bounded only by resp_cb->length and
-hdr.len + sizeof(struct host_cmd_header), both small positive values, so
-the same malformed input gave a bounded stale read.  Does the new line turn
-that into an unbounded memcpy?  Note that fortify cannot catch it either,
-since dest_resp is a struct host_cmd_resp * with a flexible array member,
-so __struct_size() is unknown.
+> > For pacing offload specifically, I considered the risk low enough to
+> > rely on the admin to manually revert the FQ settings when such an
+> > event happens. But the bots kept complaining. And in fairness a
+> > notifier based auto disable is indeed much more robust than a manual
+> > correlated roll-out. OTOH, it is rarely exercised code in practice an=
+d
+> > thus more prone to latent bugs.
+> =
 
-Would min_t(u32, ...) or skb_headlen() be the right comparison type here?
+> TBH I'm not sure what you have in mind with the notifier.
+> What netdev event does the FW reset generate? =
 
-[Severity: High]
-Does this cover the other reads of the same buffer?
+>
+> > A simpler approach for pacing offload is to check the dev fields
+> > directly in fq. It is likely that that cacheline is warm.
+> =
 
-mm81x_cmd_resp_process() dereferences the device-supplied header long
-before reaching the clamped memcpy, with no check that skb->len covers
-sizeof(struct host_cmd_resp) (12-byte host_cmd_header plus the __le32
-status):
+> Right, there's ~30b of unused flag space in the first cache line
+> of struct net_device. Should be warm.
 
-    u16 resp_message_id = le16_to_cpu(src_resp->hdr.message_id);
-    u16 resp_host_id = le16_to_cpu(src_resp->hdr.host_id);
-    ...
-    if (!HOST_CMD_IS_RESP(src_resp)) {
-        ret = mm81x_mac_event_recv(mors, skb);
+I can move dev->pacing_offload there.
 
-and the branch immediately below the memcpy, taken whenever the caller
-passed no response buffer, reads bytes 12..15 with no skb->len bound at
-all:
-
-    } else {
-        ret = le32_to_cpu(src_resp->status);
-    }
-
-skb->len on entry is fully device derived: mm81x_yaps_read_pkt() trims to
-sizeof(*hdr) + hdr->offset + le16_to_cpu(hdr->len) and
-mm81x_skbq_dispatch_work() pulls sizeof(*hdr) + hdr->offset, so a chip
-reporting hdr.len == 0 on the command channel hands this function an skb
-with skb->len == 0.  The sibling consumer reached from the
-HOST_CMD_IS_RESP() branch, mm81x_mac_event_recv() in mac.c, reads
-message_id, host_id and vif_id from skb->data with the same lack of a
-length check.
-
-Would a single early rejection, along the lines of
-
-    if (skb->len < sizeof(struct host_cmd_resp))
-        goto exit_free;
-
-be the better shape?  That would also make the clamp added here redundant.
-
-[Severity: High]
-Is silent truncation the intended policy for a malformed response?
-
-ret = 0 is assigned before both clamps, so a copy shorter than
-sizeof(struct host_cmd_resp) is reported to the caller as a successful
-command, and mm81x_cmd_resp_process() records nothing about the response
-having been incomplete.
-
-Every caller passes an uninitialised on-stack response struct, for example
-in mm81x_cmd_get_max_txpower():
-
-    struct host_cmd_resp_get_max_txpower resp;
-
-    ret = mm81x_cmd_tx(mors, (struct host_cmd_resp *)&resp,
-                       (struct host_cmd_req *)&req, sizeof(resp), 0);
-    if (!ret)
-        *out_power_mbm = QDBM_TO_MBM(le32_to_cpu(resp.power_qdbm));
-
-mm81x_cmd_get_capabilities() and mm81x_cmd_add_if() do the same, and none
-of them use = {} or memset().
-
-mm81x_cmd_tx() then takes the status out of that same buffer:
-
-    ret = (length && resp) ? le32_to_cpu(resp->status) :
-                             resp_cb->ret;
-    if (ret > 0 || ret < -MAX_ERRNO)
-        ret = -EIO;
-
-So if the device reports hdr.len < 4, or skb->len < 16, the status word at
-offset 12 is never written and the command return status comes from
-uninitialised kernel stack, filtered only when it happens to fall outside
-the errno range.  If the truncation instead lands between 16 bytes and
-sizeof(resp), status is copied as 0 and the payload fields stay
-uninitialised while still being consumed: resp.hdr.vif_id in
-mm81x_cmd_add_if(), resp.power_qdbm in mm81x_cmd_get_max_txpower(), and
-the whole capability block copied into mors->fw_caps in
-mm81x_cmd_get_capabilities().
-
-Would rejecting the short response (ret = -EINVAL; goto exit;) or zeroing
-the untouched tail be preferable to extending the clamp chain?
-
->  		memcpy(dest_resp, src_resp, length);
->  	} else {
->  		ret = le32_to_cpu(src_resp->status);
-
-[Severity: High]
-This isn't a bug introduced by this patch, but the memcpy being hardened
-here writes through dest_resp, which is read out of a pending command
-skb whose lifetime does not look protected.
-
-mm81x_skbq_tx_pending() in skbq.c peeks mq->pending and drops mq->lock
-before returning the raw pointer:
-
-    spin_lock_bh(&mq->lock);
-    pfirst = skb_peek(&mq->pending);
-    spin_unlock_bh(&mq->lock);
-    return pfirst;
-
-mm81x_cmd_resp_process() then uses that pointer while holding only
-mors->cmd_lock: mm81x_skbq_pull_hdr_post_tx(cmd_skb), the read of
-resp_cb->length and resp_cb->dest_resp from IEEE80211_SKB_CB(cmd_skb),
-the memcpy, and the resp_cb->ret store.
-
-Meanwhile mm81x_yaps_flush_cmds() in yaps.c purges the command TX queue
-first:
-
-    if (yaps->flags & MM81X_HIF_FLAGS_COMMAND) {
-        mm81x_skbq_finish(&yaps->cmd_q);
-        mm81x_skbq_finish(&yaps->cmd_resp_q);
-    }
-
-and mm81x_skbq_finish() only cancels the dispatch work for to-host queues:
-
-    if (mq->flags & MM81X_HIF_FLAGS_DIR_TO_HOST)
-        cancel_work_sync(&mq->dispatch_work);
-    mm81x_skbq_purge(mq, &mq->skbq);
-    mm81x_skbq_purge(mq, &mq->pending);
-
-For the TX-side cmd_q there is no work to cancel, so the pending command
-skb is freed under cmd_q->lock only, and this happens before the
-cmd_resp_q finish cancels the response dispatch work.  The callers
-(mm81x_mac_flush(), mm81x_mac_restart(), mm81x_mac_unregister()) hold
-neither mors->cmd_lock nor mors->cmd_wait and do not flush mors->net_wq.
-
-Can the net_wq dispatch worker therefore be inside
-mm81x_cmd_resp_process() when the skb it peeked is freed, giving a
-skb_pull on freed memory, a resp_cb read from freed memory, and a memcpy
-through a stale dest_resp?  The same lockset gap would also let
-mm81x_cmd_tx() read resp_cb->ret and call mm81x_skbq_skb_finish(cmd_q,
-skb, NULL) on an already freed skb.
-
-Would holding cmd_lock (or cmd_q->lock) across the peek-and-use region,
-or making the flush path take cmd_lock and cancel the response dispatch
-work before purging cmd_q, be the right fix?
-
->  	}
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/AS8P251MB0001B37B237975CAE6092B80C8B32%40AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
+max_pacing_offload is in a cold line. Finding a way to squeeze that
+somewhere warm can perhaps be left for later.
