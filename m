@@ -1,41 +1,41 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F27C053FD5C;
-	Wed,  9 Sep 2026 15:16:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05B48559C9A;
+	Wed,  9 Sep 2026 15:16:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788966976; cv=none; b=J7t/m2gHUMD3gr9l39+Fnzx6LQUC3UWrRoFg+jY7iNIdC8IkSKZmVe1SjOvQ9011omswa4zYrI+BCLNjjfIf/w52I2m7piXEyffw+0qsBBv3GbLh0FBtX7MzBZZbSXLEhfgiEca4H27CfCgRkfftPRQoS5wlvWLoV8DOq3elvOA=
+	t=1788966977; cv=none; b=oxPsWrCdU/1RHHsCqbyQWyuE4V3RjNyZm1IPeZzo5SUCjWSb39XkIy+UWGGAtKtCpSGNa3PyMd3xPfIegrqzbw19bTy7jMJR+kIRlOKcA1omw6BVC/Bt4BRtcCW0OCMNqJLMnhJgPOTdrod1b+LusLcIv88ScEfwiRjQrMfiB3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788966976; c=relaxed/simple;
-	bh=N2OHMkg6LERKRgoKvP1UsRXdYcwY2AEQFcSv7OGmjZs=;
+	s=arc-20240116; t=1788966977; c=relaxed/simple;
+	bh=Hqt8pMrgScs9o/prDc54Qc+QqwDXpPYCAVpK5lWOIu8=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=JLLdLzXc8sqU/qRMWJcSekPJjtjTxgF0+gXTCO4UtEbBsdWl43D+FvWbso70xcRqRkHJ2jjJh1mgehbpLMEhpaWI/mBygvvWxpvLOJJqVPB1AIgSTDuC3uQSvDkFTCn8IOHqKqj6gVyoQG9FIbA2e1TxMWVo+WP7sPjxhDypcG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n/AMLb0D; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=D4RZns17IHnBY0FjKXLlQRnr/wnCNB3jlT0+nemBnrI7gGLI3gDrZn4qTa7dFauNnswQetgk8fx8EVbjguwx3DrAkHGUuBpLW1qzg+Nsgq7oOzQHPiODh7lfVwkwjySt6ry+UZup+v66P1Dq28BEqjZ9A2SKfXinWIwrrqZB/pk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hLihS9Tr; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n/AMLb0D"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13E1B1F00A3D;
-	Wed,  9 Sep 2026 15:16:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hLihS9Tr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B3921F00A3E;
+	Wed,  9 Sep 2026 15:16:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788966974;
-	bh=TCe9d7CbBS7ZUrrks/Db2Zz5HUpxhow2pCQbfMdvO2w=;
+	s=k20260515; t=1788966975;
+	bh=heYJUaP2q9Wh6AOZ0OFZIFgHVrN6J+Ev5xJ9qbx5sPs=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=n/AMLb0DDJ2rG18OroBK7s8u3ZhRAuQqwLqw9r8PvNPfh+HLpGV1jW4w918ZdGlcA
-	 rI2ERfMr7o6wrLKJCOnHjLKKqPL2EUOQFI/3+3SqmyldnIzr7R/w9EXo1floKUf55X
-	 LOlBzZyPhtDnHK3d3ewF7j11zsY9QYxhhJ88IBuk4/29wxe6ny2HroeVlqIMJuU7P5
-	 d/IFHwzyUFdjx8mevWJLsQ/v4POlzErMiLpw98ZDjwjOrjIgmgVRbW+Iec75y4jaUU
-	 LP2e01WwW199a73hVHgA6+++gbYVthYSm0e8im8s3JDusWV4Z/azTjoQXxqDmkat0d
-	 x9cwlX92vEIEg==
-Subject: Re: [PATCH net-next v3 2/6] net: dsa: motorcomm: Split MIB buffers
+	b=hLihS9Tre7WwCy/ceiOWfRy4i9dzgB/gL2dIQRfd3VKULqanNNdms8rjSJ+BVSA5e
+	 HbL0JZAt+l5i1OWpSwPBS1oDHU2pJPBdZYLp60EMNFFVb/WhR8SWbhUzYPeT5YfsEJ
+	 kqxp8vTkUpFK1XQBCEyWGHYdLfvw9pHqt3MtGKj7kP+iEQ1typYIbI+dwjfEG+bDBZ
+	 kuFy5V2lIAjkGc2L0hIo4viEX6j6xoSm/d4AMsdlao2w1SV8e9sRByFenyWukBCjZI
+	 8WZXFn41vW19VqkZTqHSl1QSRRyrXoScYk75V+iQeHfYjEeNZ3OWa+bP+fnMBSshmZ
+	 zHSQpmWSaiC2w==
+Subject: Re: [PATCH net-next v3 3/6] net: dsa: motorcomm: Split MIB module
 From: netdev-bot+sashiko@kernel.org
 To: mmyangfl@gmail.com
 Cc: netdev@vger.kernel.org, andrew@lunn.ch, olteanv@gmail.com,
  davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
  linux@armlinux.org.uk, linux-kernel@vger.kernel.org
-Date: Wed, 09 Sep 2026 15:16:13 +0000
-Message-ID: <178896697363.219967.5664786879390405949@kernel.org>
-In-Reply-To: <20260906131414.2683362-3-mmyangfl@gmail.com>
-References: <20260906131414.2683362-3-mmyangfl@gmail.com>
+Date: Wed, 09 Sep 2026 15:16:14 +0000
+Message-ID: <178896697478.219967.17798090601969318390@kernel.org>
+In-Reply-To: <20260906131414.2683362-4-mmyangfl@gmail.com>
+References: <20260906131414.2683362-4-mmyangfl@gmail.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -46,248 +46,236 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
+Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider:
 
-Critical: 0 · High: 0 · Medium: 1 (1) · Low: 1 (1)
+Critical: 0 · High: 0 · Medium: 1 (2) · Low: 0
 
-- [Medium] Asymmetric use of the counted workqueue disable API: the new
-  .port_teardown callback yt921x_dsa_port_teardown()…
-- [Low] The descriptor-table comment above yt921x_mib_descs[] says 'Must
-  agree with yt921x_mib', but after this patch `struct yt921x_mib`…
+- [Medium] MIB polling work is permanently disabled by
+  `yt921x_dsa_port_teardown()`…
 
 Pre-existing issues:
-- [Medium] The software MIB shadow is not re-zeroed when the hardware MIB
-  counters are cleared: yt921x_chip_setup() issues YT921X_MIB_CTRL_CLEAN…
-- [Low] Unsynchronized 64-bit statistics: the MIB counters are written by
-  yt921x_mib_read() from the poll worker under priv->reg_lock (plain…
+- [Medium] Unsynchronized access to the cached 64-bit MIB counters: at
+  this commit `yt921x_mib_read()` (drivers/net/dsa/motorcomm/mib.c)…
+- [Medium] Non-atomic read of the 64-bit MIB counter register pairs: for
+  descriptors with `size == 2` (RX_GOOD_BYTES 0x3c/0x40, RX_BAD_BYTES…
 
 --
 
-net: dsa: motorcomm: Split MIB buffers
+net: dsa: motorcomm: Split MIB module
 
-This moves the per-port MIB statistics, the derived rx/tx frame counters
-and the MIB poll delayed_work out of struct yt921x_port into a new
-struct yt921x_mib, allocated with devm_kzalloc() from .port_setup() only
-for internal/external ports.  A new .port_teardown() callback replaces
-the disable loop that used to live in yt921x_mdio_remove().
+This moves the yt921x MIB descriptor table, register definitions, stats
+structures and all of the ethtool/stats64 callbacks out of chip.c and
+chip.h into new mib.c and mib.h files, in preparation for yt922x using a
+different MIB scheme. The change is described as pure code motion.
 
-> diff --git a/drivers/net/dsa/motorcomm/chip.c b/drivers/net/dsa/motorcomm/chip.c
-> index ad5fe1ccb1d71..95041a2fb0ecc 100644
-> --- a/drivers/net/dsa/motorcomm/chip.c
-> +++ b/drivers/net/dsa/motorcomm/chip.c
-> @@ -549,9 +549,12 @@ static int yt921x_mib_read(struct yt921x_priv *priv, int port)
->  {
->  	struct yt921x_port *pp = &priv->ports[port];
->  	struct device *dev = to_device(priv);
-> -	struct yt921x_mib_stats *mib = &pp->mib;
-> +	struct yt921x_mib *pm = pp->mib;
-> +	struct yt921x_mib_stats *mib;
->  	int res = 0;
->  
-> +	mib = &pm->stats;
-> +
->  	/* Reading of yt921x_port::mib is not protected by a lock and it's vain
->  	 * to keep its consistency, since we have to read registers one by one
->  	 * and there is no way to make a snapshot of MIB stats.
-
-[Severity: Low]
-Two comments look stale after the split.
-
-The header comment above yt921x_mib_descs[] says "Must agree with
-yt921x_mib", but struct yt921x_mib is now the wrapper holding the port
-back pointer, the delayed work and the two derived counters.  The
-descriptor offsets are applied to the flat counter layout instead:
-
-	mib = &pm->stats;
-	...
-		u64 *valp = &((u64 *)mib)[i];
-
-Should that comment name yt921x_mib_stats now?
-
-The comment kept here still says "Reading of yt921x_port::mib is not
-protected by a lock", although that member is only a pointer after this
-patch and the lockless data lives in yt921x_mib::stats, rx_frames and
-tx_frames.  This second half is removed later in the series by "net: dsa:
-motorcomm: Fix MIB synchronization", but the yt921x_mib_descs comment
-still reads "Must agree with yt921x_mib" at the end of the series.
+> diff --git a/drivers/net/dsa/motorcomm/mib.c b/drivers/net/dsa/motorcomm/mib.c
+> new file mode 100644
+> index 0000000000000..b1296f224cf69
+> --- /dev/null
+> +++ b/drivers/net/dsa/motorcomm/mib.c
+> @@ -0,0 +1,408 @@
 
 [ ... ]
 
-> @@ -786,7 +810,12 @@ yt921x_dsa_get_stats64(struct dsa_switch *ds, int port,
->  {
->  	struct yt921x_priv *priv = to_yt921x_priv(ds);
->  	struct yt921x_port *pp = &priv->ports[port];
-> -	struct yt921x_mib_stats *mib = &pp->mib;
+> +/* Read and handle overflow of 32bit MIBs. MIB buffer must be zeroed before. */
+> +static int yt921x_mib_read(struct yt921x_priv *priv, int port)
+> +{
+
+[ ... ]
+
+> +	for (size_t i = 0; i < ARRAY_SIZE(yt921x_mib_descs); i++) {
+> +		const struct yt921x_mib_desc *desc = &yt921x_mib_descs[i];
+> +		u32 reg = YT921X_MIBn_DATA0(port) + desc->offset;
+> +		u64 *valp = &((u64 *)mib)[i];
+> +		u32 val0;
+> +		u64 val;
+> +
+> +		res = yt921x_reg_read(priv, reg, &val0);
+> +		if (res)
+> +			break;
+> +
+> +		if (desc->size <= 1) {
+> +			u64 old_val = *valp;
+> +
+> +			val = (old_val & ~(u64)U32_MAX) | val0;
+> +			if (val < old_val)
+> +				val += 1ull << 32;
+> +		} else {
+> +			u32 val1;
+> +
+> +			res = yt921x_reg_read(priv, reg + 4, &val1);
+> +			if (res)
+> +				break;
+> +			val = ((u64)val1 << 32) | val0;
+> +		}
+
+[Severity: Medium]
+This is a pre-existing issue carried over by the move, not something this
+patch introduces, but can the size == 2 path assemble a torn value?
+
+The two halves come from two independent SMI/MDIO transactions:
+
+	res = yt921x_reg_read(priv, reg, &val0);
+	...
+	res = yt921x_reg_read(priv, reg + 4, &val1);
+	...
+	val = ((u64)val1 << 32) | val0;
+
+If the low word wraps between the two reads, the combined value is off by
+2^32.  Unlike the size <= 1 branch there is no wraparound correction here,
+so the affected counters (RX_GOOD_BYTES, RX_BAD_BYTES, TX_GOOD_BYTES) can
+step backwards by about 4 GiB, and stats64 rx_bytes/tx_bytes can underflow
+once ETH_FCS_LEN * packets is subtracted.
+
+At 1 Gbps the low word of a byte counter wraps roughly every 34 seconds,
+while each register access over MDIO takes tens of microseconds, so the
+window is reachable in practice.
+
+For traceability: a later commit in this series, "net: dsa: motorcomm: Use
+safe 64-bit counter reader", replaces this open-coded pair read with
+yt921x_counter_read() in smi.c, which reads lo, then re-reads hi/lo and
+accepts the value only when lo >= old_lo (bounded to 16 attempts,
+-ETIMEDOUT otherwise).
+
+> +
+> +		WRITE_ONCE(*valp, val);
+> +	}
+> +
+> +	pm->rx_frames = mib->rx_64byte + mib->rx_65_127byte +
+> +			mib->rx_128_255byte + mib->rx_256_511byte +
+> +			mib->rx_512_1023byte + mib->rx_1024_1518byte +
+> +			mib->rx_jumbo;
+> +	pm->tx_frames = mib->tx_64byte + mib->tx_65_127byte +
+> +			mib->tx_128_255byte + mib->tx_256_511byte +
+> +			mib->tx_512_1023byte + mib->tx_1024_1518byte +
+> +			mib->tx_jumbo;
+
+[ ... ]
+
+> +void yt921x_mib_poll(struct work_struct *work)
+> +{
+> +	struct yt921x_mib *pm = container_of_const(work, struct yt921x_mib,
+> +						   work.work);
+
+[ ... ]
+
+> +	schedule_delayed_work(&pm->work, delay);
+> +}
+
+[Severity: Medium]
+Now that yt921x_mib_poll() lives here, is the work item's disable count
+ever balanced for a re-used struct yt921x_mib?
+
+In chip.c, yt921x_dsa_port_teardown() does:
+
+	if (pm)
+		disable_delayed_work_sync(&pm->work);
+
+which is __cancel_work_sync(&dwork->work, WORK_CANCEL_DELAYED |
+WORK_CANCEL_DISABLE), so the disable count stays in work->data until a
+matching enable_delayed_work().
+
+On a later setup, yt921x_dsa_port_setup() only re-initialises the work when
+the allocation is fresh:
+
+	if (!pm && (BIT(port) & (priv->info->internal_mask |
+		    priv->info->external_mask))) {
+		pm = devm_kzalloc(dev, sizeof(*pm), GFP_KERNEL);
+		...
+		INIT_DELAYED_WORK(&pm->work, yt921x_mib_poll);
+	}
+
+pp->mib is a devm allocation that survives a DSA tree teardown/setup cycle,
+so pm is non-NULL the second time and neither INIT_DELAYED_WORK() nor
+enable_delayed_work() runs.
+
+The teardown callback is reached on ordinary port teardown, not just device
+removal: dsa_port_devlink_teardown() calls ds->ops->port_teardown, and
+dsa_switch_remove() tears down the whole tree, so a surviving switch's
+ports get torn down while its pp->mib stays alive.  A later
+dsa_tree_setup() then calls port_setup again on that switch.
+
+After that, the schedule_delayed_work(&pm->work, 0) in
+yt921x_phylink_mac_link_up() is silently dropped by
+clear_pending_if_disabled(), so MIB polling never resumes for the port and
+the 32-bit wraparound accumulation in yt921x_mib_read() stops happening.
+
+Would cancel_delayed_work_sync() in port_teardown, or a matching
+enable_delayed_work() in yt921x_dsa_port_setup(), be more appropriate for a
+re-usable object?
+
+[ ... ]
+
+> +void
+> +yt921x_dsa_get_stats64(struct dsa_switch *ds, int port,
+> +		       struct rtnl_link_stats64 *stats)
+> +{
+> +	struct yt921x_priv *priv = to_yt921x_priv(ds);
+> +	struct yt921x_port *pp = &priv->ports[port];
 > +	struct yt921x_mib *pm = pp->mib;
 > +	struct yt921x_mib_stats *mib;
 > +
 > +	if (!pm)
 > +		return;
 > +	mib = &pm->stats;
->  
->  	stats->rx_length_errors = mib->rx_undersize_errors +
->  				  mib->rx_fragment_errors;
-> @@ -802,8 +831,8 @@ yt921x_dsa_get_stats64(struct dsa_switch *ds, int port,
->  	/* stats->tx_heartbeat_errors */
->  	stats->tx_window_errors = mib->tx_late_collisions;
->  
-> -	stats->rx_packets = pp->rx_frames;
-> -	stats->tx_packets = pp->tx_frames;
+
+[ ... ]
+
 > +	stats->rx_packets = pm->rx_frames;
 > +	stats->tx_packets = pm->tx_frames;
->  	stats->rx_bytes = mib->rx_good_bytes - ETH_FCS_LEN * stats->rx_packets;
->  	stats->tx_bytes = mib->tx_good_bytes - ETH_FCS_LEN * stats->tx_packets;
+> +	stats->rx_bytes = mib->rx_good_bytes - ETH_FCS_LEN * stats->rx_packets;
+> +	stats->tx_bytes = mib->tx_good_bytes - ETH_FCS_LEN * stats->tx_packets;
 
-[Severity: Low]
-This isn't a bug introduced by this patch, but can these u64 reads tear on
-32-bit?  yt921x_mib_read() stores pm->rx_frames and pm->tx_frames with
-plain assignments from the poll worker, and yt921x_dsa_get_stats64() reads
-them with neither priv->reg_lock nor a u64_stats_sync retry loop, so a
-reader can observe halves from two different updates.  The subtraction
+[Severity: Medium]
+This isn't a bug introduced by this patch, but how are these cached 64-bit
+counters synchronized against the poll worker?
 
-	stats->rx_bytes = mib->rx_good_bytes - ETH_FCS_LEN * stats->rx_packets;
+yt921x_mib_read() writes each counter with WRITE_ONCE() on a plain u64 and
+stores pm->rx_frames / pm->tx_frames with plain assignments while holding
+priv->reg_lock.  yt921x_dsa_get_stats64() reads all of them with no lock at
+all, and the other callbacks release the lock before copying out, e.g.:
 
-can then underflow.
+	mutex_lock(&priv->reg_lock);
+	yt921x_mib_read(priv, port);
+	mutex_unlock(&priv->reg_lock);
 
-The baseline had the same lockless read of pp->rx_frames/pp->tx_frames, and
-later patches in this series ("net: dsa: motorcomm: Use u64_stats_t for MIB
-stats" and "net: dsa: motorcomm: Fix MIB synchronization") wrap the writer
-in u64_stats_update_begin()/end() and the reader in
-u64_stats_fetch_begin()/u64_stats_fetch_retry(), so this is only noted for
-completeness.
+	mac_stats->FramesTransmittedOK = pm->tx_frames;
+
+and in yt921x_dsa_get_pause_stats():
+
+	mutex_unlock(&priv->reg_lock);
+
+	pause_stats->tx_pause_frames = mib->tx_pause;
+
+On 32-bit builds a u64 store is two stores, so a reader can observe
+mismatched halves, and derived values can mix fields from different
+snapshots.  Can rx_bytes underflow when rx_good_bytes comes from an older
+snapshot than rx_frames?
+
+For traceability: later commits in this series, "net: dsa: motorcomm: Use
+u64_stats_t for MIB stats" and "net: dsa: motorcomm: Fix MIB
+synchronization", convert the counters to u64_stats_t, wrap the write-back
+in u64_stats_update_begin()/u64_stats_update_end(), add a
+u64_stats_fetch_begin()/u64_stats_fetch_retry() loop in
+yt921x_dsa_get_stats64(), and move the remaining field copies inside the
+reg_lock section.
+
+> diff --git a/drivers/net/dsa/motorcomm/mib.h b/drivers/net/dsa/motorcomm/mib.h
+> new file mode 100644
+> index 0000000000000..cfad0665baaea
+> --- /dev/null
+> +++ b/drivers/net/dsa/motorcomm/mib.h
+> @@ -0,0 +1,159 @@
 
 [ ... ]
 
-> @@ -3988,7 +4026,9 @@ yt921x_phylink_mac_link_up(struct phylink_config *config,
->  		dev_err(dp->ds->dev, "Failed to %s port %d: %i\n", "bring up",
->  			port, res);
->  
-> -	schedule_delayed_work(&priv->ports[port].mib_read, 0);
-> +	pm = priv->ports[port].mib;
-> +	if (pm)
-> +		schedule_delayed_work(&pm->work, 0);
->  }
->  
->  static void
-> @@ -4108,11 +4148,35 @@ yt921x_dsa_get_tag_protocol(struct dsa_switch *ds, int port,
->  	return DSA_TAG_PROTO_YT921X;
->  }
->  
-> +static void yt921x_dsa_port_teardown(struct dsa_switch *ds, int port)
-> +{
-> +	struct yt921x_priv *priv = to_yt921x_priv(ds);
-> +	struct yt921x_port *pp = &priv->ports[port];
-> +	struct yt921x_mib *pm = pp->mib;
-> +
-> +	if (pm)
-> +		disable_delayed_work_sync(&pm->work);
-> +}
-> +
->  static int yt921x_dsa_port_setup(struct dsa_switch *ds, int port)
->  {
->  	struct yt921x_priv *priv = to_yt921x_priv(ds);
-> +	struct yt921x_port *pp = &priv->ports[port];
-> +	struct device *dev = to_device(priv);
-> +	struct yt921x_mib *pm = pp->mib;
->  	int res;
->  
-> +	if (!pm && (BIT(port) & (priv->info->internal_mask |
-> +		    priv->info->external_mask))) {
-> +		pm = devm_kzalloc(dev, sizeof(*pm), GFP_KERNEL);
-> +		if (!pm)
-> +			return -ENOMEM;
-> +		pp->mib = pm;
-> +
-> +		pm->port = pp;
-> +		INIT_DELAYED_WORK(&pm->work, yt921x_mib_poll);
-> +	}
-> +
-
-[Severity: Medium]
-Is the disable/enable pair here asymmetric?  yt921x_dsa_port_teardown()
-calls disable_delayed_work_sync(&pm->work), but yt921x_dsa_port_setup() has
-no matching enable_delayed_work(), and the "if (!pm && ...)" gate means an
-already allocated pm (and its work item, including the disable counter) is
-reused untouched.
-
-The disable count is a plain counter in the work data, documented in
-kernel/workqueue.c as:
-
- * Disable @work by incrementing its disable count and cancel it if currently
- * pending. As long as the disable count is non-zero, any attempt to queue @work
- * will fail and return %false.
-
-with work_offqd_disable()/work_offqd_enable() incrementing/decrementing it
-and enable_delayed_work() being the only decrement.  So after a single
-teardown/setup cycle on a still-live switch:
-
-yt921x_phylink_mac_link_up()
-	schedule_delayed_work(&pm->work, 0);	/* returns false, forever */
-
-yt921x_mib_poll() never runs again and the cached counters read by
-yt921x_dsa_get_stats64() and the ethtool callbacks stay frozen, including
-the 32-bit wrap accumulation done in yt921x_mib_read().
-
-Two paths where DSA runs port_setup again for the same priv:
-
-net/dsa/dsa.c:dsa_tree_setup_ports() {
-	...
-			err = dsa_port_setup(dp);
-			if (err) {
-				err = dsa_port_setup_as_unused(dp);
-	...
-}
-
-dsa_port_setup() already ran the driver's port_teardown on its error path
-(dsa_port_devlink_setup() calls dsa_port_devlink_teardown() when
-devlink_port_register() fails), and then port_setup is called again.
-
-In a multi-switch tree, dsa_switch_remove() -> dsa_tree_teardown() tears
-down the ports of the surviving switches too, and a later re-probe runs
-dsa_tree_setup() again, calling port_setup() for a port whose pp->mib is
-already non-NULL.
-
-Should port_setup() call enable_delayed_work(&pm->work) when it reuses an
-existing pm?  As written, each cycle also bumps the disable depth
-monotonically until it hits WORK_OFFQ_DISABLE_BITS and WARN_ONCE fires.
-
-[Severity: Medium]
-This is a pre-existing issue, but should the shadow counters be re-zeroed
-here rather than only on first allocation?  yt921x_chip_setup() clears the
-hardware MIB on every .setup():
-
-	ctrl = YT921X_MIB_CTRL_CLEAN | YT921X_MIB_CTRL_ALL_PORT;
-	res = yt921x_reg_write(priv, YT921X_MIB_CTRL, ctrl);
-
-while pm->stats is zeroed only by the devm_kzalloc() inside the
-"if (!pm && ...)" branch.  dsa_switch_teardown() clears ds->setup, so a
-second dsa_tree_setup() can call ds->ops->setup again for the same priv (for
-example when a sibling switch in the tree is removed and re-probed).  The
-retained shadow then holds pre-clean values while the hardware restarts at
-zero, and the first read applies the wrap correction:
-
-drivers/net/dsa/motorcomm/chip.c:yt921x_mib_read() {
-	...
-			val = (old_val & ~(u64)U32_MAX) | val0;
-			if (val < old_val)
-				val += 1ull << 32;
-	...
-}
-
-adding a spurious 2^32 to every affected counter.  The baseline had the same
-behaviour with the shadow embedded in priv.
+> +struct yt921x_mib_stats {
+> +	u64 rx_broadcast;
+> +	u64 rx_pause;
 
 [ ... ]
 
-> diff --git a/drivers/net/dsa/motorcomm/chip.h b/drivers/net/dsa/motorcomm/chip.h
-> index 805febb486838..5bf2d3409f4bb 100644
-> --- a/drivers/net/dsa/motorcomm/chip.h
-> +++ b/drivers/net/dsa/motorcomm/chip.h
-> @@ -913,6 +913,15 @@ struct yt921x_mib_stats {
->  	u64 tx_oam;
->  };
->  
 > +struct yt921x_mib {
 > +	struct yt921x_port *port;
 > +
@@ -296,7 +284,6 @@ behaviour with the shadow embedded in priv.
 > +	u64 rx_frames;
 > +	u64 tx_frames;
 > +};
-> +
 
 [ ... ]
 
