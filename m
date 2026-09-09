@@ -1,149 +1,145 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC0A42D2381
-	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 05:08:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.172
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788930541; cv=pass; b=OfGjev/yrct3yVFdb0OsllKKtT15Zm7g+j6etTzOcKaM3j7er/lsdb++TvKPepnea2VApq3sJAZXdXVwBCjdFmC9/bYQKgAEIyO33oO0aW9jRD7Gdl+dmf+6E9ZIEqDTe1Ynq9HLPQE/OL1OkthTyh4Qgw3PZZoRQ7Z7jCAYXQI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788930541; c=relaxed/simple;
-	bh=HezRIAx0sXtEI+YT3JY2PBlp5lPNNul4wM0VNcCw+wU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UIlnrUnZkR0Sml8aGA++FAwdRiJYtasR8txxeTK0ihDBOq+Gq4Ye8D+EwfvabH3fbSoCnmJ96ws3AxWWJDrvEpmfxccaZxO4Rm8eksYWUv9Af6QXFWilvE8aQs/FYUh23zM5rh0ZwqrJWG8SlmBiRJjYK8hrK5IzSgsf3n0AbOU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T1BsHc+S; arc=pass smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D91CF361977
+	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 05:20:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788931223; cv=none; b=gGnv1hp0aJurHSKC8VZ7+cyyYZ/gZUvWTMkhKC0WmSTH18ybaKDxGlRgcrJ+JJ9oDyFMJ4zlFocBodNUw1gJqiyAdMTL2cbrw/ojxIubmjPA21sNRFtfK1sUKmicSbPWcI3uUwvvRa7QcJ5bgkFWZTIPfY4v50EF609C6HPrsB0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788931223; c=relaxed/simple;
+	bh=6GRgVD5TlHUcB4Yfs3UD57oj6nYQ5AAP1lZaClmnwuA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RSXRGqcj8Eu+h7lKTIFXCS0L55kUPCyBt//wA/EAjkrWpYm1Cydu825ATHO1Y7Bw3QcHJnggERtyCTMKcS5z7TXS6PbS89aEwvHguHDcHlKW59Vnero0M/yEolV0VPuheosQSg2RrFDfmM3sQIhhbMz6YdfA5GqE2BIbLqBEgLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=pDZZZYZz; arc=none smtp.client-ip=209.85.216.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T1BsHc+S"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2d6fe26ef1cso55183995ad.2
-        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 22:08:59 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788930539; cv=none;
-        d=google.com; s=arc-20260327;
-        b=fOgnPR78EPc3Kd8or9ko/swu4nnBhXqGhnwbf/EJW+xwNp5OPj1ew4xx6KzzTx+Jzp
-         Cy/QOu6yLujEfCKSCW9/XWIyTeaifKMY8Ho5FLXtJa6Hb6iZbF1CWyZwLs+cDkt9fqmy
-         b7SPCBlHYEcq8ncFZEnb7KWCI8PU416fc5arNm90L8ZmhZgcepy3/ctF058tHbvZ99P0
-         kB4KbgDzVc0jtBtDWB2p12zdipKoD2v7gwGsz7D9f6ZFBl087ICJ4aB9IDIM35IFT7/t
-         Rgc0kNbKc7PKOW402K4fnhdiZgcFpiX71MvQcbFq2LqIRHaxcxXiBn7zl/HZtl0tGbYn
-         J6kA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=b/lw5mO4gsU3bTOqtJwjVuYg0yHunzGXi2m1syQJ2Qk=;
-        fh=Uoe1+YVT2W3rPR6OPNhdwEulx5/D9rFgh7WEqwX0jJo=;
-        b=Ol0g0iD1f7xBW/LvoH4wuSOP1w5SYTW/Sq4raOzN2MK6E3vnz4+VsBJa8TKDnOvLhM
-         WPv2vPvnF+/GxtbDrI8IxhJQVaTvQgWPuaBpPSCwO8MuMlYasioisGNjBPy+zoQ5XlPv
-         sGDKQnrawVsvWMwrTEtl4HeggFjyOkzKFV2QHP7Nt2nK8jwcQbVwhfz3yjF+AHQhJtid
-         shf7UvxZnXFkFfYIekwHbtx8SrhX31LvmikbGqGftKUHlcWTEcCAlN9Tdxit5FpEXEMm
-         +MJ2bCIJhwnSihbJzVa8rKfklkE/sKf7j0XSLCOLYQpC/gIJOe60E3IfRAqpGju9hMlP
-         mfwA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="pDZZZYZz"
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-3964dfb5b9aso6559013a91.1
+        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 22:20:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788930539; x=1789535339; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=b/lw5mO4gsU3bTOqtJwjVuYg0yHunzGXi2m1syQJ2Qk=;
-        b=T1BsHc+SQdk94m28uUKbjgUzkkPvEmLELkLDd95mqwOr0lN4iXQAdZXDSzV4SISC8u
-         aHCatXEMmQsWPR8TqdhSL/ud9uo7IXK4OZd8+lOK869Rz1uMA0p+lq3d9ZPpqHXmKVtc
-         dqMFRJ/kXeG33O4hI8/W+eBHycPLdUdmTHpcqYij7DE7eDUc5WeNLl0jLDk2dW6tg7nH
-         ahCbNgFnD1tfkpksGg0GgpVZQMyZfo8iET239Xq/SaBldHmhYB0r4wTbjJ2IKb6qK/xR
-         3j9TgCdkEnJKICt+AuOp9MIhluAEcRQ6gxl5ZDfURuH9cwalSAEqq+ZiDNle1lQxAcVq
-         PZVA==
+        d=nebusec.ai; s=google; t=1788931221; x=1789536021; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=dFArgWxamKhfPZe43+V+EkvskIUCY9GoJkM/i4cqerY=;
+        b=pDZZZYZzVAPvx7/SOYXLSnDPdfqAqC4wrSn7SeBLZLT5iJLriT8NR9/I8/pD+eGFzS
+         zWMz/IlaV4cri66BbcQXvXs7fV/8vhaR2izAnnZ5OV8gRvWaNnVoa3sA5LkYjKifXvV5
+         pZWVxgjwack+Gt206ezOLbetlOe7zMn1GgtKuFgT6v1Pme6etlYbeYHx+BJSQr0Pzs+R
+         FXrzJL2ITzMd2vmdPRq/+5H5Y+G6JCdtex4taKc0HFqZBUVSvHcq/8aBOdZB9D3OlaKu
+         eyVOVvzSLTCRkoIZk/33U4bo4NMJdDAuCr1uQXya58mnrcs0LZzxTFJ95Hq+5aZ/zcQe
+         uA4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788930539; x=1789535339;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=b/lw5mO4gsU3bTOqtJwjVuYg0yHunzGXi2m1syQJ2Qk=;
-        b=T47yrfDfieEDq1BrCITreahwsPWDSO8So/070aNjQk12/IJ9kuZBGfI88qZA6TaDRI
-         0HOY1IhS07dqXsDEXY1Tba4B62kWkeLcoO198nfashRVdUErjyZSOtpzRafsSoReHuO7
-         1DGlErYS8yJ9ncqGhcVA5HE7dbGy++qscUf9PTE4i5JnadQbpp9i1XC+s5Hbsef9erkV
-         tMWDAfNLOHrejmp+1USlpWJKbzGsh/hjqSSNl7jPj2f4CpAJZO0V7nibANXqX4II5/P9
-         R66j0Tme/rQUHtW3BUN0YIYagQS+WFc3FtBaf5rqdgrnXM3s2tw21LGYuwaM2yIJPPKB
-         m//w==
-X-Forwarded-Encrypted: i=1; AKwUvBz+aIXN6rdjyWiT3DqHQhPY2IgdY+ybzom55aWrvStZYJV4n3nBXrq+M58FeNbtNht0PDJ1hxI=@vger.kernel.org
-X-Gm-Message-State: AFuF++k3jh92D3MJPbAL3HIXOa56dEgsHhDoWGdaHcszfXpU3c91H8ax
-	PGyPPTnw+MHsTP7h7eVpFGVsiQqmpwWb2JrPy6WCX8825FwMNZhvy0aMhX08RX+wzYgRXE4HK1q
-	pKKbuD6XsF3EtlpggHfWvV406xx1sWUQ=
-X-Gm-Gg: AYBFou1sVr148Tup0oT29UdDCcqHVvW8FqBxk37y227SNuRrqrjFui8oDdGOv3Uhn0K
-	WaS2ZMwipFsZQxRpb8v7svYFwTEGzrglcqwqUjOoretCFuQr3cAZQRreTeO4H9PWDuNJ05XdEm2
-	KkodE/tAJve2r2K8SKBCQYNKE9waqF5eJ2AlLo6d9MPWlJ5jXeXsK0oj07Es9EahnoF75Dox1VC
-	iXyrRxNLDLA18QNLjb9qz/K+OHn85B1vALyJiDHjLMykMkMwv9gAcIPIo7XwBOKeYLb777kUMWV
-	T9bDLCUTKvcOXBa2KxvDrjPeRJWAFssedYuHo2PqgnJEZ3cqir7AA/QOVvXnw5D7b2m52EYxYo8
-	7V9h/9qgl8omkI8HLlZjej+9WB70GvC0MrsviW7rW/dd6+9+W2y9BcH+ANEEfoRxcgj+xPupWCY
-	3+jwOJoiZPILwnO1kF0xQ9
-X-Received: by 2002:a17:90b:3fd0:b0:398:d6e6:4671 with SMTP id
- 98e67ed59e1d1-39b262981a2mr47513999a91.25.1788930538817; Tue, 08 Sep 2026
- 22:08:58 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1788931221; x=1789536021;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=dFArgWxamKhfPZe43+V+EkvskIUCY9GoJkM/i4cqerY=;
+        b=SsOZGCAp4RhRtUSrXcE2lLcw4NVjhWqkCq2aAFK7ojhkdRt5EANQmb4LQ4gvwPyX2+
+         aD5H8Pw65/7z+grjqIrCUYxIKsLfk0nc+8/joNyS8MZ1bwDLxqbGHKA7624OybZnwARY
+         Saz2MzXL34sjmFGr17tLdITwHFVVcpQjsUzYsXPTz2O+kAwqUirzDuxwvoMvwTJIFbfr
+         dIQHoUYpTyP6ASc+YXdjo3djfYVWI+pGBLMBaF+seXgVphnG+KtW51x3a/+oreZTZbLX
+         IjqGifdjSkTwetXleMlS1iv6SBUyvc1R4dWOIM7sVeo78uQC0IVmZVj3RZt21CYID7CW
+         DO0A==
+X-Forwarded-Encrypted: i=1; AKwUvBzIFHKL3hd3DlzX/ZFJ10zZDueK+mfKqCrCBg2TRNjJ2SWENECfVb8gO3+i0+JoRKpgp3lWn28=@vger.kernel.org
+X-Gm-Message-State: AFuF++n0zpxl9N9ZiSRlXQU4x7WzHwksoXpUUkd07w4fsXlBb8tkCGRk
+	7s8QcEK5AHmmi2rfaLUb1Jdvhc00psh0fD4katb6p5QQ/JM8m1TYB2RnuH6HFEVFpC4s
+X-Gm-Gg: AYBFou2/2rybbwqM0Pbl1fFwVc/vPSMyVg3Y5aMYcRAHlEn7NCrk8X6QTvbrMhbeeoG
+	JIZccGWSeGoorZuE90OxGcfGjAIoTE+AzEibL9H7ebXdxZ8ojMoljJx8bWkODj+t03ll+8j/Wpi
+	J7z6mm1tR5zXDszde0x+zNnvZvIPeKdUrzF//6fSG/2LTJEJEdTYjyf5Ti4SlLIR5lK8FHnkNtd
+	UfSHA3XDj6/TmIb2s0O6Y5hVZkkpyZeUly451G8L4DmDE8sza3JqFjKQun9bMIX2InLHfUEF7D0
+	k/TqTjBjtmA44lEFee8gbxBV0xZZ+ubP+t9Vc84+/JwhN0WBSSNqG2ZJtkDWWzj6D1D/s7lOisf
+	BRFpcpVEho78YIsXBdiKLy6AUNpH+sVs73a95x+zpLjoi8b7DOZVIKyMlskgm8fxOF9sRur+8ms
+	olp4HX8L3y/49JY4ajl4p7HQPPkZaoD1NINF/ErOaEeQRXwRpoKgQzuGYVyoEpWGi8NsSlKubY4
+	FhJLZUh
+X-Received: by 2002:a17:90b:5106:b0:37f:c22a:c188 with SMTP id 98e67ed59e1d1-39b260feb03mr48275601a91.4.1788931219655;
+        Tue, 08 Sep 2026 22:20:19 -0700 (PDT)
+Received: from enjou-Legion-Y7000P-2019 ([165.232.167.5])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3339b314cfcsm40920142eec.19.2026.09.08.22.20.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Sep 2026 22:20:19 -0700 (PDT)
+From: Ren Wei <weir@nebusec.ai>
+To: oe-linux-nfc@lists.linux.dev,
+	netdev@vger.kernel.org,
+	horms@kernel.org
+Cc: david@ixit.cz,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	kees@kernel.org,
+	pengpeng@iscas.ac.cn,
+	raoxu@uniontech.com,
+	rosenp@gmail.com,
+	dddddd@hust.edu.cn,
+	joe@dama.to,
+	ian.ray@gehealthcare.com,
+	kuniyu@google.com,
+	linma@zju.edu.cn,
+	vega@nebusec.ai,
+	rakukuip@gmail.com,
+	weir@nebusec.ai
+Subject: [PATCH v3 0/1] net: nfc: fix use-after-free in nfc_get_local_general_bytes
+Date: Wed,  9 Sep 2026 13:19:23 +0800
+Message-ID: <cover.1788841682.git.rakukuip@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260906030429.2085375-1-xmei5@asu.edu> <CAJwJo6asOVa21T==+n7qdso1DBvH6Y3rXo24DdieAQS6XeTutw@mail.gmail.com>
- <CAAVpQUDuHr4WxEOUwikYqdG9FncoY09LOMGDPciHex2bQ51ePQ@mail.gmail.com>
-In-Reply-To: <CAAVpQUDuHr4WxEOUwikYqdG9FncoY09LOMGDPciHex2bQ51ePQ@mail.gmail.com>
-From: Dmitry Safonov <0x7f454c46@gmail.com>
-Date: Wed, 9 Sep 2026 06:08:47 +0100
-X-Gm-Features: AcwNN1XYHOLlrXffZ4dyL2xhSU8WgL5jBkszIuyqQKj86r-XafJfRNUfbGQgShs
-Message-ID: <CAJwJo6b72cdQixQ9Xodx5mhWLVvHgnaULvZ0JFjFhSwDuGvaBw@mail.gmail.com>
-Subject: Re: [PATCH net v2] net/tcp-ao: don't dereference NULL current_key/rnext_key
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: Xiang Mei <xmei5@asu.edu>, Jiayuan Chen <jiayuan.chen@linux.dev>, 
-	Eric Dumazet <edumazet@google.com>, Neal Cardwell <ncardwell@google.com>, 
-	"David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Salam Noureddine <noureddine@arista.com>, David Ahern <dsahern@kernel.org>, co+2c72469dbbec34af@bugs.sh, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, 9 Sept 2026 at 05:44, Kuniyuki Iwashima <kuniyu@google.com> wrote:
->
-> On Tue, Sep 8, 2026 at 9:31=E2=80=AFPM Dmitry Safonov <0x7f454c46@gmail.c=
-om> wrote:
-> >
-> > Hi Xiang,
-> >
-> > Thanks for your report and the proposed fix.
-> > I remember I wanted to write tests for re-connect() on the same
-> > socket, but never found time for this, as it's not really used in BGP,
-> > as far as I'm aware.
-> >
-[..]
-> > > --- a/net/ipv4/tcp_ao.c
-> > > +++ b/net/ipv4/tcp_ao.c
-> > > @@ -857,6 +857,8 @@ int tcp_ao_prepare_reset(const struct sock *sk, s=
-truct sk_buff *skb,
-> > >                         return -ENOENT;
-> > >                 *traffic_key =3D snd_other_key(*key);
-> > >                 rnext_key =3D READ_ONCE(ao_info->rnext_key);
-> > > +               if (!rnext_key)
-> > > +                       return -ENOENT;
-> >
-> > I think this is quite a big hammer to fix the re-connect() issue.
-> > In theory, we could even restrict connect()/listen() after TCP_CLOSE,
->
-> As there were too many rehash issues, we disallowed it.
->
-> 8cc3aef0cb19 tcp: Do not allow buggy transitions between ehash and lhash2=
-.
+From: Luxiao Xu <rakukuip@gmail.com>
 
-Thanks, that makes sense! Two tricky-to-handle corner cases that no
-one uses less to have in mind :-)
+This series addresses a use-after-free (UAF) regression introduced by
+commit 6709d4b7bc2e ("net: nfc: Fix use-after-free caused by
+nfc_llcp_find_local").
 
-> > but I think I have an idea how to address it "properly".
-> >
-> > I have a draft of a patch; I'll test it today and send it for review.
-> >
-> > >                 *keyid =3D rnext_key->rcvid;
-> > >                 *sne =3D tcp_ao_compute_sne(READ_ONCE(ao_info->snd_sn=
-e),
-> > >                                           snd_basis, seq);
+In commit 6709d4b7bc2e, nfc_llcp_local_put(local) was added right before
+returning local->gb. However, if the reference count drops to zero, the
+object is immediately freed, causing callers accessing the returned
+pointer to trigger a use-after-free.
 
-Thanks,
-             Dmitry
+Using dynamic allocation (e.g. kmemdup) to copy the buffer was evaluated
+in v1, but it led to memory leaks because all callers consistently treat
+the returned buffer as borrowed memory and do not free it.
+
+To solve this properly without lifetime issues or leaks, this patch
+refactors nfc_llcp_general_bytes() and nfc_get_local_general_bytes() to
+take a caller-provided destination buffer and maximum length. The bytes
+are safely copied before dropping the reference via nfc_llcp_local_put().
+All callers in core and drivers (microread, pn533, pn544, st21nfca,
+digital_dep, and nci) are updated accordingly.
+
+---
+v3:
+ - Include <net/nfc/nfc.h> in pn533.h to fix build error in uart.c
+   caused by undefined NFC_MAX_GT_LEN.
+ - Restore nci_request() in nci_set_local_general_bytes() to preserve
+   ndev->req_lock synchronization (avoid unlocked __nci_request() via
+   nci_set_config()).
+v2 Link: https://lore.kernel.org/all/cover.1788157545.git.rakukuip@gmail.com/
+v2:
+ - Use caller-provided output buffers to fix UAF instead of dynamic
+   allocation (kmemdup), avoiding memory leaks.
+
+Luxiao Xu (1):
+  net: nfc: fix use-after-free in nfc_get_local_general_bytes
+
+ drivers/nfc/microread/microread.c |  6 +++---
+ drivers/nfc/pn533/pn533.c         | 14 ++++++++------
+ drivers/nfc/pn533/pn533.h         |  4 +++-
+ drivers/nfc/pn544/pn544.c         |  7 +++----
+ drivers/nfc/st21nfca/core.c       |  8 ++++----
+ include/net/nfc/hci.h             |  2 +-
+ include/net/nfc/nfc.h             |  3 ++-
+ net/nfc/core.c                    | 15 +++++++--------
+ net/nfc/digital_dep.c             |  8 ++++----
+ net/nfc/llcp_core.c               | 17 +++++++++++++----
+ net/nfc/nci/core.c                | 10 +++++-----
+ net/nfc/nfc.h                     |  3 ++-
+ 12 files changed, 55 insertions(+), 42 deletions(-)
+
+-- 
+2.43.0
