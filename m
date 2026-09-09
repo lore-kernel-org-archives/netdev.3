@@ -1,125 +1,79 @@
-Received: from out28-121.mail.aliyun.com (out28-121.mail.aliyun.com [115.124.28.121])
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 922AC34F483;
-	Wed,  9 Sep 2026 05:44:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.121
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B687A3546E9;
+	Wed,  9 Sep 2026 05:53:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788932656; cv=none; b=mBLmMMbt+U2KInT49VD9nHPYabvGpmS6wJy0f4SNX6cZa6LtMTszVWYXvEk/0ysNg/aGViH7J3pJUk/+qaH3NHadLbhXQF7pSOjadJ9pa0aBMLXdsPUFIC7h4JrfgYRAr/MERQ8chQDxfVGq62KEgNaaMQE1NeRPKeul5MmULIw=
+	t=1788933198; cv=none; b=WpT3vkBkBhqGQHmGio5t3FNTylrnbRPVeLkU/O8x71ZHXmv6dPw8L7I7LUpxKvSlp51mjlbpMLXJdrBvweU/G/Gp+P7qrzhKmq4tnEwR/odu2ZDxNn97pmD620IU1SclvRUJAIL0CgbdzFeGK/DMklpEKY/bVGU5TQsXhnhwZXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788932656; c=relaxed/simple;
-	bh=ncL1TZaUvrafoNmevXZ2l6gNwmK0Gf7X0LneI3k+DaY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KjHOd0WfunI26lCWXjfho6Sdt/l5ZnU5IX4FlcHOJ3feKNDQK9c7V1cXnqR415p2KkiNGeusXubc/KiUjdf6pM5natqWJvQJDpKkJ/8DufK1V0Mkc80mN8/caFLTp8VFPlaQUbeE57V4fjBa0T2qRR//wbQyXwpv5EdXR63zoGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xiaopeng.com; spf=pass smtp.mailfrom=xiaopeng.com; dkim=pass (1024-bit key) header.d=xiaopeng.com header.i=@xiaopeng.com header.b=sUOy8V56; arc=none smtp.client-ip=115.124.28.121
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xiaopeng.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xiaopeng.com
+	s=arc-20240116; t=1788933198; c=relaxed/simple;
+	bh=/Mhe+TGwpITJ5l85bZCjeSMXVvHI6Gxgg3Z+in9G8gQ=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=n2lTeV+DaJWnLiZRgVnyUchQaE4xo9yW6NGq0xIj6+ubX9S6FacG2zSQPddk/axwZusj1Y/7hYzZQJ5z+mwlS0pyP1oOxmpqSl3HqnjQPi17xMGK8I0xFaiCQ+ArOjtuOVFeoBXqD8iEGw6d0XL5fJ5uCT2jy4xivy/zUNRgxCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=pTQTZV0r; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=xiaopeng.com header.i=@xiaopeng.com header.b="sUOy8V56"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=xiaopeng.com; s=default;
-	t=1788932643; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=clFMEoaK0/ropSvPOKmrmoJ/NX3PTGHrk1ZEqEfZ2Gw=;
-	b=sUOy8V56Hts7+VMLHZRqB5ibeq5aDMG9g4bwT5VUOaBhh+0Ife+pQpYrjTALIdeWFjxA9db+7/bYt1sOZWmcWu3cCsV7hceTvyfBmxeotXeQHOWmsC6G+BYqlGNdivqcV5tuzImwTl65EASjXUoar6a/+BLkFGNmBsOD1w4tgXE=
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.169033|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.00438728-0.000974205-0.994639;FP=11404490654595305044|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033023018039;MF=zhugl3@xiaopeng.com;NM=1;PH=DS;RN=14;RT=14;SR=0;TI=SMTPD_---.j9ME9Bu_1788932641;
-Received: from DESKTOP-UL5U09E.xiaopeng.local(mailfrom:zhugl3@xiaopeng.com fp:SMTPD_---.j9ME9Bu_1788932641 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Wed, 09 Sep 2026 13:44:02 +0800
-From: Guanglei Zhu <zhugl3@xiaopeng.com>
-To: Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>,
-	Loic Poulain <loic.poulain@oss.qualcomm.com>,
-	Sergey Ryazanov <ryazanov.s.a@gmail.com>
-Cc: Liu Haijun <haijun.liu@mediatek.com>,
-	Ricardo Martinez <ricardo.martinez@linux.intel.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] net: wwan: t7xx: validate the HS2 message data length
-Date: Wed,  9 Sep 2026 13:44:01 +0800
-Message-ID: <20260909054401.718959-1-zhugl3@xiaopeng.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="pTQTZV0r"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=/Mhe+TGwpITJ5l85bZCjeSMXVvHI6Gxgg3Z+in9G8gQ=;
+	t=1788933196; x=1790142796; b=pTQTZV0rbo7EvBjTgPY0sVuLjB/mcsc1yvaPlgebPIYLl5V
+	88Q0CXFT4ySMSo+aZ0ta6FfvrP6M08vv7i8n+wJ5WAZIzgHiiy6wM0Z+tt35Wwgu/uIM3TNhHy7mz
+	K7oAu8IhKGJtUCMhLe3NlPiv20DesTpaNc/GfR1ps1G5K6H/KLh32lI2jLtecEYitikk+wZtvyUJf
+	8lhP01nK1sqj4PZSo2CG8a2/cD7Z+hmjD2wFH7qytiwE8sGQrFPtyXBLhOtPStfC5kV99ccVA95XI
+	tJeP4V9pNxofWcBZTlmdo5V6JREyH+aSMUN8tHrQWuw8z4hC4e1ujxzwUFwg9tNQ==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__ECDSA_SECP256R1_SHA256__AES_256_GCM:256)
+	(Exim 4.98.2)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1x4BF8-00000007djD-0drd;
+	Wed, 09 Sep 2026 07:53:10 +0200
+Message-ID: <e9b36721c9e2b0b24c89c2e1b5b03b17c438f30c.camel@sipsolutions.net>
+Subject: Re: [PATCH RESEND wireless-next 00/18] wifi: Add Seamless Mobility
+ Domain (SMD) AP support
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>, Jakub Kicinski
+	 <kuba@kernel.org>
+Cc: Pooventhiran G <pooventhiran.g@oss.qualcomm.com>, "David S . Miller"
+	 <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+	 <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-wireless@vger.kernel.org
+Date: Wed, 09 Sep 2026 07:53:09 +0200
+In-Reply-To: <e7089219-ed02-4288-a678-660a52289e61@oss.qualcomm.com>
+References: <20260908-smd-v1-0-9fd2d876a1fb@oss.qualcomm.com>
+	 <20260908125017.0fb226c5@kernel.org>
+	 <404004c4c97bf776077685b7ec33a14fa777cd70.camel@sipsolutions.net>
+	 <80266eb9666d6106110d998cb6330868da55bf59.camel@sipsolutions.net>
+	 <20260908132004.29176fec@kernel.org>
+	 <0e950f7f0c3f5a2c1f6476e255716b09876624f4.camel@sipsolutions.net>
+	 <e7089219-ed02-4288-a678-660a52289e61@oss.qualcomm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-malware-bazaar: not-scanned
 
-control_msg_handler() passes the modem-supplied data_length field of a
-CTL_ID_HS2_MSG message straight to t7xx_fsm_append_event(), which
-memcpy()s that many bytes out of the skb.  Nothing compares the field
-with the actual length of the message, so a modem reporting a larger
-data_length makes the driver read past the end of the skb and store
-kernel heap memory in the FSM event.
+On Tue, 2026-09-08 at 17:20 -0700, Jeff Johnson wrote:
+>=20
+> Apologies for the AI-like commit messages. Those are at my prompting sinc=
+e I
+> want these patches to be understandable by folks who may not know or
+> understand the underlying details of SMD roaming so I requested they cont=
+ain
+> enough detail that referencing the spec should not be necessary.
+>=20
+> AFAIK none of this code is AI generated.
 
-0e7c074cfcd9 ("net: wwan: t7xx: validate port_count against message
-length in t7xx_port_enum_msg_handler") added this kind of check for
-the port enumeration path but missed the handshake path.
+Did you read it? The comments (in patch 1 we were talking about) are
+also all clearly generated.
 
-Reject the message when data_length does not fit into the skb.
-
-Fixes: da45d2566a1d ("net: wwan: t7xx: Add control port")
-Cc: stable@vger.kernel.org
-Signed-off-by: Guanglei Zhu <zhugl3@xiaopeng.com>
----
-
-Verified in a QEMU guest with a fault injector feeding the driver's
-control port thread a handshake message whose data_length exceeds the
-skb: the unpatched driver trips KASAN on a read of 8192 bytes past a
-500-byte payload, and the extra bytes land in the FSM event.  With
-this check the message is rejected, and well-formed handshakes are
-unaffected.
- drivers/net/wwan/t7xx/t7xx_port_ctrl_msg.c | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/net/wwan/t7xx/t7xx_port_ctrl_msg.c b/drivers/net/wwan/t7xx/t7xx_port_ctrl_msg.c
-index f869e4ed9..0f2ead8a7 100644
---- a/drivers/net/wwan/t7xx/t7xx_port_ctrl_msg.c
-+++ b/drivers/net/wwan/t7xx/t7xx_port_ctrl_msg.c
-@@ -178,22 +178,32 @@ static int control_msg_handler(struct t7xx_port *port, struct sk_buff *skb)
- 
- 	ctrl_msg_h = (struct ctrl_msg_header *)skb->data;
- 	switch (le32_to_cpu(ctrl_msg_h->ctrl_msg_id)) {
--	case CTL_ID_HS2_MSG:
-+	case CTL_ID_HS2_MSG: {
-+		u32 data_length;
-+
- 		skb_pull(skb, sizeof(*ctrl_msg_h));
-+		data_length = le32_to_cpu(ctrl_msg_h->data_length);
- 
- 		if (port_conf->rx_ch == PORT_CH_CONTROL_RX ||
- 		    port_conf->rx_ch == PORT_CH_AP_CONTROL_RX) {
- 			int event = port_conf->rx_ch == PORT_CH_CONTROL_RX ?
- 				    FSM_EVENT_MD_HS2 : FSM_EVENT_AP_HS2;
- 
--			ret = t7xx_fsm_append_event(ctl, event, skb->data,
--						    le32_to_cpu(ctrl_msg_h->data_length));
--			if (ret)
--				dev_err(port->dev, "Failed to append Handshake 2 event");
-+			if (data_length > skb->len) {
-+				dev_err(port->dev, "Invalid HS2 message length %u\n",
-+					data_length);
-+				ret = -EINVAL;
-+			} else {
-+				ret = t7xx_fsm_append_event(ctl, event, skb->data,
-+							    data_length);
-+				if (ret)
-+					dev_err(port->dev, "Failed to append Handshake 2 event");
-+			}
- 		}
- 
- 		dev_kfree_skb_any(skb);
- 		break;
-+	}
- 
- 	case CTL_ID_MD_EX:
- 	case CTL_ID_MD_EX_ACK:
--- 
-2.43.0
-
+johannes
