@@ -1,267 +1,141 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 411BC472538;
-	Wed,  9 Sep 2026 11:42:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FD2F54936D;
+	Wed,  9 Sep 2026 11:42:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788954156; cv=none; b=iraBlEP4qCp063mYY6E7i0+wjjvl+MJ2X7tD/7h09zspXSN0+Bin9IAblgyYPw9V9a1Ml8Bq860IEgC7AVlptXVlHT6MjOJ0+lKcPQEaZiviEkMk8tZDj/y85Z55fPGWPQcvzqn99klUMN5QK8Dn76dE5jsrcj07/Of3wlc8klc=
+	t=1788954166; cv=none; b=YHumIFZRRJWQwqm9/6ikvViKWL8WYjRNFwnEzhGe1dlw9jcUQuvI+KPnvnJ6gfwL6C4F/lIuyXTGY/JLqNGyd1Q8HCB7ISFNv8v043CNRkHUAF3LfW1A8Afe+ZQxjNa8U32/47DWeaAkV2Z2rYrs6sVZ21zZYtiE8q5m8cFS9aY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788954156; c=relaxed/simple;
-	bh=2snWrRJ4uKorGtLI1mnuq+G1C5icOs1zvH0gbkFqGfU=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=hZdHXJ32aRjyTVmc93t+2GrFJRSC0NKnjfdWD5VpDSQSFiYye6LoMK6+4q7VgTxFCv20uogALc9TzZPJjo4h5Udb8s+VEGsVNZeMvo4PW/aQ+96FF1YZSltS1yVQOGwltYBlJPUpHBwE9ADYLvQxRIHg6VzCz7hpOz6Shetv7qE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EA2rFaUh; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788954166; c=relaxed/simple;
+	bh=NHuRSVmRbB4nVz4ShQc/CV4keQMxc9xxzTf4mlVXcxg=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=cv6br12c0cF82Ed6Wv/RccVFtuVKTeSswT7upXqfObDwsHZ5Gv5TE3HBEUUkDwm34kMkM/8/dPVD16kiRAcRYd4Euu177/P8LYwQHkjwnALtoOJLPX1i1x5etKgD4rdDHrMnVRn7BeZg7Gp1FSeYnBJPM8/MzOul6MLsHItaZIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=sbRE2tYk; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EA2rFaUh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 661F81F00A3D;
-	Wed,  9 Sep 2026 11:42:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788954152;
-	bh=Yfjjb++jzXj/lmKBwq5OTsLKZrasvS3tMpARBFSXekY=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=EA2rFaUhwdewAgNFzbdKgUmvqPwUKatu19woT9xnBtKOVNkgvhySJUy9/vOBSpeA3
-	 s15JgWu/ODPSqlLtVw22V6NhCrdcSMEtJbIBO2u0dshPpIDcCi5DiUccEcAUCp/z9G
-	 FCJeFNjDkWhdNQ57+CHDgtifwyNV5P+JF7G96PTNCTOrPmoVsRwSnhPDMo1IFtVIaA
-	 dFn4UoNJ2lQcwcUO9wld/lTbKcJgJR10MiFPQfWal/Dc6+J7KTCXOCUSakwTVkkk10
-	 2FdqKguW073bVtaf3iA0MCUDifXS1IIA4zSV8NcOLN/qDV47dEhCPtgUOS3ffVma2L
-	 PSyGxvgAqLefA==
-Subject:
- Re: [PATCH net] net: dsa: mxl862xx: disable the stats poll on teardown
-From: netdev-bot+sashiko@kernel.org
-To: daniel@makrotopia.org
-Cc: andrew@lunn.ch, olteanv@gmail.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Wed, 09 Sep 2026 11:42:31 +0000
-Message-ID: <178895415193.219967.5342143627576620914@kernel.org>
-In-Reply-To: =?utf-8?q?=3C8b861014c836377afab0fdfb66a83fa017e5cd84=2E1788779?=
- =?utf-8?q?062=2Egit=2Edaniel=40makrotopia=2Eorg=3E?=
-References: =?utf-8?q?=3C8b861014c836377afab0fdfb66a83fa017e5cd84=2E17887790?=
- =?utf-8?q?62=2Egit=2Edaniel=40makrotopia=2Eorg=3E?=
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="sbRE2tYk"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id DCBDEA91C3;
+	Wed,  9 Sep 2026 13:32:45 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1788953583; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=yPBIL7xp9k71Jeokn/0hO8JzhFF0Afrctk/+t5BAEHE=;
+	b=sbRE2tYkP1k8m+7VZC/tSY0yzOQ8YBnjJnZvwjHUTlqrOFt2S+IFcDWSu6pyR+oAtqCEqa
+	x8JHfGwqVz7NMO/Fod8/lA9KeBM58l3Kv5BpRWDcyWGpG4LTsKTVSnNkt4khTC6k2n6wbg
+	aTbFeLXHYiMu60j+b2fSDKzQ+1bLRVFdpvnedgmYC/wZVWaVOJRZ3DIaRvr+krDKWRXhPa
+	D8CPaES0bPYr1YRgt3c33kt2leHuIqp9gxrmMj0fmPTC+7dGlLE11tmNab8vm6zsuciAaY
+	8Ifwj7UmXpl/WF5PZJiOq3uP+aKNCpJ0k4jx3Kq8XVhn3ITd22PEXi+8VreUVQ==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Date: Wed, 09 Sep 2026 13:32:45 +0200
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Russell King <linux@armlinux.org.uk>, Heiner Kallweit
+ <hkallweit1@gmail.com>, =?UTF-8?Q?Alexis_Lothor=C3=A9?=
+ <alexis.lothore@bootlin.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, Emil Renner Berthing
+ <kernel@esmil.dk>, Minda Chen <minda.chen@starfivetech.com>, Neil Armstrong
+ <neil.armstrong@linaro.org>, Kevin Hilman <khilman@baylibre.com>, Jerome
+ Brunet <jbrunet@baylibre.com>, Martin Blumenstingl
+ <martin.blumenstingl@googlemail.com>, Jan Petrous <jan.petrous@oss.nxp.com>,
+ Ovidiu Panait <ovidiu.panait.rb@renesas.com>, Jose.Abreu@synopsys.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ thomas.petazzoni@bootlin.com, linux-arm-kernel@lists.infradead.org,
+ linux-stm32@st-md-mailman.stormreply.com, PKneuper@dspace.de, David Laight
+ <david.laight.linux@gmail.com>
+Subject: Re: [PATCH net 2/6] net: stmmac: selftests: Validate EEE based on the
+ actual LPI timer value
+In-Reply-To: <20260909074740.1247762-3-maxime.chevallier@bootlin.com>
+References: <20260909074740.1247762-1-maxime.chevallier@bootlin.com>
+ <20260909074740.1247762-3-maxime.chevallier@bootlin.com>
+Message-ID: <2f268c9ff187ba59f69d37dd4e4ba99b@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider:
+Hi Maxime
 
-Critical: 0 · High: 1 · Medium: 0 (1) · Low: 1 (1)
+On 9.9.2026 09:47, Maxime Chevallier wrote:
+> The EEE selftest is a 2-step test :
+>  - It validates that we enter in LPI mode with the
+>    irq_tx_path_in_lpi_mode_n counter
+>  - It then validates that we exit LPI when sending a frame, with the
+>    irq_tx_path_exit_lpi_mode_n counter.
+> 
+> The current state of the test lacks 2 main things :
+> 
+>  - We don't know exactly when was the previous frame sent (it's from 
+> the
+>    previous selftest)
+> 
+>  - The timeout is hardcoded, while the LPI is entered after a
+>    user-configurable delay. On top of that, the timeout loop uses a
+>    pre-decrement iterator (--retries) that actually only iterate nine
+>    times, so 900ms while the default LPI value is 1 second.
+> 
+> Let's therefore make it more deterministic :
+> 
+>  - Send a frame at the beginning of the test
+>  - Wait for more than the lpi timer value, we timeout after about twice
+>    the value,
+>  - Then send another frame, and verify that we do go out of LPI, also
+>    with a timeout.
+> 
+> Note that the test's goal isn't to validate the LPI timer value itself,
+> only that we enter/leave LPI mode.
+> 
+> Fixes: 091810dbded9 ("net: stmmac: Introduce selftests support")
+> Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+> ---
+>  .../stmicro/stmmac/stmmac_selftests.c         | 33 ++++++++++++++-----
+>  1 file changed, 25 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c 
+> b/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
+> index 6503678b646e..4564b9f29194 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
 
-- [High] Stats poll can walk a freed dsa_port list on the DSA
-  registration-failure path: mxl862xx_setup() arms priv->stats_work…
-- [Low] The commit message overstates the failure mechanism: it blames
-  both mxl862xx_get_stats64() and "the stats poll's own re-arm" for…
+> [...]
 
-Pre-existing issues:
-- [Medium] Two of the driver's three work items keep the weaker cancel-
-  only teardown contract in the very functions this patch touches, and…
-- [Low] The comment above the re-arm in mxl862xx_get_stats64()
-  (drivers/net/dsa/mxl862xx/mxl862xx.c:2050-2052) claims the…
+> -	memcpy(initial, &priv->xstats, sizeof(*initial));
+> -
+> +	/* Send a frame, then wait to enter LPI */
+>  	ret = stmmac_test_mac_loopback(priv);
+>  	if (ret)
+>  		goto out_free_final;
+> 
+> +	max_duration = usecs_to_jiffies(2 * priv->tx_lpi_timer);
+> +
+> +	memcpy(initial, &priv->xstats, sizeof(*initial));
 
---
+Is the LPI entry already counted here? AFAIU with tx-lpi-timer=0 on 
+dwmac4 the
+MAC goes directly into LPI after the frame, before 
+stmmac_test_mac_loopback()
+returns. The loop below would time out although LPI is working.
 
-net: dsa: mxl862xx: disable the stats poll on teardown
+Snapshot before the first frame, and take a second snapshot right before
+the second loopback for the exit check?
 
-This switches the three teardown sites in the mxl862xx driver from
-cancel_delayed_work_sync() to disable_delayed_work_sync() so that a
-re-arm racing with the WORK_STOPPED flag cannot bring the stats poll
-back after the drain. The WORK_STOPPED flag is still set before the
-drain in all three places.
+> [...]
 
-A couple of questions about the changelog and about the paths the
-change is meant to cover.
+> +	memcpy(final, &priv->xstats, sizeof(*final));
+>  	if (final->irq_tx_path_exit_lpi_mode_n <=
+>  	    initial->irq_tx_path_exit_lpi_mode_n) {
+>  		ret = -EINVAL;
 
-> The WORK_STOPPED flag test in mxl862xx_get_stats64() and in the stats
-> poll's own re-arm is not atomic with the cancel in remove(), shutdown()
-> and the probe error path. A re-arm that read the flag before it was set
-> queues the work after cancel_delayed_work_sync() has returned
+nit: -ETIMEDOUT here as well, to match the entry check?
 
-[Severity: Low]
-Is the "stats poll's own re-arm" half of this accurate?
-
-cancel_delayed_work_sync() goes through __cancel_work_sync(), which raises
-the disable count before it flushes and only drops it afterwards:
-
-kernel/workqueue.c:__cancel_work_sync() {
-	ret = __cancel_work(work, cflags | WORK_CANCEL_DISABLE);
-	...
-	if (wq_online)
-		__flush_work(work, true);
-
-	if (!(cflags & WORK_CANCEL_DISABLE))
-		enable_work(work);
-}
-
-So the schedule_delayed_work() at the tail of mxl862xx_stats_work_fn() runs
-while the work is disabled and is either stolen by work_grab_pending() or
-dropped by clear_pending_if_disabled(). cancel_work_sync()'s kerneldoc says
-as much ("can be used even if the work re-queues itself ... as long as there
-aren't racing enqueues").
-
-That leaves the re-arm in mxl862xx_get_stats64() as the one enqueue that can
-actually land after the cancel returned. Would it be worth narrowing the
-changelog to that path, since the patch itself is still needed for it?
-
-> diff --git a/drivers/net/dsa/mxl862xx/mxl862xx.c b/drivers/net/dsa/mxl862xx/mxl862xx.c
-> index cfa7e3e269a28..a31ebbe451e00 100644
-> --- a/drivers/net/dsa/mxl862xx/mxl862xx.c
-> +++ b/drivers/net/dsa/mxl862xx/mxl862xx.c
-> @@ -2131,7 +2131,7 @@ static int mxl862xx_probe(struct mdio_device *mdiodev)
->  	err = dsa_register_switch(ds);
->  	if (err) {
->  		set_bit(MXL862XX_FLAG_WORK_STOPPED, &priv->flags);
-> -		cancel_delayed_work_sync(&priv->stats_work);
-> +		disable_delayed_work_sync(&priv->stats_work);
-
-[Severity: High]
-Can this error path still let the poll walk a freed dsa_port list?
-
-mxl862xx_setup() arms the poll while still inside dsa_register_switch():
-
-drivers/net/dsa/mxl862xx/mxl862xx.c:mxl862xx_setup() {
-	...
-	schedule_delayed_work(&priv->stats_work,
-			      MXL862XX_STATS_POLL_INTERVAL);
-
-	return mxl862xx_setup_mdio(ds);
-}
-
-If mxl862xx_setup_mdio() or any later dsa_tree_setup() step fails, DSA frees
-the ports before returning to the driver:
-
-net/dsa/dsa.c:dsa_switch_probe() {
-	err = dsa_tree_setup(dst);
-	if (err) {
-		dsa_switch_release_ports(ds);
-		dsa_tree_put(dst);
-	}
-}
-
-net/dsa/dsa.c:dsa_switch_release_ports() {
-		...
-		list_del(&dp->list);
-		kfree(dp);
-}
-
-Meanwhile the worker iterates that same list with no lock:
-
-drivers/net/dsa/mxl862xx/mxl862xx.c:mxl862xx_stats_work_fn() {
-	dsa_switch_for_each_available_port(dp, ds)
-		mxl862xx_stats_poll(ds, dp->index);
-	...
-}
-
-and mxl862xx_stats_poll() then does spin_lock_bh(&priv->ports[port].stats_lock)
-plus 64-bit accumulate writes using that dp->index. Since the disable here
-only runs after dsa_register_switch() has already completed its unwind, does
-this change cover that window at all? mxl862xx_switch_ops has .port_teardown
-but no .teardown, so DSA's own unwind gives the driver no place to stop the
-poll before the ports go away. Would disabling the work from a .teardown op,
-or from mxl862xx_setup()'s own error handling, close it?
-
->  		mxl862xx_host_shutdown(priv);
->  		for (i = 0; i < MXL862XX_MAX_PORTS; i++)
->  			cancel_work_sync(&priv->ports[i].host_flood_work);
-
-[Severity: Medium]
-This isn't a bug introduced by this patch, but the other two work items in
-the driver keep the weaker cancel-only contract in the very functions being
-touched here, and for crc_err_work it looks defeatable.
-
-mxl862xx_host_shutdown() only cancels:
-
-drivers/net/dsa/mxl862xx/mxl862xx-host.c:mxl862xx_host_shutdown() {
-	cancel_work_sync(&priv->crc_err_work);
-}
-
-and none of the queue sites for that work consult MXL862XX_FLAG_WORK_STOPPED,
-only MXL862XX_FLAG_CRC_ERR:
-
-drivers/net/dsa/mxl862xx/mxl862xx-host.c:mxl862xx_send_cmd() {
-		if ((ret == MXL862XX_FW_CRC6_ERR ||
-		     ret == MXL862XX_FW_CRC16_ERR) &&
-		    !test_and_set_bit(MXL862XX_FLAG_CRC_ERR, &priv->flags))
-			schedule_work(&priv->crc_err_work);
-}
-
-The same pattern is in mxl862xx_issue_cmd() and mxl862xx_api_wrap().
-
-Here crc_err_work is cancelled before the host_flood_work drain, and
-mxl862xx_host_flood_work_fn() issues firmware commands via
-mxl862xx_bridge_config_fwd() holding only rtnl_lock(). If a CRC-6/CRC-16
-mismatch happens on one of those commands after mxl862xx_host_shutdown()
-returned, crc_err_work is queued again. On this path priv is devres-freed as
-soon as probe returns err, so mxl862xx_crc_err_work_fn() would then
-dereference freed memory:
-
-drivers/net/dsa/mxl862xx/mxl862xx-host.c:mxl862xx_crc_err_work_fn() {
-	struct mxl862xx_priv *priv = container_of(work, struct mxl862xx_priv,
-						  crc_err_work);
-}
-
-Would moving mxl862xx_host_shutdown() after the host_flood_work drain, or
-disabling crc_err_work and host_flood_work rather than cancelling them, put
-all three work items on one contract?
-
-[ ... ]
-
-> @@ -2181,7 +2181,7 @@ static void mxl862xx_shutdown(struct mdio_device *mdiodev)
->  	dsa_switch_shutdown(ds);
->  
->  	set_bit(MXL862XX_FLAG_WORK_STOPPED, &priv->flags);
-> -	cancel_delayed_work_sync(&priv->stats_work);
-> +	disable_delayed_work_sync(&priv->stats_work);
->  
->  	mxl862xx_host_shutdown(priv);
->  
-
-The same crc_err_work ordering applies on this path. dsa_switch_shutdown()
-does not call .port_teardown, so p->setup_done is still true when the flood
-worker runs and it proceeds to issue firmware commands after crc_err_work has
-already been cancelled. The re-queue looks harmless during system shutdown,
-but the ordering is the same as in the probe error path above.
-
-One more observation about a comment that this patch does not touch but which
-the change makes partly stale.
-
-[Severity: Low]
-This is a pre-existing issue, but the comment above the re-arm in
-mxl862xx_get_stats64() reads:
-
-drivers/net/dsa/mxl862xx/mxl862xx.c:mxl862xx_get_stats64() {
-	/* Trigger a fresh poll so the next read sees up-to-date counters.
-	 * No-op if the work is already pending, running, or teardown started.
-	 */
-	if (!test_bit(MXL862XX_FLAG_WORK_STOPPED, &priv->flags))
-		schedule_delayed_work(&priv->stats_work, 0);
-}
-
-Is it a no-op while the work is running? queue_delayed_work_on() only bails
-on WORK_STRUCT_PENDING or a non-zero disable count:
-
-kernel/workqueue.c:queue_delayed_work_on() {
-	if (!test_and_set_bit(WORK_STRUCT_PENDING_BIT, work_data_bits(work)) &&
-	    !clear_pending_if_disabled(work)) {
-		__queue_delayed_work(cpu, wq, dwork, delay);
-		ret = true;
-	}
-}
-
-process_one_work() clears PENDING before invoking the callback, so a queue
-attempt during execution is accepted and the MDIO-heavy poll runs again right
-after the current one. Repeated readers, e.g. "ip -s link" in a loop, can
-chain polls back to back.
-
-After this patch the "teardown started" clause is also satisfied by the new
-disable count rather than by the flag test the comment sits on. Could the
-comment be updated to match?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/8b861014c836377afab0fdfb66a83fa017e5cd84.1788779062.git.daniel%40makrotopia.org
+Thanks
+Nicolai
