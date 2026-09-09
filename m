@@ -1,261 +1,390 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f178.google.com (mail-oi1-f178.google.com [209.85.167.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9D2C39AD55;
-	Wed,  9 Sep 2026 18:42:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 486403A7826
+	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 18:42:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788979349; cv=none; b=uUShRbr88fz5f+WbLaXP3EQzBVFrh31aD2pbknFYa/DQiW52bOZnP83rPMmGgClnhVfHCpiNMuMLLuZIjtK0WBwY2cPa5v7+O+iijPoVO7EBmph4Ru0xW8oGltKJzjzxmPlWFtc47j7vQzukur4bBgEWBh4C0jN9wuEAltYXQ9A=
+	t=1788979350; cv=none; b=QFhXLo0+1RMnDWx+xkUyocxcros2TqN3o4e9F1MWqsYUd46Si2Bq8G3Vh2N48VWzWSIpHYiclSSEk91mFbO2SHbo8A78OREBAy08vrBQoHhRJlntRPQ1jgbCU6GKVeUobd0msDHCaoX58rGXsMrUlWK4lloR5hyyu2spbcQLdIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788979349; c=relaxed/simple;
-	bh=vishV5fuTs5iBOtlLv8W5MtQa9iD8lEiA5+8KhLHHAo=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=S5sjODJcZFiNpPkTx2JZRAiGb2UMe+/7h94Ghd6rYZeTNSEmAVDIsRzsztNi7b7RTqrWWzoXe9QHirWa9TukPldTz0xSuboIW6AexTfk8BDICvZacPQqg2F8YDA17LroHrDgve9AynKWrGt9YQI4p/IxxVmfw1NsPW/7/yBtNfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XXdpqJJ7; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788979350; c=relaxed/simple;
+	bh=WS4gE+gsuteGV8hDTyCAPSaz9lLwSR8Fyhm1O69yjQc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kWMDmoxpK/B4/5lsPY8tkNLaZRAjQ/txDSByb4N6QXUPkfFR7c97R6gbCJ+D7WaFMvSEJDNjgMaC8QvSR/cb7DRcS7OX6JAaTSbqj/5wlPvx8KSEczc9t0Yeb7xXKvbVJD62xEpLjiBaX5pWJUkZG9nBLv/pktrlEc9HtrUc09o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cMw56YS7; arc=none smtp.client-ip=209.85.167.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XXdpqJJ7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6B5A1F000FF;
-	Wed,  9 Sep 2026 18:42:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788979347;
-	bh=1X1pJMZ491RdYGpH9hzqiianfRrvhBC5mGwVqdCjDhM=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=XXdpqJJ7XOnfHxBwy+NBy5dvDtDLnA7ThQDzMz6e6gXB4y7mOkCula21VPnbp3q/C
-	 iHaGj2dCMygKLVXF6ocXyfe0RhOiKodkPKW1uvNki4RzedBM/d0Q6F8GrO8nxDhpWr
-	 FfzUPhO/LU92NFPNMSdrOwwOAD+Z7VvUh0ybzC8ociprM8l25j/lmd/qAUYd0a7o7z
-	 ekcLF9VijbG/fdP1bD0vKrOaQDccpd/jUljzmaPJ+6mjE3te2acd+XH+rAV5T4Yawz
-	 LP+kJB8B333hM16w9qR7m3p10ddlwBpvaQ1FqiDTSeYfDHkL2yUO7XTJqEcC3/PdnF
-	 i88PqEagP101Q==
-Subject:
- Re: [PATCH] wifi: mm81x: validate packet length in mm81x_yaps_read_pkt()
-From: netdev-bot+sashiko@kernel.org
-To: elb12345@hotmail.co.uk
-Cc: lachlan.hodges@morsemicro.com, dan.callaghan@morsemicro.com,
- kvalo@kernel.org, arien.judge@morsemicro.com, johannes@sipsolutions.net,
- linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
- stable@vger.kernel.org, kuba@kernel.org
-Date: Wed, 09 Sep 2026 18:42:26 +0000
-Message-ID: <178897934638.219967.5289393639495920738@kernel.org>
-In-Reply-To: =?utf-8?q?=3CAS8P251MB0001B650C31E9F37C3B7907BC8B32=40AS8P251MB?=
- =?utf-8?q?0001=2EEURP251=2EPROD=2EOUTLOOK=2ECOM=3E?=
-References: =?utf-8?q?=3CAS8P251MB0001B650C31E9F37C3B7907BC8B32=40AS8P251MB0?=
- =?utf-8?q?001=2EEURP251=2EPROD=2EOUTLOOK=2ECOM=3E?=
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cMw56YS7"
+Received: by mail-oi1-f178.google.com with SMTP id 5614622812f47-4b333de9451so5427378b6e.3
+        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 11:42:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788979347; x=1789584147; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=B+ejgy5Nlwnfj97ymg22230Q/iVtOnJy6lcAnjEV1mM=;
+        b=cMw56YS7Gz6L03V7M6MspBIQuQxuPRnKu4makqzRoHlXGzpvmEQLP6VMJL/qiNluMB
+         DoESCbpla7h5SZRozVo9UbEbWcCZj+k/fm1oSK8SQ8qrMhlDRv9VHZFnxOc7LlN/7w8L
+         ncqjM3YxWSsIuzLB5zPTlNJg6k/My8MkG/C0UtqCz80LsT8wnQesaB/srlwtX9rcE+ot
+         bAkxTGX/4wJbDxVXCRMcyZeRWpVi+NK9LuG5h2w7s4SiSlaFgb3CUOfzf8Wju6xkvsHn
+         eBfC8tGD0u4ZEZVS0dzmpF/nNxYi0vJPqV6rDCRY67OHEfegCk5zyVqDcK5xrWdSx/vb
+         28Ig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788979347; x=1789584147;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=B+ejgy5Nlwnfj97ymg22230Q/iVtOnJy6lcAnjEV1mM=;
+        b=Z7Iv2FrBXRIRGpD2vGPsSzJlYI94qmUrSI2fuNzvg1XIFTYOd5ebM7pV54NrUogS2n
+         mE09a6gMzW8HYG1a3qP9TxOm1bIUUc1ds2dBNfA90fHrwIohvxHm/ESZQuqIjohj2lX5
+         N9GCXtjY/bfAmwUUWIhk46hZSbh3vXc0d3/zUXjxZKbvFWL3JWj+/opgMTUvmYIEB/GZ
+         3CPZFE/l7BRz/9qQGMQrxDnce9W3gQAIvUQak9lDUAW9IubUbZLtv0eDWxbPPDxgD97e
+         IGA4v6qiSS+VBV2ATkzYOSR0OPUTZEVln6WxG1ki6jSP0UISLdqWlEGSbRVchISb3yeR
+         UXXg==
+X-Forwarded-Encrypted: i=1; AKwUvBz/4lEBvrhKZKXc+5NfQUaWzjOPjLee5IrE7+oWLurT/UPMlnL9aDqj7WZJypLe3V6FYe1RN00=@vger.kernel.org
+X-Gm-Message-State: AFuF++m4j5jOeclJH34Bkeg+EE4KO8Zkz9BIGsRg05FE/3kRqcyMeY7n
+	1sLQ5yi1SUjJEQYQ8kVHwY7m4HEymx+ZJYglofJeYBCf4M4LCgd35iQ9
+X-Gm-Gg: AYBFou0D9xP1wTiX3uhInsq1JeEEB8cjIoKSWKePdqInv4i7BYwUpAAlLd+T+fbkCHs
+	b/qepT7JAwKH+lAZNcSmTsHmvyz2niUcw66lxP8eYSPu9Il5A17MyiGQ7sN2UPOBjL9q8v98sLF
+	48u4OFSbhUw7XwV0l2nRIOsiS9YvkFwfiSwA/Ml1EPREldwgXHnIMYyEtWzLmnLEZwacQ2qg05O
+	g2o0UxHRGBP4BMFhj08sJlBZdSXxcWsjric6eZFQ/bA10AH6dRTGDlE3bCO7QCCgOfEqojrj2XC
+	lA9CzmRoK2NoBWYUu3gBeaNuLYVDhDDG37TtUIRaBqckuSsTrV3Tc+eHDGQ2xqfD9PIALCZ2VQR
+	9CTfp+0ZhkT9GILmMqvWNOLfDafGbsTJgs70WDbEjuJlTPhAEIG1deUB39Ti124AMk0irSOUB8k
+	uKLCYxMfDzeqdgcMfGcsRiv5XoP2riYnUvzbWhck/c6kyxgkVvvASm01H476vBKM9lbDZ7O7Ki+
+	G0C4TV9eqTroCFtUwc=
+X-Received: by 2002:a05:6808:1b21:b0:4a4:ed9a:e793 with SMTP id 5614622812f47-4b96250e4e1mr21658033b6e.16.1788979346947;
+        Wed, 09 Sep 2026 11:42:26 -0700 (PDT)
+Received: from devvm29614.prn0.facebook.com ([2a03:2880:ff:4::])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-4b971675f82sm15934808b6e.12.2026.09.09.11.42.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 09 Sep 2026 11:42:25 -0700 (PDT)
+Date: Wed, 9 Sep 2026 11:42:21 -0700
+From: Bobby Eshleman <bobbyeshleman@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+	pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
+	shuah@kernel.org, cjubran@nvidia.com, cratiu@nvidia.com,
+	noren@nvidia.com, willemb@google.com, petrm@nvidia.com,
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH net-next v2] selftests: net: add ctl_file_write() helper
+Message-ID: <aqGojTHSSPmwWymW@devvm29614.prn0.facebook.com>
+References: <20260909180009.1894019-1-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260909180009.1894019-1-kuba@kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider:
-
-Critical: 0 · High: 1 (1) · Medium: 0 (2) · Low: 0
-
-- [High] Incomplete fix / wrong ordering: the header-claimed-length
-  validation added by this patch runs ~30 lines AFTER…
-
-Pre-existing issues:
-- [High] Missing minimum-payload validation lets an undersized device
-  command response reach mm81x_cmd_resp_process()…
-- [Medium] Two RX parse sites disagree on the meaning of struct
-  mm81x_skb_hdr's `offset` field.
-- [Medium] skb leak on the -ENOMEM path of mm81x_yaps_hw_read_pkts().
-
---
-
-wifi: mm81x: validate packet length in mm81x_yaps_read_pkt()
-
-The patch adds two length checks to mm81x_yaps_read_pkt(): a minimum
-length check before the struct mm81x_skb_hdr cast, and a check that the
-header-claimed total length does not exceed skb->len before the packet is
-trimmed and enqueued.  A few questions about the placement of the second
-check and about the paths that consume the validated packet.
-
-> diff --git a/drivers/net/wireless/morsemicro/mm81x/yaps.c b/drivers/net/wireless/morsemicro/mm81x/yaps.c
-> index e98a2a58726f5..da2c88901d64c 100644
-> --- a/drivers/net/wireless/morsemicro/mm81x/yaps.c
-> +++ b/drivers/net/wireless/morsemicro/mm81x/yaps.c
-> @@ -147,6 +147,13 @@ static int mm81x_yaps_read_pkt(struct mm81x_yaps *yaps, struct sk_buff *skb)
+On Wed, Sep 09, 2026 at 11:00:09AM -0700, Jakub Kicinski wrote:
+> Setting a sysctl or a sysfs attribute for the duration of a test and
+> putting the old value back has been open coded multiple times.
+> 
+> We generally avoid creating library helpers but this one is very
+> common, and the defer is a little tricky as using the same function
+> for defer as the initial write leads to an infinite loop (not that
+> I would ever make such mistake!)
+> 
+> Some of the conversions are not identical, but arguably ctl_file_write()
+> semantics are more correct.
+> 
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> ---
+> v2:
+>  - rebase
+>  - drop the irq.py change which wasn't identical
+> v1: https://lore.kernel.org/20260904174134.3789400-1-kuba@kernel.org
+> 
+> CC: bobbyeshleman@gmail.com
+> CC: shuah@kernel.org
+> CC: cjubran@nvidia.com
+> CC: cratiu@nvidia.com
+> CC: noren@nvidia.com
+> CC: willemb@google.com
+> CC: petrm@nvidia.com
+> CC: linux-kselftest@vger.kernel.org
+> ---
+>  .../testing/selftests/drivers/net/gro_lib.py  | 17 +++---------
+>  .../drivers/net/hw/devlink_rate_tc_bw.py      |  5 ++--
+>  .../drivers/net/hw/lib/py/__init__.py         |  4 +--
+>  .../selftests/drivers/net/hw/toeplitz.py      | 10 +++----
+>  .../selftests/drivers/net/lib/py/__init__.py  |  4 +--
+>  .../selftests/drivers/net/ring_reconfig.py    | 26 ++++---------------
+>  .../testing/selftests/net/lib/py/__init__.py  |  4 +--
+>  tools/testing/selftests/net/lib/py/utils.py   | 22 ++++++++++++++++
+>  8 files changed, 42 insertions(+), 50 deletions(-)
+> 
+> diff --git a/tools/testing/selftests/drivers/net/gro_lib.py b/tools/testing/selftests/drivers/net/gro_lib.py
+> index 45ded8477a50..b7ac0660adc0 100644
+> --- a/tools/testing/selftests/drivers/net/gro_lib.py
+> +++ b/tools/testing/selftests/drivers/net/gro_lib.py
+> @@ -48,7 +48,7 @@ import re
+>  from lib.py import ksft_run, ksft_exit, ksft_pr
+>  from lib.py import NetDrvEpEnv, KsftFailEx, KsftXfailEx
+>  from lib.py import NetdevFamily, EthtoolFamily
+> -from lib.py import bkg, cmd, defer, ethtool, ip
+> +from lib.py import bkg, cmd, ctl_file_write, defer, ethtool, ip
+>  from lib.py import ksft_variants, KsftNamedVariant
 >  
->  	__skb_queue_head_init(&skbq);
 >  
-> +	if (skb->len < sizeof(*hdr)) {
-> +		dev_err(mors->dev, "packet too short for header (%u < %zu)",
-> +			skb->len, sizeof(*hdr));
-> +		ret = -EINVAL;
-> +		goto exit_return_page;
-> +	}
+> @@ -85,17 +85,6 @@ GRO_DPORT = 8000
+>      return getattr(cfg, attr)
+>  
+>  
+> -def _write_defer_restore(cfg, path, val, defer_undo=False):
+> -    with open(path, "r", encoding="utf-8") as fp:
+> -        orig_val = fp.read().strip()
+> -        if str(val) == orig_val:
+> -            return
+> -    with open(path, "w", encoding="utf-8") as fp:
+> -        fp.write(val)
+> -    if defer_undo:
+> -        defer(_write_defer_restore, cfg, path, orig_val)
+> -
+> -
+>  def _set_mtu_restore(dev, mtu, host):
+>      if dev['mtu'] < mtu:
+>          ip(f"link set dev {dev['ifname']} mtu {mtu}", host=host)
+> @@ -250,8 +239,8 @@ def _run_gro_bin(cfg, test_name, protocol=None, num_flows=None,
+>          flush_path = f"/sys/class/net/{cfg.ifname}/gro_flush_timeout"
+>          irq_path = f"/sys/class/net/{cfg.ifname}/napi_defer_hard_irqs"
+>  
+> -        _write_defer_restore(cfg, flush_path, "200000", defer_undo=True)
+> -        _write_defer_restore(cfg, irq_path, "10", defer_undo=True)
+> +        ctl_file_write(flush_path, "200000")
+> +        ctl_file_write(irq_path, "10")
+>  
+>          _set_ethtool_feat(cfg.ifname, cfg.feat,
+>                            {"generic-receive-offload": True,
+> diff --git a/tools/testing/selftests/drivers/net/hw/devlink_rate_tc_bw.py b/tools/testing/selftests/drivers/net/hw/devlink_rate_tc_bw.py
+> index 4e4faa9275bb..38d712755257 100755
+> --- a/tools/testing/selftests/drivers/net/hw/devlink_rate_tc_bw.py
+> +++ b/tools/testing/selftests/drivers/net/hw/devlink_rate_tc_bw.py
+> @@ -63,7 +63,7 @@ from lib.py import ksft_pr, ksft_run, ksft_exit
+>  from lib.py import KsftSkipEx, KsftFailEx, KsftXfailEx
+>  from lib.py import NetDrvEpEnv, DevlinkFamily
+>  from lib.py import NlError
+> -from lib.py import cmd, defer, ethtool, ip
+> +from lib.py import cmd, ctl_file_write, defer, ethtool, ip
+>  from lib.py import Iperf3Runner
+>  
+>  
+> @@ -113,8 +113,7 @@ from lib.py import Iperf3Runner
+>      except Exception as exc:
+>          raise KsftSkipEx(f"Failed to enable switchdev mode on {cfg.pci}") from exc
+>      try:
+> -        cmd(f"echo 1 > /sys/class/net/{cfg.ifname}/device/sriov_numvfs", shell=True)
+> -        defer(cmd, f"echo 0 > /sys/class/net/{cfg.ifname}/device/sriov_numvfs", shell=True)
+> +        ctl_file_write(f"/sys/class/net/{cfg.ifname}/device/sriov_numvfs", 1)
+>      except Exception as exc:
+>          raise KsftSkipEx(f"Failed to enable SR-IOV on {cfg.ifname}") from exc
+>  
+> diff --git a/tools/testing/selftests/drivers/net/hw/lib/py/__init__.py b/tools/testing/selftests/drivers/net/hw/lib/py/__init__.py
+> index 8a58cb17cc06..81e1d1865cd5 100644
+> --- a/tools/testing/selftests/drivers/net/hw/lib/py/__init__.py
+> +++ b/tools/testing/selftests/drivers/net/hw/lib/py/__init__.py
+> @@ -24,7 +24,7 @@ KSFT_DIR = (Path(__file__).parent / "../../../../..").resolve()
+>      from net.lib.py import CmdExitFailure
+>      from net.lib.py import bkg, cmd, bpftool, bpftrace, defer, ethtool, \
+>          fd_read_timeout, ip, rand_port, rand_ports, wait_port_listen, \
+> -        wait_file, tool
+> +        wait_file, ctl_file_write, tool
+>      from net.lib.py import bpf_map_set, bpf_map_dump, bpf_prog_map_ids
+>      from net.lib.py import KsftSkipEx, KsftFailEx, KsftXfailEx
+>      from net.lib.py import ksft_disruptive, ksft_exit, ksft_pr, ksft_run, \
+> @@ -40,7 +40,7 @@ KSFT_DIR = (Path(__file__).parent / "../../../../..").resolve()
+>                 "CmdExitFailure",
+>                 "bkg", "cmd", "bpftool", "bpftrace", "defer", "ethtool",
+>                 "fd_read_timeout", "ip", "rand_port", "rand_ports",
+> -               "wait_port_listen", "wait_file", "tool",
+> +               "wait_port_listen", "wait_file", "ctl_file_write", "tool",
+>                 "bpf_map_set", "bpf_map_dump", "bpf_prog_map_ids",
+>                 "KsftSkipEx", "KsftFailEx", "KsftXfailEx",
+>                 "ksft_disruptive", "ksft_exit", "ksft_pr", "ksft_run",
+> diff --git a/tools/testing/selftests/drivers/net/hw/toeplitz.py b/tools/testing/selftests/drivers/net/hw/toeplitz.py
+> index 571732198b93..962d1aca2bc9 100755
+> --- a/tools/testing/selftests/drivers/net/hw/toeplitz.py
+> +++ b/tools/testing/selftests/drivers/net/hw/toeplitz.py
+> @@ -13,7 +13,7 @@ import os
+>  import socket
+>  from lib.py import ksft_run, ksft_exit, ksft_pr
+>  from lib.py import NetDrvEpEnv, EthtoolFamily, NetdevFamily
+> -from lib.py import cmd, bkg, rand_port, defer
+> +from lib.py import cmd, bkg, ctl_file_write, rand_port, defer
+>  from lib.py import ksft_in
+>  from lib.py import ksft_variants, KsftNamedVariant, KsftSkipEx, KsftFailEx
+>  
+> @@ -113,7 +113,7 @@ QUEUE_CAP = 8
+>  
+>  
+>  def _configure_rps(cfg, rps_cpus):
+> -    """Configure RPS for all Rx queues."""
+> +    """Configure RPS for all Rx queues, restored at the end of the test."""
+>  
+>      mask = 0
+>      for cpu in rps_cpus:
+> @@ -123,9 +123,8 @@ QUEUE_CAP = 8
+>  
+>      # Set RPS bitmap for all rx queues
+>      for rps_file in glob.glob(f"/sys/class/net/{cfg.ifname}/queues/rx-*/rps_cpus"):
+> -        with open(rps_file, "w", encoding="utf-8") as fp:
+> -            # sysfs expects hex without '0x' prefix, toeplitz.c needs the prefix
+> -            fp.write(mask[2:])
+> +        # sysfs expects hex without '0x' prefix, toeplitz.c needs the prefix
+> +        ctl_file_write(rps_file, mask[2:])
+>  
+>      return mask
+>  
+> @@ -208,7 +207,6 @@ QUEUE_CAP = 8
+>          # Get CPUs not used by Rx queues and configure them for RPS
+>          rps_cpus = _get_unused_rps_cpus(cfg, count=2)
+>          rps_mask = _configure_rps(cfg, rps_cpus)
+> -        defer(_configure_rps, cfg, [])
+>          rx_cmd += ["-r", rps_mask]
+>          ksft_pr(f"RPS using CPUs: {rps_cpus}, mask: {rps_mask}")
+>  
+> diff --git a/tools/testing/selftests/drivers/net/lib/py/__init__.py b/tools/testing/selftests/drivers/net/lib/py/__init__.py
+> index ee903bcf3207..591b1e6c7eea 100644
+> --- a/tools/testing/selftests/drivers/net/lib/py/__init__.py
+> +++ b/tools/testing/selftests/drivers/net/lib/py/__init__.py
+> @@ -24,7 +24,7 @@ KSFT_DIR = (Path(__file__).parent / "../../../..").resolve()
+>      from net.lib.py import CmdExitFailure
+>      from net.lib.py import bkg, cmd, bpftool, bpftrace, defer, ethtool, \
+>          fd_read_timeout, ip, rand_port, rand_ports, tc, wait_port_listen, \
+> -        wait_file
+> +        wait_file, ctl_file_write
+>      from net.lib.py import bpf_map_set, bpf_map_dump, bpf_prog_map_ids
+>      from net.lib.py import KsftSkipEx, KsftFailEx, KsftXfailEx
+>      from net.lib.py import ksft_disruptive, ksft_exit, ksft_pr, ksft_run, \
+> @@ -38,7 +38,7 @@ KSFT_DIR = (Path(__file__).parent / "../../../..").resolve()
+>                 "CmdExitFailure",
+>                 "bkg", "cmd", "bpftool", "bpftrace", "defer", "ethtool",
+>                 "fd_read_timeout", "ip", "rand_port", "rand_ports", "tc",
+> -               "wait_port_listen", "wait_file",
+> +               "wait_port_listen", "wait_file", "ctl_file_write",
+>                 "bpf_map_set", "bpf_map_dump", "bpf_prog_map_ids",
+>                 "KsftSkipEx", "KsftFailEx", "KsftXfailEx",
+>                 "ksft_disruptive", "ksft_exit", "ksft_pr", "ksft_run",
+> diff --git a/tools/testing/selftests/drivers/net/ring_reconfig.py b/tools/testing/selftests/drivers/net/ring_reconfig.py
+> index 2bc329b77134..6682d4badfbf 100755
+> --- a/tools/testing/selftests/drivers/net/ring_reconfig.py
+> +++ b/tools/testing/selftests/drivers/net/ring_reconfig.py
+> @@ -13,7 +13,7 @@ from lib.py import ksft_run, ksft_exit, ksft_pr
+>  from lib.py import ksft_eq
+>  from lib.py import KsftSkipEx, KsftXfailEx
+>  from lib.py import NetDrvEpEnv, EthtoolFamily, GenerateTraffic
+> -from lib.py import cmd, defer, rand_port, tc, NlError
+> +from lib.py import cmd, ctl_file_write, defer, rand_port, tc, NlError
+>  
+>  # Added in Python 3.13; fallback to 61 for x86/ARM/MIPS
+>  SO_TXTIME = getattr(socket, "SO_TXTIME", 61)
+> @@ -166,22 +166,6 @@ MAX_TX_RING = 1024
+>          GenerateTraffic(cfg).wait_pkts_and_stop(10000)
+>  
+>  
+> -def _write_file(path, val):
+> -    """Write val to a file."""
+> -    with open(path, "w", encoding="utf-8") as fp:
+> -        fp.write(str(val))
+> -
+> -
+> -def _write_sysfs(path, val):
+> -    """Write val to a sysfs file, restoring the original value on exit."""
+> -    with open(path, "r", encoding="utf-8") as fp:
+> -        orig_val = fp.read().strip()
+> -    if str(val) == orig_val:
+> -        return
+> -    _write_file(path, val)
+> -    defer(_write_file, path, orig_val)
+> -
+> -
+>  def _get_qdisc_backlog(cfg, mq_handle, queue):
+>      """Return the qdisc backlog (bytes) for the given TX queue's leaf."""
+>      target_parent = f"{mq_handle}{queue + 1:x}"
+> @@ -342,8 +326,8 @@ MAX_TX_RING = 1024
+>      # Slow completions so the ring stays full after FQ releases packets
+>      napi_defer = f"/sys/class/net/{cfg.ifname}/napi_defer_hard_irqs"
+>      gro_timeout = f"/sys/class/net/{cfg.ifname}/gro_flush_timeout"
+> -    _write_sysfs(napi_defer, 100)
+> -    _write_sysfs(gro_timeout, 1000000000)
+> +    ctl_file_write(napi_defer, 100)
+> +    ctl_file_write(gro_timeout, 1000000000)
+>  
+>      port = rand_port()
+>      # A single flow must overflow the ring, so send twice the ring depth and
+> @@ -384,8 +368,8 @@ MAX_TX_RING = 1024
+>      cfg.eth.rings_set(ehdr | {'tx': tx_cur})
+>  
+>      # Let completions proceed normally
+> -    _write_sysfs(napi_defer, 0)
+> -    _write_sysfs(gro_timeout, 0)
+> +    ctl_file_write(napi_defer, 0)
+> +    ctl_file_write(gro_timeout, 0)
+>  
+>      # Poll for backlog to drain
+>      for _ in range(100):
+> diff --git a/tools/testing/selftests/net/lib/py/__init__.py b/tools/testing/selftests/net/lib/py/__init__.py
+> index 34935886b6ad..71df5880b356 100644
+> --- a/tools/testing/selftests/net/lib/py/__init__.py
+> +++ b/tools/testing/selftests/net/lib/py/__init__.py
+> @@ -14,7 +14,7 @@ from .netns import NetNS, NetNSEnter, UserNetNS
+>  from .nsim import NetdevSim, NetdevSimDev
+>  from .utils import CmdExitFailure, fd_read_timeout, cmd, bkg, defer, \
+>      bpftool, ip, ethtool, bpftrace, rand_port, rand_ports, wait_port_listen, \
+> -    wait_file, tool, tc
+> +    ctl_file_write, wait_file, tool, tc
+>  from .bpf import bpf_map_set, bpf_map_dump, bpf_prog_map_ids
+>  from .ynl import NlError, NlctrlFamily, YnlFamily, \
+>      EthtoolFamily, NetdevFamily, RtnlFamily, RtnlAddrFamily, RtnlRouteFamily
+> @@ -29,7 +29,7 @@ __all__ = ["KSRC",
+>             "NetNS", "NetNSEnter", "UserNetNS",
+>             "CmdExitFailure", "fd_read_timeout", "cmd", "bkg", "defer",
+>             "bpftool", "ip", "ethtool", "bpftrace", "rand_port", "rand_ports",
+> -           "wait_port_listen", "wait_file", "tool", "tc",
+> +           "wait_port_listen", "ctl_file_write", "wait_file", "tool", "tc",
+>             "bpf_map_set", "bpf_map_dump", "bpf_prog_map_ids",
+>             "NetdevSim", "NetdevSimDev",
+>             "NetshaperFamily", "DevlinkFamily", "PSPFamily", "NlError",
+> diff --git a/tools/testing/selftests/net/lib/py/utils.py b/tools/testing/selftests/net/lib/py/utils.py
+> index 184bb04343f6..1727bc418073 100644
+> --- a/tools/testing/selftests/net/lib/py/utils.py
+> +++ b/tools/testing/selftests/net/lib/py/utils.py
+> @@ -357,6 +357,28 @@ GLOBAL_DEFER_ARMED = False
+>          time.sleep(sleep)
+>  
+>  
+> +def _ctl_file_write(path, val):
+> +    with open(path, "w", encoding="utf-8") as fp:
+> +        fp.write(str(val))
 > +
->  	hdr = (struct mm81x_skb_hdr *)skb->data;
->  	if (hdr->sync != MM81X_SKB_HEADER_SYNC) {
->  		dev_err(mors->dev, "sync value error [0xAA:%d], hdr.len %d",
-
-> @@ -186,6 +193,14 @@ static int mm81x_yaps_read_pkt(struct mm81x_yaps *yaps, struct sk_buff *skb)
->  	}
->  
->  	skb_len = sizeof(*hdr) + hdr->offset + le16_to_cpu(hdr->len);
-> +	if (skb_len > skb->len) {
-> +		dev_err(mors->dev,
-> +			"header claims %d bytes but packet is only %u",
-> +			skb_len, skb->len);
-> +		ret = -EINVAL;
-> +		goto exit_return_page;
-> +	}
 > +
+> +def ctl_file_write(path, val):
+> +    """
+> +    Write @val to a control file - a sysctl, a sysfs attribute, configfs...
+> +    and defer() restoring the old value, so needs a defer queue.
+> +
+> +    Writing a value which is already set is skipped, there is nothing
+> +    to restore in that case.
+> +    """
+> +    with open(path, "r", encoding="utf-8") as fp:
+> +        old = fp.read().strip()
+> +    if old == str(val):
+> +        return
+> +
+> +    _ctl_file_write(path, val)
+> +    defer(_ctl_file_write, path, old)
+> +
+> +
+>  def wait_file(fname, test_fn, sleep=0.005, deadline=5, encoding='utf-8'):
+>      """
+>      Wait for file contents on the local system to satisfy a condition.
+> -- 
+> 2.55.0
+> 
 
-[Severity: High]
-Does this check come too late to protect the checksum walk?  In
-mm81x_yaps_read_pkt() the checksum helper is called earlier, between the
-sync check and the channel switch, while hdr->len is still unvalidated:
-
-	if (yaps->mors->hif.validate_skb_checksum &&
-	    !mm81x_skbq_validate_checksum(skb->data)) {
-
-mm81x_skbq_validate_checksum() in skbq.c takes no buffer length at all and
-derives its read extent from the device-supplied header:
-
-	u16 len = le16_to_cpu(skb_hdr->len) + sizeof(*skb_hdr);
-	u32 *data_to_xor = (u32 *)data;
-	...
-	for (i = 0; i < len; i += 4) {
-		xor ^= *data_to_xor;
-		data_to_xor++;
-	}
-
-The real bound on the buffer is the YAPS delimiter size, which is
-independent of hdr->len, in mm81x_yaps_hw_read_pkts():
-
-	pkts[i].skb = dev_alloc_skb(pkt_size);
-	...
-	skb_put(pkts[i].skb, pkt_size);
-
-So with pkt_size == sizeof(struct mm81x_skb_hdr) and hdr->len == 0xFFFF,
-can this read roughly 64 KiB past the end of the skb data allocation before
-the new skb_len check runs?
-
-Separately, the same helper dereferences an 802.11 header placed just after
-the mm81x header:
-
-	struct ieee80211_hdr *hdr =
-		(struct ieee80211_hdr *)(data + sizeof(*skb_hdr));
-	...
-	    (ieee80211_is_data(hdr->frame_control) ||
-
-with the new minimum check accepting skb->len == sizeof(*hdr) exactly, is
-that frame_control read (and the clamped span sizeof(*skb_hdr) +
-sizeof(struct ieee80211_qos_hdr) + IEEE80211_CCMP_HDR_LEN) also outside the
-packet data?
-
-The path looks live: mors->hif.validate_skb_checksum is set from the
-firmware host table in mm81x_fw_update_validate_skb_checksum():
-
-	mors->hif.validate_skb_checksum =
-		validate_checksum->insert_and_validate_checksum;
-
-Would computing and validating skb_len before the
-mm81x_skbq_validate_checksum() call, or passing the available length into
-that helper and bounding its loop there, close this?
-
-[Severity: High]
-This isn't a bug introduced by this patch, but since these checks are the
-new choke point for RX length validation: is a minimum payload length also
-needed per channel?  hdr->len == 0 passes both new checks, and
-mm81x_skbq_dispatch_work() then strips the header entirely:
-
-	/* Remove mm81x header and padding */
-	__skb_pull(pfirst, sizeof(*hdr) + hdr->offset);
-
-	switch (channel) {
-	case MM81X_SKB_CHAN_COMMAND:
-		mm81x_cmd_resp_process(mors, pfirst);
-
-mm81x_cmd_resp_process() in command.c dereferences the response header with
-no skb->len check at all:
-
-	struct host_cmd_resp *src_resp = (struct host_cmd_resp *)(skb->data);
-	...
-	u16 resp_message_id = le16_to_cpu(src_resp->hdr.message_id);
-	u16 resp_host_id = le16_to_cpu(src_resp->hdr.host_id);
-
-and on the matched-response path the memcpy source length is bounded only
-by the destination size and a second device-supplied length:
-
-	length = min_t(int, length,
-		       le16_to_cpu(src_resp->hdr.len) +
-			       sizeof(struct host_cmd_header));
-	memcpy(dest_resp, src_resp, length);
-
-For a zero-length command payload with a large embedded hdr.len, does this
-copy adjacent slab memory into the driver's command response structure?
-
-[Severity: Medium]
-This is a pre-existing issue, but the length formula being validated here
-includes hdr->offset while the checksum helper does not.  The dispatch path
-and the TX producer both treat offset as padding between the header and the
-payload:
-
-skbq.c:mm81x_skbq_dispatch_work()
-	__skb_pull(pfirst, sizeof(*hdr) + hdr->offset);
-
-skbq.c:mm81x_skbq_skb_tx()
-	hdr.len = cpu_to_le16(skb->len);
-	hdr.offset = data - (aligned_head + sizeof(hdr));
-
-whereas mm81x_skbq_validate_checksum() ignores offset:
-
-	struct ieee80211_hdr *hdr =
-		(struct ieee80211_hdr *)(data + sizeof(*skb_hdr));
-	u16 len = le16_to_cpu(skb_hdr->len) + sizeof(*skb_hdr);
-
-For an RX packet with hdr->offset != 0, does the helper then read padding
-bytes as frame_control and XOR a byte range shifted by offset, producing a
-checksum verdict over the wrong bytes?
-
->  	skb_bytes_remaining = mm81x_skbq_space(mq);
->  
->  	if (skb_len > skb_bytes_remaining) {
-
-[Severity: Medium]
-This isn't a bug introduced by this patch, but while looking at the caller
-of mm81x_yaps_read_pkt(): can the -ENOMEM path of
-mm81x_yaps_hw_read_pkts() leak the already allocated RX skbs?
-
-yaps_hw.c:mm81x_yaps_hw_read_pkts() bumps the count after each successful
-packet and bails out on allocation failure:
-
-		if (pkts[i].skb)
-			dev_err(yaps->mors->dev, "yaps packet leak");
-
-		/* SKB doesn't want padding */
-		pkts[i].skb = dev_alloc_skb(pkt_size);
-		if (!pkts[i].skb) {
-			ret = -ENOMEM;
-			dev_err(yaps->mors->dev, "yaps no mem for skb");
-			goto exit;
-		}
-
-yaps.c:mm81x_yaps_rx_handler() then skips the only loop that takes
-ownership of them:
-
-	if (ret && ret != -EAGAIN) {
-		dev_err(yaps->mors->dev, "YAPS read_pkts fail: %d", ret);
-		goto exit;
-	}
-
-	for (i = 0; i < num_pks_received; ++i) {
-		mm81x_yaps_read_pkt(yaps, yaps->hw.from_chip_pkts[i].skb);
-		yaps->hw.from_chip_pkts[i].skb = NULL;
-	}
-
-Since ownership is only released inside mm81x_yaps_read_pkt() (enqueue or
-dev_kfree_skb()), and rx_handler returns true for -ENOMEM so it is called
-again, does the next pass simply hit the "yaps packet leak" dev_err and
-overwrite the stale pointers?  The same appears to apply to the
-mm81x_dm_read() overhang error path.
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/AS8P251MB0001B650C31E9F37C3B7907BC8B32%40AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
+Reviewed-by: Bobby Eshleman <bobbyeshleman@meta.com>
