@@ -1,76 +1,53 @@
-Received: from mail-oi1-f178.google.com (mail-oi1-f178.google.com [209.85.167.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 486403A7826
-	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 18:42:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FE8839CD12;
+	Wed,  9 Sep 2026 18:43:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788979350; cv=none; b=QFhXLo0+1RMnDWx+xkUyocxcros2TqN3o4e9F1MWqsYUd46Si2Bq8G3Vh2N48VWzWSIpHYiclSSEk91mFbO2SHbo8A78OREBAy08vrBQoHhRJlntRPQ1jgbCU6GKVeUobd0msDHCaoX58rGXsMrUlWK4lloR5hyyu2spbcQLdIc=
+	t=1788979389; cv=none; b=S+ApEevb6mp9dAT7LocgCmXj/bAFuByPapaRQOP9jKmyFSDW9RlDBIueQ6Zj4wkWaoanjLo780jdKMcvBFxDGAEbeJUJcunS0iGVrMuveZMHooFPyX56fbJieZ92704wmPbGgpHxqwpFIiTM7VUuFTQ1JNTIpcFGHwCJ54aqULc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788979350; c=relaxed/simple;
-	bh=WS4gE+gsuteGV8hDTyCAPSaz9lLwSR8Fyhm1O69yjQc=;
+	s=arc-20240116; t=1788979389; c=relaxed/simple;
+	bh=xD5y7y1l9Mqr/TBbQ7bGejvagY3t+8gWX0MLHWCuMDE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kWMDmoxpK/B4/5lsPY8tkNLaZRAjQ/txDSByb4N6QXUPkfFR7c97R6gbCJ+D7WaFMvSEJDNjgMaC8QvSR/cb7DRcS7OX6JAaTSbqj/5wlPvx8KSEczc9t0Yeb7xXKvbVJD62xEpLjiBaX5pWJUkZG9nBLv/pktrlEc9HtrUc09o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cMw56YS7; arc=none smtp.client-ip=209.85.167.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=L5+0FIumfoen2gDFZIhGA/qu1wlx6NfJfmeEkMlffjXjLyg0JO6IQ2ReGPrZcHfdFA8Q7Hd0VaaPuSD/++GvA1tUoqBmfkmgVcTwGxAzhx6Cd/cdZc6M4UtkJodwo5/+m/ugi8/2AMv9et8NnxQngXrbJzzdFAG1nuzgg6ZE+F8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=AuECV7Qv; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cMw56YS7"
-Received: by mail-oi1-f178.google.com with SMTP id 5614622812f47-4b333de9451so5427378b6e.3
-        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 11:42:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788979347; x=1789584147; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=B+ejgy5Nlwnfj97ymg22230Q/iVtOnJy6lcAnjEV1mM=;
-        b=cMw56YS7Gz6L03V7M6MspBIQuQxuPRnKu4makqzRoHlXGzpvmEQLP6VMJL/qiNluMB
-         DoESCbpla7h5SZRozVo9UbEbWcCZj+k/fm1oSK8SQ8qrMhlDRv9VHZFnxOc7LlN/7w8L
-         ncqjM3YxWSsIuzLB5zPTlNJg6k/My8MkG/C0UtqCz80LsT8wnQesaB/srlwtX9rcE+ot
-         bAkxTGX/4wJbDxVXCRMcyZeRWpVi+NK9LuG5h2w7s4SiSlaFgb3CUOfzf8Wju6xkvsHn
-         eBfC8tGD0u4ZEZVS0dzmpF/nNxYi0vJPqV6rDCRY67OHEfegCk5zyVqDcK5xrWdSx/vb
-         28Ig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788979347; x=1789584147;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=B+ejgy5Nlwnfj97ymg22230Q/iVtOnJy6lcAnjEV1mM=;
-        b=Z7Iv2FrBXRIRGpD2vGPsSzJlYI94qmUrSI2fuNzvg1XIFTYOd5ebM7pV54NrUogS2n
-         mE09a6gMzW8HYG1a3qP9TxOm1bIUUc1ds2dBNfA90fHrwIohvxHm/ESZQuqIjohj2lX5
-         N9GCXtjY/bfAmwUUWIhk46hZSbh3vXc0d3/zUXjxZKbvFWL3JWj+/opgMTUvmYIEB/GZ
-         3CPZFE/l7BRz/9qQGMQrxDnce9W3gQAIvUQak9lDUAW9IubUbZLtv0eDWxbPPDxgD97e
-         IGA4v6qiSS+VBV2ATkzYOSR0OPUTZEVln6WxG1ki6jSP0UISLdqWlEGSbRVchISb3yeR
-         UXXg==
-X-Forwarded-Encrypted: i=1; AKwUvBz/4lEBvrhKZKXc+5NfQUaWzjOPjLee5IrE7+oWLurT/UPMlnL9aDqj7WZJypLe3V6FYe1RN00=@vger.kernel.org
-X-Gm-Message-State: AFuF++m4j5jOeclJH34Bkeg+EE4KO8Zkz9BIGsRg05FE/3kRqcyMeY7n
-	1sLQ5yi1SUjJEQYQ8kVHwY7m4HEymx+ZJYglofJeYBCf4M4LCgd35iQ9
-X-Gm-Gg: AYBFou0D9xP1wTiX3uhInsq1JeEEB8cjIoKSWKePdqInv4i7BYwUpAAlLd+T+fbkCHs
-	b/qepT7JAwKH+lAZNcSmTsHmvyz2niUcw66lxP8eYSPu9Il5A17MyiGQ7sN2UPOBjL9q8v98sLF
-	48u4OFSbhUw7XwV0l2nRIOsiS9YvkFwfiSwA/Ml1EPREldwgXHnIMYyEtWzLmnLEZwacQ2qg05O
-	g2o0UxHRGBP4BMFhj08sJlBZdSXxcWsjric6eZFQ/bA10AH6dRTGDlE3bCO7QCCgOfEqojrj2XC
-	lA9CzmRoK2NoBWYUu3gBeaNuLYVDhDDG37TtUIRaBqckuSsTrV3Tc+eHDGQ2xqfD9PIALCZ2VQR
-	9CTfp+0ZhkT9GILmMqvWNOLfDafGbsTJgs70WDbEjuJlTPhAEIG1deUB39Ti124AMk0irSOUB8k
-	uKLCYxMfDzeqdgcMfGcsRiv5XoP2riYnUvzbWhck/c6kyxgkVvvASm01H476vBKM9lbDZ7O7Ki+
-	G0C4TV9eqTroCFtUwc=
-X-Received: by 2002:a05:6808:1b21:b0:4a4:ed9a:e793 with SMTP id 5614622812f47-4b96250e4e1mr21658033b6e.16.1788979346947;
-        Wed, 09 Sep 2026 11:42:26 -0700 (PDT)
-Received: from devvm29614.prn0.facebook.com ([2a03:2880:ff:4::])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-4b971675f82sm15934808b6e.12.2026.09.09.11.42.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Sep 2026 11:42:25 -0700 (PDT)
-Date: Wed, 9 Sep 2026 11:42:21 -0700
-From: Bobby Eshleman <bobbyeshleman@gmail.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
-	pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
-	shuah@kernel.org, cjubran@nvidia.com, cratiu@nvidia.com,
-	noren@nvidia.com, willemb@google.com, petrm@nvidia.com,
-	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH net-next v2] selftests: net: add ctl_file_write() helper
-Message-ID: <aqGojTHSSPmwWymW@devvm29614.prn0.facebook.com>
-References: <20260909180009.1894019-1-kuba@kernel.org>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="AuECV7Qv"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=JSaz+OvzDYSq8/CrBzpIBZ76d3+JBQCuLA+7/pAS+bs=; b=AuECV7Qvr3TOndclz75aWKPKfF
+	mRkBjVxcBTt3TwW2HQPK2GKJ3euC7D9GlSpIDO26klwT3TPKgUskVQf5ujiOtYl5BTWI4ig5pU2EQ
+	33v3vPeXwOxg8Ss8l2Z9wdCZ/RkgD9iEQoq4kO3FzLnD+fKNIMr3i9Gu9DLo9+RIFzWI=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1x4NG2-004MUZ-89; Wed, 09 Sep 2026 20:42:54 +0200
+Date: Wed, 9 Sep 2026 20:42:54 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Potin Lai <potin.lai.pt@gmail.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Oliver Neukum <oliver@neukum.org>,
+	Samuel Mendoza-Jonas <sam@mendozajonas.com>,
+	Paul Fertser <fercerpav@gmail.com>, Simon Horman <horms@kernel.org>,
+	linux-usb@vger.kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Cosmo Chou <cosmo.chou@quantatw.com>,
+	Mike Hsieh <Mike_Hsieh@quantatw.com>,
+	Mik Lin <Mik.Lin@quantatw.com>, Potin Lai <potin.lai@quantatw.com>,
+	Adrian Ambrozewicz <aambrozewicz@nvidia.com>
+Subject: Re: [PATCH 0/2] net: add USB CDC Ethernet NCSI support and fix
+ unregister UAF
+Message-ID: <aba31684-fdd8-4ece-bf77-51aea4ac4bcf@lunn.ch>
+References: <20260907-ncsi-over-usb-v1-0-6b74d2f1196c@gmail.com>
+ <1db2f8a7-6a17-410e-be1a-e9ac0b91e6d3@lunn.ch>
+ <CAGfYmwVUg-Tm42WeEAaG8bKrKp1Tv+08vvJVnmwk8+BeQ1j0Ww@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -79,312 +56,40 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260909180009.1894019-1-kuba@kernel.org>
+In-Reply-To: <CAGfYmwVUg-Tm42WeEAaG8bKrKp1Tv+08vvJVnmwk8+BeQ1j0Ww@mail.gmail.com>
 
-On Wed, Sep 09, 2026 at 11:00:09AM -0700, Jakub Kicinski wrote:
-> Setting a sysctl or a sysfs attribute for the duration of a test and
-> putting the old value back has been open coded multiple times.
+> Hi Andrew,
 > 
-> We generally avoid creating library helpers but this one is very
-> common, and the defer is a little tricky as using the same function
-> for defer as the initial write leads to an infinite loop (not that
-> I would ever make such mistake!)
+> Thanks for the review. To clarify the architecture, it looks like this:
 > 
-> Some of the conversions are not identical, but arguably ctl_file_write()
-> semantics are more correct.
+> [ BMC ] <--(USB)--> [ SMA Controller ] <--(Internal)--> [ Shared NIC (CX9) ]
 > 
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> ---
-> v2:
->  - rebase
->  - drop the irq.py change which wasn't identical
-> v1: https://lore.kernel.org/20260904174134.3789400-1-kuba@kernel.org
+> 1. The USB Interface: Between the BMC and the shared NIC, there is an
+>    SMA controller. This controller emulates a standard USB CDC Ethernet
+>    device facing the BMC.
 > 
-> CC: bobbyeshleman@gmail.com
-> CC: shuah@kernel.org
-> CC: cjubran@nvidia.com
-> CC: cratiu@nvidia.com
-> CC: noren@nvidia.com
-> CC: willemb@google.com
-> CC: petrm@nvidia.com
-> CC: linux-kselftest@vger.kernel.org
-> ---
->  .../testing/selftests/drivers/net/gro_lib.py  | 17 +++---------
->  .../drivers/net/hw/devlink_rate_tc_bw.py      |  5 ++--
->  .../drivers/net/hw/lib/py/__init__.py         |  4 +--
->  .../selftests/drivers/net/hw/toeplitz.py      | 10 +++----
->  .../selftests/drivers/net/lib/py/__init__.py  |  4 +--
->  .../selftests/drivers/net/ring_reconfig.py    | 26 ++++---------------
->  .../testing/selftests/net/lib/py/__init__.py  |  4 +--
->  tools/testing/selftests/net/lib/py/utils.py   | 22 ++++++++++++++++
->  8 files changed, 42 insertions(+), 50 deletions(-)
+> 2. Passthrough (Bypass): The SMA controller acts as a transparent bridge.
+>    It simply passes through both standard network packets and NCSI
+>    control packets between the BMC's USB interface and the actual
+>    shared NIC.
 > 
-> diff --git a/tools/testing/selftests/drivers/net/gro_lib.py b/tools/testing/selftests/drivers/net/gro_lib.py
-> index 45ded8477a50..b7ac0660adc0 100644
-> --- a/tools/testing/selftests/drivers/net/gro_lib.py
-> +++ b/tools/testing/selftests/drivers/net/gro_lib.py
-> @@ -48,7 +48,7 @@ import re
->  from lib.py import ksft_run, ksft_exit, ksft_pr
->  from lib.py import NetDrvEpEnv, KsftFailEx, KsftXfailEx
->  from lib.py import NetdevFamily, EthtoolFamily
-> -from lib.py import bkg, cmd, defer, ethtool, ip
-> +from lib.py import bkg, cmd, ctl_file_write, defer, ethtool, ip
->  from lib.py import ksft_variants, KsftNamedVariant
->  
->  
-> @@ -85,17 +85,6 @@ GRO_DPORT = 8000
->      return getattr(cfg, attr)
->  
->  
-> -def _write_defer_restore(cfg, path, val, defer_undo=False):
-> -    with open(path, "r", encoding="utf-8") as fp:
-> -        orig_val = fp.read().strip()
-> -        if str(val) == orig_val:
-> -            return
-> -    with open(path, "w", encoding="utf-8") as fp:
-> -        fp.write(val)
-> -    if defer_undo:
-> -        defer(_write_defer_restore, cfg, path, orig_val)
-> -
-> -
->  def _set_mtu_restore(dev, mtu, host):
->      if dev['mtu'] < mtu:
->          ip(f"link set dev {dev['ifname']} mtu {mtu}", host=host)
-> @@ -250,8 +239,8 @@ def _run_gro_bin(cfg, test_name, protocol=None, num_flows=None,
->          flush_path = f"/sys/class/net/{cfg.ifname}/gro_flush_timeout"
->          irq_path = f"/sys/class/net/{cfg.ifname}/napi_defer_hard_irqs"
->  
-> -        _write_defer_restore(cfg, flush_path, "200000", defer_undo=True)
-> -        _write_defer_restore(cfg, irq_path, "10", defer_undo=True)
-> +        ctl_file_write(flush_path, "200000")
-> +        ctl_file_write(irq_path, "10")
->  
->          _set_ethtool_feat(cfg.ifname, cfg.feat,
->                            {"generic-receive-offload": True,
-> diff --git a/tools/testing/selftests/drivers/net/hw/devlink_rate_tc_bw.py b/tools/testing/selftests/drivers/net/hw/devlink_rate_tc_bw.py
-> index 4e4faa9275bb..38d712755257 100755
-> --- a/tools/testing/selftests/drivers/net/hw/devlink_rate_tc_bw.py
-> +++ b/tools/testing/selftests/drivers/net/hw/devlink_rate_tc_bw.py
-> @@ -63,7 +63,7 @@ from lib.py import ksft_pr, ksft_run, ksft_exit
->  from lib.py import KsftSkipEx, KsftFailEx, KsftXfailEx
->  from lib.py import NetDrvEpEnv, DevlinkFamily
->  from lib.py import NlError
-> -from lib.py import cmd, defer, ethtool, ip
-> +from lib.py import cmd, ctl_file_write, defer, ethtool, ip
->  from lib.py import Iperf3Runner
->  
->  
-> @@ -113,8 +113,7 @@ from lib.py import Iperf3Runner
->      except Exception as exc:
->          raise KsftSkipEx(f"Failed to enable switchdev mode on {cfg.pci}") from exc
->      try:
-> -        cmd(f"echo 1 > /sys/class/net/{cfg.ifname}/device/sriov_numvfs", shell=True)
-> -        defer(cmd, f"echo 0 > /sys/class/net/{cfg.ifname}/device/sriov_numvfs", shell=True)
-> +        ctl_file_write(f"/sys/class/net/{cfg.ifname}/device/sriov_numvfs", 1)
->      except Exception as exc:
->          raise KsftSkipEx(f"Failed to enable SR-IOV on {cfg.ifname}") from exc
->  
-> diff --git a/tools/testing/selftests/drivers/net/hw/lib/py/__init__.py b/tools/testing/selftests/drivers/net/hw/lib/py/__init__.py
-> index 8a58cb17cc06..81e1d1865cd5 100644
-> --- a/tools/testing/selftests/drivers/net/hw/lib/py/__init__.py
-> +++ b/tools/testing/selftests/drivers/net/hw/lib/py/__init__.py
-> @@ -24,7 +24,7 @@ KSFT_DIR = (Path(__file__).parent / "../../../../..").resolve()
->      from net.lib.py import CmdExitFailure
->      from net.lib.py import bkg, cmd, bpftool, bpftrace, defer, ethtool, \
->          fd_read_timeout, ip, rand_port, rand_ports, wait_port_listen, \
-> -        wait_file, tool
-> +        wait_file, ctl_file_write, tool
->      from net.lib.py import bpf_map_set, bpf_map_dump, bpf_prog_map_ids
->      from net.lib.py import KsftSkipEx, KsftFailEx, KsftXfailEx
->      from net.lib.py import ksft_disruptive, ksft_exit, ksft_pr, ksft_run, \
-> @@ -40,7 +40,7 @@ KSFT_DIR = (Path(__file__).parent / "../../../../..").resolve()
->                 "CmdExitFailure",
->                 "bkg", "cmd", "bpftool", "bpftrace", "defer", "ethtool",
->                 "fd_read_timeout", "ip", "rand_port", "rand_ports",
-> -               "wait_port_listen", "wait_file", "tool",
-> +               "wait_port_listen", "wait_file", "ctl_file_write", "tool",
->                 "bpf_map_set", "bpf_map_dump", "bpf_prog_map_ids",
->                 "KsftSkipEx", "KsftFailEx", "KsftXfailEx",
->                 "ksft_disruptive", "ksft_exit", "ksft_pr", "ksft_run",
-> diff --git a/tools/testing/selftests/drivers/net/hw/toeplitz.py b/tools/testing/selftests/drivers/net/hw/toeplitz.py
-> index 571732198b93..962d1aca2bc9 100755
-> --- a/tools/testing/selftests/drivers/net/hw/toeplitz.py
-> +++ b/tools/testing/selftests/drivers/net/hw/toeplitz.py
-> @@ -13,7 +13,7 @@ import os
->  import socket
->  from lib.py import ksft_run, ksft_exit, ksft_pr
->  from lib.py import NetDrvEpEnv, EthtoolFamily, NetdevFamily
-> -from lib.py import cmd, bkg, rand_port, defer
-> +from lib.py import cmd, bkg, ctl_file_write, rand_port, defer
->  from lib.py import ksft_in
->  from lib.py import ksft_variants, KsftNamedVariant, KsftSkipEx, KsftFailEx
->  
-> @@ -113,7 +113,7 @@ QUEUE_CAP = 8
->  
->  
->  def _configure_rps(cfg, rps_cpus):
-> -    """Configure RPS for all Rx queues."""
-> +    """Configure RPS for all Rx queues, restored at the end of the test."""
->  
->      mask = 0
->      for cpu in rps_cpus:
-> @@ -123,9 +123,8 @@ QUEUE_CAP = 8
->  
->      # Set RPS bitmap for all rx queues
->      for rps_file in glob.glob(f"/sys/class/net/{cfg.ifname}/queues/rx-*/rps_cpus"):
-> -        with open(rps_file, "w", encoding="utf-8") as fp:
-> -            # sysfs expects hex without '0x' prefix, toeplitz.c needs the prefix
-> -            fp.write(mask[2:])
-> +        # sysfs expects hex without '0x' prefix, toeplitz.c needs the prefix
-> +        ctl_file_write(rps_file, mask[2:])
->  
->      return mask
->  
-> @@ -208,7 +207,6 @@ QUEUE_CAP = 8
->          # Get CPUs not used by Rx queues and configure them for RPS
->          rps_cpus = _get_unused_rps_cpus(cfg, count=2)
->          rps_mask = _configure_rps(cfg, rps_cpus)
-> -        defer(_configure_rps, cfg, [])
->          rx_cmd += ["-r", rps_mask]
->          ksft_pr(f"RPS using CPUs: {rps_cpus}, mask: {rps_mask}")
->  
-> diff --git a/tools/testing/selftests/drivers/net/lib/py/__init__.py b/tools/testing/selftests/drivers/net/lib/py/__init__.py
-> index ee903bcf3207..591b1e6c7eea 100644
-> --- a/tools/testing/selftests/drivers/net/lib/py/__init__.py
-> +++ b/tools/testing/selftests/drivers/net/lib/py/__init__.py
-> @@ -24,7 +24,7 @@ KSFT_DIR = (Path(__file__).parent / "../../../..").resolve()
->      from net.lib.py import CmdExitFailure
->      from net.lib.py import bkg, cmd, bpftool, bpftrace, defer, ethtool, \
->          fd_read_timeout, ip, rand_port, rand_ports, tc, wait_port_listen, \
-> -        wait_file
-> +        wait_file, ctl_file_write
->      from net.lib.py import bpf_map_set, bpf_map_dump, bpf_prog_map_ids
->      from net.lib.py import KsftSkipEx, KsftFailEx, KsftXfailEx
->      from net.lib.py import ksft_disruptive, ksft_exit, ksft_pr, ksft_run, \
-> @@ -38,7 +38,7 @@ KSFT_DIR = (Path(__file__).parent / "../../../..").resolve()
->                 "CmdExitFailure",
->                 "bkg", "cmd", "bpftool", "bpftrace", "defer", "ethtool",
->                 "fd_read_timeout", "ip", "rand_port", "rand_ports", "tc",
-> -               "wait_port_listen", "wait_file",
-> +               "wait_port_listen", "wait_file", "ctl_file_write",
->                 "bpf_map_set", "bpf_map_dump", "bpf_prog_map_ids",
->                 "KsftSkipEx", "KsftFailEx", "KsftXfailEx",
->                 "ksft_disruptive", "ksft_exit", "ksft_pr", "ksft_run",
-> diff --git a/tools/testing/selftests/drivers/net/ring_reconfig.py b/tools/testing/selftests/drivers/net/ring_reconfig.py
-> index 2bc329b77134..6682d4badfbf 100755
-> --- a/tools/testing/selftests/drivers/net/ring_reconfig.py
-> +++ b/tools/testing/selftests/drivers/net/ring_reconfig.py
-> @@ -13,7 +13,7 @@ from lib.py import ksft_run, ksft_exit, ksft_pr
->  from lib.py import ksft_eq
->  from lib.py import KsftSkipEx, KsftXfailEx
->  from lib.py import NetDrvEpEnv, EthtoolFamily, GenerateTraffic
-> -from lib.py import cmd, defer, rand_port, tc, NlError
-> +from lib.py import cmd, ctl_file_write, defer, rand_port, tc, NlError
->  
->  # Added in Python 3.13; fallback to 61 for x86/ARM/MIPS
->  SO_TXTIME = getattr(socket, "SO_TXTIME", 61)
-> @@ -166,22 +166,6 @@ MAX_TX_RING = 1024
->          GenerateTraffic(cfg).wait_pkts_and_stop(10000)
->  
->  
-> -def _write_file(path, val):
-> -    """Write val to a file."""
-> -    with open(path, "w", encoding="utf-8") as fp:
-> -        fp.write(str(val))
-> -
-> -
-> -def _write_sysfs(path, val):
-> -    """Write val to a sysfs file, restoring the original value on exit."""
-> -    with open(path, "r", encoding="utf-8") as fp:
-> -        orig_val = fp.read().strip()
-> -    if str(val) == orig_val:
-> -        return
-> -    _write_file(path, val)
-> -    defer(_write_file, path, orig_val)
-> -
-> -
->  def _get_qdisc_backlog(cfg, mq_handle, queue):
->      """Return the qdisc backlog (bytes) for the given TX queue's leaf."""
->      target_parent = f"{mq_handle}{queue + 1:x}"
-> @@ -342,8 +326,8 @@ MAX_TX_RING = 1024
->      # Slow completions so the ring stays full after FQ releases packets
->      napi_defer = f"/sys/class/net/{cfg.ifname}/napi_defer_hard_irqs"
->      gro_timeout = f"/sys/class/net/{cfg.ifname}/gro_flush_timeout"
-> -    _write_sysfs(napi_defer, 100)
-> -    _write_sysfs(gro_timeout, 1000000000)
-> +    ctl_file_write(napi_defer, 100)
-> +    ctl_file_write(gro_timeout, 1000000000)
->  
->      port = rand_port()
->      # A single flow must overflow the ring, so send twice the ring depth and
-> @@ -384,8 +368,8 @@ MAX_TX_RING = 1024
->      cfg.eth.rings_set(ehdr | {'tx': tx_cur})
->  
->      # Let completions proceed normally
-> -    _write_sysfs(napi_defer, 0)
-> -    _write_sysfs(gro_timeout, 0)
-> +    ctl_file_write(napi_defer, 0)
-> +    ctl_file_write(gro_timeout, 0)
->  
->      # Poll for backlog to drain
->      for _ in range(100):
-> diff --git a/tools/testing/selftests/net/lib/py/__init__.py b/tools/testing/selftests/net/lib/py/__init__.py
-> index 34935886b6ad..71df5880b356 100644
-> --- a/tools/testing/selftests/net/lib/py/__init__.py
-> +++ b/tools/testing/selftests/net/lib/py/__init__.py
-> @@ -14,7 +14,7 @@ from .netns import NetNS, NetNSEnter, UserNetNS
->  from .nsim import NetdevSim, NetdevSimDev
->  from .utils import CmdExitFailure, fd_read_timeout, cmd, bkg, defer, \
->      bpftool, ip, ethtool, bpftrace, rand_port, rand_ports, wait_port_listen, \
-> -    wait_file, tool, tc
-> +    ctl_file_write, wait_file, tool, tc
->  from .bpf import bpf_map_set, bpf_map_dump, bpf_prog_map_ids
->  from .ynl import NlError, NlctrlFamily, YnlFamily, \
->      EthtoolFamily, NetdevFamily, RtnlFamily, RtnlAddrFamily, RtnlRouteFamily
-> @@ -29,7 +29,7 @@ __all__ = ["KSRC",
->             "NetNS", "NetNSEnter", "UserNetNS",
->             "CmdExitFailure", "fd_read_timeout", "cmd", "bkg", "defer",
->             "bpftool", "ip", "ethtool", "bpftrace", "rand_port", "rand_ports",
-> -           "wait_port_listen", "wait_file", "tool", "tc",
-> +           "wait_port_listen", "ctl_file_write", "wait_file", "tool", "tc",
->             "bpf_map_set", "bpf_map_dump", "bpf_prog_map_ids",
->             "NetdevSim", "NetdevSimDev",
->             "NetshaperFamily", "DevlinkFamily", "PSPFamily", "NlError",
-> diff --git a/tools/testing/selftests/net/lib/py/utils.py b/tools/testing/selftests/net/lib/py/utils.py
-> index 184bb04343f6..1727bc418073 100644
-> --- a/tools/testing/selftests/net/lib/py/utils.py
-> +++ b/tools/testing/selftests/net/lib/py/utils.py
-> @@ -357,6 +357,28 @@ GLOBAL_DEFER_ARMED = False
->          time.sleep(sleep)
->  
->  
-> +def _ctl_file_write(path, val):
-> +    with open(path, "w", encoding="utf-8") as fp:
-> +        fp.write(str(val))
-> +
-> +
-> +def ctl_file_write(path, val):
-> +    """
-> +    Write @val to a control file - a sysctl, a sysfs attribute, configfs...
-> +    and defer() restoring the old value, so needs a defer queue.
-> +
-> +    Writing a value which is already set is skipped, there is nothing
-> +    to restore in that case.
-> +    """
-> +    with open(path, "r", encoding="utf-8") as fp:
-> +        old = fp.read().strip()
-> +    if old == str(val):
-> +        return
-> +
-> +    _ctl_file_write(path, val)
-> +    defer(_ctl_file_write, path, old)
-> +
-> +
->  def wait_file(fname, test_fn, sleep=0.005, deadline=5, encoding='utf-8'):
->      """
->      Wait for file contents on the local system to satisfy a condition.
-> -- 
-> 2.55.0
-> 
+> 3. PHY Management: Because of this architecture, the actual 3-port switch
+>    logic and the physical PHY management are handled entirely by the
+>    NIC/SMA hardware firmware on the DPU side.
 
-Reviewed-by: Bobby Eshleman <bobbyeshleman@meta.com>
+This is the first time i've seen this sort of setup. You should
+explain this in the commit message, because it is probably new to
+others as well.
+
+> >From the BMC's perspective, it only sees a point-to-point USB CDC Ethernet
+> device. The BMC driver does not have direct access to manage the shared
+> PHY's link state.
+
+So why is the SMA controller emulator actually reporting the true link
+state? Since it is an emulator, why not just say the link is always
+up? And ignore any requests from the BMC to change its state? You then
+don't need any quirks in the CDC driver. It seems silly to emulator
+something and not actually use the fact it is an emulation to hide
+away differences to a real device.
+
+      Andrew
