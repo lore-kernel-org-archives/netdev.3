@@ -1,336 +1,159 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C3EB472F75
-	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 09:39:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 890423E7BB4;
+	Wed,  9 Sep 2026 09:39:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788946775; cv=none; b=nH61B4KHkbcvraaAhu1ylzt4bk7K3uRQ216wzF84f+0pnT4m4RaYDHr9Dm0x7JYec+extk2kG4xdw8oWQTVbZzOHkB15d8RwxdE16OllNb3CriAEGDQ9eyp4nzMrfM79b8rN4sQ+t8skHAN4fHu0SW7h88TSjtgrR1gjApVg1sk=
+	t=1788946773; cv=none; b=lSoA1AigVz/SwydhPmiT2CQBKENrfyukifqIR0H+LCFojVeIteHLK9LWMa0SzXzFpNak+pQ/Z/CS73ESrFADQUvD129YeApNaG1EwQYFRhh8LWjbE0atrolCvrgFE+3W7ZwzfqkUUH+CXpeprFIIoHL2qFLmYh1uwfvu5s4Zr2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788946775; c=relaxed/simple;
-	bh=/WCxZIOIu4ILSNgs/MeZkaXlzRuxiUAyqkCrCtBH8GI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ukpqXrKDU20Jq673pxly4dBPot2CMBqy+25UEGe+g/pNPNpnM8nAwNHXRqJ8zqZyVNUXlIHGIL85Dp1pdbzhZHidIntT4xWFZ01YObXHt4OStwjwcMuJoW+IUk3vptg9g4bEVKHDzlesbOg9qpc785aDz1Eky6zL8ID7VXMZuv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=GXx5rBj4; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1788946773; c=relaxed/simple;
+	bh=fjKhVmcr/EyK4vU6sArnT209Vzr1k4r+UlW7jCrishk=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=MZY2QTKttm0Lcj72otXDkzn2KuWKFvt4BbFG2k3d0XOuzv/hcV9v1QjmR2V1qOfhqtaHgumWWxTZSLLIl6HaRr4XRu3Ngt5j4VrR1NU25uzbUdMn0KELeehbmcT/gnXAqciKRSGXkij/+/ORC2IedCaIId0tMQgeJeRW8MC3asE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WiZItjS6; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="GXx5rBj4"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 74E6E1A1A7B;
-	Wed,  9 Sep 2026 09:39:25 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 4268E60448;
-	Wed,  9 Sep 2026 09:39:25 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 886C111C7AF71;
-	Wed,  9 Sep 2026 11:39:14 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1788946764; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding; bh=LE3W5jZk3vVI6gRFTtvRCXw6n++OYqfvPKuA/1vVleI=;
-	b=GXx5rBj4ytXjRv8x9L3KSC9RWxK4jm2XXzvieAWJ1DrsF0qa/j/lkuZ8JsKmhOXw8keSq8
-	Ng+2aBa9K4YSRehWdAGl0bLuyXZm5atdXi+vgGVK+slm/2UIaYe65XG5IiXBR5xVvZZTH3
-	fQxQR+JTWyHMQumPYI8kEo2hiLimDS3PxYMCcTgiqIkAJ/W4qpKhvq2C3LWUN5S0kLSvce
-	subh1g96tkCTRj4ppjgfT11f6t6J45zDgsqWTGvNI7P7dn/Sbc563XXwWAEuTdAHvgl8Yf
-	+MYUSyYz0/8szf4JJHBPDh8I0ebzLM/0gvhlCmHWHU/qVUqDRxUDctYEoD+EoQ==
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-To: davem@davemloft.net,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	thomas.petazzoni@bootlin.com,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Herve Codina <herve.codina@bootlin.com>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	=?UTF-8?q?K=C3=B6ry=20Maincent?= <kory.maincent@bootlin.com>,
-	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	=?UTF-8?q?Nicol=C3=B2=20Veronese?= <nicveronese@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	mwojtas@chromium.org,
-	Romain Gantois <romain.gantois@bootlin.com>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Dimitri Fedrau <dimitri.fedrau@liebherr.com>,
-	Frank Wunderlich <frank.wunderlich@linux.dev>,
-	Pietro Ameruoso <p.ameruoso@live.it>
-Subject: [PATCH net-next v17 00/10] net: phy_port: SFP modules representation and phy_port listing
-Date: Wed,  9 Sep 2026 11:39:01 +0200
-Message-ID: <20260909093912.1290810-1-maxime.chevallier@bootlin.com>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WiZItjS6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 506081F00A3F;
+	Wed,  9 Sep 2026 09:39:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788946763;
+	bh=N3lXI2lCWgiKvFN9Nv+hgXcmmvBtqm5fZVQQwl0WoDM=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=WiZItjS6ZXCBi++sMU+hy7N9lVH9ifMOX5REnYAb91AF2Cn1jrQjNUOhykxucZnFP
+	 WMU9ijSCWyGbhtO0SNMmFscgqYkBr+XDo4T/s7T134wIkXiFJK/M6rZvuUinSm27ms
+	 LEprg2QDdAnYV678w90vUt1T/xNxeG4kzxz92K11oRPBiZin4icdz6u4e9Txmqie39
+	 kYPeqNqm1zLGxPgtYnQ18LMNmSltVyIHxOcv3+1zq6s8DvxsEl0vsrb3eMwnxTul+2
+	 ahRBKWzdOkkUjWjv0q8YI0MvB/zCroVNlxepPZ19RdksBcqdvFduLzUFy2O/zs6yT0
+	 77vtOfHDwosig==
+Subject: Re: [PATCH] netfilter: conntrack_amanda: fix port value truncation
+From: netdev-bot+sashiko@kernel.org
+To: elb12345@hotmail.co.uk
+Cc: pablo@netfilter.org, netfilter-devel@vger.kernel.org,
+ coreteam@netfilter.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, kuba@kernel.org
+Date: Wed, 09 Sep 2026 09:39:22 +0000
+Message-ID: <178894676277.219967.1844924383954861310@kernel.org>
+In-Reply-To: =?utf-8?q?=3CAS8P251MB0001CCFE2A0F40637E5A366CC8B32=40AS8P251MB?=
+ =?utf-8?q?0001=2EEURP251=2EPROD=2EOUTLOOK=2ECOM=3E?=
+References: =?utf-8?q?=3CAS8P251MB0001CCFE2A0F40637E5A366CC8B32=40AS8P251MB0?=
+ =?utf-8?q?001=2EEURP251=2EPROD=2EOUTLOOK=2ECOM=3E?=
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
 
-Hello everyone,
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider:
 
-Here's V17 for the phy_port improved SFP support and netlink interface.
+Critical: 0 · High: 1 · Medium: 0 · Low: 0
 
-V17 addresses the port_id wrapparound with the xarray insertion, and the
-missing comment during the ethtool header regen from the YNL specs.
+- [High] net/netfilter/nf_conntrack_amanda.c:amanda_help() — the new
+  range check closes only the htons() truncation window for numbers that…
 
-This work extends on the recent addition of phy_port representation to enable
-listing the front-facing ports of an interface. For now, we don't control
-these ports, we merely list their presence and their capabilities.
+--
 
-As the most common use-case of multi-port interfaces is combo-ports that
-provide both RJ45 and SFP connectors on a single MAC, there's a lot of
-SFP stuff in this series.
+netfilter: conntrack_amanda: fix port value truncation
 
-This series is in 2 main parts. The first one aims at representing the
-SFP cages and modules using phy_port, as combo-ports with RJ45 + SFP are
-by far the most common cases for multi-connector setups.
+The patch parses the Amanda CONNECT port into an unsigned long and rejects
+values above 65535 before the htons() conversion, instead of relying on the
+old "port == 0 || len > 5" test.  A new tmp_port variable holds the
+simple_strtoul() result.
 
-The second part is the netlink interface to list those ports, now that
-most use-cases are covered.
+> diff --git a/net/netfilter/nf_conntrack_amanda.c b/net/netfilter/nf_conntrack_amanda.c
+> index 14ae660491f36..057cef7e2a7ed 100644
+> --- a/net/netfilter/nf_conntrack_amanda.c
+> +++ b/net/netfilter/nf_conntrack_amanda.c
+> @@ -91,6 +91,7 @@ static int amanda_help(struct sk_buff *skb,
+>  	char pbuf[sizeof("65535")], *tmp;
+>  	u16 len;
+>  	__be16 port;
+> +	unsigned long tmp_port;
+>  	int ret = NF_ACCEPT;
+>  	nf_nat_amanda_hook_fn *nf_nat_amanda;
+>  
+> @@ -132,10 +133,11 @@ static int amanda_help(struct sk_buff *skb,
+>  			break;
+>  		pbuf[len] = '\0';
+>  
+> -		port = htons(simple_strtoul(pbuf, &tmp, 10));
+> +		tmp_port = simple_strtoul(pbuf, &tmp, 10);
+>  		len = tmp - pbuf;
+> -		if (port == 0 || len > 5)
+> +		if (tmp_port == 0 || tmp_port > 65535 || len > 5)
+>  			break;
+> +		port = htons(tmp_port);
 
-Let's see what we can do with some examples of the new ethtool API :
+[Severity: High]
+Can the new tmp_port > 65535 test ever fire, and does it close the case
+described in the changelog?
 
-- Get MII interfaces supported by an empty SFP cage :
+In amanda_help(), the digit string is copied into a 6-byte buffer and the
+copy length is clamped before parsing:
 
-# ethtool --show-ports eth3
+net/netfilter/nf_conntrack_amanda.c:amanda_help() {
+	char pbuf[sizeof("65535")], *tmp;
+	...
+		len = min_t(unsigned int, sizeof(pbuf) - 1, stop - off);
+		if (skb_copy_bits(skb, off, pbuf, len))
+			break;
+		pbuf[len] = '\0';
+}
 
-Port for eth3:
-	Port id: 1
-	Supported MII interfaces : sgmii, 1000base-x, 2500base-x
-	Port type: sfp
+So simple_strtoul() sees at most 5 characters, which bounds tmp_port at
+99999 and bounds len = tmp - pbuf at 5.
 
-- Get Combo-ports supported modes, on each port :
+For a reply payload of "CONNECT DATA 123456\n", pbuf becomes "12345",
+tmp_port becomes 12345 and len becomes 5, so all three clauses of
 
-# ethtool --show-ports eth1
+		if (tmp_port == 0 || tmp_port > 65535 || len > 5)
 
-Port for eth1:
-	Port id: 1
-	Supported link modes:  10baseT/Half 10baseT/Full
-	                       100baseT/Half 100baseT/Full
-	                       1000baseT/Full
-	                       10000baseT/Full
-	                       2500baseT/Full
-	                       5000baseT/Full
+pass and an expectation is installed for TCP port 12345 even though the
+advertised value was 123456.  Isn't that the same "conntrack expectation
+for an unintended port" the changelog is trying to eliminate, just via the
+fixed-size copy rather than the u16 narrowing?
 
-	Port type: mdi
+Would it make sense to also reject the token when the digit run is not
+terminated inside the examined region, for example bailing out when
+stop - off > sizeof(pbuf) - 1, or when the character following the parsed
+digits is still a digit, the way the FTP helper's parsers require an
+explicit terminator?
 
-Port for eth1:
-	Port id: 2
-	Supported MII interfaces : 10gbase-r
-	Port type: sfp
+There is also a NAT-side effect of the clamp.  amanda_help() hands len to
+the NAT hook as matchlen:
 
-- Get Achievable linkmodes on a SFP module (combo port with a DAC in the
-SFP cage)
+			ret = nf_nat_amanda(skb, ct, ctinfo, protoff,
+					    off - dataoff, len, exp);
 
-# ethtool --show-ports eth1
+and net/netfilter/nf_nat_amanda.c:help() replaces exactly matchlen bytes:
 
-Port for eth1:
-	Port id: 1
-	Supported link modes:  10baseT/Half 10baseT/Full
-	                       100baseT/Half 100baseT/Full
-	                       1000baseT/Full
-	                       10000baseT/Full
-	                       2500baseT/Full
-	                       5000baseT/Full
-	Port type: mdi
+	if (!nf_nat_mangle_udp_packet(skb, ct, ctinfo,
+				      protoff, matchoff, matchlen,
+				      buffer, strlen(buffer))) {
 
-Port for eth1:
-	Port id: 2
-	Supported MII interfaces : 10gbase-r
-	Port type: sfp
+With a 6-digit advertisement, matchlen is 5, so only 5 of the 6 digit bytes
+are rewritten and a trailing digit stays in the forwarded payload.  Should
+the over-long digit run be rejected before reaching the NAT hook?
 
-Port for eth1:
-	Port id: 3
-	Upstream id: 2
-	Supported link modes:  10000baseCR/Full
-	Port type: mdi
+> +
+>  		exp = nf_ct_expect_alloc(ct);
+>  		if (exp == NULL) {
 
-Note that here, we have 3 ports :
- - The Copper port
- - The SFP Cage itself, marked as 'occupied'
- - The SFP module
+Separately, the changelog states:
 
-This series builds on top of phy_port and phy_link_topology to allow
-tracking the ports of an interface. We maintain a list of supported
-linkmodes/interfaces on each port, which allows for fine-grained
-reporting of each port's capability.
+  "The existing check "port == 0 || len > 5" is insufficient: it
+   catches values that truncate to zero (e.g. 65536) and strings longer
+   than 5 digits"
 
-What this series doesn't do :
- - We don't support selecting which port is active. This is the next step.
- - We only support PHY-driven combo ports. The end-goal of this whole
-   journey that started with phy_link_topology is to get support for MII
-   muxes, such as the one we have on the Turris Omnia. This will eventually
-   be upstreamed as well.
-
-If you want to play around with it, here's [1] the patched ethtool that I've
-been using to produce the outputs above.
-
-Thanks !
-
-Maxime
-
-[1] : https://github.com/minimaxwell/ethtool/tree/mc/ethtool_port
-
-Changelog :
-
-Changes in v17:
- - Handle port index wraparound
- - Regen the ethtool headers, now with the comment :)
-
-Changes in v16:
-https://lore.kernel.org/r/20260902212135.1805948-1-maxime.chevallier@bootlin.com
- - unregister phy_ports at phy_detach
- - typos in patch 1 (of -> or)
- - Fix the netlink specs
-
-Changes in v15:
-https://lore.kernel.org/netdev/20260801074332.98755-1-maxime.chevallier@bootlin.com/
- - Fail on port access for ops-locked devices
- - Use a direct phy_port pointer for upstream tracking
- - Addressed the kdoc issues
-
-Changes in v14:
-https://lore.kernel.org/netdev/20260720174808.139573-1-maxime.chevallier@bootlin.com/
- - Added a big comment on the first patch for the topo alloc potential
-   races
- - Fixed the multi-buff DUMP on last patch with a separate iterator for
-   dumps
- - Fixed some typos in the documentation
-
-Changes in V13:
-V13: https://lore.kernel.org/r/20260701110427.143945-1-maxime.chevallier@bootlin.com
- - Rebase on net-next
- - Fix the SFP bus cleanup path in patch 5
-
-Changes in V12:
-V12: https://lore.kernel.org/r/20260615153907.862987-1-maxime.chevallier@bootlin.com
- - Rebased on net-next, including fixes on the phy probing and cleanup
-   paths
- - Rebased on Jakub's netdev_ops_locked changes in phy_link_topology
- - Fixed some typos reported by Andrew and sashiko in the documentation
-
-Changes in v11:
-V11:https://lore.kernel.org/r/20260521121040.1199622-1-maxime.chevallier@bootlin.com
- - Aggregated Andrew's reviews :)
- - Removed the "vacant" field, replaced it with "upstream_port"
-
-Changes in V10:
-V10: https://lore.kernel.org/r/20260513130521.1064094-1-maxime.chevallier@bootlin.com
- - Rebase on net-next
- - Rename phylink/phy_device sfp_bus_port to sfp_cage_port
- - Sashiko's reviews were mostly unrealistic or wrong :(
-
-Changes in V9:
-V9: https://lore.kernel.org/r/20260403123755.175742-1-maxime.chevallier@bootlin.com
- - Added missing netlink doc updates for u8->u32 conversion
- - Removed dead code with a condition that can never be true in
-   phylink's mod_port code
- - Fixed the error path in phy_sfp_connect_phy
-
-Changes in v8:
-V8: https://lore.kernel.org/r/20260325081937.571115-1-maxime.chevallier@bootlin.com
- - Set the new phydev.has_sfp_mod_phy field when we're sure that no
-   errors occured
- - Fix formatting of the copyright info in ethnl port
- - Use a policy to validate the range of port_id
- - Use GENL_REQ_ATTR_CHECK
- - alpha-sort headers
- - use u32 in netlink messages
- - return better error codes
- - don't check the skb len, the core does that
-
-Changes in V7:
-V7: https://lore.kernel.org/all/20260309152747.702373-1-maxime.chevallier@bootlin.com/
- - Changed the port cleanup path to use list_for_each_entry_continue_reverse
- - Adjusted the cleanup path in phylink for the port vacant state
- - Pass the right cmd for the netlink dump message
-
-Changes in V6:
-V6: https://lore.kernel.org/r/20260304145444.442334-1-maxime.chevallier@bootlin.com
- - Added some comments in th mod_port cleanup
- - changed some kmalloc to kmalloc_obj
- - Removed some phy_link_topo_del_port that wasn't needed
-
-Changes in V5:
-V5: https://lore.kernel.org/r/20260205092317.755906-1-maxime.chevallier@bootlin.com
- - Fixed a check on a potentially un-initialized pointer, reported by
-   Simon
- - Fixed a documentation formatting issue
- - Remove a stray pr_info
- - Rebased on net-next
-
-Changes in V4:
-V4 : https://lore.kernel.org/netdev/20260203172839.548524-1-maxime.chevallier@bootlin.com/
- - Add a cleanup patch for the of port parsing
- - Added a match to sync the port's linkmodes with the PHY's for OF
-   ports
- - Added RTNL assert in the port_get topo helper
- - nullify the bus port for phylink support
- - Fix some typos
-
-Changes in V3:
-V3: https://lore.kernel.org/netdev/20260201151249.642015-1-maxime.chevallier@bootlin.com/
- - Remove the sfp bus ops for nophy, and use .module_start() as
-   suggested by Russell
- - Added missing cleanup for the topology, as per AI review
- - Fixed a few typos as per Romain's review
- - Changed "occupied" to "vacant" as per Romain's review
- - Added missing checks for null ports, per AI review
-
-Changes in V2:
-V2: https://lore.kernel.org/netdev/20260128204526.170927-1-maxime.chevallier@bootlin.com/
- - Fix the cleanup path of phy_link_topo_add_phy, as per AI review
- - Fix the cleanup path of phy_sfp_probe, as per AI review
- - Fix the call-site of the disconnect_nophy sfp bus ops, per AI review
- - Fix the netdev-less case uin phylink, per AI review
- - Fix the prototype of phy_link_topo_get_port for the stubs
- - Dropped patch 11. It ended-up breaking 'allnoconfig', so instead we
-   built a phy_interface_names array in net/ethtool/netlink.c
- - Fix an ethool-netlink spec discrepancy with the type of an attribute
- - Fix the size computation in the netlink port API
- - Fix the cleanup path in the netlink port API
-
-V1: https://lore.kernel.org/netdev/20260127134202.8208-1-maxime.chevallier@bootlin.com/
-
-Maxime Chevallier (10):
-  net: phy: phy_link_topology: Add a helper for opportunistic alloc
-  net: phy: phy_link_topology: Track ports in phy_link_topology
-  net: phylink: Register a phy_port for MAC-driven SFP cages
-  net: phy: Create SFP phy_port before registering upstream
-  net: phy: Represent PHY-less SFP modules with phy_port
-  net: phy: phy_port: Store information about a port's upstream
-  net: phy: phy_link_topology: Add a helper to retrieve ports
-  netlink: specs: Add ethernet port listing with ethtool
-  net: ethtool: Introduce ethtool command to list ports
-  Documentation: networking: Update the phy_port infrastructure
-    description
-
- Documentation/netlink/specs/ethtool.yaml      |  55 +++
- Documentation/networking/ethtool-netlink.rst  |  34 ++
- Documentation/networking/phy-port.rst         |  26 +-
- MAINTAINERS                                   |   1 +
- drivers/net/phy/phy-caps.h                    |   2 +
- drivers/net/phy/phy_caps.c                    |  26 ++
- drivers/net/phy/phy_device.c                  | 186 +++++++--
- drivers/net/phy/phy_link_topology.c           | 101 ++++-
- drivers/net/phy/phylink.c                     | 128 +++++-
- include/linux/phy.h                           |  10 +
- include/linux/phy_link_topology.h             |  44 ++
- include/linux/phy_port.h                      |   5 +
- .../uapi/linux/ethtool_netlink_generated.h    |  22 +
- net/core/dev.c                                |   1 +
- net/ethtool/Makefile                          |   2 +-
- net/ethtool/netlink.c                         |  25 ++
- net/ethtool/netlink.h                         |   8 +
- net/ethtool/port.c                            | 382 ++++++++++++++++++
- 18 files changed, 1020 insertions(+), 38 deletions(-)
- create mode 100644 net/ethtool/port.c
+Given the min_t() clamp above, len can never exceed 5, so the len > 5
+clause looks like it was already unreachable and cannot catch strings
+longer than 5 digits.  Could that sentence be reworded, and should the
+now-dead len > 5 clause be dropped or replaced by a real over-long check?
 
 -- 
-2.55.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/AS8P251MB0001CCFE2A0F40637E5A366CC8B32%40AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
