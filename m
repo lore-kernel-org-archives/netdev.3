@@ -1,173 +1,126 @@
-Received: from mail-oi1-f179.google.com (mail-oi1-f179.google.com [209.85.167.179])
+Received: from mail-oo2-f43.google.com (mail-oo2-f43.google.com [74.125.231.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C14C57D239
-	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 16:17:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.179
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788970626; cv=none; b=BIWb72MLZ5N1graiXhWKlbwc1W3eSx4pvAYPwFT1rO5dplYL7EIOE2jpUYYROqIunIB+nI8mna5HPkaAzoaJWlhKoEpUzn56q/n3mv5XjTgYoIfyJEvtVZSOpZcqMp9x9iQ3MpD7idnPStzmyiSiywLlCxkE96ppPT80wobEI3o=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788970626; c=relaxed/simple;
-	bh=eFHDOCUvG6RJkKxnP7GoyTwndFgmCvaMrkqn3U9uemE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XUvExnj3da4QTaCnv09LoCy8BmrfUJxcV3GiOIKZLrdB/vuIpKIxC/vuypD/RNWyPBDKoKK1NIIiHErz0zLWFPhvkloIuAzTTO89AQnIqnwNHxrX/VvlBQGinqrOp/n0/9qcUgA+G3p4aaaFN25OibKe/BcJWUeT72HFuC8DDf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K1whdm1Z; arc=none smtp.client-ip=209.85.167.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A0EF569F39
+	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 16:19:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.231.171
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788970747; cv=pass; b=ufoRaM2wrnIpDhMQzRY++42gbacidyeEeY1Kk7ChRUU/JnwFjzuQCYa/hYVpVWXctVsQmt+o8Cf3A+WJ1rzDWFo7/iQG437eQ4A3X7WKwCcS+kq1VH29wr9MmOclHZnMe6ftVz3DTM0j1gAr/UEuRRC8vxUGhmNlFlDR361N484=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788970747; c=relaxed/simple;
+	bh=jNYZ/e9tA0bZ+daU+gREuhraXiyCzcdRSOIl2qdMcWI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rn8sciuRmoKB1z5HhECoWpHwWOWbBkS82eoS64ruxhkQbnrIz/W5d5KG2ghBiXPrtAoPBGytIpvsgHEUmw/wUsTlWtThVo5Hd92AjsDV4rupWc+WZab7FvLv55znQsk4b9gA5bqdKtMZL4qw9vFOErPYhwNiNa01lGzsM1d4FYs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X6m3Pr6V; arc=pass smtp.client-ip=74.125.231.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K1whdm1Z"
-Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-4b333de9451so5276224b6e.3
-        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 09:17:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X6m3Pr6V"
+Received: by mail-oo2-f43.google.com with SMTP id 006d021491bc7-6b1ae716867so702792eaf.2
+        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 09:19:06 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788970745; cv=none;
+        d=google.com; s=arc-20260327;
+        b=mP8hrgiPTRkCzSXK4c0OVac/ttd4DRP8i25KbHDzOX3fFO6lqr0+XKW4+wsq66Lzhl
+         0zF3YKhwgQ72A/njOimAcHo+wq1n6Lbk1wcNh/ndhUqRKyUFGigM231PuGhrPRPm4c2A
+         5zWeLTqPc+vhb/1XRmO8SveYmd4nLcU3AeMTdTEV6sTW3iaQMeYF+ccus2E7NSY2hulY
+         O08wRvsayq4F1sfIbZFF3INZyQ/0kTvJFvpeH6QRY24S4YTkr4GJmF7YQOFU6bDOuDAc
+         1wf27j6NtmxCy6THGnmE6bBFtrsODjg7nWl8UCUV+x3Mfqnw3qXwKX2A25oTeOgshNGn
+         IIJg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=hAUbchDH9m45dgmc18rC+fxqU5ICx7ntiYK3bF/7BEw=;
+        fh=NF7/GI8XOrpWVi88wyEu90bmBGJNPqwlDUTSHVIOSb0=;
+        b=HnYUBGEGMnbbZel5mJShegFHqlkxyntdG216/GcrpBqxMSzeSOGY+xQgAHb2sX2xt9
+         MDjNZQn6blKpN9Vedkhz9zVOmUGY+wsQqITcllNaqQzKNY6UGxdWUE/UFJoLzSGIN8yC
+         j+3hM1P8LL05Ktv1i0GThK0CUUJFVf01LGYMlydKeeEXFtX3Csg5yEUq90tX3Eo8cQLW
+         3hlo6yG06ahtUS5Uoi8ER4OmdbiK/M6FEwVgVkLGZsiCgOvTCVvv6TZOx9I50PED4eqS
+         T1ag/w3yLWsBT5ERI5f9K0I7P46+gauzOMSaFCylhsVRXOb+qURTsK+OXl0FdJ2n8f6k
+         ZW/Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788970623; x=1789575423; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+        d=gmail.com; s=20251104; t=1788970745; x=1789575545; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=fshKvEEVhGFc5VFLl5TyLUM9DH0VS/1zTeCkHq9ANIQ=;
-        b=K1whdm1ZS+gonRbBoAHFC94DNJfuOZqjjRn9l5S9ut3rEPZWEHf8apT56NeHM6X7sn
-         HFAwomhnpw/VOedeIYsIQ3VYzYv8EYdT86Xrt8HOMH/7BLAEgHUN6WTFLoRn1Frl6+fi
-         aZb+h7/qu7glTMZ3SVu7j2Eeh60kck1ezT0mtmwIx6IArkegZT/rW3/IcMLHpZsm7oOJ
-         dQXCU+Gn84Aq00YwUlgNFrQ452ih1Yn88z7DG2UjwF6laHUFOWhRRzeNXNf1uuN2vhat
-         RjABQJitvE7lwcdSOujeJshyA5AQhHNRKrDnVpEBjVvAkmMXd8+gLpsdDZJDi3KqDIHl
-         SBag==
+        bh=hAUbchDH9m45dgmc18rC+fxqU5ICx7ntiYK3bF/7BEw=;
+        b=X6m3Pr6VVhpvjgQjK1nepn79bcB1/ht3RripIDXTwx2TBUxQxS5G7l8KOqZG6nz/Zh
+         FwXiJspPnxBqgbcBy25r0esh2HHyE6PsPsdEAN9noKdHODPXXHf8wYONY77oC9bW56LE
+         C+n/2PuxOXREvykaeuK4KMoNDJ2BIsetvftganLOm5gcZv9M0El7JR44Ta35L2WoYHzb
+         52Rx81HUPylSk0wxvYzqS7wyI35FbqcvWPitoghVZzc3/V+lCWysHuTQplqDoKMYm1I7
+         NizaIIjKrA/YCMsgzq8a7SL0BOyJG5jZTPq+8UxCJzQMr9/IdFvKuPfAF6DsXUzuHveS
+         IUrA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788970623; x=1789575423;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20251104; t=1788970745; x=1789575545;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=fshKvEEVhGFc5VFLl5TyLUM9DH0VS/1zTeCkHq9ANIQ=;
-        b=sbF8hjmEP3GZBn5+6TEy1EpMp2FnkzO7+mZQZnEQpdu4gTFSjXpji5/L0jlo5WoSmC
-         PDby/JR1UrfqlR1ow0y+vGcolZBzQiI9XNmsgJb4d2D6KGJbSoHIeESX0y82r2eqgYqa
-         MY1IKuDkHV0Vnc1B0q6F4DSVoGak1a/SqP3TrFpJXzoGU+8cfj3AkdV8jiz/7HsBhGAP
-         IHFoz/GQeDFswszBhlAV0soBqK286Ta4EAXOwYMvoPbpHXNnuXvJvSlR4b5cysmSKjy+
-         5zeH+Zp7ROS1173sEYmKytU76a5e/MRn/TylE8EOISOoWJXyCndCzwttfDrIgLCRFzga
-         PUew==
-X-Forwarded-Encrypted: i=1; AKwUvByHJohnY6FxKfah9un7Q25whilf4PjzNHZytvoRlvQan7CvYELRiQJpMAaIj51e2kM8VZ195AI=@vger.kernel.org
-X-Gm-Message-State: AFuF++nBaFMpGzc4U0nj9ESqnVexQnhFwPXKXqRZ9cFHWAQeOOxQYpGP
-	VrtEY3+gzH30Y8Pz5tWhdCTQA8HHLjB3O2ptm+AcS/Nr6evjfSK1mZ5LX5B/fA==
-X-Gm-Gg: AYBFou3ImFRe2Nc62sIcMzWwW88iZkBDSMamj7/CqfWImWm3c6L3EVJpszvSoO2x2l9
-	8pamG4K3GP7R+4w5JNBrtsg9drXd2q+J/BR+uqLKEzdhBJFthuXWImUwWluMohq2WMuxe3kB7ef
-	GgRjMpLWCNYYXUR8LgH0cB9rDTv5mUKkV6TZ00fJ5ibmMJxE120EGIJYJah3KDgyxWRWbdK/rh+
-	TkBvPbMcId8VzytU531kIjT1zKJs9/7kOjCF3A4OgVTVNi1jWxHCf8yjsmXTKpwcDNUFaXNREDO
-	MD2+3fflNL9tdLUVldHlSp5KaMjfrQ2p86yYPlBx79+4kIXy7fG7jrxodRMbiRrGU6aTMzs3Hgq
-	9NXjs4hISApmcbvFDgRePo1POd+OhLaNRXV5/WP6DLRF1jY8F/q3SMo587aXaDcJ/K2+/uvVfV2
-	h5cZkdRq8P7UVftf+aqLvCIvVMHhk8oxbosV4XRLruRSvvNrb3U32rjFSlC/RxYzplUr2PbrbKk
-	72ddrerfzZ82ojOdnF3
-X-Received: by 2002:a05:6808:bc4:b0:4a4:adaf:5570 with SMTP id 5614622812f47-4b95fb4f59bmr23974245b6e.4.1788970622954;
-        Wed, 09 Sep 2026 09:17:02 -0700 (PDT)
-Received: from devvm29614.prn0.facebook.com ([2a03:2880:ff:6::])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-4b971240f68sm16753189b6e.8.2026.09.09.09.17.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Sep 2026 09:17:01 -0700 (PDT)
-Date: Wed, 9 Sep 2026 09:16:58 -0700
-From: Bobby Eshleman <bobbyeshleman@gmail.com>
-To: netdev-bot+sashiko@kernel.org
-Cc: juanlu@fastmail.com, dw@davidwei.uk, netdev@vger.kernel.org,
-	io-uring@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kuba@kernel.org,
-	asml.silence@gmail.com, pabeni@redhat.com, shuah@kernel.org
-Subject: Re: [net-next,v6,5/6] selftests: net: add multithread server support
- to iou-zcrx
-Message-ID: <aqGGevrEG5+iZosZ@devvm29614.prn0.facebook.com>
-References: <20260831-iou-zcrx-v6-5-02d1d012f0fd@fastmail.com>
- <178839229706.3394541.1555608492152892136@kernel.org>
+        bh=hAUbchDH9m45dgmc18rC+fxqU5ICx7ntiYK3bF/7BEw=;
+        b=j11KeeUaODTeT89KrhOSFKTL+tAB8qsYo++c2D3mdBfrLfN6g04hevLJULFfXw5sDv
+         2BBu7o+rY6nwoaCKenCJefVSzgWRI3ug0uYk86PGZ29JcGBUFzvET4ehQHj79zyYBexj
+         Fmv2Dga8TVnBSU2vXjr6LGlYJOA7mB2J54L3L1U1FD5RVU3uJsjsPPRGgGG+uzAz2+j3
+         zXb+ei0t2X0vur0/onANhr4TD5uEserDpGtirsdHHnX098Bv/wnHFwcFdmFZr7VX527X
+         3cFzCsNPEB1dOiDa/RdDt5FWnuA+FR2SIVwtcG0trVV9U4/XH1rwjgCxeR8KsOz9GY1e
+         lyKQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxmxmrH0//2DJUEMtLUDtYGo88rcXEksLYkeVDU8BjZqcJucHR2fZpFnNq//riIAO1EhtMoEU4=@vger.kernel.org
+X-Gm-Message-State: AFuF++lyj8yZrVQaNqJIpFI468pREyCQL5QJJUafaUJOs15r74XgVgZH
+	H8jMhsjKaPuac5dXwdoqNwd+bTasp3w2eRYi6o3ix2WMrvPCr/AE7bdWyf8ign/IJfmUWb+tzuT
+	sfS7Ol1ZN5uiLl7ypStVDjD88MYGXxRM=
+X-Gm-Gg: AYBFou2iP8g5YBvM+LSHpKxsSOIPQqsYIzNuz+tCT7yzSAJOnFmq+CTxLHChsWGX4vS
+	+U1p+jNtevasQ7TI0rUsfvcZLWwxoRi8wNbg3pM7EvTI4U54iN7Ug0FdcdtLkwH0nitTmrkjFk+
+	w5Q3nqkC+ajOeyX3FuBQhKJ3sRqh/bC9cHFtCm2WWuqWqevWb4A1xe939CeQ3E5qy2JiObTMvs8
+	wrgIsTtALRf8ZiJVVJ/767y8aai+LJsTal4NaonywSI7HzAkI+VQgsgP1rLmOTxhQnnGdU+vS8w
+	QZma8BFSm7eZL+vpoQajLI9HRI3l6gRjDc5uWgFTEZUiCHNQBXJvzxQj6wwqNChrtOjwSMLpIYT
+	epXwjqSUGDwDTkARwhEadqs0=
+X-Received: by 2002:a05:6820:4c10:b0:6b1:62fd:3b4d with SMTP id
+ 006d021491bc7-6bdcc1a4333mr7206501eaf.21.1788970745040; Wed, 09 Sep 2026
+ 09:19:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <178839229706.3394541.1555608492152892136@kernel.org>
+References: <20260908083614.2210505-1-kyle.switch@motor-comm.com> <20260908083614.2210505-2-kyle.switch@motor-comm.com>
+In-Reply-To: <20260908083614.2210505-2-kyle.switch@motor-comm.com>
+From: David Yang <mmyangfl@gmail.com>
+Date: Thu, 10 Sep 2026 00:18:28 +0800
+X-Gm-Features: AcwNN1WNDNfMVmBhvlW6uZJv5v4eYnI30Ge-2mYnVT8Vfeo53MpIQ6A1zZKhmlE
+Message-ID: <CAAXyoMNkvyVN435bUwWuN+q8UmKbwnWbn+=uWt-nC2omBk94Lg@mail.gmail.com>
+Subject: Re: [PATCH net-next v6 1/6] net: dsa: motorcomm: initialize
+ dsa_switch based on chipid
+To: Kyle Switch <kyle.switch@motor-comm.com>
+Cc: andrew@lunn.ch, olteanv@gmail.com, davem@davemloft.net, 
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	linux@armlinux.org.uk, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	ming.xu@motor-comm.com, xiaolin.xu@motor-comm.com, 
+	jianmin.wang@motor-comm.com, wei.zhang@gl-inet.com, sijia.huang@gl-inet.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Sep 02, 2026 at 11:38:17PM +0000, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 6 potential
-> issue(s) to consider:
-> 
+On Tue, Sep 8, 2026 at 4:36=E2=80=AFPM Kyle Switch <kyle.switch@motor-comm.=
+com> wrote:
+> +       if (major =3D=3D YT9215_MAJOR || major =3D=3D YT9218_MAJOR)
+> +               mode =3D YT92XX_MODE_YT921X;
+> +
+> +       for (i =3D 0; i < ARRAY_SIZE(yt92xx_series_table); ++i)
+> +               if (yt92xx_series_table[i].mode =3D=3D mode)
+> +                       return &yt92xx_series_table[i];
 
-[...]
+Still redundant lookups here.
 
-> > @@ -356,29 +444,68 @@ static void run_server(void)
-> >  	if (ret < 0)
-> >  		error(1, 0, "bind()");
-> >  
-> > -	flags |= IORING_SETUP_COOP_TASKRUN;
-> > -	flags |= IORING_SETUP_SINGLE_ISSUER;
-> > -	flags |= IORING_SETUP_DEFER_TASKRUN;
-> > -	flags |= IORING_SETUP_SUBMIT_ALL;
-> > -	flags |= IORING_SETUP_CQE32;
-> > +	pthread_barrier_init(&setup_done, NULL, cfg_num_threads + 1);
-> > +	pthread_barrier_init(&dispatch_done, NULL, cfg_num_threads + 1);
-> > +
-> > +	for (i = 0; i < cfg_num_threads; i++) {
-> > +		ctxs[i].queue_id = cfg_queue_id + i;
-> > +		ctxs[i].setup_done = &setup_done;
-> > +		ctxs[i].dispatch_done = &dispatch_done;
-> > +	}
-> >  
-> > -	io_uring_queue_init(512, &ctx.ring, flags);
-> > +	for (i = 0; i < cfg_num_threads; i++) {
-> > +		ret = pthread_create(&threads[i], NULL,
-> > +				     server_worker, &ctxs[i]);
-> > +		if (ret)
-> > +			error(1, ret, "pthread_create()");
-> > +	}
-> >  
-> > -	setup_zcrx(&ctx);
-> >  	if (cfg_dry_run)
-> > -		return;
-> > +		goto join;
-> >  
-> >  	if (listen(fd, 1024) < 0)
-> >  		error(1, 0, "listen()");
-> >  
-> > -	add_accept(&ctx, fd);
-> > +	pthread_barrier_wait(&setup_done);
-> 
-> [Severity: High]
-> Is the listen() intentionally moved before the workers have registered
-> their ifqs? The main thread creates the threads, calls listen(), and only
-> then waits on setup_done, while the workers reach that barrier after
-> io_uring_queue_init_params() plus setup_zcrx(), i.e. after
-> io_uring_register_ifq() has restarted the device RX queue.
-> 
-> Before the patch the sequence was serialized in one thread:
-> 
-> 	io_uring_queue_init(512, &ctx.ring, flags);
-> 	setup_zcrx(&ctx);
-> 	...
-> 	listen(fd, 1024);
-> 
-> so the port only became visible once the memory provider was installed.
-> 
-> Two existing tests depend on that ordering. wait_port_listen() in
-> net/lib/py/utils.py polls every 5 ms, so it can now return while
-> registration is still in flight:
-> 
-> iou-zcrx.py:test_zcrx_large_chunks() {
-> 	wait_port_listen(cfg.port, proto="tcp")
-> 
-> 	check_iou_rx_buf_len(cfg, rx_buf_len)
-> }
-> 
-> check_iou_rx_buf_len() raises "Expected 1 io-uring page pool, found 0",
-> and nk_qlease.py:test_destroy() does queue_get() plus
-> ksft_in("io-uring", queue_info) immediately after wait_port_listen() with
-> no sleep.
-> 
-> Beyond the harness races, data delivered into the queue before the
-> provider exists is serviced by the copy fallback rather than zero copy,
-> and the queue restart during registration can drop in-flight frames.
-> 
-> Would moving listen() below pthread_barrier_wait(&setup_done) restore the
-> previous guarantee?
+> -       ds->priv =3D priv;
 
-Just a heads up that I tested this on BRCM and did find this listen()
-ordering issue to cause genuine (but flaky) regression for
-nk_qlease.test_destroy. Moving the listen() to after wait(setup_done)
-indeed fixed it.
+ds->priv is gone in the new register.
 
-Best,
-Bobby
+>  static const struct of_device_id yt921x_of_match[] =3D {
+> -       { .compatible =3D "motorcomm,yt9215" },
+> -       {}
+> +       {
+> +               .compatible =3D "motorcomm,yt9215",
+> +       },
+> +       { /* sentinel */ }
+
+Leftovers.
