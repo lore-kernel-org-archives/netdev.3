@@ -1,147 +1,157 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.cjdns.fr (mail.cjdns.fr [5.135.140.105])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07AFD59D636
-	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 21:24:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C08C485949;
+	Wed,  9 Sep 2026 21:33:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.135.140.105
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788989053; cv=none; b=Rp4TooJPqcWmLVRWcOyxPhGVRcCL1PwGGce79Cmp80IxOM/SfSleRc/nJhqFHGF13FARfuuw1eCfNWdnbdZNyIveMvA5qKvKZt6LFbPHS/aq9Y/L7bcEi9UEPt4k39RGttw0GCuuLBbfLJWQI2EZv68TDb9iK38RhGeLMpuQUtk=
+	t=1788989609; cv=none; b=psFSU7cjhy7CSl/359CKv3tY52oTspvO3HQQjKFJYj3u3SgRg/CWvp9aNv0Sh2ToFljqcORpyT8Kv7z0jLz5Xg7aGODDoFarOTEecnV6aW1/nlMIbiWYA7QHwk8OEY/v+tp89bUbzYt5vCUcoNWB9VE1ZVEfGzzSnub0BilOcRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788989053; c=relaxed/simple;
-	bh=CZjG2Cm4beBlXwkRf0BZXKtwcXcjdcZtdHsTnzgexlw=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=jopjGlGS31zYg3usyEVJys3SSv+Qe4fIjMZ89XwSGslsyTZDB7GWxpKyr4tisXyE6KzCyEn2bVsxDDyN2Ct8P+DpocoFeOQDZTTl3JYQGzCnkl7V3+ptq442dkR0JlKf8SCSZVkGK56mituqYef5RXlpqC3HsUCrNNL8+rWMbRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nyjJhho/; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788989609; c=relaxed/simple;
+	bh=834eDjOan/A5adnG3hsLjh7NHyS9qItlttjBQ8iMDKM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Qd5pkqVsbzCbBNiZJrxDZAuww7SaW22Q5SJxiZX0brDsfGsLhu0a951vnS7lKwTixoZi3hSbOMqv+bQuXokwQx1J3w6f/CWXSe5yqL/65yZ8EWP5fxLzMwfHr58Cn2FIPMIK2AE+krXnmN+YX3vg1FOnxLgpB0GGmWSYyoIx5kE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cjdns.fr; spf=pass smtp.mailfrom=cjdns.fr; dkim=pass (2048-bit key) header.d=cjdns.fr header.i=@cjdns.fr header.b=njbNHfNm; arc=none smtp.client-ip=5.135.140.105
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cjdns.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cjdns.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nyjJhho/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AFBD1F000FF;
-	Wed,  9 Sep 2026 21:24:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788989043;
-	bh=Cs7ZKNpKePbZjILhCM495ioiKqg/0FHnDvE1Uh07vHI=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=nyjJhho/ARXaUgNWXFvXq7DSfysk83GqxEYvRJtOS5/XGzTDzO8Q7q7Kygf0lx5SE
-	 +YzYZoI8YEa8KF9JNjA+gYR5tmmHdXYn6Bh5svZplHiL8nxOGfUr8UOD9A5VUgd2RZ
-	 L2sz4KJqmR5YzOWIJyuK54x5GxHl1uwbc+DMLgdrBPrbMEZuHGn7BzjQOM/P29M0Vn
-	 Emk70F8kFbCOT+j9+Godv55KBfMJbvA4bVg9FMoI0eK5qYHLUE0PxM80qbjC9CW97l
-	 P80dYiI7c50FzAkEqFsD+7jheeNMtqbpCBnfPw95JKSwpchdzrAJfFIvR4TTZbfKO1
-	 3t2KIxY2Jj0rg==
-Subject: Re: [PATCH] net: prestera: validate num_counters in counter response
-From: netdev-bot+sashiko@kernel.org
-To: elb12345@hotmail.co.uk
-Cc: enachman@marvell.com, netdev@vger.kernel.org, davem@davemloft.net,
- kuba@kernel.org, pabeni@redhat.com, edumazet@google.com
-Date: Wed, 09 Sep 2026 21:24:02 +0000
-Message-ID: <178898904299.219967.14214566618811763209@kernel.org>
-In-Reply-To: =?utf-8?q?=3CAS8P251MB0001CC8A4737B0CC46F41DDFC8B22=40AS8P251MB?=
- =?utf-8?q?0001=2EEURP251=2EPROD=2EOUTLOOK=2ECOM=3E?=
-References: =?utf-8?q?=3CAS8P251MB0001CC8A4737B0CC46F41DDFC8B22=40AS8P251MB0?=
- =?utf-8?q?001=2EEURP251=2EPROD=2EOUTLOOK=2ECOM=3E?=
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=cjdns.fr header.i=@cjdns.fr header.b="njbNHfNm"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 55D76408E9C;
+	Wed,  9 Sep 2026 23:33:03 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cjdns.fr; s=dkim;
+	t=1788989589; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=V/qlTnUfYfGp2JdX/hItZG5Gee2j7Ew0nxnFZ6sxuQ4=;
+	b=njbNHfNmVsDqxX50TMx4/HC1qNAlT73XFtEcqOCX+5q5vZN+umf7CVN2biX8IYFOq7QTmY
+	fPkiBhd8WynUvTvHrd6efRjK5N+Sbtaq3XTkjYOXX4bRr+V+rrGdh2n3VYzYoTocINjWgP
+	BUSJT38c1rt9hxPDekC0tPn0FXUgC0wVkrmbTKOSEKUlQl+99LgczV5aZ8HSQCQ6MRWsI6
+	jV0SE3HZ46FstACiVBZMtrnt+7jaX8iFk3285cZlcxT1VLES+IOAZBS0L1gwEcCIbPrK+J
+	lGsgQe3MsVoKmGLIcoRwV/9P5TGvDVOFmtUNhunF4QUD9PNjrQyvyE4nZSn4kA==
+From: Caleb James DeLisle <cjd@cjdns.fr>
+To: netdev@vger.kernel.org
+Cc: daniel@makrotopia.org,
+	dqfext@gmail.com,
+	SkyLake.Huang@mediatek.com,
+	andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	linux@armlinux.org.uk,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	Caleb James DeLisle <cjd@cjdns.fr>,
+	Matheus Sampaio Queiroga <srherobrine20@gmail.com>
+Subject: [PATCH net-next] net: phy: mediatek: support MT7530 PHYs on EN71221 MCM
+Date: Wed,  9 Sep 2026 21:32:50 +0000
+Message-Id: <20260909213250.3184238-1-cjd@cjdns.fr>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider:
+The EcoNet EN751221 multi-chip module implementation of the MT7530
+requires some additional configuration of the PHYs on startup.
+The reason for this is not known, but it is possible that it has
+to do with the fact that the EN751221 MCM implementation of the
+MT7530 runs at an abnormal PLL frequency (362.5Mhz).
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 0
+Detect whether the MT7530 PHY is attached to the MDIO bus of an
+EcoNet EN751221 switch and if so, apply the necessary register
+updates.
 
-- [High] Incomplete bounds check: prestera_hw_counters_get()
-  (drivers/net/ethernet/marvell/prestera/prestera_hw.c:2327) validates…
+Co-developed-by: Matheus Sampaio Queiroga <srherobrine20@gmail.com>
+Signed-off-by: Matheus Sampaio Queiroga <srherobrine20@gmail.com>
+Signed-off-by: Caleb James DeLisle <cjd@cjdns.fr>
+---
+ drivers/net/phy/mediatek/mtk-ge.c | 61 +++++++++++++++++++++++++++++++
+ 1 file changed, 61 insertions(+)
 
---
-
-net: prestera: validate num_counters in counter response
-
-This adds a check in prestera_hw_counters_get() that rejects a firmware
-counter response whose num_counters field exceeds the number of counters
-that were requested, returning -EINVAL instead of iterating over the
-response.
-
-> diff --git a/drivers/net/ethernet/marvell/prestera/prestera_hw.c b/drivers/net/ethernet/marvell/prestera/prestera_hw.c
-> index 7695cbb2ce626..c4cb5f22893c9 100644
-> --- a/drivers/net/ethernet/marvell/prestera/prestera_hw.c
-> +++ b/drivers/net/ethernet/marvell/prestera/prestera_hw.c
-> @@ -2324,6 +2324,11 @@ int prestera_hw_counters_get(struct prestera_switch *sw, u32 idx,
->  	if (err)
->  		goto free_buff;
->  
-> +	if (__le32_to_cpu(resp->num_counters) > *len) {
-> +		err = -EINVAL;
-> +		goto free_buff;
-> +	}
-> +
-
-[Severity: High]
-The commit message says this closes "out-of-bounds writes to the caller
-stats array", but does *len actually describe the capacity of stats[]?
-
-The only caller is prestera_counter_stats_work() in prestera_counter.c,
-which always requests a fixed chunk size and passes a pointer into the
-middle of block->stats:
-
-	u32 count = COUNTER_BULK_SIZE;
-	...
-	err = prestera_hw_counters_get(counter->sw, counter->total_read,
-				       &count, &done,
-				       &block->stats[counter->total_read]);
-
-COUNTER_BULK_SIZE is 256, while block->stats is allocated with exactly
-block->num_counters elements in prestera_counter_block_get():
-
-	err = prestera_hw_counter_block_get(counter->sw, client,
-					    &block->id, &block->offset,
-					    &block->num_counters);
-	...
-	block->stats = kzalloc_objs(*block->stats, block->num_counters);
-
-block->num_counters also comes from the firmware, so it can be smaller
-than 256 and need not be a multiple of 256.
-
-Can stats[] still be overflowed with this check in place?  If firmware
-reports num_counters = 10 for the block and then answers the
-COUNTER_GET with resp->num_counters = 256, the new test (256 > 256) is
-false and the loop below writes stats[0..255] into a 10 element array.
-Similarly, with block->num_counters = 300, the second poll iteration
-passes &block->stats[256] which has only 44 slots left, yet *len is
-still 256, so any reply in the range 45..256 passes.
-
-Would clamping the requested count in prestera_counter_stats_work() to
-block->num_counters - counter->total_read, or passing the remaining
-capacity down to prestera_hw_counters_get(), be a better place for the
-bound?  The helper as written never learns the size of the destination
-array.
-
->  	for (i = 0; i < __le32_to_cpu(resp->num_counters); i++) {
->  		stats[i].packets += __le64_to_cpu(resp->stats[i].packets);
->  		stats[i].bytes += __le64_to_cpu(resp->stats[i].bytes);
-
-[Severity: High]
-Related to the above: on success *len is set to resp->num_counters, and
-prestera_counter_stats_work() then does:
-
-	counter->total_read += count;
-	if (!done || counter->total_read < block->num_counters) {
-		resched_time = COUNTER_RESCHED_TIME;
-		goto resched;
-	}
-
-Can counter->total_read end up larger than block->num_counters here?  If
-so, and the same reply has done == 0, the work is rescheduled and the
-next invocation forms &block->stats[counter->total_read], which is
-already past the end of the array before any write happens.
-
-The out-of-bounds read of resp->stats[] does look addressed by this
-check, since the response buffer is allocated with
-struct_size(resp, stats, *len).  Would it be worth splitting the commit
-message so it only claims the read side, or extending the fix to cover
-the write side too?
-
+diff --git a/drivers/net/phy/mediatek/mtk-ge.c b/drivers/net/phy/mediatek/mtk-ge.c
+index 73d9b72f9d9e..42b06c40d703 100644
+--- a/drivers/net/phy/mediatek/mtk-ge.c
++++ b/drivers/net/phy/mediatek/mtk-ge.c
+@@ -1,4 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0+
++#include <linux/of.h>
+ #include <linux/bitfield.h>
+ #include <linux/module.h>
+ #include <linux/phy.h>
+@@ -62,8 +63,68 @@ static void mtk_gephy_config_init(struct phy_device *phydev)
+ 		       FIELD_PREP(MTK_MCC_NEARECHO_OFFSET_MASK, 0x3));
+ }
+ 
++static bool mt7530_phy_is_en751221_companion(struct phy_device *phydev)
++{
++	struct device *parent = phydev->mdio.bus->parent;
++
++	return parent && parent->of_node &&
++	       of_device_is_compatible(parent->of_node, "econet,en751221");
++}
++
++/*
++ * The EcoNet reference implementation applies additional tuning to
++ * the PHYs of the multi-chip module MT7530.
++ */
++static int mt7530_phy_en751221_config_init(struct phy_device *phydev)
++{
++	int ret;
++
++	ret = genphy_soft_reset(phydev);
++	if (ret)
++		return ret;
++
++	/* Clause 22 local data. */
++	ret = phy_write(phydev, MII_CTRL1000, 0x1e00);
++	if (ret < 0)
++		return ret;
++
++	ret = phy_write_paged(phydev, MTK_PHY_PAGE_EXTENDED_1, 0x14, 0x3a04);
++	if (ret < 0)
++		return ret;
++
++	/* Clause 45 global/local data from mt7530GePhyCfgLoad(E3.0). */
++	ret = phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x0417, 0x7775);
++	if (ret < 0)
++		return ret;
++
++	ret = phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x00a6, 0x0350);
++	if (ret < 0)
++		return ret;
++
++	ret = phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x0012, 0xd210);
++	if (ret < 0)
++		return ret;
++
++	/* Vendor profile disables 100/1000BASE-T EEE advertisement. */
++	ret = phy_write_mmd(phydev, MDIO_MMD_AN, 0x003c, 0x0000);
++	if (ret < 0)
++		return ret;
++
++	phydev_info(phydev, "EN751221 companion MT7530 E3.0 PHY profile loaded\n");
++
++	return 0;
++}
++
+ static int mt7530_phy_config_init(struct phy_device *phydev)
+ {
++	int ret;
++
++	if (mt7530_phy_is_en751221_companion(phydev)) {
++		ret = mt7530_phy_en751221_config_init(phydev);
++		if (ret)
++			return ret;
++	}
++
+ 	mtk_gephy_config_init(phydev);
+ 
+ 	/* Increase post_update_timer */
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/AS8P251MB0001CC8A4737B0CC46F41DDFC8B22%40AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
+2.39.5
+
