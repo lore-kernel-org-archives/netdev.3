@@ -1,137 +1,108 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mxd.seznam.cz (mxd.seznam.cz [77.75.76.210])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5D1C3C9891;
-	Wed,  9 Sep 2026 20:30:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74CE643E49A;
+	Wed,  9 Sep 2026 20:33:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=77.75.76.210
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788985826; cv=none; b=q5glcd0QAw85QXC2JLx9FNTO0dag/80tpA1Fv0UXxj8nivjtD6EkUBHqsSTwn9QF3WhnPvTOxJvsQylM6fmatvLhM386KPGHX/WilydYWvjFwicMm+lJeZ3LX9O3CxOQKtcfGkngys701bKHIaSE1X9DlYQ4eFI3WxlkHrX6H7w=
+	t=1788986010; cv=none; b=DQ28l0WcwTMg+n3teEBnKbBSDfnlvqko9nYRe6WGCkNMR11yidAbwrQt+KsE0X0OLEQtA+gwpeXndSXv05L78QiWcns+uYzv5fV/64CmRPnHSgxw7OTOA1ldgMM9fXQ4AA2GtX+3JeJtCudjVsktg/yFFeCn7eeu3Au23nFH6Bc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788985826; c=relaxed/simple;
-	bh=LGVG5wgoxq5v0/GNNkulEJvG++Bh9ZsV3SBFZetv5xo=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JFYXaglxlXyA/vz4ah39H3VVxWHVIsFNIWq6PDqiJEWW0j5V6K+0klIA8xvS+LCGENtqxgNqIBFQm18MS91Vec1kJFw0B8rpqKZf8UvTytcnNmt33JQy/NpiGf8pK4nC0E1Kr8d0DfApArZwQB3JoEqPheTeKIVo/3L2X8hUgzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gr3rHPsI; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788986010; c=relaxed/simple;
+	bh=RMAu/QNHXEM/oR4TK8SNDcoL1VMXdPVO5VZmdFvUeKk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=t1ExOkZKmBSJKM7ZY4Ag5JEs5XfoKG7UG/x1SucNXYuPQVUmRUH2I4HzUAKCiZCikdWuyM6RGgzK9/HlWgRfQtXo+zz3VMuie0EeL3pK7f8czW4sX52dS39CBwAm7U0ukggwM0ZdfanWqFBUNOTyc0cZJ5PBdTUmA5/9uOZ4z78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=email.cz; spf=pass smtp.mailfrom=email.cz; dkim=pass (2048-bit key) header.d=email.cz header.i=@email.cz header.b=GoVYhoIK; arc=none smtp.client-ip=77.75.76.210
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=email.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=email.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gr3rHPsI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51EC31F000FF;
-	Wed,  9 Sep 2026 20:30:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788985820;
-	bh=4NF93pv4hlLONiEkdgn+sZDEdD085KmMYD2qugUAdak=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Gr3rHPsI1vGNRQ/BCKTB2avhCLlZqFrlfLfpbQRQTJ6Qjigv/pCLtlt8LQh0Nu5mV
-	 kD9LhqsSx9vqEgmVbjMulsejb2JWG3wp3JqAZhxhfvUXVTgG7WyD85qYD14KEeyO4o
-	 YU5VMcL61UTiHT7cm/Grstt2mEyRepWMAmusl/eUiCHyOusB7/p7Rc/qFk8GksLVNP
-	 QJ5KlVdGNufgk5E1DFBzQXwcQfLtxQAx3EQXOFH4Sz4oLHSiO3pklB9Jxb51oXtfOe
-	 vOU1Tq4PM/PyTxkXrmjw8PGP5XVTXEcqlOF1rBYPG9kgxXsHgo+Bps9bCXV9lQ9fmq
-	 EHzlybHAfJYrQ==
-Date: Wed, 9 Sep 2026 13:30:19 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: netdev-bot+sashiko@kernel.org
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
- pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
- adrian.pielech@intel.com, sheenamo@google.com,
- przemyslaw.kitszel@intel.com, shuah@kernel.org,
- linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH net-next] selftests: drv-net: warn if LOCAL_V6 has DAD
- or not kept on link down
-Message-ID: <20260909133019.048e7205@kernel.org>
-In-Reply-To: <178898507124.219967.9302814811759079514@kernel.org>
-References: <20260908181956.1357684-1-kuba@kernel.org>
-	<178898507124.219967.9302814811759079514@kernel.org>
+	dkim=pass (2048-bit key) header.d=email.cz header.i=@email.cz header.b="GoVYhoIK"
+Received: from email.seznam.cz
+	by smtpc-mxd-7df9bfcc5f-xt28s
+	(smtpc-mxd-7df9bfcc5f-xt28s [2a02:598:96:8a00::1200:70c])
+	id 63d7209ce3304a0161a31ef2;
+	Wed, 09 Sep 2026 22:32:33 +0200 (CEST)
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed; d=email.cz; s=szn1;
+	t=1788985953; bh=jogMKRYJWaF8PeTu3z07YD/N5tIeVwYkeypfnTb5Rsw=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding;
+	b=GoVYhoIK2rmpf25wqE1Fq4mmcWKXdrc/a7/pdROuf7ozGe76pX+tvhvduEIod+X4f
+	 NzA8he+GtbedLDsmEIlIGotP1ZIOn/SngHnx0Kcrh8LCL5mbx6t1qjOnpsRmHpJSme
+	 KVsEfOJ7zgdVy2qgD8ZtidNI2SMwyfzWDHXUAqaFb5V2D8BFl6XUps2HC3BaxvNLsp
+	 2+BAOaXwW85XXDK6/VedIJ6kXN1p/npVWmr7nYa/mMPaPrIgP3pBRJszprLUcQXg6e
+	 9VH4RYrwTfOMhg6Bxm6tZ/NHoO62ZzSKxCUg22FK2cUmma/cOK+gn5+k+kPM14kHBa
+	 FSaYtCJqpGwhw==
+Received: from arch-zen.localdomain ([2a02:8308:b086:3c00:3636:4bcf:b8c2:e5cf])
+	by smtpd-relay-7887d69dc5-j57bt (szn-email-smtpd/2.0.82) with ESMTPA
+	id 03700400-fae3-4b33-9877-78ea5db3103f;
+	Wed, 09 Sep 2026 22:31:52 +0200
+Date: Wed, 9 Sep 2026 22:31:47 +0200
+From: Jan Havran <havran.jan@email.cz>
+To: Daniel Golle <daniel@makrotopia.org>
+Cc: Hauke Mehrtens <hauke@hauke-m.de>, Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net 0/3] net: dsa: lantiq_gswip: SGMII/2500BASE-X and
+ flow-control fixes
+Message-ID: <aqHCM6M_1SpVfLKI@arch-zen.localdomain>
+References: <20260907134818.16670-1-havran.jan@email.cz>
+ <ap7yeykTFK0nNbzz@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ap7yeykTFK0nNbzz@makrotopia.org>
 
-On Wed, 09 Sep 2026 20:17:51 +0000 netdev-bot+sashiko@kernel.org wrote:
-> > diff --git a/tools/testing/selftests/drivers/net/README.rst b/tools/testing/selftests/drivers/net/README.rst
-> > index c6bed9a985bc..3fe49bce4f3a 100644
-> > --- a/tools/testing/selftests/drivers/net/README.rst
-> > +++ b/tools/testing/selftests/drivers/net/README.rst
-> > @@ -70,6 +70,15 @@ LOCAL_V4, LOCAL_V6, REMOTE_V4, REMOTE_V6
-> >  
-> >  Local and remote endpoint IP addresses.
-> >  
-> > +Tests reconfigure the device freely, including taking the link down, and
-> > +expect the addresses to work immediately afterwards. IPv6 needs help::
-> > +
-> > +  ip -6 address add 2001:db8:1::1/64 dev eth0 nodad
-> > +  sysctl -w net.ipv6.conf.eth0.keep_addr_on_down=1
-> > +
-> > +Without those the address is flushed when the link goes down, or spends
-> > +a second unusable while waiting for DAD to finish.
-> > +
-> >  LOCAL_PREFIX_V6
-> >  ~~~~~~~~~~~~~~~
-> >  
-> > diff --git a/tools/testing/selftests/drivers/net/lib/py/env.py b/tools/testing/selftests/drivers/net/lib/py/env.py
-> > index 25903f580b40..6262080a8bf4 100644
-> > --- a/tools/testing/selftests/drivers/net/lib/py/env.py
-> > +++ b/tools/testing/selftests/drivers/net/lib/py/env.py
-> > @@ -239,6 +239,25 @@ class NetDrvEpEnv(NetDrvEnvBase):
-> >          if missing:
-> >              raise Exception("Invalid environment, missing configuration:", missing,
-> >                              "Please see tools/testing/selftests/drivers/net/README.rst")
-> > +        if "LOCAL_V6" in self.env:
-> > +            self._check_v6_env()  
+V Mon, Sep 07, 2026 at 06:22:48PM +0100, Daniel Golle napsal(a):
+> On Mon, Sep 07, 2026 at 03:48:15PM +0200, Jan Havran (Advantech Czech) wrote:
+> > This series fixes three issues in the lantiq_gswip / mxl-gsw1xx DSA driver
+> > found while bringing up a MaxLinear GSW145 over SGMII on a Marvell
+> > Armada 7040 board, with the switch CPU port running 2500BASE-X and the
+> > user ports at 1000BASE-T.
+> > 
+> > Patch 1 reorders the SerDes NCO clock-rate setup ahead of the SGMII shell
+> > reset. Without it, only the rate the switch was left at by the straps or
+> > the boot loader links up; the other rate comes up but forwards no traffic.
+> > 
+> > Patch 2 adds the missing SPEED_2500 case to gswip_port_set_speed(); without
+> > it the CPU port was forced to 10 Mbps at 2.5G link-up.
+> > 
+> > Patch 3 corrects the GSWIP_MDIO_PHY_FCONTX_EN field value (a typo present
+> > since the original vrx200 driver).
+> > 
+> > Tested on GSW145 hardware only. The register values are backed by the
+> > public GSW145 data sheet and by the driver's own field encoding; the
+> > xRX200/xRX300 data sheets are not public.
+> > 
+> > Jan Havran (Advantech Czech) (3):
+> >   net: dsa: mxl-gsw1xx: set SerDes NCO rate before SGMII reset
+> >   net: dsa: lantiq_gswip: handle SPEED_2500 in gswip_port_set_speed()
+> >   net: dsa: lantiq_gswip: fix GSWIP_MDIO_PHY_FCONTX_EN value
 > 
-> [Severity: Medium]
-> Do the in-tree environment providers meet the invariant that is being
-> documented here?
+> Thank you for taking care of this on a board which allows you to actually
+> test it -- on the reference platform I had to develop the driver with the
+> SerDes interface of the switch is hard-wired to an MxL86111 PHY, hence I
+> could never test 2500Base-X mode.
 > 
-> Two cases look like they do not:
-> 
-> 1) NetDrvEpEnv.create_local() (the netdevsim path in the same file) adds
->    the addresses with nodad, but never enables keep_addr_on_down on the
->    nsim devices or on 'all':
-> 
->      ip(f"   addr add dev {self._ns.nsims[0].ifname} {self.nsim_v4_pfx}1/24")
->      ip(f"-6 addr add dev {self._ns.nsims[0].ifname} {self.nsim_v6_pfx}1/64 nodad")
->      ip(f"   link set dev {self._ns.nsims[0].ifname} up")
-> 
->    Both the devconf_all and per-device defaults are 0, and
->    addrconf_ifdown() drops permanent global addresses when the aggregate
->    is not positive:
-> 
->    net/ipv6/addrconf.c:addrconf_ifdown() {
-> 	...
-> 	int _keep_addr = READ_ONCE(net->ipv6.devconf_all->keep_addr_on_down);
-> 
-> 	if (!_keep_addr)
-> 		_keep_addr = READ_ONCE(idev->cnf.keep_addr_on_down);
-> 
-> 	keep_addr = (_keep_addr > 0);
-> 	...
->    }
-> 
->    So a test that follows the new documentation and bounces the link
->    would lose the nsim LOCAL_V6 address. Note also that this path never
->    reaches _check_v6_env(), since the call is only made from the branch
->    that requires NETIF, so there is no warning either.
+> Whole series
+> Reviewed-by: Daniel Golle <daniel@makrotopia.org>
 
-This is no different to the HW case, we expect the outside runner 
-to configure the system. As proven by the fact that the WARN print
-added here does not trigger in NIPA on netdevsim:
+Thank you, Daniel.
+We are developing a new board containing this switch and we found your upstream driver
+in a much better shape than the official Maxlinear driver.
 
-https://netdev-ctrl.bots.linux.dev/logs/vmksft/net-drv/results/816282/13-napi-id-py/stdout
+Unfortunatelly 2.5G did not work for us because of the missing SPEED_2500 case and
+1G did not work because the switch was left in 2.5G mode by the straps.
 
-> 2) tools/testing/selftests/net/lib/ksft_setup_loopback.sh sets up the
->    env that this code validates, and adds LOCAL_V6 without nodad and
->    without touching keep_addr_on_down:
-> 
->      ip -netns "${SERVER_NS}" addr add $LOCAL_V6/64 dev server
->      ...
->      export NETIF=server
-> 
->    Would every run driven by that script now print both new warnings,
->    pointing at in-tree setup code rather than at a user
->    misconfiguration? Should the script and create_local() be updated
->    along with the documentation?
+But with these fixes, this driver works great for us.
 
-Not sure if and how that script is actually used :S
+Thanks again for your work on this driver.
+Regards,
+Jan
