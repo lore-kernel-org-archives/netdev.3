@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85C63550DB5;
-	Wed,  9 Sep 2026 12:12:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 360F75519B3;
+	Wed,  9 Sep 2026 12:12:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788955948; cv=none; b=kyn60ePlewH+tS43S0FbD6x8D2jVR34a2YKIn7Fqvb3y1ZxNykRxi89+Fsmzl2zMWnxQec/2eFf+NNBI/yiZYWcSiWF2DLsv+SuTL57e1BqPYINjcDIVdJ7Jk+nI311ionBeeYHMZMWgUADdMEDj8Ap08WZBOfb7+Hf0AJnjdcc=
+	t=1788955950; cv=none; b=KtObms9/Z+bGiKlOwU/H6OAKuWvprCmXNAHRmPbFPnC9MTXB+pK1V02WdNYz7TprELCLerqEOWNCdhDfLxQZzABj0GeKXX/VLaUVpDenA9BnXyaMn9U4Xv8Fqo2X6D5EZw/zp1FSTRoOAKlnZ6RVBWFbD/FkbpRUnz2WHtXK9O4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788955948; c=relaxed/simple;
-	bh=0eza9hmbmpnwwdzaEK4z2Fzrj7wxNCMz0u5gRrWgeH8=;
+	s=arc-20240116; t=1788955950; c=relaxed/simple;
+	bh=ZC0mdFk5q8FNgjsyV9RFk6LTrWvcBB8gVLTu4iiUOSQ=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=WRJYxlRsR39l+vo4gGr320gnhjZhCFuQgDz4kngNcxa8WGLT7j9gfYkDUpBr34skAzXi7Av49A26uWr/Py+SnzFugEK3omoA887TGvnkcb1ZdeNbcZAqU8GwnWEiyVvs8DtPDzEJDhD/8vCpcF/+6T8D8RP9DZxEjKOZrf1ecNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MSp2dZvG; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=akreBfwHUCfwmPP8+mAD7H/V6zS9XC0CNlMLco33TkgnYdJGPg+8e/2RdBTFT9r3r/hG4md759XZyllxhsiHU7aSuXlM4Kh/4Gm0KLQTtCf0n3T5njgux3h+3UDjMHswYbqNn0q1QJFoiZoSpnkjvQggiW91cvSDm/g/TI0TP8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H+972LGJ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MSp2dZvG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74E1E1F00A3A;
-	Wed,  9 Sep 2026 12:12:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H+972LGJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 106C61F00A3E;
+	Wed,  9 Sep 2026 12:12:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788955947;
-	bh=K1YQsi/7IjjFywqyLFJ6weEnZEs1+TwcBvIgqZHVF5w=;
+	s=k20260515; t=1788955949;
+	bh=YkpRTW7aH+SOPISDbzLAxFe6GI6LAf/p2BdybRyyffw=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=MSp2dZvGMIlaC0h43j9Os59YWqitOgaiQ2aqKSgiM2RKRolfvSVrdE2iCAOY141ec
-	 XAZ1L23Uv7xIrdCh5HOEe9eM2VsphL310mFuRCnaMbBXDhgzHQw0tb2bLS/dEaDw6k
-	 1DeHFu1WO2E8KOCaSr0Yp5ja+I377j8uqtnxwyNipCM/DBurZ07dDZhobuhb6440Np
-	 Mqu/r5dZvQ3OaPg0ce4z6S+rKuHPKCP3xiAEKW5YNxUnNQD60cHtYi1d9XZkXVJxsW
-	 +a4FJriPkKv9qNxIILm/zMm0uyMeK/qiJFIGG4hXvPCtJopdN22aC/RJr32Jmfnqwt
-	 RVsL8SOVDU7Ag==
-Subject:
- Re: [PATCH net-next v2 3/4] net: dsa: Add tag handling for SoC-e switches
+	b=H+972LGJiqjETj5NtZ6Rx3WajFAKuWptpZJYIbD1Zcg+1MPG9OcXYFfuOLkW7Hz5f
+	 Rj+Jiz1RvpFQIUkHLJvzTIf1KQ1/EAfBwvbNAcDqPEIYJIBNndnHLlu0FO73OG8Egm
+	 q/B17s3fLw09d0s5koKr1IeM+TJW2C+geKTQCIRat1v2Z1MGhDIrggYkBYChPmmhJc
+	 zqhRP9g1Wi5iSywp/nONJW0J4oJL4qgZs+vYcYXus8Nwdmj4eO0/vM6kteT6u6vcHc
+	 rk9yKWTxTcnRz8tcArT9Bfyqdu4arG2MKIMq6K4EvuQ5o02Tb0oteQU3j47QvpcLol
+	 LZQAfdLRqJuKQ==
+Subject: Re: [PATCH net-next v2 4/4] net: dsa: soce: Add basic support for
+ SoC-e switch IP cores
 From: netdev-bot+sashiko@kernel.org
 To: v.strassheim@linutronix.de
 Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, andrew@lunn.ch,
@@ -36,12 +36,12 @@ Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, andrew@lunn.ch,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
  netdev@vger.kernel.org, martin.kaistra@linutronix.de,
  b.spranger@linutronix.de
-Date: Wed, 09 Sep 2026 12:12:25 +0000
-Message-ID: <178895594594.219967.10703472718792333808@kernel.org>
+Date: Wed, 09 Sep 2026 12:12:27 +0000
+Message-ID: <178895594761.219967.4769482322073838475@kernel.org>
 In-Reply-To:
- <20260903-devel-vstrassheim-soce-dsa-ml-v2-3-fb0587cb466b@linutronix.de>
+ <20260903-devel-vstrassheim-soce-dsa-ml-v2-4-fb0587cb466b@linutronix.de>
 References:
- <20260903-devel-vstrassheim-soce-dsa-ml-v2-3-fb0587cb466b@linutronix.de>
+ <20260903-devel-vstrassheim-soce-dsa-ml-v2-4-fb0587cb466b@linutronix.de>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -52,176 +52,253 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
+Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider:
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+Critical: 0 · High: 0 · Medium: 2 · Low: 1
 
-- [Medium] sdsa_rcv() (net/dsa/tag_sdsa.c, lines 86-87) unconditionally
-  destroys every received frame whose SDSA header has the VLAN-info bit…
-- [Low] Concern (INVALIDATED by series context): 'the new DSA tag
-  protocol DSA_TAG_PROTO_SDSA / CONFIG_NET_DSA_TAG_SDSA has no in-tree…
+- [Medium] The MDIO master transaction sequence never verifies that the
+  shared controller is idle before programming PARAMS/WRITE and kicking…
+- [Medium] soce_setup() arms the switch's "tag all frames" and "DSA
+  custom rules tagging" bits, but the driver provides no .teardown…
+- [Low] The compatible string and its binding description declare a
+  register layout with "the core version register at offset 0x00 and…
 
 --
 
-net: dsa: Add tag handling for SoC-e switches
+net: dsa: soce: Add basic support for SoC-e switch IP cores
 
-This adds a new DSA tagger for SoC-e switches, which insert an 8-byte SDSA
-header with EtherType 0xdcdc between the source MAC address and the original
-EtherType.  Both TO_CPU and FROM_CPU directions are handled, while the VLAN
-metadata fields in the header are left clear on transmit and rejected on
-receive.
+This adds a new DSA driver for SoC-e FPGA switch IP cores, detecting the
+core version and port counts from memory-mapped registers at probe time
+and enabling the SDSA tagging feature. It also exposes each hardware MDIO
+output of the integrated MDIO bridge as a separate logical mii_bus.
 
-> diff --git a/net/dsa/Kconfig b/net/dsa/Kconfig
-> index 23b4b74004ed5..0032ccd3badf6 100644
-> --- a/net/dsa/Kconfig
-> +++ b/net/dsa/Kconfig
-> @@ -188,6 +188,12 @@ config NET_DSA_TAG_RZN1_A5PSW
->  	  Renesas RZ/N1 embedded switch that uses an 8 byte tag located after
->  	  destination MAC address.
->  
-> +config NET_DSA_TAG_SDSA
-> +	tristate "Tag driver for SoC-e switches using EtherType SDSA headers"
-> +	help
-> +	  Say Y or M if you want to enable support for tagging frames for the
-> +	  SoC-e switches.
+A few questions about the register descriptor, the MDIO timeout handling
+and the missing teardown path.
+
+> diff --git a/drivers/net/dsa/soce/soce_dsa_core.c b/drivers/net/dsa/soce/soce_dsa_core.c
+> new file mode 100644
+> index 0000000000000..60f9f8c030e88
+> --- /dev/null
+> +++ b/drivers/net/dsa/soce/soce_dsa_core.c
+
+[ ... ]
+
+> +struct soce_probe_desc {
+> +	u32 core_version_offset;
+> +	u32 licensed_features_offset;
+> +	u32 implemented_features0_offset;
+> +	u32 mdio_master_offset;
+> +};
 > +
+> +static const struct soce_probe_desc soce_probe_desc_swip_00_04_0c_10 = {
+> +	.core_version_offset		= 0x0000,
+> +	.licensed_features_offset	= 0x0004,
+> +	.implemented_features0_offset	= 0x000c,
+> +	.mdio_master_offset		= 0x0200,
+> +};
 
 [Severity: Low]
-This isn't a bug, just a note so it does not get raised again during review.
-Taken on its own, this patch adds a tagger and a protocol id with no in-tree
-user.  The next patch in the series, "net: dsa: soce: Add basic support for
-SoC-e switch IP cores", adds drivers/net/dsa/soce/ whose Kconfig contains
-select NET_DSA_TAG_SDSA and whose soce_get_tag_protocol() returns
-DSA_TAG_PROTO_SDSA, so the tagger is reachable by the end of the series.
+The compatible name soce,swip-00-04-0c-10 and the binding text describe a
+register layout with "the core version register at offset 0x00 and feature
+identification registers at offsets 0x04, 0x0c, and 0x10", but this
+descriptor only models 0x00, 0x04 and 0x0c.
+
+Is the 0x10 register meant to be read somewhere?  soce_sw_detect_features()
+reads only licensed_features_offset and implemented_features0_offset:
+
+	regval = readl(local->base_addr + probe_desc->licensed_features_offset);
+	...
+	regval = readl(local->base_addr +
+		       probe_desc->implemented_features0_offset);
+
+The "features0" suffix also suggests a features1 register at 0x10 that is
+currently ignored.
+
+Going the other way, mdio_master_offset = 0x0200 is a register block the
+driver depends on for every MDIO transaction, but the binding does not
+mention it at all.  Should the binding describe that block too, or should
+the offset list in the compatible description match what the driver
+actually models?
 
 [ ... ]
 
-> diff --git a/net/dsa/tag_sdsa.c b/net/dsa/tag_sdsa.c
-> new file mode 100644
-> index 0000000000000..83bccd65b1b1d
-> --- /dev/null
-> +++ b/net/dsa/tag_sdsa.c
-> @@ -0,0 +1,123 @@
-
-[ ... ]
-
-> +/* SDSA tag byte layout (after the 12-byte MAC header):
-> + * Bytes 0-1: SDSA EtherType (0xDCDC)
-> + * Bytes 2-3: Reserved
-> + * Byte 4:    Frame type (bits 7-6), VLAN-info bit (bit 5), port[9:5] (bits 4-0)
-> + * Byte 5:    Port[4:0] (bits 7-3)
-> + * Bytes 6-7: PCP (bits 7-5) / CFI (bit 4) / VID (bits 3-0 + byte 7), only
-> + *            meaningful when the VLAN-info bit is set.
-> + */
-
-[ ... ]
-
-> +static struct sk_buff *sdsa_xmit(struct sk_buff *skb, struct net_device *dev)
+> +static void soce_sw_enable_tagging(struct soce_dsa_local *local)
 > +{
-
-[ ... ]
-
-> +	tag->port_lo = FIELD_PREP(SDSA_TAG_PORT_LO_MASK, dp->index);
-> +	tag->vlan = 0;
+> +	u32 regval;
 > +
-> +	return skb;
+> +	regval = readl(local->base_addr + SOCE_TAG_ALL_FRAMES_CTRL_OFFSET);
+> +	regval |= SOCE_TAG_ALL_FRAMES_ENABLE;
+> +	writel(regval, local->base_addr + SOCE_TAG_ALL_FRAMES_CTRL_OFFSET);
+> +
+> +	regval = readl(local->base_addr + SOCE_CUSTOM_RULES_TAGGING_OFFSET);
+> +	regval |= SOCE_CUSTOM_RULES_TAGGING_ENABLE;
+> +	writel(regval, local->base_addr + SOCE_CUSTOM_RULES_TAGGING_OFFSET);
 > +}
 > +
-> +static struct sk_buff *sdsa_rcv(struct sk_buff *skb, struct net_device *dev)
+> +static int soce_setup(struct dsa_switch *ds)
 > +{
+> +	struct soce_priv *priv = ds->priv;
+> +
+> +	soce_sw_enable_tagging(&priv->local);
+> +
+> +	return 0;
+> +}
 
 [ ... ]
 
-> +	/* SDSA VLAN information is not supported. */
-> +	if (tag->frame_type_port_hi & SDSA_TAG_VLAN_BIT)
-> +		goto out_drop;
+> +static const struct dsa_switch_ops soce_switch_ops = {
+> +	.get_tag_protocol	= soce_get_tag_protocol,
+> +	.setup			= soce_setup,
+> +	.phylink_get_caps	= soce_phylink_get_caps,
+> +};
 
 [Severity: Medium]
-Can this drop every VLAN-tagged frame destined for the CPU?
+Should there be a .teardown counterpart that clears what soce_setup()
+armed?
 
-The layout comment in this file states that bytes 6-7 carry PCP/CFI/VID and
-are "only meaningful when the VLAN-info bit is set", so the hardware appears
-to move the frame's VLAN identity out of the frame body and into the tag.
+soce_sw_enable_tagging() sets SOCE_TAG_ALL_FRAMES_ENABLE and
+SOCE_CUSTOM_RULES_TAGGING_ENABLE, and nothing in the driver ever clears
+them again.  There is no .teardown in soce_switch_ops, and the platform
+callbacks only unregister:
 
-The SDSA layout looks like a close relative of Marvell (E)DSA: proprietary
-EtherType, two reserved bytes, command in bits 7-6 of the first tag byte,
-port in bits 7-3 of the second byte, and the VLAN indication in bit 5.  In
-tag_dsa.c that bit means the frame arrived VLAN-tagged and the tagger
-reconstructs the 802.1Q header rather than dropping the frame:
+soce_sw_remove()
+	dsa_unregister_switch(priv->ds);
 
-net/dsa/tag_dsa.c:dsa_rcv_ll() {
-	...
-	if (dsa_header[0] & 0x20) {
-		u8 new_header[4];
+soce_sw_shutdown()
+	dsa_switch_shutdown(priv->ds);
 
-		/* Insert 802.1Q ethertype and copy the VLAN-related
-		 * fields, but clear the bit that will hold CFI (since
-		 * DSA uses that bit location for another purpose).
-		 */
-		new_header[0] = (ETH_P_8021Q >> 8) & 0xff;
-		new_header[1] = ETH_P_8021Q & 0xff;
-		new_header[2] = dsa_header[2] & ~0x10;
-		new_header[3] = dsa_header[3];
-	...
-}
+After an unbind or rmmod, does the core keep inserting SDSA source-port
+tags into every frame delivered to the CPU port, with the tagger that
+would strip them gone?  As described in the commit message, the same bits
+also keep the user ports in CPU-directed operation:
 
-If the SoC-e core sets bit 5 for ordinary tagged ingress in any supported
-configuration, all such traffic towards the CPU is freed here.  The driver
-added later in the series only programs SOCE_TAG_ALL_FRAMES_ENABLE and
-SOCE_CUSTOM_RULES_TAGGING_ENABLE in soce_sw_enable_tagging() and implements
-no VLAN operations at all, so nothing turns this hardware behaviour off.
-Is it known that the core never sets that bit?
+    "Enabling this tagging feature of the switch, places all user ports
+    into CPU-directed operation"
 
-The drop itself is a bare kfree_skb() with no drop reason, counter, or
-ratelimited message, so from userspace the resulting loss is hard to tell
-apart from a link or MAC problem.  Would kfree_skb_reason() be worth using
-for these paths?
+so the switch would also stay locked out of normal port-to-port
+forwarding after the driver is removed.
 
-On the transmit side, sdsa_xmit() writes tag->vlan = 0 with the VLAN-info
-bit left clear while any 802.1Q header stays inline in the payload.  If the
-switch expects the egress VLAN identity in the tag, as the Marvell-style
-parts do in tag_dsa.c:
-
-net/dsa/tag_dsa.c:dsa_xmit_ll() {
-	...
-	if (skb->protocol == htons(ETH_P_8021Q) &&
-	    (!br_dev || br_vlan_enabled(br_dev))) {
-		...
-		dsa_header[0] = (cmd << 6) | 0x20 | tag_dev;
-	...
-}
-
-would FROM_CPU frames then be injected as untagged/PVID-assigned with the
-inline 802.1Q header treated as opaque payload?
-
-The commit message does say the field could not be tested:
-
-    SDSA VLAN metadata generation could not be tested on the available
-    switch configuration yet. Leave these fields clear on transmit and
-    reject receive headers which mark the metadata as valid.
-
-Could the receive side pass such frames up (or at least count them) instead
-of discarding them, so an untested field does not turn into silent packet
-loss?
-
+> +static void soce_sw_remove(struct platform_device *pdev)
+> +{
+> +	struct soce_priv *priv = platform_get_drvdata(pdev);
 > +
-> +	/* Determine the source port from the two port fields. */
-> +	source_port = FIELD_GET(SDSA_TAG_PORT_HI_MASK,
-> +				tag->frame_type_port_hi) <<
-> +		      SDSA_TAG_PORT_HI_SHIFT;
-> +	source_port |= FIELD_GET(SDSA_TAG_PORT_LO_MASK, tag->port_lo);
+> +	if (!priv)
+> +		return;
 > +
-> +	skb->dev = dsa_conduit_find_user(dev, 0, source_port);
-> +	if (!skb->dev)
-> +		goto out_drop;
+> +	dsa_unregister_switch(priv->ds);
+> +	platform_set_drvdata(pdev, NULL);
+> +}
 
 [ ... ]
 
-> +out_drop:
-> +	kfree_skb(skb);
-> +	return NULL;
+> diff --git a/drivers/net/dsa/soce/soce_mdio.c b/drivers/net/dsa/soce/soce_mdio.c
+> new file mode 100644
+> index 0000000000000..692dcbe57d1a6
+> --- /dev/null
+> +++ b/drivers/net/dsa/soce/soce_mdio.c
+
+[ ... ]
+
+> +static int soce_mdio_read(struct mii_bus *bus, int addr, int reg)
+> +{
+
+[ ... ]
+
+> +	mutex_lock(&local->mdio_lock);
+> +	ret = local->mdio_ops->phy_read(state->ds, state->mdio_output, addr,
+> +					reg);
+> +	mutex_unlock(&local->mdio_lock);
+> +
+> +	return ret;
 > +}
+
+[ ... ]
+
+> +static int soce_mdio_23_02_wait_for_idle(struct dsa_switch *ds)
+> +{
+> +	struct soce_priv *priv = ds->priv;
+> +	struct soce_dsa_local *local;
+> +	void __iomem *ctrl;
+> +	u32 val;
+> +
+> +	local = &priv->local;
+> +	ctrl = local->mdio_master_addr + SOCE_MDIO_CTRL_OFFSET;
+> +
+> +	return readl_poll_timeout(ctrl, val,
+> +		!(val & (0x1 << SOCE_MDIO_23_02_CTRL_OPSTATUS_OFFSET)), 10,
+> +		SOCE_MDIO_TIMEOUT * 1000);
+> +}
+
+[Severity: Medium]
+What happens to the hardware state when this poll times out?
+
+On -ETIMEDOUT the OPSTATUS bit is still set, meaning the operation is
+still in flight, and the callers just propagate the error without aborting
+or resetting the master:
+
+	ret = soce_mdio_23_02_wait_for_idle(ds);
+	if (ret)
+		return ret;
+
+The bus wrappers soce_mdio_read(), soce_mdio_write(), soce_mdio_read_c45()
+and soce_mdio_write_c45() then drop mdio_lock unconditionally, so the
+software lock protecting the shared master is released while the hardware
+is still busy.
+
+None of the transaction helpers check for idle before programming the
+registers either.  In soce_mdio_23_02_read_c22():
+
+	regvalue = (regnum << SOCE_MDIO_23_02_CTRL_REGADDRDEVTYPE_OFFSET) +
+		   (phy_addr << SOCE_MDIO_23_02_CTRL_PHYADDR_OFFSET);
+	writel(regvalue, params);
+
+	regvalue = ((mdio_output << SOCE_MDIO_23_02_CTRL_BUS_OFFSET) + ...
+
+Can the next transaction, possibly issued through a different logical bus
+sharing the same master, reprogram PARAMS/WRITE and kick CTRL underneath
+a still-running operation?
+
+> +int soce_mdio_23_02_read_c45(struct dsa_switch *ds, int mdio_output,
+> +			     int phy_addr, int devad, int regnum)
+> +{
+
+[ ... ]
+
+> +	regvalue = (devad << SOCE_MDIO_23_02_CTRL_REGADDRDEVTYPE_OFFSET) +
+> +		   (phy_addr << SOCE_MDIO_23_02_CTRL_PHYADDR_OFFSET);
+> +	writel(regvalue, params);
+> +
+> +	writel(regnum, write_reg);
+> +
+> +	/* address cycle */
+> +	regvalue = ((mdio_output << SOCE_MDIO_23_02_CTRL_BUS_OFFSET) +
+> +		    (0x0 << SOCE_MDIO_23_02_CTRL_TRANSTYPE_OFFSET) +
+> +		    (0x1 << SOCE_MDIO_23_02_CTRL_CLAUSE_OFFSET) +
+> +		    (0x1 << SOCE_MDIO_23_02_CTRL_OPSTATUS_OFFSET));
+> +	writel(regvalue, ctrl);
+> +
+> +	ret = soce_mdio_23_02_wait_for_idle(ds);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* read cycle */
+
+[Severity: Medium]
+For Clause 45 the address cycle and the data cycle are separate hardware
+operations.  If the address cycle times out here and is never aborted, can
+a later data cycle land on a stale address, and can the following
+
+	return readl(read_reg) & 0xffff;
+
+hand the previous transaction's result back to phylib as a valid register
+value?
+
+Would it make sense to poll for idle before programming PARAMS/WRITE, and
+to clear or reset the master on the timeout path before releasing
+mdio_lock?  The same applies to soce_mdio_23_02_write_c22() and
+soce_mdio_23_02_write_c45(), where a corrupted transaction would write to
+an unintended PHY register.
 
 [ ... ]
 
