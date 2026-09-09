@@ -1,197 +1,169 @@
-Received: from mail-yx2-f12.google.com (mail-yx2-f12.google.com [74.125.224.140])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD9A936B903
-	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 17:19:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.140
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788974347; cv=pass; b=tBD+ZhT9aNPoEhtjJF7DAE+5p/yf+xYjMLBKT+GEPTOVG8S2JLJkxroB7mR5OsyAIjd8ayOm4836fUzagGOcS/f9gshj8Yfz7sw0Y4h0qXxAFa4aUp6KFwSgbPT3Nvz9DjCkmuHq+cWMIGAap33/Mfm20ncl6mzHQkyQFuYu1zM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788974347; c=relaxed/simple;
-	bh=BQ+Hst8gOUWR37L4XOKGfAUQBTOzIL1QvKMGUdQMdVA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kiIf/zprz68zGovuUR76Bmhe1TIr5yU7iGxoWBXWRGEbLewedDwnNfSnWL6GKt8ZpFkez7fZW/+OCEAt96V46eLx0PmT0S53EOWlNMc4/Y/Y8IaK+KvZOA2hisOccSQ2wLCTlo5AU9dNgIAGPZ1Vs9cexnLxYXnkvZlWDygjP1s=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com; spf=pass smtp.mailfrom=etsalapatis.com; dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b=z5hGrFdL; arc=pass smtp.client-ip=74.125.224.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=etsalapatis.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B95336E466
+	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 17:19:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788974368; cv=none; b=kHXEVlI3zPkUTmRVeSwYJtKcorXUfyPFumCbeEvsjgrGE0GmL9I8sv2oClzeSDcUR638774Idv+UePXj7+8pw2f9fX60SqtPFdG45Nj8H6olIiSyvssB95P9rn6x0/vQ6vuuH14ejlulPtlP65XgziQm//MWwUEw/fI7MqyBWwQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788974368; c=relaxed/simple;
+	bh=8kIFCP4E8pMff/4MvsJkIzUFTt+S8MQ7T6gh0N3KGQA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Yk0pjiTgAnfhAglR85qLxYtrePsbPGEnrQrhyQgAfGnvaiIlCAUICk/570bW6HjI8R98KVYc+nyPWx3+HW1dLTJLGU/TkPZA/vmEfQbhw+XouC5VxNfMK4+gleJzBOwRPtOKYsJHhpcle/S7m/HFtP78g+PZz6+4cjSLKiX9JeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=openvz.org; spf=pass smtp.mailfrom=openvz.org; dkim=pass (2048-bit key) header.d=openvz.org header.i=@openvz.org header.b=BSrQc1r0; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=openvz.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvz.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b="z5hGrFdL"
-Received: by mail-yx2-f12.google.com with SMTP id 956f58d0204a3-66e4ab201ebso628796d50.3
-        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 10:19:05 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788974345; cv=none;
-        d=google.com; s=arc-20260327;
-        b=i9jv4D5XRqPrg7dfJMnZTWMYTiPGsngZOux2A8XYmN3OV2DL7QAViLvsYhCQMs06NM
-         CpPehKRMJfcMrdrTx1i19gTAshuCWzW0ZkWvi294WEXB6eubj4TicdUtOYSDRt/7S0db
-         wVRoGd2VeCc7+4TMbokT3cnCsRlUMpccFkZLAlVUcVJ09sfGQQlATfY0IsUkntiz0CxP
-         2VzZcd7U23n7GepMpoZUiOKbydbeStAgsXpo3VG4dT9ADAMIOjGobLcfTv71itBvOgsN
-         Mmuz9S7rIv1s4wWkn11kCp3eor8t6pJJJAVNRVCSeaeX9kup+zKwUg9aZkwEsORPPA9d
-         rpRA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=6E68RRU9n5lqapFJ2+/cJtqMKWFxDFCie3V1FAMd+4g=;
-        fh=2AYlzT6mxEk0vegkYyOM0n2HIynp+WOJj4mGJHorhi8=;
-        b=dSWZhnaTzBkFIsOLUGtSnQu7jOZM2PWT6oh0LfpKqxfGZJt9Ma2eBcdCHNQE2Sg2mX
-         6wvWVIFp4zUoiAp0aZQBUpXn8zG52AaZl1nMcKOpKHpQQFyNAUrLS2YMylY/ni67QZKs
-         /qr8/RrQZ9m/0pPiJPsgqmHeMJL1TM0uSK+4G/4QQ2RrstOv9CtT6ZjcMdYyiwZ13u9+
-         KxHqLTv7DJOEB401ceQpv62KuwRvT3OhSvjeBUoQCv03ziFtblry0zcDhRkrr55JI71X
-         RKFLfd465P9E4WU3yicfa0qtPdYnhdQxxkGwsPkd4bpeKaHRzkk+Wuc+CTlfBK+h2HRh
-         t6rA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=openvz.org header.i=@openvz.org header.b="BSrQc1r0"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-49b8ce9b733so48922145e9.1
+        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 10:19:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=etsalapatis-com.20251104.gappssmtp.com; s=20251104; t=1788974345; x=1789579145; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=6E68RRU9n5lqapFJ2+/cJtqMKWFxDFCie3V1FAMd+4g=;
-        b=z5hGrFdLgDm+Rboba1delLX9FtBlGxiqFqtudICHSpjiuW5vLNEDkDrgXRLUm1PXXg
-         kLmD2HNMODCvIVFA8LA/2qGCV2uYXs85B0YZxMcn6U6pToLCx6fw6XKfnjI1NT62uQ9m
-         NQcfRaQvAnUtYKnCqle6DedFs4YvKDjGIKJlYdRZJedWgD/D8g37YzjaVGuuvzohaFXp
-         9pMU6JoGGgOux4/Fadq7gM+tY8ttdQWnQGyPgBzhHyccVOkEMqNJkVOsQdUqxszwPgoX
-         PRv9sM321iDCHK5aydwxCllwGLdEq57cHpyBW70GVCfH2jzsP1wpZLE0afTHdNvqgtv6
-         LLCg==
+        d=openvz.org; s=google; t=1788974365; x=1789579165; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=2lankMhKljfGqcOe/+EwZWVYhmCbtsmCmxJQsu9Mi40=;
+        b=BSrQc1r0vFm6c5sG1ENKp3JVDR2s9pP5GHZZlYhvYCWzOptNBGXs0NSXk3UzJeYYKH
+         2XJL9WCeKmoDrpSiG9YsKFU4Yvmb0tP+PTyDuu2WRmiIyLar4qgMy5siw2fQhc8XN5zd
+         RJbtBQsSXDECVRr4nQyWXqo7fmx4qBXrzuGfprQ3LVLFU4x4v9eTbukL060ft3KXNp1H
+         ufxYs81j3I7nhDykwvbeypo5rKp/0qlbxT5i5xnRz2Lq0pbprk6YLQKLsOZkzNQMz1zd
+         ciK+UYaAhYpi9xCvLELWfAPaQQmtEQdh9wjEsCzaP3iZ8AxSYX26wgYqGLrstOy1X8m/
+         KBVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788974345; x=1789579145;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=6E68RRU9n5lqapFJ2+/cJtqMKWFxDFCie3V1FAMd+4g=;
-        b=NeTsYHE5v24dvMuxxvjEuiu0/S6+VyvTNosvX4C9XW/x9uRh+T60Mcry1YYuIaT+Gt
-         h3k6rGpwz3279b6Yj0Z10gI9XPe4AnKPKNerQ7EWJ6tRbyURbFL2EpjID/ZmosvmMfRp
-         nvLjFB1dYL+8XeG7M/NDeygQktyMJ5+20dR8IWgl7np5fnHZtfWsYLsagGDE/KS09aFN
-         RyIx+m412NKO6FtJlLcNDdcR6FkLgBVuA2VM1FCt59574JUK+ZEWcMlshQXmIZoZjZX8
-         Mp90dmpiUO8U3hTa6Kg0KwfB/gx1BVt3nqtzCj2g84txETBEgDAqJfqNwQGZPtcFglYO
-         eRxw==
-X-Forwarded-Encrypted: i=1; AKwUvByAyauszl1cyafcR2+alpr9TsCrhy0z17E24S5iK54Ojoy3gYkRB9xbRVqSiUv2CG8Y7Hl4E5o=@vger.kernel.org
-X-Gm-Message-State: AFuF++k7xqAYxt1bcRF6jnNYmppITqHmK+0HwIdFNrxrBtZ3s7yJfScL
-	WofbK0f/E6MB+VtX5YvnN0KpzPIo39x00RPZufgQWKyjCtQQ1F7PWCj58LKECH4eZCTInOuBJlI
-	TafXgJNyr1g6Urkx0A/P8bhlvaOlbOiUwcOdKXUK4vw==
-X-Gm-Gg: AYBFou2VjVMpJHbR+nAj7ON/k5E6j9xhUL34xN9+xhaP9PNVwBMmcXt60JntVWDpoNL
-	fORyHp3B28h4zSlicJ+9Nqz82d4Yth01oKlGGDnJirVcECD8CoNh+2j5k+O/XdyO3gAiYPEWmvG
-	seRh5GA9D35suWFFCcgY4Xwaa9L0r96PyBcs5je9bbAZ1YmE3RsoqDRczA/a9zqZ2vc6zyCtYg9
-	sVMKZklXWDhxeIc2bq67BoWyLO8lQsOTPa8E+BxRTu6aOlJOS/RWg1yNPHXuPNpCrPOedWenCly
-	se6ZYhI4bS1q4DViu2k27z3ffc+VT5P4l77SaAWEVfmz7H6YzGD20PQ=
-X-Received: by 2002:a05:690e:1407:b0:66f:c284:4806 with SMTP id
- 956f58d0204a3-67110027d40mr1411230d50.66.1788974344494; Wed, 09 Sep 2026
- 10:19:04 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1788974365; x=1789579165;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=2lankMhKljfGqcOe/+EwZWVYhmCbtsmCmxJQsu9Mi40=;
+        b=qaiR9C+yCq/pPd3ELqZdjFwQIl64Hw6vqlqNA9KOKcfxFgmzYsASg0oMsy1Ne1pEd7
+         54EAYyLHvzekTss5Ba8BkafFh6n2qLWzmTSG0X+OytVJhDhfs/wRC2Xck9dRK6ETDavR
+         Nup/W5V9MvIznzar2cvqa9uXt9YCdYKo9qGmLyJu2zRjZCKnnZ6nskTdQc6s2iQb29Vo
+         B1kZgzUldOrvOLdL08o++1/jXzySyPkBLiSb7SON+DnRWmAB40CqzDujQvnE0Ka0JLQ2
+         4e2OmdXZzZyOkjv1RiGXkVVWinyXhzCzalvj3MV/W1jIjmUoDfVWxzU//9he2dsgIhlc
+         L0eg==
+X-Gm-Message-State: AFuF++nhCrXQoXZPg73enp/CcnHvMBVManOA640GMBPLT2eUcrk/9ej3
+	30fvnc7m2KdC0nLMz6vp6LDf+g+zTGdm5N4vZ2OLNgzDWSRx/9aWo8IxLLDZ5wecOrlv0fQqhLT
+	jc8kN
+X-Gm-Gg: AYBFou25fEEx3pvlVM7c0yXTwdlEOI43RVpEPCIAn3wFTEi4kSawhSISJkwRRlr5YcC
+	vvMIeIhKoFOSH5eLURlI5b9fuNoTMzXiAVbfCWUgUoJcxWwQ3OnFCCkCCLySdxU63gPkTmB0a3l
+	J0nXxU/mImWGCrTc9OTaFPyyOwETyG8TUj8TyzVuOqflfDkWQTcgjHh1TvA3vQW44XyG7xdQC5y
+	rZtw1TCXSYW386rwOfSYyBuLtVvUK2kbEWKhnuD0Mi29gWeeKFXgaQ0NLcMcJUIQ2kXQ7ND8wEw
+	4C+4rDThSwvLA56SDR2zrscz9eTj0skC8hHvMMLKde1f8PZpHqQP+VKqXZEKHT6jil+VnkXeTsT
+	NL48MshLHmcnwuKhsSbYafKHPg1GvZ/0lBTziFRajg2R2O4wixSRdracCya3epQP/i+VcCdwWr/
+	qwJvU+XhrmDHI7pLzas7ziABClE1hXeY3CT22mtrpVmiucxv08Hdg9G+qH4BfetOlG44E=
+X-Received: by 2002:a05:600c:5247:b0:493:aa0a:45ad with SMTP id 5b1f17b1804b1-49cf81dadcamr337791325e9.2.1788974364647;
+        Wed, 09 Sep 2026 10:19:24 -0700 (PDT)
+Received: from athena.sw.ru ([2a06:5b06:b600:300:3062:5db2:b6f:d44e])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49d26c2985dsm7395915e9.6.2026.09.09.10.19.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 09 Sep 2026 10:19:23 -0700 (PDT)
+From: "Denis V. Lunev" <den@openvz.org>
+To: netdev@vger.kernel.org
+Cc: dev@openvswitch.org,
+	"Denis V. Lunev" <den@openvz.org>,
+	Aaron Conole <aconole@redhat.com>,
+	Eelco Chaudron <echaudro@redhat.com>,
+	Ilya Maximets <i.maximets@ovn.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Subject: [PATCH 1/1] openvswitch: disable BH once per netlink dump instead of per item
+Date: Wed,  9 Sep 2026 19:19:20 +0200
+Message-ID: <20260909171920.1001074-1-den@openvz.org>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260909024011.1252694-1-nikhilljatt@gmail.com>
-In-Reply-To: <20260909024011.1252694-1-nikhilljatt@gmail.com>
-From: Emil Tsalapatis <linux-lists@etsalapatis.com>
-Date: Wed, 9 Sep 2026 13:18:52 -0400
-X-Gm-Features: AcwNN1U4pDVgjWmRTrx7PuoPtmF0Fx_Otlis6cGINQ1Y-tUySGzn4ekMF7-3TDY
-Message-ID: <CABFh=a7Z=heZODVsXwisY3VwULDy-Rq1hwO09exgX2d0-KzgUQ@mail.gmail.com>
-Subject: Re: [PATCH bpf] bpf: fix reading neigh ha in bpf_fib_lookup()
-To: Nikhil <nikhilljatt@gmail.com>
-Cc: ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	eddyz87@gmail.com, memxor@gmail.com, martin.lau@linux.dev, song@kernel.org, 
-	yonghong.song@linux.dev, jolsa@kernel.org, john.fastabend@gmail.com, 
-	sdf@fomichev.me, horms@kernel.org, dsahern@gmail.com, hawk@kernel.org, 
-	razor@blackwall.org, stable@vger.kernel.org, bpf@vger.kernel.org, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, Sep 8, 2026 at 10:40=E2=80=AFPM Nikhil <nikhilljatt@gmail.com> wrot=
-e:
->
-> bpf_ipv4_fib_lookup() and bpf_ipv6_fib_lookup() copy the neighbour's
-> link layer address into params->dmac without any synchronisation, but
-> neigh_update() writes neigh->ha under write_seqlock(&neigh->ha_lock)
-> exactly because there are lockless readers.  A BPF program calling
-> bpf_fib_lookup() while the neighbour is being updated can therefore be
-> handed a torn address, and XDP/tc then forwards the packet to a bogus
-> L2 destination.
->
-> neigh_ha_snapshot() cannot be used here because it copies dev->addr_len
-> bytes while params->dmac is only ETH_ALEN long (an IPoIB egress device
-> has addr_len 20 and would overflow into params->smac), so open-code the
-> seqlock loop around the ETH_ALEN copy.
->
-> Same problem and same fix as commit 57549ab90791 ("net: bridge: arp/nd
-> proxy: fix reading neigh ha") and commit b824059a673b ("vxlan: fix
-> reading neigh ha").
->
-> Reproduced on x86_64 under qemu: a dummy device holds a permanent
-> neighbour whose lladdr is flipped between aa:aa:aa:aa:aa:aa and
-> bb:bb:bb:bb:bb:bb with RTM_NEWNEIGH, while an XDP program driven by
-> BPF_PROG_TEST_RUN calls bpf_fib_lookup() in a loop and checks that all
-> six bytes of the returned dmac are equal.  Before this patch: 211 torn
-> addresses out of 16300000 lookups (last one aa:aa:aa:aa:bb:bb).  After
-> this patch: 0 out of 38060000 lookups.
->
-> Fixes: 87f5fc7e48dd ("bpf: Provide helper to do forwarding lookups in ker=
-nel FIB table")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Nikhil <nikhilljatt@gmail.com>
-> ---
+From: Denis V. Lunev <den@openvz.org>
 
-Bot is right wrt possible lockups, please adjust the seqlock
-accordingly. Also please
-add your full name in the SOB.
+ovs_flow_cmd_dump() and ovs_vport_cmd_dump() release a BH-disabling
+spinlock once per item they emit: stats->lock in ovs_flow_stats_get()
+for every CPU that has touched the flow, and nsid_lock in
+peernet2id_alloc() for every vport that lives in a foreign netns.
+Every release is a local_bh_enable(), and each one runs the pending
+softirq backlog in the dumping thread's own context.
 
-pw-bot: cr
+The skb bounds how much work a dump callback does, which is why no
+dumper carries a budget of its own, but it does not bound the softirq
+work the callback absorbs. On a CPU that carries the box's packet load
+the backlog refills as fast as it drains, so the dumping thread becomes
+that CPU's softirq engine. It never sleeps and it has no reschedule
+point, so under voluntary preemption nothing can take the CPU away from
+it: neither the ksoftirqd the kernel woke to take the work over, nor
+the stopper thread the softlockup detector dispatches to refresh its
+timestamp. The watchdog then panics a node that has enough flows and
+ports to keep the dump running.
 
->  net/core/filter.c | 18 ++++++++++++++++--
->  1 file changed, 16 insertions(+), 2 deletions(-)
->
-> diff --git a/net/core/filter.c b/net/core/filter.c
-> index 61940e753552..6fdb85c9af44 100644
-> --- a/net/core/filter.c
-> +++ b/net/core/filter.c
-> @@ -6298,6 +6298,20 @@ static const struct bpf_func_proto bpf_skb_get_xfr=
-m_state_proto =3D {
->  #endif
->
->  #if IS_ENABLED(CONFIG_INET) || IS_ENABLED(CONFIG_IPV6)
-> +/* Take a stable snapshot of the neighbour's link layer address.
-> + * neigh_ha_snapshot() can not be used here because it copies dev->addr_=
-len
-> + * bytes while params->dmac is only ETH_ALEN long.
-> + */
-> +static void bpf_fib_dmac_snapshot(u8 *dmac, const struct neighbour *neig=
-h)
-> +{
-> +       unsigned int seq;
-> +
-> +       do {
-> +               seq =3D read_seqbegin(&neigh->ha_lock);
-> +               memcpy(dmac, neigh->ha, ETH_ALEN);
-> +       } while (read_seqretry(&neigh->ha_lock, seq));
-> +}
-> +
->  static int bpf_fib_set_fwd_params(struct net_device *dev,
->                                   struct bpf_fib_lookup *params,
->                                   u32 flags, u32 mtu, u32 in_ifindex)
-> @@ -6491,7 +6505,7 @@ static int bpf_ipv4_fib_lookup(struct net *net, str=
-uct bpf_fib_lookup *params,
->
->         if (!neigh || !(READ_ONCE(neigh->nud_state) & NUD_VALID))
->                 return BPF_FIB_LKUP_RET_NO_NEIGH;
-> -       memcpy(params->dmac, neigh->ha, ETH_ALEN);
-> +       bpf_fib_dmac_snapshot(params->dmac, neigh);
->         memcpy(params->smac, dev->dev_addr, ETH_ALEN);
->
->  set_fwd_params:
-> @@ -6644,7 +6658,7 @@ static int bpf_ipv6_fib_lookup(struct net *net, str=
-uct bpf_fib_lookup *params,
->         neigh =3D __ipv6_neigh_lookup_noref(dev, dst);
->         if (!neigh || !(READ_ONCE(neigh->nud_state) & NUD_VALID))
->                 return BPF_FIB_LKUP_RET_NO_NEIGH;
-> -       memcpy(params->dmac, neigh->ha, ETH_ALEN);
-> +       bpf_fib_dmac_snapshot(params->dmac, neigh);
->         memcpy(params->smac, dev->dev_addr, ETH_ALEN);
->
->  set_fwd_params:
-> --
-> 2.43.0
->
->
+ovs_flow_stats_get() used to do exactly this. One local_bh_disable()
+around the whole per-CPU walk was added by commit 4f647e0a3c37
+("openvswitch: fix a possible deadlock and lockdep warning") to close
+an ABBA deadlock between two CPUs reading each other's stats.
+Commit 63e7959c4b9b ("openvswitch: Per NUMA node flow stats.") dropped
+that region the same day while reworking the stats layout, and replaced
+it with a spin_lock_bh() per item. The deadlock stayed fixed; the
+single region did not come back.
+
+Hold BH off across the whole callback instead, the way
+ctnetlink_dump_table() does. Both loops already run under
+rcu_read_lock() and cannot sleep, so this forbids nothing that was
+allowed before, and the nested spin_unlock_bh() in the callees stop
+draining softirqs.
+
+Signed-off-by: Denis V. Lunev <den@openvz.org>
+CC: Aaron Conole <aconole@redhat.com>
+CC: Eelco Chaudron <echaudro@redhat.com>
+CC: Ilya Maximets <i.maximets@ovn.org>
+CC: "David S. Miller" <davem@davemloft.net>
+CC: Eric Dumazet <edumazet@google.com>
+CC: Jakub Kicinski <kuba@kernel.org>
+CC: Paolo Abeni <pabeni@redhat.com>
+CC: Simon Horman <horms@kernel.org>
+---
+ net/openvswitch/datapath.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/net/openvswitch/datapath.c b/net/openvswitch/datapath.c
+index 631a03136fa1..ae2c9924aeb0 100644
+--- a/net/openvswitch/datapath.c
++++ b/net/openvswitch/datapath.c
+@@ -1533,6 +1533,7 @@ static int ovs_flow_cmd_dump(struct sk_buff *skb, struct netlink_callback *cb)
+ 	}
+ 
+ 	ti = rcu_dereference(dp->table.ti);
++	local_bh_disable();
+ 	for (;;) {
+ 		struct sw_flow *flow;
+ 		u32 bucket, obj;
+@@ -1552,6 +1553,7 @@ static int ovs_flow_cmd_dump(struct sk_buff *skb, struct netlink_callback *cb)
+ 		cb->args[0] = bucket;
+ 		cb->args[1] = obj;
+ 	}
++	local_bh_enable();
+ 	rcu_read_unlock();
+ 	return skb->len;
+ }
+@@ -2565,6 +2567,7 @@ static int ovs_vport_cmd_dump(struct sk_buff *skb, struct netlink_callback *cb)
+ 		rcu_read_unlock();
+ 		return -ENODEV;
+ 	}
++	local_bh_disable();
+ 	for (i = bucket; i < DP_VPORT_HASH_BUCKETS; i++) {
+ 		struct vport *vport;
+ 
+@@ -2585,6 +2588,7 @@ static int ovs_vport_cmd_dump(struct sk_buff *skb, struct netlink_callback *cb)
+ 		skip = 0;
+ 	}
+ out:
++	local_bh_enable();
+ 	rcu_read_unlock();
+ 
+ 	cb->args[0] = i;
+-- 
+2.53.0
+
