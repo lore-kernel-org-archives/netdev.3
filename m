@@ -1,82 +1,134 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF1EA3D1CAC
-	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 18:57:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1683A31F9BD;
+	Wed,  9 Sep 2026 19:01:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788980276; cv=none; b=mo61kZ+oHiH7NnqdWwV2M5JEuCUZJeUvIL2jzvKJabeWtf5NgxgL7RlRrwGxfPWfXnk1z9V+wAdpFgxu6xt1Nfw0wQZV7nAAOP9xpuHcAspT9yfR9cuQgdkP41aKKIGwI3dL5e/jqpLmLZt2TgAL2r2fMflpLnG20y25bGgyPlI=
+	t=1788980487; cv=none; b=Ug+ykopVYdJJWCf+cVHskChNtfYxL3ge9a5KkNAG7wnW8wLh4J6dAhypATJek9IM/m7Ns95kYyj/aEoUzM9OpLU7FzGGoY3Mf17274ldYPvfzRSc7OBuTChzR6KVTAJ8EV8SCKfH4Exih2s/IDQVuj41+yxvZdSmB6w4QXzPCus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788980276; c=relaxed/simple;
-	bh=Uiv/4PrLFx2CMwXXY6gt0YS2lZKn2wa8TNi2cR+uUrw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Bo708/DKd96XOPjnjc5d5F6izwTBlyRMV/qushAPMefgMtpAnyhYO6ZGrOoEdxAEDFieeCAJcLrHH+eqPdg3xpJnJKxNUlYT0ul8f4p4QjSqO5JJh0LWlzPQW0IeursvizfcoSuLmN7RZPXdbc5LvKFX59DMabTwL0A1LPg7ebk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AfR8t5QL; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788980487; c=relaxed/simple;
+	bh=wOYpV9+kjOSeRztAds1dW6IO0mPN7/x23ns19noRwvw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eqMun9bZhGnU7YYEIMKFbO9S25ostFeD/6FOC+sY2ceNa0z08VYJWZW4LZodsZZMDXIXIe0nONcCqQ2UjSIeisUvENfd9a6gB7ihUqE8A+Bu0ATuJE4PUWkpviGNd5ZspWPk1hh2rwdLBSW5TB+fUPnltXHp6K+mhiiWDxtygaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=zOsDRFRz; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AfR8t5QL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 435071F000FF;
-	Wed,  9 Sep 2026 18:57:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788980274;
-	bh=D3KSgKRO1NtNPVyUBgrFO7pRIl73Eon2VvEdxKs9iG8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=AfR8t5QLHCbNHAcAaSsMDSWafDcER6lUMAhC6K01B0ecKJTjQyJfXtEpA8/Fom8Xl
-	 wTD8fsYs8nFg+pWtpBw3FeH5YCZ6uoWa5qdtF64ghBcRDdS0N8iOiV777XIRys8obF
-	 EpXrRccXNh/dJdUMLP3KUa9trtinWtlNPnwy6nTJax0W3eOHUlYarAszkJTuWAeCgC
-	 cLhQJMLKa8dMYmyLhgFXsatNJ0s0weFwpNsM+tC+rZx/hx7jmE9FLXSN7O8fNo0M4k
-	 dRLyRp7yCcs0/QNVHyC032nxgw+tDYvbeRMhHoJZ+5Q6LurKwa3QtyxQNKd1beJsA3
-	 iCxuof6CdG21w==
-Date: Wed, 9 Sep 2026 11:57:53 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Steffen Klassert <steffen.klassert@secunet.com>
-Cc: Paolo Abeni <pabeni@redhat.com>, David Miller <davem@davemloft.net>,
- Herbert Xu <herbert@gondor.apana.org.au>, <netdev@vger.kernel.org>
-Subject: Re: Some clarifications on the upstreaming process
-Message-ID: <20260909115753.75723ca1@kernel.org>
-In-Reply-To: <aqE4eK2cqpvxqCQJ@secunet.com>
-References: <20260907093020.2228346-1-steffen.klassert@secunet.com>
-	<aqD-_cBnIOMEpxVh@secunet.com>
-	<70d0048d-694b-4348-a6a5-de87a767b8fd@redhat.com>
-	<aqEzoAcZ0uP0Kz6k@secunet.com>
-	<83dd4915-e7a3-4c7e-91dd-adbea16450b3@redhat.com>
-	<aqE4eK2cqpvxqCQJ@secunet.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="zOsDRFRz"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=4B+JtYnaN3jovWrVTtixgnxDuklodZXdvo3NMICFkTo=; b=zOsDRFRzoTis9Dak8q3yKb9spD
+	Zu936BpafKqNr/usumC1wIe0kkMMbVPxVZ86J0GNMIhqCb8lXZPPsRmyqiQqwL1vwwftxToYdyyyw
+	e3mhS/tZHQMxKLRjd39l9GLMSTUfe7+m7q7JJM+OaYKCIrcxYJJDIUSK3FYj7RJ7e05g=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1x4NXm-004MfQ-A1; Wed, 09 Sep 2026 21:01:14 +0200
+Date: Wed, 9 Sep 2026 21:01:14 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Aleksei Sviridkin <f@lex.la>
+Cc: andrew+netdev@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, horms@kernel.org, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, ericwouds@gmail.com,
+	netdev@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH net-next v2 0/7] net: mdio: an MDIO device driver for
+ the Airoha EN8811H
+Message-ID: <44f163ed-8362-4aad-99c9-f8709dfbed76@lunn.ch>
+References: <20260908155707.4164559-1-f@lex.la>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260908155707.4164559-1-f@lex.la>
 
-On Wed, 9 Sep 2026 12:44:08 +0200 Steffen Klassert wrote:
-> On Wed, Sep 09, 2026 at 12:34:42PM +0200, Paolo Abeni wrote:
-> > On 9/9/26 12:23 PM, Steffen Klassert wrote:  
-> > > Are you willing to pull this as is, or should I resend the pull
-> > > request with the incremental fix? The latter leads to problem
-> > > 4.1 (patch does not apply to net).  
-> > Due to time schedule I can't look into the series detail before tomorrow
-> > my time. Since Jakub forwarded the AI report and left the series in PW I
-> > assume he is looking for your replies to the AI comments - which is
-> > pretty much would I'll do.  
+On Tue, Sep 08, 2026 at 03:57:00PM +0000, Aleksei Sviridkin wrote:
+> The Airoha EN8811H answers its PHY ID from power-on, but it is an MD32
+> microcontroller until the host loads firmware into its volatile RAM.
+> Today one driver owns both roles: the PHY driver downloads the firmware
+> from .probe(), which works only when the files are readable by then and
+> leaves the reset line in the hands of a PHY node whose detach wipes what
+> was loaded.
+
+I think because you are sending this as RFC, the AI bots are ignoring
+it. I also think it is not getting build testing etc.
+
+> What I am asking:
 > 
-> It was a general question, not directly related to this pull request.
-> 
-> There were several issues reported, it will take a bit of time
-> to review the AI comments.
+>  1. The binding lets software timing pick the topology: the same chip
+>     on the same board is a plain PHY node when its firmware is in the
+>     bootloader, and an MCU with a child bus when the firmware arrives
+>     with the rootfs. Move the files into an initramfs and the
+>     recommended description changes without a wire moving. The hardware
+>     argument that does hold is narrower - the reset line belongs to the
+>     MD32 core rather than to the PHY the firmware creates, and a PHY
+>     node that owns it wipes the firmware on detach - and it argues for
+>     the MCU node, not for the child bus. If the child bus has to be
+>     justified by hardware too, I do not have that argument, and the
+>     honest options are to describe the chip one way always, or to say
+>     plainly in the binding that this is a driver model choice. Which
+>     would you rather see?
 
-Thanks, I'll toss this version form PW, please let us know if it's good
-(enough) and we should pull as is after all.
+One way to argue it is that the MDIO bus it connected to the MCU. The
+MCU, once booted, forwards the MDIO bus through to the PHY part of the
+package.
 
-In general, I'd of course like to allow more use of the meta sponsored
-models but my time is limited, and to some extent so are the funds (to
-some extent because I suspect the volume is negligible compared to
-netdev).
+>  3. Removing the parent MDIO controller reaches this driver's remove
+>     with the child PHY attached, and nothing pins the parent's owner.
+>     Closing it wants a way for a bus to tell its PHYs' consumers to let
+>     go, which is a phy-core change. The failed-resume path above wants
+>     the same channel for "re-initialise" rather than "let go", so that
+>     is two uses for one mechanism. Is it worth doing here?
 
-At the same time I worry that *shikos are making it easier for our
-maintainers to ignore the fundamental changes which AI brings to SW
-engineering. IOW I'd like to encourage more local use and
-experimentation.
+Consider a normal setup, what happens when you remove the MDIO
+controller when the PHY is directly connected?  And look at what MDIO
+mux drivers do, which is not so different a use case.
 
-Sorry for not answering your actual questions. TBH I don't think we
-have any real answers for most of them.
+>  4. MDIO_AIROHA_EN8811H sits in the "MDIO controller drivers" menu,
+>     though it drives a device on a bus and not a controller. The
+>     mdio-mux entries set the precedent, but say if you want it
+>     elsewhere.
+
+It is fine. I would also add a select or depends on the PHY driver
+Kconfig stanza to link it to the MDIO_AIROHA_EN8811H driver.
+
+>  5. The child bus accepts exactly one address, the one this node
+>     occupies on the parent, and I do not think the schema can say so.
+>     What it does say now is that a child named ethernet-phy@N is
+>     validated as one, and that it must not carry reset-gpios or its
+>     timings - the whole reason this node exists is that a PHY-node
+>     reset is what phy_detach() asserts, and it erases the firmware.
+>     What it cannot say is that a differently named child is refused:
+>     mdio.yaml's own patternProperties evaluates any node@hex and its
+>     additionalProperties: true admits the rest, so unevaluatedProperties
+>     has nothing left to reject. Is prose enough for the address, and is
+>     there an idiom I am missing for the rest?
+
+Prose is enough. And C code to catch DT authors who get it wrong. But
+you also need to be careful to not break backwards compatibility when
+the PHY driver is used alone.
+
+>  6. include/linux/mdio/mdio-airoha-en8811h.h is named for the driver
+>     that consumes it, while its four neighbours in that directory name
+>     the driver that implements them - here the implementation is
+>     drivers/net/phy/air_phy_lib.c. Where should this header live, and
+>     should the MAINTAINERS entry that now claims it also claim the
+>     library files it declares?
+
+The location is fine. MAINTAINERS need to list it. What you might want
+to do is list it twice, once in the PHY driver MAINTAINERS record, and
+again in the MDIO driver section. Any changes need to be coordinated
+in both, so all Maintainers should get notified.
+
+    Andrew
+
+---
+pw-bot: cr
