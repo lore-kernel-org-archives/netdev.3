@@ -1,43 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47C3C357D09;
-	Wed,  9 Sep 2026 09:03:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 566064921A6
+	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 09:06:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788944588; cv=none; b=bZ3KKvI8mrBmu45xz5YbHqlGmhM8jSYalbOp/KBF6kx17YkYq5OchD335kR9olzaSbj9rOfSZKikTSQ6DV2EEMyNmyMMfSWiDVoz1GyhP8xLBLCo6mBe9G/hFlzfuCduUsLU30h6GnpZtgzdVPh1daFzSW7LRCRZJShMWYkOATs=
+	t=1788944786; cv=none; b=fxHlqQ/4qR2aj/XeeV0Es/mO2I4okf7OBKY6z8M3ZUTLuLtf5ET1P2DvswceuS4ZsNYeR+aeCgCdlaZEaZiytUBaMIEdbWyQYZiH3bgh/gfNK8fwMKGucnJWI5u1FyhrTatVYeQxCfgO23jqdhwvlIhWg1FZecPDsy6P8QMnvvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788944588; c=relaxed/simple;
-	bh=w1N1zPkQ9mGPXQZD3zwD2xR1mRDu14CBGKK8vaPJxRo=;
+	s=arc-20240116; t=1788944786; c=relaxed/simple;
+	bh=Jev1JzEt91ORb5OHLsWSTFXLyjNPmERoXXeEN7gkn30=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Vlys+kHcD5nSdt9RydewXSRVQF2AfuaGXogztr1fAj3ToIysoLJ52gCq9IQmQgUhxJ4PAaxaMn4pCBlLZbax5iODDUjlBIgBNMRF+6PVVmLCsp7RbZFxCcfQ6kn9Xf+jiGikUaZSnV+nKl0elg3L02+SdRYd2XTNO9Ec4A3KpAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UxvJre/d; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=jWcghEyKfkCfMM+MygsVCDuO0P/5a/BrtpVjJLwORdd/le22K2DDd4ZSkaKi0OS9sweOI8VtBXwg+FyG1/cdiclYhfAIUQi0lZsKR/H+lsd8uXu/aHwe/9rlt2jfZxkPLlhlhKyyxpKqeAi0dTpOFwqo9lpCr5MDhbF3usMn1v4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i+qngh35; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UxvJre/d"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C759D1F00A3A;
-	Wed,  9 Sep 2026 09:03:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i+qngh35"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 519681F00A3E;
+	Wed,  9 Sep 2026 09:06:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788944586;
-	bh=AdhICVDd3XeO9TrCmQEOzxpFVAahhrpfNkZGct+poOg=;
+	s=k20260515; t=1788944784;
+	bh=wwtkeblvzufsHH+y90/cObbBMVVMEPgv/rcrKemjHNE=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=UxvJre/dJstmYmqqKLLe7aEntPNoqZpVbxvA2jWRZNV/Pf9rWqZFoYom3wLXDJWi0
-	 m2uTDCL8PRCRWxjVBL58zKwL/mAlhx0f2Gket4Al7sD0a0JvAo537fGpfgbHTtKjD8
-	 dtARbgWiywnd78DybldGxX0kn62Hx0ornJ6RuzM3shxFcgxNXheDnS9dg0Z0RB/1Af
-	 DBr18u3iG8icamiIWeiyuQ2uVqqQlMBajWV1eB8LGWQiPVNa3VUBjJyUU0oua1IlKB
-	 Ss8wjqHa3vz5L2iuY7h074Mh7+ypcvmyZ3oYYg7pp6VDgnIiQavmMwtkBHc3PlDVGP
-	 YAaEi1upTid3Q==
-Subject: Re: [PATCH net v5] net: wwan: qcom_bam_dmux: fix TX DMA channel
- use-after-free
+	b=i+qngh35KMZePm2OOxmjwxhA5xRno0R4C6eMNA2mGUhO5lCeJnFvb2ZwrZUBYZop8
+	 ybpLM2X05ln8Xo9e2Lqqrvjda/yJtAJMkQj0fPd1n1kGW2oGZLmxQlgVaP/EpuXaJf
+	 6OVJ1Izg+atsxsHXU111qOP3JUAADg8qvgFMpWf/1rzkSp2D3wwnpU2zplMkLfAxWf
+	 bDy90xh5ZZ+YDhU1X2GHZ35JPMBfArWBBhIP2v6U9vkjS9FQoSi+L7Rmd64w+gi80J
+	 JexkaMFgx0kqgSOZNaVboq+q+nzTv7RXIXhoIRSj9I9IIlNm3R38dbmNvgyKFvNf3i
+	 QWdRzcUsMIXLw==
+Subject: Re: [PATCH net] net: stmmac: propagate PTP init failures in
+ __stmmac_open() and stmmac_resume()
 From: netdev-bot+sashiko@kernel.org
-To: getshell@seu.edu.cn
-Cc: stephan@gerhold.net, loic.poulain@oss.qualcomm.com, ryazanov.s.a@gmail.com,
- johannes@sipsolutions.net, andrew+netdev@lunn.ch, davem@davemloft.net,
+To: lorenzo.bianconi@oss.qualcomm.com
+Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
  edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org, linux-arm-msm@vger.kernel.org, stable@vger.kernel.org
-Date: Wed, 09 Sep 2026 09:03:05 +0000
-Message-ID: <178894458529.219967.3874306151542640489@kernel.org>
-In-Reply-To: <20260903180057.1437-1-getshell@seu.edu.cn>
-References: <20260903180057.1437-1-getshell@seu.edu.cn>
+ mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+ richardcochran@gmail.com, rayagond@vayavyalabs.com, treding@nvidia.com,
+ netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org
+Date: Wed, 09 Sep 2026 09:06:22 +0000
+Message-ID: <178894478282.219967.9123750287154631714@kernel.org>
+In-Reply-To:
+ <20260904-stmmac-ptp-error-propagate-v1-1-80f01b03dafa@oss.qualcomm.com>
+References:
+ <20260904-stmmac-ptp-error-propagate-v1-1-80f01b03dafa@oss.qualcomm.com>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -48,337 +52,319 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
+Thank you for your contribution! Sashiko AI review found 4 potential
 issue(s) to consider:
 
-Critical: 0 · High: 1 (2) · Medium: 1 · Low: 0
+Critical: 0 · High: 1 (1) · Medium: 1 · Low: 2
 
-- [High] The new design (live level re-read via
-  irq_get_irqchip_state(IRQCHIP_STATE_LINE_LEVEL) as the only state…
-- [Medium] bam_dmux_runtime_suspend() turns a possibly stale
-  BAM_DMUX_PC_VOTE_DOWN_PENDING into an irreversible power-down…
+- [High] Undisclosed functional regression: PTP setup failures are now
+  fatal to `ndo_open()` and to system resume.
+- [Medium] Unbalanced clk_ptp_ref enable/disable against the platform
+  noirq PM callbacks.
+- [Low] The kernel-doc block above `stmmac_init_timestamping()`
+  (stmmac_main.c:893-899) still states 'this is to verify if the HW…
+- [Low] Both new unwind paths halt the DMA but never undo
+  `stmmac_hw_setup()`'s `stmmac_mac_set(priv, priv->ioaddr, true)`…
 
 Pre-existing issues:
-- [High] bam_dmux_remove() cancels register_netdev_work and unregisters
-  all netdevs while the RX DMA producer and the pc IRQ are still live;…
-- [High] bam_dmux_rx_callback() can run concurrently with
-  bam_dmux_power_off() and dereference a released/NULL RX channel.
+- [High] Pre-existing double free / use-after-free of the DMA descriptor
+  rings, whose trigger set this patch widens.
 
 --
 
-net: wwan: qcom_bam_dmux: fix TX DMA channel use-after-free
+net: stmmac: propagate PTP init failures in __stmmac_open() and stmmac_resume()
 
-This adds a power_lock mutex to serialize the modem power-control state,
-re-reads the pc line level at each decision point instead of toggling a
-cached bool, defers a pc=false transition while the host vote is active and
-TX is allocated, and keeps both state IRQs masked with IRQF_NO_AUTOEN until
-probe has committed the initial state.
+This converts stmmac_setup_ptp() from void to int so that the PTP
+reference clock enable and stmmac_init_timestamping() failures are
+propagated, and adds unwind paths in __stmmac_open() and stmmac_resume()
+for those failures.  The HW timestamp capability check moves out of
+stmmac_init_timestamping() into the new stmmac_check_timestamp_cap()
+helper.
 
-Link: https://lore.kernel.org/netdev/20260822085308.1089-1-getshell@seu.edu.cn/
+A few questions below.
 
-> diff --git a/drivers/net/wwan/qcom_bam_dmux.c b/drivers/net/wwan/qcom_bam_dmux.c
-> index cc6ace8d64371..429d34a3cfa07 100644
-> --- a/drivers/net/wwan/qcom_bam_dmux.c
-> +++ b/drivers/net/wwan/qcom_bam_dmux.c
-
-[ ... ]
-
-> @@ -655,6 +683,8 @@ static void bam_dmux_free_skbs(struct bam_dmux_skb_dma skbs[],
->  
->  static void bam_dmux_power_off(struct bam_dmux *dmux)
->  {
-> +	lockdep_assert_held(&dmux->power_lock);
-> +
->  	if (dmux->tx) {
->  		dmaengine_terminate_sync(dmux->tx);
->  		dma_release_channel(dmux->tx);
-
-[Severity: High]
-This isn't a bug introduced by this patch, but now that power_lock
-serializes the power-control paths, is the RX completion callback still
-left outside that serialization?
-
-bam_dmux_rx_callback() ends with an unconditional refill:
-
-drivers/net/wwan/qcom_bam_dmux.c:bam_dmux_rx_callback() {
-	...
-out:
-	if (bam_dmux_skb_dma_queue_rx(skb_dma, GFP_ATOMIC))
-		dma_async_issue_pending(dmux->rx);
-}
-
-while bam_dmux_power_off() does:
-
-	if (dmux->rx) {
-		dmaengine_terminate_sync(dmux->rx);
-		dma_release_channel(dmux->rx);
-		dmux->rx = NULL;
-	}
-
-Can the refill see dmux->rx == NULL and oops? dmaengine_prep_config_single()
-dereferences chan with no NULL check:
-
-include/linux/dmaengine.h:
-	if (chan->device->device_prep_config_sg)
-
-Qualcomm BAM registers device_terminate_all but no device_synchronize:
-
-drivers/dma/qcom/bam_dma.c:
-	bdev->common.device_terminate_all = bam_dma_terminate_all;
-
-so dmaengine_terminate_sync() -> dmaengine_synchronize() cannot wait for a
-callback that vchan_complete() has already spliced off and started. Should
-the RX callback also take power_lock, or check a shutdown flag, before
-requeueing?
-
-> @@ -670,10 +700,24 @@ static void bam_dmux_free_skbs(struct bam_dmux_skb_dma skbs[],
->  	bam_dmux_free_skbs(dmux->rx_skbs, DMA_FROM_DEVICE);
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> index 24656b35350b1..d33c82bd3ee46 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> @@ -885,6 +885,11 @@ static int stmmac_init_tstamp_counter(struct stmmac_priv *priv,
+>  	return 0;
 >  }
 >  
-> -static irqreturn_t bam_dmux_pc_irq(int irq, void *data)
-> +static void bam_dmux_complete_pc_down(struct bam_dmux *dmux)
->  {
-> -	struct bam_dmux *dmux = data;
-> -	bool new_state = !dmux->pc_state;
-> +	lockdep_assert_held(&dmux->power_lock);
-> +
-> +	bam_dmux_power_off(dmux);
-> +	bam_dmux_pc_ack(dmux);
-> +	WRITE_ONCE(dmux->pc_state, false);
+> +static bool stmmac_check_timestamp_cap(struct stmmac_priv *priv)
+> +{
+> +	return priv->dma_cap.time_stamp || priv->dma_cap.atime_stamp;
 > +}
 > +
-> +static bool bam_dmux_handle_pc(struct bam_dmux *dmux, bool new_state)
-> +{
-> +	lockdep_assert_held(&dmux->power_lock);
-> +
-> +	if (new_state == dmux->pc_state) {
-> +		if (new_state && dmux->pc_vote == BAM_DMUX_PC_VOTE_DOWN_PENDING)
-> +			dmux->pc_vote = BAM_DMUX_PC_VOTE_ACTIVE;
-> +		return false;
-> +	}
+>  /**
+>   * stmmac_init_timestamping - initialise timestamping
+>   * @priv: driver private structure
+> @@ -900,11 +905,6 @@ static int stmmac_init_timestamping(struct stmmac_priv *priv)
+>  	if (priv->plat->ptp_clk_freq_config)
+>  		priv->plat->ptp_clk_freq_config(priv);
 >  
->  	dev_dbg(dmux->dev, "pc: %u\n", new_state);
+> -	if (!(priv->dma_cap.time_stamp || priv->dma_cap.atime_stamp)) {
+> -		netdev_info(priv->dev, "PTP not supported by HW\n");
+> -		return -EOPNOTSUPP;
+> -	}
+> -
+
+[Severity: Low]
+Should the kernel-doc block just above stmmac_init_timestamping() be updated
+in the same patch?  It still says:
+
+	 * Description: this is to verify if the HW supports the PTPv1 or PTPv2.
+	 * This is done by looking at the HW cap. register.
+	 * This function also registers the ptp driver.
+
+After this hunk the HW cap. register check lives in
+stmmac_check_timestamp_cap()/stmmac_setup_ptp(), which is also why
+stmmac_resume() now has to open-code "if (stmmac_check_timestamp_cap(priv))",
+and stmmac_ptp_register() is only called from stmmac_setup_ptp().  The
+-EOPNOTSUPP return the description implies is no longer produced by any
+path here, and the function's new error returns are not described.
+
+>  	ret = stmmac_init_tstamp_counter(priv, STMMAC_HWTS_ACTIVE |
+>  					       PTP_TCR_TSCFUPDT);
+>  	if (ret) {
+> @@ -937,22 +937,39 @@ static int stmmac_init_timestamping(struct stmmac_priv *priv)
+>  	return 0;
+>  }
 >  
-
-[ ... ]
-
-> @@ -706,9 +795,47 @@ static irqreturn_t bam_dmux_pc_ack_irq(int irq, void *data)
->  static int bam_dmux_runtime_suspend(struct device *dev)
+> -static void stmmac_setup_ptp(struct stmmac_priv *priv)
+> +static int stmmac_setup_ptp(struct stmmac_priv *priv)
 >  {
->  	struct bam_dmux *dmux = dev_get_drvdata(dev);
-> +	bool wake = false;
+>  	int ret;
 >  
->  	dev_dbg(dev, "runtime suspend\n");
-> -	bam_dmux_pc_vote(dmux, false);
-> +
-> +	scoped_guard(mutex, &dmux->power_lock) {
-> +		bam_dmux_pc_vote_locked(dmux, false);
-> +		if (dmux->pc_vote == BAM_DMUX_PC_VOTE_DOWN_PENDING) {
-> +			dmux->pc_vote = BAM_DMUX_PC_VOTE_INACTIVE;
-> +			bam_dmux_complete_pc_down(dmux);
-> +			wake = true;
-> +		} else if (!dmux->pc_state) {
-> +			bam_dmux_power_off(dmux);
-> +		}
+> +	if (!stmmac_check_timestamp_cap(priv)) {
+> +		netdev_info(priv->dev, "PTP not supported by HW\n");
+> +		return 0;
 > +	}
+> +
+>  	ret = clk_prepare_enable(priv->plat->clk_ptp_ref);
 
 [Severity: Medium]
-Is it safe for this to act on the cached BAM_DMUX_PC_VOTE_DOWN_PENDING
-without re-sampling the pc line?
+Does this early return unbalance clk_ptp_ref against the platform noirq PM
+callbacks?
 
-Every other new decision point in the patch calls
-irq_get_irqchip_state(IRQCHIP_STATE_LINE_LEVEL) first, but this one
-converts the cached flag straight into bam_dmux_complete_pc_down(), which
-releases both channels, frees the RX skbs and toggles pc-ack:
+Before this patch stmmac_setup_ptp() always did clk_prepare_enable() on open
+and stmmac_release_ptp() always did clk_disable_unprepare() on close, so a
+running interface always held one enable/prepare reference.  With the new
+capability gate in both functions, hardware whose dma_cap.time_stamp and
+dma_cap.atime_stamp are clear never gets the clock enabled.  Note
+stmmac_hw_init() leaves priv->dma_cap all-zero when there is no HW feature
+register ("No HW DMA feature register supported").
 
-	bam_dmux_power_off(dmux);
-	bam_dmux_pc_ack(dmux);
-	WRITE_ONCE(dmux->pc_state, false);
+stmmac_pltfr_noirq_suspend() in stmmac_platform.c still does this
+unconditionally for any running non-WoL interface:
 
-DOWN_PENDING is only cancelled from bam_dmux_handle_pc() when a later
-invocation observes new_state == dmux->pc_state == true:
+	if (!priv->wolopts) {
+		/* Disable clock in case of PWM is off */
+		clk_disable_unprepare(priv->plat->clk_ptp_ref);
 
-	if (new_state == dmux->pc_state) {
-		if (new_state && dmux->pc_vote == BAM_DMUX_PC_VOTE_DOWN_PENDING)
-			dmux->pc_vote = BAM_DMUX_PC_VOTE_ACTIVE;
+With the enable/prepare counts at zero, does that hit the clk core
+enable_count/prepare_count underflow warning?  And after
+stmmac_pltfr_noirq_resume() re-enables it unconditionally, the close path
+stmmac_release_ptp() now returns early for the same hardware, so does that
+reference stay held for good?
 
-So if the modem re-raises pc and the rising-edge handler is still blocked on
-mutex_lock(&dmux->power_lock) when the autosuspend timer fires:
+These four sites appear to be the only clk_ptp_ref enable/disable users, and
+stmmac_pltfr_pm_ops installs those noirq callbacks for a large number of
+platform glue drivers.
 
-bam_dmux_runtime_suspend()
-   scoped_guard(mutex, &dmux->power_lock)
-      bam_dmux_complete_pc_down()   /* pc line is high again */
-
-does the driver then acknowledge a pc=false transition the modem has already
-revoked, and tear down RX while the peer believes the link is up? The commit
-message describes this as the case to avoid:
-
-    "acknowledging a new pc=false transition while the host vote remains
-    active lets the modem power down the DMA engine underneath the driver"
-
-Would reading the line level here before calling
-bam_dmux_complete_pc_down() close that window?
-
-[ ... ]
-
-> @@ -817,31 +939,40 @@ static int bam_dmux_probe(struct platform_device *pdev)
->  	pm_runtime_use_autosuspend(dev);
->  	pm_runtime_enable(dev);
->  
-> -	ret = devm_request_threaded_irq(dev, pc_ack_irq, NULL, bam_dmux_pc_ack_irq,
-> -					IRQF_ONESHOT, NULL, dmux);
-> +	ret = devm_request_threaded_irq(dev, dmux->pc_ack_irq, NULL,
-> +					bam_dmux_pc_ack_irq,
-> +					IRQF_ONESHOT | IRQF_NO_AUTOEN,
-> +					NULL, dmux);
->  	if (ret)
->  		goto err_disable_pm;
->  
->  	ret = devm_request_threaded_irq(dev, dmux->pc_irq, NULL, bam_dmux_pc_irq,
-> -					IRQF_ONESHOT, NULL, dmux);
-> +					IRQF_ONESHOT | IRQF_NO_AUTOEN, NULL, dmux);
->  	if (ret)
-> -		goto err_disable_pm;
-> +		goto err_power_off;
->  
-> +	mutex_lock(&dmux->power_lock);
->  	ret = irq_get_irqchip_state(dmux->pc_irq, IRQCHIP_STATE_LINE_LEVEL,
-> -				    &dmux->pc_state);
-> -	if (ret)
-> -		goto err_disable_pm;
-> +				    &pc_state);
+> -	if (ret < 0)
+> +	if (ret < 0) {
+>  		netdev_warn(priv->dev,
+>  			    "failed to enable PTP reference clock: %pe\n",
+>  			    ERR_PTR(ret));
+> +		return ret;
+> +	}
+> +
+> +	ret = stmmac_init_timestamping(priv);
 > +	if (ret) {
-> +		mutex_unlock(&dmux->power_lock);
-> +		goto err_power_off;
+> +		clk_disable_unprepare(priv->plat->clk_ptp_ref);
+> +		return ret;
 > +	}
 >  
->  	/* Check if remote finished initialization before us */
-> -	if (dmux->pc_state) {
-> -		if (bam_dmux_power_on(dmux))
-> -			bam_dmux_pc_ack(dmux);
-> -		else
-> -			bam_dmux_power_off(dmux);
-> -	}
-> +	bam_dmux_handle_pc(dmux, pc_state);
-> +	mutex_unlock(&dmux->power_lock);
+> -	if (stmmac_init_timestamping(priv) == 0)
+> -		stmmac_ptp_register(priv);
+> +	stmmac_ptp_register(priv);
 > +
-> +	/* Start handling state changes after the initial state is processed. */
-> +	enable_irq(dmux->pc_ack_irq);
-> +	enable_irq(dmux->pc_irq);
+> +	return 0;
+>  }
+>  
+>  static void stmmac_release_ptp(struct stmmac_priv *priv)
+>  {
+> +	if (!stmmac_check_timestamp_cap(priv))
+> +		return;
+> +
+>  	stmmac_ptp_unregister(priv);
+>  	clk_disable_unprepare(priv->plat->clk_ptp_ref);
+>  }
+> @@ -4161,10 +4178,12 @@ static int __stmmac_open(struct net_device *dev,
+>  	ret = stmmac_hw_setup(dev);
+>  	if (ret < 0) {
+>  		netdev_err(priv->dev, "%s: Hw setup failed\n", __func__);
+> -		goto init_error;
+> +		return ret;
+>  	}
+>  
+> -	stmmac_setup_ptp(priv);
+> +	ret = stmmac_setup_ptp(priv);
+> +	if (ret)
+> +		goto ptp_error;
 
 [Severity: High]
-Can a pc transition be lost in the window created here between the level
-snapshot and enable_irq(dmux->pc_irq)?
+Can this make "ip link set dev ethX up" fail on configurations that work
+today?
 
-The in-tree DTs for qcom,bam-dmux (msm8916.dtsi, msm8939.dtsi) parent these
-interrupts on SMSM:
+stmmac_setup_ptp() -> stmmac_init_timestamping() -> stmmac_init_tstamp_counter()
+returns -EINVAL for a zero PTP rate:
 
-	interrupt-parent = <&hexagon_smsm>;
-	interrupts = <1 IRQ_TYPE_EDGE_BOTH>, <11 IRQ_TYPE_EDGE_BOTH>;
-
-and smsm_intr() advances the cached level for all bits but only dispatches
-the enabled ones:
-
-drivers/soc/qcom/smsm.c:smsm_intr() {
-	val = readl(entry->remote_state);
-	changed = val ^ xchg(&entry->last_value, val);
-
-	for_each_set_bit(i, entry->irq_enabled, 32) {
-	...
-}
-
-and on unmask the cache is re-synced to the live line rather than replaying
-the missed edge:
-
-drivers/soc/qcom/smsm.c:smsm_unmask_irq() {
-	/* Make sure our last cached state is up-to-date */
-	if (readl(entry->remote_state) & BIT(irq))
-		set_bit(irq, &entry->last_value);
-	else
-		clear_bit(irq, &entry->last_value);
-}
-
-The smp2p provider does the same thing in qcom_smp2p_notify_in().
-
-So if the modem raises pc after irq_get_irqchip_state() but before
-enable_irq(), is that edge simply consumed?  bam_dmux_power_on() would never
-run, no pc-ack would be toggled, and the following falling edge would land in
-bam_dmux_handle_pc() with new_state == dmux->pc_state == false:
-
-	if (new_state == dmux->pc_state) {
-		...
-		return false;
+	if (!priv->plat->clk_ptp_rate) {
+		netdev_err(priv->dev, "Invalid PTP clock rate");
+		return -EINVAL;
 	}
 
-after which every bam_dmux_runtime_resume() would time out in
+Before this patch that only produced the "PTP init failed" warning and the
+interface still came up without timestamping.
 
-	wait_event_timeout(dmux->pc_wait, READ_ONCE(dmux->pc_state),
-			   BAM_DMUX_REMOTE_TIMEOUT)
+Is "timestamp capable but clk_ptp_rate == 0" a real configuration?
+stmmac_register_devlink() already tolerates exactly that combination:
 
-because the modem has no reason to produce another rising edge. Given that
-probe already has a "Check if remote finished initialization before us" path,
-a pc rising edge concurrent with probe looks like expected timing. Is there a
-recovery path for that case, or does relying on a re-read of the line level
-while the child IRQ is masked need a different approach?
+	if (!(priv->dma_cap.time_stamp || priv->dma_cap.atime_stamp) ||
+	    !priv->plat->clk_ptp_rate)
+		return 0;
 
+and stmmac_probe_config_dt() derives the rate from a clock that may be NULL:
+
+	if (IS_ERR(plat->clk_ptp_ref)) {
+		plat->clk_ptp_rate = clk_get_rate(plat->stmmac_clk);
+		plat->clk_ptp_ref = NULL;
+
+with clk_get_rate(NULL) returning 0 (plat->stmmac_clk is left NULL on the
+"Cannot get CSR clock" path, and is not fetched at all for
+snps,dwc-qos-ethernet-4.10).
+
+On such a board, would the interface become permanently un-openable for
+users who never touch PTP or TAPRIO?  The same question applies to
+stmmac_resume() below, where the new goto skips netif_device_attach() and
+leaves a previously working link down.  Since there are two Fixes: tags this
+will be picked up for stable, so it may be worth spelling the behaviour
+change out in the changelog, or keeping the failure non-fatal for the
+datapath and only refusing the PTP/EST-dependent features.
+
+>  	stmmac_init_coalesce(priv);
 >  
->  	return 0;
+> @@ -4187,9 +4206,10 @@ static int __stmmac_open(struct net_device *dev,
 >  
-> +err_power_off:
-> +	mutex_lock(&dmux->power_lock);
-> +	bam_dmux_power_off(dmux);
-> +	mutex_unlock(&dmux->power_lock);
->  err_disable_pm:
->  	pm_runtime_disable(dev);
->  	pm_runtime_dont_use_autosuspend(dev);
-> @@ -872,12 +1003,16 @@ static void bam_dmux_remove(struct platform_device *pdev)
->  	pm_runtime_set_suspended(dev);
->  
->  	/* Try to wait for remote side to drop power vote */
-> -	if (!wait_event_timeout(dmux->pc_wait, !dmux->rx, BAM_DMUX_REMOTE_TIMEOUT))
-> +	if (!wait_event_timeout(dmux->pc_wait, !READ_ONCE(dmux->rx),
-> +				BAM_DMUX_REMOTE_TIMEOUT))
->  		dev_err(dev, "Timed out waiting for remote side to suspend\n");
->  
->  	/* Make sure everything is cleaned up before we return */
-> +	disable_irq(dmux->pc_ack_irq);
->  	disable_irq(dmux->pc_irq);
-> +	mutex_lock(&dmux->power_lock);
->  	bam_dmux_power_off(dmux);
-> +	mutex_unlock(&dmux->power_lock);
->  	bam_dmux_free_skbs(dmux->tx_skbs, DMA_TO_DEVICE);
+>  	for (chan = 0; chan < priv->plat->tx_queues_to_use; chan++)
+>  		hrtimer_cancel(&priv->dma_conf.tx_queue[chan].txtimer);
+> -
+>  	stmmac_release_ptp(priv);
+> -init_error:
+> +ptp_error:
+> +	stmmac_stop_all_dma(priv);
+> +
+>  	return ret;
 >  }
 
 [Severity: High]
-This is a pre-existing ordering issue rather than something the patch
-introduces, but since the remove path is being touched here: can
-register_netdev_work be re-queued after its only cancellation?
+This isn't a bug introduced by this patch, but the new ptp_error exit widens
+the set of ways __stmmac_open() can fail after it has already done:
 
-bam_dmux_remove() runs cancel_work_sync(&dmux->register_netdev_work) and
-unregister_netdevice_many() at the top, while the RX channel is still armed
-and the pc IRQ is still enabled. Only afterwards does it reach
-disable_irq()/bam_dmux_power_off().
+	memcpy(&priv->dma_conf, dma_conf, sizeof(*dma_conf));
 
-A remote OPEN command arriving in that window does:
+so priv->dma_conf holds its own copy of every pointer in the caller's
+dma_conf.  On the MTU reopen path the caller reacts to failure like this:
 
-bam_dmux_rx_callback()
-  bam_dmux_cmd_open()
-     /* Cannot sleep here, schedule work to register the netdev */
-     schedule_work(&dmux->register_netdev_work);
+stmmac_change_mtu()
+	ret = __stmmac_open(dev, dma_conf);
+	if (ret) {
+		free_dma_desc_resources(priv, dma_conf);
+		kfree(dma_conf);
 
-and there is no second cancel_work_sync() after the IRQs are disabled and the
-DMA is terminated. bam_dmux_register_netdev_work() would then dereference the
-devm-allocated dmux and publish a fresh netdev holding it:
+The interface is left administratively up, and priv->dma_conf still points
+at the freed dma_alloc_coherent() buffers and the freed tx_skbuff/rx_skbuff
+arrays, since nulling pointers inside the caller's copy cannot clear the
+memcpy'd copy.  A later "ip link set dev ethX down" then runs:
 
-	bndev = netdev_priv(netdev);
-	bndev->dmux = dmux;
-	...
-	ret = register_netdev(netdev);
+__stmmac_release()
+	stmmac_stop_all_dma(priv);
+	/* Release and free the Rx/Tx resources */
+	free_dma_desc_resources(priv, &priv->dma_conf);
 
-Once remove() returns, devm frees dmux, so any xmit on that interface would
-touch freed memory. Would moving the cancel_work_sync() after
-disable_irq()/bam_dmux_power_off(), or adding a second one there, be
-appropriate?
+Does that free the same rings a second time?  The pre-existing trigger was
+an stmmac_request_irq() failure via irq_error; with this patch a PTP
+reference clock enable failure reaches the same state.
+
+[Severity: Low]
+Should this unwind also clear the MAC Rx/Tx enable that stmmac_hw_setup()
+set?
+
+stmmac_hw_setup() does:
+
+	/* Enable the MAC Rx/Tx */
+	stmmac_mac_set(priv, priv->ioaddr, true);
+
+stmmac_stop_all_dma() only clears the DMA channel start bits and deinits the
+channels.  The MAC enable is cleared in the mac_link_down callback, in the
+reset path and in stmmac_suspend(), and on the ptp_error path
+phylink_start() was never reached, so mac_link_down() cannot run.
+stmmac_open() then frees the descriptor rings and drops the runtime-PM
+reference, leaving the MAC clock-gated with its Rx/Tx still armed.  All
+stmmac_hw_setup() failure returns happen before the stmmac_mac_set() call,
+so this residue is specific to the new post-setup failure exits.
+
+> @@ -8326,13 +8346,14 @@ int stmmac_resume(struct device *dev)
+>  	ret = stmmac_hw_setup(ndev);
+>  	if (ret < 0) {
+>  		netdev_err(priv->dev, "%s: Hw setup failed\n", __func__);
+> -		stmmac_legacy_serdes_power_down(priv);
+> -		mutex_unlock(&priv->lock);
+> -		rtnl_unlock();
+> -		return ret;
+> +		goto error_unlock;
+>  	}
+>  
+> -	stmmac_init_timestamping(priv);
+> +	if (stmmac_check_timestamp_cap(priv)) {
+> +		ret = stmmac_init_timestamping(priv);
+> +		if (ret)
+> +			goto error_stop_dma;
+> +	}
+>  
+>  	stmmac_init_coalesce(priv);
+>  	phylink_rx_clk_stop_block(priv->phylink);
+> @@ -8356,6 +8377,15 @@ int stmmac_resume(struct device *dev)
+>  	netif_device_attach(ndev);
+>  
+>  	return 0;
+> +
+> +error_stop_dma:
+> +	stmmac_stop_all_dma(priv);
+> +error_unlock:
+> +	stmmac_legacy_serdes_power_down(priv);
+> +	mutex_unlock(&priv->lock);
+> +	rtnl_unlock();
+> +
+> +	return ret;
+>  }
+
+[Severity: Low]
+Same question on the resume side: stmmac_suspend() explicitly did
+
+	stmmac_mac_set(priv, priv->ioaddr, false);
+
+but error_stop_dma/error_unlock stops the DMA and calls
+stmmac_legacy_serdes_power_down() while the MAC Rx/Tx enabled by
+stmmac_hw_setup() is still set, so the SerDes is removed under an enabled
+MAC.  Would adding stmmac_mac_set(priv, priv->ioaddr, false) to this unwind
+restore the state that stmmac_suspend() had established?
+
+Also, on this path netif_device_attach() is never reached while
+netif_running() is still true, so the netdev stays detached after a resume
+failure.  Is that the intended outcome for a PTP init error?
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260903180057.1437-1-getshell%40seu.edu.cn
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260904-stmmac-ptp-error-propagate-v1-1-80f01b03dafa%40oss.qualcomm.com
