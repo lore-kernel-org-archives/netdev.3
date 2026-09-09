@@ -1,169 +1,167 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B95336E466
-	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 17:19:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F54935C1AE
+	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 17:26:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788974368; cv=none; b=kHXEVlI3zPkUTmRVeSwYJtKcorXUfyPFumCbeEvsjgrGE0GmL9I8sv2oClzeSDcUR638774Idv+UePXj7+8pw2f9fX60SqtPFdG45Nj8H6olIiSyvssB95P9rn6x0/vQ6vuuH14ejlulPtlP65XgziQm//MWwUEw/fI7MqyBWwQ=
+	t=1788974787; cv=none; b=ObuZ8DjK3mgn31DBGRXIwH9MRDjoyBjzmU2niEKlwFvs1MfWTdkeLbI+CXpZjDw9k8NXB7pZjpzX8tJ3wyn0wHkwcKS4xIYsQWTDbGkjZ7/+RQl9Abi+9S9BrOEbKJ97ntCoIb/irNDgeHH6vPywMVXVZSI2+1xYP9FmXwOJFRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788974368; c=relaxed/simple;
-	bh=8kIFCP4E8pMff/4MvsJkIzUFTt+S8MQ7T6gh0N3KGQA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Yk0pjiTgAnfhAglR85qLxYtrePsbPGEnrQrhyQgAfGnvaiIlCAUICk/570bW6HjI8R98KVYc+nyPWx3+HW1dLTJLGU/TkPZA/vmEfQbhw+XouC5VxNfMK4+gleJzBOwRPtOKYsJHhpcle/S7m/HFtP78g+PZz6+4cjSLKiX9JeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=openvz.org; spf=pass smtp.mailfrom=openvz.org; dkim=pass (2048-bit key) header.d=openvz.org header.i=@openvz.org header.b=BSrQc1r0; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=openvz.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvz.org
+	s=arc-20240116; t=1788974787; c=relaxed/simple;
+	bh=YuhMC+ikAd+pjOQay2Ig0CjXXaSBPmUs/yYHR+5uMzM=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=QEAYNmOxIZon/Eupz8fF6CZyUhRHxZ6ETPyz+DAgGzqMVaGQGix6Plh/JhROE/P6Tm3p/eHTDK4G1VhdtOXH4nGv/4EKyp9p6aJQdwcjTMyaqAncOh014rr0kwcArNPZ7kE6pfOtDxS2pwSXc35qQ2bAj0GaV08g5InTZ0FyB/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=L4CMqh96; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=g1LFYfUY; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=openvz.org header.i=@openvz.org header.b="BSrQc1r0"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-49b8ce9b733so48922145e9.1
-        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 10:19:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="L4CMqh96";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="g1LFYfUY"
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 689H7ZuO3133780
+	for <netdev@vger.kernel.org>; Wed, 9 Sep 2026 17:26:25 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	TvnR5tjlXGe8UBW8k3JIMB+3DEiF8Somqt3qxNxJN1o=; b=L4CMqh96zJuXA6P3
+	VTRI3yFqqw95fvKIuKcU2CC6CMLspWKcEJvHZHajWXz5OGIsGaOWQXzEe8RfCaT4
+	boA7iEJSkWCEi8d7Ydk8H1+SPckgNCMkj+brCfTsGe/No5ejIxsf0AWviYC+Scmj
+	tbWA2xEk4kCoXJLLZK9BThScM6zDhuOzndM3XpWWtnvrIQBVgzaWABkqQAqLElUX
+	a/zpgGWtyaSR//7LKrAhGGjnDt0m+LmYU9O4Y5Oz6tq3bW+bL7yAeiHAX0rKHsC/
+	5rORAWcgMsDYM9X7joFWeCvbUbtv9qU4AwoneNJXZVuuWzlXSenvP21gb4woQvjt
+	ojHTOA==
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gk5ru1w93-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 17:26:25 +0000 (GMT)
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2d001671a54so109797185ad.2
+        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 10:26:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=openvz.org; s=google; t=1788974365; x=1789579165; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=2lankMhKljfGqcOe/+EwZWVYhmCbtsmCmxJQsu9Mi40=;
-        b=BSrQc1r0vFm6c5sG1ENKp3JVDR2s9pP5GHZZlYhvYCWzOptNBGXs0NSXk3UzJeYYKH
-         2XJL9WCeKmoDrpSiG9YsKFU4Yvmb0tP+PTyDuu2WRmiIyLar4qgMy5siw2fQhc8XN5zd
-         RJbtBQsSXDECVRr4nQyWXqo7fmx4qBXrzuGfprQ3LVLFU4x4v9eTbukL060ft3KXNp1H
-         ufxYs81j3I7nhDykwvbeypo5rKp/0qlbxT5i5xnRz2Lq0pbprk6YLQKLsOZkzNQMz1zd
-         ciK+UYaAhYpi9xCvLELWfAPaQQmtEQdh9wjEsCzaP3iZ8AxSYX26wgYqGLrstOy1X8m/
-         KBVA==
+        d=oss.qualcomm.com; s=google; t=1788974784; x=1789579584; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :references:cc:to:subject:from:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=TvnR5tjlXGe8UBW8k3JIMB+3DEiF8Somqt3qxNxJN1o=;
+        b=g1LFYfUYkxYX/BfnH34DSNk7QssZ7Utd/rpiu4lX+oSm+kbSYr/uBdpSh9Y9ZMKWXP
+         GXmuA1e1ing82hcf4GLZKkfjKmxQKktf0N1inQRuDUncNS4ykNGnSDuNSIofAj6buFKx
+         yjOX4f6VPUC86aeYbIGyFfTrkKMPecNFBs9vMf1uF3kcOltSTq952oo/dI8NxR3trgFG
+         bVi2hOCPJBYAAiibwnT2B6QeinJJIqgqP8DsMEyLnxCkr+pS+kruzackK58fXwn6IBJf
+         GY03/O/LUVZmXyfQkFCNuFRKFoIUt2DXGeysHZ+q01o4+skmxJ3pzd/G1Hehr4w53WRx
+         erqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788974365; x=1789579165;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1788974784; x=1789579584;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :references:cc:to:subject:from:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=2lankMhKljfGqcOe/+EwZWVYhmCbtsmCmxJQsu9Mi40=;
-        b=qaiR9C+yCq/pPd3ELqZdjFwQIl64Hw6vqlqNA9KOKcfxFgmzYsASg0oMsy1Ne1pEd7
-         54EAYyLHvzekTss5Ba8BkafFh6n2qLWzmTSG0X+OytVJhDhfs/wRC2Xck9dRK6ETDavR
-         Nup/W5V9MvIznzar2cvqa9uXt9YCdYKo9qGmLyJu2zRjZCKnnZ6nskTdQc6s2iQb29Vo
-         B1kZgzUldOrvOLdL08o++1/jXzySyPkBLiSb7SON+DnRWmAB40CqzDujQvnE0Ka0JLQ2
-         4e2OmdXZzZyOkjv1RiGXkVVWinyXhzCzalvj3MV/W1jIjmUoDfVWxzU//9he2dsgIhlc
-         L0eg==
-X-Gm-Message-State: AFuF++nhCrXQoXZPg73enp/CcnHvMBVManOA640GMBPLT2eUcrk/9ej3
-	30fvnc7m2KdC0nLMz6vp6LDf+g+zTGdm5N4vZ2OLNgzDWSRx/9aWo8IxLLDZ5wecOrlv0fQqhLT
-	jc8kN
-X-Gm-Gg: AYBFou25fEEx3pvlVM7c0yXTwdlEOI43RVpEPCIAn3wFTEi4kSawhSISJkwRRlr5YcC
-	vvMIeIhKoFOSH5eLURlI5b9fuNoTMzXiAVbfCWUgUoJcxWwQ3OnFCCkCCLySdxU63gPkTmB0a3l
-	J0nXxU/mImWGCrTc9OTaFPyyOwETyG8TUj8TyzVuOqflfDkWQTcgjHh1TvA3vQW44XyG7xdQC5y
-	rZtw1TCXSYW386rwOfSYyBuLtVvUK2kbEWKhnuD0Mi29gWeeKFXgaQ0NLcMcJUIQ2kXQ7ND8wEw
-	4C+4rDThSwvLA56SDR2zrscz9eTj0skC8hHvMMLKde1f8PZpHqQP+VKqXZEKHT6jil+VnkXeTsT
-	NL48MshLHmcnwuKhsSbYafKHPg1GvZ/0lBTziFRajg2R2O4wixSRdracCya3epQP/i+VcCdwWr/
-	qwJvU+XhrmDHI7pLzas7ziABClE1hXeY3CT22mtrpVmiucxv08Hdg9G+qH4BfetOlG44E=
-X-Received: by 2002:a05:600c:5247:b0:493:aa0a:45ad with SMTP id 5b1f17b1804b1-49cf81dadcamr337791325e9.2.1788974364647;
-        Wed, 09 Sep 2026 10:19:24 -0700 (PDT)
-Received: from athena.sw.ru ([2a06:5b06:b600:300:3062:5db2:b6f:d44e])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49d26c2985dsm7395915e9.6.2026.09.09.10.19.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Sep 2026 10:19:23 -0700 (PDT)
-From: "Denis V. Lunev" <den@openvz.org>
-To: netdev@vger.kernel.org
-Cc: dev@openvswitch.org,
-	"Denis V. Lunev" <den@openvz.org>,
-	Aaron Conole <aconole@redhat.com>,
-	Eelco Chaudron <echaudro@redhat.com>,
-	Ilya Maximets <i.maximets@ovn.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Subject: [PATCH 1/1] openvswitch: disable BH once per netlink dump instead of per item
-Date: Wed,  9 Sep 2026 19:19:20 +0200
-Message-ID: <20260909171920.1001074-1-den@openvz.org>
-X-Mailer: git-send-email 2.53.0
+        bh=TvnR5tjlXGe8UBW8k3JIMB+3DEiF8Somqt3qxNxJN1o=;
+        b=G3W8Y8zUi3bClgPYrQ/STX0b0GvAHqfbEgqTsDUwWXGXduDO3TXV50XpGvmPyhjxLn
+         qBNkE0ZliWmjj7o4tBqIPPRxrwZjo8r8f9M7qENamz5bV1N7j2PdTyFC83/Bo9eXS691
+         s70hVjfgICrtA5Aou9iz4bBiOMewhN8/0jjfnqCD0t+sovT/IdZhfHCOc4N3x/HYhdhf
+         05LpbFkumzsry31BByGx6zTcDfHWM47JQXdA6G0cNm3EM1uBW+tKbTF9IYv+n1IxutXG
+         h3ZZe0R6O4B6k1IcnUeYol7YT5aHajWUcLIQBnvQhhfgHUxmIGQdNQWvUkKXQFMfYpCG
+         GHyw==
+X-Forwarded-Encrypted: i=1; AKwUvBxHOizpos+dc+vXhyFjHsP48+7cBtMPi5HGmE7qDOvbSikks3ArZW046EiGtPo7Rf8K9Ewxdq0=@vger.kernel.org
+X-Gm-Message-State: AFuF++mSE57tOszXMo+Cncx7riYyXZ9MdHRxD+QL6bw5GBIyl5z9eBY0
+	UmHWs4yhWvXQMX/85mNs64KjZECVOQnYlHu0N7JBHzvTNnTiWSzSFC+QuQEeMlPP8PgYIWQnkGx
+	42FjIYayCgrzAL7rUy3ZF9jjpSuYccxLXPVAXyXcZQFG+BPCJrfauY4M96g==
+X-Gm-Gg: AYBFou0QfBKGrvqcC8vsTndHr7kD8QocmmviqfbjyOzxsk3FJzd/QtgbpAU6lStBVTp
+	HTAzZ4ez+b4u0oqEgbhn7AkqZlCIb6n42SaTNONYJbn+8R2osF7Ded0+uoQtAfCQVaLw4mvYC1S
+	+0jL3Cd54PVl4TXn4cEgizMAeOynoNu4ooUwFHWWeQlscYbufWu6oFIEQSg2ugknUJ4rZEUauUt
+	jdclA76XcdWVVBAzyvQ4gtK7fW9aRPfqYwxE1U0hLO729HOnyIbyuhZMxEypEHEFvPDuzRnxa7h
+	GlWKRe2DKjxaxvXSH7VKO5wn9VYICVpmqkNBdCi4+YLeEP50NP0guWnLvH17/k86Wab27UpOoxd
+	+nWtm/48SHaOfhI2Ud5tbXlYMFjFr6w==
+X-Received: by 2002:a17:902:ccca:b0:2c9:aae1:a61a with SMTP id d9443c01a7336-2db127cc2afmr548653475ad.14.1788974784256;
+        Wed, 09 Sep 2026 10:26:24 -0700 (PDT)
+X-Received: by 2002:a17:902:ccca:b0:2c9:aae1:a61a with SMTP id d9443c01a7336-2db127cc2afmr548652735ad.14.1788974783562;
+        Wed, 09 Sep 2026 10:26:23 -0700 (PDT)
+Received: from [192.168.0.108] ([49.206.13.7])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2db1495b40esm77278825ad.22.2026.09.09.10.26.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 09 Sep 2026 10:26:12 -0700 (PDT)
+Message-ID: <03b61010-2210-4923-8172-545c30fd97df@oss.qualcomm.com>
+Date: Wed, 9 Sep 2026 22:55:46 +0530
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+From: Pooventhiran G <pooventhiran.g@oss.qualcomm.com>
+Subject: Re: [PATCH RESEND wireless-next 00/18] wifi: Add Seamless Mobility
+ Domain (SMD) AP support
+To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Jakub Kicinski <kuba@kernel.org>
+Cc: "David S . Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+        Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org,
+        netdev@vger.kernel.org, linux-wireless@vger.kernel.org
+References: <20260908-smd-v1-0-9fd2d876a1fb@oss.qualcomm.com>
+ <20260908125017.0fb226c5@kernel.org>
+ <404004c4c97bf776077685b7ec33a14fa777cd70.camel@sipsolutions.net>
+ <80266eb9666d6106110d998cb6330868da55bf59.camel@sipsolutions.net>
+ <20260908132004.29176fec@kernel.org>
+ <0e950f7f0c3f5a2c1f6476e255716b09876624f4.camel@sipsolutions.net>
+ <e7089219-ed02-4288-a678-660a52289e61@oss.qualcomm.com>
+ <e9b36721c9e2b0b24c89c2e1b5b03b17c438f30c.camel@sipsolutions.net>
+ <80b5c9ab-de1a-4170-9ea2-26242b767e93@oss.qualcomm.com>
+Content-Language: en-US
+In-Reply-To: <80b5c9ab-de1a-4170-9ea2-26242b767e93@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Authority-Analysis: v=2.4 cv=M+997Sws c=1 sm=1 tr=0 ts=6aa196c1 cx=c_pps
+ a=JL+w9abYAAE89/QcEU+0QA==:117 a=1GmPaZxtcqOdqSZF9xWxyA==:17
+ a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22
+ a=ly1jUebXebrwMyEau08A:9 a=QEXdDO2ut3YA:10 a=324X-CrmTo6CU4MGRt3R:22
+X-Proofpoint-GUID: cGE_6kztScJgkKJKwQ8q3SBLb20wco6B
+X-Proofpoint-ORIG-GUID: cGE_6kztScJgkKJKwQ8q3SBLb20wco6B
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTA5MDE5MyBTYWx0ZWRfXwPOU2NtucwSO
+ cby/NeFUgoRbh2LHfE4y/j9/WHrWI6jwaTmOLSbpIkC1OLTpo5aOhTg0nYlFmslGury/tIgE/A6
+ dDjwuFNC/p8QfNJ4KW7vNyh5U6uc2YE=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA5MDE5MyBTYWx0ZWRfXzk57KfXRwM5c
+ fh7v2cwwZIMUJEkQ2RHaYfwlE8VhUZvJhnBF4ets3fH+a3tAulxjqTWUROdgy5tLCTcuccBNWIB
+ 8BzI0UqaNDskVAGLvA3lpaYlD8/0VkaH6bh9WKSD3TaIMX+kR9dy+qaOPXq5/HBratwDfkHTapM
+ zbq3KXeW4ArkDBZfBU+DOJIojF0KdBni9X3YzOopraoc5XvbI+hZ/YTMAk3D1XvNArLUSV1+DzH
+ abH8K5qg1OJZkDFTDZeohhkOxm1Tpe40UX9s8xKxHTag8ANGGRPXPVASSGybrmzYOqDVZTnjHnu
+ Qvpd/Bq6hUK6L0Hy0Cl6y1+4TtXOdoZMmHu6KzdoVLyith1clei8zztIt1dyohd+vB2C4AFJkXr
+ TiZnfjjkc/RqszYEGgg5Bp1LMbnQhwlz4MK9inxZ2dX5PB54Zg9DcK9+sDsAuMUyt/QkqmaLiU/
+ kvo+wGjSGxI7qIHm1Rg==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-08_03,2026-09-09_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 bulkscore=0 spamscore=0 phishscore=0 impostorscore=0
+ lowpriorityscore=0 suspectscore=0 clxscore=1015 priorityscore=1501
+ malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2606150000
+ definitions=main-2609090193
 
-From: Denis V. Lunev <den@openvz.org>
 
-ovs_flow_cmd_dump() and ovs_vport_cmd_dump() release a BH-disabling
-spinlock once per item they emit: stats->lock in ovs_flow_stats_get()
-for every CPU that has touched the flow, and nsid_lock in
-peernet2id_alloc() for every vport that lives in a foreign netns.
-Every release is a local_bh_enable(), and each one runs the pending
-softirq backlog in the dumping thread's own context.
 
-The skb bounds how much work a dump callback does, which is why no
-dumper carries a budget of its own, but it does not bound the softirq
-work the callback absorbs. On a CPU that carries the box's packet load
-the backlog refills as fast as it drains, so the dumping thread becomes
-that CPU's softirq engine. It never sleeps and it has no reschedule
-point, so under voluntary preemption nothing can take the CPU away from
-it: neither the ksoftirqd the kernel woke to take the work over, nor
-the stopper thread the softlockup detector dispatches to refresh its
-timestamp. The watchdog then panics a node that has enough flows and
-ports to keep the dump running.
+On 09-09-2026 07:42 pm, Jeff Johnson wrote:
+> On 9/8/2026 10:53 PM, Johannes Berg wrote:
+>> On Tue, 2026-09-08 at 17:20 -0700, Jeff Johnson wrote:
+>>>
+>>> Apologies for the AI-like commit messages. Those are at my prompting since I
+>>> want these patches to be understandable by folks who may not know or
+>>> understand the underlying details of SMD roaming so I requested they contain
+>>> enough detail that referencing the spec should not be necessary.
+>>>
+>>> AFAIK none of this code is AI generated.
+>>
+>> Did you read it? The comments (in patch 1 we were talking about) are
+>> also all clearly generated.
+> Commit text was AI assisted. IDK about code comments but I've asked the
+> developers to be as detailed as necessary to justify the design/code,
+> especially the SKB extension proposal.
+> 
+> /jeff
 
-ovs_flow_stats_get() used to do exactly this. One local_bh_disable()
-around the whole per-CPU walk was added by commit 4f647e0a3c37
-("openvswitch: fix a possible deadlock and lockdep warning") to close
-an ABBA deadlock between two CPUs reading each other's stats.
-Commit 63e7959c4b9b ("openvswitch: Per NUMA node flow stats.") dropped
-that region the same day while reworking the stats layout, and replaced
-it with a spin_lock_bh() per item. The deadlock stayed fixed; the
-single region did not come back.
+Thanks, Jakub, Johannes, and Paolo, for your feedback.
 
-Hold BH off across the whole callback instead, the way
-ctnetlink_dump_table() does. Both loops already run under
-rcu_read_lock() and cannot sleep, so this forbids nothing that was
-allowed before, and the nested spin_unlock_bh() in the callees stop
-draining softirqs.
+My apologies once again for the AI-like documentation. I think because of the design justification details and multiple rounds of AI-assisted reviews, the texts ended up reading more mechanical and AI-like.
 
-Signed-off-by: Denis V. Lunev <den@openvz.org>
-CC: Aaron Conole <aconole@redhat.com>
-CC: Eelco Chaudron <echaudro@redhat.com>
-CC: Ilya Maximets <i.maximets@ovn.org>
-CC: "David S. Miller" <davem@davemloft.net>
-CC: Eric Dumazet <edumazet@google.com>
-CC: Jakub Kicinski <kuba@kernel.org>
-CC: Paolo Abeni <pabeni@redhat.com>
-CC: Simon Horman <horms@kernel.org>
----
- net/openvswitch/datapath.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/net/openvswitch/datapath.c b/net/openvswitch/datapath.c
-index 631a03136fa1..ae2c9924aeb0 100644
---- a/net/openvswitch/datapath.c
-+++ b/net/openvswitch/datapath.c
-@@ -1533,6 +1533,7 @@ static int ovs_flow_cmd_dump(struct sk_buff *skb, struct netlink_callback *cb)
- 	}
- 
- 	ti = rcu_dereference(dp->table.ti);
-+	local_bh_disable();
- 	for (;;) {
- 		struct sw_flow *flow;
- 		u32 bucket, obj;
-@@ -1552,6 +1553,7 @@ static int ovs_flow_cmd_dump(struct sk_buff *skb, struct netlink_callback *cb)
- 		cb->args[0] = bucket;
- 		cb->args[1] = obj;
- 	}
-+	local_bh_enable();
- 	rcu_read_unlock();
- 	return skb->len;
- }
-@@ -2565,6 +2567,7 @@ static int ovs_vport_cmd_dump(struct sk_buff *skb, struct netlink_callback *cb)
- 		rcu_read_unlock();
- 		return -ENODEV;
- 	}
-+	local_bh_disable();
- 	for (i = bucket; i < DP_VPORT_HASH_BUCKETS; i++) {
- 		struct vport *vport;
- 
-@@ -2585,6 +2588,7 @@ static int ovs_vport_cmd_dump(struct sk_buff *skb, struct netlink_callback *cb)
- 		skip = 0;
- 	}
- out:
-+	local_bh_enable();
- 	rcu_read_unlock();
- 
- 	cb->args[0] = i;
--- 
-2.53.0
-
+Based on Paolo's and Johannes' feedback, I will come back with a v2 that explores an SKB extensions alternative and is more wireless-contained (with concise documentation).
