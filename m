@@ -1,111 +1,276 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFB712EEE8A;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63B9F2C17A3;
 	Wed,  9 Sep 2026 01:54:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788918894; cv=none; b=HFDeMvvxC0tNpleZ8f/TRTinVxSPA2F0GQwO+BIgicZ4ZMf93lmTLoYACtSCoWF7qvKElNbZGpTG45gimN9Y9BEFRIny2tKz2vuXI/WmQ2Yj8yDX2wWMgk1ssJsctImyjSGQ/TUkHo2/iIEV3f8WEozlFSjuBlV/7AsXsq9akRo=
+	t=1788918898; cv=none; b=Kp53Hb+l/vGgO5xzPJ9YqkWLonceDiopMqbaBKL3rTxAIB20BpLj3CpnuFG8lUB0uw3/ICZsKSFl4Z47EcyOlzjwXTI17JncO8/R+7HcFACJDLnSd29FnH4HVyT7pqhZNK5iPKzSy3eWfBpOCQm2k5g9t7Y++WSUV1zZ7c//LTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788918894; c=relaxed/simple;
-	bh=u3q67zwEWNpxcLR9UzJLGgQXapS+iQ8jZZnWpcsAoZw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tnhWhGKi4Cce9nSzW6aASO+80ly1cY6gIJw4DS2JwRLaPt+KT82+eek0D8+TpY9oDmDQUWZbqjZl65QBtdNLjFJB0Q8MW+kvwC6gl5+XaPSJ3NP6ZxL655HXRguxbQRAzohnFbpdUAiEhx9gQPSydHMvoTrcEN47ZlYZSxW4gHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JmmDVkPP; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788918898; c=relaxed/simple;
+	bh=7ozVkbftgSEuAbtSGOYLzZoKFSz7qBH1XaAifNnlXtI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cK0+++0f2AkwzQQ7BhVXrVJs1PeJTSzpJBOB6Ox/bv+wH2BDiS+o3m7hAR9EKUVvgfuOq4N5Tswf7W5JbiO7rHA1BCNF1iDF5D+lnRyJPgf2BvEcS9MjraJ+Nc9RcY9azHH/Tk/AIm4O3Et9euVdnsJ+HWnHazlWIrxHxJgvnxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=EgbJoCXG; arc=none smtp.client-ip=220.197.31.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JmmDVkPP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A1B91F00A3A;
-	Wed,  9 Sep 2026 01:54:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788918892;
-	bh=bAb3Ny8bot1GqTJl3eZl5xMko6ZykxPClD8Vw7YzPag=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=JmmDVkPPPiohw8z1U2yvO5rdEWirlppecRQ+65VZ3VTEzYatr8MHDfdzWBlQPKZSx
-	 wHpDQRDFUyknzlV29ODaVULZpTdX1xnrbpL+MsofGF3Tzxqg9+vDj49W0m3XrPzixL
-	 vp2mxHf161XNj8fWMdfo/X1GxSonutZjL/pAlIiybqt56kJY25DHu/1v/twvFP8TlS
-	 pa4KedreJwFt8tOjVmIlMrAW7FkNgOviL1mf8WEJo1b5RE+yugjc/GnafgnCNuLbBZ
-	 5slJU3hGddZ3Du7fRoGeMzEEqad7YVEOIGEZsYS4DYTTz7NpgYziER0UjlOixNgbIL
-	 S0BOxhI97jTxQ==
-Date: Tue, 8 Sep 2026 18:54:51 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Zihan Xi <zihanx@nebusec.ai>
-Cc: netdev@vger.kernel.org, "David S . Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon
- Horman <horms@kernel.org>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, Vega <vega@nebusec.ai>
-Subject: Re: [PATCH net 1/1] net: fix linkwatch UAF on uninitialized netdev
-Message-ID: <20260908185451.73a49bbd@kernel.org>
-In-Reply-To: <eeaeddc20bf5382336eaf704b5b15e3780dbb768.1788500348.git.zihanx@nebusec.ai>
-References: <cover.1788500348.git.zihanx@nebusec.ai>
-	<eeaeddc20bf5382336eaf704b5b15e3780dbb768.1788500348.git.zihanx@nebusec.ai>
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="EgbJoCXG"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=fw
+	N4tmz3rp+n3zWW3xTgETF8DGgAuLH4t/UYF32mdKg=; b=EgbJoCXG1FmPJ6hEu7
+	UME8VZid6S+qz93Hprmo1cclYINZH/fgtYrhBWFXC1+faQRewpmJl7olFMjBU3t5
+	RlY41L/wiqqO0el3x4Sk3TNqAD4Npf1TNyKrdvbwgW2/m/jhbVRELNCyXHxOHhzs
+	9l8MCIKSXdo/7TqTh61GRgQ0A=
+Received: from LAPTOP-BJS5C4G0 (unknown [])
+	by gzga-smtp-mtada-g1-4 (Coremail) with SMTP id _____wD3_zphvKBqY2huBg--.48624S2;
+	Wed, 09 Sep 2026 09:54:42 +0800 (CST)
+From: Heyang Tan <thy15333007817@163.com>
+To: netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	sgoutham@marvell.com,
+	rkannoth@marvell.com,
+	gakula@marvell.com,
+	sbhatta@marvell.com
+Subject: [PATCH v3] octeontx2-af: use seq_file for rsrc_alloc debugfs
+Date: Wed,  9 Sep 2026 09:54:37 +0800
+Message-ID: <20260909015437.1042-1-thy15333007817@163.com>
+X-Mailer: git-send-email 2.51.0.windows.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wD3_zphvKBqY2huBg--.48624S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxKr4kZr1xXF1fuw4rZF4ruFg_yoWxGw1Dpa
+	1YyryxKr4qqr18G3W7KF48ZFs5Gan5tFW8XFyv9348C3Z8Gr4Iqr4Ykr47Ka1rGrZ7tr90
+	gry5KFZ7CF15Jr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UNXoxUUUUU=
+X-CM-SenderInfo: 5wk1ikatttiiixyrlqqrwthudrp/xtbC4gQLtGqgvGS+NQAA3A
 
-On Fri,  4 Sep 2026 06:46:44 +0000 Zihan Xi wrote:
-> linkwatch_fire_event() queues a net_device onto lweventlist and takes a
-> netdev_hold() even when the device has never been registered.
-> 
-> netif_carrier_on(), netif_carrier_off() and netif_carrier_event() already
-> skip NETREG_UNINITIALIZED. netif_dormant_*() and netif_testing_*() do
-> not. Pre-registration operstate changes are meant to stay local and be
-> consumed later by linkwatch_init_dev() in register_netdevice().
-> 
-> If a driver fires a dormant or testing event before register_netdevice()
-> and registration then fails, rtnl_newlink_create() calls free_netdev().
-> For NETREG_UNINITIALIZED devices, free_netdev() immediately kvfree()s
-> the object without draining linkwatch. The later linkwatch worker
-> dereferences the stale list entry and use-after-frees the device.
-> 
-> The same path is reachable from an unprivileged user who can unshare
-> user and net namespaces, because only netns-local CAP_NET_ADMIN is
-> required.
-> 
-> linkwatch_fire_event() has never rejected NETREG_UNINITIALIZED devices.
-> That goes back to commit 1da177e4c3f4 ("Linux-2.6.12-rc2"), the root of
-> this tree. Later changes only altered callers or were reverted.
-> 
-> commit b47300168e77 ("net: Do not fire linkwatch events
-> until the device is registered.")
-> skipped uninitialized devices in the carrier helpers only.
-> 
-> commit 22604c866889 ("net: Fix for initial link state in 2.6.28")
-> briefly added a NETREG_UNINITIALIZED return in the helper after calling
-> rfc2863_policy().
-> 
-> commit c276e098d3ee ("Revert "net: Fix for initial link state in 2.6.28"")
-> removed it again because that rfc2863_policy() call could take
-> dev_base_lock in software-interrupt context.
-> 
-> Fix this in linkwatch_fire_event() by ignoring NETREG_UNINITIALIZED
-> devices so they cannot be queued, without calling rfc2863_policy().
-> Pre-registration flags remain on the device and are still applied by
-> linkwatch_init_dev() if registration succeeds.
+The rsrc_alloc debugfs reader writes rows directly to userspace without
+respecting the caller's read count. It also uses the current row length as
+the userspace stride, which can corrupt output when rows have different
+widths.
 
-This commit message seems to be quite low quality.
-It reads like the LLM was following some check box list rather than
-allowed to think. From the bug report in cover letter the problem
-seems to be that one caller (wifi test harness device) fires a
-linkwatch even too early. And you think that the fix is to change 
-the core helper to silently ignore this event? Just fix the buggy
-driver?? Or if you think there's more than one such driver please
-provide more info.
+Use seq_file to handle userspace buffer sizes, offsets, and partial reads.
 
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+The LF list formatter is used both to determine the widest column and skip
+PF/VF rows with no resources, and to emit the final table. Let it measure
+the formatted length when no seq_file is supplied, and write directly to
+the seq_file during rendering. This preserves the pre-scan behavior while
+removing the temporary string buffers.
 
-Since your trigger didn't exist in 2.6.12 I'm not sure why you're
-pointing at that commit.
+Fixes: 23205e6d06d4 ("octeontx2-af: Dump current resource provisioning status")
+Assisted-by: LLM Codex
+Signed-off-by: Heyang Tan <thy15333007817@163.com>
 
-FTR, the quality of the repro is also looking like a year+ old model
-following a checklist:
+Changes in v3:
+- Format LF lists directly in the seq_file buffer and remove temporary buffers.
+- Measure, rather than emit, LF lists during width calculation and row scans.
+- Explain the two formatter modes in a code comment.
+- Preserve column alignment with seq_setwidth() and seq_pad().
+- Reorder local declarations in reverse Christmas tree order.
 
-  This is an rtnetlink RTM_NEWLINK creation path, not a packet-sequence
-  or protocol-state trigger. packetdrill cannot express creating a dummy
-  lower device...
+Link: https://lore.kernel.org/netdev/20260906141129.1730-1-thy15333007817@163.com/
+---
+ .../marvell/octeontx2/af/rvu_debugfs.c        | 114 +++++++++++-------
+ 1 file changed, 69 insertions(+), 45 deletions(-)
 
-Please get a better model.
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c
+index fcbf4ba0e10a..1f177851e76d 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c
+@@ -646,10 +646,29 @@ static ssize_t rvu_dbg_lmtst_map_table_display(struct file *filp,
+ 
+ RVU_DEBUG_FOPS(lmtst_map_table, lmtst_map_table_display, NULL);
+ 
+-static void get_lf_str_list(const struct rvu_block *block, int pcifunc,
+-			    char *lfs)
++static int get_num_digits(int number)
+ {
+-	int lf = 0, seq = 0, len = 0, prev_lf = block->lf.max;
++	int width = 1;
++
++	while (number >= 10) {
++		number /= 10;
++		width++;
++	}
++
++	return width;
++}
++
++/*
++ * Pre-scan callers need the formatted length to size columns and skip empty
++ * PF/VF rows. Passing NULL keeps those scans from emitting output before the
++ * final rendering pass.
++ */
++static int format_lf_str_list(struct seq_file *filp,
++			      const struct rvu_block *block, int pcifunc)
++{
++	int prev_lf = block->lf.max;
++	int lf = 0, len = 0;
++	bool seq = false;
+ 
+ 	for_each_set_bit(lf, block->lf.bmap, block->lf.max) {
+ 		if (lf >= block->lf.max)
+@@ -664,32 +683,40 @@ static void get_lf_str_list(const struct rvu_block *block, int pcifunc,
+ 			continue;
+ 		}
+ 
+-		if (seq)
+-			len += sprintf(lfs + len, "-%d,%d", prev_lf, lf);
+-		else
+-			len += (len ? sprintf(lfs + len, ",%d", lf) :
+-				      sprintf(lfs + len, "%d", lf));
++		if (seq) {
++			if (filp)
++				seq_printf(filp, "-%d,%d", prev_lf, lf);
++			len += get_num_digits(prev_lf) + get_num_digits(lf) + 2;
++		} else if (len) {
++			if (filp)
++				seq_printf(filp, ",%d", lf);
++			len += get_num_digits(lf) + 1;
++		} else {
++			if (filp)
++				seq_printf(filp, "%d", lf);
++			len += get_num_digits(lf);
++		}
+ 
+ 		prev_lf = lf;
+-		seq = 0;
++		seq = false;
+ 	}
+ 
+-	if (seq)
+-		len += sprintf(lfs + len, "-%d", prev_lf);
++	if (seq) {
++		if (filp)
++			seq_printf(filp, "-%d", prev_lf);
++		len += get_num_digits(prev_lf) + 1;
++	}
+ 
+-	lfs[len] = '\0';
++	return len;
+ }
+ 
+ static int get_max_column_width(struct rvu *rvu)
+ {
+-	int index, pf, vf, lf_str_size = 12, buf_size = 256;
+ 	struct rvu_block block;
++	int lf_str_size = 12;
++	int index, pf, vf;
+ 	u16 pcifunc;
+-	char *buf;
+-
+-	buf = kzalloc(buf_size, GFP_KERNEL);
+-	if (!buf)
+-		return -ENOMEM;
++	int len;
+ 
+ 	for (pf = 0; pf < rvu->hw->total_pfs; pf++) {
+ 		for (vf = 0; vf <= rvu->hw->total_vfs; vf++) {
+@@ -702,39 +729,38 @@ static int get_max_column_width(struct rvu *rvu)
+ 				if (!strlen(block.name))
+ 					continue;
+ 
+-				get_lf_str_list(&block, pcifunc, buf);
+-				if (lf_str_size <= strlen(buf))
+-					lf_str_size = strlen(buf) + 1;
++				len = format_lf_str_list(NULL, &block, pcifunc);
++				if (lf_str_size <= len)
++					lf_str_size = len + 1;
+ 			}
+ 		}
+ 	}
+ 
+-	kfree(buf);
+ 	return lf_str_size;
+ }
+ 
+ /* Dumps current provisioning status of all RVU block LFs */
+ static int rvu_dbg_rsrc_attach_status(struct seq_file *filp, void *unused)
+ {
+-	int index, pf, vf, pcifunc;
+ 	struct rvu *rvu = filp->private;
++	int index, pf, vf, pcifunc;
+ 	struct rvu_block block;
+ 	int lf_str_size;
+-	char *lfs;
++	int len;
+ 
+ 	lf_str_size = get_max_column_width(rvu);
+-	if (lf_str_size < 0)
+-		return lf_str_size;
+ 
+-	lfs = kzalloc(lf_str_size, GFP_KERNEL);
+-	if (!lfs)
+-		return -ENOMEM;
++	seq_setwidth(filp, lf_str_size);
++	seq_puts(filp, "pcifunc");
++	seq_pad(filp, ' ');
++	for (index = 0; index < BLK_COUNT; index++) {
++		if (!strlen(rvu->hw->block[index].name))
++			continue;
+ 
+-	seq_printf(filp, "%-*s", lf_str_size, "pcifunc");
+-	for (index = 0; index < BLK_COUNT; index++)
+-		if (strlen(rvu->hw->block[index].name))
+-			seq_printf(filp, "%-*s", lf_str_size,
+-				   rvu->hw->block[index].name);
++		seq_setwidth(filp, lf_str_size);
++		seq_puts(filp, rvu->hw->block[index].name);
++		seq_pad(filp, ' ');
++	}
+ 
+ 	seq_putc(filp, '\n');
+ 	for (pf = 0; pf < rvu->hw->total_pfs; pf++) {
+@@ -747,35 +773,33 @@ static int rvu_dbg_rsrc_attach_status(struct seq_file *filp, void *unused)
+ 				block = rvu->hw->block[index];
+ 				if (!strlen(block.name))
+ 					continue;
+-				lfs[0] = '\0';
+-				get_lf_str_list(&block, pcifunc, lfs);
+-				if (strlen(lfs))
++				len = format_lf_str_list(NULL, &block, pcifunc);
++				if (len)
+ 					break;
+ 			}
+ 			if (index == BLK_COUNT)
+ 				continue;
+ 
++			seq_setwidth(filp, lf_str_size);
+ 			if (vf)
+-				sprintf(lfs, "PF%d:VF%d", pf, vf - 1);
++				seq_printf(filp, "PF%d:VF%d", pf, vf - 1);
+ 			else
+-				sprintf(lfs, "PF%d", pf);
+-			seq_printf(filp, "%-*s", lf_str_size, lfs);
++				seq_printf(filp, "PF%d", pf);
++			seq_pad(filp, ' ');
+ 
+ 			for (index = 0; index < BLK_COUNT; index++) {
+ 				block = rvu->hw->block[index];
+ 				if (!strlen(block.name))
+ 					continue;
+ 
+-				lfs[0] = '\0';
+-				get_lf_str_list(&block, pcifunc, lfs);
+-				seq_printf(filp, "%-*s", lf_str_size, lfs);
++				seq_setwidth(filp, lf_str_size);
++				format_lf_str_list(filp, &block, pcifunc);
++				seq_pad(filp, ' ');
+ 			}
+ 			seq_putc(filp, '\n');
+ 		}
+ 	}
+ 
+-	kfree(lfs);
+-
+ 	return 0;
+ }
+ 
+-- 
+2.34.1
+
