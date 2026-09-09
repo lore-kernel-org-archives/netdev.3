@@ -1,50 +1,48 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6152B3CB56C;
-	Wed,  9 Sep 2026 21:47:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94582344DAE;
+	Wed,  9 Sep 2026 21:50:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788990466; cv=none; b=b1x9Ljxkwa2hJ7CRmPbe1plc/4Pj6r9l0tKZFA/r1vw3iAScrhkmHKvPcazXszIM8hxYXHxR+AfyY8BS2nqrVdwjP9gMX/AUb0IiY5B6055gSp/HIreWgDNNAJI1bgLSgWrhC7zbOOh3sUOeYIqKQkhgK28shP5ny4jec8XEwC0=
+	t=1788990652; cv=none; b=i3ZIasxM+nJirrx9pMuB3BzOXQPGPnMKYOsvQfuqW4RPMAnk00wYbclE5u9uUv+fS4HtGQ79hDXRbjX49K1oUUn0rRkYx0tooPZ7/DWT1y2HItcHu5e1eQWzD0sGyy4U2HeLcRQupmXw0RYVtdA0QTaF/QUnfUQ4Ex9ejuhNwqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788990466; c=relaxed/simple;
-	bh=Tz8tOJ1hpLXBu6wtbzVBED1+49xi9UwTmp1d9nIl3sA=;
+	s=arc-20240116; t=1788990652; c=relaxed/simple;
+	bh=pDid7rjntruX2H4VEdeeqsdi59XnWiUaYIdYa5Jg+pg=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=evIEDKFsJIlYLAZHs77OzqDw+RGCWEa3v7wI42sBqRwsiBjLQS+8wRQDc41dy3o957fx7LWAymbySI5ZfM0wVPejwK/qsvPN/0OfZep7KTkXfb/vjMYYl64Sgi8LKDtqoMlWQ7h1TYykhX3m8/mk3l8AI1NTF7+84HqfuL3a7x4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XAqbmZTx; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=hF+Xt/JYng9wU6Cz9FtSzAFw49GGzsEUwybajdRCFG2KVkDvzCDq0J8BaN4nzWOwqA+XdZAFqfVDmewVUBLws1BvUDFXhEVOZ4VQ7amaBWyv4Qli1ifl4gWhyBv+xsnoEUyyIDpmws0UU6JD1gjKR5/7io3vDCKu0IftQbYvHHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IKXBB2OX; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XAqbmZTx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D7651F0089D;
-	Wed,  9 Sep 2026 21:47:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IKXBB2OX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5613E1F000FF;
+	Wed,  9 Sep 2026 21:50:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788990440;
-	bh=Um4PbpNaoB+q7vOWgdXZlGyVbU8hxhqvNDsLIljAtb0=;
+	s=k20260515; t=1788990648;
+	bh=SBgTT3VIWig+VgekORUqrYlktN0bs73d9DwAiyf9MpQ=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=XAqbmZTxfracJIfJtsVDYiUPyu4P/w3Prkqza/W4Wl55ZmUBFt1rApkdNEx5bktGy
-	 0mJ+USy6+YxqfnbQRpGlIyGWpzuB2lXHqQN5TPxJXztJnG8XCxs1cUsudu4nVvZpOY
-	 8Kqw/eelJU9vasLiz1PRGrvePxBtAHY6WuJ8it9pT1LSOkBMYrn8/PHGpLfGW4/R2y
-	 f4Co+L4axqaPjEzwSfxiw1eXDM1hfFy973ovXJmVYtibKqiIWXE6N2c1nAu6THCU0r
-	 Ys1j96psqh1AHlne7VFUKoD8RKd8+/BqkR+TAwz7DBl2LEcLtbCr16EsvhkgQnof68
-	 /k1srFuwkV//A==
+	b=IKXBB2OXUFUgcjdpMoqQuDCznorx5HEjNfzuxwg9G7zxBN/vvAtnxrGii/tp1m0iM
+	 Szz0AQgsCXLF6PAA9fWdr13BTpGnWc/g5mS06ztymMdfyiz0F5wop/yVjPELhmxSPA
+	 prdC2qlgVw6ykcasFwrYpVeF9k0qCJYOJEGzuxFoY+nCrTj5f/SnIovAElGXxS2bIe
+	 YMBaS+7Eumu63/XbChQY1wSHGBf/deJVcHNtFHFEIyTNcPpLrblGa21mLlZPxmWfev
+	 Z168gTCHoNwscwDgQ+70FTj4azjPfVNLNuOQW3OfmVW3SCxdZkYR7InFHKnkCxCBdq
+	 5j8E2PVPkf95g==
 Subject:
- Re: [PATCH net-next 9/9] net: stmmac: qcom-ethqos: add Shikra EMAC support
+ Re: [PATCH v2] net: stmmac: clear dma_conf in __stmmac_open error path
 From: netdev-bot+sashiko@kernel.org
-To: mohd.anwar@oss.qualcomm.com
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, afd@ti.com, andrew@lunn.ch, hkallweit1@gmail.com,
- linux@armlinux.org.uk, richardcochran@gmail.com, andersson@kernel.org,
- konradybcio@kernel.org, alexandre.torgue@foss.st.com, peppe.cavallaro@st.com,
- joabreu@synopsys.com, maxime.chevallier@bootlin.com,
- mcoquelin.stm32@gmail.com, netdev@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+To: zhaojinming@uniontech.com
+Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com, horms@kernel.org,
+ ansuelsmth@gmail.com, Jose.Abreu@synopsys.com, netdev@vger.kernel.org,
  linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org
-Date: Wed, 09 Sep 2026 21:47:18 +0000
-Message-ID: <178899043882.219967.17727623521559354388@kernel.org>
-In-Reply-To: <20260904-shikra_ethernet-v1-9-a50765996035@oss.qualcomm.com>
-References: <20260904-shikra_ethernet-v1-9-a50765996035@oss.qualcomm.com>
-X-sashiko-severity: Medium
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Date: Wed, 09 Sep 2026 21:50:46 +0000
+Message-ID: <178899064691.219967.12835853245703806626@kernel.org>
+In-Reply-To: =?utf-8?q?=3C20260904-fix-stmmac-mtu-change-use-after-free-v2-1?=
+ =?utf-8?q?-91e680476921=40uniontech=2Ecom=3E?=
+References: =?utf-8?q?=3C20260904-fix-stmmac-mtu-change-use-after-free-v2-1-?=
+ =?utf-8?q?91e680476921=40uniontech=2Ecom=3E?=
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -54,214 +52,222 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 3 potential
+Thank you for your contribution! Sashiko AI review found 4 potential
 issue(s) to consider:
 
-Critical: 0 · High: 0 · Medium: 3 · Low: 0
+Critical: 0 · High: 2 (1) · Medium: 2 · Low: 0
 
-- [Medium] shikra_data (drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-
-  ethqos.c:337-359) is the only ETHQOS platform descriptor without…
-- [Medium] Shikra is the first compatible with a nonzero num_noc_clks, so
-  qcom_ethqos_probe() now calls qcom_ethqos_init_noc_clks(), which ends…
-- [Medium] The PTP clock rate (`clk_ptp_rate`) is captured from the
-  `stmmaceth` clock before its rate is updated to 120MHz, leading to…
+- [High] The new `memset(&priv->dma_conf, 0, sizeof(priv->dma_conf))` at
+  drivers/net/ethernet/stmicro/stmmac/stmmac_main.c:4193 also zeroes the…
+- [High] On the `irq_error` path the MAC and all DMA channels are already
+  running, but the unwind never stops them, so the descriptor rings the…
+- [Medium] The new memset() at stmmac_main.c:4193 also wipes the per-TX-
+  queue TBS state in `priv->dma_conf.tx_queue[].tbs` (STMMAC_TBS_EN /…
+- [Medium] The whole-struct clear at stmmac_main.c:4193 also erases
+  persistent user configuration held in `priv->dma_conf.dma_rx_size` /…
+
+Pre-existing issues:
+- [High] After a failed reopen the driver leaves every NAPI instance
+  disabled while the netdevice stays logically running, and the next…
 
 --
 
-net: stmmac: qcom-ethqos: add Shikra EMAC support
+net: stmmac: clear dma_conf in __stmmac_open error path
 
-Adds a qcom,shikra-ethqos compatible backed by a new shikra_data
-descriptor.  The descriptor enables three NOC clocks (axi-noc,
-pcie-tile-axi-noc, stmmaceth) at 120 MHz and sets a 36-bit DMA address
-width.
+This adds a memset of priv->dma_conf on the error paths of
+__stmmac_open(), so that the struct no longer points at the descriptor
+resources the callers free after a failed open.  A few questions about
+what else that whole-struct clear erases, and about the state the failed
+open leaves behind.
 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-> index a31541506a4c9..f96680456472d 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-> @@ -328,6 +328,36 @@ static const struct ethqos_emac_driver_data emac_v4_0_0_data = {
->  	},
->  };
+Link to v1: https://lore.kernel.org/r/20260903-fix-stmmac-mtu-change-use-after-free-v1-1-c81dc7d6d18a@uniontech.com
+
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> index 24656b35350b1..4369e64faf9f8 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> @@ -4190,6 +4190,7 @@ static int __stmmac_open(struct net_device *dev,
 >  
-> +static const struct ethqos_noc_clk_cfg shikra_noc_clks[] = {
-> +	{ "axi-noc", 120000000 },
-> +	{ "pcie-tile-axi-noc", 120000000 },
-> +	{ "stmmaceth", 120000000 },
-> +};
-> +
-> +static const struct ethqos_emac_driver_data shikra_data = {
-> +	.dma_addr_width = 36,
-> +	.has_emac_ge_3 = true,
+>  	stmmac_release_ptp(priv);
+>  init_error:
+> +	memset(&priv->dma_conf, 0, sizeof(priv->dma_conf));
+       ^^^^^^
+
+[Severity: High]
+Can this memset turn the per-queue txtimer hrtimers into invalid ones?
+
+The struct hrtimer txtimer lives inside priv->dma_conf.tx_queue[], and on
+the irq_error path stmmac_init_coalesce() has already initialized them:
+
+  struct stmmac_tx_queue *tx_q = &priv->dma_conf.tx_queue[chan];
+  ...
+  hrtimer_setup(&tx_q->txtimer, stmmac_tx_timer, CLOCK_MONOTONIC,
+                HRTIMER_MODE_REL);
+
+After the memset those timers are all-zero, so timer->base is NULL.  Every
+teardown path walks them unconditionally, in __stmmac_release(),
+stmmac_suspend() and stmmac_xdp_release():
+
+  for (chan = 0; chan < priv->plat->tx_queues_to_use; chan++)
+          hrtimer_cancel(&priv->dma_conf.tx_queue[chan].txtimer);
+
+and hrtimer_cancel() -> hrtimer_try_to_cancel() -> hrtimer_active() has no
+NULL check:
+
+  base = READ_ONCE(timer->base);
+  seq = raw_read_seqcount_begin(&base->seq);
+
+A failed reopen in stmmac_change_mtu() just returns the error, so the
+interface stays IFF_UP and the next ip link set down, suspend or XDP
+attach reaches those zeroed timers.
+
+The commit message says the memset leaves "the state consistent regardless
+of the caller" - but priv->dma_conf is the live object all of those paths
+dereference.  Would it be better to invalidate only the freed resource
+pointers, or to leave the timers alone, rather than clearing the whole
+struct?
 
 [Severity: Medium]
-Note that this list programs the main MAC clock ("stmmaceth") to
-120 MHz, and shikra_data is the first descriptor to do so.  That
-interacts badly with how the PTP reference rate is captured earlier in
-probe.
+Does this also drop the per-queue TBS state?
 
-qcom_ethqos_probe() calls devm_stmmac_probe_config_dt() before any of
-the clock rates are touched, and stmmac_probe_config_dt() has the
-fall-back path:
+tc_setup_etf() in stmmac_tc.c keeps the ETF/launch-time offload state
+only in priv->dma_conf:
 
-	plat->clk_ptp_ref = devm_clk_get(&pdev->dev, "ptp_ref");
-	if (IS_ERR(plat->clk_ptp_ref)) {
-		plat->clk_ptp_rate = clk_get_rate(plat->stmmac_clk);
-		plat->clk_ptp_ref = NULL;
-		dev_info(&pdev->dev, "PTP uses main clock\n");
+  if (!(priv->dma_conf.tx_queue[qopt->queue].tbs & STMMAC_TBS_AVAIL))
+          return -EINVAL;
 
-so plat_dat->clk_ptp_rate is a snapshot of whatever rate the bootloader
-left on stmmaceth.  Only afterwards do qcom_ethqos_init_noc_clks() and
-ethqos_clks_config() move that same clock to the 120 MHz requested
-above.  And ethqos_ptp_clk_freq_config() cannot repair the value,
-because it bails out first thing when the fall-back was taken:
+  if (qopt->enable)
+          priv->dma_conf.tx_queue[qopt->queue].tbs |= STMMAC_TBS_EN;
 
-	if (!plat_dat->clk_ptp_ref)
-		return;
+and the loop at the top of __stmmac_open() exists to carry that bit across
+a reopen:
 
-Does that leave stmmac using a stale clk_ptp_rate for the sub-second
-increment and addend programming, i.e. PTP timestamps that advance at
-the wrong rate?  If the boot rate happens to be 0, the check in
-stmmac_init_tstamp_counter() rejects it outright ("Invalid PTP clock
-rate") and hwtstamping fails.
+  for (int i = 0; i < priv->plat->tx_queues_to_use; i++)
+          if (priv->dma_conf.tx_queue[i].tbs & STMMAC_TBS_EN)
+                  dma_conf->tx_queue[i].tbs = priv->dma_conf.tx_queue[i].tbs;
 
-Admittedly this needs a DT that omits ptp_ref, which the
-qcom,shikra-ethqos binding does not allow, so the window is narrow.
-Still, since the core explicitly supports the fall-back, it would be
-good to know the intent here: is ptp_ref mandatory for Shikra by
-construction, or should the stmmaceth rate be established before
-devm_stmmac_probe_config_dt() runs (or clk_ptp_rate re-read after the
-rate change) so the two cannot disagree?
+After the memset both STMMAC_TBS_EN and STMMAC_TBS_AVAIL are gone while
+the etf qdisc is still installed, so a following tc ... etf call returns
+-EINVAL.
+
+On the next successful open stmmac_setup_dma_desc() re-derives only AVAIL
+from plat->tx_queues_cfg[].tbs_en and stmmac_hw_setup() re-arms the
+hardware:
+
+  int enable = tx_q->tbs & STMMAC_TBS_AVAIL;
+
+  stmmac_enable_tbs(priv, priv->ioaddr, enable, chan);
+
+but stmmac_xmit() only programs the launch time when tx_q->tbs &
+STMMAC_TBS_EN.  Does that mean launch times are silently ignored from
+then on, with no error reported anywhere?
 
 [Severity: Medium]
-Is the missing .rgmii_por / .num_rgmii_por pair intentional here?  This is
-the only descriptor in the file without a POR table; emac_v2_1_0_data,
-emac_v2_3_0_data, emac_v3_0_0_data and emac_v4_0_0_data all supply a
-six-entry table.
+The same clear erases the ring geometry the user configured through
+ethtool -G.  stmmac_reinit_ringparam() stores it directly in the struct
+being zeroed:
 
-Since .link_clk_name is also unset, qcom_ethqos_probe() asks for the clock
-named "rgmii":
+  priv->dma_conf.dma_rx_size = rx_size;
+  priv->dma_conf.dma_tx_size = tx_size;
 
-	ethqos->link_clk = devm_clk_get(dev, data->link_clk_name ?: "rgmii");
+  if (netif_running(dev))
+          ret = stmmac_open(dev);
 
-so this instance takes the ethqos_fix_mac_speed_rgmii() path, where the
-POR restore loop runs zero times:
+and stmmac_setup_dma_desc() reads it back, treating 0 as "never
+configured":
 
-	/* Reset to POR values and enable clk */
-	for (i = 0; i < ethqos->num_rgmii_por; i++)
-		rgmii_writel(ethqos, ethqos->rgmii_por[i].value,
-			     ethqos->rgmii_por[i].offset);
+  dma_conf->dma_tx_size = priv->dma_conf.dma_tx_size;
+  dma_conf->dma_rx_size = priv->dma_conf.dma_rx_size;
 
-With num_rgmii_por == 0, RGMII_IO_MACRO_CONFIG, RGMII_IO_MACRO_CONFIG2,
-SDCC_HC_REG_DLL_CONFIG(2), SDCC_HC_REG_DDR_CONFIG and SDCC_USR_CTL are
-never returned to a known baseline before the speed-specific
-read-modify-write sequence runs.
+  if (!dma_conf->dma_tx_size)
+          dma_conf->dma_tx_size = DMA_DEFAULT_TX_SIZE;
+  if (!dma_conf->dma_rx_size)
+          dma_conf->dma_rx_size = DMA_DEFAULT_RX_SIZE;
 
-Can that leave a stale delay setting across a speed change?  In
-ethqos_rgmii_macro_init(), the non-1000 Mbps branch does:
+So after ethtool -G followed by a failed ip link set up,
+stmmac_get_ringparam() reports rx_pending 0 / tx_pending 0 - a value
+stmmac_set_ringparam() itself rejects as below DMA_MIN_RX_SIZE /
+DMA_MIN_TX_SIZE - and the next successful open quietly allocates default
+sized rings.  Is losing the configured sizes intended here?
 
-	rgmii_setmask(ethqos, SDCC_DDR_CONFIG_EXT_PRG_RCLK_DLY_EN,
-		      SDCC_HC_REG_DDR_CONFIG);
+There is a second consumer: stmmac_xdp_open() uses priv->dma_conf in
+place without recomputing the sizes or dma_buf_sz:
 
-while the SPEED_1000 branch only programs PRG_RCLK_DLY and sets
-PRG_DLY_EN.  Neither branch clears the other branch's enable bit; on the
-existing ge_3 platforms the POR write (DDR_CONFIG = 0x80040800, with
-EXT_PRG_RCLK_DLY_EN clear) is what clears it.  Does a 10/100 to 1000 Mbps
-renegotiation on Shikra therefore end up with the external RX clock delay
-path enabled together with the 1 G programmed delay?  The first link-up
-would likewise be configured on top of whatever the bootloader left in the
-IO macro and DLL.
+  ret = alloc_dma_desc_resources(priv, &priv->dma_conf);
+  ...
+  ret = init_dma_desc_rings(dev, &priv->dma_conf, GFP_KERNEL);
 
-Alternatively, if Shikra is not an RGMII part, then the "rgmii" link clock
-name and the absent .needs_sgmii_loopback look inconsistent with
-emac_v4_0_0_data.  The commit message only says "similar to previous
-platforms", which does not say which of the two it is.
+Would a zeroed conf describe zero-length rings to the hardware there?
 
-> +	.noc_clk_cfg = shikra_noc_clks,
-> +	.num_noc_clks = ARRAY_SIZE(shikra_noc_clks),
+[Severity: High]
+This isn't a bug introduced by this patch, but it affects the same
+failure path the commit message says it makes consistent, so it seems
+worth raising here: after a failed reopen, NAPI is left disabled while
+netif_running() is still true, and the next teardown calls napi_disable()
+on it again.
 
-[Severity: Medium]
-This is the first descriptor with a nonzero num_noc_clks, so it is also the
-first to activate the NOC/OPP voting path in qcom_ethqos_probe().  Can that
-leave a performance state vote behind on a probe failure?
+stmmac_change_mtu() calls __stmmac_release() (which runs
+stmmac_disable_all_queues() -> __stmmac_disable_all_queues() ->
+napi_disable() per queue) and then __stmmac_open().  NAPI is re-enabled
+only on the success path:
 
-qcom_ethqos_init_noc_clks() ends with:
+  stmmac_enable_all_queues(priv);
+  netif_tx_start_all_queues(priv->dev);
 
-	ret = dev_pm_opp_set_rate(dev, data->noc_clk_cfg[0].rate);
-	if (ret)
-		return dev_err_probe(dev, ret, "Failed to set initial NOC OPP rate\n");
+so both error labels return with NAPI disabled.  napi_disable_locked()
+in net/core/dev.c leaves the state bits set and a second call waits on
+them:
 
-which programs axi-noc and, through the required-opps, raises the device's
-genpd performance state.  The paired teardown is only installed later:
+  while (val & (NAPIF_STATE_SCHED | NAPIF_STATE_NPSVC)) {
+          usleep_range(20, 200);
+          val = READ_ONCE(n->state);
+  }
 
-	ethqos->link_clk = devm_clk_get(dev, data->link_clk_name ?: "rgmii");
-	if (IS_ERR(ethqos->link_clk))
-		return dev_err_probe(dev, PTR_ERR(ethqos->link_clk),
-				     "Failed to get link_clk\n");
+Nothing clears those bits because napi_enable() is never called, so does
+the following ip link set down, suspend, stmmac_xdp_release(),
+stmmac_reinit_ringparam() or stmmac_reset_subtask() hang there while
+holding rtnl_lock?
 
-	ret = ethqos_clks_config(ethqos, true);
-	if (ret)
-		return ret;
+If that is the case, the release-side unwind never reaches the
+free_dma_desc_resources() the commit message describes, so does the
+memset on its own actually make the post-failure state safe?
 
-	ret = devm_add_action_or_reset(dev, ethqos_clks_disable, ethqos);
+>  	return ret;
+>  }
+>  
 
-So if devm_clk_get() returns -EPROBE_DEFER (rgmii clock provider not yet
-registered) or -ENOENT on an incomplete DT, probe returns before
-ethqos_clks_disable is registered and dev_pm_opp_set_rate(dev, 0) is never
-issued.
+[Severity: High]
+One more question about the same error path: are the DMA engines still
+running when the callers free the rings?
 
-Does the devm cleanup undo the vote?  _opp_table_kref_release() in
-drivers/opp/core.c drops current_opp, clears the OF table and puts the
-clock, but performs no OPP transition:
+stmmac_hw_setup() programs every channel with the new dma_conf ring
+addresses, enables MAC Rx/Tx, and ends with:
 
-	if (opp_table->current_opp)
-		dev_pm_opp_put(opp_table->current_opp);
-	_of_clear_opp_table(opp_table);
-	/* Release automatically acquired single clk */
-	if (!IS_ERR(opp_table->clk))
-		clk_put(opp_table->clk);
+  /* Start the ball rolling... */
+  stmmac_start_all_dma(priv);
 
-And on the genpd side, genpd_dev_pm_detach() only drops the attach-time
-default pstate:
+If stmmac_request_irq() then fails, the irq_error path only does
+phylink_stop(), the per-queue hrtimer_cancel() loop and
+stmmac_release_ptp() - there is no stmmac_stop_all_dma().  Compare
+__stmmac_release(), which stops the engines first:
 
-	/* Drop the default performance state */
-	if (dev_gpd_data(dev)->default_pstate) {
-		dev_pm_genpd_set_performance_state(dev, 0);
-		dev_gpd_data(dev)->default_pstate = 0;
-	}
+  /* Stop TX/RX DMA and clear the descriptors */
+  stmmac_stop_all_dma(priv);
 
-which is 0 here because the required-opps live on the OPP table entries,
-and genpd_remove_device() does not re-evaluate genpd->performance_state.
-Does that mean the elevated VDD_CX and 120 MHz axi-noc vote survives with
-no driver bound?
+  /* Release and free the Rx/Tx resources */
+  free_dma_desc_resources(priv, &priv->dma_conf);
 
-A narrower variant is the dev_pm_opp_set_rate() failure inside
-ethqos_clks_config(true), which returns the error without lowering the vote
-taken in qcom_ethqos_init_noc_clks().
+Both callers of __stmmac_open() free immediately after the failure, for
+example in stmmac_change_mtu():
 
-Would it work to register the cleanup action (or call
-dev_pm_opp_set_rate(dev, 0)) immediately after the initial vote, or to move
-the initial vote into the existing ethqos_clks_config() sequence where
-failures already lower it?
+  free_dma_desc_resources(priv, dma_conf);
+  kfree(dma_conf);
 
-> +	.rgmii_config_loopback_en = false,
-> +	.dwmac4_addrs = {
-
-[ ... ]
-
-> +	},
-> +};
-> +
-
-[ ... ]
-
-> @@ -957,6 +987,7 @@ static const struct of_device_id qcom_ethqos_match[] = {
->  	{ .compatible = "qcom,qcs404-ethqos", .data = &emac_v2_3_0_data},
->  	{ .compatible = "qcom,sa8775p-ethqos", .data = &emac_v4_0_0_data},
->  	{ .compatible = "qcom,sc8280xp-ethqos", .data = &emac_v3_0_0_data},
-> +	{ .compatible = "qcom,shikra-ethqos", .data = &shikra_data},
->  	{ .compatible = "qcom,sm8150-ethqos", .data = &emac_v2_1_0_data},
->  	{ }
->  };
+Can the Rx DMA engine keep writing incoming frames into those unmapped
+and freed descriptors and buffers?  After a failed MTU change the
+interface stays IFF_UP, so nothing else stops the engines.  Should the
+error path stop the DMA and disable the MAC instead of (or in addition
+to) clearing priv->dma_conf?
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260904-shikra_ethernet-v1-0-a50765996035%40oss.qualcomm.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260904-fix-stmmac-mtu-change-use-after-free-v2-1-91e680476921%40uniontech.com
