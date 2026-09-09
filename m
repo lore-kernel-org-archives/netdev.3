@@ -1,127 +1,118 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.cjdns.fr (mail.cjdns.fr [5.135.140.105])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 174BD53FD2B;
-	Wed,  9 Sep 2026 14:07:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B37D52B1FF;
+	Wed,  9 Sep 2026 14:11:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.135.140.105
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788962836; cv=none; b=ght1u6XJ8lc4XR80otpEYsHwxVNRixJB14aPF77OgeJ9OQDWIZ8Ht/2R1E0ETmOhuN7XAI1slVH2nQ9PNGl4sfdh13ABkyUX3CSlc/+SvFG8v5+2qrl4ZYEXDlB0MOfdfXxnAacYA6fF+dHUTpfv5QwqK0He5toJBuoR8F9bjxY=
+	t=1788963084; cv=none; b=ZYVc4bNaGpaKUC9Y0IJHa+r/j4Y3PTO02jeKpXsx351CUUaU9CgHRTJm5ZuflrUbn3U6GQC2V3tbZT9cHl5+GW8qcuF/JhchZTbcuxEI5M7ZISWKzsg7Dqd+jNX33ZRoLV6Ek76P0bXzJcvtq8vVLWsGIAgnQRu06b71gwonJtY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788962836; c=relaxed/simple;
-	bh=yGxcXMg/VT7JrxWQ7k59cV5n2jK1svswZYlXM2tThIQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CQ2hy6o7XCqnCH34UjaPRZQVTP07GaFw6jaa3DNFXv380uoG0U6IEeS6pul2uXsaIgsqCs3XijKjvVCNQESKe794acUk/PEFj6e/uy3At+Jn8KuCkJixFNLimSw/W6eiignaHL+KIj8NIn6bEgg7Pu5G8RRgzS4+xrKxtVwNCMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VpvCy6Uw; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788963084; c=relaxed/simple;
+	bh=em9lEzcQ17j77nlA5ULbhP+JQpXBNU+/2cH/TEM6/vM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=icESTv3TMAN1wux9dFfSUSBFbE5HML5WkhiG+rFX+t+T6iA2BN0t0+zVLo7JelQD3LF9BEuFQXCMWSVdj54zGp1H1m8ezK4yFU4x36uHXaFvtjXSN5da/bOyTpOaGnJKCzLxFFsHj0vDZxdFKYLgHmVzFLGjQLQAyRHD3CggL2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cjdns.fr; spf=pass smtp.mailfrom=cjdns.fr; dkim=pass (2048-bit key) header.d=cjdns.fr header.i=@cjdns.fr header.b=V0Bl0Pyn; arc=none smtp.client-ip=5.135.140.105
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cjdns.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cjdns.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VpvCy6Uw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 628091F00A3A;
-	Wed,  9 Sep 2026 14:07:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788962834;
-	bh=yGxcXMg/VT7JrxWQ7k59cV5n2jK1svswZYlXM2tThIQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=VpvCy6UwudJZRKyHYxBt6LUZKSLzqyeSNPo8wcmuhCq6VuIWbikSim8NAcIVxZdE8
-	 Rr2dWFLy383Dhuh7eMMJ38xof/JHameVOaXR+T3Oz9BdvFb0Mjf5JUjBzSALmUTCYu
-	 VkvaF6rvZECVLdGBKB8OjrZdWoDHc6z4rNutbF/vdkvnn5dV+EGAyvOxEvTE9Zrwn9
-	 5kbIb3SSv8A2THq3Mk3ZUKazodObnYDrfNbLzFzUtxOFWJiM2VcxN5Zf6sI5POERtV
-	 UTAE55cfsVoVsODX4FPbGdSQL0V6DbXl3p6lWexRNY28qtPTAojEgIQp96U1DJPLIX
-	 A+FiqpeFWSKgg==
-Date: Wed, 9 Sep 2026 16:07:09 +0200
-From: Joel Granados <joel.granados@kernel.org>
-To: Mauricio Faria de Oliveira <mfo@igalia.com>
-Cc: Kees Cook <kees@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Nicolas Schier <nsc@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, kernel-dev@igalia.com, 
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, fsverity@lists.linux.dev, 
-	keyrings@vger.kernel.org, bpf@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org, netdev@vger.kernel.org, linux-wpan@vger.kernel.org, 
-	lvs-devel@vger.kernel.org, netfilter-devel@vger.kernel.org, coreteam@netfilter.org, 
-	linux-sctp@vger.kernel.org, linux-rdma@vger.kernel.org, linux-s390@vger.kernel.org, 
-	bridge@lists.linux.dev, mptcp@lists.linux.dev, rds-devel@oss.oracle.com, 
-	virtualization@lists.linux.dev
-Subject: Re: [PATCH RFC v3 00/13] sysctl: add module aliases
-Message-ID: <rywhz6soawf5dzyui5g7dnbufsgpxr7ma7honuhejwgncemzrm@f32at7hl6ugm>
-References: <20260819-sysctl-module-aliases-v3-0-aab90569365d@igalia.com>
- <bpnqwggtidgiec5akns3fa5edbsvl7xf55dxabtwng2xspy4pn@ue554aii2ngk>
- <53155340c897560bfc67e61ba9568fd6@igalia.com>
- <mokz5pdtwswkyab4byfq7q7m6ac2g6ceoi6jflyxmaszaibzqa@su6m4kamtdpy>
- <b1a6cec17e7c828fcebe310ca2a0d25b@igalia.com>
+	dkim=pass (2048-bit key) header.d=cjdns.fr header.i=@cjdns.fr header.b="V0Bl0Pyn"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2E5023F4CFF;
+	Wed,  9 Sep 2026 16:03:56 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cjdns.fr; s=dkim;
+	t=1788962643; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=xLi0wt5EgiuhG354z8EC8PK2vbC5Ize9fBnpPsOtAkc=;
+	b=V0Bl0Pynw325ad30OOqtsTgd1yy+X9jSaAEch0YTYZ+H/IqpjOLcVkvGjn5vlvzjYG0Twp
+	322UmHarUlALPu8E3kVfVPMrfbyAIpKBxegkb/jPhDalfwID+SMImaFC/aJVgrDK90qb+z
+	MgNZYpZ1DJmU44bxby8v0DBpww2hinmM2ilAy2ToniI7xCSqS/L4TwjKMXN3TVep1s4L+l
+	hw8IBhFHsTVVXmywRbcr4bKY8QTSu/wiD0w8QiE1RYBPE4Y2OnZROBSSgDAva18/149yAc
+	HESXKlEaH4dpQ3puhNxjqTaPcmvM4fMwBpMelP4SL9UtDBKFAV6hM5AYL+h80w==
+From: Caleb James DeLisle <cjd@cjdns.fr>
+To: netdev@vger.kernel.org
+Cc: andrew@lunn.ch,
+	olteanv@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com,
+	chester.a.unal@arinc9.com,
+	daniel@makrotopia.org,
+	linux@armlinux.org.uk,
+	arinc.unal@arinc9.com,
+	Landen.Chao@mediatek.com,
+	dqfext@gmail.com,
+	sean.wang@mediatek.com,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	naseefkm@gmail.com,
+	b.larsson@gmx.com,
+	Caleb James DeLisle <cjd@cjdns.fr>
+Subject: [PATCH net-next 0/7] net: dsa: mt7530: support EcoNet EN751221
+Date: Wed,  9 Sep 2026 14:03:39 +0000
+Message-Id: <20260909140346.2861572-1-cjd@cjdns.fr>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="2m5clqoly7vxfssm"
-Content-Disposition: inline
-In-Reply-To: <b1a6cec17e7c828fcebe310ca2a0d25b@igalia.com>
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
+The EcoNet EN751221 has a unique switch configuration. Every chip made
+with an EN751221 die has at least one on-die MT7530 that is MMIO based.
+This switch has 3x 10/100 ports and 1x gigabit port.
 
---2m5clqoly7vxfssm
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Some popular chip packages such as the EN7513G and EN7526G have another
+MT7530 implemented as a multi-chip-module that connects to port 5 of
+the on-die switch and is controlled via the MDIO controller integrated
+in the on-die MT7530.
 
-On Fri, Sep 04, 2026 at 02:45:23PM -0300, Mauricio Faria de Oliveira wrote:
-> On 2026-09-04 10:41, Joel Granados wrote:
-> > On Thu, Aug 20, 2026 at 06:22:13PM -0300, Mauricio Faria de Oliveira wr=
-ote:
-> >> On 2026-08-20 09:51, Joel Granados wrote:
-> >> > On Wed, Aug 19, 2026 at 03:16:13PM -0300, Mauricio Faria de Oliveira=
- wrote:
-> >> >> This series adds 'sysctl:' aliases to modules that register sysctl =
-tables; e.g.:
-<... snip ...>
-> > use the correct call moving forward?
->=20
-> This scheme currently covers all modules, AFAIK, as it is wrapped in the
-> functions that register sysctl tables.
->=20
-> On moving forward: usage of such functions in a way that breaks a
-> requirement of this series (e.g., failing to specify the template
-> table/path parameter(s), or not having constant initializers) hits a
-> build error, as the requirements are actually from the compiler.
->=20
-> >> I guess that a different design could use MODULE_SYSCTL_TABLE() as
-> >> MODULE_DEVICE_TABLE(), declared per table instead of wrapped into
-> >> register sysctl functions.
-> >> However, it seems to require moving the value of the path argument (or
-> >> its template) into the macro and still referencing it in the function
-> >> (or its instantiation of the template), which adds obfuscation, to all
-> >> callers.=20
-> >>=20
-> >> What do you think?
-> > It might be that having it inside the module subsys is more work, but I
-> > believe that there is the right place to have it. I still don't see that
-> > adding a module specific arg to the sysctl register is a good thing.
->=20
-> Ok, cool. I can work on a different design.
->=20
-> Please just let me know whether you are OK with the remaining (above),
-> and I'll be happy to tackle this.
+In this configurations, the upstream switch is put into a "passthrough"
+mode in which all traffic is forwarded between port 5 and port 6
+without altering its DSA tags.
 
-What is "the remaining"?
+Furthermore, since the DSA core does not call mt753x_setup until all
+switches are present, and the downstream switch only becomes available
+when the upstream switch has configured its MDIO controller, the MDIO
+controller setup on MMIO implementations must be done before
+mt753x_setup, or else it will never complete.
 
-Best
+Finally, the on-die switch and the MCM switch connect via a TRGMII link
+which requires calibration. In order to calibrate this, PLL adjustment
+must be possible on the on-die switch, necessitating changes to the
+core_(set|clear|write|rmw) functions to support MMIO implementations.
 
---2m5clqoly7vxfssm
-Content-Type: application/pgp-signature; name="signature.asc"
+Solve all of these issues, add the TRGMII calibration, and add support
+for both switches.
 
------BEGIN PGP SIGNATURE-----
+Since this patchset will probably be subject to some discussion, please
+consider accepting any patches that are non-controversial since it will
+make future re-submissions easier.
 
-iQGzBAABCgAdFiEErkcJVyXmMSXOyyeQupfNUreWQU8FAmqhaAwACgkQupfNUreW
-QU+KhwwAk2Lee/ZoiUFUIogotHEgXdEnbLXsVMd7eYE+yCbFRSeHmKvBS3+HIQKk
-3YwwDiKYy9LoPX/Z8J6u2Xzr6HX2acGjasEgcoVhtZwFfhNXbIhLsKQXuCL5xeP8
-SP94dos6ha2gCbwAasxDxDaxBIeSpiyAojpShoXDz5sWPUp0+CmYPWbFSxvUSIiI
-ky8t15AXflY5CE5Zs1l4rIapiMx4+KY3eP9XUpwYfkuRfqrIcdXpZAQLPEEHlvpI
-YWkeFHLIzcVwQDJMylAIDZXqkqkcPwdT7HhvrtG59h/8S3oIx5d/D6RC03Wgb6Ac
-O03rgV1e427EBuBbAqihY/D46amiR8xQUv+T+jgM+DnKvwGlmiTsIUimaqMrbVkq
-tbmIxW90f2zlalhgxxmLbrnkzOLQ/jL4hz7blCO912BBCLNX40Ed/ZwI2GE+7hWk
-LwqnPJ25U43p9yb5S6lO0E4aXy0oDr1cRrm93HBZeRgkQBJM4L8IttiwgbTEVAGM
-McH2aXN2
-=WiYs
------END PGP SIGNATURE-----
+Thanks!
 
---2m5clqoly7vxfssm--
+Caleb James DeLisle (7):
+  net: dsa: mt7530: get ctrl phy addr using a function
+  dt-bindings: net: dsa: mediatek,mt7530: add passthrough mode
+  net: dsa: mediatek: add support for passthrough mode
+  net: dsa: mediatek: support PLL setup on MMIO MT7530
+  net: dsa: mediatek: support MDIO switch downstream of MMIO switch
+  dt-bindings: net: dsa: mediatek,mt7530: add econet,en751221
+  net: dsa: mediatek: support EN751221 switch
+
+ .../bindings/net/dsa/mediatek,mt7530.yaml     |  50 +-
+ drivers/net/dsa/mt7530-mdio.c                 |   1 +
+ drivers/net/dsa/mt7530-mmio.c                 |   8 +-
+ drivers/net/dsa/mt7530.c                      | 575 ++++++++++++++++--
+ drivers/net/dsa/mt7530.h                      |  46 +-
+ 5 files changed, 628 insertions(+), 52 deletions(-)
+
+-- 
+2.39.5
+
