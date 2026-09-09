@@ -1,42 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66EFA2E06EF
-	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 02:33:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA26230648C;
+	Wed,  9 Sep 2026 02:36:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788921207; cv=none; b=LDU0fc0heTXQtOR2d1QC2S6sI7f5HwZDxB5BLrY9wOQ80Qsb/uwZJ+vxAz0ZpTXl/GdPJBr3BOrEwEU5JgOfovMYdcrvabS4XV7dVAELrr7QMNCm5j8x9qLTTt9peSrky65W5b3Ck5BUGvXZS6rnZtr/7AqQye53PeGChCwq5L4=
+	t=1788921418; cv=none; b=VRzFUBepYiZLhuo7BmulrWumoNH4UVAmHnYfA8QVD2LTCboQqec8cwxSsrHFRYLEPQ/9C/eflORRywS55ZKSdt/qo2rJkT4Dpa8EfMaaxND5kATphv+3vQyBzPg+K953Vn+6BRwvtk+8ABhRmfaq0bJi+tPoRHUGdDoI5ZnruyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788921207; c=relaxed/simple;
-	bh=lhrXvMxCSGq/rE5uNEHfufDBqXhd63SUjB8zYdFHIVU=;
+	s=arc-20240116; t=1788921418; c=relaxed/simple;
+	bh=MdMRKcr4RCcIckMKiox054ELsgROHZ/zrOl7J0fhazo=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=FAVPPWd+NGF5Scrr96212ewEzKhy/vEvrLahK9oekbWGVFSlGXobg01BG7C6OKRtGpGjx52TJJHcTsdP4jFAQtYMYRKpZSav7LLK3/PP6pDOPxlCihqJHWLeROuz7m5D5p0gkkIMXNR3OD+KmMdekvyNXB6tE1cZadd5b2ZGR4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AciyzCpG; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=GN8bMcwv2RSnrlne+wu8ExjDIGvMqQTYYV7Eaw27LbLs+hE25q2NPEwAmsCgY9Foy2FFcfxI9+NIImHVUlSQfoiXTwVcvWqrYa3FhLSX2k5E+4liEhHiJlD8hj57K6W5J01WQWEyugKeqrsDNYHh6nDn6M62kO97ndoFkt+qQ3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PAxvAivo; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AciyzCpG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88E241F00A3A;
-	Wed,  9 Sep 2026 02:33:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PAxvAivo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 011C11F00A3A;
+	Wed,  9 Sep 2026 02:36:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788921205;
-	bh=gSQ9qbzpAMWUPIlAftKLpCMjz2pDPFD9VyMQu3iSrAA=;
+	s=k20260515; t=1788921413;
+	bh=7SnHjoka3biYXsU/usMnvGvxju6EcnroAMwKl7/BMn0=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=AciyzCpGofgyz803QdkrnVM322ZLhvD8/FM6mF626c+T+MZAhwfV8RGjmU6GzhukK
-	 jZl5sxYFjkpwl+xRjcayny9tnH4znMBAihjy2jWPhFc98T8lLan01rOXSRLFmTjb5x
-	 Ano+Kp1JorXu2CaZ1wnIPgQ7ddp1qYAq1WYGhmkyiPdigZPjVY6/DjehZwSYiHozXJ
-	 1dKHgV3mcIWvLVkO1YrgqxnW3Hs63+RjnNplvqSfbmdlOKW+7TmM5i7wf5KCr5Uwtp
-	 f5KT8DtuvKGVkDJ+4ktp5G4Y3OeuPk6BvwzHNCW7lhdHMx9bDdUUnFDxCjaQKWH3Tl
-	 nDNUibhysr0pg==
-Subject: Re: [PATCH net] tg3: check NVRAM and control register if SRAM has the
- placeholder MAC address
+	b=PAxvAivoBVWJl8aNUDPk7Q3Eb+LmKGduCMb4I2WXGuv+8kk0AqabYIBOZE0Lxxunc
+	 rCUDELZFcpOZTc4L/Qnud3yYfOeCSoAclz/oHL01ra9d8nXK/6LUtreIXMvld8sIr9
+	 3/Nr1aHBSqEoSIhRYHWAiT+vUfxoE5iK1EjvNMdzQ66nvpWMhDVUofI2EwUg+B14rq
+	 3kPIs2fSAJy2wX2H62KjG5lu61Sm0W7TlJvq818p47VcrhAIF6TBd5Nj3rhGe//LDt
+	 Os0FXAzvztZ1Ps5JTq7AytxXqIOq88tIklY2wOp7j0PDFTHAA56iHGI9sMdozI9Mts
+	 oxij27YLB1i2Q==
+Subject: Re: [PATCH net] octeontx2-pf: fix null RX segment address free
 From: netdev-bot+sashiko@kernel.org
-To: colona@arista.com
-Cc: kuba@kernel.org, michael.chan@broadcom.com, pavan.chebbi@broadcom.com,
- netdev@vger.kernel.org, paul.sage@42.fr, vinc@42.fr,
- atharvatiwarilinuxdev@gmail.com
-Date: Wed, 09 Sep 2026 02:33:25 +0000
-Message-ID: <178892120510.219967.1246975569411905126@kernel.org>
-In-Reply-To: <20260903233255.GA4109366@visor>
-References: <20260903233255.GA4109366@visor>
+To: nshettyj@marvell.com
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, gakula@marvell.com,
+ sgoutham@marvell.com, rkannoth@marvell.com, sbhatta@marvell.com,
+ bbhushan2@marvell.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
+Date: Wed, 09 Sep 2026 02:36:52 +0000
+Message-ID: <178892141248.219967.7550488863478080555@kernel.org>
+In-Reply-To: <20260903143516.2697708-1-nshettyj@marvell.com>
+References: <20260903143516.2697708-1-nshettyj@marvell.com>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -47,92 +47,141 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
+Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider:
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 0
+Critical: 0 · High: 2 · Medium: 0 · Low: 0
 
-- [High] In tg3_get_device_address()
-  (drivers/net/ethernet/broadcom/tg3.c), clearing addr_ok when the SRAM…
+- [High] Incomplete fix: the zero-`seg_addr` guard is added only to
+  `otx2_free_rcv_seg()`, leaving the bug class the commit message claims…
+- [High] The new guard in `otx2_free_rcv_seg()` (otx2_txrx.c:260-261)
+  uses `return`, which aborts the inner per-segment loop *and* the outer…
 
 --
 
-tg3: check NVRAM and control register if SRAM has the placeholder MAC address
+octeontx2-pf: fix null RX segment address free
 
-This adds the placeholder address check to the addr_ok expression in
-tg3_get_device_address(), so a BCM57762 reporting 00:10:18:00:00:00 in the
-SRAM mailbox falls through to the NVRAM and MAC control register sources
-instead of failing probe.
+The patch adds a check in otx2_free_rcv_seg() so that a segment address
+which reads back as zero is not handed to aura_freeptr().  It targets the
+multi-segment reclaim path introduced by b1bc8457e9d0.
 
-> diff --git a/drivers/net/ethernet/broadcom/tg3.c b/drivers/net/ethernet/broadcom/tg3.c
-> index 73a4b569b03e3..0b47908f09355 100644
-> --- a/drivers/net/ethernet/broadcom/tg3.c
-> +++ b/drivers/net/ethernet/broadcom/tg3.c
-> @@ -17081,7 +17081,8 @@ static int tg3_get_device_address(struct tg3 *tp, u8 *addr)
->  		addr[5] = (lo >>  0) & 0xff;
->  
->  		/* Some old bootcode may report a 0 MAC address in SRAM */
-> -		addr_ok = is_valid_ether_addr(addr);
-> +		addr_ok = is_valid_ether_addr(addr) &&
-> +			  !tg3_is_default_mac_address(addr);
->  	}
->  	if (!addr_ok) {
->  		__be32 be_hi, be_lo;
+> diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
+> index 8d2d607bc92f..a9aefd14ae52 100644
+> --- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
+> +++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
+> @@ -256,9 +256,12 @@ static void otx2_free_rcv_seg(struct otx2_nic *pfvf, struct nix_cqe_rx_s *cqe,
+>  	while (start < end) {
+>  		sg = (struct nix_rx_sg_s *)start;
+>  		seg_addr = &sg->seg_addr;
+> -		for (seg = 0; seg < sg->segs; seg++, seg_addr++)
+> +		for (seg = 0; seg < sg->segs; seg++, seg_addr++) {
+> +			if (unlikely(!*seg_addr))
+> +				return;
 
 [Severity: High]
-Does clearing addr_ok for the placeholder address remove the only way to
-reach the device_get_mac_address() fallback added by e4c00ba7274b?
+Should this be continue instead of return?
 
-Once addr_ok is 0, the block that follows rewrites all six bytes of addr
-from NVRAM or from MAC_ADDR_0_{HIGH,LOW}, so the placeholder value no
-longer survives to the tail of tg3_get_device_address():
+The return leaves both the inner per-segment loop and the outer
+while (start < end) walk over the remaining SG sub-descriptors, so if
+slot N reads zero, slots N+1..segs-1 and every later SG word inside
+(desc_sizem1 + 1) * 16 are never returned to the aura.
 
-drivers/net/ethernet/broadcom/tg3.c:tg3_get_device_address() {
+struct nix_rx_sg_s in otx2_struct.h describes segs as a count, not a
+null-terminated list:
+
+	u64 segs       : 2;
 	...
-	if (!is_valid_ether_addr(addr))
-		return -EINVAL;
+	u64 seg_addr;
+	u64 seg2_addr;
+	u64 seg3_addr;
 
-	if (tg3_is_default_mac_address(addr))
-		return device_get_mac_address(&tp->pdev->dev, addr);
+and the peer walk in otx2_rcv_pkt_handler() processes every advertised
+slot of every SG word, so the two readers of the same descriptor now
+disagree about its meaning.
+
+Neither caller re-scans the CQE afterwards.  otx2_check_rcv_errors()
+does:
+
+	/* Free buffer back to pool */
+	if (cqe->sg.segs)
+		otx2_free_rcv_seg(pfvf, cqe, qidx);
+	return true;
+
+and otx2_cleanup_rx_cqes() bumps processed_cqe, continues, and later
+rings the CQ doorbell.  Can the skipped pointers leak the RX buffers
+here, i.e. lose them from the NPA aura and, on the teardown path, leave
+pages charged to the page_pool with their DMA mappings still installed
+so page_pool_destroy() sees inflight pages?
+
+The commit message describes a per-segment condition ("when the segment
+address is null"), which reads more like a skip of the single bad slot
+than an abort of the whole reclaim loop.
+
+>  			pfvf->hw_ops->aura_freeptr(pfvf, qidx,
+>  						   *seg_addr & ~0x07ULL);
+> +		}
+>  		start += sizeof(*sg);
+>  	}
+>  }
+
+[Severity: High]
+If a segment address in an RX CQE can be observed as zero, does the fix
+cover the other readers of the same descriptor words?
+
+otx2_rcv_pkt_handler() performs the identical walk with no zero test at
+all:
+
+	start = (void *)sg;
+	end = start + ((cqe->parse.desc_sizem1 + 1) * 16);
+	while (start < end) {
+		sg = (struct nix_rx_sg_s *)start;
+		seg_addr = &sg->seg_addr;
+		seg_size = (void *)sg;
+		for (seg = 0; seg < sg->segs; seg++, seg_addr++) {
+			if (otx2_skb_add_frag(pfvf, skb, *seg_addr,
+					      seg_size[seg], parse, cq->cq_idx))
+				cq->pool_ptrs++;
+		}
+		start += sizeof(*sg);
+	}
+
+The pre-check in otx2_rx_napi_handler() only looks at the first word:
+
+		if (cqe->hdr.cqe_type == NIX_XQE_TYPE_INVALID ||
+		    !cqe->sg.seg_addr) {
+
+so seg2_addr, seg3_addr and any later SG sub-descriptor reach
+otx2_skb_add_frag() unchecked.  With a zero iova that function does:
+
+	va = phys_to_virt(otx2_iova_to_phys(pfvf->iommu_domain, iova));
 	...
-}
+	page = virt_to_page(va);
 
-If the NVRAM words at mac_offset or the MAC control registers read as
-0xffffffff (erased flash, ff:ff:ff:ff:ff:ff is multicast) or as zeros, the
-is_valid_ether_addr() test returns -EINVAL before the
-device_get_mac_address() call is reached.  Would that not move the probe
-failure from the placeholder path to the NVRAM/register path, on the same
-systems (iMac 20,1 / BCM57766) where the fwnode property is currently the
-working source?
+and publishes a page the driver never allocated into the GRO skb, with
+skb_mark_for_recycle() run on it later.  When nr_frags has reached
+MAX_SKB_FRAGS it also does:
 
-And when the NVRAM or register value is valid but stale, is the firmware
-property still consulted at all?  It looks like the hardware source now
-wins over the property, which inverts the priority e4c00ba7274b set up for
-the placeholder-in-SRAM case.
+	pfvf->hw_ops->aura_freeptr(pfvf, qidx, iova & ~0x07ULL);
 
-Note eth_platform_get_mac_address() earlier in the same function does not
-cover that platform class either, since net/ethernet/eth.c only consults
-dev->of_node via of_get_mac_address() and arch_get_platform_mac_address(),
-not dev_fwnode()/ACPI.
+which is the same invalid free the commit message says it is preventing,
+only on the fast path.  Can this happen?
 
-Would it work to read each fallback source into a scratch buffer, reject
-content that is invalid or equal to the placeholder, and keep
-device_get_mac_address() as the last resort, for example by testing
+The same question applies to the caller that motivates this change.  In
+otx2_cleanup_rx_cqes() only the multi-segment case goes through the
+patched helper:
 
-	if (!is_valid_ether_addr(addr) || tg3_is_default_mac_address(addr))
-		return device_get_mac_address(&tp->pdev->dev, addr);
+		if (cqe->sg.segs > 1) {
+			otx2_free_rcv_seg(pfvf, cqe, cq->cq_idx);
+			continue;
+		}
+		iova = cqe->sg.seg_addr - OTX2_HEAD_ROOM;
 
-instead of returning -EINVAL first?
+		otx2_free_bufs(pfvf, pool, iova, pfvf->rbsize);
 
-A related question about the fallback block itself: tg3_nvram_read_be32()
-returns 0 for any successfully executed read command regardless of the
-content read, so unprogrammed NVRAM (0x00.. or 0xff..) is copied into addr
-and also suppresses the MAC_ADDR_0_{HIGH,LOW} branch that may still hold
-the bootcode-programmed address.  Should the NVRAM content be validated
-before that branch is skipped?
-
-Lastly, could the commit message mention that the device property fallback
-is being narrowed by this change?
+With seg_addr == 0 the subtraction underflows, and otx2_free_bufs() in
+otx2_common.c then does virt_to_head_page(phys_to_virt(pa)) followed by
+page_pool_put_full_page() / dma_unmap / put_page() on a page derived from
+that address.  Does this branch need the same guard?
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260903233255.GA4109366%40visor
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260903143516.2697708-1-nshettyj%40marvell.com
