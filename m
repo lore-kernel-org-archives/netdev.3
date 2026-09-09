@@ -1,225 +1,197 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx2-f12.google.com (mail-yx2-f12.google.com [74.125.224.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13E8F35C1A1
-	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 17:16:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788974180; cv=none; b=mzIYbbixQ8NUzuzF6KOh0xQF9teyfOcSeYWhWGvoKFEU84UERwfgZ0U+efv3T6s8U+Dp7ZeCo7ilvmvHbnInJrWiVUelQdYfBaVwCJn0vJsrXCXH/Q26h7SE7E4jqe1s7INrQKHkQQP4kU47g0bpsVhaUdG0hYZOVGsXYUbPG1o=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788974180; c=relaxed/simple;
-	bh=Edmagecg2PaIU44/PLytw5C3Adgmsos2KNBXGxIxnCw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=b4Kg/rXOo8vSaSU2a8lsLyRbBexWdOszbE+QYN/FB1XULA5kE2y2G1Ewv0Mcr8lqx5Uwf4XmlDwIyIAgTM8gExOwLD98HV3+eZhIxvcJuirbDatuuI13ZsSWCLLhdyaTARj3LJVXFpjv+wmM9G1biV0lChRjWWCkw3ElLVZDuE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=S72Welgf; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=P/AdubD5; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD9A936B903
+	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 17:19:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.140
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788974347; cv=pass; b=tBD+ZhT9aNPoEhtjJF7DAE+5p/yf+xYjMLBKT+GEPTOVG8S2JLJkxroB7mR5OsyAIjd8ayOm4836fUzagGOcS/f9gshj8Yfz7sw0Y4h0qXxAFa4aUp6KFwSgbPT3Nvz9DjCkmuHq+cWMIGAap33/Mfm20ncl6mzHQkyQFuYu1zM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788974347; c=relaxed/simple;
+	bh=BQ+Hst8gOUWR37L4XOKGfAUQBTOzIL1QvKMGUdQMdVA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kiIf/zprz68zGovuUR76Bmhe1TIr5yU7iGxoWBXWRGEbLewedDwnNfSnWL6GKt8ZpFkez7fZW/+OCEAt96V46eLx0PmT0S53EOWlNMc4/Y/Y8IaK+KvZOA2hisOccSQ2wLCTlo5AU9dNgIAGPZ1Vs9cexnLxYXnkvZlWDygjP1s=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com; spf=pass smtp.mailfrom=etsalapatis.com; dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b=z5hGrFdL; arc=pass smtp.client-ip=74.125.224.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=etsalapatis.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="S72Welgf";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="P/AdubD5"
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 689H86F01938177
-	for <netdev@vger.kernel.org>; Wed, 9 Sep 2026 17:16:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=NrIsFfwedfuLeKvzU70rKNtT
-	+rVIhJ0VJ39qxRIr5Qw=; b=S72WelgfsaZtrz5JllU+R+NP9CCOf2QzT2nd3iR6
-	wVf8+viNAnTjKlWgnXqmTJa+2+dOvFTecJ/+pvjjoef8HDQrzr3XkftTUg//NuT5
-	QE2XVeIArXON82vf2exGclBNbCWt9I8jtGwOKQAOesYkbRJCpqFlVqVHwI7H4oCF
-	j8otjdTeVixQT3MxPzRBRHAmjqQWv5JN1oO39r2VPoj9ccSctHWm5xJVArVMH3Fr
-	khQaXcy0sO/7WGuWyZPw68FrU0mR/J3a+mR8p31Wx0leOSVanwZrRR86HEdyCSXx
-	MZhI/FigkoPuuT56ufkksltirKf6M6JnMHyWflixtksxOQ==
-Received: from mail-vs1-f71.google.com (mail-vs1-f71.google.com [209.85.217.71])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gk559syqb-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 17:16:16 +0000 (GMT)
-Received: by mail-vs1-f71.google.com with SMTP id ada2fe7eead31-6751db2792dso881632137.3
-        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 10:16:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b="z5hGrFdL"
+Received: by mail-yx2-f12.google.com with SMTP id 956f58d0204a3-66e4ab201ebso628796d50.3
+        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 10:19:05 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788974345; cv=none;
+        d=google.com; s=arc-20260327;
+        b=i9jv4D5XRqPrg7dfJMnZTWMYTiPGsngZOux2A8XYmN3OV2DL7QAViLvsYhCQMs06NM
+         CpPehKRMJfcMrdrTx1i19gTAshuCWzW0ZkWvi294WEXB6eubj4TicdUtOYSDRt/7S0db
+         wVRoGd2VeCc7+4TMbokT3cnCsRlUMpccFkZLAlVUcVJ09sfGQQlATfY0IsUkntiz0CxP
+         2VzZcd7U23n7GepMpoZUiOKbydbeStAgsXpo3VG4dT9ADAMIOjGobLcfTv71itBvOgsN
+         Mmuz9S7rIv1s4wWkn11kCp3eor8t6pJJJAVNRVCSeaeX9kup+zKwUg9aZkwEsORPPA9d
+         rpRA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=6E68RRU9n5lqapFJ2+/cJtqMKWFxDFCie3V1FAMd+4g=;
+        fh=2AYlzT6mxEk0vegkYyOM0n2HIynp+WOJj4mGJHorhi8=;
+        b=dSWZhnaTzBkFIsOLUGtSnQu7jOZM2PWT6oh0LfpKqxfGZJt9Ma2eBcdCHNQE2Sg2mX
+         6wvWVIFp4zUoiAp0aZQBUpXn8zG52AaZl1nMcKOpKHpQQFyNAUrLS2YMylY/ni67QZKs
+         /qr8/RrQZ9m/0pPiJPsgqmHeMJL1TM0uSK+4G/4QQ2RrstOv9CtT6ZjcMdYyiwZ13u9+
+         KxHqLTv7DJOEB401ceQpv62KuwRvT3OhSvjeBUoQCv03ziFtblry0zcDhRkrr55JI71X
+         RKFLfd465P9E4WU3yicfa0qtPdYnhdQxxkGwsPkd4bpeKaHRzkk+Wuc+CTlfBK+h2HRh
+         t6rA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1788974176; x=1789578976; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+        d=etsalapatis-com.20251104.gappssmtp.com; s=20251104; t=1788974345; x=1789579145; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=NrIsFfwedfuLeKvzU70rKNtT+rVIhJ0VJ39qxRIr5Qw=;
-        b=P/AdubD5CbjshzP1yZdjveCGdDZ9/HPX72/8sINHn+fiYgnL4C3gaZItFWtxacGgkB
-         nTZeoE/5r7Sfyzn/oSjoq/wPffaNI1LIcHPeEof8w5MJBlEnqYD7IuhWDCcjsDdBbBvh
-         VlHAnKMFzMOm6kEAA9PMHuidnfyea3dlShc89akxCkILVCic1aOJU1B0yFUfhfiP9NSi
-         GvkAZUkAXb/vGRpGseAEqZGSASF5R6gUqLvtMQP14K8Gj9BuFB29/DEYotP20X2EKvoC
-         2iPg49lJWLC7nkGEPl5N+PD8/eVZ6tQF2+0Ve1lKOd7hIegru6HUg3AQ2Ty8NIeiRLEa
-         NN4w==
+        bh=6E68RRU9n5lqapFJ2+/cJtqMKWFxDFCie3V1FAMd+4g=;
+        b=z5hGrFdLgDm+Rboba1delLX9FtBlGxiqFqtudICHSpjiuW5vLNEDkDrgXRLUm1PXXg
+         kLmD2HNMODCvIVFA8LA/2qGCV2uYXs85B0YZxMcn6U6pToLCx6fw6XKfnjI1NT62uQ9m
+         NQcfRaQvAnUtYKnCqle6DedFs4YvKDjGIKJlYdRZJedWgD/D8g37YzjaVGuuvzohaFXp
+         9pMU6JoGGgOux4/Fadq7gM+tY8ttdQWnQGyPgBzhHyccVOkEMqNJkVOsQdUqxszwPgoX
+         PRv9sM321iDCHK5aydwxCllwGLdEq57cHpyBW70GVCfH2jzsP1wpZLE0afTHdNvqgtv6
+         LLCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788974176; x=1789578976;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20251104; t=1788974345; x=1789579145;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=NrIsFfwedfuLeKvzU70rKNtT+rVIhJ0VJ39qxRIr5Qw=;
-        b=NZ3VCxrkMBxje1Iu7bT2XDYUruZgZ4D1H8x2L7eiriUkR1GOqp5mW2RzUrJWvhUL0U
-         N7CzxI3WwY4gfwqaWKO3sHEv8kIARaxm5GLTRDTrr3u7MQtycqpEF5D8GMTKmKvZjiSW
-         gXN6CX7387uuRuIU/98+vU0H9Bc81jOsN7ENs4BHtarqHMTNwDZzAl5jp/lluQlZ00FI
-         49WpW6mxZeCuR7UfZX8psMsm2YsDmByGhw2M6z2K4LQAb1Cxa1fVyoQqB94wuT9Ijkvw
-         GFxJzRXNb8HWfAcGKbIq1L4boivC6EUemP0i2bgvVR2EFNHRS2F5i1bxx2Z/kNf/Lyrk
-         6huw==
-X-Forwarded-Encrypted: i=1; AKwUvBy3xinGA8B8VBYUBbpabso+b5lXNXFLK9F7mhZ/4u3BUbsH++O3YeyRTWUmajaQFMeh6QI+mVY=@vger.kernel.org
-X-Gm-Message-State: AFuF++k+6MmGoRsVB2yZxKHYu6jaePC166g54AHGKXUEhzWrBp3m7uwW
-	Rj2vl2RcwRGBGneCuU0DTkYV44lhn7O39pBaD2eUi+WviTb3nRTLYg0JEqxLmvssD5H3GX4XdWl
-	wcDokhHfCBFbyYFV4q2baCPPT9/vuqdc/TRu9+zyncjAudp0G/x0Jk00rP/s=
-X-Gm-Gg: AYBFou2qpbfZyrNBjER4LNBOWPkEFPaA+gtybRoHa/oqyH2c8B4YEtPavvkf3A9IyPX
-	GhCljsWJ+Lr/JOHAITthoSE0eQrEU1SgfMUt+cYln+PpxHfVcO2GadDndNm9OGwwB9zFQQ4KBtA
-	vGLQOCQ5RluhideQwCJ3XY+feVqdWLyaNgqmKasTTauW04FRQXmr8uaIUZqzCq7KyU7HuEaxpbc
-	gcofMbhSOY2Pxy89QSW3zBN7JAOJgwcA8gM6imYvxHJ9mKRhfecJa+63fQgLA5WSf8OHZ4L7hvC
-	gVtMpWzuobfLa08jETOPFKWofsqmHrocQ8LKIY6NM1KVgq19U4IdUx0GAhiU81Omkd7TtqxngAb
-	qvNrONXoiYBGGLw==
-X-Received: by 2002:a05:6102:5698:b0:78f:f234:75b9 with SMTP id ada2fe7eead31-790726d342emr1955915137.0.1788974176144;
-        Wed, 09 Sep 2026 10:16:16 -0700 (PDT)
-X-Received: by 2002:a05:6102:5698:b0:78f:f234:75b9 with SMTP id ada2fe7eead31-790726d342emr1955829137.0.1788974175459;
-        Wed, 09 Sep 2026 10:16:15 -0700 (PDT)
-Received: from localhost ([188.216.77.92])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49d1fb04f1esm60278055e9.0.2026.09.09.10.16.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Sep 2026 10:16:13 -0700 (PDT)
-Date: Wed, 9 Sep 2026 19:16:13 +0200
-From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-To: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>, Andrew Davis <afd@ti.com>,
-        Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Richard Cochran <richardcochran@gmail.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-        Jose Abreu <joabreu@synopsys.com>,
-        Maxime Chevallier <maxime.chevallier@bootlin.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH net-next v2 4/9] net: stmmac: qcom-ethqos: convert
- ethqos_rgmii_macro_init() to void
-Message-ID: <aqGUXf4aaPNGhuJm@lore-desk>
-References: <20260908-shikra_ethernet-v2-0-bbe3389d0652@oss.qualcomm.com>
- <20260908-shikra_ethernet-v2-4-bbe3389d0652@oss.qualcomm.com>
+        bh=6E68RRU9n5lqapFJ2+/cJtqMKWFxDFCie3V1FAMd+4g=;
+        b=NeTsYHE5v24dvMuxxvjEuiu0/S6+VyvTNosvX4C9XW/x9uRh+T60Mcry1YYuIaT+Gt
+         h3k6rGpwz3279b6Yj0Z10gI9XPe4AnKPKNerQ7EWJ6tRbyURbFL2EpjID/ZmosvmMfRp
+         nvLjFB1dYL+8XeG7M/NDeygQktyMJ5+20dR8IWgl7np5fnHZtfWsYLsagGDE/KS09aFN
+         RyIx+m412NKO6FtJlLcNDdcR6FkLgBVuA2VM1FCt59574JUK+ZEWcMlshQXmIZoZjZX8
+         Mp90dmpiUO8U3hTa6Kg0KwfB/gx1BVt3nqtzCj2g84txETBEgDAqJfqNwQGZPtcFglYO
+         eRxw==
+X-Forwarded-Encrypted: i=1; AKwUvByAyauszl1cyafcR2+alpr9TsCrhy0z17E24S5iK54Ojoy3gYkRB9xbRVqSiUv2CG8Y7Hl4E5o=@vger.kernel.org
+X-Gm-Message-State: AFuF++k7xqAYxt1bcRF6jnNYmppITqHmK+0HwIdFNrxrBtZ3s7yJfScL
+	WofbK0f/E6MB+VtX5YvnN0KpzPIo39x00RPZufgQWKyjCtQQ1F7PWCj58LKECH4eZCTInOuBJlI
+	TafXgJNyr1g6Urkx0A/P8bhlvaOlbOiUwcOdKXUK4vw==
+X-Gm-Gg: AYBFou2VjVMpJHbR+nAj7ON/k5E6j9xhUL34xN9+xhaP9PNVwBMmcXt60JntVWDpoNL
+	fORyHp3B28h4zSlicJ+9Nqz82d4Yth01oKlGGDnJirVcECD8CoNh+2j5k+O/XdyO3gAiYPEWmvG
+	seRh5GA9D35suWFFCcgY4Xwaa9L0r96PyBcs5je9bbAZ1YmE3RsoqDRczA/a9zqZ2vc6zyCtYg9
+	sVMKZklXWDhxeIc2bq67BoWyLO8lQsOTPa8E+BxRTu6aOlJOS/RWg1yNPHXuPNpCrPOedWenCly
+	se6ZYhI4bS1q4DViu2k27z3ffc+VT5P4l77SaAWEVfmz7H6YzGD20PQ=
+X-Received: by 2002:a05:690e:1407:b0:66f:c284:4806 with SMTP id
+ 956f58d0204a3-67110027d40mr1411230d50.66.1788974344494; Wed, 09 Sep 2026
+ 10:19:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="Jz3BLvdJrcEnCQaB"
-Content-Disposition: inline
-In-Reply-To: <20260908-shikra_ethernet-v2-4-bbe3389d0652@oss.qualcomm.com>
-X-Authority-Analysis: v=2.4 cv=KP1qylFo c=1 sm=1 tr=0 ts=6aa19460 cx=c_pps
- a=P2rfLEam3zuxRRdjJWA2cw==:117 a=WpTaRW6qxYHRGzLzQsVYzg==:17
- a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=yx91gb_oNiZeI1HMLzn7:22 a=P-IC7800AAAA:8
- a=EUspDBNiAAAA:8 a=VkhmObMS16-UOsR-uKgA:9 a=CjuIK1q_8ugA:10
- a=Ytgtto6viW8UiwRGLNEA:9 a=ODZdjJIeia2B_SHc_B0f:22 a=d3PnA9EDa4IxuAV0gXij:22
-X-Proofpoint-ORIG-GUID: maw4ipV6yqkj5Njj1es--zEXfvnzFnEb
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTA5MDE5MiBTYWx0ZWRfX6jeg0G6HRSSh
- Q1pJhBlSJ5KMU6rpFmFtTHgpax8HwvUfwDyTVZSBKKuTkVVoK+9m5DSHTnSNhteDDUrjsKYo4gS
- dhc2sHZwr74ExB6NToLr103EyjyRg3U=
-X-Proofpoint-GUID: maw4ipV6yqkj5Njj1es--zEXfvnzFnEb
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA5MDE5MiBTYWx0ZWRfXwiVJGTS6MGGX
- nNXFI1fZBxkMcjQ8TTlW81Vwn4ayN+Ka4+HcVxyzrOOE/GwS1+WcLsoHE1Ug65vGSGeTnzSZ8Sr
- gpT3P4u73BR0V3I9rfJN4R4COw5ZYCc1KL2Nmm3JnrM+PsvtfNKvoQt/i0OQg4TIU2qFEeWKz2t
- +5RcnoDZFhVurR7H/gOZLUdXNR0sIW29BeigkWMNt8kxGgmPBBM63pSXbJAPMK3xAL5+lRGe7Bl
- MoHh3ya3p6njPnm+5ZMnKI7kHoI+DWdS0Op4gyZfryPGq/LaZlRFK2MbWV/IxjWr8eO5ji8cjLH
- cUcYLab4Qf+HMknmXmbTbVKMlwoaPHzUj91jKeSENf6wb940drYuEZxQSvgj0cVbAoXwc4/rLtW
- /1RFWFLA+mph91iObBZUROqVBH1tbU62Lorwax0a8v6ApDGpyHT1OFJpiNhJ9HrioM/00pNZ9/+
- SgsrkgECBZ+HTRYg5Uw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-08_03,2026-09-09_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 lowpriorityscore=0 adultscore=0 spamscore=0 malwarescore=0
- suspectscore=0 impostorscore=0 bulkscore=0 priorityscore=1501 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2609090192
-
---Jz3BLvdJrcEnCQaB
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <20260909024011.1252694-1-nikhilljatt@gmail.com>
+In-Reply-To: <20260909024011.1252694-1-nikhilljatt@gmail.com>
+From: Emil Tsalapatis <linux-lists@etsalapatis.com>
+Date: Wed, 9 Sep 2026 13:18:52 -0400
+X-Gm-Features: AcwNN1U4pDVgjWmRTrx7PuoPtmF0Fx_Otlis6cGINQ1Y-tUySGzn4ekMF7-3TDY
+Message-ID: <CABFh=a7Z=heZODVsXwisY3VwULDy-Rq1hwO09exgX2d0-KzgUQ@mail.gmail.com>
+Subject: Re: [PATCH bpf] bpf: fix reading neigh ha in bpf_fib_lookup()
+To: Nikhil <nikhilljatt@gmail.com>
+Cc: ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, 
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
+	eddyz87@gmail.com, memxor@gmail.com, martin.lau@linux.dev, song@kernel.org, 
+	yonghong.song@linux.dev, jolsa@kernel.org, john.fastabend@gmail.com, 
+	sdf@fomichev.me, horms@kernel.org, dsahern@gmail.com, hawk@kernel.org, 
+	razor@blackwall.org, stable@vger.kernel.org, bpf@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-> The return value is never checked by its sole caller and the speed
-> validation duplicates a check higher up the call stack.  Convert to
-> void and remove the dead code.
->=20
-> Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-> Signed-off-by: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>
-
-Acked-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-
+On Tue, Sep 8, 2026 at 10:40=E2=80=AFPM Nikhil <nikhilljatt@gmail.com> wrot=
+e:
+>
+> bpf_ipv4_fib_lookup() and bpf_ipv6_fib_lookup() copy the neighbour's
+> link layer address into params->dmac without any synchronisation, but
+> neigh_update() writes neigh->ha under write_seqlock(&neigh->ha_lock)
+> exactly because there are lockless readers.  A BPF program calling
+> bpf_fib_lookup() while the neighbour is being updated can therefore be
+> handed a torn address, and XDP/tc then forwards the packet to a bogus
+> L2 destination.
+>
+> neigh_ha_snapshot() cannot be used here because it copies dev->addr_len
+> bytes while params->dmac is only ETH_ALEN long (an IPoIB egress device
+> has addr_len 20 and would overflow into params->smac), so open-code the
+> seqlock loop around the ETH_ALEN copy.
+>
+> Same problem and same fix as commit 57549ab90791 ("net: bridge: arp/nd
+> proxy: fix reading neigh ha") and commit b824059a673b ("vxlan: fix
+> reading neigh ha").
+>
+> Reproduced on x86_64 under qemu: a dummy device holds a permanent
+> neighbour whose lladdr is flipped between aa:aa:aa:aa:aa:aa and
+> bb:bb:bb:bb:bb:bb with RTM_NEWNEIGH, while an XDP program driven by
+> BPF_PROG_TEST_RUN calls bpf_fib_lookup() in a loop and checks that all
+> six bytes of the returned dmac are equal.  Before this patch: 211 torn
+> addresses out of 16300000 lookups (last one aa:aa:aa:aa:bb:bb).  After
+> this patch: 0 out of 38060000 lookups.
+>
+> Fixes: 87f5fc7e48dd ("bpf: Provide helper to do forwarding lookups in ker=
+nel FIB table")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Nikhil <nikhilljatt@gmail.com>
 > ---
->  drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c | 10 +---------
->  1 file changed, 1 insertion(+), 9 deletions(-)
->=20
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c b/dr=
-ivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-> index ac7d6d3e205a1ab5b391def879d6f1033a0961b6..44270c25d874f72e7f971757f=
-ec659d36468c315 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-> @@ -371,9 +371,8 @@ static int ethqos_dll_configure(struct qcom_ethqos *e=
-thqos)
->  	return 0;
->  }
-> =20
-> -static int ethqos_rgmii_macro_init(struct qcom_ethqos *ethqos, int speed)
-> +static void ethqos_rgmii_macro_init(struct qcom_ethqos *ethqos, int spee=
-d)
->  {
-> -	struct device *dev =3D &ethqos->pdev->dev;
->  	unsigned int prg_rclk_dly, loopback;
->  	unsigned int phase_shift;
-> =20
-> @@ -384,11 +383,6 @@ static int ethqos_rgmii_macro_init(struct qcom_ethqo=
-s *ethqos, int speed)
->  	/* Select RGMII, write 0 to interface select */
->  	rgmii_clrmask(ethqos, RGMII_CONFIG_INTF_SEL, RGMII_IO_MACRO_CONFIG);
-> =20
-> -	if (speed !=3D SPEED_1000 && speed !=3D SPEED_100 && speed !=3D SPEED_1=
-0) {
-> -		dev_err(dev, "Invalid speed %d\n", speed);
-> -		return -EINVAL;
-> -	}
-> -
->  	rgmii_setmask(ethqos, RGMII_CONFIG_DDR_MODE, RGMII_IO_MACRO_CONFIG);
-> =20
->  	if (speed =3D=3D SPEED_1000) {
-> @@ -479,8 +473,6 @@ static int ethqos_rgmii_macro_init(struct qcom_ethqos=
- *ethqos, int speed)
-> =20
->  	rgmii_updatel(ethqos, RGMII_CONFIG_LOOPBACK_EN, loopback,
->  		      RGMII_IO_MACRO_CONFIG);
-> -
-> -	return 0;
->  }
-> =20
->  static void ethqos_fix_mac_speed_rgmii(void *bsp_priv,
->=20
-> --=20
-> 2.34.1
->=20
->=20
 
---Jz3BLvdJrcEnCQaB
-Content-Type: application/pgp-signature; name=signature.asc
+Bot is right wrt possible lockups, please adjust the seqlock
+accordingly. Also please
+add your full name in the SOB.
 
------BEGIN PGP SIGNATURE-----
+pw-bot: cr
 
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCaqGUXQAKCRA6cBh0uS2t
-rIibAP0S/gGVaDgOtJQrrnNWdWnIJWz20hm/VIyYD9SKCquKdwD/YToyiF5E74NX
-CzVfv/b293W/qNrfSESKxGxMQFlq6A8=
-=s/dw
------END PGP SIGNATURE-----
-
---Jz3BLvdJrcEnCQaB--
+>  net/core/filter.c | 18 ++++++++++++++++--
+>  1 file changed, 16 insertions(+), 2 deletions(-)
+>
+> diff --git a/net/core/filter.c b/net/core/filter.c
+> index 61940e753552..6fdb85c9af44 100644
+> --- a/net/core/filter.c
+> +++ b/net/core/filter.c
+> @@ -6298,6 +6298,20 @@ static const struct bpf_func_proto bpf_skb_get_xfr=
+m_state_proto =3D {
+>  #endif
+>
+>  #if IS_ENABLED(CONFIG_INET) || IS_ENABLED(CONFIG_IPV6)
+> +/* Take a stable snapshot of the neighbour's link layer address.
+> + * neigh_ha_snapshot() can not be used here because it copies dev->addr_=
+len
+> + * bytes while params->dmac is only ETH_ALEN long.
+> + */
+> +static void bpf_fib_dmac_snapshot(u8 *dmac, const struct neighbour *neig=
+h)
+> +{
+> +       unsigned int seq;
+> +
+> +       do {
+> +               seq =3D read_seqbegin(&neigh->ha_lock);
+> +               memcpy(dmac, neigh->ha, ETH_ALEN);
+> +       } while (read_seqretry(&neigh->ha_lock, seq));
+> +}
+> +
+>  static int bpf_fib_set_fwd_params(struct net_device *dev,
+>                                   struct bpf_fib_lookup *params,
+>                                   u32 flags, u32 mtu, u32 in_ifindex)
+> @@ -6491,7 +6505,7 @@ static int bpf_ipv4_fib_lookup(struct net *net, str=
+uct bpf_fib_lookup *params,
+>
+>         if (!neigh || !(READ_ONCE(neigh->nud_state) & NUD_VALID))
+>                 return BPF_FIB_LKUP_RET_NO_NEIGH;
+> -       memcpy(params->dmac, neigh->ha, ETH_ALEN);
+> +       bpf_fib_dmac_snapshot(params->dmac, neigh);
+>         memcpy(params->smac, dev->dev_addr, ETH_ALEN);
+>
+>  set_fwd_params:
+> @@ -6644,7 +6658,7 @@ static int bpf_ipv6_fib_lookup(struct net *net, str=
+uct bpf_fib_lookup *params,
+>         neigh =3D __ipv6_neigh_lookup_noref(dev, dst);
+>         if (!neigh || !(READ_ONCE(neigh->nud_state) & NUD_VALID))
+>                 return BPF_FIB_LKUP_RET_NO_NEIGH;
+> -       memcpy(params->dmac, neigh->ha, ETH_ALEN);
+> +       bpf_fib_dmac_snapshot(params->dmac, neigh);
+>         memcpy(params->smac, dev->dev_addr, ETH_ALEN);
+>
+>  set_fwd_params:
+> --
+> 2.43.0
+>
+>
