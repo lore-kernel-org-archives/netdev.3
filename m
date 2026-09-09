@@ -1,195 +1,138 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from pdx-out-013.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-013.esa.us-west-2.outbound.mail-perimeter.amazon.com [34.218.115.239])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC6363B2D14
-	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 08:54:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0000B3B2D24;
+	Wed,  9 Sep 2026 08:55:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=34.218.115.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788944101; cv=none; b=RQcPPLetSyep2tIZi+X18H0Xur2npiLSGqMsAF2K64IECm47mip0H+AoruFUgAdVW63r7f7JFIAiWIqtECkEN1vCUoBJRoi5Ifcynq/fY6oikGrIBAUarAs6CGgivwWYdovNKPunKu7WFFuyZpFJwB3davRBcd0kBO0JrmSzwtQ=
+	t=1788944161; cv=none; b=DAzxK9n2HQJ28B8T4LxybJEpxWBg1n+i5vkYr/3tUTjkIjOhMa2uFaSo18Qhxq/a3Jy0inCNm+BF1oRttW/RcKHwpMtgWxyvx7szbYI9VqSXmfspCy54J6ojc/t/nAaSS2r8yzWRDR+x3AOFQI08ZEPxTnZxyO+ze+i6rP/K+TE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788944101; c=relaxed/simple;
-	bh=7cPkgIUOsk0MocRKezV51VKoCLxzehwpo1vyQuv46OU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=qXBfgwIC5UzOnEGTjmcwphaJkRC+rrrz5jHJ9v31lKd1xBG81G5dPw9OZXrjkFL+Q6fxJysddbVLrNeTdM9vmWGYl0cM3mvE4bge+lV51kBRDA1VvS4Bx1omnIGTt7B1DhiTv0ekW1h6GDJwymmDJ62UU2mC8h/UuQbozTkxZuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=INOw9tX2; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1788944161; c=relaxed/simple;
+	bh=D9U5g7q9v+rnJDJNy22p+Pe5KS+zbVIaqFGLV1VvEt0=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=mrzihXkJ8WYQ0+w9M+7ZsJnAenH6MsbqC1B1FtqPUgcs1yQUngYC5aClEWuelNecfpDtEKfmt//Tfmki0SZiT3Yw4cv0hVNfxI/dGxpewwUqM6b8AIg4c0LR5ePV1vbzM2mk8RJwHrICKswIud6d94vHmqA5a8brzqCcRGdy+5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b=aqAkk7t3; arc=none smtp.client-ip=34.218.115.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="INOw9tX2"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id D5DDE4E415A5;
-	Wed,  9 Sep 2026 08:54:55 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id A1A1D60448;
-	Wed,  9 Sep 2026 08:54:55 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id EE19811C7AF3D;
-	Wed,  9 Sep 2026 10:54:46 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1788944094; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=CBUZe/64GkG+m8JWuaZUd/+jnxYa1o2TQiNt+JVJL4M=;
-	b=INOw9tX2m2rM0gnRghmS8T2l4+YzLDn/qffgULlQxhlYXz5yEkjUk8e/z47xS8IE2pif8L
-	BKAqVketizAM+RoitfbjnFLDTF9Q87GXNsdo3skBCmH+b35jv+XHSb+MAON2Qv5mNIl30+
-	6hps7MuKi8wMK9WwjIVX0SUtcwxXTliWUtXdNU5YEcujR7yg/s0CXJXmR/Ak0TFgfotw7J
-	vza4b+k4Yd+S+A8mpLtXXFIDe/FItghlPhzZUxz9DbjMe3iOAQuDHBe0F6QYHlDPYlXDqR
-	f2OSldDD8iWFZwQlv/vlWJ80K1FxYI289PEbM3fD3ruOQyS5PASANr2DHgsI6A==
-From: "Miguel Gazquez (Schneider Electric)" <miguel.gazquez@bootlin.com>
-Date: Wed, 09 Sep 2026 10:54:45 +0200
-Subject: [PATCH 6.6.y] tcp: clear sock_ops cb flags before force-closing a
- child socket
+	dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b="aqAkk7t3"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
+  t=1788944159; x=1820480159;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=mWBjSLBU925hAFawF2eAchvZnolvusgBQ8n8QxE9OVM=;
+  b=aqAkk7t3za2X2SBwJ7fxe/XKoEsj6ZOlCEiDtfXGj0ZligTpaPbPg++8
+   6VKmOxadJDWTgCxuSpWH8epcIWXGoiL3e30OzniiTVH457IyjZnyHkLLv
+   M/RvQWk+Ko+DhOeQc6a2nGKodvTNa44fKn0mbAhWG+zXDvQtYaGsqFpOk
+   Wyl1buguQ6i2hvis8Mn8glKqo9xCngfsiKH97nr0QIiT+2F/sxAMC9MOn
+   EV9g9T3KFUA4N+lhdgOvfl2gshW48i/BHFqOubCr9up97NMwC3bhyTvzG
+   MV+85TzhyiEaLPutlyQVOt8Kn0NPS+xbFOZsaABHBRv97nI+gqZFtM0RE
+   g==;
+X-CSE-ConnectionGUID: d0JHdyqaQPmU7Dfjyo4vJw==
+X-CSE-MsgGUID: EQnoxXBEQd+tMXMHwqWNjQ==
+X-IronPort-AV: E=Sophos;i="6.25,270,1779148800"; 
+   d="scan'208";a="27991648"
+Received: from ip-10-5-0-115.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.0.115])
+  by internal-pdx-out-013.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2026 08:55:57 +0000
+Received: from EX19MTAUWB001.ant.amazon.com [205.251.233.104:22904]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.15.196:2525] with esmtp (Farcaster)
+ id 4952f932-5e69-4f2d-92d6-ffc2bd750591; Wed, 9 Sep 2026 08:55:57 +0000 (UTC)
+X-Farcaster-Flow-ID: 4952f932-5e69-4f2d-92d6-ffc2bd750591
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.45;
+ Wed, 9 Sep 2026 08:55:57 +0000
+Received: from dev-dsk-doebel-1a-7b355d76.us-east-1.amazon.com (10.169.119.5)
+ by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.46;
+ Wed, 9 Sep 2026 08:55:56 +0000
+From: Bjoern Doebel <doebel@amazon.de>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+CC: Willem de Bruijn <willemb@google.com>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, Bjoern Doebel <doebel@amazon.de>,
+	<stable@vger.kernel.org>
+Subject: [PATCH net] loopback: orphan zerocopy frags before releasing the sender in loopback_xmit()
+Date: Wed, 9 Sep 2026 08:55:42 +0000
+Message-ID: <20260909085542.3370986-1-doebel@amazon.de>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260909-cve-2026-74268-6-6-v1-1-75d16ead8a9e@bootlin.com>
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWMQQ6CMBBFr0L+2iFtY6bgVYwLaQcYF2haJBLC3
- S2av3o/eW9DlqSScak2JFk063MqYE8VwnifBiGNheGMY9OahsIidAD5s+OGuKy1UXxvvLMhooi
- vJL1+ftEruOZ6xe1/53f3kDAfQez7F1Mhk9N9AAAA
-X-Change-ID: 20260908-cve-2026-74268-6-6-91de7f0721cd
-To: stable@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, David Ahern <dsahern@kernel.org>, 
- Alexei Starovoitov <ast@kernel.org>, Lawrence Brakmo <brakmo@fb.com>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, bpf@vger.kernel.org, 
- Sechang Lim <rhkrqnwk98@gmail.com>, Jiayuan Chen <jiayuan.chen@linux.dev>, 
- Kuniyuki Iwashima <kuniyu@google.com>, Sasha Levin <sashal@kernel.org>, 
- "Miguel Gazquez (Schneider Electric)" <miguel.gazquez@bootlin.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1788944086; l=4720;
- i=miguel.gazquez@bootlin.com; s=20250708; h=from:subject:message-id;
- bh=NSa0K+CLWn1uuuM30KtYMbXNTTYFbi3kpJHxqJhvT50=;
- b=6EGAvfNgzy8SLlatoe4WAoq9VB4jWg5pbYa6uY/hvl6iZcIZyuEe32O7s69EjNbzJ9/jZGhKf
- YpnB36EBQZcDurZWNaKMRxJYP7hb8FHpU9r2vKp7bFv0FvFuvYAIj9N
-X-Developer-Key: i=miguel.gazquez@bootlin.com; a=ed25519;
- pk=k/2KI9jkmayaF0ghZ8QYUH9Wm/kFHDhl8QoZ0RHbr4w=
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D036UWC003.ant.amazon.com (10.13.139.214) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
 
-From: Sechang Lim <rhkrqnwk98@gmail.com>
+AF_PACKET PACKET_TX_RING transmission over the loopback interface can
+silently corrupt packet payloads in flight. tpacket_fill_skb() builds
+the transmit skb using zerocopy frags. loopback_xmit() then calls bare
+skb_orphan(), which runs skb->destructor (tpacket_destruct_skb()) and
+marks the ring slot TP_STATUS_AVAILABLE, telling userspace the buffer is
+reusable while the in-flight skb frags still reference that buffer.
 
-[ Upstream commit 990348e5bb457697c2f1f7f7b65154a3334d9d2b ]
+This is ok if the packet gets processed immediately in loopback's xmit
+path before userspace gets a chance to reuse the frag buffer. However,
+if the packet gets redirected for instance to another CPU (via RPS),
+this opens a window where userspace may already write new data into the
+frag buffer before the receiver reads the original content.
 
-A child socket inherits the listener's bpf_sock_ops_cb_flags via
-sk_clone_lock(). If its setup fails in tcp_v4_syn_recv_sock() /
-tcp_v6_syn_recv_sock(), the child is freed through put_and_exit, where
-inet_csk_prepare_forced_close() drops the socket lock and tcp_done() runs
-without it.
+Reproducer using txring_overwrite from the net:run_afpackettests selftest:
 
-If BPF_SOCK_OPS_STATE_CB_FLAG was inherited, tcp_done() -> tcp_set_state()
-calls tcp_call_bpf(), which expects the lock and trips sock_owned_by_me():
+  ip netns add ns && ip -netns ns link set lo up
+  ip netns exec ns sh -c \
+      'echo 100 > /sys/class/net/lo/queues/rx-0/rps_cpus'
+  taskset -c 0 ip netns exec ns ./txring_overwrite
 
-  WARNING: include/net/sock.h:1799 at tcp_set_state+0x433/0x550
-  RIP: 0010:tcp_set_state+0x433/0x550 include/net/sock.h:1799
-  Call Trace:
-   <IRQ>
-   tcp_done+0xba/0x250 net/ipv4/tcp.c:5095
-   tcp_v4_syn_recv_sock+0x850/0xa50 net/ipv4/tcp_ipv4.c:1787
-   tcp_check_req+0xf30/0x1360 net/ipv4/tcp_minisocks.c:926
-   tcp_v4_rcv+0x1047/0x1b50 net/ipv4/tcp_ipv4.c:2164
-   </IRQ>
+Commit 5cd8d46ea156 ("packet: copy user buffers before orphan or clone")
+is meant to trigger this copy from the skb_orphan_frags{_rx}() call
+sites, but loopback_xmit() calls bare skb_orphan() before any of them
+run. Address this by taking a kernel-private copy of the skb frags
+before going down the receive path.
 
-The child is freed before it is ever established, so it should run no
-sock_ops callback. Clear its cb flags in inet_csk_prepare_for_destroy_sock(),
-the common point for the IPv4, IPv6 and chtls forced-close paths and for the
-MPTCP ->syn_recv_sock() failure path (dispose_child), which reaches tcp_done()
-on a child that was never established too.
-
-Suggested-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Fixes: d44874910a26 ("bpf: Add BPF_SOCK_OPS_STATE_CB")
-Signed-off-by: Sechang Lim <rhkrqnwk98@gmail.com>
-Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260611092923.1895982-1-rhkrqnwk98@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-
-[ Moved inet_csk_prepare_for_destroy_sock() to inet_connection_sock.c due to header dependency,
-  Added a guard arount the call to tcp_clear_sock_ops_cb_flags to avoid
-  calling it for DDCP sockets.]
-
-Signed-off-by: Miguel Gazquez (Schneider Electric) <miguel.gazquez@bootlin.com>
+Fixes: 5cd8d46ea156 ("packet: copy user buffers before orphan or clone")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bjoern Doebel <doebel@amazon.de>
+Assisted-by: Kiro:claude-opus-5
 ---
- include/net/inet_connection_sock.h | 8 +-------
- include/net/tcp.h                  | 9 +++++++++
- net/ipv4/inet_connection_sock.c    | 9 +++++++++
- 3 files changed, 19 insertions(+), 7 deletions(-)
+Verified that the reproducer in the commit message fails 100% right now
+and no longer fails after the patch.
+---
+ drivers/net/loopback.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/include/net/inet_connection_sock.h b/include/net/inet_connection_sock.h
-index 3eb715f66cbf..cf391f72c270 100644
---- a/include/net/inet_connection_sock.h
-+++ b/include/net/inet_connection_sock.h
-@@ -296,14 +296,8 @@ reqsk_timeout(struct request_sock *req, unsigned long max_timeout)
- 	return (unsigned long)min_t(u64, timeout, max_timeout);
- }
- 
--static inline void inet_csk_prepare_for_destroy_sock(struct sock *sk)
--{
--	/* The below has to be done to allow calling inet_csk_destroy_sock */
--	sock_set_flag(sk, SOCK_DEAD);
--	this_cpu_inc(*sk->sk_prot->orphan_count);
--}
--
- void inet_csk_destroy_sock(struct sock *sk);
-+void inet_csk_prepare_for_destroy_sock(struct sock *sk);
- void inet_csk_prepare_forced_close(struct sock *sk);
- 
- /*
-diff --git a/include/net/tcp.h b/include/net/tcp.h
-index 23d830a7a6c8..b07429da6bae 100644
---- a/include/net/tcp.h
-+++ b/include/net/tcp.h
-@@ -2513,6 +2513,11 @@ static inline int tcp_call_bpf_3arg(struct sock *sk, int op, u32 arg1, u32 arg2,
- 	return tcp_call_bpf(sk, op, 3, args);
- }
- 
-+static inline void tcp_clear_sock_ops_cb_flags(struct sock *sk)
-+{
-+	tcp_sk(sk)->bpf_sock_ops_cb_flags = 0;
-+}
-+
- #else
- static inline int tcp_call_bpf(struct sock *sk, int op, u32 nargs, u32 *args)
+diff --git a/drivers/net/loopback.c b/drivers/net/loopback.c
+index 1fb6ce6843ade..31ae10a9d7911 100644
+--- a/drivers/net/loopback.c
++++ b/drivers/net/loopback.c
+@@ -72,6 +72,23 @@ static netdev_tx_t loopback_xmit(struct sk_buff *skb,
  {
-@@ -2530,6 +2535,10 @@ static inline int tcp_call_bpf_3arg(struct sock *sk, int op, u32 arg1, u32 arg2,
- 	return -EPERM;
- }
+ 	int len;
  
-+static inline void tcp_clear_sock_ops_cb_flags(struct sock *sk)
-+{
-+}
++	/* The skb_orphan() below will run the skb's destructor, which
++	 * for AF_PACKET TX-ring senders marks the slot as TP_STATUS_AVAILABLE
++	 * again, even though it still has zerocopy frags pointing to it that
++	 * will only be copied later in the receive path's
++	 * skb_orphan_frags_rx(). As such, if the receive path gets deferred,
++	 * for example by RPS steering the packet to another CPU, this creates
++	 * a race where userspace may fill in new data into the frag before the
++	 * old data gets copied out.
++	 *
++	 * Take a kernel-private copy.
++	 */
++	if (unlikely(skb_orphan_frags_rx(skb, GFP_ATOMIC))) {
++		dev_core_stats_tx_dropped_inc(dev);
++		kfree_skb_reason(skb, SKB_DROP_REASON_SKB_UCOPY_FAULT);
++		return NETDEV_TX_OK;
++	}
 +
- #endif
+ 	skb_tx_timestamp(skb);
  
- static inline u32 tcp_timeout_init(struct sock *sk)
-diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
-index 208f8b173a05..530d495ff7d2 100644
---- a/net/ipv4/inet_connection_sock.c
-+++ b/net/ipv4/inet_connection_sock.c
-@@ -1252,6 +1252,15 @@ void inet_csk_destroy_sock(struct sock *sk)
- }
- EXPORT_SYMBOL(inet_csk_destroy_sock);
- 
-+void inet_csk_prepare_for_destroy_sock(struct sock *sk)
-+{
-+	/* The below has to be done to allow calling inet_csk_destroy_sock */
-+	if (sk->sk_protocol == IPPROTO_TCP)
-+		tcp_clear_sock_ops_cb_flags(sk);
-+	sock_set_flag(sk, SOCK_DEAD);
-+	this_cpu_inc(*sk->sk_prot->orphan_count);
-+}
-+
- /* This function allows to force a closure of a socket after the call to
-  * tcp/dccp_create_openreq_child().
-  */
-
----
-base-commit: a4a971135a2ff64382ae4235b3ae60503bb1036a
-change-id: 20260908-cve-2026-74268-6-6-91de7f0721cd
-
-Best regards,
---  
-Miguel Gazquez (Schneider Electric) <miguel.gazquez@bootlin.com>
+ 	/* do not fool net_timestamp_check() with various clock bases */
+-- 
+2.50.1
 
