@@ -1,345 +1,178 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AED156510E
-	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 13:34:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17D62576EA9
+	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 13:37:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.122
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788960900; cv=none; b=naaKQEG7nDNsznddl8D44EI/MPB9kbqO+HlcI2YeYeluiFboQbZSsYBzQOvB5FUP7TnBdFcS797JqY7euO0Y1/a77LyGAjiTPJHe0756/2j/z0yQB4qMoof575+O6bwwe8ZQUbcH3tSI7wjw/JtwuT+blbWFDzCJhmZWLJwdJfo=
+	t=1788961070; cv=none; b=d89DqPPO61g5dqXbyzlNoLWe1lA9IlUIWN0DQ5iezXno3PWn42kGpgJHTecopqkTO/V9IYaRwiRLpkf2bfrUcMn4yRIpryhSooUwVyRRwx2JmWqLNuz/0NKzT5e8WDEM2oZ0ni/t7/57Eq+kc5uFnYXjY6HD6nqhJsqwL6puEoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788960900; c=relaxed/simple;
-	bh=26VC8n4Ng6A0y+Wkuy9lcQf2qfOy2zt/rnmF9reH7U4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Xy2LiAOLsKPDqBgZXRiO3x80Em8f+aQOg8F74YKRmNPXAxr3lUVtUOWUZ4PSrg73yzpPjuk3DK/0ydEgPbRZxEcYfTiFg5E6NHFOdP75gt7hWXZxDAKB7AWQHUT1zT7kQhwBKlJBV/Ni7JGtkx/1FkNt0urIphdv4/rPMvrbffk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Fr1DSKOw; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1788961070; c=relaxed/simple;
+	bh=c8s69uF6RIIg/jHSdzxsYQ7S8UDIf9cWpe1rBQgZpJI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ewmFMCJmjASqQRNxsXSPnlC9P0BZAQ97EdUr+BuIBJWlu6NkASscNOfORnWap4xF9asPDyonjogOMi8YSFBhvMy7Nf6+dhj/IFTJShDy7JjDCpfwryAvSkafb8kaYVYQ5QizFrO9Toasjv738e4fDV2WUp5Mqjb4zG9TsBv8RpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b=TByyyd8/; arc=none smtp.client-ip=185.125.188.122
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Fr1DSKOw"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 53A4F4E415B7;
-	Wed,  9 Sep 2026 13:34:56 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 1CE8260448;
-	Wed,  9 Sep 2026 13:34:56 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id DFDAE11C7AF88;
-	Wed,  9 Sep 2026 15:34:42 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1788960890; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=bzP84++dIUD2xVkyohXj6a1b7SQ2ZvywP8RgCImadtM=;
-	b=Fr1DSKOw6uQBdDBOBKuO7bT5IF6rjWkPbPxgX1RToEBgUXCsxseNc9U9CerHZooNhxadHF
-	3ShT4cXkKAN1kzmMZplMTzl6E61g7WQ7N7nvxPacYZNNFwfptl12awaslmPhGutA9+Quai
-	TVR79I9Auo1GzIoHQBEeQt2TuYMQvJzgdQKTz+wE5JoWIfSmnebY1A2ZmXkjG4NcsThOGz
-	pHIFDxIY899MRP8ndNg/PDTAqUHjUFpQyujSHXjbBBdr0OSimq1bSNSTfDNrdHzY8aEz8v
-	JU9fM8iBpjjGzU2oqNN2MrXece0YLgTZShVsC/WboEZgJ5JpSiYKEMS/sZReew==
-Message-ID: <c893bd0f-e8d2-4e0b-b5a6-af39b3124180@bootlin.com>
-Date: Wed, 9 Sep 2026 15:34:41 +0200
+	dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b="TByyyd8/"
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com [209.85.221.69])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 828B33F442
+	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 13:37:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+	s=20251003; t=1788961065;
+	bh=wrjcPeS70hvY/2jCIpdeC3QpRdoxkk0IP/UxQtFlPx4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:In-Reply-To;
+	b=TByyyd8//razJFWl7esNH1cAA7D02B9NKmfCjgxI/3zTvcG9aowo61TiDu4G8FPu9
+	 lcWglk1MjK/YjKYENzTdfVo9fNrDKVtR+k/iP7xxhxUbqGBLpFtm+6ustIR8e7jdmt
+	 Lwnr8wN1+Yg1gn+3nXZLNY9wDgBoWyTL2pgD2HUz8VBef+alLwV5RHChkoiAksT61j
+	 TwBcvsjk7iHz+QzHwjjHJkH49KDUR9HweTyVWTq6sxhathboZH7ADblEFqoIhicGP/
+	 ga7hBSB9mkNBxy6tvTXt/Usruipb38FtDhE2OORjwlhiwhi17lCIXaRygz2g3g/ooZ
+	 wJH9SGgE3ad5uW4MYSDMtcwByiJbEyORt7mFTcLBbT5A35RgGvQxe853nEoXIyv851
+	 VWfzuuT3PlCL9je3u5BhVRXPO79ox2WNce+kkhh1zLAL8V7V3sKsCQdpWLvErzPKR7
+	 9L1gq0aYzEbVmu7EkX2aS0c5mNlBkSrjt87eV4Mn2ItyCHndg6wjL9BcCVvQ9uMDXs
+	 snX6qlmJ1h3Ad1iB61jnRp/LIdg9TB8uJa++pt+GTIeTzV+tjp1r1hxlX1kAPOz4h0
+	 xaRj2MYk0ZEjg/opIlj2Q0hjOsfL4nc8JbaPUn+oDMC9WeFDi7C7qM/tkXamFTvxDx
+	 K9IIfN3FR/lV7zPn/srPyLc0=
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-4858f06e142so3317782f8f.0
+        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 06:37:45 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788961065; x=1789565865;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=wrjcPeS70hvY/2jCIpdeC3QpRdoxkk0IP/UxQtFlPx4=;
+        b=ju2mmnrqiu7zLmFKFGCz6JQkIcAIGLzsnhphQBNmFh3zMRxTd9j8dHJKsMya/Wtuu3
+         sGmnuWZXPm6wNLsxwqGo7Noxqd2CmJbtG4alfD3vm2Zperci2Mm21IlIGKFzXRPKHpPq
+         IKkBQQA4KUy0O5VhhRm0s298/Bj7E68qLSftylEaPD1A1GV8Yqz3V7MTPNRGnAXEGCSF
+         B7vZFJX+Hs/3fUUfPvfTijWcObOtaWr6+Mq+KvxRIKbHJHisYso3CIduZMpxZatSR0/A
+         rMGY46JTeAUsIVXAEJjlMwlBTNfLt0dPN+2NnBuz+mQK968YEKkfOw/FTAl579CgmBPI
+         Ps1A==
+X-Gm-Message-State: AFuF++nFIP9sZycTl52RttqlhznVrpxYKLVDdjMpkLXG7qNlRkG8fYjZ
+	w2rmJhAgwpPEFIrw+A+eUQK8DoAlvLiAYSqjVUT2ClmDv9Vuf6ppN0kWn4iiDbcmdKOK765N1uJ
+	rgWYzsvjpmy8YRkqtdnA74lnANOxmFXCG3EY/ExzKiff8884gJGhCGznxbrmPN+NHItDGSYEwYQ
+	==
+X-Gm-Gg: AYBFou18WvC/Nwp4T+A32fEhEwSYlkfeqi+IolIeFnXUKaQ0BvmXrc/O031uwer5IqE
+	6U7iykVgjcPZIcbliIF2+3Vd7dIy8DFXAJaSHHxY3go9kEgUpZa6uysS3rRrHI2nFK5FRP3WgNv
+	QpklB46hSUM7W4Ri7MwSDdMScehgdp9H04tfleQ5Yrgd1NiVUn7UwiIbMReg1s/bsEfUJ4z5Ctl
+	x7wB8NWJsuhqx3Ua6Q20DwG+AFfAU3URPh5PHE7U1HaZyv6bICijx7X/nznsawMrjKsm9hw+hJM
+	D9QGeuQfxOxgBDRwQTHuglqgIDG3I34FEtsS9Mnl87S/o+lFd7cBUVmdevrtgWIJtMts/T9R8dV
+	iQXjjP0PdkmigMaKDXDTzsNhgcGDH3YTUkjSC7MjBKEUvSnPfQayITDAfFc7RR9Z7Q4zs9Q==
+X-Received: by 2002:adf:e19b:0:b0:485:a46b:bc13 with SMTP id ffacd0b85a97d-485b30e56d0mr1667221f8f.0.1788961064821;
+        Wed, 09 Sep 2026 06:37:44 -0700 (PDT)
+X-Received: by 2002:adf:e19b:0:b0:485:a46b:bc13 with SMTP id ffacd0b85a97d-485b30e56d0mr1667107f8f.0.1788961063813;
+        Wed, 09 Sep 2026 06:37:43 -0700 (PDT)
+Received: from sprawlopolis ([154.62.191.154])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-485885bbb51sm46791526f8f.30.2026.09.09.06.37.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 09 Sep 2026 06:37:43 -0700 (PDT)
+Date: Wed, 9 Sep 2026 14:37:41 +0100
+From: Andrei Gherzan <andrei.gherzan@canonical.com>
+To: Jakub Kicinski <kuba@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	Kleber Sacilotto de Souza <kleber.souza@canonical.com>,
+	Hangbin Liu <liuhangbin@gmail.com>
+Subject: Re: [PATCH net 0/2] netdevsim: fix IPsec debugfs byte order
+Message-ID: <aqFhJbNp5qqlehD0@sprawlopolis>
+References: <20260908140325.13367-1-andrei.gherzan@canonical.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v17 00/10] net: phy_port: SFP modules
- representation and phy_port listing
-To: davem@davemloft.net, Andrew Lunn <andrew@lunn.ch>,
- Jakub Kicinski <kuba@kernel.org>, Eric Dumazet <edumazet@google.com>,
- Paolo Abeni <pabeni@redhat.com>, Russell King <linux@armlinux.org.uk>,
- Heiner Kallweit <hkallweit1@gmail.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- thomas.petazzoni@bootlin.com, Christophe Leroy
- <christophe.leroy@csgroup.eu>, Herve Codina <herve.codina@bootlin.com>,
- Florian Fainelli <f.fainelli@gmail.com>,
- Vladimir Oltean <vladimir.oltean@nxp.com>,
- =?UTF-8?Q?K=C3=B6ry_Maincent?= <kory.maincent@bootlin.com>,
- =?UTF-8?Q?Marek_Beh=C3=BAn?= <kabel@kernel.org>,
- Oleksij Rempel <o.rempel@pengutronix.de>,
- =?UTF-8?Q?Nicol=C3=B2_Veronese?= <nicveronese@gmail.com>,
- Simon Horman <horms@kernel.org>, mwojtas@chromium.org,
- Romain Gantois <romain.gantois@bootlin.com>,
- Daniel Golle <daniel@makrotopia.org>,
- Dimitri Fedrau <dimitri.fedrau@liebherr.com>,
- Frank Wunderlich <frank.wunderlich@linux.dev>,
- Pietro Ameruoso <p.ameruoso@live.it>
-References: <20260909093912.1290810-1-maxime.chevallier@bootlin.com>
-Content-Language: en-US
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-In-Reply-To: <20260909093912.1290810-1-maxime.chevallier@bootlin.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="VLgbsStmR6asIkJ2"
+Content-Disposition: inline
+In-Reply-To: <20260908140325.13367-1-andrei.gherzan@canonical.com>
 
-Hi,
 
-On 9/9/26 11:39, Maxime Chevallier wrote:
-> Hello everyone,
-> 
-> Here's V17 for the phy_port improved SFP support and netlink interface.
+--VLgbsStmR6asIkJ2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Looks like I got ratelimited by my mail provider, it's the second series
-today that partially makes it to the ML :(
+On 26/09/08 03:03PM, Andrei Gherzan wrote:
+> The netdevsim IPsec debugfs file (used by selftests/net/rtnetlink.sh's
+> ipsec_offload subtest) prints the SA salt and key in host CPU byte
+> order instead of network byte order, because nsim_sa.key[]/salt are
+> typed as plain u32 and printed directly with "%08x". This makes the
+> reported values differ between little-endian and big-endian hosts for
+> the same underlying key material, and breaks the selftest on
+> big-endian (e.g. s390x), which hardcodes the little-endian output.
+>=20
+> A driver-side fix was proposed in 2022 but stalled in review: keeping
+> the fields as plain u32 meant sparse could not validate the added
+> ntohl()/be32_to_cpu() conversions.
+>=20
+>   https://lore.kernel.org/netdev/20220308135106.890270-1-kleber.souza@can=
+onical.com/
+>=20
+> This series:
+>=20
+>   1/2 retypes nsim_sa.key[]/salt to __be32 (matching the existing
+>       __be32 ipaddr[] field) and converts with be32_to_cpu() before
+>       printing, so the debugfs output is now network-order on every
+>       host, independent of endianness.
+>=20
+>   2/2 updates the selftest's expected output to match the new,
+>       endianness-independent values. It depends on 1/2: applied on
+>       its own it would regress little-endian hosts (though it happens
+>       to have no effect on big-endian hosts, whose old host-order
+>       output already matched the new expected values).
+>=20
 
-I'll resend after 24h cooldown,
+I forgot to add Cc: stable@vger.kernel.org to these patches. Should I
+send a v2 for that, given patch 2/2 only makes sense together with
+patch 1/2 (applying just one regresses the test on one endianness or
+the other)?
 
-Maxime
+> Tested on real booted kernels, both patches applied:
+>   - x86_64 (little-endian): PASS: ipsec_offload
+>   - s390x (big-endian):     PASS: ipsec_offload
+>=20
+> checkpatch.pl --strict and sparse (make C=3D2) are clean on both patches.
+>=20
+> Andrei Gherzan (2):
+>   netdevsim: print IPsec salt/key in network byte order
+>   selftests: rtnetlink: update ipsec_offload expected output
+>=20
+>  drivers/net/netdevsim/ipsec.c            | 10 +++++-----
+>  drivers/net/netdevsim/netdevsim.h        |  4 ++--
+>  tools/testing/selftests/net/rtnetlink.sh |  8 ++++----
+>  3 files changed, 11 insertions(+), 11 deletions(-)
 
-> 
-> V17 addresses the port_id wrapparound with the xarray insertion, and the
-> missing comment during the ethtool header regen from the YNL specs.
-> 
-> This work extends on the recent addition of phy_port representation to enable
-> listing the front-facing ports of an interface. For now, we don't control
-> these ports, we merely list their presence and their capabilities.
-> 
-> As the most common use-case of multi-port interfaces is combo-ports that
-> provide both RJ45 and SFP connectors on a single MAC, there's a lot of
-> SFP stuff in this series.
-> 
-> This series is in 2 main parts. The first one aims at representing the
-> SFP cages and modules using phy_port, as combo-ports with RJ45 + SFP are
-> by far the most common cases for multi-connector setups.
-> 
-> The second part is the netlink interface to list those ports, now that
-> most use-cases are covered.
-> 
-> Let's see what we can do with some examples of the new ethtool API :
-> 
-> - Get MII interfaces supported by an empty SFP cage :
-> 
-> # ethtool --show-ports eth3
-> 
-> Port for eth3:
-> 	Port id: 1
-> 	Supported MII interfaces : sgmii, 1000base-x, 2500base-x
-> 	Port type: sfp
-> 
-> - Get Combo-ports supported modes, on each port :
-> 
-> # ethtool --show-ports eth1
-> 
-> Port for eth1:
-> 	Port id: 1
-> 	Supported link modes:  10baseT/Half 10baseT/Full
-> 	                       100baseT/Half 100baseT/Full
-> 	                       1000baseT/Full
-> 	                       10000baseT/Full
-> 	                       2500baseT/Full
-> 	                       5000baseT/Full
-> 
-> 	Port type: mdi
-> 
-> Port for eth1:
-> 	Port id: 2
-> 	Supported MII interfaces : 10gbase-r
-> 	Port type: sfp
-> 
-> - Get Achievable linkmodes on a SFP module (combo port with a DAC in the
-> SFP cage)
-> 
-> # ethtool --show-ports eth1
-> 
-> Port for eth1:
-> 	Port id: 1
-> 	Supported link modes:  10baseT/Half 10baseT/Full
-> 	                       100baseT/Half 100baseT/Full
-> 	                       1000baseT/Full
-> 	                       10000baseT/Full
-> 	                       2500baseT/Full
-> 	                       5000baseT/Full
-> 	Port type: mdi
-> 
-> Port for eth1:
-> 	Port id: 2
-> 	Supported MII interfaces : 10gbase-r
-> 	Port type: sfp
-> 
-> Port for eth1:
-> 	Port id: 3
-> 	Upstream id: 2
-> 	Supported link modes:  10000baseCR/Full
-> 	Port type: mdi
-> 
-> Note that here, we have 3 ports :
->  - The Copper port
->  - The SFP Cage itself, marked as 'occupied'
->  - The SFP module
-> 
-> This series builds on top of phy_port and phy_link_topology to allow
-> tracking the ports of an interface. We maintain a list of supported
-> linkmodes/interfaces on each port, which allows for fine-grained
-> reporting of each port's capability.
-> 
-> What this series doesn't do :
->  - We don't support selecting which port is active. This is the next step.
->  - We only support PHY-driven combo ports. The end-goal of this whole
->    journey that started with phy_link_topology is to get support for MII
->    muxes, such as the one we have on the Turris Omnia. This will eventually
->    be upstreamed as well.
-> 
-> If you want to play around with it, here's [1] the patched ethtool that I've
-> been using to produce the outputs above.
-> 
-> Thanks !
-> 
-> Maxime
-> 
-> [1] : https://github.com/minimaxwell/ethtool/tree/mc/ethtool_port
-> 
-> Changelog :
-> 
-> Changes in v17:
->  - Handle port index wraparound
->  - Regen the ethtool headers, now with the comment :)
-> 
-> Changes in v16:
-> https://lore.kernel.org/r/20260902212135.1805948-1-maxime.chevallier@bootlin.com
->  - unregister phy_ports at phy_detach
->  - typos in patch 1 (of -> or)
->  - Fix the netlink specs
-> 
-> Changes in v15:
-> https://lore.kernel.org/netdev/20260801074332.98755-1-maxime.chevallier@bootlin.com/
->  - Fail on port access for ops-locked devices
->  - Use a direct phy_port pointer for upstream tracking
->  - Addressed the kdoc issues
-> 
-> Changes in v14:
-> https://lore.kernel.org/netdev/20260720174808.139573-1-maxime.chevallier@bootlin.com/
->  - Added a big comment on the first patch for the topo alloc potential
->    races
->  - Fixed the multi-buff DUMP on last patch with a separate iterator for
->    dumps
->  - Fixed some typos in the documentation
-> 
-> Changes in V13:
-> V13: https://lore.kernel.org/r/20260701110427.143945-1-maxime.chevallier@bootlin.com
->  - Rebase on net-next
->  - Fix the SFP bus cleanup path in patch 5
-> 
-> Changes in V12:
-> V12: https://lore.kernel.org/r/20260615153907.862987-1-maxime.chevallier@bootlin.com
->  - Rebased on net-next, including fixes on the phy probing and cleanup
->    paths
->  - Rebased on Jakub's netdev_ops_locked changes in phy_link_topology
->  - Fixed some typos reported by Andrew and sashiko in the documentation
-> 
-> Changes in v11:
-> V11:https://lore.kernel.org/r/20260521121040.1199622-1-maxime.chevallier@bootlin.com
->  - Aggregated Andrew's reviews :)
->  - Removed the "vacant" field, replaced it with "upstream_port"
-> 
-> Changes in V10:
-> V10: https://lore.kernel.org/r/20260513130521.1064094-1-maxime.chevallier@bootlin.com
->  - Rebase on net-next
->  - Rename phylink/phy_device sfp_bus_port to sfp_cage_port
->  - Sashiko's reviews were mostly unrealistic or wrong :(
-> 
-> Changes in V9:
-> V9: https://lore.kernel.org/r/20260403123755.175742-1-maxime.chevallier@bootlin.com
->  - Added missing netlink doc updates for u8->u32 conversion
->  - Removed dead code with a condition that can never be true in
->    phylink's mod_port code
->  - Fixed the error path in phy_sfp_connect_phy
-> 
-> Changes in v8:
-> V8: https://lore.kernel.org/r/20260325081937.571115-1-maxime.chevallier@bootlin.com
->  - Set the new phydev.has_sfp_mod_phy field when we're sure that no
->    errors occured
->  - Fix formatting of the copyright info in ethnl port
->  - Use a policy to validate the range of port_id
->  - Use GENL_REQ_ATTR_CHECK
->  - alpha-sort headers
->  - use u32 in netlink messages
->  - return better error codes
->  - don't check the skb len, the core does that
-> 
-> Changes in V7:
-> V7: https://lore.kernel.org/all/20260309152747.702373-1-maxime.chevallier@bootlin.com/
->  - Changed the port cleanup path to use list_for_each_entry_continue_reverse
->  - Adjusted the cleanup path in phylink for the port vacant state
->  - Pass the right cmd for the netlink dump message
-> 
-> Changes in V6:
-> V6: https://lore.kernel.org/r/20260304145444.442334-1-maxime.chevallier@bootlin.com
->  - Added some comments in th mod_port cleanup
->  - changed some kmalloc to kmalloc_obj
->  - Removed some phy_link_topo_del_port that wasn't needed
-> 
-> Changes in V5:
-> V5: https://lore.kernel.org/r/20260205092317.755906-1-maxime.chevallier@bootlin.com
->  - Fixed a check on a potentially un-initialized pointer, reported by
->    Simon
->  - Fixed a documentation formatting issue
->  - Remove a stray pr_info
->  - Rebased on net-next
-> 
-> Changes in V4:
-> V4 : https://lore.kernel.org/netdev/20260203172839.548524-1-maxime.chevallier@bootlin.com/
->  - Add a cleanup patch for the of port parsing
->  - Added a match to sync the port's linkmodes with the PHY's for OF
->    ports
->  - Added RTNL assert in the port_get topo helper
->  - nullify the bus port for phylink support
->  - Fix some typos
-> 
-> Changes in V3:
-> V3: https://lore.kernel.org/netdev/20260201151249.642015-1-maxime.chevallier@bootlin.com/
->  - Remove the sfp bus ops for nophy, and use .module_start() as
->    suggested by Russell
->  - Added missing cleanup for the topology, as per AI review
->  - Fixed a few typos as per Romain's review
->  - Changed "occupied" to "vacant" as per Romain's review
->  - Added missing checks for null ports, per AI review
-> 
-> Changes in V2:
-> V2: https://lore.kernel.org/netdev/20260128204526.170927-1-maxime.chevallier@bootlin.com/
->  - Fix the cleanup path of phy_link_topo_add_phy, as per AI review
->  - Fix the cleanup path of phy_sfp_probe, as per AI review
->  - Fix the call-site of the disconnect_nophy sfp bus ops, per AI review
->  - Fix the netdev-less case uin phylink, per AI review
->  - Fix the prototype of phy_link_topo_get_port for the stubs
->  - Dropped patch 11. It ended-up breaking 'allnoconfig', so instead we
->    built a phy_interface_names array in net/ethtool/netlink.c
->  - Fix an ethool-netlink spec discrepancy with the type of an attribute
->  - Fix the size computation in the netlink port API
->  - Fix the cleanup path in the netlink port API
-> 
-> V1: https://lore.kernel.org/netdev/20260127134202.8208-1-maxime.chevallier@bootlin.com/
-> 
-> Maxime Chevallier (10):
->   net: phy: phy_link_topology: Add a helper for opportunistic alloc
->   net: phy: phy_link_topology: Track ports in phy_link_topology
->   net: phylink: Register a phy_port for MAC-driven SFP cages
->   net: phy: Create SFP phy_port before registering upstream
->   net: phy: Represent PHY-less SFP modules with phy_port
->   net: phy: phy_port: Store information about a port's upstream
->   net: phy: phy_link_topology: Add a helper to retrieve ports
->   netlink: specs: Add ethernet port listing with ethtool
->   net: ethtool: Introduce ethtool command to list ports
->   Documentation: networking: Update the phy_port infrastructure
->     description
-> 
->  Documentation/netlink/specs/ethtool.yaml      |  55 +++
->  Documentation/networking/ethtool-netlink.rst  |  34 ++
->  Documentation/networking/phy-port.rst         |  26 +-
->  MAINTAINERS                                   |   1 +
->  drivers/net/phy/phy-caps.h                    |   2 +
->  drivers/net/phy/phy_caps.c                    |  26 ++
->  drivers/net/phy/phy_device.c                  | 186 +++++++--
->  drivers/net/phy/phy_link_topology.c           | 101 ++++-
->  drivers/net/phy/phylink.c                     | 128 +++++-
->  include/linux/phy.h                           |  10 +
->  include/linux/phy_link_topology.h             |  44 ++
->  include/linux/phy_port.h                      |   5 +
->  .../uapi/linux/ethtool_netlink_generated.h    |  22 +
->  net/core/dev.c                                |   1 +
->  net/ethtool/Makefile                          |   2 +-
->  net/ethtool/netlink.c                         |  25 ++
->  net/ethtool/netlink.h                         |   8 +
->  net/ethtool/port.c                            | 382 ++++++++++++++++++
->  18 files changed, 1020 insertions(+), 38 deletions(-)
->  create mode 100644 net/ethtool/port.c
-> 
+--=20
+Andrei Gherzan
+gpg: rsa4096/D4D94F67AD0E9640
 
+--VLgbsStmR6asIkJ2
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEQvNqws+Dz7aX1cEEc7voa356t88FAmqhYSQACgkQc7voa356
+t89CjhAAsc9ihP4BOFOtH+fWmOM5lVZIpAeuppSpPCB9czlRzrua64EwObXfFX7n
+oG9uQUzx2p3UTY52038DFCCsmCVxKTMPbQvfLoevy1SUXlt3ZqGW7p/WoaPalozb
+c1zLAj99KWyKE9YdFd1D5dEzsDJkilxX7CSD51JExDzwpqflugcpJyVJ6JUGe/B0
+JSkg7FL6XMY6w2WBer6R53PxG+vCHqhLV4M+vObbysVFJyoEUCBV6aFcZHbdxRBj
+FLw58vys31n8/6x8vC6n2jjdoYTaiQb/4Bh1JtdZfKIGDmIE7NQN1v0OU9Hgp+iv
+6BebVhgAUI2SB5I8tj67VB7Dm6TndFci7R9xZFsBxwN5pZ9P/LcGSz2MviBZronM
+P7QNFq3Kl1FnBMwYg/dwy5K0C+HSHBKX7sQCUW0zuokREsSmfzGJDzUP0hZ4oNY9
+0KERXDISjbWkBMZGg+AAv7oz6oHgkXBHjU7u5cS98cxQhYLCipcEd48bm5tgZvh5
+HfNWJ0AScmeTps6vwLMLfjj9+r/zO9nAhuUNNxsoHlqLGbxmsGMldd+e8xU/wOzg
+tOjdOwiLuGwq6vTqci6sT9iuKf3yW9UTsJwG6qNCCUXgQ50vnIkY6siA2x1cfCK/
+cSEomDAKcGTrB/zi3iWZyLZb9TxzJaqMfTjOJjR5/Z6uJLmJwEI=
+=HvP6
+-----END PGP SIGNATURE-----
+
+--VLgbsStmR6asIkJ2--
