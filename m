@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 633243C342F;
-	Wed,  9 Sep 2026 21:47:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BA333C10BD;
+	Wed,  9 Sep 2026 21:47:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788990447; cv=none; b=mup5dUVfuRyqatX7hwk1BuK7lx6m8qkH1WZAki5Fr693q4oh3pjqZ1Re5Os7mjjFskazMRcmbzO7cDgQjl5/ILMWV8sDRyFTECwzcQVu+luVJpDS9awVVPeuSFGNMp4Fest82sORw+3vYun52rGMSKdlNc3Sra3sx+albY3f5y0=
+	t=1788990450; cv=none; b=Fz7iWrPADDuZfeqc/LFXaLghAQ6rGwrBwRx5pGUsDd9KwVbSYdXggiMEUDAdPjUCL+vttVLHjNB34zibxwHHycfwuCCHtwltGZi4Myx3Vz+gUhZc3tPwy/u3ytUsN1OSDvRAIIVlfJuRhAObSU7NDTkdHHQBAVusbln24ka/sBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788990447; c=relaxed/simple;
-	bh=mjyQtZIA9XPJzKLE5FVNxgxaO/EKN/KvK9MIZ1qVMmg=;
+	s=arc-20240116; t=1788990450; c=relaxed/simple;
+	bh=zP+ejzq3PURFESVFVeeglVfJJbtzBw44MmEUGUVo1t4=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=D9Qj/rt0B96sC3ZqQaY6+UG72eNIjYUXuby+72gSM+mfF7mtCWDFqxelrW25+Nc49UPsXOBeeo3cCOJCzGfM+9opzMQVunyqYsJrnQP+TiD8T9mkIfbR326XAJphTbfzoHAmP3YhVedDnaJOO2c89+wq1hPq0MD7wV1nchTY/OQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lAfLYe8b; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=JkyGzMLTX6yv2gyX6gNuC/VH5W94YZ8eSFDjdVqg2yevRvqpQMB5TEhjgvNkZrtk3Vsm4VAQ5F/ntqd1LERrXlC9fsNnkZtvZzWnUX7hw8IVHNIqeM6RWAGA6G4RWXY5GEsxGQ5pKSQDDuRQ/U9ckyJcK3R+XI7bg3RUm8PMxHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TUcYEFS0; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lAfLYe8b"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87AE01F0089C;
-	Wed,  9 Sep 2026 21:47:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TUcYEFS0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41B051F000FF;
+	Wed,  9 Sep 2026 21:47:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788990434;
-	bh=u51wIMseDkxpNxShtMSfkG0JWTpwrhqNHA6Dm1oZaNs=;
+	s=k20260515; t=1788990427;
+	bh=VyR/9+HKKkwanUiR3MUx/t7NgUeADXU1eBQkqHF17Qc=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=lAfLYe8b5+GZyzAOdsogQyUui5DYNZtHMauM++5n5SYZIvnjSvFlrPgCAk8DWRAtC
-	 kgmeghX6HGJXg1S6C41pAGl5nq02nykLw1QpAdh3UjcTN73X3hiSQUr57Otm/c5Yr+
-	 a7Ujx/KqjQzU40XFi6d9znR7UE1/v1yCYRSXCKT/CZNYiE7Y0bG8NdaKVVPlts8L0P
-	 ljtbA3hIo8lLhyHr0YIMf+5Q2wKRG13oFMzfxTuW8sz6w2r1JPfUtZQ5d8UerpI7PI
-	 OTUmIe/KZXtRwMLAM/+tWbiYbPpRid7NQyZlp0LqiBq5yqB4FbYI99n/WhadzHPvyD
-	 WKAkq9qJW9knA==
-Subject: Re: [PATCH net-next 6/9] net: stmmac: qcom-ethqos: warn about legacy
- RGMII PHY modes
+	b=TUcYEFS0/z0SsQXt7rbqKc78YIO0ooWhOFE1+FPYtSpnX7ywW+8KZRyUbHL2hhNQ1
+	 1u8vZCUzEceW55ZGjRJRuWAnw35q6oQvizoS2ugVzpRKrnHOH4J0qhcvbLr8/fXK+a
+	 DtL2m5O5O8yv1uFQW/IEwaYSv3ujujB7p2jJyOQQhBK+tMJYsx0RYQ8nTpirKMRVZl
+	 XSTjcr8XhDuEk3VSCTwJpfKV0ZvimvrhsC2TGngCXBrIXlOoplD5+VPvtkAOt2heuW
+	 HA222fcuGLtsfSuAd2nV6f0nSNG9vXMtUxFICewcIJvyPiSFwotD2YM7UGVebbFdXX
+	 5zung3x9ENHYw==
+Subject: Re: [PATCH net-next 3/9] dt-bindings: net: qcom,ethqos: add
+ qcom,shikra-ethqos compatible
 From: netdev-bot+sashiko@kernel.org
 To: mohd.anwar@oss.qualcomm.com
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
@@ -40,10 +40,10 @@ Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
  linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
  linux-stm32@st-md-mailman.stormreply.com,
  linux-arm-kernel@lists.infradead.org
-Date: Wed, 09 Sep 2026 21:47:12 +0000
-Message-ID: <178899043209.219967.1138402258618527467@kernel.org>
-In-Reply-To: <20260904-shikra_ethernet-v1-6-a50765996035@oss.qualcomm.com>
-References: <20260904-shikra_ethernet-v1-6-a50765996035@oss.qualcomm.com>
+Date: Wed, 09 Sep 2026 21:47:05 +0000
+Message-ID: <178899042581.219967.9210178730210063221@kernel.org>
+In-Reply-To: <20260904-shikra_ethernet-v1-3-a50765996035@oss.qualcomm.com>
+References: <20260904-shikra_ethernet-v1-3-a50765996035@oss.qualcomm.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -57,90 +57,134 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider:
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 0
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
-- [Medium] Unbounded log spam: the new dev_warn("legacy RGMII phy-mode
-  detected; consider upgrading to a newer DTB") is placed in the body of…
-- [Medium] The warning fires for a PHY mode the commit message never
-  mentions.
+- [Medium] The new `qcom,shikra-ethqos` conditional in
+  Documentation/devicetree/bindings/net/qcom,ethqos.yaml enforces only…
+- [Low] Reported concern: the binding documents `qcom,shikra-ethqos` (a
+  standalone compatible with no fallback), two new clocks (`axi-noc`,…
 
 --
 
-net: stmmac: qcom-ethqos: warn about legacy RGMII PHY modes
+dt-bindings: net: qcom,ethqos: add qcom,shikra-ethqos compatible
 
-This adds a dev_warn() in ethqos_fix_mac_speed_rgmii() for the RGMII
-configuration paths that are not rgmii-id, to encourage migration to
-DTBs using "rgmii-id" with PHY-provided delays.
+Adds the qcom,shikra-ethqos compatible to the ethqos and snps,dwmac
+bindings, extends the clock list with axi-noc and pcie-tile-axi-noc, and
+adds an if/else block constraining Shikra to six clocks while requiring
+operating-points-v2.
 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-> index 67738c1598c50..2ca2f03de3017 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-> @@ -554,6 +554,8 @@ static void ethqos_fix_mac_speed_rgmii(void *bsp_priv,
->  		return;
->  	}
+> diff --git a/Documentation/devicetree/bindings/net/qcom,ethqos.yaml b/Documentation/devicetree/bindings/net/qcom,ethqos.yaml
+> index 423959cb928d9..ad2cc706fa740 100644
+> --- a/Documentation/devicetree/bindings/net/qcom,ethqos.yaml
+> +++ b/Documentation/devicetree/bindings/net/qcom,ethqos.yaml
+
+[ ... ]
+
+> @@ -32,6 +29,7 @@ properties:
+>            - qcom,qcs404-ethqos
+>            - qcom,sa8775p-ethqos
+>            - qcom,sc8280xp-ethqos
+> +          - qcom,shikra-ethqos
+>            - qcom,sm8150-ethqos
+
+[Severity: Low]
+
+This is a standalone compatible with no fallback, and at this point in the
+series nothing consumes it, the two new NOC clocks, or the mandatory OPP
+table.
+
+Checking the end of the series, this is addressed by the later patches:
+"net: stmmac: qcom-ethqos: add per-platform NOC clock voting" adds
+qcom_ethqos_init_noc_clks() with devm_clk_bulk_get() and
+devm_pm_opp_of_add_table(), and "net: stmmac: qcom-ethqos: add Shikra EMAC
+support" adds shikra_noc_clks[] plus:
+
+	{ .compatible = "qcom,shikra-ethqos", .data = &shikra_data},
+
+to qcom_ethqos_match[], so the compatible does bind by the end of the
+series. Noting it only for ordering visibility.
+
+[ ... ]
+
+> @@ -81,6 +83,11 @@ properties:
+>        - const: cpu-mac
+>        - const: mac-mem
 >  
-> +	dev_warn(dev, "legacy RGMII phy-mode detected; consider upgrading to a newer DTB\n");
+> +  operating-points-v2: true
+> +
+> +  opp-table:
+> +    type: object
+> +
 
 [Severity: Medium]
-Can this print repeat without bound?  ethqos_fix_mac_speed_rgmii() is
-installed as plat_dat->fix_mac_speed in qcom_ethqos_probe():
 
-  ethqos->phy_mode = plat_dat->phy_interface;
-  switch (ethqos->phy_mode) {
-  case PHY_INTERFACE_MODE_RGMII:
-  case PHY_INTERFACE_MODE_RGMII_ID:
-  case PHY_INTERFACE_MODE_RGMII_RXID:
-  case PHY_INTERFACE_MODE_RGMII_TXID:
-          plat_dat->fix_mac_speed = ethqos_fix_mac_speed_rgmii;
+The OPP properties are added here, but power-domains is never mentioned
+anywhere in qcom,ethqos.yaml. It is only permitted through the inherited
+$ref to snps,dwmac.yaml, which defines:
 
-and stmmac_mac_link_up() calls it on every resolved link:
+  power-domains:
+    maxItems: 1
 
-  if (priv->plat->fix_mac_speed)
-          priv->plat->fix_mac_speed(priv->plat->bsp_priv, interface,
-                                    speed, mode);
+The commit message says the OPP table exists "to vote VDD_CX to SVS when
+the NOC clocks are enabled" through required-opps. Can that vote take
+effect without a power-domains phandle on the node?
 
-The only early return before the new print is the
-phy_mode == PHY_INTERFACE_MODE_RGMII_ID branch, so for the other RGMII
-modes every link-up, cable re-plug, link flap, autoneg speed change,
-ifdown/ifup and resume emits another identical warning.  The condition
-being reported is the static DT phy-mode, which is already known at probe
-time and does not change afterwards.
+A per-OPP required-opps entry reaches genpd only via:
 
-Would dev_warn_once(), or a single check in qcom_ethqos_probe() where the
-phy_mode switch already exists, be preferable here?  dev_warn_ratelimited()
-would at least bound the output.
+drivers/base/power/common.c:dev_pm_domain_set_performance_state() {
+	if (dev->pm_domain && dev->pm_domain->set_performance_state)
+		return dev->pm_domain->set_performance_state(dev, state);
+
+	return 0;
+}
+
+With no power-domains phandle, dev->pm_domain is NULL and this returns 0
+without doing anything, so dev_pm_opp_set_rate() ->  _set_required_opps()
+-> _set_opp_level() silently drops the CX corner while the two 120 MHz NOC
+clocks run.
+
+> @@ -92,6 +99,41 @@ required:
+>    - clock-names
+>    - reg-names
+>  
+> +allOf:
+> +  - $ref: snps,dwmac.yaml#
+> +
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            const: qcom,shikra-ethqos
+> +    then:
+> +      properties:
+> +        clocks:
+> +          minItems: 6
+> +        clock-names:
+> +          items:
+> +            - const: stmmaceth
+> +            - const: pclk
+> +            - const: ptp_ref
+> +            - const: rgmii
+> +            - const: axi-noc
+> +            - const: pcie-tile-axi-noc
+> +      required:
+> +        - operating-points-v2
 
 [Severity: Medium]
-The commit message says:
 
-  "However, existing DTBs use "rgmii" and "rgmii-txid" and must remain
-   supported for backwards compatibility."
+Should power-domains also be listed in this required block, next to
+operating-points-v2?
 
-  "Warn when either of these legacy PHY modes is used [...]"
+As written, a Shikra node carrying operating-points-v2 and an OPP table
+full of required-opps but no power-domains = <&rpmhpd RPMHPD_CX> passes
+dt_binding_check and dtbs_check cleanly, and the schema emits no
+diagnostic for the missing phandle.
 
-but the code warns for anything reaching ethqos_fix_mac_speed_rgmii()
-that is not PHY_INTERFACE_MODE_RGMII_ID, which also covers
-PHY_INTERFACE_MODE_RGMII_RXID, dispatched to this callback by the switch
-in qcom_ethqos_probe().
+Grepping drivers/net/ethernet/stmicro/stmmac/ at the end of the series
+returns no pm_domain references, so the device tree is the only place the
+CX dependency can be expressed.
 
-Documentation/devicetree/bindings/net/ethernet-controller.yaml lists
-rgmii-rxid as the correct description when the TX delay is provided by the
-PCB:
-
-      # TX delay is provided by the PCB. See below
-      - rgmii-rxid
-
-So a board that legitimately describes itself as rgmii-rxid is now told to
-move to "rgmii-id", which would misdescribe the hardware.
-
-Should the condition be narrowed to the two modes named in the commit
-message, or should the commit message explain why rgmii-rxid is deprecated
-too?
-
->  	/* Initialize the DLL first */
->  
->  	/* Set DLL_RST */
+[ ... ]
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260904-shikra_ethernet-v1-0-a50765996035%40oss.qualcomm.com
