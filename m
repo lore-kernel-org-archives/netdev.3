@@ -1,172 +1,495 @@
-Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6B094C77A9
-	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 10:14:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6252A3AD510
+	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 10:16:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788948848; cv=none; b=jqOcQ5a6rM1DHayQXDnZuR5Hr5gq9D7YXHjAPNMDq5Nj0MA1RgZX2NIWA7SCdcNm9faTpTGKqHs60rpkmSDrQjFLV0uBNP7S/4rxmQwaqZ8pc1B61j+vUIX9CxkJrPpo0U5/aIj1WjyS80TFmmGAnfEvgZELws9OjykxA4dkjBU=
+	t=1788948989; cv=none; b=CAow3T9X96xeQGBSPk8CLCLTdsx1JPwtw8bo5mL/i/vFF7zW4O4zy0M0KUu14AyBZ0JDE8P7GyZomEZUee3ILC2TsoJDJuXPc00We/hx6MzqsTOxTLcjo0ukW2bl8kruNd7MDz4mNivPyKnf7ynsfd7iEvpCww6MZTHxzM3v1RA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788948848; c=relaxed/simple;
-	bh=8wkVR54HKtCmvT4epnFFfFoh7l/x4A5Z8r0EQJHwXbo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JN3z9bxoalOffBTBNoCGN9Ze0Gm9ers2q6WveRynxHbjEg6yu+V8EATr42fTS62lFwmSx6kqXCgFkPO/RfA008YjR7VIIiZPKyS+ei6vjL06hTqt6apD5GuWtCOrlrDbLVjagk0BZKYM2lV9b6JXwuMBQeEYotC/SS3LZkdwWKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e0mmCYgB; arc=none smtp.client-ip=74.125.225.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788948989; c=relaxed/simple;
+	bh=XJ3lG5vWtmYqrD1WVN6pAFkFTPbSXJama+2T8E3AHOk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nbKKy1fuODnDck2opy9d1WfSUEotxtYjk5/g7ViWz2E3giq/ovM7W8kNrrNGe/WxFatmqeEK0TdiWaQQq91NBYvEc4/eflLkE3CrspZkUHBpl8DmQW+OnKemE8rLrlc2VqBG1KEZFn5Q/f9UAhJVFMp9IsRKBwkO/9maHQSMiP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=B4cwy4D2; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=VKPiG9F7; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e0mmCYgB"
-Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-4843c2790ccso543089f8f.1
-        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 03:14:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="B4cwy4D2";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="VKPiG9F7"
+Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6896G6Gd965075
+	for <netdev@vger.kernel.org>; Wed, 9 Sep 2026 10:16:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=88BiZAGnU1hEzYoS7eZr1V/C
+	eQRL3wzzrwguAq0PNIk=; b=B4cwy4D2o/+zWG2OaYwF8Kg406ofGMnRr02qxXwY
+	Y3RcK0sOYfyt/oQe/5KSbHrMKA9LWIcP+TXGbZ6dp6IaAoVbBrYAPUjXJRSugpWA
+	2rOEgMsU7mmlCMPtM5BDNRCSRk3Lqt42TxnBx8WewGWsW5prdaETjNUuo8axKWTE
+	cl4EQuMoT+9ehEh3NTkGk3MMSeQammi7HIShDQYouuFOUq7mdYPChVmMA+Thr6vG
+	HILmpQF7KLzCAZL1KJ8uqq2EA8ieMp2xxRSFkY8hkyeRqnKe5PLzx95UT8r99Nkt
+	clxnotqYiuk/pTf5obfKyuOuvJzJ/y3Z02HCOU7URS7IPA==
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gjqha3h30-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 10:16:11 +0000 (GMT)
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-92e82060977so936176385a.1
+        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 03:16:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788948841; x=1789553641; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=L3wFqSlIV4kXpf46Lk+RTfPnzO0CcPwpy1/grqIwRVw=;
-        b=e0mmCYgByrZO++YUpPtjPuHNXiRbLqqCuD7lmAJx+/bIix8YVQifSIM+AYJ3LazzO3
-         FuBGLWCXjBTPMt/nxM7o/0DxTAZ6HLuZMRzSbxPz5f0384J+kNaDFmZzdi8Q7ZolZCSp
-         RnKMVlk2md7ub6P73TMruid7fbe467pow52qMrphIhbATVKv54J/h9GwsVGLdK6BePhG
-         C3+VIUaaQXdx9TBu6jySmi5YvUYr+8dnllVo7cLal8/kVKtjvVnX1YQwgnsXJGUv1mgs
-         wIh9oUuMyOCmF78vzNqeUY7FTJ661989MYTyqDB/SidRIlmj8i5aVPIRhM9YTrYzDlRT
-         MB8g==
+        d=oss.qualcomm.com; s=google; t=1788948971; x=1789553771; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=88BiZAGnU1hEzYoS7eZr1V/CeQRL3wzzrwguAq0PNIk=;
+        b=VKPiG9F7VTGA00LInTx2JwRcSnJeTnzGPOA5V5VGpN/rHmhEPxrNZ9NI0JSGHJiWVS
+         aRnWZrl0LAl39AmUjqErivw5HnUjlh/lmKW6W9TZ6uDUJ6ypTD+MfBvdrJzGr8iEr6Oq
+         erJQjNtVNFfqamyi+Nm3H8KmRLc40drR9upMz/yx7GIXlJZn9jlJZz1vN6JsDvE6iRWH
+         zVHA5/nsm6tn7hrKLQjuDk76vvs7OAslJh2Le8Ita2suTE0jdwmoOE8OevVSaMuMXLJn
+         vO2ECLUHjMN7gmVEpNoEbJZrouWAhdo/IdJgAUhzB5pXsnjIIWdCAh+unGH1EVC4yPpq
+         HwRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788948841; x=1789553641;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=L3wFqSlIV4kXpf46Lk+RTfPnzO0CcPwpy1/grqIwRVw=;
-        b=UeDT6rRxs8qdmG+csIh/r1sox8Jh9iqnca4pfKZp9KwMNx1w0eHVYH7VPJoNK3TVs1
-         GtSZ2AMKN71M0ObI+IUURP2yDTqBGG+Mf+bzt1f79lWeNtTLrsgVcXo0XJ3xJNmqUZZf
-         bbexx+F0KaYmEDRFLt9cdUo0OtpfcAO3z5BktfgOmkBD54M1qX23JdocdO7UkDuY1Jtc
-         SJvgwbkXbvZM1HUlPkrXlaRUOeSItdUnLZtSwyXxmBb4BzL3f4H5EelNdo1dthhWXobQ
-         +pcb7GkpX7IPbdtgtvNq+jQmmHhWtOmLKtf/rO/BRnjELaKTPkHtHkRHEaaJXSkediP8
-         TRCg==
-X-Forwarded-Encrypted: i=1; AKwUvBxd3irkMI5er/bD3jVj6smlXNxmiVLR9BlNp15tsBTlTs7c4deljAf6EGnU/OX1I8zEhkQH3wg=@vger.kernel.org
-X-Gm-Message-State: AFuF++kgafJO3uPqyhRWvX9FNcSZDjAZ2e2HBQvCQEHR4Ar7H04kpz+b
-	feSWwHqB8spix8FKa3ktaw34fItgwlcC6cV0ZO8svg6ngtqpXgAfu3mE
-X-Gm-Gg: AYBFou3+gnFjRBwmfLkqkRVzag9pl8oAxFPd4xjBAKkgg2/7nepteofqkpFMx8jdE07
-	W3cWeGZzEz6GscvXbgNLrR3LTLzVkhNs0QV9Ye5Ndgx2MKPWlVG5GVuQwiTNrebcBPZKNgdhtTw
-	cSs22zIveY2+Thn/wBmt89QN/dpydRKOsJ77GYPbcftuXr9MPwx4nqcK1ghiP36cR5uoCV6b08W
-	iHY79Ks0WRnjSDmTJy8gfVcTCg4IrJ3X9UXtnwgFmFoIh8oQox8PTT14Ynqi6c1AVVVdcCJWRac
-	hUB6GCks3Sk6Pi5nP7lg15ldZJvZsFJQQop3N+EokxJ+e6xtc0FUyO+IHTbZA6CufWdna842muD
-	xGUZw2uclF/8XoICzL9oxnK3kL8xgmxzhggtyeYIzwthI/4C7HXD4g1zXgakkux9dloUa0RkJKz
-	5Oxlu0xpLcCUvI6CUCd252bshrjmOyt+E2/ybEEzDPD8TYDUwbujEbciWrrABs0Nze8emJla0Jo
-	Umr/fl/YJDKgWNnRBP1
-X-Received: by 2002:a05:600c:3b1f:b0:49d:5ff:f408 with SMTP id 5b1f17b1804b1-49d1f37bb1bmr82227985e9.15.1788948840941;
-        Wed, 09 Sep 2026 03:14:00 -0700 (PDT)
-Received: from VivoBook-ASUS-X712UA-M712UA.lan ([2a00:f44:c51:e108:e113:5dfd:782e:8bfa])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49d0af538d0sm336040765e9.8.2026.09.09.03.13.59
+        d=1e100.net; s=20251104; t=1788948971; x=1789553771;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=88BiZAGnU1hEzYoS7eZr1V/CeQRL3wzzrwguAq0PNIk=;
+        b=kBma9VRcsOd4Xdx5M/4v9TpCv8TFadHpPPmUdQJVPb40SShL6FbNCuNN/yQaXfdnVS
+         eGh0ec73BsFKkEG5AocngD7V0i/Zk8q1MFzqiwctHvptCrYTgPMsLg9zno7+3bLK2gfK
+         veuabjHXmuMenGTYeV/v8DUwqp14krrYe16fwmEgIW9QHSIqL2l07Yj0mptuATk3Rr6o
+         6yh2k1FF6nIytCKS6ZWvFnh6N308rzsJY3bHSu291ihPKY12t4W22C7ZU0dCFS1N8W9b
+         J3ze9DzZ+xpfyMgGrS5UEW5oy6ipGzhvu6FzsGgcy9b5QPxN0uNjtriSRuL4ZwBOAfpv
+         c7qA==
+X-Forwarded-Encrypted: i=1; AKwUvBzzFP3WL4mck6pTa+f/Z4G28akrJxZJL7luNB34cZg9lJH1npYe/PMFPxd/mJ3buD5bSnAxNck=@vger.kernel.org
+X-Gm-Message-State: AFuF++mLVYCJVehBgPXXzabJPMKKw/NLk2rKEen6395sBQnyf6ncw+GT
+	lCv1gqBCDp//hwS3kdhFQqznJ04qDWUTlSPKdmtWSr1O6CDcr75TWaHJbdvYyfAeu6p7hltH5WI
+	jgNlAsq+OcyK2D8exorWSwF/iDxLFdBipnezPpMPF3g9qtesKPNV+F8/jPCM=
+X-Gm-Gg: AYBFou1abQ26p/Tw1a0bzd1/qebvjw+4akL41KVKa2i1G+DlthZK1DHrfAfRhxHaZft
+	+UvQgRc0MvfUCqJbu1vIn89XFB3tkzoED5mjbaW9RtCVTSJ6RaTInBGx5p9tPQ+RTuKkdbJBBVi
+	cZstT0uReW23F542gE+KcUnuNi7KWvf18TiAeIL7kdJHx02uRcFEUH/EHSDDwEe2re2cvBs31+B
+	mRQuI7dYoIt56o4+e5Pm1VCV9vINuDj+P/fSbBY/4Md/DnLxPyX0qot9IM7sCT7M3+LZPJPrsdb
+	4nKUm50SOXH3XEx+6WlR4uIe5uz89/4xbOMZRBedDk6MYsmdQ5bxG9QI+3PBifk9l4YdglM9hP2
+	gMX8zyGCpC61DFQ==
+X-Received: by 2002:a05:620a:711c:b0:939:a8b1:3696 with SMTP id af79cd13be357-939a8b13b38mr1595145185a.27.1788948970638;
+        Wed, 09 Sep 2026 03:16:10 -0700 (PDT)
+X-Received: by 2002:a05:620a:711c:b0:939:a8b1:3696 with SMTP id af79cd13be357-939a8b13b38mr1595140485a.27.1788948969913;
+        Wed, 09 Sep 2026 03:16:09 -0700 (PDT)
+Received: from localhost ([188.216.77.92])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49d20db6e76sm52797735e9.3.2026.09.09.03.16.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Sep 2026 03:14:00 -0700 (PDT)
-From: Stanislaw Pal <kuncy7@gmail.com>
-To: Luiz Angelo Daros de Luca <luizluca@gmail.com>
-Cc: Linus Walleij <linusw@kernel.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	=?UTF-8?q?Alvin=20=C5=A0ipraga?= <alvin.sipraga@analog.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v2] net: dsa: realtek: rtl8365mb: wait out the full chip reset time
-Date: Wed,  9 Sep 2026 12:13:55 +0200
-Message-ID: <20260909101355.25660-1-kuncy7@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <CAJq09z4qBz+poVQR3tEQzB-_4se5ka76Xq1mwEM0RvEnTuGLNw@mail.gmail.com>
-References: <CAJq09z4qBz+poVQR3tEQzB-_4se5ka76Xq1mwEM0RvEnTuGLNw@mail.gmail.com>
+        Wed, 09 Sep 2026 03:16:08 -0700 (PDT)
+Date: Wed, 9 Sep 2026 12:16:08 +0200
+From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+To: netdev-bot+sashiko@kernel.org
+Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+        richardcochran@gmail.com, rayagond@vayavyalabs.com, treding@nvidia.com,
+        netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH net] net: stmmac: propagate PTP init failures in
+ __stmmac_open() and stmmac_resume()
+Message-ID: <aqEx6OTMleffeODV@lore-desk>
+References: <20260904-stmmac-ptp-error-propagate-v1-1-80f01b03dafa@oss.qualcomm.com>
+ <178894478282.219967.9123750287154631714@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="5hYik/OtwsiKgIbw"
+Content-Disposition: inline
+In-Reply-To: <178894478282.219967.9123750287154631714@kernel.org>
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA5MDExNCBTYWx0ZWRfXz1DSC+QwuTuZ
+ Mx0a9xDflXTMkjxuNho6Pvvox8k9w5NfPtQyr6cWOBg0/xrBLczXkmOn84u57a/ZnTo8WC1susm
+ 7qJFzY5GjMYlweFdaG6U8bsEnE+kFSPB3Gm3kiq6/hFIcoVKSGkEs6pKKTFSMapoMuGto6x3Gxj
+ ty/PR4iTjJFig7JR41vdoKQtRinU5vOWa7BPU4KArRH+7f/NcSILLKbWk/Qyen/QTV4uUkIFQQR
+ mV3WTxm7KciZlMDr5cvW39i0e6SLryQbHk9JqKx4GYztV9j22V0zBDBwlxDzDbl2o1wMpY3NvPf
+ O5/7xUAEzJpgX5MB/6pbR+mQ8PqbPZ0mXHh6tXdHi/I/Hp6nmsv8PmHl0U64EVPj9o1Pr7OBtMU
+ P8JdcEDgxkvCSKq0U1kKHLnrQzrcf9Q/UJ2XkmX36YSEC07x8/acngB4jkstTuEXebUEj5BR+jc
+ RO+UOobr6MWAaOQA0/A==
+X-Authority-Analysis: v=2.4 cv=Z5Xc2nRA c=1 sm=1 tr=0 ts=6aa131eb cx=c_pps
+ a=HLyN3IcIa5EE8TELMZ618Q==:117 a=WpTaRW6qxYHRGzLzQsVYzg==:17
+ a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=Um2Pa8k9VHT-vaBCBUpS:22 a=VwQbUJbxAAAA:8
+ a=EUspDBNiAAAA:8 a=9R54UkLUAAAA:8 a=P1KT4AghTBEP7EdPzwwA:9 a=QEXdDO2ut3YA:10
+ a=nLVQ_eJ5mUh1pCUzEw4A:9 a=bTQJ7kPSJx9SKPbeHEYW:22 a=YTcpBFlVQWkNscrzJ_Dz:22
+X-Proofpoint-GUID: JE0oDRyf9njqGDETtueCEXXaQk_aMZTY
+X-Proofpoint-ORIG-GUID: JE0oDRyf9njqGDETtueCEXXaQk_aMZTY
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTA5MDExNCBTYWx0ZWRfX6dDgJvHsLLnm
+ mVMuwha5v1+WpHVYXrCICIVhmxLJuDyx5SgBzxdA8ejjjHQe2qHWT1QYSxREjzwAOXpHTiV+nSb
+ ApYjA8xcWt467rxUnzatJfmmREoGpII=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-08_03,2026-09-08_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 impostorscore=0 lowpriorityscore=0 bulkscore=0 malwarescore=0
+ adultscore=0 phishscore=0 priorityscore=1501 spamscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2609090114
 
-Hi Luiz,
+--5hYik/OtwsiKgIbw
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Thanks - all three points are fair, and the first one I owe you a
-correction on.
+> Thank you for your contribution! Sashiko AI review found 4 potential
+> issue(s) to consider:
+>=20
+> Critical: 0 =C2=B7 High: 1 (1) =C2=B7 Medium: 1 =C2=B7 Low: 2
+>=20
+> - [High] Undisclosed functional regression: PTP setup failures are now
+>   fatal to `ndo_open()` and to system resume.
+> - [Medium] Unbalanced clk_ptp_ref enable/disable against the platform
+>   noirq PM callbacks.
+> - [Low] The kernel-doc block above `stmmac_init_timestamping()`
+>   (stmmac_main.c:893-899) still states 'this is to verify if the HW=E2=80=
+=A6
+> - [Low] Both new unwind paths halt the DMA but never undo
+>   `stmmac_hw_setup()`'s `stmmac_mac_set(priv, priv->ioaddr, true)`=E2=80=
+=A6
+>=20
+> Pre-existing issues:
+> - [High] Pre-existing double free / use-after-free of the DMA descriptor
+>   rings, whose trigger set this patch widens.
+>=20
+> --
+>=20
+> net: stmmac: propagate PTP init failures in __stmmac_open() and stmmac_re=
+sume()
 
+I think I have already posted a v2 for this series:
+https://patchwork.kernel.org/project/netdevbpf/patch/20260907-stmmac-ptp-er=
+ror-propagate-v2-1-4a2e8e41e860@oss.qualcomm.com/
 
-The power supply
-----------------
+This one is marked as Superseded in patchwork.
 
-That July message was too broadly worded, and I should have followed up
-in that thread rather than leaving it as the last word.
+Regards,
+Lorenzo
 
-What the A/B/A established still holds, but for a narrower fault than I
-claimed. The July signature was link up at 2.5G/Full with 326 FCS errors
-and 326 drop events on the switch's CPU-facing port; swapping the supply
-made it go away and putting the old one back brought it straight back.
-I have no reason to doubt that part.
+>=20
+> This converts stmmac_setup_ptp() from void to int so that the PTP
+> reference clock enable and stmmac_init_timestamping() failures are
+> propagated, and adds unwind paths in __stmmac_open() and stmmac_resume()
+> for those failures.  The HW timestamp capability check moves out of
+> stmmac_init_timestamping() into the new stmmac_check_timestamp_cap()
+> helper.
+>=20
+> A few questions below.
+>=20
+> > diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/driver=
+s/net/ethernet/stmicro/stmmac/stmmac_main.c
+> > index 24656b35350b1..d33c82bd3ee46 100644
+> > --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> > +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> > @@ -885,6 +885,11 @@ static int stmmac_init_tstamp_counter(struct stmma=
+c_priv *priv,
+> >  	return 0;
+> >  }
+> > =20
+> > +static bool stmmac_check_timestamp_cap(struct stmmac_priv *priv)
+> > +{
+> > +	return priv->dma_cap.time_stamp || priv->dma_cap.atime_stamp;
+> > +}
+> > +
+> >  /**
+> >   * stmmac_init_timestamping - initialise timestamping
+> >   * @priv: driver private structure
+> > @@ -900,11 +905,6 @@ static int stmmac_init_timestamping(struct stmmac_=
+priv *priv)
+> >  	if (priv->plat->ptp_clk_freq_config)
+> >  		priv->plat->ptp_clk_freq_config(priv);
+> > =20
+> > -	if (!(priv->dma_cap.time_stamp || priv->dma_cap.atime_stamp)) {
+> > -		netdev_info(priv->dev, "PTP not supported by HW\n");
+> > -		return -EOPNOTSUPP;
+> > -	}
+> > -
+>=20
+> [Severity: Low]
+> Should the kernel-doc block just above stmmac_init_timestamping() be upda=
+ted
+> in the same patch?  It still says:
+>=20
+> 	 * Description: this is to verify if the HW supports the PTPv1 or PTPv2.
+> 	 * This is done by looking at the HW cap. register.
+> 	 * This function also registers the ptp driver.
+>=20
+> After this hunk the HW cap. register check lives in
+> stmmac_check_timestamp_cap()/stmmac_setup_ptp(), which is also why
+> stmmac_resume() now has to open-code "if (stmmac_check_timestamp_cap(priv=
+))",
+> and stmmac_ptp_register() is only called from stmmac_setup_ptp().  The
+> -EOPNOTSUPP return the description implies is no longer produced by any
+> path here, and the function's new error returns are not described.
+>=20
+> >  	ret =3D stmmac_init_tstamp_counter(priv, STMMAC_HWTS_ACTIVE |
+> >  					       PTP_TCR_TSCFUPDT);
+> >  	if (ret) {
+> > @@ -937,22 +937,39 @@ static int stmmac_init_timestamping(struct stmmac=
+_priv *priv)
+> >  	return 0;
+> >  }
+> > =20
+> > -static void stmmac_setup_ptp(struct stmmac_priv *priv)
+> > +static int stmmac_setup_ptp(struct stmmac_priv *priv)
+> >  {
+> >  	int ret;
+> > =20
+> > +	if (!stmmac_check_timestamp_cap(priv)) {
+> > +		netdev_info(priv->dev, "PTP not supported by HW\n");
+> > +		return 0;
+> > +	}
+> > +
+> >  	ret =3D clk_prepare_enable(priv->plat->clk_ptp_ref);
+>=20
+> [Severity: Medium]
+> Does this early return unbalance clk_ptp_ref against the platform noirq PM
+> callbacks?
+>=20
+> Before this patch stmmac_setup_ptp() always did clk_prepare_enable() on o=
+pen
+> and stmmac_release_ptp() always did clk_disable_unprepare() on close, so a
+> running interface always held one enable/prepare reference.  With the new
+> capability gate in both functions, hardware whose dma_cap.time_stamp and
+> dma_cap.atime_stamp are clear never gets the clock enabled.  Note
+> stmmac_hw_init() leaves priv->dma_cap all-zero when there is no HW feature
+> register ("No HW DMA feature register supported").
+>=20
+> stmmac_pltfr_noirq_suspend() in stmmac_platform.c still does this
+> unconditionally for any running non-WoL interface:
+>=20
+> 	if (!priv->wolopts) {
+> 		/* Disable clock in case of PWM is off */
+> 		clk_disable_unprepare(priv->plat->clk_ptp_ref);
+>=20
+> With the enable/prepare counts at zero, does that hit the clk core
+> enable_count/prepare_count underflow warning?  And after
+> stmmac_pltfr_noirq_resume() re-enables it unconditionally, the close path
+> stmmac_release_ptp() now returns early for the same hardware, so does that
+> reference stay held for good?
+>=20
+> These four sites appear to be the only clk_ptp_ref enable/disable users, =
+and
+> stmmac_pltfr_pm_ops installs those noirq callbacks for a large number of
+> platform glue drivers.
+>=20
+> > -	if (ret < 0)
+> > +	if (ret < 0) {
+> >  		netdev_warn(priv->dev,
+> >  			    "failed to enable PTP reference clock: %pe\n",
+> >  			    ERR_PTR(ret));
+> > +		return ret;
+> > +	}
+> > +
+> > +	ret =3D stmmac_init_timestamping(priv);
+> > +	if (ret) {
+> > +		clk_disable_unprepare(priv->plat->clk_ptp_ref);
+> > +		return ret;
+> > +	}
+> > =20
+> > -	if (stmmac_init_timestamping(priv) =3D=3D 0)
+> > -		stmmac_ptp_register(priv);
+> > +	stmmac_ptp_register(priv);
+> > +
+> > +	return 0;
+> >  }
+> > =20
+> >  static void stmmac_release_ptp(struct stmmac_priv *priv)
+> >  {
+> > +	if (!stmmac_check_timestamp_cap(priv))
+> > +		return;
+> > +
+> >  	stmmac_ptp_unregister(priv);
+> >  	clk_disable_unprepare(priv->plat->clk_ptp_ref);
+> >  }
+> > @@ -4161,10 +4178,12 @@ static int __stmmac_open(struct net_device *dev,
+> >  	ret =3D stmmac_hw_setup(dev);
+> >  	if (ret < 0) {
+> >  		netdev_err(priv->dev, "%s: Hw setup failed\n", __func__);
+> > -		goto init_error;
+> > +		return ret;
+> >  	}
+> > =20
+> > -	stmmac_setup_ptp(priv);
+> > +	ret =3D stmmac_setup_ptp(priv);
+> > +	if (ret)
+> > +		goto ptp_error;
+>=20
+> [Severity: High]
+> Can this make "ip link set dev ethX up" fail on configurations that work
+> today?
+>=20
+> stmmac_setup_ptp() -> stmmac_init_timestamping() -> stmmac_init_tstamp_co=
+unter()
+> returns -EINVAL for a zero PTP rate:
+>=20
+> 	if (!priv->plat->clk_ptp_rate) {
+> 		netdev_err(priv->dev, "Invalid PTP clock rate");
+> 		return -EINVAL;
+> 	}
+>=20
+> Before this patch that only produced the "PTP init failed" warning and the
+> interface still came up without timestamping.
+>=20
+> Is "timestamp capable but clk_ptp_rate =3D=3D 0" a real configuration?
+> stmmac_register_devlink() already tolerates exactly that combination:
+>=20
+> 	if (!(priv->dma_cap.time_stamp || priv->dma_cap.atime_stamp) ||
+> 	    !priv->plat->clk_ptp_rate)
+> 		return 0;
+>=20
+> and stmmac_probe_config_dt() derives the rate from a clock that may be NU=
+LL:
+>=20
+> 	if (IS_ERR(plat->clk_ptp_ref)) {
+> 		plat->clk_ptp_rate =3D clk_get_rate(plat->stmmac_clk);
+> 		plat->clk_ptp_ref =3D NULL;
+>=20
+> with clk_get_rate(NULL) returning 0 (plat->stmmac_clk is left NULL on the
+> "Cannot get CSR clock" path, and is not fetched at all for
+> snps,dwc-qos-ethernet-4.10).
+>=20
+> On such a board, would the interface become permanently un-openable for
+> users who never touch PTP or TAPRIO?  The same question applies to
+> stmmac_resume() below, where the new goto skips netif_device_attach() and
+> leaves a previously working link down.  Since there are two Fixes: tags t=
+his
+> will be picked up for stable, so it may be worth spelling the behaviour
+> change out in the changelog, or keeping the failure non-fatal for the
+> datapath and only refusing the PTP/EST-dependent features.
+>=20
+> >  	stmmac_init_coalesce(priv);
+> > =20
+> > @@ -4187,9 +4206,10 @@ static int __stmmac_open(struct net_device *dev,
+> > =20
+> >  	for (chan =3D 0; chan < priv->plat->tx_queues_to_use; chan++)
+> >  		hrtimer_cancel(&priv->dma_conf.tx_queue[chan].txtimer);
+> > -
+> >  	stmmac_release_ptp(priv);
+> > -init_error:
+> > +ptp_error:
+> > +	stmmac_stop_all_dma(priv);
+> > +
+> >  	return ret;
+> >  }
+>=20
+> [Severity: High]
+> This isn't a bug introduced by this patch, but the new ptp_error exit wid=
+ens
+> the set of ways __stmmac_open() can fail after it has already done:
+>=20
+> 	memcpy(&priv->dma_conf, dma_conf, sizeof(*dma_conf));
+>=20
+> so priv->dma_conf holds its own copy of every pointer in the caller's
+> dma_conf.  On the MTU reopen path the caller reacts to failure like this:
+>=20
+> stmmac_change_mtu()
+> 	ret =3D __stmmac_open(dev, dma_conf);
+> 	if (ret) {
+> 		free_dma_desc_resources(priv, dma_conf);
+> 		kfree(dma_conf);
+>=20
+> The interface is left administratively up, and priv->dma_conf still points
+> at the freed dma_alloc_coherent() buffers and the freed tx_skbuff/rx_skbu=
+ff
+> arrays, since nulling pointers inside the caller's copy cannot clear the
+> memcpy'd copy.  A later "ip link set dev ethX down" then runs:
+>=20
+> __stmmac_release()
+> 	stmmac_stop_all_dma(priv);
+> 	/* Release and free the Rx/Tx resources */
+> 	free_dma_desc_resources(priv, &priv->dma_conf);
+>=20
+> Does that free the same rings a second time?  The pre-existing trigger was
+> an stmmac_request_irq() failure via irq_error; with this patch a PTP
+> reference clock enable failure reaches the same state.
+>=20
+> [Severity: Low]
+> Should this unwind also clear the MAC Rx/Tx enable that stmmac_hw_setup()
+> set?
+>=20
+> stmmac_hw_setup() does:
+>=20
+> 	/* Enable the MAC Rx/Tx */
+> 	stmmac_mac_set(priv, priv->ioaddr, true);
+>=20
+> stmmac_stop_all_dma() only clears the DMA channel start bits and deinits =
+the
+> channels.  The MAC enable is cleared in the mac_link_down callback, in the
+> reset path and in stmmac_suspend(), and on the ptp_error path
+> phylink_start() was never reached, so mac_link_down() cannot run.
+> stmmac_open() then frees the descriptor rings and drops the runtime-PM
+> reference, leaving the MAC clock-gated with its Rx/Tx still armed.  All
+> stmmac_hw_setup() failure returns happen before the stmmac_mac_set() call,
+> so this residue is specific to the new post-setup failure exits.
+>=20
+> > @@ -8326,13 +8346,14 @@ int stmmac_resume(struct device *dev)
+> >  	ret =3D stmmac_hw_setup(ndev);
+> >  	if (ret < 0) {
+> >  		netdev_err(priv->dev, "%s: Hw setup failed\n", __func__);
+> > -		stmmac_legacy_serdes_power_down(priv);
+> > -		mutex_unlock(&priv->lock);
+> > -		rtnl_unlock();
+> > -		return ret;
+> > +		goto error_unlock;
+> >  	}
+> > =20
+> > -	stmmac_init_timestamping(priv);
+> > +	if (stmmac_check_timestamp_cap(priv)) {
+> > +		ret =3D stmmac_init_timestamping(priv);
+> > +		if (ret)
+> > +			goto error_stop_dma;
+> > +	}
+> > =20
+> >  	stmmac_init_coalesce(priv);
+> >  	phylink_rx_clk_stop_block(priv->phylink);
+> > @@ -8356,6 +8377,15 @@ int stmmac_resume(struct device *dev)
+> >  	netif_device_attach(ndev);
+> > =20
+> >  	return 0;
+> > +
+> > +error_stop_dma:
+> > +	stmmac_stop_all_dma(priv);
+> > +error_unlock:
+> > +	stmmac_legacy_serdes_power_down(priv);
+> > +	mutex_unlock(&priv->lock);
+> > +	rtnl_unlock();
+> > +
+> > +	return ret;
+> >  }
+>=20
+> [Severity: Low]
+> Same question on the resume side: stmmac_suspend() explicitly did
+>=20
+> 	stmmac_mac_set(priv, priv->ioaddr, false);
+>=20
+> but error_stop_dma/error_unlock stops the DMA and calls
+> stmmac_legacy_serdes_power_down() while the MAC Rx/Tx enabled by
+> stmmac_hw_setup() is still set, so the SerDes is removed under an enabled
+> MAC.  Would adding stmmac_mac_set(priv, priv->ioaddr, false) to this unwi=
+nd
+> restore the state that stmmac_suspend() had established?
+>=20
+> Also, on this path netif_device_attach() is never reached while
+> netif_running() is still true, so the netdev stays detached after a resume
+> failure.  Is that the intended outcome for a PTP init error?
+>=20
+> --=20
+> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
+set/20260904-stmmac-ptp-error-propagate-v1-1-80f01b03dafa%40oss.qualcomm.com
 
-What I got wrong was declaring the cold-start problem closed. On the new
-supply the board later came up broken again, several times, with a
-different signature: no FCS errors, no drop events, no CRC or symbol
-errors anywhere - the switch simply never forwards what the CPU sends,
-and the MIB TX counters on the user ports stay at zero. A power cycle or
-a driver re-probe clears it. That is the failure these patches address,
-and it happens on a supply that is not faulty.
+--5hYik/OtwsiKgIbw
+Content-Type: application/pgp-signature; name=signature.asc
 
-So: two faults, one supply-related and settled, one not. I conflated
-them in July.
+-----BEGIN PGP SIGNATURE-----
 
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCaqEx6AAKCRA6cBh0uS2t
+rE4WAPsH+53zamQMSb8+l3vjOhc245hJ9HSqv18qQgtD6j/aUAD8DaNU1/QNLSWI
+qhHSumkyTUk3cgGFC/HQwrelHiC1ggg=
+=eerw
+-----END PGP SIGNATURE-----
 
-Why unbind/rebind always works
-------------------------------
-
-I do not have a measurement that settles this, so treat what follows as
-a hypothesis.
-
-At rebind the chip has been powered for minutes or hours, so whatever
-internal power-on sequence it runs is long finished; the driver's reset
-then only restarts the register blocks, and they come back quickly. From
-cold, the reset lands while that power-on initialisation is still in
-progress, and the two overlap. That would explain why the extra wait
-only ever matters on the first probe after power-on, and why every warm
-path - rebind, reboot, sysupgrade - is clean regardless.
-
-It also fits your RTL8367R observation: if the reset bit reflects the
-register-level reset rather than the completion of the internal boot,
-then how much slack there is after the bit clears is a property of the
-part, and a driver that keys off the bit alone is relying on that slack
-being zero.
-
-
-The deadline arithmetic
------------------------
-
-I have no attachment to the implementation, but I would rather not
-change it on my own judgement here, because you and Linus have landed on
-opposite sides: he reviewed this version specifically liking the
-deadline optimisation, and you would rather see the complexity gone.
-
-If you two settle on the simple form I will send a v3 with
-
-	msleep(RTL8365MB_CHIP_RESET_TIME_MS);
-
-up front and a single read of RTL8365MB_CHIP_RESET_HW_MASK afterwards,
-returning -ETIMEDOUT if it is still set. Total probe time is the same
-either way; what the current version buys is only that a chip whose poll
-already took the full second does not wait twice, which on reflection is
-not worth the arithmetic if it reads as complexity to the people
-maintaining this.
-
-
-Numbers
--------
-
-One thing I should be straight about: the "one cold boot in seven"
-figure was measured with both patches applied together, so it does not
-attribute the failures to either one on its own. Johan raised the same
-point on the OpenWrt PR. I am running per-arm cold-boot counts now -
-neither patch, 714-01 alone, both - on the only board I have that
-reproduces this, and I will report the counts when I have enough boots
-for them to mean anything. If 714-01 alone turns out to be sufficient,
-the second patch should be dropped rather than respun.
-
-Best regards,
-Stanislaw
+--5hYik/OtwsiKgIbw--
