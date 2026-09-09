@@ -1,500 +1,280 @@
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF94D57F75D
-	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 14:37:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B195314A86;
+	Wed,  9 Sep 2026 14:39:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788964637; cv=none; b=SsKSIH9eLs6v7ZzZuAEqmBCxmp6rltu8ct1uIz1kzrbnbYfVJ8UdtQ55dALJzTyZScIZqLZMAotWW78FbXkQI1mueix2v6cPI3MLMb8fjYxZNmyEpsNj5Vma4w3CWVS4AEzo+xsJ/wahCG96jUtf5ORkQgivFQhA5RbT0DUphSk=
+	t=1788964770; cv=none; b=n2MwFPuItKW4Uzz160bTAUAJXb8XYZXjzCGFQ+Scai6sxMda75EsaBdHDQ+/yAJiq2MFxhAxvz7HoncidqC+AiZBeKtr5gkcQJjwoM9DRjEmMnkPL8RxUG51feUA6bIi1PNiaqaildU8OLBJUE0b3X/hKAQcu66a0x4osdQ9zTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788964637; c=relaxed/simple;
-	bh=XAeMdlYimKGJc3ti1ha2/ZiCzFnirh7Ki5zeO+6i5EA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W0TZod1hkddDK90lt++gqKo52/UPFm77vpvX+6GQWZSY2DjyQQ0E3F3Zfi6Z6VjjjGpk9Zdh4IhwcDwUVczpTFYiR6mEps4x7H6phon2WGCh9WOnC7nm15HPBzDLv3vGbVBsS3mjArI7LPhUD3fvtdAxlt6MsDGsd0rNARIt7qQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=deNyLPCn; arc=none smtp.client-ip=209.85.215.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
+	s=arc-20240116; t=1788964770; c=relaxed/simple;
+	bh=1rzzRsFBAiuC+bYDPvS/SgKKe5unW7JKdmc8jw0Cpq8=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=hZ/LD33khtO0Nt0hWwOlL/br0uXqTa6fVkne88/eB7cxt9fpnymCUrVRLq2wr7dx4yYHNzE/5v7MtULXQY0YqOrl9wUKK0x9SRzL2dJFfVnOifYTq88lQA4UuhnIN5yCdy6r2mDYPvu24a1+8y7v2Jxiu8f4u56Bqa25AMfTuvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cqcX/Z5F; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="deNyLPCn"
-Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-cc1cf287ef8so4816947a12.3
-        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 07:37:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1788964635; x=1789569435; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=AnZ/fPcgKjflxJLFmbxeWbpyuVjiHN/0svFus5OARoM=;
-        b=deNyLPCnVC45lXwiavvPNs8bP4zE7WZrH3r+8kHERiqCqLVAo+C1oKVQG1fTtOJfYH
-         iFKzXg52EgmSmmU/Y9lW/+5N4U64GKbKnzzClpu0W5o9AS+DYexqK8eDR7EMFekMFu4d
-         P9SS8IBe8q4hgD2yrcgQ/ZwOpRbsC6nPIsr6biaqW5r3bqNIkAm0/d7PU/OhubnNzeaf
-         R+P82BIFPo8r75nlsqoEwT1qVXWP9asgjyyusblRGF7pnJ9d+aorhLnbzHu9082vPUz3
-         7m/g4qCBorig7B24GN6yMFr9ojFZEQCQRZUzv1YDnA8g+qaLl20UrdZAzi/X96f3Mse2
-         sNng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788964635; x=1789569435;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=AnZ/fPcgKjflxJLFmbxeWbpyuVjiHN/0svFus5OARoM=;
-        b=rnjcni+9tQkHy0OrMz56W1I8S/Wxm6mOvdvClP71eyacgTgWVsEJpa6ndqyqGBzcoh
-         WiFuPNIH3UF0IzecJqPSK2L/EJIsOy5voVqjP7dBOgapA+wE+LbHtbCat3hO+gr7EvrX
-         rHVjnogN3CY97xkhHGeGM6mU9tN5YSQiFyP4oZkUD9caRBAHCqGRKr9Kb8pYfv6NYCx5
-         W3UDJjjXVtM6aUQIpEvZrqdS80eCXOD9D4AUvjIltuLey4UPAUhRCduIxxmWBqlKq0Ss
-         MwqPBxzAbxaTfsS1XZ0yNDMG/1kVRb+mX/9H3ps8pJ5hR9ENA1z+0Fx095gIocU/ljC0
-         Z2SQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzrgJ2ZsQvuyReh0u0ZiPRPVouucqvh+/tLpZYE6WpCSfjKbQJCmqwCVZ9NVQxsO3LEshT+Ah8=@vger.kernel.org
-X-Gm-Message-State: AFuF++lATEh+6W/C/fHESDp4QEIYBDHM074W9XCvSaXEiUHow+j6Grsa
-	X6eaNfa8gSe30WugokFI3+kH7g/qHIJ0sGzJfp1Y3a3Tczyz5GrZeDNZB48ddwUCPE+N
-X-Gm-Gg: AYBFou2Up5EOXhNthBs5bSJHAxxZbV1dmZnD5d6gNg/VSpM4EQ0/8qT2ThgWJh8d3Bt
-	/toVPipEqAoaJZgHmka0cNwzmg/g+UlkQ6uKnQV7CObA45z9ENHrOFXyRgRAA5tbHrhZ+sOfuNH
-	frZEhYxXoiIum0qKXnBFrx42NDhbsxx83G7UnyvHtf7qiJgRLJYEFDwqTBUzDMnrq7BI55Dr9u+
-	7OgO4I0LO4inncGEPW5DbrkseYE1Ump+vRi59fkL6DzohFa79L3o9dT6wUklaFM4lExIIOTQyx2
-	EdTzeSKfmKNeO6/nc57kNaQH5KEtscYch9loBEI1ZT+ZKg+NztCIGpEfJSBehy6fE8bal5LaRld
-	jlyKNgrC5q8SSd0JFBjfAn6xWMZqt5Yui9B0EyYMf5pjo4Ohb6OzRDvScejDv7aPFpW6jGf/DCK
-	eTEbWnskcq6sjlTDutVSm/fRb9hXPmlhGIc27qX6MIKsh3lRodVTSk61IzfqaR77R1Sw/Dog3Qi
-	2AlUcRHXjc7MtQlMc9drqrBeiGCQQ==
-X-Received: by 2002:a05:6300:6cc3:10b0:3da:755f:a031 with SMTP id adf61e73a8af0-3da755fa627mr22358075637.12.1788964635053;
-        Wed, 09 Sep 2026 07:37:15 -0700 (PDT)
-Received: from b6ad5085b32f.. ([122.51.212.64])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc455451b46sm6784762a12.18.2026.09.09.07.37.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Sep 2026 07:37:14 -0700 (PDT)
-From: Zihan Xi <zihanx@nebusec.ai>
-To: Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>
-Cc: Zihan Xi <zihanx@nebusec.ai>,
-	Phil Sutter <phil@nwl.cc>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Vega <vega@nebusec.ai>
-Subject: [PATCH nf v2 1/1] netfilter: x_tables: avoid holding mutex over faultable user copies
-Date: Wed,  9 Sep 2026 14:36:58 +0000
-Message-ID: <bef677757277dc3c29f503eddc74cf1fbc5fb5fd.1788961415.git.zihanx@nebusec.ai>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <cover.1788961415.git.zihanx@nebusec.ai>
-References: <cover.1788961415.git.zihanx@nebusec.ai>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cqcX/Z5F"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 483791F00A3A;
+	Wed,  9 Sep 2026 14:39:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788964768;
+	bh=+UIf8Zu80TSsKBxyqZn2MTJLVYa1HNYtb0XS0mqqrDM=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=cqcX/Z5F0wiZ2qcJe0b0D/ylWsfnaBX5mIhlSu3R0jYpAglQ1ZoVBrbT7cY7UsgB3
+	 E2ibg1SP7n7ITRMoaKpivUwxaDRdVGqRjZXJ0ZeWx8jQleOw9Ouv1jppWOJ8016nU4
+	 on1srxWDjSEy2oLpclOJKlhmiwRH31IzlDj8/ainsotrMKgCL8YVbyrY8YFYI9yggg
+	 lkhRpa9FuHs+3V19TIClaoEJS/LWDTTA6yQc8kykxlI+PKNmb9+g0bL+dY4m3RBFct
+	 q+tLQk7Cf3XKGyXlcMIG68vMXpwp10dyvrc7akCdy1ZpgsOhAOc0+KMhh06h4X6uoH
+	 yDFeEvmWXd1Xg==
+Subject: Re: [PATCH net v2 2/2] net: fec: free the PPS interrupt before
+ tearing down the PHC and netdev
+From: netdev-bot+sashiko@kernel.org
+To: me@cherr.cc
+Cc: wei.fang@nxp.com, frank.li@nxp.com, shenwei.wang@nxp.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, richardcochran@gmail.com,
+ troy.kisky@boundarydevices.com, fugang.duan@nxp.com, l.stach@pengutronix.de,
+ horms@kernel.org, phucduc.bui@gmail.com, imx@lists.linux.dev,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Date: Wed, 09 Sep 2026 14:39:26 +0000
+Message-ID: <178896476679.219967.6901697617013894396@kernel.org>
+In-Reply-To: <20260908-fec-ptp-pps-event-uaf-v2-2-2a1d57121ade@cherr.cc>
+References: <20260908-fec-ptp-pps-event-uaf-v2-2-2a1d57121ade@cherr.cc>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-The legacy IPv4, IPv6 and ARP table GET_INFO and GET_ENTRIES paths hold
-the per-family xtables mutexes while copying table data to userspace. A
-faultable destination can therefore sleep indefinitely with the mutex held,
-blocking unrelated table and registry operations.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider:
 
-Disable page faults during the locked copy, release the lock, fault in the
-output range, and retry once. Move GET_INFO's fixed-size copy outside the
-table locks and apply the same retry handling to the remaining IPv4/IPv6
-compat GET_ENTRIES paths.
+Critical: 0 · High: 0 (1) · Medium: 1 (1) · Low: 0 (1)
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Reported-by: Vega <vega@nebusec.ai>
-Assisted-by: LLM
-Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
----
-changes in v2:
-  - Rebase onto current nf.git after 0bd7ed1a3263c ("netfilter:
-    arp_tables: remove the 32bit compat interface"). ARP GET_INFO
-    and GET_ENTRIES are updated on the native paths only. IPv4 and
-    IPv6 still include the compat GET_ENTRIES retry.
-  - Drop hung_task_panic and the 10-second hung_task timeout from the
-    reproducer, as pointed out by Pablo Neira Ayuso. Observe the stall
-    through holder/waiter wchan instead.
-  - v1 Link: https://lore.kernel.org/all/cover.1788244146.git.zihanx@nebusec.ai/
+- [Medium] fec_ptp_stop() now removes the PPS interrupt handler
+  (devm_free_irq(), drivers/net/ethernet/freescale/fec_ptp.c:870)…
 
- net/ipv4/netfilter/arp_tables.c | 22 +++++++++++++++++-----
- net/ipv4/netfilter/ip_tables.c  | 33 ++++++++++++++++++++++++++++-----
- net/ipv6/netfilter/ip6_tables.c | 33 ++++++++++++++++++++++++++++-----
- 3 files changed, 73 insertions(+), 15 deletions(-)
+Pre-existing issues:
+- [High] Use-after-free of fec_enet_private via the perout hrtimer during
+  driver removal.
+- [Medium] fec_pps_interrupt()
+  (drivers/net/ethernet/freescale/fec_ptp.c:696-728) performs a read-…
+- [Low] Kernel-doc above fec_ptp_init()
+  (drivers/net/ethernet/freescale/fec_ptp.c:735) states "If ptp support…
 
-diff --git a/net/ipv4/netfilter/arp_tables.c b/net/ipv4/netfilter/arp_tables.c
-index db307fa49f3f6..7b43269aa6b21 100644
---- a/net/ipv4/netfilter/arp_tables.c
-+++ b/net/ipv4/netfilter/arp_tables.c
-@@ -23,6 +23,7 @@
- #include <linux/init.h>
- #include <linux/mutex.h>
- #include <linux/err.h>
-+#include <linux/pagemap.h>
- #include <net/sock.h>
- #include <linux/uaccess.h>
- 
-@@ -695,6 +696,7 @@ static int copy_entries_to_user(unsigned int total_size,
- 
- 	loc_cpu_entry = private->entries;
- 
-+	pagefault_disable();
- 	/* FIXME: use iterator macros --RR */
- 	/* ... then go back and fix counters and names */
- 	for (off = 0, num = 0; off < total_size; off += e->next_offset, num++){
-@@ -719,12 +721,14 @@ static int copy_entries_to_user(unsigned int total_size,
- 	}
- 
-  free_counters:
-+	pagefault_enable();
- 	vfree(counters);
- 	return ret;
- }
- 
- static int get_info(struct net *net, void __user *user, const int *len)
- {
-+	struct arpt_getinfo info;
- 	char name[XT_TABLE_MAXNAMELEN];
- 	struct xt_table *t;
- 	int ret;
-@@ -738,7 +742,6 @@ static int get_info(struct net *net, void __user *user, const int *len)
- 	name[XT_TABLE_MAXNAMELEN-1] = '\0';
- 	t = xt_request_find_table_lock(net, NFPROTO_ARP, name);
- 	if (!IS_ERR(t)) {
--		struct arpt_getinfo info;
- 		const struct xt_table_info *private = t->private;
- 
- 		memset(&info, 0, sizeof(info));
-@@ -751,15 +754,14 @@ static int get_info(struct net *net, void __user *user, const int *len)
- 		info.size = private->size;
- 		strscpy(info.name, name);
- 
--		if (copy_to_user(user, &info, *len) != 0)
--			ret = -EFAULT;
--		else
--			ret = 0;
-+		ret = 0;
- 		xt_table_unlock(t);
- 		module_put(t->me);
- 	} else
- 		ret = PTR_ERR(t);
- 
-+	if (!ret && copy_to_user(user, &info, *len) != 0)
-+		ret = -EFAULT;
- 	return ret;
- }
- 
-@@ -769,6 +771,7 @@ static int get_entries(struct net *net, struct arpt_get_entries __user *uptr,
- 	int ret;
- 	struct arpt_get_entries get;
- 	struct xt_table *t;
-+	bool faulted = false;
- 
- 	if (*len < sizeof(get))
- 		return -EINVAL;
-@@ -779,6 +782,7 @@ static int get_entries(struct net *net, struct arpt_get_entries __user *uptr,
- 
- 	get.name[sizeof(get.name) - 1] = '\0';
- 
-+ retry:
- 	t = xt_find_table_lock(net, NFPROTO_ARP, get.name);
- 	if (!IS_ERR(t)) {
- 		const struct xt_table_info *private = t->private;
-@@ -794,6 +798,14 @@ static int get_entries(struct net *net, struct arpt_get_entries __user *uptr,
- 	} else
- 		ret = PTR_ERR(t);
- 
-+	if (ret == -EFAULT && !faulted) {
-+		faulted = true;
-+		if (fault_in_writeable((char __user *)uptr->entrytable,
-+				       get.size))
-+			return -EFAULT;
-+		goto retry;
-+	}
-+
- 	return ret;
- }
- 
-diff --git a/net/ipv4/netfilter/ip_tables.c b/net/ipv4/netfilter/ip_tables.c
-index 809441cedcedc..e029072b07501 100644
---- a/net/ipv4/netfilter/ip_tables.c
-+++ b/net/ipv4/netfilter/ip_tables.c
-@@ -21,6 +21,7 @@
- #include <linux/proc_fs.h>
- #include <linux/err.h>
- #include <linux/cpumask.h>
-+#include <linux/pagemap.h>
- 
- #include <linux/netfilter/x_tables.h>
- #include <linux/netfilter_ipv4/ip_tables.h>
-@@ -824,6 +825,7 @@ copy_entries_to_user(unsigned int total_size,
- 
- 	loc_cpu_entry = private->entries;
- 
-+	pagefault_disable();
- 	/* FIXME: use iterator macros --RR */
- 	/* ... then go back and fix counters and names */
- 	for (off = 0, num = 0; off < total_size; off += e->next_offset, num++){
-@@ -861,6 +863,7 @@ copy_entries_to_user(unsigned int total_size,
- 	}
- 
-  free_counters:
-+	pagefault_enable();
- 	vfree(counters);
- 	return ret;
- }
-@@ -943,6 +946,7 @@ static int compat_table_info(const struct xt_table_info *info,
- 
- static int get_info(struct net *net, void __user *user, const int *len)
- {
-+	struct ipt_getinfo info;
- 	char name[XT_TABLE_MAXNAMELEN];
- 	struct xt_table *t;
- 	int ret;
-@@ -960,7 +964,6 @@ static int get_info(struct net *net, void __user *user, const int *len)
- #endif
- 	t = xt_request_find_table_lock(net, AF_INET, name);
- 	if (!IS_ERR(t)) {
--		struct ipt_getinfo info;
- 		const struct xt_table_info *private = t->private;
- #ifdef CONFIG_NETFILTER_XTABLES_COMPAT
- 		struct xt_table_info tmp;
-@@ -981,10 +984,7 @@ static int get_info(struct net *net, void __user *user, const int *len)
- 		info.size = private->size;
- 		strscpy(info.name, name);
- 
--		if (copy_to_user(user, &info, *len) != 0)
--			ret = -EFAULT;
--		else
--			ret = 0;
-+		ret = 0;
- 
- 		xt_table_unlock(t);
- 		module_put(t->me);
-@@ -994,6 +994,8 @@ static int get_info(struct net *net, void __user *user, const int *len)
- 	if (in_compat_syscall())
- 		xt_compat_unlock(AF_INET);
- #endif
-+	if (!ret && copy_to_user(user, &info, *len) != 0)
-+		ret = -EFAULT;
- 	return ret;
- }
- 
-@@ -1004,6 +1006,7 @@ get_entries(struct net *net, struct ipt_get_entries __user *uptr,
- 	int ret;
- 	struct ipt_get_entries get;
- 	struct xt_table *t;
-+	bool faulted = false;
- 
- 	if (*len < sizeof(get))
- 		return -EINVAL;
-@@ -1013,6 +1016,7 @@ get_entries(struct net *net, struct ipt_get_entries __user *uptr,
- 		return -EINVAL;
- 	get.name[sizeof(get.name) - 1] = '\0';
- 
-+ retry:
- 	t = xt_find_table_lock(net, AF_INET, get.name);
- 	if (!IS_ERR(t)) {
- 		const struct xt_table_info *private = t->private;
-@@ -1027,6 +1031,14 @@ get_entries(struct net *net, struct ipt_get_entries __user *uptr,
- 	} else
- 		ret = PTR_ERR(t);
- 
-+	if (ret == -EFAULT && !faulted) {
-+		faulted = true;
-+		if (fault_in_writeable((char __user *)uptr->entrytable,
-+				       get.size))
-+			return -EFAULT;
-+		goto retry;
-+	}
-+
- 	return ret;
- }
- 
-@@ -1561,12 +1573,14 @@ compat_copy_entries_to_user(unsigned int total_size, struct xt_table *table,
- 
- 	pos = userptr;
- 	size = total_size;
-+	pagefault_disable();
- 	xt_entry_foreach(iter, private->entries, total_size) {
- 		ret = compat_copy_entry_to_user(iter, &pos,
- 						&size, counters, i++);
- 		if (ret != 0)
- 			break;
- 	}
-+	pagefault_enable();
- 
- 	vfree(counters);
- 	return ret;
-@@ -1579,6 +1593,7 @@ compat_get_entries(struct net *net, struct compat_ipt_get_entries __user *uptr,
- 	int ret;
- 	struct compat_ipt_get_entries get;
- 	struct xt_table *t;
-+	bool faulted = false;
- 
- 	if (*len < sizeof(get))
- 		return -EINVAL;
-@@ -1591,6 +1606,7 @@ compat_get_entries(struct net *net, struct compat_ipt_get_entries __user *uptr,
- 
- 	get.name[sizeof(get.name) - 1] = '\0';
- 
-+ retry:
- 	xt_compat_lock(AF_INET);
- 	t = xt_find_table_lock(net, AF_INET, get.name);
- 	if (!IS_ERR(t)) {
-@@ -1610,6 +1626,13 @@ compat_get_entries(struct net *net, struct compat_ipt_get_entries __user *uptr,
- 		ret = PTR_ERR(t);
- 
- 	xt_compat_unlock(AF_INET);
-+	if (ret == -EFAULT && !faulted) {
-+		faulted = true;
-+		if (fault_in_writeable((char __user *)uptr->entrytable,
-+				       get.size))
-+			return -EFAULT;
-+		goto retry;
-+	}
- 	return ret;
- }
- #endif
-diff --git a/net/ipv6/netfilter/ip6_tables.c b/net/ipv6/netfilter/ip6_tables.c
-index 313c4aac377aa..a64fcd3a9948c 100644
---- a/net/ipv6/netfilter/ip6_tables.c
-+++ b/net/ipv6/netfilter/ip6_tables.c
-@@ -25,6 +25,7 @@
- #include <linux/proc_fs.h>
- #include <linux/err.h>
- #include <linux/cpumask.h>
-+#include <linux/pagemap.h>
- 
- #include <linux/netfilter_ipv6/ip6_tables.h>
- #include <linux/netfilter/x_tables.h>
-@@ -845,6 +846,7 @@ copy_entries_to_user(unsigned int total_size,
- 
- 	loc_cpu_entry = private->entries;
- 
-+	pagefault_disable();
- 	/* FIXME: use iterator macros --RR */
- 	/* ... then go back and fix counters and names */
- 	for (off = 0, num = 0; off < total_size; off += e->next_offset, num++){
-@@ -882,6 +884,7 @@ copy_entries_to_user(unsigned int total_size,
- 	}
- 
-  free_counters:
-+	pagefault_enable();
- 	vfree(counters);
- 	return ret;
- }
-@@ -964,6 +967,7 @@ static int compat_table_info(const struct xt_table_info *info,
- 
- static int get_info(struct net *net, void __user *user, const int *len)
- {
-+	struct ip6t_getinfo info;
- 	char name[XT_TABLE_MAXNAMELEN];
- 	struct xt_table *t;
- 	int ret;
-@@ -981,7 +985,6 @@ static int get_info(struct net *net, void __user *user, const int *len)
- #endif
- 	t = xt_request_find_table_lock(net, AF_INET6, name);
- 	if (!IS_ERR(t)) {
--		struct ip6t_getinfo info;
- 		const struct xt_table_info *private = t->private;
- #ifdef CONFIG_NETFILTER_XTABLES_COMPAT
- 		struct xt_table_info tmp;
-@@ -1002,10 +1005,7 @@ static int get_info(struct net *net, void __user *user, const int *len)
- 		info.size = private->size;
- 		strcpy(info.name, name);
- 
--		if (copy_to_user(user, &info, *len) != 0)
--			ret = -EFAULT;
--		else
--			ret = 0;
-+		ret = 0;
- 
- 		xt_table_unlock(t);
- 		module_put(t->me);
-@@ -1015,6 +1015,8 @@ static int get_info(struct net *net, void __user *user, const int *len)
- 	if (in_compat_syscall())
- 		xt_compat_unlock(AF_INET6);
- #endif
-+	if (!ret && copy_to_user(user, &info, *len) != 0)
-+		ret = -EFAULT;
- 	return ret;
- }
- 
-@@ -1025,6 +1027,7 @@ get_entries(struct net *net, struct ip6t_get_entries __user *uptr,
- 	int ret;
- 	struct ip6t_get_entries get;
- 	struct xt_table *t;
-+	bool faulted = false;
- 
- 	if (*len < sizeof(get))
- 		return -EINVAL;
-@@ -1035,6 +1038,7 @@ get_entries(struct net *net, struct ip6t_get_entries __user *uptr,
- 
- 	get.name[sizeof(get.name) - 1] = '\0';
- 
-+ retry:
- 	t = xt_find_table_lock(net, AF_INET6, get.name);
- 	if (!IS_ERR(t)) {
- 		struct xt_table_info *private = t->private;
-@@ -1049,6 +1053,14 @@ get_entries(struct net *net, struct ip6t_get_entries __user *uptr,
- 	} else
- 		ret = PTR_ERR(t);
- 
-+	if (ret == -EFAULT && !faulted) {
-+		faulted = true;
-+		if (fault_in_writeable((char __user *)uptr->entrytable,
-+				       get.size))
-+			return -EFAULT;
-+		goto retry;
-+	}
-+
- 	return ret;
- }
- 
-@@ -1575,12 +1587,14 @@ compat_copy_entries_to_user(unsigned int total_size, struct xt_table *table,
- 
- 	pos = userptr;
- 	size = total_size;
-+	pagefault_disable();
- 	xt_entry_foreach(iter, private->entries, total_size) {
- 		ret = compat_copy_entry_to_user(iter, &pos,
- 						&size, counters, i++);
- 		if (ret != 0)
- 			break;
- 	}
-+	pagefault_enable();
- 
- 	vfree(counters);
- 	return ret;
-@@ -1593,6 +1607,7 @@ compat_get_entries(struct net *net, struct compat_ip6t_get_entries __user *uptr,
- 	int ret;
- 	struct compat_ip6t_get_entries get;
- 	struct xt_table *t;
-+	bool faulted = false;
- 
- 	if (*len < sizeof(get))
- 		return -EINVAL;
-@@ -1605,6 +1620,7 @@ compat_get_entries(struct net *net, struct compat_ip6t_get_entries __user *uptr,
- 
- 	get.name[sizeof(get.name) - 1] = '\0';
- 
-+ retry:
- 	xt_compat_lock(AF_INET6);
- 	t = xt_find_table_lock(net, AF_INET6, get.name);
- 	if (!IS_ERR(t)) {
-@@ -1624,6 +1640,13 @@ compat_get_entries(struct net *net, struct compat_ip6t_get_entries __user *uptr,
- 		ret = PTR_ERR(t);
- 
- 	xt_compat_unlock(AF_INET6);
-+	if (ret == -EFAULT && !faulted) {
-+		faulted = true;
-+		if (fault_in_writeable((char __user *)uptr->entrytable,
-+				       get.size))
-+			return -EFAULT;
-+		goto retry;
-+	}
- 	return ret;
- }
- #endif
+--
+
+net: fec: free the PPS interrupt before tearing down the PHC and netdev
+
+This records the PPS interrupt number in struct fec_enet_private when
+devm_request_irq() succeeds, and releases it with devm_free_irq() in
+fec_ptp_stop() before ptp_clock_unregister(), so the handler is gone
+before the PHC and the netdev go away.
+
+A few questions about the teardown ordering and about state that is not
+covered by the new devm_free_irq() call.
+
+> diff --git a/drivers/net/ethernet/freescale/fec_ptp.c b/drivers/net/ethernet/freescale/fec_ptp.c
+> index 56801c2009d59..567ea2a461173 100644
+> --- a/drivers/net/ethernet/freescale/fec_ptp.c
+> +++ b/drivers/net/ethernet/freescale/fec_ptp.c
+> @@ -778,6 +778,7 @@ void fec_ptp_init(struct platform_device *pdev, int irq_idx)
+>  	hrtimer_setup(&fep->perout_timer, fec_ptp_pps_perout_handler, CLOCK_REALTIME,
+>  		      HRTIMER_MODE_REL);
+>  
+> +	fep->pps_irq = -1;
+
+[Severity: Low]
+This is a pre-existing documentation issue and not something this patch
+introduces, but the kernel-doc directly above fec_ptp_init() in
+fec_ptp.c claims an early-exit path that the body does not have:
+
+ * This function performs the required steps for enabling ptp
+ * support. If ptp support has already been loaded it simply calls the
+ * cyclecounter init routine and exits.
+
+The body has no such test: every call re-populates fep->ptp_caps,
+re-initialises tmreg_lock, the time_keep delayed work and perout_timer,
+and now also resets fep->pps_irq before requesting the pps irq again.
+
+Since fec_ptp_init() is only called once per probe from fec_probe(), this
+has no runtime effect today. If a repeat initialisation ever became
+possible though, would the unconditional fep->pps_irq = -1 erase the
+recorded irq while the old non-shared handler is still installed, so that
+the second devm_request_irq() fails and fec_ptp_stop() then skips
+devm_free_irq() entirely?
+
+Would it make sense to correct the comment while touching this function?
+
+>  	irq = platform_get_irq_byname_optional(pdev, "pps");
+>  	if (irq < 0)
+>  		irq = platform_get_irq_optional(pdev, irq_idx);
+> @@ -787,9 +788,12 @@ void fec_ptp_init(struct platform_device *pdev, int irq_idx)
+>  	if (irq >= 0) {
+>  		ret = devm_request_irq(&pdev->dev, irq, fec_pps_interrupt,
+>  				       0, pdev->name, ndev);
+> -		if (ret < 0)
+> +		if (ret < 0) {
+>  			dev_warn(&pdev->dev, "request for pps irq failed(%d)\n",
+>  				 ret);
+> +		} else {
+> +			fep->pps_irq = irq;
+> +		}
+>  	}
+>  
+> @@ -861,6 +865,12 @@ void fec_ptp_stop(struct platform_device *pdev)
+>  
+>  	cancel_delayed_work_sync(&fep->time_keep);
+>  	hrtimer_cancel(&fep->perout_timer);
+
+[Severity: High]
+This is a pre-existing race and not introduced here (the patch only
+inserts devm_free_irq() between this cancel and the unregister), but since
+the teardown order is what the patch is about: can the perout hrtimer be
+re-armed after this hrtimer_cancel() and outlive free_netdev()?
+
+fec_ptp_enable() drops both locks before arming the timer:
+
+drivers/net/ethernet/freescale/fec_ptp.c:fec_ptp_enable() {
+	...
+unlock:
+			spin_unlock_irqrestore(&fep->tmreg_lock, flags);
+			mutex_unlock(&fep->ptp_clk_mutex);
+	...
+			if (delta > FEC_PTP_MAX_NSEC_COUNTER) {
+				timeout = ns_to_ktime(delta - NSEC_PER_SEC);
+				hrtimer_start(&fep->perout_timer, timeout, HRTIMER_MODE_REL);
+	...
+}
+
+So for a PTP_PEROUT_REQUEST whose start time is more than
+FEC_PTP_MAX_NSEC_COUNTER away, a concurrent unbind can run
+fec_drv_remove() -> unregister_netdev() -> fec_ptp_stop() and execute
+hrtimer_cancel() while the timer is not yet armed, and the ioctl arms it
+afterwards.
+
+Does anything cancel it again? ptp_clock_unregister() waits for in-flight
+posix-clock operations and then calls ptp_disable_all_events(), which only
+touches EXTTS pins and PPS. This driver sets ptp_caps.n_pins = 0, and the
+PPS-off request returns -EBUSY from fec_ptp_enable_pps() while
+fep->perout_enable is set, so PEROUT is never disabled.
+
+fec_drv_remove() then reaches:
+
+drivers/net/ethernet/freescale/fec_main.c:fec_drv_remove() {
+	...
+	fec_enet_deinit(ndev);
+	free_netdev(ndev);
+}
+
+which frees the netdev private area containing both fep and the still
+queued perout_timer. When it expires, fec_ptp_pps_perout_handler()
+recovers the freed fec_enet_private with container_of() and
+fec_ptp_pps_perout() writes fep->hwp registers that devres already
+unmapped. Should fec_ptp_stop() do its hrtimer cancellation after the PHC
+has been made inaccessible, rather than before?
+
+> +
+> +	if (fep->pps_irq >= 0) {
+> +		devm_free_irq(&pdev->dev, fep->pps_irq, ndev);
+> +		fep->pps_irq = -1;
+> +	}
+
+[Severity: Medium]
+This is a pre-existing problem, not one added by the patch, but it affects
+where the new devm_free_irq() should go: fec_pps_interrupt() does a
+read-modify-write of the compare channel without taking fep->tmreg_lock:
+
+drivers/net/ethernet/freescale/fec_ptp.c:fec_pps_interrupt() {
+	val = readl(fep->hwp + FEC_TCSR(channel));
+	if (val & FEC_T_TF_MASK) {
+		writel(fep->next_counter, fep->hwp + FEC_TCCR(channel));
+		do {
+			writel(val, fep->hwp + FEC_TCSR(channel));
+		} while (readl(fep->hwp + FEC_TCSR(channel)) & FEC_T_TF_MASK);
+	...
+}
+
+Every other accessor (fec_ptp_enable_pps(), fec_ptp_pps_perout(),
+fec_ptp_pps_disable()) holds spin_lock_irqsave(&fep->tmreg_lock), and the
+irqsave variant suggests the handler was meant to take it too.
+
+Because val is sampled before the disabling writel(0, FEC_TCSR(ch)) in
+fec_ptp_enable_pps(fep, 0), can a handler running on another CPU write
+TIE and TMODE back into TCSR after that disable, re-arming the channel and
+clobbering fep->next_counter?
+
+In fec_ptp_stop() the new devm_free_irq() sits after
+fec_ptp_enable_pps(fep, 0), so the handler is only quiesced once the
+state has already been torn down. Would freeing the irq first close that
+window?
+
+[Severity: Medium]
+Removing the handler here does not seem to be paired with quiescing the
+1588 compare channel in hardware for the PEROUT case. The channel is only
+disabled when fep->pps_enable is set, via
+fec_ptp_stop() -> fec_ptp_enable_pps(fep, 0), which writes 0 to FEC_TCSR.
+
+When the channel was armed through PTP_CLK_REQ_PEROUT instead,
+fec_ptp_pps_perout() leaves it enabled:
+
+drivers/net/ethernet/freescale/fec_ptp.c:fec_ptp_pps_perout() {
+	...
+	temp_val |= (1 << FEC_T_TF_OFFSET | 1 << FEC_T_TIE_OFFSET);
+	temp_val &= ~(FEC_T_TMODE_MASK);
+	temp_val |= (FEC_TMODE_TOGGLE << FEC_T_TMODE_OFFSET);
+	writel(temp_val, fep->hwp + FEC_TCSR(fep->pps_channel));
+	...
+}
+
+and fec_ptp_stop() only cancels the software hrtimer; it never calls the
+existing helper that clears the register:
+
+drivers/net/ethernet/freescale/fec_ptp.c:fec_ptp_pps_disable() {
+	hrtimer_cancel(&fep->perout_timer);
+	spin_lock_irqsave(&fep->tmreg_lock, flags);
+	fep->perout_enable = false;
+	writel(0, fep->hwp + FEC_TCSR(channel));
+	...
+}
+
+The later ptp_clock_unregister() -> ptp_disable_all_events() PPS-off
+request cannot help either, since fec_ptp_enable_pps() returns -EBUSY
+immediately while fep->perout_enable is true, without touching TCSR.
+
+The close path does not reliably clear it either. On SoCs with
+FEC_QUIRK_HAS_MULTI_QUEUES, or FEC_QUIRK_NO_HARD_RESET with the link up,
+fec_ctrl_reset() only disables the MAC:
+
+drivers/net/ethernet/freescale/fec_main.c:fec_ctrl_reset() {
+	...
+		if (fep->quirks & FEC_QUIRK_HAS_MULTI_QUEUES ||
+		    ((fep->quirks & FEC_QUIRK_NO_HARD_RESET) && fep->link)) {
+			writel(0, fep->hwp + FEC_ECNTRL);
+	...
+}
+
+so TCSR and TCCR survive fec_stop().
+
+fec_pps_interrupt() is the only code that acknowledges the write-1-to-clear
+TF flag and reloads TCCR from fep->next_counter. After this devm_free_irq(),
+does the channel stay enabled with TF latched and unacknowledged, and the
+output pin still toggling?
+
+And on a later re-bind, would the stale armed channel be serviced as soon
+as fec_ptp_init() re-installs the handler with devm_request_irq() -- which
+happens before ptp_clock_register() and before anything resets TCSR, as
+fec_ptp_start_cyclecounter() only writes ATIME_INC, ATIME_EVT_PERIOD and
+ATIME_CTRL -- reprogramming TCCR from a freshly zeroed fep->next_counter
+on a channel the new instance considers idle?
+
+Would it be better to clear FEC_TCSR for fep->pps_channel (acknowledging
+TF) for both the pps and perout cases, for example by calling
+fec_ptp_pps_disable(), and only then drop the handler?
+
 -- 
-2.43.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260908-fec-ptp-pps-event-uaf-v2-0-2a1d57121ade%40cherr.cc
