@@ -1,109 +1,108 @@
-Received: from prod-dose-smtp-2.daouoffice.com (prod-dose-smtp-2.daouoffice.com [35.216.41.104])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CD2E3A4539;
-	Wed,  9 Sep 2026 05:59:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.216.41.104
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A04DE37CD37;
+	Wed,  9 Sep 2026 06:03:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788933567; cv=none; b=nfwpmFzdTh4N0fucL7I1qp7II9J0xUTMhCD/5YEovHirWkcKBbLfrYuY8J0NgJSX+XCoba97lBI7xjSf4IPotihjVYUGrauBFZvrNk6TaDoN6dpkjM+5FLJAnUya4meWqvHSqM9WHT2eoXxJiZL/WmQjHZc111NdpEudUJ0me7o=
+	t=1788933796; cv=none; b=MRHsPAGJ+OjkG3FIjkWvsQ2VMaF2QlyrxMAvypEqrXQQb12mjzh0YNhsOahM1to6Jgrcktw01hEsDVj8FEW6wXlWO5S/lMZhyR/pnxUS529jjAVv/qzCyO70lnBu73ZWcXEd8nh4Htx2vinYE0k6Sm+nK8l+gPnMGfGA6jCAl+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788933567; c=relaxed/simple;
-	bh=2M2zx9hp3tqqYZmU/CXChcbgNyX/bw3kynPSH8S4Szc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=d4Ss0TU/lZAMbxIPfD52GtlX+cz5HmxvY/nIbDWYx12s2WAlu33u5DSGH5+2GBsZBYpq5QEeh9a7+jfB9PNQS/+uBcxgb43O5rMKcpN7z+SkAc5JHScJzZ2ac3gcblZq7sWDZy4eg8Blg7d+IjgOzIlw8SH6ZATrMDRFGhSFGQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pribit.com; spf=pass smtp.mailfrom=pribit.com; arc=none smtp.client-ip=35.216.41.104
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pribit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pribit.com
-Received-SPF: SoftFail 
-	client-ip="106.245.249.210" envelope-from="his1415@pribit.com" 
-Received: from [106.245.249.210] ([106.245.249.210]) 
-          by prod-dose-smtp-2.daouoffice.com ([10.37.10.9]) 
-          with ESMTP id 1788932748.202706.140060550747712.prod-dose-smtp-2
-          for <>; 
-          Wed, 09 Sep 2026 14:45:48 +0900 (KST) 
-From: Hong In-su <his1415@pribit.com>
-To: steffen.klassert@secunet.com,
-	herbert@gondor.apana.org.au,
-	davem@davemloft.net,
-	netdev@vger.kernel.org
-Cc: edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	linux-kernel@vger.kernel.org,
-	Hong In-su <his1415@pribit.com>
-Subject: [PATCH net-next] xfrm: add ARIA CBC and CTR support
-X-TERRACE-DUMMYSUBJECT: Terrace Spam system                                  *
-Date: Wed,  9 Sep 2026 05:45:30 +0000
-Message-ID: <20260909054530.7861-1-his1415@pribit.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1788933796; c=relaxed/simple;
+	bh=j+6JOQ9ayV+ksPXicfcDXkHTUp2zulV1q0BOuNHWZrc=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=XuiNc0lZbBAFCw9ZhrYsvCecqg+ckMcquZdYY2DBDVx6jSFC4Fmf1mX6/5+glejmj9bIQ0V3iE2SBrd3GdLooJu2NvR4ZK3cNLRuwVCr6pjTVQ9dnzA8rxB+2YAQboo7DYm3rXPhsyK9xD2cBmefLRxlpqPQzICTnQUHbhdeOdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KzIVASu5; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KzIVASu5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E85B31F00A3D;
+	Wed,  9 Sep 2026 06:03:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788933795;
+	bh=KqdLnz2otcs/Y+5ddF0p4ES+NmmuXrcQpn82rCBZyf0=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=KzIVASu5AV75/YC5HuyrDpz5AIWES+zqEVQbWzpy1Q4KeavKCup37uRR+frQr07Z9
+	 ZIQtIz4ttytsLtZXo+KXe3xWOX1sPT3cbUvGVUCa24D2FIDWbbJ5ON1JfQwa+QwmrB
+	 BOp1Kn/lYihnt3OkyNMxvbDn3h6W7RrODDTyJbgB5U+uPaobAF9N2FjHtwv3ZgCkTc
+	 3h4AcGMVNxMPQkQI9maEzqZpqgzjwuSDLsDYHfeHOtqcGJDG9zVNp1jc6UBc+GvP9Q
+	 F4+3AyDAv2Bs8TgNzZlRCD5pCK7eMqpXq6evE28DsrcTto0nzkHNciiqP625nQnYj+
+	 jo3L7xJ8oXYjQ==
+Subject: Re: [PATCH net] net: usb: qmi_wwan: add Quectel RG660QB
+From: netdev-bot+sashiko@kernel.org
+To: sebastian.sjoholm@gmail.com
+Cc: bjorn@mork.no, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ netdev@vger.kernel.org, linux-usb@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Date: Wed, 09 Sep 2026 06:03:14 +0000
+Message-ID: <178893379449.219967.12448568252331713076@kernel.org>
+In-Reply-To: <20260903180044.6179-1-sebastian.sjoholm@gmail.com>
+References: <20260903180044.6179-1-sebastian.sjoholm@gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TERRACE-SPAMMARK: NO       (SR:8.70)                     
-  (by Terrace)                                                   
-X-TERRACE-SUPERWHITEIP: pribit_com_packetgoOS
-X-TERRACE-SID: 1788932748.202706.140060550747712.prod-dose-smtp-2
-X-TERRACE-CLASSID: Terrace Spam system                                      
 
-The kernel crypto API already provides ARIA implementations, but XFRM
-does not have algorithm descriptors for them. Consequently, ARIA cannot
-be selected for ESP through XFRM.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider:
 
-Add XFRM algorithm descriptors for CBC and RFC3686 CTR modes using the
-existing cbc(aria) and rfc3686(ctr(aria)) crypto algorithms.
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-The CBC and CTR modes have been tested with IPsec using strongSwan.
+- [Medium] Inaccurate commit message / incomplete composite-device
+  support: the patch adds only the qmi_wwan match for Quectel RG660QB…
 
-Signed-off-by: Hong In-su <his1415@pribit.com>
----
- net/xfrm/xfrm_algo.c | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+--
 
-diff --git a/net/xfrm/xfrm_algo.c b/net/xfrm/xfrm_algo.c
-index 70434495f23f..16c70dc1a426 100644
---- a/net/xfrm/xfrm_algo.c
-+++ b/net/xfrm/xfrm_algo.c
-@@ -512,6 +512,34 @@ static struct xfrm_algo_desc ealg_list[] = {
- 		.sadb_alg_maxbits = 256
- 	}
- },
-+{
-+	.name = "cbc(aria)",
-+	.compat = "aria",
-+
-+	.uinfo = {
-+		.encr = {
-+			.geniv = "echainiv",
-+			.blockbits = 128,
-+			.defkeybits = 256,
-+		}
-+	},
-+
-+	.pfkey_supported = 0,
-+},
-+{
-+	.name = "rfc3686(ctr(aria))",
-+	.compat = "aria",
-+
-+	.uinfo = {
-+		.encr = {
-+			.geniv = "seqiv",
-+			.blockbits = 128,
-+			.defkeybits = 160,
-+		}
-+	},
-+
-+	.pfkey_supported = 0,
-+},
- {
- 	.name = "cbc(twofish)",
- 	.compat = "twofish",
+net: usb: qmi_wwan: add Quectel RG660QB
+
+This adds a single qmi_wwan match for the Quectel RG660QB 5G module
+(2c7c:013d) using QMI_MATCH_FF_FF_FF, i.e. the vendor-specific ff/ff/ff
+QMI function only.  The commit message states that the remaining
+interfaces of the device are handled by the option driver.
+
+> diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
+> index fdfdcf24ddcf8..f51cf9cb9421c 100644
+> --- a/drivers/net/usb/qmi_wwan.c
+> +++ b/drivers/net/usb/qmi_wwan.c
+> @@ -1084,6 +1084,7 @@ static const struct usb_device_id products[] = {
+>  	},
+>  	{QMI_MATCH_FF_FF_FF(0x2c7c, 0x0122)},	/* Quectel RG650V */
+>  	{QMI_MATCH_FF_FF_FF(0x2c7c, 0x0125)},	/* Quectel EC25, EC20 R2.0  Mini PCIe */
+> +	{QMI_MATCH_FF_FF_FF(0x2c7c, 0x013d)},	/* Quectel RG660QB */
+
+[Severity: Medium]
+The commit message says:
+
+    The remaining interfaces are handled by the option driver.
+
+Is that true for this tree?  Grepping drivers/usb/serial/option.c at this
+commit returns no entry for product id 0x013d, and every match in
+option_ids[] in the Quectel block is per-product-id, so there is no
+vendor-wide wildcard that could pick 2c7c:013d up:
+
+drivers/usb/serial/option.c:option_ids[] {
+	...
+	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RG650V, 0xff, 0xff, 0x30) },
+	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RG650V, 0xff, 0, 0) },
+	...
+}
+
+The sibling modules referenced in the neighbouring qmi_wwan lines carry
+that extra pair of option.c rows (RG650V for 0x0122, and 0x0620 for
+EM160R-GL), but nothing equivalent is added here for 0x013d.
+
+Since the other functions of the module also use vendor-specific class
+0xff, cdc_acm will not claim them either, and qcserial only matches
+0x05c6/0x1199.  Does that leave the AT/DM/NMEA/PPP interfaces of the
+RG660QB unbound, with no /dev/ttyUSB* nodes appearing?
+
+Should this either come with a companion option.c patch adding the
+0x013d entries, or have the sentence about the option driver dropped or
+reworded so the commit message matches what the tree actually contains?
+
 -- 
-2.43.0
-
-
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260903180044.6179-1-sebastian.sjoholm%40gmail.com
