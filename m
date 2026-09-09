@@ -1,244 +1,125 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from out28-121.mail.aliyun.com (out28-121.mail.aliyun.com [115.124.28.121])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F32A38E8BD;
-	Wed,  9 Sep 2026 05:43:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 922AC34F483;
+	Wed,  9 Sep 2026 05:44:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.121
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788932615; cv=none; b=HARHAr5cLc1afiMLln/PKj/echpiTBklSmqRa1bur2RlatlyCYVc3vBWS2KrxSsuQCGuGvUqgGTgeWmFlsCeBrcsobvNtQzzXxWuKjR+G/8RP5Q537fAWTNqlLNh0P2ovye8U3KOL9e5Bi55XrF/QTIjrInuWAohY3xsjK4AnNo=
+	t=1788932656; cv=none; b=mBLmMMbt+U2KInT49VD9nHPYabvGpmS6wJy0f4SNX6cZa6LtMTszVWYXvEk/0ysNg/aGViH7J3pJUk/+qaH3NHadLbhXQF7pSOjadJ9pa0aBMLXdsPUFIC7h4JrfgYRAr/MERQ8chQDxfVGq62KEgNaaMQE1NeRPKeul5MmULIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788932615; c=relaxed/simple;
-	bh=nbp3vJ9M6dnWV+9Gt8heBSp2MC4MZZYdhYahrYt+ZCg=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ifplJ7wQRVpGAybWbfYhwkQNr3bEO5irXj9uNExk5EHq2s/kcdUu/xvjn59jCujBja6Px2nezXyIrmUTYbWpd4PqAlnDTZYW7e5Ep8BVx0AK7I0Mq1ULYZlZ8l5h1UO87pwhP+en8Y5MZNTUYjl8Cp8mR/7iXPvfr2gu7gxtp+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HBuMSeWm; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788932656; c=relaxed/simple;
+	bh=ncL1TZaUvrafoNmevXZ2l6gNwmK0Gf7X0LneI3k+DaY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KjHOd0WfunI26lCWXjfho6Sdt/l5ZnU5IX4FlcHOJ3feKNDQK9c7V1cXnqR415p2KkiNGeusXubc/KiUjdf6pM5natqWJvQJDpKkJ/8DufK1V0Mkc80mN8/caFLTp8VFPlaQUbeE57V4fjBa0T2qRR//wbQyXwpv5EdXR63zoGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xiaopeng.com; spf=pass smtp.mailfrom=xiaopeng.com; dkim=pass (1024-bit key) header.d=xiaopeng.com header.i=@xiaopeng.com header.b=sUOy8V56; arc=none smtp.client-ip=115.124.28.121
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=xiaopeng.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xiaopeng.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HBuMSeWm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A60F31F00A3A;
-	Wed,  9 Sep 2026 05:43:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788932606;
-	bh=SrgUySBHJx3FdRjq/ffjjyZVSlvYV7wHdbXU/tg5FZI=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=HBuMSeWmh6PBXW7VjBfK/9JUDy7xkpO5OWRZwmnZz6heIG5n4RyKCRANWZapXX9P+
-	 MAuWBMnjXWIFeGq76JR4FybMAzgZ+8JO+kigNFCjZt1JsAYPdQBGOhJ6miyYERHm2O
-	 bSOpaoepZD/tw70BWdnhuYHnLAoNxBSFlvE8hHeE/BSSakTCwq7OP2CG7TQm0rJtz6
-	 srRmjrv6ZAa1Up6IyIGjzEkLBJUaZl3PWJFFKWncPgWhp6T260grT2l8Je2kp+Js4k
-	 mWY5kXhi2bMbfSLm4chO++f1+RJjirEMAFPwCf57vTpfRh8R4UAorS5YGWzOce2lGv
-	 gxKd3FMjZJH1w==
-Subject:
- Re: [PATCH net-next v2 7/7] net: mctp: usblib: Add test for failing append
-From: netdev-bot+sashiko@kernel.org
-To: james@codeconstruct.com.au
-Cc: jk@codeconstruct.com.au, matt@codeconstruct.com.au, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- kees@kernel.org, gustavoars@kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-Date: Wed, 09 Sep 2026 05:43:25 +0000
-Message-ID: <178893260523.219967.7691706807394215121@kernel.org>
-In-Reply-To:
- <20260903-dev-mctp-usb-lib-test-v2-7-313cf15e0b56@codeconstruct.com.au>
-References:
- <20260903-dev-mctp-usb-lib-test-v2-7-313cf15e0b56@codeconstruct.com.au>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=xiaopeng.com header.i=@xiaopeng.com header.b="sUOy8V56"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=xiaopeng.com; s=default;
+	t=1788932643; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=clFMEoaK0/ropSvPOKmrmoJ/NX3PTGHrk1ZEqEfZ2Gw=;
+	b=sUOy8V56Hts7+VMLHZRqB5ibeq5aDMG9g4bwT5VUOaBhh+0Ife+pQpYrjTALIdeWFjxA9db+7/bYt1sOZWmcWu3cCsV7hceTvyfBmxeotXeQHOWmsC6G+BYqlGNdivqcV5tuzImwTl65EASjXUoar6a/+BLkFGNmBsOD1w4tgXE=
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.169033|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.00438728-0.000974205-0.994639;FP=11404490654595305044|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033023018039;MF=zhugl3@xiaopeng.com;NM=1;PH=DS;RN=14;RT=14;SR=0;TI=SMTPD_---.j9ME9Bu_1788932641;
+Received: from DESKTOP-UL5U09E.xiaopeng.local(mailfrom:zhugl3@xiaopeng.com fp:SMTPD_---.j9ME9Bu_1788932641 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Wed, 09 Sep 2026 13:44:02 +0800
+From: Guanglei Zhu <zhugl3@xiaopeng.com>
+To: Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>,
+	Loic Poulain <loic.poulain@oss.qualcomm.com>,
+	Sergey Ryazanov <ryazanov.s.a@gmail.com>
+Cc: Liu Haijun <haijun.liu@mediatek.com>,
+	Ricardo Martinez <ricardo.martinez@linux.intel.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH] net: wwan: t7xx: validate the HS2 message data length
+Date: Wed,  9 Sep 2026 13:44:01 +0800
+Message-ID: <20260909054401.718959-1-zhugl3@xiaopeng.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider:
+control_msg_handler() passes the modem-supplied data_length field of a
+CTL_ID_HS2_MSG message straight to t7xx_fsm_append_event(), which
+memcpy()s that many bytes out of the skb.  Nothing compares the field
+with the actual length of the message, so a modem reporting a larger
+data_length makes the driver read past the end of the skb and store
+kernel heap memory in the FSM event.
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 1
+0e7c074cfcd9 ("net: wwan: t7xx: validate port_count against message
+length in t7xx_port_enum_msg_handler") added this kind of check for
+the port enumeration path but missed the handshake path.
 
-- [High] drivers/net/mctp/mctp-usblib-
-  test.c:mctp_usblib_test_tx_overflow() disables preemption with `dstats…
-- [Low] The oracle of the new mctp_usblib_test_tx_overflow()
-  (drivers/net/mctp/mctp-usblib-test.c:869-908) is a single aggregate…
+Reject the message when data_length does not fit into the skb.
 
---
+Fixes: da45d2566a1d ("net: wwan: t7xx: Add control port")
+Cc: stable@vger.kernel.org
+Signed-off-by: Guanglei Zhu <zhugl3@xiaopeng.com>
+---
 
-net: mctp: usblib: Add test for failing append
+Verified in a QEMU guest with a fault injector feeding the driver's
+control port thread a handshake message whose data_length exceeds the
+skb: the unpatched driver trips KASAN on a read of 8192 bytes past a
+500-byte payload, and the extra bytes land in the FSM event.  With
+this check the message is rejected, and well-formed handshakes are
+unaffected.
+ drivers/net/wwan/t7xx/t7xx_port_ctrl_msg.c | 20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
-Adds a KUnit case, mctp_usblib_test_tx_overflow(), to the mctp-usblib
-test suite that pushes three 200-byte packets through
-mctp_usblib_tx_push() with a failing send op, then checks that the
-per-CPU tx_drops counter reached 3.
-
-> diff --git a/drivers/net/mctp/mctp-usblib-test.c b/drivers/net/mctp/mctp-usblib-test.c
-> index 73bda4745433..25eac80db3e2 100644
-> --- a/drivers/net/mctp/mctp-usblib-test.c
-> +++ b/drivers/net/mctp/mctp-usblib-test.c
-> @@ -867,6 +867,47 @@ static void mctp_usblib_test_tx_multi_push(struct kunit *test)
->  	KUNIT_EXPECT_EQ(test, i, ARRAY_SIZE(sends));
->  }
->  
-> +static void mctp_usblib_test_tx_overflow(struct kunit *test)
-> +{
-> +	struct mctp_usblib_test_ctx *ctx;
-> +	struct mctp_usblib_tx_ops ops;
-> +	struct pcpu_dstats *dstats;
-> +	struct mctp_usblib_tx *tx;
-> +	struct net_device *ndev;
-> +	struct sk_buff *skb;
-> +	unsigned int start;
-> +	size_t len, i;
-> +	u64 stats;
-> +	u8 *buf;
-> +	int rc;
-> +
-> +	len = 200;
-
-[Severity: Low]
-This isn't a bug, but len = 200 and the loop count of 3 below silently
-encode a dependency on MCTP_USB_1_0_XFER_SIZE (512) and MCTP_USB_BTU,
-without referencing either constant.
-
-I traced the intended path and it does run today with span=false: each skb
-becomes 204 bytes after mctp_usblib_tx_skb_prepare() pushes the 4-byte
-header, push 1 creates the 512-byte ctx, push 2 appends (len 408, avail
-104), and push 3 hits mctp_usblib_tx_append():
-
-	if (mctp_usblib_tx_avail(ctx) < skb->len)
-		return -ENOBUFS;
-
-with avail 104 < skb->len 204.
-
-Could len and the iteration count be derived from
-MCTP_USB_1_0_XFER_SIZE / MCTP_USB_BTU instead, so the case keeps hitting
-the append-failure branch if those change?
-
-Also, would tx_overflow be better named after the append failure the
-commit subject describes?
-
-> +
-> +	ctx = mctp_usblib_test_init(test);
-> +	ndev = ctx->dev->ndev;
-> +
-> +	ops.send = mctp_usblib_test_tx_send_fail;
-> +
-> +	tx = mctp_usblib_test_tx_init(test, &ops, ctx, false);
-> +	buf = mctp_usblib_test_init_buf(test, len);
-> +
-> +	dstats = get_cpu_ptr(ndev->dstats);
-> +	for (i = 0; i < 3; i++) {
-> +		skb = mctp_usblib_test_init_skb(test, len, ndev, buf);
-> +
-> +		rc = mctp_usblib_tx_push(ndev, tx, skb, i != 2);
-> +		KUNIT_EXPECT_EQ(test, rc, 0);
-> +	}
-
-[Severity: High]
-Can this sleep with preemption disabled?  get_cpu_ptr() expands to
-preempt_disable() plus this_cpu_ptr(), so the whole loop runs in atomic
-context, and mctp_usblib_test_init_skb() allocates with GFP_KERNEL:
-
-drivers/net/mctp/mctp-usblib-test.c:mctp_usblib_test_init_skb() {
-	skb = __netdev_alloc_skb(ndev, length, GFP_KERNEL);
-	KUNIT_ASSERT_NOT_NULL(test, skb);
-	...
-}
-
-GFP_KERNEL sets __GFP_DIRECT_RECLAIM, so __netdev_alloc_skb() takes the
-blocking slab path:
-
-net/core/skbuff.c:__netdev_alloc_skb() {
-	if (len <= SKB_WITH_OVERHEAD(SKB_SMALL_HEAD_CACHE_SIZE) ||
-	    len > SKB_WITH_OVERHEAD(PAGE_SIZE) ||
-	    (gfp_mask & (__GFP_DIRECT_RECLAIM | GFP_DMA))) {
-		skb = __alloc_skb(len, gfp_mask, SKB_ALLOC_RX, NUMA_NO_NODE);
-	...
-}
-
-With CONFIG_DEBUG_ATOMIC_SLEEP, wouldn't the might_sleep() in the
-allocator produce a "sleeping function called from invalid context" splat
-every time this case runs?
-
-Two further consequences of the same region:
-
-The KUNIT_ASSERT_NOT_NULL() in mctp_usblib_test_init_skb() and the KUnit
-failure reporting behind KUNIT_EXPECT_EQ() also allocate with GFP_KERNEL,
-and the assert variant does not return:
-
-lib/kunit/try-catch.c:kunit_try_catch_throw() {
-	try_catch->try_result = -EFAULT;
-	kthread_exit(0);
-}
-
-so put_cpu_ptr() below is skipped and the thread exits still in atomic
-context, which kernel/exit.c reports:
-
-kernel/exit.c:do_exit() {
-	if (unlikely(in_atomic())) {
-		pr_info("note: %s[%d] exited with preempt_count %d\n",
-			current->comm, task_pid_nr(current),
-			preempt_count());
-		preempt_count_set(PREEMPT_ENABLED);
-	}
-	...
-}
-
-mctp_usblib_tx_push() also takes a spinlock_t here:
-
-drivers/net/mctp/mctp-usblib.c:mctp_usblib_tx_push() {
-	spin_lock_irqsave(&tx->lock, flags);
-	...
-}
-
-On PREEMPT_RT that is a sleeping lock, so is acquiring it from an
-explicitly preempt-disabled section valid?
-
-Note the driver itself uses GFP_ATOMIC on this path
-(mctp_usblib_tx_ctx_create() uses kzalloc_flex(..., GFP_ATOMIC)), so only
-the test's own allocation is out of context.
-
-Since mctp_usblib_tx_stats_update() picks the counter with
-get_cpu_ptr(dev->dstats), could the skb allocation and the assertions move
-outside the pinned region, leaving only the counter read inside
-get_cpu_ptr()/put_cpu_ptr(), or could tx_drops be summed over
-for_each_possible_cpu() instead?
-
-> +
-> +	do {
-> +		start = u64_stats_fetch_begin(&dstats->syncp);
-> +		stats = u64_stats_read(&dstats->tx_drops);
-> +	} while (u64_stats_fetch_retry(&dstats->syncp, start));
-> +	put_cpu_ptr(dstats);
-> +
-> +	KUNIT_EXPECT_EQ(test, stats, 3);
-
-[Severity: Low]
-This is the same finding as the len = 200 comment above: this aggregate
-drop count is the only oracle in the case.
-
-The append-failure path yields 2 drops from the detached two-skb context
-plus 1 from the single-skb context, but so do other paths: if the ctx
-buffer size grew, if the MCTP_USB_BTU margin in
-mctp_usblib_tx_should_send() changed so the ctx flushed after push 2, or
-if all three skbs fit one ctx, the append branch never runs and stats is
-still 3.
-
-Neither the number of ops.send() invocations, nor tx->cur_ctx, nor
-ctx->tx_xfers is checked here, while the neighbouring
-mctp_usblib_test_tx_failing_send() does:
-
-	KUNIT_EXPECT_EQ(test, rc, 0);
-	KUNIT_EXPECT_NULL(test, tx->cur_ctx);
-	KUNIT_EXPECT_TRUE(test, list_empty(&ctx->tx_xfers));
-
-Would checking tx_drops == 0 after the first two pushes and counting the
-send attempts (2 sends carrying 2 and 1 packets) pin down the branch under
-test?
-
-> +}
-> +
->  static struct kunit_case mctp_usblib_test_cases[] = {
-
-[ ... ]
-
+diff --git a/drivers/net/wwan/t7xx/t7xx_port_ctrl_msg.c b/drivers/net/wwan/t7xx/t7xx_port_ctrl_msg.c
+index f869e4ed9..0f2ead8a7 100644
+--- a/drivers/net/wwan/t7xx/t7xx_port_ctrl_msg.c
++++ b/drivers/net/wwan/t7xx/t7xx_port_ctrl_msg.c
+@@ -178,22 +178,32 @@ static int control_msg_handler(struct t7xx_port *port, struct sk_buff *skb)
+ 
+ 	ctrl_msg_h = (struct ctrl_msg_header *)skb->data;
+ 	switch (le32_to_cpu(ctrl_msg_h->ctrl_msg_id)) {
+-	case CTL_ID_HS2_MSG:
++	case CTL_ID_HS2_MSG: {
++		u32 data_length;
++
+ 		skb_pull(skb, sizeof(*ctrl_msg_h));
++		data_length = le32_to_cpu(ctrl_msg_h->data_length);
+ 
+ 		if (port_conf->rx_ch == PORT_CH_CONTROL_RX ||
+ 		    port_conf->rx_ch == PORT_CH_AP_CONTROL_RX) {
+ 			int event = port_conf->rx_ch == PORT_CH_CONTROL_RX ?
+ 				    FSM_EVENT_MD_HS2 : FSM_EVENT_AP_HS2;
+ 
+-			ret = t7xx_fsm_append_event(ctl, event, skb->data,
+-						    le32_to_cpu(ctrl_msg_h->data_length));
+-			if (ret)
+-				dev_err(port->dev, "Failed to append Handshake 2 event");
++			if (data_length > skb->len) {
++				dev_err(port->dev, "Invalid HS2 message length %u\n",
++					data_length);
++				ret = -EINVAL;
++			} else {
++				ret = t7xx_fsm_append_event(ctl, event, skb->data,
++							    data_length);
++				if (ret)
++					dev_err(port->dev, "Failed to append Handshake 2 event");
++			}
+ 		}
+ 
+ 		dev_kfree_skb_any(skb);
+ 		break;
++	}
+ 
+ 	case CTL_ID_MD_EX:
+ 	case CTL_ID_MD_EX_ACK:
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260903-dev-mctp-usb-lib-test-v2-0-313cf15e0b56%40codeconstruct.com.au
+2.43.0
+
