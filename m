@@ -1,62 +1,49 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CA303CDBA4;
-	Wed,  9 Sep 2026 20:26:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B601D3101B2;
+	Wed,  9 Sep 2026 20:26:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788985600; cv=none; b=kiC4JTX+zL0hNWoPWA/CQ+PYqRtc/MCOdUXru23EDgw1bbX0dGsYruo7n/M0fJ/PkmAGntVjJxyuc+oA2jtjX+U2abpYc/XFYQmLRlZiIMlhiDe8rih/HLbKyLjGt6m2CWItGw6Q5EAaT2Vr/T4pmx7/OTMN1iztyzn6oJr+xpQ=
+	t=1788985605; cv=none; b=uQt5llsjGGgoZl5VH31JiOBYEH4A+HrcOrleRNmt9kFLvM3C45A19P1x8DRHBXNHfc8DKb7MOhuMXrzlJCfrur8nXhOBL+iWOvZNabVd2tQnSUVii3qhAuZ7DNcBLtAqeLxpyDittEdEG95sJ5bIKHMTlrjCvqgjg/v85rf2T2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788985600; c=relaxed/simple;
-	bh=/B0BEmfw1+AImewv9HSwP4n+q/lj8Y551EKJPUD7yOU=;
+	s=arc-20240116; t=1788985605; c=relaxed/simple;
+	bh=ktN7tNdoYP43KwvGUyiKmOWRIyjxMh3OptPBEmbhk2o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vBNQ9PcqS7FHtip3E5KiLiq6zvnlQCFQf1XN1DCjkCyNu2UbC5UvVulDSPbETuoe/Tp5xyE2CWKWo/JUrxxKlgCAYh+LlrWeVVEuP4Z8oOslFAFK8CAmlAbxEPEEnPB0NwVhAaW0AuhxUSynDOawMKcyitVh4kgi45IBdexHpl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fZ9GRTjL; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=hGly0xXgQLuJGotl9RYhONcEGvG7z/DRB+HejbyEexe6lbNv0kvPJdSiVpVMdRC19TAS/JkjBRPsoP/8XXY3kLTyUXjRhP3qKpwXG4ALCr/ocZ2me4VKFz955W3dNlRNSSJ6b5HImWeoYtK8FzwyB0GmPQU1ANv/FwIk5UWLgqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lc7BsVSK; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fZ9GRTjL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 268281F000FF;
-	Wed,  9 Sep 2026 20:26:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lc7BsVSK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 400BC1F00899;
+	Wed,  9 Sep 2026 20:26:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788985594;
-	bh=VLP5rlPCDRA17XnopQ8izkaJ8zZzRM+VTYn3F6+WpfE=;
+	s=k20260515; t=1788985598;
+	bh=tX/kkO+6nAZ2yk4srIwlhYDMW0iyNqDX3IR530S8N1A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fZ9GRTjLqzEPuDpn6Bid+GILZvYWhZOb5t7BuQ/m6vj7z3mY7AWSBlhW7f0TDn5WB
-	 gosQ0ZnVoyCXbYS+j4zxV2Z0c3+YDckJpG47n/WmkZR9mopcxoOw6DYFuMwScRR4wf
-	 mSyVmCR7oOQlCEqjB8UvEp8Cv5DcPUlzW6cWEQ99SjVF+aOwDNqCRSGyLITyvoD5TC
-	 mGn0KZH7B08VKPmc+dD6vmA2VDlhLZ0JAhx5ghXIaW3N7Mu9iPZkczMM283/tOw732
-	 EjZ4bwr0mfhtWboyWLXfuLucHX5W3HOgdfQQ1xGd4hwMZrXBt1ba1pMynSo1epbkNt
-	 0n2G+ZyM/SNlw==
+	b=lc7BsVSKX0Hc7DizsmuXfY4Gaot0S4Cx5Tkjxo/TKSM397DF7itQO4IQCY02LgPwY
+	 rrLC/WhA0M67fnl1T7jsvCkgFylUFauKVXgzwja5wXcACbcSpRXP+qqPBK2Z27HCV7
+	 +1pw8ThEq3/yu4iCrw+GA75jwMtJYh/YlcSnBkVdlOGLcVIHSZbXaJsZn9qbVku2mK
+	 254UnwKIXHHPUDth9aTsvMOWzr2LI2sboyPTQ+ruYzEGD0E6PzmumFDoAuB/nPkfel
+	 /MRg1ojXj/8N1i1LhBa1tVV1WDkyLn1uyCD7jTDZbTKtR4jB/9mP+ymwCiI73orvsy
+	 LHm/v3p4MdyDg==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
-	Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Martin KaFai Lau <kafai@fb.com>,
-	Song Liu <songliubraving@fb.com>,
-	Yonghong Song <yhs@fb.com>,
-	John Fastabend <john.fastabend@gmail.com>,
-	KP Singh <kpsingh@kernel.org>,
-	Lawrence Brakmo <brakmo@fb.com>
+To: stable@vger.kernel.org
 Cc: Sasha Levin <sashal@kernel.org>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	gregkh@linuxfoundation.org,
+	saeedm@nvidia.com,
 	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org,
-	Sechang Lim <rhkrqnwk98@gmail.com>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	"Miguel Gazquez (Schneider Electric)" <miguel.gazquez@bootlin.com>
-Subject: Re: [PATCH 5.10.y] tcp: clear sock_ops cb flags before force-closing a child socket
-Date: Wed,  9 Sep 2026 16:25:59 -0400
-Message-ID: <2026-09-09-daily-reply-0001-tcp-sock-ops-cb-flags-5-10@kernel.org>
+	phaddad@nvidia.com,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Paul Saab <ps@mu.org>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: Re: [PATCH v2 6.1.y 6.6.y 6.12.y 6.18.y] net/mlx5e: xsk: Fix unlocked writing to ICOSQ
+Date: Wed,  9 Sep 2026 16:26:01 -0400
+Message-ID: <2026-09-09-daily-reply-0003-mlx5e-xsk-icosq@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260909-cve-2026-74268-5-10-v1-1-374ebc121b6d@bootlin.com>
-References: <20260909-cve-2026-74268-5-10-v1-1-374ebc121b6d@bootlin.com>
+In-Reply-To: <20260909141332.2297825-2-dtatulea@nvidia.com>
+References: <20260909141332.2297825-2-dtatulea@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -65,13 +52,11 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-> A child socket inherits the listener's bpf_sock_ops_cb_flags via
-> sk_clone_lock(). If its setup fails in tcp_v4_syn_recv_sock() /
-> tcp_v6_syn_recv_sock(), the child is freed through put_and_exit, where
-> inet_csk_prepare_forced_close() drops the socket lock and tcp_done() runs
-> without it.
+> During napi poll, when the affinity changes and there's still XSK work
+> to be done, we trigger an ICOSQ interrupt on the new CPU. However, this
+> triggering on the ICOSQ is done unprotected.
 
-Queued for 5.10, thanks.
+Queued for 6.18, 6.12, 6.6 and 6.1, thanks.
 
 -- 
 Thanks,
