@@ -1,148 +1,215 @@
-Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF4585616C6
-	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 12:37:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DF3A5592F5;
+	Wed,  9 Sep 2026 12:39:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788957466; cv=none; b=ZQ+hwSjuPYCr7QCgtCmvq1v4k+9jj32zcXuWDh0Mw8iaSUbEZP2Zq/xQYO0BSvOQPuOUAvRJRVdRPCoNsCJfDE4BnT90u70Ef+l6/b7/n8Jtn+TtltmsVS20Whgc7gODWYcLkzLjQTrnnYZTZVnPe5GlRS8iY4b3DP/tf16QfNk=
+	t=1788957542; cv=none; b=YkCZy5cZ17/P1shMHRafbMwPWn+u8qWpguLSZC4x4OP3WZfLyrFrGF+VzLK5ZztMzhNfnBtxZDysBv7Ti68b/U7/YSmK6vPxgpSPrIIoO9I4rXIiD0fqF5rzW+ilP4f8I+GHaP+h/emjfTUxxMZqb1OryvHK95f3+1BnhVzJSKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788957466; c=relaxed/simple;
-	bh=3+ese/BC7ABQtPNeXTWrPYUi2tWpSVRo5ACoFFtlpsQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HqkH8M0auResG0CPdipQnOpP2lovolvgGMLA3shW95KzrZmy72hSRd/KuSHtnNy7A2sw1kQ7VRqxXIXjfc4A+gh90XSQGKt9+kvmE+sRRWBconK90nKJOWbLysgBc85JtgtiNiJxv6bTDHPmW7A6oqx9DJLlAgmJ9KmsyyaV2o8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=bk6wRSPB; arc=none smtp.client-ip=74.125.228.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
+	s=arc-20240116; t=1788957542; c=relaxed/simple;
+	bh=N8e0mHtfrLhJTzcSZsXBav63lynCCymY+XwiF4qZeBg=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=S7zRRJwB29hhjXxx2RiD9/3Kw4zdSYkf46yGtIflQjPn3tOOvExASq+lR0OL4Ho15NX91qXfCyG8V3xIK9hNY42wDIKfCJDoDlPJuqnqzAcHCaaQ0xkesZIWZZCvOfx7Y7SktaLz8ufBU59pM6IKKItfIAqQ2RTQsAy9enTsgSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aFC9EwKd; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="bk6wRSPB"
-Received: by mail-pz2-f12.google.com with SMTP id d2e1a72fcca58-85469e25187so107384b3a.2
-        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 05:37:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1788957462; x=1789562262; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=lVbHlHnf4CwWKZF41ARDlFSQjSg4eEO9OdDQSzP1YhU=;
-        b=bk6wRSPBMtx6Jo1Qm6kkuv9oSKbxX9A4Siz2pZnLbU+5AD01yi86DncZVKmeWooNJq
-         h7muHQD8ccwflhAxDqmdRvVcdiTGT997sQWf1nc0yzwFNwj+W8VNki+uhFbwAMYmwQfu
-         g+kXFVamRKEq82nc2/JmySfFHgU4ItBKEKP/I9iO4T5ysMHG4fdR5b4WKq5iE/G+IvhA
-         pFSO4AX8CDrLkXIS0uzXZgRdsmrlmT6DBUZK1mXvDmqJBP/GAq/qGDEQjZZSS5eshW86
-         T8XrUG5f8skQNzP9AIgnx5Sm+eVhh6pBzcy98t0mlgWvD1UF3ZyZ/S/p41iVWKnltxpc
-         xYfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788957462; x=1789562262;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=lVbHlHnf4CwWKZF41ARDlFSQjSg4eEO9OdDQSzP1YhU=;
-        b=n5X8xHcbOzgJY2F4BmQYbwF7D4GJm81aRpfy8euyCbqYHhOlj6AM+NCiH+X5UzRwPF
-         jkrCEX67SteO/w1Z8hUpKGYb5F831pyn/vpgpJ1bHZA2XTTtw3lJD8Oq6nEjw2TYzT2H
-         ZFN05PnU7klprcwzGrJ2B05Z1A1Jxyr/4xf8Xflmt/Br4tnKPaIKyn5vpaPBXd67WZoO
-         onkdsGExrL1jojRUz7La9C9t5A08mracE7cU+39C/6KcCEgCt1nIwTfhWrWB5JrZyl85
-         D2xZ0FKgiSlbAdBGfANIz4spgSzHyGMnGCUiDrBB96iGLdA9MZ1rvl/Rc6dYEpxe/9y8
-         uChQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxAYcV9ssHixVYOBWMLvMzXxz6o+FOACj0xV6qq563XccdVeX7EPiYreWOIt3wg/fz8Omzlugk=@vger.kernel.org
-X-Gm-Message-State: AFuF++khzuNLcm6ORpZCdflf8qowI6/v5r1IMkh62j5DrrBI8g2jOLbY
-	hkV/BXfDpcG6ZtlG9toxCaCSq4BYfyLhj2Dovw+86L6z2vWNDGb62EO0L1Uw+rI25RcE
-X-Gm-Gg: AYBFou0/DU2Ygh/3jpTSY3kMnN9WNb6IZAT1KPSW8YfPkUTFu3KDXLb55uSGAzOCsWM
-	lEudXz/k/MdQQtHvmmi7b/mH521o7Yx1N5kGMhzPbi6Gj+QsjIB/HjqyFoNvmGe5ZpJSWAALfGF
-	7h0uX6qau55eknIhvs6usiUp8FPUwf/yrG0R082tSFD2QHPdA+nQ/Yt0A3uv4q1DQbosbNXob5/
-	vUaoYV9SMo/FrUNcR/RfLXKxViGCZ8p0y3mxtMTB9ZbT6YHKcP259OLn8S3wpkTGCpEpqM8BSfp
-	+R3WMsQinYRhYe5cKAjK2+c847CpFuSEySxg3qM8bK8HEcyhJEvCvdv/AgkAOo8HW97nhI1zrrc
-	O4w0R1bxXWR1Wn66PJPie1hB+oE7eqejnzOJR5F/4VSD0HULZhU9msPIoCG2hnKOLWtwYBMadLA
-	MYsSYV7GyFAtvRYl9BmmSjf4WYCZFr+viX2DhSEPlFbDwdX+wABhVc/A4GsxVUvFapNv7lXDzIR
-	xOPXm9NUK/yz69fmRx+W0SaWEKtJg==
-X-Received: by 2002:a05:6a00:985:b0:857:7384:b5fc with SMTP id d2e1a72fcca58-86948d28ecamr1113151b3a.24.1788957462456;
-        Wed, 09 Sep 2026 05:37:42 -0700 (PDT)
-Received: from b6ad5085b32f.. ([122.51.212.64])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-86153027951sm6828614b3a.40.2026.09.09.05.37.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Sep 2026 05:37:41 -0700 (PDT)
-From: Zihan Xi <zihanx@nebusec.ai>
-To: Johannes Berg <johannes@sipsolutions.net>,
-	linux-wireless@vger.kernel.org
-Cc: Zihan Xi <zihanx@nebusec.ai>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Jakub Kicinski <kuba@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Mariano Baragiola <mbaragiola@linux.com>,
-	James Guan <guan_yufei@163.com>,
-	Kees Cook <kees@kernel.org>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Alexander Popov <alex.popov@linux.com>,
-	Breno Leitao <leitao@debian.org>,
-	Alistair Strachan <astrachan@google.com>,
-	Tristan Muntsinger <muntsinger@google.com>,
-	Cody Schuffelen <schuffelen@google.com>,
-	Greg Hartman <ghartman@google.com>,
-	stable@vger.kernel.org,
-	Vega <vega@nebusec.ai>,
-	Luxing Yin <root@tr0jan.top>
-Subject: [PATCH v2 1/1] wifi: virt_wifi: don't transfer operstate before register
-Date: Wed,  9 Sep 2026 12:37:18 +0000
-Message-ID: <f5a832fb0ab228ce6e2b5a91fba4ca8b79198a2f.1788948455.git.zihanx@nebusec.ai>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <cover.1788948455.git.zihanx@nebusec.ai>
-References: <cover.1788948455.git.zihanx@nebusec.ai>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aFC9EwKd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0688E1F00A3A;
+	Wed,  9 Sep 2026 12:38:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788957539;
+	bh=joLSSrsFmb2lcxW3W5OuNn3CdYAbfbENeKzl8u5hbCE=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=aFC9EwKdNv5cb72gC40/YaNlY/izlEbVukgbEOEeTcTUNvhDXYKsJEldTPnmQWYd0
+	 cTg8VBwN0d1nSCEzy1Hw1n7mTsC0QpsT37E1sgpCgiFLV8TsPdqLFQEr3H6yXII4jK
+	 A6qGh+azHHi5n1SIMhsAOWaIPH0RlOdp0pd6ZzlN+VKtrzRnfmY3HxC1umWgNT8kAI
+	 g6l1luOpyTDgxa/yORWqReDIUbnsuU1LOaBQyeyxlTLyoViKXDO3U+zMBwoQ8ZdVlt
+	 cuRPxupByWMXc8pjmhe5xbjBnphtC4894dHsanAE1cf3G18xrJHdoREXoFzz/OUDTI
+	 d3sHPcz+bvFIg==
+Subject: Re: [PATCH net-next v7 1/3] dt-bindings: net: wiznet,w5100: convert
+ to DT schema
+From: netdev-bot+sashiko@kernel.org
+To: arthur@marmottus.net
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, arnd@arndb.de, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ krzysztof.kozlowski@oss.qualcomm.com
+Date: Wed, 09 Sep 2026 12:38:58 +0000
+Message-ID: <178895753846.219967.8860843467900146377@kernel.org>
+In-Reply-To: <20260904-wiznet-link-gpio-v7-1-69f01b70c96f@marmottus.net>
+References: <20260904-wiznet-link-gpio-v7-1-69f01b70c96f@marmottus.net>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-virt_wifi_newlink() calls netif_stacked_transfer_operstate() before
-register_netdevice(). If the lower device is dormant, that queues the
-new netdev on lweventlist while it is still uninitialized. If
-registration fails after that, for example because of an invalid name
-such as "bad/name", free_netdev() immediately frees the object. A
-later linkwatch_fire_event() then use-after-frees the list entry.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider:
 
-Move the transfer to after netdev_upper_dev_link(), as macvlan and
-ipvlan already do.
+Critical: 0 · High: 0 · Medium: 0 · Low: 1 (1)
 
-Fixes: c7cdba31ed8b ("mac80211-next: rtnetlink wifi simulation device")
-Cc: stable@vger.kernel.org
-Reported-by: Vega <vega@nebusec.ai>
-Assisted-by: LLM
-Co-developed-by: Luxing Yin <root@tr0jan.top>
-Signed-off-by: Luxing Yin <root@tr0jan.top>
-Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
----
-changes in v2:
-  - Fix virt_wifi_newlink() instead of dropping events in
-    linkwatch_fire_event().
-  - Fixes: c7cdba31ed8b, the commit that added virt_wifi.
-  - v1 Link:
-    https://lore.kernel.org/all/cover.1788500348.git.zihanx@nebusec.ai/
+- [Low] In the newly added
+  Documentation/devicetree/bindings/net/wiznet,w5100.yaml, `spi-max-…
 
- drivers/net/wireless/virtual/virt_wifi.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Pre-existing issues:
+- [Low] Documentation/devicetree/bindings/net/wiznet,w5100.yaml (added by
+  this patch) constrains `interrupts` only with a count (`maxItems: 1`…
 
-diff --git a/drivers/net/wireless/virtual/virt_wifi.c b/drivers/net/wireless/virtual/virt_wifi.c
-index b69a4650fba85..48afc2432f93a 100644
---- a/drivers/net/wireless/virtual/virt_wifi.c
-+++ b/drivers/net/wireless/virtual/virt_wifi.c
-@@ -558,7 +558,6 @@ static int virt_wifi_newlink(struct net_device *dev,
- 	}
- 
- 	eth_hw_addr_inherit(dev, priv->lowerdev);
--	netif_stacked_transfer_operstate(priv->lowerdev, dev);
- 
- 	dev->ieee80211_ptr = kzalloc_obj(*dev->ieee80211_ptr);
- 
-@@ -584,6 +583,8 @@ static int virt_wifi_newlink(struct net_device *dev,
- 		goto unregister_netdev;
- 	}
- 
-+	netif_stacked_transfer_operstate(priv->lowerdev, dev);
-+
- 	dev->priv_destructor = virt_wifi_net_device_destructor;
- 	priv->being_deleted = false;
- 	priv->is_connected = false;
+--
+
+dt-bindings: net: wiznet,w5100: convert to DT schema
+
+This converts the Wiznet w5x00 SPI Ethernet controller binding from plain
+text to a YAML schema, adding the file wiznet,w5100.yaml and deleting
+wiznet,w5x00.txt.  The new schema enumerates the three compatibles,
+constrains reg/interrupts/spi-max-frequency, and carries over the
+Raspberry Pi example.
+
+A couple of questions below about the interrupt and spi-max-frequency
+descriptions.
+
+> diff --git a/Documentation/devicetree/bindings/net/wiznet,w5100.yaml b/Documentation/devicetree/bindings/net/wiznet,w5100.yaml
+> new file mode 100644
+> index 0000000000000..601d828bae927
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/net/wiznet,w5100.yaml
+> @@ -0,0 +1,66 @@
+
+[ ... ]
+
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - wiznet,w5100
+> +      - wiznet,w5200
+> +      - wiznet,w5500
+> +
+> +  interrupts:
+> +    maxItems: 1
+
+[Severity: Low]
+This isn't an issue introduced by this patch, but the interrupt polarity
+disagreement between the binding and the driver is now the only in-tree
+record of it, and the wording that described it is being dropped here.
+
+The deleted wiznet,w5x00.txt said:
+
+  w5x00 natively generates falling edge interrupts, however, additional
+  board logic might invert the signal.
+
+The new schema has no description and no type constraint under
+interrupts, so that information disappears from the tree.
+
+Meanwhile w5100_probe() in drivers/net/ethernet/wiznet/w5100.c hardcodes a
+level-low trigger in both registration paths:
+
+	err = request_threaded_irq(priv->irq, NULL, w5100_interrupt,
+				   IRQF_TRIGGER_LOW | IRQF_ONESHOT,
+				   netdev_name(ndev), ndev);
+	} else {
+		err = request_irq(priv->irq, w5100_interrupt,
+				  IRQF_TRIGGER_LOW, netdev_name(ndev), ndev);
+
+and __setup_irq() in kernel/irq/manage.c applies the driver flags over
+whatever the DT node asked for:
+
+		if (new->flags & IRQF_TRIGGER_MASK) {
+			ret = __irq_set_trigger(desc,
+						new->flags & IRQF_TRIGGER_MASK);
+
+So no interrupts are lost, but the type in a node copied from the example
+is never the one the line is programmed with, and request_irq() fails
+outright on an irqchip that cannot do level triggering.
+
+Would it make sense to either describe/constrain the type as level-low in
+the schema, or have the driver pass IRQF_TRIGGER_NONE and honour the DT
+type?
+
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  spi-max-frequency:
+> +    description:
+> +      According to the w5500 datasheet, the chip allows a maximum of 80 MHz,
+> +      however, board designs may need to limit this value.
+> +    maximum: 80000000
+
+[Severity: Low]
+Should this ceiling be per-compatible?  The description scopes the 80 MHz
+figure to the w5500 only ("According to the w5500 datasheet"), and the
+deleted .txt scoped it the same way ("when accessing the w5500"), but the
+constraint sits in the shared properties block so wiznet,w5100 and
+wiznet,w5200 inherit it too.
+
+The older parts have lower SCLK limits, so a node like:
+
+    ethernet@0 {
+        compatible = "wiznet,w5100";
+        spi-max-frequency = <80000000>;
+        ...
+    };
+
+passes make dt_binding_check with no diagnostic, and w5100-spi.c then
+clocks the bus at that rate.
+
+Other net SPI bindings in the same directory express this per variant
+inside a compatible conditional, for example the spi-max-frequency block
+in Documentation/devicetree/bindings/net/qca,qca7000.yaml:
+
+        spi-max-frequency:
+          default: 8000000
+          maximum: 16000000
+          minimum: 1000000
+
+Would an allOf/if:properties:compatible:contains: block per part be
+better here, or a description explaining why 80 MHz is safe for all
+three?
+
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - interrupts
+> +
+> +unevaluatedProperties: false
+> +
+> +examples:
+
+[ ... ]
+
+> +        ethernet@0 {
+> +            compatible = "wiznet,w5500";
+> +            reg = <0>;
+> +            pinctrl-names = "default";
+> +            pinctrl-0 = <&eth1_pins>;
+> +            interrupt-parent = <&gpio>;
+> +            interrupts = <25 IRQ_TYPE_EDGE_FALLING>;
+
+[Severity: Low]
+This is the same pre-existing mismatch noted above and not something this
+patch introduces; the edge-falling type was in the old .txt example
+verbatim.  Since this example is now the only surviving statement of the
+expected trigger type, is IRQ_TYPE_LEVEL_LOW the value to show, given
+w5100_probe() requests IRQF_TRIGGER_LOW?
+
+Nothing in-tree uses these compatibles today (a grep for wiznet,w5 matches
+only the binding and w5100-spi.c), so no shipped board DT is affected
+either way.
+
+> +            spi-max-frequency = <30000000>;
+> +            local-mac-address = [ a0 b0 c0 d0 e0 f0 ];
+> +        };
+> +    };
+> +...
+
+[ ... ]
+
 -- 
-2.43.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260904-wiznet-link-gpio-v7-0-69f01b70c96f%40marmottus.net
