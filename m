@@ -1,241 +1,148 @@
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96E2451E42E
-	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 12:25:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38274550DDA;
+	Wed,  9 Sep 2026 12:25:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788956739; cv=none; b=DTZirVpnUvRzjnl7HXbDlHHzbI0uIZCU7DS5o3RF6EcclLD5W32dWQc9Gf0KZhfF0YHjhfoWH3gqt9GOc6Fw/ifKfLPds0A4fhJuKFbA5/oQnkxiGrONC9m+hutKtV/D3jk65dYb/2y9bLEaHM90MRnPoaZDdWQbBROVFPQQoHA=
+	t=1788956739; cv=none; b=TFdxJTFIW7bgj9SiBsk/evqpxzTfFXS1vQEtXYV6pG/oeB4IL4KnUMJK6lyb8sJTCm/Rqr3hMRM/6spsIP3Ppub6GnhsfF9Y3pU7eejXLkdWycScT9mJHVs2CU6IUAPgUT31LD8eupidFtAq3WJtE+a6WTfXgjbDjIz9uW3WhW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1788956739; c=relaxed/simple;
-	bh=OO8u88ct1eUzY6gjgFbQzGRL2Zne/YtM7Y5ChNZ4mMA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CVF3b8wtlmaYhmOk5/0TotVuLOPn2J2Zz9Y15BYc4j7MJJJOj+ofE7m9RLjukgnjcWkUYE4feTJLH/CCYryERnuf9iU5fAbyKRtL0Nv6Xc6xIL4HMDMbv0g/hNraVxbTJx18H/XvfrvG00j21njpf5SFm/oYESUooCpKQbmIC4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eLXegIrn; arc=none smtp.client-ip=209.85.160.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	bh=xMb94n5ci++ZfySiyYkZM9SC4xYqfdwapKQZj+qcWzA=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:Subject:Cc:To:
+	 References:In-Reply-To; b=g8HDFHk0XbS+gGh7EvlDLimzJ8AIIpf4SKLVCznxW717NhB7vxtl/o2z7BI3551jEOtnEZ4PJQgpWvGOAmSaLbWGRDuvOzPUDhgqUHuIdJHsPTltlYFhyKngsSsJkcAIRtb9gOEBAIPtrV9/CzfDN+3C/6JvyTYuCYbkWpL5T34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Yu5OMXoP; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eLXegIrn"
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-53024149d40so27955641cf.1
-        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 05:25:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788956735; x=1789561535; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=x7SoCGf8+xqv9IONclm8/e6UxRTuHFXL1XQZ0escfhE=;
-        b=eLXegIrn/54b+yV7abj/03B4oufx83UkfQTHw8WImoe1AoM/prT3LD8kDWhEuXk3UZ
-         OjwCb6ev+jYj0IA7T0zmnIqrcmOrq12lurAu+KIgAdXt0jMgPTRe0NyL7r3yAPGHwmIX
-         NQzsQDr89uVVw2W8MS4BfRncaiEDzj7XSVvgpU1+Ajsb0tueUMMYI1Dh1uvb4QEg2NGw
-         3NQ2IyXhciIgnaDhZVJKmdXPvGt0h5t+Y3Q/p3MdWzV/fUwrA+1E+G8kPYQJJY3oE9yH
-         FtpCR04qc5jTzUWK8V8wE6n3X25y0HMkRXvZJbYV0Oj4pqC/m+evWWhF338/ERyClgeE
-         ARgw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788956735; x=1789561535;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=x7SoCGf8+xqv9IONclm8/e6UxRTuHFXL1XQZ0escfhE=;
-        b=TGG02VscMeGJILF8myD8L7S2/bsu1+O0H+S8yY6XgKKcl4k3fSb1s6dvrYj6lm55PM
-         RYIO2awu/zuh1gMe7vB5e3z9f6QAqDTkZ8iYDqlPxg0k/tL9XuKtTJP2RwwWTSbQ0wp6
-         xyXlHt9Gd5+vp6Uv+tTw/WffB+A1dJRSN1w5IOlgs2IYos5Xp4+0vMsrx0VmRv0wEEOx
-         ETaVuk1uWkScBIylYK4/5ypY1ZC8jfR3exW3dZcXtUcjEtIEdEbnXELLOi1jT5OqyJFa
-         e2uHPoNYdiSD8xstLQ2EUbJouSg+WvP9csotMSntbr4NcOWzh6X+ffIDz+V1HCpMSSnJ
-         yuSg==
-X-Gm-Message-State: AFuF++mlZzjbcY/RzrTT99Ac5ZbFBzvV9EPCHc0yU9csk8qDGxLL5UUC
-	5YItLHjOnck3r7GlKFIiZ18P7GhU8LQGxeusV+b1Xit+rJ5DFv+JuIBFVg7B9Wrf
-X-Gm-Gg: AYBFou0kSNDSBjxJnds9XgxjPRo+k7Wjeag5JJaHz8pJPllLt1dhtdIcCPdvkOE5wrM
-	46xolHrNSFcrKJos4JJjjvnEtKnCit2UR1WpjzQne9LLki9vsdqzoH8/PTWyprsTHKC9gy8zUFm
-	jX/rXIsUl8M2yY5zNifU/wja6UYY9GoWXZMQipohnCi3QuqPGxyJ6RbBq4ACPPFf+/LHIt/QZjE
-	bUlSvlrjdegI+47NHxIrDdhbHkkxNSHlfdXESOFseVoMloInbym4YMpg43as+54AP9Scol8yUB7
-	sDK8SGrvsQVcf337W4w65y+X4Mj9dhIMu2t2mygopO8ae3hiG75I9doS6N79vueLIWqf8Ow4QCw
-	2yDAh7JR4rsNEQVNuiaFG1jHbEuw/3QrDrndAaKEFDsUnzubQzqXJnoQ1L/CkqwkJKfjuuvwckP
-	TA9vg8wyC6d+hoZsk3d23j9id7aDzxApPo9KaOOmIFRJkG0HXR7sBh4wec2IKDMtn92g==
-X-Received: by 2002:a05:622a:1115:b0:530:430f:b922 with SMTP id d75a77b69052e-53054a32ce5mr403798111cf.49.1788956735225;
-        Wed, 09 Sep 2026 05:25:35 -0700 (PDT)
-Received: from houminxi ([163.123.141.225])
-        by smtp.googlemail.com with ESMTPSA id d75a77b69052e-5308d8d3eddsm61037541cf.0.2026.09.09.05.25.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Sep 2026 05:25:34 -0700 (PDT)
-From: Minxi Hou <houminxi@gmail.com>
-To: netdev@vger.kernel.org
-Cc: aconole@redhat.com,
-	echaudro@redhat.com,
-	i.maximets@ovn.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	shuah@kernel.org,
-	dev@openvswitch.org,
-	linux-kselftest@vger.kernel.org,
-	Minxi Hou <houminxi@gmail.com>
-Subject: [PATCH net-next v4 1/2] selftests/net/openvswitch: add SCTP flow key test over IPv6
-Date: Wed,  9 Sep 2026 08:25:20 -0400
-Message-ID: <20260909122521.2687193-2-houminxi@gmail.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260909122521.2687193-1-houminxi@gmail.com>
-References: <20260909122521.2687193-1-houminxi@gmail.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Yu5OMXoP"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 805D24E415B1;
+	Wed,  9 Sep 2026 12:25:35 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 536D760448;
+	Wed,  9 Sep 2026 12:25:35 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6220811C7AF96;
+	Wed,  9 Sep 2026 14:25:31 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1788956734; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=84CBflGEgtrFQdlVoKzIX6sEF0F5qk25QvC3/9WaHTg=;
+	b=Yu5OMXoPK0bE0i4ZR7GbuKuVwM8SLoZB0+r2/fHXOw+PBAy+8WKuUjxkDOGkmNytu5K7BJ
+	I2/V2ZeZgjR128qHJIOoHRr/+CZmx4f+V9yDHKfpgvwfVvFgj/KGw7AYXpjbLlD/UrZgWD
+	v4X4lQ7NT7uP7XcVYnpv1MmWR6Xuy91YgFvyg6dzQHjVX225gRqw1tlGLMqujzlqIbEQD3
+	W1peoYxyyEezzOXeA1rwpRPAMWyqjOx4JD/GSMSMje2F6Jda3PzIzBM4KMJhMoXub9jIuT
+	+YfplJCnjMVYVxcdotUIWlteENaUxc94aIcj63WUhDKPj8RrFE/UjeOtaLEpHg==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 09 Sep 2026 14:25:30 +0200
+Message-Id: <DLAS8GLF5E54.2TXTEZ229AHZI@bootlin.com>
+From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
+Subject: Re: [RFC PATCH net] net: macb: fix ordering around PTP timestamp
+ read
+Cc: <netdev@vger.kernel.org>, "Richard Cochran" <richardcochran@gmail.com>,
+ "Conor Dooley" <conor.dooley@microchip.com>, "Andrew Lunn"
+ <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, "Eric
+ Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>, "Paolo
+ Abeni" <pabeni@redhat.com>, <linux-kernel@vger.kernel.org>
+To: "Nicolai Buchwitz" <nb@tipi-net.de>, "James Clark" <jjc@jclark.com>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260908053150.28694-1-jjc@jclark.com>
+ <efc8c860b90e8f55882241267b0e242d@tipi-net.de>
+In-Reply-To: <efc8c860b90e8f55882241267b0e242d@tipi-net.de>
+X-Last-TLS-Session-Version: TLSv1.3
 
-The merged SCTP test covers only IPv4. The SCTP branch of the IPv6
-extractor (the proto=132 walk after parse_ipv6hdr) and the v6 side of
-the SCTP netlink validation (match_validate() requires the sctp() key
-whenever ipv6(proto=132) is matched) have no selftest coverage.
+Hello Nicolai,
 
-Add test_sctp_connect_v6 mirroring the v4 test: bare icmpv6() flows
-forward NS/NA, and ipv6(proto=132),sctp(dst=4443)/sctp(src=4443)
-flows gate the association in the same three phases (flows installed,
-removed, reinstalled). A keyless ipv6(proto=132) install must be
-refused with EINVAL, pinning the reject side of the match_validate()
-rule; without it a regression dropping the requirement would pass
-unnoticed. The refusal is asserted to be EINVAL specifically, not a
-parse error of the flow string. After the association succeeds the
-test also pushes a known payload across and waits for the listener
-to log it, proving the datapath carries the association's traffic
-end to end, not only its handshake. Skips when the sctp module is
-missing, socat lacks SCTP support, or IPv6 is unavailable; an
-association or payload failure with the flows installed fails the
-test.
+On Tue Sep 8, 2026 at 11:12 AM CEST, Nicolai Buchwitz wrote:
+> On 8.9.2026 07:31, James Clark wrote:
+>> PTP_SYS_OFFSET_EXTENDED returns system timestamps that do not correctly
+>> bracket the PHC register read on MACB/GEM. On a Raspberry Pi 5, the
+>> returned interval can be as short as 37 ns, while an ordered register
+>> read takes approximately 1 us. This biases the midpoint used by=20
+>> phc2sys,
+>> causing CLOCK_REALTIME to run approximately 0.5 us ahead when=20
+>> synchronized
+>> to the PHC.
+>>=20
+>> gem_tsu_get_time() reads the nanoseconds register using the driver's
+>> relaxed MMIO accessor. On weakly ordered systems, the subsequent system
+>> timestamp can be taken before the register read completes.
+>>=20
+>> Add rmb() after the bracketed nanoseconds read in both the normal and
+>> seconds rollover paths, ensuring that the read completes before the=20
+>> post
+>> timestamp is taken. With the fix, the minimum interval on the same
+>> Raspberry Pi 5 increases to approximately 1 us.
+>>=20
+>> Fixes: e51bb5c2784c ("net: macb: ptp: Switch to gettimex64()=20
+>> interface")
+>> Signed-off-by: James Clark <jjc@jclark.com>
+>> ---
+>> This uses rmb() to preserve the existing accessor and endianness=20
+>> handling.
+>> Would an ordered MMIO accessor be preferable for these two reads?
+>
+> AFAIU rmb() fits better here. Switching to readl() would also order the r=
+ead
+> on arm64, but only for hw_readl(). hw_readl_native() uses __raw_readl(), =
+which
+> has no ordered version, so that path would still need a barrier.
 
-Signed-off-by: Minxi Hou <houminxi@gmail.com>
----
- .../selftests/net/openvswitch/openvswitch.sh  | 108 ++++++++++++++++++
- 1 file changed, 108 insertions(+)
+Agreed we want to use our existing helper and an explicit memory
+barrier. Our mistake here is an helper called gem_readl() that doesn't
+call readl()! Proper naming would maybe have helped catch this earlier.
 
-diff --git a/tools/testing/selftests/net/openvswitch/openvswitch.sh b/tools/testing/selftests/net/openvswitch/openvswitch.sh
-index a31f7fb6882d..1160f8ed7d8a 100755
---- a/tools/testing/selftests/net/openvswitch/openvswitch.sh
-+++ b/tools/testing/selftests/net/openvswitch/openvswitch.sh
-@@ -34,6 +34,7 @@ tests="
- 	trunc					trunc: output truncation
- 	icmpv6					icmpv6: ICMPv6 echo type match
- 	sctp_connect_v4				sctp: SCTP flow key matching
-+	sctp_connect_v6			sctp6: SCTP flow key matching over IPv6
- 	psample					psample: Sampling packets with psample"
- 
- info() {
-@@ -700,6 +701,113 @@ test_sctp_connect_v4() {
- 	return 0
- }
- 
-+# sctp_connect_v6 test
-+# - sctp(dst=4443) matches client-to-server INIT
-+# - sctp(src=4443) matches server-to-client INIT-ACK
-+# - icmpv6 NS/NA flows forward neighbour discovery
-+# - remove flows and verify connection fails, reinstall and recover
-+test_sctp_connect_v6() {
-+	local t="test_sctp_connect_v6"
-+	local v6="eth_type(0x86dd),ipv6(proto=132)"
-+	local payload="SCTP6_DATA_OK"
-+	local rxfile="${ovs_base}/${t}/sctp-rx.txt"
-+
-+	modprobe -q sctp 2>/dev/null || return "$ksft_skip"
-+	socat -V 2>&1 | grep -q "define WITH_SCTP" || return "$ksft_skip"
-+	[ -e /proc/sys/net/ipv6 ] || return "$ksft_skip"
-+
-+	sbx_add "$t" || return $?
-+	ovs_add_dp "$t" sctp6 || return 1
-+
-+	info "create namespaces"
-+	for ns in client server; do
-+		ovs_add_netns_and_veths "$t" "sctp6" "$ns" \
-+		    "${ns:0:1}0" "${ns:0:1}1" || return 1
-+	done
-+
-+	ip netns exec client ip addr add fd00::1/64 dev c1 nodad
-+	ip netns exec client ip link set c1 up
-+	ip netns exec server ip addr add fd00::2/64 dev s1 nodad
-+	ip netns exec server ip link set s1 up
-+
-+	# NS/NA forwarding
-+	ovs_add_flow "$t" sctp6 \
-+	    'in_port(1),eth(),eth_type(0x86dd),ipv6(proto=58),icmpv6()' \
-+	    '2' || return 1
-+	ovs_add_flow "$t" sctp6 \
-+	    'in_port(2),eth(),eth_type(0x86dd),ipv6(proto=58),icmpv6()' \
-+	    '1' || return 1
-+
-+	# SCTP port matching: dst for request, src for reply
-+	ovs_add_flow "$t" sctp6 \
-+	    "in_port(1),eth(),$v6,sctp(dst=4443)" \
-+	    '2' || return 1
-+	ovs_add_flow "$t" sctp6 \
-+	    "in_port(2),eth(),$v6,sctp(src=4443)" \
-+	    '1' || return 1
-+
-+	# A keyless ipv6(proto=132) install must be refused (EINVAL):
-+	# match_validate() requires the sctp() key. Pin the reject side
-+	# of that rule; the keyed installs above cover the accept side.
-+	# Verify the refusal is EINVAL (missing key), not a parse error.
-+	err=$(ovs_sbx "$t" python3 $ovs_base/ovs-dpctl.py add-flow sctp6 \
-+	    "in_port(1),eth(),$v6" '2' 2>&1 >/dev/null) \
-+	    && { info "keyless SCTP flow should be refused"
-+	         return 1; }
-+	echo "$err" | grep -q "(22," || {
-+		info "keyless SCTP flow refused for wrong reason: $err"
-+		return 1
-+	}
-+
-+	ovs_netns_spawn_daemon "$t" "server" \
-+	    socat -u -t 1 SCTP6-LISTEN:4443,fork \
-+	    OPEN:"$rxfile",creat,append
-+	ovs_wait sctp_eps_has server 4443 || return 1
-+
-+	info "verify SCTP association with port-keyed flows"
-+	ovs_sbx "$t" ip netns exec client \
-+	    timeout 3 socat -u STDIN "SCTP6-CONNECT:[fd00::2]:4443" </dev/null \
-+	    || return 1
-+
-+	info "verify SCTP DATA chunk crosses the datapath"
-+	ovs_sbx "$t" ip netns exec client \
-+	    timeout 3 socat -u STDIN "SCTP6-CONNECT:[fd00::2]:4443" \
-+	    <<< "$payload" || return 1
-+	ovs_wait grep -q "$payload" "$rxfile" \
-+	    || { info "server did not receive SCTP DATA payload"
-+	         return 1; }
-+
-+	ovs_del_flows "$t" sctp6
-+
-+	info "verify connection fails without flows"
-+	ovs_add_flow "$t" sctp6 \
-+	    'in_port(1),eth(),eth_type(0x86dd),ipv6(proto=58),icmpv6()' \
-+	    '2' || return 1
-+	ovs_add_flow "$t" sctp6 \
-+	    'in_port(2),eth(),eth_type(0x86dd),ipv6(proto=58),icmpv6()' \
-+	    '1' || return 1
-+
-+	ovs_sbx "$t" ip netns exec client \
-+	    timeout 3 socat -u STDIN "SCTP6-CONNECT:[fd00::2]:4443" </dev/null \
-+	    >/dev/null 2>&1 \
-+	    && { info "connection should fail without flows"
-+	         return 1; }
-+
-+	info "reinstall flows and verify recovery"
-+	ovs_add_flow "$t" sctp6 \
-+	    "in_port(1),eth(),$v6,sctp(dst=4443)" \
-+	    '2' || return 1
-+	ovs_add_flow "$t" sctp6 \
-+	    "in_port(2),eth(),$v6,sctp(src=4443)" \
-+	    '1' || return 1
-+
-+	ovs_sbx "$t" ip netns exec client \
-+	    timeout 3 socat -u STDIN "SCTP6-CONNECT:[fd00::2]:4443" </dev/null \
-+	    || return 1
-+
-+	return 0
-+}
-+
- # psample test
- # - use psample to observe packets
- test_psample() {
--- 
-2.55.0
+>>  drivers/net/ethernet/cadence/macb_ptp.c | 4 ++++
+>>  1 file changed, 4 insertions(+)
+>>=20
+>> diff --git a/drivers/net/ethernet/cadence/macb_ptp.c=20
+>> b/drivers/net/ethernet/cadence/macb_ptp.c
+>> index e5195d7da..8209ec190 100644
+>> --- a/drivers/net/ethernet/cadence/macb_ptp.c
+>> +++ b/drivers/net/ethernet/cadence/macb_ptp.c
+>> @@ -51,6 +51,8 @@ static int gem_tsu_get_time(struct ptp_clock_info=20
+>> *ptp, struct timespec64 *ts,
+>>  	spin_lock_irqsave(&bp->tsu_clk_lock, flags);
+>>  	ptp_read_system_prets(sts);
+>>  	first =3D gem_readl(bp, TN);
+>> +	/* Ensure the PHC read completes before taking the post timestamp. */
+>> +	rmb();
+>>  	ptp_read_system_postts(sts);
+>>  	secl =3D gem_readl(bp, TSL);
+>>  	sech =3D gem_readl(bp, TSH);
+>> @@ -63,6 +65,8 @@ static int gem_tsu_get_time(struct ptp_clock_info=20
+>> *ptp, struct timespec64 *ts,
+>>  		 */
+>>  		ptp_read_system_prets(sts);
+>>  		ts->tv_nsec =3D gem_readl(bp, TN);
+>> +		/* Ensure the PHC read completes before taking the post timestamp.=20
+>> */
+>
+> nit: comment should be wrapped, to fit in the usual line length
+>
+>> +		rmb();
+>>  		ptp_read_system_postts(sts);
+>>  		secl =3D gem_readl(bp, TSL);
+>>  		sech =3D gem_readl(bp, TSH);
+>
+>
+> Tested-by: Nicolai Buchwitz <nb@tipi-net.de> # Raspberry Pi CM5, min=20
+> bracket 37 ns -> 981 ns
+> Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
+
+Thanks for testing Nicolai! I don't have any Pi 5 setup (yet hopefully).
+
+Thanks,
+
+--
+Th=C3=A9o Lebrun, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
