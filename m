@@ -1,120 +1,113 @@
-Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACF49511235
-	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 23:43:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C1913D904C
+	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 23:44:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788997428; cv=none; b=EpHo161ZfZFhP49e/Xof7IId1H0TpumLH1/ztENdTPYU0+P2kaFQLd0SHYOFRf6w34YGtJ0oymWml1z7bY5nuG4sN/+gAWRexOAWysta7rbookH45U0ARdJnro+6E7oWiYMjp9j7BL9a4+nnSjNPEduQf7EO/TCkH3yAg4SXQxU=
+	t=1788997467; cv=none; b=QPRhJoZT8VULZJoUXT2Q9ZfbaZqam5szdLRNRZpuZy+d+ZFT18Dmpy5aMUwps9k0qykIT7+z5sp8XqYUs6AfUuwq//t9v2mgde+8qWnerYIreqpnh85D1iSy/Lg4jYAupVb00du/KSvZbYtIjyTKR06NYOIoMV5OK7a48S23Tio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788997428; c=relaxed/simple;
-	bh=iQgKnqdFfC74cuoZof/tmRQHnjNDWB4QnkvrWQ4+DaE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hNazgsTswMRlY2+jdFHBd2O2FK1SxcmSpLYmEg+mDJfq8P/DswuQCQLRsoX1yhyLMNutNv++inKqfm2o3r7onmaGJ78oeIBFeqs1l3nFtD1Xiw7dWSDhZj6DKhdKzubYeVhgjFpNCUbnKbXaiUkhqH7F7zRGL6Kky05CIypdd2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ryq+2TuC; arc=none smtp.client-ip=74.125.228.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788997467; c=relaxed/simple;
+	bh=1eXPsTNYVM5qQ5KNN+fG6c0lvQIs0xtvuUndT+F8I6Y=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=lJtrY21wBVon5xoqCHagCTmEbwUKWYuKgoaiQ2BwdhDOZierSZSIgtuc4vrYi66T5p8U/XlPRb+kSYX5BpsXmF1VsO+6ItZ2E8cxKq0I/9G0Ps1YQQiSZJpJbvwyhXc94gKkGYTu3PqKrzhI78fV5WFFzTeAatlAbpLW9ybqRp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Sz31HNh5; arc=none smtp.client-ip=209.85.215.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ryq+2TuC"
-Received: by mail-pz2-f12.google.com with SMTP id 41be03b00d2f7-cc1cea4aeb5so682146a12.2
-        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 16:43:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Sz31HNh5"
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cc42a07d04aso6975130a12.1
+        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 16:44:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788997426; x=1789602226; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=k+ujgBnpldppc1WGTJUZWawg3lev00ws7zgSWhD2ufM=;
-        b=Ryq+2TuCP78E7C5M+is/maleyI+R/4UCzEIoYV1EUCqTjxHm7mN/9hYS15hBaK25UP
-         8CIMlD7GkZQo9HHu0/pnxywGSlMIoAfEsVpdiEO5/8UiNsn201GNPihJe1n8dMpXhq0z
-         vaYtQoibQRwskUqhs5XzULBnzaMchpJpm03pNYIKf4lCpgUPPGwWASHmScuOb+Tqbevo
-         M/Y84cZCLe8qIrjZqWnG8dxfFYr+hFFxWMGvU6b3o+q1uHxBEQWe0oKYcVoASOsWYFUa
-         VdSljJ+9WiYwWrpaml+nFMm2kQIDNuSBnsm5OqNmDrYyl1L2trfv4Rz1pLz5bQBjY3iv
-         7HYA==
+        d=google.com; s=20251104; t=1788997466; x=1789602266; darn=vger.kernel.org;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=1MFRngc/SCkLOCcscCrQUuAZZ/k/qiFhD2yx16c4ZyU=;
+        b=Sz31HNh5hqn80BmS+50aWxY1AgnpqfQ9hnmxl+XdZiMdxpO4J9cOFENBrJu+Khxd1X
+         qUJYnW05TDfxZfoiSowRlb5tueEhbUMBnDgoC0hWIAikBSVxo3IByojxhhaZyVZ1DsQZ
+         aObWt0QVGJwV0ikO9ozuhHxADQYmXXf5T6LGm2ARZQSbdR+3y8hDOu0JFStJZaBGJkZS
+         Ko4aCRySNY19IPSCkzZXoUT1C6fGCWgTuLCrT4rio6je4OSlNdMfuSyyTW06VVNE1T0S
+         i3k0B38PHRKH6UAQre2d3lXd2qTZNOn+tShdG7ONlTqS+aUlb7u4Hae93XkF8QF9I5Rk
+         GyuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788997426; x=1789602226;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+        d=1e100.net; s=20251104; t=1788997466; x=1789602266;
+        h=content-type:cc:to:from:subject:message-id:mime-version:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=k+ujgBnpldppc1WGTJUZWawg3lev00ws7zgSWhD2ufM=;
-        b=bVE5vRPbVgXb2qvsbl+uecUbGO7xrA0h5S7fdQHtnc/3+VE3xU51TG6c4OmXfs2pIp
-         ThMBn98nTBl9v1vQY3tz15uG/nBRq+6axvnQznRlHYryJ0BBSNF0TR4sfUQXmZGzulrd
-         VL4znwbbMDLL+nepW/gV69nKxbuAhT7ERdz/rKId5AcYV3nmddlNT08/gKOrrPV+Ya5j
-         1Z/Ae8fNUVBuXfVHOHtnb1nCOQ++bSR3+sTjv5CJTaXQfw1atwehUgE6nycmMYg6Xe32
-         TFzx5XA0eD07eXq+fq4ZSNa8naTye7LPoegbRB5FuRHEp9mOK7hXAHylGyDEduCYi8jP
-         /ntQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwWTHqqA7akIe8Cttk4E2NBU9KsM7Kxfb0/PO3xKFY8/VNE0VqFmIQuo2Ohy7VJJIqoxd1dlo8=@vger.kernel.org
-X-Gm-Message-State: AFuF++kQ85q+U2rVmN8eDh2NzI9VTRHZnb04AzhSiId0s6aCtTYl6V/f
-	uRzn9ICNNh/JEp7zjidAaghm06l8eMQByyZmGRY6PwpRGTZeFrx/HsBR
-X-Gm-Gg: AYBFou1kFt8K0UhB46psbrSYWylWDk6N58IR2jPp6/ekUH0RkbwlvJyH49ZMNjZBBN+
-	SsJAA3pMmA/igXknqRHOLzeiZQU7kdv6IMs9NaklSrw2QOx7AfU9CpEhMlaz6byX6OKbj1SUXt+
-	yanHNcBg5cfeKh7kMz2jMH6RmY495BXlDnNGTq4DvfFUOAQYIuZBua5ilS1GAz4LZe/fs4HtCeg
-	SX4kKjP0drwpDe6DKdutL2v2w7xw/vSH7qpoWT4WPIzWJthmYiESWp+1JPADqgVyGyIaCMyawS0
-	+z0mU/OmcVItTlvGGUMlb/aLN3I3LDK+rrxwCbo6VtQA/otwSsNKCrPTxKb9EnlgEYz1b6ezBSy
-	PrloHLNG6uODecrKGeofeWX660TCMVuKwzp6M1p3VPnRkWeKsP8UJCIN4ufc2X8rEMcAX9TN6Iy
-	2mLGhzCOzxq6ZlYQZstrBzDOhfxNER8Y84l73OVKia750Q3X9EIQ+btiFETMp1KGUKT0qONI19K
-	ss=
-X-Received: by 2002:a17:90b:3fc3:b0:39a:e002:f192 with SMTP id 98e67ed59e1d1-39d70b57638mr5363794a91.22.1788997425904;
-        Wed, 09 Sep 2026 16:43:45 -0700 (PDT)
-Received: from dev ([163.43.103.131])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39cd20c2f75sm1832150a91.2.2026.09.09.16.43.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Sep 2026 16:43:45 -0700 (PDT)
-From: Yuya Kusakabe <yuya.kusakabe@gmail.com>
-To: netdev-bot+sashiko@kernel.org
-Cc: Yuya Kusakabe <yuya.kusakabe@gmail.com>,
-	Andrea Mayer <andrea.mayer@uniroma2.it>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2] seg6: reallocate the skb head on L2 encapsulation only when needed
-Date: Thu, 10 Sep 2026 08:43:33 +0900
-Message-ID: <20260910084328.32338-1-yuya.kusakabe@gmail.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <178885587111.219967.14896644410984520593@kernel.org>
-References: <20260903-seg6-l2cow-v2-1-f37b3b35416f@gmail.com> <178885587111.219967.14896644410984520593@kernel.org>
+        bh=1MFRngc/SCkLOCcscCrQUuAZZ/k/qiFhD2yx16c4ZyU=;
+        b=WZsagAos4kKaiy0plx6UCh9l1gqEn1YPEBhkaPuhr/sVIH74yIvCtc4cGp+/kCXSAH
+         tY29tYCN3qZb3EVjjLvrAmYJKzs/m0qp07mg+U4Kx7knaP4OLlz2I6wC4CkkSl7OcIhY
+         xX+GTYgel9tj/WvDRi96Qugthx9xglsruMXhIJH1GPhMCiE3W3KNGnNqc63RGO/aGjnp
+         J333hrxtpvuD8vcRivZzsu6YbtsU6ZM09ZW8bPWBtW00AErKtfgSGDeQsJhyStJGxC5g
+         MbId9CtwX3KgUNgkXTI88ciwZWdC7bJW9s1twG1YqeaqQeLRpFKG1XnbPf25UCnffB/J
+         dV8g==
+X-Forwarded-Encrypted: i=1; AKwUvByNrN5gUjYUNd5l2KSHLyOVAZ76yb+NsrNRD80+HJUU3N++p5rq/PCGL3XLMil4rL+F11Demw0=@vger.kernel.org
+X-Gm-Message-State: AFuF++mLvibJr/A+AwM4dfDscFRVmwCLh/ZYo0OzxnWigFg7kj3+sHeS
+	jSj4h9O8qAOHS7DHMaW49mummyCsj7mn3uDGJEMNEKNrPjLMxurZCu4Vwmmcmro1GwPv8PjDtUL
+	3PBr1Iw==
+X-Received: from pgmk28.prod.google.com ([2002:a63:5a5c:0:b0:cc1:4e93:a6fe])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:a92:b0:3d3:b00b:26e8
+ with SMTP id adf61e73a8af0-3da3a17ede3mr66424607637.28.1788997465647; Wed, 09
+ Sep 2026 16:44:25 -0700 (PDT)
+Date: Wed,  9 Sep 2026 23:43:43 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.55.0.1003.g10538fe699-goog
+Message-ID: <20260909234422.2416506-1-kuniyu@google.com>
+Subject: [PATCH v2 net-next 0/7] ip_tunnel: Support per-netns device unregistration.
+From: Kuniyuki Iwashima <kuniyu@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, David Ahern <dsahern@kernel.org>, 
+	Ido Schimmel <idosch@nvidia.com>
+Cc: Simon Horman <horms@kernel.org>, Steffen Klassert <steffen.klassert@secunet.com>, 
+	Herbert Xu <herbert@gondor.apana.org.au>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Sep 8, 2026 at 5:24 PM netdev-bot+sashiko@kernel.org wrote:
-> Can that wrap to roughly 65534 and make the following
->
-> 	memmove(skb_mac_header(skb), old_mac, skb->mac_len);
->
-> write skb->mac_len bytes about 64 KB past skb->head?
+Patch 1 - 3 are prep patches to unlink ip_tunnel device from
+the hash table in ip_tunnel_dellink() only.
 
-Yes.  Forwarding plain ping6 traffic through a VLAN device with
-reorder_hdr off on ingress reproduces it: skb->mac_header comes back as
-65534 on a 704-byte head, and skb_mac_header_rebuild() writes 26 bytes
-there.
+Patch 4 removes ip_tunnel_del() from ip_tunnel_uninit() to
+ip_tunnel_dellink().
 
-> A similarly shaped window existed before this change, since the
-> skb_cow_head() inside __seg6_do_srh_encap() never accounted for mac_len
-> either.  Given that this patch takes over sizing the whole encapsulation
-> up front, would it make sense to fix the amount here?
+Patch 5 & 6 adds mutex to protect the per-netns hash table.
 
-The window is not specific to the L2 modes, so I would rather fix it in
-__seg6_do_srh_encap() and seg6_do_srh_encap_red() themselves.  Mode
-encap reproduces it too, on unpatched net-next.  40475b63761a ("net:
-ipv6: seg6_iptunnel: mitigate 2-realloc issue") replaced skb->mac_len
-with dst_dev_overhead() in those two skb_cow_head() requests, and
-dst_dev_overhead() is the smaller of the two whenever mac_len exceeds
-LL_RESERVED_SPACE() of the egress device.  Asking for the larger of them
-restores the guarantee without giving up the one 40475b63761a added.
+Patch 7 uses unregister_netdevice_queue_net() to support
+cross-netns device unregistration.
 
-I will send that against net, separately from this patch.
 
-> This isn't a bug, but does this trailer match the form documented in
-> Documentation/process/coding-assistants.rst?
+Changes:
+  v2:
+    * Patch 1
+      * Correct commit message; ip_tunnel_uninit() unlinks
+        DVMRP device, instead of ->dellink()
+    * Patch 7
+      * Check if (!itn->fb_tunnel_dev) in ip_tunnel_ctl().
 
-No, it does not.  I will use "Assisted-by: LLM" from now on.
+  v1: https://lore.kernel.org/netdev/20260907225846.3787676-1-kuniyu@google.com/
+
+
+Kuniyuki Iwashima (7):
+  ipmr: Call ->dellink() to remove DVMRP tunnel device.
+  ip_tunnel: Set itn->fb_tunnel_dev to NULL in ip_tunnel_delete_net().
+  ip_tunnel: Don't pass rtnl_link_ops to ip_tunnel_delete_net().
+  ip_tunnel: Centralise ip_tunnel_del() to ip_tunnel_dellink().
+  ip_tunnel: Unify error paths in ip_tunnel_newlink() and
+    ip_tunnel_changelink().
+  ip_tunnel: Protect ip_tunnel_net.tunnels[] with mutex.
+  ip_tunnel: Support per-netns device unregistration.
+
+ include/net/ip_tunnels.h |   2 +-
+ net/ipv4/ip_gre.c        |   6 +-
+ net/ipv4/ip_tunnel.c     | 132 +++++++++++++++++++++++++++------------
+ net/ipv4/ip_vti.c        |   2 +-
+ net/ipv4/ipip.c          |   2 +-
+ net/ipv4/ipmr.c          |  12 +++-
+ 6 files changed, 108 insertions(+), 48 deletions(-)
+
+-- 
+2.55.0.1003.g10538fe699-goog
+
