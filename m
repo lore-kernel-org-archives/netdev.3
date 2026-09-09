@@ -1,133 +1,120 @@
-Received: from fout-a2-smtp.messagingengine.com (fout-a2-smtp.messagingengine.com [103.168.172.145])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi2-f13.google.com (mail-oi2-f13.google.com [74.125.231.205])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A3F4378D94
-	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 17:38:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.145
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788975513; cv=none; b=dQbh50SMhL9rtPU4G31a199RmCJ9h4so6L2wlvNuw0zB+4pNVOrJFUPZW/wo1DQMgoeduSOO5VZRJBjXYJcXS0CCZF0FXUGEbknwC7Z0JYwcgmKeFSzJ0wxSSXMCdPgwhTq/9S+vsSQyWg1HUMCbzCvD131ouPP1/vKg0ItN7vI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788975513; c=relaxed/simple;
-	bh=nrI4GPIQhcNLCr47tkvvICyrs3LEYA/CiiaxMuRCSAw=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=MtUTusdJyh9KJiRCWnQ8oiK1V+xi/G93Ln3wbRnHwULBd7xgjACt0eAcjPSDmzjHG0cfcHi69r+v5WlNys2BOoj1o1rpDn2UMVuoF623BEbbSS1mAQ/lT29YI/j/gLPHF9YI8mUl3eOBwqN2Ac6Y1I6tyLcT0RG4/wQBZrRpmQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im; spf=pass smtp.mailfrom=fastmail.im; dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b=R1cMNfpE; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=sePm/wAz; arc=none smtp.client-ip=103.168.172.145
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastmail.im
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FEEE38C427
+	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 17:46:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.231.205
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788975992; cv=pass; b=JQSjG/u3aCIlfgzBhPpp7fNXGKQJbg7XUeBYVMQKB9blZb4bAHe/gg8PKi+aKlsiCSg7tKiM5biZ4/z+ieCOSfLcWo8gUlZg2ahHOux0BVoetxt4lObrGnCuvNRA6Q1ID+FvHLlDWMBgSKmIgg3JJdt28F0/8RUwhJ0ZL3hkCZA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788975992; c=relaxed/simple;
+	bh=UJGGMp/OrSs3NS/+SU1nVzly047peJCMppV7Ba9pMto=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ZH/BVlRFEm343NKArshH07b88A5AseKKjdkK/vOh+vvatji3ijAS9/M4Kre8iq2AKfMCHpdYwzkqfGaytshdAji4zgWcz5flRMe6TDdS6TuxI8dUU+t+kxSSHI8VQUc7xUnEpgqQdfC0+f/QuIm/45UXwCNdJ9OcteWyF1Vfvik=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EuxHdGKf; arc=pass smtp.client-ip=74.125.231.205
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b="R1cMNfpE";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="sePm/wAz"
-Received: from ams-compute-01.internal (ams-compute-01.internal [10.64.2.61])
-	by mailfout.phl.internal (Postfix) with ESMTP id 423B6EC0077;
-	Wed,  9 Sep 2026 13:38:29 -0400 (EDT)
-Received: from ams-imap-09 ([10.64.2.29])
-  by ams-compute-01.internal (MEProxy); Wed, 09 Sep 2026 13:38:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fastmail.im; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1788975508;
-	 x=1789061908; bh=+OlHwml09KbQAHZfavRDO602tceew8eMar5iOF7IKLE=; b=
-	R1cMNfpEJItjOJ2ZOP4i2YRdEjCL9Yfx+l9eScXoK9RD2KIAR9AmBfZlsP74TUox
-	iRUl0PK2U2f2Zjki0mifm7991HDpMIT4mA0NKMzPKhBOgsC0ICTR7h+7szvaFHwX
-	rvbicD/IYh4uDhgNzo5ulGXq7zLGExus/i2x11cMXOXveAhmwfr1VffEL6vVyd5v
-	WuJqlsBgvIxuIDL3WCotxf30YAjNPDAO9g+Z4u8dHgzKbEJmhgnqJqmldGdDyfv9
-	BPQyzO4GSlNrF9743RseqVx22lFh0Xixlk1rNs+D12jOxIoiziDeO40AcccJ8442
-	0kfPasSQSpZiZrkkKyWpow==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1788975508; x=
-	1789061908; bh=+OlHwml09KbQAHZfavRDO602tceew8eMar5iOF7IKLE=; b=s
-	ePm/wAzxLP7uYwcYrG2sS/Xq+goXbUtR4p/nbw53491ojHHQoLSI3+kMAFxToS7A
-	zgmSQ/EZXxSHLuI5urdkuEOAALo6ghcMKyqx5Ro0Tmgk8NnvjMJ7u7gV/eOP3TSe
-	HofoFIaHpR5urmRym/uAbAeUWgXt3/LKYD/FfGOeYh39MM6CVvTToTB2ieUGlHOX
-	xRRcv3HKt9NC+oPbJ/1ldsQcyu/fK2GAY8z5BQwV4ybvlBCE8ccFpm/vntMdvf7r
-	Yw4aOOEqvu+bAhu6+39UdQJNYKA93DaViyKiA0wY5yhhKGHesLkQ4ko27EuFgw7O
-	n70WDCqZEHQ2EdXF6OVjQ==
-X-ME-Sender: <xms:jpmhahAcgLhJxLSvRgj9ed6CbwbhaN60G3mUUA650IIjBkRFovCG5A>
-    <xme:jpmhaqUmEUKCzx8ji482nxcLnrMf5_T79d6F5Z4xWvPnOuvekq2zFkK_hZO-AJnlM
-    lQ6b64L3l_yS2x8jnldq43nP7f0VSxadzry-JqLK9lkinLkltIxV_wQ>
-X-ME-Proxy-Cause: dmFkZTEV4+WjRKM3cQ/9YbgICPxWVMYRnIBLN5LjH81Dk2B1KXC8T1sEmU9Cr6Yp1x78FH
-    Q19bv5vhacnjv0X8hZoeAWFHfc2f05iB4HyED4HB0IWs/nSeTqk3lg0nVGAt6ZK36HJum8
-    mopKGvEu7ES/ulAncv0ZpXcxtwt9ywMaAcpz8UJ5U67zoRHIwnhck9CuWbnp3NasgHpwpM
-    H0au4s4v7b75X7nMPHag2J/IEkOw74i9R0/q5sHv+bSEkEeB2MP7ShO/SlGQ2TAu9G16CN
-    0MlKNgS1WEVQHP6p9y8gARwLhwclC3noXtg7K0Saz9MLQw2ETaCswsKFOXBS+S9PijxLJj
-    qteh+Wg6Xvm32WxFEhH2FcKNwDkYWcErMF3cjnyZ1DfXu/iTjmWYBBAOcLv3rYcPm/uLLR
-    XSRlcXIsoAN2kEEqNMc64e7iqEYr+CPCX4hQ294Va7XTRDLGh/5wCCeJ6bx0GF8tiIfxd+
-    P5IWAGm2FSzqL6Wa3HDQL25qUXlGaE30bP9DltWPMzLAUh3ujINo15SRmQ5Jg67H93alVE
-    uNMgQSYodN+z0bsQz03eJRe1RzqoiCwcI2PqQR9iUmJD1zGUSBG/Gr6Loex0ZBaD6M+Z+n
-    qB/F7uIiYbVaydEoIly71gEAifSS8aAOB4cFf7rt4YIlMBEn/wS7wFSXx7FQ
-X-ME-Proxy: <xmx:kZmhahTXEeEUxM94UUzcSZE8Z72KrqdeMVLzpcF90SN0H9-UcrKAGg>
-    <xmx:kZmhalKgeQG75LEA9blNhGQbpR7xDRM-C0NhkshK7c-JJOuYTpLiSg>
-    <xmx:kZmhas-OMXuW3CA6I4keFhBuOrIiltW6ye1FMWDh49DAjNRtleQxgg>
-    <xmx:kZmhakLsoj7PIIH0EBckB2x3gZAzUaJpvZXrFCzoGAEVigSl_BBgnA>
-    <xmx:lJmhameuF-NY0sYbM6QW04lqWVDKlyAuWiAK8eS8d7RirFE5gMFWUhDx>
-Feedback-ID: i559e4809:Fastmail
-Received: by mailuser.ams.internal (Postfix, from userid 501)
-	id B7AC7180087; Wed,  9 Sep 2026 13:38:22 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EuxHdGKf"
+Received: by mail-oi2-f13.google.com with SMTP id 5614622812f47-4c112aaaf04so383755b6e.1
+        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 10:46:31 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788975990; cv=none;
+        d=google.com; s=arc-20260327;
+        b=kn5euoSwl1OuMYG4j6JIO7wT/2i+I8wKfrw2u3ZGu1iroI3Y6137I/XZrEpuwDncHT
+         nTSFmjCdMqTF2sLoONCdRhsjuTli1kQB8nkPoXYhCkJYIFVNm3yxtaI/haJm0xZvlljl
+         Qie2aFBbQUCQaOAno+6KvtJh7lUvKC6FJRxz7fQ2+G8S7J8XgIX03cbivWYRB/Svzn+F
+         8TG742Vyiujo2bJttIPkl1uzYweM+inwq4AK9ixY+7zoj2qunK8kfDmUddH1bWyqiTHO
+         k6TUQEVWhPHIKZLVbBZMLgOVKA4nBNEf8EqFiGCWwlky70mfmvcz/vU+uYpeL/ZQWGlN
+         /o3w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=EGxBHlYMfw2i6Wn1XBE9lhliUOi4k7OBEah5+qrJswM=;
+        fh=OsYXKoY2sSKBhNTThW9kucESC7dyZwg253Kp+7pxyN4=;
+        b=NV08gf99w2FTaFFL94u1D5rNr84lYlKOp7tnVYJCjvN6nxJ3GlWtQoIzRCbndR2yL4
+         Rw3opz8NYDqh7T1I1Q2K/MBSZ0rhiqmS/EMdujvewIRMvja0pqYoGKIGRrsU4hJYQuBb
+         PKLT/nuZBf9g0/6uarhOIdVPHjjmXrvbe+mSVocS2i44Mnxgf6cj8V9ZARmjGdMRHPkE
+         uIWRNpxUyxjnYRbp1MvzUXmdYMgfdGJ3/si4iSexySmPjrHNK8BVG/OrmuVFZvZbaShO
+         /I+RvhgHNLoc0Im65wB2yq2DY0S3+26OMi885zacQMZ5lGP+wNiDOYjIbpenwX2Ayjt3
+         TEbg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788975990; x=1789580790; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=EGxBHlYMfw2i6Wn1XBE9lhliUOi4k7OBEah5+qrJswM=;
+        b=EuxHdGKfpiC1H9knpgsuVeBfjytphq5Tx5oQKPUkVjTNoPTvafgdPMIeo+Uooh+te0
+         GgYvtMTnoOw+g+lKXCNNxJ3hQ4oQbxyfhXpZA3OpcSc+a2Jj/gphz//+RPhZ+tv3VuWr
+         Pz7q7Gnq5lFdDTQKhv0rBZrPCPXNzn9zBuuJ2l5C7GY15CsXpQ3ADTZfUrParQ873uAn
+         QBwhcRrtd1IsTgPA8+XAX5n472zixsqSDZHbad/zSrUI1Sob7hGb7lJDziwon5Y9Gh9t
+         hbxkf7YCJPM9qVqtmhaun5HpqHxHcDHW8rSbcNhYnYTZofjEadE1Oxg4VLU++xb7gDzC
+         ScoQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788975990; x=1789580790;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=EGxBHlYMfw2i6Wn1XBE9lhliUOi4k7OBEah5+qrJswM=;
+        b=pfhe7YC9HUyN8HfoPIduOZ63zNN00bc7sNjLkBaA4BZI7llj+okqGDuSIDkw4xFPGP
+         WazDjS3fghHHruojKEF8slc2gU8DKES0qfB4HRGLZ6Xxs8rZnGo1/G8EEkC/ERzBTT3g
+         y1KX8HU/M5v6OIgeItsHOD//uE2fx90TBkhJJ4JpRlWU1ZBHtpJyBkDTR9CjRqGNady7
+         kKboZbn13I9fhnX+ZhXGt3Z2p7eEONBEpLQw9NidtKH+whXJYFEWCiEOaOcja9IBiyzJ
+         y8vt7foHVN+lPbsrqpnuYLT2hkOG6g24CKG6sjsbkqLlaGu87GoOWenaAOik50EXEJNE
+         rWBw==
+X-Gm-Message-State: AFuF++kBvkmdfIGGgfe0Kjn51c/FFPbmk7v+RY5D9X49ScZX0xQ8vPn4
+	pVHdkrWr/JFngKFsxKCtvFfGVLqB3yrmmQMUTP/6QmiETAUXMtGkavHWluzKcvaFSrkzzGOqaXD
+	zXZYpSYrWzTdiwE9x6QlO9MvW5MUWrJY=
+X-Gm-Gg: AYBFou0/Hxjyi8vGaX6/taZEN8+N+Mx8cTqSCpo/42kT6gQagXvz1VkGtXS/Mg3um+7
+	vf5cRo9W5R3d7PSh2cWbewY5JxYen/BVllX8Mm9eqhnXXfYVS+u5YKaVfvpUywVchfBcWbLzO6D
+	n0S9tjkfpAuQniYsB984NJR0GdIHe3xzeECXpUB509gpJ0i/iJXyhPe3YOSUYDHrZfi5g+etabS
+	e9jqIbKbLcR26uTG53ESuEggftiFJa8l8ruZSoVwoe7EUQtjQuPwxAyNoUL4r3imPf3oj3+sZsg
+	51PGGpgqdroiDbq4k8rK1c/ir/uWw7oPzK6fYZbi0SeYoGFR5rjkGe3XVosKHXvE4PVhCKG6pxi
+	lQNsmTomVi2d3
+X-Received: by 2002:a05:6820:2912:b0:6b3:b9d1:f629 with SMTP id
+ 006d021491bc7-6bee5e98160mr2823187eaf.31.1788975987613; Wed, 09 Sep 2026
+ 10:46:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: ArITeD_9vPCs
-Date: Wed, 09 Sep 2026 20:37:48 +0300
-From: "Alice Mikityanska" <alice.kernel@fastmail.im>
-To: netdev-bot+sashiko@kernel.org, "Paolo Abeni" <pabeni@redhat.com>,
- "Jakub Kicinski" <kuba@kernel.org>
-Cc: "Willem de Bruijn" <willemdebruijn.kernel@gmail.com>,
- "David Ahern" <dsahern@kernel.org>, "Ido Schimmel" <idosch@nvidia.com>,
- "David S. Miller" <davem@davemloft.net>,
- "Eric Dumazet" <edumazet@google.com>, "Simon Horman" <horms@kernel.org>,
- "Shuah Khan" <shuah@kernel.org>,
- "Hannes Frederic Sowa" <hannes@stressinduktion.org>,
- vadim.fedorenko@linux.dev, netdev@vger.kernel.org,
- "Alice Mikityanska" <alice@isovalent.com>,
- "Willem de Bruijn" <willemb@google.com>
-Message-Id: <d61e1918-7234-4be5-8520-7932e62de962@app.fastmail.com>
-In-Reply-To: <178851946040.4131868.4350633164754043676@kernel.org>
-References: <20260901195714.673548-4-alice.kernel@fastmail.im>
- <178851946040.4131868.4350633164754043676@kernel.org>
-Subject: Re: [PATCH net v5 3/4] selftests: net: Test UDP length overflow with PMTU
- discover and big MTU
-Content-Type: text/plain; charset=utf-8
+References: <20260906131414.2683362-6-mmyangfl@gmail.com> <178896697703.219967.8447526738608779891@kernel.org>
+In-Reply-To: <178896697703.219967.8447526738608779891@kernel.org>
+From: David Yang <mmyangfl@gmail.com>
+Date: Thu, 10 Sep 2026 01:45:49 +0800
+X-Gm-Features: AcwNN1VxSFEObAOlS0oWuqxHPTQpRA1FtSHwEXKSDmt_D-rjyBcp-cftfMoT6sc
+Message-ID: <CAAXyoMM_uqu8z0jzTbNGGbOBW5UX3PGzJ-Tz3OZmyQxeYxTs0Q@mail.gmail.com>
+Subject: Re: [PATCH net-next v3 5/6] net: dsa: motorcomm: Fix MIB synchronization
+To: netdev-bot+sashiko@kernel.org
+Cc: netdev@vger.kernel.org, andrew@lunn.ch, olteanv@gmail.com, 
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
+	linux@armlinux.org.uk, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Sep 4, 2026, at 13:57, netdev-bot+sashiko@kernel.org wrote:
->> +    for filename, method in [
->> +        ('/proc/config.gz', gzip.open),
->> +        (f'/boot/config-{os.uname().release}', open),
->> +    ]:
->> +        try:
->> +            with method(filename, 'rt') as config:
->> +                for line in config:
->> +                    if line.rstrip() =3D=3D f'{option}=3Dy':
->> +                        return True
->> +                return False
->> +        except OSError:
->> +            continue
->> +        return None
->
-> [Severity: Low]
-> Is this return None reachable?  It sits at the end of the for body, bu=
-t the
-> try block always returns (True on match, False once the file is exhaus=
-ted)
-> and the only other path is "except OSError: continue", which restarts =
-the
-> loop.  The documented "Returns None if the config is not found" behavi=
-our
-> comes from falling off the end of the loop after both candidates raise
-> OSError.
+On Wed, Sep 9, 2026 at 11:16=E2=80=AFPM <netdev-bot+sashiko@kernel.org> wro=
+te:
 
-I'd like to fix this tiny thing =E2=80=94 should I send a patch to net o=
-r net-
-next (after it's synced)? return None was supposed to be outside the for
-loop =E2=80=94 I added it to address pylint's warnings. It doesn't affec=
-t the
-behavior, because it's unreachable as is, so maybe not worth sending to
-net as a fix.
+> [Severity: Medium]
+> Should this carry a Fixes: tag?  The unsynchronized 64-bit MIB accessors
+> and .get_stats64() came in with 186623f4aa724c ("net: dsa: yt921x: Add
+> support for Motorcomm YT921x"), so this is a fix to already-merged driver
+> code.
+>
+> Related to that, the fix does not look self-contained: the counter type
+> conversion lives in the preceding patch "net: dsa: motorcomm: Use
+> u64_stats_t for MIB stats", whose changelog says "u64_stats_sync will be
+> equipped in the next commit", and this commit also builds on "Rename MIB
+> stuffs", "Split MIB buffers" and "Split MIB module".
+>
+> Since neither commit alone closes the tearing window, how would a stable
+> backport of this fix be done without pulling in the whole refactor series=
+?
+
+This is a low-risk issue and does not affect control paths. Also it
+would be quite impossible to backport it since the whole series is to
+fix this and it would require major refactor on the struct.
