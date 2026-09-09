@@ -1,162 +1,206 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECEB7242D9B
-	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 13:45:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8DBC545D82;
+	Wed,  9 Sep 2026 13:53:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788961525; cv=none; b=ZSGNeiF5Jy77PrvFDeitxzGZbNTXmOC1tbJ83SwpNIWXvtVjKK3HtARus01q2g8QKvasgOkSQdzVWDjWY47Aos8p7u/aJR+LUtOVkCJEWmfRw6X/Rd9jqYgH3VR7OgwVW6ZCKfW3OmMEa98rrQxxNuSKwFGAcC0+8/ugrP043U4=
+	t=1788962032; cv=none; b=XTOW6vE6Ev2WWR8zGhSGFRFarO1BCjCH6Vx4V6nO9lz/D9Z+O/S5JKjOGR0vZcSwgfGmboFne0IF/A2G3mdYXC5KB1tjGAgz0lPNs+yqwem/GQM3u9v1I8tqopjSstS9vninvViDBO0ZCeow/OMceCvIIGgsVBEZojIDSK0qDAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788961525; c=relaxed/simple;
-	bh=vc97Kdxihu9K4p0okJBFVQyPd1nlm/aJdmI27zbe9ZI=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=HU/iOqJzVcHQAXadU1aBdXhUNgI98r9q5awH8nYWw0UR+H0o4MWHRCVg2qjo2Ohe9/8oU0taWnwHGENFhlqlRWy9H3ogT7f1V5zfCxyA1Ye5EiHYIkl4XKYhyctXmJERZkhLj6qzKM7P8weLmbvjtyGTUyWSI1MZzrVFxxyjkdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C8lyU2vS; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788962032; c=relaxed/simple;
+	bh=3l7lMquNmVfJX9gEHjGJPlkgwN50l3+CQX1vYtz0ETw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DmsD0K8IFmHfGQC98TJjT8P27pKikVSvxAY5eGkb9BQhctL5qZ4IUMuyDoazAIPqDzV6QDmSeEYoRjCZJmkFfx7mBJBo4zDeJ4Yenp6N3zBnBG58fMCe4VDa4qDfyPUTcv9clu4rHJlld1m8vE6qNN6gWmHJaqngCr0b68pPdOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=FcoSUCK8; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C8lyU2vS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B3E81F00A3A;
-	Wed,  9 Sep 2026 13:45:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788961523;
-	bh=miHrUx7HrqbY/E7N2cItt3ETqEa27hlDzoqphW7O64E=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=C8lyU2vSCXQ13oSOizk7ilCNWfv1WUdah5oK4a6SBv1lyyfKB1PDokBDx/yIPJJPh
-	 SPYRrjKlFvEJhk9ZMiz/Q//LKqzRQFcfyAdPAdCVtZZTBoPY9C9+F3cy2EmZHn/60G
-	 esi5xjgj81UsC+2JflOYp/JARB5/4TYVwelVzfQ3gljJMJQmqxkiqTfLj01ykBujQn
-	 g13bw/MTn2gUXRuYWN3CgdHyr7fRuRge5oIYsvahDbXW6UVYixgDy0J08LCY/c1U3l
-	 axCOP9Axcc6o6rxQR4LOzFtaTvThv5eHQXwx0zZTYUwcFBEgzVo+PQEVnBIWptnI+0
-	 2tDyEukDG1kOw==
-Subject: Re: [PATCH net v2 1/1] tcp: reject non zerocopy devmem tx
-From: netdev-bot+sashiko@kernel.org
-To: asml.silence@gmail.com
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org,
- almasrymina@google.com
-Date: Wed, 09 Sep 2026 13:45:22 +0000
-Message-ID: <178896152268.219967.2387243409101048587@kernel.org>
-In-Reply-To: =?utf-8?q?=3Cfdc2478d8f21268d7078556409887d8e6ba0ad32=2E1788529?=
- =?utf-8?q?053=2Egit=2Easml=2Esilence=40gmail=2Ecom=3E?=
-References: =?utf-8?q?=3Cfdc2478d8f21268d7078556409887d8e6ba0ad32=2E17885290?=
- =?utf-8?q?53=2Egit=2Easml=2Esilence=40gmail=2Ecom=3E?=
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="FcoSUCK8"
+Received: from localhost.localdomain (unknown [52.172.102.187])
+	by linux.microsoft.com (Postfix) with ESMTPSA id A83CA20B7128;
+	Wed,  9 Sep 2026 06:52:54 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com A83CA20B7128
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1788961989;
+	bh=Uv2isFaho/0/l3FkvZ8496hJ7fuZ5VFJCs6DWazZhUs=;
+	h=From:To:Cc:Subject:Date:From;
+	b=FcoSUCK8WKu0+rHf+4j4iS6pSk7bzsGx1enChBSOLOTq0UspCbee/BathcryPYgAL
+	 nUCw0wVov56aSPv4eZt4hVoVZVwsbncJBrNeNwt2Yl6AlWFMECsc8MiJ8NRIuYZQBQ
+	 yQKbnCnqJwpRsPHaY1rbp0IPGwcVMhT+LMXWdllY=
+From: "Cen Zhang (Microsoft Security FORGE Labs)" <cenzhang@linux.microsoft.com>
+To: bpf@vger.kernel.org
+Cc: daniel@iogearbox.net,
+	john.fastabend@gmail.com,
+	sdf@fomichev.me,
+	martin.lau@linux.dev,
+	ast@kernel.org,
+	andrii@kernel.org,
+	eddyz87@gmail.com,
+	memxor@gmail.com,
+	song@kernel.org,
+	yonghong.song@linux.dev,
+	jolsa@kernel.org,
+	emil@etsalapatis.com,
+	ihor.solodrai@linux.dev,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	m.xhonneux@gmail.com,
+	dlebrun@google.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	AutonomousCodeSecurity@microsoft.com,
+	xmei5@asu.edu,
+	tgopinath@linux.microsoft.com,
+	kys@microsoft.com,
+	"Cen Zhang (Microsoft Security FORGE Labs)" <cenzhang@linux.microsoft.com>
+Subject: [PATCH bpf v2] bpf: Fix non-linear SRH access in bpf_update_srh_state()
+Date: Wed,  9 Sep 2026 09:53:24 -0400
+Message-ID: <20260909135324.60165-1-cenzhang@linux.microsoft.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider:
+bpf_update_srh_state() locates an SRH with ipv6_find_hdr() and caches
+skb->data + srhoff in the per-CPU SEG6 BPF state. This assumes that the
+returned offset is within the skb linear head.
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 0
+That assumption is wrong because ipv6_find_hdr() uses skb_header_pointer()
+and can locate an SRH in non-linear data. The direct srh->hdrlen read and
+the cached SRH pointer can therefore access memory outside the linear area.
 
-- [High] Incomplete enforcement: devmem TX can still reach a byte-copy
-  path that misinterprets dma-buf offsets as user virtual addresses.
+BUG: KASAN: slab-use-after-free in bpf_update_srh_state+0x1bc/0x200
+ net/core/filter.c:7027 bpf_update_srh_state()
+ bpf_lwt_seg6_action()
+ input_action_end_bpf()
+ seg6_local_input()
+ ipv6_rthdr_rcv()
 
---
+Fix this by using seg6_get_srh(), which pulls and validates the complete
+SRH and reloads its pointer afterwards. Pulling can reallocate skb->head,
+so refresh the BPF data pointers inside bpf_update_srh_state() immediately
+after the call.
 
-tcp: reject non zerocopy devmem tx
+For End.DT6, make the inner IPv6 base header linear before removing the
+outer headers. Pulling only the outer headers can leave the inner header in
+non-linear data, while ipv6_find_hdr() and the nexthop lookup access it
+directly. Clear the cached SRH pointer and refresh the BPF data pointers if
+the pull fails.
 
-The patch replaces the MSG_ZEROCOPY/SOCK_ZEROCOPY test that guards devmem
-TX in tcp_sendmsg_locked() with a stricter check that requires the
-zero-copy path to actually be in use and the dmabuf binding to have been
-obtained.
+End.B6 and End.B6.Encap can insert a new SRH and reallocate the skb before
+a later HMAC calculation or nexthop lookup returns an error. Rebuild the
+SRH state when the skb length changes, which indicates that the new SRH was
+inserted. Failures before insertion leave the existing state unchanged.
 
-> diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-> index 1c867a3024446..562752352afe4 100644
-> --- a/net/ipv4/tcp.c
-> +++ b/net/ipv4/tcp.c
-> @@ -1169,8 +1169,7 @@ int tcp_sendmsg_locked(struct sock *sk, struct msghdr *msg, size_t size)
->  			zc = MSG_SPLICE_PAGES;
->  	}
->  
-> -	if (!sockc_err && sockc.dmabuf_id &&
-> -	    (!(flags & MSG_ZEROCOPY) || !sock_flag(sk, SOCK_ZEROCOPY))) {
-> +	if (!sockc_err && sockc.dmabuf_id && (zc != MSG_ZEROCOPY || !binding)) {
->  		err = -EINVAL;
->  		goto out_err;
->  	}
+Fixes: 486cdf21583e ("bpf: add End.DT6 action to bpf_lwt_seg6_action helper")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Link: https://lore.kernel.org/bpf/20260901183151.16648-1-cenzhang@linux.microsoft.com/
+Suggested-by: Emil Tsalapatis <emil@etsalapatis.com>
+Link: https://lore.kernel.org/bpf/CABFh=a5iLOEJdPhoaWUhLc0eEqAuhnd83_jJr9MVZZG6gSJAEw@mail.gmail.com/
+Signed-off-by: Cen Zhang (Microsoft Security FORGE Labs) <cenzhang@linux.microsoft.com>
+Assisted-by: Copilot:gpt-5.6-sol
+---
+Changes in v2:
+- Rebuild the SRH state after End.B6 and End.B6.Encap only when the skb
+  length changes, avoiding selection of a spent Routing Header on errors
+  before insertion.
+- Rebase onto the current bpf master branch.
 
-[Severity: High]
-Does this check still leave a devmem copy path reachable via TCP Fast
-Open?  Right after it, tcp_sendmsg_locked() does:
+Please queue this fix for stable kernels.
 
-	if (unlikely(flags & MSG_FASTOPEN ||
-		     inet_test_bit(DEFER_CONNECT, sk)) &&
-	    !tp->repair) {
-		err = tcp_sendmsg_fastopen(sk, msg, &copied_syn, size, uarg);
+Testing:
+- Static checks only: checkpatch.pl, diff --check and patch replay.
+- No targeted selftest was added. BPF LWT test-run does not support
+  non-linear skbs, and the existing SEG6 netns test does not create a
+  split inner IPv6 header for End.DT6.
 
-Neither tcp_sendmsg_fastopen() nor tcp_connect()->tcp_send_syn_data()
-gets the binding, and tcp_send_syn_data() copies straight out of the
-same iterator:
+ net/core/filter.c | 31 +++++++++++++++++++------------
+ 1 file changed, 19 insertions(+), 12 deletions(-)
 
-net/ipv4/tcp_output.c:tcp_send_syn_data() {
-	...
-	space = copy_page_from_iter(pfrag->page, pfrag->offset,
-				    space, &fo->data->msg_iter);
-	...
-	skb_fill_page_desc(syn_data, 0, pfrag->page,
-			   pfrag->offset, space);
-	...
-	skb_zcopy_set(syn_data, fo->uarg, NULL);
-}
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 8513167a858a..b037d70e5fe6 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -7017,15 +7017,16 @@ static void bpf_update_srh_state(struct sk_buff *skb)
+ {
+ 	struct seg6_bpf_srh_state *srh_state =
+ 		this_cpu_ptr(&seg6_bpf_srh_states);
+-	int srhoff = 0;
++	struct ipv6_sr_hdr *srh;
+ 
+-	if (ipv6_find_hdr(skb, &srhoff, IPPROTO_ROUTING, NULL, NULL) < 0) {
+-		srh_state->srh = NULL;
+-	} else {
+-		srh_state->srh = (struct ipv6_sr_hdr *)(skb->data + srhoff);
+-		srh_state->hdrlen = srh_state->srh->hdrlen << 3;
+-		srh_state->valid = true;
+-	}
++	srh = seg6_get_srh(skb, 0);
++	bpf_compute_data_pointers(skb);
++	srh_state->srh = srh;
++	if (!srh)
++		return;
++
++	srh_state->hdrlen = srh->hdrlen << 3;
++	srh_state->valid = true;
+ }
+ 
+ BPF_CALL_4(bpf_lwt_seg6_action, struct sk_buff *, skb,
+@@ -7033,6 +7034,7 @@ BPF_CALL_4(bpf_lwt_seg6_action, struct sk_buff *, skb,
+ {
+ 	struct seg6_bpf_srh_state *srh_state =
+ 		this_cpu_ptr(&seg6_bpf_srh_states);
++	unsigned int old_len;
+ 	int hdroff = 0;
+ 	int err;
+ 
+@@ -7058,32 +7060,37 @@ BPF_CALL_4(bpf_lwt_seg6_action, struct sk_buff *, skb,
+ 
+ 		if (ipv6_find_hdr(skb, &hdroff, IPPROTO_IPV6, NULL, NULL) < 0)
+ 			return -EBADMSG;
+-		if (!pskb_pull(skb, hdroff))
++		if (!pskb_may_pull(skb, hdroff + sizeof(struct ipv6hdr))) {
++			srh_state->srh = NULL;
++			bpf_compute_data_pointers(skb);
+ 			return -EBADMSG;
++		}
++		__skb_pull(skb, hdroff);
+ 
+ 		skb_postpull_rcsum(skb, skb_network_header(skb), hdroff);
+ 		skb_reset_network_header(skb);
+ 		skb_reset_transport_header(skb);
+ 		skb->encapsulation = 0;
+ 
+-		bpf_compute_data_pointers(skb);
+ 		bpf_update_srh_state(skb);
+ 		return seg6_lookup_nexthop(skb, NULL, *(int *)param);
+ 	case SEG6_LOCAL_ACTION_END_B6:
+ 		if (srh_state->srh && !seg6_bpf_has_valid_srh(skb))
+ 			return -EBADMSG;
++		old_len = skb->len;
+ 		err = bpf_push_seg6_encap(skb, BPF_LWT_ENCAP_SEG6_INLINE,
+ 					  param, param_len);
+-		if (!err)
++		if (skb->len != old_len)
+ 			bpf_update_srh_state(skb);
+ 
+ 		return err;
+ 	case SEG6_LOCAL_ACTION_END_B6_ENCAP:
+ 		if (srh_state->srh && !seg6_bpf_has_valid_srh(skb))
+ 			return -EBADMSG;
++		old_len = skb->len;
+ 		err = bpf_push_seg6_encap(skb, BPF_LWT_ENCAP_SEG6,
+ 					  param, param_len);
+-		if (!err)
++		if (skb->len != old_len)
+ 			bpf_update_srh_state(skb);
+ 
+ 		return err;
 
-For a devmem send the iovec entries are dma-buf offsets, not addresses:
-
-net/core/datagram.c:zerocopy_fill_skb_from_devmem() {
-	/* Devmem filling works by taking an IOVEC from the user where the
-	 * iov_addrs are interpreted as an offset in bytes into the dma-buf to
-	 * send from. We do not support other iter types.
-	 */
-}
-
-So does copy_page_from_iter() here read whatever the caller happens to
-have mapped at the numeric value of those offsets, put it into a regular
-page frag, advance the iterator past the corresponding dma-buf range,
-and then report those bytes back through fo->copied -> copied_syn ->
-copied as if they had been sent?
-
-Is the path reachable without MSG_FASTOPEN as well?  tcp_v4_connect()
-runs sk_setup_caps(sk, &rt->dst) before tcp_fastopen_defer_connect(), so
-with TCP_FASTOPEN_CONNECT the socket has a dst and NETIF_F_SG in
-sk_route_caps while DEFER_CONNECT is still set.  A subsequent
-sendmsg(MSG_ZEROCOPY) carrying SCM_DEVMEM_DMABUF would then get
-zc == MSG_ZEROCOPY and a valid binding from net_devmem_get_binding(),
-pass the new check, and land in tcp_send_syn_data().
-
-There also looks to be a second residual route through repair mode.  The
-tp->repair branch below reaches tcp_send_rcvq(), which copies from the
-same iterator with no binding awareness:
-
-net/ipv4/tcp_input.c:tcp_send_rcvq() {
-	...
-	err = skb_copy_datagram_from_iter(skb, 0, &msg->msg_iter, size);
-	...
-}
-
-That one needs CAP_NET_ADMIN, so it is less interesting, but it is still
-a devmem iterator being byte-copied.
-
-One more detail on the Fast Open case: msg_zerocopy_alloc() skips
-accounting for devmem uargs:
-
-net/core/skbuff.c:msg_zerocopy_alloc() {
-	...
-	if (likely(!devmem) && mm_account_pinned_pages(&uarg->mmp, size)) {
-	...
-}
-
-so attaching that uarg to a copied page frag in tcp_send_syn_data()
-would leave the frag unaccounted too.
-
-Would it make sense to also reject dmabuf_id together with
-MSG_FASTOPEN/DEFER_CONNECT and with repair-queue sends, or to teach
-those paths about the binding?  The commit message mentions neither, so
-it is hard to tell from the changelog whether these were considered,
-which also matters for backporting given the two Fixes: tags.
-
+base-commit: 15e2565f1c43771af0bc5324971cabaad79ac286
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/fdc2478d8f21268d7078556409887d8e6ba0ad32.1788529053.git.asml.silence%40gmail.com
+2.55.0
