@@ -1,135 +1,162 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31FAB48425A
-	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 21:07:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73B3D58FD39
+	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 21:07:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788988059; cv=none; b=YF1cAydfng+hH7f94pVHFo+R1N1gxFwzAzCgOGx50H2Ha7IQ6nDg3XX5Gn21Is30xFKC2z/y9ixv7862ZI8hgNijQdiruM5Ylu0dw7246vH3xUrKlpOfaDPHVdE48aM1Bfbtf1cqxd6IQWLz7dSoZgcMvp8kF8E1iIwqOnWtYdg=
+	t=1788988061; cv=none; b=sNRPoBHrfOo4X/9szIMYTPaoXzc7lgXTarIyjgSW23gU+6ZqgmYvNBSrKldFQbMsREGylVEn+YNppvQhjc8IyHiExaUMo9biRETj9Iqin3HyA9sUDl/68jm3DnqAz4LvJVK7PWS//1Y9WqQF0OywHDBwPsZyWbzikWZqHZ5tE78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788988059; c=relaxed/simple;
-	bh=HUyf1jNW5C6VMkF4GEdLDA5cUo4KPy1rxF/rBUbkDCQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mgh8mkKDBYfm3WWwld+bHigtdMMRf/cnxI9GIZgUrnSyz9IxKyibTBxa2cLQ4ODAWXJ9XbFFy3SHDmOFe9VaQavOB9wmB5HrYMgeP1bwTPBcTSrRqeu4OJf2Yy+5P9RzOQhLjFqQnZFw1CX+2mTVFtMPLRsSTAIkld3S3xxSGnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=sgVEZO9d; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788988061; c=relaxed/simple;
+	bh=T2hP5E8synOJ8Yud2/bdGMh3E/n/gJVwYMhXSsApqBs=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=YvYePd+gQRy3DNpb+Y1mPMUpv5k6JTqo+E16OaVIdDQqbuFiEpLNLiShbRYowkJjgmP+kJ6He1wllPMQCzQsZ0xtqE4ZefqKNjSoW5662WegPNmNSIfX4mA3DWsa79ycgcu76giqha3WRsQZdp2Ai3VkB17PY4M9XE+0oM/oEa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l/AdwZeB; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="sgVEZO9d"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2d6fe26ef1cso67006015ad.2
-        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 14:07:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788988057; x=1789592857; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=vbtB6JrjYpZN4dYkBaoy7eX+pbOdiI7LyNX1EdfEPGE=;
-        b=sgVEZO9dWBkVe7nOo4aRfq183gwJGIDcsfoC/+ZKDJMaQbZF419O95VoG0g0C9ml7p
-         UKGKunCuwMSVPWr8/TqYGPalB5uGtu1iP+r0kvIfLonc7jxoCNTrlwPQ22Gw+GOSX4+E
-         RcjjvyY9PojQZbgHDrPB5ZGAuMUPxbVQ4SRwUOl1R4KL96S/k8FrUe5wFQtVFcVjdqeJ
-         rbzK4z3YAvbOv42rDOHCq5t2ApbmQ2B+6mgy/JYRA1HxzXiDhQzZ7kA2gzVTmNa9BCqK
-         4FrHMqavY2e3V0NpaxiodZf6d4Br7cZh5ffeWgIapZfQXPUtVcKn4Jt5SHzVOo0gULjM
-         3dqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788988057; x=1789592857;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=vbtB6JrjYpZN4dYkBaoy7eX+pbOdiI7LyNX1EdfEPGE=;
-        b=suVMtJOIyopP0eDbix7L9fdFqoTxul1JxHj5fBYsD+hJ+BcXdhea3XG/YcrAsCU0M3
-         ga5K7zYXkwSGQLVyVS6lpVNK2QyOS80KrI4F6dOAjrvBAj1xau+YPUaHfHBR+VBMrR6z
-         MwTEZ+MUDjb5dUAvB8TTtsNDC5EC6Q9ePnKzWDc9GYlr/6yFKyedHHjp/FIrIrZFFgrg
-         TGFFeFyrVTu+AhbCVIl+URmFbNT83pUOrPj8lt/ytd+rxB/7LL1Ucc5wDynBGJSkcDi7
-         UdANRvmhnDusWIuVH/sAdpOtWhczCUy0Ymes9+iiWHrymfp1ferKSAvHdYO36Rnq3y7i
-         gbZA==
-X-Forwarded-Encrypted: i=1; AKwUvBy68y3E0WawIUPVWOA7TGAg/UeGiSUBvZWV4rswGr2irBmnNTDr20KIVR0ny+qpDeX4FXKt+JE=@vger.kernel.org
-X-Gm-Message-State: AFuF++lHFwzkE/t/5327kycW7IAAZ52N0WJWbKPnNLksPzAi7rLOPCGt
-	Cu4vaCPRyffGO36oei9J4inclUCUrG6cKCtmuLzreN6gV/5rqTclfIfZ
-X-Gm-Gg: AYBFou1EIEOEhuQs6WJ1w6/MnMF4Ggfe7jfKm/Nt68SsZBbvu8fNqURZwMUA85c2a32
-	JwXdMkLfteeAhVmo0OeQCWIgJDQQ7a3ktNHT0tBdd8xO7zS7XRCygcVdCtZpkMgKUja+SCz/OEg
-	qKKZlcdCXbQeuZlTPlqBm6RcIlpXJ4zl3GWmOrqKExmCBoQQNRfET4bjz68nr3OJ6EppQNv+2nw
-	gP7Qd3yBkT7jDellPRLEVTGOJ3K8xv+OtkXcbyiHYmsaY/Wf6pnd5sshuXDhOFSgSHEpFYWObjb
-	I56vK1w7JwCDaxwEFy0WM2jh/l0Y9EBD5UlU932lQRr4ee6wi9Kdt7CSwHROIgEZCygUqHIN65r
-	m0nk3TPzA9/D/Ka0s6TPIyBRAzBKPLSzEqZ1/LBEGjxSSurotB4KrstSbKVXGgRwAo+GBV1eZHy
-	If/q90s6wbxRtt4A9pKJs45YLdBPI9l2/YSh32rgUNg1LPSHlcYCixNOpzKad2JcxPMpGU/IOC
-X-Received: by 2002:a17:90b:5343:b0:398:e46e:ade3 with SMTP id 98e67ed59e1d1-39b2628fc1amr58979698a91.23.1788988057397;
-        Wed, 09 Sep 2026 14:07:37 -0700 (PDT)
-Received: from G15-5520 ([103.206.144.85])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1435c2ae6b5sm1258817c88.1.2026.09.09.14.07.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Sep 2026 14:07:37 -0700 (PDT)
-From: Lalit Shankar Chowdhury <lalitshankarch@gmail.com>
-To: David Ahern <dsahern@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	netdev@vger.kernel.org (open list:NETWORKING [IPv4/IPv6]),
-	linux-kernel@vger.kernel.org (open list)
-Cc: Lalit Shankar Chowdhury <lalitshankarch@gmail.com>
-Subject: [PATCH] ipv6: replace sprintf() with no format specifiers with strscpy()
-Date: Wed,  9 Sep 2026 21:05:52 +0000
-Message-ID: <20260909210552.51828-1-lalitshankarch@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l/AdwZeB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E0A41F000FF;
+	Wed,  9 Sep 2026 21:07:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788988060;
+	bh=TGLGilqS33J2RxYAb96SYC9so6AlMXKOHXw5e+1h71E=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=l/AdwZeBeEtbUeTCg5WjwwQXLEEac3Kr3hmq8z1rksOv1TzBz3zwPgyhzl9JQPQw9
+	 podgfTEaYISqsqgR/sf8KFV+bV3FXlBohtAA8KVyPLlEb5rWHoIpjS/7F8q4l/NNAA
+	 itQJsstaMsoLCrWDaDWOY1frG/R3DHNWEfcPQs+cEPKBwLwGrmhaf+aYlqqCqW5d3k
+	 8zcJEEk0814LVmpK+uXEFaxNX7AmuxxQGsv17fBGBNjuwPqC0KPWq6byjiviRx+TrH
+	 A3X4n5MX5ck1Vm0FWHvoMjDlLFbJtWOP5D4waGV2yNgv8YTOZ/fRO2zgkG23jjoAFq
+	 n4eWsBvLreWxg==
+Subject: Re: [PATCH net] pppoatm: ensure a writable skb header
+From: netdev-bot+sashiko@kernel.org
+To: edumazet@google.com
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ andrew+netdev@lunn.ch, horms@kernel.org, netdev@vger.kernel.org,
+ eric.dumazet@gmail.com, mitch@sfgoth.com, 3chas3@gmail.com,
+ qingfang.deng@linux.dev
+Date: Wed, 09 Sep 2026 21:07:39 +0000
+Message-ID: <178898805913.219967.13489586928492348974@kernel.org>
+In-Reply-To: <20260908090519.339696-1-edumazet@google.com>
+References: <20260908090519.339696-1-edumazet@google.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Multiple instances of sprintf() have no format specifiers. Replace
-them with strscpy().
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider:
 
-Signed-off-by: Lalit Shankar Chowdhury <lalitshankarch@gmail.com>
----
- net/ipv6/ip6_tunnel.c | 2 +-
- net/ipv6/ip6_vti.c    | 2 +-
- net/ipv6/ip6mr.c      | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
-index d5ff50a2ac01..ef3a6d931c9e 100644
---- a/net/ipv6/ip6_tunnel.c
-+++ b/net/ipv6/ip6_tunnel.c
-@@ -294,7 +294,7 @@ static struct ip6_tnl *ip6_tnl_create(struct net *net, struct __ip6_tnl_parm *p)
- 			goto failed;
- 		strscpy(name, p->name, IFNAMSIZ);
- 	} else {
--		sprintf(name, "ip6tnl%%d");
-+		strscpy(name, "ip6tnl%d", IFNAMSIZ);
- 	}
- 	err = -ENOMEM;
- 	dev = alloc_netdev(sizeof(*t), name, NET_NAME_UNKNOWN,
-diff --git a/net/ipv6/ip6_vti.c b/net/ipv6/ip6_vti.c
-index ab94b3a4ba9c..182a7949d830 100644
---- a/net/ipv6/ip6_vti.c
-+++ b/net/ipv6/ip6_vti.c
-@@ -210,7 +210,7 @@ static struct ip6_tnl *vti6_tnl_create(struct net *net, struct __ip6_tnl_parm *p
- 			goto failed;
- 		strscpy(name, p->name, IFNAMSIZ);
- 	} else {
--		sprintf(name, "ip6_vti%%d");
-+		strscpy(name, "ip6_vti%d", IFNAMSIZ);
- 	}
- 
- 	dev = alloc_netdev(sizeof(*t), name, NET_NAME_UNKNOWN, vti6_dev_setup);
-diff --git a/net/ipv6/ip6mr.c b/net/ipv6/ip6mr.c
-index 3f2ed9b77deb..20ac8cb87468 100644
---- a/net/ipv6/ip6mr.c
-+++ b/net/ipv6/ip6mr.c
-@@ -692,7 +692,7 @@ static struct net_device *ip6mr_reg_vif(struct net *net, struct mr_table *mrt)
- 	char name[IFNAMSIZ];
- 
- 	if (mrt->id == RT6_TABLE_DFLT)
--		sprintf(name, "pim6reg");
-+		strscpy(name, "pim6reg", IFNAMSIZ);
- 	else
- 		sprintf(name, "pim6reg%u", mrt->id);
- 
+- [Medium] net/atm/pppoatm.c:pppoatm_send() — the SC_COMP_PROT "undo"
+  heuristic on the `nospace` path now makes its decision based on…
+
+--
+
+pppoatm: ensure a writable skb header
+
+This replaces the open-coded skb_realloc_headroom() dance in pppoatm_send()
+with skb_cow_head(), so the LLC header is pushed into headroom that is both
+large enough and writable.  It also removes the temporary skb allocation
+that used to happen when the ATM socket buffer was full.
+
+> diff --git a/net/atm/pppoatm.c b/net/atm/pppoatm.c
+> index 6da52d12df68e..4ce7fa6e493e9 100644
+> --- a/net/atm/pppoatm.c
+> +++ b/net/atm/pppoatm.c
+> @@ -317,21 +317,12 @@ static int pppoatm_send(struct ppp_channel *chan, struct sk_buff *skb)
+>  
+>  	switch (pvcc->encaps) {		/* LLC encapsulation needed */
+>  	case e_llc:
+> -		if (skb_headroom(skb) < LLC_LEN) {
+> -			struct sk_buff *n;
+> -			n = skb_realloc_headroom(skb, LLC_LEN);
+> -			if (n != NULL &&
+> -			    !pppoatm_may_send(pvcc, n->truesize)) {
+> -				kfree_skb(n);
+> -				goto nospace;
+> -			}
+> -			consume_skb(skb);
+> -			skb = n;
+> -			if (skb == NULL) {
+> -				bh_unlock_sock(sk_atm(vcc));
+> -				return DROP_PACKET;
+> -			}
+> -		} else if (!pppoatm_may_send(pvcc, skb->truesize))
+> +		if (skb_cow_head(skb, LLC_LEN)) {
+> +			bh_unlock_sock(sk_atm(vcc));
+> +			kfree_skb(skb);
+> +			return DROP_PACKET;
+> +		}
+> +		if (!pppoatm_may_send(pvcc, skb->truesize))
+>  			goto nospace;
+
+[Severity: Medium]
+Does this change how the SC_COMP_PROT undo heuristic behaves at the nospace
+label for skbs that arrive with less than LLC_LEN headroom?
+
+The head expansion now happens on the original skb, before the
+pppoatm_may_send() admission check, so when admission fails we reach:
+
+net/atm/pppoatm.c:pppoatm_send() {
+	...
+nospace:
+	bh_unlock_sock(sk_atm(vcc));
+	if ((pvcc->flags & SC_COMP_PROT) && skb_headroom(skb) > 0 &&
+	    skb->data[-1] == '\0')
+		(void) skb_push(skb, 1);
+	return 0;
+}
+
+For an skb that entered with zero headroom, skb_cow_head() goes through
+pskb_expand_head(), which allocates with kmalloc_reserve() (no __GFP_ZERO)
+and only copies the old data:
+
+net/core/skbuff.c:pskb_expand_head() {
+	...
+	data = kmalloc_reserve(&size, gfp_mask, NUMA_NO_NODE, NULL);
+	if (!data)
+		goto nodata;
+	size = SKB_WITH_OVERHEAD(size);
+	memcpy(data + nhead, skb->head, skb_tail_pointer(skb) - skb->head);
+	...
+}
+
+The new bytes in front of the copied data are never initialized, so is
+skb->data[-1] here reading stale slab content rather than a byte this
+function pulled?  If that byte happens to be 0x00, the skb_push(skb, 1)
+prepends a spurious zero to a frame from which nothing was ever pulled at:
+
+	if (skb->data[0] == '\0' && (pvcc->flags & SC_COMP_PROT))
+		(void) skb_pull(skb, 1);
+
+Before this change the same case took the skb_realloc_headroom() branch,
+freed the copy and jumped to nospace with the original zero-headroom skb, so
+the skb_headroom(skb) > 0 test suppressed the push.
+
+Frames written to /dev/ppp look like they can hit this: ppp_write() does
+
+drivers/net/ppp/ppp_generic.c:ppp_write() {
+	...
+	skb = alloc_skb(count + pf->hdrlen, GFP_KERNEL);
+	if (!skb)
+		goto out;
+	skb_reserve(skb, pf->hdrlen);
+	...
+}
+
+and pppoatm never assigns chan.hdrlen, so pf->hdrlen is 0 and control frames
+with a non-zero first protocol byte (LCP 0xc021, IPCP 0x8021, PAP 0xc023)
+arrive with no headroom and no entry-time pull.  With the VCC queue full,
+pppoatm_may_send() returns 0 and the goto nospace path runs.
+
+Would it be more robust to record whether the entry-time skb_pull(skb, 1)
+actually happened in a local bool, and test that at nospace, instead of
+inferring it from skb->data[-1]?
+
 -- 
-2.53.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260908090519.339696-1-edumazet%40google.com
