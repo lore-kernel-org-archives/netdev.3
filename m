@@ -1,76 +1,85 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1F4D3B059F;
-	Wed,  9 Sep 2026 20:01:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE67D3E832B;
+	Wed,  9 Sep 2026 20:13:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788984069; cv=none; b=AVDj68mSs9weboeMmX/+8cX2dvlbgC7M1gTxTaGw/pXtsn2hMDWLtRm0nHFoH4++oTBbcpsv2huGsghYsCOb3yZ0eCGu3gsHZialpatHPwsiGUylre5IwfHyzBoeRpn0mQLMyP4ZTGm73kZBY63nqC552lkQdFQ4yy5yHjbOHkM=
+	t=1788984798; cv=none; b=Z+RhZXUsbOAFGfr9ydzoPJRdtzK5SGPx0shmyMf1zdjmVwOe4e8J0kuvCLZsIVLTAVnX9lyl99hA3IKOupyU+8TTEvKnaZbnVDhcd+m+W6fSup3PWJ9CN7yBaUg+7L+TlIMUhVasPfs2xz/t4pwTH4CGrQh9pXG+itDaPD+bjTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788984069; c=relaxed/simple;
-	bh=X4O+lTU61F0JQOLgGAycaO9X0LJP/ZSP3MEnoKzBZjI=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=BH8iP/vJssz+/sFfZCZTEFinIe5mmBx1v5ELSLOHZvXfr2PjBIbo9qtZICUmdnHJnK9WI/SN3eKoE729Og4qCFtqINoft8cUgtiimDm0plAIeZ+sUUGC8Kg+R5EhUCBnHGvgtinh1HZJV6VyVuHMkO3GMOql8phsZ3CwB3ZzIoo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WEAKzrbK; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788984798; c=relaxed/simple;
+	bh=bnC9i/qyrIrvmIuMX4qik5bvAcDw9t6bIP1TOqxUKNs=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=djI+JZo3oAZTEiZWD1hWH695/NwEjlGbESRJ95sOW8wCfzU2ZzNutJ7r2Cg2WExD9tSBshi/DfFuDSUh8uVG4BgLSJAiv1XUGeRvpJwQ8XBryp3JpuQHfhpnb2yPrD7TwQzoKfHsOVjZ06Gu1Mj/IVLjrK0V+APBHEideaCveWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DR/n6eKN; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WEAKzrbK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9DF91F000FF;
-	Wed,  9 Sep 2026 20:01:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DR/n6eKN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB2E31F000FF;
+	Wed,  9 Sep 2026 20:13:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788984066;
-	bh=3Lki2zKjYM+qNV6KC9xTZ6rVRofIMGvc4jF56clPzCU=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=WEAKzrbKzWQwAR5wCzrPuZSJ6r2WDK8LNobPcoIfcxEpL7iMfxoqd3TN4Dnr9OBNl
-	 6796E1udklCJadLFQDQ+Tye12frCxA7GbQqLQfPv95wJU/T0zRu2Acx8Qey9bUWnQn
-	 vIjYjSVqagu6twS11jdfZ+L3PvGEui7InJ2kuj5MpHAmIGH38/iyNloU1KwwqOatYZ
-	 q4NIUR7ey+/0AFtLVAxcwOUuPPtKapzTU4G5RTx6LV8fWmWl7JrnU2/5Yvzhn59KFG
-	 yc2CBh+3natE5KYqLHvs+5YYN6LoqKaEF8/hAeeWQDc3IEN4PvR61UlanHNiWjfxWv
-	 SwxGeer0ac11w==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 0E9E2380AA74;
-	Wed,  9 Sep 2026 20:00:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1788984789;
+	bh=3ESmjIDaAZL3gvYROvt+bUtd2dtK8PDyuE2Z4g7MRIY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=DR/n6eKNdaynq1gsYXZ/BwaPHXNus9E3/0vj6BrXjMblDdcaFAsb7h1+ttvROLj/Y
+	 VilZ8LrOrckcLoYRbIN9ipl7TELaiWdUpXt7ibYsNdxhcwuXBx1ELanUKtZ5JA+/1E
+	 TR6IUorEcPrV/Fsrqd3d4br5LbvBd4sPgV72V1aMWdcr7q8QDJujAjyqXuCNUaPSwz
+	 EzI88LTScrLZ9J6XTytdz9a/C/Z3XYXK1DJ04o7Gx6cSXZqfZ+JY8hbCFsvKVtIJL7
+	 pgFY16M4J0CDcrfvo3NYHiX6BUL/hu7jHYIAA3CX5hybZnbLfH9PTS6FN5rcjn/SKN
+	 Ztil6yC4LQ0QA==
+Date: Wed, 9 Sep 2026 13:13:08 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Johannes Berg <johannes@sipsolutions.net>
+Cc: Pooventhiran G <pooventhiran.g@oss.qualcomm.com>, "David S . Miller" 
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni 
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ linux-wireless@vger.kernel.org
+Subject: Re: [PATCH RESEND wireless-next 00/18] wifi: Add Seamless Mobility
+ Domain (SMD) AP support
+Message-ID: <20260909131308.6bda08e0@kernel.org>
+In-Reply-To: <0e950f7f0c3f5a2c1f6476e255716b09876624f4.camel@sipsolutions.net>
+References: <20260908-smd-v1-0-9fd2d876a1fb@oss.qualcomm.com>
+	<20260908125017.0fb226c5@kernel.org>
+	<404004c4c97bf776077685b7ec33a14fa777cd70.camel@sipsolutions.net>
+	<80266eb9666d6106110d998cb6330868da55bf59.camel@sipsolutions.net>
+	<20260908132004.29176fec@kernel.org>
+	<0e950f7f0c3f5a2c1f6476e255716b09876624f4.camel@sipsolutions.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [GIT PULL] bluetooth 2026-09-08
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178898400463.1032931.8145913840198303606.git-patchwork-notify@kernel.org>
-Date: Wed, 09 Sep 2026 20:00:04 +0000
-References: <20260908212127.1022197-1-luiz.dentz@gmail.com>
-In-Reply-To: <20260908212127.1022197-1-luiz.dentz@gmail.com>
-To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Cc: davem@davemloft.net, kuba@kernel.org, linux-bluetooth@vger.kernel.org,
- netdev@vger.kernel.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
-
-This pull request was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Tue,  8 Sep 2026 17:21:27 -0400 you wrote:
-> The following changes since commit 38b6be101006d3e7af972999f45d4f1e8250587a:
+On Tue, 08 Sep 2026 22:27:52 +0200 Johannes Berg wrote:
+> On Tue, 2026-09-08 at 13:20 -0700, Jakub Kicinski wrote:
+> > Ah, missed the skb extension. Obvious AI slop. Fun times.  
 > 
->   net: macb: fix NULL pointer dereference on unbind with fixed-link (2026-09-05 13:58:52 -0700)
+> "Look Mom, I can push a button, I'm an engineer now!"
 > 
-> are available in the Git repository at:
+> Do we have rules? I'm currently refusing to read anything that has an AI
+> written commit message ... at the very least.
 > 
->   git://git.kernel.org/pub/scm/linux/kernel/git/bluetooth/bluetooth.git tags/for-net-2026-09-08
+> While I was on vacation the AI sloperators were arguing with each other
+> on the wireless list:
+> https://lore.kernel.org/linux-wireless/20260827074442.826644@enxio.de/
 > 
-> [...]
+> Can I ban those email addresses somehow?
 
-Here is the summary with links:
-  - [GIT,PULL] bluetooth 2026-09-08
-    https://git.kernel.org/netdev/net/c/bbee0759d363
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+We have a bot in nipa (mailbot.py) which follows the mailing list.
+It can already update patchwork state.
+I was thinking of adding support for bans there, something like 
+ pv-bot: ban-1mo
+and for a month the bot would respond "you have been banned, bla bla"
+and auto-discard patches from patchwork.
+That said I haven't gotten to the point of wanting to ban anyone yet.
+Most of the "contributors" excrete 10+ patches in a day, then get bored
+and disappear. Corporate slop may be more persistent tho, Qualcomm
+employees must have gotten LLM access because we also saw slop from them
+on netdev. TBH I see similar problems within Meta, tho. Random people
+who can barely master Java now try to contribute upstream.
+No idea what to do about all this.
+One obvious thing, I guess, is that we should no longer feel obligated
+to provide any meaningful feedback just because someone posted code.
