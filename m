@@ -1,75 +1,69 @@
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta1.migadu.com (out-251.mta1.migadu.com [95.215.58.251])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 684F3582BBD
-	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 14:16:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F269F58B6A6
+	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 14:18:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.251
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788963381; cv=none; b=pr4mRvbVOO1G7Y+tT9bTHNcuNEESOKQkVLbCE+8UZ5E5Yq0mRcKnHVf5yC0YetRqAMXrJ9SAsnwclOMRxq9igTVnXlytNdxFMNP6HUJhCkap3tnMjllro2Sihb6CYYSNlg4ixUPkYeLn1WFJgr3+cSeNA80vnQui8slv4coMoXI=
+	t=1788963510; cv=none; b=gF4bq0qWq0AjvWleT8Duc+p/xFIBLw3JSxYThod2j3ljMe/Z0WtGCGx1eanEogBa9e619B/nQRn5BVf/G4TcTW8ECax015b1hxeLY6H1VHZKylx2U5I8C0SOgfd0U/gxI6vPcWYXmQFxYI+0+s+5S160EcvQQrNqlk02TFg9Scs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788963381; c=relaxed/simple;
-	bh=QJJaWfahQvLd4eSRNO5aQhD0l9pbZ++jwjuV0ILwaQM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CUChk2M/o5rfx7ioC0TFgRb9hS03Olk6ugJE+vNZO4XI1Atwkog2LqV2s+ioneqY6XshRSBDiNnyB1J4CGprYkpntmpQ1bOLMqY7XGMzGID0QvIfKP5GNY/VTbTg3Y7hloqljPSkxqYMMYernYj2FtAPBC3Yxx4t2e4hf0xUnPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=vqdKoGkM; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
+	s=arc-20240116; t=1788963510; c=relaxed/simple;
+	bh=3IScLMqR1j4WOInzczvg5L6GZZlSpePkJw/WpMCPcyc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=sr7UCiK+P1HziVfHBdO2TJRBNTCWhAlN+eFLjv+QGma2b268IBAVORHQMRGBGJvAP2i5kYA/nPy1jdZqWHAXlNtwAh4OhXIs8PTE2oRgESEDbQg/Fe5kj2nrMuKCUjJJzirDuIL0j0E+n/Q4WUvUL6e738c264hceyA1AKL3uYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ufEOUQRT; arc=none smtp.client-ip=95.215.58.251
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="vqdKoGkM"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=4gJWK0CsCanIqr2CcAL6KVdYWNAlhC1u6+5ypr1xDm8=; b=vqdKoGkMqI3l0Mzokkdx6VXH/n
-	foZpguuW3YclQ/ZVT6v840i9RDe+kEtQW5iJM3vrIKGKgo6CuD2y+ltV0VhDLSmVk0IIof45Ckxi5
-	uTcLhbRP7My87tHahpjnFL8YWY22jLZaC/m2qsb7XQi2k3mfSeNHclDqvC5krIIERBVDHQ0JFJtHS
-	PoLcGpstJQonj4MyTYpbJGuZBLIXod3xZgW1NTf1reMs4Vmzb68udEyO1xBLpgY5rPMS9eLqL5ZRY
-	8PBvZuxjXQ453EXgtMHq7+wkCctHvAICvFd1UAYIfwUGx9IFv18kNglsbtwVevcaZhza8uM8D+M4X
-	vmPdGyBw==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1x4J5n-00370r-18;
-	Wed, 09 Sep 2026 14:16:03 +0000
-Date: Wed, 9 Sep 2026 07:15:58 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: anthony.l.nguyen@intel.com, netdev@vger.kernel.org, 
-	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com, andrew+netdev@lunn.ch, 
-	horms@kernel.org, intel-wired-lan@lists.osuosl.org, przemyslaw.kitszel@intel.com, 
-	jbrandeb@kernel.org, benjamin.h.shelton@intel.com
-Subject: Re: [PATCH iwl] eth: ice: don't dereference pointers from TP_printk()
-Message-ID: <aqFp78nsYmT8gRDO@gmail.com>
-References: <20260821020201.1337338-1-kuba@kernel.org>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ufEOUQRT"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=3IScLMqR1j4WOInzczvg5L6GZZlSpePkJw/WpMCPcyc=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1788963505; v=1; x=1789568305;
+ b=ufEOUQRTG7/mBrkey+CZYxeOlZyr3lX12dp8AwyeHb5ZXuEgwKJpJ3LL60LCSDJBfazOBtRg
+ Fb0XfiP2hDLmR+pTfct/9AXZb73X2y8ZMT6Y0ePV2bsVzpKGff0JYrRjrVbvGpffqciQEgNW86f
+ LP2HAcp5hOv1H2X75NCjBGfE=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id a8c734c53a6dca85;
+	Wed, 09 Sep 2026 14:18:24 +0000
+X-Mizu-Trace-ID: a8c734c53a6dca85
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <c7102128-e2bd-4b06-a402-409cd2960931@linux.dev>
+Date: Wed, 9 Sep 2026 22:18:17 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260821020201.1337338-1-kuba@kernel.org>
-X-Debian-User: leitao
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH nf-next] netfilter: flowtable: check namespace before
+ iterating flows
+To: Phil Sutter <phil@nwl.cc>
+Cc: Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, netfilter-devel@vger.kernel.org,
+ coreteam@netfilter.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260909081705.1512600-1-qingfang.deng@linux.dev>
+ <aqFAALdUODUjUMo0@orbyte.nwl.cc>
+Content-Language: en-US
+From: Qingfang Deng <qingfang.deng@linux.dev>
+In-Reply-To: <aqFAALdUODUjUMo0@orbyte.nwl.cc>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Aug 20, 2026 at 07:02:01PM -0700, Jakub Kicinski wrote:
-> After forwarding net-next during the v7.3 merge window we started
-> seeing:
-> 
->   TRACE EVENT ERROR: Event ice_tx_dim_work has double dereference in TP_printk: REC->q_vector->tx.tx_ring->q_index
->   WARNING: kernel/trace/trace_events.c:420 at test_double_dereference.cold+0x39/0x4b
+Hi,
 
-I am seeing this in one of my hosts as well.
+On 9/9/2026 7:16 PM, Phil Sutter wrote:
+> A second caller of nf_flow_table_gc_cleanup is
+> nf_flow_table_indr_cleanup in net/netfilter/nf_flow_table_offload.c. Is
+> the net_eq-check needed there as well? If not, could you please update
+> the patch description with a statement explaining why?
 
-> this is due to extra checks added in tracing subsystem in
-> commit b5cc230af5e5 ("tracing: Warn when an event dereferences a pointer in TP_printk()").
-> 
-> Printing happens long after the event was recorded, by which point
-> the pointers may be invalid (the ring or the dim instance).
-> Copy the eight scalars into the event instead.
-> 
-> Fixes: 3089cf6d3caa ("ice: add tracepoints")
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+No. Its callback uses the device bound to the flowtable, which belongs 
+to the same namespace.
 
-Reviewed-by: Breno Leitao <leitao@debian.org>
+Kind regards,
+Qingfang
