@@ -1,44 +1,49 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AD2C428470;
-	Wed,  9 Sep 2026 21:40:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A9E13BA241;
+	Wed,  9 Sep 2026 21:47:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788990030; cv=none; b=mXtwFeWM2+/R1eXPQR62cFB+/xMi72xpnrtx7Atw1Z5gNzzd3L91HaxFwCNq1VrbASoUQvIRonGcwxzeBqC5qRiejQBnVbHLrY8rl+nXGXJjz/E+e5bd9n3LPV37JWKkMB3Hrmh9eCwZCfbIc2IloZ/aX+oQlqMZdXELsflr3JU=
+	t=1788990436; cv=none; b=InIi2nd5d24pvNvxYE/GUS/6oUiuEudpGi3p7Fh4qvxTtWXF4KlA17HHmgXupRNI7n9w5GhCoJ+jgEFR1AOiq4CXLuBKk9y3G+IHXZMosI9XRMU3D66CFujEQWMmtquQznlP/Rv/QgbkauvWJLSmRGCKNgFunoeddAiUZgBv9a4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788990030; c=relaxed/simple;
-	bh=iLRTGvcbRVPxvDEotXdqrfpEIK0u7OW44TSaNXoVxvM=;
+	s=arc-20240116; t=1788990436; c=relaxed/simple;
+	bh=Oav56iHE9LAkQUO0YQDqj4BfY/L9HX4miqgxDpbrIbQ=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=G2QyT18iAkUwSXPwKN94J6QXr1ns9ZRJcJRFPlj+grspyrBzOzwEz8wOLXPh+y+BHLI+BFi8vIowQgD4ZvekQHYEK4qoyNGwl1xnfxdIhuOkyf7NiX6JY3MNplTuvlPAvsX4Qx8y5FrVkgqgJtDHvDZEGs/D5Wl2AmtwWI4o3U8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iOL/sBtt; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=ZUdK4TQGHwkMgL4MJljdSVCOTGQ0DurlN2fFkf1QUtz2HBBB1NaZGXx6N2Xt7V0WQ92TKiMMHuS/pEwoxjjVGP3mumVXueC2WWB+c3vUrslnCILXXOIQQ6IKeqb1sd32+5yx/ibeNxAmEjjD+rwQlD9Yc+Xh4nvf5+0aF3SA04o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XvF+zqZp; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iOL/sBtt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 210C31F00893;
-	Wed,  9 Sep 2026 21:40:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XvF+zqZp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50A9D1F0089B;
+	Wed,  9 Sep 2026 21:47:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788990014;
-	bh=x7KwwqJ4/lIetO8pwNsdhdaL/gdEblfES9CSS1fXvE8=;
+	s=k20260515; t=1788990425;
+	bh=IFR+HSUKYMe1MTegffKpRQhJblaCo7ANXcisz6wPPgM=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=iOL/sBttvbEthp8aUQchU8wxkfojODO/8wQt7PsSZdcqcoUSfDtJ85qLBzkR8MVFE
-	 +D94qAO/aIjdM18s8Z3sqr/WjCDUKQzguZM2+5Ku3CzNDFGAPt6IXlfzubGLe723Gp
-	 hqSo4NKTyyl7fa43KS4s4C+uL3r4+MmjEx75ToqGJSpAxIWGI/mIaWcqjpJxY7uiYc
-	 9jQQrlC/hibLZvNcLYcKErvVf1zZKpdp3js8sZds4FxOzU/2K523tYHepMqAAkw3Lb
-	 f5euBxlC7PgACwohtu9a5fEa4OR37sHCPxS6EWd93aq+LqK3f43MQTIOOF6BALy2I4
-	 mXWK7owvzLSPQ==
-Subject: Re: [PATCH] netfilter: conntrack_irc: fix port value truncation in
- parse_dcc()
+	b=XvF+zqZpLKAX56jNU1JQm4dx34vpjc3LVhEEuh7U5uJIMD6bQGapyCOqeIsI4Geai
+	 glgxG343PhXqSyhShbXV6DvAZwqee8oPOux2zs4IbF98DYnJ6ZTO7LyIzq5Cmezaf2
+	 JPbo9hysCryH0Pb7zKPIQbjZkJR216aY6pVJriLkUmxcAEJgICjOw5f+P68nthAH6D
+	 7qL4cvJuCE0J/RAvO/gcl03fWMtAalXFTf/HkYNcX8dIu34jmwKHsDKfHbtnZqk98Y
+	 35Y3PjOHgWl1EYJl96awQFlLMS0K1OxjZO0pKEBYeoMZeIUOQWH1TxVOG4831JSBd9
+	 fJlhPnlMvFZoA==
+Subject:
+ Re: [PATCH net-next 2/9] net: phy: dp83867: add regulator supply management
 From: netdev-bot+sashiko@kernel.org
-To: elb12345@hotmail.co.uk
-Cc: pablo@netfilter.org, netfilter-devel@vger.kernel.org,
- coreteam@netfilter.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, kuba@kernel.org
-Date: Wed, 09 Sep 2026 21:40:13 +0000
-Message-ID: <178899001368.219967.734841882054887472@kernel.org>
-In-Reply-To: =?utf-8?q?=3CAS8P251MB0001B81958B28F762352EF3DC8B32=40AS8P251MB?=
- =?utf-8?q?0001=2EEURP251=2EPROD=2EOUTLOOK=2ECOM=3E?=
-References: =?utf-8?q?=3CAS8P251MB0001B81958B28F762352EF3DC8B32=40AS8P251MB0?=
- =?utf-8?q?001=2EEURP251=2EPROD=2EOUTLOOK=2ECOM=3E?=
+To: mohd.anwar@oss.qualcomm.com
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, afd@ti.com, andrew@lunn.ch, hkallweit1@gmail.com,
+ linux@armlinux.org.uk, richardcochran@gmail.com, andersson@kernel.org,
+ konradybcio@kernel.org, alexandre.torgue@foss.st.com, peppe.cavallaro@st.com,
+ joabreu@synopsys.com, maxime.chevallier@bootlin.com,
+ mcoquelin.stm32@gmail.com, netdev@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org
+Date: Wed, 09 Sep 2026 21:47:03 +0000
+Message-ID: <178899042391.219967.303939015092483762@kernel.org>
+In-Reply-To: <20260904-shikra_ethernet-v1-2-a50765996035@oss.qualcomm.com>
+References: <20260904-shikra_ethernet-v1-2-a50765996035@oss.qualcomm.com>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -49,118 +54,231 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
+Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider:
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 0
+Critical: 0 · High: 1 · Medium: 2 · Low: 0
 
-- [High] Incomplete fix: in parse_dcc()
-  (net/netfilter/nf_conntrack_irc.c:92-95) the new bound check is…
+- [High] The supplies are enabled from the PHY driver's ->probe callback,
+  which is structurally too late for the use case the commit message…
+- [Medium] dp83867_power_on() (drivers/net/phy/dp83867.c) treats a 0
+  return from devm_regulator_get_enable_optional() as "this rail was…
+- [Medium] dp83867_power_on() propagates every non--ENODEV error out of
+  dp83867_probe(), including -EPROBE_DEFER, which…
 
 --
 
-netfilter: conntrack_irc: fix port value truncation in parse_dcc()
+net: phy: dp83867: add regulator supply management
 
-This adds a bound check to the DCC port parsing in parse_dcc() so that
-values above 65535 are rejected instead of being silently truncated into
-the u16 output.  The stated goal is to prevent a conntrack expectation
-being created for a port that never appeared in the DCC command.
+This adds dp83867_power_on(), called from dp83867_probe(), which walks four
+supply names, enables each one via devm_regulator_get_enable_optional(),
+and sleeps 200 ms if any of them returned success.
 
-> diff --git a/net/netfilter/nf_conntrack_irc.c b/net/netfilter/nf_conntrack_irc.c
-> index 92360963757a9..8321f12dbf155 100644
-> --- a/net/netfilter/nf_conntrack_irc.c
-> +++ b/net/netfilter/nf_conntrack_irc.c
-> @@ -64,6 +64,7 @@ static int parse_dcc(char *data, const char *data_end, __be32 *ip,
->  		     u_int16_t *port, char **ad_beg_p, char **ad_end_p)
+> diff --git a/drivers/net/phy/dp83867.c b/drivers/net/phy/dp83867.c
+> index 88255e92b4cdb..e03b39fd080d1 100644
+> --- a/drivers/net/phy/dp83867.c
+> +++ b/drivers/net/phy/dp83867.c
+
+[ ... ]
+
+> @@ -719,9 +720,40 @@ static int dp83867_resume(struct phy_device *phydev)
+>  	return 0;
+>  }
+>  
+> +static int dp83867_power_on(struct phy_device *phydev)
+> +{
+> +	static const char * const supply_names[] = {
+> +		"vdda-2p5", "vdd-1p0", "vdda-1p8", "vddio",
+> +	};
+> +	struct device *dev = &phydev->mdio.dev;
+> +	u32 count = 0;
+> +	int i, ret;
+> +
+> +	for (i = 0; i < ARRAY_SIZE(supply_names); i++) {
+> +		ret = devm_regulator_get_enable_optional(dev, supply_names[i]);
+> +		if (!ret)
+> +			count++;
+> +		else if (ret != -ENODEV)
+> +			return dev_err_probe(dev, ret,
+> +					     "failed to enable %s supply\n",
+> +					     supply_names[i]);
+> +	}
+
+[Severity: Medium]
+This propagates -EPROBE_DEFER out of dp83867_probe(), which
+devm_regulator_get_enable_optional() returns when the phandle resolves but
+the regulator provider has not registered yet.
+
+Can that deferral end up with genphy bound instead?  In
+phy_attach_direct(), if the MAC attaches the PHY while the dp83867 probe is
+still deferred:
+
+drivers/net/phy/phy_device.c:phy_attach_direct() {
+	...
+	if (!d->driver) {
+		if (phydev->is_c45)
+			d->driver = &genphy_c45_driver.mdiodrv.driver;
+		else
+			d->driver = &genphy_driver.mdiodrv.driver;
+
+		phydev->is_genphy_driven = 1;
+	}
+	...
+	if (phydev->is_genphy_driven) {
+		err = d->driver->probe(d);
+		if (err >= 0)
+			err = device_bind_driver(d);
+	...
+}
+
+Once genphy is bound, does the deferred retry still get a chance to bind
+dp83867, or does __device_attach() return early because dev->driver is
+already set?  If it is the latter, the port links with none of the
+DP83867-specific setup (RGMII internal tx/rx delays, tx/rx FIFO depth, IO
+impedance, clk-output-sel, rxctrl strap quirk) and nothing is logged.
+
+Would it be worth mentioning the new probe-deferral point in the commit
+message?
+
+> +
+> +	/* Datasheet section 6.6 suggests a 200ms post power-up stabilization */
+> +	if (count)
+> +		fsleep(200000);
+> +
+> +	return 0;
+> +}
+
+[Severity: Medium]
+Does count actually track "newly enabled" supplies?  The commit message says
+
+  "Absent supplies are silently skipped, so boards that do not describe
+  them are unaffected."
+
+and
+
+  "When any supply is newly enabled the driver sleeps for 200 ms"
+
+but with CONFIG_REGULATOR=n the stub never returns -ENODEV:
+
+include/linux/regulator/consumer.h {
+	static inline int devm_regulator_get_enable_optional(struct device *dev,
+							     const char *id)
+	{
+		return 0;
+	}
+}
+
+so count becomes 4 on every probe, including boards that describe no
+supplies at all, and fsleep(200000) takes the msleep() branch:
+
+include/linux/delay.h:fsleep() {
+	...
+	else
+		msleep(DIV_ROUND_UP(usecs, USEC_PER_MSEC));
+}
+
+The driver has no depends on REGULATOR and no IS_ENABLED(CONFIG_REGULATOR)
+guard, so isn't this a plain 200 ms stall per DP83867 probe for all existing
+users?
+
+The CONFIG_REGULATOR=y case looks similar for an already-on rail:
+
+drivers/regulator/devres.c:_devm_regulator_get_enable() {
+	r = _devm_regulator_get(dev, id, get_type);
+	if (IS_ERR(r))
+		return PTR_ERR(r);
+
+	ret = regulator_enable(r);
+	...
+}
+
+regulator_enable() is reference counted and returns 0 for a rail already
+enabled by the bootloader, by regulator-always-on/boot-on, or by another
+consumer, so no ramp happens yet the 200 ms "post power-up stabilization"
+delay is still paid.  Should the delay instead be gated on something that
+reflects an actual off to on transition?
+
+>  static int dp83867_probe(struct phy_device *phydev)
 >  {
->  	char *tmp;
-> +	unsigned long tmp_port;
+>  	struct dp83867_private *dp83867;
+> +	int ret;
+> +
+> +	ret = dp83867_power_on(phydev);
+> +	if (ret)
+> +		return ret;
 
 [Severity: High]
-Is unsigned long wide enough here on 32-bit builds?
+Can the rails ever be enabled from here on the boards this targets?  The
+commit message describes boards that "use GPIO-controlled regulators for the
+DP83867 power rails", but drv->probe() only runs after the PHY has already
+answered MDIO ID reads during bus enumeration:
 
-> @@ -88,7 +89,10 @@ static int parse_dcc(char *data, const char *data_end, __be32 *ip,
->  		data++;
->  	}
+of_mdiobus_register()
+  __of_mdiobus_parse_phys()
+    of_mdiobus_register_phy()
+      fwnode_mdiobus_register_phy()
+        get_phy_device()
+          get_phy_c22_id()
+
+drivers/net/mdio/fwnode_mdio.c:fwnode_mdiobus_register_phy() {
+	is_c45 = fwnode_device_is_compatible(child, "ethernet-phy-ieee802.3-c45");
+	if (is_c45 || fwnode_get_phy_id(child, &phy_id))
+		phy = get_phy_device(bus, addr, is_c45);
+	else
+		phy = phy_device_create(bus, addr, phy_id, 0, NULL);
+	...
+}
+
+Unless the DT child carries an explicit ethernet-phy-idAAAA.BBBB compatible,
+an unpowered DP83867 does not answer and the address is simply skipped:
+
+drivers/net/mdio/of_mdio.c:__of_mdiobus_parse_phys() {
+	...
+	if (rc == -ENODEV)
+		dev_err(&mdio->dev,
+			"MDIO device at address %d is missing.\n",
+			addr);
+	...
+}
+
+There is no deferred retry for that address, so dp83867_probe() and
+dp83867_power_on() never run and the GPIO regulator is never enabled.
+
+For the case where the PHY is found (rail already on at boot, or the ID
+hard-coded in DT), reset release and register writes happen before the
+supplies are touched:
+
+drivers/net/phy/phy_device.c:phy_device_register() {
+	/* Deassert the reset signal */
+	phy_device_reset(phydev, 0);
+
+	/* Run all of the fixups for this PHY */
+	err = phy_scan_fixups(phydev);
+	...
+}
+
+drivers/net/phy/phy_device.c:phy_probe() {
+	/* Deassert the reset signal */
+	phy_device_reset(phydev, 0);
+
+	if (phydev->drv->probe) {
+		err = phydev->drv->probe(phydev);
+	...
+}
+
+Nothing in the new code re-asserts reset or re-applies configuration after
+the rails stabilise, so does the part end up programmed while unpowered and
+then left at POR/strap defaults?
+
+Grepping for regulator under drivers/net/mdio/ and in
+drivers/net/phy/mdio_bus.c turns up only the mdio-sun4i controller's own
+supply, so should rail control for a device that must answer MDIO during
+enumeration be handled before/at bus registration, or the rails described as
+regulator-always-on/boot-on in DT, rather than in the PHY driver probe?
+
 >  
-> -	*port = simple_strtoul(data, &data, 10);
-> +	tmp_port = simple_strtoul(data, &data, 10);
-> +	if (tmp_port > 65535)
-> +		return -1;
-> +	*port = tmp_port;
-
-Does the truncation still happen before the new check runs on ILP32
-(i386, ARM32, MIPS32), where unsigned long is 32 bits?
-
-simple_strtoul() itself narrows:
-
-lib/vsprintf.c:
-unsigned long simple_strtoul(const char *cp, char **endp, unsigned int base)
-{
-	return simple_strtoull(cp, endp, base);
-}
-
-And _parse_integer_limit() in lib/kstrtox.c only saturates to ULLONG_MAX
-when check_mul_overflow()/check_add_overflow() fire, so a value in the
-2^32 range is returned exactly as a 64-bit result:
-
-		if (unlikely(res & (~0ull << 60))) {
-			if (check_mul_overflow(res, base, &res) ||
-			    check_add_overflow(res, val, &res)) {
-				res = ULLONG_MAX;
-				overflow = KSTRTOX_OVERFLOW;
-
-So for a DCC field of "4294967297", would the 64-bit 0x1_00000001 be
-narrowed to 1 by the assignment into tmp_port, making tmp_port > 65535
-false and leaving *port == 1?
-
-If so, the path in help() would still be reached with a port that was
-never in the command, since the only remaining guard is dcc_port == 0:
-
-net/netfilter/nf_conntrack_irc.c:help() {
-	...
-			    dcc_port == 0) {
-	...
-			port = htons(dcc_port);
-			nf_ct_expect_init(exp, NF_CT_EXPECT_CLASS_DEFAULT,
-					  tuple->src.l3num,
-					  NULL, &tuple->dst.u3,
-					  IPPROTO_TCP, NULL, &port);
-	...
-}
-
-The input here is remote IRC payload copied into irc_buffer by help(),
-and parse_dcc() only requires a '\n' inside the buffer, so a payload of
-the form "PRIVMSG x :\1DCC SEND t <ip> 4294967297\1\n" reaches this
-parse.
-
-The commit message says this follows nf_conntrack_ftp:
-
-  "The nf_conntrack_ftp helper had the same class of defect and was fixed
-  by using a wider accumulator with a range check (get_port checks
-  tmp_port > 65535).  Apply the same pattern here"
-
-Is that equivalent, though?  get_port() uses a fixed-width u32 and
-re-tests after every digit, so it cannot be affected by the width of
-unsigned long:
-
-net/netfilter/nf_conntrack_ftp.c:get_port() {
-	u32 tmp_port = 0;
-	...
-		} else if (data[i] >= '0' && data[i] <= '9') {
-			tmp_port = tmp_port*10 + data[i] - '0';
-			if (tmp_port > 65535)
-				break;
-	...
-}
-
-Would a width-independent form work better here, for example parsing
-with simple_strtoull() into an unsigned long long, using kstrtou16() and
-checking for -ERANGE, or the ftp-style per-digit bound?
-
->  	*ad_end_p = data;
->  
->  	return 0;
+>  	dp83867 = devm_kzalloc(&phydev->mdio.dev, sizeof(*dp83867),
+>  			       GFP_KERNEL);
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/AS8P251MB0001B81958B28F762352EF3DC8B32%40AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260904-shikra_ethernet-v1-0-a50765996035%40oss.qualcomm.com
