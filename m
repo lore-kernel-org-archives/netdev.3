@@ -1,82 +1,67 @@
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 652DE3DC856
-	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 09:27:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C3EB472F75
+	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 09:39:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788946064; cv=none; b=LmSoXpXETo/GiGQvAz9bTYC2q/06Nnr2CanA5GZuFjQc2GtN7hi7vEQZUNthOjdxIr4F48lYeP5dp2OW1sQZHDTyHcxAlKqlsXBhh9OCbDnLR7ZrCx5+oRn/AMnlQFO6CjRXyTUYGpSNUZvgG/Qrs2l+GhvS1ZaNJTSaqvPeFKM=
+	t=1788946775; cv=none; b=nH61B4KHkbcvraaAhu1ylzt4bk7K3uRQ216wzF84f+0pnT4m4RaYDHr9Dm0x7JYec+extk2kG4xdw8oWQTVbZzOHkB15d8RwxdE16OllNb3CriAEGDQ9eyp4nzMrfM79b8rN4sQ+t8skHAN4fHu0SW7h88TSjtgrR1gjApVg1sk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788946064; c=relaxed/simple;
-	bh=nhZxE20iqrNouy33myorDXb8+bwJsQJcZSRRuLIwtTU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WSI3NkAvgW6H8Md4T9Nzlzh5pKaR816BtlK//6RN8owRndTqc5X7SzyWUxTqZqbq3vIYU4tIvnF57KXQs0ukzs6hamcPwTO3/46G/w95mqUtiClspiwUNIWr6mOWUtBv+yViBkHZFcgP6rYo0PqMIGXQujzUuRH8Rr8ttiiDDwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XPZdYCDs; arc=none smtp.client-ip=74.125.225.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788946775; c=relaxed/simple;
+	bh=/WCxZIOIu4ILSNgs/MeZkaXlzRuxiUAyqkCrCtBH8GI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ukpqXrKDU20Jq673pxly4dBPot2CMBqy+25UEGe+g/pNPNpnM8nAwNHXRqJ8zqZyVNUXlIHGIL85Dp1pdbzhZHidIntT4xWFZ01YObXHt4OStwjwcMuJoW+IUk3vptg9g4bEVKHDzlesbOg9qpc785aDz1Eky6zL8ID7VXMZuv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=GXx5rBj4; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XPZdYCDs"
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49d097b4939so67655e9.0
-        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 02:27:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788946053; x=1789550853; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=0ZOiWl3M7/VaLqAJX3bE5+mtA25D2TLANT8C6ELvR88=;
-        b=XPZdYCDsa5YsWFLRV9Ffn/xSw14ylG5wQEmTox4o3XeHfjUVJc2d8KExxzMoOx8WiN
-         6I2kecAf1F/YA/TzIkQnBEHMCz9zcSF9HBzCZwzxwTcE0A6hAsAcxHdmnn8sjd3jBZyc
-         Hc9zLMdMZqj9+cXZrzaPlzyzs/5lZxp+4bh5wvPqpibbcHtR57uj4W2SXzIwcdZ8CH+L
-         KjOGG+hziNT5IB6WBppHiNBGWnho74oOfEY+RmMOgvVmEla3Y2L7CXCsBczvssWcCdSQ
-         JQi6l/KQVl60ZqMWToRHXBSMlUQxsycEI0XFespaYTgkUPPwaZI5T8HGekV+FSBW3c1U
-         oSRg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788946053; x=1789550853;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=0ZOiWl3M7/VaLqAJX3bE5+mtA25D2TLANT8C6ELvR88=;
-        b=cj6hDSg+ATX90cPJSNhX38Xi2eH2EHJTaYlY5OVa9x0H45nxPtvcIJ6Egsp16qz+uL
-         i8yxUutFHYmtujdT+WTOPeYnLNHT4p4VY2bM3TSZSB7VvcE3vVJEzgeOJVsUbQqcadcV
-         lZE004vjGxEoZL6eUVWTwspjTlrr7R3Pr+xvlYP9RSaqOvOiOgDmpF34hfmq2OLF5PkX
-         ZJ6TeIrXLaYT+6lkgrLpE1GmcrupxKCXqIHE4mueqUMeENgnBKVDXcrBYaukfF8vT/qb
-         KTNuXl7eKDx8I6Z16GP/+zNZH7vtRcOZh6N9qgsDUy3gceRiH42ZEelbGQCALgHWfxW1
-         WvEg==
-X-Gm-Message-State: AFuF++kIjRYHetZnZrt9O86+Z7RBnW5oODCjSgakhF2nA9iee9RYOnZb
-	aphlvyxViZrPIRVF+BKS+gBKX81JEmiBYVUrZX4B0JNZzL/GeOXXBYsXz0CHJmt9xeM=
-X-Gm-Gg: AYBFou1GPi6vqOWK+47sH3d6cfL/5UXe/eOvkHss/xTJsHdAktbFkyJqAnN3DECyOTb
-	XXOFUW4HeDZ6SeGc6/MiszJmrojXR0K2O0jJqcZKuKX3B7Fo0k+Zd0/lzo+SU3w92i9lLrsjPui
-	BWQEUo6jaH3K1x8H0R5OXkxUaaDjxVenWM+j0iPws6ACaYJBYQl8ZMi5vIk6gPZN3eGxOxpUDab
-	GFhH8YxWZS0GV5GSRb+Zkz4izAJYCT5qzTQGZwAS/61cqGHOmhRQsLpfwvc7rJHhksHybWAeR/h
-	aUnUizy1ukZA+rCqFAA4M5MhCeNghPpgfeucZi9Ovj+8iHM2f13ZQLQLs93OSDqQe3+8wXhE0oM
-	rvyeuCE7XNSVeoB8/WS7Z3Nt9gXwgiQRT4Zgm2vF8y+0ZjXegJBcaJlHffTU1WMZX7HDYXHV0Vq
-	HvvE3djQidVEIvT2sG0qxsZhas+yw3l8TyQAhUdBW5FHyEhrrb3zPHknWbbtCgRrcAJlem7QCwJ
-	HVYBEto1bC/1+Gwn8JB3yuw4w==
-X-Received: by 2002:a05:6000:2011:b0:485:9876:82b8 with SMTP id ffacd0b85a97d-485c2411beamr100636f8f.49.1788946052430;
-        Wed, 09 Sep 2026 02:27:32 -0700 (PDT)
-Received: from kali ([169.224.126.247])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-485883c074asm41558442f8f.23.2026.09.09.02.27.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Sep 2026 02:27:32 -0700 (PDT)
-From: Ali Firas <alishmery18@gmail.com>
-To: netdev@vger.kernel.org,
-	idosch@nvidia.com
-Cc: kuba@kernel.org,
-	pabeni@redhat.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	andrew+netdev@lunn.ch,
-	razor@blackwall.org,
-	roopa@nvidia.com,
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="GXx5rBj4"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 74E6E1A1A7B;
+	Wed,  9 Sep 2026 09:39:25 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 4268E60448;
+	Wed,  9 Sep 2026 09:39:25 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 886C111C7AF71;
+	Wed,  9 Sep 2026 11:39:14 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1788946764; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=LE3W5jZk3vVI6gRFTtvRCXw6n++OYqfvPKuA/1vVleI=;
+	b=GXx5rBj4ytXjRv8x9L3KSC9RWxK4jm2XXzvieAWJ1DrsF0qa/j/lkuZ8JsKmhOXw8keSq8
+	Ng+2aBa9K4YSRehWdAGl0bLuyXZm5atdXi+vgGVK+slm/2UIaYe65XG5IiXBR5xVvZZTH3
+	fQxQR+JTWyHMQumPYI8kEo2hiLimDS3PxYMCcTgiqIkAJ/W4qpKhvq2C3LWUN5S0kLSvce
+	subh1g96tkCTRj4ppjgfT11f6t6J45zDgsqWTGvNI7P7dn/Sbc563XXwWAEuTdAHvgl8Yf
+	+MYUSyYz0/8szf4JJHBPDh8I0ebzLM/0gvhlCmHWHU/qVUqDRxUDctYEoD+EoQ==
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+To: davem@davemloft.net,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Heiner Kallweit <hkallweit1@gmail.com>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Ali Firas <alishmery18@gmail.com>
-Subject: [PATCH net 3/3] selftests: net: test the vxlan vnifilter VNI range limit
-Date: Wed,  9 Sep 2026 12:26:45 +0300
-Message-ID: <20260909092645.3105263-4-alishmery18@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260909092645.3105263-1-alishmery18@gmail.com>
-References: <20260907141001.GA708129@shredder>
- <20260909092645.3105263-1-alishmery18@gmail.com>
+	thomas.petazzoni@bootlin.com,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Herve Codina <herve.codina@bootlin.com>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	=?UTF-8?q?K=C3=B6ry=20Maincent?= <kory.maincent@bootlin.com>,
+	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	=?UTF-8?q?Nicol=C3=B2=20Veronese?= <nicveronese@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	mwojtas@chromium.org,
+	Romain Gantois <romain.gantois@bootlin.com>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Dimitri Fedrau <dimitri.fedrau@liebherr.com>,
+	Frank Wunderlich <frank.wunderlich@linux.dev>,
+	Pietro Ameruoso <p.ameruoso@live.it>
+Subject: [PATCH net-next v17 00/10] net: phy_port: SFP modules representation and phy_port listing
+Date: Wed,  9 Sep 2026 11:39:01 +0200
+Message-ID: <20260909093912.1290810-1-maxime.chevallier@bootlin.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -84,45 +69,268 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-A single RTM_NEWTUNNEL or RTM_DELTUNNEL request may span at most 4096
-VNIs. Nothing covered the range functionality at all, so add the
-boundary cases to the existing API test: a range of exactly the maximum
-is accepted and one VNI more is rejected, for both add and delete.
+Hello everyone,
 
-The range used sits above the VNIs the surrounding tests already
-install, so it does not disturb them.
+Here's V17 for the phy_port improved SFP support and netlink interface.
 
-Assisted-by: LLM
-Signed-off-by: Ali Firas <alishmery18@gmail.com>
----
- .../selftests/net/test_vxlan_vnifiltering.sh        | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+V17 addresses the port_id wrapparound with the xarray insertion, and the
+missing comment during the ethtool header regen from the YNL specs.
 
-diff --git a/tools/testing/selftests/net/test_vxlan_vnifiltering.sh b/tools/testing/selftests/net/test_vxlan_vnifiltering.sh
-index 8deacc565afa..464ff353d6c0 100755
---- a/tools/testing/selftests/net/test_vxlan_vnifiltering.sh
-+++ b/tools/testing/selftests/net/test_vxlan_vnifiltering.sh
-@@ -371,6 +371,19 @@ vxlan_vnifilter_api()
- 	# change vxlan vnifilter flag
- 	run_cmd "ip -netns $testns link set dev vxlan-ext1 type vxlan external novnifilter"
- 	log_test $? 2 "Cannot unset vnifilter flag on a device"
-+
-+	# a single request may span at most 4096 vnis
-+	run_cmd "bridge -netns $testns vni add dev vxlan-ext1 vni 10000-14095"
-+	log_test $? 0 "Add vni range of maximum size"
-+
-+	run_cmd "bridge -netns $testns vni add dev vxlan-ext1 vni 10000-14096"
-+	log_test $? 255 "Cannot add vni range larger than maximum"
-+
-+	run_cmd "bridge -netns $testns vni del dev vxlan-ext1 vni 10000-14096"
-+	log_test $? 255 "Cannot delete vni range larger than maximum"
-+
-+	run_cmd "bridge -netns $testns vni del dev vxlan-ext1 vni 10000-14095"
-+	log_test $? 0 "Delete vni range of maximum size"
- }
- 
- # Sanity test vnifilter datapath
+This work extends on the recent addition of phy_port representation to enable
+listing the front-facing ports of an interface. For now, we don't control
+these ports, we merely list their presence and their capabilities.
+
+As the most common use-case of multi-port interfaces is combo-ports that
+provide both RJ45 and SFP connectors on a single MAC, there's a lot of
+SFP stuff in this series.
+
+This series is in 2 main parts. The first one aims at representing the
+SFP cages and modules using phy_port, as combo-ports with RJ45 + SFP are
+by far the most common cases for multi-connector setups.
+
+The second part is the netlink interface to list those ports, now that
+most use-cases are covered.
+
+Let's see what we can do with some examples of the new ethtool API :
+
+- Get MII interfaces supported by an empty SFP cage :
+
+# ethtool --show-ports eth3
+
+Port for eth3:
+	Port id: 1
+	Supported MII interfaces : sgmii, 1000base-x, 2500base-x
+	Port type: sfp
+
+- Get Combo-ports supported modes, on each port :
+
+# ethtool --show-ports eth1
+
+Port for eth1:
+	Port id: 1
+	Supported link modes:  10baseT/Half 10baseT/Full
+	                       100baseT/Half 100baseT/Full
+	                       1000baseT/Full
+	                       10000baseT/Full
+	                       2500baseT/Full
+	                       5000baseT/Full
+
+	Port type: mdi
+
+Port for eth1:
+	Port id: 2
+	Supported MII interfaces : 10gbase-r
+	Port type: sfp
+
+- Get Achievable linkmodes on a SFP module (combo port with a DAC in the
+SFP cage)
+
+# ethtool --show-ports eth1
+
+Port for eth1:
+	Port id: 1
+	Supported link modes:  10baseT/Half 10baseT/Full
+	                       100baseT/Half 100baseT/Full
+	                       1000baseT/Full
+	                       10000baseT/Full
+	                       2500baseT/Full
+	                       5000baseT/Full
+	Port type: mdi
+
+Port for eth1:
+	Port id: 2
+	Supported MII interfaces : 10gbase-r
+	Port type: sfp
+
+Port for eth1:
+	Port id: 3
+	Upstream id: 2
+	Supported link modes:  10000baseCR/Full
+	Port type: mdi
+
+Note that here, we have 3 ports :
+ - The Copper port
+ - The SFP Cage itself, marked as 'occupied'
+ - The SFP module
+
+This series builds on top of phy_port and phy_link_topology to allow
+tracking the ports of an interface. We maintain a list of supported
+linkmodes/interfaces on each port, which allows for fine-grained
+reporting of each port's capability.
+
+What this series doesn't do :
+ - We don't support selecting which port is active. This is the next step.
+ - We only support PHY-driven combo ports. The end-goal of this whole
+   journey that started with phy_link_topology is to get support for MII
+   muxes, such as the one we have on the Turris Omnia. This will eventually
+   be upstreamed as well.
+
+If you want to play around with it, here's [1] the patched ethtool that I've
+been using to produce the outputs above.
+
+Thanks !
+
+Maxime
+
+[1] : https://github.com/minimaxwell/ethtool/tree/mc/ethtool_port
+
+Changelog :
+
+Changes in v17:
+ - Handle port index wraparound
+ - Regen the ethtool headers, now with the comment :)
+
+Changes in v16:
+https://lore.kernel.org/r/20260902212135.1805948-1-maxime.chevallier@bootlin.com
+ - unregister phy_ports at phy_detach
+ - typos in patch 1 (of -> or)
+ - Fix the netlink specs
+
+Changes in v15:
+https://lore.kernel.org/netdev/20260801074332.98755-1-maxime.chevallier@bootlin.com/
+ - Fail on port access for ops-locked devices
+ - Use a direct phy_port pointer for upstream tracking
+ - Addressed the kdoc issues
+
+Changes in v14:
+https://lore.kernel.org/netdev/20260720174808.139573-1-maxime.chevallier@bootlin.com/
+ - Added a big comment on the first patch for the topo alloc potential
+   races
+ - Fixed the multi-buff DUMP on last patch with a separate iterator for
+   dumps
+ - Fixed some typos in the documentation
+
+Changes in V13:
+V13: https://lore.kernel.org/r/20260701110427.143945-1-maxime.chevallier@bootlin.com
+ - Rebase on net-next
+ - Fix the SFP bus cleanup path in patch 5
+
+Changes in V12:
+V12: https://lore.kernel.org/r/20260615153907.862987-1-maxime.chevallier@bootlin.com
+ - Rebased on net-next, including fixes on the phy probing and cleanup
+   paths
+ - Rebased on Jakub's netdev_ops_locked changes in phy_link_topology
+ - Fixed some typos reported by Andrew and sashiko in the documentation
+
+Changes in v11:
+V11:https://lore.kernel.org/r/20260521121040.1199622-1-maxime.chevallier@bootlin.com
+ - Aggregated Andrew's reviews :)
+ - Removed the "vacant" field, replaced it with "upstream_port"
+
+Changes in V10:
+V10: https://lore.kernel.org/r/20260513130521.1064094-1-maxime.chevallier@bootlin.com
+ - Rebase on net-next
+ - Rename phylink/phy_device sfp_bus_port to sfp_cage_port
+ - Sashiko's reviews were mostly unrealistic or wrong :(
+
+Changes in V9:
+V9: https://lore.kernel.org/r/20260403123755.175742-1-maxime.chevallier@bootlin.com
+ - Added missing netlink doc updates for u8->u32 conversion
+ - Removed dead code with a condition that can never be true in
+   phylink's mod_port code
+ - Fixed the error path in phy_sfp_connect_phy
+
+Changes in v8:
+V8: https://lore.kernel.org/r/20260325081937.571115-1-maxime.chevallier@bootlin.com
+ - Set the new phydev.has_sfp_mod_phy field when we're sure that no
+   errors occured
+ - Fix formatting of the copyright info in ethnl port
+ - Use a policy to validate the range of port_id
+ - Use GENL_REQ_ATTR_CHECK
+ - alpha-sort headers
+ - use u32 in netlink messages
+ - return better error codes
+ - don't check the skb len, the core does that
+
+Changes in V7:
+V7: https://lore.kernel.org/all/20260309152747.702373-1-maxime.chevallier@bootlin.com/
+ - Changed the port cleanup path to use list_for_each_entry_continue_reverse
+ - Adjusted the cleanup path in phylink for the port vacant state
+ - Pass the right cmd for the netlink dump message
+
+Changes in V6:
+V6: https://lore.kernel.org/r/20260304145444.442334-1-maxime.chevallier@bootlin.com
+ - Added some comments in th mod_port cleanup
+ - changed some kmalloc to kmalloc_obj
+ - Removed some phy_link_topo_del_port that wasn't needed
+
+Changes in V5:
+V5: https://lore.kernel.org/r/20260205092317.755906-1-maxime.chevallier@bootlin.com
+ - Fixed a check on a potentially un-initialized pointer, reported by
+   Simon
+ - Fixed a documentation formatting issue
+ - Remove a stray pr_info
+ - Rebased on net-next
+
+Changes in V4:
+V4 : https://lore.kernel.org/netdev/20260203172839.548524-1-maxime.chevallier@bootlin.com/
+ - Add a cleanup patch for the of port parsing
+ - Added a match to sync the port's linkmodes with the PHY's for OF
+   ports
+ - Added RTNL assert in the port_get topo helper
+ - nullify the bus port for phylink support
+ - Fix some typos
+
+Changes in V3:
+V3: https://lore.kernel.org/netdev/20260201151249.642015-1-maxime.chevallier@bootlin.com/
+ - Remove the sfp bus ops for nophy, and use .module_start() as
+   suggested by Russell
+ - Added missing cleanup for the topology, as per AI review
+ - Fixed a few typos as per Romain's review
+ - Changed "occupied" to "vacant" as per Romain's review
+ - Added missing checks for null ports, per AI review
+
+Changes in V2:
+V2: https://lore.kernel.org/netdev/20260128204526.170927-1-maxime.chevallier@bootlin.com/
+ - Fix the cleanup path of phy_link_topo_add_phy, as per AI review
+ - Fix the cleanup path of phy_sfp_probe, as per AI review
+ - Fix the call-site of the disconnect_nophy sfp bus ops, per AI review
+ - Fix the netdev-less case uin phylink, per AI review
+ - Fix the prototype of phy_link_topo_get_port for the stubs
+ - Dropped patch 11. It ended-up breaking 'allnoconfig', so instead we
+   built a phy_interface_names array in net/ethtool/netlink.c
+ - Fix an ethool-netlink spec discrepancy with the type of an attribute
+ - Fix the size computation in the netlink port API
+ - Fix the cleanup path in the netlink port API
+
+V1: https://lore.kernel.org/netdev/20260127134202.8208-1-maxime.chevallier@bootlin.com/
+
+Maxime Chevallier (10):
+  net: phy: phy_link_topology: Add a helper for opportunistic alloc
+  net: phy: phy_link_topology: Track ports in phy_link_topology
+  net: phylink: Register a phy_port for MAC-driven SFP cages
+  net: phy: Create SFP phy_port before registering upstream
+  net: phy: Represent PHY-less SFP modules with phy_port
+  net: phy: phy_port: Store information about a port's upstream
+  net: phy: phy_link_topology: Add a helper to retrieve ports
+  netlink: specs: Add ethernet port listing with ethtool
+  net: ethtool: Introduce ethtool command to list ports
+  Documentation: networking: Update the phy_port infrastructure
+    description
+
+ Documentation/netlink/specs/ethtool.yaml      |  55 +++
+ Documentation/networking/ethtool-netlink.rst  |  34 ++
+ Documentation/networking/phy-port.rst         |  26 +-
+ MAINTAINERS                                   |   1 +
+ drivers/net/phy/phy-caps.h                    |   2 +
+ drivers/net/phy/phy_caps.c                    |  26 ++
+ drivers/net/phy/phy_device.c                  | 186 +++++++--
+ drivers/net/phy/phy_link_topology.c           | 101 ++++-
+ drivers/net/phy/phylink.c                     | 128 +++++-
+ include/linux/phy.h                           |  10 +
+ include/linux/phy_link_topology.h             |  44 ++
+ include/linux/phy_port.h                      |   5 +
+ .../uapi/linux/ethtool_netlink_generated.h    |  22 +
+ net/core/dev.c                                |   1 +
+ net/ethtool/Makefile                          |   2 +-
+ net/ethtool/netlink.c                         |  25 ++
+ net/ethtool/netlink.h                         |   8 +
+ net/ethtool/port.c                            | 382 ++++++++++++++++++
+ 18 files changed, 1020 insertions(+), 38 deletions(-)
+ create mode 100644 net/ethtool/port.c
+
 -- 
-2.53.0
+2.55.0
 
