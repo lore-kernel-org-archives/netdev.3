@@ -1,210 +1,150 @@
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010001.outbound.protection.outlook.com [52.101.61.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E66083FB7E7;
-	Wed,  9 Sep 2026 10:03:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71EED4A2E1A
+	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 10:05:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.176
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788948219; cv=fail; b=llc8N+57kBEHGzpbPLEFSbnjBVtRsCBr81SK1tO09LTrpkKlhGj0ItGyREqsbZ+OeARLNxeD+hgwMDLYgeX+dnwjQcmCES98i4TtMCTmbo9B7hNv+vqGAdHcXlThpzrJfBbL/OvuWUw029PtkrSG/wAXhufW1/5dt0tE9/zdJTU=
+	t=1788948336; cv=pass; b=s276KDM/CdVAJbfGpWZA9TImaskBKk2GiWTBlM8GMTXo6BJH+rLg4B9UCPj52gZ3GcGV68Hu+3F+30Jcb57EDaEcctGwTOLBeNGY8pvtkPpwxE8wjtZGz4xQ4zKhpplWGom0d34Y8wluUH+0KQO0d9k8GNupZjblQYvqwJLdjW8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788948219; c=relaxed/simple;
-	bh=ZocE+f+U0FYkI8kLqXLBE0e27dV9j6AkPG4VSu3zYSA=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=m6+7O8TN97LoE9XaNEx0yE9xhqF3G7/4wEHm42PyEzTg+hGl4Ct4CY5BDpCMq3eJo4WGtYRxItOTUdRNc2sCcTDMo/RG1NnWRe5V7naLABlHgjfzR11J9p8XIaiHqMaoxDkmeQj+SiNx8G6wpu1xPawJ3zTLkXm5jg85stdqbQ8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ETMEaRGp; arc=fail smtp.client-ip=52.101.61.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1788948336; c=relaxed/simple;
+	bh=Qs6MOo0ipbx7jwU40KRVH3VbId5c+se0y+w18KEpP08=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pyV4hWY/Vb8Z66frz7x7FQgy/XNYb4M3JRlf7HJ0+aISDknUbiNmEm3GZNTAGdTrqbs96QHavmHZNkSXnsqli1exT5gvZCaHb564PL1bmDei6VFhl43bMLSausUkGk0yzHyElgn14LpLY/YdeXJOCs9v+LJNDejh1CHH0ONElC0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=Fyh67PfP; arc=pass smtp.client-ip=209.85.210.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ETMEaRGp"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=kbTbtDjMRfQ3IosC+kmZbGW47Yb5Rk11SJW3uEz9oxXPt8LhCczYSdKwB87WDc0obdNFwEEF0X7CisJALDcyPACDvM8Ly39hbrxxcwWsuwnaG7/gOkeQ0Tyitx3JElOUv98iTKzR2lNFshOGhUw3/lNg7Ob+JH/u13FczYkaENwSM5ST4kKtujajLlrDdciGlos8NCl6F7a5Sc46s715w0ApsWgYMGk2WvrelDvRkQriXupl2yFXr0bxE7RbQl+TspwYAtYfIy+6kw4uPBagGq8yEGmS+71IsaBCHfFA54XxmcB19QRc3D6EptkZWCm9NYrGaQRlH9ltMt630/8rZA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rmtd+0OJoztfVMWhTfFYOWu7oPNFOEDnMoQWOUwfNGE=;
- b=XEX6pF+l22Vb/quYN1ciXx6yYPORQuZzixBd6XPoeKr9RzplW7kxQOFb7S+GkzUnV4wRirAtPaGZLHCKHyHG4pEGsKuLytWl1IqzbFOza+UcuWvmzdmOcWNaFC6DHlBw8jcxaElMMZcuZ7D7lx7jKMBrmzwH9z/ZHakY+wing7Fdebbdk1ESV5EFAIgl+Nt4oseHPmNUdR9tuzHoeTx3Q6P10nnODoJPDWcDfEo1UmtdniYdVJJyAkQpqqn8vjxrC7P2h4eHReKGwA29LBI6bRmyaKbPY+zsAJ3+50yYmcNyyV005EkX2qeOnKK7FYrEiIX33ObYS3KXuCl2vHoKiQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rmtd+0OJoztfVMWhTfFYOWu7oPNFOEDnMoQWOUwfNGE=;
- b=ETMEaRGpYVUCc3T2gjbIktXPywx0VZ7nUcXp+THy6qE4yj/wmyIhwEea3OkndA5rk+Or6cBXlUrjwBbfwTZ31QaHl12KujBCwSXukXfp5WbxfH1YGa5UwIK7tkSRF2R628X8FJB+sHyzMpVz6BR2xwOjuCuuUE5z5M0tqIrjDpUavxwLhJxHazcOY3e8m8dK+IPTJFDn+KAKZ3+jfy2VUOsM4k6kftcGOpOf8sFFeMbyPUi357krqcTmN/5Po1eTczco1mDZ1EEgxJbPDNXELTGVmO8+67Qxy14fovl/stTk49QZtmnljIWqYqgfRnjFpv7rUCpFI8uOsAzgBlTX0g==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH3PR12MB8728.namprd12.prod.outlook.com (2603:10b6:610:171::12)
- by CH8PR12MB9742.namprd12.prod.outlook.com (2603:10b6:610:27a::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.382.15; Wed, 9 Sep
- 2026 10:03:30 +0000
-Received: from CH3PR12MB8728.namprd12.prod.outlook.com
- ([fe80::2641:1046:bdf3:93d7]) by CH3PR12MB8728.namprd12.prod.outlook.com
- ([fe80::2641:1046:bdf3:93d7%6]) with mapi id 15.21.0406.007; Wed, 9 Sep 2026
- 10:03:30 +0000
-From: Dragos Tatulea <dtatulea@nvidia.com>
-To: stable@vger.kernel.org
-Cc: saeedm@nvidia.com,
-	tariqt@nvidia.com,
-	netdev@vger.kernel.org,
-	phaddad@nvidia.com,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Paul Saab <ps@mu.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1.y 6.6.y 6.12.y 6.18.y] net/mlx5e: xsk: Fix unlocked writing to ICOSQ
-Date: Wed,  9 Sep 2026 10:03:10 +0000
-Message-ID: <20260909100310.1941561-2-dtatulea@nvidia.com>
-X-Mailer: git-send-email 2.43.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: FR5P281CA0004.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:f2::13) To CH3PR12MB8728.namprd12.prod.outlook.com
- (2603:10b6:610:171::12)
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="Fyh67PfP"
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-852c481415fso6949988b3a.3
+        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 03:05:34 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788948334; cv=none;
+        d=google.com; s=arc-20260327;
+        b=GWabAMw8btyFY/ELBpVojpHLiSytRU5Mnj18ryLE3FGNZ1SVwCvdByKgwRpimhyE87
+         qsTTWpWOpwe3yAfdJMrvu13Pa5weUrMNlRN5DOdl0WhcHQ6k4hGulNTHKu5Y4gW7d0oU
+         sK5AWx7rwI0xETPV7ODUwD0j19qNlwQ5zNfMgcC0KAK+iNTCJbFu2UiNyTw4K/mYO9SB
+         4BfdhNberCag2L7zGB5J+wYrOxrb2T+K37zHxkhsIDa8q+PA1PupGMs+XIirAPC070UT
+         0RwzfMwZLrleRE2TZqv8uaUg9U51uR4KZwU+hSHMEgG0q4Rn/cTYPE0AZxs/x5VNJEVi
+         Q0BA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=H4NnU3M9b/3b6iNVJB4nDxkla8ekZHTTUWyoEboJwMQ=;
+        fh=S74tJcXTMFiUbx0B3JdLTBnONPYQ3Mg9GXaGgRJFoRU=;
+        b=JgjlUHZyX9Re2SgWjOY154x0M2tYMDR4kkitqWLsZ11EVXttQBMqxHDs8eqDhSIHLY
+         gc+kTKFKDBnnlIO4A1uIBuujXxAu+GC/8LJ0BzuANaQqmNxQ6NPWPaBHzJolXg0TGFzK
+         s76Lsz6T8oIlZtRzYbsMsocqCriCif6fqHMREf82Ty/xyAVcVLr8JCDF/rCL7DHq2Tmo
+         yRDmj6Al/sT0sOxYu23CXPeESmYhxq0SOTnijTSXV4nmcf3kJJeJHkj9Wty5yddKge2K
+         X0VgyKUzl28x1glF5HmdqpILJecpzvJ/k6/AiAdNhv8H4OKE485FFO0o2lYA7VX1tSdJ
+         ttmQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu.com; s=google; t=1788948334; x=1789553134; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=H4NnU3M9b/3b6iNVJB4nDxkla8ekZHTTUWyoEboJwMQ=;
+        b=Fyh67PfPES0WDZ9cuGkdzPUfAb/BXY2KURx51u1wdu8e5Tl6ZZNBpFh+EqcZZx7lTA
+         8NPTp8/HzX1M90Nwc08bVnAk1tGvzBHlu7BXLvpNxKzVK+fQGfwoqyF6PX3ls5Augf2I
+         7PrJancQuLGvRwcbf9QigiGfTuZb/EANssCYI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788948334; x=1789553134;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=H4NnU3M9b/3b6iNVJB4nDxkla8ekZHTTUWyoEboJwMQ=;
+        b=hO1ynimJ8YAUMCaJGy9+qzy8+ixAZrkHVts5PNdhpdOY5yTQbPIOf1y3LQeU748Gcx
+         ijDJ5aCjMY3/XCOoXZIA2LY7nbS3v8Sbz0zc/0iJhSRPy6kGvJkvbZePS4kNRFo1g5AR
+         8HEYle6zlH8X/RtI0NusAWlU3ADFRHSRxgV7GguME8sADJQoFXLH0bNECAR/9VdRb5oo
+         U2IKNSWRKbCqujWtS92GA5IJDgzwL+IOQ2KnGpksH+4aDwVrR/oShVmiO10hA9/H8fU9
+         vmvg95dgGkvZ6KQtI2Ro5U26/l+wEB1JKjWv6WD53InuhHpTkCEOGTqZI5rUvEfFczIR
+         KH1w==
+X-Gm-Message-State: AFuF++ker9VJRSKER/gv20M6XUESCrG0nt8uRcHZV3H2yxAgwsd7P3fa
+	n7vrgtK1lceypCwXSqbvJyHiVuJV96Zaq6iojEHJmG4EwvyTOKcpcHrfKHRynTrE/FeB4fp+VL1
+	wm9jC92dGUwktq6xK2l+kxN2j2+fFCIORs+e/m6MX
+X-Gm-Gg: AYBFou1TX3VX73B8H/Akr+DADC6z0hKBh6mzqaPDWzohqgPNblZRZCFTbV/0JNwmnPy
+	IKbCFTd8eJxtx/m49A2Bn68h18GJvoKYnM2HV7VGWPg+gUzzKTKrwoVgoqYvrLNS/V3fuclnFpe
+	soeqfMlIre2mIoOxsK6nrXNPRqLOV3xwGy53UnTA/+TzG8KLzaeNipJYUGCN6uqH4EXLPzMx9BU
+	D1wE9LelKcmkGRb1JbxxYckyMjvSpQtPYXalVe7bF7vsJioa2xjs6KK3yRCO5Ny46K8uFcqptg2
+	rXuQtUV/E53kxecyDZHrb7n9VjgSWkSq5y4kY2EREfAQDgI59IrXb06P3GJbd4NXT1g3++nr3Ka
+	EuTASm+9a8XAh2/gc0WkUo0WrRFH1TEbmdPAuoi5+098w
+X-Received: by 2002:a05:6a00:4298:b0:84a:646f:193 with SMTP id
+ d2e1a72fcca58-861633ca7b1mr48778621b3a.0.1788948333754; Wed, 09 Sep 2026
+ 03:05:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB8728:EE_|CH8PR12MB9742:EE_
-X-MS-Office365-Filtering-Correlation-Id: d9da2aa9-ae6c-4089-e3a5-08df0e59998b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|23010399003|376014|10067099003|6133799003|56012099006|18002099003|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	t5fn++7q1ULd/6bdSGRxT6rYcMuE1eTJnU4RkYV1UpV+pqZu5WFdzrzMqFgcognVZszZ0bx9PMki690YOH4360r0n3EZXNxscEX0n7JR3piqDZo9es6U6P+OCCz4+V7Gu29R7nI3fBgtCXI6H9yVit2+7g6lDuEQN854fvjofRH8BFfl6YQkMagmghIt9LkoCvU86iNreZSR9cM66T9WyAQw7VmHRxhsbZ7CnlPLB7XaWoXPASZmImdXfG9n/nJWz053O3POIt/HscExnto+mcNraIU46bQZ2tBV9BrQPkuLtRRLrjZ+qhIf/yXcWt8taeYSoHrjoaMRf1AP/XEwGMmJ6mR4Wm5cOTvp5u7INcC4VKIaPwrIKysmHMX1ICtv9gUH2S/XIJgC1fqH2MyoAiMe4A+85BbkLwcXd+LHoWuQhrcOHSByyi8JyMG3oNMTfB0vP9i+weeuiCCAtoW4aiXovNihP1anTyS+LXWEtFxN4GmQEUx1qa748SxDxx2jjyECgvQVpmpczcTl9jgzRRbi7OSAyVGI1NUtGKYJuPyHZlYdpuoLPG0Hbnf1ZQaAJbd3kF3euW48FIY51jF0kSv4QXYRJ+1uN2KF6h1sNBwnluE76iAbwBvPs2neO9WzHvfxrPDoqtpUevDp0HWJz51/whk39qaltLCrnsW6t58=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8728.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(23010399003)(376014)(10067099003)(6133799003)(56012099006)(18002099003)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Mhh1Zi8T7lAkTzVJn5humlkfbVD5CD3bmFelpnEtvu8DTnxF7s40u+KJ0+UT?=
- =?us-ascii?Q?nQK7F1k6EB/NWj5yGu0Je4VL+Ds+kFzqTdFfj/93wjod+3Vgpw0Q3TYemWnq?=
- =?us-ascii?Q?FKNUrWI8CgvsXimnQyegDF1znATGoAbyuh1vjwuwKCE4cvKScANp7tdX/36A?=
- =?us-ascii?Q?Aod3T3KGPWBT86TDY6PrExvZvtUnbB0n3ZIdI8bVcImFg46D0TT05IBkfd4y?=
- =?us-ascii?Q?eVPmUVYGaXYISx2PcI9gOB80hxvs2F5s6FtnYCLOXRK0PT3WNS6qFDUqWuVs?=
- =?us-ascii?Q?KsJw+fyan4JeW3qK2jDutPLbhdb1IOg/27vsQ4MTefAxKHe/02pUcPTokO/R?=
- =?us-ascii?Q?2HTlR7JolSyxUoqf2xpy9bo4+BnjbIQX6YjtOhFKyNLgKEaJaefLb2kGRNAw?=
- =?us-ascii?Q?hzmZJeTtSk/hMYe3bXK/vy0gJziPTP3pYnV6MElJw2hrQa1R8rBfaIhq+RCn?=
- =?us-ascii?Q?uDz+ng+qAou861WF4Pabj79MVVna5hyoidvOTIVcFyEYFrZLwA5Jggz+GDnv?=
- =?us-ascii?Q?6BuCnXRpYMa7rWKUUxIOz740j5p9sqHBGq5lqX/QxLdEQRMA0+rRgzbKFcoA?=
- =?us-ascii?Q?CEaqY9d4GYUyzQ77we1oEBp50hlaWQh07TmMjgub6cWSS5xGI3k1GWqBQWK6?=
- =?us-ascii?Q?SW6Chh1RExi4z1JbBLWIQfJliE5yabRD4B56led3RvZCVh4rqKCYAOv19AW5?=
- =?us-ascii?Q?mtS9YV1zubaY84jYs6zSr15PRdFJMf79OLsC4V95mjJZr4bqT39DBPgUfMXJ?=
- =?us-ascii?Q?KULZxEcSIFo9aZ0h8YFMcmZFHrtj642kaLAccM4BVDv620EkNG4gs/DbEgfv?=
- =?us-ascii?Q?D2MGgfBg7QsNhR2loE1QD+55k4Rot8c0v8KAz8tlzcuh/2Q02kts5cojwWpQ?=
- =?us-ascii?Q?XhHuKwgL+crYq7dE4HHSdzV55tTw5stoSgvT8VveTxeQk7kiJcgC7ZG5mOMR?=
- =?us-ascii?Q?NiO/asE1vZeUSoscuzSixAcRHdTmPr8SGOm7epTeoahxMw6PaukDt5/2todk?=
- =?us-ascii?Q?VPE0NhS3DwfDZB5y8jDlYZ6UcrWCu3wSw3cKWDdywoTpzk15KjY08A4wLt1H?=
- =?us-ascii?Q?hqfN0KPubvmy1ciPkirrfgCg62wp+K6kpzGbf5uo5Hb8W6cLE0kCss7dZ4C7?=
- =?us-ascii?Q?8hJE1AWypN8XfBnPl+f8vZPzPHQdybWsSOPLu83zwFTV4tKZgQrLatNeGmEz?=
- =?us-ascii?Q?tjIRAjoSAbukTU3mGfCyrQPuaUqhMFh3TXDQ0fj8u35DIt46KA7e3VrjhKEk?=
- =?us-ascii?Q?B5cDuQajRhZ/S2mq9cTFd4JNq8Ey9j02PCMLyvjHwP4ssU4yt2z4GBuKPTGy?=
- =?us-ascii?Q?/cp//iRHcByATuDfblwr0pdTETOBcjvvRRwkcsOA+S3XQDIe6Yxb5QAy7rM3?=
- =?us-ascii?Q?wjkm7sp7vhxApLQm3w+3zz22hfX/ZyezqREHHYx99WZImG63TDVJC1Nrc+fO?=
- =?us-ascii?Q?DjlPdX3Xvldr1kKll63mbuBR/eF9fAsPr7X5As4rUgfWDMQLDkrnhI7c8OOm?=
- =?us-ascii?Q?9XYUov/ND1r4PBV389OmvXdGZMmqOvG9f/7uCmKonGUyUHplukPTm85bIUJW?=
- =?us-ascii?Q?fZUfqoQ7VGxkFyq6d1kpNnIdKVWszVTQ53MinOMhLc/Av1Iny2b2jQtAYIFH?=
- =?us-ascii?Q?nivTWsRT+oXj0YCQCDImK4TuJbgPK+2XGBpuNJOH5Ul2V9XL2EtbhaZRm8Hm?=
- =?us-ascii?Q?g8NteBgt8uzE4wcJMXNITVtN8wQSy6HMfTVbNBLkawBEuM+onpIeBYFznU7O?=
- =?us-ascii?Q?bRqoghr3yg=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d9da2aa9-ae6c-4089-e3a5-08df0e59998b
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8728.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Sep 2026 10:03:30.3017
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: JBF7fgUs/iS7SUbCl9i9nrcOCDzjZhtLf2OCeZtGL/rzq/9ebuBfhQZPzH1t/XNUyL+N747gndD7vg6LqjNiRA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH8PR12MB9742
+References: <20260909070336.32979-1-xuanqiang.luo@linux.dev>
+In-Reply-To: <20260909070336.32979-1-xuanqiang.luo@linux.dev>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Wed, 9 Sep 2026 06:05:21 -0400
+X-Gm-Features: AcwNN1XRsCSsVSIJECxCc-1JgLAJouQ3Cyvq8feC7J8tsCQrA7yQNPwNFlVqu04
+Message-ID: <CAM0EoMnZ6AwTX45hHAkqe_tvY0jpeMhzz=c9jhduzzau2Qn84w@mail.gmail.com>
+Subject: Re: [PATCH net v1 0/2] net/sched: fix action batch failure cleanup
+To: Xuanqiang Luo <xuanqiang.luo@linux.dev>
+Cc: netdev@vger.kernel.org, jiri@resnulli.us, davem@davemloft.net, 
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	shuah@kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-commit c326f9c68921e2f14dfcecb2f6b4216313d50248 upstream.
+On Wed, Sep 9, 2026 at 3:04=E2=80=AFAM Xuanqiang Luo <xuanqiang.luo@linux.d=
+ev> wrote:
+>
+> From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+>
+> Failed batched RTM_NEWACTION requests can leak action references and
+> reserved IDR indices when cleanup encounters a filter-bound action.
+>
+> Patch 1 fixes the failure cleanup.
+>
+> Patch 2 adds tc-testing regression coverage.
+>
+> Failure reproduction (key output excerpts):
+>
+>   python3 tdc.py -f tc-tests/actions/gact-rollback.json
+>
+> not ok 1 e3b1 - Failed action batch releases a bound action reference
+>         Could not match regex pattern. Verify command output:
+> [...]
+>          index 1 ref 3 bind 1
+>
+> not ok 2 e3b2 - Failed action batch releases entries after a bound action
+>         Command exited with 255, expected 0
+> RTNETLINK answers: Resource temporarily unavailable
+> We have an error talking to the kernel
+>
+> not ok 3 e3b3 - Failed action batch releases repeated references to a bou=
+nd action
+>         Could not match regex pattern. Verify command output:
+> [...]
+>          index 1 ref 4 bind 1
+>
 
-During napi poll, when the affinity changes and there's still XSK work
-to be done, we trigger an ICOSQ interrupt on the new CPU. However, this
-triggering on the ICOSQ is done unprotected.
+Thank you for providing a reproducer.
+For the series:
+Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
 
-mlx5e_trigger_irq() is called while mlx5e_xsk_alloc_rx_mpwqe() is
-running from a different CPU due to affinity change. This can happen
-because IRQ triggering is done after napi_complete_done(). At this point
-the NAPI can be scheduled on a different CPU. Like this:
-
-  CPU A (old affinity, NAPI tail)    CPU B (new affinity, fresh NAPI)
-  -------------------------------    --------------------------------
-  napi_complete_done()  clears SCHED
-  mlx5e_cq_arm(...)
-                                     napi_schedule_prep() sets SCHED
-                                     mlx5e_napi_poll()
-                                       mlx5e_xsk_alloc_rx_mpwqe()
-                                         memcpy 640 B UMR body
-                                         advance sq->pc by 10
-  mlx5e_trigger_irq(&c->icosq)
-    wqe_info[pi] = {NOP, 1}
-    mlx5e_post_nop() advances sq->pc
-
-The obvious fix would be to lock the ICOSQ. But the ICOSQ is expected to
-be accessed only from the channel's NAPI and has no locking. Kick the
-async ICOSQ instead which is always locked.
-
-This issue was noticed in the wild with the following splat:
-
-  netdevice: ge-0-0-1: Bad OP in ICOSQ CQE: 0xd
-  WARNING: drivers/net/ethernet/mellanox/mlx5/core/en_rx.c:826 [...]
-  [...]
-  Call Trace:
-   <IRQ>
-   mlx5e_napi_poll+0x11d/0x7f0 [mlx5_core]
-   __napi_poll+0x30/0x200
-   ? skb_defer_free_flush+0x9c/0xc0
-   net_rx_action+0x2fe/0x3f0
-   handle_softirqs+0xd8/0x340
-   __irq_exit_rcu+0xbc/0xe0
-   common_interrupt+0x85/0xa0
-   </IRQ>
-   <TASK>
-   asm_common_interrupt+0x26/0x40
-  [...]
-  ---[ end trace 0000000000000000 ]---
-  mlx5_core 0000:08:00.0 ge-0-0-1: Error cqe on cqn 0x548, ci 0x2022, qn 0x8f4,
-  opcode 0xd, syndrome 0x2, vendor syndrome 0x68
-
-[ Backport to 6.18.y and older: upstream commit calls
-  mlx5e_trigger_napi_async_icosq(), which was introduced by commit
-  0da1dba72616 ("net/mlx5e: XSK, Fix unintended ICOSQ change") and is not
-  present here. In these trees mlx5e_trigger_napi_icosq() is the
-  equivalent helper: it takes c->async_icosq_lock and triggers
-  c->async_icosq, which is unconditionally opened, activated, polled and
-  armed for every channel. Race B of the upstream commit message does not
-  apply, as it concerns the sync-ICOSQ variant of
-  mlx5e_trigger_napi_icosq() that only exists upstream. ]
-
-Fixes: db05815b36cb ("net/mlx5e: Add XSK zero-copy support")
-Reported-by: Paul Saab <ps@mu.org>
-Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20260513064613.334602-1-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
----
- drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c
-index 44547b22a536..799414c2cdc8 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c
-@@ -245,7 +245,7 @@ int mlx5e_napi_poll(struct napi_struct *napi, int budget)
- 	}
- 
- 	if (unlikely(aff_change && busy_xsk)) {
--		mlx5e_trigger_irq(&c->icosq);
-+		mlx5e_trigger_napi_icosq(c);
- 		ch_stats->force_irq++;
- 	}
- 
--- 
-2.43.0
-
+cheers,
+jamal
+> Xuanqiang Luo (2):
+>   net/sched: act_api: release all action references on NEWACTION failure
+>   selftests: tc-testing: test action batch failure cleanup
+>
+>  net/sched/act_api.c                           |  9 +--
+>  .../tc-tests/actions/gact-rollback.json       | 78 +++++++++++++++++++
+>  2 files changed, 80 insertions(+), 7 deletions(-)
+>  create mode 100644 tools/testing/selftests/tc-testing/tc-tests/actions/g=
+act-rollback.json
+>
+>
+> base-commit: a401a9d547c50ef34db1088cc1fb9a201a7af657
+> --
+> 2.43.0
+>
