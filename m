@@ -1,156 +1,138 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71A6F582B8B
-	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 16:44:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 112BF339395
+	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 16:47:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.182
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788972265; cv=pass; b=GeP8u0b3pEgwN/ZLaqSwkhMTfLzUMbeGkxPrM0KT7/gvfEyCuueRH9NhmNhucqCROr+6yEPKqPeAKi+K7WbuwizwY5Yt9rwRdrX3zQFjxPId3lHXiXSsrhlIgNUDSYEOQCNwSlYWB2kfPZopTpLgPTzFF5y2nYx5iQfBQhS09Ig=
+	t=1788972428; cv=pass; b=rtEssPWiFEN2Asyu9RPij57LyFScnKnJ7+APcRzJ9tYnGMEsUMtHRt+deerXUPmfVnK+8LsXCP87z5mZA+Yy6e481qJAhVlK7ofTvE/pySXRXFgZHySi8D2lVwH8IGdglDZaHYmGkZf6hk+ZMB9P9svMEIGd/JYJc4NhjKcVa2E=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788972265; c=relaxed/simple;
-	bh=m6fk8JHYFEz30V0AHeoziaJO92c3GqRALMF2D5SW+MM=;
+	s=arc-20240116; t=1788972428; c=relaxed/simple;
+	bh=/e+BSNmPjk9NKfQGG7nIfLhJ8jYKrYUiYyiNqBMdcXI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KfKh+W2/O/k7H2/AihnUy4pOYQyEw50SiDutj1tPVlWve13QQ0mQMFSFF8SgRyiRh7PBwqaSKEqT6QDGDRPcys7yGSz8307vuDUHdltkPsuRZbvmuQpiFn+J4SNSMPFeNE0EySlE1RuvIk3sbRxRkoUIWgyx/GpGc3IkZ7+/jJo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HIAc7kUf; arc=pass smtp.client-ip=209.85.214.174
+	 To:Cc:Content-Type; b=Mt8XwhisWUYYhPSRzz3QQvRl8Jle+RXMJJX8vNnbaZrA7sJowZCFesXFQOyPiHFUSeZvtXyXzGxJ6PtHwgIC9IdHJQK91VAfUuxGyXJvDnvFjo9NBM2qeu5sL/DaHd81SATLAr3dCEnpAx9cgqiVr+D3ccvZAzSTf7LLsAsloaQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YUcO40Cq; arc=pass smtp.client-ip=209.85.215.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HIAc7kUf"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2d6f9e2f681so67950135ad.3
-        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 09:44:23 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788972262; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YUcO40Cq"
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-cc147d86bebso68255a12.0
+        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 09:47:06 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788972426; cv=none;
         d=google.com; s=arc-20260327;
-        b=sKiblpw/KIl+VWI9obkSqoqiPzQGCXs6fB84HmnC3tucZXGGc/juayVgaBSWuhL307
-         Eb8QvlWrSL3Nab2bW2YLtcmlwAP/pJqIl+s9Nw2nBZSaExd0FUxmv6aJXPK2w/TAHRv+
-         t5NHxHPFfj+tvsNZUl6p/fjdHDYLNuIKErKMpyG5+NkC+EJA2XKiTI2x3i1av0XlpqyM
-         AMJvQGt9FSB8o1c/GDoJ3zuJMbCxlY7VJVYW0Duij6o8RDZ6t7w/rK7wxUVcTnSBCGRe
-         09dHqQDp/uPFoAm0eDkQWcQbPkR6vcmXK3GLnl53XEbAw9fDm+/CXtk7lZCthpEVHA3C
-         /4Gw==
+        b=ibXHrbn00XqL0cMYEgTwnBVaRNCE/a/ExbIE93thc0hSO4Ffez2CAs7ye68q9exqrP
+         3nzo6j3PHTTVl/wLxuZSXvpEGuYXuF854/liW+iGPE3+FZok7zDB2HUkFcYqqdaljUvb
+         FZY0I5ceclFjmFTj+3yai/ghlAMTb0epfuAj4ekeRN6oQ9OwxbkWVM/P44j4zXijgRiy
+         OSeZ0NpG6UbKe/PnYxN33CD9oXBeNbCPFIl9VEm5inQA4U/NQghHdqjCXaPiM230a3u0
+         V+nk4uuEC3vxK7HSo6P3vx7HXC4if/2O/x/8Sx4VSRDaO88QDLA6FBlr/FRO3SRqVReG
+         nAXQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=GL83gaMOvXfff1Ob2HNVIqAEM9PbF7exA6Z8GJpPwHU=;
-        fh=P10J6mjSg4/Ab8sk2cpTCtJAUefU64ttJjetxqAq0RE=;
-        b=aDgj2+usKIGcuDmQNFKyRD3uZYCaovoq35vOsNvQcpbCHqIKwy0qtO70LyN+3YqkLv
-         rChtSHAZe+ds5tkdTGb6djAYGiTARXVnxCjz5R4/qNwlgZ+Xyjo2W5gfT5HV/addVtmL
-         qkctYxy8Qnkva+IVps2Nupn17Twg5F9GEB/gmA0OAMnEpY0ojFSU5oXQU0tdfhMUrgp+
-         5ko4ehFx0mN2Y10qNnWpSpWb63DEEWQIbBVDzg8SxY9dxsiAFKU1fop+p8PqOHqTdG+n
-         GEXv65OsPpgZ9evmZMVFNSjb0LoAlFnQHo94gmIYFg1hnbl1ehzMAE093kuPtqOMLp8E
-         sLfA==;
+        bh=/e+BSNmPjk9NKfQGG7nIfLhJ8jYKrYUiYyiNqBMdcXI=;
+        fh=KKLm5v898ln4N/Xt6SnLneYiaU/rl3U1/R3Xri0bJiU=;
+        b=fsPP2PG5mKPR1PAVnRKMRm6BExxvC4vM4EFxVtTb5tEmOAisv9Ri4QCfpyLVE+uI2w
+         D7Ee42nEWGkZwwdRvCbDYRbsa8GAWchvVjI1E2Tqg1c/WbxbA0St7O0OxRyVL0oEIULq
+         scMjC7BU5NK+b+O81Y8WhP2LPEGGmlrKC2npVM9q2e8cOepNOmBd5VifgHfK+yVg/RZ1
+         rnOQMQDf4dff39tV8B4izd08QlUzmrcyG8YRj1rD8ocuMK9Is4XAmxk3cMMUVBnWJrY6
+         XMz63W6KGuzxiEy8jC9fopG3YRfv931cJwLVJTZFGNfkmm/0Na9Akt4ocLXC3g6OhCFN
+         Av+A==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788972262; x=1789577062; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1788972426; x=1789577226; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=GL83gaMOvXfff1Ob2HNVIqAEM9PbF7exA6Z8GJpPwHU=;
-        b=HIAc7kUf2P7eK4BCUd3oTlqnbY3geQn2RcwceI3MuiHWsKBc9yrcOf08JHbB1hr210
-         PKLkYYmiiiUSwv/cDkSgPM4sK0ysRSchuasZffsnM7FpzPcJ1NbdXmCedIhEku/6iv8u
-         98beukwuloFTz+9pA80oMNvzQ4haWll/oKUCqYPN2XALxiZOnV1IstydJhQ0PmwMVH0d
-         5tnUI6M30p2DZ8rWqe11kBU8ZKbarfTxxFvBADisx0DFGsPPwp55akqETi4k5JPU5TfE
-         1DpM1ppO2OXMF9/aNnQw/vqvxBCq+MI/N6YeC6tLn3rvybkZHnCzx3XoSgiQkXNLP22w
-         JFfg==
+        bh=/e+BSNmPjk9NKfQGG7nIfLhJ8jYKrYUiYyiNqBMdcXI=;
+        b=YUcO40Cq31Psm+Zmam8K5YksYcPPxntug+M/D3Tq/VwQF1DIH2zJZJSHQ1d57ALN1h
+         yi79KldDWNA++V8/0DsXAHo4WwP8jO0dUx3uKP7od7E0z+cRazgaRLCcmC2Rgb41aZQ6
+         NlmDRudJcWRUdkvBG8VjWrayQVGP5pJUtGvTvJpyO/1IpWT+XHNevRBd+CHlEvFuLq2w
+         jZbP0cRPnt/SjtZfM/0nIlo57HT/13CAxQSGRdsbwIO2WVaOyG7O+xuUe7O3uN9DTJaX
+         pHyMC1fAdy9knAPWWOeHUvtpEpyi7U+KGzeSTV1x4XkUHXZn9w2kIFXUhksxfnpJeY+1
+         W7Vg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788972262; x=1789577062;
+        d=1e100.net; s=20251104; t=1788972426; x=1789577226;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=GL83gaMOvXfff1Ob2HNVIqAEM9PbF7exA6Z8GJpPwHU=;
-        b=Hcsy1XZYmV+VLwyCdXzf3xVsdrLrD8vRmhSe/Uz8jNCx/MUuez7+WZKi1pU67XwQaP
-         /g/JewTY8PzdvM+/IDbnDE/W+3l6KSRacEPCYzfY4pReru273I7kGErqQtcIVQo/JNQM
-         Q2RFA1CsYYCDOa/rQXUteUbpFDtYnFw1uKX7wyK1MdKPwNypqF58gE4Vlj4IhcArhSyU
-         DJg1rwuU3WxiHm7k6iDTv5YusK2mtMCJLDFGvxCbevyT0AsxmrMJFzIkbC9l0ms/WJ3Q
-         8diLyEPBVrL14unbw4w292V0vURWQKJ0s4RFu6oaE82DJw1Yk3eJYbH+JdEG+sCyM9gU
-         a8gg==
-X-Forwarded-Encrypted: i=1; AKwUvBzKSINTmdIg2ssCen6NXLey+jg0iaa8/V0pYutEuQ9pwmQpx4aoI8jeE+EP82jVjLsTRzluwfQ=@vger.kernel.org
-X-Gm-Message-State: AFuF++nf16J6AwzM8Ik324qdPdzdULipVNIDaQCqesE0tisvgL47jSLt
-	Z2XjjPSHQLskWVHYO4enzhu8ww4XppYaYtGL3TaTUjLS1MulhmfvTtbun3E3bdUsNpE6y8TN+nR
-	VD4UzN6Lu81H7HV2SMBrmSy5TacDClCOaXQHwzCAu
-X-Gm-Gg: AYBFou2BVYIIY7M2x3Q3PqK3mpumxbqkPi+wlTlUb3cqt9pRz2EGHRm+9daN6f4tDo9
-	25ljG2I8U8urVWRgjuKpIe7VfkyVoQ6p8nyvx+WHFZqTmEKqbZ2geRIekLF4tOHDh8y9nKuV2Vm
-	MpdCZm03QE+6/vNwcdeh9qzzCqs+FYk9ECdDfedptiyYWwUm46/1W330Tsbtaw0zM0pX7OC51mf
-	wgUf0nxsF9yn0yZA/b0l5uUnR5HDHOIASJ+DiqT7Q9TfHRkDss0db1wKgQuQD5DVyF/5oJXkoFi
-	xh54Ia3J5lLWmkj+T+MDzQNafsUBLcsvmN+akWfpHl7yyEXAf7V5gu6iptrpDkTyvHWhGnKY/Bb
-	rRAhJxVRzHXz7itw8Q3fCx5qs9jtPzbMGIcrk5ejM0f1k1TyO8pQIjPipzvLP47rbIKdVMLHxOx
-	Jw6vifRACsdQbLJ2PDR2foUhR+
-X-Received: by 2002:a05:6a21:6016:b0:3d3:ae0f:526c with SMTP id
- adf61e73a8af0-3da3a15cf74mr59737523637.24.1788972261832; Wed, 09 Sep 2026
- 09:44:21 -0700 (PDT)
+        bh=/e+BSNmPjk9NKfQGG7nIfLhJ8jYKrYUiYyiNqBMdcXI=;
+        b=HwIdTh8Mbctoy2kTsd91vZ2Sk6U2x5KJGCB+jPZhOHVh9prJTfMFu1D2Ru5YqoKLRT
+         vaMAkNdmxLfJuPvgJIY+4lJgHUTUX1HCFNJRfWCVLiiuRud0V2QV7oKUrqUN+6whyb56
+         AgIb/BSmGR+Q1ycM0ISBXbpsd+Wds5qChHK4DC34YNgQNml9oC/bu09ukiT1V1Hy1gwZ
+         5qirJy7iVGWAL/9SNfnQbe/FxzqD1LSDH5u8TIN3zNpNnvAje2Es6hz5+A7Bjs/hs4pQ
+         CnTcHA2PyrOquOWbbbCNbEhjOq49/9I/6Bz+B0Pm1QJFWfvF2dE6wE5TmBHfLHwjugx9
+         PVIg==
+X-Forwarded-Encrypted: i=1; AKwUvBwf+1DA67k8Vr8HYlsfu/bRHAsUe5eqPqmKlJ7GT8gbWtNQSN3AYNJIjfUqA+a6Qb4BSExF8ws=@vger.kernel.org
+X-Gm-Message-State: AFuF++lzY69WRfWyT0VOgP2QzKnLK6QV/5nHRNI46x6zKqawR31Mo1oI
+	TUh193LIMq10+vSgiPZ14UDdDF2P5gWJj1K8DiYzf18nk8FmQUJ5EuFzeaw/xyvQkE17HW5mLkw
+	X+Qdexi2PX8IO6GTBQ2YNadGQ5NSHx3mLxigoSBMM
+X-Gm-Gg: AYBFou25GfnFSt72q47NpBrpmzXVB699NkFCitdPOVvBq7+kA6PLdVCGYC61i9zWWdY
+	R6EYT1YOWY/cjdYkxfc9a5WJUqpFT7jf6/HTgSpAN2a5Uj0JHTV8N/L1LK+zzlMF/X/00uYK3mN
+	gP29BlchxCs/1xdq7BkGTvQOxaQ9o/+lm9bE/C6UsReW0bbtxxtU5rzl4+5Rzn3YeTI+k1PO4Ne
+	RVUuuPdliGMYVhHtCK+4pA+CnXkGIWwmnCTeVBn6PIeCHYtHrzEovlnTOjSCdgft29Bi9pZvcBs
+	/3PbbWqM+b652bNOod7DbtAi3eG1rWwff6H1uXBvKl/Tg6kJ1KbV6d3lSOa3HEclQjZmv3Zdg23
+	oPu4/OAsROX5jsuDqQjkC7rhIkF1a+yuC8pnSfTKJJCbjwdjbGG5lapByYLeZKkaOR5j4cyYW/b
+	sGM36ptv7dNQd8XLGj0kcD3prj
+X-Received: by 2002:a05:6a20:d0a1:b0:3bf:8a0e:dd99 with SMTP id
+ adf61e73a8af0-3dad28a3ea9mr142626637.17.1788972425771; Wed, 09 Sep 2026
+ 09:47:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260908211419.882954-1-kuniyu@google.com> <20260908211419.882954-3-kuniyu@google.com>
- <20260909065116.GC1183641@shredder> <20260909065546.GA1205208@shredder>
-In-Reply-To: <20260909065546.GA1205208@shredder>
+References: <20260908205537.863484-1-kuniyu@google.com> <CAM0EoMnFTMQPjy1kaSmgcaFzRsHHgZAH1zTGn4RvrrEzy62Qsw@mail.gmail.com>
+In-Reply-To: <CAM0EoMnFTMQPjy1kaSmgcaFzRsHHgZAH1zTGn4RvrrEzy62Qsw@mail.gmail.com>
 From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Wed, 9 Sep 2026 09:44:10 -0700
-X-Gm-Features: AcwNN1UpwKIWGXx1FisIsHLo6zEbNqF_OWRnXdGXOmfbsCcx5bZfMebBSgO-IJQ
-Message-ID: <CAAVpQUALW_LA=-M8_Eb2CYR16DNyrrSYQYM8zFASGwuJ8j=W3A@mail.gmail.com>
-Subject: Re: [PATCH v2 net 2/4] neighbour: Enforce min/max to NDTPA_INTERVAL_PROBE_TIME_MS.
-To: Ido Schimmel <idosch@nvidia.com>
-Cc: "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+Date: Wed, 9 Sep 2026 09:46:53 -0700
+X-Gm-Features: AcwNN1XYZDG25sq9dto_19K2mo7n0sMnAgXHH7HbxqeOTRYLrllK7acn9JgY1RM
+Message-ID: <CAAVpQUD6KVE9WmX442cazpF+WimZrN-kv_aU+jxqxCV_NXcA4g@mail.gmail.com>
+Subject: Re: [PATCH v1 net] net/sched: cls_api: Don't replay RTM_GETCHAIN in tc_ctl_chain().
+To: Jamal Hadi Salim <jhs@mojatatu.com>
+Cc: Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, "Gustavo A. R. Silva" <gustavo@embeddedor.com>, 
 	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, 
-	Yuwei Wang <wangyuweihx@gmail.com>
+	Taras Madan <tarasmadan@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 8, 2026 at 11:56=E2=80=AFPM Ido Schimmel <idosch@nvidia.com> wr=
-ote:
+On Wed, Sep 9, 2026 at 3:01=E2=80=AFAM Jamal Hadi Salim <jhs@mojatatu.com> =
+wrote:
 >
-> On Wed, Sep 09, 2026 at 09:51:16AM +0300, Ido Schimmel wrote:
-> > On Tue, Sep 08, 2026 at 09:12:46PM +0000, Kuniyuki Iwashima wrote:
-> > > diff --git a/Documentation/netlink/specs/rt-neigh.yaml b/Documentatio=
-n/netlink/specs/rt-neigh.yaml
-> > > index 0f46ef313590..5ec57d95d7f6 100644
-> > > --- a/Documentation/netlink/specs/rt-neigh.yaml
-> > > +++ b/Documentation/netlink/specs/rt-neigh.yaml
-> > > @@ -341,6 +341,8 @@ attribute-sets:
-> > >        -
-> > >          name: interval-probe-time-ms
-> > >          type: u64
-> > > +        min: 1
-> > > +        max: 86400000
+> On Tue, Sep 8, 2026 at 4:55=E2=80=AFPM Kuniyuki Iwashima <kuniyu@google.c=
+om> wrote:
 > >
-> > This differs from what I suggested [1] and fails validation:
-
-Oh sorry, I completely overlooked "check:" !
-
+> > If a netlink socket sends RTM_GETCHAIN requests repeatedly
+> > without recv()ing the responses, tc_ctl_chain() hogs CPU and
+> > triggers Hung Task splat. [0]
 > >
-> > $ tools/net/ynl/pyynl/cli.py --spec Documentation/netlink/specs/rt-neig=
-h.yaml \
-> >       --schema Documentation/netlink/netlink-raw.yaml --validate
-
-TIL : --validate
-
-I was wondering how it could be used after seeing strace
-showed recvmsg() with -ERANGE from kernel.
-
-> > [...]
-> > jsonschema.exceptions.ValidationError: Additional properties are not al=
-lowed ('max', 'min' were unexpected)
-> > [...]
-> > On instance['attribute-sets'][2]['attributes'][18]:
-> >     {'name': 'interval-probe-time-ms',
-> >      'type': 'u64',
-> >      'min': 1,
-> >      'max': 86400000}
+> > As caught in the stack trace, netlink_attachskb() could confuse
+> > tc_ctl_chain() by returning -EAGAIN when the userspace netlink
+> > socket's receive buffer is full.
 > >
-> > Works fine with this diff [2]:
+> > The replay: label exists since commit 32a4f5ecd738 ("net: sched:
+> > introduce chain object to uapi") but was not used initially.
 > >
-> > $ tools/net/ynl/pyynl/cli.py --spec Documentation/netlink/specs/rt-neig=
-h.yaml \
-> >       --schema Documentation/netlink/netlink-raw.yaml --validate
-> > $ echo $?
-> > 0
+> > Since commit 9f407f1768d3 ("net: sched: introduce chain templates"),
+> > the label is needed for RTM_NEWCHAIN because tcf_proto_lookup_ops()
+> > may release RTNL to call request_module().
+> >
+> > However, the replay logic is unnecessary for RTM_GETCHAIN.
+> >
+> > Let's apply the replay logic only for RTM_NEWCHAIN.
+> >
 >
-> BTW, patch LGTM otherwise, so you can add my tag to v3. Thanks!
+> The patch looks sane.
+> Can you send me a reproducer please? We are automating and testing of
+> all tc submissions.
+>
+> Reviewed-by: Jamal Hadi Salim
 
-Will fix "check:" in v3 and add your tag.
+FTR, sent the repro offlist and asked to resend the tag with
+the email address.
 
-Thank you !
+Thanks !
