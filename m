@@ -1,117 +1,229 @@
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59E495237A4
-	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 12:08:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85C63550DB5;
+	Wed,  9 Sep 2026 12:12:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788955726; cv=none; b=nQB9Ej72g6QmQ9/fznFQ/WO7ktiW2j0YyelPMvGAtRYG3HPq8FEGBs+CrIGQCpjm2cIK34kGFqa3i+lWmtmLXETecSjncWBL3uFGVHIfOYa/BxAQ5DVL/9C+ZvNUq1n6FKo4BSrM3SzD5D3TAF4dkVDXMKyx/rMi20dEhWoQ5SQ=
+	t=1788955948; cv=none; b=kyn60ePlewH+tS43S0FbD6x8D2jVR34a2YKIn7Fqvb3y1ZxNykRxi89+Fsmzl2zMWnxQec/2eFf+NNBI/yiZYWcSiWF2DLsv+SuTL57e1BqPYINjcDIVdJ7Jk+nI311ionBeeYHMZMWgUADdMEDj8Ap08WZBOfb7+Hf0AJnjdcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788955726; c=relaxed/simple;
-	bh=bZxxw56AVwtZnpwP8MD7EMIUl3KPinsdzlvWzVY7qAg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WvDHanMFHo9GdezJ9HUstEgXSYHEoA3M4tKyPW7C72nI3Ufk/msiDxsbZXEn0VLrc3EVKEDFeC0YZC0wp+RbF97/oFduoPZttJI1aA3t9kOfXFsBQltCZpmCsHlcJPQQmd06hwbCEX9Xcf8JHIXe3YR8MslHzU2Qlh4rcOodDsg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eJK7nNTR; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788955948; c=relaxed/simple;
+	bh=0eza9hmbmpnwwdzaEK4z2Fzrj7wxNCMz0u5gRrWgeH8=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=WRJYxlRsR39l+vo4gGr320gnhjZhCFuQgDz4kngNcxa8WGLT7j9gfYkDUpBr34skAzXi7Av49A26uWr/Py+SnzFugEK3omoA887TGvnkcb1ZdeNbcZAqU8GwnWEiyVvs8DtPDzEJDhD/8vCpcF/+6T8D8RP9DZxEjKOZrf1ecNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MSp2dZvG; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eJK7nNTR"
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-49d0b98d6d0so37551975e9.0
-        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 05:08:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788955723; x=1789560523; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=bZxxw56AVwtZnpwP8MD7EMIUl3KPinsdzlvWzVY7qAg=;
-        b=eJK7nNTR30g6iX6af2Yfv07WlKO80eEddQhnCvuZZEW1YFjDbLmV/rPEJCIbGJQIyt
-         aPrh70qmtCoLMPgpeEYFLOrSYROZX9u9qOV8w8/iNxMHtBqta6Tma50+SMUVdjm62HGd
-         ogGOFY2jxBXGscMsV03EkkD+HtDaSTLDDH6h+bTFnAPoh3lWrzMh6OvkrpdBt9iECgQH
-         cUylNyc4zCkb4TQngjDCStJBjcCm/Gpw8ioe9SSDyM03MyD73U6X5L5gTd3/5il3S/bC
-         BQNd1MYTAS6y69DOjqvDlmdI38zYwHTalrYlP7SEQGd1w6Aq+j91gMTNUsBoioEIUA2Y
-         kzGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788955723; x=1789560523;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=bZxxw56AVwtZnpwP8MD7EMIUl3KPinsdzlvWzVY7qAg=;
-        b=b7Vvf3pRHvATdav5odu0ZqgCgF2dXX3HOLACD3xUHWkabMijClC11lTXA6xkUZfO6U
-         D1lzZNpcSaZZHapUyIl664m3wf0juYHi6v2n/iCbvUHWx69yUKY2I/6vlZTFWXbhhP7f
-         8jZmUmxEreN6oaonEAK5SQl0kDnRiJ/vr6h3peKDDxVQB/BvNr6uMGoq7NY+R8DScObm
-         gk5pNczhzgp9AsgZKZeYvIs+7IQFrKeP64lHBcaoVK3NBDA8ekBv83tI0f0/bOPZaHY+
-         IJNU8LBNWrEZK/X6ViYKxZVQAOr/lxfhPkWW5LVRTZ3a8fj6cA2oy44z917Sb/sVXGC0
-         e8Qw==
-X-Forwarded-Encrypted: i=1; AKwUvBxXKEzdl2Eae84I19ohhN7JWvfc5gb8HI1GEDQhvDaxFCk3IQ3Te6VzGbK6zoq1+f/J3waI/lU=@vger.kernel.org
-X-Gm-Message-State: AFuF++n2vP2efjXARfdgCTuyGsuY0MUnNJwzp20dz1WigwfnbXiHYwBg
-	AyZir3v9mdH+Fu6ld8k8RikePHIwpYkOcnZAUa4kxe2H45+ePVBChJYd
-X-Gm-Gg: AYBFou0r0UNXKPUtSU4T+sRkReMjLcIrml4WFJxrTDTPuCODYLo8AkWUtoTddg+hPWU
-	i1tZJi8Qe4pIBF/c3ioS6UCeF21yjajq9Dxa4UNSPQNKO02VbwdZy1NJbFp3C2Vi42mDh8LR3Nh
-	8RpQgFEB4kjcZtNKKR+/joffNiIzn61n07ycbn5bsToFOTn1mj7RCaOIA3Ix24tjK7V11QM1aRC
-	C4AYQbn0DTrPo7kdqPwU+WTF9Xvqo/5kQGz0LBQS6w63ZTtJ3U+V8wp6Yw2e4NfT3AsFN7GF5Nc
-	P3wNtx7IYr71usSULZ5GqaWW/JEaUpUukU37xNecNRH5PUHn6sB3UXDnV0sk0DblrkRW52JVw+t
-	nDi1eADG9LkJktyZHBOeZXLCQU6jwWNKou2XFDEffBnXMV/np+lX/dGYI6qWsN6lDW7QmKRowIK
-	IGcF4ZJGQppRGSZaUxik76kbC7lPH8tc7ZBOtsOkO0NC+65sgTsoMoHuA2Tac/jn0DwutZPKmMw
-	8ohrvA1HbN6qxzSgwwZ
-X-Received: by 2002:a05:600c:628c:b0:49c:e1cd:536 with SMTP id 5b1f17b1804b1-49d17a8745bmr123017595e9.12.1788955723370;
-        Wed, 09 Sep 2026 05:08:43 -0700 (PDT)
-Received: from VivoBook-ASUS-X712UA-M712UA.lan ([2a00:f44:c51:e108:176f:2adf:3ca6:dc52])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49cee60bae6sm655154905e9.9.2026.09.09.05.08.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Sep 2026 05:08:42 -0700 (PDT)
-From: Stanislaw Pal <kuncy7@gmail.com>
-To: Linus Walleij <linusw@kernel.org>,
-	Luiz Angelo Daros de Luca <luizluca@gmail.com>,
-	=?UTF-8?q?Alvin=20=C5=A0ipraga?= <alvin.sipraga@analog.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Johan Alvarado <contact@c127.dev>,
-	Mieczyslaw Nalewaj <namiltd@yahoo.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] net: dsa: realtek: rtl8365mb: let the SerDes PLL settle after the data-path reset
-Date: Wed,  9 Sep 2026 14:08:38 +0200
-Message-ID: <20260909120838.33380-1-kuncy7@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260907191945.806751-1-kuncy7@gmail.com>
-References: <20260907191945.806751-1-kuncy7@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MSp2dZvG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74E1E1F00A3A;
+	Wed,  9 Sep 2026 12:12:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788955947;
+	bh=K1YQsi/7IjjFywqyLFJ6weEnZEs1+TwcBvIgqZHVF5w=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=MSp2dZvGMIlaC0h43j9Os59YWqitOgaiQ2aqKSgiM2RKRolfvSVrdE2iCAOY141ec
+	 XAZ1L23Uv7xIrdCh5HOEe9eM2VsphL310mFuRCnaMbBXDhgzHQw0tb2bLS/dEaDw6k
+	 1DeHFu1WO2E8KOCaSr0Yp5ja+I377j8uqtnxwyNipCM/DBurZ07dDZhobuhb6440Np
+	 Mqu/r5dZvQ3OaPg0ce4z6S+rKuHPKCP3xiAEKW5YNxUnNQD60cHtYi1d9XZkXVJxsW
+	 +a4FJriPkKv9qNxIILm/zMm0uyMeK/qiJFIGG4hXvPCtJopdN22aC/RJr32Jmfnqwt
+	 RVsL8SOVDU7Ag==
+Subject:
+ Re: [PATCH net-next v2 3/4] net: dsa: Add tag handling for SoC-e switches
+From: netdev-bot+sashiko@kernel.org
+To: v.strassheim@linutronix.de
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, andrew@lunn.ch,
+ olteanv@gmail.com, davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, linux@armlinux.org.uk,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, martin.kaistra@linutronix.de,
+ b.spranger@linutronix.de
+Date: Wed, 09 Sep 2026 12:12:25 +0000
+Message-ID: <178895594594.219967.10703472718792333808@kernel.org>
+In-Reply-To:
+ <20260903-devel-vstrassheim-soce-dsa-ml-v2-3-fb0587cb466b@linutronix.de>
+References:
+ <20260903-devel-vstrassheim-soce-dsa-ml-v2-3-fb0587cb466b@linutronix.de>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Withdrawing this one.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider:
 
-The evidence behind it came entirely from a single Archer AX55 v1, and
-it was never separated from the chip-reset patch it was sent alongside:
-the cold-boot counts I quoted were measured with both applied, as Johan
-pointed out on the OpenWrt side. Since then the case for trusting that
-board has got weaker rather than stronger. It is four years old, it has
-one confirmed power supply fault behind it, its cold-boot behaviour
-differs from its warm-boot behaviour in a way Alvin rightly reads as
-out-of-spec supplies, and Johan cannot reproduce anything like it on an
-MR80X v2.20 with the same IPQ5018 and RTL8367S.
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
-The 98 ms wait may still be right - the vendor firmware does take it,
-and the constant is in the vendor SerDes init table - but "the vendor
-does it" is not on its own a reason to put a delay in a driver, and I
-have nothing else left to offer for it.
+- [Medium] sdsa_rcv() (net/dsa/tag_sdsa.c, lines 86-87) unconditionally
+  destroys every received frame whose SDSA header has the VLAN-info bit…
+- [Low] Concern (INVALIDATED by series context): 'the new DSA tag
+  protocol DSA_TAG_PROTO_SDSA / CONFIG_NET_DSA_TAG_SDSA has no in-tree…
 
-If someone reproduces a half-alive SGMII link on hardware that is not
-suspect, this is easy to bring back.
+--
 
-The chip-reset patch is respun separately as v3, retargeted at net-next
-and without the Fixes tag, for reasons set out there:
-https://lore.kernel.org/all/20260908174403.420507-1-kuncy7@gmail.com/
+net: dsa: Add tag handling for SoC-e switches
 
-Sorry for the noise, and thanks to all of you for the time on it.
+This adds a new DSA tagger for SoC-e switches, which insert an 8-byte SDSA
+header with EtherType 0xdcdc between the source MAC address and the original
+EtherType.  Both TO_CPU and FROM_CPU directions are handled, while the VLAN
+metadata fields in the header are left clear on transmit and rejected on
+receive.
 
-Best regards,
-Stanislaw
+> diff --git a/net/dsa/Kconfig b/net/dsa/Kconfig
+> index 23b4b74004ed5..0032ccd3badf6 100644
+> --- a/net/dsa/Kconfig
+> +++ b/net/dsa/Kconfig
+> @@ -188,6 +188,12 @@ config NET_DSA_TAG_RZN1_A5PSW
+>  	  Renesas RZ/N1 embedded switch that uses an 8 byte tag located after
+>  	  destination MAC address.
+>  
+> +config NET_DSA_TAG_SDSA
+> +	tristate "Tag driver for SoC-e switches using EtherType SDSA headers"
+> +	help
+> +	  Say Y or M if you want to enable support for tagging frames for the
+> +	  SoC-e switches.
+> +
+
+[Severity: Low]
+This isn't a bug, just a note so it does not get raised again during review.
+Taken on its own, this patch adds a tagger and a protocol id with no in-tree
+user.  The next patch in the series, "net: dsa: soce: Add basic support for
+SoC-e switch IP cores", adds drivers/net/dsa/soce/ whose Kconfig contains
+select NET_DSA_TAG_SDSA and whose soce_get_tag_protocol() returns
+DSA_TAG_PROTO_SDSA, so the tagger is reachable by the end of the series.
+
+[ ... ]
+
+> diff --git a/net/dsa/tag_sdsa.c b/net/dsa/tag_sdsa.c
+> new file mode 100644
+> index 0000000000000..83bccd65b1b1d
+> --- /dev/null
+> +++ b/net/dsa/tag_sdsa.c
+> @@ -0,0 +1,123 @@
+
+[ ... ]
+
+> +/* SDSA tag byte layout (after the 12-byte MAC header):
+> + * Bytes 0-1: SDSA EtherType (0xDCDC)
+> + * Bytes 2-3: Reserved
+> + * Byte 4:    Frame type (bits 7-6), VLAN-info bit (bit 5), port[9:5] (bits 4-0)
+> + * Byte 5:    Port[4:0] (bits 7-3)
+> + * Bytes 6-7: PCP (bits 7-5) / CFI (bit 4) / VID (bits 3-0 + byte 7), only
+> + *            meaningful when the VLAN-info bit is set.
+> + */
+
+[ ... ]
+
+> +static struct sk_buff *sdsa_xmit(struct sk_buff *skb, struct net_device *dev)
+> +{
+
+[ ... ]
+
+> +	tag->port_lo = FIELD_PREP(SDSA_TAG_PORT_LO_MASK, dp->index);
+> +	tag->vlan = 0;
+> +
+> +	return skb;
+> +}
+> +
+> +static struct sk_buff *sdsa_rcv(struct sk_buff *skb, struct net_device *dev)
+> +{
+
+[ ... ]
+
+> +	/* SDSA VLAN information is not supported. */
+> +	if (tag->frame_type_port_hi & SDSA_TAG_VLAN_BIT)
+> +		goto out_drop;
+
+[Severity: Medium]
+Can this drop every VLAN-tagged frame destined for the CPU?
+
+The layout comment in this file states that bytes 6-7 carry PCP/CFI/VID and
+are "only meaningful when the VLAN-info bit is set", so the hardware appears
+to move the frame's VLAN identity out of the frame body and into the tag.
+
+The SDSA layout looks like a close relative of Marvell (E)DSA: proprietary
+EtherType, two reserved bytes, command in bits 7-6 of the first tag byte,
+port in bits 7-3 of the second byte, and the VLAN indication in bit 5.  In
+tag_dsa.c that bit means the frame arrived VLAN-tagged and the tagger
+reconstructs the 802.1Q header rather than dropping the frame:
+
+net/dsa/tag_dsa.c:dsa_rcv_ll() {
+	...
+	if (dsa_header[0] & 0x20) {
+		u8 new_header[4];
+
+		/* Insert 802.1Q ethertype and copy the VLAN-related
+		 * fields, but clear the bit that will hold CFI (since
+		 * DSA uses that bit location for another purpose).
+		 */
+		new_header[0] = (ETH_P_8021Q >> 8) & 0xff;
+		new_header[1] = ETH_P_8021Q & 0xff;
+		new_header[2] = dsa_header[2] & ~0x10;
+		new_header[3] = dsa_header[3];
+	...
+}
+
+If the SoC-e core sets bit 5 for ordinary tagged ingress in any supported
+configuration, all such traffic towards the CPU is freed here.  The driver
+added later in the series only programs SOCE_TAG_ALL_FRAMES_ENABLE and
+SOCE_CUSTOM_RULES_TAGGING_ENABLE in soce_sw_enable_tagging() and implements
+no VLAN operations at all, so nothing turns this hardware behaviour off.
+Is it known that the core never sets that bit?
+
+The drop itself is a bare kfree_skb() with no drop reason, counter, or
+ratelimited message, so from userspace the resulting loss is hard to tell
+apart from a link or MAC problem.  Would kfree_skb_reason() be worth using
+for these paths?
+
+On the transmit side, sdsa_xmit() writes tag->vlan = 0 with the VLAN-info
+bit left clear while any 802.1Q header stays inline in the payload.  If the
+switch expects the egress VLAN identity in the tag, as the Marvell-style
+parts do in tag_dsa.c:
+
+net/dsa/tag_dsa.c:dsa_xmit_ll() {
+	...
+	if (skb->protocol == htons(ETH_P_8021Q) &&
+	    (!br_dev || br_vlan_enabled(br_dev))) {
+		...
+		dsa_header[0] = (cmd << 6) | 0x20 | tag_dev;
+	...
+}
+
+would FROM_CPU frames then be injected as untagged/PVID-assigned with the
+inline 802.1Q header treated as opaque payload?
+
+The commit message does say the field could not be tested:
+
+    SDSA VLAN metadata generation could not be tested on the available
+    switch configuration yet. Leave these fields clear on transmit and
+    reject receive headers which mark the metadata as valid.
+
+Could the receive side pass such frames up (or at least count them) instead
+of discarding them, so an untested field does not turn into silent packet
+loss?
+
+> +
+> +	/* Determine the source port from the two port fields. */
+> +	source_port = FIELD_GET(SDSA_TAG_PORT_HI_MASK,
+> +				tag->frame_type_port_hi) <<
+> +		      SDSA_TAG_PORT_HI_SHIFT;
+> +	source_port |= FIELD_GET(SDSA_TAG_PORT_LO_MASK, tag->port_lo);
+> +
+> +	skb->dev = dsa_conduit_find_user(dev, 0, source_port);
+> +	if (!skb->dev)
+> +		goto out_drop;
+
+[ ... ]
+
+> +out_drop:
+> +	kfree_skb(skb);
+> +	return NULL;
+> +}
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260903-devel-vstrassheim-soce-dsa-ml-v2-0-fb0587cb466b%40linutronix.de
