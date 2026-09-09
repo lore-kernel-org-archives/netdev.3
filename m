@@ -1,191 +1,83 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D202D3B8D7E;
-	Wed,  9 Sep 2026 19:21:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDA6749DBA5
+	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 19:25:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788981706; cv=none; b=r4QNCWEQyMfY+FmVJLjxXYbz/Ia57NtfOsjWpr4wOs0xWe4AU8X3yNKUtGPEgl2Zii1c1miqsrxiIZj9xgifXqDZqV+/b5puuOmPa3I5ih5lO8j8SM9XbylmnEekw0+ZAckcws0+nrq6dzoj9EWglKgW63VNBULznstn6YY4HYA=
+	t=1788981927; cv=none; b=YBagSl8xNwZVH4XJoBkgrRXmyztCv9bOj4Ex+QxMcyhXxN1byTN522z2b/oQr5i2ViJG15nzP2oBl/r4NolBWNm0wBYQIeePuWtWbYg2hYx53ka1BV7eciLF6wZHkQ03Zfi50VfAhcMidX7S7bg5Sa1OSjRl6CHT+v1HoKCIlL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788981706; c=relaxed/simple;
-	bh=wItJgys1WkoCBv9Nv/62nASo8IwyR5mnOPwWb60Kmu8=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=QhUVYRGMrWPYOsArYSclrcmfWa9DVY7s8yE76si7h9XRxT2OhwvdyIWKqyM/HnydmImYNViMopCGHWfk3Qf6ICKP01NFPhsdVSAuycrf2TQEBUWe9sMEmBHu1nUwNcaFUORDif+2v6BJz5qXWoSkgAza1poFHNIWDgDs9kbXN1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lftNlYty; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788981927; c=relaxed/simple;
+	bh=JqMSR+Da4NVux+GSct3KYN21nN/qQvTE8oL3k5rSxqE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KScyRWBiZVMBRRTcvcZ1Knd7Mpo5mbS7W5PebnqIZU9cpXoZxQnOftRtqDrgYh1A3oLnNRzM0KLVJVnLhUzOpWSsRTCpA8Tja2ZGa02pl3dO9IoiANQ15xLeT64ZUgamWMfRpMusmMqvo1XvQQGGbyiYnQj18SzJRC3Ssq+Vjeg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AjoNXuu1; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lftNlYty"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C8D91F000FF;
-	Wed,  9 Sep 2026 19:21:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AjoNXuu1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 756C01F0089E
+	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 19:25:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788981704;
-	bh=0dPH5qYcxrlDKWgIHKe2IFZsZPUZ6aoHJ9KkYKMgFZs=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=lftNlYtymdMvrlagU6hpqyz3324ojlhSea3M0Mz0xtSTRTcCSFURnTR32azbMBJC1
-	 vCHlGhobdbO43RIa0nTG2e3FPvtepQLPBlOK7vHocL1MTFTPX5DbiZl4+6fQWZg3Z3
-	 9qzORfGCY9TzGJ5F1Dwrl4Vcmr+dEsq/X+8YLdB6A5HLzndchLnhePYjkqRmzOTExL
-	 jRZW3+Z3z1+LC0o92xQNLcm5j5WDfC17kJH49CI88itKJ6g3pOfehUL/+F6DF9gpaX
-	 GjBR2ksEJHUjM6r7ZBHD3GvFQfpeAEoiquCL3uuI+uwhhumHcvNLQYu4pOa5ZV3jRd
-	 sB1+XuL+v+qUg==
-Subject:
- Re: [PATCH nf] netfilter: flowtable: advertise the vlan match in used_keys
-From: netdev-bot+sashiko@kernel.org
-To: julius@bairaktaris.de
-Cc: netfilter-devel@vger.kernel.org, pablo@netfilter.org, fw@strlen.de,
- phil@nwl.cc, coreteam@netfilter.org, netdev@vger.kernel.org, kuba@kernel.org
-Date: Wed, 09 Sep 2026 19:21:43 +0000
-Message-ID: <178898170386.219967.2768890098511373106@kernel.org>
-In-Reply-To: <20260906141947.480524-1-julius@bairaktaris.de>
-References: <20260906141947.480524-1-julius@bairaktaris.de>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20260515; t=1788981926;
+	bh=JqMSR+Da4NVux+GSct3KYN21nN/qQvTE8oL3k5rSxqE=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=AjoNXuu1022s8I//3Wk6u5KiqSjcOWmDS+IfOzhUNLiN+YMM1IUUVupItmqa+rA2T
+	 yqeu4GasDhOj7CEvBVlhcKlAf7gIv1Q6RP1nBgqI97gpE7wA2fsVO00+XuIi19IPsW
+	 AcMt4bhM/YKKKkE3yYUS2reSJieULseDDecNoeSvLD1JYyVPEUTfayxTaLkxffdSDA
+	 lhOQEY7Kye1zSGN8pAIneanOmm7gZxZTK4srwoElon/wJe+98j5nYVoQH1J4SUz0hG
+	 Z+PkmS2o8Hdbrv4g6cZ3OS/RmtUuRbcjkn7TI0XNLB+4ocD2Fa4y8ORmm7cd9quEtJ
+	 VstjT1Ymehp3Q==
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-39c95395230so55285511fa.2
+        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 12:25:26 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AKwUvBw6wXAKYoSn51rZrwHU7aaJhcf5feGr0Cf6Rg881+nw5YXHVIpLlAG9iANoVq6Jo+KOq0FrSv8=@vger.kernel.org
+X-Gm-Message-State: AFuF++mkShbvjrEwMxIbckV8MQ3pXUbO7WEh1VUzZj9N4T2im2nc8bfl
+	SZbzkSssA558eYPH1xH3WGeIog06ZWyJssJSs4yQb7y/Dl+fXUN8HhaB/jHioI1HmU9cw5y9eKR
+	52N/zV+w+UHXU2KYg5+z/ctE3tTabGjE=
+X-Received: by 2002:a05:6512:110f:b0:5b7:a987:d048 with SMTP id
+ 2adb3069b0e04-5b7a987d14cmr1006497e87.24.1788981925087; Wed, 09 Sep 2026
+ 12:25:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20260909-b4-gemini-ethernet-fixes-2-v1-0-5ea3aa393f41@kernel.org> <20260909181949.GM40544@horms.kernel.org>
+In-Reply-To: <20260909181949.GM40544@horms.kernel.org>
+From: Linus Walleij <linusw@kernel.org>
+Date: Wed, 9 Sep 2026 21:25:13 +0200
+X-Gmail-Original-Message-ID: <CAD++jL=eB_kAeX_GoY_bUFVs1Zkur0gigHRMTzr0gbFgf=gTMw@mail.gmail.com>
+X-Gm-Features: AcwNN1X7-qf8Kv5dOXYeY06U66wRUGvioVAZ4EI-GlAoENCuz0rObKUn2yOOeGU
+Message-ID: <CAD++jL=eB_kAeX_GoY_bUFVs1Zkur0gigHRMTzr0gbFgf=gTMw@mail.gmail.com>
+Subject: Re: [PATCH net-next 0/2] net: ethernet: cortina: Gemini Ethernet
+ fixes, part 2
+To: Simon Horman <horms@kernel.org>
+Cc: Hans Ulli Kroll <ulli.kroll@googlemail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	=?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>, 
+	netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider:
-
-Critical: 0 · High: 0 · Medium: 2 · Low: 0
-
-- [Medium] Commit message justification names a driver that cannot
-  consume the newly advertised key.
-- [Medium] The `else` branch of the second encapsulation block now
-  declares an outer VLAN match that describes the wrong tag when the…
-
---
-
-netfilter: flowtable: advertise the vlan match in used_keys
-
-nf_flow_rule_match() fills the vlan and cvlan dissector keys and sets their
-offsets, but never sets the matching bits in match->dissector.used_keys.
-This patch ORs BIT_ULL(FLOW_DISSECTOR_KEY_VLAN) and
-BIT_ULL(FLOW_DISSECTOR_KEY_CVLAN) into used_keys where the keys are filled.
-
-> netfilter: flowtable: advertise the vlan match in used_keys
+On Wed, Sep 9, 2026 at 8:19=E2=80=AFPM Simon Horman <horms@kernel.org> wrot=
+e:
+> On Wed, Sep 09, 2026 at 12:18:18PM +0200, Linus Walleij wrote:
+> > Fix two RX-path issues: acknowledge FIFO overruns with the correct stat=
+us
+> > bit and bound descriptor processing when malformed chains lack EOF.
+> >
+> > Assisted-by: LLM
+> > Signed-off-by: Linus Walleij <linusw@kernel.org>
 >
-> mtk_ppe_offload.c reads the ingress vlan through flow_rule_match_key()
-> and so never gets it, and a driver that checks used_keys against the
-> keys it supports installs an entry that ignores the tag.
+> Hi Linus,
+>
+> Perhaps it is a timing error relating to earlier work hitting net-next.
+> But unfortunately this series didn't apply with the CI ran.
+>
+> Please (rebase and?) repost after the usual 24h delay.
+> Thanks!
 
-[Severity: Medium]
-Is the mtk part of this justification accurate?  In
-mtk_flow_offload_replace() the FLOW_DISSECTOR_KEY_VLAN read sits inside the
-addr_type == 0 arm:
+OK no problem!
 
-drivers/net/ethernet/mediatek/mtk_ppe_offload.c:mtk_flow_offload_replace() {
-	switch (addr_type) {
-	case 0:
-		offload_type = MTK_PPE_PKT_TYPE_BRIDGE;
-		...
-		if (flow_rule_match_key(rule, FLOW_DISSECTOR_KEY_VLAN)) {
-			...
-			data.vlan_in = match.key->vlan_id;
-		...
-	case FLOW_DISSECTOR_KEY_IPV4_ADDRS:
-	...
-}
-
-But nf_flow_rule_match() always sets key->control.addr_type to
-FLOW_DISSECTOR_KEY_IPV4_ADDRS or FLOW_DISSECTOR_KEY_IPV6_ADDRS and returns
--EOPNOTSUPP for anything else, so flowtable rules always take the IPv4/IPv6
-arms, which do not look at the vlan key at all.  mtk also never reads
-FLOW_DISSECTOR_KEY_CVLAN and has no used_keys whitelist, so its behaviour
-looks unchanged by this patch, before and after.
-
-The driver whose behaviour does change appears to be mlx5e, through
-mlx5e_rep_setup_ft_cb() -> mlx5e_rep_setup_tc_cls_flower() ->
-__parse_cls_flower().  The other TC_SETUP_FT consumers (airoha_ppe.c,
-mtk_wed.c, mt76, netdevsim) contain no FLOW_DISSECTOR_KEY_VLAN read either,
-and nfp does not implement TC_SETUP_FT at all.
-
-Could the changelog name the driver that actually consumes the new bits,
-and drop or reword the mtk claim?
-
-> diff --git a/net/netfilter/nf_flow_table_offload.c b/net/netfilter/nf_flow_table_offload.c
-> index 801a3dd9ceea3..9ef89127bf252 100644
-> --- a/net/netfilter/nf_flow_table_offload.c
-> +++ b/net/netfilter/nf_flow_table_offload.c
-> @@ -126,6 +126,7 @@ static int nf_flow_rule_match(struct nf_flow_match *match,
->  		nf_flow_rule_vlan_match(&key->vlan, &mask->vlan,
->  					tuple->encap[0].id,
->  					tuple->encap[0].proto);
-> +		match->dissector.used_keys |= BIT_ULL(FLOW_DISSECTOR_KEY_VLAN);
->  		vlan_encap = true;
->  	}
->  
-> @@ -137,12 +138,16 @@ static int nf_flow_rule_match(struct nf_flow_match *match,
->  			nf_flow_rule_vlan_match(&key->cvlan, &mask->cvlan,
->  						tuple->encap[1].id,
->  						tuple->encap[1].proto);
-> +			match->dissector.used_keys |=
-> +				BIT_ULL(FLOW_DISSECTOR_KEY_CVLAN);
->  		} else {
->  			NF_FLOW_DISSECTOR(match, FLOW_DISSECTOR_KEY_VLAN,
->  					  vlan);
->  			nf_flow_rule_vlan_match(&key->vlan, &mask->vlan,
->  						tuple->encap[1].id,
->  						tuple->encap[1].proto);
-> +			match->dissector.used_keys |=
-> +				BIT_ULL(FLOW_DISSECTOR_KEY_VLAN);
-
-[Severity: Medium]
-Can this else branch now advertise a vlan key that describes the wrong tag?
-
-The branch is taken whenever vlan_encap is false, which includes the case
-where encap[0] is simply not 802.1Q, because the first block tests:
-
-net/netfilter/nf_flow_table_offload.c:nf_flow_rule_match() {
-	if (tuple->encap_num > 0 && !(tuple->in_vlan_ingress & BIT(0)) &&
-	    tuple->encap[0].proto == htons(ETH_P_8021Q)) {
-	...
-}
-
-encap[0] is the outermost tag on the wire, since flow_offload_fill_route()
-reverses the path-walk order:
-
-net/netfilter/nf_flow_table_core.c:flow_offload_fill_route() {
-	for (i = route->tuple[dir].in.num_encaps - 1; i >= 0; i--) {
-		flow_tuple->encap[j].id = route->tuple[dir].in.encap[i].id;
-		flow_tuple->encap[j].proto = route->tuple[dir].in.encap[i].proto;
-	...
-}
-
-and encap[].proto is copied verbatim from the configured VLAN protocol,
-which can be ETH_P_8021AD:
-
-net/8021q/vlan_dev.c:vlan_dev_fill_forward_path() {
-	path->encap.proto = vlan->vlan_proto;
-	...
-}
-
-net/bridge/br_vlan.c:br_vlan_fill_forward_path_pvid() {
-	path->bridge.vlan_proto = br->vlan_proto;
-	...
-}
-
-So with an 802.1ad outer tag and an 802.1Q tag beneath it, the first block
-is skipped, vlan_encap stays false, and the else branch stores the inner
-tag (encap[1].id, tpid 0x8100) into key->vlan, the outer vlan slot.  Before
-this patch that key was inert; with the bit set it becomes an authoritative
-match, while the action side pops only the 802.1Q tag:
-
-net/netfilter/nf_flow_table_offload.c:nf_flow_rule_route_common() {
-		if (tuple->encap[i].proto == htons(ETH_P_8021Q)) {
-			entry = flow_action_entry_next(flow_rule);
-			if (!entry)
-				return -1;
-			entry->id = FLOW_ACTION_VLAN_POP;
-	...
-}
-
-Would it be better to gate the else branch on tuple->in_vlan_ingress &
-BIT(0), or to return -EOPNOTSUPP when the outer encapsulation is not
-802.1Q, so the declared match and the emitted actions agree on which tag is
-outermost?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260906141947.480524-1-julius%40bairaktaris.de
+Yours,
+Linus Walleij
