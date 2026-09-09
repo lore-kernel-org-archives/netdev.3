@@ -1,138 +1,436 @@
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+Received: from mail-oo2-f43.google.com (mail-oo2-f43.google.com [74.125.231.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 112BF339395
-	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 16:47:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.215.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37528560ABB
+	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 16:51:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.231.171
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788972428; cv=pass; b=rtEssPWiFEN2Asyu9RPij57LyFScnKnJ7+APcRzJ9tYnGMEsUMtHRt+deerXUPmfVnK+8LsXCP87z5mZA+Yy6e481qJAhVlK7ofTvE/pySXRXFgZHySi8D2lVwH8IGdglDZaHYmGkZf6hk+ZMB9P9svMEIGd/JYJc4NhjKcVa2E=
+	t=1788972705; cv=pass; b=jxhHfu5B97bHiIYKKcvjho4PyiuUORzQL0f2ElUy6i70vQVKTXProovFx7fvWO9dnDPxfPql1CY0XUM5PO/qiK0Y27UW6Liz6gdHLNx9YhhmykzM3O9cGq3j15GwoAt6AhEPsAvTfkM/slyX+o5oVG2l8C6SoFOdnrMqT+d7+88=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788972428; c=relaxed/simple;
-	bh=/e+BSNmPjk9NKfQGG7nIfLhJ8jYKrYUiYyiNqBMdcXI=;
+	s=arc-20240116; t=1788972705; c=relaxed/simple;
+	bh=jwhwaE8fm/pKLXVZub7vb/BlaHn8D/Z2l9jwB86QuTM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Mt8XwhisWUYYhPSRzz3QQvRl8Jle+RXMJJX8vNnbaZrA7sJowZCFesXFQOyPiHFUSeZvtXyXzGxJ6PtHwgIC9IdHJQK91VAfUuxGyXJvDnvFjo9NBM2qeu5sL/DaHd81SATLAr3dCEnpAx9cgqiVr+D3ccvZAzSTf7LLsAsloaQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YUcO40Cq; arc=pass smtp.client-ip=209.85.215.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=YCyfAAxqV4+GD0k6UxVX2DQST0pKV31S5YpP18eZJfpsv8/Z1kJK0YezWZoYNAEHQpRR6D0AMpIJF9uo+0KKXsXCNPme+GZC5QSbCgmfxvj50i/jq9ZSw2xxY8IzY1roMfqrsTtzWxjQBx0qQF/YNvcgm9mOfUrBPWHcVb1FFEo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R8pRRfVm; arc=pass smtp.client-ip=74.125.231.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YUcO40Cq"
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-cc147d86bebso68255a12.0
-        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 09:47:06 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788972426; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R8pRRfVm"
+Received: by mail-oo2-f43.google.com with SMTP id 006d021491bc7-6b1ae71686cso771298eaf.1
+        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 09:51:44 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788972703; cv=none;
         d=google.com; s=arc-20260327;
-        b=ibXHrbn00XqL0cMYEgTwnBVaRNCE/a/ExbIE93thc0hSO4Ffez2CAs7ye68q9exqrP
-         3nzo6j3PHTTVl/wLxuZSXvpEGuYXuF854/liW+iGPE3+FZok7zDB2HUkFcYqqdaljUvb
-         FZY0I5ceclFjmFTj+3yai/ghlAMTb0epfuAj4ekeRN6oQ9OwxbkWVM/P44j4zXijgRiy
-         OSeZ0NpG6UbKe/PnYxN33CD9oXBeNbCPFIl9VEm5inQA4U/NQghHdqjCXaPiM230a3u0
-         V+nk4uuEC3vxK7HSo6P3vx7HXC4if/2O/x/8Sx4VSRDaO88QDLA6FBlr/FRO3SRqVReG
-         nAXQ==
+        b=jJZZE1I/kC2kOGD1RsWekvSk+zshg4pypeBFRg1qPYNDAvfMHH+sf/OjFTWqOTAXP3
+         JyLf5RwtPC1SJKAWM9PXheN9zhmW8RAJXVaYYMUMBIFgkDgACYYSWWXQgKNf2CM6TmBL
+         E8RB9ei0AK6xxSSn9+Kd4nL/hiJqM7STYbWZIoSnWXJ7fvl8BB0ee3omBILB2ZylNFwW
+         NrV1t5iaeI8d0xQX1GPLtKri/IE/Ls37kn9X2prbzE+4zL0uyOodCmucOQ5OfNnWZDoQ
+         J9vqldvSolP3Rk8apxPU2gkhykobaZ6ssMhXPHomk5XEYtFMDkcquGzmg2kjyi320uhm
+         2dyw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=/e+BSNmPjk9NKfQGG7nIfLhJ8jYKrYUiYyiNqBMdcXI=;
-        fh=KKLm5v898ln4N/Xt6SnLneYiaU/rl3U1/R3Xri0bJiU=;
-        b=fsPP2PG5mKPR1PAVnRKMRm6BExxvC4vM4EFxVtTb5tEmOAisv9Ri4QCfpyLVE+uI2w
-         D7Ee42nEWGkZwwdRvCbDYRbsa8GAWchvVjI1E2Tqg1c/WbxbA0St7O0OxRyVL0oEIULq
-         scMjC7BU5NK+b+O81Y8WhP2LPEGGmlrKC2npVM9q2e8cOepNOmBd5VifgHfK+yVg/RZ1
-         rnOQMQDf4dff39tV8B4izd08QlUzmrcyG8YRj1rD8ocuMK9Is4XAmxk3cMMUVBnWJrY6
-         XMz63W6KGuzxiEy8jC9fopG3YRfv931cJwLVJTZFGNfkmm/0Na9Akt4ocLXC3g6OhCFN
-         Av+A==;
+        bh=GZD8fQwzWOIg9aQ+I6SUCLi9VoyglW27yql9EbnGC8s=;
+        fh=iWCZA9/DKjnOICWJc8Sx1fknBKdO94CZ4DyMiI4wkFE=;
+        b=Cn/XpQOuIhXcNfwE58rxyMiYC3zbMNqmjl2ohJJcSMIILKh2FHIQYKTIp1Q2xfo7rq
+         Cf//GYUDA1CBjvf+8RUyz46BN/L9ttzGB+WAe+2RKaursQz2XC9MUSOy3+RnR6M9Yonk
+         qJDfKS+r6k531i1ZSAasZctHQN6riQ+KuQdgh7adNzMNhQ6dJIZLKQ3xiaQeD7nUnhyF
+         A9mDgHXd2RE95ooUj0+nfs3vaGIMUD2KgX7JaYX/OUNs4VVLoFb2VWFSvLxaneZ56x0p
+         ebDOoDy+NRapfj8XRIj6+9PSIzz7IdHFGU2Pq2n4ErygvqziIJcaNUzKwRHSG2F0xb2j
+         TzIA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788972426; x=1789577226; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1788972703; x=1789577503; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=/e+BSNmPjk9NKfQGG7nIfLhJ8jYKrYUiYyiNqBMdcXI=;
-        b=YUcO40Cq31Psm+Zmam8K5YksYcPPxntug+M/D3Tq/VwQF1DIH2zJZJSHQ1d57ALN1h
-         yi79KldDWNA++V8/0DsXAHo4WwP8jO0dUx3uKP7od7E0z+cRazgaRLCcmC2Rgb41aZQ6
-         NlmDRudJcWRUdkvBG8VjWrayQVGP5pJUtGvTvJpyO/1IpWT+XHNevRBd+CHlEvFuLq2w
-         jZbP0cRPnt/SjtZfM/0nIlo57HT/13CAxQSGRdsbwIO2WVaOyG7O+xuUe7O3uN9DTJaX
-         pHyMC1fAdy9knAPWWOeHUvtpEpyi7U+KGzeSTV1x4XkUHXZn9w2kIFXUhksxfnpJeY+1
-         W7Vg==
+        bh=GZD8fQwzWOIg9aQ+I6SUCLi9VoyglW27yql9EbnGC8s=;
+        b=R8pRRfVmQb4VJbktUWfkRCbBcOlcsJ9ztkOuY1LXzvdEP7hqNCPJGJt7XUK4TfTRHa
+         waHmNJpJWe7r0nCZjEmBOU//KuCNl5U7+jfh8PvnXy73RmhuKYjMiQ8IBPO/DeZE1LGm
+         ndLbUP2rV1H+hohyNnBzvy6euGR9Qz8llhHztdcnLmNSYr3juQqJrKDvG02FSEXZw8w2
+         I8Dw2guHuL6hh9CVdYToPq6QOXIlLqiVBUmmA6NpgF3ITQ57KdmgogHpVAFJ0ON7Cmjd
+         oFEfuCvtRoXvYyUf1zpsV6DtK9aiaWyDQvXLTt7fk4a1ashWWK7L3//VqMBUDGqKLZRN
+         rGwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788972426; x=1789577226;
+        d=1e100.net; s=20251104; t=1788972703; x=1789577503;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=/e+BSNmPjk9NKfQGG7nIfLhJ8jYKrYUiYyiNqBMdcXI=;
-        b=HwIdTh8Mbctoy2kTsd91vZ2Sk6U2x5KJGCB+jPZhOHVh9prJTfMFu1D2Ru5YqoKLRT
-         vaMAkNdmxLfJuPvgJIY+4lJgHUTUX1HCFNJRfWCVLiiuRud0V2QV7oKUrqUN+6whyb56
-         AgIb/BSmGR+Q1ycM0ISBXbpsd+Wds5qChHK4DC34YNgQNml9oC/bu09ukiT1V1Hy1gwZ
-         5qirJy7iVGWAL/9SNfnQbe/FxzqD1LSDH5u8TIN3zNpNnvAje2Es6hz5+A7Bjs/hs4pQ
-         CnTcHA2PyrOquOWbbbCNbEhjOq49/9I/6Bz+B0Pm1QJFWfvF2dE6wE5TmBHfLHwjugx9
-         PVIg==
-X-Forwarded-Encrypted: i=1; AKwUvBwf+1DA67k8Vr8HYlsfu/bRHAsUe5eqPqmKlJ7GT8gbWtNQSN3AYNJIjfUqA+a6Qb4BSExF8ws=@vger.kernel.org
-X-Gm-Message-State: AFuF++lzY69WRfWyT0VOgP2QzKnLK6QV/5nHRNI46x6zKqawR31Mo1oI
-	TUh193LIMq10+vSgiPZ14UDdDF2P5gWJj1K8DiYzf18nk8FmQUJ5EuFzeaw/xyvQkE17HW5mLkw
-	X+Qdexi2PX8IO6GTBQ2YNadGQ5NSHx3mLxigoSBMM
-X-Gm-Gg: AYBFou25GfnFSt72q47NpBrpmzXVB699NkFCitdPOVvBq7+kA6PLdVCGYC61i9zWWdY
-	R6EYT1YOWY/cjdYkxfc9a5WJUqpFT7jf6/HTgSpAN2a5Uj0JHTV8N/L1LK+zzlMF/X/00uYK3mN
-	gP29BlchxCs/1xdq7BkGTvQOxaQ9o/+lm9bE/C6UsReW0bbtxxtU5rzl4+5Rzn3YeTI+k1PO4Ne
-	RVUuuPdliGMYVhHtCK+4pA+CnXkGIWwmnCTeVBn6PIeCHYtHrzEovlnTOjSCdgft29Bi9pZvcBs
-	/3PbbWqM+b652bNOod7DbtAi3eG1rWwff6H1uXBvKl/Tg6kJ1KbV6d3lSOa3HEclQjZmv3Zdg23
-	oPu4/OAsROX5jsuDqQjkC7rhIkF1a+yuC8pnSfTKJJCbjwdjbGG5lapByYLeZKkaOR5j4cyYW/b
-	sGM36ptv7dNQd8XLGj0kcD3prj
-X-Received: by 2002:a05:6a20:d0a1:b0:3bf:8a0e:dd99 with SMTP id
- adf61e73a8af0-3dad28a3ea9mr142626637.17.1788972425771; Wed, 09 Sep 2026
- 09:47:05 -0700 (PDT)
+        bh=GZD8fQwzWOIg9aQ+I6SUCLi9VoyglW27yql9EbnGC8s=;
+        b=pIaw/Efft7c+4KFORP3WAe7xetKgdWSmN/1Mt7iPsNMdE3w3cWkpd4ZM61ZqpOgPZl
+         eBWOwr1y5tqowqFlOTG8QWLc0hZTQXOdyjfGvRx2SXBvEfm7TieqekDERpwl8lPxX3oC
+         TCIall8Xo/2y2YcFDBww5YT/m9WdEt3Vj1y0MZFY0WLe7VpXOBYQhEYAQkz4gLDzJ7Ag
+         FENvNmteuJwGbJOgDKvAnAY2lbFPxNCbbVfMZaMroqmxWq4hpisddQS07R+7gTYJZLpr
+         gL1NXZVDrE+il7i0RAigEW6TIUoW9zvtDWVwfXsZ+FXKrBcoski744EDfiSvjYEvffxO
+         jLGg==
+X-Forwarded-Encrypted: i=1; AKwUvBzVytxJUL2gAfhseiPfDbVXlMnkj7tqt0Knp0joLWxKwDW6eg2FJ4AeIYi/r8FTbebz71iG0xQ=@vger.kernel.org
+X-Gm-Message-State: AFuF++lUTbQw/i4w1w+FBlgmzKOZ9i/egDh/n/QRDfOLzPlzWwmXPXdU
+	zA1kO0/cyuW0Gc9nhzAPQZfvpo6rIFasveFGtnoNjN+u8SM+sw7tjNgXmsAj/m5kzLNS0GzMnGE
+	JdrRFeBC8TSk8mvxBZZSvWpxU4kF6kLs=
+X-Gm-Gg: AYBFou0IPd1CJDIjZczOhxFePCwm37BXbswX7yLmaNko1Q7R5WgYWiAMlzzAZj+cXuN
+	8j557onJtRfCEfFpMIxB0H6iNFvcig3r4Z8bKZYLepIXEWop6g1KfiUqy5Lu8gVGTaKEqO8U/WR
+	jpORHdoi9wJvcBmzISWxLwRsHwmYwCaQJI5YIBpANJnxKb9wyksly2+s1wncbPXZybhzmmhCQay
+	C8vi3TS4S6idGIDv0mHzGqRtt8KftzcIVF8DDb149s1oEBiecoP/1GahfDLYalW1nhTq4WPvnM6
+	YsizxXIEKGUsRjyPMj5yMqw3t0gOtw3zmhx0kQcNxxTnYdLE8DlyPmbG/KNbwKTP/lqydi3Trh2
+	nV9KcYxpR+fLA/7ugcC/WMGo=
+X-Received: by 2002:a05:6820:169f:b0:6bd:b31a:4b1f with SMTP id
+ 006d021491bc7-6bdcd33f307mr6766100eaf.29.1788972702909; Wed, 09 Sep 2026
+ 09:51:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260908205537.863484-1-kuniyu@google.com> <CAM0EoMnFTMQPjy1kaSmgcaFzRsHHgZAH1zTGn4RvrrEzy62Qsw@mail.gmail.com>
-In-Reply-To: <CAM0EoMnFTMQPjy1kaSmgcaFzRsHHgZAH1zTGn4RvrrEzy62Qsw@mail.gmail.com>
-From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Wed, 9 Sep 2026 09:46:53 -0700
-X-Gm-Features: AcwNN1XYZDG25sq9dto_19K2mo7n0sMnAgXHH7HbxqeOTRYLrllK7acn9JgY1RM
-Message-ID: <CAAVpQUD6KVE9WmX442cazpF+WimZrN-kv_aU+jxqxCV_NXcA4g@mail.gmail.com>
-Subject: Re: [PATCH v1 net] net/sched: cls_api: Don't replay RTM_GETCHAIN in tc_ctl_chain().
-To: Jamal Hadi Salim <jhs@mojatatu.com>
-Cc: Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, "Gustavo A. R. Silva" <gustavo@embeddedor.com>, 
-	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, 
-	Taras Madan <tarasmadan@google.com>
+References: <20260908083614.2210505-1-kyle.switch@motor-comm.com> <20260908083614.2210505-7-kyle.switch@motor-comm.com>
+In-Reply-To: <20260908083614.2210505-7-kyle.switch@motor-comm.com>
+From: David Yang <mmyangfl@gmail.com>
+Date: Thu, 10 Sep 2026 00:51:05 +0800
+X-Gm-Features: AcwNN1V3yEM_moDVfXugny-9Dlzed60W-aZlQNUB-4tiDGKqJS-aEdnH2Weggcs
+Message-ID: <CAAXyoMMLpaD5B4QojC0OKHxOFfPfFGpsS2nxCMT9e=nJeo8beg@mail.gmail.com>
+Subject: Re: [PATCH net-next v6 6/6] net: dsa: motorcomm: Add support for
+ Motorcomm YT922x
+To: Kyle Switch <kyle.switch@motor-comm.com>
+Cc: andrew@lunn.ch, olteanv@gmail.com, davem@davemloft.net, 
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	linux@armlinux.org.uk, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	ming.xu@motor-comm.com, xiaolin.xu@motor-comm.com, 
+	jianmin.wang@motor-comm.com, wei.zhang@gl-inet.com, sijia.huang@gl-inet.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Sep 9, 2026 at 3:01=E2=80=AFAM Jamal Hadi Salim <jhs@mojatatu.com> =
-wrote:
->
-> On Tue, Sep 8, 2026 at 4:55=E2=80=AFPM Kuniyuki Iwashima <kuniyu@google.c=
-om> wrote:
-> >
-> > If a netlink socket sends RTM_GETCHAIN requests repeatedly
-> > without recv()ing the responses, tc_ctl_chain() hogs CPU and
-> > triggers Hung Task splat. [0]
-> >
-> > As caught in the stack trace, netlink_attachskb() could confuse
-> > tc_ctl_chain() by returning -EAGAIN when the userspace netlink
-> > socket's receive buffer is full.
-> >
-> > The replay: label exists since commit 32a4f5ecd738 ("net: sched:
-> > introduce chain object to uapi") but was not used initially.
-> >
-> > Since commit 9f407f1768d3 ("net: sched: introduce chain templates"),
-> > the label is needed for RTM_NEWCHAIN because tcf_proto_lookup_ops()
-> > may release RTNL to call request_module().
-> >
-> > However, the replay logic is unnecessary for RTM_GETCHAIN.
-> >
-> > Let's apply the replay logic only for RTM_NEWCHAIN.
-> >
->
-> The patch looks sane.
-> Can you send me a reproducer please? We are automating and testing of
-> all tc submissions.
->
-> Reviewed-by: Jamal Hadi Salim
+On Tue, Sep 8, 2026 at 4:36=E2=80=AFPM Kyle Switch <kyle.switch@motor-comm.=
+com> wrote:
 
-FTR, sent the repro offlist and asked to resend the tag with
-the email address.
+>  config NET_DSA_YT921X
+>         tristate "Motorcomm YT9215 ethernet switch chip support"
+>         select NET_DSA_TAG_YT921X
+> +       select NET_DSA_TAG_YT922X
+>         select NET_IEEE8021Q_HELPERS if DCB
+>         help
+>           This enables support for the Motorcomm YT9215 ethernet switch
 
-Thanks !
+Not sure, but might be better with NET_DSA_TAG_YT921X ||
+NET_DSA_TAG_YT922X if that does not cause an error.
+
+> +/**
+> + * Initialize serdes configuration based on interface mode.
+> + */
+> +static int yt922x_sds_init(struct yt921x_priv *priv, int port,
+> +                          phy_interface_t interface)
+> +{
+> +       int addr;
+> +       u16 data;
+> +       int res;
+> +
+> +       addr =3D yt922x_sds_phyaddr_get
+> +               (port, YT922X_PHY_REG_TYPE_SDS_COMMON_EXT,
+> +                YT922X_PHY_REG_SPACE_SGMII);
+> +       if (addr < 0)
+> +               return -EINVAL;
+> +       /* write protect */
+> +       res =3D yt921x_intif_ext_write(priv, addr, 0x4be, 0xd);
+> +       if (res)
+> +               return res;
+> +       /* CDR */
+> +       if (interface =3D=3D PHY_INTERFACE_MODE_100BASEX) {
+> +               res =3D yt921x_intif_ext_write(priv, addr, 0x406, 0x0);
+> +               if (res)
+> +                       return res;
+> +               res =3D yt921x_intif_ext_write(priv, addr, 0x416, 0x3458)=
+;
+> +               if (res)
+> +                       return res;
+> +       } else {
+> +               res =3D yt921x_intif_ext_write(priv, addr, 0x406, 0x800);
+> +               if (res)
+> +                       return res;
+> +               res =3D yt921x_intif_ext_write(priv, addr, 0x416, 0x4558)=
+;
+> +               if (res)
+> +                       return res;
+> +       }
+> +       /* PLL */
+> +       if (interface =3D=3D PHY_INTERFACE_MODE_USXGMII) {
+> +               res =3D yt921x_intif_ext_write(priv, addr, 0x43a, 0x1006)=
+;
+> +               if (res)
+> +                       return res;
+> +               res =3D yt921x_intif_ext_write(priv, addr, 0x43f, 0x3029)=
+;
+> +               if (res)
+> +                       return res;
+> +               res =3D yt921x_intif_ext_write(priv, addr, 0x42a, 0xf070)=
+;
+> +               if (res)
+> +                       return res;
+> +       } else {
+> +               res =3D yt921x_intif_ext_write(priv, addr, 0x43d, 0x207d)=
+;
+> +               if (res)
+> +                       return res;
+> +               res =3D yt921x_intif_ext_write(priv, addr, 0x43c, 0x207d)=
+;
+> +               if (res)
+> +                       return res;
+> +               res =3D yt921x_intif_ext_write(priv, addr, 0x43f, 0x3032)=
+;
+> +               if (res)
+> +                       return res;
+> +               res =3D yt921x_intif_ext_write(priv, addr, 0x43a, 0x6);
+> +               if (res)
+> +                       return res;
+> +               res =3D yt921x_intif_ext_write(priv, addr, 0x42a, 0xf070)=
+;
+> +               if (res)
+> +                       return res;
+> +       }
+> +       /* VCO */
+> +       res =3D yt921x_intif_ext_write(priv, addr, 0x439, 0xC0);
+> +       if (res)
+> +               return res;
+> +       /* Vdac */
+> +       res =3D yt921x_intif_ext_write(priv, addr, 0x492, 0x7f7f);
+> +       if (res)
+> +               return res;
+> +       res =3D yt921x_intif_ext_write(priv, addr, 0x491, 0x7f);
+> +       if (res)
+> +               return res;
+> +       /* Eye */
+> +       res =3D yt921x_intif_ext_write(priv, addr, 0x454, 0xf14);
+> +       if (res)
+> +               return res;
+> +       res =3D yt921x_intif_ext_write(priv, addr, 0x497, 0xa44);
+> +       if (res)
+> +               return res;
+> +       res =3D yt921x_intif_ext_write(priv, addr, 0x4cd, 0x0);
+> +       if (res)
+> +               return res;
+> +
+> +       res =3D yt921x_intif_ext_write(priv, addr, 0x4af, 0x45e3);
+> +       if (res)
+> +               return res;
+> +       res =3D yt921x_intif_ext_write(priv, addr, 0x48a, 0xfff);
+> +       if (res)
+> +               return res;
+> +       res =3D yt921x_intif_ext_write(priv, addr, 0x408, 0x7c00);
+> +       if (res)
+> +               return res;
+> +       res =3D yt921x_intif_ext_write(priv, addr, 0x4d6, 0x7f);
+> +       if (res)
+> +               return res;
+> +       res =3D yt921x_intif_ext_write(priv, addr, 0x44f, 0xff08);
+> +       if (res)
+> +               return res;
+> +       /* FFE */
+> +       res =3D yt921x_intif_ext_write(priv, addr, 0x48e, 0x7d00);
+> +       if (res)
+> +               return res;
+> +       res =3D yt921x_intif_ext_write(priv, addr, 0xd, 0x60f);
+> +       if (res)
+> +               return res;
+> +       /* CTLE */
+> +       res =3D yt921x_intif_ext_write(priv, addr, 0x4b0, 0x804);
+> +       if (res)
+> +               return res;
+> +       res =3D yt921x_intif_ext_write(priv, addr, 0x4b1, 0x7774);
+> +       if (res)
+> +               return res;
+> +       res =3D yt921x_intif_ext_write(priv, addr, 0x4af, 0x45e7);
+> +       if (res)
+> +               return res;
+> +       res =3D yt921x_intif_ext_write(priv, addr, 0x3, 0x5603);
+> +       if (res)
+> +               return res;
+> +
+> +       msleep(20);
+> +       res =3D yt921x_intif_ext_write(priv, addr, 0x492, 0x7fff);
+> +       if (res)
+> +               return res;
+> +       res =3D yt921x_intif_ext_write(priv, addr, 0x492, 0x7f7f);
+> +       if (res)
+> +               return res;
+> +       /* CTLE */
+> +       res =3D yt921x_intif_ext_write(priv, addr, 0x2000, 0x40);
+> +       if (res)
+> +               return res;
+> +       res =3D yt921x_intif_ext_write(priv, addr, 0x2000, 0x0);
+> +       if (res)
+> +               return res;
+> +
+> +       if (interface =3D=3D PHY_INTERFACE_MODE_SGMII) {
+> +               res =3D yt921x_intif_ext_write(priv, addr, 0x1042, 0x48c)=
+;
+> +               if (res)
+> +                       return res;
+> +       }
+> +       /* soft reset */
+> +       addr =3D yt922x_sds_phyaddr_get(port, YT922X_PHY_REG_TYPE_MII,
+> +                                     YT922X_PHY_REG_SPACE_SGMII);
+> +       if (addr < 0)
+> +               return res;
+> +       res =3D yt921x_intif_read(priv, addr, 0x0, &data);
+> +       if (res)
+> +               return res;
+> +       data &=3D ~(1 << 15);
+> +       res =3D yt921x_intif_write(priv, addr, 0x0, data);
+> +       if (res)
+> +               return res;
+> +       addr =3D yt922x_sds_phyaddr_get(port, YT922X_PHY_REG_TYPE_MII,
+> +                                     YT922X_PHY_REG_SPACE_USXGMII);
+> +       if (addr < 0)
+> +               return res;
+> +       res =3D yt921x_intif_read(priv, addr, 0x0, &data);
+> +       if (res)
+> +               return res;
+> +       data |=3D 1 << 15;
+> +       res =3D yt921x_intif_write(priv, addr, 0x0, data);
+> +       if (res)
+> +               return res;
+> +
+> +       return 0;
+> +}
+
+No one else, except you, can maintain this stuff. Drop it for now and
+discuss it later.
+
+> +static void
+> +yt922x_dsa_phylink_get_caps(struct dsa_switch *ds, int port,
+> +                           struct phylink_config *config)
+> +{
+> +       struct yt921x_priv *priv =3D to_yt921x_priv(ds);
+> +       const struct yt921x_info *info =3D priv->info;
+> +
+> +       config->mac_capabilities =3D MAC_ASYM_PAUSE | MAC_SYM_PAUSE |
+> +                                  MAC_10 | MAC_100 | MAC_1000;
+> +
+> +       if (info->internal_mask & BIT(port)) {
+> +               if (port >=3D 4 && port <=3D 7) {
+> +                       /* port 4 to port 7, internal utp */
+> +                       __set_bit(PHY_INTERFACE_MODE_INTERNAL,
+> +                                 config->supported_interfaces);
+> +                       config->mac_capabilities |=3D MAC_2500FD;
+> +               } else {
+> +                       __set_bit(PHY_INTERFACE_MODE_SGMII,
+> +                                 config->supported_interfaces);
+> +                       __set_bit(PHY_INTERFACE_MODE_100BASEX,
+> +                                 config->supported_interfaces);
+> +                       __set_bit(PHY_INTERFACE_MODE_1000BASEX,
+> +                                 config->supported_interfaces);
+> +                       __set_bit(PHY_INTERFACE_MODE_2500BASEX,
+> +                                 config->supported_interfaces);
+> +                       config->mac_capabilities |=3D MAC_2500FD;
+> +                       __set_bit(PHY_INTERFACE_MODE_USXGMII,
+> +                                 config->supported_interfaces);
+
+By definition internal_mask is PHY_INTERFACE_MODE_INTERNAL only. Move
+other modes into external_mask.
+
+> +                       config->mac_capabilities |=3D MAC_2500FD;
+
+Duplicated config->mac_capabilities |=3D MAC_2500FD;
+
+> +static int yt922x_chip_detect(struct yt921x_priv *priv)
+> +{
+> +       struct device *dev =3D to_device(priv);
+> +       const struct yt921x_info *info;
+> +       u32 chipid;
+> +       u32 major;
+> +       int res;
+> +
+> +       res =3D yt921x_reg_read(priv, YT921X_CHIP_ID, &chipid);
+> +       if (res)
+> +               return res;
+> +       major =3D FIELD_GET(YT921X_CHIP_ID_MAJOR, chipid);
+> +       for (info =3D yt921x_infos; info->name; info++)
+> +               if (info->major =3D=3D major)
+> +                       break;
+> +       if (!info->name) {
+> +               dev_err(dev, "Unexpected chipid 0x%x\n", chipid);
+> +               return -ENODEV;
+> +       }
+> +       priv->info =3D info;
+> +
+> +       return 0;
+> +}
+> +
+> +static int yt922x_chip_reset(struct yt921x_priv *priv)
+> +{
+> +       struct device *dev =3D to_device(priv);
+> +       u16 eth_p_tag;
+> +       u32 val;
+> +       int res;
+> +
+> +       res =3D yt922x_chip_detect(priv);
+> +       if (res)
+> +               return res;
+> +
+> +       /* Reset */
+> +       res =3D yt921x_reg_write(priv, YT921X_RST, YT921X_RST_HW);
+> +       if (res)
+> +               return res;
+> +
+> +       fsleep(YT921X_RST_DELAY_US);
+> +
+> +       val =3D 0;
+> +       res =3D yt921x_reg_wait(priv, YT921X_RST, ~0, &val);
+> +       if (res)
+> +               return res;
+> +
+> +       /* TPID check */
+> +       res =3D yt921x_reg_read(priv, YT921X_CPU_TAG_TPID, &val);
+> +       if (res)
+> +               return res;
+> +       eth_p_tag =3D FIELD_GET(YT921X_CPU_TAG_TPID_TPID_M, val);
+> +       if (eth_p_tag !=3D ETH_P_YT921X) {
+> +               dev_err(dev, "Tag type 0x%x !=3D 0x%x\n", eth_p_tag,
+> +                       ETH_P_YT921X);
+> +               return -EINVAL;
+> +       }
+> +
+> +       return 0;
+> +}
+
+Isn't it just yt921x_chip_reset? Please reuse existing functions.
+
+> +static int yt922x_cpu_port_set(struct yt921x_priv *priv)
+> +{
+> +       struct dsa_switch *ds =3D &priv->ds;
+> +       u32 ctrl;
+> +       int res;
+> +
+> +       /* cpu tag mode */
+> +       res =3D yt922x_cpu_tag_mode_set_8b(priv);
+> +       if (res)
+> +               return res;
+> +
+> +       /* Enable DSA */
+> +       priv->cpu_ports_mask =3D dsa_cpu_ports(ds);
+> +       ctrl =3D YT921X_EXT_CPU_PORT_TAG_EN | YT921X_EXT_CPU_PORT_PORT_EN=
+ |
+> +              YT921X_EXT_CPU_PORT_PORT(__ffs(priv->cpu_ports_mask));
+> +       res =3D yt921x_reg_write(priv, YT921X_EXT_CPU_PORT, ctrl);
+> +       if (res)
+> +               return res;
+> +
+> +       /* Setup software switch */
+> +       ctrl =3D YT922X_CPU_COPY_TO_EXT_CPU;
+> +       res =3D yt921x_reg_write(priv, YT922X_CPU_COPY, ctrl);
+> +       if (res)
+> +               return res;
+> +
+> +       return res;
+> +}
+
+Move this into chip_setup_dsa() to align with existing yt921x functions.
+
+> @@ -1007,6 +1108,8 @@ struct yt921x_priv {
+>
+>         u8 acl_masks[YT921X_ACL_BLK_NUM];
+>         struct yt921x_acl_blk *acl_blks[YT921X_ACL_BLK_NUM];
+> +       struct yt922x_pcs pcs_port_0;
+> +       struct yt922x_pcs pcs_port_8;
+>  };
+
+More reasonable if pre-port "struct phylink_pcs yt921x_port::pcs".
