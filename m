@@ -1,177 +1,123 @@
-Received: from mail-ej2-f12.google.com (mail-ej2-f12.google.com [74.125.228.140])
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CED07345CA8
-	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 11:10:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E28495221E6
+	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 11:15:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.48
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788952226; cv=pass; b=AEYqRaBCaotEaY04BmHDRcrjXBnDFNkPpR9YAe7ZcMXGYPPycthP2jQwxojSFofM+r2PvAZ2ZNPxMaLEk/R5FFAcANGErwz28ifXVXoqw78WPBgh1N7BzhG9ZKJhpRRgAvNNfneYrpxHtDE8t53W9Jut+OxBLZCggDbUT1DU3vk=
+	t=1788952558; cv=pass; b=qAY/b9p5elu1d4obJvCedcnA/UExD2oleVk/E5zM7hN8+cgU9MdnrCPHX/87afCo8UASVik8kpgxGPV902zmuoeBnQv4vvCmc/xrPuA1OOfuhpwBASiJ7V+6iwRABIY+r3gGwDJGA1gZJ0JS/vF1tn1cWlNuDx+TTWSGJhAKZlw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788952226; c=relaxed/simple;
-	bh=YkZ9FXYxom6GTJ696R1xgKPjABJ5NoWT2CU+7PuBHFQ=;
+	s=arc-20240116; t=1788952558; c=relaxed/simple;
+	bh=+j50wNv2r3xNtSsPdNlvPp69DU3jj8cq2MKhSUhc5Cw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CFpubITgRJCix6wd4R/5Al95IEkplS8a5LBmM+YXjWhYb22NdJ1pD9SwrEeOYJOINFQi43SlFiXv41fkznSjUao3mR4AdimSvkPxow2DyLsvoawhjq528/KSBbnMJdzCPTepFayrp85YnY6gwEpyYCsc5Nt02LagYi5OPcYxVQY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mihalicyn.com; spf=pass smtp.mailfrom=mihalicyn.com; dkim=pass (1024-bit key) header.d=mihalicyn.com header.i=@mihalicyn.com header.b=dX0q+oK6; arc=pass smtp.client-ip=74.125.228.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mihalicyn.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mihalicyn.com
+	 To:Cc:Content-Type; b=Voi0TO5pRArIS/JYLAY7MMx545VJneiGlzyDwoPZViYY+KsUvHUfb15U0fqGKIUGJjasLMDljkSBZY4s2utYSI16eSnNFbMGTO0iQ3vLlUUBdabNpK3WaaC2vVRK0AQEppZHQBdU1VXhOGwdNGg2nMB/VplDZjjhm/aZY3sZnqE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C63zya/L; arc=pass smtp.client-ip=209.85.167.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mihalicyn.com header.i=@mihalicyn.com header.b="dX0q+oK6"
-Received: by mail-ej2-f12.google.com with SMTP id a640c23a62f3a-c254fa663bfso6620066b.1
-        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 04:10:23 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788952222; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C63zya/L"
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5b5607bd3b5so3450644e87.3
+        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 04:15:55 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788952553; cv=none;
         d=google.com; s=arc-20260327;
-        b=U3pprw6Ei5G7KXxs9CxOmyb6IICtOB4hHNNpn7BRG2UCwdUAckw+tvaTTd7udJQY76
-         VrZG0iiqvt34dKSqo4loglyXMd+253gXxQOgVM8BibaFTdM1iHIB8TpZ9YMicLmiHE0W
-         mVNhHkKG9WV0N6DCFf8f9h4kPvmiSXkTLC4c+7fOho/BMKxlr6Hf4hZwbgvo7P+gYOy2
-         2NJhN0U6iFwpZVwZrepk1b2QcMg6pTmnA7jG5uHRz2WBbHUCdTb2wXbeiaqdK1gtGy9P
-         H5YFHB5p0eQTA42fRivO/Jn3Roa/t2JTDhKUSCFUF7ThvbBbIVN7qIya4uGkkTSGO8OK
-         S5ZA==
+        b=UDAqbTTsRjKVsAhmazCw+T2uRMtUy8cvVd/M8Q3X8271DV4xomrTWPFCs/9zDk5rxM
+         8927kQiHA88l6WLY08Suue8bdqC1aqrHcplUVwYXQ8AvND+yInnDmYWp9TNTgsHw/ynx
+         gFvjRWaZBXXa9R8XY569UvS+MPevtnmnTpUqDCTqKL5m5nlOTFKqul3cbt8tahyMO2By
+         xKBI1Baq7nuFWjTtu8xhk63HnE5ixmK20RMxDl3PkdnX/rV5FshLX1pRkiZ62b8QqIrM
+         7eGnBMJqBhnmNihIR+dmD840fxRX1THOOfWD/t7fyTrFzZ85HGzLDCn68KKs4edYnyGF
+         JlMQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:dkim-signature;
-        bh=Mgt8XRgHU0466zZJnQp3K3kwl0ZmrdZ791mHZpm+8k4=;
-        fh=/iOcqzcy0x9pRJ0jgza1EX91c/pyc2Vr5lJlIA4CgZ4=;
-        b=myPxqyiENPS5hUh4s6E9w9ClLc+XaGLdHMBZd3TNzZB+lXarWUKYjJGkxAgXDaVlcA
-         739koYJiLECSNiy1K1RN3F3pJBmrKKHtRXsgD8ZdIrpQKIW5VMYDVPAZuTGnXksnzzR8
-         l0wyce8EuTSv+NuLDDJ8dpYfq5I/jmAP6xmH/HgI5NPo4OMAJWIrpiDy8VXyViKg5Sxe
-         GvA++bm2tfGLmnZBtiHLPGZTu7q+AbxWoNXrD/LY+w/7NcfxyH2p0axAU2e7XH1NrHW9
-         RPhLcQtT4O7Ll8xmnY8y2Ze112ZASY1Hu7zCFxAkSRjemghmEc21oCZSpKLIOG8JstdQ
-         nQNQ==;
+        bh=y4cdUU4wdLJreuRLma15s70p7885T7zuEzvFUDm+iJY=;
+        fh=kfoazHsvTaWFSTDkyNy1vf14TX2+Rz66YBnI7wfzD6I=;
+        b=LZFYGoeCLgMUiCSgNf5oBvlkszjg+Y4gwSdshqrssTCQuR+cApHz/DYORsOI19qMxT
+         mrR3cPdTUnwTieqL4Xz7wNeGckjfXSulzEc9FXjWF191hC4W4skiyg8H+bRVJTqdI7mR
+         bq5skf9rlB99sYgvw9ZOm97xVO3WN8Gv8uec4WZLvE0JBN8EbJ3onphn/RIKhFTccHXS
+         0nswUCDFYBKbBeUToK7Zy7Z0lZsBxTSjEfiXJ8KOVqS+BKd+hkS0UlpbltWI/paFYcxM
+         hqfQi86tTXp5RFGo7Lp2Ak8cZi+xu89hlaWw/vipAuYuKShP/Au48gu7pVrJn2KTTzK0
+         aWEg==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mihalicyn.com; s=mihalicyn; t=1788952222; x=1789557022; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1788952553; x=1789557353; darn=vger.kernel.org;
         h=content-type:cc:to:subject:message-id:date:from:in-reply-to
          :references:mime-version:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Mgt8XRgHU0466zZJnQp3K3kwl0ZmrdZ791mHZpm+8k4=;
-        b=dX0q+oK6psQKBVWpzPmJNAB/SUPsmrJYjWjuLSDb+yl4yOhVR75twv//YochFw3j4G
-         f1fgEdTt7HbsfDGgHZJWplKWqJcs8PvMGOKdA9sM0+Sksnc9ZjRmbk1FTI7+WN+FJyer
-         kZJ0GKY23pR7SOJ5QB3rJDr/KexOrL5QPQJp4=
+        bh=y4cdUU4wdLJreuRLma15s70p7885T7zuEzvFUDm+iJY=;
+        b=C63zya/LpWmCGXJ1ydVUM8LXgdoY+CC82am8T57E8i3/V5F9xluwuc2hR1pjWzQEs2
+         F8u00psAJXRgzh7vjx61DAZtcnQNVcqbOxSuWdJPkIbMeV4z2NVb8OTpY+dyDVv/TkBS
+         tUV15Gxh9lmoN3RwMUP8O0OY0n4460nL+qIigFIboYrsBiwBRvR0uZ0JKJ8uEb8eeJnm
+         qdqPQkvstuB8WAElfpkMca/EHjnoGLOl+e6Nw41snfE0Sw171BS9GQ0mUJvDUvXd1Bom
+         d5uB4V3GTcnnhg8yTkOUTgWfBhQGzq4EtQrA/9okQ6uuOmc5NlG4liq0/acgJy3xHrTQ
+         3jvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788952222; x=1789557022;
+        d=1e100.net; s=20251104; t=1788952553; x=1789557353;
         h=content-type:cc:to:subject:message-id:date:from:in-reply-to
          :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to:content-type;
-        bh=Mgt8XRgHU0466zZJnQp3K3kwl0ZmrdZ791mHZpm+8k4=;
-        b=CwX6TO4R2bejeI6aKoN1OLCdqkpx9MY6kjpFsZDdlmQz/xWT/LdL1Dus8UhQWPHnUA
-         Yuq/gI0WaQor31aBhORLPxC3i4tYIPphDCzfKcD8U/2d0UW2+NFuVz1n0MhCPgKZbmJb
-         mZuMS6RZKCtWymnpphsDARTVA+jWKMzW9XvWAcqMiy/++MQMx6MQF64xDU5QrwmjV3T3
-         q1vh57zR1tM4wkQ4NpF8yb2ctrjhY3JNH+4TGxOa8mJ+GHGGar+CkBtxUJ6UW9XCStBo
-         Xz77b7rh3b6lR2fgcDMmnMwdKgS2TaaGKxAFtaXnmJPtHvK+QZmQIYVmjPY/fHVBwosX
-         rBQA==
-X-Forwarded-Encrypted: i=1; AKwUvBzRYzV668hxbwh7yEip5VAfcNLoJdxF6gooqvv7O3g1RVk3NgLyp+yY611goA1TxYw3fzsMFpc=@vger.kernel.org
-X-Gm-Message-State: AFuF++mHMTXTjz2AB+YeUQiowjHzIqTsiZI36NVz9C92oB5y6pd/dPX/
-	AEw3y5CqAcYceCC9NTquPDoUrADM1Is0FYXTCk46J8k68tljYddWxnlFEaNf2nSIh8MU9U0A2ki
-	nGmKx4yUSu0h/oARM1g/2f7If7NtteNMojGo0CYJW0A==
-X-Gm-Gg: AYBFou2kvWqZ7WEof9mDHFNv3jkGno86u5BIPK7LxBuj6X7+vlu85txPN0CcNsy8SJ3
-	BlU1qkNe662QiQ5FyqG8RTgRCE8nYDByhIBToVyzH4hNSeSRsFOJj1fd/TrW1j45Lk/6dWy/52X
-	x70pTaQTlacoSnuiuYW0jdvHKi3TafXyPxECbRGLuB4U6JVkgrTjdI45U0xkWMIkckHdg7QW8YN
-	zRwSEaGcoy2Aqdc1UKG2+EYVXbGenfSiVJQbusWkrV+4GV2vtPvqMallO8kJEd1vWkp63Sy+o56
-	GDQUKzdC0U7mDzJpfhIOHCgXSNW8qiWyTLgcT016PrGTp3+VPyOg3EL99Cvq6SiG/qUyfulNciU
-	nMbFVW5OfS7fhlKq46scTEQ==
-X-Received: by 2002:a17:907:c09:b0:c25:c7a9:7b8a with SMTP id
- a640c23a62f3a-c2941ae9193mr12751566b.12.1788952221639; Wed, 09 Sep 2026
- 04:10:21 -0700 (PDT)
+        bh=y4cdUU4wdLJreuRLma15s70p7885T7zuEzvFUDm+iJY=;
+        b=Q4d0EfJEPIOh3NdOuwT1zggsjYnNwkn86AOSUDCnbtTb8IFYJ6DLkhPLyhcbupseS6
+         Wf7y1QxdfZAm/u5pbBaf6uoRN97QcVsj3SsEOS0Dh58Fh7Us6gPqSX8iN6sgz/t1S/vH
+         Wy1iI4V6T/QkFPMgzUDsSrwBDJ5a69B4AZKc34bGbjCjvV5iGBeRk1vLvaA11uohxdEK
+         2OpID8h2o9fgePTMmgGaNwaUjyH+s6Oj93RgZyQIlqI7EOE7edkLnoWUiy8plXSJ61Q0
+         Cft7y2UnSngSdPLFGhtolvkM9djECHJuxYf2TK/GqtsjnHTC/AX7qe4UIcsoQoMOUIrl
+         VxVA==
+X-Forwarded-Encrypted: i=1; AKwUvBwCRWADI1NuSNsE8NJNAW12TUu/tAafmHDrn7GdnurK30VpguWkzFlTOcYY6iIQ4GMHjGCxnLo=@vger.kernel.org
+X-Gm-Message-State: AFuF++kB7U4RifQ0z7ab8qJTFGLB+Z9VthWhOrVwRQrjZxZOopXWXnty
+	U7fWnjFDqlc5koEmpOh+l9PigcNgPDK7xmTFKDNLjJu0iFFiH0nAco3aghy4rtLkpA2DuQl8/m0
+	HM7KEEqs2ZQw5NXD2ANa6L+N2BJrXStk=
+X-Gm-Gg: AYBFou0RrRcRRXFATUSiH3sBblsrU46f9T148bOpNrfWYbwTKdpBshb3pGhb1ak/gDA
+	Ihxv9cX65c52Ia7BiquGfCJFH98E9Oz8D6HsPAgdsVMsAMSm9s0V4putOqOz3EGVQ6Eqk8xzNQi
+	ssE9VLkSniPZD85wtrmj+KCpBW5gPnZ3n0tq/jeB96WPhi6XDqiafWrA8vq1pm50t25+YDtJCUq
+	jabmY3RL7ZTn4o+yM1BH8qC3kWwSLr+ickVTZw66668ddJhr3iZ0w2qakyDgKz1W8tl3EpxsrQh
+	1pO4JxBgKvgwsTbCBjwDZ2nrhZVVs3lAItA8Xy5X9jOiekc0/V55Nn77mFsKvmLKVniy+UYbT9y
+	rUdJfifQ0/7LsnN/DZ2BwFukWaNiNgo6BCkx5cVuTKnU=
+X-Received: by 2002:a05:6512:108e:b0:5b4:a9e1:b8a4 with SMTP id
+ 2adb3069b0e04-5b616f4a238mr5849435e87.25.1788952553103; Wed, 09 Sep 2026
+ 04:15:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260909-work-unix-passpidfd-v2-0-7bd342abb2d1@kernel.org>
-In-Reply-To: <20260909-work-unix-passpidfd-v2-0-7bd342abb2d1@kernel.org>
-From: Alexander Mikhalitsyn <alexander@mihalicyn.com>
-Date: Wed, 9 Sep 2026 13:10:10 +0200
-X-Gm-Features: AcwNN1XTgvzqLxcVf_sNNwgtEWfE868-Kflp519NXR5vjxPBUXSPcRZwXEOLDjc
-Message-ID: <CAJqdLroLH7x1Zrgaa2U=H5v9pFfdzJS4CCcAmSvqShS8Wh+0rw@mail.gmail.com>
-Subject: Re: [PATCH v2 00/10] net: support thread-specific pidfds for send and connect
-To: Christian Brauner <brauner@kernel.org>
-Cc: Jakub Kicinski <kuba@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, Oleg Nesterov <oleg@redhat.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Willem de Bruijn <willemb@google.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org
+References: <20260909013401.14408-1-sigefriedhyy@gmail.com>
+ <20260909013401.14408-2-sigefriedhyy@gmail.com> <175b6b01-2f8e-4b77-8504-6f26d9f8df98@6wind.com>
+In-Reply-To: <175b6b01-2f8e-4b77-8504-6f26d9f8df98@6wind.com>
+From: Yuyang Huang <sigefriedhyy@gmail.com>
+Date: Wed, 9 Sep 2026 20:15:42 +0900
+X-Gm-Features: AcwNN1UbxNJzD9rsLIr-ful2KYX9yromNjRe3aj1Ks5MUzUlvT_D5TZcbmgqvTo
+Message-ID: <CA+7S2vKm=4_JBocQPq7OCZ6ZSaVOVS7UUzQN5Rd_+ABAFBkQ_Q@mail.gmail.com>
+Subject: Re: [PATCH net-next v2 1/3] rtnetlink: add AF_PACKET multicast dumps
+To: nicolas.dichtel@6wind.com
+Cc: "David S. Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>, 
+	Donald Hunter <donald.hunter@gmail.com>, Eric Dumazet <edumazet@google.com>, 
+	Ido Schimmel <idosch@nvidia.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, Nikolaos Gkarlis <nickgarlis@gmail.com>, 
+	Paolo Abeni <pabeni@redhat.com>, Sabrina Dubroca <sd@queasysnail.net>, Shuah Khan <shuah@kernel.org>, 
+	Simon Horman <horms@kernel.org>, Stanislav Fomichev <sdf.kernel@gmail.com>, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, netdev@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-Am Mi., 9. Sept. 2026 um 12:43 Uhr schrieb Christian Brauner
-<brauner@kernel.org>:
->
-> SO_PASSPIDFD/SCM_PIDFD and SO_PEERPIDFD allow to retrieve a pidfd for
-> the thread-group leader. The coredump server using the coredump socket
-> cannot get a handle on the task that took the signal and is writing the
-> coredump easily. Workloads interested in per-thread authentification
-> have similar problems.
->
-> Add SO_PASSPIDFD_THREAD and SO_PEERPIDFD_THREAD. We record the sending
-> and the connecting thread in addition to the thread-group leader.
->
-> SO_PASSPIDFD_THREAD functions like SO_PASSPIDFD but instead of an
-> SCM_PIDFD message for the thread-group leader, SCM_PIDFD sends a pidfd
-> for the specific thread. SO_PASSPIDFD_THREAD is mutually exclusive with
-> SO_PASSPIDFD. The last one set takes precedence and disables the other
-> one. Both SO_PASSCRED and SO_PASSPIDFD receivers see one writer per
-> process as before.
->
-> SO_PEERPIDFD_THREAD allows to retrieve a pidfd for the specific thread
-> that called connect(), listen(), or socketpair().
->
-> pidfs_coredump() now also stamps the dumping thread's struct pid so a
-> pidfd for that thread reports the coredump like the pidfd of the
-> thread-group leader does.
->
-> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+> > +  - IFA_F_PERMANENT marks entries added with SIOCADDMULTI
+> > +    (netdev_hw_addr::global_use, "static" in "ip maddr")
+> The global flag is also set for addresses added via dev_mc_add_excl(), ie by
+> some drivers.
 
-Reviewed-by: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@futurfusion.io>
+Thanks for the reminder, will fix the comment in patchset v3
 
-> ---
-> Changes in v2:
-> - Fix a few documentation issues.
-> - Link to v1: https://patch.msgid.link/20260831-work-unix-passpidfd-v1-0-70cbfda0c7ba@kernel.org
->
-> ---
-> Christian Brauner (10):
->       pid: add helpers to operate on a struct pid array
->       af_unix: record the pid of the sending thread
->       net: add SO_PASSPIDFD_THREAD to get a thread-specific SCM_PIDFD
->       selftests/net: SO_PASSPIDFD_THREAD
->       net: turn sk_peer_pid into an array indexed by pid type
->       af_unix: record the pid of the connecting thread
->       net: add SO_PEERPIDFD_THREAD to get a thread-specific pidfd
->       selftests/net: SO_PEERPIDFD_THREAD
->       pidfs: record the coredump on the dumping thread's pid too
->       selftests/coredump: check the dumping thread's pidfd
->
->  arch/alpha/include/uapi/asm/socket.h               |   4 +
->  arch/mips/include/uapi/asm/socket.h                |   4 +
->  arch/parisc/include/uapi/asm/socket.h              |   4 +
->  arch/sparc/include/uapi/asm/socket.h               |   4 +
->  fs/coredump.c                                      |  22 +-
->  fs/pidfs.c                                         |  27 +-
->  include/linux/coredump.h                           |   4 +-
->  include/linux/pid.h                                |  53 +++
->  include/linux/pid_types.h                          |   8 +
->  include/linux/pidfs.h                              |   5 +
->  include/linux/sched/signal.h                       |  18 +
->  include/net/scm.h                                  |   7 +-
->  include/net/sock.h                                 |  14 +-
->  include/trace/events/landlock.h                    |   2 +-
->  include/uapi/asm-generic/socket.h                  |   4 +
->  net/bluetooth/af_bluetooth.c                       |   6 +-
->  net/bluetooth/hci_sock.c                           |   8 +-
->  net/bluetooth/l2cap_sock.c                         |   2 +-
->  net/core/scm.c                                     |  36 +-
->  net/core/sock.c                                    | 120 ++++---
->  net/unix/af_unix.c                                 |  67 ++--
->  net/unix/af_unix.h                                 |   3 +-
->  tools/lib/python/kdoc/xforms_lists.py              |   1 +
->  .../selftests/coredump/coredump_socket_test.c      | 175 ++++++++++
->  tools/testing/selftests/coredump/coredump_test.h   |   2 +
->  .../selftests/coredump/coredump_test_helpers.c     |  49 +++
->  tools/testing/selftests/net/af_unix/Makefile       |   2 +
->  tools/testing/selftests/net/af_unix/scm_pidfd.c    | 366 +++++++++++++++++++++
->  28 files changed, 907 insertions(+), 110 deletions(-)
-> ---
-> base-commit: cee9395acd8043be0644b25c34bfa86623f2b935
-> change-id: 20260825-work-unix-passpidfd-086a1ec09e8a
->
+> > +     ifm->ifa_flags = ha->global_use ? IFA_F_PERMANENT : 0;
+> I wonder if adding a new attribute IFA_F_GLOBAL would not make the API more
+> understandable.
+
+Good point, IFA_F_GLOBAL is indeed a better API that will fixed in patchset v3.
+
+> > +     struct net *net = sock_net(skb->sk);
+> For consistency with ipv4/ipv6, it would be nice to handle IFA_TARGET_NETNSID.
+
+Will do in v3.
+
+Thanks,
+
+Yuyang
