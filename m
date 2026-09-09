@@ -1,112 +1,116 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 977483C108F;
-	Wed,  9 Sep 2026 20:41:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C014F42668B
+	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 20:42:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788986490; cv=none; b=Q0Ae/V0AaXiMMdfzB89Sketk9jE1YgJzn818RHyB58TVlfZ3Mew3gAd+c8BH9dhJGFYFef3W9tBItgCmqqg5k4wod6vMJCeUR6p5DP/aS7AR5ZLvpkmTt7dLwzSWxxOyFkN8q+P5WGwtf/QSuBdUciLno2FLFaQSopUHH3MMkBk=
+	t=1788986577; cv=none; b=XNvYzSbX9qobTZLyraaeEhMcakCdOv101BxQVCFUPbo3ia5cQdqCYEN1GM0fSIF39pomuKyrdx8YZwfrXIADGPyuiXe6/0lxU8YbpLAdMX45h8+5jX+XMk1GebegrAPXqsq/LuLKj/ITJDfzpVBBNFmKAyIGXmiMJWkQ89h2k4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788986490; c=relaxed/simple;
-	bh=Lv695M+ET14zQcMLsFvWiig8OxilxbrUcVHK7NozT+w=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=ttf4BIA+6L19QnN+l9nlbFKsk1VpivtbDwLlKppEjSgYPe9OUb2oNm5WO/DMP7nwBVGsOE4lcfsxESp/H/JhMAAM325IuCP2Z78l9YDwz/Q/aiipnafVwj+aw7Cd1eHuhiff0EvVDRrzP+BNLbJGI22iuq8rk3832YWE9A3vHTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GgN8x0gn; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788986577; c=relaxed/simple;
+	bh=4QK22JD6oH4SvxZHmOyYQJJkExZcrvgo8YM1Io2s18M=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 Content-Type:MIME-Version; b=e9kyS7SeVSiO7N1JvpoqGRWtIf3sYm8/kLXctt1SKZkKDY4A4Fbly/jFsNqBwb/eXhRZU4HLggdWGKCY2xdG0ghAPNrZlkSBc2KfPtBIZ991DfvW69HvNoj1jZGLCAXypph0dR4kKg7CN8JCgz5Z0s8JdgBsigTU1TeDcsdKO40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rLL5rnvK; arc=none smtp.client-ip=209.85.216.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GgN8x0gn"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABAA31F000FF;
-	Wed,  9 Sep 2026 20:41:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788986471;
-	bh=XlRgql6gXyVqTyyC7XPsHaPGMVDu5J/x8i7A2d7OcWM=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=GgN8x0gnUY4zKgKqn7/6SJcyXo0H85ikpN9dAeR/fTlLRYmPg8yHPKzDJts/9fY4X
-	 eumPerJUS32tN7N+eBgyorKqQ2q2g11AsdzMX1tQtRLkYGplUL18pY5QdxsyTyUFpq
-	 8SgKNnKssNqiedoLNkVTc9yZe80VAR1W49rIHB67Cvv3QdVHSXjtTPfG7aMZnaDVMo
-	 pa0GC91I4C7hUnYVg2ig7BlwYb0tpwRzNeod+pGmJGqxIcWipD8PuHq4PTotQUvf48
-	 0xDEVQzPQzRxRgBP1OsgSrItG+zTc3+W2RXidA0V3fD3pJ6zu9LW5S89kY1y5c1dJI
-	 i40LQTq1Ds7JA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0D24380AAD2;
-	Wed,  9 Sep 2026 20:40:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rLL5rnvK"
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-3990fe066ebso5260439a91.1
+        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 13:42:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788986544; x=1789591344; darn=vger.kernel.org;
+        h=mime-version:content-transfer-encoding:content-type:message-id:date
+         :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=oN/gqs4AWaGEOYc4NXETn7MgtPOtvKlXrZlfFK+KbqY=;
+        b=rLL5rnvKxJ7bimUEcTFKJMabTEqZECh1pV/CVR3V0vpTtduiuEKKDH14JkcVkTV45d
+         1X3JNvE+5ko7Ihvn8ahXUTqh0ngrHVK5lGNB80LtJbLAepPvIcFM1JmR7W9/JzK1UN1F
+         QC+5ddYNQhk08DFWGt7G5OQaH9Um3qRp0mRQrHHmRFt7qa8UGAFah9fq/kLcOrB6CCXS
+         K3m/RvXf9GUkV0CAhd10bPKJeQQfoPS/bl961dDJcTFxHNdMW7YgaW/VsHBK8wB5jo9l
+         5OM4Yn+MEKIM++DCpv9cDPEnmF631Ws6RY9dWAaTFUE1h13FdtksuMFYg0h4sKT5NAoO
+         vVEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788986544; x=1789591344;
+        h=mime-version:content-transfer-encoding:content-type:message-id:date
+         :references:in-reply-to:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=oN/gqs4AWaGEOYc4NXETn7MgtPOtvKlXrZlfFK+KbqY=;
+        b=o5N1Z8cS2c2fXpZ5O94+Vpl1FWbL0EAt7qZLM9TZqYLGLlplXO+hz8lobiasNR9X4O
+         ynb0+NhgbsocoVspjIIF+uPzCcFHDaubC4mCEpMyml+18uHc8eJKkxI+bcbik1XPW931
+         98p28Fu/kGQ4sinP+ePxjQpfx6nVrkCQmbru+P3RG/TZ8uBxCom8SpY98pIoZHmk0qwb
+         VQO0HCXflLjmyMQKhNSfC9hFCOKyNr+88tK0H//Vrm2zGfRlviR5HaGOuCkH4yzR3qDi
+         Ifo57U6Ncx+tanoPy+Qn4R7ryLxcdq6mw/CjiTtNO2mKTshlDHkWnDoCad9veSGHEXAK
+         e8EA==
+X-Forwarded-Encrypted: i=1; AKwUvByKHgtOvL8pz8Xk6S90co35Xdxaf14A53xrE7QS6mobtIoeFMLwAF4bTAzW0fjcuyeqWY1Vtpw=@vger.kernel.org
+X-Gm-Message-State: AFuF++kquga0yyQyvDM88ndiT0P9wYusPn8MdkqwLfu1K6j1iNx7fLAp
+	/j6dpaOMa7y73ozDFdvgqmlKtUaF8CbN41L4/POqasr9M+HDPvDFp5am
+X-Gm-Gg: AYBFou050vIbZ5ZWVWIG0XIoWMb1M+F9nZTKEz/oEAZpOC91WbvAiICAXYXUcoPav9h
+	Mu81SLRpOcYFHqqIGnDrRtEdnxZKcpCOPv+GKWf8i4FlsOJyS+rAaZTFATeY1NWxGkJwB9tHYX6
+	efGnVRPS7PViZqL7lOyLrNN6UzTeIJDQvlI/Md7PLt1CFnK7HbV/eXSpUHg2I5VzN0Sk2ezZd2N
+	uOkL1jB9uNZGjqkB3Oyt06JHP6Agbis4dajKe4FMguHGjy9kzsup3F6MKKGbH2pvA4MF4sLbgla
+	v84qnr3WKfi9OgvvFW9yXsgbJ4kxu2C7b/fEIJFeRhiRXFLYBC70p1B7eD6VgQ6HDPc7ExBNQa5
+	4bg7mAWTwhGxE53EuFx/8YrqvSo4PETRgp+U9bonWrvtwU6GubYsv6axaRAJ7t5vIhLNg3ymt3I
+	2KpEtA5+MaBRCt7SyuxuIAnjjV6Ox7L63P2vlUyqFv/G9F2uAWF/i7RAg1q8dWUNAhoUm0nLCxK
+	KZ1jaB2syRwYnoCKKriomIyYliU6asyKG/x1z93HHqH5JNNmrwb2c8dkHXQ1ps6WpWk+OQqei7I
+	jUgj3QnS7t61arNSmHWVfFi4WVd9wlWWBywjfx5isnD1MW5QdJEqKB5ziVVlF17bAaoRoOQa53O
+	NzflAKv7tg5VJmRop41v/
+X-Received: by 2002:a17:90b:578c:b0:398:e6b6:acc2 with SMTP id 98e67ed59e1d1-39b261e7649mr58879248a91.12.1788986543953;
+        Wed, 09 Sep 2026 13:42:23 -0700 (PDT)
+Received: from [127.0.1.1] ([43.227.225.58])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39d770a010dsm1270437a91.3.2026.09.09.13.42.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 09 Sep 2026 13:42:23 -0700 (PDT)
+From: Nikhil Ludder <nikhilljatt@gmail.com>
+To: Emil Tsalapatis <linux-lists@etsalapatis.com>
+Cc: ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ eddyz87@gmail.com, memxor@gmail.com, martin.lau@linux.dev, song@kernel.org,
+ yonghong.song@linux.dev, jolsa@kernel.org, john.fastabend@gmail.com,
+ sdf@fomichev.me, horms@kernel.org, dsahern@gmail.com, hawk@kernel.org,
+ razor@blackwall.org, bpf@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH bpf] bpf: fix reading neigh ha in bpf_fib_lookup()
+In-Reply-To:
+ <CABFh=a7Z=heZODVsXwisY3VwULDy-Rq1hwO09exgX2d0-KzgUQ@mail.gmail.com>
+References: <20260909024011.1252694-1-nikhilljatt@gmail.com>
+ <CABFh=a7Z=heZODVsXwisY3VwULDy-Rq1hwO09exgX2d0-KzgUQ@mail.gmail.com>
+Date: Thu, 10 Sep 2026 02:12:14 +0530
+Message-ID: <178898653497.1776876.10402414041023036972@gmail.com>
 Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2 00/15] mptcp: misc fixes for v7.3-rc1
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178898640963.1048067.13477009364378101406.git-patchwork-notify@kernel.org>
-Date: Wed, 09 Sep 2026 20:40:09 +0000
-References: 
- <20260908-net-mptcp-misc-fixes-7-3-rc1-v2-0-df1de70348b6@kernel.org>
-In-Reply-To: 
- <20260908-net-mptcp-misc-fixes-7-3-rc1-v2-0-df1de70348b6@kernel.org>
-To: Matthieu Baerts <matttbe@kernel.org>
-Cc: martineau@kernel.org, geliang@kernel.org, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- netdev@vger.kernel.org, mptcp@lists.linux.dev, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, fw@strlen.de, kalpan.jani@mpiricsoftware.com,
- syzbot+55c2a5c871441261ed14@syzkaller.appspotmail.com, cuitao@kylinos.cn,
- yangang@kylinos.cn, shuah@kernel.org, linux-kselftest@vger.kernel.org,
- luoqing@kylinos.cn, kishen.maloor@intel.com, kuniyu@google.com,
- kmta1236@gmail.com, jakub@cloudflare.com
 
-Hello:
+On Wed, Sep 9, 2026 at 1:18 PM Emil Tsalapatis <linux-lists@etsalapatis.com> wrote:
+> Bot is right wrt possible lockups, please adjust the seqlock
+> accordingly. Also please
+> add your full name in the SOB.
 
-This series was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Will fix the SOB in v2, thanks.
 
-On Tue, 08 Sep 2026 16:07:05 +0200 you wrote:
-> Here are various unrelated fixes:
-> 
-> - Patch 1: Do not reschedule the RTX timer for sockets that fell back to
->   TCP. A fix for v5.7.
-> 
-> - Patch 2: Avoid copying thmac which will not be used and could be
->   uninitialised. A fix for v5.7.
-> 
-> [...]
+On the lockup: I don't think it can happen here.  neigh->ha_lock has
+exactly one writer in the tree, __neigh_update() at
+net/core/neighbour.c:1495, and it already runs with softirqs disabled:
+write_lock_bh(&neigh->lock) at line 1384 covers it through
+write_unlock_bh() at line 1524.  A reader in softirq context therefore
+cannot preempt the writer on the same CPU and spin on the sequence
+count.
 
-Here is the summary with links:
-  - [net,v2,01/15] mptcp: do not reschedule the RTX timer for fallback sockets
-    https://git.kernel.org/netdev/net/c/e2ab913f68c7
-  - [net,v2,02/15] mptcp: subflow: no need to copy thmac during ulp_clone
-    https://git.kernel.org/netdev/net/c/29f641951be0
-  - [net,v2,03/15] mptcp: syncookies: remember the request backup flag
-    https://git.kernel.org/netdev/net/c/b76c0e28b392
-  - [net,v2,04/15] mptcp: pm: kernel: drop pending ADD_ADDR when removing ID0
-    https://git.kernel.org/netdev/net/c/2ac7d6e62076
-  - [net,v2,05/15] mptcp: options: handle MPC data + csum reqd + no csum
-    https://git.kernel.org/netdev/net/c/ab36b1a80942
-  - [net,v2,06/15] mptcp: prevent race between disconnect() and rtx
-    https://git.kernel.org/netdev/net/c/85c580b0d859
-  - [net,v2,07/15] selftests: mptcp: fix an UAF in mptcp_connect.c
-    https://git.kernel.org/netdev/net/c/730444f094b1
-  - [net,v2,08/15] mptcp: pm: userspace: fix address ID overflow
-    https://git.kernel.org/netdev/net/c/f9f0068e8813
-  - [net,v2,09/15] mptcp: pm: reset retrans_time when ADD_ADDR entry is reused
-    https://git.kernel.org/netdev/net/c/f968190c0b42
-  - [net,v2,10/15] mptcp: remove unneeded READ_ONCE() annotation
-    https://git.kernel.org/netdev/net/c/caa4a79f74f3
-  - [net,v2,11/15] selftests: mptcp: lib: dump nstat for the right test
-    https://git.kernel.org/netdev/net/c/e1a56368eac1
-  - [net,v2,12/15] selftests: mptcp: lib: get counters for the right test
-    https://git.kernel.org/netdev/net/c/d23c41366e85
-  - [net,v2,13/15] mptcp: options: fix uninit-value in mptcp_write_data_fin
-    https://git.kernel.org/netdev/net/c/b110f1dd6cb6
-  - [net,v2,14/15] mptcp: being below memory limit is a likely() condition
-    https://git.kernel.org/netdev/net/c/a4257a91af7a
-  - [net,v2,15/15] mptcp: avoid pruning for OoW data
-    https://git.kernel.org/netdev/net/c/f01b8275745e
+The same pattern is already used by the other lockless readers of
+neigh->ha on the tx path, neigh_resolve_output() and
+neigh_connected_output() (neighbour.c:1610 and :1639), and by the two
+recent fixes this patch follows, 57549ab90791 ("net: bridge: arp/nd
+proxy: fix reading neigh ha") and b824059a673b ("vxlan: fix reading
+neigh ha").
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Am I missing a writer path?  If you would still prefer a different
+form here, I am happy to respin.
 
-
+Thanks,
+Nikhil
