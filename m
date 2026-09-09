@@ -1,44 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F92E136351;
-	Wed,  9 Sep 2026 02:18:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66EFA2E06EF
+	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 02:33:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788920331; cv=none; b=HppGT6mO8/nHFyj7DRmGOopAtrVV4Ex3eibQKodIoOLYMmsJfzHhi+QgphbRHiztvHU3Pqx3MtlNJffYnOjRLr+xqxw9hC3QfBQZnkQ9ei/A/AAdTSmG6tA10ZQWhoxWppkUBOjNyARRMy4VdtPCUWUcP1j0G7YAbxzvMZ16zP0=
+	t=1788921207; cv=none; b=LDU0fc0heTXQtOR2d1QC2S6sI7f5HwZDxB5BLrY9wOQ80Qsb/uwZJ+vxAz0ZpTXl/GdPJBr3BOrEwEU5JgOfovMYdcrvabS4XV7dVAELrr7QMNCm5j8x9qLTTt9peSrky65W5b3Ck5BUGvXZS6rnZtr/7AqQye53PeGChCwq5L4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788920331; c=relaxed/simple;
-	bh=ezCnWhNLd0PnrqUDGoC3hQ0XYhvUxnjaEIeofcm9LF8=;
+	s=arc-20240116; t=1788921207; c=relaxed/simple;
+	bh=lhrXvMxCSGq/rE5uNEHfufDBqXhd63SUjB8zYdFHIVU=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Eoc+sGQTuRbsEMJDHZ3/Mb8kcTKRwO/MlROEjMD26uwiI5cXTjp0u3zW5h7MYvFanHXcIR7FU92iAUU6GeJ++vSNRbyBPVycSmbbaITS+fMpqTG5d194qwF0L0e5NP69t6qHuG5flmk+5URM5YpViIAuFoYqXU7u01vaUADoCrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q3gd+PV1; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=FAVPPWd+NGF5Scrr96212ewEzKhy/vEvrLahK9oekbWGVFSlGXobg01BG7C6OKRtGpGjx52TJJHcTsdP4jFAQtYMYRKpZSav7LLK3/PP6pDOPxlCihqJHWLeROuz7m5D5p0gkkIMXNR3OD+KmMdekvyNXB6tE1cZadd5b2ZGR4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AciyzCpG; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q3gd+PV1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E36291F00A3A;
-	Wed,  9 Sep 2026 02:18:48 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AciyzCpG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88E241F00A3A;
+	Wed,  9 Sep 2026 02:33:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788920329;
-	bh=PW/Kt5aGXVcfHJcs71ojtkObUm+W7S3nt9R4flqpg3Y=;
+	s=k20260515; t=1788921205;
+	bh=gSQ9qbzpAMWUPIlAftKLpCMjz2pDPFD9VyMQu3iSrAA=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Q3gd+PV1BEk0EMLCJT+M4HHlEknjVuOgCBrf2vC7GurnqKnwYKqWhxts6OwE5fxyL
-	 vRG8GFibUM5/RtsWelQTQoHfLPUVdbgnUuqZyMr21Qtn/JyeflTH+/IR6kahQjlnLc
-	 +jZNEwsy5YDxgWxpPZUSl2gNEtFF4+qhYlWGwI+fc1wF6bNO9Qe14+FdPaUIEywyWR
-	 DymDDM6lfdIGJbFmx4RjWRAs8XcAoFnmjtBZybJeqHYcUh3rM/ojyLC6Pis3tv01mQ
-	 rcDrS50RqZOryDZhPnq12rEGtz+Br3VhUkgKanG32UDoeqHOBvOn4J7ooiYtB4MFtG
-	 K3JQswvtBV6WQ==
-Subject: Re: [PATCH net] vxlan: vnifilter: roll back VNI insertion when the
- group update fails
+	b=AciyzCpGofgyz803QdkrnVM322ZLhvD8/FM6mF626c+T+MZAhwfV8RGjmU6GzhukK
+	 jZl5sxYFjkpwl+xRjcayny9tnH4znMBAihjy2jWPhFc98T8lLan01rOXSRLFmTjb5x
+	 Ano+Kp1JorXu2CaZ1wnIPgQ7ddp1qYAq1WYGhmkyiPdigZPjVY6/DjehZwSYiHozXJ
+	 1dKHgV3mcIWvLVkO1YrgqxnW3Hs63+RjnNplvqSfbmdlOKW+7TmM5i7wf5KCr5Uwtp
+	 f5KT8DtuvKGVkDJ+4ktp5G4Y3OeuPk6BvwzHNCW7lhdHMx9bDdUUnFDxCjaQKWH3Tl
+	 nDNUibhysr0pg==
+Subject: Re: [PATCH net] tg3: check NVRAM and control register if SRAM has the
+ placeholder MAC address
 From: netdev-bot+sashiko@kernel.org
-To: alishmery18@gmail.com
-Cc: netdev@vger.kernel.org, idosch@nvidia.com, kuba@kernel.org,
- pabeni@redhat.com, davem@davemloft.net, edumazet@google.com,
- andrew+netdev@lunn.ch, razor@blackwall.org, roopa@nvidia.com,
- bestswngs@gmail.com, xmei5@asu.edu, linux-kernel@vger.kernel.org
-Date: Wed, 09 Sep 2026 02:18:48 +0000
-Message-ID: <178892032843.219967.12339801688901979534@kernel.org>
-In-Reply-To: <20260904021707.2891129-1-alishmery18@gmail.com>
-References: <20260904021707.2891129-1-alishmery18@gmail.com>
-X-sashiko-severity: Medium
+To: colona@arista.com
+Cc: kuba@kernel.org, michael.chan@broadcom.com, pavan.chebbi@broadcom.com,
+ netdev@vger.kernel.org, paul.sage@42.fr, vinc@42.fr,
+ atharvatiwarilinuxdev@gmail.com
+Date: Wed, 09 Sep 2026 02:33:25 +0000
+Message-ID: <178892120510.219967.1246975569411905126@kernel.org>
+In-Reply-To: <20260903233255.GA4109366@visor>
+References: <20260903233255.GA4109366@visor>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -48,220 +47,92 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 3 potential
+Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider:
 
-Critical: 0 · High: 0 (2) · Medium: 2 · Low: 1
+Critical: 0 · High: 1 · Medium: 0 · Low: 0
 
-- [Medium] Incomplete fix: only the insertion branch of vxlan_vni_add()
-  gets a rollback.
-- [Medium] The new err_vni_del path calls vxlan_vni_delete_group() on a
-  node whose FDB installation may never have happened, and can therefore…
-- [Low] Commit message test report is inconsistent with both its own
-  reproducer and the code: it states 'after the change the table is…
-
-Pre-existing issues:
-- [High] NULL pointer dereference in vxlan_igmp_join()/vxlan_igmp_leave()
-  reachable from the exact call the new rollback wraps.
-- [High] Loop-control type mismatch plus missing VNI range validation in
-  the direct caller of the patched function.
+- [High] In tg3_get_device_address()
+  (drivers/net/ethernet/broadcom/tg3.c), clearing addr_ok when the SRAM…
 
 --
 
-vxlan: vnifilter: roll back VNI insertion when the group update fails
+tg3: check NVRAM and control register if SRAM has the placeholder MAC address
 
-This adds an error path to vxlan_vni_add() so that the new VNI node is
-removed from the hash table, the device list and the socket when
-vxlan_vni_update_group() fails, and moves vxlan_vnifilter_notify() so it
-only runs on success. The node was already published, so it is freed with
-call_rcu().
+This adds the placeholder address check to the addr_ok expression in
+tg3_get_device_address(), so a BCM57762 reporting 00:10:18:00:00:00 in the
+SRAM mailbox falls through to the NVRAM and MAC control register sources
+instead of failing probe.
 
-Link: https://lore.kernel.org/netdev/20260323095544.3311285-4-bestswngs@gmail.com/
-
-A few questions below, plus one about the changelog.
-
-First, on the test report in the commit message:
-
-  Tested in a QEMU guest under KASAN and PROVE_LOCKING. Before the change
-  VNI 21 is listed after failing and a notification is emitted for it;
-  after the change the table is empty while the add fails with the same
-  errno at the same VNI, and ftrace confirms vxlan_vni_update_group() is
-  still reached for all 22 adds, so the failure does not move earlier.
-
-[Severity: Low]
-Can "the table is empty" be right for the reproducer shown just above it?
-The loop adds VNIs 1 to 21 and only VNI 21 fails, and the new rollback in
-vxlan_vni_add() removes only the VNI whose own vxlan_vni_update_group()
-call failed. vxlan_vni_add_del() aborts the loop on the first error and
-leaves the previously added VNIs installed, so shouldn't bridge vni show
-still list VNIs 1 to 20, with only VNI 21 absent?
-
-The same sentence says vxlan_vni_update_group() was reached "for all 22
-adds" while the loop shown performs 21 adds. Should that be 21?
-
-> diff --git a/drivers/net/vxlan/vxlan_vnifilter.c b/drivers/net/vxlan/vxlan_vnifilter.c
-> index dd94085e08865..ef60a96bcf904 100644
-> --- a/drivers/net/vxlan/vxlan_vnifilter.c
-> +++ b/drivers/net/vxlan/vxlan_vnifilter.c
-
-[ ... ]
-
-> @@ -756,9 +758,21 @@ static int vxlan_vni_add(struct vxlan_dev *vxlan,
+> diff --git a/drivers/net/ethernet/broadcom/tg3.c b/drivers/net/ethernet/broadcom/tg3.c
+> index 73a4b569b03e3..0b47908f09355 100644
+> --- a/drivers/net/ethernet/broadcom/tg3.c
+> +++ b/drivers/net/ethernet/broadcom/tg3.c
+> @@ -17081,7 +17081,8 @@ static int tg3_get_device_address(struct tg3 *tp, u8 *addr)
+>  		addr[5] = (lo >>  0) & 0xff;
 >  
->  	err = vxlan_vni_update_group(vxlan, vninode, group, true, &changed,
->  				     extack);
-> +	if (err)
-> +		goto err_vni_del;
-
-[Severity: Medium]
-Should the other branch of this same function get the same treatment?
-vxlan_vni_add() starts with:
-
-	if (vxlan_vnifilter_lookup(vxlan, v))
-		return vxlan_vni_update(vxlan, vg, v, group, &changed, extack);
-
-and vxlan_vni_update() does:
-
-	ret = vxlan_vni_update_group(vxlan, vninode, group, false, changed,
-				     extack);
-	if (ret)
-		return ret;
-
-By the time vxlan_vni_update_group() can fail on the IGMP join, it has
-already installed the new default FDB entry via
-vxlan_update_default_fdb_entry(), committed the address with
-memcpy(&vninode->remote_ip, group, sizeof(vninode->remote_ip)), and
-dropped the old membership with vxlan_igmp_leave(). If the join then
-returns the same -ENOBUFS the changelog uses as its reproducer, the VNI
-keeps the new group in bridge vni show with no membership behind it, and
-because *changed stays false no notification is sent either.
-
-Reached with two ordinary commands, for example:
-
-  bridge vni add vni 21 dev vx0
-  bridge vni add vni 21 group 239.1.1.21 dev vx0
-
-Is leaving this sibling path untouched intentional? If so, could the
-changelog say so, since it describes the defect as state remaining visible
-after a failed request?
+>  		/* Some old bootcode may report a 0 MAC address in SRAM */
+> -		addr_ok = is_valid_ether_addr(addr);
+> +		addr_ok = is_valid_ether_addr(addr) &&
+> +			  !tg3_is_default_mac_address(addr);
+>  	}
+>  	if (!addr_ok) {
+>  		__be32 be_hi, be_lo;
 
 [Severity: High]
-This isn't a bug introduced by this patch, but the very call being wrapped
-here can oops. vxlan_vni_update_group() does:
+Does clearing addr_ok for the placeholder address remove the only way to
+reach the device_get_mac_address() fallback added by e4c00ba7274b?
 
-		if (vxlan_addr_multicast(&vninode->remote_ip)) {
-			ret = vxlan_igmp_join(vxlan, &vninode->remote_ip, 0);
+Once addr_ok is 0, the block that follows rewrites all six bytes of addr
+from NVRAM or from MAC_ADDR_0_{HIGH,LOW}, so the placeholder value no
+longer survives to the tail of tg3_get_device_address():
 
-and vxlan_igmp_join() in vxlan_multicast.c picks the socket purely from
-the group address family and dereferences it without a NULL check:
-
-	} else {
-		struct vxlan_sock *sock6 = rtnl_dereference(vxlan->vn6_sock);
-
-		sk = sock6->sk;
-
-A vnifilter device implies COLLECT_METADATA, so vxlan_sock_add() takes the
-path that sets both ipv6 and ipv4 and tolerates a failed IPv6 socket:
-
-	if (ipv6) {
-		ret = __vxlan_sock_add(vxlan, true);
-		if (ret < 0 && ret != -EAFNOSUPPORT)
-			ipv4 = false;
-	}
-
-With ipv6.disable=1 and CONFIG_IPV6=y the IPv6 socket fails with
--EAFNOSUPPORT, the device still comes UP, and vn6_sock stays NULL.
-vxlan_process_vni_filter() accepts VXLAN_VNIFILTER_ENTRY_GROUP6 and only
-checks default_dst.remote_ifindex, and vxlan_vni_update_group() adds no
-family check, so bridge vni add vni 1 group6 ff0e::1 dev vx0 reaches
-sk = sock6->sk with sock6 == NULL, under RTNL. Is a family/socket check
-missing on this path? The changelog mentions an unrelated
-vxlan_igmp_join() fix that "was not followed up" - is this the same one?
-
->  
->  	vxlan_vnifilter_notify(vxlan, vninode, RTM_NEWTUNNEL);
->  
-> +	return 0;
-> +
-> +err_vni_del:
-> +	vxlan_vni_delete_group(vxlan, vninode);
-
-[Severity: Medium]
-Can this delete FDB state the failed add never created?
-
-The changelog says "if it failed before installing the FDB entry, both
-vninode->remote_ip and the default remote_ip are zero and it does
-nothing", but the guard in vxlan_vni_delete_group() is an OR:
-
-	if (!vxlan_addr_any(&vninode->remote_ip) ||
-	    !vxlan_addr_any(&dst->remote_ip)) {
-		spin_lock_bh(&vxlan->hash_lock);
-		__vxlan_fdb_delete(vxlan, all_zeros_mac,
-				   (vxlan_addr_any(&vninode->remote_ip) ?
-				   dst->remote_ip : vninode->remote_ip),
-				   ...
-				   true);
-
-So on a device with a non-zero default_dst.remote_ip the rollback still
-issues __vxlan_fdb_delete() for the default remote_ip even when
-vxlan_update_default_fdb_entry() is what failed. That happens to be
-harmless only when vxlan_find_mac() misses.
-
-There is also a case where it is not harmless. vxlan_fdb_append() in
-vxlan_core.c returns early when the destination already exists:
-
-	rd = vxlan_fdb_find_rdst(f, ip, port, vni, ifindex);
-	if (rd)
-		return 0;
-
-and vxlan_fdb_parse() accepts any NDA_SRC_VNI without consulting the VNI
-filter, so a zero-MAC entry can be installed out of band:
-
-  bridge fdb append 00:00:00:00:00:00 dst 239.1.1.21 src_vni 21 vni 21 dev vx0
-
-Then an add for VNI 21 with that group commits vninode->remote_ip without
-creating anything new, and if the IGMP join fails with the changelog's
--ENOBUFS, the rollback calls __vxlan_fdb_delete() and destroys that
-pre-existing entry, with swdev_notify=true so userspace and offloading
-drivers see an RTM_DELNEIGH for it.
-
-The helper's other caller, vxlan_vni_del(), only ever sees a fully
-installed node. Would it be safer to remember whether this add actually
-installed the FDB entry, and only undo that?
-
-> +	rhashtable_remove_fast(&vg->vni_hash, &vninode->vnode,
-> +			       vxlan_vni_rht_params);
-> +	__vxlan_vni_del_list(vg, vninode);
-> +	if (vxlan->dev->flags & IFF_UP)
-> +		vxlan_vs_add_del_vninode(vxlan, vninode, true);
-> +	call_rcu(&vninode->rcu, vxlan_vni_node_rcu_free);
->  	return err;
->  }
->  
-
-[Severity: High]
-This is a pre-existing issue in the caller and not introduced here, but
-while looking at this error path: vxlan_vni_add_del() iterates the range
-with a signed loop variable against u32 endpoints:
-
-	int v, err = 0;
+drivers/net/ethernet/broadcom/tg3.c:tg3_get_device_address() {
 	...
-	for (v = start_vni; v <= end_vni; v++) {
+	if (!is_valid_ether_addr(addr))
+		return -EINVAL;
 
-and vxlan_process_vni_filter() reads the endpoints as plain NLA_U32 with
-no upper bound (vxlan_mdb.c uses .max = VXLAN_N_VID - 1 for the same
-kind of value):
+	if (tg3_is_default_mac_address(addr))
+		return device_get_mac_address(&tp->pdev->dev, addr);
+	...
+}
 
-	if (vattrs[VXLAN_VNIFILTER_ENTRY_START]) {
-		vni_start = nla_get_u32(vattrs[VXLAN_VNIFILTER_ENTRY_START]);
-		vni_end = vni_start;
-	}
+If the NVRAM words at mac_offset or the MAC control registers read as
+0xffffffff (erased flash, ff:ff:ff:ff:ff:ff is multicast) or as zeros, the
+is_valid_ether_addr() test returns -EINVAL before the
+device_get_mac_address() call is reached.  Would that not move the probe
+failure from the placeholder path to the NVRAM/register path, on the same
+systems (iMac 20,1 / BCM57766) where the fwnode property is currently the
+working source?
 
-For start == end == 0xFFFFFFFF, v is -1 but the comparison promotes it, so
-0xFFFFFFFF <= 0xFFFFFFFF passes and a VNI outside the 24-bit range is
-added; v++ then wraps to 0 and 0 <= 0xFFFFFFFF still holds. Does a request
-for a single VNI then keep allocating vxlan_vni_node plus per-CPU stats
-under RTNL until an allocation fails or the rhashtable reaches max_size?
+And when the NVRAM or register value is valid but stale, is the firmware
+property still consulted at all?  It looks like the hardware source now
+wins over the property, which inverts the priority e4c00ba7274b set up for
+the placeholder-in-SRAM case.
+
+Note eth_platform_get_mac_address() earlier in the same function does not
+cover that platform class either, since net/ethernet/eth.c only consults
+dev->of_node via of_get_mac_address() and arch_get_platform_mac_address(),
+not dev_fwnode()/ACPI.
+
+Would it work to read each fallback source into a scratch buffer, reject
+content that is invalid or equal to the placeholder, and keep
+device_get_mac_address() as the last resort, for example by testing
+
+	if (!is_valid_ether_addr(addr) || tg3_is_default_mac_address(addr))
+		return device_get_mac_address(&tp->pdev->dev, addr);
+
+instead of returning -EINVAL first?
+
+A related question about the fallback block itself: tg3_nvram_read_be32()
+returns 0 for any successfully executed read command regardless of the
+content read, so unprogrammed NVRAM (0x00.. or 0xff..) is copied into addr
+and also suppresses the MAC_ADDR_0_{HIGH,LOW} branch that may still hold
+the bootcode-programmed address.  Should the NVRAM content be validated
+before that branch is skipped?
+
+Lastly, could the commit message mention that the device property fallback
+is being narrowed by this change?
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260904021707.2891129-1-alishmery18%40gmail.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260903233255.GA4109366%40visor
