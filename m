@@ -1,239 +1,249 @@
-Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C4AF35C6B4
-	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 17:07:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.227.140
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788973681; cv=pass; b=i2hDhJoOqjJqwqeeaJXWcXyHDDjCZ2ZD8OpDeJetmcEROGhfLRVuv8n/Qu/+ZAmk0r0sk6sTJRLdNxqZ4NFUnYF+Z41tU+eSRUjfOYvmLJW5AG588oR4h1XXfgcRVOOcfc25fN3D6Lss7dX+JaWPIxJeGIc+jcG49eAAx72hpFc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788973681; c=relaxed/simple;
-	bh=bzrElJCwL4G7roTrTT2sArSldH7To7o0gXq+eDk1Tr4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AJV7ZYVtAtk3PjQFUv3hmTWzEQZYu0KuZ2vzYaqylBeuUIsh7P70vcQ+YtbKIaBqhLvpnGHKEubs3SQkmIev10NAtlh25914D8mhSxGJZZIXMc887tQ1tDK+m/3tsCvcPu75kzB6XG1mzJ5ahr+F4Zi0IadJJVSUOcjs8Cf4Q6M=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=berkeley.edu; spf=pass smtp.mailfrom=berkeley.edu; dkim=pass (2048-bit key) header.d=berkeley.edu header.i=@berkeley.edu header.b=tcBl4ykK; arc=pass smtp.client-ip=74.125.227.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=berkeley.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=berkeley.edu
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84BDB35C69D
+	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 17:08:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788973729; cv=none; b=eGoYMmcOnoS8V9YtOXD7Uc7HBDz1zIA4ar8d7JMmKawdT9eHC3ZoiMCjE/kDO7kgc8jcxloFdM+RxaZjQOTCxHLYBizysbwqlahYNgB2Zd1XzhVsRLRgJXJBLwMeqeIIKDpU73DNlh8ivBgD4HQPbpMCP/gorfazJLx5XSPD03k=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788973729; c=relaxed/simple;
+	bh=a2Q00hhq8FgtKObRRTGE/RZijDxUqzAGqRWDuS9C4jw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rlNFCNuTFaWChuga7TJlZphmpjzGlfCnWIW9Jwtss3qM5tg7A04LnTCkppu04+6tiod1XEDJ6qL3Vy3mPOiw1ii3sTrZdQf6aOCPE1wJeX5w1Sby6uchM0uFMFoaHiFfcTaaeinxJbF7GJ6NSWgKHmBRHNl3Se8ZUo6bC7F+Iug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=daU+XEpv; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=PrByy8gB; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=berkeley.edu header.i=@berkeley.edu header.b="tcBl4ykK"
-Received: by mail-pj2-f12.google.com with SMTP id d9443c01a7336-2d747ee1f38so12430725ad.2
-        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 10:07:57 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788973676; cv=none;
-        d=google.com; s=arc-20260327;
-        b=QrhYsN329qHb/fWTYKZb7RGTx6W3dma+djGMbN3RAuLpSfZ2eI5tc/nNhM91trqYbJ
-         tq3vYuYc6ld/sAAn6MqmNo/N17qK06sEG6hqHV+A0o7kJOw40+OnawMEcUOSjQYmI9Ak
-         EL40wcQbojJNZl1joeFe6OJNNMAjWJn0mGCSl05mPvwxzqpBCp0zuIc1ScUzQpjoqMfp
-         ZDCDV/hLVLrhMoT2iy1JviCZmGcZW4IJd/Jjbe4eNY40y9xrA97IX7fbTM3Gu8dl7Z6v
-         9BwF+R9hQ5fUg1xOwoUNalacLC9vJexDOLmgVCjDMO+xWIQGIE3vhKVe+EtKT/W85Hm/
-         iuxQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=vpiZKdH9/3gtM/46eDiyEezUXTTA7RsQdyhkG7qhBOc=;
-        fh=5NSk+hn0qOBEtp8aeQYxVmuLPrOJMxMLWdEv8zoa0G8=;
-        b=N+WO4OvCMeb8KTfHWGnR/98Dak6W80gIqQmTCsSWwbRaXP2cdMOJofaJt4KhPz5ViZ
-         jzqWbzRIMtk9aJ2N2LGS1JIGpShE4n32EeJFlPSxw2MNfteiTpu05rrJZTbCbxKggw2S
-         O2IN3HidoZ9ZOEfuCu1/1AL9DEtlIdVI3CkJ6KCFzN+QlvgMvDUhF4TlrlouaJaA9yCi
-         NAn6gGeoYWj8eaBgjo9itLqzdSA9LL3s6hOaYtn+FBGxBWu1Liq1uhU03w0oWBam0CUm
-         NRQqIAk3bOwX2cs6iQJSGC8FcifCaykdQUg9J0NYXeNF3dCM23raAsgpaK/X5mBRB2Y+
-         Os8w==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="daU+XEpv";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="PrByy8gB"
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 689H7epn3716926
+	for <netdev@vger.kernel.org>; Wed, 9 Sep 2026 17:08:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=G1YWjulGrHQXzMx6OGl6R6Sv
+	TvcP7k1AMvCnp6YruR8=; b=daU+XEpvUaNWTAd7+b1SU8Ge0rZiT+O08N4gzT16
+	GAEJfsSPMr46R0FtmLfAxckUf2f75A4bdPaMxyqfiZmge+YYxT5wh7AIHoWP9+/s
+	Y2kq1Goc/+rdh0ejzvWMaKzjLr41xAtSuEyLdL0AqKmiuFhb6jO7xxTxCC9Jdp9Y
+	+NTgeYQ/fwaCLBVvv12wUHBQUIkus23c/FEr3ihrNAEEpqoF22M67zUXNTorLOvE
+	cFjfkntCrHhcIP3AvvzxsiYgmRQWqoIHjVpMkxdnLYoGvMpVwRYNGOznlbe1yZeO
+	oXySDHwPKkPojs+Psp5VvQgKqyIhCnV7NbITKGX8OofBFw==
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gk7921cqr-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 17:08:45 +0000 (GMT)
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-934963b2bc0so1195358785a.3
+        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 10:08:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=berkeley.edu; s=google; t=1788973676; x=1789578476; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=vpiZKdH9/3gtM/46eDiyEezUXTTA7RsQdyhkG7qhBOc=;
-        b=tcBl4ykKHD3fq+vKP8kZretQgPH4tXHLyRqFNL2TVF9e/uaiwMbl/PkKuG6Yvk0tSf
-         UQYIaeV7QDaROeUyRVVI+xxYSd6qx//2JDYGZLtmXVhQAtRR+CeDhZzCKWuHakyYMeaf
-         LKL0KRqlTOO1eabNCBRR5nR6kZERwv0O4VNSVsnRIsXBEnQ66s88PePwacA2vVnNzcsh
-         fieXos3zz6Ry0kOWy9MybIxSd8foL/GCghFRt84aK7eS3lIxjF8T72Ku0j34S26Kv4EC
-         eNLzmtQ/bm8UjLIVluZzHUBtjRuK2anUO39yE+cE9HrVcFwv68G/r4QzWxNOwoY3gHI2
-         3WcA==
+        d=oss.qualcomm.com; s=google; t=1788973724; x=1789578524; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=G1YWjulGrHQXzMx6OGl6R6SvTvcP7k1AMvCnp6YruR8=;
+        b=PrByy8gBN0MVRXf40zjA5ww3zhbjNpwspB0hMUgvfZ7qwYlGEjZe5cfwCsSNW1CxYE
+         aRvvteNXMl6Kt4Gxe9N/ZcD4PojofPc4JYVNfnihh9XAarmx4IWhp9wu/MCrLopc5QTV
+         ukLABfkstbzQ5YBygC+wgI1+wK+JZ3LJfHPqsB4M30e8VXyYdWvxGZpMOfYbD7UIetxj
+         N4lHP/XCNO2LBW6aMq+pwv1hKRRz9kYvB78/ZYEpnulDotCiXZz7v97haQJYtPhs+5H5
+         O2Xbwi1CGSN3KrxQOPHtrgvtW4y57zoyrgLFk0uI4QSR/ZjNQT8qm629hkK/dbBh7nfg
+         aQvw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788973676; x=1789578476;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=vpiZKdH9/3gtM/46eDiyEezUXTTA7RsQdyhkG7qhBOc=;
-        b=EZRlIuG4dVVfZI2kduASBHUxzgcOcUJzUG9U6LTZJVEH5Vz0p5W5hbMSUBFKjsDzVl
-         Y1y19xwrWAR6/6FkSPeYt4tWZeikdzz1HyX7hhn7HkM9Arne4gJqL9g+2b4u4NRVF4od
-         a8ZFE8R+nlE54va0Zhknx8Hmb6TGIoUxAb4AFXnmENT8rhD4yWDl8Py3XBqHJgCFWBox
-         7bVGGYjf08AKgnv+MK/uPo0yVQ/LCzQKUJBujWfNO/Kc39Arn0RHFO2VcPyLc8TcCXC4
-         gnIUpOtwTpwLWBh2HzkVUrc1g6sF/PClNhpwBv+Bt7nQnf7su3orKtdPJIfNC5KaYzQI
-         XOoQ==
-X-Forwarded-Encrypted: i=1; AKwUvBw6MhSFXtv4UNbnvnYzi32dSY3lpCnFxUJYDW3u4oPPN1MLs6qI/pOyJoRKRQdOQOjv9mnShB4=@vger.kernel.org
-X-Gm-Message-State: AFuF++lV2T3eYRb1VjqcOnxM0YxUV0tCJkN5a8G6P5DdYRUqF81k9q0R
-	3BJzfPa4dB3aqVNiR3xus2g6GZUi+YIfBVGfWjMDXRSWbZSt8mpDxpb4tVWlQHFVvRGrBfhpP3G
-	DgrswoEQaZlVTahT/fmqxPFB+T+wjTUJbqelZTU5a
-X-Gm-Gg: AYBFou09LeQ6yG9zZTkTDMwTAbnMiO7e3nkBuVr2or2UuEOkgOaz7/OXe90DBrdTjqM
-	Q0qEgZBih8KyB6H2RdHDRgut7NqiopwJLvzXsw1ZToXOZc9lklDa3pti9TTTncDfL/vbyOHybSF
-	tRFZfbBJmIOXeAEyRdMt07Kfwy28Twsm9qjYgOj0qcYSwqGyC+iUTd0VpblS6T8W7eVu/PJ+e5V
-	b4e0+Tm+8KgAJj+SjU2Xrctp0IGp86A8+G9rp2gyJPRnYJy7csa1AN4MtZ7Mn2p8Du6Yb6xWHkF
-	iIxmNVZ42M3QFwoIJfVrXmb47W2Qg/EpCqqQOKND5RuJkHizh7LO1Ltannnl9HXDQxX+08Sg4My
-	+yBZLLtcAp0BZVN3WAuWBkpQdaAkn8L4qv/kWp8GS8+ECdQ7kbZc=
-X-Received: by 2002:a17:902:f78f:b0:2d8:d4cc:be62 with SMTP id
- d9443c01a7336-2db8de9b5e0mr97047485ad.15.1788973674079; Wed, 09 Sep 2026
- 10:07:54 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1788973724; x=1789578524;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=G1YWjulGrHQXzMx6OGl6R6SvTvcP7k1AMvCnp6YruR8=;
+        b=DhG+CzmZC/GyO+7fP6FMVdrVa4djyiffDrCfPQV+7dGlnm+IdyBQLlC6MYB6xbcIY9
+         sTu+JMEg8LdXcx2iU3FyjrkoQUdAmkXOagpgZVRL2jo7snXlEahn+WCYHNfQZ4btBJoJ
+         SDBwsvwBOO2c7BAhqlWBcu7nK9eOU1Yj0hA+JP2OqLAsqT3xqKXKRG7h4jdVEXRGscoH
+         m+6kySAI44zZlvbGfJr0xCPsBJHnewdO0dkjq3AZ8uryIdERJ619Nt7twGgnJyyPcDPh
+         0UsVTei/SC8mMbBm4rHmaJs/p/rn1DC86EmmOT/BE7EOb7HkE6Se4f1W1CaAsocP83vU
+         RdQQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwwUnB/ODrjbZcDz77I09yt1R6hg68h9u7ZEzYp+Rbb28FKYPn7oFmuK3b3RFLAS3TyvKn83pU=@vger.kernel.org
+X-Gm-Message-State: AFuF++mEEh7JXZIufwZIhuN1/giFEzZmfuyjoXVa/KrnOluPgMj6kD0c
+	sGAx4nemckvn6dJ87KOydGQQtZs674gilSn/4G+eC3yv4+jCGfxFVkfy0EN1Vm8wux8ONo5lhgy
+	HfnhTBxN6q6iAFhC8zYV+7K0dCItSa1r1TT/LOdVQS2axMgO9nzpk0n+WA38=
+X-Gm-Gg: AYBFou19WtFU4mktATiLbkC26JYfehVPRe+eP0xQCfjDW24iRLWQFUkLf2i8Inj1YQl
+	5h6EjV+kj4/ZRV/NsoURIWc7Ide2BUSKekISk/wf8tnRtxbaVlQDD+7dv8OnEHJEoDoRyWavkXt
+	IWcdW2XK+Tp2Ym5s/NSDC44p97XJKA2N+oIQ4E797d9RikNJqNGntTZOKykEZebSKbQd3BsSiLM
+	+QlTJF1XmCWF55HqTNePXpyel34WJmWILm8YNi5rrhXHwAeaQ/wyAj5piJe58ZxBsr/d+WbveUq
+	eb2n61SdMR8139O0+BwUIB3Xl4I8URcGij5mUmByZWzzerdEATo0JVRNfRO6bwEIIuxdp9m3PRt
+	rHg43QRxEKuewGQ==
+X-Received: by 2002:a05:620a:d89:b0:938:39e7:725 with SMTP id af79cd13be357-939c94a60ecmr1014705485a.32.1788973724293;
+        Wed, 09 Sep 2026 10:08:44 -0700 (PDT)
+X-Received: by 2002:a05:620a:d89:b0:938:39e7:725 with SMTP id af79cd13be357-939c94a60ecmr1014685785a.32.1788973723191;
+        Wed, 09 Sep 2026 10:08:43 -0700 (PDT)
+Received: from localhost ([188.216.77.92])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49d26c1bfc1sm5185045e9.4.2026.09.09.10.08.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 09 Sep 2026 10:08:42 -0700 (PDT)
+Date: Wed, 9 Sep 2026 19:08:41 +0200
+From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+To: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>, Andrew Davis <afd@ti.com>,
+        Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Richard Cochran <richardcochran@gmail.com>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+        Jose Abreu <joabreu@synopsys.com>,
+        Maxime Chevallier <maxime.chevallier@bootlin.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH net-next v2 2/9] net: phy: dp83867: add regulator supply
+ management
+Message-ID: <aqGSmVslLLsp7tJu@lore-desk>
+References: <20260908-shikra_ethernet-v2-0-bbe3389d0652@oss.qualcomm.com>
+ <20260908-shikra_ethernet-v2-2-bbe3389d0652@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CA+0ovCgforg-XzdODxh9axazFP8M+hFj1wk=XE05oSGz9B2Zzw@mail.gmail.com>
- <CAEAWyHfU-yo+H6Ss_wXPSzMnsU+bd9EP8Jz7bPJ17xvj2Kc6Yw@mail.gmail.com>
-In-Reply-To: <CAEAWyHfU-yo+H6Ss_wXPSzMnsU+bd9EP8Jz7bPJ17xvj2Kc6Yw@mail.gmail.com>
-From: Farhad Alemi <farhad.alemi@berkeley.edu>
-Date: Wed, 9 Sep 2026 10:07:40 -0700
-X-Gm-Features: AcwNN1WNc2HaR-arU8CToz5M3pkc38CE7sE3jOaPreBSKGxiN-dhXdR6eM_6xS4
-Message-ID: <CA+0ovCjyMrHOtOSQ9xHzsTz=iO3MVr8RcsgxNVBmge5yczpURg@mail.gmail.com>
-Subject: Re: [BUG] gve_adminq_release -- unbounded reset-wait loop, WARNs then
- spins forever
-To: Harshitha Ramamurthy <hramamurthy@google.com>
-Cc: Joshua Washington <joshwash@google.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: multipart/mixed; boundary="0000000000005c0f6d065b0fe48c"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="c9IX8H6zKLOh4Z/N"
+Content-Disposition: inline
+In-Reply-To: <20260908-shikra_ethernet-v2-2-bbe3389d0652@oss.qualcomm.com>
+X-Authority-Analysis: v=2.4 cv=bd1bluPB c=1 sm=1 tr=0 ts=6aa1929d cx=c_pps
+ a=qKBjSQ1v91RyAK45QCPf5w==:117 a=WpTaRW6qxYHRGzLzQsVYzg==:17
+ a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=eoimf2acIAo5FJnRuUoq:22 a=EUspDBNiAAAA:8
+ a=Tc_FYgHOodJxOJMde3UA:9 a=CjuIK1q_8ugA:10 a=eESnzHPFhmDI2KvGUDgA:9
+ a=NFOGd7dJGGMPyQGDc5-O:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA5MDE5MSBTYWx0ZWRfXx4sFbmblurfB
+ Y1hWze/7FEchVBOOEfUt2DiAR9bRnsk8ilQdsUs83+805tVF2kg/X/9EsXw/g3r5PDpjv7X6V28
+ 6g7HoQi6focQomOun18T3kyG8LToKmQhHVu2FN6d0elmlg/qBPB4AbBOo5WDQtN+LvcQUmrFVZr
+ 5xGmFLQfxyAqsJIhJZp3ihhOmbve0qEQzY714QzWIxnV2ELHkIdZvqjO2Za6fmQSirCYpy4lV7F
+ nS7JiqXBYKE12L3Sv7sKGwXrm38qCc20Fo2BcPjS1A4xVqZkxO+JCjc/WYe+LQ5bqebiEeOZ9wd
+ C1APeAKD+hhKWJvEnVctFETDAAwXZhgWQ5CZ8e0nIa9lsXFIoxWPFuIL0pWFSKfey/cC5Uhw5H4
+ ymExgsVhh6o6huyCBkolZBevtDRDijOSwfJlkn4MZqrwtChoV9evn15Etkl0ZH/YNc6o1Vovg92
+ IYYKL/llbHIsxwWnkoA==
+X-Proofpoint-ORIG-GUID: YhIexOs76TroMOGBtoEdgcpHlPux5hRe
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTA5MDE5MSBTYWx0ZWRfX6YXuvbcREhKk
+ xpbD4UVk9C2OgGpo7OMohdw9avHtSKys4zuhRdoW5YOfWP1nmZ56dKb47rmDoBzZetgRjqHG8gm
+ lzSkEmvhfaHtTyjYdE0xrxzT0qYhLag=
+X-Proofpoint-GUID: YhIexOs76TroMOGBtoEdgcpHlPux5hRe
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-08_03,2026-09-09_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 clxscore=1015 spamscore=0 lowpriorityscore=0 suspectscore=0
+ bulkscore=0 impostorscore=0 phishscore=0 priorityscore=1501 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2609090191
 
---0000000000005c0f6d065b0fe48c
-Content-Type: text/plain; charset="UTF-8"
+--c9IX8H6zKLOh4Z/N
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Attaching the reproducer; thanks!
+> Some embedded board designs use GPIO-controlled regulators for the
+> DP83867 power rails. Add dp83867_power_on() to enable all four supply
+> domains at probe time. Absent supplies are silently skipped, so boards
+> that do not describe them are unaffected.
+>=20
+> When any supply is newly enabled the driver sleeps for 200 ms before
+> returning.  This satisfies the post power-up stabilisation requirement
+> mentioned in section 6.6 of the DP83867E/IS/CS datasheet.
+>=20
+> Signed-off-by: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>
 
-On Fri, Aug 28, 2026 at 1:53=E2=80=AFPM Harshitha Ramamurthy
-<hramamurthy@google.com> wrote:
->
-> On Thu, Aug 27, 2026 at 9:23=E2=80=AFPM Farhad Alemi <farhad.alemi@berkel=
-ey.edu> wrote:
-> >
-> > Hello,
-> >
-> > As part of the kernel research at ASU's SEFCOM
-> > lab, we hit the crash below. Crash reports can be found here:
-> >
-> >   https://github.com/farhad-alemi/public_bug_reports/tree/main/129-gve-=
-adminq-release-unbounded-reset-wait/
-> >
-> >   Unrecoverable platform error!
-> >   WARNING: drivers/net/ethernet/google/gve/gve_adminq.c:378 at
-> > gve_adminq_release+0xff/0x260
-> > drivers/net/ethernet/google/gve/gve_adminq.c:378, CPU#1:
-> > syz.0.63/11869
-> >   Call Trace:
-> >    gve_adminq_release+0xff/0x260
-> > drivers/net/ethernet/google/gve/gve_adminq.c:378
-> >    gve_adminq_free+0x78/0x140 drivers/net/ethernet/google/gve/gve_admin=
-q.c:392
-> >    gve_init_priv+0x2a8a/0x3450 drivers/net/ethernet/google/gve/gve_main=
-.c:2509
-> >    gve_probe+0x61f/0x970 drivers/net/ethernet/google/gve/gve_main.c:289=
-2
-> >    pci_device_probe+0x461/0xa50 drivers/pci/pci-driver.c:489
-> >    really_probe+0x267/0xaf0 drivers/base/dd.c:709
-> >    device_driver_attach+0xdc/0x1d0 drivers/base/dd.c:1206
-> >    bind_store+0x1d0/0x220 drivers/base/bus.c:267
-> >    kernfs_fop_write_iter+0x2fa/0x480 fs/kernfs/file.c:352
-> >
-> > Our reproducer.c is available upon request.
->
-> Hi,
->
-> Thanks for the report. Could you please share the reproducer too?
->
-> It's a good catch. The driver shouldn't spin infinitely if the
-> hypervisor is unresponsive/misbehaving. I will send out a patch to fix
-> this. Would be great if you could help test it also.
-> >
-> > Happy to test a patch if that would help.
-> >
-> > Regards,
+Acked-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
 
---0000000000005c0f6d065b0fe48c
-Content-Type: application/octet-stream; name="reproducer.c"
-Content-Disposition: attachment; filename="reproducer.c"
-Content-Transfer-Encoding: base64
-Content-ID: <f_mtucp8sx0>
-X-Attachment-Id: f_mtucp8sx0
+> ---
+>  drivers/net/phy/dp83867.c | 33 +++++++++++++++++++++++++++++++++
+>  1 file changed, 33 insertions(+)
+>=20
+> diff --git a/drivers/net/phy/dp83867.c b/drivers/net/phy/dp83867.c
+> index 88255e92b4cdbd6da2e2c1d10f9c72348d28dbc3..dbeee7cad6f0cbfeb127bfd28=
+f43ee2a16c78879 100644
+> --- a/drivers/net/phy/dp83867.c
+> +++ b/drivers/net/phy/dp83867.c
+> @@ -15,6 +15,7 @@
+>  #include <linux/etherdevice.h>
+>  #include <linux/bitfield.h>
+>  #include <linux/nvmem-consumer.h>
+> +#include <linux/regulator/consumer.h>
+> =20
+>  #include <dt-bindings/net/ti-dp83867.h>
+> =20
+> @@ -719,9 +720,41 @@ static int dp83867_resume(struct phy_device *phydev)
+>  	return 0;
+>  }
+> =20
+> +static int dp83867_power_on(struct phy_device *phydev)
+> +{
+> +#ifdef CONFIG_OF
+> +	static const char * const supply_names[] =3D {
+> +		"vdda-2p5", "vdd-1p0", "vdda-1p8", "vddio",
+> +	};
+> +	struct device *dev =3D &phydev->mdio.dev;
+> +	u32 count =3D 0;
+> +	int i, ret;
+> +
+> +	for (i =3D 0; i < ARRAY_SIZE(supply_names); i++) {
+> +		ret =3D devm_regulator_get_enable_optional(dev, supply_names[i]);
 
-I2RlZmluZSBfR05VX1NPVVJDRQojaW5jbHVkZSA8ZGlyZW50Lmg+CiNpbmNsdWRlIDxmY250bC5o
-PgojaW5jbHVkZSA8c3RkaW8uaD4KI2luY2x1ZGUgPHN0ZGxpYi5oPgojaW5jbHVkZSA8c3RyaW5n
-Lmg+CiNpbmNsdWRlIDxzeXMvbW1hbi5oPgojaW5jbHVkZSA8dW5pc3RkLmg+CgojZGVmaW5lIFBD
-SV9ERVZJQ0VTCSIvc3lzL2J1cy9wY2kvZGV2aWNlcyIKI2RlZmluZSBHVkVfRFJJVkVSCSIvc3lz
-L2J1cy9wY2kvZHJpdmVycy9ndmUiCiNkZWZpbmUgSU9SRVNPVVJDRV9NRU0JMHgyMDAKCnN0YXRp
-YyBpbnQgcmVhZF9zeXNmcyhjb25zdCBjaGFyICpwYXRoLCBjaGFyICpvdXQsIHNpemVfdCBsZW4p
-CnsKCWludCBmZCA9IG9wZW4ocGF0aCwgT19SRE9OTFkpOwoJc3NpemVfdCBuOwoKCWlmIChmZCA8
-IDApCgkJcmV0dXJuIC0xOwoJbiA9IHJlYWQoZmQsIG91dCwgbGVuIC0gMSk7CgljbG9zZShmZCk7
-CglpZiAobiA8IDApCgkJcmV0dXJuIC0xOwoJb3V0W25dID0gMDsKCXJldHVybiAwOwp9CgpzdGF0
-aWMgaW50IHdyaXRlX3N5c2ZzKGNvbnN0IGNoYXIgKnBhdGgsIGNvbnN0IGNoYXIgKnZhbHVlKQp7
-CglpbnQgZmQgPSBvcGVuKHBhdGgsIE9fV1JPTkxZKTsKCXNzaXplX3QgbjsKCglpZiAoZmQgPCAw
-KQoJCXJldHVybiAtMTsKCW4gPSB3cml0ZShmZCwgdmFsdWUsIHN0cmxlbih2YWx1ZSkpOwoJY2xv
-c2UoZmQpOwoJcmV0dXJuIG4gPCAwID8gLTEgOiAwOwp9CgpzdGF0aWMgdW5zaWduZWQgbG9uZyBy
-ZWFkX3BjaV9hdHRyX2hleChjb25zdCBjaGFyICpiZGYsIGNvbnN0IGNoYXIgKmF0dHIpCnsKCWNo
-YXIgcGF0aFsyNTZdLCBidWZbNjRdOwoKCXNucHJpbnRmKHBhdGgsIHNpemVvZihwYXRoKSwgUENJ
-X0RFVklDRVMgIi8lcy8lcyIsIGJkZiwgYXR0cik7CglpZiAocmVhZF9zeXNmcyhwYXRoLCBidWYs
-IHNpemVvZihidWYpKSkKCQlyZXR1cm4gMDsKCXJldHVybiBzdHJ0b3VsKGJ1ZiwgTlVMTCwgMTYp
-Owp9CgovKiBCQVIwIG11c3QgYmUgbWVtb3J5IGFuZCBhdCBsZWFzdCB0aGUgc2l6ZSBvZiBzdHJ1
-Y3QgZ3ZlX3JlZ2lzdGVyczsgZ3ZlIGFsc28KICogbWFwcyBCQVIyIGFzIGl0cyBkb29yYmVsbCBy
-ZWdpb24sIHNvIHRoYXQgaGFzIHRvIGJlIG1lbW9yeSB0b28uICovCnN0YXRpYyBpbnQgaGFzX3Vz
-YWJsZV9ndmVfYmFycyhjb25zdCBjaGFyICpiZGYpCnsKCWNoYXIgcGF0aFsyNTZdLCBidWZbNDA5
-Nl0sICpsaW5lLCAqc2F2ZSA9IE5VTEw7Cgl1bnNpZ25lZCBsb25nIHN0YXJ0LCBlbmQsIGZsYWdz
-OwoJaW50IGJhciA9IDAsIGJhcjBfb2sgPSAwLCBiYXIyX29rID0gMDsKCglzbnByaW50ZihwYXRo
-LCBzaXplb2YocGF0aCksIFBDSV9ERVZJQ0VTICIvJXMvcmVzb3VyY2UiLCBiZGYpOwoJaWYgKHJl
-YWRfc3lzZnMocGF0aCwgYnVmLCBzaXplb2YoYnVmKSkpCgkJcmV0dXJuIDA7Cglmb3IgKGxpbmUg
-PSBzdHJ0b2tfcihidWYsICJcbiIsICZzYXZlKTsgbGluZSAmJiBiYXIgPCA2OwoJICAgICBsaW5l
-ID0gc3RydG9rX3IoTlVMTCwgIlxuIiwgJnNhdmUpLCBiYXIrKykgewoJCWlmIChzc2NhbmYobGlu
-ZSwgIiVseCAlbHggJWx4IiwgJnN0YXJ0LCAmZW5kLCAmZmxhZ3MpICE9IDMpCgkJCWNvbnRpbnVl
-OwoJCWlmICghc3RhcnQgfHwgIShmbGFncyAmIElPUkVTT1VSQ0VfTUVNKSkKCQkJY29udGludWU7
-CgkJaWYgKGJhciA9PSAwICYmIGVuZCAtIHN0YXJ0ICsgMSA+PSA2NCkKCQkJYmFyMF9vayA9IDE7
-CgkJaWYgKGJhciA9PSAyICYmIGVuZCAtIHN0YXJ0ICsgMSA+PSA4KQoJCQliYXIyX29rID0gMTsK
-CX0KCXJldHVybiBiYXIwX29rICYmIGJhcjJfb2s7Cn0KCi8qIFRoZSByb290ZnMgZ3VhcmQuIEtl
-ZXAgdGhpcyBhaGVhZCBvZiBldmVyeSB3cml0ZSB0byB0aGUgZnVuY3Rpb24uICovCnN0YXRpYyBp
-bnQgaXNfc2FmZV92aWN0aW0oY29uc3QgY2hhciAqYmRmKQp7Cgl1bnNpZ25lZCBsb25nIGNsYXNz
-ID0gcmVhZF9wY2lfYXR0cl9oZXgoYmRmLCAiY2xhc3MiKTsKCXVuc2lnbmVkIGJhc2VfY2xhc3Mg
-PSAoY2xhc3MgPj4gMTYpICYgMHhmZjsKCglpZiAoYmFzZV9jbGFzcyA9PSAweDAxKQkJCS8qIG1h
-c3Mgc3RvcmFnZTogdGhlIHJvb3QgZGlzayAqLwoJCXJldHVybiAwOwoJaWYgKGJhc2VfY2xhc3Mg
-PT0gMHgwNikJCQkvKiBicmlkZ2UgKi8KCQlyZXR1cm4gMDsKCWlmIChzdHJzdHIoYmRmLCAiOjFm
-LiIpKQkJLyogTFBDL0FIQ0kgZnVuY3Rpb24gb2YgdGhlIElDSDkgKi8KCQlyZXR1cm4gMDsKCXJl
-dHVybiByZWFkX3BjaV9hdHRyX2hleChiZGYsICJyZXZpc2lvbiIpID49IDEgJiYgaGFzX3VzYWJs
-ZV9ndmVfYmFycyhiZGYpOwp9CgpzdGF0aWMgdm9pZCB1bmJpbmRfY3VycmVudF9kcml2ZXIoY29u
-c3QgY2hhciAqYmRmKQp7CgljaGFyIHBhdGhbMjU2XSwgbGlua1sxMjhdLCAqZHJpdmVyOwoJc3Np
-emVfdCBuOwoKCXNucHJpbnRmKHBhdGgsIHNpemVvZihwYXRoKSwgUENJX0RFVklDRVMgIi8lcy9k
-cml2ZXIiLCBiZGYpOwoJbiA9IHJlYWRsaW5rKHBhdGgsIGxpbmssIHNpemVvZihsaW5rKSAtIDEp
-OwoJaWYgKG4gPD0gMCkKCQlyZXR1cm47CglsaW5rW25dID0gMDsKCWRyaXZlciA9IHN0cnJjaHIo
-bGluaywgJy8nKTsKCWRyaXZlciA9IGRyaXZlciA/IGRyaXZlciArIDEgOiBsaW5rOwoJc25wcmlu
-dGYocGF0aCwgc2l6ZW9mKHBhdGgpLCAiL3N5cy9idXMvcGNpL2RyaXZlcnMvJXMvdW5iaW5kIiwg
-ZHJpdmVyKTsKCXdyaXRlX3N5c2ZzKHBhdGgsIGJkZik7Cn0KCnN0YXRpYyB2b2lkIHB1dF9iZTMy
-KHZvbGF0aWxlIHVuc2lnbmVkIGNoYXIgKnAsIHVuc2lnbmVkIGludCB2KQp7CglwWzBdID0gdiA+
-PiAyNDsgcFsxXSA9IHYgPj4gMTY7IHBbMl0gPSB2ID4+IDg7IHBbM10gPSB2Owp9CgpzdGF0aWMg
-aW50IHNlZWRfZ3ZlX3JlZ2lzdGVycyhjb25zdCBjaGFyICpiZGYpCnsKCWNoYXIgcGF0aFsyNTZd
-OwoJdm9sYXRpbGUgdW5zaWduZWQgY2hhciAqYmFyMDsKCWludCBmZDsKCglzbnByaW50ZihwYXRo
-LCBzaXplb2YocGF0aCksIFBDSV9ERVZJQ0VTICIvJXMvcmVzb3VyY2UwIiwgYmRmKTsKCWZkID0g
-b3BlbihwYXRoLCBPX1JEV1IgfCBPX1NZTkMpOwoJaWYgKGZkIDwgMCkKCQlyZXR1cm4gLTE7Cgli
-YXIwID0gbW1hcChOVUxMLCA0MDk2LCBQUk9UX1JFQUQgfCBQUk9UX1dSSVRFLCBNQVBfU0hBUkVE
-LCBmZCwgMCk7CgljbG9zZShmZCk7CglpZiAoYmFyMCA9PSBNQVBfRkFJTEVEKQoJCXJldHVybiAt
-MTsKCgltZW1zZXQoKHZvaWQgKiliYXIwLCAwLCA2NCk7CglwdXRfYmUzMihiYXIwICsgMCwgMCk7
-CQkvKiBkZXZpY2Vfc3RhdHVzOiBERVZJQ0VfSVNfUkVTRVQgY2xlYXIgKi8KCXB1dF9iZTMyKGJh
-cjAgKyA0LCAwKTsJCS8qIGRyaXZlcl9zdGF0dXMgKi8KCXB1dF9iZTMyKGJhcjAgKyA4LCAxKTsJ
-CS8qIG1heF90eF9xdWV1ZXMgKi8KCXB1dF9iZTMyKGJhcjAgKyAxMiwgMSk7CQkvKiBtYXhfcnhf
-cXVldWVzICovCglwdXRfYmUzMihiYXIwICsgMTYsIDApOwkJLyogYWRtaW5xX3BmbiAqLwoJcHV0
-X2JlMzIoYmFyMCArIDIwLCAwKTsJCS8qIGFkbWlucV9kb29yYmVsbCAqLwoJcHV0X2JlMzIoYmFy
-MCArIDI0LCAwKTsJCS8qIGFkbWlucV9ldmVudF9jb3VudGVyICovCgltdW5tYXAoKHZvaWQgKili
-YXIwLCA0MDk2KTsKCXJldHVybiAwOwp9CgppbnQgbWFpbih2b2lkKQp7CgljaGFyIHBhdGhbNTEy
-XTsKCXN0cnVjdCBkaXJlbnQgKmVudHJ5OwoJRElSICpkaXI7CglpbnQgdHJpZWQgPSAwOwoKCWlm
-IChhY2Nlc3MoR1ZFX0RSSVZFUiwgRl9PSykpCgkJcmV0dXJuIDE7CglkaXIgPSBvcGVuZGlyKFBD
-SV9ERVZJQ0VTKTsKCWlmICghZGlyKQoJCXJldHVybiAxOwoKCXdoaWxlICgoZW50cnkgPSByZWFk
-ZGlyKGRpcikpICYmIHRyaWVkIDwgMykgewoJCWNvbnN0IGNoYXIgKmJkZiA9IGVudHJ5LT5kX25h
-bWU7CgoJCWlmIChiZGZbMF0gPT0gJy4nIHx8ICFpc19zYWZlX3ZpY3RpbShiZGYpKQoJCQljb250
-aW51ZTsKCgkJdW5iaW5kX2N1cnJlbnRfZHJpdmVyKGJkZik7CgkJaWYgKHNlZWRfZ3ZlX3JlZ2lz
-dGVycyhiZGYpKQoJCQljb250aW51ZTsKCgkJLyogZHJpdmVyX292ZXJyaWRlIG1ha2VzIHBjaV9t
-YXRjaF9kZXZpY2UoKSByZXR1cm4gdGhlIGR1bW15IGlkLAoJCSAqIHNvIHRoZSBiaW5kIHdyaXRl
-IGFsb25lIGRyaXZlcyB0aGUgcHJvYmUgdGhyb3VnaCBiaW5kX3N0b3JlLiAqLwoJCXNucHJpbnRm
-KHBhdGgsIHNpemVvZihwYXRoKSwgUENJX0RFVklDRVMgIi8lcy9kcml2ZXJfb3ZlcnJpZGUiLCBi
-ZGYpOwoJCXdyaXRlX3N5c2ZzKHBhdGgsICJndmUiKTsKCQl3cml0ZV9zeXNmcyhHVkVfRFJJVkVS
-ICIvYmluZCIsIGJkZik7CgkJdHJpZWQrKzsKCX0KCWNsb3NlZGlyKGRpcik7CglyZXR1cm4gMDsK
-fQo=
---0000000000005c0f6d065b0fe48c--
+nit: I guess it easier to read if you do something like:
+
+		if (ret !=3D -ENODEV)
+			return dev_err_probe();
+
+		count +=3D !ret;
+
+> +		if (!ret)
+> +			count++;
+> +		else if (ret !=3D -ENODEV)
+> +			return dev_err_probe(dev, ret,
+> +					     "failed to enable %s supply\n",
+> +					     supply_names[i]);
+> +	}
+> +
+> +	/* Datasheet section 6.6 suggests a 200ms post power-up stabilization */
+> +	if (count)
+> +		fsleep(200000);
+> +#endif
+> +	return 0;
+> +}
+> +
+>  static int dp83867_probe(struct phy_device *phydev)
+>  {
+>  	struct dp83867_private *dp83867;
+> +	int ret;
+> +
+> +	ret =3D dp83867_power_on(phydev);
+> +	if (ret)
+> +		return ret;
+> =20
+>  	dp83867 =3D devm_kzalloc(&phydev->mdio.dev, sizeof(*dp83867),
+>  			       GFP_KERNEL);
+>=20
+> --=20
+> 2.34.1
+>=20
+>=20
+
+--c9IX8H6zKLOh4Z/N
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCaqGSmQAKCRA6cBh0uS2t
+rNquAQC5wJNUN95Ep26s8XtzLNRj4JBV+qFthkyWqQAnIRtBTgEA+pcM+Wip2fRN
+UHB7AACiMwvDdjPTHaF37W2hm07h/g0=
+=eyly
+-----END PGP SIGNATURE-----
+
+--c9IX8H6zKLOh4Z/N--
