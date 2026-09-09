@@ -1,166 +1,160 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D88841D4EF
-	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 10:22:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89A4549AA45
+	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 10:23:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788949352; cv=none; b=m4pJjaHPhTwy8C4NkWz7YJW6uMd/KMYItMnk4ocMxyYAbBGvfd8lkzpT4c3B0Gi3HQC3hMNPDEUGmVfoW5gSAelmjAlUaPwAc3hYUZM2VriM/OKfVNriPRzmb1c/kGQM4A9ZN45QLiEjiV76AhnWOJ8h7pprNSoKHg9ZCrQ66mQ=
+	t=1788949417; cv=none; b=fWJ0JX3yoK2Nv7aohyUsqTFUNYQ4x2n4l6yPS35MsR4dB/WRF7QIbIKlZUf4QQEOh3f3b3V3Ihm/Q/lI1TKVvlmvUFzgTt21VbyTMxsIh6AenMvDrtGmUAamAjef1iRzlWJQuYYyHSFl9Tu7HxiKtDjb4WEUqCoriVHGdnkANcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788949352; c=relaxed/simple;
-	bh=jzG+g7iKYUUcWcvBzIkAZUCX9UIB+TGAE+Az/emZlVI=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Oc5szKntjY48kkQhMdqTS+SPLejgbHTH5+8XOKJJ3gJTNH9oeboBR4fh15EUlFjdGHWMpoBisA3uhyCXOEnQX2OZEG2d7Mdl/+ej3DVgV2ESIjF8gKL0FqUzVPzyRkLRpejDa7N6JZyw5vUZzRK2ZT6hAob7/8Sn29PAcS9SXi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cpnv0zWw; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788949417; c=relaxed/simple;
+	bh=GIKeEIpX6bu2mSsgllCLz7N1GSQMMvriOoU2DkKa3TQ=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=R+VTjoFgnN5B5whAJ/euqqUgY8glS9R0+6RSFIWFM0MlzO7G7pY6AqJ/IbrdUAVojhZTxmFgySYGF8WCRSIVKxc7uOwGerO2VFsDSocdzhWEtQS2kkTrUDgfvu8Fc0l5Wh7avprg1PXYPQI2GWAaYJhx0VCw5Qt8x4cDr0JoOYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=H7s+aJfs; arc=none smtp.client-ip=62.96.220.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cpnv0zWw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 295041F00A3A;
-	Wed,  9 Sep 2026 10:22:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788949350;
-	bh=EMSy4EtAPU3DJadtZckO+KxZ2jy5yHNr/i9X9uKLqWg=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=cpnv0zWwZOjhadomaxv350ejoh6ZAKzXIunkMwnCFBYNpiCOrqOQ16/zE8bLV6uPW
-	 So6rSYdZfjs6viojJ1AUXB7zV9LSnWKISnjEhTdZH2Ys1HKpVF8tvmuwCUWIBLuI65
-	 U+Sh5pBWpZZTv16/WWM9EL1r5K9A1QmBA2Ap8hrOzmfHtnQvS/8p1M51xqvWCUwAXR
-	 ce9onpwhR2eFDZPgFtmv5LpZ0YaPhF++yVEKthP9EQ+tuEZcFMNxr2s6ZpsI6zJ823
-	 Q/75eSk547WyEu/JuXlvhwMYK5EoL4cxxnTBwrWiLn/P8aLQ41l26WHtQKuzF/MK9d
-	 Y9hHJOGIUeeIQ==
-Subject: Re: [PATCH net v2 2/4] net/sched: cls_route: Reject handle aliasing
-From: netdev-bot+sashiko@kernel.org
-To: victor@mojatatu.com
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, jhs@mojatatu.com, jiri@resnulli.us, horms@kernel.org,
- vega@nebusec.ai, netdev@vger.kernel.org
-Date: Wed, 09 Sep 2026 10:22:29 +0000
-Message-ID: <178894934962.219967.16944577524953312446@kernel.org>
-In-Reply-To: <20260907192133.2639067-3-victor@mojatatu.com>
-References: <20260907192133.2639067-3-victor@mojatatu.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="H7s+aJfs"
+Received: from localhost (localhost [127.0.0.1])
+	by mx1.secunet.com (Postfix) with ESMTP id 364AB205DD;
+	Wed,  9 Sep 2026 12:23:31 +0200 (CEST)
+X-Virus-Scanned: by secunet
+Received: from mx1.secunet.com ([127.0.0.1])
+ by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id VMJpqiGSiQax; Wed,  9 Sep 2026 12:23:30 +0200 (CEST)
+Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mx1.secunet.com (Postfix) with ESMTPS id 7258420643;
+	Wed,  9 Sep 2026 12:23:30 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 7258420643
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
+	s=202301; t=1788949410;
+	bh=hR2krZCcC8dNPV+S5ASkDPvhZIoZe17yZmu5JuEtkv8=;
+	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
+	b=H7s+aJfsBktP7I+rFVb7lpVveVB42bJL4jc+q8oV0kngK23ceOTUNEmp8FFNHWjFK
+	 tF1vc8oCLwtiSeTJTjxxtpVG1xSB5JgdB/Rr8FnZH4d0JBKgZH0mG6jWIdzZqmWr0o
+	 vBWPCIlFy/FPqSh3988t0iMasP+LrGCraG9Lzhff6f97F84Ghf9LgiL0VgILV7hDTs
+	 jhHSAbQMZhnJ6Wgh6DKBa9OUQ4ryHVH225CmoCoZelfk/u4QuqW1OvX83bHxU5eRUI
+	 x+9nQwOTFwGKWAj5kZgQhll6CIeFc3b+umSuzDD0IVPDQs8bUk61pVHoHRGeg8bwbS
+	 6fQmQxEaP40tA==
+Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Wed, 9 Sep
+ 2026 12:23:29 +0200
+Received: (nullmailer pid 334441 invoked by uid 1000);
+	Wed, 09 Sep 2026 10:23:28 -0000
+Date: Wed, 9 Sep 2026 12:23:28 +0200
+From: Steffen Klassert <steffen.klassert@secunet.com>
+To: Paolo Abeni <pabeni@redhat.com>
+CC: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>, <netdev@vger.kernel.org>
+Subject: Re: Some clarifications on the upstreaming process
+Message-ID: <aqEzoAcZ0uP0Kz6k@secunet.com>
+References: <20260907093020.2228346-1-steffen.klassert@secunet.com>
+ <aqD-_cBnIOMEpxVh@secunet.com>
+ <70d0048d-694b-4348-a6a5-de87a767b8fd@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <70d0048d-694b-4348-a6a5-de87a767b8fd@redhat.com>
+X-ClientProxiedBy: EXCH-04.secunet.de (10.32.0.184) To EXCH-01.secunet.de
+ (10.32.0.171)
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider:
+On Wed, Sep 09, 2026 at 11:23:56AM +0200, Paolo Abeni wrote:
+> On 9/9/26 8:38 AM, Steffen Klassert wrote:
+> > I need some clarifications on how to handle future ipsec patches.
+> > Since we have the AI-generated patches and patch reviews things
+> > changed quite a bit and I have problems to upstream ipsec fixes.
+> > 
+> > I have the following problematic situations:
+> > 
+> > 1) Sashiko found nothing in the original patch submisstion,
+> > but found an issue when I resent the patch with the pull
+> > request. I think this can be solved by asking the author
+> > to send an incremental fix on top of the ipsec tree if
+> > it does not happen too often.
+> 
+> This is usually the correct approach, with some exceptions i.e. the
+> newly found issue is impactful (the new code is exploitable).
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+Are you willing to pull this as is, or should I resend the pull
+request with the incremental fix? The latter leads to problem
+4.1 (patch does not apply to net).
 
-- [Medium] net/sched/cls_route.c:route4_set_parms() — the duplicate-
-  handle scan rewritten by this patch (line 463: `if (fp->handle ==…
+> 
+> > 2) How to treat preexisting issues that are not introduced by the
+> > patch under review? I'd say that's ok as long as the bug is
+> > completely fixed with the patch. Is that acceptable?
+> 
+> Yes, pre-existing issue are generally better handled as follow-up. With
+> some exception. i.e. sometimes sashiko says "this is a pre-existing
+> issue, but it looks like the path doesn't actually fix the pre-existing
+> issue it's supposed to fix..."o
+> 
+> Or when the pre-existing issue is very strongly tied to the issue at hand.
+> > 3) Which severity is ok to accept? Maybe this:
+> > 
+> > - High, only if the review is wrong?
+> > - Medium, only with good reson?
+> > - Low, ok to accept?
+> 
+> AFAIK the above is the current general guidance.
+> 
+> Note that some brief comments on the ML in reply to sashiko feedback
+> would help in all the above mentioned cases.
 
---
+Ok, will do this.
 
-net/sched: cls_route: Reject handle aliasing
+> > 4) Some patches for the ipsec and ipsec-next tree don't get Sashiko
+> > reviews either because they don't apply to net or net-next, or
+> > because of some other reasons I'm not aware of. This is the biggest
+> > issue, I see the Sashiko review only after I sent a pull request.
+> > This makes the upstreaming process complicated and delays fixes
+> > quite a bit. I requested some infrastructure from the LF to get
+> > this fixed, but no answer so far. Any other ideas how to fix
+> > this issue?
+> 
+> I think are 2 separate points:
+> 
+> 4.1 missing sashiko reviews on edge cases
+> 4.2 difficulty to reproduce the sashiko/clashiko review process in advance.
+> 
+> WRT 4.1 things should generally improve over time, with the exception of
+> patch that do not apply. I think we can't do much for them, but they
+> also should not matter much, right?
 
-route4_set_parms() scanned the destination chain for the filter's old
-handle instead of the handle it is about to be linked under, so a change
-that moves a filter into a chain already holding nhandle missed the
-collision and created two filters with the same handle.  The patch makes
-the scan compare against nhandle and adds an extack message.
+Well, the 'patch does not apply' is one of my biggest problems.
 
-Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260829205422.854785-1-victor%40mojatatu.com
+> WRT 4.2 the current guidance is to run AI reviews before submission.
+> Sashiko could be installed and run locally.
 
-> diff --git a/net/sched/cls_route.c b/net/sched/cls_route.c
-> index 17b0ebb766626..9710b77d379c4 100644
-> --- a/net/sched/cls_route.c
-> +++ b/net/sched/cls_route.c
-> @@ -460,8 +460,12 @@ static int route4_set_parms(struct net *net, struct tcf_proto *tp,
->  		for (fp = rtnl_dereference(b->ht[h2]);
->  		     fp;
->  		     fp = rtnl_dereference(fp->next))
-> -			if (fp->handle == f->handle)
-> +			if (fp->handle == nhandle) {
-> +				NL_SET_ERR_MSG_FMT(extack,
-> +						   "Handle %x is already in use",
-> +						   nhandle);
->  				return -EEXIST;
-> +			}
+If somebody pays for the LLM tokens...
 
-[Severity: Medium]
+I don't have any influence on the patch author. But as most of
+the patches are AI-generated, I'd guess they have some AI review
+too. Unfortunately this does not mean they are correct.
 
-Should this scan skip the filter that is being replaced?  When
-route4_change() is called with an existing filter, fold is still linked in
-its bucket chain while route4_set_parms() runs, and f was seeded from it:
+> The nipa instance (clashiko)
+> is slighly more effective than sashiko.dev because it runs several
+> recent models and its result are indeed hard to replicate locally/in
+> advance.
+> 
+> Clashiko currently runs on (very significant) meta-sponsored budget, I
+> think it would be hard to extend it's usage to netdev's subsystems.
 
-net/sched/cls_route.c:route4_change() {
-	...
-	if (fold) {
-		f->id = fold->id;
-		f->iif = fold->iif;
-		f->handle = fold->handle;
+But that would fix the issue. Finally all the patches are reviewd by
+Clashiko anyway when I send the pull request. If the nipa picks the
+correct tree (ipsec or ipsec-next) the patches get reviewed already
+when submitted and I could send the pull request without attaching
+the patches. So this would be still one review per patch.
 
-		f->tp = fold->tp;
-		f->bkt = fold->bkt;
-		new = false;
-	}
-
-	err = route4_set_parms(net, tp, base, f, handle, head, tb,
-			       tca[TCA_RATE], new, flags, extack);
-	...
-}
-
-fold is unlinked from b->ht[] only after route4_set_parms() returns
-successfully, so the new scan can walk into fold itself.
-
-Two things seem to follow from that.  First, for an in-place change that
-keeps the same to/from, nhandle equals fold->handle and the scan matches
-fold, returning -EEXIST for the very filter the user asked to modify.  The
-old code compared fp->handle == f->handle, which is also fold->handle, so
-the self-match itself is pre-existing and not introduced here, but the new
-extack now reports "Handle %x is already in use" for the object being
-modified, which reads as a foreign collision.
-
-Second, does this newly allow a filter to be silently renumbered?  The
-0x7F00 order bits are only folded in for the create path:
-
-net/sched/cls_route.c:route4_set_parms() {
-	...
-	if (handle && new) {
-		nhandle |= handle & 0x7F00;
-	...
-}
-
-So for something like
-
-  tc filter change ... pref 100 handle 0x10101 route from 1 to 1 classid 1:9
-
-nhandle comes out as 0x10001 while fold->handle is 0x10101.  to_hash() uses
-only id & 0xFF plus the 0x8000 bit, and from_hash(nhandle >> 16) is
-unchanged, so both handles land in the same b->ht[] chain and fold really is
-visible to the scan.  With the old comparison against f->handle the scan
-matched fold and the change was refused; with the comparison against
-nhandle it no longer matches, the change is accepted, and
-
-	f->handle = nhandle;
-
-renumbers the filter from 0x10101 to 0x10001.  After that, del or replace by
-handle 0x10101 no longer addresses the intended filter.  Was that change of
-behaviour intended here?
-
-There is no memory-safety consequence either way: the -EEXIST return happens
-before refcount_inc(&b->filters_ref) and before the f->handle / f->bkt
-assignments.
-
-For what it is worth, both halves appear to be addressed later in the same
-series by "net/sched: cls_route: Fix in-place replace" (ba2f28f8), which
-turns the test into
-
-	if (fp != fold && fp->handle == nhandle) {
-
-and carries the order bits over with
-
-	if (handle && (!fold || nhandle == (handle & ~0x7F00)))
-		nhandle |= handle & 0x7F00;
-
-so the concern is limited to the intermediate tree state at this commit.
-Would it make sense to fold the fp != fold exclusion and the 0x7F00
-carry-over into this patch so no bisect point renumbers filters?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260907192133.2639067-1-victor%40mojatatu.com
+The current workflow makes me running in circles. I have no idea
+how many iterations it needs to get a PR upstream, while the
+queue of new patches continues to grow.
