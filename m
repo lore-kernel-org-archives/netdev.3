@@ -1,38 +1,38 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 890C938E8D0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80BB81A6835
 	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 07:48:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788940101; cv=none; b=hxoy5EI/UjihwwhcIuEbB/GZqG2YBt3PX+eSVqhDR/xaHXzptimquG7S7FysWRlmZ2oMS+ulZQQ8zKdtNrubWpimj1grdCIXvR3sy/DbzhdcPxUi0I6gD10OJwDiPr0xncIhgeSErcW/7PQ+HI/+/80dlHPmkk6/gdsffJdKNuA=
+	t=1788940102; cv=none; b=itlqV46H5ycX1GWPg4IxVd5sUhlX3Cm/vbKUW/OjkZYJk2/Xy6rYAZZ5dQnXF5YBflAu9hn4w7cEUJbVO7U5GlzOm8nHQYhIaF2wEd2s1wuBuXUoIMtGgaCUdl9yHCIjxpn4Z8UIWrarUUzIoauc7UfTK/csX51nEpQ3oMl2VnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788940101; c=relaxed/simple;
-	bh=TrkuluP5P0hsHSCuiA3vpvv1iEMs1+ocpB+H02WT470=;
+	s=arc-20240116; t=1788940102; c=relaxed/simple;
+	bh=5Dv134WaCeCqSk2f6YgrUDGmtWTKmrDWg4peL7es3J4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I7wqUbTvLo9fSyFqoe/yde9OO1kJLSuZC2K2QRva9IsP+VzKGdKe+7QXN9lKuD6PuBnxNyYRGZfCb0kenk/TkMyNMcJfxegwyrmyuwRV3mCBe9DgULgJwEm2I5ci8CztKg08Ld3dxW7TcZy55stC2FPntgdZC6zCp6rUYHgSlLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=xpEPJXvs; arc=none smtp.client-ip=185.246.85.4
+	 MIME-Version; b=HvaTriFjTV0PIFQl1G1/GU52uGxMs+I761BxpjeasaASb3kqvLQFpIIFgF1cNyvJmJpAfySxy9BgKO6boM7hPWllUTdhl1WfB5PUYwubuPbWGeNuRlrelCaK4qUWuUIJSiHHL3iivYpY5BKao28SH0gi8aZlZQDevukBd1Vikv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=RJ57TqPt; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="xpEPJXvs"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="RJ57TqPt"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id E9CB64E415AD;
-	Wed,  9 Sep 2026 07:48:18 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id E5DE01A199A;
+	Wed,  9 Sep 2026 07:48:12 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id BBBB560448;
-	Wed,  9 Sep 2026 07:48:18 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 16FA611C7AF65;
-	Wed,  9 Sep 2026 09:48:11 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id B7E0260448;
+	Wed,  9 Sep 2026 07:48:12 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id EEDDA11C7AF63;
+	Wed,  9 Sep 2026 09:48:07 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1788940096; h=from:subject:date:message-id:to:cc:mime-version:
+	t=1788940090; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=LNfPfVxE7TyoGk4owPMHBVxj0S8J8FrPyxLkQ78bxNY=;
-	b=xpEPJXvsrZtm58HaHjF/2UmevoVvxuSrtclLVRnua6XHwvqdSuZYhPiTU2423gaScnaUYH
-	fUBMgyz5d+kvFTs7OfHPQlLXHe4Pe/4fjJNcWUpS9+tg8KiPpAq+U0bmt6aGa876emyR10
-	BPHhFSs57IsYxbKT7A70Rx+LLqruZVlPHgDqmfNeCAvHmosySxcXh0Xr51OYH9WZTWeqQz
-	qPh9VDO7iZHCHJWYxaSjVh6cbiCw4dYkK5DN7z6ZNCQJgzgUL42NTufgjwSnj7f6OGCK57
-	RX5yx6sO4xlVzBdtBkLgLpnZJVTB30+qVVf1M+gn1VOEkiF0daF7MktQt0WrSw==
+	bh=BMivBElmV1/MOOc+DLH0sFFzsd8a8AgGGCJqDLRWE1U=;
+	b=RJ57TqPtLQ+K6sX1w7O3eQR8UxaggqHYmvpy4LIKj/TxuUOp0DzVPHlDjmcO+H/ktkHkyY
+	d8gMmR9WC2r2UnEwE65YQg0FYVoYDFo06uXAU7mDrYNXd6E0rN3GROHFr14On7CDQIiLKr
+	dqYfbdSepYZ8jYnyViaXVuoLzNHL4jNrR+p3RwiBe9cowh4hsAmFTAAaMN9v+4plbHsqZe
+	xb7VF6AvcFKhzjOJfjdJw8edmkvV91D1raiZ4CkdaBjV4aa4EkBUo+GXK61s3AxJndGBA5
+	RGKe6FBpUJkQiSYDweTVODYJJ/KKMFLgsR/4gHPTMCKle81gEnRGD2r1FdxfFQ==
 From: Maxime Chevallier <maxime.chevallier@bootlin.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>,
 	davem@davemloft.net,
@@ -61,9 +61,9 @@ Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
 	linux-stm32@st-md-mailman.stormreply.com,
 	PKneuper@dspace.de,
 	David Laight <david.laight.linux@gmail.com>
-Subject: [PATCH net 6/6] net: stmmac: selftests: Account for alignment shift on dwmac1000 for Jumbo test
-Date: Wed,  9 Sep 2026 09:47:39 +0200
-Message-ID: <20260909074740.1247762-7-maxime.chevallier@bootlin.com>
+Subject: [PATCH net 5/6] net: stmmac: size the RX buffers from the frame length, not the MTU
+Date: Wed,  9 Sep 2026 09:47:38 +0200
+Message-ID: <20260909074740.1247762-6-maxime.chevallier@bootlin.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260909074740.1247762-1-maxime.chevallier@bootlin.com>
 References: <20260909074740.1247762-1-maxime.chevallier@bootlin.com>
@@ -76,41 +76,82 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-On dwmac1000, we currently only support single-descriptor frames. The
-Jumbo test started failing when NET_IP_ALIGN was added to align the IP
-header, as this tests tries to send the biggest possible frame.
+When picking the buffsize to use based on the MTU, we shouldn't check
+only the MTU value, but also :
+ - ETH_HLEN for the L2 header,
+ - up to 2 VLAN tags,
+ - the FCS,
+ - the NET_IP_ALIGN
 
-On dwmac1000 the DMA transfer is aligned on 4-bytes, so adding a 2-byte
-shift at the start-of-buffer address means it takes a whole extra 4-byte
-DMA burst to receive the Jumbo packet, causing it to spill over the next
-descriptor.
+The default bufsize is 1536 bytes, which is enough to contain all the
+above so this hasn't surfaced before, but the addition of NET_IP_ALIGN
+to the start of buffer address tripped the Jumbo selftest, leading to
+this discovery.
 
-This doesn't seem to happen on dwmac4 and xgmac that appear to correctly
-handle unaligned xfers (only tested on dwmac4)
+With that, we don't need the '>=' checks on the buffer len, we can use
+more consistent comparison operators in stmmac_set_bfsize.
 
-Let's account for that in the Jumbo test, reduce the size of our big
-packet by the align size.
-
-Fixes: 23680bf5f8c6 ("net: stmmac: restore NET_IP_ALIGN in the RX DMA offset")
+Fixes: 286a83721720 ("stmmac: add CHAINED descriptor mode support (V4)")
 Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c | 3 +++
- 1 file changed, 3 insertions(+)
+ .../net/ethernet/stmicro/stmmac/stmmac_main.c | 20 ++++++++++---------
+ 1 file changed, 11 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
-index 2fc0badb65a7..ffc58c210d0d 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
-@@ -1768,6 +1768,9 @@ static int __stmmac_test_jumbo(struct stmmac_priv *priv, u16 queue)
- 	struct stmmac_packet_attrs attr = { };
- 	int size = priv->dma_conf.dma_buf_sz;
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 24656b35350b..8a23562196d9 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -1536,17 +1536,17 @@ static unsigned int stmmac_rx_offset(struct stmmac_priv *priv)
+ 	return NET_SKB_PAD + NET_IP_ALIGN;
+ }
  
-+	if (!dwmac_is_xmac(priv->plat->core_type))
-+		size -= NET_IP_ALIGN;
+-static int stmmac_set_bfsize(int mtu)
++static int stmmac_set_bfsize(int len)
+ {
+ 	int ret;
+ 
+-	if (mtu >= BUF_SIZE_8KiB)
++	if (len > BUF_SIZE_8KiB)
+ 		ret = BUF_SIZE_16KiB;
+-	else if (mtu >= BUF_SIZE_4KiB)
++	else if (len > BUF_SIZE_4KiB)
+ 		ret = BUF_SIZE_8KiB;
+-	else if (mtu >= BUF_SIZE_2KiB)
++	else if (len > BUF_SIZE_2KiB)
+ 		ret = BUF_SIZE_4KiB;
+-	else if (mtu > DEFAULT_BUFSIZE)
++	else if (len > DEFAULT_BUFSIZE)
+ 		ret = BUF_SIZE_2KiB;
+ 	else
+ 		ret = DEFAULT_BUFSIZE;
+@@ -4063,7 +4063,7 @@ static struct stmmac_dma_conf *
+ stmmac_setup_dma_desc(struct stmmac_priv *priv, unsigned int mtu)
+ {
+ 	struct stmmac_dma_conf *dma_conf;
+-	int bfsize, ret;
++	int bfsize, len, ret;
+ 	u8 chan;
+ 
+ 	dma_conf = kzalloc_obj(*dma_conf);
+@@ -4073,13 +4073,15 @@ stmmac_setup_dma_desc(struct stmmac_priv *priv, unsigned int mtu)
+ 		return ERR_PTR(-ENOMEM);
+ 	}
+ 
+-	/* Returns 0 or BUF_SIZE_16KiB if mtu > 8KiB and dwmac4 or ring mode */
+-	bfsize = stmmac_set_16kib_bfsize(priv, mtu);
++	len = mtu + ETH_HLEN + 2 * VLAN_HLEN + ETH_FCS_LEN + NET_IP_ALIGN;
 +
- 	attr.dst = priv->dev->dev_addr;
- 	attr.max_size = size - ETH_FCS_LEN;
- 	attr.queue_mapping = queue;
++	/* Returns 0 or BUF_SIZE_16KiB if len > 8KiB and dwmac4 or ring mode */
++	bfsize = stmmac_set_16kib_bfsize(priv, len);
+ 	if (bfsize < 0)
+ 		bfsize = 0;
+ 
+ 	if (bfsize < BUF_SIZE_16KiB)
+-		bfsize = stmmac_set_bfsize(mtu);
++		bfsize = stmmac_set_bfsize(len);
+ 
+ 	dma_conf->dma_buf_sz = bfsize;
+ 	/* Chose the tx/rx size from the already defined one in the
 -- 
 2.55.0
 
