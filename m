@@ -1,275 +1,133 @@
-Received: from mail-yx2-f12.google.com (mail-yx2-f12.google.com [74.125.224.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-a2-smtp.messagingengine.com (fout-a2-smtp.messagingengine.com [103.168.172.145])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04B30379C42
-	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 17:37:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.140
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788975445; cv=pass; b=KEXEOrVjluW5TEsPCT4ycnedlw2jAc+JWAZb5vGva3tLHWn8LRVdLQtwygAndwqGJzJDwWI5/QKNYGOel2kgdFgQzTUDo54V5JeybSca4sUh2imHUFUeHBAMyaMA1iAvO5MdA1MZCr8l5A3Fm700dO5F9eik8tBIJ2wlquo6T8Y=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788975445; c=relaxed/simple;
-	bh=L6EZGw8SGANGHrrGkcSveLb3zd9izGncX/8VAKQnZiU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=A3nVswSAk2c+tJqYJRvzO7xajg0/G2Srdjf3N5omD6dyfFU2NSA4RjDD1yB5qZQtJMRKV+T7JYhPkt31TEr2g6batIZzdWcdP9TcSyA67/9LoMUTGB8+ABmm/3wuMLmPUwJzM/WoesOnYuUESQohOZWCENFvO3Wv2FBftiJxZ9g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com; spf=pass smtp.mailfrom=etsalapatis.com; dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b=z8jqWRYA; arc=pass smtp.client-ip=74.125.224.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=etsalapatis.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A3F4378D94
+	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 17:38:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.145
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788975513; cv=none; b=dQbh50SMhL9rtPU4G31a199RmCJ9h4so6L2wlvNuw0zB+4pNVOrJFUPZW/wo1DQMgoeduSOO5VZRJBjXYJcXS0CCZF0FXUGEbknwC7Z0JYwcgmKeFSzJ0wxSSXMCdPgwhTq/9S+vsSQyWg1HUMCbzCvD131ouPP1/vKg0ItN7vI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788975513; c=relaxed/simple;
+	bh=nrI4GPIQhcNLCr47tkvvICyrs3LEYA/CiiaxMuRCSAw=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=MtUTusdJyh9KJiRCWnQ8oiK1V+xi/G93Ln3wbRnHwULBd7xgjACt0eAcjPSDmzjHG0cfcHi69r+v5WlNys2BOoj1o1rpDn2UMVuoF623BEbbSS1mAQ/lT29YI/j/gLPHF9YI8mUl3eOBwqN2Ac6Y1I6tyLcT0RG4/wQBZrRpmQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im; spf=pass smtp.mailfrom=fastmail.im; dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b=R1cMNfpE; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=sePm/wAz; arc=none smtp.client-ip=103.168.172.145
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastmail.im
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b="z8jqWRYA"
-Received: by mail-yx2-f12.google.com with SMTP id 956f58d0204a3-66e4ab19127so650437d50.1
-        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 10:37:21 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1788975441; cv=none;
-        d=google.com; s=arc-20260327;
-        b=eo+r6i2gEgoC5hIFoa7LeNswcHGrwMC8ctNJnJmA7CGCVcn8HbfTtoyCw3XGFLq5ac
-         epGGiLzZ62dRirXBWZvbdJAg7/qHhUJekufRoOiOi8ta3+cD7hxsbeumovAqvVD57cFy
-         pue/NdfGj6rf2nQ1iZWtkl9k9cOSDTOy2Vjp65BGxdow/bEYr7KFErZOqXUU3Khsjm6p
-         k8Qf/0yv+2mKfjMronwyoCUyQlssa+JMHuAzJMWZMC8as6BL56z5yJgHEDBuSaL2lvAJ
-         yP1syElwTLmHmMOE/oMVZDLF+YuyAOtW+jzhkIJi4PipPQ50VxSQjp2wFYIpqmPt6N1g
-         qz5A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Af6ITtfBEfomuP9/zSoltzeiZzdojuJAWeTn9uFF6ek=;
-        fh=yC2LSLDL++L1I9VkETfh10nOvNSFkZVTyOyBdjbDTiQ=;
-        b=GqaNucYHigoZVfAtuXiaBzQs8H1vY5h+yV/7DFPCryNHrWrjZHSgOhUJU5eDw3pZiS
-         waglBntRNOitUaTZ0TohT1fD5Br3UglzRHRHq1NunNWBckeIqRlRdiVkSqzIk56F6hFR
-         /v/bmZ57q6Cz4RXYPlchSFgr9eAaVMpa6YJYJK/qqTs9QvwvIwpmrS4DaAUcaJeNvUcq
-         LcYeawWKTAF6bQYJTUhEeaiuiXE+Wppb1KxbnbXZ2qKLabxV/Z2k/sKKawTR+xcajWND
-         4VKIVpKGfQfwYX6cjGfrTJ7Z6n+sQq+yZYDJyfLFjZRsVF7LVYKLSZ2g4WOURYHqkdwU
-         vSDg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=etsalapatis-com.20251104.gappssmtp.com; s=20251104; t=1788975441; x=1789580241; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Af6ITtfBEfomuP9/zSoltzeiZzdojuJAWeTn9uFF6ek=;
-        b=z8jqWRYALdUGBkLxezUs8C+xjV5pUXYMTvjAM+dHk0vJHl285vdrgg+tiQs06BsHzO
-         wgnRt6jtOn4koRztyEO7uUt7jGml4eR8vDalIXRM2dSa4IecKuidumQDJD66h6mA3/hL
-         dnUlh7nWPZTgXLwOLsLrT6fxinNoS6qiitnhAAkU7SDN9IQF7CA16KattG4mqNuKQEkp
-         c1QI0rO1IqhwVnwlBbHvZdQZ0oiL5HP39gJGwGO73V3zy+rmLYGFOKMlUwbuMvGsLbRI
-         thxWKSCd7M7+fVvrtGg0mmBJtrrPeQkZ8RlFFfXV5l6cyati6NxJEnLxjn8qkpIQDlWa
-         ia+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788975441; x=1789580241;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Af6ITtfBEfomuP9/zSoltzeiZzdojuJAWeTn9uFF6ek=;
-        b=TO4SzUSu2U9nJwMjTh3emgapXv6zasNWbA4HWjV8G4fCtYmn268UcyulDNcHQJFzSG
-         QI5Y7COuDjeTBw6e/OXE9GwfxnKV2d5vAosKNm1byXY+d4OLuTMhMiGfgHVLaHFHJl5r
-         /XzU9n7EtoZkp329Zm48ugnJ89S4GBnmHgObsPFhNBXmLERwNXtlmxqbJmqtQzf5QWL0
-         XEdh0bxx3PUXI5qZKfl3qDjNmIYdTYRuV0/mhRq4gdzaePC9ltyyUgE80QjsKTmRIXkn
-         D0lGWuxJTWDy1N0UD6vFvpOxW0HceH/+7Ov8G8LUHJ+e48DHz+G80lyETd+0jA4sjGzf
-         h4Kw==
-X-Forwarded-Encrypted: i=1; AKwUvBy7DE6V251gjPxUMDgCpTc0wG8vndkgldv6BaXNg35l3s6rf2ahhmuX3YZQ8uhrxc++YlINhrs=@vger.kernel.org
-X-Gm-Message-State: AFuF++m2c8dkNccGONX+85uy7i1bDKT5izQ5zXQIfDktddM0DiZI7mXh
-	OF5hA+AV4d82+feSJEZm8ysWMhEB882Q27nm2QVXbOEiQgeZJBlBcQB5yM7+WzxNDaAUUVrhN/w
-	P52GAfUp+7OpKc6llHfmB0I9ejJIWm+9emYT7w2DLxQ==
-X-Gm-Gg: AYBFou2/RV7pzq7OKLINO73D6PeSqOgxvuTaN9PtHxlDEhjGTtfxeM9HnImIQkcSC+/
-	OCSHTBHRyaw9mTAuCn4HNhwQGNsm2zwon+rek2zrtOse+IoXvo30bQWRq77bcbAVEZdgSeqahRJ
-	gxeYGi/Vt+s6HySgDUrt8MCjBxX9lIB9ShoXrX4rCOivy8fkE0A3XcN6NbOW+cj+OsD8Yh2etY6
-	+kNqLHpOaq84wxhVADWjfQbZqKjd7dpj7njqksmILk5rj8JTdveK5tGq1xYyJ7dHqJcg4EKevzK
-	tHz4GPQSOXl/Q7Advby1HfiabrWjwMASr0kpqpxaBzhwyWDaFgVf1yRNduHUqBLu
-X-Received: by 2002:a05:690e:400a:b0:66d:93e:f06b with SMTP id
- 956f58d0204a3-671100b5114mr953412d50.38.1788975439124; Wed, 09 Sep 2026
- 10:37:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b="R1cMNfpE";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="sePm/wAz"
+Received: from ams-compute-01.internal (ams-compute-01.internal [10.64.2.61])
+	by mailfout.phl.internal (Postfix) with ESMTP id 423B6EC0077;
+	Wed,  9 Sep 2026 13:38:29 -0400 (EDT)
+Received: from ams-imap-09 ([10.64.2.29])
+  by ams-compute-01.internal (MEProxy); Wed, 09 Sep 2026 13:38:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fastmail.im; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1788975508;
+	 x=1789061908; bh=+OlHwml09KbQAHZfavRDO602tceew8eMar5iOF7IKLE=; b=
+	R1cMNfpEJItjOJ2ZOP4i2YRdEjCL9Yfx+l9eScXoK9RD2KIAR9AmBfZlsP74TUox
+	iRUl0PK2U2f2Zjki0mifm7991HDpMIT4mA0NKMzPKhBOgsC0ICTR7h+7szvaFHwX
+	rvbicD/IYh4uDhgNzo5ulGXq7zLGExus/i2x11cMXOXveAhmwfr1VffEL6vVyd5v
+	WuJqlsBgvIxuIDL3WCotxf30YAjNPDAO9g+Z4u8dHgzKbEJmhgnqJqmldGdDyfv9
+	BPQyzO4GSlNrF9743RseqVx22lFh0Xixlk1rNs+D12jOxIoiziDeO40AcccJ8442
+	0kfPasSQSpZiZrkkKyWpow==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1788975508; x=
+	1789061908; bh=+OlHwml09KbQAHZfavRDO602tceew8eMar5iOF7IKLE=; b=s
+	ePm/wAzxLP7uYwcYrG2sS/Xq+goXbUtR4p/nbw53491ojHHQoLSI3+kMAFxToS7A
+	zgmSQ/EZXxSHLuI5urdkuEOAALo6ghcMKyqx5Ro0Tmgk8NnvjMJ7u7gV/eOP3TSe
+	HofoFIaHpR5urmRym/uAbAeUWgXt3/LKYD/FfGOeYh39MM6CVvTToTB2ieUGlHOX
+	xRRcv3HKt9NC+oPbJ/1ldsQcyu/fK2GAY8z5BQwV4ybvlBCE8ccFpm/vntMdvf7r
+	Yw4aOOEqvu+bAhu6+39UdQJNYKA93DaViyKiA0wY5yhhKGHesLkQ4ko27EuFgw7O
+	n70WDCqZEHQ2EdXF6OVjQ==
+X-ME-Sender: <xms:jpmhahAcgLhJxLSvRgj9ed6CbwbhaN60G3mUUA650IIjBkRFovCG5A>
+    <xme:jpmhaqUmEUKCzx8ji482nxcLnrMf5_T79d6F5Z4xWvPnOuvekq2zFkK_hZO-AJnlM
+    lQ6b64L3l_yS2x8jnldq43nP7f0VSxadzry-JqLK9lkinLkltIxV_wQ>
+X-ME-Proxy-Cause: dmFkZTEV4+WjRKM3cQ/9YbgICPxWVMYRnIBLN5LjH81Dk2B1KXC8T1sEmU9Cr6Yp1x78FH
+    Q19bv5vhacnjv0X8hZoeAWFHfc2f05iB4HyED4HB0IWs/nSeTqk3lg0nVGAt6ZK36HJum8
+    mopKGvEu7ES/ulAncv0ZpXcxtwt9ywMaAcpz8UJ5U67zoRHIwnhck9CuWbnp3NasgHpwpM
+    H0au4s4v7b75X7nMPHag2J/IEkOw74i9R0/q5sHv+bSEkEeB2MP7ShO/SlGQ2TAu9G16CN
+    0MlKNgS1WEVQHP6p9y8gARwLhwclC3noXtg7K0Saz9MLQw2ETaCswsKFOXBS+S9PijxLJj
+    qteh+Wg6Xvm32WxFEhH2FcKNwDkYWcErMF3cjnyZ1DfXu/iTjmWYBBAOcLv3rYcPm/uLLR
+    XSRlcXIsoAN2kEEqNMc64e7iqEYr+CPCX4hQ294Va7XTRDLGh/5wCCeJ6bx0GF8tiIfxd+
+    P5IWAGm2FSzqL6Wa3HDQL25qUXlGaE30bP9DltWPMzLAUh3ujINo15SRmQ5Jg67H93alVE
+    uNMgQSYodN+z0bsQz03eJRe1RzqoiCwcI2PqQR9iUmJD1zGUSBG/Gr6Loex0ZBaD6M+Z+n
+    qB/F7uIiYbVaydEoIly71gEAifSS8aAOB4cFf7rt4YIlMBEn/wS7wFSXx7FQ
+X-ME-Proxy: <xmx:kZmhahTXEeEUxM94UUzcSZE8Z72KrqdeMVLzpcF90SN0H9-UcrKAGg>
+    <xmx:kZmhalKgeQG75LEA9blNhGQbpR7xDRM-C0NhkshK7c-JJOuYTpLiSg>
+    <xmx:kZmhas-OMXuW3CA6I4keFhBuOrIiltW6ye1FMWDh49DAjNRtleQxgg>
+    <xmx:kZmhakLsoj7PIIH0EBckB2x3gZAzUaJpvZXrFCzoGAEVigSl_BBgnA>
+    <xmx:lJmhameuF-NY0sYbM6QW04lqWVDKlyAuWiAK8eS8d7RirFE5gMFWUhDx>
+Feedback-ID: i559e4809:Fastmail
+Received: by mailuser.ams.internal (Postfix, from userid 501)
+	id B7AC7180087; Wed,  9 Sep 2026 13:38:22 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260909135324.60165-1-cenzhang@linux.microsoft.com>
-In-Reply-To: <20260909135324.60165-1-cenzhang@linux.microsoft.com>
-From: Emil Tsalapatis <emil@etsalapatis.com>
-Date: Wed, 9 Sep 2026 13:37:08 -0400
-X-Gm-Features: AcwNN1WDkVwiFlZuDNEwXauBrRSu0q6NKwPjowBV4De_y5EG6aHsz-Bo8i1LExM
-Message-ID: <CABFh=a4VyzxsQqsayWpTKjxY3HL2C072u=pbecEpNDbL9eBNKA@mail.gmail.com>
-Subject: Re: [PATCH bpf v2] bpf: Fix non-linear SRH access in bpf_update_srh_state()
-To: "Cen Zhang (Microsoft Security FORGE Labs)" <cenzhang@linux.microsoft.com>
-Cc: bpf@vger.kernel.org, daniel@iogearbox.net, john.fastabend@gmail.com, 
-	sdf@fomichev.me, martin.lau@linux.dev, ast@kernel.org, andrii@kernel.org, 
-	eddyz87@gmail.com, memxor@gmail.com, song@kernel.org, yonghong.song@linux.dev, 
-	jolsa@kernel.org, ihor.solodrai@linux.dev, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	m.xhonneux@gmail.com, dlebrun@google.com, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, AutonomousCodeSecurity@microsoft.com, 
-	xmei5@asu.edu, tgopinath@linux.microsoft.com, kys@microsoft.com
-Content-Type: text/plain; charset="UTF-8"
+X-ThreadId: ArITeD_9vPCs
+Date: Wed, 09 Sep 2026 20:37:48 +0300
+From: "Alice Mikityanska" <alice.kernel@fastmail.im>
+To: netdev-bot+sashiko@kernel.org, "Paolo Abeni" <pabeni@redhat.com>,
+ "Jakub Kicinski" <kuba@kernel.org>
+Cc: "Willem de Bruijn" <willemdebruijn.kernel@gmail.com>,
+ "David Ahern" <dsahern@kernel.org>, "Ido Schimmel" <idosch@nvidia.com>,
+ "David S. Miller" <davem@davemloft.net>,
+ "Eric Dumazet" <edumazet@google.com>, "Simon Horman" <horms@kernel.org>,
+ "Shuah Khan" <shuah@kernel.org>,
+ "Hannes Frederic Sowa" <hannes@stressinduktion.org>,
+ vadim.fedorenko@linux.dev, netdev@vger.kernel.org,
+ "Alice Mikityanska" <alice@isovalent.com>,
+ "Willem de Bruijn" <willemb@google.com>
+Message-Id: <d61e1918-7234-4be5-8520-7932e62de962@app.fastmail.com>
+In-Reply-To: <178851946040.4131868.4350633164754043676@kernel.org>
+References: <20260901195714.673548-4-alice.kernel@fastmail.im>
+ <178851946040.4131868.4350633164754043676@kernel.org>
+Subject: Re: [PATCH net v5 3/4] selftests: net: Test UDP length overflow with PMTU
+ discover and big MTU
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Sep 9, 2026 at 9:53=E2=80=AFAM Cen Zhang (Microsoft Security FORGE
-Labs) <cenzhang@linux.microsoft.com> wrote:
+On Fri, Sep 4, 2026, at 13:57, netdev-bot+sashiko@kernel.org wrote:
+>> +    for filename, method in [
+>> +        ('/proc/config.gz', gzip.open),
+>> +        (f'/boot/config-{os.uname().release}', open),
+>> +    ]:
+>> +        try:
+>> +            with method(filename, 'rt') as config:
+>> +                for line in config:
+>> +                    if line.rstrip() =3D=3D f'{option}=3Dy':
+>> +                        return True
+>> +                return False
+>> +        except OSError:
+>> +            continue
+>> +        return None
 >
-> bpf_update_srh_state() locates an SRH with ipv6_find_hdr() and caches
-> skb->data + srhoff in the per-CPU SEG6 BPF state. This assumes that the
-> returned offset is within the skb linear head.
->
-> That assumption is wrong because ipv6_find_hdr() uses skb_header_pointer(=
-)
-> and can locate an SRH in non-linear data. The direct srh->hdrlen read and
-> the cached SRH pointer can therefore access memory outside the linear are=
-a.
->
-> BUG: KASAN: slab-use-after-free in bpf_update_srh_state+0x1bc/0x200
->  net/core/filter.c:7027 bpf_update_srh_state()
->  bpf_lwt_seg6_action()
->  input_action_end_bpf()
->  seg6_local_input()
->  ipv6_rthdr_rcv()
->
-> Fix this by using seg6_get_srh(), which pulls and validates the complete
-> SRH and reloads its pointer afterwards. Pulling can reallocate skb->head,
-> so refresh the BPF data pointers inside bpf_update_srh_state() immediatel=
-y
-> after the call.
->
-> For End.DT6, make the inner IPv6 base header linear before removing the
-> outer headers. Pulling only the outer headers can leave the inner header =
-in
-> non-linear data, while ipv6_find_hdr() and the nexthop lookup access it
-> directly. Clear the cached SRH pointer and refresh the BPF data pointers =
-if
-> the pull fails.
->
-> End.B6 and End.B6.Encap can insert a new SRH and reallocate the skb befor=
-e
-> a later HMAC calculation or nexthop lookup returns an error. Rebuild the
-> SRH state when the skb length changes, which indicates that the new SRH w=
-as
-> inserted. Failures before insertion leave the existing state unchanged.
->
-> Fixes: 486cdf21583e ("bpf: add End.DT6 action to bpf_lwt_seg6_action help=
-er")
-> Reported-by: Xiang Mei <xmei5@asu.edu>
-> Link: https://lore.kernel.org/bpf/20260901183151.16648-1-cenzhang@linux.m=
-icrosoft.com/
-> Suggested-by: Emil Tsalapatis <emil@etsalapatis.com>
-> Link: https://lore.kernel.org/bpf/CABFh=3Da5iLOEJdPhoaWUhLc0eEqAuhnd83_jJ=
-r9MVZZG6gSJAEw@mail.gmail.com/
-> Signed-off-by: Cen Zhang (Microsoft Security FORGE Labs) <cenzhang@linux.=
-microsoft.com>
-> Assisted-by: Copilot:gpt-5.6-sol
-> ---
-> Changes in v2:
-> - Rebuild the SRH state after End.B6 and End.B6.Encap only when the skb
->   length changes, avoiding selection of a spent Routing Header on errors
->   before insertion.
-> - Rebase onto the current bpf master branch.
->
-> Please queue this fix for stable kernels.
->
-> Testing:
-> - Static checks only: checkpatch.pl, diff --check and patch replay.
-> - No targeted selftest was added. BPF LWT test-run does not support
->   non-linear skbs, and the existing SEG6 netns test does not create a
->   split inner IPv6 header for End.DT6.
->
->  net/core/filter.c | 31 +++++++++++++++++++------------
->  1 file changed, 19 insertions(+), 12 deletions(-)
->
-> diff --git a/net/core/filter.c b/net/core/filter.c
-> index 8513167a858a..b037d70e5fe6 100644
-> --- a/net/core/filter.c
-> +++ b/net/core/filter.c
-> @@ -7017,15 +7017,16 @@ static void bpf_update_srh_state(struct sk_buff *=
-skb)
->  {
->         struct seg6_bpf_srh_state *srh_state =3D
->                 this_cpu_ptr(&seg6_bpf_srh_states);
-> -       int srhoff =3D 0;
-> +       struct ipv6_sr_hdr *srh;
->
-> -       if (ipv6_find_hdr(skb, &srhoff, IPPROTO_ROUTING, NULL, NULL) < 0)=
- {
-> -               srh_state->srh =3D NULL;
-> -       } else {
-> -               srh_state->srh =3D (struct ipv6_sr_hdr *)(skb->data + srh=
-off);
-> -               srh_state->hdrlen =3D srh_state->srh->hdrlen << 3;
-> -               srh_state->valid =3D true;
-> -       }
-> +       srh =3D seg6_get_srh(skb, 0);
-> +       bpf_compute_data_pointers(skb);
-> +       srh_state->srh =3D srh;
-> +       if (!srh)
-> +               return;
-> +
-> +       srh_state->hdrlen =3D srh->hdrlen << 3;
-> +       srh_state->valid =3D true;
->  }
->
->  BPF_CALL_4(bpf_lwt_seg6_action, struct sk_buff *, skb,
-> @@ -7033,6 +7034,7 @@ BPF_CALL_4(bpf_lwt_seg6_action, struct sk_buff *, s=
-kb,
->  {
->         struct seg6_bpf_srh_state *srh_state =3D
->                 this_cpu_ptr(&seg6_bpf_srh_states);
-> +       unsigned int old_len;
->         int hdroff =3D 0;
->         int err;
->
-> @@ -7058,32 +7060,37 @@ BPF_CALL_4(bpf_lwt_seg6_action, struct sk_buff *,=
- skb,
->
->                 if (ipv6_find_hdr(skb, &hdroff, IPPROTO_IPV6, NULL, NULL)=
- < 0)
->                         return -EBADMSG;
-> -               if (!pskb_pull(skb, hdroff))
-> +               if (!pskb_may_pull(skb, hdroff + sizeof(struct ipv6hdr)))=
- {
-> +                       srh_state->srh =3D NULL;
-> +                       bpf_compute_data_pointers(skb);
->                         return -EBADMSG;
-> +               }
-> +               __skb_pull(skb, hdroff);
->
->                 skb_postpull_rcsum(skb, skb_network_header(skb), hdroff);
->                 skb_reset_network_header(skb);
->                 skb_reset_transport_header(skb);
->                 skb->encapsulation =3D 0;
->
-> -               bpf_compute_data_pointers(skb);
->                 bpf_update_srh_state(skb);
->                 return seg6_lookup_nexthop(skb, NULL, *(int *)param);
+> [Severity: Low]
+> Is this return None reachable?  It sits at the end of the for body, bu=
+t the
+> try block always returns (True on match, False once the file is exhaus=
+ted)
+> and the only other path is "except OSError: continue", which restarts =
+the
+> loop.  The documented "Returns None if the config is not found" behavi=
+our
+> comes from falling off the end of the loop after both candidates raise
+> OSError.
 
-Sorry but sth we missed on v1:, We need to do tbl_id =3D *(int *)param;
-before we start
-pulling. The verifier allows the *param pointer to point to packet
-memory, and we may
-be freeing the packet in pskb_may_pull(). There is no good reason for
-*param to be
-pointing to packet memory, but it's still possible.
-
-pw-bot: cr
-
->         case SEG6_LOCAL_ACTION_END_B6:
->                 if (srh_state->srh && !seg6_bpf_has_valid_srh(skb))
->                         return -EBADMSG;
-> +               old_len =3D skb->len;
->                 err =3D bpf_push_seg6_encap(skb, BPF_LWT_ENCAP_SEG6_INLIN=
-E,
->                                           param, param_len);
-> -               if (!err)
-> +               if (skb->len !=3D old_len)
->                         bpf_update_srh_state(skb);
->
->                 return err;
->         case SEG6_LOCAL_ACTION_END_B6_ENCAP:
->                 if (srh_state->srh && !seg6_bpf_has_valid_srh(skb))
->                         return -EBADMSG;
-> +               old_len =3D skb->len;
->                 err =3D bpf_push_seg6_encap(skb, BPF_LWT_ENCAP_SEG6,
->                                           param, param_len);
-> -               if (!err)
-> +               if (skb->len !=3D old_len)
->                         bpf_update_srh_state(skb);
->
->                 return err;
->
-> base-commit: 15e2565f1c43771af0bc5324971cabaad79ac286
-> --
-> 2.55.0
+I'd like to fix this tiny thing =E2=80=94 should I send a patch to net o=
+r net-
+next (after it's synced)? return None was supposed to be outside the for
+loop =E2=80=94 I added it to address pylint's warnings. It doesn't affec=
+t the
+behavior, because it's unreachable as is, so maybe not worth sending to
+net as a fix.
