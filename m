@@ -1,239 +1,223 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0116A298CAF;
-	Wed,  9 Sep 2026 16:57:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D56423A9BD;
+	Wed,  9 Sep 2026 17:00:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788973039; cv=none; b=LXQULssgvDpVS2eKOyI/qIazTk0RkD4IYJANg1UrbkPt6jFf8IIU+3I954HsqmlKRP2BQHgdFOv5qdjTyNbeBx9yJkpCyWHQ7DsahzEGAcc2cYypEh9R7Zms23hJR86Ycvplg2BxcWqVLlaiVuukPyAMNPbianDka8hx0VSZceM=
+	t=1788973248; cv=none; b=r66IKMX9fRWaQ2NKVJKWxuNBBysL4/ff5fyc8xOZzVUnR555yBCAf2IUVoRdrDzuubTr1AeiKR4rXUB/2/4iauJr1o+PSv5HpfZr0uE2fmqSBu56xmPCS6tznzbM4holtbasf0+r3X+bJ23ZuFVnvccXgaVmaQieNjLEcMnFSwU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788973039; c=relaxed/simple;
-	bh=Vmx0X4nzunNaL7FUjY7UkS9yt6Dza+5LT0xMtWzBaSk=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=GgayKgTy4TIJSLqhLSbYWTjmaRWE+q65dl+bHmwjJworqkudQ/60P2WmniTUrSYVFrXWVDfB9/InTSPJlYvQ5fIYMepLWvk8neeYcJengwESo0wjUl29+GKXeIkL2P5dm6k0ZvbpnHIYI12lCDP/g23eUDjId11WVTZ9LvjN8zI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IxssZqQ8; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788973248; c=relaxed/simple;
+	bh=zutMWd4cfItNbZd3E7kH17rV62OMLlPg4WlwdiywvV4=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=klmJ1owz69kKI+NcZ3eUxJVm9aSKc3jrxqkS9m9GniVwwHtLlmz6wVxUPLfw2SiCOBYq/xEZUslRuKpE28k17e+aNuE4qfjPDOCey9XzZ5NQ/rnklrZoDEkpFhHcemT9PNnN4zlYu7PaQTtfI/fdmFabnk8qlKbllTOll6VSh5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PJ3rLCzR; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IxssZqQ8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C00631F000FF;
-	Wed,  9 Sep 2026 16:57:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PJ3rLCzR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 473E61F000FF;
+	Wed,  9 Sep 2026 17:00:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788973037;
-	bh=bAVhB1TR9T/6sa4eS8RCZ3jxJOT8Df+ARcoVYLoq5pk=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=IxssZqQ8/rZ7Yyxopzlc3VfYRTHj4RJpjZ/0kMrq1b5qcf65t7dPG9KbYrxwOnDMo
-	 ymFTQ2hcdjI7rDv3HRKhN5NNRELIp8lMPJHPL9a9c8BTzWVGaMmhwFDVo/UkosdxUp
-	 OiVfzkfxtEavaAIUO5mn0l5uOdLKRnexaaCp+0GFZn0pkDRWutDaeWTl6N+/N91roY
-	 lc8zouRqgeqXP8jOY5X1sUU1aBWSv1Bw3xqZvByJaefjZ6eWw3otsbhxycuog8KxYF
-	 uDr83TuW64uhlpjLk9YBxJNKNxUbCwF2+dhoiw+eXwbDAkUNYP3XU0KFX4ghi2FKSW
-	 T9AYJQfMMOytw==
-Subject: Re: [PATCH v3 net-next] net: phy: air_en8811h: select LED GPIO pins
- based on AN8811HB package variant
-From: netdev-bot+sashiko@kernel.org
-To: weiting.lee@airoha.com
-Cc: netdev@vger.kernel.org, andrew@lunn.ch, hkallweit1@gmail.com,
- linux@armlinux.org.uk, davem@davemloft.net, kuba@kernel.org,
- edumazet@google.com, pabeni@redhat.com, linux-kernel@vger.kernel.org,
- bjorn@mork.no, ericwouds@gmail.com, frank-w@public-files.de,
- joseph.lin@airoha.com, wenshin.chung@airoha.com, lucien.jheng@airoha.com,
- albert-al.lee@airoha.com
-Date: Wed, 09 Sep 2026 16:57:16 +0000
-Message-ID: <178897303632.219967.12350879229326827803@kernel.org>
-In-Reply-To: <20260907015638.2875763-1-weiting.lee@airoha.com>
-References: <20260907015638.2875763-1-weiting.lee@airoha.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20260515; t=1788973247;
+	bh=eUakEIuIGM1pCT6REcgovT621BIGVqTwq9TrrmQuWWw=;
+	h=From:Subject:Date:To:Cc;
+	b=PJ3rLCzRSkpHHQo1IprYe8zlvRCXf2XNyLYulSoBiGaqWO/GtBIlKyFU/oYscw+ZH
+	 M/aDZ3ErYFIbP9tNysGO9kQKiCNs7IiALoP0/WVY8VAQ5OEik4hbhThRHiQkbQpEi6
+	 9i2X3wr1wbfLN1AYZO+zKTzfIVYUH9QXYbN7FHQt5IUWj8xeKiLrO/0ec33FTu1AlM
+	 c/PFGwPOQjNLDJO0Qbcfn20UvCopaYD9jWMcgXZDHLE4ry/7jdPKMNB327Yy9ysGFG
+	 bROOsNkVWepxQ7g/LQWLdeU28qGeKB2tjsSczDqmv/3oNo1d1VV6LrEoWtiBz9+arB
+	 nhtpQUcNb7axA==
+From: Linus Walleij <linusw@kernel.org>
+Subject: [PATCH net-next v11 0/4] net: dsa: microchip: Add support for
+ KSZ8995XA/KS8995XA
+Date: Wed, 09 Sep 2026 19:00:29 +0200
+Message-Id: <20260909-ks8995-to-ksz8-v11-0-0e04411a559d@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/23SS07DMBAG4KtUXhPk8XtYcQ/EIrbHbShKUBKiQ
+ tW746aLBoadX9/81thnMdHY0SSedmcx0tJN3dDXCcDDTqRD2++p6XJdEEoqJ63E5jgFRNvMQx1
+ 9hwZs0QVTUB6KqOhjpNKd1oovoqe56ek0i9fbzvQZ3yjN13rXs4dumofxaw1fYBW3GHB/YxZoZ
+ ONlllRM29pino809vT+OIz7tfqiNl4p5lX11oNKMickb5nXW8/zdfXJalmcBQxYmDd376Rm3lR
+ PYMEgFQXkmbdbb5i31WOILUVjyTl+f7f1gXlXfUaoXFNOiXt/9/6ffF+9aouk2n1j28B8uPugg
+ flQfcmQY1TRO+Ie7x4l7z9WH3IIYFuEmLkHuS3AGwDy+oO0R6WRorO/X/ByufwAVpvkEgwDAAA
+ =
+X-Change-ID: 20260509-ks8995-to-ksz8-15f3f9c8271f
+To: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com, 
+ Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Marek Vasut <marex@denx.de>, 
+ Simon Horman <horms@kernel.org>, Russell King <linux@armlinux.org.uk>, 
+ Nicolai Buchwitz <nb@tipi-net.de>
+Cc: netdev@vger.kernel.org, Woojung Huh <Woojung.Huh@microchip.com>, 
+ devicetree@vger.kernel.org, Linus Walleij <linusw@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+X-Mailer: b4 0.16.0
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider:
+This series breaks with the dated attempt to polish the old
+KS8995 driver, and instead implement support for the KS8995XA
+in the KSZ driver, and after that delete the old KS8995 driver.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 2
+The hardware clearly has the same ancestry, the KSZ8995XA is
+just a rebrand of the much older Micrel KX8995XA switch.
 
-- [Medium] Multi-bit hardware field implicitly cast to a boolean
-  evaluates to true for any non-zero value, potentially misidentifying…
-- [Low] The commit message states that "Using a fixed GPIO assignment
-  causes incorrect LED behavior on one of the variants", i.e. it…
-- [Low] The in-file comment at drivers/net/phy/air_en8811h.c:188-192
-  documents the default LED-to-GPIO mapping unconditionally ("GPIO5 <->…
+The old driver identified the shared 0x95/0x0 ID as KS8995MA, but
+this ID cannot distinguish MA from XA. No KS8995MA users are known,
+and KS8995E has no documented SPI management interface. Neither
+variant has been verified with the replacement driver.
 
---
+Add new compatibles, add special code paths for the KSZ8995XA,
+including support for its two-level DCB priority model, and add a
+new tagger for the special front tag found in the KSZ8995XA.
 
-net: phy: air_en8811h: select LED GPIO pins based on AN8811HB package variant
+The patches, including the per-port PHY reset polling, were tested
+with the Actiontec MI424WR rev D (which has the KS8995XA) and
+OpenWrt as userspace.
 
-This patch reads the AN8811HB package variant from the read-only silicon
-identification bits in AN8811HB_HWTRAP2 during an8811hb_probe() and stores
-it in priv->is_an8811hbcn.  A new helper an8811hb_led_gpio_setup() then
-programs either GPIO 0/1/15 (AN8811HBCN) or GPIO 3/4/5 (AN8811HBN) from
-an8811hb_config_init().
+Signed-off-by: Linus Walleij <linusw@kernel.org>
+---
+Changes in v11:
+- Drop KSZ8995XA from the three-port binding exception so ports 3 and
+  4 receive generic DSA port validation.
+- Reject invalid KS8995 receive port masks before ilog2() so plain
+  802.1Q frames are dropped safely.
+- Propagate KSZ8995XA PHY reset assertion errors instead of treating
+  a failed write as a completed reset.
+- Do not advertise legacy VLAN behavior for KSZ8995XA, preserving genuine
+  ingress VLAN tags through the DSA receive path.
+- Link to v10: https://patch.msgid.link/20260908-ks8995-to-ksz8-v10-0-7379239eb65f@kernel.org
 
-No Link: tags were present in the commit header.
+Changes in v10:
+- Wait for the KSZ8995XA per-port PHY reset bits to clear before
+  continuing setup; verified to work on Actiontec MI424WR rev D
+  hardware.
+- Drop the unreachable KSZ8995XA VLAN filtering check because the
+  restricted switch operations do not expose that callback.
+- Add KSZ8995XA to the binding's Ethernet-port schema exception list.
+- Convert big-endian KS8995 transmit tag fields to host byte order
+  before logging them.
+- Align the KSZ8995XA SPI ID with its DT compatible to restore module
+  autoloading and avoid the SPI registration warning.
+- Link to v9: https://patch.msgid.link/20260906-ks8995-to-ksz8-v9-0-8d8815a91bd8@kernel.org
 
-> diff --git a/drivers/net/phy/air_en8811h.c b/drivers/net/phy/air_en8811h.c
-> index ec7c44ca68e7d..b6eac8dc63d9f 100644
-> --- a/drivers/net/phy/air_en8811h.c
-> +++ b/drivers/net/phy/air_en8811h.c
+Changes in v9:
+- Fold the legacy Micrel compatibles into KSZ8995XA support and use an
+  exact tristate dependency to avoid probe races and bisect gaps.
+- Always prepend a distinct KS8995 switch tag to preserve existing VLAN
+  headers and avoid unsafe MAC-header access on direct transmit paths.
+- Rate-limit KS8995 receive untagging errors to avoid log flooding.
+- Link to v8: https://patch.msgid.link/20260831-ks8995-to-ksz8-v8-0-fd1dbb2b76e8@kernel.org
 
-[ ... ]
+Changes in v8:
+- Add DCB support for the KSZ8995XA two-level priority model and set its
+  internal priority map count to two.
+- Initialize the KSZ8995XA per-port default tags to VID 0 so the tagger can
+  distinguish originally untagged packets from VLAN-tagged frames.
+- Push non-802.1Q hardware-accelerated VLAN tags into the packet before
+  adding the KS8995 tag, so they cannot displace the switch tag from its
+  required offset 12.
+- Account for the discrepancy between the documented and observed
+  KSZ8995XA MTU behavior. Its packet-size control bits use the same
+  polarity as the other KSZ8 switches, while using the opposite polarity
+  documented in the manual makes the switch hang on big packets.
+- Rebased on v7.3-rc1
+- Link to v7: https://patch.msgid.link/20260704-ks8995-to-ksz8-v7-0-2af0eaa545a8@kernel.org
 
-> @@ -1077,10 +1090,49 @@ static int en8811h_leds_setup(struct phy_device *phydev)
->  	return ret;
->  }
->  
-> +static int an8811hb_led_gpio_setup(struct phy_device *phydev)
-> +{
-> +	struct en8811h_priv *priv = phydev->priv;
-> +	int ret;
-> +
-> +	if (priv->is_an8811hbcn) {
-> +		/* AN8811HBCN: LED GPIOs are 0, 1, 15 */
-> +		ret = air_phy_buckpbus_reg_modify(phydev, AN8811HB_GPIO_OUTPUT,
-> +						  AN8811HB_GPIO_OUTPUT_0115,
-> +						  AN8811HB_GPIO_OUTPUT_0115);
-> +		if (ret < 0)
-> +			return ret;
+Changes in v7:
+- Rebased on v7.2-rc1
+- Rebased on top of Bastiens cleanups.
+- Rebased and reworked on top of my patch changing the SKB ownership
+  model in the taggers.
+- Drop bogus reset routine, keep per-port reset but use the right
+  defines.
+- Properly implement the 2way queue split support (low/hi prio)
+- Drop bogus surplus ops assignment.
+- Link to v6: https://patch.msgid.link/20260608-ks8995-to-ksz8-v6-0-d91eb43edcc5@kernel.org
 
-[Severity: Low]
+Changes in v6:
+- Provide a prompt along with the transition symbol NET_DSA_KS8995
+  so that oldconfig works.
+- Clarify in commit message that the platform data probe path is
+  unused in the kernel and it is fine to delete this mechanism.
+- Link to v5: https://patch.msgid.link/20260604-ks8995-to-ksz8-v5-0-98baeb45e665@kernel.org
 
-This isn't a bug, but should the LED mapping comment above the trigger
-defaults be qualified per package now?
+Changes in v5:
+- Rebase on net-next again to be sure we apply.
+- Fix the codepath where DCB was set up per-port, damaging KS8995XA
+  port registers.
+- Fix up the transitional symbol NET_DSA_KS8995 to depend on
+  SPI and select both NET_DSA_MICROCHIP_KSZ_COMMON and
+  NET_DSA_MICROCHIP_KSZ_SPI.
+- Link to v4: https://patch.msgid.link/20260603-ks8995-to-ksz8-v4-0-e15149ef21e7@kernel.org
 
-The only in-tree description of which LED index drives which pin sits
-above AIR_DEFAULT_TRIGGER_LED0/1/2 and is written unconditionally:
+Changes in v4:
+- Create a stub symbol for NET_DSA_KS8995 to phase over users to
+  the new driver.
+- Link to v3: https://patch.msgid.link/20260526-ks8995-to-ksz8-v3-0-c530f651989f@kernel.org
 
-  /* Default LED setup:
-   * GPIO5 <-> LED0  On: Link detected, blink Rx/Tx
-   * GPIO4 <-> LED1  On: Link detected at 2500 or 1000 Mbps
-   * GPIO3 <-> LED2  On: Link detected at 2500 or  100 Mbps
-   */
+Changes in v3:
+- Rebase on net-next again, moving target!
+- Fix a netdev_info() print in the tagger to be netdev_debug()
+- Add net/dsa/tag_ks8995.c to MAINTAINERS
+- Link to v2: https://patch.msgid.link/20260522-ks8995-to-ksz8-v2-0-5712c0dc9e75@kernel.org
 
-Those same defaults are applied by en8811h_leds_setup(), which is called
-from both en8811h_probe() and an8811hb_probe().  After this patch the
-GPIO 3/4/5 wording only holds for EN8811H and AN8811HBN, since on
-AN8811HBCN the identical trigger defaults now drive pads 0, 1 and 15 via
-AN8811HB_GPIO_OUTPUT_0115 plus the SEL1/SEL2 mux codes.
+Changes in v2:
+- Avoid trying to configure TOS priority settings (DCB) on the KSZ8995XA.
+  It does have some support for this, but let's add that later.
+- Pick up Krzysztof's ACK on the new DT bindings.
+- Reset the KSZ8995XA by disabling and enabling the switch like the old
+  driver does.
+- Move mutually exclusive Kconfig over to the patch introducing the
+  old Micrel compatibles to the Microchip ksz_spi driver.
+  (this complaint from Sashiko.)
+- Use __be16 instead of u16 when casting into the SKB in the tagger
+  (this complaint from Sashiko.)
+- Do not modify the hdr->h_vlan_TCI if no hardware accelerated tag
+  is detected, it would get nullified. Use whatever the Linux network stack
+  assigned to TCI there.
+  (this complaint from Sashiko.)
+- Avoid dereference of NULL in debug prints in the tagger.
+  (this complaint from Sashiko.)
+- Ignored comment: Sashiko complains about ilog2(0) being potentially
+  undefined but that is clearly defined as 0 in the Linux kernel.
+- Link to v1: https://patch.msgid.link/20260516-ks8995-to-ksz8-v1-0-70d0ef4aa5f4@kernel.org
 
-Could the comment mention the AN8811HBCN pin assignment as well?
+---
+Linus Walleij (4):
+      dt-bindings: net: dsa: microchip: Add KSZ8995XA
+      net: dsa: tag_ks8995: Add the KS8995 tag handling
+      net: dsa: microchip: Support Microchip KSZ8995XA / KS8995XA
+      net: dsa: ks8995: Delete surplus driver
 
-> +
-> +		ret = air_phy_buckpbus_reg_modify(phydev, AN8811HB_GPIO_SEL1,
-> +						  AN8811HB_GPIO_SEL1_0_MASK |
-> +						  AN8811HB_GPIO_SEL1_1_MASK,
-> +						  AN8811HB_GPIO_SEL1_0 |
-> +						  AN8811HB_GPIO_SEL1_1);
-> +		if (ret < 0)
-> +			return ret;
-> +
-> +		ret = air_phy_buckpbus_reg_modify(phydev, AN8811HB_GPIO_SEL2,
-> +						  AN8811HB_GPIO_SEL2_15_MASK,
-> +						  AN8811HB_GPIO_SEL2_15);
-> +		if (ret < 0)
-> +			return ret;
-> +	} else {
-> +		/* AN8811HBN: LED GPIOs are 3, 4, 5 */
-> +		ret = air_phy_buckpbus_reg_modify(phydev, AN8811HB_GPIO_OUTPUT,
-> +						  AN8811HB_GPIO_OUTPUT_345,
-> +						  AN8811HB_GPIO_OUTPUT_345);
-> +		if (ret < 0)
-> +			return ret;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
+ .../devicetree/bindings/net/dsa/microchip,ksz.yaml |   1 +
+ MAINTAINERS                                        |   1 +
+ drivers/net/dsa/Kconfig                            |   9 +-
+ drivers/net/dsa/Makefile                           |   1 -
+ drivers/net/dsa/ks8995.c                           | 857 ---------------------
+ drivers/net/dsa/microchip/Kconfig                  |   1 +
+ drivers/net/dsa/microchip/ksz8.c                   | 243 +++++-
+ drivers/net/dsa/microchip/ksz8.h                   |   2 +
+ drivers/net/dsa/microchip/ksz8_reg.h               |   2 +
+ drivers/net/dsa/microchip/ksz_common.c             |  53 +-
+ drivers/net/dsa/microchip/ksz_common.h             |  11 +-
+ drivers/net/dsa/microchip/ksz_dcb.c                |  55 +-
+ drivers/net/dsa/microchip/ksz_spi.c                |  33 +-
+ include/linux/platform_data/microchip-ksz.h        |   1 +
+ include/net/dsa.h                                  |   2 +
+ net/dsa/Kconfig                                    |   6 +
+ net/dsa/Makefile                                   |   1 +
+ net/dsa/tag_ks8995.c                               | 145 ++++
+ 18 files changed, 492 insertions(+), 932 deletions(-)
+---
+base-commit: cee9395acd8043be0644b25c34bfa86623f2b935
+change-id: 20260509-ks8995-to-ksz8-15f3f9c8271f
 
-[ ... ]
+Best regards,
+--  
+Linus Walleij <linusw@kernel.org>
 
-> @@ -1269,10 +1327,11 @@ static int an8811hb_config_init(struct phy_device *phydev)
->  		return ret;
->  	}
->  
-> -	/* Restore LED GPIO output enables after MCU initialization. */
-> -	ret = air_phy_buckpbus_reg_modify(phydev, AN8811HB_GPIO_OUTPUT,
-> -					  AN8811HB_GPIO_OUTPUT_345,
-> -					  AN8811HB_GPIO_OUTPUT_345);
-> +	ret = an8811hb_led_gpio_setup(phydev);
-> +	if (ret < 0) {
-> +		phydev_err(phydev, "Failed to set up LED GPIO: %d\n", ret);
-> +		return ret;
-> +	}
->  	return ret;
->  }
-
-[Severity: Low]
-
-Should this carry a Fixes: tag?  The commit message says:
-
-  "Using a fixed GPIO assignment causes incorrect LED behavior on one of
-   the variants."
-
-That describes a user-visible defect in code that already shipped, but
-there is no Fixes: tag and no stable annotation.
-
-The AN8811HB entry and .config_init = an8811hb_config_init came in with
-5afda1d734ed ("net: phy: air_en8811h: add Airoha AN8811HB support"), and
-the unconditional AN8811HB_GPIO_OUTPUT_345 write being replaced here was
-moved into config_init by 3498acda6b68 ("net: phy: air_en8811h: restore
-AN8811HB LED GPIO after MCU restart").
-
-The driver binds with phy_id_compare_model(phydev->phy_id,
-AN8811HB_PHY_ID), so AN8811HBCN parts already bind to this driver in
-released kernels and get GPIO 3/4/5 forced as outputs while their LEDs
-are on GPIO 0/1/15.
-
-If this is a fix for those kernels, could a Fixes: tag be added?  If it
-is instead enablement of a newly supported package, could the changelog
-be reworded so it does not describe existing behaviour as incorrect?
-
-[ ... ]
-
-> @@ -1115,6 +1167,12 @@ static int an8811hb_probe(struct phy_device *phydev)
->  	/* MDIO_DEVS1/2 empty, so set mmds_present bits here */
->  	phydev->c45_ids.mmds_present |= MDIO_DEVS_PMAPMD | MDIO_DEVS_AN;
->  
-> +	/* Detect package variant */
-> +	ret = air_phy_buckpbus_reg_read(phydev, AN8811HB_HWTRAP2, &reg_val);
-> +	if (ret < 0)
-> +		goto err_dev_create;
-> +	priv->is_an8811hbcn = FIELD_GET(AN8811HB_HWTRAP2_PKG, reg_val);
-> +
->  	ret = en8811h_leds_setup(phydev);
->  	if (ret < 0)
->  		goto err_dev_create;
-
-[Severity: Medium]
-AN8811HB_HWTRAP2_PKG is GENMASK(14, 12), so FIELD_GET() yields a
-3-bit value here, but it is stored straight into the bool
-priv->is_an8811hbcn.  Any non-zero package code therefore collapses to
-true, which means the whole variant decision in
-an8811hb_led_gpio_setup() rests on the unstated assumption that
-AN8811HBCN is the only encoding with a non-zero value and AN8811HBN
-reads back exactly 0.
-
-If the field can take any other value - a second AN8811HBN encoding, a
-reserved code, or a future package - it lands in the
-AN8811HB_GPIO_OUTPUT_0115 branch and the driver drives GPIO 0/1/15
-plus the SEL1/SEL2 mux for a part whose LEDs are not on those pads.
-That failure mode is silent: the LEDs simply do not work, and there is
-nothing in the source that documents what the encoding actually is.
-
-Could you define the expected package identifiers as named constants
-and compare against them explicitly, e.g. something like
-
-	pkg = FIELD_GET(AN8811HB_HWTRAP2_PKG, reg_val);
-	priv->is_an8811hbcn = (pkg == AN8811HB_HWTRAP2_PKG_HBCN);
-
-so that unknown codes fall into the conservative branch rather than
-being treated as AN8811HBCN?  If the hardware really only ever reports
-two values and 0 is guaranteed to mean AN8811HBN, please say so in a
-comment next to the assignment, since the reader cannot tell that from
-the mask alone.  Also, is it worth warning (or failing probe) on an
-unrecognised package code rather than silently picking a GPIO mapping?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260907015638.2875763-1-weiting.lee%40airoha.com
