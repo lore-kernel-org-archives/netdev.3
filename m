@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9431342509;
-	Wed,  9 Sep 2026 03:20:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F57F339394;
+	Wed,  9 Sep 2026 03:20:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788924014; cv=none; b=BS/4CptcbJoZeZN/LMUHFF5luVbQibYCrOY3yjN5ZgCOz9UNVPsmoBlRsfak91u4Nuu3DykLKE6pZoI0yM8IT75EGR5DPr484vAPvQn7CjzBZIzqULiH47Ntrs+R/lt9eys2qcIRaXOzt5C6RvTtcGjITaL9u2QrGJjI5NpFhII=
+	t=1788924016; cv=none; b=CJFWiSBGrsCsHHzsJ7PZkRi7/hbeI8fpTkq45aEDpbCshnWwNTNhnvWaFq3HAkWKbsLlKwCVeIxp3cMZ3nFgC88nM+kfMo9aVtEOj5J+lSmFKAd/L2rVefsh3LhsLJDpZmZt+8UMXG3h9V6isaFLOJhh6Zl2fcJzY14Vh5PT/2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788924014; c=relaxed/simple;
-	bh=WHTT0aHB09NYfZ84LQYXffRCR6zXLrweRwuqfH//AO0=;
+	s=arc-20240116; t=1788924016; c=relaxed/simple;
+	bh=qXCC4faZu5ZewXWBNCwNBRh9mNH5SWMd3RJblkmzcQo=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=OTxKSO9VR13KfCAyEJ5Af5TMy1OXK44DUJQBDhts4EA22fNHnHQIIJR0FN2OjzFZMmevIqdk2z4Wwk6gkZzbK3G32LvMF2VGpL4U5OLiTbvd1B3Pl1bKGZ+nCKEzs9AVd+F7+EGchq7FV8AxMETu2KmMrc2M/H5ePZlSnAYWBZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cfBhe8M4; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=Ghwyz/NVIEhnAAs1XlsNkL71FkXTPUAYjgaAPrN+Mo2K380Hm+0FNi2LGJ80iGzCZiGqeSdH8U4/93dNdOi6xxmSxMx0NGxZLauwH2ERMswpSX0GVMj+x40xxvXDweOSeq4w18G3ry4C2R3GTPbAMjDtLjwXKMXaEdBBdkWuPPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jn+tMtD1; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cfBhe8M4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56F391F00A3A;
-	Wed,  9 Sep 2026 03:20:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jn+tMtD1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF71E1F00A3D;
+	Wed,  9 Sep 2026 03:20:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788924013;
-	bh=Iw03k/3AfN3l3SzaVyyl42dnRPgFngzNDmWYx0/bKRo=;
+	s=k20260515; t=1788924014;
+	bh=QKTMvao0zPO7nUSxOCkxsOz1mmx5QrppYLcLjFFOJH0=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=cfBhe8M4En7MjVTQWzR74BRwrcSoPe/XpuzWMXWxdG4UXfH7mZ8paMfR5dlnfQtku
-	 +ApTKKwoHni+17rIXkPSL/KEzxOgrhHX1IVDHPzVaMddJXNIKDHOH8M8KNUt8kWY4v
-	 A4CUToWsXoVkxcJ3T2u+jWIxHDIn5YD3V5oHxtAD5gXwpz9rWXFHPXdChgrTlbzrR2
-	 cK2FVh6DBNM7WqycOieL536GnoA+CnEGi8M6SMRcTP21+fwaPDBD97Gbk3y+Q3CpHu
-	 xmWA5NotAtQDSmkxpIIdFy+ytOrIAvgXLjFLCetZZhLD4mijOGUrTdAb9Pz5oDYuxR
-	 QVeZMEppYHBew==
-Subject: Re: [PATCH net-next v2 2/3] net: mdio: realtek-rtl9300: Convert
- "fwnode" left-overs to "of"
+	b=Jn+tMtD1HtyQmtyRQe70VDNjCUIdy9vhhBwIssw75cMpLodFFLBsRdPFOsCTkE7kc
+	 xXEMszxorvb+/kgKo1KqTD+ARr/zjan22mUtGhLcayMx8yT3b17IBfMDmJ2FFcxlJq
+	 74DxBYIg08qhmbylruJbC3JxCBXY34Ixl9nCDQ6LqsDZyGN//QyCHFnWu0Ik0Ch2iF
+	 JCSzKkFHQcTbaMrIZYvgz/i/4ykCrIudHuKt0XID41nBjouKcSw4MhfpCyyZ0xFjnw
+	 90A9mSPGvvcTxISAZe7mFbST4UDi+wfrL0dHiOsrRTWDdv1f+fZgJI8BL7haGL1x2d
+	 50HdHX6R8Y5fA==
+Subject: Re: [PATCH net-next v2 3/3] net: mdio: realtek-rtl9300: Support
+ non-default clock frequency
 From: netdev-bot+sashiko@kernel.org
 To: markus.stockhausen@gmx.de
 Cc: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
  davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
  netdev@vger.kernel.org, chris.packham@alliedtelesis.co.nz, robh@kernel.org,
  krzk+dt@kernel.org, conor+dt@kernel.org, devicetree@vger.kernel.org
-Date: Wed, 09 Sep 2026 03:20:11 +0000
-Message-ID: <178892401189.219967.6693494754880026860@kernel.org>
-In-Reply-To: <20260906081946.3499898-3-markus.stockhausen@gmx.de>
-References: <20260906081946.3499898-3-markus.stockhausen@gmx.de>
+Date: Wed, 09 Sep 2026 03:20:13 +0000
+Message-ID: <178892401327.219967.6510304373643539035@kernel.org>
+In-Reply-To: <20260906081946.3499898-4-markus.stockhausen@gmx.de>
+References: <20260906081946.3499898-4-markus.stockhausen@gmx.de>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -53,93 +53,99 @@ issue(s) to consider:
 
 Critical: 0 · High: 1 · Medium: 0 · Low: 0
 
-- [High] Non-equivalent API conversion in otto_emdio_probe(): replacing
-  `device_for_each_child_node_scoped(dev, child)` with…
+- [High] RTL839x: a device tree that is fully valid against
+  realtek,rtl9301-mdio.yaml can make the entire MDIO controller fail to…
 
 --
 
-net: mdio: realtek-rtl9300: Convert "fwnode" left-overs to "of"
+net: mdio: realtek-rtl9300: Support non-default clock frequency
 
-This converts the remaining fwnode based property/child-node accesses in
-the rtl9300 MDIO driver over to the OF API, and re-indents the
-continuation line of otto_emdio_probe_one().
+This adds a per-family set_bus_frequency() callback so the MDC clock of
+the Realtek Otto MDIO controllers can be selected from the device tree
+via clock-frequency, defaulting to 2.5 MHz. RTL839x only has a single
+global frequency field, so the driver caches the first programmed value
+and rejects a second bus asking for something else.
 
 > diff --git a/drivers/net/mdio/mdio-realtek-rtl9300.c b/drivers/net/mdio/mdio-realtek-rtl9300.c
-> index 11d078ef941cd..429321e9114fd 100644
+> index 429321e9114fd..8edb0ba0bcdd1 100644
 > --- a/drivers/net/mdio/mdio-realtek-rtl9300.c
 > +++ b/drivers/net/mdio/mdio-realtek-rtl9300.c
-> @@ -831,14 +831,14 @@ static void otto_emdio_notify_phy_detach(struct phy_device *phydev)
+
+[ ... ]
+
+> @@ -749,6 +768,40 @@ static int otto_emdio_8380_setup_controller(struct otto_emdio_priv *priv)
+>  	return regmap_set_bits(priv->regmap, RTL8380_SMI_GLB_CTRL, RTL8380_SMI_PHY_PATCH_DONE);
 >  }
 >  
->  static int otto_emdio_probe_one(struct device *dev, struct otto_emdio_priv *priv,
-> -				 struct fwnode_handle *node)
-> +				struct device_node *node)
->  {
->  	struct otto_emdio_chan *chan;
->  	struct mii_bus *bus;
->  	u32 mdio_bus;
->  	int err;
->  
-> -	err = fwnode_property_read_u32(node, "reg", &mdio_bus);
-> +	err = of_property_read_u32(node, "reg", &mdio_bus);
->  	if (err)
->  		return dev_err_probe(dev, err, "undefined smi bus number\n");
->  
-> @@ -865,7 +865,7 @@ static int otto_emdio_probe_one(struct device *dev, struct otto_emdio_priv *priv
->  
->  	snprintf(bus->id, MII_BUS_ID_SIZE, "%s-%d", dev_name(dev), mdio_bus);
->  
-> -	err = devm_of_mdiobus_register(dev, bus, to_of_node(node));
-> +	err = devm_of_mdiobus_register(dev, bus, node);
->  	if (err)
->  		return dev_err_probe(dev, err, "cannot register MDIO bus\n");
->  
-> @@ -1027,7 +1027,7 @@ static int otto_emdio_probe(struct platform_device *pdev)
->  			return dev_err_probe(dev, err, "failed to setup MDIO bus controller\n");
->  	}
->  
-> -	device_for_each_child_node_scoped(dev, child) {
-> +	for_each_child_of_node_scoped(dev->of_node, child) {
+> +static int otto_emdio_8390_set_bus_frequency(struct mii_bus *bus, u32 freq)
+> +{
+> +	struct otto_emdio_priv *priv = otto_emdio_bus_to_priv(bus);
+> +	u32 val;
+> +	int err;
+> +
+> +	if (freq != 1250000 && freq != 2500000 && freq != 5000000)
+> +		return -EINVAL;
+> +	if (priv->global_freq)
+> +		return freq == priv->global_freq ? 0 : -EINVAL;
+> +
+> +	val = FIELD_PREP(RTL8390_SMI_FREQ_SEL, freq / 2500000);
+> +	err = regmap_update_bits(priv->regmap, RTL8390_SMI_GLB_CTRL, RTL8390_SMI_FREQ_SEL, val);
+> +	if (!err)
+> +		priv->global_freq = freq;
+> +
+> +	return err;
+> +}
 
 [Severity: High]
+Can a device tree that is valid against realtek,rtl9301-mdio.yaml make the
+whole RTL839x controller fail to probe here?
 
-Is this iterator swap intended to be behaviour preserving?  The two
-iterators differ in whether they honour the DT status property.
+The binding describes clock-frequency as an independent per-bus property of
+each mdio-bus@N child, with an implicit default:
 
-The old one dispatched into the OF fwnode ops:
+Documentation/devicetree/bindings/net/realtek,rtl9301-mdio.yaml
+      clock-frequency:
+        default: 2500000
 
-drivers/of/property.c:of_fwnode_get_next_child_node() {
-	return of_fwnode_handle(of_get_next_available_child(to_of_node(fwnode),
-							    to_of_node(child)));
-}
+and the realtek,rtl8391-mdio / rtl8392-mdio / rtl8393-mdio conditional only
+restricts the allowed values per child bus:
 
-The new one does not filter:
+            clock-frequency:
+              enum: [1250000, 2500000, 5000000]
 
-include/linux/of.h
-#define for_each_child_of_node_scoped(parent, child) \
-	for (struct device_node *child __free(device_node) =		\
-	     of_get_next_child(parent, NULL);				\
-	     child != NULL;						\
-	     child = of_get_next_child(parent, child))
+There is nothing in the schema requiring the two RTL839x child buses to name
+the same frequency, so the natural way to express "set the shared field to
+5 MHz" is:
 
-So nodes with status = "disabled" now reach otto_emdio_probe_one().
+	mdio-bus@0 {
+		reg = <0>;
+		clock-frequency = <5000000>;
+		...
+	};
 
-Does that turn a disabled bus child into a probe failure for the whole
-controller?  A disabled mdio-bus@N node still has a valid reg, so it
-passes the reg and num_buses checks and ends up in:
+	mdio-bus@1 {
+		reg = <1>;
+		...
+	};
 
-	err = devm_of_mdiobus_register(dev, bus, node);
-	if (err)
-		return dev_err_probe(dev, err, "cannot register MDIO bus\n");
+Because otto_emdio_probe_one() substitutes the default before calling the
+callback:
 
-which reaches:
+	if (of_property_read_u32(node, "clock-frequency", &freq))
+		freq = 2500000;
 
-drivers/net/mdio/of_mdio.c:__of_mdiobus_register() {
-	/* Do not continue if the node is disabled */
-	if (!of_device_is_available(np))
-		return -ENODEV;
+an absent property is indistinguishable from an explicit 2.5 MHz request.
+Doesn't that mean the second bus reaches
+otto_emdio_8390_set_bus_frequency() with freq = 2500000 while
+priv->global_freq is already 5000000, and
 
-and otto_emdio_probe() propagates that error immediately:
+	if (priv->global_freq)
+		return freq == priv->global_freq ? 0 : -EINVAL;
+
+returns -EINVAL for a device tree that never asked for two different
+frequencies?  The reverse node ordering fails the same way.
+
+otto_emdio_probe() aborts on the first failing child:
 
 	for_each_child_of_node_scoped(dev->of_node, child) {
 		err = otto_emdio_probe_one(dev, priv, child);
@@ -147,35 +153,36 @@ and otto_emdio_probe() propagates that error immediately:
 			return err;
 	}
 
-Previously the disabled child was skipped and the enabled buses still
-came up.
+so no MDIO bus is registered at all and none of the PHYs behind the switch
+are reachable.  The message "cannot set frequency 2500000 for MDIO bus 1"
+also does not point at anything the device tree actually contains.
 
-This looks reachable with in-tree DT: arch/mips/boot/dts/realtek/rtl930x.dtsi
-ships all four mdio-bus@0..3 children with status = "disabled", so boards
-that enable the controller plus only the buses they use would now fail
-probe entirely.
+Would it make sense to either express the RTL839x restriction in the binding
+(a controller level property or a dedicated conditional/schema), or to treat
+an absent per-bus clock-frequency as "no constraint" instead of an explicit
+2.5 MHz request, so that a schema legal device tree keeps probing?
 
-There is also a CONFIG_OF_MDIO=n variant of the same concern: the stub
-devm_of_mdiobus_register() in include/linux/of_mdio.h forwards to
-devm_mdiobus_register() with no availability check, so a DT-disabled bus
-would be registered and address-scanned instead.
+> +
+>  static int otto_emdio_9300_set_bus_frequency(struct mii_bus *bus, u32 freq)
 
-Finally, the sibling OF walk in the same driver still filters on
-availability:
+[ ... ]
 
-	for_each_available_child_of_node_scoped(ports_dn, port_dn) {
+> @@ -865,6 +933,13 @@ static int otto_emdio_probe_one(struct device *dev, struct otto_emdio_priv *priv
+>  
+>  	snprintf(bus->id, MII_BUS_ID_SIZE, "%s-%d", dev_name(dev), mdio_bus);
+>  
+> +	if (of_property_read_u32(node, "clock-frequency", &freq))
+> +		freq = 2500000;
+> +	err = priv->info->set_bus_frequency(bus, freq);
+> +	if (err)
+> +		return dev_err_probe(dev, err, "cannot set frequency %u for MDIO bus %d\n",
+> +				     freq, mdio_bus);
+> +
+>  	err = devm_of_mdiobus_register(dev, bus, node);
+>  	if (err)
+>  		return dev_err_probe(dev, err, "cannot register MDIO bus\n");
 
-so otto_emdio_map_ports() and the bus enumeration would no longer agree on
-which nodes are usable.  Would for_each_available_child_of_node_scoped(dev->of_node, child)
-be the equivalent conversion here?
-
-Note this is still present at the end of the series, in otto_emdio_probe()
-at e4ad7bb3a35d ("net: mdio: realtek-rtl9300: Support non-default clock
-frequency").
-
->  		err = otto_emdio_probe_one(dev, priv, child);
->  		if (err)
->  			return err;
+[ ... ]
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260906081946.3499898-1-markus.stockhausen%40gmx.de
