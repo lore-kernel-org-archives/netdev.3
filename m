@@ -1,613 +1,197 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87F874968FF
-	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 09:39:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 684FE406822
+	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 09:42:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788946799; cv=none; b=K0hP0lwo0x5/MetQgVTQLHxyfvwTwc1jPz8H8eaMfp4wqye5Ay2+ymKp8IgS5rnFs4/k7nRCp71Au1udsxhH3SReucyLFi3cYMMYlqj5f3DiqlQFgHbABfsagPrFbLKiuFnZq+ClW5bdD2cz8RPGqoVBHtisvL3kXJzhPh2KWQ8=
+	t=1788946976; cv=none; b=lxF/p/KTOlzplkKTmPWZQFE32S8s9O3T25kBN8o+SXPts+x+Vt4KnfiwexvtQXrBi8W+7APsrEpA40qGQ+tiQB/6V0jYqEzc7g/4E+eNLB0d4vHcDPlkK/F+3w0saoFKRqZDpICDpY0IihR58T+Vd7OxkOXlpAnnqu7GFxrPZAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788946799; c=relaxed/simple;
-	bh=FwsOzx9dH5ilNzrQKLN2DKbYoTcaLUJhxLsvVbOA32U=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hh5c89bjda2QebrDVomcnCLdamJKOP3OCwB6L/STWYO7O+VbejlPtPTIcC/G7rHBA8DMJGQhYG4C7DFd2i2Kns1Di/coMoF7q3hycVC0aSFjiqNhA2gEHF0rGlnIjybhRg1rE5p9lwO7d2aK2iYE2F/qQuY+8ZL0nAutlLxWisI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=GwX4Czw5; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1788946976; c=relaxed/simple;
+	bh=nAQBbg9Zs0y2Qf9x9IGuBTOq7gf12GSRPT0y06wSXn0=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=pGlFbBlZCSYO33VQit2UxGXszuBqjX41mQwkxdAGwZPSMj4Jpwh/OqppzFqMzN+dnTA4ZQPiBHUBnb3EhDGx+LCgmn6ES343O9Ue6H1Z+KpuDjiNtgIj0lJGAWqDuvxmasWufGv9sWMonwP8Lf/vbgaygJzhdMF3THTMfPRuppk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NlmZT3s+; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=QCFGw+SJ; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="GwX4Czw5"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 134131A1A7C;
-	Wed,  9 Sep 2026 09:39:52 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id DA28A60448;
-	Wed,  9 Sep 2026 09:39:51 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0D0D211C7AF7E;
-	Wed,  9 Sep 2026 11:39:47 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1788946790; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=CFdlIiDKGF5uJ3RaOntuYI47NrlqgeHH6fOjUmqoXUY=;
-	b=GwX4Czw5pC/JTgkNzEwTzJLsi+vNe7SyCTmN03tCFmxNpYuEOCw4VRz3Q/Z1BrPMys4Yl+
-	Y8cI6Lxf9MncRs9xKYge7UBnDoe5DRHoAmwZnHYKdFZLQfGUhZCjxB1gWY5rs4TR4MGOyg
-	8j13Tz+cZNxGyiSHjT0oPesAQNe44h1PjgTyWUBgVntHnKy6Vpbe4UBEl+L1G7nPrVjX5o
-	6DQ1rSG8VIlgNjNhDWbgdU4jqymM/fHTMQSseRQQyHBq5iRSVXRdIz6Z4FjHO4PuYtq8z2
-	+e5FjxOyc+dgkGPE1a2Yp5aCxjTXrnG67LsLRLBOOmXUtsLJvbIrgTqaL7l+SA==
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-To: davem@davemloft.net,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	thomas.petazzoni@bootlin.com,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Herve Codina <herve.codina@bootlin.com>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	=?UTF-8?q?K=C3=B6ry=20Maincent?= <kory.maincent@bootlin.com>,
-	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	=?UTF-8?q?Nicol=C3=B2=20Veronese?= <nicveronese@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	mwojtas@chromium.org,
-	Romain Gantois <romain.gantois@bootlin.com>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Dimitri Fedrau <dimitri.fedrau@liebherr.com>,
-	Frank Wunderlich <frank.wunderlich@linux.dev>,
-	Pietro Ameruoso <p.ameruoso@live.it>
-Subject: [PATCH net-next v17 09/10] net: ethtool: Introduce ethtool command to list ports
-Date: Wed,  9 Sep 2026 11:39:10 +0200
-Message-ID: <20260909093912.1290810-10-maxime.chevallier@bootlin.com>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260909093912.1290810-1-maxime.chevallier@bootlin.com>
-References: <20260909093912.1290810-1-maxime.chevallier@bootlin.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NlmZT3s+";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="QCFGw+SJ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1788946971;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=k5ADtFhBnmPz3rZHAoQiP2HyIk15/rYOjED5HrGOPIQ=;
+	b=NlmZT3s+IakJBW3DPywyLqFFZTNROyT1ARcnQ2igyj95nUmocZNsHcbpW+yzaukS+dHybo
+	nGYp+XnB0zyXt7wDQktoH4lOX1vgAsxD4glu3CMKG5UNjXvwRHqP7Ijn3SddPJ1nBilGjc
+	H1TEKXKth6iFPbjRs27EpyLb/Kl2I6w=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-257-KsYfu7QuPdqMDo-tgE8hvQ-1; Wed, 09 Sep 2026 05:42:50 -0400
+X-MC-Unique: KsYfu7QuPdqMDo-tgE8hvQ-1
+X-Mimecast-MFC-AGG-ID: KsYfu7QuPdqMDo-tgE8hvQ_1788946969
+Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-6a99446422cso469032a12.2
+        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 02:42:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1788946969; x=1789551769; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-disposition:content-type
+         :mime-version:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=k5ADtFhBnmPz3rZHAoQiP2HyIk15/rYOjED5HrGOPIQ=;
+        b=QCFGw+SJfPxIDCqTpfCv2NEOh0vlyj52QvOzFgdo59VK41YNPq8B3yu0ri3nbUuz8l
+         3djv6MSjiHbyocxf3u6W/d11iX+ReS8l4RB+IXDgGV5y5YUZr6cSXgA/87Nh8ISBVZVy
+         174p/zVVb8dTfueBDrbFqmddMu/kGBwC3DLPDjSaKDiVs6U4Hbld/5KT6SAMyfDW0jzL
+         2F+SInIXXmMSe6PWNL0bUxH7vDN577PS90IYINKE2plovfm4Zh3er8fh9XU5GHsyukHy
+         rbs4BAwnQFSS/dYUxlGi4GZ6MCKP8on+I9ahubDDpWpv5ibhVVH61xOX330x0jaP0Wsi
+         iqOQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788946969; x=1789551769;
+        h=content-transfer-encoding:content-disposition:content-type
+         :mime-version:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=k5ADtFhBnmPz3rZHAoQiP2HyIk15/rYOjED5HrGOPIQ=;
+        b=IdVZWUH+yrZNt5/LPyInK4XcuYjo2QsyJP8VI4wX71MeicNqeCexmnyR4KWKEhBISs
+         gfOoeqKE/6t7WLNFW5iGSytCkBLG+vIGbOaQqT1lGODm6smIg59b8llrXA4+Rn+7YuuV
+         /+CnLvckEistU61mMqcW0SnIAJBq+buCTLV/Tb4n9HCCQCON8I8ptkegC+Vzn2tfBaKk
+         CcQ6aZ1yeUKbgcC11yjheAZKUNsp9f2BkY5iXm5Ui2AjBPNdi2dWpiDesC11EmCisS8t
+         Agi734KaySkUyhJLUzWFxyetWmXpV2iFV5vFtertBbCD6+R/DEfiwKzWCuT/WktBMEUk
+         CX/A==
+X-Forwarded-Encrypted: i=1; AKwUvByJV64MVxWddC9yd+mJCGNYPZDxqCLuJWIyfpSGXfdfdlMKS3XQXKyz2OfHDmtwabUpLIPBZlA=@vger.kernel.org
+X-Gm-Message-State: AFuF++mHrkUEqin8mYPdF1Qi0C+SOxNl3vpEl+/1Y9yb2s0S+kdybLNT
+	0Zkgb0lmjgfYRcKP/CbD7xlpb8QDkgn7aI8np3PaoKq+jYJEyNvuAt5yaskFZTFr/xoqOnjrFtw
+	VK4fZPu+hbKhQZyjVFl4INW7oUFp03CQ1vJK9OVi8GZlYgIxnP7K6G5zJyQ==
+X-Gm-Gg: AYBFou1u9JSNOEk6eIqj2noIuTXNWO4EhGd8kokkfKCmgDmEFDwfj2PUOtTIRsONVRT
+	I9GkpmJYJfMriO/60fNtYCF3JHEpxHkle0ElQuMM+07kvFt8/DwHwyBUPQEKQOQU5b9HKpUxbXM
+	xes9QPl8KxTDiLzfq9he0q2zdQXUMk9dNeM7QOLTUs8Db4RXb2X7Wg9qJ2zPyYLx7+WTnd1f8ON
+	s4f2vHpVfc08kNpzqHpID1Uz5s8sTn2mepjRyRQ16PoqRPhSz3pRU5y+LwTAXSwlkidfQeIYYrp
+	1WUB6eco0NLnaA5cihS3z6phMACD6r0sNSbbYv8MC1HKrFRbSaAMkuQlqGeA2O1lIHxDscMsGcI
+	Ll7MUv2pLBDD008C/Rbfo4iU=
+X-Received: by 2002:a05:6402:2552:b0:6a7:ea54:390 with SMTP id 4fb4d7f45d1cf-6a7ea542471mr11986144a12.33.1788946968898;
+        Wed, 09 Sep 2026 02:42:48 -0700 (PDT)
+X-Received: by 2002:a05:6402:2552:b0:6a7:ea54:390 with SMTP id 4fb4d7f45d1cf-6a7ea542471mr11986120a12.33.1788946968355;
+        Wed, 09 Sep 2026 02:42:48 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-79-236.inter.net.il. [80.230.79.236])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a9857ce120sm1226086a12.4.2026.09.09.02.42.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 09 Sep 2026 02:42:47 -0700 (PDT)
+Date: Wed, 9 Sep 2026 05:42:45 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: kvm@vger.kernel.org, virtualization@lists.linux-foundation.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	astellman@stellman-greene.com, dongli.zhang@oracle.com,
+	eperezma@redhat.com, graf@amazon.com, kmehltretter@gmail.com,
+	linfeng.sun.dev@gmail.com, lvivier@redhat.com, mst@redhat.com,
+	nikhilljatt@gmail.com, physicalmtea@gmail.com,
+	xiongweimin@kylinos.cn, yuz08559@gmail.com
+Subject: [GIT PULL] vhost,vdpa,virtio: fixes
+Message-ID: <20260909054245-mutt-send-email-mst@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+X-Mutt-Fcc: =sent
 
-Expose the phy_port information to userspace, so that we can know how
-many ports are available on a given interface, as well as their
-capabilities. For MDI ports, we report the list of supported linkmodes
-based on what the PHY that drives this port says.
-For MII ports, i.e. empty SFP cages, we report the MII linkmodes that we
-can output on this port.
+The following changes since commit df2908090cda368b01ff43709f51890076c56157:
 
-Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
----
- MAINTAINERS           |   1 +
- net/ethtool/Makefile  |   2 +-
- net/ethtool/netlink.c |  25 +++
- net/ethtool/netlink.h |   8 +
- net/ethtool/port.c    | 382 ++++++++++++++++++++++++++++++++++++++++++
- 5 files changed, 417 insertions(+), 1 deletion(-)
- create mode 100644 net/ethtool/port.c
+  Linux 7.3-rc2 (2026-09-06 15:07:20 -0700)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index b23fb6f2f4ef..72698062b63d 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -18993,6 +18993,7 @@ F:	Documentation/devicetree/bindings/net/ethernet-connector.yaml
- F:	Documentation/networking/phy-port.rst
- F:	drivers/net/phy/phy_port.c
- F:	include/linux/phy_port.h
-+F:	net/ethtool/port.c
- K:	struct\s+phy_port|phy_port_
- 
- NETWORKING [GENERAL]
-diff --git a/net/ethtool/Makefile b/net/ethtool/Makefile
-index 629c10916670..9b5b09670008 100644
---- a/net/ethtool/Makefile
-+++ b/net/ethtool/Makefile
-@@ -9,4 +9,4 @@ ethtool_nl-y	:= netlink.o bitset.o strset.o linkinfo.o linkmodes.o rss.o \
- 		   channels.o coalesce.o pause.o eee.o tsinfo.o cabletest.o \
- 		   tunnels.o fec.o eeprom.o stats.o phc_vclocks.o mm.o \
- 		   module.o cmis_fw_update.o cmis_cdb.o pse-pd.o plca.o \
--		   phy.o tsconfig.o mse.o
-+		   phy.o tsconfig.o mse.o port.o
-diff --git a/net/ethtool/netlink.c b/net/ethtool/netlink.c
-index 1af395b54330..c076c07d0a08 100644
---- a/net/ethtool/netlink.c
-+++ b/net/ethtool/netlink.c
-@@ -26,6 +26,8 @@ static u32 ethnl_bcast_seq;
- 			     ETHTOOL_FLAG_OMIT_REPLY)
- #define ETHTOOL_FLAGS_STATS (ETHTOOL_FLAGS_BASIC | ETHTOOL_FLAG_STATS)
- 
-+char phy_interface_names[PHY_INTERFACE_MODE_MAX][ETH_GSTRING_LEN] __ro_after_init;
-+
- const struct nla_policy ethnl_header_policy[] = {
- 	[ETHTOOL_A_HEADER_DEV_INDEX]	= { .type = NLA_U32 },
- 	[ETHTOOL_A_HEADER_DEV_NAME]	= { .type = NLA_NUL_STRING,
-@@ -431,6 +433,7 @@ ethnl_default_requests[__ETHTOOL_MSG_USER_CNT] = {
- 	[ETHTOOL_MSG_TSCONFIG_SET]	= &ethnl_tsconfig_request_ops,
- 	[ETHTOOL_MSG_PHY_GET]		= &ethnl_phy_request_ops,
- 	[ETHTOOL_MSG_MSE_GET]		= &ethnl_mse_request_ops,
-+	[ETHTOOL_MSG_PORT_GET]		= &ethnl_port_request_ops,
- };
- 
- static struct ethnl_dump_ctx *ethnl_dump_context(struct netlink_callback *cb)
-@@ -1572,6 +1575,15 @@ static const struct genl_ops ethtool_genl_ops[] = {
- 		.policy = ethnl_mse_get_policy,
- 		.maxattr = ARRAY_SIZE(ethnl_mse_get_policy) - 1,
- 	},
-+	{
-+		.cmd	= ETHTOOL_MSG_PORT_GET,
-+		.doit	= ethnl_default_doit,
-+		.start	= ethnl_port_dump_start,
-+		.dumpit	= ethnl_port_dumpit,
-+		.done	= ethnl_port_dump_done,
-+		.policy = ethnl_port_get_policy,
-+		.maxattr = ARRAY_SIZE(ethnl_port_get_policy) - 1,
-+	},
- };
- 
- static const struct genl_multicast_group ethtool_nl_mcgrps[] = {
-@@ -1594,10 +1606,23 @@ static struct genl_family ethtool_genl_family __ro_after_init = {
- 
- /* module setup */
- 
-+static void __init ethnl_phy_names_populate(void)
-+{
-+	const char *name;
-+	int i;
-+
-+	for (i = 0; i < PHY_INTERFACE_MODE_MAX; i++) {
-+		name = phy_modes(i);
-+		strscpy(phy_interface_names[i], name, ETH_GSTRING_LEN);
-+	}
-+}
-+
- static int __init ethnl_init(void)
- {
- 	int ret;
- 
-+	ethnl_phy_names_populate();
-+
- 	ret = genl_register_family(&ethtool_genl_family);
- 	if (WARN(ret < 0, "ethtool: genetlink family registration failed"))
- 		return ret;
-diff --git a/net/ethtool/netlink.h b/net/ethtool/netlink.h
-index 3e969a070f9f..dc7211f67c4d 100644
---- a/net/ethtool/netlink.h
-+++ b/net/ethtool/netlink.h
-@@ -5,11 +5,14 @@
- 
- #include <linux/ethtool_netlink.h>
- #include <linux/netdevice.h>
-+#include <linux/phy.h>
- #include <net/genetlink.h>
- #include <net/sock.h>
- 
- struct ethnl_req_info;
- 
-+extern char phy_interface_names[PHY_INTERFACE_MODE_MAX][ETH_GSTRING_LEN];
-+
- int ethnl_parse_header_dev_get(struct ethnl_req_info *req_info,
- 			       const struct nlattr *nest, struct net *net,
- 			       struct netlink_ext_ack *extack,
-@@ -474,6 +477,7 @@ extern const struct ethnl_request_ops ethnl_mm_request_ops;
- extern const struct ethnl_request_ops ethnl_phy_request_ops;
- extern const struct ethnl_request_ops ethnl_tsconfig_request_ops;
- extern const struct ethnl_request_ops ethnl_mse_request_ops;
-+extern const struct ethnl_request_ops ethnl_port_request_ops;
- 
- extern const struct nla_policy ethnl_header_policy[ETHTOOL_A_HEADER_FLAGS + 1];
- extern const struct nla_policy ethnl_header_policy_stats[ETHTOOL_A_HEADER_FLAGS + 1];
-@@ -530,6 +534,7 @@ extern const struct nla_policy ethnl_phy_get_policy[ETHTOOL_A_PHY_HEADER + 1];
- extern const struct nla_policy ethnl_tsconfig_get_policy[ETHTOOL_A_TSCONFIG_HEADER + 1];
- extern const struct nla_policy ethnl_tsconfig_set_policy[ETHTOOL_A_TSCONFIG_MAX + 1];
- extern const struct nla_policy ethnl_mse_get_policy[ETHTOOL_A_MSE_HEADER + 1];
-+extern const struct nla_policy ethnl_port_get_policy[ETHTOOL_A_PORT_ID + 1];
- 
- int ethnl_set_features(struct sk_buff *skb, struct genl_info *info);
- int ethnl_act_cable_test(struct sk_buff *skb, struct genl_info *info);
-@@ -545,6 +550,9 @@ int ethnl_tsinfo_dumpit(struct sk_buff *skb, struct netlink_callback *cb);
- int ethnl_tsinfo_done(struct netlink_callback *cb);
- int ethnl_rss_create_doit(struct sk_buff *skb, struct genl_info *info);
- int ethnl_rss_delete_doit(struct sk_buff *skb, struct genl_info *info);
-+int ethnl_port_dump_start(struct netlink_callback *cb);
-+int ethnl_port_dumpit(struct sk_buff *skb, struct netlink_callback *cb);
-+int ethnl_port_dump_done(struct netlink_callback *cb);
- 
- extern const char stats_std_names[__ETHTOOL_STATS_CNT][ETH_GSTRING_LEN];
- extern const char stats_eth_phy_names[__ETHTOOL_A_STATS_ETH_PHY_CNT][ETH_GSTRING_LEN];
-diff --git a/net/ethtool/port.c b/net/ethtool/port.c
-new file mode 100644
-index 000000000000..0d6150e5f66a
---- /dev/null
-+++ b/net/ethtool/port.c
-@@ -0,0 +1,382 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Copyright 2026 Bootlin
-+ */
-+#include <linux/phy.h>
-+#include <linux/phy_link_topology.h>
-+#include <linux/phy_port.h>
-+#include <net/netdev_lock.h>
-+
-+#include "bitset.h"
-+#include "common.h"
-+#include "netlink.h"
-+
-+struct port_req_info {
-+	struct ethnl_req_info base;
-+	u32 port_id;
-+};
-+
-+struct port_reply_data {
-+	struct ethnl_reply_data	base;
-+	__ETHTOOL_DECLARE_LINK_MODE_MASK(supported);
-+	DECLARE_PHY_INTERFACE_MASK(interfaces);
-+	u32 port_id;
-+	bool mii;
-+	bool sfp;
-+	u32 upstream_port;
-+};
-+
-+#define PORT_REQINFO(__req_base) \
-+	container_of(__req_base, struct port_req_info, base)
-+
-+#define PORT_REPDATA(__reply_base) \
-+	container_of(__reply_base, struct port_reply_data, base)
-+
-+const struct nla_policy ethnl_port_get_policy[ETHTOOL_A_PORT_ID + 1] = {
-+	[ETHTOOL_A_PORT_HEADER] = NLA_POLICY_NESTED(ethnl_header_policy),
-+	[ETHTOOL_A_PORT_ID] = NLA_POLICY_MIN(NLA_U32, 1),
-+};
-+
-+static int port_parse_request(struct ethnl_req_info *req_info,
-+			      const struct genl_info *info,
-+			      struct nlattr **tb,
-+			      struct netlink_ext_ack *extack)
-+{
-+	struct port_req_info *request = PORT_REQINFO(req_info);
-+
-+	if (GENL_REQ_ATTR_CHECK(info, ETHTOOL_A_PORT_ID))
-+		return -EINVAL;
-+
-+	request->port_id = nla_get_u32(tb[ETHTOOL_A_PORT_ID]);
-+
-+	return 0;
-+}
-+
-+static int port_prepare_data(const struct ethnl_req_info *req_info,
-+			     struct ethnl_reply_data *reply_data,
-+			     const struct genl_info *info)
-+{
-+	struct port_reply_data *reply = PORT_REPDATA(reply_data);
-+	struct port_req_info *request = PORT_REQINFO(req_info);
-+	struct phy_port *port;
-+
-+	/* RTNL must be held while holding a ref to the phy_port. Here, caller
-+	 * holds RTNL.
-+	 */
-+	port = phy_link_topo_get_port(req_info->dev, request->port_id);
-+	if (!port)
-+		return -ENODEV;
-+
-+	linkmode_copy(reply->supported, port->supported);
-+	phy_interface_copy(reply->interfaces, port->interfaces);
-+	reply->port_id = port->id;
-+	reply->mii = port->is_mii;
-+	reply->sfp = port->is_sfp;
-+	reply->upstream_port = port->upstream_port ? port->upstream_port->id : 0;
-+
-+	return 0;
-+}
-+
-+static int port_reply_size(const struct ethnl_req_info *req_info,
-+			   const struct ethnl_reply_data *reply_data)
-+{
-+	bool compact = req_info->flags & ETHTOOL_FLAG_COMPACT_BITSETS;
-+	struct port_reply_data *reply = PORT_REPDATA(reply_data);
-+	size_t size = 0;
-+	int ret;
-+
-+	/* ETHTOOL_A_PORT_ID */
-+	size += nla_total_size(sizeof(u32));
-+
-+	if (!reply->mii) {
-+		/* ETHTOOL_A_PORT_SUPPORTED_MODES */
-+		ret = ethnl_bitset_size(reply->supported, NULL,
-+					__ETHTOOL_LINK_MODE_MASK_NBITS,
-+					link_mode_names, compact);
-+		if (ret < 0)
-+			return ret;
-+
-+		size += ret;
-+	} else {
-+		/* ETHTOOL_A_PORT_SUPPORTED_INTERFACES */
-+		ret = ethnl_bitset_size(reply->interfaces, NULL,
-+					PHY_INTERFACE_MODE_MAX,
-+					phy_interface_names, compact);
-+		if (ret < 0)
-+			return ret;
-+
-+		size += ret;
-+	}
-+
-+	/* ETHTOOL_A_PORT_TYPE */
-+	size += nla_total_size(sizeof(u32));
-+
-+	/* ETHTOOL_A_PORT_UPSTREAM_PORT */
-+	if (reply->upstream_port)
-+		size += nla_total_size(sizeof(u32));
-+
-+	return size;
-+}
-+
-+static int port_fill_reply(struct sk_buff *skb,
-+			   const struct ethnl_req_info *req_info,
-+			   const struct ethnl_reply_data *reply_data)
-+{
-+	bool compact = req_info->flags & ETHTOOL_FLAG_COMPACT_BITSETS;
-+	struct port_reply_data *reply = PORT_REPDATA(reply_data);
-+	int ret, port_type = ETHTOOL_PORT_TYPE_MDI;
-+
-+	if (nla_put_u32(skb, ETHTOOL_A_PORT_ID, reply->port_id))
-+		return -EMSGSIZE;
-+
-+	if (!reply->mii) {
-+		ret = ethnl_put_bitset(skb, ETHTOOL_A_PORT_SUPPORTED_MODES,
-+				       reply->supported, NULL,
-+				       __ETHTOOL_LINK_MODE_MASK_NBITS,
-+				       link_mode_names, compact);
-+		if (ret < 0)
-+			return ret;
-+	} else {
-+		ret = ethnl_put_bitset(skb, ETHTOOL_A_PORT_SUPPORTED_INTERFACES,
-+				       reply->interfaces, NULL,
-+				       PHY_INTERFACE_MODE_MAX,
-+				       phy_interface_names, compact);
-+		if (ret < 0)
-+			return ret;
-+	}
-+
-+	if (reply->mii || reply->sfp)
-+		port_type = ETHTOOL_PORT_TYPE_SFP;
-+
-+	if (nla_put_u32(skb, ETHTOOL_A_PORT_TYPE, port_type))
-+		return -EMSGSIZE;
-+
-+	if (reply->upstream_port &&
-+	    nla_put_u32(skb, ETHTOOL_A_PORT_UPSTREAM_PORT,
-+			reply->upstream_port))
-+		return -EMSGSIZE;
-+
-+	return 0;
-+}
-+
-+struct port_dump_ctx {
-+	struct port_req_info	*req_info;
-+	struct port_reply_data	*reply_data;
-+	unsigned long		ifindex;
-+	unsigned long		pos_ifindex;
-+	unsigned long		pos_portid;
-+};
-+
-+static struct port_dump_ctx *
-+port_dump_ctx_get(struct netlink_callback *cb)
-+{
-+	return (struct port_dump_ctx *)cb->ctx;
-+}
-+
-+int ethnl_port_dump_start(struct netlink_callback *cb)
-+{
-+	const struct genl_dumpit_info *info = genl_dumpit_info(cb);
-+	struct port_dump_ctx *ctx = port_dump_ctx_get(cb);
-+	struct nlattr **tb = info->info.attrs;
-+	struct port_reply_data *reply_data;
-+	struct port_req_info *req_info;
-+	int ret;
-+
-+	BUILD_BUG_ON(sizeof(*ctx) > sizeof(cb->ctx));
-+
-+	req_info = kzalloc_obj(*req_info);
-+	if (!req_info)
-+		return -ENOMEM;
-+
-+	reply_data = kmalloc_obj(*reply_data);
-+	if (!reply_data) {
-+		ret = -ENOMEM;
-+		goto free_req_info;
-+	}
-+
-+	ret = ethnl_parse_header_dev_get(&req_info->base, tb[ETHTOOL_A_PORT_HEADER],
-+					 genl_info_net(&info->info),
-+					 info->info.extack, false);
-+	if (ret < 0)
-+		goto free_rep_data;
-+
-+	ctx->ifindex = 0;
-+	ctx->pos_ifindex = 0;
-+
-+	/* For filtered DUMP requests, let's just store the ifindex. We'll check
-+	 * again if the netdev is still there when looping over the netdev list
-+	 * in the DUMP loop.
-+	 */
-+	if (req_info->base.dev) {
-+		ctx->ifindex = req_info->base.dev->ifindex;
-+		netdev_put(req_info->base.dev, &req_info->base.dev_tracker);
-+		req_info->base.dev = NULL;
-+	}
-+
-+	ctx->req_info = req_info;
-+	ctx->reply_data = reply_data;
-+
-+	return 0;
-+
-+free_rep_data:
-+	kfree(reply_data);
-+free_req_info:
-+	kfree(req_info);
-+
-+	return ret;
-+}
-+
-+static int port_dump_one(struct sk_buff *skb, struct net_device *dev,
-+			 struct netlink_callback *cb)
-+{
-+	struct port_dump_ctx *ctx = port_dump_ctx_get(cb);
-+	void *ehdr;
-+	int ret;
-+
-+	ehdr = ethnl_dump_put(skb, cb, ETHTOOL_MSG_PORT_GET_REPLY);
-+	if (!ehdr)
-+		return -EMSGSIZE;
-+
-+	memset(ctx->reply_data, 0, sizeof(struct port_reply_data));
-+	ctx->reply_data->base.dev = dev;
-+
-+	rtnl_lock();
-+	netdev_lock_ops(dev);
-+
-+	ret = port_prepare_data(&ctx->req_info->base, &ctx->reply_data->base,
-+				genl_info_dump(cb));
-+
-+	netdev_unlock_ops(dev);
-+	rtnl_unlock();
-+
-+	if (ret < 0)
-+		goto out;
-+
-+	ret = ethnl_fill_reply_header(skb, dev, ETHTOOL_A_PORT_HEADER);
-+	if (ret < 0)
-+		goto out;
-+
-+	ret = port_fill_reply(skb, &ctx->req_info->base, &ctx->reply_data->base);
-+
-+out:
-+	ctx->reply_data->base.dev = NULL;
-+	if (ret < 0)
-+		genlmsg_cancel(skb, ehdr);
-+	else
-+		genlmsg_end(skb, ehdr);
-+
-+	return ret;
-+}
-+
-+static int port_dump_one_dev(struct sk_buff *skb, struct netlink_callback *cb)
-+{
-+	struct port_dump_ctx *ctx = port_dump_ctx_get(cb);
-+	struct net_device *dev;
-+	struct phy_port *port;
-+	int ret;
-+
-+	dev = ctx->req_info->base.dev;
-+
-+	if (!dev->link_topo)
-+		return 0;
-+
-+	xa_for_each_start(&dev->link_topo->ports, ctx->pos_portid, port,
-+			  ctx->pos_portid) {
-+		ctx->req_info->port_id = ctx->pos_portid;
-+
-+		ret = port_dump_one(skb, dev, cb);
-+		if (ret == -ENODEV)
-+			continue;
-+		if (ret)
-+			return ret;
-+	}
-+
-+	ctx->pos_portid = 0;
-+
-+	return 0;
-+}
-+
-+static int port_dump_all_dev(struct sk_buff *skb, struct netlink_callback *cb)
-+{
-+	struct port_dump_ctx *ctx = port_dump_ctx_get(cb);
-+	struct net *net = sock_net(skb->sk);
-+	netdevice_tracker dev_tracker;
-+	struct net_device *dev;
-+	int ret = 0;
-+
-+	rcu_read_lock();
-+	for_each_netdev_dump(net, dev, ctx->pos_ifindex) {
-+		netdev_hold(dev, &dev_tracker, GFP_ATOMIC);
-+		rcu_read_unlock();
-+
-+		ctx->req_info->base.dev = dev;
-+		ret = port_dump_one_dev(skb, cb);
-+
-+		rcu_read_lock();
-+		netdev_put(dev, &dev_tracker);
-+		ctx->req_info->base.dev = NULL;
-+
-+		if (ret < 0 && ret != -EOPNOTSUPP) {
-+			if (likely(skb->len))
-+				ret = skb->len;
-+			break;
-+		}
-+
-+		ret = 0;
-+	}
-+	rcu_read_unlock();
-+
-+	return ret;
-+}
-+
-+int ethnl_port_dumpit(struct sk_buff *skb, struct netlink_callback *cb)
-+{
-+	const struct genl_dumpit_info *info = genl_dumpit_info(cb);
-+	struct port_dump_ctx *ctx = port_dump_ctx_get(cb);
-+	int ret = 0;
-+
-+	if (ctx->ifindex) {
-+		netdevice_tracker dev_tracker;
-+		struct net_device *dev;
-+
-+		dev = netdev_get_by_index(genl_info_net(&info->info),
-+					  ctx->ifindex, &dev_tracker,
-+					  GFP_KERNEL);
-+		if (!dev)
-+			return -ENODEV;
-+
-+		ctx->req_info->base.dev = dev;
-+		ret = port_dump_one_dev(skb, cb);
-+		if (ret < 0 && ret != -EOPNOTSUPP && likely(skb->len))
-+			ret = skb->len;
-+
-+		netdev_put(dev, &dev_tracker);
-+	} else {
-+		ret = port_dump_all_dev(skb, cb);
-+	}
-+
-+	return ret;
-+}
-+
-+int ethnl_port_dump_done(struct netlink_callback *cb)
-+{
-+	struct port_dump_ctx *ctx = port_dump_ctx_get(cb);
-+
-+	kfree(ctx->req_info);
-+	kfree(ctx->reply_data);
-+
-+	return 0;
-+}
-+
-+const struct ethnl_request_ops ethnl_port_request_ops = {
-+	.request_cmd		= ETHTOOL_MSG_PORT_GET,
-+	.reply_cmd		= ETHTOOL_MSG_PORT_GET_REPLY,
-+	.hdr_attr		= ETHTOOL_A_PORT_HEADER,
-+	.req_info_size		= sizeof(struct port_req_info),
-+	.reply_data_size	= sizeof(struct port_reply_data),
-+
-+	.parse_request		= port_parse_request,
-+	.prepare_data		= port_prepare_data,
-+	.reply_size		= port_reply_size,
-+	.fill_reply		= port_fill_reply,
-+};
--- 
-2.55.0
+are available in the Git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/mst/vhost.git tags/for_linus
+
+for you to fetch changes up to 48a4ee65e677559776349128e6a81a6041986c99:
+
+  vduse: return compat ioctl results directly (2026-09-08 03:58:27 -0400)
+
+----------------------------------------------------------------
+vhost,vdpa,virtio: fixes
+
+Just a ton of small fixes all over the place.
+
+Also includes virtio and virtio-rng MAINTAINERS updates.
+
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+
+----------------------------------------------------------------
+Alexander Graf (1):
+      virtio_ring: fix stale descriptor flags after a failed packed add
+
+Andrew Stellman (1):
+      virtio-pci: return IRQ_HANDLED after non-zero ISR
+
+Dongli Zhang (2):
+      vhost-scsi: use kvzalloc for vq array allocation
+      vhost-scsi: clamp max_io_vqs module parameter
+
+Eugenio Pérez (1):
+      virtio: add Eugenio Pérez as Maintainer
+
+Jia Jia (4):
+      virtio_console: do not free control-out buffers on remove
+      vhost/vdpa: reject VRING_NUM larger than device max
+      vduse: validate virtqueue alignment
+      vhost: invalidate vring access on IOTLB transitions
+
+Karl Mehltretter (2):
+      virtio: fix use-after-free in unregister_virtio_device()
+      virtio_input: stop callbacks before unregistering input device
+
+Laurent Vivier (1):
+      MAINTAINERS: Add a section for virtio-rng
+
+Linfeng Sun (4):
+      vdpa_sim_blk: reject out-of-range sector starts
+      vdpa_sim_net: check TX pull result before RX copy
+      vhost: limit outstanding IOTLB misses per virtqueue
+      vduse: return compat ioctl results directly
+
+Nikhil (1):
+      vduse: do not take dev->rwsem in the virtqueue kick path
+
+Xiong Weimin (8):
+      virtio_mmio: disable IRQ wake before free_irq
+      vdpa/pds: check virtqueue notify mapping
+      vdpa: alibaba: Keep DRIVER_OK clear if IRQ setup fails
+      vdpa: solidrun: Free IRQs after request failure
+      vdpa: ifcvf: Put device on unsupported feature error
+      vdpa: octeon_ep: Check dev_set_name() in dev add
+      virtio-vdpa: Use queue id when setting vq affinity
+      virtio_input: reset device if input_register_device() fails
+
+Yu Zhang (2):
+      vhost-vdpa: don't install the eventfd_ctx_fdget() error in config_ctx
+      vhost-vdpa: protect config_ctx from being freed under the config callback
+
+ MAINTAINERS                              | 13 ++++-
+ drivers/char/virtio_console.c            | 21 ++++++-
+ drivers/vdpa/alibaba/eni_vdpa.c          |  5 +-
+ drivers/vdpa/ifcvf/ifcvf_main.c          |  3 +-
+ drivers/vdpa/octeon_ep/octep_vdpa_main.c |  2 +
+ drivers/vdpa/pds/vdpa_dev.c              |  6 ++
+ drivers/vdpa/solidrun/snet_main.c        |  6 +-
+ drivers/vdpa/vdpa_sim/vdpa_sim_blk.c     |  3 +-
+ drivers/vdpa/vdpa_sim/vdpa_sim_net.c     |  7 ++-
+ drivers/vdpa/vdpa_user/vduse_dev.c       | 36 +++++++++---
+ drivers/vhost/net.c                      |  2 +
+ drivers/vhost/scsi.c                     | 49 +++++++++++-----
+ drivers/vhost/vdpa.c                     | 88 +++++++++++++++++++++--------
+ drivers/vhost/vhost.c                    | 95 ++++++++++++++++++++++++++++++--
+ drivers/vhost/vhost.h                    |  4 ++
+ drivers/vhost/vsock.c                    |  2 +
+ drivers/virtio/virtio.c                  |  2 +-
+ drivers/virtio/virtio_input.c            |  9 ++-
+ drivers/virtio/virtio_mmio.c             | 16 +++++-
+ drivers/virtio/virtio_pci_common.c       |  4 +-
+ drivers/virtio/virtio_ring.c             | 38 +++++++++++--
+ drivers/virtio/virtio_vdpa.c             |  5 +-
+ 22 files changed, 342 insertions(+), 74 deletions(-)
 
