@@ -1,94 +1,142 @@
-Received: from sg-2-3.ptr.blmpb.com (sg-2-3.ptr.blmpb.com [71.18.227.3])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-b1-smtp.messagingengine.com (fhigh-b1-smtp.messagingengine.com [202.12.124.152])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C7713C5DA6
-	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 19:48:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=71.18.227.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6FC835DA4A;
+	Wed,  9 Sep 2026 19:51:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788983311; cv=none; b=sm7nFf5WOnO+dLWvKNhUjTT531ELPs7JdlfAdAbM5XNH3vVSGxHppl8zHQ05QGAn0mp9zzX26u7/oT1rCHrkjyvuGzdebcQuZjNf4Q/ZxDMHaxhFEt0qhKMxNlb0+0ebhAeEL1aS+7kQxnclgvygbLc+2IEsjNXANbgsDlCLgC4=
+	t=1788983498; cv=none; b=MoVMQnIoLLZvLY9BQ66/CCFG+q85i0rnG3BhIMCzH/c9oaD6lFotUygBs0ATtGhKWyDKubN0+SHSqWqIX/shj1En9dAo6TzC5/gJ/Kj+Q6VMXu4T6yjCL8iD092GEWAIkRKgbVAxzmpqkJuKSWXdnYvHRdJ4RBT2JGzs+HqKZlk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788983311; c=relaxed/simple;
-	bh=bIHnFJeIR8NCizBam5bSpQWNUrltT1kv2ZZq+/mblJQ=;
-	h=From:Subject:Cc:Content-Disposition:Content-Type:Mime-Version:
-	 Date:Message-Id:References:In-Reply-To:To; b=IyQZs2043Rofwl+mgJuUaSW76tn/x5RxhU308VQBZ0Kn/haBl+NrTgqZ9+zZsLmlcsH66yTaQOePyWxgrnylfYhjX27+28vlWii829Ir58sbFjQUFGAiQYqOYQXaw2DoV3S5axzmYBSLVVhZPSYakQ7lqcSqCPonqTz1vQIzmvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cherr.cc; spf=pass smtp.mailfrom=cherr.cc; dkim=pass (2048-bit key) header.d=cherr.cc header.i=@cherr.cc header.b=IHW3e2mQ; arc=none smtp.client-ip=71.18.227.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cherr.cc
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cherr.cc
+	s=arc-20240116; t=1788983498; c=relaxed/simple;
+	bh=1LhBJ66w1k8GNfrsaXMA5+HvLgA6hwVpIRDgp3cGSDc=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=V4/rZNPg/nhQPzgYzBvK9baw/1Yc8Nua+bviRAIZDL/INzpc0NaDMBm6AeoJVmmDv899iydKb/T/8999LAeJmE4tRTc7atojrUxY/TPQlC4MhyCKoKKQH5FAGuvLOc8YpW6F8GuNziCc7cESDnklysJSd7DII4egM/AztOfZaPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.com; spf=pass smtp.mailfrom=fastmail.com; dkim=pass (2048-bit key) header.d=fastmail.com header.i=@fastmail.com header.b=RqRB/h0H; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=gxs1QaTJ; arc=none smtp.client-ip=202.12.124.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cherr.cc header.i=@cherr.cc header.b="IHW3e2mQ"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=feishu2604220257; d=cherr.cc; t=1788983296; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=VWXdC+EiFgKXDk4rNFutmJw52+1YadomDGamPq9rKuI=;
- b=IHW3e2mQi6/o4orGzclZk1XIgRsFPdaWkn5bD5vJvp9vNlWhYsuJegb9BlmzDA2ZYMAGfC
- HfqumZKKN90TLdO642EJJy1s/01ti7hz/QZhwPjEzvNEst3IbKYjpNR1C8kyd4lEs7cPKz
- jZET06kpwF3br5pxxYFHHIjsQGrR2GCzruD1yzc5L4VdXirNs8pVx7IH3iN3Y5flydGusi
- jkp5BvUMHxDT/2x0fKxx3ZSbFBPDp2TyCKpnNgbZypIO0LtvqqK7xrVo6WqzM22CeEyU82
- NZoU4AMJpJ0pyiWpugMXumuYmO8q6Lc1QHMPPDbsj6TcmSYX6rJbsUckjSMGCw==
-From: "Shengzhuo Wei" <me@cherr.cc>
-Subject: Re: [PATCH net v3 2/2] net: fec: free the PPS interrupt before tearing down the PHC and netdev
-Received: from nobug ([111.42.148.144]) by smtp.feishu.cn with ESMTPS; Thu, 10 Sep 2026 03:48:13 +0800
-Content-Transfer-Encoding: 7bit
-Cc: "Shengzhuo Wei" <me@cherr.cc>, "Frank Li" <frank.li@nxp.com>, 
-	"Shenwei Wang" <shenwei.wang@nxp.com>, 
-	"Andrew Lunn" <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, 
-	"Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>, 
-	"Paolo Abeni" <pabeni@redhat.com>, 
-	"Richard Cochran" <richardcochran@gmail.com>, 
-	"Troy Kisky" <troy.kisky@boundarydevices.com>, 
-	"Fugang Duan" <fugang.duan@nxp.com>, 
-	"Lucas Stach" <l.stach@pengutronix.de>, 
-	"Simon Horman" <horms@kernel.org>, <imx@lists.linux.dev>, 
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
-	<stable@vger.kernel.org>
-Content-Disposition: inline
-X-Lms-Return-Path: <lba+26aa1b7fe+00e492+vger.kernel.org+me@cherr.cc>
-Content-Type: text/plain; charset=UTF-8
-X-Original-From: Shengzhuo Wei <me@cherr.cc>
+	dkim=pass (2048-bit key) header.d=fastmail.com header.i=@fastmail.com header.b="RqRB/h0H";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="gxs1QaTJ"
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 9E1897A0075;
+	Wed,  9 Sep 2026 15:51:34 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-06.internal (MEProxy); Wed, 09 Sep 2026 15:51:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fastmail.com; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:message-id:mime-version:reply-to
+	:subject:subject:to:to; s=fm1; t=1788983494; x=1789069894; bh=Te
+	9pUtz8HHvJio0zOcSIK+7k4siPDoYwlTXA189ndtk=; b=RqRB/h0HHpLuGhYbEE
+	BV9fWqwdZccr2N3Lq6+PEGzLvMbWMoQhLwfRi0XT7GhbQKRgeF/XXOo3teHEsJqi
+	kFNZdJi6bWKoaG5YciykRyMkzdfteLXWAcWX33OxDzzNSomE6+v4iB5e2Iy1QtIY
+	BfWPnxVHqV/PRj4X3y5hB04ssAWHuzoF8mA95d9NCUG5NJ4Vb5915lRfVuAv2zW5
+	C7UbsiK3mOizcXlfoSOQPzNKzJWLNtI7v8/wiVcDUBWo2ID4BnI3x8mPhzWJy5df
+	XDm4SNPDIs2o3gqmM3I5fFQCy9wsUjQvdkDEpAJQgvCm+IjE8o7DJ0HRPU40yM8T
+	l76A==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:message-id:mime-version:reply-to:subject
+	:subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm1; t=1788983494; x=1789069894; bh=Te9pUtz8HHvJio0zOcSIK+7k4siP
+	DoYwlTXA189ndtk=; b=gxs1QaTJbQyumEVnzjXq4xNMhHWWFduEoW5EY+T9nccV
+	BgXO4fapUMrWiPrhSNqAOhFDzXpw94r6u9eEBe/DenM1r4Ky0F443dgRL5FUYkvH
+	Wbqh+pPi4mgRNMkZ5f8mzpvfzPNe2onBcfhcyuD4Oiy3hWTUB5XVi9Td9qHHGFRO
+	5Xh7Tf74NaLmdmpLq4r+QZKnobju+IzQbVuAMIV4ZP732gHL7c5WYiK3Acnv2hWK
+	xC1qsjMyQDKqG0+XjSyO8qcXX5jMOwrTDx+C4vHPPBFezlPBjZxuW718AtNfj5v7
+	I5PBHjK5nsABXex/6iEKGOyC7ULOw4H9sjQDkPIIpA==
+X-ME-Sender: <xms:xrihaiyR1RdqoNHwivDhb0tD-31Ap9w1NFYGYX3qNdAUR7lEThULgg>
+    <xme:xrihamdoXsVVXvOBNHN9TKwoZ23xMoAlxK8q5RqBAOglnDt6rjdOn0P5thoYxU2Nh
+    cTETtoVUgEuXObfQlGHznth23cFi38L7IiCmUT3U3IG87iBed3F25F3>
+X-ME-Received: <xmr:xrihav6_bfVWpqIHmTz-3d33kJ1cpeEFymUSeaAXWsvSDf9oBjQWP_lbDgV7cGHq>
+X-ME-Proxy-Cause: dmFkZTFstriRpVOIzBLSQs0vKiuKLiGzVnASIcLfUyR+LMtT9K4QQkPigvZSe4eIWtHcOK
+    oTsUtKEkjjP0goX8ueiEWaxuzoai23k1jE5gQHkJfnlzZsCtducPKXV0N+lbRH+igkQXCd
+    VT/R6dIF+ub6C6WXaN2AtCctEyOj7isnkxxACqHgMwlCCbv1cHyTjKGg01+iHN9Umw4yK7
+    bDtqnNbYNnhh1NEiPub2l9mBZhWNvVCw/8DekLNHevxgWAOLh/asU+H6gtU7E4DUCHmBZ0
+    8LoBnnEodgh7rIzGS8lEklyIf4mW2/mXR6tx8uerqxY3JZjZY+tkzQfpFAFnWY+F+CyDsW
+    QwYw9mJxY9uHHlsovKKubHSS70FixIlEw6WA67mvKlRfIomh2iv261UbCLavupBNTrKUp5
+    D7T3i4vrmdMCao/mm6YUFj1wJZwyMKg2kqO370rLYACHevNRXLGxrX4FQfrea4EbKnkM5M
+    6GsGz0Kd7CERlilNd5CDwhTcARk3CNPcACuIyRZF/qR6+mmUUMy1a/5kss08sES1yblSjz
+    R471JvPHnrHhupMSvmnKJBX3K6WyqyXXr3UCiuiF+7CLszW4tcyRQaNW6RL258GYBxyXL/
+    2mEqoyuOD6p6OT/lJIIW1mOVA6/AaP5dSGAIyxpOcXe/HYHGA8vTRAU89Opg
+X-ME-Proxy: <xmx:xrihajJ52b507iSQc915NzWreSSjyP8ni69pGEk3Yt7BGdeBzoQz7g>
+    <xmx:xrihavzJ4bJsP4A7fe4q4ujvF1ldas-Xkp5-XjE8nvEJ_G-ZXRaNuQ>
+    <xmx:xrihajI70LhWT6q30WnrE0iRBQEv50G4TO1r1yEtWqwZWMOcez14bA>
+    <xmx:xrihamU7u4PlXXuaytMLNKBZELcqJGv3Z1i_m0qSzshXOCft0t1NaA>
+    <xmx:xrihalL1QxnBC6syIFUyGCuOzQXgevjzVgNpcNq6Zz7kBlyBpfNMmwW_>
+Feedback-ID: i80b64ba7:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 9 Sep 2026 15:51:33 -0400 (EDT)
+From: Juanlu Herrero <juanlu@fastmail.com>
+Subject: [PATCH net-next v7 0/6] selftests: net: make iou-zcrx tests
+ multithreaded
+Date: Wed, 09 Sep 2026 14:51:22 -0500
+Message-Id: <20260909-iou-zcrx-v7-0-6b5d48a2a922@fastmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Date: Thu, 10 Sep 2026 03:48:11 +0800
-Message-Id: <aqG3-ySw1AecQVkD@nobug>
-References: <20260909-fec-ptp-pps-event-uaf-v3-0-bead12c29a16@cherr.cc> <20260909-fec-ptp-pps-event-uaf-v3-2-bead12c29a16@cherr.cc> <CAABR9nGshJE96aCZVriQeMd+7Zjua5n+EKpUTN=953sowUL0Tg@mail.gmail.com>
-In-Reply-To: <CAABR9nGshJE96aCZVriQeMd+7Zjua5n+EKpUTN=953sowUL0Tg@mail.gmail.com>
-To: "Bui Duc Phuc" <phucduc.bui@gmail.com>, "Wei Fang" <wei.fang@nxp.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yWMQQqDMBQFryJv3Q9RigavUrrQ9LX9XURJooSKd
+ 2+sy2GG2RAZlBF9tSFw1aiTL9BdKrj34F8UfRRGY5rW2LoTnRb5upCFlte2NnYwo0PJ58Cn5v/
+ qBs8knjnhfpq4jB+6dJyw7z8hCSMBdgAAAA==
+X-Change-ID: 20260817-iou-zcrx-e8e46108a0bc
+To: dw@davidwei.uk, netdev@vger.kernel.org
+Cc: io-uring@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, kuba@kernel.org, asml.silence@gmail.com, 
+ pabeni@redhat.com, shuah@kernel.org, juanlu@fastmail.com
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1990; i=juanlu@fastmail.com;
+ h=from:subject:message-id; bh=1LhBJ66w1k8GNfrsaXMA5+HvLgA6hwVpIRDgp3cGSDc=;
+ b=owGbwMvMwCWW/91SPSt7w03G02pJDFkLdxzunee1K+AdX8eTWa+Eq+yUXApDUwXfhZllKK3Z/
+ O1YoF9Wx0QWBjEuBksxRRaPlyItGlMrGu+qRgjCzGFlAhkiLdLAAAQsDHy5iXmlRjpGeqbahnqG
+ RjoGOsYMXJwCMNX35jMy7LNQmaobb7/ZUsl3VeWy5Wmh6WbalyXFZ29VMNmwqnCiMcP/8nNMRVv
+ 6fe33Jx/fONk6X756UnJM5YmvVw/d3S7AElXFCgA=
+X-Developer-Key: i=juanlu@fastmail.com; a=openpgp;
+ fpr=48E9148428957881DD2558116FF739276A6BB0D9
 
-> > +
-> > +       if (fep->pps_irq >= 0) {
-> > +               free_irq(fep->pps_irq, ndev);
-> > +               fep->pps_irq = -1;
-> > +       }
-> > +
-> 
-> I think fep->pps_irq > 0 would be more appropriate here,
-> since the IRQ returned by platform_get_irq_byname_optional() or
-> platform_get_irq_optional() cannot be 0.
+This series extends the iou-zcrx selftests to be multithreaded while
+preserving existing single-threaded tests.
 
-Hi Phuc,
+Patches 1 and 2 are prep fixes/cleanups. Patch 3 refactors the server's
+global state. Patches 4 and 5 add the multithreaded client and server.
+Finally, patch 6 adds the python side multithreaded test case.
 
-You're right. I hadn't checked whether these helpers could return
-IRQ 0.
+Changes since v6:
+- moving listen() after workers have registered their zcrx ifqs
+  (Sashiko, Paolo, Bobby)
+- worker verifies its own connections received the fully payload (to
+  deal with the 0 connection per worker case passing (Sashiko, Paolo)
 
-I saw the existing irq >= 0 check in the request path and wanted
-the release path to match it. I used -1 to distinguish "no IRQ
-requested" from a possible IRQ 0, recording the IRQ only after
-request_irq() succeeded.
+v6: https://lore.kernel.org/all/20260831-iou-zcrx-v6-0-02d1d012f0fd@fastmail.com/
+v5: https://lore.kernel.org/all/20260814012348.46958-1-juanlu@fastmail.com/
+v4: https://lore.kernel.org/netdev/20260729221825.42773-1-juanlu@fastmail.com/
+v3: https://lore.kernel.org/netdev/20260722203950.58550-1-juanlu@fastmail.com/
+v2: https://lore.kernel.org/netdev/cover.1776444379.git.juanlu@fastmail.com/
+v1: https://lore.kernel.org/netdev/20260408163816.2760-1-juanlu@fastmail.com/
 
-Since both helpers reject IRQ 0, that extra handling is unnecessary.
-Keeping pps_irq at its initial value of 0 and checking > 0 before
-free_irq() is sufficient.
+Assisted-by: Claude:claude-opus-4-8
+Signed-off-by: Juanlu Herrero <juanlu@fastmail.com>
+---
+Juanlu Herrero (6):
+      selftests: net: fix get_refill_ring_size() to use its local variable
+      selftests: net: remove unused variable in process_recvzc()
+      selftests: net: refactor server state into struct thread_ctx
+      selftests: net: add multithread client support to iou-zcrx
+      selftests: net: add multithread server support to iou-zcrx
+      selftests: net: add rss_multiqueue test variant to iou-zcrx
 
-Wei, I plan to drop the -1 initialization, use > 0 for the release
-check, and reset pps_irq to 0 after freeing it. Do you have any
-concerns with that change?
-
-Thanks for pointing this out.
+ tools/testing/selftests/drivers/net/hw/Makefile    |   7 +-
+ tools/testing/selftests/drivers/net/hw/iou-zcrx.c  | 422 +++++++++++++++------
+ tools/testing/selftests/drivers/net/hw/iou-zcrx.py |  50 ++-
+ 3 files changed, 347 insertions(+), 132 deletions(-)
+---
+base-commit: 548b86839f7fb819a4d6c83b71c73ec378d24275
+change-id: 20260817-iou-zcrx-e8e46108a0bc
 
 Best regards,
-Shengzhuo
+--  
+Juanlu Herrero
+
