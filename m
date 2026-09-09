@@ -1,239 +1,284 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C9D2244692;
-	Wed,  9 Sep 2026 03:16:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E02C5846A;
+	Wed,  9 Sep 2026 03:17:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788923811; cv=none; b=nf9/05f9RoFWIvHoit8LMKyFSmhFaFMMaKbO5ggVEUsz8whrfPniO1Lgj7BWrg/qucEbfXiBoC3481aS9eprhGqfAV38zUTyszYtkH9pJifpYIShbmEU594wMj3V3pORFA0Fpf2aXNr0adBquDMOMmfxFlwB/T0TUB9At9L3CL4=
+	t=1788923852; cv=none; b=kHfZORI4ynuv95474wQv+NUzrPF2Va+plqyqEYspeiIua52foHL4JtP+eL7BnpJ6Cu4XIp9lQIg3HXKn4mzjUMQSqb4t8gMAPmo2Qru/WQfjBL3Jz1p1I4ryvW2HDeaRCG8859FGPx1E2DghzNCBvbWTMOet/RFiKFUyiaFzR3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788923811; c=relaxed/simple;
-	bh=0U5hTNbyEeUK7kGjvfosGTLRrTM1il3C+BTfhlqktkk=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=eHcn2MRubK5Y8GDc2tk5rdAZP4dbkX7ObbL2mBa/YEd6KmkC2DSHgmokNiVagG03InOol25oEYsWydg98oifcwIouBE5pmFNZX09jXUxAXOmBe9wVta0AqqFXtt/mv2uwdshPx5BbmOYdt/EGv2p5FPyyyBlVQyVp/YmLu86Bbw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FH71/6YD; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788923852; c=relaxed/simple;
+	bh=gO8/wzbula69UjPLsaAFAfb4VYs9owik9alWAHWgknM=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=avAn0T7pOOXCxuYUZLtjw1G2EKHW8+e9L/2hJ/nFHF7p8og6fOf03hUR3zaU9tLTlcOZyeT9KJHNbrBTbNOSfKqnE1rKczEdymHH1siEZAQwR3aLZxzUwsdK3tvWz1vpnIord739QCOkqvE1qi6RWKqaPT266ub+DtzdsHnvK3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=LZQXTILM; arc=none smtp.client-ip=67.231.156.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FH71/6YD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1299E1F00A3A;
-	Wed,  9 Sep 2026 03:16:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788923809;
-	bh=nOyPhUUjOAGK/f5eBS9tgcpfUcHH4ikyW2r5eX5Wc5w=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=FH71/6YD03qNfPHstms2cqVsk8oQc7Qiu1358ex4uMwjFAGRvsXvQhB66aXd0aKwL
-	 JUc4lY2rTdHKQiUuBNnT1DhUPw2hG43sskaqpZlULmD5gEF1UKPph7ZvjkIASrQCiY
-	 UsMNYEeqwH187uJchKWwf0Tbu+C+1Nsa8q+Xi0mdCZ1ymWyzKS4Xgw+1NVb7dSEiB+
-	 C3yFw0rlTTgdipKENh/rYdeMNVhcFI1RMSwRJJcXY+wP6FauuJw/o8kH0GXSSU9mdC
-	 CFm/dny9ANUK/BH769cRDjwOF2aeWw5VRiRQfQBW/mIBFXsH7BJoM9F+iHdkjFPZXh
-	 gylU2IGCsIlFw==
-Subject: Re: [PATCH] udp_tunnel: avoid calling the wrong GRO handler
-From: netdev-bot+sashiko@kernel.org
-To: Jeremy.Jean@oss.cyber.gouv.fr
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Wed, 09 Sep 2026 03:16:48 +0000
-Message-ID: <178892380854.219967.4849169204627691045@kernel.org>
-In-Reply-To: <20260906211351.1272699-2-Jeremy.Jean@oss.cyber.gouv.fr>
-References: <20260906211351.1272699-2-Jeremy.Jean@oss.cyber.gouv.fr>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="LZQXTILM"
+Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6891UnOH1568962;
+	Tue, 8 Sep 2026 20:17:21 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=x
+	comrW9jVXFX62Upjo1YTfLTecKCj6r82E5QbVSQuk8=; b=LZQXTILMjQMuAxdcr
+	YwO6wsxgbHpLrnNd/Oj8ro7D7C9ZNgxTqFocjWPzsg0lp5yrye6M1c3SQOLjaz1b
+	5IY6sG3H6euYGf1UzWQjS4QxkoqJlrwLAH9R3JZNo04E+U73ZfINqucOHm91n7Xr
+	xJuEwoxRtK0oD1gQkBvdH2r4eFlv6/ocGY0ejj/FTphYUC8bjdao9ZjD+0yvhqFG
+	b75UgiiSa6EMpev4Bo1qi589JB3aoIBc8waBuMBPS21U8Dd0EElUqaYCpQjlDsX2
+	Gy8FSSepwGPBxvHDRDbh8BdzI6bWlSSwHcgPeAeSnFqAP80xRHuO9qalxULTCwzY
+	ev0pA==
+Received: from dc5-exch05.marvell.com ([199.233.59.128])
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4gjwuu06ub-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 08 Sep 2026 20:17:21 -0700 (PDT)
+Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
+ DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Tue, 8 Sep 2026 20:17:20 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
+ (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Tue, 8 Sep 2026 20:17:20 -0700
+Received: from rkannoth-OptiPlex-7090 (unknown [10.28.36.165])
+	by maili.marvell.com (Postfix) with ESMTP id EB8813F7071;
+	Tue,  8 Sep 2026 20:17:16 -0700 (PDT)
+Date: Wed, 9 Sep 2026 08:47:10 +0530
+From: Ratheesh Kannoth <rkannoth@marvell.com>
+To: <netdev-bot+sashiko@kernel.org>
+CC: <davem@davemloft.net>, <hkelam@marvell.com>,
+        <linux-kernel@vger.kernel.org>, <naveenm@marvell.com>,
+        <netdev@vger.kernel.org>, <sgoutham@marvell.com>,
+        <andrew+netdev@lunn.ch>, <edumazet@google.com>, <kuba@kernel.org>,
+        <pabeni@redhat.com>
+Subject: Re: [PATCH v4 net] octeontx2-pf: reset HTB scheduler topology before
+ freeing queues
+Message-ID: <aqDPtg2y3Pl5_r-j@rkannoth-OptiPlex-7090>
+References: <20260903020533.3068041-1-rkannoth@marvell.com>
+ <178888726063.219967.8664029829834628993@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <178888726063.219967.8664029829834628993@kernel.org>
+X-Proofpoint-ORIG-GUID: FrHDYgM9XZgUsfzd4gOwOHJtLt6LE7Af
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTA5MDAzMyBTYWx0ZWRfX0vwpK0n+qW8y
+ P0MUzYWm4Mk81Ew0HUDYz1yiIBUBVXusF3UVHNftHFTZQtFFPUdebb3hho6F1qTn8yyDhhaEU/p
+ L+FGspatLKDFYc4gKtKJSHFKK8Opwtw=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA5MDAzMyBTYWx0ZWRfX+lvYU+Dm/3WT
+ SouS6BGe1TsVuQn2IHH9GRKa49iLpB4ojk/L0M0rmq6dCUKnW8B+u72BqxvrZtg7kA33xyv60RX
+ ZwI3AlkXQDATkTHeIwSRhLEwiSCA4XHRBkzahbAMAd5knd5w+HI1YQBak4b8qvQR11Sw4adzSUb
+ 1DDLYndy6rP2wlAX1ZmjkGnOh8onCz86miss1BD0c/olqOjR8bgZOutuWvCgGSQNFT7pmWpQ/fI
+ vcWdQdBukCt2U4pGp0L0DEn03rWtp1oWMMf58eTkJwT2lSXpu1ZU6tZORQxoRuxVm8vEurYTwU3
+ gQ1yjiaa9YY4Hrf1AkcmDa9T6cW4Fb7ZJbcWupkJykT5w7o9Qw1idnSIpoLHUThtatx9YlLSCLp
+ 1LcECrS1PNsm8tHE4JFr4V5USYiZC1RIHO90IrsWNITfioFPqJf57gzplUJQRtioT4PvR/VARB2
+ p5wj98/Ml5Txi0I6MUw==
+X-Authority-Analysis: v=2.4 cv=SfzHsPRu c=1 sm=1 tr=0 ts=6aa0cfc1 cx=c_pps
+ a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
+ a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=l0iWHRpgs5sLHlkKQ1IR:22 a=qit2iCtTFQkLgVSMPQTB:22 a=9R54UkLUAAAA:8
+ a=M5GUcnROAAAA:8 a=VwQbUJbxAAAA:8 a=s4vksbRjvoXbhyHLyvkA:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10 a=YTcpBFlVQWkNscrzJ_Dz:22 a=OBjm3rFKGHvpk9ecZwUJ:22
+X-Proofpoint-GUID: FrHDYgM9XZgUsfzd4gOwOHJtLt6LE7Af
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-08_03,2026-09-08_03,2025-10-01_01
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider:
+On 2026-09-08 at 22:37:40, netdev-bot+sashiko@kernel.org (netdev-bot+sashiko@kernel.org) wrote:
+> Thank you for your contribution! Sashiko AI review found 2 potential
+> issue(s) to consider:
+>
+> Critical: 0 · High: 1 · Medium: 1 · Low: 0
+>
+> - [High] Incomplete fix: the stale-TOPOLOGY bug class the commit claims
+>   to close stays reachable through the AF's bulk release path.
+AF's built release path is FLR/PCI reset path. We will fix it as seperate fix.
 
-Critical: 0 · High: 1 (1) · Medium: 1 · Low: 0
+> - [Medium] Set/reset asymmetry at the aggregation level: HTB offload
+>   programs NIX_AF_TL1X_TOPOLOGY (PRIO_ANCHOR/RR_PRIO) on the shared per-…
+We can't clear TL1 blindly as it is a shared resource between PF and VF.
 
-- [High] Incomplete fix: the patch removes the static-call dispatch but
-  leaves the root cause named in its own commit message untouched.
-- [Medium] The patch deletes the only reader of the static call and of
-  the static key but leaves the entire producer side in the tree.
-
-Pre-existing issues:
-- [High] By making `udp_tunnel_gro_rcv()`
-  (net/ipv4/udp_offload.c:147-152) the unconditional dispatch path, the…
-
---
-
-udp_tunnel: avoid calling the wrong GRO handler
-
-This drops the static-call fast path from udp_tunnel_gro_rcv() so that
-dispatch always goes through call_gro_receive_sk() with the per-socket
-gro_receive handler.  The changelog argues the static call can point at
-another tunnel type's handler while setup_udp_tunnel_sock() is still
-publishing the handlers on an already bound socket.
-
-> diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
-> index cf07c3c6611a2..30649f407a788 100644
-> --- a/net/ipv4/udp_offload.c
-> +++ b/net/ipv4/udp_offload.c
-> @@ -148,13 +148,6 @@ static struct sk_buff *udp_tunnel_gro_rcv(struct sock *sk,
->  					  struct list_head *head,
->  					  struct sk_buff *skb)
->  {
-> -	if (static_branch_likely(&udp_tunnel_static_call)) {
-> -		if (unlikely(gro_recursion_inc_test(skb))) {
-> -			NAPI_GRO_CB(skb)->flush |= 1;
-> -			return NULL;
-> -		}
-> -		return static_call(udp_tunnel_gro_rcv)(sk, head, skb);
-> -	}
-
-[Severity: High]
-Does this actually close the window described in the changelog?  The
-commit message says:
-
-    setup_udp_tunnel_sock() installs the GRO handlers before updating the
-    global static call. The socket is already bound, so packets can arrive
-    while the static call still points to the handler for another tunnel
-    type.
-
-but setup_udp_tunnel_sock() in net/ipv4/udp_tunnel_core.c is not touched
-here, and it still publishes the handler pair with two independent plain
-stores on a socket that GRO can already find:
-
-	udp_sk(sk)->gro_receive = cfg->gro_receive;
-	udp_sk(sk)->gro_complete = cfg->gro_complete;
-
-	udp_tunnel_encap_enable(sk);
-
-	udp_tunnel_update_gro_rcv(sk, true);
-
-udp4_gro_receive() looks the socket up as soon as the global
-udp_encap_needed_key is on, which any other encap socket in the system
-already guarantees:
-
-	if (static_branch_unlikely(&udp_encap_needed_key))
-		sk = udp4_gro_lookup_skb(skb, uh->source, uh->dest);
-
-So a packet arriving in that window can be aggregated by the tunnel
-gro_receive while gro_complete is still NULL, and udp_gro_complete() then
-takes the plain-segment branch:
-
-	if (sk && udp_sk(sk)->gro_complete) {
-		...
-		skb->encapsulation = 1;
-		err = udp_sk(sk)->gro_complete(sk, skb,
-				nhoff + sizeof(struct udphdr));
-	} else {
-		err = udp_gro_complete_segment(skb);
-
-Since both stores are plain, the opposite order is permitted too, so
-udp_gro_complete() can observe a non-NULL gro_complete for an skb that was
-aggregated as plain UDP, set skb->encapsulation and derive inner offsets
-from packet bytes.
-
-Isn't that the same "receive and completion can then parse the packet
-differently" case the changelog claims to remove?  Would ordering the
-publication of the handler set before the socket becomes GRO-reachable, or
-fixing the setup ordering itself, be the fix that is needed here instead?
-
->  	return call_gro_receive_sk(udp_sk(sk)->gro_receive, sk, head, skb);
->  }
-
-[Severity: High]
-This isn't a bug introduced by this patch, but making this the only
-dispatch path widens where it can be hit.  udp_sk(sk)->gro_receive is
-validated once in udp_gro_receive():
-
-	if (!sk || !udp_sk(sk)->gro_receive) {
-
-and then re-read here for the indirect call, with no lock and no
-READ_ONCE() pinning the value between the two loads.  call_gro_receive_sk()
-in include/net/gro.h invokes cb(sk, head, skb) unconditionally after the
-recursion test, so a NULL observed on the second load is called.
-
-Can the field go NULL between those two loads?  gtp_encap_enable_socket()
-in drivers/net/gtp.c passes an already bound user socket with
-
-	struct udp_tunnel_sock_cfg tuncfg = {NULL};
-
-and l2tp_tunnel_register() in net/l2tp/l2tp_core.c likewise passes a cfg
-with no gro_receive, so setup_udp_tunnel_sock() stores NULL over whatever
-was there.  The only admission check on those paths is
-sk->sk_user_data == NULL, and the setsockopt(UDP_GRO)+setsockopt(UDP_ENCAP,
-UDP_ENCAP_ESPINUDP) path in net/ipv4/udp.c installs
-xfrm4_gro_udp_encap_rcv without setting sk_user_data.  A GRO softirq on
-another CPU that already passed the check in udp_gro_receive() would then
-call through NULL.
-
-The same double read also means the handler invoked need not be the one
-that was validated, which races with the annotated writer in
-set_xfrm_gro_udp_encap_rcv():
-
-			WRITE_ONCE(udp_sk(sk)->gro_receive, new_gro_receive);
-
-Before this change the single-registered-type configuration went through
-static_call(udp_tunnel_gro_rcv) and never re-read the socket field, so this
-was only reachable with two or more registered tunnel types.  Should
-udp_tunnel_gro_rcv() load the pointer once into a local with READ_ONCE()
-and check it there?
-
-[Severity: Medium]
-With the static-call dispatch gone, is anything left that reads the static
-call or the static key?  net/ipv4/udp_offload.c still carries
-dummy_gro_rcv(), DEFINE_STATIC_CALL(udp_tunnel_gro_rcv, dummy_gro_rcv),
-DEFINE_STATIC_KEY_FALSE(udp_tunnel_static_call), udp_tunnel_gro_types[],
-UDP_MAX_TUNNEL_TYPES, udp_tunnel_gro_type_lock and the whole refcount
-bookkeeping in udp_tunnel_update_gro_rcv(), including:
-
-	if (udp_tunnel_gro_type_nr == 1) {
-		static_call_update(udp_tunnel_gro_rcv,
-				   udp_tunnel_gro_types[0].gro_receive);
-		static_branch_enable(&udp_tunnel_static_call);
-	} else if (old_gro_type_nr == 1) {
-		static_branch_disable(&udp_tunnel_static_call);
-		static_call_update(udp_tunnel_gro_rcv, dummy_gro_rcv);
-	}
-
-udp_tunnel_update_gro_rcv() is still exported and still called on every
-tunnel socket add and remove from setup_udp_tunnel_sock() and from
-udp_tunnel_cleanup_gro() in include/net/udp_tunnel.h, so each setup and
-teardown still takes the global mutex and triggers text patching for state
-that nothing consumes.
-
-The remaining comments no longer match the code either, for example:
-
-	/*
-	 * Dummy GRO tunnel callback, exists mainly to avoid dangling/NULL
-	 * values for the udp tunnel static call.
-	 */
-
-	/* Check if the static call is permanently disabled. */
-
-	/* Ensure static call will never be enabled */
-
-And the two arms of the CONFIG_NET_UDP_TUNNEL split are now identical:
-
-	#if IS_ENABLED(CONFIG_NET_UDP_TUNNEL)
-	...
-	static struct sk_buff *udp_tunnel_gro_rcv(struct sock *sk,
-						  struct list_head *head,
-						  struct sk_buff *skb)
-	{
-		return call_gro_receive_sk(udp_sk(sk)->gro_receive, sk, head, skb);
-	}
-
-	#else
-
-	static struct sk_buff *udp_tunnel_gro_rcv(struct sock *sk,
-						  struct list_head *head,
-						  struct sk_buff *skb)
-	{
-		return call_gro_receive_sk(udp_sk(sk)->gro_receive, sk, head, skb);
-	}
-
-	#endif
-
-Should the producer side be retired in the same patch, effectively
-reverting 5d7f5b2f6b93, so the config split and the comments stop
-describing machinery that has no consumer?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260906211351.1272699-2-Jeremy.Jean%40oss.cyber.gouv.fr
+>
+> --
+>
+> octeontx2-pf: reset HTB scheduler topology before freeing queues
+>
+> This adds otx2_qos_reset_schq_topology() and otx2_qos_free_hw_schq() so
+> that NIX_AF_TL{4,3,2}X_TOPOLOGY is zeroed before each QoS scheduler queue
+> is handed back to the AF during HTB hierarchy teardown and cfg rollback.
+> The aggregation level (TL1) is intentionally skipped.
+>
+> > diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/qos.c b/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
+> > index 69c0911e28e9..f160b1618efa 100644
+> > --- a/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
+> > +++ b/drivers/net/ethernet/marvell/octeontx2/nic/qos.c
+> > @@ -235,13 +235,63 @@ static int otx2_qos_txschq_set_parent_topology(struct otx2_nic *pfvf,
+> >  	return rc;
+> >  }
+> >
+> > +static int otx2_qos_reset_schq_topology(struct otx2_nic *pfvf, u16 lvl,
+> > +					u16 schq)
+> > +{
+> > +	struct mbox *mbox = &pfvf->mbox;
+> > +	struct nix_txschq_config *cfg;
+> > +	int rc;
+> > +
+> > +	if (lvl < NIX_TXSCH_LVL_TL4 || lvl >= NIX_TXSCH_LVL_TL1)
+> > +		return 0;
+>
+> [Severity: Medium]
+> Should the TL1 case be handled here too, or at least commented in the
+> code?  otx2_qos_txschq_set_parent_topology() does program TL1:
+>
+> 	else if (parent->level == NIX_TXSCH_LVL_TL1)
+> 		cfg->reg[0] = NIX_AF_TL1X_TOPOLOGY(parent->schq);
+>
+> 	cfg->regval[0] = (u64)parent->prio_anchor << 32;
+> 	cfg->regval[0] |= ((parent->child_dwrr_prio != OTX2_QOS_DEFAULT_PRIO) ?
+> 			    parent->child_dwrr_prio : 0)  << 1;
+>
+> and for a PF the HTB root sits at that level, in otx2_qos_alloc_root():
+>
+> 	if (!is_otx2_vf(pfvf->pcifunc)) {
+> 		node->level = NIX_TXSCH_LVL_TL1;
+>
+> so otx2_qos_txschq_push_cfg_tl() -> otx2_qos_txschq_set_parent_topology()
+> writes NIX_AF_TL1X_TOPOLOGY with the HTB prio_anchor, which is the base
+> index of the contiguous TL2 child block.
+>
+> On tc qdisc del, otx2_qos_root_destroy() -> otx2_qos_destroy_node() ->
+> otx2_qos_free_hw_cfg() calls otx2_qos_free_hw_schq(pfvf, node->level,
+> node->schq) with node->level == NIX_TXSCH_LVL_TL1, which takes the early
+> return above.
+>
+> Does anything else restore the default TL1 topology while the interface
+> stays up?  nix_txschq_free_one() early-returns for lvl >=
+> hw->cap.nix_tx_aggr_lvl, nix_reset_tx_schedule() has no TL1 case, and
+> nix_tl1_default_cfg() declines to reprogram once the PF has configured
+> TL1:
+>
+> 	/* Skip if PF has already done the config */
+> 	if (TXSCH_MAP_FLAGS(pfvf_map[schq]) & NIX_TXSCHQ_CFG_DONE)
+> 		return;
+> 	rvu_write64(rvu, blkaddr, NIX_AF_TL1X_TOPOLOGY(schq),
+> 		    (TXSCH_TL1_DFLT_RR_PRIO << 1));
+>
+> The only writer of the default TL1 value appears to be
+> otx2_txschq_config():
+>
+> 	req->reg[1] = NIX_AF_TL1X_TOPOLOGY(schq);
+> 	req->regval[1] = hw->txschq_aggr_lvl_rr_prio << 1;
+>
+> which runs at interface open rather than on TC_HTB_DESTROY.  So after HTB
+> teardown with the link up, the shared TL1 keeps a PRIO_ANCHOR pointing at
+> TL2 indices that were just returned to the AF's block-wide TL2 pool and
+> may be re-allocated to another function.
+>
+> The commit message says TL1 "is not freed back to the AF by
+> nix_txschq_free_one()", which rules out re-allocating TL1 itself, but does
+> it cover the residual anchor pointing into recycled TL2 indices?  Whether
+> the TL1 arbiter can act on such a stale anchor depends on hardware
+> semantics that are not visible from the tree, so this may be harmless in
+> practice, but the set/reset asymmetry looks worth spelling out in the code
+> rather than only in the changelog.
+>
+> > +
+> > +	mutex_lock(&mbox->lock);
+> > +
+> > +	cfg = otx2_mbox_alloc_msg_nix_txschq_cfg(mbox);
+> > +	if (!cfg) {
+> > +		mutex_unlock(&mbox->lock);
+> > +		return -ENOMEM;
+> > +	}
+> > +
+> > +	cfg->lvl = lvl;
+> > +	cfg->num_regs = 1;
+> > +
+> > +	if (lvl == NIX_TXSCH_LVL_TL4)
+> > +		cfg->reg[0] = NIX_AF_TL4X_TOPOLOGY(schq);
+> > +	else if (lvl == NIX_TXSCH_LVL_TL3)
+> > +		cfg->reg[0] = NIX_AF_TL3X_TOPOLOGY(schq);
+> > +	else if (lvl == NIX_TXSCH_LVL_TL2)
+> > +		cfg->reg[0] = NIX_AF_TL2X_TOPOLOGY(schq);
+> > +
+> > +	cfg->regval[0] = 0;
+> > +
+> > +	rc = otx2_sync_mbox_msg(mbox);
+> > +
+> > +	mutex_unlock(&mbox->lock);
+> > +
+> > +	return rc;
+> > +}
+> > +
+> > +static void otx2_qos_free_hw_schq(struct otx2_nic *pfvf, u16 lvl, u16 schq)
+> > +{
+> > +	int err;
+> > +
+> > +	err = otx2_qos_reset_schq_topology(pfvf, lvl, schq);
+>
+> [Severity: High]
+> Does this cover the case where the AF, not the driver, releases the QoS
+> queues?  The reset only runs on the driver's explicit per-schq frees, but
+> nix_txschq_free() in af/rvu_nix.c returns the same TL4/TL3/TL2 indices to
+> the shared pool with only PARENT and SCHEDULE cleared:
+>
+> 	nix_reset_tx_schedule(rvu, blkaddr, lvl, schq);
+> 	rvu_free_rsrc(&txsch->schq, schq);
+> 	txsch->pfvf_map[schq] = TXSCH_MAP(0, NIX_TXSCHQ_FREE);
+>
+> and nix_reset_tx_schedule() writes TLxX_PARENT and TLxX_SCHEDULE only, so
+> TOPOLOGY (PRIO_ANCHOR/RR_PRIO) stays programmed.
+>
+> That path is reachable while an HTB qdisc is still offloaded, for example
+> on a function reset (echo 1 > /sys/bus/pci/devices/<bdf>/reset) or a VF
+> FLR from a passthrough guest:
+>
+> rvu_flr_handler() -> rvu_blklf_teardown() -> rvu_nix_lf_teardown() ->
+> nix_txschq_free()
+>
+> In that case otx2_qos_free_hw_schq() never runs, so the state the commit
+> message describes ("PRIO_ANCHOR/RR_PRIO settings can survive in the
+> shared scheduler pool and affect later allocations") is unchanged.
+>
+> The allocation side also looks unsanitized.  nix_txschq_alloc() resets
+> linkcfg, shaping and schedule for every newly allocated schq:
+>
+> 	nix_reset_tx_linkcfg(rvu, blkaddr, lvl, schq);
+> 	nix_reset_tx_shaping(rvu, blkaddr, nixlf, lvl, schq);
+> 	nix_reset_tx_schedule(rvu, blkaddr, lvl, schq);
+>
+> but not TOPOLOGY, and otx2_txschq_config() never writes TOPOLOGY for
+> TL2/TL3/TL4, so a new owner inherits whatever anchor was left behind.
+>
+> Would adding the TLxX_TOPOLOGY register to nix_reset_tx_schedule() be a
+> better place for this?  That would cover free_one, TXSCHQ_FREE_ALL, FLR
+> and allocation-time inheritance for all AF clients under rvu->rsrc_lock,
+> and the driver-side helper added here would not be needed.
+>
+> > +	if (err)
+> > +		netdev_warn(pfvf->netdev,
+> > +			    "QoS: failed to reset topology for schq %u at level %u: %d\n",
+> > +			    schq, lvl, err);
+> > +
+> > +	otx2_txschq_free_one(pfvf, lvl, schq);
+> > +}
+> > +
+> >  static void otx2_qos_free_hw_node_schq(struct otx2_nic *pfvf,
+> >  				       struct otx2_qos_node *parent)
+> >  {
+> >  	struct otx2_qos_node *node;
+> >
+> >  	list_for_each_entry_reverse(node, &parent->child_schq_list, list)
+> > -		otx2_txschq_free_one(pfvf, node->level, node->schq);
+> > +		otx2_qos_free_hw_schq(pfvf, node->level, node->schq);
+> >  }
+>
+> [ ... ]
+>
+> --
+> Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260903020533.3068041-1-rkannoth%40marvell.com
