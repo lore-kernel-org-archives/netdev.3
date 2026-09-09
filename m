@@ -1,47 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AE812561A7;
-	Wed,  9 Sep 2026 00:03:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 787B51E5B70;
+	Wed,  9 Sep 2026 00:07:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788912223; cv=none; b=BGR56ikw7QhEU6q3zkgRBMeYtsxEYr69705eb3MFLbBCYi1dFxhGR+uh1PWA73C3gkmHHtem7HG3gPH9JNq7JGOrSlAwwXa2evknmfLRyFU9pwa3qGzAvDCAR6u8LPl9UnQHAiTEROksjuFdubcjhiLr13Go2kMvWiNZ3CfkNjo=
+	t=1788912452; cv=none; b=mhp9WtO4D1IdGSVGQ5iNA2vAEzYpcLoepAaiCSPjBioC734qVXvuJlYE/dsRCFczOBy6qOLx7HTYGEvjMReG516TR4IgoKtSbq9ttB0TsUB2XlD0ihMUQMIFUpTE8CKAs0274yIE6UQo+1jn4Lui3Ts2xQItIdCxDphQGtDaPdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788912223; c=relaxed/simple;
-	bh=fRxxyaxF4sEIOICY66X/8reWA/2dX8AYB6hJI+WF83c=;
+	s=arc-20240116; t=1788912452; c=relaxed/simple;
+	bh=VcpVxoKWJmJ+9LC27nRBgNa/npnA38cKa7KlI9T4Rp0=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OSNkSKsdxbuIsaoYVVCdvxTyulrSKHP5IiFWMPwrNLVqgEqW475kBXMquMp0EEoTFx4Dp7rH3vKeem2Dvvk/h7ZjR6AlQ4wqId+0MKysbv6hNwgCe088ZpoFhju7JQKgHiejCDvNXivz2LXDg8S/8TgWEijqzadK+qQ/Sf3nWE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qjv69hpZ; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=PBwzw6Z6x3b/zGHXLMFBtJ3w/ZS5cz4KPeRX3LgNNwjx2GqytvRf9mk4P0BfBpexDwX7v3VW700nJIH7uE1kPhZghdApXzA14m0VMtth+Ks9nX7OmLScV/phi5dbWtITIQMQQAc7JNdXYSCFz1D1AjPU3rIiuc35Md4zFgeJb8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I7CWTOl2; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qjv69hpZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCF781F00A3A;
-	Wed,  9 Sep 2026 00:03:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I7CWTOl2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 941BA1F00A3A;
+	Wed,  9 Sep 2026 00:07:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788912216;
-	bh=6IxhlJ9b8uAGlHKepWvd0viaQd29xcE83/MQglixBLU=;
+	s=k20260515; t=1788912449;
+	bh=LNaOvELzNK3TbeKfcjOdnO4YUnvdu3dCSyVYn5j90SI=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Qjv69hpZltPtq1Jt++GXvMsJ/5TJDRZ1v3V1kkkhdBbRThP+4bGsMYao0gjhBtLAh
-	 ot2lHeQXQSNi5BktOPaw7t0wSVuA8SzBo7HEQhzbDFTX6urtkSGV1rmYDo1PfLC5M0
-	 h5zlFV3eZpzpDNXeOacd28NWmqrN1nSPEAzDaaJFfJbaIz5teGYRcJTr4vrERrw9e2
-	 OsvyU/kWTGIET6SrAdxLq7ASXez1mJXENgpZc7TmB9548mCDN9LNqSDpOJ2XbqFbGI
-	 HL9yXJosKU3T6d+KNDi3u67serPzDTuExJWTDNbqW4avXBj+jBYz+otefoBXKQpEmb
-	 I+QlHAkYFyCgg==
-Date: Tue, 8 Sep 2026 17:03:35 -0700
+	b=I7CWTOl2ztsTLiaBAm6pTVKDwJujJy3/uYBao6GZwPDX48U05bGrs3j2jEA6wX7XW
+	 Tel55p/mO5hwq+mHJFEMpZReygckYByJvZ1RCkeRDNfd+Xd0PUmEjROzFVQpCMZVvN
+	 NTw5XuB5rI/HMxPI14X8CH1DWmWreDylCMlHScUOa32yYb3dByJ6gDwAjD/XQZ49ZB
+	 s9C+5XPs3lll5Q6KCDbZlfnprX98vwBocHHtK6iBktPSN8fJupdCCXGaF/Utv15owd
+	 alALLkLt1EMLD/a46EvV506n+7ho+xVrZl6gCJ30edfyCzT1rd1zVXVFIyZVrd9+58
+	 phkVEw9IRWvXA==
+Date: Tue, 8 Sep 2026 17:07:27 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Qingfang Deng <qingfang.deng@linux.dev>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
- <pabeni@redhat.com>, Mitchell Blank Jr <mitch@sfgoth.com>, Chas Williams
- <3chas3@gmail.com>, Simon Horman <horms@kernel.org>, James Chapman
- <jchapman@katalix.com>, "Jiri Slaby (SUSE)" <jirislaby@kernel.org>, Kees
- Cook <kees@kernel.org>, Breno Leitao <leitao@debian.org>, Asim Viladi Oglu
- Manizada <manizada@pm.me>, Eric Woudstra <ericwouds@gmail.com>, Felix
- Fietkau <nbd@nbd.name>, linux-ppp@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-atm-general@lists.sourceforge.net
-Subject: Re: [PATCH net-next v2] ppp: pass private data to channel callbacks
-Message-ID: <20260908170335.5e98fe60@kernel.org>
-In-Reply-To: <20260906134830.992-1-qingfang.deng@linux.dev>
-References: <20260906134830.992-1-qingfang.deng@linux.dev>
+To: Ajith P V <ajithpv.linux@gmail.com>
+Cc: tung.quang.nguyen@est.tech, jmaloy@redhat.com, davem@davemloft.net,
+ edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
+ netdev@vger.kernel.org, tipc-discussion@lists.sourceforge.net,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v5] tipc: replace deprecated strcpy with
+ strscpy in tipc_bearer_get_name()
+Message-ID: <20260908170727.0c41017c@kernel.org>
+In-Reply-To: <20260903132718.1616159-1-ajithpv.linux@gmail.com>
+References: <20260903132718.1616159-1-ajithpv.linux@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -51,19 +47,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sun,  6 Sep 2026 21:47:36 +0800 Qingfang Deng wrote:
-> PPP channel callbacks receive struct ppp_channel only to retrieve the
-> driver's private pointer. Pass that pointer directly instead.
-> 
-> This decouples channel callbacks from the public channel representation
-> and prepares for making struct ppp_channel opaque, with allocation and
-> lifetime managed by the generic PPP layer.
+On Thu,  3 Sep 2026 13:27:18 +0000 Ajith P V wrote:
+> From: Ajith P V <ajithpv.linux@gmail.com>
 
-Not immediately obvious that this is a win. Having a callback op take
-untyped pointer can be error prone. Also, subjectively, making types
-opaque in C often leads to ugly and unnecessarily complex code.
-
-This patch does not stand on its own, IMO, maybe you need to post the
-entire series, and maybe rethink.
--- 
-pw-bot: cr
+Full name needed. Such a damn waste of time, SMH
