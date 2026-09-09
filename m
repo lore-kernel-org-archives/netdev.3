@@ -1,87 +1,33 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C27583D5666
-	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 11:20:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DC9B5427E2;
+	Wed,  9 Sep 2026 11:24:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788952824; cv=none; b=PsSskTStvSzdFZFaPMirk3kcAlPhUIC0iPl51Bv+FS0HC+oFH2lmLOGocOhmNNKslaD0BIPLkS3MqNWIcvubbJiHB/cjSGO0JERr6uKx6Neejz+XLl7eESm0KJVFODZF1AegUKTq1KZzyoBsj8cvhbeOBWJxd4JbP3oqttAOlbA=
+	t=1788953051; cv=none; b=iqkEBoIG5VUmfT2txfOLWbfWlRWkyp9tU5bCJjYu+BI2qjejM0prjYaooWxqoB0Jdr06qDpXnDh7hP4n45WfEVv2QMDsAhWM5g1ceyQb7YFRqOKe9jyeI1Uf2YBGwNvCc2VI7hvi3CFmVs+rthX14cLhvVGtLRojTUVwMzNyGvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788952824; c=relaxed/simple;
-	bh=DUsYlKkvwKjjsSNqIoQQxP51Bvntujpq0lq4unmaNL0=;
+	s=arc-20240116; t=1788953051; c=relaxed/simple;
+	bh=/F2t/Uq8IPUCABLqE6ue7gTeeL1hInqTVzeqBu+4o14=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CxCe5Uv9/8fje4sv/IMmIwIYTdGBY6ah48KBkTdjT7kKPZTFa74NG/oCSJSuhRKoS9k1Nyxne3owG84JKTiaiUwSjdEBSVeePWybsGdWeJABK41SNZxxCNyUpPu5x9t7PPEV8SUF86ffu3pC0ffGS+XpZncHHJHhzgYdkCpv+FA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=ECFrIsn8; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=iTiP1I5U; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	 In-Reply-To:Content-Type; b=jDwpYSAk6Ov2au5etiG9diwm5mSeSA/tWpm8WA1MgbfhUi77qz1jfrFmw3GHfokXepTPzQpLtZgnOeq1cJnDdiApVT9XJjoiV4EuGiZaY9rgM9CFHnfbDgGIXSiiysRztYIBt7Ltr5e6rgHG0UzwPmNdKaM5ebaVGtemnTwW0Xg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JzrIT9vU; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="ECFrIsn8";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="iTiP1I5U"
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 689Apb2o2084094
-	for <netdev@vger.kernel.org>; Wed, 9 Sep 2026 11:20:21 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	vQtQQqwToKFipRp5aPXLXVSkmG9dKnTQCGGbK9gORPM=; b=ECFrIsn8p5LdXh0B
-	008jOPQ4K4CKWRWQsmOHYYxhJtvGIah/owRDrTJwK87nEDb/SIce+cTYI5anaw8u
-	aJ/SKqbT0yDtH2sud1oI8hfSIS6rxTu7KGQcoNtTNO88Wn/urWLOi0XmoWD+PVZt
-	inriZavsQwbnYzkwF68vxXVB9EGDdkJtjeXAT8mFXFzabLDXSoKvCUdSsAYPgIEB
-	L1NSOpC9g6GMyeXpfBneNkvk+TXmBFB+DcbLLHolwRVkClvV3mGewqN+U0bEDpPq
-	v9syV2Q8+p31PFSEnXTU8ew83iGW2hf4IETsh6mQ7qKWNnDTRvRj7gIV0/0g3QR1
-	gCyItw==
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com [209.85.222.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gk5rgg66f-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 11:20:21 +0000 (GMT)
-Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-939a28482e4so61208885a.0
-        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 04:20:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1788952821; x=1789557621; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=vQtQQqwToKFipRp5aPXLXVSkmG9dKnTQCGGbK9gORPM=;
-        b=iTiP1I5UU2T+zIIQxxj2FCgpHWQqic5PBgYYfILSZ/Ezge3IGt9HMD8J46WtSkn/w2
-         rBMvQyWn6ubgEglkDT0oAGmMGvCVViMcSvfyOA6BXhspGg83WQBL2IxEvBwi9QwyrXVb
-         uSaaFOyf+3J4rqbGN6ZNPer0pETaA/S6iVE87R5zx5EJm7nL0RzfkQWBemi6ViTVHobw
-         1FJB02Qpl8iU3nX9UvrscpHPBhR+9M/CJDUdVk5VAGqCW9Abyn0QV1ebXuuTA2W/3g2o
-         TWElVMgUDoYu2bYUPAA244JGxajSdHC9gK1ymJ+dz9NMPpB+djxYeNW5CdQ4ol6bnRrf
-         Nntg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788952821; x=1789557621;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=vQtQQqwToKFipRp5aPXLXVSkmG9dKnTQCGGbK9gORPM=;
-        b=rMXfzBfMwQ2j0Hd9htjI3Wb4dxZ3UqP1LoB1oNcT5Bhuurrwkvo+3KACYZX2iZ8jwm
-         JF6AcPisD4k7cwnn/9kWzPq+qDPEcmNydAQLxDRZREwgRr0gA+gHtR6+ZO3L0bx/3znd
-         ZQ+rzJHhmWkO1T03ysRQsLQayf1CTPRgceeHw7GGokuymYdKHGISOxhUkyRKvmJ7HKNL
-         tYWRMbQhZMiIvMMJvW4FAupdb0khQsWsy5JUp8RgYrodTuE7Cch9NGicDldt08R0vPNt
-         bgay5dgZTkatNANLeRsSOX+XApCP2prNybqVSEw6pRKooW3bbGAdCpRmDPr46sT4D0Pq
-         cwrg==
-X-Forwarded-Encrypted: i=1; AKwUvBwa0iLlnqKCW49HTK878mXISKGyw95A50d0mhT5UlwLHvX5Kds68j17gKVqbAMQL0CIAlNBoO8=@vger.kernel.org
-X-Gm-Message-State: AFuF++mJEIRQ2SAIredpjoogiXjIly/XWs6nnIFSM6mB635zU7D6MQ1T
-	O79QJU6Z6aqdTvFsiG7sHWF77RmqQ7XJLBJTPY1BFYsBZMiHkthxrccaf0Lycw03mORVMx8O6bS
-	i+6L5mw766SIq9dM5LeEII3IIbd2UPaQbj/N9UQYgEOn2NybxTdpSBGSuzQA=
-X-Gm-Gg: AYBFou11xP2PaQbd27O/MM8I4uyAcFrW/CpqivFJNmEIUZvnCXKLvICDHGOTjQhGrIB
-	uc2Y4/cPOg6bgL57dhqcA6BhanRZ2IU6Ht9UMQGJlKWAna81qlG94OjJ7MQE96vqHSJWmKJh3y1
-	PVkOwM4oXYiJgHW8S8lk4C1s1xjtMTYNBs4O7Y3y2aXEi5oPJQ9Ma/e9wIm9S8G6mcPSG+ar2U/
-	orlV3Pms1HK30qO5BjitCJTxQtzm1Zr+TB19kKhhf+fNETwYPJTDDY6ZUByZcZh9DbfSLRDalw6
-	t/kr8CS2HsDTHw0qh3irOgiZNNC0EO3uKfC2y+8aCXnOCF+XddHP2+Klxr3WE8ZHF+be9iVOGwk
-	GJOLmZEM00UGKLcdSyJ8CQQ==
-X-Received: by 2002:a05:620a:d93:b0:939:7e96:d296 with SMTP id af79cd13be357-93980964b18mr2960057985a.1.1788952821038;
-        Wed, 09 Sep 2026 04:20:21 -0700 (PDT)
-X-Received: by 2002:a05:620a:d93:b0:939:7e96:d296 with SMTP id af79cd13be357-93980964b18mr2960049485a.1.1788952820503;
-        Wed, 09 Sep 2026 04:20:20 -0700 (PDT)
-Received: from [192.168.202.12] ([178.235.128.140])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c260d036469sm760422566b.1.2026.09.09.04.20.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 09 Sep 2026 04:20:19 -0700 (PDT)
-Message-ID: <d56e598d-e598-4b9a-a6b4-1d1965aca656@oss.qualcomm.com>
-Date: Wed, 9 Sep 2026 13:20:17 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JzrIT9vU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4B691F00A3D;
+	Wed,  9 Sep 2026 11:24:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788953050;
+	bh=uHekCidMeo5wbTQLA0ISsEzIRynEmrNc4aEvGPZ6XU0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=JzrIT9vU2Ev90WuzxqXPCs1Qq4B1ThJVgTsG2XRgjNI8XTJ3WOgf/xUafTLKlea0E
+	 KzrTmwu0iS9jl/mGOvEH9JLvFO5DAWMIeAVUf7aSzYWdaCh8wu6EAB0yj0RJC4dviE
+	 eh3jKB0hWKrYQEHoWUJOXsuepRZjIo92lkDflG7uZ0kFqmk+1vKZcs5swU8TU23f6t
+	 AtiBZWPbJuLAYKsLMQl5kweJOncnRfihT8xMvhe89sjLdkcRzFs8lVpHzw2xhAlRfk
+	 8YZTXeI6bavHrXYCJcou+VnkkoYevNyZ02xAkKEWIvpttWxejLObWjlbLPGd/5f6ds
+	 6uAO3byrs6PKg==
+Message-ID: <4aee70eb-bd1d-4320-8921-e55bb8e0d176@kernel.org>
+Date: Wed, 9 Sep 2026 13:24:02 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -91,71 +37,92 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH PRELIMINARY 1/5] arm64: dts: qcom: shikra-iqs-som: fix
  GPIO138 reservation
-To: Andrew Lunn <andrew@lunn.ch>,
-        Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>
-Cc: Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley
- <conor+dt@kernel.org>,
-        Komal Bajaj <komal.bajaj@oss.qualcomm.com>,
-        Anurag Pateriya <apateriy@qti.qualcomm.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-        Richard Cochran <richardcochran@gmail.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        Maxime Chevallier <maxime.chevallier@bootlin.com>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+To: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Komal Bajaj <komal.bajaj@oss.qualcomm.com>,
+ Anurag Pateriya <apateriy@qti.qualcomm.com>,
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+ Richard Cochran <richardcochran@gmail.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>,
+ Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+ linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org
 References: <20260908-shikra_ethernet_dts-v1-0-69c0c5c7c124@oss.qualcomm.com>
  <20260908-shikra_ethernet_dts-v1-1-69c0c5c7c124@oss.qualcomm.com>
- <169b2cd5-d0d8-4682-8756-bacf545a95a0@lunn.ch>
- <aqAQ+BxwJstTlnU3@oss.qualcomm.com>
- <6e5624f5-410e-4413-82de-84cf864fd654@lunn.ch>
+From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
-From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-In-Reply-To: <6e5624f5-410e-4413-82de-84cf864fd654@lunn.ch>
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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
+In-Reply-To: <20260908-shikra_ethernet_dts-v1-1-69c0c5c7c124@oss.qualcomm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTA5MDEyNiBTYWx0ZWRfX3pu5xMjSeCAn
- 8YSdU1938jvwNcJNWPZKIjmh719W3EPiJ8TnSjSKpSYrLeKwVMKbIzuTZyVO5KTtvYICkRVRnwG
- JWAaKI+QcrbdhRjLl3MHYRWM3s+ix28=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA5MDEyNiBTYWx0ZWRfXxXK2QdFZHeZ5
- 40MS7fZYb7uY30eOqZgOKYASCtqgv76RirEtcqiSMb//Tz10hrvQTlAgIQetJrzbmpwCiXp34a3
- KitSOLUkMmKP5hfjPJZwJUC1RS62Ej90Hg2rP++bXA6glmR+/ke6VC3N1H0JZJ8ZiR8ykQjHYmt
- BdnV87yBwrcSdub8fMLjDbM4oR5PCUecqikWotrsqzNjDlh389Qct3tK7hPukGYC+wm8LM5WwNn
- GXjq4MKKUwZQELmht9u/c3L3PeEp06CB41Ux9zB7bDX2qCadU7KvosLGAwO544iaFq8rKOioz2N
- gFNfqZkagee9tBgmNnGEHKZOftci/ij+NLkeGpamBTKJ3bjjyKjNgQXrYZNudrrZ9NS7O4C3Wdk
- 43OeZeztMphm0HegJF9Xhnqe5N9drFBFlRXfUMA2PtsGAkiZOHjlmZ/FMUO2HflYeTOtZj1Xf+d
- xp/oscgsXHsYHgs+zaw==
-X-Authority-Analysis: v=2.4 cv=B6qJFutM c=1 sm=1 tr=0 ts=6aa140f5 cx=c_pps
- a=50t2pK5VMbmlHzFWWp8p/g==:117 a=PRfkaYvzSr8QmIIGAkY2Sg==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_glEPmIy2e8OvE2BGh3C:22
- a=aGMi1ODkbYrmhBfOWAQA:9 a=QEXdDO2ut3YA:10 a=IoWCM6iH3mJn3m4BftBB:22
-X-Proofpoint-GUID: 7tjeEBtPbLDxVl2NL-ywDb6ogdIAr70H
-X-Proofpoint-ORIG-GUID: 7tjeEBtPbLDxVl2NL-ywDb6ogdIAr70H
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-08_03,2026-09-09_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 phishscore=0 spamscore=0 adultscore=0 malwarescore=0
- bulkscore=0 clxscore=1015 impostorscore=0 lowpriorityscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2609090126
 
-On 9/8/26 3:57 PM, Andrew Lunn wrote:
->> You're right that it reads like a standalone fix, and that's on me for
->> the commit message. There's no functional impact on current users: the
->> reserved GPIO (138) is unused today, so applying this on a released
->> kernel produces no error and there's nothing to backport to stable.
->>
->> I'll reword the commit message so it reads as a prerequisite for
->> enabling Ethernet rather than implying a current break.
+On 08/09/2026 08:23, Mohd Ayaan Anwar wrote:
+> The GPIO mappings on the IQS variant differ from the CQ variants.
+> GPIO138 is connected to the RGMII1_RX_CTL pin rather than the NFC ESE
+> Secure IO pin; the latter is connected to GPIO49. This incorrect
+> reservation causes the probe of the second Ethernet port to fail:
 > 
-> And drop the Fixes: tag. It is that which draws the eye and makes the
-> Reviewer ask the question.
+>   shikra-tlmm 500000.pinctrl: error -EINVAL: pin-138 (5d20000.ethernet)
+>   shikra-tlmm 500000.pinctrl: error -EINVAL: could not request pin 138
+>   (GPIO_138) from group gpio138 on device 500000.pinctrl
+>   qcom-ethqos 5d20000.ethernet: Error applying setting, reverse things back
+> 
+> Replace gpio138 with gpio49 in the reserved list.
+> 
+> Fixes: 779aead2dace ("arm64: dts: qcom: shikra: Add gpio-reserved-ranges to tlmm")
+> Signed-off-by: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>
+> ---
+>  arch/arm64/boot/dts/qcom/shikra-iqs-som.dtsi | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
 
-I noticed this subthread only after leaving my tag, it's still fine
-to keep
+This looks duplicating:
+https://lore.kernel.org/all/20260820085347.822-1-xueyao.an@oss.qualcomm.com/
 
-Konrad
+Best regards,
+Krzysztof
