@@ -1,32 +1,32 @@
 Received: from mail.cjdns.fr (mail.cjdns.fr [5.135.140.105])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F241956C65F;
-	Wed,  9 Sep 2026 14:04:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C62857268D;
+	Wed,  9 Sep 2026 14:04:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.135.140.105
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788962663; cv=none; b=MUqFoTOv5O1CZXzveo2v/qwg1AJdx+PGZKKGDxdnf0Z15tQWbLmVGxDT0/iN4zlhblYjjHZ7WxlojnTbeQh1fEpNNwgc5pUdCyc59ZfklVZVdRvJAmzUCiGava4TeuE2V6XSmQHwkr9xNF73pLmQgQ9IEkRlMxiLemcnKAXjMI4=
+	t=1788962667; cv=none; b=k8mmf85V0haHV0UT8cjmp6DhkbIYL23d8DpJkrgd5z9N3J1fu/C8sDlOX7u/wYouS88GOT8lz5K1/ZGFkDVrOmFayTNuDnqVx5c07h1N9/nM46t8iMdfAT+2ojw2Rbhvf2xdSGWoUPLk+BBF5Mddbc4KYE+4YsQFdZd6uyc5AkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788962663; c=relaxed/simple;
-	bh=cWh45arCzs8rjhrxxwabr/Sj5xUeYgtGh5cZ1czy2is=;
+	s=arc-20240116; t=1788962667; c=relaxed/simple;
+	bh=xf1l35mobZ8DrnpJFcgs8wOzQ3IA5/7pdWloLECVICA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Wh1tazNqj+bvgLLzal3pw/tYGJgseiQ53FuFnhvPKY8T+wuesUfxsXMKYj1ym9M8clHDapNmxGXj+iKNRl5CAdupt1TJEDznSJ/TTDduX3ctysXsr2PT21YQYLy/c0fIF/7n+ERY2OJEnZPmoo43RUIW2AZalr8eQGxh/qv4Hf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cjdns.fr; spf=pass smtp.mailfrom=cjdns.fr; dkim=pass (2048-bit key) header.d=cjdns.fr header.i=@cjdns.fr header.b=hxl2j3jP; arc=none smtp.client-ip=5.135.140.105
+	 MIME-Version; b=iYJ5lbdI7ne7C1lqSndIw/AADG13JAbGfckM9ZLix0xArhU2gwjoTexz88uTUUygHO/TlXiDLnfGWkITFPl+X3lkfyjq7XTLOHkuLnl9g2p+UaqL1v7CQ12ljsjASw7wuCY7A7jSr3DuH+yKJ30R6jHzlBq+7ghSVDwiTdPGi3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cjdns.fr; spf=pass smtp.mailfrom=cjdns.fr; dkim=pass (2048-bit key) header.d=cjdns.fr header.i=@cjdns.fr header.b=mEngIkic; arc=none smtp.client-ip=5.135.140.105
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cjdns.fr
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cjdns.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cjdns.fr header.i=@cjdns.fr header.b="hxl2j3jP"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A5EC53F68B0;
-	Wed,  9 Sep 2026 16:04:15 +0200 (CEST)
+	dkim=pass (2048-bit key) header.d=cjdns.fr header.i=@cjdns.fr header.b="mEngIkic"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C07953F5BB3;
+	Wed,  9 Sep 2026 16:04:19 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cjdns.fr; s=dkim;
-	t=1788962659; h=from:subject:date:message-id:to:cc:mime-version:
+	t=1788962662; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=gTaOFDg37fp2eoTbF2OI2hBT4gxntW61rlVN2OtS6+4=;
-	b=hxl2j3jPJxX/fqZLtAJw95FpwCCfdkVFSu/KLjJpifb9GkAgrh5SOz6GN5ilyPMlDHSFEA
-	kZG7oPcFCwNRvpoTqKyk+tWjrhgoDwfwKr5BQUI95x6dCeAQD+kRzJfLCp+TqRSOBRg9rb
-	282ej7KqhE9m+CnhhLSjFT3F0dl8R8RckKVCpQmGylp3HIb+BhYTlh7qlo65s5QeRoptuI
-	E1u84pUiZdUZqA9nEnhSxJ2XAk0tTAxZ5hJteiJFSHoJBDa+F1D9GGsDq0f9XkKyUhmp7A
-	XvmVdBqw59+PVXepDces7fUrVJWWT/hExusSNJ7ZHqdIRiaD2z0KF/YXJXifsA==
+	bh=Otkn7qrD0QQsF9M2J+eNQoCf9Wvi4mx3LaCwu7r60wI=;
+	b=mEngIkic16H62AjxFy6YMg7Re2h5vGQWsoEzDYVvXAhAlrtdA+hR3Wxr3jhuwMoGl/MSAz
+	8zuzFGJLzc5rfBAq3L1eAyYqDiO8DQVPx4pff7TRGdNojeJo5jXtW3Ff6zNCHUcR44wsEp
+	I3lQ9gViH/Dbi1IRig/lW6XeywOD5qjenYxG8Ql56a9HG5RXsReELYrclbrmoG+skL7AXx
+	s0L1FOTPykuCmUzmbpHtxv7GNHbiTelSNS9Pg9JqkuRz6g61iKh08I2/NKLkCZc1z1p/VZ
+	s2WbpSgl9Gw1VBMTs1ClTzP7ZG32cEt0WGJW7EhOwi4vl5PPcaib7wY2y2FQLA==
 From: Caleb James DeLisle <cjd@cjdns.fr>
 To: netdev@vger.kernel.org
 Cc: andrew@lunn.ch,
@@ -54,9 +54,9 @@ Cc: andrew@lunn.ch,
 	naseefkm@gmail.com,
 	b.larsson@gmx.com,
 	Caleb James DeLisle <cjd@cjdns.fr>
-Subject: [PATCH net-next 4/7] net: dsa: mediatek: support PLL setup on MMIO MT7530
-Date: Wed,  9 Sep 2026 14:03:43 +0000
-Message-Id: <20260909140346.2861572-5-cjd@cjdns.fr>
+Subject: [PATCH net-next 5/7] net: dsa: mediatek: support MDIO switch downstream of MMIO switch
+Date: Wed,  9 Sep 2026 14:03:44 +0000
+Message-Id: <20260909140346.2861572-6-cjd@cjdns.fr>
 In-Reply-To: <20260909140346.2861572-1-cjd@cjdns.fr>
 References: <20260909140346.2861572-1-cjd@cjdns.fr>
 Precedence: bulk
@@ -68,84 +68,100 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-On MT7530 and MT7531, PHYs are an integral part of the switch. However,
-on MT7530, certain configuration such as PLL setup is done via special
-registers on one of the PHYs.
+The MT7530 / MT7531 can connect via either MDIO or MMIO. In MMIO mode
+the switch provides its own MDIO bus which connects to its integrated
+PHYs, but also can be connected to other things, such as another
+switch.
 
-In an MMIO implementation, the MDIO bus is part of the switch itself.
-This bus is already setup for PHY calibration so begin using it for
-core switch PLL setup.
+If the MDIO bus contains another switch, then the upstream switch
+will register but it will not setup the DSA tree because the
+downstream switch is missing. Without the complete DSA tree,
+mt753x_setup() will not be called on the switch and therefore
+mt7530_setup_mdio() is never called so the downstream switch never
+registers.
+
+Update mt7530_setup_mdio() so that it can be called multiple times,
+export the symbol, and call it again after dsa_register_switch()
+from mt7988_probe().
 
 Signed-off-by: Caleb James DeLisle <cjd@cjdns.fr>
 ---
- drivers/net/dsa/mt7530.c | 15 +++++++++++++++
- drivers/net/dsa/mt7530.h |  4 ++++
- 2 files changed, 19 insertions(+)
+ drivers/net/dsa/mt7530-mmio.c |  7 ++++++-
+ drivers/net/dsa/mt7530.c      |  7 ++++++-
+ drivers/net/dsa/mt7530.h      | 10 ++++++++++
+ 3 files changed, 22 insertions(+), 2 deletions(-)
 
+diff --git a/drivers/net/dsa/mt7530-mmio.c b/drivers/net/dsa/mt7530-mmio.c
+index cf3bdb23a2d5..29fbd0fc50d1 100644
+--- a/drivers/net/dsa/mt7530-mmio.c
++++ b/drivers/net/dsa/mt7530-mmio.c
+@@ -61,7 +61,12 @@ mt7988_probe(struct platform_device *pdev)
+ 	if (IS_ERR(priv->regmap))
+ 		return PTR_ERR(priv->regmap);
+ 
+-	return dsa_register_switch(priv->ds);
++	ret = dsa_register_switch(priv->ds);
++
++	if (ret)
++		return ret;
++
++	return mt7530_setup_mdio(priv);
+ }
+ 
+ static void mt7988_remove(struct platform_device *pdev)
 diff --git a/drivers/net/dsa/mt7530.c b/drivers/net/dsa/mt7530.c
-index 58190e13813c..a165b4c8ed8d 100644
+index a165b4c8ed8d..0c0c5358b8b8 100644
 --- a/drivers/net/dsa/mt7530.c
 +++ b/drivers/net/dsa/mt7530.c
-@@ -77,6 +77,12 @@ core_write(struct mt7530_priv *priv, u32 reg, u32 val)
- 	struct mii_bus *bus = priv->bus;
- 	int ret;
+@@ -2404,7 +2404,7 @@ mt7530_free_mdio_irq(struct mt7530_priv *priv)
+ 	}
+ }
  
-+	if (!bus)
-+		bus = priv->child_bus;
-+
-+	if (WARN_ON_ONCE(!bus))
-+		return;
-+
- 	mt7530_mutex_lock(priv);
+-static int
++int
+ mt7530_setup_mdio(struct mt7530_priv *priv)
+ {
+ 	struct device_node *mnp, *np = priv->dev->of_node;
+@@ -2414,6 +2414,10 @@ mt7530_setup_mdio(struct mt7530_priv *priv)
+ 	static int idx;
+ 	int ret = 0;
  
- 	/* Write the desired MMD Devad */
-@@ -112,6 +118,12 @@ core_rmw(struct mt7530_priv *priv, u32 reg, u32 mask, u32 set)
- 	u32 val;
- 	int ret;
- 
-+	if (!bus)
-+		bus = priv->child_bus;
++	/* Already done */
++	if (priv->child_bus)
++		return 0;
 +
-+	if (WARN_ON_ONCE(!bus))
-+		return;
-+
- 	mt7530_mutex_lock(priv);
+ 	mnp = of_get_child_by_name(np, "mdio");
  
- 	/* Write the desired MMD Devad */
-@@ -2429,8 +2441,11 @@ mt7530_setup_mdio(struct mt7530_priv *priv)
- 	if (priv->irq_domain && !mnp)
- 		mt7530_setup_mdio_irq(priv);
+ 	if (mnp && !of_device_is_available(mnp))
+@@ -2455,6 +2459,7 @@ mt7530_setup_mdio(struct mt7530_priv *priv)
+ 	of_node_put(mnp);
+ 	return ret;
+ }
++EXPORT_SYMBOL_GPL(mt7530_setup_mdio);
  
-+	priv->child_bus = bus;
-+
- 	ret = devm_of_mdiobus_register(dev, bus, mnp);
- 	if (ret) {
-+		priv->child_bus = NULL;
- 		dev_err(dev, "failed to register MDIO bus: %d\n", ret);
- 		if (priv->irq_domain && !mnp)
- 			mt7530_free_mdio_irq(priv);
+ static int
+ mt7530_setup(struct dsa_switch *ds)
 diff --git a/drivers/net/dsa/mt7530.h b/drivers/net/dsa/mt7530.h
-index 108c831dd012..5b7394f6383c 100644
+index 5b7394f6383c..c86bc4bca29b 100644
 --- a/drivers/net/dsa/mt7530.h
 +++ b/drivers/net/dsa/mt7530.h
-@@ -886,6 +886,9 @@ struct mt753x_info {
-  * @dev:		The device pointer
-  * @ds:			The pointer to the dsa core structure
-  * @bus:		The bus used for the device and built-in PHY
-+ * @child_bus:		The bus created by the device, on MDIO implementations
-+ *			this is bus indirectly accesses `bus`, on MMIO
-+ *			implementations this bus is part of the switch.
-  * @regmap:		The regmap instance representing all switch registers
-  * @rstc:		The pointer to reset control used by MCM
-  * @core_pwr:		The power supplied into the core
-@@ -914,6 +917,7 @@ struct mt7530_priv {
- 	struct device		*dev;
- 	struct dsa_switch	*ds;
- 	struct mii_bus		*bus;
-+	struct mii_bus		*child_bus;
- 	struct regmap		*regmap;
- 	struct reset_control	*rstc;
- 	struct regulator	*core_pwr;
+@@ -969,6 +969,16 @@ struct mt7530_hw_stats {
+ int mt7530_probe_common(struct mt7530_priv *priv);
+ void mt7530_remove_common(struct mt7530_priv *priv);
+ 
++/*
++ * When an MMIO based switch has an MDIO bus which contains a downstream MDIO
++ * switch, the MDIO bus is not normally setup until mt753x_setup() has been
++ * called. But mt753x_setup() is not called until DSA sees that every switch in
++ * the tree has been probed. Calling mt7530_setup_mdio() after at the end of
++ * the MMIO probe function allows the downstream switch to register, completing
++ * the tree.
++ */
++int mt7530_setup_mdio(struct mt7530_priv *priv);
++
+ extern const struct mt753x_info mt753x_table[];
+ 
+ #endif /* __MT7530_H */
 -- 
 2.39.5
 
