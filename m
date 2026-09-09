@@ -1,157 +1,157 @@
-Received: from mail.cjdns.fr (mail.cjdns.fr [5.135.140.105])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C08C485949;
-	Wed,  9 Sep 2026 21:33:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.135.140.105
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F8543C3C16;
+	Wed,  9 Sep 2026 21:40:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788989609; cv=none; b=psFSU7cjhy7CSl/359CKv3tY52oTspvO3HQQjKFJYj3u3SgRg/CWvp9aNv0Sh2ToFljqcORpyT8Kv7z0jLz5Xg7aGODDoFarOTEecnV6aW1/nlMIbiWYA7QHwk8OEY/v+tp89bUbzYt5vCUcoNWB9VE1ZVEfGzzSnub0BilOcRM=
+	t=1788990026; cv=none; b=pwR83zqRgbvY3a4hDuwBydhw+PH7PAOzXUlSdtgoMk0r6XGn86pL61aZ9iBTL7Txv8rnO6v7IxT4LAjnMaXIE0S5KsQZ6QwalQg4A+elcZ6RNeB4TcJ6IypWqEywD4s5B5SwGD8WAA+EX8GrTzsjbXprhydxzj7E2xRwSqqp11k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788989609; c=relaxed/simple;
-	bh=834eDjOan/A5adnG3hsLjh7NHyS9qItlttjBQ8iMDKM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Qd5pkqVsbzCbBNiZJrxDZAuww7SaW22Q5SJxiZX0brDsfGsLhu0a951vnS7lKwTixoZi3hSbOMqv+bQuXokwQx1J3w6f/CWXSe5yqL/65yZ8EWP5fxLzMwfHr58Cn2FIPMIK2AE+krXnmN+YX3vg1FOnxLgpB0GGmWSYyoIx5kE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cjdns.fr; spf=pass smtp.mailfrom=cjdns.fr; dkim=pass (2048-bit key) header.d=cjdns.fr header.i=@cjdns.fr header.b=njbNHfNm; arc=none smtp.client-ip=5.135.140.105
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cjdns.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cjdns.fr
+	s=arc-20240116; t=1788990026; c=relaxed/simple;
+	bh=xfVJea4uY5edbVA/Kqv7Xt2stEqupQMgz6KCOci0o0g=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=RRCz0zXAhvmv91nn0Ff9pn7XguS1Ughb63OOpaEzc097NePUeAJE78G18SjMo7DrptzFPE11QgxTx/WH6deV9Tse85ZUQigzoGV5jcZaVSibISrQg1pxb7YwCWENesBojDB4VcTPQqAhaKVZq2Cp0aXwnoWsFror0ijOc2ESkj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EkSeHm9N; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cjdns.fr header.i=@cjdns.fr header.b="njbNHfNm"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 55D76408E9C;
-	Wed,  9 Sep 2026 23:33:03 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cjdns.fr; s=dkim;
-	t=1788989589; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding; bh=V/qlTnUfYfGp2JdX/hItZG5Gee2j7Ew0nxnFZ6sxuQ4=;
-	b=njbNHfNmVsDqxX50TMx4/HC1qNAlT73XFtEcqOCX+5q5vZN+umf7CVN2biX8IYFOq7QTmY
-	fPkiBhd8WynUvTvHrd6efRjK5N+Sbtaq3XTkjYOXX4bRr+V+rrGdh2n3VYzYoTocINjWgP
-	BUSJT38c1rt9hxPDekC0tPn0FXUgC0wVkrmbTKOSEKUlQl+99LgczV5aZ8HSQCQ6MRWsI6
-	jV0SE3HZ46FstACiVBZMtrnt+7jaX8iFk3285cZlcxT1VLES+IOAZBS0L1gwEcCIbPrK+J
-	lGsgQe3MsVoKmGLIcoRwV/9P5TGvDVOFmtUNhunF4QUD9PNjrQyvyE4nZSn4kA==
-From: Caleb James DeLisle <cjd@cjdns.fr>
-To: netdev@vger.kernel.org
-Cc: daniel@makrotopia.org,
-	dqfext@gmail.com,
-	SkyLake.Huang@mediatek.com,
-	andrew@lunn.ch,
-	hkallweit1@gmail.com,
-	linux@armlinux.org.uk,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	Caleb James DeLisle <cjd@cjdns.fr>,
-	Matheus Sampaio Queiroga <srherobrine20@gmail.com>
-Subject: [PATCH net-next] net: phy: mediatek: support MT7530 PHYs on EN71221 MCM
-Date: Wed,  9 Sep 2026 21:32:50 +0000
-Message-Id: <20260909213250.3184238-1-cjd@cjdns.fr>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EkSeHm9N"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F61F1F000FF;
+	Wed,  9 Sep 2026 21:40:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788990013;
+	bh=Q65d2+vKaeIvv1aFsZlNeZwHA/AqvMGseC0yWChkYPw=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=EkSeHm9NrHRF4EN0XUN3SyzkBkhH7n4ABKoVlOWsi3M9NiEqoKQkXqqZRuQiVYHff
+	 d6zAdSXr3JeNlhG3Y0ea2feamIG1tXlNG9MW+YEIc5Es/vBnjDuL3sOFtIm0FRRkD0
+	 uZh9XRm6rbRDEONCDe700aC8EVotLENpOF/Mw8qmjILDtELBqX532Gt9C+qUfOQv9H
+	 Kw4tGt+mAGZzJXus6Yn0WGWc7itSMXNdSho94OElCwhll98YTE1rNHTC4WRNtTcvpu
+	 0lDscfq8PUx96tphDiFuuQcAla0PEysd7OrusMSYayZhEpmcuk8Ddh0Kk0KBePdems
+	 fn2ux5Z6gQnLg==
+Subject: Re: [PATCH net v4] net: wwan: qcom_bam_dmux: account network packets
+From: netdev-bot+sashiko@kernel.org
+To: sinyavin@gmail.com
+Cc: stephan@gerhold.net, stephan.gerhold@linaro.org,
+ loic.poulain@oss.qualcomm.com, ryazanov.s.a@gmail.com,
+ johannes@sipsolutions.net, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Date: Wed, 09 Sep 2026 21:40:11 +0000
+Message-ID: <178899001185.219967.6678486297703743680@kernel.org>
+In-Reply-To: <20260904183737.2994139-1-sinyavin@gmail.com>
+References: <20260904183737.2994139-1-sinyavin@gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
 
-The EcoNet EN751221 multi-chip module implementation of the MT7530
-requires some additional configuration of the PHYs on startup.
-The reason for this is not known, but it is possible that it has
-to do with the fact that the EN751221 MCM implementation of the
-MT7530 runs at an abnormal PLL frequency (362.5Mhz).
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider:
 
-Detect whether the MT7530 PHY is attached to the MDIO bus of an
-EcoNet EN751221 switch and if so, apply the necessary register
-updates.
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-Co-developed-by: Matheus Sampaio Queiroga <srherobrine20@gmail.com>
-Signed-off-by: Matheus Sampaio Queiroga <srherobrine20@gmail.com>
-Signed-off-by: Caleb James DeLisle <cjd@cjdns.fr>
----
- drivers/net/phy/mediatek/mtk-ge.c | 61 +++++++++++++++++++++++++++++++
- 1 file changed, 61 insertions(+)
+- [Medium] In `bam_dmux_netdev_start_xmit()` the new
+  `dev_sw_netstats_tx_add(netdev, 1, len)`…
 
-diff --git a/drivers/net/phy/mediatek/mtk-ge.c b/drivers/net/phy/mediatek/mtk-ge.c
-index 73d9b72f9d9e..42b06c40d703 100644
---- a/drivers/net/phy/mediatek/mtk-ge.c
-+++ b/drivers/net/phy/mediatek/mtk-ge.c
-@@ -1,4 +1,5 @@
- // SPDX-License-Identifier: GPL-2.0+
-+#include <linux/of.h>
- #include <linux/bitfield.h>
- #include <linux/module.h>
- #include <linux/phy.h>
-@@ -62,8 +63,68 @@ static void mtk_gephy_config_init(struct phy_device *phydev)
- 		       FIELD_PREP(MTK_MCC_NEARECHO_OFFSET_MASK, 0x3));
- }
- 
-+static bool mt7530_phy_is_en751221_companion(struct phy_device *phydev)
-+{
-+	struct device *parent = phydev->mdio.bus->parent;
-+
-+	return parent && parent->of_node &&
-+	       of_device_is_compatible(parent->of_node, "econet,en751221");
-+}
-+
-+/*
-+ * The EcoNet reference implementation applies additional tuning to
-+ * the PHYs of the multi-chip module MT7530.
-+ */
-+static int mt7530_phy_en751221_config_init(struct phy_device *phydev)
-+{
-+	int ret;
-+
-+	ret = genphy_soft_reset(phydev);
-+	if (ret)
-+		return ret;
-+
-+	/* Clause 22 local data. */
-+	ret = phy_write(phydev, MII_CTRL1000, 0x1e00);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = phy_write_paged(phydev, MTK_PHY_PAGE_EXTENDED_1, 0x14, 0x3a04);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* Clause 45 global/local data from mt7530GePhyCfgLoad(E3.0). */
-+	ret = phy_write_mmd(phydev, MDIO_MMD_VEND2, 0x0417, 0x7775);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x00a6, 0x0350);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = phy_write_mmd(phydev, MDIO_MMD_VEND1, 0x0012, 0xd210);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* Vendor profile disables 100/1000BASE-T EEE advertisement. */
-+	ret = phy_write_mmd(phydev, MDIO_MMD_AN, 0x003c, 0x0000);
-+	if (ret < 0)
-+		return ret;
-+
-+	phydev_info(phydev, "EN751221 companion MT7530 E3.0 PHY profile loaded\n");
-+
-+	return 0;
-+}
-+
- static int mt7530_phy_config_init(struct phy_device *phydev)
- {
-+	int ret;
-+
-+	if (mt7530_phy_is_en751221_companion(phydev)) {
-+		ret = mt7530_phy_en751221_config_init(phydev);
-+		if (ret)
-+			return ret;
-+	}
-+
- 	mtk_gephy_config_init(phydev);
- 
- 	/* Increase post_update_timer */
+--
+
+net: wwan: qcom_bam_dmux: account network packets
+
+The BAM-DMUX data path did not update the netdev packet and byte counters,
+so userspace saw zero traffic.  This adds per-CPU software statistics with
+NETDEV_PCPU_STAT_TSTATS and dev_get_tstats64(), counting TX in
+bam_dmux_netdev_start_xmit() and RX in bam_dmux_cmd_data().
+
+> diff --git a/drivers/net/wwan/qcom_bam_dmux.c b/drivers/net/wwan/qcom_bam_dmux.c
+> index cc6ace8d64371..03360301c8ee5 100644
+> --- a/drivers/net/wwan/qcom_bam_dmux.c
+> +++ b/drivers/net/wwan/qcom_bam_dmux.c
+
+[ ... ]
+
+> @@ -357,17 +358,19 @@ static netdev_tx_t bam_dmux_netdev_start_xmit(struct sk_buff *skb,
+>  		if (!atomic_long_fetch_or(BIT(skb_dma - dmux->tx_skbs),
+>  					  &dmux->tx_deferred_skb))
+>  			queue_pm_work(&dmux->tx_wakeup_work);
+> -		return NETDEV_TX_OK;
+> -	}
+> +	} else {
+> +		if (!bam_dmux_skb_dma_submit_tx(skb_dma))
+> +			goto drop;
+>  
+> -	if (!bam_dmux_skb_dma_submit_tx(skb_dma))
+> -		goto drop;
+> +		dma_async_issue_pending(dmux->tx);
+> +	}
+>  
+> -	dma_async_issue_pending(dmux->tx);
+> +	dev_sw_netstats_tx_add(netdev, 1, len);
+>  	return NETDEV_TX_OK;
+
+[Severity: Medium]
+Is it intended that dev_sw_netstats_tx_add() now also covers the deferred
+branch, where nothing has been submitted to the DMA engine yet?
+
+In the active <= 0 case the skb is only marked in dmux->tx_deferred_skb and
+bam_dmux_tx_wakeup_work() is queued.  The descriptor is prepared later in
+that worker, which can bail out before submitting anything:
+
+drivers/net/wwan/qcom_bam_dmux.c:bam_dmux_tx_wakeup_work() {
+	ret = pm_runtime_resume_and_get(dmux->dev);
+	if (ret < 0) {
+		dev_err(dmux->dev, "Failed to resume: %d\n", ret);
+		return;
+	}
+	...
+	for_each_set_bit(i, &pending, BAM_DMUX_NUM_SKB) {
+		bam_dmux_skb_dma_submit_tx(&dmux->tx_skbs[i]);
+	}
+	...
+}
+
+bam_dmux_runtime_resume() can return -ETIMEDOUT from any of its three 2
+second waits on the remote modem, or -ENXIO when the TX channel cannot be
+requested, for example after a modem crash or power collapse.  In that case
+the worker returns with the packet still sitting in dmux->tx_skbs[], while
+tx_packets/tx_bytes have already been incremented for it and tx_dropped is
+never touched.
+
+The other failure mode is the return value of the same helper being ignored
+in the worker:
+
+drivers/net/wwan/qcom_bam_dmux.c:bam_dmux_skb_dma_submit_tx() {
+	desc = dmaengine_prep_slave_single(dmux->tx, skb_dma->addr,
+					   skb_dma->skb->len, DMA_MEM_TO_DEV,
+					   DMA_PREP_INTERRUPT);
+	if (!desc) {
+		dev_err(dmux->dev, "Failed to prepare TX DMA buffer\n");
+		return false;
+	}
+	...
+}
+
+So the two callers of bam_dmux_skb_dma_submit_tx() end up with opposite
+accounting: start_xmit() counts a drop via dev_core_stats_tx_dropped_inc(),
+the worker counts nothing at all.
+
+The commit message says the counters are updated "after the driver has
+prepared and accepted them", which explains counting at accept time, but
+would it be better to account the deferred packets from
+bam_dmux_tx_wakeup_work() once submission succeeds, and to increment
+tx_dropped there when it does not?
+
+> drop:
+>  	bam_dmux_tx_done(skb_dma);
+> +	dev_core_stats_tx_dropped_inc(netdev);
+>  	dev_kfree_skb_any(skb);
+>  	return NETDEV_TX_OK;
+>  }
+
+[ ... ]
+
 -- 
-2.39.5
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260904183737.2994139-1-sinyavin%40gmail.com
