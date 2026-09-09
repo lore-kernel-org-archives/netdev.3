@@ -1,116 +1,137 @@
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C014F42668B
-	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 20:42:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7DE458B6DA
+	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 20:43:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788986577; cv=none; b=XNvYzSbX9qobTZLyraaeEhMcakCdOv101BxQVCFUPbo3ia5cQdqCYEN1GM0fSIF39pomuKyrdx8YZwfrXIADGPyuiXe6/0lxU8YbpLAdMX45h8+5jX+XMk1GebegrAPXqsq/LuLKj/ITJDfzpVBBNFmKAyIGXmiMJWkQ89h2k4U=
+	t=1788986606; cv=none; b=VdrhD1jeJHvQekOnrvAIfLddY65lArGlDDtpFV1emuCC2Nr5pqKu9E8Cp4KOI0X8ab4zmjwbre/FSoDTbOjKhzzUoITQE6xkO4cy1Xu/Ah9VxHq1bjFUMG2iTocBb7KICuS/NiOfnbWyjbKZhlEjHBuxQhg7OSL6vB6tWaTs/4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788986577; c=relaxed/simple;
-	bh=4QK22JD6oH4SvxZHmOyYQJJkExZcrvgo8YM1Io2s18M=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 Content-Type:MIME-Version; b=e9kyS7SeVSiO7N1JvpoqGRWtIf3sYm8/kLXctt1SKZkKDY4A4Fbly/jFsNqBwb/eXhRZU4HLggdWGKCY2xdG0ghAPNrZlkSBc2KfPtBIZ991DfvW69HvNoj1jZGLCAXypph0dR4kKg7CN8JCgz5Z0s8JdgBsigTU1TeDcsdKO40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rLL5rnvK; arc=none smtp.client-ip=209.85.216.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788986606; c=relaxed/simple;
+	bh=ms+wPxxykgLhoZIPeEqV1SUNEDq6O/wPxWyQ2fNzuOA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=SLln+k8o1EOBe58nHr0ObW74bjrcUuSMVGtkWzhsmzg+TMkrfmHnrV0abxmhRh6dkYDSCA1riFwvt8cWao8rcwxfvoSvuSgaCb7dau+z+gFcB7fMxyAgrB9p2xn3fl+YBADzy0/IEeufw8zxo964DXfwMV3IpdG1V0q7So7VMc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la; spf=pass smtp.mailfrom=lex.la; dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b=am39DyZ5; arc=none smtp.client-ip=209.85.221.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lex.la
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rLL5rnvK"
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-3990fe066ebso5260439a91.1
-        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 13:42:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b="am39DyZ5"
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-48441a2ba14so5329257f8f.1
+        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 13:43:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788986544; x=1789591344; darn=vger.kernel.org;
-        h=mime-version:content-transfer-encoding:content-type:message-id:date
-         :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
+        d=lex.la; s=google; t=1788986594; x=1789591394; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=oN/gqs4AWaGEOYc4NXETn7MgtPOtvKlXrZlfFK+KbqY=;
-        b=rLL5rnvKxJ7bimUEcTFKJMabTEqZECh1pV/CVR3V0vpTtduiuEKKDH14JkcVkTV45d
-         1X3JNvE+5ko7Ihvn8ahXUTqh0ngrHVK5lGNB80LtJbLAepPvIcFM1JmR7W9/JzK1UN1F
-         QC+5ddYNQhk08DFWGt7G5OQaH9Um3qRp0mRQrHHmRFt7qa8UGAFah9fq/kLcOrB6CCXS
-         K3m/RvXf9GUkV0CAhd10bPKJeQQfoPS/bl961dDJcTFxHNdMW7YgaW/VsHBK8wB5jo9l
-         5OM4Yn+MEKIM++DCpv9cDPEnmF631Ws6RY9dWAaTFUE1h13FdtksuMFYg0h4sKT5NAoO
-         vVEg==
+        bh=0MCT7Y2OFjhcDKKihQE5DUJP52LKyDCkCXjyba/ItNY=;
+        b=am39DyZ5bpMeXNn/GKFma2YAv0wQ7iOBY6EiZSDBjgVlL2BFzvjynz5WjHSSp6WJDx
+         vINt9mbwhWnE/gzo0WpJMr9aJRIrg5J2/IpqLPcAR2WvWD1ZLgO7DeGgP6JiWBt6Eayf
+         mvmKu+L9amaBXOmSQq9xGD5q75//Pw4g7A+fTrrUlycXSstclYg/xV31S8fWUd4wJKnV
+         qsAN5FSrPqF9qa37bAjF5OamAXhWIFAOgE37+s6AzvMiYhMnYGtU1AqKX8DdzUwN+YuV
+         lA6Y+IU4OtPFdFOcKeawKIzmNJ6D+UFNXjn8qRW/JE88ecU/S3us5fH8tx9mheHiSpTg
+         1P/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788986544; x=1789591344;
-        h=mime-version:content-transfer-encoding:content-type:message-id:date
-         :references:in-reply-to:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=oN/gqs4AWaGEOYc4NXETn7MgtPOtvKlXrZlfFK+KbqY=;
-        b=o5N1Z8cS2c2fXpZ5O94+Vpl1FWbL0EAt7qZLM9TZqYLGLlplXO+hz8lobiasNR9X4O
-         ynb0+NhgbsocoVspjIIF+uPzCcFHDaubC4mCEpMyml+18uHc8eJKkxI+bcbik1XPW931
-         98p28Fu/kGQ4sinP+ePxjQpfx6nVrkCQmbru+P3RG/TZ8uBxCom8SpY98pIoZHmk0qwb
-         VQO0HCXflLjmyMQKhNSfC9hFCOKyNr+88tK0H//Vrm2zGfRlviR5HaGOuCkH4yzR3qDi
-         Ifo57U6Ncx+tanoPy+Qn4R7ryLxcdq6mw/CjiTtNO2mKTshlDHkWnDoCad9veSGHEXAK
-         e8EA==
-X-Forwarded-Encrypted: i=1; AKwUvByKHgtOvL8pz8Xk6S90co35Xdxaf14A53xrE7QS6mobtIoeFMLwAF4bTAzW0fjcuyeqWY1Vtpw=@vger.kernel.org
-X-Gm-Message-State: AFuF++kquga0yyQyvDM88ndiT0P9wYusPn8MdkqwLfu1K6j1iNx7fLAp
-	/j6dpaOMa7y73ozDFdvgqmlKtUaF8CbN41L4/POqasr9M+HDPvDFp5am
-X-Gm-Gg: AYBFou050vIbZ5ZWVWIG0XIoWMb1M+F9nZTKEz/oEAZpOC91WbvAiICAXYXUcoPav9h
-	Mu81SLRpOcYFHqqIGnDrRtEdnxZKcpCOPv+GKWf8i4FlsOJyS+rAaZTFATeY1NWxGkJwB9tHYX6
-	efGnVRPS7PViZqL7lOyLrNN6UzTeIJDQvlI/Md7PLt1CFnK7HbV/eXSpUHg2I5VzN0Sk2ezZd2N
-	uOkL1jB9uNZGjqkB3Oyt06JHP6Agbis4dajKe4FMguHGjy9kzsup3F6MKKGbH2pvA4MF4sLbgla
-	v84qnr3WKfi9OgvvFW9yXsgbJ4kxu2C7b/fEIJFeRhiRXFLYBC70p1B7eD6VgQ6HDPc7ExBNQa5
-	4bg7mAWTwhGxE53EuFx/8YrqvSo4PETRgp+U9bonWrvtwU6GubYsv6axaRAJ7t5vIhLNg3ymt3I
-	2KpEtA5+MaBRCt7SyuxuIAnjjV6Ox7L63P2vlUyqFv/G9F2uAWF/i7RAg1q8dWUNAhoUm0nLCxK
-	KZ1jaB2syRwYnoCKKriomIyYliU6asyKG/x1z93HHqH5JNNmrwb2c8dkHXQ1ps6WpWk+OQqei7I
-	jUgj3QnS7t61arNSmHWVfFi4WVd9wlWWBywjfx5isnD1MW5QdJEqKB5ziVVlF17bAaoRoOQa53O
-	NzflAKv7tg5VJmRop41v/
-X-Received: by 2002:a17:90b:578c:b0:398:e6b6:acc2 with SMTP id 98e67ed59e1d1-39b261e7649mr58879248a91.12.1788986543953;
-        Wed, 09 Sep 2026 13:42:23 -0700 (PDT)
-Received: from [127.0.1.1] ([43.227.225.58])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39d770a010dsm1270437a91.3.2026.09.09.13.42.16
+        d=1e100.net; s=20251104; t=1788986594; x=1789591394;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=0MCT7Y2OFjhcDKKihQE5DUJP52LKyDCkCXjyba/ItNY=;
+        b=i3xw9XoQnVW7tSQHVuPYdsyebIrutx/3eB5N9zaopTx3PECsJuDU1CZGqYB1ouqHoz
+         bMp43BRsvOfCvoKO9TjCL9UAIoHbuE5TQpXwQkJIIgOz4ax944TdFqPT/5b6XQNaHa59
+         ARlJJUMZB40wbnYGsKs1sfFrrmLeGCeWGvZtj8S8g8e/Z9Jv2isWTfAUWMm+qBW4HgG+
+         uriGzCeQ0TKIK6II7odOroG+SkKhq/+YA/HNfw1fEX/Wt9jE6RaOrckCju8s6+LJ80zf
+         RowkrKu/+/GOjpSSRBnouii7qlzXDMPt8BA/tRvZcX4YaJo9OHO1ZI3Sr62l/7zKkDzB
+         Xq0A==
+X-Forwarded-Encrypted: i=1; AKwUvBwqmkQ9VktWciBFPrWjJWUAbiFXPVeIKI4LtSGUOgoHVOCr5pMYTr9/gdw3X5T0tEiVAI+pMS4=@vger.kernel.org
+X-Gm-Message-State: AFuF++lXt3KViCqDFIbbpRgImV4FV7+VGxUfpI7tKVINevtmtKHYqi1c
+	ZJRaCZ+bA+8f63POPd7X+a/JnnQWMtdKWMJ7d4hlHhjcS+1kmpd37YJKVviLsLt0xzyn2t6aeQx
+	vNPpRWjpBG8kDbPY=
+X-Gm-Gg: AYBFou2yawcjca8uUWQePWTdcux92deZIEomy4UlRNPipcFv1JVSrgWrkO4H8xB0QhB
+	Jt9lnxaxPG1ktrPkGnmGLLA9IuTJ/vV9sn7X45s7gJlclQTKoyMolZ1hNb+7ZoHJEa1qSnSflOV
+	bDIE0EktLqHtYUBv4r+uSuqprmZZECj3gFW4gP3EB5GQVM3G91h5NtPhqjHrRhD/KOKIPjQazqt
+	kJGspHlzT2n9DElY6jQ2uGSaHaZEYTy9Amwjhxez//93EDfRXARmGGehMA57HAIhY9KFLwd59D5
+	6rnscKV16yue+ZmIItVfDzhZGgIItDK8uCs1dn8ihcDgAiQS1MuRClQBcXL0BJLI1grloxKfSlg
+	56IjnSesF9i5tOlNgcaFo9k9Gkkxrmvflb4BSEEKyhi/cZkmhqe55a2i/KlCwOTDmX/oG8X767R
+	8L1K8LKgV0+j+5pt9buRK8U73h77ZeYyg4bnWBFIKomNINBQhZkA==
+X-Received: by 2002:a05:6000:1785:b0:485:91ac:434f with SMTP id ffacd0b85a97d-48591ac44a5mr29197734f8f.16.1788986594389;
+        Wed, 09 Sep 2026 13:43:14 -0700 (PDT)
+Received: from remote-01 ([84.17.55.229])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4858e239862sm40693606f8f.9.2026.09.09.13.43.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Sep 2026 13:42:23 -0700 (PDT)
-From: Nikhil Ludder <nikhilljatt@gmail.com>
-To: Emil Tsalapatis <linux-lists@etsalapatis.com>
-Cc: ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- eddyz87@gmail.com, memxor@gmail.com, martin.lau@linux.dev, song@kernel.org,
- yonghong.song@linux.dev, jolsa@kernel.org, john.fastabend@gmail.com,
- sdf@fomichev.me, horms@kernel.org, dsahern@gmail.com, hawk@kernel.org,
- razor@blackwall.org, bpf@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH bpf] bpf: fix reading neigh ha in bpf_fib_lookup()
-In-Reply-To:
- <CABFh=a7Z=heZODVsXwisY3VwULDy-Rq1hwO09exgX2d0-KzgUQ@mail.gmail.com>
-References: <20260909024011.1252694-1-nikhilljatt@gmail.com>
- <CABFh=a7Z=heZODVsXwisY3VwULDy-Rq1hwO09exgX2d0-KzgUQ@mail.gmail.com>
-Date: Thu, 10 Sep 2026 02:12:14 +0530
-Message-ID: <178898653497.1776876.10402414041023036972@gmail.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+        Wed, 09 Sep 2026 13:43:14 -0700 (PDT)
+From: Aleksei Sviridkin <f@lex.la>
+To: andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	linux@armlinux.org.uk
+Cc: olteanv@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Aleksei Sviridkin <f@lex.la>
+Subject: [PATCH net v7 2/2] net: phy: take the interrupt back from the bus on detach
+Date: Wed,  9 Sep 2026 20:43:06 +0000
+Message-ID: <20260909204306.2374562-3-f@lex.la>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260909204306.2374562-1-f@lex.la>
+References: <20260909204306.2374562-1-f@lex.la>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Wed, Sep 9, 2026 at 1:18 PM Emil Tsalapatis <linux-lists@etsalapatis.com> wrote:
-> Bot is right wrt possible lockups, please adjust the seqlock
-> accordingly. Also please
-> add your full name in the SOB.
+A PHY whose own driver is a module on a filesystem that is not mounted
+when the MAC probes gets the generic driver first. phy_probe() replaces
+phydev->irq with PHY_POLL because that driver has no interrupt support,
+nothing puts it back, and the PHY polls for the rest of the uptime once
+its real driver takes over.
 
-Will fix the SOB in v2, thanks.
+Take the number back in phy_detach(), from mdiobus->irq[], which is
+where phy_device_create() seeded phydev->irq from and where the bus that
+described the interrupt still holds it. Detach is the end of every bind
+cycle, so this covers the two substitutions phy_attach_direct() makes as
+well as the one in phy_probe(), without any of them having to record
+anything.
 
-On the lockup: I don't think it can happen here.  neigh->ha_lock has
-exactly one writer in the tree, __neigh_update() at
-net/core/neighbour.c:1495, and it already runs with softirqs disabled:
-write_lock_bh(&neigh->lock) at line 1384 covers it through
-write_unlock_bh() at line 1524.  A reader in softirq context therefore
-cannot preempt the writer on the same CPU and spin on the sequence
-count.
+Doing it here rather than from phy_remove() keeps a single writer on the
+rtnl side. phy_attach_direct() is what reads the number back and decides
+whether to request an interrupt, and it holds no lock against the driver
+core, so a restore driven by an unbind would be racing that decision
+rather than ordered against it.
 
-The same pattern is already used by the other lockless readers of
-neigh->ha on the tx path, neigh_resolve_output() and
-neigh_connected_output() (neighbour.c:1610 and :1639), and by the two
-recent fixes this patch follows, 57549ab90791 ("net: bridge: arp/nd
-proxy: fix reading neigh ha") and b824059a673b ("vxlan: fix reading
-neigh ha").
+A bus whose driver writes only phydev->irq and never the table is not
+covered, because the table then holds PHY_POLL and there is nothing to
+take back; lan78xx, smsc95xx and sxgbe are in that position today and
+registering the interrupt with the bus is theirs to do.
 
-Am I missing a writer path?  If you would still prefer a different
-form here, I am happy to respin.
+Assisted-by: LLM
+Signed-off-by: Aleksei Sviridkin <f@lex.la>
+---
+ drivers/net/phy/phy_device.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-Thanks,
-Nikhil
+diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+index 94b2e85e00a3..84e2da81dbd3 100644
+--- a/drivers/net/phy/phy_device.c
++++ b/drivers/net/phy/phy_device.c
+@@ -1969,6 +1969,11 @@ void phy_detach(struct phy_device *phydev)
+ 		phydev->is_genphy_driven = 0;
+ 	}
+ 
++	/* Whatever this attachment did to the interrupt, the bus that
++	 * described it still knows the number. Take it back from there.
++	 */
++	phydev->irq = phydev->mdio.bus->irq[phydev->mdio.addr];
++
+ 	/* Assert the reset signal */
+ 	phy_device_reset(phydev, 1);
+ 
+-- 
+2.53.0
+
