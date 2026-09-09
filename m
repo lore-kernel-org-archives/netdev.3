@@ -1,35 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F75149AA32
-	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 10:18:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 263924CCDEB
+	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 10:18:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788949108; cv=none; b=X9efoFVi81F7SZWhtAwdmDxgLDUgbiLklwRXsJe8KmbtuMIJIYZ7d+izZjL7GeBVLaG27i0MyJ5yupD5djgBbemQg5e0Ezn4U5DBGZkxxwMBOjS60ZmwRK4uYl4fsKTaG+S71ZQ/7XSWisNrYGSC/8JDCNsVAxmm7FCIRf5Jl8I=
+	t=1788949110; cv=none; b=nj7q/SoYvSlngsBQBniZDDikR8fcUWW2X+v9zpnyCYhzac8QZKCQLXikzbeYeYjs2hFFCvpxkiLckbHgDPNfvXQa3OLbmLGGvDn/9FZTSsF6VmJU9SVQhe17jGesvivI8ysZ+mCk8tGubLcX3/Pwqp+OTl6S4SVgTEycOQLBkrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788949108; c=relaxed/simple;
-	bh=NYdJer5cQWhQnRcGRgs3Z0R6cHyb7Q4nxL0oGzNbbq4=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Rhc21SOI3VHYf+/SbLlgrK69E0SyVHPsWUfoxND5dHpu/6A3BL1Ci/f1gG/ry/mfiA15nry6EytqnG+pGnduu30SLJvWgLThQ9c0fEq/eZ/68n1YhokStIGqejs4GUF+T6JODIrhQDIMfnS5SzmbmbaGlmsteCh2/bxSPwAze74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TUMlsuws; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788949110; c=relaxed/simple;
+	bh=imOYJxMiWQqFBK3wHgW4ucgqXDVmc9RDOsaTQbhe1PA=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=bMRzhmRvS4vICyanCY4Xnl/jZsYpTbbEpUc8AFyaqtUnIPIwC0zl7vCFInYajOdG2cUxRcbSqFniNNdEVSqLRnGEGC2GiVE9hpu5om9RiTOarTU/q8uMTQ+IUhZHth9vv9kUGf9Mbs2IO9XKJm3DOVfvcqPH0m9awzQZ9XN7gF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l0Zzx+E+; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TUMlsuws"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31F9F1F00ACA;
-	Wed,  9 Sep 2026 10:18:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l0Zzx+E+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A34BB1F00AC4;
+	Wed,  9 Sep 2026 10:18:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788949103;
-	bh=lA0XEuZ9dP0He4rq++c9mC1HdQfeJiCrdQXFt6m0Hho=;
-	h=From:Subject:Date:To:Cc;
-	b=TUMlsuwsYldE+/rghXrY/ZSAlGJtz2oBQStJWIK4LxDjhJ4TKr6yXcsINOqJSXrV8
-	 sjTYNcBbENZHHg/22P4uuv8fk+csKtadQqPzjw4nTrswMNBi9cZORE2ldTVC2DlJVQ
-	 gACSSCMvD5+Z7TCy6o3oWLo7MIyEaLeX6uW2wAIt0bSOSLY+Bj5BbXM4r4UVkpv0OU
-	 j2Enunqe4s7itW9CMYMsIM72BNnL2Fo/Nic3ySQfJVNC1JsfStpRpgbgS8buHSkyWM
-	 9saBEDRD9bv/ucnQN8VJJEHgDG1JUD6Yx4NpmL6au5U82/3m8iwJSrtlmbAUhHvfIC
-	 bMbEpXQDs2v1w==
+	s=k20260515; t=1788949105;
+	bh=IyG0sXVnmxwHhntu1L7wc/n2XCZHl1eDAtdFEpeqVpo=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=l0Zzx+E+apuFUGcUwRMOG+EHZ3cbTiNsNm4xjD90EE+0Qpz70spiRM/nTmHfcLNzZ
+	 SWEf/ajRCNHTb6wKlxAeGY3Po1AWiSM8ynH9daOJqW1Swo61zX5G1acCCSea+3RIi0
+	 Z+28s7tlikaG4G7U1vpb5OGk9z7l50Kvw8nHZjFnwVGhfLK9FXHCYGvB93dyQgSxsj
+	 0xw2qgC8fnHzHfEO0yEgsbiz4iVIe+6OfzBj5UdopY11BJ2m2NdkHixhe8Rs4pBV3E
+	 bKB0nRRfN+At+bJZWgVhdbGhJZobdTyMqBZZ4EYJts5vW9UFREjMyX6UrX4Wj6VESW
+	 4IrjGQnxLrpQg==
 From: Linus Walleij <linusw@kernel.org>
-Subject: [PATCH net-next 0/2] net: ethernet: cortina: Gemini Ethernet
- fixes, part 2
-Date: Wed, 09 Sep 2026 12:18:18 +0200
-Message-Id: <20260909-b4-gemini-ethernet-fixes-2-v1-0-5ea3aa393f41@kernel.org>
+Date: Wed, 09 Sep 2026 12:18:19 +0200
+Subject: [PATCH net-next 1/2] net: ethernet: cortina: Ack RX overrun
+ interrupt correctly
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -38,10 +38,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2MQQqEMBAEvyJzdiAJuuz6FfGgptU57ChJEEH8u
- 9Fj0dV1UkQQRGqKkwJ2ibJqBlsWNC69zmDxmckZ9zE/8+Wh4hl/UWGkBUGReJIDkR37anSArb2
- 1PeXAFvBO+d/SIyqORN113dfwyzZ2AAAA
-X-Change-ID: 20260908-b4-gemini-ethernet-fixes-2-d4c2ee15d11a
+Message-Id: <20260909-b4-gemini-ethernet-fixes-2-v1-1-5ea3aa393f41@kernel.org>
+References: <20260909-b4-gemini-ethernet-fixes-2-v1-0-5ea3aa393f41@kernel.org>
+In-Reply-To: <20260909-b4-gemini-ethernet-fixes-2-v1-0-5ea3aa393f41@kernel.org>
 To: Hans Ulli Kroll <ulli.kroll@googlemail.com>, 
  Andrew Lunn <andrew+netdev@lunn.ch>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
@@ -50,23 +49,34 @@ To: Hans Ulli Kroll <ulli.kroll@googlemail.com>,
 Cc: netdev@vger.kernel.org, Linus Walleij <linusw@kernel.org>
 X-Mailer: b4 0.16.0
 
-Fix two RX-path issues: acknowledge FIFO overruns with the correct status
-bit and bound descriptor processing when malformed chains lack EOF.
+The RX overrun interrupt is reported in interrupt status register 4, but
+gmac_irq() acknowledges it using the RX descriptor error bit from status
+register 0. For GMAC0 this writes the GMAC1 overrun bit, while for GMAC1
+the shift leaves no bit in the 32-bit register.
 
+Acknowledge the same per-port RX overrun bit that was detected.
+
+Fixes: 4d5ae32f5e1e ("net: ethernet: Add a driver for Gemini gigabit ethernet")
 Assisted-by: LLM
 Signed-off-by: Linus Walleij <linusw@kernel.org>
 ---
-Linus Walleij (2):
-      net: ethernet: cortina: Ack RX overrun interrupt correctly
-      net: ethernet: cortina: Bound RX descriptor processing
+ drivers/net/ethernet/cortina/gemini.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- drivers/net/ethernet/cortina/gemini.c | 34 ++++++++++++++++++++++------------
- 1 file changed, 22 insertions(+), 12 deletions(-)
----
-base-commit: c20065162307a94f88124f2adb00777a475ab4d7
-change-id: 20260908-b4-gemini-ethernet-fixes-2-d4c2ee15d11a
+diff --git a/drivers/net/ethernet/cortina/gemini.c b/drivers/net/ethernet/cortina/gemini.c
+index f08de623e6f7..2dd2fa801829 100644
+--- a/drivers/net/ethernet/cortina/gemini.c
++++ b/drivers/net/ethernet/cortina/gemini.c
+@@ -1798,7 +1798,7 @@ static irqreturn_t gmac_irq(int irq, void *data)
+ 
+ 	if (val & (GMAC0_RX_OVERRUN_INT_BIT << (netdev->dev_id * 8))) {
+ 		spin_lock(&geth->irq_lock);
+-		writel(GMAC0_RXDERR_INT_BIT << (netdev->dev_id * 8),
++		writel(GMAC0_RX_OVERRUN_INT_BIT << (netdev->dev_id * 8),
+ 		       geth->base + GLOBAL_INTERRUPT_STATUS_4_REG);
+ 		u64_stats_update_begin(&port->ir_stats_syncp);
+ 		++port->stats.rx_fifo_errors;
 
-Best regards,
---  
-Linus Walleij <linusw@kernel.org>
+-- 
+2.55.0
 
