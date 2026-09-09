@@ -1,142 +1,116 @@
-Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx2-f4.google.com (mail-yx2-f4.google.com [74.125.224.132])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA9AB45D90B;
-	Wed,  9 Sep 2026 22:06:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.38
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788991618; cv=none; b=DMLgZ3dPuKmvCUhDeEKQgEPymmVdAv/DSL/N6FvHag4wN4Sg9gVoZ+8b3dMxm5pieSVviY/Gun3fsPlCZrVuDfnyFM/+tO4NdqItFFcf8rHrwChw6bLDA1yakCGhDhQPwN1amxAhOMlVHndIgQom4YPsCakSwAZ1DJDKw+lEvYE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788991618; c=relaxed/simple;
-	bh=zhamF1YEZiyf2s9A3XkbddvVHeH6TFDpcQeg7jivakw=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=BfUytD3p5KHb272Ol73S5IEzFMG7mpZPp37MogTKJy3NRv394phpksgN8BBFC5QVyVrOsAyPWf+51uzer7zmYRHgMTIVF0/x0AplS2OXZAFYrt88O+GTH0GYJBVFhwmCj7XJfUr6BzMcj4CKV49WF54ZELWLAEb8GGuPYExJaSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=FdZHrhjj; arc=none smtp.client-ip=185.226.149.38
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 468B24399C4
+	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 22:12:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.132
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788991948; cv=pass; b=GLXLiDd6GGYxxmMuKLEeqHG+paLF9t8bezlbYq/owXzJSrSbQmQ8yPg95WnIe3v7hc0QEAHhZuhV820WbLhKc0Vq/tPBpgyIOGd3dCjj0G5wi4N+V+kc5wVMx31cx+rt/i7qsyLDB9margpNZUEZptFuHOWIxK+qKGyjAL0We7s=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788991948; c=relaxed/simple;
+	bh=u1c0AJOKpOQYV8POEA0JDva21A7YKfl3x4xor8nmioo=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=gQQLhJQToakSzWG/4AwMA3gUeQPmpywav+99RtxrIcv0UXeWmSIYur7g4Bep3UlbqeF6kuns6j2ibjFGVDSYrqsA00LDwe3KVw+n2P27i4ViENlQl1amDZ8W3Cni4lo3Ni++YuLSi4Wdg8roqXce7BCIjRzcXs7cjQxDCV0MptA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bairaktaris.de; spf=pass smtp.mailfrom=bairaktaris.de; dkim=pass (2048-bit key) header.d=bairaktaris.de header.i=@bairaktaris.de header.b=zQaUowz/; arc=pass smtp.client-ip=74.125.224.132
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bairaktaris.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bairaktaris.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="FdZHrhjj"
-Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
-	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.93)
-	(envelope-from <mhal@rbox.co>)
-	id 1x4QRG-0022FL-Ti; Thu, 10 Sep 2026 00:06:42 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
-	s=selector2; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:References:
-	Cc:To:Subject:From:MIME-Version:Date:Message-ID;
-	bh=mbtrJSJQDPTCk5h/S+ZCPyq99FhufN14XFpnDQdo3Qo=; b=FdZHrhjjgvEOwHwJoE9h4CqhHg
-	FENu0M45lYsCy/8LrpYiUPJCpNhu6vJ631mFuEXRYEdihv1dVAtz0rWVkP4nqofpCf9tJtLLFc7qj
-	XRxC68ad4tDE6Eym5/ax0+NfnqlFYDLrABIK3EqkVg7LSIKpeYmVHjlJA5TtCI7z7SE/5tF7bH3JH
-	EA76sR6FSYzuRABa2wc4gQFpfeSEwSh60PLPtE1xDVYWaUYanYEKwx0lTj2RWkiugn+XEGQ2B15Cl
-	lVV2vkVb/E8o+ExJ7sbiRPZDYw1j963uCY+WsFojMoAlu+OiJQM62BJMTEiuW9fV/xjHVxH8XyJw9
-	uxIBAz8Q==;
-Received: from [10.9.9.72] (helo=submission01.runbox)
-	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
-	(envelope-from <mhal@rbox.co>)
-	id 1x4QR6-0002PE-Fm; Thu, 10 Sep 2026 00:06:32 +0200
-Received: by submission01.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.95)
-	id 1x4QR1-000J5F-Fp;
-	Thu, 10 Sep 2026 00:06:27 +0200
-Message-ID: <7cd32cc3-8acd-4048-9008-b5795e43d871@rbox.co>
-Date: Thu, 10 Sep 2026 00:06:15 +0200
+	dkim=pass (2048-bit key) header.d=bairaktaris.de header.i=@bairaktaris.de header.b="zQaUowz/"
+Received: by mail-yx2-f4.google.com with SMTP id 00721157ae682-86785a548ddso4439497b3.1
+        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 15:12:27 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788991946; cv=none;
+        d=google.com; s=arc-20260327;
+        b=XNKnfyhhW/nunYxjv6uqjQ6uPEroW9upIEOtyJpXbvOPgf5ULsIFfZV+BPxACx482q
+         NH3vBnKXF684k3Mwvz2920ftV63NTD3JJ8ww8i0oPXgE3wVojelD7dSvVnvSoSkFkHzG
+         pe/0GvHDry04tC9F6jb16HmWzm2ghAVT+Sw39JxxNW7lDvRWOxElEeLZhc8z+CmdhBVz
+         BMgQ38BFOoCeMfGvOXb8Ik2v4YiHKptaUNTwZNvfm6veUo0MS08MW2NScuhlEgY7gt+E
+         TR6oDv/XbClmc5xDIE/2gX9Ok5vZ8G8KLbVDYvxA6GsIUQ5GcM7zNr9VDbSj0dbh2D07
+         k4sg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=u1c0AJOKpOQYV8POEA0JDva21A7YKfl3x4xor8nmioo=;
+        fh=bd6MnesxUEtnwYJCHBJtJrpWHNjaxkSO33INtaQs9TA=;
+        b=IynV1XL+8rUA3n4uBP3eanl1ELjpdw9OL3hEmctLkzw+8VRhD3f/Ov+yARWJz2vbWd
+         uB/LrsIO8+QEoVoUbhpc76BTse7B12lNLFXqu/7rNDj25A+wxu/I3n0T99M7O4p6xLak
+         KbUCKe/nP1KoPavg/fJjszynCr4PRYeK0PQD/j9riuUDk3bgKKpn8fV689H8sNDOvV+e
+         L00eJ2qk3XGiqgca+R2YRrwWzkX9m0LJUgUP6fbNnAh0n5Fbdm28b0KFMin5g8WIttB/
+         QD4UweWPMLUtyXCu/Hi56SMnJa8MXusPLjcJ4XomycgrhthlwAh2h9KiAO1aO+Yu9YyT
+         D4Xg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bairaktaris.de; s=google; t=1788991946; x=1789596746; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=u1c0AJOKpOQYV8POEA0JDva21A7YKfl3x4xor8nmioo=;
+        b=zQaUowz/S/lpIt/XI1Y6oXr/qQ90VItCh6t803aLwXvyXmkBnX7bfwCDLjnxCQjVUV
+         tuvTwxdUTxYFRylXEjDYi4zB8ws0r9TzZ7c6sW6e7I410NttMgZx/QQLRtz7fbTRUJ7b
+         eoMWMtwz/q4TDPDq06xqu2P5G0nPzHZbviW1hvYbtxYyrUkIP3qZb+JOclUFrolBDucz
+         HNBhFYUNwmIRYu5rE6GckYuzyKQXXqx8DTU+iT+2Pv4DvLyOWmF5zYueCWy0hI/I7ac5
+         RfAn4y+Km+FDG01d3eNnScrHLTIYAMPIN4OO3xYtKtWmPrPSchSjA65brwFkDQcYDhAc
+         /YtQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788991946; x=1789596746;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=u1c0AJOKpOQYV8POEA0JDva21A7YKfl3x4xor8nmioo=;
+        b=EG6y5LoDVyys9LfwsN7luHMizzm6Z/g1WUxLnJ5eWsJ3NsD8ub1QRASJdvw+TP3ycs
+         dzn5f5vyRh68qebJ5DGXPYBCXAVTm2gfJbTfeAAvxRIMgc8oYUyc4ZgaB55TAvbFSGSf
+         6ffCrM7mSfixshZS8Ju5nMq1RbCIagDKo/1jmjPu7HXsUz6t4eNYSP7XhK61Ec0RnAx8
+         9ShdiIseXuWmwSfPUH5UolpR/1AMEmy8WK2PyeqlXwuuUKthPu3wA16WpVew5TKgO8A6
+         2EGWDJ7UyrF6V2sneF0p53Pdjrn8C1t+UVtIW6PRMQQHSZz5Y7MAkD5J7CZn6UOZ9ZY5
+         XLFw==
+X-Gm-Message-State: AFuF++nRJAjxXpGnWlTewTKMw76yq2UTWWXaO9YGntFqEj1bHQXDxNKO
+	TCbQeCr039YOeyBJ5G3FGLIy1JxZtWGTGMYPrS7pQBp/k20We2hmMO6P2X4wiNb/9GZJOTRH02U
+	wW/6m38DvOMgFReA5FbrZ063gFB+ZceWNYXvr5tUgZvoQvQ7p+/e4UvyBlxveNgWf
+X-Gm-Gg: AYBFou2DJ9FI31gFdXESN2xA0T3+zOBHj8r/SN+KaWFL6vPgO1a6qHnqtckxm+lYUar
+	/MGhg29ClCs8AdCGptUj80LC3FamT0ARQYR/NtBIa1/AgR2Rg9khm6po4TL/vdUgLVHimiHS/0t
+	CwuqL95+j+f7g17D5DDZLp9ZzIrVS//lrdSuw/NYefimIL5eZ99lbK++s8RoWDosS2jOCL3xY+k
+	VWIEWy7UlpKi5dpepoAJlGpSUObc2G7tf57Ng36gYyvBudsccyLWCPWWQ9/VaxB6Ek0RjbM23GD
+	xIV6ZfNbSwiTzVo/bvrkFkZbzYAxPBZTaDVsJR2zbTe/qZn0MJ7RmpnuWST/+8Im+hga4u9tOcS
+	vJBkPq1/FE6KzZPv0B5lkQasB0sDc74kOgGMuwobGdhptemDXgtjGAZ1M1eoUHNDnGnzhvnl6cj
+	4E9J2+kP4UCyv0+9AZXBGDViYYkCeg5AjZePhOzq1lJl2o3NOPOVrOOTuBjAYLjxelEtTnoeXhg
+	UfpeFhSIEI4zRrIZ2iQd2rj9NQG7wppLX4YsP1cfQV6XZfNrTmeQ7q84II5
+X-Received: by 2002:a05:690c:4588:b0:867:142e:f581 with SMTP id
+ 00721157ae682-87121acdf18mr161168927b3.6.1788991946069; Wed, 09 Sep 2026
+ 15:12:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Michal Luczaj <mhal@rbox.co>
-Subject: Re: [PATCH net] vsock: do not reset a socket in connect() once it has
- connected
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: Hyunwoo Kim <imv4bel@gmail.com>, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- leonardi@redhat.com, bobbyeshleman@meta.com, stefanha@redhat.com,
- mst@redhat.com, virtualization@lists.linux.dev, netdev@vger.kernel.org
-References: <anzT1fREOSyHT99k@v4bel>
- <218226a4-38e6-4a16-a660-6c1bb92f9f96@rbox.co> <an5zJ9Uf94_L9TyB@v4bel>
- <c11d6fe8-fdf9-4b45-b291-e5d5b0ef5cb4@rbox.co>
- <aoVnp0w9jlyFDPj7@sgarzare-redhat>
-Content-Language: pl-PL, en-GB
-In-Reply-To: <aoVnp0w9jlyFDPj7@sgarzare-redhat>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+From: Julius Bairaktaris <julius@bairaktaris.de>
+Date: Wed, 9 Sep 2026 22:11:49 +0000
+X-Gm-Features: AcwNN1UVM1MUNf3n1Golr8IjSYQEp0Z5n3joRWJnLwyZ--Sl0-paHWdylPTGm9k
+Message-ID: <CAC1t37+=keDdX7=G+zyPhBx2LgRNEuoB2tonHF5itrN+Lyx2+g@mail.gmail.com>
+Subject: PPE driver: are qdisc or flowtable offloads planned?
+To: jie.luo@oss.qualcomm.com
+Cc: netdev@vger.kernel.org, robimarko@gmail.com
+Content-Type: text/plain; charset="UTF-8"
 
-On 8/19/26 10:54, Stefano Garzarella wrote:
->>>> diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
->>>> index 622dbd046799..39c42ef016c3 100644
->>>> --- a/net/vmw_vsock/af_vsock.c
->>>> +++ b/net/vmw_vsock/af_vsock.c
->>>> @@ -1807,15 +1807,18 @@ static int vsock_connect(struct socket *sock, struct sockaddr_unsized *addr,
->>>>  		timeout = schedule_timeout(timeout);
->>>>  		lock_sock(sk);
->>>>
->>>> -		/* Connection established. Whatever happens to socket once we
->>>> +		/* Connection (has been) established. Whatever happens to socket once we
->>>>  		 * release it, that's not connect()'s concern. No need to go
->>>>  		 * into signal and timeout handling. Call it a day.
->>>>  		 *
->>>>  		 * Note that allowing to "reset" an already established socket
->>>>  		 * here is racy and insecure.
->>>>  		 */
->>>> -		if (sk->sk_state == TCP_ESTABLISHED)
->>>> -			break;
->>>> +		if (sk->sk_state == TCP_ESTABLISHED ||
->>>> +		    sk->sk_state == TCP_CLOSING) {
->>>> +			err = -sk->sk_err;
->>>> +			goto out_wait;
->>>> +		}
->>>>
->>>>  		/* If connection was _not_ established and a signal/timeout came
->>>>  		 * to be, we want the socket's state reset. User space may want
->>>>
->>>> ?
->>>
->>> Yes, I like it better than mine. I confirmed it fixes the issue.
->>
->> Great, thanks.
->>
->>> If you don't mind, would you take the patch from here?
->>
->> Sure, no problem.
->>
->> Stefano, does this look good to you?
-> 
-> Yep, thanks for helping here!
-> 
-> My only doubt is if it makes sense to leave the `break` there, and add a 
-> similar check before resetting the socket, I mean something like this:
-> 
-> 	err = sock_error(sk);
-> 	if (err && sk->sk_state != TCP_ESTABLISHED &&
-> 		   sk->sk_state != TCP_CLOSING)) {
-> 		sk->sk_state = TCP_CLOSE;
-> 		sock->state = SS_UNCONNECTED;
-> 	}
-> 
-> Just to be a bit more defensive, but I don't have a strong opinion, your 
-> version is also fine.
-> 
->> And should any sk_err be consumed
->> here, too? (`err = sock_error(sk)` instead of `err = -sk->sk_err`)
-> 
-> I'd stay with sock_error() to consume the error if it makes sense also 
-> for you.
+Hi Jie,
 
-Sure, one note: perhaps it's better to always return 0 on
-TCP_ESTABLISHED/TCP_CLOSING? From connect()'s PoV these two states mean "we
-did good, we connected to something for some time". Currently, even if the
-connection was established, virtio_transport_recv_connected()'s
-VIRTIO_VSOCK_OP_RW error handling may set sk_err = ENOBUFS, and connect()
-would return that. Even though connect() itself was a success.
+I am building a PPE flow-offload driver for IPQ8074 in OpenWrt
+(https://github.com/openwrt/openwrt/pull/24806/) with a DSA switch driver,
+PPE flow tables, port shapers and queue classifiers.
 
-Anyway, here's a fix for the uaf:
-https://lore.kernel.org/netdev/20260909-vsock-connect-reset-closing-v1-1-50298b9ccfbf@rbox.co/
-It's incomplete, but I'm not sure how to follow up. Please see the
-below---comment.
+It needs two kernel patches that have no in-tree user, so they are stuck:
 
-thanks,
-Michal
+"net/sched: sch_tbf: carry the queue limit into the offload" adds q->limit
+to the tbf offload params, so a driver knows how deep the queue behind the
+shaper may get. Not posted yet.
 
+"net: dsa: offer a flowtable to the switch before the conduit" offers
+TC_SETUP_FT to the switch first, so a switch that owns its own flow engine
+is offered the flowtable instead of the conduit netdev. Posted and rejected
+for not having an in-tree user.
+
+Is a tc/qdisc or flowtable offload planned for the upstream PPE driver, and
+on what timescale? If yes it would be wonderful if we could align, so the
+two patches could go in with it.
+
+I read the three-part plan (PPE init, phylink, EDMA + netdev) but did not find
+an answer to my question.
+
+Julius
