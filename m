@@ -1,49 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E75573BED61;
-	Wed,  9 Sep 2026 21:47:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8BE83C9EFC;
+	Wed,  9 Sep 2026 21:47:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788990456; cv=none; b=YfHICjBeFXes1IT4HGKADfLaltY8HOb8igYuzwtQMgBdQHDEOYfDVoyl5FndyN4Jon5rXLibo9DFBMVvClKGleABvdDRG2FAkxcVVwcgkNRO9XirJCWrJjxxGKIPyKBN6G9X81lSSwgKkJ71O2MlDmysyk4oJb0f3MrGPCqOfdc=
+	t=1788990463; cv=none; b=NUP5bZVnLRa3eDSDNxNB0ymReH42n3aSR3qUb6H7J2B9HjvPN+qa+K6nLH+LTizUzXAOub1NU/0Nty9ZDXBbml1hfbhNWdrzMDFDm14LWMICY99H2GERKTuq001h9HhqauiYwaWO1Sq4hT8Y3XGu2PUKHqjNQ/bl44GwnaC2fsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788990456; c=relaxed/simple;
-	bh=mxmCFcHexHv9KSFGTwkZ6nRLna1emqzvTuP5Ux1zJj8=;
+	s=arc-20240116; t=1788990463; c=relaxed/simple;
+	bh=PyzES/uHVDs3di3nq3fTez/4i/LkgOc9RwISRBJ8LTI=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=KSxn01EnOilGwrQcyEAIThRBEsKz6eZ+va+BlVkSjHjgDSgOdi8UP8bdTb5QnEbSPHdTwr188traZBPe2gqry55Rz4KiE/d4raYAODRVjXTjxrz2tpV8CuaYJDtywDqREHi2LTiSBoMBQ3r6m025qBqytrt+dlgYkPqEpmXbvXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NaPADtvv; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=FN+9q5k3X0MTNys0LQ5OgufpUeLDIYonI2xpXUZeKumJAcQ6rCOgthGS9nH5RN8xPwnri/sj8zKtXbHtfn8ZfyYVhJJLJhH758dPzyx811Oa2xygpx2vS6BTBCHvJgHOAnNGIvkkUCPm+qQ1GsaLNAWsDbb56BTkLAPYXcB3RoU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R6u+QKaV; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NaPADtvv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D65D1F0089A;
-	Wed,  9 Sep 2026 21:47:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R6u+QKaV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AA2E1F000FF;
+	Wed,  9 Sep 2026 21:47:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788990431;
-	bh=Fxm0rfg/W700YPmfHnrKBmFSWVktG0RSyDx6J4rYQAc=;
+	s=k20260515; t=1788990455;
+	bh=TxkCSwEjNOtlm2Jrz5XkAhDF93yeqvQiIMcyAnanaqY=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=NaPADtvvzmV+s2NvbIW2UOB799kJDqph9FG7qpdZNYPB8JB9DakHXvheENaAkFlt0
-	 rqvIYntlUwYij2NOfumWJNsadhT7pV2KuKjUiCnd8mSEqm9vdd0sJy5pViEAqh/Ddw
-	 heYd1xaZ44pqa8U8Ccel7jEVMthWLeREfUeng+Xde8kqYcndHOHHw9LBkyyw9mbFoi
-	 SAH5mcPUKI5r+nhD2kFQr7gwBvxj7b7Z22FbiBXtrB1bpMpYyYak3Iw9i9KgIDfZvp
-	 cIoJ00eHSs/EGuQ3E8fWBz4ullGk8kCGaq4O+t3ApjOQzPm1JHcGKmvyjzh5AK5Wr3
-	 Q2GRfXVGWQhGw==
-Subject: Re: [PATCH net-next 5/9] net: stmmac: qcom-ethqos: fix RGMII_ID mode
- to use DLL bypass
+	b=R6u+QKaVRPsDjo795RGERogcW8BlorlfyZp1m/A63WxvCkSsjQ/T4Qgpn7nycKKj3
+	 QwhS0iZwP0OALvYCoQ8fKL1xwq1lgVprjMYaZbcStzWOTjGB7z/EHvT6os1MLyP6+4
+	 MnYqVSn4RbzUNR2uUrPRxxUQXqWft5UcSs1ecoWUJJTi7T4otKAvh7J04VggHrjlEy
+	 fcFlkfz8vz/Gm+2bAgEfkGnF9DFyy4xlkzxtIYOX7veI7hVxAt7VNIr1bf+Ihs56Wc
+	 YlVE4g6AD62a6OLumyjds5UL+pImuYnTsSOxK9aov9uHBALEOEpIub08eoMAjdbRts
+	 FiZQJKTBs26ag==
+Subject:
+ Re: [PATCH net v4] usbnet: fix smp_processor_id() use in preemptible context
 From: netdev-bot+sashiko@kernel.org
-To: mohd.anwar@oss.qualcomm.com
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, afd@ti.com, andrew@lunn.ch, hkallweit1@gmail.com,
- linux@armlinux.org.uk, richardcochran@gmail.com, andersson@kernel.org,
- konradybcio@kernel.org, alexandre.torgue@foss.st.com, peppe.cavallaro@st.com,
- joabreu@synopsys.com, maxime.chevallier@bootlin.com,
- mcoquelin.stm32@gmail.com, netdev@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org
-Date: Wed, 09 Sep 2026 21:47:09 +0000
-Message-ID: <178899042982.219967.10620350671306953901@kernel.org>
-In-Reply-To: <20260904-shikra_ethernet-v1-5-a50765996035@oss.qualcomm.com>
-References: <20260904-shikra_ethernet-v1-5-a50765996035@oss.qualcomm.com>
+To: omermetekaya0@gmail.com
+Cc: netdev@vger.kernel.org, oneukum@suse.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+ david.laight.linux@gmail.com,
+ syzbot+04cd90bb99c6ef81a65d@syzkaller.appspotmail.com
+Date: Wed, 09 Sep 2026 21:47:34 +0000
+Message-ID: <178899045475.219967.8804711454240391662@kernel.org>
+In-Reply-To: <20260907214727.692307-1-omermetekaya0@gmail.com>
+References: <20260907214727.692307-1-omermetekaya0@gmail.com>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -54,177 +49,167 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
+Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider:
 
-Critical: 0 · High: 1 · Medium: 0 (1) · Low: 1
+Critical: 0 · High: 1 · Medium: 0 · Low: 0
 
-- [High] ethqos_set_clk_tx_rate() applies the new DLL-bypass (no-MAC-
-  delay) link clock rate to every RGMII variant except plain "rgmii",…
-- [Low] The patch is titled "fix RGMII_ID mode to use DLL bypass" and the
-  changelog states the driver "currently falls through to the generic…
-
-Pre-existing issues:
-- [Medium] For PHY_INTERFACE_MODE_RGMII_RXID the PHY supplies the RX
-  delay, yet that mode still takes the legacy path in…
+- [High] usbnet: dropping
+  u64_stats_update_begin_irqsave()/u64_stats_update_end_irqrestore() in…
 
 --
 
-net: stmmac: qcom-ethqos: fix RGMII_ID mode to use DLL bypass
+usbnet: fix smp_processor_id() use in preemptible context
 
-For rgmii-id the PHY supplies both delays, so this powers down the DLL,
-sets DDR bypass and programs the IO_MACRO through a new
-ethqos_rgmii_id_macro_init() helper.  It also changes the link clock rate
-calculation in ethqos_set_clk_tx_rate() and drops RGMII_ID from the
-phase-shift suppression in ethqos_rgmii_macro_init().
+This changes usbnet_skb_return() and tx_complete() to fetch the per-CPU
+pcpu_sw_netstats pointer with get_cpu_ptr()/put_cpu_ptr() instead of a bare
+this_cpu_ptr(), addressing a smp_processor_id()-in-preemptible-code report
+from syzbot.  Along with the pointer change it also switches the seqcount
+write helpers from the _irqsave variants to the plain ones.
 
-A few questions below.
+Closes: https://syzkaller.appspot.com/bug?extid=04cd90bb99c6ef81a65d
 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-> index 44270c25d874f..67738c1598c50 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-
-[ ... ]
-
-> @@ -183,7 +186,15 @@ static int ethqos_set_clk_tx_rate(void *bsp_priv, struct clk *clk_tx_i,
->  	if (rate < 0)
->  		return rate;
+> diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
+> index a19ecf718f36a..3df72b0c6bcfc 100644
+> --- a/drivers/net/usb/usbnet.c
+> +++ b/drivers/net/usb/usbnet.c
+> @@ -325,8 +325,7 @@ static void __usbnet_status_stop_force(struct usbnet *dev)
+>   */
+>  void usbnet_skb_return(struct usbnet *dev, struct sk_buff *skb)
+>  {
+> -	struct pcpu_sw_netstats *stats64 = this_cpu_ptr(dev->net->tstats);
+> -	unsigned long flags;
+> +	struct pcpu_sw_netstats *stats64;
+>  	int	status;
 >  
-> -	return clk_set_rate(ethqos->link_clk, rate * 2);
-> +	/* Clock Rate Requirements:
-> +	 * MAC added delay: 250/50/5 Mhz for 1G/100M/10M
-> +	 * No MAC delay (DLL bypass): 250/25/2.5 Mhz for 1G/100M/10M
-> +	 */
-> +	if (ethqos->phy_mode == PHY_INTERFACE_MODE_RGMII ||
-> +	    speed == SPEED_1000)
-> +		rate *= 2;
-> +
-> +	return clk_set_rate(ethqos->link_clk, rate);
->  }
+>  	if (test_bit(EVENT_RX_PAUSED, &dev->flags)) {
+> @@ -338,10 +337,12 @@ void usbnet_skb_return(struct usbnet *dev, struct sk_buff *skb)
+>  	if (skb->protocol == 0)
+>  		skb->protocol = eth_type_trans(skb, dev->net);
+>  
+> -	flags = u64_stats_update_begin_irqsave(&stats64->syncp);
+> +	stats64 = get_cpu_ptr(dev->net->tstats);
+> +	u64_stats_update_begin(&stats64->syncp);
+>  	u64_stats_inc(&stats64->rx_packets);
+>  	u64_stats_add(&stats64->rx_bytes, skb->len);
+> -	u64_stats_update_end_irqrestore(&stats64->syncp, flags);
+> +	u64_stats_update_end(&stats64->syncp);
+> +	put_cpu_ptr(dev->net->tstats);
 
 [Severity: High]
-Should this predicate match the one that actually selects the bypass
-hardware configuration?
 
-Here the un-doubled (bypass) rate is applied to every RGMII variant
-except plain "rgmii", so rgmii-txid and rgmii-rxid also get the
-un-doubled rate at 100M and 10M:
+Does dropping the _irqsave seqcount helpers here re-open the problem that
+commit 2695578b896a ("net: usbnet: fix potential deadlock on 32bit hosts")
+closed?
 
-  ethqos_set_clk_tx_rate()
-     if (ethqos->phy_mode == PHY_INTERFACE_MODE_RGMII ||
-         speed == SPEED_1000)
-             rate *= 2;
+The reported splat is about the per-CPU pointer being taken outside of a
+preempt-disabled section, which get_cpu_ptr() addresses.  But get_cpu_ptr()
+only disables preemption:
 
-But in ethqos_fix_mac_speed_rgmii() only PHY_INTERFACE_MODE_RGMII_ID
-takes the new early return into the bypass configuration:
+  include/linux/percpu-defs.h
+  #define get_cpu_ptr(var)						\
+  ({									\
+	preempt_disable();						\
+	this_cpu_ptr(var);						\
+  })
 
-  if (ethqos->phy_mode == PHY_INTERFACE_MODE_RGMII_ID) {
-          rgmii_setmask(ethqos, SDCC_DLL_CONFIG_PDN, SDCC_HC_REG_DLL_CONFIG);
-          rgmii_setmask(ethqos, SDCC_USR_CTL_DDR_BYPASS, SDCC_USR_CTL);
-          ethqos_rgmii_id_macro_init(ethqos, speed);
-          return;
+so nothing masks interrupts across the seqcount write section anymore.
+
+usbnet_skb_return() runs from usbnet_bh_work()->rx_process() (and from
+usbnet_resume_rx() in BH-disabled process context), i.e. with hardirqs
+enabled.  tx_complete() below is the urb->complete callback, and for host
+controllers that do not set HCD_BH it is invoked straight from the
+controller's hardirq handler:
+
+  drivers/usb/core/hcd.c:usb_hcd_giveback_urb() {
+	if (!hcd_giveback_urb_in_bh(hcd) && !is_root_hub(urb->dev)) {
+		__usb_hcd_giveback_urb(urb);
+		return;
+	}
   }
 
-rgmii-txid and rgmii-rxid still run the full DLL init and
-ethqos_rgmii_macro_init(), which sets RGMII_CONFIG_DDR_MODE and programs
-PRG_RCLK_DLY, i.e. the "MAC added delay" configuration that the new
-comment says needs 50 MHz at 100M and 5 MHz at 10M.  Those modes now get
-25 MHz and 2.5 MHz instead, where before the patch the rate was always
-doubled.
+  drivers/usb/core/hcd.c:__usb_hcd_giveback_urb() {
+	kcov_remote_start_usb_softirq((u64)urb->dev->bus->busnum);
+	urb->complete(urb);
+	kcov_remote_stop_softirq();
+  }
 
-arch/arm64/boot/dts/qcom/sa8540p-ride.dts uses phy-mode = "rgmii-txid"
-on both EMAC nodes, so is this a regression for that board whenever the
-link comes up at 100 Mbps or 10 Mbps?
+There is no local_irq_save() around urb->complete().  In-tree only
+ehci-hcd, xhci and dwc2 set HCD_BH, so on OHCI/UHCI/musb/max3421/sl811 and
+friends tx_complete() is a hardirq-context writer.
 
-Would something like the following keep the two halves consistent?
+Both sites write the same object, since struct pcpu_sw_netstats has a
+single u64_stats_sync shared by the rx and tx counters:
 
-  if (ethqos->phy_mode != PHY_INTERFACE_MODE_RGMII_ID ||
-      speed == SPEED_1000)
-          rate *= 2;
+  include/linux/netdevice.h
+  struct pcpu_sw_netstats {
+	u64_stats_t		rx_packets;
+	u64_stats_t		rx_bytes;
+	u64_stats_t		tx_packets;
+	u64_stats_t		tx_bytes;
+	struct u64_stats_sync   syncp;
+  };
 
-The condition is still unchanged at the tip of the series
-(70ec5f4a19736338086794f26222dcb9ec15b24c); the later commit
-"net: stmmac: qcom-ethqos: warn about legacy RGMII PHY modes" only adds a
-dev_warn() on that path and does not restore the doubled rate.
+On 32-bit, where u64_stats_sync is a real seqcount, can the following
+nesting happen on one CPU?
+
+  usbnet_bh_work() -> rx_process() -> usbnet_skb_return()
+     u64_stats_update_begin()          /* seq odd, rx_bytes half written */
+        <HCD hardirq>
+        usb_hcd_giveback_urb() -> __usb_hcd_giveback_urb() -> tx_complete()
+           u64_stats_update_begin()    /* seq even again */
+           u64_stats_update_end()      /* seq odd */
+     u64_stats_update_end()            /* seq even */
+
+A reader coming in via dev_get_tstats64()->dev_fetch_sw_netstats() (for
+example "ip -s link show") would then see an even sequence in the middle of
+the outer update and accept a torn 64-bit counter without
+u64_stats_fetch_retry() firing.  With lockdep on 32-bit, is this also the
+"inconsistent {IN-HARDIRQ-W} -> {HARDIRQ-ON-W}" report that 2695578b896a
+removed?
+
+This is the constraint documented in include/linux/u64_stats_sync.h:
+
+   * 3) Write side must use the _irqsave() variant if other writers, or a reader,
+   *    can be invoked from an IRQ context. On 64bit systems this variant does not
+   *    disable interrupts.
+
+Since the _irqsave variant compiles away on 64-bit, would it work to keep
+it and only change the pointer acquisition?
+
+  stats64 = get_cpu_ptr(dev->net->tstats);
+  flags = u64_stats_update_begin_irqsave(&stats64->syncp);
+  u64_stats_inc(&stats64->rx_packets);
+  u64_stats_add(&stats64->rx_bytes, skb->len);
+  u64_stats_update_end_irqrestore(&stats64->syncp, flags);
+  put_cpu_ptr(dev->net->tstats);
+
+The changelog only mentions the get_cpu_ptr()/put_cpu_ptr() conversion and
+says nothing about dropping the IRQ-safe helpers; could that be spelled out
+if the removal is intentional?
 
 >  
->  static void
-> @@ -405,8 +416,7 @@ static void ethqos_rgmii_macro_init(struct qcom_ethqos *ethqos, int speed)
->  		      RGMII_IO_MACRO_CONFIG2);
+>  	netif_dbg(dev, rx_status, dev->net, "< rx, len %zu, type 0x%x\n",
+>  		  skb->len + sizeof(struct ethhdr), skb->protocol);
+> @@ -1298,13 +1299,14 @@ static void tx_complete(struct urb *urb)
+>  	struct usbnet		*dev = entry->dev;
 >  
->  	/* Determine if the PHY adds a 2 ns TX delay or the MAC handles it */
-> -	if (ethqos->phy_mode == PHY_INTERFACE_MODE_RGMII_ID ||
-> -	    ethqos->phy_mode == PHY_INTERFACE_MODE_RGMII_TXID)
-> +	if (ethqos->phy_mode == PHY_INTERFACE_MODE_RGMII_TXID)
->  		phase_shift = 0;
->  	else
->  		phase_shift = RGMII_CONFIG2_TX_CLK_PHASE_SHIFT_EN;
-
-[Severity: Medium]
-This isn't a problem introduced by this patch, but was rgmii-rxid
-considered while reworking this?
-
-qcom_ethqos_probe() accepts it and routes it to the same handler:
-
-  case PHY_INTERFACE_MODE_RGMII_RXID:
-  case PHY_INTERFACE_MODE_RGMII_TXID:
-          plat_dat->fix_mac_speed = ethqos_fix_mac_speed_rgmii;
-
-and ethqos_rgmii_macro_init() programs the MAC RX delay regardless of
-phy-mode:
-
-  rgmii_updatel(ethqos, SDCC_DDR_CONFIG_PRG_RCLK_DLY,
-                FIELD_PREP(SDCC_DDR_CONFIG_PRG_RCLK_DLY,
-                           prg_rclk_dly), SDCC_HC_REG_DDR_CONFIG);
-
-  rgmii_setmask(ethqos, SDCC_DDR_CONFIG_PRG_DLY_EN,
-                SDCC_HC_REG_DDR_CONFIG);
-
-(and SDCC_DDR_CONFIG_EXT_PRG_RCLK_DLY_CODE = 5 plus the EXT_PRG_RCLK_DLY
-bits at 100M/10M).  For rgmii-rxid the PHY already supplies the RX delay,
-which is the same class of issue the patch fixes on the rgmii-id side.
-No in-tree qcom DTS uses "rgmii-rxid", so only out-of-tree boards would
-see it.  Could the changelog say whether rgmii-rxid was evaluated and
-left alone deliberately?
+>  	if (urb->status == 0) {
+> -		struct pcpu_sw_netstats *stats64 = this_cpu_ptr(dev->net->tstats);
+> -		unsigned long flags;
+> +		struct pcpu_sw_netstats *stats64;
+>  
+> -		flags = u64_stats_update_begin_irqsave(&stats64->syncp);
+> +		stats64 = get_cpu_ptr(dev->net->tstats);
+> +		u64_stats_update_begin(&stats64->syncp);
+>  		u64_stats_add(&stats64->tx_packets, entry->packets);
+>  		u64_stats_add(&stats64->tx_bytes, entry->length);
+> -		u64_stats_update_end_irqrestore(&stats64->syncp, flags);
+> +		u64_stats_update_end(&stats64->syncp);
+> +		put_cpu_ptr(dev->net->tstats);
+>  	} else {
 
 [ ... ]
 
-> @@ -493,6 +539,21 @@ static void ethqos_fix_mac_speed_rgmii(void *bsp_priv,
->  
->  	ethqos_set_func_clk_en(ethqos);
->  
-> +	/* For rgmii-id mode, the PHY should add the required delays.
-> +	 * Therefore, power down the DLL and program it in bypass mode.
-> +	 * Program the IO_MACRO as per the settings recommended by the
-> +	 * programming guide for bypass mode. This will ensure that the
-> +	 * MAC core doesn't add any additional delays.
-> +	 */
-> +	if (ethqos->phy_mode == PHY_INTERFACE_MODE_RGMII_ID) {
-> +		rgmii_setmask(ethqos, SDCC_DLL_CONFIG_PDN, SDCC_HC_REG_DLL_CONFIG);
-> +		rgmii_setmask(ethqos, SDCC_USR_CTL_DDR_BYPASS, SDCC_USR_CTL);
-> +
-> +		ethqos_rgmii_id_macro_init(ethqos, speed);
-> +
-> +		return;
-> +	}
-> +
-
-[Severity: Low]
-The subject says "fix RGMII_ID mode to use DLL bypass" and the changelog
-describes a user-visible timing misconfiguration, but the commit carries
-only a Signed-off-by, with no Fixes: tag and no stable Cc.
-
-Would this one be appropriate?
-
-  Fixes: 164a9ebe9742 ("net: stmmac: dwmac-qcom-ethqos: Respect phy-mode and TX delay")
-
-That commit introduced the per-phy-mode delay handling for rgmii-id and
-rgmii-txid while leaving the DLL/RX delay path enabled for rgmii-id.
-
->  	/* Initialize the DLL first */
->  
->  	/* Set DLL_RST */
-
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260904-shikra_ethernet-v1-0-a50765996035%40oss.qualcomm.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260907214727.692307-1-omermetekaya0%40gmail.com
