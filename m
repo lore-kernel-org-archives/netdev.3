@@ -1,201 +1,157 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3560B563286;
-	Wed,  9 Sep 2026 12:39:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5009455C332
+	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 12:40:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788957565; cv=none; b=qI2wW768bUmeOdWmEtsqfVo/2pNIMjPqMd8VHInANsTCO6vTJL98VZn2Sw2nLgUSh7z7/0NWb/kU9ZkYwfyOSl74lnJZMW6N9GuTlOY1PSNyiJNCcfvJgreoycG335FjMgXuedYFr4qvepqUFIcbizd+maXBRfny3jGNgTX3CWw=
+	t=1788957623; cv=none; b=f3M6Lq4DxridgrdbwEacSzmvtJ125wIxK3WSWCzCEMN6EcU7fo4kRtzASflU84M1a5kv4OpdQgJ5b2jHfE022gd4uR9yVHZahbYwJswFIt35/PWEK0GY6hzPIH+kQanDkbM16TIMbcZWKrFwmgvsN4EzQwAgfTa3P8Ba1sufIFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788957565; c=relaxed/simple;
-	bh=VcgIdmNMYXI7yNdnB7holatvKQwONyu5My/mVct0ZEg=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Wc470xBi40qwdt60xVN6dSgWh77dgmVLwVs8TdU/wmZtm+eXhlYxxNdxeU99yg1k8R58U5pe+52TkhpBeJXF4gVxCOmt9U7JRenRDFdOKQG4kwMPcYl4lb3bQQS5EsnmXyFMvV7oANcqsAfAd+ndleNsYweWMC18NpDBE2/h9+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FNXLF10t; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788957623; c=relaxed/simple;
+	bh=JOCzA7UqMSUAmqpxR+HgTPpFXK07zEBdQs8gYSTyPtA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=S4c9DejTt1HLhlPIzzb6GTT3eJnQ6D/XvzsJNJpwgFWDpdxcbam8hHcFcWOTJVkqiEkefzmZMEl9JvwesFtLJhsV+OYyClSZGZtJDoa9zM8LRhpkjR/Wb6k87/dyndhHtjosN8sPjTXT06T/1lFu+ZhiN7tcFwnXvv4RIkZm12I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=jPu/fFVj; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FNXLF10t"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E6091F00A3A;
-	Wed,  9 Sep 2026 12:39:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788957563;
-	bh=aBRTZZZvyK+ppw+WpnaWViM8laukFKs+n1HWm1orEGw=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=FNXLF10tkwhDlWAQQFzFEkyGjOPrqV1K6avOehEvyJxHwNZQs8xBGoxVYOF0zV2Ct
-	 a3W3ORuFSihg4NmyrEC4arEoHuaxE3ivy4CIKXklPKkqOxeCen+scAbBgFtA6WnsxI
-	 hN/B5Qn1E17AXIBP+JjRCL+LnieFMk2/aUzNqbhqEnaboDFDA1yxyNlSo6IY9wGwDQ
-	 +Tc+9xXpTc2ID1tNNXVqnlSaXIbk25n+uMYeoudFy+NuvcUJflTSM2s7hebsZks+Cl
-	 UnZJe2y2DEU55pPKceIFQEws7iDg0H5M9DdvtbouuDVvKvy65XVji6R0Xcyb5SXuJj
-	 nEex2Gzb+MDLw==
-Subject: Re: [PATCH net-next v10 4/4] net: dsa: ks8995: Delete surplus driver
-From: netdev-bot+sashiko@kernel.org
-To: linusw@kernel.org
-Cc: woojung.huh@microchip.com, UNGLinuxDriver@microchip.com, andrew@lunn.ch,
- olteanv@gmail.com, davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- marex@denx.de, horms@kernel.org, linux@armlinux.org.uk, nb@tipi-net.de,
- netdev@vger.kernel.org, devicetree@vger.kernel.org
-Date: Wed, 09 Sep 2026 12:39:21 +0000
-Message-ID: <178895756167.219967.14097789539530670509@kernel.org>
-In-Reply-To: <20260908-ks8995-to-ksz8-v10-4-7379239eb65f@kernel.org>
-References: <20260908-ks8995-to-ksz8-v10-4-7379239eb65f@kernel.org>
-X-sashiko-severity: Low
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="jPu/fFVj"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 466FC1A1A7B;
+	Wed,  9 Sep 2026 12:40:17 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 1928960448;
+	Wed,  9 Sep 2026 12:40:17 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E8DC211C7AF79;
+	Wed,  9 Sep 2026 14:40:07 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1788957615; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=tBGWJLf4lbE7tDmFqi5pL+JxqX8pm53QFWV7OPw4FYs=;
+	b=jPu/fFVj4ys/46RddOEnm44/WEbxSWiW4MBVKahqN6QKlKH10rmmcan6Ks69hoyT93S91j
+	vqmwprD8lgnaYuLNv9x9GsWDs0xwTw9JsDChxbfG7V9wn4ZsnSlV53YFOWmb5TCtdRMiKf
+	Vm4mKWTw4fTxR0Fiupo6X04Qvkbsev7RJtOmsQO8PNz4s2Fwp6ofrUpd+fbTPJll0cWEda
+	qnLuLBjG1dYGZUaVOLW1IxR3LJY3NoiTo5F752U7u4v0q0t9oweyeM/WTNpXr7xqXsnAwA
+	B0OF4cdWetxhxaao4c8eODe5xl6EO6X1eAHTR6RuNz2j7hZFJTAYIG/799mMHQ==
+Message-ID: <b7c7b6d0-b41e-4f27-b6f1-2500046c6d2a@bootlin.com>
+Date: Wed, 9 Sep 2026 14:40:07 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 2/6] net: stmmac: selftests: Validate EEE based on the
+ actual LPI timer value
+To: Nicolai Buchwitz <nb@tipi-net.de>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Russell King <linux@armlinux.org.uk>,
+ Heiner Kallweit <hkallweit1@gmail.com>,
+ =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Emil Renner Berthing <kernel@esmil.dk>,
+ Minda Chen <minda.chen@starfivetech.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>,
+ Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>,
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+ Jan Petrous <jan.petrous@oss.nxp.com>,
+ Ovidiu Panait <ovidiu.panait.rb@renesas.com>, Jose.Abreu@synopsys.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ thomas.petazzoni@bootlin.com, linux-arm-kernel@lists.infradead.org,
+ linux-stm32@st-md-mailman.stormreply.com, PKneuper@dspace.de,
+ David Laight <david.laight.linux@gmail.com>
+References: <20260909074740.1247762-1-maxime.chevallier@bootlin.com>
+ <20260909074740.1247762-3-maxime.chevallier@bootlin.com>
+ <2f268c9ff187ba59f69d37dd4e4ba99b@tipi-net.de>
+Content-Language: en-US
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <2f268c9ff187ba59f69d37dd4e4ba99b@tipi-net.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider:
+Hi,
 
-Critical: 0 · High: 0 · Medium: 0 · Low: 3
+On 9/9/26 13:32, Nicolai Buchwitz wrote:
+> Hi Maxime
+> 
+> On 9.9.2026 09:47, Maxime Chevallier wrote:
+>> The EEE selftest is a 2-step test :
+>>  - It validates that we enter in LPI mode with the
+>>    irq_tx_path_in_lpi_mode_n counter
+>>  - It then validates that we exit LPI when sending a frame, with the
+>>    irq_tx_path_exit_lpi_mode_n counter.
+>>
+>> The current state of the test lacks 2 main things :
+>>
+>>  - We don't know exactly when was the previous frame sent (it's from the
+>>    previous selftest)
+>>
+>>  - The timeout is hardcoded, while the LPI is entered after a
+>>    user-configurable delay. On top of that, the timeout loop uses a
+>>    pre-decrement iterator (--retries) that actually only iterate nine
+>>    times, so 900ms while the default LPI value is 1 second.
+>>
+>> Let's therefore make it more deterministic :
+>>
+>>  - Send a frame at the beginning of the test
+>>  - Wait for more than the lpi timer value, we timeout after about twice
+>>    the value,
+>>  - Then send another frame, and verify that we do go out of LPI, also
+>>    with a timeout.
+>>
+>> Note that the test's goal isn't to validate the LPI timer value itself,
+>> only that we enter/leave LPI mode.
+>>
+>> Fixes: 091810dbded9 ("net: stmmac: Introduce selftests support")
+>> Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+>> ---
+>>  .../stmicro/stmmac/stmmac_selftests.c         | 33 ++++++++++++++-----
+>>  1 file changed, 25 insertions(+), 8 deletions(-)
+>>
+>> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
+>> index 6503678b646e..4564b9f29194 100644
+>> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
+>> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
+> 
+>> [...]
+> 
+>> -    memcpy(initial, &priv->xstats, sizeof(*initial));
+>> -
+>> +    /* Send a frame, then wait to enter LPI */
+>>      ret = stmmac_test_mac_loopback(priv);
+>>      if (ret)
+>>          goto out_free_final;
+>>
+>> +    max_duration = usecs_to_jiffies(2 * priv->tx_lpi_timer);
+>> +
+>> +    memcpy(initial, &priv->xstats, sizeof(*initial));
+> 
+> Is the LPI entry already counted here? AFAIU with tx-lpi-timer=0 on dwmac4 the
+> MAC goes directly into LPI after the frame, before stmmac_test_mac_loopback()
+> returns. The loop below would time out although LPI is working.
 
-- [Low] The Kconfig stub silently changes the DSA tag protocol for every
-  existing CONFIG_NET_DSA_KS8995 user, and the commit message does not…
-- [Low] After this deletion,
-  Documentation/devicetree/bindings/net/dsa/micrel,ks8995.yaml is the DT…
-- [Low] The retired NET_DSA_KS8995 symbol is kept as a visible `tristate`
-  with its original hardware-sounding prompt ("Micrel KS8995 family…
+hmmm this is a good point ! I'll test and send a V2 :)
 
---
+> 
+> Snapshot before the first frame, and take a second snapshot right before
+> the second loopback for the exit check?
+> 
+>> [...]
+> 
+>> +    memcpy(final, &priv->xstats, sizeof(*final));
+>>      if (final->irq_tx_path_exit_lpi_mode_n <=
+>>          initial->irq_tx_path_exit_lpi_mode_n) {
+>>          ret = -EINVAL;
+> 
+> nit: -ETIMEDOUT here as well, to match the entry check?
 
-net: dsa: ks8995: Delete surplus driver
+This is the old behaviour, if we don't entry we timeout, if we did enter but
+don't record an exit event this is an error, it kinda makes sense to me no ?
 
-This removes drivers/net/dsa/ks8995.c and its Makefile rule, and turns
-CONFIG_NET_DSA_KS8995 into a transitional Kconfig stub that selects the
-Microchip KSZ SPI driver instead.  Three observations below, all minor.
+Thanks for looking at this,
 
-> diff --git a/drivers/net/dsa/Kconfig b/drivers/net/dsa/Kconfig
-> index e309e4c1ee3a..55a9714033a6 100644
-> --- a/drivers/net/dsa/Kconfig
-> +++ b/drivers/net/dsa/Kconfig
-> @@ -110,11 +110,13 @@ config NET_DSA_RZN1_A5PSW
->  config NET_DSA_KS8995
->  	tristate "Micrel KS8995 family 5-ports 10/100 Ethernet switches"
->  	depends on SPI
-> -	depends on NET_DSA_MICROCHIP_KSZ_SPI = n
-> -	select NET_DSA_TAG_NONE
-> +	select NET_DSA_MICROCHIP_KSZ_COMMON
-> +	select NET_DSA_MICROCHIP_KSZ_SPI
-
-[Severity: Low]
-Should the commit message mention that this changes the CPU port framing
-for existing users?
-
-The deleted driver returned DSA_TAG_PROTO_NONE from
-ks8995_get_tag_protocol(), while "micrel,ks8995" in ksz_dt_ids of
-drivers/net/dsa/microchip/ksz_spi.c binds to
-ksz_switch_chips[KSZ8995XA], whose ksz8995xa_get_tag_protocol() in
-drivers/net/dsa/microchip/ksz8.c returns DSA_TAG_PROTO_KS8995
-(needed_headroom = VLAN_HLEN in net/dsa/tag_ks8995.c).  ksz8_setup()
-also programs the switch into special tagging mode:
-
-	if (ksz_is_ksz8995xa(dev))
-		ksz_cfg(dev, REG_SW_CTRL_9, SW_SPECIAL_TAG, true);
-
-Until this patch the two drivers were mutually exclusive via
-"depends on NET_DSA_MICROCHIP_KSZ_SPI = n", so this select is what flips
-existing configs from untagged to 4-byte special-tag framing.
-
-The commit message says the two in-tree device trees "continue to be
-supported by the replacement driver without regressions" without noting
-the tag protocol change.  Could that sentence be expanded?
-
-[Severity: Low]
-This isn't a bug, but both selected symbols are user-visible:
-NET_DSA_MICROCHIP_KSZ_COMMON is a menuconfig with the prompt "Microchip
-KSZ8XXX/KSZ9XXX/LAN937X series switch support" and
-NET_DSA_MICROCHIP_KSZ_SPI is a tristate with the prompt "KSZ series SPI
-connected switch driver".
-
-Documentation/kbuild/kconfig-language.rst says "In general use select
-only for non-visible symbols (no prompts anywhere) and for symbols with
-no dependencies".  While CONFIG_NET_DSA_KS8995 is set, neither the KSZ
-menuconfig nor the KSZ SPI driver can be set to n, and menuconfig gives
-no hint about what is forcing them on.
-
-The same file already uses the prompt-less pattern for symbols that are
-meant to be selected:
-
-config NET_DSA_SMSC_LAN9303
-	tristate
-	select NET_DSA_TAG_LAN9303
-	...
-
-Would dropping the prompt on NET_DSA_KS8995 work better here?
-
->  	help
-> -	  This driver supports the Micrel KS8995 family of 10/100 Mbit ethernet
-> -	  switches, managed over SPI.
-> +	  This is a transitional option for users who had NET_DSA_KS8995
-> +	  enabled. It automatically enables the new NET_DSA_MICROCHIP_KSZ_SPI
-> +	  driver which supersedes it. This option will be removed in a future
-> +	  kernel release.
-
-[Severity: Low]
-Related to the above: the symbol keeps the hardware-style tristate prompt
-"Micrel KS8995 family 5-ports 10/100 Ethernet switches" even though the
-Makefile rule is gone, so the menu now offers a driver that builds no
-code and whose y/m distinction has no meaning.  Should the prompt be
-retitled as deprecated, and should the help text name the kernel release
-in which it will be removed?
-
-> diff --git a/drivers/net/dsa/Makefile b/drivers/net/dsa/Makefile
-> index 6ceb78a755d7..9923137429f8 100644
-> --- a/drivers/net/dsa/Makefile
-> +++ b/drivers/net/dsa/Makefile
-> @@ -2,7 +2,6 @@
->  obj-$(CONFIG_NET_DSA_BCM_SF2)	+= bcm-sf2.o
->  bcm-sf2-objs			:= bcm_sf2.o bcm_sf2_cfp.o
->  obj-$(CONFIG_NET_DSA_LOOP)	+= dsa_loop.o
-> -obj-$(CONFIG_NET_DSA_KS8995) 	+= ks8995.o
-
-[ ... ]
-
-> diff --git a/drivers/net/dsa/ks8995.c b/drivers/net/dsa/ks8995.c
-> deleted file mode 100644
-> index 77d8b842693c..000000000000
-> --- a/drivers/net/dsa/ks8995.c
-> +++ /dev/null
-> @@ -1,857 +0,0 @@
-
-[ ... ]
-
-> -static const struct of_device_id ks8995_spi_of_match[] = {
-> -	{ .compatible = "micrel,ks8995" },
-> -	{ .compatible = "micrel,ksz8864" },
-> -	{ .compatible = "micrel,ksz8795" },
-> -	{ },
-> -};
-
-[Severity: Low]
-Does Documentation/devicetree/bindings/net/dsa/micrel,ks8995.yaml need an
-update in the same patch?  After this deletion it is the DT contract for
-hardware whose only implementation is
-drivers/net/dsa/microchip/ksz_spi.c, and its description says:
-
-  The chip itself is managed over SPI, but all the
-  PHYs need to be accessed from an external MDIO channel.
-
-That matched the deleted driver, which had no .phy_read/.phy_write, but
-ksz_switch_chips[KSZ8995XA] in drivers/net/dsa/microchip/ksz_common.c
-declares:
-
-		.internal_phy = {true, true, true, true, false},
-
-and the KSZ driver provides ksz8_phy_read16()/ksz8_phy_write16().
-
-The schema also keeps a narrow "unevaluatedProperties: false" whitelist,
-while these same three micrel,* compatibles are now served by the driver
-documented in microchip,ksz.yaml, so future KSZ binding additions will
-not apply to them.  Note the file cannot simply be dropped, since
-arch/arm/boot/dts/intel/ixp/intel-ixp42x-linksys-wrv54g.dts and
-intel-ixp42x-actiontec-mi424wr.dtsi still use "micrel,ks8995".
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260908-ks8995-to-ksz8-v10-0-7379239eb65f%40kernel.org
+Maxime
