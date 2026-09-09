@@ -1,73 +1,73 @@
 Received: from fhigh-b8-smtp.messagingengine.com (fhigh-b8-smtp.messagingengine.com [202.12.124.159])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A723B3A3E76;
-	Wed,  9 Sep 2026 17:31:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9260F5678C9;
+	Wed,  9 Sep 2026 17:31:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.159
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788975083; cv=none; b=eSBxkuDr5eVOG3g7iUu57dNJFVCHc/UZPbUFZWQO4XY7dHPqXILKYgiwyiAMca0R+lILFwAIQAnVf2AO9lsR2B61GKwPhuiFccrrw6N1lUMuWaKzPuS2hjQ10CiRI/eSxdT3H/7eNAXd74KlsW4XRFNSlwOsda5IAAmJxlzuLkM=
+	t=1788975086; cv=none; b=Te9KJDUt+dHq2A7dTPRCVnPEhXSw1lkUoHAJk3MLN3ODglQVC1EMyrRWzlfyWGqODmZTrtz33FLf/A5YF9708f7I8hzCXQAD0bF7Ns6AGQz8KgJhLaLWY0EfS+VkdPhOx1KSYIjJgsNGuOtk3WeMBnOZv5AkGHRZRZS60s+xAE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788975083; c=relaxed/simple;
-	bh=93JsYLxWf43Z4lB44N6XlCD1AtrDkTa1YbfZxKouPFc=;
+	s=arc-20240116; t=1788975086; c=relaxed/simple;
+	bh=T2U0BhcSuHwr3Q04Oax+Q9cAEyg+8M3IrVjIN1pHo2w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SzND3Jz+FjSNA5VWYW3FLdTtfDYEV2YuhwpeK36t1eInqJ3NkKtATUu7GRQ+hJ6bFnI4qg1Ib1/TW7giQLCiOdyGM2c45CcaKc8TtUPmdNXEJDEPxigAl/bz6TQmgrQKf9xT8s/PEaQmEbxIVxB0iHQBHSd0AIM2s5uqL2d/7F8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se; spf=pass smtp.mailfrom=ragnatech.se; dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b=o/Wpv8ln; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=sQuV9hnl; arc=none smtp.client-ip=202.12.124.159
+	 MIME-Version:Content-Type; b=WAyHUajK2Pq4AL4yGf7gCl5pb5seJRpAScT8A/EQOy4/C73b4RItOMzay95zNPcKwFVAYfYpjd/iSv04hjHdO1rdNfQxn22a7yrrezLtHfqHxQDBTfgw5Z+lgIAiTIlxTBESEk2fag5H6lsJVTi+2XucWSkq1yp1yZh1eLVVpdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se; spf=pass smtp.mailfrom=ragnatech.se; dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b=zwg2ydvE; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Ei6VKWxD; arc=none smtp.client-ip=202.12.124.159
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ragnatech.se
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b="o/Wpv8ln";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="sQuV9hnl"
-Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 797A27A00D5;
-	Wed,  9 Sep 2026 13:31:20 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-09.internal (MEProxy); Wed, 09 Sep 2026 13:31:20 -0400
+	dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b="zwg2ydvE";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Ei6VKWxD"
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 797967A00CD;
+	Wed,  9 Sep 2026 13:31:23 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Wed, 09 Sep 2026 13:31:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ragnatech.se; h=
 	cc:cc:content-transfer-encoding:content-type:content-type:date
 	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1788975080;
-	 x=1789061480; bh=3As11Y4/j4vd5fRYoUyxOaAShGEnhOe+hveBHuRB/W0=; b=
-	o/Wpv8lnLoNUrQX6mo/9sG3h19xFiJC2zR3johSrsRMhYqvsXhOT1NWPROmpkkk2
-	EDvAOias9t66ujJ6wN8ys0oPxtoTO09+AEXN6Xx5XxzXCGBdxmAciNlEBgebGCT/
-	0h4wCTTP8BGBRYvXj0bBahgFaimE+5skMsMfQC3Wrs4kttXZmkl6T118vrmIn23T
-	AF/KQut1nc4xoqB/JYDx0X4z5hKV6oP3eX3O0WJ8o437PswW7Nx9628uTARmnFYR
-	ttkY9tYnbhUp0QhozznRPe0Kvea82qflVCytcC+vMlzi/2/rpn09ghoc+ywuvAhc
-	STkT1h4cYD28SWERRHx4LA==
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1788975083;
+	 x=1789061483; bh=J+UiB0JQF3J734EIk7xL8AfWMjHXBByPW0qfltoR+18=; b=
+	zwg2ydvECnUvMht9hW8076PWjx8woNgu29hvuYB0ZbS/J7xyAM4nrk1nO5Sycvu7
+	UVRa4PnEKHFDnZKI9ym9TFGmByvIjE5j7Z6qhg3vnW5zdToRtGsxJdNw1D2Y4a3r
+	O0d6+pnUzIbdoJ013Sm8eyCDTqQzMSxEMdCpRZ+ErYjyGkA9wlnSXAKOrvxAuk67
+	VW9X7J/hqklxiBTq9V+wvwg0I1ah4KAKClAO1uL0tHDsc6OG+5f/wnkOj/x+CLqw
+	PP2X6bwdtlBPzWUcWOTilbJ2Mjk5yJZoai+AkO7OiEb4qJZ4EqaaNESu0M8nFRNS
+	GU2eQCD1MC08Yf8oKbD0Yg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1788975080; x=
-	1789061480; bh=3As11Y4/j4vd5fRYoUyxOaAShGEnhOe+hveBHuRB/W0=; b=s
-	QuV9hnl0HtusgbiKgJsME79BFJiP0DhC3DeHclUqwWau7Kzcq3fO9eqj9h+vzCid
-	itbdRs3OcrVIN6wKmH0wWmybbYoQ7G/DEapp+lkAQwEq81h5DxyB3+TXhnIXr5TZ
-	Va+67SVP5DeGZGCsgmxowP5JJfedNUIbe1MqF8/NuULRZ6i5QUPuj70uxQcJ0HeY
-	twFZaGaMHLEfOb019Vfn/WKu3SG1SUxeF45NwBa9hQkkgHnwrY3UeXQ17UlgMnVL
-	PragoiNADJBRk00ZzTB8poImFAeX2TuBtq9lV/LRVPgjpofmIQiOm6ylzv3PxMq1
-	o9fW7A7tWESKzU43hMC+w==
-X-ME-Sender: <xms:6JehapBawUfUA7aCPJgq67sazsPoOYzcaZAe-JR9ZDWp8L98OeH5yw>
-    <xme:6JehaudMVLaoORWKLVAFqvoggYIdytWE7nQCdEjrB9XjFsZyMzJWtijkeHuALdhSw
-    cWWzKfMxV05WAXL3KBcAjyaky_C_2KjYwWo2A1ZvOHbf7OotnD2zhTi>
-X-ME-Received: <xmr:6Jehapqa30fp6TkuLUPK0sAhBi2sC_Xa6SXFUIq18ivFXG45BxAozTMcR5H7dHzN2jpyA7ZCwDM2ZOdNwmCR0z87JruMTGw>
-X-ME-Proxy-Cause: dmFkZTFpKuOoHA8K6npXM0EyPQ3B6fuJj1V92yxTkRTwTvOrGLmaogCPSGJNdxe3w3n+ts
-    3Bnq9S0gANJKKK31pjNWK50OZ9a7PMq2fNO8DZXCQ+/ff2Kmc+UHBXNITlDnGREVxg/f50
-    czaZu7ewfHhQ8KEOahciUDlJaktTnHuAyQxRzBwFm86u+eYYubMr2Wb9/todjLgmh5z450
-    82zfjBukuoe9N1IpciNBSfLDvZO88JgjH/tASHI61YFG/pSFyNvmg0AvAJCBYM82e580+H
-    IntiqdDAd7FDyLCJPHSk55kS+5m53Gxxbft8dJNI3qmcm7XJFRCQyhfwNMEehhg0cLBjn3
-    1FXMrH2iGxIIyuhcsC8vaqNVJNAN6u0+/yXgMpsQYahv35X9RyamMX3hF3mchImcRo9Jf3
-    rNvai9/DccOg8InC/rN/THdCLScIF5/V75dj4s4izcfq93rkMQqrwGHRAR46Nqy823qP6C
-    fbMTCkorDbRtMv6EJnENY5kpX370cox0IBa+TY1Wjuhljeh5rKO9imwmLm7+mkP6tuRe6F
-    4pcuQxlHpQO0mOlqCMxx8uL4NFe7LdJ0xp/PWNMi1xjoksiz+OYd62XuLWd1DQO/ZQwFe/
-    +44U8Yud13y5qWeSvvuh/SHQzfWaQJWW3DfnDsOccppbIzunL8+y2eKZoXSw
-X-ME-Proxy: <xmx:6Jehaq5nybUJtl1q9UqjaLUc7tyFIrFSone67JDHXdrlScTpnm57MQ>
-    <xmx:6JehapBtruyEoQGnSMab5iwFZSDhzkg8MEGrYtDZdzwvHefglWsqbA>
-    <xmx:6JehasbdRdpsFMAABZhaN2ARwcGOerPBuZtSg5UzBJqBlws9WSkgKA>
-    <xmx:6JehatKZ0w6qyECSJzeui378EON4sTaQQ1KlrVyRvfcdaxQTUuOyKg>
-    <xmx:6JehatymmbTq9Z7E_lOOTqQ1SjSpdflODM7aWjC-qKDYL4fPkPok4gLo>
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1788975083; x=
+	1789061483; bh=J+UiB0JQF3J734EIk7xL8AfWMjHXBByPW0qfltoR+18=; b=E
+	i6VKWxDNbjUvSwSiuMaKJ/IquayiuRs9o4QTkmdNVDt6gRM9cJPg3VbavKHrGWPf
+	n4o+zAdUorDRcA9Erx5vOZG+Bm8Cssbfkm3MBVpHV4E+4ZiM45NZTV4J5C1XUuei
+	kSbLa9pbB2VRu9zWtAnPAtf99kweTC5gEmBl4yeF0tTYCxKDEQq5iVG5tqKkHQFI
+	9VQW9jUqDPJ/nyuB6JSOuO03hYqd81DOi844dl6BSl+jbD1kSfuKw/1cepihTJZF
+	6mpdC9OoONEWwSs4sr2UR0ZjhgIfyB8U1ftpmSCpmTCz8AMkHJV+PFrTbbPoJOpF
+	DTVRoP5VObIHdy2WHttuQ==
+X-ME-Sender: <xms:65ehatdukLV6IRgDpnkCnpsS6wp17FP5asBms4AgV7PD0tB7-mji2Q>
+    <xme:65ehaplFuwVZs6QCQrMKOufGw-A5JBuUMqPWOd_gpenuMnWlzlU7qYurFQXrqhRMg
+    nrTlw6A5W9K3c2mMQXXI_oKNi8XJU6jsScqWXG9lmKlMj8sBLPyVHo>
+X-ME-Received: <xmr:65ehaijRuwNG2vSaDYXqQCTxtYkU4ofDDinJVBmRjwMQGNQPe0WFWQIPx-Qw5PJOFKPmyuu0wFmvwCKzXgK1lXvFL6Pkjgg>
+X-ME-Proxy-Cause: dmFkZTFXqFEZUnNCVBq6maUL3v38xhhrAf8GAtK+/CXoS0IWijgVEgLNpLnHNVjDlGVlDs
+    v2hY7tvTUbKhcu8SwS2K92TuSoyVhqa+KWn7TC6YbQfS58BAB1nv1N3sqsvMkLmGhALYbL
+    GyU/ctPmiWnfMzWE8wrxRbe9sTQmGk8DZ+5fQDhWfC3F0u2qvNKhnxBTgXb3k+4T0J4Kb7
+    XcVCeXE4LdKjTMQja3Cq0gf9GSuSItpIgO/ZpzH/36Riyo8o4Ec2R4ehjDJI06WvqmepHz
+    urjDsXPLML1i71n5LV4ZtIXVzc13eMh130tNZs2yEAFcsipzsVFrm5VzV+UdoUyrm2CASt
+    s8IzLjb/0PL1pQuo0yz6LLG/esGXiuKPxw54fVjVjk4ROjQeeQV/amrSP7irD9jug3BWtg
+    yjr4WLPdia/H5KW+8GPjV4BtKJKQRo+yCEIXUxyUJPTa6/am5BbgpoCpvovedAFxCnVFXp
+    vKK83Txzslf9yUG2/NM7gjRjNJccpf8/Izi7pmG87DEMZuE+iceiHKbVdSU8IJ/I7pCjhN
+    mzJm1cSTrNsy9/L0PvRRIZ+wUfatKoY2OB9g2vhLTzsh0SLP/inewHneZhUWei7g1rdNfz
+    Bqp1TpijQrEBwyEh1EMqvnEIgGRqceBOUhuMiA7LHqO9Ly7fGw2QZ3RkJY1w
+X-ME-Proxy: <xmx:65ehaqGUHZYYr88gPEa9vbfykHyCt7gFIh8Qw3pvIV9t_boFvombVw>
+    <xmx:65ehahwQVyoObnu1xiJQNz8oJX4itMtO-BVoP1QQsTI2oEuFJ_4IQQ>
+    <xmx:65ehahq4aStfk5dzkjY9XKXIKKKGyRuRqMg6wfa_LLBCJUrpqypnHA>
+    <xmx:65ehasfMHDonSYkdiHN6uEKUqsEML3dOVR18WxpEc0sJDt4aAHizZw>
+    <xmx:65ehahHugwwYcV2bNimyh0ZKgZ4CIY10_BkxM0usI9rmcPdOWDUjPMXB>
 Feedback-ID: i80c9496c:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 9 Sep 2026 13:31:19 -0400 (EDT)
+ 9 Sep 2026 13:31:22 -0400 (EDT)
 From: =?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>
 To: paul@pbarker.dev,
 	Rob Herring <robh@kernel.org>,
@@ -87,10 +87,11 @@ To: paul@pbarker.dev,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org
-Cc: =?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>
-Subject: [PATCH net-next v4 08/10] net: ethernet: ravb: Add callback for gPTP clock index
-Date: Wed,  9 Sep 2026 19:30:25 +0200
-Message-ID: <20260909173027.2201560-9-niklas.soderlund+renesas@ragnatech.se>
+Cc: =?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Subject: [PATCH net-next v4 09/10] dt-bindings: net: renesas,etheravb: Add optional gPTP phandle for Gen4
+Date: Wed,  9 Sep 2026 19:30:26 +0200
+Message-ID: <20260909173027.2201560-10-niklas.soderlund+renesas@ragnatech.se>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260909173027.2201560-1-niklas.soderlund+renesas@ragnatech.se>
 References: <20260909173027.2201560-1-niklas.soderlund+renesas@ragnatech.se>
@@ -103,109 +104,56 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Prepare for adding Gen4 support which have an optional external gPTP
-clock. Add a callback to get the clock index and use it to determine if
-the device shall report gPTP support.
+The RAVB module on Gen4 have no gPTP clock as part of the RAVB module
+itself, instead it relies on an external system wide gPTP clock. The
+gPTP clock is shared with RTSN on V4H and RSWITCH on S4.
+
+Add an optional phandle so that the RAVB driver can find and use the
+gPTP clock. Ideally this should have been a mandatory property but for
+backward compatible it is optional. The RAVB module is capable of
+functioning without it, but can in such cases not provided PTP
+functionality.
 
 Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
 Reviewed-by: Sergey Shtylyov <sergei.shtylyov@gmail.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 ---
-* Changes since v3
-- Add check to feed sashiko.
+* Changes since v1
+- Use generic ptp-timer property instead of vendor specific one.
+- Improve spelling in commit message.
 ---
- drivers/net/ethernet/renesas/ravb.h      |  2 ++
- drivers/net/ethernet/renesas/ravb_main.c | 22 ++++++++++++++++++++--
- 2 files changed, 22 insertions(+), 2 deletions(-)
+ .../devicetree/bindings/net/renesas,etheravb.yaml     | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/net/ethernet/renesas/ravb.h b/drivers/net/ethernet/renesas/ravb.h
-index b788e8f5260d..27e2b31955ba 100644
---- a/drivers/net/ethernet/renesas/ravb.h
-+++ b/drivers/net/ethernet/renesas/ravb.h
-@@ -1042,6 +1042,7 @@ struct ravb_ptp {
-  * critical points in the RAVB driver.
-  *
-  * @probe:		Probe the gPTP clock
-+ * @clock_index:	Get the PTP clock index, if any
-  * @set_config_mode:	Enter config mode
-  * @dmac_start:		Called when the DMAC starts
-  * @dmac_stop:		Called when the DMAC stops
-@@ -1050,6 +1051,7 @@ struct ravb_ptp {
-  */
- struct ravb_gptp_info {
- 	int (*probe)(struct net_device *ndev);
-+	int (*clock_index)(struct net_device *ndev);
- 	int (*set_config_mode)(struct net_device *ndev);
- 	int (*dmac_start)(struct net_device *ndev);
- 	void (*dmac_stop)(struct net_device *ndev);
-diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
-index 1092e8ada188..8617c30dbb14 100644
---- a/drivers/net/ethernet/renesas/ravb_main.c
-+++ b/drivers/net/ethernet/renesas/ravb_main.c
-@@ -1773,8 +1773,13 @@ static int ravb_get_ts_info(struct net_device *ndev,
- {
- 	struct ravb_private *priv = netdev_priv(ndev);
- 	const struct ravb_hw_info *hw_info = priv->info;
-+	int index = -1;
+diff --git a/Documentation/devicetree/bindings/net/renesas,etheravb.yaml b/Documentation/devicetree/bindings/net/renesas,etheravb.yaml
+index 1e00ef5b3acd..fad002492421 100644
+--- a/Documentation/devicetree/bindings/net/renesas,etheravb.yaml
++++ b/Documentation/devicetree/bindings/net/renesas,etheravb.yaml
+@@ -97,6 +97,8 @@ properties:
  
--	if (priv->ptp.clock && hw_info->ptp) {
-+	if (hw_info->ptp && hw_info->ptp->clock_index)
-+		index = hw_info->ptp->clock_index(ndev);
+   phy-handle: true
+ 
++  ptp-timer: true
 +
-+	/* Only advertise ptp clock if present. */
-+	if (index >= 0) {
- 		info->so_timestamping =
- 			SOF_TIMESTAMPING_TX_SOFTWARE |
- 			SOF_TIMESTAMPING_TX_HARDWARE |
-@@ -1785,7 +1790,7 @@ static int ravb_get_ts_info(struct net_device *ndev,
- 			(1 << HWTSTAMP_FILTER_NONE) |
- 			(1 << HWTSTAMP_FILTER_PTP_V2_L2_EVENT) |
- 			(1 << HWTSTAMP_FILTER_ALL);
--		info->phc_index = ptp_clock_index(priv->ptp.clock);
-+		info->phc_index = index;
- 	}
+   '#address-cells':
+     description: Number of address cells for the MDIO bus.
+     const: 1
+@@ -305,6 +307,15 @@ allOf:
+             items:
+               - const: fck
+               - const: refclk
++  - if:
++      not:
++        properties:
++          compatible:
++            contains:
++              const: renesas,etheravb-rcar-gen4
++    then:
++      properties:
++        ptp-timer: false
  
- 	return 0;
-@@ -2653,6 +2658,16 @@ static int ravb_gen2_ptp_probe(struct net_device *ndev)
- 	return ravb_compute_gti(ndev, priv->clk);
- }
+ additionalProperties: false
  
-+static int ravb_gen2_ptp_clock_index(struct net_device *ndev)
-+{
-+	struct ravb_private *priv = netdev_priv(ndev);
-+
-+	if (!priv->ptp.clock)
-+		return -ENODEV;
-+
-+	return ptp_clock_index(priv->ptp.clock);
-+}
-+
- static int ravb_gen2_ptp_set_config_mode(struct net_device *ndev)
- {
- 	int ret;
-@@ -2669,6 +2684,7 @@ static int ravb_gen2_ptp_set_config_mode(struct net_device *ndev)
- 
- static const struct ravb_gptp_info ravb_gen2_ptp_info = {
- 	.probe = ravb_gen2_ptp_probe,
-+	.clock_index = ravb_gen2_ptp_clock_index,
- 	.set_config_mode = ravb_gen2_ptp_set_config_mode,
- 	.dmac_start = ravb_ptp_init,
- 	.dmac_stop = ravb_ptp_stop,
-@@ -2706,6 +2722,7 @@ static int ravb_gen3_ptp_set_config_mode(struct net_device *ndev)
- 
- static const struct ravb_gptp_info ravb_gen3_ptp_info = {
- 	.probe = ravb_gen2_ptp_probe,
-+	.clock_index = ravb_gen2_ptp_clock_index,
- 	.set_config_mode = ravb_gen3_ptp_set_config_mode,
- 	.ndev_open = ravb_ptp_init,
- 	.ndev_close = ravb_ptp_stop,
-@@ -2778,6 +2795,7 @@ static int ravb_rzv2m_ptp_probe(struct net_device *ndev)
- 
- static const struct ravb_gptp_info ravb_rzv2m_ptp_info = {
- 	.probe = ravb_rzv2m_ptp_probe,
-+	.clock_index = ravb_gen2_ptp_clock_index,
- 	.set_config_mode = ravb_gen2_ptp_set_config_mode,
- 	.dmac_start = ravb_ptp_init,
- 	.dmac_stop = ravb_ptp_stop,
 -- 
 2.55.0
 
