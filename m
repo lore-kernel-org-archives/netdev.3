@@ -1,298 +1,351 @@
-Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed2-f12.google.com (mail-ed2-f12.google.com [74.125.228.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A2CA331EB9;
-	Wed,  9 Sep 2026 16:07:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.99
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788970033; cv=none; b=KU3xtqJW5rDeHjhGqMl8t85maiaXu1HYaY2ToH4xuwJV+yS1F27QU8G85ie0D6U1s3vCZV6CQ3zZH2+E6Nas/FF3IITrnYeH/QpgXwM1BYJ264+HHecFAHkKswBt4GCzvH2dOFBVzDeeBzm80+M8m9Dg6sTNTtqB33n/oqP0K2w=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788970033; c=relaxed/simple;
-	bh=chkZXiKbmRUxmJLFCqdgiCv0uwoikp1MINdnSfGtSLE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=X3DViH9z/9thyaZyU3g7U0Kix4WeE/olNQYVGi3QWu28MKzRRDFhHcHW2lfBUva1YkDj6b9MF+VW7OLVAZGwBINKsXPQ0+q1Ho+l3LuzV4Zxp+pG6OaB817/QewJ92X3TAwb5ctK1H5DtiWJqWbOLkdvNSNFjobks5ktdxQ4mU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=QHkWkn3V; arc=none smtp.client-ip=115.124.30.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 125C2576EB5
+	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 16:07:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.76
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788970034; cv=pass; b=a/jnj6BXJWJXnzSpkjiToaRCBhMohkcuybmnrYJZS2/kqJ4ebcHYP3hy9SF0QhDSUEQxABFRs2VcgCPbq150C9gclSqRNMNJIQjzLuw2bZO9uZwp5S2AMkKv7MR4MYNq6WQVvADIr4Y1WDnoc7FD0D3pg93Zbj/d3eqHIBhtkXY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788970034; c=relaxed/simple;
+	bh=MKCSmzG+mmiHp1RSdzilQ2MMIn2OYW/LdktmIFMming=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dlhy42YYDJDFoy3c/bavaoengrkqYrWMYVdK9qSu1/JB5TexsoLz4j+gRAGu4wLz4uP/4E3wF/ICZovXR0JgTWJZ+6OgCRGKICzkvlbIy1HcAxy6eNyaKCuodF0X/cyMatSfZCPt2XuJFvplQgMt2OVdVVPRDpWW9nwvvoWDyxc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RsxFLdFg; arc=pass smtp.client-ip=74.125.228.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="QHkWkn3V"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1788970023; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
-	bh=tEiGMgkz1gfUIAip5YKwtlSoH3nUyI3YdbxlmBU5qEE=;
-	b=QHkWkn3VOdceJznPpf/Fq5GscbFeMQwBW/4F+smJZuqJV2AvaWjQo88O7Y9uQB44qDRKMmBax/iXdScxfOL1J6CKNPuQHviDHYyVE/A7yhpXIGIMSYR3Wq5uqPaaaFdkmr9oHnJQR1rJAC+eobCzjcMw68tTx0+O9Z3/i5aQ77Q=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R941e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=dust.li@linux.alibaba.com;NM=1;PH=DS;RN=17;SR=0;TI=SMTPD_---0XAfGm61_1788970021;
-Received: from localhost(mailfrom:dust.li@linux.alibaba.com fp:SMTPD_---0XAfGm61_1788970021 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 10 Sep 2026 00:07:02 +0800
-Date: Thu, 10 Sep 2026 00:07:01 +0800
-From: Dust Li <dust.li@linux.alibaba.com>
-To: Hidayath Khan <hidayath@linux.ibm.com>,
-	Mahanta Jambigi <mjambigi@linux.ibm.com>, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, alibuda@linux.alibaba.com, sidraya@linux.ibm.com
-Cc: pasic@linux.ibm.com, horms@kernel.org, tonylu@linux.alibaba.com,
-	guwen@linux.alibaba.com, stable@vger.kernel.org,
-	netdev@vger.kernel.org, linux-s390@vger.kernel.org,
-	linux-rdma@vger.kernel.org
-Subject: Re: [PATCH net v2 0/2] net/smc: fix diag dump lifetime races
-Message-ID: <aqGEJRP_hZotdoNu@linux.alibaba.com>
-Reply-To: dust.li@linux.alibaba.com
-References: <20260828065439.3582783-1-mjambigi@linux.ibm.com>
- <apWEzobrZ3QR3IfN@linux.alibaba.com>
- <4f303f9f-fd20-475a-8004-1a670dfd34df@linux.ibm.com>
- <apbMyLc0IhLMKwwA@linux.alibaba.com>
- <85fa9f02-7516-4595-b5a8-4ae4ca845121@linux.ibm.com>
- <apgTu9dRGIQE6tm3@linux.alibaba.com>
- <899816c9-c908-4d64-8f5c-ba35619f78f2@linux.ibm.com>
- <apriDec7yHBkQgNv@linux.alibaba.com>
- <3803428a-2edc-4a5c-88e8-025f2f3322f4@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RsxFLdFg"
+Received: by mail-ed2-f12.google.com with SMTP id 4fb4d7f45d1cf-6a613a6bcd8so12134a12.0
+        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 09:07:11 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788970030; cv=none;
+        d=google.com; s=arc-20260327;
+        b=C7tCmdUzoVn0wYzZRZfyqmyzRY7S3rIegiwA+ed2Afg2cuIA6VBmGsbZZprM0ul/nm
+         JmpaL61w/TPIazVKtVjLbP4R38o1bGZXThfN7qZsplFm3uw1K1idn6RHFXyW8FrIB7LK
+         1e/RpU26hlAPTR5DIt0O0i7mtBn/MhoRpurCpbPAm6sboXQDK6CxP6hcmKlf08kh9mq0
+         EQ//267xOm4VF8JekjBLnrbtYW+Z+Ng8MpUoidT4VrB1Fm8e6pERYCwKHAy5lN6oS2vO
+         gjTF2z2pE4aMch9jl10G6CvR0qfmLWxlsHc63SoPeimgUomRMX+cCe8Dloeo3JBrc/E+
+         rjnQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=CnRxXWbeRnl6PzdWQmJBxR6Pu8ITF5skNlZsyk3ysJU=;
+        fh=zEwzjFPLu3eI2Q9wfk1O4RKSoWFa4KPimr5y4l8iXdw=;
+        b=YMUw1zLO0gv54/yhN/3r7B8/r8n6JvXd5AInHkp5clfnjZREgHUOW85LbC4htSjrYg
+         nPtaIPig9lNQ1ZoAEp7KXc1XPofeUURW7Kd9Q17bmlfRupkduxGTSFQJvmsvdVKg/1uq
+         zr3jndNpgZfaKBZD/dlFXqD4BPJY4f2RJkny4lwEwxmf84vzS7mbStC0vHvruFoknNwQ
+         HDMoHUHbZx1Y1UC2Q9Tiga3B5Kg/ysIHz5o5tb6MIM17XErDl9+8/aVyXebCI/gq7Fsa
+         zIyz3rFzFWfSh+tGDLivuI3MekOZZW4ulbrka/9nWW+I2/pgEWPTTj2s8XII9nR6DHJ7
+         7SFg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1788970030; x=1789574830; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=CnRxXWbeRnl6PzdWQmJBxR6Pu8ITF5skNlZsyk3ysJU=;
+        b=RsxFLdFgl+k/ROM2wAieUFZa+l5Sv/tNdUTrThap/jJ923VjnSLiwpuekt0ytf+Lz7
+         fqVrHOWpqCZdfV+1oNLftbWTDXVXny6JWKnPYGqr+2wvdL5pTOvxE5hLc2tlnMnKq+98
+         vYdiNP5fqICVoXwdKwSQ7OiYYu6j02ABvECy5t4R/kKW6mA/hiHwp4Rsx+M31Lk6Slo0
+         pF63dsDnw9J7s+qYX7FUOubPDO9d6v0ST8ij8YB1IpeKO3120lA5LrWpI8nb3J+QUahf
+         T30/FZDPgBM0Nyq0gpzdW5GgeWo1J7kd1ZJx/Qk1HfmjoroNeiVwh2eF3YeGGaTRKkZM
+         xMEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788970030; x=1789574830;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=CnRxXWbeRnl6PzdWQmJBxR6Pu8ITF5skNlZsyk3ysJU=;
+        b=mAqBVZr0srNdOA8G/kOIoXzcyuZFgFo4zobz2pHk/A/60vOYJdg+esjNe0rF96bdgU
+         miEanhqCz6wTdnZhz7yTtDKtweq7d9eJbc4LZmVk4hTC9axi9s+VYAlfd+yxx1ftOmjv
+         B4NB+ET7vQy2R6MEnHKm8JPy/LXG9ra5noFBQ9Aeb264VJdGQH3gazFCLIMFSOVcFc/F
+         37dqlc09W+nIsPQs37+HCuTR1T8ItAjcJAoxN6Mbpf9dp+Axf3zgqroAm/Ldxb9ceymR
+         J8X7N/G+x80XoPy8SQSS+F+/PGDXZk2oV+CxtVeeooKUm1+SZTbCs7Niw4ER6BJ3EMqz
+         ZqcA==
+X-Forwarded-Encrypted: i=1; AKwUvBwdUaFZzvzXNX/Jcqce1ygH6AuquPH9kOWnMTpSbVvY3e/j4Yu4e2myhJXfF6iOSe0RqCuNrlU=@vger.kernel.org
+X-Gm-Message-State: AFuF++n/dfswb6fUu5ng9nNltIbWX6v/2xLrq+qgG9jZlia/rcwwsbk8
+	cxj/7ypgpaOmp2ERDvdNd1Hw7HOpCNypg2IwzHevw6kAtT2hSKhyaTF8SP1ntHEPc4Bc2HRp2PY
+	ddarPWUUn3jM76Er0TKp2zb5CRaR6T/5unYWlPygj
+X-Gm-Gg: AYBFou06FVNoY9W1rbZ1i/mMchuceDjcwNDOXKKqHfxGSguqHS2wz1/L/o4RpMDwWcU
+	0rerxiNP0Fupn8cZaz9Tjr0X66VIW1OO4meiNjGZltQrTlp32DBDZMxXZvr0dW1CXitIqzdpk8J
+	4MGGWdL4AswrHa4B1FiI+rhYEWo6nnYdqOX2TCTRAVG/M4NjMLtEpU67/dLZ0UvABbZQM1y2EWh
+	Ec01/N66t2QAcbHOd6qgwWZii5JD8Nih+0jZ2xtHN3hRJvcreByYSN+8eI5ornYxVHW7ZspRKt+
+	1I76l8Iwo3Bwn3V7Zsuar4zXpxg4CVgP1VtYcRKWXSn1TcChmVTE
+X-Received: by 2002:a05:6402:2081:20b0:6a6:7385:3eac with SMTP id
+ 4fb4d7f45d1cf-6a99347d86bmr30789a12.11.1788970029279; Wed, 09 Sep 2026
+ 09:07:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <3803428a-2edc-4a5c-88e8-025f2f3322f4@linux.ibm.com>
+References: <20260831183529.2517322-1-sdf@fomichev.me> <CAHS8izM5+CrZG77PxKpfG9k5kEWYMgN=uAuYvy21aabyztBt0w@mail.gmail.com>
+ <aphk-b52PGfESvjL@devvm7509.cco0.facebook.com>
+In-Reply-To: <aphk-b52PGfESvjL@devvm7509.cco0.facebook.com>
+From: Mina Almasry <almasrymina@google.com>
+Date: Wed, 9 Sep 2026 09:06:57 -0700
+X-Gm-Features: AcwNN1UNfhOLZYENFOH-MMzII8uEmjay9oCkuW5NlbKnvUALQiEYrCsKpGGfW_s
+Message-ID: <CAHS8izPRSRFz=s6q1smaKKscZshg=kRkYtXzSpSXA4KmVoh=Fw@mail.gmail.com>
+Subject: Re: [PATCH net-next 0/2] net: devmem: remove gen_pool from dma-buf allocations
+To: Stanislav Fomichev <sdf.kernel@gmail.com>
+Cc: Kaifeng Wang <kaifengw@google.com>, netdev@vger.kernel.org, davem@davemloft.net, 
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	sdf@fomichev.me, bobbyeshleman@meta.com, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 2026-09-08 21:53:14, Hidayath Khan wrote:
+On Wed, Sep 2, 2026 at 11:37=E2=80=AFAM Stanislav Fomichev <sdf.kernel@gmai=
+l.com> wrote:
 >
->On 04/09/26 8:51 pm, Dust Li wrote:
->> On 2026-09-03 13:26:30, Mahanta Jambigi wrote:
->> > On 02/09/26 5:46 pm, Dust Li wrote:
->> > > I think we can close this window by holding the SMC hash table lock in
->> > > smcr_link_clear()? [...]
->> > Hi Dust,
->> > 
->> > After debugging further, I believe that __smcr_link_clear() cannot be
->> > called from smc_switch_link_and_count() because
->> > refcount_dec_and_test(&lnk->refcnt) is always false on that path — the
->> > initial ref (set in smcr_link_init(), released only in
->> > smcr_link_clear()) is always held while the switch executes. So there is
->> > no UAF from that path. The only consequence is that the diag reader may
->> > observe a stale conn->lnk pointer value — pointing to the old link which
->> > is still fully live — and read the old link's ibport/link_id/ibname from it.
->> Hi Mahanta,
->> 
->> Sorry for the late reply. I've done some more thinking on this topic.
->> 
->> That's true, but strictly I think there is still a small gap. The old link is
->> memset later, in smcr_link_clear() after all connections have migrated, so a
->> reader that loaded conn->lnk just before its own connection was switched has a
->> few-instruction window before it dereferences. In practice this window is
->> really narrow: the clear path runs the whole switch + LLC + QP teardown, orders
->> of magnitude longer than the reader's load+deref.
->> 
->> > The real UAF is via smc_conn_free(): it drops both the connection-owned
->> > conn->lnk reference via smcr_link_put() and the connection-owned
->> > conn->lgr reference via smc_lgr_put(), while the socket is still visible
->> > in the hash table. [...] The current patch tries to fix this using
->> > lgr_lnk_lock. Since you suggested we fix it with *unhash-before-free*, I
->> > thought about it and here is my proposal.
->> > 
->> > Proposed fix (high level):
->> > 
->> > Introduce a smc_conn_unhash() helper with a per-connection unhashed flag
->> > that ensures the socket is removed from the hash table exactly once.
->> > Call it at the top of smc_conn_free(), before any lgr/lnk references are
->> > dropped.
->> > 
->> > This establishes the invariant: any socket still visible to the diag
->> > reader under read_lock(hash->lock) has valid conn->lgr and conn->lnk
->> > pointers. [...]
->> > 
->> > Does this design look reasonable to you?
->> Yes, I think it's the right fix and we can go ahead and fix it this way first.
->> 
->> > There is a separate minor issue — smc_switch_link_and_count() updates
->> > conn->lnk under send_lock while the diag reader loads it without any
->> > lock, which can cause stale ibport/link_id/ibname in *smcss -R* during a
->> > failover event. This is a data race but not a safety issue since the
->> > link struct is always live at that point.
->> > 
->> > This race is very rare in practice [...] Even when it occurs, the effect
->> > is transient: one dump may show the old link's ibport/link_id/ibname, and
->> > the next dump will show the correct values.
->> I think this is acceptable.
->> 
->> ---
->> 
->> I've been re-thinking this a bit more. We've been plagued by SMC's tangled
->> locks and ad-hoc lifetime handling for years — every fix adds another lock or
->> another ordering rule. I think it's time to step back and refactor this area as
->> a whole, and set up some rules for how we use locks/refcounts in SMC, instead of
->> keeping patching individual races. Below are some rough thoughts.
->> 
->> 1. Object layering
->> 
->> SMC really has three lifetime tiers, and the top one has to be split the way
->> TCP splits struct socket from struct sock:
->> 
->> - the file (struct socket) — lifetime tied to fput;
->> - the connection sock (smc_sock, with conn embedded) — lifetime tied to
->>    sk_refcnt; like a TCP sock it can be orphaned and outlive the file. On an
->>    active close, close(fd) orphans it first, but it stays alive — still bound to
->>    the transport — to finish the close handshake;
->> - the shared transport (lgr / link / device) — lifetime by refcount, multiplexed
->>    across connections.
->> 
->> It's the socket/sock split, plus one more tier because our transport is shared
->> (TCP's sock is 1:1, our lgr/link is not). Today smc_conn_free() mixes all three
->> and is called from the transport layer while the socket is still hashed —
->> that's exactly where these races come from.
->> 
->> With the tiers separated, teardown becomes two independent, idempotent steps
->> rather than one:
->> 
->> - orphan (file <-> sock): at fput, via sock_orphan();
->> - transport-detach (sock <-> transport): the connection drops its lgr/link
->>    refs. On an active close this happens later, after the handshake completes;
->>    on a transport fault it happens immediately.
->> 
->> The sock is freed only once it is orphaned, transport-detached, and the last
->> sock_put lands; the order of the two steps just depends on who initiates
->> teardown (app close vs. transport fault).
->> 
->> 2. Lifetime & boundary contract
->> 
->> Give each tier the right tool, and a clear boundary between them:
->> 
->> - ownership by kref; traversal by RCU (conn->lgr / conn->lnk become RCU
->>    pointers, the lgr is freed with kfree_rcu); fd-visible objects (clcsock)
->>    released only after the last fput; and no in-place mutation of a published
->>    object (stop memset()ing a link — mark it dead and reclaim it with the lgr
->>    after a grace period);
->> 
->> - boundary rule: on a transport fault the lower layer only signals and
->>    transport-detaches; it never orphans, unhashes, or frees the sock.
->>    - signal = wake the app with an error (sk_err + wakeup);
->>    - transport-detach = publish rcu_assign_pointer(conn->lgr/lnk, NULL), then
->>      drop the usage references (smc_lgr_put / smcr_link_put). The transport
->>      object itself is reclaimed later by its own refcount + kfree_rcu; the sock
->>      is left untouched.
->>    Handle-side teardown (orphan, unhash, clcsock release, final sock_put)
->>    belongs to the connection/file side and is driven by close — never by the
->>    transport layer.
->> 
->> With that, a diag reader under rcu_read_lock is guaranteed the link/lgr
->> outlives its critical section, so the per-connection lgr_lnk_lock is no longer
->> needed and smc_conn_unhash() can be retired too. (clcsock_release_lock goes
->> away separately, via the clcsock lifetime series.) It's a larger, mostly
->> mechanical change and would take a lot of careful rework, so I'd do it as a
->> follow-up. Your smc_conn_unhash() is the right fix to take now (and for
->> stable); the rework, if we agree on this direction, would retire it afterwards.
->Hi Dust,
+> On 08/31, Mina Almasry wrote:
+> > On Mon, Aug 31, 2026 at 11:35=E2=80=AFAM Stanislav Fomichev
+> > <sdf.kernel@gmail.com> wrote:
+> > >
+> > > Replace devmem's gen_pool based fixed-size allocator with a binding-l=
+evel
+> > > freelist similar to the one used by io_uring zero-copy receive.
+> > >
+> > > This is motivated by allocation latency observed in the NAPI receive =
+path:
+> > >
+> > >   [ 1036.228913]  ? gen_pool_create+0x90/0x90
+> > >   [ 1036.228915]  net_devmem_alloc_dmabuf+0x1f/0x60
+> > >   [ 1036.228918]  mp_dmabuf_devmem_alloc_netmems+0x17/0x80
+> > >   [ 1036.228920]  mlx5e_post_rx_mpwqes+0xdbe/0xdd0
+> > >   [ 1036.228926]  mlx5e_napi_poll+0x113/0x830
+> > >   [ 1036.228928]  ? sched_clock+0x5/0x10
+> > >   [ 1036.228931]  ? wake_up_process+0x778/0x14b0
+> > >   [ 1036.228933]  net_rx_action+0x15d/0x570
+> > >   [ 1036.228934]  ? update_rq_clock+0x31/0x240
+> > >   [ 1036.228937]  ? __napi_schedule+0x55/0xa0
+> > >   [ 1036.228938]  ? mlx5_eq_comp_int+0x137/0x230
+> > >   [ 1036.228940]  ? atomic_notifier_call_chain+0x36/0x90
+> > >   [ 1036.228943]  ? sched_clock+0x5/0x10
+> > >   [ 1036.228944]  ? sched_clock_cpu+0xc/0x170
+> > >   [ 1036.228947]  irq_exit_rcu+0x12b/0x370
+> > >   [ 1036.228950]  common_interrupt+0x85/0x90
+> > >
+> > > udmabuf can create a very large number of SG entries. In the worst ca=
+se,
+> > > devmem ends up adding one gen_pool chunk for each net_iov allocation
+> > > unit backed by those entries. The gen_pool allocation path then has t=
+o
+> > > traverse a linked list that can become too long for this hot path.
+> > >
+> > > Patch 1 removes the gen_pool and replaces it with a simple freelist o=
+f
+> > > net_iov pointers protected by the same spin_lock_bh() pattern used by
+> > > io_uring zcrx. Patch 2 removes the now-unnecessary chunk owner wrappe=
+r by
+> > > embedding the net_iov_area directly in the dma-buf binding.
+> > >
+> >
+> > Oh boy, this is going to be a bit tricky.
+> >
+> > I ran into this exact horrible perf bug (sorry for it in the first
+> > place), but my solution was different. My solution [1] was to coalesce
+> > the SG entries that are contigious (and they usually are in practice),
+> > and I got 'acceptable' perf after that. Kaifeng is actually working on
+> > cleaning up my hacky patch up to send it upstream now.
 >
->Thanks for writing this up and for the pointer from my abort_work patch.
+
+Sorry for the late reply. We got some perf data. Not complete perf
+data but we ran the workload that detected this issue.
+
+Basically your fix and my fix produce the same results. Surprisingly,
+the batching doesn't help.
+
+I think to be honest we want the fix with the batching. It seems
+brutally stupid to me that we refill the cache one netmem at a time
+when filling 64 at a time should in theory be so much better,
+especially if we're not paying a gen_pool_alloc cost every time.
+
+I'm a bit unsure about this as the version with the gen_pool fix is so
+much more verified in our production. I would welcome discussion. It
+would be nice to know the maintainers are open to switching back to
+gen_pool if this causes us issues in production. In testing and
+benchmarks it's fine.
+
+I'll go through the patch to see if I have any other feedback besides
+perhaps including the batching.
+
+> As you mention, coalescing might happen to work or it might not :-(
+> I'd like us to have something that's less probabilistic.
 >
->You describe three tiers, with lgr, link and device as the transport one.
->I was not sure where the buffer descriptor fits. It does not seem to
->follow the lgr: smc_buf_unuse() returns conn->rmb_desc to lgr->rmbs, and
->smc_buf_get_slot() can then hand it to another connection while the lgr is
->still alive.
+
+Honestly it's not that hard to get a contingous pages. We usually
+alloc GPU mem at boot when there is no fragmentation, and also I think
+underlying, the CUDA will use huge pages and if end up with a handful
+of chunks, the perf is still good.
+
+> > Now I don't know which approach is better. Thinking about the pros and
+> > cons of your approach:
+> >
+> > + your approach is much simpler, and removes gen_pool overheads for a
+> > single queue case. It should be (much?) faster for that case.
+> > - your approach adds a lock and allocations from multiple queues in
+> > parallel will contend on this lock. There should be some value of # of
+> > queues N where your approach starts to completely trash. gen_pool is
+> > lockless so I wouldn't expect it to degrade significantly in the
+> > multi-queue case.
+> >
+> > The question for me is what the performance is for a real use case
+> > (NCCL all-to-all for example) over a realistic number of shared queues
+> > (it's 4-8 for me). I need that perf data to be honest before judging
+> > this.
+> >
+> > The io_uring zcrx comparision is not completely valid. io_uring zcrx
+> > is built from the ground up to be one-buffer-is-bound-to-one-rx-queue,
+> > and devmem tcp is built from the ground up to be
+> > one-buffer-can-be-bound-to-N-rx-queues.
 >
->Two places look like they can outlive it:
+> What if we add batching similar to io_pp_zc_alloc_netmems? So we don't
+> have to spin lock on every netmem (and move PP_ALLOC_CACHE_REFILL-worth
+> of chunks). Untested, on top of this series:
 >
->- a splice reader still holding pipe pages, since smc_buf_unuse() does not
->  consult conn->splice_pending;
 >
->- smc_cdc_msg_recv_action() and smc_cdc_handle_urg_data_arrival(), which
->  read conn->rmb_desc after smc_cdc_rx_handler() has already left
->  conns_lock. On the is_reg_err path smcr_buf_unuse() frees the
->  descriptor rather than recycling it.
+> diff --git a/net/core/devmem.c b/net/core/devmem.c
+> index 84d6c30516c8..5a1c996ba515 100644
+> --- a/net/core/devmem.c
+> +++ b/net/core/devmem.c
+> @@ -58,25 +58,25 @@ void __net_devmem_dmabuf_binding_free(struct work_str=
+uct *wq)
+>         kfree(binding);
+>  }
 >
->Have you already considered the descriptor in this model? Would it need
->its own kref, or is it meant to sit inside the transport tier? I may be
->missing something here.
-
-Hi Hidayath,
-
-I didn't think much about the descriptor before and thanks for point this out.
-In this model, it belongs to the transport tier (it lives in the lgr buffer
-pool, multiplexed across connections), and the conn->rmb_desc / sndbuf_desc
-binding is a usage reference just like conn->lnk.
-
-So buf_desc should get a kref: the pool holds one reference for existence,
-and every user holds one -- the bound connection, each outstanding splice
-pipe buffer, and an in-flight rx reader. A descriptor may return to the
-pool (->used cleared, eligible to be re-handed by smc_buf_get_slot()) only
-once *all* of them are dropped, not just when the owning conn detaches --
-otherwise a lingering reader sees zeroed or another connection's data,
-since the same memory gets recycled.
-
-That should cover your two cases:
-
-- splice: get_page() pins the physical page, but nothing stops
-  smc_buf_unuse() from zeroing the buffer and returning the slot to the
-  pool while a pipe still references it (and it never consults
-  splice_pending). With the kref, each splice pipe buffer holds a
-  reference, so the slot is recycled only after the last page is
-  released.
-
-- rx after conns_lock: the receive action reads conn->rmb_desc holding
-  only a sock reference, racing smc_conn_free() -> smc_buf_unuse() (and
-  on the is_reg_err path smcr_buf_unuse() frees the descriptor outright).
-  Making conn->rmb_desc an RCU pointer, read under rcu_read_lock in the
-  receive path, closes this: a late reader either sees NULL (detached) or
-  a descriptor that outlives its read-side section.
-
+> -struct net_iov *
+> -net_devmem_alloc_dmabuf(struct net_devmem_dmabuf_binding *binding)
+> +static unsigned int
+> +net_devmem_alloc_dmabuf_bulk(struct net_devmem_dmabuf_binding *binding,
+> +                            netmem_ref *netmems, unsigned int count)
+>  {
+> -       struct net_iov *niov;
+> +       unsigned int i;
+> +
+>         spin_lock_bh(&binding->freelist_lock);
+> -       if (unlikely(!binding->free_count)) {
+> -               spin_unlock_bh(&binding->freelist_lock);
+> -               return NULL;
+> +
+> +       count =3D min_t(size_t, count, binding->free_count);
+> +       for (i =3D 0; i < count; i++) {
+> +               struct net_iov *niov =3D binding->freelist[--binding->fre=
+e_count];
+> +
+> +               binding->freelist[binding->free_count] =3D NULL;
+> +               netmems[i] =3D net_iov_to_netmem(niov);
+>         }
 >
->One smaller question, on the boundary rule. The SMC-D side already looks
->close to what you describe: smcd_handle_irq() holds smcd->lock across both
->the lookup and the tasklet_schedule(), and smc_ism_unset_conn() clears the
->slot under the same lock. The SMC-R receive path drops conns_lock between
->the lookup and the action. Is that difference something the refactor
->would make uniform, or is there a reason the receive path cannot hold the
->lock that long?
-
-There is a real reason they differ today: SMC-R does the receive inline in
-the completion softirq, and holding conns_lock (a bh rwlock) across that
-would invert against the teardown/migration paths that take it for write
-under lock_sock. SMC-D only schedules a tasklet under smcd->lock, which is
-cheap, and defers the work.
-
-But I'd rather not unify them by holding a lock longer -- that is the same
-"use a lock for lifetime" pattern I'd like to move away from. The refactor
-unifies the mechanism instead: both sides bridge the lookup -> action gap
-with a reference + RCU, not with a lock or a drain.
-
-For SMC-D the tasklet is the subtle part. RCU does not span the tasklet
-boundary: smcd_handle_irq()'s read-side section ends when the IRQ returns,
-and the tasklet runs later, possibly after a grace period. So a reference,
-not RCU, has to carry the connection across that gap:
-
-- smcd_handle_irq() takes a sock reference under smcd->lock before
-  tasklet_schedule(), and the tasklet drops it at the end -- exactly
-  what the SMC-R rx handler already does;
-- the tasklet reads conn->rmb_desc under its own rcu_read_lock();
-- smcd->lock stays as the state lock for the dmbno -> conn slot table,
-  and smc_ism_unset_conn() keeps clearing the slot, but its job becomes
-  "stop scheduling new work" rather than "keep the tasklet off freed
-  memory";
-
-So yes, the refactor makes the two uniform -- through references + RCU,
-not by extending conns_lock.
-
-More generally, the discipline I'd like us to adopt: don't use locks (or
-drains, or ad-hoc flags) to manage object lifetime -- use a kref for ownership
-plus RCU for traversal. A lock only covers the paths that remember to take it,
-so it always leaves one uncovered; a reference + RCU makes "can't be reclaimed
-while observed" structural.
-
-
+> -       niov =3D binding->freelist[--binding->free_count];
+> -       binding->freelist[binding->free_count] =3D NULL;
+>         spin_unlock_bh(&binding->freelist_lock);
 >
->If it would be useful, I can write up the lifetime assumptions I have run
->into while working through the teardown paths. Please tell me if that
->helps, or if it would only repeat what you already have.
+> -       niov->desc.pp_magic =3D 0;
+> -       niov->desc.pp =3D NULL;
+> -       atomic_long_set(&niov->desc.pp_ref_count, 0);
+> -
+> -       return niov;
+> +       return count;
+>  }
+>
+>  void net_devmem_free_dmabuf(struct net_iov *niov)
+> @@ -433,20 +433,35 @@ int mp_dmabuf_devmem_init(struct page_pool *pool)
+>  netmem_ref mp_dmabuf_devmem_alloc_netmems(struct page_pool *pool, gfp_t =
+gfp)
+>  {
+>         struct net_devmem_dmabuf_binding *binding =3D pool->mp_priv;
+> -       struct net_iov *niov;
+> -       netmem_ref netmem;
+> +       netmem_ref *netmems =3D pool->alloc.cache;
+> +       unsigned int allocated, i;
+> +
+> +       if (WARN_ON_ONCE(pool->alloc.count))
+> +               return 0;
+>
+> -       niov =3D net_devmem_alloc_dmabuf(binding);
+> -       if (!niov)
+> +       allocated =3D net_devmem_alloc_dmabuf_bulk(binding, netmems,
+> +                                                PP_ALLOC_CACHE_REFILL);
+> +       if (unlikely(!allocated))
+>                 return 0;
+>
+> -       netmem =3D net_iov_to_netmem(niov);
+> +       for (i =3D 0; i < allocated; i++) {
+> +               struct net_iov *niov =3D netmem_to_net_iov(netmems[i]);
+>
+> -       page_pool_set_pp_info(pool, netmem);
+> +               niov->desc.pp_magic =3D 0;
+> +               niov->desc.pp =3D NULL;
+> +               atomic_long_set(&niov->desc.pp_ref_count, 0);
+> +
+> +               page_pool_set_pp_info(pool, netmems[i]);
+> +
+> +               pool->pages_state_hold_cnt++;
+> +               trace_page_pool_state_hold(pool, netmems[i],
+> +                                          pool->pages_state_hold_cnt);
+> +       }
+>
+> -       pool->pages_state_hold_cnt++;
+> -       trace_page_pool_state_hold(pool, netmem, pool->pages_state_hold_c=
+nt);
+> -       return netmem;
+> +       /* Return the last one, the rest stay in the page_pool cache. */
+> +       allocated--;
+> +       pool->alloc.count =3D allocated;
+> +       return netmems[allocated];
+>  }
+>
+>  void mp_dmabuf_devmem_destroy(struct page_pool *pool)
+> diff --git a/net/core/devmem.h b/net/core/devmem.h
+> index 20a3eb90ea7f..7195769b8bd1 100644
+> --- a/net/core/devmem.h
+> +++ b/net/core/devmem.h
+> @@ -133,8 +133,6 @@ net_devmem_dmabuf_binding_put(struct net_devmem_dmabu=
+f_binding *binding)
+>  void net_devmem_get_net_iov(struct net_iov *niov);
+>  void net_devmem_put_net_iov(struct net_iov *niov);
+>
+> -struct net_iov *
+> -net_devmem_alloc_dmabuf(struct net_devmem_dmabuf_binding *binding);
+>  void net_devmem_free_dmabuf(struct net_iov *ppiov);
+>
+>
+> @@ -191,12 +189,6 @@ net_devmem_bind_dmabuf_to_queue(struct net_device *d=
+ev, u32 rxq_idx,
+>         return -EOPNOTSUPP;
+>  }
+>
+> -static inline struct net_iov *
+> -net_devmem_alloc_dmabuf(struct net_devmem_dmabuf_binding *binding)
+> -{
+> -       return NULL;
+> -}
+> -
+>  static inline void net_devmem_free_dmabuf(struct net_iov *ppiov)
+>  {
+>  }
+>
+>
+> > Are you able to get NCCL all-to-all tests for N=3D4/8 yourself?
+> > Otherwise please wait for me to backport this to my release kernel and
+> > test it. ETA sometime this week, I hope.
+>
+> I can definitely wait for you to access the perf impact on your side. Won=
+der
+> if we need to have a selftest to do that properly in NIPA. Doesn't have t=
+o
+> be a red/green signal, but some number for humans to compare
+> before-after (specifically this bind one dmabuf to multiple queues and pa=
+ss
+> a lot of traffic). I can probably sketch something..
 
-Please do -- I'd frame it as stress-testing the model rather than just
-documenting it. buf_desc is exactly the kind of gap I want to shake out
-before we commit to this direction: an object my write-up missed, which
-you found by walking the teardown paths. So it wouldn't be a repeat of
-what I have.
+Selftest in NIPA is nice, but NIPA would need access to a real GPU to
+run NCCL tests, AFAIK. I don't know how to make those run on udmabuf
+without O(months) of work.
 
-Best regards,
-Dust
+--=20
+Thanks,
+Mina
