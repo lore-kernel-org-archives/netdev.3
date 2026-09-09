@@ -1,20 +1,20 @@
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0908485922;
-	Wed,  9 Sep 2026 22:25:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 313F1493D59;
+	Wed,  9 Sep 2026 22:25:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788992716; cv=none; b=Bh14lp/EBwM60cy9ZjUcH0i0y0hHr7dLMPzUmthy/Pv+iugXoFgLiJuJP9hz5OSzK4pK+OpYDZxK1bS1TWCiZ9Ok3JyNF2GMhHgBvaM1qIKIRw6tSCM8b4IS64uLeesM1gwIEKMbD35L1Q0dXSh595L0uNh7nWSo9SXhvVUF4N0=
+	t=1788992717; cv=none; b=RmvufKLezb1v00+Kt18fJwTMN6Zfnjj7XUV04J+sQpOiVFTGgC3lmCPYXiMF+Gs3scq5nwChi0jh0UL/HcSYQySUZP3u/eJ0WsZspcr9hd61NCKhW1mMbsEftlH0PelTjePyGkqvNDvBJ2m9FbhvvIGPhve4xU99ghJxVgaGE3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788992716; c=relaxed/simple;
-	bh=ub9U4bU9idBuGk9/5s7JRjGSzScVySkQ93L/PteITX0=;
+	s=arc-20240116; t=1788992717; c=relaxed/simple;
+	bh=jY+P3A3+fjaNjIgHLHhfZjggzZus3kriWxtpMECBmwE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o8h2Xg+3mwCQ3JABSv6XyGy4cQepWjukCb2O41E5jOIeNRKyXTa5Pqy63m4WN9oCcAhv0lJKPUD8SKdw6QNFclmNEiueXH8N21Dm5Fh+dA8CB9guhDnaFlDLRhF+IMB+CBJdVTEKeA/9eKwqtzHzcl/0F5zlfnW33aBKfMsZ/74=
+	 MIME-Version; b=b3KBAeYCt1UP4qve5yCLSHHkROQevp+UiTiE3OQiwlN/TvxT2oBm1qpWaEmYh/ycEAaMcr9feGC18zeaLiLMa5PTg3MmU/ru5w0plcl6hSHfH2gE6R9Wjk6WmJDu+Fyx8vt73lBKkjjdWN14WPvbU+QFQaLUBCQDn3NYuoCoLJU=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; arc=none smtp.client-ip=13.77.154.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Received: by linux.microsoft.com (Postfix, from userid 1202)
-	id 5A1E920B716C; Wed,  9 Sep 2026 15:24:29 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 5A1E920B716C
+	id BADC920B7178; Wed,  9 Sep 2026 15:24:29 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com BADC920B7178
 From: Long Li <longli@microsoft.com>
 To: Long Li <longli@microsoft.com>,
 	Long Li <longli@kernel.org>,
@@ -39,9 +39,9 @@ Cc: netdev@vger.kernel.org,
 	linux-rdma@vger.kernel.org,
 	linux-hyperv@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v5 03/13] net: mana: swap queue sets in mana_set_channels
-Date: Wed,  9 Sep 2026 15:24:06 -0700
-Message-ID: <20260909222416.884246-4-longli@microsoft.com>
+Subject: [PATCH net-next v5 10/13] net: mana: release EQs left idle by a channel-count reduction
+Date: Wed,  9 Sep 2026 15:24:13 -0700
+Message-ID: <20260909222416.884246-11-longli@microsoft.com>
 X-Mailer: git-send-email 2.43.7
 In-Reply-To: <20260909222416.884246-1-longli@microsoft.com>
 References: <20260909222416.884246-1-longli@microsoft.com>
@@ -53,16 +53,12 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Build a replacement queue set before quiescing TX, then publish it and
-retire the old set. Allocation failure preserves the running queues;
-publication failure attempts rollback. If rollback also fails, close the
-port and lower carrier, allowing a later administrative reopen.
+Release EQs above the live queue count after retiring queues are freed
+or replacement allocation fails. All CQs using those EQs must be gone.
+Return their vector allocations to the pool; IRQ registrations remain.
 
-Keep RX queue indices valid until retiring queues stop delivering. Order
-the port-up store before TX ring reads to avoid a missed queue wakeup.
-
-The temporary SQ/RQ peak is old + new. Later patches remove that peak for
-channel-count changes; full per-queue rebuilds still require it.
+Store each EQ's debugfs dentry in apc->eqs[] rather than a stack copy so
+shrinking can remove individual EQ directories.
 
 Signed-off-by: Long Li <longli@microsoft.com>
 ---
@@ -70,510 +66,119 @@ Changes in v5:
   - Rebased onto current net-next; no changes to this patch.
 
 Changes in v4:
-  - Raise the RX queue count during publication, but defer lowering it
-    until retiring RQs are destroyed, including after rollback.
-  - Order the port-up store before TX ring reads with a full barrier.
-  - Qualify rollback recovery and document the temporary queue peak;
-    shorten comments.
+  - Derive the live port from scratch->ndev inside mana_free_qset()
+    instead of adding a redundant parameter and shadowing local.
+  - State the CQ-lifetime requirement for shrinking and shorten comments.
 
- .../net/ethernet/microsoft/mana/mana_bpf.c    |   5 +
- drivers/net/ethernet/microsoft/mana/mana_en.c | 246 +++++++++++++++++-
- .../ethernet/microsoft/mana/mana_ethtool.c    |  78 ++++--
- include/net/mana/mana.h                       |  16 +-
- 4 files changed, 313 insertions(+), 32 deletions(-)
+ drivers/net/ethernet/microsoft/mana/mana_en.c | 49 ++++++++++++++++---
+ .../ethernet/microsoft/mana/mana_ethtool.c    |  1 -
+ 2 files changed, 41 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_bpf.c b/drivers/net/ethernet/microsoft/mana/mana_bpf.c
-index 29b8d61cad229d07898fd7725181e0133978ce5b..5867ac6eb7b9fa56f593ee87ebfb91ce85301786 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_bpf.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_bpf.c
-@@ -59,6 +59,11 @@ int mana_xdp_xmit(struct net_device *ndev, int n, struct xdp_frame **frames,
- 	if (unlikely(!apc->port_is_up))
- 		return 0;
- 
-+	/* Pair with the smp_wmb() in mana_publish_qset() before reading queue
-+	 * state.
-+	 */
-+	smp_rmb();
-+
- 	q_idx = smp_processor_id() % ndev->real_num_tx_queues;
- 
- 	for (i = 0; i < n; i++) {
 diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-index fc80d4bcde6c453d61222371d7763cff90b2a26a..bb9ef4e634a6edaf097bc85f2248c2ceea88fc05 100644
+index 98007bb3ef7caa974849c3f4998854f15c925321..fc96837d69a00f97c090474ca69bf42cb4805353 100644
 --- a/drivers/net/ethernet/microsoft/mana/mana_en.c
 +++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -90,6 +90,17 @@ static int mana_open(struct net_device *ndev)
- 	smp_wmb();
+@@ -1881,6 +1881,8 @@ void mana_destroy_eq(struct mana_port_context *apc)
+ 		msi = eq->eq.msix_index;
+ 		mana_gd_destroy_queue(gc, eq);
+ 		mana_gd_put_gic(gc, !gc->msi_sharing, msi);
++		apc->eqs[i].eq = NULL;
++		apc->eqs[i].mana_eq_debugfs = NULL;
+ 	}
  
- 	netif_tx_wake_all_queues(ndev);
-+
-+	/* Undo a forced carrier-off unless a disconnect is pending behind RTNL.
-+	 */
-+	if (apc->carrier_forced_off) {
-+		u32 ev = READ_ONCE(apc->ac->link_event);
-+
-+		apc->carrier_forced_off = false;
-+		if (ev != HWC_DATA_HW_LINK_DISCONNECT)
-+			netif_carrier_on(ndev);
-+	}
-+
- 	netdev_dbg(ndev, "%s successful\n", __func__);
- 	return 0;
+ 	kfree(apc->eqs);
+@@ -1891,15 +1893,16 @@ EXPORT_SYMBOL_NS(mana_destroy_eq, "NET_MANA");
+ 
+ static void mana_create_eq_debugfs(struct mana_port_context *apc, int i)
+ {
+-	struct mana_eq eq = apc->eqs[i];
++	struct mana_eq *eq = &apc->eqs[i];
+ 	char eqnum[32];
+ 
+ 	sprintf(eqnum, "eq%d", i);
+-	eq.mana_eq_debugfs = debugfs_create_dir(eqnum, apc->mana_eqs_debugfs);
+-	debugfs_create_u32("head", 0400, eq.mana_eq_debugfs, &eq.eq->head);
+-	debugfs_create_u32("tail", 0400, eq.mana_eq_debugfs, &eq.eq->tail);
+-	debugfs_create_u32("irq", 0400, eq.mana_eq_debugfs, &eq.eq->eq.irq);
+-	debugfs_create_file("eq_dump", 0400, eq.mana_eq_debugfs, eq.eq, &mana_dbg_q_fops);
++	eq->mana_eq_debugfs = debugfs_create_dir(eqnum, apc->mana_eqs_debugfs);
++	debugfs_create_u32("head", 0400, eq->mana_eq_debugfs, &eq->eq->head);
++	debugfs_create_u32("tail", 0400, eq->mana_eq_debugfs, &eq->eq->tail);
++	debugfs_create_u32("irq", 0400, eq->mana_eq_debugfs, &eq->eq->eq.irq);
++	debugfs_create_file("eq_dump", 0400, eq->mana_eq_debugfs, eq->eq,
++			    &mana_dbg_q_fops);
  }
-@@ -106,6 +117,7 @@ static int mana_close(struct net_device *ndev)
  
- static void mana_link_state_handle(struct work_struct *w)
- {
-+	struct mana_port_context *apc;
- 	struct mana_context *ac;
- 	struct net_device *ndev;
- 	u32 link_event;
-@@ -131,6 +143,9 @@ static void mana_link_state_handle(struct work_struct *w)
- 		if (!ndev)
- 			continue;
+ int mana_create_eq(struct mana_port_context *apc)
+@@ -2008,11 +2011,37 @@ static int mana_grow_eqs(struct mana_port_context *apc, unsigned int need)
  
-+		apc = netdev_priv(ndev);
-+		apc->carrier_forced_off = false;
-+
- 		if (link_up) {
- 			netif_carrier_on(ndev);
- 
-@@ -312,8 +327,8 @@ static void mana_per_port_queue_reset_work_handler(struct work_struct *work)
- 
- 	rtnl_lock();
- 
--	/* Block RDMA from grabbing the vport during the detach/attach
--	 * window, same as mana_set_channels().
-+	/* Exclude RDMA across detach/attach; RTNL serializes channel_changing
-+	 * writers.
- 	 */
- 	mutex_lock(&apc->vport_mutex);
- 	apc->channel_changing = true;
-@@ -366,6 +381,15 @@ netdev_tx_t mana_start_xmit(struct sk_buff *skb, struct net_device *ndev)
- 	if (unlikely(!apc->port_is_up))
- 		goto tx_drop;
- 
-+	/* Pair with mana_publish_qset()'s pre-gate smp_wmb(): observe queue
-+	 * fields after reading port_is_up.
-+	 */
-+	smp_rmb();
-+
-+	/* Retiring RXQs may use indices beyond the live queue count. */
-+	if (unlikely(txq_idx >= apc->num_queues))
-+		goto tx_drop_count;
-+
- 	if (skb_cow_head(skb, MANA_HEADROOM))
- 		goto tx_drop_count;
- 
-@@ -1045,6 +1069,7 @@ static void mana_cleanup_indir_table(struct mana_port_context *apc)
- 
- static int mana_init_port_context(struct mana_port_context *apc)
- {
-+	kfree(apc->rxqs);
- 	apc->rxqs = kzalloc_objs(struct mana_rxq *, apc->num_queues);
- 
- 	return !apc->rxqs ? -ENOMEM : 0;
-@@ -2077,6 +2102,7 @@ static void mana_poll_tx_cq(struct mana_cq *cq)
- 	/* Ensure checking txq_stopped before apc->port_is_up. */
- 	smp_rmb();
- 
-+	/* Order the stopped-state read before the retiring read. */
- 	if (txq_stopped && !READ_ONCE(txq->retiring) && apc->port_is_up &&
- 	    avail_space >= MAX_TX_WQE_SIZE) {
- 		netif_tx_wake_queue(net_txq);
-@@ -3993,9 +4019,213 @@ int mana_alloc_qset(struct mana_port_context *apc,
+ 	return 0;
+ out:
+-	/* Retain partial growth for reuse; the live set still needs this pool.
+-	 */
  	return err;
  }
  
-+/* Destroy caller-owned CQs before closing this dead-end port: closing also
-+ * frees the shared EQ pool. Requires RTNL.
-+ */
-+void mana_publish_close_if_needed(struct mana_port_context *apc)
++/* All CQs referencing EQs at or above @keep must be destroyed first. */
++static void mana_shrink_eqs(struct mana_port_context *apc, unsigned int keep)
 +{
-+	ASSERT_RTNL();
-+
-+	if (!apc->publish_dead_end)
-+		return;
-+
-+	apc->publish_dead_end = false;
-+
-+	if (mana_dealloc_queues(apc->ndev))
-+		netdev_err(apc->ndev,
-+			   "failed to close the port after a failed rollback\n");
-+}
-+
-+/* Carried-over queues may still have full rings. */
-+static void mana_start_txqs(struct mana_port_context *apc)
-+{
-+	struct net_device *ndev = apc->ndev;
++	struct gdma_context *gc = apc->ac->gdma_dev->gdma_context;
++	struct gdma_queue *eq;
++	unsigned int msi;
 +	unsigned int i;
 +
-+	if (!apc->tx_qp)
++	if (!apc->eqs || keep >= apc->num_eqs)
 +		return;
 +
-+	/* Order port_is_up=true before ring reads to avoid a missed wakeup.
-+	 * Pair with mana_poll_tx_cq()'s full barrier after its tail update.
-+	 */
-+	smp_mb();
-+
-+	for (i = 0; i < apc->num_queues; i++) {
-+		if (!apc->tx_qp[i])
++	for (i = keep; i < apc->num_eqs; i++) {
++		eq = apc->eqs[i].eq;
++		if (!eq)
 +			continue;
 +
-+		if (mana_can_tx(apc->tx_qp[i]->txq.gdma_sq))
-+			netif_tx_wake_queue(netdev_get_tx_queue(ndev, i));
-+	}
-+}
++		debugfs_remove_recursive(apc->eqs[i].mana_eq_debugfs);
++		apc->eqs[i].mana_eq_debugfs = NULL;
 +
-+/* Retiring completions must not wake replacement queues. Mark the leaving set
-+ * before unmarking the incoming set.
-+ */
-+static void mana_qset_set_retiring(struct mana_qset *qset, bool retiring)
-+{
-+	unsigned int q;
-+
-+	if (!qset->tx_qp)
-+		return;
-+
-+	for (q = 0; q < qset->num_queues; q++) {
-+		if (qset->tx_qp[q])
-+			WRITE_ONCE(qset->tx_qp[q]->txq.retiring, retiring);
-+	}
-+}
-+
-+/* Leave TX stopped and request RX disable; steering may be unrecoverable. */
-+static void mana_publish_give_up(struct mana_port_context *apc)
-+{
-+	int err;
-+
-+	apc->rss_state = TRI_STATE_FALSE;
-+
-+	err = mana_disable_vport_rx(apc);
-+	if (err && mana_en_need_log(apc, err))
-+		netdev_err(apc->ndev, "failed to disable vPort RX: %d\n", err);
-+
-+	apc->carrier_forced_off = netif_carrier_ok(apc->ndev);
-+	netif_carrier_off(apc->ndev);
-+	apc->publish_dead_end = true;
-+}
-+
-+/* Keep the RX count high until retiring RQs stop delivering their indices. */
-+static int mana_raise_real_num_rx(struct net_device *ndev, unsigned int count)
-+{
-+	if (count <= ndev->real_num_rx_queues)
-+		return 0;
-+
-+	return netif_set_real_num_rx_queues(ndev, count);
-+}
-+
-+/* Publish under RTNL with TX gated. An error restores old pointers, not
-+ * necessarily service. Free only owned queues.
-+ */
-+int mana_publish_qset(struct mana_port_context *apc, struct mana_qset *newq,
-+		      struct mana_qset *out_old)
-+{
-+	struct net_device *ndev = apc->ndev;
-+	int err;
-+
-+	ASSERT_RTNL();
-+
-+	/* Close the XDP gate before stopping TX queues. Pair with
-+	 * mana_poll_tx_cq()'s smp_rmb() to prevent mid-swap wakeups.
-+	 */
-+	WRITE_ONCE(apc->port_is_up, false);
-+
-+	/* Ensure port state updated before txq state */
-+	smp_wmb();
-+
-+	netif_tx_disable(ndev);
-+
-+	mana_qset_snapshot(apc, out_old);
-+
-+	/* Mark before the grace period so old completions cannot wake the
-+	 * replacement's stopped queue.
-+	 */
-+	mana_qset_set_retiring(out_old, true);
-+
-+	/* Drain TX/XDP readers past the gate and polls missing retiring. */
-+	synchronize_net();
-+
-+	mana_qset_set_retiring(newq, false);
-+
-+	mana_qset_install(apc, newq);
-+	apc->rss_state = apc->num_queues > 1 ? TRI_STATE_TRUE : TRI_STATE_FALSE;
-+
-+	err = netif_set_real_num_tx_queues(ndev, apc->num_queues);
-+	if (err)
-+		goto rollback;
-+
-+	err = mana_raise_real_num_rx(ndev, apc->num_queues);
-+	if (err)
-+		goto rollback;
-+
-+	/* Install XDP and per-RXQ references before steering reaches new
-+	 * queues.
-+	 */
-+	mana_chn_setxdp(apc, mana_xdp_get(apc));
-+
-+	err = mana_config_rss(apc, TRI_STATE_TRUE, true, true);
-+	if (err)
-+		goto rollback;
-+
-+	/* Publish fields before opening the gate; pair with TX/XDP read
-+	 * barriers. The post-gate full barrier cannot replace this.
-+	 */
-+	smp_wmb();
-+
-+	WRITE_ONCE(apc->port_is_up, true);
-+	mana_start_txqs(apc);
-+
-+	return 0;
-+
-+rollback:
-+	netdev_err(ndev, "%s failed: %d, restoring previous queue set\n",
-+		   __func__, err);
-+
-+	mana_qset_set_retiring(newq, true);
-+	mana_qset_set_retiring(out_old, false);
-+
-+	mana_qset_install(apc, out_old);
-+	apc->rss_state = apc->num_queues > 1 ? TRI_STATE_TRUE : TRI_STATE_FALSE;
-+
-+	if (netif_set_real_num_tx_queues(ndev, apc->num_queues) ||
-+	    mana_raise_real_num_rx(ndev, apc->num_queues)) {
-+		/* Inconsistent restored queue counts prohibit TX; leave the
-+		 * port stopped.
-+		 */
-+		netdev_err(ndev, "failed to restore queue counts, closing the port\n");
-+		mana_publish_give_up(apc);
-+		return err;
++		msi = eq->eq.msix_index;
++		mana_gd_destroy_queue(gc, eq);
++		mana_gd_put_gic(gc, !gc->msi_sharing, msi);
++		apc->eqs[i].eq = NULL;
 +	}
 +
-+	if (mana_config_rss(apc, TRI_STATE_TRUE, true, true)) {
-+		/* Do not reopen TX with mismatched steering; RX disable is
-+		 * best-effort.
-+		 */
-+		netdev_err(ndev, "failed to restore RSS steering, closing the port\n");
-+		mana_publish_give_up(apc);
-+		return err;
-+	}
-+
-+	/* Publish restored fields before reopening the gate, as on success. */
-+	smp_wmb();
-+
-+	WRITE_ONCE(apc->port_is_up, true);
-+	mana_start_txqs(apc);
-+
-+	return err;
++	apc->num_eqs = keep;
 +}
 +
-+/* Create missing debugfs nodes once retiring names are gone. */
-+static void mana_qset_debugfs_publish(struct mana_port_context *apc)
-+{
-+	unsigned int i;
-+
-+	ASSERT_RTNL();
-+
-+	if (IS_ERR_OR_NULL(apc->mana_port_debugfs))
-+		return;
-+
-+	for (i = 0; i < apc->num_queues; i++) {
-+		if (apc->tx_qp && apc->tx_qp[i] &&
-+		    IS_ERR_OR_NULL(apc->tx_qp[i]->mana_tx_debugfs))
-+			mana_create_txq_debugfs(apc, i);
-+
-+		if (apc->rxqs && apc->rxqs[i] &&
-+		    IS_ERR_OR_NULL(apc->rxqs[i]->mana_rx_debugfs))
-+			mana_create_rxq_debugfs(apc, i);
-+	}
-+}
-+
- /* Under RTNL, free only queues no longer shared with the installed set. */
- void mana_free_qset(struct mana_port_context *scratch, struct mana_qset *qset)
+ static int mana_fence_rq(struct mana_port_context *apc, struct mana_rxq *rxq)
  {
-+	struct mana_port_context *apc = netdev_priv(scratch->ndev);
- 	struct bpf_prog *retiring_prog;
- 	unsigned int retiring_queues;
- 
-@@ -4020,7 +4250,9 @@ void mana_free_qset(struct mana_port_context *scratch, struct mana_qset *qset)
- 
- 	mana_qset_install(scratch, qset);
- 
--	/* Keep retiring RXQs' XDP programs and references until RX teardown. */
-+	/* Keep retiring RXQs' XDP programs and references until RX teardown.
-+	 * Read the program from the queues, not queue-set metadata.
-+	 */
- 	retiring_prog = mana_chn_xdp_peek(scratch);
- 	retiring_queues = scratch->num_queues;
- 
-@@ -4029,7 +4261,6 @@ void mana_free_qset(struct mana_port_context *scratch, struct mana_qset *qset)
- 		/* FLR also destroys the HWC; rebuilding ports is best-effort.
- 		 * This path does not reinitialize the device.
- 		 */
--		struct mana_port_context *apc = netdev_priv(scratch->ndev);
- 		struct mana_context *ac = apc->ac;
- 		struct mana_port_context *sib;
- 		unsigned int i;
-@@ -4059,6 +4290,13 @@ void mana_free_qset(struct mana_port_context *scratch, struct mana_qset *qset)
+ 	struct mana_fence_rq_resp resp = {};
+@@ -4148,6 +4177,8 @@ int mana_alloc_qset(struct mana_port_context *apc,
+ 	kfree(scratch->rxqs);
  	scratch->rxqs = NULL;
+ out_err:
++	mana_shrink_eqs(apc, apc->num_queues);
++
+ 	netdev_err(ndev, "%s(num_queues=%u) failed: %d\n", __func__,
+ 		   num_queues, err);
+ 	return err;
+@@ -4453,6 +4484,8 @@ void mana_free_qset(struct mana_port_context *scratch, struct mana_qset *qset)
+ 	 */
+ 	netif_set_real_num_rx_queues(apc->ndev, apc->num_queues);
  
- 	memset(qset, 0, sizeof(*qset));
++	mana_shrink_eqs(apc, apc->num_queues);
 +
-+	/* Retiring RQs can no longer deliver indices beyond the live queue
-+	 * count.
-+	 */
-+	netif_set_real_num_rx_queues(apc->ndev, apc->num_queues);
-+
-+	mana_qset_debugfs_publish(apc);
+ 	mana_qset_debugfs_publish(apc);
  }
  
- int mana_detach(struct net_device *ndev, bool from_close)
 diff --git a/drivers/net/ethernet/microsoft/mana/mana_ethtool.c b/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
-index ece7ff9cc409a806b6a6de70a85b44874bfa6dad..45031ca1254e327a9b129bd77c7a08fb8a240838 100644
+index 77dcbd01a1f3da692c341f17d8f2a8301c02bd6b..53a76ae42333f46e8791c3c493887ede5c6bb410 100644
 --- a/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
 +++ b/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
-@@ -648,52 +648,82 @@ static int mana_set_coalesce(struct net_device *ndev,
- 	return 0;
- }
+@@ -752,7 +752,6 @@ static int mana_set_channels(struct net_device *ndev,
+ 	mana_free_qset(scratch, &oldq);
  
--/* mana_set_channels - change the number of queues on a port
-- *
-- * Returns -EBUSY if RDMA holds the vport with EQs sized to the
-- * current num_queues.
-- */
- static int mana_set_channels(struct net_device *ndev,
- 			     struct ethtool_channels *channels)
- {
- 	struct mana_port_context *apc = netdev_priv(ndev);
- 	unsigned int new_count = channels->combined_count;
--	unsigned int old_count = apc->num_queues;
-+	struct mana_port_context *scratch;
-+	struct mana_qset newq, oldq;
- 	int err;
- 
--	/* Set channel_changing to block RDMA from grabbing the vport
--	 * during the detach/attach window. mana_cfg_vport() checks
--	 * this flag under vport_mutex and returns -EBUSY if set.
-+	if (new_count < 1 || new_count > apc->max_queues) {
-+		netdev_err(ndev, "Invalid combined_count %u (max %u)\n",
-+			   new_count, apc->max_queues);
-+		return -EINVAL;
-+	}
-+
-+	if (new_count == apc->num_queues)
-+		return 0;
-+
-+	/* Resize rxqs while down: mana_open() does not recreate the port
-+	 * context. RDMA must not own the vport while num_queues changes.
- 	 */
- 	mutex_lock(&apc->vport_mutex);
--	if (!apc->port_is_up && apc->vport_use_count) {
-+	if (!apc->port_is_up) {
-+		struct mana_rxq **rxqs;
-+
-+		if (apc->vport_use_count) {
-+			mutex_unlock(&apc->vport_mutex);
-+			return -EBUSY;
-+		}
-+
-+		rxqs = kzalloc_objs(struct mana_rxq *, new_count);
-+		if (!rxqs) {
-+			mutex_unlock(&apc->vport_mutex);
-+			return -ENOMEM;
-+		}
-+
-+		kfree(apc->rxqs);
-+		apc->rxqs = rxqs;
-+		apc->num_queues = new_count;
-+		mutex_unlock(&apc->vport_mutex);
-+		return 0;
-+	}
-+
-+	/* The Ethernet port already holds a vport reference; exclude RDMA
-+	 * through failure cleanup.
-+	 */
-+	if (apc->channel_changing) {
- 		mutex_unlock(&apc->vport_mutex);
- 		return -EBUSY;
- 	}
- 	apc->channel_changing = true;
- 	mutex_unlock(&apc->vport_mutex);
- 
--	err = mana_pre_alloc_rxbufs(apc, ndev->mtu, new_count);
--	if (err) {
--		netdev_err(ndev, "Insufficient memory for new allocations");
-+	scratch = mana_qset_scratch_alloc(apc);
-+	if (!scratch) {
-+		err = -ENOMEM;
- 		goto clear_flag;
- 	}
- 
--	err = mana_detach(ndev, false);
--	if (err) {
--		netdev_err(ndev, "mana_detach failed: %d\n", err);
--		goto out;
--	}
-+	err = mana_alloc_qset(apc, scratch, new_count, apc->rx_queue_size,
-+			      apc->tx_queue_size, apc->priv_flags, &newq);
-+	if (err)
-+		goto free_scratch;
- 
--	apc->num_queues = new_count;
--	err = mana_attach(ndev);
-+	err = mana_publish_qset(apc, &newq, &oldq);
- 	if (err) {
--		apc->num_queues = old_count;
--		netdev_err(ndev, "mana_attach failed: %d\n", err);
-+		mana_free_qset(scratch, &newq);
-+		goto free_scratch;
- 	}
- 
--out:
--	mana_pre_dealloc_rxbufs(apc);
-+	mana_free_qset(scratch, &oldq);
-+
-+free_scratch:
-+	/* Release unpublished queues before closing their shared EQ pool. */
-+	mana_publish_close_if_needed(apc);
-+	mana_qset_scratch_free(scratch);
+ free_scratch:
+-	/* Release unpublished queues before closing their shared EQ pool. */
+ 	mana_publish_close_if_needed(apc);
+ 	mana_qset_scratch_free(scratch);
  clear_flag:
- 	mutex_lock(&apc->vport_mutex);
- 	apc->channel_changing = false;
-diff --git a/include/net/mana/mana.h b/include/net/mana/mana.h
-index de026eeb8fc25f80d3e0f9613fb277eae9ae19a9..e965d86b4d8502408f175bdbee5d77fb2e406df3 100644
---- a/include/net/mana/mana.h
-+++ b/include/net/mana/mana.h
-@@ -623,12 +623,17 @@ struct mana_port_context {
- 	struct mutex vport_mutex;
- 	int vport_use_count;
- 
--	/* Set by mana_set_channels() under vport_mutex to block RDMA
--	 * from grabbing the vport during the detach/attach window.
--	 * Checked by mana_cfg_vport() when called from the RDMA path.
--	 */
-+	/* Exclude RDMA during reconfiguration; protected by vport_mutex. */
- 	bool channel_changing;
- 
-+	/* Caller must close the port after releasing the unpublished set. */
-+	bool publish_dead_end;
-+
-+	/* Carrier lowered by failed rollback; cleared on reopen or a link
-+	 * event.
-+	 */
-+	bool carrier_forced_off;
-+
- 	/* Net shaper handle*/
- 	struct net_shaper_handle handle;
- 
-@@ -706,6 +711,9 @@ int mana_alloc_qset(struct mana_port_context *apc,
- 		    struct mana_port_context *scratch, unsigned int num_queues,
- 		    unsigned int rx_queue_size, unsigned int tx_queue_size,
- 		    u32 priv_flags, struct mana_qset *out);
-+int mana_publish_qset(struct mana_port_context *apc, struct mana_qset *newq,
-+		      struct mana_qset *out_old);
-+void mana_publish_close_if_needed(struct mana_port_context *apc);
- void mana_free_qset(struct mana_port_context *scratch, struct mana_qset *qset);
- 
- void mana_dim_change(struct mana_cq *cq, bool enable);
 -- 
 2.43.0
