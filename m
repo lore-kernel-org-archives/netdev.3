@@ -1,612 +1,829 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EE5F56B879
-	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 19:06:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FA3C3B71CC
+	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 19:06:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788980785; cv=none; b=EWqObC2b5Y2dtLGa5QmVTdMBW6eWHcGaS8YV3ypBP7w0AgXgYAraorc2Ty8cG/X8SFBA+42xcWTgmuagbogkABwvkP98+bnayFfUrMZRSUEoIChNZ+E6myp0N87bGIab3ruh2S8RuhJfH+A+uMAAY3YWgnxiNVtF3TofcW68FaI=
+	t=1788980794; cv=none; b=HpAzZJeOT/BIR1EFQoqTRWldMyGMi7g6ah9i7D0h39YyM9SdJMCu/uU5sU09rrk6nL5yyWTtq9kJCn3enn18XkPX0824odbZTsQE6t7gVNj63mWKL6YigArhLbR2a6WdtUTeat6pwEIVqn8VTRlwOT8Xt+rZ33iZBSpCQ1aVWiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788980785; c=relaxed/simple;
-	bh=tpiyYUu4W3wSp1VrfwBQGrVTznu1OSah8soBeLKBCWA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ejB+CFDichZI4v5E0yE8D4InrtKzhs9ZVJglHrILAGFe6vJh5QN/tLI7AKMSJtoTuHbSjHaXqdBnmnfrDqnDVjgTZMxcq1/PEyTuwqpoVkj49vwvM1w4klyvXCVVC8oyg00hDBE5sHs+RDrRbyB4qO49xMe65z8zwRp+syK1O8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SoQJDhB5; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788980794; c=relaxed/simple;
+	bh=o1MsI30/4xQPJt0elTs+80wTOxmuGLiGmLxKVRDIOQY=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=cnhjCnaY/o1fIhvM2uIELB2AMGhmVIU/7h6VeDMx3n0qpNJ3Tbq88OOqYKX3zP6QQvJLpxq+bWTUJ7QMHm9nrjqAn87V2UqYQhmy1QigDhWQGGB/PMsg0qQoLv51qP/gylcAH3O8Uwuxe4matzaWuYqB6pE54dVYEqYHowWIMNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VCO5bFhV; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SoQJDhB5"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2dd020a2e44so9266545ad.1
-        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 12:06:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788980781; x=1789585581; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=UE0l+d60HG/d/H4W8gUzVNuSI7TlYN9g71Pa18BLYTs=;
-        b=SoQJDhB5O0+QAUqCNZF4qjJafgcHitd94obPGY+dAxGaZpDnShI8aXbdjoM2Oo7IWR
-         gSWKZyrp/gTE9g+ShWQ+Yr/ND8okpOHKQ8izzDUW7Sds5g3JxyQZc0RfcFKbYZkFltqE
-         2FxDtoTQ5DpWIqk8Kcfntzy1RTeMu8/6Cs8Vbf1nEOlh7/ClhxZ9zNxw3hHjFq0nOYPJ
-         +y1hZwC5dq+2JJLapO0Hnvlhtmd3sKZSY1ftVl9tLRHWfwig9h1TDDaZ23fy3OkQ8ynr
-         pSqvt3FE4+ah/bwCO5HyWsSXwoljT7+ITdKejB1JY6uc6+V8aoI8Tiyti3xe1Nq/JqoK
-         4zvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788980781; x=1789585581;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=UE0l+d60HG/d/H4W8gUzVNuSI7TlYN9g71Pa18BLYTs=;
-        b=iXYBMBJ2qJ7+XUPG1I2XBCy80M5YW4IwvaJzk/WVttwTDEXCmrKr0STaYj0VI/pGRf
-         S0FBq1ktGWAKoSqInuToe2uJUt23YlZei6Q+pm0XD+vkM9x18FVLzTesFcX2s5gRPhme
-         OP8VjDwfk6WIpI6loESonu0Vjrgvkn0RCEBxEbdwzO9KhU9wbr3RCuHz1opuOub6+pVZ
-         nNVbg2+yRZp6ym8F8GN8V49+98eF8HK6fn10gTnwyAX9LCMa5DUXzLaX2qBo2GMmLUOw
-         gs1O5XLV6AVSX2OQbjfKzfSHzawtIlRExbOKZMQYOQM5p2i381V/Cy574iGjFxiiui31
-         MkXA==
-X-Gm-Message-State: AFuF++ktEt4HhL8fbb6L+yuECL89jowedZSibopSSAQRnOyOUD3somQ/
-	0kN832MVo2rllKWFaoTj6mLEKP0WMbwGAcZ9yQFrZgiK99lj/92DYuu8YNO6vSaOLls=
-X-Gm-Gg: AYBFou2jF2CwzccoPEBSsM8XLe7BmTGRKO6R76CHsbKymbEU4DQn+B9V8KAZZDkEert
-	BQbDT5cmtsJbEcAJBq0d/IMxJ3nmNTyTxprxq8yQW1wfgGRRix4GDok+vYRATaIcy4Iu5P7LiA3
-	RaGVpUfMARkXnaP2DQqtAz1fUpUUOG5lnaPZVEqSF+HmHUbkpqaO7wb5aGeXtEMF7gpRcQEZvCW
-	IW0u9e//zUB136EuCgz94p/QThizDlXUujiX19Vwu65IpNC++6eCWlmmomchVgSP7Bg9MMsVOkN
-	hB8MCdE17KmTj94WfuQYTDrYUjIn0ysUb3WjiMHm4kDKuMeiL06bkeiqWx6ryMqYhN8LFJtbPmG
-	iZuizwgUvH++Nb92Vbz2UABwNOS3ClWC3+YJK/o6MMjX1Klv0q4UzuqxR/a77pva+8QXZhVqSjE
-	PXwk+TsMEo0+9S9q7Yi2yMp4SxOiIj4DQiYGc+brahTv0+t/j25G06Aj5iwdTpwaTSVceDyGPUu
-	M+9/6Res+XQL8F4mwLd1Ukm
-X-Received: by 2002:a17:903:40c6:b0:2ca:f21a:a6c5 with SMTP id d9443c01a7336-2db12508a53mr504355095ad.1.1788980781374;
-        Wed, 09 Sep 2026 12:06:21 -0700 (PDT)
-Received: from d.home.yangfl.dn42 ([2a09:bac1:76a0:d30::4d0:7b])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2dcffa9827dsm13988515ad.66.2026.09.09.12.06.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Sep 2026 12:06:21 -0700 (PDT)
-From: David Yang <mmyangfl@gmail.com>
-To: netdev@vger.kernel.org
-Cc: David Yang <mmyangfl@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Russell King <linux@armlinux.org.uk>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next 7/7] net: dsa: motorcomm: Add SerDes PCS
-Date: Thu, 10 Sep 2026 03:05:35 +0800
-Message-ID: <20260909190541.466476-8-mmyangfl@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260909190541.466476-1-mmyangfl@gmail.com>
-References: <20260909190541.466476-1-mmyangfl@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VCO5bFhV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E63371F000FF;
+	Wed,  9 Sep 2026 19:06:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788980790;
+	bh=VhwVmLm0LiGTdgqpw/0O8WvHA/y71hMtdhFSNHtjlbs=;
+	h=From:Date:Subject:To:Cc;
+	b=VCO5bFhVovK5fDdL0igQx9MGHoFFlOoVpTRQoUta38qSZNU4FEDQ1PoIH5RvR/Yw6
+	 Vb0QUNUQI5wa+T7yqmdu5oSKvOPux38MvIm8nwcIazjP5YAoRhjL2tE4Qo9bbOAaYk
+	 8WsBc/XsprHsaCTbKg7JWKlsPsUDIVGEgbiPF0kewP75tukeaNruCxMETbiaDZREqn
+	 zLvhWXxEEBIoF+zIl+65MyNkq/+PcW5WK41QCX56CRgSB1BXpsJbgnXC2HpAC6L6Wq
+	 ZCAQHvjQ7m83kOOlB5jAbNQfYAF+FvYHKs50hq535pRGA0eJKSPZFA2Cf6V00eWrvF
+	 NOuTwq84ZuEPA==
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+Date: Wed, 09 Sep 2026 21:06:05 +0200
+Subject: [PATCH net-next v7] net: airoha: add LRO offload support
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260909-airoha-eth-lro-v7-1-e6317be79067@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3WRTW7DIBBGrxKxrqMZMGCyyj2qLvgZx1YT02LXS
+ hXl7iXuIq5wNRISGr3vDcONjZR6Gtlhd2OJ5n7s45Av+mXHfGeHE1V9yHfGgSuQHCrbp9jZiqa
+ uOqdYWRnQCyWwQWQZ+kjU9tcl8JUNNFUDXSf2ljtdP04xfS+mGZf+f6EzVrm48V4IrRSZ4zulg
+ c77mE4PycLl2uSAnCcHZFsv1txjhpmvvSXPM89r4taQtsLoTS/CJidrR8Y4Y3mQhVesvU3Bi8y
+ HAMZj6wCAtrxawCaXd2+UCFA3VL63fnob0AVfL3sOiOSd1qE+xnHcf37Zs4+Xyz4fvylylSKwS
+ JGPKRy0EmpA5FhMoZ682fg1lXmrvJeojW383+3d7/cfL7EvEqUCAAA=
+X-Change-ID: 20260520-airoha-eth-lro-a5d1c3631811
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: Alexander Lobakin <aleksander.lobakin@intel.com>, 
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org, 
+ netdev@vger.kernel.org, Madhur Agrawal <madhur.agrawal@airoha.com>, 
+ Simon Horman <horms@kernel.org>
+X-Mailer: b4 0.14.3
 
-Support in-band negotiation of the SerDes ports.
+Introduce LRO offload support to the airoha_eth driver, leveraging
+the EN7581/AN7583 SoC's 8 dedicated LRO hardware queues mapped to RX
+queues 24-31. LRO offloading does not support Scatter-Gather (SG) so
+it is required to increase the page_pool allocation order to 2 for RX
+queues 24-31 (LRO queues).
 
-Signed-off-by: David Yang <mmyangfl@gmail.com>
+Since LRO is configured per-QDMA and shared across all devices using
+it, LRO is mutually exclusive with multiple devices bound to the
+same QDMA block. NETIF_F_LRO availability is re-evaluated whenever the
+QDMA user count changes (device registration and runtime QDMA
+migration): airoha_update_netdev_features() drops the feature when the
+QDMA has more than one user, while airoha_dev_set_qdma() re-enables LRO
+on the destination QDMA after a migration so that a running device
+keeps it active on the new QDMA block.
+
+Set the GSO metadata (gso_type/gso_size/gso_segs) on aggregated packets,
+together with CHECKSUM_PARTIAL and the pseudo-header checksum, so that
+L3-forwarded traffic is correctly re-segmented by the GSO/TSO path on
+the egress device.
+
+The HW does not report the per-segment MSS (msg3[31:16] only reports
+the max aggregated size), so the gso_size of an aggregated packet is
+approximated as DIV_ROUND_UP(data_len, agg_count), i.e. the mean
+segment size. Since this can never exceed the largest merged segment,
+re-segmentation only produces smaller packets, which is safe.
+Aggregated skbs are marked SKB_GSO_DODGY so that the stack recomputes
+gso_segs from gso_size and does not merge the aggregate into the GRO
+engine.
+
+Performance comparison between sw GRO and LRO has been carried out using
+a 10Gbps NIC:
+GRO:    ~2.7 Gbps
+LRO:    ~8.2 Gbps
+
+Tested-by: Madhur Agrawal <madhur.agrawal@airoha.com>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
 ---
- drivers/net/dsa/motorcomm/Makefile   |   1 +
- drivers/net/dsa/motorcomm/chip.c     |  78 ++++++----
- drivers/net/dsa/motorcomm/chip.h     |   8 +-
- drivers/net/dsa/motorcomm/mdio_bus.c |  28 +++-
- drivers/net/dsa/motorcomm/mdio_bus.h |  14 ++
- drivers/net/dsa/motorcomm/pcs-921x.c | 209 +++++++++++++++++++++++++++
- drivers/net/dsa/motorcomm/pcs.h      |  13 ++
- 7 files changed, 323 insertions(+), 28 deletions(-)
- create mode 100644 drivers/net/dsa/motorcomm/pcs-921x.c
- create mode 100644 drivers/net/dsa/motorcomm/pcs.h
+Changes in v7:
+- Rely on dev_core_stats_rx_dropped_inc() to update rx drop stats.
+- Update commit message.
+- Link to v6: https://lore.kernel.org/r/20260906-airoha-eth-lro-v6-1-a6cc5179a8c5@kernel.org
 
-diff --git a/drivers/net/dsa/motorcomm/Makefile b/drivers/net/dsa/motorcomm/Makefile
-index f7cce7eabbb8..1d2c1b3064c4 100644
---- a/drivers/net/dsa/motorcomm/Makefile
-+++ b/drivers/net/dsa/motorcomm/Makefile
-@@ -3,4 +3,5 @@ obj-$(CONFIG_NET_DSA_YT921X) += yt921x.o
- yt921x-objs := chip.o
- yt921x-$(CONFIG_NET_DSA_YT921X_LEDS) += leds.o
- yt921x-objs += mdio_bus.o
-+yt921x-objs += pcs-921x.o
- yt921x-objs += smi.o
-diff --git a/drivers/net/dsa/motorcomm/chip.c b/drivers/net/dsa/motorcomm/chip.c
-index 85a31389050b..4780bb190ede 100644
---- a/drivers/net/dsa/motorcomm/chip.c
-+++ b/drivers/net/dsa/motorcomm/chip.c
-@@ -28,6 +28,7 @@
- #include "chip.h"
- #include "leds.h"
- #include "mdio_bus.h"
-+#include "pcs.h"
- #include "smi.h"
+Changes in v6:
+- Advertise NETIF_F_LRO instead of NETIF_F_GRO_HW
+- Link to v5: https://lore.kernel.org/r/20260831-airoha-eth-lro-v5-1-6b0f50401121@kernel.org
+
+Changes in v5:
+- Rebase on top of net-next branch.
+- Fix sashiko's reported issues on v4.
+- Link to v4: https://lore.kernel.org/r/20260807-airoha-eth-lro-v4-1-12d11ecb77d4@oss.qualcomm.com
+
+Changes in v4:
+- Fix qdma user check in airoha_dev_open().
+- Disable hw-gro in airoha_dev_stop().
+- Check hw-gro configuration in airoha_enable_qos_for_gdm34() running
+  airoha_dev_check_hw_gro().
+- Enable rx interrupt for queue 31.
+- Check tcp_ts_reply from hw descriptor.
+- Add more sanity checks in airoha_qdma_lro_rx_skb().
+- Move airoha_update_netdev_features() in airoha_dev_set_qdma()
+- Link to v3: https://lore.kernel.org/r/20260730-airoha-eth-lro-v3-1-631963d048e3@kernel.org
+
+Changes in v3:
+- Add missing TCP header length check.
+- Fix TCP checkum calculation.
+- Disable LRO running ndo_stop callback.
+- Implement packet header split in order to support HW-GRO
+- Link to v2: https://lore.kernel.org/r/20260610-airoha-eth-lro-v2-1-54be99b9a2d5@kernel.org
+
+Changes in v2:
+- Rebase on top of net-next main branch.
+- Link to v1: https://lore.kernel.org/r/20260606-airoha-eth-lro-v1-1-0ebceb0eafc3@kernel.org
+
+Changes in v1:
+- Please note this patch depends on the following patch not applied yet
+  to net-next
+  https://lore.kernel.org/netdev/20260606-airoha_qdma_users-no-atomic-v1-1-86e2d6a1bfaf@kernel.org/T/#u
+- Restrict LRO to single user QDMA.
+- Introduce some more sanity checks.
+- Disable scatter-gather for LRO queues.
+- Run netif_receive_skb() for LRO packets.
+- Link to v3: https://lore.kernel.org/r/20260528-airoha-eth-lro-v3-1-dd09c1fb000e@kernel.org
+
+Changes in RFC v3:
+- Fix double-free of the page_pool of airoha_qdma_lro_rx_process()
+  fails.
+- Set AIROHA_LRO_PAGE_ORDER according to PAGE_SIZE.
+- Add missig gso metadata for the LRO packet.
+- Link to v2: https://lore.kernel.org/r/20260526-airoha-eth-lro-v2-1-24e2a9e7a397@kernel.org
+
+Changes in RFC v2:
+- Improve performances fixing buf_size computation.
+- Fix possible overflow in REG_CDM_LRO_LIMIT() register configuration.
+- Require the device to be not running before configuring LRO.
+- Fix configuration order in airoha_fe_lro_is_enabled().
+- Check skb header length in airoha_qdma_lro_rx_process().
+- Do not check net_device feature in airoha_qdma_rx_process() before
+  executing airoha_qdma_lro_rx_process() but rely on
+  airoha_qdma_lro_rx_process() logic.
+- Fix possible double recycle in airoha_qdma_rx_process() for LRO
+  packets.
+- Always use AIROHA_RXQ_LRO_MAX_AGG_COUNT macro for max LRO aggregated
+  fragments in airoha_fe_lro_init_rx_queue().
+- Link to v1: https://lore.kernel.org/r/20260520-airoha-eth-lro-v1-1-129cc33766e9@kernel.org
+---
+ drivers/net/ethernet/airoha/airoha_eth.c  | 363 ++++++++++++++++++++++++++++--
+ drivers/net/ethernet/airoha/airoha_eth.h  |  26 +++
+ drivers/net/ethernet/airoha/airoha_regs.h |  23 +-
+ 3 files changed, 390 insertions(+), 22 deletions(-)
+
+diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ethernet/airoha/airoha_eth.c
+index 64619e9a704d..21ac80bdd084 100644
+--- a/drivers/net/ethernet/airoha/airoha_eth.c
++++ b/drivers/net/ethernet/airoha/airoha_eth.c
+@@ -10,8 +10,10 @@
+ #include <linux/tcp.h>
+ #include <linux/u64_stats_sync.h>
+ #include <net/dst_metadata.h>
++#include <net/ip6_checksum.h>
+ #include <net/page_pool/helpers.h>
+ #include <net/pkt_cls.h>
++#include <net/tcp.h>
+ #include <uapi/linux/ppp_defs.h>
  
- struct yt921x_mib_desc {
-@@ -3516,6 +3517,10 @@ yt921x_port_up(struct yt921x_priv *priv, int port, unsigned int mode,
- 	if (ps == YT921X_SPEED_NUM)
- 		return -EINVAL;
- 
-+	mask = YT921X_PORT_SPEED_M | YT921X_PORT_TX_MAC_EN |
-+	       YT921X_PORT_RX_MAC_EN | YT921X_PORT_TX_PAUSE |
-+	       YT921X_PORT_RX_PAUSE | YT921X_PORT_DUPLEX_FULL |
-+	       YT921X_PORT_CTRL_LINK_AN;
- 	ctrl = YT921X_PORT_SPEED(ps);
- 	if (duplex == DUPLEX_FULL)
- 		ctrl |= YT921X_PORT_DUPLEX_FULL;
-@@ -3524,7 +3529,9 @@ yt921x_port_up(struct yt921x_priv *priv, int port, unsigned int mode,
- 	if (rx_pause)
- 		ctrl |= YT921X_PORT_RX_PAUSE;
- 	ctrl |= YT921X_PORT_RX_MAC_EN | YT921X_PORT_TX_MAC_EN;
--	res = yt921x_reg_write(priv, YT921X_PORTn_CTRL(port), ctrl);
-+	if (pp->serdes && pp->inband)
-+		ctrl |= YT921X_PORT_CTRL_LINK_AN;
-+	res = yt921x_reg_update_bits(priv, YT921X_PORTn_CTRL(port), mask, ctrl);
- 	if (res)
- 		return res;
- 
-@@ -3544,7 +3551,8 @@ yt921x_port_up(struct yt921x_priv *priv, int port, unsigned int mode,
- 		if (rx_pause)
- 			ctrl |= YT921X_SERDES_RX_PAUSE;
- 		mask |= YT921X_SERDES_LINK;
--		ctrl |= YT921X_SERDES_LINK;
-+		if (!pp->inband)
-+			ctrl |= YT921X_SERDES_LINK;
- 		res = yt921x_reg_update_bits(priv, YT921X_SERDESn(port),
- 					     mask, ctrl);
- 		if (res)
-@@ -3575,7 +3583,6 @@ yt921x_port_config(struct yt921x_priv *priv, int port, unsigned int mode,
- 	struct yt921x_port *pp = &priv->ports[port];
- 	struct device *dev = to_device(priv);
- 	u32 mask;
--	u32 ctrl;
- 	int res;
- 
- 	if (BIT(port) & info->internal_mask) {
-@@ -3603,28 +3610,6 @@ yt921x_port_config(struct yt921x_priv *priv, int port, unsigned int mode,
- 		if (res)
- 			return res;
- 
--		mask = YT921X_SERDES_MODE_M;
--		switch (interface) {
--		case PHY_INTERFACE_MODE_SGMII:
--			ctrl = YT921X_SERDES_MODE_SGMII;
--			break;
--		case PHY_INTERFACE_MODE_100BASEX:
--			ctrl = YT921X_SERDES_MODE_100BASEX;
--			break;
--		case PHY_INTERFACE_MODE_1000BASEX:
--			ctrl = YT921X_SERDES_MODE_1000BASEX;
--			break;
--		case PHY_INTERFACE_MODE_2500BASEX:
--			ctrl = YT921X_SERDES_MODE_2500BASEX;
--			break;
--		default:
--			return -EINVAL;
--		}
--		res = yt921x_reg_update_bits(priv, YT921X_SERDESn(port),
--					     mask, ctrl);
--		if (res)
--			return res;
--
- 		pp->serdes = true;
- 		break;
- 	/* add XMII support here */
-@@ -3639,6 +3624,24 @@ yt921x_port_config(struct yt921x_priv *priv, int port, unsigned int mode,
- 	return -EINVAL;
+ #include "airoha_regs.h"
+@@ -491,6 +493,88 @@ static void airoha_fe_crsn_qsel_init(struct airoha_eth *eth)
+ 				 CDM_CRSN_QSEL_Q1));
  }
  
-+static struct phylink_pcs *
-+yt921x_phylink_mac_select_pcs(struct phylink_config *config,
-+			      phy_interface_t interface)
++static void airoha_fe_lro_rxq_enable(struct airoha_eth *eth, int qdma_id,
++				     int lro_queue_index, int qid,
++				     int buf_size)
 +{
-+	struct dsa_port *dp = dsa_phylink_to_port(config);
-+	struct yt921x_priv *priv = to_yt921x_priv(dp->ds);
++	int id = qdma_id + 1;
 +
-+	switch (interface) {
-+	case PHY_INTERFACE_MODE_SGMII:
-+	case PHY_INTERFACE_MODE_100BASEX:
-+	case PHY_INTERFACE_MODE_1000BASEX:
-+	case PHY_INTERFACE_MODE_2500BASEX:
-+		return &priv->ports[dp->index].pcs;
-+	default:
-+		return NULL;
++	airoha_fe_rmw(eth, REG_CDM_LRO_LIMIT(id),
++		      CDM_LRO_AGG_NUM_MASK | CDM_LRO_AGG_SIZE_MASK,
++		      FIELD_PREP(CDM_LRO_AGG_SIZE_MASK, buf_size) |
++		      FIELD_PREP(CDM_LRO_AGG_NUM_MASK,
++				 AIROHA_RXQ_LRO_MAX_AGG_COUNT));
++	airoha_fe_rmw(eth, REG_CDM_LRO_AGE_TIME(id),
++		      CDM_LRO_AGE_TIME_MASK | CDM_LRO_AGG_TIME_MASK,
++		      FIELD_PREP(CDM_LRO_AGE_TIME_MASK,
++				 AIROHA_RXQ_LRO_MAX_AGE_TIME) |
++		      FIELD_PREP(CDM_LRO_AGG_TIME_MASK,
++				 AIROHA_RXQ_LRO_MAX_AGG_TIME));
++	airoha_fe_rmw(eth, REG_CDM_LRO_RXQ(id, lro_queue_index),
++		      LRO_RXQ_MASK(lro_queue_index),
++		      __field_prep(LRO_RXQ_MASK(lro_queue_index), qid));
++	airoha_fe_set(eth, REG_CDM_LRO_EN(id), BIT(lro_queue_index));
++}
++
++static void airoha_fe_lro_disable(struct airoha_eth *eth, int qdma_id)
++{
++	int i, id = qdma_id + 1;
++
++	airoha_fe_clear(eth, REG_CDM_LRO_EN(id), LRO_RXQ_EN_MASK);
++	airoha_fe_clear(eth, REG_CDM_LRO_LIMIT(id),
++			CDM_LRO_AGG_NUM_MASK | CDM_LRO_AGG_SIZE_MASK);
++	airoha_fe_clear(eth, REG_CDM_LRO_AGE_TIME(id),
++			CDM_LRO_AGE_TIME_MASK | CDM_LRO_AGG_TIME_MASK);
++	for (i = 0; i < AIROHA_MAX_NUM_LRO_QUEUES; i++)
++		airoha_fe_clear(eth, REG_CDM_LRO_RXQ(id, i), LRO_RXQ_MASK(i));
++}
++
++static bool airoha_fe_lro_is_enabled(struct airoha_eth *eth, int qdma_id)
++{
++	return airoha_fe_get(eth, REG_CDM_LRO_EN(qdma_id + 1),
++			     LRO_RXQ_EN_MASK);
++}
++
++static void airoha_dev_lro_enable(struct airoha_gdm_dev *dev)
++{
++	struct airoha_qdma *qdma = airoha_qdma_deref(dev);
++	struct airoha_eth *eth = qdma->eth;
++	int qdma_id = qdma - &eth->qdma[0];
++	int i, lro_queue_index = 0;
++
++	if (airoha_fe_lro_is_enabled(eth, qdma_id))
++		return;
++
++	for (i = 0; i < ARRAY_SIZE(qdma->q_rx); i++) {
++		struct airoha_queue *q = &qdma->q_rx[i];
++		u32 size;
++
++		if (!q->ndesc)
++			continue;
++
++		if (!airoha_qdma_is_lro_queue(q))
++			continue;
++
++		size = SKB_WITH_OVERHEAD(AIROHA_RX_LEN(q->buf_size));
++		size = min_t(u32, size, AIROHA_MAX_RX_SIZE);
++		airoha_fe_lro_rxq_enable(eth, qdma_id, lro_queue_index, i,
++					 size);
++		lro_queue_index++;
 +	}
 +}
 +
- static void
- yt921x_phylink_mac_link_down(struct phylink_config *config, unsigned int mode,
- 			     phy_interface_t interface)
-@@ -4226,6 +4229,11 @@ static int yt921x_chip_setup(struct yt921x_priv *priv)
- 	if (res)
- 		return res;
++static void airoha_dev_lro_disable(struct airoha_gdm_dev *dev)
++{
++	struct airoha_qdma *qdma = airoha_qdma_deref(dev);
++	struct airoha_eth *eth = qdma->eth;
++	int qdma_id = qdma - &eth->qdma[0];
++
++	if (!airoha_fe_lro_is_enabled(eth, qdma_id))
++		return;
++
++	airoha_fe_lro_disable(eth, qdma_id);
++}
++
+ static int airoha_fe_init(struct airoha_eth *eth)
+ {
+ 	airoha_fe_maccr_init(eth);
+@@ -616,6 +700,7 @@ static int airoha_qdma_fill_rx_queue(struct airoha_queue *q)
+ 		e->dma_addr = page_pool_get_dma_addr(page) + offset;
+ 		e->dma_len = SKB_WITH_OVERHEAD(AIROHA_RX_LEN(q->buf_size));
  
-+	res = yt921x_reg_clear_bits(priv, YT921X_SERDES_CTRL,
-+				    YT921X_SERDES_CTRL_TEST);
-+	if (res)
-+		return res;
++		WRITE_ONCE(desc->tcp_ts_reply, 0);
+ 		val = FIELD_PREP(QDMA_DESC_LEN_MASK, e->dma_len);
+ 		WRITE_ONCE(desc->ctrl, cpu_to_le32(val));
+ 		WRITE_ONCE(desc->addr, cpu_to_le32(e->dma_addr));
+@@ -657,13 +742,146 @@ airoha_qdma_get_gdm_dev(struct airoha_eth *eth, struct airoha_qdma_desc *desc)
+ 	return port->devs[d] ? port->devs[d] : ERR_PTR(-ENODEV);
+ }
+ 
++static int airoha_qdma_lro_rx_skb(struct airoha_queue *q,
++				  struct airoha_qdma_desc *desc,
++				  u32 msg1, u32 len)
++{
++	u32 th_off, tcp_ack_seq, data_off, agg_count = 1;
++	u32 msg2 = le32_to_cpu(READ_ONCE(desc->msg2));
++	struct skb_shared_info *shinfo;
++	struct sk_buff *skb = q->skb;
++	u16 tcp_win, l2_len;
++	struct tcphdr *th;
++	bool ipv4, ipv6;
++
++	if (airoha_qdma_is_lro_queue(q)) {
++		agg_count = FIELD_GET(QDMA_ETH_RXMSG_AGG_COUNT_MASK, msg2);
++		if (agg_count > AIROHA_RXQ_LRO_MAX_AGG_COUNT)
++			return -EINVAL;
++	}
++
++	if (likely(agg_count <= 1)) /* not LRO */
++		return 0;
++
++	ipv4 = FIELD_GET(QDMA_ETH_RXMSG_IP4_MASK, msg1);
++	ipv6 = FIELD_GET(QDMA_ETH_RXMSG_IP6_MASK, msg1);
++	if (!ipv4 && !ipv6)
++		return 0;
++
++	l2_len = FIELD_GET(QDMA_ETH_RXMSG_L2_LEN_MASK, msg2);
++
++	if (ipv4) {
++		struct iphdr *iph, _iph;
++
++		iph = skb_header_pointer(skb, l2_len, sizeof(*iph), &_iph);
++		if (!iph)
++			return -EINVAL;
++
++		if (iph->protocol != IPPROTO_TCP)
++			return -EINVAL;
++
++		if (iph->ihl < 5)
++			return -EINVAL;
++
++		th_off = l2_len + (iph->ihl << 2);
++		if (!pskb_may_pull(skb, th_off))
++			return -EINVAL;
++
++		iph = (struct iphdr *)(skb->data + l2_len);
++		iph->tot_len = cpu_to_be16(len - l2_len);
++		iph->check = 0;
++		iph->check = ip_fast_csum((void *)iph, iph->ihl);
++	} else {
++		struct ipv6hdr *ip6h;
++
++		th_off = l2_len + sizeof(*ip6h);
++		if (!pskb_may_pull(skb, th_off))
++			return -EINVAL;
++
++		ip6h = (struct ipv6hdr *)(skb->data + l2_len);
++		if (ip6h->nexthdr != NEXTHDR_TCP)
++			return -EINVAL;
++
++		ip6h->payload_len = cpu_to_be16(len - th_off);
++	}
++
++	data_off = th_off + sizeof(*th);
++	if (len < data_off)
++		return -EINVAL;
++
++	if (!pskb_may_pull(skb, data_off))
++		return -EINVAL;
++
++	th = (struct tcphdr *)(skb->data + th_off);
++	if (th->doff < 5)
++		return -EINVAL;
++
++	data_off = th_off + (th->doff << 2);
++	if (len <= data_off)
++		return -EINVAL;
++
++	tcp_win = FIELD_GET(QDMA_ETH_RXMSG_TCP_WIN_MASK,
++			    le32_to_cpu(READ_ONCE(desc->msg3)));
++	tcp_ack_seq = le32_to_cpu(READ_ONCE(desc->data));
++	th->ack_seq = cpu_to_be32(tcp_ack_seq);
++	th->window = cpu_to_be16(tcp_win);
++
++	/* Check tcp timestamp option */
++	if (th->doff == (sizeof(*th) + TCPOLEN_TSTAMP_ALIGNED) / 4) {
++		u32 topt;
++
++		if (!pskb_may_pull(skb, data_off))
++			return -EINVAL;
++
++		th = (struct tcphdr *)(skb->data + th_off);
++		topt = get_unaligned_be32(th + 1);
++		if (topt == ((TCPOPT_NOP << 24) | (TCPOPT_NOP << 16) |
++			     (TCPOPT_TIMESTAMP << 8) | TCPOLEN_TIMESTAMP)) {
++			u8 *ptr = (u8 *)th + sizeof(*th) + 2 * sizeof(__be32);
++			__le32 tcp_ts_reply = READ_ONCE(desc->tcp_ts_reply);
++
++			/* The field is pre-zeroed in the posted descriptor,
++			 * so a non-zero value is the hardware confirming the
++			 * timestamp echo reply is valid. Leave TSecr
++			 * untouched otherwise, since the hardware may not
++			 * populate it for every aggregate.
++			 */
++			if (tcp_ts_reply)
++				put_unaligned_be32(le32_to_cpu(tcp_ts_reply),
++						   ptr);
++		}
++	}
++
++	if (ipv4) {
++		struct iphdr *iph = (struct iphdr *)(skb->data + l2_len);
++
++		th->check = ~tcp_v4_check(len - th_off, iph->saddr,
++					  iph->daddr, 0);
++	} else {
++		struct ipv6hdr *ip6h = (struct ipv6hdr *)(skb->data + l2_len);
++
++		th->check = ~tcp_v6_check(len - th_off, &ip6h->saddr,
++					  &ip6h->daddr, 0);
++	}
++
++	shinfo = skb_shinfo(skb);
++	shinfo->gso_type = ipv4 ? SKB_GSO_TCPV4 : SKB_GSO_TCPV6;
++	shinfo->gso_type |= SKB_GSO_DODGY;
++	shinfo->gso_size = DIV_ROUND_UP(len - data_off, agg_count);
++	shinfo->gso_segs = agg_count;
++
++	skb->csum_start = skb_headroom(skb) + th_off;
++	skb->csum_offset = offsetof(struct tcphdr, check);
++	skb->ip_summed = CHECKSUM_PARTIAL;
++
++	return 0;
++}
++
+ static int airoha_qdma_rx_process(struct airoha_queue *q, int budget)
+ {
+ 	enum dma_data_direction dir = page_pool_get_dma_dir(q->page_pool);
+-	struct airoha_qdma *qdma = q->qdma;
+-	struct airoha_eth *eth = qdma->eth;
+-	int qid = q - &qdma->q_rx[0];
+-	int done = 0;
++	int qid = q - &q->qdma->q_rx[0], done = 0;
++	struct airoha_eth *eth = q->qdma->eth;
+ 
+ 	while (done < budget) {
+ 		struct airoha_queue_entry *e = &q->entry[q->tail];
+@@ -696,7 +914,9 @@ static int airoha_qdma_rx_process(struct airoha_queue *q, int budget)
+ 		if (IS_ERR(dev))
+ 			goto free_frag;
+ 
++		msg1 = le32_to_cpu(READ_ONCE(desc->msg1));
+ 		netdev = netdev_from_priv(dev);
++
+ 		if (!q->skb) { /* first buffer */
+ 			q->skb = napi_build_skb(e->buf - AIROHA_RX_HEADROOM,
+ 						q->buf_size);
+@@ -707,9 +927,17 @@ static int airoha_qdma_rx_process(struct airoha_queue *q, int budget)
+ 			__skb_put(q->skb, len);
+ 			skb_mark_for_recycle(q->skb);
+ 			q->skb->dev = netdev;
+-			q->skb->protocol = eth_type_trans(q->skb, netdev);
+ 			q->skb->ip_summed = CHECKSUM_UNNECESSARY;
+ 			skb_record_rx_queue(q->skb, qid);
++
++			if (airoha_qdma_lro_rx_skb(q, desc, msg1, len)) {
++				dev_core_stats_rx_dropped_inc(netdev);
++				dev_kfree_skb(q->skb);
++				q->skb = NULL;
++				continue;
++			}
++
++			q->skb->protocol = eth_type_trans(q->skb, netdev);
+ 		} else { /* scattered frame */
+ 			struct skb_shared_info *shinfo = skb_shinfo(q->skb);
+ 			int nr_frags = shinfo->nr_frags;
+@@ -742,7 +970,6 @@ static int airoha_qdma_rx_process(struct airoha_queue *q, int budget)
+ 						  &port->dsa_meta[sptag]->dst);
+ 		}
+ 
+-		msg1 = le32_to_cpu(READ_ONCE(desc->msg1));
+ 		hash = FIELD_GET(AIROHA_RXD4_FOE_ENTRY, msg1);
+ 		if (hash != AIROHA_RXD4_FOE_ENTRY)
+ 			skb_set_hash(q->skb, jhash_1word(hash, 0),
+@@ -800,12 +1027,10 @@ static int airoha_qdma_rx_napi_poll(struct napi_struct *napi, int budget)
+ static int airoha_qdma_init_rx_queue(struct airoha_queue *q,
+ 				     struct airoha_qdma *qdma, int ndesc)
+ {
+-	const struct page_pool_params pp_params = {
+-		.order = 0,
++	struct page_pool_params pp_params = {
+ 		.pool_size = 256,
+ 		.flags = PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV,
+ 		.dma_dir = DMA_FROM_DEVICE,
+-		.max_len = PAGE_SIZE,
+ 		.nid = NUMA_NO_NODE,
+ 		.dev = qdma->eth->dev,
+ 		.napi = &q->napi,
+@@ -813,9 +1038,10 @@ static int airoha_qdma_init_rx_queue(struct airoha_queue *q,
+ 	struct airoha_eth *eth = qdma->eth;
+ 	int qid = q - &qdma->q_rx[0], thr;
+ 	dma_addr_t dma_addr;
++	bool lro_q;
+ 
+-	q->buf_size = PAGE_SIZE / 2;
+ 	q->qdma = qdma;
++	lro_q = airoha_qdma_is_lro_queue(q);
+ 
+ 	q->entry = devm_kzalloc(eth->dev, ndesc * sizeof(*q->entry),
+ 				GFP_KERNEL);
+@@ -827,6 +1053,9 @@ static int airoha_qdma_init_rx_queue(struct airoha_queue *q,
+ 	if (!q->desc)
+ 		return -ENOMEM;
+ 
++	pp_params.order = lro_q ? AIROHA_LRO_PAGE_ORDER : 0;
++	pp_params.max_len = PAGE_SIZE << pp_params.order;
++
+ 	q->page_pool = page_pool_create(&pp_params);
+ 	if (IS_ERR(q->page_pool)) {
+ 		int err = PTR_ERR(q->page_pool);
+@@ -835,6 +1064,7 @@ static int airoha_qdma_init_rx_queue(struct airoha_queue *q,
+ 		return err;
+ 	}
+ 
++	q->buf_size = lro_q ? pp_params.max_len : pp_params.max_len / 2;
+ 	q->ndesc = ndesc;
+ 	netif_napi_add(eth->napi_dev, &q->napi, airoha_qdma_rx_napi_poll);
+ 
+@@ -848,7 +1078,12 @@ static int airoha_qdma_init_rx_queue(struct airoha_queue *q,
+ 			FIELD_PREP(RX_RING_THR_MASK, thr));
+ 	airoha_qdma_rmw(qdma, REG_RX_DMA_IDX(qid), RX_RING_DMA_IDX_MASK,
+ 			FIELD_PREP(RX_RING_DMA_IDX_MASK, q->head));
+-	airoha_qdma_set(qdma, REG_RX_SCATTER_CFG(qid), RX_RING_SG_EN_MASK);
++	if (lro_q)
++		airoha_qdma_clear(qdma, REG_RX_SCATTER_CFG(qid),
++				  RX_RING_SG_EN_MASK);
++	else
++		airoha_qdma_set(qdma, REG_RX_SCATTER_CFG(qid),
++				RX_RING_SG_EN_MASK);
+ 
+ 	airoha_qdma_fill_rx_queue(q);
+ 
+@@ -870,6 +1105,7 @@ static void airoha_qdma_cleanup_rx_queue(struct airoha_queue *q)
+ 					page_pool_get_dma_dir(q->page_pool));
+ 		page_pool_put_full_page(q->page_pool, page, false);
+ 		/* Reset DMA descriptor */
++		WRITE_ONCE(desc->tcp_ts_reply, 0);
+ 		WRITE_ONCE(desc->ctrl, 0);
+ 		WRITE_ONCE(desc->addr, 0);
+ 		WRITE_ONCE(desc->data, 0);
+@@ -1896,6 +2132,34 @@ static void airoha_update_hw_stats(struct airoha_gdm_dev *dev)
+ 	spin_unlock(&port->stats_lock);
+ }
+ 
++static void airoha_update_netdev_features(struct airoha_gdm_dev *dev)
++{
++	struct airoha_eth *eth = dev->eth;
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(eth->ports); i++) {
++		struct airoha_gdm_port *port = eth->ports[i];
++		int j;
++
++		if (!port)
++			continue;
++
++		for (j = 0; j < ARRAY_SIZE(port->devs); j++) {
++			struct airoha_gdm_dev *iter_dev = port->devs[j];
++			struct net_device *netdev;
++
++			if (!iter_dev)
++				continue;
++
++			netdev = netdev_from_priv(iter_dev);
++			if (netdev->reg_state != NETREG_REGISTERED)
++				continue;
++
++			netdev_update_features(netdev);
++		}
++	}
++}
++
+ static void airoha_dev_set_xmit_frame_size(struct net_device *netdev)
+ {
+ 	struct airoha_gdm_dev *dev = netdev_priv(netdev);
+@@ -1913,14 +2177,28 @@ static int airoha_dev_open(struct net_device *netdev)
+ 	struct airoha_gdm_port *port = dev->port;
+ 	u32 pse_port = FE_PSE_PORT_PPE1;
+ 	struct airoha_qdma *qdma;
+-	int err;
++	int qdma_id, err;
++
++	/* LRO is configured on the QDMA and it is shared between all
++	 * the devices using it. Refuse to open a second device on the
++	 * same QDMA if LRO is enabled on any device sharing it or if
++	 * this device has LRO enabled in its feature set.
++	 */
++	qdma = airoha_qdma_deref(dev);
++	qdma_id = qdma - &qdma->eth->qdma[0];
++
++	if (qdma->users > 1 && (airoha_fe_lro_is_enabled(qdma->eth, qdma_id) ||
++				(netdev->features & NETIF_F_LRO))) {
++		netdev_warn(netdev, "required to disable LRO on QDMA%d\n",
++			    qdma_id);
++		return -EBUSY;
++	}
+ 
+ 	netif_tx_start_all_queues(netdev);
+ 	err = airoha_set_vip_for_gdm_port(dev, true);
+ 	if (err)
+ 		return err;
+ 
+-	qdma = airoha_qdma_deref(dev);
+ 	if (netdev_uses_dsa(netdev))
+ 		airoha_fe_set(qdma->eth, REG_GDM_INGRESS_CFG(port->id),
+ 			      GDM_STAG_EN_MASK);
+@@ -1937,6 +2215,9 @@ static int airoha_dev_open(struct net_device *netdev)
+ 	airoha_set_gdm_port_fwd_cfg(qdma->eth, REG_GDM_FWD_CFG(port->id),
+ 				    pse_port);
+ 
++	if (netdev->features & NETIF_F_LRO)
++		airoha_dev_lro_enable(dev);
 +
  	return 0;
  }
  
-@@ -4235,6 +4243,8 @@ static int yt921x_dsa_setup(struct dsa_switch *ds)
- 	struct device *dev = to_device(priv);
- 	struct device_node *np = dev->of_node;
- 	struct device_node *child;
-+	unsigned long mask;
-+	int port;
- 	int res;
+@@ -1954,6 +2235,10 @@ static int airoha_dev_stop(struct net_device *netdev)
+ 		airoha_set_gdm_port_fwd_cfg(dev->eth,
+ 					    REG_GDM_FWD_CFG(port->id),
+ 					    FE_PSE_PORT_DROP);
++
++	if (netdev->features & NETIF_F_LRO)
++		airoha_dev_lro_disable(dev);
++
+ 	return 0;
+ }
  
- 	mutex_lock(&priv->reg_lock);
-@@ -4268,6 +4278,23 @@ static int yt921x_dsa_setup(struct dsa_switch *ds)
- 		return -ENODEV;
+@@ -2115,11 +2400,14 @@ static void airoha_dev_set_qdma(struct airoha_gdm_dev *dev)
+ 	qdma = &eth->qdma[!airoha_is_lan_gdm_dev(dev)];
+ 	cur_qdma = airoha_qdma_deref(dev);
+ 
+-	if (cur_qdma)
++	if (cur_qdma) {
+ 		netif_tx_stop_all_queues(netdev);
++		airoha_dev_lro_disable(dev);
++	}
+ 
+ 	rcu_assign_pointer(dev->qdma, qdma);
+ 	netdev->irq = qdma->irq_banks[0].irq;
++	qdma->users++;
+ 	synchronize_rcu();
+ 
+ 	ppe_id = !airoha_is_lan_gdm_dev(dev) && airoha_ppe_is_enabled(eth, 1);
+@@ -2136,8 +2424,14 @@ static void airoha_dev_set_qdma(struct airoha_gdm_dev *dev)
+ 			airoha_qdma_rr(qdma, REG_CNTR_VAL((i << 1) + 1));
  	}
  
-+	mask = priv->info->serdes_mask;
-+	for_each_set_bit(port, &mask, YT921X_PORT_NUM) {
-+		struct yt921x_port *pp = &priv->ports[port];
-+
-+		pp->pcs.ops = &yt921x_phylink_pcs_ops;
-+		pp->pcs.poll = true;
-+
-+		__set_bit(PHY_INTERFACE_MODE_SGMII,
-+			  pp->pcs.supported_interfaces);
-+		__set_bit(PHY_INTERFACE_MODE_100BASEX,
-+			  pp->pcs.supported_interfaces);
-+		__set_bit(PHY_INTERFACE_MODE_1000BASEX,
-+			  pp->pcs.supported_interfaces);
-+		__set_bit(PHY_INTERFACE_MODE_2500BASEX,
-+			  pp->pcs.supported_interfaces);
+-	if (cur_qdma)
++	if (cur_qdma) {
++		cur_qdma->users--;
+ 		netif_tx_wake_all_queues(netdev);
 +	}
 +
- 	mutex_lock(&priv->reg_lock);
- 	res = yt921x_chip_setup(priv);
- 	mutex_unlock(&priv->reg_lock);
-@@ -4285,6 +4312,7 @@ static int yt921x_dsa_setup(struct dsa_switch *ds)
++	airoha_update_netdev_features(dev);
++	if (netdev->features & NETIF_F_LRO)
++		airoha_dev_lro_enable(dev);
  }
  
- static const struct phylink_mac_ops yt921x_phylink_mac_ops = {
-+	.mac_select_pcs	= yt921x_phylink_mac_select_pcs,
- 	.mac_link_down	= yt921x_phylink_mac_link_down,
- 	.mac_link_up	= yt921x_phylink_mac_link_up,
- 	.mac_config	= yt921x_phylink_mac_config,
-diff --git a/drivers/net/dsa/motorcomm/chip.h b/drivers/net/dsa/motorcomm/chip.h
-index 21132a147d6b..42905e35928b 100644
---- a/drivers/net/dsa/motorcomm/chip.h
-+++ b/drivers/net/dsa/motorcomm/chip.h
-@@ -42,7 +42,7 @@
- #define YT921X_PVID_SEL			0x80014
- #define  YT921X_PVID_SEL_SVID_PORTn(port)	BIT(port)
- #define YT921X_SERDES_CTRL		0x80028
--#define  YT921X_SERDES_CTRL_PORTn_TEST(port)	BIT((port) - 3)
-+#define  YT921X_SERDES_CTRL_TEST		BIT(6)
- #define  YT921X_SERDES_CTRL_PORTn(port)		BIT((port) - 8)
- #define YT921X_IO_LEVEL			0x80030
- #define  YT9215_IO_LEVEL_NORMAL_M		GENMASK(5, 4)
-@@ -910,6 +910,8 @@ struct yt921x_port {
- 
- 	/* SerDes in use */
- 	bool serdes:1;
-+	/* Link from in-band status (PHYLINK_PCS_NEG_INBAND) */
-+	bool inband:1;
- 	/* BR_HAIRPIN_MODE */
- 	bool hairpin:1;
- 	/* BR_ISOLATED */
-@@ -929,8 +931,12 @@ struct yt921x_port {
- 
- 	struct yt921x_led *leds[YT921X_LED_GROUP_NUM];
- #endif
-+
-+	struct phylink_pcs pcs;
- };
- 
-+#define pcs_to_yt921x_port(_pcs) container_of((_pcs), struct yt921x_port, pcs)
-+
- struct yt921x_reg_ops {
- 	int (*read)(void *context, u32 reg, u32 *valp);
- 	int (*write)(void *context, u32 reg, u32 val);
-diff --git a/drivers/net/dsa/motorcomm/mdio_bus.c b/drivers/net/dsa/motorcomm/mdio_bus.c
-index ba70343f3f33..5a47ed7bff99 100644
---- a/drivers/net/dsa/motorcomm/mdio_bus.c
-+++ b/drivers/net/dsa/motorcomm/mdio_bus.c
-@@ -19,8 +19,7 @@ static int yt921x_intif_wait(struct yt921x_priv *priv)
- 			       &val);
+ static int airoha_dev_init(struct net_device *netdev)
+@@ -2288,6 +2582,32 @@ int airoha_get_fe_port(struct airoha_gdm_dev *dev)
+ 	}
  }
  
--static int
--yt921x_intif_read(struct yt921x_priv *priv, int port, int reg, u16 *valp)
-+int yt921x_intif_read(struct yt921x_priv *priv, int port, int reg, u16 *valp)
++static netdev_features_t airoha_dev_fix_features(struct net_device *netdev,
++						 netdev_features_t features)
++{
++	struct airoha_gdm_dev *dev = netdev_priv(netdev);
++	struct airoha_qdma *qdma;
++
++	qdma = airoha_qdma_deref(dev);
++	if (qdma->users > 1)
++		features &= ~NETIF_F_LRO;
++
++	return features;
++}
++
++static int airoha_dev_set_features(struct net_device *netdev,
++				   netdev_features_t features)
++{
++	struct airoha_gdm_dev *dev = netdev_priv(netdev);
++
++	if (features & NETIF_F_LRO)
++		airoha_dev_lro_enable(dev);
++	else
++		airoha_dev_lro_disable(dev);
++
++	return 0;
++}
++
+ static netdev_tx_t airoha_dev_xmit(struct sk_buff *skb,
+ 				   struct net_device *netdev)
  {
- 	struct device *dev = to_device(priv);
- 	u32 mask;
-@@ -86,6 +85,31 @@ yt921x_intif_write(struct yt921x_priv *priv, int port, int reg, u16 val)
- 	return yt921x_intif_wait(priv);
+@@ -3199,7 +3519,7 @@ static int airoha_enable_qos_for_gdm34(struct net_device *netdev,
+ 	struct airoha_gdm_dev *wan_dev, *dev = netdev_priv(netdev);
+ 	struct airoha_gdm_port *port = dev->port;
+ 	struct airoha_eth *eth = dev->eth;
+-	int err = -EBUSY;
++	int err;
+ 
+ 	if (port->id != AIROHA_GDM3_IDX &&
+ 	    port->id != AIROHA_GDM4_IDX) {
+@@ -3218,6 +3538,7 @@ static int airoha_enable_qos_for_gdm34(struct net_device *netdev,
+ 		    wan_dev->port->id == AIROHA_GDM2_IDX) {
+ 			NL_SET_ERR_MSG_MOD(extack,
+ 					   "QoS configured for WAN device");
++			err = -EBUSY;
+ 			goto error_unlock;
+ 		}
+ 		airoha_disable_qos_for_gdm34(netdev_from_priv(wan_dev));
+@@ -3343,6 +3664,8 @@ static const struct net_device_ops airoha_netdev_ops = {
+ 	.ndo_stop		= airoha_dev_stop,
+ 	.ndo_change_mtu		= airoha_dev_change_mtu,
+ 	.ndo_select_queue	= airoha_dev_select_queue,
++	.ndo_fix_features	= airoha_dev_fix_features,
++	.ndo_set_features	= airoha_dev_set_features,
+ 	.ndo_start_xmit		= airoha_dev_xmit,
+ 	.ndo_get_stats64        = airoha_dev_get_stats64,
+ 	.ndo_set_mac_address	= airoha_dev_set_macaddr,
+@@ -3430,11 +3753,9 @@ static int airoha_alloc_gdm_device(struct airoha_eth *eth,
+ 	netdev->ethtool_ops = &airoha_ethtool_ops;
+ 	netdev->max_mtu = AIROHA_MAX_MTU;
+ 	netdev->watchdog_timeo = 5 * HZ;
+-	netdev->hw_features = NETIF_F_IP_CSUM | NETIF_F_RXCSUM | NETIF_F_TSO6 |
+-			      NETIF_F_IPV6_CSUM | NETIF_F_SG | NETIF_F_TSO |
+-			      NETIF_F_HW_TC;
+-	netdev->features |= netdev->hw_features;
+-	netdev->vlan_features = netdev->hw_features;
++	netdev->hw_features = AIROHA_HW_FEATURES | NETIF_F_LRO;
++	netdev->features |= AIROHA_HW_FEATURES;
++	netdev->vlan_features = AIROHA_HW_FEATURES;
+ 	SET_NETDEV_DEV(netdev, eth->dev);
+ 
+ 	/* reserve hw queues for HTB offloading */
+diff --git a/drivers/net/ethernet/airoha/airoha_eth.h b/drivers/net/ethernet/airoha/airoha_eth.h
+index 527e3833e36b..286f73e2e1e0 100644
+--- a/drivers/net/ethernet/airoha/airoha_eth.h
++++ b/drivers/net/ethernet/airoha/airoha_eth.h
+@@ -46,6 +46,18 @@
+ 	 (_n) == 15 ? 128 :		\
+ 	 (_n) ==  0 ? 1024 : 32)
+ 
++#define AIROHA_LRO_PAGE_ORDER		get_order(SZ_16K)
++#define AIROHA_MAX_NUM_LRO_QUEUES	8
++#define AIROHA_RXQ_LRO_EN_MASK		GENMASK(31, 24)
++#define AIROHA_RXQ_LRO_MAX_AGG_COUNT	64
++#define AIROHA_RXQ_LRO_MAX_AGG_TIME	100
++#define AIROHA_RXQ_LRO_MAX_AGE_TIME	2000
++
++#define AIROHA_HW_FEATURES			\
++	(NETIF_F_IP_CSUM | NETIF_F_RXCSUM |	\
++	 NETIF_F_TSO6 | NETIF_F_IPV6_CSUM |	\
++	 NETIF_F_SG | NETIF_F_TSO | NETIF_F_HW_TC)
++
+ #define PSE_RSV_PAGES			128
+ #define PSE_QUEUE_RSV_PAGES		64
+ 
+@@ -561,6 +573,8 @@ struct airoha_qdma {
+ 	struct airoha_eth *eth;
+ 	void __iomem *regs;
+ 
++	int users;
++
+ 	struct airoha_irq_bank irq_banks[AIROHA_MAX_NUM_IRQ_BANKS];
+ 
+ 	struct airoha_tx_irq_queue q_tx_irq[AIROHA_NUM_TX_IRQ];
+@@ -715,6 +729,18 @@ static inline bool airoha_is_7583(struct airoha_eth *eth)
+ 	return eth->soc->version == 0x7583;
  }
  
-+int
-+yt921x_intif_modify_changed(struct yt921x_priv *priv, int port, int reg,
-+			    u16 mask, u16 val)
++static inline bool airoha_qdma_is_lro_queue(struct airoha_queue *q)
 +{
-+	int res;
-+	u16 v;
-+	u16 u;
++	struct airoha_qdma *qdma = q->qdma;
++	int qid = q - &qdma->q_rx[0];
 +
-+	res = yt921x_intif_read(priv, port, reg, &v);
-+	if (res)
-+		return res;
++	/* EN7581 SoC supports at most 8 LRO rx queues */
++	BUILD_BUG_ON(hweight32(AIROHA_RXQ_LRO_EN_MASK) >
++		     AIROHA_MAX_NUM_LRO_QUEUES);
 +
-+	u = v;
-+	u &= ~mask;
-+	u |= val;
-+	if (u == v)
-+		return 0;
-+
-+	res = yt921x_intif_write(priv, port, reg, u);
-+	if (res)
-+		return res;
-+
-+	return 1;
++	return !!(AIROHA_RXQ_LRO_EN_MASK & BIT(qid));
 +}
 +
- static int yt921x_mbus_int_read(struct mii_bus *mbus, int port, int reg)
- {
- 	struct yt921x_priv *priv = mbus->priv;
-diff --git a/drivers/net/dsa/motorcomm/mdio_bus.h b/drivers/net/dsa/motorcomm/mdio_bus.h
-index 261a71c637f5..d859226fede8 100644
---- a/drivers/net/dsa/motorcomm/mdio_bus.h
-+++ b/drivers/net/dsa/motorcomm/mdio_bus.h
-@@ -31,6 +31,20 @@
+ int airoha_get_fe_port(struct airoha_gdm_dev *dev);
+ bool airoha_is_valid_gdm_dev(struct airoha_eth *eth,
+ 			     struct airoha_gdm_dev *dev);
+diff --git a/drivers/net/ethernet/airoha/airoha_regs.h b/drivers/net/ethernet/airoha/airoha_regs.h
+index 442b48c9b991..07dd04859fde 100644
+--- a/drivers/net/ethernet/airoha/airoha_regs.h
++++ b/drivers/net/ethernet/airoha/airoha_regs.h
+@@ -122,6 +122,20 @@
+ #define CDM_CRSN_QSEL_REASON_MASK(_n)	\
+ 	GENMASK(4 + (((_n) % 4) << 3),	(((_n) % 4) << 3))
  
- struct yt921x_priv;
++#define REG_CDM_LRO_RXQ(_n, _m)		(CDM_BASE(_n) + 0x78 + ((_m) & 0x4))
++#define LRO_RXQ_MASK(_n)		GENMASK(4 + (((_n) & 0x3) << 3), ((_n) & 0x3) << 3)
++
++#define REG_CDM_LRO_EN(_n)		(CDM_BASE(_n) + 0x80)
++#define LRO_RXQ_EN_MASK			GENMASK(7, 0)
++
++#define REG_CDM_LRO_LIMIT(_n)		(CDM_BASE(_n) + 0x84)
++#define CDM_LRO_AGG_NUM_MASK		GENMASK(23, 16)
++#define CDM_LRO_AGG_SIZE_MASK		GENMASK(15, 0)
++
++#define REG_CDM_LRO_AGE_TIME(_n)	(CDM_BASE(_n) + 0x88)
++#define CDM_LRO_AGE_TIME_MASK		GENMASK(31, 16)
++#define CDM_LRO_AGG_TIME_MASK		GENMASK(15, 0)
++
+ #define REG_GDM_FWD_CFG(_n)		GDM_BASE(_n)
+ #define GDM_PAD_EN_MASK			BIT(28)
+ #define GDM_DROP_CRC_ERR_MASK		BIT(23)
+@@ -887,9 +901,16 @@
+ #define QDMA_ETH_RXMSG_SPORT_MASK	GENMASK(25, 21)
+ #define QDMA_ETH_RXMSG_CRSN_MASK	GENMASK(20, 16)
+ #define QDMA_ETH_RXMSG_PPE_ENTRY_MASK	GENMASK(15, 0)
++/* RX MSG2 */
++#define QDMA_ETH_RXMSG_AGG_COUNT_MASK	GENMASK(31, 24)
++#define QDMA_ETH_RXMSG_L2_LEN_MASK	GENMASK(6, 0)
++/* RX MSG3 */
++/* max aggregated size in bytes */
++#define QDMA_ETH_RXMSG_AGG_LEN_MASK	GENMASK(31, 16)
++#define QDMA_ETH_RXMSG_TCP_WIN_MASK	GENMASK(15, 0)
  
-+int yt921x_intif_read(struct yt921x_priv *priv, int port, int reg, u16 *valp);
-+int yt921x_intif_modify_changed(struct yt921x_priv *priv, int port, int reg,
-+				u16 mask, u16 val);
-+
-+static inline int
-+yt921x_intif_modify(struct yt921x_priv *priv, int port, int reg, u16 mask,
-+		    u16 val)
-+{
-+	int res;
-+
-+	res = yt921x_intif_modify_changed(priv, port, reg, mask, val);
-+	return res >= 0 ? 0 : res;
-+}
-+
- int yt921x_mbus_int_init(struct yt921x_priv *priv, struct device_node *mnp);
- int yt921x_mbus_ext_init(struct yt921x_priv *priv, struct device_node *mnp);
- 
-diff --git a/drivers/net/dsa/motorcomm/pcs-921x.c b/drivers/net/dsa/motorcomm/pcs-921x.c
-new file mode 100644
-index 000000000000..eef6e79c099b
---- /dev/null
-+++ b/drivers/net/dsa/motorcomm/pcs-921x.c
-@@ -0,0 +1,209 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * Copyright (c) 2026 David Yang
-+ */
-+
-+#include "chip.h"
-+#include "mdio_bus.h"
-+#include "pcs.h"
-+#include "smi.h"
-+
-+#define to_device(priv) ((priv)->ds.dev)
-+
-+static int
-+yt921x_serdes_config(struct yt921x_priv *priv, int port, unsigned int neg_mode,
-+		     phy_interface_t interface,
-+		     const unsigned long *advertising)
-+{
-+	bool inband = neg_mode & PHYLINK_PCS_NEG_INBAND;
-+	struct yt921x_port *pp = &priv->ports[port];
-+	bool changed = false;
-+	u16 bmcr;
-+	u32 mask;
-+	u32 ctrl;
-+	int adv;
-+	int res;
-+
-+	switch (interface) {
-+	case PHY_INTERFACE_MODE_SGMII:
-+		ctrl = YT921X_SERDES_MODE_SGMII;
-+		break;
-+	case PHY_INTERFACE_MODE_100BASEX:
-+		ctrl = YT921X_SERDES_MODE_100BASEX;
-+		break;
-+	case PHY_INTERFACE_MODE_1000BASEX:
-+		ctrl = YT921X_SERDES_MODE_1000BASEX;
-+		break;
-+	case PHY_INTERFACE_MODE_2500BASEX:
-+		ctrl = YT921X_SERDES_MODE_2500BASEX;
-+		break;
-+	default:
-+		return -EOPNOTSUPP;
-+	}
-+
-+	res = yt921x_reg_update_bits(priv, YT921X_SERDESn(port),
-+				     YT921X_SERDES_MODE_M, ctrl);
-+	if (res)
-+		return res;
-+
-+	mask = YT921X_PORT_CTRL_LINK_AN | YT921X_PORT_CTRL_PAUSE_AN;
-+	ctrl = 0;
-+	if (inband)
-+		ctrl |= YT921X_PORT_CTRL_LINK_AN;
-+	if (neg_mode == PHYLINK_PCS_NEG_INBAND_ENABLED)
-+		ctrl |= YT921X_PORT_CTRL_PAUSE_AN;
-+	res = yt921x_reg_update_bits(priv, YT921X_PORTn_CTRL(port), mask, ctrl);
-+	if (res)
-+		return res;
-+
-+	if (inband) {
-+		res = yt921x_reg_clear_bits(priv, YT921X_SERDESn(port),
-+					    YT921X_SERDES_LINK);
-+		if (res)
-+			return res;
-+	}
-+
-+	adv = phylink_mii_c22_pcs_encode_advertisement(interface, advertising);
-+	if (adv >= 0) {
-+		res = yt921x_intif_modify_changed(priv, port, MII_ADVERTISE,
-+						  U16_MAX, adv);
-+		if (res < 0)
-+			return res;
-+
-+		changed = !!res;
-+	}
-+
-+	bmcr = neg_mode == PHYLINK_PCS_NEG_INBAND_ENABLED ? BMCR_ANENABLE : 0;
-+	res = yt921x_intif_modify_changed(priv, port, MII_BMCR,
-+					  BMCR_ANENABLE | BMCR_ISOLATE, bmcr);
-+	if (res < 0)
-+		return res;
-+
-+	/* If the ANENABLE bit was changed, the PHY will restart negotiation,
-+	 * so we don't need to flag a change to trigger its own restart.
-+	 */
-+	if (res)
-+		changed = false;
-+
-+	pp->inband = inband;
-+	return changed;
-+}
-+
-+static unsigned int
-+yt921x_phylink_pcs_inband_caps(struct phylink_pcs *pcs,
-+			       phy_interface_t interface)
-+{
-+	return LINK_INBAND_DISABLE | LINK_INBAND_ENABLE;
-+}
-+
-+static void
-+yt921x_phylink_pcs_get_state(struct phylink_pcs *pcs, unsigned int neg_mode,
-+			     struct phylink_link_state *state)
-+{
-+	struct yt921x_port *pp = pcs_to_yt921x_port(pcs);
-+	struct yt921x_priv *priv = yt921x_port_to_priv(pp);
-+	struct device *dev = to_device(priv);
-+	int port = pp->index;
-+	u16 bmsr;
-+	u16 lpa;
-+	int res;
-+
-+	mutex_lock(&priv->reg_lock);
-+
-+	res = yt921x_intif_read(priv, port, MII_BMSR, &bmsr);
-+	if (res)
-+		goto out;
-+
-+	res = yt921x_intif_read(priv, port, MII_LPA, &lpa);
-+
-+out:
-+	mutex_unlock(&priv->reg_lock);
-+
-+	if (res) {
-+		dev_err(dev, "Failed to %s PCS port %d: %i\n", "get state of",
-+			port, res);
-+		state->link = false;
-+		return;
-+	}
-+
-+	phylink_mii_c22_pcs_decode_state(state, neg_mode, bmsr, lpa);
-+}
-+
-+static void yt921x_phylink_pcs_an_restart(struct phylink_pcs *pcs)
-+{
-+	struct yt921x_port *pp = pcs_to_yt921x_port(pcs);
-+	struct yt921x_priv *priv = yt921x_port_to_priv(pp);
-+	struct device *dev = to_device(priv);
-+	int port = pp->index;
-+	int res;
-+
-+	mutex_lock(&priv->reg_lock);
-+	res = yt921x_intif_modify(priv, port, MII_BMCR, BMCR_ANRESTART,
-+				  BMCR_ANRESTART);
-+	mutex_unlock(&priv->reg_lock);
-+
-+	if (res)
-+		dev_err(dev, "Failed to %s PCS port %d: %i\n", "restart",
-+			port, res);
-+}
-+
-+static void yt921x_phylink_pcs_disable(struct phylink_pcs *pcs)
-+{
-+	struct yt921x_port *pp = pcs_to_yt921x_port(pcs);
-+	struct yt921x_priv *priv = yt921x_port_to_priv(pp);
-+	struct device *dev = to_device(priv);
-+	int port = pp->index;
-+	int res;
-+
-+	mutex_lock(&priv->reg_lock);
-+	res = yt921x_intif_modify(priv, port, MII_BMCR, BMCR_PDOWN,
-+				  BMCR_PDOWN);
-+	mutex_unlock(&priv->reg_lock);
-+
-+	if (res)
-+		dev_err(dev, "Failed to %s PCS port %d: %i\n", "power down",
-+			port, res);
-+}
-+
-+static int yt921x_phylink_pcs_enable(struct phylink_pcs *pcs)
-+{
-+	struct yt921x_port *pp = pcs_to_yt921x_port(pcs);
-+	struct yt921x_priv *priv = yt921x_port_to_priv(pp);
-+	int port = pp->index;
-+	int res;
-+
-+	mutex_lock(&priv->reg_lock);
-+	res = yt921x_intif_modify(priv, port, MII_BMCR,
-+				  BMCR_PDOWN | BMCR_ANRESTART, BMCR_ANRESTART);
-+	mutex_unlock(&priv->reg_lock);
-+
-+	return res;
-+}
-+
-+static int
-+yt921x_phylink_pcs_config(struct phylink_pcs *pcs, unsigned int neg_mode,
-+			  phy_interface_t interface,
-+			  const unsigned long *advertising,
-+			  bool permit_pause_to_mac)
-+{
-+	struct yt921x_port *pp = pcs_to_yt921x_port(pcs);
-+	struct yt921x_priv *priv = yt921x_port_to_priv(pp);
-+	int port = pp->index;
-+	int res;
-+
-+	mutex_lock(&priv->reg_lock);
-+	res = yt921x_serdes_config(priv, port, neg_mode, interface,
-+				   advertising);
-+	mutex_unlock(&priv->reg_lock);
-+
-+	return res;
-+}
-+
-+const struct phylink_pcs_ops yt921x_phylink_pcs_ops = {
-+	.pcs_inband_caps	= yt921x_phylink_pcs_inband_caps,
-+	.pcs_get_state		= yt921x_phylink_pcs_get_state,
-+	.pcs_an_restart		= yt921x_phylink_pcs_an_restart,
-+	.pcs_disable		= yt921x_phylink_pcs_disable,
-+	.pcs_enable		= yt921x_phylink_pcs_enable,
-+	.pcs_config		= yt921x_phylink_pcs_config,
-+};
-diff --git a/drivers/net/dsa/motorcomm/pcs.h b/drivers/net/dsa/motorcomm/pcs.h
-new file mode 100644
-index 000000000000..42426558086a
---- /dev/null
-+++ b/drivers/net/dsa/motorcomm/pcs.h
-@@ -0,0 +1,13 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/*
-+ * Copyright (c) 2026 David Yang
-+ */
-+
-+#ifndef _YT_PCS_H
-+#define _YT_PCS_H
-+
-+#include <linux/phylink.h>
-+
-+extern const struct phylink_pcs_ops yt921x_phylink_pcs_ops;
-+
-+#endif
+ struct airoha_qdma_desc {
+-	__le32 rsv;
++	__le32 tcp_ts_reply;
+ 	__le32 ctrl;
+ 	__le32 addr;
+ 	__le32 data;
+
+---
+base-commit: 548b86839f7fb819a4d6c83b71c73ec378d24275
+change-id: 20260520-airoha-eth-lro-a5d1c3631811
+
+Best regards,
 -- 
-2.53.0
+Lorenzo Bianconi <lorenzo@kernel.org>
 
