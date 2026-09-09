@@ -1,247 +1,183 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1B9D2580F2;
-	Wed,  9 Sep 2026 04:13:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788927202; cv=none; b=Dd5u6b1CaAJlujK4nV5fRRyhhgN2qrlWmx2vrlP4G0yGHXF92JwayD06kmWQfdKkKtu0q9li/qXeh0Dha4e3waojcxvH7PRsQ+iJhMP8c+JiKFgW4aivMDPssvUUXjkQBLjIy3klyeEOXa0HFsDhDQbvgvHajJ5UGNs59cluvUw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788927202; c=relaxed/simple;
-	bh=+QMfpW4vIHU+Qc4b+LixIgGuhPlbPjnx0N8/U1HzLAY=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=nrJr2zwDydCrsAIm6aDvEDCb5it8lldsPOlXbo8QcABucPrr3sD7zRkW+dWlatxPtu3J0GXqetAeLawV4WblI4Uwa/M5e/AVE5i6LF9UqmxqvduYhUXUkOCSC8J8+dZoCPzoyjoe1YpArMDcV0vdppvMjn0SOXSD9hFZ7lZ4niE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e638hRF5; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E2122BB13
+	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 04:13:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.175
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788927235; cv=pass; b=djqph/0beiuIZYv1LXFN5dNd2zLOb5vfQpYq6C3uUHotMxoM6kuGsMqh8tEJeDsdAC/9saVJe1FfmRvfnhAd9BssVp3qrrZidCvqn2B0ToNxXdjCR0OD6WRsgexifBKEfND8Hv0KgjabbwTPHVQIy1C+1VMrgKd8xwU8K0E/q2g=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788927235; c=relaxed/simple;
+	bh=9v7dLvyOJNBAsde7TO81Ja7O7elFrUcQkQNj8CnuAe4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=LiD/YI7rhaJwckvqi8rxTxbmAWJ4pUq13C3F2JZL9fmTtl542hNB/4gt1g5ERIX3+uGbahg09Iz+WVTAvOyjJ4mjesZkqi8EI4H4BUUO4k7Gwl2h+bv5LbrRHq6n4yKMYjbxjf14SewKbIkqcV7U/uK+TJFO1lLRrRDR0YjZ/HY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MB5+Cura; arc=pass smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e638hRF5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83C7C1F00A3A;
-	Wed,  9 Sep 2026 04:13:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788927200;
-	bh=EZm7Zc51oA/0TCvfz+1edTY1ztiFSao+Uz2FzV+69GA=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=e638hRF5s8euzFr7iGDpBtm3vmwwhzJ2kLLRB78Zytl+VsDXvBc0L8sQaTSPpmb+C
-	 U4DfxvE0rTk9nztUovqWgIW6B8vxyPuc3RqG3X5MrSTLhIKGvoZfifaYMGr6eDXdjJ
-	 kV05hzuKCXeqTKhCjY1Le+33waLEoSsgVuCNX9PhwLld9KG2Vk85mkG9mZAvOGv5L5
-	 8tbyCRcLwBp/1cjhrtPNAL5vfH9rP3UzU735RIk6ka8Gde8ZK+K8ot2iZ/CBNbpI25
-	 OWpDNoi4HF02miQ3xgbJ94HTa398AFCOcbKs69imBw+fK6kLE+bkacsDeN2L48XvGa
-	 1JQdoPYb6J0tA==
-Subject: Re: [PATCH net] octeontx2-pf: Fix autoneg reporting in ethtool
-From: netdev-bot+sashiko@kernel.org
-To: nshettyj@marvell.com
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, hkelam@marvell.com,
- sgoutham@marvell.com, gakula@marvell.com, rkannoth@marvell.com,
- sbhatta@marvell.com, bbhushan2@marvell.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- cjacob@marvell.com, jbrandeb@kernel.org
-Date: Wed, 09 Sep 2026 04:13:19 +0000
-Message-ID: <178892719904.219967.11170576570328933912@kernel.org>
-In-Reply-To: <20260903161117.2856633-1-nshettyj@marvell.com>
-References: <20260903161117.2856633-1-nshettyj@marvell.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MB5+Cura"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2d9db539a54so47716005ad.0
+        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 21:13:54 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788927234; cv=none;
+        d=google.com; s=arc-20260327;
+        b=eUVSMqd7I4iPqNfwAVAwVyQfUhuIMwCW1937kSEvLTotYj1OCdKDwvhA/XGfO0b0yv
+         mhXsZwnGpb8iwPg1RHI7kco53O0ukPRs0F81o/4o//lGfVMwnAA/CKqcXlf4G0xjamM+
+         q42tdLZfY5/rtk5pHs4KeOzbv9nJ/tXpbQHOmLls7Wd57rzb3rvJ4uIWpxtl+gW2swsR
+         GieJ7koOqiqv4GrqKYacrvQXsVRS/mQ//K0qX2cBKlpD8knMeTJYrZjaHfp69/loadap
+         yzr2NOZo6tNOGbB+fIsI6izjPZnqt3NvP1LvqGER1sozV/a/yZQOaJBTgBhdYpCrufb2
+         t3mg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Bl91wg/yGgEZh0K4fEYbtb7VRvcFObBtiBN/Kbq4nbA=;
+        fh=+b9sRF3ztW92RvXoc9p+GALGO4WyXWsd8ALXSKTYFT8=;
+        b=q54eN4o10N8rJpGNpp/Z86DHkZXm0eR4+vTD2+yQ7chg3QINfMAvSPe7BtOXB3n38Z
+         FveR/pU04ECQOW7YWR55sW5tq72jNma9+bXr1xDeJFwwxBMVQD5Cwzj98RnoxmE1H29P
+         Z4bVk+oWHvlP0IK4tXlhK2VLM4NytQEW5YkKSrDdZ32SxyRvkPDa+4X7seIxgsgAEuOv
+         TFBddtsv97p0RlTp1pEy5XSPc436GcXDBcuMHza1vyX+64JM5i1062FGmYppyL0r/Jv3
+         vPjIzx9KxniXHEu4v5KDayVZAYYuVIaNFQu/WUEyhOG6Ucq/0GcGY3kTkK5cAbSQZKbC
+         n7/g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1788927234; x=1789532034; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=Bl91wg/yGgEZh0K4fEYbtb7VRvcFObBtiBN/Kbq4nbA=;
+        b=MB5+CuraMjtDj6cTw8UoPAT4Oaq+gCUMsmlyKsdCHQEBxQIaoxGGfxOKwury65lLHK
+         dSuVOQmC8+/shH6aMkcdSpEhx3AG5yZYaTxt535YwoLH+R/Iwt07vYbblrNxmHjas0rA
+         plsWoVqIlyHufawRy7QsFD4ijq2zfkJk1Impx1xvHk4aDSC/BUbyXtA5Ldv2LjV3En03
+         MhNHVcfZlZ46b/WT/C1bpvRxSSsu2u+J7i4RfWxTyeV9GdANmwaZNEXdhaKoLRx1pX1A
+         gW2rMEFjXVRqbivJcJr2ZbmQxnw0TvarECN3GQ0eRTVYaUxOI1CVIw0CyO7DJMr6hGID
+         ewFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788927234; x=1789532034;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Bl91wg/yGgEZh0K4fEYbtb7VRvcFObBtiBN/Kbq4nbA=;
+        b=VkroIwVQ9Twl0X4RR0pPFsCTGrTAJYmYl/6T9v6EVgunw/hPEGibbO0weQp/2FvYnp
+         drsXBQZFGQu9aOhOHQr1qo45EIb61rQl2Z+BTp8/zpD7sHn7Qrcu5HT4oj8/tIPA8/1i
+         bi5hOolzVgrlCoEgxMBSqsBB/gYWzmBncm/hyBkUmHpIQJPtrJleh26sGDaNOeXmgZE6
+         4g9y6ZYBY2TbHG/J791XbCjm4deRKJowyn1qpFd/tAHE32ztMKbN9KFVoRNARaV1RomP
+         xO1jsHewtVGHGz5p+7JAq6iO17lyWPm1qSQfCa6TS2oTeBzaviVrJ6PXvJsbH4wFNWXq
+         pqrA==
+X-Forwarded-Encrypted: i=1; AKwUvByh7UvQLi+DMbrN39B6InNJJN5VmZahVgsrbQsxTJMTpxqX9LEynKBCaPSE6YlBVVQJ9VYTpXA=@vger.kernel.org
+X-Gm-Message-State: AFuF++mQZdyWbHTSHEKZ0zpb9mbFqPxEu3aAFFMPUdWgEVehpVVPrUi2
+	130HryeZk9lstRQ3UsfiufTfd7aNp3BQuflkwWbx32LUGJeyY25PfebjKd4Xae8Ddj6alNq00vZ
+	BOB+oeFnLcsx7Tch/rzEbhyDy7JONTaKZDWdXicBx
+X-Gm-Gg: AYBFou28qPZrZScpSUmjBtmCUW3x77Fr44LDk91Z7MEn/NoQmO73dYC2nohPKM2nNgR
+	NUjIkxKqi/xwHwX3YkHV7w3n3trv8POUyU9GZS/k/36ep/2GphntfgZlyQu7uVbFZI3bJ8maRQ3
+	yaSzE2FVzxGbGskCGMZ43ypfl0N76fVLGry69yIo2zYv2WzCMg+D5WtxmFBZAvu4AXNB5a7FLia
+	HVHDnuWjORsxs878lhBHp42Sa5iw9qFRPPX5Scd3ZvpaG8gdxO9Sqv9OfoNXcqArUB/LlXCg2vG
+	GtF5dNhtQa6aFxk3BxE7cO1TkdAOvEmQzipzN5PeTAG31EkWrRFr8C3/PV/vBtt5lJL9Y/oE3zn
+	jaKDVIp76EGgpFs1eXr4RZI9zfvryYUKNTDNn90LRZ7xtL+ciyCSlpxAQuGqTs6eGXMs=
+X-Received: by 2002:a17:90a:149:b0:39b:2b10:d05c with SMTP id
+ 98e67ed59e1d1-39b2b115ba1mr34345615a91.5.1788927232913; Tue, 08 Sep 2026
+ 21:13:52 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20260907225846.3787676-2-kuniyu@google.com> <178891911928.219967.7580029616723211694@kernel.org>
+In-Reply-To: <178891911928.219967.7580029616723211694@kernel.org>
+From: Kuniyuki Iwashima <kuniyu@google.com>
+Date: Tue, 8 Sep 2026 21:13:40 -0700
+X-Gm-Features: AcwNN1Wx9NiFzLv4O-MvEfmRZLjm_TaF-8bvIr6n03tgItHgaD-evtLsKAE7aYQ
+Message-ID: <CAAVpQUDUg2rbw161gF8XmBPLCE7S10UxMoT+m5dmjU==ZDx6uA@mail.gmail.com>
+Subject: Re: [PATCH v1 net-next 1/7] ipmr: Call ->dellink() to remove DVMRP
+ tunnel device.
+To: netdev-bot+sashiko@kernel.org
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	pabeni@redhat.com, dsahern@kernel.org, idosch@nvidia.com, horms@kernel.org, 
+	steffen.klassert@secunet.com, herbert@gondor.apana.org.au, kuni1840@gmail.com, 
+	netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider:
-
-Critical: 0 · High: 1 · Medium: 1 (1) · Low: 0
-
-- [High] Newly added Autoneg bits leak into the firmware link-mode
-  request and corrupt it.
-- [Medium] otx2_get_link_ksettings() (otx2_ethtool.c:1225) now reads
-  rsp->fwdata.advertised_an unconditionally, without gating it on…
-
-Pre-existing issues:
-- [Medium] This problem wasn't introduced by this patch, but the patch
-  adds one more read inside the unsafe window: otx2_get_fwdata()…
-
---
-
-octeontx2-pf: Fix autoneg reporting in ethtool
-
-The patch moves the supported autoneg link mode bit so that it is set after
-otx2_get_link_mode_info() has done its linkmode_copy() into the supported
-mask, and adds the advertised autoneg bit when firmware reports
-advertised_an.
-
-> diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
-> index 9bee1b91eeaa..612fefc41a17 100644
-> --- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
-> +++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
-> @@ -1218,19 +1218,23 @@ static int otx2_get_link_ksettings(struct net_device *netdev,
->  	if (IS_ERR(rsp))
->  		return PTR_ERR(rsp);
-
-[Severity: Medium]
-This isn't a problem introduced by this patch, but the patch adds two more
-reads inside an existing unlocked window.  otx2_get_fwdata() returns a raw
-pointer into the shared mailbox response region after dropping the mailbox
-mutex:
-
-	err = otx2_sync_mbox_msg(&pfvf->mbox);
-	if (!err) {
-		rsp = (struct cgx_fw_data *)
-			otx2_mbox_get_rsp(&pfvf->mbox.mbox, 0, &req->hdr);
-	} else {
-		rsp = ERR_PTR(err);
-	}
-
-	mutex_unlock(&pfvf->mbox.lock);
-	return rsp;
-
-So every rsp->fwdata read in otx2_get_link_ksettings(), including the newly
-added advertised_an and supported_an checks, runs with no mailbox lock held.
-
-There is a concurrent mailbox writer that does not take rtnl,
-otx2_rx_mode_wrk_handler() -> otx2_do_set_rx_mode(), which serializes only
-on the same mbox.lock and issues otx2_sync_mbox_msg().  If it runs between
-the unlock and the reads, can ethtool decode link modes, FEC and autoneg
-out of an unrelated mailbox reply?
-
-The same file already shows the other pattern in otx2_set_fecparam(), where
-the response is consumed while mbox->lock is still held:
-
-	rsp = (struct fec_mode *)otx2_mbox_get_rsp(&pfvf->mbox.mbox,
-						   0, &req->hdr);
-	...
-	if (rsp->fec >= 0)
-		pfvf->linfo.fec = rsp->fec;
-	...
-end:
-	mutex_unlock(&mbox->lock);
-
-Would copying fwdata into a local under the lock be preferable here?
-
->  
-> -	if (rsp->fwdata.supported_an)
-> -		ethtool_link_ksettings_add_link_mode(cmd,
-> -						     supported,
-> -						     Autoneg);
-> -
->  	otx2_get_link_mode_info(rsp->fwdata.advertised_link_modes,
->  				OTX2_MODE_ADVERTISED, cmd);
->  	otx2_get_fec_info(rsp->fwdata.advertised_fec,
->  			  OTX2_MODE_ADVERTISED, cmd);
-> +	if (rsp->fwdata.advertised_an)
-> +		ethtool_link_ksettings_add_link_mode(cmd,
-> +						     advertising,
-> +						     Autoneg);
-
-[Severity: Medium]
-Should this advertising bit be gated on rsp->fwdata.supported_an as well?
-
-The firmware-owned struct cgx_lmac_fwdata_s in af/mbox.h carries this
-comment over the advertised group:
-
-	u64 supported_an;
-	u64 supported_link_modes;
-	/* only applicable if AN is supported */
-	u64 advertised_fec;
-	...
-	u64 advertised_an:1;
-
-and rvu_mbox_handler_cgx_get_aux_link_info() just memcpy()s the firmware
-shared-memory image into the response, so the kernel never validates these
-fields:
-
-		memcpy(&rsp->fwdata,
-		       &rvu->fwdata->cgx_fw_data[cgx_id][lmac_id],
-		       sizeof(struct cgx_lmac_fwdata_s));
-
-If an LMAC reports advertised_an while supported_an is zero, the advertising
-mask ends up not being a subset of the supported mask.  Besides being an
-inconsistent report, does that then make otx2_set_link_ksettings() reject
-every later ethtool -s on that port, given the netlink set path re-feeds the
-get advertising mask back into the driver?
-
-	if (!linkmode_subset(cmd->link_modes.advertising,
-			     cur_ks.link_modes.supported))
-		return -EINVAL;
-
-> +
->  	otx2_get_link_mode_info(rsp->fwdata.supported_link_modes,
->  				OTX2_MODE_SUPPORTED, cmd);
->  	otx2_get_fec_info(rsp->fwdata.supported_fec,
->  			  OTX2_MODE_SUPPORTED, cmd);
-> +	if (rsp->fwdata.supported_an)
-> +		ethtool_link_ksettings_add_link_mode(cmd,
-> +						     supported,
-> +						     Autoneg);
-
-[Severity: High]
-Now that ETHTOOL_LINK_MODE_Autoneg_BIT survives in both masks, can it leak
-into the firmware link mode request?
-
-The netlink set path seeds the request from the driver's get result,
-ethnl_set_linkmodes() -> netif_get_link_ksettings() ->
-otx2_get_link_ksettings(), and ethnl_auto_linkmodes() skips entries whose
-link_mode_params speed is SPEED_UNKNOWN, which is the case for Autoneg, so
-the bit is never cleared on the way back down.
-
-In otx2_set_link_ksettings() the subset check now passes because the
-supported mask contains Autoneg too, and the strip mask only covers the FEC
-pseudo bits:
-
-	linkmode_set_bit(ETHTOOL_LINK_MODE_FEC_NONE_BIT, mask);
-	linkmode_set_bit(ETHTOOL_LINK_MODE_FEC_BASER_BIT, mask);
-	linkmode_set_bit(ETHTOOL_LINK_MODE_FEC_RS_BIT, mask);
-
-	linkmode_copy(req->args.advertising,
-		      cmd->link_modes.advertising);
-	linkmode_andnot(req->args.advertising,
-			req->args.advertising, mask);
-
-so bit 6 reaches req->args.advertising.  It is also counted here, which can
-misclassify a single mode request as multimode:
-
-	if (bitmap_weight(req->args.advertising,
-			  __ETHTOOL_LINK_MODE_MASK_NBITS) >= 2)
-		req->args.multimode = true;
-
-On the AF side, rvu_mbox_handler_cgx_set_link_mode() forwards the bitmap
-unvalidated and cgx_set_link_mode() parses every bit as a link mode:
-
-	for_each_set_bit(bit, args.advertising,
-			 __ETHTOOL_LINK_MODE_MASK_NBITS)
-		otx2_map_ethtool_link_modes(bit, &args);
-
-Bit 6 matches no case in otx2_map_ethtool_link_modes() and lands in the
-default arm:
-
-	default:
-		set_mod_args(args, 0, 1, 0, BIT_ULL(CGX_MODE_MAX));
-		break;
-
-With CGX_MODE_MAX being 53, does this end up OR-ing BIT_ULL(53) into the
-mask written to the firmware shared advertised_link_modes when multimode is
-set?  And when Autoneg is the only remaining bit, does set_mod_args() turn
-it into an unrelated mode group 1 request?
-
-	cgx_mode = find_first_bit((unsigned long *)&mode, CGX_MODE_MAX);
-	args->mode = mode;
-	mode_baseidx = cgx_mode - 41;
-	if (mode_baseidx > 0) {
-		args->mode_baseidx = 1;
-		args->mode = BIT_ULL(mode_baseidx);
-	}
-
-Before this patch the Autoneg bit could not survive the linkmode_copy() in
-otx2_get_link_mode_info(), so requests carrying it were rejected by the
-subset check.  Would it make sense to also add
-ETHTOOL_LINK_MODE_Autoneg_BIT to the strip mask in
-otx2_set_link_ksettings(), and exclude it from the multimode weight, in the
-same patch?
-
->  	return 0;
->  }
+On Tue, Sep 8, 2026 at 6:58=E2=80=AFPM <netdev-bot+sashiko@kernel.org> wrot=
+e:
 >
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider:
+>
+> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 0 =C2=B7 Low: 1
+>
+> - [Low] The commit message of "ipmr: Call ->dellink() to remove DVMRP
+>   tunnel device." states the rationale inverted: "This is fine because=E2=
+=80=A6
+>
+> --
+>
+> ipmr: Call ->dellink() to remove DVMRP tunnel device.
+>
+> The patch converts the two places in net/ipv4/ipmr.c that removed DVMRP
+> tunnel devices with unregister_netdevice()/unregister_netdevice_queue()
+> into calls to the device's ->dellink() followed by unregistration, in
+> preparation for moving ip_tunnel_del() from ip_tunnel_uninit() to
+> ip_tunnel_dellink().
+>
+> > ipmr.c uses unregister_netdevice() to remove DVMRP tunnel devices
+> > created in ipmr_new_tunnel().
+> >
+> > This is fine because currently ipip_link_ops.dellink() is no-op
+> > for non-fallback tunnel devices.
+>
+> [Severity: Low]
+> Is this sentence inverted?
 
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260903161117.2856633-1-nshettyj%40marvell.com
+Oh right, will update the commit mesasge.
+
+
+>  ipip_link_ops sets .dellink =3D ip_tunnel_dellink,
+> and that function looks like this:
+>
+> net/ipv4/ip_tunnel.c:ip_tunnel_dellink() {
+>         itn =3D net_generic(tunnel->net, tunnel->ip_tnl_net_id);
+>
+>         if (itn->fb_tunnel_dev !=3D dev) {
+>                 ip_tunnel_del(itn, netdev_priv(dev));
+>                 unregister_netdevice_queue(dev, head);
+>         }
+> }
+>
+> So it does real work (unhash plus queue unregister) for non-fallback
+> devices, and is a no-op only for the fallback device (itn->fb_tunnel_dev)=
+.
+>
+> The dvmrp%d devices ipmr creates go through tunl0's
+> ndo_tunnel_ctl(SIOCADDTUNNEL) -> ip_tunnel_create -> ip_tunnel_add, so
+> they are non-fallback and hashed in itn->tunnels[].
+>
+> Isn't the reason the current unregister_netdevice() calls in ipmr.c are
+> harmless instead that ip_tunnel_uninit(), which runs as ndo_uninit from
+> the unregister path, also calls ip_tunnel_del()?
+>
+> net/ipv4/ip_tunnel.c:ip_tunnel_uninit() {
+>         itn =3D net_generic(net, tunnel->ip_tnl_net_id);
+>         ip_tunnel_del(itn, netdev_priv(dev));
+>         ...
+> }
+>
+> ip_tunnel_del() uses hlist_del_init_rcu(), so calling it from both
+> ->dellink() and ndo_uninit is idempotent and this conversion is
+> behaviour-preserving today.
+>
+> Could the message be reworded to cite ip_tunnel_uninit() rather than
+> describing ->dellink() as a no-op for non-fallback devices?  As written i=
+t
+> suggests this preparatory patch has no interaction with ipmr, which is th=
+e
+> opposite of what the follow-up "ip_tunnel: Centralise ip_tunnel_del() to
+> ip_tunnel_dellink()." depends on.  The code change itself looks fine, and
+> dev->rtnl_link_ops is always set for ioctl-created tunnels by
+> __ip_tunnel_create(), so the new ->dellink() dereferences in
+> ipmr_new_tunnel() and vif_delete() cannot be NULL.
+>
+> --
+> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
+set/20260907225846.3787676-1-kuniyu%40google.com
