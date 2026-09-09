@@ -1,50 +1,47 @@
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDB13493D38;
-	Wed,  9 Sep 2026 22:19:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E4EA3D45CF;
+	Wed,  9 Sep 2026 22:25:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788992353; cv=none; b=DsB1Ep81AzxiJAChmzFOE3fOlq8cxUuLJ3YwshFl0DJKjYz6q3lnA3S/Cuq4GOVLwfcv0ZOLky2KMhAOinL0mfB+fMUu+jbjrdze5MMGZDJIGryRQrg1S6oeJtlb4MtxT5rVQYYT5OTkcpFoJ6S9JPxR02D0bd51V/Y1Z6kv+6U=
+	t=1788992713; cv=none; b=unJO6zn8J7QuvKPrRwPndIyHOFRTsEntwZtFcdcd9r2wDM5Ea511kRQHd8K5lVD9qfeSMw7kxxWj5ltNM0aoWZhfgxCiDPyCPyP8gYo0WTHRaXvkE+Fb5ejB4JCUbNWFSEg/MHQ4nQPuTUrT5e61/m/bLoTTtqFBQewgt0h9wQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788992353; c=relaxed/simple;
-	bh=jrT3oX3mKDFRjtRI9PnG7RCHgOxUNE7JlN4gfGGVCqo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k853fq5awssszL0987Mng6Gig8ua6a+YRVjHSWFYOuTmXmgtIh3RhGOXT0tXUHJN2/SzRJAXClYKmHo23kIZidU1J7MaSrK1WhbTTd8bRVrInxIxsVOz2uN3oSaDboz3y1IGQANdmbLufoKE8PMtMr9G86CkEd1vdwSQs0k2wR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=S8ZXT5xd; arc=none smtp.client-ip=217.70.190.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="S8ZXT5xd"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1788992342;
-	bh=3K1cdcG7lCMhwb2HmdLaCPOZtjgB80js8r3x1WzuzTA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S8ZXT5xdxNX5sBrap/FGTPW7G6eR6AWem8zG3F7jHl81shpg/++tBiMnTOjFQVnpo
-	 Vw4tRgVynlYGHI5X5p+XIZcO41reg8vS6pwGX8cBwsQiEjFbya71B4h6KFs5SAzzDt
-	 YCTLsLiZMwH9VVqfE/mHmcvH3ajl6T5LOZBOCRqnrbaqVsZufoW0CMrdDiC63vYO9I
-	 cio59NBAOW/cclgt36vW2hVpS3F0yZOuZU1obYL6mSbTAbCMXlRIT9Pf9pkovfN/Ih
-	 hjecQBG251O7KRuv8DMsYO6tsAQoYtHhWNEWpFyIednPIUTdJdITuwizn6tTuk3taU
-	 iou/Qr9Fhb4IQ==
-Received: from localhost.localdomain (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with ESMTPSA id 7C3ED607C7;
-	Thu, 10 Sep 2026 00:19:01 +0200 (CEST)
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: netfilter-devel@vger.kernel.org
-Cc: davem@davemloft.net,
-	netdev@vger.kernel.org,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	horms@kernel.org,
-	fw@strlen.de,
-	ja@ssi.bg
-Subject: [PATCH net 7/7] netfilter: hold reference on module during netlink dump
-Date: Thu, 10 Sep 2026 00:18:44 +0200
-Message-ID: <20260909221844.1650275-8-pablo@netfilter.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260909221844.1650275-1-pablo@netfilter.org>
-References: <20260909221844.1650275-1-pablo@netfilter.org>
+	s=arc-20240116; t=1788992713; c=relaxed/simple;
+	bh=PWCWMYo8hgMcaBt8wD+rzXheDC4ftdx7H2aB8V3pp/4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iKsER55gnQE5SvrnnIh8Q0ngT3a7UA7OdXL9K96fPTxhFKTslQNYPDx4iBQvbBG+yU487KabTdsiSmtMAdVcAGT7IYff48ql7NHrAJLaib9PK3sWRJzb8V4X6bERy+iXf/NLTf/lQ27by5gA9Tn8qOgqcHGd3D2etEnXzcQpsb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: by linux.microsoft.com (Postfix, from userid 1202)
+	id 309C120B7169; Wed,  9 Sep 2026 15:24:29 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 309C120B7169
+From: Long Li <longli@microsoft.com>
+To: Long Li <longli@microsoft.com>,
+	Long Li <longli@kernel.org>,
+	Konstantin Taranov <kotaranov@microsoft.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Leon Romanovsky <leon@kernel.org>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	"K . Y . Srinivasan" <kys@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	shradhagupta@linux.microsoft.com,
+	Simon Horman <horms@kernel.org>,
+	ernis@linux.microsoft.com,
+	stephen@networkplumber.org,
+	shirazsaleem@microsoft.com
+Cc: netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	linux-hyperv@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v5 00/13] net: mana: reconfigure by replacing the queue set
+Date: Wed,  9 Sep 2026 15:24:03 -0700
+Message-ID: <20260909222416.884246-1-longli@microsoft.com>
+X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -53,135 +50,128 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Modules can be removed in the middle of a netlink dump. Set .module to
-THIS_MODULE in struct netlink_dump_control to hold a reference on the
-module while netlink dump is in progress.
+Replace detach/attach reconfiguration with pre-allocation and queue-set
+replacement. Allocation failure leaves the running configuration intact.
+Publication failure attempts rollback; if rollback also fails, the port
+is stopped and requires administrative recovery.
 
-See commit 6dc878a8ca39 ("netlink: add reference of module in
-netlink_dump_start") which describes this problem.
+EQs and statistics belong to the port, and valid user RSS tables survive
+queue rebuilds. Channel-count changes reuse surviving queues: reductions
+retire only the tail, and increases allocate only the added queues. Ring,
+MTU, private-flag and XDP changes that rebuild queues still require both
+sets temporarily and can fail at hardware resource limits.
 
-Fixes: a7b4f989a629 ("netfilter: ipset: IP set core support")
-Fixes: c1d10adb4a52 ("[NETFILTER]: Add ctnetlink port for nf_conntrack")
-Fixes: 50978462300f ("netfilter: add cttimeout infrastructure for fine timeout tuning")
-Fixes: 9413902796f5 ("netfilter: add extended accounting infrastructure over nfnetlink")
-Fixes: 12f7a505331e ("netfilter: add user-space connection tracking helper infrastructure")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
----
- net/netfilter/ipset/ip_set_core.c    | 1 +
- net/netfilter/nf_conntrack_netlink.c | 7 +++++++
- net/netfilter/nfnetlink_acct.c       | 1 +
- net/netfilter/nfnetlink_cthelper.c   | 1 +
- net/netfilter/nfnetlink_cttimeout.c  | 1 +
- 5 files changed, 11 insertions(+)
+Patch layout:
+  1-2:   Queue-set helpers and the shared EQ pool.
+  3-7:   Convert channel, ring, private-flag, MTU and XDP reconfiguration.
+  8:     Remove an unreachable early return from mana_detach().
+  9-11:  Preserve statistics, release unused EQs and preserve RSS tables.
+  12-13: Reuse queues across channel-count reductions and increases.
 
-diff --git a/net/netfilter/ipset/ip_set_core.c b/net/netfilter/ipset/ip_set_core.c
-index 0a86a170ba90..624c5f14acf6 100644
---- a/net/netfilter/ipset/ip_set_core.c
-+++ b/net/netfilter/ipset/ip_set_core.c
-@@ -1733,6 +1733,7 @@ static int ip_set_dump(struct sk_buff *skb, const struct nfnl_info *info,
- 			.start = ip_set_dump_start,
- 			.dump = ip_set_dump_do,
- 			.done = ip_set_dump_done,
-+			.module = THIS_MODULE,
- 		};
- 		return netlink_dump_start(info->sk, skb, info->nlh, &c);
- 	}
-diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
-index 579ada063b1b..2340885b2076 100644
---- a/net/netfilter/nf_conntrack_netlink.c
-+++ b/net/netfilter/nf_conntrack_netlink.c
-@@ -1682,6 +1682,7 @@ static int ctnetlink_get_conntrack(struct sk_buff *skb,
- 			.start = ctnetlink_start,
- 			.dump = ctnetlink_dump_table,
- 			.done = ctnetlink_done,
-+			.module = THIS_MODULE,
- 			.data = (void *)cda,
- 		};
- 
-@@ -1826,6 +1827,7 @@ static int ctnetlink_get_ct_dying(struct sk_buff *skb,
- 	if (info->nlh->nlmsg_flags & NLM_F_DUMP) {
- 		struct netlink_dump_control c = {
- 			.dump = ctnetlink_dump_dying,
-+			.module = THIS_MODULE,
- 		};
- 		return netlink_dump_start(info->sk, skb, info->nlh, &c);
- 	}
-@@ -1840,6 +1842,7 @@ static int ctnetlink_get_ct_unconfirmed(struct sk_buff *skb,
- 	if (info->nlh->nlmsg_flags & NLM_F_DUMP) {
- 		struct netlink_dump_control c = {
- 			.dump = ctnetlink_dump_unconfirmed,
-+			.module = THIS_MODULE,
- 		};
- 		return netlink_dump_start(info->sk, skb, info->nlh, &c);
- 	}
-@@ -2555,6 +2558,7 @@ static int ctnetlink_stat_ct_cpu(struct sk_buff *skb,
- 	if (info->nlh->nlmsg_flags & NLM_F_DUMP) {
- 		struct netlink_dump_control c = {
- 			.dump = ctnetlink_ct_stat_cpu_dump,
-+			.module = THIS_MODULE,
- 		};
- 		return netlink_dump_start(info->sk, skb, info->nlh, &c);
- 	}
-@@ -3278,6 +3282,7 @@ static int ctnetlink_dump_exp_ct(struct net *net, struct sock *ctnl,
- 		.dump = ctnetlink_exp_ct_dump_table,
- 		.start = ctnetlink_dump_exp_ct_start,
- 		.done = ctnetlink_dump_exp_ct_done,
-+		.module = THIS_MODULE,
- 	};
- 
- 	err = ctnetlink_parse_tuple(cda, &tuple, CTA_EXPECT_MASTER,
-@@ -3327,6 +3332,7 @@ static int ctnetlink_get_expect(struct sk_buff *skb,
- 		else {
- 			struct netlink_dump_control c = {
- 				.dump = ctnetlink_exp_dump_table,
-+				.module = THIS_MODULE,
- 			};
- 			return netlink_dump_start(info->sk, skb, info->nlh, &c);
- 		}
-@@ -3748,6 +3754,7 @@ static int ctnetlink_stat_exp_cpu(struct sk_buff *skb,
- 	if (info->nlh->nlmsg_flags & NLM_F_DUMP) {
- 		struct netlink_dump_control c = {
- 			.dump = ctnetlink_exp_stat_cpu_dump,
-+			.module = THIS_MODULE,
- 		};
- 		return netlink_dump_start(info->sk, skb, info->nlh, &c);
- 	}
-diff --git a/net/netfilter/nfnetlink_acct.c b/net/netfilter/nfnetlink_acct.c
-index 8ff1e0ad5cb0..39a62bb9a6e6 100644
---- a/net/netfilter/nfnetlink_acct.c
-+++ b/net/netfilter/nfnetlink_acct.c
-@@ -284,6 +284,7 @@ static int nfnl_acct_get(struct sk_buff *skb, const struct nfnl_info *info,
- 			.dump = nfnl_acct_dump,
- 			.start = nfnl_acct_start,
- 			.done = nfnl_acct_done,
-+			.module = THIS_MODULE,
- 			.data = (void *)tb[NFACCT_FILTER],
- 		};
- 
-diff --git a/net/netfilter/nfnetlink_cthelper.c b/net/netfilter/nfnetlink_cthelper.c
-index 5b6a09f46903..1331aba007ba 100644
---- a/net/netfilter/nfnetlink_cthelper.c
-+++ b/net/netfilter/nfnetlink_cthelper.c
-@@ -644,6 +644,7 @@ static int nfnl_cthelper_get(struct sk_buff *skb, const struct nfnl_info *info,
- 	if (info->nlh->nlmsg_flags & NLM_F_DUMP) {
- 		struct netlink_dump_control c = {
- 			.dump = nfnl_cthelper_dump_table,
-+			.module = THIS_MODULE,
- 		};
- 		return netlink_dump_start(info->sk, skb, info->nlh, &c);
- 	}
-diff --git a/net/netfilter/nfnetlink_cttimeout.c b/net/netfilter/nfnetlink_cttimeout.c
-index 132c02ac7c4e..29de875d1713 100644
---- a/net/netfilter/nfnetlink_cttimeout.c
-+++ b/net/netfilter/nfnetlink_cttimeout.c
-@@ -277,6 +277,7 @@ static int cttimeout_get_timeout(struct sk_buff *skb,
- 	if (info->nlh->nlmsg_flags & NLM_F_DUMP) {
- 		struct netlink_dump_control c = {
- 			.dump = ctnl_timeout_dump,
-+			.module = THIS_MODULE,
- 		};
- 		return netlink_dump_start(info->sk, skb, info->nlh, &c);
- 	}
+Overlap with submitted net fixes:
+
+Two independent fixes have been submitted to net:
+
+  [1] net: mana: restore the XDP program pointer when pre-allocation fails
+  https://lore.kernel.org/all/20260904202640.3900685-1-longli@microsoft.com/
+
+  [2] net: mana: do not discard an ethtool-configured RSS table on a queue
+      rebuild
+  https://lore.kernel.org/all/20260905004401.3937066-1-longli@microsoft.com/
+
+Neither is a prerequisite for this series, and they are not resent here
+as standalone patches. Their handling is incorporated into patches 7
+and 11, respectively. Merging the trees can conflict in these blocks:
+
+  - Patch 7, mana_bpf.c: retain the queue-set version of mana_xdp_set().
+    It leaves the live program unchanged during allocation, replacing
+    the pre-allocation failure path repaired by [1].
+  - Patch 11, mana_en.c: retain the three-argument mana_rss_table_keep()
+    and its callers, which validate the prospective queue count and
+    defer swap-path loss notifications until publication succeeds.
+    ETHTOOL_OP_NEEDS_RTNL_RSS in mana_ethtool.c is identical in [2] and
+    this series.
+
+These resolutions apply to the overlapping blocks, not unrelated net
+changes. The two patch mails also carry the corresponding merge notes.
+
+Changes in v5:
+
+  - Rebase onto net-next at ce48a0fdc564 ("Merge branch
+    'dpll-fix-lies-in-the-netlink-spec'").
+  - Refresh patch 1's mana_bpf.c context after upstream commit
+    8d5f1bda7e8b ("net: mana: remove unreachable dead code in mana_bpf()").
+    This resolves v4's application failure caused by the removed
+    "return ret;" context.
+  - No functional changes to the series; patches 2-13 are unchanged
+    apart from rebasing.
+
+Changes in v4:
+
+  - Retain pcie_flr() instead of pci_try_reset_function(), avoiding the
+    device-lock conflict in the remove path.
+  - Delay lowering real_num_rx_queues until retiring RQs are destroyed,
+    including after rollback.
+  - Add the full barrier between reopening port_is_up and reading TX
+    ring state, preventing a missed queue wakeup.
+  - Report persistent statistics while down or swapping; keep only the
+    hardware PHY query gated on port_is_up.
+  - Derive the live port inside mana_free_qset() instead of passing a
+    redundant port argument.
+  - Require RTNL for RSS setters. Remove loss notification from the
+    non-swap allocation path, whose callers do not consistently hold
+    the required netdev instance lock.
+  - Wait for TX-selection readers before freeing the old RSS table in
+    both channel-count paths. Clear TX slots after partial teardown.
+  - Shorten comments and commit messages; correct failure-path,
+    ownership and resource-limit descriptions. Document the two net
+    submissions and their merge overlap.
+
+Changes in v3:
+
+  - Move shared EQ ownership before the first converted caller.
+  - Separate retiring RX statistics and fold them on teardown or rollback.
+  - Preserve carrier through successful swaps and rollback, and track
+    software-forced carrier shutdown separately from hardware link events.
+  - Correct kernel-doc and EQ/vector lifetime descriptions.
+  - Rebase onto net-next and move the resize-recovery capability to BIT(31).
+
+Changes in v2:
+
+  - Replace post-failure retries with pre-allocated queue-set replacement.
+
+Previous versions:
+  v4: https://lore.kernel.org/all/20260908032843.397667-1-longli@microsoft.com/
+  v3: https://lore.kernel.org/all/20260901014442.2945689-1-longli@microsoft.com/
+  v2: https://patchwork.kernel.org/project/netdevbpf/list/?series=1145125
+  v1: https://lore.kernel.org/netdev/20260711041415.3008868-1-dipayanroy@linux.microsoft.com/
+
+Dipayaan Roy (1):
+  net: mana: do not bail out of mana_detach on dealloc failure
+
+Long Li (12):
+  net: mana: add queue-set allocation and teardown helpers
+  net: mana: share the EQ pool across a queue-set swap
+  net: mana: swap queue sets in mana_set_channels
+  net: mana: swap queue sets in mana_set_ringparam
+  net: mana: swap queue sets in mana_set_priv_flags
+  net: mana: swap queue sets in mana_change_mtu
+  net: mana: swap queue sets in mana_xdp_set
+  net: mana: keep per-queue statistics in the port context
+  net: mana: release EQs left idle by a channel-count reduction
+  net: mana: keep a user-configured RSS table across a queue rebuild
+  net: mana: keep the surviving queues when the channel count is reduced
+  net: mana: keep the existing queues when the channel count is raised
+
+ .../net/ethernet/microsoft/mana/mana_bpf.c    |   94 +-
+ drivers/net/ethernet/microsoft/mana/mana_en.c | 1256 +++++++++++++++--
+ .../ethernet/microsoft/mana/mana_ethtool.c    |  312 ++--
+ include/net/mana/gdma.h                       |    8 +-
+ include/net/mana/mana.h                       |  105 +-
+ 5 files changed, 1524 insertions(+), 251 deletions(-)
+
+
+base-commit: ce48a0fdc56464b1afb03471dbdf38a5e0d571ad
 -- 
-2.47.3
+2.43.0
 
