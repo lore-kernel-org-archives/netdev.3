@@ -1,79 +1,69 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5514E1DA57;
-	Wed,  9 Sep 2026 00:01:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AE812561A7;
+	Wed,  9 Sep 2026 00:03:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788912067; cv=none; b=HJEO2J5gjYwRlenoX2ZCcQ+AoyWP2QyCr9GHbRb5G1rOZo0r+VhYAnyqEPn0vLEa1qg46E7egyZxGfbh9kRcpNxxjvcf8lnFznLqzyHAxsnFkzbNC9KtFbQLGu7jyYLwu9KNNz247ePRAlSJHo3JBuqcW37KnbCmLnE+WHZmh9A=
+	t=1788912223; cv=none; b=BGR56ikw7QhEU6q3zkgRBMeYtsxEYr69705eb3MFLbBCYi1dFxhGR+uh1PWA73C3gkmHHtem7HG3gPH9JNq7JGOrSlAwwXa2evknmfLRyFU9pwa3qGzAvDCAR6u8LPl9UnQHAiTEROksjuFdubcjhiLr13Go2kMvWiNZ3CfkNjo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788912067; c=relaxed/simple;
-	bh=HwY5YhcFBdtLoVKno9zLvoqbbLnoNw6zYKyxZtGZd8o=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=VQtrb5h2IQr62v1SZi1w51wD0JXvdwJn/9f2q/oxvAGhGuqIJbYYXQzEbqYGWEox87k59bK8adhBuEibJgg3d1zbnhBOmEOw03tmMzI2/kbKs18mRyBqJ7MS84slpIAVvs2a6Fxrq6op0yby1qi4csYtVs+cqvC/0d3lGfp9GNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K5kJ9674; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788912223; c=relaxed/simple;
+	bh=fRxxyaxF4sEIOICY66X/8reWA/2dX8AYB6hJI+WF83c=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=OSNkSKsdxbuIsaoYVVCdvxTyulrSKHP5IiFWMPwrNLVqgEqW475kBXMquMp0EEoTFx4Dp7rH3vKeem2Dvvk/h7ZjR6AlQ4wqId+0MKysbv6hNwgCe088ZpoFhju7JQKgHiejCDvNXivz2LXDg8S/8TgWEijqzadK+qQ/Sf3nWE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qjv69hpZ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K5kJ9674"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD8F21F00A3A;
-	Wed,  9 Sep 2026 00:01:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qjv69hpZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCF781F00A3A;
+	Wed,  9 Sep 2026 00:03:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788912065;
-	bh=SKyRPMGxBhZU9sMrN+qGSV4EIXXEDHgkSTG5S4UPUuE=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=K5kJ9674uURCrsuhlpa6HvhkM3ayuWCgOwmrbgTY9eJoWyqhT9ODkEihqZ9yAVJ1i
-	 1RSYFdpY714ai9c3R0DEcp2f7bVpUeHLSB1B9hQKyFKCPdYsi0OftPOJqkrzIPwEXa
-	 rF8KDKo1aibdPeMQsCXgB6457xSDSaSyvDwwvIAa7TETCZMfTzG3j+nxTthu0I8pX7
-	 UhWDsxYsqVsiPDxvv4ubYD8i0SMOSL3N8obD53Jo1Yd43aJ2CVBuJKCfS+CxgKCeh0
-	 YxZjW410Dst31wMWAvVVy81Db8oTzVb5AnWQGONPudyWfHXfo7SbmAXz47xNruj8mm
-	 +4DLWkL9L8HVA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 624A9380820D;
-	Wed,  9 Sep 2026 00:00:05 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1788912216;
+	bh=6IxhlJ9b8uAGlHKepWvd0viaQd29xcE83/MQglixBLU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=Qjv69hpZltPtq1Jt++GXvMsJ/5TJDRZ1v3V1kkkhdBbRThP+4bGsMYao0gjhBtLAh
+	 ot2lHeQXQSNi5BktOPaw7t0wSVuA8SzBo7HEQhzbDFTX6urtkSGV1rmYDo1PfLC5M0
+	 h5zlFV3eZpzpDNXeOacd28NWmqrN1nSPEAzDaaJFfJbaIz5teGYRcJTr4vrERrw9e2
+	 OsvyU/kWTGIET6SrAdxLq7ASXez1mJXENgpZc7TmB9548mCDN9LNqSDpOJ2XbqFbGI
+	 HL9yXJosKU3T6d+KNDi3u67serPzDTuExJWTDNbqW4avXBj+jBYz+otefoBXKQpEmb
+	 I+QlHAkYFyCgg==
+Date: Tue, 8 Sep 2026 17:03:35 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Qingfang Deng <qingfang.deng@linux.dev>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Mitchell Blank Jr <mitch@sfgoth.com>, Chas Williams
+ <3chas3@gmail.com>, Simon Horman <horms@kernel.org>, James Chapman
+ <jchapman@katalix.com>, "Jiri Slaby (SUSE)" <jirislaby@kernel.org>, Kees
+ Cook <kees@kernel.org>, Breno Leitao <leitao@debian.org>, Asim Viladi Oglu
+ Manizada <manizada@pm.me>, Eric Woudstra <ericwouds@gmail.com>, Felix
+ Fietkau <nbd@nbd.name>, linux-ppp@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-atm-general@lists.sourceforge.net
+Subject: Re: [PATCH net-next v2] ppp: pass private data to channel callbacks
+Message-ID: <20260908170335.5e98fe60@kernel.org>
+In-Reply-To: <20260906134830.992-1-qingfang.deng@linux.dev>
+References: <20260906134830.992-1-qingfang.deng@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCHv3 net] net: ll_temac: Return actual error from
- of_get_mac_address()
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178891200414.71040.17612268760920600379.git-patchwork-notify@kernel.org>
-Date: Wed, 09 Sep 2026 00:00:04 +0000
-References: <20260903213241.1040204-1-rosenp@gmail.com>
-In-Reply-To: <20260903213241.1040204-1-rosenp@gmail.com>
-To: Rosen Penev <rosenp@gmail.com>
-Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- michal.simek@amd.com, esben@geanix.com, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
-
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Thu,  3 Sep 2026 14:32:41 -0700 you wrote:
-> When of_get_mac_address() fails, return the actual error code (rc)
-> instead of the hardcoded -ENODEV. This preserves the original error
-> information, which may be more specific (e.g., -EINVAL, -EPROBE_DEFER)
-> and helps callers handle the failure appropriately.
+On Sun,  6 Sep 2026 21:47:36 +0800 Qingfang Deng wrote:
+> PPP channel callbacks receive struct ppp_channel only to retrieve the
+> driver's private pointer. Pass that pointer directly instead.
 > 
-> Use dev_err_probe() to avoid printing an extra error message in case of
-> -EPROBE_DEFER.
-> 
-> [...]
+> This decouples channel callbacks from the public channel representation
+> and prepares for making struct ppp_channel opaque, with allocation and
+> lifetime managed by the generic PPP layer.
 
-Here is the summary with links:
-  - [PATCHv3,net] net: ll_temac: Return actual error from of_get_mac_address()
-    https://git.kernel.org/netdev/net-next/c/3d80284b244e
+Not immediately obvious that this is a win. Having a callback op take
+untyped pointer can be error prone. Also, subjectively, making types
+opaque in C often leads to ugly and unnecessarily complex code.
 
-You are awesome, thank you!
+This patch does not stand on its own, IMO, maybe you need to post the
+entire series, and maybe rethink.
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+pw-bot: cr
