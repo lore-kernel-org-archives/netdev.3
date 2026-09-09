@@ -1,209 +1,130 @@
-Received: from mail-oa2-f12.google.com (mail-oa2-f12.google.com [74.125.231.76])
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D77532C15A5
-	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 01:12:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.76
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788916323; cv=none; b=MbRBH6/MeSu/OVDg5IhW7aFxx89KIlfYYChA/AKpGzBqa+5Bw8YXAHZbsZ2256QLAoVH7Qo7sbuAlTaj1RYcffFV36cPShDixg475dKUcodM/FDVXpAmGtN8Oo7hZ+rBXoaTOfeZL6K33cByX9jWs+vWqlDai5g1fRxnCBLvYHs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788916323; c=relaxed/simple;
-	bh=78YHx0yWVPDvUyOR4u9IIre+/Nu/Oz2FqNSImaYhDvU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jrvUtMGQDUfy7G96vaFHqwwd/w8nk94cshDlGuh+Vs71ZBOwlmdbD89FMTpCxXewtnZ9xVI0g+fJ/Rnz2UUvRZXPi8XUJlxGndzYtuskQxga+pbVxo+tsBkjvBAX4qc2MgH5X6F/p/MxkjPXMWRL3LPLL+USSjH9/GVPis5bQHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aVOT3mJ3; arc=none smtp.client-ip=74.125.231.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8894A28505E
+	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 01:15:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.169
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788916551; cv=pass; b=Cy//Sf4yGOV1crLecVY9DBT5wyEsD3frCEVDHqmjOidDSn7X4QTIoBs/1fOs5cAl/HxziK1oawjf9HN6yB9URWXTb6T9NCRpg5a3c+PmfuUxc4d0YmZ/xTF6w2F0O6ugi1qXPiGzYIXS8LZWyO5eT4CrOABoi2rR1pybuOPsNF0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788916551; c=relaxed/simple;
+	bh=MQSwhbdiJCeNBOXOMm+u2E1bHED2yNrmentBhrbYLAI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=GzAw1Vb3XfuJDLqK9OY7lmnJdWaTchJNxcbYXwvZJ5TR7IRjI9DKAvt984TbnDm1zOHXnt1LSatzwbClZIp2cIcOhMSUd88CJ32TkKn6YSvLo3r9c3LO9kvVWcXLX79KpmNbQSElmZAnzjv2Pei8e1CAUtmVo2DvF7pIBPw/CTM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XgRfgUkj; arc=pass smtp.client-ip=209.85.208.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aVOT3mJ3"
-Received: by mail-oa2-f12.google.com with SMTP id 586e51a60fabf-466cc9b4b70so322261fac.0
-        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 18:12:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XgRfgUkj"
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-3a49dbfaf25so433301fa.2
+        for <netdev@vger.kernel.org>; Tue, 08 Sep 2026 18:15:49 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788916547; cv=none;
+        d=google.com; s=arc-20260327;
+        b=rNGCv3nco40PLXPW1NC+0JdhqKg8Ft4yxTfFz/BgRi4u3tLufhJhwVkKq23YHyqKRu
+         mjebKIR++mKBO1Qh4ZsZTBfy8eZfQukcHobTyrmEz9zA9/38MKh52nF/0W8y4CNX0HX6
+         cvwUE8F3//7x7O9tcTEfx/1rtWHUCotNcV7ULxP/yrgqm1JKUQ1TgcrWDzYCPdjVrgwu
+         SUooWHdceLaxDRc+lHSs2zZVD6I7M5F34+BuFItTSXmf8S3I0ZbrU6A8QkZZqATB3Rp6
+         xIOljvoUK9k4OL4YbbON+1E7twtzFsTPNUV/juVNTncAtfOYQ7pmco+yRYp85nQv2Wiy
+         9svA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=0TTx+LiFvOB0q6Xwa3UfI6WzvnZa/o+6Kwi8basQ/fc=;
+        fh=bpUJ+/N8iRPKNLDVp7fTGjjYRkMQO1l9CZpkclsuYNQ=;
+        b=IAeQBiXKP6SlubAk/czdHcMjlYqnBkmtuDayh0w1nrMHik5ENAe2D/d4hj+u24n/WY
+         Zhok3WMTw6EjK9PXfStK5p6hM6VwWu0OrMFu1av4alslGAHq1/ggeIS/yfQQx2FLstwc
+         p0AFrHoQnK5s/+jUrzVjevtmvbU0WO9hWONxZFaQl5ZYX1CMCXQOjI/upbOojPUZNvVG
+         /FvQKRdv7T5dhyu46MmtaD4y92IZRwLBdWrLWf1r6ufyixqy8damUyx/157HPmFVPm7T
+         CDZPij+qaaA6PowOrqlKzg/k9E1S9q1FfSlP9J2/aqy+QUFoa7zBgqhVW6pZA9rP2akz
+         2wSw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788916320; x=1789521120; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+        d=gmail.com; s=20251104; t=1788916547; x=1789521347; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=69NpNYRfiy3q+HXuUHJlVfVJ+ZNmTg+OdYZin1d+3V4=;
-        b=aVOT3mJ3bTZdvPl3Gyb4h2YE1+QYhs5543Cdy6Q7VvquNJVtkUG0qqmvKguIfNmF6D
-         OpbPcsa5l03LbNoVpcSnafwI12bbpfUaL1pB7kvpm/OAUsissldaEedGckjRR8t4xAqg
-         VAC8MrMNEOx4tp7DTwW5wgc0uLmY1Hown1QCBN7jla+D0RAlFt6iWJYl3H8vC1Nyf2yH
-         qizogNqjsK6ZbhCfSxc2NJ+Uy5x0HSWRbvhon58r6UgU5dpPbRUBE2im3nK1dcmExsKJ
-         yaXEVIn0NkPhjnRJ2DLZi8MNL8C1UdUdyJDukJ7fYMSUwNYt7fzdNY6SiQNI7sU57yWf
-         iNRw==
+        bh=0TTx+LiFvOB0q6Xwa3UfI6WzvnZa/o+6Kwi8basQ/fc=;
+        b=XgRfgUkjK6mNHRl7hxl+8eb8pymDKZQJ9YyHy+h/PGbdlwy0AuD5A0cXWgrHr5/ukK
+         oOppDsIAZziIHEnfOpLUdDKA2iObLQuBaiCXvoXZz2Py+C004F3O+MECyqYYkbW5lE6z
+         NQIvpbeTRn/ZySrrDtqP2LPCnqXOfUKfn4KmsS8GM/JDzMjo+9FtbngC8kCf3robtOLf
+         PR5g6WghGCLtW7T3RdHc/aoggsu2UpXXhKrv98Y2b28UujQYwId7MkzpFZb71BnjXsfV
+         wKgbuEO0KXkZLaIsBn1uEz5FdxFOjlliHSZnMvsZmkEdp8aQI6n4DzjNIcKlDQxYB0/B
+         7KRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788916320; x=1789521120;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20251104; t=1788916547; x=1789521347;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=69NpNYRfiy3q+HXuUHJlVfVJ+ZNmTg+OdYZin1d+3V4=;
-        b=hhit3gTbzExPLtU2dAteYiQHT4uRS286GXg0T/LpYOvZaqahcNbOYdV7xSzCO8kd0F
-         t+3ON05Ezrxb8DiSu/n3il0WSq6N5i75SDeQb3yRYa6+aS4HKvxxV1V7dzAJ/HBKTkEL
-         g3m+edTwCJ4H6QZA3T2WA417rRtYmZH8rZ1gIHv0IpWUZ9xGrh8FXXuj0ml+G0QpZBO8
-         BgFea4MXOW0nsbJQIkTjLq/Kbvxs1vB0m0Ok4gOMk34tKaQg/rvhJsoF7qlUQtE+yRnn
-         AcB5cyoxVPzPsb8oCwJCWxLrkEcyA/HrilLtqmKdZqL5dSzZxExgPnUE8UJuMMzplAov
-         vGsA==
-X-Forwarded-Encrypted: i=1; AKwUvBxI4yIrtPSEsP4t+Da4UecaOO8zy4TiCfq4I9+7uabOgpdrFXfBoCiE5o2LPqTtvSmkNhrhZ80=@vger.kernel.org
-X-Gm-Message-State: AFuF++naC/VzfwEMHpMuiunGeQVFCeV25goLGL72OmzeTnjhF34VPIre
-	Ts+DbYcLClkn0WHClI+uzIjEhgbp9KUbes4u0KymBmEmEfo4SuFI+9j0
-X-Gm-Gg: AYBFou3U1ZC2CgrW9Etd1BEWxpkgXL+VDHq5EkNxjuItr5vIlWW3zPKOo1JZD2WlrQH
-	d/YWHT4Uv00V3u74OWI6kmLkASyY5Zd/cU4ca1IQ0FRkulJrj8Hvsx3CkEt8eTL3f/PMlujSiFz
-	n7T0b6Isg1/zBpAzGWaKhHIoOpMjlfNkj91SkZ/qR0LXB5TKr8jYXU0R5x95nr19VM35UzmqgMM
-	IFQGz0LH7EaUs9QRJPokAQVC2FYL1my2RDDe+0vVpKIfwqOzbg19Z99rZuhxO5gwU6eOV1r3l3z
-	9SCsdVFeuR+qctbR/RAsXoCd7gnZQCCetSuGYtaNgt5BxmlvPLfRxSmRJZoNi/Rs717V4PphAPI
-	qxrMqYhgTCvnGX5W7RceQr6loqmP4k/CQ2LPPhQUjO1l1AG81QwNgoiK05gXvECxqhSyxep3d9N
-	k+R7AadDD5j0AIpkam5HibJydWOoVPDUFMh3bghiLJfsBHat5PVKroS7PYiVDne3L8x68YN9qlD
-	j8FXj3n7F/JljJLSR8X
-X-Received: by 2002:a05:6820:60e:b0:6b5:ec3f:4988 with SMTP id 006d021491bc7-6bc27fe0322mr3929278eaf.35.1788916319677;
-        Tue, 08 Sep 2026 18:11:59 -0700 (PDT)
-Received: from devvm29614.prn0.facebook.com ([2a03:2880:ff:53::])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-6b6dbedc38bsm17083879eaf.4.2026.09.08.18.11.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Sep 2026 18:11:57 -0700 (PDT)
-Date: Tue, 8 Sep 2026 18:11:53 -0700
-From: Bobby Eshleman <bobbyeshleman@gmail.com>
-To: "Maxime Chevallier (Netdev Foundation)" <maxime.chevallier@bootlin.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>,
-	matttbe@kernel.org, Stanislav Fomichev <sdf@fomichev.me>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	thomas.petazzoni@bootlin.com, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH net-next v3 1/2] tools: ynl: Allow cross-compiling ynl
- and associated tools
-Message-ID: <aqCyWQxqKDuQnZYR@devvm29614.prn0.facebook.com>
-References: <20260907161438.755125-1-maxime.chevallier@bootlin.com>
- <20260907161438.755125-2-maxime.chevallier@bootlin.com>
+        bh=0TTx+LiFvOB0q6Xwa3UfI6WzvnZa/o+6Kwi8basQ/fc=;
+        b=lmns5jypXYSZpJOU270ldwKB+iY+oPIH9Co2MbUSaMi67RVcoGLIz1C8cE6B+kdeXi
+         dI5CkXbcekf2CzIR2DTzRdokdp2Huei3y3PQ8vueLIVJBtmJLtrkr2KgQs5WvSYOs1Nf
+         I25fczLBMOkhcM6qFf/YYsgrD6g2yoeLUNygUaDSfUBSrZ2WEGf9ThqhbIndpVS1jwdA
+         7vJS7aYcWOF8huNBfHMee1PFgEZTuVvemer7mCIkYU4Y0P76wUgEmAFoQjrO+J2rmUlr
+         xWcK1uXkTHQR50xcsmVngdOyDu3/hd1E9mROMKNSW2e4wuvBi04BWi/pYrYiTWRS/OJ3
+         Kt0g==
+X-Forwarded-Encrypted: i=1; AKwUvBwWuE5uqKGplOeo0oVOIFk/Cq7YTHHdoZsuFu2tslnFp+gcBBqtDLxxGDrHNMAf96SDH+DKPRU=@vger.kernel.org
+X-Gm-Message-State: AFuF++kDktpY1JLEPVleYszn4EhkbNWrVF8Dm2N2K48WUnkW6ose0oUC
+	6qKtPx5WWKQOshoPovwxklF8EAK8xAyuB7ok3q0SLqJMWCL3kvCq4LL1/bAOqDwfMsdC2QaEiJt
+	fFo1wFe3OhSjkzUBXGH8eZxk9IjqtqPY=
+X-Gm-Gg: AYBFou2fLzDXXpVanr8FD25VTjalOahmHDhDQuh0/ezMfU50eGHrlpAzQWlLTfa4w9u
+	z2/99zKEQCvkbl6gSGfme35ERGmms9IiAAh+GFigDB/w9MdlJiichxzgRALQBPILS5RkSJP/AFY
+	ZmMWdqtpd4mwA+gG4ITTvt2+Uqn2dJiwVw8IDjBkdrzVBWnrZOhPck+cIalRO1DnMOI3JRqsF/7
+	+jeB8wF5iAcARTjapU7FKU4yYGYFz1BWV6+Km4EL/YgnHXJJzu0qfF6xexROEarrbCs6qRuTft2
+	VMIyYksinDl6jPNC6zLyULoR1+k5bZSVaxq1ujE38Y86LFI5Bd23KiyQfu9WTfzJ8A2Ra7g03EO
+	6LQURvdNIMTc=
+X-Received: by 2002:a2e:a98c:0:b0:3a1:eb3d:d30 with SMTP id
+ 38308e7fff4ca-3a371ba9be1mr37005571fa.10.1788916547185; Tue, 08 Sep 2026
+ 18:15:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260907161438.755125-2-maxime.chevallier@bootlin.com>
+References: <20260905093932.43726-1-sigefriedhyy@gmail.com>
+ <20260905093932.43726-2-sigefriedhyy@gmail.com> <1673485d-5529-415b-b1b6-60e27291e3bf@kernel.org>
+In-Reply-To: <1673485d-5529-415b-b1b6-60e27291e3bf@kernel.org>
+From: Yuyang Huang <sigefriedhyy@gmail.com>
+Date: Wed, 9 Sep 2026 10:15:35 +0900
+X-Gm-Features: AcwNN1VKTW3usIKu3ouYSVflf7oviyQs0HuBjHgGBr26olQ879IgU8NHIR61XhA
+Message-ID: <CA+7S2v+vdR-=XJYNrmY5djFPW+4uLtHJYaV3iDsmuCEQcB9FMQ@mail.gmail.com>
+Subject: Re: [PATCH net-next 1/3] rtnetlink: add AF_PACKET multicast dumps
+To: David Ahern <dsahern@kernel.org>
+Cc: "David S. Miller" <davem@davemloft.net>, Donald Hunter <donald.hunter@gmail.com>, 
+	Eric Dumazet <edumazet@google.com>, Ido Schimmel <idosch@nvidia.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	Nikolaos Gkarlis <nickgarlis@gmail.com>, Paolo Abeni <pabeni@redhat.com>, 
+	Sabrina Dubroca <sd@queasysnail.net>, Shuah Khan <shuah@kernel.org>, Simon Horman <horms@kernel.org>, 
+	Stanislav Fomichev <sdf.kernel@gmail.com>, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 07, 2026 at 06:14:35PM +0200, Maxime Chevallier (Netdev Foundation) wrote:
-> The ynl tool and libraries may be built standalone or through the
-> drivers/net/hw selftest machinery. This may target a different arch, so
-> we need to take the CROSS_COMPILE variable into account for LLVM and
-> gcc.
-> 
-> Let's include the tools/scripts/Makefile.include that deals with the
-> CC/AR resolution.
-> 
-> Fixup the ynltool CFLAGS handling to use +=, so that we don't override
-> the ones set in Makefile.include.
-> 
-> Makefile.include also sets the Q variable for verbose mode, so we can
-> drop it from the ynltool Makefile. This will allow properly selection
-> the verbosity of ynltool builds with the V=1 make flag.
-> 
-> Reviewed-by: Matthieu Baerts (Netdev Foundation) <matttbe@kernel.org>
-> Signed-off-by: Maxime Chevallier (Netdev Foundation) <maxime.chevallier@bootlin.com>
+On Wed, Sep 9, 2026 at 12:56=E2=80=AFAM David Ahern <dsahern@kernel.org> wr=
+ote:
+>
+> On 9/5/26 4:39 AM, Yuyang Huang wrote:
+> > +static int rtnl_dump_mcaddr(struct sk_buff *skb, struct netlink_callba=
+ck *cb)
+> > +{
+> > +     struct net *net =3D sock_net(skb->sk);
+> > +     unsigned int flags =3D NLM_F_MULTI;
+> > +     struct {
+> > +             unsigned long ifindex;
+> > +             int addr_idx;
+> > +     } *ctx =3D (void *)cb->ctx;
+> > +     struct net_device *dev;
+> > +     int ifindex =3D 0;
+> > +     int err =3D 0;
+> > +
+> > +     if (cb->strict_check) {
+>
+> this is new code. It should only work with strict checking.
 
-Hey Maxime,
+Thanks for the advice, I will fix it in patchset v2.
 
-It seems that this patch may break some invocations of make:
+Thanks,
 
-  # make -C tools/net/ynl/ynltool O=/tmp/o1
-  make: Entering directory '/data/users/bobbyeshleman/linux-worktrees/review/tools/net/ynl/ynltool'
-  make: *** No rule to make target '/tmp/o1/json_writer.o', needed by '/tmp/o1/ynltool'.  Stop.
-  make: Leaving directory '/data/users/bobbyeshleman/linux-worktrees/review/tools/net/ynl/ynltool'
-
-Best,
-Bobby
-
-> ---
->  tools/net/ynl/Makefile           | 1 +
->  tools/net/ynl/generated/Makefile | 3 ++-
->  tools/net/ynl/lib/Makefile       | 3 ++-
->  tools/net/ynl/tests/Makefile     | 2 +-
->  tools/net/ynl/ynltool/Makefile   | 6 ++----
->  5 files changed, 8 insertions(+), 7 deletions(-)
-> 
-> diff --git a/tools/net/ynl/Makefile b/tools/net/ynl/Makefile
-> index 3cefe4ed96cb..838c465d65aa 100644
-> --- a/tools/net/ynl/Makefile
-> +++ b/tools/net/ynl/Makefile
-> @@ -1,5 +1,6 @@
->  # SPDX-License-Identifier: GPL-2.0
->  
-> +include ../../scripts/Makefile.include
->  include ../../scripts/Makefile.arch
->  
->  INSTALL	?= install
-> diff --git a/tools/net/ynl/generated/Makefile b/tools/net/ynl/generated/Makefile
-> index ea4128f612d6..5a186349b5a8 100644
-> --- a/tools/net/ynl/generated/Makefile
-> +++ b/tools/net/ynl/generated/Makefile
-> @@ -1,6 +1,7 @@
->  # SPDX-License-Identifier: GPL-2.0
->  
-> -CC=gcc
-> +include ../../../scripts/Makefile.include
-> +
->  CFLAGS += -std=gnu11 -O2 -W -Wall -Wextra -Wno-unused-parameter -Wshadow \
->  	-I../lib/ -idirafter $(UAPI_PATH)
->  ifeq ("$(DEBUG)","1")
-> diff --git a/tools/net/ynl/lib/Makefile b/tools/net/ynl/lib/Makefile
-> index 9b98c0599600..7b3eae89982f 100644
-> --- a/tools/net/ynl/lib/Makefile
-> +++ b/tools/net/ynl/lib/Makefile
-> @@ -1,6 +1,7 @@
->  # SPDX-License-Identifier: GPL-2.0
->  
-> -CC=gcc
-> +include ../../../scripts/Makefile.include
-> +
->  CFLAGS += -std=gnu11 -O2 -W -Wall -Wextra -Wno-unused-parameter -Wshadow
->  ifeq ("$(DEBUG)","1")
->    CFLAGS += -g -fsanitize=address -fsanitize=leak -static-libasan
-> diff --git a/tools/net/ynl/tests/Makefile b/tools/net/ynl/tests/Makefile
-> index 40827ca8e579..99ae7dcd6348 100644
-> --- a/tools/net/ynl/tests/Makefile
-> +++ b/tools/net/ynl/tests/Makefile
-> @@ -2,8 +2,8 @@
->  # Makefile for YNL tests
->  
->  include ../Makefile.deps
-> +include ../../../scripts/Makefile.include
->  
-> -CC=gcc
->  CFLAGS += -std=gnu11 -O2 -W -Wall -Wextra -Wno-unused-parameter -Wshadow \
->  	-I../lib/ -I../generated/ -I../../../testing/selftests/ \
->  	-idirafter $(UAPI_PATH)
-> diff --git a/tools/net/ynl/ynltool/Makefile b/tools/net/ynl/ynltool/Makefile
-> index 48b0f32050f0..b8c67cdb4fdf 100644
-> --- a/tools/net/ynl/ynltool/Makefile
-> +++ b/tools/net/ynl/ynltool/Makefile
-> @@ -1,12 +1,12 @@
->  # SPDX-License-Identifier: GPL-2.0-only
->  
->  include ../Makefile.deps
-> +include ../../../scripts/Makefile.include
->  
->  INSTALL	?= install
->  prefix  ?= /usr
->  
-> -CC := gcc
-> -CFLAGS := -Wall -Wextra -Werror -O2
-> +CFLAGS += -Wall -Wextra -Werror -O2
->  ifeq ("$(DEBUG)","1")
->    CFLAGS += -g -fsanitize=address -fsanitize=leak -static-libasan
->  endif
-> @@ -27,8 +27,6 @@ include $(wildcard *.d)
->  
->  all: $(YNLTOOL)
->  
-> -Q = @
-> -
->  $(YNLTOOL): ../libynl.a $(OBJS)
->  	$(Q)echo -e "\tLINK $@"
->  	$(Q)$(CC) $(CFLAGS) -o $@ $(OBJS) ../libynl.a -lm
-> -- 
-> 2.55.0
-> 
+Yuyang
