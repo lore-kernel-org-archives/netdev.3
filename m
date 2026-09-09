@@ -1,288 +1,259 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED1EB5678FD
-	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 14:26:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C70F566C70
+	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 14:28:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788963996; cv=none; b=S++uQ0sOBg3sP3kSDJQypYf2pw8baAp1ck0u29ZCtVg+tB8BHqHC5KXhSovPrfK7YvdfIbLfhZNeY5tWU40bRjr9BETHz9x9pkvPhIykFh9dLm98NOx57WAYL/pDpHWEPg8oZsKn7/Gyw0VWg5ciy3vbVQcLdzEt2jxG9iqEwKQ=
+	t=1788964135; cv=none; b=dKLZkp3YOsKY+JXxH57aRAw8/vAZmEOaRXIqH1s4WK2ZBKqoQrgGf/xBWFgqViy9+Mc2EkVlJiVBJAi/ZnXc+ZWm3zZ4MGPEqSevDqcCBAGaKExpi+ClgIdVq9dbV/gXdX8kDAQdMu4/fC93y2hxwB/dG8e5qqcIKPjjWEFpGmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788963996; c=relaxed/simple;
-	bh=KyQG3fqNgMyfWse8k/Dti2O/gJMM+CLJyWpXpFa3WiA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ChnIFtG3LWLftkTEivibTjetz/mr6T44tp5Dt7u4aVGQanT/rlRsCZDPi6V/OHJ+11qnarsl6hWhYMtohZeZQcgTM8GO7ZXQB2MvWVguG3tKDg55dYCqSTUWUCdmHql/vgezVF9mVu+r02n3P3EbOQUZdxYVks+kuUsLb7PrSsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Bl/ZSY9f; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=a/pkuMe9; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1788964135; c=relaxed/simple;
+	bh=5q5Kxm1o6yjpU0G2siLoIK/IYDFj/Yajqsg2XUqzmxg=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Nq5ZQxUWtGQitcVIs1LaSgmzDjOKpywRaUP9edSUmrxzMA8k4ij2K1Ny9n1u5qu4qeqrz68qsty9UQmO7CaOLeDRn2dD3ZQDPSIfYi4x70G9E5ZmZGZn32pgp9tkNJ6m7bxQHebup2S2BL87LKQYW/Au0CImbbCGk3u823q0yhI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AfWwwfdB; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Hg/82Qv4; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Bl/ZSY9f";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="a/pkuMe9"
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 689BU7U12171738
-	for <netdev@vger.kernel.org>; Wed, 9 Sep 2026 14:26:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	LxOgZcRvRYGuo3XQn/zJemLPSzBU5dwDiN5STI6YNto=; b=Bl/ZSY9fK8jYCkOd
-	3j4EeMQEvopYtE8TN4Ah2+TBKXoif/Lhuxc7QW6VW4J9MnInt/08u/uBBJgOHQL4
-	NvkG8BjtaIZWuaU4Po8sVz67jBYpWIfLfqhgfCtEeo+FUjlAs8oWjB22yPedtoIg
-	Ko7XJfdPm1lnOBYuWgSPBfZ/Dep34ADNO2U7O8ZfSOjKwu5ykrH0SxKQeFqQD+KU
-	NhGPOEDZGTOZcIhtFBR3w57IB8nHdrAsHCXW5ICtuSkEgcRKti1Wkv5TQPieeFCP
-	hWi2UL7FY30L8x3pFcScn3wHmEsHQW6ltPZGoxbuACOYcnmKXuzmvrya1sKhPUbL
-	9zItKQ==
-Received: from mail-ua1-f72.google.com (mail-ua1-f72.google.com [209.85.222.72])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gk5rggxfr-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 14:26:33 +0000 (GMT)
-Received: by mail-ua1-f72.google.com with SMTP id a1e0cc1a2514c-97e99615e0dso5128431241.1
-        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 07:26:33 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AfWwwfdB";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Hg/82Qv4"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1788964131;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Pw4e6oik4dRUDIn5qml2Np190c3xmC7+uPRws27S9Ko=;
+	b=AfWwwfdBTaA/9qY9Onpbs/FlAS+myHVby8ynkLub7w+H7ewH8kWhi/Q11S5nv5rbS65bSs
+	UZmpI51SCcEsS7PptJVo2kZhaB2jaR94SwPWuPPMkPg/ZKr91JjMTWWr0QSwUx5Tjo4igv
+	lyg5dQa91mtkNQ40k9fBGUZyPXyi07Q=
+Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com
+ [209.85.167.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-196-gJlEM8AzOAWXsxNBtTxUNw-1; Wed, 09 Sep 2026 10:28:48 -0400
+X-MC-Unique: gJlEM8AzOAWXsxNBtTxUNw-1
+X-Mimecast-MFC-AGG-ID: gJlEM8AzOAWXsxNBtTxUNw_1788964128
+Received: by mail-oi1-f199.google.com with SMTP id 5614622812f47-4a41f46d629so9697562b6e.3
+        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 07:28:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1788963993; x=1789568793; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=LxOgZcRvRYGuo3XQn/zJemLPSzBU5dwDiN5STI6YNto=;
-        b=a/pkuMe9XmiihLrkmta1TMDbtUc0k4moVKmcLhg7PoNn5Wxfft2rQG/nm3RnmxQjiW
-         PUHzWoGxUOpjvs6VBd/SgatdFpRy97/Vxch8F+sydZ4YgRjwaL5lQOqzDu2Q8gnQOBE8
-         t+uWzQG8oXe7IpIJbiFqS/g5ZW9m2dX3dPC6eHKvDSfZLxxeBUL0qJ59Al6FWibS657w
-         xc38XbaU/N3nuDCcYiSkNXUrYzayfKxaMTjX1Enslt4wEHlXZ16fIIT50XFYtmlHVGJE
-         6lJT7J/bhhQIiLQjJfYeNqQcKZMw4pMjuznAe5HHzXFKSLTSteAi/BeTt/SBAMlk8bT+
-         M0rA==
+        d=redhat.com; s=google; t=1788964128; x=1789568928; darn=vger.kernel.org;
+        h=content-type:mime-version:user-agent:message-id:date:references
+         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=Pw4e6oik4dRUDIn5qml2Np190c3xmC7+uPRws27S9Ko=;
+        b=Hg/82Qv4t+B3UNtfe7xQvlV8voTWqcNEQXPAWUwf0U/zNaUZ3BbAA62/JPpiJZ6C9a
+         heWu4XyP+tIDBQIuYRpGD1AEv9OYjzCi2eO5r8zdKdmutxxbBfK8NAUeC3sGLnayii59
+         wygPcl8wRN0zhqdZ7tqWosvovariDTSqu4FLEDzKfeYl+O8JRPqPARsaMMI4ffeKNczB
+         RbDjhCHdP+OfzneI/WG0LQsBRXLlzJfQY3hVhg0bj/3OiadZov3/bc1NwJORGRFdbJb5
+         HU+Tk3WFVL3e8wbjgEVtULOByeY9zkX7Rs7441IV+qfp+vOUV9KqaRXj70RPsemzRRDh
+         p7yA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788963993; x=1789568793;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=LxOgZcRvRYGuo3XQn/zJemLPSzBU5dwDiN5STI6YNto=;
-        b=GbE+kpIucRTFTmDx2pUoRChSAfyv4gTnGsqgU650WJK5zzq6+ClKouyC9Z8ki+9nhI
-         wg4nO3/eE7pBFfB1OuXtiLm00HXOYxtqaLDNLTdaun62JAJZTmDDp7pX+/7xXj7meckm
-         wvR+Gy6xIgg13D/BQlHBQudMRH3hiRVsgBn33WEI6Ao2JCwZgqJE6dKN9p8fNJuRTYz+
-         ACpVxEwcQTxjI+7FvofnzRtSXQPju1IFWIoI0QtyjomhzuvmCd8zp2OMpZS+Y/6z/4XM
-         H+TepbhGVXw1+xha/Z9o2QJJfk33NEzonrIyDo35IVbzXd7FQZDCp+1cyPUk1mCy0RlP
-         Q5Sw==
-X-Gm-Message-State: AFuF++nuuBK16Bs4sYASTuT1cdPupUMTAbez9wvAsZR3tvHFwkoW8E0C
-	M/744CieTNKGBoTVBsV3h3w6bwuF6USnhUhxqQmlLQ4LU+4KKYj3cNqgVhbeJNpLYqcfBUr2sy5
-	+3LocYovUzlXc9z1iHpzuRqQqMmS7Ihb+ipneoS2glC6QZYgYnQz1sMACJJw=
-X-Gm-Gg: AYBFou0z2j48gMc2cVu6QV7sXwPz5fAkMUVBYTTSvaPdtg61hA/JGkYQm3iXa/6qLhz
-	OrK1iwYVLesedx1+RDyc36NR5W+MNes7hJsvyGnSSNMTJCGgj2uWQejaEAgpdOBCuImOd41vEpR
-	Wnw5on4LqmHRav0rFAlbxMPcFo0Rs3TT9b8jpgOTxb+80QCOzTaLqpqjuzCe93w6XlOvE3BPa0d
-	i1oBZy6BkAn8f0nxWlja7WjOUXA8UObpoD95MAmsWceYvUS5CFpd0hmTHwY+Yzy8du6n+L5K5bF
-	oZlYG+Wc6KZIMQ94lLFsqmHV3xeiasb+6qXrIQLt2Xa4W9TeHzw245iTSQx/2xJMbB/naOGJfbk
-	O2xyjyy8eB/4mGQ==
-X-Received: by 2002:a05:6102:30c6:20b0:780:c9c:bfcd with SMTP id ada2fe7eead31-78a2f00e2a9mr8076606137.17.1788963993029;
-        Wed, 09 Sep 2026 07:26:33 -0700 (PDT)
-X-Received: by 2002:a05:6102:30c6:20b0:780:c9c:bfcd with SMTP id ada2fe7eead31-78a2f00e2a9mr8076539137.17.1788963991349;
-        Wed, 09 Sep 2026 07:26:31 -0700 (PDT)
-Received: from localhost ([188.216.77.92])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49d20fce7a7sm128366565e9.4.2026.09.09.07.26.30
+        d=1e100.net; s=20251104; t=1788964128; x=1789568928;
+        h=content-type:mime-version:user-agent:message-id:date:references
+         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=Pw4e6oik4dRUDIn5qml2Np190c3xmC7+uPRws27S9Ko=;
+        b=JniSbx7kVA0sHHiyny061mP9qelKmrEXHuiBNWgk48UmbEsbQmI4zVNLSTMnhXh1rL
+         cMFJKPI4GJJkQAtBeX8JhLOuiWGZYsxwZA+hNFhO8VfeWWGgM/9FBp82WdABlk4X3DJA
+         CA7/6xZNYk6SdWWhLUSx951FX7hzOBzmUOeutw4hQiz4C+qf10i5/O5evC5eA1/3QZiR
+         tFCOy/N+SqwcGu4o+UVvPeWKcJn4Vo7u1IhqcJUUxkeDxSarLZprrWukHNCbNWFgJewk
+         3Czke2nHN+5O9xg557jDYSqbLhtLZCUew9W2ir25Gs+3CknNszWzVpSLinF0uZ9XCmhu
+         4YYQ==
+X-Gm-Message-State: AFuF++nKnqqQx/66jLyBou6lo1QV3keKiFDSNV+RZ1lbtDV8x6SzaxRw
+	qhKAHexKrjtjgdLGiCaC6YfVWK9Wtqs1MBCWsaLBWO4OLejpCdviTg/oaIFMtwtj+ulIjFoHtRK
+	cd7MhQRpFRNVezCczrNrRAgzWg2+5BckvMTw5Ggfyx8wAvzbKjl7/STGP+g==
+X-Gm-Gg: AYBFou31rzaJIGW1K9ZurgXVVgSlhxpXocvnJvLJdrhmkH3xq866Ym0tDL9obycukfn
+	kqQWUivGDsl2OqiAUGXG+I3rt8d8eTnetpvyKQS2VucRQ+kp5T+sC2egHBSKaNC345yZ4nnsWCU
+	PNIp2e0ysDA/04MatcLgCYZA6/73sJGi+kp8Y5S9+UU6vdCQ90k2L5bvj9K528DpBX4w2PX9M7u
+	jy063CjNPz9DBiiWOVheGLDpO9vXliDVyUo8vaTQJwDjEe4D6VS7HMbK62yUODjVgBph3WQBp3q
+	9f10GSXpQPTPvScjJVh0Rkm61LEuRIQV0tSK3KruJHe1wgb3oS8CjGVbeuvR79OSmzDemL7v0Tr
+	+p6ojLzyWFlTCjSFaHWNDpJUPQ+oJ
+X-Received: by 2002:a05:6808:130a:b0:4bc:d58d:6cff with SMTP id 5614622812f47-4bcd58d8b6dmr10621179b6e.43.1788964127886;
+        Wed, 09 Sep 2026 07:28:47 -0700 (PDT)
+X-Received: by 2002:a05:6808:130a:b0:4bc:d58d:6cff with SMTP id 5614622812f47-4bcd58d8b6dmr10621128b6e.43.1788964127326;
+        Wed, 09 Sep 2026 07:28:47 -0700 (PDT)
+Received: from aconole-thinkpadt14gen4.rmtusnh.csb ([216.212.25.12])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-4b96babc2c3sm18029742b6e.0.2026.09.09.07.28.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Sep 2026 07:26:30 -0700 (PDT)
-From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-Date: Wed, 09 Sep 2026 16:26:10 +0200
-Subject: [PATCH net v2 2/2] net: stmmac: preserve real_num_tx_queues on
- mqprio setup failure
+        Wed, 09 Sep 2026 07:28:45 -0700 (PDT)
+From: Aaron Conole <aconole@redhat.com>
+To: Minxi Hou <houminxi@gmail.com>
+Cc: netdev@vger.kernel.org,  echaudro@redhat.com,  i.maximets@ovn.org,
+  davem@davemloft.net,  kuba@kernel.org,  pabeni@redhat.com,
+  edumazet@google.com,  horms@kernel.org,  shuah@kernel.org,
+  linux-kselftest@vger.kernel.org,  dev@openvswitch.org
+Subject: Re: [PATCH v3 1/2] selftests/net/openvswitch: add SCTP flow key
+ test over IPv6
+In-Reply-To: <20260906165251.1176875-2-houminxi@gmail.com> (Minxi Hou's
+	message of "Sun, 6 Sep 2026 12:52:50 -0400")
+References: <20260906165251.1176875-1-houminxi@gmail.com>
+	<20260906165251.1176875-2-houminxi@gmail.com>
+Date: Wed, 09 Sep 2026 10:28:43 -0400
+Message-ID: <f7t33vio5wk.fsf@aconole-thinkpadt14gen4.rmtusnh.csb>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260909-stmmac-tc_setup_dwmac510_mqprio-error-path-v2-2-8158b8333b3d@oss.qualcomm.com>
-References: <20260909-stmmac-tc_setup_dwmac510_mqprio-error-path-v2-0-8158b8333b3d@oss.qualcomm.com>
-In-Reply-To: <20260909-stmmac-tc_setup_dwmac510_mqprio-error-path-v2-0-8158b8333b3d@oss.qualcomm.com>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Furong Xu <0x1207@gmail.com>, Vladimir Oltean <olteanv@gmail.com>
-Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-X-Mailer: b4 0.14.3
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTA5MDE2MCBTYWx0ZWRfX3dJU6lgJTQWt
- 4AVRslOa3G2xykVQxEZjlRNwu5QOWqgk1YOlDRkZ5Vx1BZBiTdTCVQ2rm3ulRmYUrZfx0tmV+ej
- Wu5f64/ybKNUISAHc5kaV9FV1sTA0lo=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTA5MDE2MCBTYWx0ZWRfX6TdbM2jbEmiJ
- 7D/lCdedjmsHVGUqbBllPQ73Q+WdVIirk59H6AvmSFy20eZYNtsfvthOOZrc1/sD80CdP3UmaRG
- v9cRz2vrQj+0qzU1lKE3R8BFrpbyrQ5NZ1soLrTE0wHEdHX+lSZidpEkWvfZNLWSJbdd6HvbYsj
- IehhQ1n6TrVGMWQshHClQJIB9phksvMIvSJ99Uc7Kzq25ZcBuYfzcjY4/67eMuWwS7XOkTf4sK3
- rLbt1xipjqME4ClA/bIk3epPAsSAWZLbdHbDZIHaNs+tenoVbixQwDtiEkwGeaGyvEyyt2eWkRT
- DD8YoKjQawFbehjDDcqkpr+PV0lUUrpo4B09juDGBKkW4Tpt7kNkqGYcQi4E8GiZsj+z2DM/z4N
- EYUhjZyeSKFUOG12h20u7OPNb6r86uUL6kBBxAIRGXV/kTyspHJ/jwvLyOvl8GDyZI7RqXOB2E4
- O/ciBfA1HdCEk/nNFbA==
-X-Authority-Analysis: v=2.4 cv=B6qJFutM c=1 sm=1 tr=0 ts=6aa16c99 cx=c_pps
- a=ULNsgckmlI/WJG3HAyAuOQ==:117 a=WpTaRW6qxYHRGzLzQsVYzg==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_glEPmIy2e8OvE2BGh3C:22
- a=EUspDBNiAAAA:8 a=0NSVpFHRlRhN2sU1BpMA:9 a=QEXdDO2ut3YA:10
- a=1WsBpfsz9X-RYQiigVTh:22
-X-Proofpoint-GUID: doHn5hzdw3GPz8DMfiILi9IJcUuhYZHZ
-X-Proofpoint-ORIG-GUID: doHn5hzdw3GPz8DMfiILi9IJcUuhYZHZ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-08_03,2026-09-09_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 phishscore=0 spamscore=0 adultscore=0 malwarescore=0
- bulkscore=0 clxscore=1015 impostorscore=0 lowpriorityscore=0 suspectscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2606150000 definitions=main-2609090160
+Content-Type: text/plain
 
-With the FPE preemption-class mapping error now propagated from
-stmmac_fpe_map_preemption_class(), tc_setup_dwmac510_mqprio() can fail
-on the mapping step. The error path used to call stmmac_reset_tc_mqprio(),
-which resets the number of real TX queues to priv->plat->tx_queues_to_use
-(the platform maximum), overwriting the value that was active before the
-offload was attempted (for example a lower count left over from a previous
-mqprio configuration).
+Minxi Hou <houminxi@gmail.com> writes:
 
-The issue can be triggered using the following configuration:
+> The merged SCTP test covers only IPv4. The SCTP branch of the IPv6
+> extractor (the proto=132 walk after parse_ipv6hdr) and the v6 side of
+> the SCTP netlink validation (match_validate() requires the sctp() key
+> whenever ipv6(proto=132) is matched) have no selftest coverage.
+>
+> Add test_sctp_connect_v6 mirroring the v4 test: bare icmpv6() flows
+> forward NS/NA, and ipv6(proto=132),sctp(dst=4443)/sctp(src=4443)
+> flows gate the association in the same three phases (flows installed,
+> removed, reinstalled). After the association succeeds the test also
+> pushes a known payload across and waits for the listener to log it,
+> proving the datapath carries the association's traffic end to end,
+> not only its handshake. Skips when the sctp module is missing, socat
+> lacks SCTP support, or IPv6 is unavailable; an association or payload
+> failure with the flows installed fails the test.
+>
+> Signed-off-by: Minxi Hou <houminxi@gmail.com>
+> ---
+>  .../selftests/net/openvswitch/openvswitch.sh  | 95 +++++++++++++++++++
+>  1 file changed, 95 insertions(+)
+>
+> diff --git a/tools/testing/selftests/net/openvswitch/openvswitch.sh b/tools/testing/selftests/net/openvswitch/openvswitch.sh
+> index a31f7fb6882d..0926e304ed88 100755
+> --- a/tools/testing/selftests/net/openvswitch/openvswitch.sh
+> +++ b/tools/testing/selftests/net/openvswitch/openvswitch.sh
+> @@ -34,6 +34,7 @@ tests="
+>  	trunc					trunc: output truncation
+>  	icmpv6					icmpv6: ICMPv6 echo type match
+>  	sctp_connect_v4				sctp: SCTP flow key matching
+> +	sctp_connect_v6			sctp6: SCTP flow key matching over IPv6
 
-  # First mqprio config lowers the hw queue count.
-  $tc qdisc add dev eth0 root handle 1: mqprio queues 4@0 4@4
+This series has a spacing alignment issue in the test list (line 37
+doesn't align with the others).  This is the third version where basic
+formatting issues appear in this same block, and it is indicative of a
+larger problem.  I do understand you're trying to address feedback in a
+timely fashion.
 
-  # Replace mqprio configuration with a second one that fails FPE
-  # preemption-class mapping. stmmac driver resets the real_num_tx_queues
-  # to the platform maximum, losing the previous configuration.
-  $tc qdisc replace dev eth0 root handle 2: mqprio queues 2@0 2@2 fp E P
+I need to be direct: submitting patches with preventable formatting
+issues suggests they're not getting a careful final review before
+firing off 'git send-email'.  These kinds of errors create unnecessary
+review cycles and CI burden.
 
-Save ndev->real_num_tx_queues before lowering it and restore it,
-together with the TC-to-queue and priority-to-TC mappings, when the FPE
-preemption-class mapping fails, instead of resetting the queue count to
-the platform maximum.
+Before submitting, please review your own patches with the same care a
+maintainer would.  You should be checking the functionality, and the
+architecture, yes.  You should make sure all of the feedback is
+addressed, yes.  BUT you also need to care for formatting, alignment,
+and style consistency.  A pre-submission checklist might help catch
+these.
 
-Note that a failed setup makes the qdisc layer run mqprio_destroy() on
-the new qdisc, which resets dev->num_tc to 0; that is qdisc-layer handling,
-out of the driver's control, and the driver-side restore remains correct
-for the still-active previous configuration.
+I'm setting this series aside for now.  Please resubmit when you've had a
+chance to do a thorough self-review.  That may take more than 24 hours.
+Please don't rush this important pre-submission step.
 
-Fixes: 195e4f409a40 ("net: stmmac: support fp parameter of tc-mqprio")
-Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
----
- drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c | 80 ++++++++++++++++++-------
- 1 file changed, 60 insertions(+), 20 deletions(-)
-
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-index 5398616fcdfe..7d73b0c16f50 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-@@ -1237,6 +1237,30 @@ static int tc_query_caps(struct stmmac_priv *priv,
- 	}
- }
- 
-+static int stmmac_set_ndev_tcs(struct net_device *ndev, u8 ntc,
-+			       struct netdev_tc_txq *tc_to_txq)
-+{
-+	int i, err;
-+
-+	netdev_reset_tc(ndev);
-+	if (!ntc)
-+		return 0;
-+
-+	err = netdev_set_num_tc(ndev, ntc);
-+	if (err)
-+		return err;
-+
-+	for (i = 0; i < ntc; i++) {
-+		u16 count, offset;
-+
-+		count = tc_to_txq[i].count;
-+		offset = tc_to_txq[i].offset;
-+		netdev_set_tc_queue(ndev, i, count, offset);
-+	}
-+
-+	return 0;
-+}
-+
- static int stmmac_reset_tc_mqprio(struct net_device *ndev,
- 				  struct netlink_ext_ack *extack)
- {
-@@ -1251,43 +1275,59 @@ static int stmmac_reset_tc_mqprio(struct net_device *ndev,
- static int tc_setup_dwmac510_mqprio(struct stmmac_priv *priv,
- 				    struct tc_mqprio_qopt_offload *mqprio)
- {
-+	unsigned int ndev_num_tx_queues, num_tx_queues = 0;
-+	struct netdev_tc_txq ndev_tc_to_txq[TC_MAX_QUEUE];
-+	struct netdev_tc_txq tc_to_txq[TC_MAX_QUEUE] = {};
- 	struct netlink_ext_ack *extack = mqprio->extack;
- 	struct tc_mqprio_qopt *qopt = &mqprio->qopt;
--	u32 offset, count, num_stack_tx_queues = 0;
- 	struct net_device *ndev = priv->dev;
--	u32 num_tc = qopt->num_tc;
--	int err;
-+	u8 ndev_prio_tc_map[TC_BITMASK + 1];
-+	int i, err, ndev_ntc;
- 
--	if (!num_tc)
-+	if (!qopt->num_tc)
- 		return stmmac_reset_tc_mqprio(ndev, extack);
- 
--	err = netdev_set_num_tc(ndev, num_tc);
--	if (err)
--		return err;
--
--	for (u32 tc = 0; tc < num_tc; tc++) {
--		offset = qopt->offset[tc];
--		count = qopt->count[tc];
--		num_stack_tx_queues += count;
-+	if (qopt->num_tc > ARRAY_SIZE(tc_to_txq))
-+		return -EINVAL;
- 
--		err = netdev_set_tc_queue(ndev, tc, count, offset);
--		if (err)
--			goto err_reset_tc;
-+	/* save current tc values for reset */
-+	ndev_ntc = netdev_get_num_tc(ndev);
-+	for (i = 0; i < ARRAY_SIZE(ndev->tc_to_txq); i++)
-+		ndev_tc_to_txq[i].combined =
-+			READ_ONCE(ndev->tc_to_txq[i].combined);
-+	for (i = 0; i < ARRAY_SIZE(ndev_prio_tc_map); i++)
-+		ndev_prio_tc_map[i] = READ_ONCE(ndev->prio_tc_map[i]);
-+
-+	for (i = 0; i < qopt->num_tc; i++) {
-+		tc_to_txq[i] = (struct netdev_tc_txq) {
-+			.count = qopt->count[i],
-+			.offset = qopt->offset[i],
-+		};
-+		num_tx_queues += qopt->count[i];
- 	}
- 
--	err = netif_set_real_num_tx_queues(ndev, num_stack_tx_queues);
-+	err = stmmac_set_ndev_tcs(ndev, qopt->num_tc, tc_to_txq);
-+	if (err)
-+		goto error_reset_tc;
-+
-+	ndev_num_tx_queues = ndev->real_num_tx_queues;
-+	err = netif_set_real_num_tx_queues(ndev, num_tx_queues);
- 	if (err)
--		goto err_reset_tc;
-+		goto error_reset_tc;
- 
- 	err = stmmac_fpe_map_preemption_class(priv, ndev, extack,
- 					      mqprio->preemptible_tcs);
- 	if (err)
--		goto err_reset_tc;
-+		goto error_reset_num_tx_queues;
- 
- 	return 0;
- 
--err_reset_tc:
--	stmmac_reset_tc_mqprio(ndev, extack);
-+error_reset_num_tx_queues:
-+	netif_set_real_num_tx_queues(ndev, ndev_num_tx_queues);
-+error_reset_tc:
-+	stmmac_set_ndev_tcs(ndev, ndev_ntc, ndev_tc_to_txq);
-+	for (i = 0; i < ARRAY_SIZE(ndev_prio_tc_map); i++)
-+		netdev_set_prio_tc_map(ndev, i, ndev_prio_tc_map[i]);
- 
- 	return err;
- }
-
--- 
-2.55.0
+>  	psample					psample: Sampling packets with psample"
+>  
+>  info() {
+> @@ -700,6 +701,100 @@ test_sctp_connect_v4() {
+>  	return 0
+>  }
+>  
+> +# sctp_connect_v6 test
+> +# - sctp(dst=4443) matches client-to-server INIT
+> +# - sctp(src=4443) matches server-to-client INIT-ACK
+> +# - icmpv6 NS/NA flows forward neighbour discovery
+> +# - remove flows and verify connection fails, reinstall and recover
+> +test_sctp_connect_v6() {
+> +	local t="test_sctp_connect_v6"
+> +	local v6="eth_type(0x86dd),ipv6(proto=132)"
+> +	local payload="SCTP6_DATA_OK"
+> +	local rxfile="${ovs_base}/${t}/sctp-rx.txt"
+> +
+> +	modprobe -q sctp 2>/dev/null || return "$ksft_skip"
+> +	socat -V 2>&1 | grep -q "define WITH_SCTP" || return "$ksft_skip"
+> +	[ -e /proc/sys/net/ipv6 ] || return "$ksft_skip"
+> +
+> +	sbx_add "$t" || return $?
+> +	ovs_add_dp "$t" sctp6 || return 1
+> +
+> +	info "create namespaces"
+> +	for ns in client server; do
+> +		ovs_add_netns_and_veths "$t" "sctp6" "$ns" \
+> +		    "${ns:0:1}0" "${ns:0:1}1" || return 1
+> +	done
+> +
+> +	ip netns exec client ip addr add fd00::1/64 dev c1 nodad
+> +	ip netns exec client ip link set c1 up
+> +	ip netns exec server ip addr add fd00::2/64 dev s1 nodad
+> +	ip netns exec server ip link set s1 up
+> +
+> +	# NS/NA forwarding
+> +	ovs_add_flow "$t" sctp6 \
+> +	    'in_port(1),eth(),eth_type(0x86dd),ipv6(proto=58),icmpv6()' \
+> +	    '2' || return 1
+> +	ovs_add_flow "$t" sctp6 \
+> +	    'in_port(2),eth(),eth_type(0x86dd),ipv6(proto=58),icmpv6()' \
+> +	    '1' || return 1
+> +
+> +	# SCTP port matching: dst for request, src for reply
+> +	ovs_add_flow "$t" sctp6 \
+> +	    "in_port(1),eth(),$v6,sctp(dst=4443)" \
+> +	    '2' || return 1
+> +	ovs_add_flow "$t" sctp6 \
+> +	    "in_port(2),eth(),$v6,sctp(src=4443)" \
+> +	    '1' || return 1
+> +
+> +	ovs_netns_spawn_daemon "$t" "server" \
+> +	    socat -u -t 1 SCTP6-LISTEN:4443,fork \
+> +	    OPEN:"$rxfile",creat,append
+> +	ovs_wait sctp_eps_has server 4443 || return 1
+> +
+> +	info "verify SCTP association with port-keyed flows"
+> +	ovs_sbx "$t" ip netns exec client \
+> +	    timeout 3 socat -u STDIN "SCTP6-CONNECT:[fd00::2]:4443" </dev/null \
+> +	    || return 1
+> +
+> +	info "verify SCTP DATA chunk crosses the datapath"
+> +	ovs_sbx "$t" ip netns exec client \
+> +	    timeout 3 socat -u STDIN "SCTP6-CONNECT:[fd00::2]:4443" \
+> +	    <<< "$payload" || return 1
+> +	ovs_wait grep -q "$payload" "$rxfile" \
+> +	    || { info "server did not receive SCTP DATA payload"
+> +	         return 1; }
+> +
+> +	ovs_del_flows "$t" sctp6
+> +
+> +	info "verify connection fails without flows"
+> +	ovs_add_flow "$t" sctp6 \
+> +	    'in_port(1),eth(),eth_type(0x86dd),ipv6(proto=58),icmpv6()' \
+> +	    '2' || return 1
+> +	ovs_add_flow "$t" sctp6 \
+> +	    'in_port(2),eth(),eth_type(0x86dd),ipv6(proto=58),icmpv6()' \
+> +	    '1' || return 1
+> +
+> +	ovs_sbx "$t" ip netns exec client \
+> +	    timeout 3 socat -u STDIN "SCTP6-CONNECT:[fd00::2]:4443" </dev/null \
+> +	    >/dev/null 2>&1 \
+> +	    && { info "connection should fail without flows"
+> +	         return 1; }
+> +
+> +	info "reinstall flows and verify recovery"
+> +	ovs_add_flow "$t" sctp6 \
+> +	    "in_port(1),eth(),$v6,sctp(dst=4443)" \
+> +	    '2' || return 1
+> +	ovs_add_flow "$t" sctp6 \
+> +	    "in_port(2),eth(),$v6,sctp(src=4443)" \
+> +	    '1' || return 1
+> +
+> +	ovs_sbx "$t" ip netns exec client \
+> +	    timeout 3 socat -u STDIN "SCTP6-CONNECT:[fd00::2]:4443" </dev/null \
+> +	    || return 1
+> +
+> +	return 0
+> +}
+> +
+>  # psample test
+>  # - use psample to observe packets
+>  test_psample() {
 
