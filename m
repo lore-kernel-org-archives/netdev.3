@@ -1,163 +1,109 @@
-Received: from mta1.migadu.com (out-151.mta1.migadu.com [95.215.58.151])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4A303B71B5
-	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 07:04:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7D893D5656;
+	Wed,  9 Sep 2026 07:09:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788937472; cv=none; b=q3hqobOno8arvF+UPyCxYbr/2rnMIBw1Zv6Fwy+lpPb8ZHehopeVDC2xPyTbHRuuau9cDTogmfCjVH7umTGVBbqDqvSbgtaNhYH5GtVmMMe6f7xVFFL5BqYmbBVH/mLSI1phGlg9rIXRRGoxpuMAHvwspbVboD47vo65coJeiBU=
+	t=1788937775; cv=none; b=mVGyQqcetz4l4bcA24iWSOGPolF7XxB2lrlxAsEEd0omc8EHUvpe50aPMXQJjrLOBdfQX3oB7G38/8Vz9QKBfd1F3jPp9Wo59AxjT48bO4zpJoCupTbCWXqhDs9hDEzhapq19F6GIGIjKGWZV79cbWGNGTZJ1F+qce1GiQJFB7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788937472; c=relaxed/simple;
-	bh=//yohNIuqAnGRo3lgqQJ49CeHC5XJjYRMg3X/WB18PA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V6HV/EvnhTpYSp1FMSZQ5xnd+/GVe0xab6te8VnFgEJiXpOS9iKnH5ashbT0UvK5IpDBSWhaObJub+k8CTLW1l72tKVXpiqUmx8amPdcoMjUifh9nB8I4WeUPMBsHN8aKRrrYTd7HI4v6mc9UoE1nDYDqKEsmqkyBMKV31TuU+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=uTnVHdOY; arc=none smtp.client-ip=95.215.58.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1788937775; c=relaxed/simple;
+	bh=1FAIQnZhZLFZV/kJb7P8mASwsdd4Z8mss2/nHoa+KR0=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=c2XeP2nMHz1pmLsDP8pEYKz+YS7KCWswzxnRMHVdhczlQVAApxecpzTuPWHpfnj2kgCDvcgFx/p7e/ugNNuBfU0BmMPzV4sEU+Xb9Ap0TWXPze4tZpPayH0Ag6zjx3NSh9kVSenV1uDxfJE7ChwwuMKa9WQ4hqmmWf+22KIIMGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dqZcA2zc; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="uTnVHdOY"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=//yohNIuqAnGRo3lgqQJ49CeHC5XJjYRMg3X/WB18PA=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1788937468; v=1; x=1789542268;
- b=uTnVHdOYYKCg2HalMo60hJAgJH66QhFjVANiweZ9e05v510y3hWnmtw7kpau0HJvV0jp57cc
- wGxXuilLiVpdvfEXmyyWVPopaXH0Tp0iVa0RQr2kaSgf/0zuGz9464XJZaUVNFX56tpagjYhOUj
- YrRv0xdIjDcABaeZKqAN0rdQ=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id b6175bb5234216f3;
-	Wed, 09 Sep 2026 07:04:28 +0000
-X-Mizu-Trace-ID: b6175bb5234216f3
-X-Migadu-Flow: FLOW_OUT
-From: Xuanqiang Luo <xuanqiang.luo@linux.dev>
-To: netdev@vger.kernel.org
-Cc: jhs@mojatatu.com,
-	jiri@resnulli.us,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	shuah@kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Xuanqiang Luo <luoxuanqiang@kylinos.cn>
-Subject: [PATCH net v1 2/2] selftests: tc-testing: test action batch failure cleanup
-Date: Wed,  9 Sep 2026 15:03:36 +0800
-Message-ID: <20260909070336.32979-3-xuanqiang.luo@linux.dev>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260909070336.32979-1-xuanqiang.luo@linux.dev>
-References: <20260909070336.32979-1-xuanqiang.luo@linux.dev>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dqZcA2zc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1D011F00A3A;
+	Wed,  9 Sep 2026 07:09:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788937773;
+	bh=07RL5PmXNvtCfGUStJ5pEHV1wfyEpGPOcdrgmnwqvqQ=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=dqZcA2zcPrzpT4MGF+wy9U90QV4SzDzwQbpPlgCkQkbHMU6g4WLGrTe0R3zRArkpc
+	 qd5Ru50M9+AaZs9l4w4kHrGHaVqEd/4w2os7TbO+5hTHS1SpOcLPDOylGfuwHgUHhM
+	 P4WgCA+ll+bnSSpoTq5d830ZcDQlZFpEo06aLSaaIU6WhX0TEfi5Ru7aDFnVglF+M7
+	 VUcvj+yimtv4lFoBxgMfV9BcvxL9NxcaicDCWpptT6iEj+j4ruAGLDDOR0TTNt1YNE
+	 vWoPAUeYzfNT+cWhExflaf8h0trCwWz7fV6kjufvUc9uDgoZ9iOD6p8Zi3YFCGB/kO
+	 vfpUgZhfsgG2Q==
+Message-ID: <4fda023c1e7152aee2d5f977f5045dcddcd08d8d.camel@kernel.org>
+Subject: Re: [PATCH net] rds: ib: use rds_conn_drop() on protocol version
+ mismatch
+From: Allison Henderson <achender@kernel.org>
+To: henrymei <ljp1205831794@gmail.com>, netdev@vger.kernel.org
+Cc: linux-rdma@vger.kernel.org, rds-devel@oss.oracle.com, 
+	santosh.shilimkar@oracle.com, davem@davemloft.net, edumazet@google.com, 
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, Aohan Mei
+	 <henrymei@tencent.com>, TencentOS Corvus AI <corvus@tencent.com>, 
+	stable@vger.kernel.org
+Date: Wed, 09 Sep 2026 00:09:32 -0700
+In-Reply-To: <20260908123356.1163970-1-henrymei@tencent.com>
+References: <20260908123356.1163970-1-henrymei@tencent.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.3-0ubuntu1.1 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+On Tue, 2026-09-08 at 20:33 +0800, henrymei wrote:
+> From: Aohan Mei <henrymei@tencent.com>
+>=20
+> rds_ib_cm_connect_complete() runs from the RDMA-CM event handler with
+> conn->c_cm_lock held.  When the peer negotiates a protocol version
+> older than RDS_PROTOCOL_COMPAT_VERSION, the handler calls
+> rds_conn_destroy(), which is only safe in the rmmod path: it
+> synchronously tears the connection down and flush_work()es the
+> shutdown work cp_down_w.
+>=20
+> That shutdown work (rds_conn_shutdown()) needs cp_cm_lock, which is
+> the very lock the event handler still holds, so the flush never
+> completes: the two workers wait on each other and the RDS connection
+> workqueues stall for good.
+>=20
+> All other RDMA-CM failure paths (REJECTED, CONNECT_ERROR,
+> DISCONNECTED) use rds_conn_drop(), which marks the connection
+> RDS_CONN_ERROR and schedules the shutdown work asynchronously.  Use
+> it here as well.
+>=20
+> Fixes: cdc306a5c9cd ("rds: make v3.1 as compat version")
 
-Add tests for cleanup after a batched RTM_NEWACTION request fails.
-Replace an existing gact action bound to a filter, then fail a later
-entry by requesting goto chain without a classifier context.
+Hi Aohan,
 
-Check that the bound action's reference count returns to its original
-value. Also cover a successfully initialized new action between the
-bound action and the failing entry, verifying that its reserved index
-can be reused. Repeat the bound action in another batch to check that
-each temporary reference to the same action is released.
+Thanks for the catch, this looks correct to me.  Just one nit on the
+fixes tag.  I think we want: f147dd9ecabf ("RDS/IB: Disallow connections
+less than RDS 3.1").  That looks like the commit that added the
+rds_conn_destroy() call to the version check.  Other than that, I think
+this patch looks good.  With the Fixes tag corrected, you can add my rvb:
 
-Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
----
- .../tc-tests/actions/gact-rollback.json       | 78 +++++++++++++++++++
- 1 file changed, 78 insertions(+)
- create mode 100644 tools/testing/selftests/tc-testing/tc-tests/actions/gact-rollback.json
+Reviewed-by: Allison Henderson <achender@kernel.org>
 
-diff --git a/tools/testing/selftests/tc-testing/tc-tests/actions/gact-rollback.json b/tools/testing/selftests/tc-testing/tc-tests/actions/gact-rollback.json
-new file mode 100644
-index 0000000000000..e92a4180db689
---- /dev/null
-+++ b/tools/testing/selftests/tc-testing/tc-tests/actions/gact-rollback.json
-@@ -0,0 +1,78 @@
-+[
-+    {
-+        "id": "e3b1",
-+        "name": "Failed action batch releases a bound action reference",
-+        "category": [
-+            "actions",
-+            "gact"
-+        ],
-+        "plugins": {
-+           "requires": "nsPlugin"
-+        },
-+        "setup": [
-+            "$TC qdisc add dev $DEV1 ingress",
-+            "$TC actions add action pass index 1",
-+            "$TC filter add dev $DEV1 protocol all ingress prio 1 matchall action gact index 1"
-+        ],
-+        "cmdUnderTest": "$TC actions replace action pass index 1 action goto chain 42 index 3",
-+        "expExitCode": "255",
-+        "verifyCmd": "$TC actions ls action gact",
-+        "matchPattern": "total acts 1.*index 1 ref 2 bind 1",
-+        "matchCount": "1",
-+        "teardown": [
-+            "$TC qdisc del dev $DEV1 ingress"
-+        ]
-+    },
-+    {
-+        "id": "e3b2",
-+        "name": "Failed action batch releases entries after a bound action",
-+        "category": [
-+            "actions",
-+            "gact"
-+        ],
-+        "plugins": {
-+           "requires": "nsPlugin"
-+        },
-+        "setup": [
-+            "$TC qdisc add dev $DEV1 ingress",
-+            "$TC actions add action pass index 1",
-+            "$TC filter add dev $DEV1 protocol all ingress prio 1 matchall action gact index 1",
-+            [
-+                "$TC actions replace action pass index 1 action pass index 2 action goto chain 42 index 3",
-+                255
-+            ]
-+        ],
-+        "cmdUnderTest": "$TC actions add action pass index 2",
-+        "expExitCode": "0",
-+        "verifyCmd": "$TC actions ls action gact",
-+        "matchPattern": "total acts 2.*index 1 ref 2 bind 1.*index 2 ref 1 bind 0",
-+        "matchCount": "1",
-+        "teardown": [
-+            "$TC qdisc del dev $DEV1 ingress"
-+        ]
-+    },
-+    {
-+        "id": "e3b3",
-+        "name": "Failed action batch releases repeated references to a bound action",
-+        "category": [
-+            "actions",
-+            "gact"
-+        ],
-+        "plugins": {
-+           "requires": "nsPlugin"
-+        },
-+        "setup": [
-+            "$TC qdisc add dev $DEV1 ingress",
-+            "$TC actions add action pass index 1",
-+            "$TC filter add dev $DEV1 protocol all ingress prio 1 matchall action gact index 1"
-+        ],
-+        "cmdUnderTest": "$TC actions replace action pass index 1 action pass index 1 action goto chain 42 index 3",
-+        "expExitCode": "255",
-+        "verifyCmd": "$TC actions ls action gact",
-+        "matchPattern": "total acts 1.*index 1 ref 2 bind 1",
-+        "matchCount": "1",
-+        "teardown": [
-+            "$TC qdisc del dev $DEV1 ingress"
-+        ]
-+    }
-+]
--- 
-2.43.0
+Thanks!
+Allison
+
+> Reported-by: TencentOS Corvus AI <corvus@tencent.com>
+> Cc: stable@vger.kernel.org
+> Assisted-by: CodeBuddy:Kimi-K3
+> Signed-off-by: Aohan Mei <henrymei@tencent.com>
+> ---
+>  net/rds/ib_cm.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/net/rds/ib_cm.c b/net/rds/ib_cm.c
+> index d46146887ba4..2909da8363f3 100644
+> --- a/net/rds/ib_cm.c
+> +++ b/net/rds/ib_cm.c
+> @@ -115,7 +115,7 @@ void rds_ib_cm_connect_complete(struct rds_connection=
+ *conn, struct rdma_cm_even
+>  				  &conn->c_laddr, &conn->c_faddr,
+>  				  RDS_PROTOCOL_MAJOR(conn->c_version),
+>  				  RDS_PROTOCOL_MINOR(conn->c_version));
+> -			rds_conn_destroy(conn);
+> +			rds_conn_drop(conn);
+>  			return;
+>  		}
+>  	}
 
