@@ -1,197 +1,188 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 684FE406822
-	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 09:42:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788946976; cv=none; b=lxF/p/KTOlzplkKTmPWZQFE32S8s9O3T25kBN8o+SXPts+x+Vt4KnfiwexvtQXrBi8W+7APsrEpA40qGQ+tiQB/6V0jYqEzc7g/4E+eNLB0d4vHcDPlkK/F+3w0saoFKRqZDpICDpY0IihR58T+Vd7OxkOXlpAnnqu7GFxrPZAw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788946976; c=relaxed/simple;
-	bh=nAQBbg9Zs0y2Qf9x9IGuBTOq7gf12GSRPT0y06wSXn0=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=pGlFbBlZCSYO33VQit2UxGXszuBqjX41mQwkxdAGwZPSMj4Jpwh/OqppzFqMzN+dnTA4ZQPiBHUBnb3EhDGx+LCgmn6ES343O9Ue6H1Z+KpuDjiNtgIj0lJGAWqDuvxmasWufGv9sWMonwP8Lf/vbgaygJzhdMF3THTMfPRuppk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NlmZT3s+; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=QCFGw+SJ; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6133F406822
+	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 10:01:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.179
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788948076; cv=pass; b=oaHFbiXyp6zcpqMA7r5V4YVb71HGqzbL7c2SPlf7+ZtfNF6WHtceQktvQsZDfKIXtvtjG54trI1eqeM/pMmNFKS1bxXXq8l4is4hvnwfcQYGHPRFRCVbMz/mkFWb92dr5iLbC8RUHzye39d2M9DJWyD5+21xBHgvQGvx0zSEWYg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788948076; c=relaxed/simple;
+	bh=yqM8/JJN+TMh09dbJ080hACMRCJv/LJI5aHCbHF0rAQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=F0wisYRGnj4kCzm5uaUs6Tai94jmlWYmJw8sNvxfgWhZcaWTBtDz/c6dpw8qSdGSGEL992A/eq3O+2adcX35j1AZzOD0UmeW2zqwaHAKohkm3lwn1llnz91Hl17PGYS66pTpOXJic56YBzLOCv9iiTWlmV/x/pWruIrxcTyuTn4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=JY8pBvAh; arc=pass smtp.client-ip=209.85.210.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NlmZT3s+";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="QCFGw+SJ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1788946971;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=k5ADtFhBnmPz3rZHAoQiP2HyIk15/rYOjED5HrGOPIQ=;
-	b=NlmZT3s+IakJBW3DPywyLqFFZTNROyT1ARcnQ2igyj95nUmocZNsHcbpW+yzaukS+dHybo
-	nGYp+XnB0zyXt7wDQktoH4lOX1vgAsxD4glu3CMKG5UNjXvwRHqP7Ijn3SddPJ1nBilGjc
-	H1TEKXKth6iFPbjRs27EpyLb/Kl2I6w=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-257-KsYfu7QuPdqMDo-tgE8hvQ-1; Wed, 09 Sep 2026 05:42:50 -0400
-X-MC-Unique: KsYfu7QuPdqMDo-tgE8hvQ-1
-X-Mimecast-MFC-AGG-ID: KsYfu7QuPdqMDo-tgE8hvQ_1788946969
-Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-6a99446422cso469032a12.2
-        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 02:42:50 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="JY8pBvAh"
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-8557c3f270eso3775174b3a.3
+        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 03:01:13 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788948073; cv=none;
+        d=google.com; s=arc-20260327;
+        b=qGoVb1bfWRP6zbDvAWKlo4isLVwTYhSk8JYDoDbCw6iEmVoBsh+6bojuKWK9lW2Q0E
+         CBzMEaJSu69qOB5XYA9RWQ0s+PJoyU1MW6pZWhk6SEV9gF0fyE68OuLhYRXNyDQw+d4m
+         vsdPykNIrScCdSYvP+zwBhel6LaScMIt1MRL8u3IfGZOz5euZCOr9ZJe/dRJ7d70nSgz
+         kVoy+zmhhUdUJ4oOKEKdMP1n3gd95dH8xg6dtEJvFUxb2QdIB/cVAkshgc90bZACLeBK
+         PIyfCdyFgH0j0o5b/q0rRkyHuouCKa373SWMWrngJecKvtUyA9xASBfm0hR8BPol3OA1
+         b6Ug==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=RuwmPg0I3XqJf+YLYZj9hXGAosc0Co0HZXYre8jKsu8=;
+        fh=nob3nCkRMcCXvMrK/1oEL/YnZtpWxKVSqN90v210dtk=;
+        b=MLjwOSS7g64PWkQ0nMX62TgxrrUewsC0jkULiJv94YyxUQqoKocYtpcG7ZT2KqN5WP
+         6FyTPjFFdqtmnTvkmQAluQrsUUcx4oGJIil1w4S9Hok0Xe6AxPziwqkBKvA1srltaHTe
+         6cLyl7SXEJYMY4lY4Knqu5fGGIJRdcRUe7hZ44AAoNKgOk2DH7tMuGYkC0qe/rse/PAJ
+         RLD9qtVpUSlbkiABeVPqZRo4RNIqjuJ8ulFwWJdWbKLDWmFrkKu8m+lmUq0ivZ8bvZVg
+         X1Udrqv2oNyIGserfggYULtmP9JYandUvc6qp1jzomkhoeOLu2FtBZ7mFvdgioDp+ReC
+         MiEw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1788946969; x=1789551769; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-disposition:content-type
-         :mime-version:message-id:subject:cc:to:from:date:from:to:cc:subject
+        d=mojatatu.com; s=google; t=1788948073; x=1789552873; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=k5ADtFhBnmPz3rZHAoQiP2HyIk15/rYOjED5HrGOPIQ=;
-        b=QCFGw+SJfPxIDCqTpfCv2NEOh0vlyj52QvOzFgdo59VK41YNPq8B3yu0ri3nbUuz8l
-         3djv6MSjiHbyocxf3u6W/d11iX+ReS8l4RB+IXDgGV5y5YUZr6cSXgA/87Nh8ISBVZVy
-         174p/zVVb8dTfueBDrbFqmddMu/kGBwC3DLPDjSaKDiVs6U4Hbld/5KT6SAMyfDW0jzL
-         2F+SInIXXmMSe6PWNL0bUxH7vDN577PS90IYINKE2plovfm4Zh3er8fh9XU5GHsyukHy
-         rbs4BAwnQFSS/dYUxlGi4GZ6MCKP8on+I9ahubDDpWpv5ibhVVH61xOX330x0jaP0Wsi
-         iqOQ==
+        bh=RuwmPg0I3XqJf+YLYZj9hXGAosc0Co0HZXYre8jKsu8=;
+        b=JY8pBvAhtO/ZI2jTkXPejg/UXD7TLWa0H30S8VmSob1XYmoTTMeMXCxGLdHAqNTQkL
+         +dpulVMK7V3HKEXas3kNnvQmdHS8Baf0VD+W12yCKeU4kjwW207PeduWbxJ6hunvavRT
+         AGdz/zQ57t58Kj1i4gbZgHu7bg/JC2szFginY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788946969; x=1789551769;
-        h=content-transfer-encoding:content-disposition:content-type
-         :mime-version:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20251104; t=1788948073; x=1789552873;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=k5ADtFhBnmPz3rZHAoQiP2HyIk15/rYOjED5HrGOPIQ=;
-        b=IdVZWUH+yrZNt5/LPyInK4XcuYjo2QsyJP8VI4wX71MeicNqeCexmnyR4KWKEhBISs
-         gfOoeqKE/6t7WLNFW5iGSytCkBLG+vIGbOaQqT1lGODm6smIg59b8llrXA4+Rn+7YuuV
-         /+CnLvckEistU61mMqcW0SnIAJBq+buCTLV/Tb4n9HCCQCON8I8ptkegC+Vzn2tfBaKk
-         CcQ6aZ1yeUKbgcC11yjheAZKUNsp9f2BkY5iXm5Ui2AjBPNdi2dWpiDesC11EmCisS8t
-         Agi734KaySkUyhJLUzWFxyetWmXpV2iFV5vFtertBbCD6+R/DEfiwKzWCuT/WktBMEUk
-         CX/A==
-X-Forwarded-Encrypted: i=1; AKwUvByJV64MVxWddC9yd+mJCGNYPZDxqCLuJWIyfpSGXfdfdlMKS3XQXKyz2OfHDmtwabUpLIPBZlA=@vger.kernel.org
-X-Gm-Message-State: AFuF++mHrkUEqin8mYPdF1Qi0C+SOxNl3vpEl+/1Y9yb2s0S+kdybLNT
-	0Zkgb0lmjgfYRcKP/CbD7xlpb8QDkgn7aI8np3PaoKq+jYJEyNvuAt5yaskFZTFr/xoqOnjrFtw
-	VK4fZPu+hbKhQZyjVFl4INW7oUFp03CQ1vJK9OVi8GZlYgIxnP7K6G5zJyQ==
-X-Gm-Gg: AYBFou1u9JSNOEk6eIqj2noIuTXNWO4EhGd8kokkfKCmgDmEFDwfj2PUOtTIRsONVRT
-	I9GkpmJYJfMriO/60fNtYCF3JHEpxHkle0ElQuMM+07kvFt8/DwHwyBUPQEKQOQU5b9HKpUxbXM
-	xes9QPl8KxTDiLzfq9he0q2zdQXUMk9dNeM7QOLTUs8Db4RXb2X7Wg9qJ2zPyYLx7+WTnd1f8ON
-	s4f2vHpVfc08kNpzqHpID1Uz5s8sTn2mepjRyRQ16PoqRPhSz3pRU5y+LwTAXSwlkidfQeIYYrp
-	1WUB6eco0NLnaA5cihS3z6phMACD6r0sNSbbYv8MC1HKrFRbSaAMkuQlqGeA2O1lIHxDscMsGcI
-	Ll7MUv2pLBDD008C/Rbfo4iU=
-X-Received: by 2002:a05:6402:2552:b0:6a7:ea54:390 with SMTP id 4fb4d7f45d1cf-6a7ea542471mr11986144a12.33.1788946968898;
-        Wed, 09 Sep 2026 02:42:48 -0700 (PDT)
-X-Received: by 2002:a05:6402:2552:b0:6a7:ea54:390 with SMTP id 4fb4d7f45d1cf-6a7ea542471mr11986120a12.33.1788946968355;
-        Wed, 09 Sep 2026 02:42:48 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-79-236.inter.net.il. [80.230.79.236])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a9857ce120sm1226086a12.4.2026.09.09.02.42.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Sep 2026 02:42:47 -0700 (PDT)
-Date: Wed, 9 Sep 2026 05:42:45 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: kvm@vger.kernel.org, virtualization@lists.linux-foundation.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	astellman@stellman-greene.com, dongli.zhang@oracle.com,
-	eperezma@redhat.com, graf@amazon.com, kmehltretter@gmail.com,
-	linfeng.sun.dev@gmail.com, lvivier@redhat.com, mst@redhat.com,
-	nikhilljatt@gmail.com, physicalmtea@gmail.com,
-	xiongweimin@kylinos.cn, yuz08559@gmail.com
-Subject: [GIT PULL] vhost,vdpa,virtio: fixes
-Message-ID: <20260909054245-mutt-send-email-mst@kernel.org>
+        bh=RuwmPg0I3XqJf+YLYZj9hXGAosc0Co0HZXYre8jKsu8=;
+        b=YDrJ8PEh1CKYJG29z5c+a9ruLfsLexJMksXPoNxJAI4ZYSlk8ag4s3K/V5Mlay2QTf
+         8FUbDGjblXvOy8PXbHKXYNa0BLzxjiAm7qOLLKy3N0JOIAcpobiCGcRPgamTWFNZfvcU
+         OYEcn211RGjwkLCJ/7IsSaTOV2tZXZBiMhrZOqUdlqL7BHGdMipZZO0xUrwxlrVAIn40
+         XlNc+qm8Z4jxoEcJ55xLXfWNdIVjlcT05lzHBbK6Yp+Yvu61LD/NqYT06K6N1+7yvhbh
+         OFzBo8vEtJ0+1zLm+Tuq5t8urBgLUyy9e4nG0AHnE3NibN/WcGlO2+wahR092COS0I2C
+         YOGw==
+X-Forwarded-Encrypted: i=1; AKwUvBw9zuvVRv6f2KjJlW669SG956Q14q60mVwzrcDpOA4nGRb02CGSmgb9fojq6Su2VSXqQlAdt/M=@vger.kernel.org
+X-Gm-Message-State: AFuF++mOHuDdj1QJoQqcPUHQ4oCI/rDJS4417DaIqn9qJnP19WsfwBXO
+	RIxurSC9EsYXBJ2Dqk10L6raP+H1xTiikI8yDtvw/RzTCE/ZictuL7V0jmHnkmo6wFIKZebe3Wp
+	mvYvIm3pylmOsLdoGgXCSp9sycU0BbRVBThcBUyHT
+X-Gm-Gg: AYBFou1ASfSENlHKcAsS34UQYrg0c7SayvXnMCQ7JV3zj+a4d32JoYp/xjBdJZvJtU6
+	puiePPrGixCbdw8Ke15CWZTolPj77Je1aVl40wKxxjh5OEE6/zAIVGOWzy34bpFt3UX2eeol6wv
+	RJigBekJl/FH+1v5WFUtramcpIsvcFdp3QoaraEDsquJgUF4I+vlTebWFjQJGcQSRGKyRCebFEJ
+	kbFLC8KOh7IU4nI9d0qumTseDgK535bm7fbtALPMt9gvzLA5odyv4VminIg/mVB/cW3rXV2baOI
+	2LwBBlxNvuxjvpCEVn0GDuiPv/JFI/hcr+qkWGD0CerGZ/AJeIo8tWEmw6sA7QrdQ3a9P7QbLgo
+	aVSdXpsnliBfO9l89lqlKR0p7TLJc7ds0ug==
+X-Received: by 2002:a05:6a00:8015:b0:857:4dea:e2fe with SMTP id
+ d2e1a72fcca58-8616b26f4a8mr49680345b3a.13.1788948072707; Wed, 09 Sep 2026
+ 03:01:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-X-Mutt-Fcc: =sent
+References: <20260908205537.863484-1-kuniyu@google.com>
+In-Reply-To: <20260908205537.863484-1-kuniyu@google.com>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Wed, 9 Sep 2026 06:01:01 -0400
+X-Gm-Features: AcwNN1UWQjx_TDz7N1t07GUM1VuUSFgEfZYkDYM7O90m8JlqYfubkJNCW6GnotM
+Message-ID: <CAM0EoMnFTMQPjy1kaSmgcaFzRsHHgZAH1zTGn4RvrrEzy62Qsw@mail.gmail.com>
+Subject: Re: [PATCH v1 net] net/sched: cls_api: Don't replay RTM_GETCHAIN in tc_ctl_chain().
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, "Gustavo A. R. Silva" <gustavo@embeddedor.com>, 
+	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, 
+	Taras Madan <tarasmadan@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The following changes since commit df2908090cda368b01ff43709f51890076c56157:
+On Tue, Sep 8, 2026 at 4:55=E2=80=AFPM Kuniyuki Iwashima <kuniyu@google.com=
+> wrote:
+>
+> If a netlink socket sends RTM_GETCHAIN requests repeatedly
+> without recv()ing the responses, tc_ctl_chain() hogs CPU and
+> triggers Hung Task splat. [0]
+>
+> As caught in the stack trace, netlink_attachskb() could confuse
+> tc_ctl_chain() by returning -EAGAIN when the userspace netlink
+> socket's receive buffer is full.
+>
+> The replay: label exists since commit 32a4f5ecd738 ("net: sched:
+> introduce chain object to uapi") but was not used initially.
+>
+> Since commit 9f407f1768d3 ("net: sched: introduce chain templates"),
+> the label is needed for RTM_NEWCHAIN because tcf_proto_lookup_ops()
+> may release RTNL to call request_module().
+>
+> However, the replay logic is unnecessary for RTM_GETCHAIN.
+>
+> Let's apply the replay logic only for RTM_NEWCHAIN.
+>
 
-  Linux 7.3-rc2 (2026-09-06 15:07:20 -0700)
+The patch looks sane.
+Can you send me a reproducer please? We are automating and testing of
+all tc submissions.
 
-are available in the Git repository at:
+Reviewed-by: Jamal Hadi Salim
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/mst/vhost.git tags/for_linus
-
-for you to fetch changes up to 48a4ee65e677559776349128e6a81a6041986c99:
-
-  vduse: return compat ioctl results directly (2026-09-08 03:58:27 -0400)
-
-----------------------------------------------------------------
-vhost,vdpa,virtio: fixes
-
-Just a ton of small fixes all over the place.
-
-Also includes virtio and virtio-rng MAINTAINERS updates.
-
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-
-----------------------------------------------------------------
-Alexander Graf (1):
-      virtio_ring: fix stale descriptor flags after a failed packed add
-
-Andrew Stellman (1):
-      virtio-pci: return IRQ_HANDLED after non-zero ISR
-
-Dongli Zhang (2):
-      vhost-scsi: use kvzalloc for vq array allocation
-      vhost-scsi: clamp max_io_vqs module parameter
-
-Eugenio Pérez (1):
-      virtio: add Eugenio Pérez as Maintainer
-
-Jia Jia (4):
-      virtio_console: do not free control-out buffers on remove
-      vhost/vdpa: reject VRING_NUM larger than device max
-      vduse: validate virtqueue alignment
-      vhost: invalidate vring access on IOTLB transitions
-
-Karl Mehltretter (2):
-      virtio: fix use-after-free in unregister_virtio_device()
-      virtio_input: stop callbacks before unregistering input device
-
-Laurent Vivier (1):
-      MAINTAINERS: Add a section for virtio-rng
-
-Linfeng Sun (4):
-      vdpa_sim_blk: reject out-of-range sector starts
-      vdpa_sim_net: check TX pull result before RX copy
-      vhost: limit outstanding IOTLB misses per virtqueue
-      vduse: return compat ioctl results directly
-
-Nikhil (1):
-      vduse: do not take dev->rwsem in the virtqueue kick path
-
-Xiong Weimin (8):
-      virtio_mmio: disable IRQ wake before free_irq
-      vdpa/pds: check virtqueue notify mapping
-      vdpa: alibaba: Keep DRIVER_OK clear if IRQ setup fails
-      vdpa: solidrun: Free IRQs after request failure
-      vdpa: ifcvf: Put device on unsupported feature error
-      vdpa: octeon_ep: Check dev_set_name() in dev add
-      virtio-vdpa: Use queue id when setting vq affinity
-      virtio_input: reset device if input_register_device() fails
-
-Yu Zhang (2):
-      vhost-vdpa: don't install the eventfd_ctx_fdget() error in config_ctx
-      vhost-vdpa: protect config_ctx from being freed under the config callback
-
- MAINTAINERS                              | 13 ++++-
- drivers/char/virtio_console.c            | 21 ++++++-
- drivers/vdpa/alibaba/eni_vdpa.c          |  5 +-
- drivers/vdpa/ifcvf/ifcvf_main.c          |  3 +-
- drivers/vdpa/octeon_ep/octep_vdpa_main.c |  2 +
- drivers/vdpa/pds/vdpa_dev.c              |  6 ++
- drivers/vdpa/solidrun/snet_main.c        |  6 +-
- drivers/vdpa/vdpa_sim/vdpa_sim_blk.c     |  3 +-
- drivers/vdpa/vdpa_sim/vdpa_sim_net.c     |  7 ++-
- drivers/vdpa/vdpa_user/vduse_dev.c       | 36 +++++++++---
- drivers/vhost/net.c                      |  2 +
- drivers/vhost/scsi.c                     | 49 +++++++++++-----
- drivers/vhost/vdpa.c                     | 88 +++++++++++++++++++++--------
- drivers/vhost/vhost.c                    | 95 ++++++++++++++++++++++++++++++--
- drivers/vhost/vhost.h                    |  4 ++
- drivers/vhost/vsock.c                    |  2 +
- drivers/virtio/virtio.c                  |  2 +-
- drivers/virtio/virtio_input.c            |  9 ++-
- drivers/virtio/virtio_mmio.c             | 16 +++++-
- drivers/virtio/virtio_pci_common.c       |  4 +-
- drivers/virtio/virtio_ring.c             | 38 +++++++++++--
- drivers/virtio/virtio_vdpa.c             |  5 +-
- 22 files changed, 342 insertions(+), 74 deletions(-)
-
+cheers,
+jamal
+> [0]:
+> INFO: task repro:1018 is blocked on a mutex likely owned by task repro:10=
+22.
+> task:repro           state:R  running task     stack:14096 pid:1022  tgid=
+:1014  ppid:961    task_flags:0x400040 flags:0x00080000
+> Call Trace:
+>  <TASK>
+>  ? clockevents_program_event (kernel/time/clockevents.c:372)
+>  ? pskb_expand_head (net/core/skbuff.c:615)
+>  ? skb_release_data (net/core/skbuff.c:1122)
+>  ? netlink_attachskb (./include/linux/skbuff.h:1323 ./include/linux/skbuf=
+f.h:1332 net/netlink/af_netlink.c:1232)
+>  ? __netlink_lookup (./include/linux/rcupdate.h:882 ./include/linux/rhash=
+table.h:711 net/netlink/af_netlink.c:499)
+>  ? tc_chain_notify (net/sched/cls_api.c:3045)
+>  ? tc_chain_notify (./include/linux/skbuff.h:1384 net/sched/cls_api.c:304=
+1)
+>  ? netlink_unicast (net/netlink/af_netlink.c:1335)
+>  ? rtnl_unicast (./include/net/netlink.h:1198 net/core/rtnetlink.c:985)
+>  ? tc_ctl_chain (net/sched/cls_api.c:3242)
+>  ? rtnetlink_rcv_msg (net/core/rtnetlink.c:7146)
+>  ? netlink_unicast (net/netlink/af_netlink.c:1354)
+>  ? __pfx_rtnetlink_rcv_msg (net/core/rtnetlink.c:7177)
+>  ? netlink_rcv_skb (net/netlink/af_netlink.c:2556)
+>  ? netlink_unicast (net/netlink/af_netlink.c:1319)
+>  ? netlink_sendmsg (net/netlink/af_netlink.c:1900)
+>  ? __sock_sendmsg (net/socket.c:800)
+>  ? __sys_sendto (net/socket.c:2281)
+>  ? __x64_sys_sendto (net/socket.c:2288 net/socket.c:2284 net/socket.c:228=
+4)
+>  ? do_syscall_64 (arch/x86/entry/syscall_64.c:61 arch/x86/entry/syscall_6=
+4.c:84)
+>  ? entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:121)
+>  </TASK>
+>
+> Fixes: 2ed9db3074fc ("net: sched: cls_api: fix dead code in switch")
+> Reported-by: Taras Madan <tarasmadan@google.com>
+> Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+> ---
+>  net/sched/cls_api.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/net/sched/cls_api.c b/net/sched/cls_api.c
+> index 9966766661d5..c47d2ee13641 100644
+> --- a/net/sched/cls_api.c
+> +++ b/net/sched/cls_api.c
+> @@ -3254,7 +3254,7 @@ static int tc_ctl_chain(struct sk_buff *skb, struct=
+ nlmsghdr *n,
+>         tcf_chain_put(chain);
+>  errout_block:
+>         tcf_block_release(q, block, true);
+> -       if (err =3D=3D -EAGAIN)
+> +       if (err =3D=3D -EAGAIN && n->nlmsg_type =3D=3D RTM_NEWCHAIN)
+>                 /* Replay the request. */
+>                 goto replay;
+>         return err;
+> --
+> 2.55.0.979.g7e5102b832-goog
+>
