@@ -1,83 +1,143 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDA6749DBA5
-	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 19:25:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A85D569F11;
+	Wed,  9 Sep 2026 19:29:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788981927; cv=none; b=YBagSl8xNwZVH4XJoBkgrRXmyztCv9bOj4Ex+QxMcyhXxN1byTN522z2b/oQr5i2ViJG15nzP2oBl/r4NolBWNm0wBYQIeePuWtWbYg2hYx53ka1BV7eciLF6wZHkQ03Zfi50VfAhcMidX7S7bg5Sa1OSjRl6CHT+v1HoKCIlL4=
+	t=1788982150; cv=none; b=OsK9kn9cQtuRpSlAmC83bsJy3YFKa8cyJgR28Znlddj72rYHxPktoonp1e4Cwv++SVzjyfACcopEX3UXUVqsXqkY/yUiK5N54+Fa+yDR9NMfPgQbbg2vjif/2/cIqavIR1DwiGGceG6wNOql86PO3pCHTs/Nm9qZtF/vaAQfw6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788981927; c=relaxed/simple;
-	bh=JqMSR+Da4NVux+GSct3KYN21nN/qQvTE8oL3k5rSxqE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KScyRWBiZVMBRRTcvcZ1Knd7Mpo5mbS7W5PebnqIZU9cpXoZxQnOftRtqDrgYh1A3oLnNRzM0KLVJVnLhUzOpWSsRTCpA8Tja2ZGa02pl3dO9IoiANQ15xLeT64ZUgamWMfRpMusmMqvo1XvQQGGbyiYnQj18SzJRC3Ssq+Vjeg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AjoNXuu1; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788982150; c=relaxed/simple;
+	bh=u0C7UNcPm9Vs1Nhb8pf/Brf+J5IEED1yVMFPRSAcarI=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=t1LU4HesWXwOID8a9Lus3cHQH/h8zyCliRQu+vIrS5+WRanLb5z4rfB/FV6k0gFVgInJIzArCv73YcpMHo7fyWxw6MkQ8gkGccarDTNscavWvhnP2GNsYANZsGS9rpBTN19Dq+q+4aSyaasfZvYTPbRqdG0faTY9ZNlbCn1RRqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=BDhaYE1p; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=BBW4B77D; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AjoNXuu1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 756C01F0089E
-	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 19:25:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788981926;
-	bh=JqMSR+Da4NVux+GSct3KYN21nN/qQvTE8oL3k5rSxqE=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=AjoNXuu1022s8I//3Wk6u5KiqSjcOWmDS+IfOzhUNLiN+YMM1IUUVupItmqa+rA2T
-	 yqeu4GasDhOj7CEvBVlhcKlAf7gIv1Q6RP1nBgqI97gpE7wA2fsVO00+XuIi19IPsW
-	 AcMt4bhM/YKKKkE3yYUS2reSJieULseDDecNoeSvLD1JYyVPEUTfayxTaLkxffdSDA
-	 lhOQEY7Kye1zSGN8pAIneanOmm7gZxZTK4srwoElon/wJe+98j5nYVoQH1J4SUz0hG
-	 Z+PkmS2o8Hdbrv4g6cZ3OS/RmtUuRbcjkn7TI0XNLB+4ocD2Fa4y8ORmm7cd9quEtJ
-	 VstjT1Ymehp3Q==
-Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-39c95395230so55285511fa.2
-        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 12:25:26 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AKwUvBw6wXAKYoSn51rZrwHU7aaJhcf5feGr0Cf6Rg881+nw5YXHVIpLlAG9iANoVq6Jo+KOq0FrSv8=@vger.kernel.org
-X-Gm-Message-State: AFuF++mkShbvjrEwMxIbckV8MQ3pXUbO7WEh1VUzZj9N4T2im2nc8bfl
-	SZbzkSssA558eYPH1xH3WGeIog06ZWyJssJSs4yQb7y/Dl+fXUN8HhaB/jHioI1HmU9cw5y9eKR
-	52N/zV+w+UHXU2KYg5+z/ctE3tTabGjE=
-X-Received: by 2002:a05:6512:110f:b0:5b7:a987:d048 with SMTP id
- 2adb3069b0e04-5b7a987d14cmr1006497e87.24.1788981925087; Wed, 09 Sep 2026
- 12:25:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="BDhaYE1p";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="BBW4B77D"
+Message-ID: <ab7e4eeed1b8296188355413cce1aa2b2aa5c670.camel@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1788982140;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9law9+CgCfDsQ6flDKJswQTstAjtY8tODH32Z4bNGQM=;
+	b=BDhaYE1pGmhk3Cm4cto9WTwk5b6VM9sENFMpKrfGMlXOZCag4k9V67DS7PSd/wlwzdFo4u
+	eAPUoOIW4NyYRYdaHRKJ4kEfqjUzm4GMOHabQKrMVmyLVVqmD66GaqNZlpY4gE8FKMt8oP
+	8wTH5r0MLlI7Y9ptY7j857BmvlQzCL+TVIuxuIgodU6snMkhnUtvxLB102xaBHM8u8Q432
+	wMYoVqnYsp+XBayxlj17gCYGDWnvy+tD6WS3QSoauFapWMqVSIkAkvCKwSoweqvQOD5KoK
+	qUh3xe/Hk0BX6xECWNS0DlN+0Nsbpdg7WZOpinCAg8gjyTv3oxDLV+Q2UfcM2Q==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1788982140;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9law9+CgCfDsQ6flDKJswQTstAjtY8tODH32Z4bNGQM=;
+	b=BBW4B77DQ3V2MvL1l2g1Dem5WdUOUTvAQlu8+VqHwscTGtrU9at8BqbnBQZU+o8+SQHTD5
+	X1FrURFXZYvRlHDA==
+Subject: Re: [PATCH net-next v2 4/4] net: dsa: soce: Add basic support for
+ SoC-e switch IP cores
+From: Vasilij Strassheim <v.strassheim@linutronix.de>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+  Conor Dooley <conor+dt@kernel.org>, Vladimir Oltean <olteanv@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Russell King
+ <linux@armlinux.org.uk>,  devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org,  Martin Kaistra
+ <martin.kaistra@linutronix.de>, Benedikt Spranger <b.spranger@linutronix.de>
+Date: Wed, 09 Sep 2026 21:28:59 +0200
+In-Reply-To: <5c955c96-7883-4e59-97ef-9fc3b63abf58@lunn.ch>
+References: 
+	<20260903-devel-vstrassheim-soce-dsa-ml-v2-0-fb0587cb466b@linutronix.de>
+	 <20260903-devel-vstrassheim-soce-dsa-ml-v2-4-fb0587cb466b@linutronix.de>
+	 <3c2c5b39-6a7d-4cb2-af1c-b5015b6bf1e8@lunn.ch>
+	 <db26d5c9262069a11e5cbe00e176b81e40baebeb.camel@linutronix.de>
+	 <5c955c96-7883-4e59-97ef-9fc3b63abf58@lunn.ch>
+Organization: Linutronix GmbH
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260909-b4-gemini-ethernet-fixes-2-v1-0-5ea3aa393f41@kernel.org> <20260909181949.GM40544@horms.kernel.org>
-In-Reply-To: <20260909181949.GM40544@horms.kernel.org>
-From: Linus Walleij <linusw@kernel.org>
-Date: Wed, 9 Sep 2026 21:25:13 +0200
-X-Gmail-Original-Message-ID: <CAD++jL=eB_kAeX_GoY_bUFVs1Zkur0gigHRMTzr0gbFgf=gTMw@mail.gmail.com>
-X-Gm-Features: AcwNN1X7-qf8Kv5dOXYeY06U66wRUGvioVAZ4EI-GlAoENCuz0rObKUn2yOOeGU
-Message-ID: <CAD++jL=eB_kAeX_GoY_bUFVs1Zkur0gigHRMTzr0gbFgf=gTMw@mail.gmail.com>
-Subject: Re: [PATCH net-next 0/2] net: ethernet: cortina: Gemini Ethernet
- fixes, part 2
-To: Simon Horman <horms@kernel.org>
-Cc: Hans Ulli Kroll <ulli.kroll@googlemail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	=?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>, 
-	netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, Sep 9, 2026 at 8:19=E2=80=AFPM Simon Horman <horms@kernel.org> wrot=
-e:
-> On Wed, Sep 09, 2026 at 12:18:18PM +0200, Linus Walleij wrote:
-> > Fix two RX-path issues: acknowledge FIFO overruns with the correct stat=
-us
-> > bit and bound descriptor processing when malformed chains lack EOF.
-> >
-> > Assisted-by: LLM
-> > Signed-off-by: Linus Walleij <linusw@kernel.org>
->
-> Hi Linus,
->
-> Perhaps it is a timing error relating to earlier work hitting net-next.
-> But unfortunately this series didn't apply with the CI ran.
->
-> Please (rebase and?) repost after the usual 24h delay.
-> Thanks!
+On Tue, 2026-09-08 at 21:20 +0200, Andrew Lunn wrote:
+> > > What is the MDIO master?
+> >=20
+> > It refers to the switch-integrated MDIO controller: one shared set of
+> > MMIO transaction registers serving multiple selectable MDIO buses. The
+> > switch documentation calls it an MDIO bridge. I will rename "master" to
+> > "controller".
+>=20
+> In Linux, we have the concept of MDIO muxes. You have one true MDIO
+> bus master, and then logic gates to connect it to many MDIO
+> busses. Generally, the MDIO data line has a set of analogue switches
+> to mux it to one of the many MDIO busses.
+>=20
+> Having only one true MDIO bus master means you cannot do transactions
+> in parallel.
 
-OK no problem!
+That's true. I had already considered using an MDIO mux for v2, but
+decided to retain the existing implementation while addressing the other
+feedback first.
 
-Yours,
-Linus Walleij
+> It seems like this is how this hardware works. The question is, should
+> we model it this way. Take a look at mdio-mux-mmioreg.c. Maybe the
+> MDIO bus driver can be placed into drivers/net/mdio, and a
+> mdio-mux-mmioreg stacked on top of it to provide the per port MDIO
+> busses. That will make the locking simpler, and remove a lot of code.
+>=20
+
+For the next revision, I will try to implement this model. The MDIO
+controller will become a standalone driver under mdio and register a
+single parent mii_bus. A generic mdio-mux-mmioreg instance will then
+provide the per-port child buses. Something like this:
+
+ethernet-switch@xy {
+    /* ... */
+
+    mdio_parent: mdio@204 {
+        compatible =3D "soce,swip-mdio-23-02";
+        reg =3D <0x204 0xc>, <0x200 0x4>;
+        reg-names =3D "data", "control";
+    };
+
+    mdio-mux@200 {
+        compatible =3D "mdio-mux-mmioreg", "mdio-mux";
+        reg =3D <0x200 0x4>;
+        mux-mask =3D <0x1f0000>;
+        mdio-parent-bus =3D <&mdio_parent>;
+        #address-cells =3D <1>;
+        #size-cells =3D <0>;
+
+        mdio@0 {
+            reg =3D <0>;
+            /* PHYs connected to port 0 */
+        };
+
+        mdio@10000 {
+            reg =3D <0x10000>;
+            /* PHYs connected to port 1 */
+        };
+    };
+
+    /* ethernet-ports ... */
+};
+
+This requires a separate binding and compatible string for the MDIO
+controller. I currently have soce,swip-mdio.yaml and the
+register-layout-specific soce,swip-mdio-23-02 in mind, although I still
+need to consider the naming.
+
+> 	Andrew
+
+Thanks,
+Vasilij
