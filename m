@@ -1,283 +1,191 @@
-Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAFC23B14D3
-	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 19:11:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D202D3B8D7E;
+	Wed,  9 Sep 2026 19:21:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788981118; cv=none; b=k0RWGJ13/ecmm/550oFAKoOzeRq66YHDFKwOvozF8IojIVshQxe3gYLnX/ewtavU40hYkY8njXsu7m4xDqIstN/hRWJHV37GSa+XBYZjGCrNhvtkQCUnP7r79v0ExSwajt4ZwQ3Tco0Iug8L3LAvKdWmtixl6VACKapbq8Hsadw=
+	t=1788981706; cv=none; b=r4QNCWEQyMfY+FmVJLjxXYbz/Ia57NtfOsjWpr4wOs0xWe4AU8X3yNKUtGPEgl2Zii1c1miqsrxiIZj9xgifXqDZqV+/b5puuOmPa3I5ih5lO8j8SM9XbylmnEekw0+ZAckcws0+nrq6dzoj9EWglKgW63VNBULznstn6YY4HYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788981118; c=relaxed/simple;
-	bh=6CaPKQc7QmcX96WwtnTad/J7uxd9cHkleOtxz6VENEg=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Hq2qbVVToojQrJ+kJ3tRhChfsSm1PmWJdtWJcICcvJFGDHaoVXApf57YatXlsAcl2pqytijTYPsItMbZXArIMCtKSnq7Jg12UTsbMhBK0Z3RRPL5x3hMLgMGhWMhQiAFoiCLeRHOONaMrIpgh8I5bv0NHtXnexD6n8MNqQ42Thg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--hramamurthy.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uQukNyRH; arc=none smtp.client-ip=209.85.216.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--hramamurthy.bounces.google.com
+	s=arc-20240116; t=1788981706; c=relaxed/simple;
+	bh=wItJgys1WkoCBv9Nv/62nASo8IwyR5mnOPwWb60Kmu8=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=QhUVYRGMrWPYOsArYSclrcmfWa9DVY7s8yE76si7h9XRxT2OhwvdyIWKqyM/HnydmImYNViMopCGHWfk3Qf6ICKP01NFPhsdVSAuycrf2TQEBUWe9sMEmBHu1nUwNcaFUORDif+2v6BJz5qXWoSkgAza1poFHNIWDgDs9kbXN1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lftNlYty; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uQukNyRH"
-Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-38f57e31b6eso3134828a91.1
-        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 12:11:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788981108; x=1789585908; darn=vger.kernel.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=C2wRjNyXR6pE/D87MnbzZFeOwFTH0/V5+5+ZnMyd8uc=;
-        b=uQukNyRH9/m9L8mWd5dU3y0EAUUnntBARJy2N+wsP0yZHM5Okpo7XUNm4+EATS1y5n
-         JWknAMukPOv56GU7J+gr07+g55Z2uMS6LYfsEwnZ8T9cfQofyrOwULQFgCa5gx7M9BaB
-         8zBJcmx5DPJCckf3HL77CRdDLyCYHPaKWOVInifU3EzBA2V2J1UilqTrOrmCHxieN/1S
-         n0mTC0yQOd9n7ijsClgX8FRc7MwE8JC/26bkbsR6Nmsny7zlpFSjhY2txmTIHe5UZvkq
-         LlQ2EWGwAp81RtlFpDo2HcjHd4f3jdnwhjrYsPKmAdgynCdKYGTh5UMuBiAqy0B23oqg
-         SM5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788981108; x=1789585908;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=C2wRjNyXR6pE/D87MnbzZFeOwFTH0/V5+5+ZnMyd8uc=;
-        b=nkTyjlM921UWG/GPk+WlEMj98gciZ3nW8l5iAmHiyBivjkRSz2D9ZaoD7GEl3GzVe0
-         u5Zfd15IewhykH/6RIyQqUTOTfbHWJAq3hBianNCLpH57EG7ASBibMnI5DFs8CwkQaQG
-         HAy+D+OHlaZs0pw+ZmJ7ZHGml6s+S+a2QuNBE/R1roxu/FJ+k49wnQo41gmlw6m06Qfm
-         O3rR42v49dhRGFoJtimLxbDMNhwkXuzJRnBJ8BDVPJ8gyeDYo1bGVnU9bASdx56jR5az
-         sMk9Inri9MBi8US0/+rGwUJPSpJp2VBsqKaGcuUtWLKRcS/cw+1VK94IJKZa+ve468z2
-         w8Cw==
-X-Gm-Message-State: AFuF++lxAd/463ibh+28RytsaJrrqa+JgHXgJIwp/mpQyB6Or0rGT3UI
-	VZ3b9PByH0QW5eu0lbvvsJAGilfRDKrmpfucsN1fZ5ggNfyzckqmlF7T7kZ2/QJl8lVIdu039pR
-	akHkDSPY50FQoBPimdUsVDnfqnTT4YMvw28teJElqJPrxQ6cbwTLiZwBmppzW6ANZq5TPJUwhgr
-	DblZcQrRP5biU+Ig8P4/1f89V7hJtuKcFDZgezoxrMUBm8IHZCi4uxoxcbBtfxN28=
-X-Received: from pjbfs22.prod.google.com ([2002:a17:90a:f296:b0:39d:627d:6bfc])
- (user=hramamurthy job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90a:fc47:b0:398:9c0c:7c72 with SMTP id 98e67ed59e1d1-39b2627fe24mr51602245a91.25.1788981107456;
- Wed, 09 Sep 2026 12:11:47 -0700 (PDT)
-Date: Wed,  9 Sep 2026 19:11:34 +0000
-In-Reply-To: <20260909191136.3811892-1-hramamurthy@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lftNlYty"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C8D91F000FF;
+	Wed,  9 Sep 2026 19:21:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788981704;
+	bh=0dPH5qYcxrlDKWgIHKe2IFZsZPUZ6aoHJ9KkYKMgFZs=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=lftNlYtymdMvrlagU6hpqyz3324ojlhSea3M0Mz0xtSTRTcCSFURnTR32azbMBJC1
+	 vCHlGhobdbO43RIa0nTG2e3FPvtepQLPBlOK7vHocL1MTFTPX5DbiZl4+6fQWZg3Z3
+	 9qzORfGCY9TzGJ5F1Dwrl4Vcmr+dEsq/X+8YLdB6A5HLzndchLnhePYjkqRmzOTExL
+	 jRZW3+Z3z1+LC0o92xQNLcm5j5WDfC17kJH49CI88itKJ6g3pOfehUL/+F6DF9gpaX
+	 GjBR2ksEJHUjM6r7ZBHD3GvFQfpeAEoiquCL3uuI+uwhhumHcvNLQYu4pOa5ZV3jRd
+	 sB1+XuL+v+qUg==
+Subject:
+ Re: [PATCH nf] netfilter: flowtable: advertise the vlan match in used_keys
+From: netdev-bot+sashiko@kernel.org
+To: julius@bairaktaris.de
+Cc: netfilter-devel@vger.kernel.org, pablo@netfilter.org, fw@strlen.de,
+ phil@nwl.cc, coreteam@netfilter.org, netdev@vger.kernel.org, kuba@kernel.org
+Date: Wed, 09 Sep 2026 19:21:43 +0000
+Message-ID: <178898170386.219967.2768890098511373106@kernel.org>
+In-Reply-To: <20260906141947.480524-1-julius@bairaktaris.de>
+References: <20260906141947.480524-1-julius@bairaktaris.de>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260909191136.3811892-1-hramamurthy@google.com>
-X-Mailer: git-send-email 2.55.0.1003.g10538fe699-goog
-Message-ID: <20260909191136.3811892-12-hramamurthy@google.com>
-Subject: [PATCH net-next v6 11/12] gve: add ctrl ops for queue operations
-From: Harshitha Ramamurthy <hramamurthy@google.com>
-To: netdev@vger.kernel.org
-Cc: joshwash@google.com, hramamurthy@google.com, andrew+netdev@lunn.ch, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org, 
-	john.fastabend@gmail.com, sdf@fomichev.me, jordanrhee@google.com, 
-	willemb@google.com, nktgrg@google.com, maolson@google.com, thostet@google.com, 
-	jacob.e.keller@intel.com, debarghyak@google.com, kees@kernel.org, 
-	bpf@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	przemyslaw.kitszel@intel.com
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
 
-Add the next few control ops to
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider:
 
-- create queues
-- destroy queues
+Critical: 0 · High: 0 · Medium: 2 · Low: 0
 
-These changes are just moving existing code into ops, no functional
-change.
+- [Medium] Commit message justification names a driver that cannot
+  consume the newly advertised key.
+- [Medium] The `else` branch of the second encapsulation block now
+  declares an outer VLAN match that describes the wrong tag when the…
 
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Reviewed-by: Jordan Rhee <jordanrhee@google.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Harshitha Ramamurthy <hramamurthy@google.com>
----
-v6:
-- drop unintentional change of gve_priv from const to non-const
+--
 
-v5:
-- remove double logging during queue creation/destruction on err also (Sashiko)
+netfilter: flowtable: advertise the vlan match in used_keys
 
- drivers/net/ethernet/google/gve/gve.h        |  4 ++
- drivers/net/ethernet/google/gve/gve_adminq.c | 50 ++++++++++++++++++++
- drivers/net/ethernet/google/gve/gve_adminq.h |  2 +
- drivers/net/ethernet/google/gve/gve_main.c   | 43 +++--------------
- 4 files changed, 63 insertions(+), 36 deletions(-)
+nf_flow_rule_match() fills the vlan and cvlan dissector keys and sets their
+offsets, but never sets the matching bits in match->dissector.used_keys.
+This patch ORs BIT_ULL(FLOW_DISSECTOR_KEY_VLAN) and
+BIT_ULL(FLOW_DISSECTOR_KEY_CVLAN) into used_keys where the keys are filled.
 
-diff --git a/drivers/net/ethernet/google/gve/gve.h b/drivers/net/ethernet/google/gve/gve.h
-index 016e85ed91a5..00966b6a730f 100644
---- a/drivers/net/ethernet/google/gve/gve.h
-+++ b/drivers/net/ethernet/google/gve/gve.h
-@@ -843,6 +843,8 @@ struct gve_device_info {
-  * @configure_rss: Set up default RSS configuration
-  * @setup_stats_report: Set up DMA region for stats report (AdminQ only)
-  * @reset_flow_rules: Flush all flow rules from device
-+ * @create_queues: Sends commands to the device to create TX/RX queues.
-+ * @destroy_queues: Sends commands to the device to destroy TX/RX queues.
-  */
- struct gve_ctrl_ops {
- 	int (*map_db_bar)(struct gve_priv *priv);
-@@ -861,6 +863,8 @@ struct gve_ctrl_ops {
- 				  dma_addr_t stats_report_addr,
- 				  u64 interval_ms); /* AQ-specific */
- 	int (*reset_flow_rules)(struct gve_priv *priv);
-+	int (*create_queues)(struct gve_priv *priv);
-+	int (*destroy_queues)(struct gve_priv *priv);
- };
- 
- struct gve_priv {
-diff --git a/drivers/net/ethernet/google/gve/gve_adminq.c b/drivers/net/ethernet/google/gve/gve_adminq.c
-index c3c10d5062f5..9a0a94ebdcd8 100644
---- a/drivers/net/ethernet/google/gve/gve_adminq.c
-+++ b/drivers/net/ethernet/google/gve/gve_adminq.c
-@@ -943,6 +943,30 @@ static void gve_set_default_rss_sizes(struct gve_priv *priv)
- 	}
- }
- 
-+int gve_adminq_destroy_queues(struct gve_priv *priv)
-+{
-+	int num_tx_queues = gve_num_tx_queues(priv);
-+	int err;
-+
-+	err = gve_adminq_destroy_tx_queues(priv, 0, num_tx_queues);
-+	if (err) {
-+		netif_err(priv, drv, priv->dev,
-+			  "failed to destroy tx queues\n");
-+		/* This failure will trigger a reset - no need to clean up */
-+		return err;
-+	}
-+	netif_dbg(priv, drv, priv->dev, "destroyed tx queues\n");
-+	err = gve_adminq_destroy_rx_queues(priv, priv->rx_cfg.num_queues);
-+	if (err) {
-+		netif_err(priv, drv, priv->dev,
-+			  "failed to destroy rx queues\n");
-+		/* This failure will trigger a reset - no need to clean up */
-+		return err;
-+	}
-+	netif_dbg(priv, drv, priv->dev, "destroyed rx queues\n");
-+	return err;
-+}
-+
- static void gve_enable_supported_features(struct gve_priv *priv,
- 					  u32 supported_features_mask,
- 					  const struct gve_device_option_jumbo_frames
-@@ -1791,3 +1815,29 @@ void gve_adminq_teardown_mgmt_irq(struct gve_priv *priv)
- 		priv->mgmt_irq_requested = false;
- 	}
- }
-+
-+int gve_adminq_create_queues(struct gve_priv *priv)
-+{
-+	int num_tx_queues = gve_num_tx_queues(priv);
-+	int err;
-+
-+	err = gve_adminq_create_tx_queues(priv, 0, num_tx_queues);
-+	if (err) {
-+		netif_err(priv, drv, priv->dev, "failed to create %d tx queues\n",
-+			  num_tx_queues);
-+		return err;
-+	}
-+	netif_dbg(priv, drv, priv->dev, "created %d tx queues\n",
-+		  num_tx_queues);
-+
-+	err = gve_adminq_create_rx_queues(priv, priv->rx_cfg.num_queues);
-+	if (err) {
-+		netif_err(priv, drv, priv->dev, "failed to create %d rx queues\n",
-+			  priv->rx_cfg.num_queues);
-+		return err;
-+	}
-+	netif_dbg(priv, drv, priv->dev, "created %d rx queues\n",
-+		  priv->rx_cfg.num_queues);
-+
-+	return err;
-+}
-diff --git a/drivers/net/ethernet/google/gve/gve_adminq.h b/drivers/net/ethernet/google/gve/gve_adminq.h
-index 0b48e9f2a82a..d696e4932a8b 100644
---- a/drivers/net/ethernet/google/gve/gve_adminq.h
-+++ b/drivers/net/ethernet/google/gve/gve_adminq.h
-@@ -628,6 +628,8 @@ int gve_adminq_configure_device_resources(struct gve_priv *priv,
- 					  dma_addr_t db_array_bus_addr,
- 					  u32 num_ntfy_blks);
- int gve_adminq_deconfigure_device_resources(struct gve_priv *priv);
-+int gve_adminq_create_queues(struct gve_priv *priv);
-+int gve_adminq_destroy_queues(struct gve_priv *priv);
- int gve_adminq_create_tx_queues(struct gve_priv *priv, u32 start_id, u32 num_queues);
- int gve_adminq_destroy_tx_queues(struct gve_priv *priv, u32 start_id, u32 num_queues);
- int gve_adminq_create_single_rx_queue(struct gve_priv *priv, u32 queue_index);
-diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/ethernet/google/gve/gve_main.c
-index e7ebc4e0f24b..c9abb9681dca 100644
---- a/drivers/net/ethernet/google/gve/gve_main.c
-+++ b/drivers/net/ethernet/google/gve/gve_main.c
-@@ -873,33 +873,16 @@ static int gve_unregister_qpls(struct gve_priv *priv)
- 
- static int gve_create_rings(struct gve_priv *priv)
- {
--	int num_tx_queues = gve_num_tx_queues(priv);
- 	int err;
- 	int i;
- 
--	err = gve_adminq_create_tx_queues(priv, 0, num_tx_queues);
-+	err = priv->ctrl_ops->create_queues(priv);
- 	if (err) {
--		netif_err(priv, drv, priv->dev, "failed to create %d tx queues\n",
--			  num_tx_queues);
- 		/* This failure will trigger a reset - no need to clean
- 		 * up
- 		 */
- 		return err;
- 	}
--	netif_dbg(priv, drv, priv->dev, "created %d tx queues\n",
--		  num_tx_queues);
--
--	err = gve_adminq_create_rx_queues(priv, priv->rx_cfg.num_queues);
--	if (err) {
--		netif_err(priv, drv, priv->dev, "failed to create %d rx queues\n",
--			  priv->rx_cfg.num_queues);
--		/* This failure will trigger a reset - no need to clean
--		 * up
--		 */
--		return err;
--	}
--	netif_dbg(priv, drv, priv->dev, "created %d rx queues\n",
--		  priv->rx_cfg.num_queues);
- 
- 	if (gve_is_gqi(priv)) {
- 		/* Rx data ring has been prefilled with packet buffers at queue
-@@ -1054,26 +1037,12 @@ static int gve_queues_mem_alloc(struct gve_priv *priv,
- 
- static int gve_destroy_rings(struct gve_priv *priv)
- {
--	int num_tx_queues = gve_num_tx_queues(priv);
- 	int err;
- 
--	err = gve_adminq_destroy_tx_queues(priv, 0, num_tx_queues);
--	if (err) {
--		netif_err(priv, drv, priv->dev,
--			  "failed to destroy tx queues\n");
--		/* This failure will trigger a reset - no need to clean up */
--		return err;
--	}
--	netif_dbg(priv, drv, priv->dev, "destroyed tx queues\n");
--	err = gve_adminq_destroy_rx_queues(priv, priv->rx_cfg.num_queues);
--	if (err) {
--		netif_err(priv, drv, priv->dev,
--			  "failed to destroy rx queues\n");
--		/* This failure will trigger a reset - no need to clean up */
--		return err;
--	}
--	netif_dbg(priv, drv, priv->dev, "destroyed rx queues\n");
--	return 0;
-+	err = priv->ctrl_ops->destroy_queues(priv);
-+
-+	/* A failure will trigger a reset - no need to clean up */
-+	return err;
- }
- 
- static void gve_queues_mem_free(struct gve_priv *priv,
-@@ -2486,6 +2455,8 @@ static const struct gve_ctrl_ops gve_adminq_ops = {
- 	.release_db_resources	= gve_adminq_release_db_resources,
- 	.setup_mgmt_irq		= gve_adminq_setup_mgmt_irq,
- 	.teardown_mgmt_irq	= gve_adminq_teardown_mgmt_irq,
-+	.create_queues		= gve_adminq_create_queues,
-+	.destroy_queues		= gve_adminq_destroy_queues,
- };
- 
- static int gve_init_priv(struct gve_priv *priv)
+> netfilter: flowtable: advertise the vlan match in used_keys
+>
+> mtk_ppe_offload.c reads the ingress vlan through flow_rule_match_key()
+> and so never gets it, and a driver that checks used_keys against the
+> keys it supports installs an entry that ignores the tag.
+
+[Severity: Medium]
+Is the mtk part of this justification accurate?  In
+mtk_flow_offload_replace() the FLOW_DISSECTOR_KEY_VLAN read sits inside the
+addr_type == 0 arm:
+
+drivers/net/ethernet/mediatek/mtk_ppe_offload.c:mtk_flow_offload_replace() {
+	switch (addr_type) {
+	case 0:
+		offload_type = MTK_PPE_PKT_TYPE_BRIDGE;
+		...
+		if (flow_rule_match_key(rule, FLOW_DISSECTOR_KEY_VLAN)) {
+			...
+			data.vlan_in = match.key->vlan_id;
+		...
+	case FLOW_DISSECTOR_KEY_IPV4_ADDRS:
+	...
+}
+
+But nf_flow_rule_match() always sets key->control.addr_type to
+FLOW_DISSECTOR_KEY_IPV4_ADDRS or FLOW_DISSECTOR_KEY_IPV6_ADDRS and returns
+-EOPNOTSUPP for anything else, so flowtable rules always take the IPv4/IPv6
+arms, which do not look at the vlan key at all.  mtk also never reads
+FLOW_DISSECTOR_KEY_CVLAN and has no used_keys whitelist, so its behaviour
+looks unchanged by this patch, before and after.
+
+The driver whose behaviour does change appears to be mlx5e, through
+mlx5e_rep_setup_ft_cb() -> mlx5e_rep_setup_tc_cls_flower() ->
+__parse_cls_flower().  The other TC_SETUP_FT consumers (airoha_ppe.c,
+mtk_wed.c, mt76, netdevsim) contain no FLOW_DISSECTOR_KEY_VLAN read either,
+and nfp does not implement TC_SETUP_FT at all.
+
+Could the changelog name the driver that actually consumes the new bits,
+and drop or reword the mtk claim?
+
+> diff --git a/net/netfilter/nf_flow_table_offload.c b/net/netfilter/nf_flow_table_offload.c
+> index 801a3dd9ceea3..9ef89127bf252 100644
+> --- a/net/netfilter/nf_flow_table_offload.c
+> +++ b/net/netfilter/nf_flow_table_offload.c
+> @@ -126,6 +126,7 @@ static int nf_flow_rule_match(struct nf_flow_match *match,
+>  		nf_flow_rule_vlan_match(&key->vlan, &mask->vlan,
+>  					tuple->encap[0].id,
+>  					tuple->encap[0].proto);
+> +		match->dissector.used_keys |= BIT_ULL(FLOW_DISSECTOR_KEY_VLAN);
+>  		vlan_encap = true;
+>  	}
+>  
+> @@ -137,12 +138,16 @@ static int nf_flow_rule_match(struct nf_flow_match *match,
+>  			nf_flow_rule_vlan_match(&key->cvlan, &mask->cvlan,
+>  						tuple->encap[1].id,
+>  						tuple->encap[1].proto);
+> +			match->dissector.used_keys |=
+> +				BIT_ULL(FLOW_DISSECTOR_KEY_CVLAN);
+>  		} else {
+>  			NF_FLOW_DISSECTOR(match, FLOW_DISSECTOR_KEY_VLAN,
+>  					  vlan);
+>  			nf_flow_rule_vlan_match(&key->vlan, &mask->vlan,
+>  						tuple->encap[1].id,
+>  						tuple->encap[1].proto);
+> +			match->dissector.used_keys |=
+> +				BIT_ULL(FLOW_DISSECTOR_KEY_VLAN);
+
+[Severity: Medium]
+Can this else branch now advertise a vlan key that describes the wrong tag?
+
+The branch is taken whenever vlan_encap is false, which includes the case
+where encap[0] is simply not 802.1Q, because the first block tests:
+
+net/netfilter/nf_flow_table_offload.c:nf_flow_rule_match() {
+	if (tuple->encap_num > 0 && !(tuple->in_vlan_ingress & BIT(0)) &&
+	    tuple->encap[0].proto == htons(ETH_P_8021Q)) {
+	...
+}
+
+encap[0] is the outermost tag on the wire, since flow_offload_fill_route()
+reverses the path-walk order:
+
+net/netfilter/nf_flow_table_core.c:flow_offload_fill_route() {
+	for (i = route->tuple[dir].in.num_encaps - 1; i >= 0; i--) {
+		flow_tuple->encap[j].id = route->tuple[dir].in.encap[i].id;
+		flow_tuple->encap[j].proto = route->tuple[dir].in.encap[i].proto;
+	...
+}
+
+and encap[].proto is copied verbatim from the configured VLAN protocol,
+which can be ETH_P_8021AD:
+
+net/8021q/vlan_dev.c:vlan_dev_fill_forward_path() {
+	path->encap.proto = vlan->vlan_proto;
+	...
+}
+
+net/bridge/br_vlan.c:br_vlan_fill_forward_path_pvid() {
+	path->bridge.vlan_proto = br->vlan_proto;
+	...
+}
+
+So with an 802.1ad outer tag and an 802.1Q tag beneath it, the first block
+is skipped, vlan_encap stays false, and the else branch stores the inner
+tag (encap[1].id, tpid 0x8100) into key->vlan, the outer vlan slot.  Before
+this patch that key was inert; with the bit set it becomes an authoritative
+match, while the action side pops only the 802.1Q tag:
+
+net/netfilter/nf_flow_table_offload.c:nf_flow_rule_route_common() {
+		if (tuple->encap[i].proto == htons(ETH_P_8021Q)) {
+			entry = flow_action_entry_next(flow_rule);
+			if (!entry)
+				return -1;
+			entry->id = FLOW_ACTION_VLAN_POP;
+	...
+}
+
+Would it be better to gate the else branch on tuple->in_vlan_ingress &
+BIT(0), or to return -EOPNOTSUPP when the outer encapsulation is not
+802.1Q, so the declared match and the emitted actions agree on which tag is
+outermost?
+
 -- 
-2.55.0.979.g7e5102b832-goog
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260906141947.480524-1-julius%40bairaktaris.de
