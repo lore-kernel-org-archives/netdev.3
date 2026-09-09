@@ -1,152 +1,156 @@
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44E7552B1D2
-	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 16:35:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788971740; cv=none; b=NmUi8yYHPXyJRpmnRjhdepUnWEiUpnPBFKsPxnR5Ne4UCGgn2ZXBtmbTR1tszHCESVMZHctXMCw0lFXmth9JblPlVzcO2x1rJZgRsl+mxfihSK2Inmj8MPmWM1H9p/f9nXWIBe6PbDnx6XW2+RKa6NacczAX1kSUyFFRU5dxsnQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788971740; c=relaxed/simple;
-	bh=ITiuVoieKTQOWZnGToTekTb3oEaE28KkiGWSmsyA07E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hv9fzugM019KGFQq9//MSvMkOsBdjPluY/vZ5ih3/qqvnhudcwAlqFPvzEL5j07CveN1ySRiogC+67eyK4Rwv185TnclH/B3HmXtzIimcWW2V0fB5jsbA/HOuKxvt1zxDIkl7eWxLpFKPdDSSKrrNP+NQGCy4d3VrGZkLhx1nv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eeEFFabt; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71A6F582B8B
+	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 16:44:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.174
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1788972265; cv=pass; b=GeP8u0b3pEgwN/ZLaqSwkhMTfLzUMbeGkxPrM0KT7/gvfEyCuueRH9NhmNhucqCROr+6yEPKqPeAKi+K7WbuwizwY5Yt9rwRdrX3zQFjxPId3lHXiXSsrhlIgNUDSYEOQCNwSlYWB2kfPZopTpLgPTzFF5y2nYx5iQfBQhS09Ig=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1788972265; c=relaxed/simple;
+	bh=m6fk8JHYFEz30V0AHeoziaJO92c3GqRALMF2D5SW+MM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KfKh+W2/O/k7H2/AihnUy4pOYQyEw50SiDutj1tPVlWve13QQ0mQMFSFF8SgRyiRh7PBwqaSKEqT6QDGDRPcys7yGSz8307vuDUHdltkPsuRZbvmuQpiFn+J4SNSMPFeNE0EySlE1RuvIk3sbRxRkoUIWgyx/GpGc3IkZ7+/jJo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HIAc7kUf; arc=pass smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eeEFFabt"
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-49ccfbe062eso59565925e9.3
-        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 09:35:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HIAc7kUf"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2d6f9e2f681so67950135ad.3
+        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 09:44:23 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1788972262; cv=none;
+        d=google.com; s=arc-20260327;
+        b=sKiblpw/KIl+VWI9obkSqoqiPzQGCXs6fB84HmnC3tucZXGGc/juayVgaBSWuhL307
+         Eb8QvlWrSL3Nab2bW2YLtcmlwAP/pJqIl+s9Nw2nBZSaExd0FUxmv6aJXPK2w/TAHRv+
+         t5NHxHPFfj+tvsNZUl6p/fjdHDYLNuIKErKMpyG5+NkC+EJA2XKiTI2x3i1av0XlpqyM
+         AMJvQGt9FSB8o1c/GDoJ3zuJMbCxlY7VJVYW0Duij6o8RDZ6t7w/rK7wxUVcTnSBCGRe
+         09dHqQDp/uPFoAm0eDkQWcQbPkR6vcmXK3GLnl53XEbAw9fDm+/CXtk7lZCthpEVHA3C
+         /4Gw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=GL83gaMOvXfff1Ob2HNVIqAEM9PbF7exA6Z8GJpPwHU=;
+        fh=P10J6mjSg4/Ab8sk2cpTCtJAUefU64ttJjetxqAq0RE=;
+        b=aDgj2+usKIGcuDmQNFKyRD3uZYCaovoq35vOsNvQcpbCHqIKwy0qtO70LyN+3YqkLv
+         rChtSHAZe+ds5tkdTGb6djAYGiTARXVnxCjz5R4/qNwlgZ+Xyjo2W5gfT5HV/addVtmL
+         qkctYxy8Qnkva+IVps2Nupn17Twg5F9GEB/gmA0OAMnEpY0ojFSU5oXQU0tdfhMUrgp+
+         5ko4ehFx0mN2Y10qNnWpSpWb63DEEWQIbBVDzg8SxY9dxsiAFKU1fop+p8PqOHqTdG+n
+         GEXv65OsPpgZ9evmZMVFNSjb0LoAlFnQHo94gmIYFg1hnbl1ehzMAE093kuPtqOMLp8E
+         sLfA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788971737; x=1789576537; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ESyFju7TbbiKWIaiTGCNmAIToQRsP0nTPwSbd9PY2d8=;
-        b=eeEFFabt+hpzsNKPJeWzA6A9mqgHJedckm0JuXWyomIh2yPDjHZ9fwhe6qREysvZ8S
-         ge57zmB8jbPft8TctKacresaXFRsOO+DCqK4MJKEekp5q+LhxZO+1524Y+aQWTF1B9r7
-         aTqXFxHmraGwyDmdoahBHOLKiaddZe7Vpm1e6pv9tIjdC9sB6K7vl0L8GpGUAjHOP+bq
-         H3qrau2ybX1+Cc8ivrFS3gW6Nw7Q1LBRZmqmjOJbfmf2UMXNT+PVLBzHCVmCURtkIDZW
-         0Lm4dt4u7Y3rWF26AKCxIDz2nwPDdLE1VcX1O3TTDoIrOL5KoUW0iU6o84RLFNk85aeT
-         FhwA==
+        d=google.com; s=20251104; t=1788972262; x=1789577062; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=GL83gaMOvXfff1Ob2HNVIqAEM9PbF7exA6Z8GJpPwHU=;
+        b=HIAc7kUf2P7eK4BCUd3oTlqnbY3geQn2RcwceI3MuiHWsKBc9yrcOf08JHbB1hr210
+         PKLkYYmiiiUSwv/cDkSgPM4sK0ysRSchuasZffsnM7FpzPcJ1NbdXmCedIhEku/6iv8u
+         98beukwuloFTz+9pA80oMNvzQ4haWll/oKUCqYPN2XALxiZOnV1IstydJhQ0PmwMVH0d
+         5tnUI6M30p2DZ8rWqe11kBU8ZKbarfTxxFvBADisx0DFGsPPwp55akqETi4k5JPU5TfE
+         1DpM1ppO2OXMF9/aNnQw/vqvxBCq+MI/N6YeC6tLn3rvybkZHnCzx3XoSgiQkXNLP22w
+         JFfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788971737; x=1789576537;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ESyFju7TbbiKWIaiTGCNmAIToQRsP0nTPwSbd9PY2d8=;
-        b=nGytWfe9AogXyYMxjpmPJUaubOafJQscbKXq/vOTNgYp3vrCKjOQYHZ8TwHvWCcJK3
-         mk7rucZu4ffsds/VkCs0DhDoeGMT0vnRB/MDc9RV2/W7tsJsaCo1qen7ENhzJ0s3tJ4J
-         hYLpF3HvrQD7Vo36C4C9EyEdJcf3it2yU1HzCy82Ezk4KGj3Ttc8JXIjcwMTgkdD6U4Z
-         Fkqe2G4PAwqPbPVzJI6wnr8+0Rc3RrAzv1vsYKdDfb2TDrcYeWH1sjRsrSPJtvHxK4Cz
-         /9Q5t5/e8iSEIqm6WTcRvzBWfRZw/mUxZobehnF+PpTHN3TU1yxjbiC8YFEvd+juKU33
-         gC0A==
-X-Forwarded-Encrypted: i=1; AKwUvBzd1ZMaPWBX1hn1rPXyHRdJ1+LL35297gehWYGO9wbxutStPpTXYzQvF5Z/NIIWlhooRDcOw0k=@vger.kernel.org
-X-Gm-Message-State: AFuF++m+h+Hrr4xaXS/DHRiGxzXNtgfS5hov6GGyrMxEUD8ZOg0ghkq6
-	Jg2BAViv3wwv3AKmKOQ3U+gS0siMtGQWNareiA0X6Zi4HzcG3Qxuaaj1lbtXwg==
-X-Gm-Gg: AYBFou37B9BQRQ/jq3QlSDsqvJRdxCRikKFOwZqfBFI2Grs1RHvdWTiP2HF2SZeIsOZ
-	bGp8mzorULGmPEoPMmMJNY8wRxKs4VE7+0ulsBrSm8E+6YDGrOw34uA/+pwHTjNt+rZ6YiaKSUF
-	S1a5gH7mZhe8XRTkNVS578loHktnaoW1OGXta+Zw0gMkRZLbIJYRDVNXkUUgD7uH+3Jf1dn0k5F
-	5Ts6lioqSrFonhS2ImTDJEXwPkbPWWYDI4NB3+TWxECwM3l9Hvx/TbohRrK7+fcddS+kQIZMeu9
-	KsqYl8yh0dyOi2CYiKPxqGWTIdLzjMo/IY+5rU4dbJtoqLsFAj9jSRo68+kURhP6dJD/wdzFN5B
-	NH+GBZZwZlsaruvhumPQXYUVDsWrSb88pUMO9Hb3/Q+U1AYH7EEAtkgBdv633XniowC+TB6QQG8
-	7DiMbvmAJwByUNOmu9gw7+8G5qQqt9nzSy055UMgQEJ0noQXySBa3w17skxKP1L58ipEMClisUQ
-	+JfD07pYKiJemPbmctDFQlJ0sIuwEV0ebWL7lk/NE1YHOMUkpwK+0AnLvdfzbyXgbyunERWL61x
-	12UHpCbpHJzrBw2AZ/Wm7IZsGTeY4Whvaksp
-X-Received: by 2002:a05:600c:620b:b0:49c:fa20:cc07 with SMTP id 5b1f17b1804b1-49cff19cbf4mr306075945e9.30.1788971737114;
-        Wed, 09 Sep 2026 09:35:37 -0700 (PDT)
-Received: from ?IPV6:2003:ea:8f3f:2700:d91c:55a7:4a6a:c054? (p200300ea8f3f2700d91c55a74a6ac054.dip0.t-ipconnect.de. [2003:ea:8f3f:2700:d91c:55a7:4a6a:c054])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49d26c46b64sm2112395e9.13.2026.09.09.09.35.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 09 Sep 2026 09:35:36 -0700 (PDT)
-Message-ID: <9c34a1dc-6147-4369-8d12-9c5939d07530@gmail.com>
-Date: Wed, 9 Sep 2026 18:35:34 +0200
+        d=1e100.net; s=20251104; t=1788972262; x=1789577062;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=GL83gaMOvXfff1Ob2HNVIqAEM9PbF7exA6Z8GJpPwHU=;
+        b=Hcsy1XZYmV+VLwyCdXzf3xVsdrLrD8vRmhSe/Uz8jNCx/MUuez7+WZKi1pU67XwQaP
+         /g/JewTY8PzdvM+/IDbnDE/W+3l6KSRacEPCYzfY4pReru273I7kGErqQtcIVQo/JNQM
+         Q2RFA1CsYYCDOa/rQXUteUbpFDtYnFw1uKX7wyK1MdKPwNypqF58gE4Vlj4IhcArhSyU
+         DJg1rwuU3WxiHm7k6iDTv5YusK2mtMCJLDFGvxCbevyT0AsxmrMJFzIkbC9l0ms/WJ3Q
+         8diLyEPBVrL14unbw4w292V0vURWQKJ0s4RFu6oaE82DJw1Yk3eJYbH+JdEG+sCyM9gU
+         a8gg==
+X-Forwarded-Encrypted: i=1; AKwUvBzKSINTmdIg2ssCen6NXLey+jg0iaa8/V0pYutEuQ9pwmQpx4aoI8jeE+EP82jVjLsTRzluwfQ=@vger.kernel.org
+X-Gm-Message-State: AFuF++nf16J6AwzM8Ik324qdPdzdULipVNIDaQCqesE0tisvgL47jSLt
+	Z2XjjPSHQLskWVHYO4enzhu8ww4XppYaYtGL3TaTUjLS1MulhmfvTtbun3E3bdUsNpE6y8TN+nR
+	VD4UzN6Lu81H7HV2SMBrmSy5TacDClCOaXQHwzCAu
+X-Gm-Gg: AYBFou2BVYIIY7M2x3Q3PqK3mpumxbqkPi+wlTlUb3cqt9pRz2EGHRm+9daN6f4tDo9
+	25ljG2I8U8urVWRgjuKpIe7VfkyVoQ6p8nyvx+WHFZqTmEKqbZ2geRIekLF4tOHDh8y9nKuV2Vm
+	MpdCZm03QE+6/vNwcdeh9qzzCqs+FYk9ECdDfedptiyYWwUm46/1W330Tsbtaw0zM0pX7OC51mf
+	wgUf0nxsF9yn0yZA/b0l5uUnR5HDHOIASJ+DiqT7Q9TfHRkDss0db1wKgQuQD5DVyF/5oJXkoFi
+	xh54Ia3J5lLWmkj+T+MDzQNafsUBLcsvmN+akWfpHl7yyEXAf7V5gu6iptrpDkTyvHWhGnKY/Bb
+	rRAhJxVRzHXz7itw8Q3fCx5qs9jtPzbMGIcrk5ejM0f1k1TyO8pQIjPipzvLP47rbIKdVMLHxOx
+	Jw6vifRACsdQbLJ2PDR2foUhR+
+X-Received: by 2002:a05:6a21:6016:b0:3d3:ae0f:526c with SMTP id
+ adf61e73a8af0-3da3a15cf74mr59737523637.24.1788972261832; Wed, 09 Sep 2026
+ 09:44:21 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] r8169: don't enable chip LTR when the platform has
- not enabled LTR
-To: Yogesh Gaur <yogeshgaur.83@gmail.com>, nic_swsd@realtek.com
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, Javen Xu <javen_xu@realsil.com.cn>
-References: <20260909110554.1977-1-yogeshgaur.83@gmail.com>
-Content-Language: en-US
-From: Heiner Kallweit <hkallweit1@gmail.com>
-In-Reply-To: <20260909110554.1977-1-yogeshgaur.83@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20260908211419.882954-1-kuniyu@google.com> <20260908211419.882954-3-kuniyu@google.com>
+ <20260909065116.GC1183641@shredder> <20260909065546.GA1205208@shredder>
+In-Reply-To: <20260909065546.GA1205208@shredder>
+From: Kuniyuki Iwashima <kuniyu@google.com>
+Date: Wed, 9 Sep 2026 09:44:10 -0700
+X-Gm-Features: AcwNN1UpwKIWGXx1FisIsHLo6zEbNqF_OWRnXdGXOmfbsCcx5bZfMebBSgO-IJQ
+Message-ID: <CAAVpQUALW_LA=-M8_Eb2CYR16DNyrrSYQYM8zFASGwuJ8j=W3A@mail.gmail.com>
+Subject: Re: [PATCH v2 net 2/4] neighbour: Enforce min/max to NDTPA_INTERVAL_PROBE_TIME_MS.
+To: Ido Schimmel <idosch@nvidia.com>
+Cc: "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org, 
+	Yuwei Wang <wangyuweihx@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 09.09.2026 13:05, Yogesh Gaur wrote:
-> rtl_enable_ltr() programs the MAC to generate LTR messages - ALDPS_LTR_EN,
-> LTR_SNOOP_EN, LTR_OBFF_LOCK_EN, plus LINK_SPEED_CHANGE_EN on
-> RTL8125/RTL8126/RTL8127 - and rtl_hw_aspm_clkreq_enable() calls it on
-> every ASPM enable, then goes on to let the chip trigger L1.2.
-> 
-> The only gate is tp->aspm_manageable, which records that the OS is allowed
-> to control ASPM. It says nothing about LTR. LTR is a separate PCIe
-> capability that only works if every device on the path to the root port
-> supports it. The PCI core determines that in pci_configure_ltr() and
-> records the result by setting LTR Mechanism Enable in the endpoint's
-> Device Control 2 register; per PCIe r6.0 sec 7.5.3.16 a function must not
-> issue LTR messages while that bit is clear.
-> 
-> So on a platform whose hierarchy has no LTR path, the driver now tells the
-> chip to start sending LTR messages nothing will honour, and ties ALDPS -
-> the PHY's link-down power saving - to them. A report against RTL8125B
-> (rev 05, firmware rtl8125b-2_0.0.2) in a mini PC shows the effect: 291
-> link down/up transitions in one eight-hour boot, with repeated downshifts
-> to 100Mbps, against four transitions at boot and then a stable link on the
-> kernel before the LTR change.
-> 
-> Read the endpoint's LTR Mechanism Enable bit and leave the chip's LTR
-> machinery alone when the platform did not enable it.
-> pcie_capability_read_word() zeroes its output on error, so an unreadable
-> capability takes the same safe path.
-> 
+On Tue, Sep 8, 2026 at 11:56=E2=80=AFPM Ido Schimmel <idosch@nvidia.com> wr=
+ote:
+>
+> On Wed, Sep 09, 2026 at 09:51:16AM +0300, Ido Schimmel wrote:
+> > On Tue, Sep 08, 2026 at 09:12:46PM +0000, Kuniyuki Iwashima wrote:
+> > > diff --git a/Documentation/netlink/specs/rt-neigh.yaml b/Documentatio=
+n/netlink/specs/rt-neigh.yaml
+> > > index 0f46ef313590..5ec57d95d7f6 100644
+> > > --- a/Documentation/netlink/specs/rt-neigh.yaml
+> > > +++ b/Documentation/netlink/specs/rt-neigh.yaml
+> > > @@ -341,6 +341,8 @@ attribute-sets:
+> > >        -
+> > >          name: interval-probe-time-ms
+> > >          type: u64
+> > > +        min: 1
+> > > +        max: 86400000
+> >
+> > This differs from what I suggested [1] and fails validation:
 
-Thanks for the fix!
+Oh sorry, I completely overlooked "check:" !
 
-> Fixes: 9ab94a32af70 ("r8169: enable LTR support")
-> Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2529752
-> Signed-off-by: Yogesh Gaur <yogeshgaur.83@gmail.com>
-> ---
->  drivers/net/ethernet/realtek/r8169_main.c | 10 ++++++++++
->  1 file changed, 10 insertions(+)
-> 
-> diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-> index ec4fc21fa21f..c1ff4e898570 100644
-> --- a/drivers/net/ethernet/realtek/r8169_main.c
-> +++ b/drivers/net/ethernet/realtek/r8169_main.c
-> @@ -3037,6 +3037,16 @@ static void rtl_disable_exit_l1(struct rtl8169_private *tp)
->  
->  static void rtl_enable_ltr(struct rtl8169_private *tp)
->  {
-> +	u16 ctl2;
-> +
-> +	/* The chip must not issue LTR messages unless the platform enabled
-> +	 * LTR on the whole path up to the root port. The PCI core discovers
-> +	 * that in pci_configure_ltr() and reflects it in LTR Mechanism Enable.
-> +	 */
-> +	pcie_capability_read_word(tp->pci_dev, PCI_EXP_DEVCTL2, &ctl2);
-> +	if (!(ctl2 & PCI_EXP_DEVCTL2_LTR_EN))
-> +		return;
-> +
+> >
+> > $ tools/net/ynl/pyynl/cli.py --spec Documentation/netlink/specs/rt-neig=
+h.yaml \
+> >       --schema Documentation/netlink/netlink-raw.yaml --validate
 
-Can't you simply query tp->pci_dev->ltr_path instead of doing this low-level
-PCI register read? When reading through pci_configure_ltr(), I think this
-should do the trick.
+TIL : --validate
 
->  	switch (tp->mac_version) {
->  	case RTL_GIGA_MAC_VER_80:
->  		r8168_mac_ocp_write(tp, 0xcdd0, 0x9003);
+I was wondering how it could be used after seeing strace
+showed recvmsg() with -ERANGE from kernel.
 
+> > [...]
+> > jsonschema.exceptions.ValidationError: Additional properties are not al=
+lowed ('max', 'min' were unexpected)
+> > [...]
+> > On instance['attribute-sets'][2]['attributes'][18]:
+> >     {'name': 'interval-probe-time-ms',
+> >      'type': 'u64',
+> >      'min': 1,
+> >      'max': 86400000}
+> >
+> > Works fine with this diff [2]:
+> >
+> > $ tools/net/ynl/pyynl/cli.py --spec Documentation/netlink/specs/rt-neig=
+h.yaml \
+> >       --schema Documentation/netlink/netlink-raw.yaml --validate
+> > $ echo $?
+> > 0
+>
+> BTW, patch LGTM otherwise, so you can add my tag to v3. Thanks!
+
+Will fix "check:" in v3 and add your tag.
+
+Thank you !
