@@ -1,265 +1,256 @@
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0241E43FD3F
-	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 07:45:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05D023859C3;
+	Wed,  9 Sep 2026 07:46:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788939912; cv=none; b=lueqZN3ed0YRvsj941mPKk+X67PWgw6It6Vw28JV5u5Cs5iaBRsVhJpunsC4FPUZ5sd/10/P9pj818vrDluu9qD1iaJVlT8hKqq63Urgo2Dzc5koHLBp6H6sBixFjIt7lJYBMTFUoVXEtTBlcpWMIMOgGpob0YdSUEpxcPQc/18=
+	t=1788939994; cv=none; b=EcSmRwEPLsT9P12BaTq9FYhYNp9EW3O2OdI/HB9X13MqellbkLsfJ6ReStbcH6s6NUg7bTsQfdMa7mErRlg/yc3pjRq4BjJsifmy58syf7baKP7Cx0Fai3lbpzeZnpgpeUiUns73/RFDjaU55R2YEvSW+M+g6xxnzI32+HoCYtA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788939912; c=relaxed/simple;
-	bh=yVEP+3GkL35VJVuIwqYuEO5WEVHZjx04XefECuT04t8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sdLIcGC4nyEMmGycLIT1+W/IluVJpR9gKCaC3GzYidWc5rFc1Y5gT6V8C7aYb28oS5fjuHVrEAsNRyADP8WEvDXHVs7V5azpPh8NX+lCIQqEoCjX5DHgrjFLIyTXLi1Epg/tnM1XR1NEYypAdTNu378mfZT7pFe1FtuGQgcpT8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai; spf=pass smtp.mailfrom=nebusec.ai; dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b=n52nl+S4; arc=none smtp.client-ip=209.85.216.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=nebusec.ai
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebusec.ai
+	s=arc-20240116; t=1788939994; c=relaxed/simple;
+	bh=yXMrT6IzEUhWBRPcUDnQRqXLpg95d8PdeoBh6GLSwvw=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=MzKm59nixZVi3pm0p8cskghhfEyk8RK66bt9lC4pfcfDYA/V/yyYqYXReAiL2X7c65tuyVAKOxVVzkjj+ZnoG5RcJ+ZSg3AmwqZbXOpWi+6ACb/6rfcSdkMxb4hJ+Is58ppxXqNUZE2FBwKK0IYkuJHXLonPsyGAcg1wf/Gp+Lc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RF0qvh/e; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nebusec.ai header.i=@nebusec.ai header.b="n52nl+S4"
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-3966791a6eeso6841467a91.3
-        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 00:45:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=nebusec.ai; s=google; t=1788939910; x=1789544710; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Cfle/33DhJaHpZirsUEVX2vPd7lYd6/QJCyoGwAPahM=;
-        b=n52nl+S4eezyxYiG2vQVGL9l956i066STyEAQ3t8Fyc8oAulIpfhTVUUEoWAi+Ef+f
-         tNsa9zxkNC6yT3sYb8IvGsB0tRnuwE3J26acPQFQmkvJNxHQiKzRGW+ruM5hnZb+wu31
-         foYgi08MTh+xmbSJXolHmtnZxRAXaKIo2L3myc3Cu3bQmUStGOdEOTfeoo81eV+wYgGE
-         qwc1/lfAIoIkh8pj3bRDcqpLEAtRr3KGRI/OTxKzyKM2xgVaGbEEEv2UnN35YcdA8uqU
-         UcSZvgG/xi27Li+Ly0Ll/ohZpMRWSHNlz6ww2DaVxocvmLZ1kMBnNMEMNGAyrWYyzIU5
-         xa+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788939910; x=1789544710;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=Cfle/33DhJaHpZirsUEVX2vPd7lYd6/QJCyoGwAPahM=;
-        b=UAecTsCscz7cjFRMeDjbS79XcSCUkAH89JzpcSYjtJR464HgXodnH6B9mlKYg+xII5
-         FO2H0+pUqeoxLCc5V45veVa79CzBYJLFxTjtpfckTbwU12aGiyUbelPSamZs9/MeceNm
-         svFQsXREmDyiYVwav2xsba8vUceHIjbtAUW9AWJ6DAj3WY45y6aOhIh7Ya2XgD+rRsD1
-         G0rEIaHkkzY++SP7trp41O+RP1XE3RG40Rd/EzZRGXXCZOYbr9SPlYB5TATnyxxgBVs1
-         okifDMCK89gYX1M66eFb2or2r51vLYl/3PLPfTAg6yKAnVVIcX1i2KIgLe0sjcqXeAGR
-         RI4Q==
-X-Gm-Message-State: AFuF++kqjJzpL/WahBwwC9sEZqHCZ9I8JHxi8r8D8UYE6mu54khKpzu8
-	CyheSS8WY8Ue41Af3fqL/ulaiqjNwI2tA7aig6NE/Q1Ei/M6a93gyGSUi9D/a/IaTT7z1HPB0XH
-	bQoPO9A==
-X-Gm-Gg: AYBFou3Es98cchtf90hZNH85HEMXVOgUhWrv4jkb4tytm6fDNWqJx0VPMYu8LnzW5Wc
-	T5AM8CexrsYtgvTZRvig1F7Bre07rh3JMPjYjU9lXLS5cws1IVLzv5y27cgAcE+avTTNAg9QQxn
-	s7VW/B/XEWT2Eai3CFl9af1WLmmdzYFVBvA45LXrkwIad5XaTKdVlAP/pxLcUagE96ZLuo/1vD/
-	/R38g2/l3ZkNKtwXZ80s3d6y27jgYkJ/phNmhRbvYU/Nds5iNPw33gKwbU1N1fn5Th+M6DoVhBy
-	32qlG4fr8xNPXUZ1il6sEYpthHo6ak5wiUKHdFzKbfAZS75M11vxuSxlnaLJwDFqxqxjR3I6rI+
-	KhgVo/NiC3TdQygdoCsNdBVAEPnaLtJBnByWn3K/BOfeQxFvl+0fIWoLSQBS8HfI2ic+wJpjmPV
-	RCBXTK1tDKKJWgu5yIw9jKQnY+6m44YYCeIehhxzodAG82d5jhM7DTLcJLQfPb7vUv0UacZCmAS
-	HYKaygkqpNcFUUgrH4vsosawc1c7A==
-X-Received: by 2002:a17:90a:d610:b0:399:1b08:28de with SMTP id 98e67ed59e1d1-39b2613259fmr49954285a91.7.1788939910014;
-        Wed, 09 Sep 2026 00:45:10 -0700 (PDT)
-Received: from b6ad5085b32f.. ([122.51.212.64])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39b07b197a9sm36300085a91.0.2026.09.09.00.45.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Sep 2026 00:45:09 -0700 (PDT)
-From: Zihan Xi <zihanx@nebusec.ai>
-To: netdev@vger.kernel.org,
-	linux-afs@lists.infradead.org
-Cc: David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Vega <vega@nebusec.ai>,
-	Luxing Yin <root@tr0jan.top>,
-	Zihan Xi <zihanx@nebusec.ai>
-Subject: [PATCH net v4 1/1] rxrpc: fix encap_rcv skb accounting exhaustion
-Date: Wed,  9 Sep 2026 07:44:58 +0000
-Message-ID: <ca1d010bc963319d4167b8e985b5afac5912f6da.1788878590.git.zihanx@nebusec.ai>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <cover.1788878590.git.zihanx@nebusec.ai>
-References: <cover.1788878590.git.zihanx@nebusec.ai>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RF0qvh/e"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FA1A1F00A3A;
+	Wed,  9 Sep 2026 07:46:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788939992;
+	bh=d7GagPEcixH3H5MMbvg8ksiBnC47o3JwyIOR1AMzKr0=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=RF0qvh/evHvX6JzdJI41FraeMCyq5G2qVA8W4tpKSdpG0HbMuQjaAfjIOUcK3hbar
+	 kuVMz3lFyxAQ8RLc1IUIN+lI9QCOzC6Wajl0DV9+k3T+rK6kbWAwOQkXyngbvXl24N
+	 FKo/UirZGLJyOFuXey9WzNOAamOLHAx+HxZtNcnlHrAXrcpqqfQjrvdT+N6C3/L1LE
+	 RIzdudnvfLZhWrAGp0TpLJpEl/QShLkZh+Q4B3Thi4bf7ZuJJ/KZDt7eFMELnKRNoQ
+	 dPmEJyL7FRRTCmr4q/8+A46NofdTYpzTkadEJJLJSQAg6bZT1rZJG7TIm8OAWl54+j
+	 AXHx2D7YqyRig==
+Subject:
+ Re: [PATCH net-next v3] selftests/bpf: Track test_xdp_features DUT processes
+From: netdev-bot+sashiko@kernel.org
+To: bochaolucky@gmail.com
+Cc: daniel@iogearbox.net, kuba@kernel.org, alexis.lothore@bootlin.com,
+ emil@etsalapatis.com, lorenzo@kernel.org, shuah@kernel.org,
+ bpf@vger.kernel.org, netdev@vger.kernel.org, linux-kselftest@vger.kernel.org
+Date: Wed, 09 Sep 2026 07:46:31 +0000
+Message-ID: <178893999152.219967.3747368704885781101@kernel.org>
+In-Reply-To:
+ <20260904-xdp-dut-process-lifecycle-gmail-v3-1-5b7eee4f7009@gmail.com>
+References:
+ <20260904-xdp-dut-process-lifecycle-gmail-v3-1-5b7eee4f7009@gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-rxrpc_encap_rcv() moves encapsulated UDP packets onto the local
-RxRPC queue without preserving UDP receive-buffer accounting. A local
-AF_RXRPC service such as the AFS callback listener can therefore be
-flooded with RxRPC-shaped UDP packets until the local queue grows
-without bound and consumes large amounts of memory.
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider:
 
-Reaccount encapsulated packets against the UDP socket before queueing
-them on the RxRPC local queue and drop packets once the socket rcvbuf
-limit is reached. Orphan PACKET skbs when the I/O thread dequeues
-them so UDP ownership does not follow those packets onto call or
-connection queues. Error-queue skbs keep their existing destructor.
-Clear sk_user_data under RCU protection and release the socket only
-after the local queues are purged.
+Critical: 0 · High: 0 · Medium: 2 (1) · Low: 1
 
-sk_forward_alloc is not atomic. UDP already serialises it with
-sk->sk_receive_queue.lock; take that lock around the charge in
-rxrpc_encap_rcv() and around skb_orphan() in the I/O thread. The I/O
-thread uses spin_lock_bh() so a concurrent BH encap_rcv() cannot
-update the same counter. The skbs stay on the RxRPC local queue, not
-the UDP receive queue.
+- [Medium] The commit message justifies part of the rewrite with a
+  failure mode that cannot occur in the pre-patch script: "The readiness…
+- [Medium] Signal coverage regression that contradicts the commit
+  message.
+- [Low] Trap race on partially published DUT state in start_dut_server()
+  (tools/testing/selftests/bpf/test_xdp_features.sh, lines 72-76): the…
 
-Fixes: 446b3e14525b ("rxrpc: Move packet reception processing into I/O thread")
-Cc: stable@vger.kernel.org
-Reported-by: Vega <vega@nebusec.ai>
-Assisted-by: LLM
-Co-developed-by: Luxing Yin <root@tr0jan.top>
-Signed-off-by: Luxing Yin <root@tr0jan.top>
-Signed-off-by: Zihan Xi <zihanx@nebusec.ai>
----
-changes in v4:
-  - serialise UDP rmem charge/uncharge with sk->sk_receive_queue.lock
-  - use spin_lock() in encap_rcv() (BH) and spin_lock_bh() around
-    skb_orphan() in the I/O thread
-  - do not enqueue encapsulated skbs on the UDP receive queue
-  - orphan only PACKET skbs charged in encap_rcv(); leave error-queue
-    skb ownership alone
-  - restore the unshare -Urn reproducer and document the AFS callback
-    listener
-  - add the privileged pin/FIFO hog commands used to record the panic
-  - clarify the recorded panic is a downstream OOM after
-    privileged pin/FIFO hog, not the unshare-only flood
-  - include the full OOM Mem-Info in the cover crash log
-  - v3 Link: https://lore.kernel.org/all/cover.1788539302.git.zihanx@nebusec.ai/
-changes in v3:
-  - orphan the skb when the I/O thread dequeues it from the local
-    queue so UDP rmem ownership does not follow packets onto
-    call/conn queues
-  - mention both io_thread.c and local_object.c in the cover opening
-  - do not describe the recorded panic as a complete non-root-only
-    reproducer; the flood is unprivileged but I/O-thread starvation
-    used privileged steps
-  - attribute the OOM to skbuff growth rather than incoming-call
-    setup
-  - describe the recorded panic as a downstream OOM in
-    rxrpc_reject_packet()/sock_alloc_send_pskb after I/O-thread
-    contention, not as an allocation at the encap_rcv enqueue site
-  - note that cgroup.freeze does not stop krxrpcio; the crash still
-    shows that kthread allocating, and the CPU pin plus SCHED_FIFO
-    hog are the steps that slowed it
-  - v2 Link: https://lore.kernel.org/all/cover.1785339953.git.zihanx@nebusec.ai/
-changes in v2:
-  - switch the drop path from atomic_inc(&udp_sk->sk_drops) to
-    sk_drops_inc(udp_sk)
-  - retarget Fixes to 446b3e14525b, the first boundary where encap_rcv
-    queued the skb onto local->rx_queue for later I/O-thread consumption
-  - rebase onto current net/main
-  - refresh the cover crash log from an unfixed 7.3.0-rc1+ net/main run
-    and include the decoded stack
-  - explain in the cover why packetdrill was not used
-  - document the actual local flood command instead of a generic
-    unshare invocation
-  - v1 Link: https://lore.kernel.org/all/cover.1784742007.git.zihanx@nebusec.ai/
+Pre-existing issues:
+- [Medium] The selftest's pass/fail verdict cannot observe an XDP feature
+  regression.
 
- net/rxrpc/io_thread.c    | 37 +++++++++++++++++++++++++++++++++++--
- net/rxrpc/local_object.c |  8 ++++++--
- 2 files changed, 41 insertions(+), 4 deletions(-)
+--
 
-diff --git a/net/rxrpc/io_thread.c b/net/rxrpc/io_thread.c
-index dc5184a2fa9d1..415b05f5e2b47 100644
---- a/net/rxrpc/io_thread.c
-+++ b/net/rxrpc/io_thread.c
-@@ -13,6 +13,22 @@ static int rxrpc_input_packet_on_conn(struct rxrpc_connection *conn,
- 				      struct sockaddr_rxrpc *peer_srx,
- 				      struct sk_buff *skb);
- 
-+/*
-+ * Drop UDP rmem ownership for packets charged in encap_rcv().
-+ * sk_forward_alloc is serialised by sk_receive_queue.lock.
-+ */
-+static void rxrpc_skb_orphan_udp(struct sk_buff *skb)
-+{
-+	struct sock *sk = skb->sk;
-+
-+	if (!sk)
-+		return;
-+
-+	spin_lock_bh(&sk->sk_receive_queue.lock);
-+	skb_orphan(skb);
-+	spin_unlock_bh(&sk->sk_receive_queue.lock);
-+}
-+
- /*
-  * handle data received on the local endpoint
-  * - may be called in interrupt context
-@@ -41,8 +57,6 @@ int rxrpc_encap_rcv(struct sock *udp_sk, struct sk_buff *skb)
- 	if (skb->tstamp == 0)
- 		skb->tstamp = ktime_get_real();
- 
--	skb->mark = RXRPC_SKB_MARK_PACKET;
--	rxrpc_new_skb(skb, rxrpc_skb_new_encap_rcv);
- 	rx_queue = &local->rx_queue;
- #ifdef CONFIG_AF_RXRPC_INJECT_RX_DELAY
- 	if (rxrpc_inject_rx_delay ||
-@@ -52,6 +66,22 @@ int rxrpc_encap_rcv(struct sock *udp_sk, struct sk_buff *skb)
- 	}
- #endif
- 
-+	spin_lock(&udp_sk->sk_receive_queue.lock);
-+	if (atomic_read(&udp_sk->sk_rmem_alloc) >= READ_ONCE(udp_sk->sk_rcvbuf) ||
-+	    !sk_rmem_schedule(udp_sk, skb, skb->truesize)) {
-+		spin_unlock(&udp_sk->sk_receive_queue.lock);
-+		sk_drops_inc(udp_sk);
-+		kfree_skb(skb);
-+		return 0;
-+	}
-+
-+	skb->dev = NULL;
-+	skb_set_owner_r(skb, udp_sk);
-+	spin_unlock(&udp_sk->sk_receive_queue.lock);
-+	skb_dst_force(skb);
-+
-+	skb->mark = RXRPC_SKB_MARK_PACKET;
-+	rxrpc_new_skb(skb, rxrpc_skb_new_encap_rcv);
- 	skb_queue_tail(rx_queue, skb);
- 	wake_up_process(io_thread);
- 	return 0;
-@@ -471,6 +501,9 @@ int rxrpc_io_thread(void *data)
- 		/* Distribute packets and errors. */
- 		while ((skb = __skb_dequeue(&rx_queue))) {
- 			struct rxrpc_skb_priv *sp = rxrpc_skb(skb);
-+
-+			if (skb->mark == RXRPC_SKB_MARK_PACKET)
-+				rxrpc_skb_orphan_udp(skb);
- 			switch (skb->mark) {
- 			case RXRPC_SKB_MARK_PACKET:
- 				skb->priority = 0;
-diff --git a/net/rxrpc/local_object.c b/net/rxrpc/local_object.c
-index 169f9dfdaa77f..6604f9f952660 100644
---- a/net/rxrpc/local_object.c
-+++ b/net/rxrpc/local_object.c
-@@ -437,8 +437,8 @@ void rxrpc_destroy_local(struct rxrpc_local *local)
- 	if (socket) {
- 		local->socket = NULL;
- 		kernel_sock_shutdown(socket, SHUT_RDWR);
--		socket->sk->sk_user_data = NULL;
--		sock_release(socket);
-+		rcu_assign_sk_user_data(socket->sk, NULL);
-+		synchronize_rcu();
- 	}
- 
- 	/* At this point, there should be no more packets coming in to the
-@@ -448,6 +448,10 @@ void rxrpc_destroy_local(struct rxrpc_local *local)
- 	rxrpc_purge_queue(&local->rx_delay_queue);
- #endif
- 	rxrpc_purge_queue(&local->rx_queue);
-+
-+	if (socket)
-+		sock_release(socket);
-+
- 	rxrpc_purge_client_connections(local);
- 	page_frag_cache_drain(&local->tx_alloc);
- }
+selftests/bpf: Track test_xdp_features DUT processes
+
+This reworks test_xdp_features.sh so that the DUT xdp_features instance is
+tracked by PID and shell job instead of by process name, waits for that
+exact PID to appear in ss output with a bounded retry loop, and reaps it
+after each subtest.  The old signal traps are replaced with an EXIT trap
+plus HUP/INT/TERM handlers.
+
+A few questions below.
+
+> The readiness loop also has no timeout,
+> so a DUT that exits before listening leaves the test hung indefinitely.
+
+[Severity: Medium]
+Is this description of the pre-patch behaviour accurate?  In the baseline
+script, set -e is in effect before test_xdp_features is invoked, and the
+readiness probe sits in the body of the while loop, not in its condition:
+
+	wait_for_dut_server() {
+		while sleep 1; do
+			ss -tlp | grep -q xdp_features
+			[ $? -eq 0 ] && break
+		done
+	}
+
+Bash exempts only the command list immediately following the while or until
+keyword from errexit, which here is sleep 1.  The grep -q in the loop body
+is not exempt, so the first failing probe terminates the script with status
+1.  Wouldn't that mean the loop can never reach a second iteration, and the
+observable pre-patch symptom is a spurious failure about a second after the
+DUT is started (plus a leaked netns and veth, since there was no EXIT trap),
+rather than an indefinite hang?
+
+Since the patch carries a Fixes: tag, could this sentence be reworded to
+describe the failure mode that actually occurs?  The other two motivations
+in the message, name-wide ss matching and pidof killing unrelated
+xdp_features processes, do match the baseline code.
+
+> diff --git a/tools/testing/selftests/bpf/test_xdp_features.sh b/tools/testing/selftests/bpf/test_xdp_features.sh
+> index 0aa71c4455c05..35ce0d4e24180 100755
+> --- a/tools/testing/selftests/bpf/test_xdp_features.sh
+> +++ b/tools/testing/selftests/bpf/test_xdp_features.sh
+
+[ ... ]
+
+> @@ -30,77 +31,118 @@ setup() {
+>  	} > /dev/null 2>&1
+>  }
+>  
+> +terminate_dut_server() {
+> +	[ -z "$dut_pid" ] && return
+> +
+> +	# Use the shell job instead of a PID which may have been reused.
+> +	if [ "$(jobs -pr %% 2> /dev/null)" = "$dut_pid" ]; then
+> +		kill -KILL %% 2> /dev/null || true
+> +	fi
+> +
+> +	wait "$dut_pid" 2> /dev/null || true
+> +	dut_pid=""
+> +}
+> +
+>  cleanup() {
+> -	ip link del v1 2> /dev/null
+> -	ip netns del ${NS} 2> /dev/null
+> -	[ "$(pidof xdp_features)" = "" ] || kill $(pidof xdp_features) 2> /dev/null
+> +	terminate_dut_server
+> +	ip link del v1 2> /dev/null || true
+> +	ip netns del "${NS}" 2> /dev/null || true
+>  }
+
+[ ... ]
+
+> +start_dut_server() {
+> +	./xdp_features "$@" &
+> +	dut_pid=$!
+> +	wait_for_dut_server
+> +}
+
+[Severity: Low]
+Can a trap serviced between these two commands orphan the DUT?  The child is
+forked by the background command, but its identity becomes visible to the
+cleanup path only when the separate assignment dut_pid=$! runs.  Bash runs
+pending trap handlers at command boundaries.
+
+A directed signal in that window, for example kill -TERM on the script pid,
+which does not reach the async child, runs the new TERM handler and then the
+EXIT trap:
+
+	trap 'exit 143' TERM
+	  -> trap cleanup EXIT
+	     -> cleanup()
+	        -> terminate_dut_server()
+
+and terminate_dut_server() starts with:
+
+	[ -z "$dut_pid" ] && return
+
+dut_pid is still empty here, since it is initialised to "" at the top of the
+script and cleared again by reap_dut_server() after each subtest, so the
+just-forked xdp_features is never signalled.  cleanup() then continues into
+ip link del v1 and ip netns del, leaving an xdp_features process behind with
+its XDP program still attached and its device and netns removed underneath
+it.  The removed pidof sweep used to cover this window.
+
+Would signalling the job whenever jobs -pr reports one, rather than keying
+off the variable assignment having completed, close this?
+
+[ ... ]
+
+>  	## XDP_NDO_XMIT
+> -	./xdp_features -f XDP_NDO_XMIT -D ::ffff:$V1_IP4 -T ::ffff:$V0_IP4 v1 &
+> -	wait_for_dut_server
+> +	start_dut_server -f XDP_NDO_XMIT -D ::ffff:$V1_IP4 -T ::ffff:$V0_IP4 v1
+>  	ip netns exec ${NS} ./xdp_features -t -f XDP_NDO_XMIT \
+>  					   -D ::ffff:$V1_IP4 \
+>  					   -C ::ffff:$V1_IP4 \
+>  					   -T ::ffff:$V0_IP4 v0
+>  	ret=$?
+> -	cleanup
+> +	reap_dut_server
+>  }
+
+[Severity: Medium]
+This isn't an issue introduced by this patch, but while the ret=$? contract
+is being touched here, can this script actually observe an XDP feature
+regression?  The script's verdict comes only from the tester exit status,
+via ret=$? here and exit $ret at the end.
+
+On the tester side, tester_run() in xdp_features.c collects the result and
+only prints it:
+
+	detected_cap = tester_collect_detected_cap(skel, ntohl(stats));
+
+	fprintf(stdout, "Feature %s: [%s][%s]\n", get_xdp_feature_str(), ...);
+out:
+	bpf_xdp_detach(env.ifindex, flags, NULL);
+	close(sockfd);
+	return err < 0 ? err : 0;
+
+detected_cap never reaches the return value, and main() collapses anything
+non-negative:
+
+	return err < 0 ? -err : 0;
+
+So a NOT DETECTED result for XDP_PASS, XDP_DROP, XDP_ABORTED, XDP_TX,
+XDP_REDIRECT or XDP_NDO_XMIT still exits 0 and the harness records a pass;
+only infrastructure failures such as socket, attach or protocol errors can
+fail the test.  Is that intended?
+
+>  set -e
+> -trap cleanup 2 3 6 9
+> +trap cleanup EXIT
+> +trap 'exit 129' HUP
+> +trap 'exit 130' INT
+> +trap 'exit 143' TERM
+
+[Severity: Medium]
+The old trap covered signals 2, 3, 6 and 9, that is INT, QUIT, ABRT and
+KILL.  The new set covers HUP, INT and TERM, so QUIT and ABRT are no longer
+handled.  A shell killed by an untrapped fatal signal does not run its EXIT
+trap, so does kill -QUIT on the script, or a terminal Ctrl-\, now skip
+cleanup() entirely and leave the v1 veth and the ns1-XXXXXX netns behind?
+
+The background DUT looks affected too.  A non-interactive shell sets
+SIGINT and SIGQUIT to ignored in asynchronous children, so a process-group
+SIGQUIT does not reach the child started by:
+
+	./xdp_features "$@" &
+
+and the catch-all sweep that used to collect it has been removed from
+cleanup():
+
+	-	[ "$(pidof xdp_features)" = "" ] || kill $(pidof xdp_features) 2> /dev/null
+
+That leaves an xdp_features process holding an XDP program plus stale
+network state, and the next run then fails in setup() at ip link add v1.
+
+The commit message says "Install an EXIT trap and signal handlers so failure
+paths also remove network setup" -- would adding trap 'exit 131' QUIT and
+trap 'exit 134' ABRT match that claim?
+
+>  
+>  test_xdp_features
+>
+
 -- 
-2.43.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260904-xdp-dut-process-lifecycle-gmail-v3-1-5b7eee4f7009%40gmail.com
