@@ -1,56 +1,56 @@
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
+Received: from mail-pl1-f199.google.com (mail-pl1-f199.google.com [209.85.214.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33FC652ED5D
-	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 23:44:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B74C55293EE
+	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 23:44:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788997472; cv=none; b=M3MSQrLJ+NJkrtk2pfm0djzbWiSCI1YIvqvRO0TCtXXyplz3MW7Za0MaKb3RnKdSSW4xUY6NPPkOI1w80bLlWdOTX8RSv4aKGoyVxwtgeyBH7XMMsBOC22tQ4EbeUm5EeIWgNG3IwzqVlKBtNqF5StdXh/TFP/ECWPli7UsAPvE=
+	t=1788997473; cv=none; b=qhG+q3kmg+rTgyR38HhGuKJJlIX/ymtp3JWDfJwOHvhZ6xT2e2MQz0Z+iKasaFxZifaTC4OIVZkY11rvdeArfnFazS8yoHxCXSXk9Q0dKhAf/f2E3ifWinoPxDIddbWNZUI4QIlJuW7ebntUhQ6DKRcYnypQeHs+Ju/nSRtGoPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788997472; c=relaxed/simple;
-	bh=cp43fHmgHlbMCEgPJIQWQoxL5TDExDyjispxCD8X4i4=;
+	s=arc-20240116; t=1788997473; c=relaxed/simple;
+	bh=48BBTfAmlo6oADo47hWjHC/xsUQOQV/0+yuTfS77ul8=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=tGWjXSG7RreWuJ1E27ILPkK0zVsInrkjCqQ7N6JuwrQMoNgaLLqPzNCkXkFWMazbGwfeUOrB60pyDsyGAijJYftUByHEkVgPUFJKHV1TduD/AN2xZ8vQTdF4F1vV8aJ8V3JOY/KPqIsOBQV6bK2a38hRHwb5+QiYh5mpF2SCeKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=D6y64Yjc; arc=none smtp.client-ip=209.85.215.199
+	 To:Cc:Content-Type; b=GmsYt6D211thxUhHFRltR4YFW21t6R5Xkvap48J6jV+JQWsWOI5dt4fROBRRf2vX6glJekic/547n06OcpANO8QOB4/jfujbf3L1oMnlycujOpKT0M7TKAbix/beYFJRc1/r6BrNBtGHz7dwCJmtTsHI5TPpcyEK9unyBNzA6Z8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wLMs5vnA; arc=none smtp.client-ip=209.85.214.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="D6y64Yjc"
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-c89704da8c7so8362792a12.0
-        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 16:44:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wLMs5vnA"
+Received: by mail-pl1-f199.google.com with SMTP id d9443c01a7336-2dd03492f9fso15512625ad.2
+        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 16:44:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1788997470; x=1789602270; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1788997471; x=1789602271; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=oPeHoAp96qVJQtBdKQRtObanZSycV+yeuM3H6wqItRA=;
-        b=D6y64Yjcub6DBu10w4lHuib8kEjpgxHFZ4NwdJ9bDbc1K7CJGFNQYMQGMWJJA4kqfM
-         Qx3t5jriuAYStf02CqmGC+oiBh1qoFLNwPPISkEh91JhXZszbO0fPiP4f9QopLA/kDYh
-         LjmSheMXDAcHiMls6G9Gc1uxmjWwSAJXI8o8smI50v4pLX3YwvySbfQEqiIya75gCXQu
-         WsOC6lx6G0fK/EPFOm3m4FsWbkrcNJuGwQTR8ZD+B5N5iefB46EizYdaBdKX0xF4SqBB
-         ICXCTD/ps5AbH3t476OdOJZPHBjgu8Q03nQJCaLICFcJxoP32AqQlISsHi11unjEyJ3l
-         5juQ==
+        bh=GAB1/Us3msu+i1ZwzE0vUpvfL4OCnB5ETelbpTnXsk4=;
+        b=wLMs5vnABuHGl1AkZO45j/xquDMk8C0IwM9+jehg8Z+2JmO0I6U4WHQIlHu3jhrKwN
+         FzB6rRUy6KE+CYiKcR4Gi6n4ZRSjJpBZ7yO2hygIuWlTdhAAnw1RLccRAWLeCemx1YlJ
+         KAOycGsMG0JpVXnM5aDVsN9coYRmuFqP9Ex6s5nDp02hF1Iqnf4kAewTy8j4yoWimrs1
+         fLcOUlEhydErbn6mjURG9I1hD/apKFPbVNlJhqCiab3uzEa3I/DlmkZcfUan57LzHKAq
+         FSe4XS2mwE3kRfwZd4g06Yng34WP9bZXwptnMY5b2S+EVTR3aDtI0MSrpSS+Aw+2WTiM
+         3Ecg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788997470; x=1789602270;
+        d=1e100.net; s=20251104; t=1788997471; x=1789602271;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=oPeHoAp96qVJQtBdKQRtObanZSycV+yeuM3H6wqItRA=;
-        b=YJhF6/6s4KWm1McjmcGMwNr9uKuRzYczHzLhhG51t18dTasOEGshvWkpgd6Vs9ZyiB
-         FV3vlKq5AJuBMgtoUI4nLgMxW/E6G6Clnsz/gZZNbbUYogn6Pr4Ajda413WEdvq2n/H/
-         pPAJMSkrF6ooKUuy9rDEnVZVOF+3iM3JS1aLKkKH6LF/lgwAyU5PcIUSHVUKmFOy+uZF
-         Uh1hDoeJpfw8hHkkO+rKUlaPJcQk6p0T5gkLbB1ozdZxgaDrseydrc6h00LEzZHkNGWe
-         YaOX3Ux77v1RL94HNYWXHu/lFRiroEMbHuZYj/ZGt2ElhxGKoQJShOuxI5ZaSs5gKoNc
-         G28g==
-X-Forwarded-Encrypted: i=1; AKwUvByLf1wKvEe9KLzP5Cnh+SlRXT4IP/YmXLk/48WqNy1QjzDBTai6tGm/YQshBWpAqCgAkYpzFhQ=@vger.kernel.org
-X-Gm-Message-State: AFuF++nYPlFkBiF6P8rmY76gJaluTQ0n2lv8KG002Q1UBOAMqGceGwKY
-	kLye0Fkc6O398E5NkJvs34+EDAjyMm4XDyAPuvv2Hl33tR/ei0Xob77uUGOLkp0YMykyPKAVxN6
-	qO8HU8w==
-X-Received: from pgbm9-n2.prod.google.com ([2002:a05:6a02:6189:20b0:cc1:a31f:2d16])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:a109:b0:3d3:aec2:4dcb
- with SMTP id adf61e73a8af0-3dacbf2a0f9mr5877115637.23.1788997470121; Wed, 09
- Sep 2026 16:44:30 -0700 (PDT)
-Date: Wed,  9 Sep 2026 23:43:48 +0000
+        bh=GAB1/Us3msu+i1ZwzE0vUpvfL4OCnB5ETelbpTnXsk4=;
+        b=sSXlTNYfCShjEjpm0LiaWSjC3+wfv2Rd92Vvaw3KYojgLsiTdQnPAKOlNW3162Pg2U
+         A5wLtOyqULjIMthCbDC2ZSB/D5Vuv+h4LBgx00VzMbfDncSMDbXoeN9MrDgYmQ7pplJv
+         307OZU5/nImwcmH36T+fmb714Ch4n3lrx84H39StUE+EQYpXHEpSQ4ZcJ7RcCEuAxo79
+         Ogzum+p7ZIbd7bpYvxQmithYhgQmrwhYxFm4ButtlF4+b7yUuEz3krVzhgxHg/qnnLJe
+         +Bl9sHFudRysmtAtqAa9MJXwiP0TXZcV/d8gtTgOfpxVL2d7xxObZveX2SDxZEn9RgOO
+         KfiQ==
+X-Forwarded-Encrypted: i=1; AKwUvBwm+OjuyWzLivVLMKmnf4OXny5IIOaksGkQLzNs04eKSeT0WCnLrfFBARqfnxmTnmhfNiNuzzQ=@vger.kernel.org
+X-Gm-Message-State: AFuF++l7bcGKwW4Ap2MzJNfyiUjZdFwEsf2jdGGwMlVbqdvQ6VED1h8H
+	SMD/N4u/CGQNkCIjhux1GoGPBZ07MJwtrkq8vko22FXAfbwKRDESYJ8sCcuHif+iEIattzs4EON
+	ykTFVeA==
+X-Received: from plei1.prod.google.com ([2002:a17:902:e481:b0:2db:4036:e5b4])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1670:b0:2d9:438e:b70d
+ with SMTP id d9443c01a7336-2db1232c88emr581797095ad.1.1788997471003; Wed, 09
+ Sep 2026 16:44:31 -0700 (PDT)
+Date: Wed,  9 Sep 2026 23:43:49 +0000
 In-Reply-To: <20260909234422.2416506-1-kuniyu@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -60,9 +60,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260909234422.2416506-1-kuniyu@google.com>
 X-Mailer: git-send-email 2.55.0.1003.g10538fe699-goog
-Message-ID: <20260909234422.2416506-6-kuniyu@google.com>
-Subject: [PATCH v2 net-next 5/7] ip_tunnel: Unify error paths in
- ip_tunnel_newlink() and ip_tunnel_changelink().
+Message-ID: <20260909234422.2416506-7-kuniyu@google.com>
+Subject: [PATCH v2 net-next 6/7] ip_tunnel: Protect ip_tunnel_net.tunnels[]
+ with mutex.
 From: Kuniyuki Iwashima <kuniyu@google.com>
 To: "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, David Ahern <dsahern@kernel.org>, 
@@ -72,112 +72,183 @@ Cc: Simon Horman <horms@kernel.org>, Steffen Klassert <steffen.klassert@secunet.
 	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-The next patch will introduce per-netns mutex and acquire it
-in ip_tunnel_newlink() and ip_tunnel_changelink().
+struct ip_tunnel.net is the netns where encapsulated packets
+flow into.
 
-To make the diff cleaner, let's unify the error paths.
+struct ip_tunnel is linked to ip_tunnel_net.tunnels[] of netns.
+
+During netns dismantle or module unload, ip_tunnel_delete_net()
+iterates the list and queues devices for destruction regardless
+of the devices' netns.
+
+Thus, once RTNL is removed, the list can be modified concurrently
+from different netns due to device removal.
+
+Let's protect it with per-netns mutex.
+
+Note that dev_siocdevprivate() calls netdev_lock_ops() but
+it must be NOP for tunnel devices to avoid AB-BA deadlock.
+DEBUG_NET_WARN_ON_ONCE() is added to annotate the locking
+explicitly.
 
 Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 ---
- net/ipv4/ip_tunnel.c | 37 ++++++++++++++++++++++++-------------
- 1 file changed, 24 insertions(+), 13 deletions(-)
+ include/net/ip_tunnels.h |  1 +
+ net/ipv4/ip_tunnel.c     | 42 +++++++++++++++++++++++++++++++++++-----
+ 2 files changed, 38 insertions(+), 5 deletions(-)
 
+diff --git a/include/net/ip_tunnels.h b/include/net/ip_tunnels.h
+index b0f9d02a7f18..57a67900e2d3 100644
+--- a/include/net/ip_tunnels.h
++++ b/include/net/ip_tunnels.h
+@@ -215,6 +215,7 @@ struct ip_tunnel_net {
+ 	struct net_device *fb_tunnel_dev;
+ 	struct rtnl_link_ops *rtnl_link_ops;
+ 	struct hlist_head tunnels[IP_TNL_HASH_SIZE];
++	struct mutex tunnels_lock;
+ 	struct ip_tunnel __rcu *collect_md_tun;
+ 	int type;
+ };
 diff --git a/net/ipv4/ip_tunnel.c b/net/ipv4/ip_tunnel.c
-index 5833f93c1964..3ba03c2b3b90 100644
+index 3ba03c2b3b90..9ad63f1af37a 100644
 --- a/net/ipv4/ip_tunnel.c
 +++ b/net/ipv4/ip_tunnel.c
-@@ -1181,21 +1181,23 @@ int ip_tunnel_newlink(struct net *net, struct net_device *dev,
- 		      struct nlattr *tb[], struct ip_tunnel_parm_kern *p,
- 		      __u32 fwmark)
- {
--	struct ip_tunnel *nt;
- 	struct ip_tunnel_net *itn;
-+	struct ip_tunnel *nt;
-+	int err = 0;
- 	int mtu;
--	int err;
+@@ -219,7 +219,8 @@ static struct ip_tunnel *ip_tunnel_find(struct ip_tunnel_net *itn,
  
+ 	ip_tunnel_flags_copy(flags, parms->i_flags);
+ 
+-	hlist_for_each_entry_rcu(t, head, hash_node, lockdep_rtnl_is_held()) {
++	hlist_for_each_entry_rcu(t, head, hash_node,
++				 lockdep_is_held(&itn->tunnels_lock)) {
+ 		if (local == t->parms.iph.saddr &&
+ 		    remote == t->parms.iph.daddr &&
+ 		    link == READ_ONCE(t->parms.link) &&
+@@ -894,6 +895,16 @@ static void ip_tunnel_update(struct ip_tunnel_net *itn,
+ 	netdev_state_change(dev);
+ }
+ 
++static void __ip_tunnel_dellink(struct net_device *dev, struct list_head *head)
++{
++	struct ip_tunnel *tunnel = netdev_priv(dev);
++	struct ip_tunnel_net *itn;
++
++	itn = net_generic(tunnel->net, tunnel->ip_tnl_net_id);
++	ip_tunnel_del(itn, tunnel);
++	unregister_netdevice_queue(dev, head);
++}
++
+ int ip_tunnel_ctl(struct net_device *dev, struct ip_tunnel_parm_kern *p,
+ 		  int cmd)
+ {
+@@ -903,8 +914,12 @@ int ip_tunnel_ctl(struct net_device *dev, struct ip_tunnel_parm_kern *p,
+ 	struct net *net = t->net;
+ 	int err = 0;
+ 
++	DEBUG_NET_WARN_ON_ONCE(netdev_need_ops_lock(dev));
++
+ 	itn = net_generic(net, t->ip_tnl_net_id);
+ 
++	mutex_lock(&itn->tunnels_lock);
++
+ 	switch (cmd) {
+ 	case SIOCGETTUNNEL:
+ 		if (dev == itn->fb_tunnel_dev) {
+@@ -988,7 +1003,7 @@ int ip_tunnel_ctl(struct net_device *dev, struct ip_tunnel_parm_kern *p,
+ 			dev = t->dev;
+ 		}
+ 
+-		ip_tunnel_dellink(dev, &dev_kill_list);
++		__ip_tunnel_dellink(dev, &dev_kill_list);
+ 		err = 0;
+ 		break;
+ 
+@@ -997,6 +1012,8 @@ int ip_tunnel_ctl(struct net_device *dev, struct ip_tunnel_parm_kern *p,
+ 	}
+ 
+ done:
++	mutex_unlock(&itn->tunnels_lock);
++
+ 	unregister_netdevice_many(&dev_kill_list);
+ 
+ 	return err;
+@@ -1093,8 +1110,9 @@ void ip_tunnel_dellink(struct net_device *dev, struct list_head *head)
+ 	itn = net_generic(tunnel->net, tunnel->ip_tnl_net_id);
+ 
+ 	if (itn->fb_tunnel_dev != dev) {
+-		ip_tunnel_del(itn, netdev_priv(dev));
+-		unregister_netdevice_queue(dev, head);
++		mutex_lock(&itn->tunnels_lock);
++		__ip_tunnel_dellink(dev, head);
++		mutex_unlock(&itn->tunnels_lock);
+ 	}
+ }
+ EXPORT_SYMBOL_GPL(ip_tunnel_dellink);
+@@ -1126,6 +1144,8 @@ int ip_tunnel_init_net(struct net *net, unsigned int ip_tnl_net_id,
+ 	for (i = 0; i < IP_TNL_HASH_SIZE; i++)
+ 		INIT_HLIST_HEAD(&itn->tunnels[i]);
+ 
++	mutex_init(&itn->tunnels_lock);
++
+ 	if (!ops || !net_has_fallback_tunnels(net)) {
+ 		struct ip_tunnel_net *it_init_net;
+ 
+@@ -1164,6 +1184,8 @@ void ip_tunnel_delete_net(struct net *net, unsigned int id,
+ 
+ 	ASSERT_RTNL_NET(net);
+ 
++	mutex_lock(&itn->tunnels_lock);
++
+ 	WRITE_ONCE(itn->fb_tunnel_dev, NULL);
+ 
+ 	for (h = 0; h < IP_TNL_HASH_SIZE; h++) {
+@@ -1172,8 +1194,10 @@ void ip_tunnel_delete_net(struct net *net, unsigned int id,
+ 		struct ip_tunnel *t;
+ 
+ 		hlist_for_each_entry_safe(t, n, thead, hash_node)
+-			ip_tunnel_dellink(t->dev, head);
++			__ip_tunnel_dellink(t->dev, head);
+ 	}
++
++	mutex_unlock(&itn->tunnels_lock);
+ }
+ EXPORT_SYMBOL_GPL(ip_tunnel_delete_net);
+ 
+@@ -1189,6 +1213,8 @@ int ip_tunnel_newlink(struct net *net, struct net_device *dev,
  	nt = netdev_priv(dev);
  	itn = net_generic(net, nt->ip_tnl_net_id);
  
++	mutex_lock(&itn->tunnels_lock);
++
  	if (nt->collect_md) {
  		if (rtnl_dereference(itn->collect_md_tun))
--			return -EEXIST;
-+			err = -EEXIST;
- 	} else {
- 		if (ip_tunnel_find(itn, p, dev->type))
--			return -EEXIST;
-+			err = -EEXIST;
- 	}
-+	if (err)
-+		goto out;
- 
- 	nt->net = net;
- 	nt->parms = *p;
-@@ -1222,22 +1224,26 @@ int ip_tunnel_newlink(struct net *net, struct net_device *dev,
- 		goto err_dev_set_mtu;
+ 			err = -EEXIST;
+@@ -1225,6 +1251,8 @@ int ip_tunnel_newlink(struct net *net, struct net_device *dev,
  
  	ip_tunnel_add(itn, nt);
--	return 0;
-+out:
-+	return err;
+ out:
++	mutex_unlock(&itn->tunnels_lock);
++
+ 	return err;
  
  err_dev_set_mtu:
- 	unregister_netdevice(dev);
- err_register_netdevice:
--	return err;
-+	goto out;
- }
- EXPORT_SYMBOL_GPL(ip_tunnel_newlink);
- 
- int ip_tunnel_changelink(struct net_device *dev, struct nlattr *tb[],
- 			 struct ip_tunnel_parm_kern *p, __u32 fwmark)
- {
--	struct ip_tunnel *t;
- 	struct ip_tunnel *tunnel = netdev_priv(dev);
- 	struct net *net = tunnel->net;
--	struct ip_tunnel_net *itn = net_generic(net, tunnel->ip_tnl_net_id);
-+	struct ip_tunnel_net *itn;
-+	struct ip_tunnel *t;
-+	int err = 0;
-+
-+	itn = net_generic(net, tunnel->ip_tnl_net_id);
- 
+@@ -1248,6 +1276,8 @@ int ip_tunnel_changelink(struct net_device *dev, struct nlattr *tb[],
  	if (dev == itn->fb_tunnel_dev)
  		return -EINVAL;
-@@ -1245,8 +1251,10 @@ int ip_tunnel_changelink(struct net_device *dev, struct nlattr *tb[],
+ 
++	mutex_lock(&itn->tunnels_lock);
++
  	t = ip_tunnel_find(itn, p, dev->type);
  
  	if (t) {
--		if (t->dev != dev)
--			return -EEXIST;
-+		if (t->dev != dev) {
-+			err = -EEXIST;
-+			goto out;
-+		}
- 	} else {
- 		t = tunnel;
- 
-@@ -1259,13 +1267,16 @@ int ip_tunnel_changelink(struct net_device *dev, struct nlattr *tb[],
- 				nflags = IFF_POINTOPOINT;
- 
- 			if ((dev->flags ^ nflags) &
--			    (IFF_POINTOPOINT | IFF_BROADCAST))
--				return -EINVAL;
-+			    (IFF_POINTOPOINT | IFF_BROADCAST)) {
-+				err = -EINVAL;
-+				goto out;
-+			}
- 		}
- 	}
+@@ -1276,6 +1306,8 @@ int ip_tunnel_changelink(struct net_device *dev, struct nlattr *tb[],
  
  	ip_tunnel_update(itn, t, dev, p, !tb[IFLA_MTU], fwmark);
--	return 0;
-+out:
-+	return err;
+ out:
++	mutex_unlock(&itn->tunnels_lock);
++
+ 	return err;
  }
  EXPORT_SYMBOL_GPL(ip_tunnel_changelink);
- 
 -- 
 2.55.0.1003.g10538fe699-goog
 
