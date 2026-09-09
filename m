@@ -1,44 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CD2A559CA3;
-	Wed,  9 Sep 2026 12:39:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD3A7470126;
+	Wed,  9 Sep 2026 12:39:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788957547; cv=none; b=LPTKn4Ub1ai7O1ozVLbsg2yJpvIvQHvwsPWux7bCrzvWkkhXvKRTw5ZAt2EJVD0Z68WDptq29efaeFNntKXaN+2oAGGhu5skKqtettkE9H+WXqZXJNTJr4ZxyYqYeG2DRq+qJggUbandzb1bUHdUvm8pdbPrPhfJKVMk6tfFL2w=
+	t=1788957557; cv=none; b=cQrMcCd97S0+5SfGsFwqQa2+Omjn3R1C191pwc9aZe7AaaCyNxzcXGUH5w4FyVLGjfEumnxzXU4WcNJ6VRzl5/D3zS7DxtsEpoIV3zvZwVfb3gw6AZjgqA7VqwpoU26XH6S0l/3+wjf1UVM5fOJRT/AiMoZ05KSUMi/gaaHD2nw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788957547; c=relaxed/simple;
-	bh=IdcxEiGmXAdQ2pJO0tkiHtsxWR5Mqusn6wl8E+jTwYI=;
+	s=arc-20240116; t=1788957557; c=relaxed/simple;
+	bh=uYj6ej5PCBSHg2bRY7ej7atI8oNG+QWbxxknZ5hwxag=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=j9Knt+g4GKxrNk6add5Qit6d3bRrxwGHhl7lP8Gi5V7ssgL2/mNm9ILVjtIrL3MyovlCBCgg+w0/blrOgWZlpCTVl4eDSPdfGSrVAa1vUS2ep4lEyRLvxawySaEJzlgyCq6m/nUe9a/fInByydJCVW7BMijTX9ra4zCLa8sMsbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iyYlQj/l; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=sPggJJq40IGyuiE8tEvyadD7BLm4d0cMtIUNNml9L+sIripFpfJrRi+yIW2DN3xCngbLqxGGhxsSyJVDgxAXeCmU2Qg8XsjWWA+OxahoK3/WMkGTSEEim0q2RVIV/7ZTwfa4kfkyfwF6aHfXA6DfcK5APkRVOGY51KfJTTLhGsM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eC9eqfsZ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iyYlQj/l"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9D6A1F00A3E;
-	Wed,  9 Sep 2026 12:39:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eC9eqfsZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC2CE1F00A3A;
+	Wed,  9 Sep 2026 12:39:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788957542;
-	bh=tSIaSL0ymmmaxqC51K3SNloZqopwpchw+uADipbUbhk=;
+	s=k20260515; t=1788957555;
+	bh=Em3hrMz7az8HDcufhQiRa3PV0ozCCHRcFtxVaNVposQ=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=iyYlQj/lDMy6UbCX088wWUj+cITAJa4/z7FGrbvlw2NoxMQW/xVAxyd2AYhUQO/YY
-	 I5MZQimghmrYmmNcJsdkFe4RwloKl4NWSjFjQg0KzUeiqrcAJFu0+NFY5wgF9/6t2g
-	 02CgqHDbStOBeSqzryupNmu9I3ikEIJ4Qm+Uo3z0ZnlKIyzRMhZ1/NQZVQ6C1/H9Nf
-	 DZ9YPSWMicQ4AwOM9CG1+FrzcPOtaT6qBm9lCMbq+3LRxL5JKy3c6/DrwLOkUOhf5N
-	 GUEtBVNHGP42SbMtn+qIsaiDDLjB7ZvGXKtIijLLfcueZjKJxL3mckPGt6cH30UuJW
-	 CWuOexNYEQ4xw==
-Subject: Re: [PATCH net-next v7 3/3] w5100: detect carrier state using link
- status bit and optional interrupt
+	b=eC9eqfsZLUnN0anxs4swUIhdgUgveRQ7xcAhMJHLGC/PkwSeAJzSL0MGjLwubgUvW
+	 Sw6tJ7SKCkEGVkGpVVOnrhkfAhoPX+nib+aOfU2joDs9q749NZc5JASOEBhy5iDRpQ
+	 3mgzSRatFk7ieqhISzrQwsk+eXxL/W22tAYKicyN3IfIo9i0+0zhASSs2TMgcCvQsX
+	 MA0TTikOx/kkQ1ne1cXVHVCSyTaCpwB8itjR2pDpLLUMXUKtqBCPVTCCPsLuNgSZPs
+	 9lDT8pjhQbHvSIC5EzPoilUoo0zT2FLVW2hlHuJMkRqovwTJu7ocUOTaAQx5HgRLex
+	 ks10bcbwB186w==
+Subject: Re: [PATCH net] net/sched: cls_u32: take a reference on the hash
+ table in u32_change()
 From: netdev-bot+sashiko@kernel.org
-To: arthur@marmottus.net
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, arnd@arndb.de, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- krzysztof.kozlowski@oss.qualcomm.com
-Date: Wed, 09 Sep 2026 12:39:01 +0000
-Message-ID: <178895754151.219967.10801079239966954315@kernel.org>
-In-Reply-To: <20260904-wiznet-link-gpio-v7-3-69f01b70c96f@marmottus.net>
-References: <20260904-wiznet-link-gpio-v7-3-69f01b70c96f@marmottus.net>
+To: norbert@doyensec.com
+Cc: netdev@vger.kernel.org, jhs@mojatatu.com, jiri@resnulli.us,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, xiyou.wangcong@gmail.com, linux-kernel@vger.kernel.org
+Date: Wed, 09 Sep 2026 12:39:14 +0000
+Message-ID: <178895755454.219967.8093907569129807456@kernel.org>
+In-Reply-To: <79DB27AC-0FC0-42B2-A795-A8B585B73CFB@doyensec.com>
+References: <79DB27AC-0FC0-42B2-A795-A8B585B73CFB@doyensec.com>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -49,286 +47,158 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 4 potential
+Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider:
 
-Critical: 0 · High: 1 · Medium: 2 · Low: 1
+Critical: 0 · High: 1 · Medium: 1 · Low: 0
 
-- [High] On w5500 the carrier state is now sampled exactly once per ifup
-  (and once per resume) from PHYCFGR, with no polling fallback and no…
-- [Medium] `w5500_get_phycfgr_lnk()` returns a tri-state value (<0 on
-  SPI/register read error, 0 link down, 1 link up), and its consumers…
-- [Medium] The carrier state is computed and published by two
-  unsynchronized contexts.
-- [Low] The YAML binding added earlier in this series
-  (Documentation/devicetree/bindings/net/wiznet,w5100.yaml, commit "dt-…
+- [High] The new pin in u32_change() (refcount_inc(&ht->refcnt) /
+  refcount_dec(&ht->refcnt) around u32_set_parms()) assumes every drop…
+- [Medium] Commit message understates the reachability of the bug being
+  fixed.
 
 --
 
-w5100: detect carrier state using link status bit and optional interrupt
+net/sched: cls_u32: take a reference on the hash table in u32_change()
 
-This adds link detection on the w5500 by reading the Link Status bit of
-the PHY Configuration register, and adds an optional second interrupt
-(LINKLED) to notice link changes. The netdev is now registered as the
-last step of w5100_probe(), and the link interrupt is enabled/disabled
-in open/stop and resume/suspend.
+u32_change() holds the target tc_u_hnode in a local variable while
+u32_set_parms() may drop rtnl to load an action module, so a concurrent
+RTM_DELTFILTER can free it.  The patch pins the hnode with
+refcount_inc()/refcount_dec() around the u32_set_parms() call.
 
-A few questions about the carrier handling below.
+Two questions below, one on the changelog and one on the new pin itself.
 
-> diff --git a/drivers/net/ethernet/wiznet/w5100.c b/drivers/net/ethernet/wiznet/w5100.c
-> index 53d8dc642fbd6..ecb99621d0a1e 100644
-> --- a/drivers/net/ethernet/wiznet/w5100.c
-> +++ b/drivers/net/ethernet/wiznet/w5100.c
-
-[ ... ]
-
-> @@ -345,6 +349,44 @@ static void w5500_memory_configure(struct w5100_priv *priv)
->  	}
->  }
->  
-> +static int w5500_get_phycfgr_lnk(struct net_device *ndev)
-> +{
-> +	struct w5100_priv *priv = netdev_priv(ndev);
-> +	int ret = w5100_read(priv, W5500_PHYCFGR);
-> +
-> +	if (ret < 0) {
-> +		netif_err(priv, link, ndev,
-> +			  "failed to read link status: %d\n", ret);
-> +		return ret;
-> +	}
-> +
-> +	return ret & PHYCFGR_LNK;
-> +}
-> +
-> +static irqreturn_t w5500_detect_link(int irq, void *ndev_instance)
-> +{
-> +	struct net_device *ndev = ndev_instance;
-> +	struct w5100_priv *priv = netdev_priv(ndev);
-> +	int state;
-> +
-> +	if (!netif_running(ndev))
-> +		return IRQ_HANDLED;
-> +
-> +	state = w5500_get_phycfgr_lnk(ndev);
-> +	if (state < 0)
-> +		return IRQ_HANDLED;
-> +
-> +	if (state) {
-> +		netif_info(priv, link, ndev, "link is up\n");
-> +		netif_carrier_on(ndev);
-> +	} else {
-> +		netif_info(priv, link, ndev, "link is down\n");
-> +		netif_carrier_off(ndev);
-> +	}
-> +
-> +	return IRQ_HANDLED;
-> +}
-> +
-
-[ ... ]
-
-> @@ -414,6 +456,16 @@ static void w5100_get_drvinfo(struct net_device *ndev,
->  		sizeof(info->bus_info));
->  }
->  
-> +static u32 w5100_get_link(struct net_device *ndev)
-> +{
-> +	struct w5100_priv *priv = netdev_priv(ndev);
-> +
-> +	if (priv->ops->chip_id == W5500)
-> +		return w5500_get_phycfgr_lnk(ndev) > 0;
+>     u32_change() keeps the target hash table in a local variable without
+>     taking a reference. u32_set_parms() may then drop rtnl to load an action
+>     module, and on a failed load returns without asking the caller to
+>     replay (-ENOENT). A concurrent RTM_DELTFILTER can free the table in
+>     that window, and u32_change() then removes the node id it reserved from
+>     the freed table.
 
 [Severity: Medium]
-Does the "> 0" here turn a register read failure into a definite "link
-down"?
+Is the race really limited to the "failed load" case?  tc_action_load_ops()
+in net/sched/act_api.c drops rtnl in both outcomes:
 
-w5500_get_phycfgr_lnk() returns three distinct things: a negative errno,
-0 for link down and 1 for link up.  w5500_spi_read() can really return an
-error, since it propagates spi_write_then_read():
+net/sched/act_api.c:tc_action_load_ops() {
+	...
+		rtnl_unlock();
+		request_module("act_%s", act_name);
+		rtnl_lock();
+	...
+		if (a_o != NULL) {
+			module_put(a_o->owner);
+			return ERR_PTR(-EAGAIN);
+		}
+	#endif
+		NL_SET_ERR_MSG(extack, "Failed to load TC action module");
+		return ERR_PTR(-ENOENT);
+}
 
-	return ret ? ret : data;
+In u32_change() any non-zero err from u32_set_parms() skips the
+if (err == 0) block and falls through errunbind -> errout -> erridr, where
+idr_remove(&ht->handle_idr, handle) dereferences ht.  So the -EAGAIN path
+(module present and loaded successfully, request replayed afterwards) also
+touches ht after rtnl was dropped, and that is the common case on a normal
+system.
 
-w5500_detect_link() deliberately leaves the carrier alone in that case:
+Would it be worth describing the window as "u32_set_parms() may drop rtnl"
+without tying it to -ENOENT, so backport triage sees the wider trigger?
 
-	state = w5500_get_phycfgr_lnk(ndev);
-	if (state < 0)
-		return IRQ_HANDLED;
-
-but w5100_get_link() folds the errno into 0, so w5100_open() will call
-netif_carrier_off() on a transient SPI failure even when the link is up,
-and w5100_resume() (which has no else branch) will leave the carrier off.
-The same lossy mapping is what the newly added ethtool .get_link reports,
-so an SPI error shows up as "Link detected: no".
-
-Would it be better to keep the error case out of the carrier decision, the
-way the interrupt handler does?
-
-> +
-> +	return 1;
-> +}
-> +
-
-[ ... ]
-
-> @@ -659,6 +711,15 @@ static int w5100_open(struct net_device *ndev)
->  	w5100_hw_start(priv);
->  	napi_enable(&priv->napi);
->  	netif_start_queue(ndev);
-> +
-> +	if (priv->link_irq >= 0)
-> +		enable_irq(priv->link_irq);
-> +
-> +	if (w5100_get_link(ndev))
-> +		netif_carrier_on(ndev);
-> +	else
-> +		netif_carrier_off(ndev);
+> diff --git a/net/sched/cls_u32.c b/net/sched/cls_u32.c
+> index a3e65c8cf29ef..0e9128f2f33e8 100644
+> --- a/net/sched/cls_u32.c
+> +++ b/net/sched/cls_u32.c
+> @@ -1180,8 +1180,11 @@ static int u32_change(struct net *net, struct sk_buff *in_skb,
+>  	}
+>  #endif
+>  
+> +	/* u32_set_parms() may drop rtnl; keep ht alive across it */
+> +	refcount_inc(&ht->refcnt);
+>  	err = u32_set_parms(net, tp, n, tb, tca[TCA_RATE],
+>  			    flags, n->flags, extack);
+> +	refcount_dec(&ht->refcnt);
 
 [Severity: High]
-Can the interface end up permanently NO-CARRIER on a w5500 board whose
-device tree only declares the single INT interrupt?
+Does this pin hold when the hnode being pinned belongs to a different
+tcf_proto?
 
-The second (LINKLED) interrupt is optional and is introduced by this
-series, so on existing device trees w5100_probe() does:
+The changelog states that a racing deletion "fails its
+refcount_dec_if_one() and returns -EBUSY", which is true for u32_delete()
+of a non-root hnode.  But u32_destroy() drops the root hnode reference
+unconditionally:
 
-	priv->link_irq = ops->chip_id == W5500 ?
-			 fwnode_irq_get(dev_fwnode(dev), 1) : -ENODEV;
+net/sched/cls_u32.c:u32_destroy() {
+	if (root_ht && refcount_dec_and_test(&root_ht->refcnt))
+		u32_destroy_hnode(tp, root_ht, extack);
+	...
+}
 
-fwnode_irq_get() returns a negative value for index 1, no link interrupt
-is requested, and every "if (priv->link_irq >= 0)" site is skipped.
+tc_u_common is shared by all cls_u32 tcf_protos on the same qdisc/block,
+and u32_change() resolves TCA_U32_HASH through the shared list without any
+is_root or owner check:
 
-That leaves the sample taken here as the only carrier update for the whole
-lifetime of the ifup.  If PHYCFGR.LNK reads 0 at that moment (cable not
-plugged, or auto-negotiation not finished yet after the reset done in
-w5100_probe() -> w5100_hw_reset()), netif_carrier_off() is called and
-nothing turns it back on: the only netif_carrier_on() call sites are
-w5500_detect_link(), w5100_open() and w5100_resume(), and there is no
-timer or delayed work polling PHYCFGR.
+net/sched/cls_u32.c:u32_change() {
+	...
+		ht = u32_lookup_ht(tp->data, TC_U32_HTID(htid));
+		if (!ht) {
+			NL_SET_ERR_MSG_MOD(extack, "Specified hash table not found");
+			return -EINVAL;
+		}
+	...
+}
 
-Before this patch the w5500 carrier was never cleared at ifup, so is this
-a behaviour change for existing w5500 device trees, where a link that
-comes up after ifup is never noticed until the user bounces the interface?
+net/sched/cls_u32.c:u32_lookup_ht() {
+	for (ht = rtnl_dereference(tp_c->hlist);
+	     ht;
+	     ht = rtnl_dereference(ht->next))
+		if (ht->handle == handle)
+			break;
+	...
+}
 
-The commit message says:
+So a filter added at prio 2 with "ht 800:" can pin prio 1's root hnode.
+If prio 1 is deleted in the rtnl-dropped window (RTM_DELTFILTER with
+tcm_handle == 0 -> tcf_chain_tp_remove() + tcf_proto_put() ->
+tcf_proto_destroy() -> u32_destroy()), the sequence looks like:
 
-	"The interrupt is only needed to detect subsequent link changes."
+	u32_change()	refcount_inc()			refcnt 1 -> 2
+	u32_destroy()	refcount_dec_and_test() false	refcnt 2 -> 1
+	u32_change()	refcount_dec()			refcnt 1 -> 0
 
-Could this state that without the interrupt there is no detection of
-subsequent link changes at all, including the initial link-up?
+Two things follow.  First, u32_destroy_hnode() is skipped, so the hnode
+stays linked in tp_c->hlist with no owner and u32_clear_hnode(),
+u32_clear_hw_hnode(), idr_remove(&tp_c->handle_idr, ...), idr_destroy()
+and kfree_rcu() never run.
 
-[Severity: Medium]
-Separately, does the ordering of enable_irq() and the PHYCFGR sample here
-allow the threaded handler's newer verdict to be overwritten by an older
-one?
+Second, the trailing refcount_dec() takes the count 1 -> 0:
 
-__dev_open() sets __LINK_STATE_START before calling ndo_open, so
-netif_running() is already true and the early bail in w5500_detect_link()
-does not exclude a concurrent run.  enable_irq() can also replay an edge
-that arrived while the line was masked:
+include/linux/refcount.h:__refcount_dec() {
+	int old = atomic_fetch_sub_release(1, &r->refs);
+	...
+	if (unlikely(old <= 1))
+		refcount_warn_saturate(r, REFCOUNT_DEC_LEAK);
+}
 
-w5100_open()
-	enable_irq(priv->link_irq);
-	w5100_get_link()	  /* sleeping SPI read, old value */
+That warns and sets REFCOUNT_SATURATED without freeing anything, and once
+saturated no later refcount_dec_and_test() in u32_destroy() can reach zero:
 
-			w5500_detect_link()	 /* newer PHYCFGR value */
-				netif_carrier_on(ndev);
+net/sched/cls_u32.c:u32_destroy() {
+	...
+			if (refcount_dec_and_test(&ht->refcnt))
+				kfree_rcu(ht, rcu);
+	...
+}
 
-	netif_carrier_off(ndev);  /* overwrites with the stale sample */
+Can this leak the hnode (plus its idr and any knodes later inserted into
+it) for the lifetime of the block, and splat under panic_on_warn?  Would
+handling the "we dropped the last reference" case, or re-looking up ht
+after u32_set_parms() instead of carrying a borrowed pointer, avoid this?
 
-Nothing serializes the read-and-publish pair: the handler takes no lock,
-open holds only RTNL which the IRQ thread never takes, and struct
-w5100_priv has no lock covering the carrier update.  With edge-only
-notification and no polling, the wrong state then persists until the link
-toggles again.
-
-w5100_resume() has the same enable-then-sample order and only ever calls
-netif_carrier_on(), so a "down" seen by the handler can be discarded.
-
-Note the teardown paths do it the other way around and disable_irq()
-first, which does synchronize with the threaded handler.
-
-> +
->  	return 0;
->  }
->  
-
-[ ... ]
-
-> @@ -745,13 +811,21 @@ int w5100_probe(struct device *dev, const struct w5100_ops *ops,
->  		break;
->  	default:
->  		err = -EINVAL;
-> -		goto err_register;
-> +		goto err_wq;
->  	}
->  
->  	priv->ndev = ndev;
->  	priv->ops = ops;
->  	priv->irq = irq;
->  
-> +	priv->link_irq = ops->chip_id == W5500 ?
-> +			 fwnode_irq_get(dev_fwnode(dev), 1) : -ENODEV;
-
-[Severity: Low]
-This isn't a bug in the C code, but does the binding added earlier in the
-series match this restriction?
-
-Documentation/devicetree/bindings/net/wiznet,w5100.yaml describes the
-interrupts as:
-
-  interrupts:
-    minItems: 1
-    items:
-      - description: Main interrupt (INT pin on the device).
-      - description:
-          Optional interrupt for link status changes (LINKLED pin on w5500).
-
-with no allOf/if-then keyed on the compatible string, so wiznet,w5100 and
-wiznet,w5200 nodes may declare two interrupts and still pass
-dt_binding_check.  Here index 1 is only looked up for chip_id == W5500, so
-such a line is silently ignored (priv->link_irq stays -ENODEV).
-
-Would an if-then block limiting the second interrupt to wiznet,w5500 (or
-honouring the second interrupt for all parts) express this better?  The
-w5500-only restriction is currently only in free-form description text,
-which validation does not enforce.
-
-> +	if (priv->link_irq == -EPROBE_DEFER) {
-> +		err = dev_err_probe(dev, priv->link_irq,
-> +				    "failed to get link irq\n");
-> +		goto err_wq;
-> +	}
-> +
-
-[ ... ]
-
-> @@ -839,6 +931,9 @@ static int w5100_suspend(struct device *dev)
->  	struct w5100_priv *priv = netdev_priv(ndev);
->  
->  	if (netif_running(ndev)) {
-> +		if (priv->link_irq >= 0)
-> +			disable_irq(priv->link_irq);
-> +
->  		netif_carrier_off(ndev);
->  		netif_device_detach(ndev);
->  
-> @@ -857,6 +952,12 @@ static int w5100_resume(struct device *dev)
->  		w5100_hw_start(priv);
->  
->  		netif_device_attach(ndev);
-> +
-> +		if (priv->link_irq >= 0)
-> +			enable_irq(priv->link_irq);
-> +
-> +		if (w5100_get_link(ndev))
-> +			netif_carrier_on(ndev);
->  	}
->  	return 0;
->  }
-
-Since suspend unconditionally clears the carrier and resume only sets it
-when this single read reports link, is there any path that re-asserts the
-carrier later when there is no link interrupt or when the PHYCFGR read
-fails here?
+As a smaller note on the same two lines: the reference is released before
+the remaining ht dereferences it is meant to cover, namely
+idr_remove(&ht->handle_idr, handle) at erridr and the
+&ht->ht[TC_U32_HASH(handle)] insertion, so it relies on u32_set_parms()
+always having re-acquired rtnl by the time it returns.
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260904-wiznet-link-gpio-v7-0-69f01b70c96f%40marmottus.net
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/79DB27AC-0FC0-42B2-A795-A8B585B73CFB%40doyensec.com
