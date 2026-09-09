@@ -1,370 +1,220 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 566064921A6
-	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 09:06:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 055CF46C4CC;
+	Wed,  9 Sep 2026 09:08:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788944786; cv=none; b=fxHlqQ/4qR2aj/XeeV0Es/mO2I4okf7OBKY6z8M3ZUTLuLtf5ET1P2DvswceuS4ZsNYeR+aeCgCdlaZEaZiytUBaMIEdbWyQYZiH3bgh/gfNK8fwMKGucnJWI5u1FyhrTatVYeQxCfgO23jqdhwvlIhWg1FZecPDsy6P8QMnvvU=
+	t=1788944889; cv=none; b=iteJ7McumY9ASru4IB0Wa/hz2eKEUz6b2kl5k35+x06v2H3uFl9Cwa6A3Evv4gnBzT2Ih9jNoxYO8CsBHE2s0Rn4FQi0u5LIZgMXFVRH9ratEmRi+m8Hl3i0wC2eC0uvyZWScbBX5nB1snwskZY3dRNP1IBE6VMiPY+MtoSZP+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788944786; c=relaxed/simple;
-	bh=Jev1JzEt91ORb5OHLsWSTFXLyjNPmERoXXeEN7gkn30=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=jWcghEyKfkCfMM+MygsVCDuO0P/5a/BrtpVjJLwORdd/le22K2DDd4ZSkaKi0OS9sweOI8VtBXwg+FyG1/cdiclYhfAIUQi0lZsKR/H+lsd8uXu/aHwe/9rlt2jfZxkPLlhlhKyyxpKqeAi0dTpOFwqo9lpCr5MDhbF3usMn1v4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i+qngh35; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788944889; c=relaxed/simple;
+	bh=5wRF7TRW52v6iM/t+CctJ9Yw2DGOgUE70RFWbI6LmVw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=oFo2InIBTUAZf5OFB6UJaEHKhUviLLsdeS5EbasXWysidgGsXblCKPuWj81x0PEb0FpLPFNJXBVOcJnGzw4DwyAWgI0rPTebgznjBqCkp4yOQuInAMSMJpexorSXpMvkncy8eupVmOwvUKl5/gYhCD7XpBKEF8VfXluUU5f/Ujg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cQ8GOymJ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i+qngh35"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 519681F00A3E;
-	Wed,  9 Sep 2026 09:06:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cQ8GOymJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23C9F1F00A3A;
+	Wed,  9 Sep 2026 09:08:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788944784;
-	bh=wwtkeblvzufsHH+y90/cObbBMVVMEPgv/rcrKemjHNE=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=i+qngh35KMZePm2OOxmjwxhA5xRno0R4C6eMNA2mGUhO5lCeJnFvb2ZwrZUBYZop8
-	 ybpLM2X05ln8Xo9e2Lqqrvjda/yJtAJMkQj0fPd1n1kGW2oGZLmxQlgVaP/EpuXaJf
-	 6OVJ1Izg+atsxsHXU111qOP3JUAADg8qvgFMpWf/1rzkSp2D3wwnpU2zplMkLfAxWf
-	 bDy90xh5ZZ+YDhU1X2GHZ35JPMBfArWBBhIP2v6U9vkjS9FQoSi+L7Rmd64w+gi80J
-	 JexkaMFgx0kqgSOZNaVboq+q+nzTv7RXIXhoIRSj9I9IIlNm3R38dbmNvgyKFvNf3i
-	 QWdRzcUsMIXLw==
-Subject: Re: [PATCH net] net: stmmac: propagate PTP init failures in
- __stmmac_open() and stmmac_resume()
-From: netdev-bot+sashiko@kernel.org
-To: lorenzo.bianconi@oss.qualcomm.com
-Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
- richardcochran@gmail.com, rayagond@vayavyalabs.com, treding@nvidia.com,
- netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org
-Date: Wed, 09 Sep 2026 09:06:22 +0000
-Message-ID: <178894478282.219967.9123750287154631714@kernel.org>
-In-Reply-To:
- <20260904-stmmac-ptp-error-propagate-v1-1-80f01b03dafa@oss.qualcomm.com>
-References:
- <20260904-stmmac-ptp-error-propagate-v1-1-80f01b03dafa@oss.qualcomm.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20260515; t=1788944887;
+	bh=ikuyhdzrRTHbXh9Rv6iCOPsdsIpNolnvd/NEcrSB7ws=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=cQ8GOymJdzZblgxf4OYQEVE/awuSct+wlDX8T2nATx7nfJ3JEInMX289INZHNlhyf
+	 fAAY9JvOxyfYMRV11pek1qtgDrpgzHe4VtLvJhHsiWItJePhCF9RzLsff798eeStE2
+	 ezFSmFmtFaNnWTFcNgnpaj4Gtwg5VhwebYzETEX3UZ20vnu518N8xOWHxBteWV3gcf
+	 EZHvJ1yoxrqZLsSB+dOubuOI1frz5E2Lr84vJpUVJJ9v4YfvrdMBrFj1maIb4ZEl8v
+	 HngSBzetAIxzWkKh67dNTsnIWc9ThPisHK1CUgilXTfZw/Ey0njFuaYRZpo+klUfjr
+	 NiRduo0MWPoMw==
+Message-ID: <a59d9197-0a1c-4543-9fac-ca2c2d53a8db@kernel.org>
+Date: Wed, 9 Sep 2026 11:08:02 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH net v2] tcp: fix data-race in tcp_recv_should_stop
+Content-Language: fr
+To: Jiayuan Chen <jiayuan.chen@linux.dev>, quanyeyang@proton.me,
+ Eric Dumazet <edumazet@google.com>, Neal Cardwell <ncardwell@google.com>,
+ Kuniyuki Iwashima <kuniyu@google.com>, "David S. Miller"
+ <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Geliang Tang <geliang@kernel.org>, Mat Martineau <martineau@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260909-mptcp-sk-err-net-v2-1-5044abecac90@proton.me>
+ <8bbee583-6f21-4817-bfeb-2d60057380a3@linux.dev>
+From: Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ xsFNBFXj+ekBEADxVr99p2guPcqHFeI/JcFxls6KibzyZD5TQTyfuYlzEp7C7A9swoK5iCvf
+ YBNdx5Xl74NLSgx6y/1NiMQGuKeu+2BmtnkiGxBNanfXcnl4L4Lzz+iXBvvbtCbynnnqDDqU
+ c7SPFMpMesgpcu1xFt0F6bcxE+0ojRtSCZ5HDElKlHJNYtD1uwY4UYVGWUGCF/+cY1YLmtfb
+ WdNb/SFo+Mp0HItfBC12qtDIXYvbfNUGVnA5jXeWMEyYhSNktLnpDL2gBUCsdbkov5VjiOX7
+ CRTkX0UgNWRjyFZwThaZADEvAOo12M5uSBk7h07yJ97gqvBtcx45IsJwfUJE4hy8qZqsA62A
+ nTRflBvp647IXAiCcwWsEgE5AXKwA3aL6dcpVR17JXJ6nwHHnslVi8WesiqzUI9sbO/hXeXw
+ TDSB+YhErbNOxvHqCzZEnGAAFf6ges26fRVyuU119AzO40sjdLV0l6LE7GshddyazWZf0iac
+ nEhX9NKxGnuhMu5SXmo2poIQttJuYAvTVUNwQVEx/0yY5xmiuyqvXa+XT7NKJkOZSiAPlNt6
+ VffjgOP62S7M9wDShUghN3F7CPOrrRsOHWO/l6I/qJdUMW+MHSFYPfYiFXoLUZyPvNVCYSgs
+ 3oQaFhHapq1f345XBtfG3fOYp1K2wTXd4ThFraTLl8PHxCn4ywARAQABzSRNYXR0aGlldSBC
+ YWVydHMgPG1hdHR0YmVAa2VybmVsLm9yZz7CwZEEEwEIADsCGwMFCwkIBwIGFQoJCAsCBBYC
+ AwECHgECF4AWIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZUDpDAIZAQAKCRD2t4JPQmmgcz33
+ EACjROM3nj9FGclR5AlyPUbAq/txEX7E0EFQCDtdLPrjBcLAoaYJIQUV8IDCcPjZMJy2ADp7
+ /zSwYba2rE2C9vRgjXZJNt21mySvKnnkPbNQGkNRl3TZAinO1Ddq3fp2c/GmYaW1NWFSfOmw
+ MvB5CJaN0UK5l0/drnaA6Hxsu62V5UnpvxWgexqDuo0wfpEeP1PEqMNzyiVPvJ8bJxgM8qoC
+ cpXLp1Rq/jq7pbUycY8GeYw2j+FVZJHlhL0w0Zm9CFHThHxRAm1tsIPc+oTorx7haXP+nN0J
+ iqBXVAxLK2KxrHtMygim50xk2QpUotWYfZpRRv8dMygEPIB3f1Vi5JMwP4M47NZNdpqVkHrm
+ jvcNuLfDgf/vqUvuXs2eA2/BkIHcOuAAbsvreX1WX1rTHmx5ud3OhsWQQRVL2rt+0p1DpROI
+ 3Ob8F78W5rKr4HYvjX2Inpy3WahAm7FzUY184OyfPO/2zadKCqg8n01mWA9PXxs84bFEV2mP
+ VzC5j6K8U3RNA6cb9bpE5bzXut6T2gxj6j+7TsgMQFhbyH/tZgpDjWvAiPZHb3sV29t8XaOF
+ BwzqiI2AEkiWMySiHwCCMsIH9WUH7r7vpwROko89Tk+InpEbiphPjd7qAkyJ+tNIEWd1+MlX
+ ZPtOaFLVHhLQ3PLFLkrU3+Yi3tXqpvLE3gO3LM7BTQRV4/npARAA5+u/Sx1n9anIqcgHpA7l
+ 5SUCP1e/qF7n5DK8LiM10gYglgY0XHOBi0S7vHppH8hrtpizx+7t5DBdPJgVtR6SilyK0/mp
+ 9nWHDhc9rwU3KmHYgFFsnX58eEmZxz2qsIY8juFor5r7kpcM5dRR9aB+HjlOOJJgyDxcJTwM
+ 1ey4L/79P72wuXRhMibN14SX6TZzf+/XIOrM6TsULVJEIv1+NdczQbs6pBTpEK/G2apME7vf
+ mjTsZU26Ezn+LDMX16lHTmIJi7Hlh7eifCGGM+g/AlDV6aWKFS+sBbwy+YoS0Zc3Yz8zrdbi
+ Kzn3kbKd+99//mysSVsHaekQYyVvO0KD2KPKBs1S/ImrBb6XecqxGy/y/3HWHdngGEY2v2IP
+ Qox7mAPznyKyXEfG+0rrVseZSEssKmY01IsgwwbmN9ZcqUKYNhjv67WMX7tNwiVbSrGLZoqf
+ Xlgw4aAdnIMQyTW8nE6hH/Iwqay4S2str4HZtWwyWLitk7N+e+vxuK5qto4AxtB7VdimvKUs
+ x6kQO5F3YWcC3vCXCgPwyV8133+fIR2L81R1L1q3swaEuh95vWj6iskxeNWSTyFAVKYYVskG
+ V+OTtB71P1XCnb6AJCW9cKpC25+zxQqD2Zy0dK3u2RuKErajKBa/YWzuSaKAOkneFxG3LJIv
+ Hl7iqPF+JDCjB5sAEQEAAcLBXwQYAQIACQUCVeP56QIbDAAKCRD2t4JPQmmgc5VnD/9YgbCr
+ HR1FbMbm7td54UrYvZV/i7m3dIQNXK2e+Cbv5PXf19ce3XluaE+wA8D+vnIW5mbAAiojt3Mb
+ 6p0WJS3QzbObzHNgAp3zy/L4lXwc6WW5vnpWAzqXFHP8D9PTpqvBALbXqL06smP47JqbyQxj
+ Xf7D2rrPeIqbYmVY9da1KzMOVf3gReazYa89zZSdVkMojfWsbq05zwYU+SCWS3NiyF6QghbW
+ voxbFwX1i/0xRwJiX9NNbRj1huVKQuS4W7rbWA87TrVQPXUAdkyd7FRYICNW+0gddysIwPoa
+ KrLfx3Ba6Rpx0JznbrVOtXlihjl4KV8mtOPjYDY9u+8x412xXnlGl6AC4HLu2F3ECkamY4G6
+ UxejX+E6vW6Xe4n7H+rEX5UFgPRdYkS1TA/X3nMen9bouxNsvIJv7C6adZmMHqu/2azX7S7I
+ vrxxySzOw9GxjoVTuzWMKWpDGP8n71IFeOot8JuPZtJ8omz+DZel+WCNZMVdVNLPOd5frqOv
+ mpz0VhFAlNTjU1Vy0CnuxX3AM51J8dpdNyG0S8rADh6C8AKCDOfUstpq28/6oTaQv7QZdge0
+ JY6dglzGKnCi/zsmp2+1w559frz4+IC7j/igvJGX4KDDKUs0mlld8J2u2sBXv7CGxdzQoHaz
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <8bbee583-6f21-4817-bfeb-2d60057380a3@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 4 potential
-issue(s) to consider:
+Hi Jiayuan,
 
-Critical: 0 · High: 1 (1) · Medium: 1 · Low: 2
+On 09/09/2026 04:57, Jiayuan Chen wrote:
+> 
+> On 9/9/26 10:05 AM, Quanye Yang via B4 Relay wrote:
+>> From: Quanye Yang <quanyeyang@proton.me>
+>>
+>> BUG: KCSAN: data-race in do_recvmmsg / mptcp_recvmsg
+>>
+>> read-write (marked) to 0xffff8880134d391c of 4 bytes by task 2619 on
+>> cpu 1:
+>>   instrument_atomic_read_write include/linux/instrumented.h:113 [inline]
+>>   sock_error include/net/sock.h:2565 [inline]
+>>   do_recvmmsg+0x50c/0x580 net/socket.c:3049
+>>   __sys_recvmmsg net/socket.c:3144 [inline]
+>>   __do_sys_recvmmsg net/socket.c:3167 [inline]
+>>   __se_sys_recvmmsg net/socket.c:3160 [inline]
+>>   __x64_sys_recvmmsg+0x161/0x180 net/socket.c:3160
+>>   x64_sys_call+0x19c7/0x1ca0 arch/x86/include/generated/asm/
+>> syscalls_64.h:300
+>>   do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+>>   do_syscall_64+0xde/0x3d0 arch/x86/entry/syscall_64.c:84
+>>   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+>>
+>> read to 0xffff8880134d391c of 4 bytes by task 2620 on cpu 0:
+>>   tcp_recv_should_stop include/net/tcp.h:3086 [inline]
+>>   mptcp_recvmsg+0x54d/0xd50 net/mptcp/protocol.c:2466
+>>   inet_recvmsg+0x204/0x210 net/ipv4/af_inet.c:894
+>>   sock_recvmsg_nosec net/socket.c:1151 [inline]
+>>   sock_recvmsg+0x11a/0x140 net/socket.c:1173
+>>   ____sys_recvmsg+0x14b/0x3c0 net/socket.c:2933
+>>   ___sys_recvmsg+0x116/0x160 net/socket.c:2975
+>>   __sys_recvmsg net/socket.c:3008 [inline]
+>>   __do_sys_recvmsg net/socket.c:3014 [inline]
+>>   __se_sys_recvmsg net/socket.c:3011 [inline]
+>>   __x64_sys_recvmsg+0xeb/0x160 net/socket.c:3011
+>>   x64_sys_call+0x1319/0x1ca0 arch/x86/include/generated/asm/
+>> syscalls_64.h:48
+>>   do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+>>   do_syscall_64+0xde/0x3d0 arch/x86/entry/syscall_64.c:84
+>>   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+>>
+>> value changed: 0x0000006b -> 0x00000000
+>>
+>> Reported by Kernel Concurrency Sanitizer on:
+>> CPU: 0 UID: 0 PID: 2620 Comm: syz.2.33 Not tainted 7.2.0-g39d4f32c5d53
+>> #76 PREEMPT(full)
+>> Hardware name: QEMU Ubuntu 26.04 PC (i440FX + PIIX, 1996), BIOS
+>> 1.17.0-debian-1.17.0-1ubuntu1 04/01/2014
+>>
+>> do_recvmmsg() calls sock_error() without the socket lock. sock_error()
+>> clears sk_err with xchg(), which races with the unmarked load in
+>> tcp_recv_should_stop(). The same race exists for plain TCP with
+>> concurrent recvmmsg() readers; KCSAN reported it on an MPTCP socket
+>> because mptcp_recvmsg() uses this helper.
+>>
+>> Use READ_ONCE() for the lockless peek. No extra ordering is needed:
+>> the value is only used to decide whether receiving should stop.
+>> This does not consume sk_err; the check-then-sock_error() TOCTOU
+>> on the no-data paths is a separate issue.
+>>
+>> Fixes: eb477fdd6803 ("tcp: add recv_should_stop helper")
+> 
+> 
+> Is the Fixes tag right? eb477fdd6803 only moved the existing check
+> into a helper, the plain read was already there before.
+> 
+> 
+>> Reported-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+>> Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/632
+>> Signed-off-by: Quanye Yang <quanyeyang@proton.me>
+>> ---
+>> Link: https://lore.kernel.org/all/14749060-
+>> d011-41e7-9a4b-754eb5bd9d5b@redhat.com/
+>> ---
+>> Changes in v2:
+>> - add Reported-by and Closes for the MPTCP syzkaller report
+>> - Link to v1: https://patch.msgid.link/20260908-mptcp-sk-err-net-v1-1-
+>> da71aaec9afd@proton.me
+>> ---
+>>   include/net/tcp.h | 3 ++-
+>>   1 file changed, 2 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/include/net/tcp.h b/include/net/tcp.h
+>> index 436495ff2271..c61d8678eafd 100644
+>> --- a/include/net/tcp.h
+>> +++ b/include/net/tcp.h
+>> @@ -3082,7 +3082,8 @@ enum skb_drop_reason tcp_inbound_hash(struct
+>> sock *sk,
+>>     static inline int tcp_recv_should_stop(struct sock *sk)
+>>   {
+>> -    return sk->sk_err ||
+>> +    /* sk_err can be cleared locklessly by sock_error(). */
+>> +    return READ_ONCE(sk->sk_err) ||
+>>              sk->sk_state == TCP_CLOSE ||
+>>              (sk->sk_shutdown & RCV_SHUTDOWN) ||
+>>              signal_pending(current);
+> 
+> 
+> The lockless writers are sock_error() from SO_ERROR and recvmmsg(),
+> so every plain read of sk_err on a TCP socket has the same race, not
+> only this helper:
+>     tcp_recvmsg_locked
+>     tcp_sendmsg_locked
+>     tcp_splice_read
+>     sk_stream_wait_memory
+>     tcp_bpf_sendmsg
+>     tcp_bpf_recvmsg_parser
+>     mptcp_splice_read
+>     mptcp_recvmsg
+> 
+> I'd drop the Fixes tag, target net-next and annotate all of them like
+> e13ec3da05d1, instead of pointing at a MPTCP commit.
+> 
+> Eric, Matthieu, does that sound OK?
 
-- [High] Undisclosed functional regression: PTP setup failures are now
-  fatal to `ndo_open()` and to system resume.
-- [Medium] Unbalanced clk_ptp_ref enable/disable against the platform
-  noirq PM callbacks.
-- [Low] The kernel-doc block above `stmmac_init_timestamping()`
-  (stmmac_main.c:893-899) still states 'this is to verify if the HW…
-- [Low] Both new unwind paths halt the DMA but never undo
-  `stmmac_hw_setup()`'s `stmmac_mac_set(priv, priv->ioaddr, true)`…
+Sounds good to me to target net-next without the Fixes tag.
 
-Pre-existing issues:
-- [High] Pre-existing double free / use-after-free of the DMA descriptor
-  rings, whose trigger set this patch widens.
-
---
-
-net: stmmac: propagate PTP init failures in __stmmac_open() and stmmac_resume()
-
-This converts stmmac_setup_ptp() from void to int so that the PTP
-reference clock enable and stmmac_init_timestamping() failures are
-propagated, and adds unwind paths in __stmmac_open() and stmmac_resume()
-for those failures.  The HW timestamp capability check moves out of
-stmmac_init_timestamping() into the new stmmac_check_timestamp_cap()
-helper.
-
-A few questions below.
-
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> index 24656b35350b1..d33c82bd3ee46 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-> @@ -885,6 +885,11 @@ static int stmmac_init_tstamp_counter(struct stmmac_priv *priv,
->  	return 0;
->  }
->  
-> +static bool stmmac_check_timestamp_cap(struct stmmac_priv *priv)
-> +{
-> +	return priv->dma_cap.time_stamp || priv->dma_cap.atime_stamp;
-> +}
-> +
->  /**
->   * stmmac_init_timestamping - initialise timestamping
->   * @priv: driver private structure
-> @@ -900,11 +905,6 @@ static int stmmac_init_timestamping(struct stmmac_priv *priv)
->  	if (priv->plat->ptp_clk_freq_config)
->  		priv->plat->ptp_clk_freq_config(priv);
->  
-> -	if (!(priv->dma_cap.time_stamp || priv->dma_cap.atime_stamp)) {
-> -		netdev_info(priv->dev, "PTP not supported by HW\n");
-> -		return -EOPNOTSUPP;
-> -	}
-> -
-
-[Severity: Low]
-Should the kernel-doc block just above stmmac_init_timestamping() be updated
-in the same patch?  It still says:
-
-	 * Description: this is to verify if the HW supports the PTPv1 or PTPv2.
-	 * This is done by looking at the HW cap. register.
-	 * This function also registers the ptp driver.
-
-After this hunk the HW cap. register check lives in
-stmmac_check_timestamp_cap()/stmmac_setup_ptp(), which is also why
-stmmac_resume() now has to open-code "if (stmmac_check_timestamp_cap(priv))",
-and stmmac_ptp_register() is only called from stmmac_setup_ptp().  The
--EOPNOTSUPP return the description implies is no longer produced by any
-path here, and the function's new error returns are not described.
-
->  	ret = stmmac_init_tstamp_counter(priv, STMMAC_HWTS_ACTIVE |
->  					       PTP_TCR_TSCFUPDT);
->  	if (ret) {
-> @@ -937,22 +937,39 @@ static int stmmac_init_timestamping(struct stmmac_priv *priv)
->  	return 0;
->  }
->  
-> -static void stmmac_setup_ptp(struct stmmac_priv *priv)
-> +static int stmmac_setup_ptp(struct stmmac_priv *priv)
->  {
->  	int ret;
->  
-> +	if (!stmmac_check_timestamp_cap(priv)) {
-> +		netdev_info(priv->dev, "PTP not supported by HW\n");
-> +		return 0;
-> +	}
-> +
->  	ret = clk_prepare_enable(priv->plat->clk_ptp_ref);
-
-[Severity: Medium]
-Does this early return unbalance clk_ptp_ref against the platform noirq PM
-callbacks?
-
-Before this patch stmmac_setup_ptp() always did clk_prepare_enable() on open
-and stmmac_release_ptp() always did clk_disable_unprepare() on close, so a
-running interface always held one enable/prepare reference.  With the new
-capability gate in both functions, hardware whose dma_cap.time_stamp and
-dma_cap.atime_stamp are clear never gets the clock enabled.  Note
-stmmac_hw_init() leaves priv->dma_cap all-zero when there is no HW feature
-register ("No HW DMA feature register supported").
-
-stmmac_pltfr_noirq_suspend() in stmmac_platform.c still does this
-unconditionally for any running non-WoL interface:
-
-	if (!priv->wolopts) {
-		/* Disable clock in case of PWM is off */
-		clk_disable_unprepare(priv->plat->clk_ptp_ref);
-
-With the enable/prepare counts at zero, does that hit the clk core
-enable_count/prepare_count underflow warning?  And after
-stmmac_pltfr_noirq_resume() re-enables it unconditionally, the close path
-stmmac_release_ptp() now returns early for the same hardware, so does that
-reference stay held for good?
-
-These four sites appear to be the only clk_ptp_ref enable/disable users, and
-stmmac_pltfr_pm_ops installs those noirq callbacks for a large number of
-platform glue drivers.
-
-> -	if (ret < 0)
-> +	if (ret < 0) {
->  		netdev_warn(priv->dev,
->  			    "failed to enable PTP reference clock: %pe\n",
->  			    ERR_PTR(ret));
-> +		return ret;
-> +	}
-> +
-> +	ret = stmmac_init_timestamping(priv);
-> +	if (ret) {
-> +		clk_disable_unprepare(priv->plat->clk_ptp_ref);
-> +		return ret;
-> +	}
->  
-> -	if (stmmac_init_timestamping(priv) == 0)
-> -		stmmac_ptp_register(priv);
-> +	stmmac_ptp_register(priv);
-> +
-> +	return 0;
->  }
->  
->  static void stmmac_release_ptp(struct stmmac_priv *priv)
->  {
-> +	if (!stmmac_check_timestamp_cap(priv))
-> +		return;
-> +
->  	stmmac_ptp_unregister(priv);
->  	clk_disable_unprepare(priv->plat->clk_ptp_ref);
->  }
-> @@ -4161,10 +4178,12 @@ static int __stmmac_open(struct net_device *dev,
->  	ret = stmmac_hw_setup(dev);
->  	if (ret < 0) {
->  		netdev_err(priv->dev, "%s: Hw setup failed\n", __func__);
-> -		goto init_error;
-> +		return ret;
->  	}
->  
-> -	stmmac_setup_ptp(priv);
-> +	ret = stmmac_setup_ptp(priv);
-> +	if (ret)
-> +		goto ptp_error;
-
-[Severity: High]
-Can this make "ip link set dev ethX up" fail on configurations that work
-today?
-
-stmmac_setup_ptp() -> stmmac_init_timestamping() -> stmmac_init_tstamp_counter()
-returns -EINVAL for a zero PTP rate:
-
-	if (!priv->plat->clk_ptp_rate) {
-		netdev_err(priv->dev, "Invalid PTP clock rate");
-		return -EINVAL;
-	}
-
-Before this patch that only produced the "PTP init failed" warning and the
-interface still came up without timestamping.
-
-Is "timestamp capable but clk_ptp_rate == 0" a real configuration?
-stmmac_register_devlink() already tolerates exactly that combination:
-
-	if (!(priv->dma_cap.time_stamp || priv->dma_cap.atime_stamp) ||
-	    !priv->plat->clk_ptp_rate)
-		return 0;
-
-and stmmac_probe_config_dt() derives the rate from a clock that may be NULL:
-
-	if (IS_ERR(plat->clk_ptp_ref)) {
-		plat->clk_ptp_rate = clk_get_rate(plat->stmmac_clk);
-		plat->clk_ptp_ref = NULL;
-
-with clk_get_rate(NULL) returning 0 (plat->stmmac_clk is left NULL on the
-"Cannot get CSR clock" path, and is not fetched at all for
-snps,dwc-qos-ethernet-4.10).
-
-On such a board, would the interface become permanently un-openable for
-users who never touch PTP or TAPRIO?  The same question applies to
-stmmac_resume() below, where the new goto skips netif_device_attach() and
-leaves a previously working link down.  Since there are two Fixes: tags this
-will be picked up for stable, so it may be worth spelling the behaviour
-change out in the changelog, or keeping the failure non-fatal for the
-datapath and only refusing the PTP/EST-dependent features.
-
->  	stmmac_init_coalesce(priv);
->  
-> @@ -4187,9 +4206,10 @@ static int __stmmac_open(struct net_device *dev,
->  
->  	for (chan = 0; chan < priv->plat->tx_queues_to_use; chan++)
->  		hrtimer_cancel(&priv->dma_conf.tx_queue[chan].txtimer);
-> -
->  	stmmac_release_ptp(priv);
-> -init_error:
-> +ptp_error:
-> +	stmmac_stop_all_dma(priv);
-> +
->  	return ret;
->  }
-
-[Severity: High]
-This isn't a bug introduced by this patch, but the new ptp_error exit widens
-the set of ways __stmmac_open() can fail after it has already done:
-
-	memcpy(&priv->dma_conf, dma_conf, sizeof(*dma_conf));
-
-so priv->dma_conf holds its own copy of every pointer in the caller's
-dma_conf.  On the MTU reopen path the caller reacts to failure like this:
-
-stmmac_change_mtu()
-	ret = __stmmac_open(dev, dma_conf);
-	if (ret) {
-		free_dma_desc_resources(priv, dma_conf);
-		kfree(dma_conf);
-
-The interface is left administratively up, and priv->dma_conf still points
-at the freed dma_alloc_coherent() buffers and the freed tx_skbuff/rx_skbuff
-arrays, since nulling pointers inside the caller's copy cannot clear the
-memcpy'd copy.  A later "ip link set dev ethX down" then runs:
-
-__stmmac_release()
-	stmmac_stop_all_dma(priv);
-	/* Release and free the Rx/Tx resources */
-	free_dma_desc_resources(priv, &priv->dma_conf);
-
-Does that free the same rings a second time?  The pre-existing trigger was
-an stmmac_request_irq() failure via irq_error; with this patch a PTP
-reference clock enable failure reaches the same state.
-
-[Severity: Low]
-Should this unwind also clear the MAC Rx/Tx enable that stmmac_hw_setup()
-set?
-
-stmmac_hw_setup() does:
-
-	/* Enable the MAC Rx/Tx */
-	stmmac_mac_set(priv, priv->ioaddr, true);
-
-stmmac_stop_all_dma() only clears the DMA channel start bits and deinits the
-channels.  The MAC enable is cleared in the mac_link_down callback, in the
-reset path and in stmmac_suspend(), and on the ptp_error path
-phylink_start() was never reached, so mac_link_down() cannot run.
-stmmac_open() then frees the descriptor rings and drops the runtime-PM
-reference, leaving the MAC clock-gated with its Rx/Tx still armed.  All
-stmmac_hw_setup() failure returns happen before the stmmac_mac_set() call,
-so this residue is specific to the new post-setup failure exits.
-
-> @@ -8326,13 +8346,14 @@ int stmmac_resume(struct device *dev)
->  	ret = stmmac_hw_setup(ndev);
->  	if (ret < 0) {
->  		netdev_err(priv->dev, "%s: Hw setup failed\n", __func__);
-> -		stmmac_legacy_serdes_power_down(priv);
-> -		mutex_unlock(&priv->lock);
-> -		rtnl_unlock();
-> -		return ret;
-> +		goto error_unlock;
->  	}
->  
-> -	stmmac_init_timestamping(priv);
-> +	if (stmmac_check_timestamp_cap(priv)) {
-> +		ret = stmmac_init_timestamping(priv);
-> +		if (ret)
-> +			goto error_stop_dma;
-> +	}
->  
->  	stmmac_init_coalesce(priv);
->  	phylink_rx_clk_stop_block(priv->phylink);
-> @@ -8356,6 +8377,15 @@ int stmmac_resume(struct device *dev)
->  	netif_device_attach(ndev);
->  
->  	return 0;
-> +
-> +error_stop_dma:
-> +	stmmac_stop_all_dma(priv);
-> +error_unlock:
-> +	stmmac_legacy_serdes_power_down(priv);
-> +	mutex_unlock(&priv->lock);
-> +	rtnl_unlock();
-> +
-> +	return ret;
->  }
-
-[Severity: Low]
-Same question on the resume side: stmmac_suspend() explicitly did
-
-	stmmac_mac_set(priv, priv->ioaddr, false);
-
-but error_stop_dma/error_unlock stops the DMA and calls
-stmmac_legacy_serdes_power_down() while the MAC Rx/Tx enabled by
-stmmac_hw_setup() is still set, so the SerDes is removed under an enabled
-MAC.  Would adding stmmac_mac_set(priv, priv->ioaddr, false) to this unwind
-restore the state that stmmac_suspend() had established?
-
-Also, on this path netif_device_attach() is never reached while
-netif_running() is still true, so the netdev stays detached after a resume
-failure.  Is that the intended outcome for a PTP init error?
-
+Cheers,
+Matt
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260904-stmmac-ptp-error-propagate-v1-1-80f01b03dafa%40oss.qualcomm.com
+Sponsored by the NGI0 Core fund.
+
