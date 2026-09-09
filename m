@@ -1,320 +1,151 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C3C6534442;
-	Wed,  9 Sep 2026 10:49:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46AAC5237AD;
+	Wed,  9 Sep 2026 11:06:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.219
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788950965; cv=none; b=YG40ckvtogEWn55VOIAw1Ze5mHAtRGVJ43izDFB1Kpv8JC2gq5R+iNKkvH7udClxdVCVYVXNBFLD8g5xQsj6eLgMdvUks5uRd7bD0HHnJUzoSt3WSS13/Ki+5HjYQiDwOLdXNUGU1c/gdk2ItNtwUVI1Eb4OSY2fo97ia7jKkhc=
+	t=1788951988; cv=none; b=qcW/frKkhmrSWoEx9WG8grfzTEWnGnrBmRxMV4+rs1Ksed/G2jaZUl0FmhpeMjmVasaBKV24Xtprs4ydhCJOXur67ekrSDaXFVFi0vqyT5f2GMRVrz1OEQFZ6dDNfPcX5Ndv4FO8K5+kVWRGRQrhDctz0Dlfg/t11LLQA2r2ddE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788950965; c=relaxed/simple;
-	bh=NIbN3x2fe3c1+D//EHq/wwGNl7/JKtKpxd3lOinw0FI=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=KtDsL1cFdEfkOPx95+PUivytQvLBcpq/19EM1mZIsVcQquu7a0BTKtKo3ToJkLygYcErM2ODXgXSmjZszXLumw7Rj7KZaoJ1zAT1Tu6vuyRF0sdDSgIiqnx6OB72iQ5MMWtSqR33GrysJ8QUk2ZxpZiIrWPzydkmfGBALKCJMAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MfwTXteq; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1788951988; c=relaxed/simple;
+	bh=xYQGAF0ve5ncKxvXj69wlunj82ZvZpm+BXA3PMT0rGk=;
+	h=Message-ID:Date:MIME-Version:CC:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=OTko/cyIKvse1JyDgrP4AffK9dX5FENn9EjPU9IJziQEuuRG4h473hEE7hqRXdBio0j9Za4E47IehsEBoKm4bwOdr7gMLJ01T9IXkTn0eNl4iuZQozYcvZnKYcPQknDjYdUAuukb4QlAZJ43WmpspttbPTd8c0QKtuN34VAFFXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=jR8fGYTA; arc=none smtp.client-ip=113.46.200.219
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MfwTXteq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC2451F00A3D;
-	Wed,  9 Sep 2026 10:49:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788950962;
-	bh=cHJTGnwrRP3s7wqMU5rB0oLtvCJJO/80I5mWj7uMgYw=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=MfwTXteqSRZJdBaE5H/wIuq5jiss2ozfPMhlN0tMjVAWzRDqBmHkBW6cLH2W9lXCg
-	 +EKki7JraHF3YjjpxyQhqVhtlUL7IdRs+Ms3lGILEH6IT1jwWByxsp01zF2OUuoXGc
-	 yaS56FPCT0MPN81eYQM5T5A7zhermUJVZa4UCEUFdeUZ6smwltnnetl3Fu2iSUUjDR
-	 l8jsEwtEV9lsT3xDCLi3VoR4O7MASZB3QBnGFTkaV3T3V0BXanZaI6zmMdE6yhztMK
-	 MnDALnGK1yMgmVzGpRl3ppURJmntZKwkhhtO4yMT4V98MSnTSn2Tj1mtGwH/hOpuvr
-	 KZD8FuO+muThw==
-Subject:
- Re: [PATCH net-next v10 2/2] net: phy: add X-Powers AC200/AC300 EPHY driver
-From: netdev-bot+sashiko@kernel.org
-To: james.hilliard1@gmail.com
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, andrew@lunn.ch, hkallweit1@gmail.com,
- linux@armlinux.org.uk, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, arnd@arndb.de, jedrzej.jagielski@intel.com,
- andre.przywara@arm.com, wens@kernel.org, jernej.skrabec@gmail.com,
- maxime.chevallier@bootlin.com, linux-sunxi@lists.linux.dev,
- netdev@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Wed, 09 Sep 2026 10:49:20 +0000
-Message-ID: <178895096044.219967.9072892743673097567@kernel.org>
-In-Reply-To:
- <20260906-submit-acx00-of-dynamic-v1-v10-2-dd272e03b547@gmail.com>
-References: <20260906-submit-acx00-of-dynamic-v1-v10-2-dd272e03b547@gmail.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="jR8fGYTA"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=sm5hZKlRG1kdRKEeS9E+CM4U4vHBPHrbqoe03Kq/6mc=;
+	b=jR8fGYTA5LjNiB7N9ItZ9pJxW4LBxJ3N3Frsepxkpkhe28tWmq4rYbOr9sddAxn1bjyDvl001
+	afuH0mFsR17hmPwenRdyx7RCX3hQTzW5vUEUjN5TfSaOLeAbr3R+NMux6obhhlXwjCtwUmkf7/T
+	+xjJ4d3KSw1xejM4c16gk0k=
+Received: from mail.maildlp.com (unknown [172.19.163.104])
+	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4hfyQ00gqSz1prMB;
+	Wed,  9 Sep 2026 18:55:20 +0800 (CST)
+Received: from kwepemo500018.china.huawei.com (unknown [7.202.195.199])
+	by mail.maildlp.com (Postfix) with ESMTPS id 101954056E;
+	Wed,  9 Sep 2026 19:06:16 +0800 (CST)
+Received: from [10.67.120.192] (10.67.120.192) by
+ kwepemo500018.china.huawei.com (7.202.195.199) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Wed, 9 Sep 2026 19:06:15 +0800
+Message-ID: <9284cd9f-88fb-4067-be39-3e0025dee2c4@huawei.com>
+Date: Wed, 9 Sep 2026 19:06:14 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+CC: <shaojijie@huawei.com>, Yury Norov <ynorov@nvidia.com>, Rasmus Villemoes
+	<linux@rasmusvillemoes.dk>, Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH 6/9] net: avoid copies before linkmode_and()
+To: Yury Norov <yury.norov@gmail.com>, Andrew Lunn <andrew@lunn.ch>, Heiner
+ Kallweit <hkallweit1@gmail.com>, Russell King <linux@armlinux.org.uk>, Raju
+ Rangoju <Raju.Rangoju@amd.com>, Prashanth Kumar K R
+	<PrashanthKumar.K.R@amd.com>, Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>, Jian Shen
+	<shenjian15@huawei.com>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, <linux-kernel@vger.kernel.org>,
+	<netdev@vger.kernel.org>, <intel-wired-lan@lists.osuosl.org>,
+	<linux-usb@vger.kernel.org>
+References: <20260907215439.409858-1-ynorov@nvidia.com>
+ <20260907215439.409858-7-ynorov@nvidia.com>
+From: Jijie Shao <shaojijie@huawei.com>
+In-Reply-To: <20260907215439.409858-7-ynorov@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ kwepemo500018.china.huawei.com (7.202.195.199)
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider:
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 1
+on 2026/9/8 5:54, Yury Norov wrote:
+> Avoid separate linkmode_copy() calls by passing the original source
+> bitmap directly to linkmode_and().
+>
+> In phy_ethtool_ksettings_set(), also use the return value of
+> linkmode_and() when validating that the requested advertisement
+> contains a supported link mode.
 
-- [Medium] The AC200 backend cannot function in this tree:
-  ac200_ephy_ctl_create() requires the phandle target (x-powers,ac200)…
-- [Medium] When acx00_ephy_control_power_off() fails during suspend,
-  acx00_ephy_suspend() recovers by calling…
-- [Low] The binding and the driver disagree on the width/encoding of the
-  'configuration' NVMEM cell.
+Please include "hns3" in the subject prefix (e.g., "net: hns3: ...")
+so it's clear which driver this patch belongs to. I didn't immediately
+find the hns3 driver modifications from the current title.
 
---
+>
+> Signed-off-by: Yury Norov <ynorov@nvidia.com>
+> ---
+>   drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mdio.c | 5 ++---
+>   drivers/net/phy/phy.c                                   | 7 +++----
+>   2 files changed, 5 insertions(+), 7 deletions(-)
+>
+> diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mdio.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mdio.c
+> index cf881108fa57..5801da6100b8 100644
+> --- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mdio.c
+> +++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mdio.c
+> @@ -205,7 +205,6 @@ int hclge_mac_connect_phy(struct hnae3_handle *handle)
+>   	struct hclge_dev *hdev = vport->back;
+>   	struct net_device *netdev = hdev->vport[0].nic.netdev;
+>   	struct phy_device *phydev = hdev->hw.mac.phydev;
+> -	__ETHTOOL_DECLARE_LINK_MODE_MASK(mask) = { 0, };
+>   	int ret;
+>   
+>   	if (!phydev)
+> @@ -223,8 +222,8 @@ int hclge_mac_connect_phy(struct hnae3_handle *handle)
+>   		return ret;
+>   	}
+>   
+> -	linkmode_copy(mask, hdev->hw.mac.supported);
+> -	linkmode_and(phydev->supported, phydev->supported, mask);
+> +	linkmode_and(phydev->supported, phydev->supported,
+> +		     hdev->hw.mac.supported);
+>   	linkmode_copy(phydev->advertising, phydev->supported);
+>   
+>   	/* supported flag is Pause and Asym Pause, but default advertising
+> diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
+> index fce9bc7be330..cd71186cd842 100644
+> --- a/drivers/net/phy/phy.c
+> +++ b/drivers/net/phy/phy.c
+> @@ -1160,6 +1160,7 @@ int phy_ethtool_ksettings_set(struct phy_device *phydev,
+>   			      const struct ethtool_link_ksettings *cmd)
+>   {
+>   	__ETHTOOL_DECLARE_LINK_MODE_MASK(advertising);
+> +	bool has_advertising;
+>   	u8 autoneg = cmd->base.autoneg;
+>   	u8 duplex = cmd->base.duplex;
+>   	u32 speed = cmd->base.speed;
+> @@ -1167,17 +1168,15 @@ int phy_ethtool_ksettings_set(struct phy_device *phydev,
+>   	if (cmd->base.phy_address != phydev->mdio.addr)
+>   		return -EINVAL;
+>   
+> -	linkmode_copy(advertising, cmd->link_modes.advertising);
+> -
+>   	/* We make sure that we don't pass unsupported values in to the PHY */
+> -	linkmode_and(advertising, advertising, phydev->supported);
+> +	has_advertising = linkmode_and(advertising, cmd->link_modes.advertising, phydev->supported);
 
-net: phy: add X-Powers AC200/AC300 EPHY driver
 
-This adds a new PHY driver for the Fast Ethernet link PHY inside the
-X-Powers AC200 and AC300 companion chips, with two package backends: AC200
-control registers reached over an I2C regmap, and AC300 control registers
-reached through the PHY package helpers.  A few questions below about the
-AC200 provider dependency, the NVMEM configuration cell, and the suspend
-error recovery path.
+To keep the file clean, could you please update this part to match thesurrounding code style?
+Specifically, we order local variables fromlongest to shortest (reverse Christmas tree) and
+enforce an 80-characterline limit.
 
-> diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
-> index b4ef927fd4a67..d3835597e3795 100644
-> --- a/drivers/net/phy/Kconfig
-> +++ b/drivers/net/phy/Kconfig
-> @@ -484,6 +484,17 @@ config VITESSE_PHY
->  	help
->  	  Currently supports the vsc8244
->  
-> +config XPOWERS_ACX00_PHY
-> +	tristate "X-Powers AC200/AC300 Ethernet PHY"
-> +	depends on COMMON_CLK && NVMEM && OF_MDIO && REGULATOR
-> +	depends on I2C || !I2C
-> +	select PHY_PACKAGE
-> +	help
-> +	  Enable the Fast Ethernet PHY driver shared by the X-Powers AC200
-> +	  and AC300 companion ICs. The driver configures their common MDIO PHY
-> +	  registers and the package-specific AC200 I2C or AC300 MDIO control
-> +	  registers.
-> +
+Thanks,
+Jijie Shao
 
-[ ... ]
 
-> diff --git a/drivers/net/phy/xpowers/ac200.c b/drivers/net/phy/xpowers/ac200.c
-> new file mode 100644
-> index 0000000000000..afdd2a3dfbe41
-> --- /dev/null
-> +++ b/drivers/net/phy/xpowers/ac200.c
-> @@ -0,0 +1,314 @@
-
-[ ... ]
-
-> +struct acx00_ephy_control *
-> +ac200_ephy_ctl_create(struct phy_device *phydev,
-> +		      struct device_node *package_node,
-> +		      bool has_calibration, u8 calibration)
-> +{
-
-[ ... ]
-
-> +	ac200_node = of_parse_phandle(package_node, "x-powers,ac200", 0);
-> +	if (!ac200_node)
-> +		return ERR_PTR(dev_err_probe(dev, -EINVAL,
-> +					     "missing x-powers,ac200 reference\n"));
-> +	client = of_find_i2c_device_by_node(ac200_node);
-> +	of_node_put(ac200_node);
-> +	if (!client) {
-> +		ret = IS_ENABLED(CONFIG_I2C) ? -EPROBE_DEFER : -ENODEV;
-> +		return ERR_PTR(dev_err_probe(dev, ret,
-> +					     "AC200 device is not registered\n"));
-> +	}
-
-[ ... ]
-
-> +	device_lock(&client->dev);
-> +	if (device_is_bound(&client->dev))
-> +		priv->regmap = dev_get_regmap(&client->dev, NULL);
-> +	device_unlock(&client->dev);
-> +	if (!priv->regmap) {
-> +		ret = dev_err_probe(dev, -EPROBE_DEFER,
-> +				    "AC200 driver is not ready\n");
-> +		goto out_put_client;
-> +	}
-
-[Severity: Medium]
-Is there anything in this tree that can satisfy this AC200 provider
-contract?
-
-ac200_ephy_ctl_create() requires the x-powers,ac200 phandle target to be a
-registered I2C client that is bound to a driver and that has attached an
-unnamed regmap covering 0x0014, 0x0016, 0x6000 and 0x8004, plus a clkdev
-for clk_get(&client->dev, NULL):
-
-	/* The bound AC200 provider enables and exclusively pins this rate. */
-	clk_rate = clk_get_rate(clk);
-
-Grepping for x-powers,ac200 at this commit matches only these new driver
-files and the package binding added by the preceding patch in the series,
-so nothing under drivers/mfd or elsewhere binds that I2C device, attaches
-the regmap, or registers the clock.
-
-Doesn't that make both the fixed x-powers,ac200-ephy-package path and the
-AC200 selection of x-powers,acx00-ephy-package defer forever with
-"AC200 device is not registered" or "AC200 driver is not ready"?
-
-The commit message states the provider behaviour as an existing fact:
-
-    The companion MFD provider enables and exclusively pins the input
-    clock rate while it is bound.
-
-and the Kconfig help text advertises "the package-specific AC200 I2C or
-AC300 MDIO control registers".  Could the merge dependency on the
-separately submitted provider be stated explicitly in this patch, or the
-provider be included in the series?
-
-[ ... ]
-
-> diff --git a/drivers/net/phy/xpowers/acx00.c b/drivers/net/phy/xpowers/acx00.c
-> new file mode 100644
-> index 0000000000000..932ed4335d843
-> --- /dev/null
-> +++ b/drivers/net/phy/xpowers/acx00.c
-> @@ -0,0 +1,621 @@
-
-[ ... ]
-
-> +static int acx00_ephy_read_nvmem_u16(struct device_node *node,
-> +				     const char *name, u16 *value)
-> +{
-
-[ ... ]
-
-> +	if (!len || len > sizeof(*value)) {
-> +		kfree(buf);
-> +		return len ? -ERANGE : -EINVAL;
-> +	}
-> +
-> +	for (i = 0; i < len; i++)
-> +		val |= (u16)buf[i] << (8 * i);
-
-[Severity: Low]
-Should the binding pin down the width and byte order of the
-"configuration" cell?
-
-This helper accepts a 1-byte cell and assembles the value little-endian,
-so a one-byte cell can never carry bit 8, the AC300 variant bit.  The
-binding for x-powers,acx00-ephy-package documents the bit assignments but
-does not state a minimum cell width or an endianness, and it explicitly
-allows a partial cell:
-
-    A fixed AC200 package may provide only the low calibration bits or
-    omit the cell
-
-[ ... ]
-
-> +	if (selectable) {
-> +		priv->is_ac300 =
-> +			configuration & ACX00_EPHY_CONFIG_VARIANT_AC300;
-> +	} else {
-> +		priv->is_ac300 = fixed_ac300;
-> +		if (has_configuration &&
-> +		    !!(configuration & ACX00_EPHY_CONFIG_VARIANT_AC300) !=
-> +		    priv->is_ac300) {
-> +			ret = dev_err_probe(dev, -EINVAL,
-> +					    "configuration does not match package\n");
-> +			goto out_put_node;
-> +		}
-> +	}
-
-Given the above, a device tree that passes dt_binding_check with a
-one-byte (or big-endian) cell would fail probe here with "configuration
-does not match package" on x-powers,ac300-ephy-package, and would silently
-select the AC200 backend on the generic x-powers,acx00-ephy-package.  Can
-the binding require the two-byte little-endian layout that
-acx00_ephy_read_nvmem_u16() and this check assume?
-
-[ ... ]
-
-> +static int __acx00_ephy_power_on_and_resume(struct phy_device *phydev)
-> +{
-> +	struct acx00_ephy_priv *priv = phydev->priv;
-> +	int ret;
-> +
-> +	lockdep_assert_held(&phydev->lock);
-> +	lockdep_assert_held(&priv->state_lock);
-> +
-> +	ret = acx00_ephy_set_interface(phydev);
-> +	if (ret)
-> +		goto out_power_off;
-> +
-> +	ret = acx00_ephy_control_power_on(priv);
-> +	if (ret)
-> +		goto out_power_off;
-> +
-> +	ret = genphy_resume(phydev);
-> +	if (ret)
-> +		goto out_power_off;
-> +
-> +	/* Powering off the control block loses the vendor-page state. */
-> +	ret = __acx00_ephy_config_init(phydev);
-> +	if (ret)
-> +		goto out_power_off;
-> +
-> +	return 0;
-> +
-> +out_power_off:
-> +	acx00_ephy_control_power_off_warn(priv);
-> +
-> +	return ret;
-> +}
-
-[ ... ]
-
-> +static int acx00_ephy_suspend(struct phy_device *phydev)
-> +{
-
-[ ... ]
-
-> +	ret = genphy_suspend(phydev);
-> +	if (ret)
-> +		goto out_unlock;
-> +
-> +	ret = acx00_ephy_control_power_off(priv);
-> +	if (ret) {
-> +		resume_ret = __acx00_ephy_power_on_and_resume(phydev);
-> +		if (resume_ret)
-> +			phydev_warn(phydev,
-> +				    "failed to recover from suspend error: %pe\n",
-> +				    ERR_PTR(resume_ret));
-> +	}
-
-[Severity: Medium]
-Does this recovery path lose the user's link configuration?
-
-Consider the case where the register writes in ac200_ephy_ctl_disable() or
-ac300_ephy_ctl_disable() succeeded, so the EPHY reset was asserted (and
-for AC300 the input clock was disabled), and only the trailing
-regulator_disable(priv->vcc) failed:
-
-ac200_ephy_ctl_disable()
-	ac200_ephy_ctl_write(priv, AC200_SYS_EPHY_CTL0_REG, 0);  /* reset asserted */
-	...
-	err = regulator_disable(priv->vcc);   /* fails, returned to caller */
-
-The Clause 22 registers are back at reset defaults at that point, but
-__acx00_ephy_power_on_and_resume() only clears the power-down bit through
-genphy_resume() and reapplies the vendor pages plus the EEE advertisement
-in __acx00_ephy_config_init().  There is no genphy_config_aneg() or
-genphy_setup_forced() call to restore phydev->advertising or a configured
-forced speed and duplex.
-
-Since acx00_ephy_suspend() then returns the original error, phy_suspend()
-never sets phydev->suspended and mdio_bus_phy_suspend() propagates the
-failure, so mdio_bus_phy_resume() -> phy_init_hw() is not run for this
-device afterwards.
-
-Doesn't that leave the PHY running with reset-default advertising, or with
-autonegotiation enabled even though a forced mode was configured?
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260906-submit-acx00-of-dynamic-v1-v10-0-dd272e03b547%40gmail.com
+>   
+>   	/* Verify the settings we care about. */
+>   	if (autoneg != AUTONEG_ENABLE && autoneg != AUTONEG_DISABLE)
+>   		return -EINVAL;
+>   
+>   	if (autoneg == AUTONEG_ENABLE &&
+> -	    (linkmode_empty(advertising) ||
+> +	    (!has_advertising ||
+>   	     !linkmode_test_bit(ETHTOOL_LINK_MODE_Autoneg_BIT,
+>   				phydev->supported)))
+>   		return -EINVAL;
