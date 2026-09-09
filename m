@@ -1,133 +1,233 @@
-Received: from mail-yx2-f12.google.com (mail-yx2-f12.google.com [74.125.224.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3331753D0DC
-	for <netdev@vger.kernel.org>; Wed,  9 Sep 2026 15:03:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A739A2EFD9B;
+	Wed,  9 Sep 2026 15:06:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788966214; cv=none; b=WFSxFpt1p8yfTFH0DB3CcgNXDvmBJB6SKmL7YKliz0HFvWCGJsrhQ0A3TgfZl+JIl8AHXOz8Ej6vTeOJjE7s9i4dKjJGzPZOK45QLHPqDzVsQh+iy+bnyJxLkpKE4KVhvgOaPJEadZOH0c+yyFAZg8AX7mxwS9PO05cr7QSmhuU=
+	t=1788966381; cv=none; b=rUxskgT3VEyBNghNt+6/kLgDRYiEwu5Ra9qlh81JbqiV2KMwOObsjK6wdbXf4rw1EkTkjJuBKseTm2dBETfbAm16TgQbPw+VPXnbd1ZfSFMfJvPekvW9NyqZTMUPbJentLiJXMrQC3lrGc/f9ToNDnDwZ4iiOUf4u4uehVYli74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788966214; c=relaxed/simple;
-	bh=HHNm5/zc77jcYLLmGgqPDR+NQaIoL0CJyojjLcJtZKc=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=oFADXpDWPU+rhZNahCw9lP6wYjALZn/fmRDXTnwOvG1b4rPyFDo9n2DG9DGT8ARusgAWeqtkl5hpbfYxI3PcHi54r9AYTNMCHBuCRUiQ6i6aXiM2Iyi4CPBL0zG2cxOz0K5cZyeG1J8Z1D+yepuuTWp8VaMNJsHl2PFExqX7G+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pe4eIKu1; arc=none smtp.client-ip=74.125.224.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1788966381; c=relaxed/simple;
+	bh=yabihiRtc+OyrJ4wRyvigDmme4CVUHpQrO3pHMwLN3s=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=UHg1X8wUPjGwUXQMfS3GX0sq0wFBIBeBG4HNJ3n8sesTMq0H/Lz/uCdvpHerA26tHDQ5UN0dFCvv6oINtGaN2Q3+P4hru5zI91Xeiw0E+gjZ1+I5jdDbX3HBPim4C2LtHhPD0/8LHXJIckqwo8MbM3yw3o1vuXExnHOjg6/ffCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ACFPLCrG; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pe4eIKu1"
-Received: by mail-yx2-f12.google.com with SMTP id 00721157ae682-85d46e4cdcaso11137077b3.3
-        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 08:03:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1788966211; x=1789571011; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=08HkDWgh1+HEX92rfdOLS5P3VBFy/7LtpPCQPcLhVmk=;
-        b=pe4eIKu1NcigxbYAhfQnp88yJbDzdBiP5VV/aE31+JK7IdCbd1L4QsQb2xQLMRr9k3
-         +Fqatxp0DXKcVvUb3E3kmU+YLT1WF9jXPx32jZSnDU9TJpg4BXW0XAq2ztqfNzXccuDu
-         KzUZ0L5jEZJVam0tlzVAhiSqIO2ZNachSXJJvgHkRn1P2Fm5GSYDBd/wk7jhV6MZAS5i
-         ODan5nEmAplPSPIsBenby5tTpO2eKhGVMh7UNuPeLB0GgtP1d32CZn1CvdFinc7XK1/N
-         Rf+qwkh6p4U4I3ZTHDQOYNJ0WkdIWWOgh1ejZTFa+QtvvhYV4dKyCargmcK8Sz/XY0HA
-         eAvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788966211; x=1789571011;
-        h=content-transfer-encoding:content-type:mime-version:subject
-         :references:in-reply-to:message-id:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=08HkDWgh1+HEX92rfdOLS5P3VBFy/7LtpPCQPcLhVmk=;
-        b=DO6hIM1GwJOyaIeqFT7usRch4KDLE2lavYDBGXuYut1gYuDOvQ+6YGxF+4Z143z4cs
-         xXB2UHw8k/R9zV3wHFkFkgvYdKtjbIgeGlxeDLM8iAI06mTkYk5/zE8g3La3WH4ItGUR
-         1obWZhrghsGUh6ccb3iZukWEcSwcz2EnaEudbqdBgUjbyuHvB7fzoLa3xSwocEonZIwI
-         WY/TENNeynxEpK4siQ89/PQxdNn5R78Oq60ooOHDp6Vp7vEoahiLy2r8Ad+J5uUciMJy
-         NrpoLa5tSqooDUOsKyPrSTQgjF5Jd+lMRoRlbzh6o+yxpoV36rR5UvwLyfv2GGCetf8A
-         Ixvg==
-X-Forwarded-Encrypted: i=1; AKwUvBydXaAFDFDRrJ0MGksxDINEpQP8MqlmWOVo+L3J3oQvDoq9U2diosNAbUevwdle21q2ZMXI+GY=@vger.kernel.org
-X-Gm-Message-State: AFuF++m7pUBfRskLPumOetuqnwCofRqplhc6feD2SE7E9ElSkgH+S34L
-	6y7rKkIAhpeFzGaF0knOG+o5wcVsdeQXEVSFEWOAqPCx5X1nHwnPSm7B4eN1hQ==
-X-Gm-Gg: AYBFou3MAtIfN49Qed43CE1fAqFOFhHlsExB5zUCA4xu7DB2fEty9q2ij+lDE8STeCG
-	3ejyP0nrPAzPQF3m1s8VZr7D+rkfext92NafECIj4XitwmolrBEfGHFhn+Nu8GC3f5d4vA2JLkt
-	A2SQf/cysOjjMR2CnkNlbYt3hjlXARccHom+uq+ZuccaOtJAimX1kdBd1MI92Z35Gng2hDfhA6N
-	KXUxi2whfV3eFFjPkxJy+EOo9OWdzvMI9cg7exqkOmwxzrhMgbfVuTBCm19DCE1lGWvUQgL0SGR
-	ysCEDhoPEPQnb2Zyq7AgWV1FyghEmZGncnQxWcmA332AMzZEfg9Sc+o6DTI5K1xavN/zbb2zKVp
-	6Pq4ldHUiWg28idolB4UiDhCwY0USlVximDDRJ51xvMmevjmh/n48kS4KWJg2sDMkH3J+M9BADV
-	hhgbing+JPR4cwBL6wjvJJPOOM9AJHtXEXuNP+Oi3grReipQgJcF9eXwayBq3Z1at5ziKiqsP3v
-	1ziVhxvmc6NhfKGyVL+W8qeKPpb3gESoKV5uqehROi8kwJwjR5L
-X-Received: by 2002:a05:690c:9:b0:836:ec9b:b468 with SMTP id 00721157ae682-87f2a0de993mr31193367b3.34.1788966209661;
-        Wed, 09 Sep 2026 08:03:29 -0700 (PDT)
-Received: from gmail.com (234.207.85.34.bc.googleusercontent.com. [34.85.207.234])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-87149316347sm113552517b3.15.2026.09.09.08.03.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Sep 2026 08:03:28 -0700 (PDT)
-Date: Wed, 09 Sep 2026 11:03:28 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Bjoern Doebel <doebel@amazon.de>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S . Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>
-Cc: Willem de Bruijn <willemb@google.com>, 
- netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- Bjoern Doebel <doebel@amazon.de>, 
- stable@vger.kernel.org
-Message-ID: <willemdebruijn.kernel.e4612d16d68@gmail.com>
-In-Reply-To: <20260909085542.3370986-1-doebel@amazon.de>
-References: <20260909085542.3370986-1-doebel@amazon.de>
-Subject: Re: [PATCH net] loopback: orphan zerocopy frags before releasing the
- sender in loopback_xmit()
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ACFPLCrG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9825F1F00A3A;
+	Wed,  9 Sep 2026 15:06:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1788966379;
+	bh=UENA8jCUZQAc8iZ7vC/BLUZox9hbgrKC9gfsqY1wUAk=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=ACFPLCrGYE0DWlpQcP5pNBwyL11aVApKadPScZz0wTGKUf5nJQBRap00SQ8OSknSI
+	 9XHfMiRouE2IPF+P8/cJKPJ/XhnPf2yqD9psJEvStksoSKRQyrC4L22aIsB28nW443
+	 MG0Q6TQcxOvgliNMcPgfHR+nouzaiy7B8NJD5MLbpzgB+0ujNQ0msg1XxpozMn/gWR
+	 ha9pQZwqzXVU2myczZCGWrE6KTTypo5FOtqzbvXIbP7w6KFnW0nJZMBUtQp6OPXC5/
+	 cJqxpHHhOc+usRL/tD7ZLrvAVThBb72x3+pn5GKGjPhnYnmf8c92wWte3shLJ7pVd8
+	 Dv1kblFwOn3Mg==
+Subject:
+ Re: [PATCH v2] bpf, sockmap: Fix self-redirect copied_seq double-counting
+From: netdev-bot+sashiko@kernel.org
+To: geliang@kernel.org
+Cc: john.fastabend@gmail.com, jakub@cloudflare.com, jiayuan.chen@linux.dev,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, daniel@iogearbox.net, tanggeliang@kylinos.cn,
+ netdev@vger.kernel.org, bpf@vger.kernel.org
+Date: Wed, 09 Sep 2026 15:06:18 +0000
+Message-ID: <178896637807.219967.17814650555231944505@kernel.org>
+In-Reply-To: =?utf-8?q?=3C1d2370f4c81f10834b8dd77524924575c629a464=2E1788591?=
+ =?utf-8?q?198=2Egit=2Etanggeliang=40kylinos=2Ecn=3E?=
+References: =?utf-8?q?=3C1d2370f4c81f10834b8dd77524924575c629a464=2E17885911?=
+ =?utf-8?q?98=2Egit=2Etanggeliang=40kylinos=2Ecn=3E?=
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
 
-Bjoern Doebel wrote:
-> AF_PACKET PACKET_TX_RING transmission over the loopback interface can
-> silently corrupt packet payloads in flight. tpacket_fill_skb() builds
-> the transmit skb using zerocopy frags. loopback_xmit() then calls bare
-> skb_orphan(), which runs skb->destructor (tpacket_destruct_skb()) and
-> marks the ring slot TP_STATUS_AVAILABLE, telling userspace the buffer is
-> reusable while the in-flight skb frags still reference that buffer.
-> 
-> This is ok if the packet gets processed immediately in loopback's xmit
-> path before userspace gets a chance to reuse the frag buffer. However,
-> if the packet gets redirected for instance to another CPU (via RPS),
-> this opens a window where userspace may already write new data into the
-> frag buffer before the receiver reads the original content.
-> 
-> Reproducer using txring_overwrite from the net:run_afpackettests selftest:
-> 
->   ip netns add ns && ip -netns ns link set lo up
->   ip netns exec ns sh -c \
->       'echo 100 > /sys/class/net/lo/queues/rx-0/rps_cpus'
->   taskset -c 0 ip netns exec ns ./txring_overwrite
-> 
-> Commit 5cd8d46ea156 ("packet: copy user buffers before orphan or clone")
-> is meant to trigger this copy from the skb_orphan_frags{_rx}() call
-> sites, but loopback_xmit() calls bare skb_orphan() before any of them
-> run. Address this by taking a kernel-private copy of the skb frags
-> before going down the receive path.
-> 
-> Fixes: 5cd8d46ea156 ("packet: copy user buffers before orphan or clone")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Bjoern Doebel <doebel@amazon.de>
-> Assisted-by: Kiro:claude-opus-5
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider:
 
-Thanks for the report. We're receiving a number of these.
+Critical: 0 · High: 0 · Medium: 1 (1) · Low: 1 (1)
 
-This issue is not limited to loopback. It is indeed possible to insert
-skb_orphan_frags(_rx) statements before skb_orphan in specific
-callsites.
+- [Medium] sk_psock_verdict_apply() is the verdict path for every sockmap
+  protocol that implements ->read_skb (TCP, AF_UNIX, vsock, UDP), not…
+- [Low] The changelog names a function that does not exist.
 
-But that is not sufficient in all cases, and a game of whack-a-mole
-where we may miss instances.
+Pre-existing issues:
+- [Medium] psock->ingress_bytes is a plain non-atomic u32 that is
+  incremented in sk_psock_skb_ingress_enqueue() (net/core/skmsg.c:575)…
+- [Low] Reported concern: routing an ingress self-redirect through `case
+  __SK_PASS` only balances copied_seq when the inline…
 
-I'm reviewing the options. The alternative, a deep fix in tx_ring,
-appears to be non-trivial so not without risk itself.
+--
+
+bpf, sockmap: Fix self-redirect copied_seq double-counting
+
+The patch rewrites an ingress self-redirect verdict into __SK_PASS at the
+top of sk_psock_verdict_apply() so the skb goes to the psock ingress queue
+instead of through the __SK_REDIRECT arm. The intent is that copied_seq is
+advanced only once, by the copied_from_self accounting in
+tcp_bpf_recvmsg_parser().
+
+A few questions on the changelog and on the scope of the new check.
+
+The changelog says:
+
+  "This bypasses the __SK_REDIRECT case entirely (which calls
+   sk_psock_eat_skb), letting the __SK_PASS path queue the skb to the
+   psock ingress queue."
+
+and:
+
+  "Cross-socket redirects continue through __SK_REDIRECT with
+   sk_psock_eat_skb() unchanged."
+
+[Severity: Low]
+Is sk_psock_eat_skb() the intended name here? A grep of the tree finds no
+such symbol. The helper actually invoked in the __SK_REDIRECT arm of
+sk_psock_verdict_apply(), and in the drop arm, is tcp_eat_skb() from
+net/ipv4/tcp_bpf.c, which the first paragraph of the same changelog names
+correctly. Since this carries a Fixes: tag and will likely be backported,
+could the name be corrected to tcp_eat_skb()?
+
+> diff --git a/net/core/skmsg.c b/net/core/skmsg.c
+> index 2521b643fa05d..df385a5a961e8 100644
+> --- a/net/core/skmsg.c
+> +++ b/net/core/skmsg.c
+> @@ -1000,6 +1000,10 @@ static int sk_psock_verdict_apply(struct sk_psock *psock, struct sk_buff *skb,
+>  	int err = 0;
+>  	u32 len, off;
+>  
+> +	if (verdict == __SK_REDIRECT && skb_bpf_ingress(skb) &&
+> +	    skb_bpf_redirect_fetch(skb) == psock->sk)
+> +		verdict = __SK_PASS;
+> +
+
+[Severity: Medium]
+Should this remap be gated on sk_is_tcp(psock->sk)?
+
+sk_psock_verdict_apply() is reached from every protocol that implements
+->read_skb, not only TCP: unix_read_skb() and the vsock/UDP equivalents all
+funnel into sk_psock_verdict_recv() -> sk_psock_verdict_apply(). For those
+protocols there is no copied_seq to fix, since tcp_eat_skb() returns
+immediately for !sk_is_tcp(sk).
+
+For AF_UNIX the skb owner is the sender socket (set by
+sock_alloc_send_pskb()), so before this patch a self-redirect took:
+
+  __SK_REDIRECT
+    sk_psock_skb_redirect()      -> psock->ingress_skb
+      sk_psock_backlog()
+        sk_psock_skb_ingress()
+
+and there the "if (unlikely(skb->sk == sk))" shortcut is not taken, so
+sk_psock_create_ingress_msg() ran its admission test:
+
+net/core/skmsg.c:sk_psock_create_ingress_msg() {
+	if (atomic_read(&sk->sk_rmem_alloc) > sk->sk_rcvbuf)
+		return NULL;
+
+	if (!sk_rmem_schedule(sk, skb, skb->truesize))
+		return NULL;
+	...
+}
+
+With the remap, the same traffic enters case __SK_PASS and, whenever
+psock->ingress_skb is empty (now the steady state, since nothing is queued
+there any more), goes straight to sk_psock_skb_ingress_self(), which only
+does skb_set_owner_r() and performs no sk_rcvbuf or sk_rmem_schedule()
+check.
+
+Can psock->ingress_msg then grow past SO_RCVBUF for AF_UNIX/vsock
+self-redirect traffic, with the sender un-throttled once skb_orphan() inside
+skb_set_owner_r() drops its wmem charge?
+
+The changelog describes the change as TCP copied_seq accounting only, so the
+non-TCP behaviour change is not mentioned anywhere. Could the condition be
+scoped to the protocol that actually has the defect?
+
+[Severity: Low]
+This is a pre-existing issue rather than something introduced here, but the
+remap newly routes self-redirected data into it, so it may be worth a note.
+
+Routing the self-redirect through case __SK_PASS only balances copied_seq
+when the inline sk_psock_skb_ingress_self() enqueue succeeds. When
+psock->ingress_skb is non-empty the skb is merely queued and
+psock->ingress_bytes is not incremented during the read pass, while
+tcp_bpf_strp_read_sock() still commits:
+
+net/ipv4/tcp_bpf.c:tcp_bpf_strp_read_sock() {
+	tp->copied_seq = psock->copied_seq - psock->ingress_bytes;
+	...
+	__tcp_cleanup_rbuf(sk, copied - psock->ingress_bytes);
+}
+
+That common deferral looks balanced, because sk_psock_strp_read() clears the
+owner before applying the verdict:
+
+net/core/skmsg.c:sk_psock_strp_read() {
+		ret = sk_psock_map_verd(ret, skb_bpf_redirect_fetch(skb));
+		skb->sk = NULL;
+	}
+	sk_psock_verdict_apply(psock, skb, ret);
+
+so the worker later misses the "skb->sk == sk" shortcut in
+sk_psock_skb_ingress(), msg->sk stays NULL, and "from_self = msg_rx->sk ==
+sk" in __sk_msg_recvmsg() is false.
+
+The one case that does not balance is when sk_psock_skb_ingress_self() has
+already run skb_set_owner_r() (making skb->sk == psock->sk) and then fails
+in sk_psock_skb_ingress_enqueue() because skb_to_sgvec() exceeds
+MAX_MSG_FRAGS and skb_linearize() returns -ENOMEM. The deferred skb then
+does take the self branch, msg->sk is set, and copied_from_self advances
+bytes that tp->copied_seq already covers, giving the same warnings quoted in
+the changelog. The identical window exists for ordinary __SK_PASS strparser
+traffic today.
+
+[Severity: Medium]
+This isn't a bug introduced by this patch either, but since the remap makes
+the socket's own data depend on this counter in strparser mode, is the
+accounting of psock->ingress_bytes safe?
+
+It is a plain u32 with a non-atomic increment in
+sk_psock_skb_ingress_enqueue():
+
+net/core/skmsg.c:sk_psock_skb_ingress_enqueue() {
+#if IS_ENABLED(CONFIG_BPF_STREAM_PARSER)
+	psock->ingress_bytes += len;
+#endif
+}
+
+That site is reached both with the socket lock held (strp_read_sock() ->
+tcp_bpf_strp_read_sock() -> sk_psock_strp_read() ->
+sk_psock_verdict_apply()) and from sk_psock_backlog(), which runs on the
+workqueue holding only psock->work_mutex and never takes lock_sock().
+
+CPU1 (socket lock held)
+tcp_bpf_strp_read_sock()
+    psock->ingress_bytes = 0;
+    tcp_read_sock_noack(...);
+    tp->copied_seq = psock->copied_seq - psock->ingress_bytes;
+    __tcp_cleanup_rbuf(sk, copied - psock->ingress_bytes);
+
+CPU0 (work_mutex only), draining an skb another socket redirected in via
+sk_psock_skb_redirect(), whose bytes were never part of psock->copied_seq:
+
+sk_psock_backlog()
+    sk_psock_handle_skb()
+        sk_psock_skb_ingress_enqueue()
+            psock->ingress_bytes += len;
+
+If the worker increment lands inside that window, does tp->copied_seq end up
+subtracting foreign bytes, and can "copied - psock->ingress_bytes" go
+negative? There is no lock, atomic, or READ_ONCE/WRITE_ONCE pairing on this
+field at any of its three access sites.
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/1d2370f4c81f10834b8dd77524924575c629a464.1788591198.git.tanggeliang%40kylinos.cn
