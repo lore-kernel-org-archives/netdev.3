@@ -1,79 +1,109 @@
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from prod-dose-smtp-2.daouoffice.com (prod-dose-smtp-2.daouoffice.com [35.216.41.104])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B687A3546E9;
-	Wed,  9 Sep 2026 05:53:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CD2E3A4539;
+	Wed,  9 Sep 2026 05:59:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.216.41.104
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788933198; cv=none; b=WpT3vkBkBhqGQHmGio5t3FNTylrnbRPVeLkU/O8x71ZHXmv6dPw8L7I7LUpxKvSlp51mjlbpMLXJdrBvweU/G/Gp+P7qrzhKmq4tnEwR/odu2ZDxNn97pmD620IU1SclvRUJAIL0CgbdzFeGK/DMklpEKY/bVGU5TQsXhnhwZXo=
+	t=1788933567; cv=none; b=nfwpmFzdTh4N0fucL7I1qp7II9J0xUTMhCD/5YEovHirWkcKBbLfrYuY8J0NgJSX+XCoba97lBI7xjSf4IPotihjVYUGrauBFZvrNk6TaDoN6dpkjM+5FLJAnUya4meWqvHSqM9WHT2eoXxJiZL/WmQjHZc111NdpEudUJ0me7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788933198; c=relaxed/simple;
-	bh=/Mhe+TGwpITJ5l85bZCjeSMXVvHI6Gxgg3Z+in9G8gQ=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=n2lTeV+DaJWnLiZRgVnyUchQaE4xo9yW6NGq0xIj6+ubX9S6FacG2zSQPddk/axwZusj1Y/7hYzZQJ5z+mwlS0pyP1oOxmpqSl3HqnjQPi17xMGK8I0xFaiCQ+ArOjtuOVFeoBXqD8iEGw6d0XL5fJ5uCT2jy4xivy/zUNRgxCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=pTQTZV0r; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=permerror header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="pTQTZV0r"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=/Mhe+TGwpITJ5l85bZCjeSMXVvHI6Gxgg3Z+in9G8gQ=;
-	t=1788933196; x=1790142796; b=pTQTZV0rbo7EvBjTgPY0sVuLjB/mcsc1yvaPlgebPIYLl5V
-	88Q0CXFT4ySMSo+aZ0ta6FfvrP6M08vv7i8n+wJ5WAZIzgHiiy6wM0Z+tt35Wwgu/uIM3TNhHy7mz
-	K7oAu8IhKGJtUCMhLe3NlPiv20DesTpaNc/GfR1ps1G5K6H/KLh32lI2jLtecEYitikk+wZtvyUJf
-	8lhP01nK1sqj4PZSo2CG8a2/cD7Z+hmjD2wFH7qytiwE8sGQrFPtyXBLhOtPStfC5kV99ccVA95XI
-	tJeP4V9pNxofWcBZTlmdo5V6JREyH+aSMUN8tHrQWuw8z4hC4e1ujxzwUFwg9tNQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__ECDSA_SECP256R1_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1x4BF8-00000007djD-0drd;
-	Wed, 09 Sep 2026 07:53:10 +0200
-Message-ID: <e9b36721c9e2b0b24c89c2e1b5b03b17c438f30c.camel@sipsolutions.net>
-Subject: Re: [PATCH RESEND wireless-next 00/18] wifi: Add Seamless Mobility
- Domain (SMD) AP support
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>, Jakub Kicinski
-	 <kuba@kernel.org>
-Cc: Pooventhiran G <pooventhiran.g@oss.qualcomm.com>, "David S . Miller"
-	 <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
-	 <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-wireless@vger.kernel.org
-Date: Wed, 09 Sep 2026 07:53:09 +0200
-In-Reply-To: <e7089219-ed02-4288-a678-660a52289e61@oss.qualcomm.com>
-References: <20260908-smd-v1-0-9fd2d876a1fb@oss.qualcomm.com>
-	 <20260908125017.0fb226c5@kernel.org>
-	 <404004c4c97bf776077685b7ec33a14fa777cd70.camel@sipsolutions.net>
-	 <80266eb9666d6106110d998cb6330868da55bf59.camel@sipsolutions.net>
-	 <20260908132004.29176fec@kernel.org>
-	 <0e950f7f0c3f5a2c1f6476e255716b09876624f4.camel@sipsolutions.net>
-	 <e7089219-ed02-4288-a678-660a52289e61@oss.qualcomm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
+	s=arc-20240116; t=1788933567; c=relaxed/simple;
+	bh=2M2zx9hp3tqqYZmU/CXChcbgNyX/bw3kynPSH8S4Szc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=d4Ss0TU/lZAMbxIPfD52GtlX+cz5HmxvY/nIbDWYx12s2WAlu33u5DSGH5+2GBsZBYpq5QEeh9a7+jfB9PNQS/+uBcxgb43O5rMKcpN7z+SkAc5JHScJzZ2ac3gcblZq7sWDZy4eg8Blg7d+IjgOzIlw8SH6ZATrMDRFGhSFGQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pribit.com; spf=pass smtp.mailfrom=pribit.com; arc=none smtp.client-ip=35.216.41.104
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pribit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pribit.com
+Received-SPF: SoftFail 
+	client-ip="106.245.249.210" envelope-from="his1415@pribit.com" 
+Received: from [106.245.249.210] ([106.245.249.210]) 
+          by prod-dose-smtp-2.daouoffice.com ([10.37.10.9]) 
+          with ESMTP id 1788932748.202706.140060550747712.prod-dose-smtp-2
+          for <>; 
+          Wed, 09 Sep 2026 14:45:48 +0900 (KST) 
+From: Hong In-su <his1415@pribit.com>
+To: steffen.klassert@secunet.com,
+	herbert@gondor.apana.org.au,
+	davem@davemloft.net,
+	netdev@vger.kernel.org
+Cc: edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	linux-kernel@vger.kernel.org,
+	Hong In-su <his1415@pribit.com>
+Subject: [PATCH net-next] xfrm: add ARIA CBC and CTR support
+X-TERRACE-DUMMYSUBJECT: Terrace Spam system                                  *
+Date: Wed,  9 Sep 2026 05:45:30 +0000
+Message-ID: <20260909054530.7861-1-his1415@pribit.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Transfer-Encoding: 8bit
+X-TERRACE-SPAMMARK: NO       (SR:8.70)                     
+  (by Terrace)                                                   
+X-TERRACE-SUPERWHITEIP: pribit_com_packetgoOS
+X-TERRACE-SID: 1788932748.202706.140060550747712.prod-dose-smtp-2
+X-TERRACE-CLASSID: Terrace Spam system                                      
 
-On Tue, 2026-09-08 at 17:20 -0700, Jeff Johnson wrote:
->=20
-> Apologies for the AI-like commit messages. Those are at my prompting sinc=
-e I
-> want these patches to be understandable by folks who may not know or
-> understand the underlying details of SMD roaming so I requested they cont=
-ain
-> enough detail that referencing the spec should not be necessary.
->=20
-> AFAIK none of this code is AI generated.
+The kernel crypto API already provides ARIA implementations, but XFRM
+does not have algorithm descriptors for them. Consequently, ARIA cannot
+be selected for ESP through XFRM.
 
-Did you read it? The comments (in patch 1 we were talking about) are
-also all clearly generated.
+Add XFRM algorithm descriptors for CBC and RFC3686 CTR modes using the
+existing cbc(aria) and rfc3686(ctr(aria)) crypto algorithms.
 
-johannes
+The CBC and CTR modes have been tested with IPsec using strongSwan.
+
+Signed-off-by: Hong In-su <his1415@pribit.com>
+---
+ net/xfrm/xfrm_algo.c | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
+
+diff --git a/net/xfrm/xfrm_algo.c b/net/xfrm/xfrm_algo.c
+index 70434495f23f..16c70dc1a426 100644
+--- a/net/xfrm/xfrm_algo.c
++++ b/net/xfrm/xfrm_algo.c
+@@ -512,6 +512,34 @@ static struct xfrm_algo_desc ealg_list[] = {
+ 		.sadb_alg_maxbits = 256
+ 	}
+ },
++{
++	.name = "cbc(aria)",
++	.compat = "aria",
++
++	.uinfo = {
++		.encr = {
++			.geniv = "echainiv",
++			.blockbits = 128,
++			.defkeybits = 256,
++		}
++	},
++
++	.pfkey_supported = 0,
++},
++{
++	.name = "rfc3686(ctr(aria))",
++	.compat = "aria",
++
++	.uinfo = {
++		.encr = {
++			.geniv = "seqiv",
++			.blockbits = 128,
++			.defkeybits = 160,
++		}
++	},
++
++	.pfkey_supported = 0,
++},
+ {
+ 	.name = "cbc(twofish)",
+ 	.compat = "twofish",
+-- 
+2.43.0
+
+
+
