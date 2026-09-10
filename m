@@ -1,102 +1,133 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE1CD3D7D91;
-	Thu, 10 Sep 2026 07:54:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4315346A07;
+	Thu, 10 Sep 2026 07:59:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789026890; cv=none; b=WSZEWqK6lSDpVPfUS4Xe8Z774IKlDRDYLwwCkdNmJxje9z0DabSKqcaG2OhdTUBRI2W7r6RpMj4T8P2XYxS2RlRgD9cfcXOs4rAdW3Gzue8ZczV/aaw3IbQNDhumWqDefJetLbMdPBzb46rVLxEVZW4UuOq97kFwToe/X5jdHnw=
+	t=1789027144; cv=none; b=dP1YEK0qYxLX1nzRxOLRLWgt2l7+S8STUJmCrBbDd/o1FuG4r/YeQg8PTBzDPufLN8T1u+ngOx4eHS2RcV1v0J+FdfO6vQiSwnuNO4fyLKXcTLUanyoemCErkQ46PRYMXSlDoS1viNq1OPd8mDNg9VxjdXHMsrfx5341NEj7nHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789026890; c=relaxed/simple;
-	bh=92MeadmcJtnuno8ZJ8uDmoyfowuzz/49J9L/3j9N4P8=;
-	h=MIME-Version:Content-Type:Subject:From:To:Cc:In-Reply-To:
-	 References:Date:Message-Id; b=Vg+4Di8DxVPIO3qne5FvuBxzXDjvHIcUsUkOO2beDeUeeUMXb3WYAHpZounrNWH8O5d6s9kFS/bHKgwEYAq1Fcj+RJwnnT4VOcRNXQpRcBOpmaar240lHG3mGSYHB6/QxgRB1fM3Ks8otvmTK3Bzqko2sf2yjtLrk7Jnl7EizIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nCX5Y8yL; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789027144; c=relaxed/simple;
+	bh=YN/RJCBh2aKaPe4XRDyXXuL8DMUj6Wq2cWl6F9VwlBE=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=SSrrs4C2cF7q+Aq9ii6Bn+8tzr5/A544/HX2x54mJMocWgiVQboC8Y7Pie/0QmRlL5DPL7q1KwolaWoGiWRuHQeTqmGphOoSTt1UxzB1lvcFWA6bSQjpkWdrec4mVEA3l+2Ob0hGqfTiXHxHM5gbqZxrDiUfFrf1F/KP0iqAm1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gIFdyj2y; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nCX5Y8yL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D59F1F000FF;
-	Thu, 10 Sep 2026 07:54:44 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gIFdyj2y"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A59AD1F000FF;
+	Thu, 10 Sep 2026 07:59:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789026888;
-	bh=81xEdGdgngRiAgblNE3PtSjjrQlaJ1FhOAUhZwtimZ4=;
-	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=nCX5Y8yLwh0ipMwPawk5BN+r9u0BHptijljtYjvdVEosfFEwuSST/sH/YKZvBOcy6
-	 /oryXPV/HCPC3oJfgLNksqP6x1iix3ow0vW8wQ+ZRKCjmUQWxsVuV2vbx6WV0GT3op
-	 BmmWyuky5rFKIIe7DcuIxdOiMqvnYsEHKQSbZZ2fSBwyVWA11ubewJ9xOLIJ6dLNFx
-	 OOM54FlBTYNP0bBdo6/bSwsi3s2i92Ih4Ik+7G8W7OUgxG4y9RiYsByLy47jTWxdNU
-	 ptmnZ1QlYd4ZwVJLi8KlVTnYNE43Fx5uCcwSSqy9LAqiheqsNzkjUKgvxFQXKFS37z
-	 Y+G7YjUHNGXWA==
+	s=k20260515; t=1789027142;
+	bh=TzpxlQ/Q3h5cs9QnDSu/xDBV//zRwzKq5lxcSq+xP2s=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=gIFdyj2yF/qMjHvYRrSPg0Ed31UviF2mzNLdjsffD3H43dMgFBeV0OX2aK78I4Un0
+	 NHWfUNFj8dQHtRlJXVZF+AbfEzOeucUjOlthGFAzcihTuNGra+Xzb93u0xElFxXlki
+	 11/Ah4SwhrZvjMstgk2VNB/pIpwAcdwVggIn4OfFQY5zXemlvC7U8iP94wxTvTOMIy
+	 7xnjWXO4LqcW/StHG6LSQNRJggNCjHOhym9TN39GJPi4SDCYiX3rJad8Gq+Fn/+mMN
+	 wzcbWR6G3aV9pnKUr1HIpClDCOTGETq4fsDJgX5Xu79Zhd3+iyTtfu4LDdHhTa6S3z
+	 BpH8/GHDA2qXg==
+Subject: Re: [PATCH net v2 1/2] tcp: exclude old ACKs from tcp fast path
+From: netdev-bot+sashiko@kernel.org
+To: inbal.lipshtat@mail.huji.ac.il
+Cc: netdev@vger.kernel.org, edumazet@google.com, ncardwell@google.com,
+ kuniyu@google.com, davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, shuah@kernel.org, linux-kselftest@vger.kernel.org
+Date: Thu, 10 Sep 2026 07:59:01 +0000
+Message-ID: <178902714117.219967.14735865272246328849@kernel.org>
+In-Reply-To: <20260909075644.1408171-2-inbal.lipshtat@mail.huji.ac.il>
+References: <20260909075644.1408171-2-inbal.lipshtat@mail.huji.ac.il>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2 00/10] net: support thread-specific pidfds for send
- and connect
-From: Christian Brauner <brauner@kernel.org>
-To: Kuniyuki Iwashima <kuniyu@google.com>
-Cc: Christian Brauner <brauner@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
- Willem de Bruijn <willemb@google.com>, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Alexander Viro <viro@zeniv.linux.org.uk>, 
- Jan Kara <jack@suse.cz>, linux-fsdevel@vger.kernel.org, 
- Alexander Mikhalitsyn <alexander@mihalicyn.com>
-In-Reply-To: <CAAVpQUAx2K1Nhj64oEYMfQOzsp35uPhRmRrS4hnp7nd=jvj2kA@mail.gmail.com>
-References: <20260909-work-unix-passpidfd-v2-0-7bd342abb2d1@kernel.org>
- <CAAVpQUAx2K1Nhj64oEYMfQOzsp35uPhRmRrS4hnp7nd=jvj2kA@mail.gmail.com>
-Date: Thu, 10 Sep 2026 09:54:42 +0200
-Message-Id: <20260910-salzig-hegemonie-wipfel-3443601bf82c@brauner>
-X-Mailer: b4 0.17-dev-db0b7
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1731; i=brauner@kernel.org;
- h=from:subject:message-id; bh=92MeadmcJtnuno8ZJ8uDmoyfowuzz/49J9L/3j9N4P8=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWQtSnL+aZTJpvc8ktH0zVbpdcd3mMtNfxt9dsm6P/385
- tnCb5u7O0pZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTACZioM3wP5LFpvrfvTddXs+e
- 5+590FX7cSarSYi4/7rAKt0mMXnJ5YwM75f6tr8uWzPnj11soNdUgccBNSmvV9cwOc1IzLnA49f
- KDAA=
-X-Developer-Key: i=brauner@kernel.org; a=openpgp;
- fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 
-On 2026-09-09 23:33 -0700, Kuniyuki Iwashima wrote:
-> On Wed, Sep 9, 2026 at 3:43 AM Christian Brauner <brauner@kernel.org> wrote:
-> >
-> > SO_PASSPIDFD/SCM_PIDFD and SO_PEERPIDFD allow to retrieve a pidfd for
-> > the thread-group leader. The coredump server using the coredump socket
-> > cannot get a handle on the task that took the signal and is writing the
-> > coredump easily. Workloads interested in per-thread authentification
-> > have similar problems.
-> >
-> > Add SO_PASSPIDFD_THREAD and SO_PEERPIDFD_THREAD. We record the sending
-> > and the connecting thread in addition to the thread-group leader.
-> >
-> > SO_PASSPIDFD_THREAD functions like SO_PASSPIDFD but instead of an
-> > SCM_PIDFD message for the thread-group leader, SCM_PIDFD sends a pidfd
-> > for the specific thread. SO_PASSPIDFD_THREAD is mutually exclusive with
-> > SO_PASSPIDFD. The last one set takes precedence and disables the other
-> > one. Both SO_PASSCRED and SO_PASSPIDFD receivers see one writer per
-> > process as before.
-> >
-> > SO_PEERPIDFD_THREAD allows to retrieve a pidfd for the specific thread
-> > that called connect(), listen(), or socketpair().
-> >
-> > pidfs_coredump() now also stamps the dumping thread's struct pid so a
-> > pidfd for that thread reports the coredump like the pidfd of the
-> > thread-group leader does.
-> 
-> systemd-coredump currently uses SO_PEERPIDFD, so
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider:
 
-And dbus-broker and polkit and etc pp.
+Critical: 0 · High: 0 · Medium: 0 · Low: 2
 
-> SO_PEERPIDFD_THREAD makes sense to me, but is there
-> real need/use-case to fetch each thread's pidfd per sendmsg()
-> via cmsg ?
+- [Low] The patch fixes a live, security-relevant input-validation defect
+  (three Reported-by tags, RFC5961 reference) but carries no Fixes: tag,…
+- [Low] The kerneldoc-style block comment above tcp_rcv_established()
+  (net/ipv4/tcp_input.c:6477-6499) enumerates the conditions that…
 
-I want to be able to authenticate individual threads in a thread-group
-on a per message basis in an authentication framework.
+--
 
-Thanks for the review!
+tcp: exclude old ACKs from tcp fast path
 
+This changes the header prediction test in tcp_rcv_established() so that
+segments whose ack_seq is below SND.UNA no longer enter the fast path, in
+addition to the existing rejection of ack_seq above SND.NXT.  Such segments
+now fall through to the slow path where tcp_ack() applies the RFC5961
+validation and challenge ACK handling.
+
+No Link: tags are present in the commit header.
+
+Two notes below.
+
+[Severity: Low]
+The changelog refers to the validation added by commit 3d501dd326fb1c7
+("tcp: do not accept ACK of bytes we never sent") in prose:
+
+    Such ACKs will fall through to the slow path, where tcp_ack()
+    performs the appropriate validation and challenge ACK handling
+    according to RFC5961 and Commit 3d501dd326fb1c7 ("tcp: do not
+    accept ACK of bytes we never sent").
+
+Should this carry a Fixes: tag as well, so stable tooling can pick it up?
+
+git blame on the replaced predicate in tcp_rcv_established() points at
+31770e34e43d6 ("tcp: Revert \"tcp: remove header prediction\""), and
+3d501dd326fb is the commit that added the too-old-ACK check the fast path
+was bypassing, so either looks like a concrete candidate.
+
+There are three Reported-by tags but no Link: to the report, and the
+changelog does not state the user-visible impact.  Could both be added?
+
+> diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+> index 0f60a1dbf927..89f9f3913b52 100644
+> --- a/net/ipv4/tcp_input.c
+> +++ b/net/ipv4/tcp_input.c
+> @@ -6539,7 +6539,7 @@ void tcp_rcv_established(struct sock *sk, struct sk_buff *skb)
+>  
+>  	if ((tcp_flag_word(th) & TCP_HP_BITS) == tp->pred_flags &&
+>  	    TCP_SKB_CB(skb)->seq == tp->rcv_nxt &&
+> -	    !after(TCP_SKB_CB(skb)->ack_seq, tp->snd_nxt)) {
+> +	    between(TCP_SKB_CB(skb)->ack_seq, tp->snd_una, tp->snd_nxt)) {
+
+[Severity: Low]
+Should the block comment above tcp_rcv_established() be updated for this
+new rejection class?  It enumerates the cases that disable the fast path
+and then claims the enumeration is complete:
+
+ *	- Unexpected TCP flags/window values/header lengths are received
+ *	  (detected by checking the TCP header against pred_flags)
+ *	- Data is sent in both directions. Fast path only supports pure senders
+ *	  or pure receivers (this means either the sequence number or the ack
+ *	  value must stay constant)
+ *	- Unexpected TCP option.
+ *
+ *	When these conditions are not satisfied it drops into a standard
+ *	receive procedure patterned after RFC793 to handle all cases.
+ *	The first three cases are guaranteed by proper pred_flags setting,
+ *	the rest is checked inline. Fast processing is turned on in
+ *	tcp_data_queue when everything is OK.
+
+Nothing in that list mentions ACK sequence validity.  After this change, a
+reordered or duplicated pure ACK with ack_seq strictly below SND.UNA takes
+the slow path on a plain pure-sender/pure-receiver connection with matching
+pred_flags, which the list above says would be fast-pathed.  A bullet for
+ack_seq outside [SND.UNA, SND.NXT] would keep the comment in agreement with
+the predicate.
+
+>  		int tcp_header_len = tp->tcp_header_len;
+>  		s32 delta = 0;
+>  		int flag = 0;
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260909075644.1408171-1-inbal.lipshtat%40mail.huji.ac.il
