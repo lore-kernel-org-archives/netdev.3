@@ -1,62 +1,64 @@
-Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
+Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3799841D23D
-	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 08:10:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7BF33A7F54
+	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 08:10:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789027830; cv=none; b=QgevY2UNoQ+iVXb2MnBTREZEDxSFZrVQsNVLQ7WGi3bVxlkYFdcraCIYzzMb+vYv1n7joTtmyGmxYYvfKJOERcjRKsdR1pp1N1yb6rziKQNkm+woBOXqqvdyCwDY8BR+TQCchK+iUGVNOAPEpo6NP5rvFyC9elz1JG6JlA4rw9o=
+	t=1789027836; cv=none; b=e8dSovS2B6n9qfRu/1E/7a05yF/xhnXSI7aLD7yQ1g4dGHHl2M4+EVxQS2/xVY43gfbrS3Up6aaspJ2OfcKaHUfZgVHZNn1tNz0dH7KM70vbEnrogx23MN0bJWv7szXZS0yqWy17nmzap3HN3t0guHWQ14ocw59tlEOLByCqqmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789027830; c=relaxed/simple;
-	bh=Ups6Na12RMvnO7T8H4wHROVUdgJrEy7x5iqCKw6n8wA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Y2BuDA+3xvxjDYN/lMatlM37XdY60P6KWEWipr6nZ2WXvMR9X88UuaHdxgya/SgH+HFAcaCZfDc76KAFfWIps6OAsX5qi7I0dp0jTxH/WSV21OI9VGOpszBl2MJlibmzfGzn1PlmSNK9csYbTMOalYQkVrWkJhQmQgUlxmGtqZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GOewAPJV; arc=none smtp.client-ip=74.125.228.12
+	s=arc-20240116; t=1789027836; c=relaxed/simple;
+	bh=7A+U+74WGkXsYGVAmxIitnef1L1YpX9QdK0dK/NlEMc=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=hc1sy7i/w6HivMjHKRetPi92pLt5Q5qe/G/ScWSp/5eY8j7B5+fArw4vQVSezImxCKBpjUx+62FkgKWG3KBKYq31KFXT87g85TCiCv1TwfVw4pxl8cFxMA7o74N9IgLPAZMjkIsy6kNImXQfcGajvo4iBoWqgmP0exbWK9Gma+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Kosq5C2r; arc=none smtp.client-ip=209.85.215.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GOewAPJV"
-Received: by mail-pz2-f12.google.com with SMTP id 41be03b00d2f7-cc1cebad4aeso1838443a12.2
-        for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 01:10:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Kosq5C2r"
+Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-cc1cf287ef8so5473896a12.3
+        for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 01:10:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789027828; x=1789632628; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=LGTao/KdTdduxv+yT3fMuwnoAGn1zACXJ7pG0Rb21UQ=;
-        b=GOewAPJVOL37bjW4dw5RZc8rupUWtuWllDfVW1QVJwx5uDeidAR03o3Pykj8V6cxna
-         3FnPQfo7l1Rz+z6a0dQpMJrJW2fZflyFL6S05Hpraervzs3ijtO4YdeUVLB7AeiN1Kk+
-         hZ+Y6ghmDwd1jw647JB+zyCzj5M8+2E4o9JFwvRpCN3tTagU3C1/OjsMAzKyzP0Of7r4
-         7kMWu7y5xwaTfo8rCs2Fg3AYkIS/YZCWIc7TpBWqgDxI02znaXC6NNwSnDyCOUOGCjJF
-         B3OCTRdSnGg9smpUsYIqTieVUDYrUD4tyM8PHjRJGy5tUIBT9RIOVnEAE6f9uhR2j5or
-         9drg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789027828; x=1789632628;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1789027834; x=1789632634; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=LGTao/KdTdduxv+yT3fMuwnoAGn1zACXJ7pG0Rb21UQ=;
-        b=m2AJXqkjbeTA6RbZTrF2khCpKu+Kh5zULodBtbsqDY1sG+BKwzBHvMd9vMTt793gx5
-         pgW7oIHD1wxNo4oBbMbZqZiNkxE/Tx5aUciRuug88yKNsQABOwEKcqVqCfR6rCEOr2J/
-         vrLm+h2ZtBOB8Of4IVbEmNTvZbPank8ApqphckbTmbIcfJUJv26BfvsS0+91/0NIwB4y
-         GumnmK34UGiHc1xDMVfKnKhk9qVOpIifDXrU1z2H5m/RWTCg2Zz6r3S1z33x5yLOzqS3
-         ARz7u94u7raJ1ItgjWgrEgUOxmaeGBpubn4dT6M6VAq+yNlHSQSX9rcaE+nXMN8RFiia
-         e2Cg==
-X-Forwarded-Encrypted: i=1; AKwUvBydmzuzRNg+zznip5kF0rzgosoqtJtRYYWkwsQCdyv0+wrhy/tCfFL3jy/8T37E8GbX8nb9/DY=@vger.kernel.org
-X-Gm-Message-State: AFuF++nIeL/wGqEco+2CCo5U87JmUGWgmR6TkV31FoZilVCFjmR8Ijpf
-	/nwG4EbK3/sjpUKnamnN75eWhWgXrwQcNwyu4FOP61Y/zMEyreoAqgCs
-X-Gm-Gg: AYBFou2eTKCvcV2w4PN02um3YDmLPxSHR82rcfGDHa7t/2RDWKD6lhwp5GAO1FPSwjN
-	swzJbcYajBpckoeDdx9NledT4a446hAeAv14BEHgsz56buh/J6JmTXNl4jdu9TLkr//2XO3vkvj
-	J6fU6Bhdlyeh3cRfrlrdtGROzhroXgATlJsz5xoU7GSyV2hKx2C6GuWKHgt2F0Dd95/aODnx33G
-	3c2R5L539WbPUzCzYGY0yKE3r82mbpJh3vRF28Ch7bhnqP5wyZyGjT3uLLQPzcVkOGZNaTf3OX/
-	77mQnlXJtn4zx1b7tdJ7btwv0zmW9Tuo6rkV1TxrrB3pCQi/Xx2gRPJznrDDkTjCgtweEwhlY3Y
-	5fLLppt3MZybZARaILVM94hNtSmVVkZ1dXeUMKrMSd5CnI0xYguDqNQNYhBzt1C0wIxHa33uaNb
-	kXvw1bC9YFZLwj9TN+HFd69TgNY8/GxZYa5CxKvpVGE5m6REPhVmv2JSBCClPmuEI9EDuXVo4vC
-	O1m9k7V
-X-Received: by 2002:a17:90b:4d84:b0:398:e73e:5a0c with SMTP id 98e67ed59e1d1-39bac138257mr15353888a91.1.1789027828457;
-        Thu, 10 Sep 2026 01:10:28 -0700 (PDT)
+        bh=31zePXVLBWNEdCU+Xr18Au8ugINcScI/iDLGt4y6SQ0=;
+        b=Kosq5C2rlL8LfUgyjd9vm3IYVSY7Iq4dygWi4aGgKoQLmoPmYqkZEasKLH5w+uF1Ui
+         EEs4ofaSNYqS/QlKDpUPXJxJRhhCDzb4zS8qjzA5g3D3+7Gwm6i+NDveSxtOueHSTbMK
+         t/pP5q2vMP9tMWSAHu8xLGXFiesPAL1AxCvk0CZ49IH2MKTnx+g2nXTkigGOSUBon9Ss
+         /fiEb5t5bvraftAb+/TldzUgBjwpATgEGa+maCRJ5PcUZlBQFHvhnH1e9v+tzNcqGKvd
+         xvVK5veRu1HlKbYLO49F+S06e/0RR39Zvoz2tkGz9jJNzVm6pqhHyFUeLgaQ9y4qXoh6
+         ugbA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789027834; x=1789632634;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=31zePXVLBWNEdCU+Xr18Au8ugINcScI/iDLGt4y6SQ0=;
+        b=aQ5VjZoAwkwX4A37I02cVaAwZMC+fXTv7QNddy6BX64cjVx5rLRfCiDTWMQLnU9j6r
+         SMRWRVdomFoLeX3jHIM8faCx1KvwY+lZNYs6m9hkat5+OtV7z27t98P4E4rjDO4p13pR
+         M6U5phTS5PqL+wnshm2XcQ4eyV5+troP8Q7/LnaOtQfRkHFQWCWu7W+x+SigZRtFTP9v
+         bZjSXY6Opi1o09GZWegv4fNjet47VlSGJuDwZzXUXbDb4yJnXPi3AffrOVSnmAOKdk/e
+         BM0p0TUa5qyfC3BdxMyV1fdB0+NaW3GXW73J4QZMoHoZRpXnaHoZeyxNbIG+5tSnkluz
+         81lA==
+X-Forwarded-Encrypted: i=1; AKwUvBz2Wd1y8wSjxwcRbnNmRgNSu82Hp1NbEdAOb5Y3PZnJpUnA+6uU5g83SjPago4VrfTg07lMKr8=@vger.kernel.org
+X-Gm-Message-State: AFuF++ngx5OmEEEajNqF4+h9DiSdewqs7qlF4DFDnyccJD8EGtwN5tJJ
+	zDWNESkyNxkj0C92qiRl+IbsRU0D3qW4oE0vvknyAolFTgT2JD60loDP
+X-Gm-Gg: AYBFou21aC8X4F5INuTe5D6SmPGjEJlpcZa5tPIh6RspN5vn+6By5PtCxJmS4RRtN2G
+	so5CPXoLE9KcqRLOjA12sNX5UrtsVt5SvoJe/CExljOnZgvFOytIlFqW1IuQHHLBcsTm0s+7dI9
+	5L4ag2S3Ao9xQ5/F8V42/Iu7JLD9vqLF1ArLaeJCf4V+dbKpNDODwCTGASOxFk3jcX3pROdwI/6
+	suUARzjiUKW7sQOUeHPNTa0HEwZrGAI8NXD37mVwTxy0W5NHLzT+qEoOVsWyuOAfRwC+oEB7X/R
+	KXbU+9ODj9QhbR9soUCRoRmjQobUnQvqwup7/ri+NPaqVbd3xEEvtNcNbCDxRW9BrRkn2OulA2E
+	tmzBaiPYVlikBlynVliaYGeUZP0ZvwJlKecXWwqnEx6JzoIW7WC8TOkKjkIwxXG/jX8oFxnqdAf
+	EpWS64pgtO6idn92QbDfzPfng24wi0oqNLP/ugq3IKsln+o6IWFS4RpifX2vUes6rcsGzrboi8Y
+	G9ajjWD
+X-Received: by 2002:a17:90b:1d52:b0:398:dcef:c040 with SMTP id 98e67ed59e1d1-39b26242a20mr59997599a91.19.1789027834038;
+        Thu, 10 Sep 2026 01:10:34 -0700 (PDT)
 Received: from server227.. ([39.170.101.209])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39d770bc9f5sm4442434a91.2.2026.09.10.01.10.23
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39d770bc9f5sm4442434a91.2.2026.09.10.01.10.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Sep 2026 01:10:27 -0700 (PDT)
+        Thu, 10 Sep 2026 01:10:32 -0700 (PDT)
 From: Zxyan Zhu <zxyan0222@gmail.com>
 To: andrew+netdev@lunn.ch,
 	davem@davemloft.net,
@@ -74,10 +76,12 @@ Cc: mcoquelin.stm32@gmail.com,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	Zxyan Zhu <zxyan0222@gmail.com>
-Subject: [PATCH net-next v5 0/2] net: stmmac: dwxgmac2: timestamp interrupt support + Agilex5 fix
-Date: Thu, 10 Sep 2026 16:10:18 +0800
-Message-Id: <20260910081020.86227-1-zxyan0222@gmail.com>
+Subject: [PATCH net-next v5 1/2] net: stmmac: dwmac-socfpga: complete cross-timestamp on ATSNS
+Date: Thu, 10 Sep 2026 16:10:19 +0800
+Message-Id: <20260910081020.86227-2-zxyan0222@gmail.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260910081020.86227-1-zxyan0222@gmail.com>
+References: <20260910081020.86227-1-zxyan0222@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -86,52 +90,87 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This series adds auxiliary snapshot (EXTTS) interrupt support to
-DWXGMAC2/DWXLGMAC2 and fixes a stale TSIS race on the Agilex5
-cross-timestamp path that the new handler would otherwise expose.
+The Agilex5 smtg_crosststamp() handler arms an internal auxiliary
+snapshot, toggles GPO0 and then polls XGMAC_INT_STATUS for TSIS to
+learn that the snapshot is ready.  TSIS is a transient, read-to-clear
+status bit: it is set by any MAC timestamp event and cleared the moment
+XGMAC_TIMESTAMP_STATUS is read.
 
-Patch 1 makes smtg_crosststamp() complete on the persistent ATSNS count
-instead of the transient TSIS bit, waits for the ATSFC FIFO clear to
-complete before arming, and derives the pop count from the poll result,
-so the completion condition is immune to the destructive reads of
-XGMAC_TIMESTAMP_STATUS performed by the DWXGMAC2 timestamp interrupt
-handler and the TX timestamp completion path.
+That makes the TSIS poll racy in two ways.  A stale TSIS latched by an
+unrelated event satisfies the poll immediately, before the auxiliary
+snapshot is latched, so the FIFO comes back empty and *device is never
+written even though the call returns 0.  Conversely a concurrent reader
+of XGMAC_TIMESTAMP_STATUS, such as the TX timestamp completion path, can
+clear TSIS while the poll is waiting and make it time out with "Wait for
+time sync operation timeout".
 
-Patch 2 wires up a dedicated DWXGMAC2 timestamp interrupt handler.
-Before this change the XGMAC hwif entries used the generic stmmac_ptp
-ops, whose timestamp_interrupt callback read the dwmac4 offset
-GMAC_TIMESTAMP_STATUS (0xb20) instead of the XGMAC register at 0xd20,
-and XGMAC_TSIE was never enabled, so auxiliary snapshot events were
-never reported on XGMAC platforms.
+The auxiliary snapshot FIFO is also reported by the persistent ATSNS
+count in XGMAC_TIMESTAMP_STATUS.  ATSNS is cleared only when the FIFO
+clear bit (PTP_ACR_ATSFC) is set, so it is immune to the destructive
+reads above.  Poll ATSNS instead of TSIS, wait for the ATSFC clear to
+complete first so a stale ATSNS cannot be observed, and derive the
+count for the FIFO pop loop from the value the poll read back so it is
+guaranteed non-zero on the success path.
 
-Because v5 changes the completion mechanism, the previous Tested-by for
-the mask approach no longer applies; Patch 1 needs re-verification on
-Agilex5 hardware.
+Signed-off-by: Zxyan Zhu <zxyan0222@gmail.com>
+---
+ .../ethernet/stmicro/stmmac/dwmac-socfpga.c   | 29 +++++++++++++++----
+ 1 file changed, 24 insertions(+), 5 deletions(-)
 
-v1: https://lore.kernel.org/netdev/20260806-dwxgmac2-timestamp-irq-v1-1-c051c79c9d90@gmail.com/
-v2: https://lore.kernel.org/netdev/20260810100221.9166-1-zxyan0222@gmail.com/
-v3: https://lore.kernel.org/netdev/20260818132722.1852876-1-zxyan0222@gmail.com/
-v4: https://lore.kernel.org/netdev/20260902131441.322167-1-zxyan0222@gmail.com/
-v5:
-- Replace the XGMAC_TSIE masking approach with completing the
-  cross-timestamp on the persistent ATSNS count, and reorder the series
-  so it is bisect-safe.
-- Wait for the ATSFC FIFO clear to complete before arming, so a stale
-  ATSNS count from a previous snapshot cannot be observed.
-
-Zxyan Zhu (2):
-  net: stmmac: dwmac-socfpga: complete cross-timestamp on ATSNS
-  net: stmmac: dwxgmac2: add XGMAC timestamp interrupt support
-
- .../ethernet/stmicro/stmmac/dwmac-socfpga.c   | 29 ++++++++++---
- .../net/ethernet/stmicro/stmmac/dwxgmac2.h    |  2 +-
- .../ethernet/stmicro/stmmac/dwxgmac2_core.c   | 43 +++++++++++++++++++
- drivers/net/ethernet/stmicro/stmmac/hwif.c    |  4 +-
- drivers/net/ethernet/stmicro/stmmac/hwif.h    |  1 +
- .../ethernet/stmicro/stmmac/stmmac_hwtstamp.c | 12 ++++++
- .../net/ethernet/stmicro/stmmac/stmmac_ptp.h  |  1 +
- 7 files changed, 84 insertions(+), 8 deletions(-)
-
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
+index 1d7f0a57d288..ee6f28637878 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-socfpga.c
+@@ -340,6 +340,18 @@ static int smtg_crosststamp(ktime_t *device, struct system_counterval_t *system,
+ 	/* Release the mutex */
+ 	mutex_unlock(&priv->aux_ts_lock);
+ 
++	/* Wait for the FIFO clear to complete so a stale ATSNS count from
++	 * a previous snapshot cannot satisfy the poll below before the new
++	 * snapshot is latched.
++	 */
++	ret = readl_poll_timeout(ptpaddr + PTP_ACR, acr_value,
++				 !(acr_value & PTP_ACR_ATSFC), 10, 10000);
++	if (ret) {
++		netdev_err(priv->dev, "%s: Failed to clear snapshot FIFO\n",
++			   __func__);
++		return ret;
++	}
++
+ 	/* Trigger Internal snapshot signal. Create a rising edge by just toggle
+ 	 * the GPO0 to low and back to high.
+ 	 */
+@@ -349,9 +361,17 @@ static int smtg_crosststamp(ktime_t *device, struct system_counterval_t *system,
+ 	gpio_value |= XGMAC_GPIO_GPO0;
+ 	writel(gpio_value, ioaddr + XGMAC_GPIO_STATUS);
+ 
+-	/* Poll for time sync operation done */
+-	ret = readl_poll_timeout(priv->ioaddr + XGMAC_INT_STATUS, v,
+-				 (v & XGMAC_INT_TSIS), 100, 10000);
++	/* Wait for the auxiliary snapshot to be latched.  TSIS is a
++	 * transient status bit that is set by any MAC timestamp event and
++	 * cleared by reading XGMAC_TIMESTAMP_STATUS, so it is not a
++	 * reliable completion condition.  Poll the persistent ATSNS count
++	 * instead: it is cleared only by setting PTP_ACR_ATSFC, so
++	 * nothing can clear it while we wait, and it reflects exactly the
++	 * snapshot latched by this trigger.
++	 */
++	ret = readl_poll_timeout(ioaddr + XGMAC_TIMESTAMP_STATUS, v,
++				 FIELD_GET(XGMAC_TIMESTAMP_ATSNS_MASK, v),
++				 100, 10000);
+ 	if (ret) {
+ 		netdev_err(priv->dev, "%s: Wait for time sync operation timeout\n",
+ 			   __func__);
+@@ -364,8 +384,7 @@ static int smtg_crosststamp(ktime_t *device, struct system_counterval_t *system,
+ 		.use_nsecs = false,
+ 	};
+ 
+-	num_snapshot = FIELD_GET(XGMAC_TIMESTAMP_ATSNS_MASK,
+-				 readl(ioaddr + XGMAC_TIMESTAMP_STATUS));
++	num_snapshot = FIELD_GET(XGMAC_TIMESTAMP_ATSNS_MASK, v);
+ 
+ 	/* Repeat until the timestamps are from the FIFO last segment */
+ 	for (i = 0; i < num_snapshot; i++) {
 -- 
 2.34.1
 
