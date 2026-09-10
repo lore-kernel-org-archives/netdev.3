@@ -1,303 +1,210 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail-m49197.qiye.163.com (mail-m49197.qiye.163.com [45.254.49.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9700B35E948;
-	Thu, 10 Sep 2026 05:47:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA1E030D3E8;
+	Thu, 10 Sep 2026 05:51:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789019223; cv=none; b=QKbIhbcgIAFVzBSNKRR9t3zwEHXDkFBS5FTl/Sgj6GpE2VzXRjrGsiSn/QWiSpfMftxX3dU5bf9pexfyf5QKoGm2XSpRWPhCjNl4JT5gL/m8IxU4BIOnw95o1oEJuI12l8FvVOt9tQTgFIOrr//t8sq2WTuYVAo3kDn5B2anFRI=
+	t=1789019481; cv=none; b=E1Tfgt1Ch9GSc1rWhNHWWoMsq37yNe+rgpJoKlqCuJT+45my3iV58rE78tJrpdx9N8Px/NMcNLc00Am1AO0cp6a7e4pvmZhW/xUaJYxF8fNthNlkYyLflsuBgVYPw0SoUrDeqcrAa7YmA5H4eDnap1URvGlpY5FwmQNwveqiEgI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789019223; c=relaxed/simple;
-	bh=qs6Z8CFzvZFim5aACpS8p+XZllCkNji2gLarIBZz/zY=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=HNlL6EQsaXhnKAWm9DuJ7Ufl1u9c7R2CNG44HWF3n5Tgzue6oMjHFd7c33rarPX+RamtKEjSwvNkwXKrU4JKC0xIebn93Bzrc2gu8kLkNQ4xYLmwnX69H+tcI7Y3GIStWdrDYF240Aa0ZVEevVRjn61JjQu+mP+o7pNHf5LZyZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kGTy2Ig6; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789019481; c=relaxed/simple;
+	bh=sthCcF/sNcApycehZxI7ySnbqcrCrh0oGJyrDEjPzBQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BlE8InLY35QESJRCMZhNg6z5HnRzkYzJGm7LmXoqWMI8uqp67KqMCIsJnhkEQG97Cm/rV4UAPlnhyNGaV7xg1Jw+G/9xinl8BQcNmOo9baib6dRm+vBLkouD+i/cnncyV0CQoZ6p+83Jjn+vYcgUtXXSGjXP+C1WSvuSRFA1Qe8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=stu.pku.edu.cn; spf=pass smtp.mailfrom=stu.pku.edu.cn; dkim=pass (1024-bit key) header.d=stu.pku.edu.cn header.i=@stu.pku.edu.cn header.b=Wj8YiKOP; arc=none smtp.client-ip=45.254.49.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=stu.pku.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=stu.pku.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kGTy2Ig6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 683F21F000FF;
-	Thu, 10 Sep 2026 05:47:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789019221;
-	bh=df1IwpVaY4WEHXnsjUW+GtbrSC7JurnzMcxUU78FhQI=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=kGTy2Ig64ZSEsubsoZpTqOTNknz69H5wBtElBb2s8p0wS+N/xbXW0Viyag1MeC/lh
-	 vRPispeKS77vxe08YZYiW9/V1AOA37JklbNjaw52v2jvylAfOLWNA/gfXavKKaUCD6
-	 8DBs/ndOgFhVs2TSqSGAfETIQ17dpVdNtPToynHR24fEAScScK7OWGUz2Q6kIUec8+
-	 brLOn/6gB8SasA4HiVIQ+dhrjBBBhnpJ7Rd9QFJ717VI0SPNYgw0g1tu0xsq5MXc2w
-	 PI/5uFyfDpLiDM2hJXIEgiqaW/QAM4SZ/Anbk2BTW96Fb+gQs5Lnrz3vwahSEoZdL3
-	 w+pNxOhwBej2Q==
-Subject: Re: [PATCH] net: wwan: t7xx: validate the HS2 message data length
-From: netdev-bot+sashiko@kernel.org
-To: zhugl3@xiaopeng.com
-Cc: chandrashekar.devegowda@intel.com, loic.poulain@oss.qualcomm.com,
- ryazanov.s.a@gmail.com, haijun.liu@mediatek.com,
- ricardo.martinez@linux.intel.com, johannes@sipsolutions.net,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Date: Thu, 10 Sep 2026 05:46:59 +0000
-Message-ID: <178901921967.219967.14297389311939486523@kernel.org>
-In-Reply-To: <20260909054401.718959-1-zhugl3@xiaopeng.com>
-References: <20260909054401.718959-1-zhugl3@xiaopeng.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=stu.pku.edu.cn header.i=@stu.pku.edu.cn header.b="Wj8YiKOP"
+Received: from localhost.localdomain (unknown [106.120.124.5])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 4d3b9ec9e;
+	Thu, 10 Sep 2026 13:51:11 +0800 (GMT+08:00)
+From: Chunfeng Song <springbreeze@stu.pku.edu.cn>
+To: Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Boqun Feng <boqun@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	stable@vger.kernel.org
+Subject: [PATCH net v6] rust: net: phy: fix off-by-one bit positions in device status accessors
+Date: Thu, 10 Sep 2026 05:51:10 +0000
+Message-ID: <20260910055110.167110-1-springbreeze@stu.pku.edu.cn>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0aa089debb8a03a1kunm6d76624b183ffd
+X-HM-MType: 10
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWRgWCB1ZQUpXWS1ZQUlXWQ8JGhUIEh9ZQVlDHRgfVk0ZHkpDSh5KTkwZH1YeHw
+	5VEwETFhoSFyQUDg9ZV1kYEgtZQVlKS01VSklLVUpJT1VOWVdZFhoPEhUdFFlBWU9LSFVKS0hKTk
+	xOVUpLS1VKQktLWQY+
+DKIM-Signature: a=rsa-sha256;
+	b=Wj8YiKOPXqB4zVdj+jjmflh7zDwuYvbPgBycoMa610oPr2BTqunN1MX93MDinxk9VOgDMOAraNmQC031He5O3n0HE2edhQPJ4ppVBDFDftexiTCDl/hAxNgVcrvYNXfu4GrgiOzRAlWN2PQUnYKq9JEnFn8DO0UAY8dW2cxxMHg=; c=relaxed/relaxed; s=default; d=stu.pku.edu.cn; v=1;
+	bh=rhEO/9fD+Arvx5VJ3IVK2ueO7ZfQCkmPusDExwKpZFQ=;
+	h=date:mime-version:subject:message-id:from;
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider:
+The hand-written bitfield offsets in is_link_up(), is_autoneg_enabled()
+and is_autoneg_completed() were correct when the abstraction was
+merged: at that time autoneg, link, and autoneg_complete were at bits
+13, 14, and 15 of struct phy_device's first bitfield unit. Commit
+2796ff1e3dca ("net: phy: add flag is_genphy_driven to struct phy_device")
+later inserted is_genphy_driven just before autoneg, shifting the three
+fields up by one, so the accessors now read:
 
-Critical: 0 · High: 1 (2) · Medium: 1 · Low: 0
+  is_link_up()           reads bit 14 = autoneg
+  is_autoneg_enabled()   reads bit 13 = is_genphy_driven
+  is_autoneg_completed() reads bit 15 = link
 
-- [High] The new validation in control_msg_handler() bounds the modem-
-  supplied data_length only from above (`data_length > skb->len`).
-- [Medium] control_msg_handler()
-  (drivers/net/wwan/t7xx/t7xx_port_ctrl_msg.c:179-205) never verifies…
+The official ax88796b Rust driver uses all three accessors in its
+read_status() implementation, so it inherits the bug.
+phy_attach_direct() sets is_genphy_driven only when it falls back to
+the generic driver, and ax88796b has a real driver, so
+is_genphy_driven stays 0. The broken is_autoneg_enabled() therefore
+reads bit 13 as 0, compares it against AUTONEG_ENABLE (1), and always
+returns false, so read_status() never reaches the
+resolve_aneg_linkmode() call.
 
-Pre-existing issues:
-- [High] control_msg_handler() owns the skb dequeued by
-  port_ctl_rx_thread() (drivers/net/wwan/t7xx/t7xx_port_ctrl_msg.c:262…
-- [High] t7xx_cldma_gpd_rx_from_q()
-  (drivers/net/wwan/t7xx/t7xx_hif_cldma.c:159-161) passes the device-…
+The ordinary bindgen accessors take &self. Calling them through
+(*phydev).link() would create a shared reference to the complete
+bindings::phy_device, which is not appropriate for an object wrapped in
+Opaque.
 
---
+Use the bindgen-generated raw accessors (link_raw(), autoneg_raw(),
+and autoneg_complete_raw()) instead. They retain the bit positions and
+endianness handling generated from the C layout without creating a Rust
+reference to the complete phy_device. Drop the hand-written numbers
+together with the TODO comment that marked them as a stopgap.
 
-net: wwan: t7xx: validate the HS2 message data length
+The raw accessors are only emitted by bindgen 0.71 and later, and were
+added at the Rust-for-Linux project's request, so this fix can only be
+backported to stable branches whose minimum bindgen version is at least
+that, hence the scope on the Cc: stable line below.
 
-This adds a bound on the modem-supplied data_length field of a
-CTL_ID_HS2_MSG control message before it is handed to
-t7xx_fsm_append_event(), rejecting the message when data_length is
-larger than the remaining skb length.
+Found by a static equivalence audit (C2RustDrv, a C-to-Rust driver
+migration tool) that compares hand-written bitfield offsets against
+the bindgen layout of struct phy_device. Verified by building the
+bindings and checking the generated accessors; no runtime testing was
+possible without PHY hardware.
 
-> diff --git a/drivers/net/wwan/t7xx/t7xx_port_ctrl_msg.c b/drivers/net/wwan/t7xx/t7xx_port_ctrl_msg.c
-> index f869e4ed9ee9..0f2ead8a7caa 100644
-> --- a/drivers/net/wwan/t7xx/t7xx_port_ctrl_msg.c
-> +++ b/drivers/net/wwan/t7xx/t7xx_port_ctrl_msg.c
-> @@ -178,22 +178,32 @@ static int control_msg_handler(struct t7xx_port *port, struct sk_buff *skb)
->  
->  	ctrl_msg_h = (struct ctrl_msg_header *)skb->data;
->  	switch (le32_to_cpu(ctrl_msg_h->ctrl_msg_id)) {
-> -	case CTL_ID_HS2_MSG:
-> +	case CTL_ID_HS2_MSG: {
-> +		u32 data_length;
-> +
->  		skb_pull(skb, sizeof(*ctrl_msg_h));
-> +		data_length = le32_to_cpu(ctrl_msg_h->data_length);
+Fixes: 2796ff1e3dca ("net: phy: add flag is_genphy_driven to struct phy_device")
+Cc: stable@vger.kernel.org # Only 7.1.y and later (requires bindgen's raw pointer accessors).
+Link: https://github.com/rust-lang/rust-bindgen/issues/2674
+Signed-off-by: Chunfeng Song <springbreeze@stu.pku.edu.cn>
+---
+v6:
+  - Name read_status() instead of the vague "link-change handling" in
+    the commit message (FUJITA Tomonori).
+  - Correct the impact description: on ax88796b, which has its own
+    driver, is_genphy_driven stays 0, so the broken is_autoneg_enabled()
+    always returns false and read_status() never reaches the
+    resolve_aneg_linkmode() call (FUJITA Tomonori).
+  - Rewrite the SAFETY comments to state why the raw accessors may be
+    called: the pointer is valid and there is no concurrent write to the
+    field (FUJITA Tomonori).
 
-[Severity: Medium]
-Is the new bound sound when the message is shorter than the control
-header itself?  Nothing in control_msg_handler() checks that skb->len is
-at least sizeof(struct ctrl_msg_header) (12 bytes), and the return value
-of skb_pull() is discarded:
+v5: https://lore.kernel.org/r/20260901143251.136378-1-springbreeze@stu.pku.edu.cn/
+  - Move the comparison out of the `unsafe` block so that only the raw
+    accessor call stays inside (Gary Guo, Miguel Ojeda).
+  - Scope the `Cc: stable` backport to 7.1.y and later, since the raw
+    accessors require bindgen 0.71 (Miguel Ojeda).
+  - Mention the bindgen 0.71 dependency in the commit message.
 
-include/linux/skbuff.h:
-	static inline void *skb_pull_inline(struct sk_buff *skb, unsigned int len)
-	{
-		return unlikely(len > skb->len) ? NULL : __skb_pull(skb, len);
-	}
+v4: https://lore.kernel.org/r/20260901031824.1377498-1-springbreeze@stu.pku.edu.cn/
+  - Use the bindgen-generated raw accessors to avoid creating a shared
+    reference to the complete C `phy_device`, as suggested by Jakub Kicinski.
+  - Update the SAFETY comments to describe pointer validity and the
+    callback-context preconditions.
+  - Add `#[inline]` to the three small forwarding methods.
 
-So for a 0..11 byte message the pull is a no-op: skb->data still points
-at the control header and skb->len still counts those header bytes.  The
-subsequent data_length > skb->len test is then evaluated against the
-wrong length, and t7xx_fsm_append_event() stores control-header bytes as
-if they were HS2 payload.
+v3: https://lore.kernel.org/r/20260825111334.795732-1-springbreeze@stu.pku.edu.cn/
+  - Use the bindgen-generated accessors instead of hard-coded bit numbers.
+  - Update the Fixes tag and add the net tree subject prefix.
 
-The read of ctrl_msg_h->data_length itself is at offset 8..11, which is
-past skb->tail for such a short message, i.e. it reads the uninitialized
-part of the skb data area allocated in t7xx_cldma_alloc_and_map_skb().
+v2: https://lore.kernel.org/r/20260824111227.742645-1-springbreeze@stu.pku.edu.cn/
+  - Use bindgen-generated accessors as suggested by Andrew Lunn.
+  - Explain that the offsets drifted after `is_genphy_driven` was added.
 
-The length reaching here is fully device-controlled, with no floor
-anywhere upstream:
+v1: https://lore.kernel.org/r/20260823103644.342849-1-springbreeze@stu.pku.edu.cn/
+ rust/kernel/net/phy.rs | 38 ++++++++++++++++++--------------------
+ 1 file changed, 18 insertions(+), 20 deletions(-)
 
-t7xx_hif_cldma.c:t7xx_cldma_gpd_rx_from_q() {
-	...
-	skb_put(skb, le16_to_cpu(gpd->data_buff_len));
-	...
-}
+diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
+index 956cda573ddb..c4e7b1d6c6f4 100644
+--- a/rust/kernel/net/phy.rs
++++ b/rust/kernel/net/phy.rs
+@@ -123,39 +123,37 @@ pub fn state(&self) -> DeviceState {
+     /// Gets the current link state.
+     ///
+     /// It returns true if the link is up.
++    #[inline]
+     pub fn is_link_up(&self) -> bool {
+-        const LINK_IS_UP: u64 = 1;
+-        // TODO: the code to access to the bit field will be replaced with automatically
+-        // generated code by bindgen when it becomes possible.
+-        // SAFETY: The struct invariant ensures that we may access
+-        // this field without additional synchronization.
+-        let bit_field = unsafe { &(*self.0.get())._bitfield_1 };
+-        bit_field.get(14, 1) == LINK_IS_UP
++        let phydev = self.0.get().cast_const();
++        // SAFETY: By the type invariant of `Device`, `phydev` points to a valid
++        // `struct phy_device`, and there is no concurrent write to this field.
++        let link = unsafe { bindings::phy_device::link_raw(phydev) };
++        link == 1
+     }
+ 
+     /// Gets the current auto-negotiation configuration.
+     ///
+     /// It returns true if auto-negotiation is enabled.
++    #[inline]
+     pub fn is_autoneg_enabled(&self) -> bool {
+-        // TODO: the code to access to the bit field will be replaced with automatically
+-        // generated code by bindgen when it becomes possible.
+-        // SAFETY: The struct invariant ensures that we may access
+-        // this field without additional synchronization.
+-        let bit_field = unsafe { &(*self.0.get())._bitfield_1 };
+-        bit_field.get(13, 1) == u64::from(bindings::AUTONEG_ENABLE)
++        let phydev = self.0.get().cast_const();
++        // SAFETY: By the type invariant of `Device`, `phydev` points to a valid
++        // `struct phy_device`, and there is no concurrent write to this field.
++        let autoneg = unsafe { bindings::phy_device::autoneg_raw(phydev) };
++        autoneg == bindings::AUTONEG_ENABLE
+     }
+ 
+     /// Gets the current auto-negotiation state.
+     ///
+     /// It returns true if auto-negotiation is completed.
++    #[inline]
+     pub fn is_autoneg_completed(&self) -> bool {
+-        const AUTONEG_COMPLETED: u64 = 1;
+-        // TODO: the code to access to the bit field will be replaced with automatically
+-        // generated code by bindgen when it becomes possible.
+-        // SAFETY: The struct invariant ensures that we may access
+-        // this field without additional synchronization.
+-        let bit_field = unsafe { &(*self.0.get())._bitfield_1 };
+-        bit_field.get(15, 1) == AUTONEG_COMPLETED
++        let phydev = self.0.get().cast_const();
++        // SAFETY: By the type invariant of `Device`, `phydev` points to a valid
++        // `struct phy_device`, and there is no concurrent write to this field.
++        let completed = unsafe { bindings::phy_device::autoneg_complete_raw(phydev) };
++        completed == 1
+     }
+ 
+     /// Sets the speed of the PHY.
 
-t7xx_port_proxy.c:t7xx_port_proxy_recv_skb() {
-	...
-	skb_pull(skb, sizeof(*ccci_h));
-
-	ret = port_conf->ops->recv_skb(port, skb);
-	...
-}
-
-Would it be worth adding the same header floor the enumeration path
-already has, before the pull?
-
-	if (skb->len < sizeof(*ctrl_msg_h))
-		return -EINVAL;
-
-t7xx_port_enum_msg_handler() does this for its own header:
-
-	if (msg_len < sizeof(*port_msg)) {
-		dev_err(dev, "Port enum msg too short for header: need %zu, have %zu\n",
-			sizeof(*port_msg), msg_len);
-		return -EINVAL;
-	}
-
->  
->  		if (port_conf->rx_ch == PORT_CH_CONTROL_RX ||
->  		    port_conf->rx_ch == PORT_CH_AP_CONTROL_RX) {
->  			int event = port_conf->rx_ch == PORT_CH_CONTROL_RX ?
->  				    FSM_EVENT_MD_HS2 : FSM_EVENT_AP_HS2;
->  
-> -			ret = t7xx_fsm_append_event(ctl, event, skb->data,
-> -						    le32_to_cpu(ctrl_msg_h->data_length));
-> -			if (ret)
-> -				dev_err(port->dev, "Failed to append Handshake 2 event");
-> +			if (data_length > skb->len) {
-> +				dev_err(port->dev, "Invalid HS2 message length %u\n",
-> +					data_length);
-> +				ret = -EINVAL;
-> +			} else {
-> +				ret = t7xx_fsm_append_event(ctl, event, skb->data,
-> +							    data_length);
-> +				if (ret)
-> +					dev_err(port->dev, "Failed to append Handshake 2 event");
-> +			}
-
-[Severity: High]
-Should data_length also be bounded from below here?  Only the upper
-bound is enforced, so data_length == 0 (or anything smaller than
-sizeof(struct feature_query), 72 bytes) is accepted and becomes the FSM
-event payload length.
-
-t7xx_fsm_append_event() sizes the allocation from that value:
-
-t7xx_state_monitor.c:t7xx_fsm_append_event() {
-	...
-	event = kmalloc_flex(*event, data, length,
-			     in_interrupt() ? GFP_ATOMIC : GFP_KERNEL);
-	...
-	event->length = length;
-
-	if (data && length)
-		memcpy(event->data, data, length);
-	...
-}
-
-with the payload being a counted flexible array:
-
-t7xx_state_monitor.h:
-	struct t7xx_fsm_event {
-		struct list_head	entry;
-		enum t7xx_fsm_event_state event_id;
-		unsigned int		length;
-		unsigned char		data[] __counted_by(length);
-
-The consumer of that payload does not look at event->length:
-
-t7xx_modem_ops.c:t7xx_core_hk_handler() {
-	...
-	ret = t7xx_prepare_device_rt_data(core_info, dev, event->data);
-	...
-}
-
-t7xx_modem_ops.c:t7xx_prepare_device_rt_data() {
-	struct feature_query *md_feature = data;
-	...
-	if (le32_to_cpu(md_feature->head_pattern) != MD_FEATURE_QUERY_ID ||
-	    le32_to_cpu(md_feature->tail_pattern) != MD_FEATURE_QUERY_ID) {
-	...
-}
-
-With data_length == 0 that reads 72 bytes (head_pattern,
-feature_set[64], tail_pattern) out of a 24-byte allocation, and the
-out-of-bounds feature_set bytes are then echoed back to the device in
-the HS3 reply via rt_feature->support_info = md_feature->feature_set[i].
-The length-aware t7xx_parse_host_rt_data() called just before it simply
-returns 0 for a short payload, since its loop condition is
-offset < data_length with offset starting at sizeof(struct
-feature_query).
-
-Would rejecting data_length < sizeof(struct feature_query) here, or
-making t7xx_prepare_device_rt_data() length-aware, be preferable to the
-max-only check?
-
->  		}
->  
->  		dev_kfree_skb_any(skb);
->  		break;
-> +	}
->  
->  	case CTL_ID_MD_EX:
->  	case CTL_ID_MD_EX_ACK:
-
-Two more observations about surrounding code that the same malformed
-control messages reach:
-
-[Severity: High]
-This isn't a bug introduced by this patch, but does control_msg_handler()
-leak the RX skb for two of the switch arms it is being modified in?
-port_ctl_rx_thread() hands ownership over and never frees it:
-
-	skb = __skb_dequeue(&port->rx_skb_list);
-	spin_unlock_irqrestore(&port->rx_wq.lock, flags);
-
-	control_msg_handler(port, skb);
-
-Only the CTL_ID_HS2_MSG and CTL_ID_MD_EX* arms call
-dev_kfree_skb_any().  The enumeration arm returns without freeing:
-
-	case CTL_ID_PORT_ENUM:
-		skb_pull(skb, sizeof(*ctrl_msg_h));
-		ret = t7xx_port_enum_msg_handler(ctl->md, (struct port_msg *)skb->data, skb->len);
-		...
-		break;
-
-and so does the unknown-message arm:
-
-	default:
-		ret = -EINVAL;
-		dev_err(port->dev, "Unknown control message ID to FSM %x\n",
-			le32_to_cpu(ctrl_msg_h->ctrl_msg_id));
-		break;
-
-t7xx_port_enum_msg_handler() only parses the buffer, and
-port_ctl_send_msg_to_md() allocates a fresh skb through
-t7xx_ctrl_alloc_skb(), so neither takes ownership.  Since ctrl_msg_id is
-modem-supplied, can a modem repeatedly sending an unrecognized
-ctrl_msg_id leak one RX skb (CLDMA_SHARED_Q_BUFF_SZ, 3584 bytes, plus
-skb overhead) per message without bound?
-
-[Severity: High]
-This is a pre-existing issue and not something this patch introduces,
-but it is the same modem-supplied length trust boundary one layer down.
-Can t7xx_cldma_gpd_rx_from_q() panic on a device-reported GPD length
-larger than the RX buffer?
-
-t7xx_hif_cldma.c:t7xx_cldma_gpd_rx_from_q() {
-	...
-	skb->len = 0;
-	skb_reset_tail_pointer(skb);
-	skb_put(skb, le16_to_cpu(gpd->data_buff_len));
-	...
-}
-
-gpd->data_buff_len is a __le16 written by the device, so up to 65535,
-while the skb comes from __dev_alloc_skb(queue->tr_ring->pkt_size) with
-pkt_size being CLDMA_SHARED_Q_BUFF_SZ (3584),
-CLDMA_DEDICATED_Q_BUFF_SZ (2048) or CLDMA_JUMBO_BUFF_SZ (64528).  The
-only limit given to the hardware is advisory:
-
-t7xx_hif_cldma.c:t7xx_cldma_ring_init() {
-	...
-	gpd->rx_data_allow_len = cpu_to_le16(ring->pkt_size);
-	...
-}
-
-Nothing re-checks the returned length against pkt_size or the skb
-tailroom, so a length beyond the buffer would take skb->tail past
-skb->end and hit skb_over_panic() -> BUG().  Would a check of
-data_buff_len against tr_ring->pkt_size before the skb_put() be
-appropriate?
-
+base-commit: 2709dd5ae32f0828f386327c76bba9f39f63a1c6
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260909054401.718959-1-zhugl3%40xiaopeng.com
+2.43.0
+
