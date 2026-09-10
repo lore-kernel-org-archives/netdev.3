@@ -1,191 +1,285 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC3F2355F5F;
-	Thu, 10 Sep 2026 09:10:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789031441; cv=none; b=m2XIERgtEtohAAuU3LWV13C6A3ILYQOYL4hRmV8FqOLSkGCWdHJDktyWqMhSAZ497NAl7cWgcVsQfeACqY3PcJxO9Arh/V0NXDhiJNuXCXkL4eoT9S8RH93EKBSU4gqNIFGkanOYwaihF4V1+3fjmodwWgZU+RTEIMzPwnWvO14=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789031441; c=relaxed/simple;
-	bh=wa8+AB71aWAAABk7jurpjv26ahxiui1HCF9JZAeOVYk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jUK5DTARrp8zzCyh5uN/dJ2LVG6OS3SyzK7eLccBvZkbJvBJEpatcu0/5YdUUe3+wGo0oqOWzz4lmTyA7yNqQlONOJ3EBgPfIo3Zo23Oanygad2r93r44WWeoV9tBbSIIK3fRu2x5Dv/ko0TjrkzPAdq7NshvTVJFW0VfbLR2kc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=P/Y0fYIF; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=sHfk8gXf; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Mp62uj+j; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=2AmFRRB+; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 030F13BBA0D
+	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 09:20:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789032031; cv=pass; b=I7EDag2RkPe1KDuWTmMIwzzxo9E8yL5buNwCQEFSh739OafbuWEbl5nVbk5pceJo3PedYSNaz4Qfe2xPJP2Ny9HPh2mdyhQnsFWDOJqKFViix8edRK9tgd8Be+F/vF99cCCK0Sm/Sq8ccRg2Eh5XIu8FDTTXYqkWmjhANjkwlX8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789032031; c=relaxed/simple;
+	bh=vjcFsdx+OWmfN+e1puRAxR73rbMuw1qtGHYTYiVxuTs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jvjXb54CqkLlQh0npQQcUiaM5c27d9CYpPtS7DCy+dxPKvrn4KMwybnaZyda325iUvkLEmWYFIGzkClsv+5w+f1RymOfEbxoMGhEBlHxurya2Ux+SyLC9wyQP3eFTBVhcnR2IKJR+mW7oKaDxm9K4V1ilj3SB0Hf8OxRFoBr0Jw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qrator.net; spf=pass smtp.mailfrom=qrator.net; dkim=pass (1024-bit key) header.d=qrator.net header.i=@qrator.net header.b=iqUI6xYj; arc=pass smtp.client-ip=209.85.216.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qrator.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qrator.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="P/Y0fYIF";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="sHfk8gXf";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Mp62uj+j";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="2AmFRRB+"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 5C2941FDB7;
-	Thu, 10 Sep 2026 09:10:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1789031429; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=s9nYzq2znk7osZTamSzy01Swvtojf1hO+2D9mmw5CNU=;
-	b=P/Y0fYIFHrc/h1GPP5D/fHo2sTUwzOSc4rC07N0meWX97ZtIdZu21HqL4sZjSdsNIvsQVd
-	tC7wba2rk4WQzUpclbakSrpeebgYkNCxTjGCFt16jyQo+sZcOCJj9wCyJz+yfjA7AIxB3T
-	AxTNxbhjUB3TDCTmzPG0+zx+zgGUoh4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1789031429;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=s9nYzq2znk7osZTamSzy01Swvtojf1hO+2D9mmw5CNU=;
-	b=sHfk8gXfjccHcp27eVbITSKXqy15+2GfK5byVAMK1gbKoWG66vAE3gEvCvlbMMLMkCNP16
-	NZccDP2ApvnT/oBA==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Mp62uj+j;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=2AmFRRB+
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1789031425; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=s9nYzq2znk7osZTamSzy01Swvtojf1hO+2D9mmw5CNU=;
-	b=Mp62uj+jMMWLmvATNok5E9z6uvqdO1Uz61bR7MYBokF3it8PHV2BbqHSNNv69+CCe9qufb
-	TeFJJzl9QcO1jG6lZaVTGWdnpgcAXFc3W4Gdw/+K5A6R/+mw6giWt5qzG/o9WVaajBEGYy
-	9xxFweoQArTQRdW6RmPjceAhUPeLmHc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1789031425;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=s9nYzq2znk7osZTamSzy01Swvtojf1hO+2D9mmw5CNU=;
-	b=2AmFRRB+KVGBB1eoBpOXACNx+8dg7UxATPM4FguLC0qmlzsuIWD00H5bquYC5uz7VHrl2g
-	OvmmGAiqMd7NbKBA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 86EF7137FD;
-	Thu, 10 Sep 2026 09:10:24 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id b0IiHgB0omokfwAAD6G6ig
-	(envelope-from <fmancera@suse.de>); Thu, 10 Sep 2026 09:10:24 +0000
-Message-ID: <e84cd7a1-8708-43bb-bbdc-25c10611f3ad@suse.de>
-Date: Thu, 10 Sep 2026 11:09:42 +0200
+	dkim=pass (1024-bit key) header.d=qrator.net header.i=@qrator.net header.b="iqUI6xYj"
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-3964dfb5b9aso8123831a91.1
+        for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 02:20:27 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789032027; cv=none;
+        d=google.com; s=arc-20260327;
+        b=HypvAOm1TtcsijwszR6iH/tZQQMRXeKB7W2CMt+XDWD/P6bF+MUVrkBLxsxgArza6r
+         cCoRk8Jl1pGZRK6cSvP9lT2vIgZLO9/At7b4jj2DoUdaD343Ocw4ULbOg6AKlpioqDu+
+         Yk4J3ZuX98EHFm3uuZ2Ms3obCUER6UVCqesq/gvtWK1jcacYhXN61ZiB7TqqQ6RS15J2
+         1/C0zDcKDNKcYK5TAFYZ/sszrLlsIjNmdQ6WKatkjy77r6+OFphQb/gXLeN0RTsGNbRC
+         M9aYOsF9WWHzm9urDHFkcFiGHqP/uDhqEkkr0MceDyx2P3U7eLaG53IJalXcCGlMd2In
+         BXfg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=5a1NTf8f50RWDetuWbF6sPyLXhIutWr6cV/jB+Euj18=;
+        fh=ZjiePLZAkocQpKo0AWedQskKSWDcBzt3zQnQbTW4rKg=;
+        b=P6rCbX5WnQhYNDyOMiqqITlndIc7CERYK2nDv5qXIHGoAVA3Q/ZQJF3XpUaXSO0g6o
+         8T7T7Ind+kJUp2s6BvqRFnlhJl/WoZxE+W5vG6HspLZmToGOoUR1i/dTLGIUuWlklNg/
+         L9vIc0gty1XN2b7I0VB4tsqdhJ59gTUtxmWVgMtX/4HwBY2m4iVJs8xAS3cGTf4Txj/6
+         GrSZhtaw/ddKqFK4jBmN5HH1l5rFo5JdGG7RKsMlJ1WbsMMm8rQ3nlxkVX9jI2n/mggY
+         Xo4uPE36l41IUojCJ606vBvP61qM9vdwH6rjUgJPoLD/XTkEqxhA7j1JKDnHCF2lpxL4
+         bjpA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=qrator.net; s=google; t=1789032027; x=1789636827; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=5a1NTf8f50RWDetuWbF6sPyLXhIutWr6cV/jB+Euj18=;
+        b=iqUI6xYj41yNdEQa1yectThSzp98jNVQ89JoZs4cCMpuB2+4Cd7nRtHFaJ7FA29LDJ
+         Y54oSsoKC95W3PmtzN4dLJNMeQP/pKKZ3Ik3/SNqZpZKT34vTr/mYSzZzqXylvmFrfB1
+         wrA0abIXhaygq8yUB4z75/wZX0bul++biTzm4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789032027; x=1789636827;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=5a1NTf8f50RWDetuWbF6sPyLXhIutWr6cV/jB+Euj18=;
+        b=AD7hfNSlHXrhkLy9ahDZMqmqm0ttL6pg2uwEQfFFh5xnxQQZ1HaWoiQu4jLRVw/Cht
+         yR2Lzdrtt50OtWAnOHVDb/O/Be4O815/S07IkZ0QgDeBmjWzrAXZJNPU2ag8PyviHxi4
+         7YL7a0ON7XQd8gDWw7wNfjY3Olf/aP7LTQLQAHPKKuVQDcFpkaiFmzyolwsKx50Wq7dr
+         NodolPRSHlZQQo7xTw6QhboogEpV/Pe+5Y6K9N5uJqxnk2XacI0OtlTLfZWBxBPTl1TD
+         y/HkBHF0sYhTEWQ8FsF6QqHBc880q+vGftnye7ASYzARlcC2BLqmINL1CNNLydtZF9sF
+         5idQ==
+X-Gm-Message-State: AFuF++nbJ+hWXx3Ofs6BShUMP6b1iPoOV1u/KWxQqELwt/vRZ3VS1mwn
+	/SJdir4ijsKiVDkMMNfIiF7H1a5dyUHKR8TfvBxaqXImTFRPSO5ZIPtxs5wbee86JwcrKKvW9yZ
+	2l3nKHZIbPQGIokdw4dQx7Bxkqos1y1wJf/CczA9N3w==
+X-Gm-Gg: AYBFou2VnhADUesPksTdFxoil+sr4eMGOdbg5oNF9YEHR3xtEHbU/UJ8A2Y5IkrvEjA
+	WqZhyTdnbEgm4DigH1dNGMMKVAeJdsoELnT/aqXzn5WYeHafacK4XrguM856L5xdRE4GqzO5Ve+
+	kmvioIwE+8I4Eak5sIRV0Zi0S9rp0vgjNF3n4pp5xp3ei3rsT/be+mbKTN4uUoqHKDBaPRbzYzi
+	3ywEHfdtK4So5V3emRS9VyaJIQYLMZ/WxZvrEFId8m8iI07hEZoWWF44qmavZfaadlAg7qAqgvt
+	cAaaAIPWcaOluY9vQLJcGSyT1WHjDKXQl1c+7pxTyY9k976uEBnMiQC6vOxLDU7V0uBoecDDC9D
+	ZzaNAlE8BL5YqO7VXE6ZixQ1iP11daQ8KdHUfpqPHgaFtm9DBk+H/LIO5XVmU9WyqkdZOf2paiQ
+	==
+X-Received: by 2002:a17:90b:5343:b0:398:e46e:ade3 with SMTP id
+ 98e67ed59e1d1-39b2628fc1amr63947624a91.23.1789032026811; Thu, 10 Sep 2026
+ 02:20:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: hsr: enable promiscuous mode on interlink port
- with fwd offload
-To: MD Danish Anwar <danishanwar@ti.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Felix Maurer <fmaurer@redhat.com>,
- Hangbin Liu <liuhangbin@gmail.com>, Kees Cook <kees@kernel.org>,
- Xiaoliang Yang <xiaoliang.yang_1@nxp.com>, Lukasz Majewski <lukma@denx.de>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260908090856.2876114-1-danishanwar@ti.com>
-Content-Language: en-US
-From: Fernando Fernandez Mancera <fmancera@suse.de>
-In-Reply-To: <20260908090856.2876114-1-danishanwar@ti.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Score: -4.51
-X-Rspamd-Queue-Id: 5C2941FDB7
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spam-Level: 
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-4.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	RCPT_COUNT_TWELVE(0.00)[13];
-	FREEMAIL_TO(0.00)[ti.com,davemloft.net,google.com,kernel.org,redhat.com,gmail.com,nxp.com,denx.de];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,ti.com:email,suse.de:dkim,suse.de:email,suse.de:mid];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from]
-X-Spam-Flag: NO
+References: <20260830181949.1096-1-green@qrator.net> <20260908181225.31712-1-green@qrator.net>
+ <20260908113123.16604ef7@phoenix.local>
+In-Reply-To: <20260908113123.16604ef7@phoenix.local>
+From: Alexander Zubkov <green@qrator.net>
+Date: Thu, 10 Sep 2026 11:20:00 +0200
+X-Gm-Features: AcwNN1Xgag9KeC-6xsVRn-m4cYhD0ReeYkF76y7Qirk49pMV90qUyqaq7uTJzPM
+Message-ID: <CABr+u0badmsby4XGvEoa7h9ghbUk3W83dj3qkb6kMT9VN+hsNA@mail.gmail.com>
+Subject: Re: [PATCH iproute2 v2 0/2] ip: ipstats: Fix statistics split across
+ netlink messages
+To: Stephen Hemminger <stephen@networkplumber.org>
+Cc: netdev@vger.kernel.org, Petr Machata <me@pmachata.org>, 
+	Ido Schimmel <idosch@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 9/8/26 11:08 AM, MD Danish Anwar wrote:
-> hsr_portdev_setup() skips promiscuous mode on non-master ports when
-> hsr->fwd_offloaded is set. fwd_offloaded is derived only from the ring
-> slaves' NETIF_F_HW_HSR_FWD bit, so this also skips it for the interlink
-> port, which never gets forwarding offload. Without promiscuous mode,
-> the interlink NIC drops unicast frames addressed to hsr_dev's MAC
-> (e.g. SAN traffic to the RedBox), breaking RedBox whenever the ring is
-> HW-offloaded.
-> 
-> Fixes: 5055cccfc2d1 ("net: hsr: Provide RedBox support (HSR-SAN)")
-> Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
+On Tue, Sep 8, 2026 at 8:31=E2=80=AFPM Stephen Hemminger
+<stephen@networkplumber.org> wrote:
+>
+> On Tue,  8 Sep 2026 20:12:23 +0200
+> Alexander Zubkov <green@qrator.net> wrote:
+>
+> > The kernel can split the statistics of one interface across several
+> > netlink messages, and "ip stats" formats each of them on its own, so th=
+e
+> > interface is shown twice and part of its statistics is lost. Easy to hi=
+t
+> > with "group offload subgroup l3_stats" on a box with many netdevices:
+> >
+> >     109: vlan859: group offload subgroup l3_stats on used on
+> >
+> >     109: vlan859: group offload subgroup l3_stats
+> >
+> > Patch 1 merges such messages before formatting them, patch 2 is an
+> > unrelated cleanup.
+> >
+> > What the merge rests on, for whoever touches it next:
+> >
+> >  - Only the last attribute of one message and the first of the next can
+> >    be two halves of one nest.
+> >
+> >  - A leaf is emitted in one piece, so a leaf attribute seen in both
+> >    messages is a layout the kernel does not produce, and the merge is
+> >    refused.
+> >
+> >  - An array is only ever split between two of its elements. Were an
+> >    element itself split, the result would not be distinguishable from a
+> >    longer array of shorter elements, and no reader could reassemble it.
+> >
+> >  - At the outer level ipstats_stat_ifla_max[] tells which attributes ar=
+e
+> >    nests. One level in there is no such table, and none is needed: the
+> >    children of the two halves are whole either way, whether they are an
+> >    array, split only between elements, or attributes indexed by type, o=
+f
+> >    which there is at most one of each. Appending them is then what the
+> >    kernel would have sent unsplit.
+> >
+> >  - Where the merge does not apply, the two messages are formatted
+> >    separately, which is the behaviour this patch set replaces rather
+> >    than a new failure mode.
+> >
+> > v2:
+> >  - Comments and commit messages trimmed, the merge reworked around the
+> >    two border attributes that can actually be halves of one nest.
+> >
+> > Alexander Zubkov (2):
+> >   ip: ipstats: Merge statistics split across several netlink messages
+> >   ip: ipstats: Do not hide HW statistics when hw_stats_info is missing
+> >
+> >  ip/ipstats.c | 266 +++++++++++++++++++++++++++++++++++++++++++++++++--
+> >  1 file changed, 258 insertions(+), 8 deletions(-)
+> >
+>
+> This is a real problem (not AI hallucination) but the code generated is
+> far larger than really needed. I asked Fable to come up with something
+> more concise.
+>
 
-Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
+For sure, I faced it on our device and observed the split in strace
+before turning to AI.
 
-Thanks!
+>
+> The fix is right in principle. Per-ifindex buffering is unavoidable
+> here: each enabled group prints its own header and JSON object, and
+> l3_stats needs HW_S_INFO and L3_STATS together, so nothing can go out
+> until the next ifindex shows up. Merging the raw messages is also the
+> right layer, it leaves the show code alone. But the merge is about
+> three times bigger than the problem.
+>
+> What the kernel actually does (rtnl_fill_statsinfo, rtnl_stats_dump,
+> br_fill_linkxstats): a message is kept partial only when prividx
+> advanced. The resume reopens the top-level nest in idxattr and, inside
+> it, at most one more nest (LINK_XSTATS_TYPE_BRIDGE, resumed at a VLAN
+> index). Everything below that is whole. Nothing at those two levels
+> repeats within one message; the only repeated type anywhere is
+> BRIDGE_XSTATS_VLAN, a leaf two levels down. So:
 
-> ---
->   net/hsr/hsr_slave.c | 11 +++++++----
->   1 file changed, 7 insertions(+), 4 deletions(-)
-> 
-> diff --git a/net/hsr/hsr_slave.c b/net/hsr/hsr_slave.c
-> index 01c73b4b50ddd..a546f70f9cc8b 100644
-> --- a/net/hsr/hsr_slave.c
-> +++ b/net/hsr/hsr_slave.c
-> @@ -149,9 +149,12 @@ static int hsr_portdev_setup(struct hsr_priv *hsr, struct net_device *dev,
->   	int res;
->   
->   	/* Don't use promiscuous mode for offload since L2 frame forward
-> -	 * happens at the offloaded hardware.
-> +	 * happens at the offloaded hardware. The interlink port never
-> +	 * gets forwarding offload (RedBox forwarding to/from it is done
-> +	 * by this driver), so it still needs promiscuous mode to receive
-> +	 * frames addressed to hsr_dev's MAC rather than its own.
->   	 */
-> -	if (!port->hsr->fwd_offloaded) {
-> +	if (!port->hsr->fwd_offloaded || port->type == HSR_PT_INTERLINK) {
->   		res = dev_set_promiscuity(dev, 1);
->   		if (res)
->   			return res;
-> @@ -176,7 +179,7 @@ static int hsr_portdev_setup(struct hsr_priv *hsr, struct net_device *dev,
->   fail_rx_handler:
->   	netdev_upper_dev_unlink(dev, hsr_dev);
->   fail_upper_dev_link:
-> -	if (!port->hsr->fwd_offloaded)
-> +	if (!port->hsr->fwd_offloaded || port->type == HSR_PT_INTERLINK)
->   		dev_set_promiscuity(dev, -1);
->   
->   	return res;
-> @@ -240,7 +243,7 @@ void hsr_del_port(struct hsr_port *port)
->   		netdev_update_features(master->dev);
->   		dev_set_mtu(master->dev, hsr_get_max_mtu(hsr));
->   		netdev_rx_handler_unregister(port->dev);
-> -		if (!port->hsr->fwd_offloaded)
-> +		if (!port->hsr->fwd_offloaded || port->type == HSR_PT_INTERLINK)
->   			dev_set_promiscuity(port->dev, -1);
->   		if (port->type == HSR_PT_SLAVE_A || port->type == HSR_PT_SLAVE_B)
->   			vlan_vids_del_by_dev(port->dev, master->dev);
-> 
-> base-commit: 8d6cd188508513503805c156165de38e4e4a8615
+Thanks for the insights on the kernel internals, I lack this
+knowledge, so yes, the original work was too generic.
 
+>
+> - ipstats_rta_count() and the na/nb test guard a layout that does not
+>   exist. Drop them.
+>
+> - IPSTATS_MERGE_REFUSE guards a leaf on both sides, which idxattr
+>   gating rules out. If it ever happened, copying both and letting
+>   parse_rtattr() keep the first is no worse than a warning plus
+>   formatting the halves separately. Drop it, and the -EOPNOTSUPP
+>   fallback in ipstats_dump_one() with it.
+>
+> - With those gone the enum and ipstats_merge_classify() collapse into
+>   one condition and the switch into an if.
+>
+> Something like this. Checked against synthetic offload, bridge VLAN
+> and empty-nest splits, same bytes as your version:
+>
+> /* The kernel resumes a split dump by reopening the top-level nest it
+>  * stopped in and, for bridge xstats, the nest inside that. Everything
+>  * below is whole and nothing at those two levels repeats, so join the
+>  * two halves at the boundary and copy the rest.
+>  */
+> static int ipstats_merge_attrs(struct nlmsghdr *n, int maxlen,
+>                                struct rtattr *a, int alen,
+>                                struct rtattr *b, int blen, int depth)
+> {
+>         struct rtattr *last =3D NULL, *rta, *nest;
+>         unsigned short type;
+>         int rem;
+>
+>         /* type 0 is 64-bit padding, possibly on either side of the split=
+ */
+>         for (rta =3D a, rem =3D alen; RTA_OK(rta, rem); rta =3D RTA_NEXT(=
+rta, rem))
+>                 if (rta->rta_type)
+>                         last =3D rta;
+>         while (RTA_OK(b, blen) && !b->rta_type)
+>                 b =3D RTA_NEXT(b, blen);
+>
+>         if (depth =3D=3D 2 || !last || !RTA_OK(b, blen))
+>                 goto copy;
+>         type =3D last->rta_type & NLA_TYPE_MASK;
+>         if (type !=3D (b->rta_type & NLA_TYPE_MASK) ||
+>             (!depth && (type > IFLA_STATS_MAX || !ipstats_stat_ifla_max[t=
+ype])))
+>                 goto copy;
+>
+>         if (addraw_l(n, maxlen, a, (char *)last - (char *)a))
+>                 return -EMSGSIZE;
+>         nest =3D addattr_nest(n, maxlen, last->rta_type);
+>         if (ipstats_merge_attrs(n, maxlen, RTA_DATA(last), RTA_PAYLOAD(la=
+st),
+>                                 RTA_DATA(b), RTA_PAYLOAD(b), depth + 1))
+>                 return -EMSGSIZE;
+>         addattr_nest_end(n, nest);
+>         b =3D RTA_NEXT(b, blen);
+>         return addraw_l(n, maxlen, b, blen) ? -EMSGSIZE : 0;
+>
+> copy:
+>         if (addraw_l(n, maxlen, a, alen) || addraw_l(n, maxlen, b, blen))
+>                 return -EMSGSIZE;
+>         return 0;
+> }
+>
+> The dump side is then: flush pending if the ifindex changed, then
+> either copy the message or merge it into pending. No need for the
+> err out-parameter or a separate ipstats_msg_merge().
+>
+> Nits:
+>
+> - addattr_nest() never returns NULL, those checks are dead.
+>
+> - Mask rta_type with NLA_TYPE_MASK before comparing or indexing.
+>   HW_S_INFO already carries NLA_F_NESTED; your >=3D ARRAY_SIZE test
+>   would refuse the merge if a top-level nest ever grew the flag.
+
+This is actually related to an additional question I wanted to raise
+later. The type is used to compare types, which should not be
+different, and also to index ipstats_stat_ifla_max[], and the
+top-level type is unflagged AFAIK. But I agree, that it better to mask
+the type right now.
+
+And my related question is the following. While preparing the patch we
+noticed that parse_rtattr() pass 0 flag to parse_rtattr_flags(), so
+the type is not masked there. And it seems to me that it is better to
+apply the mask there too, if there is no strong reasons not to do it.
+Because it would allow the kernel to add the nested flag the top level
+attribute eventually, while now it cannot do that. Claude refered to
+commit 0da4cfaa where Petr added masking to rta_parse_nested() only
+and suggested that he might know the reason why the type is not masked
+in other places.
+
+>
+> - calloc -> malloc, addraw_l() zeroes the padding.
+>
+> - The cover letter bullets are the comment that belongs above the
+>   merge function, in three lines.
+>
+> Patch 2 is fine on its own.
+>
+> Unrelated, for Petr/Ido: in rtnl_fill_statsinfo() when
+> nla_nest_start_noflag() itself fails, the message is cancelled
+> (prividx did not move) but idxattr stays set, so the retry for that
+> netdev skips IFLA_STATS_LINK_64.
