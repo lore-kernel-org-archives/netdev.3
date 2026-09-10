@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4CB7545DAC
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9BA357D22F
 	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 20:03:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789070603; cv=none; b=CtkxwwWMHd6n2z6pjDNqPNHVBTddWF30m4bTvHIPkAY7SUwst0xHKnqG1fDEyujhVf0CHsXLNicM9FcwvuTZXmf4VBYiTlrjb9Ovm0qp7iXQKfvxOOtfU5JiCHcxvcr7bMR6hwN+Y3FxJhTK8qchs3Ux71XCU9uq6vHQJagdYtk=
+	t=1789070604; cv=none; b=UGXS0F+7qddg4sQfkM3jRxOl8u7wdEYospn3HvdWgsZXCNmdC2I1cnOABllOa1FYsNLtD/PtKQoYQ36BggEbZCkqZnYxCaYiT+FYweypkKfWsZX+ZsF0Img9pir4lpQGnKLnTshWAFX8nfzA7WCD2TsCRK8LQLIVDgA3sJ0ejj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789070603; c=relaxed/simple;
-	bh=nSM4JEtwMy0XlSCwN5nbQSmNShmWwaAGsqEyPFZnno8=;
+	s=arc-20240116; t=1789070604; c=relaxed/simple;
+	bh=Cxl04WvO+nVrAEjru5lQG1bwdm7V4ZJnuJYZE5Uz320=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kShePjt2irAsfjTxdaBp5RLH9SlYJT5ber4kOJkSO8HfRhf/iRe0dCRgTVv0JGqN4S/q/l5tDr/66vyOAP0n8bbYywSME9PvDDpQHHrh2f6DxnDTPtHJaOnyOiT8AxHAHkUe2trUBq7jOhcn7NoxIDc565TSn/snDSmM+MGch8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NWsdMzrS; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=Kj+BOuhYfwVv76mc3snkecY/8VX53uJmkjPyJCcBVfVu8cctssAc+Z4gRPHfZdL2YYo3GxHbkeNE1ngzev0DUgTNoHmpZEv+/JdsOR2cWkVM82E0xOazujdOEJr7kbqO6zeVdCC2UkARoEqT8cSDS3Vms10hc/EUmqTYWUHJqec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n4mG2L2C; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NWsdMzrS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F15441F00899;
-	Thu, 10 Sep 2026 20:03:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n4mG2L2C"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70B2F1F000FF;
+	Thu, 10 Sep 2026 20:03:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1789070602;
-	bh=4SRc/BcUYhKtTStd+FJEAvnJx0WdtWJ2s7wdEZSM4Rw=;
+	bh=1L0SD5tsj/rMqHbCYn27/ZUjHexXZNGzbZuG2dIyMII=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=NWsdMzrSubO/RiZtJwa9g+OjXIEFy+ogDQPtxgzicR6PJpDU0+G6+MEdE77BK8OPO
-	 ZTnMXTiwMU90iYCbgAVgY4/idnBTsRv0zVFeUzRr8KidruA+7QgT6KZZ80GwTMx9L1
-	 tIeXIE6FcwHkHEeiL7dUaO/RiSUJ7TOZO5GFjyumNAfJmaGZBZoV1xb6gq/msQA+e0
-	 Qm1+EvIrdgX1vbJWs4AdPnlyxufwuxf7lILUWHyTlowknGXIUni6BSgGGq/FhTPR9A
-	 +4BP51sHdf1pQisvVKf5cbeK4D3ho3o8gPeOzgr49sagoxDf06xLGx4gOufotFuSb3
-	 Z/Y8P5AlNa0JQ==
+	b=n4mG2L2CPLv4ouyDCNceN3Vr17tSj+VxEeJU36zswTUn2Ol0ra18C7zd0lQfVjoIc
+	 y0D5HIYRU0lUoDNoLrxtr4RpEEiZqL08kLHbkLOehFm91KYf5YWUbjlRoKMy4o5UNm
+	 F/7f2Fnpxv0gIIY+Tjcn0xEisFvwb/JkDNlVrhth3OMZy4SKfI8nTBSbpi8KeAxHuq
+	 Yolf4qBcSnkNyoCS3ckvbhiU5GVNzPXGgFY+6TeyOijk6etiR6iS7VizsObKa/IV0F
+	 kJMWcTRTKZJfNTFF8G2G2U16QGLVod1fOWd9ugrszRDHh2y/zGAlArG48eK4dwsUmq
+	 v9d0VacpYbukg==
 From: Jakub Kicinski <kuba@kernel.org>
 To: davem@davemloft.net
 Cc: netdev@vger.kernel.org,
@@ -38,9 +38,9 @@ Cc: netdev@vger.kernel.org,
 	moshe@nvidia.com,
 	donald.hunter@gmail.com,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net-next 3/8] netlink: specs: devlink: describe DEVLINK_ATTR_NESTED_DEVLINK
-Date: Thu, 10 Sep 2026 13:03:07 -0700
-Message-ID: <20260910200312.2665792-4-kuba@kernel.org>
+Subject: [PATCH net-next 4/8] netlink: specs: devlink: complete the port function nest
+Date: Thu, 10 Sep 2026 13:03:08 -0700
+Message-ID: <20260910200312.2665792-5-kuba@kernel.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260910200312.2665792-1-kuba@kernel.org>
 References: <20260910200312.2665792-1-kuba@kernel.org>
@@ -52,70 +52,95 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The "# TODO: fill in the attributes in between" gap before selftests
-(176) hides exactly one attribute, DEVLINK_ATTR_NESTED_DEVLINK (175).
-devlink_nl_fill() calls devlink_nl_nested_fill() unconditionally, which
-emits one of these per entry in devlink->nested_rels (mlx5, ice).
+dl-port-function stops at caps, but the nest also carries
+DEVLINK_PORT_FN_ATTR_DEVLINK (5) and DEVLINK_PORT_FN_ATTR_MAX_IO_EQS (6)
+both put by devlink_nl_port_function_attrs_put() on every port-get
+do and dump. YNL raises
 
-Unlike the other TODO gaps this is a single attribute of an already
-modelled type, so just fill it in.
+  Space 'dl-port-function' has no attribute with value '6'
+
+for any port reporting max_io_eqs or a nested devlink handle,
+i.e. for mlx5 SFs and VFs.
+
+Commit 5af3e3876d56 ("devlink: Support setting max_io_eqs") added the
+uAPI value and the hand written policy but never touched the spec.
+
+Add the missing attributes, subsequent commit reworks the code
+to use the YNL-generated policy.
 
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
- Documentation/netlink/specs/devlink.yaml | 23 +++++++++++++++++++----
- 1 file changed, 19 insertions(+), 4 deletions(-)
+ Documentation/netlink/specs/devlink.yaml |  8 ++++++++
+ net/devlink/netlink_gen.h                |  3 ++-
+ net/devlink/netlink_gen.c                | 11 ++++++++++-
+ 3 files changed, 20 insertions(+), 2 deletions(-)
 
 diff --git a/Documentation/netlink/specs/devlink.yaml b/Documentation/netlink/specs/devlink.yaml
-index 0e0791d4e2c7..7ec52f81c323 100644
+index 7ec52f81c323..962789dfbfac 100644
 --- a/Documentation/netlink/specs/devlink.yaml
 +++ b/Documentation/netlink/specs/devlink.yaml
-@@ -858,13 +858,14 @@ doc: Partial family for Devlink.
-         name: linecard-supported-types
-         type: nest
-         nested-attributes: dl-linecard-supported-types
--
--      # TODO: fill in the attributes in between
--
+@@ -992,6 +992,14 @@ doc: Partial family for Devlink.
+         type: bitfield32
+         enum: port-fn-attr-cap
+         enum-as-flags: true
 +      -
-+        name: nested-devlink
++        name: devlink
 +        type: nest
-+        multi-attr: true
 +        nested-attributes: dl-nested-devlink
-       -
-         name: selftests
-         type: nest
--        value: 176
-         nested-attributes: dl-selftest-id
-       -
-         name: rate-tx-priority
-@@ -1351,6 +1352,19 @@ doc: Partial family for Devlink.
-       -
-         name: index
++        doc: Handle of the peer devlink instance instantiated for this function.
++      -
++        name: max-io-eqs
++        type: u32
  
-+  -
-+    name: dl-nested-devlink
-+    subset-of: devlink
-+    attributes:
-+      -
-+        name: bus-name
-+      -
-+        name: dev-name
-+      -
-+        name: index
-+      -
-+        name: netns-id
+   -
+     name: dl-dpipe-tables
+diff --git a/net/devlink/netlink_gen.h b/net/devlink/netlink_gen.h
+index a70e0e4769aa..75572a9a23f6 100644
+--- a/net/devlink/netlink_gen.h
++++ b/net/devlink/netlink_gen.h
+@@ -13,8 +13,9 @@
+ #include <uapi/linux/devlink.h>
+ 
+ /* Common nested types */
++extern const struct nla_policy devlink_dl_nested_devlink_nl_policy[DEVLINK_ATTR_INDEX + 1];
+ extern const struct nla_policy devlink_dl_parent_dev_nl_policy[DEVLINK_ATTR_INDEX + 1];
+-extern const struct nla_policy devlink_dl_port_function_nl_policy[DEVLINK_PORT_FN_ATTR_CAPS + 1];
++extern const struct nla_policy devlink_dl_port_function_nl_policy[DEVLINK_PORT_FN_ATTR_MAX_IO_EQS + 1];
+ extern const struct nla_policy devlink_dl_rate_tc_bws_nl_policy[DEVLINK_RATE_TC_ATTR_BW + 1];
+ extern const struct nla_policy devlink_dl_selftest_id_nl_policy[DEVLINK_ATTR_SELFTEST_ID_FLASH + 1];
+ 
+diff --git a/net/devlink/netlink_gen.c b/net/devlink/netlink_gen.c
+index 30f01901b587..17d1edcdb935 100644
+--- a/net/devlink/netlink_gen.c
++++ b/net/devlink/netlink_gen.c
+@@ -46,17 +46,26 @@ devlink_attr_param_type_validate(const struct nlattr *attr,
+ }
+ 
+ /* Common nested types */
++const struct nla_policy devlink_dl_nested_devlink_nl_policy[DEVLINK_ATTR_INDEX + 1] = {
++	[DEVLINK_ATTR_BUS_NAME] = { .type = NLA_NUL_STRING, },
++	[DEVLINK_ATTR_DEV_NAME] = { .type = NLA_NUL_STRING, },
++	[DEVLINK_ATTR_INDEX] = NLA_POLICY_FULL_RANGE(NLA_UINT, &devlink_attr_index_range),
++	[DEVLINK_ATTR_NETNS_ID] = { .type = NLA_U32, },
++};
 +
- operations:
-   enum-model: directional
-   list:
-@@ -1376,6 +1390,7 @@ doc: Partial family for Devlink.
-             - index
-             - reload-failed
-             - dev-stats
-+            - nested-devlink
-       dump:
-         reply: *get-reply
+ const struct nla_policy devlink_dl_parent_dev_nl_policy[DEVLINK_ATTR_INDEX + 1] = {
+ 	[DEVLINK_ATTR_BUS_NAME] = { .type = NLA_NUL_STRING, },
+ 	[DEVLINK_ATTR_DEV_NAME] = { .type = NLA_NUL_STRING, },
+ 	[DEVLINK_ATTR_INDEX] = NLA_POLICY_FULL_RANGE(NLA_UINT, &devlink_attr_index_range),
+ };
  
+-const struct nla_policy devlink_dl_port_function_nl_policy[DEVLINK_PORT_FN_ATTR_CAPS + 1] = {
++const struct nla_policy devlink_dl_port_function_nl_policy[DEVLINK_PORT_FN_ATTR_MAX_IO_EQS + 1] = {
+ 	[DEVLINK_PORT_FUNCTION_ATTR_HW_ADDR] = { .type = NLA_BINARY, },
+ 	[DEVLINK_PORT_FN_ATTR_STATE] = NLA_POLICY_MAX(NLA_U8, 1),
+ 	[DEVLINK_PORT_FN_ATTR_OPSTATE] = NLA_POLICY_MAX(NLA_U8, 1),
+ 	[DEVLINK_PORT_FN_ATTR_CAPS] = NLA_POLICY_BITFIELD32(15),
++	[DEVLINK_PORT_FN_ATTR_DEVLINK] = NLA_POLICY_NESTED(devlink_dl_nested_devlink_nl_policy),
++	[DEVLINK_PORT_FN_ATTR_MAX_IO_EQS] = { .type = NLA_U32, },
+ };
+ 
+ const struct nla_policy devlink_dl_rate_tc_bws_nl_policy[DEVLINK_RATE_TC_ATTR_BW + 1] = {
 -- 
 2.55.0
 
