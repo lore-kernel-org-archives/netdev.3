@@ -1,492 +1,287 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBB89492E4F;
-	Thu, 10 Sep 2026 14:44:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0971A48664A
+	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 14:49:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789051500; cv=none; b=WDcdI+alZwfV2XvhPuWsy0O8Kyy/wwqU3+uSyTmI7SgabJ+XYaB8YLi4CEsludzYIasTEZSo1GEo2bC5if0ZYFA00auTS2XV8iCNRLOuPA0cKM63E18UOTMhzNv8LdUdzN5dNNm/xhlU3V0aUCwI3m9erChJ3ieBSWSCmZtGIFc=
+	t=1789051796; cv=none; b=vCmtMwv2nkFWJRhhULC2tYCvK4kdxb9yZtqj0oZ5PgwRuRSJBlxx/ZQj4LFDPjRF5Lt9DyuAIAUwGZx/USQhkR0Jroj8VbzCPmTu240zWPC0CykEmpvTUpzeP4ihySX7J1WoM3NyLfBY/nH0C6yqGNjXnzwuXAoThsfSDRoeaEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789051500; c=relaxed/simple;
-	bh=AV72FfqTaqVI2T2BE1cdGWX1TP6eUrru3swJh5lKEgg=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=cICqDC26bElen3TI7viL1a6J4LpS6rwMiT+lAwBOytww07Csc/Yjw7VA0pMA205U8mZfTsdqnVNsEfytiV35JZOHIhqDS7HEpNNskh5IYFYXVtYg2DDYGxj84ldib8Rh+T781uZhpYAMBFswh0jo6JSbgUBR5VRGTlCxuLgcmK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LD2ep8D9; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789051796; c=relaxed/simple;
+	bh=+yJRMNvcC4IN4sL3nZkMzTwHcfwGR6nv0JHSeulh/8M=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Y+jBDcpnzVCYzLIud7pJMuTdW/g9t59IV6pRyT7M+J7NLZss4b4seshA4YL+dcQAgGhDZ6BM11MExjGMy+tuEUkQ0UiGs0dKpvfiuKMxFZsO24cwK0n7RAxqZfKm+pLOQACwwD+OfwDw1WumfgRHVyFr7RjBvEBZev85VMVapQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=IEXyCYrv; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=FeCn1xCN; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=c0o+zGe8; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=3BSI9/hq; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LD2ep8D9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 336C01F000FF;
-	Thu, 10 Sep 2026 14:44:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789051497;
-	bh=wBdNsQTfyKRm4ndEj/A8KvuBz0V4hCgtrxNafl1++NQ=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=LD2ep8D929M/G7Bfmn75ksgX3BH03bZOwBHcx3xa/h4y5tgWNqzcmAQh9r2QYTRgj
-	 SediO9YXqJG8ws2o67zMfKOW9Xtng9issmmQ0qE2f+VxFYkpXcmdVPNdtS/vvoVTzH
-	 nAzD5nSJoQXbDjT4o65aDYlN6yOccQvc3nN7AejoMvZpedjTltzyXl1BSGYiDrBj6q
-	 V7qZdFoK4meLMkLJvUQfepoiTCc1umfdRBjHQcNBu1jklOe5VhppIqTwv8iXTeFArh
-	 ATM7AjEEJwNefH3Rjurpa2qv3yZJUe+pFs08+59AKj019McqzKZ5zRMjwgwSuHvszo
-	 CJZw1/uabJFrg==
-Subject: Re: [PATCH net-next v2 4/4] net: macb: Add TSN CBS TC offload support
-From: netdev-bot+sashiko@kernel.org
-To: vineeth.karumanchi@amd.com
-Cc: theo.lebrun@bootlin.com, conor.dooley@microchip.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- git@amd.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Thu, 10 Sep 2026 14:44:56 +0000
-Message-ID: <178905149676.219967.5874263463845015629@kernel.org>
-In-Reply-To: <20260909142056.1433875-5-vineeth.karumanchi@amd.com>
-References: <20260909142056.1433875-5-vineeth.karumanchi@amd.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="IEXyCYrv";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="FeCn1xCN";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="c0o+zGe8";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="3BSI9/hq"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id C207E21B64;
+	Thu, 10 Sep 2026 14:49:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1789051788; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=ewDA92rRPajPzk464++eraFrXGFY2rnlu76t49q5a8o=;
+	b=IEXyCYrv4TC6Z0YIKQEV0OmopwKU24iMqtSqCgb8OrEgSBl7jriRqCC6tCm7bEQ5noOYNs
+	bSEUgfsyKbj6htimDV39Qi4IBBvlyytvvSXfa0ZZW86A6lAfo6gtfSnd/DPy3b9eT+cDBi
+	OhaGSHsqI3c0zOEej8RZAt4kSS60txo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1789051788;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=ewDA92rRPajPzk464++eraFrXGFY2rnlu76t49q5a8o=;
+	b=FeCn1xCNX3lLVgf6fcWYwP8fjF2BvBt+VgWoZYFgXDhsddue5szzrXn/NV+Gs49HTX6NXD
+	svWqH25z95092aBA==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1789051784; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=ewDA92rRPajPzk464++eraFrXGFY2rnlu76t49q5a8o=;
+	b=c0o+zGe8fwE0SU0iWDH2AgupaAjg8puFZmNzfK8JA1/c1QbWMKqCPRYYTWWSbsANZswGHn
+	qZjNhRFImN2o5qvhAthXqJuT3DlX8+mms4Bi14q6Q/ZNU2rZAwbwIde4GiH0l52TQPJOCQ
+	aGUgLYli31qVjQkZrabXkQtbgvdOw7o=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1789051784;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=ewDA92rRPajPzk464++eraFrXGFY2rnlu76t49q5a8o=;
+	b=3BSI9/hqts8PEa5P9eYpRYDNP34a/L+gWOYEi3/HwZwVZN3HvPgomXrsxcDJFOrLPfMl22
+	gKdL9exyQQeamxCQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3795D13180;
+	Thu, 10 Sep 2026 14:49:44 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id H4vLCojDomogZwAAD6G6ig
+	(envelope-from <fmancera@suse.de>); Thu, 10 Sep 2026 14:49:44 +0000
+From: Fernando Fernandez Mancera <fmancera@suse.de>
+To: netdev@vger.kernel.org
+Cc: horms@kernel.org,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	davem@davemloft.net,
+	Fernando Fernandez Mancera <fmancera@suse.de>
+Subject: [PATCH 00/13 net-next] Allow compiling an IPv6-only kernel network stack
+Date: Thu, 10 Sep 2026 16:48:25 +0200
+Message-ID: <20260910144914.8025-1-fmancera@suse.de>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Level: 
+X-Spam-Score: -2.80
+X-Spam-Flag: NO
+X-Spamd-Result: default: False [-2.80 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_MISSING_CHARSET(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-0.997];
+	MIME_GOOD(-0.10)[text/plain];
+	RCPT_COUNT_SEVEN(0.00)[7];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:mid];
+	RCVD_COUNT_TWO(0.00)[2];
+	RCVD_TLS_ALL(0.00)[]
 
-Thank you for your contribution! Sashiko AI review found 7 potential
-issue(s) to consider:
+The primary goal of this patch series is to enable the compilation of an
+IPv6-only kernel by decoupling the core networking infrastructure from the IPv4
+protocol.
 
-Critical: 0 · High: 0 · Medium: 6 · Low: 1
+Historically, IPv4 has been intertwined with the generic socket and transport
+layers. By untangling these dependencies, this series allows systems to be
+built with CONFIG_IPV4 disabled. This configuration targets strict IPv6-only
+deployments, constrained environments, and specialized appliances where
+removing the IPv4 subsystem reduces the network attack surface.
 
-- [Medium] macb_cbs_add() (drivers/net/ethernet/cadence/macb_main.c:4519)
-  bakes the instantaneous link speed into the value written to…
-- [Medium] macb_cbs_add() consumes only qopt->queue, qopt->enable and
-  qopt->idleslope from struct tc_cbs_qopt_offload and returns 0,…
-- [Medium] The CBS disable request can be rejected before it reaches
-  macb_cbs_destroy(), leaving the CBS enable bit and a stale idleslope…
-- [Medium] The CBS enable bits and idleslope registers programmed by
-  macb_cbs_add() are never cleared on interface down and never…
-- [Medium] macb_cbs_add() and macb_cbs_destroy() perform MMIO
-  (gem_readl/gem_writel of GEM_CBS_CONTROL at…
-- [Medium] Incorrect queue mapping allows configuring CBS on the base
-  best-effort queue on 1- or 2-queue devices.
-- [Low] macb_cbs_add() samples the link speed with
-  phylink_ethtool_ksettings_get() at macb_main.c:4538 (outside bp->lock)…
+To achieve this, subsystems with hard dependencies on IPv4 were modified to use
+conditional compilation guards. When CONFIG_IPV4 is disabled, the affected
+packet manipulation routines and routing hooks evaluate to stubs returning
+standard error codes. The INDIRECT_CALL_INET macros within the transport layer
+were adapted to safely bypass IPv4 function pointers without penalizing the
+dual-stack fast paths. In addition, there has been several code splits for UDP,
+RAW, ICMP or Ping isolating the IPv4 specific code.
 
---
+Finally, CONFIG_IPV4 is exposed in Kconfig as an explicit boolean, defaulting
+to 'y' to preserve existing configurations.
 
-net: macb: Add TSN CBS TC offload support
+The bloat-o-meter diff for x86_64 with dualstack and IPv6 disabled:
+   
+   text    data     bss     dec     hex filename 
+31211950        8946390 1121076 41279416        275dfb8 vmlinux.dual 
+27464679        8008670 1069040 36542389        22d97b5 vmlinux.ipv6
 
-This adds Credit-Based Shaper (IEEE 802.1Qav) TC offload for the two
-highest-priority GEM queues, computing the idleslope register value from
-the current link speed and arming the per-queue CBS enable bit. A few
-questions about the link-speed dependency, the ignored qopt fields and
-the interaction with runtime PM / suspend below.
+add/remove: 52/25057 grow/shrink: 58/565 up/down: 937258/-4632671 (-3695413)
 
-> diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-> index 67150ff03066..00c1c619dea8 100644
-> --- a/drivers/net/ethernet/cadence/macb_main.c
-> +++ b/drivers/net/ethernet/cadence/macb_main.c
+Performance testing:
 
-[ ... ]
+Basic TCP performance validation was conducted using iperf3 on an AMD Ryzen 9
+9950X between two bridged virtual machines. These benchmarks verify that there
+are no obvious performance regressions.
 
-> @@ -4492,6 +4496,116 @@ static int macb_setup_taprio(struct net_device *netdev,
->  	return err;
->  }
->  
-> +static int macb_cbs_get_queue_params(struct macb *bp, u8 queue_num,
-> +				     u32 *enable_bit, u32 *idleslope_reg)
-> +{
+Kernel / Configuration            Traffic Type    Offloads ON     Offloads OFF
+-------------------------------------------------------------------------------
+net-next (Dual-Stack Baseline)     IPv4            20.8 Gbps       7.22 Gbps
+net-next (Dual-Stack Baseline)     IPv6            20.4 Gbps       7.55 Gbps
+net-next (IPv4-Only Baseline)      IPv4            20.9 Gbps       7.86 Gbps
 
-[ ... ]
+Patched (Dual-Stack)               IPv4            21.8 Gbps       7.77 Gbps
+Patched (Dual-Stack)               IPv6            21.7 Gbps       7.35 Gbps
+Patched (IPv4-Only)                IPv4            20.9 Gbps       7.91 Gbps
+Patched (IPv6-Only)                IPv6            21.1 Gbps       8.06 Gbps
 
-> +static int macb_cbs_add(struct net_device *netdev,
-> +			struct tc_cbs_qopt_offload *qopt)
-> +{
-> +	u32 enable_bit, idleslope, speed_kbps, ctrl, idleslope_reg;
-> +	struct ethtool_link_ksettings kset = {};
-> +	struct macb *bp = netdev_priv(netdev);
-> +	int err;
-> +
-> +	err = macb_cbs_get_queue_params(bp, qopt->queue, &enable_bit, &idleslope_reg);
-> +	if (err) {
-> +		netdev_err(netdev, "CBS: Queue %d not eligible (only top 2 queues support CBS)\n",
-> +			   qopt->queue);
-> +		return -EINVAL;
-> +	}
-> +
-> +	/* idleslope is calibrated for the current link speed; CBS is not
-> +	 * reprogrammed on link-speed changes, so it must be reconfigured
-> +	 * if the link speed changes.
-> +	 */
-> +	phylink_ethtool_ksettings_get(bp->phylink, &kset);
+Follow-up for this series:
 
-[Severity: Medium]
-Is there anything that makes the "must be reconfigured if the link speed
-changes" requirement in this comment actually happen?
+Future work decoupled from this initial series includes expanding Kconfig
+adaptations across remaining kernel subsystems to support an IPv6-only
+environment. This includes patches for network bonding modes that assume
+dual-stack availability and analyze Netfilter nftables expressions and
+connection tracking to ensure pure IPv6 operations are fully independent.
 
-Grepping the tree, GEM_CBS_CONTROL and GEM_CBS_IDLESLOPE_Q_A/Q_B are
-referenced only from macb_cbs_add() and macb_cbs_destroy().
-macb_mac_link_up() reprograms NCFGR SPD/GBE for the new speed but leaves
-the CBS registers alone, and on the core side cbs_dev_notifier() ->
-cbs_set_port_rate() only refreshes the software port_rate on NETDEV_UP /
-NETDEV_CHANGE, it never re-issues ndo_setup_tc(TC_SETUP_QDISC_CBS).
+The main burden the series introduce is the noise in git which will be
+cumbersome when trying to identify breaking commits or blames and the
+risks of regressions.
 
-macb_cbs_add() also keeps no copy of qopt in struct macb, so is there any
-data left to replay even if such a hook were added?
+Fernando Fernandez Mancera (13):
+  net: ipv4: introduce CONFIG_IPV4 to decouple the IPv4 stack
+  net: core: add IPv4 fallback stubs and guards for CONFIG_IPV4=n
+  net: inet: relocate ip_generic_getfrag and guard IPv4 socket logic
+  net: tcp: move protocol agnostic TCP functions out of tcp_ipv4.c
+  net: raw: split IPv4 specific logic into raw_ipv4.c
+  net: udp: split IPv4 specific logic into udp_ipv4.c
+  net: icmp: split IPv4 specific logic into icmp_ipv4.c
+  net: ping: split IPv4 specific logic into ping_ipv4.c
+  net: fib: split common nexthop logic to fib_core.c
+  net: tunnel: guard IPv4 tunnel functions with CONFIG_IPV4
+  netfilter: ipv4: guard ip_route_me_harder() with CONFIG_IPV4
+  net: ipv4: disable IPv4-only sysctls when CONFIG_IPV4=n
+  net: ipv4: make CONFIG_IPV4 boolean
 
-For standard MACB the *unit* of the register is chosen by the speed
-(kset.base.speed >= 1000 selects bytes/sec vs nibbles/sec), so after a
-1000 -> 100 Mbit renegotiation the register still holds a bytes/sec value
-that hardware now consumes as nibbles/sec at one tenth of the port rate,
-while the enable bit stays armed and userspace still sees the qdisc as
-offloaded. Would deriving the port rate from the qopt parameters the way
-stmmac's tc_setup_cbs() does avoid the dependency entirely?
-
-  port_transmit_rate_kbps = qopt->idleslope - qopt->sendslope;
-
-Related: rejecting speed 0 / SPEED_UNKNOWN means CBS cannot be installed
-at all while the link is down. Is that intended?
-
-> +
-> +	if (!kset.base.speed || kset.base.speed == SPEED_UNKNOWN) {
-> +		netdev_err(netdev, "CBS: Invalid link speed\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	speed_kbps = kset.base.speed * 1000;
-
-[Severity: Low]
-Can the speed sampled here change before the register write below?
-
-The phylink_ethtool_ksettings_get() call is outside bp->lock, and the
-idleslope is programmed later under scoped_guard(spinlock_irqsave,
-&bp->lock). phylink_resolve() runs from the workqueue holding only
-pl->phydev_mutex, phy->lock and pl->state_mutex - it does not take RTNL -
-and calls phylink_link_up() -> macb_mac_link_up(), which changes the MAC
-speed under bp->lock:
-
-  macb_mac_link_up()
-      spin_lock_irqsave(&bp->lock, flags);
-      ctrl = macb_or_gem_readl(bp, NCFGR);
-      ctrl &= ~(MACB_BIT(SPD) | MACB_BIT(FD));
-
-So RTNL held by the qdisc path does not exclude a renegotiation landing
-between the read of kset.base.speed and the write of idleslope_reg,
-leaving a value scaled with the 1G factor on a 100 Mbit link. Should the
-speed be sampled inside the same critical section as the programming, or
-re-checked afterwards?
-
-> +
-> +	if (qopt->idleslope <= 0 || (u32)qopt->idleslope > speed_kbps) {
-> +		netdev_err(netdev, "CBS: invalid idleslope %d (must be 1..%u kbps)\n",
-> +			   qopt->idleslope, speed_kbps);
-> +		return -EINVAL;
-> +	}
-
-[Severity: Medium]
-Should qopt->hicredit, qopt->locredit and qopt->sendslope be rejected
-rather than silently dropped?
-
-Only qopt->queue, qopt->enable and qopt->idleslope are consumed here, and
-0 is returned; those three field names do not appear anywhere in
-macb_main.c. On the core side cbs_enable_offload() fills all four shaper
-parameters:
-
-  cbs.hicredit = opt->hicredit;
-  cbs.locredit = opt->locredit;
-  cbs.idleslope = opt->idleslope;
-  cbs.sendslope = opt->sendslope;
-
-and on a 0 return cbs_change() stores them and cbs_dump() echoes them
-back, so "tc qdisc show" advertises credit limits and a sendslope that
-hardware was never configured with.
-
-sendslope in particular carries the port transmit rate in this ABI
-(sendslope = idleslope - portTransmitRate). Would returning -EOPNOTSUPP
-with an extack for the unsupported fields be preferable to reporting a
-complete offload?
-
-> +
-> +	/* qopt->idleslope is in kbps; convert to the units the hardware
-> +	 * register expects:
-> +	 * - High-speed GEM: fraction of port bandwidth, scaled to the full
-> +	 *   32-bit register range
-> +	 * - Standard MACB: the register counts bytes/sec in 1G (8-bit GMII)
-> +	 *   mode and nibbles/sec in 10/100 (4-bit MII) mode, so scale kbps
-> +	 *   by 1000/8 (125) or 1000/4 (250) respectively
-> +	 */
-> +	if (bp->caps & MACB_CAPS_HIGH_SPEED)
-> +		idleslope = DIV_ROUND_UP_ULL((u64)qopt->idleslope * U32_MAX, speed_kbps);
-> +	else
-> +		idleslope = (u32)qopt->idleslope * (kset.base.speed >= 1000 ?
-> +					       MACB_CBS_PORT_RATE_1G : MACB_CBS_PORT_RATE_10_100M);
-> +
-> +	scoped_guard(spinlock_irqsave, &bp->lock) {
-> +		/* Disable CBS for the queue before updating idleslope */
-> +		ctrl = gem_readl(bp, CBS_CONTROL) & ~enable_bit;
-> +		gem_writel(bp, CBS_CONTROL, ctrl);
-> +		/* Update idleslope for the queue */
-> +		bp->macb_reg_writel(bp, idleslope_reg, idleslope);
-> +		/* Re-enable CBS for the queue with new idleslope */
-> +		gem_writel(bp, CBS_CONTROL, ctrl | enable_bit);
-> +	}
-
-[Severity: Medium]
-Can these register accesses run with the clocks already gated?
-
-The only protection is the pm_runtime_suspended(&bp->pdev->dev) sample
-taken earlier in macb_setup_tc(); no usage reference is taken here (no
-pm_runtime_resume_and_get() / pm_runtime_put_autosuspend()). macb_close()
-drops the driver's reference with pm_runtime_put() and the autosuspend
-delay is MACB_PM_TIMEOUT (100 ms), and macb_runtime_suspend() gates the
-clocks without taking bp->lock:
-
-  macb_runtime_suspend()
-      if (!(device_may_wakeup(dev)))
-              macb_clks_disable(bp->pclk, bp->hclk, bp->tx_clk, bp->rx_clk, bp->tsu_clk);
-
-so the scoped_guard(spinlock_irqsave, &bp->lock) here cannot delay the
-transition. macb_mdio_read()/macb_mdio_write() and macb_open() take
-pm_runtime_resume_and_get() before touching registers - should the CBS
-paths do the same?
-
-> +
-> +	netdev_dbg(netdev, "CBS: Configured queue %d with idleslope 0x%x\n",
-> +		   qopt->queue, idleslope);
-> +
-> +	return 0;
-> +}
-> +
-> +static void macb_cbs_destroy(struct net_device *netdev, u8 queue_num)
-> +{
-> +	struct macb *bp = netdev_priv(netdev);
-> +	u32 enable_bit, idleslope_reg;
-> +
-> +	if (macb_cbs_get_queue_params(bp, queue_num, &enable_bit, &idleslope_reg))
-> +		return;
-> +
-> +	scoped_guard(spinlock_irqsave, &bp->lock) {
-> +		gem_writel(bp, CBS_CONTROL, gem_readl(bp, CBS_CONTROL) & ~enable_bit);
-> +		bp->macb_reg_writel(bp, idleslope_reg, 0);
-> +	}
-
-[Severity: Medium]
-Does the CBS state survive an interface down/up or a suspend/resume in a
-way that was intended?
-
-macb_reset_hw(), used by macb_close() and by the non-WoL suspend path,
-clears NCR/TSR/RSR/PBUFRXCUT and the per-queue interrupts but does not
-touch GEM_CBS_CONTROL or GEM_CBS_IDLESLOPE_Q_A/Q_B, so after "ip link set
-down" the shaper stays armed with the idleslope computed for the previous
-link speed, and the next macb_open() transmits under it even with no CBS
-qdisc attached.
-
-In the other direction macb_resume() restores the state the driver tracks:
-
-  if (netdev->hw_features & NETIF_F_NTUPLE)
-          gem_writel_n(bp, ETHT, SCRT2_ETHT, bp->pm_data.scrt2);
-  ...
-  macb_init_hw(bp);
-
-but there is no CBS restore, so if the controller loses register content
-an installed, still-"offloaded" CBS qdisc silently stops shaping.
-
-Since macb_cbs_add() stores nothing in struct macb, is there any way to
-repair either direction at runtime?
-
-> +
-> +	netdev_dbg(netdev, "CBS: Disabled queue %d\n", queue_num);
-> +}
-> +
-> +static int macb_setup_cbs(struct net_device *netdev,
-> +			  struct tc_cbs_qopt_offload *qopt)
-> +{
-> +	if (qopt->enable)
-> +		return macb_cbs_add(netdev, qopt);
-> +
-> +	macb_cbs_destroy(netdev, qopt->queue);
-> +	return 0;
-> +}
-> +
-
-[ ... ]
-
-> @@ -4571,6 +4685,8 @@ static int macb_setup_tc(struct net_device *netdev, enum tc_setup_type type,
->  	switch (type) {
->  	case TC_SETUP_QDISC_MQPRIO:
->  		return macb_setup_mqprio(netdev, type_data);
-> +	case TC_SETUP_QDISC_CBS:
-> +		return macb_setup_cbs(netdev, type_data);
-
-[Severity: Medium]
-Can the disable request be dropped before it reaches this case?
-
-macb_setup_tc() returns -EOPNOTSUPP for every TC_SETUP_QDISC_CBS call,
-including enable == 0, when the device is runtime suspended:
-
-  if (unlikely(pm_runtime_suspended(&bp->pdev->dev))) {
-          netdev_err(netdev, "Device is in runtime suspend\n");
-          return -EOPNOTSUPP;
-  }
-
-so this switch is never reached and macb_cbs_destroy() never runs. A
-sequence like: offload CBS on the top queue, "ip link set ethX down"
-(macb_close() -> pm_runtime_put(), then the 100 ms autosuspend), then "tc
-qdisc del ..." ends in cbs_destroy() -> cbs_disable_offload(), which only
-warns:
-
-  err = ops->ndo_setup_tc(dev, TC_SETUP_QDISC_CBS, &cbs);
-  if (err < 0)
-          pr_warn("Couldn't disable CBS offload for queue %d\n", cbs.queue);
-
-and frees the qdisc anyway. With macb_reset_hw()/macb_init_hw() not
-touching GEM_CBS_CONTROL, does the queue stay credit-shaped with the old
-idleslope after the next "ip link set up" even though no CBS qdisc
-exists?
-
->  	case TC_SETUP_QDISC_TAPRIO:
->  		return macb_setup_taprio(netdev, type_data);
->  	default:
-
-[ ... ]
-
-> @@ -4492,6 +4496,116 @@ static int macb_setup_taprio(struct net_device *netdev,
->  	return err;
->  }
->  
-> +static int macb_cbs_get_queue_params(struct macb *bp, u8 queue_num,
-> +				     u32 *enable_bit, u32 *idleslope_reg)
-> +{
-> +	/* Queue A is highest priority (num_queues - 1) */
-> +	if (queue_num == bp->num_queues - 1) {
-> +		*enable_bit = GEM_BIT(CBS_ENABLE_QUEUE_A);
-> +		*idleslope_reg = GEM_CBS_IDLESLOPE_Q_A;
-> +		return 0;
-> +	}
-> +
-> +	/* Queue B is second highest priority (num_queues - 2) */
-> +	if (queue_num == bp->num_queues - 2) {
-> +		*enable_bit = GEM_BIT(CBS_ENABLE_QUEUE_B);
-> +		*idleslope_reg = GEM_CBS_IDLESLOPE_Q_B;
-> +		return 0;
-> +	}
-> +
-> +	return -EINVAL;
-> +}
-> +
-> +static int macb_cbs_add(struct net_device *netdev,
-> +			struct tc_cbs_qopt_offload *qopt)
-> +{
-> +	u32 enable_bit, idleslope, speed_kbps, ctrl, idleslope_reg;
-> +	struct ethtool_link_ksettings kset = {};
-> +	struct macb *bp = netdev_priv(netdev);
-> +	int err;
-> +
-> +	err = macb_cbs_get_queue_params(bp, qopt->queue, &enable_bit, &idleslope_reg);
-> +	if (err) {
-> +		netdev_err(netdev, "CBS: Queue %d not eligible (only top 2 queues support CBS)\n",
-> +			   qopt->queue);
-> +		return -EINVAL;
-> +	}
-> +
-> +	/* idleslope is calibrated for the current link speed; CBS is not
-> +	 * reprogrammed on link-speed changes, so it must be reconfigured
-> +	 * if the link speed changes.
-> +	 */
-> +	phylink_ethtool_ksettings_get(bp->phylink, &kset);
-> +
-> +	if (!kset.base.speed || kset.base.speed == SPEED_UNKNOWN) {
-> +		netdev_err(netdev, "CBS: Invalid link speed\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	speed_kbps = kset.base.speed * 1000;
-> +
-> +	if (qopt->idleslope <= 0 || (u32)qopt->idleslope > speed_kbps) {
-> +		netdev_err(netdev, "CBS: invalid idleslope %d (must be 1..%u kbps)\n",
-> +			   qopt->idleslope, speed_kbps);
-> +		return -EINVAL;
-> +	}
-> +
-> +	/* qopt->idleslope is in kbps; convert to the units the hardware
-> +	 * register expects:
-> +	 * - High-speed GEM: fraction of port bandwidth, scaled to the full
-> +	 *   32-bit register range
-> +	 * - Standard MACB: the register counts bytes/sec in 1G (8-bit GMII)
-> +	 *   mode and nibbles/sec in 10/100 (4-bit MII) mode, so scale kbps
-> +	 *   by 1000/8 (125) or 1000/4 (250) respectively
-> +	 */
-> +	if (bp->caps & MACB_CAPS_HIGH_SPEED)
-> +		idleslope = DIV_ROUND_UP_ULL((u64)qopt->idleslope * U32_MAX, speed_kbps);
-> +	else
-> +		idleslope = (u32)qopt->idleslope * (kset.base.speed >= 1000 ?
-> +					       MACB_CBS_PORT_RATE_1G : MACB_CBS_PORT_RATE_10_100M);
-> +
-> +	scoped_guard(spinlock_irqsave, &bp->lock) {
-> +		/* Disable CBS for the queue before updating idleslope */
-> +		ctrl = gem_readl(bp, CBS_CONTROL) & ~enable_bit;
-> +		gem_writel(bp, CBS_CONTROL, ctrl);
-> +		/* Update idleslope for the queue */
-> +		bp->macb_reg_writel(bp, idleslope_reg, idleslope);
-> +		/* Re-enable CBS for the queue with new idleslope */
-> +		gem_writel(bp, CBS_CONTROL, ctrl | enable_bit);
-> +	}
-> +
-> +	netdev_dbg(netdev, "CBS: Configured queue %d with idleslope 0x%x\n",
-> +		   qopt->queue, idleslope);
-> +
-> +	return 0;
-> +}
-> +
-> +static void macb_cbs_destroy(struct net_device *netdev, u8 queue_num)
-> +{
-> +	struct macb *bp = netdev_priv(netdev);
-> +	u32 enable_bit, idleslope_reg;
-> +
-> +	if (macb_cbs_get_queue_params(bp, queue_num, &enable_bit, &idleslope_reg))
-> +		return;
-> +
-> +	scoped_guard(spinlock_irqsave, &bp->lock) {
-> +		gem_writel(bp, CBS_CONTROL, gem_readl(bp, CBS_CONTROL) & ~enable_bit);
-> +		bp->macb_reg_writel(bp, idleslope_reg, 0);
-> +	}
-> +
-> +	netdev_dbg(netdev, "CBS: Disabled queue %d\n", queue_num);
-> +}
-> +
-> +static int macb_setup_cbs(struct net_device *netdev,
-> +			  struct tc_cbs_qopt_offload *qopt)
-> +{
-> +	if (qopt->enable)
-> +		return macb_cbs_add(netdev, qopt);
-> +
-> +	macb_cbs_destroy(netdev, qopt->queue);
-> +	return 0;
-> +}
-> +
->  static int macb_setup_mqprio(struct net_device *netdev,
->  			     struct tc_mqprio_qopt_offload *mqprio)
->  {
-
-[Severity: Medium]
-Does this mapping still hold on hardware with only one or two
-queues?
-
-bp->num_queues comes from the DCFG6 queue mask in macb_probe(), and
-nothing here bounds it from below. On a 2-queue GEM, bp->num_queues -
-2 == 0, so a CBS qdisc installed on queue 0 - the base best-effort
-queue - matches the Queue B branch and gets GEM_BIT(CBS_ENABLE_QUEUE_B)
-plus GEM_CBS_IDLESLOPE_Q_B programmed for it. On single-queue
-hardware the same happens one branch earlier: bp->num_queues - 1 == 0,
-so queue 0 is treated as Queue A. In both cases macb_cbs_add()
-returns 0, the qdisc is reported as offloaded, and the CBS enable bit
-is armed for a priority queue the design does not have, while the
-traffic on queue 0 is not shaped at all.
-
-The commit message says CBS is restricted to the two highest-priority
-queues "matching hardware capability", but the base queue is exactly
-the one that is not a priority queue, so the arithmetic silently
-includes it once bp->num_queues drops to 2. Should
-macb_cbs_get_queue_params() reject the request unless bp->num_queues
-is at least 3, or is the intent to gate CBS on a capability flag (the
-way MACB_CAPS_* is used elsewhere) and also refuse to advertise it in
-macb_tc_query_caps() on such devices? Whichever way, an explicit
-lower bound on bp->num_queues here would make the queue A/B
-identification safe to read.
+ drivers/infiniband/Kconfig                    |    2 +-
+ drivers/net/Kconfig                           |   24 +-
+ drivers/net/ethernet/broadcom/Kconfig         |    2 +
+ drivers/net/ethernet/chelsio/Kconfig          |    2 +-
+ drivers/net/ethernet/intel/Kconfig            |    2 +
+ drivers/net/ethernet/marvell/prestera/Kconfig |    1 +
+ .../net/ethernet/mellanox/mlx5/core/Kconfig   |    3 +-
+ drivers/net/ethernet/mellanox/mlxsw/Kconfig   |    1 +
+ drivers/net/ethernet/netronome/Kconfig        |    1 +
+ drivers/net/ethernet/qlogic/Kconfig           |    2 +
+ drivers/net/ethernet/sfc/Kconfig              |    1 +
+ drivers/net/ethernet/stmicro/stmmac/Kconfig   |    1 +
+ drivers/net/ethernet/via/Kconfig              |    1 +
+ drivers/net/ppp/Kconfig                       |    1 +
+ .../broadcom/brcm80211/brcmfmac/Kconfig       |    1 +
+ drivers/net/wireless/intel/iwlwifi/Kconfig    |    1 +
+ drivers/nvme/host/Kconfig                     |    2 +-
+ drivers/nvme/target/Kconfig                   |    2 +-
+ drivers/scsi/bnx2fc/Kconfig                   |    1 +
+ drivers/scsi/bnx2i/Kconfig                    |    1 +
+ drivers/scsi/cxgbi/cxgb3i/Kconfig             |    2 +-
+ drivers/scsi/cxgbi/cxgb4i/Kconfig             |    2 +-
+ drivers/target/iscsi/Kconfig                  |    2 +-
+ fs/Kconfig                                    |    1 +
+ fs/afs/Kconfig                                |    2 +-
+ fs/nfs/Kconfig                                |    2 +-
+ fs/nfsd/Kconfig                               |    2 +-
+ include/linux/indirect_call_wrapper.h         |    8 +-
+ include/net/icmp.h                            |    1 +
+ include/net/ip.h                              |  104 +-
+ include/net/ip_fib.h                          |   27 +-
+ include/net/route.h                           |   14 +
+ include/net/tcp.h                             |   16 +-
+ net/Kconfig                                   |   11 +-
+ net/batman-adv/Kconfig                        |    1 +
+ net/bridge/Kconfig                            |    3 +-
+ net/bridge/netfilter/Kconfig                  |    6 +-
+ net/core/Makefile                             |    2 +-
+ net/core/dev_ioctl.c                          |    4 +
+ net/core/fib_core.c                           |  307 +++
+ net/core/filter.c                             |   24 +-
+ net/core/neighbour.c                          |    5 +
+ net/ipv4/Kconfig                              |   29 +-
+ net/ipv4/Makefile                             |   24 +-
+ net/ipv4/af_inet.c                            |  124 +-
+ net/ipv4/fib_frontend.c                       |   96 -
+ net/ipv4/fib_semantics.c                      |  205 --
+ net/ipv4/icmp.c                               | 1419 +------------
+ net/ipv4/icmp_ipv4.c                          | 1445 +++++++++++++
+ net/ipv4/inet_connection_sock.c               |    2 +-
+ net/ipv4/inet_hashtables.c                    |    4 +
+ net/ipv4/ip_output.c                          |   18 -
+ net/ipv4/ip_tunnel_core.c                     |   11 +
+ net/ipv4/netfilter.c                          |    4 +
+ net/ipv4/netfilter/Kconfig                    |    2 +-
+ net/ipv4/netlink.c                            |    2 +
+ net/ipv4/nexthop.c                            |    9 +-
+ net/ipv4/ping.c                               |  215 +-
+ net/ipv4/ping_ipv4.c                          |  228 +++
+ net/ipv4/proc.c                               |   38 +-
+ net/ipv4/raw.c                                |  853 --------
+ net/ipv4/raw_diag.c                           |    4 +
+ net/ipv4/raw_ipv4.c                           |  883 ++++++++
+ net/ipv4/sysctl_net_ipv4.c                    |   32 +-
+ net/ipv4/tcp.c                                | 1299 ++++++++++++
+ net/ipv4/tcp_bpf.c                            |    2 +
+ net/ipv4/tcp_ipv4.c                           | 1307 +-----------
+ net/ipv4/udp.c                                | 1781 +---------------
+ net/ipv4/udp_bpf.c                            |    6 +
+ net/ipv4/udp_diag.c                           |   12 +
+ net/ipv4/udp_ipv4.c                           | 1790 +++++++++++++++++
+ net/ipv4/udp_offload.c                        |   10 +
+ net/ipv6/Kconfig                              |   17 +-
+ net/ipv6/af_inet6.c                           |    5 +
+ net/ipv6/datagram.c                           |   14 +
+ net/ipv6/netfilter/Kconfig                    |    2 +-
+ net/ipv6/tcp_ipv6.c                           |   25 +-
+ net/ipv6/udp.c                                |   18 +
+ net/l2tp/Kconfig                              |    2 +-
+ net/mac80211/Kconfig                          |    2 +-
+ net/mpls/Kconfig                              |    1 +
+ net/mptcp/Kconfig                             |    2 +-
+ net/netfilter/Kconfig                         |    2 +-
+ net/netfilter/ipset/Kconfig                   |    2 +-
+ net/netfilter/ipvs/Kconfig                    |    2 +-
+ net/openvswitch/Kconfig                       |    2 +-
+ net/packet/Kconfig                            |    1 +
+ net/rds/Kconfig                               |    2 +-
+ net/rxrpc/Kconfig                             |    2 +-
+ net/sched/Kconfig                             |    2 +-
+ net/sctp/Kconfig                              |    2 +-
+ net/smc/Kconfig                               |    2 +-
+ net/sunrpc/Kconfig                            |    2 +-
+ net/tipc/Kconfig                              |    2 +-
+ net/xfrm/Kconfig                              |   12 +-
+ security/smack/Kconfig                        |    1 +
+ 96 files changed, 6585 insertions(+), 5991 deletions(-)
+ create mode 100644 net/core/fib_core.c
+ create mode 100644 net/ipv4/icmp_ipv4.c
+ create mode 100644 net/ipv4/ping_ipv4.c
+ create mode 100644 net/ipv4/raw_ipv4.c
+ create mode 100644 net/ipv4/udp_ipv4.c
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260909142056.1433875-1-vineeth.karumanchi%40amd.com
+2.55.0
+
