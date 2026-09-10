@@ -1,132 +1,162 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta1.migadu.com (out-83.mta1.migadu.com [95.215.58.83])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E81D3472069
-	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 11:27:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B426472535
+	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 11:27:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.83
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789039672; cv=none; b=IIsvOP1ipVyuXf6m51tuBL979s79VVQ4Tyo2Q7sGC3IhJ+rzijzZ9xzJO26lJ/84o2QZqpWpFCCaHLufN2YeWMgvQBR8NOivUZMBDENIrONqc4U1RkbI0Py/INNqGwpBPVj16efLiMdPp5VV5yk6HmjWjpeyWO7QDwrjhmyPVN0=
+	t=1789039673; cv=none; b=gJuBe5qG6t9Id7wyxoUO6eYt8E0v+EqiyxIuBDmvZ0OSNATj7rBXKWQnDh2+wgNK96pIU6zkApyKVe1R2Om+F+aYrn24c+k0UqcQ5aYb2NHVfvmzRhxMuJ5axriZ/7uwgDgsrJEP4bEN1Cz5kI6bJd65yxgdLkzDPogYpN53q2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789039672; c=relaxed/simple;
-	bh=4CrwJ5iXW29xR1B9ic/OTu6MoVXyZPeG0uhyIiSglP4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=abT4veVrZ2RSitmJEQLeifwGmltCYNmFDUAdn0/mjWCpSoZcJx+ewhQY6Cfmbi6RBENHyHQQDKTgtlexjzppOk+Vy88KiS1Scm6S9OFG61JmV6Kj4PGcmfENPEXXDKxYIXORHIlcCZI7GUsa175GTTM24+D8G50kmoh1GIaClMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YlwMQ8X8; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=izux76Sz; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1789039673; c=relaxed/simple;
+	bh=XiIXkLh7xZJlvQ5cEZsGq8UI4ICTYL+iKbirY9wCMFU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=P5Gt+i6dBQv5dlOuwPcHSYcPFBKbsRHArZlmHFtsRRe206HT+NeLQ2Ki59+m4B9G/d4B2jScWVdOuNj5p0ABjGWRcH1uUXLdNdU1xWs+f+icEzT+ODwPaBan5ifswQR+uW07occD9BCYirpfvarWH1TwqfEekkshx6rovR4Syuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=XqMeqZ1f; arc=none smtp.client-ip=95.215.58.83
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YlwMQ8X8";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="izux76Sz"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1789039669;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+CPMSwBIbKMNx+ykYOgoG6podj5+4wemD8bUPdP/A1E=;
-	b=YlwMQ8X8ICcYTY5Sy3fk25xH5pCWE8Y+4C2JlYuLxw5mjhJVZR36Kn3H3VYOjfu9c0pAYP
-	6sMhZcXJhyX046lI9fD8jVWwKGL+MJ2zeBLUJk2KuyZObOGB50jK8EY2AlcwsX87lDkJpO
-	5bAKRlmiiGz6+WiK2s0fn8ljFGmzuwc=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-170-6Nsa6NH9Mtq9m1MrphohPw-1; Thu, 10 Sep 2026 07:27:46 -0400
-X-MC-Unique: 6Nsa6NH9Mtq9m1MrphohPw-1
-X-Mimecast-MFC-AGG-ID: 6Nsa6NH9Mtq9m1MrphohPw_1789039665
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-49b7c1dc61eso55867285e9.3
-        for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 04:27:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1789039665; x=1789644465; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=+CPMSwBIbKMNx+ykYOgoG6podj5+4wemD8bUPdP/A1E=;
-        b=izux76SzTENHbSScXgbbMmRTlrqgdhguBEAikDl4vkPnICRo3adFI9u86//LjMm33q
-         DKiUX0a55TYWClXDZ1xZ3rn5HDrHwDnBbLxILzJRmRyCe41Wnly7QDEHoiIAQSCrveo1
-         mSBH2XtJe+2h3FiSM4n9muKLZYvGTDTwkq3i/ZiXKlLqQav1ebmkfft59OHyIoWpJSSA
-         vRb3fQxpdPYOfecic7kB5GG70aAFiDFJR/lINDdLwToB9fSR0+7yZLkRKZEkB74pPhe8
-         1XOxviH8qyGzo6MKES0Hf3o/6cJofGZMra1J/Af+23ZQkvpgHlIvKvUsRcxqX4E7Esj1
-         pjJA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789039665; x=1789644465;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=+CPMSwBIbKMNx+ykYOgoG6podj5+4wemD8bUPdP/A1E=;
-        b=n6rm1GbzfIlJ3f/kDDAM5joe/iT11ZECuqVZOVY822ERpBhlw+JPdKXdhte2zioCE+
-         wVVGCouy2l+TU81uXEly8z6I4FY0v8DXfvwcpGDneL3xuyK28OsO/sZk4/F5/BSQY6Us
-         OpopfSWPvNYoLMfLHl9RYiN87fCdAYF4n49CEgcItZI2sFBXJXDfze4wvm2SVPtq+ETO
-         ls06G9iwmsk/dp5OPFsSchlFsdmy2EKYC+ROPf1Y+CUSle8JEmRqlV6TZan0NPucl7+H
-         keHpFwvp/ITpD/nJFxnSIhGPOUlAnomx/bog7Koo2/UB6vfdDCG/2Y1ppGTWp/G+UWFO
-         upFg==
-X-Forwarded-Encrypted: i=1; AKwUvBw5nylVRnKlnawF0vj/tU10dm2MeLeHMPOfVowgPU++PQRYLDDz6EcJZqRb+SxxXP/2XRB/Ja4=@vger.kernel.org
-X-Gm-Message-State: AFuF++m++JI2EncZQHHO/msLaeHVxTtyTcsWLQkPxiMRfgomoIuqYbo0
-	rHvrjx8efJzc3ngQcmuMQJ87kLLehWpd5ySIic0SyLpsUjZroniX+8ESXEV6dBDnjhvruSn1AvS
-	hIOHBAioChl9YNAyE4S1LZupWjrAO++nIeIp80O/zNroxY489YP8y1Nmpbw==
-X-Gm-Gg: AYBFou2m2lwBvMzKQysuwzjw3Metw0T4UggENkOAxEQcJmsJCiWCICzDjoi46sHmPYZ
-	ytqudPyiEmFeThWN2jyg28uM33JdEOAiR05uFi/s/b9azH+iNffhzzyqxryIFlEVQACydxKaHvO
-	Rplti8lbGOqzddbiWd+eiE+ORiEUt0009UboeIFT8nDHqwQ1lSNX/Cyvx+GOYLNBmx3MYm8noM2
-	gAZk7yZmEGtryAaIa+bmZyh00Xt8TCdIfPPap18ncDPten5Juue6uYKkgOiweEMw/W+LHWW50qG
-	bQC5ImQCaN8IgyKncwlA30CZUIcL5CbDe49uBSSY2osrVmyZAzj7rJyhCXcmdt5H9dnC0SKw6Fs
-	8Vl0IHVleUTOxn6jeBbm886VyoRqP01dVyQWgsyMI8HSZM+ovob6kX6HioiXBaQahZsJNsS0gyA
-	==
-X-Received: by 2002:a05:600c:1385:b0:498:952:e276 with SMTP id 5b1f17b1804b1-49d258d85c0mr59112755e9.8.1789039665433;
-        Thu, 10 Sep 2026 04:27:45 -0700 (PDT)
-X-Received: by 2002:a05:600c:1385:b0:498:952:e276 with SMTP id 5b1f17b1804b1-49d258d85c0mr59112385e9.8.1789039665038;
-        Thu, 10 Sep 2026 04:27:45 -0700 (PDT)
-Received: from [192.168.188.218] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-485883959f0sm53665292f8f.10.2026.09.10.04.27.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 10 Sep 2026 04:27:44 -0700 (PDT)
-Message-ID: <013fffd2-6d59-4e99-8214-1377b1cb46bb@redhat.com>
-Date: Thu, 10 Sep 2026 13:27:42 +0200
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="XqMeqZ1f"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=XiIXkLh7xZJlvQ5cEZsGq8UI4ICTYL+iKbirY9wCMFU=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789039669; v=1; x=1789644469;
+ b=XqMeqZ1fWCnoFtEmEdPQKgg5d7Xwr/A4Yk/fn60Nsikh9iCXfdNC0o/ciC8ZUAwGUtFQld0j
+ MGqRyL/Tz/8GgZcPPnj1XChd4/GJ1JPwz8oRH0k6FlDIvCGER7YJAiqq0sYKFs3BevyRIl9HFo6
+ cg2Uh1W0SNbEenhH3COmy2d4=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id c60bcde16ef5a46e;
+	Thu, 10 Sep 2026 11:27:48 +0000
+X-Mizu-Trace-ID: c60bcde16ef5a46e
+X-Migadu-Flow: FLOW_OUT
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+To: bpf@vger.kernel.org
+Cc: Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	Ihor Solodrai <ihor.solodrai@linux.dev>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Neal Cardwell <ncardwell@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Aditi Ghag <aditi.ghag@isovalent.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH bpf v3 2/3] tcp: Skip cond_resched() in inet_csk_listen_stop() under BPF context
+Date: Thu, 10 Sep 2026 19:27:28 +0800
+Message-ID: <20260910112736.153710-1-jiayuan.chen@linux.dev>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260910112107.148770-1-jiayuan.chen@linux.dev>
+References: <20260910112107.148770-1-jiayuan.chen@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v7 3/3] w5100: detect carrier state using link
- status bit and optional interrupt
-To: arthur@marmottus.net
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- arnd@arndb.de, netdev@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, krzysztof.kozlowski@oss.qualcomm.com
-References: <20260904-wiznet-link-gpio-v7-3-69f01b70c96f@marmottus.net>
- <178895754151.219967.10801079239966954315@kernel.org>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <178895754151.219967.10801079239966954315@kernel.org>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On 9/9/26 2:39 PM, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 4 potential
-> issue(s) to consider:
-> 
-> Critical: 0 · High: 1 · Medium: 2 · Low: 1
-> 
-> - [High] On w5500 the carrier state is now sampled exactly once per ifup
->   (and once per resume) from PHYCFGR, with no polling fallback and no…
+bpf_sock_destroy() runs from the tcp iterator, under rcu_read_lock(). If
+the sock is a listener that still has children in its accept queue,
+tcp_abort() ends up in inet_csk_listen_stop() and the cond_resched()
+there trips the debug check:
 
-I read this one as 'with a bad config/devtree the eth could non functional'
-which does look a big deal to me...
+BUG: sleeping function called from invalid context at net/ipv4/inet_connection_sock.c:1523
+in_atomic(): 0, irqs_disabled(): 0, non_block: 0, pid: 628, name: test_progs
+preempt_count: 0, expected: 0
+RCU nest depth: 1, expected: 0
+locks held by test_progs/628: 3, last CPU#3:
+ #0: ffff8881158cee18 (&p->lock){+.+.}-{4:4}, at: bpf_seq_read+0x56/0x1210
+ #1: ffff8881106bb858 (sk_lock-AF_INET6){+.+.}-{0:0}, at: bpf_iter_tcp_seq_show+0x32b/0x4b0
+ #2: ffffffffb435af20 (rcu_read_lock){....}-{1:3}, at: bpf_iter_run_prog+0x46b/0xde0
+CPU: 3 UID: 0 PID: 628 Comm: test_progs Tainted: G        W           7.2.0+ #65 PREEMPT
+Tainted: [W]=WARN
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xc1/0xf0
+ dump_stack+0x10/0x20
+ __might_resched+0x3d2/0x610
+ inet_csk_listen_stop+0x7b/0xbf0
+ tcp_abort+0x23b/0x3b0
+ bpf_sock_destroy+0xfc/0x140
+ bpf_prog_448133d24601754f_iter_tcp6_server+0x81/0x8a
+ bpf_iter_run_prog+0x538/0xde0
+ bpf_iter_tcp_seq_show+0x26b/0x4b0
+ bpf_seq_read+0x424/0x1210
+ vfs_read+0x197/0xe40
+ ksys_read+0x119/0x240
+ __x64_sys_read+0x72/0xc0
+ x64_sys_call+0x647/0x27e0
+ do_syscall_64+0xe5/0x610
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+RIP: 0033:0x7fad39b28aca
+RSP: 002b:00007ffc381c61c0 EFLAGS: 00000246 ORIG_RAX: 0000000000000000
+RAX: ffffffffffffffda RBX: 00007ffc381c6a88 RCX: 00007fad39b28aca
+RDX: 0000000000000032 RSI: 00007ffc381c6250 RDI: 0000000000000014
+RBP: 00007ffc381c61e0 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000003
+R13: 0000000000000000 R14: 000055f077c1bbb0 R15: 00007fad3a0f3000
+ </TASK>
 
-> - [Medium] `w5500_get_phycfgr_lnk()` returns a tri-state value (<0 on
->   SPI/register read error, 0 link down, 1 link up), and its consumers…
-> - [Medium] The carrier state is computed and published by two
->   unsynchronized contexts.
+The commit that added the kfunc already guards lock_sock() in tcp_abort()
+and udp_abort() with has_current_bpf_ctx(), but missed the listener path.
+Do the same for the cond_resched(). The loop runs inside the iterator's
+rcu_read_lock(), it must not reschedule or report a quiescent state there.
 
-... but the above 2 looks relevant to me. Note that ordering the irq
-enabling and initial link detection is not enough, you need explicit
-synchronization.
+Fixes: 4ddbcb886268 ("bpf: Add bpf_sock_destroy kfunc")
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+---
+A reviewer worried that skipping cond_resched() lets a big accept queue
+run without a reschedule point under BPF. That can't be helped, the
+iterator runs the prog under rcu_read_lock() and rescheduling there is
+not an option. The loop is bounded by the accept queue.
 
-Finally please note commit c82ff94592fb68f529afe63ca7f5ddb7dae4ba83, you
-should explicitly handle sashiko's comments.
+The iterator taking lock_sock() on a not yet accepted child while the
+listener is closed concurrently is a pre-existing issue with its own
+report, handled separately:
+https://lore.kernel.org/netdev/20260807095707.224300-1-zirajs7@gmail.com/
 
-/P
+Kuniyuki suggested to just remove the cond_resched(), since after commit
+7dadeaa6e851 ("sched: Further restrict the preemption modes") x86 and
+friends only have full and lazy preemption left. But VOLUNTARY is still
+there on arm, mips, sparc and others, NONE on alpha, hexagon and m68k,
+and this fix goes to stable where x86 has them too. close() on a big
+listener still relies on this cond_resched() there, so keep it and only
+skip it under BPF. It may be removed in the future once those modes are
+gone.
+---
+ net/ipv4/inet_connection_sock.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/net/ipv4/inet_connection_sock.c b/net/ipv4/inet_connection_sock.c
+index 6257459bcee24..6a30f11384547 100644
+--- a/net/ipv4/inet_connection_sock.c
++++ b/net/ipv4/inet_connection_sock.c
+@@ -1520,7 +1520,8 @@ void inet_csk_listen_stop(struct sock *sk)
+ 		local_bh_enable();
+ 		sock_put(child);
+ 
+-		cond_resched();
++		if (!has_current_bpf_ctx())
++			cond_resched();
+ 	}
+ 	if (queue->fastopenq.rskq_rst_head) {
+ 		/* Free all the reqs queued in rskq_rst_head. */
+-- 
+2.43.0
 
