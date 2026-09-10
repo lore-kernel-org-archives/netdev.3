@@ -1,28 +1,28 @@
-Received: from CO1PR03CU002.outbound.protection.outlook.com (mail-westus2azon11010008.outbound.protection.outlook.com [52.101.46.8])
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010061.outbound.protection.outlook.com [40.93.198.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43C643E49F9;
-	Thu, 10 Sep 2026 10:25:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.46.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 485393DC4DD;
+	Thu, 10 Sep 2026 10:25:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.61
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789035958; cv=fail; b=IzkoSjPISz+9vhbanjvCoQY4iI84/uuug7t7lH0OTanaRQODsNOLkxfMiDKiFsE76isnQ4eLuIUe121CGayUkW5glZfvE4tNr0pDlSuHUp1FtrexHcTBmf0K61mCizl1Sypjf0DEi6nl33C5vPttn00I/SY9HKPapjVh00zHWOo=
+	t=1789035966; cv=fail; b=R6NEMy8JejrBFv0NDJaF6v370qccX2QM3jwBBzX12ZnNpGKvB4Zmmd3l8oPQZhOzKjrx/HgqbL5Zv4xVtcZQnUVpIcrqweMITxqEp1322BHFn/StnFi/KzOuUUldnHKw2SxsFek89GXT9C08EG9BByd5wwzvqCBjKQ4//guFNwA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789035958; c=relaxed/simple;
-	bh=xhXlMWlmtaL/l+A3qrmYxD+vFS3orKSR4ApKKzUrnxU=;
+	s=arc-20240116; t=1789035966; c=relaxed/simple;
+	bh=Q4K5eTnDCz6ekNVsX3j+lOosC2czksPun18goXAsNQE=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XmwYuZa4pYQKbXQh4D4hyWnXTMvV9lah6G4AQQa1vjciqcEr/9viczePOCMWLQCAyUJtb+dcwLhDnq387ZDtqWXP7/ad2bDPVQ6pm6mUHsEEQP93bRH4Zj7H983uTU00USNJbxS8441eVBc1y3bMVNodVl+jS6i/O5LiI3ojt/8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=kpwv9L1s; arc=fail smtp.client-ip=52.101.46.8
+	 MIME-Version:Content-Type; b=rTiUf1fNqvBSEYdtk4AiltbxNQVs2SQLBV7K533Xf8ThRMXbopA7skaviRb8Z2fpqx3N+h5udIHkY4pfs+xosfRot6aIDl3764HwnmvbbYZCgR1Oc2i24pukvglG1KEIHSFMeggL/iY/aGvtPXTliU3I94a6G75symZ1JmgqWXc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=a46ZXryi; arc=fail smtp.client-ip=40.93.198.61
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="kpwv9L1s"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="a46ZXryi"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=S3/W4/mX/n42yAjr8pHG5djjaYCJs/thirbN4VcjYSH3dHC6xPZoknCybVGbKgl5eOe8m2P5wuAfDbOgmwV2E2g/bXixMfmL/j9eiwb+hX0+FujD4eD2cTWWS4Divb/3e/YjBKQnb7vPh33UUo13GUgsxSHg7XbvTMw8ZMh+JxcR7PZFe2UoUGDk32SRKH1ACcGy9Wc9iwHdFFLqN8eXj9kr99HYrTZlYEkrUXUVtViFmxdWtE7kK3UtTHtueoU8COu6HqVMc0ctEyDxW4a7190jqSGrhhrX2NnlVUdxbsNzzdO7J/f+2DWnH0ZqMG3ZuVX6oGAaW/3nC3421CE0xA==
+ b=VeUCYwLvz5M4t1brn77fYwYiV+1bUNXo/3BswQzQ15JAJHdfyM7pYtQGZKNHRQVYi3eJc4DPnZpm0VMYghke0IpFe/qwuEY0urxDXZybyk5ewzG+yYW7t1kf5RdY8/9aOaOT+7rXUFffQiLS3pghsZwsafqragBT+sA/joGCWglCtJMTbWnlE6bvJc5epooguTZXshZkfDISB1vLfh8ENfUScHTCnIG/anroEfNMOk3oR1HvusuiAWg97200dYJF9xR6ZqSLBElNeXjX46a8lYBqj5CWiLtXrVoC3L38chDgGwSBRzNOAocRm+iogf9i4hahpHWS9juJQJl2JEI8YQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=TFrbBFPw5MZ/UH9isTp0UIJUV/s04mXq96fH0YCPmqg=;
- b=dg3YAwKrpvUeb35txCea/Cgg98OoKPtKxUUUCS9oe8ZrFjwR74fhhItSm7cDUviGGmWdQtUMG18hn09qEGUwGkwfdFNPcfJ6lKxaPEeW5UgQu8jMSZOiwGvVdE+wLfgFHYmzQtUFjmzxIW9xuYsfSsOGbE5vO1iOEnqZ2ZP05aOD1kg28ZW1EkE2GpyvODqrzbxmya2Kcv6TXb7ci3lNukos37Z9XXuGI6GJd9dCFR0Oub1IiTqqdLDMJeTRD6IdsxMo5oXwORhOvh/hXZplxwJKeKi3NrQ1kFHR6Q5xj442CSjV0CaAioSbutlXsT44DEzhDsn8LHb/TtkE2gmpxA==
+ bh=S52Q+aX0qyWTs8O31jgL5gdpFHT7t5x7yH1OtKjJTPY=;
+ b=SI3EZ+gQJHaJV2rutmTAWP60T5ucA6IFxFM5KGHymAV/l+4Sam4txijgossXul8P5vhTvBnX/M3RCGRlHqo1VhfLIb/giao20NZsLyiE8oHWuf4nnYb/HuTrl9XPkZvENzUJR3ustCbCWw3GA8Fo+gIyvB5kUfJoJ6h5O66PmGDljzKcNi8K+1QnF0dXZUlj5l38jhOCuUn3DiD7qJHj2+al/bYOvGX2wQSF8VrrHdxHzVpnU/iFk0wcYPhDDY/ekrtduPGt0OOlGGUpmJPMCvZPgTY8UGcg1D69HmhW3t2QNl7U6q07lTG0nC33TUOC2+EE0kie6G30VxdNAnuY5A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  216.228.117.160) smtp.rcpttodomain=lunn.ch smtp.mailfrom=nvidia.com;
  dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
@@ -30,18 +30,18 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=TFrbBFPw5MZ/UH9isTp0UIJUV/s04mXq96fH0YCPmqg=;
- b=kpwv9L1szrGbLUPalQFCvh1g1OxYPfqAQ9rPj4zBc6DG0YiMPvhxK4k//26MAwpYuV87edh1ZgfG1UwQyChCZRV+I0+tF7zPgDE14TVi9RURvBEgkPURil2yFqLvCnHgt/TgofYDoeaCoiEIDiK4WPsPHV4HJJD4RRypdl7AiQG4WeRGI/W7Pi6BvFAuvq7cERNhMGlQH3ffg18r6VUpI6tsGc8UqIOLYgEjNbYCOTDHMgxAsZABsKjml5aLMBJ2pQ5LeKpfi6sHTj9awK5+B5BhAdV7d5kUvoYl4aXvljT/C7fDirGGHtIi+XZBJX1TE3Aj2uJAZIodxCZrXNKrXA==
-Received: from BN0PR04CA0088.namprd04.prod.outlook.com (2603:10b6:408:ea::33)
- by DS7PR12MB5717.namprd12.prod.outlook.com (2603:10b6:8:70::19) with
+ bh=S52Q+aX0qyWTs8O31jgL5gdpFHT7t5x7yH1OtKjJTPY=;
+ b=a46ZXryiVugOEG0TuCLqrBe8d/mJw/Nx26VerrZ950jxO+Lefm+ouq9wr3be0J9ISmcE7O4Bd8OIw7yUZXEXMPWNEyMrb4wZ6ZlNj5cMXZ9ySe3WtVvOGy6LAxtHkWnjJV52vrTwi1YhyvqNudbwWQDbJtQ2a6904vZYsc/SMBhMNOtfvlWrXKBIiDj8+k89opNsTG5qtEzyYdO+0xo1569AS0biq6jr8SI4Mahx7UCeZXasnYjgyVo6y2U3XlqrfTvYCy9V0+3ql4OSQJTxj9VG6ua4hC5p57UOEDysHDF7iWbEyJu4Y7Jkl0Q9DfuXozqYF+IamO+n8sG92czsUA==
+Received: from CH2PR17CA0024.namprd17.prod.outlook.com (2603:10b6:610:53::34)
+ by PH8PR12MB6748.namprd12.prod.outlook.com (2603:10b6:510:1c4::5) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.9; Thu, 10 Sep
- 2026 10:25:43 +0000
-Received: from BL6PEPF0002256E.namprd02.prod.outlook.com
- (2603:10b6:408:ea:cafe::5b) by BN0PR04CA0088.outlook.office365.com
- (2603:10b6:408:ea::33) with Microsoft SMTP Server (version=TLS1_3,
+ 2026 10:25:41 +0000
+Received: from BL6PEPF00022575.namprd02.prod.outlook.com
+ (2603:10b6:610:53:cafe::98) by CH2PR17CA0024.outlook.office365.com
+ (2603:10b6:610:53::34) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.21.406.9 via Frontend Transport; Thu, 10
- Sep 2026 10:25:43 +0000
+ Sep 2026 10:25:38 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
  smtp.mailfrom=nvidia.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=nvidia.com;
@@ -49,20 +49,20 @@ Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
  216.228.117.160 as permitted sender) receiver=protection.outlook.com;
  client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
 Received: from mail.nvidia.com (216.228.117.160) by
- BL6PEPF0002256E.mail.protection.outlook.com (10.167.249.36) with Microsoft
+ BL6PEPF00022575.mail.protection.outlook.com (10.167.249.43) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.406.5 via Frontend Transport; Thu, 10 Sep 2026 10:25:42 +0000
-Received: from rnnvmail205.nvidia.com (10.129.68.10) by mail.nvidia.com
+ 15.21.406.5 via Frontend Transport; Thu, 10 Sep 2026 10:25:38 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
  (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.46; Thu, 10 Sep
- 2026 03:25:28 -0700
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail205.nvidia.com
- (10.129.68.10) with Microsoft SMTP Server (version=TLS1_2,
+ 2026 03:25:23 -0700
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail201.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.46; Thu, 10 Sep
- 2026 03:25:27 -0700
+ 2026 03:25:22 -0700
 Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com (10.129.68.8)
  with Microsoft SMTP Server id 15.2.2562.46 via Frontend Transport; Thu, 10
- Sep 2026 03:25:23 -0700
+ Sep 2026 03:25:18 -0700
 From: Tariq Toukan <tariqt@nvidia.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
 	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
@@ -73,9 +73,9 @@ CC: Edward Srouji <edwards@nvidia.com>, Gal Pressman <gal@nvidia.com>, "Jason
 	<msanalla@nvidia.com>, Mark Bloch <mbloch@nvidia.com>, Or Har-Toov
 	<ohartoov@nvidia.com>, Saeed Mahameed <saeedm@nvidia.com>, Shay Drori
 	<shayd@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>
-Subject: [PATCH net 4/5] net/mlx5: Lag, limit aggregated TX speed by PCIe bandwidth
-Date: Thu, 10 Sep 2026 13:24:31 +0300
-Message-ID: <20260910102432.3845360-5-tariqt@nvidia.com>
+Subject: [PATCH net 3/5] {RDMA,net}/mlx5: cache and use TX-enabled aggregate speed for vports
+Date: Thu, 10 Sep 2026 13:24:30 +0300
+Message-ID: <20260910102432.3845360-4-tariqt@nvidia.com>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20260910102432.3845360-1-tariqt@nvidia.com>
 References: <20260910102432.3845360-1-tariqt@nvidia.com>
@@ -90,40 +90,39 @@ Content-Type: text/plain
 X-NV-OnPremToCloud: ExternallySecured
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF0002256E:EE_|DS7PR12MB5717:EE_
-X-MS-Office365-Filtering-Correlation-Id: bf74bd71-7f32-4112-c2dd-08df0f25de56
+X-MS-TrafficTypeDiagnostic: BL6PEPF00022575:EE_|PH8PR12MB6748:EE_
+X-MS-Office365-Filtering-Correlation-Id: 24917d51-87b8-48ef-a710-08df0f25dbae
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|82310400026|23010399003|1800799024|36860700016|10067099003|11063799006|56012099006|22082099003|18002099003;
+	BCL:0;ARA:13230040|1800799024|36860700016|376014|7416014|82310400026|23010399003|10067099003|11063799006|56012099006|22082099003|18002099003;
 X-Microsoft-Antispam-Message-Info:
-	h62jNqh48xon+NDO9ScloUEANG3u4DoIGZt9pTeGsiEoWQgXyslV2/g9NbBwQvQwVKWvNOw9dppfkjp6IiPeHBY0bf46TrWDDzpeA0h99RCobk2L7ChfBb/+1zS07YujS2fr/8t6+Ihi6CHSkMo/xg2aVnox7iVf132FJTUmlRMhCcV6EbnGEXRjlK6U5TCEI88o43DYrKkeJa5Jq+/Zh7xXbZ9+Qm7lzO3elhtLKvtjJilassHcEg4xTka/OpvufE7k7tlheVGY3GaNKpnGukOe9PM/uZmorkjQsGzsPq/JhwOBapHak9aiT1om7ynFsAnkmg9mWx6HmD8ZdpOMHUtSeErzNYegfI+PZvcEGXhvnql+GvXFbvaG2gV61lJiaP/za96GwpDopWSWaI6+zlEL9XQEKoP/DqS3cqH4RzTeCMP9+uFwnIPCtmjm4AaRI9pQooSl4gMjZ/jVoHeyOqpNBgwl1jwSL+Dl/S8zwwd9ChZxlj5c3sO9FbXjvBJNiXFQtNPNVU9ljogWLYB36wvTLBY0r2Ib0jIGZhAZSCaOD7Ix5F2xa8MTn7V7jEbDQRrSfMzK2f+7mV9f/L3hVkaWFDSya84D7xRYQ7ZZF3Yz0PxBiitbCoe1hS3ku3RHB87eQBd2NaflRmf15Al3b8ZhCTT+i6LybS1AzyMVvPTHooEqWivbA9ZUJpH3OOzepOdH8TphxZXz2oeLIgNglg==
+	MkOn5WNMO8+nA1E2i/qKcwVkoF0PnZUY1JJAECuLCEcqvXdWoWBHurwcr46KzSGOcqX9LVHvWO9IjDsOaBq9dTI8RWL2MMkMbYuszBp7MOI1yod2vnrAEYyqHIKpsPEKnmqmbU3dSloLwBEH2XNxzw7QnVscMi1F8WLrIVEtUIe4Gtg3wjJCw73XCY7uNM1WpFPsrieeaOPOMJqnsjeddwUq2J9/WHjlsrWpqXSQioS5JzDezt3M3slQHqz5rkTYSLOQRzftFVODwLa9sXjhReGubWiEPVGiAhwo71OXHf1xwLpB/ax+WOB2jX9ScwqXV3WmviYGWyVAS5kAnOnFgkXyBjQpyJtuP0DTXcnauCTZyjIzFH/kxit1Kjshf1sa3x/ytwS6Vv/bap/95SAo8KRx4MAkURvI57vgd2IrXF4Clql7RewvNZ4MCUUXEZkFHd8n9JLsFd3WDmfpP3gRijackJNoVdaXJZmDlcFm2dbVoUq/Iy6K+fgoLl7rP55FofvFznxPHPMmCDlZ+1ZTshlDctSPEF7t4aTHUw4TDuPRnd4U6edzFA0L1q52j9191fyw0njkGkiylBU+Rc8VUrELhqdk+YEHEQ4kum0AVSBt0qZ7HADpgJg/XVoZAh4F0nCBLxyhrI/4YG2IYc+h9WYSxHZJypoTzIiS9inErzNfQfjuGRK553f1Dt5adVJ8
 X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(7416014)(82310400026)(23010399003)(1800799024)(36860700016)(10067099003)(11063799006)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(36860700016)(376014)(7416014)(82310400026)(23010399003)(10067099003)(11063799006)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	ydgsdYU61Z4bz7lGn883nRmlDuYRvZAu48a/DAht6UWqMjrSk+OejPf2GutXC/dZzdxJdZfuWjDbtKWhj0J9UfdShyBkmqL/NFVUTQWnv1CcwtOvQPkaVqVgI+4mDw3q+iCMjiOUsHpvAfD+DbzTOuYjtXJkKW0SkqvAocwJ5DzFIdmg0o8HI3B8aKP/G0aCShYAb9rL305LUUtEa0ummJ2BCYHMhDBqE3dBRfaO8EhShAyJDHnv/Oc+GTPZmjvYKOtt04xl5y34YHQTBMC32vSfh8n2YVBJZ/VNovaimSiMoSGtQBfvn2wWzOR2idBsM90MTwhtPXJm57BWv0lOHk4nHBDZO58hYH898bKKXd3NSYcYmtEp5vRkY7ZDFzA83U/KGDjVN5/egjoWnzMW9FeFOOe17tzUAB10xMKA9zTX5WXEcNrECBuJLFFLCExO
+	d4If7KNHvKfvK5yv+v63kMzNvHI8oMKsRFkuwWGwjOoGZgOMHsQjw51+OSo+XelzL1QmDzOpFDrEPmS7SlD27+B/kxqX844wfHv2kpuDV92dYaJOWedmInL8m8Y+DiCIVfBkhpOduIrhMzEU1uRQ3rQDNf/Qobee8Oy3NtV8DzNthVCnrGIsrH32+FmWbmoLf7448sd4fMgli2ulZwJQBWn9PVtFOYYq/FpIpV1SBCM62C3rXSe5E+POaoXN1Bl1fXHvwAl+ZgnyM/RLwmGBfZQ80EPejAdelU8zVPyc1XvaRMdof/tz/SZLKLb55mDvQLmXS3+LFOwf/ptLCX+w3pXcaaLA0SjPBGoo8Pq/fN/w9JWg862dFWcXpjaW3HfhHvcz3ZJMJoo5D/EJZRKgkq8N+NWSUQXMYZ9+FJgnt7WEpSJGmWBtvT6V9jQMMZNf
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Sep 2026 10:25:42.6424
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Sep 2026 10:25:38.1910
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: bf74bd71-7f32-4112-c2dd-08df0f25de56
+X-MS-Exchange-CrossTenant-Network-Message-Id: 24917d51-87b8-48ef-a710-08df0f25dbae
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	BL6PEPF0002256E.namprd02.prod.outlook.com
+	BL6PEPF00022575.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB5717
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB6748
 
 From: Or Har-Toov <ohartoov@nvidia.com>
 
-FW initializes max_tx_speed to the minimum of the port speed and the
-PCI bandwidth. Modifying it with a value computed by different rules
-changes the meaning of the field rather than updating it.
+Cache aggregate TX-enabled speed we calculated, and use it instead of
+querying the bond speed so we can, in the following patch, limit it by
+the PCI bandwidth.
 
-Limit each uplink's contribution to the aggregated LAG TX speed by the
-NIC's PCIe bandwidth and reset max_tx_speed to the same value when lag
-is torn down.
+The bond speed takes the calculation from PTYS, and PTYS is not bounded
+by the PCI bandwidth of the NIC.
 
 Fixes: 50f1d188c580 ("net/mlx5: Propagate LAG effective max_tx_speed to vports")
 Signed-off-by: Or Har-Toov <ohartoov@nvidia.com>
@@ -131,119 +130,175 @@ Reviewed-by: Shay Drori <shayd@nvidia.com>
 Reviewed-by: Mark Bloch <mbloch@nvidia.com>
 Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/dev.c | 20 +++++++++++++++++++
- .../net/ethernet/mellanox/mlx5/core/lag/lag.c | 12 +++++++++++
- .../ethernet/mellanox/mlx5/core/mlx5_core.h   |  1 +
- 3 files changed, 33 insertions(+)
+ drivers/infiniband/hw/mlx5/main.c             |  2 +-
+ .../net/ethernet/mellanox/mlx5/core/lag/lag.c | 61 +++++++++++++++----
+ .../net/ethernet/mellanox/mlx5/core/lag/lag.h | 15 ++++-
+ include/linux/mlx5/driver.h                   |  1 +
+ 4 files changed, 65 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/dev.c b/drivers/net/ethernet/mellanox/mlx5/core/dev.c
-index df2e3ad01819..81f3dc3b8034 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/dev.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/dev.c
-@@ -30,6 +30,7 @@
-  * SOFTWARE.
-  */
+diff --git a/drivers/infiniband/hw/mlx5/main.c b/drivers/infiniband/hw/mlx5/main.c
+index 373ee1f42d4a..6ab7f945e712 100644
+--- a/drivers/infiniband/hw/mlx5/main.c
++++ b/drivers/infiniband/hw/mlx5/main.c
+@@ -1654,7 +1654,7 @@ static int mlx5_ib_query_port_speed_from_bond(struct mlx5_ib_dev *dev,
+ 	u32 bond_speed;
+ 	int err;
  
-+#include <linux/bitfield.h>
- #include <linux/mlx5/driver.h>
- #include <linux/mlx5/eswitch.h>
- #include <linux/mlx5/mlx5_ifc_vdpa.h>
-@@ -40,6 +41,25 @@
+-	err = mlx5_lag_query_bond_speed(mdev, &bond_speed);
++	err = mlx5_lag_query_aggregated_speed(mdev, &bond_speed);
+ 	if (err)
+ 		return err;
  
- static DEFINE_IDA(mlx5_adev_ida);
- 
-+#define MLX5_PCIE_MIN_SPEED_MBPS	(2500)
-+
-+u32 mlx5_pcie_bandwidth(struct mlx5_core_dev *dev)
-+{
-+	u16 lnksta;
-+	int speed;
-+	u32 width;
-+
-+	if (pcie_capability_read_word(dev->pdev, PCI_EXP_LNKSTA, &lnksta))
-+		return 0;
-+
-+	width = FIELD_GET(PCI_EXP_LNKSTA_NLW, lnksta);
-+	speed = pcie_link_speed_mbps(dev->pdev);
-+	if (speed < MLX5_PCIE_MIN_SPEED_MBPS)
-+		return 0;
-+
-+	return speed * width;
-+}
-+
- static bool is_eth_rep_supported(struct mlx5_core_dev *dev)
- {
- 	if (!IS_ENABLED(CONFIG_MLX5_ESWITCH))
 diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
-index 76b574fa0d7a..fd91becd6848 100644
+index c2f21eb4ea7c..76b574fa0d7a 100644
 --- a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
 +++ b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
-@@ -1418,6 +1418,7 @@ static int mlx5_lag_get_devices_oper_speed(struct mlx5_lag *ldev,
+@@ -1413,7 +1413,6 @@ static bool mlx5_lag_should_disable_lag(struct mlx5_lag *ldev, bool do_bond)
+ 	       ldev->mode != MLX5_LAG_MODE_MPESW;
+ }
+ 
+-#ifdef CONFIG_MLX5_ESWITCH
+ static int mlx5_lag_get_devices_oper_speed(struct mlx5_lag *ldev,
+ 					   u32 *sum_speed)
  {
- 	struct mlx5_core_dev *pf_mdev;
- 	struct lag_func *pf;
-+	u32 pci_bw;
- 	int pf_idx;
- 	bool mpesw;
- 	u32 speed;
-@@ -1452,6 +1453,9 @@ static int mlx5_lag_get_devices_oper_speed(struct mlx5_lag *ldev,
- 			return ret;
- 		}
+@@ -1496,6 +1495,30 @@ static int mlx5_lag_get_devices_max_speed(struct mlx5_lag *ldev, u32 *max_speed)
+ 	return 0;
+ }
  
-+		pci_bw = mlx5_pcie_bandwidth(pf_mdev);
-+		if (pci_bw)
-+			speed = min(speed, pci_bw);
- 		*sum_speed += speed;
- 	}
- 
-@@ -1463,6 +1467,7 @@ static int mlx5_lag_get_devices_max_speed(struct mlx5_lag *ldev, u32 *max_speed)
- 	struct mlx5_core_dev *pf_mdev;
- 	struct lag_func *pf;
- 	bool take_max;
-+	u32 pci_bw;
- 	int pf_idx;
- 	u32 speed;
- 	int ret;
-@@ -1488,6 +1493,9 @@ static int mlx5_lag_get_devices_max_speed(struct mlx5_lag *ldev, u32 *max_speed)
- 			return ret;
- 		}
- 
-+		pci_bw = mlx5_pcie_bandwidth(pf_mdev);
-+		if (pci_bw)
-+			speed = min(speed, pci_bw);
- 		*max_speed = take_max ?
- 			max(*max_speed, speed) : *max_speed + speed;
- 	}
-@@ -1588,6 +1596,7 @@ void mlx5_lag_reset_vports_speed(struct mlx5_lag *ldev)
++void mlx5_lag_update_agg_speed(struct mlx5_lag *ldev)
++{
++	u32 speed;
++
++	lockdep_assert_held(&ldev->lock);
++
++	if (mlx5_lag_get_devices_oper_speed(ldev, &speed))
++		return;
++
++	/* If speed is not set, use the sum of max speeds of all PFs */
++	if (!speed && mlx5_lag_get_devices_max_speed(ldev, &speed))
++		return;
++
++	ldev->agg_speed_mbps = speed;
++}
++
++void mlx5_lag_reset_agg_speed(struct mlx5_lag *ldev)
++{
++	lockdep_assert_held(&ldev->lock);
++
++	ldev->agg_speed_mbps = 0;
++}
++
++#ifdef CONFIG_MLX5_ESWITCH
+ static void mlx5_lag_modify_device_vports_speed(struct mlx5_core_dev *mdev,
+ 						u32 speed)
  {
- 	struct mlx5_core_dev *mdev;
- 	struct lag_func *pf;
-+	u32 pci_bw;
+@@ -1541,17 +1564,10 @@ void mlx5_lag_set_vports_agg_speed(struct mlx5_lag *ldev)
  	u32 speed;
  	int pf_idx;
+ 
+-	if (ldev->mode == MLX5_LAG_MODE_MPESW) {
+-		if (mlx5_lag_get_devices_oper_speed(ldev, &speed))
+-			return;
+-	} else {
+-		speed = ldev->tracker.bond_speed_mbps;
+-		if (speed == SPEED_UNKNOWN)
+-			return;
+-	}
++	mlx5_lag_update_agg_speed(ldev);
++	speed = ldev->agg_speed_mbps;
+ 
+-	/* If speed is not set, use the sum of max speeds of all PFs */
+-	if (!speed && mlx5_lag_get_devices_max_speed(ldev, &speed))
++	if (!speed)
+ 		return;
+ 
+ 	speed = speed / MLX5_MAX_TX_SPEED_UNIT;
+@@ -1576,6 +1592,7 @@ void mlx5_lag_reset_vports_speed(struct mlx5_lag *ldev)
+ 	int pf_idx;
  	int ret;
-@@ -1609,6 +1618,9 @@ void mlx5_lag_reset_vports_speed(struct mlx5_lag *ldev)
- 			continue;
- 		}
  
-+		pci_bw = mlx5_pcie_bandwidth(mdev);
-+		if (pci_bw)
-+			speed = min(speed, pci_bw);
- 		speed = speed / MLX5_MAX_TX_SPEED_UNIT;
- 		mlx5_lag_modify_device_vports_speed(mdev, speed);
- 	}
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h b/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h
-index d6713a2ce676..555842085daf 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h
-@@ -281,6 +281,7 @@ void mlx5_events_cleanup(struct mlx5_core_dev *dev);
- void mlx5_events_start(struct mlx5_core_dev *dev);
- void mlx5_events_stop(struct mlx5_core_dev *dev);
++	mlx5_lag_reset_agg_speed(ldev);
+ 	mlx5_ldev_for_each(pf_idx, 0, ldev) {
+ 		pf = mlx5_lag_pf(ldev, pf_idx);
+ 		if (!pf)
+@@ -2068,6 +2085,28 @@ static int mlx5_handle_changeinfodata_event(struct mlx5_lag *ldev,
+ 	return 1;
+ }
  
-+u32 mlx5_pcie_bandwidth(struct mlx5_core_dev *dev);
- int mlx5_adev_idx_alloc(void);
- void mlx5_adev_idx_free(int idx);
- void mlx5_adev_cleanup(struct mlx5_core_dev *dev);
++/* Returns speed in Mbps. */
++int mlx5_lag_query_aggregated_speed(struct mlx5_core_dev *mdev, u32 *speed)
++{
++	struct mlx5_lag *ldev;
++	int ret = 0;
++
++	ldev = mlx5_lag_dev(mdev);
++	if (!ldev)
++		return -ENODEV;
++
++	mutex_lock(&ldev->lock);
++	*speed = ldev->agg_speed_mbps;
++	if (*speed == 0)
++		ret = -EINVAL;
++	mutex_unlock(&ldev->lock);
++
++	if (ret == -EINVAL)
++		mlx5_core_dbg(mdev, "aggregated speed is unknown\n");
++	return ret;
++}
++EXPORT_SYMBOL_GPL(mlx5_lag_query_aggregated_speed);
++
+ static void mlx5_lag_update_tracker_speed(struct lag_tracker *tracker,
+ 					  struct net_device *ndev)
+ {
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.h b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.h
+index e9f0ef83ce1d..744fbf9a0078 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.h
+@@ -99,6 +99,7 @@ struct mlx5_lag {
+ 	/* Protect lag fields/state changes */
+ 	struct mutex		  lock;
+ 	struct lag_mpesw	  lag_mpesw;
++	u32			  agg_speed_mbps;
+ };
+ 
+ static inline struct mlx5_lag *
+@@ -258,12 +259,22 @@ void mlx5_lag_rescan_dev_locked(struct mlx5_lag *ldev,
+ void mlx5_lag_add_devices_filter(struct mlx5_lag *ldev, u32 filter);
+ struct mlx5_devcom_comp_dev *mlx5_lag_get_devcom_comp(struct mlx5_lag *ldev);
+ 
++void mlx5_lag_update_agg_speed(struct mlx5_lag *ldev);
++void mlx5_lag_reset_agg_speed(struct mlx5_lag *ldev);
++
+ #ifdef CONFIG_MLX5_ESWITCH
+ void mlx5_lag_set_vports_agg_speed(struct mlx5_lag *ldev);
+ void mlx5_lag_reset_vports_speed(struct mlx5_lag *ldev);
+ #else
+-static inline void mlx5_lag_set_vports_agg_speed(struct mlx5_lag *ldev) {}
+-static inline void mlx5_lag_reset_vports_speed(struct mlx5_lag *ldev) {}
++static inline void mlx5_lag_set_vports_agg_speed(struct mlx5_lag *ldev)
++{
++	mlx5_lag_update_agg_speed(ldev);
++}
++
++static inline void mlx5_lag_reset_vports_speed(struct mlx5_lag *ldev)
++{
++	mlx5_lag_reset_agg_speed(ldev);
++}
+ #endif
+ 
+ static inline bool mlx5_lag_is_supported(struct mlx5_core_dev *dev)
+diff --git a/include/linux/mlx5/driver.h b/include/linux/mlx5/driver.h
+index 83d0a83bbfbc..a83926689e9a 100644
+--- a/include/linux/mlx5/driver.h
++++ b/include/linux/mlx5/driver.h
+@@ -1155,6 +1155,7 @@ bool mlx5_lag_is_roce(struct mlx5_core_dev *dev);
+ bool mlx5_lag_is_sriov(struct mlx5_core_dev *dev);
+ bool mlx5_lag_is_active(struct mlx5_core_dev *dev);
+ int mlx5_lag_query_bond_speed(struct mlx5_core_dev *dev, u32 *speed);
++int mlx5_lag_query_aggregated_speed(struct mlx5_core_dev *dev, u32 *speed);
+ bool mlx5_lag_mode_is_hash(struct mlx5_core_dev *dev);
+ bool mlx5_lag_is_master(struct mlx5_core_dev *dev);
+ bool mlx5_lag_is_shared_fdb(struct mlx5_core_dev *dev);
 -- 
 2.44.0
 
