@@ -1,214 +1,267 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5A28370AEB;
-	Thu, 10 Sep 2026 18:55:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B938E3CA481
+	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 19:33:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789066546; cv=none; b=qI04ZCD/mffz8cpWqepYGMFV8Mp+SckjY1mMcAa6rsDe9kbC0stcfx2zD+J7+I3u1JbuCYOfprkKBtOdQXCzDaRdWO8wC3s07a4U34v1gZM4aPdg96uWmghvXCkFNLpDqk3ix6QSKvlbeFommd9l3PlW59y1YVogEyWBeklnOxg=
+	t=1789068804; cv=none; b=iEQvLx1E/v4feAEVLmyy4iS5Yz6iOznEzKcHuxvWkwRQX7pvy75A0UnMJ1soeTAN902yQKSG98xdXJIeRKndOEJDAtkWG2pe0nitpyZ5L0ciV1F2UDCjCxOVDPs2YeiYNxQVrEApUXOlCbii6i9syiEJT0P+Q401G4fr+AgUJBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789066546; c=relaxed/simple;
-	bh=jA1OIjMBwv91UuOt5Tn56hy+6IGDF/xyXBVDc+O0W7c=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=A+ac7OsFdCSk2ZgjggUEYNyk4qABfHooj+hlO9MbViUc0WCRtXI5eLFkxpk7W9dQ5JYKjN2SCapwFEuOSIMOYCeUAUznU6rWrRcXDK+Uv8sJjOm3BmsrZD6qMF1fS9r9KQgw8cQJYtc7xANVQGzoX0yYNcmROoSIKr0IrqWz3ac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F6i3O5AT; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789068804; c=relaxed/simple;
+	bh=z/ntw6rkZ01hf6p5sHZuJQruPYMKRq0GuPPT61YKsXI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=U7n93sW94p7P27c/R7H3FfPq+0rWyZWZLP68n3nP11XLYLzlAkqRhUz1VMlXXCAGJQzQcj14qTNglEO1OBICbXSFIvAjy37dlbhAfj/c7WVMpZKJjbrNPtIxCj1afI96sif/L56LnL1zpnit6RcWMGFGRdsM53jwEJjkzURioNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YLrUzNVB; arc=none smtp.client-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F6i3O5AT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC6741F008A6;
-	Thu, 10 Sep 2026 18:55:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789066544;
-	bh=CrpBp6UrC3ldEa5GcKmmPo3oz74G2RAnpQBvJ2o9k1k=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject;
-	b=F6i3O5AT5R2f9Yx+JsX4oi2MbBVZy6vhmuah8fyZ7HoRM4fcwu9ko/hMOipVkG55B
-	 1Zmg31PLcmFyjN/6qwvx+Gi14CUmpNgqwIW3GIcgTV8r/HdYjj80cmHBvTlnPKg5uR
-	 OFZIpZsE3LqRG10E9rSuJaexxU9wT5CasLzhcaoOUlc1HtwpM6VduzyZ+RCbNEeTCG
-	 7mnywN+8+H6LvsHwXafWrsaQmZDzIueYYyazPefKJGcMkw5e44QHRXV4epY9oIt8b/
-	 VxUYOa++vQ7n7D+qHzq2qnf380yDhptkzXHvt9CgqRKD1Qe5yMUYoD9jvQW061SukA
-	 KzIemnQ3+sQfA==
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfauth.phl.internal (Postfix) with ESMTP id C451EF40069;
-	Thu, 10 Sep 2026 14:55:42 -0400 (EDT)
-Received: from phl-imap-15 ([10.202.2.104])
-  by phl-compute-10.internal (MEProxy); Thu, 10 Sep 2026 14:55:42 -0400
-X-ME-Sender: <xms:Lv2iajO020W1DUB7kxvyyEY7DfRl-e2BIJTX073yLiFUhMClSPWBiA>
-    <xme:Lv2iaoxfBFeDEd_VmLtT0qd94HDtXRhhpDvUfHkJM_m66XDNqrBNS-B2koOqMN4lP
-    Sa0Ug9f_2FH0Kq2r3-yqf79TNecZT6-Lakr_OXpOKrFWd9sWBuPoBo>
-X-ME-Proxy-Cause: dmFkZTF4DbH3FZ3dPjetu62giaNH+KK3h7Vnr+fEg85PysIt/4nck/4imrawKEp8DsE6Pr
-    r0whIQLHunubPaHCLLANlXfZ8RvcApjV2EH4HvJnIa7IIlTjW/aieFsEYioNdVnIC1pGZ7
-    r7+Be7rv47aINSOQmPbhGzYvhtHf8def9lEg4PtjWAs9LAnZxAA8HHEDG0Nu5Q4D+ErnGo
-    wbL3v3GuUBm9m4647OHl9jiHICZ+8M7+WaOVrci5hxhVfG9CY47ExztZrbckd1/ZxcD0FZ
-    vwDE7nYg/E3N/QLZgdrUVACuceWMJkJ6Wb+Z2hJc7h8HgoI8f/4b+gnUnlKGDgCx/5CDPJ
-    po6DIC9Q8yofj6Gyo3f7FKL5mt0EHv82L6g17/YO3gWxVRbIFJetz+YWg8fgbv7WuFfefm
-    hnLsmWUjBQVBzx6B9SMuUsPATs4OJtGO1f+mnt0J/1peJ5Nq63D3J9EC8B1PaX5BKnWN5n
-    NTUc5qHazXKrxzCndz85zJiyINbeiTNLTCeRjTR7RMcNSUFcXqheUFmGnh70f88dysYIhz
-    x/wWpwuzN1bBTEbUGCyOiSyCxaCxeioaasg+88aeLfS3v1QhYfc5bHYGwrmHrU/cjZ20YX
-    SgmgetWptaxFGpGrTy/DDcJdYBDIVEtFh7oH120w4eOuhoZaxlVn3LGzD7xQ
-X-ME-Proxy: <xmx:Lv2iagKDhe4ENuyDEBPe0XuX5JV95iH3pOzVxXrfT1HwGt5hmy731g>
-    <xmx:Lv2iavY0YWPFwc5heNSQaejsEbm3T9Hzm9qfGqn3H3Ql0pmX2TgP2A>
-    <xmx:Lv2ias4lIQtLaB1oGx0UNzfhFXq0OCShC-yE9ybCKPEj_MhGksso3A>
-    <xmx:Lv2iaoJl7Z6wMLyQsn5RJgRWdIhUrImOwvxM7EqgPgmRZWBE2AuVGw>
-    <xmx:Lv2iaqawY0GSonv8zq4bA_iHkDoRcvBDh1ekvmmQAljAmwqWH4krgir7>
-Feedback-ID: ifa6e4810:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 8F75E7811F0; Thu, 10 Sep 2026 14:55:42 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YLrUzNVB"
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-486e934b0c9so39167f8f.2
+        for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 12:33:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789068799; x=1789673599; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=VKdmL79F/q5jy1ukzo1sZIwlgRGg6y+i6cYUbNQ2MJk=;
+        b=YLrUzNVBJRxSjduF6rkjEH/J1HsxBgX8Mb8q8OqDHdVuokbWtXhA/OXT56dcWiupEi
+         nsAK9yz0H3PE17ekZ45QDfpd/MV9wwcZ7cPJePo+y3B5PkxDtU4c0Qbqor/kqM1SRxiC
+         QIcEzwNqzfqquUJ1Hd2rdFrM8oNuoLP/+Df2Y7CJGub7vZZbCGyn9CRn40/WBwQPociE
+         kzXOIwaWJlgXm9edYOIaWw319V/wbMB9/Z92DFrKYHmc0w8t0+pbnYdoTmDpC2DKDepY
+         l3nZ1uHDcoPGlAK8uwwH8soRwzZ9d3TR/zbvr3S9Y+YGApny+YwIs6xpnAD53v0s0uYf
+         27Ug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789068799; x=1789673599;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=VKdmL79F/q5jy1ukzo1sZIwlgRGg6y+i6cYUbNQ2MJk=;
+        b=n1lGt3bcYB285KxiAbM6zwKw1rAeOubijCcLUp5RZQErw/kseKmP/oKMoUPFRFLRtf
+         hT0I98CHomUqun5QxL4z+JgU0ESNlZsjnxwbl4BTykLSg0N0RzuS7eFHQ3sY4URSiird
+         jNfgx16ichYB7ma89xT9T1QxUsj0TWhjL+6JSw/7ZJ9J832c1VkuMHHCXzTIH8LcvwzD
+         GlOso/w2TugLRYR4Iwqp3aGl40T2xkZ8HswaFWraKrjTcDnF/cYZmeXEcpFwX3AgGhxX
+         p+MicNqcXMGN+yfjXyQ6773kc9w9/5Rkvg5k+T4uPfIEchcBF1S0JXl3js27LSrn1yPt
+         Vmzg==
+X-Forwarded-Encrypted: i=1; AKwUvBwhqiPjYpinuO085AeztibfTXvwIWMxyF/kx4sxv765Vv+IT1Rq12niKjh8RA69O9KThxEiflc=@vger.kernel.org
+X-Gm-Message-State: AFuF++n8sgRf65pqmPw0tOE9ShPJs9avJcx6oJ4V4xOUWbHsSBto/mtZ
+	L0mx2tViVV7L6Xx8TsHfJVQwh3PV4EW3pQw9scUju53GU20o0zYReuGy
+X-Gm-Gg: AYBFou2ZTV/uFbiXbJNbf2s3sWLGW10Xjdl5W2AOK/jJEV/YVx2ADpJa17edMXittwO
+	xfujqybCE95kDbpU4bTrSB1q5NzAfxf/t3RLR+0GM2myxM8myuNZsDbapnVLdrZGtJhHzFFd4BG
+	xCLG329juCpmxTOcxD55pfcjOZ22nBpw8CwaAwausm6vY/u+p6I62/AujzXKHs/3bYci1c7C+lf
+	TqiR0K5mhwoAQ+eEyXLV4brvrzOh79dmiW4Wl/Xlr8qs2gKcvw8lriunYfkC+8jQ+IAP23WntXp
+	QjqrZZn6Z0OTicoPWITuPovGHzcQppExRpHxCBUD66UmTUGYpCQmsXCgrgBaT5G4DyWZsaKlG3j
+	eGHqpZPoJcI0CyugtSzmXw16wZzibAKj4br32I4xQXTr/I7BD8jESqx8koY34DXOStpOXNfmqcy
+	mFRQtmd3bpt4ef9U/Pt7QhTBQ1RQudqrh6OiYEWzrKS0zDrLLU+Hhl/f4skImW9gSP3wehbP57y
+	iNT+8Q9G8VfhY16DVC3lcBaSZ/loxjUrDptarXojSOIUdOnzRitcMgnSytF/92tcDnsKx/voUG6
+	fS1FFVPZZ2SeDpVRRjuTb/7nkpygh23DGlkE
+X-Received: by 2002:a05:6000:4a12:b0:484:4537:95ed with SMTP id ffacd0b85a97d-486eafd6f7dmr650425f8f.5.1789068798984;
+        Thu, 10 Sep 2026 12:33:18 -0700 (PDT)
+Received: from ?IPV6:2003:ea:8f2c:d400:9135:d56e:c3ce:edd3? (p200300ea8f2cd4009135d56ec3ceedd3.dip0.t-ipconnect.de. [2003:ea:8f2c:d400:9135:d56e:c3ce:edd3])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-486eb2ecf23sm620428f8f.5.2026.09.10.12.33.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 10 Sep 2026 12:33:18 -0700 (PDT)
+Message-ID: <46807790-6f07-4f0a-b50b-375cc1c9b061@gmail.com>
+Date: Thu, 10 Sep 2026 21:33:15 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: AHIlAaKAQArc
-Date: Thu, 10 Sep 2026 14:55:20 -0400
-From: "Chuck Lever" <cel@kernel.org>
-To: "Fernando Fernandez Mancera" <fmancera@suse.de>, netdev@vger.kernel.org
-Cc: "Simon Horman" <horms@kernel.org>, "Jakub Kicinski" <kuba@kernel.org>,
- "Paolo Abeni" <pabeni@redhat.com>, edumazet@google.com,
- davem@davemloft.net, "Jason Gunthorpe" <jgg@ziepe.ca>,
- "Leon Romanovsky" <leon@kernel.org>,
- "Andrew Lunn" <andrew+netdev@lunn.ch>,
- "Tony Nguyen" <anthony.l.nguyen@intel.com>,
- "Przemek Kitszel" <przemyslaw.kitszel@intel.com>,
- "Elad Nachman" <enachman@marvell.com>,
- "Saeed Mahameed" <saeedm@nvidia.com>, "Tariq Toukan" <tariqt@nvidia.com>,
- "Mark Bloch" <mbloch@nvidia.com>, "Ido Schimmel" <idosch@nvidia.com>,
- "Petr Machata" <petrm@nvidia.com>,
- "Edward Cree" <ecree.xilinx@gmail.com>,
- "Maxime Chevallier" <maxime.chevallier@bootlin.com>,
- "Maxime Coquelin" <mcoquelin.stm32@gmail.com>,
- "Alexandre Torgue" <alexandre.torgue@foss.st.com>,
- "Arend van Spriel" <arend.vanspriel@broadcom.com>,
- "Miri Korenblit" <miriam.rachel.korenblit@intel.com>,
- "Keith Busch" <kbusch@kernel.org>, "Jens Axboe" <axboe@kernel.dk>,
- "Christoph Hellwig" <hch@lst.de>, "Sagi Grimberg" <sagi@grimberg.me>,
- "Chaitanya Kulkarni" <kch@nvidia.com>,
- "Saurav Kashyap" <skashyap@marvell.com>,
- "Javed Hasan" <jhasan@marvell.com>,
- GR-QLogic-Storage-Upstream@marvell.com,
- "James Bottomley" <James.Bottomley@hansenpartnership.com>,
- "Martin K. Petersen" <mkp@kernel.org>,
- "Nilesh Javali" <njavali@marvell.com>,
- "Manish Rangankar" <mrangankar@marvell.com>,
- "Varun Prakash" <varun@chelsio.com>,
- "Alexander Viro" <viro@zeniv.linux.org.uk>,
- "Christian Brauner" <brauner@kernel.org>, "Jan Kara" <jack@suse.cz>,
- "David Howells" <dhowells@redhat.com>,
- "Marc Dionne" <marc.dionne@auristor.com>,
- "Trond Myklebust" <trondmy@kernel.org>,
- "Anna Schumaker" <anna@kernel.org>, "Jeff Layton" <jlayton@kernel.org>,
- NeilBrown <neil@brown.name>, "Olga Kornievskaia" <okorniev@redhat.com>,
- "Dai Ngo" <Dai.Ngo@oracle.com>, "Tom Talpey" <tom@talpey.com>,
- "Marek Lindner" <marek.lindner@mailbox.org>,
- "Simon Wunderlich" <sw@simonwunderlich.de>,
- "Antonio Quartulli" <antonio@mandelbit.com>,
- "Sven Eckelmann" <sven@narfation.org>,
- "Nikolay Aleksandrov" <razor@blackwall.org>,
- "Pablo Neira Ayuso" <pablo@netfilter.org>,
- "Florian Westphal" <fw@strlen.de>, "Phil Sutter" <phil@nwl.cc>,
- "Johannes Berg" <johannes@sipsolutions.net>,
- "Matthieu Baerts" <matttbe@kernel.org>,
- "Mat Martineau" <martineau@kernel.org>,
- "Geliang Tang" <geliang@kernel.org>, "Julian Anastasov" <ja@ssi.bg>,
- "Aaron Conole" <aconole@redhat.com>,
- "Eelco Chaudron" <echaudro@redhat.com>,
- "Ilya Maximets" <i.maximets@ovn.org>,
- "Allison Henderson" <achender@kernel.org>,
- "Jamal Hadi Salim" <jhs@mojatatu.com>, "Jiri Pirko" <jiri@resnulli.us>,
- "Marcelo Ricardo Leitner" <marcelo.leitner@gmail.com>,
- "Xin Long" <lucien.xin@gmail.com>,
- "D. Wythe" <alibuda@linux.alibaba.com>,
- "Dust Li" <dust.li@linux.alibaba.com>,
- "Sidraya Jayagond" <sidraya@linux.ibm.com>,
- "Mahanta Jambigi" <mjambigi@linux.ibm.com>,
- "Tony Lu" <tonylu@linux.alibaba.com>, "Wen Gu" <guwen@linux.alibaba.com>,
- "Jon Maloy" <jmaloy@redhat.com>,
- "Tung Quang Nguyen" <tung.quang.nguyen@est.tech>,
- "Steffen Klassert" <steffen.klassert@secunet.com>,
- "Herbert Xu" <herbert@gondor.apana.org.au>,
- "Casey Schaufler" <casey@schaufler-ca.com>,
- "Paul Moore" <paul@paul-moore.com>, "James Morris" <jmorris@namei.org>,
- "Serge E. Hallyn" <serge@hallyn.com>,
- "Vikas Gupta" <vikas.gupta@broadcom.com>,
- "Bhargava Marreddy" <bhargava.marreddy@broadcom.com>,
- "Rajashekar Hudumula" <rajashekar.hudumula@broadcom.com>,
- "Nicolai Buchwitz" <nb@tipi-net.de>,
- =?UTF-8?Q?Markus_Bl=C3=B6chl?= <markus@blochl.de>,
- "Arnd Bergmann" <arnd@arndb.de>,
- "Heiner Kallweit" <hkallweit1@gmail.com>,
- "Florian Fainelli" <florian.fainelli@broadcom.com>,
- "Krzysztof Kozlowski" <krzk@kernel.org>,
- "Qingfang Deng" <qingfang.deng@linux.dev>,
- "Julian Braha" <julianbraha@gmail.com>,
- "Ethan Nelson-Moore" <enelsonmoore@gmail.com>,
- "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
- "Eric Biggers" <ebiggers@kernel.org>, "Ard Biesheuvel" <ardb@kernel.org>,
- "Neal Cardwell" <ncardwell@google.com>,
- "Kuniyuki Iwashima" <kuniyu@google.com>,
- "Willem de Bruijn" <willemb@google.com>, "Alyssa Ross" <hi@alyssa.is>,
- "Joel Granados" <joel.granados@kernel.org>,
- "Oleg Nesterov" <oleg@redhat.com>, linux-rdma@vger.kernel.org,
- linux-kernel@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
- oss-drivers@corigine.com, linux-net-drivers@amd.com,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-wireless@vger.kernel.org,
- brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com,
- linux-nvme@lists.infradead.org,
- "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
- target-devel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-afs@lists.infradead.org, linux-nfs@vger.kernel.org,
- b.a.t.m.a.n@lists.open-mesh.org, bridge@lists.linux.dev,
- netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
- mptcp@lists.linux.dev, lvs-devel@vger.kernel.org, dev@openvswitch.org,
- rds-devel@oss.oracle.com, linux-sctp@vger.kernel.org,
- linux-s390@vger.kernel.org, tipc-discussion@lists.sourceforge.net,
- linux-security-module@vger.kernel.org
-Message-Id: <ff6ff699-e942-455f-8816-49af24afb370@app.fastmail.com>
-In-Reply-To: <20260910144914.8025-2-fmancera@suse.de>
-References: <20260910144914.8025-1-fmancera@suse.de>
- <20260910144914.8025-2-fmancera@suse.de>
-Subject: Re: [PATCH 01/13 net-next] net: ipv4: introduce CONFIG_IPV4 to decouple the
- IPv4 stack
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2] r8169: don't enable chip LTR when the platform has
+ not enabled LTR
+To: Yogesh Gaur <yogeshgaur.83@gmail.com>, nic_swsd@realtek.com
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Javen Xu <javen_xu@realsil.com.cn>
+References: <20260910130140.910-1-yogeshgaur.83@gmail.com>
+Content-Language: en-US
+From: Heiner Kallweit <hkallweit1@gmail.com>
+In-Reply-To: <20260910130140.910-1-yogeshgaur.83@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-
-
-On Thu, Sep 10, 2026, at 10:48 AM, Fernando Fernandez Mancera wrote:
-> Historically, the IPv4 protocol has been linked to the core INET
-> subsystem. Because shared infrastructure like the TCP/UDP engine,
-> routing or INET hashtables live inside net/ipv4/, it has been impossible
-> to compile a kernel with only IPv6 support.
->
-> This patch introduces the CONFIG_IPV4 Kconfig symbol, which is set to
-> 'def_bool y' for now. This does not allow to completely disable the
-> IPv4 stack yet but it lays the necessary build-system work for that
-> goal.
->
-> In addition, multiple subsystems Kconfig symbols across networking
-> features like tunnels, drivers and filesystems have been adjusted to
-> depend on IPv4. Keep on mind that follow-up work is required to convert
-> the Kconfig symbol to bool and remove the dependency on IPv4 where it
-> makes sense.
->
-> Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
-
-> diff --git a/net/sunrpc/Kconfig b/net/sunrpc/Kconfig
-> index e7808e5714dc..58e6f6db3100 100644
-> --- a/net/sunrpc/Kconfig
-> +++ b/net/sunrpc/Kconfig
-> @@ -1,7 +1,7 @@
->  # SPDX-License-Identifier: GPL-2.0-only
->  config SUNRPC
->  	tristate
-> -	depends on MULTIUSER
-> +	depends on MULTIUSER && IPV4
+On 10.09.2026 15:01, Yogesh Gaur wrote:
+> rtl_enable_ltr() programs the MAC to generate LTR messages - ALDPS_LTR_EN,
 > 
->  config SUNRPC_GSS
->  	tristate
 
-Acked-by: Chuck Lever <cel@kernel.org>
+Empty lines, mail formatting issue?
 
+> LTR_SNOOP_EN, LTR_OBFF_LOCK_EN, plus LINK_SPEED_CHANGE_EN on
+> 
+> RTL8125/RTL8126/RTL8127 - and rtl_hw_aspm_clkreq_enable() calls it on
+> 
+> every ASPM enable, then goes on to let the chip trigger L1.2.
+> 
+> 
+> 
+> The only gate is tp->aspm_manageable, which records that the OS is allowed
+> 
+> to control ASPM. It says nothing about LTR. LTR is a separate PCIe
+> 
+> capability that only works if every device on the path to the root port
+> 
+> supports it. The PCI core works that out in pci_configure_ltr() and
+> 
+> records the result in pci_dev->ltr_path; per PCIe r6.0 sec 7.5.3.16 a
+> 
+> function must not issue LTR messages while LTR Mechanism Enable is clear.
+> 
+> 
+> 
+> So on a platform whose hierarchy has no LTR path, the driver tells the
+> 
+> chip to start sending LTR messages nothing will honour, and ties ALDPS -
+> 
+> the PHY's link-down power saving - to them. A report against RTL8125B
+> 
+> (rev 05, firmware rtl8125b-2_0.0.2) in a mini PC shows the effect: 291
 
--- 
-Chuck Lever (Come to NFS bake-a-thon! https://nfsv4bat.org)
+Did you verify that this is caused by LTR messages, and not by any other
+root cause?
+
+> 
+> link down/up transitions in one eight-hour boot, with repeated downshifts
+> 
+> to 100Mbps, against four transitions at boot and then a stable link on
+> 
+> the kernel before the LTR change.
+> 
+> 
+> 
+> Gate the chip's LTR programming on pci_dev->ltr_path. That field lives
+> 
+> inside CONFIG_PCIEASPM, and without ASPM support there is nothing here to
+> 
+> enable LTR for, so compile the function out in that configuration.
+> 
+> 
+> 
+> Note this does change CONFIG_PCIEASPM=n builds, which used to program
+> 
+> chip LTR unconditionally: pci_disable_link_state() is a stub that returns
+> 
+> success there, so tp->aspm_manageable ends up set. The PCI core does not
+> 
+> configure LTR in that configuration either.
+> 
+> 
+> 
+> Fixes: 9ab94a32af70 ("r8169: enable LTR support")
+> 
+> Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2529752
+ 
+Did you verify that your patch fixes the reported issue? Or do you
+just assume this? Because in the bug comment history I don't see
+a statement that issue has been resolved.
+
+> Assisted-by: LLM
+> 
+> Signed-off-by: Yogesh Gaur <yogeshgaur.83@gmail.com>
+> 
+> ---
+> 
+> v2:
+> 
+>  - Gate on pci_dev->ltr_path instead of reading PCI_EXP_DEVCTL2 directly,
+> 
+>    and compile rtl_enable_ltr() out for CONFIG_PCIEASPM=n, where that
+> 
+>    field does not exist and there is nothing to enable LTR for.
+> 
+>    Suggested by Heiner Kallweit.
+> 
+>  - Commit message notes the resulting change for CONFIG_PCIEASPM=n builds.
+> 
+>  - No change to the RTL8125 register programming itself.
+> 
+> 
+> 
+> v1: https://lore.kernel.org/all/20260909110554.1977-1-yogeshgaur.83@gmail.com/
+> 
+> 
+> 
+>  drivers/net/ethernet/realtek/r8169_main.c | 13 +++++++++++++
+> 
+>  1 file changed, 13 insertions(+)
+> 
+> 
+> 
+> diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+> 
+> index ec4fc21fa21f..05f7a44aff01 100644
+> 
+> --- a/drivers/net/ethernet/realtek/r8169_main.c
+> 
+> +++ b/drivers/net/ethernet/realtek/r8169_main.c
+> 
+> @@ -3035,8 +3035,16 @@ static void rtl_disable_exit_l1(struct rtl8169_private *tp)
+> 
+>  	}
+> 
+>  }
+> 
+>  
+> 
+> +#ifdef CONFIG_PCIEASPM
+> 
+>  static void rtl_enable_ltr(struct rtl8169_private *tp)
+> 
+>  {
+> 
+> +	/* The chip must not issue LTR messages unless LTR is enabled on the
+> 
+> +	 * whole path up to the root port. pci_configure_ltr() works that out
+> 
+> +	 * and records the result in pci_dev->ltr_path.
+> 
+> +	 */
+> 
+> +	if (!tp->pci_dev->ltr_path)
+
+Simpler would be:
+if (!IS_ENABLED(CONFIG_PCIEASPM) || !tp->pci_dev->ltr_path)
+
+Then you don't need the stub function.
+
+> 
+> +		return;
+> 
+> +
+> 
+>  	switch (tp->mac_version) {
+> 
+>  	case RTL_GIGA_MAC_VER_80:
+> 
+>  		r8168_mac_ocp_write(tp, 0xcdd0, 0x9003);
+> 
+> @@ -3120,6 +3128,11 @@ static void rtl_enable_ltr(struct rtl8169_private *tp)
+> 
+>  	/* chip can trigger LTR */
+> 
+>  	r8168_mac_ocp_modify(tp, LTR_OBFF_LOCK, 0x0003, LTR_OBFF_LOCK_EN);
+> 
+>  }
+> 
+> +#else
+> 
+> +static void rtl_enable_ltr(struct rtl8169_private *tp)
+> 
+> +{
+> 
+> +}
+> 
+> +#endif
+> 
+>  
+> 
+>  static void rtl_hw_aspm_clkreq_enable(struct rtl8169_private *tp, bool enable)
+> 
+>  {
+> 
+
