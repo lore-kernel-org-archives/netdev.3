@@ -1,116 +1,81 @@
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out28-53.mail.aliyun.com (out28-53.mail.aliyun.com [115.124.28.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 206BD38F651
-	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 03:21:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789010493; cv=pass; b=tRavU5ftVGI/5yt2ZOUXiMY6Ryrvm0RZJ2dsKzRmbQBDRf5S7ipEMC91U/69WfiTyIxCZO3NndDNefUBkyO3G9gvh63U7iJndgmDonFDED8cl1eL3b4j2hM1T9LjYfu8Ofs1f2/6t+oF8YfS6l0vLHvtycDYWbME6tNeY6O+c+k=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789010493; c=relaxed/simple;
-	bh=d9sO9YfjOMtfhkKI218+Hml8pdw2xki6+3ssCBL+UVU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Q+67bBndrpOg9CYlN7HoQxyI6OzqtnJgKPlmNhcgDswSNuPKt0wEQRzGICF9FQgPMtb6ec8tVAmbVXk1HTUBT4KRZE1XSUH1WfdZdD8/sNo7AfljnLC8e9t4vWyNuHQPuA5qxy8zEX13zD0H6UPcj61tve9VrXXFiRO+0+3j8lo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SWQ7MXUq; arc=pass smtp.client-ip=209.85.167.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SWQ7MXUq"
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5b76515c0d7so408860e87.0
-        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 20:21:30 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789010489; cv=none;
-        d=google.com; s=arc-20260327;
-        b=UkdkUFOtBdwgDCDmhN3a33WLv2y45mN9F1eA+5K3nkx+t/Pp8lc+OXt+o5SFLlnEzn
-         Fi5gZA8Hv0EeqoNMYgWeX/9MQRbjakcBiFmm5JgN7ANATRMbU8rokgEMuMa9gozm52gP
-         iY+YLwuT4pUUXegzW0pu0AK9y8MusUYc28K2nJHJRgF7UFAxf+g4ZlCCPoJ2m5KBvebl
-         xBNmVoJDXGgjNRLRp+xd1D1YWVi7cu/LjLK4Cjg9UD02rhjb8T1/1tiDi0TBCiBCVT9g
-         +85WT4r9kQjPRdRpz+dK/D3hiEK1pkxf1HYJ2viVL6SJe91DrhTwL6mFQDd7SSp/PSHo
-         kNMA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=d9sO9YfjOMtfhkKI218+Hml8pdw2xki6+3ssCBL+UVU=;
-        fh=db461V+dTbZeBFHIQcBJTIaEKPrbz2yp0OglxG+2XLE=;
-        b=JLpvg854FE2DW99M1PdM0Y/qmBGcWw65f1CrliI4ndsuixI1GEmPtYxrCRbaskwH0J
-         dkIljE4PKH7NuEuPDGIGlSXTovk0CgX+lZRlw4DSF7iEBiOJ05tXtOn35obdMXOU26jP
-         1T4nD3KAtNcmqcwBmn10SbDuTfdcxITEyg9C+azHWDKnTRe2T73lBPZzzxB+v6R29bCl
-         XhIcpPVqWvthhzcAOvuSn3mudwTWcn0MliCqaYdWDO54vGlWv8oqsVwDmhHCQ17fSh8G
-         aA3PZ3Ww6yRBZguGSWzjc+t2ArXwn5sQ1Msp1TVgXwlZNp+IUkgmupbqjG3OXFGxowwC
-         CJsw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789010489; x=1789615289; darn=vger.kernel.org;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=d9sO9YfjOMtfhkKI218+Hml8pdw2xki6+3ssCBL+UVU=;
-        b=SWQ7MXUq8hWauQt3woccc8fdoH1ixQ2nrXNn/BjQWP80zEtOoB9H2o/2oAUCncxq6z
-         +LYl5JKPujjfKOuRZ76JqFLukjKgbmksJ4vp5iXC2OUDcfmVXMl34PjJjnRXYewANJ1y
-         PI5zLMp7k/PYQQMUluPqoy0KRqVRVxysSr5PUDc67xGZ9FPPAn3hU1B4KXC2G2rP+DVe
-         jyzdov7KQg7afQKPXinC06msaYTylYaeiTuKa0i19qf0lKpD/sctOmNCz2brzq+u9bLy
-         kFhBAROKwzpc3v5aogPct0eS8UDOyWnomU4AhnHctSIwZq7y6+0THzTK15vwZzN1lisP
-         UnzQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789010489; x=1789615289;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=d9sO9YfjOMtfhkKI218+Hml8pdw2xki6+3ssCBL+UVU=;
-        b=MH8gmz5Yvbkc4KcWsAR8mF337ACBrOvUWjRlSb8St3EVMi7/9AOly5E8VUxVEBKVzV
-         xqGp562HwpFk8MNvx5xIUfu23vL8n0Gzk3NoxpB/chUG8SYG6C9RnBrq/jzVKzDREIIy
-         49RRvqb1q77fNl1IizuPWdX+ZldlkdezQ7rNd4pr73HCcJOq7qCvS8QbnczpJ1vbmGtv
-         w9Z2x5z4aDSFPmQgH6z+IrHwDE6QTKh7M12yIc1lHfzZqiohsqRnaWPM03SgUwG8UkyD
-         521EapA9QUJJ8uzaj0ANWUEvC+cB0WGpsYTKSN2DWb+jWtuld1EGX7KT4lyP0vaZ7xSO
-         Syzw==
-X-Forwarded-Encrypted: i=1; AKwUvBwrP3L9lRIrf/kw7PuPlcz2M+ab9ZwDYByFxwt00aWka4/pdBxYHzukKEpzx8Ov/dEuABFiM+c=@vger.kernel.org
-X-Gm-Message-State: AFuF++kNKG42iQWUP8gyJh+nH3J09cT+OpfCKTSuQXyDfwc41aj7gnbX
-	UE+Sg/PM5QrZiuncyEyfARprp060VHJO1aNsy41QSMM98H1kBU4/HFBcsfzikkFkr/FwlflB3O1
-	EQl1X8wHnJG8uw/3XbMQuAQtP93QnDO0=
-X-Gm-Gg: AYBFou2WqDpJIqP2R2b1roJdxtH6UtwuMfw30ttCggm8qhFQwGWBfgcHpbXKQSmVet5
-	8xp0iqrHEpyoisF+OTKHjAf10tw33bAqvfPdJwFDFn+u3ZzNDnRVCS+j+g1uWlQ79Kop8U2KGlk
-	JP6cmC1BZfuN8cJhNwKEa/HWmuFrOrIRqSqnCndLErtN/VhrBCi9BTxqG+ERttd8Pf4RLnTMofw
-	X140cZPLNL199Tv60l81HrpItQzmDCNqTjjWTUPUuzCi9UN84nXRGuikjdWjKW+5nNGAWGmcLPo
-	Axo9M7SX/+lq+7WfhP2ZlyxIYH2+8k60AYmDUUsusr/1usSOv8wpnqI8+zYF2yRPeypzun6SUz/
-	mlODUsrKmpW/JMc7F5LmAwV1Zvn1TTOxOPUF9bRbPwQ==
-X-Received: by 2002:a05:6512:1307:b0:5b5:e3b0:231 with SMTP id
- 2adb3069b0e04-5b89a2fad8dmr399549e87.13.1789010488773; Wed, 09 Sep 2026
- 20:21:28 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A83C13769FF;
+	Thu, 10 Sep 2026 03:23:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.53
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789010600; cv=none; b=Gh2Kylnsn9NMh183gf6Yhkn3eoYwz3xcy/pxa/oiqACCsBGX2mTmfWiZkyrPZZrD42dj8HOEu5DaEI5/orUMqNDyQL2lscJwsxoONggDI84AMLGRpTf92TRgh90Ct0zWUvmCS0gV/Rwn4uyh/CJNcujKWwVASH2XRFHPmOOCKRU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789010600; c=relaxed/simple;
+	bh=iouvbhhZfixEDdQwyTcpAFyO2f9eDsZZhIh5HjGEswQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XhSm6jStRuMG4n+MukjX96zSzGFPJZSUFIj+7NknO5Ct/tIIAvHdJovilYMVUj2bI/DqtP4jYSOZOt2ZrSrXZYSlRPr/ttI49kwOCfY6LP2JQXw05BUbaDqphBFubo03nlYDtTPjJ3+wClLzM1kWrgfSB0zGj29V2Om8UHFNimU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com; spf=pass smtp.mailfrom=motor-comm.com; arc=none smtp.client-ip=115.124.28.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=motor-comm.com
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.1041459|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_regular_dialog|0.0193458-0.00239537-0.978259;FP=5400844641935200081|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037022039;MF=kyle.switch@motor-comm.com;NM=1;PH=DS;RN=16;RT=16;SR=0;TI=SMTPD_---.jA5tta5_1789010584;
+Received: from 10.10.26.192(mailfrom:kyle.switch@motor-comm.com fp:SMTPD_---.jA5tta5_1789010584 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Thu, 10 Sep 2026 11:23:06 +0800
+Message-ID: <1bd79ceb-4abf-49e3-a441-7c026a89d220@motor-comm.com>
+Date: Thu, 10 Sep 2026 11:23:03 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260909013401.14408-2-sigefriedhyy@gmail.com> <178900489222.219967.5701707176821161509@kernel.org>
-In-Reply-To: <178900489222.219967.5701707176821161509@kernel.org>
-From: Yuyang Huang <sigefriedhyy@gmail.com>
-Date: Thu, 10 Sep 2026 12:21:16 +0900
-X-Gm-Features: AcwNN1V7GyyXN-MLzIxbdYaXEdpcN2buyxt9nexIpKd7w-_caM0SlF_aUp8xaeU
-Message-ID: <CA+7S2v+kkzOxwp_o7eJ6e8gCGhqvN7ua52jsBNsCM1hMW79VNA@mail.gmail.com>
-Subject: Re: [PATCH net-next v2 1/3] rtnetlink: add AF_PACKET multicast dumps
-To: netdev-bot+sashiko@kernel.org
-Cc: davem@davemloft.net, dsahern@kernel.org, donald.hunter@gmail.com, 
-	edumazet@google.com, idosch@nvidia.com, kuba@kernel.org, kuniyu@google.com, 
-	nicolas.dichtel@6wind.com, nickgarlis@gmail.com, pabeni@redhat.com, 
-	sd@queasysnail.net, shuah@kernel.org, horms@kernel.org, sdf.kernel@gmail.com, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v6 6/6] net: dsa: motorcomm: Add support for
+ Motorcomm YT922x
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: David Yang <mmyangfl@gmail.com>, olteanv@gmail.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ linux@armlinux.org.uk, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ ming.xu@motor-comm.com, xiaolin.xu@motor-comm.com,
+ jianmin.wang@motor-comm.com, wei.zhang@gl-inet.com, sijia.huang@gl-inet.com
+References: <20260908083614.2210505-1-kyle.switch@motor-comm.com>
+ <20260908083614.2210505-7-kyle.switch@motor-comm.com>
+ <CAAXyoMMLpaD5B4QojC0OKHxOFfPfFGpsS2nxCMT9e=nJeo8beg@mail.gmail.com>
+ <0aa20394-2042-4c52-b30b-cdd742d4da65@lunn.ch>
+ <5e492c8b-1afa-4af8-8f66-9b50799911e4@motor-comm.com>
+ <0ad7cd3b-006f-41a0-9d58-5f6dad9c22e8@lunn.ch>
+Content-Language: en-US
+From: Kyle Switch <kyle.switch@motor-comm.com>
+In-Reply-To: <0ad7cd3b-006f-41a0-9d58-5f6dad9c22e8@lunn.ch>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-> Could the changelog drop or reword that claim?
 
-Okay, I'll drop the claim in v4.
+On 9/10/26 09:57, Andrew Lunn wrote:
+>>>> No one else, except you, can maintain this stuff. Drop it for now and
+>>>> discuss it later.
+>>> There also appears to be similar magic in the PHY driver. Can this be
+>>> consolidated?
+>> Ans: This part of the initialization is for the switch SerDes, so from my
+>>
+>> side it may be hard to consolidate.
+> Is it the same IP? Same configuration? Or totally different?
+Ans: They are the same IP, but there are the following differences:
 
-> This isn't a bug introduced by this patch, but can this copy expose
-uninitialized bytes from ha->addr?
+1. phy8824 only supports usxgmii_multiport mode.
 
-Not related to this patch, will send a follow up.
+     yt922x has 4utp+2serdes. These two serdes support more modes,
 
-> Can this positional resume cursor silently skip dev->mc entries?
+     such as usxgmii_singleport, bx1000, sgmii, etc., which results in more
 
-In theory yes, but this follows the existing dumps: there is no
-generation counter for dev->mc, and in_dev_dump_ifmcaddr() has the
-same window. I'd rather keep it consistent than add a counter just
-for this one. If the issue is really worth fixing, I will send a
-follow up to fix both places.
+     initialization configurations for the switch serdes.
+
+2. Another point that I think is difficult to integrate is that the phyID
+
+     of the switch serdes (defined in USXGMII reg space mii 0x2, 0x3) is
+
+     inconsistent with the phyID of phy8824 (defined in UTP reg space 
+mii 0x2, 0x3),
+
+     so phy8824 cannot be matched, and therefore two sets of initialization
+
+    configurations are required.
+
+> 	Andrew
