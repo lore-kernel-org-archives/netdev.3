@@ -1,70 +1,69 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from out28-1.mail.aliyun.com (out28-1.mail.aliyun.com [115.124.28.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 791AF2931C1;
-	Thu, 10 Sep 2026 02:12:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4100D377AA8;
+	Thu, 10 Sep 2026 02:13:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789006345; cv=none; b=ubHqE/c81WNeWVR/bN7h8l2HgbJHy7jId+RLUJNAvMb617JXtg2ARSCYKV32LXcLA11dFiMDRE51ZHuDR5wduC1jHRiEjlwHeIvNrqlXW4uuUXiVMVTfM3t95dMP580vIzZJmjjkaaziQn8Vd0kD0Srx8d0v26SpD71cKKAWUoE=
+	t=1789006433; cv=none; b=D1N511S82Vn5gwyYLQx2YXfFKhhJgevLoWuZ+ThXu2Qp1e2Vrwoe8rdf2nn0nSB6QVqu8V4iRM4nd8P8qsyftlgdBxSMX9Fxgzxcr6+x7awAsbECqXpImTaE9y/wj4c110ahCo2yPUnlDrwVaVPDDyKES8QJzwHAbIgYruL7mxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789006345; c=relaxed/simple;
-	bh=BWzCCdEf/sZzKu6OvipNlaHbzyMiK+WzqEnl/OfaOuE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=elRrdEuMvjnKZ91BQFaNesJ0Y2V1vDtWLdT4UOimJhvzhnzw3MelAdQhFjwHGJ0PK2XhXMTe/nrSLF4AJpo3pxiVZq88tynuwotlh+UT132vS69HH9hjRY3sdYgtR6ut6en6s4Zj8sPsMPAjPC3apksq51l7LPl/zpY0FN1LRos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=KscgrVCZ; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="KscgrVCZ"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=jGsz/AIlg5zkRhqib8+rxPKlP5FHVXhKZMGyojJ8N8M=; b=KscgrVCZFZYlw91Zfay36req7N
-	H+xB8J5nRlxqnmO4DJyEFdZk7QSJlpNFWMTLkzfQskL/eaUn53hrCUrEd1l/PLzmmytAPjQ2g/ZZE
-	ljxyu8D0D96bMzqDP6vHjAbBbQ/75IJQ1Xf5uCjVHBlwmuAhBfXF5MwP3LxLcibuME24=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1x4UGP-004Pzi-CH; Thu, 10 Sep 2026 04:11:45 +0200
-Date: Thu, 10 Sep 2026 04:11:45 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Caleb James DeLisle <cjd@cjdns.fr>
-Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	p.zabel@pengutronix.de, matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com, vadim.fedorenko@linux.dev,
-	maxime.chevallier@bootlin.com, dong100@mucse.com,
-	wangruikang@iscas.ac.cn, 25181214217@stu.xidian.edu.cn,
-	hkallweit1@gmail.com, han.junyang@zte.com.cn,
-	xuanzhuo@linux.alibaba.com, enelsonmoore@gmail.com,
-	jes@trained-monkey.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, naseefkm@gmail.com,
-	b.larsson@gmx.com
-Subject: Re: [PATCH net-next 1/2] dt-bindings: net: econet: add EN751221
- ethernet
-Message-ID: <a9eac625-f0f3-47db-ac2c-26c7df66f52a@lunn.ch>
-References: <20260909212146.3184077-1-cjd@cjdns.fr>
- <20260909212146.3184077-2-cjd@cjdns.fr>
+	s=arc-20240116; t=1789006433; c=relaxed/simple;
+	bh=ia6acwSXciTPWY474ZC9bNFUQPGmQMRF/Mkw7JWKP70=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UySuzsFCOBmOWJrkAlyEVcFmmmXIG8gmKQ4G0ARroqjxc5C/jZ/23H+gOuYt6lgI/UIZG4P5IQ7AmXTsbxDuqKrkKZvVCrxOJtSfIS6a0GxG1nppKhPmtIkudw1sSbXLzCA8DmWYYLJc4reEmN2HYYlTZ24qUfiDYCbJ7A+xIfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com; spf=pass smtp.mailfrom=motor-comm.com; arc=none smtp.client-ip=115.124.28.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=motor-comm.com
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.2285654|-1;BR=01201311R561ec;CH=green;DM=|CONTINUE|false|;DS=SPAM|spam_ad|0.880871-0.000325482-0.118804;FP=16380463733967879957|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037022039;MF=kyle.switch@motor-comm.com;NM=1;PH=DS;RN=16;RT=16;SR=0;TI=SMTPD_---.jA.ZRaE_1789006415;
+Received: from 10.10.26.192(mailfrom:kyle.switch@motor-comm.com fp:SMTPD_---.jA.ZRaE_1789006415 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Thu, 10 Sep 2026 10:13:38 +0800
+Message-ID: <01d589b2-73b9-4699-9a45-f869392778cd@motor-comm.com>
+Date: Thu, 10 Sep 2026 10:13:35 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260909212146.3184077-2-cjd@cjdns.fr>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v6 1/6] net: dsa: motorcomm: initialize
+ dsa_switch based on chipid
+To: David Yang <mmyangfl@gmail.com>
+Cc: andrew@lunn.ch, olteanv@gmail.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ linux@armlinux.org.uk, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ ming.xu@motor-comm.com, xiaolin.xu@motor-comm.com,
+ jianmin.wang@motor-comm.com, wei.zhang@gl-inet.com, sijia.huang@gl-inet.com
+References: <20260908083614.2210505-1-kyle.switch@motor-comm.com>
+ <20260908083614.2210505-2-kyle.switch@motor-comm.com>
+ <CAAXyoMNkvyVN435bUwWuN+q8UmKbwnWbn+=uWt-nC2omBk94Lg@mail.gmail.com>
+Content-Language: en-US
+From: Kyle Switch <kyle.switch@motor-comm.com>
+In-Reply-To: <CAAXyoMNkvyVN435bUwWuN+q8UmKbwnWbn+=uWt-nC2omBk94Lg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-> +        gmac1: mac@1 {
-> +          compatible = "econet,eth-mac";
-> +          reg = <1>;
-> +          status = "disabled";
-> +          phy-mode = "rgmii-rxid";
 
-That is a very unusual phy-mode. Is there a reason this is used in the
-example?
-
-	Andrew
+On 9/10/26 00:18, David Yang wrote:
+> On Tue, Sep 8, 2026 at 4:36 PM Kyle Switch <kyle.switch@motor-comm.com> wrote:
+>> +       if (major == YT9215_MAJOR || major == YT9218_MAJOR)
+>> +               mode = YT92XX_MODE_YT921X;
+>> +
+>> +       for (i = 0; i < ARRAY_SIZE(yt92xx_series_table); ++i)
+>> +               if (yt92xx_series_table[i].mode == mode)
+>> +                       return &yt92xx_series_table[i];
+> Still redundant lookups here.
+Ans: will be fixed in next patch.
+>> -       ds->priv = priv;
+> ds->priv is gone in the new register.
+Ans: will be fixed in next version.
+>>   static const struct of_device_id yt921x_of_match[] = {
+>> -       { .compatible = "motorcomm,yt9215" },
+>> -       {}
+>> +       {
+>> +               .compatible = "motorcomm,yt9215",
+>> +       },
+>> +       { /* sentinel */ }
+> Leftovers.
+Ans: will be fixed in next version
