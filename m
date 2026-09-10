@@ -1,87 +1,40 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41B773D9530
-	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 11:08:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D74CA47044B
+	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 11:08:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789038499; cv=none; b=bW0ihpSusHnM2AVJ+TUV/9+HR70YDVN9HSYgXVpssVFDnDN2JPZANduomwkWvVjkbaxRwnuYtMMWIF+j/OKlq9xCI0cxYeUTAlr3+S5KxC1lElY1nk0FnZ4T6OeK5UXsrPr7senPlRo4uYlKvS0C3mGAYVo5jqQuaBpkv0fHRA4=
+	t=1789038532; cv=none; b=dQMO+ro4aVuNSbQCvBOpGXwwxEmRXqaF3PBdiYosv2aNO/9BPN6Lb54sh7a2Ui5oZoaCqxCocb6eF4GWkosjHPDgb+uO0lmzCcqyyGrnyl34nBG7z60WzZThBdn1qu4FSDUgRHp69e9A2KnJIHaALLgqBEWsdvwTacF0qFW5+nM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789038499; c=relaxed/simple;
-	bh=A81B61BRd2x1sSFxHm+OOFOqfMYEtzRTvPX8AsEKQ68=;
+	s=arc-20240116; t=1789038532; c=relaxed/simple;
+	bh=K6vTRC6I31fQK6gVtUTNl3XwnQl2ZtJnVVWEd3Z7WFc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=u2CUdXNdxKqI051v3gXjBfNwnV6SxFXG8uhXQSzDYSOpYSCNkYNYD1G5dMNFxTusC2c16qkN5J6TSebCuN65dy63Xw49S/Mw4NTvcjxHtLyLCcAjTqGnlz36HXvtEour7XvZisp4iSW6SwUs1VUzswI5bBpMmvNxwSyFnGry6fM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hS4PsL9G; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Tj9stkns; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 In-Reply-To:Content-Type; b=g+r4chNgOw49l8xvDc9c+7hLEsN9iETkKAq8YKe7XyaX2ZA0hvciFXmg9jx1Gzw39ZfHkSNOcf2j3iaSss+4AJ4PAdcBU8zHjvHynCoRGx54Q0Qvv9WPh3jNWQMZV/jJ+ECKuDyNCNFdR6bVNYmIq9dYav/DZ6Qn+Awe19g5+lw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=MyKQSv9q; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hS4PsL9G";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Tj9stkns"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1789038497;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=G8CFytEdCGSTDyDlAvIjNaZjMoqpFkxgcAOASoLn7Aw=;
-	b=hS4PsL9Gcz1Iv6m99GXjVLYSsnwASWI1BRAjWZvy+TRVjZSWCPzqphGVurUrUHMRxQJFf5
-	5zpt+F3p16CUuntXu/3jtnpoIjLQR37l7jNjloAKz2jREadILXHoSdBM+ouYCekLxbVVSS
-	2kRoNUZOdzD/cjXwaQP6f4lOdYXuQA4=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-66-Q2qp6Vy8Ob6WI5IAQwYULA-1; Thu, 10 Sep 2026 07:08:15 -0400
-X-MC-Unique: Q2qp6Vy8Ob6WI5IAQwYULA-1
-X-Mimecast-MFC-AGG-ID: Q2qp6Vy8Ob6WI5IAQwYULA_1789038495
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-49cf5bd2f12so89699815e9.1
-        for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 04:08:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1789038494; x=1789643294; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=G8CFytEdCGSTDyDlAvIjNaZjMoqpFkxgcAOASoLn7Aw=;
-        b=Tj9stknsmFyLalVHTz5fsL97nKqzThx/BaJqmTTbj/KBmvVG+40t2aj+eSlPmrcT5a
-         zY9Ifr0XDyhby2a3z8eiewXGSEx8k8XsQCSz6Dtx8IOq6TJvNDfuZa3t5sUXI1n9f2+q
-         x+w+YkWLD6ei1/hs4FhgryyNazsqt+S2MUs+dEoIRyQrgdlzN2q11zk8KtOhrgq99MSp
-         COJiRTzLxvN0AycQs2BS+izAB3OECARKMEgfKMIJYS2Q+V2BxP0kQqwpfv9lrH9LXeUe
-         G/kI5/sNhcqKOmTUbL0nSOT0bocQRHWmFdlujDkTL/z735+GZJ5v91QDaMa+MDRNENqt
-         aCqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789038494; x=1789643294;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=G8CFytEdCGSTDyDlAvIjNaZjMoqpFkxgcAOASoLn7Aw=;
-        b=r6dk/mXyL+bPu3pkFFNuF9Z0eK+TMvYfXkeuzBOx+s1SHPe0dSMjLky/Lf0hTpSXf+
-         WqE6zb+b50I3C8jFx8MPrb6lzFwluP3u1Q+SzSFGSCzhVFnKG1MpW9FsCjs44QOOdaaH
-         o7XH4k8846ykg8S5n1jJNnUTrxvegCQmj52N4TpXaKXcEey25AdxmpZw9oB9YlgN60RP
-         VjBge8cU8xc5RoGkCe8Ru+19aUP6noX/oUGl/615iB67L++8SZXQLgCpJ+yCfrFw3WoQ
-         0dSSn5yvzHzDrQ5C9KBrSTs/Jpfq+fE71NULUZnw2PdA1raoKcssXq2XNVYyUzfLMiz0
-         s+yg==
-X-Forwarded-Encrypted: i=1; AKwUvBzovss3WF/EDaZ7lLLIpiIDNsYLl7gTFJw5JGt98IRIB3NmnnIlSn9l9RjBHnjuPDVMMBYizXU=@vger.kernel.org
-X-Gm-Message-State: AFuF++mjs9X6Rv7slBZn6sxZsTSuzSTeSS92k3eU9BtQnMGY7v5xAznE
-	8mMnD+zoa/sswwYZL+i10LzhVu1fV4hdmZiNR+HfbVSz9hxqlpFgucyfxJLuBmtmaYmlpj7wC8i
-	Y1TMqM6lcspHpOCAznVi6OUv3CD3rxhLAuk3aGd6/IXClKGuWdZ8JDCFJJw==
-X-Gm-Gg: AYBFou1CZO012j6ERz47EVW3wKVF/VTtBrgqDfZ2PnoXz2JHB3r137Y7dwOvuZPwlrE
-	BpPOsQ/ye4azahTlQrWs6BSWTabEpbWnO/qTdVVM2lBYXFcg2uwoqWhFj5NnM++IGFilKmT+0u9
-	d4eVv5QySX9zapp4eAPaxnlBUoHuGavPJaf9Ei350N67hUdF/DxwEOb0JTcrIJBP91u2QQbAH9n
-	CYKfNSVosZ06BzClHzeUpUtj6T06GUxnrxNNHFG4LB6Oahkmo0wHXFaFPf0Lneckcte70PRlU2+
-	35g3dQ0iBhIG90xOniCusomeDc73Sb2QigJt2bGoul7u8AQq2n1MhrgvYUC+hKWw1YpFDLOdTef
-	Ub6w3kaYnpotipl9nx6jf1XMniTtiR1w6krH1qMtZVlsmdMauBrkcqsbY7X9IEfd5K7veJSQZ1g
-	==
-X-Received: by 2002:a05:600c:4e8f:b0:49d:4ef:bf70 with SMTP id 5b1f17b1804b1-49d04efc043mr317131925e9.10.1789038494558;
-        Thu, 10 Sep 2026 04:08:14 -0700 (PDT)
-X-Received: by 2002:a05:600c:4e8f:b0:49d:4ef:bf70 with SMTP id 5b1f17b1804b1-49d04efc043mr317131425e9.10.1789038494197;
-        Thu, 10 Sep 2026 04:08:14 -0700 (PDT)
-Received: from [192.168.188.218] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-485881353e8sm50339161f8f.1.2026.09.10.04.08.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 10 Sep 2026 04:08:13 -0700 (PDT)
-Message-ID: <54c3768c-ba5b-40f8-9fd9-d2e628c0c592@redhat.com>
-Date: Thu, 10 Sep 2026 13:08:11 +0200
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="MyKQSv9q"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id E2C00C2F4FB;
+	Thu, 10 Sep 2026 11:00:29 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 8764F602B8;
+	Thu, 10 Sep 2026 10:59:48 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C298211C78279;
+	Thu, 10 Sep 2026 12:59:37 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1789037987; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=PiVPoZqxXQzLSRnTyxJY0LUsG2EsVds3etvNlaImVXs=;
+	b=MyKQSv9qy+ede1HK7HqbuXAUK7XqNhdafo5puwBvBNW5aeh0/tXviCEzLnnfor378UQg5p
+	m4mN7KciSm6fhsKKUzhpiUcwf3efVd8QrepBSI+Kjyc6gj7yyzge1Yq5ghMACgVZ49GVjQ
+	3QIjLBajCgtFqs4oHzyZkcx1X5HNhQdUho0sRSXTfFYWlARolRHSYAy6Hwh4qxgQAOyxLG
+	A/Nh1wXO4WaXuIqnYXIoK+EBu4aAWRsLBYQ9HP+stBv970OTB/N2/jE2MZHuY/7LVEKZOM
+	vzekn7UQdE/lQi/BQ2Pk2LLO4Ms1RCTsjouURhrT5P0dFgc/ta+2ICbS/giMHQ==
+Message-ID: <44d7840d-0cde-4022-937c-4c630398c45d@bootlin.com>
+Date: Thu, 10 Sep 2026 12:59:36 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -89,50 +42,120 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net V2 1/4] net/mlx5: SD, serialize SD LAG init/cleanup
- against LAG mode changes
-To: Tariq Toukan <tariqt@nvidia.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org
-Cc: Akiva Goldberger <agoldberger@nvidia.com>,
- Edward Srouji <edwards@nvidia.com>, Gal Pressman <gal@nvidia.com>,
- Kees Cook <kees@kernel.org>, Leon Romanovsky <leon@kernel.org>,
- linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org,
- Maher Sanalla <msanalla@nvidia.com>, Mark Bloch <mbloch@nvidia.com>,
- Or Har-Toov <ohartoov@nvidia.com>, Parav Pandit <parav@nvidia.com>,
- Patrisious Haddad <phaddad@nvidia.com>, Saeed Mahameed <saeedm@nvidia.com>,
- Shay Drori <shayd@nvidia.com>, Simon Horman <horms@kernel.org>
-References: <20260906071332.3759199-1-tariqt@nvidia.com>
- <20260906071332.3759199-2-tariqt@nvidia.com>
+Subject: Re: [PATCH net-next v2 2/2] net: stmmac: Add support for Allwinner
+ A733 GMAC210
+To: Jerome Brunet <jbrunet@baylibre.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Chen-Yu Tsai <wens@kernel.org>,
+ Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Samuel Holland <samuel@sholland.org>,
+ Richard Cochran <richardcochran@gmail.com>,
+ Maxime Ripard <mripard@kernel.org>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Philipp Zabel <p.zabel@pengutronix.de>
+Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
+ linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ Andre Przywara <andre.przywara@arm.com>
+References: <20260910-allwinner-a733-gmac-support-v2-0-4f4a1e520c23@baylibre.com>
+ <20260910-allwinner-a733-gmac-support-v2-2-4f4a1e520c23@baylibre.com>
 Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20260906071332.3759199-2-tariqt@nvidia.com>
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <20260910-allwinner-a733-gmac-support-v2-2-4f4a1e520c23@baylibre.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 9/6/26 9:13 AM, Tariq Toukan wrote:
->  void mlx5_lag_enable_change(struct mlx5_core_dev *dev)
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/sd.c b/drivers/net/ethernet/mellanox/mlx5/core/lib/sd.c
-> index 4cdc50cd6f03..99cf455a61e1 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/lib/sd.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/sd.c
-> @@ -345,7 +345,14 @@ static void sd_lag_init(struct mlx5_core_dev *dev)
->  		return;
->  	}
->  
-> +recheck:
->  	mutex_lock(&ldev->lock);
-> +	if (ldev->mode_changes_in_progress) {
-> +		mutex_unlock(&ldev->lock);
-> +		msleep(100);
-> +		goto recheck;
+Hi Jerome,
 
-My reading of the clashiko report is that the above introduces a
-deadlock.
+On 9/10/26 12:25, Jerome Brunet wrote:
+> The A733 GMAC210 is a DesignWare MAC 5.20 using an Allwinner glue close to
+> the A523 GMAC200 already supported by this driver, with the following
+> differences to handle:
+> 
+> * The glue configuration registers are a dedicated MMIO region of the
+>   controller instead of a syscon register. This new register region
+>   appears to be in the reset domain of stmmac's main reset. This requires
+>   the glue driver to handle the reset rather than letting stmmac deal with
+>   it.
+> * The TX clock delay value is 5 bits wide, split over 2 register fields,
+>   allowing delays up to 3100ps.
+> * The DMA channels have their own interrupt lines, so the per-DMA-channel
+>   interrupt mode is enabled, as the vendor SDK does.
+> * TX LPI clock gating is supported, as the vendor SDK indicates. Follow
+>   the PHY capability with STMMAC_FLAG_EN_TX_LPI_CLK_PHY_CAP rather than
+>   forcing it on with the deprecated 'snps,en-tx-lpi-clockgating' DT
+>   property.
+> 
+> Unlike the A523, both GMAC instances are supported by the same driver.
+> 
+> Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
 
-While I agree that the fairness issue raised by sashiko.dev
-could be deferred to net-next, I think we must avoid introducing
-the mentioned deadlock.
+[...]
 
-/P
+> +
+> +static struct regmap *sun60i_gmac210_get_regmap(struct platform_device *pdev,
+> +						struct plat_stmmacenet_data *plat)
+> +{
+> +	struct device *dev = &pdev->dev;
+> +	void __iomem *base;
+> +	int ret;
+> +
+> +	base = devm_platform_ioremap_resource(pdev, 1);
+> +	if (IS_ERR(base)) {
+> +		dev_err_probe(dev, PTR_ERR(base), "unable to get glue memory region\n");
+> +		return ERR_CAST(base);
+> +	}
+> +
+> +	if (!plat->stmmac_rst || !plat->stmmac_ahb_rst) {
 
+Why check stmmac_ahb_rst, but not do anything with it ?
+
+> +		dev_err(dev, "missing required reset controls\n");
+> +		return ERR_PTR(-EINVAL);
+> +	}
+> +
+> +	/*
+> +	 * The configuration registers are inside the controller
+> +	 * reset domain, so the reset must happen before any write to them
+> +	 * and should not be done again by stmmac or the configuration will
+> +	 * be lost.
+> +	 */
+> +	ret = reset_control_assert(plat->stmmac_rst);
+> +	if (!ret)
+> +		ret = reset_control_deassert(plat->stmmac_rst);
+> +
+> +	if (ret) {
+> +		dev_err_probe(dev, ret, "device reset failed\n");
+> +		return ERR_PTR(ret);
+> +	}
+> +
+> +	ret = devm_add_action_or_reset(dev, sun60i_gmac210_reset_assert,
+> +				       plat->stmmac_rst);
+> +	if (ret)
+> +		return ERR_PTR(ret);
+> +
+> +	plat->stmmac_rst = NULL;
+> +
+> +	return devm_regmap_init_mmio(&pdev->dev, base, &sun60i_a733_regmap_cfg);
+
+I wonder if this is the first glue to face this...
+
+If you need further setup to be done after reset has been deasserted, I suggest
+adding a dedicated callback in plat_stmmacenet_data, instead of doing this behind
+the generic code's back.
+
+maybe something like "post_reset_init()", something like that ?
+
+the ->mac_setup already runs after reset, but isn't really for this type of usecase.
+
+For readability of the patch, maybe you should split this patch to first do the
+a523 rework, then add a733 support.
+
+Thanks !
+
+Maxime
