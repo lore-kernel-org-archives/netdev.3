@@ -1,68 +1,68 @@
-Received: from mail-ot1-f46.google.com (mail-ot1-f46.google.com [209.85.210.46])
+Received: from mail-oi2-f13.google.com (mail-oi2-f13.google.com [74.125.231.205])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E57E49E12D
-	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 23:46:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE65349E12D
+	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 23:46:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.205
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789083982; cv=none; b=fdKFmRfcmieEVeCXQU+L4KGj+DNK4emnzUxTpo9F5Cwt1A1itwuw6IjADeLUDRgd38Kn97Fa2EeQ6IXKZQFGFn55zWY+DgPKzXz/qvBa5G2wkVm3a+a4DMIAdCf+i4CMF1YKHUMdBcgVK/3R8pxCtI2LDBybYOL7naeRczThAE8=
+	t=1789083987; cv=none; b=XDChqWlSX710+EkbK8/Q2//1AZt901V80vWQaKr8ZgBuEbbQKMsc6+AGekyLDLbGvo7dT4C+lkAVGyTIKuY4w5pVZ2Hf/BQATdD9SG/V1N8GWysofZbzlpBqwCWMoqREqLIcHd1M878YelA0PFe6p9EFCBnPk1uHxyhohMkgqUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789083982; c=relaxed/simple;
-	bh=M6jIXaEoyrgc6/WiURsN+U8IhrrnZ9zZFg+Oj7F70yQ=;
+	s=arc-20240116; t=1789083987; c=relaxed/simple;
+	bh=i5SSJclfpTZsD3tbZQrq1a93Y6jfPDeXDX017S0hopk=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=KOUJbTpQstBXvLzXXJd9LBE8NdVhActoF5OrH706cQKYxE4NAqTbULf3/sFoVjBQLRr83umClu+nDuSc9lwdSS7wraDZp178UL1yDiliV9JHYsxD8rf000LIATjiFerf2uXcFedS2ShQ0tWZ8/PI2SyBIwtS4uHNY8VNeduadZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h2zxLEdh; arc=none smtp.client-ip=209.85.210.46
+	 In-Reply-To:To:Cc; b=grebmCyahXh8iohfoBrmjw+V+YKO+MDDdmTjOCfpU8FP3uziUpzmQ84klCDQRtRYgh47J0EppEkr27khPs4l0QWrR/3y9J303ersnt8Oaek36m4NVYpXWmjuyb3dQfBB/S7EAiG9AAhF7UcgkXeYKjGubnG5UrrI+U+RcNYMqRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T7ivxdE4; arc=none smtp.client-ip=74.125.231.205
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h2zxLEdh"
-Received: by mail-ot1-f46.google.com with SMTP id 46e09a7af769-7f4b94d72acso346628a34.1
-        for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 16:46:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T7ivxdE4"
+Received: by mail-oi2-f13.google.com with SMTP id 5614622812f47-4bf948737e1so318597b6e.2
+        for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 16:46:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789083980; x=1789688780; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1789083984; x=1789688784; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=kbyz7e2Zj6Paq1U1ORPGnZB2czddhzmepRdeHB+cyyk=;
-        b=h2zxLEdh2X+9pBLiJGXLrsF7DuPx0SdMZj202+AUvu8KfSElB9fEgE145Bxigj4AaA
-         u1LgPi24WJzLIPC3Ul4quk3T72yvOtIRcand7Ete+47fyfL//NNTyMG3PXMj/iqH4+Ny
-         QNkg2Mhy7ddOPMQ0mBNHQVU4UY1ipAIiXRL+GNmwUvf23+NQm6ZL2AAITHbxx0/6egQN
-         6gq/FI7XVpOyAQS+//I6tkbUIJ6SRTYa6fUodc/SD8sHgCYev3YBRNMA3q39ZK04nnYu
-         n0UGk+hwJgpsllh4x8XRiPAePsH8aZ83TNZMX8lYIjm2Bl2L0f0Api6sCwAHuAmN3TN2
-         mClQ==
+        bh=6n6jlSmBF1kKwhxMNpXMOGrKa/toteP0cdIVsSP+HbE=;
+        b=T7ivxdE4Fif996iORt5oA7e3pLkxwRGj/3nP3hJCO0A9UO23rObl1IjQXF02XW7G4M
+         lqlc864YT5wrsuIARDbQdxrB897JjqjUFaTobHCgh8rvtUjKqMt41Wxt5hQJi8M1R0sE
+         fnZcfnBs2fNQHVZxE2/gujk78ISoUQGXWPJn2O5SvrZBIcYhA8MjMths9Nzjlz8t/0Jn
+         W0emt2tKdBLL5pYBV4gRrmZ2XYPR4sN8Kb5TJ98JscmmGl8pNCPJcvHsxmb6g1M4ea/U
+         +QCkGk2ZbObVKbmjgKStRN1UgkDktvQt1HuOntcnWpdrHKAR2cosmWuhvOWbpDdxUPJV
+         UZ9g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789083980; x=1789688780;
+        d=1e100.net; s=20251104; t=1789083984; x=1789688784;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=kbyz7e2Zj6Paq1U1ORPGnZB2czddhzmepRdeHB+cyyk=;
-        b=S0cUGhE3NgYCIzH1o4knyBq0cfxsag4f5xX91ZlaK02EDnZX5FnTrqKWIKQgxrTFPE
-         DWcUSXRQsnhKdlrNkUh9MXn6XtbQEKh/TQgaHYVGb/3JBvkvNcT/diVeNCgsM7xzqBib
-         7rvKA5Ocqjey/Z7evewFI+KUMFumIwUdOFkXr5STAaLKUGJY3uEkoG/7XNU3+ky0KAgg
-         q+WjAc8jkm96pzfsbP1F2oN42yB5o8e2nz4rTQ9+NghIKs/pGBvml5ExY5yn3KFHXMcE
-         T5rd7pR2Sw79ov65JsZseApV2Zb+5YMRaJVa+oc6sWxqPqProdfldG0g0fA8oYiZAI9j
-         kLuA==
-X-Forwarded-Encrypted: i=1; AKwUvBwqHZspOynydpRsP5QhFgKxlY5fNJAH5Vm9VivM8MC+FTfo9gYTuOTgbMRQU4ahZ//F9YoC3vs=@vger.kernel.org
-X-Gm-Message-State: AFuF++kKXI388j9hbZxQ9f/ODUtqynq+BGUSC+oJFGr+a6HsPex+GsHQ
-	q8Ap3NCaSaBLKDabFPkJ/x+sRRYTUELNaJ5UzMpKcTw/OUcGgYWQFUXCJXs5+u8v
-X-Gm-Gg: AYBFou0op+LpGnecdrZgbqO3SSYTIS1VPMop6UF7uimonHiR7kYv+RhtTE8KSkNncOj
-	p39vzcDD8XdthDvWm4JNFy24IsR5U75n90XqAvzfU663iu93sqfqIslbRdM/P84/me6ei5QCLZS
-	yZS837B1/iNZJ/JYhpWne5JuzpTExUBF44Mc3mXro3nazcPAheGgSbU54OvJDHULH4MSYpVNmrs
-	r0o84KQ9u/6eywbfhO3NaI8Gsu86uwgqQXkPPqJ/JQoK4sQWp4yw4mPZbgjD9NSTVCekubTIJxd
-	lXuFZK2xxNMdEBDPXVitoVqncSIqtWmxBMl+hLkfblqA2YZyhtfTu/NHMVf58gbUzId2Dy8rhyY
-	Reu81xaJ4gRfERl70IryusN7Gfy5Gm13ohU+iZEDX2oZ1puxjEghZXieuFyPdb0Xr6TOzN6A4Sp
-	ezHzwa2fyGiU+jellnkOl5zC+UoeVGlSXp7YCYtYF/QxVZXVh5QMOWiOMJuf3AQrpiBjk=
-X-Received: by 2002:a05:6830:81cf:b0:7dc:df37:844b with SMTP id 46e09a7af769-803fadd1e9dmr1084870a34.4.1789083979942;
-        Thu, 10 Sep 2026 16:46:19 -0700 (PDT)
-Received: from localhost ([2a03:2880:30ff:1::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-803f5adf6absm926604a34.6.2026.09.10.16.46.18
+        bh=6n6jlSmBF1kKwhxMNpXMOGrKa/toteP0cdIVsSP+HbE=;
+        b=sc6Tonvq+NhYKCR0/m9mxHq1YWAkA29g4WQRL+jeMB0A9oKsn0i6090g+uACUqPyfQ
+         lxtrtRFV4XU5Uez1pCEgbqPVTQL6F4ch/7dJhZNQLSlgXMLtufRA6gwKo0y3D2M9Xfic
+         FcpVAVm9oS4JYY2lRM98M2jP49N2fssOcuMpwNgz3O6I58m5u7ZxHe1Q4dlkw/p9Xlb7
+         /jjRAtGqPlSEdzxX9M4P8fkt1ZZ/fv8oVNzeCZ7LB3GNtqnm/negrJuWru/6erBqMYKO
+         bjSaVP4wa7TmwvS7DxPa5eNihBY2vdARMdBN6MAfeRgpCsAwUjc2s/0c6XQ5lYFaik/E
+         +lVw==
+X-Forwarded-Encrypted: i=1; AKwUvBwwJvjxA8tQxHn8zVBYWyuLzug1c7ROPiTTm9GeDb2PwOuMj0yRcr/wJBdksVrDQeteKA7WcnI=@vger.kernel.org
+X-Gm-Message-State: AFuF++nNTrFtmsazTzmQZbmzGdXseRjIFy2bVGayLvCagDk3W1rGnCR6
+	3fqyDjdYbPUzjWNE5AghLEEXNC4HszI/MCNR7twrxEhT80RhZzNkZV5T
+X-Gm-Gg: AYBFou0UkV24fPdByN+KFv3j8i/RFeRPsX/RT0RwVWXtb5weWg57NJJ9s7UGpuiLkbq
+	tV/DuMOimT1BVAVWIOCklJttBiOxbMb6SB6I0so19qWl6bQWrHd8xftKUhGtAUOrem7+pr5TSFc
+	yChLyutOd3EjUYl/eS1+0wcXM0aVmhP0OiXhrTGmEqqOrQLvVNZQ8F7o1udS69Nxs+baVkcwpFi
+	maMuuL18HVoGd+CTN1Uw0+wpPdEkbSiYF2//qfTSvTIUeXciN5BloNvL/dL/y95WNE5Ou7yYpBP
+	cKfNuhhKkE7WTX/cr0RHJ7qZUndnTym3r9guQTGacO69GuuTHDIp6epjSYEl+Lk1cK/99YCZbfy
+	djZCC2seDO3QGUnAj+0i0CDfXKg0zal5bpLD9CmsgHATGg/BkDow71GDK9cdr7al/MprqVWEtYr
+	yToSHlZGzDYaABGCASo99Lt6QBGxQSpTC8oQo8vAW2GjMtqZHnR2xb54ue8uAYa56bpx2K
+X-Received: by 2002:a05:6808:30aa:b0:495:eb86:6e8f with SMTP id 5614622812f47-4c31bcf3a50mr2081426b6e.14.1789083983151;
+        Thu, 10 Sep 2026 16:46:23 -0700 (PDT)
+Received: from localhost ([2a03:2880:30ff:72::])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-4c331bc9342sm698094b6e.12.2026.09.10.16.46.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Sep 2026 16:46:19 -0700 (PDT)
+        Thu, 10 Sep 2026 16:46:22 -0700 (PDT)
 From: Daniel Zahka <daniel.zahka@gmail.com>
-Date: Thu, 10 Sep 2026 16:46:04 -0700
-Subject: [PATCH net 1/2] net: psp: avoid conflicts with skb->decrypted and
- sk_validate_xmit_skb()
+Date: Thu, 10 Sep 2026 16:46:05 -0700
+Subject: [PATCH net 2/2] selftests: drv-net: psp: test PSP and TCP ULP
+ mutual exclusion
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -71,7 +71,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260910-psp-ktls-fix-v1-1-e3f30aaeca4e@gmail.com>
+Message-Id: <20260910-psp-ktls-fix-v1-2-e3f30aaeca4e@gmail.com>
 References: <20260910-psp-ktls-fix-v1-0-e3f30aaeca4e@gmail.com>
 In-Reply-To: <20260910-psp-ktls-fix-v1-0-e3f30aaeca4e@gmail.com>
 To: Eric Dumazet <edumazet@google.com>, 
@@ -84,107 +84,91 @@ Cc: Willem de Bruijn <willemb@google.com>, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
 X-Mailer: b4 0.13.0
 
-PSP conflicts with TLS ULP in its usage of both skb->decrypted and
-sk->sk_validate_xmit_skb(). Offloaded TLS conflicts on both sides in
-both Tx and Rx. SW TLS could mistake skb->decrypted in the Rx path set
-by a PSP device as being a decrypted TLS record.
+Test both setting PSP after TLS ULP, and TLS ULP after PSP.
 
-Prevent PSP from being used with other socket features that use
-skb->decrypted or sk->sk_validate_xmit_skb().
+Add CONFIG_TLS=y to the drivers/net/config.
 
-For now, we include all TCP ULPs in the sk_has_decrypt_user() check,
-even though TLS is the only one that conflicts with PSP via the
-decrypted bit. This is intentional because PSP was not designed to be
-used with ULPs. It is best to close off surface area that may make bugs
-reachable, until someone wishes to design and test an actual user of PSP
-with ULPs.
-
-Fixes: 6b46ca260e22 ("net: psp: add socket security association code")
 Signed-off-by: Daniel Zahka <daniel.zahka@gmail.com>
 ---
- include/net/sock.h | 11 +++++++++++
- net/core/sock.c    |  7 +++++++
- net/ipv4/tcp_ulp.c |  4 ++++
- net/psp/psp_sock.c |  4 ++++
- 4 files changed, 26 insertions(+)
+ tools/testing/selftests/drivers/net/config |  1 +
+ tools/testing/selftests/drivers/net/psp.py | 46 ++++++++++++++++++++++++++++++
+ 2 files changed, 47 insertions(+)
 
-diff --git a/include/net/sock.h b/include/net/sock.h
-index 51185222aac2..ba5e5092f192 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -2312,6 +2312,17 @@ static inline void sk_gso_disable(struct sock *sk)
- 	sk->sk_route_caps &= ~NETIF_F_GSO_MASK;
- }
+diff --git a/tools/testing/selftests/drivers/net/config b/tools/testing/selftests/drivers/net/config
+index b6989c7d3d9d..4838adf27fa1 100644
+--- a/tools/testing/selftests/drivers/net/config
++++ b/tools/testing/selftests/drivers/net/config
+@@ -21,5 +21,6 @@ CONFIG_NET_SCH_INGRESS=y
+ CONFIG_NET_SCH_PRIO=m
+ CONFIG_PPP=y
+ CONFIG_PPPOE=y
++CONFIG_TLS=y
+ CONFIG_VLAN_8021Q=m
+ CONFIG_XDP_SOCKETS=y
+diff --git a/tools/testing/selftests/drivers/net/psp.py b/tools/testing/selftests/drivers/net/psp.py
+index 315648a770d0..12b27f2a3fa1 100755
+--- a/tools/testing/selftests/drivers/net/psp.py
++++ b/tools/testing/selftests/drivers/net/psp.py
+@@ -23,6 +23,8 @@ from lib.py import NetNSEnter
+ from lib.py import bkg, rand_port, wait_port_listen
+ from lib.py import ip
  
-+static inline bool sk_has_validate_xmit_skb(const struct sock *sk)
-+{
-+#ifdef CONFIG_SOCK_VALIDATE_XMIT
-+	return !!sk->sk_validate_xmit_skb;
-+#else
-+	return false;
-+#endif
-+}
++TCP_ULP = 31
 +
-+bool sk_has_decrypt_user(const struct sock *sk);
+ 
+ def _get_outq(s):
+     one = b'\0' * 4
+@@ -333,6 +335,50 @@ def assoc_version_mismatch(cfg):
+             ksft_eq(the_exception.nl_msg.error, -errno.EINVAL)
+ 
+ 
++def _require_tls_ulp():
++    with socket.create_server(("localhost", 0)) as srv:
++        with socket.create_connection(srv.getsockname()) as s:
++            try:
++                s.setsockopt(socket.SOL_TCP, TCP_ULP, b"tls")
++            except OSError as exc:
++                raise KsftSkipEx("kTLS not available") from exc
 +
- static inline int skb_do_copy_data_nocache(struct sock *sk, struct sk_buff *skb,
- 					   struct iov_iter *from, char *to,
- 					   int copy, int offset)
-diff --git a/net/core/sock.c b/net/core/sock.c
-index fa60b7494c58..9489d9c47949 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -142,6 +142,7 @@
- 
- #include <trace/events/sock.h>
- 
-+#include <net/psp.h>
- #include <net/tcp.h>
- #include <net/busy_poll.h>
- #include <net/phonet/phonet.h>
-@@ -2670,6 +2671,12 @@ void sk_setup_caps(struct sock *sk, struct dst_entry *dst)
- }
- EXPORT_SYMBOL_GPL(sk_setup_caps);
- 
-+bool sk_has_decrypt_user(const struct sock *sk)
-+{
-+	return psp_sk_assoc(sk) ||
-+	       (sk_is_inet(sk) && inet_csk_has_ulp(sk)); /* for tls */
-+}
 +
- /*
-  *	Simple resource managers for sockets.
-  */
-diff --git a/net/ipv4/tcp_ulp.c b/net/ipv4/tcp_ulp.c
-index 2aa442128630..f3e0c9d379bb 100644
---- a/net/ipv4/tcp_ulp.c
-+++ b/net/ipv4/tcp_ulp.c
-@@ -136,6 +136,10 @@ static int __tcp_set_ulp(struct sock *sk, const struct tcp_ulp_ops *ulp_ops)
- 	if (icsk->icsk_ulp_ops)
- 		goto out_err;
- 
-+	err = -EINVAL;
-+	if (sk_has_decrypt_user(sk) || sk_has_validate_xmit_skb(sk))
-+		goto out_err;
++def assoc_psp_ulp_exclusive(cfg):
++    """ Test that a TCP ULP cannot be attached to a PSP socket """
++    _init_psp_dev(cfg)
++    _require_tls_ulp()
 +
- 	if (sk->sk_socket)
- 		clear_bit(SOCK_SUPPORT_ZC, &sk->sk_socket->flags);
- 
-diff --git a/net/psp/psp_sock.c b/net/psp/psp_sock.c
-index 1a2a6b7516b0..509035617894 100644
---- a/net/psp/psp_sock.c
-+++ b/net/psp/psp_sock.c
-@@ -143,6 +143,10 @@ int psp_sock_assoc_set_rx(struct sock *sk, struct psp_assoc *pas,
- 		NL_SET_ERR_MSG(extack, "Socket already has PSP state");
- 		err = -EBUSY;
- 		goto exit_unlock;
-+	} else if (sk_has_decrypt_user(sk) || sk_has_validate_xmit_skb(sk)) {
-+		NL_SET_ERR_MSG(extack, "Socket has incompatible state");
-+		err = -EINVAL;
-+		goto exit_unlock;
- 	}
- 
- 	refcount_inc(&pas->refcnt);
++    with _make_clr_conn(cfg) as s:
++        try:
++            cfg.pspnl.rx_assoc({"version": 0,
++                                "dev-id": cfg.psp_dev_id,
++                                "sock-fd": s.fileno()})
++            with ksft_raises(OSError) as cm:
++                s.setsockopt(socket.SOL_TCP, TCP_ULP, b"tls")
++            ksft_eq(cm.exception.errno, errno.EINVAL)
++        finally:
++            _close_conn(cfg, s)
++
++
++def assoc_ulp_psp_exclusive(cfg):
++    """ Test that a PSP assoc cannot be added to a socket with a TCP ULP """
++    _init_psp_dev(cfg)
++    _require_tls_ulp()
++
++    with _make_clr_conn(cfg) as s:
++        try:
++            s.setsockopt(socket.SOL_TCP, TCP_ULP, b"tls")
++            with ksft_raises(NlError) as cm:
++                cfg.pspnl.rx_assoc({"version": 0,
++                                    "dev-id": cfg.psp_dev_id,
++                                    "sock-fd": s.fileno()})
++            ksft_eq(cm.exception.nl_msg.error, -errno.EINVAL)
++            ksft_eq(cm.exception.nl_msg.extack['bad-attr'], ".sock-fd")
++        finally:
++            _close_conn(cfg, s)
++
++
+ def assoc_twice(cfg):
+     """ Test reusing Tx assoc for two sockets """
+     _init_psp_dev(cfg)
 
 -- 
 2.52.0
