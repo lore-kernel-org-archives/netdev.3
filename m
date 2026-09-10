@@ -1,68 +1,68 @@
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F83649891E
-	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 14:03:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A61F49DBB5
+	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 14:03:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789048984; cv=none; b=Y/FPb1sB+WmH7g7jr64xo1+rH1GA6N1Gm0P+A8zdv60G37HE8kU5LImIk+gTZy3OHtR8c16pWzimSUB1wAm+HKZT+S2MkggCjQaiG6FpwRmt8kyNoT1zFhnBrffsLRextx2uFn8DXQcj+h/RjymKZYbMkkpYplVuR3us6ylOL50=
+	t=1789048987; cv=none; b=VCwWq4quvEmDv375tGUx1MY1PpubPxCsQ1kWreJjaIUkhjXKTSWOnQjtttWzugevit9DdmUHxk6OLMpwzkxkobjj8eDwUtG76fnJxc5qHoSCc/YaQU5tr6B+JsrJsrufgnUjilMMAmU3+9QSQx+lrmqEnS+Z8otzMLnhY73ixe0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789048984; c=relaxed/simple;
-	bh=iNdMjWrSLmoDqGXXaKcK202M5/08k+vu9lK5uuKoNZs=;
+	s=arc-20240116; t=1789048987; c=relaxed/simple;
+	bh=Th9fOuo593MEakXdF6e+fuy7/Sg4Fdb28BQWy6QPbuY=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=PhqRRj4svH074deFCnubEi1sSD3X+Szc1h2f95q+ZxZzm9BFlCO8ZCD3j7UWLocT2AxiifahMaFslppMqbYL0jl0E6wueXU3LeJ0agnMYxhIAUPM/fs+HXNfFUnNb81461zQrOfAYdIej/hIbz9TtqGg719I4IKYNdK1tJHQGoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=CndDu3Dj; arc=none smtp.client-ip=209.85.218.51
+	 In-Reply-To:To:Cc; b=V0MXPorZfudjmt45OtJICDW0EOGKJ1hvv7vC/+qBvTJdb2HIg+CAZYt/c+noWTjq7hP2SfgRHwQ+5L7eUFccYK1Q/VJxsq8M4/wuk+sFKrs+9xrJ6Pbm2tXRwwWHtQr19/fb8FSQVTrOgOt2sfEpHn8FI/Kz4QOpp110qXk/Buc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=ZfCfk0+z; arc=none smtp.client-ip=209.85.208.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="CndDu3Dj"
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-c2940d16190so244815066b.3
-        for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 07:03:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="ZfCfk0+z"
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-6a0a4aa99bdso9283709a12.1
+        for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 07:03:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1789048979; x=1789653779; darn=vger.kernel.org;
+        d=cloudflare.com; s=google09082023; t=1789048982; x=1789653782; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=g+Ed9iMsPg2bKuHCFAFiCmWW+jc2xc98e3S/3vWsOxE=;
-        b=CndDu3DjH6awZHr95Fwl57wuow+LxP8zCluXe+SWyvsZPI/wAhgRTvGG+ph9NTqLVz
-         qf59PnuydZocd01vjD/tnwcDP9bmIuhylS7vKIyOkW6BBJBLJu7BdeBEZLNxyJ5WvCmE
-         rjWtTLJFDSJStrDIJwMSVG7+nPgYJ/hhdNQ3Q/lVRViNoE/GBQdJD5iNHwLP7xopQA8y
-         Mwn/q2O3fWww/0itGI9vR+5NrQUktlNBDqXuhsZGd1HxPrk8uvnm6IqtMfUQ6vf0EGuD
-         xmvh2+vq8sgfJhXAVNbGMYkrYf8i7vrKgj12Za2nAQPRdnaogiodv4eExpOG9zdMovLq
-         5bMw==
+        bh=WD8KWD/r4URYpRa7t6/SWDFE46Sv7/iOlqifbsRvdqI=;
+        b=ZfCfk0+z5NQPEIEXVTIbUCmORcowq9AvB9eFazW2HgBA4hkyN/f3aLzjFOTgB8h03t
+         Me/ywdWiXR+WfLhF3Mc9+Exv0ErkahE3W2Q6mdOza1gAiNKio/N9Yxgio0fzYdzgjnQF
+         ZljMtCiHA5Y95SlFEBYjju0dC+79I8DoP7ew/E59/ju6O20I8YtIYb/ABtgwzfsmlTKI
+         hnHAUq9iwjjJCUtjsJlGfLR7GZxu2s2hSh7wbxxj6JCvI1bgwv9CqPYdDL6kbIgAlzf4
+         1RgK11u95dNZwhtISXI2LPidZ3wToknhYHASiOx5XuQXG4r7GIcv0RQM8gMtV//C3gdK
+         V5RQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789048979; x=1789653779;
+        d=1e100.net; s=20251104; t=1789048982; x=1789653782;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=g+Ed9iMsPg2bKuHCFAFiCmWW+jc2xc98e3S/3vWsOxE=;
-        b=KMZvMleGldhuPgXtz7I7B1F916ehFimifEvKPm1r3L7HHS/4POTgYDqhWdiyZcAGUS
-         QBDRAhgGBCOnhnEFAJETHN2w2DFFfwBQ9bSDECvdrdGjWYneFiRmLmdq8j0QZywx/80t
-         vQlfm251aU7rDScQWobiXe7yw0W+yJReQXajuzejtVGhpbiw23mYg8S/wJGFB++ueA1t
-         5EWRYAuSynPBd06O87Z/LhCGUOgG39GOkn9eBRosbxbD+tEyxIievxiEPqBw1y2IXw0W
-         WXgXEYiSFX+NdBUxC+9io8Z7a/mGBxQ1pDnimMkumr9yUkdA1BxpRx1GfdfzVWYJFDJj
-         B/Pg==
-X-Gm-Message-State: AFuF++mC2ybAlwSVFk7SHF/a94dR6y2zc1s4FnpBe9tZRWF+M0IHxRKA
-	jZriduzgGRU+9IA202SRBsm9+JNbc4L28PfB2IlN+i1l/F5oPWV0FdHpygWlLHJdlBU=
-X-Gm-Gg: AYBFou2igwgDk+N6ZzbcmuG0MmUh5jK1xFf80FMW1ypq01Q2D6sZvWnak+XS2GdN/AJ
-	oL8UA9kzn6ddQUZpUDus8NPmpfLZXUZtTLVTx8J52utEDBMh3otm1lqxDjrxXpq0LdQtZxnN+Yc
-	w3ZoU6zbLlt6jc2/3yyTp0Fo1tKf8AWWaQ47TZo1iCmDyeVAp42HVQRikHV1kUa3ZqGsLrjtx/W
-	MhYhrfJ0WwmxSq0kt91l8GkjUAobG/ZysLQxuer4ytSgzDZxtnxqY37KT09qSBsMec/6Y/2XEuc
-	IyCtRGZxBO26P2HTBDQwuooi7b6pCr6GPgiVxkJt5VanxMRQF9QpwiHScA1T2kvRU4xdSTGfyhX
-	gG+DG1eb+YyKFealNfkJopENc6veMsZH5PdlC0nlh7i21gWDSoY/puQnQAT3YK03CVIfA8zv/nI
-	qwROdSFJhW5iLGPW3ELfCurimbrWfBIC0T+kRqcUMrhSBdiDIPDN1voL2v2CW2EADKFjx8BnXax
-	KKW+hVFTyJmxVcqc2fYKThC/CTnN2GHav7AFZY7v54q5fFOww==
-X-Received: by 2002:a17:907:d649:b0:c26:19e3:e982 with SMTP id a640c23a62f3a-c2619e3eee5mr1497484066b.34.1789048978851;
-        Thu, 10 Sep 2026 07:02:58 -0700 (PDT)
+        bh=WD8KWD/r4URYpRa7t6/SWDFE46Sv7/iOlqifbsRvdqI=;
+        b=Qr1WlsAXMKCfi4L08fX0mGONkGZqWomTjkw8TPqDrQRXdazcdeG2sdHCoRMHJbxQ1q
+         l2zev3CniExf1B9rrlYdtKp+pjEB87f8t4ZNXtQ03YEGkn1C1ux5yrxYm/uqLGXkdPc7
+         RjYXjX3fAtO0VVLnnvin9rp0yfGsBOZ8kkXKhy1gdyEhg4JJFxl3Jg3DNwsoDs8lNGyF
+         pZ+AbsGdgQLK+80bj5W5GqpnCbUoDGWm/4h78LmyztfkmbCr5cZzmKbxGTczPkrHs4u1
+         Ip5TzaFZpV8b2Cub4HcdhPJONQdI7kj9d2p1toX7mmKkMEO3nLdFLfOcLT8XB1iHw2we
+         r2zA==
+X-Gm-Message-State: AFuF++nYAGtB/GYFp71tqVN61wphoS+342UDR4JXNHM0ERrmF2WG+amM
+	xrxWe9atPLtYEGEp6htpwfceD2quPbK2HQq0ZupeZJYaO6HsivOQA4CgCgxhU4b/Myk=
+X-Gm-Gg: AYBFou13aBYXLHtxKlu/7ilt1Ot7YZisxxlwWgdJu0MskC5G/NetuANdYxIUTAvDTDJ
+	uolaufT6XkEYInMmO+3cpbfpIbj6JoqSEsZyKkAgO1xslJvTPz6PnfAnK3c8/9f0UamozEEWBR1
+	OfuN4iycVRE4Jf4CayDQ+ktfDoVuYBc2jTG3JFGKCIHqjRti73IbCJ0NE6uWsxCoLa9F8b9gx1L
+	mslIdfGvKSx6F2kdv/zHL0xV8N6s7qc7pxPExiOaFaCJ8IFuRY/TYaJNZ6VV5esnOEkSUrvYfgs
+	CtUTZL944S25xMwtum/aZtzZ6DuKmufbhl7tBHq6kA6JiPutgn3ao0tjHEpDtwkSsEWY0kZDMNF
+	ctTyCQYGKuYE6OGb9UEiuGlAlet/X//+NFinLY8to+YHAOmRl6JHwG30fJAafSQTZHgpwjVT0VK
+	vmihJLsOAE+R9GM3wBMyipqZK7CtVhp4hm9Ji4pl2FRbTncLYjoRDletAL0di2faJO3EwhyI4oS
+	sI0GdUh7w+gNXZ8d9UYi7IjArn4olEBu0CTMOmzk/Tj3LuO5yt3rt7MvAI=
+X-Received: by 2002:a05:6402:3885:b0:6a9:a33b:bb8f with SMTP id 4fb4d7f45d1cf-6a9a33bc700mr2138258a12.41.1789048982382;
+        Thu, 10 Sep 2026 07:03:02 -0700 (PDT)
 Received: from cloudflare.com (79.184.140.212.ipv4.supernova.orange.pl. [79.184.140.212])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c260d4a8ba1sm903187766b.22.2026.09.10.07.02.58
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a7e6bf3032sm8272971a12.24.2026.09.10.07.03.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Sep 2026 07:02:58 -0700 (PDT)
+        Thu, 10 Sep 2026 07:03:01 -0700 (PDT)
 From: Jakub Sitnicki <jakub@cloudflare.com>
-Date: Thu, 10 Sep 2026 16:02:45 +0200
-Subject: [PATCH net-next v2 10/14] selftests/bpf: Test skb_ext read from
- netfilter hook
+Date: Thu, 10 Sep 2026 16:02:47 +0200
+Subject: [PATCH net-next v2 12/14] selftests/bpf: Test skb_ext read from
+ seg6local End.BPF hook
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -71,7 +71,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260910-bpf-meta-inside-skb-ext-v2-10-0b21e42180b0@cloudflare.com>
+Message-Id: <20260910-bpf-meta-inside-skb-ext-v2-12-0b21e42180b0@cloudflare.com>
 References: <20260910-bpf-meta-inside-skb-ext-v2-0-0b21e42180b0@cloudflare.com>
 In-Reply-To: <20260910-bpf-meta-inside-skb-ext-v2-0-0b21e42180b0@cloudflare.com>
 To: netdev@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>, 
@@ -91,57 +91,147 @@ Cc: bpf@vger.kernel.org, kernel-team@cloudflare.com,
  Florian Westphal <fw@strlen.de>, Jack Wang <163wangjack@gmail.com>
 X-Mailer: b4 0.16.0
 
-Add a TC -> netfilter cross-hook test for bpf_dynptr_from_skb_ext(). A TC
-ingress program writes skb_ext on loopback, and a netfilter program at
-NF_INET_LOCAL_IN reads it back.
+Test bpf_dynptr_from_skb_ext() from lwt_seg6local context:
+- TC writes skb_ext on the encapped packet leaving NS1,
+- NS2 runs End.BPF for fd01::1 which reads it back,
+- NS3 receives the packet and decapsulates it.
+
+Note that End.BPF cannot deliver locally since seg6_lookup_nexthop rejects
+loopback routes, hence a three netns setup is necessary.
 
 Signed-off-by: Jakub Sitnicki <jakub@cloudflare.com>
 ---
- .../bpf/prog_tests/xdp_context_test_run.c          | 56 ++++++++++++++++++++++
- tools/testing/selftests/bpf/progs/test_xdp_meta.c  | 23 +++++++++
- 2 files changed, 79 insertions(+)
+ .../bpf/prog_tests/xdp_context_test_run.c          | 170 +++++++++++++++++++++
+ tools/testing/selftests/bpf/progs/test_xdp_meta.c  |  18 +++
+ 2 files changed, 188 insertions(+)
 
 diff --git a/tools/testing/selftests/bpf/prog_tests/xdp_context_test_run.c b/tools/testing/selftests/bpf/prog_tests/xdp_context_test_run.c
-index 632b2ae6935c..b42e74aaca88 100644
+index cb38a221a278..2814bfa0d6b5 100644
 --- a/tools/testing/selftests/bpf/prog_tests/xdp_context_test_run.c
 +++ b/tools/testing/selftests/bpf/prog_tests/xdp_context_test_run.c
-@@ -2,6 +2,7 @@
- #include <test_progs.h>
- #include <network_helpers.h>
- #include <linux/ipv6.h>
-+#include <linux/netfilter.h>
- #include <arpa/inet.h>
- #include "test_xdp_context_test_run.skel.h"
- #include "test_xdp_meta.skel.h"
-@@ -1362,6 +1363,59 @@ static void test_cgrp_egress_to_kfree_skb(struct test_xdp_meta *skel)
- 		close(cgroup_fd);
+@@ -1510,6 +1510,174 @@ static void test_skb_ext_lwt(struct test_xdp_meta *skel, const char *name,
+ 		unlink(LWT_EXT_PIN_PATH);
  }
  
-+/* Test skb_ext survival across TC ingress -> netfilter hook */
-+static void test_skb_ext_nf(struct test_xdp_meta *skel, const char *name)
++#define SEG6_PIN_PATH "/sys/fs/bpf/skb_ext_seg6local"
++
++/*
++ * Test skb_ext survival across TC egress -> seg6local End.BPF hook.
++ *
++ * Topology:
++ *
++ *     NS1           NS2            NS3
++ *   lo veth1 <-> veth2 veth3 <-> veth4 lo
++ *
++ * NS1 encaps fb01::2 with SRH (segments fd01::1,fd01::2) on output and
++ * writes skb_ext at TC egress on veth1. NS2 runs End.BPF for fd01::1,
++ * which reads skb_ext, then forwards to NS3 (seg6_lookup_nexthop
++ * rejects loopback routes with local_delivery=false, so End.BPF
++ * cannot deliver locally). NS3 has fd01::2 local, decapsulates, and
++ * delivers the inner UDP (dst=fb01::2) to a local socket for test
++ * synchronization.
++ *
++ * The TC program drops non-test packets, so NDP is bypassed with a
++ * static neighbor entry on the NS1->NS2 hop.
++ */
++static void test_skb_ext_seg6local(struct test_xdp_meta *skel)
 +{
-+	LIBBPF_OPTS(bpf_tc_hook, tc_hook,
-+		    .ifindex = 1 /* IFINDEX_LO */,
-+		    .attach_point = BPF_TC_INGRESS);
++	LIBBPF_OPTS(bpf_tc_hook, tc_hook, .attach_point = BPF_TC_EGRESS);
 +	LIBBPF_OPTS(bpf_tc_opts, tc_opts, .handle = 1, .priority = 1);
-+	LIBBPF_OPTS(bpf_netfilter_opts, nf_opts,
-+		    .pf = NFPROTO_IPV4,
-+		    .hooknum = NF_INET_LOCAL_IN,
-+		    .priority = 1);
-+	struct bpf_link *reader_link = NULL;
-+	struct netns_obj *ns = NULL;
++	struct nstoken *nstoken = NULL;
++	struct sockaddr_in6 dst = {};
++	char buf[TEST_PAYLOAD_LEN];
++	bool pinned = false;
++	int client_fd = -1;
 +	int server_fd = -1;
++	ssize_t bytes;
 +	int ret;
 +
-+	ns = netns_new(name, true);
-+	if (!ASSERT_OK_PTR(ns, "netns_new"))
++	unlink(SEG6_PIN_PATH);
++	ret = bpf_program__pin(skel->progs.seg6local_skb_ext_read,
++			       SEG6_PIN_PATH);
++	if (!ASSERT_OK(ret, "pin seg6local"))
 +		return;
++	pinned = true;
 +
-+	server_fd = start_server(AF_INET, SOCK_DGRAM, "127.0.0.1", 0, 0);
++	skel->bss->test_pass = false;
++
++	SYS(cleanup, "ip netns add seg6_1");
++	SYS(cleanup, "ip netns add seg6_2");
++	SYS(cleanup, "ip netns add seg6_3");
++
++	/* NS1 <-> NS2 veth pair; static NDP since TC drops NS/NA */
++	SYS(cleanup, "ip -n seg6_1 link add veth1 type veth peer name veth2 netns seg6_2");
++	SYS(cleanup, "ip -n seg6_1 link set dev veth1 up");
++	SYS(cleanup, "ip -n seg6_2 link set dev veth2 address 02:00:00:00:00:02");
++	SYS(cleanup, "ip -n seg6_2 link set dev veth2 up");
++	SYS(cleanup, "ip -n seg6_1 -6 addr add fb00::12/16 dev veth1 scope link nodad");
++	SYS(cleanup, "ip -n seg6_2 -6 addr add fb00::21/16 dev veth2 scope link nodad");
++	SYS(cleanup, "ip -n seg6_1 -6 neigh add fb00::21 lladdr 02:00:00:00:00:02 "
++		     "nud permanent dev veth1");
++
++	/* NS2 <-> NS3 veth pair */
++	SYS(cleanup, "ip -n seg6_2 link add veth3 type veth peer name veth4 netns seg6_3");
++	SYS(cleanup, "ip -n seg6_2 link set dev veth3 up");
++	SYS(cleanup, "ip -n seg6_3 link set dev veth4 up");
++	SYS(cleanup, "ip -n seg6_2 -6 addr add fb00::34/16 dev veth3 scope link nodad");
++	SYS(cleanup, "ip -n seg6_3 -6 addr add fb00::43/16 dev veth4 scope link nodad");
++
++	/* NS1: source address + SRH encap on output + route for fd01::/16 */
++	SYS(cleanup, "ip -n seg6_1 link set dev lo up");
++	SYS(cleanup, "ip -n seg6_1 -6 addr add fb01::1/128 dev lo nodad");
++	SYS(cleanup, "ip -n seg6_1 -6 route add fb01::2 encap seg6 mode encap "
++		     "segs fd01::1,fd01::2 dev veth1 via fb00::21");
++	SYS(cleanup, "ip -n seg6_1 -6 route add fd01::/16 dev veth1 via fb00::21");
++
++	/* NS2: seg6local End.BPF for fd01::1, then forward to NS3.
++	 * Use open_netns so the pinned prog on bpffs is accessible.
++	 */
++	nstoken = open_netns("seg6_2");
++	if (!ASSERT_OK_PTR(nstoken, "open seg6_2"))
++		goto cleanup;
++
++	SYS(cleanup, "ip link set dev lo up");
++	SYS(cleanup, "sysctl -wq net.ipv6.conf.all.forwarding=1");
++	SYS(cleanup, "ip -6 route add fd01::2/128 dev veth3 via fb00::43");
++	SYS(cleanup, "ip -6 route add fd01::1 encap seg6local "
++		     "action End.BPF endpoint pinned " SEG6_PIN_PATH " dev veth2");
++
++	close_netns(nstoken);
++	nstoken = NULL;
++
++	/* NS3: decap point + UDP server.
++	 * fd01::2 local triggers SRH decap (segments_left=0).
++	 * fb01::2 local delivers the inner UDP to the socket.
++	 */
++	nstoken = open_netns("seg6_3");
++	if (!ASSERT_OK_PTR(nstoken, "open seg6_3"))
++		goto cleanup;
++
++	SYS(cleanup, "ip link set dev lo up");
++	SYS(cleanup, "sysctl -wq net.ipv6.conf.all.seg6_enabled=1");
++	SYS(cleanup, "sysctl -wq net.ipv6.conf.lo.seg6_enabled=1");
++	SYS(cleanup, "sysctl -wq net.ipv6.conf.veth4.seg6_enabled=1");
++	SYS(cleanup, "ip -6 addr add fd01::2/128 dev lo nodad");
++	SYS(cleanup, "ip -6 addr add fb01::2/128 dev lo nodad");
++
++	server_fd = start_server(AF_INET6, SOCK_DGRAM, "fb01::2", 1234, 0);
 +	if (!ASSERT_GE(server_fd, 0, "start_server"))
 +		goto cleanup;
 +
-+	skel->bss->test_pass = false;
++	close_netns(nstoken);
++	nstoken = NULL;
++
++	/* NS1: write skb_ext at TC egress on veth1, then send.
++	 * TC egress fires after seg6 encap, on the encapped packet.
++	 */
++	nstoken = open_netns("seg6_1");
++	if (!ASSERT_OK_PTR(nstoken, "open seg6_1"))
++		goto cleanup;
++
++	tc_hook.ifindex = if_nametoindex("veth1");
++	if (!ASSERT_GT(tc_hook.ifindex, 0, "ifindex veth1"))
++		goto cleanup;
 +
 +	ret = bpf_tc_hook_create(&tc_hook);
 +	if (!ASSERT_OK(ret, "bpf_tc_hook_create"))
@@ -152,65 +242,81 @@ index 632b2ae6935c..b42e74aaca88 100644
 +	if (!ASSERT_OK(ret, "bpf_tc_attach"))
 +		goto cleanup;
 +
-+	reader_link = bpf_program__attach_netfilter(skel->progs.nf_skb_ext_read,
-+						    &nf_opts);
-+	if (!ASSERT_OK_PTR(reader_link, "attach_nf"))
++	client_fd = socket(AF_INET6, SOCK_DGRAM, 0);
++	if (!ASSERT_GE(client_fd, 0, "socket"))
 +		goto cleanup;
 +
-+	if (send_loopback_udp(server_fd))
++	dst.sin6_family = AF_INET6;
++	dst.sin6_port = htons(1234);
++	inet_pton(AF_INET6, "fb01::2", &dst.sin6_addr);
++
++	bytes = sendto(client_fd, test_payload, TEST_PAYLOAD_LEN, 0,
++		       (void *)&dst, sizeof(dst));
++
++	close_netns(nstoken);
++	nstoken = NULL;
++
++	if (!ASSERT_EQ(bytes, TEST_PAYLOAD_LEN, "sendto"))
 +		goto cleanup;
 +
++	/* Receive decapsulated packet -- synchronizes with seg6local */
++	nstoken = open_netns("seg6_3");
++	if (!ASSERT_OK_PTR(nstoken, "open seg6_3"))
++		goto cleanup;
++
++	bytes = recvfrom(server_fd, buf, sizeof(buf), 0, NULL, NULL);
++	ASSERT_EQ(bytes, TEST_PAYLOAD_LEN, "recvfrom");
 +	ASSERT_TRUE(skel->bss->test_pass, "test_pass");
 +
 +cleanup:
-+	bpf_link__destroy(reader_link);
-+	bpf_tc_hook_destroy(&tc_hook);
++	close_netns(nstoken);
 +	if (server_fd >= 0)
 +		close(server_fd);
-+	netns_free(ns);
++	if (client_fd >= 0)
++		close(client_fd);
++	SYS_NOFAIL("ip netns del seg6_3");
++	SYS_NOFAIL("ip netns del seg6_2");
++	SYS_NOFAIL("ip netns del seg6_1");
++	if (pinned)
++		unlink(SEG6_PIN_PATH);
 +}
 +
  void test_skb_ext_cross_hook(void)
  {
  	struct test_xdp_meta *skel = NULL;
-@@ -1380,6 +1434,8 @@ void test_skb_ext_cross_hook(void)
- 		test_skb_ext_tcp(skel, "tc_to_skops", READER_SKOPS);
- 	if (test__start_subtest("cgrp_egress_to_kfree_skb"))
- 		test_cgrp_egress_to_kfree_skb(skel);
-+	if (test__start_subtest("tc_to_nf"))
-+		test_skb_ext_nf(skel, "tc_to_nf");
+@@ -1539,6 +1707,8 @@ void test_skb_ext_cross_hook(void)
+ 	if (test__start_subtest("lwt_xmit_to_tc"))
+ 		test_skb_ext_lwt(skel, "lwt_xmit_to_tc",
+ 				 skel->progs.lwt_xmit_skb_ext_write, "xmit", true);
++	if (test__start_subtest("tc_to_seg6local"))
++		test_skb_ext_seg6local(skel);
  
  	test_xdp_meta__destroy(skel);
  }
 diff --git a/tools/testing/selftests/bpf/progs/test_xdp_meta.c b/tools/testing/selftests/bpf/progs/test_xdp_meta.c
-index e162683a6534..98d06ab340bf 100644
+index 8ec0ffd98da3..00312a549ea9 100644
 --- a/tools/testing/selftests/bpf/progs/test_xdp_meta.c
 +++ b/tools/testing/selftests/bpf/progs/test_xdp_meta.c
-@@ -1146,4 +1146,27 @@ int BPF_PROG(tp_kfree_skb_ext_read, struct sk_buff *skb)
- 	return 0;
+@@ -1214,4 +1214,22 @@ int lwt_xmit_skb_ext_write(struct __sk_buff *ctx)
+ 	return BPF_OK;
  }
  
-+#define NF_ACCEPT 1
-+
-+SEC("netfilter")
-+int nf_skb_ext_read(struct bpf_nf_ctx *ctx)
++/* Read skb_ext from seg6local End.BPF -- tests TC -> seg6local path */
++SEC("lwt_seg6local")
++int seg6local_skb_ext_read(struct __sk_buff *ctx)
 +{
-+	struct __sk_buff *skb = (struct __sk_buff *)ctx->skb;
 +	__u8 meta_have[META_SIZE];
 +	struct bpf_dynptr meta;
 +
-+	if (!skb)
-+		return NF_ACCEPT;
-+
-+	if (bpf_dynptr_from_skb_ext(skb, 0, 0, &meta))
-+		return NF_ACCEPT;
++	if (bpf_dynptr_from_skb_ext(ctx, 0, 0, &meta))
++		return BPF_OK;
 +	if (bpf_dynptr_read(meta_have, META_SIZE, &meta, 0, 0))
-+		return NF_ACCEPT;
++		return BPF_OK;
 +	if (!check_metadata(meta_have))
-+		return NF_ACCEPT;
++		return BPF_OK;
 +
 +	test_pass = true;
-+	return NF_ACCEPT;
++	return BPF_OK;
 +}
 +
  char _license[] SEC("license") = "GPL";
