@@ -1,36 +1,36 @@
 Received: from mail1.fiberby.net (mail1.fiberby.net [193.104.135.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 935C13AB496;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9350F39524D;
 	Thu, 10 Sep 2026 22:19:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.104.135.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789078790; cv=none; b=cydGsiMfm9aRxpDQoz+M53CoqKpFWcDoIVdeoEvF95tTr6qIas9qvnSiDhne2bB3o31cgA7lT7sjxnME/dwtrwJpw4wDywunGqLbBPkAW9Z3rvTO48NRiSfSc8zSyhrX/YFiJRM2Md7Nuzpda73ii7NiMMS5mTKeUwLM9h9yL2o=
+	t=1789078790; cv=none; b=XrNX78Icx56531G6ouBAV8zuLEzzCNAb7dP3HpIMUqc5wRZ2Xn9Mnl+WI3DPTsJpRtYqInwnufPVK+aLrkJccs5oAuB/MIAXifKwiL7QxLRNxIAr/eOMgy42ydLaCFUruwJSGFgWf6HRgEx79inO3csZTaevBjkvEBsEJXlx4zQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1789078790; c=relaxed/simple;
-	bh=wfwCmT8DoKSSUntYp3RrEFWgEP9KlheUfTkbMuIxZTo=;
+	bh=Dozir/3IJu939c5SnxFwdH9rgQY6CoLTFGtt7NTbXkg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kdUXxI2tQMZZJ9bAoeHcPge3m+JFpme5NSLa8eajYRrY5yoo322dvGuhhFgXVNMP0FQ6eL0LrIUpqsWT3iF2eDVQ9DcE3WKVwrRe5sGDXYmggpxesN7AcznEIz+DGNChESqHIb+P7YHa7T06mYh1ovlP643NeAnaisvitUHUNCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=tJDpaA3F; arc=none smtp.client-ip=193.104.135.124
+	 MIME-Version:Content-Type; b=GmztnMayCHCwzAzj56/m3vah9wcRAyXfjkY1P62vRvc/LnQY0elkVYPfXALDW6CeBfVNrauskwHOeNCVcjm5hPsE2S9+MWrQ5uju8ZqqjUY7YH8/KLtD3XSjKEDGAgzXLBP7Pr8fusBfdx+djCm7udFJaJI5IFRKoSoujO9e+k0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=v6E2o2FD; arc=none smtp.client-ip=193.104.135.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="tJDpaA3F"
+	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="v6E2o2FD"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fiberby.net;
-	s=202008; t=1789078778;
-	bh=wfwCmT8DoKSSUntYp3RrEFWgEP9KlheUfTkbMuIxZTo=;
+	s=202008; t=1789078777;
+	bh=Dozir/3IJu939c5SnxFwdH9rgQY6CoLTFGtt7NTbXkg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tJDpaA3FkllyflGf/hu3IkoNB/2VeUyZAhg0cua1z3wUA6a6ZXU1ddTZO7jfN4VID
-	 GWlueKfdUTwTXt4I8CWYF6XXhLhRl1k/Az8PAJrctPCSrvIa8WOaUE4XWuSe3UXIH+
-	 ElgW5Oflk7qBqmYF8zQtPtjfDnrLc/33cvLrxDNN23JDBXmpg+irMprSxlK6cRQIdu
-	 oVkYrU+fi6QAcAo/92MsGV19t3SE7ueE2SOuNCYCL07c48JL1S3cysLIytSZscdEf/
-	 lqZoAqcUTMJBSYA9QJ7ONckPhhvDSL/VIGcH6cPzikbf5kSDXJBUmWPi0vjcrvJ9K/
-	 u4F0hZs9h9Q2Q==
+	b=v6E2o2FDGphZDQuycyiDhKYZ3u2j9teQLWeRgm7LE6YyVPL3xwD4wSIkejNWxC6WZ
+	 AZCLXL385YZHSSMhyfC69zQ7DphO8Nmmxn4Q8ZsgyKNFmLk9aLN4RiDUOSLdmVseZk
+	 P66MrVsoB9FEO8DGHBIyvjG4J/++YjlQpM8awoMNkapvy/IoONkO4ok5H9BeotsBqv
+	 JCfic86K0sFUw3s+J5bT+qgzPoNtdkTVSCvcgNK4FcO3v+aQd5Gw51YG5zHNQZKvu+
+	 3Xn97SKHCsPZbP+UCzTdMn9pTWHRnshn74R9eABovcSp3poAas8KSUYsg7rOb54Ysk
+	 dgh9KjTY3/K+A==
 Received: from x201s (193-104-135-243.ip4.fiberby.net [193.104.135.243])
-	by mail1.fiberby.net (Postfix) with ESMTPSA id 3F2B260107;
+	by mail1.fiberby.net (Postfix) with ESMTPSA id 3CEB260104;
 	Thu, 10 Sep 2026 22:19:19 +0000 (UTC)
 Received: by x201s (Postfix, from userid 1000)
-	id DCAEE2025B6; Thu, 10 Sep 2026 22:17:39 +0000 (UTC)
+	id BBC632023F3; Thu, 10 Sep 2026 22:17:37 +0000 (UTC)
 From: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>
 To: netdev@vger.kernel.org
 Cc: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
@@ -48,10 +48,11 @@ Cc: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
 	Simon Horman <horms@kernel.org>,
 	Stanislav Fomichev <sdf.kernel@gmail.com>,
 	Heng Guo <heng.guo@windriver.com>,
-	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH net-next 8/8] netlink: specs: rt-link: fix netkit-policy names
-Date: Thu, 10 Sep 2026 22:17:28 +0000
-Message-ID: <20260910221733.1021864-9-ast@fiberby.net>
+	linux-kernel@vger.kernel.org,
+	Sashiko <sashiko-bot@kernel.org>
+Subject: [RFC PATCH net-next 6/8] netlink: specs: rt-link: re-align ifla-inet6-stats
+Date: Thu, 10 Sep 2026 22:17:26 +0000
+Message-ID: <20260910221733.1021864-7-ast@fiberby.net>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260910221733.1021864-1-ast@fiberby.net>
 References: <20260910221733.1021864-1-ast@fiberby.net>
@@ -64,36 +65,77 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Correct the names of these `enum netkit_action` constants:
+YNL enum ifla-inet6-stats got mis-aligned with C, as two commits
+reordered the enum.
 
-- NETKIT_PASS is 0, so "pass", not "forward".
-- NETKIT_DROP is 2, so "drop", not "blackhole".
+In commit b4a11b2033b7 ("net: fix IPSTATS_MIB_OUTPKGS increment in
+OutForwDatagrams."), IPSTATS_MIB_OUTPKTS was renamed to _OUTREQUESTS
+and a new _OUTPKTS was as the last entry.
 
-Note, the other enum members are not used in netlink, and
-are not allowed by netkit_check_policy().
+In commit 652e2c777862 ("net: reorganize IP MIB values (II)"), the
+IPSTATS_MIB_* enum was reorganized for data locality.
 
+Neither of these commits updated the YNL spec.
+
+This changed uAPI, as IPSTATS_MIB_* is used as indicies in an u64 array,
+exported as IFLA_INET6_STATS by inet6_fill_ifla6_stats_attrs().
+
+This patch updates ifla-inet6-stats to reflect both of these commits.
+Next time we want to reorganize these counters we should properly apply
+mapping as to maintain the current order on the netlink side.
+
+This pre-existing issue was identified by Sashiko during review of
+commit 2b0aecb7b2b1 ("netlink: specs: rt-link: add accept-ra-min-lft").
+
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Closes: https://sashiko.dev/#/patchset/20260831093458.472180-1-ast%40fiberby.net
 Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
 ---
- Documentation/netlink/specs/rt-link.yaml | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ Documentation/netlink/specs/rt-link.yaml | 20 +++++++++++---------
+ 1 file changed, 11 insertions(+), 9 deletions(-)
 
 diff --git a/Documentation/netlink/specs/rt-link.yaml b/Documentation/netlink/specs/rt-link.yaml
-index 6639b7f5677b..fe52d508d607 100644
+index aee516e87b89..c84bbd58cfcb 100644
 --- a/Documentation/netlink/specs/rt-link.yaml
 +++ b/Documentation/netlink/specs/rt-link.yaml
-@@ -827,10 +827,10 @@ definitions:
-     name-prefix: netkit-
-     entries:
+@@ -541,11 +541,21 @@ definitions:
        -
--        name: forward
-+        name: pass
-         value: 0
+         name: indelivers
        -
--        name: blackhole
-+        name: drop
-         value: 2
-   -
-     name: netkit-mode
+-        name: outforwdatagrams
++        name: noectpkts
++      -
++        name: ect1pkts
++      -
++        name: ect0pkts
++      -
++        name: cepkts
++      -
++        name: outrequests
+       -
+         name: outpkts
+       -
+         name: outoctets
++      -
++        name: outforwdatagrams
+       -
+         name: inhdrerrors
+       -
+@@ -596,14 +606,6 @@ definitions:
+         name: outbcastoctets
+       -
+         name: csumerrors
+-      -
+-        name: noectpkts
+-      -
+-        name: ect1-pkts
+-      -
+-        name: ect0-pkts
+-      -
+-        name: cepkts
+       -
+         name: reasm-overlaps
+   - name: br-boolopt-multi
 -- 
 2.55.0
 
