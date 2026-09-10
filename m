@@ -1,33 +1,33 @@
-Received: from mta1.migadu.com (out-47.mta1.migadu.com [95.215.58.47])
+Received: from mta1.migadu.com (out-61.mta1.migadu.com [95.215.58.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B362A3E3D8F
-	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 09:34:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF6FF3DCD95
+	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 09:34:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789032878; cv=none; b=FLMZZfRh0QgkGcGCDj5r2OE4VE3hZTwoP3I+4xyORCPARV2MYIv93/pSAwtwsG7q9Hh0K4WyQ9yBGXlvDbTOGHUt0cuJG2e8JzqKxXBU8wpg64EjvE5/bPn/quiNoFXaHvzdPzsf9XqJzUFCfr1G4png1gDbBwXpQnSmR6SVlIs=
+	t=1789032884; cv=none; b=aseuqvzR2/3iGWA5zagpg42B819an/S0a/ZIBEEZpQa8if+jEuxn3/oJbYUr8enq+rbVB6JSl5YocFCHW8K3e+7Q7XU/K0A7fZkK7zLWnHGeA9IWZpKvczuTwR6w7TH4H9gWeiSmTQNwEi5nTiTMsuhsnyamEkTOn9Owenb14bw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789032878; c=relaxed/simple;
-	bh=pxNPuqInUXA5BhBex6CFLs+8pBKZ4qJtowlQoFJZa4I=;
+	s=arc-20240116; t=1789032884; c=relaxed/simple;
+	bh=QW5F+KC6Mtc19N8+SJ6VtwIGPrdVeLpE90M+rMrrlUQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Onx7J8Qdd/drxYAvDESFRBG7veYEHFFpMVTSdp58C2ALY01YKEErtX2DymqBkjjUMouvU/dfjgiOgHNgok+ZLKDCWuyfavOMjdhzjw+P8BOQNe7IDRJHIqyU2bkIEdAYTzwPiSkB6Vt1t7En3tDCJYfJLTMgaywH0oJl+Wnc1/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=omBR1qhp; arc=none smtp.client-ip=95.215.58.47
+	 MIME-Version; b=hy37niaqEB5M+JKQqr+fvyL19QJUSvW3EJz72/MrekDW6Lm/B/xAczkGW2LFM2BfzzuFExv1/90LDOUgiUuwzLanSfqIp5z7mfDjU4OcOQ99FXduw5GOsFi4+8jmmACKKqscMpSbyFQzfhG8M9FtnQw9/7Vs73LNEkcSgVVRU7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=l68KufMU; arc=none smtp.client-ip=95.215.58.61
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="omBR1qhp"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="l68KufMU"
 X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=pxNPuqInUXA5BhBex6CFLs+8pBKZ4qJtowlQoFJZa4I=;
+DKIM-Signature: a=rsa-sha256; bh=QW5F+KC6Mtc19N8+SJ6VtwIGPrdVeLpE90M+rMrrlUQ=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789032873; v=1; x=1789637673;
- b=omBR1qhpwge9NI9TtfrqzOuldPeanhnTOo/H2N2/WV3QCU+UNQquH3L4t15ZHj0Gznmz1BLM
- nDQgamZHj1K38nn9Vqz62xdNWvs/jXtzpcPK2ipgxkiSsAOfZsvcpffIyvzUAgAKm0/4IBl31W2
- XfPYB5xFctvfDaOTzPFir8qo=
+ t=1789032879; v=1; x=1789637679;
+ b=l68KufMUs8MjF0atgUN0wNwds7dpgaKwssgp6Gp82jhPR5cvZJ7Mf8eHKK31/4kfZfkDDV2v
+ aZlMixhhxUcmukgeuZBn1Cnww5Mps4iUJaBVT0cDpVjntiCM/Xwe36NtgMHJmXRKZqcBSldZNyK
+ NwqLs6V+NWG3bCly3QPC6rao=
 X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 5d418fa20c543b52;
-	Thu, 10 Sep 2026 09:34:33 +0000
-X-Mizu-Trace-ID: 5d418fa20c543b52
+Received: by smtp.migadu.com with ESMTPS id b9c99183e804cd3e;
+	Thu, 10 Sep 2026 09:34:39 +0000
+X-Mizu-Trace-ID: b9c99183e804cd3e
 X-Migadu-Flow: FLOW_OUT
 From: Xuanqiang Luo <xuanqiang.luo@linux.dev>
 To: netdev@vger.kernel.org
@@ -43,11 +43,10 @@ Cc: jhs@mojatatu.com,
 	pctammela@mojatatu.com,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Xuanqiang Luo <luoxuanqiang@kylinos.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH net v1 1/2] net/sched: act_api: release tail references on DELACTION failure
-Date: Thu, 10 Sep 2026 17:34:12 +0800
-Message-ID: <20260910093413.34509-2-xuanqiang.luo@linux.dev>
+	Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+Subject: [PATCH net v1 2/2] selftests: tc-testing: test action batch deletion failure cleanup
+Date: Thu, 10 Sep 2026 17:34:13 +0800
+Message-ID: <20260910093413.34509-3-xuanqiang.luo@linux.dev>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260910093413.34509-1-xuanqiang.luo@linux.dev>
 References: <20260910093413.34509-1-xuanqiang.luo@linux.dev>
@@ -61,51 +60,141 @@ Content-Transfer-Encoding: 8bit
 
 From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
 
-A batched RTM_DELACTION request takes a temporary reference on each
-action before attempting any deletion. tcf_action_delete() clears
-each processed slot and drops its temporary reference before attempting
-the deletion. If deletion fails, tca_action_gd() calls
-tcf_action_put_many() to release the remaining references, but its
-tcf_act_for_each_action() iterator stops at the first NULL slot.
+Add tests for cleanup after a batched RTM_DELACTION request fails at
+a gact action bound to a filter. Check that subsequent actions retain
+their original reference counts and that earlier successful deletions
+are preserved.
 
-When a batch stops at an action bound to a filter, this leaks a
-reference on each subsequent action. A later delete of an unbound
-action can then return success without removing it from the IDR.
+Cover failures at the first and middle entries. Verify that a remaining
+unbound action can be removed with one subsequent delete.
 
-Walk the full array in tcf_action_put_many() and skip NULL slots to
-release the references held on the unprocessed actions.
-
-Fixes: a0e947c9ccff ("net/sched: act_api: avoid non-contiguous action array")
-Cc: stable@vger.kernel.org
 Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
 ---
- net/sched/act_api.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ .../tc-tests/actions/batch-delete.json        | 115 ++++++++++++++++++
+ 1 file changed, 115 insertions(+)
+ create mode 100644 tools/testing/selftests/tc-testing/tc-tests/actions/batch-delete.json
 
-diff --git a/net/sched/act_api.c b/net/sched/act_api.c
-index 37eced84dfa5f..86710a596a0fa 100644
---- a/net/sched/act_api.c
-+++ b/net/sched/act_api.c
-@@ -1223,11 +1223,16 @@ static int tcf_action_put(struct tc_action *p)
- 
- static void tcf_action_put_many(struct tc_action *actions[])
- {
--	struct tc_action *a;
- 	int i;
- 
--	tcf_act_for_each_action(i, a, actions) {
--		const struct tc_action_ops *ops = a->ops;
-+	/* Deletion may have cleared entries before failing. */
-+	for (i = 0; i < TCA_ACT_MAX_PRIO; i++) {
-+		struct tc_action *a = actions[i];
-+		const struct tc_action_ops *ops;
-+
-+		if (!a)
-+			continue;
-+		ops = a->ops;
- 		if (tcf_action_put(a))
- 			module_put(ops->owner);
- 	}
+diff --git a/tools/testing/selftests/tc-testing/tc-tests/actions/batch-delete.json b/tools/testing/selftests/tc-testing/tc-tests/actions/batch-delete.json
+new file mode 100644
+index 0000000000000..ef7ca4a6775bc
+--- /dev/null
++++ b/tools/testing/selftests/tc-testing/tc-tests/actions/batch-delete.json
+@@ -0,0 +1,115 @@
++[
++    {
++        "id": "d710",
++        "name": "Release tail references after first action deletion fails",
++        "category": [
++            "actions",
++            "gact"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [
++            [
++                "$TC actions flush action gact",
++                0,
++                1,
++                255
++            ],
++            "$TC qdisc add dev $DEV1 ingress",
++            "$TC actions add action pass index 1",
++            "$TC actions add action pass index 2",
++            "$TC actions add action pass index 3",
++            "$TC filter add dev $DEV1 protocol ip ingress u32 match u32 0 0 action gact index 1"
++        ],
++        "cmdUnderTest": "$TC actions del action gact index 1 action gact index 2 action gact index 3",
++        "expExitCode": "255",
++        "verifyCmd": "$TC actions ls action gact",
++        "matchPattern": "total acts 3\\b.*index 1 ref 2 bind 1\\b.*index 2 ref 1 bind 0\\b.*index 3 ref 1 bind 0\\b",
++        "matchCount": "1",
++        "teardown": [
++            "$TC qdisc del dev $DEV1 ingress",
++            [
++                "$TC actions flush action gact",
++                0,
++                1,
++                255
++            ]
++        ]
++    },
++    {
++        "id": "d711",
++        "name": "Release tail references after middle action deletion fails",
++        "category": [
++            "actions",
++            "gact"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [
++            [
++                "$TC actions flush action gact",
++                0,
++                1,
++                255
++            ],
++            "$TC qdisc add dev $DEV1 ingress",
++            "$TC actions add action pass index 1",
++            "$TC actions add action pass index 2",
++            "$TC actions add action pass index 3",
++            "$TC filter add dev $DEV1 protocol ip ingress u32 match u32 0 0 action gact index 2"
++        ],
++        "cmdUnderTest": "$TC actions del action gact index 1 action gact index 2 action gact index 3",
++        "expExitCode": "255",
++        "verifyCmd": "$TC actions ls action gact",
++        "matchPattern": "total acts 2\\b.*index 2 ref 2 bind 1\\b.*index 3 ref 1 bind 0\\b",
++        "matchCount": "1",
++        "teardown": [
++            "$TC qdisc del dev $DEV1 ingress",
++            [
++                "$TC actions flush action gact",
++                0,
++                1,
++                255
++            ]
++        ]
++    },
++    {
++        "id": "d713",
++        "name": "Delete a tail action once after a failed batch",
++        "category": [
++            "actions",
++            "gact"
++        ],
++        "plugins": {
++            "requires": "nsPlugin"
++        },
++        "setup": [
++            [
++                "$TC actions flush action gact",
++                0,
++                1,
++                255
++            ],
++            "$TC qdisc add dev $DEV1 ingress",
++            "$TC actions add action pass index 1",
++            "$TC actions add action pass index 2",
++            "$TC filter add dev $DEV1 protocol ip ingress u32 match u32 0 0 action gact index 1"
++        ],
++        "cmdUnderTest": "$TC actions del action gact index 1 action gact index 2",
++        "expExitCode": "255",
++        "verifyCmd": "sh -c '$TC actions del action gact index 2 && $TC actions ls action gact'",
++        "matchPattern": "total acts 1\\b.*index 1 ref 2 bind 1\\b",
++        "matchCount": "1",
++        "teardown": [
++            "$TC qdisc del dev $DEV1 ingress",
++            [
++                "$TC actions flush action gact",
++                0,
++                1,
++                255
++            ]
++        ]
++    }
++]
 -- 
 2.43.0
 
