@@ -1,253 +1,240 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B93737E5C9;
-	Thu, 10 Sep 2026 03:38:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789011488; cv=none; b=D4kJKUl/5f23MIeJNANGMj/PYp3/4yzX6hK9PtjDKoYlfsdqPosmUY2Lwu/1KLHeRBRG4VsKkBqh758g08jvrNcYlMasY3vJUAgFvMaCj8uOabWnT2I6AUGqT0THzVBfSJ3oXTTuAvM3uH9nTgwKK/b3yX4A4iDQ8hdo5xe9vBg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789011488; c=relaxed/simple;
-	bh=Hr3oZU2DGTaJF7RYY8SHEQiTy9FvjwzGSb7rHZ3HIUo=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=rW0h6IsgNWxuBwf5j4LVZ/ZTGmUp43u8U2TrG7K1DtiMHjKMDVdTGvdHJq14WDqGyDW4uKqBZKjlpX8+/Zpra8BeSWeeoPsxaBeWGLJaIx/tXVvUhh8ypE3UCJ0b4BIZz2xqS4zdVye1D1odp66vZ3tSPl8eim7OtTlHOzFOYvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FaAKqWyo; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B070139656D;
+	Thu, 10 Sep 2026 03:39:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.17
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789011601; cv=fail; b=qVveV1XTygiLGMG3qFdYUM30gWcJ9Hsbm55VLvuGetr51v6m8Qq+N0k12au5tbA68eJ0E8K7oUAHnZ0lIhF8S7HqMVmag2itsE1DQnKTc/60BHVLaflbqhzXDYOc8cM5Tr4hMxyZDtOFXeTnygXywkf5Ck2w+aLIIV0wvRySbUE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789011601; c=relaxed/simple;
+	bh=o2VK52HpqNc+WJUPK3KFRubx/wTlyjKNABixmnFDJ8Y=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=p1m+U8K1H/0krprCnlKFIRJkjctq7G9m45p5TjBA4iBhq81Nd1372lGApsqPNdP6fhVtc//ii1itGuJa5FI6BK/pSY0WuSoq2Py+jVImzh82wAL5cZtaQSrO844xxb2pegTx7zdSizxRVLDRYAO4F0JBdJPOFiy8Yg8rHzevsmg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OEVqOf+W; arc=fail smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FaAKqWyo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 918931F000FF;
-	Thu, 10 Sep 2026 03:38:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789011487;
-	bh=4CSDVEKhvI/miVbVmt/K0SX2SLNYpqDTjFSavY1zd+c=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=FaAKqWyoNsz0qLMCX3xXwnnbqOb9qQ3w/JzzC3+VPyJTSUp36+/sdtbuWaxikt0SS
-	 0olodx8qn0NcUVNICHB/c4IyT7OoEqgDwSMklGPoANR/lksWR4mVJuiy2PsJEeCJCy
-	 mYk8AXnFb+MoYq/yX/PMaALGkLtvUdn+5crILdImIJZLUvE+LC0PLIpvojN1Myz6X6
-	 1fnABXBf7PbPLxM4IGj8p3Ep2icWTBlmVLC4+JZBDxcCu4yhAGdHGrHCin189e0MSG
-	 lhsybP4Hy5ASCkINS3CDT10QcKZfkahKkj5MG+pOggF0lyaefEpLYjmwzPqIthaeNq
-	 KLt2RptIXSjHA==
-Subject: Re: [PATCH] wifi: mwifiex: validate scan response TLV lengths
-From: netdev-bot+sashiko@kernel.org
-To: elb12345@hotmail.co.uk
-Cc: briannorris@chromium.org, kvalo@kernel.org, linux-wireless@vger.kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- kuba@kernel.org
-Date: Thu, 10 Sep 2026 03:38:06 +0000
-Message-ID: <178901148617.219967.9577139649619803564@kernel.org>
-In-Reply-To: =?utf-8?q?=3CAS8P251MB0001DD15CC44F76B4BBD2853C8B32=40AS8P251MB?=
- =?utf-8?q?0001=2EEURP251=2EPROD=2EOUTLOOK=2ECOM=3E?=
-References: =?utf-8?q?=3CAS8P251MB0001DD15CC44F76B4BBD2853C8B32=40AS8P251MB0?=
- =?utf-8?q?001=2EEURP251=2EPROD=2EOUTLOOK=2ECOM=3E?=
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OEVqOf+W"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1789011600; x=1820547600;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=o2VK52HpqNc+WJUPK3KFRubx/wTlyjKNABixmnFDJ8Y=;
+  b=OEVqOf+WX92ALaPU6M3+sOQYvh8mR0+/oYkH+YiFW4601WQILVW4ijWS
+   mkIpdcMsXaToLcDsN7Z5h43WXfRxKlx5uS2TMwUhKGB2UZU2+obOPY/aP
+   nHJw50DFVvywJcMFoNPCgJM1pznTrmI/Am92qBuneEU0Dwy96+A6pt4Ed
+   SeBqgY0fRGQPG0je9dI6PLE+G3go9I7PDPQtqoHkwJDkjVFLykkq5/89i
+   NY6Vbf5XPoH6MKId9515F0W2ux4zOMn00PYYenKC339Vgu0+5WKm4FsLx
+   phNr5LMozOgKFkZziow6VednxRFB3CuydJTFfontnnMfvXWw/8Cpt4uGP
+   Q==;
+X-CSE-ConnectionGUID: arNk9HaFSQOQCZwUa8uMtQ==
+X-CSE-MsgGUID: DQS9ol5ZRqiA4bY90mNNxg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11900"; a="89325115"
+X-IronPort-AV: E=Sophos;i="6.25,271,1779174000"; 
+   d="scan'208";a="89325115"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2026 20:39:59 -0700
+X-CSE-ConnectionGUID: 5hue6rOTTHef6CxdaPuYIQ==
+X-CSE-MsgGUID: DAHJERe7SaCKkI6Dj0cjYA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.25,271,1779174000"; 
+   d="scan'208";a="270158952"
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2026 20:39:53 -0700
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Wed, 9 Sep 2026 20:39:49 -0700
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46 via Frontend Transport; Wed, 9 Sep 2026 20:39:49 -0700
+Received: from CH5PR02CU005.outbound.protection.outlook.com (40.107.200.71) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.46; Wed, 9 Sep 2026 20:39:48 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=gBzeBqM2gTCFMgt3IBBe38+ia+pS2OhuoXwJNl/e+lly6x/cN7RjMoBI7FIURIYpf5tfFvf7rCdInB45pex1oPDB2ixb/hhCg1/4kvzRWBd5T5hgVPTQSskBxl6vpf5FhCSaIvNszO/11BM0f20VNpT+jP94E31vskF/0Q929zNCD4ofKkL9OthvRAST5h1VeNjbAr4o5fSOd1Zn5ZNmL+lgOaLg9IlCotczhs7BEXr990k1M1pbzkJ6KDITZtn9yG3dyj1UJTA6tGDOZRpA+2kmADMQiP4orCXUfpTuwkvYfmnjfUiy1kyW+cWtpEhteJSCxUer4BKAV6Kql8MuoQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=DziKIxwX5o7gOx7ebEqyUcUq4wKUBOhOQciRiZNkj1A=;
+ b=DnaFSb9ZRE3yDrVEs5vL6uqA0tvYfSeLjrZv+aOsL1DenjXZvVICDN5gmBD8TSq9vWyrA4JwUzkNJp9UbU1/i+MAQAWQR2BUbJh93tfidJh0Be4QnZxjcHK2uJ/t3b/P+wWnXj0FWWHHoktDYEPpAz2z7Pfn7R4dUMx+6im109kFkQyl34PKEmEsUOOaMOKlnSL60Pgp6pw72AsMBTWrtpyi9r86WDTotoJ8PyFSbOM++/k96DWj4A+HeNPtemxci8jE+In9T0e/eWEHSbJWzwNDQPDkSlpVGtrZcaIYcwfWHwsOdKuaUYm5Zd3yBgHIp4xRNmPeJLmr7mdS5MCYCA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from IA1PR11MB6241.namprd11.prod.outlook.com (2603:10b6:208:3e9::5)
+ by LV2PR11MB9538.namprd11.prod.outlook.com (2603:10b6:408:378::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.8; Thu, 10 Sep
+ 2026 03:39:40 +0000
+Received: from IA1PR11MB6241.namprd11.prod.outlook.com
+ ([fe80::7ac8:884c:5d56:9919]) by IA1PR11MB6241.namprd11.prod.outlook.com
+ ([fe80::7ac8:884c:5d56:9919%3]) with mapi id 15.21.0406.007; Thu, 10 Sep 2026
+ 03:39:40 +0000
+From: "Rinitha, SX" <sx.rinitha@intel.com>
+To: "Oros, Petr" <poros@redhat.com>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>
+CC: "Vecera, Ivan" <ivecera@redhat.com>, Alice Michael
+	<alice.michael@intel.com>, "Kitszel, Przemyslaw"
+	<przemyslaw.kitszel@intel.com>, Eric Dumazet <edumazet@google.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "Martyna
+ Szapar-Mudlaw" <martyna.szapar-mudlaw@linux.intel.com>, Andrew Lunn
+	<andrew+netdev@lunn.ch>, Marcin Szycik <marcin.szycik@linux.intel.com>,
+	"Nguyen, Anthony L" <anthony.l.nguyen@intel.com>, Simon Horman
+	<horms@kernel.org>, "intel-wired-lan@lists.osuosl.org"
+	<intel-wired-lan@lists.osuosl.org>, "Keller, Jacob E"
+	<jacob.e.keller@intel.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, "David S. Miller" <davem@davemloft.net>
+Subject: RE: [Intel-wired-lan] [PATCH iwl-net v4 1/2] ice: skip per-VLAN
+ promisc rules when default VSI Rx rule is set
+Thread-Topic: [Intel-wired-lan] [PATCH iwl-net v4 1/2] ice: skip per-VLAN
+ promisc rules when default VSI Rx rule is set
+Thread-Index: AQHdDtmI0Xq5iS1pvk6EOBK3yUUWiLbHjX7A
+Date: Thu, 10 Sep 2026 03:39:40 +0000
+Message-ID: <IA1PR11MB624104E0EDBB194323D6EFA68BBF2@IA1PR11MB6241.namprd11.prod.outlook.com>
+References: <20260708125755.706263-1-poros@redhat.com>
+ <20260708125755.706263-2-poros@redhat.com>
+In-Reply-To: <20260708125755.706263-2-poros@redhat.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: IA1PR11MB6241:EE_|LV2PR11MB9538:EE_
+x-ms-office365-filtering-correlation-id: bf4d71b8-61a0-41a8-e327-08df0eed2539
+x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|7416014|376014|366016|23010399003|1800799024|38070700021|10067099003|56012099006|4143699003|11063799006|22082099003|18002099003;
+x-microsoft-antispam-message-info: hryRlLXcnsoT6v56LOt8KxZc+3P3bhl1EFnRPcIlxlMHvlHTg0gvn88Vuh4v+rOz+TPJ81UReVklCN3GQ5wMsR7AbyiOUJxXcTpm1u3Gl4/7w+d6v41+B+Mz51/4MxTwrJEm1zKRKkrbEyC+hkYTCPfkTmPW+uJmPPNoZvl9ckA1FlkFQ8F/uH01zrAhv+TUs1qaHfibwIB7cIXBCs6RYUy2Tcf0Ic6SGJIjlcXrXpJQ7S8Dcfoc7bVLAFv0V2pDBrTag/ilvqRXW+ffNXC+5raT01+y2L2UpJC5ONCzK4aA1jOuSC4GHAMoiFSoWsrB5oHpGjVDhWyGEwC63aYnJOs51PyGZnDttjz4N28yiJzQNb0a6HdF1OxI7HU7e6MJIHRKGD/c5K6BjpAwA4OThScrkl9LRtwWNfEbVNlDOV3H2OlW/xDMmXqpx1rqa62PxUoUPOKDvp4zmjERWIbljoKg+8MAnY1kwJiCyTfXmdq2l3YHMAMaQIcX8aMoLCrOCEr2ns8uz3o3+YrrBY86O+vDTjQSrm5bWsw7qLXLFJ7Xsb9ZEHO6aEhA8ANLnzHYC3oeteMU+LvvhcZZRi5lKtY+XVukojPC5wlVufXSSGiRWpWRUwUtZg3QXnit6fyRjnWd6cHenoA43glZHWPQBI3nyYZ79D1O/ZVsmfO6uRBexyqToB50xcscXKzH4PRTqTlW/DNAmRvieUlyHC9CsG9OuZRueYG0/Of1BzWH1Nc=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR11MB6241.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(23010399003)(1800799024)(38070700021)(10067099003)(56012099006)(4143699003)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?uZbOnIeAqthIfOz5qfKBco5P1ZGDgWI1P/stEz7aZ4bslNeYMTWoJSEYBbAP?=
+ =?us-ascii?Q?1VGLIJ7qsy2VuekKeLHrLuL+fPi+eYU/e5g/Xj08uy+WhZynJu3Z+4Wk+wRD?=
+ =?us-ascii?Q?INzmsS99c30XkkrkVqxxTbeLxus7H/TMS01XEduXfeuYoFR3zjF9Hwy7Sc2p?=
+ =?us-ascii?Q?JE8VLhvSv0MLey8CB92P7OW46c0dEH4BWRK4U5kFg2egprBOV/F4T9G6+O91?=
+ =?us-ascii?Q?we7mNbiHtx8c2dA3MQL+vS8n4FVYp/f7tSwqAHOREDDogDzt3rpo0EdYZd2e?=
+ =?us-ascii?Q?qs7HRAnUaHTkBl5YUodhQhijF3heDFkPaoxys7RWiqm8tIhmR5WEkQfozJAw?=
+ =?us-ascii?Q?xZ7NOyDrE/nONX1HyjUS5l/k16A6sBuLlL14ydQXK6WX55pGYVqHpmKgwwS7?=
+ =?us-ascii?Q?CweJPsDfkOvWOMZ658YyDRxtgcmtyhus3IiGWghb5VF4GTnKd4L91+7U5by3?=
+ =?us-ascii?Q?YteWFWcdgKDK2SsWl687Dulx0iGdJQKg/9xUyv3eDxkYPWhRTfEvroOp9UKS?=
+ =?us-ascii?Q?fDdtDY/4SqB+UIPrfZvPEm8kJkTvafJt04xaM7eHFtyDKte+BQtQQU875B3V?=
+ =?us-ascii?Q?TNtgYht8HahdApBtUrrl79pPiZ6oJAaa0uILP8O0WGsbaao8/55t3UhjjXo/?=
+ =?us-ascii?Q?Po7rLG/1XSgpHzaUlNHv0CTF1WwnD7O4+Q5rZmqvshU746Xocki83CCkO3Xu?=
+ =?us-ascii?Q?CTfBoVxEzbkmDj8uzjexTtcZVL/41CjuswSrv7Be3Q43wbBFJ6fWVoQBPl28?=
+ =?us-ascii?Q?lXGX3ZFp7Vv0BE/tSuuQvE+J3C4tQ8hC5uw2ydcXEdUpUhTxNY4IMmL+QByZ?=
+ =?us-ascii?Q?ZMZKD0VEL3eW5CgCMnbAMJ1XS5LRtJNNzP3i9AWV6IqdkNCHo15qa9mWMbAK?=
+ =?us-ascii?Q?GpA2T90SYwxdAniw6Ak2vp1z/Cds6xZcYsGvr+X/Eb1pdsMF5Vp+aJ8aZpLg?=
+ =?us-ascii?Q?Y+xrpU7JR4OOMZBizT6nufEst36TIy7wZEsUcmbWUgzE0QyPwEiAFLdc8Zy+?=
+ =?us-ascii?Q?Vxi/cuKDZ+dT22+kTGOCANgA+0IRvvJuoZwb/0O8QxtEyHO2ikWmrrwYCKJe?=
+ =?us-ascii?Q?UhM+9/D9z6hgRDpVFyYhawz/cdIinkVmiil+fd95uWpIyivjGXgJ2V2APuFd?=
+ =?us-ascii?Q?xay26oy7GVGndwgTFEl0JKYjZzZXKfsvCTOxig99CJqV2BXshV/NB4HuqBKY?=
+ =?us-ascii?Q?EIfnwGyKlYEdt9iAjURwQSF+w5HPkacRyFXX/9hJw8uAKTTuiHf6Wnc2y0CH?=
+ =?us-ascii?Q?rRpjAhoev0JSy5zrFmVRT8H9h2CCqaZ3hRUbjdYsoVjZSvJRNqCAJPfjc6NG?=
+ =?us-ascii?Q?HueZCF3BU7p5484MZ6jKMFF6nsxVKta4UKGjcf25jaEjasX5khh98v91mu33?=
+ =?us-ascii?Q?bYRrdZH6eobr57yHshCARYeB53xJtsnhF/MrN6uzhPzZSr9TOlGatCJT0dka?=
+ =?us-ascii?Q?CWApH3ARo9rvdR5PMRDglHnCUqmlC/b1ZAx19qlwXxz4Vf18/Najhv6IoanL?=
+ =?us-ascii?Q?LtylNYpRaB1SPL3KiPWL2tLX56aj5Si5Pyv05iJ4p0g5afKR8VE08pdJmzzP?=
+ =?us-ascii?Q?TWQfnrfjqNwMn5d9INLr9QB/rLAzFoBKBbrJcfCFHQyWZTetaHztBQcs1pHY?=
+ =?us-ascii?Q?oldmD4KfKbpLaN/ltzaOyniiieYuRJ7nq1m3+qTE5jRlDguph/8Kp6G44j61?=
+ =?us-ascii?Q?r1jQSCeFwJT5BqiZ+ojnmMndZYX/i33etee6ngmegtFQH9YY?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-Exchange-RoutingPolicyChecked: JFuIz9BOVX+eaX8c4PpwmwFO3DhClB6QPTIm9eafWPT02k1TLx2nTHLv6P5IGB3iRm9nbnbNgpl3oFqnU19mj0qKb8PvJdoRyo211afPaXgvA6uk/ORpGE3z8mE1U76Tg4FDv6ETOrH0aDer2PEqqITXevAqJtXI3qWZ02XS6yUUPykzLHv9fCSa31qK4BPue0UYa3StmZtSIZpBT6o+3l20DCI+bU7aaA5yWC7ZO+Iw3jdnRC/ITATFEsVowjblnfr5e6C/IRGUpzLvspkjSmyZc5eJDe/bnJYkWs8a6Yn8IzJrzoWDbp+zxLW3BNw+hfgC1SyEXdGdthDpwm0mAw==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: IA1PR11MB6241.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bf4d71b8-61a0-41a8-e327-08df0eed2539
+X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Sep 2026 03:39:40.4169
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Ug7ySbz0rqdoo9sRoLIF5WxexB5NUYej766aJJLo0A+p9V+YBJckn2lkSNtioNCLO9Bvx6hNIUe6uKkJUeeOpQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR11MB9538
+X-OriginatorOrg: intel.com
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider:
+> -----Original Message-----
+> From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf Of P=
+etr Oros
+> Sent: 08 July 2026 18:28
+> To: netdev@vger.kernel.org
+> Cc: Vecera, Ivan <ivecera@redhat.com>; Alice Michael <alice.michael@intel=
+.com>; Kitszel, Przemyslaw <przemyslaw.kitszel@intel.com>; Eric Dumazet <ed=
+umazet@google.com>; linux-kernel@vger.kernel.org; Martyna Szapar-Mudlaw <ma=
+rtyna.szapar-mudlaw@linux.intel.com>; Andrew Lunn <andrew+netdev@lunn.ch>; =
+Marcin Szycik <marcin.szycik@linux.intel.com>; Nguyen, Anthony L <anthony.l=
+.nguyen@intel.com>; Simon Horman <horms@kernel.org>; intel-wired-lan@lists.=
+osuosl.org; Keller, Jacob E <jacob.e.keller@intel.com>; Jakub Kicinski <kub=
+a@kernel.org>; Paolo Abeni <pabeni@redhat.com>; David S. Miller <davem@dave=
+mloft.net>
+> Subject: [Intel-wired-lan] [PATCH iwl-net v4 1/2] ice: skip per-VLAN prom=
+isc rules when default VSI Rx rule is set
+>
+> When an ice port in a vlan-filtering bridge goes promiscuous (typical for=
+ bond slaves), the driver installs a per-VLAN ICE_SW_LKUP_PROMISC_VLAN rule=
+ for every VID on top of the broad ICE_SW_LKUP_DFLT VSI Rx rule. Each rule =
+consumes one of > the ~32K Flow Lookup Unit (FLU) entries the device shares=
+ across PFs, so a wide trunk (vid 2-4094) over several PFs overruns the
+> pool: firmware rejects further Add Switch Rules with ENOSPC (AQ 0x10) and=
+ the DFLT Rx rule itself fails to install:
+>
+>  ice 0000:5c:00.1: Failed to set VSI 14 as the default forwarding
+>                    VSI, error -5
+>  ice 0000:5c:00.1 ens1f1: Error -5 setting default VSI 14 Rx rule
+>
+> Once a switch context is overrun the retries can also come back as ENOENT=
+ (AQ 0x2), which has misled triage toward a perceived recipe binding defect=
+ rather than a capacity issue.
+>
+> The DFLT rule already catches every packet on the port regardless of VLAN=
+ tag, so the per-VLAN promisc expansion is redundant while it is installed.
+> Skip it at the two sites that drive it, ice_set_promisc() and ice_vlan_rx=
+_add_vid(), keyed on ice_is_vsi_dflt_vsi() rather than the netdev IFF_PROMI=
+SC flag so a failed or LAG-suppressed DFLT install still falls back to the =
+per-VLAN rules.
+>
+> IFF_ALLMULTI and IFF_PROMISC can reach ice_vsi_sync_fltr() in separate pa=
+sses (a bridge join sets them through separate calls), so the allmulti pass=
+ may expand the per-VID rules before the DFLT rule exists. Drop those now-r=
+edundant rules right > after ice_set_dflt_vsi() installs the DFLT rule;
+> ice_vsi_exit_dflt_promisc() reinstates them when promisc is cleared.
+>=20
+> ice_vsi_sync_fltr() subscribed multicast promiscuity only inside the "def=
+ault VSI not yet in use" branch, so a promiscuous VSI that finds the defaul=
+t VSI rule already present (owned by another VSI, or preserved across a swi=
+tchdev session) ended up > in unicast promisc with no multicast subscriptio=
+n. Issue ice_set_promisc(ICE_MCAST_PROMISC_BITS) whenever the netdev is pro=
+miscuous; it is idempotent and returns 0 if the rule is already present.
+>
+> Fixes: 1273f89578f2 ("ice: Fix broken IFF_ALLMULTI handling")
+> Signed-off-by: Petr Oros <poros@redhat.com>
+> ---
+> v4 (review comments from Marcin Szycik):
+> - Reworded the ice_clear_promisc() and the per-VID cleanup comments.
+> - Flipped the ice_vsi_clear_vlan_mc_promisc() guard to an early return to
+>   reduce indentation, and noted that the clear is best-effort.
+> No functional change.
+>
+> v3: https://lore.kernel.org/all/20260701133601.2118382-2-poros@redhat.com=
+/
+> v2: https://lore.kernel.org/all/20260622113428.2565255-2-poros@redhat.com=
+/
+> v1: https://lore.kernel.org/all/89efbea9831175e6f57e9fe8557f7a0e48e050b7.=
+1781786935.git.poros@redhat.com/
+> ---
+> drivers/net/ethernet/intel/ice/ice_main.c | 109 +++++++++++++++++-----
+> 1 file changed, 88 insertions(+), 21 deletions(-)
+>
 
-Critical: 0 · High: 2 · Medium: 1 · Low: 0
-
-- [High] Incomplete fix: the new bound check in mwifiex_ret_802_11_scan()
-  (drivers/net/wireless/marvell/mwifiex/scan.c:2143-2150) validates the…
-- [High] The newly added `chan_band_tlv = NULL` invalidation
-  (drivers/net/wireless/marvell/mwifiex/scan.c:2182-2185) creates a…
-- [Medium] The new bss_descript_size validation
-  (drivers/net/wireless/marvell/mwifiex/scan.c:2143-2150) and the…
-
---
-
-wifi: mwifiex: validate scan response TLV lengths
-
-This adds three checks to mwifiex_ret_802_11_scan(): a bound check on the
-firmware-supplied bss_descript_size against the response size, and
-invalidation of the TSF and channel-band TLVs when their reported lengths
-are too short for number_of_sets entries.  A few questions on the new
-checks below.
-
-> diff --git a/drivers/net/wireless/marvell/mwifiex/scan.c b/drivers/net/wireless/marvell/mwifiex/scan.c
-> index 97c0ec3b822e7..4d0f3c412a900 100644
-> --- a/drivers/net/wireless/marvell/mwifiex/scan.c
-> +++ b/drivers/net/wireless/marvell/mwifiex/scan.c
-> @@ -2137,11 +2137,18 @@ int mwifiex_ret_802_11_scan(struct mwifiex_private *priv,
->  	bss_info = scan_rsp->bss_desc_and_tlv_buffer;
->  
->  	/*
-> -	 * The size of the TLV buffer is equal to the entire command response
-> -	 *   size (scan_resp_size) minus the fixed fields (sizeof()'s), the
-> -	 *   BSS Descriptions (bss_descript_size as bytesLef) and the command
-> -	 *   response header (S_DS_GEN)
-> +	 * Validate that bss_descript_size fits within the response to
-> +	 * prevent an underflow in the TLV buffer size computation below.
->  	 */
-> +	if (bytes_left + sizeof(scan_rsp->bss_descript_size) +
-> +	    sizeof(scan_rsp->number_of_sets) + S_DS_GEN > scan_resp_size) {
-> +		mwifiex_dbg(adapter, ERROR,
-> +			    "SCAN_RESP: bss_descript_size %u exceeds resp size %u\n",
-> +			    bytes_left, scan_resp_size);
-> +		ret = -1;
-> +		goto check_next_scan;
-> +	}
-> +
-
-[Severity: High]
-Does this check actually bound the parse to the received buffer?  The
-reference used here is scan_resp_size, which comes from
-le16_to_cpu(resp->size) a few lines above, and resp->size is itself a
-firmware-supplied field.
-
-The dispatcher never reconciles it with the length of the skb that was
-actually received:
-
-drivers/net/wireless/marvell/mwifiex/cmdevt.c:mwifiex_process_cmdresp() {
-	...
-	resp = (struct host_cmd_ds_command *)adapter->curr_cmd->resp_skb->data;
-	...
-}
-
-A grep for resp_skb->len in drivers/net/wireless/marvell/mwifiex/ returns
-no matches, and the only clamp against MWIFIEX_SIZE_OF_CMD_BUFFER is on the
-CMD_F_HOSTCMD copy path, which does not apply to the scan handler.  On PCIe
-the response buffer is allocated at MWIFIEX_UPLD_SIZE and then trimmed to
-the transport length:
-
-drivers/net/wireless/marvell/mwifiex/pcie.c:mwifiex_pcie_process_cmd_complete() {
-	...
-	rx_len = get_unaligned_le16(skb->data);
-	skb_put(skb, MWIFIEX_UPLD_SIZE - skb->len);
-	skb_trim(skb, rx_len);
-	...
-}
-
-and on USB only an upper bound on skb->len is enforced in
-mwifiex_usb_recv().
-
-So can a response that carries only a couple of kilobytes but declares
-resp->size = 0xFFFF (with a small bss_descript_size) pass this new check
-and leave tlv_buf_size at roughly 64 KB?
-
-	tlv_buf_size = scan_resp_size - (bytes_left
-					 + sizeof(scan_rsp->bss_descript_size)
-					 + sizeof(scan_rsp->number_of_sets)
-					 + S_DS_GEN);
-
-mwifiex_ret_802_11_scan_get_tlv_ptrs() then walks TLV headers with that
-bound, and mwifiex_parse_single_response_buf() consumes bytes_left
-descriptor bytes, both past the end of the real allocation.  If that is
-correct, the "TLV search to read past the response buffer" case described
-in the changelog is still reachable, just bounded at ~64 KB rather than
-unbounded.  Would it be better to anchor the check on
-adapter->curr_cmd->resp_skb->len (or validate/clamp resp->size against it
-in mwifiex_process_cmdresp()) instead of on resp->size?
-
-[Severity: Medium]
-Is the fixed-header term correct for the background-scan variant?  Earlier
-in mwifiex_ret_802_11_scan() the response can be the nested bgscan form:
-
-	if (is_bgscan_resp)
-		scan_rsp = &resp->params.bg_scan_query_resp.scan_resp;
-	else
-		scan_rsp = &resp->params.scan_resp;
-
-and fw.h defines that variant with an extra 32-bit field ahead of the
-nested structure:
-
-struct host_cmd_ds_802_11_bg_scan_query_rsp {
-	__le32 report_condition;
-	struct host_cmd_ds_802_11_scan_rsp scan_resp;
-} __packed;
-
-Since resp->size counts from the start of struct host_cmd_ds_command, the
-fixed part for a HostCmd_CMD_802_11_BG_SCAN_QUERY response is
-S_DS_GEN + 4 + 3, not S_DS_GEN + 3.  Does that mean the new check accepts a
-bss_descript_size that extends four bytes past the firmware-declared
-response, and that tlv_buf_size is likewise four bytes too large, so
-mwifiex_ret_802_11_scan_get_tlv_ptrs() can accept a TLV header that lies
-partly outside the declared payload?  The resulting header.len is then
-trusted as the upper bound by the two new TSF/chan-band checks.  Would
-deriving the fixed size from the selected response variant be preferable to
-carrying the existing S_DS_GEN-only formula into the new guard?
-
->  	tlv_buf_size = scan_resp_size - (bytes_left
->  					 + sizeof(scan_rsp->bss_descript_size)
->  					 + sizeof(scan_rsp->number_of_sets)
-
-[ ... ]
-
-> @@ -2165,6 +2178,12 @@ int mwifiex_ret_802_11_scan(struct mwifiex_private *priv,
->  					     (struct mwifiex_ie_types_data **)
->  					     &chan_band_tlv);
->  
-> +	/* Validate chan-band TLV has enough entries for all reported BSS */
-> +	if (chan_band_tlv &&
-> +	    le16_to_cpu(chan_band_tlv->header.len) <
-> +	    scan_rsp->number_of_sets * sizeof(struct chan_band_param_set))
-> +		chan_band_tlv = NULL;
-> +
-
-[Severity: High]
-Can clearing chan_band_tlv here leave adapter->nd_info in an inconsistent
-state?  n_matches is published from number_of_sets regardless:
-
-	if (nd_config) {
-		adapter->nd_info =
-			kzalloc_flex(*adapter->nd_info, matches,
-				     scan_rsp->number_of_sets, GFP_ATOMIC);
-
-		if (adapter->nd_info)
-			adapter->nd_info->n_matches = scan_rsp->number_of_sets;
-	}
-
-but the per-entry allocation in the loop below is gated on chan_band_tlv:
-
-		if (chan_band_tlv && adapter->nd_info) {
-			adapter->nd_info->matches[idx] =
-				kzalloc(sizeof(*pmatch) + sizeof(u32),
-					GFP_ATOMIC);
-
-So with a short chan-band TLV, n_matches is non-zero while every
-matches[i] stays NULL.  mwifiex_ret_wakeup_reason() then hands that object
-to cfg80211:
-
-drivers/net/wireless/marvell/mwifiex/cfg80211.c:mwifiex_ret_wakeup_reason() {
-	...
-	if (wiphy->wowlan_config->nd_config)
-		wakeup_report.net_detect = adapter->nd_info;
-	...
-}
-
-and nl80211 dereferences the entries without a NULL check:
-
-net/wireless/nl80211.c:cfg80211_net_detect_results() {
-	...
-	for (i = 0; i < nd->n_matches; i++) {
-		struct cfg80211_wowlan_nd_match *match = nd->matches[i];
-		...
-		if (nla_put(msg, NL80211_ATTR_SSID, match->ssid.ssid_len,
-			    match->ssid.ssid)) {
-	...
-}
-
-Before this hunk a short chan-band TLV still produced a non-NULL
-chan_band_tlv (with the out-of-bounds read of chan_band_param[idx] the
-changelog describes), so does this trade that read for a NULL dereference
-on the wowlan wakeup report path?
-
-The same inconsistency looks reachable without this patch as well, when
-firmware omits the chan-band TLV entirely, when the GFP_ATOMIC kzalloc of a
-match fails, or when the loop exits early on bytes_left == 0 or the parse
-error goto.  Would setting n_matches after the loop to the number of
-entries actually populated, or dropping nd_info when the chan-band TLV is
-unusable, cover all of those?
-
->  #ifdef CONFIG_PM
->  	if (priv->wdev.wiphy->wowlan_config)
->  		nd_config = priv->wdev.wiphy->wowlan_config->nd_config;
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/AS8P251MB0001DD15CC44F76B4BBD2853C8B32%40AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
