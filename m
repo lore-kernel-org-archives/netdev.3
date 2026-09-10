@@ -1,59 +1,88 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D37B54A6CD4;
-	Thu, 10 Sep 2026 16:03:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A602937F330
+	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 16:11:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789056188; cv=none; b=STIpbkgxfm6Z3/XVMv08PI0XNrKRzXTHXNuLBGosBZymJWr+yDbQgjxvdXWRgm/4D2vsUqwEYqem6bwCV5uwiXiCk+IazDk0atmBFf0PL0/YZJIljm9//xCPZwugOxjIXKwC3h3tw5MzqtXKJb09qNNxvOcM6Kz1K3xItZPL/Nc=
+	t=1789056678; cv=none; b=JW8sfE36feIVLPdxlwPZt2tcM3PomUidYcp8FWT51Ngqs5kRQUKzHmt0pHyX/a03bYzIx3LYMo0jUtxFXEdxpcqoyvV0Yg5cN6jNPdJ8KLr1973NVz0qpIVdh1MNbxNxnX+/8+IXaaI7Bt9USgnazhsookq7FgjbHXvVGh4A+Qg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789056188; c=relaxed/simple;
-	bh=bDcbaPFNZr5xBRY1xc9NL6Put++QctJsgCgk8jmTm0A=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kY12BJyjaoTOATeO5cQ0FGo1XB2oFgQl8hkrsGR4J+gBF5LtCJt9tJgcOca3SsA3sW8aFRjBm8LgDfC0dKuekF904z8yb+Ao5pc3ohhcoPgHT6jfa56diMTGGFawhY/VSy8QoIBnj/W7bvQH0cvunzhgsiYvvA5Dok3dv99lElk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d2jOhy+D; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789056678; c=relaxed/simple;
+	bh=kLdsDNPmGksF6Ej2hPih03ONdsUMSeqzel+pmJpfreU=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=fJ44OVUjb8D2L1sYp0033Q7HWmxXo/lqyQD2upkNF8VHBlqEoZzU3anZgzGLRpGqtcbEBNJ455yVTAUtfFeSxXD251rKEikikIo3CQWXNy2wd8yXuDnLXAXgKARZT2ihB/SsiSqaUAFY4W5cH1Nt4UeE0HxZuew3O+qJpI3NnI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ViwlKXpJ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d2jOhy+D"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE13B1F000FF;
-	Thu, 10 Sep 2026 16:03:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ViwlKXpJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DD451F000FF;
+	Thu, 10 Sep 2026 16:11:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789056186;
-	bh=bDcbaPFNZr5xBRY1xc9NL6Put++QctJsgCgk8jmTm0A=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=d2jOhy+Dn8cK0ItQV7iVdGsK2E9lsnbXmIMcDl/o1Q9XVOjdHJJAC6D/zFQQ5bVWD
-	 1ZIKcea80MJ2NcdGKMnuIpcu3nvjaXAkeWiTm5YPxiKb/faDyowJKtthoCVAqtoXh1
-	 ZgSYvZdHC0/JSPfrAlwwZ+Gu9DOSiOJ9qPh1BceqR7hNFYlJsJM18JXJnCDFN0SMrV
-	 yMavA+CzWoEX2jFob/+DvjBbPvV77bjZSZpCArSxMaGFOUyAy/DDHVMf3IrA1uFAZ7
-	 9GlNAUBa2t4A7jM/6mtcQczJb+Moph3ClIBN4xz3YRL+4RyY87J26eExrgtEbjIwrB
-	 pV2jvyZatn/zQ==
-Date: Thu, 10 Sep 2026 09:03:05 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Hangbin Liu <hangbin.liu@linux.dev>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
- pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
- donald.hunter@gmail.com, ast@fiberby.net, i.maximets@ovn.org,
- one-d-wide@protonmail.com, fw@strlen.de, pablo@netfilter.org,
- netfilter-devel@vger.kernel.org
-Subject: Re: [PATCH net-next 0/7] netlink: specs: conntrack: minor spec
- fixes
-Message-ID: <20260910090305.2fb2a961@kernel.org>
-In-Reply-To: <aqJQ2rz2HDF5FTM3@fedora>
-References: <20260910003852.2184031-1-kuba@kernel.org>
-	<aqJQ2rz2HDF5FTM3@fedora>
+	s=k20260515; t=1789056677;
+	bh=hCMvK+BBYmQxsAlBvVQVAkt7qKb+CEF8PhFbR2eF8j4=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=ViwlKXpJsGE3IIaexApRZVvOvQS1sZrrulgO53VGuJi+zEr5/9rz2L4N1JsaEiHwA
+	 KiUe5eGWOef1iP2XSp1XkYdauI/JO4XW0bM8d5a0g6+bmD8TvXXk/s6h9mwTqeFjSp
+	 7T/RDhBQ7ey7Ru9b57ibxGIbmLmgx47Aphs47R6k1LG5m7Bl/VgB2sLMduYpV4nvqQ
+	 /mWlerGz1TyhVYvDO9Txjz7BzN9tZGzPxUvKJ3ErAdPwxtUGwUk/NRT8RXwTh/tuY+
+	 yllkGi4AV8e5f1w6Xucer8NN6hXfZWUikDyDjTr1z7SsYRyHC/FqX3cnIyHNRJ/GUO
+	 YnpdxpEXoFX2A==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0B91380CFFA;
+	Thu, 10 Sep 2026 16:10:15 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net 0/5][pull request] Intel Wired LAN Driver Updates
+ 2026-09-08 (idpf, ice)
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178905661464.1519745.9773724483651279344.git-patchwork-notify@kernel.org>
+Date: Thu, 10 Sep 2026 16:10:14 +0000
+References: <20260908214502.528440-1-anthony.l.nguyen@intel.com>
+In-Reply-To: <20260908214502.528440-1-anthony.l.nguyen@intel.com>
+To: Tony Nguyen <anthony.l.nguyen@intel.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ edumazet@google.com, andrew+netdev@lunn.ch, netdev@vger.kernel.org,
+ ae878000@gmail.com, mhun512@gmail.com, joshua.a.hay@intel.com,
+ sridhar.samudrala@intel.com, milena.olech@intel.com,
+ vadim.fedorenko@linux.dev, willemb@google.com, jacob.e.keller@intel.com,
+ przemyslaw.kitszel@intel.com, jbrandeb@kernel.org
 
-On Thu, 10 Sep 2026 14:40:26 +0800 Hangbin Liu wrote:
-> BTW, I'm still working on rt lwtunnel encap support. I noticed some sections
-> in your change have documentation while others do not. Are there any mandatory
-> requirements for documentation at this point?
+Hello:
 
-For the new families where YNL actually code gens the uAPI and kernel
-code it's recommended to add the docs in the spec. For classic Netlink
-families it's up to the author.
+This series was applied to netdev/net.git (main)
+by Tony Nguyen <anthony.l.nguyen@intel.com>:
+
+On Tue,  8 Sep 2026 14:44:55 -0700 you wrote:
+> For idpf:
+> Myeonghun Pak adds calls to disable DIM work and PTM to allow for proper
+> cleanup.
+> 
+> Josh adds check, and adjustment, for VLAN headers when processing RSC
+> packets.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net,1/5] idpf: disable DIM work before freeing q_vectors
+    https://git.kernel.org/netdev/net/c/7dd4c829bac2
+  - [net,2/5] idpf: disable PTM on probe failure and on remove
+    https://git.kernel.org/netdev/net/c/650f197d8ea6
+  - [net,3/5] idpf: account for VLAN header when parsing RSC packet header
+    https://git.kernel.org/netdev/net/c/cc6d60ef9227
+  - [net,4/5] ice: add missing xa_destroy for sched_node_ids
+    https://git.kernel.org/netdev/net/c/53432c4c3e86
+  - [net,5/5] eth: ice: don't dereference pointers from TP_printk()
+    https://git.kernel.org/netdev/net/c/b8bf9bfda5f6
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
