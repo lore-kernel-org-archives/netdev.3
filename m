@@ -1,86 +1,102 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta1.migadu.com (out-39.mta1.migadu.com [95.215.58.39])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB4583E0083
-	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 09:34:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE4E3396D13
+	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 09:34:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.39
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789032854; cv=none; b=SURVTclvk0S4mrHfe/nBZzpy9rKfZPEMTbUOwUZvdNSM37W2h1aeH3cxFhx1Th8VZ/9cjETEMtWKWKWqo8IuOJOoV15ZkQTnqQ/v70eKk4kMp8NHxwYHrxZq7xcYbYRA02/YmmywPQHI6lfCsowGi91oWw+GrdVYzGMDLlLragw=
+	t=1789032874; cv=none; b=UwyS4dfMWvlaurnooqPhuGv6a7j7TFt3MAdCVBJZpJMx7f4YrcON7dHm1jOe/Bv2U9we4nD5HbASoFOtCpW5eFr3W6jzjHFib/VH7/Gi3CcHdM89dbpOHkNdgHieM8VD2qo6K08XKIOl0pz37AT2IR7d/XCWUj9ZVCaap8ppBbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789032854; c=relaxed/simple;
-	bh=HvJgWGi4GL9ZKpD7FsGUlW+AIAMp2vYrszUViiJjstA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rx5IVVpd48m6K6psaG608hGBWcioeKGfp/AREJzwbRJk3rQWfr73n+3dqEKc4zOtnXuFpnn/vuRILwcr/3VLkrqpiIRimx0u/eUAv51UMnaEgV7e0x4siZMSKk7SAjzTYKvIynCTHkk27akmOne/IYAtbse+opm6s9J8b2emHAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Dr5geoxF; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1789032874; c=relaxed/simple;
+	bh=O5RJIBAf8bdM+SFjmTJLRNSqjUhosM/VE9Wbdt3m/JM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mQmpjc5/aw5V1cr+rs8kmiTtg/kjmrfyAkeGHC9ESwZESv80nmFGfyChQs3UY8qezVNHf3tp1OWauIdBuX6lAVM3hySwbLMqnOk/UgTkxnV7q3vkBQTnj+hmsvB7rwIiRoqwsrHrbY8YWHKXD7/rpsh7uikbDm6c1eFD/NCgeq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=kKEPIE+T; arc=none smtp.client-ip=95.215.58.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Dr5geoxF"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 0A9241A1A91;
-	Thu, 10 Sep 2026 09:34:11 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id C984A602B8;
-	Thu, 10 Sep 2026 09:34:10 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9491D11C78279;
-	Thu, 10 Sep 2026 11:34:06 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1789032849; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=1owobzy3BRq9SFfOwfU/CvE4VvMt2JngnSld/aGsaHk=;
-	b=Dr5geoxFBxVmYooRsucrROQiGay10ZeOmk/7VDz1X4YfNWD88szpMF1G+0tg04v/5gn8Wl
-	ztSOz3P2ycE/unkvWydWLPihn92qSd38V0YFGllVeN7nHN5RhY1aCKK/Qa2Fo2aI7UQR38
-	c1ZFqD6uWidMYZaJiZrDW7BvpjTSw+JZLpVir/r3lHHkSdUE6JB42TeIqWPkNXLkg1MYQY
-	mU3aP8WPGqL0ZrfwvqchOjG7/p7CHq+Ko/PWZ0KfDe/e0pJo0HxjDjZrI3iuwcJVzPaONr
-	JbsB7D5vhvYGXjh+lLjZOamquaBpBY4wknPLEI20bSBJJQl1GY3gP8ZJhwc36Q==
-Message-ID: <4bbedc45-1f24-4124-87bb-a68da07b10e0@bootlin.com>
-Date: Thu, 10 Sep 2026 11:34:05 +0200
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="kKEPIE+T"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=O5RJIBAf8bdM+SFjmTJLRNSqjUhosM/VE9Wbdt3m/JM=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789032868; v=1; x=1789637668;
+ b=kKEPIE+TQJuOLKMBCD4vd/Yklk3RS8Ft4N7vEu7dBndTumZhqUFr5rSqxaIqAud192yJ2XlV
+ 9wmRsfswhorUNWcDazEYnM6+M8gMuzqOHpIvo6O1Jsjr+542CurCC6ddxuix5cqr12P8hRcbrPy
+ 1CateQQqXVlVAjxVyVQ/2UWE=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id b741d43ade1385a0;
+	Thu, 10 Sep 2026 09:34:28 +0000
+X-Mizu-Trace-ID: b741d43ade1385a0
+X-Migadu-Flow: FLOW_OUT
+From: Xuanqiang Luo <xuanqiang.luo@linux.dev>
+To: netdev@vger.kernel.org
+Cc: jhs@mojatatu.com,
+	jiri@resnulli.us,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	shuah@kernel.org,
+	marcelo.leitner@gmail.com,
+	pctammela@mojatatu.com,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+Subject: [PATCH net v1 0/2] net/sched: fix action batch deletion cleanup
+Date: Thu, 10 Sep 2026 17:34:11 +0800
+Message-ID: <20260910093413.34509-1-xuanqiang.luo@linux.dev>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.10.y] bpf: Enforce expected_attach_type for tailcall
- compatibility
-To: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau <kafai@fb.com>,
- Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
- John Fastabend <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>,
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Jesper Dangaard Brouer <hawk@kernel.org>, Andrey Ignatov <rdna@fb.com>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, netdev@vger.kernel.org,
- bpf@vger.kernel.org, linux-kernel@vger.kernel.org,
- Yinhao Hu <dddddd@hust.edu.cn>, Kaiyan Mei <M202472210@hust.edu.cn>,
- Dongliang Mu <dzm91@hust.edu.cn>
-References: <20260908-cve-2025-40123-v1-1-be62451196fb@bootlin.com>
- <2026-09-09-daily-reply-0031-bpf-tailcall-attach-type-5-10@kernel.org>
-Content-Language: en-US
-From: Miguel Gazquez <miguel.gazquez@bootlin.com>
-In-Reply-To: <2026-09-09-daily-reply-0031-bpf-tailcall-attach-type-5-10@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
 
-Hi
+From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
 
-Le 09/09/2026 à 22:26, Sasha Levin a écrit :
->> The underlying issue goes beyond XDP though. Another example are programs
->> of type BPF_PROG_TYPE_CGROUP_SOCK_ADDR. sock_addr_is_valid_access() as well
->> as sock_addr_func_proto() have different logic depending on the programs'
->> expected_attach_type.
-> 
-> Thanks for the 5.10.y backport of 4540aed51b12 ("bpf: Enforce
-> expected_attach_type for tailcall compatibility"). Holding this until a 5.15.y
-> version exists too, since fixes need to land on newer trees first.
-> 
+Batched RTM_DELACTION requests can leak references to unprocessed actions
+when deletion stops at a filter-bound action.
 
-Sorry I missed that there was no 5.15 backport, I sent it.
+Patch 1 fixes the failure cleanup.
 
+Patch 2 adds tc-testing regression coverage.
+
+Failure reproduction (key output excerpts):
+
+  python3 tdc.py -f /root/tc-testing/batch-delete.json
+
+not ok 1 d710 - Release tail references after first action deletion fails
+	Could not match regex pattern. Verify command output:
+[...]
+	 index 2 ref 2 bind 0
+[...]
+	 index 3 ref 2 bind 0
+
+not ok 2 d711 - Release tail references after middle action deletion fails
+	Could not match regex pattern. Verify command output:
+[...]
+	 index 3 ref 2 bind 0
+
+not ok 3 d713 - Delete a tail action once after a failed batch
+	Could not match regex pattern. Verify command output:
+total acts 2
+[...]
+	 index 2 ref 1 bind 0
+
+Xuanqiang Luo (2):
+  net/sched: act_api: release tail references on DELACTION failure
+  selftests: tc-testing: test action batch deletion failure cleanup
+
+ net/sched/act_api.c                           |  11 +-
+ .../tc-tests/actions/batch-delete.json        | 115 ++++++++++++++++++
+ 2 files changed, 123 insertions(+), 3 deletions(-)
+ create mode 100644 tools/testing/selftests/tc-testing/tc-tests/actions/batch-delete.json
+
+
+base-commit: 7f26a5e8040b4957ef4dbdfcde6cc7ba2db53937
 -- 
-Miguel Gazquez, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.43.0
 
