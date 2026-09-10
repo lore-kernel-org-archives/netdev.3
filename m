@@ -1,257 +1,93 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail.cjdns.fr (mail.cjdns.fr [5.135.140.105])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D880330D3E8;
-	Thu, 10 Sep 2026 06:54:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0CBF339705;
+	Thu, 10 Sep 2026 07:02:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.135.140.105
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789023288; cv=none; b=sVHj9N8sVXjKzUoJlUsL/NKrxJ2aLX+41vK+nw0a2dpZgCXDnxp1FMLVjpx+t8L9lmltFB3UDwu/GsXFuYc7tUl2xs56c6McjnwGrOVcAQk8q5YC/r4vIDVTwn19WPzrT8I32tcHgKyz6Q/tMEgNiWLcNuOvpSa5Sc3YYyMIqAw=
+	t=1789023729; cv=none; b=Cd1oSDGxnBYwKjFMcfS7TBKgMQjCp4yT3BJ41uni8ecXYHex0FNxBjr56+IygQYkOD/G8anRtvIFo7MJNVsPrbkvKeCjkzDlsRHdz1+Zr0M23tSU1xJpSCK/UDuhXK/6275EeVZpXvbzhrpL9Urr9q9zA1olqFIMCVJmMgQCmvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789023288; c=relaxed/simple;
-	bh=n9odGZdEAfMv1EitzufznCQRLwi8wplX0Uov18O85ls=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=tsNkBlnVKIh1FS2s2PHarlLAKf46/uCfKnGhalc+zwyY7eUu0Wi1elHsNaPB+9aJJvjalQ9T1lTZuhqexFaUphMmreo+9ojanAWfdViitqMqTbrIbadT7NCGEgzUtxb/pPLHJPMRY5rxmylPLqKZr53TNjGpsmBLWUfE+nArwEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ncr1GlNb; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789023729; c=relaxed/simple;
+	bh=j4vKVPvnsOsBQU/VrqbLlTk0VbnewQj8PhyL9juhic8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uVqWZ6EIM/8watDsD0Hd4kP1ky66V1xE309G6Fu00Yb17hfLgUZeWP3/2Mhbm99QOg/Tbsqfgbil4OjJCnSFcKyn5vz6Ip+1ggZ16FwqtMpwNm/lF5jkI8qtBnR/mEr4gQNbZPeF+me2JgC3IvVkGScIB/uoROh/YCbVhE8B8b4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cjdns.fr; spf=none smtp.mailfrom=cjdns.fr; dkim=pass (2048-bit key) header.d=cjdns.fr header.i=@cjdns.fr header.b=HkcLTc9P; arc=none smtp.client-ip=5.135.140.105
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cjdns.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=cjdns.fr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ncr1GlNb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E63581F000FF;
-	Thu, 10 Sep 2026 06:54:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789023286;
-	bh=wi5rBy9HhdLl2dwL3tu5ohZQ+FFI73SL/VWlC+ZFZ3E=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=ncr1GlNbddpXLnfe78bkT/V5vz9kYB0MyFUCtUyBidyDHnqDQtX2+jpl5lC4mjaBn
-	 Y/4QIpAIjQumHo9uOH30Uls0uJBRjnVkOV1JZQQyoXR936Ff1HvZWzC5N5W/ocP0Ut
-	 xOlMnY4mbcFFIwbeO7cAzcDiRw960Lo6stiHJ8qoE6E2zRn2F8bJcIeKFsVNgAsHfY
-	 v/MkyhNLclCYyiyeBemg3w+bTAPXGAcVm9SBbmgkZPmfhYxZcberB64cLuMsmczm9y
-	 ipI2VyGUCL6pPxfgvJiRKdfzKtZvZd+0G+Mz08eknO2XdJGGab73UWKpXdiolR42Hm
-	 wWl6a8lHwGg7w==
-Subject: Re: [PATCH v2] net: tulip: use mod_timer() in t21142_lnk_change()
-From: netdev-bot+sashiko@kernel.org
-To: linmag7@gmail.com
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
- linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-alpha@vger.kernel.org, stable@vger.kernel.org
-Date: Thu, 10 Sep 2026 06:54:45 +0000
-Message-ID: <178902328547.219967.7621030268252739442@kernel.org>
-In-Reply-To: <20260905225454.439466-1-linmag7@gmail.com>
-References: <20260905225454.439466-1-linmag7@gmail.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=cjdns.fr header.i=@cjdns.fr header.b="HkcLTc9P"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2F0D140002A;
+	Thu, 10 Sep 2026 09:01:51 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cjdns.fr; s=dkim;
+	t=1789023721; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=vJp4rYGfCyVBSJ4qRp4Dvdioa41fPP8ClB9wWTWCzjw=;
+	b=HkcLTc9Pv7shqY6xnM1fnVqUKoJ5NSzhnAZHVtmRA8vJ5pSbMF34oxJL340E7LmN64xgyx
+	HK8PueNvZEw2Dkr9O6sMYuLf5L4qryshGLuJo0maVUyl4rP4S4Yt4OV9XzOYHXZ6oqTm4/
+	qB8ALVLDe27vfHr8pK05B3/rjUaqhaTGSV7ndSjLm6j1pEQqBB+Ii9ChgwPHOW3t1OmDo5
+	nCkCPsG5f7ZbMiuBe142X7UoTa4KH7jPCOncSP3vZiskGNez5XMUnKCnOeCg5ujhlcAfOQ
+	EB0/i8fHXKXbBPQLOy2U0d15S152FntkJMeQ3jWspQ2MVCbd4SYJXXKCFObKMg==
+Message-ID: <34c4739b-1d10-4bf9-b8b9-c09e023908b8@cjdns.fr>
+Date: Thu, 10 Sep 2026 09:01:50 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [PATCH net-next] net: phy: mediatek: support MT7530 PHYs on
+ EN71221 MCM
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: netdev@vger.kernel.org, daniel@makrotopia.org, dqfext@gmail.com,
+ SkyLake.Huang@mediatek.com, hkallweit1@gmail.com, linux@armlinux.org.uk,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, matthias.bgg@gmail.com,
+ angelogioacchino.delregno@collabora.com, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
+ Matheus Sampaio Queiroga <srherobrine20@gmail.com>
+References: <20260909213250.3184238-1-cjd@cjdns.fr>
+ <746ebc26-e4ad-4988-a839-c5805d7ab319@lunn.ch>
+Content-Language: en-US
+From: Caleb James DeLisle <cjd@cjdns.fr>
+In-Reply-To: <746ebc26-e4ad-4988-a839-c5805d7ab319@lunn.ch>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider:
 
-Critical: 0 · High: 1 (1) · Medium: 0 · Low: 1
+On 10/09/2026 04:03, Andrew Lunn wrote:
+>> +	/* Clause 22 local data. */
+>> +	ret = phy_write(phydev, MII_CTRL1000, 0x1e00);
+> Please express this using
+>
+> /* 1000BASE-T Control register */
+> #define ADVERTISE_1000FULL	0x0200  /* Advertise 1000BASE-T full duplex */
+> #define ADVERTISE_1000HALF	0x0100  /* Advertise 1000BASE-T half duplex */
+> #define CTL1000_PREFER_MASTER	0x0400  /* prefer to operate as master */
+> #define CTL1000_AS_MASTER	0x0800
+> #define CTL1000_ENABLE_MASTER	0x1000
+>
+> Once we have symbolic names, it might be obvious what this is doing,
+> and if there is a better way to do it.
+>
+>
+>> +	/* Vendor profile disables 100/1000BASE-T EEE advertisement. */
+>> +	ret = phy_write_mmd(phydev, MDIO_MMD_AN, 0x003c, 0x0000);
+>> +	if (ret < 0)
+>> +		return ret;
+> Any idea why? Is EEE broken? If it is, phy_disable_eee().
 
-- [High] Incomplete fix: the illegal hardirq timer_delete_sync() on the
-  non-TIMER_IRQSAFE media timer is still reachable from the exact call…
-- [Low] Stale synchronization comment left behind by the conversion.
 
-Pre-existing issues:
-- [High] t21142_lnk_change() re-arms tp->timer from hardirq
-  (drivers/net/ethernet/dec/tulip/21142.c:219 and :227) with no…
+I am so sorry, we had this entire conversation about the other PHY and I 
+did not check carefully enough that this one is doing the same thing. I 
+will test and submit the same solution we arrived at over there.
 
---
 
-net: tulip: use mod_timer() in t21142_lnk_change()
+Thanks,
 
-This replaces the timer_delete_sync() + expires + add_timer() sequences in
-t21142_lnk_change() with a single mod_timer() call, since the function runs
-in hardirq context and tp->timer is not TIMER_IRQSAFE.  The mod_timer() is
-placed before t21142_start_nway() so a pending timer cannot fire while the
-NWay state is being reprogrammed.  The comment in tulip_interrupt() is
-updated to point at pnic2_lnk_change() instead.
+Caleb
 
-> diff --git a/drivers/net/ethernet/dec/tulip/21142.c b/drivers/net/ethernet/dec/tulip/21142.c
-> index 76767dec216da..950abf4a8c14a 100644
-> --- a/drivers/net/ethernet/dec/tulip/21142.c
-> +++ b/drivers/net/ethernet/dec/tulip/21142.c
-> @@ -216,20 +216,16 @@ void t21142_lnk_change(struct net_device *dev, int csr5)
->  		    (csr12 & 2) == 2) ||
->  		   (tp->nway && (csr5 & (TPLnkFail)))) {
->  		/* Link blew? Maybe restart NWay. */
-> -		timer_delete_sync(&tp->timer);
-> +		mod_timer(&tp->timer, RUN_AT(3 * HZ));
->  		t21142_start_nway(dev);
-> -		tp->timer.expires = RUN_AT(3*HZ);
-> -		add_timer(&tp->timer);
 
-[Severity: High]
-This isn't a bug introduced by this patch, but can this hardirq re-arm make
-the media timer pending again after teardown already cancelled it?
-
-tulip_down() in tulip_core.c does the sync-cancel while chip interrupts and
-the registered IRQ are still live:
-
-	cancel_work_sync(&tp->media_work);
-	napi_disable(&tp->napi);
-	timer_delete_sync(&tp->timer);
-	spin_lock_irqsave(&tp->lock, flags);
-	/* Disable interrupts by clearing the interrupt mask. */
-	iowrite32(0x00000000, ioaddr + CSR7);
-	...
-	timer_setup(&tp->timer, tulip_tbl[tp->chip_id].media_timer, 0);
-
-free_irq() only happens later, in tulip_close().  A TPLnkFail/TPLnkPass
-interrupt taken in that window reaches:
-
-	tulip_interrupt() -> tp->link_change() -> t21142_lnk_change()
-	   -> mod_timer(&tp->timer, RUN_AT(3 * HZ));
-
-and the hook is deliberately called outside tp->lock, so this can run on
-another CPU while tulip_down() holds the lock.  tulip_down() then calls
-timer_setup() on a timer that is pending again, which re-initialises
-timer->entry while the node is still linked into base->vectors[idx].  Can
-that corrupt the timer base's hlist, so a later detach_timer() ->
-__hlist_del() writes through a NULL pprev from the timer softirq?
-
-If the entry instead stays armed, tulip_remove_one() only calls
-unregister_netdev() with no final timer_delete_sync()/timer_shutdown_sync(),
-so tulip_timer() would dereference tp->dev after the netdev and the embedded
-tulip_private are gone.
-
-The old code had the same shape (sync-delete then add_timer() from hardirq),
-so this is not new, but the conversion makes the post-teardown re-arm silent
-where add_timer() would at least have tripped WARN_ON_ONCE(timer_pending()).
-Would it make sense to mask CSR7 and free the IRQ before the timer sync (or
-switch tulip_down() to timer_shutdown_sync()), or to guard the hardirq
-re-arm?
-
-There is a symmetric case on the way up: tulip_up() enables CSR7 interrupts
-before the unlocked pair
-
-	tp->timer.expires = RUN_AT(next_tick);
-	add_timer(&tp->timer);
-
-so a concurrent hardirq mod_timer() races that plain store, and add_timer()
-can then hit its pending warning and leave the wrong deadline.
-
-[Severity: Low]
-With both add_timer() calls here converted, does the comment in
-t21142_media_task() still describe an existing call site?
-
-drivers/net/ethernet/dec/tulip/21142.c:t21142_media_task() {
-	...
-	/* mod_timer synchronizes us with potential add_timer calls
-	 * from interrupts.
-	 */
-	mod_timer(&tp->timer, RUN_AT(next_tick));
-}
-
-tulip_media_task() in timer.c carries the identical wording.  tulip_tbl[]
-gives t21142_media_task to DC21142/43 and tulip_media_task to DC21140,
-AX88140, I21145, DM910X and RS7112; of those only DC21142/43 and I21145 have
-HAS_NWAY, so tp->link_change is t21142_lnk_change, whose two add_timer()
-calls this patch removed.  The remaining add_timer(&tp->timer) is in
-tulip_up(), which is process context, and the interrupt-path re-arms in
-interrupt.c already use mod_timer().
-
-The analogous comment in tulip_interrupt() was updated in this patch, so
-should these two say mod_timer calls from interrupts as well?
-
->  	} else if (dev->if_port == 3  ||  dev->if_port == 5) {
->  		if (tulip_debug > 1)
->  			dev_info(&dev->dev, "21143 %s link beat %s\n",
->  				 medianame[dev->if_port],
->  				 (csr12 & 2) ? "failed" : "good");
->  		if ((csr12 & 2)  &&  ! tp->medialock) {
-> -			timer_delete_sync(&tp->timer);
-> +			mod_timer(&tp->timer, RUN_AT(3 * HZ));
->  			t21142_start_nway(dev);
-> -			tp->timer.expires = RUN_AT(3*HZ);
-> -			add_timer(&tp->timer);
->  		} else if (dev->if_port == 5)
->  			iowrite32(csr14 & ~0x080, ioaddr + CSR14);
->  	} else if (dev->if_port == 0  ||  dev->if_port == 4) {
-
-> diff --git a/drivers/net/ethernet/dec/tulip/interrupt.c b/drivers/net/ethernet/dec/tulip/interrupt.c
-> index 0a12cb9b3ba78..6ed4b68ad86c2 100644
-> --- a/drivers/net/ethernet/dec/tulip/interrupt.c
-> +++ b/drivers/net/ethernet/dec/tulip/interrupt.c
-> @@ -698,9 +698,8 @@ irqreturn_t tulip_interrupt(int irq, void *dev_instance)
->  				dev->stats.rx_errors++;
->  				tulip_start_rxtx(tp);
->  			}
-> -			/*
-> -			 * NB: t21142_lnk_change() does a timer_delete_sync(), so be careful
-> -			 * if this call is ever done under the spinlock
-> +			/* NB: pnic2_lnk_change() does a timer_delete_sync(), so be careful
-> +			 * if this call is ever done under the spinlock.
->  			 */
->  			if (csr5 & (TPLnkPass | TPLnkFail | 0x08000000)) {
->  				if (tp->link_change)
-
-[Severity: High]
-Since the same hazard is still reachable through this exact hook, would it
-be better to convert pnic2_lnk_change() in the same patch rather than
-document it in the comment?
-
-tulip_init_one() installs both handlers into the one hook:
-
-drivers/net/ethernet/dec/tulip/tulip_core.c:tulip_init_one() {
-	...
-	if (tp->chip_id == PNIC2)
-		tp->link_change = pnic2_lnk_change;
-	else if (tp->flags & HAS_NWAY)
-		tp->link_change = t21142_lnk_change;
-	...
-	timer_setup(&tp->timer, tulip_tbl[tp->chip_id].media_timer, 0);
-}
-
-The timer is set up with flags 0, i.e. not TIMER_IRQSAFE, and
-pnic2_lnk_change() still has three copies of the old sequence:
-
-drivers/net/ethernet/dec/tulip/pnic2.c:pnic2_lnk_change() {
-	...
-		timer_delete_sync(&tp->timer);
-		pnic2_start_nway(dev);
-		tp->timer.expires = RUN_AT(3*HZ);
-		add_timer(&tp->timer);
-	...
-}
-
-On a PNIC-II board a link-state interrupt therefore produces the same
-WARN_ON(in_hardirq() && !(timer->flags & TIMER_IRQSAFE)) splat this patch
-fixes for the 21142.
-
-Beyond the warning, __timer_delete_sync() then spins:
-
-kernel/time/timer.c:__timer_delete_sync() {
-	do {
-		ret = __try_to_del_timer_sync(timer, shutdown);
-
-		if (unlikely(ret < 0)) {
-			del_timer_wait_running(timer);
-			cpu_relax();
-		}
-	} while (ret < 0);
-}
-
-del_timer_wait_running() is a no-op without CONFIG_PREEMPT_RT, so if the
-tulip hardirq lands on the CPU whose timer softirq is currently in
-pnic2_timer(), can that callback ever complete, or does the CPU spin
-indefinitely?
-
-The commit message says:
-
-  "pnic2_lnk_change() still calls timer_delete_sync() from the same hardirq
-  path, but its timer callback re-arms the timer directly with mod_timer(),
-  so fixing that path requires separate consideration of the
-  callback/reschedule race."
-
-pnic2_timer() re-arming with mod_timer() looks like the same situation as
-t21142_media_task()/tulip_media_task(), whose overwrite race the commit
-message already accepts for the converted sites.  What makes the PNIC2 case
-different?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260905225454.439466-1-linmag7%40gmail.com
+>
+>      Andrew
