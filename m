@@ -1,150 +1,98 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC07C59650D;
-	Thu, 10 Sep 2026 20:08:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2976A339376
+	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 20:15:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789070888; cv=none; b=Uh9/27AqbekDZVT+ajpN8QSIAXTiflyzgd9GMTqXw2kAAtDQ4i4iI36OgP0kWOrEhsytRFe4EirZh+Uj00LCDThLRuxlRoF+YibfwlDiizDeYr5szg5TsjfuwWHqtvSC1HkUhYFYA74JfMzN2WO7ynQ+a0Rrwg3ihiwRtBDi9XA=
+	t=1789071313; cv=none; b=s2NVaePddFREXg/9YLAsfFq+AbOPdmaWhEN2yYtwcv8ssMjvBtHKRuU1dI9pFnPJ2ppRSCnyuATld2EfscrafjPpAinMcUSyvu1bLQKCxAysY1fhHZzvqwoA0xMPdGUQgnn0lb+oTdfl5B7D6GHHHW2aUBBwMdkHzgT3pVwkgjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789070888; c=relaxed/simple;
-	bh=9VN3bwZka3S+tTg96FmOIUV3qYPE1M05k5Wl+t8sisQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=JZ5C+S8g97V+fOsPVt/2qAvBxXQXi1SzF6eOd2two3rhzuYkDXJDyy4fn9/ttRUtDzjaoE6VZNmWaRP6TcHjDp1/gorodLfk0NHQk/SKOqqlw7Jtfy0zabqASe00ZitK+7wn2x2BDCbNga/2DKWm5hm3K+/yhPXQ8KHEkNz5Am0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fYykwd/d; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1789071313; c=relaxed/simple;
+	bh=lhnrct5IwDdL3oCq8UXa5PxdL6Lxk7HEL+sYVJFgPpw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AB3t1qUhRgeSzPcVDSYXJLpxTyKp14UoMqyjHbyi/JAdj3/27F9bmCKVUm+mVv4D0K2vzj1qkviO3BhQoUUqx8jukG+GAP3VOm3jAK9UfULP3G2UTpPmfr3MCG3XAakBaIvW8Lw0T98+H3T2dk9fLf30ngm/49wc+5iFNNQJPSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b=btB6ClNt; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fYykwd/d"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id CF537C2BD05;
-	Thu, 10 Sep 2026 20:08:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1789070886;
-	bh=9VN3bwZka3S+tTg96FmOIUV3qYPE1M05k5Wl+t8sisQ=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=fYykwd/dQWxc1GcfAUYzHz9vvAfD6xQW5Or+3/9qU8kwWRQe3SeWqZpWKXgJvOMdI
-	 DbIba7rbihNAjtl4IPRiSnliZ2nR3T9gnGQhBeYwSNgkRqHnjHkswVpEkkMc1wntdC
-	 gbHdGfwwoa/H+3vD5PCFCS7MZ3YiC2UFhEwpvgENZq3VtZZA95NFPKVnFgYtewbFQT
-	 u0yVDLFZkZ+7qR0p068MCjIKhO0VQ/Xl9v0Td1fo5G3bbOO0lRfV5oCjmI/T+axvLp
-	 9A68gokm4SdW1gI7LcMVj8UjxnJ+kMPN/l0ESZB+QBW+f3SZxz1luV2yJH9G4gIMqd
-	 aTi2oGqEBhOBw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BE3BCC88E42;
-	Thu, 10 Sep 2026 20:08:06 +0000 (UTC)
-From: Ricardo Pardini via B4 Relay <devnull+ricardo.pardini.net@kernel.org>
-Date: Thu, 10 Sep 2026 22:07:57 +0200
-Subject: [PATCH v5 7/7] arm64: dts: rockchip: describe PCIe RTL8125
- Ethernet on ROCK 5 ITX
+	dkim=pass (2048-bit key) header.d=dama-to.20251104.gappssmtp.com header.i=@dama-to.20251104.gappssmtp.com header.b="btB6ClNt"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2cace91f112so896915ad.0
+        for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 13:15:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=dama-to.20251104.gappssmtp.com; s=20251104; t=1789071310; x=1789676110; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:mail-followup-to:message-id:subject:cc:to:from:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Z3MOfs+yLWKNPu3hgjlvLeCZjdzWzvpbMagd5VEL7u0=;
+        b=btB6ClNtFYr5A2zJUu5qs+KUy4HKmlgD2G3EhGBDOhyCcV+WqSM10SpsNY8BIYG7Vs
+         oHtBQ4/eKXU3FmMIsYpdEAhxyfEBuVsmBhffOOMfT8Fl1AWvNXg3v5mI+yIuJYLrx6uY
+         r2IZlIUYIkOBzASF68w6a4PthMsq59076rc0FXMfp2PL10y5D3Aylhu/GP1AHUw+bcpE
+         cDDYRQhTVNb9mQCMr1QIqQQNKTYIwT7T0b41YSIo8gc3I+s+SdgKO6r/2Uv99FHmdNOs
+         /uv7rtFYL6hUyOWVPB6VUIvBscjagPyvu6cfncUyvJaxKVPzkUtkMzHBj6xIoswvY6Dm
+         rZLQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789071310; x=1789676110;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:mail-followup-to:message-id:subject:cc:to:from:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=Z3MOfs+yLWKNPu3hgjlvLeCZjdzWzvpbMagd5VEL7u0=;
+        b=AXlB8M2rolcCac6l8fSN3Fyt4HjQ4iHRmZv02tgmFr6LOnDluEcpE2GW5bvq1PacrW
+         4YtJr4NcBlD3sxKb89BHPdTDoXVprnffPIi83pLmuwHtVZAPaeYHao3N9ASsL9ke5d6v
+         vwkFgr/ejLZKuIh0vkzXyPNL0Z/FyQi0ay7PQjMquD+VWwHTQJCdyBcYc4HhQvmtV3kK
+         5j9vXdIpX8XgnkV/0cr5OsBF7pmXxp8fQar+/nNH29mxoNQ89VRSndwWdg9yJV9fAfl2
+         8PArOroWd1s/tFPmknIRf68dfIVJPvM4R4pI6ljunnpZBxvnW8ik7EhbeNEFgQFRlKm7
+         5FRw==
+X-Gm-Message-State: AFuF++nh+qBIfoMUwgU0C68sj5LSmwfq81HFaxQhtdbKqFRsx/O2vI9v
+	PYOjgsq8P0lj/lGxSBP8n4eL/fBGOR37nv/G7LSx0YdtIEDC74aVAnW4JMIt1FhFWWs=
+X-Gm-Gg: AYBFou3WToTTEEKCS4BppPU9ztzhsf6KHO9YoFB+73aQr/Fq/eyI0MwyHnBKl8wYoxe
+	jMqOXq0fcCL8cpq4zpk+9DQGQvQ3Wv7vfge6ZT3HoIKslPk/Q3CiFQSRjY5N8qR+Mt43wgZesqO
+	NlIzvHXewVX2wP006+v9dwheQeyMxZjDRya0moOhHKCzAIkUy2GF1RJnFZ+qGuS7dQvokwe9eIP
+	UqITB55YUyufB+hgPAHZRoWzlPjKrAoRAQk06pjZJbtMX/gLxdUyznp3dA8sIhyohK0o2PJJe1y
+	uTY9s3qxXBTcBhKfNy0A2Dd2aG5NpZOOkyqI/x5AB11bzgMJZQ+wlJiH/Pi2vnfy/rrqQ1WrwVa
+	w4MASr4cMILq/Brb8fjEdH66tDGmzryHAlAJLdMZEVcIUuwaQANGwQlErePLF472IwkLZRAIQ2q
+	/gVhmirdXc28djphHLUWc0aTAZohe+mVk/2Rrf9tBvwmcvS+SSyZnm
+X-Received: by 2002:a17:903:174e:b0:2d6:f6ba:263d with SMTP id d9443c01a7336-2dd2a1e1a0dmr16924975ad.7.1789071310032;
+        Thu, 10 Sep 2026 13:15:10 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:5f::])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2dd2ce9c8besm1325375ad.18.2026.09.10.13.15.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 10 Sep 2026 13:15:09 -0700 (PDT)
+Date: Thu, 10 Sep 2026 13:15:08 -0700
+From: Joe Damato <joe@dama.to>
+To: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Subject: Re: [PATCH] drivers: net: smsc: Remove unused smc9194.h header
+Message-ID: <aqMPzDuk1wI0dCkQ@devvm20253.cco0.facebook.com>
+Mail-Followup-To: Joe Damato <joe@dama.to>,
+	Ethan Nelson-Moore <enelsonmoore@gmail.com>, netdev@vger.kernel.org,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+References: <20260910143516.87304-1-enelsonmoore@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260910-rk3588-dts-rtl-eth-describe-dt-alias-v5-7-c1b9e5f10cd6@pardini.net>
-References: <20260910-rk3588-dts-rtl-eth-describe-dt-alias-v5-0-c1b9e5f10cd6@pardini.net>
-In-Reply-To: <20260910-rk3588-dts-rtl-eth-describe-dt-alias-v5-0-c1b9e5f10cd6@pardini.net>
-To: Heiner Kallweit <hkallweit1@gmail.com>, nic_swsd@realtek.com, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Heiko Stuebner <heiko@sntech.de>
-Cc: Sebastian Reichel <sebastian.reichel@collabora.com>, 
- netdev@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-rockchip@lists.infradead.org, Ricardo Pardini <ricardo@pardini.net>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1909;
- i=ricardo@pardini.net; h=from:subject:message-id;
- bh=6JENscbgGnnWW/4PaIbc3X/OTv8wHFKHVCvXFVsCaGI=;
- b=owGbwMvMwMFoHWf/eN7xty8ZT6slMWQt5lM5Z/zure0WD5bAba2XA91+FL/82syq2fdTRU/S1
- OhlhOifTkZ/FgZGDgZLMUWWNRLKPN/Wvzp1x6NjMswgViaQKdIiDQxAwMLAl5uYV2qkY6Rnqm2o
- Z2ikY6BjzMDFKQBTnXaWg6GVjcWSZZrtF86duUf1exXWOm3Ze1yT98wrA/WzkXNr87relftXt9U
- tDJIucr7PmfsnZvlKW8elQk1/rrMXXjmTZnbuhoDaZtNzdx0UOh0shY2ML0yZGxFzpCHxXY1Ua3
- ifw5cmo87VT1vffprCfOZpc2eO4Iy8b9HznTOKN7IyhLZMauwwO7Qla5qW/8my3weNpNcZPD2z3
- 2GeoGW5X7juh6YehrULPG8ZTDa1kBLuOTCtJXxphtXGK9sknP9eUtTz/6FxuHPqTQEudfHDiU8r
- Ln851t1dev2nxaJveZ86fy/ii47Ksunoepd23kwi+YW9b3C02s+m1QeyJprMPMD6cMfR1jM+0wy
- EWSI1AQ==
-X-Developer-Key: i=ricardo@pardini.net; a=openpgp;
- fpr=AC18230CF6AFEACADC4888933B5E3FE39EC7EDE9
-X-Endpoint-Received: by B4 Relay for ricardo@pardini.net/default with
- auth_id=588
-X-Original-From: Ricardo Pardini <ricardo@pardini.net>
-Reply-To: ricardo@pardini.net
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260910143516.87304-1-enelsonmoore@gmail.com>
 
-From: Ricardo Pardini <ricardo@pardini.net>
+On Thu, Sep 10, 2026 at 07:35:05AM -0700, Ethan Nelson-Moore wrote:
+> The smc9194 driver was removed in commit 9fdf9f61fa6d ("drivers: net:
+> smsc: smc9194: Remove this driver"), but smc9194.h was left behind.
+> Remove it.
+> 
+> Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+> ---
+>  drivers/net/ethernet/smsc/smc9194.h | 241 ----------------------------
+>  1 file changed, 241 deletions(-)
+>  delete mode 100644 drivers/net/ethernet/smsc/smc9194.h
 
-The Radxa ROCK 5 ITX carries two on-board Realtek RTL8125 NICs behind
-pcie2x1l1 and pcie2x1l2.
-
-Describe the fixed function nodes and attach ethernet0/ethernet1
-aliases, so that U-Boot's fdt_fixup_ethernet() can inject mac-address
-properties from its ethaddr/eth1addr env, for stable MACs across
-boots that both U-Boot and the kernel agree on.
-
-Signed-off-by: Ricardo Pardini <ricardo@pardini.net>
----
- arch/arm64/boot/dts/rockchip/rk3588-rock-5-itx.dts | 30 ++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
-
-diff --git a/arch/arm64/boot/dts/rockchip/rk3588-rock-5-itx.dts b/arch/arm64/boot/dts/rockchip/rk3588-rock-5-itx.dts
-index 6f25e088f3189..f1d6647c57bf9 100644
---- a/arch/arm64/boot/dts/rockchip/rk3588-rock-5-itx.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3588-rock-5-itx.dts
-@@ -20,6 +20,8 @@ / {
- 	compatible = "radxa,rock-5-itx", "rockchip,rk3588";
- 
- 	aliases {
-+		ethernet0 = &rtl_eth0;
-+		ethernet1 = &rtl_eth1;
- 		mmc0 = &sdhci;
- 		mmc1 = &sdmmc;
- 		mmc2 = &sdio;
-@@ -631,6 +633,20 @@ &pcie2x1l1 {
- 	reset-gpios = <&gpio4 RK_PA2 GPIO_ACTIVE_HIGH>;
- 	vpcie3v3-supply = <&vcc3v3_lan>;
- 	status = "okay";
-+
-+	pcie@0,0 {
-+		reg = <0x300000 0 0 0 0>;
-+		#address-cells = <3>;
-+		#size-cells = <2>;
-+		ranges;
-+		device_type = "pci";
-+		bus-range = <0x30 0x3f>;
-+
-+		rtl_eth0: ethernet@0,0 {
-+			compatible = "pci10ec,8125";
-+			reg = <0x310000 0 0 0 0>;
-+		};
-+	};
- };
- 
- /* RTL8125B_2 */
-@@ -640,6 +656,20 @@ &pcie2x1l2 {
- 	reset-gpios = <&gpio3 RK_PB0 GPIO_ACTIVE_HIGH>;
- 	vpcie3v3-supply = <&vcc3v3_lan_phy2>;
- 	status = "okay";
-+
-+	pcie@0,0 {
-+		reg = <0x400000 0 0 0 0>;
-+		#address-cells = <3>;
-+		#size-cells = <2>;
-+		ranges;
-+		device_type = "pci";
-+		bus-range = <0x40 0x4f>;
-+
-+		rtl_eth1: ethernet@0,0 {
-+			compatible = "pci10ec,8125";
-+			reg = <0x410000 0 0 0 0>;
-+		};
-+	};
- };
- 
- &pcie30phy {
-
--- 
-2.55.0
-
-
+Reviewed-by: Joe Damato <joe@dama.to>
