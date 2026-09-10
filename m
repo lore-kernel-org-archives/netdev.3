@@ -1,171 +1,96 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC163380FE7;
-	Thu, 10 Sep 2026 03:09:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 844AD1C3BFC;
+	Thu, 10 Sep 2026 03:11:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789009756; cv=none; b=sI8HuSYeUJlZt/88EHM4Gq842ezgmZJ6r8/kPEXC2yjvV85pE0fhx4v8MVze4o3dFKNP4m8b8S5GQKxuft0UJUtuTWiQFG4koZSbJDowHbBx/qb5FhlLnZK7eftB13xykm9HQXCvik7wpi6/h5MkFXf8JpORJ9LFFoyG6GwnEsY=
+	t=1789009867; cv=none; b=ezLj+eg6QhgqCshWiOiKbITBshnpP9a2GNx54EPrEHgZJ5aAQJ5p8CgwNNm8L17MIBrGFQaUwY/GLUU4fr3p6Z+v3fBLQsed/+aaf8LrhYvUUI3DkYLdHIfspRPJ8JC9IphEYosnVb9jqvuRUmQKEBoF2kyOKqh5yGa2w4ouMbU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789009756; c=relaxed/simple;
-	bh=0gMJj2/y7UEk2F5iiJ0+r0KOpjpb25MfLcU89P2tClY=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=DzsQSgKZTck3iSGDQpxsNhMGT2eQBB5th9vcHyuyrvQu353isE3X1M1Rscnv/bffEXJcC6HQyCg6oAnS+McY5S+xKbhfLJc3Ry3M2hpI2KGHBCfvxnBwEjwPt9pq+hE4f5ZL2K5Qmo0gYQGcgTVV/IiEbRG2nLEPC/I+lzlz66c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OranrfeV; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789009867; c=relaxed/simple;
+	bh=15hXHIEA+G+GFzukycQPOAOo2ITHoNnxowjxcxAaEtA=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=INX2pwviztGx7p3NFQKtVXmg5SENmipFTFvzHMSeRDBrx8SdvSaLXImC0OCdANemnWLyDffrsr0T11y+z3Gq7d7kh2L/bPn4mCBnmRPCcX3TA1fYHhG/vWxImNBBpfBPs6DmBSt9DCflnNhUAm+5A8TNBhTYxE/Ib6t1s/MDnJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V3LnHlUn; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OranrfeV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C92E41F000FF;
-	Thu, 10 Sep 2026 03:09:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V3LnHlUn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 235F71F000FF;
+	Thu, 10 Sep 2026 03:11:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789009754;
-	bh=7Mnnl6IixqIIoQUXK0HBqu/7/2qQhKzWTmOfpvOINa4=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=OranrfeVIMyz+75rRMIjl4Wkqdv1UE6u0OXOjR+/I3fAJKDyEMA7v9VfLs4fmpuUV
-	 OuxYkVqySdLeZaCpBe0b6rQ5p71TgfwPZNScxBGyCBPCmwKQy+tIewPtbRN8Xjpu23
-	 XjQttZAg/kczR3Qvuzrimg5hpAs82meiP1Dik1VavYHNd+xpRXVvzrV7CtN65QrV38
-	 L5JmOu7KBIQL0OZ0fbKBTZHfi6rMBQ8l3v2FDL5sGmO3MLxZIRENW/UWV6H21z789L
-	 DYNOUrMeeCkOa3W7Lc8NsY6n26WfkmC9e/TpChMJBxITFwpFY0CtRT7FwZ56aGiT8+
-	 HRY1Qj3ANbczg==
-Subject: Re: [PATCH] net: ipa: Add IPA_MEM_STATS_DROP_MODEM memory region
-From: netdev-bot+sashiko@kernel.org
-To: esteuwu@proton.me
-Cc: elder@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, xlie7669@gmail.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- phone-devel@vger.kernel.org
-Date: Thu, 10 Sep 2026 03:09:13 +0000
-Message-ID: <178900975328.219967.188619870211891152@kernel.org>
-In-Reply-To: <20260909-ipa-modem-drop-v1-1-0c9664f09c4a@proton.me>
-References: <20260909-ipa-modem-drop-v1-1-0c9664f09c4a@proton.me>
-X-sashiko-severity: Medium
+	s=k20260515; t=1789009866;
+	bh=Dfmp/qJolIcZdYfOuuuuSCHVvZ02bDHMoGGhyetY/Tg=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=V3LnHlUnew58JI1wTo/jsrxlLrCkfEWfnpsNQx0kD2Zj1Dtej6e7Ir59FlSCZzGaL
+	 TSr39XLT8Ubk4ZvLZj26QVFnEg5iZ3CMksVJxlIwN59yGKTRAAsFpeo7TLwYE5tSfY
+	 N2tS+wwXtgPHeN9Kg0/i3SzlGlPY4GfDdDY9cgVnk6scWC+FvpwoIGkE8IkRZZ7kjm
+	 6hNYRuHxubvjjy9tLlEVX3reiffBjjKM3EKyiYKKDism2clf1PbzKDsle2BmOLlTCf
+	 yo/2o5EVP2kijkxwgi7AbzUBzBEBIBkqiPYTs8KEuXqmIU7OEA1n6wo9jCgUo23rS/
+	 4S/7ncY1lTZzw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 199E6380CEC7;
+	Thu, 10 Sep 2026 03:10:05 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net V2] net/mlx5e: Move representor vnic reporter to
+ eswitch
+ devlink port
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178900980389.1168652.5408559475805106477.git-patchwork-notify@kernel.org>
+Date: Thu, 10 Sep 2026 03:10:03 +0000
+References: <20260906090700.3761260-1-tariqt@nvidia.com>
+In-Reply-To: <20260906090700.3761260-1-tariqt@nvidia.com>
+To: Tariq Toukan <tariqt@nvidia.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com,
+ cjubran@nvidia.com, cratiu@nvidia.com, gal@nvidia.com, leon@kernel.org,
+ linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org,
+ msanalla@nvidia.com, mbloch@nvidia.com, moshe@nvidia.com,
+ ohartoov@nvidia.com, saeedm@nvidia.com
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider:
+Hello:
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-- [Medium] The newly declared region id `IPA_MEM_MODEM_STATS_DROP` has no
-  producer and no consumer, so the patch is functionally inert and…
-- [Low] Commit-message / code identifier mismatch plus stale peer
-  documentation for the new drop-statistics region.
+On Sun, 6 Sep 2026 12:07:00 +0300 you wrote:
+> From: Carolina Jubran <cjubran@nvidia.com>
+> 
+> The representor vnic devlink health reporter is created and destroyed
+> along the representor netdev (un)load path, which is not serialized by
+> the devlink instance lock. Destroying the reporter from there triggers
+> a devl_assert_locked() splat on driver unbind:
+>   WARNING: net/devlink/core.c:259 at devl_assert_locked+0x54/0x70, CPU#2: bash/3758
+>   Modules linked in: mlx5_vdpa vringh vdpa mlx5_ib mlx5_fwctl mlx5_core ...
+>   CPU: 2 UID: 0 PID: 3758 Comm: bash Tainted: G        W           6.19.0+ #1 PREEMPT
+>   Tainted: [W]=WARN
+>   Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), ...
+>   RIP: 0010:devl_assert_locked+0x54/0x70
+>   Call Trace:
+>    <TASK>
+>    devl_health_reporter_destroy+0x3a/0x1b0
+>    mlx5e_vport_rep_unload+0x12d/0x2b0 [mlx5_core]
+>    mlx5_eswitch_unregister_vport_reps+0x1b8/0x220 [mlx5_core]
+>    ? __esw_offloads_unload_rep+0x190/0x190 [mlx5_core]
+>    ? kernfs_remove_by_name_ns+0xc3/0xf0
+>    device_release_driver_internal+0x3b2/0x560
+>    unbind_store+0xce/0xf0
+> 
+> [...]
 
---
+Here is the summary with links:
+  - [net,V2] net/mlx5e: Move representor vnic reporter to eswitch devlink port
+    https://git.kernel.org/netdev/net/c/7f26a5e8040b
 
-net: ipa: Add IPA_MEM_STATS_DROP_MODEM memory region
-
-This adds a new ipa_mem_id enumerator for the modem-side drop statistics
-region and allows it in ipa_mem_id_valid() only for IPA v5.0 and later.
-No platform data file or driver code path references the new region.
-
-Link: https://github.com/LineageOS/android_kernel_qcom_sm8450-modules/commit/fc71d0972a2453cc29f873d723a355a902c6d69c
-
-> diff --git a/drivers/net/ipa/ipa_mem.c b/drivers/net/ipa/ipa_mem.c
-> index 078d32a18dbf..3000aaa24530 100644
-> --- a/drivers/net/ipa/ipa_mem.c
-> +++ b/drivers/net/ipa/ipa_mem.c
-> @@ -166,6 +166,7 @@ static bool ipa_mem_id_valid(struct ipa *ipa, enum ipa_mem_id mem_id)
->  			return false;
->  		break;
->  
-> +	case IPA_MEM_MODEM_STATS_DROP:
->  	case IPA_MEM_AP_V4_FILTER:
->  	case IPA_MEM_AP_V6_FILTER:
->  		if (version < IPA_VERSION_5_0)
-
-[Severity: Medium]
-Can this new case ever be taken?  ipa_mem_id_valid() is only consulted for
-ids that already appear in a struct ipa_mem_data.local[] array, and a grep
-of the tree at this commit shows IPA_MEM_MODEM_STATS_DROP only in
-ipa_mem.h (the declaration) and here.
-
-The v5.0+ data files that the version >= IPA_VERSION_5_0 gate could apply
-to all define just the one drop-stats region:
-
-drivers/net/ipa/data/ipa_data-v5.0.c
-drivers/net/ipa/data/ipa_data-v5.2.c
-drivers/net/ipa/data/ipa_data-v5.5.c
-	.id		= IPA_MEM_STATS_DROP,
-
-and the only consumer of drop-stats memory still looks up the old id:
-
-drivers/net/ipa/ipa_qmi.c:init_modem_driver_req() {
-	...
-	/* If the DROP stats region is defined, include it */
-	mem = ipa_mem_find(ipa, IPA_MEM_STATS_DROP);
-	if (mem && mem->size) {
-		req.hw_stats_drop_base_addr_valid = 1;
-	...
-}
-
-The commit message says the region "is used in IPA v5.0 and higher", but
-with no producer and no consumer the change has no runtime effect.  Would it
-make sense to land the data-file entry and the QMI consumer in the same
-series?
-
-There also seems to be a layout prerequisite that isn't mentioned.  In
-ipa_data-v5.0.c, IPA_MEM_STATS_DROP is at offset 0x3870 with size 0x0020
-(ending at 0x3890), and IPA_MEM_MODEM starts at 0x3898 with canary_count 2,
-so its two canaries occupy 0x3890-0x3898:
-
-	{
-		.id		= IPA_MEM_STATS_DROP,
-		.offset		= 0x3870,
-		.size		= 0x0020,
-		.canary_count	= 0,
-	},
-	{
-		.id		= IPA_MEM_MODEM,
-		.offset		= 0x3898,
-		.size		= 0x0d48,
-		.canary_count	= 2,
-	},
-
-Doesn't adding a second drop-stats region require shifting IPA_MEM_MODEM and
-everything after it?
-
-> diff --git a/drivers/net/ipa/ipa_mem.h b/drivers/net/ipa/ipa_mem.h
-> index b25babade787..56703bada07c 100644
-> --- a/drivers/net/ipa/ipa_mem.h
-> +++ b/drivers/net/ipa/ipa_mem.h
-> @@ -68,6 +68,7 @@ enum ipa_mem_id {
->  	IPA_MEM_STATS_QUOTA_AP,		/* 0 canaries, optional (IPA v4.0+) */
->  	IPA_MEM_STATS_TETHERING,	/* 0 canaries, optional (IPA v4.0+) */
->  	IPA_MEM_STATS_DROP,		/* 0 canaries, optional (IPA v4.0+) */
-> +	IPA_MEM_MODEM_STATS_DROP,	/* 0 canaries, optional (IPA v5.0+) */
-
-[Severity: Low]
-The subject and the body both name IPA_MEM_STATS_DROP_MODEM, but the
-enumerator added here is IPA_MEM_MODEM_STATS_DROP, and a grep of the tree at
-this commit finds no occurrence of IPA_MEM_STATS_DROP_MODEM at all.  Could
-the changelog and the code be made to agree?
-
-The neighbouring statistics regions put the owner last:
-
-	IPA_MEM_STATS_QUOTA_MODEM,	/* 2/4 canaries (IPA v4.0+) */
-	IPA_MEM_STATS_QUOTA_AP,		/* 0 canaries, optional (IPA v4.0+) */
-
-Would IPA_MEM_STATS_DROP_MODEM (as the subject says) fit that convention
-better than IPA_MEM_MODEM_STATS_DROP?
-
-Also, the comment on the existing IPA_MEM_STATS_DROP still reads "0
-canaries, optional (IPA v4.0+)" with no hint that it becomes the AP-side
-region once the modem-side one exists on v5.0+.  Could that comment be
-updated so a config author can tell which region to use for AP drop
-statistics?
-
-One more thing on the changelog: the paragraph explaining the split ("From
-IPA v5.0 onwards, two memory regions for drop stats exist: one for the AP
-(that is, the driver) and one for the modem (Q6).") sits below the ---
-cut line, so it is not part of the recorded commit message.  Was that
-intended to be above the cut line?
-
+You are awesome, thank you!
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260909-ipa-modem-drop-v1-1-0c9664f09c4a%40proton.me
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
