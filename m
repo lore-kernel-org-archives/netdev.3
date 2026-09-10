@@ -1,174 +1,135 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5AEE568FA1
-	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 17:44:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82CD3503BF7
+	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 17:47:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789062291; cv=none; b=f0BvGbHs0IDh+TAawdKI/3n9zdUCF3/8v0CMuDOyhVh3rTHP/txVe3/u1g+oHBzkKpwIpQVw3El1RYg+u1QwgjX3G707bnRqSssgtajppcCVZvoaee/Fyl5xJI8YBjwc8UUaz/fVfvrj59EiFEvbDhN4DIGnWB6jMMSi7HJjLDg=
+	t=1789062438; cv=none; b=lbCAfTw0FkndKIYH8ReKz7teMv3MesahknoJ70UsH5HBpkBXS0C/K+CCBx0Pi7SAziam0RqeQArAB4Hn8f29N5HZg5tRXiirPhcHM0Yn2xVqhteXOeusBv82gV+mybxENZGR6tZexiNdpfQ7fS/qFubhjV+5oBNJy7/ZRXxsNTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789062291; c=relaxed/simple;
-	bh=hOwAM19ellXTuSTfVu3GiJAsTHtYyEpB1hz91S9UrOo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=BlcERP6KyhHlyXUlxEC73bRANlmZ/Ef9CB5LYCQS5DDK84vV0PeOi1Twxh/+qGPip4sZyNnxTulYffUhhbvZAsB2SFhEjGH9o7W/jQpmkQ84SUqqxFRumERa1mI+QM8JlHnaddImnau1Qsl4M8onlrrCGyghOYyrx5WWjkI6UWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=G4+dGp39; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=KG85I3IZ; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1789062438; c=relaxed/simple;
+	bh=ggmWy378Fm8XbzIqsmoiDfWqgCWV7miSo+Loys+qS6I=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=sExHzkENpg/ve/TMFyYDCqE3YS5ndUmixE9GQBVZNDsfzqCYDE85Y9dbAku/KDqIallTyxeAKhkj7msblJ/Oq/gdVg/9B7oswgNXJL0aGoTRBSPFDOp2aDD81nBDiNWL/NAI39Q368LoF+7kJaCMM4feq/Mx51YNyyCFZS/f2DM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com; spf=pass smtp.mailfrom=etsalapatis.com; dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b=HUHwSk7O; arc=none smtp.client-ip=209.85.216.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=etsalapatis.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="G4+dGp39";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="KG85I3IZ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1789062281;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JT+A7W1MmDpVr6cMOdIJpFjVZmY1bGOG8YUIXDNF/Yo=;
-	b=G4+dGp39oWxRAvZopn5TpcHx1W06U15uUSfD2BSpjHSI7f37sUldNxbaISPRXjMFxf2Bgr
-	XYAIBvn9hhwFr8+US1J1SpdNmOPqxWWhf59NoFw0kHbwS/MynG32ihBeopUUFPej260lcT
-	ufJI1bl23a0v85sW5Nqk9P8IXaBQWuA=
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
- [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-657-E4xdXTKlO3ueh4QPMrTIjw-1; Thu, 10 Sep 2026 13:44:38 -0400
-X-MC-Unique: E4xdXTKlO3ueh4QPMrTIjw-1
-X-Mimecast-MFC-AGG-ID: E4xdXTKlO3ueh4QPMrTIjw_1789062278
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-9375d92d8cdso1365286685a.2
-        for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 10:44:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b="HUHwSk7O"
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-38a0c7e841fso9418355a91.2
+        for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 10:47:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1789062278; x=1789667078; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:user-agent
-         :message-id:date:references:in-reply-to:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to:content-type;
-        bh=JT+A7W1MmDpVr6cMOdIJpFjVZmY1bGOG8YUIXDNF/Yo=;
-        b=KG85I3IZNZ3vwavd7IFCxQ4KrhV5jqHBwHqn0BOcRrHaXlGr/23it85+P8Y+l1nlhV
-         3Dsej6ycLcV/CILOgERUrxdpsmfhmg4gUGMMJBg0P0d0l7EtXuHKNvtKdH9qjbI62Vtq
-         xngJrzVp2ZY4EvwBf9oyhZKF4aCp8H5QAivsncJVasz7B7Eq//CVDRTvU0ekteEhM6fN
-         iX5QXl7nNKOTYYGChjxdgv0/7NbhOW3KfjlRlJ60jKnbPwOh+QHVZvGvYO9OP3LOtMjl
-         7mdfiUiB1oGk4WpaMJUGTDIC8tzg5wzp7uFUWaWoV1E+qIu5nYRJCca448wALQQTsbT+
-         f/MQ==
+        d=etsalapatis-com.20251104.gappssmtp.com; s=20251104; t=1789062427; x=1789667227; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=HAvA87Et5zN/g6j7vdy1Ap87pfUn9R+X0a3IzOHRO74=;
+        b=HUHwSk7OVdy7wpzNCyqFSt0yxKwOynRRXEBnkyUtOGsGl5Si3uamMpwuqIA5trg7Hs
+         Mr85LLXnSJseku++pvzOVjuvnNBC2p2FsAZgMm/a9thop2FTNDBpsLdrClIDHuW9NKzd
+         l9dPe+TT6zH4vRn/x44lWIMCXqvLpV7iiTBwaoIHZQd489fvGazRkxRek3cZveM+l0p8
+         1GSlRPDslRjkUgIQ8umUr/fPzSDkjjnioCpgJxzcjSoibPc8DJQ3Rt/yVqWq2bzeuaiE
+         HxFEZ3gTH+AprS3kP66SXQjGF5dcGm6bID2iGSzoMAMpmhUstuPzLeDPfiaEWPtOEhQa
+         +FFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789062278; x=1789667078;
-        h=content-transfer-encoding:content-type:mime-version:user-agent
-         :message-id:date:references:in-reply-to:subject:cc:to:from:x-gm-gg
+        d=1e100.net; s=20251104; t=1789062427; x=1789667227;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=JT+A7W1MmDpVr6cMOdIJpFjVZmY1bGOG8YUIXDNF/Yo=;
-        b=WNZVvsMEUvqWIaRKDUvqyZ1Wg28go2otejrKuyizvN8YNg+cRBdV6QrJRsD/l7iW/r
-         Np/NM1xYTmfb9AzGUPAIEaz9nlNulLLMrJw+LuX0kfbcUuggyMBQL0aR+0X6ekuzXenr
-         KZPXv71egoVtLMroaUI+MK3KUFTh7lNVePxvkTAGRVnAx9rn5EDbRqqEQS/epJxBDdy0
-         a5CdgtpYpIcgtV3mjX3oNZy5bAAN4+HzvsO2g8pnBoLEYcEX9rP1poBUIvy+pq99+60B
-         EGRxLdrwd61ZRITPP5WrSncMoPTE9igZj2Neeuv4GploNfDF6iwRfBIqtABoc2slHbIy
-         j97w==
-X-Forwarded-Encrypted: i=1; AKwUvByGAdHggV6fpMWrtX/RRSsWfyccLzKoI6Qk2iVKun9wSRNg0U9bfmri5GObTrSB/0eO4gQvGPs=@vger.kernel.org
-X-Gm-Message-State: AFuF++k7j/AQjqHB6dN0P7PqRSMLS6n5+PLJ2mMr/WlxVbLjW24VtoN/
-	YZfli/4P1yZNQ/L7uvhTvoIBXJd5QM9bRMST9MJv/X28t8mgDDOGm59NFuonYbaAbIIO1fGi2gd
-	DAt+Q2g+GWhQS+Osx46bReOB3X/6icAB+hz/bSCUpSRP+cRxJTfx6WfVyTA==
-X-Gm-Gg: AYBFou0nKOqGRMnI59W4ihgAeysv+W/eylFtZu04GpFdTdHQs5lRANflIVmJ7CholBX
-	KUemW7fXODfcmhPq2t0ZXQIsXPOq/8R4aUPk2w8MP+cmCUL5zQtdEGYyLv+V8V3r2WG5PDJnD7j
-	XuhunnGwWLCAk7yZLFGHxRt5KzRT1FJJIsc7YkzqtZHIfeViRIW8WpfaMnAtDp2XvswwfvaI08v
-	MfMQkztIOW1GcbFZaJTGHXbE//l7FWqqENmlUJvqfCArQu1A7MMmZOXdz6pdYx2kuir1kJcpaVT
-	EHGUtczL97SEZ7cmVKBRpdqv73ANq93V8kamLuIKn52TS6KsAZxbL9Y7KopXiuaRnGN2eUE1vAl
-	JDmaz0fmQ9remMwZXKVZ9sUJJWv5X
-X-Received: by 2002:a05:620a:f0b:b0:939:a1cc:f234 with SMTP id af79cd13be357-939a1ccf31fmr3238070185a.5.1789062277525;
-        Thu, 10 Sep 2026 10:44:37 -0700 (PDT)
-X-Received: by 2002:a05:620a:f0b:b0:939:a1cc:f234 with SMTP id af79cd13be357-939a1ccf31fmr3238063185a.5.1789062276933;
-        Thu, 10 Sep 2026 10:44:36 -0700 (PDT)
-Received: from aconole-thinkpadt14gen4.rmtusnh.csb ([216.212.25.12])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-939e80471a3sm34848885a.22.2026.09.10.10.44.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Sep 2026 10:44:36 -0700 (PDT)
-From: Aaron Conole <aconole@redhat.com>
-To: netdev-bot+sashiko@kernel.org
-Cc: houminxi@gmail.com,  netdev@vger.kernel.org,  echaudro@redhat.com,
-  i.maximets@ovn.org,  davem@davemloft.net,  edumazet@google.com,
-  kuba@kernel.org,  pabeni@redhat.com,  horms@kernel.org,
-  shuah@kernel.org,  dev@openvswitch.org,  linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH net-next v3 3/4] selftests: openvswitch: add missing
- docstrings in ovs-dpctl.py
-In-Reply-To: <178906092280.219967.16432524038911632507@kernel.org>
-	(netdev-bot's message of "Thu, 10 Sep 2026 17:22:02 +0000")
-References: <20260908171859.1967327-4-houminxi@gmail.com>
-	<178906092280.219967.16432524038911632507@kernel.org>
-Date: Thu, 10 Sep 2026 13:44:35 -0400
-Message-ID: <f7t33vhm264.fsf@aconole-thinkpadt14gen4.rmtusnh.csb>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+        bh=HAvA87Et5zN/g6j7vdy1Ap87pfUn9R+X0a3IzOHRO74=;
+        b=Dx+810jXNR0F3u0OEZjxjPu4gPeX70wu4ktZMFmwgVbQqEaNXp/2TMrdMC0kxlIL7B
+         zTV2S+sziRo9BZxNOXWlWjfIPkNKSKd6LNQK+/gKnbXJgGaY05F6kshBfqcgVfDO2YzU
+         utE3hc157KRIYmT6r5qbWOS6MMXOjN6aO16M7ADt4NfZsQD9pGJRgQqwBkOaZLzgac+y
+         FVbvHk7D7NRCe2qecRMXrHKLa1GpIXhdlps1VHA20OKLgMh1HvCsVxjUEzLoD94/ud51
+         V+YVQacr7lJnHIk62TMxa4kxQWl47drMjGSEkTIx0tdHF9058AN3vuDhl3rTEg9PwzBB
+         gs/A==
+X-Forwarded-Encrypted: i=1; AKwUvBwZMeF35gv+HqqEOYx1jaf9Vl2/tzc7xh3naiQ4mA9mnL7YXOa3zs/F1eyyHShr7mAgLqul9/o=@vger.kernel.org
+X-Gm-Message-State: AFuF++lgrHwNt+gkwWos1WCDw7daLIbkvGiggpvWlWzs4NOPbAVxw6X3
+	8wT60YPLc7MPdr8oZiTELH/BiWVlYzm/9iOi3p1aakChvvl6qfk1/1m1rLHNNXGoshg=
+X-Gm-Gg: AYBFou147ECG6t/dNVL6avpgaflvWCHk3tBCiO6bQUlEwCw1qUpSI/FqvKwkWIOt4gS
+	weDKouai70L22HTAd0EKd9ptQZVoTvumJIZcAESq2/uArHduf38lKRDKJgySgheo4GR/IImxUvn
+	WZ1jG8UNoBjWyDOGKsYFqIex9K8iI+4wQ1ALerg8N00S5wg01M8ygqO81U/u1AMRM1h9YOTO9vo
+	5BhgriTnnZnqtsJrJfO/GWW0B0i8VTjTo3m3ZsANd5BTRubD16YzfkBaod/suj+tvcsviCvZ/IU
+	dolrM0AQOXTrA78L5wg3UImzCkwplpViQjp7GPOU8nsProD1Cq8UIsVH+kdj5+w7WQbJEAM0Viv
+	V7ABmsZ2iPZNEdD6RGbClupow9Gfv0tMcxU6G7Y6laQd/F+eyPtbEED4j/7+KPUB/K4J8BNX6c+
+	Q45KKyT1Z9d90DND8Bzr+O+5Pa4JixH0oa4sTBQdBKA3C2QxbV0yVECLKho0gPlYWubMl/L8PbU
+	ezyEIBWfcDwMlJ7nl2INKRpJamf
+X-Received: by 2002:a17:90b:274e:b0:398:b1eb:136c with SMTP id 98e67ed59e1d1-39b2610fe62mr64208964a91.9.1789062426873;
+        Thu, 10 Sep 2026 10:47:06 -0700 (PDT)
+Received: from localhost (107-190-31-17.cpe.teksavvy.com. [107.190.31.17])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39d98e60484sm263339a91.4.2026.09.10.10.46.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 10 Sep 2026 10:46:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 10 Sep 2026 13:46:56 -0400
+Message-Id: <DLBTP43WDS59.3HN832U7195TZ@etsalapatis.com>
+Cc: "Emil Tsalapatis" <linux-lists@etsalapatis.com>, <ast@kernel.org>,
+ <daniel@iogearbox.net>, <andrii@kernel.org>, <davem@davemloft.net>,
+ <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
+ <eddyz87@gmail.com>, <memxor@gmail.com>, <martin.lau@linux.dev>,
+ <song@kernel.org>, <yonghong.song@linux.dev>, <jolsa@kernel.org>,
+ <john.fastabend@gmail.com>, <sdf@fomichev.me>, <horms@kernel.org>,
+ <dsahern@gmail.com>, <hawk@kernel.org>, <razor@blackwall.org>,
+ <bpf@vger.kernel.org>, <netdev@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH bpf] bpf: fix reading neigh ha in bpf_fib_lookup()
+From: "Emil Tsalapatis" <emil@etsalapatis.com>
+To: "Nikhil Ludder" <nikhilljatt@gmail.com>, "Jiayuan Chen"
+ <jiayuan.chen@linux.dev>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260909024011.1252694-1-nikhilljatt@gmail.com>
+ <CABFh=a7Z=heZODVsXwisY3VwULDy-Rq1hwO09exgX2d0-KzgUQ@mail.gmail.com>
+ <178898653497.1776876.10402414041023036972@gmail.com>
+ <7f3e237e-ac5c-46af-ae21-8b437a099fe3@linux.dev>
+ <178903991209.1916825.3991149870565892141@gmail.com>
+In-Reply-To: <178903991209.1916825.3991149870565892141@gmail.com>
 
-netdev-bot+sashiko@kernel.org writes:
+On Thu Sep 10, 2026 at 7:31 AM EDT, Nikhil Ludder wrote:
+> On 9/10/26 12:59 PM, Jiayuan Chen wrote:
+>> Yes, no deadlock.
+>
+> Thanks for confirming.
 
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider:
->
-> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 0 =C2=B7 Low: 1
->
-> - [Low] The docstring added to print_ovsdp_full()
->   (tools/testing/selftests/net/openvswitch/ovs-dpctl.py line 2940)=E2=80=
-=A6
->
-> --
->
-> selftests: openvswitch: add missing docstrings in ovs-dpctl.py
->
-> This adds one-line docstrings to the module, classes and methods in the
-> openvswitch selftest helper ovs-dpctl.py to silence pylint C0114, C0115
-> and C0116. No code behaviour is changed.
->
->> diff --git a/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
->> b/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
->> index 502e6eb4c4b4..dc88cb1b20c1 100644
->> --- a/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
->> +++ b/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
->
-> [ ... ]
->
->> @@ -2887,6 +2973,7 @@ class PsampleEvent(EventSocket):
->>=20=20
->>=20=20
->>  def print_ovsdp_full(dp_lookup_rep, ifindex, ndb=3DNDB(), vpl=3DOvsVpor=
-t()):
->> +    """Print full datapath state: stats, vports, and flows."""
->>  	  dp_name =3D dp_lookup_rep.get_attr("OVS_DP_ATTR_NAME")
->>  	  base_stats =3D dp_lookup_rep.get_attr("OVS_DP_ATTR_STATS")
->>  	  megaflow_stats =3D dp_lookup_rep.get_attr("OVS_DP_ATTR_MEGAFLOW_STAT=
-S")
->
-> [Severity: Low]
-> Does print_ovsdp_full() actually print flows?  The body only emits the
-> datapath name, the values from OVS_DP_ATTR_STATS,
-> OVS_DP_ATTR_MEGAFLOW_STATS, OVS_DP_ATTR_MASKS_CACHE_SIZE and
-> OVS_DP_ATTR_USER_FEATURES, then one line per vport:
->
->     print(f"  flows:{int(base_stats['flows'])}")
->     ...
->     # port print out
->     for iface in ndb.interfaces:
->         rep =3D vpl.info(iface.ifname, ifindex)
->         if rep is not None:
->             print(
->                 f"  port {int(rep.get_attr('OVS_VPORT_ATTR_PORT_NO'))}: "
->                 ...
->
-> The only flow-related output is the flows:<n> counter that comes from
-> OVS_DP_ATTR_STATS, which is already covered by "stats".
->
-> Flow enumeration lives in OvsFlow.dump(), and main() calls that only for
-> the dump subcommand, not on the show path that reaches
-> print_ovsdp_full().
->
-> Would something like "Print datapath statistics and attached vports." be
-> a more accurate one-liner here?
+The explanation makes sense, hadn't considered where this is written
+from. No need to adjust.
 
-I agree with this verbiage.
+>
+>> BTW, if an IPoIB device can show up here, dmac is already truncated
+>> today and the packet can't be forwarded anyway.
+>> Shouldn't we just reject addr_len !=3D ETH_ALEN instead of open-coding
+>> the copy? Then you can use the native function instead.
+>
+> You are right, and it is worse than just dmac: the line immediately
+> below copies dev->dev_addr into params->smac with a fixed ETH_ALEN and
+> no addr_len check either, so both addresses are already truncated for
+> such a device.  struct bpf_fib_lookup declares smac[6] and dmac[6], so
+> the helper is ethernet-only by contract and a non-ethernet nexthop is
+> already outside it.
+>
+> I would rather not fold that into this patch though.  This one is a
+> race fix with Cc: stable and no behaviour change, whereas rejecting a
+> device that today returns a (garbage) success is uapi visible and does
+> not belong in a stable backport.  Would you be happy with the seqlock
+> fix as it stands, and a follow-up for bpf-next that rejects
+> addr_len !=3D ETH_ALEN and covers smac as well?  I am happy to write it.
+>
 
-> The commit message says "Each docstring describes the command or
-> attribute group the code actually implements", so this one looks like it
-> overstates the output.
+I think this split makes sense, even if there's the churn of adding the
+fix then removing it to use the pre-existing helper. It's just a couple
+lines of temporary duplication. @Jiayuan wdyt?
+
+> If so, which return code would you want for that?  None of the existing
+> BPF_FIB_LKUP_RET_* really fits: NO_NEIGH is untrue since the neighbour
+> is there, NOT_FWDED is vague, and adding a new BPF_FIB_LKUP_RET_* is
+> uapi, which is another reason to keep it out of this patch.
+>
+> Thanks,
+> Nikhil
 
