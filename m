@@ -1,192 +1,340 @@
-Received: from dvalin.narfation.org (dvalin.narfation.org [213.160.73.56])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1BE63AB287;
-	Thu, 10 Sep 2026 16:56:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.160.73.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0C103A5989
+	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 17:01:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789059398; cv=none; b=HJKzcnIDFkhoe2QBCp4RxSTXdLSZklQ9lA/9o3r4EJbU4/6sH5UwhYUuVXrQEoO7fSrNWea+cHCIxc/Qfqf4pPUi/8oDOJm80RXR1yFLHOzpz4m8v/isCThWEb1l8zYTYfsxrA6srBeImTyMR3QOedjgMUC9SYR2HoN4BBpWtKU=
+	t=1789059688; cv=none; b=jajpfZ11r6WlLEc5oQMbxSFXxsO14NI7//YmhuC7F/danInpdLScqfnFpMC/HUp81xkAu5ndWYqvZkeAJpaaz0MyZU8sgZsOJeSuCBRpOdZfa7uPz69jk8DyDR0tgU9uabFGoGeNtKXk4JGUOffQkQKPy5wBSZzSplWJamGq0Gw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789059398; c=relaxed/simple;
-	bh=ScSG9WBXfS4Wo/8HDgWfWshTRFigOP1Fj1R22XjxUT0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UWG/PNPJ3BOcvwcfagXSU5JivU87sfjf2cx6FcYoTCFWl0wNuwEZSLwW9sLabzu0qLR28NYvsJY6cGHLkvWU1j69BJreRSEeS0xdeIr2+UJX2LF43AjAHYCjZ9j+XGhTmUCUJ5k9HqQ7O96L32Mp19IDj55B/oD4tCFgd68PayU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org; spf=pass smtp.mailfrom=narfation.org; dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b=nwEXBdcA; arc=none smtp.client-ip=213.160.73.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=narfation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=narfation.org
+	s=arc-20240116; t=1789059688; c=relaxed/simple;
+	bh=NANkpeWR4zh1oRqvOJvtCAg0s9BHbg4yUFC1vrL6iAs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hPvxAJHWQ+Tm3u8aOPbj3oOt4Gn0DDmbNSB4gZ15B7ijwKJcDx4lMWx2VOYvxTXLWuNMFAbKuky//BcXWDWohxftppkgX5kvS292PYP72k9Nf4SPwFj9O88wa/kZQcM9Dqq5tQlZzan8hOqMeschD0W84hHm7S20uNTfQJgrwfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=2rsoI16R; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=narfation.org header.i=@narfation.org header.b="nwEXBdcA"
-Received: by dvalin.narfation.org (Postfix) id 2356320394;
-	Thu, 10 Sep 2026 16:56:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-	s=20121; t=1789059391;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jpfKdfRhIDieddP8CnPCmiOpHujz9qF8RTfexgVbXU8=;
-	b=nwEXBdcAy3Bpov4VOY4e9xQIUo1PQ2X9HlwxbfnLeQfMjABTkXF73qIcnksvyZ+lcbcS0g
-	2rPkDRnl7UQZFmPrLPM9uczBVt0vyDhtL/31BVXskbZBb26AOMkMrYm6WaedfzaSpjh5hq
-	RYBqqwgy91rok1+/oD3mlpj7KKJQqzg=
-From: Sven Eckelmann <sven@narfation.org>
-To: netdev@vger.kernel.org, Fernando Fernandez Mancera <fmancera@suse.de>
-Cc: horms@kernel.org, kuba@kernel.org, pabeni@redhat.com, edumazet@google.com,
- davem@davemloft.net, Fernando Fernandez Mancera <fmancera@suse.de>,
- Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
- Andrew Lunn <andrew+netdev@lunn.ch>,
- Tony Nguyen <anthony.l.nguyen@intel.com>,
- Przemek Kitszel <przemyslaw.kitszel@intel.com>,
- Elad Nachman <enachman@marvell.com>, Saeed Mahameed <saeedm@nvidia.com>,
- Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>,
- Ido Schimmel <idosch@nvidia.com>, Petr Machata <petrm@nvidia.com>,
- Edward Cree <ecree.xilinx@gmail.com>,
- Maxime Chevallier <maxime.chevallier@bootlin.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Arend van Spriel <arend.vanspriel@broadcom.com>,
- Miri Korenblit <miriam.rachel.korenblit@intel.com>,
- Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@kernel.dk>,
- Christoph Hellwig <hch@lst.de>, Sagi Grimberg <sagi@grimberg.me>,
- Chaitanya Kulkarni <kch@nvidia.com>, Saurav Kashyap <skashyap@marvell.com>,
- Javed Hasan <jhasan@marvell.com>, GR-QLogic-Storage-Upstream@marvell.com,
- "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
- "Martin K. Petersen" <mkp@kernel.org>, Nilesh Javali <njavali@marvell.com>,
- Manish Rangankar <mrangankar@marvell.com>, Varun Prakash <varun@chelsio.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- David Howells <dhowells@redhat.com>, Marc Dionne <marc.dionne@auristor.com>,
- Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>,
- Chuck Lever <cel@kernel.org>, Jeff Layton <jlayton@kernel.org>,
- NeilBrown <neil@brown.name>, Olga Kornievskaia <okorniev@redhat.com>,
- Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>,
- Marek Lindner <marek.lindner@mailbox.org>,
- Simon Wunderlich <sw@simonwunderlich.de>,
- Antonio Quartulli <antonio@mandelbit.com>,
- Nikolay Aleksandrov <razor@blackwall.org>,
- Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>,
- Phil Sutter <phil@nwl.cc>, Johannes Berg <johannes@sipsolutions.net>,
- Matthieu Baerts <matttbe@kernel.org>, Mat Martineau <martineau@kernel.org>,
- Geliang Tang <geliang@kernel.org>, Julian Anastasov <ja@ssi.bg>,
- Aaron Conole <aconole@redhat.com>, Eelco Chaudron <echaudro@redhat.com>,
- Ilya Maximets <i.maximets@ovn.org>, Allison Henderson <achender@kernel.org>,
- Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>,
- Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
- Xin Long <lucien.xin@gmail.com>, "D. Wythe" <alibuda@linux.alibaba.com>,
- Dust Li <dust.li@linux.alibaba.com>,
- Sidraya Jayagond <sidraya@linux.ibm.com>,
- Mahanta Jambigi <mjambigi@linux.ibm.com>, Tony Lu <tonylu@linux.alibaba.com>,
- Wen Gu <guwen@linux.alibaba.com>, Jon Maloy <jmaloy@redhat.com>,
- Tung Quang Nguyen <tung.quang.nguyen@est.tech>,
- Steffen Klassert <steffen.klassert@secunet.com>,
- Herbert Xu <herbert@gondor.apana.org.au>,
- Casey Schaufler <casey@schaufler-ca.com>, Paul Moore <paul@paul-moore.com>,
- James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>,
- Vikas Gupta <vikas.gupta@broadcom.com>,
- Bhargava Marreddy <bhargava.marreddy@broadcom.com>,
- Rajashekar Hudumula <rajashekar.hudumula@broadcom.com>,
- Nicolai Buchwitz <nb@tipi-net.de>,
- Markus =?UTF-8?B?QmzDtmNobA==?= <markus@blochl.de>,
- Arnd Bergmann <arnd@arndb.de>, Heiner Kallweit <hkallweit1@gmail.com>,
- Florian Fainelli <florian.fainelli@broadcom.com>,
- Krzysztof Kozlowski <krzk@kernel.org>,
- Qingfang Deng <qingfang.deng@linux.dev>,
- Julian Braha <julianbraha@gmail.com>,
- Ethan Nelson-Moore <enelsonmoore@gmail.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Eric Biggers <ebiggers@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
- Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>,
- Willem de Bruijn <willemb@google.com>, Alyssa Ross <hi@alyssa.is>,
- Joel Granados <joel.granados@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
- linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
- intel-wired-lan@lists.osuosl.org, oss-drivers@corigine.com,
- linux-net-drivers@amd.com, linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-wireless@vger.kernel.org,
- brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com,
- linux-nvme@lists.infradead.org, linux-scsi@vger.kernel.org,
- target-devel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-afs@lists.infradead.org, linux-nfs@vger.kernel.org,
- b.a.t.m.a.n@lists.open-mesh.org, bridge@lists.linux.dev,
- netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
- mptcp@lists.linux.dev, lvs-devel@vger.kernel.org, dev@openvswitch.org,
- rds-devel@oss.oracle.com, linux-sctp@vger.kernel.org,
- linux-s390@vger.kernel.org, tipc-discussion@lists.sourceforge.net,
- linux-security-module@vger.kernel.org
-Subject:
- Re: [PATCH 01/13 net-next] net: ipv4: introduce CONFIG_IPV4 to decouple the
- IPv4 stack
-Date: Thu, 10 Sep 2026 18:56:26 +0200
-Message-ID: <2927239.BEx9A2HvPv@ripper>
-In-Reply-To: <20260910144914.8025-2-fmancera@suse.de>
-References:
- <20260910144914.8025-1-fmancera@suse.de>
- <20260910144914.8025-2-fmancera@suse.de>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="2rsoI16R"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id A9ADE4E40106;
+	Thu, 10 Sep 2026 17:01:14 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 668C15FC38;
+	Thu, 10 Sep 2026 17:01:14 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A335211C787F4;
+	Thu, 10 Sep 2026 19:01:05 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1789059672; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=q+THQD9cacgAhlNfCsr4F8/RiLr6jwgba6exTWyNR3I=;
+	b=2rsoI16RJP8dSPy7ySUJKmmaG1eTO9TAQ/XW5i9BtjwYWfL5tf/OI23nOBxm4w6FVA3SVw
+	X9yudtHMr9Snolsx/YH2/TxuaAnTWeZ8EZMwoQ+CyFnNFC1/pnAHS7YC8ekCbyVyiKb46+
+	7ksmxPxn9h8fKNs+oAmX333Us/1NG4mbk59ibMV81a2qmLUxENXThPuKtPHETxnrgJIKuH
+	vRLXuxsUToGawzuXrdM34nfqlnQicXtBA/64j9oFg3OmmlCvISaggOKzqMwA1l5YMYYA/m
+	NIc71JSi9Hx4fGLo8CbcToWXjC1bO81FxJ9+8N3IO1GfB1LPeL6KxLOcoWqy3A==
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+To: davem@davemloft.net,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Heiner Kallweit <hkallweit1@gmail.com>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	thomas.petazzoni@bootlin.com,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Herve Codina <herve.codina@bootlin.com>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	=?UTF-8?q?K=C3=B6ry=20Maincent?= <kory.maincent@bootlin.com>,
+	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	=?UTF-8?q?Nicol=C3=B2=20Veronese?= <nicveronese@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	mwojtas@chromium.org,
+	Romain Gantois <romain.gantois@bootlin.com>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Dimitri Fedrau <dimitri.fedrau@liebherr.com>,
+	Frank Wunderlich <frank.wunderlich@linux.dev>,
+	Pietro Ameruoso <p.ameruoso@live.it>
+Subject: [PATCH RESEND net-next v17 00/10] net: phy_port: SFP modules representation and phy_port listing
+Date: Thu, 10 Sep 2026 19:00:52 +0200
+Message-ID: <20260910170103.1029108-1-maxime.chevallier@bootlin.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart15836323.tv2OnDr8pf";
- micalg="pgp-sha512"; protocol="application/pgp-signature"
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
---nextPart15836323.tv2OnDr8pf
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"; protected-headers="v1"
-From: Sven Eckelmann <sven@narfation.org>
-Date: Thu, 10 Sep 2026 18:56:26 +0200
-Message-ID: <2927239.BEx9A2HvPv@ripper>
-In-Reply-To: <20260910144914.8025-2-fmancera@suse.de>
-MIME-Version: 1.0
+Hello everyone,
 
-On Thursday, 10 September 2026 16:48:26 CEST Fernando Fernandez Mancera wrote:
-> diff --git a/net/batman-adv/Kconfig b/net/batman-adv/Kconfig
-> index 58c408b7a7d9..60ad4b09be6e 100644
-> --- a/net/batman-adv/Kconfig
-> +++ b/net/batman-adv/Kconfig
-> @@ -9,6 +9,7 @@
->  
->  config BATMAN_ADV
->         tristate "B.A.T.M.A.N. Advanced Meshing Protocol"
-> +       depends on IPV4
->         select CRC32
->         help
->           B.A.T.M.A.N. (better approach to mobile ad-hoc networking) is
+Here's V17 (again) for the phy_port improved SFP support and netlink
+interface. Resending as some of yesterday's patches didn't feel like
+going to the netdev list...
 
-This doesn't make a lot of sense to me IPV4 is not a requirement for 
-batman-adv. Only very specific features will require symbols from IPv4:
+V17 addresses the port_id wrapparound with the xarray insertion, and the
+missing comment during the ethtool header regen from the YNL specs.
 
-* CONFIG_BATMAN_ADV_BLA
+This work extends on the recent addition of phy_port representation to enable
+listing the front-facing ports of an interface. For now, we don't control
+these ports, we merely list their presence and their capabilities.
 
-  - arp_create
+As the most common use-case of multi-port interfaces is combo-ports that
+provide both RJ45 and SFP connectors on a single MAC, there's a lot of
+SFP stuff in this series.
 
-* CONFIG_BATMAN_ADV_DAT
+This series is in 2 main parts. The first one aims at representing the
+SFP cages and modules using phy_port, as combo-ports with RJ45 + SFP are
+by far the most common cases for multi-connector setups.
 
-  - arp_create
+The second part is the netlink interface to list those ports, now that
+most use-cases are covered.
 
-* CONFIG_BATMAN_ADV_MCAST
+Let's see what we can do with some examples of the new ethtool API :
 
-  - ip_mc_check_igmp
+- Get MII interfaces supported by an empty SFP cage :
+
+# ethtool --show-ports eth3
+
+Port for eth3:
+	Port id: 1
+	Supported MII interfaces : sgmii, 1000base-x, 2500base-x
+	Port type: sfp
+
+- Get Combo-ports supported modes, on each port :
+
+# ethtool --show-ports eth1
+
+Port for eth1:
+	Port id: 1
+	Supported link modes:  10baseT/Half 10baseT/Full
+	                       100baseT/Half 100baseT/Full
+	                       1000baseT/Full
+	                       10000baseT/Full
+	                       2500baseT/Full
+	                       5000baseT/Full
+
+	Port type: mdi
+
+Port for eth1:
+	Port id: 2
+	Supported MII interfaces : 10gbase-r
+	Port type: sfp
+
+- Get Achievable linkmodes on a SFP module (combo port with a DAC in the
+SFP cage)
+
+# ethtool --show-ports eth1
+
+Port for eth1:
+	Port id: 1
+	Supported link modes:  10baseT/Half 10baseT/Full
+	                       100baseT/Half 100baseT/Full
+	                       1000baseT/Full
+	                       10000baseT/Full
+	                       2500baseT/Full
+	                       5000baseT/Full
+	Port type: mdi
+
+Port for eth1:
+	Port id: 2
+	Supported MII interfaces : 10gbase-r
+	Port type: sfp
+
+Port for eth1:
+	Port id: 3
+	Upstream id: 2
+	Supported link modes:  10000baseCR/Full
+	Port type: mdi
+
+Note that here, we have 3 ports :
+ - The Copper port
+ - The SFP Cage itself, marked as 'occupied'
+ - The SFP module
+
+This series builds on top of phy_port and phy_link_topology to allow
+tracking the ports of an interface. We maintain a list of supported
+linkmodes/interfaces on each port, which allows for fine-grained
+reporting of each port's capability.
+
+What this series doesn't do :
+ - We don't support selecting which port is active. This is the next step.
+ - We only support PHY-driven combo ports. The end-goal of this whole
+   journey that started with phy_link_topology is to get support for MII
+   muxes, such as the one we have on the Turris Omnia. This will eventually
+   be upstreamed as well.
+
+If you want to play around with it, here's [1] the patched ethtool that I've
+been using to produce the outputs above.
+
+Thanks !
+
+Maxime
+
+[1] : https://github.com/minimaxwell/ethtool/tree/mc/ethtool_port
+
+Changelog :
+
+Changes in v17:
+ - Handle port index wraparound
+ - Regen the ethtool headers, now with the comment :)
+
+Changes in v16:
+https://lore.kernel.org/r/20260902212135.1805948-1-maxime.chevallier@bootlin.com
+ - unregister phy_ports at phy_detach
+ - typos in patch 1 (of -> or)
+ - Fix the netlink specs
+
+Changes in v15:
+https://lore.kernel.org/netdev/20260801074332.98755-1-maxime.chevallier@bootlin.com/
+ - Fail on port access for ops-locked devices
+ - Use a direct phy_port pointer for upstream tracking
+ - Addressed the kdoc issues
+
+Changes in v14:
+https://lore.kernel.org/netdev/20260720174808.139573-1-maxime.chevallier@bootlin.com/
+ - Added a big comment on the first patch for the topo alloc potential
+   races
+ - Fixed the multi-buff DUMP on last patch with a separate iterator for
+   dumps
+ - Fixed some typos in the documentation
+
+Changes in V13:
+V13: https://lore.kernel.org/r/20260701110427.143945-1-maxime.chevallier@bootlin.com
+ - Rebase on net-next
+ - Fix the SFP bus cleanup path in patch 5
+
+Changes in V12:
+V12: https://lore.kernel.org/r/20260615153907.862987-1-maxime.chevallier@bootlin.com
+ - Rebased on net-next, including fixes on the phy probing and cleanup
+   paths
+ - Rebased on Jakub's netdev_ops_locked changes in phy_link_topology
+ - Fixed some typos reported by Andrew and sashiko in the documentation
+
+Changes in v11:
+V11:https://lore.kernel.org/r/20260521121040.1199622-1-maxime.chevallier@bootlin.com
+ - Aggregated Andrew's reviews :)
+ - Removed the "vacant" field, replaced it with "upstream_port"
+
+Changes in V10:
+V10: https://lore.kernel.org/r/20260513130521.1064094-1-maxime.chevallier@bootlin.com
+ - Rebase on net-next
+ - Rename phylink/phy_device sfp_bus_port to sfp_cage_port
+ - Sashiko's reviews were mostly unrealistic or wrong :(
+
+Changes in V9:
+V9: https://lore.kernel.org/r/20260403123755.175742-1-maxime.chevallier@bootlin.com
+ - Added missing netlink doc updates for u8->u32 conversion
+ - Removed dead code with a condition that can never be true in
+   phylink's mod_port code
+ - Fixed the error path in phy_sfp_connect_phy
+
+Changes in v8:
+V8: https://lore.kernel.org/r/20260325081937.571115-1-maxime.chevallier@bootlin.com
+ - Set the new phydev.has_sfp_mod_phy field when we're sure that no
+   errors occured
+ - Fix formatting of the copyright info in ethnl port
+ - Use a policy to validate the range of port_id
+ - Use GENL_REQ_ATTR_CHECK
+ - alpha-sort headers
+ - use u32 in netlink messages
+ - return better error codes
+ - don't check the skb len, the core does that
+
+Changes in V7:
+V7: https://lore.kernel.org/all/20260309152747.702373-1-maxime.chevallier@bootlin.com/
+ - Changed the port cleanup path to use list_for_each_entry_continue_reverse
+ - Adjusted the cleanup path in phylink for the port vacant state
+ - Pass the right cmd for the netlink dump message
+
+Changes in V6:
+V6: https://lore.kernel.org/r/20260304145444.442334-1-maxime.chevallier@bootlin.com
+ - Added some comments in th mod_port cleanup
+ - changed some kmalloc to kmalloc_obj
+ - Removed some phy_link_topo_del_port that wasn't needed
+
+Changes in V5:
+V5: https://lore.kernel.org/r/20260205092317.755906-1-maxime.chevallier@bootlin.com
+ - Fixed a check on a potentially un-initialized pointer, reported by
+   Simon
+ - Fixed a documentation formatting issue
+ - Remove a stray pr_info
+ - Rebased on net-next
+
+Changes in V4:
+V4 : https://lore.kernel.org/netdev/20260203172839.548524-1-maxime.chevallier@bootlin.com/
+ - Add a cleanup patch for the of port parsing
+ - Added a match to sync the port's linkmodes with the PHY's for OF
+   ports
+ - Added RTNL assert in the port_get topo helper
+ - nullify the bus port for phylink support
+ - Fix some typos
+
+Changes in V3:
+V3: https://lore.kernel.org/netdev/20260201151249.642015-1-maxime.chevallier@bootlin.com/
+ - Remove the sfp bus ops for nophy, and use .module_start() as
+   suggested by Russell
+ - Added missing cleanup for the topology, as per AI review
+ - Fixed a few typos as per Romain's review
+ - Changed "occupied" to "vacant" as per Romain's review
+ - Added missing checks for null ports, per AI review
+
+Changes in V2:
+V2: https://lore.kernel.org/netdev/20260128204526.170927-1-maxime.chevallier@bootlin.com/
+ - Fix the cleanup path of phy_link_topo_add_phy, as per AI review
+ - Fix the cleanup path of phy_sfp_probe, as per AI review
+ - Fix the call-site of the disconnect_nophy sfp bus ops, per AI review
+ - Fix the netdev-less case uin phylink, per AI review
+ - Fix the prototype of phy_link_topo_get_port for the stubs
+ - Dropped patch 11. It ended-up breaking 'allnoconfig', so instead we
+   built a phy_interface_names array in net/ethtool/netlink.c
+ - Fix an ethool-netlink spec discrepancy with the type of an attribute
+ - Fix the size computation in the netlink port API
+ - Fix the cleanup path in the netlink port API
+
+V1: https://lore.kernel.org/netdev/20260127134202.8208-1-maxime.chevallier@bootlin.com/
 
 
-Basically things which currently depend on INET in net/batman-adv/Kconfig
 
-Or am I missing something here?
+Maxime Chevallier (10):
+  net: phy: phy_link_topology: Add a helper for opportunistic alloc
+  net: phy: phy_link_topology: Track ports in phy_link_topology
+  net: phylink: Register a phy_port for MAC-driven SFP cages
+  net: phy: Create SFP phy_port before registering upstream
+  net: phy: Represent PHY-less SFP modules with phy_port
+  net: phy: phy_port: Store information about a port's upstream
+  net: phy: phy_link_topology: Add a helper to retrieve ports
+  netlink: specs: Add ethernet port listing with ethtool
+  net: ethtool: Introduce ethtool command to list ports
+  Documentation: networking: Update the phy_port infrastructure
+    description
 
-Regards,
-	Sven
---nextPart15836323.tv2OnDr8pf
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
+ Documentation/netlink/specs/ethtool.yaml      |  55 +++
+ Documentation/networking/ethtool-netlink.rst  |  34 ++
+ Documentation/networking/phy-port.rst         |  26 +-
+ MAINTAINERS                                   |   1 +
+ drivers/net/phy/phy-caps.h                    |   2 +
+ drivers/net/phy/phy_caps.c                    |  26 ++
+ drivers/net/phy/phy_device.c                  | 186 +++++++--
+ drivers/net/phy/phy_link_topology.c           | 101 ++++-
+ drivers/net/phy/phylink.c                     | 128 +++++-
+ include/linux/phy.h                           |  10 +
+ include/linux/phy_link_topology.h             |  44 ++
+ include/linux/phy_port.h                      |   5 +
+ .../uapi/linux/ethtool_netlink_generated.h    |  22 +
+ net/core/dev.c                                |   1 +
+ net/ethtool/Makefile                          |   2 +-
+ net/ethtool/netlink.c                         |  25 ++
+ net/ethtool/netlink.h                         |   8 +
+ net/ethtool/port.c                            | 382 ++++++++++++++++++
+ 18 files changed, 1020 insertions(+), 38 deletions(-)
+ create mode 100644 net/ethtool/port.c
 
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQS81G/PswftH/OW8cVND3cr0xT1ywUCaqLhOgAKCRBND3cr0xT1
-y0QVAQCluQcX0gr2MIQxC1VBX8WP3ecVDFqIOBKX04RTLEdoGQD+LCZ3LWDtGBbG
-zKG3h3F96XOApdHINtJ4L0x6nSSviww=
-=kxMI
------END PGP SIGNATURE-----
-
---nextPart15836323.tv2OnDr8pf--
-
-
+-- 
+2.55.0
 
