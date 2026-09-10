@@ -1,240 +1,290 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B070139656D;
-	Thu, 10 Sep 2026 03:39:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.17
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789011601; cv=fail; b=qVveV1XTygiLGMG3qFdYUM30gWcJ9Hsbm55VLvuGetr51v6m8Qq+N0k12au5tbA68eJ0E8K7oUAHnZ0lIhF8S7HqMVmag2itsE1DQnKTc/60BHVLaflbqhzXDYOc8cM5Tr4hMxyZDtOFXeTnygXywkf5Ck2w+aLIIV0wvRySbUE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789011601; c=relaxed/simple;
-	bh=o2VK52HpqNc+WJUPK3KFRubx/wTlyjKNABixmnFDJ8Y=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=p1m+U8K1H/0krprCnlKFIRJkjctq7G9m45p5TjBA4iBhq81Nd1372lGApsqPNdP6fhVtc//ii1itGuJa5FI6BK/pSY0WuSoq2Py+jVImzh82wAL5cZtaQSrO844xxb2pegTx7zdSizxRVLDRYAO4F0JBdJPOFiy8Yg8rHzevsmg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OEVqOf+W; arc=fail smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10D242E0B5C;
+	Thu, 10 Sep 2026 03:41:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789011696; cv=none; b=hNTNgbL//Axr1QQFxy4cEqnytylZTubQ0R/zy7ttUDs+l9c/ARhTy+ISZgkE675pQpSs9W+8pJQK7jpmeojcD/13IYwVVBwUSUjsh3qeyLCe2ihd1KIVZubwG02tZic/8zxr7Ty7i09gWaOY8QRw+mtmsImiN/Aqg+uJtqrRtDw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789011696; c=relaxed/simple;
+	bh=1wwDJEpw5gEsXmbo+gLmfDIOdn+qoV5258NG0Z2Ke7k=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=QAQi1QvAauC3Dq/xtp15l9CTVmxTR3qcyI8WYzkccpO+QWzDoYamUw3z78P261AzBT3Rdn1gYP0RinA2T3oqr8xArNPJHahw6ASGvXMSyHSyOxQI4z50kMmN5I+dzSV+IJqZVValjBJXl2vFkod3qs/knmZsPOGGqVzvMO6ROVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VVsxcB/p; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OEVqOf+W"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1789011600; x=1820547600;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=o2VK52HpqNc+WJUPK3KFRubx/wTlyjKNABixmnFDJ8Y=;
-  b=OEVqOf+WX92ALaPU6M3+sOQYvh8mR0+/oYkH+YiFW4601WQILVW4ijWS
-   mkIpdcMsXaToLcDsN7Z5h43WXfRxKlx5uS2TMwUhKGB2UZU2+obOPY/aP
-   nHJw50DFVvywJcMFoNPCgJM1pznTrmI/Am92qBuneEU0Dwy96+A6pt4Ed
-   SeBqgY0fRGQPG0je9dI6PLE+G3go9I7PDPQtqoHkwJDkjVFLykkq5/89i
-   NY6Vbf5XPoH6MKId9515F0W2ux4zOMn00PYYenKC339Vgu0+5WKm4FsLx
-   phNr5LMozOgKFkZziow6VednxRFB3CuydJTFfontnnMfvXWw/8Cpt4uGP
-   Q==;
-X-CSE-ConnectionGUID: arNk9HaFSQOQCZwUa8uMtQ==
-X-CSE-MsgGUID: DQS9ol5ZRqiA4bY90mNNxg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11900"; a="89325115"
-X-IronPort-AV: E=Sophos;i="6.25,271,1779174000"; 
-   d="scan'208";a="89325115"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2026 20:39:59 -0700
-X-CSE-ConnectionGUID: 5hue6rOTTHef6CxdaPuYIQ==
-X-CSE-MsgGUID: DAHJERe7SaCKkI6Dj0cjYA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.25,271,1779174000"; 
-   d="scan'208";a="270158952"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
-  by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2026 20:39:53 -0700
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Wed, 9 Sep 2026 20:39:49 -0700
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46 via Frontend Transport; Wed, 9 Sep 2026 20:39:49 -0700
-Received: from CH5PR02CU005.outbound.protection.outlook.com (40.107.200.71) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.46; Wed, 9 Sep 2026 20:39:48 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=gBzeBqM2gTCFMgt3IBBe38+ia+pS2OhuoXwJNl/e+lly6x/cN7RjMoBI7FIURIYpf5tfFvf7rCdInB45pex1oPDB2ixb/hhCg1/4kvzRWBd5T5hgVPTQSskBxl6vpf5FhCSaIvNszO/11BM0f20VNpT+jP94E31vskF/0Q929zNCD4ofKkL9OthvRAST5h1VeNjbAr4o5fSOd1Zn5ZNmL+lgOaLg9IlCotczhs7BEXr990k1M1pbzkJ6KDITZtn9yG3dyj1UJTA6tGDOZRpA+2kmADMQiP4orCXUfpTuwkvYfmnjfUiy1kyW+cWtpEhteJSCxUer4BKAV6Kql8MuoQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DziKIxwX5o7gOx7ebEqyUcUq4wKUBOhOQciRiZNkj1A=;
- b=DnaFSb9ZRE3yDrVEs5vL6uqA0tvYfSeLjrZv+aOsL1DenjXZvVICDN5gmBD8TSq9vWyrA4JwUzkNJp9UbU1/i+MAQAWQR2BUbJh93tfidJh0Be4QnZxjcHK2uJ/t3b/P+wWnXj0FWWHHoktDYEPpAz2z7Pfn7R4dUMx+6im109kFkQyl34PKEmEsUOOaMOKlnSL60Pgp6pw72AsMBTWrtpyi9r86WDTotoJ8PyFSbOM++/k96DWj4A+HeNPtemxci8jE+In9T0e/eWEHSbJWzwNDQPDkSlpVGtrZcaIYcwfWHwsOdKuaUYm5Zd3yBgHIp4xRNmPeJLmr7mdS5MCYCA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from IA1PR11MB6241.namprd11.prod.outlook.com (2603:10b6:208:3e9::5)
- by LV2PR11MB9538.namprd11.prod.outlook.com (2603:10b6:408:378::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.8; Thu, 10 Sep
- 2026 03:39:40 +0000
-Received: from IA1PR11MB6241.namprd11.prod.outlook.com
- ([fe80::7ac8:884c:5d56:9919]) by IA1PR11MB6241.namprd11.prod.outlook.com
- ([fe80::7ac8:884c:5d56:9919%3]) with mapi id 15.21.0406.007; Thu, 10 Sep 2026
- 03:39:40 +0000
-From: "Rinitha, SX" <sx.rinitha@intel.com>
-To: "Oros, Petr" <poros@redhat.com>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>
-CC: "Vecera, Ivan" <ivecera@redhat.com>, Alice Michael
-	<alice.michael@intel.com>, "Kitszel, Przemyslaw"
-	<przemyslaw.kitszel@intel.com>, Eric Dumazet <edumazet@google.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "Martyna
- Szapar-Mudlaw" <martyna.szapar-mudlaw@linux.intel.com>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, Marcin Szycik <marcin.szycik@linux.intel.com>,
-	"Nguyen, Anthony L" <anthony.l.nguyen@intel.com>, Simon Horman
-	<horms@kernel.org>, "intel-wired-lan@lists.osuosl.org"
-	<intel-wired-lan@lists.osuosl.org>, "Keller, Jacob E"
-	<jacob.e.keller@intel.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, "David S. Miller" <davem@davemloft.net>
-Subject: RE: [Intel-wired-lan] [PATCH iwl-net v4 1/2] ice: skip per-VLAN
- promisc rules when default VSI Rx rule is set
-Thread-Topic: [Intel-wired-lan] [PATCH iwl-net v4 1/2] ice: skip per-VLAN
- promisc rules when default VSI Rx rule is set
-Thread-Index: AQHdDtmI0Xq5iS1pvk6EOBK3yUUWiLbHjX7A
-Date: Thu, 10 Sep 2026 03:39:40 +0000
-Message-ID: <IA1PR11MB624104E0EDBB194323D6EFA68BBF2@IA1PR11MB6241.namprd11.prod.outlook.com>
-References: <20260708125755.706263-1-poros@redhat.com>
- <20260708125755.706263-2-poros@redhat.com>
-In-Reply-To: <20260708125755.706263-2-poros@redhat.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: IA1PR11MB6241:EE_|LV2PR11MB9538:EE_
-x-ms-office365-filtering-correlation-id: bf4d71b8-61a0-41a8-e327-08df0eed2539
-x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|7416014|376014|366016|23010399003|1800799024|38070700021|10067099003|56012099006|4143699003|11063799006|22082099003|18002099003;
-x-microsoft-antispam-message-info: hryRlLXcnsoT6v56LOt8KxZc+3P3bhl1EFnRPcIlxlMHvlHTg0gvn88Vuh4v+rOz+TPJ81UReVklCN3GQ5wMsR7AbyiOUJxXcTpm1u3Gl4/7w+d6v41+B+Mz51/4MxTwrJEm1zKRKkrbEyC+hkYTCPfkTmPW+uJmPPNoZvl9ckA1FlkFQ8F/uH01zrAhv+TUs1qaHfibwIB7cIXBCs6RYUy2Tcf0Ic6SGJIjlcXrXpJQ7S8Dcfoc7bVLAFv0V2pDBrTag/ilvqRXW+ffNXC+5raT01+y2L2UpJC5ONCzK4aA1jOuSC4GHAMoiFSoWsrB5oHpGjVDhWyGEwC63aYnJOs51PyGZnDttjz4N28yiJzQNb0a6HdF1OxI7HU7e6MJIHRKGD/c5K6BjpAwA4OThScrkl9LRtwWNfEbVNlDOV3H2OlW/xDMmXqpx1rqa62PxUoUPOKDvp4zmjERWIbljoKg+8MAnY1kwJiCyTfXmdq2l3YHMAMaQIcX8aMoLCrOCEr2ns8uz3o3+YrrBY86O+vDTjQSrm5bWsw7qLXLFJ7Xsb9ZEHO6aEhA8ANLnzHYC3oeteMU+LvvhcZZRi5lKtY+XVukojPC5wlVufXSSGiRWpWRUwUtZg3QXnit6fyRjnWd6cHenoA43glZHWPQBI3nyYZ79D1O/ZVsmfO6uRBexyqToB50xcscXKzH4PRTqTlW/DNAmRvieUlyHC9CsG9OuZRueYG0/Of1BzWH1Nc=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR11MB6241.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(23010399003)(1800799024)(38070700021)(10067099003)(56012099006)(4143699003)(11063799006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?uZbOnIeAqthIfOz5qfKBco5P1ZGDgWI1P/stEz7aZ4bslNeYMTWoJSEYBbAP?=
- =?us-ascii?Q?1VGLIJ7qsy2VuekKeLHrLuL+fPi+eYU/e5g/Xj08uy+WhZynJu3Z+4Wk+wRD?=
- =?us-ascii?Q?INzmsS99c30XkkrkVqxxTbeLxus7H/TMS01XEduXfeuYoFR3zjF9Hwy7Sc2p?=
- =?us-ascii?Q?JE8VLhvSv0MLey8CB92P7OW46c0dEH4BWRK4U5kFg2egprBOV/F4T9G6+O91?=
- =?us-ascii?Q?we7mNbiHtx8c2dA3MQL+vS8n4FVYp/f7tSwqAHOREDDogDzt3rpo0EdYZd2e?=
- =?us-ascii?Q?qs7HRAnUaHTkBl5YUodhQhijF3heDFkPaoxys7RWiqm8tIhmR5WEkQfozJAw?=
- =?us-ascii?Q?xZ7NOyDrE/nONX1HyjUS5l/k16A6sBuLlL14ydQXK6WX55pGYVqHpmKgwwS7?=
- =?us-ascii?Q?CweJPsDfkOvWOMZ658YyDRxtgcmtyhus3IiGWghb5VF4GTnKd4L91+7U5by3?=
- =?us-ascii?Q?YteWFWcdgKDK2SsWl687Dulx0iGdJQKg/9xUyv3eDxkYPWhRTfEvroOp9UKS?=
- =?us-ascii?Q?fDdtDY/4SqB+UIPrfZvPEm8kJkTvafJt04xaM7eHFtyDKte+BQtQQU875B3V?=
- =?us-ascii?Q?TNtgYht8HahdApBtUrrl79pPiZ6oJAaa0uILP8O0WGsbaao8/55t3UhjjXo/?=
- =?us-ascii?Q?Po7rLG/1XSgpHzaUlNHv0CTF1WwnD7O4+Q5rZmqvshU746Xocki83CCkO3Xu?=
- =?us-ascii?Q?CTfBoVxEzbkmDj8uzjexTtcZVL/41CjuswSrv7Be3Q43wbBFJ6fWVoQBPl28?=
- =?us-ascii?Q?lXGX3ZFp7Vv0BE/tSuuQvE+J3C4tQ8hC5uw2ydcXEdUpUhTxNY4IMmL+QByZ?=
- =?us-ascii?Q?ZMZKD0VEL3eW5CgCMnbAMJ1XS5LRtJNNzP3i9AWV6IqdkNCHo15qa9mWMbAK?=
- =?us-ascii?Q?GpA2T90SYwxdAniw6Ak2vp1z/Cds6xZcYsGvr+X/Eb1pdsMF5Vp+aJ8aZpLg?=
- =?us-ascii?Q?Y+xrpU7JR4OOMZBizT6nufEst36TIy7wZEsUcmbWUgzE0QyPwEiAFLdc8Zy+?=
- =?us-ascii?Q?Vxi/cuKDZ+dT22+kTGOCANgA+0IRvvJuoZwb/0O8QxtEyHO2ikWmrrwYCKJe?=
- =?us-ascii?Q?UhM+9/D9z6hgRDpVFyYhawz/cdIinkVmiil+fd95uWpIyivjGXgJ2V2APuFd?=
- =?us-ascii?Q?xay26oy7GVGndwgTFEl0JKYjZzZXKfsvCTOxig99CJqV2BXshV/NB4HuqBKY?=
- =?us-ascii?Q?EIfnwGyKlYEdt9iAjURwQSF+w5HPkacRyFXX/9hJw8uAKTTuiHf6Wnc2y0CH?=
- =?us-ascii?Q?rRpjAhoev0JSy5zrFmVRT8H9h2CCqaZ3hRUbjdYsoVjZSvJRNqCAJPfjc6NG?=
- =?us-ascii?Q?HueZCF3BU7p5484MZ6jKMFF6nsxVKta4UKGjcf25jaEjasX5khh98v91mu33?=
- =?us-ascii?Q?bYRrdZH6eobr57yHshCARYeB53xJtsnhF/MrN6uzhPzZSr9TOlGatCJT0dka?=
- =?us-ascii?Q?CWApH3ARo9rvdR5PMRDglHnCUqmlC/b1ZAx19qlwXxz4Vf18/Najhv6IoanL?=
- =?us-ascii?Q?LtylNYpRaB1SPL3KiPWL2tLX56aj5Si5Pyv05iJ4p0g5afKR8VE08pdJmzzP?=
- =?us-ascii?Q?TWQfnrfjqNwMn5d9INLr9QB/rLAzFoBKBbrJcfCFHQyWZTetaHztBQcs1pHY?=
- =?us-ascii?Q?oldmD4KfKbpLaN/ltzaOyniiieYuRJ7nq1m3+qTE5jRlDguph/8Kp6G44j61?=
- =?us-ascii?Q?r1jQSCeFwJT5BqiZ+ojnmMndZYX/i33etee6ngmegtFQH9YY?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VVsxcB/p"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D16041F000FF;
+	Thu, 10 Sep 2026 03:41:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789011694;
+	bh=ulp+TU34kNx1g0TvXb7mz/lbGuv0wf5Z6rXyYC+guOM=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=VVsxcB/pGyJM9Ml91UKvkF1Hv0JQ7OTGjiSEkK4w4TM0XuB63tjIkmN22J27kumv1
+	 meeQxDU7eAO/iT6Y1SVa8o/nqLJO6v+9rOLUkIuRxxXky8i6WBefHfwiX+Z0/ih1ZV
+	 rA7/sbCjMDMp8QajLYV8Am5HCOTextg5VXWTeVsR44HNFrjUOkqjO/M6Uc867j/G2h
+	 I9d5qT50HUDxApthtE5vzCThadHtgY2LwjX2m/tgwKhgND0CgOG7MCh0yrSK3ZePxj
+	 EgC9KNfrnKkTcRvPNTdLJUZinhJX03P7SOStVNqG7oPkuuDWTyOFnzY6lT6UKO/a5n
+	 SpWyygErg7N5A==
+Subject: Re: [PATCH net-next 1/3] rtnetlink: add AF_PACKET multicast dumps
+From: netdev-bot+sashiko@kernel.org
+To: sigefriedhyy@gmail.com
+Cc: davem@davemloft.net, dsahern@kernel.org, donald.hunter@gmail.com,
+ edumazet@google.com, idosch@nvidia.com, kuba@kernel.org, kuniyu@google.com,
+ nickgarlis@gmail.com, pabeni@redhat.com, sd@queasysnail.net, shuah@kernel.org,
+ horms@kernel.org, sdf.kernel@gmail.com, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, netdev@vger.kernel.org
+Date: Thu, 10 Sep 2026 03:41:33 +0000
+Message-ID: <178901169340.219967.5720246601361596190@kernel.org>
+In-Reply-To: <20260905093932.43726-2-sigefriedhyy@gmail.com>
+References: <20260905093932.43726-2-sigefriedhyy@gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: JFuIz9BOVX+eaX8c4PpwmwFO3DhClB6QPTIm9eafWPT02k1TLx2nTHLv6P5IGB3iRm9nbnbNgpl3oFqnU19mj0qKb8PvJdoRyo211afPaXgvA6uk/ORpGE3z8mE1U76Tg4FDv6ETOrH0aDer2PEqqITXevAqJtXI3qWZ02XS6yUUPykzLHv9fCSa31qK4BPue0UYa3StmZtSIZpBT6o+3l20DCI+bU7aaA5yWC7ZO+Iw3jdnRC/ITATFEsVowjblnfr5e6C/IRGUpzLvspkjSmyZc5eJDe/bnJYkWs8a6Yn8IzJrzoWDbp+zxLW3BNw+hfgC1SyEXdGdthDpwm0mAw==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: IA1PR11MB6241.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bf4d71b8-61a0-41a8-e327-08df0eed2539
-X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Sep 2026 03:39:40.4169
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Ug7ySbz0rqdoo9sRoLIF5WxexB5NUYej766aJJLo0A+p9V+YBJckn2lkSNtioNCLO9Bvx6hNIUe6uKkJUeeOpQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR11MB9538
-X-OriginatorOrg: intel.com
 
-> -----Original Message-----
-> From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf Of P=
-etr Oros
-> Sent: 08 July 2026 18:28
-> To: netdev@vger.kernel.org
-> Cc: Vecera, Ivan <ivecera@redhat.com>; Alice Michael <alice.michael@intel=
-.com>; Kitszel, Przemyslaw <przemyslaw.kitszel@intel.com>; Eric Dumazet <ed=
-umazet@google.com>; linux-kernel@vger.kernel.org; Martyna Szapar-Mudlaw <ma=
-rtyna.szapar-mudlaw@linux.intel.com>; Andrew Lunn <andrew+netdev@lunn.ch>; =
-Marcin Szycik <marcin.szycik@linux.intel.com>; Nguyen, Anthony L <anthony.l=
-.nguyen@intel.com>; Simon Horman <horms@kernel.org>; intel-wired-lan@lists.=
-osuosl.org; Keller, Jacob E <jacob.e.keller@intel.com>; Jakub Kicinski <kub=
-a@kernel.org>; Paolo Abeni <pabeni@redhat.com>; David S. Miller <davem@dave=
-mloft.net>
-> Subject: [Intel-wired-lan] [PATCH iwl-net v4 1/2] ice: skip per-VLAN prom=
-isc rules when default VSI Rx rule is set
->
-> When an ice port in a vlan-filtering bridge goes promiscuous (typical for=
- bond slaves), the driver installs a per-VLAN ICE_SW_LKUP_PROMISC_VLAN rule=
- for every VID on top of the broad ICE_SW_LKUP_DFLT VSI Rx rule. Each rule =
-consumes one of > the ~32K Flow Lookup Unit (FLU) entries the device shares=
- across PFs, so a wide trunk (vid 2-4094) over several PFs overruns the
-> pool: firmware rejects further Add Switch Rules with ENOSPC (AQ 0x10) and=
- the DFLT Rx rule itself fails to install:
->
->  ice 0000:5c:00.1: Failed to set VSI 14 as the default forwarding
->                    VSI, error -5
->  ice 0000:5c:00.1 ens1f1: Error -5 setting default VSI 14 Rx rule
->
-> Once a switch context is overrun the retries can also come back as ENOENT=
- (AQ 0x2), which has misled triage toward a perceived recipe binding defect=
- rather than a capacity issue.
->
-> The DFLT rule already catches every packet on the port regardless of VLAN=
- tag, so the per-VLAN promisc expansion is redundant while it is installed.
-> Skip it at the two sites that drive it, ice_set_promisc() and ice_vlan_rx=
-_add_vid(), keyed on ice_is_vsi_dflt_vsi() rather than the netdev IFF_PROMI=
-SC flag so a failed or LAG-suppressed DFLT install still falls back to the =
-per-VLAN rules.
->
-> IFF_ALLMULTI and IFF_PROMISC can reach ice_vsi_sync_fltr() in separate pa=
-sses (a bridge join sets them through separate calls), so the allmulti pass=
- may expand the per-VID rules before the DFLT rule exists. Drop those now-r=
-edundant rules right > after ice_set_dflt_vsi() installs the DFLT rule;
-> ice_vsi_exit_dflt_promisc() reinstates them when promisc is cleared.
->=20
-> ice_vsi_sync_fltr() subscribed multicast promiscuity only inside the "def=
-ault VSI not yet in use" branch, so a promiscuous VSI that finds the defaul=
-t VSI rule already present (owned by another VSI, or preserved across a swi=
-tchdev session) ended up > in unicast promisc with no multicast subscriptio=
-n. Issue ice_set_promisc(ICE_MCAST_PROMISC_BITS) whenever the netdev is pro=
-miscuous; it is idempotent and returns 0 if the rule is already present.
->
-> Fixes: 1273f89578f2 ("ice: Fix broken IFF_ALLMULTI handling")
-> Signed-off-by: Petr Oros <poros@redhat.com>
-> ---
-> v4 (review comments from Marcin Szycik):
-> - Reworded the ice_clear_promisc() and the per-VID cleanup comments.
-> - Flipped the ice_vsi_clear_vlan_mc_promisc() guard to an early return to
->   reduce indentation, and noted that the clear is best-effort.
-> No functional change.
->
-> v3: https://lore.kernel.org/all/20260701133601.2118382-2-poros@redhat.com=
-/
-> v2: https://lore.kernel.org/all/20260622113428.2565255-2-poros@redhat.com=
-/
-> v1: https://lore.kernel.org/all/89efbea9831175e6f57e9fe8557f7a0e48e050b7.=
-1781786935.git.poros@redhat.com/
-> ---
-> drivers/net/ethernet/intel/ice/ice_main.c | 109 +++++++++++++++++-----
-> 1 file changed, 88 insertions(+), 21 deletions(-)
->
+Thank you for your contribution! Sashiko AI review found 4 potential
+issue(s) to consider:
 
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Critical: 0 · High: 0 · Medium: 2 · Low: 2
+
+- [Medium] rtnl_dump_mcaddr()/rtnl_dump_mcaddr_dev()
+  (net/core/rtnetlink.c) resume a truncated dump purely positionally —…
+- [Medium] rtnl_fill_mcaddr() (net/core/rtnetlink.c) copies dev->addr_len
+  bytes out of ha->addr[MAX_ADDR_LEN] into the IFA_MULTICAST attribute:…
+- [Low] Claimed uAPI/YAML divergence: Documentation/netlink/specs/rt-
+  addr.yaml documents op `getmulticast` as 'Get / dump IPv4/IPv6…
+- [Low] Claimed spec/implementation mismatch: rt-addr.yaml lists
+  `cacheinfo` in the getmulticast reply attribute set (mcaddr-attrs) and…
+
+--
+
+rtnetlink: add AF_PACKET multicast dumps
+
+This adds a PF_PACKET RTM_GETMULTICAST dump handler that walks dev->mc for
+every device in the netns and reports each netdev_hw_addr in the existing
+ifaddrmsg format with IFA_MULTICAST and IFA_MC_USERS.  The dump runs under
+RCU plus netif_addr_lock_bh() and is registered with
+RTNL_FLAG_DUMP_UNLOCKED.
+
+A few questions below.
+
+> diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+> index 81c5a6104dea1..5e83232c15048 100644
+> --- a/net/core/rtnetlink.c
+> +++ b/net/core/rtnetlink.c
+> @@ -4566,6 +4566,136 @@ static int rtnl_dump_all(struct sk_buff *skb, struct netlink_callback *cb)
+>  	return skb->len ? : ret;
+>  }
+>  
+> +static int rtnl_fill_mcaddr(struct sk_buff *skb, const struct net_device *dev,
+> +			    const struct netdev_hw_addr *ha, u32 portid,
+> +			    u32 seq, unsigned int flags)
+> +{
+
+[ ... ]
+
+> +	if (nla_put(skb, IFA_MULTICAST, dev->addr_len, ha->addr) ||
+> +	    nla_put_u32(skb, IFA_MC_USERS, ha->refcount)) {
+
+[Severity: Medium]
+
+Can this nla_put() copy uninitialized slab bytes into IFA_MULTICAST when
+dev->addr_len grew after the entry was created?
+
+netdev_hw_addr entries are allocated with plain kmalloc() and only
+addr_len bytes are initialized, and the length used at creation time is
+not recorded anywhere:
+
+net/core/dev_addr_lists.c:__hw_addr_create() {
+	alloc_size = sizeof(*ha);
+	if (alloc_size < L1_CACHE_BYTES)
+		alloc_size = L1_CACHE_BYTES;
+	ha = kmalloc(alloc_size, GFP_ATOMIC);
+	if (!ha)
+		return NULL;
+	memcpy(ha->addr, addr, addr_len);
+	...
+}
+
+__dev_mc_add() passes dev->addr_len as it is at add time:
+
+net/core/dev_addr_lists.c:__dev_mc_add() {
+	err = __hw_addr_add_ex(&dev->mc, addr, dev->addr_len,
+			       NETDEV_HW_ADDR_T_MULTICAST, global, false,
+			       0, false);
+}
+
+while rtnl_fill_mcaddr() emits the current dev->addr_len.  One sequence
+that produces a mismatch:
+
+  1. create a tap device (ARPHRD_ETHER, addr_len 6)
+  2. SIOCADDMULTI via dev_ifsioc() -> dev_mc_add_global(), which only
+     requires netif_device_present(), so the device may be down; 6 bytes
+     of ha->addr are initialized
+  3. TUNSETLINK with ARPHRD_TUNNEL6 in drivers/net/tun.c:
+
+	tun->dev->type = (int) arg;
+	tun->dev->addr_len = tun_get_addr_len(tun->dev->type);
+
+     which raises addr_len to 16 and does not purge dev->mc
+  4. run the new RTM_GETMULTICAST/AF_PACKET dump
+
+Would step 4 then emit 16 bytes out of a 6-byte-initialized ha->addr,
+handing 10 bytes of never-written slab memory to user space?  The read
+stays inside ha->addr[MAX_ADDR_LEN], so this is a disclosure of
+uninitialized memory rather than an out-of-bounds access.
+
+The same bytes are already visible through /proc/net/dev_mcast, which
+prints "%*phN" with dev->addr_len, so the underlying unzeroed tail is
+older than this patch, but this adds a second path to it.  Would it make
+sense to either bound the emitted length or zero the address tail in
+__hw_addr_create()?
+
+> +		nlmsg_cancel(skb, nlh);
+> +		return -EMSGSIZE;
+> +	}
+> +
+> +	nlmsg_end(skb, nlh);
+> +	return 0;
+> +}
+> +
+> +static int rtnl_dump_mcaddr_dev(struct net_device *dev, struct sk_buff *skb,
+> +				struct netlink_callback *cb, int *s_addr_idx,
+> +				unsigned int flags)
+> +{
+> +	struct netdev_hw_addr *ha;
+> +	int addr_idx = 0;
+> +	int err = 0;
+> +
+> +	netif_addr_lock_bh(dev);
+> +	netdev_for_each_mc_addr(ha, dev) {
+> +		if (addr_idx < *s_addr_idx) {
+> +			addr_idx++;
+> +			continue;
+> +		}
+> +		err = rtnl_fill_mcaddr(skb, dev, ha, NETLINK_CB(cb->skb).portid,
+> +				       cb->nlh->nlmsg_seq, flags);
+> +		if (err < 0)
+> +			break;
+> +		addr_idx++;
+> +	}
+> +	netif_addr_unlock_bh(dev);
+> +
+> +	*s_addr_idx = err < 0 ? addr_idx : 0;
+
+[Severity: Medium]
+
+Should this dump also maintain a generation counter and call
+nl_dump_check_consistent() so interrupted dumps get NLM_F_DUMP_INTR?
+
+Resume state here is purely positional (ctx->ifindex plus ctx->addr_idx)
+and neither RTNL nor netif_addr_lock is held between two invocations of
+the callback.  netlink_dump() turns the -EMSGSIZE into a continued dump:
+
+net/netlink/af_netlink.c:netlink_dump() {
+	if (nlk->dump_done_errno == -EMSGSIZE && skb->len)
+		nlk->dump_done_errno = skb->len;
+}
+
+so entries added to or removed from dev->mc in that window shift the
+index and entries can be silently repeated or skipped.
+
+cb->seq is never assigned in rtnl_dump_mcaddr(), so the check in
+nl_dump_check_consistent():
+
+	if (cb->prev_seq && cb->seq != cb->prev_seq)
+		nlh->nlmsg_flags |= NLM_F_DUMP_INTR;
+
+can never fire and user space has no way to notice the loss.  The AF_INET
+sibling of the same message type does both halves: inet_dump_addr() sets
+
+	cb->seq = inet_base_seq(tgt_net);
+
+and in_dev_dump_ifmcaddr() calls nl_dump_check_consistent(cb,
+nlmsg_hdr(skb)) for every emitted message.
+
+> +
+> +	return err;
+> +}
+
+[ ... ]
+
+> +static int rtnl_dump_mcaddr(struct sk_buff *skb, struct netlink_callback *cb)
+> +{
+
+[ ... ]
+
+> +	for_each_netdev_dump(net, dev, ctx->ifindex) {
+> +		err = rtnl_dump_mcaddr_dev(dev, skb, cb, &ctx->addr_idx,
+> +					   flags);
+> +		if (err < 0)
+> +			break;
+> +	}
+
+[Severity: Medium]
+
+Related to the above, can a stale ctx->addr_idx be applied to the wrong
+device here?
+
+On -EMSGSIZE, rtnl_dump_mcaddr_dev() keeps the offset in ctx->addr_idx and
+the break skips the ifindex++ of for_each_netdev_dump(), so ctx->ifindex
+still names the interrupted device.  If that device is unregistered before
+the dump resumes:
+
+include/linux/netdevice.h:
+	#define for_each_netdev_dump(net, d, ifindex)				\
+		for (; (d = xa_find(&(net)->dev_by_index, &ifindex,		\
+				    ULONG_MAX, XA_PRESENT)); ifindex++)
+
+xa_find() with XA_PRESENT returns the next device that does exist, and the
+non-zero ctx->addr_idx is passed unchanged into rtnl_dump_mcaddr_dev(), so
+
+		if (addr_idx < *s_addr_idx) {
+			addr_idx++;
+			continue;
+		}
+
+would skip the first ctx->addr_idx multicast entries of an unrelated
+device.  Should ctx->addr_idx be reset when the resumed ifindex does not
+match the recorded one?
+
+> +out:
+> +	rcu_read_unlock();
+> +	return err;
+> +}
+> +
+
+[ ... ]
+
+> @@ -7251,6 +7381,8 @@ static const struct rtnl_msg_handler rtnetlink_rtnl_msg_handlers[] __initconst =
+>  	{.msgtype = RTM_SETSTATS, .doit = rtnl_stats_set},
+>  	{.msgtype = RTM_NEWLINKPROP, .doit = rtnl_newlinkprop},
+>  	{.msgtype = RTM_DELLINKPROP, .doit = rtnl_dellinkprop},
+> +	{.protocol = PF_PACKET, .msgtype = RTM_GETMULTICAST,
+> +	 .dumpit = rtnl_dump_mcaddr, .flags = RTNL_FLAG_DUMP_UNLOCKED},
+
+[Severity: Low]
+
+This isn't a bug, but as of this commit alone the getmulticast op in
+Documentation/netlink/specs/rt-addr.yaml still reads "Get / dump
+IPv4/IPv6 multicast addresses." while the same op now also serves
+AF_PACKET requests with link-layer address semantics.
+
+The follow-up patch in the series, "netlink: specs: rt-addr: document
+AF_PACKET multicast dumps", rewrites that doc to cover ifa-family
+selecting AF_INET, AF_INET6 or AF_PACKET and the permanent-flag meaning,
+so the spec and the implementation do agree at the end of the series.
+Only noting it in case the two patches are ever applied separately.
+
+>  	{.protocol = PF_BRIDGE, .msgtype = RTM_GETLINK,
+>  	 .dumpit = rtnl_bridge_getlink},
+>  	{.protocol = PF_BRIDGE, .msgtype = RTM_DELLINK,
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260905093932.43726-1-sigefriedhyy%40gmail.com
