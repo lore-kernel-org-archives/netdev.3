@@ -1,163 +1,142 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C58A54825A8;
-	Thu, 10 Sep 2026 20:02:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31F1B46EC6C
+	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 20:02:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789070526; cv=none; b=loie1xHRdnCxov6vd4Y7fAZ7xVrA9BHh+eJKtqhG1TBS9JdRyQs+b4+Topy/Veo0V8h+0iluyrw1KawqwDE+nPs3y0yjMyavn/Fyfnl4BrEFxk+bHZXuXZcZPs0x87g6p614UNYPJNpX1XL/62YgvoRZhZJUmXqtZfmpDkz5+k4=
+	t=1789070557; cv=none; b=o+Gfi9PzEz3DRW85hWGuLuijc1nRPQ5c8wbIyAa3LCY4QLrtmRzdG7XHkOIA+qiuS17YV3xz6EVJH3DZL1r5C3ETkyxvDvZTfV/3As03KhLe2yXBhlM9UbVaMACY8pbAVEwLULVT1/yksyG6+ZudC7VN7l/X0Y9/ywZ+eLGQsjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789070526; c=relaxed/simple;
-	bh=lsnZ9FEErTzPI6kczqdyCGmd3+HhdRLdrbBHbeokNns=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=CI+PbxN5TJkX0LlmpxrQGzME4LHeJG+fkNYXtl19vz7wi2NyaWftx2HwwQ+qgO5bxHQCQyDBesnRmdrLSB3YqQKa1ZmLxi8ViTn1cC7TSeVj7F2CKtLs9Gr62GmD+IPt70vQ7Esr1xnQF3WOK9jl1Wdn8hkA5qCXl++jW74Q8Nw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hm+zOB8a; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789070557; c=relaxed/simple;
+	bh=A3hZp6S0iVLSHK0F2SHRfV8fdm35uGWaIJU8a37QGP8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=q3mxw5B55FoCPLPcsUWWealxSGP0JstGyVffJM1GPSJmUPr5gixjeA3l4k4gcKAa09dgO+Jc+Z97wV3uDvwATA0sWhAMc234AT7mNHT4Ymxn1PE9Io2WXB757qHQuMTKZp9FyYsrIBa3qsI/j8Vf7Ssyx5gzSvJrJbL1v1yHh3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QdHeWh2E; arc=none smtp.client-ip=74.125.225.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hm+zOB8a"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 796421F00893;
-	Thu, 10 Sep 2026 20:02:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789070524;
-	bh=nfyOn+nEk/GMCi1Qa4cIAoJuiFBSov5lv9/s3UOize0=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Hm+zOB8a2bJT03EpmEnIASTXmvEjGimUWpZGJdbfplSbbulQkOgAblfHOaO0PFLpY
-	 V+RFdi0Bg1oQSL/Dko0ZSfcQA3oJ8HGgUobCgRcFCZXoCdGvRBMZciRR2a3S1n28Bn
-	 4aYvIvEZ3Z+0xXl4PrYDc29/ERHqyaMCX6QQCJexx/wzCAKFzPwFExa8XH5F26OeCb
-	 HqzUzfbFRQXUKEbN6YWyswSyfVJSZuL/5cughzr6cO17XpVQZhL+O6WZBnrgLW88/Q
-	 aiD0zvtKMOWcCTy57y+nX6xY+DQwBZlkF95OedUYwpBVULbXLJl77S67nyzHLdCo9S
-	 23BCujS+BATGA==
-Subject: Re: [PATCH net-next v11 4/4] net: dsa: ks8995: Delete surplus driver
-From: netdev-bot+sashiko@kernel.org
-To: linusw@kernel.org
-Cc: woojung.huh@microchip.com, UNGLinuxDriver@microchip.com, andrew@lunn.ch,
- olteanv@gmail.com, davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- marex@denx.de, horms@kernel.org, linux@armlinux.org.uk, nb@tipi-net.de,
- netdev@vger.kernel.org, devicetree@vger.kernel.org
-Date: Thu, 10 Sep 2026 20:02:03 +0000
-Message-ID: <178907052301.219967.24777314580254394@kernel.org>
-In-Reply-To: <20260909-ks8995-to-ksz8-v11-4-0e04411a559d@kernel.org>
-References: <20260909-ks8995-to-ksz8-v11-4-0e04411a559d@kernel.org>
-X-sashiko-severity: Low
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QdHeWh2E"
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49ce364488dso750695e9.0
+        for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 13:02:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789070553; x=1789675353; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ly0zpPrI27aaOVayRwfu5QMDzC7RwvjeeGzfZnLG77c=;
+        b=QdHeWh2EOqi9mHZ2zFY1OU7P5N2FUR1Gtac7NDIpMd9L7HoWSNgWRU5lXDh4/g/1IF
+         o3ubzxqQ+GCsocse9/TvNtSwNkZzQHbgKMkLMwBfxSTICcTphvFVEPMRXxgWkk9cWBNY
+         shsCFlgV80mGNvm4xPcPnXqq93lSrK9o5rco21t3rKLFKkxZ4N44FxMa+NclsYfK7d4F
+         mLWCzj/BObQNbCwYMml0YMWZI2xj91kPL4kzsEekwq/pUo2GbbwncoyJpK3+elD06jjs
+         6s5RgKcdUx+Nyzqhd82u9vSWHWe5kpgw4svrgzRZWBvgN3MStV758iXfEgUN/oSD5Hrd
+         u/Zw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789070553; x=1789675353;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=ly0zpPrI27aaOVayRwfu5QMDzC7RwvjeeGzfZnLG77c=;
+        b=Pri+p04WkB4Pcj5LwzE9OhGVlTsUBFlHT5O/hpHrbueGVOsVZF62goa+XtwJX0ryMS
+         dSmwS2/msWf2cMHIDn/e9R7YbYab0Mamm72VsYk3pwHfYTVGN/gOrPTLl2r96CjWKjos
+         Jv8xsEsiDm6bSl9ld5giGANBvq3WUOvPhPFVINCVDpTX6NMx7VcM9Xs+jQTAbgGq1G5V
+         ovBWcIaKF+AJOPcYkIhqtbFSIW9zZMquwK4zUeIJdSUlbmcdzz/5HLnBt0OLREhZUDyN
+         svhGZfesZdgd2w2s+jIgOr9dE0RFSfDwtLp2zY9M1bQSZOPK6g49FOiXY4TvlftBsNIn
+         Y5Fg==
+X-Forwarded-Encrypted: i=1; AKwUvBy9ALd40iZsD3NmYK8YHj1z4jAgvr9w1IlQc5uHj2lbO61aj1XYt292OoBGumgJ2Q33TBcelDU=@vger.kernel.org
+X-Gm-Message-State: AFuF++kzDvyrJ9hkjOl7W3TlbY8Ydd5j1/OfpNgVRG2ClXY4wAWpdEot
+	vS93wwJVc47+d27A4e+pjErcP2GTnJ1JlgiAUtpR+7+lh+mphqhg2/Y4
+X-Gm-Gg: AYBFou0OU1U/HTdGiL5wfs5izNcyL8CZrlDYzUfZg1Ds2ocR4zXeSHOlybkOb1a7+kr
+	wnuAnABy7xBfU28Nwd2MQGt2OwCdXLc0at+tTa5yUgGDrtF9WCVhU99wT+qXtFp8T/F1QOpdQwl
+	UASl+1Lto7yZQxs/LLrXcpJQ7dvG9fjbUv5lA6T0yA9veZbBcmrvn9X1hnI/nbd/G6cDxb6V9l2
+	bSgZU7mkr4slMYiaqA95WJJfnqtAwyENGXBe1tLcGiZEaFhaXT1s2CgXjuiZWgqgRLocR4AHUaZ
+	vlfaFwZ5MX4+ek+OYClDbBCkTVH2EX/ITyS1lI7zp+YycGy8vQKBL9vNjoleKZ3UMfbos0Mx54I
+	9EkdjcvmI6g1Pqcpdtp3mD54ScUu7nn3fAEdZ0ayuOh7vJ69VLpjCSCWUO0ENBGEqjQxuxUVUCG
+	lXTnlSyI6ukK8+OE9Q4LfS1H5TgSACQODJT4K9bCog+ugHy2Q36vYyhER1fq8OmAImcyTa3wu6J
+	chy3PHafpqGI5liPO4Fv+zwSdFt56dd89orBzMxixsACSLKBBZkSxPae2TqviI3kuVCacwfgJ3t
+	ju7LYyZUfve/aEFmaQqxw7kchQmoVK+GLflVlZ5k+1Amq1iGvrLSZkMf+IpKUgsCrFHHSOP8ATJ
+	bcOR+gu7R2eKtyOsX
+X-Received: by 2002:a05:600c:348a:b0:49d:29ab:67f8 with SMTP id 5b1f17b1804b1-49e6108ad2amr10904115e9.12.1789070553232;
+        Thu, 10 Sep 2026 13:02:33 -0700 (PDT)
+Received: from MacBook-Pro-von-Karl.localdomain (dynamic-2a02-3100-b3d9-b901-601c-58ef-b3f5-74f5.310.pool.telefonica.de. [2a02:3100:b3d9:b901:601c:58ef:b3f5:74f5])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49e62227071sm638505e9.3.2026.09.10.13.02.31
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Thu, 10 Sep 2026 13:02:32 -0700 (PDT)
+From: Karl Mehltretter <kmehltretter@gmail.com>
+To: Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>
+Cc: Karl Mehltretter <kmehltretter@gmail.com>,
+	Phil Sutter <phil@nwl.cc>,
+	Fernando Fernandez Mancera <ffmancera@riseup.net>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] netfilter: nft_synproxy: use the family-aware checksum helper
+Date: Thu, 10 Sep 2026 22:02:28 +0200
+Message-Id: <20260910200228.5127-1-kmehltretter@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider:
+nft_synproxy_do_eval() verifies the TCP checksum before it switches on
+skb->protocol.  It uses nf_ip_checksum(), which constructs an IPv4
+pseudo header and relies on the IPv4 header checksum when folding the
+whole skb.  Neither operation is valid for an IPv6 packet.
 
-Critical: 0 · High: 0 · Medium: 0 · Low: 1
+A correctly checksummed IPv6 segment can therefore fail verification
+when it reaches the hook as CHECKSUM_NONE or, at NF_INET_LOCAL_IN,
+CHECKSUM_COMPLETE.  nft_synproxy_do_eval() returns NF_DROP before
+nft_synproxy_eval_v6() can send a SYN-ACK.
 
-- [Low] Incomplete DT-binding transition: after drivers/net/dsa/ks8995.c
-  is deleted, the compatibles "micrel,ks8995", "micrel,ksz8795" and…
+nft_synproxy_validate() deliberately admits NFPROTO_IPV6 and
+NFPROTO_INET, and the xtables counterpart ip6t_SYNPROXY.c already calls
+nf_ip6_checksum().
 
---
+Use nf_checksum() with nft_pf() so the checksum helper dispatches to the
+packet family's implementation.
 
-net: dsa: ks8995: Delete surplus driver
+Fixes: ad49d86e07a4 ("netfilter: nf_tables: Add synproxy support")
+Assisted-by: LLM
+Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
+---
 
-The old ks8995 DSA driver is removed because the Microchip KSZ driver now
-handles the KS(Z)8995XA, and the NET_DSA_KS8995 Kconfig symbol is turned
-into a transitional stub that selects the KSZ SPI driver instead.  The two
-in-tree device trees using "micrel,ks8995" are said to keep working with
-the replacement driver.
+Notes (testing):
+    Testing:
+    - Raspberry Pi 400 with bcmgenet and 6.18.39+rpt-rpi-v8: the base kernel
+      received IPv6 SYNs but sent no reply.  IPv4 with the same synproxy rule
+      and IPv6 without synproxy completed normally.
+    - Two x86_64 QEMU guests with pcnet CHECKSUM_NONE receive packets: the
+      current-mainline base completed the IPv4 handshake but dropped six
+      IPv6 SYNs.  With this patch, both families completed SYN, SYN-ACK and
+      ACK.  ICMP controls passed and the invalid-drop counters stayed zero.
 
-> diff --git a/drivers/net/dsa/Kconfig b/drivers/net/dsa/Kconfig
-> index e309e4c1ee3a..55a9714033a6 100644
-> --- a/drivers/net/dsa/Kconfig
-> +++ b/drivers/net/dsa/Kconfig
-> @@ -110,11 +110,13 @@ config NET_DSA_RZN1_A5PSW
->  config NET_DSA_KS8995
->  	tristate "Micrel KS8995 family 5-ports 10/100 Ethernet switches"
->  	depends on SPI
-> -	depends on NET_DSA_MICROCHIP_KSZ_SPI = n
-> -	select NET_DSA_TAG_NONE
-> +	select NET_DSA_MICROCHIP_KSZ_COMMON
-> +	select NET_DSA_MICROCHIP_KSZ_SPI
->  	help
-> -	  This driver supports the Micrel KS8995 family of 10/100 Mbit ethernet
-> -	  switches, managed over SPI.
-> +	  This is a transitional option for users who had NET_DSA_KS8995
-> +	  enabled. It automatically enables the new NET_DSA_MICROCHIP_KSZ_SPI
-> +	  driver which supersedes it. This option will be removed in a future
-> +	  kernel release.
+ net/netfilter/nft_synproxy.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-[ ... ]
+diff --git a/net/netfilter/nft_synproxy.c b/net/netfilter/nft_synproxy.c
+index 9ed288c9d168..554a96a000f4 100644
+--- a/net/netfilter/nft_synproxy.c
++++ b/net/netfilter/nft_synproxy.c
+@@ -118,7 +118,8 @@ static void nft_synproxy_do_eval(const struct nft_synproxy *priv,
+ 		return;
+ 	}
+ 
+-	if (nf_ip_checksum(skb, nft_hook(pkt), thoff, IPPROTO_TCP)) {
++	if (nf_checksum(skb, nft_hook(pkt), thoff, IPPROTO_TCP,
++			nft_pf(pkt))) {
+ 		regs->verdict.code = NF_DROP;
+ 		return;
+ 	}
 
-> diff --git a/drivers/net/dsa/ks8995.c b/drivers/net/dsa/ks8995.c
-> deleted file mode 100644
-> index 77d8b842693c..000000000000
-> --- a/drivers/net/dsa/ks8995.c
-> +++ /dev/null
-> @@ -1,857 +0,0 @@
-
-[ ... ]
-
-> -static const struct of_device_id ks8995_spi_of_match[] = {
-> -	{ .compatible = "micrel,ks8995" },
-> -	{ .compatible = "micrel,ksz8864" },
-> -	{ .compatible = "micrel,ksz8795" },
-> -	{ },
-> -};
-> -MODULE_DEVICE_TABLE(of, ks8995_spi_of_match);
-
-[Severity: Low]
-Should the device tree bindings move over together with the driver here?
-
-After this deletion, "micrel,ks8995", "micrel,ksz8795" and "micrel,ksz8864"
-are documented only in
-Documentation/devicetree/bindings/net/dsa/micrel,ks8995.yaml, which was
-written for the driver being removed:
-
-  properties:
-    compatible:
-      enum:
-        - micrel,ks8995
-        - micrel,ksz8795
-        - micrel,ksz8864
-    reg: ...
-    reset-gpios: ...
-  ...
-  unevaluatedProperties: false
-
-The driver that now matches those compatibles is
-drivers/net/dsa/microchip/ksz_spi.c, whose ksz_dt_ids still carries:
-
-  {
-          .compatible = "micrel,ks8995",
-          .data = &ksz_switch_chips[KSZ8995XA]
-  },
-
-ksz_spi_probe() does dev->irq = spi->irq, and ksz_mdio_register() looks up
-an "mdio" child node and an "mdio-parent-bus" phandle.  Those properties are
-described in microchip,ksz.yaml but rejected by micrel,ks8995.yaml because of
-unevaluatedProperties: false.  Does that mean a node using the legacy
-compatible with interrupts or an mdio child node now fails dt_binding_check?
-
-In the other direction, microchip,ksz.yaml gained microchip,ksz8995xa but
-lists none of the three micrel,* strings, so the two in-tree nodes named in
-the commit message, ethernet-switch@0 in
-arch/arm/boot/dts/intel/ixp/intel-ixp42x-linksys-wrv54g.dts and in
-arch/arm/boot/dts/intel/ixp/intel-ixp42x-actiontec-mi424wr.dtsi, cannot be
-validated against the binding of the driver that handles them.  Would it make
-sense to fold the legacy compatibles into microchip,ksz.yaml, marking them
-deprecated as appropriate?
-
-One more detail in the surviving schema: the description states
-
-  The chip itself is managed over SPI, but all the
-  PHYs need to be accessed from an external MDIO channel.
-
-while the chip data for KSZ8995XA in drivers/net/dsa/microchip/ksz_common.c
-declares
-
-  .internal_phy = {true, true, true, true, false},
-
-Is that sentence still accurate for the replacement driver?
-
+base-commit: 50d05c7c76c96b90462f24debacca971d2e86713
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260909-ks8995-to-ksz8-v11-0-0e04411a559d%40kernel.org
+2.53.0
+
