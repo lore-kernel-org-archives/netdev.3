@@ -1,43 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E38036194C;
-	Thu, 10 Sep 2026 05:21:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18C253AEF4E;
+	Thu, 10 Sep 2026 05:21:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789017674; cv=none; b=CODACTaPrFumAsLkCQD40gwLi2SbA9ybRuxyJX81N2wISgZngwpIoNb0Mqbdd7oBq2hjjCn97T/S3tKbumECAwek5AvZcOD+gM7awewvw+2RIN6i18216zulcnTkvW+4ovTFsbdFaj7bV0UwGU15aJMPoN+gzmSGIHRB7I6X9v0=
+	t=1789017675; cv=none; b=GEXzpXWfjxDzhSDx3ytWiOCRkNfuPkWrK+mRTkIcLRR2QGQKwImTAXHe+dWBNCS9adbpQ/1s12/YB2sDHRD4/8CFEGJRsDu+iO9hNQpkkTp6VVTqm/0PPytbq+LARg2TD+hv6FReehCXBDmSqTgQfX7uVnqwI9+pEZ3ksulfAuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789017674; c=relaxed/simple;
-	bh=v/QstYm3i2rgnZLYs1v96MWHLqKGiHy8kb6V4Gnfytc=;
+	s=arc-20240116; t=1789017675; c=relaxed/simple;
+	bh=qo3oQwnarchgPdxpGAFXeUnZ0O+algQPHl60G14fT8c=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=H7jIg/8qwn+6ZHGMdFDfXbdK+U3jO9DzYL+/Qn8OYViZmlUv/IzIG9EjFXTM1LKqx9HaGuujmiACCB9rxcit3bpBaClQi5gangamqMznH+5u3gWcTsh+3RIN/EcPnO8DZAxODQerjdEcOpG+Bw2uDIPv1o8wRsn7oyQdx7Zzl28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oS8j8sGe; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=Gf+WgHYolUoI1Sq5ClmySmLDgGcC6am6XFw5DJL+7CaQgVKESoWDYxw38+yt3U2yXL36KtQebQBeqAFqAkCzm75x9xMc5ng/RiPg9CxBBFDXmt4RKJkLHxa9O3sk5qP/VPTjjV5ZYkq7Z+WZX45YhBlImz4L/wOk9oE5zz7vKxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gPjbWJaW; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oS8j8sGe"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B07441F00893;
-	Thu, 10 Sep 2026 05:21:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gPjbWJaW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2CDF1F00898;
+	Thu, 10 Sep 2026 05:21:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789017672;
-	bh=cdMoUQ8ORrxIIRtrlFXwK9p+foa2zwlewAJA91TDSZ8=;
+	s=k20260515; t=1789017673;
+	bh=AglIGlIWj6rcbiZO6kWYmfisptQWaVtEA7jJ0FFZuGM=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=oS8j8sGeI4xieaMAb46xG6IpEYWE/+tqbQreKEB/qTIA6dUNnwYhPx8jAQXGhHE9N
-	 EC1/Y8D0LdII8ckG1I/bml997kTrtsoP2tuC2yGNdUK6ix5BqXfU4Rw1Op8UFhnceM
-	 sr7uvUsG4t3Gc2ZkmzoY2TlhPFInehkgimlh3hrz/YZpeqwG4k5a+R0pKQZRV0EGDY
-	 FqfJniDVmCm8xcUEi9SB6W6M/opgyiMghULEuwmS18KBeu9+vBeybb5ptMIb0pXXIW
-	 euyqpwxPGBHYLKqsaFaO5uPxPmDOu43/aZ+TNMQh/Xcc7EERSBgdApSzuWqp+RmVfc
-	 tdcfse3gQYNuw==
-Subject: Re: [PATCH net-next v2 2/4] net: ethernet: oa_tc6: deliver the PHY
- interrupt to phylib
+	b=gPjbWJaWJsikVr4Zky0EyE2AuKw4quZvTVpFukm3wOml/5luN8yvomsmRxMSjvbpd
+	 4YnAETnaCfbdDxlELWxCuwuNTL/8ONmdJNcgslstnykcVqx/EEY+s2cxDH7NaCLDzV
+	 3H10+/BE41HdgHQ47hvrVlcYDgT8Z7g5lmFs2y2IJMGGYlgGAa1de4vphJqUIc/ZOG
+	 IY+xxOeGPiDBQZFvbqiATd01aTteWpnBcldAH2LBmX+nCWK7Ss246l+np5HPGZd9ts
+	 9wBOKwhrE2iVOSaqh05ZXrflrCE8ZL8Ii4oD0a5qI1TInRf6W7x8ILADFzjGJYif7g
+	 j8N9UIU88i6Tg==
+Subject: Re: [PATCH net-next v2 3/4] microchip: lan865x: enable PHY interrupt
+ via virtual IRQ
 From: netdev-bot+sashiko@kernel.org
 To: parthiban.veerasooran@microchip.com
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
  kuba@kernel.org, pabeni@redhat.com, hkallweit1@gmail.com,
  linux@armlinux.org.uk, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
  UNGLinuxDriver@microchip.com
-Date: Thu, 10 Sep 2026 05:21:11 +0000
-Message-ID: <178901767130.219967.4729766971337827606@kernel.org>
-In-Reply-To: <20260907052007.391972-3-parthiban.veerasooran@microchip.com>
-References: <20260907052007.391972-3-parthiban.veerasooran@microchip.com>
+Date: Thu, 10 Sep 2026 05:21:12 +0000
+Message-ID: <178901767241.219967.3774142098536150677@kernel.org>
+In-Reply-To: <20260907052007.391972-4-parthiban.veerasooran@microchip.com>
+References: <20260907052007.391972-4-parthiban.veerasooran@microchip.com>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -48,255 +48,296 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 4 potential
+Thank you for your contribution! Sashiko AI review found 6 potential
 issue(s) to consider:
 
-Critical: 0 · High: 2 · Medium: 0 · Low: 2
+Critical: 0 · High: 2 (1) · Medium: 4 · Low: 0
 
-- [High] oa_tc6_unmask_interrupts() clears OA_TC6_INT_MASK0_PHY_INT_MASK
-  unconditionally for every MAC-PHY, while the only code that can make…
-- [High] Use of `dummy_irq_chip` for the nested PHY interrupt creates an
-  unrecoverable interrupt storm (DoS) condition if the generic IRQ…
-- [Low] The new code in oa_tc6_phy_irq_setup()/oa_tc6_phy_irq_teardown()
-  calls irq_domain_create_linear(), irq_create_mapping() and…
-- [Low] Concern (baseline verdict: false positive) that the
-  OA_TC6_PHY_INT infrastructure has no in-tree producer, making the irq…
+- [High] Asymmetric interrupt enable/acknowledge in the OA TC6 framework:
+  oa_tc6_unmask_interrupts() (drivers/net/ethernet/oa_tc6.c, formerly…
+- [High] Interrupt livelock when the nested PHY handler cannot
+  acknowledge the source.
+- [Medium] Undisclosed behavioural change: by passing OA_TC6_PHY_INT,
+  lan865x_probe() gives the LAN865X internal PHY a valid phydev->irq…
+- [Medium] This patch is a mandatory part of the collision-detection bug
+  fix for LAN865X, but it carries neither a Fixes: tag nor any statement…
+- [Medium] lan86xx_plca_set_cfg() uses `if (phydev->irq != PHY_POLL)
+  return 0;` to decide that 'PHYs with routed interrupts handle CDEN…
+- [Medium] Enabling OA_TC6_PHY_INT makes the LAN865x SPI data engine
+  dispatch the PHY interrupt synchronously from inside the RX-chunk-…
+
+Pre-existing issues:
+- [High] lan865x_remove() calls cancel_work_sync(&priv->multicast_work)
+  *before* unregister_netdev().
 
 --
 
-net: ethernet: oa_tc6: deliver the PHY interrupt to phylib
+microchip: lan865x: enable PHY interrupt via virtual IRQ
 
-This adds an OA_TC6_PHY_INT quirk flag so MAC drivers can opt in when the
-PHY interrupt is delivered in-band through the MAC-PHY SPI status register.
-When the flag is set, a one-entry irq domain with a nested virtual IRQ is
-created before mdiobus_register(), all mii_bus->irq[] entries are populated
-with that virq, and PHYINT seen in the extended status is dispatched with
-handle_nested_irq() from the threaded IRQ.
+This passes the new OA_TC6_PHY_INT quirk flag to oa_tc6_init() so that the
+LAN865X internal PHY gets a virtual IRQ from the OA TC6 framework and phylib
+can run the PHY driver's config_intr/handle_interrupt callbacks instead of
+polling.
 
-A few questions below.
+A few questions about the consequences of turning this on, mostly about the
+interaction with the two preceding patches in the series.
 
-> diff --git a/drivers/net/ethernet/oa_tc6.c b/drivers/net/ethernet/oa_tc6.c
-> index 6fcc5f561d560..00b0176c1fe7a 100644
-> --- a/drivers/net/ethernet/oa_tc6.c
-> +++ b/drivers/net/ethernet/oa_tc6.c
-> @@ -8,6 +8,8 @@
->  #include <linux/bitfield.h>
->  #include <linux/iopoll.h>
->  #include <linux/interrupt.h>
-> +#include <linux/irq.h>
-> +#include <linux/irqdomain.h>
->  #include <linux/mdio.h>
->  #include <linux/phy.h>
->  #include <linux/oa_tc6.h>
-
-[ ... ]
-
-> @@ -528,6 +532,44 @@ int oa_tc6_mdiobus_write_c45(struct mii_bus *bus, int addr, int devnum,
->  }
->  EXPORT_SYMBOL_GPL(oa_tc6_mdiobus_write_c45);
+> diff --git a/drivers/net/ethernet/microchip/lan865x/lan865x.c b/drivers/net/ethernet/microchip/lan865x/lan865x.c
+> index 26a2761332a5a..043a3dc3f9657 100644
+> --- a/drivers/net/ethernet/microchip/lan865x/lan865x.c
+> +++ b/drivers/net/ethernet/microchip/lan865x/lan865x.c
+> @@ -332,6 +332,7 @@ static const struct net_device_ops lan865x_netdev_ops = {
 >  
-> +static int oa_tc6_phy_irq_map(struct irq_domain *domain, unsigned int irq,
-> +			      irq_hw_number_t hwirq)
-> +{
-> +	irq_set_chip_data(irq, domain->host_data);
-> +	irq_set_chip_and_handler(irq, &dummy_irq_chip, handle_simple_irq);
-> +	irq_set_nested_thread(irq, true);
-> +	irq_set_noprobe(irq);
-> +
-> +	return 0;
-> +}
-> +
-> +static const struct irq_domain_ops oa_tc6_phy_irq_domain_ops = {
-> +	.map = oa_tc6_phy_irq_map,
-> +};
-> +
-> +static int oa_tc6_phy_irq_setup(struct oa_tc6 *tc6)
-> +{
-> +	tc6->phy_irq_domain =
-> +		irq_domain_create_linear(NULL, 1,
-> +					 &oa_tc6_phy_irq_domain_ops, tc6);
-> +	if (!tc6->phy_irq_domain)
-> +		return -ENOMEM;
-> +
-> +	tc6->phy_virq = irq_create_mapping(tc6->phy_irq_domain, 0);
-> +	if (!tc6->phy_virq) {
-> +		irq_domain_remove(tc6->phy_irq_domain);
-> +		return -ENOMEM;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static void oa_tc6_phy_irq_teardown(struct oa_tc6 *tc6)
-> +{
-> +	irq_dispose_mapping(tc6->phy_virq);
-> +	irq_domain_remove(tc6->phy_irq_domain);
-> +}
-
-[Severity: High]
-Is dummy_irq_chip the right irqchip for a level-triggered, in-band
-source that only stops asserting once the PHY is acked?
-
-dummy_irq_chip (kernel/irq/dummychip.c) implements .irq_mask and
-.irq_unmask as no-ops, so nothing the generic IRQ core does to this
-virq can ever reach OA_TC6_INT_MASK0_PHY_INT_MASK in the MAC-PHY.
-That matters because the core does try to mask this virq on its own:
-handle_nested_irq() calls note_interrupt() for each dispatch (unless
-irq_settings_no_debug()), and the spurious-IRQ accounting there will
-eventually call __report_bad_irq() and disable the interrupt if the
-PHY handler keeps returning IRQ_NONE. Note that oa_tc6_phy_irq_map()
-sets IRQ_NOPROBE via irq_set_noprobe(), which is not IRQ_NO_DEBUG, so
-that accounting does apply here - is that intended?
-
-Once the core has disabled the virq, mask_irq() lands in the dummy
-chip and does nothing, but the next PHYINT still reaches
-oa_tc6_process_extended_status(), where handle_nested_irq() bails out
-early in irq_can_handle_actions() without running phy_interrupt().
-The PHY status registers are then never read, the level-triggered
-source stays asserted, and with IRQF_TRIGGER_LOW | IRQF_ONESHOT the
-SPI IRQ re-fires as soon as oa_tc6_macphy_threaded_irq() returns -
-with no path left to re-mask PHYINT in hardware. Same reasoning
-applies to any other caller that disables the virq, e.g. the
-disable_irq_nosync() in phy_interrupt().
-
-Would a small real irq_chip with .irq_mask / .irq_unmask that clear
-and set OA_TC6_INT_MASK0_PHY_INT_MASK be preferable here? Since the
-register access is over SPI and sleeps, that presumably needs
-.irq_bus_lock / .irq_bus_sync_unlock to defer the actual transfer,
-which is the usual pattern for nested SPI/I2C irqchips. If you would
-rather keep the dummy chip, how is the disabled-virq case supposed to
-be recovered, and should the IRQ_NONE return from handle_nested_irq()
-be acted on instead of dropped?
-
-[Severity: Low]
-Does oa_tc6 need "select IRQ_DOMAIN" now?
-
-irq_domain_create_linear(), irq_create_mapping() and irq_domain_remove()
-are all declared inside the "#ifdef CONFIG_IRQ_DOMAIN" block of
-include/linux/irqdomain.h.  The !CONFIG_IRQ_DOMAIN branch only provides
-stubs for irq_dispose_mapping() and irq_find_matching_fwnode(), so
-oa_tc6_phy_irq_setup() and oa_tc6_phy_irq_teardown() would hit
-implicit-function-declaration errors there.
-
-The OA_TC6 entry in drivers/net/ethernet/Kconfig currently has:
-
-config OA_TC6
-	tristate "OPEN Alliance TC6 10BASE-T1x MAC-PHY support" if COMPILE_TEST
-	depends on SPI
-	select PHYLIB
-
-That allows CONFIG_SPI=y with CONFIG_IRQ_DOMAIN=n (m68k/ColdFire has SPI
-and never selects IRQ_DOMAIN).  drivers/net/dsa/mv88e6xxx/Kconfig and
-drivers/net/dsa/realtek/Kconfig add "select IRQ_DOMAIN" for the same
-reason.
-
-> @@ -661,7 +721,7 @@ static int oa_tc6_sw_reset_macphy(struct oa_tc6 *tc6)
->  	return oa_tc6_write_register(tc6, OA_TC6_REG_STATUS0, regval);
->  }
->  
-> -static int oa_tc6_unmask_macphy_error_interrupts(struct oa_tc6 *tc6)
-> +static int oa_tc6_unmask_interrupts(struct oa_tc6 *tc6)
+>  static int lan865x_probe(struct spi_device *spi)
 >  {
->  	u32 regval;
+> +	struct oa_tc6_quirks tc6_quirks = {};
+>  	struct net_device *netdev;
+>  	struct lan865x_priv *priv;
 >  	int ret;
-> @@ -670,7 +730,8 @@ static int oa_tc6_unmask_macphy_error_interrupts(struct oa_tc6 *tc6)
->  	if (ret)
->  		return ret;
+> @@ -346,7 +347,8 @@ static int lan865x_probe(struct spi_device *spi)
+>  	spi_set_drvdata(spi, priv);
+>  	INIT_WORK(&priv->multicast_work, lan865x_multicast_work_handler);
 >  
-> -	regval &= ~(OA_TC6_INT_MASK0_TX_PROTOCOL_ERR_MASK |
-> +	regval &= ~(OA_TC6_INT_MASK0_PHY_INT_MASK |
-> +		    OA_TC6_INT_MASK0_TX_PROTOCOL_ERR_MASK |
->  		    OA_TC6_INT_MASK0_RX_BUFFER_OVERFLOW_ERR_MASK |
->  		    OA_TC6_INT_MASK0_LOSS_OF_FRAME_ERR_MASK |
->  		    OA_TC6_INT_MASK0_HEADER_ERR_MASK);
+> -	priv->tc6 = oa_tc6_init(spi, netdev, NULL);
+> +	tc6_quirks.quirk_flags = OA_TC6_PHY_INT;
+> +	priv->tc6 = oa_tc6_init(spi, netdev, &tc6_quirks);
+
+[Severity: Medium]
+Does setting OA_TC6_PHY_INT here silently remove the deterministic
+COL_DET_CTRL0 write for LAN865x?
+
+With this quirk, oa_tc6_mdiobus_register() fills every mii_bus->irq[] entry
+with tc6->phy_virq, so phydev->irq for the internal PHY is no longer
+PHY_POLL, and lan86xx_plca_set_cfg() now takes the new early return added by
+the preceding PHY patch:
+
+drivers/net/phy/microchip_t1s.c:lan86xx_plca_set_cfg() {
+	...
+	if (phydev->irq != PHY_POLL)
+		return 0;
+	...
+}
+
+After that, the only writer of CDEN for this device is
+lan86xx_handle_interrupt(), and only when the read-to-clear STS1 read
+observes LAN86XX_STS1_PLCA_STS_CHANGED:
+
+	if (sts1 & LAN86XX_STS1_PLCA_STS_CHANGED) {
+		ret = genphy_c45_plca_get_status(phydev, &plca_st);
+
+Two things follow from that. First, an administrative
+"ethtool --set-plca-cfg ... enable off" performed while the PLCA status is
+unchanged produces no PST edge, so nothing reprograms CDEN. Second,
+lan86xx_config_intr() reads STS1 to clear pending status before unmasking
+PSTCM, so a transition latched before that point is consumed without ever
+being applied to CDEN, and it never evaluates the live PLCA status:
+
+		/* Read to clear any pending status before enabling. */
+		ret = phy_read_mmd(phydev, MDIO_MMD_VEND2, LAN86XX_REG_STS1);
+
+Is there anything that establishes the CDEN baseline for this part?
+lan865x_revb_fixup_registers[] does not contain 0x0087, unlike the LAN867X
+Rev.B1 AN1699 list which writes 0x0087 with mask 0x801C. If the correctness
+now relies on the reset default of COL_DET_CTRL0 bit 15 and on the PHY
+latching PSTC for every relevant change, could the changelog mention that,
+since it currently reads only as "enable interrupt mode"?
+
+[Severity: Medium]
+Should this patch carry the same Fixes: tag as the PHY change, or at least
+state the dependency?
+
+The only commit in the series with a Fixes: tag is "net: phy: microchip_t1s:
+fix collision detection on PLCA status change" (135306e057ab, Fixes:
+78341049fbcd), and its changelog says:
+
+	LAN865X is excluded from the static write because its interrupt is
+	always routed via the MAC-PHY SPI driver and the interrupt handler
+	always runs.
+
+Is that statement true before this patch is applied? Without OA_TC6_PHY_INT
+the framework never populates mii_bus->irq[], mdiobus_alloc_size()
+initialises every entry to PHY_POLL, phy_request_interrupt() is never called,
+and lan86xx_handle_interrupt() never runs.
+
+A stable selection that follows the Fixes: tag would then take the PHY commit
+alone and leave LAN865x with neither the static write nor the interrupt path.
 
 [Severity: High]
-Should the PHYINT unmask be gated on OA_TC6_PHY_INT the same way the
-service path is?
+While looking at the framework side this patch opts into: is the PHYINT
+unmask in the preceding oa_tc6 patch missing the OA_TC6_PHY_INT gate?
 
-oa_tc6_unmask_interrupts() clears OA_TC6_INT_MASK0_PHY_INT_MASK for every
-MAC-PHY, but the only code that can make the level-triggered source drop is
-quirk-gated in oa_tc6_process_extended_status():
+oa_tc6_unmask_interrupts() clears the mask for every MAC-PHY, unconditionally
+from oa_tc6_init():
 
+drivers/net/ethernet/oa_tc6.c:oa_tc6_unmask_interrupts() {
+	regval &= ~(OA_TC6_INT_MASK0_PHY_INT_MASK |
+		    OA_TC6_INT_MASK0_TX_PROTOCOL_ERR_MASK |
+	...
+}
+
+but the only code that services and acknowledges it is quirk-gated:
+
+drivers/net/ethernet/oa_tc6.c:oa_tc6_process_extended_status() {
+	...
 	if ((tc6->quirk_flags & OA_TC6_PHY_INT) &&
 	    FIELD_GET(OA_TC6_STATUS0_PHY_INT, value))
 		handle_nested_irq(tc6->phy_virq);
+	...
+}
 
-As the commit message says, PHYINT is level triggered and only drops when
-the PHY source is acked, so the STATUS0 write-back just above does not
-clear it.
+drivers/net/ethernet/adi/adin1140.c:adin1140_probe() passes only
+OA_TC6_BROKEN_PHY, so on that device PHYINT is armed while tc6->phy_virq is 0
+and no path can read or ack the PHY's interrupt status. Since STATUS0.PHYINT
+is a level reflection (the new comment says the STATUS0 write-back does not
+clear it) and the host IRQ is requested as level-low with ONESHOT:
 
-For a driver that does not set the new flag, is there anything that can
-clear PHYINT once the PHY asserts it?  adin1140_probe() sets only:
+	ret = devm_request_threaded_irq(&tc6->spi->dev, tc6->spi->irq,
+					oa_tc6_macphy_isr,
+					oa_tc6_macphy_threaded_irq,
+					IRQF_TRIGGER_LOW | IRQF_ONESHOT,
 
-	tc6_quirks.quirk_flags = OA_TC6_BROKEN_PHY;
+wouldn't an asserted PHYINT on a non-opt-in device loop forever? The hard ISR
+sets tc6->int_flag, oa_tc6_macphy_threaded_irq() spins in
+while (tc6->int_flag || ...), oa_tc6_try_spi_transfer() clears int_flag, the
+thread returns and ONESHOT unmasks a still-low line. Should the unmask be
+gated on OA_TC6_PHY_INT too?
 
-and its PHY is polled (devm_mdiobus_alloc() leaves mii_bus->irq[] at
-PHY_POLL), so PHYINT is now armed in hardware with no ack path.
+[Severity: Medium]
+Related to the branch this patch activates: should lan86xx_plca_set_cfg() use
+phy_interrupt_is_valid() rather than comparing against PHY_POLL only?
 
-Even on a device that does set OA_TC6_PHY_INT, can the dispatch return
-without acking?  drivers/net/phy/phy.c:phy_interrupt() has:
+include/linux/phy.h:phy_interrupt_is_valid() {
+	return phydev->irq != PHY_POLL && phydev->irq != PHY_MAC_INTERRUPT;
+}
 
+For PHY_MAC_INTERRUPT phylib never calls phy_request_interrupt(), so
+.config_intr/.handle_interrupt are never invoked. A LAN867x on a bus that
+assigns PHY_MAC_INTERRUPT, for example:
+
+drivers/net/mdio/mdio-moxart.c:moxart_mdio_probe() {
+	for (i = 0; i < PHY_MAX_ADDR; i++)
+		bus->irq[i] = PHY_MAC_INTERRUPT;
+}
+
+would then skip the static COL_DET_CTRL0 write and never get the handler, so
+CDEN is never programmed at all. The comment above the new early return says
+"PHYs with routed interrupts handle CDEN dynamically via the interrupt
+handler", which does not hold for that phylib mode.
+
+[Severity: High]
+Can the nested dispatch enabled here livelock when phylib has the virq
+disabled?
+
+handle_nested_irq() only sets IRQS_PENDING when !action or
+irqd_irq_disabled(&desc->irq_data), and phylib disables this virq on its own
+during system suspend:
+
+drivers/net/phy/phy_device.c:mdio_bus_phy_suspend() {
+	if (phy_interrupt_is_valid(phydev)) {
+		phydev->irq_suspended = 1;
+		synchronize_irq(phydev->irq);
+	}
+}
+
+drivers/net/phy/phy.c:phy_interrupt() {
 	if (IS_ENABLED(CONFIG_PM_SLEEP) && phydev->irq_suspended) {
 		...
 		phydev->irq_rerun = 1;
 		disable_irq_nosync(irq);
 		return IRQ_HANDLED;
 	}
+}
 
-After that the virq is disabled, so handle_nested_irq() becomes a no-op
-because irq_can_handle_actions() is false.  resume_device_irqs() re-enables
-the SPI IRQ in the noirq phase while mdio_bus_phy_resume() clears
-irq_suspended only later in the device-resume phase, which looks like a
-window where the PHY source stays asserted with the SPI IRQ live.
+Neither oa_tc6 nor lan865x sets mac_managed_pm, so this branch is reachable
+for this phydev. The PHY is never read, its latched status is not cleared,
+and with dummy_irq_chip the mask is a no-op, so STATUS0.PHYINT stays
+asserted. The level-low ONESHOT MAC IRQ then re-fires after each return of:
 
-With IRQF_TRIGGER_LOW | IRQF_ONESHOT, wouldn't the still-asserted level
-re-trigger oa_tc6_macphy_isr() as soon as oa_tc6_macphy_threaded_irq()
-returns, spinning on empty data chunks plus two extra STATUS0 control
-transactions per chunk footer?  The result of handle_nested_irq() is not
-used, PHYINT is never re-masked, and oa_tc6_disable_traffic() is only
-reached on SPI transfer errors.
+drivers/net/ethernet/oa_tc6.c:oa_tc6_macphy_threaded_irq() {
+	while (tc6->int_flag ||
+	       (tc6->waiting_tx_skb && tc6->tx_credits)) {
+		ret = oa_tc6_try_spi_transfer(tc6);
+	...
+}
 
-> @@ -810,6 +871,15 @@ static int oa_tc6_process_extended_status(struct oa_tc6 *tc6)
->  		return ret;
->  	}
->  
-> +	/* Dispatch the PHY interrupt to phylib via the nested virtual IRQ so
-> +	 * the PHY driver reads and acknowledges its status. PHYINT is level
-> +	 * triggered, so doing this synchronously here (in the sleepable
-> +	 * threaded IRQ) clears the source before the next data chunk.
-> +	 */
-> +	if ((tc6->quirk_flags & OA_TC6_PHY_INT) &&
-> +	    FIELD_GET(OA_TC6_STATUS0_PHY_INT, value))
-> +		handle_nested_irq(tc6->phy_virq);
-> +
+Is there anything that bounds this, or that masks
+OA_TC6_INT_MASK0_PHY_INT_MASK as a fallback when the nested handler cannot
+ack? The same no-ack outcome seems possible for any PHYINT source not
+represented in STS1, since lan86xx_handle_interrupt() reads only STS1 and
+otherwise returns IRQ_NONE, which also feeds note_interrupt() on the nested
+virq. If an SPI transfer fails during such a storm, oa_tc6_disable_traffic()
+is reached and the interface stays dead.
 
-[ ... ]
+[Severity: High]
+This isn't a bug introduced by this patch, but while the teardown path is in
+scope: lan865x_remove() cancels the multicast work before unregistering the
+netdev.
 
-> diff --git a/include/linux/oa_tc6.h b/include/linux/oa_tc6.h
-> index 27f652d4920b2..1c8cc263c5e53 100644
-> --- a/include/linux/oa_tc6.h
-> +++ b/include/linux/oa_tc6.h
-> @@ -68,6 +70,7 @@ struct oa_tc6;
->  
->  enum oa_tc6_quirk_flag {
->  	OA_TC6_BROKEN_PHY = BIT(0),
-> +	OA_TC6_PHY_INT    = BIT(1),
->  };
+drivers/net/ethernet/microchip/lan865x/lan865x.c:lan865x_remove() {
+	cancel_work_sync(&priv->multicast_work);
+	unregister_netdev(priv->netdev);
+	oa_tc6_exit(priv->tc6);
+	free_netdev(priv->netdev);
+}
 
-[Severity: Low]
-This isn't a bug, just a note for anyone reading this commit alone: at this
-point in the series no in-tree caller passes OA_TC6_PHY_INT, so the irq
-domain, the virq, the mii_bus->irq[] population and the handle_nested_irq()
-dispatch are all unreachable here.
+.ndo_set_rx_mode is still installed and callable in that window, and
+lan865x_remove() does not hold rtnl:
 
-The following patch in the series, "microchip: lan865x: enable PHY
-interrupt via virtual IRQ", adds the producer in lan865x_probe():
+static void lan865x_set_multicast_list(struct net_device *netdev)
+{
+	struct lan865x_priv *priv = netdev_priv(netdev);
 
-	tc6_quirks.quirk_flags = OA_TC6_PHY_INT;
-	priv->tc6 = oa_tc6_init(spi, netdev, &tc6_quirks);
+	schedule_work(&priv->multicast_work);
+}
 
-so this resolves within the series and no change is needed.
+Nothing cancels or flushes the work again, so can the handler run after
+oa_tc6_exit() and free_netdev(), dereferencing freed netdev_priv memory?
+
+	if (priv->netdev->flags & IFF_PROMISC) {
+	...
+	ret = oa_tc6_write_register(priv->tc6, LAN865X_REG_MAC_NET_CFG, regval);
+
+An "ip link set eth0 promisc on" or a multicast join reaching
+dev_mc_add() -> __dev_set_rx_mode() during unbind would be enough to re-arm
+it. Would unregister_netdev() first, then cancel_work_sync(), close this?
+This patch also widens what the stale work can touch, since oa_tc6_exit() now
+performs irq_dispose_mapping()/irq_domain_remove() as well.
+
+[Severity: Medium]
+Does dispatching the PHY interrupt from inside the chunk-processing loop
+couple the data path to phydev->lock?
+
+The call chain enabled by this quirk is
+oa_tc6_macphy_threaded_irq() -> oa_tc6_try_spi_transfer() ->
+oa_tc6_process_spi_data_rx_buf() -> oa_tc6_process_rx_chunk_footer() ->
+oa_tc6_process_extended_status() -> handle_nested_irq(tc6->phy_virq), and
+handle_nested_irq() calls the thread_fn directly:
+
+drivers/net/phy/phy.c:phy_interrupt() {
+	...
+	mutex_lock(&phydev->lock);
+	ret = phydev->drv->handle_interrupt(phydev);
+	...
+}
+
+lan86xx_handle_interrupt() then issues several phy_read_mmd()/phy_modify_mmd()
+calls, each taking the MDIO bus mutex and tc6->spi_ctrl_lock and doing a
+synchronous SPI control transfer. So the single thread that performs all
+TX/RX chunk transfers, running at RT priority with the MAC-PHY line masked by
+IRQF_ONESHOT, now blocks on a sleeping mutex held by unrelated,
+user-triggerable phylib contexts (ethtool PLCA get/set,
+phy_do_ioctl_running() -> phy_start_aneg(), phy_start/phy_stop, phy_init_hw()
+on resume, the state machine work).
+
+	while (tc6->int_flag ||
+	       (tc6->waiting_tx_skb && tc6->tx_credits)) {
+
+Mutexes give no priority inheritance, so a normal-priority holder stalls the
+pump while RX chunks accumulate in the MAC-PHY RX buffer, which shows up as
+OA_TC6_STATUS0_RX_BUFFER_OVERFLOW_ERROR and lost frames. Would deferring the
+phylib dispatch out of the chunk-processing loop, for example after the
+transfer loop or from a dedicated worker, keep the data path independent of
+phydev->lock?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260907052007.391972-1-parthiban.veerasooran%40microchip.com
