@@ -1,165 +1,117 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5028F396B9D;
-	Thu, 10 Sep 2026 10:13:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5CC33955CA;
+	Thu, 10 Sep 2026 10:14:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789035219; cv=none; b=aFk3bPR2T9Pa0j9xtC35h6F7bk9apNYY+mY8TtX6JHd5EESLIvYXAL68TiiIM7banQ/3sW5sYuzY9uq7LNPeeHssLgcHn0/TCkalmRo8hencEFIbsB6HFJWTnfIg25FLePaFdKc423BV2ofYo4vzLEDYhsoaVSNim5dUczkFDto=
+	t=1789035276; cv=none; b=WyRzCzOb89WWcimuSwGv5YewqIwIWs0dVQClX+INJJvvFXQhJT0QRQaBLwv/fyekqLg0dnACsXyVrhqc4+JdxrnWT8tw97R7vxOfKKjhZJQxVk5CcuEwmpepgQuQiSHXNQZEVw7Q5XjdMfi9Zbt7mCsCQ1b7IYnmzKpibpukuak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789035219; c=relaxed/simple;
-	bh=t7XBJTdeA5LYyiKBQx1hBo7BxbXRQJjB0d9EpiSTDYE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uwpLJZbLpISacoLcPQqdyOLJzCqI4JpVHSReBwYznvi2RSKwaTvxe9hV6yMaD7GC/BKo0Ily6IhM3XLHk+M8836fHU1ksg5/uKL35svAb27OjAqqRkpMDR+6hX4psxkYuUqjhSMrsxIGRrNjqSKtch7UaqFaPFdte1Ayhs1hk8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i5XciVZl; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789035276; c=relaxed/simple;
+	bh=jpVG4p3SMg6F7Y/z1SShMyfoiqGQ5ZswZ/kwFzvBNK8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HnziPhHt2OOreWshHq/1axVrtESYAjDwESxpqq9+Iw4ZPXygMX24yNvzE+jiYJy6t0MH2SZuLBcRTBZf/ZG98WMFxuDX2ctO9XiRRWDcUPwcM8U1mWGwe1K3rZIztS1M0DI2k73u/YABwm/lGZ160xNEDxcRIubBUgG7vwBGQfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L5IJxrpH; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i5XciVZl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 795AA1F000FF;
-	Thu, 10 Sep 2026 10:13:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L5IJxrpH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48D461F000FF;
+	Thu, 10 Sep 2026 10:14:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789035218;
-	bh=wO6RPWe/NhhD5fik9dJ1h/oDDE7OmmVRzqbqef2u77U=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=i5XciVZlh+ll3ruG0ZwVvzT0wkMAhLCwaptabd00GA7o8uuHOKwthb9Yug+o2/SaC
-	 yiysL8CK2YS/Em7SC8DBRtQUAfrsGmwtDcGjZNEoU0tQ9CXTRbM8+AqkECuVjHkcot
-	 g5wKQ4UJd2AXlnDn07c4GN57/70gom7yJ6yZqcyaFjC3d/GJwzsTVKlODT5uNPrEoO
-	 QvVbyqdJPK53J21MddUQl+eJBIO1MAzUaoo3Y5gTD/Qo0sjSoc0+t4dQ5qKB4DvWZL
-	 S9PkznTb/zVJVOukrQxbcdOEmnd74M36gAf0PC+q8X8jOe018VEZAsyWgS+vy6HFYc
-	 l1z1QR/12UPnQ==
-Message-ID: <cd7d7f5e-d729-475e-b772-e201a2ab37be@kernel.org>
-Date: Thu, 10 Sep 2026 12:13:34 +0200
+	s=k20260515; t=1789035274;
+	bh=vuN9YgNNVDUDcK9F5V9wjj4jgSHSO9jPfMDMRTl00m4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=L5IJxrpHYACCI3tkKbfR8R+V4hXIzjwQbm69USLqNRck8/aJ6MxyOPfDyv9Z6Xi0t
+	 HTl/wQEbF/iISzOx57w+XLzjMSvEdrfejt1OI8HNGOxT5T26hHcL+4PKOKvvQ3aDFk
+	 5FrUCFhyKYas1qYBbyC2urL6cG9LDmgZZLOcrqUmhOXIkF2MnnwrX74JwzFFu/myfR
+	 wKrrm5O0tihSm/n+nLCZH7FsTnRGtbvbG5NVEUkFlsuSfueWUjjZqG+PfBo1pidDoj
+	 aKTLRliAYoM1sLfxR0PY1SVYQgEpTZIkYeS9aQnm/GfPNZ4MiHs4A72rKSGydHwDHS
+	 rrf/OXv4UACww==
+Date: Thu, 10 Sep 2026 11:14:31 +0100
+From: Simon Horman <horms@kernel.org>
+To: Aamir Ahmed <elb12345@hotmail.co.uk>
+Cc: Samuel Mendoza-Jonas <sam@mendozajonas.com>,
+	Paul Fertser <fercerpav@gmail.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 2/2] net: ncsi: validate MAC and VLAN counts in Get
+ Parameters response
+Message-ID: <20260910101431.GU40544@horms.kernel.org>
+References: <20260906233752.87773-1-elb12345@hotmail.co.uk>
+ <AS8P251MB0001E99A1865DFEC3C3A16E7C8B32@AS8P251MB0001.EURP251.PROD.OUTLOOK.COM>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Thunderbird Daily
-Subject: Re: [PATCH v2] tcp: fastopen: check rsk_drop_req() in
- tcp_fastopen_create_child()
-Content-Language: fr
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev,
- Kimi Security Team <bug-report@moonshot.ai>,
- Yilin Zhang <yilinzhang@moonshot.ai>, Mat Martineau <martineau@kernel.org>,
- Jiayuan Chen <jiayuan.chen@linux.dev>
-References: <20260903094010.4066892-1-yilinzhang@moonshot.ai>
- <c95bc6f8-b8da-426f-a056-1c692559d14f@redhat.com>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- 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
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <c95bc6f8-b8da-426f-a056-1c692559d14f@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <AS8P251MB0001E99A1865DFEC3C3A16E7C8B32@AS8P251MB0001.EURP251.PROD.OUTLOOK.COM>
 
-Hi Paolo,
-
-Thank you for having checked!
-
-On 10/09/2026 10:12, Paolo Abeni wrote:
-> On 9/3/26 11:40 AM, Yilin Zhang wrote:
->> subflow_syn_recv_sock() sets drop_req when an MP_JOIN SYN takes the fatal
->> fallback and destroys the cloned child. tcp_fastopen_create_child()
->> ignored the flag and could queue the destroyed child.
->>
->> With an MPTCP listener using server-side Fast Open, a valid-cookie
->> MP_JOIN SYN could then expose the freed child through accept().
->>
->> Release the locked child and drop the request before tcp_conn_request()
->> sends a SYN-ACK. Initialize drop_req when allocating the request so the
->> check cannot observe stale state after request-socket reuse.
->>
->> Changes in v2:
->> - unlock the child before dropping its reference
->> - drop the request instead of sending a SYN-ACK after the MPTCP reset,
->>   as suggested by Jiayuan Chen
->>
->> Fixes: 90bf45134d55 ("mptcp: add new sock flag to deal with join subflows")
->> Reported-by: Kimi Security Team <bug-report@moonshot.ai>
->> Suggested-by: Jiayuan Chen <jiayuan.chen@linux.dev>
->> Signed-off-by: Yilin Zhang <yilinzhang@moonshot.ai>
+On Mon, Sep 07, 2026 at 12:37:52AM +0100, Aamir Ahmed wrote:
+> The Get Parameters (GP) response handler iterates over MAC address
+> and VLAN filter tables using counts (mac_cnt, vlan_cnt) taken directly
+> from the response packet.  These counts are not validated against either
+> the actual packet length or the filter arrays allocated by the earlier
+> Get Capabilities response handler.
 > 
-> This looks like the wrong fix. IIRC fastopen is not compatible with MPJ
-> - as the latter must accept data only after the 4way handshake completion.
+> A malformed GP response can cause:
+>  - out-of-bounds read past the packet data when iterating pdata
+>  - out-of-bounds write to mac_filter.addrs[] when mac_cnt exceeds
+>    the allocated filter size (n_uc + n_mc + n_mixed)
+>  - out-of-bounds write to vlan_filter.vids[] when vlan_cnt exceeds
+>    n_vids
+>  - bitmap corruption via set_bit()/clear_bit() beyond u64 width
 > 
-> @Mat(s): could you please double check the above ^^^ statement???
+> Add three validation checks before the filter table loops:
+>  1. Packet is large enough for the claimed MAC and VLAN entries
+>  2. mac_cnt does not exceed the allocated MAC filter capacity
+>  3. vlan_cnt does not exceed the allocated VLAN filter capacity
 > 
-> If so mptcp should reject entirely MPJ + fastopen and no addtional code
-> required on the TCP side.
+> Also check for NULL filter arrays in case Get Capabilities was not
+> processed first.
+> 
+> Fixes: 0b49507fc090 ("net/ncsi: Resource management")
+> Signed-off-by: Aamir Ahmed <elb12345@hotmail.co.uk>
+> ---
+>  net/ncsi/ncsi-rsp.c | 31 +++++++++++++++++++++++++++++--
+>  1 file changed, 29 insertions(+), 2 deletions(-)
+> 
+> diff --git a/net/ncsi/ncsi-rsp.c b/net/ncsi/ncsi-rsp.c
+> index 1401528dbd6c..88f3b8db0289 100644
+> --- a/net/ncsi/ncsi-rsp.c
+> +++ b/net/ncsi/ncsi-rsp.c
+> @@ -884,10 +884,38 @@ static int ncsi_rsp_handler_gp(struct ncsi_request *nr)
+>  	nc->modes[NCSI_MODE_AEN].enable = 1;
+>  	nc->modes[NCSI_MODE_AEN].data[0] = ntohl(rsp->aen_mode);
+>  
+> +	/* Validate the response carries enough data for the MAC and VLAN
+> +	 * tables it claims to contain.  The variable-length area begins
+> +	 * at offset 48 (right after the fixed Get Parameters fields).
+> +	 */
+> +	if (nr->rsp->len < 48 + (unsigned int)rsp->mac_cnt * ETH_ALEN +
+> +			    (unsigned int)rsp->vlan_cnt * sizeof(__be16)) {
+> +		netdev_warn(ndp->ndev.dev,
+> +			    "NCSI: GP response too short for %u MACs + %u VLANs\n",
+> +			    rsp->mac_cnt, rsp->vlan_cnt);
+> +		return -EINVAL;
+> +	}
 
-I didn't check in details, but when I try with this packetdrill repro...
+My concern with this patch is the same as for patch 1/2.
 
- https://lore.kernel.org/20260903070649.3965366-1-yilinzhang@moonshot.ai
+I'm not sure that there is any guarantee that nr->rsp is a linear skb
+and if not then checking len is insufficient and I think the check
+should be implemented using pskb_may_pull.
 
-... it looks like the kernel replies with an MP_RST, but also a SYN+ACK,
-and a WARN:
+Not that any pointers referring to skb data may be invalidated
+by that call, so, f.e. rsp should probably be set after the
+call to pskb_may_pull().
 
-  refcount_t: underflow; use-after-free.
-  (...)
-  inet_csk_listen_stop (net/ipv4/inet_connection_sock.c:1533)
-  ? mptcp_subflow_queue_clean (net/mptcp/subflow.c:1925)
-  mptcp_check_listen_stop.part.0 (include/net/sock.h:1486
-                                  net/mptcp/protocol.c:3482)
-  __mptcp_close (net/mptcp/protocol.c:3534)
-  mptcp_close (net/mptcp/protocol.c:3572)
-  inet_release (net/ipv4/af_inet.c:425)
-
-With this v2, I don't see the SYN+ACK, only the RST.
+...
 
 
-If I'm not mistaken, with TFO, syn_recv_sock will be called first
-(tcp_conn_request -> tcp_fastopen_create_child -> subflow_syn_recv_sock)
-then MPTCP will only check TFO when the SYN+ACK is being sent
-(tcp_conn_request -> subflow_v(46)_send_synack).
+As noted collectively by Greg and Paolo elsewhere:
+1. Please include an Assisted-by tag
+2. Please keep the number of patches in-flight to 15 or less
 
-In subflow_syn_recv_sock(), I don't think we have a strong indicator
-that the caller is TFO. It looks like we would also need to change the
-TCP stack to pass this info, no?
-
-Cheers,
-Matt
 -- 
-Sponsored by the NGI0 Core fund.
-
+pw-bot: changes-requested
