@@ -1,45 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63D283AB5DC;
-	Thu, 10 Sep 2026 04:29:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B58B36A35A;
+	Thu, 10 Sep 2026 04:32:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789014569; cv=none; b=ORQAKUPw4Knj8nyAe+BwjmNlOXlQhqTAq//xckyzTXsX7mfzKUUix8+zviN9EboYTAi5BaDHBeXj7SJCXUndlYkGhTO13s6Epzk+v8G88mTOdIQ4iDyY1mJs7qYSqgrUggb1KvNI2Tm2VaO3YyA/1Eu32SZfHRMFJS74GR/j7og=
+	t=1789014766; cv=none; b=pfgrbkSCzyg18Py2ZaLAzkDg/q26SYwBdWcbAkN8YQqkPfm6ESAn1/x67QM+6U0Pp9d3Wh0c2ad37SC8v7hX213aHP8rgtvNvl5IBGm4Llp/XbToO7TLXg1CilplvRfK1MlHs1Y6ymuHwYQ4w2zgYblwrxDXiCpouv+lkLxkOnU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789014569; c=relaxed/simple;
-	bh=0UQpCnHmZaz6eJE27RdBZoBNNLkmVXC9i16CVAVrYKc=;
+	s=arc-20240116; t=1789014766; c=relaxed/simple;
+	bh=MFKzVYgGQEd11ppCdPQZn7O0GNRRG1Mhk6EDGf/9rEo=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=FBv8hE6l4wB9NLq7Sk2kcpAVFkbrt2/ECTWkpqhMwxnnxCg+/pooSlxtpuPLeuMhz1iMwwqrS/rmvdYdGa5fjx1Wn8dO5OXtDIGGJcLG0IAJyUBhuWI967tuZ3NW7W++HYfbfGcVMnF+bX6hJ8lstgCPCK7WhhiazKT68s7r/sA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VxsjTs2i; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=BcMU6ktvVHtDwH5OsJW/E5DPX29xA3p/FVFW9cm7OoFYU4Tn4/dOKuwn0VZadVT4vsw40uBRgmQdho6KnAoocPMGMdFjfF/SnK8il02LyKMFqDqgL1D3w7DHSFb1ggcXU/6WljUn7Me7DeQEggHb/hjaxq2J7czUTrAxT8Dgbh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F/+uRx3R; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VxsjTs2i"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32AD31F000FF;
-	Thu, 10 Sep 2026 04:29:26 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F/+uRx3R"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11BF41F000FF;
+	Thu, 10 Sep 2026 04:32:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789014567;
-	bh=aRkxR0tfvuYcQsIW26vPk5E1hxrzATRnV3+jdRehPAQ=;
+	s=k20260515; t=1789014764;
+	bh=nLomoyMuXiOxkohf3Z2yt0fbleEgNC5NNGz+z6kEYZw=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=VxsjTs2iKUigxaTKsVJoTj7nRkH2zJFRUuIs794P49WZgsXoHIwAtEZJmMeaZzIFt
-	 0bLz8xsBp2QVDpvre9Xta/ASiYP8p9nIa/KdNQgYmD4qx8DzKMQE4g6LFaUOcJ/HTX
-	 F7pMGlzF0yGuOmbELk3rflwUO5HepSRev9PVv6W9ORMA5ZAcPfiPX/XFlEv7YYW2ID
-	 4B/JWD776tsCMVV/DEqimtSqCvYyua0f4f4S4HVvmnjsDMWp/Bc1g+b22Z0ktyuwP8
-	 bW33p7fDHBCOGXnIZmWWudjH4Icr7duArUM9NvpLUmKklSKA+axDVkT/WoydsnlyJ+
-	 29Q8m+bAK9hEA==
-Subject: Re: [PATCH net v3] net: mana: fix reset work race with device removal
+	b=F/+uRx3RBbxhWQNjRFmM9fS6VCvHCvSoq5Te6UCgUURUF+sW9NzeFFsEmlrvsZ17i
+	 VeI82RHauLI3xR/hTn49GEcmxMgVxYv7WYu9AwY1dzD+Qmj2Fb/VzG8ZyTAJ5rt/P8
+	 R1HZCEPbpaGq/PaGfEWCXdXBADX+EdpRmwQaewhCYphpOhkFunNdXQNF/l23/F8PUr
+	 7FeSX+OJB1pCyw+4caDtfOOVmbSHi0s3rvNKZcRQMAEwz3zC8ZC/3K/GRRDrc0jjWA
+	 239LTE0H/iHUFP/t+GAtu8gnN2xPPqOsDyoO6TYpm7jD8Z2tjqSfPvT7/roCTNe9Do
+	 LZf1Lk9UbKp5g==
+Subject: Re: [PATCH v3 net-next] octeontx2-pf: report port connector type in
+ ethtool link ksettings
 From: netdev-bot+sashiko@kernel.org
-To: fanwu01@zju.edu.cn
-Cc: netdev@vger.kernel.org, kys@microsoft.com, haiyangz@microsoft.com,
- wei.liu@kernel.org, decui@microsoft.com, longli@microsoft.com,
+To: rkannoth@marvell.com
+Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
  andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, linux-hyperv@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, horms@kernel.org,
- songl@zju.edu.cn
-Date: Thu, 10 Sep 2026 04:29:25 +0000
-Message-ID: <178901456575.219967.1716228063014177420@kernel.org>
-In-Reply-To: <20260909042529.652301-1-fanwu01@zju.edu.cn>
-References: <20260909042529.652301-1-fanwu01@zju.edu.cn>
-X-sashiko-severity: High
+ kuba@kernel.org, pabeni@redhat.com, sgoutham@marvell.com, hkelam@marvell.com
+Date: Thu, 10 Sep 2026 04:32:43 +0000
+Message-ID: <178901476356.219967.4043623609208931989@kernel.org>
+In-Reply-To: <20260909040621.397255-1-rkannoth@marvell.com>
+References: <20260909040621.397255-1-rkannoth@marvell.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -49,348 +47,112 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 3 potential
+Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider:
 
-Critical: 0 · High: 1 (1) · Medium: 1 · Low: 1
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-- [High] GC_REMOVING is a one-way latch that is set on service exits
-  which do not necessarily remove the device.
-- [Medium] The new `if (test_bit(GC_PROBE_SUCCEEDED, &gc->flags))` gate
-  in `mana_gf_stats_work_handler()` (mana_en.c:4068) silently discards…
-- [Low] The new service-work submission uses `queue_work(system_wq,
-  &gc->serv_work)` (gdma_main.c:886).
-
-Pre-existing issues:
-- [High] `mana_gd_shutdown()` (gdma_main.c:2776) tears down the HWC —
-  `mana_gd_cleanup_device()` -> `mana_hwc_destroy_channel()` ->…
+- [Medium] otx2_get_link_ksettings()
+  (drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c:1236)…
 
 --
 
-net: mana: fix reset work race with device removal
+octeontx2-pf: report port connector type in ethtool link ksettings
 
-The service work is moved into struct gdma_context and GC_IN_SERVICE now
-describes whether the work may still touch gc.  Removal and the probe
-unwind set a new GC_REMOVING bit to close admission and then wait for an
-in-flight cycle to retire before clearing drvdata and freeing gc.  Reset
-events observed during probe are latched in GC_SERVICE_DURING_PROBE
-instead of being admitted immediately.
+otx2_get_link_ksettings() now reads the connector type out of the CGX
+firmware shared data (struct cgx_lmac_fwdata_s.port), masks the low eight
+bits, checks the result against a list of ethtool PORT_* values and stores
+it into cmd->base.port.  Unrecognized values become PORT_OTHER.
 
-No Link: tags in the commit header.  Earlier postings referenced in the
-changelog:
-  https://lore.kernel.org/netdev/20260905023602.425827-1-fanwu01@zju.edu.cn
-  https://lore.kernel.org/netdev/20260805143812.220509-1-fanwu01@zju.edu.cn
-
-> diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-> index f92b2d0bf926..28544f00e8ce 100644
-> --- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
-> +++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-> @@ -678,10 +678,38 @@ static void mana_serv_rescan(struct pci_dev *pdev)
->  	pci_unlock_rescan_remove();
->  }
->  
-> -static void mana_serv_fpga(struct pci_dev *pdev)
-> +/* Retire one service cycle: GC_IN_SERVICE is the last state published
-> + * by the work, so remove() and the probe unwind may free gc once it
-> + * is clear.  Must run before the exit paths take pci_lock_rescan_remove():
-> + * removal can be waiting on the bit while holding that lock.
-> + */
-> +static void mana_service_done(struct gdma_context *gc)
-> +{
-> +	/* Pairs with test_bit_acquire() on the wait side. */
-> +	clear_bit_unlock(GC_IN_SERVICE, &gc->flags);
-> +	/* wake_up_var() requires a full barrier between the update of the
-> +	 * waited-on variable and the wake.
-> +	 */
-> +	smp_mb__after_atomic();
-> +	wake_up_var(&gc->flags);
-> +}
-> +
-> +/* Retire a cycle whose exit removes the device: close admission
-> + * first so no new cycle can be admitted in the retire window.
-> + */
-> +static void mana_service_done_removing(struct gdma_context *gc)
-> +{
-> +	set_bit(GC_REMOVING, &gc->flags);
-> +	mana_service_done(gc);
-> +}
-> +
-> +static void mana_serv_fpga(struct pci_dev *pdev, struct gdma_context *gc)
->  {
->  	struct pci_bus *bus, *parent;
->  
-> +	if (gc)
-> +		mana_service_done_removing(gc);
-> +
->  	pci_lock_rescan_remove();
->  
->  	bus = pdev->bus;
-> @@ -706,9 +734,8 @@ static void mana_serv_fpga(struct pci_dev *pdev)
->  	pci_unlock_rescan_remove();
->  }
->  
-> -static void mana_serv_reset(struct pci_dev *pdev)
-> +static void mana_serv_reset(struct pci_dev *pdev, struct gdma_context *gc)
->  {
-> -	struct gdma_context *gc = pci_get_drvdata(pdev);
->  	struct hw_channel_context *hwc;
->  	int ret;
->  
-> @@ -738,6 +765,7 @@ static void mana_serv_reset(struct pci_dev *pdev)
->  	if (ret == -ETIMEDOUT || ret == -EPROTO) {
->  		/* Perform PCI rescan on device if we failed on HWC */
->  		dev_err(&pdev->dev, "MANA service: resume failed, rescanning\n");
-> +		mana_service_done_removing(gc);
->  		mana_serv_rescan(pdev);
->  		return;
->  	}
-
-[Severity: High]
-Is GC_REMOVING guaranteed to be followed by an actual removal here?  Both
-callers of mana_service_done_removing() can return with the device still
-bound.
-
-In mana_serv_fpga(), the bit is set before the bus checks:
-
-	if (gc)
-		mana_service_done_removing(gc);
-
-	pci_lock_rescan_remove();
-
-	bus = pdev->bus;
-	if (!bus) {
-		dev_err(&pdev->dev, "MANA service: no bus\n");
-		goto out;
-	}
-
-	parent = bus->parent;
-	if (!parent) {
-		dev_err(&pdev->dev, "MANA service: no parent bus\n");
-		goto out;
-	}
-
-bus->parent is NULL whenever the MANA function sits on a root bus, so
-this exits through "goto out" without calling
-pci_stop_and_remove_bus_device().
-
-The failed-resume path has the same shape: mana_serv_rescan() has its own
-"if (!parent)" bail-out that returns without removing the device, after
-GC_REMOVING has already been latched.
-
-I can't find any code that clears GC_REMOVING again.  Once it is set on a
-live gc, mana_schedule_serv_work() refuses every subsequent request:
-
-	if (test_bit(GC_REMOVING, &gc->flags)) {
-		dev_info(gc->dev, "Device is being removed\n");
-		mana_service_done(gc);
-		return -EBUSY;
-	}
-
-and mana_tx_timeout() in mana_en.c also stops queueing queue-reset work
-for the rest of the binding:
-
-	if (test_bit(GC_IN_SERVICE, &gc->flags) ||
-	    test_bit(GC_REMOVING, &gc->flags))
-		return;
-
-Does this leave a still-bound device permanently without HWC reset
-service and without TX queue reset?  Would it be better to set
-GC_REMOVING only after the point where removal is known to happen, or to
-clear it on the bail-out paths?
-
-> @@ -796,48 +841,49 @@ static void mana_recovery_delayed_func(struct work_struct *w)
+> diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
+> index 9bee1b91eeaa..a05dee0085a3 100644
+> --- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
+> +++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
 
 [ ... ]
 
->  int mana_schedule_serv_work(struct gdma_context *gc, enum gdma_eqe_type type)
->  {
-> -	struct mana_serv_work *mns_wk;
-> -
->  	if (test_and_set_bit(GC_IN_SERVICE, &gc->flags)) {
->  		dev_info(gc->dev, "Already in service\n");
->  		return -EBUSY;
->  	}
->  
-> +	/* Pairs with set_bit(GC_REMOVING) + smp_mb__after_atomic() in
-> +	 * mana_gd_remove(): the test_and_set_bit() above is fully ordered,
-> +	 * so either this read sees GC_REMOVING and the cycle aborts, or
-> +	 * remove() observes GC_IN_SERVICE and waits for the cycle to retire
-> +	 * before it frees gc.
-> +	 */
-> +	if (test_bit(GC_REMOVING, &gc->flags)) {
-> +		dev_info(gc->dev, "Device is being removed\n");
-> +		mana_service_done(gc);
-> +		return -EBUSY;
+> @@ -1231,6 +1232,23 @@ static int otx2_get_link_ksettings(struct net_device *netdev,
+>  				OTX2_MODE_SUPPORTED, cmd);
+>  	otx2_get_fec_info(rsp->fwdata.supported_fec,
+>  			  OTX2_MODE_SUPPORTED, cmd);
+> +
+> +	port = FIELD_GET(GENMASK(7, 0), rsp->fwdata.port);
+> +	switch (port) {
+> +	case PORT_TP:
+> +	case PORT_AUI:
+> +	case PORT_MII:
+> +	case PORT_FIBRE:
+> +	case PORT_BNC:
+> +	case PORT_DA:
+> +	case PORT_NONE:
+> +		cmd->base.port = port;
+> +		break;
+> +	default:
+> +		cmd->base.port = PORT_OTHER;
+> +		break;
 > +	}
-> +
->  	if (!try_module_get(THIS_MODULE)) {
->  		dev_info(gc->dev, "Module is unloading\n");
-> -		clear_bit(GC_IN_SERVICE, &gc->flags);
-> +		mana_service_done(gc);
->  		return -ENODEV;
->  	}
->  
-> -	mns_wk = kzalloc(sizeof(*mns_wk), GFP_ATOMIC);
-> -	if (!mns_wk) {
-> -		module_put(THIS_MODULE);
-> -		clear_bit(GC_IN_SERVICE, &gc->flags);
-> -		return -ENOMEM;
-> -	}
-> -
->  	dev_info(gc->dev, "Start MANA service type:%d\n", type);
-> -	mns_wk->pdev = to_pci_dev(gc->dev);
-> -	mns_wk->type = type;
-> -	pci_dev_get(mns_wk->pdev);
-> -	INIT_WORK(&mns_wk->serv_work, mana_serv_func);
-> -	schedule_work(&mns_wk->serv_work);
-> +
-> +	gc->serv_type = type;
-> +	pci_dev_get(to_pci_dev(gc->dev));
-> +	queue_work(system_wq, &gc->serv_work);
->  	return 0;
->  }
-
-[Severity: Low]
-This isn't a bug, but was system_wq intended here rather than
-system_percpu_wq?  In this tree the declaration is:
-
-include/linux/workqueue.h:
-	extern struct workqueue_struct *system_wq; /* use system_percpu_wq, this will be removed */
-
-and system_wq is allocated with __WQ_DEPRECATED, so __queue_work() emits:
-
-kernel/workqueue.c:__queue_work() {
-	if (unlikely(wq->flags & __WQ_DEPRECATED))
-		pr_warn_once("workqueue: work func %ps enqueued on deprecated workqueue. "
-			"Use system_{percpu|dfl}_wq instead.\n",
-			work->func);
-}
-
-The code being replaced used schedule_work(), which queues on
-system_percpu_wq.  The stated reason for staying off gc->service_wq is
-satisfied equally by schedule_work(&gc->serv_work).
-
-[ ... ]
-
-> @@ -2624,6 +2700,20 @@ static void mana_gd_remove(struct pci_dev *pdev)
->  {
->  	struct gdma_context *gc = pci_get_drvdata(pdev);
->  
-> +	/* Close admission and retire an in-flight cycle before any
-> +	 * teardown: the service work is the only user of gc that
-> +	 * remove() does not otherwise synchronise with.  The service
-> +	 * exits retire before taking the PCI rescan/remove lock, so
-> +	 * this wait cannot deadlock against them.
-> +	 */
-> +	set_bit(GC_REMOVING, &gc->flags);
-> +	/* Pairs with the ordered test_and_set_bit(GC_IN_SERVICE) in
-> +	 * mana_schedule_serv_work().
-> +	 */
-> +	smp_mb__after_atomic();
-> +	wait_var_event(&gc->flags,
-> +		       !test_bit_acquire(GC_IN_SERVICE, &gc->flags));
-> +
->  	pci_disable_sriov(pdev);
->  
->  	mana_rdma_remove(&gc->mana_ib);
-
-[Severity: High]
-This isn't a bug introduced by this patch, but should mana_gd_shutdown()
-get the same admission-close and drain that is added here?  It tears the
-HWC down with no synchronisation against an in-flight service cycle:
-
-static void mana_gd_shutdown(struct pci_dev *pdev)
-{
-	struct gdma_context *gc = pci_get_drvdata(pdev);
-
-	dev_info(&pdev->dev, "Shutdown was called\n");
-
-	mana_rdma_remove(&gc->mana_ib);
-	mana_remove(&gc->mana, true);
-
-	mana_gd_cleanup_device(pdev);
-
-	pci_disable_device(pdev);
-}
-
-Meanwhile mana_serv_reset() caches the HWC pointer and then sleeps for
-MANA_SERVICE_PERIOD seconds across suspend/resume:
-
-	hwc = gc->hwc.driver_data;
-	...
-	hwc->hwc_timeout = 0;
-	...
-	mana_gd_suspend(pdev, PMSG_SUSPEND);
-
-	msleep(MANA_SERVICE_PERIOD * 1000);
-
-	ret = mana_gd_resume(pdev);
-
-mana_gd_cleanup_device() -> mana_hwc_destroy_channel() does kfree(hwc),
-and both paths call it.  device_shutdown() takes only
-device_lock(&pdev->dev), which the service work does not hold, so on
-reboot or kexec during a reset cycle can this end up as a use-after-free
-of hwc and a second kfree()/destroy_workqueue() on the same objects?
-
-> diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-> index 591fb4191d90..c297de8bb762 100644
-> --- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-> +++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-
-[ ... ]
-
-> @@ -4061,9 +4061,12 @@ static void mana_gf_stats_work_handler(struct work_struct *work)
->  		dev_warn(gc->dev,
->  			 "Gf stats wk handler: gf stats query timed out.\n");
->  		/* As HWC timed out, indicating a faulty HW state and needs a
-> -		 * reset.
-> +		 * reset.  Never admit service work before the probe has
-> +		 * completed: a probe that is failing unwinds netdevs and the
-> +		 * HWC channel itself and cannot drain a cycle.
->  		 */
-> -		mana_schedule_serv_work(gc, GDMA_EQE_HWC_RESET_REQUEST);
-> +		if (test_bit(GC_PROBE_SUCCEEDED, &gc->flags))
-> +			mana_schedule_serv_work(gc, GDMA_EQE_HWC_RESET_REQUEST);
->  		return;
->  	}
->  	schedule_delayed_work(&ac->gf_stats_work, MANA_GF_STATS_PERIOD);
 
 [Severity: Medium]
-What happens to the reset request when this gate is false but the probe
-then succeeds?
+Can this report a wrong connector type when firmware never populated the
+field?
 
-mana_probe() arms this work before returning to mana_gd_probe():
+PORT_TP is 0x00 in include/uapi/linux/ethtool.h, and the ethtool core
+zero-fills the settings before calling into the driver:
 
-	schedule_delayed_work(&ac->gf_stats_work, MANA_GF_STATS_PERIOD);
+net/ethtool/ioctl.c:netif_get_link_ksettings() {
+	memset(link_ksettings, 0, sizeof(*link_ksettings));
+	return dev->ethtool_ops->get_link_ksettings(dev, link_ksettings);
+}
 
-with MANA_GF_STATS_PERIOD being 2 * HZ, while mana_gd_probe() still has
-mana_rdma_probe() to run before it publishes the flag:
+So a zero firmware word takes the "case PORT_TP:" arm rather than the
+default PORT_OTHER arm, and ethtool prints "Port: Twisted Pair" on a
+fibre, DAC or backplane board.
 
-	set_bit(GC_PROBE_SUCCEEDED, &gc->flags);
-	if (test_and_set_bit(GC_SERVICE_DURING_PROBE, &gc->flags)) {
+Is a zero word possible here?  The member was carved out of the previously
+reserved (zero-filled) tail of struct cgx_lmac_fwdata_s by commit
+49f02e6877d1b, which shrank LMAC_FWDATA_RESERVED_MEM from 1021 to 1018:
 
-So a mana_query_gf_stats() timeout in that window takes the new branch,
-drops the request, and the bare "return;" also skips the
-schedule_delayed_work() re-arm below it.
+drivers/net/ethernet/marvell/octeontx2/af/mbox.h:
+	u64 mgmt_port:1;
+	u64 advertised_an:1;
+	u64 port;
+#define LMAC_FWDATA_RESERVED_MEM 1018
+	u64 reserved[LMAC_FWDATA_RESERVED_MEM];
 
-The EQE handler in gdma_main.c latches and re-checks instead:
+RVU_FWDATA_VERSION was not bumped at the same time, and
+is_rvu_fwdata_valid() in af/rvu.h only compares header_magic and version,
+so firmware images that predate the field still pass the ABI gate and hand
+back zeros for this word.
 
-	if (!test_bit(GC_PROBE_SUCCEEDED, &gc->flags)) {
-		if (!test_and_set_bit(GC_SERVICE_DURING_PROBE, &gc->flags))
-			dev_info(gc->dev,
-				 "Service is to be processed in probe\n");
-		else if (test_bit(GC_PROBE_SUCCEEDED, &gc->flags))
-			mana_schedule_serv_work(gc, type);
-		break;
-	}
+Would it make sense to also consult rw_valid from the same struct?  It is
+the per-LMAC validity flag, and grep shows it is currently only referenced
+in mbox.h and rvu_debugfs.c, never by this new consumer.  Note also that
+the debugfs dumper added alongside the field prints rw_valid, lmac_type,
+portm_idx and mgmt_port, but not port.
 
-Here there is neither a latch nor a re-check, and the plain test_bit()
-also races the set_bit() at the probe boundary.  If the probe goes on to
-succeed, the device is left with ac->hwc_timeout_occurred set, the stats
-poll never re-armed, and no reset cycle requested, where the previous
-code called mana_schedule_serv_work() unconditionally.  Should this call
-site latch into GC_SERVICE_DURING_PROBE (or re-check after the boundary)
-so the request is not lost?
+Separately, does the masking defeat part of the validation?  FIELD_GET()
+with GENMASK(7, 0) drops bits 63:8 before the switch runs, so firmware
+values such as 0x100 or 0x103 are published as PORT_TP and PORT_FIBRE
+respectively.  mbox.h documents no bitfield layout, mask or reserved-bit
+contract for this bare u64, so it isn't clear the upper bits can be
+discarded rather than treated as "not a valid connector code".
+
+Related to that, the commit message says:
+
+  "Extract only the low 8 bits of the firmware field and validate the
+   value against the standard ethtool PORT_* definitions before
+   publishing it to userspace."
+
+Given that neither the unpopulated (zero) case nor invalid values living in
+bits 63:8 can be rejected by this check, could the description be made
+more precise about what is actually validated?
+
+One more question on the encoding itself: is there an in-tree statement
+that fwdata.port uses ethtool PORT_* numbering?  The only other firmware
+description of a "port" value is struct cgx_lnk_sts.port:8 with
+RESP_LINKSTAT_PORT in af/cgx_fw_if.h, and that macro is defined but never
+decoded by cgx.c, so the mapping to PORT_TP/PORT_FIBRE/... appears
+undocumented here.
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260909042529.652301-1-fanwu01%40zju.edu.cn
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260909040621.397255-1-rkannoth%40marvell.com
