@@ -1,131 +1,175 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68EED392819
-	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 08:34:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B5AF3C108D
+	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 08:36:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789029298; cv=none; b=UrahnwwFXmyGNMa4mhFfADozqmbJ07r/P95PnKTTh7O/GZYP2pCudY6n6ilOVBmNobCtWe7Xj4qPlULTvxxSaSOsEEmmhPJdU3mphxCyO8+whro6DJWSW8Orr+q9275PcvRXiL6G02MFwY94l9AJdNCHRojiBst+YKo35KmvHE4=
+	t=1789029364; cv=none; b=GfHALlFeaWuWrhNjjMN47awvrqhlG08QV4u3+x+e4FjfL7uG/j8/nYaJVEfPD5jWuapxyJTROPQsVsWDelDw6SVsoegYp6om25vyzobFfiXYcBBa6/3KZNfmbTv7O5x2rIrRLbh0RoHR0FGiOPE4HMpSMOCvEwixYidHb0b6fx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789029298; c=relaxed/simple;
-	bh=TpuLBKMPFct48AFRYHZZ24jG1FdoNN7ANXjZgpBiaUQ=;
+	s=arc-20240116; t=1789029364; c=relaxed/simple;
+	bh=4hIdoHI4bBkJ09RTKQiCkxu/k0Y4cxF0L+FAjYtb0LQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aSdDuYx/u0onB87UDchX43vtRMBSFRGsm3doERhuzcM9KKN83Ia4ShMP5DK65Tp6HrwqqKpvtzuJNrxOcFnmEE3/5Qy7fPqZ9IXfWk9zbl5e14SCAe5cmoWbGFMYqomjGADJJTz1Cq+vEC4xH54gnNBPv5JEs7SujNJQQo+5nCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=aGZ9239b; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=XQ1BEbSF; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 In-Reply-To:Content-Type; b=R6SODggseyIPzntshy2VxVNGD+478RmrdNW10l6jovnfkE7VE9Kf+UN2TikiTjZODmv+3PUr6b2iqdIWrvguKjOncWmcoMBZMptZA4AJlbvGz7qqSIiA7lJHh0gxaMoR6jCcqNUTn9qJJ7vfwZfUpj/rEM5uA/iGKPXr0/1FzMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HyDgs+Eh; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="aGZ9239b";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="XQ1BEbSF"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1789029295;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=tNvBbi3elEz1nStREMnqxozxYEg4vrtCAI0Kppph1j0=;
-	b=aGZ9239bE6ZiSHfUmPCNSYDSArSRPR6jzRwAmasoMK98NlybIyxfXN5TpwF0RAgTDf65m/
-	3+5Ucl8Fi3RYvwxe4+W1usAiQkwUpTWWDCVV2fUZqrzV9zKo5UB099Ckr6/MlNWNQbHbJw
-	Mbed2bhMtJzL94J07RhskBbvcAR2/j8=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-605-8lfi4r4gO_embpcP-H5VFg-1; Thu, 10 Sep 2026 04:34:54 -0400
-X-MC-Unique: 8lfi4r4gO_embpcP-H5VFg-1
-X-Mimecast-MFC-AGG-ID: 8lfi4r4gO_embpcP-H5VFg_1789029293
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-49b8c651ac0so99912895e9.2
-        for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 01:34:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1789029293; x=1789634093; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=tNvBbi3elEz1nStREMnqxozxYEg4vrtCAI0Kppph1j0=;
-        b=XQ1BEbSFtrpicE+LpNm2KKtJGMlnjVqh2M8sqkEx6DMpCcRP6wFhYbnGizJalq85P7
-         zYcQ7z3gRqIhewPlEFHNgI4h/n500pK2LvpjxGjuk7ekiYjzNDZkEsN8o6JgNWhJfSbY
-         Ypn9OyeCDYGUJ6auOVgm7tdbaS159ZgTDsglVCuX/wvWuS25xqa26WaIPVhIVhzCspfs
-         46dIKvGfGu7tTDIVPEW6AL5kAzGGsHi22NaZQ7SC0grtgKy5fjJx8xQMhOlRh+k+c6Ni
-         v4eQ5MdIGWU5S9JJ2B5AEukpvH5qCLYIVH1k9erTf1/y+/MGwGXC73Qhm8tXF14MIR5t
-         49Pw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789029293; x=1789634093;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=tNvBbi3elEz1nStREMnqxozxYEg4vrtCAI0Kppph1j0=;
-        b=KZtd9UCSPCQkkgrI2phfw9KY0HaGyqtfgF6y/Kc8nCpRa+jNPCD8mT1ZsSOERCI4xW
-         VGJxD9RkO3J8G7CNW66Uhwu9Ce8xRsHSQMatqhOU6UG5eRMhtjbkTGFhp4rvddwQOzFF
-         csvcUrR1Us+LR0e2txOR4/MESlvAxEqjtOiKyOhKc8xnIzj88qOyP74ql0duGCSQ4S1C
-         JwT4Hpg21B7g2tVUnk24zjtnlzv9W60B8QWSma20IF1Qa5TiNtvbHEccU1vyM3Ca8OkG
-         ZrnxERguVes1rTJup0OcbCESAIk1nVh/V5Sm6JZVQ9TKDnn1Iqi3sBHbvzl9hXwwkK4T
-         Umbg==
-X-Forwarded-Encrypted: i=1; AKwUvByJnmZlrRC5gqpEAZctow8B/Lsz3gm7rw6WkE8w866xoVId6R3jjDofes5aDT9dRMvihiubj68=@vger.kernel.org
-X-Gm-Message-State: AFuF++kyaym9ThrusY/PvQAMFElrBgZdP8b4qlKKbrgpzTyfNte6slka
-	DvW8NFJMUGm8yYhe56zjtPqoHSTr4jDfQsVAXFgs3RhL0C7+K1Ys8aBVHjOs1S3su42c70RbyPk
-	GYWllPWCx6Rvt1nBe4qp7VF8a00OLHfg0ttBEVTOWwpwKG2o0m4drURMtWQ==
-X-Gm-Gg: AYBFou3jFB+7mtw6kFX4WOnRq1sD7bkITtosK3VzcbHcFGna0a0isAuTjBhz913VVpz
-	2ijfQtZ7UL4lclEsiLzK4DXoQNLQwoYB4V82IHXElsVBBAR2FhFDNIM9RzvXkw9YaLOKLA+RQZt
-	FE0muszeRYGjbvfLBi8/9hIHKbbQ1+AB7fo1/7LVEA+0Fusr1izQz8auOCP5JjRQJZYlWZ/Gffp
-	mfFbceNsoZX+5H4iPuCqnCnnbdFy8XKlfg0GYKH5GEx4T1MclD8W957pWjlgpWwP1hBSiiOtKak
-	je3AtPNtx0vZrOWIjnVM/oLCsq7KbmqaIrcd3r1DsTrLMdNHnba+t7D9eTyXm+ATv0FENqS7/Ib
-	tpROu+gLxMX7dLdn0JH/0P5cI0Z/06ZrjzBoPD/Z+jIqVonD+vdQBFEDhxGkNZFuXb0AYxwPjgQ
-	==
-X-Received: by 2002:a05:600c:34c2:b0:49d:10d6:fd55 with SMTP id 5b1f17b1804b1-49d10d6fdeemr237639055e9.1.1789029292756;
-        Thu, 10 Sep 2026 01:34:52 -0700 (PDT)
-X-Received: by 2002:a05:600c:34c2:b0:49d:10d6:fd55 with SMTP id 5b1f17b1804b1-49d10d6fdeemr237638595e9.1.1789029292375;
-        Thu, 10 Sep 2026 01:34:52 -0700 (PDT)
-Received: from [192.168.188.218] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49d20fce7a7sm256356735e9.4.2026.09.10.01.34.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 10 Sep 2026 01:34:51 -0700 (PDT)
-Message-ID: <5d4ad86d-9c30-4fc7-8f4a-0ee1ce6df62d@redhat.com>
-Date: Thu, 10 Sep 2026 10:34:50 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HyDgs+Eh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B07BF1F000FF;
+	Thu, 10 Sep 2026 08:36:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789029362;
+	bh=LGq6DmUKNA2obAn1dCcyKcd5rycZZPJNPLzm6jwz07A=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=HyDgs+EhPscZWJ/7BftS1IaAGl1JYriqalTje2iJV2frCczSFWLo2MjcZ2f/c8I2L
+	 uSoelUEaOl6aBn8Lj5JZPXZloGdfAjWQQ8/j+RlCqXO3usZ9Y2vHnPM+LHEp7+h0TC
+	 b292U/C4KTbOWxzS7de20uNauC8Zdv6XH8X6IKWeR+iL2saEBLKZiinrGtGR4yFzhF
+	 WwCfKW2lN8ujQnQTg11TX/zqB7JE78DHJczgZr+l/0Ven5CAqztVF17hbBT9hAsc+n
+	 aTnSHeAFxR7SAxbZqilNq80MU+uPq5kd+QtyAV9Dy2WHSP3pZNuu4LxevGYy898fAP
+	 h8dQNPW2JxgPw==
+Message-ID: <d5103afe-4ae6-4812-888e-9e41699c8617@kernel.org>
+Date: Thu, 10 Sep 2026 10:35:58 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] octeontx2-pf: Fix autoneg reporting in ethtool
-To: nshettyj@marvell.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: Hariprasad Kelam <hkelam@marvell.com>,
- Sunil Goutham <sgoutham@marvell.com>, Geetha sowjanya <gakula@marvell.com>,
- Ratheesh Kannoth <rkannoth@marvell.com>,
- Subbaraya Sundeep <sbhatta@marvell.com>,
- Bharat Bhushan <bbhushan2@marvell.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Christina Jacob <cjacob@marvell.com>,
- Jesse Brandeburg <jbrandeb@kernel.org>
-References: <20260903161117.2856633-1-nshettyj@marvell.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20260903161117.2856633-1-nshettyj@marvell.com>
+User-Agent: Thunderbird Daily
+Subject: Re: Some clarifications on the upstreaming process
+Content-Language: fr
+To: Steffen Klassert <steffen.klassert@secunet.com>
+Cc: Paolo Abeni <pabeni@redhat.com>, Herbert Xu
+ <herbert@gondor.apana.org.au>, netdev@vger.kernel.org,
+ David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>
+References: <20260907093020.2228346-1-steffen.klassert@secunet.com>
+ <aqD-_cBnIOMEpxVh@secunet.com>
+ <70d0048d-694b-4348-a6a5-de87a767b8fd@redhat.com>
+ <6d53e8e5-96a3-462f-97d7-722e1b9f8f79@kernel.org>
+ <aqJniwjpWMGk_oY9@secunet.com>
+From: Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <aqJniwjpWMGk_oY9@secunet.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 9/3/26 6:11 PM, nshettyj@marvell.com wrote:
-> From: Hariprasad Kelam <hkelam@marvell.com>
-> 
-> The driver adds the supported autoneg bit before copying the supported
-> link modes. The copy clears the bit, so ethtool does not report
-> supported autoneg correctly.
-> 
-> Add the supported autoneg bit after copying the supported link modes.
-> Also add the advertised autoneg bit when firmware reports it.
-> 
-> Fixes: 1a50280c25ec ("octeontx2-pf: ethtool physical link status")
-> Signed-off-by: Nitin Shetty J <nshettyj@marvell.com>
-> Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
-The SoB chain looks wrong, likely Hariprasad' SoB should come first.
+Hi Steffen,
 
-Please have a look at commit c82ff94592fb68f529afe63ca7f5ddb7dae4ba83:
-you are expected to reply to the LLM comments.
+On 10/09/2026 10:17, Steffen Klassert wrote:
+> On Wed, Sep 09, 2026 at 12:22:14PM +0200, Matthieu Baerts wrote:
+>> On 09/09/2026 11:23, Paolo Abeni wrote:
+>>> On 9/9/26 8:38 AM, Steffen Klassert wrote:
 
-FTR lacking the H/W specific knowledge on your NIC, all the comments
-looked valid to me, I'm setting your patches to changes requested.
+(...)
 
-/P
+>>>> This is the biggest
+>>>> issue, I see the Sashiko review only after I sent a pull request.
+>>>> This makes the upstreaming process complicated and delays fixes
+>>>> quite a bit. I requested some infrastructure from the LF to get
+>>>> this fixed, but no answer so far. Any other ideas how to fix
+>>>> this issue?
+>>>
+>>> I think are 2 separate points:
+>>>
+>>> 4.1 missing sashiko reviews on edge cases
+>>> 4.2 difficulty to reproduce the sashiko/clashiko review process in advance.
+>>>
+>>> WRT 4.1 things should generally improve over time, with the exception of
+>>> patch that do not apply. I think we can't do much for them, but they
+>>> also should not matter much, right?
+>>>
+>>> WRT 4.2 the current guidance is to run AI reviews before submission.
+>>> Sashiko could be installed and run locally. The nipa instance (clashiko)
+>>> is slighly more effective than sashiko.dev because it runs several
+>>> recent models and its result are indeed hard to replicate locally/in
+>>> advance.
+>>>
+>>> Clashiko currently runs on (very significant) meta-sponsored budget, I
+>>> think it would be hard to extend it's usage to netdev's subsystems.
+>>
+>> We might need to find a solution for the subsystems for this 4th point.
+>> I have the same issue with MPTCP, and it seems it is the same with
+>> Netfilter (and likely others) from what I saw. I would prefer to have
+>> Clashiko reviews before applying patches on my side: to reduce the risk
+>> to deal with new issues later on, and to let the author dealing with
+>> that (instead of me days/weeks after).
+> 
+> Right, patches must get the review before they get applied to
+> a git tree, not after. It was always like that and we should
+> try to get back to it. The current workflow feels broken from
+> a submaintainers point of view. The submaintaners are now the
+> bottleneck.
+
+Indeed, same here.
+
+>> >From what I understood, Clashiko is still being tweaked, and that's the
+>> current priority. Maybe later, subsystems can have their patches
+>> reviewed by Clashiko as well?
+> 
+> That's what I would hope for.
+> 
+>> If that's a budget issue that cannot be solved easily, I wonder if
+>> Clashiko shouldn't ignore subsystems patches: I see its value, but I
+>> also see the cost for the different subsystems :-/
+> 
+> Maybe we can work with a compromise in the meantime. Clashiko
+> reviews all subsystem patches that apply to net or net-next
+> when the patches are submitted to the list as it is now.
+> But then the subsystem pull requests are done without
+> resending all patches to the list. So patches do not get
+> reviewed again with the pull request. That would avoid the
+> hassle with reviews of already applied patches.
+
+I guess that could work for you because ipsec specific patches are sent
+to the same list, but not for subsystems with dedicated mailing lists.
+In our case, new features and complex fixes are usually discussed there
+first, with potentially multiple revisions, before being sent to netdev.
+
+Cheers,
+Matt
+-- 
+Sponsored by the NGI0 Core fund.
 
