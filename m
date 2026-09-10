@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5594C599A39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C015259E33F
 	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 20:03:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789070605; cv=none; b=m14IOQg4HcQekefXkidQ8xip37KEnGaWdqV3mD63Hyl+8xCZiiK8z925HdCsFAONMfX4piJovwsfxRHyuwGIhef61L5XSfWIAS8gaam7I++tnwR4BgxDx7Ndn7haO8fOrC2gRYAtsqp2Fi8R0NU9yeOmNCinY+GgwwPo6fowfrY=
+	t=1789070606; cv=none; b=UIh7guA1v8j2c385ivzCQ++31LFeVld+EpVUgO5hpHX6MU1iHejpO4w3AuLRV9A3eO5BNwz7Xp2mO28VClbJrj3BnJWesmBOccdIyxuAaG6tpFcRrLHlW2pETmGMqPUsh78el2tfUxxi1ozCJeCvxggsBWsec09H7d21CQzTqbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789070605; c=relaxed/simple;
-	bh=FrwR64hfOtZ8LRmynpak3XiTDysVtvkkqWr7MW8wls8=;
+	s=arc-20240116; t=1789070606; c=relaxed/simple;
+	bh=ChUoPAwVOe9GpYAv2RXB4FEw+78JfqkCYZxsxo30rXE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UGDQMCBsrAYhzSWiTiqkP2hRn8yOm/gYr1D2qRCWI6/rSFS5adjCYTMpmjwBXsQe5aF4KyeaXRYqFlHEnLDES7NqZ3yN4lvlCTb7OGESZ28atHVdEXfAhmKP1FflxaYxPZAXp8dRSzYmSNKz9fSSVs9JnIlwh7vta3O1DzAUBOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cRJnt+fp; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=J52wHGL4SWoQp9oIlueoDtumr3HK/CiRu2KMAryNrx/4GaAAYBn1S42CFlxWzl4DkRrk4tefJRLCoRfIh1cBgttPnB9ozjzuIQ7B1JRBJ9kOt6WipJjqo188nz5838gFx7K057Ivf/paVc0UKYuuyuciOM0tbntJYX/63H2Y8V8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m6pHVjSM; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cRJnt+fp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D74ED1F0089A;
-	Thu, 10 Sep 2026 20:03:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m6pHVjSM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56B4D1F000FF;
+	Thu, 10 Sep 2026 20:03:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1789070604;
-	bh=/sGnEaI0YHN7ilUvcEfM6C0C7oOJ4/OHpm+2jY5+Wx0=;
+	bh=34aCThUdcI0Xgr9g3nNlhLlfdyIAOyY1i4SuV4nGgbs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=cRJnt+fpW3QkAhwL3tp4XochSBfCtS6OVkrz3tx8bWJLpl2SNLriZ0UtxfUuv1fBj
-	 S74T6tNjy/vyG5FGsXAKielIDSFY19YLCvTIP72h/UBL/9RZf+XGk3jmnKPrMF5DFI
-	 FYhV41Yw28HG2LO763r7zyvRVsk708H95c02ptWtM8ab/EK2ZYMJ9Ua8yrb7y97Gpm
-	 ZenLZgyGaXZL7P1WrQddz5pBd/iVSIaoYOLcRGNWHZoFrxJOGwcYM2/c0hO/4WCsig
-	 q9M2SVR7b7rRd/fwC4yijU0eJ6OGjrirJPqgp8oI7JkNXz59b+HAx/nxzUOc7UQFSC
-	 TpQG07mS/2Eug==
+	b=m6pHVjSMHeQQGYerK9sh/vNwzoIi3cncIPeeuGsPFxZ8xGg4ZyG96TcUnk9cylB/W
+	 b05aW++HRhJnJGwxTV6Z4ZgkkA/BaCZjiYppVTV5vydLCMgD7dmfY0cxxtseu62oUY
+	 HBXY0JC6UkUdPmVHBWcrgQHPBmBH6b11MR9VQxqylt6nGp1AwCs6dar16PcCS3olji
+	 wxb3WbMK/++8sgm2d93ZC2tbS+VfxXoxDha2oAaQrRk1YSVWkhBRpN2xdxmhpB5yop
+	 OKKNadpNB+PWYestpXfylq0n4TGytxBhp9nuaLKXlWZ3Tsu+PGEugfi2k3m3CfeUS5
+	 YXuBhaSG/ATLg==
 From: Jakub Kicinski <kuba@kernel.org>
 To: davem@davemloft.net
 Cc: netdev@vger.kernel.org,
@@ -38,9 +38,9 @@ Cc: netdev@vger.kernel.org,
 	moshe@nvidia.com,
 	donald.hunter@gmail.com,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net-next 7/8] netlink: specs: devlink: describe the netns id in the parent-dev nest
-Date: Thu, 10 Sep 2026 13:03:11 -0700
-Message-ID: <20260910200312.2665792-8-kuba@kernel.org>
+Subject: [PATCH net-next 8/8] netlink: specs: devlink: add pad to the subsets carrying padded u64s
+Date: Thu, 10 Sep 2026 13:03:12 -0700
+Message-ID: <20260910200312.2665792-9-kuba@kernel.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260910200312.2665792-1-kuba@kernel.org>
 References: <20260910200312.2665792-1-kuba@kernel.org>
@@ -52,97 +52,77 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-devlink_nl_rate_parent_fill() emits DEVLINK_ATTR_PARENT_DEV via
-devlink_nl_put_nested_handle(), which adds DEVLINK_ATTR_NETNS_ID
-whenever the parent rate node lives on a devlink instance in another
-netns. Now that we defined dl-nested-devlink subset, which unlike
-dl-parent-dev includes netns-id, let's switch to it. The rate APIs
-input genuinely does not accept the netns-id, so we need to subset
-them to stick with dl-parent-dev.
+We are missing the pad attribute in a number of subsets.
+Worse, dl-attr-stats which is a separate attr space doesn't
+define pad, but reuses the value from the root attr set
+(DEVLINK_ATTR_PAD). This would break parsing stats on
+an arch without CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS.
 
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
- Documentation/netlink/specs/devlink.yaml | 39 ++++++++++++++++++++++--
- 1 file changed, 36 insertions(+), 3 deletions(-)
+ Documentation/netlink/specs/devlink.yaml | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
 diff --git a/Documentation/netlink/specs/devlink.yaml b/Documentation/netlink/specs/devlink.yaml
-index 9d816a0b7da4..54de1eeb2234 100644
+index 54de1eeb2234..acb22856a6a8 100644
 --- a/Documentation/netlink/specs/devlink.yaml
 +++ b/Documentation/netlink/specs/devlink.yaml
-@@ -912,7 +912,7 @@ doc: Partial family for Devlink.
+@@ -1065,6 +1065,8 @@ doc: Partial family for Devlink.
+         name: dpipe-table-resource-id
        -
-         name: parent-dev
-         type: nest
--        nested-attributes: dl-parent-dev
-+        nested-attributes: dl-nested-devlink
-         doc: |
-           Identifies the devlink instance which owns the parent rate node.
-           Used with rate-set and rate-new to parent a rate object to a node on
-@@ -1390,6 +1390,10 @@ doc: Partial family for Devlink.
-   -
-     name: dl-parent-dev
-     subset-of: devlink
-+    doc: |
-+      Devlink handle accepted as the parent-dev input; the netns id the
-+      kernel reports back is not accepted, the parent is always resolved
-+      in the caller's netns.
-     attributes:
-       -
-         name: bus-name
-@@ -1398,6 +1402,35 @@ doc: Partial family for Devlink.
-       -
-         name: index
+         name: dpipe-table-resource-units
++      -
++        name: pad
  
-+  -
-+    name: dl-rate-set
-+    subset-of: devlink
-+    doc: Attributes accepted by the rate-set and rate-new requests.
-+    attributes:
-+      -
-+        name: bus-name
-+      -
-+        name: dev-name
-+      -
-+        name: index
-+      -
-+        name: rate-node-name
-+      -
-+        name: rate-tx-share
-+      -
-+        name: rate-tx-max
-+      -
-+        name: rate-tx-priority
-+      -
-+        name: rate-tx-weight
-+      -
-+        name: rate-parent-node-name
-+      -
-+        name: rate-tc-bws
-+      -
-+        name: parent-dev
-+        nested-attributes: dl-parent-dev
-+
    -
-     name: dl-nested-devlink
-     subset-of: devlink
-@@ -2379,7 +2412,7 @@ doc: Partial family for Devlink.
-     -
-       name: rate-set
-       doc: Set rate instances.
--      attribute-set: devlink
-+      attribute-set: dl-rate-set
-       dont-validate: [strict]
-       flags: [admin-perm]
-       do:
-@@ -2402,7 +2435,7 @@ doc: Partial family for Devlink.
-     -
-       name: rate-new
-       doc: Create rate instances.
--      attribute-set: devlink
-+      attribute-set: dl-rate-set
-       dont-validate: [strict]
-       flags: [admin-perm]
-       do:
+     name: dl-dpipe-table-matches
+@@ -1099,6 +1101,8 @@ doc: Partial family for Devlink.
+         name: dpipe-entry-action-values
+       -
+         name: dpipe-entry-counter
++      -
++        name: pad
+ 
+   -
+     name: dl-dpipe-entry-match-values
+@@ -1237,6 +1241,8 @@ doc: Partial family for Devlink.
+         name: resource-unit
+       -
+         name: resource-occ
++      -
++        name: pad
+ 
+   -
+     name: dl-resource-list
+@@ -1289,6 +1295,8 @@ doc: Partial family for Devlink.
+         name: region-chunk-data
+       -
+         name: region-chunk-addr
++      -
++        name: pad
+ 
+   -
+     name: dl-fmsg
+@@ -1329,6 +1337,8 @@ doc: Partial family for Devlink.
+         name: health-reporter-auto-dump
+       -
+         name: health-reporter-burst-period
++      -
++        name: pad
+ 
+   -
+     name: dl-attr-stats
+@@ -1343,6 +1353,10 @@ doc: Partial family for Devlink.
+       -
+         name: stats-rx-dropped
+         type: u64
++      -
++        name: pad
++        type: pad
++        value: 61
+ 
+   -
+     name: dl-trap-metadata
 -- 
 2.55.0
 
