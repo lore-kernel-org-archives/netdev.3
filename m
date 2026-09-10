@@ -1,125 +1,94 @@
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B96BF4BB5CC
-	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 15:38:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 054C448664A
+	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 15:41:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789054702; cv=none; b=F+NzQgYa0J4i0Tg2FS2dtEfBpDpmjjpUflxFAUS0PvEmdz5EuQpVCSD23TOTOM5YjPfpR7OT6yFnM59MxqFrcjMnuQughVNaRWV3YVpZ+rTUSmbAzRp4mYKUqDA/Pc4GYv7v/6YE0hDPM43WM1RRKied1A4GpyxyghpTVKkOLH8=
+	t=1789054869; cv=none; b=oMJIqX0eh1i9V2SGv87/2nTyjEe3UJMR4IX/1zTTbGdMH0HvJQ62hMxzRvfUyo7xcA0r4xq3GqulDAq1IUL8qx2ksqfPjwQYy9M03RcnX/2/RtvclIWiTW5QOaYu2yLwVtwY9vF4Y0TwyHLjb+DMOMwWpXrZimaqNRNca1o1ZQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789054702; c=relaxed/simple;
-	bh=ZxqeS1E771yr0ofEeWkRJncYn+0HDmT7Y6kC3tSRRLQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UWDP1yqoKRAUW5ubVOLHfVY2TkKDUfCkNDWsqpLFbk1U9hX4T/NVvtr4yAiMncPYuXNWF3SyRm0g8vTd8uPkAnd9kqdCNUvkGIem/CTDQBAdvwHtczTunXw0r3y8N9qDxepmG6ZzztZM6auv8dO0b3l4lVTzT/wmewOTT7L5Ypc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la; spf=pass smtp.mailfrom=lex.la; dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b=N4HrI+01; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lex.la
+	s=arc-20240116; t=1789054869; c=relaxed/simple;
+	bh=SWVygpAToW6QP3p7ii5LswHN802F1rcn7UsedAa8/eQ=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=sQ1ViX+rJbkz8OafraD/OUVDBMdTPC82U9Ceb32PMWBuUjtDvVf9zoZ6GHhkRNN83HGcFT4+oqqJmtyBn3JU7ADSE14lMEtBe1FG+YWTZDSC9EjBVdmW7YtGaMBadZ6GUS0+w2F2ctbRQfaEzWu8mhCnWuM3sqmTygVTNmFy6j8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DovwmqI8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b="N4HrI+01"
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4956869750eso65369545e9.2
-        for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 08:38:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=lex.la; s=google; t=1789054698; x=1789659498; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ZxqeS1E771yr0ofEeWkRJncYn+0HDmT7Y6kC3tSRRLQ=;
-        b=N4HrI+01u32kOe55aBgx/5Fqt1Rgje787WB9kHAqk9J7O1wH86VXlH66I9ZjEsKDI0
-         xhaSfwqZPfRFjAE1zozPoF1RO7P/w39HBXbAichZO+q7bASHiuVVx+GpQk4cYnZLCdFb
-         i1HwMh8+WOzNAl71LbCMPOxqj9WBOHPX+BD9zZEI3OYDYItiHmHAROZqmCPSUfDNHZ40
-         ORlNXspml1CdDQezdx4HXnk6IZYBACvOMAeVX1bxdWDM+F9+FjF9aiAPhoI1lUtd86jL
-         WlzJgIWqGLSXK4OzFY0FC+NVZtOa7TaykJNmcVNIQtsNufFie2wVUFizMHGocsY1okp0
-         pLMQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789054698; x=1789659498;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ZxqeS1E771yr0ofEeWkRJncYn+0HDmT7Y6kC3tSRRLQ=;
-        b=Eveppj7FuhYGCufxfvo7mxPwntivxSaLbISlebNzf5VBRcaUe0tnni175iE60Jungs
-         7b89wCJl/sRZrumX2hANwEMTe3ABmtAevLYHld2+UITMvVXmOipivlFjPcZQ+BJsgNJt
-         u47/dYJOYFSUPjIqL0FEvPihRQ2UP1DoXP/zHa/EWpc1B8oQBx+FfB678e59WBnlSFAb
-         asd4fEeAl4eqqboM1E7YKYesXpdFHg4nCQHXkGCZ2WjIpVBcAYrfsyzeZqp/Cf0GFmM4
-         hwpHow5YxteSmgBooRhn3T3L8MTlelK4XeKVcPJih6pSIHbn1/9S7Q1p8vG0I72jYKbE
-         zPnA==
-X-Forwarded-Encrypted: i=1; AKwUvBwgC+VEvRjVdeDnL7d9ElsCEzFuMMD9C2Xy14fZRVMPpBSvb36FjBIkkhkNv0AM/XjOWXMG5ms=@vger.kernel.org
-X-Gm-Message-State: AFuF++l5O0xK+/zHSi+canWE4TxWORe20+H7gQVxOgnf+ngW/2ajuwXf
-	Rft5+/MffKBPb9AQm78I3IBKt54+Hbb5cFyoSJl8e2hhX6IRbQtw89qV5zqHf9Vp+nM=
-X-Gm-Gg: AYBFou0bO5pW7GatGshEYOzoq8f1Zzr44GX9OFuz/eeWmtBX+H1Pcq9QSTaPtXX67QC
-	//oemvymCPqUPIpiQk0gEGMRxu7zylXJWBBRKblFK8KsmcWClMk7gvTFx026qEff1q01LzME5uI
-	PzHJmhJIhLraT6eeUSW7kqOTPtBurivPnxEq9VWJl0S2SeLmno0TLQvEKDKl0dSK9hdSDUGbv+J
-	30AHT1akeqQIB04PLxdRChGbuC9gaMS1C0LAE/yFvCDR1FZ2lLifW7cJJAUt16Vb8Q76tQQ/9Ya
-	kL8ishd7HT7piHlGPgmak3qO2QYinHkYZ1RJWWtgrv2ntW3HIHudDdV5c5+eGfo5mgGJ72w70gt
-	NMc3mabZko0pRR1sWcLeGcJ58vbM6OH+mWHrkiTOigq4Mk/1THAU1/ZuMuKZSrPsj7vHRY9XFdv
-	1w9wNvQI/TQWIJmgEJ1oSrcY96009Vw+GAXGecIPakjFoJAzBJcISN54fgvVLzjw==
-X-Received: by 2002:a05:600c:3115:b0:49c:e1b5:b2bf with SMTP id 5b1f17b1804b1-49cf7f48645mr421170135e9.0.1789054693628;
-        Thu, 10 Sep 2026 08:38:13 -0700 (PDT)
-Received: from remote-01 ([84.17.55.229])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49e5dcb40b3sm16903555e9.4.2026.09.10.08.38.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Sep 2026 08:38:13 -0700 (PDT)
-From: Aleksei Sviridkin <f@lex.la>
-To: Conor Dooley <conor@kernel.org>
-Cc: Aleksei Sviridkin <f@lex.la>,
-	linux@armlinux.org.uk,
-	andrew@lunn.ch,
-	andrew+netdev@lunn.ch,
-	hkallweit1@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH net-next 1/2] dt-bindings: net: ethernet-controller: add phy-needs-host-firmware
-Date: Thu, 10 Sep 2026 15:38:11 +0000
-Message-ID: <20260910153811.778387-1-f@lex.la>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260907-shallow-universal-b614da6fe0c4@spud>
-References: <cover.1788711837.git.f@lex.la> <20260906174621.4107320-1-f@lex.la> <20260907-shallow-universal-b614da6fe0c4@spud>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DovwmqI8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3AE01F000FF;
+	Thu, 10 Sep 2026 15:41:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789054867;
+	bh=djiO85oS8pp5OwgcWxxA+1nEL+n9+Dqo+t+O+D/6AZY=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=DovwmqI8gHCvbNpzUvvyH/y7BW/NuQXPK6xwohKCPqPQhTZawA2C5Vb8Wcr4LfJv/
+	 Jeb7zVVwe2Z4greXVBAaZ/ifjDd9wBwiMB5Z8gjpadV5sQ1JLoogRIHDPmIX2T7wmq
+	 P4saumim85AkOUgPC3hXikziyvq/qAG5kM8AGgWjFV+3gZHroECcmRt0p+sPTHDGye
+	 84rX1LgDFOusE/cv/QROrFsW0Gyco/oIeRo2/HX2UrOXUN4l4fhh28+80fp10YZMCK
+	 EE/5zjpDZAICAHwK4zF87BeAEZSCARrC0/uPfsEHAinpD1lrsNYxat2nlGF/6aoCsJ
+	 lyxo8DinB1WGw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56B40380CEF9;
+	Thu, 10 Sep 2026 15:40:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] net: stmmac: fix TX descriptor availability check for
+ TSO traffic
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178905480513.1504082.12531935982183581.git-patchwork-notify@kernel.org>
+Date: Thu, 10 Sep 2026 15:40:05 +0000
+References: 
+ <20260907-stmmac-fix-tso-nfrags-check-v1-1-328459906cdb@oss.qualcomm.com>
+In-Reply-To: 
+ <20260907-stmmac-fix-tso-nfrags-check-v1-1-328459906cdb@oss.qualcomm.com>
+To: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+ peppe.cavallaro@st.com, alexandre.torgue@st.com, netdev@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org
 
-On Mon, Sep 07, 2026 at 06:26:31PM +0100, Conor Dooley wrote:
-> That doesn't seem right, sounds like it should be on the phy if the
-> behaviour is caused by the phy.
-> In fact, it seems like something that should be determined when the
-> phy is identified, not really sure why it needs a property at all? Or
-> based on the fact that the phy has firmware-name.
+Hello:
 
-firmware-name it is. marvell,aquantia and aeonsemi,as21xxx already
-describe a firmware loading PHY that way, and as21xxx requires the
-property for the compatible the chip answers before its firmware runs.
-The node on my board already carries that pre-firmware compatible,
-ethernet-phy-id03a2.a411. So the new property goes away and the wait
-keys off firmware-name.
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Measured on the board today, same kernel, one line of device tree apart.
-With firmware-name on the PHY node the port survives setup and the PHY
-attaches at 7.1s with the interrupt from its node, link up. Without it
-the connect fails at 1.83s, validation -EINVAL, "error -22 setting up
-PHY", and the interface never appears; the firmware still lands at 6.37s
-with nobody waiting for it.
+On Mon, 07 Sep 2026 23:46:45 +0200 you wrote:
+> stmmac_tso_xmit() estimates the number of free TX descriptors required by
+> a TSO skb as:
+> 
+> 	(skb->len - proto_hdr_len) / TSO_MAX_BUFF_SIZE + 1
+> 
+> which assumes the payload is split into TSO_MAX_BUFF_SIZE chunks. This
+> underestimates the descriptors actually consumed by stmmac_tso_allocator(),
+> since each fragment is mapped individually and so it needs at least one
+> descriptor regardless of its size. Moreover, one descriptor is used for
+> the L2/L3/L4 headers and, when the MSS changes, one more is consumed for
+> the MSS context descriptor.
+> For a highly fragmented TSO skb the check can therefore pass even when the
+> ring has too few free slots. stmmac_tso_allocator() then writes past the
+> available descriptors, overwriting descriptors still owned by the DMA
+> engine, corrupting the TX ring.
+> Add stmmac_tso_get_num_desc() to compute the exact number of descriptors
+> needed for the header, the linear payload and each fragment, plus the MSS
+> context descriptor when required, and use it in the availability check.
+> 
+> [...]
 
-Identification is not what is missing. The chip answers 03a2.a411 before
-any firmware runs and the generic driver binds to it. What the kernel
-cannot see is that a driver for that ID sits in a module the rootfs has
-not offered yet. In the other topology, where an MCU driver registers
-the PHY's bus, there is no device to identify when the controller
-probes.
+Here is the summary with links:
+  - [net] net: stmmac: fix TX descriptor availability check for TSO traffic
+    https://git.kernel.org/netdev/net/c/5e38d732ec67
 
-One thing I do not know how you want it: this chip takes two blobs, DM
-and DSP, and the bindings that use firmware-name allow one name. Name
-the first and leave the second in the driver, or allow two entries?
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
