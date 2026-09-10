@@ -1,98 +1,99 @@
-Received: from mail-oo1-f49.google.com (mail-oo1-f49.google.com [209.85.161.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57EF5481FD0
-	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 12:11:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24A2D4657D8;
+	Thu, 10 Sep 2026 12:12:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789042278; cv=none; b=irULpCyk0j+KFz9Kdg/81Ot3tyLqJxNYEZRDkurFG0YMl+ztos50jR+CM94ukd/kuM7pRRIkoj8CN8AUmx1FBIK9Nxfct5cB2KA0AcRlWcxbTXyPNWE0evqaX2dLW1mEVbzNuME2bHDimi3enuiU9a9xTkwTyuuSZE+m5c3x0d8=
+	t=1789042378; cv=none; b=tGezk8DBm6AJXivZ/cQ6csGnHhhlmAdhq2QF7qoVCq4jzkSLt8JG+HCpEZ2k1ZNMiryE0dHPOZZV63bJFh0oRezc+1f3lVu0RolIYVmzA2IstTBNmCsztTKxqSV+VUtbDhw7wioBGUR4FVUtyB/naF+CmOxbFzowPAwWAKSwkj0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789042278; c=relaxed/simple;
-	bh=Z4TG9gqsATkZZLxrzKjyJEmtHPOEPPy+9nNx4oYsL+0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:MIME-Version:
-	 Content-Type; b=VvHDFt/67w1U3IERcoHx4eZHFlr5oH4IFCtYZHBFVN0m9F7uZaW+zXN8xhH+To+doTplMJzpxNG0RHk8ErmwWHWZcHAUwCOFDQuwqy/RQZsNsFhwbcH4vPA1pRlUK4xQtDiAuJuwJiujGJKP5ALylq1lPGX6hB9Fg+xQJFfzjJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ipp2ag1j; arc=none smtp.client-ip=209.85.161.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789042378; c=relaxed/simple;
+	bh=Px66x/NSI1qxbIE4tMH3Y9GcHCMn5G7N54fP+mRx+Ew=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TjE5YpSD+nOH+cO6LhGrmWINGo5AnylfOKxZI1Efb7WVuUsvutRYRNIzBDlnffQ3ZrCJfPyRycdsDeFVrlluAPjIn8o8D9133IHNeRhgYWthFtXU+8BZRPme9tcnfIpGkTosPIDxFVGOd4mP7orfuYe2fOAVDwPe8A2uPu54n/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=HJUgdK3N; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ipp2ag1j"
-Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-6b35cc0a8c3so5816649eaf.0
-        for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 05:11:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789042276; x=1789647076; darn=vger.kernel.org;
-        h=content-type:content-transfer-encoding:mime-version:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=z96/yzgqxZwebx+1STswIi+Go/ctjBNtJnkegSe2jjQ=;
-        b=ipp2ag1jESoU1+rDQjDffdmrBGMdcBqm7iqrrKrjN9p3RToVU82ttLzlEItbV+oYqC
-         Mnt05FA58N3D20x13y3Aziy2zwCX3wiLkg1XEEB4MARA90fGexAWgmgHlNxFBikyG41k
-         7UNxpI/DuxH1AdoUG1lY3SkPmCCzjXZSZaEQ2/ZPc2c4Tkdh+4DW1XQ+JCU7Rwmmuw+G
-         QwE7Ncz2JZdodPixqjLA/urpguh4yEnDdC2w62cUlnPJY3yJ77gnJrB7TbcUW7iOEx61
-         4SRuZepfrRDyW42hLYKlFjQ/MPSS5XAT8eXmr89zdR5eRH5YdegvJTnJoOHxwBPgBm7a
-         camw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789042276; x=1789647076;
-        h=content-type:content-transfer-encoding:mime-version:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=z96/yzgqxZwebx+1STswIi+Go/ctjBNtJnkegSe2jjQ=;
-        b=Z3RAhsWGZB8T7M0e9Tw5zQopPcKxYNwBUbo3phU19PPzbYOfyAkmMlpTusOLWNMlvU
-         Tp54PcFXdCn9q5xl/S30If/lq+KLFfoyYH2Z3E/CCe5IdYoyYWLRQI3M4m/AaDTkcGNc
-         VBH9Qc2P0quNXihOaf1Wa7i6pFCW37U3GyE4NbAEJJpBVUWNsdQpaN08kTHA4pKw0XZ5
-         +RNeVvhYW9Cx6kz0C1SmeS6DLxM6LRhtwdefJ/G+hku2dlFsn8Ik+6X9Rpknb6mVacVf
-         pWi+gpCFZUNkdcIjDXHDm+rXX7RdtoWk9K1qUPjFWUBW7hbnn9ECB7JtjZqEJo4WMbMb
-         ew4g==
-X-Forwarded-Encrypted: i=1; AKwUvBzPcIBmFe1O68PYM+sXbcOmOokl/VicNH1ME86gVIB/qTV9H7xwP+dE/WCrm5BbapXnCFSFF9o=@vger.kernel.org
-X-Gm-Message-State: AFuF++ktzxkH27bf+CXCpHWYRxpXEp8SS3uPaKb/h8eQe3W9Whjgucl/
-	68Z7wUYh+ZFnVkMaX0rd6pxF3TIVgJKHfRcB2cMxlAbkD0giMIyNNVc=
-X-Gm-Gg: AYBFou0frPNLjM0QdZfbDrlh5CuzrV4uV5jBk0NHMkmcqgmTi1NGJ7CKyuT9ny4wMDR
-	jlAR3ztgwY3L5g9AB2sJSfLG63U5z6b50MbUz7uDHk2g0GQMkZl+ZoJcMnVgWgeFsHpasU1JbZN
-	o80pf9pUUMbZmv0pdOnMjlMhOSIl1Mx8QEGijdE+l+iHvmgLt9UW05IKjP3+8aLwnYvVK1HzVpq
-	dTlVxecPyn00q/YGmfR+xk6NfXK/HnUwLhjQL6z7t1yVGGSe7REHZqY949gUiB01Qlv6rT9AsyH
-	xLg/x311dNoNd6Lw93Z0uT6+yorltvHMEXwWgd4Mo/k36NOl6g6WJxealfEvvmn/2ZSmXvV+0SN
-	r1dR3HM0EZv0eQyHNYLjkrUTznON9Le43lwFZF5IG+b71GrI+baz7Hhcl9bkWw31lDtRa/TIere
-	W2eOa3zs2kR9viP0xLA0RApQAsICL+hUHcgumO38Bt/ZhhXTgPV1PsNnYdAdliCqbat1QyX1U3Z
-	JF+oKZQw6IPgwDPKYTWe1tSyGhAbSLERnJK5DveW9B8DCwG
-X-Received: by 2002:a4a:e84a:0:b0:6b1:4a71:775a with SMTP id 006d021491bc7-6b6fcbde97emr22252414eaf.19.1789042276189;
-        Thu, 10 Sep 2026 05:11:16 -0700 (PDT)
-Received: from matheus-note.localnet ([2804:7f0:84b3:2201:fb27:8354:17d:2bcc])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-3339bbf1feesm53156354eec.26.2026.09.10.05.11.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Sep 2026 05:11:15 -0700 (PDT)
-From: Matheus Sampaio Queiroga <srherobrine20@gmail.com>
-To: andrew@lunn.ch
-Cc: 25181214217@stu.xidian.edu.cn, andrew+netdev@lunn.ch,
- angelogioacchino.delregno@collabora.com, b.larsson@gmx.com, cjd@cjdns.fr,
- conor+dt@kernel.org, davem@davemloft.net, devicetree@vger.kernel.org,
- dong100@mucse.com, edumazet@google.com, enelsonmoore@gmail.com,
- han.junyang@zte.com.cn, hkallweit1@gmail.com, jes@trained-monkey.org,
- krzk+dt@kernel.org, kuba@kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org,
- matthias.bgg@gmail.com, maxime.chevallier@bootlin.com, naseefkm@gmail.com,
- netdev@vger.kernel.org, p.zabel@pengutronix.de, pabeni@redhat.com,
- robh@kernel.org, vadim.fedorenko@linux.dev, wangruikang@iscas.ac.cn,
- xuanzhuo@linux.alibaba.com
-Subject:
- Re: [PATCH net-next 1/2] dt-bindings: net: econet: add EN751221 ethernet
-Date: Thu, 10 Sep 2026 09:11:01 -0300
-Message-ID: <0bwM5hNxQhuX7GLiig7ffg@gmail.com>
-In-Reply-To: <a9eac625-f0f3-47db-ac2c-26c7df66f52a@lunn.ch>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="HJUgdK3N"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=tGyisL244PhSPlcSKvXQ5DNtTUfMaXu/9jASRdndF48=; b=HJUgdK3Nbnq3POGblLGt01dchg
+	2WK2S1IQ+fS+UUEmAXnF/6MuoassAZwvv/gTnVQLz8jLi9mcsJuVg5jxmrXxuTmBFJxeBQiy751m2
+	6jOd3D1kZOlIE/FM0ro3AIwHzWxEDBmt7Uh1JysnBl6Ce7QxJCTQRvyNJqS3gW1V9aBk=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1x4de4-004Ukx-J0; Thu, 10 Sep 2026 14:12:48 +0200
+Date: Thu, 10 Sep 2026 14:12:48 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Vasilij Strassheim <v.strassheim@linutronix.de>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Russell King <linux@armlinux.org.uk>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	Martin Kaistra <martin.kaistra@linutronix.de>,
+	Benedikt Spranger <b.spranger@linutronix.de>
+Subject: Re: [PATCH net-next v2 2/4] dt-bindings: net: dsa: Add SoC-e SWIP
+ switch
+Message-ID: <ee045b16-978e-4208-b447-bb422a45dbf5@lunn.ch>
+References: <20260903-devel-vstrassheim-soce-dsa-ml-v2-0-fb0587cb466b@linutronix.de>
+ <20260903-devel-vstrassheim-soce-dsa-ml-v2-2-fb0587cb466b@linutronix.de>
+ <28f8ec21-162a-4c2c-8e01-6586f39f06f8@lunn.ch>
+ <041e2884bc1aa1725a86efd413e2e3301b54d91d.camel@linutronix.de>
+ <df6dc527-8b4a-4775-828a-2633369277cd@lunn.ch>
+ <20612d5a45783ed49927fb1075c7ea1f3293f514.camel@linutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20612d5a45783ed49927fb1075c7ea1f3293f514.camel@linutronix.de>
 
-> That is a very unusual phy-mode. Is there a reason this is used in the
-> example?
->
-> 	Andrew
+> > Since this is an FPGA, i assume there are no internal PHYs. Mixed mode
+> > is not something FPGAs do. There are sometime "interesting"
+> > relationships between port number and address on the MDIO bus. But
+> > without internal PHYs you don't need to worry about this.
+> > 
+> 
+> Correct, the FPGA IP has no internal PHYs. Each port is associated with
+> a dedicated external MDIO bus.
 
-the GDM1 and GDM2 behave something similar to the newer Airoha, we have an MT7530 connected to the GDM1 as internal mode, and the GDM2 is also an internal one that communicates with the xPON and xDSL subsystem.
+How is a port and the MDIO bus associated?
 
-the en751221 has two mt7530 switches, the dsa0 limited to 10/100Mbps and a dsa2 1GbE connected to port 5 of the dsa1 in cascaded mode, but it varies from chip to chip
+Linux, in general, does not care. You have a collection of MDIO
+busses, and on those busses you have a collection of PHYs. The MACs
+use a phandle, or some other means to point to the PHY it should use.
 
+Given this is a 31 port switch, why would you dedicate 62 pins to
+MDIO, two per port, when you can put 32 PHYs on one MDIO bus?
 
+So i doubt there is a strong association between port and MDIO bus.
+
+What i could image is the one real MDIO bus controller is in global
+scope within the RTL design. And then the logic to provide a port with
+its multiplexor on that shared bus is in the per port RTL design
+scope. I've not done much FPGA design, but i assume if you don't
+connect the per port MDIO lines to anything, while place and route is
+performed, they get optimised out?
+
+> > So in theory, a 0 port switch is possible!
+> 
+> In theory, yes, but I prefer to treat it as invalid until it can be
+> tested.
+
+Yes, i would treat 0, 1 and probably 2 as invalid. 2 ports would
+technically work in the DSA setup, but is pretty much pointless. It
+only gets interesting with 3 ports or more.
+
+     Andrew
