@@ -1,198 +1,201 @@
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012062.outbound.protection.outlook.com [52.101.48.62])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A76449EC76;
-	Thu, 10 Sep 2026 14:20:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.62
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789050023; cv=fail; b=dj/H4G/msWRuU1BCjgx8R29t7ShmxABdGNqPx4v9BYTQDdEYvqjwsG2L8a0OR0DijZeXvNZU2B6hosf3nkuEfYFvpD3UoxTwGNZoA00fst+SP2FhEDn8jF7/5C3++B2Bh9WsOHFmULKCHqfe7fZskmW3HL73wGY940uMGmoZhMk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789050023; c=relaxed/simple;
-	bh=POyED6gLzH43cBYCxR9VWLmx/+DHfQ/qZa7doVD5DXs=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=bwoswwoNqcueQsgMV7lQZN0WBSeriYl0jXGFMZs4a/l0asamF/FZjspaN5ptPdk2DWmjI3xCU4/676HLYclfSSelHNg34YYhvJatdb2L6MldRaeKqKrsJTBqAHFH+yvvGPrSrVhb0jXemE6iWDhcPzPf70HBMGGHaTXRiJGkt/w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=5uNtJm5g; arc=fail smtp.client-ip=52.101.48.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79B2748CD54;
+	Thu, 10 Sep 2026 14:23:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789050239; cv=none; b=jaeQVgOMHeh9Z+U/cugLR3LxxyrR29S7R3aFLwnPb2t9doRQjy8SZfTjjVMqbizV22HIQXE78PLwq3Q9EM+9+k+a8LyHZAVbs6cqDtwXCXNoipGWi4/NJvswztBv8GXfMFBMNWYQM6hwQGEYb+/jFY2cqMnxA8gVFql8qsxTkUY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789050239; c=relaxed/simple;
+	bh=M/qvUC17dZYh3NA7ctB7iGR4URUPLBoli4cyAFwHf/U=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=baLZXzEB9dlCMKCkj+0i/igZ0P9jonqQYK0TziXL7eXE4kwOBDOq5ClIy9v5hX1T1C8NgI3VO7N8sWicdrHEGRFiQ6nSPK5ixe86kJUbn7JxwxgOGsWBGh2NlFyw6UxX0n9FkgknZpU+/s5PRWll1+1qFizliRuD3OZutavXWd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=r+8TxNQ2; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="5uNtJm5g"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RQ/lf2liQ1UrUl+KE2g0FT0D+1KCaihkvbt7e/ShY+eLnCZpz/mXHixcYBYb+Tx7RedLtY1CQiBq/ctXfICmIssqn/wWbFYKxYRajJlLo6m97Acw6ZOf73Pq7UMa/bXgeT61CUyYEXpQtZEwsDcb4tBu5ai6UKYUs20TDFBGpdOM0gz2GFyY8CqXow9AJEAOuZ7eNLMlyltDIJjFHlco0iTF7O8UGrjtz3hOzs+6w0LMmt8gXw/Y0OoD96Cku8h5JtiCc4IOZUS+4pM3YaDKW924rT2fsgUWNUCp/TkwpmkVWLu1FmdHrG9aOnbIkNBar8axl8l4ZPqR6svJRgoKMA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4gAAAdQMr1QJE3GRXXXmrwJFYQwrrCMUm2tIURAs440=;
- b=RNjwtws7AH0I5b0F9LHL2/T2g9VvrhnlwqDrWih4F2cEigMy0wWYB7oI0HH4sWwZqWM3FtCmtNkM7tsfkcAaof1TVtCEKLqsLaRvC71XNBI2IJpoYEIooBaSxm5tW1MFzo/V/swCKCG+ds3u4piauhasj1z40INyN6qqSw/9Tifle8Y3Jad/PB0k+XJun3aTraD5DGsihOuON74c5iYka8Vr3M2Is6HL6uvwJbp6kntW7kyiA3YXeN4dKeeTH/nliZ/IozSIwD63kcc6OlB6ORcw+wR+vCFWRkOnGWh62xK5lQWIIVXM5ro6rQ+zZYEQi5j2yP/vcC7TPUZoD8rh/A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=temperror (sender ip
- is 165.204.84.17) smtp.rcpttodomain=lunn.ch smtp.mailfrom=amd.com;
- dmarc=temperror action=none header.from=amd.com; dkim=none (message not
- signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4gAAAdQMr1QJE3GRXXXmrwJFYQwrrCMUm2tIURAs440=;
- b=5uNtJm5g+4lxtXVm9AL+8DlUX32i054p3xkZxsh198NpGfTXXohvRuisKgCRYUPtEEhVo5j+v0NSnBexXfl0Ffw8J9Vr0EUdhBpyeAoN4ogGSQyxwMCu4gs1QCBBLDATeRGorVfd0GXa80KmG+YkV8fs/SZ/LhLGRydxBUg5/pg=
-Received: from BL1PR13CA0385.namprd13.prod.outlook.com (2603:10b6:208:2c0::30)
- by DS0PR12MB8317.namprd12.prod.outlook.com (2603:10b6:8:f4::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.9; Thu, 10 Sep
- 2026 14:19:55 +0000
-Received: from BN7PEPF000000AB.namprd05.prod.outlook.com
- (2603:10b6:208:2c0:cafe::a9) by BL1PR13CA0385.outlook.office365.com
- (2603:10b6:208:2c0::30) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.382.10 via Frontend Transport; Thu,
- 10 Sep 2026 14:19:55 +0000
-X-MS-Exchange-Authentication-Results: spf=temperror (sender IP is
- 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=temperror action=none header.from=amd.com;
-Received-SPF: TempError (protection.outlook.com: error in processing during
- lookup of amd.com: DNS Timeout)
-Received: from satlexmb07.amd.com (165.204.84.17) by
- BN7PEPF000000AB.mail.protection.outlook.com (10.167.245.235) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.406.5 via Frontend Transport; Thu, 10 Sep 2026 14:19:55 +0000
-Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.46; Thu, 10 Sep
- 2026 09:19:54 -0500
-Received: from xhdsuragupt40.xilinx.com (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.46 via Frontend
- Transport; Thu, 10 Sep 2026 09:19:51 -0500
-From: Suraj Gupta <suraj.gupta2@amd.com>
-To: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, "Eric
- Dumazet" <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>
-CC: Michal Simek <michal.simek@amd.com>, <netdev@vger.kernel.org>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH net] net: xilinx: axienet: Free outstanding DMA buffers on dmaengine stop
-Date: Thu, 10 Sep 2026 19:49:46 +0530
-Message-ID: <20260910141946.3017164-1-suraj.gupta2@amd.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="r+8TxNQ2"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68ACVbVu2925749;
+	Thu, 10 Sep 2026 14:23:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=OHNPGY
+	GWxh+3J5U8VFWodv4712DQuRsZ8pLXZk91/oI=; b=r+8TxNQ2BcAomOfs452OYZ
+	/V7WFS81TldNEIjZE4z73q/Ot2bhwpARpnDt53owV2Ba4fd9fJ7SYfKwnrf0+Q/S
+	FvJiZ2fBm7vI0/DZqM8Lq+azM+WrPgk+lxaEHbz/uBb5OH/Dtb6HaesjKhC7cTa2
+	/4DRo5W/TFiuGah6DlghQAUhk3MZcNmJMuFWAtGyA0MG8bm6M9LBnOT4QvnE3VPy
+	6xvAYUR9VFn7XPHvQnaptrA95i4FaRyQVrg71wNZ8fRrtPE46VTU7pKGN8Cj8XTk
+	XI8hfD8cnn5cus9xqymVd6PF43Bm0WOgL8TRfy7aWL8o/b5XXaZZSX8al6gzJ8SQ
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gkd8sw3jp-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Thu, 10 Sep 2026 14:23:46 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68ADAQHq072089;
+	Thu, 10 Sep 2026 14:23:46 GMT
+Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gkvnrgfub-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 10 Sep 2026 14:23:46 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
+	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68AENjiT34276008
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 10 Sep 2026 14:23:45 GMT
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 56B515805F;
+	Thu, 10 Sep 2026 14:23:45 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A8D205805A;
+	Thu, 10 Sep 2026 14:23:44 +0000 (GMT)
+Received: from li-4c4c4544-004d-3310-8032-b2c04f503334.ibm.com (unknown [9.61.100.247])
+	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 10 Sep 2026 14:23:44 +0000 (GMT)
+Message-ID: <9d0cb973a47adc14ff7b248ea8fe58a735b8cd11.camel@linux.ibm.com>
+Subject: Re: [PATCH 1/1] bonding: crypto offload enabled, non-offload slave
+ failover, rekey failed
+From: David Dai <zdai@linux.ibm.com>
+To: Hangbin Liu <hangbin.liu@linux.dev>
+Cc: jv@jvosburgh.net, andrew+netdev@lunn.ch, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        pradeeps@linux.ibm.com
+Date: Thu, 10 Sep 2026 09:23:44 -0500
+In-Reply-To: <aqJkO4-49YtW4NxF@fedora>
+References: <20260903220123.475685-1-zdai@linux.ibm.com>
+	 <apphLbjfmRYknVNh@fedora> <aqJkO4-49YtW4NxF@fedora>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN7PEPF000000AB:EE_|DS0PR12MB8317:EE_
-X-MS-Office365-Filtering-Correlation-Id: c6ebe028-72dd-4c21-55c5-08df0f469622
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|82310400026|376014|36860700016|23010399003|10067099003|11063799006|56012099006|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	8z7qBTxshVwKt1612zpsThiaI1A5oLqXqfJ1nWjJKmsUWRsw1+6hsCja9WpKZxf+0+jCVVhumZGy99jQh6naMNhRR9/M2hGzS0eVhhSSf1cdsJ+Emr5MGNSssJT2uJ6XD6nsdD419yb/aswtCknDUHoZgUDExSIO+N/xEXtjB3hfg8v9VdV7nh2PamhIDZaTimciUnSnWS6PY85RHZymFBoP9bk8OKPVbpBcvrqN8oj+Sqv/6P4q7oLhZb9XrJrVKnwtO5t07S1JgDYZQZQiyNKndXXJeCDssO7eYYvLXJECUSUAZqNO5NUuoMSBWV1PfPklXkfVZMh0KsIXFDPbD42SrmR0S6ZCBSHFflTeFxtXfVhd4rI8V/JGUGtMsWJxELktnURtL9SQWxYYVZJc3u56VbWRg1t6w4/so+bQV1zmZht0Yn83Or/ORWkd9J0bsOx6ThjCS5vhw9dqWhPJehH59XzRCsbN4NXhepcF1mrVfj7JxXtST8ZLl7giGEbH76LPia0sLIjxxeXGOUQjalbwO5WyRSue+Ou000iqbd6UweNlJpoIH6U7UMiDnyYJca+4IenAlhxf/Q/YLeh1fFBhO/n3H13hBD5YtdcMk4Kp/FLcdBRsabAoKR0Zhbb7/7mc7krgHljIQizF5JvLGQPISJ1LEDfXt/NS9D7bidCizNJuJZjlfDH/yQAj1Ds/g5vZnffk6vlphFzDdnVyGQ==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(376014)(36860700016)(23010399003)(10067099003)(11063799006)(56012099006)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	4+Cytbwhh78r1cZw80cqhgINDNp3C0NVidOYPfj+v5bOTXwpxaXuMuSuHa2GXawvLTZg4VSjXsqM4pb85oxLXN6+k5Bsh9xeDPD9rpeC71XR5PSjlDKyuW5uvIVrLAFuLsWO37k5rw4M3MNesk4F+/vqQrkYy5FC3R3pKTBsyPSrHRj5OqacfSJhOvL1hIfjow1i3mtsoxaaLnGCiCHRlZH6tuiQ6cq4VUhn4gHuiltTa83gbFQOe24YGYpfT2ZEMWNbmwFhfhVQ4XxKMxM9qMDwIObCfQvGEaJXSH/F3TTi3LlWd4iA6wAhsZwz+MqD/8scfFYXFSCzsKHgqBtpR3W3QIOTR/xl3W/zBFXL+6FE923IglBaXNZSXk7VZlIecSiMwE8byWIYFotZ72pOvuZ+UjHFY+SC4ru+1Oc7BQyu3L39B9Q/s9iMptllM9Lv
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Sep 2026 14:19:55.0437
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: c6ebe028-72dd-4c21-55c5-08df0f469622
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN7PEPF000000AB.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8317
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTEwMDE2OSBTYWx0ZWRfXx2DZMemcb9iI
+ o0C7VTvogwjexgvaHO8WkcYylQVn0od1KG2KvoxZVaaoHjMfI5mqQtz2JfTrZMbro29sGs50pZh
+ b0Q+YQBPM9mVlJdUpZLK+3ayqZ8AIog=
+X-Proofpoint-ORIG-GUID: Kw6Q0KM8dwkd40g2RR2qopdclGJKrxep
+X-Proofpoint-GUID: -lG-uQA9_Nz0jY5a33JJ9yBCB9o1H-TF
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTEwMDE2OSBTYWx0ZWRfX5n6xGycp/4E/
+ c0k469REYE9P0asNKMUgESPa+tt7PQb8U0jAF5TheK53jfMj1PAm3lFmmD18xEz4TciJsmoy+dt
+ nHvtpC55sBlfirXDZCGBsI0e+sNfbJXyjTPbojx1y9wOKdZqiE2mHVqwqZYelOWC7cakcHIX3hu
+ mk/9WeD/MkRcl5hIBXAWy3s9UmAFWy8iLllXryXbvrKfIRB3CuU7cbLKHw0yVu0KNB7AELxCWhI
+ RYw6CHiQfO4po9derlDMVn2nuah2N751A44nzj4GaXDKG+KsyDFyXKkHrYl+wfrYuhlhzalGkHC
+ b34MbZy2s5ouMUVC+xGV5zTJjC7rOiVSlSxpkrQHgNtxexC+ljFjG+dwDBzI0zhhH0fSk1FC0mA
+ F8JZ5PWyJoulCfAu2t+nbNiZBd1tz4PyB381YKZpNblBYGc0+21HZMYe7sWhUX29Fu9N/JYfhRO
+ ZWF9viNtArBKsXiQEeA==
+X-Authority-Analysis: v=2.4 cv=PIGaavqC c=1 sm=1 tr=0 ts=6aa2bd73 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8
+ a=QA8Y5dmSeMjSImS8ZE0A:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-10_04,2026-09-09_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 priorityscore=1501 bulkscore=0 adultscore=0 suspectscore=0
+ lowpriorityscore=0 impostorscore=0 clxscore=1011 spamscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609100169
 
-In the dmaengine path the driver pre-submits RX buffers (and holds
-in-flight TX buffers) whose SKBs are allocated and DMA-mapped by the
-driver and reclaimed only in the completion callbacks. On ndo_stop()
-the driver calls dmaengine_terminate_sync(), which aborts these
-descriptors without running their callbacks, and then frees only the
-skbuf_dma_descriptor ring shells with kfree().
-
-As a result every SKB still owned by the DMA engine, together with its
-DMA mapping, is leaked on each interface down. With RX_BUF_NUM_DEFAULT
-(128) RX buffers pre-posted per channel, an ifup/ifdown cycle leaks up
-to 128 SKBs and their DMA mappings; on systems with a limited IOMMU
-aperture the mapping leak can eventually exhaust the address space.
-
-Clear the ring slot's skb pointer in the TX and RX completion callbacks
-so that a non-NULL skb reliably marks a slot that still owns a live,
-DMA-mapped buffer. On stop, after terminating the channels, walk the
-whole ring and unmap and free every such buffer before releasing the
-rings, mirroring what the completion callbacks do.
-
-Fixes: 6a91b846af85 ("net: axienet: Introduce dmaengine support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Suraj Gupta <suraj.gupta2@amd.com>
----
- .../net/ethernet/xilinx/xilinx_axienet_main.c | 34 ++++++++++++++++---
- 1 file changed, 30 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-index 1722b7038f34..7828fbb09dc8 100644
---- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-+++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-@@ -881,6 +881,7 @@ static void axienet_dma_tx_cb(void *data, const struct dmaengine_result *result)
- 	u64_stats_update_end(&lp->tx_stat_sync);
- 	dma_unmap_sg(lp->dev, skbuf_dma->sgl, skbuf_dma->sg_len, DMA_TO_DEVICE);
- 	dev_consume_skb_any(skbuf_dma->skb);
-+	skbuf_dma->skb = NULL;
- 	netif_txq_completed_wake(txq, 1, len,
- 				 CIRC_SPACE(lp->tx_ring_head, lp->tx_ring_tail, TX_BD_NUM_MAX),
- 				 2);
-@@ -1171,6 +1172,7 @@ static void axienet_dma_rx_cb(void *data, const struct dmaengine_result *result)
- 						       &meta_max_len);
- 	dma_unmap_single(lp->dev, skbuf_dma->dma_address, lp->max_frm_size,
- 			 DMA_FROM_DEVICE);
-+	skbuf_dma->skb = NULL;
- 
- 	if (IS_ERR(app_metadata)) {
- 		if (net_ratelimit())
-@@ -1752,16 +1754,40 @@ static int axienet_stop(struct net_device *ndev)
- 		free_irq(lp->rx_irq, ndev);
- 		axienet_dma_bd_release(ndev);
- 	} else {
-+		struct skbuf_dma_descriptor *skbuf_dma;
-+
- 		dmaengine_terminate_sync(lp->tx_chan);
- 		dmaengine_synchronize(lp->tx_chan);
- 		dmaengine_terminate_sync(lp->rx_chan);
- 		dmaengine_synchronize(lp->rx_chan);
- 
--		for (i = 0; i < TX_BD_NUM_MAX; i++)
--			kfree(lp->tx_skb_ring[i]);
-+		/* dmaengine_terminate_sync() aborts the descriptors still owned
-+		 * by the DMA engine without running their completion callbacks.
-+		 * A ring slot owns a live, DMA-mapped SKB iff its skb pointer is
-+		 * non-NULL (the callbacks clear it on completion), so unmap and
-+		 * free those here. Otherwise every outstanding TX/RX SKB and its
-+		 * DMA mapping is leaked on ifdown.
-+		 */
-+		for (i = 0; i < TX_BD_NUM_MAX; i++) {
-+			skbuf_dma = lp->tx_skb_ring[i];
-+			if (skbuf_dma && skbuf_dma->skb) {
-+				dma_unmap_sg(lp->dev, skbuf_dma->sgl,
-+					     skbuf_dma->sg_len, DMA_TO_DEVICE);
-+				dev_kfree_skb_any(skbuf_dma->skb);
-+			}
-+			kfree(skbuf_dma);
-+		}
- 		kfree(lp->tx_skb_ring);
--		for (i = 0; i < RX_BUF_NUM_DEFAULT; i++)
--			kfree(lp->rx_skb_ring[i]);
-+
-+		for (i = 0; i < RX_BUF_NUM_DEFAULT; i++) {
-+			skbuf_dma = lp->rx_skb_ring[i];
-+			if (skbuf_dma && skbuf_dma->skb) {
-+				dma_unmap_single(lp->dev, skbuf_dma->dma_address,
-+						 lp->max_frm_size, DMA_FROM_DEVICE);
-+				dev_kfree_skb_any(skbuf_dma->skb);
-+			}
-+			kfree(skbuf_dma);
-+		}
- 		kfree(lp->rx_skb_ring);
- 
- 		dma_release_channel(lp->rx_chan);
--- 
-2.25.1
-
+On Thu, 2026-09-10 at 16:03 +0800, Hangbin Liu wrote:
+> On Fri, Sep 04, 2026 at 02:11:57PM +0800, Hangbin Liu wrote:
+> > On Thu, Sep 03, 2026 at 05:01:23PM -0500, David Dai wrote:
+> > > Create a bonding device (i.e. bond0) in active-backup mode, 2
+> > > slaves.
+> > > Active slave: offload capable interface (i.e. eth1), primary
+> > > interface.
+> > > Backup slave: non-offload capable interface(i.e. eth2).
+> > > Configure strongswan service swantl.conf child SA "hw_offload =3D
+> > > crypto"
+> > > Start strongswan service
+> > > IPSec Crytpo Offload is enabled on top of bond0. i.e.=20
+> > > ip xfrm state |grep offload
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 crypto offload parameters:=
+ dev bond0 dir out mode crypto
+> > > 	crypto offload parameters: dev bond0 dir in mode crypto
+> > >=20
+> > > Active slave eth1 takes adavantage of IPSec Crypto Offload
+> > > capability.=20
+> > >=20
+> > > If active slave eth1 is down for any reason (i.e. eth1 link
+> > > down):
+> > > ip link set down dev eth1
+> > > non-offload capable interface eth2 failover to becomes active
+> > > slave.=20
+> > > The existing SAs can continue use software IPsec after failover.
+> > > Traffic still keeps going properly.
+> > >=20
+> > > However if eth1 link had not recovered yet, strongswan service
+> > > does
+> > > new child SA rekey, or uses swanctl command to do new child SA
+> > > rekey,=20
+> > > it will fail because active slave eth2 doesn't support crypto
+> > > offload.
+> > > In bond_ipsec_add_sa routine, it returns -EINVAL now, which is=20
+> > > treated as fatal error by xfrm_dev_state_add routine in kernel
+> > > xfrm.
+> > >=20
+> > > To make the non-offload active slave survive the child SA rekey,
+> > > need=20
+> > > to make bond_ipsec_add_sa routine returns -EOPNOTSUPP instead
+> > > when=20
+> > > active slave doesn't support IPsec Crypto offload, the xfrm will=20
+> > > gracefully fallback to create new SA using Software IPsec.=20
+> > > Network traffic can keep going.
+> > >=20
+> > > After offload capable interface eth1 link is up, becomes active
+> > > slave,
+> > > next time strongswan child SA rekey will create a new SA which
+> > > enables
+> > > crypto offload again.
+> > >=20
+> > > This way, network traffic is never interrupted, always keeps
+> > > going.
+> > >=20
+> > > Signed-off-by: David Dai <zdai@linux.ibm.com>
+> > > Tested-by: David Dai <zdai@linux.ibm.com>
+> > > ---
+> > > =C2=A0drivers/net/bonding/bond_main.c | 2 +-
+> > > =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
+> > >=20
+> > > diff --git a/drivers/net/bonding/bond_main.c
+> > > b/drivers/net/bonding/bond_main.c
+> > > index ef9eb0c53c66..79fc892dab07 100644
+> > > --- a/drivers/net/bonding/bond_main.c
+> > > +++ b/drivers/net/bonding/bond_main.c
+> > > @@ -490,7 +490,7 @@ static int bond_ipsec_add_sa(struct
+> > > net_device *bond_dev,
+> > > =C2=A0	=C2=A0=C2=A0=C2=A0 !real_dev->xfrmdev_ops->xdo_dev_state_add |=
+|
+> > > =C2=A0	=C2=A0=C2=A0=C2=A0 netif_is_bond_master(real_dev)) {
+> > > =C2=A0		NL_SET_ERR_MSG_MOD(extack, "Slave does not
+> > > support ipsec offload");
+> > > -		err =3D -EINVAL;
+> > > +		err =3D -EOPNOTSUPP;
+> > > =C2=A0		goto out;
+> > > =C2=A0	}
+> > > =C2=A0
+> > > --=20
+> > > 2.55.0
+> > >=20
+> >=20
+> > The patch looks good to me. I am just not sure whether we should
+> > shorten
+> > the description. Let's wait for others' opinions.
+> >=20
+>=20
+> BTW, please add
+>=20
+> Fixes: 18cb261afd7b ("bonding: support hardware encryption offload to
+> slaves")
+>=20
+> if there is a next version.
+Thanks for your comment!
+I'll add the Fixes line in my next v2 patch submission.
