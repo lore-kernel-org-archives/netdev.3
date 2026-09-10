@@ -1,189 +1,108 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F1BF481FBE;
-	Thu, 10 Sep 2026 15:52:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D69938DC73
+	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 15:56:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789055553; cv=none; b=kg70cFZ8QW+kUGctt7EBqPc+Uyo8eAtmhvXY/gV7td0kRlesfXrC+bvLkFP6cXbk/2FX8MqQXajxqAr4lKyFKl1wms9RiBTNgYIFCgpifLh+ZpzaagNJ3FyEquwz48z5YWDVp0+wpOlBeQSEqLedRxknqMVyXqrX263L77Vcrbo=
+	t=1789055803; cv=none; b=Xu+1Lqr5mCc6JRBYmKXuURBJRXsy9OWwyqlIlIhhzCC6BeDD8DFtQ9AwAgrzsn8zp0QQQH8TpEEwytUNK8+wH4RJaRLCYwVzU+tl+/BaVm261bhVqiNoSiXNxwrY+stpXBGgZd8FgM9SBlwnHR9ZNKf17r2PsR6vXrW/2LPuiqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789055553; c=relaxed/simple;
-	bh=pUlSWictvp/eDSu91ES6EO7H5q04wHa+8g5OJOCT5S0=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=JkVjfa4WUULmu/awFpnHYeYsHNS87qa3NfFxyXZXm+28YAcEPu+9vqv0QnAc7zAWHbPiaL+fSJ72hhE0ZaOBZDxletVDgLNwHV2K0LWmeASN435kF9hyQujg3UcfnSchHxhlISBAxKYRD1jF/ElFj5/qeHDzFTGSxtdRwpJ05qE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZACdnQCB; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789055803; c=relaxed/simple;
+	bh=BxfaM4F67WwM0NDqetEAQZCaLbFSlZZpACf0QN9vrto=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
+	 References:In-Reply-To; b=cgIqZxRF+JlhkQbmcErQ3d5Upemqe4WpeFrxwk7fmYSf9XbwyK9K1+aUhpGwC9kHYAib0OWOa2jBu+/6LJeOA0faasv2FrFZK5P99WTcwYOd3RlMlV98a72/GRPYAOt2GH0d2TXopes9HvcA8xgW/BxtKucaTw1cZ3e+DF54nt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QE4SV5Wh; arc=none smtp.client-ip=209.85.210.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZACdnQCB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EDA41F000FF;
-	Thu, 10 Sep 2026 15:52:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789055551;
-	bh=ADE8OsHyYORA6yoeRAcFH03eBG7vlWU09tWqM5pgBHs=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=ZACdnQCBNDCzTOpVvqm9H8qu47NWGW992edIRDrIQWMn/uQK/67Pb166d2wPblV1w
-	 HT2a7F61eOjHNObfW1Mzp6bygxkhMBEHtdkg5BvZf2j3lCz9UNpSvvppL3DmNU4mKl
-	 hN9cHPSIniay+r+6mAYVpLGF58H54G8HVziYZeLbH5ERXHCWRq1NAg/I/bPgFj6xQl
-	 am2X6zlB7iUdmX/rCggw7u+H35iWwQNmONwlcje/rxIMO3vtMvXhyALSMy47Tw0HBJ
-	 z2GjfKhj1BfXYCYUu+WcdqiMT5NmqUe1qXyqzAgkuhWg4NEFSLohseNNC3vDAaTS54
-	 fKK4hsjR/J+Rw==
-Subject:
- Re: [PATCH net v2] openvswitch: fix wrong flag value in get_ipv6_ext_hdrs()
-From: netdev-bot+sashiko@kernel.org
-To: echaudro@redhat.com
-Cc: netdev@vger.kernel.org, dev@openvswitch.org, aconole@redhat.com,
- i.maximets@ovn.org, davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, cpp.code.lv@gmail.com,
- stable@vger.kernel.org
-Date: Thu, 10 Sep 2026 15:52:30 +0000
-Message-ID: <178905555085.219967.6617611783437228045@kernel.org>
-In-Reply-To:
- <1b1582eb07550d71f3cbe210e5cb31eeb8d0ad86.1788876917.git.echaudro@redhat.com>
-References:
- <1b1582eb07550d71f3cbe210e5cb31eeb8d0ad86.1788876917.git.echaudro@redhat.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QE4SV5Wh"
+Received: by mail-ot1-f49.google.com with SMTP id 46e09a7af769-7eb61bbeb25so7165850a34.1
+        for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 08:56:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789055800; x=1789660600; darn=vger.kernel.org;
+        h=in-reply-to:references:from:subject:cc:to:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=BxfaM4F67WwM0NDqetEAQZCaLbFSlZZpACf0QN9vrto=;
+        b=QE4SV5WhDEJjlYHcNJPNsmLuKQkVtwVZzwZnI0OH/LGuv3DtY9FbIx6Svaz8znBzu4
+         /KwjX6BPKAcmlvl9LdlExg9Dy23HXYrDzAA8V46lF8tNH0DUIjxOlxhSf/v5e9om2j+R
+         Lng/EWMj34a2IY4gNMHpkmYgEELfdTzH1odEjeay5QvvLYVg2jXJ+k0WlCWpPr++AYo1
+         C8oHHyCLkFU1Vg33Uu5e6STyLDFnEXQC9VjxhpR+sj/V2A9cj6bw9uOOCN1//3sOyuFb
+         wSn7IwPGXR0jxOyqydV7I1etWcn6b/5vpgLdLYivSV0nM83DdMFwDYJ1cvAbT1l32FfH
+         9TCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789055800; x=1789660600;
+        h=in-reply-to:references:from:subject:cc:to:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=BxfaM4F67WwM0NDqetEAQZCaLbFSlZZpACf0QN9vrto=;
+        b=FSqTZIj92BQpQRGfqCO1Ri7Nv9nFh2YL/5VtsMnogBFSkn/3sq82W+LV61cN63shh/
+         f0URs3sxIzLmuE4SMQnPAyaCK4TYQ+M9X2+86novuzufFMLZCvBQL9krnjIEqOtbsSQ5
+         tBO/jxEmjs0dwdZ3IRN0AIH6Bh5qlwI0ffyyhKRI1leiHoLbaOIzN8v5wIC03iPgoeL7
+         y84h52F7EqmcJNh9EeO7FAnuuaRJ0alJEAb4m9VcYYVtx0QViFgKQodHpyG0fdWXi7/y
+         3UasxnKNlhk7n5FMCdbGbosyi1UrckbCE5yobVD2OFugR2S1yk6SOZQ4YURSnFy0tcOw
+         W3cg==
+X-Forwarded-Encrypted: i=1; AKwUvBwieRrq7J8jIUWOrd/d2TL1u4UvlhAQ+WX5ESTULngipqMVsD5myA4eW3rPQcvPeI8ZTIQ25lg=@vger.kernel.org
+X-Gm-Message-State: AFuF++kgxOL5ZZvQbh0TG1pXZUjWS9M6YJbAEFXhi17fEXZuk3EM1Eyf
+	uG5rKRruWA9x+qQn43qusigQ7uxuN5Zh4XXkjmWsYb6J0MkNHpwKcr79
+X-Gm-Gg: AYBFou1UccGLwTy4CN+wl0S6VZ8lRGjYa6XRO4pstREmN5cWdCPTHWb6lnZTjGdhtqs
+	pUKIuMmB9nfecmGb1nG+cV8/0i6cF3ue6ABTUyZbBKrFi5ks8dNzUbDKbT6Jj/obSq+CEGRoGpM
+	YGUAEA7Be3DX0rAnFHNGJIVSCzLFbTDFDQr5WnRzzLU85N0tDURHUTkVHF8e52pfZORxeIM+cEP
+	XK3nqRCmwuwroNDAQm1arUmsPRqQS6IlFBCwojYVPtazzBK4C0CKchrs7szwEgPkKECUaSmH8Ln
+	2LNXNfHzCPi8RhDXdZY+ovMUVFU9OshMGdkEfo99qsNz6apxh4PIjOXCVVaTWVOZN+VNhWG3yH1
+	MOrn5+UGqRxRv2lAgmI9vCeEYXXs4cxngddEaoDXhVA6/DYu87hwQgfS+CyWFw4bTl6WsOdCrsN
+	vaA3EArlHGDE0BgGgFf+/Y2TLR+L4I6+HwIQOaCI8HSn3+T664tMj1KiwLVijQKCFIaN685yNjN
+	O548zVNYLPFwLQoQ73v4/U5bLycYTpnxMcsENHzD6tQNvYK2cSdt773uspIJUoNPg==
+X-Received: by 2002:a05:6830:6d28:b0:7e9:e709:44f6 with SMTP id 46e09a7af769-7fa204ac614mr25634037a34.12.1789055799959;
+        Thu, 10 Sep 2026 08:56:39 -0700 (PDT)
+Received: from localhost ([2a03:2880:10ff:70::])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7fcc45d7852sm14684016a34.20.2026.09.10.08.56.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 10 Sep 2026 08:56:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 10 Sep 2026 08:56:37 -0700
+Message-Id: <DLBRCN9O0MAE.9NCB79Y636SS@gmail.com>
+To: "Jakub Sitnicki" <jakub@cloudflare.com>, <netdev@vger.kernel.org>,
+ "Alexei Starovoitov" <ast@kernel.org>, "Jakub Kicinski" <kuba@kernel.org>,
+ "Kuniyuki Iwashima" <kuniyu@google.com>, "Paolo Abeni" <pabeni@redhat.com>,
+ "Stanislav Fomichev" <sdf@fomichev.me>
+Cc: <bpf@vger.kernel.org>, <kernel-team@cloudflare.com>, "Daniel Borkmann"
+ <daniel@iogearbox.net>, "John Fastabend" <john.fastabend@gmail.com>,
+ "Andrii Nakryiko" <andrii@kernel.org>, "Eduard Zingerman"
+ <eddyz87@gmail.com>, "Kumar Kartikeya Dwivedi" <memxor@gmail.com>, "Martin
+ KaFai Lau" <martin.lau@linux.dev>, "Song Liu" <song@kernel.org>, "Yonghong
+ Song" <yonghong.song@linux.dev>, "Jiri Olsa" <jolsa@kernel.org>, "Emil
+ Tsalapatis" <emil@etsalapatis.com>, "David S. Miller"
+ <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>, "Simon Horman"
+ <horms@kernel.org>, "Jesper Dangaard Brouer" <hawk@kernel.org>, "Willem de
+ Bruijn" <willemdebruijn.kernel@gmail.com>, "Florian Westphal"
+ <fw@strlen.de>, "Jack Wang" <163wangjack@gmail.com>
+Subject: Re: [PATCH net-next v2 00/14] skb extension for BPF metadata
+From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
+X-Mailer: aerc
+References: <20260910-bpf-meta-inside-skb-ext-v2-0-0b21e42180b0@cloudflare.com>
+In-Reply-To: <20260910-bpf-meta-inside-skb-ext-v2-0-0b21e42180b0@cloudflare.com>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider:
+On Thu Sep 10, 2026 at 7:02 AM PDT, Jakub Sitnicki wrote:
+>
+> That said, as things stand we have already established in v1 [3] that for
+> our existing use case - attaching metadata to <1% of skbs - the
 
-Critical: 0 · High: 0 (1) · Medium: 1 · Low: 0
+so you'll be using this bpf_skb_ext only on <1% of skb-s ?
+How about we add a bit in skb 'special_cleanup' or something.
+If set it will trigger a new tracepoint during kfree_skb/consume_skb.=20
+Then use bpf_rhashtable, populate when necessary, set bit,
+attach to that new tracepoint and delete from rhash where key=3D=3Dskb.
+bpf_rhash is specifically optimized for 8-byte keys.
+I suspect it would be faster than this approach.
 
-- [Medium] The `case IPPROTO_ESP:` arm of get_ipv6_ext_hdrs()
-  (net/openvswitch/flow.c:287-297), whose whitelist this patch changes…
-
-Pre-existing issues:
-- [High] In get_ipv6_ext_hdrs() the loop tail unconditionally advances
-  the parse offset with `start += ipv6_optlen(hp)`…
-
---
-
-openvswitch: fix wrong flag value in get_ipv6_ext_hdrs()
-
-This replaces two uses of IPPROTO_FRAGMENT with OFPIEH12_FRAG in the ESP
-and AH arms of get_ipv6_ext_hdrs(), where the constant was being used as a
-bitmask of already-seen extension headers.  The stated effect is that a
-packet with two AH headers now reports OFPIEH12_UNSEQ in addition to
-OFPIEH12_UNREP.
-
-A couple of questions on the ESP arm and on the offset arithmetic in the
-same loop.
-
-> diff --git a/net/openvswitch/flow.c b/net/openvswitch/flow.c
-> index 46c1d66aad8c..868d9fdf3afd 100644
-> --- a/net/openvswitch/flow.c
-> +++ b/net/openvswitch/flow.c
-> @@ -288,7 +288,7 @@ static void get_ipv6_ext_hdrs(struct sk_buff *skb, struct ipv6hdr *nh,
->  			if (*ext_hdrs & OFPIEH12_ESP)
->  				*ext_hdrs |= OFPIEH12_UNREP;
->  			if ((*ext_hdrs & ~(OFPIEH12_HOP | OFPIEH12_DEST |
-> -					   OFPIEH12_ROUTER | IPPROTO_FRAGMENT |
-> +					   OFPIEH12_ROUTER | OFPIEH12_FRAG |
->  					   OFPIEH12_AUTH | OFPIEH12_UNREP)) ||
->  			    dest_options_header_count >= 2) {
->  				*ext_hdrs |= OFPIEH12_UNSEQ;
-
-[Severity: Medium]
-Can the case IPPROTO_ESP arm ever run?  The switch in get_ipv6_ext_hdrs()
-is inside:
-
-	while (ipv6_ext_hdr(next_type)) {
-
-and ipv6_ext_hdr() in net/ipv6/exthdrs_core.c only accepts a fixed set of
-next-header values:
-
-	return   (nexthdr == NEXTHDR_HOP)	||
-		 (nexthdr == NEXTHDR_ROUTING)	||
-		 (nexthdr == NEXTHDR_FRAGMENT)	||
-		 (nexthdr == NEXTHDR_AUTH)	||
-		 (nexthdr == NEXTHDR_NONE)	||
-		 (nexthdr == NEXTHDR_DEST);
-
-NEXTHDR_ESP (50) is not in that list, so the loop exits before the ESP arm
-is entered, and *ext_hdrs |= OFPIEH12_ESP at the end of that arm never
-executes.  That would also mean OFPIEH12_ESP is never reported in
-key->ipv6.exthdrs, and the OFPIEH12_ESP entry in the second-DSTOPTS
-whitelist can never be exercised.
-
-If that reading is right, is this part of the commit message accurate?
-
-	This caused incorrect OFPIEH12_UNSEQ verdicts in
-	both the ESP and AH arms: the ESP arm failed to whitelist OFPIEH12_FRAG,
-
-Only the AH hunk seems able to change an observable verdict.
-
-Should making the ESP arm reachable be part of this change, for example by
-admitting ESP into the walk:
-
-	while (ipv6_ext_hdr(next_type) || next_type == IPPROTO_ESP) {
-
-Note that would also need a separate advance for ESP, since the ESP header
-has no ipv6_opt_hdr-style hdrlen field.
-
-> @@ -301,7 +301,7 @@ static void get_ipv6_ext_hdrs(struct sk_buff *skb, struct ipv6hdr *nh,
->  				*ext_hdrs |= OFPIEH12_UNREP;
->  			if ((*ext_hdrs &
->  			     ~(OFPIEH12_HOP | OFPIEH12_DEST | OFPIEH12_ROUTER |
-> -			       IPPROTO_FRAGMENT | OFPIEH12_UNREP)) ||
-> +			       OFPIEH12_FRAG | OFPIEH12_UNREP)) ||
->  			    dest_options_header_count >= 2) {
->  				*ext_hdrs |= OFPIEH12_UNSEQ;
->  			}
-
-[Severity: High]
-This isn't a bug introduced by this patch, it dates back to 28a3f0601727,
-but since the AH arm is being touched here: is the offset advance at the
-bottom of the same loop in get_ipv6_ext_hdrs() correct for AH and Fragment
-headers?
-
-	hp = skb_header_pointer(skb, start, sizeof(_hdr), &_hdr);
-	if (!hp)
-		break;
-	next_type = hp->nexthdr;
-	start += ipv6_optlen(hp);
-
-ipv6_optlen() is only the right arithmetic for HOPOPTS/DSTOPTS/ROUTING.
->From include/linux/ipv6.h:
-
-	#define ipv6_optlen(p)  (((p)->hdrlen+1) << 3)
-	#define ipv6_authlen(p) (((p)->hdrlen+2) << 2)
-
-For an AH with hdrlen=4 the header is 24 bytes, but ipv6_optlen() returns
-40, so start lands 16 bytes inside the ICV/payload.  For a Fragment header,
-the byte read as hdrlen is the Reserved field, which the sender controls and
-receivers are required to ignore; the correct advance is a fixed 8.
-
-The kernel's own chain walker handles both cases explicitly in
-ipv6_find_hdr() (net/ipv6/exthdrs_core.c):
-
-			hdrlen = 8;
-		} else if (nexthdr == NEXTHDR_AUTH) {
-			if (flags && (*flags & IP6_FH_F_AUTH) && (target < 0))
-				break;
-			hdrlen = ipv6_authlen(hp);
-		} else
-			hdrlen = ipv6_optlen(hp);
-
-With the current code, any header parsed after an AH header, or after a
-Fragment header with a non-zero Reserved byte, has its nexthdr and hdrlen
-read from sender-chosen payload bytes, so the OFPIEH12_* bits stored in
-key->ipv6.exthdrs and exported as OVS_KEY_ATTR_IPV6_EXTHDRS can be steered
-remotely.  Payload bytes that look like a second AH or a HOPOPTS header
-would raise OFPIEH12_UNREP/OFPIEH12_UNSEQ, and genuine trailing headers can
-be missed.  There is no memory-safety concern here since
-skb_header_pointer() is bounds-checked and start advances by at least 8 each
-iteration.
-
-The two-AH example given in the commit message still behaves as described,
-since next_type comes from the previous header's correctly-read nexthdr
-field.  Would it make sense to fix the per-type length handling in a
-follow-up?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/1b1582eb07550d71f3cbe210e5cb31eeb8d0ad86.1788876917.git.echaudro%40redhat.com
+Overall this approach is fine from bpf perspective, but if it can be
+done with 1 bit + tracepoint approach that would be better.
