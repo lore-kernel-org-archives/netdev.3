@@ -1,124 +1,178 @@
-Received: from mail.cjdns.fr (mail.cjdns.fr [5.135.140.105])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 332333C1412;
-	Thu, 10 Sep 2026 06:13:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=5.135.140.105
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 755CD3BD62F
+	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 06:20:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789020796; cv=none; b=Cdbbn/N81Zr2ksBt41qoFwm7PUb+ZMJP6ZLFvFp4uMaiHWcNH5jovLk0blzlxGU35cE1A6UWVQVOloREKY2tybI0NBy/xdapnRyk9uU97p6wHfi77Q5kmMFxMNpYyEju/M0khFgSxlNmEDU5NJXdpg0YEU7nshMJ6U8SnyQ1xyg=
+	t=1789021236; cv=none; b=G/MBeq+A7/JcwKMx/FT32UqTkVIC+OQn0kRqfcycQNeUSryY9GcBgSnicLlaIj0Es616+gsFdsCM9Ku6sRMHefUtERlIoYhnEtCirwqNQRN/ZDr2bCrPcNVHRjFNDfvcxnhLaHUxfI7+f/X0RtXIIFyhcBXQOBbsa2aR5nAqTss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789020796; c=relaxed/simple;
-	bh=AvynD0BnRA8yFU7izqYnWJydCBcM4nkfFxErdVeNSi4=;
+	s=arc-20240116; t=1789021236; c=relaxed/simple;
+	bh=MQcC4dR8FUCijCCrs52KbxdThXmJ8Dbr/UqfZTiRloM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bb4K/x1CbBZImrHba/dGedQdvPBpBmt8i3xEU7hCFTm2cKkuL0dcAMcmY9yY/4hidAx0llaIRe65oZj/jCjEON/I6816C9bFLuP8yDRcXA1lwTmXxErNww++o252vYNHJ/wiRGlm8wcghLCyB10e7hEpT19aTW9SqjFlJsgM8YY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cjdns.fr; spf=pass smtp.mailfrom=cjdns.fr; dkim=pass (2048-bit key) header.d=cjdns.fr header.i=@cjdns.fr header.b=AXjx859f; arc=none smtp.client-ip=5.135.140.105
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cjdns.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cjdns.fr
+	 In-Reply-To:Content-Type; b=GAXuBcG4TFXq+xegWwHaxzYZOcrAp3WVLtRPsqYgnaCSXmCYXSO1c03Nt8fY2JRqZXhudoxRRNxmgtnivA9LG5dvySZVdXcW9EB7xhdaZ+YfyvwaMNg/29Y0CyG+uup9awKK3bYsxxsLFife9y4WLdQDDNoZHGJGcuExq4SBF6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cuMGrKvC; arc=none smtp.client-ip=209.85.222.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cjdns.fr header.i=@cjdns.fr header.b="AXjx859f"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 87A5B3FD91A;
-	Thu, 10 Sep 2026 08:12:50 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cjdns.fr; s=dkim;
-	t=1789020777; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=L4wB1QYwi0iuakONjjW3MYAY6XW1sNub4WuonJ/8I3E=;
-	b=AXjx859fYzPXthIfMssQwNFMKK2QBvjDlX7RstLkZivfKuuyKQYsvAzQdCDHm+pIx2wOIK
-	vd3yHuXAJfQIftacSw5No4K4DGL3iHlVawNh3oNl9IUJ6ufyUMkFqUXEcFav9LJE0CS8df
-	GH1h7Qmm9a4FoVe+cTakY1NvBRaMsNevhyHXCROaPkQ/dLdyuxJfGbspEJas+TuOOonvqn
-	+NAXS35BzNH7KJr32GSdJNwvXYiAQQOsfDtoGgM4FgwfuGfO01FckfvUwJ0+3h39m3hOqX
-	USGFyFoaNlpPM44D/1h9w8+AJ0x1Mxf2U/YjTvFXpSkdjTVM7ig5G7wiNadQFQ==
-Message-ID: <f1c898c4-2a84-41e8-ad8d-8c79df3feb47@cjdns.fr>
-Date: Thu, 10 Sep 2026 08:12:49 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cuMGrKvC"
+Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-939e028b3c9so12314185a.3
+        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 23:20:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789021226; x=1789626026; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=e7cyj0PhcIGIgu6e9EBrymS4RNeOJ3HjwObgNoqGt1I=;
+        b=cuMGrKvCn9qt+NAdeDKfUYUpXkLo/4hT2KxxI47I1f4zk2Pb8hjhJR9DmFGNRwahsy
+         /rvxwaxsXUbzBIpeChFlU6PCsiAvSfV6Ot1ZPq8w5txgYZb/O7fTQ4bx2FbxhALOoyqX
+         +qrkFUBJim02rdFvG9I2PN0qUr0rsKf3GQsCEaooD8yqxq/VVCLG3/fOcd/WDhbkZ2Mi
+         Hfsi2pgDJFvtaN1wuTC/CzwuF6NqxcS3QQFa3T5sOni7FvMPWadHisGXsKztwbMTlFCv
+         fAfLuOoIxrA1gaNFutIum+3i6basKU82tjPPq7XBmYVigzMCkeCYW0CQPfbVijKyEyUM
+         GVLw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789021226; x=1789626026;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=e7cyj0PhcIGIgu6e9EBrymS4RNeOJ3HjwObgNoqGt1I=;
+        b=lYZTeicjf7d7tPy0kop2BJj8h8bLDOBQsIGja4jv3Zf/6DK+ZoPUW3CFlYbw/SIrFv
+         yjHDALBXzuI6dqhd6k7dtmFkUvODeAXaGNp+gcSEaISk8mSxugwJ44DJEkDB79C4vImV
+         0wWsCNK/FYmSqsH/QZwqRsaWHE3grMevLFoAJlMh6jPSRdOt0oK575l1TMpsZ+6hUUIV
+         wNxcrMEk9UGQcYCOd6Q6TwaAbOXBegX2qqFb9vGMqgQZLLkT6NMO5gyvVc7v2h98hxVN
+         swbn97G2qs3NU3UB5tJRK24I1kRJQHErzv89PnJegdUXUJ4S7TRZ9L4z9wSZMfri5/9n
+         DTfw==
+X-Forwarded-Encrypted: i=1; AKwUvBzmUCES8KUE6qts/++Z5T0BrPwckdr1C8iVNWwppOMnPKgRBSvNVimZ4RTqzW/XFDaE70f6swE=@vger.kernel.org
+X-Gm-Message-State: AFuF++mXmNypv9/0LCeZBbSwr6F8EjHfcbCzRS9pisOd9mnkBZIZsp+9
+	wrxkbmT5Dx34LNhje4Df/DFvxY3GmRsWBgWgDGJOJ2WiLQGR0c1XfYtj
+X-Gm-Gg: AYBFou1ATFeg45BkLOBr1ENYOmvZ6mQQTx17BMLrzJToc/MbVwO9z+wIXQpI7yxcR6o
+	jtZGSwHqWyWuQQIW+9dso4eWiYNPOXkp1xXL+FkOMDrP94phMIlSI8fkY5zxSND1sPu2ANZDvvG
+	M5jjXW8yjU0OZ0sHwGeiB3DzxJuopr3nfE8dat1HlLXFOLAQf3SbvQ8pZcHgi2KQCNk16QKWY30
+	1TJtkfMm/XFRRoos50rkUNx88echGI6BJZYPGJF0RjR64vmLYDS84UvkEmrixVvbzHJuusaMb3n
+	Biop+7SNEZijvIleaNRRi4UhKJGEFtPl1Hgt5bSF2BCqWiY6wTT2aP0bXP0pSHBfyj1MFOSlFJT
+	dL4Q9iHtQpSWwOyUZOb25L+8U4VZk5jN8xt2Qs36jgpS3WxCnQIU7ai1uBxliGRbDDU/0SZiex0
+	hhXzh9mkvQ1Y5TOV00oHyACLCgV846LHFTXvpKSknfRes9uwXYLRGtTBaEY7MfH89e8flp90NP0
+	WqZRuEOoEuyyeAlUddMJGWdEAOeqP+K9V2cfNuwSjdtDR69dJISEUWQu6SCYCqSoAtg2PNWWix/
+	s0SKqAJ6Pszr2ubcFFcZMcBHTKlKK+154Nov
+X-Received: by 2002:a05:620a:2604:b0:939:4e49:4d3a with SMTP id af79cd13be357-939806da015mr4699071185a.27.1789021225806;
+        Wed, 09 Sep 2026 23:20:25 -0700 (PDT)
+Received: from ?IPV6:2003:ea:8f2c:d400:9135:d56e:c3ce:edd3? (p200300ea8f2cd4009135d56ec3ceedd3.dip0.t-ipconnect.de. [2003:ea:8f2c:d400:9135:d56e:c3ce:edd3])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-9397f9ee9fbsm1621645785a.1.2026.09.09.23.20.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 09 Sep 2026 23:20:25 -0700 (PDT)
+Message-ID: <beb23347-b7f1-44df-892d-cf3f49e9b3d0@gmail.com>
+Date: Thu, 10 Sep 2026 08:20:22 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH net-next] net: phy: mediatek: support MT7530 PHYs on
- EN71221 MCM
-To: Daniel Golle <daniel@makrotopia.org>
-Cc: netdev@vger.kernel.org, dqfext@gmail.com, SkyLake.Huang@mediatek.com,
- andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, matthias.bgg@gmail.com,
- angelogioacchino.delregno@collabora.com, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-mediatek@lists.infradead.org,
- Matheus Sampaio Queiroga <srherobrine20@gmail.com>
-References: <20260909213250.3184238-1-cjd@cjdns.fr>
- <aqHlfmYa249e3HRM@makrotopia.org>
- <7a3479c8-45cc-4b88-b111-c35d59f370e1@cjdns.fr>
- <aqIOGgVujIKT7H2H@makrotopia.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] r8169: don't enable chip LTR when the platform has
+ not enabled LTR
+To: Yogesh Gaur <yogeshgaur.83@gmail.com>
+Cc: nic_swsd@realtek.com, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Javen Xu <javen_xu@realsil.com.cn>
+References: <20260909110554.1977-1-yogeshgaur.83@gmail.com>
+ <9c34a1dc-6147-4369-8d12-9c5939d07530@gmail.com>
+ <CAG6enPw36egoW=ezg1nnRvKEK5EEQX1h=j_TiRTE7F7PbxY8sg@mail.gmail.com>
 Content-Language: en-US
-From: Caleb James DeLisle <cjd@cjdns.fr>
-In-Reply-To: <aqIOGgVujIKT7H2H@makrotopia.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+From: Heiner Kallweit <hkallweit1@gmail.com>
+In-Reply-To: <CAG6enPw36egoW=ezg1nnRvKEK5EEQX1h=j_TiRTE7F7PbxY8sg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
+On 10.09.2026 08:01, Yogesh Gaur wrote:
+> On Wed, Sep 9, 2026 at 10:05 PM Heiner Kallweit <hkallweit1@gmail.com> wrote:
+>>
+>> On 09.09.2026 13:05, Yogesh Gaur wrote:
+>>> rtl_enable_ltr() programs the MAC to generate LTR messages - ALDPS_LTR_EN,
+>>> LTR_SNOOP_EN, LTR_OBFF_LOCK_EN, plus LINK_SPEED_CHANGE_EN on
+>>> RTL8125/RTL8126/RTL8127 - and rtl_hw_aspm_clkreq_enable() calls it on
+>>> every ASPM enable, then goes on to let the chip trigger L1.2.
+>>>
+>>> The only gate is tp->aspm_manageable, which records that the OS is allowed
+>>> to control ASPM. It says nothing about LTR. LTR is a separate PCIe
+>>> capability that only works if every device on the path to the root port
+>>> supports it. The PCI core determines that in pci_configure_ltr() and
+>>> records the result by setting LTR Mechanism Enable in the endpoint's
+>>> Device Control 2 register; per PCIe r6.0 sec 7.5.3.16 a function must not
+>>> issue LTR messages while that bit is clear.
+>>>
+>>> So on a platform whose hierarchy has no LTR path, the driver now tells the
+>>> chip to start sending LTR messages nothing will honour, and ties ALDPS -
+>>> the PHY's link-down power saving - to them. A report against RTL8125B
+>>> (rev 05, firmware rtl8125b-2_0.0.2) in a mini PC shows the effect: 291
+>>> link down/up transitions in one eight-hour boot, with repeated downshifts
+>>> to 100Mbps, against four transitions at boot and then a stable link on the
+>>> kernel before the LTR change.
+>>>
+>>> Read the endpoint's LTR Mechanism Enable bit and leave the chip's LTR
+>>> machinery alone when the platform did not enable it.
+>>> pcie_capability_read_word() zeroes its output on error, so an unreadable
+>>> capability takes the same safe path.
+>>>
+>>
+>> Thanks for the fix!
+>>
+>>> Fixes: 9ab94a32af70 ("r8169: enable LTR support")
+>>> Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2529752
+>>> Signed-off-by: Yogesh Gaur <yogeshgaur.83@gmail.com>
+>>> ---
+>>>  drivers/net/ethernet/realtek/r8169_main.c | 10 ++++++++++
+>>>  1 file changed, 10 insertions(+)
+>>>
+>>> diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+>>> index ec4fc21fa21f..c1ff4e898570 100644
+>>> --- a/drivers/net/ethernet/realtek/r8169_main.c
+>>> +++ b/drivers/net/ethernet/realtek/r8169_main.c
+>>> @@ -3037,6 +3037,16 @@ static void rtl_disable_exit_l1(struct rtl8169_private *tp)
+>>>
+>>>  static void rtl_enable_ltr(struct rtl8169_private *tp)
+>>>  {
+>>> +     u16 ctl2;
+>>> +
+>>> +     /* The chip must not issue LTR messages unless the platform enabled
+>>> +      * LTR on the whole path up to the root port. The PCI core discovers
+>>> +      * that in pci_configure_ltr() and reflects it in LTR Mechanism Enable.
+>>> +      */
+>>> +     pcie_capability_read_word(tp->pci_dev, PCI_EXP_DEVCTL2, &ctl2);
+>>> +     if (!(ctl2 & PCI_EXP_DEVCTL2_LTR_EN))
+>>> +             return;
+>>> +
+>>
+>> Can't you simply query tp->pci_dev->ltr_path instead of doing this low-level
+>> PCI register read? When reading through pci_configure_ltr(), I think this
+>> should do the trick.
+>>
+> Thats was actually my first version, but it does not build: struct
+> pci_dev::ltr_path
+> is inside #ifdef CONFIG_PCIEASPM (include/linux/pci.h), and r8169 can be built
+> with CONFIG_PCIEASPM=n.
+> 
+However, w/o support for PCIe NIC's you don't need rtl_enable_ltr() at all.
+So the complete function could be conditionally compiled.
 
-On 10/09/2026 03:55, Daniel Golle wrote:
-> On Thu, Sep 10, 2026 at 01:26:14AM +0200, Caleb James DeLisle wrote:
->> On 10/09/2026 01:02, Daniel Golle wrote:
->>> On Wed, Sep 09, 2026 at 09:32:50PM +0000, Caleb James DeLisle wrote:
->>>> The EcoNet EN751221 multi-chip module implementation of the MT7530
->>>> requires some additional configuration of the PHYs on startup.
->>>> The reason for this is not known, but it is possible that it has
->>>> to do with the fact that the EN751221 MCM implementation of the
->>>> MT7530 runs at an abnormal PLL frequency (362.5Mhz).
->>>>
->>>> Detect whether the MT7530 PHY is attached to the MDIO bus of an
->>>> EcoNet EN751221 switch and if so, apply the necessary register
->>>> updates.
->>>>
->>>> Co-developed-by: Matheus Sampaio Queiroga <srherobrine20@gmail.com>
->>>> Signed-off-by: Matheus Sampaio Queiroga <srherobrine20@gmail.com>
->>>> Signed-off-by: Caleb James DeLisle <cjd@cjdns.fr>
->>>> ---
->>>>    drivers/net/phy/mediatek/mtk-ge.c | 61 +++++++++++++++++++++++++++++++
->>>>    1 file changed, 61 insertions(+)
->>>>
->>>> diff --git a/drivers/net/phy/mediatek/mtk-ge.c b/drivers/net/phy/mediatek/mtk-ge.c
->>>> index 73d9b72f9d9e..42b06c40d703 100644
->>>> --- a/drivers/net/phy/mediatek/mtk-ge.c
->>>> +++ b/drivers/net/phy/mediatek/mtk-ge.c
->>>> [...]
->>>>    static int mt7530_phy_config_init(struct phy_device *phydev)
->>>>    {
->>>> +	int ret;
->>>> +
->>>> +	if (mt7530_phy_is_en751221_companion(phydev)) {
->>> Please introduce a `.match_phy_device` operation for both, actual
->>> MT7530 and EN751221, similar eg. to `ksz8051_match_phy_device` in
->>> micrel.c.
->> Sounds good, since this will certainly collide with
->> https://lore.kernel.org/netdev/20260827065930.2618729-2-cjd@cjdns.fr/ would
->> you prefer them in the same patch, or as a patch set? If you'd like I can do
->> this and the FE phy as a common patch set. Let me know what you prefer.
-> I'd do it one driver at a time, starting with mtk-ge.c, already adding
-> the .match_phy_device logic so it would also avoid binding the MT7530
-> driver to an ECONET_FEPHY.
->
-> The econet-fe-soc.c driver is much larger and may require more rounds
-> to make all bots and humans happy, so I'd not have the independently
-> useful mtk-ge.c changes depend on that.
-Good point, so I can make mtk-ge so it won't interfere with "any future 
-FE PHY with the same ID" with the understanding that this PHY is moving 
-along at it's own pace.
->
-> Dumping the PHY register space and comparing it with MT7530 could also
-> help to indentify any better way than relying on the parent DT
-> compatible which *is* a bit of a stretch (but could well be
-> unavoidable, of course).
+> I think we should keep DEVCTL2 read. It is what other drivers with this need do
+> - rtw89(rtw89_pci_dev_ltr_enabled()), iwlwifi (pcie/gen1_2/trans.c),
+> qed_rdma.c,
+> rtsx_pcr.c all read PCI_EXP_DEVCTL2 and test PCI_ECP_DEVCTL2_LTR_EN.
+> 
+I'd not consider these old drivers as role models. As far as possible
+I'd like to leave dealing with low-level PCI registers to the PCI subsystem.
 
-I'll give it a shot but I have low confidence in it because AFAIK this 
-is actually a real MT7530 MCM just like MT7621 but it just happens to be 
-clocked to a weird PLL frequency.
+> Please suggest.
+> 
+> Yogesh
+> 
+>>>       switch (tp->mac_version) {
+>>>       case RTL_GIGA_MAC_VER_80:
+>>>               r8168_mac_ocp_write(tp, 0xcdd0, 0x9003);
+>>
 
-
-Thanks,
-
-Caleb
-
->
