@@ -1,218 +1,191 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 856B82E7395;
-	Thu, 10 Sep 2026 09:08:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC3F2355F5F;
+	Thu, 10 Sep 2026 09:10:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789031336; cv=none; b=nfzc2pF5ii1ViFDUj06IFbv4byEIjIJypiOAMvQn3hMCv8IwNbdivsVjfQNULedCWhfrPVZHWhyV5ffizziB0zeSkut7N8Du4IH680f0+XIadx/V71Ar/RAQu5iMk6Tkq3x2QShpjWhrVfIQXxF6MC+Ahgi3x42sp7UROAXdr14=
+	t=1789031441; cv=none; b=m2XIERgtEtohAAuU3LWV13C6A3ILYQOYL4hRmV8FqOLSkGCWdHJDktyWqMhSAZ497NAl7cWgcVsQfeACqY3PcJxO9Arh/V0NXDhiJNuXCXkL4eoT9S8RH93EKBSU4gqNIFGkanOYwaihF4V1+3fjmodwWgZU+RTEIMzPwnWvO14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789031336; c=relaxed/simple;
-	bh=rX1vhmS0c7oYpu8YXlJO3aWYkVjIqBnde8zKTeTFORo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=P2fmU1ysM6EXCXN2zhql4Z2HZnX3/5A8ZFNMBzbcJWhQHfKLhCNzFQV1UtkC80T9n7U17VzUQlREQyakwy7k2NFYGeaL2gpjU4GKk64Ut4NUfcwsmXkWwpyENsDVcvijw8khGCx3iO3UUkUBIJgFQNovUZCxOFkB+oerXC95it8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EEbilaoT; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789031441; c=relaxed/simple;
+	bh=wa8+AB71aWAAABk7jurpjv26ahxiui1HCF9JZAeOVYk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jUK5DTARrp8zzCyh5uN/dJ2LVG6OS3SyzK7eLccBvZkbJvBJEpatcu0/5YdUUe3+wGo0oqOWzz4lmTyA7yNqQlONOJ3EBgPfIo3Zo23Oanygad2r93r44WWeoV9tBbSIIK3fRu2x5Dv/ko0TjrkzPAdq7NshvTVJFW0VfbLR2kc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=P/Y0fYIF; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=sHfk8gXf; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Mp62uj+j; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=2AmFRRB+; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EEbilaoT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B03C01F000FF;
-	Thu, 10 Sep 2026 09:08:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789031334;
-	bh=woCz9bvSNwemiOB0R5mU2tl/W4FqYwbWr4i2DbovjL0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=EEbilaoTXVM2wiOAC+ZSVgT2Wus01Gy/2DkYKbcx6JqUfSPQKYfKNeRY5OPk7JuPK
-	 vR9rOaoFQPxaPzubwx9i4muwEM/rfGdUfm0EgIVspo16rRu4CbHydTnjmNuxN1mGCW
-	 CcjE38rQR4REW35fk0Pk9aE8iikk+89DXnsNULMVCIGUn5yw99ahuaADghq1ErdB5F
-	 nkXtdhBwm+jRX+cjHcZoa+s2jNxK1QNTTs8fd4JaqsNbScqNtQKPi8XYZbpmHIHk8a
-	 /lKG1IaBi8KDUckV8pfPdbc8b15iNh+eFl3FO18RvBEi7f2AdU+vUO23JZy9ogQKNF
-	 22H08KGt5FDFw==
-Date: Thu, 10 Sep 2026 10:08:49 +0100
-From: Simon Horman <horms@kernel.org>
-To: netdev-bot+sashiko@kernel.org
-Cc: nshettyj@marvell.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, gakula@marvell.com,
-	sgoutham@marvell.com, rkannoth@marvell.com, sbhatta@marvell.com,
-	bbhushan2@marvell.com, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
-Subject: Re: [PATCH net] octeontx2-pf: fix null RX segment address free
-Message-ID: <20260910090849.GN40544@horms.kernel.org>
-References: <20260903143516.2697708-1-nshettyj@marvell.com>
- <178892141248.219967.7550488863478080555@kernel.org>
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="P/Y0fYIF";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="sHfk8gXf";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Mp62uj+j";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="2AmFRRB+"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 5C2941FDB7;
+	Thu, 10 Sep 2026 09:10:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1789031429; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=s9nYzq2znk7osZTamSzy01Swvtojf1hO+2D9mmw5CNU=;
+	b=P/Y0fYIFHrc/h1GPP5D/fHo2sTUwzOSc4rC07N0meWX97ZtIdZu21HqL4sZjSdsNIvsQVd
+	tC7wba2rk4WQzUpclbakSrpeebgYkNCxTjGCFt16jyQo+sZcOCJj9wCyJz+yfjA7AIxB3T
+	AxTNxbhjUB3TDCTmzPG0+zx+zgGUoh4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1789031429;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=s9nYzq2znk7osZTamSzy01Swvtojf1hO+2D9mmw5CNU=;
+	b=sHfk8gXfjccHcp27eVbITSKXqy15+2GfK5byVAMK1gbKoWG66vAE3gEvCvlbMMLMkCNP16
+	NZccDP2ApvnT/oBA==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Mp62uj+j;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=2AmFRRB+
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1789031425; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=s9nYzq2znk7osZTamSzy01Swvtojf1hO+2D9mmw5CNU=;
+	b=Mp62uj+jMMWLmvATNok5E9z6uvqdO1Uz61bR7MYBokF3it8PHV2BbqHSNNv69+CCe9qufb
+	TeFJJzl9QcO1jG6lZaVTGWdnpgcAXFc3W4Gdw/+K5A6R/+mw6giWt5qzG/o9WVaajBEGYy
+	9xxFweoQArTQRdW6RmPjceAhUPeLmHc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1789031425;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=s9nYzq2znk7osZTamSzy01Swvtojf1hO+2D9mmw5CNU=;
+	b=2AmFRRB+KVGBB1eoBpOXACNx+8dg7UxATPM4FguLC0qmlzsuIWD00H5bquYC5uz7VHrl2g
+	OvmmGAiqMd7NbKBA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 86EF7137FD;
+	Thu, 10 Sep 2026 09:10:24 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id b0IiHgB0omokfwAAD6G6ig
+	(envelope-from <fmancera@suse.de>); Thu, 10 Sep 2026 09:10:24 +0000
+Message-ID: <e84cd7a1-8708-43bb-bbdc-25c10611f3ad@suse.de>
+Date: Thu, 10 Sep 2026 11:09:42 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <178892141248.219967.7550488863478080555@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net: hsr: enable promiscuous mode on interlink port
+ with fwd offload
+To: MD Danish Anwar <danishanwar@ti.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Felix Maurer <fmaurer@redhat.com>,
+ Hangbin Liu <liuhangbin@gmail.com>, Kees Cook <kees@kernel.org>,
+ Xiaoliang Yang <xiaoliang.yang_1@nxp.com>, Lukasz Majewski <lukma@denx.de>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260908090856.2876114-1-danishanwar@ti.com>
+Content-Language: en-US
+From: Fernando Fernandez Mancera <fmancera@suse.de>
+In-Reply-To: <20260908090856.2876114-1-danishanwar@ti.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Score: -4.51
+X-Rspamd-Queue-Id: 5C2941FDB7
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Level: 
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-4.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	RCPT_COUNT_TWELVE(0.00)[13];
+	FREEMAIL_TO(0.00)[ti.com,davemloft.net,google.com,kernel.org,redhat.com,gmail.com,nxp.com,denx.de];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,ti.com:email,suse.de:dkim,suse.de:email,suse.de:mid];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from]
+X-Spam-Flag: NO
 
-On Wed, Sep 09, 2026 at 02:36:52AM +0000, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 2 potential
-> issue(s) to consider:
+On 9/8/26 11:08 AM, MD Danish Anwar wrote:
+> hsr_portdev_setup() skips promiscuous mode on non-master ports when
+> hsr->fwd_offloaded is set. fwd_offloaded is derived only from the ring
+> slaves' NETIF_F_HW_HSR_FWD bit, so this also skips it for the interlink
+> port, which never gets forwarding offload. Without promiscuous mode,
+> the interlink NIC drops unicast frames addressed to hsr_dev's MAC
+> (e.g. SAN traffic to the RedBox), breaking RedBox whenever the ring is
+> HW-offloaded.
 > 
-> Critical: 0 · High: 2 · Medium: 0 · Low: 0
-> 
-> - [High] Incomplete fix: the zero-`seg_addr` guard is added only to
->   `otx2_free_rcv_seg()`, leaving the bug class the commit message claims…
-> - [High] The new guard in `otx2_free_rcv_seg()` (otx2_txrx.c:260-261)
->   uses `return`, which aborts the inner per-segment loop *and* the outer…
+> Fixes: 5055cccfc2d1 ("net: hsr: Provide RedBox support (HSR-SAN)")
+> Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
 
-Hi Nitin,
+Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
 
-I think that these days it's best practice for authors to respond to reviews
-from netdev-bot+sashiko. But let me give it a shot.
+Thanks!
 
+> ---
+>   net/hsr/hsr_slave.c | 11 +++++++----
+>   1 file changed, 7 insertions(+), 4 deletions(-)
 > 
-> --
+> diff --git a/net/hsr/hsr_slave.c b/net/hsr/hsr_slave.c
+> index 01c73b4b50ddd..a546f70f9cc8b 100644
+> --- a/net/hsr/hsr_slave.c
+> +++ b/net/hsr/hsr_slave.c
+> @@ -149,9 +149,12 @@ static int hsr_portdev_setup(struct hsr_priv *hsr, struct net_device *dev,
+>   	int res;
+>   
+>   	/* Don't use promiscuous mode for offload since L2 frame forward
+> -	 * happens at the offloaded hardware.
+> +	 * happens at the offloaded hardware. The interlink port never
+> +	 * gets forwarding offload (RedBox forwarding to/from it is done
+> +	 * by this driver), so it still needs promiscuous mode to receive
+> +	 * frames addressed to hsr_dev's MAC rather than its own.
+>   	 */
+> -	if (!port->hsr->fwd_offloaded) {
+> +	if (!port->hsr->fwd_offloaded || port->type == HSR_PT_INTERLINK) {
+>   		res = dev_set_promiscuity(dev, 1);
+>   		if (res)
+>   			return res;
+> @@ -176,7 +179,7 @@ static int hsr_portdev_setup(struct hsr_priv *hsr, struct net_device *dev,
+>   fail_rx_handler:
+>   	netdev_upper_dev_unlink(dev, hsr_dev);
+>   fail_upper_dev_link:
+> -	if (!port->hsr->fwd_offloaded)
+> +	if (!port->hsr->fwd_offloaded || port->type == HSR_PT_INTERLINK)
+>   		dev_set_promiscuity(dev, -1);
+>   
+>   	return res;
+> @@ -240,7 +243,7 @@ void hsr_del_port(struct hsr_port *port)
+>   		netdev_update_features(master->dev);
+>   		dev_set_mtu(master->dev, hsr_get_max_mtu(hsr));
+>   		netdev_rx_handler_unregister(port->dev);
+> -		if (!port->hsr->fwd_offloaded)
+> +		if (!port->hsr->fwd_offloaded || port->type == HSR_PT_INTERLINK)
+>   			dev_set_promiscuity(port->dev, -1);
+>   		if (port->type == HSR_PT_SLAVE_A || port->type == HSR_PT_SLAVE_B)
+>   			vlan_vids_del_by_dev(port->dev, master->dev);
 > 
-> octeontx2-pf: fix null RX segment address free
-> 
-> The patch adds a check in otx2_free_rcv_seg() so that a segment address
-> which reads back as zero is not handed to aura_freeptr().  It targets the
-> multi-segment reclaim path introduced by b1bc8457e9d0.
-> 
-> > diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
-> > index 8d2d607bc92f..a9aefd14ae52 100644
-> > --- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
-> > +++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_txrx.c
-> > @@ -256,9 +256,12 @@ static void otx2_free_rcv_seg(struct otx2_nic *pfvf, struct nix_cqe_rx_s *cqe,
-> >  	while (start < end) {
-> >  		sg = (struct nix_rx_sg_s *)start;
-> >  		seg_addr = &sg->seg_addr;
-> > -		for (seg = 0; seg < sg->segs; seg++, seg_addr++)
-> > +		for (seg = 0; seg < sg->segs; seg++, seg_addr++) {
-> > +			if (unlikely(!*seg_addr))
-> > +				return;
-> 
-> [Severity: High]
-> Should this be continue instead of return?
-> 
-> The return leaves both the inner per-segment loop and the outer
-> while (start < end) walk over the remaining SG sub-descriptors, so if
-> slot N reads zero, slots N+1..segs-1 and every later SG word inside
-> (desc_sizem1 + 1) * 16 are never returned to the aura.
+> base-commit: 8d6cd188508513503805c156165de38e4e4a8615
 
-Looking over the implementation of otx2_rx_napi_handler(),
-which only zero's the first segment address, it seems to
-me that return is the right approach. As subsequent seg_addrs will
-be neither zero nor value if processed by otx2_rx_napi_handler().
-
-However, if this is the case, I wonder if it would be somehow
-nicer to only apply the zero condition outside the loops.
-
-Something like this (completely untested!).
-
-@@ -251,6 +251,10 @@ static void otx2_free_rcv_seg(struct otx2_nic *pfvf, struct nix_cqe_rx_s *cqe,
- 	u64 *seg_addr;
- 	int seg;
-
-+	/* If the first seg_addr is 0, then there is no data to free */
-+	if (unlikely(!sg->seg_addr))
-+		return;
-+
- 	start = (void *)sg;
- 	end = start + ((cqe->parse.desc_sizem1 + 1) * 16);
- 	while (start < end) {
-
-> 
-> struct nix_rx_sg_s in otx2_struct.h describes segs as a count, not a
-> null-terminated list:
-> 
-> 	u64 segs       : 2;
-> 	...
-> 	u64 seg_addr;
-> 	u64 seg2_addr;
-> 	u64 seg3_addr;
-> 
-> and the peer walk in otx2_rcv_pkt_handler() processes every advertised
-> slot of every SG word, so the two readers of the same descriptor now
-> disagree about its meaning.
-> 
-> Neither caller re-scans the CQE afterwards.  otx2_check_rcv_errors()
-> does:
-> 
-> 	/* Free buffer back to pool */
-> 	if (cqe->sg.segs)
-> 		otx2_free_rcv_seg(pfvf, cqe, qidx);
-> 	return true;
-> 
-> and otx2_cleanup_rx_cqes() bumps processed_cqe, continues, and later
-> rings the CQ doorbell.  Can the skipped pointers leak the RX buffers
-> here, i.e. lose them from the NPA aura and, on the teardown path, leave
-> pages charged to the page_pool with their DMA mappings still installed
-> so page_pool_destroy() sees inflight pages?
-> 
-> The commit message describes a per-segment condition ("when the segment
-> address is null"), which reads more like a skip of the single bad slot
-> than an abort of the whole reclaim loop.
-> 
-> >  			pfvf->hw_ops->aura_freeptr(pfvf, qidx,
-> >  						   *seg_addr & ~0x07ULL);
-> > +		}
-> >  		start += sizeof(*sg);
-> >  	}
-> >  }
-> 
-> [Severity: High]
-> If a segment address in an RX CQE can be observed as zero, does the fix
-> cover the other readers of the same descriptor words?
-> 
-> otx2_rcv_pkt_handler() performs the identical walk with no zero test at
-> all:
-> 
-> 	start = (void *)sg;
-> 	end = start + ((cqe->parse.desc_sizem1 + 1) * 16);
-> 	while (start < end) {
-> 		sg = (struct nix_rx_sg_s *)start;
-> 		seg_addr = &sg->seg_addr;
-> 		seg_size = (void *)sg;
-> 		for (seg = 0; seg < sg->segs; seg++, seg_addr++) {
-> 			if (otx2_skb_add_frag(pfvf, skb, *seg_addr,
-> 					      seg_size[seg], parse, cq->cq_idx))
-> 				cq->pool_ptrs++;
-> 		}
-> 		start += sizeof(*sg);
-> 	}
-> 
-> The pre-check in otx2_rx_napi_handler() only looks at the first word:
-> 
-> 		if (cqe->hdr.cqe_type == NIX_XQE_TYPE_INVALID ||
-> 		    !cqe->sg.seg_addr) {
-> 
-> so seg2_addr, seg3_addr and any later SG sub-descriptor reach
-> otx2_skb_add_frag() unchecked.  With a zero iova that function does:
-> 
-> 	va = phys_to_virt(otx2_iova_to_phys(pfvf->iommu_domain, iova));
-> 	...
-> 	page = virt_to_page(va);
-> 
-> and publishes a page the driver never allocated into the GRO skb, with
-> skb_mark_for_recycle() run on it later.  When nr_frags has reached
-> MAX_SKB_FRAGS it also does:
-> 
-> 	pfvf->hw_ops->aura_freeptr(pfvf, qidx, iova & ~0x07ULL);
-> 
-> which is the same invalid free the commit message says it is preventing,
-> only on the fast path.  Can this happen?
-> 
-> The same question applies to the caller that motivates this change.  In
-> otx2_cleanup_rx_cqes() only the multi-segment case goes through the
-> patched helper:
-> 
-> 		if (cqe->sg.segs > 1) {
-> 			otx2_free_rcv_seg(pfvf, cqe, cq->cq_idx);
-> 			continue;
-> 		}
-> 		iova = cqe->sg.seg_addr - OTX2_HEAD_ROOM;
-> 
-> 		otx2_free_bufs(pfvf, pool, iova, pfvf->rbsize);
-> 
-> With seg_addr == 0 the subtraction underflows, and otx2_free_bufs() in
-> otx2_common.c then does virt_to_head_page(phys_to_virt(pa)) followed by
-> page_pool_put_full_page() / dma_unmap / put_page() on a page derived from
-> that address.  Does this branch need the same guard?
-
-OTOH, this concern does seem to warrant addressing.
