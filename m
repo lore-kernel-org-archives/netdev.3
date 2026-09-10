@@ -1,126 +1,168 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailtransmit05.runbox.com (mailtransmit05.runbox.com [185.226.149.38])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A56E38C42F
-	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 20:49:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 858943911DC;
+	Thu, 10 Sep 2026 20:51:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.38
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789073366; cv=none; b=V59lGf2U2xUR6711OmwjS8y12i7KtHwQtxjPRvZ4WP9PWwPig1dG/7MVYx1ac3Ruf7J/qKfFmZcrVfo6UBreMyeEeJgvzbDMUaf0ZJ59kfIiE28+XOQxlI+bixB4NL+PdBQT17xXzcpX+/HrKPK5mBgSztnwXK3ghOi+zqfPpj4=
+	t=1789073505; cv=none; b=qsqXog5j0+OVgrTflQ6s37XFjlW7MOakb7oeQZZElqw3Nm6GUzDgpbxDU7Rr+NXfXhjNPa9emsVvC0CwEv1k/Z9F3qoxxK0bPGwi73W4BZmG8zGZYNC/TSoUFEvQHzS44gxCvLlAlm9KEkVKaBufP2OmcLQHLDRNVgoMs4o+4+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789073366; c=relaxed/simple;
-	bh=gUckIW+EHn+RDkTms5ptK58W6fnobAQfdWsm/8/18fw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=l9xE/pe5mx0XAXB17Vi5SE8kc9mXP7zKhOcVOkcIoTY8DeOHaKhDeSrvW6QkfBXgzdABtIhrxG/jPNs0SgTxQ8FYfRhRIBvVZHLQX54uKFJL72+xVURmEiYdwchAAxASo1A+kG7dSeV/1On7K1WEdXzQag/6NSriyvHwSjDp24Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la; spf=pass smtp.mailfrom=lex.la; dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b=FJvYqqct; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lex.la
+	s=arc-20240116; t=1789073505; c=relaxed/simple;
+	bh=UCcOfUVMCJebxAkWuL8LP+6Dv3V0y9amcOj5t24E4bk=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=nZDBRMmhi9iyQ6QukGfyVh33XGFu+oY3fnDP5l2DMj6AOUdCIvnAU5sT6A2w1FSZfx9/Hq5vCel0TLvGLi7qFB9xE7WgsxPrTW3vij9/0+fsfZF4lxEVArgqPjr8mTDMTmt3pTj1p7ndOoTDvkgKJMAF1F2/pbImd+U9PCqRYHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=KgIgCt/h; arc=none smtp.client-ip=185.226.149.38
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b="FJvYqqct"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-49cd77e0f95so2191735e9.3
-        for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 13:49:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=lex.la; s=google; t=1789073362; x=1789678162; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=LD6/nMf/SCzxFaM5TR830BIT+ow88In2rb2lR6a4o9Q=;
-        b=FJvYqqctzWGFi1odEMtCbjcMArUSHlxqI7qXNKvlBhKvgeIVRwM35tu6Y+4yaIYY3w
-         A4P8f1dMRBY5WUU5gs6bjiqMpCGASD2yGN2KiRy7Ij8bw3C2DzPA1vV5hJN9uZQQNQ/N
-         EyOzO/+RvZRIN9LAPt4U0ZwimQ8Ycsx3aApcVq9gb0Gpu4qnBaO0VYcEoFUmN8j95aMb
-         8GTyLASrD8HCtkFgyfQt4qdFEvMAX2o2EYwB+OiF/PSBPrFY3a/dMASsyLZoF7Zv4w/Y
-         xWQC5seq98MKyuJHJ6z7vU6h1+A22Z+/MLj8NkTDX94fP1NxZ/JCcue20rgeZyrWJvuH
-         Lw6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789073362; x=1789678162;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=LD6/nMf/SCzxFaM5TR830BIT+ow88In2rb2lR6a4o9Q=;
-        b=PATeUiBEWIXkmfrT4TALtc4ZhJv8M5r5yxv21nXYbKkowMGC64qE4P5QmQ9cAs4OK0
-         +xup47h5AT9mq+i5pgcFVgTOS/1dp6komrAciDtny809S8N/5A7hdfjynb+QkeJsrBm8
-         T01jZFQJvbkAdWutXn5e0LPS7PpZoTMNW3PdrZVx37nYdgGR1FLJSlwwIf7pVohhhd6p
-         M9jcwIBeTcl87bGj0qSlmCWwIPW2wtPsnyXYtHGPhkznKrUmpzvg65bNBW5VjkVki2l9
-         UaSX0NfSl0p2jDf7/mW1yVpFJSlABR4FVLVE/kVtjsvnu0T0hPcS8lLPKdjOpQH3917s
-         rdmQ==
-X-Forwarded-Encrypted: i=1; AKwUvByP5YsX+PzyrPEwOFQP/mECOF6ZCc4gxjlYLF4iGNtDEHPlOlM5qYUktLlXB4QqsJkRByvWrAI=@vger.kernel.org
-X-Gm-Message-State: AFuF++nDtVt7G4fCYUU3sDa+KHj/lc6p2VOw3YOj4S9DBPGnbe4aQP8x
-	remp9ECJTkxMhDpQsH6F4gyvrMweuIjAdpKBGRWc3gEUEqbhDP2A2baKTjU7ngaoxKU=
-X-Gm-Gg: AYBFou0UMU5Fxq4Z1aPz2e+yGIPw73zDLJUWQYj+QHGnEUJLQKR/uiFyMMOFOWiFggK
-	FUF067IhvkiSOkQEfvAJfqYBe1CXDSaDU7jqr4ax3Gsu6eNC2DwkJppNKrSHLqa4X09+a+MTewl
-	YB3UEWqzasEvkWV/tfYMpUCujFHGBEj7YRLrL5sh9oN/pTO+jFJIQQzjmVYs7MMOxOZUOGVPa+R
-	LkNvI0knfy5fH7nKpkEj++G8FLbhoEMk5CwAI2rcoVWkVzIlWwfQOeyeG11tpXVYg34pbyAf/A8
-	7jVOkF6QXz8e6n0fTP2e2Zizyjjr0MSu8VGHiJz1G4Zgu1W2sgywHJOxABjXfUeQYUE+gFu75So
-	Bu0XNIt19TcEsyrqyqGNfAe7810Hhj16XU9uKf8L0hijHnCoAaetMhFqQRytKwMxU/HYIO0pQiN
-	fY546mHl9CD8SR8VDbUmxLCGH15KqU/EsLagiyo0p8YGtFMNPwHQ==
-X-Received: by 2002:a05:600d:644a:20b0:493:bd2a:93be with SMTP id 5b1f17b1804b1-49e619837a5mr6892535e9.6.1789073362150;
-        Thu, 10 Sep 2026 13:49:22 -0700 (PDT)
-Received: from remote-01 ([84.17.55.229])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-486eb35f3d9sm828813f8f.35.2026.09.10.13.49.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Sep 2026 13:49:21 -0700 (PDT)
-From: Aleksei Sviridkin <f@lex.la>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Aleksei Sviridkin <f@lex.la>,
-	andrew+netdev@lunn.ch,
-	hkallweit1@gmail.com,
-	linux@armlinux.org.uk,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	ericwouds@gmail.com,
-	netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH net-next v2 0/7] net: mdio: an MDIO device driver for the Airoha EN8811H
-Date: Thu, 10 Sep 2026 20:49:16 +0000
-Message-ID: <20260910204916.1979445-1-f@lex.la>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <44f163ed-8362-4aad-99c9-f8709dfbed76@lunn.ch>
-References: <20260908155707.4164559-1-f@lex.la> <44f163ed-8362-4aad-99c9-f8709dfbed76@lunn.ch> <20260910153757.2822676-1-f@lex.la>
+	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="KgIgCt/h"
+Received: from mailtransmit02.runbox ([10.9.9.162] helo=aibo.runbox.com)
+	by mailtransmit05.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.93)
+	(envelope-from <mhal@rbox.co>)
+	id 1x4lk1-0050Q4-FD; Thu, 10 Sep 2026 22:51:29 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
+	s=selector2; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:References:
+	Cc:To:Subject:From:MIME-Version:Date:Message-ID;
+	bh=anPNjmrD8AW3WMHHHWQknz5mBFm1utmEizQxwcLWIcE=; b=KgIgCt/hpDIDVaafe51u9nK8Qn
+	5znMARaKErqdXWomliTQtzckH4QdNqbQ97lOk0XEyua2WARW0VvXiBWWjzF1Kdg8TfT4h5FLoChQc
+	ZWukeODXaA91E+SmrxRq0ZThpAgzSSAtQviiUZQFYenHju6w88NPLkKRWOq5r9ZjzSmi7lY9X7Osr
+	M+2ZERVw9ZX8O6SXAbvoXg1PxuCNnOFIddryZKsKruVftg2F6mIqvSkhZBskAKwqoodsg8vaM9Azh
+	ZaGrIf7/3D0u3rnG6HlWOZogDXGp7wPpGTFQYhRFWJ3AEzeqtyrHMcAWSiItl6RFYLlVXFLYTOXw6
+	fEuWQxCw==;
+Received: from [10.9.9.72] (helo=submission01.runbox)
+	by mailtransmit02.runbox with esmtp (Exim 4.86_2)
+	(envelope-from <mhal@rbox.co>)
+	id 1x4ljq-0000GR-Si; Thu, 10 Sep 2026 22:51:18 +0200
+Received: by submission01.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.95)
+	id 1x4ljn-002hpl-EH;
+	Thu, 10 Sep 2026 22:51:15 +0200
+Message-ID: <3405f482-e8e8-49fa-b465-045b787d5080@rbox.co>
+Date: Thu, 10 Sep 2026 22:51:08 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+From: Michal Luczaj <mhal@rbox.co>
+Subject: Re: [PATCH net] vsock: Do not reset a TCP_CLOSING socket
+To: Bobby Eshleman <bobbyeshleman@gmail.com>
+Cc: Stefano Garzarella <sgarzare@redhat.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Dmitry Torokhov <dtor@vmware.com>,
+ Andy King <acking@vmware.com>, George Zhang <georgezhang@vmware.com>,
+ virtualization@lists.linux.dev, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Hyunwoo Kim <imv4bel@gmail.com>
+References: <20260909-vsock-connect-reset-closing-v1-1-50298b9ccfbf@rbox.co>
+ <aqHhUROhqyNhPJDr@devvm29614.prn0.facebook.com>
+Content-Language: pl-PL, en-GB
+In-Reply-To: <aqHhUROhqyNhPJDr@devvm29614.prn0.facebook.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-Two of the things I said I would do turned out not to be doable as
-stated.
+On 9/10/26 00:44, Bobby Eshleman wrote:
+> On Wed, Sep 09, 2026 at 11:58:26PM +0200, Michal Luczaj wrote:
+>> Ensure connect() resets the socket only if it has never been established.
+>> Handle the previously overlooked TCP_ESTABLISHED -> TCP_CLOSING
+>> transition (on VIRTIO_VSOCK_OP_RST), which could race with the connect
+>> loop.
+>>
+>> Resetting a socket that is still present in connected_table can lead to
+>> memory corruption. The reporter noted lost transports for in-flight skbs,
+>> and I have reproduced crashes caused by re-insertion into connected_table.
+>>
+>>   list_add double add: new=, prev=, next=.
+>>   kernel BUG at lib/list_debug.c:35!
+>>   Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+>>   Workqueue: vsock-loopback vsock_loopback_work
+>>   RIP: 0010:__list_add_valid_or_report+0x11f/0x130
+>>   Call Trace:
+>>    vsock_insert_connected.cold+0xe/0x13
+>>    virtio_transport_recv_pkt+0x10e9/0x1460
+>>    vsock_loopback_work+0x305/0x480
+>>    process_one_work+0xe4c/0x1560
+>>    worker_thread+0x4f1/0xd60
+>>    kthread+0x36e/0x470
+>>    ret_from_fork+0x47b/0x6b0
+>>    ret_from_fork_asm+0x1a/0x30
+>>
+>> Drop the inaccurate comment above signal_pending(). This fix is
+>> supplementary to commit 002541ef650b ("vsock: Ignore signal/timeout on
+>> connect() if already established"). Details at Link.
+>>
+>> Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
+>> Reported-by: Hyunwoo Kim <imv4bel@gmail.com>
+>> Link: https://lore.kernel.org/netdev/anzT1fREOSyHT99k@v4bel/
+>> Signed-off-by: Michal Luczaj <mhal@rbox.co>
+>> ---
+>> Note that this is not a complete fix. connect()'s schedule_timeout() can
+>> still race with two other functions that set sk_state = TCP_CLOSE while
+>> keeping the socket in connected_table:
+>> 1. vmci_transport_handle_detach(): no way for me to test,
+>> 2. virtio_vsock_reset_sock(): tested by unbinding the driver
+>>    (/sys/bus/virtio/drivers/virtio_transport/unbind).
+>> The latter appears easy to fix by adding __vsock_remove_connected() and
+>> switching to a _safe iterator in vsock_for_each_connected_socket().
+>> ---
+>>  net/vmw_vsock/af_vsock.c | 14 ++++++--------
+>>  1 file changed, 6 insertions(+), 8 deletions(-)
+>>
+>> diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+>> index f840498b58af..eec5dd6daebb 100644
+>> --- a/net/vmw_vsock/af_vsock.c
+>> +++ b/net/vmw_vsock/af_vsock.c
+>> @@ -1834,23 +1834,20 @@ static int vsock_connect(struct socket *sock, struct sockaddr_unsized *addr,
+>>  		timeout = schedule_timeout(timeout);
+>>  		lock_sock(sk);
+>>  
+>> -		/* Connection established. Whatever happens to socket once we
+>> -		 * release it, that's not connect()'s concern. No need to go
+>> +		/* Connection was established. Whatever happens to socket once
+>> +		 * we release it, that's not connect()'s concern. No need to go
+>>  		 * into signal and timeout handling. Call it a day.
+>>  		 *
+>>  		 * Note that allowing to "reset" an already established socket
+>>  		 * here is racy and insecure.
+>>  		 */
+>> -		if (sk->sk_state == TCP_ESTABLISHED)
+>> +		if (sk->sk_state == TCP_ESTABLISHED ||
+>> +		    sk->sk_state == TCP_CLOSING)
+>>  			break;
+>>  
+>>  		/* If connection was _not_ established and a signal/timeout came
+>>  		 * to be, we want the socket's state reset. User space may want
+>>  		 * to retry.
+>> -		 *
+>> -		 * sk_state != TCP_ESTABLISHED implies that socket is not on
+>> -		 * vsock_connected_table. We keep the binding and the transport
+>> -		 * assigned.
+>>  		 */
+>>  		if (signal_pending(current) || timeout == 0) {
+>>  			err = timeout == 0 ? -ETIMEDOUT : sock_intr_errno(timeout);
+>> @@ -1875,7 +1872,8 @@ static int vsock_connect(struct socket *sock, struct sockaddr_unsized *addr,
+>>  	}
+>>  
+>>  	err = sock_error(sk);
+>> -	if (err) {
+>> +	if (err &&
+>> +	    sk->sk_state != TCP_ESTABLISHED && sk->sk_state != TCP_CLOSING) {
+> 
+> If the OP_RESPONSE + a blast of OP_RW that pushes past the buffer limit
+> arrives while we were scheduled out, we end up with sk_err = ENOBUFS
+> here. Then I guess connect() returns an error, but sk_state/sock->state
+> is still TCP_ESTABLISHED and SS_CONNECTED. If the user sees the error
+> and tries connect() again, they just get -EISCONN back. Maybe the
+> sock_error() needs to be moved within the conditional here, and then let
+> subsequent calls return the error to the user (it looks sendmsg() at
+> least will report it faithfully, but not sure about recvmsg() or the
+> others).
 
-> It is fine. I would also add a select or depends on the PHY driver
-> Kconfig stanza to link it to the MDIO_AIROHA_EN8811H driver.
+Right, I share the concern about ENOBUFS. I'll move sock_error() in v2.
 
-Kconfig refuses it:
+thanks,
+Michal
 
-  symbol AIR_EN8811H_PHY is implied by MDIO_AIROHA_EN8811H
-  symbol MDIO_AIROHA_EN8811H is implied by AIR_EN8811H_PHY
-  error: recursive dependency detected!
-
-The MDIO stanza already carries imply AIR_EN8811H_PHY, and that is the
-direction worth having, since the MCU driver on its own drives nothing.
-A select from the PHY side would be wrong anyway: a board that
-describes the chip as a plain PHY has no use for the MCU driver. It
-stays as it is unless you want the two swapped.
-
-> The location is fine. MAINTAINERS need to list it. What you might want
-> to do is list it twice, once in the PHY driver MAINTAINERS record, and
-> again in the MDIO driver section.
-
-There is no PHY driver record to put it in. Neither air_en8811h.c nor
-the shared air_phy_lib.c is claimed by any entry, so the header sits in
-the MDIO record alone. I can add a record covering both files, but that
-puts my name on code I did not write. Tell me which you would rather
-see.
-
-The address check is in and the child bus now refuses anything that is
-not the address the core answers, with the node in the message:
-
-  ethernet-phy@e: address 14 is not answered here, only 13
