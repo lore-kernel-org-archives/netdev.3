@@ -1,196 +1,131 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CD30598BE3
-	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 19:38:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4D3C5908C6
+	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 19:44:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789069114; cv=none; b=nxpklxW39f/Bw69H86rNfCPDSvsYnviwn6gWaRGfGPLrVmZXZNFvj8TYdx65ZqWXdWbdcQ4KtCQErp/BN/iVPRQvjGxIc0Ma6ULUiQtKWhx9yDPUS70zAEYsIWzrjTdwBZYxfYX+4rhEnJgkR7+89DVHuZyt6kVQh1YLRyRQvjw=
+	t=1789069449; cv=none; b=tWH3XFUTxhS5/TK1QmSd/6tRbAj7tJG7L4PrqIuHiL+1iWS9ML8zkWimtj74UWKrAvtC1P3VA2+wkh839baEZjsIQIFTG7ieaOYPFQ4nff7EL8nZLcAvV/0Spl8p2d9sL21jc9TqmT9OULuvIcpg7QysulgFWTE/j7qVXn3Ehxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789069114; c=relaxed/simple;
-	bh=URzbeGQg/NoPkNl6O/IEsc/Hyptre/noxPW2YTadU3Y=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=rwHp/Z/hl8SlrntTTrYwVf+tPig9XKnFVJdEoqZkcW1xU7NJdZG/drQ6VclGIs0a8yK+mA3mFlbxBGWHBhUIcOkw6yTGEvLNq5BMJbE6EvleHyAFHXiMIoevAAQQGljEHFQGaTO8MsbMHFhtBZMaEjDruwDSPh5JaRqWAcgkCNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dSF6feBA; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1789069449; c=relaxed/simple;
+	bh=NDSmdLHNLWZfPpisRsXI3ev57yKL/qz1yWxAPWKXxb8=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=uC5FIXk/8x/b5lG9jXHWeCjMcJ9B0Uqb0fWnNsnocDejKx3CFolZWYO02c3xGGKEz5AjK2CruVWx0K7Cx4iXPc9GRHGbiD3sy59iLpaHTKTtDptUaynsEmSJeKK+fpJl69bDQCAxrmX0vDWFIeoWPqpmOJ/Ha9eT4ucONJsyZt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jsk4fAD/; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dSF6feBA"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1789069111; x=1820605111;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=URzbeGQg/NoPkNl6O/IEsc/Hyptre/noxPW2YTadU3Y=;
-  b=dSF6feBACcD+MOD04T1mnvb8pLk8mJjsGWs+CicqjG1gvWotfb2hi5T1
-   X6DLI412eFsNAggafqjLWvL7mr+lJamvJ2S4V3uGJnBiVn7eFZ/PfQQTD
-   Rkmf/LWhIuPkNI1le0YpMdQddBQeL7+NST74oytWHmsUy2egmuUoAects
-   29Vj/VWL4H5Tq6mGRuU4oNC9w9YYw5NjGaBn+cJErYYfcHOWxFXuyRunH
-   veNJmn5Mgks3VDuLGUlOFrrfjzHVnJax+vzAhx3c05QW0WXHQbxE4r2bu
-   eBin1fgxUUHnvLoj54BI+FaUk5oT1iFyTqunWWbWt1XS8S5yeDXKBa9lH
-   A==;
-X-CSE-ConnectionGUID: Vy/2ttZxRSibQiP+8kiyPg==
-X-CSE-MsgGUID: Ey4jC5LCR+OVElKrdwTQxw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11901"; a="93356308"
-X-IronPort-AV: E=Sophos;i="6.27,95,1787036400"; 
-   d="scan'208";a="93356308"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Sep 2026 12:38:30 -0700
-X-CSE-ConnectionGUID: BwsTX6s9S/SbdZX7N3vWYQ==
-X-CSE-MsgGUID: 6f6qYrRdRHyD8tTPUNsnhQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,95,1787036400"; 
-   d="scan'208";a="271703423"
-Received: from ccdlinuxdev11.iil.intel.com ([143.185.162.70])
-  by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Sep 2026 12:38:27 -0700
-From: Dima Ruinskiy <dima.ruinskiy@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org,
-	dima.ruinskiy@intel.com,
-	anthony.l.nguyen@intel.com,
-	allen.lan@intel.com,
-	acelan.kao@canonical.com,
-	kuba@kernel.org
-Subject: [PATCH iwl-next v4] igc: Support ACPI-based MAC passthrough
-Date: Thu, 10 Sep 2026 22:38:24 +0300
-Message-Id: <20260910193824.3257378-1-dima.ruinskiy@intel.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jsk4fAD/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26C381F00898;
+	Thu, 10 Sep 2026 19:44:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789069447;
+	bh=ttSVIgdk6jH8bW95abHDSQ4zzL4XFOk8AZIYRLz2bPA=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject;
+	b=Jsk4fAD/stluB1otq6yPS0SNLTbCJA2CIqJZtGYg7zwlzgerDQuFvdRC5k/9pogI6
+	 Op+gjIm2ap7jFtls92KxzMMX4h66bvSMmMHp07SddWref3JyG7EsVhl/BqkbRfeE0q
+	 BL01XzG0qLRqtyzFCynTkhSuzV7TCo5m8RVlaTjrBPa/UTd9md7FUfu5TUYhwqgYUh
+	 Lq3HbAonsOOtlosDUF/72Q3LRkF0tK7mQyj9BeEUqKmEGuYJBp9ZgYHAhP6j3f0uOK
+	 O+1RZcLt/JsL59F3767CRBkRJPf7YgclstfN637mKvYg2LMHbSKQwvnsm0NoqWju3o
+	 iGYnUcCXSjkag==
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 5409CF40066;
+	Thu, 10 Sep 2026 15:44:06 -0400 (EDT)
+Received: from phl-imap-15 ([10.202.2.104])
+  by phl-compute-10.internal (MEProxy); Thu, 10 Sep 2026 15:44:06 -0400
+X-ME-Sender: <xms:hgijatKendLiks4omkEsjnbVtgo8EeL0t5PHiSRnAqNLmocqac1yoA>
+    <xme:hgijaj8f9KryBBd-Wa3prBy92nayzUYhelSCOwricspCMOg5bfW-mba8zM4qRvrez
+    U5YYCpax1-2_n8TdPt1hDacRBqEsZw4KOgIYyVt7UyELf8tetUbXTOF>
+X-ME-Proxy-Cause: dmFkZTGl8jAL90lzK/34eQf8aVRvno66hAYp5+OuxVRYrHeZj1EltiDgZxZbX4j9X1xw7k
+    SoKl5QPlUS+u8UrRf1KPVt4jdN9AANu828pfpIMkeRllfJ+7HG8/JI8w6brtq194NzYinV
+    u5blyXe0ylJHsfEYsXHoaxQgjVKzPJAg49SIu+SCENSCEiPLVFVfNMLVH8aAN7KiDlwCOP
+    yKPHMZfJJl70l9hUFhc6YwD1YmIR0xxMCKRf5fjxpDJWyx341zYE4hzg2kGIg9BW+huVLQ
+    9+PY7GtVQU83wwyn//1C+rZq14X6lnn8AL14atGkw6lb0xazizBtCtvca5KD6we0iXRZfM
+    GmueDg922+WBGaUl7iADNOf+v4OHV0QzqvDQWWC1Usl+BkndA8l8BIN7PEK6OAHC8U79zO
+    3YmHSKZWiN4nD4wEqf18qQDnkkl/QYW5f5/YIanHr0CneYb5COkyu6C4A3NRg4j2XbRpCy
+    5pJYcEoalPrQiGALxrG5vUXDGi1/dnrH0dQCHXSZmoAN9W3q4B6Wv/owivCIOSXDxZfdcT
+    PJeSDnnLzhbUYLYcESavzlWi2yNsEvgdZuL+DDGDGylxCH36TUMDuY8d1VMLQvFFNnhBG+
+    pEcI7PWyCCK4Xdsre9NdGKBsHGyKvjYCRjI328qfIzzBUGE16RDQhFCQFCZA
+X-ME-Proxy: <xmx:hgijajd6FF1IlyAVes_htyHZEd2DaE7sO4PziFrGBxXbpZ19_rmC_Q>
+    <xmx:hgijaqkKVMayF8TgopXoOFOCtfTLxVJ3h72gHUEF9NuBHt7JeH2FUg>
+    <xmx:hgijalwf3_A8mcCnPrvwbkn3mKPwx9uNyneXwsZa681UQr8c8DtCcw>
+    <xmx:hgijatO487koBTqhmn2KY2r8RXeT7_Qet85bg4ml4BzVXIeTdqOczA>
+    <xmx:hgijamhN_ZaxHCung245f-VzSxKMi-XmvHdi1y5irVLyA5PW7HYQsL6e>
+Feedback-ID: ifa6e4810:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 27E987811F0; Thu, 10 Sep 2026 15:44:06 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-ThreadId: AU_HLaoPh8kZ
+Date: Thu, 10 Sep 2026 15:43:44 -0400
+From: "Chuck Lever" <cel@kernel.org>
+To: "Jeff Layton" <jlayton@kernel.org>
+Cc: "Trond Myklebust" <trondmy@kernel.org>,
+ "Anna Schumaker" <anna@kernel.org>, NeilBrown <neil@brown.name>,
+ "Olga Kornievskaia" <okorniev@redhat.com>, "Dai Ngo" <Dai.Ngo@oracle.com>,
+ "Tom Talpey" <tom@talpey.com>, "David S. Miller" <davem@davemloft.net>,
+ "Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>,
+ "Paolo Abeni" <pabeni@redhat.com>, "Simon Horman" <horms@kernel.org>,
+ "Donald Hunter" <donald.hunter@gmail.com>, "Shuah Khan" <shuah@kernel.org>,
+ linux-nfs@vger.kernel.org, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kselftest@vger.kernel.org
+Message-Id: <73066b7b-119a-47f4-9ca1-2f2432c3c6a3@slotpi15m67>
+In-Reply-To: <20260910-nfsd-norpcb-v1-2-b4d5182d634c@kernel.org>
+References: <20260910-nfsd-norpcb-v1-0-b4d5182d634c@kernel.org>
+ <20260910-nfsd-norpcb-v1-2-b4d5182d634c@kernel.org>
+Subject: Re: [PATCH 2/5] NFSD: add a userspace-rpcbind flag to listener_set
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-Some systems implement a system MAC address object in the ACPI table,
-using either \\_SB.AMAC or \\MACA object names. This system MAC address,
-when enabled, is intended to override the permanent MAC address of the
-any network controller attached via a docking station. The purpose is to
-allow the host PC retain its network identity in a corporate environment,
-regardless of the specific docking station it is connected to. The
-expectation is that only one docking station is attached at a time, or
-that only a single network controller is plugged in at a time.
+On Thu, 10 Sep 2026, Jeff Layton wrote:
+> Describe the interface that lets a caller take over rpcbind registration.
 
-Implement seamless passthrough of the system MAC address to the
-I225/I226 network controller, by looking up the relevant ACPI object names
-and using them to initialize the MAC address. Limit the lookup only to
-controllers that are Thunderbolt-attached, as these are the only docking
-stations that can pass through an I225/I226 controller to the host.
+> --- a/Documentation/netlink/specs/nfsd.yaml
+> +++ b/Documentation/netlink/specs/nfsd.yaml
+> @@ -483,13 +527,22 @@ operations:
+>      -
+>        name: listener-set
+> -      doc: set nfs running sockets
+> +      doc: >-
+> +        set nfs running sockets. A request that carries userspace-rpcbind
+> +        is answered with a reply rather than a bare ack, and the addr list
+> +        in that reply names only the listeners that have an rpcbind netid.
 
-On systems where the feature is disabled or unsupported, the ACPI objects
-do not exist or do not contain a valid Ethernet MAC, the default MAC
-address of the device is used.
+"listeners that have an rpcbind netid" overstates the set. RDMA
+listeners have netids (rdma, rdma6) but are omitted from the
+reply.
 
-Assisted-by: GitHub-Copilot:claude-opus-4.7
-Signed-off-by: Dima Ruinskiy <dima.ruinskiy@intel.com>
----
-Change log
-v3->v4:
-	use pci_is_thunderbolt_attached instead of device id check
-	explicitly save permanent address when using passthrough mac
-v2->v3:
-	fix typo that introduced check reversal
-v1->v2:
-	limit scope to dock device ids
----
- drivers/net/ethernet/intel/igc/igc_main.c | 70 +++++++++++++++++++++++
- 1 file changed, 70 insertions(+)
+Following the way Solaris handles RDMA transport, NFSD never
+registered RDMA itself, so that is not a regression, but the doc
+should say what your filter actually selects.
 
-diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
-index f6d1ee75627d..d51e9bcdfc3e 100644
---- a/drivers/net/ethernet/intel/igc/igc_main.c
-+++ b/drivers/net/ethernet/intel/igc/igc_main.c
-@@ -1,6 +1,8 @@
- // SPDX-License-Identifier: GPL-2.0
- /* Copyright (c)  2018 Intel Corporation */
- 
-+#include <linux/acpi.h>
-+#include <linux/hex.h>
- #include <linux/module.h>
- #include <linux/types.h>
- #include <linux/if_vlan.h>
-@@ -7134,6 +7136,58 @@ static enum hrtimer_restart igc_qbv_scheduling_timer(struct hrtimer *timer)
- 	return HRTIMER_NORESTART;
- }
- 
-+static bool igc_get_acpi_mac_passthru(u8 *mac)
-+{
-+	static const struct {
-+		const char *name;
-+		acpi_object_type type;
-+		u32 length;
-+	} sources[] = {
-+		{ "\\_SB.AMAC", ACPI_TYPE_BUFFER, 23 },
-+		{ "\\MACA",     ACPI_TYPE_STRING, 22 },
-+	};
-+	struct acpi_buffer buffer;
-+	union acpi_object *obj;
-+	bool mac_found = false;
-+	acpi_status status;
-+	u8 buf[ETH_ALEN];
-+	int i;
-+
-+	if (!IS_ENABLED(CONFIG_ACPI))
-+		return false;
-+
-+	for (i = 0; i < ARRAY_SIZE(sources) && !mac_found; i++) {
-+		buffer.length = ACPI_ALLOCATE_BUFFER;
-+		buffer.pointer = NULL;
-+
-+		status = acpi_evaluate_object(NULL, (char *)sources[i].name,
-+					      NULL, &buffer);
-+		if (ACPI_FAILURE(status))
-+			continue;
-+
-+		obj = buffer.pointer;
-+		if (!obj || obj->type != sources[i].type ||
-+		    obj->string.length != sources[i].length ||
-+		    !obj->string.pointer)
-+			goto free_obj;
-+
-+		if (strncmp(obj->string.pointer, "_AUXMAC_#", 9) ||
-+		    obj->string.pointer[21] != '#')
-+			goto free_obj;
-+
-+		if (hex2bin(buf, obj->string.pointer + 9, ETH_ALEN) ||
-+		    !is_valid_ether_addr(buf))
-+			goto free_obj;
-+
-+		ether_addr_copy(mac, buf);
-+		mac_found = true;
-+free_obj:
-+		ACPI_FREE(obj);
-+	}
-+
-+	return mac_found;
-+}
-+
- /**
-  * igc_probe - Device Initialization Routine
-  * @pdev: PCI device information struct
-@@ -7300,6 +7354,22 @@ static int igc_probe(struct pci_dev *pdev,
- 		/* copy the MAC address out of the NVM */
- 		if (hw->mac.ops.read_mac_addr(hw))
- 			dev_err(&pdev->dev, "NVM Read Error\n");
-+
-+		/* For devices behind a Thunderbolt/USB4 dock, look for a
-+		 * system-provided MAC in the ACPI table
-+		 */
-+		if (pci_is_thunderbolt_attached(pdev) &&
-+		    igc_get_acpi_mac_passthru(hw->mac.addr)) {
-+			/* Set the permanent MAC address. Leave blank if invalid to
-+			 * reflect there is something wrong with the NVM MAC.
-+			 */
-+			if (is_valid_ether_addr(hw->mac.perm_addr))
-+				ether_addr_copy(netdev->perm_addr, hw->mac.perm_addr);
-+			netdev->addr_assign_type = NET_ADDR_STOLEN;
-+			dev_info(&pdev->dev,
-+				 "Using ACPI pass-thru MAC addr %pM\n",
-+				 hw->mac.addr);
-+		}
- 	}
- 
- 	eth_hw_addr_set(netdev, hw->mac.addr);
+
+>        attribute-set: server-sock
+>        flags: [admin-perm]
+>        do:
+>          request:
+>            attributes:
+>              - addr
+> +            - userspace-rpcbind
+> +        reply:
+> +          attributes:
+> +            - addr
+> +            - userspace-rpcbind
+> +            - rpcbind
+
+The spec declares an unconditional reply, but patch 4 sends one only
+when the request carried userspace-rpcbind. ynl has no way to express
+a conditional reply, and no other in-tree spec does this.
+
+Either always send the reply (drop the userspace_rpcbind gate in
+patch 4, so a plain caller simply ignores it), or leave listener-set
+without a reply and put the registration data in a separate get
+operation. I lean toward always replying; that's is a little more
+"declarative".
+
+
 -- 
-2.55.0
-
+Chuck Lever (Come to NFS bake-a-thon! https://nfsv4bat.org)
