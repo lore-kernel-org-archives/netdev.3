@@ -1,201 +1,228 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79B2748CD54;
-	Thu, 10 Sep 2026 14:23:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B64A747986B;
+	Thu, 10 Sep 2026 14:25:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789050239; cv=none; b=jaeQVgOMHeh9Z+U/cugLR3LxxyrR29S7R3aFLwnPb2t9doRQjy8SZfTjjVMqbizV22HIQXE78PLwq3Q9EM+9+k+a8LyHZAVbs6cqDtwXCXNoipGWi4/NJvswztBv8GXfMFBMNWYQM6hwQGEYb+/jFY2cqMnxA8gVFql8qsxTkUY=
+	t=1789050348; cv=none; b=HtpYp01Luj0whELekN2MAl+e4nwMpe4Pb6ps6TtFtHmeVjZnrD8OxU8dzpImkK7FUXBy2W2NtJ/KfnHkjg+idd/mLBQ7Y58DaLd2eRxph5/Pr8/uBIhhqvAWCoiG+nvJ2mdOGyAEpvctELDsfHfQYTGCYRVAGLpPk/dtnAA7Yzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789050239; c=relaxed/simple;
-	bh=M/qvUC17dZYh3NA7ctB7iGR4URUPLBoli4cyAFwHf/U=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=baLZXzEB9dlCMKCkj+0i/igZ0P9jonqQYK0TziXL7eXE4kwOBDOq5ClIy9v5hX1T1C8NgI3VO7N8sWicdrHEGRFiQ6nSPK5ixe86kJUbn7JxwxgOGsWBGh2NlFyw6UxX0n9FkgknZpU+/s5PRWll1+1qFizliRuD3OZutavXWd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=r+8TxNQ2; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1789050348; c=relaxed/simple;
+	bh=3ra37ooCDgR5+2l6sK4AZHFsADOHiRoGfYj0u+rb3Os=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XALzjRiZOuNuLr1FqdhF9xTtZrUfPSfJurIkQ3kXW0nyGx1ljEE7aVOF83HWI3NQb2ylEl6tdvaiu01qJU8blMvfvVmYm4BFn0lsroAOCovs2aNlC8u2hBPcX1E/FRM385Xluq/4KQ2FD2Ncs7On8OFCzjSexdrz352f81udiGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=ERmhnF9t; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="r+8TxNQ2"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68ACVbVu2925749;
-	Thu, 10 Sep 2026 14:23:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=OHNPGY
-	GWxh+3J5U8VFWodv4712DQuRsZ8pLXZk91/oI=; b=r+8TxNQ2BcAomOfs452OYZ
-	/V7WFS81TldNEIjZE4z73q/Ot2bhwpARpnDt53owV2Ba4fd9fJ7SYfKwnrf0+Q/S
-	FvJiZ2fBm7vI0/DZqM8Lq+azM+WrPgk+lxaEHbz/uBb5OH/Dtb6HaesjKhC7cTa2
-	/4DRo5W/TFiuGah6DlghQAUhk3MZcNmJMuFWAtGyA0MG8bm6M9LBnOT4QvnE3VPy
-	6xvAYUR9VFn7XPHvQnaptrA95i4FaRyQVrg71wNZ8fRrtPE46VTU7pKGN8Cj8XTk
-	XI8hfD8cnn5cus9xqymVd6PF43Bm0WOgL8TRfy7aWL8o/b5XXaZZSX8al6gzJ8SQ
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gkd8sw3jp-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Thu, 10 Sep 2026 14:23:46 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68ADAQHq072089;
-	Thu, 10 Sep 2026 14:23:46 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4gkvnrgfub-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 10 Sep 2026 14:23:46 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
-	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68AENjiT34276008
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 10 Sep 2026 14:23:45 GMT
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 56B515805F;
-	Thu, 10 Sep 2026 14:23:45 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A8D205805A;
-	Thu, 10 Sep 2026 14:23:44 +0000 (GMT)
-Received: from li-4c4c4544-004d-3310-8032-b2c04f503334.ibm.com (unknown [9.61.100.247])
-	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 10 Sep 2026 14:23:44 +0000 (GMT)
-Message-ID: <9d0cb973a47adc14ff7b248ea8fe58a735b8cd11.camel@linux.ibm.com>
-Subject: Re: [PATCH 1/1] bonding: crypto offload enabled, non-offload slave
- failover, rekey failed
-From: David Dai <zdai@linux.ibm.com>
-To: Hangbin Liu <hangbin.liu@linux.dev>
-Cc: jv@jvosburgh.net, andrew+netdev@lunn.ch, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        pradeeps@linux.ibm.com
-Date: Thu, 10 Sep 2026 09:23:44 -0500
-In-Reply-To: <aqJkO4-49YtW4NxF@fedora>
-References: <20260903220123.475685-1-zdai@linux.ibm.com>
-	 <apphLbjfmRYknVNh@fedora> <aqJkO4-49YtW4NxF@fedora>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.60.2 (3.60.2-1.fc44) 
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="ERmhnF9t"
+Received: from mac.lan (unknown [4.194.122.144])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 86C5C20B7166;
+	Thu, 10 Sep 2026 07:24:50 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 86C5C20B7166
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1789050305;
+	bh=qHiKWmSesiOCgUaouXwZSDbZh30pM0hVLCmj06DKstE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=ERmhnF9tu4qDv8FeS2ftC0IGfXmd9pOYfvMTG73aPwgv+1IIrEtPmRKiJV1BHwpuH
+	 DPPKvhYAAQRFsBQXWCLCFuCcn+E2fB8qOUH8hSIjSgBAx7esxNID06DmfwHRUSx+jD
+	 EdXdFKJgvg98rPxQv3MVJlKN+9DiaQ2hPNBgGXNw=
+From: "Cen Zhang (Microsoft Security FORGE Labs)" <cenzhang@linux.microsoft.com>
+To: bpf@vger.kernel.org
+Cc: daniel@iogearbox.net,
+	john.fastabend@gmail.com,
+	sdf@fomichev.me,
+	martin.lau@linux.dev,
+	ast@kernel.org,
+	andrii@kernel.org,
+	eddyz87@gmail.com,
+	memxor@gmail.com,
+	song@kernel.org,
+	yonghong.song@linux.dev,
+	jolsa@kernel.org,
+	emil@etsalapatis.com,
+	ihor.solodrai@linux.dev,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	m.xhonneux@gmail.com,
+	dlebrun@google.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	AutonomousCodeSecurity@microsoft.com,
+	xmei5@asu.edu,
+	tgopinath@linux.microsoft.com,
+	kys@microsoft.com,
+	"Cen Zhang (Microsoft Security FORGE Labs)" <cenzhang@linux.microsoft.com>
+Subject: [PATCH bpf v3] bpf: Fix non-linear SRH access in bpf_update_srh_state()
+Date: Thu, 10 Sep 2026 10:25:22 -0400
+Message-ID: <20260910142522.45014-1-cenzhang@linux.microsoft.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTEwMDE2OSBTYWx0ZWRfXx2DZMemcb9iI
- o0C7VTvogwjexgvaHO8WkcYylQVn0od1KG2KvoxZVaaoHjMfI5mqQtz2JfTrZMbro29sGs50pZh
- b0Q+YQBPM9mVlJdUpZLK+3ayqZ8AIog=
-X-Proofpoint-ORIG-GUID: Kw6Q0KM8dwkd40g2RR2qopdclGJKrxep
-X-Proofpoint-GUID: -lG-uQA9_Nz0jY5a33JJ9yBCB9o1H-TF
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTEwMDE2OSBTYWx0ZWRfX5n6xGycp/4E/
- c0k469REYE9P0asNKMUgESPa+tt7PQb8U0jAF5TheK53jfMj1PAm3lFmmD18xEz4TciJsmoy+dt
- nHvtpC55sBlfirXDZCGBsI0e+sNfbJXyjTPbojx1y9wOKdZqiE2mHVqwqZYelOWC7cakcHIX3hu
- mk/9WeD/MkRcl5hIBXAWy3s9UmAFWy8iLllXryXbvrKfIRB3CuU7cbLKHw0yVu0KNB7AELxCWhI
- RYw6CHiQfO4po9derlDMVn2nuah2N751A44nzj4GaXDKG+KsyDFyXKkHrYl+wfrYuhlhzalGkHC
- b34MbZy2s5ouMUVC+xGV5zTJjC7rOiVSlSxpkrQHgNtxexC+ljFjG+dwDBzI0zhhH0fSk1FC0mA
- F8JZ5PWyJoulCfAu2t+nbNiZBd1tz4PyB381YKZpNblBYGc0+21HZMYe7sWhUX29Fu9N/JYfhRO
- ZWF9viNtArBKsXiQEeA==
-X-Authority-Analysis: v=2.4 cv=PIGaavqC c=1 sm=1 tr=0 ts=6aa2bd73 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8
- a=QA8Y5dmSeMjSImS8ZE0A:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-10_04,2026-09-09_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 priorityscore=1501 bulkscore=0 adultscore=0 suspectscore=0
- lowpriorityscore=0 impostorscore=0 clxscore=1011 spamscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609100169
+Content-Transfer-Encoding: 8bit
 
-On Thu, 2026-09-10 at 16:03 +0800, Hangbin Liu wrote:
-> On Fri, Sep 04, 2026 at 02:11:57PM +0800, Hangbin Liu wrote:
-> > On Thu, Sep 03, 2026 at 05:01:23PM -0500, David Dai wrote:
-> > > Create a bonding device (i.e. bond0) in active-backup mode, 2
-> > > slaves.
-> > > Active slave: offload capable interface (i.e. eth1), primary
-> > > interface.
-> > > Backup slave: non-offload capable interface(i.e. eth2).
-> > > Configure strongswan service swantl.conf child SA "hw_offload =3D
-> > > crypto"
-> > > Start strongswan service
-> > > IPSec Crytpo Offload is enabled on top of bond0. i.e.=20
-> > > ip xfrm state |grep offload
-> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 crypto offload parameters:=
- dev bond0 dir out mode crypto
-> > > 	crypto offload parameters: dev bond0 dir in mode crypto
-> > >=20
-> > > Active slave eth1 takes adavantage of IPSec Crypto Offload
-> > > capability.=20
-> > >=20
-> > > If active slave eth1 is down for any reason (i.e. eth1 link
-> > > down):
-> > > ip link set down dev eth1
-> > > non-offload capable interface eth2 failover to becomes active
-> > > slave.=20
-> > > The existing SAs can continue use software IPsec after failover.
-> > > Traffic still keeps going properly.
-> > >=20
-> > > However if eth1 link had not recovered yet, strongswan service
-> > > does
-> > > new child SA rekey, or uses swanctl command to do new child SA
-> > > rekey,=20
-> > > it will fail because active slave eth2 doesn't support crypto
-> > > offload.
-> > > In bond_ipsec_add_sa routine, it returns -EINVAL now, which is=20
-> > > treated as fatal error by xfrm_dev_state_add routine in kernel
-> > > xfrm.
-> > >=20
-> > > To make the non-offload active slave survive the child SA rekey,
-> > > need=20
-> > > to make bond_ipsec_add_sa routine returns -EOPNOTSUPP instead
-> > > when=20
-> > > active slave doesn't support IPsec Crypto offload, the xfrm will=20
-> > > gracefully fallback to create new SA using Software IPsec.=20
-> > > Network traffic can keep going.
-> > >=20
-> > > After offload capable interface eth1 link is up, becomes active
-> > > slave,
-> > > next time strongswan child SA rekey will create a new SA which
-> > > enables
-> > > crypto offload again.
-> > >=20
-> > > This way, network traffic is never interrupted, always keeps
-> > > going.
-> > >=20
-> > > Signed-off-by: David Dai <zdai@linux.ibm.com>
-> > > Tested-by: David Dai <zdai@linux.ibm.com>
-> > > ---
-> > > =C2=A0drivers/net/bonding/bond_main.c | 2 +-
-> > > =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
-> > >=20
-> > > diff --git a/drivers/net/bonding/bond_main.c
-> > > b/drivers/net/bonding/bond_main.c
-> > > index ef9eb0c53c66..79fc892dab07 100644
-> > > --- a/drivers/net/bonding/bond_main.c
-> > > +++ b/drivers/net/bonding/bond_main.c
-> > > @@ -490,7 +490,7 @@ static int bond_ipsec_add_sa(struct
-> > > net_device *bond_dev,
-> > > =C2=A0	=C2=A0=C2=A0=C2=A0 !real_dev->xfrmdev_ops->xdo_dev_state_add |=
-|
-> > > =C2=A0	=C2=A0=C2=A0=C2=A0 netif_is_bond_master(real_dev)) {
-> > > =C2=A0		NL_SET_ERR_MSG_MOD(extack, "Slave does not
-> > > support ipsec offload");
-> > > -		err =3D -EINVAL;
-> > > +		err =3D -EOPNOTSUPP;
-> > > =C2=A0		goto out;
-> > > =C2=A0	}
-> > > =C2=A0
-> > > --=20
-> > > 2.55.0
-> > >=20
-> >=20
-> > The patch looks good to me. I am just not sure whether we should
-> > shorten
-> > the description. Let's wait for others' opinions.
-> >=20
->=20
-> BTW, please add
->=20
-> Fixes: 18cb261afd7b ("bonding: support hardware encryption offload to
-> slaves")
->=20
-> if there is a next version.
-Thanks for your comment!
-I'll add the Fixes line in my next v2 patch submission.
+bpf_update_srh_state() locates an SRH with ipv6_find_hdr() and caches
+skb->data + srhoff in the per-CPU SEG6 BPF state. This assumes that the
+returned offset is within the skb linear head.
+
+That assumption is wrong because ipv6_find_hdr() uses skb_header_pointer()
+and can locate an SRH in non-linear data. The direct srh->hdrlen read and
+the cached SRH pointer can therefore access memory outside the linear area.
+
+BUG: KASAN: slab-use-after-free in bpf_update_srh_state+0x1bc/0x200
+ net/core/filter.c:7027 bpf_update_srh_state()
+ bpf_lwt_seg6_action()
+ input_action_end_bpf()
+ seg6_local_input()
+ ipv6_rthdr_rcv()
+
+Fix this by using seg6_get_srh(), which pulls and validates the complete
+SRH and reloads its pointer afterwards. Pulling can reallocate skb->head,
+so refresh the BPF data pointers inside bpf_update_srh_state() immediately
+after the call.
+
+For End.DT6, make the inner IPv6 base header linear before removing the
+outer headers. Pulling only the outer headers can leave the inner header in
+non-linear data, while ipv6_find_hdr() and the nexthop lookup access it
+directly. The helper parameter may point into packet data, so copy the
+table ID before pulling and potentially replacing skb->head. Clear the
+cached SRH pointer and refresh the BPF data pointers if the pull fails.
+
+End.B6 and End.B6.Encap can insert a new SRH and reallocate the skb before
+a later HMAC calculation or nexthop lookup returns an error. Rebuild the
+SRH state when the skb length changes, which indicates that the new SRH was
+inserted. Failures before insertion leave the existing state unchanged.
+
+Fixes: 486cdf21583e ("bpf: add End.DT6 action to bpf_lwt_seg6_action helper")
+Reported-by: Xiang Mei <xmei5@asu.edu>
+Link: https://lore.kernel.org/bpf/20260901183151.16648-1-cenzhang@linux.microsoft.com/
+Suggested-by: Emil Tsalapatis <emil@etsalapatis.com>
+Link: https://lore.kernel.org/bpf/CABFh=a5iLOEJdPhoaWUhLc0eEqAuhnd83_jJr9MVZZG6gSJAEw@mail.gmail.com/
+Link: https://lore.kernel.org/bpf/CABFh=a4VyzxsQqsayWpTKjxY3HL2C072u=pbecEpNDbL9eBNKA@mail.gmail.com/
+Signed-off-by: Cen Zhang (Microsoft Security FORGE Labs) <cenzhang@linux.microsoft.com>
+Assisted-by: Copilot:gpt-5.6-sol
+---
+Changes in v3:
+- Copy the End.DT6 table ID before pskb_may_pull() can replace skb->head
+  and invalidate a packet-backed helper parameter.
+- Rebase onto the current bpf master branch.
+
+Changes in v2:
+- Rebuild the SRH state after End.B6 and End.B6.Encap only when the skb
+  length changes, avoiding selection of a spent Routing Header on errors
+  before insertion.
+- Rebase onto the current bpf master branch.
+
+Please queue this fix for stable kernels.
+
+Testing:
+- Built net/core/filter.o with CONFIG_IPV6_SEG6_BPF=y.
+- checkpatch.pl, diff --check and exact-base patch replay.
+- No targeted runtime selftest was added. BPF LWT test-run does not support
+  non-linear skbs, and the existing SEG6 netns test does not create a
+  split inner IPv6 header for End.DT6.
+
+ net/core/filter.c | 39 +++++++++++++++++++++++++--------------
+ 1 file changed, 25 insertions(+), 14 deletions(-)
+
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 2a84f9d01131..06a748c07747 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -7017,15 +7017,16 @@ static void bpf_update_srh_state(struct sk_buff *skb)
+ {
+ 	struct seg6_bpf_srh_state *srh_state =
+ 		this_cpu_ptr(&seg6_bpf_srh_states);
+-	int srhoff = 0;
++	struct ipv6_sr_hdr *srh;
+ 
+-	if (ipv6_find_hdr(skb, &srhoff, IPPROTO_ROUTING, NULL, NULL) < 0) {
+-		srh_state->srh = NULL;
+-	} else {
+-		srh_state->srh = (struct ipv6_sr_hdr *)(skb->data + srhoff);
+-		srh_state->hdrlen = srh_state->srh->hdrlen << 3;
+-		srh_state->valid = true;
+-	}
++	srh = seg6_get_srh(skb, 0);
++	bpf_compute_data_pointers(skb);
++	srh_state->srh = srh;
++	if (!srh)
++		return;
++
++	srh_state->hdrlen = srh->hdrlen << 3;
++	srh_state->valid = true;
+ }
+ 
+ BPF_CALL_4(bpf_lwt_seg6_action, struct sk_buff *, skb,
+@@ -7033,6 +7034,7 @@ BPF_CALL_4(bpf_lwt_seg6_action, struct sk_buff *, skb,
+ {
+ 	struct seg6_bpf_srh_state *srh_state =
+ 		this_cpu_ptr(&seg6_bpf_srh_states);
++	unsigned int old_len;
+ 	int hdroff = 0;
+ 	int err;
+ 
+@@ -7050,40 +7052,49 @@ BPF_CALL_4(bpf_lwt_seg6_action, struct sk_buff *, skb,
+ 		if (param_len != sizeof(int))
+ 			return -EINVAL;
+ 		return seg6_lookup_nexthop(skb, NULL, *(int *)param);
+-	case SEG6_LOCAL_ACTION_END_DT6:
++	case SEG6_LOCAL_ACTION_END_DT6: {
++		int tbl_id;
++
+ 		if (!seg6_bpf_has_valid_srh(skb))
+ 			return -EBADMSG;
+ 		if (param_len != sizeof(int))
+ 			return -EINVAL;
++		tbl_id = *(int *)param;
+ 
+ 		if (ipv6_find_hdr(skb, &hdroff, IPPROTO_IPV6, NULL, NULL) < 0)
+ 			return -EBADMSG;
+-		if (!pskb_pull(skb, hdroff))
++		if (!pskb_may_pull(skb, hdroff + sizeof(struct ipv6hdr))) {
++			srh_state->srh = NULL;
++			bpf_compute_data_pointers(skb);
+ 			return -EBADMSG;
++		}
++		__skb_pull(skb, hdroff);
+ 
+ 		skb_postpull_rcsum(skb, skb_network_header(skb), hdroff);
+ 		skb_reset_network_header(skb);
+ 		skb_reset_transport_header(skb);
+ 		skb->encapsulation = 0;
+ 
+-		bpf_compute_data_pointers(skb);
+ 		bpf_update_srh_state(skb);
+-		return seg6_lookup_nexthop(skb, NULL, *(int *)param);
++		return seg6_lookup_nexthop(skb, NULL, tbl_id);
++	}
+ 	case SEG6_LOCAL_ACTION_END_B6:
+ 		if (srh_state->srh && !seg6_bpf_has_valid_srh(skb))
+ 			return -EBADMSG;
++		old_len = skb->len;
+ 		err = bpf_push_seg6_encap(skb, BPF_LWT_ENCAP_SEG6_INLINE,
+ 					  param, param_len);
+-		if (!err)
++		if (skb->len != old_len)
+ 			bpf_update_srh_state(skb);
+ 
+ 		return err;
+ 	case SEG6_LOCAL_ACTION_END_B6_ENCAP:
+ 		if (srh_state->srh && !seg6_bpf_has_valid_srh(skb))
+ 			return -EBADMSG;
++		old_len = skb->len;
+ 		err = bpf_push_seg6_encap(skb, BPF_LWT_ENCAP_SEG6,
+ 					  param, param_len);
+-		if (!err)
++		if (skb->len != old_len)
+ 			bpf_update_srh_state(skb);
+ 
+ 		return err;
+
+base-commit: e4a62833adff6ef0fe7c0b90393204fe3c26b5c5
+-- 
+2.55.0
