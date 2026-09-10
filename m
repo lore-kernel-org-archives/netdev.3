@@ -1,191 +1,167 @@
-Received: from mta1.migadu.com (out-151.mta1.migadu.com [95.215.58.151])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A9F143C04D
-	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 08:15:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 718FE3A5421
+	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 08:17:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789028149; cv=none; b=tQEudI2W0WxKkUGENPNH/KvQ/RhMp5hLkrOOonEwX+wSsm+JO6ZjalhkQN6Q/6HN1NIU90XZwSzbmVGUcFiDjkIzdX4mX3jtN7ey69QAyj2uNDYlnTBrYTbyxqJqhsEBRrQXG3RgvjrEsxUfk03+NtRlJRNjO4RMA6wV0mTB38c=
+	t=1789028250; cv=none; b=hFtqgKLpg5CYg/u1uhGXZbGGANiuWcAH2EhGOvOrhmfhwcdwWwk3qP9qUZReBfQurPwdxh2FR7kCb+FL0Dk/r6+ejpU/snjIpcOcCXYhx51Qwhsg9Qieb3DlLt1T91lOWi7CZS3z8IOfCjeRmc0IB0GCJM4CTKsP03v4h2Nzx0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789028149; c=relaxed/simple;
-	bh=oFqtJ5EmgLf6Ze95TtwfjG5mlQjaQOcAOwGTGPesNNY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DK4236hzoHJp+Q+cw2L6FEucNBFdKzCAXRVBlBjnsR7IlbZg8YeFgHK8Rru546I9s2/OtA4COw/wx0BVWokmTrB1UzKJ/teLysXiKdWsZ4QBadIBXaitibyypPvPowrJmQQ9lc5gIOEsyH5WCmx3FhlZnfHF/2av6xViSjj3+W4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=k6x+pe1q; arc=none smtp.client-ip=95.215.58.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1789028250; c=relaxed/simple;
+	bh=MTnpvTdY6iox3Uu8QA9hXh45l6Gni+W7qHF/WgDHu2c=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NlyZMuIQJXaM6BA4mmGP+zCvf5AUHx6nIzdkvHZt9Jp+q2AwpEtyGafnFcKlUAI1KMkl8JSJ5zljElpmOLx+1eafmX5sCyp4NzJfQa5ucl3bZSqQy78yr4BN6WwqwO58G8AytWzx3QGgOfI1G/YiDGMVnOK2eogg3k4Ll7jkfng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=c0n7tYzh; arc=none smtp.client-ip=62.96.220.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="k6x+pe1q"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=oFqtJ5EmgLf6Ze95TtwfjG5mlQjaQOcAOwGTGPesNNY=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789028143; v=1; x=1789632943;
- b=k6x+pe1qnOl9YVOTuuTm9UIpyxZ/JLoJjKo2a9rx6cqoVX1N0yWO1Jjt4yKL6+dEBUQx9y95
- rFnChD6Wzi5NmivHKztNJ4CB+/+KITm77VemgncPLTWSj/ZQ8ez2Gpi8SJMeO5L9c73w4MzCBz0
- BXwi5e/dffeuuXqZOoB/OXAA=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by mta11.migadu.com with ESMTPS id f7a365cfa6531857;
-	Thu, 10 Sep 2026 08:15:43 +0000
-X-Mizu-Trace-ID: f7a365cfa6531857
-X-Migadu-Flow: FLOW_OUT
-Date: Thu, 10 Sep 2026 16:15:32 +0800
-From: Hangbin Liu <hangbin.liu@linux.dev>
-To: Janis Edvarts Lacis <janislacis06@gmail.com>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] net: vlan: fix vlan name truncation
-Message-ID: <aqJnJBNbcv1LTV_7@fedora>
-References: <20260904210024.263220-1-janislacis06@gmail.com>
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="c0n7tYzh"
+Received: from localhost (localhost [127.0.0.1])
+	by mx1.secunet.com (Postfix) with ESMTP id 7547820799;
+	Thu, 10 Sep 2026 10:17:17 +0200 (CEST)
+X-Virus-Scanned: by secunet
+Received: from mx1.secunet.com ([127.0.0.1])
+ by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id 47ZHsBSEHkpn; Thu, 10 Sep 2026 10:17:16 +0200 (CEST)
+Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mx1.secunet.com (Postfix) with ESMTPS id 60937206E9;
+	Thu, 10 Sep 2026 10:17:16 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 60937206E9
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
+	s=202301; t=1789028236;
+	bh=uh5mv7Is0ful7AWLHgN0FvA1fRZwQ4Urcr82t0F9fAc=;
+	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
+	b=c0n7tYzhb6DLQYnxvZ/on6TAvXkkVwaB1Gul3mcKSeCrTTD6P7yw9tfNoylThe/sR
+	 XTsJHMdf1iV/C8TIWnYO3XJ++xhyvzrPwd/BY6Ctjv4fJJFUrcGjvxRfwkhLXwFvyA
+	 ydFR2wg+3euH3GHWOn3JF+B5ttUS9ZA3YaHXkL+W5x9lPYbpj2TRepNW6S1p8H2nyE
+	 XevXD2idTXqQA32vKOuVOGCc1/3a+prcxyFZzU356bLtlgNxb8SRfNoh3D0XSLOlnk
+	 gYMmll3S+BPRzJKbvg1ctqI0s9HxJqbqcMYNZQH5jLK+8VcZ/+M/qMa1ywIO6h2wMR
+	 iOUzUFW+mp/hw==
+Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Thu, 10 Sep
+ 2026 10:17:15 +0200
+Received: (nullmailer pid 1374235 invoked by uid 1000);
+	Thu, 10 Sep 2026 08:17:15 -0000
+Date: Thu, 10 Sep 2026 10:17:15 +0200
+From: Steffen Klassert <steffen.klassert@secunet.com>
+To: Matthieu Baerts <matttbe@kernel.org>
+CC: Paolo Abeni <pabeni@redhat.com>, Herbert Xu <herbert@gondor.apana.org.au>,
+	<netdev@vger.kernel.org>, David Miller <davem@davemloft.net>, Jakub Kicinski
+	<kuba@kernel.org>, Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal
+	<fw@strlen.de>
+Subject: Re: Some clarifications on the upstreaming process
+Message-ID: <aqJniwjpWMGk_oY9@secunet.com>
+References: <20260907093020.2228346-1-steffen.klassert@secunet.com>
+ <aqD-_cBnIOMEpxVh@secunet.com>
+ <70d0048d-694b-4348-a6a5-de87a767b8fd@redhat.com>
+ <6d53e8e5-96a3-462f-97d7-722e1b9f8f79@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260904210024.263220-1-janislacis06@gmail.com>
+In-Reply-To: <6d53e8e5-96a3-462f-97d7-722e1b9f8f79@kernel.org>
+X-ClientProxiedBy: EXCH-01.secunet.de (10.32.0.171) To EXCH-01.secunet.de
+ (10.32.0.171)
 
-On Sat, Sep 05, 2026 at 12:00:24AM +0300, Janis Edvarts Lacis wrote:
-> register_vlan_device() from net/8021q/vlan.c sets name based on a field
-> name_type from struct vlan_net. If name_type is VLAN_NAME_TYPE_RAW_PLUS_VID
-> or VLAN_NAME_TYPE_RAW_PLUS_VID_NO_PAD, register_vlan_device() sets vlan
-> device's name to the actual net_device's name and adds vid at the end of
-> this name separated by a dot.
-> 
-> Network interface's name is limited to at most 16 characters, including NUL.
-> Therefore, if the real_dev->name is long enough, then adding the vid
-> at the end of this name can lead to the result exceeding 16 bytes which
-> leads to a truncated name for the vlan device created in register_vlan_device().
-> 
-> This patch fixes the issue by returning -ENAMETOOLONG from
-> register_vlan_device() if the newly created name does not fit in 16
-> bytes.
-> 
-> The bug was discovered when compiling with flag W=1, the following warning comes up:
-> linux/net/8021q/vlan.c: In function ‘vlan_ioctl_handler’:
-> linux/net/8021q/vlan.c:250:46: error: ‘%i’ directive output may be truncated writing between 1 and 5 bytes into a region of size between 0 and 15 [-Werror=format-truncation=]
->   250 |                 snprintf(name, IFNAMSIZ, "%s.%i", real_dev->name, vlan_id);
->       |                                              ^~
-> In function ‘register_vlan_device’,
->     inlined from ‘vlan_ioctl_handler’ at linux/net/8021q/vlan.c:588:9:
-> linux/net/8021q/vlan.c:250:42: note: directive argument in the range [0, 65535]
->   250 |                 snprintf(name, IFNAMSIZ, "%s.%i", real_dev->name, vlan_id);
->       |                                          ^~~~~~~
-> 
-> Build & run the reproducer:
->     gcc poc.c -o poc
->     chmod +x poc.sh
->     ./poc.sh
-> 
-> ======BEGIN poc.sh======
-> #!/usr/bin/env bash
-> 
-> sudo ip link add vlan1234567890 type dummy
-> sudo ./poc
-> 
-> # name will not match the expected printed from poc.c on the unpatched
-> # kernel, there will be no vlan interface at all on the patched one
-> ip a
-> ======END poc.sh========
-> 
-> ======BEGIN poc.c======
-> #include <stdio.h>
-> #include <string.h>
-> #include <unistd.h>
-> #include <sys/ioctl.h>
-> #include <linux/if.h>
-> #include <linux/if_vlan.h>
-> #include <linux/sockios.h>
-> 
-> #define IF_NAME "vlan1234567890"
-> 
-> int main()
-> {
->     struct vlan_ioctl_args args = {
-> 	.cmd = ADD_VLAN_CMD,
-> 	.u.VID = 1234,
->     };
-> 
->     strcpy(args.device1, IF_NAME);
-> 
->     int fd = socket(AF_INET, SOCK_STREAM, 0);
->     if (fd < 0) {
-> 	perror("socket");
-> 	return 1;
->     }
-> 
->     /* fails with -ENAMETOOLONG */
->     if (ioctl(fd, SIOCSIFVLAN, &args) < 0) {
-> 	perror("SIOCSIFVLAN");
-> 	close(fd);
-> 	return 1;
->     }
-> 
->     printf("Expected name: %s.%i\n", IF_NAME, args.u.VID);
->     close(fd);
->     return 0;
-> }
-> ======END poc.c========
-> 
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Signed-off-by: Janis Edvarts Lacis <janislacis06@gmail.com>
-> ---
->  net/8021q/vlan.c | 13 ++++++++++---
->  1 file changed, 10 insertions(+), 3 deletions(-)
-> 
-> diff --git a/net/8021q/vlan.c b/net/8021q/vlan.c
-> index 2d2efb877975..b51092d217de 100644
-> --- a/net/8021q/vlan.c
-> +++ b/net/8021q/vlan.c
-> @@ -220,7 +220,7 @@ static int register_vlan_device(struct net_device *real_dev, u16 vlan_id)
->  	struct net *net = dev_net(real_dev);
->  	struct vlan_net *vn = net_generic(net, vlan_net_id);
->  	char name[IFNAMSIZ];
-> -	int err;
-> +	int err, len;
->  
->  	if (vlan_id >= VLAN_VID_MASK)
->  		return -ERANGE;
-> @@ -234,7 +234,9 @@ static int register_vlan_device(struct net_device *real_dev, u16 vlan_id)
->  	switch (vn->name_type) {
->  	case VLAN_NAME_TYPE_RAW_PLUS_VID:
->  		/* name will look like:	 eth1.0005 */
-> -		snprintf(name, IFNAMSIZ, "%s.%.4i", real_dev->name, vlan_id);
-> +		len = snprintf(name, IFNAMSIZ, "%s.%.4i", real_dev->name, vlan_id);
-> +		if (len >= sizeof(name))
-> +			err = -ENAMETOOLONG;
->  		break;
->  	case VLAN_NAME_TYPE_PLUS_VID_NO_PAD:
->  		/* Put our vlan.VID in the name.
-> @@ -246,7 +248,9 @@ static int register_vlan_device(struct net_device *real_dev, u16 vlan_id)
->  		/* Put our vlan.VID in the name.
->  		 * Name will look like:	 eth0.5
->  		 */
-> -		snprintf(name, IFNAMSIZ, "%s.%i", real_dev->name, vlan_id);
-> +		len = snprintf(name, IFNAMSIZ, "%s.%i", real_dev->name, vlan_id);
-> +		if (len >= sizeof(name))
-> +			err = -ENAMETOOLONG;
->  		break;
->  	case VLAN_NAME_TYPE_PLUS_VID:
->  		/* Put our vlan.VID in the name.
-> @@ -256,6 +260,9 @@ static int register_vlan_device(struct net_device *real_dev, u16 vlan_id)
->  		snprintf(name, IFNAMSIZ, "vlan%.4i", vlan_id);
->  	}
->  
-> +	if (err)
-> +		return err;
-> +
->  	new_dev = alloc_netdev(sizeof(struct vlan_dev_priv), name,
->  			       NET_NAME_UNKNOWN, vlan_setup);
->  
-> -- 
-> 2.43.0
-> 
+Hi Matthieu,
 
-Nice catch!
+On Wed, Sep 09, 2026 at 12:22:14PM +0200, Matthieu Baerts wrote:
+> Hi Steffen, Paolo,
+> 
+> (+cc Pablo, Florian)
+> 
+> Sorry to jump in the discussion, but I have similar issues with MPTCP
+> patches.
+> 
+> On 09/09/2026 11:23, Paolo Abeni wrote:
+> > On 9/9/26 8:38 AM, Steffen Klassert wrote:
+> 
+> (...)
+> 
+> >> 4) Some patches for the ipsec and ipsec-next tree don't get Sashiko
+> >> reviews either because they don't apply to net or net-next, or
+> >> because of some other reasons I'm not aware of.
+> 
+> >From what I saw, sashiko.dev tries to apply patches on top of the
+> correct tree by at least looking at the modified files and the
+> MAINTAINERS file, and possibly the prefix [1] from what I understood.
 
-Reviewed-by: Hangbin Liu <liuhangbin@kylinos.cn>
+Yes, that's correct. I did not notice this yet. Thanks!
+
+> 
+> For example this recent patch [2] got applied on top of 96f01b53c2d0,
+> which corresponds to today's 'ipset' tree [3] (tag: ipsec-2026-09-07)
+> 
+> [1] https://github.com/sashiko-dev/sashiko/issues/48
+> [2]
+> https://sashiko.dev/#/patchset/migrate-state-fixes-v2-0-c3e2767f0d96%40secunet.com
+> [3] https://git.kernel.org/pub/scm/linux/kernel/git/klassert/ipsec.git
+> 
+> For Clashiko, it only tests what's for net/net-next, same as for the
+> selftests, etc. if I'm not mistaken.
+> 
+> >> This is the biggest
+> >> issue, I see the Sashiko review only after I sent a pull request.
+> >> This makes the upstreaming process complicated and delays fixes
+> >> quite a bit. I requested some infrastructure from the LF to get
+> >> this fixed, but no answer so far. Any other ideas how to fix
+> >> this issue?
+> > 
+> > I think are 2 separate points:
+> > 
+> > 4.1 missing sashiko reviews on edge cases
+> > 4.2 difficulty to reproduce the sashiko/clashiko review process in advance.
+> > 
+> > WRT 4.1 things should generally improve over time, with the exception of
+> > patch that do not apply. I think we can't do much for them, but they
+> > also should not matter much, right?
+> > 
+> > WRT 4.2 the current guidance is to run AI reviews before submission.
+> > Sashiko could be installed and run locally. The nipa instance (clashiko)
+> > is slighly more effective than sashiko.dev because it runs several
+> > recent models and its result are indeed hard to replicate locally/in
+> > advance.
+> > 
+> > Clashiko currently runs on (very significant) meta-sponsored budget, I
+> > think it would be hard to extend it's usage to netdev's subsystems.
+> 
+> We might need to find a solution for the subsystems for this 4th point.
+> I have the same issue with MPTCP, and it seems it is the same with
+> Netfilter (and likely others) from what I saw. I would prefer to have
+> Clashiko reviews before applying patches on my side: to reduce the risk
+> to deal with new issues later on, and to let the author dealing with
+> that (instead of me days/weeks after).
+
+Right, patches must get the review before they get applied to
+a git tree, not after. It was always like that and we should
+try to get back to it. The current workflow feels broken from
+a submaintainers point of view. The submaintaners are now the
+bottleneck.
+
+> >From what I understood, Clashiko is still being tweaked, and that's the
+> current priority. Maybe later, subsystems can have their patches
+> reviewed by Clashiko as well?
+
+That's what I would hope for.
+
+> If that's a budget issue that cannot be solved easily, I wonder if
+> Clashiko shouldn't ignore subsystems patches: I see its value, but I
+> also see the cost for the different subsystems :-/
+
+Maybe we can work with a compromise in the meantime. Clashiko
+reviews all subsystem patches that apply to net or net-next
+when the patches are submitted to the list as it is now.
+But then the subsystem pull requests are done without
+resending all patches to the list. So patches do not get
+reviewed again with the pull request. That would avoid the
+hassle with reviews of already applied patches.
+
+Would that approach be acceptable for the netdev maintainers?
+
