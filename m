@@ -1,132 +1,99 @@
-Received: from mta0.migadu.com (out-142.mta0.migadu.com [91.218.175.142])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 354CA4825BC
-	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 12:15:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.142
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FB53481FD0;
+	Thu, 10 Sep 2026 12:18:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789042546; cv=none; b=e4r5zP0T3PDpTXZBIobJqsfQR5M29/ooUzveTWF7d8v4OVWfXYdLIw97yZfI95c1fTvWXhvIvxpvQe0/RyPuV9nHCurXxauyX5JGKh+A7/tJpJ9IGKVyR9eLi6+DrMG3I9IhPcnWLmNioNunDyVLCVUdhYJlV7lUeXj5gvSaL2I=
+	t=1789042714; cv=none; b=oN8dGrl/y8z3tPtMliqCCn6Nk0pKxCn5iGlKTYa65FqvEB1tFLDYRStjB0e/AGVQR9dYvguC54+yzYyLl8x4mawRsztR7QTcmj/V4ep5PeEvbTsxrUdZ+a6GROWYwDPtLAcxRMylrl6qxot1zaWLyrcf/DEy3Xuj3+sWChNIKjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789042546; c=relaxed/simple;
-	bh=sHK07o4ZNtPtjY+nN7nBwsM5doAvUH1ZVu4hBnEZvkQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TiNbWeyXtaLvb1xoeWFcVQdTgwkneEpAzWW+TbqOBA5FtfIc4+XTL5VOXgiBCke6D+aiunRDzfmrkrbn8eIBsxCSBEXRbE6Jz7iq5qZq5VmCH0Zs8FLib/qdo507Tmms31y70gipxHvvrVMPm7DTz9fft4Bc24n0Z0fVjt55y9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=vZGetiml; arc=none smtp.client-ip=91.218.175.142
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1789042714; c=relaxed/simple;
+	bh=zJ4+yME/Q7Os+J6hyzP++ZKOiQK5dIN/UxzKF4o52GI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=D7cepvcxc1tp34wZC9qUgabzhDTGXhvOxG7OVBXRLVDykPyHUKEEZVnOI8UluqlVrRYAdRYnwMZ2Fy3Ot9IK4RD+c5gCOA/yzHH/4vPGsrz1BzRFLIQ+rY0llqVLEVL+ACXl6umIdZJwXOYFRYy/rHsQXKU1PbnIO/bdoLJ5VPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=x3ZCxRG2; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="vZGetiml"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=sHK07o4ZNtPtjY+nN7nBwsM5doAvUH1ZVu4hBnEZvkQ=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789042534; v=1; x=1789647334;
- b=vZGetimlbdIETNjCrT5rtG8o2ruHTik9UzUUQt3hMaDH0Gmq3SlKlQfUHgFv5mtUr+yBsej/
- Rdtjxhoi12+jAsSPzJR3ghwQUlJtesM/cbu9EGqJQ6omuls3bN7raXMNI3u+cfP3lB/36DwJBkW
- R4TNJzNrzHPg46aA77ufsw1A=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id a1d0e7034e635d35;
-	Thu, 10 Sep 2026 12:15:23 +0000
-X-Mizu-Trace-ID: a1d0e7034e635d35
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <f8028773-9ed6-4a34-9fd4-68150a459cfb@linux.dev>
-Date: Thu, 10 Sep 2026 20:15:15 +0800
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="x3ZCxRG2"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=gNS3JIqSU8/+D32CAHUVJplRawU3iI1w217293UE1DE=; b=x3ZCxRG2UY5byY0ir/oPwV9lyK
+	wiR6f6CkgkKxjnPpGLUnjUa8KIJQ4ELN+MQsXriyfad1i8/AUcvVR11yU/Ml19JhtJk3OSDEA7QZv
+	tGO+aqgJ3PaKSvZYOwMJNXNm+V6orCMditwx7L3hpkuxw1qHyRaWbduRXRHeoXtebgno=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1x4djM-004UmW-3T; Thu, 10 Sep 2026 14:18:16 +0200
+Date: Thu, 10 Sep 2026 14:18:16 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Vasilij Strassheim <v.strassheim@linutronix.de>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Russell King <linux@armlinux.org.uk>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	Martin Kaistra <martin.kaistra@linutronix.de>,
+	Benedikt Spranger <b.spranger@linutronix.de>
+Subject: Re: [PATCH net-next v2 4/4] net: dsa: soce: Add basic support for
+ SoC-e switch IP cores
+Message-ID: <b7fdbd43-d069-40e1-aff4-30197371739d@lunn.ch>
+References: <20260903-devel-vstrassheim-soce-dsa-ml-v2-0-fb0587cb466b@linutronix.de>
+ <20260903-devel-vstrassheim-soce-dsa-ml-v2-4-fb0587cb466b@linutronix.de>
+ <3c2c5b39-6a7d-4cb2-af1c-b5015b6bf1e8@lunn.ch>
+ <db26d5c9262069a11e5cbe00e176b81e40baebeb.camel@linutronix.de>
+ <5c955c96-7883-4e59-97ef-9fc3b63abf58@lunn.ch>
+ <ab7e4eeed1b8296188355413cce1aa2b2aa5c670.camel@linutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] tcp: fastopen: check rsk_drop_req() in
- tcp_fastopen_create_child()
-To: Matthieu Baerts <matttbe@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev,
- Kimi Security Team <bug-report@moonshot.ai>,
- Yilin Zhang <yilinzhang@moonshot.ai>, Mat Martineau <martineau@kernel.org>
-References: <20260903094010.4066892-1-yilinzhang@moonshot.ai>
- <c95bc6f8-b8da-426f-a056-1c692559d14f@redhat.com>
- <cd7d7f5e-d729-475e-b772-e201a2ab37be@kernel.org>
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-In-Reply-To: <cd7d7f5e-d729-475e-b772-e201a2ab37be@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ab7e4eeed1b8296188355413cce1aa2b2aa5c670.camel@linutronix.de>
 
+> ethernet-switch@xy {
+>     /* ... */
+> 
+>     mdio_parent: mdio@204 {
+>         compatible = "soce,swip-mdio-23-02";
+>         reg = <0x204 0xc>, <0x200 0x4>;
+>         reg-names = "data", "control";
+>     };
+> 
+>     mdio-mux@200 {
+>         compatible = "mdio-mux-mmioreg", "mdio-mux";
+>         reg = <0x200 0x4>;
+>         mux-mask = <0x1f0000>;
+>         mdio-parent-bus = <&mdio_parent>;
+>         #address-cells = <1>;
+>         #size-cells = <0>;
+> 
+>         mdio@0 {
+>             reg = <0>;
+>             /* PHYs connected to port 0 */
+>         };
+> 
+>         mdio@10000 {
+>             reg = <0x10000>;
+>             /* PHYs connected to port 1 */
 
-On 9/10/26 6:13 PM, Matthieu Baerts wrote:
-> Hi Paolo,
->
-> Thank you for having checked!
->
-> On 10/09/2026 10:12, Paolo Abeni wrote:
->> On 9/3/26 11:40 AM, Yilin Zhang wrote:
->>> subflow_syn_recv_sock() sets drop_req when an MP_JOIN SYN takes the fatal
->>> fallback and destroys the cloned child. tcp_fastopen_create_child()
->>> ignored the flag and could queue the destroyed child.
->>>
->>> With an MPTCP listener using server-side Fast Open, a valid-cookie
->>> MP_JOIN SYN could then expose the freed child through accept().
->>>
->>> Release the locked child and drop the request before tcp_conn_request()
->>> sends a SYN-ACK. Initialize drop_req when allocating the request so the
->>> check cannot observe stale state after request-socket reuse.
->>>
->>> Changes in v2:
->>> - unlock the child before dropping its reference
->>> - drop the request instead of sending a SYN-ACK after the MPTCP reset,
->>>    as suggested by Jiayuan Chen
->>>
->>> Fixes: 90bf45134d55 ("mptcp: add new sock flag to deal with join subflows")
->>> Reported-by: Kimi Security Team <bug-report@moonshot.ai>
->>> Suggested-by: Jiayuan Chen <jiayuan.chen@linux.dev>
->>> Signed-off-by: Yilin Zhang <yilinzhang@moonshot.ai>
->> This looks like the wrong fix. IIRC fastopen is not compatible with MPJ
->> - as the latter must accept data only after the 4way handshake completion.
->>
->> @Mat(s): could you please double check the above ^^^ statement???
->>
->> If so mptcp should reject entirely MPJ + fastopen and no addtional code
->> required on the TCP side.
-> I didn't check in details, but when I try with this packetdrill repro...
->
->   https://lore.kernel.org/20260903070649.3965366-1-yilinzhang@moonshot.ai
->
-> ... it looks like the kernel replies with an MP_RST, but also a SYN+ACK,
-> and a WARN:
->
->    refcount_t: underflow; use-after-free.
->    (...)
->    inet_csk_listen_stop (net/ipv4/inet_connection_sock.c:1533)
->    ? mptcp_subflow_queue_clean (net/mptcp/subflow.c:1925)
->    mptcp_check_listen_stop.part.0 (include/net/sock.h:1486
->                                    net/mptcp/protocol.c:3482)
->    __mptcp_close (net/mptcp/protocol.c:3534)
->    mptcp_close (net/mptcp/protocol.c:3572)
->    inet_release (net/ipv4/af_inet.c:425)
->
-> With this v2, I don't see the SYN+ACK, only the RST.
->
->
-> If I'm not mistaken, with TFO, syn_recv_sock will be called first
-> (tcp_conn_request -> tcp_fastopen_create_child -> subflow_syn_recv_sock)
-> then MPTCP will only check TFO when the SYN+ACK is being sent
-> (tcp_conn_request -> subflow_v(46)_send_synack).
->
-> In subflow_syn_recv_sock(), I don't think we have a strong indicator
+These comments are probably wrong, as i suggested in my previous
+reply. There is no reason that port 0 PHY could not be on bus 10000.
 
+I've no idea if it will work, but maybe try:
 
-You inspired me. Maybe we can use such code:
+>         reg = <0x203 0x1>;
+>         mux-mask = <0x1f>;
 
-     if (subflow_req->mp_join &&
-         (TCP_SKB_CB(skb)->tcp_flags & TCPHDR_SYN))
-             return NULL;
+and then you get better bus numbers?
 
-
-We now skip RST and SYN+ACK also can be sent by tcp_conn_request().
-
-
-
-
-> that the caller is TFO. It looks like we would also need to change the
-> TCP stack to pass this info, no?
-
+    Andrew
