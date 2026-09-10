@@ -1,123 +1,259 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B26854746B1
-	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 12:44:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED309488741;
+	Thu, 10 Sep 2026 12:46:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789044275; cv=none; b=BRwLdO882ka76vqh0U68m82GsZOVeyky6nbHFoSLF4qsAXsN9hoggH0DIxMIL1ThsVcP84JM2z9OLa5S2FNqS5ob1Kmtxfbq9hAQ0sLsl0hCbESuuDESwUbXf/fegzCB7Rig/OdFpxBqulBL9lT4Qm2eIXcdkajrdsU8lXIipaQ=
+	t=1789044386; cv=none; b=UgEkugsPM5AYrq5zbTgM3b5ZpjeOwuG7QZA2VVN4HsvpSdKdXdyXKN007tONZPbG8EvBYhujEMNt6bEG4S9es606TX9FV4yxA9flJQdjepkje2igcfWMiaCsKTL/kbrvPzt9EuuA2d4ft4K+WeGHIywATs87aMp83I44lB7O7ls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789044275; c=relaxed/simple;
-	bh=qi/XtlmbEO8s/Kjru2891+qSMXrQ/XBaMKX6ap4IfTM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QI0Tyq7ZWjvVta24/N25iypQRRaLfTc3e15tP56t5WxotezPi2ZZZC5pW6etVSZsEFJZOwHig/R2DWJ9MrzAV+Kjl6hnODaM1Dg80gHK0jOltkcNWI01O3psJazdCQ7Y4Cp5NGVwx069cZRdvFP9ZelxLD7FW3h+gZEq5bxF2EM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MzoZWb2Y; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=pgzuKw/Y; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1789044386; c=relaxed/simple;
+	bh=PPTZOOwrBo0xAyIDhPi/8KGdNalSXPAwU0S7x0iveAk=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Wg/S4xz1eTSb3tqDPxR8KgzzLc1Ii/zQwZxm/TZD1xaXTZPytuxCsIjMig4+RvyZoYlf1+sn42wKvSXHZZUNjdfR8J9iZzm2OMV7/BAsCG2fxRHNH5Cs9oa7sLd4vjj6A7WO02+y+ffmah+VEPwJ1cOMUeyccstS5wj08lzQy5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=axfB2bZy; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MzoZWb2Y";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="pgzuKw/Y"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1789044269;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5R4tbNQ0lfdCRzGCDdQuLi/5U+jTDR24RinEX+4r3gs=;
-	b=MzoZWb2YUUFTZo1T9OcEAvRseBSwtRpVLiXyfvs6kvEmIVC7aCVSCKgYKqK971iZrsQmYb
-	JyeZjlLzY6LVhbp+5tsN7NwfwSyg504lP6ij1vPYi59qbPUauHaAeDZbOacK67HIzEFCCI
-	EP/Wh4YisO7KLVzi0GZGF53wOiVjS7c=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-604-X1W6ehhuObyP4R9zEUqPkw-1; Thu, 10 Sep 2026 08:44:28 -0400
-X-MC-Unique: X1W6ehhuObyP4R9zEUqPkw-1
-X-Mimecast-MFC-AGG-ID: X1W6ehhuObyP4R9zEUqPkw_1789044267
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-49ccb223bceso6466125e9.0
-        for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 05:44:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1789044267; x=1789649067; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=5R4tbNQ0lfdCRzGCDdQuLi/5U+jTDR24RinEX+4r3gs=;
-        b=pgzuKw/Ygz3UrOddEkOibdJG+2jW2p76kPWfFl5Wlhf0zM4AyRHG3Cngqm4nEVU90V
-         laORJUBG97gqRYZKoK9K0cAgbdbERFPU2yrYNZXUzT8HO8Z/k7m0wme0u8RU8hkjIbRV
-         6C9d39BwLOcwppZYNJSdGHFI32lCn8vkf/eh0jnoD0XzCe45f+VLnbNaFB7TUa1azSy8
-         pZ/E7BVruvPArqgESOtKUysbgrOg+j1+6cwWzDjT9F7rJoBopcXE/JGXKSq2vuWC6W4O
-         CyXa4hiRpbzwtcEirLfQApVYa1ISHjrhzM7bU4lUsFU186u1strbHoYbAmAiTLWHB9cm
-         uVEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789044267; x=1789649067;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=5R4tbNQ0lfdCRzGCDdQuLi/5U+jTDR24RinEX+4r3gs=;
-        b=Iy2b1MCj7+QCwCft0GbcGwpEQkyM95g+c6ATfk05Mt2lrgVXh87H3cN3z7ey/EPpSj
-         t3RJ6VWgw5rDiklXUGdTNaPw4DIUAsPuOgtc86PwdakqTQyF70Z3ckASIAZVuumQJU/t
-         NDt0NU9740+4ltPCBXBAgh/K/SR0c+hzuAz5Dr30iDeeAkOdWaZw7xADzKjAWDO8FaMS
-         o4T4dntyJbd3hWvBXELfSdyztgKTOKvyC5Ot/VhVMv8h/fdU8r2p6AAMJoxLf78FGiXw
-         PX8gmH/jb2f/v+xA+FnYIDz76p67Wmgukxlx/A74RVnU/bHTNkksbvGXFT78kfD4gHMw
-         FLAA==
-X-Forwarded-Encrypted: i=1; AKwUvBx9YcqG6edpjSbzNJe1yY4hIHK85M3gHiI5WKCmaPg1sEoJtl/vB5coFx144rZDw7F/6iH3OnI=@vger.kernel.org
-X-Gm-Message-State: AFuF++m4E6mEhyxQbC4csov+pcxr6JV4xenRn8cBZAPqQVd/HYGRXmK0
-	U8wlasR3BbasFFbtd1EBTf3+zLggEiSAPSyS8jjc8wUYTPmXQVZwvQT6YVbT0pWa50j/MbbmPRq
-	SsyIZj6x5OY+QRB8602qIOtjdWB3C/MIw/cIlo4LxBygeNLNVRr7uYfU96Q==
-X-Gm-Gg: AYBFou2KdhSxMoiu4j+nJe/RPlZzk/R2IyUM4Jd96dWyWFL8smVWr5BmdRljo7wNqFI
-	9WUkyV5cTw3Pj4WsGUA6Qt1rwtfUOszdXIbcl69XPOXGdycbo9l6oPP+MQgv0LOCPhfONKpRBkg
-	5fyi60kazWQS5yTMsDLOtmfcmMX0H7B/7aKYbV2WYXDKeSNwrW6Z64xlaxIRVBLHPe/77O6F/wW
-	oqJQeTa7Bi8c8sLNO2Y31S/yHWsXnNURLpCGpPviFciHpIY+k+3CKgcQ3pZu6YEAXGp6sUlFSGn
-	EhaJXLMyViP7JhS1X+4xcWVrVWx2wJdxcL9dPIIwtuoLb1Xbr+vwwADIdzehsXnAoXkkzKVEM1a
-	JrCUkeT/ZGJYCOdGoNHxdwfZMtKd6BzBq7efKIoFRcMCe8iuGBzXXKySruKQlULc+2N+9YrhYsA
-	==
-X-Received: by 2002:a05:600c:c4b8:b0:49c:f13e:e52 with SMTP id 5b1f17b1804b1-49d26dcbc5emr51128225e9.15.1789044267095;
-        Thu, 10 Sep 2026 05:44:27 -0700 (PDT)
-X-Received: by 2002:a05:600c:c4b8:b0:49c:f13e:e52 with SMTP id 5b1f17b1804b1-49d26dcbc5emr51127875e9.15.1789044266654;
-        Thu, 10 Sep 2026 05:44:26 -0700 (PDT)
-Received: from [192.168.188.218] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49d26bfdb4asm68440655e9.11.2026.09.10.05.44.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 10 Sep 2026 05:44:25 -0700 (PDT)
-Message-ID: <0f6f412c-e33c-474f-acd1-ad70a50b18ec@redhat.com>
-Date: Thu, 10 Sep 2026 14:44:24 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="axfB2bZy"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DC291F00893;
+	Thu, 10 Sep 2026 12:46:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789044382;
+	bh=cwYOsc4JExSInv+TOcwbAh1z0HVTWDEwXBC25sOTT0c=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=axfB2bZyHV7N1y//Ra/oW2XdwWi9t7ABVh4HMe62P6CtbN+BxWHARB9uSWl4rpWRM
+	 raXjBezauUqkMPDZGtBkCbKoci0a7yzzIbv8rbkpdtYiMsd4C52XwAfKfoagYVRXjt
+	 lGKgM9XHJX0wcwT5aFYLAqSxyhJnb5FxSenEIm2QvI//lMOGxJuvAc6P/XeI9tOIMt
+	 XXRm3hofUJofDMZjrseh026Rm8SFPcbrJSljRX8sZzZWtoV1yT1CuBXZ7BxHKqoN/R
+	 JwDK1+Iv2FT0nTtEDYwHhdVkiYg2IbFGUqDtd+CmqwkXPl22BSMyOSp3nf16kzE6xP
+	 oxaSOS7LhqO1w==
+Subject: Re: [PATCH net] net: mana: do not discard an ethtool-configured RSS
+ table on a queue rebuild
+From: netdev-bot+sashiko@kernel.org
+To: longli@microsoft.com
+Cc: kotaranov@microsoft.com, kuba@kernel.org, davem@davemloft.net,
+ pabeni@redhat.com, edumazet@google.com, andrew+netdev@lunn.ch, jgg@ziepe.ca,
+ leon@kernel.org, haiyangz@microsoft.com, kys@microsoft.com,
+ wei.liu@kernel.org, decui@microsoft.com, shradhagupta@linux.microsoft.com,
+ horms@kernel.org, ernis@linux.microsoft.com, stephen@networkplumber.org,
+ shirazsaleem@microsoft.com, netdev@vger.kernel.org,
+ linux-rdma@vger.kernel.org, linux-hyperv@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Date: Thu, 10 Sep 2026 12:46:20 +0000
+Message-ID: <178904438067.219967.6198285642265210218@kernel.org>
+In-Reply-To: <20260905004401.3937066-1-longli@microsoft.com>
+References: <20260905004401.3937066-1-longli@microsoft.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v2 1/1] tcp: reject non zerocopy devmem tx
-To: Mina Almasry <almasrymina@google.com>
-Cc: asml.silence@gmail.com, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, horms@kernel.org, netdev@vger.kernel.org
-References: <fdc2478d8f21268d7078556409887d8e6ba0ad32.1788529053.git.asml.silence@gmail.com>
- <178896152268.219967.2387243409101048587@kernel.org>
- <CAHS8izMF+G38GorV01mxnvjMPGjPCDKJ1fFPiRNeK-thW0eB5w@mail.gmail.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <CAHS8izMF+G38GorV01mxnvjMPGjPCDKJ1fFPiRNeK-thW0eB5w@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 
-On 9/9/26 5:57 PM, Mina Almasry wrote:
-> On Wed, Sep 9, 2026 at 6:45 AM <netdev-bot+sashiko@kernel.org> wrote:
->> Would it make sense to also reject dmabuf_id together with
->> MSG_FASTOPEN/DEFER_CONNECT and with repair-queue sends, or to teach
->> those paths about the binding?  The commit message mentions neither, so
->> it is hard to tell from the changelog whether these were considered,
->> which also matters for backporting given the two Fixes: tags.
->>
-> 
-> Yes, I think we'd need to exclude MSG_FASTOPEN and DEFER_CONNECT.
-> Those are set by the userspace right? So it doesn't matter much if we
-> don't support them with devmem. Not sure how to correctly exclude
-> repair-queue sends.
-FTR, I agree that the sashiko comments refers to a pre-existing and
-different issue that should be addressed separately. I'm actually
-quite surprised the model did not mark it as such.
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider:
 
-/P
+Critical: 0 · High: 0 · Medium: 1 · Low: 2 (1)
 
+- [Medium] Undisclosed TX-side consequence of preserving the indirection
+  table.
+- [Low] The commit message states: "The driver never clears the core's
+  IFF_RXFH_CONFIGURED, so netif_is_rxfh_configured() keeps reporting a…
+- [Low] When the surviving table cannot be honoured (an entry >=
+  apc->num_queues after mana_init_port() lowered the queue count),…
+
+Pre-existing issues:
+- [Low] Incomplete lockset for apc->indir_table on the ethtool read side.
+
+--
+
+net: mana: do not discard an ethtool-configured RSS table on a queue rebuild
+
+mana_alloc_queues() no longer regenerates the RSS indirection table from the
+driver default when the table was installed by the user, so an "ethtool -X"
+table now survives operations that rebuild the queues.  A table whose
+entries point past the last queue is still replaced by the default.  The RSS
+ethtool operations are also opted into rtnl_lock() via
+ETHTOOL_OP_NEEDS_RTNL_RSS.
+
+A couple of questions about the commit message and the new code below.
+
+>     The driver never clears the core's IFF_RXFH_CONFIGURED, so
+>     netif_is_rxfh_configured() keeps reporting a user table while the
+>     hardware has been reprogrammed with the default one.
+
+[Severity: Low]
+Is IFF_RXFH_CONFIGURED still the right name here?  A tree-wide grep for
+IFF_RXFH_CONFIGURED at this commit returns nothing.  The state that
+netif_is_rxfh_configured() consults is now:
+
+net/ethtool/common.c:
+bool netif_is_rxfh_configured(const struct net_device *dev)
+{
+	return dev->ethtool->rss_indir_user_size;
+}
+
+set and cleared by the core in net/ethtool/rss.c and net/ethtool/ioctl.c.
+The mechanism described matches, only the symbol name looks stale.
+
+> diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
+> index 45a7520491a65..396b741fa86ed 100644
+> --- a/drivers/net/ethernet/microsoft/mana/mana_en.c
+> +++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+> @@ -3310,6 +3310,28 @@ static void mana_rss_table_init(struct mana_port_context *apc)
+>  			ethtool_rxfh_indir_default(i, apc->num_queues);
+>  }
+>  
+> +/* Whether the current indirection table can be kept for apc->num_queues,
+> + * rather than rebuilt from the driver default.
+> + *
+> + * Only a user table ("ethtool -X") is worth keeping; a driver-generated one
+> + * is rebuilt so that it spreads over every queue. An entry pointing past the
+> + * last queue cannot be kept: mana_config_rss() uses these entries to index
+> + * apc->rxqs[], which holds apc->num_queues pointers.
+> + */
+> +static bool mana_rss_table_keep(struct mana_port_context *apc)
+> +{
+> +	u32 i;
+> +
+> +	if (!netif_is_rxfh_configured(apc->ndev))
+> +		return false;
+> +
+> +	for (i = 0; i < apc->indir_table_sz; i++)
+> +		if (apc->indir_table[i] >= apc->num_queues)
+> +			return false;
+> +
+> +	return true;
+> +}
+
+[Severity: Medium]
+Does keeping the table also pin the TX side?  In this driver
+apc->indir_table selects the transmit queue too:
+
+mana_en.c:mana_get_tx_queue() {
+	...
+	txq = apc->indir_table[hash & (apc->indir_table_sz - 1)];
+	...
+}
+
+reached from mana_select_queue(), and the struct member itself is commented
+"Indirection Table for RX & TX" in include/net/mana/mana.h.
+
+Before this change every rebuild ran mana_rss_table_init() and restored
+index % num_queues, so this sequence ended up with both RX and TX spread
+over all 16 queues:
+
+	ethtool -X ens1 equal 2
+	ethtool -L ens1 combined 16
+
+After the change mana_rss_table_keep() returns true, since every entry (0
+and 1) is below the new apc->num_queues of 16, so the two-entry table
+survives mana_set_channels() -> mana_attach() -> mana_alloc_queues().
+netif_set_real_num_tx_queues() then publishes 16 TX queues while
+mana_get_tx_queue() can only ever return 0 or 1.
+
+The changelog lists the rebuild paths that are affected but describes the
+change purely in terms of the RSS indirection table.  Would it be worth
+mentioning that TX queue selection becomes sticky in the same way?
+
+> @@ -3625,7 +3647,20 @@ int mana_alloc_queues(struct net_device *ndev)
+>  		goto destroy_rxq;
+>  	}
+>  
+> -	mana_rss_table_init(apc);
+> +	/* Keep a user-configured table across the rebuild: its entries are
+> +	 * queue indices and stay meaningful while they are all still in range.
+> +	 * Only a driver-generated table is regenerated here.
+> +	 *
+> +	 * A table that cannot be kept is replaced by the default without
+> +	 * telling the core, which keeps reporting the table as user
+> +	 * configured. That is what this function did for every table before,
+> +	 * and reporting it here is not an option: ethtool_rxfh_indir_lost()
+> +	 * sends ETHTOOL_MSG_RSS_NTF, which requires the netdev instance lock,
+> +	 * and this runs both with that lock held (ndo_open) and without it
+> +	 * (mana_attach() from the reset and resume paths).
+> +	 */
+> +	if (!mana_rss_table_keep(apc))
+> +		mana_rss_table_init(apc);
+
+[Severity: Low]
+This is the acknowledged case, so mostly a question about whether it can be
+narrowed rather than a new problem.
+
+When mana_attach() -> mana_init_port() lowers apc->num_queues and an entry
+falls out of range, this branch installs the driver default while
+dev->ethtool->rss_indir_user_size stays set, so netif_is_rxfh_configured()
+and "ethtool -x" keep advertising a user table the user never installed.
+
+The stated reason for skipping ethtool_rxfh_indir_lost() does hold up: its
+own assert accepts RTNL,
+
+net/ethtool/common.c:ethtool_rxfh_indir_lost() {
+	WARN_ONCE(!rtnl_is_locked() &&
+		  !lockdep_is_held_type(&dev->ethtool->rss_lock, -1),
+		  "RSS context lock assertion failed\n");
+	...
+	dev->ethtool->rss_indir_user_size = 0;
+	ethtool_rss_notify(dev, ETHTOOL_MSG_RSS_NTF, 0);
+}
+
+but the notification lands in ethnl_notify(), which runs
+netdev_assert_locked_ops_compat(dev).  mana registers net_shaper_ops, so
+with CONFIG_NET_SHAPER=y that reduces to lockdep_assert_held(&dev->lock),
+which the rtnl-only reset and resume paths do not hold.
+
+Is there a way to reach the same result without the notification, so that
+the core's view and the programmed table agree in this case?
+
+> diff --git a/drivers/net/ethernet/microsoft/mana/mana_ethtool.c b/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
+> index ece7ff9cc409a..e3acaf17efabc 100644
+> --- a/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
+> +++ b/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
+> @@ -871,7 +871,8 @@ const struct ethtool_ops mana_ethtool_ops = {
+>  	.op_needs_rtnl		= ETHTOOL_OP_NEEDS_RTNL_SCHANNELS |
+>  				  ETHTOOL_OP_NEEDS_RTNL_SRINGPARAM |
+>  				  ETHTOOL_OP_NEEDS_RTNL_SPFLAGS |
+> -				  ETHTOOL_OP_NEEDS_RTNL_GLINK,
+> +				  ETHTOOL_OP_NEEDS_RTNL_GLINK |
+> +				  ETHTOOL_OP_NEEDS_RTNL_RSS,
+
+[Severity: Low]
+This isn't a problem introduced by this patch, but does the new flag cover
+the read side as well?
+
+The core only consults ETHTOOL_OP_NEEDS_RTNL_RSS for ETHTOOL_MSG_RSS_SET
+and for the SRSSH / SRXFH / SRXFHINDIR ioctls:
+
+net/ethtool/common.h:
+	case ETHTOOL_MSG_RSS_SET:
+		return ops->op_needs_rtnl & ETHTOOL_OP_NEEDS_RTNL_RSS;
+
+so mana_get_rxfh() still runs with the netdev instance lock plus rss_lock
+only, while the rebuild writes the same array entry by entry holding RTNL
+alone when it comes from mana_attach():
+
+mana_en.c:mana_rss_table_init() {
+	for (i = 0; i < apc->indir_table_sz; i++)
+		apc->indir_table[i] =
+			ethtool_rxfh_indir_default(i, apc->num_queues);
+}
+
+CPU0: mana_per_port_queue_reset_work_handler() -> rtnl_lock() ->
+      mana_attach() -> mana_alloc_queues() -> mana_rss_table_init()
+CPU1: ethtool -x -> rss_prepare_get() -> mana_get_rxfh()
+
+Can "ethtool -x" print a mix of old and new entries in that window?  The
+hardware itself is programmed from the driver copy by mana_config_rss(), so
+this looks limited to the reported table.  The write/read race the patch set
+out to close on the set side does get closed by the new flag.
+
+For what it is worth, the freed-table variant of this does not appear to
+exist: mana_attach()'s failure path calls mana_cleanup_port_context(), which
+only frees apc->rxqs and the debugfs dentry, and mana_cleanup_indir_table()
+is only reached from mana_probe_port() before register_netdev() and from
+mana_remove() after unregister_netdevice().
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260905004401.3937066-1-longli%40microsoft.com
