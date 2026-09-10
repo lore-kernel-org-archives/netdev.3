@@ -1,135 +1,135 @@
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82CD3503BF7
-	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 17:47:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C68B5678C9
+	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 17:53:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789062438; cv=none; b=lbCAfTw0FkndKIYH8ReKz7teMv3MesahknoJ70UsH5HBpkBXS0C/K+CCBx0Pi7SAziam0RqeQArAB4Hn8f29N5HZg5tRXiirPhcHM0Yn2xVqhteXOeusBv82gV+mybxENZGR6tZexiNdpfQ7fS/qFubhjV+5oBNJy7/ZRXxsNTM=
+	t=1789062835; cv=none; b=DJ2kD6Y0xz0w/tpw1nJiMuWPfKfeRu6quvpHMP4027H0WZZ1qwWlNYshK8P2iNyMyGui/au8UcGL1i7smDpqr5pAt/caQJZcEv5WRAKlvEJEkwoV6jPezK2R567ZN7ERbBOqZ4CulUkkOlKbB7UEHd6cMs1G5F/ad9RUaNdegRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789062438; c=relaxed/simple;
-	bh=ggmWy378Fm8XbzIqsmoiDfWqgCWV7miSo+Loys+qS6I=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=sExHzkENpg/ve/TMFyYDCqE3YS5ndUmixE9GQBVZNDsfzqCYDE85Y9dbAku/KDqIallTyxeAKhkj7msblJ/Oq/gdVg/9B7oswgNXJL0aGoTRBSPFDOp2aDD81nBDiNWL/NAI39Q368LoF+7kJaCMM4feq/Mx51YNyyCFZS/f2DM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com; spf=pass smtp.mailfrom=etsalapatis.com; dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b=HUHwSk7O; arc=none smtp.client-ip=209.85.216.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=etsalapatis.com
+	s=arc-20240116; t=1789062835; c=relaxed/simple;
+	bh=OmmYDULCAhxxwCGfc8f2jli+oq6yQsGRKtNM6XN5Gvc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=X9Qxou4Eo8HKEjFB//I9NteUBowjjddmNS3yGjpZLCQIHfXzY4CIg7GLjOpLxlwIkr1umnMUOU4PSLqfvFDFKIOV3FlaGS0Xhzj5XW7FN/ksd6/O8RzJbkwLW57HwRvrcoa5XWwtPfvevwz08z4Y/sd5AdaalsHpYuJ4VgriXTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Fjmlwlgj; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=etsalapatis-com.20251104.gappssmtp.com header.i=@etsalapatis-com.20251104.gappssmtp.com header.b="HUHwSk7O"
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-38a0c7e841fso9418355a91.2
-        for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 10:47:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=etsalapatis-com.20251104.gappssmtp.com; s=20251104; t=1789062427; x=1789667227; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=HAvA87Et5zN/g6j7vdy1Ap87pfUn9R+X0a3IzOHRO74=;
-        b=HUHwSk7OVdy7wpzNCyqFSt0yxKwOynRRXEBnkyUtOGsGl5Si3uamMpwuqIA5trg7Hs
-         Mr85LLXnSJseku++pvzOVjuvnNBC2p2FsAZgMm/a9thop2FTNDBpsLdrClIDHuW9NKzd
-         l9dPe+TT6zH4vRn/x44lWIMCXqvLpV7iiTBwaoIHZQd489fvGazRkxRek3cZveM+l0p8
-         1GSlRPDslRjkUgIQ8umUr/fPzSDkjjnioCpgJxzcjSoibPc8DJQ3Rt/yVqWq2bzeuaiE
-         HxFEZ3gTH+AprS3kP66SXQjGF5dcGm6bID2iGSzoMAMpmhUstuPzLeDPfiaEWPtOEhQa
-         +FFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789062427; x=1789667227;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=HAvA87Et5zN/g6j7vdy1Ap87pfUn9R+X0a3IzOHRO74=;
-        b=Dx+810jXNR0F3u0OEZjxjPu4gPeX70wu4ktZMFmwgVbQqEaNXp/2TMrdMC0kxlIL7B
-         zTV2S+sziRo9BZxNOXWlWjfIPkNKSKd6LNQK+/gKnbXJgGaY05F6kshBfqcgVfDO2YzU
-         utE3hc157KRIYmT6r5qbWOS6MMXOjN6aO16M7ADt4NfZsQD9pGJRgQqwBkOaZLzgac+y
-         FVbvHk7D7NRCe2qecRMXrHKLa1GpIXhdlps1VHA20OKLgMh1HvCsVxjUEzLoD94/ud51
-         V+YVQacr7lJnHIk62TMxa4kxQWl47drMjGSEkTIx0tdHF9058AN3vuDhl3rTEg9PwzBB
-         gs/A==
-X-Forwarded-Encrypted: i=1; AKwUvBwZMeF35gv+HqqEOYx1jaf9Vl2/tzc7xh3naiQ4mA9mnL7YXOa3zs/F1eyyHShr7mAgLqul9/o=@vger.kernel.org
-X-Gm-Message-State: AFuF++lgrHwNt+gkwWos1WCDw7daLIbkvGiggpvWlWzs4NOPbAVxw6X3
-	8wT60YPLc7MPdr8oZiTELH/BiWVlYzm/9iOi3p1aakChvvl6qfk1/1m1rLHNNXGoshg=
-X-Gm-Gg: AYBFou147ECG6t/dNVL6avpgaflvWCHk3tBCiO6bQUlEwCw1qUpSI/FqvKwkWIOt4gS
-	weDKouai70L22HTAd0EKd9ptQZVoTvumJIZcAESq2/uArHduf38lKRDKJgySgheo4GR/IImxUvn
-	WZ1jG8UNoBjWyDOGKsYFqIex9K8iI+4wQ1ALerg8N00S5wg01M8ygqO81U/u1AMRM1h9YOTO9vo
-	5BhgriTnnZnqtsJrJfO/GWW0B0i8VTjTo3m3ZsANd5BTRubD16YzfkBaod/suj+tvcsviCvZ/IU
-	dolrM0AQOXTrA78L5wg3UImzCkwplpViQjp7GPOU8nsProD1Cq8UIsVH+kdj5+w7WQbJEAM0Viv
-	V7ABmsZ2iPZNEdD6RGbClupow9Gfv0tMcxU6G7Y6laQd/F+eyPtbEED4j/7+KPUB/K4J8BNX6c+
-	Q45KKyT1Z9d90DND8Bzr+O+5Pa4JixH0oa4sTBQdBKA3C2QxbV0yVECLKho0gPlYWubMl/L8PbU
-	ezyEIBWfcDwMlJ7nl2INKRpJamf
-X-Received: by 2002:a17:90b:274e:b0:398:b1eb:136c with SMTP id 98e67ed59e1d1-39b2610fe62mr64208964a91.9.1789062426873;
-        Thu, 10 Sep 2026 10:47:06 -0700 (PDT)
-Received: from localhost (107-190-31-17.cpe.teksavvy.com. [107.190.31.17])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39d98e60484sm263339a91.4.2026.09.10.10.46.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 10 Sep 2026 10:46:58 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Fjmlwlgj"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1789062824;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=RDSzcHCE05xPzjy6Xo6KC+PCiUblPrx84N5aVhq59vg=;
+	b=FjmlwlgjJTrWlkmw6Yqfn65E0ioxq1fW8iAn9YGijsWka6KlyEUH5gMOgW6OXtpEbNVzAl
+	xXxa5eUF5bXyuixiPflcn1RE6mr0g05kmBqPky/PJBLdwMIFlm5VwjAfAdmFsZkgXzTiWT
+	CZ8Bpg7cB9BUz3eF8pmQVge2aeyQwoA=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-599-AATMVXf4M0KWFKi0_kCiOA-1; Thu,
+ 10 Sep 2026 13:53:41 -0400
+X-MC-Unique: AATMVXf4M0KWFKi0_kCiOA-1
+X-Mimecast-MFC-AGG-ID: AATMVXf4M0KWFKi0_kCiOA_1789062820
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4105A195DBAC;
+	Thu, 10 Sep 2026 17:53:19 +0000 (UTC)
+Received: from x2.localnet (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id AC32C180034F;
+	Thu, 10 Sep 2026 17:53:17 +0000 (UTC)
+From: Steve Grubb <sgrubb@redhat.com>
+To: netdev@vger.kernel.org
+Cc: edumazet@google.com, kuniyu@google.com, pabeni@redhat.com,
+ willemb@google.com, davem@davemloft.net, kuba@kernel.org, horms@kernel.org,
+ shuah@kernel.org
+Subject: [PATCH net 1/1] net: preserve socketpair output on setup failure
+Date: Thu, 10 Sep 2026 13:53:15 -0400
+Message-ID: <JyK226D0S5CWGUpAC4MO4A@redhat.com>
+Organization: Red Hat
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 10 Sep 2026 13:46:56 -0400
-Message-Id: <DLBTP43WDS59.3HN832U7195TZ@etsalapatis.com>
-Cc: "Emil Tsalapatis" <linux-lists@etsalapatis.com>, <ast@kernel.org>,
- <daniel@iogearbox.net>, <andrii@kernel.org>, <davem@davemloft.net>,
- <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
- <eddyz87@gmail.com>, <memxor@gmail.com>, <martin.lau@linux.dev>,
- <song@kernel.org>, <yonghong.song@linux.dev>, <jolsa@kernel.org>,
- <john.fastabend@gmail.com>, <sdf@fomichev.me>, <horms@kernel.org>,
- <dsahern@gmail.com>, <hawk@kernel.org>, <razor@blackwall.org>,
- <bpf@vger.kernel.org>, <netdev@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH bpf] bpf: fix reading neigh ha in bpf_fib_lookup()
-From: "Emil Tsalapatis" <emil@etsalapatis.com>
-To: "Nikhil Ludder" <nikhilljatt@gmail.com>, "Jiayuan Chen"
- <jiayuan.chen@linux.dev>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260909024011.1252694-1-nikhilljatt@gmail.com>
- <CABFh=a7Z=heZODVsXwisY3VwULDy-Rq1hwO09exgX2d0-KzgUQ@mail.gmail.com>
- <178898653497.1776876.10402414041023036972@gmail.com>
- <7f3e237e-ac5c-46af-ae21-8b437a099fe3@linux.dev>
- <178903991209.1916825.3991149870565892141@gmail.com>
-In-Reply-To: <178903991209.1916825.3991149870565892141@gmail.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-On Thu Sep 10, 2026 at 7:31 AM EDT, Nikhil Ludder wrote:
-> On 9/10/26 12:59 PM, Jiayuan Chen wrote:
->> Yes, no deadlock.
->
-> Thanks for confirming.
+socketpair() writes the reserved descriptor numbers to userspace before
+creating the sockets and their file objects. A later failure therefore
+leaves a modified caller's array despite returning an error, contrary to
+POSIX. For example, socketpair(AF_UNIX, SOCK_STREAM, -1, fd) returns
+EPROTONOSUPPORT but replaces the array's sentinel values with unused fd
+numbers.
 
-The explanation makes sense, hadn't considered where this is written
-from. No need to adjust.
+Defer the output stores until both file objects have been created, before
+installing either descriptor. If a store faults, drop both file references
+before releasing the reserved descriptor slots. Keep the early descriptor
+reservation and the existing setup-failure cleanup paths.
 
->
->> BTW, if an IPoIB device can show up here, dmac is already truncated
->> today and the packet can't be forwarded anyway.
->> Shouldn't we just reject addr_len !=3D ETH_ALEN instead of open-coding
->> the copy? Then you can use the native function instead.
->
-> You are right, and it is worse than just dmac: the line immediately
-> below copies dev->dev_addr into params->smac with a fixed ETH_ALEN and
-> no addr_len check either, so both addresses are already truncated for
-> such a device.  struct bpf_fib_lookup declares smac[6] and dmac[6], so
-> the helper is ethernet-only by contract and a non-ethernet nexthop is
-> already outside it.
->
-> I would rather not fold that into this patch though.  This one is a
-> race fix with Cc: stable and no behaviour change, whereas rejecting a
-> device that today returns a (garbage) success is uapi visible and does
-> not belong in a stable backport.  Would you be happy with the seqlock
-> fix as it stands, and a follow-up for bpf-next that rejects
-> addr_len !=3D ETH_ALEN and covers smac as well?  I am happy to write it.
->
+In practice, I doubt anyone notices. But this aligns with the expected
+behavior
 
-I think this split makes sense, even if there's the churn of adding the
-fix then removing it to use the pre-existing helper. It's just a couple
-lines of temporary duplication. @Jiayuan wdyt?
+Signed-off-by: Steve Grubb <sgrubb@redhat.com>
+---
+ net/socket.c | 23 +++++++++++------------
+ 1 file changed, 11 insertions(+), 12 deletions(-)
 
-> If so, which return code would you want for that?  None of the existing
-> BPF_FIB_LKUP_RET_* really fits: NO_NEIGH is untrue since the neighbour
-> is there, NOT_FWDED is vague, and adding a new BPF_FIB_LKUP_RET_* is
-> uapi, which is another reason to keep it out of this patch.
->
-> Thanks,
-> Nikhil
+diff --git a/net/socket.c b/net/socket.c
+index c05d86e63abf..4cb8662869f0 100644
+--- a/net/socket.c
++++ b/net/socket.c
+@@ -1851,10 +1851,7 @@ int __sys_socketpair(int family, int type, int protocol, int __user *usockvec)
+ 	if (SOCK_NONBLOCK != O_NONBLOCK && (flags & SOCK_NONBLOCK))
+ 		flags = (flags & ~SOCK_NONBLOCK) | O_NONBLOCK;
+ 
+-	/*
+-	 * reserve descriptors and make sure we won't fail
+-	 * to return them to userland.
+-	 */
++	/* Reserve both descriptors before creating the sockets. */
+ 	fd1 = get_unused_fd_flags(flags);
+ 	if (unlikely(fd1 < 0))
+ 		return fd1;
+@@ -1865,14 +1862,6 @@ int __sys_socketpair(int family, int type, int protocol, int __user *usockvec)
+ 		return fd2;
+ 	}
+ 
+-	err = put_user(fd1, &usockvec[0]);
+-	if (err)
+-		goto out;
+-
+-	err = put_user(fd2, &usockvec[1]);
+-	if (err)
+-		goto out;
+-
+ 	/*
+ 	 * Obtain the first socket and check if the underlying protocol
+ 	 * supports the socketpair call.
+@@ -1916,6 +1905,16 @@ int __sys_socketpair(int family, int type, int protocol, int __user *usockvec)
+ 		goto out;
+ 	}
+ 
++	/* Publish the descriptors now that it shouldn't fail. */
++	err = put_user(fd1, &usockvec[0]);
++	if (!err)
++		err = put_user(fd2, &usockvec[1]);
++	if (err) {
++		fput(newfile2);
++		fput(newfile1);
++		goto out;
++	}
++
+ 	audit_fd_pair(fd1, fd2);
+ 
+ 	fd_install(fd1, newfile1);
+-- 
+2.55.0
+
+
+
 
