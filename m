@@ -1,106 +1,198 @@
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
+Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFF8D26ED4F
-	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 04:05:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.176
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789013139; cv=pass; b=Qt8hmjdIJeaFLspIZxd7bO4r3A6y7kH3xoG5nyr6kj+pvFmtENiRa8QnyI7B4mNN7u4gnccFxYRKtZ+UnTiANWOWdhfzOE5h5SheIaBlt+FGBjGNhZ9mbbTzfoJDVDuzcqzVGa4XxHkB6kGHmPphcEUTd6SDxPFySYuZBs0HSdY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789013139; c=relaxed/simple;
-	bh=cIB6oLLxIpfMMXfc6SPhaw9BgxUvuAuXYXicau/x3EA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MM1zfS5jtpyNtpkY1GEEOEHlzezCzaXb9fQNk1suVDpRMktJVngjLkRFCO96JhbcgW/PADLEwJiE7DXM1a3yWEEZlYe5Q1eLlKCfjyzoxCMgT7rCyatrCbLA7+LcW23Si+1dltSGgBmvX9fd937P7+qgwHqbBWhaivAT+Yclqgc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XSIvP0YF; arc=pass smtp.client-ip=209.85.208.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6462E39A057
+	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 04:07:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789013233; cv=none; b=sJRXFpkpBhkZX2k+ZZu6y/QR6+LYPSwLPQbrUmsQmdWNxAGfLmzrlMrgitOywLjxHfXkmaCRPBps5+lUZiCyfDHoFv3oUzHZ6SaLjSHMLyU83TGnMW170tC0hEw07Clr1YlFLZ9N2EXe/PDIsc3RwSVTl6fxgbhbXL2EV293TRk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789013233; c=relaxed/simple;
+	bh=8O7OA7NRtWER2mi1tQYij7c8KguAmXVtwpzGREABKJg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=BCQ0l25D4RPPZlAdQj3H5PBX823y9BzYKthSqOOUz/SxcEMQBnXSzFjK4yVCvPCz2HtOPSoJiGSXRkv58ohvMvS8B+PK/DzHIqq5zI0givousq+LT7td5w9LqrvV3/gTzIGsNDH0iRUHuXH4AuQk0em54pg6yRd4ZNsqYzB4MZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jclark.com; spf=pass smtp.mailfrom=jclark.com; dkim=pass (2048-bit key) header.d=jclark-com.20251104.gappssmtp.com header.i=@jclark-com.20251104.gappssmtp.com header.b=NqitI5lq; arc=none smtp.client-ip=74.125.227.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jclark.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jclark.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XSIvP0YF"
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-3a309f92daaso54179621fa.3
-        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 21:05:37 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789013136; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ecN0jxZF62qWbZ5lH7BOYPhoFWHNhLzVCcSKnG+HNiEc6lRlzunT1Nx4n1gLKXDfWQ
-         tXlqYDiKNpQCeR5r7ynDoFeeiUeOsNFxhlc1uHAO0adz0xl38rz8/Li+tdxpGfx+/eh6
-         M+3lrIsNumzFS9eZXLVTckma0R+814pkEzqUVXhLoxwBZ+K/aAkx0P7AKEe8Wm0S2lXA
-         uDSIjAedH+8XDy25nRcmU4Zqe6zpkYpWTAfPQf4Zfr/6GmYI/ORIlitcb9Cdi+aUt/C3
-         b9B+lNjnhpAAlVi7QUReGRERM0thKjus8Uuj58MJ658RqlP1/5er8oz2OqKIB/RtaXXg
-         vayg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=xDVcQUv0ft4THKOXTAkOW6jh8BrJrtEn9YRLIX/ZPD0=;
-        fh=x3oHEBSrraUf+/Je3Ry/XcK3kSa/3ygOtk69LCcbZLc=;
-        b=JHcJGmYmcniSmr+sSfP/4pyW+9giwZpmIn+3W9L6jg6R/V2TiBIAui58sMDI6HFTEI
-         kQ8OPmLK9lVMumKHcKzkajgWMVD7HApicXFapFwtfBZkA0yx8vlZ2hsRXg9wH0pypB1f
-         7y5sRzZCBNhI1c/b/1+DWSIU0uim+TubHn1GcGIXHGLzO5a7DYL4FKmx4AWLG+xJbvv4
-         qgDtMdpyGvuWe7HIiLR+k1+fX0wc+a5PGgVeU+kTVlYAvLohg4bOIKKoIugWQY1DtQW7
-         Bx5yYJiD2dZvd+EgOA8j3sPZzqaD/ECdDnk7UZuZN/IxeNE/SZgR4cxFwfDLwawhkBCb
-         u5bg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=jclark-com.20251104.gappssmtp.com header.i=@jclark-com.20251104.gappssmtp.com header.b="NqitI5lq"
+Received: by mail-pj2-f12.google.com with SMTP id d9443c01a7336-2d747eb79f6so7160355ad.0
+        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 21:07:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789013136; x=1789617936; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=xDVcQUv0ft4THKOXTAkOW6jh8BrJrtEn9YRLIX/ZPD0=;
-        b=XSIvP0YFENBnGXk/ya+4tmRlWSVGZd5JzXbwsFu2XXK8pvRxrrBYjlzKgsYF1Qr+2Q
-         sla61vAw6ugcyj7iNPJ+g0rzbTeQX8KoqeFeyWXuC5KSxhuqX2XZOBOeyOmUGfPOuP6l
-         HYiV2dq+UZZ8mKc8x2jVD0fkwW/ZtjiO2tZqZfMzGrdsdqJpSsMmaFlfhsqcEN5FWqMB
-         mGF8FIvxGCzRhFtZh83gitciEnGm7mjOtz05kies4KsTAIKoR+9cN1UGPxx7f41Pt/r/
-         EVKmd0Y3zlLahR0Eo7CKyAsdFeOCvgPEPVkN4qL09Q9BgDUbRj3kYLFOaTvCaYS+BtDb
-         yfFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789013136; x=1789617936;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=jclark-com.20251104.gappssmtp.com; s=20251104; t=1789013231; x=1789618031; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=xDVcQUv0ft4THKOXTAkOW6jh8BrJrtEn9YRLIX/ZPD0=;
-        b=LNyeEj/ixCWhpQQTLKV42rsmrfix1yaui9Vh79xC2IBSCzyiXrqMp336Ltd29R51Ba
-         m3CSKPtaeNR9nFUGLPQrQ/wOXsYdv90FMxSVdIr+TOkC9FRpQDIKk5S3nIPJCz9yhn1X
-         1H2jmGvyER6/gvCUlQuc9JSTPBjAvozz6EJunmvPeoR886EHEUkuQNkgnqn1StRY06yk
-         nGQdugpVRUp6YsGBEMqeIObnU6J1F0TVnMj2pmwT8KMTdbl1zyRr/vrxo93s/SMzWOIb
-         6b2iRnuI0h9y9/2KgQe7R3BGnH9zEVdIDxfPHg3KPL+JYQYX/HQBPDx9NX12I/gLulh1
-         xGRg==
-X-Forwarded-Encrypted: i=1; AKwUvBzkcW6RuKiienQzaAz/Bds/ANyzHYReAUndeQ5Xu9D7ZersJ9M2uxme5YM3Zmj6kG4y2GFJjeY=@vger.kernel.org
-X-Gm-Message-State: AFuF++mAd/iREWH94wJz392nQtExBlARcGcMWqOYuWdbaHiw5uNohEMA
-	O3hmNNjMb7itWAphCM2js7HjDv6v5APFL0FRsdQO0OZRTUQ+3Ps2ujZ2rFO6zRSuI9/uQeEyxLQ
-	pQxDzKvJcsXyhaTIPwlq62xtQUfVdVF0=
-X-Gm-Gg: AYBFou1X6IEeMdEmWUIISM7DqdM5vIjdjTD+kIkXM7O4LXtunPu/KdKCrDkuI1P5Moa
-	YiZhSDeMJZ5loif+JxTMukMzUsuOZTDgDyCGOaF9R4cjvOD+X4aArOfM/gb4gJ5EdmTqLvJveRO
-	QsSBw+2fRNx//B3/G2F0IBGQILts73Mx/YvP64MqQD3HAa5qUfaa0BooaU7O+wcMny+z+nKIcAm
-	cBecGQFZ1zTKtXF00SkknnuI/dMMREOVcHs73rEDGEZHSaRtyYiBj/GZWzZ105qVv3EFDpfZM0F
-	hcSH0ypPQ/4pJsNlWqcZ4FRJ5FrSF6aMLczY2qgTFjV4e/y1oziGnkJkVO5CNfzCV/mm38I9cyl
-	3dgXybracWXBvPuOR5tgP0FgTgN267hSVeD1Esf0xDg==
-X-Received: by 2002:a05:651c:2213:b0:3a3:749e:319e with SMTP id
- 38308e7fff4ca-3a3749e3381mr39434621fa.18.1789013135821; Wed, 09 Sep 2026
- 21:05:35 -0700 (PDT)
+        bh=065Fs6ol/VHxclK2iJqW35+e9V2WVaXBoq05wBkmxdM=;
+        b=NqitI5lqqraeyxaTtJeFIU8Y9O/WfxXwy2uwFDFIwEGiLbffiKw/GTSG+PZq90NkKu
+         +XPk8/R/Lt8NQdQjbMENDnCyOS8OTdVJyrad1HMplyChOrPQ0JS7VwtnX1JvxEQjIgiP
+         55WvgGWwKDLGtQ3wft27KC03vBEHbyVy5e4YznlVB3+xUtefra+dpqjMX9KSzLH228BZ
+         UQC3qu1EaEMYeKbFOmPlt21y6O2zILM4n2at1M02/LcePeoPUHRcY4LzfblNgWJh4VMb
+         Jumrh/9iJf0+2YDdlkwG02zAlGpETxpHjfzIvDUXY49renDPpavC3OIhZq9wjO1jS4q8
+         W1fw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789013231; x=1789618031;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=065Fs6ol/VHxclK2iJqW35+e9V2WVaXBoq05wBkmxdM=;
+        b=leKptAL5M7V179Rf2bIxotdBx7GHVnEw51ZI/8ypEAMpL5E25iD0xOF64D+mpcw2uO
+         /9rZf9t8AKTVymTvJxU4dSvOmKNnrcrzguQQvZfGgEtBmgJAhHhiWAzTdfCIY8J0oCB7
+         W02EYNl7ArqdJnmK9Pf7WpD2SEwRixL1xle/3m4zL3mDDudUcT933retfqoErBFzMCts
+         fCsZ3U+15cfm7Ug6c6H2M/aldmkaBIc357iwBGPMpz/zpzBtRy/Igi1zTBggdAqiIDXg
+         EDVctnJ5O1lQ6NBWnmVqnA8X5Ouluezl3jcmd0ZEH7owoNR/leX6B9bGWFjyduy7I9Xc
+         9MLQ==
+X-Forwarded-Encrypted: i=1; AKwUvByt+s6JgZv9H9xwETRIpSRlrUMEYYh39j4bAqxItGgBJSDtdjl/Xwbv/3ffHA1LdfGJN4BI+So=@vger.kernel.org
+X-Gm-Message-State: AFuF++lHY/RwR5HB+AdnF3b8fE2hoIYGn5aHSSxhb30IBMGNRHRB0XZ0
+	u1/AFzyVvc/raB/EVttKZu62yB5PVfTcSdzYW/YeR3eCI6WnBmYB+NK1p0kO6btn1A==
+X-Gm-Gg: AYBFou33bJ4blBmjaZN8mwPreoBPf3yDwgNVQC3YNziJf35PRmpFzgAUNpbFJjppVGd
+	hTy4fhOYGjMxi+n7CMXma8pMLyWdFAov+bjGx5Z1DHWe/caumA8MifP8Iean6QMCQguI5tmBPXF
+	ByoptOiXtbBWc+4LpoShLpDfOwG93UPjDDMBrJUcjpdqYpGbQLzt9znYtvbn+1SBBhZWqurKOs2
+	rYypl+qS0Z1WxcWFKvfws2f4uOWazZxH+f1nST20mj+ePVGxrCs9K/4aJrwuyfulLIzTQUNAhbM
+	dAAsJ7FJEvX3/KJrPRUXu1PoTqct9AIs75hL30G5iIUcKql1RkioPhFY8ATTfog6ui50j/08XFX
+	oVtNQiZla8ZpXPeGp3PH6V9KD3MnRb8qdSh8UNyXhmwreTAGaBD+6nk5xiHnyePy6US76nWbU9T
+	VmYKV7/Emr0d+hAJrhEkLCXr9C0OpSLUHTYoW7lCFkWp7lAH2EfV8iOQrCurL9c5+WdGvEHealC
+	Tmr8P8=
+X-Received: by 2002:a17:903:32c3:b0:2d9:3083:a3ac with SMTP id d9443c01a7336-2dd07cb7e83mr62965985ad.15.1789013230725;
+        Wed, 09 Sep 2026 21:07:10 -0700 (PDT)
+Received: from mimolette.lan ([58.136.73.233])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2db149cd817sm81589045ad.72.2026.09.09.21.07.06
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Wed, 09 Sep 2026 21:07:10 -0700 (PDT)
+From: James Clark <jjc@jclark.com>
+To: =?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
+	netdev@vger.kernel.org
+Cc: Richard Cochran <richardcochran@gmail.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org,
+	Nicolai Buchwitz <nb@tipi-net.de>
+Subject: [PATCH net v2] net: macb: fix ordering around PTP timestamp read
+Date: Thu, 10 Sep 2026 11:06:52 +0700
+Message-ID: <20260910040658.18359-1-jjc@jclark.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260905093932.43726-4-sigefriedhyy@gmail.com> <178901169484.219967.3624591832079760064@kernel.org>
-In-Reply-To: <178901169484.219967.3624591832079760064@kernel.org>
-From: Yuyang Huang <sigefriedhyy@gmail.com>
-Date: Thu, 10 Sep 2026 13:05:24 +0900
-X-Gm-Features: AcwNN1Wyvr5GEUMi694_30SRPcVjVb5vZp8y74DSCcC_5qtyY0PjOtWZgmHeQ78
-Message-ID: <CA+7S2v+7tGH2vRnN5g_oWLwGs=0JfFCX558+CgGOGAhWM6VxwQ@mail.gmail.com>
-Subject: Re: [PATCH net-next 3/3] selftests: net: test AF_PACKET multicast dumps
-To: netdev-bot+sashiko@kernel.org
-Cc: davem@davemloft.net, dsahern@kernel.org, donald.hunter@gmail.com, 
-	edumazet@google.com, idosch@nvidia.com, kuba@kernel.org, kuniyu@google.com, 
-	nickgarlis@gmail.com, pabeni@redhat.com, sd@queasysnail.net, shuah@kernel.org, 
-	horms@kernel.org, sdf.kernel@gmail.com, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
->- [Low] dump_mcaddr_l2_check() in
->  tools/testing/selftests/net/rtnetlink.py dereferences dictionary keys=E2=
-=80=A6
+PTP_SYS_OFFSET_EXTENDED returns system timestamps that do not correctly
+bracket the PHC register read on MACB/GEM. On a Raspberry Pi 5, the
+returned interval can be as short as 37 ns, while an ordered register
+read takes approximately 1 us. This biases the midpoint used by phc2sys,
+causing CLOCK_REALTIME to run approximately 0.5 us ahead when synchronized
+to the PHC.
 
-Same issue reported in v3 thread, already answered there.
+gem_tsu_get_time() reads the nanoseconds register using the driver's
+relaxed MMIO accessor. On weakly ordered systems, the subsequent system
+timestamp can be taken before the register read completes. The internal
+smp_rmb() in the pre-timestamp path also does not guarantee ordering
+against the subsequent MMIO read.
+
+Add rmb() before and after the bracketed nanoseconds read in both the
+normal and seconds rollover paths so the system timestamps bracket the
+PHC read. Adding the post-read barrier increases the minimum interval on
+the same Raspberry Pi 5 to approximately 1 us.
+
+Fixes: e51bb5c2784c ("net: macb: ptp: Switch to gettimex64() interface")
+Tested-by: Nicolai Buchwitz <nb@tipi-net.de> # Raspberry Pi CM5, min bracket 37 ns -> 981 ns
+Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
+Signed-off-by: James Clark <jjc@jclark.com>
+---
+Changes in v2:
+- Add rmb() before the PHC read in both paths, following Théo Lebrun's
+  feedback. Explain why the pre-timestamp path's smp_rmb() is insufficient
+  for MMIO ordering.
+- Wrap the post-read barrier comments.
+- Add Nicolai Buchwitz's Tested-by and Reviewed-by tags.
+- Drop RFC.
+
+v1: https://lore.kernel.org/netdev/20260908053150.28694-1-jjc@jclark.com/
+
+Nicolai's review and testing were on v1. The additional pre-read barriers
+in v2 address Théo's feedback.
+
+Reproducer:
+
+#include <fcntl.h>
+#include <linux/ptp_clock.h>
+#include <stdio.h>
+#include <sys/ioctl.h>
+
+#define DEVICE "/dev/ptp0"
+
+int main(void)
+{
+	struct ptp_sys_offset_extended ex = { .n_samples = 25 };
+	long long min = -1;
+	int fd = open(DEVICE, O_RDONLY);
+
+	if (fd < 0) {
+		perror(DEVICE);
+		return 1;
+	}
+	for (int batch = 0; batch < 40; batch++) {
+		if (ioctl(fd, PTP_SYS_OFFSET_EXTENDED, &ex) < 0) {
+			perror("PTP_SYS_OFFSET_EXTENDED");
+			return 1;
+		}
+		for (unsigned int i = 0; i < ex.n_samples; i++) {
+			long long bracket = (ex.ts[i][2].sec - ex.ts[i][0].sec) * 1000000000LL
+				+ (long long)ex.ts[i][2].nsec - ex.ts[i][0].nsec;
+			if (min < 0 || bracket < min)
+				min = bracket;
+		}
+	}
+	printf("min bracket: %lld ns\n", min);
+	return 0;
+}
+
+ drivers/net/ethernet/cadence/macb_ptp.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+
+diff --git a/drivers/net/ethernet/cadence/macb_ptp.c b/drivers/net/ethernet/cadence/macb_ptp.c
+index e5195d7da..4fb287608 100644
+--- a/drivers/net/ethernet/cadence/macb_ptp.c
++++ b/drivers/net/ethernet/cadence/macb_ptp.c
+@@ -50,7 +50,15 @@ static int gem_tsu_get_time(struct ptp_clock_info *ptp, struct timespec64 *ts,
+ 
+ 	spin_lock_irqsave(&bp->tsu_clk_lock, flags);
+ 	ptp_read_system_prets(sts);
++	/* ptp_read_system_prets() uses smp_rmb() internally,
++	 * which does not guarantee ordering against MMIO reads.
++	 */
++	rmb();
+ 	first = gem_readl(bp, TN);
++	/* Ensure the PHC read completes before taking
++	 * the post timestamp.
++	 */
++	rmb();
+ 	ptp_read_system_postts(sts);
+ 	secl = gem_readl(bp, TSL);
+ 	sech = gem_readl(bp, TSH);
+@@ -62,7 +70,15 @@ static int gem_tsu_get_time(struct ptp_clock_info *ptp, struct timespec64 *ts,
+ 		 * (assume all done within 1s)
+ 		 */
+ 		ptp_read_system_prets(sts);
++		/* ptp_read_system_prets() uses smp_rmb() internally,
++		 * which does not guarantee ordering against MMIO reads.
++		 */
++		rmb();
+ 		ts->tv_nsec = gem_readl(bp, TN);
++		/* Ensure the PHC read completes before taking
++		 * the post timestamp.
++		 */
++		rmb();
+ 		ptp_read_system_postts(sts);
+ 		secl = gem_readl(bp, TSL);
+ 		sech = gem_readl(bp, TSH);
+-- 
+2.47.3
+
