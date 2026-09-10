@@ -1,65 +1,84 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B053F36A35A;
-	Thu, 10 Sep 2026 02:23:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5AEA35F182
+	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 02:31:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789006995; cv=none; b=DcsKsG87Kj9tHT0hiOma54L2sbY8inpGY4lvks+zVt3egWzVOarPTnB1Q9i5B6ls5v1Ekqpyxxs27GbC9/K855xi0bUHcI44Wy9m5vJJG48LKNL+NeLCZgh99ACGd/+1TA9Zmq6d2X67Dk5+nqdXcJ4OCFwx7GQs//Vsxi2qDiE=
+	t=1789007469; cv=none; b=mcgSsa1Kj9QSAqUbMrmI+aEtDb/nrjYz6etZMC/FDolVQIeF1AMM5HZEzmsH5F9lxatmkgthPBCq3H26HiQfGIbOBtXkHueC5MN4WrYs3fvptHlzI33Y7tchw1yda9+UVe3O9SWcpg5UVKmzW2KN1UqaEN+mCwnD0FWAl6Oj00k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789006995; c=relaxed/simple;
-	bh=yaOc+4xdwpaaKP/g36V5RFJL0tTvL6py9/BcVMfMZ/w=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=H8Yhk3Q3KQ1ZDBxGAemQC9/4ST5QYg76VgpZcsopcu4LsfV2EohS3NA2Jk+Rc8nJZDAq8XTFA0FkCiYIy4gBi1Y7OOI6cCg7mlpTPXd/1JaC9teFa468MBDPKPDdwxsj6tn5kbNEtfL9XPm+dsQqOTYTp540vE59kjHI+Gmkpwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UHXHaSji; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789007469; c=relaxed/simple;
+	bh=GPSewceStH/QUsrjES8VWPcJ8EiCPuSl4N1K+MP+Vu4=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=jsBfBz2kPa2wVQgJtNidMzteu77XSllabbev3jlqKiK66Ah+qBWnm441B8fprCduM2mzSt0ULVGvJtoITSIBVQXRtv3MG8e9cBzLhcur6N9eZm/CYAHooluN2tMZxSreyairMYW7jvog7Uo9QXOg9XHe1xwggl51Y/39FhjauTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C28JvL1H; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UHXHaSji"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D97B1F000FF;
-	Thu, 10 Sep 2026 02:23:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C28JvL1H"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D43871F000FF;
+	Thu, 10 Sep 2026 02:31:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789006994;
-	bh=MQKSFqRWagxnTFMhT2vsNzHf6n6nghvL1auU9ieMg9g=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=UHXHaSjimXAIJZOfeVcklTYHxnEVnQb+4apbfjPreURCkoKoJ5lxaZUsXnIW4WdjX
-	 m618QCM7sWo8ZHzpWagM7/okWW0w7DkKjuJWH3TZFTpOWFMWQRPaMUbjrvuElo5qUU
-	 5jiFIGKcoGgSiTuLa46FZpXeN0+2sSgWo/ny+hFS97PSwqViUTnh+IAKrcgexK0e8W
-	 bgJyjBcd+w2AJ6MNp5pOjBjMPk78xVAZG23xqZYH4mGonbZYBvIWxlqB9xayKrgZqY
-	 YFEJ/zsVROGUq9bjPIaj2oCrOlWO+j4CyResa1GxSQERVQ4TyDR+g+HRlbw5sxJpgJ
-	 v5WTNXaXXwz0w==
-Date: Wed, 9 Sep 2026 19:23:13 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Junjie Cao <junjie.cao@intel.com>
-Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, David Ahern
- <dsahern@kernel.org>, Simon Horman <horms@kernel.org>, Ido Schimmel
- <idosch@nvidia.com>, Fernando Fernandez Mancera <fmancera@suse.de>, Jiayuan
- Chen <jiayuan.chen@linux.dev>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v4] net: dropreason: add
- SKB_DROP_REASON_IP_TTL_EXCEEDED
-Message-ID: <20260909192313.0d4bd54b@kernel.org>
-In-Reply-To: <20260907030133.482834-1-junjie.cao@intel.com>
-References: <20260907030133.482834-1-junjie.cao@intel.com>
+	s=k20260515; t=1789007466;
+	bh=mx6UGT3LIpnPAYN185YxCNFaJMqNkLiz8yLgGMh8ifo=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=C28JvL1HLKvUb4uqaRKfCWYegoGE3ScjbNlK+WEdzvZ+/Dc3yBsTwZhtogX0LqHu/
+	 63s+3GlX0wvjmgSoib69EbcPv86/wGYAr8k/bwXeb0HghHidF6VWeOMRB7NddmAFvK
+	 Gg164kk0fIcqYksPLUz8CAepaewaoCwbQUOMv/03hilmJtlWdoNzigru0e6x3LbJ2A
+	 6mQG0OUMEElReJiUpgX+BYU4reQL+CR2Zg49ZHonIwsNgCV4Oxvvdth79oJWDzAUi+
+	 8/d2EE62tJxqKYiU7PgfDHpS2yXsy/U9rgm/hJo9msjf2hz6pE2hJ1PMhctcVXYeie
+	 //9nvbRHwdEgw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0C3A380CEC7;
+	Thu, 10 Sep 2026 02:30:05 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] net: stmmac: initialize ptp_lock at probe time
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <178900740464.1158570.11551563086535432629.git-patchwork-notify@kernel.org>
+Date: Thu, 10 Sep 2026 02:30:04 +0000
+References: 
+ <20260904-stmmac-fix-ptp-clock-init-v1-1-df70eb1eb04d@oss.qualcomm.com>
+In-Reply-To: 
+ <20260904-stmmac-fix-ptp-clock-init-v1-1-df70eb1eb04d@oss.qualcomm.com>
+To: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+ richardcochran@gmail.com, Jose.Abreu@synopsys.com, netdev@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org
 
-On Mon,  7 Sep 2026 11:01:33 +0800 Junjie Cao wrote:
-> --- a/include/net/dropreason-core.h
-> +++ b/include/net/dropreason-core.h
-> @@ -128,6 +128,7 @@
->  	FN(PSP_INPUT)			\
->  	FN(PSP_OUTPUT)			\
->  	FN(RECURSION_LIMIT)		\
-> +	FN(IP_TTL_EXCEEDED)		\
->  	FNe(MAX)
+Hello:
 
-These entries are not strict uAPI, let's not append at the end cause it
-gets messy. Please add the new field after IP_INVALID_DEST
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Fri, 04 Sep 2026 12:32:55 +0200 you wrote:
+> priv->ptp_lock is only initialized in stmmac_ptp_register(), which runs
+> during __stmmac_open(). However, the lock is also used while the
+> interface is down and has never been opened: tc_taprio_configure()
+> invokes the PTP gettime64() callback to compute the EST base time when
+> offloading a TAPRIO schedule, and stmmac_get_time() takes
+> priv->ptp_lock. Using an uninitialized rwlock is undefined behaviour.
+> Move the rwlock_init() to __stmmac_dvr_probe(), together with the other
+> private locks, so that ptp_lock is always valid regardless of the
+> interface state.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net] net: stmmac: initialize ptp_lock at probe time
+    https://git.kernel.org/netdev/net/c/0338c68e22ab
+
+You are awesome, thank you!
 -- 
-pw-bot: cr
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
