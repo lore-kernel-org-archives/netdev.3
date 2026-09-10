@@ -1,154 +1,112 @@
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93CEF4A014B;
-	Thu, 10 Sep 2026 13:46:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789048014; cv=none; b=cezWTbxhkH1k5IxZiYZut0Og8fMBaBeDbZnRM3e18G6a5YxnSMAazjy/U6PTNCG81fpNc2MxAKCelkqUkUfx2mtNaCicyXQ7u2VQpVjqqBm6Iv+M8aRpc7xEM4D+zIderY5lf+ahTPo4jWD6yEETo2zniovPS1y6L2YfgOYsZCo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789048014; c=relaxed/simple;
-	bh=YweghrEN35d/HrIQDZzlztjwvxtnA6T6pjRwWdD/VPs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=nsepmUYcPN3wniAc5eRJ6dshPUm8Z8Mq4+6MOyTJy6K+d5ulDL+/Jfg1kez4pm0Ri1UTJUBUgaIZkIInWUV/TFt6DIHml5Siktu67ngXCcbWnmU3BGrZP+fX8P6O2paIOszI4WRAESbjBkE8XyfcDifVZQxCqwkXBLLnzrlZ8k8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=emUrnd93; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F94E4825B8
+	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 13:48:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.175
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789048090; cv=pass; b=FhoiKK6hCf7AH7MuFYSzf/Yln8od+F1wl2d5MzMmvcbxUfz/OdQhU1XNtL7KDvKlU+286mRC6PHYDcrLQ6v/WVg+BTB7VX6x2LOYp2qkXgX4OyUl5VlgXhMsGo8A80WwGKYwRXi6utwN3KJMnQ6QJew1pTqxp8wPTur7mGtS7Sc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789048090; c=relaxed/simple;
+	bh=FxLs2vs/J2uylK62rLnK+7N5L66TpTnceqzDX1Jt2Z0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UM8xi+LKVkl+tPLh+skQD6HKKw5VNQlcOZoygd0BeiRMOoDt7aTlmrYdMDMLmfYPwagpCme1ycA2JO+OK9UTRpDkbvBUx6DqZCdvIf9AFToL5XkZkMbMKKYa2/eSqmtgt4FC9WjQfDVzHUVqDVZqyE0eyDk96O4fU7oTjI5uUNU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rRB2mlx0; arc=pass smtp.client-ip=209.85.210.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="emUrnd93"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:In-Reply-To:References:
-	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Reply-To:Content-ID:Content-Description;
-	bh=6lGdzSD4TWF0V5JshmLHmzYOBwaLk4uPT6kfJ83UM0I=; b=emUrnd93Yuv4NEnksdN6lxuBsA
-	tVtnv5Q7g5R6zpN3PRmLr1Cqz5U7IcQ4Tc9f3nGmWu5RuhS98UGEKZJqoUmEUPj5G35WDn65HSI/8
-	4cn8mhLBgZcczZrDYuzaEfbb5833XmrYVDfGWOnFxgYeNkKHbcjFwkyVg2Ezzi8ls9i/9zCWxDZmx
-	6tgEyp6fffjV5rQiOV9AeKp+IbaMQI3wTcYL9mxN1wfXBXd1QibPLtsPTcYfm+QBHvM7q0tFt49sE
-	oRlYZ8LBI40m8arU6D8FkVPDt6rS+EghqVQ+LJpikgQ9HCn0VuTLLpRmpnXLZEFJriiqGBmVvzx5B
-	vyiMb9Gg==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1x4f73-000YIn-2e;
-	Thu, 10 Sep 2026 13:46:50 +0000
-From: Breno Leitao <leitao@debian.org>
-Date: Thu, 10 Sep 2026 06:46:13 -0700
-Subject: [PATCH net-next v2 4/4] docs: netconsole: document rate limit
- feature
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rRB2mlx0"
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-86a31708876so417757b3a.2
+        for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 06:48:08 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789048088; cv=none;
+        d=google.com; s=arc-20260327;
+        b=XB6yARMSxI5VpVGUniV3Y3kow2pFqg1/t3g6Uuu0QweIOVtQU1GkWkE+8t9YU4Dy5T
+         aezCEECkMM1NE+IRt6RIb/nX46zIlT+KOipAT+J91SKWcsdSOPnRj3Pec9f6XAf7z0cY
+         yqqbBqvPBKiNMRrMgPRVnY2s5L47EouYgV2oZ6I2UYPzUHWgRdwvApziDlWxJM/I4X7Y
+         buX4ma1QUDQSCIBkVusfRGThEiUijcQdPoO9hOK8uU5Np/Nb/F+LeXtahNgFxlLRK8Xc
+         IEEv88PqWf7y2SadIJ45ETiQQn0UVBBmrE0eWLIrI2bl1nLrpTs5REgzLXyCdnsa0ZIn
+         O8NQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=FxLs2vs/J2uylK62rLnK+7N5L66TpTnceqzDX1Jt2Z0=;
+        fh=XV6CV123N1IyvSX/OLKqBhjKbI+t7KiCbFGE2FKlwkc=;
+        b=LtfXGw940TdFmMWbGlGW/AbDxCUxAAFzkibYEs5G6tTLiFcRXH1njJ8r+up8ee2IiW
+         fmBP8ihs7Oz6XkTSU6rJfY1fRuRwxBXtGN1JxIstPCjVHldQVMzi0g4WxE1zOzY1zUHN
+         hcknCTCgYkNrfUtV9vh7PjxuuDcTocOuayDemV/LRDj4FOWEfz6A2Lrvty4QbfZSn4rs
+         PTyS50za2GhYTVpSa9TIhTPY3XkHCXrjIBcW+4vBWoqBN8YTS0H535SZXONYMDNSKolt
+         iSBmqxfJAquTGT47l4UgYrWJxqKGJhYcYXrh8H5h4gAUTPerTAs0zp57ARgM8xMslFv/
+         jRmQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789048088; x=1789652888; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=FxLs2vs/J2uylK62rLnK+7N5L66TpTnceqzDX1Jt2Z0=;
+        b=rRB2mlx0lMjhbda3ADle1Okrab0/BJMgO+TvIq9letyyruGzERKDKSc1CaDRbVKPJN
+         m57pxE6+7GkLMIuzTjA118c3ktnZX5KyN37I9hLuK4U+CLOv8s6o/NxLyCQGpuxWeKin
+         bomxeCgwVhhJAzfXDAeqfYd4C8kw9JWSpAfRHV2iXmy7QVGG7lCzy8Y28G08aXnWiJJI
+         /OOq6SxdiWxc1FpeDbL8FIut7pwTJY61GcULqa9I6CfR3kUHYQ5JLslfnmHyh31kN57y
+         evtrUbrp+J42Egaxq58lcSOZLCfWnVWB3C3EO+XaatLGh7zBQJ1urvX0KDo/TJZ0kVtP
+         kCbQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789048088; x=1789652888;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=FxLs2vs/J2uylK62rLnK+7N5L66TpTnceqzDX1Jt2Z0=;
+        b=Qb3Udm/rHRmyxCejmyArd++Mede/vmW1KkpQae8ZICjVBM0SCLpXW1fCiTEVpiQ2wE
+         1RfPfdjvg2S0wHeLNkNc8eK7myxRUFA6kBiLKvYDjR/mg18vy7q9cJwg9oaa0rDFQTmj
+         G82k9d+bFsI98lqLkF1rVnf47diLkKMx3IITzU5g2jvD1ySFkV4yGP5b15C/Mp9dpq/2
+         8L5E31A6efmRHd3ahEmK5INBxZnQlKEXr0kqTsZ5x9nbpbjzfAF04NOfjH9c6VyWDWAH
+         7dsGzuzs+rDUQId9DUBrUO+wSDZPXsApJJO4Pw+Pc1zbYGJ4GhySdi43PUP7BPKg3bvq
+         +yNg==
+X-Forwarded-Encrypted: i=1; AKwUvBwpzdW5C9O5P6N8GQ4IE5sdIQFdwYmTJBTJMP8kgqzoFJiNktWF2NREMzBW3UL5YSER84D17oQ=@vger.kernel.org
+X-Gm-Message-State: AFuF++m7pIBvNAB/4R0s49xY1hYdVFwopzv5ZAu7BMJY5E97fq+ijV7U
+	2Z2XKUwqxRX7j3+B3EiOYax3G0xEfEvsMGrk3WdipYXsA0BVaveSWFFWkyo5izKdzAX61EhYC9D
+	KDeYJQkJC7IrhFcnf2i1jHCsYEdN1Lzs=
+X-Gm-Gg: AYBFou3PJnE3xBM8MvAvXzMYj8QRIZPlv+Q+z4QY15LY9txZpRnRIS6LDdNWqfK6MQO
+	PWKDbTR1kd5KITlJD354yYkou3zbgvhP8WBtKXeI87vkc94zAc2YF7efWUpWfDi/YydpLCgst+P
+	npN5zgR59hrQgePizTIyV7yoB92uU0SuBw+4H7uMXRxK2xoJ4Po0WU/uzjyXZYLXfXxrK90dvYO
+	dcDmRIwlPIYl96xVI7KADY//FmA4SkWu4ss04GCW7/YpRF1HYYzHMsb/qBhRBpGpqxlFTRQ12+o
+	xqVhkl06/Rc3GPMmvGMTp98DfSjmTzVv6vw+yD11fFPSD2r5FqrvBmrNq0/xd3UEP5ORwBs9FqZ
+	0iM125Z7//ghKdHSQnKuA4eRHkVjP+QAmoaqSXGLDvp1mocCbonZD+yg=
+X-Received: by 2002:a05:6a00:32c4:b0:857:73e2:9107 with SMTP id
+ d2e1a72fcca58-8616c8498dfmr51907934b3a.23.1789048087728; Thu, 10 Sep 2026
+ 06:48:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260910-netcons_ratelimit-v2-4-ebf0dd91e26e@debian.org>
-References: <20260910-netcons_ratelimit-v2-0-ebf0dd91e26e@debian.org>
-In-Reply-To: <20260910-netcons_ratelimit-v2-0-ebf0dd91e26e@debian.org>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
- Shuah Khan <skhan@linuxfoundation.org>, Shuah Khan <shuah@kernel.org>
-Cc: Randy Dunlap <rdunlap@infradead.org>, paulmck@kernel.org, 
- gustavold@gmail.com, asantostc@gmail.com, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, Breno Leitao <leitao@debian.org>, 
- kernel-team@meta.com
-X-Mailer: b4 0.16-dev-f8e9d
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3209; i=leitao@debian.org;
- h=from:subject:message-id; bh=YweghrEN35d/HrIQDZzlztjwvxtnA6T6pjRwWdD/VPs=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqorSvOedOtB9UAZ59DRyvRo3o8+LhENkpQBRXW
- XSVIz9YvN6JAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaqK0rwAKCRA1o5Of/Hh3
- bS0TEAClh/SWx9vqpLBePxbdQOQOMmR4vb3mi6OcbDYi8vnA8taJTN4KRz6OIB+ngdCVPd9SvN7
- UcNF3tEH8cKSnXEBCFtgzrnRa4ZN5nDHNuVJS2sFx0/qoecMfRLIcK2ePonCjtFT4axIes4XQEC
- I0brZpUw0zTfyBgREuuhfbxAYYPMVIKawnS0QLO80L4bWpyyTrp3ywW+XTdYr8HmKhoTzAZbZg8
- 0x2aVgGBFqo6+ndo+dFF7pfV+HfoYBi4uhowYU2gIti/g0vVIMmMgby/hor1C/Z5IQ8BFPffADk
- zsF8qiSkcszDon2L8lzqw42J5KJadPpa3g8/FhG3iJhdMybitTH+jktxTAOxNpM23OFVB4AV4G2
- DUt3bpyxntRpAxsFgtDszjZ3jrJv7I8TyVBtCSHY18M3iuDgJMtNlwUGwm4SkiXte1FH5P1af2M
- BvIkaNtISRrXuJg7z2vvJdq1CLUV/N7bgRBWLM1HjhuxZ6UjjW5AuoUIHrfsp96BjbZcqmqhzuK
- NK5a8oYWZz0rukX5vKZ8vwPtUcTOdJa8pT0tJMdgJhdJ+4WJYccpTe+njlchS6JV+ZmQOB6Iu5Q
- jLQzcfD8XWxoWVm2xfFnon0f5XQZ+wKrqk2bdced8Rf+SL2zOo4f+oIDGADdMhg+c+wCHhYptqH
- LyQCerzAFZdSSsw==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
-X-Debian-User: leitao
+References: <CADvbK_dWeqUFR6XqC-BqjjwsWJpNjEeER-fJ2SVYKhUObkMm1A@mail.gmail.com>
+ <20260910020748.3643902-1-scott_gzh@163.com>
+In-Reply-To: <20260910020748.3643902-1-scott_gzh@163.com>
+From: Xin Long <lucien.xin@gmail.com>
+Date: Thu, 10 Sep 2026 09:47:56 -0400
+X-Gm-Features: AcwNN1XLYo9Tpctj6btW9Am1OvR1X4vsOSgww2ik4xoSX3FAmeg920CXO7UztCE
+Message-ID: <CADvbK_dPtNmc=gaAy_u64JkV9_+nPHT-oniH=0vReKp=oJfJcg@mail.gmail.com>
+Subject: Re: [PATCH] sctp: hold shkey across socket migration
+To: scott_gzh@163.com
+Cc: davem@davemloft.net, david.lee@trailofbits.com, 
+	dominik.czarnota@trailofbits.com, edumazet@google.com, horms@kernel.org, 
+	kuba@kernel.org, kylebot@openai.com, linux-kernel@vger.kernel.org, 
+	linux-sctp@vger.kernel.org, marcelo.leitner@gmail.com, netdev@vger.kernel.org, 
+	pabeni@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Describe the per-target token bucket and the two configfs files that
-drive it: ratelimit_interval_ms and ratelimit_burst.
+On Wed, Sep 9, 2026 at 10:08=E2=80=AFPM <scott_gzh@163.com> wrote:
+>
+> Hi Xin Long,
+>
+> Is there any progress regarding this patch?
+>
 
-Spell out the two properties that are not obvious from the file names.
-The limit is accounted per message rather than per packet, so a message
-split into several ncfrag packets is never truncated by the bucket
-running dry halfway through.
+I think you need to post v2 with the tag issues addressed.
 
-Note in the message ID section that a message the bucket discards never
-reaches the counter, so those drops leave no gap in the IDs.
-
-Signed-off-by: Breno Leitao <leitao@debian.org>
----
- Documentation/networking/netconsole.rst | 38 +++++++++++++++++++++++++++++++++
- 1 file changed, 38 insertions(+)
-
-diff --git a/Documentation/networking/netconsole.rst b/Documentation/networking/netconsole.rst
-index 4ab5d7b05cf102..a9ccf798346562 100644
---- a/Documentation/networking/netconsole.rst
-+++ b/Documentation/networking/netconsole.rst
-@@ -177,6 +177,41 @@ You can modify these targets in runtime by creating the following targets::
-  cat cmdline1/remote_ip
-  10.0.0.3
- 
-+Rate limiting
-+-------------
-+
-+Netconsole hands every console message to every enabled target, so a host that
-+logs continuously can saturate the receiving agent. Each target carries a token
-+bucket that drops messages once the configured rate is exceeded, controlled by
-+two files in the target directory:
-+
-+        ===================== ================================================
-+        ratelimit_interval_ms Length of the accounting interval, in
-+                              milliseconds. Zero, the default, sends
-+                              everything.
-+        ratelimit_burst       Messages allowed per interval. Defaults to
-+                              10; zero drops every message once an
-+                              interval is set.
-+        ===================== ================================================
-+
-+Unlike most target parameters, both knobs can be written while the target is
-+enabled, which is when a flooding target most likely needs them.
-+
-+The limit is applied per message, not per packet, so a message big enough to be
-+split into several `ncfrag` packets is either sent whole or not at all.
-+
-+Crash output bypasses the bucket. While an oops, BUG() or panic() is in
-+progress every message is sent, whatever the limit says, so a small burst
-+cannot cost you part of a crash dump.
-+
-+A drop leaves nothing on the wire. On an extended target it shows up as a gap
-+in the sequence number the header carries; a basic target has no such marker.
-+
-+Capping a target at 500 messages a minute::
-+
-+  echo 60000 > ratelimit_interval_ms
-+  echo 500 > ratelimit_burst
-+
- Append User Data
- ----------------
- 
-@@ -359,6 +394,9 @@ indicate that a message was dropped during transmission, as it may never have
- been sent via netconsole. The message ID, on the other hand, is only assigned
- to messages that are actually transmitted via netconsole.
- 
-+A message the target's rate limit discards is dropped before the ID is
-+assigned, so those drops leave no gap in the sequence of IDs either.
-+
- Example::
- 
-   echo "This is message #1" > /dev/kmsg
-
--- 
-2.53.0-Meta
-
+Thanks.
