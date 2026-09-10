@@ -1,171 +1,318 @@
-Received: from smtpbgau1.qq.com (smtpbgau1.qq.com [54.206.16.166])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D691C343887;
-	Thu, 10 Sep 2026 05:20:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.206.16.166
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81F06156661;
+	Thu, 10 Sep 2026 05:21:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789017641; cv=none; b=dviifYYD5VN3vbxc9lo7h4C9a3XTZ8wplFxy6Qbg9lq3Uxe8og8xqHT89daH9Om1F0HH/NXzSJ+EwTZOCevL9ba/kQ058nHFc4BtLy82u9tOXNGFERhuaNGHBRS5c1FTYpfWxeAjIzHDQFdhe9RtK/mE0gHFdOL8mmu3kbMsE2c=
+	t=1789017673; cv=none; b=PFouMa0IBoDndmufxHp5QJ0B2YJfFVyPu7CLABmXREwAYlXItgb4adkLF05M6fatHSB3loz6Z8iQ9obuaCEYFMwP6YJ5s0S9iKKdxYM+3UiQT5P0AJL7+6cgI8havUAa+YAPtfYgQW35IQA28Ed9X4SLws33i5o1Cn5fDmmYVEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789017641; c=relaxed/simple;
-	bh=bxiJni1pfImDDM11Ii2XeuDiBA2kQS2GBBJZlGOPF3o=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=brZgbZSNsIqtQT7P2GyD2TIFsV5sAVSdCB1MBO3/Y/bnFKz+zqnCfF5I4KeON6cPJohngzJk1/faQn4ssJVjL09CFnxtZUSA3AjkCeOhrWpmVe0/kg3TcL3VggldeTz7t7URuVeB2WAFQ0h1ZhJGq4zkep1XHIsVOEEBzAIRN20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=U15qeieQ; arc=none smtp.client-ip=54.206.16.166
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+	s=arc-20240116; t=1789017673; c=relaxed/simple;
+	bh=VXN6MCx5an8S/Hg/iPw2QnElFLT2TutrQMu6Nt6xTxg=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=SwDl2e02JjLFPzvf7i65TqxkV3wMc7LRce1/hE1gh32xPhbewoEKlHRvTmXdPkWzelfIi1/OWL6/ItqxUeMCvFnB0T35LtUsKH7E3zKkyv8ochCWxSlrdgLpVcg068JSbxwkVTnxNsdNG/xxkkjYnx7E3CIeHhKUru+egixS7EM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cVymel3y; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="U15qeieQ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1789017619;
-	bh=DsZOltiP1R8W8vsyrS5UrPX+wRdKVv3/djndYWU1II4=;
-	h=From:Date:Subject:MIME-Version:Message-Id:To;
-	b=U15qeieQsFu3gsb4LFFHvNYLyS/pQMqehrogEqnWMZ6JAuUAGdQYSMZl8P5dw3GGD
-	 dgzZfgF0jknJCOck+/Y0ZPcE5gylC3nxxKlGeqfVB8e1yVZvPdJmYEP16pd6QZl256
-	 QDIsDQCHK1n6Jh1jsR1eVWab060PeE55CN2dMSLA=
-X-QQ-mid: esmtpsz19t1789017609t8b058a96
-X-QQ-Originating-IP: DUmqSkz4nEReLFqUyWpMium9HE3atKEqluVbWzOIZ6Q=
-Received: from [10.10.7.69] ( [1.202.39.170])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Thu, 10 Sep 2026 13:19:47 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 6560279084322675743
-EX-QQ-RecipientCnt: 14
-From: ZhaoJinming <zhaojinming@uniontech.com>
-Date: Thu, 10 Sep 2026 13:19:44 +0800
-Subject: [PATCH net] net: stmmac: fix stale descriptors and DMA mapping
- leak on Tx map failure
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cVymel3y"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 880071F000FF;
+	Thu, 10 Sep 2026 05:21:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789017671;
+	bh=q4vZY3jUqrBDRsnql+7YW8P5EEgz09DuHJ4suadpLpY=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=cVymel3yByEtG33+vC6/Bs4gAr5QEXGid44RwaNiEoZb0wvKkxUJQQKabGgo1Eocp
+	 KMz6AIbAvUxzcl+DfAUBR8H8bwID0R7+BaMGKEVEBQgScUiv7cRRnrfzCO4YQmlZHY
+	 kd1vC/pCEBCEZU4fPj1KP19WxyYASDn+j1DJP4CFvHSd9UsvDnGMMf+Uv0XhlWUxo6
+	 t+PKLi8dhnnz4m25SpZ7MWZQ9jkfOqEAK/wFERLcdGyCwj/TWr1N1EBmDf/pmpEbWd
+	 N/PXg7tyiAuHwJ60UBGIqjidU4ZXefFQUGO0KI6Trrff4sJkT90YiKn6pw5UH6GWTz
+	 +jyhiK2BAEENw==
+Subject: Re: [PATCH net-next v2 1/4] net: phy: microchip_t1s: fix collision
+ detection on PLCA status change
+From: netdev-bot+sashiko@kernel.org
+To: parthiban.veerasooran@microchip.com
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, hkallweit1@gmail.com,
+ linux@armlinux.org.uk, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ UNGLinuxDriver@microchip.com
+Date: Thu, 10 Sep 2026 05:21:10 +0000
+Message-ID: <178901767002.219967.14737435173055374203@kernel.org>
+In-Reply-To: <20260907052007.391972-2-parthiban.veerasooran@microchip.com>
+References: <20260907052007.391972-2-parthiban.veerasooran@microchip.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260910-stmmac-fix-vlan-desc-leak-v1-1-6b07dca5e5e8@uniontech.com>
-X-B4-Tracking: v=1; b=H4sIAO89omoC/x2M0QqDMAwAf0XyvEAU7HC/MvYQ2ziDWqWRIhT/f
- WWPB3dXwCSpGLyaAkmymu6xQvtowM8cv4IaKkNHnaOBBrRz29jjpBfmlSMGMY+r8IIT9c9xJNc
- GZqj9kaRa//cbopzwue8fTPoWLXAAAAA=
-X-Change-ID: 20260909-stmmac-fix-vlan-desc-leak-f057bb061daa
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Jose Abreu <Jose.Abreu@synopsys.com>
-Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- ZhaoJinming <zhaojinming@uniontech.com>
-X-Mailer: b4 0.14.2
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpsz:uniontech.com:qybglogicsvrsz:qybglogicsvrsz4b-0
-X-QQ-XMAILINFO: N2K7JO7TcIoEXORpfNom9UCEKAHIG1ooxo1cYntwkOz7215O66a+8bOQ
-	phZapzVqBS5x2RfkgpwInRi/Yp5qPkALWWMkGc8PhpCiqHuRgfwxjBdM4bw7oUOTRQMMNFs
-	IruM3ZdvO3HpM5D5WnzCQyTfi/sjBG9qT44aeNQPCOYw6MXSeDuKL8Iid9tsrmZ4ylfKGBA
-	5S8BYBeqvcS58QCy8tpTzFJyA4FKsEq0RCwSHlnW2WbOesGIqt/S7bhYbnyyzw5fXOHIstQ
-	81oIN26cPWFxNoQ9rxyeVymjbuyU8etvf5YLX4ZLoUsnbGjZWhS5Gh7otBjSdFSB2nY6ngD
-	flBKNlwLNdrDdG/b19J1mu7HmGDmEAz8CUn+wKKBf/dlNiePIojxMfUAsqPyxkgqAZ9d9X0
-	RakfevUWgIqqYGjAA/tTLn8AeVKCj2HI2zEM70vblUvrwg0fcQHfvRSnL11dpsUVTgm+qy8
-	SVphzTvBnyvvj6q6pH1ONV3pCmopkPB2KP8Q6eopKPWndJeRfRf6ILXi2r22gtNU6J2TwGK
-	nBAWPhhxQ6pTQwaDfrZBKNUURwJ6Y8OTuzusJblvPspNrMUiu9i9RnN8FerlSm/iJxnHSkG
-	Tb2AYesm0z6wnX3WqQj06DHvMXLGayyDILz//v3iurzMepGGjP4YcLxEl7jHjSATtvmD/su
-	HbDkgzi7mTUd1aMFfeZsr0kDMvE2rBPEDSGKPVN+ds+WOIEdOQZvyCsDuJibwWc92D/FxIF
-	bC7AJwLqqV8xNq5No8Bt7zDSKfOOYfJ4rn3cAB+7UbBaPu7qLiT9TR/CXWqfCVA0nufI4Bx
-	8vn7q+Oujh71796GypOXGdBlF9QAwT63VC5vQHp9ouy/Kbk+Fi1hTEe7jhRDaZDrwjFC8VH
-	RjJ/BOjSEl93ayJYtU3SDoRFE+g8DCE5xaqUBv8E2FE+MP9BdemhZQru/WpXBax+4QXOtA0
-	Wwa46U2oPCcn8RUYRGUesmZwdQnKHL1GC+Tcru4Kz8cPxi3zO6YCsgM3EZbgx2dUiuO/WVc
-	gnKC/mC7+BKmtJKW8TnSEas+ZZw9c=
-X-QQ-XMRINFO: OD9hHCdaPRBwH5bRRRw8tsiH4UAatJqXfg==
-X-QQ-RECHKSPAM: 0
 
-In stmmac_xmit(), when the DMA mapping of the linear part or of a
-fragment fails, the error path only frees the skb.  This leaves behind
-the DMA mappings already created for the linear part and for the
-fragments mapped before the failure, which are never unmapped.
+Thank you for your contribution! Sashiko AI review found 5 potential
+issue(s) to consider:
 
-The VLAN context descriptor programmed by stmmac_vlan_insert() is also
-left behind with its OWN bit set while tx_q->cur_tx has been advanced
-past it, so the DMA engine later consumes the orphaned descriptor and
-applies its stale VLAN tag to an unrelated frame.
+Critical: 0 · High: 1 · Medium: 2 · Low: 2
 
-Release the descriptors and their DMA mappings in the dma_map_err path
-with stmmac_release_tx_desc() and stmmac_free_tx_buffer(), walking from
-first_entry to entry, then roll back tx_q->cur_tx and release the VLAN
-context descriptor.
+- [High] lan86xx_config_intr() (drivers/net/phy/microchip_t1s.c) read-
+  clears the latched status register LAN86XX_REG_STS1 *before* unmasking…
+- [Medium] lan86xx_plca_set_cfg() uses `if (phydev->irq != PHY_POLL)
+  return 0;` as the predicate for 'the interrupt handler will keep CDEN…
+- [Medium] In the PHY_POLL branch retained by this patch,
+  lan86xx_plca_set_cfg() tests `if (plca_cfg->enabled)` on a tri-state…
+- [Low] Reported concern (validated as RESOLVED later in this series,
+  retained for the consolidation stage): 'For the LAN865X Rev.B0/B1…
+- [Low] Reported concern (validated as RESOLVED later in this series,
+  retained for the consolidation stage): 'LAN867X Rev.D0 uses…
 
-Fixes: 30d932279dc2 ("net: stmmac: Add support for VLAN Insertion Offload")
-Signed-off-by: ZhaoJinming <zhaojinming@uniontech.com>
----
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 29 +++++++++++++++++++----
- 1 file changed, 25 insertions(+), 4 deletions(-)
+--
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 24656b35350b14454fb10deced6516eb89e2c0c9..2e36c27e2cfb436af3566cf1c3e70d32ce9830a0 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -4769,12 +4769,12 @@ static netdev_tx_t stmmac_xmit(struct sk_buff *skb, struct net_device *dev)
- 	unsigned int nopaged_len = skb_headlen(skb);
- 	u32 queue = skb_get_queue_mapping(skb);
- 	int nfrags = skb_shinfo(skb)->nr_frags;
--	unsigned int first_entry, tx_packets;
-+	unsigned int first_entry, entry, tx_packets;
- 	struct stmmac_txq_stats *txq_stats;
- 	struct dma_desc *desc, *first_desc;
- 	struct stmmac_tx_queue *tx_q;
- 	int i, csum_insertion = 0;
--	int entry, first_tx;
-+	int first_tx, ret;
- 	dma_addr_t dma_addr;
- 	u32 sdu_len;
- 
-@@ -4832,9 +4832,10 @@ static netdev_tx_t stmmac_xmit(struct sk_buff *skb, struct net_device *dev)
- 	csum_insertion = skb->ip_summed == CHECKSUM_PARTIAL;
- 
- 	if (unlikely(is_jumbo)) {
--		entry = stmmac_jumbo_frm(priv, tx_q, skb, csum_insertion);
--		if (unlikely(entry < 0) && (entry != -EINVAL))
-+		ret = stmmac_jumbo_frm(priv, tx_q, skb, csum_insertion);
-+		if (unlikely(ret < 0) && (ret != -EINVAL))
- 			goto dma_map_err;
-+		entry = ret;
- 	} else {
- 		bool last_segment = (nfrags == 0);
- 
-@@ -4984,6 +4985,26 @@ static netdev_tx_t stmmac_xmit(struct sk_buff *skb, struct net_device *dev)
- 
- dma_map_err:
- 	netdev_err(priv->dev, "Tx DMA map failed\n");
-+
-+	/* entry points one past the last descriptor written for this frame:
-+	 * on failure it is the descriptor whose DMA mapping failed, so walk
-+	 * from first_entry up to, but not including, entry.  Reset cur_tx
-+	 * unconditionally as both stmmac_vlan_insert() and stmmac_jumbo_frm()
-+	 * may have advanced it, and release the VLAN context descriptor.
-+	 */
-+	while (first_entry != entry) {
-+		desc = stmmac_get_tx_desc(priv, tx_q, first_entry);
-+		stmmac_release_tx_desc(priv, desc, priv->descriptor_mode);
-+		stmmac_free_tx_buffer(priv, &priv->dma_conf, queue, first_entry);
-+		first_entry = STMMAC_NEXT_ENTRY(first_entry,
-+						priv->dma_conf.dma_tx_size);
-+	}
-+
-+	tx_q->cur_tx = first_tx;
-+	if (has_vlan) {
-+		desc = stmmac_get_tx_desc(priv, tx_q, first_tx);
-+		stmmac_release_tx_desc(priv, desc, priv->descriptor_mode);
-+	}
- max_sdu_err:
- 	dev_kfree_skb(skb);
- 	priv->xstats.tx_dropped++;
+net: phy: microchip_t1s: fix collision detection on PLCA status change
 
----
-base-commit: 893e11787f78e43b534e252249ac3fff4d1333f8
-change-id: 20260909-stmmac-fix-vlan-desc-leak-f057bb061daa
+This adds lan86xx_config_intr() and lan86xx_handle_interrupt() to the
+microchip_t1s driver so that the PLCA Status Changed (PSTC) interrupt drives
+the collision detector enable bit in COL_DET_CTRL0.  The static CDEN write in
+lan86xx_plca_set_cfg() is now only performed when phydev->irq is PHY_POLL.
+The new handlers are wired to LAN867X Rev.B1/C1/C2 and the LAN865X Rev.B0/B1
+internal PHY.
 
-Best regards,
+A few questions on the changelog and on the new code below.
+
+> Wire these handlers to all supported PHY variants: LAN867X Rev.B1, C1,
+> C2 and LAN865X Rev.B0/B1.
+
+[Severity: Low]
+
+LAN867X Rev.D0 also uses lan86xx_plca_set_cfg() as its .set_plca_cfg, but the
+Rev.D0 entry does not get .config_intr/.handle_interrupt here.  Is "all
+supported PHY variants" accurate for this patch?
+
+Rev.D0 is covered by a later patch in the series ("net: phy: microchip_t1s:
+fix collision detection for LAN867X Rev.D0"), which wires
+lan867x_revd0_handle_interrupt() and programs CCMFC in
+lan867x_revd0_config_init() so that collision forwarding is gated by
+PLCA_Status in hardware.  Rev.D0 keeps its pre-patch behaviour at this commit,
+so this is only about the changelog wording for the intermediate state.
+
+> diff --git a/drivers/net/phy/microchip_t1s.c b/drivers/net/phy/microchip_t1s.c
+> index 73c23d311d72a..afb7e52594e71 100644
+> --- a/drivers/net/phy/microchip_t1s.c
+> +++ b/drivers/net/phy/microchip_t1s.c
+
+[ ... ]
+
+> @@ -458,6 +466,16 @@ static int lan86xx_plca_set_cfg(struct phy_device *phydev,
+>  	if (ret)
+>  		return ret;
+>  
+> +	/* PHYs with routed interrupts handle CDEN dynamically via the interrupt
+> +	 * handler, so skip the static write. PHYs running with PHY_POLL have no
+> +	 * interrupt handler, so apply the static CDEN write as a baseline on
+> +	 * every ethtool PLCA reconfiguration. The limitation is that autonomous
+> +	 * PLCA mode transitions between ethtool reconfigurations are not
+> +	 * tracked on such boards.
+> +	 */
+> +	if (phydev->irq != PHY_POLL)
+> +		return 0;
+> +
+
+[Severity: Medium]
+
+Is phydev->irq != PHY_POLL the right predicate for "the interrupt handler
+will keep CDEN up to date"?  phylib has a second non-interrupt sentinel:
+
+include/linux/phy.h:
+    static inline bool phy_interrupt_is_valid(struct phy_device *phydev)
+    {
+        return phydev->irq != PHY_POLL && phydev->irq != PHY_MAC_INTERRUPT;
+    }
+
+For phydev->irq == PHY_MAC_INTERRUPT phylib never calls
+phy_request_interrupt(), so lan86xx_config_intr() is never called with
+PHY_INTERRUPT_ENABLED and lan86xx_handle_interrupt() is never dispatched.
+phy_mac_interrupt() only calls phy_trigger_machine().  phy_probe() also only
+downgrades irq to PHY_POLL when phy_interrupt_is_valid() is true, so the
+PHY_MAC_INTERRUPT value survives.
+
+MAC drivers do set this sentinel on whatever PHY is attached, for example
+tsnep_phy_open() in drivers/net/ethernet/engleder/tsnep_main.c does:
+
+    adapter->phydev->irq = PHY_MAC_INTERRUPT;
+
+On such a board, does anything write COL_DET_CTRL0 at all after this change,
+given that the static write is skipped and the handler never runs?  Would
+phy_interrupt_is_valid(phydev), or a test on phydev->interrupts, express the
+intent more accurately here?
+
+>  	if (plca_cfg->enabled)
+>  		return phy_modify_mmd(phydev, MDIO_MMD_VEND2,
+>  				      LAN86XX_REG_COL_DET_CTRL0,
+
+[Severity: Medium]
+
+This truthiness test isn't introduced by this patch, but the patch keeps this
+path as the documented baseline for PHY_POLL boards, so it seems worth
+raising: plca_cfg->enabled is tri-state, not boolean.
+
+ethnl_set_plca() in net/ethtool/plca.c does memset(&plca_cfg, 0xff,
+sizeof(plca_cfg)), and plca_update_sint() returns early when the netlink
+attribute is absent, so an omitted enable attribute reaches the driver as -1.
+genphy_c45_plca_set_cfg() only clears PLCA_EN for enabled == 0 and only sets
+it for enabled > 0, so -1 leaves the PLCA mode untouched.
+
+For a request such as:
+
+    ethtool --set-plca-cfg <dev> node-id 5
+
+on a PHY_POLL board, enabled is -1, which is truthy, so COL_DET_DISABLE is
+written even though PLCA was left off.  Does that not leave collision
+detection disabled while the PHY keeps running CSMA/CD, with no interrupt
+handler to correct it?  Should the test be plca_cfg->enabled > 0?
+
+> @@ -506,6 +524,77 @@ static int lan86xx_read_status(struct phy_device *phydev)
+>  	return 0;
+>  }
+>  
+> +static int lan86xx_config_intr(struct phy_device *phydev)
+> +{
+> +	int ret;
+> +
+> +	if (phydev->interrupts == PHY_INTERRUPT_ENABLED) {
+> +		/* Read to clear any pending status before enabling. */
+> +		ret = phy_read_mmd(phydev, MDIO_MMD_VEND2, LAN86XX_REG_STS1);
+> +		if (ret < 0)
+> +			return ret;
+> +
+> +		/* A mask bit of 0 enables the corresponding interrupt. */
+> +		return phy_clear_bits_mmd(phydev, MDIO_MMD_VEND2,
+> +					  LAN86XX_REG_IMSK1,
+> +					  LAN86XX_STS1_PLCA_STS_CHANGED);
+> +	}
+
+[Severity: High]
+
+Can a PLCA status change be lost across the masked window here?  The enable
+path reads STS1, which clears the latched PSTC event, and only then unmasks
+PSTCM.  Nothing in the patch programs COL_DET_CTRL0 from the current
+PLCA_STATUS value, so CDEN on an interrupt-capable PHY is driven purely by
+PSTC edges once lan86xx_plca_set_cfg() returns early.
+
+Sequence for LAN867X Rev.C1/C2 with a routed IRQ, on any MAC that connects
+the PHY at ndo_open:
+
+ifup     phy_request_interrupt() -> lan86xx_config_intr(enable)
+
+ethtool  lan86xx_plca_set_cfg() sets PLCA_EN and returns early without
+         touching CDEN; beacon present, PST 0->1 -> PSTC ->
+         lan86xx_handle_interrupt() writes CDEN=0
+
+ifdown   phy_disconnect() -> phy_free_interrupt() ->
+         phy_disable_interrupts() -> lan86xx_config_intr(disable)
+         masks PSTCM and read-clears STS1; PLCA_EN stays set in hardware
+         since the driver has no .suspend
+
+         coordinator stops beaconing, PST 1->0 latches PSTC under the mask
+
+ifup     phy_init_hw() -> lan867x_revc_config_init(), which does not write
+         0x0087, so CDEN stays 0; then lan86xx_config_intr(enable) reads
+         STS1 and discards the pending PSTC before unmasking
+
+Does the bus then run CSMA/CD with the collision detector disabled until some
+future beacon both appears and disappears again?  That is the state the
+changelog describes as the bug being fixed, and since lan86xx_plca_set_cfg()
+no longer writes CDEN on such boards, is there any way for an administrator
+to repair it by re-running ethtool?
+
+lan865x_revb_config_init() also never writes 0x0087, so the same applies to
+the LAN865X internal PHY.
+
+Would sampling genphy_c45_plca_get_status() and programming CDEN from it when
+interrupts are enabled, and in set_plca_cfg regardless of irq mode, close the
+window rather than relying on edges only?
+
+> +
+> +	ret = phy_set_bits_mmd(phydev, MDIO_MMD_VEND2, LAN86XX_REG_IMSK1,
+> +			       LAN86XX_STS1_PLCA_STS_CHANGED);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* Read to clear any pending status after disabling. */
+> +	ret = phy_read_mmd(phydev, MDIO_MMD_VEND2, LAN86XX_REG_STS1);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	return 0;
+> +}
+> +
+> +static irqreturn_t lan86xx_handle_interrupt(struct phy_device *phydev)
+> +{
+> +	struct phy_plca_status plca_st;
+> +	irqreturn_t ret_irq = IRQ_NONE;
+> +	int sts1, ret;
+> +
+> +	/* Reading the status register clears the latched event bits. */
+> +	sts1 = phy_read_mmd(phydev, MDIO_MMD_VEND2, LAN86XX_REG_STS1);
+> +	if (sts1 < 0) {
+> +		phy_error(phydev);
+> +		return IRQ_NONE;
+> +	}
+> +
+> +	if (sts1 & LAN86XX_STS1_PLCA_STS_CHANGED) {
+> +		ret = genphy_c45_plca_get_status(phydev, &plca_st);
+> +		if (ret < 0) {
+> +			phy_error(phydev);
+> +			return IRQ_NONE;
+> +		}
+> +
+> +		/* AN1760/AN1699: disable collision detection in PLCA mode to
+> +		 * improve signal quality; re-enable it in CSMA/CD mode.
+> +		 *
+> +		 * https://www.microchip.com/en-us/application-notes/an1760
+> +		 * https://www.microchip.com/en-us/application-notes/an1699
+> +		 */
+> +		ret = phy_modify_mmd(phydev, MDIO_MMD_VEND2,
+> +				     LAN86XX_REG_COL_DET_CTRL0,
+> +				     COL_DET_CTRL0_ENABLE_BIT_MASK,
+> +				     plca_st.pst ? COL_DET_DISABLE :
+> +				     COL_DET_ENABLE);
+> +		if (ret < 0) {
+> +			phy_error(phydev);
+> +			return IRQ_NONE;
+> +		}
+> +
+> +		ret_irq = IRQ_HANDLED;
+> +	}
+> +
+> +	return ret_irq;
+> +}
+> +
+
+[ ... ]
+
+> @@ -556,6 +651,8 @@ static struct phy_driver microchip_t1s_driver[] = {
+>  		.features           = PHY_BASIC_T1S_P2MP_FEATURES,
+>  		.config_init        = lan865x_revb_config_init,
+>  		.read_status        = lan86xx_read_status,
+> +		.config_intr        = lan86xx_config_intr,
+> +		.handle_interrupt   = lan86xx_handle_interrupt,
+
+[Severity: Low]
+
+At this commit oa_tc6 leaves phydev->irq as PHY_POLL for the LAN865X internal
+PHY, so the changelog sentence "LAN865X is excluded from the static write
+because its interrupt is always routed via the MAC-PHY SPI driver and the
+interrupt handler always runs" does not hold yet.
+
+The gap is closed inside the same series: "net: ethernet: oa_tc6: deliver the
+PHY interrupt to phylib" adds an irq_domain, populates every mii_bus->irq[]
+entry with the virtual IRQ before mdiobus_register(), and dispatches
+handle_nested_irq(tc6->phy_virq) from the threaded IRQ when PHYINT is seen;
+"microchip: lan865x: enable PHY interrupt via virtual IRQ" enables that path
+for LAN8650/1.  Behaviour of LAN865X at this commit alone is unchanged,
+because irq == PHY_POLL keeps the static CDEN write.
+
+Could the changelog be reworded so that it does not assert a property that
+only becomes true two patches later, in case this patch is backported on its
+own?
+
 -- 
-ZhaoJinming <zhaojinming@uniontech.com>
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260907052007.391972-1-parthiban.veerasooran%40microchip.com
