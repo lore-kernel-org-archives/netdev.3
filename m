@@ -1,81 +1,108 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F1664CCDE8
-	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 16:51:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 690A1529403;
+	Thu, 10 Sep 2026 16:55:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789059083; cv=none; b=o4eyXlfrVh9YOZw5gLK6zS9fG/lPRIZQctMLOePDoivk+BkLNQaQTr1N2MZd69NqjypzzOTmVrXChiFiOKFxpUx6gjyj3uhI3MVvoAqrHXUPhpZ6U32j+UFM6NfVHe4G45B9fdkcIkkxunYyu+gSTyEZgRg1hhQzhJLof4N55cA=
+	t=1789059307; cv=none; b=Be7z1JAIlCYu/T+1V/fS5XJzjYBdV1occlahueRl6o+YJFb9jZT3UZ2VyrnCMCnm/dzWtn04CuQYogjOuTS4E0tpYt4lBf5UEc9Rx7g1X/ourGjFsx95IbFM1K+QY1M0bubjYtFIR8OpZ45VSt+ulz5DuuYaN1lhZQn7m3wro3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789059083; c=relaxed/simple;
-	bh=HrCbYNmgcS+z2LSJ5VdsjxHeTs6NHzzFMJ25U0e9i20=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gc8EbjzW5Q6VzeM+ND/UVxijHpp8QUtzvmc1Pk6g+KJ/p7ofiykc3fU7aWoiyDu04Crw2UZKtXDt/IQ8X6xXmp4+/81o5Vh2xa8sJChTw7LTOug5RmIehHCp6JSCmA8A36LGOVjFFpaaJxDwgljVe6Fmv8bUa/q83j4MgjARAh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ZY3VVNAi; arc=none smtp.client-ip=185.246.85.4
+	s=arc-20240116; t=1789059307; c=relaxed/simple;
+	bh=7QNs6NXWWKKkLOjDA8WTZScjj03/02sVjQQ7yEMIzYY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=M/fCOZRRyD3Io62SSoFuzA5N+PLFVcVmnuiKw+5PUyyBl7s/u3jHRYy4Gp2PFkhqXrGaF7qI55xxJuL4NUBymtHdmJ4KDskYN8X/mwjF6wPl2I7K6IFybnRf5BG7SKjMA5qzXv4byyDk7XlhJXCySd0+TuBXHDfMFM06QMnMbNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=f2zww/OM; arc=none smtp.client-ip=185.171.202.116
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ZY3VVNAi"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="f2zww/OM"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 6CE464E40106;
-	Thu, 10 Sep 2026 16:51:17 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 9B806C653ED;
+	Thu, 10 Sep 2026 16:55:38 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id C295D5FC38;
-	Thu, 10 Sep 2026 16:51:16 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 091FB11C787F4;
-	Thu, 10 Sep 2026 18:51:06 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 0C7065FC38;
+	Thu, 10 Sep 2026 16:54:57 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9DA3A11C7926E;
+	Thu, 10 Sep 2026 18:54:53 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1789059071; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=Puo/f4i5KVDLdRJ1D40f76FmqplugDPSVWcD8oF1klI=;
-	b=ZY3VVNAiQVBAedQVFDK4t8gmBE9DeejapVidrSilggvhAF1lOCdp3Bs7ZdT2GlHgW/bZNS
-	pq3bRy7yAuXX381iQr4lV4gF+kuSDQ+d9EBuGV81OfJZO+MOkO0DYa2kBrJs9IMTeaGKoq
-	UnzZbDJ8sg7qeANclkyyRuYXUDRIOuAEwskwstfWmjXBt05JP1ClKIuQ066M6nlKoizhdQ
-	UgOELVh8TxxV5x4gHzFG27ZzAFq2umiPPNIgHGt3fxrGnEthaRXPuGNsVU/CjTxsHTIufA
-	WNOa6ryDKkhmH7pzn3hl2VzU9NZ5WzCeg3MrpMXxjg53J6Jgxcbb0vjM2wxcFg==
-Message-ID: <fd239a92-30ce-4084-b2c1-632f1fe3a30e@bootlin.com>
-Date: Thu, 10 Sep 2026 18:51:06 +0200
+	t=1789059295; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=aDmdjhRY3UHSS7iyezWcdpKTYmGRyljkJNG/pl1HU84=;
+	b=f2zww/OMGhzX/YwoJEamCphjxEtQAb9F8TuTw3e6RoblSleiLMGEdpLn8pd2SVpPeXhamF
+	lFaqqisyZuyF50HShDRJ3LEja+aUMxh3SE9eEQcp1kuQDU7GD/g3XpaeNv2bJrpPaOhHaV
+	gPDBxeprBNUL9nM9NTQxp4g2IiBPhWZi6jzPbtICdId5OkcSCdNVoOVWG7Q45/HL3xCosD
+	WTgelmFF2l41on6Wifp64wpmi/AVAJgy839MvzJOBpQwq+zYqTy90A11dXAjLdiH8ievac
+	NmFs/HIXV+a0v4KiUt9WSJEZTASXrIeO/vZoFnu3CwzFFNui/TXs1waRWT3E7w==
+From: "Maxime Chevallier (Netdev Foundation)" <maxime.chevallier@bootlin.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	davem@davemloft.net,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Bobby Eshleman <bobbyeshleman@gmail.com>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	matttbe@kernel.org,
+	Stanislav Fomichev <sdf@fomichev.me>
+Cc: "Maxime Chevallier (Netdev Foundation)" <maxime.chevallier@bootlin.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	thomas.petazzoni@bootlin.com,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH RESEND net-next] tools: ynl: Fix out-of-tree build for ynltool
+Date: Thu, 10 Sep 2026 18:54:50 +0200
+Message-ID: <20260910165451.1027541-1-maxime.chevallier@bootlin.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] tools: ynl: Fix out-of-tree build for ynltool
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net,
- Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- Bobby Eshleman <bobbyeshleman@gmail.com>,
- Donald Hunter <donald.hunter@gmail.com>, Simon Horman <horms@kernel.org>,
- Shuah Khan <shuah@kernel.org>, matttbe@kernel.org,
- Stanislav Fomichev <sdf@fomichev.me>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, thomas.petazzoni@bootlin.com,
- linux-kselftest@vger.kernel.org
-References: <20260909071155.1234922-1-maxime.chevallier@bootlin.com>
- <20260910085931.3c64f2ab@kernel.org>
-Content-Language: en-US
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-In-Reply-To: <20260910085931.3c64f2ab@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-Hi,
+After the blamed commit, running a out-of-tree build for ynltool fails :
 
-On 9/10/26 17:59, Jakub Kicinski wrote:
-> On Wed,  9 Sep 2026 09:11:54 +0200 Maxime Chevallier (Netdev
-> Foundation) wrote:
->> thomas.petazzoni@bootlin.com, linux-kselftest@vger.kernel.org
->> Subject: [PATCH net-next] tools: ynl: Fix out-of-tree build for ynltool
-> 
-> Hi Maxime, thanks for the quick fix. Looks like this did not hit
-> netdev, unfortunately. It reached lore but via a different ML,
-> and our patchwork only trails netdev itself. Please repost.
+  # make -C tools/net/ynl/ynltool O=/tmp/o1
+  make: Entering directory 'tools/net/ynl/ynltool'
+  make: *** No rule to make target '/tmp/o1/json_writer.o', needed by '/tmp/o1/ynltool'.  Stop.
 
-Dammit, seems like most of the patches I sent yesterday failed in a
-similar fashion :(
+ynltool's Makefile correctly accounts for $(OUTPUT) to get the list of
+object files to generate :
 
-I'll resend right-away, sorry about that,
+OBJS := $(patsubst %.c,$(OUTPUT)%.o,$(SRCS))
 
-Maxime
+but it never actually set $(OUTPUT) before the blamed commit, meaning
+that out-of-tree buils of ynltool were always actually in-tree.
+
+Now, the O= parameter is correctly accounted for, and the %o: %c rule fails.
+
+Let's update the %o: %c rule to also use $(OUTPUT).
+
+Reported-by: Bobby Eshleman <bobbyeshleman@gmail.com>
+Closes: https://lore.kernel.org/all/aqCyWQxqKDuQnZYR@devvm29614.prn0.facebook.com/
+Fixes: 917f713b4ec4 ("tools: ynl: Allow cross-compiling ynl and associated tools")
+Signed-off-by: Maxime Chevallier (Netdev Foundation) <maxime.chevallier@bootlin.com>
+---
+Re-sending, the previous submission didn't reach netdev@ :/
+Fixes a bug in net-next, so targetting net-next.
+
+ tools/net/ynl/ynltool/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tools/net/ynl/ynltool/Makefile b/tools/net/ynl/ynltool/Makefile
+index b8c67cdb4fdf..1053e7606c86 100644
+--- a/tools/net/ynl/ynltool/Makefile
++++ b/tools/net/ynl/ynltool/Makefile
+@@ -31,7 +31,7 @@ $(YNLTOOL): ../libynl.a $(OBJS)
+ 	$(Q)echo -e "\tLINK $@"
+ 	$(Q)$(CC) $(CFLAGS) -o $@ $(OBJS) ../libynl.a -lm
+ 
+-%.o: %.c ../libynl.a
++$(OUTPUT)%.o: %.c ../libynl.a
+ 	$(Q)echo -e "\tCC $@"
+ 	$(Q)$(COMPILE.c) -MMD -c -o $@ $<
+ 
+-- 
+2.55.0
+
