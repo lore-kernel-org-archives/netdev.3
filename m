@@ -1,211 +1,137 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pz2-f12.google.com (mail-pz2-f12.google.com [74.125.228.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04A4F41D228
-	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 08:09:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=205.220.180.131
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789027771; cv=pass; b=oAQDOUvI3853FFyCmBpALqQD2QVvcipkyqcKfJT6Uke2DIrGKXHwfT/xi86kWX7EDSkaM1izQVgIPcXlLfl7cYS6UxKkCjeAWneYzdBX1oFb1cFiZrI16O9iC9LJF7VIe79yoFWH1LNeGVqx0iJsozhTM7FUJrBH9rfghiqxVMQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789027771; c=relaxed/simple;
-	bh=e+oi/7PVMHZr0yXmqHSvM8XmVBC199Drw87zijqnF1w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Ytm+XdU1o+y4Vu/vtDyWG82KZ/IORiVsqGGdn7/ci1o42EzD4/7XGIpGaIY2WAncDDERik4uiq9r42jZ1QArwW6xEpne+zeb/AgcyQuUkEbjBk7v87HCxfFx5Jo414L2td7YBG+CtXBNfDgvDFpcomwUEm/IA1qOH1IGktBvgqQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=QnuYhC7A; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=KESZCpMu; arc=pass smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3799841D23D
+	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 08:10:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.12
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789027830; cv=none; b=QgevY2UNoQ+iVXb2MnBTREZEDxSFZrVQsNVLQ7WGi3bVxlkYFdcraCIYzzMb+vYv1n7joTtmyGmxYYvfKJOERcjRKsdR1pp1N1yb6rziKQNkm+woBOXqqvdyCwDY8BR+TQCchK+iUGVNOAPEpo6NP5rvFyC9elz1JG6JlA4rw9o=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789027830; c=relaxed/simple;
+	bh=Ups6Na12RMvnO7T8H4wHROVUdgJrEy7x5iqCKw6n8wA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Y2BuDA+3xvxjDYN/lMatlM37XdY60P6KWEWipr6nZ2WXvMR9X88UuaHdxgya/SgH+HFAcaCZfDc76KAFfWIps6OAsX5qi7I0dp0jTxH/WSV21OI9VGOpszBl2MJlibmzfGzn1PlmSNK9csYbTMOalYQkVrWkJhQmQgUlxmGtqZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GOewAPJV; arc=none smtp.client-ip=74.125.228.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="QnuYhC7A";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="KESZCpMu"
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68A5H1uo4143034
-	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 08:09:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	hrcreM8EzHtIJPybaks7D9tmnm5FFMtbNZvHl062kt0=; b=QnuYhC7AcE37eJFg
-	jvAa9uaIU5U5Vs4O6u1T7WQMvGVxhQsbjnkHsXUFISkoJMLC5f+sQfw8A5uU2W7U
-	nYyQVgD+GkbYAmEfVYYk0et3A55xXWVCtKpfQakPJLQRKQ9OrtzvYgC6wYUYTX5I
-	Oc9jLRnSOC6K2U0a9W+WBkNmNQx9GTRrq4A95VYU+WNf6f+jTMjQbawatgqTcC2x
-	A7IseivJpEmmEs1rLyQtIzkn7sLN8MDA/flWavDKujiDiC4nXmUpa4cZVGFVwwf+
-	5P8UkxxANiFRCwWuGFinpIMJSJuAq7M3g3gcXm5IhfYINEX/qKz6iS5uAvzs4tOO
-	GQ7vYg==
-Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com [209.85.222.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gkcyd2rjf-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 08:09:28 +0000 (GMT)
-Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-9382f9430deso1166988685a.1
-        for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 01:09:28 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789027768; cv=none;
-        d=google.com; s=arc-20260327;
-        b=U7KAGTfIrYI6XTj+N3sO2vZrnR2diybirWp4rX1Wu39fK4DzP4uCjGY7X6/dLDqLnh
-         uE6mqxX6UufbN7zMFD4dc6RWiGxw9jYfp71se5cW8KNqivSletV0clbGTp2BXb+kwdfF
-         f06PbCxntn76ZGroU+XGq4rGPAOU9W02AhxUTHzSJRJ7al8v1ZssZychLHRtNhVOHccf
-         P+niiZmVtl+eLtl/btgCkvXsso+086Iqs7zY1/hMoOPKqNSIfzxiy8rAk0Naj/GDNhhq
-         Cyi/fzkHTrU5Pw+H2nUFFqIwPeUYv4RkjOaQrjjScPtY8ZjBxqnm3wKkx0wGFa8UNl0E
-         Uhyw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=hrcreM8EzHtIJPybaks7D9tmnm5FFMtbNZvHl062kt0=;
-        fh=ABq3h4xOOxnHxrdxNaA6AhYe6q7z/WGHzEPdx1c77xE=;
-        b=T0LaJ5q13Regwb6BWGsU6bE+WrvaIyv0SiwmYTDw7NOGc7gDqC5QmtoAOtYD2dB/1l
-         al7q6IC2zh++h/kAs/+oUa4Z9u048gaLWVieFZo3cOmS3RHYiPYZFCGM4hKByPJeqpdU
-         MhLYco4IUAuEFdefw5Z/YqdgpUW/5fx7V2qvR8wSvc+C1/mGF7G7DPbCAX6JtKj7kVga
-         CPGWxH3K2ZfM3YQUmqW88/4OolHlDDYzTpkgzCO52YyRdey0UGzJ8h3JSdYvKIy9Ou2p
-         FCTLOVmZm5Al3hZ1CnjFQ7hMoPq9YBSKW10IvYtjxUyTb2aETiEVte2B0uwlzjCk0dOB
-         QThw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GOewAPJV"
+Received: by mail-pz2-f12.google.com with SMTP id 41be03b00d2f7-cc1cebad4aeso1838443a12.2
+        for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 01:10:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1789027768; x=1789632568; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=hrcreM8EzHtIJPybaks7D9tmnm5FFMtbNZvHl062kt0=;
-        b=KESZCpMuHpgIrSgbTFZvNukqz8adFOI6az8OxiBszlH0ZOQ4NFX1cQfk3oRvhfKaNz
-         PzOTd6EfiUPR+DBh6GLJQn2YC6gWExKver97uJMPFVUis1CqTZ0qDpXNT0FS630H+Yc1
-         cd0anqSz6lwZP47BqDfB4YY6LC60Q2SFkjf4R8uxaCXjoEFDgQTtRSS6O/GE6jaXzBXF
-         eMyTdI+pJ6CqfF9XvywS/LWksXF5+byrFy7uW8tZ9AbRwvJrhA+7FgkS6b7SJEJFgPvt
-         rlKL9of68mWy2wKChabhMcX3pXLxe/mMGhtnZVxCrL/up/PxIzfjZr4iOScjkt9PHv83
-         vTng==
+        d=gmail.com; s=20251104; t=1789027828; x=1789632628; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=LGTao/KdTdduxv+yT3fMuwnoAGn1zACXJ7pG0Rb21UQ=;
+        b=GOewAPJVOL37bjW4dw5RZc8rupUWtuWllDfVW1QVJwx5uDeidAR03o3Pykj8V6cxna
+         3FnPQfo7l1Rz+z6a0dQpMJrJW2fZflyFL6S05Hpraervzs3ijtO4YdeUVLB7AeiN1Kk+
+         hZ+Y6ghmDwd1jw647JB+zyCzj5M8+2E4o9JFwvRpCN3tTagU3C1/OjsMAzKyzP0Of7r4
+         7kMWu7y5xwaTfo8rCs2Fg3AYkIS/YZCWIc7TpBWqgDxI02znaXC6NNwSnDyCOUOGCjJF
+         B3OCTRdSnGg9smpUsYIqTieVUDYrUD4tyM8PHjRJGy5tUIBT9RIOVnEAE6f9uhR2j5or
+         9drg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789027768; x=1789632568;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=hrcreM8EzHtIJPybaks7D9tmnm5FFMtbNZvHl062kt0=;
-        b=D8bBbhzhI2NWCYLJ6nhCjUO3J0hn/OlFyCm15xAeDnCOaPHDeWa1O4BwRhs143GmKG
-         QRQpoz8NizZZ3HleXLrJ7b7TIHv5C1ylWxUEVMqbq0Cqss3We7z11kG0tYflYhTyZNUe
-         YAszQ8hmnq8aF9Ty1FQAmfiH/1ev998wNooPLLT7P8ANlw97GXTgidQiGZUYOCWBn41l
-         KNUQ7o3vIFBRDmx1GzSMQkBw4cmBDkyDEDLZCTtl2FmLMSoJdMUuezd99+3koZlDe2br
-         x19cnulnYyB0TYhuUJqDh5Qw3149e7pQJ8KtHliHVDfasg81EbQH7aIZuSsgFM0HblJU
-         CgxQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwViYur38ls9nafX9JdkRGtaWt6i7CAgIS2wjlcSPDvbZxAqKD3UMCLlJVvw+IUsAJLUr4judM=@vger.kernel.org
-X-Gm-Message-State: AFuF++krDTpULPztbs+LYQ7AbRgOnsxg5Y4cQ2geIh4CBzIwcBNpTySP
-	VJ/Ji4CM8z5UOcaEaRwlkkFkV0SGl2Qm6DuMVaxqYVcQuMG6ycntOkvZOpcUq1BHTsgVJgbTc5h
-	CmtaRbQeR0+aUUyhp/kpmH0pL5IITf+zU6BPwcqPgtg628bIv+mCBF/KWz4VPayeC6BD0shFqpq
-	3LqfmQX7jOidCgLj1ijAeoM+BL9jBOMJ3A5g==
-X-Gm-Gg: AYBFou1kdvTtjTdm+EzELPbHVDM3bfKh0pG3mUx1+zWZOC1BJ9hKGsHSA2IJbkLRfTo
-	NuAX+uGD7UjbB6HHXDlazAI0x7wXZNz4bDmx8G3bps2bK25hTSJDH5hxZy7dmj3C2U3jiAWRENN
-	LMGoQFePedWOYbl+04OEbwP461JlA5pWU/WFCN0lKWG8OxwKD8UQuWSs/HHLPtyRspgQeiwf3xE
-	lH3bSzguskmhYYDypTUpoeDHyRWkRRAlXJefnRjNW6cqL2bTRMkRauwiU17WYGZAhzpDpZz8xwa
-X-Received: by 2002:a05:620a:8105:b0:939:6de8:43e2 with SMTP id af79cd13be357-939804cadaamr3577777485a.47.1789027768172;
-        Thu, 10 Sep 2026 01:09:28 -0700 (PDT)
-X-Received: by 2002:a05:620a:8105:b0:939:6de8:43e2 with SMTP id
- af79cd13be357-939804cadaamr3577772285a.47.1789027767689; Thu, 10 Sep 2026
- 01:09:27 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1789027828; x=1789632628;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=LGTao/KdTdduxv+yT3fMuwnoAGn1zACXJ7pG0Rb21UQ=;
+        b=m2AJXqkjbeTA6RbZTrF2khCpKu+Kh5zULodBtbsqDY1sG+BKwzBHvMd9vMTt793gx5
+         pgW7oIHD1wxNo4oBbMbZqZiNkxE/Tx5aUciRuug88yKNsQABOwEKcqVqCfR6rCEOr2J/
+         vrLm+h2ZtBOB8Of4IVbEmNTvZbPank8ApqphckbTmbIcfJUJv26BfvsS0+91/0NIwB4y
+         GumnmK34UGiHc1xDMVfKnKhk9qVOpIifDXrU1z2H5m/RWTCg2Zz6r3S1z33x5yLOzqS3
+         ARz7u94u7raJ1ItgjWgrEgUOxmaeGBpubn4dT6M6VAq+yNlHSQSX9rcaE+nXMN8RFiia
+         e2Cg==
+X-Forwarded-Encrypted: i=1; AKwUvBydmzuzRNg+zznip5kF0rzgosoqtJtRYYWkwsQCdyv0+wrhy/tCfFL3jy/8T37E8GbX8nb9/DY=@vger.kernel.org
+X-Gm-Message-State: AFuF++nIeL/wGqEco+2CCo5U87JmUGWgmR6TkV31FoZilVCFjmR8Ijpf
+	/nwG4EbK3/sjpUKnamnN75eWhWgXrwQcNwyu4FOP61Y/zMEyreoAqgCs
+X-Gm-Gg: AYBFou2eTKCvcV2w4PN02um3YDmLPxSHR82rcfGDHa7t/2RDWKD6lhwp5GAO1FPSwjN
+	swzJbcYajBpckoeDdx9NledT4a446hAeAv14BEHgsz56buh/J6JmTXNl4jdu9TLkr//2XO3vkvj
+	J6fU6Bhdlyeh3cRfrlrdtGROzhroXgATlJsz5xoU7GSyV2hKx2C6GuWKHgt2F0Dd95/aODnx33G
+	3c2R5L539WbPUzCzYGY0yKE3r82mbpJh3vRF28Ch7bhnqP5wyZyGjT3uLLQPzcVkOGZNaTf3OX/
+	77mQnlXJtn4zx1b7tdJ7btwv0zmW9Tuo6rkV1TxrrB3pCQi/Xx2gRPJznrDDkTjCgtweEwhlY3Y
+	5fLLppt3MZybZARaILVM94hNtSmVVkZ1dXeUMKrMSd5CnI0xYguDqNQNYhBzt1C0wIxHa33uaNb
+	kXvw1bC9YFZLwj9TN+HFd69TgNY8/GxZYa5CxKvpVGE5m6REPhVmv2JSBCClPmuEI9EDuXVo4vC
+	O1m9k7V
+X-Received: by 2002:a17:90b:4d84:b0:398:e73e:5a0c with SMTP id 98e67ed59e1d1-39bac138257mr15353888a91.1.1789027828457;
+        Thu, 10 Sep 2026 01:10:28 -0700 (PDT)
+Received: from server227.. ([39.170.101.209])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39d770bc9f5sm4442434a91.2.2026.09.10.01.10.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 10 Sep 2026 01:10:27 -0700 (PDT)
+From: Zxyan Zhu <zxyan0222@gmail.com>
+To: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com,
+	richardcochran@gmail.com,
+	maxime.chevallier@bootlin.com,
+	muhammad.nazim.amirul.nazle.asmade@altera.com,
+	rohan.g.thomas@altera.com,
+	netdev@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Zxyan Zhu <zxyan0222@gmail.com>
+Subject: [PATCH net-next v5 0/2] net: stmmac: dwxgmac2: timestamp interrupt support + Agilex5 fix
+Date: Thu, 10 Sep 2026 16:10:18 +0800
+Message-Id: <20260910081020.86227-1-zxyan0222@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260910033356.1052661-1-zhugl3@xiaopeng.com> <20260910033356.1052661-2-zhugl3@xiaopeng.com>
-In-Reply-To: <20260910033356.1052661-2-zhugl3@xiaopeng.com>
-From: Loic Poulain <loic.poulain@oss.qualcomm.com>
-Date: Thu, 10 Sep 2026 10:09:16 +0200
-X-Gm-Features: AcwNN1Ve1L8LMjcOpqIQaJD_QJYZ6Rdp4UWA7GwnfSgFAJr5DOKNJ8SBomTQUyw
-Message-ID: <CAFEp6-1VVVk94T_EoaXSW8aJzRNuWeGTo72ZQNPJePa=aAL5-g@mail.gmail.com>
-Subject: Re: [PATCH 2/3] net: wwan: mhi_wwan_mbim: check skb_copy_bits()
- return value
-To: Guanglei Zhu <zhugl3@xiaopeng.com>
-Cc: Sergey Ryazanov <ryazanov.s.a@gmail.com>,
-        Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>,
-        Liu Haijun <haijun.liu@mediatek.com>,
-        Ricardo Martinez <ricardo.martinez@linux.intel.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-GUID: 5heds5OxXEBr-VrrrBpoNtaYbMMlfFup
-X-Authority-Analysis: v=2.4 cv=ef+o7LEH c=1 sm=1 tr=0 ts=6aa265b8 cx=c_pps
- a=50t2pK5VMbmlHzFWWp8p/g==:117 a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10
- a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22
- a=rJkE3RaqiGZ5pbrm-msn:22 a=EgahoUkMAAAA:8 a=VwQbUJbxAAAA:8
- a=wIlMCVVetkfELOPdIZwA:9 a=QEXdDO2ut3YA:10 a=IoWCM6iH3mJn3m4BftBB:22
- a=D2SkTF70-_n5gOfERQdM:22
-X-Proofpoint-ORIG-GUID: 5heds5OxXEBr-VrrrBpoNtaYbMMlfFup
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTEwMDA4OSBTYWx0ZWRfXwhp69FXdEvI0
- RzPJPb9hrNv7YQ/YRrDrF4trhM+esAOP7LSvFFf9wh8uLZTn5z5rDhM8k2rWyPxByqSX8cOpiCc
- LS2MgMo8eYRkuMN79tUYOluFM8bLLzY=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTEwMDA4OSBTYWx0ZWRfX3bgybOgvKdfl
- JDxjxuJ9c9mVa74fRbeITnbUCdR+17CsAYDGwmqsJJPbEPYfkZOEuaT5WKn8Eh/mQZ+2cKpCnUA
- XP+Vd87yaGJQT0VFM1C8OxYIhvZlQKfOpAzVHsZi0ThxinD90sYecwdw63Kz7CSMMKWELUHs6pJ
- 4twURGxkNK4LZL7yLdX7EjM5RKZj7iNKPsZrm4emI1I/+jnngPz/NgtItfEAe3QQr0riXzWd70V
- eob8H4P/ru1mKZnbTtF3j9hBYgDBI+VxeVqFNgvNPVsdMctz2bWOrnAI6JgnEe2ux0dgKGIw7OJ
- xGcovhEYaoT6g2ogGmCE7R05uQ75LjrNV4ol14xYx/ndP2EJsnAToac/8wqXfIhNyJVN/GYjfaS
- rv+P7REdIxdUL3dWcn1+uo5dfEy7HYVOXijJPv2W3dwtRkXltK74pwT4NZphjnKdqKFsv/nQw1G
- lB4TYMPXgR4RCBP3msw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-10_02,2026-09-09_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 suspectscore=0 adultscore=0 priorityscore=1501
- lowpriorityscore=0 clxscore=1015 phishscore=0 impostorscore=0 bulkscore=0
- spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
- definitions=main-2609100089
+Content-Transfer-Encoding: 8bit
 
-On Thu, Sep 10, 2026 at 5:34=E2=80=AFAM Guanglei Zhu <zhugl3@xiaopeng.com> =
-wrote:
->
-> mhi_mbim_rx() ignores the return value of skb_copy_bits() when it
-> copies each datagram out of the NTB.  The datagram offset and length
-> come from the DPE, which is only checked to lie within the NTB
-> itself, so a modem can point a datagram outside the received skb.
-> The copy then fails and the freshly allocated skbn is passed to
-> netif_rx() with its uninitialized contents still in place, leaking
-> kernel heap memory into the network stack.
->
-> Free the skb and account an error when the copy fails.
->
-> Fixes: aa730a9905b7 ("net: wwan: Add MHI MBIM network driver")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Guanglei Zhu <zhugl3@xiaopeng.com>
-> ---
->
-> Verified in a QEMU guest with a fault injector pointing a DPE
-> outside the received NTB: the copy fails, and the unpatched driver
-> hands the uninitialized skbn to the network stack (observed as
-> "unknown protocol" on bytes that were never written).  With this
-> check the failed datagram is dropped and counted as an rx error.
->  drivers/net/wwan/mhi_wwan_mbim.c | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/net/wwan/mhi_wwan_mbim.c b/drivers/net/wwan/mhi_wwan=
-_mbim.c
-> index ef158edeb..71e700008 100644
-> --- a/drivers/net/wwan/mhi_wwan_mbim.c
-> +++ b/drivers/net/wwan/mhi_wwan_mbim.c
-> @@ -328,7 +328,13 @@ static void mhi_mbim_rx(struct mhi_mbim_context *mbi=
-m, struct sk_buff *skb)
->                                 continue;
->
->                         skb_put(skbn, dgram_len);
-> -                       skb_copy_bits(skb, dgram_offset, skbn->data, dgra=
-m_len);
-> +                       if (skb_copy_bits(skb, dgram_offset, skbn->data, =
-dgram_len)) {
-> +                               dev_kfree_skb_any(skbn);
-> +                               u64_stats_update_begin(&link->rx_syncp);
-> +                               u64_stats_inc(&link->rx_errors);
-> +                               u64_stats_update_end(&link->rx_syncp);
-> +                               continue;
+This series adds auxiliary snapshot (EXTTS) interrupt support to
+DWXGMAC2/DWXLGMAC2 and fixes a stale TSIS race on the Agilex5
+cross-timestamp path that the new handler would otherwise expose.
 
-We perform the same error handling in the switch cases below, so it
-would be better to factor it out into a common helper or a shared
-error path.
+Patch 1 makes smtg_crosststamp() complete on the persistent ATSNS count
+instead of the transient TSIS bit, waits for the ATSFC FIFO clear to
+complete before arming, and derives the pop count from the poll result,
+so the completion condition is immune to the destructive reads of
+XGMAC_TIMESTAMP_STATUS performed by the DWXGMAC2 timestamp interrupt
+handler and the TX timestamp completion path.
 
-> +                       }
->
->                         switch (skbn->data[0] & 0xf0) {
->                         case 0x40:
-> --
-> 2.43.0
->
+Patch 2 wires up a dedicated DWXGMAC2 timestamp interrupt handler.
+Before this change the XGMAC hwif entries used the generic stmmac_ptp
+ops, whose timestamp_interrupt callback read the dwmac4 offset
+GMAC_TIMESTAMP_STATUS (0xb20) instead of the XGMAC register at 0xd20,
+and XGMAC_TSIE was never enabled, so auxiliary snapshot events were
+never reported on XGMAC platforms.
+
+Because v5 changes the completion mechanism, the previous Tested-by for
+the mask approach no longer applies; Patch 1 needs re-verification on
+Agilex5 hardware.
+
+v1: https://lore.kernel.org/netdev/20260806-dwxgmac2-timestamp-irq-v1-1-c051c79c9d90@gmail.com/
+v2: https://lore.kernel.org/netdev/20260810100221.9166-1-zxyan0222@gmail.com/
+v3: https://lore.kernel.org/netdev/20260818132722.1852876-1-zxyan0222@gmail.com/
+v4: https://lore.kernel.org/netdev/20260902131441.322167-1-zxyan0222@gmail.com/
+v5:
+- Replace the XGMAC_TSIE masking approach with completing the
+  cross-timestamp on the persistent ATSNS count, and reorder the series
+  so it is bisect-safe.
+- Wait for the ATSFC FIFO clear to complete before arming, so a stale
+  ATSNS count from a previous snapshot cannot be observed.
+
+Zxyan Zhu (2):
+  net: stmmac: dwmac-socfpga: complete cross-timestamp on ATSNS
+  net: stmmac: dwxgmac2: add XGMAC timestamp interrupt support
+
+ .../ethernet/stmicro/stmmac/dwmac-socfpga.c   | 29 ++++++++++---
+ .../net/ethernet/stmicro/stmmac/dwxgmac2.h    |  2 +-
+ .../ethernet/stmicro/stmmac/dwxgmac2_core.c   | 43 +++++++++++++++++++
+ drivers/net/ethernet/stmicro/stmmac/hwif.c    |  4 +-
+ drivers/net/ethernet/stmicro/stmmac/hwif.h    |  1 +
+ .../ethernet/stmicro/stmmac/stmmac_hwtstamp.c | 12 ++++++
+ .../net/ethernet/stmicro/stmmac/stmmac_ptp.h  |  1 +
+ 7 files changed, 84 insertions(+), 8 deletions(-)
+
+-- 
+2.34.1
+
