@@ -1,245 +1,342 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A894F494825;
-	Thu, 10 Sep 2026 13:50:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05DA73AAF6B;
+	Thu, 10 Sep 2026 13:50:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789048208; cv=none; b=aAngGZjmWOkWM6s782/BP+J+NSFBXpkasp0SCnYzqLKeWhJzZ7GmOAo4toi+x8uGF4IADauOWuOZk3GTlI4LN+IugaTXYReDsv3vNRLLF6s1iYglRo3ZGUQOkiEhCXIHhGAlONxKZVkyeNc9rXPAu1lwZGGy2FHkX0Y0jHbAbrU=
+	t=1789048227; cv=none; b=cPBuOeqkmfS+Yzc5LBPbpRz++/RiKS1rdSr/+mPpzjbtPEaeFne36patsuGNG46na+xvevyLPu0GE/GrAj9lmmlZnhQn1Mh9nwoqIBxuy+Z6Pjlx45D6ThEkO5uJ5BsO/3p+4Qc3qlUaambqtGJXag78iNj35YfUBu9FZTsLP88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789048208; c=relaxed/simple;
-	bh=9uqGhByEx2A1WxyFoZME5gMeqKVADEzaBb5B8fHI2x4=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=PkjFKfpK3v5ZQacDCni6tEU3Z7egkXuupTl68t6pdzl+Va8pHkwxY5kQi+A2KUHfJLLhwY2lSxo44HPaZayeZTPJYchshK/PIcFMcEpXnMOrGuglRoZSxgzuZsK9CHpHn7gbvAIahWja0ZSicyjUZls7yzfLqAnQ4zGA5BaLeE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XNd4wz0f; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789048227; c=relaxed/simple;
+	bh=V9Y1F8P8Q5erbjhiCN13oXa0hejGdTWhlhNdfPBQ9ps=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DWJeK+onKqhoW3jnTnJKofb62fDUb8p+HetGVOBIJQqKn2RoPsVqRp3b4JV8r6xSs/8NLPT/mZpzpcWwIx7LNPVhQe7BNLqE11Ey8Hk0WLHsldFhRkn+pJ/KxNqpEReB9jFpE5LTUFJxOWxJ5rPVj5RZV5KWYrseupIbvxFcbmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=LytjJdIF; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XNd4wz0f"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FBD61F00893;
-	Thu, 10 Sep 2026 13:50:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789048205;
-	bh=I+6M3P8K0PiEyuq4SIt3bi4AW8uTGNjkP3eYdcvfMUQ=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=XNd4wz0f0L27jm5r75DLI02NG6oaKvcGgx3F5bnBelGIGkQGF62e9l0wGMCdtbeuu
-	 QnrlFpJb0RorMe8+3MrkKkaIe3WyYJhV7p8Gjvc5llzA5XYgfGw1XrWwitzh9G5vED
-	 SmOEmytqZiE2y+ZlF3d3M/yTawD0wUL6bUeObLU6h9LLkyqT7N9tKuj3D8QyuzUO/S
-	 tjg15thOcpDtST0yZDP3Q5aEnpX5jAbFr4GHyq7JJI8BmBNVzMZItVvcWhsPK9Ny1y
-	 0s0o03Zy64MzpiHhew/0hx/+/bL3uTOrQNUBXqWP1SevNNjDCekqrK2tzfLUaa6iiE
-	 1pkBg5Jc97ivA==
-Subject:
- Re: [PATCH net-next v3 4/4] selftests: net: test AF_PACKET multicast dumps
-From: netdev-bot+sashiko@kernel.org
-To: sigefriedhyy@gmail.com
-Cc: davem@davemloft.net, dsahern@kernel.org, donald.hunter@gmail.com,
- edumazet@google.com, idosch@nvidia.com, kuba@kernel.org, kuniyu@google.com,
- nicolas.dichtel@6wind.com, nickgarlis@gmail.com, pabeni@redhat.com,
- sd@queasysnail.net, shuah@kernel.org, horms@kernel.org, sdf.kernel@gmail.com,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- netdev@vger.kernel.org
-Date: Thu, 10 Sep 2026 13:50:03 +0000
-Message-ID: <178904820373.219967.782013244688408761@kernel.org>
-In-Reply-To: <20260909133247.113923-5-sigefriedhyy@gmail.com>
-References: <20260909133247.113923-5-sigefriedhyy@gmail.com>
-X-sashiko-severity: Low
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="LytjJdIF"
+Received: from mac.lan (unknown [4.194.122.162])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 1FF4320B7166;
+	Thu, 10 Sep 2026 06:49:27 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 1FF4320B7166
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1789048181;
+	bh=CPbWm5KrpeYp0YWqZerft7p6ELbJVPGttZYsnIzY9zM=;
+	h=From:To:Cc:Subject:Date:From;
+	b=LytjJdIF7NGkHvYURqJcJw98zt/TEpaAm4q9V+yBBFpifE8PXo9rFlieyd0MQogZF
+	 HA0K9nrvUf5Yog8Qcre0rrS7LI+xbYrAW+/z4uwyfYRHE2iYAe/DK0hh/lsfaatYlX
+	 sARchkzncykYJvr6ZIUWQE3xT85nbAIIeTlDABIM=
+From: "Cen Zhang (Microsoft Security FORGE Labs)" <cenzhang@linux.microsoft.com>
+To: Marc Kleine-Budde <mkl@pengutronix.de>,
+	Vincent Mailhol <mailhol@kernel.org>
+Cc: Martin Henriksson <mh@kvaser.com>,
+	Jimmy Assarsson <extja@kvaser.com>,
+	Christer Beskow <chbe@kvaser.com>,
+	Nicklas Johansson <extnj@kvaser.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Oliver Hartkopp <socketcan@hartkopp.net>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Nicolai Buchwitz <nb@tipi-net.de>,
+	Abdun Nihaal <nihaal@cse.iitm.ac.in>,
+	Kees Cook <kees@kernel.org>,
+	Enrico Pozzobon <enrico.pozzobon@dissecto.com>,
+	Yiran Qiu <eritque-arcus@ikuyo.dev>,
+	Pengpeng Hou <pengpeng@iscas.ac.cn>,
+	linux-can@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	AutonomousCodeSecurity@microsoft.com,
+	xmei5@asu.edu,
+	tgopinath@linux.microsoft.com,
+	kys@microsoft.com
+Subject: [PATCH net v4] can: kvaser_usb: validate command format before parsing in hydra receive path
+Date: Thu, 10 Sep 2026 09:50:00 -0400
+Message-ID: <20260910135000.34796-1-cenzhang@linux.microsoft.com>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issue(s) to consider:
+The receive-path command parsers (kvaser_usb_hydra_wait_cmd and
+kvaser_usb_hydra_read_bulk_callback) call kvaser_usb_hydra_cmd_size()
+without verifying that enough buffer remains. For CMD_EXTENDED,
+kvaser_usb_hydra_cmd_size() unconditionally reads a 2-byte len field
+at offset 4. A malicious USB device can place a CMD_EXTENDED header at
+the end of a 3072-byte bulk transfer such that only 4 bytes remain,
+causing a 2-byte slab-out-of-bounds read.
 
-Critical: 0 · High: 0 · Medium: 0 · Low: 2 (1)
+  BUG: KASAN: slab-out-of-bounds in kvaser_usb_hydra_wait_cmd+0x3f1/0x480
+    [kvaser_usb_hydra.c:678]
+  Read of size 2 at addr ffff888013f7ec00 by task kworker/0:0/9
+   kvaser_usb_hydra_wait_cmd+0x3f1/0x480
+   kvaser_usb_hydra_get_software_details+0x1c7/0x5d0
+   kvaser_usb_probe+0x36a/0x1240
 
-- [Low] In dump_mcaddr_l2_check() the ksft_in() membership checks are
-  non-fatal, but the immediately following statements index the same…
-- [Low] Reported concern: dump_mcaddr_l2_check() creates a netlink socket
-  (rtnl = RtnlAddrFamily(),…
+Additionally, if the device sends CMD_EXTENDED with len=0,
+kvaser_usb_hydra_cmd_size() returns 0 and the parser loops forever
+(pos += 0), permanently burning one CPU core.
 
-Pre-existing issues:
-- [Low] Documentation/netlink/specs/rt-addr.yaml declares a `do` form for
-  the getmulticast operation (request value 58, reply value 58 carrying…
+A positive but undersized extended length can also pass the buffer extent
+check and reach a handler. For example, an 8-byte CMD_RX_MESSAGE_FD at
+the end of an RX URB causes kvaser_usb_hydra_rx_msg_ext() to read fixed
+fields and payload past the buffer.
 
---
+Add receive-side length validation which preserves incomplete headers for
+reassembly, rejects extended lengths outside 8..128 bytes, and checks each
+known extended command against the minimum length its handler consumes.
+For CMD_RX_MESSAGE_FD, derive the required length from its flags and DLC
+so valid variable-length commands remain accepted. Apply the checks to
+both receive paths and clear malformed leftover state before returning.
 
-selftests: net: test AF_PACKET multicast dumps
+Fixes: aec5fb2268b7 ("can: kvaser_usb: Add support for Kvaser USB hydra family")
+Reported-by: AutonomousCodeSecurity@microsoft.com
+Reported-by: Xiang Mei (Microsoft) <xmei5@asu.edu>
+Suggested-by: Jakub Kicinski <kuba@kernel.org>
+Closes: https://lore.kernel.org/all/20260819145658.29872-1-blbllhy@gmail.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Cen Zhang (Microsoft Security FORGE Labs) <cenzhang@linux.microsoft.com>
+---
+v4:
+ - Reject extended command lengths outside the generic 8-byte header and
+   the 128-byte maximum.
+ - Validate complete CMD_TX_ACKNOWLEDGE_FD and CMD_RX_MESSAGE_FD extents
+   before dispatch, deriving variable RX payload lengths from flags and DLC.
+ - Apply command-specific validation to synchronous scanning, direct bulk
+   receive, and fragmented-command reassembly.
+ - Link: https://lore.kernel.org/all/20260827194410.4023800-1-kuba@kernel.org/
 
-This adds dump_mcaddr_l2_check() to tools/testing/selftests/net/rtnetlink.py,
-which dumps the link-layer multicast addresses of a dummy device over
-AF_PACKET RTM_GETMULTICAST and checks the ifa-index filter, the mc-users
-count, the global flag and target-netnsid. The test skips when the kernel
-answers with -EOPNOTSUPP.
+v3:
+ - Preserve fragmented command headers by distinguishing incomplete size
+   fields from invalid zero lengths.
+ - Complete a fragmented extended size field before reading it, using the
+   actual valid leftover length.
+ - Link: https://lore.kernel.org/all/20260824214058.44948-1-blbllhy@gmail.com/
 
-> diff --git a/tools/testing/selftests/net/rtnetlink.py b/tools/testing/selftests/net/rtnetlink.py
-> index 5cc3ebdcf08d..41da259c3a09 100755
-> --- a/tools/testing/selftests/net/rtnetlink.py
-> +++ b/tools/testing/selftests/net/rtnetlink.py
-> @@ -1,17 +1,21 @@
->  #!/usr/bin/env python3
->  # SPDX-License-Identifier: GPL-2.0
->  
-> +import errno
->  import socket
->  import struct
->  import time
->  from lib.py import bkg, ip, ksft_exit, ksft_run, ksft_eq, ksft_ge, ksft_true, KsftSkipEx
-> -from lib.py import ksft_not_in, ksft_not_none
-> -from lib.py import CmdExitFailure, NetNS, NetNSEnter, RtnlAddrFamily, RtnlRouteFamily
-> +from lib.py import ksft_in, ksft_not_in, ksft_not_none
-> +from lib.py import CmdExitFailure, NetNS, NetNSEnter, NlError, RtnlAddrFamily, RtnlRouteFamily
->  from lib.py import defer
->  
->  IPV4_ALL_HOSTS_MULTICAST = b'\xe0\x00\x00\x01'
->  IPV4_TEST_MULTICAST = b'\xef\x01\x01\x01'
->  IPV6_TEST_MULTICAST = bytes.fromhex('ff020000000000000000000000000123')
-> +ETH_ALL_HOSTS_MULTICAST = bytes.fromhex('01005e000001')
-> +ETH_TEST_MULTICAST_STR = '01:00:5e:01:01:01'
-> +ETH_TEST_MULTICAST = bytes.fromhex(ETH_TEST_MULTICAST_STR.replace(':', ''))
->  
->  
->  def _users_for(rtnl: RtnlAddrFamily, family: int, grp: bytes, ifindex: int):
-> @@ -105,6 +109,66 @@ def dump_mcaddr6_check() -> None:
->                  s2.close()
->  
->  
-> +def dump_mcaddr_l2_check() -> None:
-> +    """
-> +    Verify link-layer multicast addresses in an AF_PACKET RTM_GETMULTICAST
-> +    dump: the ifa-index filter, mc-users, the global flag and
-> +    target-netnsid.
-> +    """
-> +
-> +    with NetNS() as ns, NetNSEnter(str(ns)):
-> +        for ifname in ("dummy1", "dummy2"):
-> +            ip(f"link add name {ifname} type dummy")
-> +            ip(f"link set {ifname} up")
-> +        dev_idx = socket.if_nametoindex("dummy1")
-> +        ip(f"maddr add {ETH_TEST_MULTICAST_STR} dev dummy1")
-> +
-> +        rtnl = RtnlAddrFamily()
+v2:
+ - Clear malformed leftover state before returning.
+ - Reject command lengths shorter than the buffered prefix.
 
-[Severity: Low]
-This isn't a bug, but the netlink socket created here in
-dump_mcaddr_l2_check() is never closed and no defer(rtnl.close) is
-registered, so the fd stays open until CPython collects the object,
-including on the KsftSkipEx path below where the traceback keeps the frame
-alive.
+v1:
+ - The zero-length command loop is also addressed by:
+   https://lore.kernel.org/linux-can/20260815-can-esd-hydra-fixes-v1-2-de644cbeaec2@ikuyo.dev/
+ - This patch additionally handles truncated command headers in the
+   synchronous wait and asynchronous receive paths, including the
+   leftover-buffer path.
 
-Note that dump_mcaddr_check() and dump_mcaddr6_check() in the same file
-create rtnl = RtnlAddrFamily() inside NetNSEnter the same way and also
-never close it, so this matches the existing convention in this file; only
-_rtnl_route_subscribe() uses defer(rtnl.close), and that one keeps a
-notification subscription alive after leaving the netns. Would it be worth
-adding defer(rtnl.close) here anyway for symmetry with the netns teardown?
+ .../net/can/usb/kvaser_usb/kvaser_usb_hydra.c | 140 +++++++++++++++++-
+ 1 file changed, 132 insertions(+), 8 deletions(-)
 
-> +        try:
-> +            addresses = rtnl.getmulticast(
-> +                {"ifa-family": socket.AF_PACKET, "ifa-index": dev_idx},
-> +                dump=True)
-> +        except NlError as e:
-> +            if e.error == errno.EOPNOTSUPP:
-> +                raise KsftSkipEx(
-> +                    "kernel does not support AF_PACKET multicast dump")
-> +            raise
+diff --git a/drivers/net/can/usb/kvaser_usb/kvaser_usb_hydra.c b/drivers/net/can/usb/kvaser_usb/kvaser_usb_hydra.c
+index efbb7bed34c9..adc326c2d211 100644
+--- a/drivers/net/can/usb/kvaser_usb/kvaser_usb_hydra.c
++++ b/drivers/net/can/usb/kvaser_usb/kvaser_usb_hydra.c
+@@ -536,6 +536,80 @@ static size_t kvaser_usb_hydra_cmd_size(struct kvaser_cmd *cmd)
+ 	return ret;
+ }
+ 
++/* -EAGAIN means incomplete; -EINVAL rejects an invalid command length. */
++static int kvaser_usb_hydra_cmd_size_rx(struct kvaser_cmd *cmd,
++					size_t remaining, size_t *cmd_len)
++{
++	if (remaining < sizeof(cmd->header.cmd_no))
++		return -EAGAIN;
++
++	if (cmd->header.cmd_no == CMD_EXTENDED &&
++	    remaining < offsetof(struct kvaser_cmd_ext, cmd_no_ext))
++		return -EAGAIN;
++
++	*cmd_len = kvaser_usb_hydra_cmd_size(cmd);
++	if (cmd->header.cmd_no != CMD_EXTENDED)
++		return 0;
++
++	if (*cmd_len < offsetof(struct kvaser_cmd_ext, rx_can) ||
++	    *cmd_len > KVASER_USB_HYDRA_MAX_CMD_LEN)
++		return -EINVAL;
++
++	return 0;
++}
++
++static int kvaser_usb_hydra_verify_cmd_size(const struct kvaser_cmd *cmd,
++					    size_t cmd_len)
++{
++	const struct kvaser_cmd_ext *cmd_ext;
++	size_t min_len;
++
++	if (cmd->header.cmd_no != CMD_EXTENDED)
++		return 0;
++
++	cmd_ext = (const struct kvaser_cmd_ext *)cmd;
++
++	/* Keep this switch in sync with kvaser_usb_hydra_handle_cmd_ext(). */
++	switch (cmd_ext->cmd_no_ext) {
++	case CMD_TX_ACKNOWLEDGE_FD:
++		min_len = offsetof(struct kvaser_cmd_ext, tx_ack.timestamp) +
++			  sizeof(cmd_ext->tx_ack.timestamp);
++		break;
++
++	case CMD_RX_MESSAGE_FD: {
++		u32 flags;
++
++		min_len = offsetof(struct kvaser_cmd_ext,
++				   rx_can.kcan_payload);
++		if (cmd_len < min_len)
++			return -EINVAL;
++
++		flags = le32_to_cpu(cmd_ext->rx_can.flags);
++		if (flags & KVASER_USB_HYDRA_CF_FLAG_ERROR_FRAME) {
++			min_len += sizeof(cmd_ext->rx_can.err_frame_data);
++		} else if (!(flags & KVASER_USB_HYDRA_CF_FLAG_REMOTE_FRAME)) {
++			u32 kcan_header;
++			u8 dlc;
++
++			kcan_header = le32_to_cpu(cmd_ext->rx_can.kcan_header);
++			dlc = (kcan_header & KVASER_USB_KCAN_DATA_DLC_MASK) >>
++				KVASER_USB_KCAN_DATA_DLC_SHIFT;
++
++			if (flags & KVASER_USB_HYDRA_CF_FLAG_FDF)
++				min_len += can_fd_dlc2len(dlc);
++			else
++				min_len += can_cc_dlc2len(dlc);
++		}
++		break;
++	}
++
++	default:
++		return 0;
++	}
++
++	return cmd_len < min_len ? -EINVAL : 0;
++}
++
+ static struct kvaser_usb_net_priv *
+ kvaser_usb_hydra_net_priv_from_cmd(const struct kvaser_usb *dev,
+ 				   const struct kvaser_cmd *cmd)
+@@ -675,8 +749,11 @@ static int kvaser_usb_hydra_wait_cmd(const struct kvaser_usb *dev, u8 cmd_no,
+ 			size_t cmd_len;
+ 
+ 			tmp_cmd = buf + pos;
+-			cmd_len = kvaser_usb_hydra_cmd_size(tmp_cmd);
+-			if (pos + cmd_len > actual_len) {
++			err = kvaser_usb_hydra_cmd_size_rx(tmp_cmd,
++							   actual_len - pos,
++							   &cmd_len);
++			if (err || pos + cmd_len > actual_len ||
++			    kvaser_usb_hydra_verify_cmd_size(tmp_cmd, cmd_len)) {
+ 				dev_err_ratelimited(&dev->intf->dev,
+ 						    "Format error\n");
+ 				break;
+@@ -2110,6 +2187,7 @@ static void kvaser_usb_hydra_read_bulk_callback(struct kvaser_usb *dev,
+ {
+ 	unsigned long irq_flags;
+ 	struct kvaser_cmd *cmd;
++	int err;
+ 	int pos = 0;
+ 	size_t cmd_len;
+ 	struct kvaser_usb_dev_card_data_hydra *card_data =
+@@ -2120,27 +2198,64 @@ static void kvaser_usb_hydra_read_bulk_callback(struct kvaser_usb *dev,
+ 	spin_lock_irqsave(usb_rx_leftover_lock, irq_flags);
+ 	usb_rx_leftover_len = card_data->usb_rx_leftover_len;
+ 	if (usb_rx_leftover_len) {
++		const size_t cmd_size_field_end =
++			offsetof(struct kvaser_cmd_ext, cmd_no_ext);
+ 		int remaining_bytes;
+ 
+ 		cmd = (struct kvaser_cmd *)card_data->usb_rx_leftover;
+ 
+-		cmd_len = kvaser_usb_hydra_cmd_size(cmd);
++		if (cmd->header.cmd_no == CMD_EXTENDED &&
++		    usb_rx_leftover_len < cmd_size_field_end) {
++			remaining_bytes = min_t(int, len,
++						cmd_size_field_end -
++						usb_rx_leftover_len);
+ 
+-		remaining_bytes = min_t(unsigned int, len,
++			memcpy(card_data->usb_rx_leftover + usb_rx_leftover_len,
++			       buf, remaining_bytes);
++			usb_rx_leftover_len += remaining_bytes;
++			card_data->usb_rx_leftover_len = usb_rx_leftover_len;
++			pos += remaining_bytes;
++
++			if (usb_rx_leftover_len < cmd_size_field_end) {
++				spin_unlock_irqrestore(usb_rx_leftover_lock,
++						       irq_flags);
++				return;
++			}
++		}
++
++		err = kvaser_usb_hydra_cmd_size_rx(cmd, usb_rx_leftover_len,
++						   &cmd_len);
++		if (err || cmd_len < usb_rx_leftover_len) {
++			dev_err(&dev->intf->dev, "Format error\n");
++			card_data->usb_rx_leftover_len = 0;
++			spin_unlock_irqrestore(usb_rx_leftover_lock, irq_flags);
++			return;
++		}
++
++		remaining_bytes = min_t(unsigned int, len - pos,
+ 					cmd_len - usb_rx_leftover_len);
+ 		/* Make sure we do not overflow usb_rx_leftover */
+ 		if (remaining_bytes + usb_rx_leftover_len >
+ 						KVASER_USB_HYDRA_MAX_CMD_LEN) {
+ 			dev_err(&dev->intf->dev, "Format error\n");
++			card_data->usb_rx_leftover_len = 0;
+ 			spin_unlock_irqrestore(usb_rx_leftover_lock, irq_flags);
+ 			return;
+ 		}
+ 
+-		memcpy(card_data->usb_rx_leftover + usb_rx_leftover_len, buf,
+-		       remaining_bytes);
++		memcpy(card_data->usb_rx_leftover + usb_rx_leftover_len,
++		       buf + pos, remaining_bytes);
+ 		pos += remaining_bytes;
+ 
+ 		if (remaining_bytes + usb_rx_leftover_len == cmd_len) {
++			if (kvaser_usb_hydra_verify_cmd_size(cmd, cmd_len)) {
++				dev_err(&dev->intf->dev, "Format error\n");
++				card_data->usb_rx_leftover_len = 0;
++				spin_unlock_irqrestore(usb_rx_leftover_lock,
++						       irq_flags);
++				return;
++			}
++
+ 			kvaser_usb_hydra_handle_cmd(dev, cmd);
+ 			usb_rx_leftover_len = 0;
+ 		} else {
+@@ -2154,9 +2269,13 @@ static void kvaser_usb_hydra_read_bulk_callback(struct kvaser_usb *dev,
+ 	while (pos < len) {
+ 		cmd = buf + pos;
+ 
+-		cmd_len = kvaser_usb_hydra_cmd_size(cmd);
++		err = kvaser_usb_hydra_cmd_size_rx(cmd, len - pos, &cmd_len);
++		if (err && err != -EAGAIN) {
++			dev_err(&dev->intf->dev, "Format error\n");
++			return;
++		}
+ 
+-		if (pos + cmd_len > len) {
++		if (err == -EAGAIN || pos + cmd_len > len) {
+ 			/* We got first part of a command */
+ 			int leftover_bytes;
+ 
+@@ -2174,6 +2293,11 @@ static void kvaser_usb_hydra_read_bulk_callback(struct kvaser_usb *dev,
+ 			break;
+ 		}
+ 
++		if (kvaser_usb_hydra_verify_cmd_size(cmd, cmd_len)) {
++			dev_err(&dev->intf->dev, "Format error\n");
++			return;
++		}
++
+ 		kvaser_usb_hydra_handle_cmd(dev, cmd);
+ 		pos += cmd_len;
+ 	}
 
-[Severity: Low]
-This isn't a bug introduced by this patch, but while the test only ever
-uses dump=True here, the getmulticast operation in
-Documentation/netlink/specs/rt-addr.yaml also declares a do form (request
-and reply value 58, reply carrying multicast, mc-users, cacheinfo and, after
-the AF_PACKET documentation change, flags and target-netnsid).
-
-No family registers a .doit handler for RTM_GETMULTICAST: the PF_PACKET
-entry in rtnetlink_rtnl_msg_handlers(), the PF_INET entry in
-devinet_rtnl_msg_handlers() and the PF_INET6 entry in
-addrconf_rtnl_msg_handlers() all set .dumpit only. rtnetlink_rcv_msg()
-then takes the out_unlock path:
-
-	link = rtnl_get_link(family, type);
-	if (!link || !link->doit) {
-		family = PF_UNSPEC;
-		link = rtnl_get_link(PF_UNSPEC, type);
-		if (!link || !link->doit)
-			goto out_unlock;
-	}
-
-so ynl --do getmulticast, and anything generated from the do half of the
-spec, can only return -EOPNOTSUPP. Should the do form be dropped from the
-spec, or is a .doit handler planned?
-
-> +
-> +        # dummy2 has entries as well, only dummy1 may be listed
-> +        ksft_eq({addr['ifa-index'] for addr in addresses}, {dev_idx},
-> +                "AF_PACKET multicast dump ignored ifa-index filter")
-> +
-> +        entries = {addr['multicast']: addr for addr in addresses}
-> +
-> +        # Bringing an Ethernet device up joins 224.0.0.1, which maps
-> +        # to 01:00:5e:00:00:01 in the device multicast list.
-> +        ksft_in(ETH_ALL_HOSTS_MULTICAST, entries,
-> +                "dummy1 does not have the all-hosts link-layer address")
-> +        ksft_not_in('global', entries[ETH_ALL_HOSTS_MULTICAST]['flags'],
-> +                    "protocol entry is global")
-> +
-> +        ksft_in(ETH_TEST_MULTICAST, entries,
-> +                "dummy1 does not have the SIOCADDMULTI address")
-> +        ksft_eq(entries[ETH_TEST_MULTICAST]['mc-users'], 1,
-> +                "unexpected mc-users for the SIOCADDMULTI address")
-
-[Severity: Low]
-Can this raise KeyError instead of reporting the individual checks?
-ksft_in() in tools/testing/selftests/net/lib/py/ksft.py is non-fatal:
-
-    def _fail(*args):
-        global KSFT_RESULT
-        KSFT_RESULT = False
-        ...
-
-    def ksft_in(a, b, comment=""):
-        if a not in b:
-            _fail("Check failed", a, "not in", b, comment)
-
-So when the all-hosts entry is missing from the dump, ksft_in() records the
-failure and the next statement still evaluates
-entries[ETH_ALL_HOSTS_MULTICAST]['flags'], and likewise
-entries[ETH_TEST_MULTICAST]['mc-users'] after the second ksft_in().
-
-The preceding ksft_eq() on the ifa-index set is non-fatal too, so an empty
-or unexpected dump flows straight into the indexing. ksft_run() catches the
-exception and marks the case failed, but the mc-users check, the global flag
-check and the whole target-netnsid sub-test below are then skipped rather
-than reported.
-
-Would it be better to bail out before dereferencing, the way
-dump_mcaddr_check() and dump_mcaddr6_check() do with
-
-            if before is None:
-                raise KsftSkipEx(...)
-
-or to guard the dict lookups with an explicit early return?
-
-> +        ksft_in('global', entries[ETH_TEST_MULTICAST]['flags'],
-> +                "SIOCADDMULTI entry is not global")
-> +
-> +        # target-netnsid dumps another netns, ifa-index is relative to it
-> +        with NetNS() as peer:
-> +            ip(f"netns set {peer} 5")
-> +            ip("link add name dummy3 type dummy", ns=peer)
-> +            ip("link set dummy3 up", ns=peer)
-> +            peer_idx = ip("link show dummy3", json=True, ns=peer)[0]['ifindex']
-> +
-> +            addresses = rtnl.getmulticast(
-> +                {"ifa-family": socket.AF_PACKET, "target-netnsid": 5},
-> +                dump=True)
-> +            ksft_eq({(addr['ifa-index'], addr['target-netnsid'])
-> +                     for addr in addresses}, {(peer_idx, 5)},
-> +                    "target-netnsid did not dump the peer netns")
-
-[ ... ]
-
+base-commit: 7addb4e5ef1702704914b47bca3f706ef96c1589
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260909133247.113923-1-sigefriedhyy%40gmail.com
+2.55.0
