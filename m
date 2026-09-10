@@ -1,218 +1,218 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 877653BCD20
-	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 09:22:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1A29367F21
+	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 09:27:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789032130; cv=none; b=iMBXI7u040EXH17zgLbOtUepAYQECNdQG9DP4PXEZVjhOpz+2ZgPQRtm+uwPUOesuan0M8KvII53A3cf8rpSMDvpC3GzucX+/0Mg5CqwYYYh9ST4M6HliT6aDXp+aeO7wxEr43Npv5jZ8SvSBGYIinq9vZYX4al5jGBIgY4CzU4=
+	t=1789032443; cv=none; b=OgGU2jPbAyC6HeskZKFKE1a6p75WT8AXI2PIt/ZE4iL/Dh8hDyumj5uvUdtLlihCDZI0+XRlrgKMRHM0xVOYMi7AOuMIy3bek7mVDTpzGh6h05u7MaA9o7YcE1PGJpWY92ssjOvn2YLKZzI4Dc8huJCief747UNaxXS9hBaaNnU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789032130; c=relaxed/simple;
-	bh=SqMaIe31ErlyZPftI1VMm9z3onoE7TnEmVuwCwe1Z8c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lVI0CYhHq4f62lWw86c7sFhx1N3FWAXr8TV/Gb0EeO0FfMarH3lJT/wYN2g+I2jz85fGIxd+aZJ0HZkgN1HIUhYWZ/5Uxf51eNDADdVyXNX6iqrFMWnLfSBgdaFODMR8ESBAb6sXA4crdS/mwWGa26WCrSV1pjGjp312KGV3CqI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=REL0V7zV; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=FO0aLXm+; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1789032443; c=relaxed/simple;
+	bh=onSrGR1DPPS7AniFPeG6y4FBr8zoZ5FvmsyzKudrgSM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rsEOrN9eLDLUsxNasNi20rm/Cwv6ONnM4PjHP5h/I3F1vxoj5zjGw0rG0gALqbGh7BoosndGlAHy/+5v8HxiREDDa7TM++5wnmfcf9cMoy4ORCQLKPRpNz+Wv96jMpDgOoB19WE57dzWoMEYykgHmyHAy9Axr0pEGqZ3JLG6d2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TAvJ4YQA; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=T1jY1Nne; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="REL0V7zV";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="FO0aLXm+"
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68A8q03x427122
-	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 09:22:07 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=6tGM9diftK82uEPdEwwEmZx3
-	599l3xHAru6r160uTxg=; b=REL0V7zVLnqqNklSk92VK2ksvnh73yn+uXTKLHJa
-	u5ee37RDZSmQNr8DYqK9BkKvuyr7VMA5Oa6ujFJloJjRdacBPvicVOMa74qSvF9A
-	MQanvxpWteCjrq8sPhgOzkWJItBWBhLMYS2NA4wsrU6dryGnJCOxlBbxZ8nx6Fqj
-	Hc5ozfR7FsG908utiitSriOOmvQ7PviR+6ErTkQYQAxy3zBw/azQQRo8HLwHWB89
-	+9aGRIg55uI+MNM5ozqnjGZOzwNvo55WT/EjcBOQZ0JpophFPRystsnrGEs5K4dC
-	0UgGNmrdymloI4GKJ5op/zuv9ayWDHJpnmqPgedlxUExHw==
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com [209.85.222.199])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gkcyd32be-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 09:22:07 +0000 (GMT)
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-92e82060977so151403485a.1
-        for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 02:22:07 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TAvJ4YQA";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="T1jY1Nne"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1789032436;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=g/3XKDJU4nAR84kTuAFEMqKuSOff2uwWs1pjVTD0st0=;
+	b=TAvJ4YQALbIeh12WvIBrOYo495Y/hq3GnxZGUp6A/BpDagx8qSqGav4SYtqn0RJ9M2jXxA
+	as3PzlCMKHbzHDaYacQ8Tfz/x0O7doSfNJtrChR++I3j681SbFnJoQKFw3kG/CbFbMl0F7
+	FYEdf4mwfowqhQU7irPkT9ndm6U6sHY=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-556-z5sbMzFPPBqTYk1VFBoDRA-1; Thu, 10 Sep 2026 05:27:13 -0400
+X-MC-Unique: z5sbMzFPPBqTYk1VFBoDRA-1
+X-Mimecast-MFC-AGG-ID: z5sbMzFPPBqTYk1VFBoDRA_1789032432
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-48436a5fb42so3786515f8f.1
+        for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 02:27:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1789032127; x=1789636927; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=6tGM9diftK82uEPdEwwEmZx3599l3xHAru6r160uTxg=;
-        b=FO0aLXm+aFZnZ7Fc02jJqTVjmlZuFqI5eTdhRD8Rs2MS0mQpJXpZ+YC7/eTDdMTBNN
-         9E1pIdjXah6nu9jWKxgbUlHZxi79v46yhf4QA4kR8Oa/pru+u2GMZEaTYczCsQ9SJqxR
-         flEfnGutq0IX5n+59Peg7OyltgqegfqumhUvpbaJqTAxKMVD4JdD/sbz7QizDFjmkpJt
-         vhfsgOoICfAtZ4XBXxj+GZfbLxp1p5IMpkp9d1EHRpDMSfEdoUj/4+xuFS4JB5bWOyBQ
-         rzedTvwQ8rMd+F4qp99Mx9psAZZnKZr/Cc9HYAUDmQwy4ukUoIYDIbYq7S3VqMLkiO7Z
-         CrLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789032127; x=1789636927;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=redhat.com; s=google; t=1789032432; x=1789637232; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=6tGM9diftK82uEPdEwwEmZx3599l3xHAru6r160uTxg=;
-        b=WZ9K14TCS7R7QxQIzLKgjrVxdQZSyRQVukNIuiyF85JLbGizKk40w8i9TCSzqU9Ksq
-         5NX2yFsd/B+mBjX6/GVJpl9DuMxbeUdRhBhx5vEyOVh8QAtP2e06LLjSvCNw5gx5nW80
-         k+Q92l9ywCT91lQ2h/bokb9KhekzMLSZJ1MMrY3p+hpdSh13h/XeZrlfZ8phuBYbn5wY
-         4sH2CjXY3XJ2soGUaoMRXlzawBclt5mTjiBVqKIThDTvbrQ7iR+q6oviJUdkSGV5VZpC
-         K+t+sKVIvIaT1SRbVVPERkUQ84tD2PJbqAdKc9XEGQCsyAMqKVfhvPNA47HgOAcLKlGS
-         +NKA==
-X-Forwarded-Encrypted: i=1; AKwUvByjZlL0NfrJ/AcbkUWNMPLkssEV3ekShBdcuAwg17wWBL9sl9mlPoepmNXxM/yHcd9GjKX9v94=@vger.kernel.org
-X-Gm-Message-State: AFuF++nGNN62xGzmdxNm3TJIRVwQshAAmEtE4imuLgiKKxhoNgmRsxPR
-	Y4f2C6441ydp7bfW48pzBdt4KJEFeUaAhnzWGzwf7YItVB02qT2LF1ISlthiq8UYhowgBZcQF4k
-	5NFE7pnBbMelQBTtKH9jnN8kA59vAIma4NJsz99knUykkLiSYq7XmbqL11gY=
-X-Gm-Gg: AYBFou3xEGfSt+JeOyQCMzz1AOUl8fDWgDWLmzBzVkmseQQzFu51UCh7BlBiBjkqJFM
-	1WUJ3kd7gQcw1D8B8LKG4RElHl+D7tidMIpDiLiXVacm6xrd4fs2lwHcfk1B/ooGNefX6wiRAe5
-	hLMX7BBBoh9+Qcn3iPWryd4evcrLhtOQ+Z1wlLtWP/512s8wyd+8g4p5W63v2c3nyElCqz33z8b
-	e0AXOUh3vgCQORn66T2rO2ktnAbR3fixHpL3HxJ84g+gPSXTO37ZAJGzv6Ea3mDOkPgK5pUvE8k
-	IxSKblh2mFM2kc3d1zbPKbitHDPdDFMjmhw8gw6aib5ROYueQU8Qu6vd7kLfBECeF47lV7tyY+F
-	G+SJDxSqc6SxiiQ==
-X-Received: by 2002:a05:620a:8801:b0:939:319f:d6e3 with SMTP id af79cd13be357-939d7e4028amr435138585a.5.1789032126554;
-        Thu, 10 Sep 2026 02:22:06 -0700 (PDT)
-X-Received: by 2002:a05:620a:8801:b0:939:319f:d6e3 with SMTP id af79cd13be357-939d7e4028amr435133485a.5.1789032126022;
-        Thu, 10 Sep 2026 02:22:06 -0700 (PDT)
-Received: from localhost ([188.216.77.92])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-485883a9b49sm41732270f8f.17.2026.09.10.02.22.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Sep 2026 02:22:05 -0700 (PDT)
-Date: Thu, 10 Sep 2026 11:22:04 +0200
-From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-To: ZhaoJinming <zhaojinming@uniontech.com>
-Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Jose Abreu <Jose.Abreu@synopsys.com>, netdev@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] net: stmmac: fix stale descriptors and DMA mapping
- leak on Tx map failure
-Message-ID: <aqJ2vGaushx4EL5q@lore-desk>
-References: <20260910-stmmac-fix-vlan-desc-leak-v1-1-6b07dca5e5e8@uniontech.com>
+        bh=g/3XKDJU4nAR84kTuAFEMqKuSOff2uwWs1pjVTD0st0=;
+        b=T1jY1NneuyhNnBIGlEgbFa8AtzlX9BGuGO5zhN5BDj6UkMlxCUhipMr3EdFwNtfbpI
+         2IzHkfI5RLQuqC5AFEv+zFDU2awDaUqbVeLKoArKwhALWnZepoy4N+55w7607vHty7KE
+         TH65V6BvH3CpoL1TPFBP8OGbaiGq+vTSZZ0c0GB0GWJeJy3v3uCJAys1u/5oPK5ycpFa
+         5dsMqQ0pK8vFIOGt0c4xEIgCim2aA2rG+3bU6im9TUt2TSm00/OKEp2I78sg8Nx3VXaa
+         IeO5IAjc2+SGwGyrKJcdfum777DwnnqTGIctF7KA0nWkEk6VAU/OkkwRxAAdy28I956h
+         MKrQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789032432; x=1789637232;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=g/3XKDJU4nAR84kTuAFEMqKuSOff2uwWs1pjVTD0st0=;
+        b=gMqCpdg6YWmvDurnby0x8tupGbWg/6QXM0soDdMuHzurZX7W0pzCRsSSXaPmd1//ML
+         5bhdP61NPl4lptt9M5OPHGcz67pd5v4MQH4ziSvox0wS3/169SS5E56NvCIG4yv6OVgV
+         EyosbAdrmK15vaY5nZpWpmdJbytiXO5oiuYpfqcR0atr+Le2rI9kSBtiu1Xbw9N7sf+t
+         vxME4r1FSUz7TaQCUNldBdK8nsp92h9+3C9KQZmsjAFbE3Kj36fHM92xisFTt5HZPQkI
+         4e8FoC5WNdZQ75UuFP+SR/NRbiMOlKBHx4h0jSPL3/ISz0p1RVxYTEi/irMvm4QdTeIy
+         mWWg==
+X-Forwarded-Encrypted: i=1; AKwUvBykFBDBRXrWRQHBxTUpQhsuz7a9PNU4f62FOdez++XoxKPhLpI0sVuRNCrlyHUysM/COIT28/E=@vger.kernel.org
+X-Gm-Message-State: AFuF++kqPFx4yXFo0+y3GNaGvbzEoWZ4pvx1CmgbqJRx2l8Vsn9AV7OM
+	ufk7u5dgZXWQj1oKEzAOZWTsOwVn0UPafAZEtw3mY+h4VV9QBBXiDkzvb5lZMc/Xta92LMdXsSt
+	2EW2AEqy2ZGbhWCFQkW6gSs7nVuh+pbV01YYODwDTB/mYorcBHaY9m59giQ==
+X-Gm-Gg: AYBFou2r3O6xMdcYSud3XbUHDzKU5UyOpeU3t1O3flRZUXzrqVx9oHeJCNHnj3R6ebl
+	PgkKiEIUYxInUugKDxebLZ5+GxeZMSxWHsvtF93C7W6am7LC4ZUmQY0wabWZtx5Nw+wVbdyL3E8
+	6gNEEharQvdLzCZclAW/WqyYnn1U1ejDPwZCmXgBMyyrLgeeyKvIrJ6AD31mxZFl/H1kADMIF8M
+	agbD1E0oexfrJ6dvebricJ70kULzfJiSMQXhltETKw18fRgGzMcxwOtNlnXKnGvU1GPbl8rL+u+
+	vPiuuajCvRocyhXuSX67HTzmVycb3kmI/UF7uN6EVqQ9jnP1bF6jfHmikmm26uccRmqmpIqqA1D
+	QbEGwNB1Ow+8aXJ6MzUlf0iHAlTho3FGE36FQB0w4XIjML8w4NLl9yleJVWYkl0rmQGf3iIVt9g
+	==
+X-Received: by 2002:a05:6000:2011:b0:485:b169:54f8 with SMTP id ffacd0b85a97d-485b169569dmr7592354f8f.2.1789032431980;
+        Thu, 10 Sep 2026 02:27:11 -0700 (PDT)
+X-Received: by 2002:a05:6000:2011:b0:485:b169:54f8 with SMTP id ffacd0b85a97d-485b169569dmr7592302f8f.2.1789032431401;
+        Thu, 10 Sep 2026 02:27:11 -0700 (PDT)
+Received: from [192.168.188.218] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-485883953cfsm41570666f8f.13.2026.09.10.02.27.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 10 Sep 2026 02:27:10 -0700 (PDT)
+Message-ID: <fd286e60-73c0-4a6f-8861-7f6cbc197cb0@redhat.com>
+Date: Thu, 10 Sep 2026 11:27:09 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="KcOlHxOUPHTI2fBm"
-Content-Disposition: inline
-In-Reply-To: <20260910-stmmac-fix-vlan-desc-leak-v1-1-6b07dca5e5e8@uniontech.com>
-X-Proofpoint-GUID: M_jsUiN9wSu-ookVrK0ztdEZemd4Nccr
-X-Authority-Analysis: v=2.4 cv=ef+o7LEH c=1 sm=1 tr=0 ts=6aa276bf cx=c_pps
- a=HLyN3IcIa5EE8TELMZ618Q==:117 a=WpTaRW6qxYHRGzLzQsVYzg==:17
- a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=rJkE3RaqiGZ5pbrm-msn:22 a=iHwBjlyiAAAA:8
- a=w8qe9T3wKc6gY-gyingA:9 a=CjuIK1q_8ugA:10 a=dhHhmpoG3uERpqc57R0A:9
- a=bTQJ7kPSJx9SKPbeHEYW:22 a=uNSKXYNwxGiU6LD0JREI:22
-X-Proofpoint-ORIG-GUID: M_jsUiN9wSu-ookVrK0ztdEZemd4Nccr
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTEwMDEwNCBTYWx0ZWRfX8jg6X70gsdBP
- XAP0sRu+IIQal6ZcrUPyHcAcYrr0iKykrmB0TvHy+1zKDvHgtT70udL4t7ggnpZixhRafJgFNYV
- O/fU0iVfzT7HXWKkM4XCQsYCjLLuPo8=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTEwMDEwNCBTYWx0ZWRfX5UOCwjfOk1xN
- kVU3QZ7Vn5CcoZHSPzT6O5YNcz+eaPl6ygOCbQoGrsUVTGsui4/HYTODyAMyL482hp9rIgzj1JA
- ltQlVzC1vz4PLBLbmkgDSmsUwNABkBzeMFUBA6vAc/4Ksbw3nfyvT3HxzdUiha6v+ah9bn5Kk67
- nJImRtnuG8H9P5SOKcdhEArsJ1BPQn7BT5JdY4Bpy82FwdfjOomaG67tfvQcGX9qCDLHaYMzWid
- hiEbArt6f3bx3Sr0p8Frzu8t0BbY3Ox2Gx4t8SM8zqsHljro5QYazoRItawBcSUDomQSx3XqtYT
- mWaqt0ESGsoUsxDhl6ytbIQ67TMTdDwmt94Zh7b9spxNoCMHo3gnSLC/4NteoNdOj9laXUoh2dz
- B/VT1OI5TB7SNiZpzbJmE8wtrXI3J8EvM5dX1c4NFKndRmsXHn+LcZ94jkT1s6M9RcKsKbj1eqM
- GKqa7i9hrJOzPczHgpQ==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-10_03,2026-09-09_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 suspectscore=0 adultscore=0 priorityscore=1501
- lowpriorityscore=0 clxscore=1015 phishscore=0 impostorscore=0 bulkscore=0
- spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2609040000
- definitions=main-2609100104
-
---KcOlHxOUPHTI2fBm
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-> In stmmac_xmit(), when the DMA mapping of the linear part or of a
-
-[...]
-
->  	if (unlikely(is_jumbo)) {
-> -		entry =3D stmmac_jumbo_frm(priv, tx_q, skb, csum_insertion);
-> -		if (unlikely(entry < 0) && (entry !=3D -EINVAL))
-> +		ret =3D stmmac_jumbo_frm(priv, tx_q, skb, csum_insertion);
-
-if jumbo_frm() returns an error on the subsequent frames, entry is not upda=
-ted
-here, so we will end up with a DMA leak. Am I missing something?
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2 2/4] net/sched: cls_route: Reject handle aliasing
+To: victor@mojatatu.com
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ jhs@mojatatu.com, jiri@resnulli.us, horms@kernel.org, vega@nebusec.ai,
+ netdev@vger.kernel.org
+References: <20260907192133.2639067-3-victor@mojatatu.com>
+ <178894934962.219967.16944577524953312446@kernel.org>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <178894934962.219967.16944577524953312446@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
 
-> +		if (unlikely(ret < 0) && (ret !=3D -EINVAL))
->  			goto dma_map_err;
-> +		entry =3D ret;
->  	} else {
->  		bool last_segment =3D (nfrags =3D=3D 0);
-> =20
-> @@ -4984,6 +4985,26 @@ static netdev_tx_t stmmac_xmit(struct sk_buff *skb=
-, struct net_device *dev)
-> =20
->  dma_map_err:
->  	netdev_err(priv->dev, "Tx DMA map failed\n");
-> +
-> +	/* entry points one past the last descriptor written for this frame:
-> +	 * on failure it is the descriptor whose DMA mapping failed, so walk
-> +	 * from first_entry up to, but not including, entry.  Reset cur_tx
-> +	 * unconditionally as both stmmac_vlan_insert() and stmmac_jumbo_frm()
-> +	 * may have advanced it, and release the VLAN context descriptor.
-> +	 */
-> +	while (first_entry !=3D entry) {
-> +		desc =3D stmmac_get_tx_desc(priv, tx_q, first_entry);
-> +		stmmac_release_tx_desc(priv, desc, priv->descriptor_mode);
-> +		stmmac_free_tx_buffer(priv, &priv->dma_conf, queue, first_entry);
-> +		first_entry =3D STMMAC_NEXT_ENTRY(first_entry,
-> +						priv->dma_conf.dma_tx_size);
-> +	}
-> +
-> +	tx_q->cur_tx =3D first_tx;
 
-do we really need to update tx_q->cur_tx here?
+On 9/9/26 12:22 PM, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider:
+> 
+> Critical: 0 · High: 0 · Medium: 1 · Low: 0
+> 
+> - [Medium] net/sched/cls_route.c:route4_set_parms() — the duplicate-
+>   handle scan rewritten by this patch (line 463: `if (fp->handle ==…
+> 
+> --
+> 
+> net/sched: cls_route: Reject handle aliasing
+> 
+> route4_set_parms() scanned the destination chain for the filter's old
+> handle instead of the handle it is about to be linked under, so a change
+> that moves a filter into a chain already holding nhandle missed the
+> collision and created two filters with the same handle.  The patch makes
+> the scan compare against nhandle and adds an extack message.
+> 
+> Closes: https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260829205422.854785-1-victor%40mojatatu.com
+> 
+>> diff --git a/net/sched/cls_route.c b/net/sched/cls_route.c
+>> index 17b0ebb766626..9710b77d379c4 100644
+>> --- a/net/sched/cls_route.c
+>> +++ b/net/sched/cls_route.c
+>> @@ -460,8 +460,12 @@ static int route4_set_parms(struct net *net, struct tcf_proto *tp,
+>>  		for (fp = rtnl_dereference(b->ht[h2]);
+>>  		     fp;
+>>  		     fp = rtnl_dereference(fp->next))
+>> -			if (fp->handle == f->handle)
+>> +			if (fp->handle == nhandle) {
+>> +				NL_SET_ERR_MSG_FMT(extack,
+>> +						   "Handle %x is already in use",
+>> +						   nhandle);
+>>  				return -EEXIST;
+>> +			}
+> 
+> [Severity: Medium]
+> 
+> Should this scan skip the filter that is being replaced?  When
+> route4_change() is called with an existing filter, fold is still linked in
+> its bucket chain while route4_set_parms() runs, and f was seeded from it:
+> 
+> net/sched/cls_route.c:route4_change() {
+> 	...
+> 	if (fold) {
+> 		f->id = fold->id;
+> 		f->iif = fold->iif;
+> 		f->handle = fold->handle;
+> 
+> 		f->tp = fold->tp;
+> 		f->bkt = fold->bkt;
+> 		new = false;
+> 	}
+> 
+> 	err = route4_set_parms(net, tp, base, f, handle, head, tb,
+> 			       tca[TCA_RATE], new, flags, extack);
+> 	...
+> }
+> 
+> fold is unlinked from b->ht[] only after route4_set_parms() returns
+> successfully, so the new scan can walk into fold itself.
+> 
+> Two things seem to follow from that.  First, for an in-place change that
+> keeps the same to/from, nhandle equals fold->handle and the scan matches
+> fold, returning -EEXIST for the very filter the user asked to modify.  The
+> old code compared fp->handle == f->handle, which is also fold->handle, so
+> the self-match itself is pre-existing and not introduced here, but the new
+> extack now reports "Handle %x is already in use" for the object being
+> modified, which reads as a foreign collision.
+> 
+> Second, does this newly allow a filter to be silently renumbered?  The
+> 0x7F00 order bits are only folded in for the create path:
+> 
+> net/sched/cls_route.c:route4_set_parms() {
+> 	...
+> 	if (handle && new) {
+> 		nhandle |= handle & 0x7F00;
+> 	...
+> }
+> 
+> So for something like
+> 
+>   tc filter change ... pref 100 handle 0x10101 route from 1 to 1 classid 1:9
+> 
+> nhandle comes out as 0x10001 while fold->handle is 0x10101.  to_hash() uses
+> only id & 0xFF plus the 0x8000 bit, and from_hash(nhandle >> 16) is
+> unchanged, so both handles land in the same b->ht[] chain and fold really is
+> visible to the scan.  With the old comparison against f->handle the scan
+> matched fold and the change was refused; with the comparison against
+> nhandle it no longer matches, the change is accepted, and
+> 
+> 	f->handle = nhandle;
+> 
+> renumbers the filter from 0x10101 to 0x10001.  After that, del or replace by
+> handle 0x10101 no longer addresses the intended filter.  Was that change of
+> behaviour intended here?
+> 
+> There is no memory-safety consequence either way: the -EEXIST return happens
+> before refcount_inc(&b->filters_ref) and before the f->handle / f->bkt
+> assignments.
+> 
+> For what it is worth, both halves appear to be addressed later in the same
+> series by "net/sched: cls_route: Fix in-place replace" 
+FTR: due to the above point, this whole wall of text is pure noise IMHO.
+Still there are a few comments referring pre-existing issues that could
+deserve some follow-up, please have a look at the full report.
 
-Regards,
-Lorenzo
+https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260907192133.2639067-1-victor%40mojatatu.com
 
-> +	if (has_vlan) {
-> +		desc =3D stmmac_get_tx_desc(priv, tx_q, first_tx);
-> +		stmmac_release_tx_desc(priv, desc, priv->descriptor_mode);
-> +	}
->  max_sdu_err:
->  	dev_kfree_skb(skb);
->  	priv->xstats.tx_dropped++;
->=20
-> ---
-> base-commit: 893e11787f78e43b534e252249ac3fff4d1333f8
-> change-id: 20260909-stmmac-fix-vlan-desc-leak-f057bb061daa
->=20
-> Best regards,
-> --=20
-> ZhaoJinming <zhaojinming@uniontech.com>
->=20
->=20
+/P
 
---KcOlHxOUPHTI2fBm
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCaqJ2vAAKCRA6cBh0uS2t
-rO4sAP9QplCgEOl7LHiJtVRsPPgK9CPA9e9w9UD6ia60BXo9jgD/QCPFa663G/VC
-TKZ5L1wUNGHzBoI5o+tS5xidHxQsLww=
-=LJmx
------END PGP SIGNATURE-----
-
---KcOlHxOUPHTI2fBm--
