@@ -1,68 +1,68 @@
-Received: from mail-ej2-f12.google.com (mail-ej2-f12.google.com [74.125.228.140])
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05F2A49B1FF
-	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 14:02:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C323349B1F9
+	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 14:02:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789048975; cv=none; b=PymuN7/Dod79SjBkgmvLSAtHYVGLp/o4+wQHRwu5HQs8eqHL8ztyDKjkGCsVQznQ3Q9rF0rGTIDHM1uHovnhAHdBSOKkVP1mmUYfYYMJ0AyyHrNuiRT4hnU8o85pPtsrEliS8ut/CuY4Xvwtj7Nws2UXT4zzCxVrEdqIZGxVZ3s=
+	t=1789048977; cv=none; b=i0opR+dFW2wevNG7B9lqH/9hr47ai6VhyoG7Aegp8YmyvyeeVaQgORHbsUyYc3mHKMza047bjvka3KbwiicCPccpQFDFQCUUuRVJXxSUfycG16tJ9B7WkCQA1PZOFSqzVxdvkyVM6nPISDMrC/NCExC3nE8lEWROclCaQd/yreE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789048975; c=relaxed/simple;
-	bh=rC0Yd3CXyDFRpnHOHLiFaSLmxcyY7LEJf5u7KFgqIC8=;
+	s=arc-20240116; t=1789048977; c=relaxed/simple;
+	bh=cd7U6sBwAJ9/oTQseveTlVwDmh+eMKrpH0GaQtXPj8Y=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=fk6bs7EWxJ/p932h8d9PXylVM3HrHeNq4kSVr5Y8St5mmPrE/BXf8irVQtL/XAS3b2eayhkpu94+cM2TiHxvu89hNu0ou1gwSgORgCXPU+AVn2SLwIJWhTNioD5JO8qiEf+xZ+r9s6Ecb0Qm6xRWFRi6ky0VZM/uV1IEgwFeNQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=FTiQCj2+; arc=none smtp.client-ip=74.125.228.140
+	 In-Reply-To:To:Cc; b=cDD86qWhK8b12SgLEKlZXsvkuT594AP+0Qbb4f23WKMUm2dmOX40oVsaWigWAoG5VRp6fWndzBaCf3hd22+KW06IpnXaMElmnqDn9/tPMmnzpgWYg6Ho9T4I4iolwNW7ohL4s48ZskfcR1yoQGmYQbI4Wu8nPXrhifOB3r6Vvf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=MwwSa0YB; arc=none smtp.client-ip=209.85.208.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="FTiQCj2+"
-Received: by mail-ej2-f12.google.com with SMTP id a640c23a62f3a-c2940ff2313so102555266b.1
-        for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 07:02:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="MwwSa0YB"
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-6a0de062db5so10864672a12.1
+        for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 07:02:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1789048971; x=1789653771; darn=vger.kernel.org;
+        d=cloudflare.com; s=google09082023; t=1789048973; x=1789653773; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Mq8IbU/5eQsM/lONMbLuHU7eTdgL0/fDzLp8sxUozu4=;
-        b=FTiQCj2+K51NySnkpCjF1xqz5riDbJMpBpuVwWOP4yGWI2hbSXiEvh/+g0L9mTO7rt
-         k6qsNBzBSzmEJ0w8bLzU9aDFZIZCOJMYwSsNSBTsTg9fdSQLpkQuddtAKht57QjyhbFu
-         Xe77F3uxyq06Shg5MmcZUEEZQ4gmbKZmqfe/6x3TE+mmlL9ufuScMPCkFZtqX4hyHkrE
-         WGKNfWinNxWXDisFcJV9koa+ay0WqNRPeg4FmrudeDDqBczsQYxB+7A89IbQTYzdOnhI
-         92hSkDRoq9jWdD5dJrv3SdvxmEzcTyQELtRDaWRDgcFaiXf3K+G7SHL0jL8/zjnd70PS
-         yvew==
+        bh=3pBmwNSWHN0yjp8GjiKNRVDKqbDamZhuMB1kehBa5sw=;
+        b=MwwSa0YB/wk1VDIDqk65nzRI+/FE0leElwMLNmnJ3JE7uqQfkSqMnc/9HsBL6wFzhC
+         O1Zm1IN+UA4Rm8cvnjTwSP5eZoAHZtoi/I3LNxqbQxx6Yx+MLHvon3usoitN7jW3f4uE
+         8I2ItCbIEqdB87ejcQ0QhZn+uv01tqayJBSd0C798An12xhxruYHiuOTsRX1Odh06aEC
+         WT+I8heqswfh+Nlx5uDiwoCe51tdZxEorVAxN1v47nIJRoW87PGbbPieou71tBtEaRbk
+         lZBxMjrhP+wkCndxTTxC0qel4KVUKN2eP9YaP2Pns7dsGKvSlYEgqdvP8lIWzeTIuLGl
+         Gu5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789048971; x=1789653771;
+        d=1e100.net; s=20251104; t=1789048973; x=1789653773;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :content-type:mime-version:subject:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Mq8IbU/5eQsM/lONMbLuHU7eTdgL0/fDzLp8sxUozu4=;
-        b=EaHZcV14cKERi3mOWb6QTCsqqnestlT6vWIxyxxDX6448IwH9uxRrm0Kt9Zx+xr+lr
-         YXr7K2vowQp8b1XaCbqRc4Hic2g3cGnr1O42fxZYKMDlmpJq7TZvbVZ69nawiAqf1tiT
-         IJxQZS6hq4adwluJxRhThrGb+XufWkEi/fab9qfRd1mUEzh58UCY6u1+vaDXsian6mlQ
-         5BlMFQlLzkV3OHVCR6wh0KUzS+G0VstCUuK7SXCKBwUFV+/UfKwEul8HOepJrX/Wn942
-         8AY8ZeozED0m2HRbrPdxynnfjXX4Ku5n70iJtE9hZV9jSPXKd0ooel9uSofYaCGg1peu
-         8j5w==
-X-Gm-Message-State: AFuF++kIV17F2i49ZUKRQNERBwQGzjGPYR1N43CNd2qXYDm4x5ovIx0F
-	S03Z/V8TdV5dk+1iIxtCioWtCJM+9hWQqIOYXZ02UwDbl39bofcyqo6TDc8N6eJiFmo=
-X-Gm-Gg: AYBFou3rTuMX0+z3vZFVZiGf/MWj87403XSXdp6UndFymGyKNc1McofgSDeaD6mklp2
-	SrA7k/kQ24bxuroM2m+zM1AgcK4OgP6UrEyDGlAJEvAHXCFL8KPKGSzqCt+hzCxk1nZ7tdUBKEH
-	d8bJCsDR4/2aH761WZvdPNkOfZz67fFHs9WBP0OCowEeqVd5rYs7vYzXYtvQWeFG9ByxXa8L9w6
-	q81z0R7QPTRa74rj2om3rB3d8IgZXCmNpwuhn+k+Jkw/z1/Q0uBi8BTgwbP1jPBSqI8dc/elAFC
-	DNO/Jvu216ienGFfj3bA9B9xXGlgg3+ig424woDkIgObmA7IXsgrNrnxGsbmDvH7+JU0FkvSwZa
-	963Y96Tch8ir9KhIw2APiNqhznPEtqcEjTpSiV7zfiYUVWe5+cudab50Is1nwgliGppZKOT2u44
-	jEPNjQdNuBiEz+IQ4DOaC6mCSPpV/i3hNW8FJ6TbLHqV5p1GLewB1Ke3GBrllt3rDun+LdxIQXE
-	i6YVSXJwqWvVas8OoH+zqAm2cun4Vte/QkF1+Y/VEe8au9O
-X-Received: by 2002:a17:907:1c15:b0:c24:d6f0:aa0 with SMTP id a640c23a62f3a-c2945e90087mr290909566b.11.1789048971163;
-        Thu, 10 Sep 2026 07:02:51 -0700 (PDT)
+        bh=3pBmwNSWHN0yjp8GjiKNRVDKqbDamZhuMB1kehBa5sw=;
+        b=N8PKU80ZN3lq6Xy6rE4d4LenNWwHDsYKg8tkbAPS4jEvif3ElVhd8kOWQ0NT+KTdWL
+         lptaRzuhoJz44TaHc2cQUyeE6fS4y6rcg0dKAhZggmpZwUMVi6R0qS22JBB8NCHZ6QVK
+         8/4Kl062Tq2/ugJM8LDkWQas/Yz2FdiXQ4nkb840VQX6F28wXRonaAd4UBoOe11Qp1H0
+         ZXn1JODjdqltrfvKcItZWcTyl631khQoNiGcFlYUDvOesu2a6khr9gGKnhazBvIx7hPm
+         8XNDhK/yLoVtyX+fSQriWqUqS2G1h7e/YoIZbj0D+p5hri5tvaygD+txqrdTRUcBT1jA
+         PERQ==
+X-Gm-Message-State: AFuF++kRnMt+3oYjrXHm/WwdIE67Eu1a1icQeIcUsoyg2PSiysoFGXjL
+	b8ZIcl8AsZGBG/LjTIdGi83/ujxGXcuvCRbpw1wCsE69FjhUQjDqmrUbsPBQJckEsZ0=
+X-Gm-Gg: AYBFou1oeNF1Tq2U1zhXaFJRrbyUwbztdVqH06txGm5uouA8Na0EnvVB5tbGL1IfUiy
+	IXkP1xFLbv8a69EgmjMKeiGwd+jzoxqYPfRjorAGVgqLbW9BWN/k5YlXykZyIrE+SHh6oXU1oyJ
+	/3sl/k1MQN/lA2Uc8a8rw6Es8tWeQsTNNqKpYojDuHfCvJc1hEavGYdKNbhkIr4IONDC1db0MVw
+	lk4kHDqyR18cy4HziKJYRhshk+v9TkMLFSNbcClG5TId5kgJMgp+xZOWnpA2h2WQc1UJcw+gtOI
+	YeyrVQ4oITWsFtiOuuaImeSpBqnyLiUkaqCLAZsxIg0JitWpUkFsTUqmPhA+O+VLtT9Q2STBvAX
+	XyGKKxGvjJOhvvAVg8DQenfV9FVUwY08r5dfgAerbIqnMbTrzZShYiQISUbwqCcC1jgzGy2Nhb8
+	ArLSNcKxW6+vZEievqA6eJP7sgAHO/WzC4CynoQgADasUZarlmeUrwmwfWh+s2foATB3jgqmSC8
+	am/B7kQP48n4Aw9FqVSONKRWeSojvo3w0D78K+ivJ6BI+Lu
+X-Received: by 2002:a17:907:3e90:b0:c29:448b:f5d0 with SMTP id a640c23a62f3a-c29448bfc23mr303337366b.33.1789048972875;
+        Thu, 10 Sep 2026 07:02:52 -0700 (PDT)
 Received: from cloudflare.com (79.184.140.212.ipv4.supernova.orange.pl. [79.184.140.212])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c260d53c37csm911956266b.32.2026.09.10.07.02.50
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c260d4a98efsm937086466b.14.2026.09.10.07.02.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Sep 2026 07:02:50 -0700 (PDT)
+        Thu, 10 Sep 2026 07:02:52 -0700 (PDT)
 From: Jakub Sitnicki <jakub@cloudflare.com>
-Date: Thu, 10 Sep 2026 16:02:40 +0200
-Subject: [PATCH net-next v2 05/14] selftests/bpf: Test skb_ext on cloned
- skbs
+Date: Thu, 10 Sep 2026 16:02:41 +0200
+Subject: [PATCH net-next v2 06/14] selftests/bpf: Test skb_ext survival
+ across veth and GRE
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -71,7 +71,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260910-bpf-meta-inside-skb-ext-v2-5-0b21e42180b0@cloudflare.com>
+Message-Id: <20260910-bpf-meta-inside-skb-ext-v2-6-0b21e42180b0@cloudflare.com>
 References: <20260910-bpf-meta-inside-skb-ext-v2-0-0b21e42180b0@cloudflare.com>
 In-Reply-To: <20260910-bpf-meta-inside-skb-ext-v2-0-0b21e42180b0@cloudflare.com>
 To: netdev@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>, 
@@ -91,452 +91,198 @@ Cc: bpf@vger.kernel.org, kernel-team@cloudflare.com,
  Florian Westphal <fw@strlen.de>, Jack Wang <163wangjack@gmail.com>
 X-Mailer: b4 0.16.0
 
-Cover skb_ext behavior when an skb is cloned, by TC mirred (mirror to a
-dummy device) and by bpf_clone_redirect():
+Write skb_ext at TC egress and read it back at TC ingress after the
+packet crosses device boundaries:
 
-- clone_ext_read: the extension written at tap ingress is readable
-  from the mirred clone at dummy ingress -- the clone shares the
-  extension with the original
-- clone_ext_cow: opening the extension with F_CREATE on the clone
-  triggers copy-on-write, so overwriting the clone's data does not
-  affect the original -- verified by a tp_btf/kfree_skb probe that
-  checks the original skb still carries meta_want
-- clone_redir_ext_write_after / clone_redir_ext_slice_write_after: a
-  write to an skb_ext dynptr after bpf_clone_redirect() fails with
-  -EBUSY/NULL while the clone is queued on a netem-delayed loopback and
-  keeps the ext block shared, and dynptrs and pointers to backing memory
-  get invalidated on skb clone; re-acquiring the dynptr with F_CREATE
-  COWs the block and the write succeeds
+- survives_veth: veth forwarding between two netns
+- survives_gre: GRE encap/decap between two gretap endpoints over
+  loopback in a single netns
 
 Signed-off-by: Jakub Sitnicki <jakub@cloudflare.com>
 ---
- tools/testing/selftests/bpf/config                 |   1 +
- .../bpf/prog_tests/xdp_context_test_run.c          | 182 +++++++++++++++++++++
- tools/testing/selftests/bpf/progs/test_xdp_meta.c  | 126 ++++++++++++++
- .../testing/selftests/bpf/progs/verifier_skb_ext.c |  45 +++++
- 4 files changed, 354 insertions(+)
+ .../bpf/prog_tests/xdp_context_test_run.c          | 162 +++++++++++++++++++++
+ 1 file changed, 162 insertions(+)
 
-diff --git a/tools/testing/selftests/bpf/config b/tools/testing/selftests/bpf/config
-index 502f4504bdba..9bbfa351bced 100644
---- a/tools/testing/selftests/bpf/config
-+++ b/tools/testing/selftests/bpf/config
-@@ -137,3 +137,4 @@ CONFIG_SMC_HS_CTRL_BPF=y
- CONFIG_DIBS=y
- CONFIG_DIBS_LO=y
- CONFIG_PM_WAKELOCKS=y
-+CONFIG_NET_SCH_NETEM=y
 diff --git a/tools/testing/selftests/bpf/prog_tests/xdp_context_test_run.c b/tools/testing/selftests/bpf/prog_tests/xdp_context_test_run.c
-index 252ac02de81b..f7617aef4d35 100644
+index f7617aef4d35..d7e81cddb55b 100644
 --- a/tools/testing/selftests/bpf/prog_tests/xdp_context_test_run.c
 +++ b/tools/testing/selftests/bpf/prog_tests/xdp_context_test_run.c
-@@ -713,6 +713,178 @@ static void test_skb_ext_tuntap(struct bpf_program *tc_prio_1_prog,
- 		      tc_prio_2_prog, test_pass);
+@@ -885,6 +885,164 @@ static void test_clone_redir_ext_write_after(struct test_xdp_meta *skel,
+ 	netns_free(ns);
  }
  
-+/*
-+ * Test if skb_ext survives skb clone (via tc mirred).
-+ * dummy_prog runs on the clone (dummy ingress).
-+ */
-+static void test_mirred_clone_ext(struct test_xdp_meta *skel,
-+				  struct bpf_program *dummy_prog)
++/* Test if skb_ext survives veth cross-netns forward */
++static void test_skb_ext_scrub_veth(struct test_xdp_meta *skel)
 +{
-+	LIBBPF_OPTS(bpf_tc_hook, tc_hook, .attach_point = BPF_TC_INGRESS);
-+	LIBBPF_OPTS(bpf_tc_opts, tc_opts, .handle = 1, .priority = 1);
-+	struct netns_obj *ns = NULL;
-+	int dummy_ifindex;
-+	int tap_ifindex;
-+	int tap_fd = -1;
++	LIBBPF_OPTS(bpf_tc_hook, tx_hook, .attach_point = BPF_TC_EGRESS);
++	LIBBPF_OPTS(bpf_tc_opts, tx_opts, .handle = 1, .priority = 1);
++	LIBBPF_OPTS(bpf_tc_hook, rx_hook, .attach_point = BPF_TC_INGRESS);
++	LIBBPF_OPTS(bpf_tc_opts, rx_opts, .handle = 1, .priority = 1);
++	struct netns_obj *rx_ns = NULL, *tx_ns = NULL;
++	struct nstoken *nstoken = NULL;
++	int rx_ifindex, tx_ifindex;
 +	int ret;
++	int i;
 +
-+	skel->bss->write_done = false;
++	tx_ns = netns_new(TX_NETNS, false);
++	if (!ASSERT_OK_PTR(tx_ns, "create tx_ns"))
++		return;
++
++	rx_ns = netns_new(RX_NETNS, false);
++	if (!ASSERT_OK_PTR(rx_ns, "create rx_ns"))
++		goto close;
++
++	SYS(close, "ip link add " RX_NAME " netns " RX_NETNS
++	    " type veth peer name " TX_NAME " netns " TX_NETNS);
++
++	/* Setup RX side: TC ingress reader */
++	nstoken = open_netns(RX_NETNS);
++	if (!ASSERT_OK_PTR(nstoken, "setns rx_ns"))
++		goto close;
++
++	SYS(close, "ip link set dev " RX_NAME " up");
++
++	rx_ifindex = if_nametoindex(RX_NAME);
++	if (!ASSERT_GT(rx_ifindex, 0, "if_nametoindex rx"))
++		goto close;
++
++	rx_hook.ifindex = rx_ifindex;
++	ret = bpf_tc_hook_create(&rx_hook);
++	if (!ASSERT_OK(ret, "bpf_tc_hook_create rx"))
++		goto close;
++
++	rx_opts.prog_fd = bpf_program__fd(skel->progs.tc_skb_ext_read);
++	ret = bpf_tc_attach(&rx_hook, &rx_opts);
++	if (!ASSERT_OK(ret, "bpf_tc_attach rx"))
++		goto close;
++
++	close_netns(nstoken);
++
++	/* Setup TX side: TC egress writer */
++	nstoken = open_netns(TX_NETNS);
++	if (!ASSERT_OK_PTR(nstoken, "setns tx_ns"))
++		goto close;
++
++	SYS(close, "ip link set dev " TX_NAME " up");
++
++	tx_ifindex = if_nametoindex(TX_NAME);
++	if (!ASSERT_GT(tx_ifindex, 0, "if_nametoindex tx"))
++		goto close;
++
++	tx_hook.ifindex = tx_ifindex;
++	ret = bpf_tc_hook_create(&tx_hook);
++	if (!ASSERT_OK(ret, "bpf_tc_hook_create tx"))
++		goto close;
++
++	tx_opts.prog_fd = bpf_program__fd(skel->progs.tc_skb_ext_write);
++	ret = bpf_tc_attach(&tx_hook, &tx_opts);
++	if (!ASSERT_OK(ret, "bpf_tc_attach tx"))
++		goto close;
++
 +	skel->bss->test_pass = false;
 +
-+	ns = netns_new("mirred_clone", true);
-+	if (!ASSERT_OK_PTR(ns, "netns_new"))
-+		return;
-+
-+	/* Dummy dev: attach reader */
-+	SYS(close, "ip link add name " DUMMY_NAME " type dummy");
-+	SYS(close, "ip link set dev " DUMMY_NAME " up");
-+
-+	dummy_ifindex = if_nametoindex(DUMMY_NAME);
-+	if (!ASSERT_GT(dummy_ifindex, 0, "dummy_ifindex"))
++	ret = send_test_packet(tx_ifindex);
++	if (!ASSERT_OK(ret, "send_test_packet"))
 +		goto close;
 +
-+	tc_hook.ifindex = dummy_ifindex;
-+	ret = bpf_tc_hook_create(&tc_hook);
-+	if (!ASSERT_OK(ret, "dummy_hook_create"))
-+		goto close;
-+
-+	tc_opts.prog_fd = bpf_program__fd(dummy_prog);
-+	ret = bpf_tc_attach(&tc_hook, &tc_opts);
-+	if (!ASSERT_OK(ret, "dummy_attach"))
-+		goto close;
-+
-+	/* TAP dev: attach writer + mirred to dummy */
-+	tap_fd = open_tuntap(TAP_NAME, true);
-+	if (!ASSERT_GE(tap_fd, 0, "open_tuntap"))
-+		goto close;
-+
-+	SYS(close, "ip link set dev " TAP_NAME " up");
-+
-+	tap_ifindex = if_nametoindex(TAP_NAME);
-+	if (!ASSERT_GT(tap_ifindex, 0, "tap_ifindex"))
-+		goto close;
-+
-+	tc_hook.ifindex = tap_ifindex;
-+	ret = bpf_tc_hook_create(&tc_hook);
-+	if (!ASSERT_OK(ret, "tap_hook_create"))
-+		goto close;
-+
-+	tc_opts.prog_id = 0;
-+	tc_opts.prog_fd = bpf_program__fd(skel->progs.tc_skb_ext_write);
-+	ret = bpf_tc_attach(&tc_hook, &tc_opts);
-+	if (!ASSERT_OK(ret, "tap_attach"))
-+		goto close;
-+
-+	SYS(close, "tc filter add dev " TAP_NAME " ingress "
-+		   "protocol all matchall "
-+		   "action mirred ingress mirror dev " DUMMY_NAME);
-+
-+	ret = write_test_packet(tap_fd);
-+	if (!ASSERT_OK(ret, "write_test_packet"))
-+		goto close;
-+
-+	ASSERT_TRUE(skel->bss->write_done, "write_done");
-+	ASSERT_TRUE(skel->bss->test_pass, "test_pass");
-+
-+close:
-+	if (tap_fd >= 0)
-+		close(tap_fd);
-+	netns_free(ns);
-+}
-+
-+static void test_mirred_clone_ext_cow(struct test_xdp_meta *skel)
-+{
-+	struct bpf_link *tp_link;
-+
-+	skel->bss->clone_cow_done = false;
-+	tp_link = bpf_program__attach(skel->progs.tp_kfree_skb_cow_check);
-+	if (!ASSERT_OK_PTR(tp_link, "attach_tp"))
-+		return;
-+
-+	test_mirred_clone_ext(skel, skel->progs.tc_skb_ext_clone_redir_cow);
-+	bpf_link__destroy(tp_link);
-+}
-+
-+/*
-+ * Writer clones via bpf_clone_redirect() from the prog itself to loopback
-+ * whose netem qdisc delays the clone, so it stays queued and keeps sharing
-+ * the ext block while the prog writes again. When the qdisc finally leaks
-+ * the clone back to lo ingress, the reader there must still see the
-+ * clone-time snapshot.
-+ */
-+static void test_clone_redir_ext_write_after(struct test_xdp_meta *skel,
-+					     struct bpf_program *writer)
-+{
-+	LIBBPF_OPTS(bpf_tc_hook, tc_hook, .attach_point = BPF_TC_INGRESS);
-+	LIBBPF_OPTS(bpf_tc_opts, tc_opts, .handle = 1, .priority = 1);
-+	struct netns_obj *ns = NULL;
-+	int tap_ifindex;
-+	int tap_fd = -1;
-+	int ret, i;
-+
-+	skel->bss->test_pass = false;
-+	skel->bss->write_blocked = false;
-+
-+	ns = netns_new("clone_redir_ext", true);
-+	if (!ASSERT_OK_PTR(ns, "netns_new"))
-+		return;
-+
-+	/* Redirect target: lo held back by netem delay */
-+	SYS(close, "ip link set dev lo up");
-+	SYS(close, "tc qdisc add dev lo root netem delay 50ms");
-+
-+	/* Reader on the clone: lo ingress */
-+	tc_hook.ifindex = if_nametoindex("lo");
-+	ret = bpf_tc_hook_create(&tc_hook);
-+	if (!ASSERT_OK(ret, "lo_hook_create"))
-+		goto close;
-+
-+	tc_opts.prog_fd = bpf_program__fd(skel->progs.tc_skb_ext_read);
-+	ret = bpf_tc_attach(&tc_hook, &tc_opts);
-+	if (!ASSERT_OK(ret, "lo_attach"))
-+		goto close;
-+
-+	/* TAP dev: attach writer which clone_redirects to lo */
-+	tap_fd = open_tuntap(TAP_NAME, true);
-+	if (!ASSERT_GE(tap_fd, 0, "open_tuntap"))
-+		goto close;
-+
-+	SYS(close, "ip link set dev " TAP_NAME " up");
-+
-+	tap_ifindex = if_nametoindex(TAP_NAME);
-+	if (!ASSERT_GE(tap_ifindex, 0, "tap_ifindex"))
-+		goto close;
-+
-+	skel->bss->clone_redir_ifindex = tc_hook.ifindex;
-+
-+	tc_hook.ifindex = tap_ifindex;
-+	ret = bpf_tc_hook_create(&tc_hook);
-+	if (!ASSERT_OK(ret, "tap_hook_create"))
-+		goto close;
-+
-+	tc_opts.prog_id = 0;
-+	tc_opts.prog_fd = bpf_program__fd(writer);
-+	ret = bpf_tc_attach(&tc_hook, &tc_opts);
-+	if (!ASSERT_OK(ret, "tap_attach"))
-+		goto close;
-+
-+	ret = write_test_packet(tap_fd);
-+	if (!ASSERT_OK(ret, "write_test_packet"))
-+		goto close;
-+
-+	ASSERT_TRUE(skel->bss->write_blocked, "write_blocked");
-+
-+	/* Clone arrives after the netem delay; poll every 10 msec up to 1 sec */
++	/* Poll every 10 msec up to 1 sec */
 +	for (i = 0; i < 100 && !skel->bss->test_pass; i++)
 +		usleep(10000);
 +	ASSERT_TRUE(skel->bss->test_pass, "test_pass");
 +
 +close:
-+	if (tap_fd >= 0)
-+		close(tap_fd);
++	close_netns(nstoken);
++	netns_free(rx_ns);
++	netns_free(tx_ns);
++}
++
++/* Test if skb_ext survives GRE tunnel encap+decap */
++static void test_skb_ext_scrub_gre(struct test_xdp_meta *skel)
++{
++	LIBBPF_OPTS(bpf_tc_hook, tx_hook, .attach_point = BPF_TC_EGRESS);
++	LIBBPF_OPTS(bpf_tc_opts, tx_opts, .handle = 1, .priority = 1);
++	LIBBPF_OPTS(bpf_tc_hook, rx_hook, .attach_point = BPF_TC_INGRESS);
++	LIBBPF_OPTS(bpf_tc_opts, rx_opts, .handle = 1, .priority = 1);
++	struct netns_obj *ns = NULL;
++	int tx_ifindex;
++	int rx_ifindex;
++	int ret;
++	int i;
++
++	skel->bss->test_pass = false;
++
++	ns = netns_new("gre_test", true);
++	if (!ASSERT_OK_PTR(ns, "netns_new"))
++		return;
++
++	/* Setup: gre_tx -> lo -> gre_rx */
++	SYS(close, "ip link set lo up");
++	SYS(close, "ip link add gre_tx type gretap"
++	    " local 127.0.0.1 remote 127.0.0.2");
++	SYS(close, "ip link set gre_tx up");
++	SYS(close, "ip addr add 127.0.0.2/8 dev lo");
++	SYS(close, "ip link add gre_rx type gretap"
++	    " local 127.0.0.2 remote 127.0.0.1");
++	SYS(close, "ip link set gre_rx up");
++
++	/* Write skb_ext on TC egress on GRE tx */
++	tx_ifindex = if_nametoindex("gre_tx");
++	if (!ASSERT_GT(tx_ifindex, 0, "tx_ifindex"))
++		goto close;
++
++	tx_hook.ifindex = tx_ifindex;
++	ret = bpf_tc_hook_create(&tx_hook);
++	if (!ASSERT_OK(ret, "tx_hook_create"))
++		goto close;
++
++	tx_opts.prog_fd = bpf_program__fd(skel->progs.tc_skb_ext_write);
++	ret = bpf_tc_attach(&tx_hook, &tx_opts);
++	if (!ASSERT_OK(ret, "tx_attach"))
++		goto close;
++
++	/* Read skb_ext on TC ingress on GRE rx */
++	rx_ifindex = if_nametoindex("gre_rx");
++	if (!ASSERT_GT(rx_ifindex, 0, "rx_ifindex"))
++		goto close;
++
++	rx_hook.ifindex = rx_ifindex;
++	ret = bpf_tc_hook_create(&rx_hook);
++	if (!ASSERT_OK(ret, "rx_hook_create"))
++		goto close;
++
++	rx_opts.prog_fd = bpf_program__fd(skel->progs.tc_skb_ext_read);
++	ret = bpf_tc_attach(&rx_hook, &rx_opts);
++	if (!ASSERT_OK(ret, "rx_attach"))
++		goto close;
++
++	/* Then use send_test_packet on GRE tx */
++	ret = send_test_packet(tx_ifindex);
++	if (!ASSERT_OK(ret, "send_test_packet"))
++		goto close;
++
++	/* Poll every 10 msec up to 1 sec */
++	for (i = 0; i < 100 && !skel->bss->test_pass; i++)
++		usleep(10000);
++	ASSERT_TRUE(skel->bss->test_pass, "test_pass");
++
++close:
 +	netns_free(ns);
 +}
 +
  void test_skb_ext_basic(void)
  {
  	struct test_xdp_meta *skel = NULL;
-@@ -753,6 +925,16 @@ void test_skb_ext_basic(void)
- 		test_skb_ext_tuntap(skel->progs.tc_skb_ext_double_alloc,
- 				    NULL, /* tc prio 2 */
- 				    &skel->bss->test_pass);
-+	if (test__start_subtest("clone_ext_read"))
-+		test_mirred_clone_ext(skel, skel->progs.tc_skb_ext_read);
-+	if (test__start_subtest("clone_ext_cow"))
-+		test_mirred_clone_ext_cow(skel);
-+	if (test__start_subtest("clone_redir_ext_write_after"))
-+		test_clone_redir_ext_write_after(skel,
-+						 skel->progs.tc_skb_ext_write_after_clone_redir);
-+	if (test__start_subtest("clone_redir_ext_slice_write_after"))
-+		test_clone_redir_ext_write_after(skel,
-+						 skel->progs.tc_skb_ext_slice_write_after_clone_redir);
+@@ -935,6 +1093,10 @@ void test_skb_ext_basic(void)
+ 	if (test__start_subtest("clone_redir_ext_slice_write_after"))
+ 		test_clone_redir_ext_write_after(skel,
+ 						 skel->progs.tc_skb_ext_slice_write_after_clone_redir);
++	if (test__start_subtest("survives_veth"))
++		test_skb_ext_scrub_veth(skel);
++	if (test__start_subtest("survives_gre"))
++		test_skb_ext_scrub_gre(skel);
  
  	test_xdp_meta__destroy(skel);
  }
-diff --git a/tools/testing/selftests/bpf/progs/test_xdp_meta.c b/tools/testing/selftests/bpf/progs/test_xdp_meta.c
-index 43840ee32d35..ff134204a33e 100644
---- a/tools/testing/selftests/bpf/progs/test_xdp_meta.c
-+++ b/tools/testing/selftests/bpf/progs/test_xdp_meta.c
-@@ -3,6 +3,7 @@
- 
- #include <bpf/bpf_endian.h>
- #include <bpf/bpf_helpers.h>
-+#include <bpf/bpf_tracing.h>
- #include <errno.h>
- 
- #include "bpf_kfuncs.h"
-@@ -690,6 +691,8 @@ int helper_skb_change_proto(struct __sk_buff *ctx)
- 	return TC_ACT_SHOT;
- }
- 
-+bool write_done;
-+
- /* Write to skb_ext using bpf_dynptr_write helper */
- SEC("tc")
- int tc_skb_ext_write(struct __sk_buff *ctx)
-@@ -703,6 +706,7 @@ int tc_skb_ext_write(struct __sk_buff *ctx)
- 	if (bpf_dynptr_write(&meta, 0, (void *)meta_want, ARRAY_SIZE(meta_want), 0))
- 		return TC_ACT_SHOT;
- 
-+	write_done = true;
- 	return TC_ACT_UNSPEC;
- }
- 
-@@ -874,4 +878,126 @@ int tc_skb_ext_double_alloc(struct __sk_buff *ctx)
- 	return TC_ACT_UNSPEC;
- }
- 
-+static const __u8 meta_zero[META_SIZE] = {};
-+
-+bool clone_cow_done;
-+
-+/*
-+ * Overwrite skb_ext on the clone via F_CREATE (COW) -- must not affect original.
-+ * Runs on the dummy ingress (clone side), synchronously during tc mirred.
-+ */
-+SEC("tc")
-+int tc_skb_ext_clone_redir_cow(struct __sk_buff *ctx)
-+{
-+	struct bpf_dynptr meta;
-+
-+	if (bpf_dynptr_from_skb_ext(ctx, 0, BPF_SKB_EXT_F_CREATE, &meta))
-+		return TC_ACT_SHOT;
-+
-+	/* Zero out the clone's ext -- must not affect original */
-+	if (bpf_dynptr_write(&meta, 0, (void *)meta_zero, META_SIZE, 0))
-+		return TC_ACT_SHOT;
-+
-+	clone_cow_done = true;
-+	return TC_ACT_SHOT;
-+}
-+
-+/*
-+ * Verify COW isolation at kfree_skb time: once clone_cow_done is set,
-+ * check that the original skb still has meta_want.
-+ */
-+SEC("tp_btf/kfree_skb")
-+int BPF_PROG(tp_kfree_skb_cow_check, struct sk_buff *skb)
-+{
-+	__u8 meta_have[META_SIZE];
-+	struct bpf_dynptr meta;
-+
-+	if (!clone_cow_done)
-+		return 0;
-+
-+	if (bpf_dynptr_from_skb_ext((struct __sk_buff *)skb, 0, 0, &meta))
-+		return 0;
-+	if (bpf_dynptr_read(meta_have, META_SIZE, &meta, 0, 0))
-+		return 0;
-+	if (!check_metadata(meta_have))
-+		return 0;
-+
-+	test_pass = true;
-+	return 0;
-+}
-+
-+__u32 clone_redir_ifindex;
-+bool write_blocked;
-+
-+/*
-+ * Write skb_ext, clone the skb to a delayed qdisc so the clone keeps the ext
-+ * block shared, then try to write to the same dynptr again. The write must fail
-+ * with -EBUSY. Re-acquiring the dynptr with F_CREATE COWs the block and
-+ * succeeds.
-+ */
-+SEC("tc")
-+int tc_skb_ext_write_after_clone_redir(struct __sk_buff *ctx)
-+{
-+	struct bpf_dynptr meta;
-+
-+	if (!is_test_packet_tc(ctx))
-+		return TC_ACT_UNSPEC;
-+	if (bpf_dynptr_from_skb_ext(ctx, 0, BPF_SKB_EXT_F_CREATE, &meta))
-+		return TC_ACT_SHOT;
-+	if (bpf_dynptr_write(&meta, 0, (void *)meta_want, META_SIZE, 0))
-+		return TC_ACT_SHOT;
-+
-+	if (bpf_clone_redirect(ctx, clone_redir_ifindex, 0 /* egress */))
-+		return TC_ACT_SHOT;
-+
-+	/* ext now shared with the queued clone -- write must fail */
-+	if (bpf_dynptr_write(&meta, 0, (void *)meta_zero, META_SIZE, 0) != -EBUSY)
-+		return TC_ACT_SHOT;
-+
-+	/* Re-acquiring COWs the block -- write must succeed */
-+	if (bpf_dynptr_from_skb_ext(ctx, 0, BPF_SKB_EXT_F_CREATE, &meta))
-+		return TC_ACT_SHOT;
-+	if (bpf_dynptr_write(&meta, 0, (void *)meta_zero, META_SIZE, 0))
-+		return TC_ACT_SHOT;
-+
-+	write_blocked = true;
-+	return TC_ACT_UNSPEC;
-+}
-+
-+/*
-+ * Same as above but using bpf_dynptr_slice_rdwr.
-+ */
-+SEC("tc")
-+int tc_skb_ext_slice_write_after_clone_redir(struct __sk_buff *ctx)
-+{
-+	struct bpf_dynptr meta;
-+	void *slice;
-+
-+	if (!is_test_packet_tc(ctx))
-+		return TC_ACT_UNSPEC;
-+	if (bpf_dynptr_from_skb_ext(ctx, 0, BPF_SKB_EXT_F_CREATE, &meta))
-+		return TC_ACT_SHOT;
-+	if (bpf_dynptr_write(&meta, 0, (void *)meta_want, META_SIZE, 0))
-+		return TC_ACT_SHOT;
-+
-+	if (bpf_clone_redirect(ctx, clone_redir_ifindex, 0 /* egress */))
-+		return TC_ACT_SHOT;
-+
-+	/* ext now shared with the queued clone -- slice must fail */
-+	slice = bpf_dynptr_slice_rdwr(&meta, 0, NULL, META_SIZE);
-+	if (slice)
-+		return TC_ACT_SHOT;
-+
-+	/* Re-acquiring COWs the block -- slice must succeed */
-+	if (bpf_dynptr_from_skb_ext(ctx, 0, BPF_SKB_EXT_F_CREATE, &meta))
-+		return TC_ACT_SHOT;
-+	slice = bpf_dynptr_slice_rdwr(&meta, 0, NULL, META_SIZE);
-+	if (!slice)
-+		return TC_ACT_SHOT;
-+	__builtin_memcpy(slice, meta_zero, META_SIZE);
-+
-+	write_blocked = true;
-+	return TC_ACT_UNSPEC;
-+}
-+
- char _license[] SEC("license") = "GPL";
-diff --git a/tools/testing/selftests/bpf/progs/verifier_skb_ext.c b/tools/testing/selftests/bpf/progs/verifier_skb_ext.c
-index db43f1051400..c2611c9315aa 100644
---- a/tools/testing/selftests/bpf/progs/verifier_skb_ext.c
-+++ b/tools/testing/selftests/bpf/progs/verifier_skb_ext.c
-@@ -7,6 +7,51 @@
- 
- __u64 flags;
- 
-+SEC("tc")
-+__description("skb_ext slice is invalidated by bpf_clone_redirect")
-+__failure
-+int skb_ext_stale_slice_after_clone_redirect(struct __sk_buff *ctx)
-+{
-+	struct bpf_dynptr meta;
-+	__u8 *slice;
-+
-+	if (bpf_dynptr_from_skb_ext(ctx, 0, BPF_SKB_EXT_F_CREATE, &meta))
-+		return 0;
-+
-+	slice = bpf_dynptr_slice_rdwr(&meta, 0, NULL, 8);
-+	if (!slice)
-+		return 0;
-+
-+	bpf_clone_redirect(ctx, 1, 0);
-+
-+	/* Stale: the clone shares the ext block the slice points into. */
-+	*slice = 0;
-+
-+	return 0;
-+}
-+
-+SEC("tc")
-+__description("skb_ext slice is invalidated when ext is re-opened with F_CREATE")
-+__failure
-+int skb_ext_stale_slice_after_recreate(struct __sk_buff *ctx)
-+{
-+	struct bpf_dynptr d1, d2;
-+	__u8 *slice;
-+
-+	if (bpf_dynptr_from_skb_ext(ctx, 0, 0, &d1))
-+		return 0;
-+
-+	slice = bpf_dynptr_slice(&d1, 0, NULL, 8);
-+	if (!slice)
-+		return 0;
-+
-+	/* May COW the ext block, leaving the slice pointing at the old one. */
-+	if (bpf_dynptr_from_skb_ext(ctx, 0, BPF_SKB_EXT_F_CREATE, &d2))
-+		return 0;
-+
-+	return *slice;
-+}
-+
- SEC("tp_btf/kfree_skb")
- __description("F_CREATE is rejected in tracing programs")
- __failure __msg("is not allowed in lsm/tracing programs")
 
 -- 
 2.43.0
