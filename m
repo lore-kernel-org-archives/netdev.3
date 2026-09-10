@@ -1,64 +1,63 @@
-Received: from mail-yx2-f12.google.com (mail-yx2-f12.google.com [74.125.224.140])
+Received: from mail-yx1-f43.google.com (mail-yx1-f43.google.com [74.125.224.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F40595452AA
-	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 17:11:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A91A53D0BB
+	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 17:11:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789060320; cv=none; b=iXkh6kyZI0orcCum5PaSy4VFfte00KPeujFeRCgwUut8ar9pm45M2odYXA8zl8v8bfOCK/xz1VTu+8xese7pEoOV1HYbRyXPVQbbQpIsyUl/TcQQrDwmFYklFrmW108K7/0JBprKh4IFwwNDasbi25tUckcmXo5jws519GTVSAQ=
+	t=1789060322; cv=none; b=B0jbZqGivDL/mtEiRCjdiqApm2KHGg08Njh+oKhYen9XKcwqIQdYmAMS1Dac9Il9SAlb6XFbqacH2NGUuMfUITDCmQiJo2Sjcsujrt1uTQVI8eTFe4NsBOqqKvSi9KGw/ra+lz8FNI0OCyPpjLRu1E2lBzoWBeU710daA28Gnd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789060320; c=relaxed/simple;
-	bh=O3osIf01S31PT77PpMq1Y/AN9/GfVVkpCffj3kzepOk=;
+	s=arc-20240116; t=1789060322; c=relaxed/simple;
+	bh=7dS9wpp2YccmxHIywJXeSpOMA2g4XHnwuDriRcxrCuc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rdhG+dGrUoTpjL5mTOU4+Iw9FW78qklV45ThB4UWKQB/eFDsLj5N6v37yf386+qnIjQCdBSwnbGkS+MWNnxJZdstgS5g2YLnRZOS+S2Pq0Qd3xPL5/2vInmT6TcLOxgTxIpfuhM4a0cCt9U/UqFPwaDXOkOOSpzR7VrYYLPGXJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FR4rOybQ; arc=none smtp.client-ip=74.125.224.140
+	 MIME-Version; b=EEpSOp/aC5ax2oDt63LYQLhkUQSPBGf+mcyd1A6ourae2U036SEWxNj21rZyAI3Px3OEyVk3ve8+tkAczFcIYmqpKAumT/icvvvqIpW9Hgdn317+ZqqSEuL5nB1dh74zEzGJY59PyeooRh9nZIcy+Vt+9dv7CtcvusqzsvHmoNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Sfjtubam; arc=none smtp.client-ip=74.125.224.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FR4rOybQ"
-Received: by mail-yx2-f12.google.com with SMTP id 956f58d0204a3-66e50968489so1585647d50.0
-        for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 10:11:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Sfjtubam"
+Received: by mail-yx1-f43.google.com with SMTP id 956f58d0204a3-671061b015eso2901295d50.1
+        for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 10:11:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789060302; x=1789665102; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1789060299; x=1789665099; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=em/i+ISpHotSC1hrqHaaGpDbOkTRs0bCg//keJjtI1M=;
-        b=FR4rOybQwR2e2naN9j8ApsYIAsv/XQYPCG3sNU7Da0UIvrM3E438HhTkuMIYIZeNDT
-         zSGiPv0u9vzgANYYb0LgOxo87ES7Qm/fcP7NYEq+jRbh6wEbYs9aVVgIYOQDz4C8+WoC
-         TODNhRBjFHZ2xgh3gL0uCSA9HHbbGKNXEnApTR66S6m6AiwYrhiyfv2yuo47QgSZ5Z1W
-         jNg3QsaZg+5srBXe5zsFBK6ySOUFOvlFf4oKmeIU7iPjorcqTS6jxJqKNdqWBGvYD7up
-         VSys+ymirMgDNasEJxgjewTYt/p0CDoet9kvuVkUJtBcAcs4h57D2agQE2SElyGXtzel
-         hRJA==
+        bh=k/MRknm2NzoW/h6T0OXKbuYc1GhrCHd3P2gwiJO8u9s=;
+        b=SfjtubamJI6jH2AuvXaO8HciEE3PhIFFGOesDb8ISGmzfoO9/yCfTp/GOAOkYLVJi3
+         wKUrhfpivl5rV/SJ2PWCt+33bCadcmL+/23X36PP53HclIh+6Ns/I8A8jqrRTqcrYCC6
+         1Yb84FP5uNe5Kr0Rw2HRTfuge0X/w0lJc3SUcoaiMouwM07WCHdfGx4X7Zs2OyCIi61M
+         goZGNnDvLxIW8WSYXnLM7JKPtAqPX71o31gbdOxfKoBF7nsrHPbj5J/jVyLLYZ6QGqH5
+         7WkW996ikFwPm5TjS5ukOmq89L7hUlPqkoGUD/HRLhs3H+w02q9/3V0vYcmGo2MF3wbc
+         3P4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789060302; x=1789665102;
+        d=1e100.net; s=20251104; t=1789060299; x=1789665099;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=em/i+ISpHotSC1hrqHaaGpDbOkTRs0bCg//keJjtI1M=;
-        b=cK+KVTL8eygcn2Mz5LQge77k2OMoBUnxqKrz70Mc6ktLDG3g/pTdP4bxQYiIfZa99Y
-         6Aj/lSmaumUpIDxjW5CnIZAjYdrLyvCFSfPUKUJnBDe/HFNUrsv3lUHruOIL9myIJ9L6
-         m1nMGdak1W48FF70rTYJBEPa/QkVu0zABKKXoo8BotuZB6cXMuIA+sex9li2aJzH2MnZ
-         7yULzxh/uHRbSH7FWsoBUZii1QKHfdVHHroNTpwpxDSs81v7JUH78g3i7mztau3KY5Xp
-         NxQItoQ9N3Ow+nxzGUJ3ARdjKH83LJn80QRPNbXgJq915jR3/Z63qXSTTZq4Lqvlj8/s
-         2b9w==
-X-Gm-Message-State: AFuF++kmcFWsV4K0U6PQsOEckYfBEVoIZzGM79ndqRgpnfp7tHOf3Hbp
-	F6MI9wNozfSfFCa3cT1v0pNvOBwLNe77XCx0r5EvBxATsw5ZB98XSbAAc92p2g==
-X-Gm-Gg: AYBFou3Q6awBTqzOTw8RhjtL2g3E/lvvPZ5vqg0C/nS+JxAVNc6oztVKMF844xV1P6+
-	aipFcI8so/tT3/h0VZCo6h2+cwZz7jnZAaY5qrIi5l2nipF12TY/ferR3rDW5XePQLFDjjh8f1Q
-	n99rLuSy24LzaQX+PN3NCVy9cdVo02Po5cfus2AigP+/w0wo4Cnv3N3hAWeA1mZ96sYkTdoQbYX
-	Fr126Fps2uALAgDC69y4p62//rq3Th0guOSSzHFOjZ/b2kZ3u4uOQr7KEpkDuj7Ql4bzbLP0Z2C
-	Dh+6XREo97JMqvOzX2QdFjyGbfrF3CNnehwMx9rKfju01/QsQ9ZcY6MUY6GUJER8nuE+RucIO1s
-	fW2cursJ2Qe9pKohtxBEr0TONqS58ZVuNdJn5Rus0qbha3mR1cMQtHBjn6IYjV+80oIIIoZxdlf
-	9Oc9UVN2qT9HjWPIL5XirtgjCg66Pz6bKXf2nYBO5DkBLG63cvI5EPWa14qLORw7vKpaKv5KZGW
-	0vSTQsYGHw5AYspAapTl3yxxe/e+mdW0gtshUGqN5m+jVVep7Bo4WWDXxHK7YSNYXfYOXt4I/iE
-	5phXr4JE0g==
-X-Received: by 2002:a05:690e:4382:b0:66d:1eff:85f with SMTP id 956f58d0204a3-67124513295mr83615d50.6.1789060302418;
-        Thu, 10 Sep 2026 10:11:42 -0700 (PDT)
+        bh=k/MRknm2NzoW/h6T0OXKbuYc1GhrCHd3P2gwiJO8u9s=;
+        b=TO+ILcLbutFodMIoI6cWjKj0IvwcexTrtnPKpf7TNZyNAG7DtAXeKkKQUSyHuUfz0o
+         JjYs2bKt+YUe5tfxAjxNKYYVpTla3U/uSxWyfmh1bUZzleZjcStTIU+xzSEHWJfX/Zst
+         ks2xNaL8XiN64oRUIgsH3cD82DeR0LZy3TJ/yP3XduSfjBjd+eocg99dBbW8fzbWcCev
+         fYIAStlM8fpQeb35lnVeZmmAqzz9CVpC4m7GEDW31YFe50jYB5DxFfuHFBODIon+L/z4
+         b1gQufnJhnGU9nFieTNmkpMSnGhQ3qU0at6CL3eoekJwQ+jAtVAejib8A04fCIVCSOGM
+         SVLw==
+X-Gm-Message-State: AFuF++kmAN79Ew6y9UUjp7u2e8RgZCe1M1IJED8bh0B77qF3tSY6CgR6
+	/irJX7P/tttr6oUfde+W+v5yuxR17jbBv0Zd6DITyYaFea4Zx8wLXwgNUcCe4g==
+X-Gm-Gg: AYBFou1YkKDAJhcy1Q3Q+i69duV5RdAH6cSJjd9dKM/HwxrqkevnXwTDLLWWgktfHGp
+	G7dYRVXbFcAy09HlMyiqJIfikQKdWbcgJkIp9iQKksEj3KmmbXJlxRFTncAeNxU7Mq9TsfyE5v+
+	qUfeY+B2Irteh+so9G2v1ztWFiTYrQ2sTnPKk3fbkHE6SAG93Q/0T+WsuF0yDlecXpdESgcR5mq
+	sBqgg6Oy6OCn9pRjMzK9eLSqBPNcrWNC3iaLMYeRac1CQbXbZldf3Ss+JlZ3ZLALL3VQgmRIbj3
+	VD0I5MrbwBRxja0/Bpa+deIeDXFnaNeLHAyj788LUUexG5CAD+T+U3sglj/ZWT0eNhJ0XTnStRM
+	/hfePluuFAJGgtkFAKm26siFOm1zXem2XbZOIrGcHJaAWqGxiS9fTSlx4qlfp9Motr6OTEp6zDv
+	Z9e1dQ7Jwfs1FJM82MLxMKsxCPnp0nLlGZBnNwiGFq6JwhmmVxgbwQ47XwNtykmsSQBZa/pjefQ
+	N3HyA4frN4orFZvlcDy1acA7l0BJKKP7pvjONoWa67baTD6yy+AWsNLN4lzn2R3hU273IBIXsxD
+X-Received: by 2002:a05:690e:1919:b0:66f:c1bc:c078 with SMTP id 956f58d0204a3-671246cfab9mr151451d50.64.1789060298970;
+        Thu, 10 Sep 2026 10:11:38 -0700 (PDT)
 Received: from willemb.c.googlers.com.com (234.207.85.34.bc.googleusercontent.com. [34.85.207.234])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-66fb48ee9easm14059834d50.8.2026.09.10.10.11.41
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-66fb48ee9easm14059834d50.8.2026.09.10.10.11.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Sep 2026 10:11:41 -0700 (PDT)
+        Thu, 10 Sep 2026 10:11:38 -0700 (PDT)
 From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -68,9 +67,9 @@ Cc: davem@davemloft.net,
 	horms@kernel.org,
 	andrew+netdev@lunn.ch,
 	Willem de Bruijn <willemb@google.com>
-Subject: [PATCH net-next v9 7/7] selftests: drv-net: extend so_txtime with hw offload
-Date: Thu, 10 Sep 2026 13:10:26 -0400
-Message-ID: <20260910171131.2532487-8-willemdebruijn.kernel@gmail.com>
+Subject: [PATCH net-next v9 3/7] net_sched: sch_fq: clear past skb->tstamp if offloading pacing
+Date: Thu, 10 Sep 2026 13:10:22 -0400
+Message-ID: <20260910171131.2532487-4-willemdebruijn.kernel@gmail.com>
 X-Mailer: git-send-email 2.55.0.1007.g17ff1f9808-goog
 In-Reply-To: <20260910171131.2532487-1-willemdebruijn.kernel@gmail.com>
 References: <20260910171131.2532487-1-willemdebruijn.kernel@gmail.com>
@@ -84,30 +83,16 @@ Content-Transfer-Encoding: 8bit
 
 From: Willem de Bruijn <willemb@google.com>
 
-Add two pacing hardware offload variants
+When hardware offload is enabled, FQ will forward packets to the
+netdevice for pacing. The device has to test that skb->tstamp is
+in the future.
 
-1. one that uses FQ to safely offload when within bounds.
-2. one that uses pfifo_fast and thus forwards all packets.
+Avoid this cost for packets whose txtime has already passed, by
+clearing skb->tstamp.
 
-Verify that the packets are paced in hardware with new flag '-H'.
-
-Also increase rcvtimeout significantly to reduce flakiness. Especially
-for the new beyond_hw_horizon test, which is close to the 100ms limit.
-But update recv_verify_empty to take MSG_DONTWAIT. That last empty
-check must not delay each testcase by the receive timeout.
-
-Hardware pacing offload can complete packets out of order. So the
-reverse_order test is expected to pass with pfifo_fast too.
-
-Do not test ETF, which does not change its dequeue behavior based on
-pacing_offload.
-
-The pfifo_fast beyond_hw_horizon testcase expects a failure because
-the packet exceeds the hardware horizon and is transmitted immediately,
-violating receiver arrival bounds. On slow machines (KSFT_MACHINE_SLOW),
-timing variance errors are suppressed by the receiver, so relax the
-failure expectation only for this timing-sensitive case while preserving
-deterministic checks for other tests (such as ETF invalid txtime).
+Also clear slightly into the future, for EDT timestamps that are
+so close to now that they fall within a reasonable normal Tx
+latency. This slack is set to 400 nsec.
 
 Signed-off-by: Willem de Bruijn <willemb@google.com>
 
@@ -115,182 +100,84 @@ Signed-off-by: Willem de Bruijn <willemb@google.com>
 
 Changes
   v8 -> v9
-    - scope expect_fail relaxation to timing_sensitive tests
-    - move beyond_hw_horizon slow machine rationale into commit message
-    - update to pacing-offload (boolean enable)
-  v7 -> v8
-    - simplify "not a == b" test to "a != b" (ruff)
+    - (minor) use SKB_CLOCK_REALTIME instead of 0
+    - (minor) remove comments to bot below the --- separator
+  v6 -> v7
+    - timer drift logic fix moved to separate commit
   v5 -> v6
-    - do not suppress tx failures on expected failure:
-      all expect the receiver process to signal failure
+    - switch to skb_set_delivery_time to also clear SKB_CLOCK_REALTIME
+    - add fq_offload_slack_ns
   v3 -> v4
-    - replace ethtool with rtnetlink APIs
-    - expect_fail: correctly handle negative test pfifofast beyond_hw_horizon,
-      also when KSFT_MACHINE_SLOW suppresses timing errors
-    - commit-msg: clarify that rcvtimeout increase is also needed for
-      beyond_hw_horizon test
-    - define the horizon (50ms) once, rather than three times
-    - leave cfg.require_ipver in place
-  v2 -> v3
-    - remove drivers/net/settings timeout change: superseded by recent commit
-    - add reverse_order comment
-  v1 -> v2
-    - re-raise NlError from e (patchwork pylint)
-    - simplify expect_pass test (patchwork pylint)
+    - also reset tstamp_type
+    - minor: initialize time_next_packet for more obvious correctness
 ---
- .../testing/selftests/drivers/net/so_txtime.c |  4 +-
- .../selftests/drivers/net/so_txtime.py        | 80 ++++++++++++++++++-
- 2 files changed, 79 insertions(+), 5 deletions(-)
+ net/sched/sch_fq.c | 18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/drivers/net/so_txtime.c b/tools/testing/selftests/drivers/net/so_txtime.c
-index 9ebe9f91227c..5bb15498da30 100644
---- a/tools/testing/selftests/drivers/net/so_txtime.c
-+++ b/tools/testing/selftests/drivers/net/so_txtime.c
-@@ -155,7 +155,7 @@ static void do_recv_verify_empty(int fdr)
- 	char rbuf[1];
- 	int ret;
+diff --git a/net/sched/sch_fq.c b/net/sched/sch_fq.c
+index fdd9380e445c..60ad87cb1275 100644
+--- a/net/sched/sch_fq.c
++++ b/net/sched/sch_fq.c
+@@ -159,6 +159,9 @@ struct fq_sched_data {
+ 	u64		stat_allocation_errors;
+ };
  
--	ret = recv(fdr, rbuf, sizeof(rbuf), 0);
-+	ret = recv(fdr, rbuf, sizeof(rbuf), MSG_DONTWAIT);
- 	if (ret != -1 || errno != EAGAIN)
- 		error(1, 0, "recv: not empty as expected (%d, %d)", ret, errno);
- }
-@@ -380,7 +380,7 @@ static int setup_tx(struct sockaddr *addr, socklen_t alen)
- 
- static int setup_rx(struct sockaddr *addr, socklen_t alen)
++/* EDT timestamps to clear beyond now. */
++static const int fq_offload_slack_ns = 400;
++
+ /* return the i-th 2-bit value ("crumb") */
+ static u8 fq_prio2band(const u8 *prio2band, unsigned int prio)
  {
--	struct timeval tv = { .tv_usec = 100 * 1000 };
-+	struct timeval tv = { .tv_usec = 600 * 1000 };
- 	int fd;
+@@ -421,6 +424,10 @@ static struct fq_flow *fq_classify(struct Qdisc *sch, struct sk_buff *skb,
+ 			smp_store_release(&sk->sk_pacing_status,
+ 					  SK_PACING_FQ);
  
- 	fd = socket(addr->sa_family, SOCK_DGRAM, 0);
-diff --git a/tools/testing/selftests/drivers/net/so_txtime.py b/tools/testing/selftests/drivers/net/so_txtime.py
-index a097fae0b335..66a87205e02d 100755
---- a/tools/testing/selftests/drivers/net/so_txtime.py
-+++ b/tools/testing/selftests/drivers/net/so_txtime.py
-@@ -12,10 +12,12 @@ import time
- from lib.py import ksft_exit, ksft_run, ksft_variants
- from lib.py import KsftNamedVariant, KsftSkipEx
- from lib.py import NetDrvEpEnv, bkg, cmd, defer, tc
--from lib.py import CmdExitFailure
-+from lib.py import CmdExitFailure, RtnlFamily, NlError
++		if (offload_horizon &&
++		    fq_skb_cb(skb)->time_to_send <= now + fq_offload_slack_ns)
++			skb_set_delivery_time(skb, 0, SKB_CLOCK_REALTIME);
++
+ 		return &q->internal;
+ 	}
  
-+_HW_OFFLOAD_HORIZON_MS = 50
+@@ -731,6 +738,7 @@ static struct sk_buff *fq_dequeue(struct Qdisc *sch)
+ 	u64 offload_horizon = fq_offload_horizon(sch, q);
+ 	struct fq_perband_flows *pband;
+ 	struct fq_flow_head *head;
++	u64 time_next_packet = 0;
+ 	struct sk_buff *skb;
+ 	struct fq_flow *f;
+ 	unsigned long rate;
+@@ -745,7 +753,7 @@ static struct sk_buff *fq_dequeue(struct Qdisc *sch)
+ 	if (skb) {
+ 		q->internal.qlen--;
+ 		fq_dequeue_skb(sch, &q->internal, skb);
+-		goto out;
++		return skb;
+ 	}
  
--def test_so_txtime(cfg, clockid, ipver, args_tx, args_rx, expect_success):
-+def test_so_txtime(cfg, clockid, ipver, args_tx, args_rx, expect_success,
-+                   timing_sensitive=False):
-     """Main function. Run so_txtime as sender and receiver."""
-     slow_machine = os.environ.get('KSFT_MACHINE_SLOW')
+ 	now = ktime_get_ns();
+@@ -782,8 +790,8 @@ static struct sk_buff *fq_dequeue(struct Qdisc *sch)
  
-@@ -33,12 +35,42 @@ def test_so_txtime(cfg, clockid, ipver, args_tx, args_rx, expect_success):
-     expect_fail = not expect_success
-     if slow_machine:
-         expect_success = False
-+        if timing_sensitive:
-+            expect_fail = None
+ 	skb = fq_peek(f);
+ 	if (skb) {
+-		u64 time_next_packet = max_t(u64, fq_skb_cb(skb)->time_to_send,
+-					     f->time_next_packet);
++		time_next_packet = max_t(u64, fq_skb_cb(skb)->time_to_send,
++					 f->time_next_packet);
  
-     with bkg(cmd_rx, host=cfg.remote, fail=expect_success,
-              expect_fail=expect_fail, exit_wait=True):
-         cmd(cmd_tx)
+ 		if (now + offload_horizon < time_next_packet) {
+ 			head->first = f->next;
+@@ -862,6 +870,10 @@ static struct sk_buff *fq_dequeue(struct Qdisc *sch)
+ 	}
  
+ out:
++	if (offload_horizon &&
++	    time_next_packet && time_next_packet <= now + fq_offload_slack_ns)
++		skb_set_delivery_time(skb, 0, SKB_CLOCK_REALTIME);
++
+ 	return skb;
+ }
  
-+def _dev_setup_pacing_offload(cfg):
-+    """Configure pacing-offload."""
-+    rtnl = RtnlFamily()
-+
-+    try:
-+        link = rtnl.getlink({'ifi-index': cfg.ifindex})
-+    except NlError as e:
-+        raise KsftSkipEx('getlink not supported by device') from e
-+
-+    if 'pacing-offload' not in link or \
-+       'max-pacing-offload-horizon' not in link:
-+        raise KsftSkipEx('pacing offload not supported by device')
-+
-+    horizon = _HW_OFFLOAD_HORIZON_MS * 1000_000
-+    if link['max-pacing-offload-horizon'] < horizon:
-+        raise KsftSkipEx('pacing offload max horizon too small')
-+
-+    cur_offload = link['pacing-offload']
-+    rtnl.setlink({
-+        'ifi-index': cfg.ifindex,
-+        'pacing-offload': 1,
-+    })
-+    defer(rtnl.setlink, {
-+        'ifi-index': cfg.ifindex,
-+        'pacing-offload': cur_offload
-+    })
-+
-+
- def _qdisc_setup(ifname, qdisc, optargs=""):
-     """Replace root qdisc. Restore the original after the test.
- 
-@@ -61,6 +93,7 @@ def _test_variants_fq():
-             ["one_pkt", "a,10", "a,10"],
-             ["in_order", "a,10,b,20", "a,10,b,20"],
-             ["reverse_order", "a,20,b,10", "b,10,a,20"],
-+            ["beyond_hw_horizon", "a,70", "a,70"],
-         ]:
-             name = f"v{ipver}_{testcase[0]}"
-             yield KsftNamedVariant(name, ipver, testcase[1], testcase[2])
-@@ -74,6 +107,41 @@ def test_so_txtime_fq_mono(cfg, ipver, args_tx, args_rx):
-     test_so_txtime(cfg, "mono", ipver, args_tx, args_rx, True)
- 
- 
-+@ksft_variants(_test_variants_fq())
-+def test_so_txtime_fq_mono_hw(cfg, ipver, args_tx, args_rx):
-+    """Run all variants of monotonic fq tests, with offload horizon."""
-+    cfg.require_ipver(ipver)
-+    cfg.require_nsim(nsim_test=False)
-+
-+    _dev_setup_pacing_offload(cfg)
-+    try:
-+        _qdisc_setup(cfg.ifname, "fq", f"offload_horizon {_HW_OFFLOAD_HORIZON_MS}ms")
-+    except Exception as e:
-+        raise KsftSkipEx("netdev does not support offload. skipping") from e
-+
-+    # Expect all tests to use only hw pacing, except beyond_hw_horizon.
-+    # Do not pass -H to that test so that with sw pacing fallback it passes.
-+    hw_only = "-H" if args_tx != "a,70" else ""
-+    test_so_txtime(cfg, "mono", ipver, f"{hw_only} {args_tx}", args_rx, True)
-+
-+
-+@ksft_variants(_test_variants_fq())
-+def test_so_txtime_pfifofast_mono_hw(cfg, ipver, args_tx, args_rx):
-+    """Run all variants of monotonic tests, without fq pacing sw backup."""
-+    cfg.require_ipver(ipver)
-+    cfg.require_nsim(nsim_test=False)
-+
-+    _dev_setup_pacing_offload(cfg)
-+    _qdisc_setup(cfg.ifname, "pfifo_fast")
-+
-+    # Expect all tests to pass, except beyond_hw_horizon without sw fallback.
-+    # It will send immediately, failing the receiver arrival bounds check.
-+    expect_pass = args_tx != "a,70"
-+    timing_sensitive = not expect_pass
-+    test_so_txtime(cfg, "mono", ipver, f"-H {args_tx}", args_rx, expect_pass,
-+                   timing_sensitive=timing_sensitive)
-+
-+
- @ksft_variants(_test_variants_fq())
- def test_so_txtime_fq_tai(cfg, ipver, args_tx, args_rx):
-     """Run all variants of fq tests, but pass CLOCK_TAI to test conversion."""
-@@ -123,7 +191,13 @@ def main() -> None:
-     """Boilerplate ksft main."""
-     with NetDrvEpEnv(__file__) as cfg:
-         ksft_run(
--            [test_so_txtime_fq_mono, test_so_txtime_fq_tai, test_so_txtime_etf],
-+            [
-+                test_so_txtime_fq_mono,
-+                test_so_txtime_fq_mono_hw,
-+                test_so_txtime_pfifofast_mono_hw,
-+                test_so_txtime_fq_tai,
-+                test_so_txtime_etf,
-+            ],
-             args=(cfg,),
-         )
-     ksft_exit()
 -- 
 2.55.0.1007.g17ff1f9808-goog
 
