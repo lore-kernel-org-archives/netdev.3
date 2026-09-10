@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FC3F377553;
-	Thu, 10 Sep 2026 15:51:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B22B48C406;
+	Thu, 10 Sep 2026 15:51:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789055468; cv=none; b=uqyptArU83t4AaQATDYAOY4DYJtZbEjQhTwLIoOjeWr+hl6Nihb7hMKveMNCFot5OUr124SWFGwitGAC6hysZeZTSl+SruMXzgDMScGIg5tBK80sFOVF20VAtnqmkYrug2umf8kF/Uxw6dpRV4EqXwBz/IPTknDnI6JKWY8lW+o=
+	t=1789055469; cv=none; b=uQuSxF2IDesgYOZgVf3DjeSGvt6COIdDlZIcv4psStxRLi68RoNwUMxZbfvH4Pdlp2UsuOr0LHONCF7khXKUFgNhnvHUKaLuzgH50HxOSXi0yRy9zZ0Bagu/gzAcLD2q9sLBFIu65bW4tLlGyHqPY5rNNm4mb3OfqPzKInX/EXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789055468; c=relaxed/simple;
-	bh=J0BR0XlL21N+EL+dX8Jf9KJSMyypaV6NGLNardccjfw=;
+	s=arc-20240116; t=1789055469; c=relaxed/simple;
+	bh=2WOxcQxAy9FYpbVNgG4S8upkEIp+n+fGU5tSeGhbFiM=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=fO94yO8qAPLOaYYthxeisdAE8oWNTaqxI35+1ZxlGA6yIXQrvi8Jp+kIHIDLqSH20ygRqUfaCXGjLyevGc1y17ltdYiay9zlfZjZ3eFesiNI9T4aTvvRYW8EXIDKCD6g6X5Q2uBYIr1eVkWwd1xYNceOExzunoeWpCG+xNP0b2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PcV30OMw; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=kaIgBGle3Nz/8atNcNn3j2KH8JiPe0up/JlL22hPNHTztgcvCXo+S06wg0ixzSAlO5RZS8KEcgOvad2z1yJQqIZKUk22yqFmGsORJDCCPkQqQ/S2DMc4e8hCdUzfrOjHW3uJQHcDOuokDsfYl8GHDb1RFyqqS5OZFLU6nUlGpKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xv+3KXKE; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PcV30OMw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E909F1F000FF;
-	Thu, 10 Sep 2026 15:51:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xv+3KXKE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29E981F00893;
+	Thu, 10 Sep 2026 15:51:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789055467;
-	bh=TMzntpbGNDPcqG3F9baUoNtI5d7klICq7Ysy/N21cF4=;
+	s=k20260515; t=1789055468;
+	bh=gal8uHDUSBagG2oK1CJQ6A2SNIJiE1C3DHmPTfDnJkk=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=PcV30OMwUebOtl1yxU0mlxbmZZBKX1tT2ij66G4NdMuOm/nEsM7wfcSYGcM5C5kx1
-	 oa1Ou9g15HeAMC3PqKqvO+vO37vwn1CiTT5RCytD8qpc5jZmXCNPhj4BIq+JDNNMzr
-	 eAqdUx3TEe3qyHNXhwlboW7wS6dRyD3U7pOtRhclqSxS/x34/tkb4oVZjDBNPUoZEN
-	 F8ljHrHyz/3PJaFsq1/Ojnkm8IMur9mUvIEStF4tEIlf7s/DD60kuM1M6ZCsCtZ673
-	 frJ1WebZy1OOdxHQsYvnrXq5VG4q6/LTOUmKhot1cBF3p54S4AdrsCpBfrHpnZVkef
-	 6j6gg8GH5bFHA==
+	b=Xv+3KXKEVpc3i34jTxnwcHzqTKBDSSJBtgp9G9gO9FaL5fMW1CBwBEx5Z4qTs7v5j
+	 ddI39SIgHhgOhbPE/KPFmICNy0Fv/BQlDeSflJUv+aljZe+6GwxkRrjmYoMlio7sny
+	 8T1BLkgHr/qGlVR90u6gwf9f2ZG0hfGxLuhghZBWYkeRbe0wgcdqK8koVS711h9XCz
+	 WmXF2NRcBm8P8yRBhSXL3hH3zLrXXdhD0RYZngnATHu9in7mPOstA6yckXDyr0VAHO
+	 QqMXG6IzX/vYoQEn4ffjIRzXLjxbuwvcGgfkmgeFMI5Y6CKsXOQoEg7jHxPO+Nxq2x
+	 F3Uy4X9ni3yxg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93908380CFFA;
-	Thu, 10 Sep 2026 15:50:05 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D08BC380CFFA;
+	Thu, 10 Sep 2026 15:50:06 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,41 +37,40 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v3] net: macb: initialize PTP state before registering
- clock
+Subject: Re: [PATCH net] net: hsr: enable promiscuous mode on interlink port
+ with
+ fwd offload
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178905540439.1510486.3682579861887737630.git-patchwork-notify@kernel.org>
-Date: Thu, 10 Sep 2026 15:50:04 +0000
-References: <20260908103924.607033-1-runyu.xiao@seu.edu.cn>
-In-Reply-To: <20260908103924.607033-1-runyu.xiao@seu.edu.cn>
-To: Runyu Xiao <runyu.xiao@seu.edu.cn>
-Cc: theo.lebrun@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- richardcochran@gmail.com, conor.dooley@microchip.com, rafalo@cadence.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- jianhao.xu@seu.edu.cn, vadim.fedorenko@linux.dev
+ <178905540563.1510486.7136914895055165645.git-patchwork-notify@kernel.org>
+Date: Thu, 10 Sep 2026 15:50:05 +0000
+References: <20260908090856.2876114-1-danishanwar@ti.com>
+In-Reply-To: <20260908090856.2876114-1-danishanwar@ti.com>
+To: Md Danish Anwar <danishanwar@ti.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, fmaurer@redhat.com, fmancera@suse.de,
+ liuhangbin@gmail.com, kees@kernel.org, xiaoliang.yang_1@nxp.com,
+ lukma@denx.de, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue,  8 Sep 2026 18:39:24 +0800 you wrote:
-> gem_ptp_init() registers the PTP clock before initializing
-> bp->tsu_clk_lock and the TSU hardware. Since ptp_clock_register()
-> publishes the PTP character device, userspace may invoke PTP callbacks
-> before the lock and hardware are ready.
-> 
-> In addition, gem_ptp_init() is called from both the interface open and
-> resume paths. Reinitializing tsu_clk_lock there can reset the lock while
-> timestamp processing is using it.
+On Tue, 8 Sep 2026 14:38:56 +0530 you wrote:
+> hsr_portdev_setup() skips promiscuous mode on non-master ports when
+> hsr->fwd_offloaded is set. fwd_offloaded is derived only from the ring
+> slaves' NETIF_F_HW_HSR_FWD bit, so this also skips it for the interlink
+> port, which never gets forwarding offload. Without promiscuous mode,
+> the interlink NIC drops unicast frames addressed to hsr_dev's MAC
+> (e.g. SAN traffic to the RedBox), breaking RedBox whenever the ring is
+> HW-offloaded.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v3] net: macb: initialize PTP state before registering clock
-    https://git.kernel.org/netdev/net/c/e1406330d70e
+  - [net] net: hsr: enable promiscuous mode on interlink port with fwd offload
+    https://git.kernel.org/netdev/net/c/a2dc179481d1
 
 You are awesome, thank you!
 -- 
