@@ -1,545 +1,333 @@
-Received: from mail-lr2-f12.google.com (mail-lr2-f12.google.com [74.125.230.76])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011022.outbound.protection.outlook.com [52.101.62.22])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63818489FB4
-	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 14:26:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.230.76
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789050394; cv=none; b=U6HPD1CJZl7AF66EfB45rWB9Iyf1OJWy7o9IViawbCARkhEk8dnYnvpjdOcZDlOK8cZvaQHYn5bDaTyidc8W+IUz0WNtvzYxOu5b65Em/JPzG+Z19MXN4554FnYsQYpZqTaXf4mekA/yjWwFt7urj75bPTJsM8/ZhT50mNzP2NA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789050394; c=relaxed/simple;
-	bh=idjd0XpKluSxLFQX+2XIDYxpVVBUBIHh3Ossfmv7ifY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=UbT+8go0bCcIiXGSG1YX+u9t3QxkRbjNJLJbxD4l08jafN1sG0hC20phx+nvrNdPqce9c7dRV07AO5BkKyb32LcR7bIdDSeOGlXET/XAfjDdm+NCNEATu/oTt0XcDgheexaJw3quqrBauFCSLBSFUMLQvJhzf/aUBprqUYhFJ64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com; spf=pass smtp.mailfrom=cloudflare.com; dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b=FKIt39No; arc=none smtp.client-ip=74.125.230.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cloudflare.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloudflare.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1708C49BD62;
+	Thu, 10 Sep 2026 14:26:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.22
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789050417; cv=fail; b=cgiyXqBZQmTBOIzO5sWR677pGLHon7avMkt9bWv7wCp6wLv6mVDBQeb1akcHOOYfd02Rli/pgH9pspWV6eYVPOekAAQLqoROZo7jqFQy56INTs7yIU7Rla03KxWvOHFxLshKHp0ZydsJcflALLQ9oDZ35P+Y2M+rMXZwyFFfU7c=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789050417; c=relaxed/simple;
+	bh=4BvKkmv+emnA34DTOPuaXnuUFUQhgzlZYaHFmYYdW7U=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=QBRwADW3W9s8kHjXTtkiTDGMR1gaddN1LNodtXl5B8lD5lpWtNFT87KmPzZnl0MyeeVzgwgaGnIL2S8D2Abz+Bu8u3Z7NyhllLDfyJUhxfSyCiY0uXIFau4foByXXsWbefbL0znfbC4j+zcg4Phn1CbwaYneBwXCBS2YhU9Iis8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=I5MswDZc; arc=fail smtp.client-ip=52.101.62.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cloudflare.com header.i=@cloudflare.com header.b="FKIt39No"
-Received: by mail-lr2-f12.google.com with SMTP id 38308e7fff4ca-3a2ff176d7eso21748521fa.3
-        for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 07:26:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cloudflare.com; s=google09082023; t=1789050389; x=1789655189; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=SSbzilpslCe/i/7LXye4xmbe80qorkEa/HcRS29f1+4=;
-        b=FKIt39NoDSE7fZ1o+UrvV9G23psV90z7Wn/9tmUyrjh39+rFQwUSnb3JvUmoA1ULGb
-         bvuv3bbvvvUYkpjZ2q0DWm3OLzl+ZNMvVjRys2SrzzQyBuY6/Z657/zg1gL/4a0RrRg5
-         HwplQR4SE7g2SN2XX+lMnrnb9VrhmSjYT3uXuThgcsEQub3i5AHdnV0STF0Osj76Wkmi
-         eTJaLsTiYivDdBGU3HKtdKaVX5JL1PbE4tJyMsXFp9deViEHYY2xMbmo9Cr0Kv+GZsyA
-         FexHPlelLgMaBjwKITI9XR+2b13E0pGRoJ2mQ97QUhsti06y8vtkXyIBj2cAMh5xa4Ig
-         k5TQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789050389; x=1789655189;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=SSbzilpslCe/i/7LXye4xmbe80qorkEa/HcRS29f1+4=;
-        b=M33LaZvT1l9dLMLCeTXEc00ZMdJgb4GwVIeyBggQ96iS5q8UdWBxjPgdAxZEqcI7Cp
-         sUxzIcIPS1wNUqg3k/1QwKaVT2BZkWhg3bUoUXG+JmE4VlXAI845die+bnX919TjsHkR
-         MYH9aAkkYwVvFd36aj7bcnUDfdScokYNk/e5+L6p0afwOjD02Qse4AhKTHMsPVGIhOOS
-         E2VMvIZO+1i9iPzwKcx49zS4FP+hxDmfdxpa5hmokZ92Zwg/wbTOIDKqoefgrRXtccXY
-         btQrR2rdPdVlimXfqGpfObGt07I/7MduiWXwl9d+k7hu1CQ+z/b820thOMSmgsdBLy6F
-         tSwg==
-X-Gm-Message-State: AFuF++nrChHtB7f8Oy9tAW2HzNP0dz2j0EdBSPF2EG4Rbfv/bGS7nESS
-	EyoAwtRizXgA8qyPpnWmafDlLQfAQAGRUWKkv3a71hjRrs1bGImifAOTQ5puu/7QohlaoSO81EE
-	qn77wBRQ=
-X-Gm-Gg: AYBFou0AksDWsZMQj5KSrQN0wd9sYahxBR0V2hzdv2QOKto/cf/cx6W8omYzG5ed/xc
-	vdHtMACcbRDm64vsMiPeIDqLP0fqm4AecEwwDjnLWguE/M2bd2+5PUI+2fM1GceYsCxkmRIZdJR
-	oV6BHBeZNuUdRbEZiXkJlIdYIuoRrtTXwsvhkHXgOLyVGrzpZfGvP0fyZdTGg9dgSuMZ2TonU9q
-	LZpWblL51RBkWvwvXlACEksl4sDiKg5LCXVZM0Dm0xTYHVAgYO1XPib8edlQwN/j8SbDa2SrCIs
-	4qpcERV3O8pxLSfJ3EBtUExcoW6vpqPbLG8pUl1PoVu0SaBZ7IMOBiOunTLNfyXZ7x5yxzsjgz+
-	5/4hw3yli+CmhvwZn0sNgvVd4aS7UF6XlvuK51fJdY6wAlVsg8ZAGybE/bcYEbnOHFtXeDDYqyG
-	VTG5XJRcXCKGqVQ+qjgiXXo6FTgsVXJou1BxV57A9rEAmKzpuzTkLiFz3ixacgndZeHF28WZ6EG
-	psHqV3yB4uckWHr8H6KOKmY5qVgf7eSQG7IaZyFHDZ1auAO
-X-Received: by 2002:a17:907:1c21:b0:c26:3107:71bb with SMTP id a640c23a62f3a-c292b1f3691mr1092866666b.24.1789048969258;
-        Thu, 10 Sep 2026 07:02:49 -0700 (PDT)
-Received: from cloudflare.com (79.184.140.212.ipv4.supernova.orange.pl. [79.184.140.212])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2622a7c677sm820412066b.9.2026.09.10.07.02.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Sep 2026 07:02:48 -0700 (PDT)
-From: Jakub Sitnicki <jakub@cloudflare.com>
-Date: Thu, 10 Sep 2026 16:02:39 +0200
-Subject: [PATCH net-next v2 04/14] selftests/bpf: Add tests for
- bpf_dynptr_from_skb_ext
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="I5MswDZc"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=FK+QEFLKHcZe/b9QidcKHAMaqB13Fco42sxkzVsDNC4YsKMKxCCqiUTVEWVij26E3QDXy8lA0lWd+tJLpH4ajf4vzlm/NY6Jx/YsMkdQQOSKYS512KTv7VprhFmWRxiCVsXJoTQ0IbAca8E2uWuozEv45no1F43pIeev3F2Z4rJuBq/Dy64lKd7xE0VxNRc2BGSE3A22Bw8tzwvKjjqgGgv5JvhxQWRZsRIdCILTdx5Y6EJTqfB7d/zKPhD3E4VD7Ro27PNFlcu5baSX/QqaMM+wizfXZm2AtRJWHLyuH2R7Q82v0bX8Ql4xCEc6YH+r9DO0IFvYdm8ozvW/hyt1mw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ELQ973Fa1wpmw9ENkEa9lulBRF/WeCw8HGplDFxVAT4=;
+ b=Jsw9PJkrKK0jgb908cWnKzU7gR2mN7WzSP65Mh2v6OD57zse10MfISfDpp0MBwI00hOU3l2Bz727oUsqGEbBNdY47Y4BIS8LK8JQbb+Cfdfuj7SBxfYiDFo3LbZtdGpCnedOS5j5pk2gqTsrc3yKp2xYeStoj6Oy5PzR0+4y42nZ7LUbNcMKYhpBQcAljFOiQMhKUmoLJyHPFQLYb/xA18c213Ifq3YWKIebyRfQ909h6Vgb/127hwTBiDvmjRTpxyLr9ZOWY2xvkQNv3LAlUkBBMT8MomVcgw0Jtbc3L2W+GtDWHFVos8D9mxaGMSNe5XPb+nZQkuJBN+vG3CoJuQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ELQ973Fa1wpmw9ENkEa9lulBRF/WeCw8HGplDFxVAT4=;
+ b=I5MswDZcKr+GyHR2huZTNxw6f/xqcGsJ7VFoK+ENCD8Q+FPutRBoVYy5g/iG7DvnhXzg9hcoI6fy9P9LdpKxX7Zbflzt0kHGPyxZSaQW8ESHaa9cBnpfwirfNMEM4bAJyTOwYi4s5RN4A3l34t6eEUiOYbh+SsZdKZ9OLyugK46a7YxyJ61co/62VpxkOHZe6y2/HpGZZWrsrEgi59kMOYnJTWvhNwfa0vmjk6K9M68R4I97XvOqQRYc9u1tmAyPuCZPVTdJ0mP5vlnu0RfFFGGURnODqVr/+T7kwFIxzLen1Vi0OTqJEdTqBXZy6nbfKV6wk6D0YfiU4st8Jm5eHg==
+Received: from PH1PEPF000132E6.NAMP220.PROD.OUTLOOK.COM (2603:10b6:518:1::26)
+ by PH7PR12MB9101.namprd12.prod.outlook.com (2603:10b6:510:2f9::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.9; Thu, 10 Sep
+ 2026 14:26:42 +0000
+Received: from SJ1PEPF000023D8.namprd21.prod.outlook.com
+ (2a01:111:f403:c902::13) by PH1PEPF000132E6.outlook.office365.com
+ (2603:1036:903:47::3) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.406.7 via Frontend Transport; Thu, 10
+ Sep 2026 14:26:42 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 216.228.117.160) smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ SJ1PEPF000023D8.mail.protection.outlook.com (10.167.244.73) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.382.0 via Frontend Transport; Thu, 10 Sep 2026 14:26:42 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.46; Thu, 10 Sep
+ 2026 07:26:12 -0700
+Received: from [10.221.192.238] (10.126.230.37) by rnnvmail201.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.46; Thu, 10 Sep
+ 2026 07:26:05 -0700
+Message-ID: <d02134b9-d63a-4474-bfb6-7cfde2533f82@nvidia.com>
+Date: Thu, 10 Sep 2026 17:26:02 +0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260910-bpf-meta-inside-skb-ext-v2-4-0b21e42180b0@cloudflare.com>
-References: <20260910-bpf-meta-inside-skb-ext-v2-0-0b21e42180b0@cloudflare.com>
-In-Reply-To: <20260910-bpf-meta-inside-skb-ext-v2-0-0b21e42180b0@cloudflare.com>
-To: netdev@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
- Paolo Abeni <pabeni@redhat.com>, Stanislav Fomichev <sdf@fomichev.me>
-Cc: bpf@vger.kernel.org, kernel-team@cloudflare.com, 
- Daniel Borkmann <daniel@iogearbox.net>, 
- John Fastabend <john.fastabend@gmail.com>, 
- Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
- Kumar Kartikeya Dwivedi <memxor@gmail.com>, 
- Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>, 
- Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, 
- Emil Tsalapatis <emil@etsalapatis.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Simon Horman <horms@kernel.org>, Jesper Dangaard Brouer <hawk@kernel.org>, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
- Florian Westphal <fw@strlen.de>, Jack Wang <163wangjack@gmail.com>
-X-Mailer: b4 0.16.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net V2 1/4] net/mlx5: SD, serialize SD LAG init/cleanup
+ against LAG mode changes
+To: <netdev-bot+sashiko@kernel.org>, <tariqt@nvidia.com>
+CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+	<kuba@kernel.org>, <netdev@vger.kernel.org>, <pabeni@redhat.com>,
+	<agoldberger@nvidia.com>, <edwards@nvidia.com>, <gal@nvidia.com>,
+	<kees@kernel.org>, <leon@kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-rdma@vger.kernel.org>, <msanalla@nvidia.com>, <mbloch@nvidia.com>,
+	<ohartoov@nvidia.com>, <parav@nvidia.com>, <phaddad@nvidia.com>,
+	<saeedm@nvidia.com>, <horms@kernel.org>
+References: <20260906071332.3759199-2-tariqt@nvidia.com>
+ <178895614406.219967.15894719869066376557@kernel.org>
+Content-Language: en-US
+From: Shay Drori <shayd@nvidia.com>
+In-Reply-To: <178895614406.219967.15894719869066376557@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ1PEPF000023D8:EE_|PH7PR12MB9101:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7a4483cd-bc7b-4640-030c-08df0f478912
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|376014|7416014|82310400026|36860700016|1800799024|56012099006|4143699003|11063799006|10067099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	mHhX9M2RcVfWzE36XWYAjTlKrfdfuLeo9nT7SOtKuCI6w+STETIuGCa2DcE68LQfrwZXdibqBbv8edKPm8ptnKsZOXTYrSNqh/G9YDi41ZVSk3kd6hZPAUKZILBtovsNoLYzVZi/SnJMW4V+0itTvz3fUHXEfkRnha2mtFzyPO0+klHd6yMRprdHDz390i0OXD2St+RZ8kMVsG65vszocVA5iq4l0/hxIrT54DCkFO4OOEHFdtQnnBcJnRn94gB6iWrNF6qdD/6LoIxliNS6l7fTNM1q+a8k+/0EGqW1kW4OS2mUXiYzpNzEXcCNYnI2KYZAapI/TA9FfhAMOTps/zyWu6SuC82kH+wK6VCdELasjIPr3lLKFEHxO0J7HdECZQDhDamiXAzaF0sq3wyf+OguwwhLPtwCm4vJxj5rFupSOf4GbptXYRLP5I55SbXO7Wh17tZTMS1sZeMeDeQrUxe/Q3yfgWOKiPs924yK+Ly9EZpQyB5tp4bs3Ll8pJXqy4ePiUrneMffDNPCeEKQ7fDgR96wazA/nDhU84pUYKE43hDNNvNVk6BQjDjN02T2E1bzshadf28PKUke2Xxi2FR7hBSZN+8b66OA3BST7nJ2l/7T53drNvKf8PkVrmCsfE9p/kSPBkNLeKYJmktFPxwqlBBn7bX75FlWGBWaErgmwjbErkx11HAgFgKhxiW0gss7/5CsOFBQOvAW1TG2qA==
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(23010399003)(376014)(7416014)(82310400026)(36860700016)(1800799024)(56012099006)(4143699003)(11063799006)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	kCBUhuDZ6NQqPyXT6BG4MIzA351kYuU0+wvO0vMEPDGRYE7mitpQqblXRDNDTwR2b7ieiYq45PsDonK1sZvFvfneB4b76GfsOyC11+VpevOgBKFsSo4yPvHYwNLOlSV5LzlnK/uUtCuw6vbnDjMac5gTon/WyG0IF0wJGTLXCkG4iGcsOwoVlV8xeGq2efunVG46CkXKdiVPJnCuRvBcY42XmSG8q1eopOhWjPxDG5Dw84hZjRnDvT5MOOP3sUU/W7gmsx+OcSuFuoyDy6xgC5VCxHWghQf1ZJYs7t9iZ530q6ND5bhnOwpJlK7R+2Wy44cOivmBIJq+uuIlexZlxavuvr/9l2m3vP3BmiNjrwpIPa/XWuaurZ/5D1GrQEJYa6oGxg8rnSvL71WMOJILB+meca9ATxSDZKXZ0NCEG2i546rXf/1sjjpGvSL1d8zu
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Sep 2026 14:26:42.6393
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7a4483cd-bc7b-4640-030c-08df0f478912
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ1PEPF000023D8.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB9101
 
-Cover the bpf_dynptr_from_skb_ext() kfunc and the dynptr interface
-to skb_ext with TC-to-TC tests on a tuntap device:
 
-- write/read via bpf_dynptr_read and bpf_dynptr_write
-- write/read via bpf_dynptr_slice and bpf_dynptr_slice_rdwr
-- clone read via bpf_dynptr_clone
-- error paths: no allocation without F_CREATE, invalid flags, read-only
-  enforcement without F_CREATE
-- double allocation: data from first alloc survives second skb_ext_add
 
-Plus, exercise the verifier check for tracing and LSM programs that rejects
-bpf_dynptr_from_skb_ext(BPF_SKB_EXT_F_CREATE) in these contexts.
+On 09/09/2026 15:15, netdev-bot+sashiko@kernel.org wrote:
+> External email: Use caution opening links or attachments
+> 
+> 
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider:
+> 
+> Critical: 0 · High: 1 · Medium: 0 (1) · Low: 0
+> 
+> - [High] New unbounded `msleep(100)` wait loops in `sd_lag_init()` and
+>    `sd_lag_cleanup()` (drivers/net/ethernet/mellanox/mlx5/core/lib/sd.c)…
+> 
+> Pre-existing issues:
+> - [Medium] `sd_lag_cleanup()`
+>    (drivers/net/ethernet/mellanox/mlx5/core/lib/sd.c:386-412) dismantles…
+> 
+> --
+> 
+> net/mlx5: SD, serialize SD LAG init/cleanup against LAG mode changes
+> 
+> This makes sd_lag_init() and sd_lag_cleanup() wait for
+> ldev->mode_changes_in_progress to reach zero before touching ldev, folds
+> the SD shared-FDB teardown in mlx5_lag_disable_change() into the main
+> locked section, and moves mlx5_sd_eswitch_mode_set() in
+> mlx5_eswitch_disable() after mlx5_lag_enable_change(). A couple of
+> questions below about the new wait loop and about the group_id handling in
+> the relocated teardown loop.
+> 
+> [ ... ]
+> 
+>> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
+>> index 2285c889c215e..aee5ce471eba7 100644
+>> --- a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
+>> +++ b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
+>> @@ -2589,6 +2589,8 @@ void mlx5_lag_disable_change(struct mlx5_core_dev *dev)
+>>        mpesw = ldev->mode == MLX5_LAG_MODE_MPESW;
+>>        if (mpesw)
+>>                mlx5_mpesw_sd_devcoms_lock(ldev);
+>> +     else if (sd_devcom)
+>> +             mlx5_devcom_comp_lock(sd_devcom);
+>>        mutex_lock(&ldev->lock);
+>>
+>>        ldev->mode_changes_in_progress++;
+>> @@ -2599,26 +2601,22 @@ void mlx5_lag_disable_change(struct mlx5_core_dev *dev)
+>>                        mlx5_disable_lag(ldev);
+>>        }
+>>
+>> +     if (sd_devcom) {
+>> +             mlx5_lag_for_each(i, 0, ldev, MLX5_LAG_FILTER_ALL) {
+>> +                     pf = mlx5_lag_pf(ldev, i);
+>> +                     if (pf->dev == dev && pf->sd_fdb_active) {
+>> +                             mlx5_lag_shared_fdb_destroy(ldev, pf->group_id);
+>> +                             break;
+>> +                     }
+>> +             }
+>> +     }
+> 
+> [Severity: Medium]
+> 
+> This is a pre-existing issue and not introduced by this patch, but since
+> the loop is being relocated here: pf->group_id is passed to
+> mlx5_lag_shared_fdb_destroy() without checking that it is non-zero, and
+> mlx5_lag_shared_fdb_destroy() in lag/shared_fdb.c treats zero as
+> "everything":
+> 
+>          u32 filter = group_id ? group_id : MLX5_LAG_FILTER_ALL;
+>          ...
+>          if (filter == MLX5_LAG_FILTER_PORTS || filter == MLX5_LAG_FILTER_ALL) {
+>                  err = mlx5_deactivate_lag(ldev);
+> 
+> while lag.h documents group_id 0 as "not SD":
+> 
+>          u32 group_id;        /* SD group ID, 0 = not SD */
+>          bool sd_fdb_active;  /* set on all SD group members */
+> 
+> sd_lag_cleanup() zeroes group_id but never looks at sd_fdb_active, and
+> mlx5_lag_shared_fdb_create() sets sd_fdb_active on every member of the
+> group, so the primary can be left with sd_fdb_active == true and
+> group_id == 0. sd_lag_init()'s error path produces the same combination.
+> 
+> Do the normal teardown paths hide this because
+> mlx5_unload_one_devl_locked() calls mlx5_eswitch_disable() before
+> mlx5_detach_device(), so sd_fdb_active is already false by the time
+> sd_lag_cleanup() runs?
+> 
+> What happens on a manual auxiliary driver unbind, where mlx5e_remove() ->
+> mlx5_sd_cleanup() -> sd_lag_cleanup() runs with the eswitch still in
+> switchdev and the SD shared FDB armed? From there it looks like the
+> per-group single-FDB association, the peer-miss rules and the secondary
+> FDB-root alias are left installed, sd_cmd_unset_secondary() goes on to
+> silence the secondary TX root and destroy the alias flow table object, and
+> a later mlx5_lag_disable_change() reaching the loop above with
+> group_id == 0 would take the MLX5_LAG_FILTER_ALL / mlx5_deactivate_lag()
+> path rather than the SD group path.
+> 
+> Would it make sense for sd_lag_cleanup() to call
+> mlx5_lag_shared_fdb_destroy(ldev, group_id) (or at least warn when
+> sd_fdb_active is set) before erasing the group's lag_func entries?
+> 
+>> +
+>>        mutex_unlock(&ldev->lock);
+>>        if (mpesw)
+>>                mlx5_mpesw_sd_devcoms_unlock(ldev);
+>> +     else if (sd_devcom)
+>> +             mlx5_devcom_comp_unlock(sd_devcom);
+>>        mlx5_devcom_comp_unlock(primary->priv.hca_devcom_comp);
+>> -
+>> -     if (!sd_devcom)
+>> -             return;
+>> -
+>> -     /* Teardown SD shared FDB for this device's group if active */
+>> -     mlx5_devcom_comp_lock(sd_devcom);
+>> -     mutex_lock(&ldev->lock);
+>> -     mlx5_lag_for_each(i, 0, ldev, MLX5_LAG_FILTER_ALL) {
+>> -             pf = mlx5_lag_pf(ldev, i);
+>> -             if (pf->dev == dev && pf->sd_fdb_active) {
+>> -                     mlx5_lag_shared_fdb_destroy(ldev, pf->group_id);
+>> -                     break;
+>> -             }
+>> -     }
+>> -     mutex_unlock(&ldev->lock);
+>> -     mlx5_devcom_comp_unlock(sd_devcom);
+>>   }
+>>
+>>   void mlx5_lag_enable_change(struct mlx5_core_dev *dev)
+>> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/sd.c b/drivers/net/ethernet/mellanox/mlx5/core/lib/sd.c
+>> index 4cdc50cd6f038..99cf455a61e1a 100644
+>> --- a/drivers/net/ethernet/mellanox/mlx5/core/lib/sd.c
+>> +++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/sd.c
+>> @@ -345,7 +345,14 @@ static void sd_lag_init(struct mlx5_core_dev *dev)
+>>                return;
+>>        }
+>>
+>> +recheck:
+>>        mutex_lock(&ldev->lock);
+>> +     if (ldev->mode_changes_in_progress) {
+>> +             mutex_unlock(&ldev->lock);
+>> +             msleep(100);
+>> +             goto recheck;
+>> +     }
+>> +
+> 
+> [Severity: High]
+> 
+> Can this loop sleep while holding the locks that the mode-change thread
+> needs in order to make progress?
+> 
+> sd_lag_init() is called from mlx5_sd_init() with sd->devcom held, and
+> mlx5_sd_init() itself runs from adrv->probe/resume, i.e. inside the
+> hca_devcom_comp write semaphore taken by mlx5_attach_device() /
+> mlx5_register_device(). The same is true of the copy of this loop in
+> sd_lag_cleanup(), reached via mlx5_detach_device() -> mlx5e_suspend() /
+> mlx5e_remove() -> mlx5_sd_cleanup(). So the msleep() poll runs with two
+> devcom write semaphores held.
+> 
+> On the other side, mlx5_lag_disable_change() raises
+> mode_changes_in_progress and then drops every lock, and code running
+> inside that window re-takes hca_devcom_comp:
+> 
+> mlx5_devlink_eswitch_mode_set()
+>    mlx5_lag_disable_change(esw->dev)   /* mode_changes_in_progress++, locks dropped */
+>    esw_offloads_start()
+>      esw_mode_change()
+>        mlx5_devcom_comp_lock(esw->dev->priv.hca_devcom_comp)  /* blocks */
+>    mlx5_lag_enable_change(esw->dev)    /* never reached, counter stays > 0 */
+> 
+> and mlx5_devcom_comp_lock() is a write semaphore shared by all devices
+> matching the same sw system image GUID:
+> 
+> drivers/net/ethernet/mellanox/mlx5/core/lib/devcom.c:
+> void mlx5_devcom_comp_lock(struct mlx5_devcom_comp_dev *devcom)
+> {
+>          if (!devcom)
+>                  return;
+>          down_write(&devcom->comp->sem);
+> }
+> 
+> The two threads can be on different devlink instances (mode change on one
+> PF, aux probe/remove on another PF of the same ldev), so the devlink lock
+> does not serialize them. msleep() is uninterruptible and the loop has no
+> timeout or bail-out, and since the wait is a poll on a plain int it is
+> also invisible to lockdep.
+> 
+> The commit message says the new loop is "mirroring mlx5_lag_remove_mdev()"
+> - mlx5_lag_remove_mdev() polls the same counter but holds no devcom
+> semaphore. Is the mirror still valid for callers that do hold sd->devcom
+> and hca_devcom_comp?
 
-Signed-off-by: Jakub Sitnicki <jakub@cloudflare.com>
----
- tools/testing/selftests/bpf/config                 |   1 +
- tools/testing/selftests/bpf/prog_tests/verifier.c  |   2 +
- .../bpf/prog_tests/xdp_context_test_run.c          |  73 +++++++-
- tools/testing/selftests/bpf/progs/test_xdp_meta.c  | 185 +++++++++++++++++++++
- .../testing/selftests/bpf/progs/verifier_skb_ext.c |  77 +++++++++
- 5 files changed, 333 insertions(+), 5 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/config b/tools/testing/selftests/bpf/config
-index ea7044f30adc..502f4504bdba 100644
---- a/tools/testing/selftests/bpf/config
-+++ b/tools/testing/selftests/bpf/config
-@@ -7,6 +7,7 @@ CONFIG_BPF_JIT=y
- CONFIG_BPF_KPROBE_OVERRIDE=y
- CONFIG_BPF_LIRC_MODE2=y
- CONFIG_BPF_LSM=y
-+CONFIG_BPF_SKB_EXT=y
- CONFIG_BPF_STREAM_PARSER=y
- CONFIG_BPF_SYSCALL=y
- # CONFIG_BPF_UNPRIV_DEFAULT_OFF is not set
-diff --git a/tools/testing/selftests/bpf/prog_tests/verifier.c b/tools/testing/selftests/bpf/prog_tests/verifier.c
-index 64ac49ad67e6..7724e82fce66 100644
---- a/tools/testing/selftests/bpf/prog_tests/verifier.c
-+++ b/tools/testing/selftests/bpf/prog_tests/verifier.c
-@@ -94,6 +94,7 @@
- #include "verifier_scalar_ids.skel.h"
- #include "verifier_sdiv.skel.h"
- #include "verifier_search_pruning.skel.h"
-+#include "verifier_skb_ext.skel.h"
- #include "verifier_sock.skel.h"
- #include "verifier_sock_addr.skel.h"
- #include "verifier_sockmap_mutate.skel.h"
-@@ -256,6 +257,7 @@ void test_verifier_runtime_jit(void)          { RUN(verifier_runtime_jit); }
- void test_verifier_scalar_ids(void)           { RUN(verifier_scalar_ids); }
- void test_verifier_sdiv(void)                 { RUN(verifier_sdiv); }
- void test_verifier_search_pruning(void)       { RUN(verifier_search_pruning); }
-+void test_verifier_skb_ext(void)              { RUN(verifier_skb_ext); }
- void test_verifier_sock(void)                 { RUN(verifier_sock); }
- void test_verifier_sock_addr(void)            { RUN(verifier_sock_addr); }
- void test_verifier_sockmap_mutate(void)       { RUN(verifier_sockmap_mutate); }
-diff --git a/tools/testing/selftests/bpf/prog_tests/xdp_context_test_run.c b/tools/testing/selftests/bpf/prog_tests/xdp_context_test_run.c
-index 448807676176..252ac02de81b 100644
---- a/tools/testing/selftests/bpf/prog_tests/xdp_context_test_run.c
-+++ b/tools/testing/selftests/bpf/prog_tests/xdp_context_test_run.c
-@@ -16,6 +16,7 @@
- #define DUMMY_NAME "dum0"
- #define TAP_NETNS "xdp_context_tuntap"
- #define LWT_NETNS "xdp_context_lwt"
-+#define SKB_EXT_NETNS "skb_ext_tuntap"
- 
- #define TEST_PAYLOAD_LEN 32
- static const __u8 test_payload[TEST_PAYLOAD_LEN] = {
-@@ -331,10 +332,11 @@ void test_xdp_context_veth(void)
- 	netns_free(tx_ns);
- }
- 
--static void test_tuntap(struct bpf_program *xdp_prog,
--			struct bpf_program *tc_prio_1_prog,
--			struct bpf_program *tc_prio_2_prog,
--			bool *test_pass)
-+static void __test_tuntap(const char *nsname,
-+			  struct bpf_program *xdp_prog,
-+			  struct bpf_program *tc_prio_1_prog,
-+			  struct bpf_program *tc_prio_2_prog,
-+			  bool *test_pass)
- {
- 	LIBBPF_OPTS(bpf_tc_hook, tc_hook, .attach_point = BPF_TC_INGRESS);
- 	LIBBPF_OPTS(bpf_tc_opts, tc_opts, .handle = 1, .priority = 1);
-@@ -345,7 +347,7 @@ static void test_tuntap(struct bpf_program *xdp_prog,
- 
- 	*test_pass = false;
- 
--	ns = netns_new(TAP_NETNS, true);
-+	ns = netns_new(nsname, true);
- 	if (!ASSERT_OK_PTR(ns, "create and open ns"))
- 		return;
- 
-@@ -396,6 +398,15 @@ static void test_tuntap(struct bpf_program *xdp_prog,
- 	netns_free(ns);
- }
- 
-+static void test_tuntap(struct bpf_program *xdp_prog,
-+			struct bpf_program *tc_prio_1_prog,
-+			struct bpf_program *tc_prio_2_prog,
-+			bool *test_pass)
-+{
-+	__test_tuntap(TAP_NETNS, xdp_prog, tc_prio_1_prog, tc_prio_2_prog,
-+		      test_pass);
-+}
-+
- /* Write a packet to a tap dev and copy it to ingress of a dummy dev */
- static void test_tuntap_mirred(struct bpf_program *xdp_prog,
- 			       struct bpf_program *tc_prog,
-@@ -693,3 +704,55 @@ void test_xdp_context_lwt_encap(void)
- 
- 	test_xdp_meta__destroy(skel);
- }
-+
-+static void test_skb_ext_tuntap(struct bpf_program *tc_prio_1_prog,
-+				struct bpf_program *tc_prio_2_prog,
-+				bool *test_pass)
-+{
-+	__test_tuntap(SKB_EXT_NETNS, NULL /* xdp */, tc_prio_1_prog,
-+		      tc_prio_2_prog, test_pass);
-+}
-+
-+void test_skb_ext_basic(void)
-+{
-+	struct test_xdp_meta *skel = NULL;
-+
-+	skel = test_xdp_meta__open_and_load();
-+	if (!ASSERT_OK_PTR(skel, "open and load skeleton"))
-+		return;
-+
-+	if (test__start_subtest("tc_write_read"))
-+		test_skb_ext_tuntap(skel->progs.tc_skb_ext_write,
-+				    skel->progs.tc_skb_ext_read,
-+				    &skel->bss->test_pass);
-+	if (test__start_subtest("tc_write_clone_read"))
-+		test_skb_ext_tuntap(skel->progs.tc_skb_ext_write,
-+				    skel->progs.tc_skb_ext_clone_read,
-+				    &skel->bss->test_pass);
-+	if (test__start_subtest("tc_write_slice_read"))
-+		test_skb_ext_tuntap(skel->progs.tc_skb_ext_write,
-+				    skel->progs.tc_skb_ext_slice_read,
-+				    &skel->bss->test_pass);
-+	if (test__start_subtest("tc_slice_write_read"))
-+		test_skb_ext_tuntap(skel->progs.tc_skb_ext_slice_write,
-+				    skel->progs.tc_skb_ext_read,
-+				    &skel->bss->test_pass);
-+	if (test__start_subtest("tc_no_alloc"))
-+		test_skb_ext_tuntap(skel->progs.tc_skb_ext_no_alloc,
-+				    NULL, /* tc prio 2 */
-+				    &skel->bss->test_pass);
-+	if (test__start_subtest("tc_invalid_flags"))
-+		test_skb_ext_tuntap(skel->progs.tc_skb_ext_invalid_flags,
-+				    NULL, /* tc prio 2 */
-+				    &skel->bss->test_pass);
-+	if (test__start_subtest("tc_rdonly"))
-+		test_skb_ext_tuntap(skel->progs.tc_skb_ext_rdonly,
-+				    NULL, /* tc prio 2 */
-+				    &skel->bss->test_pass);
-+	if (test__start_subtest("tc_double_alloc"))
-+		test_skb_ext_tuntap(skel->progs.tc_skb_ext_double_alloc,
-+				    NULL, /* tc prio 2 */
-+				    &skel->bss->test_pass);
-+
-+	test_xdp_meta__destroy(skel);
-+}
-diff --git a/tools/testing/selftests/bpf/progs/test_xdp_meta.c b/tools/testing/selftests/bpf/progs/test_xdp_meta.c
-index 08b03be0b891..43840ee32d35 100644
---- a/tools/testing/selftests/bpf/progs/test_xdp_meta.c
-+++ b/tools/testing/selftests/bpf/progs/test_xdp_meta.c
-@@ -6,6 +6,7 @@
- #include <errno.h>
- 
- #include "bpf_kfuncs.h"
-+#include "bpf_misc.h"
- #include "bpf_tracing_net.h"
- 
- #define META_SIZE 32
-@@ -689,4 +690,188 @@ int helper_skb_change_proto(struct __sk_buff *ctx)
- 	return TC_ACT_SHOT;
- }
- 
-+/* Write to skb_ext using bpf_dynptr_write helper */
-+SEC("tc")
-+int tc_skb_ext_write(struct __sk_buff *ctx)
-+{
-+	struct bpf_dynptr meta;
-+
-+	if (!is_test_packet_tc(ctx))
-+		return TC_ACT_SHOT;
-+	if (bpf_dynptr_from_skb_ext(ctx, 0, BPF_SKB_EXT_F_CREATE, &meta))
-+		return TC_ACT_SHOT;
-+	if (bpf_dynptr_write(&meta, 0, (void *)meta_want, ARRAY_SIZE(meta_want), 0))
-+		return TC_ACT_SHOT;
-+
-+	return TC_ACT_UNSPEC;
-+}
-+
-+/* Read from skb-ext metadata using bpf_dynptr_read helper */
-+SEC("tc")
-+int tc_skb_ext_read(struct __sk_buff *ctx)
-+{
-+	__u8 meta_have[META_SIZE];
-+	struct bpf_dynptr meta;
-+
-+	if (bpf_dynptr_from_skb_ext(ctx, 0, 0, &meta))
-+		return TC_ACT_SHOT;
-+	if (bpf_dynptr_read(meta_have, ARRAY_SIZE(meta_have), &meta, 0, 0))
-+		return TC_ACT_SHOT;
-+	if (!check_metadata(meta_have))
-+		return TC_ACT_SHOT;
-+
-+	test_pass = true;
-+	return TC_ACT_UNSPEC;
-+}
-+
-+/* Read from a cloned skb_ext dynptr */
-+SEC("tc")
-+int tc_skb_ext_clone_read(struct __sk_buff *ctx)
-+{
-+	struct bpf_dynptr meta, clone;
-+	__u8 meta_have[META_SIZE];
-+
-+	if (bpf_dynptr_from_skb_ext(ctx, 0, 0, &meta))
-+		return TC_ACT_SHOT;
-+	if (bpf_dynptr_clone(&meta, &clone))
-+		return TC_ACT_SHOT;
-+	if (bpf_dynptr_read(meta_have, ARRAY_SIZE(meta_have), &clone, 0, 0))
-+		return TC_ACT_SHOT;
-+	if (!check_metadata(meta_have))
-+		return TC_ACT_SHOT;
-+
-+	test_pass = true;
-+	return TC_ACT_UNSPEC;
-+}
-+
-+/* Read from skb_ext using bpf_dynptr_slice */
-+SEC("tc")
-+int tc_skb_ext_slice_read(struct __sk_buff *ctx)
-+{
-+	struct bpf_dynptr meta;
-+	__u8 *meta_have;
-+
-+	if (bpf_dynptr_from_skb_ext(ctx, 0, 0, &meta))
-+		return TC_ACT_SHOT;
-+	meta_have = bpf_dynptr_slice(&meta, 0, NULL, META_SIZE);
-+	if (!meta_have)
-+		return TC_ACT_SHOT;
-+	if (!check_metadata(meta_have))
-+		return TC_ACT_SHOT;
-+
-+	test_pass = true;
-+	return TC_ACT_UNSPEC;
-+}
-+
-+/* Write to skb_ext using bpf_dynptr_slice_rdwr */
-+SEC("tc")
-+int tc_skb_ext_slice_write(struct __sk_buff *ctx)
-+{
-+	struct bpf_dynptr meta;
-+	__u8 *dst;
-+
-+	if (!is_test_packet_tc(ctx))
-+		return TC_ACT_SHOT;
-+	if (bpf_dynptr_from_skb_ext(ctx, 0, BPF_SKB_EXT_F_CREATE, &meta))
-+		return TC_ACT_SHOT;
-+	dst = bpf_dynptr_slice_rdwr(&meta, 0, NULL, META_SIZE);
-+	if (!dst)
-+		return TC_ACT_SHOT;
-+	__builtin_memcpy(dst, meta_want, META_SIZE);
-+
-+	return TC_ACT_UNSPEC;
-+}
-+
-+/* Opening skb_ext without F_CREATE on a fresh skb should fail */
-+SEC("tc")
-+int tc_skb_ext_no_alloc(struct __sk_buff *ctx)
-+{
-+	struct bpf_dynptr meta;
-+
-+	if (!is_test_packet_tc(ctx))
-+		return TC_ACT_SHOT;
-+	if (bpf_dynptr_from_skb_ext(ctx, 0, 0, &meta) != -ENOENT)
-+		return TC_ACT_SHOT;
-+
-+	test_pass = true;
-+	return TC_ACT_UNSPEC;
-+}
-+
-+/* Invalid flags are rejected */
-+SEC("tc")
-+int tc_skb_ext_invalid_flags(struct __sk_buff *ctx)
-+{
-+	struct bpf_dynptr meta;
-+
-+	if (!is_test_packet_tc(ctx))
-+		return TC_ACT_SHOT;
-+	if (bpf_dynptr_from_skb_ext(ctx, 0, ~0ULL, &meta) != -EINVAL)
-+		return TC_ACT_SHOT;
-+
-+	test_pass = true;
-+	return TC_ACT_UNSPEC;
-+}
-+
-+/* Without F_CREATE the dynptr is read-only */
-+SEC("tc")
-+int tc_skb_ext_rdonly(struct __sk_buff *ctx)
-+{
-+	__u8 meta_have[META_SIZE];
-+	struct bpf_dynptr meta;
-+
-+	if (!is_test_packet_tc(ctx))
-+		return TC_ACT_SHOT;
-+
-+	/* Create and populate the ext */
-+	if (bpf_dynptr_from_skb_ext(ctx, 0, BPF_SKB_EXT_F_CREATE, &meta))
-+		return TC_ACT_SHOT;
-+	if (bpf_dynptr_write(&meta, 0, (void *)meta_want, META_SIZE, 0))
-+		return TC_ACT_SHOT;
-+
-+	/* Reopen without F_CREATE -- should be read-only */
-+	if (bpf_dynptr_from_skb_ext(ctx, 0, 0, &meta))
-+		return TC_ACT_SHOT;
-+
-+	/* Verify read-only: writes must fail, reads must work */
-+	if (!bpf_dynptr_is_rdonly(&meta))
-+		return TC_ACT_SHOT;
-+	if (!bpf_dynptr_write(&meta, 0, (void *)meta_want, META_SIZE, 0))
-+		return TC_ACT_SHOT;
-+	if (bpf_dynptr_read(meta_have, META_SIZE, &meta, 0, 0))
-+		return TC_ACT_SHOT;
-+	if (!check_metadata(meta_have))
-+		return TC_ACT_SHOT;
-+
-+	test_pass = true;
-+	return TC_ACT_UNSPEC;
-+}
-+
-+/* Double alloc: data from first alloc survives second skb_ext_add */
-+SEC("tc")
-+int tc_skb_ext_double_alloc(struct __sk_buff *ctx)
-+{
-+	__u8 meta_have[META_SIZE];
-+	struct bpf_dynptr meta;
-+
-+	if (!is_test_packet_tc(ctx))
-+		return TC_ACT_SHOT;
-+
-+	/* First alloc + write */
-+	if (bpf_dynptr_from_skb_ext(ctx, 0, BPF_SKB_EXT_F_CREATE, &meta))
-+		return TC_ACT_SHOT;
-+	if (bpf_dynptr_write(&meta, 0, (void *)meta_want, META_SIZE, 0))
-+		return TC_ACT_SHOT;
-+
-+	/* Second alloc -- skb_ext_add returns existing ext */
-+	if (bpf_dynptr_from_skb_ext(ctx, 0, BPF_SKB_EXT_F_CREATE, &meta))
-+		return TC_ACT_SHOT;
-+	if (bpf_dynptr_read(meta_have, META_SIZE, &meta, 0, 0))
-+		return TC_ACT_SHOT;
-+	if (!check_metadata(meta_have))
-+		return TC_ACT_SHOT;
-+
-+	test_pass = true;
-+	return TC_ACT_UNSPEC;
-+}
-+
- char _license[] SEC("license") = "GPL";
-diff --git a/tools/testing/selftests/bpf/progs/verifier_skb_ext.c b/tools/testing/selftests/bpf/progs/verifier_skb_ext.c
-new file mode 100644
-index 000000000000..db43f1051400
---- /dev/null
-+++ b/tools/testing/selftests/bpf/progs/verifier_skb_ext.c
-@@ -0,0 +1,77 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include "vmlinux.h"
-+#include <bpf/bpf_helpers.h>
-+#include <bpf/bpf_tracing.h>
-+#include "bpf_misc.h"
-+
-+__u64 flags;
-+
-+SEC("tp_btf/kfree_skb")
-+__description("F_CREATE is rejected in tracing programs")
-+__failure __msg("is not allowed in lsm/tracing programs")
-+int BPF_PROG(tp_skb_ext_create, struct sk_buff *skb)
-+{
-+	struct bpf_dynptr meta;
-+
-+	if (bpf_dynptr_from_skb_ext((struct __sk_buff *)skb, 0,
-+				    BPF_SKB_EXT_F_CREATE, &meta))
-+		return 0;
-+
-+	return 0;
-+}
-+
-+SEC("tp_btf/kfree_skb")
-+__description("non-constant flags are rejected in tracing programs")
-+__failure __msg("must be a known constant")
-+int BPF_PROG(tp_skb_ext_var_flags, struct sk_buff *skb)
-+{
-+	struct bpf_dynptr meta;
-+
-+	if (bpf_dynptr_from_skb_ext((struct __sk_buff *)skb, 0, flags, &meta))
-+		return 0;
-+
-+	return 0;
-+}
-+
-+SEC("tc")
-+__description("non-constant flags are rejected")
-+__failure __msg("must be a known constant")
-+int skb_ext_var_flags(struct __sk_buff *ctx)
-+{
-+	struct bpf_dynptr meta;
-+
-+	if (bpf_dynptr_from_skb_ext(ctx, 0, flags, &meta))
-+		return 0;
-+
-+	return 0;
-+}
-+
-+SEC("lsm/inet_conn_established")
-+__description("F_CREATE is rejected in LSM programs")
-+__failure __msg("is not allowed in lsm/tracing programs")
-+int BPF_PROG(lsm_skb_ext_create, struct sock *sk, struct sk_buff *skb)
-+{
-+	struct bpf_dynptr meta;
-+
-+	if (bpf_dynptr_from_skb_ext((struct __sk_buff *)skb, 0,
-+				    BPF_SKB_EXT_F_CREATE, &meta))
-+		return 0;
-+
-+	return 0;
-+}
-+
-+SEC("lsm/inet_conn_established")
-+__description("non-constant flags are rejected in LSM programs")
-+__failure __msg("must be a known constant")
-+int BPF_PROG(lsm_skb_ext_var_flags, struct sock *sk, struct sk_buff *skb)
-+{
-+	struct bpf_dynptr meta;
-+
-+	if (bpf_dynptr_from_skb_ext((struct __sk_buff *)skb, 0, flags, &meta))
-+		return 0;
-+
-+	return 0;
-+}
-+
-+char _license[] SEC("license") = "GPL";
+This is a real finding and the fix needs a new approach.
+I am dropping this patch.
 
--- 
-2.43.0
+> 
+>>        pf = mlx5_lag_pf_by_dev(ldev, primary);
+>>        if (!pf) {
+>>                sd_warn(primary, "%s: primary not registered in ldev, skipping\n",
+>> @@ -388,7 +395,13 @@ static void sd_lag_cleanup(struct mlx5_core_dev *dev)
+>>        if (!ldev)
+>>                return;
+>>
+>> +recheck:
+>>        mutex_lock(&ldev->lock);
+>> +     if (ldev->mode_changes_in_progress) {
+>> +             mutex_unlock(&ldev->lock);
+>> +             msleep(100);
+>> +             goto recheck;
+>> +     }
+>>        mlx5_sd_for_each_secondary(i, primary, pos)
+>>                mlx5_ldev_remove_mdev(ldev, pos);
+>>
+> 
+> --
+> Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260906071332.3759199-1-tariqt%40nvidia.com
 
