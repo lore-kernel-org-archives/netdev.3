@@ -1,45 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58F98381AFF;
-	Thu, 10 Sep 2026 03:41:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F5ED30DEDC;
+	Thu, 10 Sep 2026 03:51:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789011698; cv=none; b=ZOXCZNa68S2GaafKRB/pf8Cwvm1b4+kqXV5+TzCpAF0x2gU3HRS09Or4wVv6O2nr4X8dSzbebadBHFEH8If70iezFUZChSaRJxbw8HrUEmicJJyQCsVlEEDWYTE3Ee3JOLkipKoFmwoJVQsJXlFNaMUKSapdYpb4wEUIB4V8sFg=
+	t=1789012269; cv=none; b=S/0RJG+IqKkZBloNKgaffwlKXDUWW+R9JVYDawEuIY0Y6RaykQrtJmthE0/4KmgUyOUG5MDMiqOzDomz1I2vZ2yPS2V1Zw4soODT/9S+4PEfllD5JhSb++6SyDdPMNlCQm+zwIk3QUfw0TZO1x23Nnx++zaHTxTGlUI1XYZEa9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789011698; c=relaxed/simple;
-	bh=w6YMxGA6TfN/6E70BV+uHG+BsvTlQTsOklfijaKjRio=;
+	s=arc-20240116; t=1789012269; c=relaxed/simple;
+	bh=zbufan/RqJ5Q1nBrrI4Svq41WAkcjTFrNniJSes07uU=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=HuCjWiQG0z1SmkGsatbx/nYUfzJMlENDKVvffreYIBhyIY0/QOyGsRb9JAZV1M2KddkWPF2CdEoeHqSBbXVESBa4H5mO5lYwELYcKvtHajgDpaLIiAURK1+gjiAvkPT+d1hTWyzYp/K4ghdOHx2uX4r3y/41xrLV+LY4/1V1tUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QphHh3vY; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=em9Sgk8N5c+UtUSG/t2nhvv6jfQxF8kqr2DEdOD4P9pAYCvdndkRIFva6DtoozdT2xsNGd5qEdhDQoZimvu+wSAby/+2o8AAiE8Jcnn77jLHsql0bdJlKo5cq+c/6r3PZVib9MBXYZhmlSPKesuNb4tSi0DNMpKC4fylNUH8zpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LPIOfPW0; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QphHh3vY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4962F1F00893;
-	Thu, 10 Sep 2026 03:41:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LPIOfPW0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7036D1F000FF;
+	Thu, 10 Sep 2026 03:51:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789011696;
-	bh=DANIVoekU9XiwWA5oMrLYSSaU2xk6/wwTj0I+yT4QfU=;
+	s=k20260515; t=1789012268;
+	bh=0mtID7B/XCQ+V2hgeDztPVv74Rf9vBOfMI+kn5Mh+II=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=QphHh3vYLLM7ufXpcqMimO0dLeH5MojSw6HRqN6EkbGDaA0/sDJtZU9Jiv1xmjAhy
-	 9l+RwQ+3Un5Gd0QKk5ltfn8nAFTgRRHrpuqJonm2oZgfuxQFQ3iOiMISSnqJ9HFOct
-	 ZtVlQhaF0c1gs6XRN8DOP/3fC6jxsJa2/8T7Nk/J9T2rpl6z6K4uth6B68VBiU9IBu
-	 2AZ+NEX2Gqbr0kW2CSJD07ZfJnDMVuRWEbFW6LEg+CDnx9XosqVkRYAw3eXU0Pxo1N
-	 YXnoCWOEWVA9SMgUZJo/blduNmHhT80avmcjs12bQYslmprRGXidDM/qpIwYAPVk48
-	 gv1oL33TB+W+g==
-Subject:
- Re: [PATCH net-next 3/3] selftests: net: test AF_PACKET multicast dumps
+	b=LPIOfPW0PSyuN3UYrFaddmVfLevOLY5Nh1KUk9QWg5xaJHNhs9FkqV4bE98ZhN0Ak
+	 zsNDoOEQ349zitkOIS7SRlxUNu/Hs8Wavu/yX2muzVopVRiU5Cn2PyLHAhlEaurpuq
+	 J49KWSWxCZSPRyHFCmkosZQ4rkErGlU25GVPXgcflUXvF9FTq9A1inPxGZEUK7hNh6
+	 KaYUIH2T1reiqMc8loCSglI8BbJmkAnlJQAyGvBg9lniybJU996TVQMP72Eez3zFwK
+	 NRgeoNb5DRAF5NisnSj+FXAFqqyRV5a5FgJ9pmje9RGPQBtutElPBBxp+LOGRaGFZT
+	 gXQ7vILpadQFw==
+Subject: Re: [PATCH net v2] nfc: llcp: fix slab-out-of-bounds read in
+ nfc_llcp_wks_sap()
 From: netdev-bot+sashiko@kernel.org
-To: sigefriedhyy@gmail.com
-Cc: davem@davemloft.net, dsahern@kernel.org, donald.hunter@gmail.com,
- edumazet@google.com, idosch@nvidia.com, kuba@kernel.org, kuniyu@google.com,
- nickgarlis@gmail.com, pabeni@redhat.com, sd@queasysnail.net, shuah@kernel.org,
- horms@kernel.org, sdf.kernel@gmail.com, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, netdev@vger.kernel.org
-Date: Thu, 10 Sep 2026 03:41:34 +0000
-Message-ID: <178901169484.219967.3624591832079760064@kernel.org>
-In-Reply-To: <20260905093932.43726-4-sigefriedhyy@gmail.com>
-References: <20260905093932.43726-4-sigefriedhyy@gmail.com>
-X-sashiko-severity: Low
+To: omermetekaya0@gmail.com
+Cc: netdev@vger.kernel.org, david@ixit.cz, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ oe-linux-nfc@lists.linux.dev, linux-kernel@vger.kernel.org,
+ syzbot+1e3df0852e82c21ca418@syzkaller.appspotmail.com
+Date: Thu, 10 Sep 2026 03:51:06 +0000
+Message-ID: <178901226692.219967.13793449876885823121@kernel.org>
+In-Reply-To: <20260905225211.596366-1-omermetekaya0@gmail.com>
+References: <20260905225211.596366-1-omermetekaya0@gmail.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -52,115 +51,158 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider:
 
-Critical: 0 · High: 0 · Medium: 0 · Low: 1
+Critical: 0 · High: 0 · Medium: 1 (1) · Low: 0 (1)
 
-- [Low] dump_mcaddr_l2_check() in
-  tools/testing/selftests/net/rtnetlink.py dereferences dictionary keys…
+- [Medium] Missing `Fixes:` tag on a [PATCH net] bug fix.
+
+Pre-existing issues:
+- [Medium] Prefix-match logic error in nfc_llcp_wks_sap()
+  (net/nfc/llcp_core.c:351-357): the loop does `strncmp(wks[sap],…
+- [Low] Unfixed sibling of the same defect class:
+  nfc_llcp_build_sdreq_tlv() (net/nfc/llcp_commands.c:138) still does…
 
 --
 
-selftests: net: test AF_PACKET multicast dumps
+nfc: llcp: fix slab-out-of-bounds read in nfc_llcp_wks_sap()
 
-This adds dump_mcaddr_l2_check() to the rtnetlink.py selftest, dumping the
-link-layer multicast addresses of a dummy device over AF_PACKET and
-checking the ifa-index filter, the all-hosts entry flags and the
-SIOCADDMULTI entry flags plus mc-users.  The case skips when the kernel
-answers the dump with EOPNOTSUPP.
+This changes the pr_debug() in nfc_llcp_wks_sap() from %s to %.*s bounded
+by service_name_len, so the non-NUL-terminated kmemdup()'d service name
+copied in llcp_sock_bind() is no longer over-read by the printk format
+scan.
 
-> diff --git a/tools/testing/selftests/net/rtnetlink.py b/tools/testing/selftests/net/rtnetlink.py
-> index 5cc3ebdcf08de..94340dac0e217 100755
-> --- a/tools/testing/selftests/net/rtnetlink.py
-> +++ b/tools/testing/selftests/net/rtnetlink.py
+Closes: https://syzkaller.appspot.com/bug?extid=1e3df0852e82c21ca418
 
-[ ... ]
+> v2: Changed prefix to [PATCH net] but still I could not find the Fixes: tag both in the gitblame and the lore.
 
-> @@ -105,6 +109,53 @@ def dump_mcaddr6_check() -> None:
->                  s2.close()
+[Severity: Medium]
+Regarding "still I could not find the Fixes: tag both in the gitblame and
+the lore" - does git blame on the removed statement point at the original
+LLCP support commit?
+
+Blaming the pr_debug("%s\n", service_name); line in nfc_llcp_wks_sap() at
+the baseline attributes it to:
+
+  d646960f7986 ("NFC: Initial LLCP support")
+
+Only the enclosing function signature was touched later, by 3df40eb3a2ea.
+The unterminated kmemdup() of the user-supplied service name in
+llcp_sock_bind() / llcp_sock_connect() comes from the same initial LLCP
+series, so would:
+
+  Fixes: d646960f7986 ("NFC: Initial LLCP support")
+
+be the right tag here?  Without it the affected range (everything since
+v3.3) has to be worked out by hand for stable backports, and the net tree
+process asks for the tag on fixes.
+
+> diff --git a/net/nfc/llcp_core.c b/net/nfc/llcp_core.c
+> index cac1b5487064d..fda236e4d9fdc 100644
+> --- a/net/nfc/llcp_core.c
+> +++ b/net/nfc/llcp_core.c
+> @@ -341,7 +341,7 @@ static int nfc_llcp_wks_sap(const char *service_name, size_t service_name_len)
+>  {
+>  	int sap, num_wks;
 >  
->  
-> +def dump_mcaddr_l2_check() -> None:
-> +    """
-> +    Verify link-layer multicast addresses in an AF_PACKET RTM_GETMULTICAST
-> +    dump: the ifa-index filter, mc-users and the permanent flag.
-> +    """
-> +
-> +    with NetNS() as ns:
-> +        with NetNSEnter(str(ns)):
-> +            for ifname in ("dummy1", "dummy2"):
-> +                ip(f"link add name {ifname} type dummy")
-> +                ip(f"link set {ifname} up")
-> +            dev_idx = socket.if_nametoindex("dummy1")
-> +            ip(f"maddr add {ETH_TEST_MULTICAST_STR} dev dummy1")
-> +
-> +            rtnl = RtnlAddrFamily()
-> +            try:
-> +                addresses = rtnl.getmulticast(
-> +                    {"ifa-family": socket.AF_PACKET, "ifa-index": dev_idx},
-> +                    dump=True)
-> +            except NlError as e:
-> +                if e.error == errno.EOPNOTSUPP:
-> +                    raise KsftSkipEx(
-> +                        "kernel does not support AF_PACKET multicast dump")
-> +                raise
-> +
-> +            # dummy2 has entries as well, only dummy1 may be listed
-> +            ksft_eq({addr['ifa-index'] for addr in addresses}, {dev_idx},
-> +                    "AF_PACKET multicast dump ignored ifa-index filter")
-> +
-> +            entries = {addr['multicast']: addr for addr in addresses}
-> +
-> +            # Bringing an Ethernet device up joins 224.0.0.1, which maps
-> +            # to 01:00:5e:00:00:01 in the device multicast list.
-> +            ksft_in(ETH_ALL_HOSTS_MULTICAST, entries,
-> +                    "dummy1 does not have the all-hosts link-layer address")
-> +            ksft_not_in('permanent',
-> +                        entries[ETH_ALL_HOSTS_MULTICAST]['ifa-flags'],
-> +                        "protocol entry is permanent")
-> +
-> +            ksft_in(ETH_TEST_MULTICAST, entries,
-> +                    "dummy1 does not have the SIOCADDMULTI address")
-> +            ksft_eq(entries[ETH_TEST_MULTICAST]['mc-users'], 1,
-> +                    "unexpected mc-users for the SIOCADDMULTI address")
-> +            ksft_in('permanent', entries[ETH_TEST_MULTICAST]['ifa-flags'],
-> +                    "SIOCADDMULTI entry is not permanent")
+> -	pr_debug("%s\n", service_name);
+> +	pr_debug("%.*s\n", (int)service_name_len, service_name);
 
 [Severity: Low]
-Can the entries[] lookups here raise KeyError in exactly the case the
-preceding checks are meant to report?
+This is a pre-existing issue and not introduced by this patch, but is
+there a second copy of the same pattern that could be converted in the
+same change?  nfc_llcp_build_sdreq_tlv() in net/nfc/llcp_commands.c does:
 
-ksft_in() in tools/testing/selftests/net/lib/py/ksft.py only records the
-failure and returns:
+  pr_debug("uri: %s, len: %zu\n", uri, uri_len);
 
-    def ksft_in(a, b, comment=""):
-        if a not in b:
-            _fail("Check failed", a, "not in", b, comment)
+The uri here is nla_data() of NFC_SDP_ATTR_URI, passed in from
+nfc_genl_llc_sdreq() together with nla_len().  The policy entry is:
 
-So when the dump does not contain 01:00:5e:00:00:01, execution continues
-into:
+  [NFC_SDP_ATTR_URI] = { .type = NLA_STRING,
+                         .len = U8_MAX - 4 },
 
-    entries[ETH_ALL_HOSTS_MULTICAST]['ifa-flags']
+NLA_STRING only trims an optional trailing NUL, it does not require one,
+and the rest of nfc_llcp_build_sdreq_tlv() is written length-based
+(if (uri[uri_len - 1] == 0) sdreq->tlv_len--; and memcpy(sdreq->uri, uri,
+uri_len)), so no terminator is assumed there either.
 
-and the same applies to entries[ETH_TEST_MULTICAST] for the mc-users and
-permanent checks if the SIOCADDMULTI address is missing.
+Note this one does not appear to be able to produce the KASAN report the
+changelog quotes: the payload sits in the netlink skb linear area and the
+format scan stops on a zero byte inside the zeroed skb_shared_info of the
+same allocation:
 
-ksft_run() catches this with "except BaseException" and prints a
-traceback, so the case is reported as a failure, but the remaining
-independent checks (mc-users == 1 and the permanent flag on the
-SIOCADDMULTI entry) are never executed.  Note also that the earlier
-ksft_eq() on the ifa-index set does not stop the case either, so
-addresses may legitimately be empty at this point.
+  net/core/skbuff.c:__alloc_skb() {
+      ...
+      memset(shinfo, 0, offsetof(struct skb_shared_info, dataref));
+      ...
+  }
 
-Would it be worth following the convention already used elsewhere in this
-file, where _users_for() and dump_mcaddr_check() test membership before
-dereferencing:
+What is left is the unbounded %s printing adjacent attribute bytes plus up
+to three bytes of uninitialised SKB_DATA_ALIGN padding into dmesg, and it
+needs CAP_NET_ADMIN (NFC_CMD_LLC_SDREQ carries GENL_ADMIN_PERM) plus an
+enabled dyndbg callsite.  Would
 
-    if 'mc-users' not in matches[0]:
-        raise KsftSkipEx(...)
+  pr_debug("uri: %.*s, len: %zu\n", (int)uri_len, uri, uri_len);
 
-and ipv6_route_del_reason_expired() guards with ksft_not_none(attrs)
-before touching attrs?
+be worth folding in for consistency?  The other %s users of a URI look
+fine, since sdreq->uri points into a kzalloc(sdreq->tlv_len + 1).
 
-[ ... ]
+>  
+>  	if (service_name == NULL)
+>  		return -EINVAL;
+>  
+
+The unquoted remainder of nfc_llcp_wks_sap() is the comparison loop:
+
+  net/nfc/llcp_core.c:nfc_llcp_wks_sap() {
+      ...
+      for (sap = 0; sap < num_wks; sap++) {
+              if (wks[sap] == NULL)
+                      continue;
+
+              if (strncmp(wks[sap], service_name, service_name_len) == 0)
+                      return sap;
+      }
+      ...
+  }
+
+[Severity: Medium]
+This is a pre-existing issue that the patch does not introduce, but since
+the change lands two lines above it: should this comparison also require
+service_name_len == strlen(wks[sap])?
+
+As written, any strict prefix of a well-known name matches, for example
+strncmp("urn:nfc:sn:ip", "urn:nfc:sn:i", 12) == 0 returns sap 2, and even a
+single byte "u" matches.
+
+nfc_llcp_wks_sap() is only reached from nfc_llcp_get_sdp_ssap(), which
+passes the name and length verbatim from llcp_sock_bind() and
+llcp_sock_connect().  Both just kmemdup() the user-supplied name under
+min_t(..., NFC_LLCP_MAX_SERVICE_NAME) with no content validation, and
+nfc_sock_create() does no capability check.
+
+nfc_llcp_get_sdp_ssap() then treats the socket as the well-known service:
+
+  net/nfc/llcp_core.c:nfc_llcp_get_sdp_ssap() {
+      ...
+      if (test_bit(ssap, &local->local_wks)) { ... return LLCP_SAP_MAX; }
+      set_bit(ssap, &local->local_wks);
+      return ssap;
+      ...
+  }
+
+So a bind of "urn:nfc:sn:i" reserves the SAP belonging to
+"urn:nfc:sn:ip", advertises it to the peer in the LLCP WKS general bytes,
+and a later bind of the real name then fails with -EADDRINUSE.
+
+The two peer-side sites in the same file do enforce exact length,
+nfc_llcp_recv_snl() with:
+
+  if (service_name_len == strlen("urn:nfc:sn:sdp") &&
+      !strncmp(service_name, "urn:nfc:sn:sdp", service_name_len)) {
+
+and nfc_llcp_sock_from_sn() skipping candidates whose service_name_len
+differs before memcmp().  Is the missing length equality check here just an
+oversight?  No out-of-bounds access is involved, strncmp reads at most
+service_name_len bytes.
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260905093932.43726-1-sigefriedhyy%40gmail.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260905225211.596366-1-omermetekaya0%40gmail.com
