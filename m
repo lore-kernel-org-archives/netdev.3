@@ -1,230 +1,171 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32B5A3D5668;
-	Thu, 10 Sep 2026 06:35:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 932C9383305
+	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 06:37:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789022113; cv=none; b=ofpGMZVO5V9FuUPk6bgHMTFYqe3OiJdnsLiRBFFRbTEipPbeRabLWuDZxEGKF53s1wh6UHXGXABUkCGF+SckOIRSAi1CvWsqvDQQHRD/2YPwLDX/RPrAQg/5mDPUXIKlkK0DGCy9hbZ2Ru4aILuCZhaLQLwSlOW3I+tVbdnf1b4=
+	t=1789022278; cv=none; b=itccXh496MLEic7jQwHxaZlDqPPBgrWDDguYmZDGnIsS8HhMWafTKiTORBrJKkpIdnQBflDUn5qii9kfORI6W7CTBzddMPA8/xooQOvvaqkOCBgzBLNo8sin7GeOyRAMi0vh5sdNAS9vvuToK8ELLS5G3xADh/WSEV+c2iJRXFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789022113; c=relaxed/simple;
-	bh=6dO5xsTdCHe+Rlre4CNhPM4AceKxp6LoUHgY4xoauWg=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=e5UjK6HaGtQUagH7pxcUQmKBY7mup+yiV82lID+y/Udpof0NAvYxexDGYZl3MHxijDx5framiqOUcLKD07Ug1BxITb4+uLgcmFHz3oCqiHQGqaSkyB7f/uQxx+zwKD7lZWJhjpLsAdCRzYbuIEYU4+l41dD/Khb19Dl++Siy4I0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TwsrRT5c; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789022278; c=relaxed/simple;
+	bh=5lywbXSlMAomh1ByTgr47An3DNmTF5ljOwkY+LU+gO8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=TlhMF/af78uGfsUwmopr5DyyoXrHS4IEbwwSZlMTEFE/rYbXXYdHWkWKi/o/Dzr6E95f1DTdT7LLgdIb+DoDmONcHR5rcnEi2+760T4T2IO2ZfwLWBkkaOtYg4XRUXI/6u4VbRUG9uaQ71b6YzzKBo82dhOpCSNla/lbh6p1KGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=korea.ac.kr; spf=pass smtp.mailfrom=korea.ac.kr; dkim=pass (2048-bit key) header.d=korea.ac.kr header.i=@korea.ac.kr header.b=GirLzWmQ; arc=none smtp.client-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=korea.ac.kr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=korea.ac.kr
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TwsrRT5c"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25BA31F000FF;
-	Thu, 10 Sep 2026 06:35:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789022111;
-	bh=GUjaWT/4AjkCL1zxMcOsSiItM4siXuY2MNJ3WGRtXCc=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=TwsrRT5clN7yiQvGw0VX9PoKOJCnnYqn+SxBoPk2Zn3ftcXTOYUPC3j5h3RhldvnK
-	 G7qoWR5k8IoEaBd5zvRfq26vNWeG6X27Zx55QaR4XQ2iJI9BiXdbwxmVovImXsVLOP
-	 QMG2hF2trXWmQApWxGw1Mh+60agA3jwVmUG+r9MxDtCUfYG3ShsXpZA5Qg2FMBb7aM
-	 M3b1QeereacBZZpDibA9CmwyQSa2CskskEMzBC7AEg8Ztdui6/gds/0TZwTn3v877W
-	 0TJUXTV7PD6hcu0UaXCTGjdVoPAJVV2zvYAL3xVtMlTi23YNLHl36nP9L6fveO5qv+
-	 szdq043E1CcnA==
-Subject: Re: [PATCH] tcp: validate old ACKs before fast path data processing
-From: netdev-bot+sashiko@kernel.org
-To: inbal.lipshtat@mail.huji.ac.il
-Cc: edumazet@google.com, ncardwell@google.com, kuniyu@google.com,
- netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, linux-kernel@vger.kernel.org,
- amit.klein@mail.huji.ac.il, tamir.shahar1@mail.huji.ac.il
-Date: Thu, 10 Sep 2026 06:35:10 +0000
-Message-ID: <178902211070.219967.15947434635255374738@kernel.org>
-In-Reply-To: <20260906123151.1391349-1-inbal.lipshtat@mail.huji.ac.il>
-References: <20260906123151.1391349-1-inbal.lipshtat@mail.huji.ac.il>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=korea.ac.kr header.i=@korea.ac.kr header.b="GirLzWmQ"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2cace91f112so58073145ad.0
+        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 23:37:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=korea.ac.kr; s=google; t=1789022275; x=1789627075; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=DlDEc0Wysg4XmstSxwWtu/wJqLCN0sS8gv/9woOxKFk=;
+        b=GirLzWmQkHYi1g2jNC52SpiJz59Kn3NuSHzJQ7iLRhJsv4oOdoXJAZ1Ojg4hM5s/8u
+         6zggbjEt4h7wzDeWsL1B36cVeQGOzPTOpK8hGGP3+eO1PKi5xf8j19gvmswpBLPaupsc
+         KbypOKgj8aVbbqe0qyZDLD0x0jjeAG4fc32yt87mEJ4/w/fzmHWhx4NbyPlOyU56VSGC
+         IaVhXZT//z6YyIyVrwI6m6RTjsg447oShmA9BZBYMRaxxy3jwz+tdhJIegWlWa/55vNc
+         KP/myiWkbO/IwB6x0vUIDAJbyixq2kzY+wguZi8ZiF5UdrdSQqYcgUpAKLh/BrG2BR1R
+         mPXA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789022275; x=1789627075;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=DlDEc0Wysg4XmstSxwWtu/wJqLCN0sS8gv/9woOxKFk=;
+        b=k+Y6CEiJIXxOuLzAZFWFLYpGJe+Pgy+wr16dLW04YQ2mDj3O3ydrebk/ScyAmpqiF2
+         PTn1Ktnt3Ds3AtVyJd+oCx7iIG/O+ZOcJzzaMw/h/GISfBqOenPf8SeBzBE9GWKtimRN
+         eUQR9aALyfVf0pBo/Q20bDC6uJJxTyCQ/UcbeANu4e/oLtUrXfv3bvIfhlsF6so+DlT9
+         /Xsgw4n5zPozwzdOceEx+2DgfhMx1KMInJoqjAWFKrWugGXTMmpG6zWtPZSB3/FtdJrk
+         uluN0tayf8fZE97o6HCybXz39J2/8wWSpVGCbSKxicrwTLU2FTe8OsljwCKCT9B+GvPD
+         /+QQ==
+X-Gm-Message-State: AFuF++l2QLh6vJ9a32NaXZiLlazNbS0zFg5oOXKPDMl+pseBGMAIfc6u
+	e6pKKgXw0ChaAh28s2Bh9Ms6WaDNO7KEa7ETDgys7ybl7Xl1mYaRgmXePH4CRolYcdg=
+X-Gm-Gg: AYBFou0SFGYxDnpwC6rdgTVAtvzeuag2KxDT1k7HGJumtzhtoi0CHejzobGEs94JjCe
+	l7ahcRmCwhHJg0+z55z2BSE7+ThpSf5pNF4Y3sBrolFylMhSiwLb8seFTA6MzMnOIRN2QZimuJF
+	HrRVQh05sFAjmGkhLKUoI+FSl9mWzHkrdIErTquC9u6vV6JYcja+MIhVVVkdttygueqnyr0vc8s
+	6PM6n0U4gKHVD0/s7KRVGC6HUTnAm3NNpHDUGyJqhLfjzwovFDTlpUN+Tjmh7BYjrQXXTPRt2rP
+	NVHB5UYxZFjD0hJz4fKLihkGGwbJRcbdY27E1mMT8ya9kRkQhKlm4COkJwYIxh/g+BGoDlmcb/B
+	thFqkiZa6ZtWSHbI3pC2+J/DRgUg6/L6vEASndpV2YYBHanAsn8UbZDJhRgI3/kv80x++Rxjl9m
+	1PBi3CWOetpv+NuORA7eTiuXy2SQHs04kQDcBG+lUoNHpKOWIppRS1/0F/n66eyxMLr2oGyFyqu
+	DPxaEieXLnnb2Mn
+X-Received: by 2002:a17:903:1670:b0:2d9:438e:b70d with SMTP id d9443c01a7336-2db1232c88emr606673835ad.1.1789022274350;
+        Wed, 09 Sep 2026 23:37:54 -0700 (PDT)
+Received: from icps5-ESC8000-E11.. ([163.152.219.23])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2db1497fbf8sm84835435ad.43.2026.09.09.23.37.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 09 Sep 2026 23:37:53 -0700 (PDT)
+From: Hohyun Sim <tlaghgus0425@korea.ac.kr>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Hohyun Sim <tlaghgus0425@korea.ac.kr>
+Subject: [PATCH net] net: fddi: skfp: fix NULL deref when setting the MAC address while down
+Date: Thu, 10 Sep 2026 15:37:43 +0900
+Message-Id: <20260910063743.110747-1-tlaghgus0425@korea.ac.kr>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Thank you for your contribution! Sashiko AI review found 4 potential
-issue(s) to consider:
+skfp_ctl_set_mac_address() calls ResetAdapter() unconditionally, without
+checking netif_running(). ResetAdapter() first calls card_stop(), which
+sets smc->hw.hw_state to STOPPED, and then mac_drv_clear_tx_queue(),
+which walks the two transmit queues:
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 3
+	for (i = QUEUE_S; i <= QUEUE_A0; i++) {
+		queue = smc->hw.fp.tx[i] ;
+		...
+		t = queue->tx_curr_get ;
 
-- [Medium] Incomplete RFC5961 enforcement: the new ACK-acceptability
-  check is only added to the data-carrying fast-path branch of…
-- [Low] The patch fixes a remotely triggerable, security-relevant defect
-  (the ESTABLISHED fast path accepting payload from a segment whose…
-- [Low] No in-tree test covers the newly added enforcement.
-- [Low] The rationale comment for the tp->bytes_acked term is lost.
+smc->hw.fp.tx[] is only populated by init_tx(), which is reached from
+skfp_open() through init_smt() -> init_fddi_driver() -> init_fplus() ->
+init_mac() -> init_tx(). The private area is allocated and zeroed by
+alloc_fddidev(), so on an interface that has never been brought up both
+queue pointers are still NULL. The hw_state test at the top of
+mac_drv_clear_tx_queue() does not catch this, because card_stop() has
+just set STOPPED; the function proceeds into the loop and dereferences
+NULL. ResetAdapter() does call init_smt() itself, but only after the
+queues have been cleared.
 
---
+Setting the MAC address on a down interface therefore oopses:
 
-tcp: validate old ACKs before fast path data processing
+  ip link set dev fddi0 address 02:00:00:00:00:01
 
-This adds an RFC5961 5.2 SEG.ACK acceptability test to the ESTABLISHED
-fast path in tcp_rcv_established(), before the segment payload is queued,
-sending a challenge ACK and dropping the segment when the ACK is too old.
-The existing test in tcp_ack() is factored into a new tcp_ack_too_old()
-helper shared by both call sites.
+  BUG: KASAN: null-ptr-deref in mac_drv_clear_tx_queue+0x68/0x2c0 [skfp]
+  Read of size 8 at addr 0000000000000010 by task ip/302
+  Call Trace:
+   <TASK>
+   mac_drv_clear_tx_queue+0x68/0x2c0 [skfp 6c01d4bab63c36978bd0a7d7e90837adb44cc37b]
+   ResetAdapter+0x29/0x100 [skfp 6c01d4bab63c36978bd0a7d7e90837adb44cc37b]
+   skfp_ctl_set_mac_address+0x57/0x80 [skfp 6c01d4bab63c36978bd0a7d7e90837adb44cc37b]
+   netif_set_mac_address+0x1e4/0x2c0
+   do_setlink+0x684/0x2680
+   </TASK>
 
-Link: https://www.cve.org/CVERecord?id=CVE-2023-52881
+Address 0x10 is the offset of tx_curr_get, the third pointer in
+struct s_smt_tx_queue, on 64-bit. mac_drv_clear_rx_queue(), which
+ResetAdapter() calls immediately afterwards, dereferences
+smc->hw.fp.rx[QUEUE_R1] in the same way behind the same ineffective
+hw_state test; the transmit queue merely crashes first. Both are
+covered by the guard below.
 
-A few questions below.
+Skip the adapter reset when the interface is down. dev_addr_set() is
+left unconditional, so the new address is still recorded in
+dev->dev_addr. Nothing is lost by not resetting the adapter here:
+skfp_open() deliberately re-reads the factory address on every open,
 
-[Severity: Low]
-The changelog names both CVE-2023-52881 and commit 3d501dd326fb1c7 ("tcp:
-do not accept ACK of bytes we never sent"), but the tag block has no
-Fixes: line and no stable routing indication.
+	read_address(smc, NULL);
+	eth_hw_addr_set(dev, smc->hw.fddi_canon_addr.a);
 
-Should this carry a Fixes: tag so stable selection and CVE correlation
-have something to key on?  The candidates implied by the changelog are the
-original RFC5961 5.2 mitigation (which only touched tcp_ack()) and/or
-3d501dd326fb1c7.
+and the comment above it states this is done to discard exactly such an
+address override across a close/open cycle. An address set while the
+interface is down could not have survived the following open even
+before this change, so the guard removes no working behaviour. Guarding
+the hardware side of ndo_set_mac_address() with netif_running() is
+established practice; skge_set_mac_address() has done so since commit
+2eb3e621c4e0 ("skge: set mac address bonding fix").
 
-[Severity: Low]
-The changelog carries a working reproducer, but nothing in-tree exercises
-the new hunk.  The existing script
-tools/testing/selftests/net/packetdrill/tcp_rfc5961_ack-out-of-window.pkt
-injects only zero-length probes for both edges:
+Guarding the reset as a whole, rather than NULL-checking the queues, is
+also what the rest of the driver expects. After a previous open/close
+the queue pointers are stale but non-NULL, so there is no crash, yet
+ResetAdapter() goes on to call smt_online() and STI_FBI() ("Enable
+Board Interrupts") while skfp_close() has already called free_irq() -
+the adapter would be brought back online with no handler installed. The
+only other ResetAdapter() caller is skfp_interrupt(), which by
+construction runs only while the device is open.
 
-  +0 < . 1:1(0) ack 2 win 1000
-  ...
-  +0 < . 1:1(0) ack 1000 win 1000
+Found by automated driver testing against an emulated SysKonnect FDDI
+adapter under a KASAN-enabled 7.0.0 kernel. Triggering it requires
+CAP_NET_ADMIN.
 
-Those take the len == tcp_header_len pure-ACK branch (or the slow path),
-so that test passes identically with and without this patch.
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Assisted-by: LLM KASAN
+Signed-off-by: Hohyun Sim <tlaghgus0425@korea.ac.kr>
+---
+ drivers/net/fddi/skfp/skfddi.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Could the packetdrill script from the changelog (500-byte priming segment
-followed by the 1000-byte segment with ack 2794967397) be added next to
-the existing rfc5961 case, so a later refactor of the fast path cannot
-silently drop the check?
-
-> diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-> index 0f60a1dbf9274..6ebf72cd9a755 100644
-> --- a/net/ipv4/tcp_input.c
-> +++ b/net/ipv4/tcp_input.c
-> @@ -4272,6 +4272,17 @@ static void tcp_rack_update_reo_wnd(struct sock *sk, struct rate_sample *rs)
->  	}
->  }
->  
-> +/* Validates that the ACK is older than the acceptable historical ACK window*/
-> +static inline bool tcp_ack_too_old(const struct tcp_sock *tp, u32 ack,
-> +				   u32 snd_una)
-> +{
-> +	u32 max_window;
-> +
-> +	max_window = min_t(u64, tp->max_window, tp->bytes_acked);
-> +
-> +	return before(ack, snd_una - max_window);
-> +}
-> +
-
-[Severity: Low]
-The helper comment describes a plain MAX.SND.WND window, but the code also
-bounds by tp->bytes_acked, which is strictly tighter than RFC5961.  The
-comment explaining that term is deleted in the hunk below and not
-reproduced here:
-
--		/* do not accept ACK for bytes we never sent. */
--		max_window = min_t(u64, tp->max_window, tp->bytes_acked);
-
-Since the helper now has two call sites, could the "do not accept ACK for
-bytes we never sent" rationale be moved into tcp_ack_too_old() alongside
-the RFC5961 note?
-
->  /* This routine deals with incoming acks, but not outgoing ones. */
->  static int tcp_ack(struct sock *sk, const struct sk_buff *skb, int flag)
->  {
-> @@ -4303,12 +4314,8 @@ static int tcp_ack(struct sock *sk, const struct sk_buff *skb, int flag)
->  	 * then we can probably ignore it.
->  	 */
->  	if (before(ack, prior_snd_una)) {
-> -		u32 max_window;
-> -
-> -		/* do not accept ACK for bytes we never sent. */
-> -		max_window = min_t(u64, tp->max_window, tp->bytes_acked);
->  		/* RFC 5961 5.2 [Blind Data Injection Attack].[Mitigation] */
-> -		if (before(ack, prior_snd_una - max_window)) {
-> +		if (tcp_ack_too_old(tp, ack, prior_snd_una)) {
->  			if (!(flag & FLAG_NO_CHALLENGE_ACK))
->  				tcp_send_challenge_ack(sk, false);
->  			return -SKB_DROP_REASON_TCP_TOO_OLD_ACK;
-
-[ ... ]
-
-> @@ -6614,6 +6621,15 @@ void tcp_rcv_established(struct sock *sk, struct sk_buff *skb)
->  			if ((int)skb->truesize > sk->sk_forward_alloc)
->  				goto step5;
->  
-> +			if (unlikely(before(TCP_SKB_CB(skb)->ack_seq, tp->snd_una))) {
-> +				if (tcp_ack_too_old(tp, TCP_SKB_CB(skb)->ack_seq,
-> +						    tp->snd_una)) {
-> +					tcp_send_challenge_ack(sk, false);
-> +					reason = SKB_DROP_REASON_TCP_TOO_OLD_ACK;
-> +					goto discard;
-> +				}
-> +			}
-> +
-
-[Severity: Medium]
-The new check sits inside the else branch of if (len <= tcp_header_len),
-so it only covers data-bearing segments.  Was the sibling pure-ACK branch
-intentionally left out?
-
-That branch still does this, in this order, in tcp_rcv_established():
-
-	if (len <= tcp_header_len) {
-		if (len == tcp_header_len) {
-			if (tcp_header_len ==
-			    (sizeof(struct tcphdr) + TCPOLEN_TSTAMP_ALIGNED) &&
-			    tp->rcv_nxt == tp->rcv_wup)
-				flag |= __tcp_replace_ts_recent(tp, delta);
-
-			tcp_ecn_received_counters(sk, skb, 0);
-			...
-			tcp_ack(sk, skb, flag);
-			__kfree_skb(skb);
-			tcp_data_snd_check(sk);
-			tp->rcv_rtt_last_tsecr = tp->rx_opt.rcv_tsecr;
-			return;
-
-__tcp_replace_ts_recent() stores unconditionally:
-
-net/ipv4/tcp_input.c:__tcp_replace_ts_recent() {
-	tcp_store_ts_recent(tp);
-	return tstamp_delta > 0 ? FLAG_TS_PROGRESS : 0;
-}
-
-So for a bare ACK matching tp->pred_flags with seq == tp->rcv_nxt,
-!after(ack_seq, tp->snd_nxt), and before(ack_seq, tp->snd_una -
-min(max_window, bytes_acked)), tp->rx_opt.ts_recent is advanced to the
-segment's TSval, the ECN receive counters are bumped, and
-tp->rcv_rtt_last_tsecr is taken from that segment.
-
-tcp_ack() then reaches the same tcp_ack_too_old() test, sends the
-challenge ACK and returns -SKB_DROP_REASON_TCP_TOO_OLD_ACK, but the
-return value is still discarded here and nothing is rolled back or
-accounted as a drop.
-
-This is the same condition the changelog describes:
-
-    "In the fast path, tcp_ack() is also called,
-    but only after the data from the segment is processed.
-    Furthermore, the return value from tcp_ack() is not checked."
-
-The slow path does not have this ordering problem, since tcp_ack() runs
-the too-old test before the FLAG_UPDATE_TS_RECENT handling, and step5
-checks (int)reason < 0.
-
-Would hoisting the new check up to just after the header prediction test,
-before if (len <= tcp_header_len), cover both branches with a single call
-site instead of leaving the pure-ACK branch as is?
-
->  			/* Predicted packet is in window by definition.
->  			 * seq == rcv_nxt and rcv_wup <= rcv_nxt.
->  			 * Hence, check seq<=rcv_wup reduces to:
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260906123151.1391349-1-inbal.lipshtat%40mail.huji.ac.il
+diff --git a/drivers/net/fddi/skfp/skfddi.c b/drivers/net/fddi/skfp/skfddi.c
+index a273362c9e70..feea7baa4816 100644
+--- a/drivers/net/fddi/skfp/skfddi.c
++++ b/drivers/net/fddi/skfp/skfddi.c
+@@ -928,7 +928,8 @@ static int skfp_ctl_set_mac_address(struct net_device *dev, void *addr)
+ 
+ 	dev_addr_set(dev, p_sockaddr->sa_data);
+ 	spin_lock_irqsave(&bp->DriverLock, Flags);
+-	ResetAdapter(smc);
++	if (netif_running(dev))
++		ResetAdapter(smc);
+ 	spin_unlock_irqrestore(&bp->DriverLock, Flags);
+ 
+ 	return 0;		/* always return zero */
