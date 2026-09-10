@@ -1,96 +1,96 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8D10479870;
-	Thu, 10 Sep 2026 11:58:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F12B4BFE90;
+	Thu, 10 Sep 2026 12:07:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789041502; cv=none; b=KrSgNCatLTy9Iz9Zb9MHxoAU4NmejxUSlcx9w0sT7KeLZzvHVtL58jj3AeRaKrUUSGlqdacAaRSintg1fBDuQUdNG8dtazsYXnL5YuXfdLhTimj7g2fZfrqc6eGL6d5I2FkhyckfuE1AnCHuY9b16rD+Bz6GP8i5CM/YeI7tPPc=
+	t=1789042037; cv=none; b=d315oWYZXlMChqzcZV6l4dS0Kdasj4o2XQQMs2zLVGH9SGxmd+L92I5zzATuM7/O697qsO8I5PiiN9A4sa2FTJA0DsoQnJbPT2MKSOBoJxxTlMIfp2v/3Vb5P1aiWaJgyZh6C79CUsSz3Z8Q3WkPwr2hY/LOV2UEvFaZR5Nu+10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789041502; c=relaxed/simple;
-	bh=j/bjW2TIWsKODP1pogSe5emK5LwuN8+lFqfm0mS3YmQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=J8fsKEvlyT4g54KqNV4X2hfQr6mj5CjpBTkf0ax4mIbhdsOkLb/6yGHzbRGNp8co/xZ+M0+VA5bcZkhc8NnSBS3QjAcUhHiMKlLJfOLf4rKzX4K1Y2DwrqwUHTl+BprzEGUzw8Zq+IP8DwhBbMFSsGGcqwgSPPZpjk98JTONB8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=k4TxumxW; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1789042037; c=relaxed/simple;
+	bh=g3ZYCEkBBxWt7DIOOlABHsrEKeP+9WdYrIMPeDWEEYg=;
+	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
+	 Subject:From:To:Cc:Date; b=mB6jP8RaE1LbgBtKIKlyJ25GdX6vZwkevhWRV/50at/nuAiajt0e5Suxt6aL44Sz4pEtI4xqRSq6Fd+r3u0oaJO4s3ehuQKfqGCR2G75RdLh5SC9+qIJVJZJWY4O9WyaOw4YbpC78sRnf/GQ6qAFBV4mSdBEXYhuPbcuUugLvjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TLGH1bWu; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="k4TxumxW"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=A4kiQ5NfZMOzoOeiqxJe61PF4dKEVvxAWz6BI7ncqc4=; b=k4
-	TxumxWbUxhbZs395QjwiHAYbtwLxO0/HehoiM8OcALuKQXLxG87fNR79yBn4rgniRZXq2qeL1Qb/Z
-	aetO80zHh6zuQiqhL5bHibp60OBvpBi8xfCJiMqMLRweKiLc3BbhlxhbP0+bkuOSvh9S42rR2lrmh
-	iEefW//Rfw3oAiM=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1x4dPo-004Ug2-6w; Thu, 10 Sep 2026 13:58:04 +0200
-Date: Thu, 10 Sep 2026 13:58:04 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Kyle Switch <kyle.switch@motor-comm.com>
-Cc: David Yang <mmyangfl@gmail.com>, olteanv@gmail.com, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	horms@kernel.org, linux@armlinux.org.uk, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, ming.xu@motor-comm.com,
-	xiaolin.xu@motor-comm.com, jianmin.wang@motor-comm.com,
-	wei.zhang@gl-inet.com, sijia.huang@gl-inet.com
-Subject: Re: [PATCH net-next v6 6/6] net: dsa: motorcomm: Add support for
- Motorcomm YT922x
-Message-ID: <1f5b5a50-abcc-440e-88b2-54a4cb8b8092@lunn.ch>
-References: <20260908083614.2210505-1-kyle.switch@motor-comm.com>
- <20260908083614.2210505-7-kyle.switch@motor-comm.com>
- <CAAXyoMMLpaD5B4QojC0OKHxOFfPfFGpsS2nxCMT9e=nJeo8beg@mail.gmail.com>
- <0aa20394-2042-4c52-b30b-cdd742d4da65@lunn.ch>
- <5e492c8b-1afa-4af8-8f66-9b50799911e4@motor-comm.com>
- <0ad7cd3b-006f-41a0-9d58-5f6dad9c22e8@lunn.ch>
- <1bd79ceb-4abf-49e3-a441-7c026a89d220@motor-comm.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TLGH1bWu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 479AC1F000FF;
+	Thu, 10 Sep 2026 12:07:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789042035;
+	bh=MXsEo9eDWBwZJSzFE3TWMA2FxYeWZOq70BkLywQ2TBE=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date;
+	b=TLGH1bWum3pyP9Q7PJjatv30y2xZA9f5PHUoBquEGbY+D2NTMsYuk5NfdTlJo9Inz
+	 7R07X61lCvBMzc/nvoGuwM6jj/b1s/0szrtFUeEVS48CUpYvyD4Ffp5E4eYi7j9SEQ
+	 aMeXoxE2l04f2cU61JVuzet9l/t6rHI1pqg3vC4JJY5jMeMqtzMcB+qae2G5DtVI3t
+	 KDxX91BpJuTwdXSP+NwkS+Vyx9A04JejHIifpKbINzfoZTtj7rBttHWue5llG6DfPN
+	 WWyr5czrRcqbO3l5fCeSNHoHXe5GbIpM/oVCgcc7JReqYZ/VzDLAFixM2bB9IfQfOC
+	 b15W8BSpXj/7A==
+Content-Type: multipart/mixed; boundary="===============2750645429148041420=="
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1bd79ceb-4abf-49e3-a441-7c026a89d220@motor-comm.com>
+Message-Id: <0a661bac8b617cc979ba16eeaec5f7c64a0b74bb01be40347dca187cbd7c24e4@mail.kernel.org>
+In-Reply-To: <20260910112634.152195-1-jiayuan.chen@linux.dev>
+References: <20260910112634.152195-1-jiayuan.chen@linux.dev>
+Subject: Re: [PATCH bpf v3 1/3] bpf: Fix out-of-bounds read of sk_protocol in bpf_sock_destroy()
+From: bot+bpf-ci@kernel.org
+To: jiayuan.chen@linux.dev,bpf@vger.kernel.org
+Cc: jiayuan.chen@linux.dev,xmei5@asu.edu,kuniyu@google.com,ast@kernel.org,daniel@iogearbox.net,andrii@kernel.org,eddyz87@gmail.com,memxor@gmail.com,martin.lau@linux.dev,song@kernel.org,yonghong.song@linux.dev,jolsa@kernel.org,emil@etsalapatis.com,ihor.solodrai@linux.dev,john.fastabend@gmail.com,sdf@fomichev.me,davem@davemloft.net,edumazet@google.com,kuba@kernel.org,pabeni@redhat.com,horms@kernel.org,ncardwell@google.com,shuah@kernel.org,aditi.ghag@isovalent.com,netdev@vger.kernel.org,linux-kernel@vger.kernel.org,linux-kselftest@vger.kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
+Date: Thu, 10 Sep 2026 12:07:14 +0000 (UTC)
 
-On Thu, Sep 10, 2026 at 11:23:03AM +0800, Kyle Switch wrote:
-> 
-> On 9/10/26 09:57, Andrew Lunn wrote:
-> > > > > No one else, except you, can maintain this stuff. Drop it for now and
-> > > > > discuss it later.
-> > > > There also appears to be similar magic in the PHY driver. Can this be
-> > > > consolidated?
-> > > Ans: This part of the initialization is for the switch SerDes, so from my
-> > > 
-> > > side it may be hard to consolidate.
-> > Is it the same IP? Same configuration? Or totally different?
-> Ans: They are the same IP, but there are the following differences:
+--===============2750645429148041420==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-> 2. Another point that I think is difficult to integrate is that the phyID
-> 
->     of the switch serdes (defined in USXGMII reg space mii 0x2, 0x3) is
-> 
->     inconsistent with the phyID of phy8824 (defined in UTP reg space mii
-> 0x2, 0x3),
-> 
->     so phy8824 cannot be matched, and therefore two sets of initialization
-> 
->    configurations are required.
+> diff --git a/net/core/filter.c b/net/core/filter.c
+> index 2a84f9d01131..cae43b999162 100644
+> --- a/net/core/filter.c
+> +++ b/net/core/filter.c
+> @@ -12913,8 +12913,9 @@ __bpf_kfunc_start_defs();
+>   * @sock: Pointer to socket to be destroyed
+>   *
+>   * Return:
+> - * On error, may return EPROTONOSUPPORT, EINVAL.
+> - * EPROTONOSUPPORT if protocol specific destroy handler is not supported.
+> + * On error, may return EOPNOTSUPP, or whatever the protocol specific
+> + * destroy handler returns.
+> + * EOPNOTSUPP if protocol specific destroy handler is not supported.
+>   * 0 otherwise
+>   */
+>  __bpf_kfunc int bpf_sock_destroy(struct sock_common *sock)
+> @@ -12926,8 +12927,12 @@ __bpf_kfunc int bpf_sock_destroy(struct sock_common *sock)
+>  	 * Supporting protocols will need to acquire sock lock in the BPF context
+>  	 * prior to invoking this kfunc.
+>  	 */
+> -	if (!sk->sk_prot->diag_destroy || (sk->sk_protocol != IPPROTO_TCP &&
+> -					   sk->sk_protocol != IPPROTO_UDP))
+> +	if (!sk->sk_prot->diag_destroy)
+> +		return -EOPNOTSUPP;
+> +
+> +	if (sk_fullsock(sk) &&
+> +	    sk->sk_protocol != IPPROTO_TCP &&
+> +	    sk->sk_protocol != IPPROTO_UDP)
+>  		return -EOPNOTSUPP;
+>
+>  	return sk->sk_prot->diag_destroy(sk, ECONNABORTED);
 
-Having different IDs is good, because they are different, as you
-pointed out. But the shared USXGMII part should really be shared.
+This isn't a bug, but would it help to keep the TCP/UDP rationale comment
+next to the protocol check, and add a short note that sk_protocol is only
+valid on full socks? The block comment explaining the locking semantics
+and TCP/UDP restriction now sits two statements away from the protocol
+test it documents, and the newly added sk_fullsock() guard doesn't have
+any nearby note explaining why it's there. The reason (sk_protocol is a
+struct sock member not present in sock_common) is only in the changelog.
 
-For the switch you are going to write a PCS driver, which might live
-in drivers/net/pcs. You can split that into a library for the usxgmii
-and a driver wrapped around it. The PHY driver can also use the
-library.
 
-Does the switch have the same horrible paging design? I really hope
-that is changed in the next generation of the IP.
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
 
-     Andrew
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/34471854292
+--===============2750645429148041420==--
