@@ -1,337 +1,161 @@
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012029.outbound.protection.outlook.com [52.101.43.29])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D98B3D1CC6
-	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 10:25:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789035950; cv=none; b=IfiiSoT+1/+oSNeBfb/z/GA43MecbX71hfHCCe2vxYhuu7AFrmnc6kVp5rXLOq6N3fO+iyJuTFC8xPcEFTriMIxftpSZFsKBJC8pMs6RKIcna6YHljzGkx6ZMwBW4EtuZZai1p7ZGLu2pXNBRNhRGONvZE4uRqEjg6PIOuso4vQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACB1C3D9DD4;
+	Thu, 10 Sep 2026 10:25:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.29
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789035950; cv=fail; b=evqUupHMbcF9p+VNBp/5WaVIra96jMJvTze43GsM1ZWDuB4Fi6/jD0LJzQ35Gr9wchlu9+GO+cCa3xqBWdCAL9yq1MXcaEVB/m4MZ3Dip+N0aSP+YodXUxwiOQPjorCJ922t9300h1FCk4dUWFHEPP+P1bbkbKqYGu/sufQGJrg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1789035950; c=relaxed/simple;
-	bh=dGwRU59pe0sF4kjsOhQWQNnHY2FCR9s7ump401KQyLE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=L5tsGXMAGawsV39kIX1VN+H51HPUapYyl8t7Eah86NrZ7cvNj8FUDyGo4+szV2z5dAn+owOncWWRl4Xf49go/5D8uI6FeFuudnYq2BvEFPnNJIUx7hN80+ZKhcPL76wP18ki1ty3W+tFjA5af2QRkX5r53sKina71VJ5Q3pti+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=nbWGcsn0; arc=none smtp.client-ip=74.125.225.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+	bh=BYE5LXjQvgA6qqSUzcT9ujZCcsTQD/9lOSzBgONqy1I=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=nJjxDvsNW5pfftZ/fjm5Tzu3x1vzzJqUa8zT2su/k+XQUyu9T/bw/B1W5P8Dp9UBwYuwoKt6Yfv9DY8OTD+fKveJdCovgcvVJDqWEcNkRKIotBiejspF2DSdmkGdgs0shlKpA8j5pBG6Zmtltz92sGSRDlcqHZuzisKFxjktEVU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=BhzqBtck; arc=fail smtp.client-ip=52.101.43.29
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="nbWGcsn0"
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49d1fb0cf5eso9532085e9.3
-        for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 03:25:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre.com; s=google; t=1789035940; x=1789640740; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=zolPHkX75MVfEQoqJHx0lnD2lNS7PbBbxJvARPQA/YM=;
-        b=nbWGcsn045uo6XPq7tedjpucMH6Nj4Zlk5Rpz358RSHDntO5Ci8TAAtj6Zleds4JQm
-         0YuN34Oe9loRgKxYGMoEe1sDyeA/aLgjEKHXn73nZc7q5NaMlBBRBQ0sEbqe4ZvV47TF
-         KSzhCwNFDecdFG6dgyMIWtDXD6DEL6+XmrJOrkEl8ps15O/H7MOD91ETRIE/fZG2xnjw
-         OTrB3b9YX5DhQcAIZpHISAdxIsLTHVpBcWK3kEEVDKHR6ccQrLXDZaFUf5lIDXb4Kfee
-         ouwNXUYkC2E1IQtDwnLfSKDvRIQ8Bl9mHH4OqRo3iyw3bxRWzmKNe1IGFc7yMENbb+a5
-         TPTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789035940; x=1789640740;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=zolPHkX75MVfEQoqJHx0lnD2lNS7PbBbxJvARPQA/YM=;
-        b=EIaDwzrKoyH7TpRjBSCMsAwcL3ONU7MXaZ2qTbRvHE43IS5j9bHqsfkNFlmmV8Jnjk
-         sMVx8ZbVtLvH694WvUUozKiVkfDoL0OS14IZj2b6nA0LbQ9n4mxsrg7HTl+yCAwyUrxM
-         IfxdbB2LA5aUoE9LC+78JOpi+eWIpcyJLzYjeWnIm1nJ5P8Vm21/iYOHAmWW+vS3mKyf
-         o18XT0dQAUYci+OB/YW/Ow6lYLzbt0LFwTivCVZP1Ld2k3NRPS+h2h1+rIaIvJsmIHb+
-         onJyCgFNG/tUyxKTFpGRtEQsj/C3d/tAhDT6+hemFiiuUmACYc7pkjjUf82Q9J6RngUA
-         ao0g==
-X-Gm-Message-State: AFuF++lqgDrNJpIno69VtFIT2+rH4WzU+uxdjFkjoiHDubpZnQqkwx/l
-	nETKb7MF1btmfdeuv0iDFQwYoJVC/TMsVB1IJvUAu7lOAWX88Z2DBXZjfafXXhCZhFg=
-X-Gm-Gg: AYBFou2TQXpj9lM4F+sfwUy/DrwyZxSqWOr5RjPN77UpLs1Xd8IAOUTDCET0X2AEEba
-	aQvCSYjTmi2YPpvStkrci4+JOKq7IZRXPEHqPa+M57NUFrAzyhVBlCkxXWRyS+u2NN7N+/NwX7Z
-	Sep30wHMMwGPlsbi3cqDoq82gc9CWkuAB3J36d5w9XWCkEAuiFMCSzUnMev9yxHlxq5xUlUVsLg
-	+ux8eXLgZpc02N+I4DakUUfh7Gbr7200jNY0tOiWHHk7SZl6XSBaqpv6pNn+xesqy0JYOkc5zBN
-	kmnOlaPGYuYUFnIRfmgrW1IkqITNC4xGE596qsR5/mFfHnRbwfPVlEbt3VVUk3zR/O7iIf/ZaRw
-	OLuVNsfShIk9/W/FSZ4njC/NLmdq6vl0U0UQ1D2zzwbLAqq30Ox1s8kUbt4OGYw5ljz7R6tWOGb
-	dOEcU3GAT+LhOf/KQmeJDCPDnUl2aySE7Zkxc17j2FsXNR9E1DAzS2Wil3ZU3Ou64HI7a76WGPA
-	nnLcg148H0jQSYWFKBsOyYiM5le
-X-Received: by 2002:a05:600c:5647:b0:499:b65e:49c9 with SMTP id 5b1f17b1804b1-49d259138bamr96347135e9.10.1789035940023;
-        Thu, 10 Sep 2026 03:25:40 -0700 (PDT)
-Received: from localhost (82-67-6-57.subs.proxad.net. [82.67.6.57])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49d26c07c17sm80398975e9.14.2026.09.10.03.25.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Sep 2026 03:25:39 -0700 (PDT)
-From: Jerome Brunet <jbrunet@baylibre.com>
-Date: Thu, 10 Sep 2026 12:25:26 +0200
-Subject: [PATCH net-next v2 1/2] dt-bindings: net: sun8i-emac: Add A733
- GMAC210 compatible
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="BhzqBtck"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ijLl11o5UZFKi/3rL4RowWvubtSb/2EE3FmpdYbhEdtBmZ+34/KOeTxkBgPvh27y/xvdvxdCPDDAVUpQcIUSQJ1LMi/VA+zcNL15c0VHPYxrfJTS9144Vy6QkY8Lj2KcXPmC4Em0CWLyaNcFwZ4lHEwgz63ieOJCYMV5bXNbvcj0ogtB+es5HY+vALgtOG5kvRBvfsHS9Nqzd/dix/8u8SmzN93EvlAhOp22/1bA8PTga+pqDvw+WLuSIZV/OddmCtxhd1UsNWvyZS168j68dbb/FdIZhU3mJqWZXytwEboX4uFrAjWceTNxRk8CWFCPzGr1x2a+U/giop2x3SgPWw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=qFIQJe0rc6+Wv0WH75ZderFn4iXf4ZfW9RchCCn5JRM=;
+ b=sZYgdjHB541GpiSEVE/hEqE9+AweKDf829WpIdZ6T6MoqwBdptqqPCAAruWsiXMi6JTwTSwYSKE/l81YxpcGPH3th8VwFM7rSLt0bCtsfYaqKqFtifnfMM6w6QUcZCR7eo3pHhKPzcvUy8XZb2jxrmzYS7p/csDZnTHevULtaOaAsFA/Xq6YWpXN0FL1imh/9ecmyD0ttTPcR1RMBQqKZiZYD6lg9OrVFom1dYQkSdVTjSaSHosXObGM7UdIa0oROXs4HKwnK7b5TEpgL6Ki8dEYEF2bktPrN4p5BR6cb2Min7ncjUhncIKMClQKrpXOamJF/se6D+jTGS3fHuR7RQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=lunn.ch smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=qFIQJe0rc6+Wv0WH75ZderFn4iXf4ZfW9RchCCn5JRM=;
+ b=BhzqBtckChPSPYarWRTBo3gSwl6HlbwFkX91dr6GE62lkJ49/53dXFAGasDHC3eI/wcKJxWqKVqdKPn19MoldDGkPOt3NMnVN2dZAGoTheqTrOAm4Y5Gtr1mj80EH1QZ9fYHtDE1JDzBzR/m+8xgqHL04ybCwBTVEmeeg1gQSIHnX34l+cVY1tGhXEX0sBgxexWJpqsq4G6gnU1z4bcKECdr7R5fJRUN2CFA80QUG2WgABEV7TxtUXUUeZBwMrxdcOxtrmhy6jCBnCQaUsTMQFc+QVN6h9dENdV3SyISzu68kA7Hv3uZQbwjm2Mkrkx2jE2z72hwaDCRomL2LkXvqg==
+Received: from BN9PR03CA0924.namprd03.prod.outlook.com (2603:10b6:408:107::29)
+ by DS2PR12MB9776.namprd12.prod.outlook.com (2603:10b6:8:2bd::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.9; Thu, 10 Sep
+ 2026 10:25:33 +0000
+Received: from BL6PEPF00022574.namprd02.prod.outlook.com
+ (2603:10b6:408:107:cafe::8d) by BN9PR03CA0924.outlook.office365.com
+ (2603:10b6:408:107::29) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.406.9 via Frontend Transport; Thu, 10
+ Sep 2026 10:25:33 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ BL6PEPF00022574.mail.protection.outlook.com (10.167.249.42) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.406.5 via Frontend Transport; Thu, 10 Sep 2026 10:25:32 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.46; Thu, 10 Sep
+ 2026 03:25:18 -0700
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail201.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.46; Thu, 10 Sep
+ 2026 03:25:17 -0700
+Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com (10.129.68.8)
+ with Microsoft SMTP Server id 15.2.2562.46 via Frontend Transport; Thu, 10
+ Sep 2026 03:25:13 -0700
+From: Tariq Toukan <tariqt@nvidia.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, <netdev@vger.kernel.org>, Paolo Abeni <pabeni@redhat.com>
+CC: Edward Srouji <edwards@nvidia.com>, Gal Pressman <gal@nvidia.com>, "Jason
+ Gunthorpe" <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, open list
+	<linux-kernel@vger.kernel.org>, <linux-rdma@vger.kernel.org>, Maher Sanalla
+	<msanalla@nvidia.com>, Mark Bloch <mbloch@nvidia.com>, Or Har-Toov
+	<ohartoov@nvidia.com>, Saeed Mahameed <saeedm@nvidia.com>, Shay Drori
+	<shayd@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>
+Subject: [PATCH net 2/5] net/mlx5: Lag, reset vport speed on teardown
+Date: Thu, 10 Sep 2026 13:24:29 +0300
+Message-ID: <20260910102432.3845360-3-tariqt@nvidia.com>
+X-Mailer: git-send-email 2.44.0
+In-Reply-To: <20260910102432.3845360-1-tariqt@nvidia.com>
+References: <20260910102432.3845360-1-tariqt@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260910-allwinner-a733-gmac-support-v2-1-4f4a1e520c23@baylibre.com>
-References: <20260910-allwinner-a733-gmac-support-v2-0-4f4a1e520c23@baylibre.com>
-In-Reply-To: <20260910-allwinner-a733-gmac-support-v2-0-4f4a1e520c23@baylibre.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@kernel.org>, 
- Jernej Skrabec <jernej.skrabec@gmail.com>, 
- Samuel Holland <samuel@sholland.org>, 
- Richard Cochran <richardcochran@gmail.com>, 
- Maxime Ripard <mripard@kernel.org>, 
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Philipp Zabel <p.zabel@pengutronix.de>, 
- Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev, 
- linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
- Andre Przywara <andre.przywara@arm.com>, 
- Jerome Brunet <jbrunet@baylibre.com>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6093; i=jbrunet@baylibre.com;
- h=from:subject:message-id; bh=dGwRU59pe0sF4kjsOhQWQNnHY2FCR9s7ump401KQyLE=;
- b=owEBbQKS/ZANAwAKAeb8Dxw38tqFAcsmYgBqooWeZxMiwo0um19rhs5hPFUy/F70TN34N0ekt
- c3qzsdT2TaJAjMEAAEKAB0WIQT04VmuGPP1bV8btxvm/A8cN/LahQUCaqKFngAKCRDm/A8cN/La
- hZejEACg/bnxpg1KnlHEiJc1VDPDY/+8Ow0tT+fJQXkXgHPAU+MRARUHKSaHbj+FMtI5pbY64+b
- UkybYmYJ9kNkhCCZqTa3/mp9jzot/dvYXHo1H0FwBgLVmEa2h73TBHdkAjG5xD+OkyCXXU7GmXb
- HEzv8RGdsYOdTX/ixDdAEAnlwNs4yHRQmCGGXZtIwKDQPXbt1I+LT53o5ybGtdPsO92fx0Aalgo
- 9bNcYqKqYAOffOjVIekKYLXlND4noSrjNk7qTpOffkNxApJZceY/jPhVHnPa/A4UpAQ4npCdvw0
- q90kfKOaPWDj2dmWKAtODernP/0mY+4Ahp1z6Rm4ytDnQ2z+nk6q6kjZh3iB1SjDF/CC0yueScx
- qXFJluTkuPAS/1mgYmwlhQhduO0oehARz+k6UUwJygDhgeQtdVR5pS3Jpb2dg7ECCxAqMoOZzJ7
- BlCrQUuX30rB7xmkBRhBf1V4iF9lUOr3P0wftVWp3W3P8+845yd/7fwVelvJOkIST8hN94YZ2EB
- o2Zze9jYQDRlvmtiy745TjgdrCArVVZt/DuDe6unpPK27lLul9wAU3I8aHV0bW8n24c7kHADMzW
- x3PvX0rb7p5jFJntcdzqeBjvYoQYzb3Iodqa9A2Rbn29RPtMbAQB7rRfOjr7VWQofw3W/OAjcc/
- UHMDa2b4r0x4qRQ==
-X-Developer-Key: i=jbrunet@baylibre.com; a=openpgp;
- fpr=F29F26CF27BAE1A9719AE6BDC3C92AAF3E60AED9
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL6PEPF00022574:EE_|DS2PR12MB9776:EE_
+X-MS-Office365-Filtering-Correlation-Id: 579a1add-6055-4a9d-3429-08df0f25d88f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|376014|7416014|1800799024|23010399003|36860700016|56012099006|11063799006|18002099003|22082099003|10067099003;
+X-Microsoft-Antispam-Message-Info:
+	HxDT2G77cfxrpPuZB2FJnVIBaaYCzJ0/+Y6uKg9KzAyVbyVU/OyHBqIuDzwLEVnU/uNQ9y9/Jomzt2+1qNeO+miWc0KWVqrK8CfHY5oxNapGZDQvYy+DA5HhM1LnIeT4YhqL1F04drKqkt32ZRrDQFscxb1o3ZT3sfoLsJWZwVOfXHIFhxSRsKfO2BNI4LgI3dzQvUgW6Lm/w8dOgQq6NyOOoceB2uIH4B0Rmfu4BDK+v3FI9Z/LUtqu93usJ4vOlrLUdLUeVyyp1S15KnFKcK5v0st7rGa6n9HuIVbIuJDYYTjk8MS5IwioVnzzajq2cWOVEZoxMer6SMbgChP4dpcyjeCbFhHacGp7Uh9GU+kxu7fSzkcQRmElnguo4d2GNHBAl1BLjUgCbw1tVju47KBeaF98wzga+LxyGg4HDA+NqahxMLBE8gSklFk81dqR8GGPiiKo04YMMT5T0KSiQwsI7vc8kuYI8xZojXX3G/fq+iGPgnPn+UL9O8IL6lKSN8PjwNhdwB3c5b/LtehYgR1rDCFl1uGkHevLvjSdqda+sFlT8NretSDuTt2YGv6O9snQTgkzszipG8puHRf2LnuZQorPbSJMBn1umihYjhXcaKkVvyFjuVI56mCqhikhn9UVBrbSZ9GsbEhIHbkiXs1tFYI4hHFySuc6/ecjruvK1n68wnuxECKKwqXHwgtCorq29uBhFvWbLulJdOUbBg==
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(376014)(7416014)(1800799024)(23010399003)(36860700016)(56012099006)(11063799006)(18002099003)(22082099003)(10067099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	XEdp139JfT5kk65VNxr8Sc69sGUCah9VKUGhfL9UD+TH4rAvbToBIhPZDel21Z8/qQUVaLw0rly7Sz3FxN8fEyeUPVfhAdFFMHkrgG9wtIWzcjJPWW8a2EdpuTsNHqSVtDgNKs4/3I1nRsrAGRGjHQHXm6WCqhgtCuxCk/QD6ysNBp1wa4HWeFyV69v+FUpqIDJt9hiX9tm0qIWmOJ2W7c35BfYnQ5x2prgmR9Z0OrQ4bLh1MFVUz8HSIsk37P25kP4nRPScHWdBF86Zby4FNon0k2F7XWPBKjNl3bBLVNDQfhSFSUKpGxfdKP3uKtAAMKRAcmrnThoag6i4YuIhqeOJVcfMdEpKeciZGqc7k7MUGOR3qT4qfhqmg1tBTMBJiyqBLkQx8f0dazZAshWpvMEFZXmFquktn5BrL6tl+JRd0HGTmZWFUx9d/u8bO1Iy
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Sep 2026 10:25:32.9474
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 579a1add-6055-4a9d-3429-08df0f25d88f
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BL6PEPF00022574.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS2PR12MB9776
 
-The A733 GMAC210 is a DesignWare MAC 5.20 close to the A523 GMAC200, with
-the following differences:
+From: Or Har-Toov <ohartoov@nvidia.com>
 
- * The glue configuration registers are a dedicated MMIO region of the
-   controller instead of a syscon register, so a second reg entry replaces
-   the syscon phandle.
- * The DMA channels and the LPI event have their own interrupt lines.
- * A PTP reference clock and an AHB reset are needed.
- * Unlike the A523, the controller does not appear to belong to a power
-   domain.
- * The TX clock delay field is 5 bits wide, allowing up to 3100ps.
+mlx5_lag_disable_mpesw() never resets the cached agg_max_tx_speed on
+the vports, unlike regular LAG teardown. This leaves stale speed values
+cached on struct mlx5_vport, and pushed to FW, after MPESW is torn
+down.
 
-Add the new compatible and describe those differences.
+Move the mlx5_lag_reset_vports_speed() call from mlx5_do_bond() into
+mlx5_deactivate_lag(), so that every teardown path resets the vport
+speeds.
 
-Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+Fixes: 50f1d188c580 ("net/mlx5: Propagate LAG effective max_tx_speed to vports")
+Signed-off-by: Or Har-Toov <ohartoov@nvidia.com>
+Reviewed-by: Shay Drori <shayd@nvidia.com>
+Reviewed-by: Mark Bloch <mbloch@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
 ---
- .../bindings/net/allwinner,sun8i-a83t-emac.yaml    | 130 ++++++++++++++++++---
- 1 file changed, 115 insertions(+), 15 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/net/allwinner,sun8i-a83t-emac.yaml b/Documentation/devicetree/bindings/net/allwinner,sun8i-a83t-emac.yaml
-index 323a669fa982..fec42f46378a 100644
---- a/Documentation/devicetree/bindings/net/allwinner,sun8i-a83t-emac.yaml
-+++ b/Documentation/devicetree/bindings/net/allwinner,sun8i-a83t-emac.yaml
-@@ -22,6 +22,7 @@ select:
-           - allwinner,sun8i-v3s-emac
-           - allwinner,sun50i-a64-emac
-           - allwinner,sun55i-a523-gmac200
-+          - allwinner,sun60i-a733-gmac210
-   required:
-     - compatible
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
+index 5aa9d5c98fe1..c2f21eb4ea7c 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
+@@ -1075,6 +1075,8 @@ int mlx5_deactivate_lag(struct mlx5_lag *ldev)
+ 	if (master_idx < 0)
+ 		return -EINVAL;
  
-@@ -44,25 +45,38 @@ properties:
-       - items:
-           - const: allwinner,sun55i-a523-gmac200
-           - const: snps,dwmac-4.20a
-+      - items:
-+          - const: allwinner,sun60i-a733-gmac210
-+          - const: snps,dwmac-5.20
- 
-   reg:
--    maxItems: 1
-+    minItems: 1
-+    items:
-+      - description: MAC controller registers
-+      - description: Glue configuration registers
- 
-   interrupts:
--    maxItems: 1
-+    minItems: 1
-+    maxItems: 4
- 
-   interrupt-names:
--    const: macirq
-+    minItems: 1
-+    items:
-+      - const: macirq
-+      - const: eth_lpi
-+      - const: tx-queue-0
-+      - const: rx-queue-0
- 
-   clocks:
-     minItems: 1
--    maxItems: 2
-+    maxItems: 3
- 
-   clock-names:
-     minItems: 1
-     items:
-       - const: stmmaceth
-       - const: mbus
-+      - const: ptp_ref
- 
-   phy-supply:
-     description: PHY regulator
-@@ -87,7 +101,6 @@ required:
-   - reset-names
-   - phy-handle
-   - phy-mode
--  - syscon
- 
- allOf:
-   - $ref: snps,dwmac.yaml#
-@@ -219,36 +232,94 @@ allOf:
-       properties:
-         compatible:
-           contains:
--            const: allwinner,sun55i-a523-gmac200
-+            enum:
-+              - allwinner,sun55i-a523-gmac200
-+              - allwinner,sun60i-a733-gmac210
-     then:
-       properties:
--        clocks:
--          minItems: 2
--        clock-names:
--          minItems: 2
-         tx-internal-delay-ps:
-           default: 0
-           minimum: 0
--          maximum: 700
-           multipleOf: 100
-           description:
--            External RGMII PHY TX clock delay chain value in ps.
-+            Internal RGMII PHY TX clock delay chain value in ps.
-         rx-internal-delay-ps:
-           default: 0
-           minimum: 0
-           maximum: 3100
-           multipleOf: 100
-           description:
--            External RGMII PHY TX clock delay chain value in ps.
--      required:
--        - power-domains
-+            Internal RGMII PHY RX clock delay chain value in ps.
-     else:
-       properties:
-+        reg:
-+          maxItems: 1
-+        interrupts:
-+          maxItems: 1
-+        interrupt-names:
-+          maxItems: 1
-         clocks:
-           maxItems: 1
-         clock-names:
-           maxItems: 1
-         power-domains: false
-+      required:
-+        - syscon
++	mlx5_lag_reset_vports_speed(ldev);
 +
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            const: allwinner,sun55i-a523-gmac200
-+    then:
-+      properties:
-+        reg:
-+          maxItems: 1
-+        interrupts:
-+          maxItems: 1
-+        interrupt-names:
-+          maxItems: 1
-+        clocks:
-+          minItems: 2
-+          maxItems: 2
-+        clock-names:
-+          minItems: 2
-+          maxItems: 2
-+        resets:
-+          maxItems: 1
-+        reset-names:
-+          maxItems: 1
-+        tx-internal-delay-ps:
-+          maximum: 700
-+      required:
-+        - power-domains
-+        - syscon
-+
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            const: allwinner,sun60i-a733-gmac210
-+    then:
-+      properties:
-+        reg:
-+          minItems: 2
-+        interrupts:
-+          minItems: 4
-+        interrupt-names:
-+          minItems: 4
-+        clocks:
-+          minItems: 3
-+        clock-names:
-+          minItems: 3
-+        resets:
-+          minItems: 2
-+        reset-names:
-+          minItems: 2
-+        tx-internal-delay-ps:
-+          maximum: 3100
-+        syscon: false
-+        power-domains: false
- 
- unevaluatedProperties: false
- 
-@@ -412,4 +483,33 @@ examples:
-             };
-         };
-     };
-+
-+  - |
-+    ethernet@4510000 {
-+        compatible = "allwinner,sun60i-a733-gmac210",
-+                     "snps,dwmac-5.20";
-+        reg = <0x04510000 0x8000>,
-+              <0x04518000 0x1000>;
-+        clocks = <&ccu 58>, <&ccu 59>, <&ccu 60>;
-+        clock-names = "stmmaceth", "mbus", "ptp_ref";
-+        resets = <&ccu 30>, <&ccu 31>;
-+        reset-names = "stmmaceth", "ahb";
-+        interrupts = <0 175 4>, <0 179 4>, <0 176 4>, <0 177 4>;
-+        interrupt-names = "macirq", "eth_lpi", "tx-queue-0", "rx-queue-0";
-+        pinctrl-names = "default";
-+        pinctrl-0 = <&rgmii1_pins>;
-+        phy-handle = <&ext_rgmii_phy_2>;
-+        phy-mode = "rgmii-id";
-+        snps,fixed-burst;
-+
-+        mdio {
-+            compatible = "snps,dwmac-mdio";
-+            #address-cells = <1>;
-+            #size-cells = <0>;
-+
-+            ext_rgmii_phy_2: ethernet-phy@1 {
-+                reg = <1>;
-+            };
-+        };
-+    };
- ...
-
+ 	dev0 = mlx5_lag_pf(ldev, master_idx)->dev;
+ 	ldev->mode = MLX5_LAG_MODE_NONE;
+ 	ldev->mode_flags = 0;
+@@ -1676,7 +1678,6 @@ static void mlx5_do_bond(struct mlx5_lag *ldev)
+ 		mlx5_modify_lag(ldev, &tracker);
+ 		mlx5_lag_set_vports_agg_speed(ldev);
+ 	} else if (mlx5_lag_should_disable_lag(ldev, do_bond)) {
+-		mlx5_lag_reset_vports_speed(ldev);
+ 		mlx5_disable_lag(ldev);
+ 	}
+ }
 -- 
-2.53.0
+2.44.0
 
