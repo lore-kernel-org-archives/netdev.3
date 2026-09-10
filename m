@@ -1,178 +1,204 @@
-Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 755CD3BD62F
-	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 06:20:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A35E1390CAD;
+	Thu, 10 Sep 2026 06:22:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789021236; cv=none; b=G/MBeq+A7/JcwKMx/FT32UqTkVIC+OQn0kRqfcycQNeUSryY9GcBgSnicLlaIj0Es616+gsFdsCM9Ku6sRMHefUtERlIoYhnEtCirwqNQRN/ZDr2bCrPcNVHRjFNDfvcxnhLaHUxfI7+f/X0RtXIIFyhcBXQOBbsa2aR5nAqTss=
+	t=1789021332; cv=none; b=oaZwrGRDDAQRQrr5C8Fnhc4sflQeLn1hFeqVu54RDndw21wT4DumlBcjiSyBJaiHKFy+8PvhmMcPdP3//ceDjytI6bYc9xNajKXUPLn/DfBinLemHjdtb2byLxezdb0xA2i3Nnbi4KIXTJvHI+DfoGLHp0EbSxi+9Wy84ysRoB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789021236; c=relaxed/simple;
-	bh=MQcC4dR8FUCijCCrs52KbxdThXmJ8Dbr/UqfZTiRloM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GAXuBcG4TFXq+xegWwHaxzYZOcrAp3WVLtRPsqYgnaCSXmCYXSO1c03Nt8fY2JRqZXhudoxRRNxmgtnivA9LG5dvySZVdXcW9EB7xhdaZ+YfyvwaMNg/29Y0CyG+uup9awKK3bYsxxsLFife9y4WLdQDDNoZHGJGcuExq4SBF6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cuMGrKvC; arc=none smtp.client-ip=209.85.222.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789021332; c=relaxed/simple;
+	bh=+sCGB9d6snie3VEyhdf94Cpul9XhKj5D0+FyUQQywTM=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=HFo1Rq5cOqDpbsKQ7XCuk0Wt0hvBv5/vVxZWPU+iOfNQ/s2zdAK2/yqzwG0A0Pe5gH3hpmp6k1QQZSOrwtZQNxV1mbyzw0t4x6wF/+0n7waBad6f7bd8Th/VTiISGWkWJGiZX52hmjLlkniOgiquNu1ntWGD9YIJfB1vz5PJWNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DcnfsuLp; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cuMGrKvC"
-Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-939e028b3c9so12314185a.3
-        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 23:20:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789021226; x=1789626026; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=e7cyj0PhcIGIgu6e9EBrymS4RNeOJ3HjwObgNoqGt1I=;
-        b=cuMGrKvCn9qt+NAdeDKfUYUpXkLo/4hT2KxxI47I1f4zk2Pb8hjhJR9DmFGNRwahsy
-         /rvxwaxsXUbzBIpeChFlU6PCsiAvSfV6Ot1ZPq8w5txgYZb/O7fTQ4bx2FbxhALOoyqX
-         +qrkFUBJim02rdFvG9I2PN0qUr0rsKf3GQsCEaooD8yqxq/VVCLG3/fOcd/WDhbkZ2Mi
-         Hfsi2pgDJFvtaN1wuTC/CzwuF6NqxcS3QQFa3T5sOni7FvMPWadHisGXsKztwbMTlFCv
-         fAfLuOoIxrA1gaNFutIum+3i6basKU82tjPPq7XBmYVigzMCkeCYW0CQPfbVijKyEyUM
-         GVLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789021226; x=1789626026;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=e7cyj0PhcIGIgu6e9EBrymS4RNeOJ3HjwObgNoqGt1I=;
-        b=lYZTeicjf7d7tPy0kop2BJj8h8bLDOBQsIGja4jv3Zf/6DK+ZoPUW3CFlYbw/SIrFv
-         yjHDALBXzuI6dqhd6k7dtmFkUvODeAXaGNp+gcSEaISk8mSxugwJ44DJEkDB79C4vImV
-         0wWsCNK/FYmSqsH/QZwqRsaWHE3grMevLFoAJlMh6jPSRdOt0oK575l1TMpsZ+6hUUIV
-         wNxcrMEk9UGQcYCOd6Q6TwaAbOXBegX2qqFb9vGMqgQZLLkT6NMO5gyvVc7v2h98hxVN
-         swbn97G2qs3NU3UB5tJRK24I1kRJQHErzv89PnJegdUXUJ4S7TRZ9L4z9wSZMfri5/9n
-         DTfw==
-X-Forwarded-Encrypted: i=1; AKwUvBzmUCES8KUE6qts/++Z5T0BrPwckdr1C8iVNWwppOMnPKgRBSvNVimZ4RTqzW/XFDaE70f6swE=@vger.kernel.org
-X-Gm-Message-State: AFuF++mXmNypv9/0LCeZBbSwr6F8EjHfcbCzRS9pisOd9mnkBZIZsp+9
-	wrxkbmT5Dx34LNhje4Df/DFvxY3GmRsWBgWgDGJOJ2WiLQGR0c1XfYtj
-X-Gm-Gg: AYBFou1ATFeg45BkLOBr1ENYOmvZ6mQQTx17BMLrzJToc/MbVwO9z+wIXQpI7yxcR6o
-	jtZGSwHqWyWuQQIW+9dso4eWiYNPOXkp1xXL+FkOMDrP94phMIlSI8fkY5zxSND1sPu2ANZDvvG
-	M5jjXW8yjU0OZ0sHwGeiB3DzxJuopr3nfE8dat1HlLXFOLAQf3SbvQ8pZcHgi2KQCNk16QKWY30
-	1TJtkfMm/XFRRoos50rkUNx88echGI6BJZYPGJF0RjR64vmLYDS84UvkEmrixVvbzHJuusaMb3n
-	Biop+7SNEZijvIleaNRRi4UhKJGEFtPl1Hgt5bSF2BCqWiY6wTT2aP0bXP0pSHBfyj1MFOSlFJT
-	dL4Q9iHtQpSWwOyUZOb25L+8U4VZk5jN8xt2Qs36jgpS3WxCnQIU7ai1uBxliGRbDDU/0SZiex0
-	hhXzh9mkvQ1Y5TOV00oHyACLCgV846LHFTXvpKSknfRes9uwXYLRGtTBaEY7MfH89e8flp90NP0
-	WqZRuEOoEuyyeAlUddMJGWdEAOeqP+K9V2cfNuwSjdtDR69dJISEUWQu6SCYCqSoAtg2PNWWix/
-	s0SKqAJ6Pszr2ubcFFcZMcBHTKlKK+154Nov
-X-Received: by 2002:a05:620a:2604:b0:939:4e49:4d3a with SMTP id af79cd13be357-939806da015mr4699071185a.27.1789021225806;
-        Wed, 09 Sep 2026 23:20:25 -0700 (PDT)
-Received: from ?IPV6:2003:ea:8f2c:d400:9135:d56e:c3ce:edd3? (p200300ea8f2cd4009135d56ec3ceedd3.dip0.t-ipconnect.de. [2003:ea:8f2c:d400:9135:d56e:c3ce:edd3])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-9397f9ee9fbsm1621645785a.1.2026.09.09.23.20.23
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 09 Sep 2026 23:20:25 -0700 (PDT)
-Message-ID: <beb23347-b7f1-44df-892d-cf3f49e9b3d0@gmail.com>
-Date: Thu, 10 Sep 2026 08:20:22 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DcnfsuLp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA2C71F000FF;
+	Thu, 10 Sep 2026 06:22:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789021331;
+	bh=r6kCMOHqePJ3Y+HCRWQ/eD8UeXAc0wuWIBstpcAROoE=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=DcnfsuLpjA2xoAN1CjZLQhORfSupSmH+BkzwHmnuWql6YUEZOeGdCvhMC9njD5aYs
+	 FeuunqNhV7+DXV4vr2DGgWpA40zwxaBp5AVTQueUVFUOuOveXhl9UtaQQIdVzW33fk
+	 Rprw6Igc6TMdsw83wqEwlUT/ca4rlv6/E0K9IxFNk+jx3IYT+MOBV5dOlnaJMZWYMt
+	 BX9fAQaHvmTuofHXdj5blTUO91xrqwHStpf561JYmrEbqVwhiYilN4CANAC/JqUuGj
+	 /9a/qAYalYaefim+NqL/NOHetuqmAKluhTPFIzPgQdZp3j2aqfa0cgIb0tNy1dMZJW
+	 A5OM76N5bFsJw==
+Subject:
+ Re: [PATCH nf] netfilter: flowtable: advertise the vlan match in used_keys
+From: netdev-bot+sashiko@kernel.org
+To: julius@bairaktaris.de
+Cc: netfilter-devel@vger.kernel.org, pablo@netfilter.org, fw@strlen.de,
+ phil@nwl.cc, coreteam@netfilter.org, netdev@vger.kernel.org, kuba@kernel.org
+Date: Thu, 10 Sep 2026 06:22:10 +0000
+Message-ID: <178902133043.219967.1427187014791649902@kernel.org>
+In-Reply-To: <20260906142018.480577-1-julius@bairaktaris.de>
+References: <20260906142018.480577-1-julius@bairaktaris.de>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] r8169: don't enable chip LTR when the platform has
- not enabled LTR
-To: Yogesh Gaur <yogeshgaur.83@gmail.com>
-Cc: nic_swsd@realtek.com, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, Javen Xu <javen_xu@realsil.com.cn>
-References: <20260909110554.1977-1-yogeshgaur.83@gmail.com>
- <9c34a1dc-6147-4369-8d12-9c5939d07530@gmail.com>
- <CAG6enPw36egoW=ezg1nnRvKEK5EEQX1h=j_TiRTE7F7PbxY8sg@mail.gmail.com>
-Content-Language: en-US
-From: Heiner Kallweit <hkallweit1@gmail.com>
-In-Reply-To: <CAG6enPw36egoW=ezg1nnRvKEK5EEQX1h=j_TiRTE7F7PbxY8sg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 
-On 10.09.2026 08:01, Yogesh Gaur wrote:
-> On Wed, Sep 9, 2026 at 10:05 PM Heiner Kallweit <hkallweit1@gmail.com> wrote:
->>
->> On 09.09.2026 13:05, Yogesh Gaur wrote:
->>> rtl_enable_ltr() programs the MAC to generate LTR messages - ALDPS_LTR_EN,
->>> LTR_SNOOP_EN, LTR_OBFF_LOCK_EN, plus LINK_SPEED_CHANGE_EN on
->>> RTL8125/RTL8126/RTL8127 - and rtl_hw_aspm_clkreq_enable() calls it on
->>> every ASPM enable, then goes on to let the chip trigger L1.2.
->>>
->>> The only gate is tp->aspm_manageable, which records that the OS is allowed
->>> to control ASPM. It says nothing about LTR. LTR is a separate PCIe
->>> capability that only works if every device on the path to the root port
->>> supports it. The PCI core determines that in pci_configure_ltr() and
->>> records the result by setting LTR Mechanism Enable in the endpoint's
->>> Device Control 2 register; per PCIe r6.0 sec 7.5.3.16 a function must not
->>> issue LTR messages while that bit is clear.
->>>
->>> So on a platform whose hierarchy has no LTR path, the driver now tells the
->>> chip to start sending LTR messages nothing will honour, and ties ALDPS -
->>> the PHY's link-down power saving - to them. A report against RTL8125B
->>> (rev 05, firmware rtl8125b-2_0.0.2) in a mini PC shows the effect: 291
->>> link down/up transitions in one eight-hour boot, with repeated downshifts
->>> to 100Mbps, against four transitions at boot and then a stable link on the
->>> kernel before the LTR change.
->>>
->>> Read the endpoint's LTR Mechanism Enable bit and leave the chip's LTR
->>> machinery alone when the platform did not enable it.
->>> pcie_capability_read_word() zeroes its output on error, so an unreadable
->>> capability takes the same safe path.
->>>
->>
->> Thanks for the fix!
->>
->>> Fixes: 9ab94a32af70 ("r8169: enable LTR support")
->>> Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2529752
->>> Signed-off-by: Yogesh Gaur <yogeshgaur.83@gmail.com>
->>> ---
->>>  drivers/net/ethernet/realtek/r8169_main.c | 10 ++++++++++
->>>  1 file changed, 10 insertions(+)
->>>
->>> diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
->>> index ec4fc21fa21f..c1ff4e898570 100644
->>> --- a/drivers/net/ethernet/realtek/r8169_main.c
->>> +++ b/drivers/net/ethernet/realtek/r8169_main.c
->>> @@ -3037,6 +3037,16 @@ static void rtl_disable_exit_l1(struct rtl8169_private *tp)
->>>
->>>  static void rtl_enable_ltr(struct rtl8169_private *tp)
->>>  {
->>> +     u16 ctl2;
->>> +
->>> +     /* The chip must not issue LTR messages unless the platform enabled
->>> +      * LTR on the whole path up to the root port. The PCI core discovers
->>> +      * that in pci_configure_ltr() and reflects it in LTR Mechanism Enable.
->>> +      */
->>> +     pcie_capability_read_word(tp->pci_dev, PCI_EXP_DEVCTL2, &ctl2);
->>> +     if (!(ctl2 & PCI_EXP_DEVCTL2_LTR_EN))
->>> +             return;
->>> +
->>
->> Can't you simply query tp->pci_dev->ltr_path instead of doing this low-level
->> PCI register read? When reading through pci_configure_ltr(), I think this
->> should do the trick.
->>
-> Thats was actually my first version, but it does not build: struct
-> pci_dev::ltr_path
-> is inside #ifdef CONFIG_PCIEASPM (include/linux/pci.h), and r8169 can be built
-> with CONFIG_PCIEASPM=n.
-> 
-However, w/o support for PCIe NIC's you don't need rtl_enable_ltr() at all.
-So the complete function could be conditionally compiled.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider:
 
-> I think we should keep DEVCTL2 read. It is what other drivers with this need do
-> - rtw89(rtw89_pci_dev_ltr_enabled()), iwlwifi (pcie/gen1_2/trans.c),
-> qed_rdma.c,
-> rtsx_pcr.c all read PCI_EXP_DEVCTL2 and test PCI_ECP_DEVCTL2_LTR_EN.
-> 
-I'd not consider these old drivers as role models. As far as possible
-I'd like to leave dealing with low-level PCI registers to the PCI subsystem.
+Critical: 0 · High: 1 · Medium: 1 · Low: 0
 
-> Please suggest.
-> 
-> Yogesh
-> 
->>>       switch (tp->mac_version) {
->>>       case RTL_GIGA_MAC_VER_80:
->>>               r8168_mac_ocp_write(tp, 0xcdd0, 0x9003);
->>
+- [High] The commit message's only concrete impact claim is false, and
+  the bug class it claims to close stays reachable for the driver it…
+- [Medium] In the second encap block of nf_flow_rule_match()
+  (net/netfilter/nf_flow_table_offload.c:133-152), the `else` branch now…
 
+--
+
+netfilter: flowtable: advertise the vlan match in used_keys
+
+nf_flow_rule_match() fills the vlan and cvlan dissector keys and sets
+their offsets, but never sets the matching bits in
+match->dissector.used_keys.  This patch sets those bits where the keys
+are filled, so that flow_rule_match_key() based drivers can see the
+match.
+
+Setting the bits for keys that are actually filled looks right to me.
+A couple of questions about the changelog and about the second
+encapsulation branch.
+
+The changelog says:
+
+  mtk_ppe_offload.c reads the ingress vlan through flow_rule_match_key()
+  and so never gets it, and a driver that checks used_keys against the
+  keys it supports installs an entry that ignores the tag.
+
+[Severity: High]
+Does the mediatek part of that hold after this change?
+
+mtk_flow_offload_replace() reads FLOW_DISSECTOR_KEY_VLAN only inside
+case 0: of its addr_type switch:
+
+	switch (addr_type) {
+	case 0:
+		offload_type = MTK_PPE_PKT_TYPE_BRIDGE;
+		...
+		if (flow_rule_match_key(rule, FLOW_DISSECTOR_KEY_VLAN)) {
+			struct flow_match_vlan match;
+
+			flow_rule_match_vlan(rule, &match);
+			...
+			data.vlan_in = match.key->vlan_id;
+		}
+		break;
+	case FLOW_DISSECTOR_KEY_IPV4_ADDRS:
+		offload_type = MTK_PPE_PKT_TYPE_IPV4_HNAPT;
+		break;
+
+nf_flow_rule_match() always assigns a non-zero addr_type, and bails out
+otherwise:
+
+	switch (tuple->l3proto) {
+	case AF_INET:
+		key->control.addr_type = FLOW_DISSECTOR_KEY_IPV4_ADDRS;
+		...
+	case AF_INET6:
+		key->control.addr_type = FLOW_DISSECTOR_KEY_IPV6_ADDRS;
+		...
+	default:
+		return -EOPNOTSUPP;
+	}
+
+so can a flowtable rule ever reach that case 0: read?  And the value it
+would store only reaches the hardware for bridge entries:
+
+	if (offload_type == MTK_PPE_PKT_TYPE_BRIDGE)
+		foe.bridge.vlan = data.vlan_in;
+
+The driver has no FLOW_DISSECTOR_KEY_CVLAN handling and no used_keys
+whitelist, and its FLOW_ACTION_VLAN_POP case is an empty break, so it
+neither consumes nor refuses the newly advertised keys and still installs
+an HNAPT/IPv6 route entry that does not describe the ingress tag.
+
+Could the mtk_ppe_offload.c sentence be dropped or reworded?  The driver
+that does gate on used_keys and reads the vlan/cvlan keys is mlx5e in
+__parse_cls_flower(), which the changelog does not name.
+
+> diff --git a/net/netfilter/nf_flow_table_offload.c b/net/netfilter/nf_flow_table_offload.c
+> index 801a3dd9ceea3..9ef89127bf252 100644
+> --- a/net/netfilter/nf_flow_table_offload.c
+> +++ b/net/netfilter/nf_flow_table_offload.c
+> @@ -126,6 +126,7 @@ static int nf_flow_rule_match(struct nf_flow_match *match,
+>  		nf_flow_rule_vlan_match(&key->vlan, &mask->vlan,
+>  					tuple->encap[0].id,
+>  					tuple->encap[0].proto);
+> +		match->dissector.used_keys |= BIT_ULL(FLOW_DISSECTOR_KEY_VLAN);
+>  		vlan_encap = true;
+>  	}
+>  
+> @@ -137,12 +138,16 @@ static int nf_flow_rule_match(struct nf_flow_match *match,
+>  			nf_flow_rule_vlan_match(&key->cvlan, &mask->cvlan,
+>  						tuple->encap[1].id,
+>  						tuple->encap[1].proto);
+> +			match->dissector.used_keys |=
+> +				BIT_ULL(FLOW_DISSECTOR_KEY_CVLAN);
+>  		} else {
+>  			NF_FLOW_DISSECTOR(match, FLOW_DISSECTOR_KEY_VLAN,
+>  					  vlan);
+>  			nf_flow_rule_vlan_match(&key->vlan, &mask->vlan,
+>  						tuple->encap[1].id,
+>  						tuple->encap[1].proto);
+> +			match->dissector.used_keys |=
+> +				BIT_ULL(FLOW_DISSECTOR_KEY_VLAN);
+
+[Severity: Medium]
+Can this else branch publish the inner tag as the outer vlan match?
+
+The branch is reached both when the outer tag was already stripped before
+the hook (in_vlan_ingress & BIT(0)), where treating encap[1] as the outer
+tag is right, and when encap[0] is still present in the frame but is not
+ETH_P_8021Q, because of the test in the first block:
+
+	if (tuple->encap_num > 0 && !(tuple->in_vlan_ingress & BIT(0)) &&
+	    tuple->encap[0].proto == htons(ETH_P_8021Q)) {
+
+With a stacked 802.1ad plus 802.1Q configuration:
+
+	ip link add link eth0 name eth0.100 type vlan proto 802.1ad id 100
+	ip link add link eth0.100 name eth0.100.200 type vlan proto 802.1Q id 200
+
+vlan_dev_fill_forward_path() copies the protocol verbatim:
+
+	path->encap.id = vlan->vlan_id;
+	path->encap.proto = vlan->vlan_proto;
+
+and flow_offload_fill_dir() reverses the path order, so encap[0] is the
+outermost tag:
+
+	for (i = route->tuple[dir].in.num_encaps - 1; i >= 0; i--) {
+		flow_tuple->encap[j].id = route->tuple[dir].in.encap[i].id;
+		flow_tuple->encap[j].proto = route->tuple[dir].in.encap[i].proto;
+
+That gives encap[0].proto == ETH_P_8021AD (vid 100) and encap[1].proto ==
+ETH_P_8021Q (vid 200).  The first block is skipped, vlan_encap stays
+false, and this else branch fills key->vlan with tpid 0x8100 / vid 200
+and now declares it in used_keys, so a driver reads an outer vlan match
+of 0x8100/200 for a frame whose outermost tag is 0x88a8/100.
+
+nf_flow_rule_route_common() emits a pop only for ETH_P_8021Q encaps:
+
+	if (tuple->encap[i].proto == htons(ETH_P_8021Q)) {
+		entry = flow_action_entry_next(flow_rule);
+		...
+		entry->id = FLOW_ACTION_VLAN_POP;
+
+so the 802.1ad tag is neither matched nor popped.  Before this patch the
+mismatched value could not be read by any driver; should this branch be
+restricted to the in_vlan_ingress case, or should a non-8021Q encap[0]
+make the rule unoffloadable?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260906142018.480577-1-julius%40bairaktaris.de
