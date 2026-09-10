@@ -1,124 +1,157 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CBFF4A485B;
-	Thu, 10 Sep 2026 15:07:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14F654A2601
+	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 15:10:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789052883; cv=none; b=YImEWswPf/ibNq5G1efQHTa8btsKkuqyRsoCkiIt/H+HztR8OFuJqK7BtnKwfLfI/UYM+4ueqHa+g8+08SLizCswM3bp7lYHN1kMg6ZlG0eRo5pxSFkoykUV/KY4oj/PIasH1T1Xhb0k026FNelp79kkPxdmtajOSTPBWTKMp34=
+	t=1789053029; cv=none; b=ovmP3JTMJLxC1CnDvjwfZk1cHdisEHDBHmiC3d7WC0/C5jbeSqQA5Do5OhTwTdgnelKMwC+Wm4qqr3DpXq+iDDgcEYTI2DOmHVomj0treUTl7wU8RVVAEl38JqGtOd5iDGolXEvaz6Fh6PXjuRq9xxxpuQ4ZeDHNBW7GwlH6RVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789052883; c=relaxed/simple;
-	bh=ErwTpVinq47Bz5B3I6Trw0G9IjnA0HH1ShtsRhXmykM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=R0tt3q91w8TETh6u1Ix1mFW2WDEGR0wCp+FxiFq/T4wOV2PsOHAO49NYxZ6wLclQSI9RPf2KhGLXSgrGtB5WRjzQgyUVeMN01bO+/cu/eenUaJGI+IudIfm8KqfQBMOK7JkOF95AJCrcXff29x7Y4DGXbOkGeW0+V1wd8lHJjyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=s87aifiY; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1789053029; c=relaxed/simple;
+	bh=Ldo9pmXtfI4QS/WKHDQsUpM/XMQ8/GUoVg15bs4b6dQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XXX1pjLrfvBDrcTjFeKgy5nme2gPL+2bLbjTEi1RIcyiVQr+oHZSYtjYRZZxfAoawF+AEIpQCXprExSW9XPB/8ZXMoqYhnwTphjinUO9AS0Ii5ldG6MPP4U/ddp9k1UBoAiOlEl4PJhHgrxOuu1LzCztqa12Hif+c/X5dbyPy6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=wCBtnoRq; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="s87aifiY"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=sAxry/9gxO8ra9Tc4i2+zGNNckg7kZCkH2Eff0cthwE=; b=s87aifiYli2n4g6vPxg0rGs/6G
-	VsxpkWgl2rFW3bWOpVaeOTJNOYzWTdFBPGepHGf4I65wXPy+jThikHXyZKiLVg+aZSzvI83DqQ/DU
-	rF89Eb92lJupn6o0wh8tJrfcJGRvVfzCNDKbZ63xYoGs6k7nFxuu3U8DXFobrRldKVhI=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1x4gNO-004Wa7-4q; Thu, 10 Sep 2026 17:07:46 +0200
-Date: Thu, 10 Sep 2026 17:07:46 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Vasilij Strassheim <v.strassheim@linutronix.de>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Russell King <linux@armlinux.org.uk>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	Martin Kaistra <martin.kaistra@linutronix.de>,
-	Benedikt Spranger <b.spranger@linutronix.de>
-Subject: Re: [PATCH net-next v2 4/4] net: dsa: soce: Add basic support for
- SoC-e switch IP cores
-Message-ID: <5bc95ef2-4e23-4c80-af17-07aa3643bebf@lunn.ch>
-References: <20260903-devel-vstrassheim-soce-dsa-ml-v2-0-fb0587cb466b@linutronix.de>
- <20260903-devel-vstrassheim-soce-dsa-ml-v2-4-fb0587cb466b@linutronix.de>
- <371fe855-e21f-4d53-a13f-4486494c8ae1@lunn.ch>
- <42efedd837c1631b38849693e1d66bd2b1fb1529.camel@linutronix.de>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="wCBtnoRq"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id DC077C653E5;
+	Thu, 10 Sep 2026 15:10:57 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 5CA355FA2F;
+	Thu, 10 Sep 2026 15:10:16 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7AAC911C799CC;
+	Thu, 10 Sep 2026 17:09:56 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1789053010; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=DAmpgL5dNVrNQnJh+yD//pzzGZfsNROOX3umq9ugYFc=;
+	b=wCBtnoRqIjXEwv87TBg6OzGvf4AYIGWYUwYDwRdo3W/063xJ94d+OSKsgMGIimBrTafcT9
+	7bBe8MvW0FcdG5b/Zat/CGay4ASlLq5dbaDpkz1FsUQmLU9g1ha+8K0R12FlyZBWPOU5Em
+	6yRHGT9vo/CH14PdQ/sBhKP+vh9Z2rYyHJTD/DMHu/drBC07oSHyxyDwLPxlH7nv9X9QwJ
+	rDZygzKwDpm9TrjENagEJDo129nx96Aq7IsQc+052w2rtxVb50VuHrUy85q3NvXIdaw6Tl
+	730yhNgMdHGw3DHwokypk7Y2f+MIG63CJLaSBVqJbhZyIOIfMc0ix2BGKaXG0g==
+Message-ID: <a8b81a01-b790-47e3-85e8-c8d82cc6273b@bootlin.com>
+Date: Thu, 10 Sep 2026 17:09:55 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <42efedd837c1631b38849693e1d66bd2b1fb1529.camel@linutronix.de>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 2/6] net: stmmac: selftests: Validate EEE based on the
+ actual LPI timer value
+To: Nicolai Buchwitz <nb@tipi-net.de>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Russell King <linux@armlinux.org.uk>,
+ Heiner Kallweit <hkallweit1@gmail.com>,
+ =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Emil Renner Berthing <kernel@esmil.dk>,
+ Minda Chen <minda.chen@starfivetech.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>,
+ Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>,
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+ Jan Petrous <jan.petrous@oss.nxp.com>,
+ Ovidiu Panait <ovidiu.panait.rb@renesas.com>, Jose.Abreu@synopsys.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ thomas.petazzoni@bootlin.com, linux-arm-kernel@lists.infradead.org,
+ linux-stm32@st-md-mailman.stormreply.com, PKneuper@dspace.de,
+ David Laight <david.laight.linux@gmail.com>
+References: <20260909074740.1247762-1-maxime.chevallier@bootlin.com>
+ <20260909074740.1247762-3-maxime.chevallier@bootlin.com>
+ <2f268c9ff187ba59f69d37dd4e4ba99b@tipi-net.de>
+Content-Language: en-US
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+In-Reply-To: <2f268c9ff187ba59f69d37dd4e4ba99b@tipi-net.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Thanks for this list.
+Hi,
 
-> ---
-> Global register block at 0x0000 (three registers currently used)
-> 	0x00 Core Version - Major and minor revision number (RO)
-> 	0x04 Licensed Features (RO)
-> 	0x08 Reserved
-> 	0x0C GUI Configuration - Implemented Features 0 (RO)
-> 	0x10 GUI Configuration - Implemented Features 1 (RO)
-
-GUI? I assume this is not Graphical User Interface, but something
-else?
-
-> 	Licensed Features Register (RO) (Bits specify if the given
-> 	feature is enabled by license):
-> 	[31:27] - Maximum Number of Ports: These bits specify the maximum
-> 	number of ports licensed
-> 	[26:15] - Reserved
-> 	- ACL: Access Control List (ACL) feature
-> 	- LLDP: LLDP feature
-> 	- IEEE 802.1X
-> 	- IEEE 802.1AX-2008 - Link Aggregation
-> 	- IEEE 802.3br/IEEE 802.1Qbu - Preemption
-> 	- IEC 61158-4-2 - DLR
-> 	- IEC 62439-2 - MRP
-> 	- IGMP Snooping
-> 	- Port mirroring
-> 	- IEEE 802.1s - MSTP
-> 	- IEEE 802.1w - RSTP
-> 	- IEEE 1588 - Transparent Clock
-> 	- Switch mode: managed or unmanaged
-
-This is probably something which should be tested in the probe
-method. No point loading the driver if it cannot be managed.
-
-> 	- Secure Chip
-> 	- Time Limitation
-
-What do these two mean?
-
-> 	MDIO - Control
-> 	[26:16] - Bus selection: These bits specify the port number over
-> 	which MDIO operation is performed.
-
-10 bits, which allows more MDIO busses than ports!
-
-> > I also wounder at the name. Does the data sheet really call it DSA?
-> > 
+On 9/9/26 13:32, Nicolai Buchwitz wrote:
+> Hi Maxime
 > 
-> Yes, there is even a chapter describing Distributed Switch Architecture
-> (DSA) as "a subsystem that was primarily designed to support specific
-> vendor switches using Linux, ..." followed by information about "custom
-> DSA tagging".
+> On 9.9.2026 09:47, Maxime Chevallier wrote:
+>> The EEE selftest is a 2-step test :
+>>  - It validates that we enter in LPI mode with the
+>>    irq_tx_path_in_lpi_mode_n counter
+>>  - It then validates that we exit LPI when sending a frame, with the
+>>    irq_tx_path_exit_lpi_mode_n counter.
+>>
+>> The current state of the test lacks 2 main things :
+>>
+>>  - We don't know exactly when was the previous frame sent (it's from the
+>>    previous selftest)
+>>
+>>  - The timeout is hardcoded, while the LPI is entered after a
+>>    user-configurable delay. On top of that, the timeout loop uses a
+>>    pre-decrement iterator (--retries) that actually only iterate nine
+>>    times, so 900ms while the default LPI value is 1 second.
+>>
+>> Let's therefore make it more deterministic :
+>>
+>>  - Send a frame at the beginning of the test
+>>  - Wait for more than the lpi timer value, we timeout after about twice
+>>    the value,
+>>  - Then send another frame, and verify that we do go out of LPI, also
+>>    with a timeout.
+>>
+>> Note that the test's goal isn't to validate the LPI timer value itself,
+>> only that we enter/leave LPI mode.
+>>
+>> Fixes: 091810dbded9 ("net: stmmac: Introduce selftests support")
+>> Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+>> ---
+>>  .../stmicro/stmmac/stmmac_selftests.c         | 33 ++++++++++++++-----
+>>  1 file changed, 25 insertions(+), 8 deletions(-)
+>>
+>> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
+>> index 6503678b646e..4564b9f29194 100644
+>> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
+>> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
+> 
+>> [...]
+> 
+>> -    memcpy(initial, &priv->xstats, sizeof(*initial));
+>> -
+>> +    /* Send a frame, then wait to enter LPI */
+>>      ret = stmmac_test_mac_loopback(priv);
+>>      if (ret)
+>>          goto out_free_final;
+>>
+>> +    max_duration = usecs_to_jiffies(2 * priv->tx_lpi_timer);
+>> +
+>> +    memcpy(initial, &priv->xstats, sizeof(*initial));
+> 
+> Is the LPI entry already counted here? AFAIU with tx-lpi-timer=0 on dwmac4 the
+> MAC goes directly into LPI after the frame, before stmmac_test_mac_loopback()
+> returns. The loop below would time out although LPI is working.
+> 
+> Snapshot before the first frame, and take a second snapshot right before
+> the second loopback for the exit check?
+> 
+>> [...]
+> 
+>> +    memcpy(final, &priv->xstats, sizeof(*final));
+>>      if (final->irq_tx_path_exit_lpi_mode_n <=
+>>          initial->irq_tx_path_exit_lpi_mode_n) {
+>>          ret = -EINVAL;
+> 
+> nit: -ETIMEDOUT here as well, to match the entry check?
 
-Does the switch support the D in DSA?
+I ended up changing my mind and following you call here, V2 is incoming,
+hopefully with all the patches this time :)
 
-> Yes, I agree that a feature structure will be needed once more fields
-> are used. I would prefer to keep the current interface for now and
-> introduce struct soce_features when another detected feature needs to be
-> retained. At the moment, it would contain only a single member.
+Maxime
 
-O.K.
+> 
+> Thanks
+> Nicolai
 
-	Andrew
