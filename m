@@ -1,85 +1,101 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0F9D37C10C;
-	Thu, 10 Sep 2026 01:51:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DC48339375;
+	Thu, 10 Sep 2026 01:55:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789005076; cv=none; b=ZLz30ijYW7gjR5i2RoP5TLzoLmwMQtc2iDl3sOA4qChB2K7XOUk5zs7ZO3mWvCXC9rinhLLDGRKtgwy9l5W1xMbco3kK2nrFQJjpAidNusTvYYOTAaCOM2wka0+ekvDjCcQciir5ySsbo53HkwG6B7mdkJ20kdp3PL93rxGKv2g=
+	t=1789005354; cv=none; b=gfAkI1pnPUI15KG73M/y8JwrkZ5ui108DGYrriI+8TsxXwE5Ao1txKExO/jiip/Pm9gvNnmrJzqHVhHRmLUl/D3ztf6JLNWsMjs22XDs1YOR9lcGHSdNrBpCfsd7MfPxfSl87BogUtGlXX7FXLd5X3ecfhTDND5Z8pnWSNLB4L0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789005076; c=relaxed/simple;
-	bh=sBS3ohsNFU+sGNeno4Q7KCztFphlvdyxUQW5u9jxbWE=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=NzxvMEY8PZ9Evbw1AFH2Hpu3CctX1XsoKTGHTWngLmyRU5J2zeaKZSDlZXUJEH6IGjxZ761flJhblx7WpZetb5BS46eDN4jhsTWFth6fDaOV0qbk9oLsAjzq9FRROznrhlUkJvGy3Z1aoPEiekDQ+C4JRUbWORVTNkFUb5aevAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BLI2NE5/; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BLI2NE5/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 545C11F00899;
-	Thu, 10 Sep 2026 01:51:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789005074;
-	bh=Ytm6j20954Sf8oNZxXXYzU5ZL6cayrdzOWfaxTcZgcg=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=BLI2NE5/FpOD8DZGo2bHmLZh6pf3rpSejETZELRMdgn98C4GSmLlLT2PuxHPcxCva
-	 JRCB6XOmQjZ/dSftx+EznIHQTU1WtCLfhijVZ1MiL74Jj3IuWP/HP0k6nCDc0SCkCk
-	 bAQSwbauhtdchiVmavLstQv3hiqw77IsRVi56pwZp17TawMHGU2O/aO5QXQjdZRhXV
-	 +t6WDkGw4p/kHaoYcBT/VOsBXdkjwtiCk+uYuzlB/VheWnS1KC58noSr/zLztqOrDD
-	 qDX4g0NrMOl4UOyQP6NoX+qwbOC5Wz+VOdBsJpMZ0D/jhvO8sboAATsd3ybwzA/fL/
-	 stVM8Pm6g0QLA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56946380CEC7;
-	Thu, 10 Sep 2026 01:50:13 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1789005354; c=relaxed/simple;
+	bh=KDPx5k8bHAGBgI/m4RVY+ihNOs1pdyNOlaqlg6Fav04=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=opMWH7kEEocOGIvGuzyq3wjyL+8ObiwJbOhRJKh3Rv+yfZfjF/OwA3vTXpp4NZhS0/vVq0y+SryIx9CUxVYE1l/QRxQcb3q/ldA+7krkiVL7w2rUWKtjc7wKFTbi7R2Hse8Iuw3LfLJQergb7SqmvBTPyzC22JJwqeYyzcTaZd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
+Received: from local
+	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256:X25519MLKEM768)
+	 (Exim 4.100)
+	(envelope-from <daniel@makrotopia.org>)
+	id 1x4U0t-000000006Qn-0xnF;
+	Thu, 10 Sep 2026 01:55:43 +0000
+Date: Thu, 10 Sep 2026 02:55:38 +0100
+From: Daniel Golle <daniel@makrotopia.org>
+To: Caleb James DeLisle <cjd@cjdns.fr>
+Cc: netdev@vger.kernel.org, dqfext@gmail.com, SkyLake.Huang@mediatek.com,
+	andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	Matheus Sampaio Queiroga <srherobrine20@gmail.com>
+Subject: Re: [PATCH net-next] net: phy: mediatek: support MT7530 PHYs on
+ EN71221 MCM
+Message-ID: <aqIOGgVujIKT7H2H@makrotopia.org>
+References: <20260909213250.3184238-1-cjd@cjdns.fr>
+ <aqHlfmYa249e3HRM@makrotopia.org>
+ <7a3479c8-45cc-4b88-b111-c35d59f370e1@cjdns.fr>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v5] net: dsa: microchip: enable the SGMII port of
- the KSZ9897S
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178900501187.1147948.14444954736072489989.git-patchwork-notify@kernel.org>
-Date: Thu, 10 Sep 2026 01:50:11 +0000
-References: <20260904-ksz9897-sgmii-port-v5-1-9bd4a0381aa8@vaisala.com>
-In-Reply-To: <20260904-ksz9897-sgmii-port-v5-1-9bd4a0381aa8@vaisala.com>
-To: Tapio Reijonen <tapio.reijonen@vaisala.com>
-Cc: woojung.huh@microchip.com, UNGLinuxDriver@microchip.com, andrew@lunn.ch,
- olteanv@gmail.com, davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, linux@armlinux.org.uk, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, tristram.ha@microchip.com, nb@tipi-net.de,
- Jerry.Ray@microchip.com, Tristram.Ha@microchip.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7a3479c8-45cc-4b88-b111-c35d59f370e1@cjdns.fr>
 
-Hello:
-
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Fri, 04 Sep 2026 06:03:00 +0000 you wrote:
-> The KSZ9897 has an SGMII/1000BASE-X capable port 7, but its chip_info
-> entry never set .sgmii_port. ksz_has_sgmii_port() is therefore false,
-> ksz9477_pcs_create() is never called and ksz9477_phylink_mac_select_pcs()
-> returns NULL for port 7, so a phy-mode = "sgmii" or "1000base-x" link on
-> that port cannot come up.
+On Thu, Sep 10, 2026 at 01:26:14AM +0200, Caleb James DeLisle wrote:
 > 
-> Only the KSZ9897S has that port; the KSZ9897R has a second RGMII port
-> instead. Both report chip ID 0x00989700, so the port cannot be enabled
-> from the chip ID alone, and enabling it unconditionally breaks the
-> KSZ9897R badly: ksz9477_setup() propagates the failure of
-> xpcs_create_pcs_mdiodev() on a part without an XPCS, so the switch as a
-> whole stops probing.
+> On 10/09/2026 01:02, Daniel Golle wrote:
+> > On Wed, Sep 09, 2026 at 09:32:50PM +0000, Caleb James DeLisle wrote:
+> > > The EcoNet EN751221 multi-chip module implementation of the MT7530
+> > > requires some additional configuration of the PHYs on startup.
+> > > The reason for this is not known, but it is possible that it has
+> > > to do with the fact that the EN751221 MCM implementation of the
+> > > MT7530 runs at an abnormal PLL frequency (362.5Mhz).
+> > > 
+> > > Detect whether the MT7530 PHY is attached to the MDIO bus of an
+> > > EcoNet EN751221 switch and if so, apply the necessary register
+> > > updates.
+> > > 
+> > > Co-developed-by: Matheus Sampaio Queiroga <srherobrine20@gmail.com>
+> > > Signed-off-by: Matheus Sampaio Queiroga <srherobrine20@gmail.com>
+> > > Signed-off-by: Caleb James DeLisle <cjd@cjdns.fr>
+> > > ---
+> > >   drivers/net/phy/mediatek/mtk-ge.c | 61 +++++++++++++++++++++++++++++++
+> > >   1 file changed, 61 insertions(+)
+> > > 
+> > > diff --git a/drivers/net/phy/mediatek/mtk-ge.c b/drivers/net/phy/mediatek/mtk-ge.c
+> > > index 73d9b72f9d9e..42b06c40d703 100644
+> > > --- a/drivers/net/phy/mediatek/mtk-ge.c
+> > > +++ b/drivers/net/phy/mediatek/mtk-ge.c
+> > > [...]
+> > >   static int mt7530_phy_config_init(struct phy_device *phydev)
+> > >   {
+> > > +	int ret;
+> > > +
+> > > +	if (mt7530_phy_is_en751221_companion(phydev)) {
+> > Please introduce a `.match_phy_device` operation for both, actual
+> > MT7530 and EN751221, similar eg. to `ksz8051_match_phy_device` in
+> > micrel.c.
 > 
-> [...]
+> Sounds good, since this will certainly collide with
+> https://lore.kernel.org/netdev/20260827065930.2618729-2-cjd@cjdns.fr/ would
+> you prefer them in the same patch, or as a patch set? If you'd like I can do
+> this and the FE phy as a common patch set. Let me know what you prefer.
 
-Here is the summary with links:
-  - [net-next,v5] net: dsa: microchip: enable the SGMII port of the KSZ9897S
-    https://git.kernel.org/netdev/net-next/c/3037c2f6a9de
+I'd do it one driver at a time, starting with mtk-ge.c, already adding
+the .match_phy_device logic so it would also avoid binding the MT7530
+driver to an ECONET_FEPHY.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+The econet-fe-soc.c driver is much larger and may require more rounds
+to make all bots and humans happy, so I'd not have the independently
+useful mtk-ge.c changes depend on that.
 
-
+Dumping the PHY register space and comparing it with MT7530 could also
+help to indentify any better way than relying on the parent DT
+compatible which *is* a bit of a stretch (but could well be
+unavoidable, of course).
