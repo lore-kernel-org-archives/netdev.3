@@ -1,99 +1,150 @@
-Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A50B445C719;
-	Thu, 10 Sep 2026 10:44:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10C67466B57
+	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 10:50:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789037103; cv=none; b=aU6ZKjRrto0nyZsVHXVJmO8DPUVF2fPNajGA9/Nk94+//mPqRu1n6vBhu6dszBNr8UusTJzCu4OE46PiDwU298lX5wl3azx36rBXIuv/kJ8HZTUxe5WkoCIDe/BzajA4VVe+BQCTnyYpZ9pg4WrT7Dh0DSB4lt1RP50OjqumfXY=
+	t=1789037423; cv=none; b=N2gSK1O4YP7SCFrz1Mw36jEWLY96L5fcRNOT+tWejKXjys5Jwnj9olHO6GJ3G1aVwqGs43//CeuCGII1hTJv+s9pWg+HR8VJeZW15IeHsp0wLhWdIKJWeHMpgUch0fdTH1+XrTnU4N0CliepnmxQUiLlhL/rtyXW3xPz6h8lqaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789037103; c=relaxed/simple;
-	bh=lp2+GU793yJFIq9F60gcFgIUCxLXcMx76AA8FdebvPE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NFsG57N3KP0RfObr6TKhiiIbS6UhsrGz5+/ColNv1vjKCEPyvQEMQxmEhEbT334DCVNBK8qGM7nOjCaHN0w1F9T/+U1iiLxTauEIGJosa7L+yz61YAVk2wbMrHDp7zQ0UAvCOxkNq4Jgb546acKOF8WEaDC6Q/ogNTSRI9Z5++w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=qElniRjH; arc=none smtp.client-ip=115.124.30.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1789037423; c=relaxed/simple;
+	bh=lrIXAC8cYNoVygFDFSiOCaWQyot7ZJ6zRghfRlFdzz0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RY6lwhmy5MwLSY382lxUVv+l/9bPW/Ri5KDqAVBcSmypzOz6n3UbtEc6uC2eK4J57txlVs6zbj1soi+70xuXf6CFIzDwTW7PSBluOYgYq5gFmqJxigNDp5cqVt0kxkL1WYT9+Zj/eZXGMs7LrZuC6vw0G1oLbn4Ka2w2bGOKMDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=b6Do+ZFb; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=FJlqgjN8; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="qElniRjH"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1789037090; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=yYGKhdaUKuscOa+4B/EVe1QwH+1F1S8i7I6K81G6a3M=;
-	b=qElniRjHiYtH48uUa2R3mUKVeQMSjRDrpTWnJ+Q9QtT2VMqZ0vXk1WlM0OVAh0Ohf0A1M+61F+dgbigfqsRAbeQWiZn7O0454j9Pijxnk2siFR3m++riYgT1vK/0CkVliHubnHFk0PerghVpeHSDm0L0N8drfjmwZBWW7aGypQg=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R111e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=alibuda@linux.alibaba.com;NM=1;PH=DS;RN=17;SR=0;TI=SMTPD_---0XAhM9NR_1789037088;
-Received: from j66a10360.sqa.eu95.tbsite.net(mailfrom:alibuda@linux.alibaba.com fp:SMTPD_---0XAhM9NR_1789037088 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 10 Sep 2026 18:44:49 +0800
-From: "D. Wythe" <alibuda@linux.alibaba.com>
-To: mjambigi@linux.ibm.com,
-	wenjia@linux.ibm.com,
-	wintera@linux.ibm.com,
-	dust.li@linux.alibaba.com,
-	tonylu@linux.alibaba.com,
-	guwen@linux.alibaba.com
-Cc: kuba@kernel.org,
-	davem@davemloft.net,
-	netdev@vger.kernel.org,
-	linux-s390@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	leonro@nvidia.com,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	sidraya@linux.ibm.com,
-	jaka@linux.ibm.com,
-	oliver.yang@linux.alibaba.com
-Subject: [PATCH net-next 1/2] net/smc: clear the correct v2 slot and buffer in smc_wr_tx_put_slot()
-Date: Thu, 10 Sep 2026 18:44:45 +0800
-Message-ID: <20260910104446.41423-2-alibuda@linux.alibaba.com>
-X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20260910104446.41423-1-alibuda@linux.alibaba.com>
-References: <20260910104446.41423-1-alibuda@linux.alibaba.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="b6Do+ZFb";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="FJlqgjN8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1789037414;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=t7hkRUQ+GXdK6lyDfi0TTOprM8ecwt5B1P/G3pNJiII=;
+	b=b6Do+ZFbW6dLY9UI+m/ljJKlGCb9VxBuUMtM0QsYd6BOipTH3CMMSIi6mWwJxLUzZCGT7t
+	vn2eFnEkQ4RDfjRGusbnSccLVxXffV8P2MRbcRG/7PnI2FJT1fLTPuArNPCqNbPmBgii0T
+	Sp86xvmMk3zAlXQIbw+xa2uwsn4daFg=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-669-3Le7ajiuO_GW7PEckNPaNQ-1; Thu, 10 Sep 2026 06:50:13 -0400
+X-MC-Unique: 3Le7ajiuO_GW7PEckNPaNQ-1
+X-Mimecast-MFC-AGG-ID: 3Le7ajiuO_GW7PEckNPaNQ_1789037412
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-49b8c651ac0so101908595e9.2
+        for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 03:50:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1789037412; x=1789642212; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=t7hkRUQ+GXdK6lyDfi0TTOprM8ecwt5B1P/G3pNJiII=;
+        b=FJlqgjN8fNyj5sUYVLFPkFRJG6Y0kKHLxxFnbt2KmfRizK09cozWMJv9g7/1liRo/S
+         lnTipB7cSn/g28p8+6yKRv/uZUAGDJNCN3KDsxTKKWlR5ybpQ8eo0tibXN1pIvrpjEAz
+         hoo2f41QeVz6Z38mgd7b3C12uhs6Ikvz+GurbGPxy15kNd0jAZKjsfoBcNFk98Tb/VWn
+         LaiEGKtGhB7hZg4ZR63BvHCdP53QM6k1fKGCiTl3unNtxbxPh1eHQCmWeVpQzvhaiq1h
+         q6KcKWOBvxTk+0B9xc4jGlQ2zipM5RTy0Wo7k8XD6k1ljlreBJjvxz0/dkAuvcgnI7ZW
+         8VUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789037412; x=1789642212;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=t7hkRUQ+GXdK6lyDfi0TTOprM8ecwt5B1P/G3pNJiII=;
+        b=Bzr2fITBBT/iELqur7bGhIrb2Y/W/wcp51M2ZBXDl6YMAM0vJ11AZt5cScm/FaYJef
+         aUyPB+6i6JbHYOOuUeE2Bh112LDiNrZpdvmz7H+FTxFYkGKsXaUDoeysVWgRqkt5n0R7
+         ITcMeGMFux6WGcI+wUaViP7XivTvK9B+A3Yrj/GOrDHwhrprDvmn2Ka6V//y+KzbAjGY
+         Vb/QSzTVEi9sk0/ovSa/74CkvyWPsinJDDHvBUC2p7VCri1egNR8uKL0lNZicZPi8yvM
+         k2oN/OZGqj6KuRSlpABKO0TG0crqP5WjmACd235ngijhcwYmL5X51Sgxhndg7wtdF9VZ
+         mg7A==
+X-Forwarded-Encrypted: i=1; AKwUvBzu4ISDchh7bxg7zSCNowfkOOJFraspHoa4VLnPpRI9w5WpDIBPFziXv/Aom8STYb+5BKZB/cc=@vger.kernel.org
+X-Gm-Message-State: AFuF++ln+UitxRuzSqUuRL+RZWhWk3tTuzIG1XLhA4cknFcD8bI6Nje7
+	AnZiLwoed91H520vX6DUEkQTet+XPc8Cez3jEMVfM3ZWuf5U7ImtRVZQSG9vFL4veMvIdK0aQib
+	jNLIUl6gdTESsU8ESxdrA7aSDBq9BjE9M5CvDk6Oko1anM5ougs3XNEBAHw==
+X-Gm-Gg: AYBFou3INDdEaFALCkUZc5keQF2LEBJquwdSB0BC5yH4Xok3WhK+esYrccwUwCULJq6
+	a19Y5KeiJHMKLS98DW7Nh03r3IaCHbMNt+NU5QXlGs9DaERR5U0Ak+Eayxvg4GNQaOrre4fjK/Q
+	3LWhxfxhOyzzuHVmdpYQRC4+eUEbm7ThcjyM/iatOYCAjUNXK/qMyQkE6k6rDAWefXjpylKMtIg
+	cTKMGi9mPbUV6HBvfDbxbI5a70byeO0FFMrYJrR4XttyFVcCHS1IcnqOvscnzuoE0PXXip1mzEM
+	ynMLGXcK1Y6ACBMopyJqk01ARbEHx+B5wYHr0znzBMpvbjleXU85nGlmbQBtj3wKtpcGXY/b+VS
+	A4m2ExdfYfAOJGgwMLPFlatHbd2Ohq9lmlse12lOVUs10Qm60CzSLiyjaPALWpueaNkwcIwTCLg
+	==
+X-Received: by 2002:a05:600c:1da8:b0:49c:cf18:494e with SMTP id 5b1f17b1804b1-49cf825a530mr490158015e9.12.1789037412228;
+        Thu, 10 Sep 2026 03:50:12 -0700 (PDT)
+X-Received: by 2002:a05:600c:1da8:b0:49c:cf18:494e with SMTP id 5b1f17b1804b1-49cf825a530mr490157565e9.12.1789037411810;
+        Thu, 10 Sep 2026 03:50:11 -0700 (PDT)
+Received: from [192.168.188.218] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49d26c1bfc1sm81538805e9.4.2026.09.10.03.50.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 10 Sep 2026 03:50:11 -0700 (PDT)
+Message-ID: <ebded824-c858-4187-948c-b5444f4bf82c@redhat.com>
+Date: Thu, 10 Sep 2026 12:50:10 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2] net/smc: fix abort_work termination in
+ smc_conn_free()
+To: Hidayath Khan <hidayath@linux.ibm.com>, sashiko-reviews@lists.linux.dev
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev
+ <agordeev@linux.ibm.com>, linux-s390@vger.kernel.org,
+ Heiko Carstens <hca@linux.ibm.com>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+References: <20260907114721.1303498-1-hidayath@linux.ibm.com>
+ <20260908114743.481841F00A3A@smtp.kernel.org>
+ <3991782b-7a63-4bc9-94c2-02b3f9173586@linux.ibm.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <3991782b-7a63-4bc9-94c2-02b3f9173586@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-smc_wr_tx_put_slot() tries to reset the v2 pending slot and buffer with
-memset(&link->wr_tx_v2_pend, 0, sizeof(link->wr_tx_v2_pend)) and the
-equivalent for wr_tx_buf_v2. Both are pointers, so this zeroes the 8-byte
-pointer variable instead of the structure it points to. The pending slot
-and buffer are therefore never actually cleared, and the pointers get
-overwritten with NULL.
+On 9/9/26 8:48 AM, Hidayath Khan wrote:
+> 
+> On 08/09/26 5:17 pm, sashiko-bot@kernel.org wrote:
+>> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+>>
+>> Pre-existing issues:
+>> - [Critical] Late-queued `tx_work` can execute on a freed socket because it does not hold a socket reference, causing a use-after-free.
+>> --
+> Thanks for the Sashiko AI review. The finding is correct.
+> 
+> tx_work is the only one of the three connection work items with no socket
+> reference:
+> 
+>    close_work   sock_hold smc_cdc.c:420   sock_put smc_close.c:444
+>    abort_work   sock_hold smc_cdc.c:324   sock_put smc_core.c:1754
+>    tx_work        none                                  none
+> 
+> The link group holds a reference while the connection is registered, which
+> is what hides this. smc_conn_free() drops it in smc_lgr_unregister_conn()
+> and never cancels tx_work - it only cancels abort_work - and the link
+> group usually outlives the socket, so lgr->tx_wq is still there to run an
+> item that was queued late.
+> 
+> Worth noting the fix in this patch does not transfer. conn->freed works
+> for abort_work because abort_work holds a reference, so the socket is
+> alive and the flag is safe to read. tx_work holds nothing, so by the time
+> it runs there may be no conn to test. It needs the missing reference
+> rather than a guard: sock_hold() at the three queue sites, sock_put() in
+> smc_tx_work(), and the reference returned at the cancel sites that report
+> they removed a pending item.
+> 
+> I will send that separately, since it is a different work item and a
+> different fix. This patch is unchanged.
+Could you please have a look at clashiko report, too? that looks
+correct, too and more strictly tied to the issue addressed here.
 
-Pass the pointers directly and use sizeof(*pointer) so the intended
-structures are cleared.
+Also note that netdev-wise the most relevant sashiko instance is
+the nipa/clashiko one, as it includes reports/reviews/findings
+from the public clashiko instance.
 
-Fixes: 8799e310fb3f ("net/smc: add v2 support to the work request layer")
-Signed-off-by: D. Wythe <alibuda@linux.alibaba.com>
-Reviewed-by: Dust Li <dust.li@linux.alibaba.com>
-Reviewed-by: Mahanta Jambigi <mjambigi@linux.ibm.com>
----
- net/smc/smc_wr.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/net/smc/smc_wr.c b/net/smc/smc_wr.c
-index 97ba46893b17..def2ab84b0c7 100644
---- a/net/smc/smc_wr.c
-+++ b/net/smc/smc_wr.c
-@@ -288,10 +288,10 @@ int smc_wr_tx_put_slot(struct smc_link *link,
- 	} else if (link->lgr->smc_version == SMC_V2 &&
- 		   pend->idx == link->wr_tx_cnt) {
- 		/* Large v2 buffer */
--		memset(&link->wr_tx_v2_pend, 0,
--		       sizeof(link->wr_tx_v2_pend));
--		memset(&link->lgr->wr_tx_buf_v2, 0,
--		       sizeof(link->lgr->wr_tx_buf_v2));
-+		memset(link->wr_tx_v2_pend, 0,
-+		       sizeof(*link->wr_tx_v2_pend));
-+		memset(link->lgr->wr_tx_buf_v2, 0,
-+		       sizeof(*link->lgr->wr_tx_buf_v2));
- 		return 1;
- 	}
- 
--- 
-2.45.0
+/P
 
