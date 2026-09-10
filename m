@@ -1,38 +1,38 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 634D04C955F
-	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 17:02:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0B1154488F;
+	Thu, 10 Sep 2026 17:02:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789059740; cv=none; b=Wjzku2tsDfiPaY2emBD+JHZV0YTkZtmLeOw9V6aLgUCJAD/F8bHB5rxL1mJmov9dy6UYv5/4jFkoYqNLVtPykbO5sCZbts79mFu5mBJquyAMZU7CQ01YlYEwcuZQz9260Vyh8ENsjdLZQIxAf/2CTswJ23zkZ6DGNJiX777UXvQ=
+	t=1789059750; cv=none; b=r87Ap+LWfvmXTywZ/f/D77Ro3/AMdGLIVXgBkKiItpwj2YcFiql9pxahX4r67RP093dwCCaqeFEfuQVCP5APJzWnnJy3Do63VhykrBMDnfPmf4VL9AYBEK9X8fsCd/bHKOd0e4A1fGhGeypSpnkQojlRDV4pY4K8n7C8oNmbJvg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789059740; c=relaxed/simple;
-	bh=K2w3QLpmWJN4bF10j4tHo70mXlwymGkT5uNeN2VnHkc=;
+	s=arc-20240116; t=1789059750; c=relaxed/simple;
+	bh=q8syqySWiH+8Yv5J2OJgmyU2V5Gvl+xUuxrGiiadBMo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ETq4Ouuu5nZHPx5v8n5o/aJ1Ff3Wp14tZgENKep8xbeG7H/ERbB7LB/9Iom8/EdC112WMM+9iruorHj1G1cpJEdpmMx21pVzi1A0zSG9iYKN812AAKyw7DY89KjLF1XHoC6ZuqlaUIkLZyx421nyVo+QJG/zzk3IGy+1pCLK0dA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=cGsD+7w6; arc=none smtp.client-ip=185.171.202.116
+	 MIME-Version; b=HfgNdrJilZQI+MmMEXYfHFQ2290bNusvETY7tJ3ApI1NPhhBLnq2yozmx2iKcORAU1UgbOkhVI035sqvfEZO2WJoSjGKZ+IUbZDpCFuEpYfxZFivHIa+iA3JAD3lntQrjnn5GC/uZWD1elVFtm8PHk0en8Qu537Ah6jixRVi+SU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=eGiT+1uR; arc=none smtp.client-ip=185.246.85.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="cGsD+7w6"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="eGiT+1uR"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 7B760C653EF;
-	Thu, 10 Sep 2026 17:02:48 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 55EE04E40107;
+	Thu, 10 Sep 2026 17:02:14 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 17D3B5FC38;
-	Thu, 10 Sep 2026 17:02:07 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id DE32711C7A1A1;
-	Thu, 10 Sep 2026 19:01:58 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 2A5585FC38;
+	Thu, 10 Sep 2026 17:02:14 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8EEDB11C7926E;
+	Thu, 10 Sep 2026 19:02:09 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1789059721; h=from:subject:date:message-id:to:cc:mime-version:
+	t=1789059733; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=zSL52HqNSkLnBgMdAYt1YJaMvfRtqed8+vPC14qsirU=;
-	b=cGsD+7w6nf+DWRwt4qbZJQZ2U8FRBKwYO3ypXTZizNhl92xQmraMCv48x/NbN4A6sGEkqu
-	R+T4XkFrTyUE3y4K0G6a/NDUKmfoe6yj4WhLn8tpIGHUwzjtrAhwSEjnoxKwd3udFFlLmS
-	b7arV5jNlKJPDVSn4dZsyeXbbIrlLYJrykhroaPKm2weA397F1oHlp5880QmRQuAkuQHPa
-	JyafMZwRvIAJisTpXafHn9V05G4xz07sxfrkSGPqIAfaWje+BZ8QVK6UVgxrvKUFNzpMSD
-	l9sRF7kaV50YXCQo27JEUHusB2+UExHP9xpMyOlHfPZAVBTXjKz+wNPcWMfaSQ==
+	bh=djF07LBbe1E5mTvU7TPS/wHgSJ+GUxxW8gl5fasZef4=;
+	b=eGiT+1uR7XjxQzQtK7z11aZaRGcU/Q7ishTgtjFe7C0esOQZ0OdirN06ApyC5jCBhNCBKA
+	a95FEhMzBqbobj4+RlPPLjkapZJHT6Rx+/WQecxRwXuUcW2y4urd4/mBucIj8+6MQxp5fj
+	6HZn8p82wA0ltcfG+6Dp4MrczTBjskR3L4TWH/fzgKadD4fikS/Hrc/o1apb/EiMq0wBnE
+	hNkPnH/ffOYELFJoNEPfbbwzfnVbWZS6AsKn3bZNo/qhD3DyWB23M4WU1GfOCOIYOpMAvk
+	HZr/KdfmxlWGrVeI4U7fQE7PSgJXJ+zmjg5MTDwRQTxI539lBLaePLwqKDVUYw==
 From: Maxime Chevallier <maxime.chevallier@bootlin.com>
 To: davem@davemloft.net,
 	Andrew Lunn <andrew@lunn.ch>,
@@ -60,9 +60,9 @@ Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
 	Dimitri Fedrau <dimitri.fedrau@liebherr.com>,
 	Frank Wunderlich <frank.wunderlich@linux.dev>,
 	Pietro Ameruoso <p.ameruoso@live.it>
-Subject: [PATCH RESEND net-next v17 08/10] netlink: specs: Add ethernet port listing with ethtool
-Date: Thu, 10 Sep 2026 19:01:00 +0200
-Message-ID: <20260910170103.1029108-9-maxime.chevallier@bootlin.com>
+Subject: [PATCH RESEND net-next v17 10/10] Documentation: networking: Update the phy_port infrastructure description
+Date: Thu, 10 Sep 2026 19:01:02 +0200
+Message-ID: <20260910170103.1029108-11-maxime.chevallier@bootlin.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260910170103.1029108-1-maxime.chevallier@bootlin.com>
 References: <20260910170103.1029108-1-maxime.chevallier@bootlin.com>
@@ -75,203 +75,53 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-Ethernet network interfaces may have more than one front-facing port.
-The phy_port infrastructure was introduced to keep track of
-these ports, and allow userspace to know about the presence and
-capability of these ports. Add a ethnl netlink message to report this
-information.
+With SFP now properly supported with phy_port, add some details in the
+documentation. Fix a typo along the way (driver -> driven).
 
 Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 ---
- Documentation/netlink/specs/ethtool.yaml      | 55 +++++++++++++++++++
- Documentation/networking/ethtool-netlink.rst  | 34 ++++++++++++
- .../uapi/linux/ethtool_netlink_generated.h    | 22 ++++++++
- 3 files changed, 111 insertions(+)
+ Documentation/networking/phy-port.rst | 26 +++++++++++++++++++++-----
+ 1 file changed, 21 insertions(+), 5 deletions(-)
 
-diff --git a/Documentation/netlink/specs/ethtool.yaml b/Documentation/netlink/specs/ethtool.yaml
-index 5dd4d1b5d94b..35e028c0be29 100644
---- a/Documentation/netlink/specs/ethtool.yaml
-+++ b/Documentation/netlink/specs/ethtool.yaml
-@@ -210,6 +210,11 @@ definitions:
-       -
-         name: discard
-         value: 31
-+  -
-+    name: port-type
-+    doc: type of physical connector
-+    type: enum
-+    entries: [mdi, sfp]
+diff --git a/Documentation/networking/phy-port.rst b/Documentation/networking/phy-port.rst
+index 6e28d9094bce..2a9b1ec93b70 100644
+--- a/Documentation/networking/phy-port.rst
++++ b/Documentation/networking/phy-port.rst
+@@ -99,13 +99,29 @@ will eventually be able to report its own ksettings::
+             (_____)-----| Port |
+                         +------+
  
- attribute-sets:
-   -
-@@ -1905,6 +1910,32 @@ attribute-sets:
-         name: link
-         type: nest
-         nested-attributes: mse-snapshot
-+  -
-+    name: port
-+    attr-cnt-name: --ethtool-a-port-cnt
-+    attributes:
-+      -
-+        name: header
-+        type: nest
-+        nested-attributes: header
-+      -
-+        name: id
-+        type: u32
-+      -
-+        name: supported-modes
-+        type: nest
-+        nested-attributes: bitset
-+      -
-+        name: supported-interfaces
-+        type: nest
-+        nested-attributes: bitset
-+      -
-+        name: type
-+        type: u32
-+        enum: port-type
-+      -
-+        name: upstream-port
-+        type: u32
++SFP ports
++=========
++
++SFP interfaces involve 2 distinct components, each represented by
++a :c:type:`struct phy_port <phy_port>` instance :
++
++ - The SFP cage itself is a :c:type:`struct phy_port <phy_port>`. It's special
++   in that it's not an MDI interface, but rather a hot-pluggable MII.
++   The :c:type:`struct phy_port <phy_port>` associated to it lists the different
++   MII interfaces we can use on the cage.
++
++ - The SFP module, when inserted, will also be associated to a
++   :c:type:`struct phy_port <phy_port>`, that represents the various linkmodes
++   that it gives access to. The module's :c:type:`struct phy_port <phy_port>`
++   doesn't supersede the cage's port, it references it through
++   the :c:type:`struct phy_port <phy_port>` :c:member:`upstream_port` field.
++
+ Next steps
+ ==========
  
- operations:
-   enum-model: directional
-@@ -2859,6 +2890,30 @@ operations:
-             - worst-channel
-             - link
-       dump: *mse-get-op
-+    -
-+      name: port-get
-+      doc: Get ports attached to an interface
-+
-+      attribute-set: port
-+
-+      do:
-+        request:
-+          attributes:
-+            - header
-+            - id
-+        reply: &port-get-op-reply
-+          attributes:
-+            - header
-+            - id
-+            - supported-modes
-+            - supported-interfaces
-+            - type
-+            - upstream-port
-+      dump:
-+        request:
-+          attributes:
-+            - header
-+        reply: *port-get-op-reply
+-As of writing this documentation, only ports controlled by PHY devices are
+-supported. The next steps will be to add the Netlink API to expose these
+-to userspace and add support for raw ports (controlled by some firmware, and directly
+-managed by the NIC driver).
++As of writing this documentation, the port's presence and information can only
++be queried, and it's not possible to change any of the port's settings or select
++which one should be used.
  
- mcast-groups:
-   list:
-diff --git a/Documentation/networking/ethtool-netlink.rst b/Documentation/networking/ethtool-netlink.rst
-index e92abf45faf5..b4326c89b075 100644
---- a/Documentation/networking/ethtool-netlink.rst
-+++ b/Documentation/networking/ethtool-netlink.rst
-@@ -2537,6 +2537,39 @@ Within each channel nest, only the metrics supported by the PHY will be present.
- See ``struct phy_mse_snapshot`` kernel documentation in
- ``include/linux/phy.h``.
- 
-+PORT_GET
-+========
-+
-+Retrieve information about the physical connection points of a network device,
-+referred to as "ports". User needs to specify a PORT_ID for the DO operation,
-+in which case the DO request returns information about that specific port.
-+
-+As there can be more than one port, the DUMP operation can be used to list the
-+ports present on a given interface, by passing an interface index or name in
-+the dump request.
-+
-+Request contents:
-+
-+  ===================================== ======  ===============================
-+  ``ETHTOOL_A_PORT_HEADER``             nested  request header
-+  ``ETHTOOL_A_PORT_ID``                 u32     port id
-+  ===================================== ======  ===============================
-+
-+Kernel response contents:
-+
-+  ======================================= ======  =============================
-+  ``ETHTOOL_A_PORT_HEADER``               nested  request header
-+  ``ETHTOOL_A_PORT_ID``                   u32     the port's unique identifier,
-+                                                  per netdevice.
-+  ``ETHTOOL_A_PORT_SUPPORTED_MODES``      bitset  bitset of supported linkmodes
-+  ``ETHTOOL_A_PORT_SUPPORTED_INTERFACES`` bitset  bitset of supported MII
-+                                                  interfaces
-+  ``ETHTOOL_A_PORT_TYPE``                 u32     the port type
-+  ``ETHTOOL_A_PORT_UPSTREAM_PORT``        u32     If any, the index of the MII
-+                                                  port that feeds into this
-+                                                  port.
-+  ======================================= ======  =============================
-+
- Request translation
- ===================
- 
-@@ -2647,4 +2680,5 @@ are netlink only.
-   n/a                                 ``ETHTOOL_MSG_PHY_GET``
-   ``SIOCGHWTSTAMP``                   ``ETHTOOL_MSG_TSCONFIG_GET``
-   ``SIOCSHWTSTAMP``                   ``ETHTOOL_MSG_TSCONFIG_SET``
-+  n/a                                 ``ETHTOOL_MSG_PORT_GET``
-   =================================== =====================================
-diff --git a/include/uapi/linux/ethtool_netlink_generated.h b/include/uapi/linux/ethtool_netlink_generated.h
-index 8134baf7860f..660e0c08a766 100644
---- a/include/uapi/linux/ethtool_netlink_generated.h
-+++ b/include/uapi/linux/ethtool_netlink_generated.h
-@@ -78,6 +78,14 @@ enum ethtool_pse_event {
- 	ETHTOOL_PSE_EVENT_SW_PW_CONTROL_ERROR = 64,
- };
- 
-+/*
-+ * type of physical connector
-+ */
-+enum ethtool_port_type {
-+	ETHTOOL_PORT_TYPE_MDI,
-+	ETHTOOL_PORT_TYPE_SFP,
-+};
-+
- enum {
- 	ETHTOOL_A_HEADER_UNSPEC,
- 	ETHTOOL_A_HEADER_DEV_INDEX,
-@@ -840,6 +848,18 @@ enum {
- 	ETHTOOL_A_MSE_MAX = (__ETHTOOL_A_MSE_CNT - 1)
- };
- 
-+enum {
-+	ETHTOOL_A_PORT_HEADER = 1,
-+	ETHTOOL_A_PORT_ID,
-+	ETHTOOL_A_PORT_SUPPORTED_MODES,
-+	ETHTOOL_A_PORT_SUPPORTED_INTERFACES,
-+	ETHTOOL_A_PORT_TYPE,
-+	ETHTOOL_A_PORT_UPSTREAM_PORT,
-+
-+	__ETHTOOL_A_PORT_CNT,
-+	ETHTOOL_A_PORT_MAX = (__ETHTOOL_A_PORT_CNT - 1)
-+};
-+
- enum {
- 	ETHTOOL_MSG_USER_NONE = 0,
- 	ETHTOOL_MSG_STRSET_GET = 1,
-@@ -893,6 +913,7 @@ enum {
- 	ETHTOOL_MSG_RSS_CREATE_ACT,
- 	ETHTOOL_MSG_RSS_DELETE_ACT,
- 	ETHTOOL_MSG_MSE_GET,
-+	ETHTOOL_MSG_PORT_GET,
- 
- 	__ETHTOOL_MSG_USER_CNT,
- 	ETHTOOL_MSG_USER_MAX = (__ETHTOOL_MSG_USER_CNT - 1)
-@@ -954,6 +975,7 @@ enum {
- 	ETHTOOL_MSG_RSS_CREATE_NTF,
- 	ETHTOOL_MSG_RSS_DELETE_NTF,
- 	ETHTOOL_MSG_MSE_GET_REPLY,
-+	ETHTOOL_MSG_PORT_GET_REPLY,
- 
- 	__ETHTOOL_MSG_KERNEL_CNT,
- 	ETHTOOL_MSG_KERNEL_MAX = (__ETHTOOL_MSG_KERNEL_CNT - 1)
+ Another parallel task is the introduction of a MII muxing framework to allow the
+-control of non-PHY driver multi-port setups.
++control of non-PHY driven multi-port setups.
 -- 
 2.55.0
 
