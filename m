@@ -1,476 +1,171 @@
-Received: from mail-wm2-f11.google.com (mail-wm2-f11.google.com [74.125.225.139])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 266F346D542
-	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 10:56:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.139
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A1E73ADBB4;
+	Thu, 10 Sep 2026 11:08:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789037815; cv=none; b=DAgB50pUFDfyAZtPOW9TkvfCUZUkDp/KI995hfAFTkR7J7QNdsOu80YQkyPsipG8iycpOT4Gxp3NdQf3N/9uSfGVBx/6L8bvAf6BEblaDOI8f5wfNYPwrEfAdSjce9CLSiCcHmtxu1nFg2eIz/JBNpaG7aqkqy4cbOzjD+8Rf88=
+	t=1789038498; cv=none; b=gF1VUPQ8u0MouGau+m5rfhObLCZhn9/rOm6cOJE6NVpwlPULM00w+PAazFZk8Ov5Hzk5y1mrfSyuPzY86TMXZhNkSEmHfB+19I8pewNFviNGB1YroaOkXN6P5B7osbjmll+c2x/6rhWzjJxxM9N0rgMuAVqaQCvUrgiAxqKR3QI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789037815; c=relaxed/simple;
-	bh=TwnlEbu5fa8vhkUeGH4BI7kLguEhSrayIGxkbzqHRQ8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GOA1rYR9vIPyTk1rm+omG+DCZEjvXJOID2DKYX0S1/SdknyodI22ZnebxWyQGx+SG/FmErPXxsDYggv2atxjwN51elLCpnTwwfRm5cfoyHCdhNPZb7EUcjhMvCjt6atsaDd1EFthyfmPL9IAnrGJccDH10AlLk9t/ZZMA+2EXnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=74.125.225.139
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ovn.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm2-f11.google.com with SMTP id 5b1f17b1804b1-49ccea58fe3so14660565e9.1
-        for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 03:56:42 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789037797; x=1789642597;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=BxFCPGv8kRt3odkYGIDhBj4Cy6nMTztKwFqF9zi+rH4=;
-        b=MZZTFFwOEjaEz4icaerku496NPu3Hi0CwYDs9H9CoHtCUbVD8qBAGKypyDMUQtmsLw
-         hQrhIc2EDcxxNi1ga3SE67uh+dFDi/G44iOcxbisSL3VO/izaJz0K8SNlTS9dB0z4IYW
-         OXivmcP5Cp5x8DMbo3Rt4MzROdX21bVpAx6tnvNjnkE9rEuL8pWGT7KBVhSayvOR/vGI
-         z9/2wHsV2IYnWZNarjp9MshyKa7IJZGSRd44qQJxRAj+TmZoIgyVPCy1yQMMPSBgSXI9
-         /32E5EzSn/mo7HwCC0S381jQxaKOHnqpQgrKJcV0uLHxo/P7cPY14jB7LJ/Pvxqt2T3Y
-         dZRg==
-X-Gm-Message-State: AFuF++nOVp1CFjdasj7DbHjTYzq7aKySUD63Ur8qBAEoFhK9EZAWK9FB
-	ZxpidMD7qyH6AuFCU/d4tPprI85qfVdLzk6onNJF0JkxQGCgR/WgSyW+
-X-Gm-Gg: AYBFou3QRc1PdFOp3Q+ZU/vHCIzcUp0Lb5TsHIjZGJ4mUXBJsazbEP4ne23oQi+njcJ
-	wW/VG8oKjglI5HOU5pCuFpMWNiiZXfJEm08Sm1Qu4mr7DLlHQZNe8k7cGr9ncJaUqcbkHsN8Ubb
-	YwfOfJ6DdEHf50oxbbNBkNq5VuNvz8wfGPdeZb0HMrFfsAp0Z3FRmriCfBlew51Kz5rh1GKoLrI
-	1mJkJs9QbvVAMA6KpL9fh2DLclgfkDqKtR9yZS9XIz53A69NP3aa1c69PRk5jz0s0Y7NMrMHWkJ
-	5DwuSBmKjGLxJKD0CzgdIgXz/KopGL2TQIep5HKLWYDWsSDsxG0X5tkWR9CjnOBdZ9tanvdQYvS
-	AoxkigZDVF0HjltVn9MPrvk+YvmvrPWPUgN+oCuzxnfk+Ofi6Q7PAQrA9zAQOXz9TD2U4318ye3
-	yTcKWnJ51BiErif8VsK/gmEoNiwk4+joePk7PCXMKgXeANGc4bmesb+2bgqA7Xk2ZLmmsYDNC/s
-	TqGGAFraQ+hhu7G5wi0rYUFwAbVD/D6+nHhFiPIKg==
-X-Received: by 2002:a05:600c:46d5:b0:49c:fc6c:be06 with SMTP id 5b1f17b1804b1-49cfc6cc142mr349599165e9.29.1789037797136;
-        Thu, 10 Sep 2026 03:56:37 -0700 (PDT)
-Received: from im-t490s.redhat.corp (37-48-53-4.nat.epc.tmcz.cz. [37.48.53.4])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49d26c2985dsm119191695e9.6.2026.09.10.03.56.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Sep 2026 03:56:36 -0700 (PDT)
-From: Ilya Maximets <i.maximets@ovn.org>
-To: netfilter-devel@vger.kernel.org
-Cc: netdev@vger.kernel.org,
-	Donald Hunter <donald.hunter@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	Phil Sutter <phil@nwl.cc>,
-	Shuah Khan <shuah@kernel.org>,
-	=?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	"Remy D. Farley" <one-d-wide@protonmail.com>,
-	linux-kernel@vger.kernel.org,
-	coreteam@netfilter.org,
-	linux-kselftest@vger.kernel.org,
-	Ilya Maximets <i.maximets@ovn.org>
-Subject: [PATCH nf-next v2] netfilter: conntrack: make filtering by zone discoverable
-Date: Thu, 10 Sep 2026 12:54:13 +0200
-Message-ID: <20260910105629.3688497-1-i.maximets@ovn.org>
-X-Mailer: git-send-email 2.55.0
+	s=arc-20240116; t=1789038498; c=relaxed/simple;
+	bh=lvVwZT5G2DPI26FlTvfYulAsJOceRRV/6N9/zikzNxg=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Ln23b3nnMzNDA0cjFkh5VVHwGPzkVrkWeJj2aRCnsq5prMXZHBlelXPq3ex80U0uEjDO19kfwvUskv6cbmIKqOt1fFfV/v7Y+87twk7DN5Q65N5vITKrv138gET3mLV2WqKCPTD14j3Nrd8IB/9hbOFUwl/j7yeYSTuU1k8kPYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SDm9souj; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SDm9souj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AE351F000FF;
+	Thu, 10 Sep 2026 11:08:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789038496;
+	bh=UtBkBjD4fGqm+D0lgDokxYy+g0WlGmIHBZgTasitzQ0=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=SDm9soujF+lthd6lr2IVDFbJtAFG7AE7dXc/s7MeSEH9gFoS5k/GD+UkH2Jjvzpuo
+	 FqgFe5UeMmBD8H8HN1FcusDB+CDUL8GK0glFoHKMgThz302lFEA1EFHCmh67KEQ0o3
+	 LmPO3op/1nW+qcb3QCw+V3TzLXONev2dtWNLeQnAY3HodbxEE+iA7yHhjg+yn5TsJx
+	 eIMNeXPLTu39g/V6C64wvIw0o/cPe2sfpk3zJu4jQk1mLo+BZje1vY8If6qtQHvBe/
+	 ubgLesNm1W83H4iUEleZOZvteyqEXjFblQfv4qjY4oWTp9O1KloL+vO246JQiAf8Ym
+	 KLybYZZ2KudJg==
+Subject: Re: [PATCH net] r8169: don't enable chip LTR when the platform has
+ not enabled LTR
+From: netdev-bot+sashiko@kernel.org
+To: yogeshgaur.83@gmail.com
+Cc: hkallweit1@gmail.com, nic_swsd@realtek.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, javen_xu@realsil.com.cn
+Date: Thu, 10 Sep 2026 11:08:15 +0000
+Message-ID: <178903849584.219967.12066474820054965044@kernel.org>
+In-Reply-To: <20260909110554.1977-1-yogeshgaur.83@gmail.com>
+References: <20260909110554.1977-1-yogeshgaur.83@gmail.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Conntrack flush supports filtering by zone using CTA_ZONE, but this
-attribute is really hard to use from user space applications.  The
-reason is that it is not possible to tell if it's supported or not.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider:
 
-Older kernels silently ignore CTA_ZONE.  And in that case they just
-happily flush all the entries from all zones breaking all the existing
-connections.  So, applications have to infer support from the kernel
-version.  While it works in most cases, it's not a particularly
-reliable or desired way to check kernel capabilities from applications
-that aim to be portable.  There should be a better way to probe or
-discover features in the kernel.
+Critical: 0 · High: 1 · Medium: 1 · Low: 0
 
-The CTA_FILTER interface on the other hand is simple enough to probe.
-We can check for NLM_F_DUMP_FILTERED in the dump to see if filtering
-is supported.  And unknown sub-attributes in CTA_FILTER are rejected
-explicitly since strict validation is in use there.
+- [High] rtl_enable_ltr()
+  (drivers/net/ethernet/realtek/r8169_main.c:3038-3048) gates all chip…
+- [Medium] The new gate only skips *programming* the chip's LTR
+  machinery; nothing ever programs it to the off state.
 
-Let's add new CTA_FILTER_ZONE that signals that CTA_ZONE should be
-filtered on.  It is a flag, since everything in the CTA_FILTER is a
-bit mask, i.e., a form of a flag.  If set, it means that CTA_ZONE must
-be present and be used for filtering.  If the flag is not set however,
-the filtering on CTA_ZONE will still take place to ensure backwards
-compatibility.  So, the flag doesn't really change the filtering
-behavior, but it allows user space applications to properly discover
-support for CTA_ZONE filtering without need to rely on kernel version
-parsing or risk accidental flushes of the entire conntrack table,
-and also without modifying the kernel state.
+--
 
-A new test variant is added to test with and without the new flag.
-Since the setup code is moved into a shared function, expectations
-replaced with assertions to bail early if the base setup fails to
-avoid the cascade of secondary failures that can be misleading.
-Error return is only for the SKIP cases.
+r8169: don't enable chip LTR when the platform has not enabled LTR
 
-Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
----
+This adds a check in rtl_enable_ltr() that reads the endpoint's
+PCI_EXP_DEVCTL2 register and returns early when PCI_EXP_DEVCTL2_LTR_EN is
+clear, so the chip's LTR machinery is not programmed on hierarchies where
+LTR was not enabled.
 
-One other alternative is to make CTA_FILTER_ZONE a U16 sub-attribute
-instead of a FLAG and prioritize it over the CTA_ZONE.  But it feels
-like a FLAG is better suited for the CTA_FILTER, even if it takes a
-bit of extra space in the request.  Though I'm OK with reworking this
-into U16 or some other mechanism that would make the feature
-discoverable, if there are better ideas.
+Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2529752
 
-Version 2:
- * Mostly a re-post now that CI / selftest build is fixed.
- * selftest: replaced one missed expectation with an assertion in the
-   conntrack_zone_setup(). [sashiko-gemini]
- * Switched the doc comment to '>-' style as it seems to be a more
-   common way of writing multi-line comments.
+> diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+> index ec4fc21fa21f..c1ff4e898570 100644
+> --- a/drivers/net/ethernet/realtek/r8169_main.c
+> +++ b/drivers/net/ethernet/realtek/r8169_main.c
+> @@ -3037,6 +3037,16 @@ static void rtl_disable_exit_l1(struct rtl8169_private *tp)
+>  
+>  static void rtl_enable_ltr(struct rtl8169_private *tp)
+>  {
+> +	u16 ctl2;
+> +
+> +	/* The chip must not issue LTR messages unless the platform enabled
+> +	 * LTR on the whole path up to the root port. The PCI core discovers
+> +	 * that in pci_configure_ltr() and reflects it in LTR Mechanism Enable.
+> +	 */
+> +	pcie_capability_read_word(tp->pci_dev, PCI_EXP_DEVCTL2, &ctl2);
+> +	if (!(ctl2 & PCI_EXP_DEVCTL2_LTR_EN))
+> +		return;
 
-Version 1:
- * https://lore.kernel.org/all/20260904174452.1913072-1-i.maximets@ovn.org/
+[Severity: High]
+Is the endpoint's LTR Mechanism Enable bit really what the PCI core uses to
+reflect an end-to-end LTR path?
 
- Documentation/netlink/specs/conntrack.yaml    |   6 +
- .../linux/netfilter/nfnetlink_conntrack.h     |   1 +
- net/netfilter/nf_conntrack_netlink.c          |  11 ++
- .../net/netfilter/conntrack_dump_flush.c      | 145 ++++++++++++------
- 4 files changed, 117 insertions(+), 46 deletions(-)
+Looking at pci_configure_ltr() in drivers/pci/pcie/aspm.c, when the bit is
+already set (for example by firmware), the core leaves it alone and only sets
+the path flag if the upstream bridge already has one:
 
-diff --git a/Documentation/netlink/specs/conntrack.yaml b/Documentation/netlink/specs/conntrack.yaml
-index b1eb102ab8432..9202baf1352a6 100644
---- a/Documentation/netlink/specs/conntrack.yaml
-+++ b/Documentation/netlink/specs/conntrack.yaml
-@@ -371,6 +371,12 @@ attribute-sets:
-         name: reply-flags
-         type: u32
-         doc: bitmask of tuple fields to filter on, reply direction
-+      -
-+        name: zone
-+        type: flag
-+        doc: >-
-+          Filter on conntrack zone id; requires the top-level zone
-+          (``CTA_ZONE``) attribute.
-   -
-     name: conntrack-attrs
-     attributes:
-diff --git a/include/uapi/linux/netfilter/nfnetlink_conntrack.h b/include/uapi/linux/netfilter/nfnetlink_conntrack.h
-index 43233af75b9d5..985f9c08d3e9b 100644
---- a/include/uapi/linux/netfilter/nfnetlink_conntrack.h
-+++ b/include/uapi/linux/netfilter/nfnetlink_conntrack.h
-@@ -285,6 +285,7 @@ enum ctattr_filter {
- 	CTA_FILTER_UNSPEC,
- 	CTA_FILTER_ORIG_FLAGS,
- 	CTA_FILTER_REPLY_FLAGS,
-+	CTA_FILTER_ZONE,
- 	__CTA_FILTER_MAX
- };
- #define CTA_FILTER_MAX (__CTA_FILTER_MAX - 1)
-diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
-index 9b4e29557ec33..ffc29a407749d 100644
---- a/net/netfilter/nf_conntrack_netlink.c
-+++ b/net/netfilter/nf_conntrack_netlink.c
-@@ -911,6 +911,7 @@ struct ctnetlink_filter {
- static const struct nla_policy cta_filter_nla_policy[CTA_FILTER_MAX + 1] = {
- 	[CTA_FILTER_ORIG_FLAGS]		= NLA_POLICY_MASK(NLA_U32, CTA_FILTER_F_ALL),
- 	[CTA_FILTER_REPLY_FLAGS]	= NLA_POLICY_MASK(NLA_U32, CTA_FILTER_F_ALL),
-+	[CTA_FILTER_ZONE]		= { .type = NLA_FLAG },
- };
- 
- static int ctnetlink_parse_filter(const struct nlattr *attr,
-@@ -930,6 +931,9 @@ static int ctnetlink_parse_filter(const struct nlattr *attr,
- 	if (tb[CTA_FILTER_REPLY_FLAGS])
- 		filter->reply_flags = nla_get_u32(tb[CTA_FILTER_REPLY_FLAGS]);
- 
-+	if (tb[CTA_FILTER_ZONE])
-+		filter->zone_filter = true;
-+
- 	return 0;
- }
- 
-@@ -1006,6 +1010,7 @@ ctnetlink_alloc_filter(const struct nlattr * const cda[], u8 family)
- 	if (err)
- 		goto err_filter;
- 
-+	/* CTA_ZONE is allowed without CTA_FILTER_ZONE. */
- 	if (cda[CTA_ZONE]) {
- 		err = ctnetlink_parse_zone(cda[CTA_ZONE], &filter->zone);
- 		if (err < 0)
-@@ -1020,6 +1025,12 @@ ctnetlink_alloc_filter(const struct nlattr * const cda[], u8 family)
- 	if (err < 0)
- 		goto err_filter;
- 
-+	/* CTA_FILTER_ZONE cannot be set without CTA_ZONE. */
-+	if (filter->zone_filter && !cda[CTA_ZONE]) {
-+		err = -EINVAL;
-+		goto err_filter;
-+	}
-+
- 	if (filter->orig_flags) {
- 		if (!cda[CTA_TUPLE_ORIG]) {
- 			err = -EINVAL;
-diff --git a/tools/testing/selftests/net/netfilter/conntrack_dump_flush.c b/tools/testing/selftests/net/netfilter/conntrack_dump_flush.c
-index 31b8250ddc53d..0c777323f4ba7 100644
---- a/tools/testing/selftests/net/netfilter/conntrack_dump_flush.c
-+++ b/tools/testing/selftests/net/netfilter/conntrack_dump_flush.c
-@@ -215,7 +215,22 @@ static int count_entries(const struct nlmsghdr *nlh, void *data)
- 	return MNL_CB_OK;
- }
- 
--static int conntrack_count_zone(struct mnl_socket *sock, uint16_t zone)
-+static void put_zone_attr(struct nlmsghdr *nlh, uint16_t zone,
-+			  bool use_cta_filter)
-+{
-+	struct nlattr *nest;
-+
-+	mnl_attr_put_u16(nlh, CTA_ZONE, htons(zone));
-+
-+	if (use_cta_filter) {
-+		nest = mnl_attr_nest_start(nlh, CTA_FILTER);
-+		mnl_attr_put(nlh, CTA_FILTER_ZONE, 0, NULL);
-+		mnl_attr_nest_end(nlh, nest);
-+	}
-+}
-+
-+static int conntrack_count_zone(struct mnl_socket *sock, uint16_t zone,
-+				bool use_cta_filter)
- {
- 	char buf[MNL_SOCKET_BUFFER_SIZE];
- 	struct nlmsghdr *nlh;
-@@ -235,7 +250,7 @@ static int conntrack_count_zone(struct mnl_socket *sock, uint16_t zone)
- 	nfh->version = NFNETLINK_V0;
- 	nfh->res_id = 0;
- 
--	mnl_attr_put_u16(nlh, CTA_ZONE, htons(zone));
-+	put_zone_attr(nlh, zone, use_cta_filter);
- 
- 	ret = mnl_socket_sendto(sock, nlh, nlh->nlmsg_len);
- 	if (ret < 0) {
-@@ -261,7 +276,8 @@ static int conntrack_count_zone(struct mnl_socket *sock, uint16_t zone)
- 	return reply_counter;
- }
- 
--static int conntrack_flush_zone(struct mnl_socket *sock, uint16_t zone)
-+static int conntrack_flush_zone(struct mnl_socket *sock, uint16_t zone,
-+				bool use_cta_filter)
- {
- 	char buf[MNL_SOCKET_BUFFER_SIZE];
- 	struct nlmsghdr *nlh;
-@@ -281,7 +297,7 @@ static int conntrack_flush_zone(struct mnl_socket *sock, uint16_t zone)
- 	nfh->version = NFNETLINK_V0;
- 	nfh->res_id = 0;
- 
--	mnl_attr_put_u16(nlh, CTA_ZONE, htons(zone));
-+	put_zone_attr(nlh, zone, use_cta_filter);
- 
- 	ret = mnl_socket_sendto(sock, nlh, nlh->nlmsg_len);
- 	if (ret < 0) {
-@@ -304,43 +320,40 @@ static int conntrack_flush_zone(struct mnl_socket *sock, uint16_t zone)
- 	return 0;
- }
- 
--FIXTURE(conntrack_dump_flush)
--{
--	struct mnl_socket *sock;
--};
--
--FIXTURE_SETUP(conntrack_dump_flush)
-+static int conntrack_zone_setup(struct __test_metadata *_metadata,
-+				struct mnl_socket **sock)
- {
- 	struct in6_addr src, dst;
- 	int ret;
- 
--	self->sock = mnl_socket_open(NETLINK_NETFILTER);
--	if (!self->sock) {
-+	*sock = mnl_socket_open(NETLINK_NETFILTER);
-+	if (!*sock) {
- 		perror("mnl_socket_open");
--		SKIP(return, "cannot open netlink_netfilter socket");
-+		SKIP(return -1, "cannot open netlink_netfilter socket");
- 	}
- 
--	ret = mnl_socket_bind(self->sock, 0, MNL_SOCKET_AUTOPID);
--	EXPECT_EQ(ret, 0);
-+	ret = mnl_socket_bind(*sock, 0, MNL_SOCKET_AUTOPID);
-+	ASSERT_EQ(ret, 0);
- 
--	ret = conntrack_count_zone(self->sock, TEST_ZONE_ID);
-+	ret = conntrack_count_zone(*sock, TEST_ZONE_ID, false);
- 	if (ret < 0 && errno == EPERM)
--		SKIP(return, "Needs to be run as root");
-+		SKIP(return -1, "Needs to be run as root");
- 	else if (ret < 0 && errno == EOPNOTSUPP)
--		SKIP(return, "Kernel does not seem to support conntrack zones");
-+		SKIP(return -1,
-+		     "Kernel does not seem to support conntrack zones");
- 
--	ret = conntrack_data_generate_v4(self->sock, 0xf0f0f0f0, 0xf1f1f1f1,
-+	ret = conntrack_data_generate_v4(*sock, 0xf0f0f0f0, 0xf1f1f1f1,
- 					 TEST_ZONE_ID);
--	EXPECT_EQ(ret, 0);
--	ret = conntrack_data_generate_v4(self->sock, 0xf2f2f2f2, 0xf3f3f3f3,
-+	ASSERT_EQ(ret, 0);
-+	ret = conntrack_data_generate_v4(*sock, 0xf2f2f2f2, 0xf3f3f3f3,
- 					 TEST_ZONE_ID + 1);
--	EXPECT_EQ(ret, 0);
--	ret = conntrack_data_generate_v4(self->sock, 0xf4f4f4f4, 0xf5f5f5f5,
-+	ASSERT_EQ(ret, 0);
-+	ret = conntrack_data_generate_v4(*sock, 0xf4f4f4f4, 0xf5f5f5f5,
- 					 TEST_ZONE_ID + 2);
--	EXPECT_EQ(ret, 0);
--	ret = conntrack_data_generate_v4(self->sock, 0xf6f6f6f6, 0xf7f7f7f7,
-+	ASSERT_EQ(ret, 0);
-+	ret = conntrack_data_generate_v4(*sock, 0xf6f6f6f6, 0xf7f7f7f7,
- 					 NF_CT_DEFAULT_ZONE_ID);
--	EXPECT_EQ(ret, 0);
-+	ASSERT_EQ(ret, 0);
- 
- 	src = (struct in6_addr) {{
- 		.__u6_addr32 = {
-@@ -358,9 +371,9 @@ FIXTURE_SETUP(conntrack_dump_flush)
- 			0x02000000
- 		}
- 	}};
--	ret = conntrack_data_generate_v6(self->sock, src, dst,
-+	ret = conntrack_data_generate_v6(*sock, src, dst,
- 					 TEST_ZONE_ID);
--	EXPECT_EQ(ret, 0);
-+	ASSERT_EQ(ret, 0);
- 	src = (struct in6_addr) {{
- 		.__u6_addr32 = {
- 			0xb80d0120,
-@@ -377,9 +390,9 @@ FIXTURE_SETUP(conntrack_dump_flush)
- 			0x04000000
- 		}
- 	}};
--	ret = conntrack_data_generate_v6(self->sock, src, dst,
-+	ret = conntrack_data_generate_v6(*sock, src, dst,
- 					 TEST_ZONE_ID + 1);
--	EXPECT_EQ(ret, 0);
-+	ASSERT_EQ(ret, 0);
- 	src = (struct in6_addr) {{
- 		.__u6_addr32 = {
- 			0xb80d0120,
-@@ -396,9 +409,9 @@ FIXTURE_SETUP(conntrack_dump_flush)
- 			0x06000000
- 		}
- 	}};
--	ret = conntrack_data_generate_v6(self->sock, src, dst,
-+	ret = conntrack_data_generate_v6(*sock, src, dst,
- 					 TEST_ZONE_ID + 2);
--	EXPECT_EQ(ret, 0);
-+	ASSERT_EQ(ret, 0);
- 
- 	src = (struct in6_addr) {{
- 		.__u6_addr32 = {
-@@ -416,14 +429,51 @@ FIXTURE_SETUP(conntrack_dump_flush)
- 			0x08000000
- 		}
- 	}};
--	ret = conntrack_data_generate_v6(self->sock, src, dst,
-+	ret = conntrack_data_generate_v6(*sock, src, dst,
- 					 NF_CT_DEFAULT_ZONE_ID);
--	EXPECT_EQ(ret, 0);
-+	ASSERT_EQ(ret, 0);
- 
--	ret = conntrack_count_zone(self->sock, TEST_ZONE_ID);
-+	return 0;
-+}
-+
-+FIXTURE(conntrack_dump_flush)
-+{
-+	struct mnl_socket *sock;
-+};
-+
-+FIXTURE_VARIANT(conntrack_dump_flush)
-+{
-+	bool use_cta_filter;
-+};
-+
-+FIXTURE_VARIANT_ADD(conntrack_dump_flush, cta_zone)
-+{
-+	.use_cta_filter = false,
-+};
-+
-+FIXTURE_VARIANT_ADD(conntrack_dump_flush, cta_filter)
-+{
-+	.use_cta_filter = true,
-+};
-+
-+FIXTURE_SETUP(conntrack_dump_flush)
-+{
-+	int ret;
-+
-+	if (conntrack_zone_setup(_metadata, &self->sock))
-+		return;
-+
-+	ret = conntrack_count_zone(self->sock, TEST_ZONE_ID, false);
- 	EXPECT_GE(ret, 2);
- 	if (ret > 2)
- 		SKIP(return, "kernel does not support filtering by zone");
-+
-+	if (variant->use_cta_filter) {
-+		ret = conntrack_count_zone(self->sock, TEST_ZONE_ID, true);
-+		if (ret < 0 && errno == EINVAL)
-+			SKIP(return, "kernel does not support CTA_FILTER_ZONE");
-+		ASSERT_GE(ret, 0);
-+	}
- }
- 
- FIXTURE_TEARDOWN(conntrack_dump_flush)
-@@ -434,39 +484,42 @@ TEST_F(conntrack_dump_flush, test_dump_by_zone)
- {
- 	int ret;
- 
--	ret = conntrack_count_zone(self->sock, TEST_ZONE_ID);
-+	ret = conntrack_count_zone(self->sock, TEST_ZONE_ID,
-+				   variant->use_cta_filter);
- 	EXPECT_EQ(ret, 2);
- }
- 
- TEST_F(conntrack_dump_flush, test_flush_by_zone)
- {
-+	bool filter = variant->use_cta_filter;
- 	int ret;
- 
--	ret = conntrack_flush_zone(self->sock, TEST_ZONE_ID);
-+	ret = conntrack_flush_zone(self->sock, TEST_ZONE_ID, filter);
- 	EXPECT_EQ(ret, 0);
--	ret = conntrack_count_zone(self->sock, TEST_ZONE_ID);
-+	ret = conntrack_count_zone(self->sock, TEST_ZONE_ID, filter);
- 	EXPECT_EQ(ret, 0);
--	ret = conntrack_count_zone(self->sock, TEST_ZONE_ID + 1);
-+	ret = conntrack_count_zone(self->sock, TEST_ZONE_ID + 1, filter);
- 	EXPECT_EQ(ret, 2);
--	ret = conntrack_count_zone(self->sock, TEST_ZONE_ID + 2);
-+	ret = conntrack_count_zone(self->sock, TEST_ZONE_ID + 2, filter);
- 	EXPECT_EQ(ret, 2);
--	ret = conntrack_count_zone(self->sock, NF_CT_DEFAULT_ZONE_ID);
-+	ret = conntrack_count_zone(self->sock, NF_CT_DEFAULT_ZONE_ID, filter);
- 	EXPECT_EQ(ret, 2);
- }
- 
- TEST_F(conntrack_dump_flush, test_flush_by_zone_default)
- {
-+	bool filter = variant->use_cta_filter;
- 	int ret;
- 
--	ret = conntrack_flush_zone(self->sock, NF_CT_DEFAULT_ZONE_ID);
-+	ret = conntrack_flush_zone(self->sock, NF_CT_DEFAULT_ZONE_ID, filter);
- 	EXPECT_EQ(ret, 0);
--	ret = conntrack_count_zone(self->sock, TEST_ZONE_ID);
-+	ret = conntrack_count_zone(self->sock, TEST_ZONE_ID, filter);
- 	EXPECT_EQ(ret, 2);
--	ret = conntrack_count_zone(self->sock, TEST_ZONE_ID + 1);
-+	ret = conntrack_count_zone(self->sock, TEST_ZONE_ID + 1, filter);
- 	EXPECT_EQ(ret, 2);
--	ret = conntrack_count_zone(self->sock, TEST_ZONE_ID + 2);
-+	ret = conntrack_count_zone(self->sock, TEST_ZONE_ID + 2, filter);
- 	EXPECT_EQ(ret, 2);
--	ret = conntrack_count_zone(self->sock, NF_CT_DEFAULT_ZONE_ID);
-+	ret = conntrack_count_zone(self->sock, NF_CT_DEFAULT_ZONE_ID, filter);
- 	EXPECT_EQ(ret, 0);
- }
- 
+	pcie_capability_read_dword(pdev, PCI_EXP_DEVCTL2, &ctl);
+	if (ctl & PCI_EXP_DEVCTL2_LTR_EN) {
+		if (pci_pcie_type(pdev) == PCI_EXP_TYPE_ROOT_PORT) {
+			pdev->ltr_path = 1;
+			return;
+		}
+
+		bridge = pci_upstream_bridge(pdev);
+		if (bridge && bridge->ltr_path)
+			pdev->ltr_path = 1;
+
+		return;
+	}
+
+So on a machine where firmware set LTR_EN on the r8169 function but the
+hierarchy above it has no LTR path, the function returns with LTR_EN still set
+and pdev->ltr_path left at 0.
+
+The whole-path result appears to live in pci_dev::ltr_path in
+include/linux/pci.h instead:
+
+	unsigned int	ltr_path:1;	/* Latency Tolerance Reporting
+					   supported from root to here */
+
+and aspm.c uses that field, not DEVCTL2, when deciding L1.2 is unusable:
+
+	if (!child->ltr_path)
+		child_l1ss_cap &= ~PCI_L1SS_CAP_ASPM_L1_2;
+
+If that reading is right, then on the platform class described in the changelog
+the new test passes, rtl_hw_start() -> rtl_hw_aspm_clkreq_enable(tp, true) ->
+rtl_enable_ltr() still programs ALDPS_LTR_EN, LTR_SNOOP_EN,
+LINK_SPEED_CHANGE_EN and finally LTR_OBFF_LOCK_EN, and the chip is still let to
+trigger L1.2. Does the link-flap case the changelog reports stay reachable
+in that configuration?
+
+There is also the CONFIG_PCIEASPM=n build, where pci_configure_ltr() is an
+empty stub in drivers/pci/pci.h while pci_disable_link_state() is a stub
+returning 0, so tp->aspm_manageable stays 1 and rtl_enable_ltr() still runs.
+In that build no path discovery has happened at all - is testing the bit
+meaningful there, or is it just leftover firmware state?
+
+Alongside that, could the comment and the commit message be adjusted? The
+comment states the core "reflects it in LTR Mechanism Enable", and the changelog
+says the core "records the result by setting LTR Mechanism Enable in the
+endpoint's Device Control 2 register", which does not hold for the
+firmware-already-set case shown above.
+
+[Severity: Medium]
+This early return skips the programming, but does anything ever program the
+chip's LTR bits to the off state?
+
+Grepping r8169_main.c, ALDPS_LTR_EN, LTR_SNOOP_EN, LTR_OBFF_LOCK_EN,
+LINK_SPEED_CHANGE_EN and COMBO_LTR_EXTEND_EN only ever appear in set
+operations inside rtl_enable_ltr():
+
+	r8168_mac_ocp_modify(tp, ALDPS_LTR, 0x0000, ALDPS_LTR_EN);
+	RTL_W8(tp, COMBO_LTR_EXTEND, RTL_R8(tp, COMBO_LTR_EXTEND) | COMBO_LTR_EXTEND_EN);
+
+The disable branch of rtl_hw_aspm_clkreq_enable() clears only 0xe092,
+ClkReqEn/INT_CFG0_CLKREQEN and ASPM_en, so those LTR bits stay armed.
+
+If they were armed earlier and rtl_enable_ltr() later takes the new early
+return - say a pre-boot UEFI Realtek driver configured ASPM plus LTR, or an
+earlier call ran while LTR_EN read as set and the bit was cleared afterwards,
+with rtl_reset_work() -> rtl_hw_start() re-entering this path on the same
+device - does the chip keep emitting LTR messages with LTR Mechanism Enable
+clear and ALDPS still tied to them?
+
+Would writing the off values for those bits when the platform has not enabled
+LTR be more robust than skipping the writes, so the driver's view and the
+chip's state cannot diverge?
+
 -- 
-2.55.0
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260909110554.1977-1-yogeshgaur.83%40gmail.com
