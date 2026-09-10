@@ -1,321 +1,326 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2C2C4A6899;
-	Thu, 10 Sep 2026 15:05:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87FBB4A3860;
+	Thu, 10 Sep 2026 15:07:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789052753; cv=none; b=dL3o+ygVr4si7s/ejR1j3Upp1WtIAmIelcLwvqcZj82/1JnvycjJ0tbUxDu+HG/OrFtpY/PhwBf43b1WX0WZxIvz3WIo6R1j3raFdLaLgPSVzj//kMajvQsybqhd6r+O7iOmNhyu+9YA0UmnM+58XIFbwVGSNnTldrxwSYAzoY0=
+	t=1789052876; cv=none; b=q6vBhvatblqIUVHY7eO0J7OrIxwKYqAKWpgqWYOWl1ksgpRu78NawOgsRH0Kp0mDfvo7GcdoplErGIgLAI2cpp3Wl1e2C/ekD/xwrB2IyvUjf2b4DPFIwxxZQy4BWbq9sPxVxybVmrGnDp9xzJoAGwdbj6hp8u7X/Mj/ZIM/Udo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789052753; c=relaxed/simple;
-	bh=Etl5JzVJqML9PmVs917q+ZC+bbgxKo3NsM+f9uGvFK4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FlLvMwHUZCqm0GF20iLLUl+9dor2qC8E24NaG3/7IzDwW+OnA57J/K9ecH/pOSK7BZgFZ/t7854uWgd+ogAOYPdVlrDoD2PsIVS+HaupYLBqAlpd1v2KgiyeprcntUxozNu1oCm4WLEHtG/+SpLKA2AsA8mDO8BU/ElrxptuRz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AClqOoG8; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789052876; c=relaxed/simple;
+	bh=xBFnHWGK44hgcZvr1ZxtbLbA5wzSrzC+sOWiamIxjhs=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=o9U+CjxNzDHInO/3/PEMVQg5uACKmgnsUXM2NRw08tBws1AIVSWuVLX+yVLzQTHZvhj9BWz8ZbNnwEsnDBlNq4xyi+IThTlF/AqzeBKg3wzVyJnXdZ7FF1MOdFiq1K9YmTCzEbyw02R0aBRzQ1+sn9CAxUT7rg3tPHzqigdW4VI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lhXrpgUD; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AClqOoG8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00E541F00893;
-	Thu, 10 Sep 2026 15:05:37 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lhXrpgUD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2CDD1F000FF;
+	Thu, 10 Sep 2026 15:07:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789052743;
-	bh=2qSXLjhAjygcr+iubfm3t6D+tdBAD9pO+lEAOs4Tgrw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=AClqOoG8fAdd+WfzrsI/BVzr5vLb7kNVYRigDBFAzV18qOToEIlxubozh0+9DY7IR
-	 3v1hDPcfcfi/rCkmuUy2hqqssTWP3Pkss9oR9rAdmADcf+OzRlbE40BSxPNR926s3E
-	 fDLPRm9CJGDrQGsKMHdwL/q6h9RJIPGXAc0jnT+J0JMFBaEspFW92JtS5NQiaNov9V
-	 UT5AfZd7Edlgsg/cFuDz1EE7ajLmEyEBNceBDW9KHEZUNn6q/X7JskX6Va4Nnvo22J
-	 4QLhlC3klw9Qy4NS8KdiZWNn+h9GdpFJQCqXNngyck3wnegzKTvm4pPgu43J2uVV02
-	 IY03/t/R7ixCw==
-Date: Thu, 10 Sep 2026 16:05:35 +0100
-From: Lee Jones <lee@kernel.org>
-To: Rong Zhang <i@rong.moe>
-Cc: Pavel Machek <pavel@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>,
-	Benson Leung <bleung@chromium.org>,
-	Guenter Roeck <groeck@chromium.org>,
-	Marek =?iso-8859-1?Q?Beh=FAn?= <kabel@kernel.org>,
-	Mark Pearson <mpearson-lenovo@squebb.ca>,
-	"Derek J. Clark" <derekjohn.clark@gmail.com>,
-	Hans de Goede <hansg@kernel.org>,
-	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Ike Panhc <ikepanhc@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Vishnu Sankar <vishnuocv@gmail.com>,
-	Vishnu Sankar <vsankar@lenovo.com>, linux-leds@vger.kernel.org,
-	netdev@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, chrome-platform@lists.linux.dev,
-	platform-driver-x86@vger.kernel.org
-Subject: Re: [PATCH v6 04/12] leds: trigger: Add offloaded() callback and
- provide trigger_may_offload attribute
-Message-ID: <20260910150535.GG1051768@google.com>
-References: <20260902-leds-trigger-hw-changed-v6-0-55693cd78877@rong.moe>
- <20260902-leds-trigger-hw-changed-v6-4-55693cd78877@rong.moe>
+	s=k20260515; t=1789052867;
+	bh=0a6DXeYoRSPuJf/o8KnFdkoa/npQEF065gLl5JrA1JA=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=lhXrpgUDoJY7c7QVQt7dF3vexkhUKmkGoMt+FhqLCR9l0DNi87GGdWquGIXgSZx8o
+	 UilAhO64RIwNgog3wOQMqRwHYTb7orPt5otypa7jKjvQGBu2/l87DrQQb1noWGknVB
+	 RVhrQKyran3lvhL1JRzrcx1x4+H5oT6y/WJTCYajo+ebdY0XlbxsQ0nTN2FVSllitV
+	 yrX4SFKtZgoM/k5vN+FXg06IahsygR3VccaaNTO2JY5sqqeC4hl5qX49lnsWf4eLHw
+	 hrg2EnUZzE4ifDod9V38Fr1cYvS9StzX0ZgwxbOQTGaKK90sLr49e92lsbzbCPaqqV
+	 uSsVD+jNloPQA==
+Subject: Re: [PATCH net v2 2/2] net: stmmac: preserve real_num_tx_queues on
+ mqprio setup failure
+From: netdev-bot+sashiko@kernel.org
+To: lorenzo.bianconi@oss.qualcomm.com
+Cc: maxime.chevallier@bootlin.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com, 0x1207@gmail.com,
+ olteanv@gmail.com, netdev@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Date: Thu, 10 Sep 2026 15:07:46 +0000
+Message-ID: <178905286654.219967.8364160447492855923@kernel.org>
+In-Reply-To: =?utf-8?q?=3C20260909-stmmac-tc=5Fsetup=5Fdwmac510=5Fmqprio-err?=
+ =?utf-8?q?or-path-v2-2-8158b8333b3d=40oss=2Equalcomm=2Ecom=3E?=
+References: =?utf-8?q?=3C20260909-stmmac-tc=5Fsetup=5Fdwmac510=5Fmqprio-erro?=
+ =?utf-8?q?r-path-v2-2-8158b8333b3d=40oss=2Equalcomm=2Ecom=3E?=
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260902-leds-trigger-hw-changed-v6-4-55693cd78877@rong.moe>
 
-On Wed, 02 Sep 2026, Rong Zhang wrote:
+Thank you for your contribution! Sashiko AI review found 5 potential
+issue(s) to consider:
 
-> There are multiple triggers implementing hardware control. However, the
-> LED trigger core doesn't really know the hardware control (offloaded)
-> state since the coordination is done directly between the trigger and
-> the LED driver. It can only assume private triggers as offloaded and
-> generic ones as not offloaded.
-> 
-> Add an offloaded() callback so that triggers can report their offloaded
-> states to the LED trigger core. When unimplemented, it defaults to true
-> for private triggers and false for generic ones to keep the current
-> behavior unchanged.
-> 
-> With that, provide a new attribute "trigger_may_offload", so that
-> userspace can determine:
-> 
-> - if the LED device supports hardware control (supported => visible)
-> - which trigger is the hardware control trigger selected by the LED
->   device
-> - if the trigger is selected ("<foo_trigger>")
-> - if the trigger is offloaded ("[foo_trigger]")
-> 
-> Note: the documentation describes the attribute as "returning a list"
-> despite the LED core currently only supports one hardware control
-> trigger per LED device. This is intentional to make the attribute
-> extensible in the future without breaking userspace.
-> 
-> Acked-by: Ike Panhc <ikepanhc@gmail.com>
-> Signed-off-by: Rong Zhang <i@rong.moe>
-> ---
-> Changes in v6:
-> - Update Date: and KernelVersion: for the document of
->   /sys/class/leds/<led>/trigger_may_offload
-> 
-> Changes in v3:
-> - Rearrange the series so that the code using the offloaded() callback is
->   introduced before the driver implementation (thanks Thomas Wei�schuh)
-> - Reword documentation (ditto)
-> - Adopt guard() and lockdep (ditto)
-> - Adopt __led_trigger_is_hw_controlled() from newly-integrated PATCH 1
-> ---
->  Documentation/ABI/testing/sysfs-class-led | 22 ++++++++++++++++++++++
->  Documentation/leds/leds-class.rst         | 20 ++++++++++++++++++++
->  drivers/leds/led-class.c                  | 22 ++++++++++++++++++++++
->  drivers/leds/led-triggers.c               | 30 ++++++++++++++++++++++++++++++
->  drivers/leds/leds.h                       |  2 ++
->  include/linux/leds.h                      |  1 +
->  6 files changed, 97 insertions(+)
-> 
-> diff --git a/Documentation/ABI/testing/sysfs-class-led b/Documentation/ABI/testing/sysfs-class-led
-> index d4c918cc11a1..e3605fc55fa8 100644
-> --- a/Documentation/ABI/testing/sysfs-class-led
-> +++ b/Documentation/ABI/testing/sysfs-class-led
-> @@ -78,6 +78,28 @@ Description:
->  		(which would often be configured in the device tree for the
->  		hardware).
->  
-> +What:		/sys/class/leds/<led>/trigger_may_offload
+Critical: 0 · High: 0 · Medium: 3 · Low: 2
 
-*_to_hw?
+- [Medium] The reproducer quoted in the commit message cannot demonstrate
+  the bug being fixed.
+- [Medium] The new error path no longer reprograms the MAC's FPE
+  preemption-class register.
+- [Medium] Spurious kernel warning triggered during mqprio teardown path
+  in `tc_setup_dwmac510_mqprio`
+- [Low] The driver-side restore of dev->num_tc / tc_to_txq[] /
+  prio_tc_map[] on the FPE-failure path is immediately overridden in…
+- [Low] The newly added rollback in tc_setup_dwmac510_mqprio() discards
+  the return value of netif_set_real_num_tx_queues(ndev,…
 
-> +Date:		September 2026
-> +KernelVersion:	7.4
-> +Contact:	linux-leds@vger.kernel.org
-> +Description:
-> +		Names and states of triggers that may be offloaded to hardware.
-> +		Such triggers are also called "hardware control trigger" in some
-> +		context.
-> +
-> +		Only exists when the LED supports trigger offload.
-> +
-> +		Reading this file returns a list of triggers that are capable to
-> +		be offloaded. The optional brackets around the trigger name
-> +		indicate the state of the current trigger:
-> +
-> +		- `foo_trigger`: the trigger is not selected.
-> +		- `<foo_trigger>`: the trigger is selected, but falls back to
-> +		  software blink for some reason (e.g., incompatible trigger
-> +		  parameters)
-> +		- `[foo_trigger]`: the trigger is selected and offloaded to
-> +		  hardware.
-> +
->  What:		/sys/class/leds/<led>/inverted
->  Date:		January 2011
->  KernelVersion:	2.6.38
-> diff --git a/Documentation/leds/leds-class.rst b/Documentation/leds/leds-class.rst
-> index 3913966cfdac..2d41a6db602c 100644
-> --- a/Documentation/leds/leds-class.rst
-> +++ b/Documentation/leds/leds-class.rst
-> @@ -242,6 +242,9 @@ ops and needs to declare specific support for the supported triggers.
->  
->  With hw control we refer to the LED driven by hardware.
->  
-> +A sysfs attribute `trigger_may_offload` is provided for userspace to
-> +query supported triggers and their states.
-> +
->  LED driver must define the following value to support hw control:
->  
->      - hw_control_trigger:
-> @@ -298,6 +301,15 @@ LED driver must implement the following API to support hw control:
->                  Returns a pointer to a struct device or NULL if nothing
->                  is currently attached.
->  
-> +LED trigger should implement the following API to indicate hw control:
-> +    - offloaded:
+--
 
-hw_offloaded?
+net: stmmac: preserve real_num_tx_queues on mqprio setup failure
 
-> +                return a boolean indicating if the trigger is currently
-> +                offloaded to hardware.
-> +
-> +                If a trigger doesn't implement this callback, the default
-> +                value will be true for private triggers and false for generic
-> +                ones.
-> +
->  LED driver can activate additional modes by default to workaround the
->  impossibility of supporting each different mode on the supported trigger.
->  Examples are hardcoding the blink speed to a set interval, enable special
-> @@ -311,6 +323,14 @@ the end use hw_control_set to activate hw control.
->  A trigger can use hw_control_get to check if a LED is already in hw control
->  and init their flags.
->  
-> +Alternatively, a private trigger can be implemented along with the LED driver if
-> +the LED's hardware control doesn't fit any generic trigger. To associate the
-> +private trigger with the LED classdev, their `trigger_type` must be the same. To
-> +declare that the private trigger provides hardware control for the associated
-> +LED classdev, set the `hw_control_trigger` string to the trigger's name. Since
-> +both the LED classdev and the private trigger are in the same LED driver, it's
-> +not necessary for them to coordinate via `hw_control_*` callbacks.
-> +
->  When the LED is in hw control, no software blink is possible and doing so
->  will effectively disable hw control.
->  
-> diff --git a/drivers/leds/led-class.c b/drivers/leds/led-class.c
-> index 39cc2f3ea63f..7e571bd1de5b 100644
-> --- a/drivers/leds/led-class.c
-> +++ b/drivers/leds/led-class.c
-> @@ -96,8 +96,30 @@ static const struct bin_attribute *const led_trigger_bin_attrs[] = {
->  	&bin_attr_trigger,
->  	NULL,
->  };
-> +
-> +static DEVICE_ATTR_RO(trigger_may_offload);
-> +static struct attribute *led_trigger_attrs[] = {
-> +	&dev_attr_trigger_may_offload.attr,
-> +	NULL
-> +};
-> +
-> +static umode_t led_trigger_is_visible(struct kobject *kobj,
+This patch saves ndev->real_num_tx_queues along with the TC-to-queue and
+priority-to-TC mappings before an mqprio offload is applied, and restores
+them if stmmac_fpe_map_preemption_class() fails, instead of calling
+stmmac_reset_tc_mqprio() which reset the queue count to the platform
+maximum.
 
-Why doesn't all of this live in the triggers file as well?
+Some questions about the commit message and the new rollback path below.
 
-> +				      struct attribute *attr,
-> +				      int idx)
-> +{
-> +	struct device *dev = kobj_to_dev(kobj);
-> +	struct led_classdev *led_cdev = dev_get_drvdata(dev);
-> +
-> +	if (attr == &dev_attr_trigger_may_offload.attr)
-> +		return led_cdev->hw_control_trigger ? attr->mode : 0;
-> +
-> +	return attr->mode;
-> +}
-> +
->  static const struct attribute_group led_trigger_group = {
->  	.bin_attrs = led_trigger_bin_attrs,
-> +	.attrs = led_trigger_attrs,
-> +	.is_visible = led_trigger_is_visible,
->  };
->  #endif
->  
-> diff --git a/drivers/leds/led-triggers.c b/drivers/leds/led-triggers.c
-> index 804a04b326c4..de17a8bbb4d4 100644
-> --- a/drivers/leds/led-triggers.c
-> +++ b/drivers/leds/led-triggers.c
-> @@ -42,6 +42,10 @@ static bool __led_trigger_is_hw_controlled(struct led_classdev *led_cdev)
->  	if (!led_cdev->trigger)
->  		return false;
->  
-> +	if (led_cdev->trigger->offloaded)
-> +		return led_cdev->trigger->offloaded(led_cdev);
-> +
-> +	/* Otherwise assume private triggers as always offloaded. */
+>     The issue can be triggered using the following configuration:
+>     
+>       # First mqprio config lowers the hw queue count.
+>       $tc qdisc add dev eth0 root handle 1: mqprio queues 4@0 4@4
 
-s/as/are/
+[Severity: Medium]
+Does this reproducer actually show the difference between the old and new
+error paths?
 
->  	return led_cdev->trigger->trigger_type;
->  }
->  
-> @@ -341,6 +345,32 @@ void led_trigger_set_default(struct led_classdev *led_cdev)
->  }
->  EXPORT_SYMBOL_GPL(led_trigger_set_default);
->  
-> +ssize_t trigger_may_offload_show(struct device *dev,
-> +				 struct device_attribute *attr, char *buf)
-> +{
-> +	struct led_classdev *led_cdev = dev_get_drvdata(dev);
-> +	struct led_trigger *trig;
-> +	bool hit, offloaded;
-> +	int len;
-> +
-> +	guard(mutex)(&led_cdev->led_access);
-> +	guard(rwsem_read)(&led_cdev->trigger_lock);
-> +
-> +	trig = led_cdev->trigger;
-> +
-> +	offloaded = __led_trigger_is_hw_controlled(led_cdev);
-> +	hit = offloaded || (trig && !strcmp(led_cdev->hw_control_trigger, trig->name));
-> +
-> +	/* [offloaded] <active_but_not_offloaded> inactive */
+"queues 4@0 4@4" totals 8 TX queues, and mqprio only accepts it if
+real_num_tx_queues is already >= 8:
 
-Why do they have to live in different 'containers'?
+net/sched/sch_mqprio_lib.c:mqprio_validate_queue_counts() {
+	...
+	if (qopt->offset[i] >= dev->real_num_tx_queues ||
+	    last > dev->real_num_tx_queues) {
+	...
+}
 
-> +	len = sysfs_emit(buf, "%s%s%s\n",
-> +			 offloaded ? "[" : (hit ? "<" : ""),
-> +			 led_cdev->hw_control_trigger,
-> +			 offloaded ? "]" : (hit ? ">" : ""));
+stmmac opts into that check via caps->validate_queue_counts = true in
+tc_query_caps(), allocates MTL_MAX_TX_QUEUES (8) TX queues, and
+stmmac_hw_setup() sets:
+
+	netif_set_real_num_tx_queues(dev, priv->plat->tx_queues_to_use);
+
+So the first command is only accepted when tx_queues_to_use == 8, i.e.
+real_num_tx_queues is already at the platform maximum, and the comment
+"First mqprio config lowers the hw queue count" does not match what
+happens.
+
+With real_num_tx_queues == 8, the old path
+stmmac_reset_tc_mqprio() -> netif_set_real_num_tx_queues(ndev,
+priv->plat->tx_queues_to_use) restores exactly the same 8 that the new
+code restores from ndev_num_tx_queues, so the two behave identically for
+the quoted commands.
+
+Would a first configuration that totals fewer queues than
+tx_queues_to_use, for example "queues 2@0 2@2" on an 8-queue MAC followed
+by the failing "queues 2@0 2@2 fp E P", be a better reproducer?
+
+>     Note that a failed setup makes the qdisc layer run mqprio_destroy() on
+>     the new qdisc, which resets dev->num_tc to 0; that is qdisc-layer handling,
+>     out of the driver's control, and the driver-side restore remains correct
+>     for the still-active previous configuration.
+
+[Severity: Low]
+Is "the driver-side restore remains correct for the still-active previous
+configuration" accurate for num_tc and the two map arrays?
+
+mqprio_enable_offload() only assigns priv->hw_offload after ndo_setup_tc()
+succeeds:
+
+net/sched/sch_mqprio.c:mqprio_enable_offload() {
+	err = dev->netdev_ops->ndo_setup_tc(dev, TC_SETUP_QDISC_MQPRIO, &mqprio);
+	if (err)
+		return err;
+
+	priv->hw_offload = mqprio.qopt.hw;
+}
+
+so on the failure path mqprio_destroy() takes the else branch:
+
+net/sched/sch_mqprio.c:mqprio_destroy() {
+	if (priv->hw_offload && dev->netdev_ops->ndo_setup_tc)
+		mqprio_disable_offload(sch);
+	else
+		netdev_set_num_tc(dev, 0);
+}
+
+netdev_set_num_tc() writes num_tc only, so the netdev ends up with num_tc
+== 0 while the driver-restored tc_to_txq[] and prio_tc_map[] stay
+populated, a combination netdev_reset_tc() never produces on its own.
+
+Since skb_tx_hash(), netif_setup_tc(), mqprio_qopt_reconstruct() and XPS
+all gate on num_tc, is the newly added save/restore of num_tc and of the
+two 16-entry maps doing anything observable, and is priority
+classification for the still-installed previous qdisc actually preserved?
+
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
+> index 5398616fcdfe..7d73b0c16f50 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
+
+[ ... ]
+
+> @@ -1251,43 +1275,59 @@ static int stmmac_reset_tc_mqprio(struct net_device *ndev,
+
+[ ... ]
+
+> +	err = stmmac_set_ndev_tcs(ndev, qopt->num_tc, tc_to_txq);
+> +	if (err)
+> +		goto error_reset_tc;
 > +
-> +	return len;
-> +}
-> +EXPORT_SYMBOL_GPL(trigger_may_offload_show);
-> +
->  /* LED Trigger Interface */
+> +	ndev_num_tx_queues = ndev->real_num_tx_queues;
+> +	err = netif_set_real_num_tx_queues(ndev, num_tx_queues);
+>  	if (err)
+> -		goto err_reset_tc;
+> +		goto error_reset_tc;
 >  
->  int led_trigger_register(struct led_trigger *trig)
-> diff --git a/drivers/leds/leds.h b/drivers/leds/leds.h
-> index bee46651e068..b08a289397e4 100644
-> --- a/drivers/leds/leds.h
-> +++ b/drivers/leds/leds.h
-> @@ -27,6 +27,8 @@ ssize_t led_trigger_read(struct file *filp, struct kobject *kobj,
->  ssize_t led_trigger_write(struct file *filp, struct kobject *kobj,
->  			const struct bin_attribute *bin_attr, char *buf,
->  			loff_t pos, size_t count);
-> +ssize_t trigger_may_offload_show(struct device *dev,
-> +				 struct device_attribute *attr, char *buf);
+>  	err = stmmac_fpe_map_preemption_class(priv, ndev, extack,
+>  					      mqprio->preemptible_tcs);
+>  	if (err)
+> -		goto err_reset_tc;
+> +		goto error_reset_num_tx_queues;
 >  
->  extern struct rw_semaphore leds_list_lock;
->  extern struct list_head leds_list;
-> diff --git a/include/linux/leds.h b/include/linux/leds.h
-> index d778709f5b1b..bee2b4309a09 100644
-> --- a/include/linux/leds.h
-> +++ b/include/linux/leds.h
-> @@ -485,6 +485,7 @@ struct led_trigger {
->  	const char	 *name;
->  	int		(*activate)(struct led_classdev *led_cdev);
->  	void		(*deactivate)(struct led_classdev *led_cdev);
-> +	bool		(*offloaded)(struct led_classdev *led_cdev);
+>  	return 0;
 >  
->  	/* Brightness set by led_trigger_event */
->  	enum led_brightness brightness;
-> 
-> -- 
-> 2.55.0
-> 
+> -err_reset_tc:
+> -	stmmac_reset_tc_mqprio(ndev, extack);
+> +error_reset_num_tx_queues:
+> +	netif_set_real_num_tx_queues(ndev, ndev_num_tx_queues);
+> +error_reset_tc:
+> +	stmmac_set_ndev_tcs(ndev, ndev_ntc, ndev_tc_to_txq);
+> +	for (i = 0; i < ARRAY_SIZE(ndev_prio_tc_map); i++)
+> +		netdev_set_prio_tc_map(ndev, i, ndev_prio_tc_map[i]);
+
+[Severity: Medium]
+Is the rollback order at these two labels right when the new mqprio
+configuration asks for more TX queues than the one it replaces?
+
+When error_reset_num_tx_queues is reached, the netdev still carries
+the mapping that stmmac_set_ndev_tcs(ndev, qopt->num_tc, tc_to_txq)
+just installed: dev->num_tc is qopt->num_tc and tc_to_txq[] describes
+num_tx_queues queues. The restore call then shrinks
+real_num_tx_queues back to ndev_num_tx_queues, and because
+dev->num_tc is non-zero netif_set_real_num_tx_queues() goes through
+netif_setup_tc():
+
+net/core/dev.c:netif_setup_tc() {
+	struct netdev_tc_txq *tc = &dev->tc_to_txq[0];
+
+	/* If TC0 is invalidated disable TC mapping */
+	if (tc->offset + tc->count > txq) {
+		netdev_warn(dev, "Number of in use tx queues changed"
+				 " invalidating tc mappings...\n");
+		dev->num_tc = 0;
+		return;
+	}
+
+	for (i = 1; i < TC_BITMASK + 1; i++) {
+		...
+		if (tc->offset + tc->count > txq) {
+			netdev_warn(dev, "... Setting map to 0\n");
+			netdev_set_prio_tc_map(dev, i, 0);
+		}
+	}
+}
+
+So for a sequence such as "queues 2@0 2@2" followed by a failing
+"queues 4@0 4@4 fp E P", the driver's own rollback makes the core
+print "Priority traffic classification disabled!" (and possibly the
+per-priority warnings), zero dev->num_tc and rewrite prio_tc_map[]
+entries, purely as a side effect of the intermediate state. The
+following stmmac_set_ndev_tcs(ndev, ndev_ntc, ndev_tc_to_txq) and
+the netdev_set_prio_tc_map() loop do repair all of that, so the
+end state looks correct, but users see a scary warning for an
+internal undo step and the tc mappings are transiently invalid.
+
+Would reversing the two rollback steps, restoring ndev_ntc /
+ndev_tc_to_txq / ndev_prio_tc_map first and only then calling
+netif_set_real_num_tx_queues(ndev, ndev_num_tx_queues), avoid this?
+The saved mapping by construction fits ndev_num_tx_queues, so
+netif_setup_tc() should have nothing to complain about. If there is
+a reason the queue count has to be restored first, could that be
+spelled out in a comment?
+
+[Severity: Low]
+Should the return value of the restoring netif_set_real_num_tx_queues() be
+checked here?
+
+On this path the call always grows the queue count, because
+mqprio_validate_queue_counts() already ensured num_tx_queues <=
+ndev_num_tx_queues, and growing can fail:
+
+net/core/dev.c:netif_set_real_num_tx_queues() {
+	...
+		rc = netdev_queue_update_kobjects(dev, dev->real_num_tx_queues,
+						  txq);
+		if (rc)
+			return rc;
+	...
+}
+
+net/core/net-sysfs.c:netdev_queue_update_kobjects() {
+	for (i = old_num; i < new_num; i++) {
+		error = netdev_queue_add_kobject(dev, i);
+		if (error) {
+			new_num = old_num;
+			break;
+		}
+	}
+}
+
+The early return happens before dev->real_num_tx_queues is assigned, so on
+-ENOMEM the device keeps the lower queue count while the following
+stmmac_set_ndev_tcs() reinstates a tc_to_txq[] whose offsets and counts
+describe queues beyond real_num_tx_queues. The function still returns only
+the original FPE error, so nothing above sees the partial restore.
+
+[Severity: Medium]
+Does this error path need to reprogram the FPE preemption-class register?
+
+The previous code reached the disarm through:
+
+drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c:stmmac_reset_tc_mqprio() {
+	netdev_reset_tc(ndev);
+	netif_set_real_num_tx_queues(ndev, priv->plat->tx_queues_to_use);
+
+	return stmmac_fpe_map_preemption_class(priv, ndev, extack, 0);
+}
+
+dwmac5_fpe_map_preemption_class() does all of its validation before its
+single read-modify-write:
+
+drivers/net/ethernet/stmicro/stmmac/stmmac_fpe.c {
+		if (priv->plat->tx_sched_algorithm == MTL_TX_ALGORITHM_SP) {
+			NL_SET_ERR_MSG_MOD(extack, ALG_ERR_MSG);
+			return -EINVAL;
+		}
+	...
+update_mapping:
+	val = readl(priv->ioaddr + GMAC5_MTL_FPE_CTRL_STS);
+	writel(u32_replace_bits(val, preemptible_txqs, FPE_MTL_PREEMPTION_CLASS),
+	       priv->ioaddr + GMAC5_MTL_FPE_CTRL_STS);
+}
+
+so on the -EINVAL path GMAC5_MTL_FPE_CTRL_STS still holds the mask
+programmed by the previous successful configuration.
+
+The new error_reset_num_tx_queues/error_reset_tc labels touch no MAC
+register, and the qdisc layer then zeroes dev->num_tc via
+mqprio_destroy() -> netdev_set_num_tc(dev, 0). Is the hardware then left
+with a per-TXQ preemptible mask armed while the driver's only description
+of which TXQs belong to which TC says there are no traffic classes, so
+express-intended frames can land on TXQs the MAC merge layer will
+fragment?
+
+The driver recomputes the mask only from netdev_get_num_tc() and
+tc_to_txq[] on later calls, so it appears the stale mask stays until the
+previous qdisc is deleted or replaced. Would it be worth mentioning this
+hardware-state change in the commit message?
 
 -- 
-Lee Jones
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260909-stmmac-tc_setup_dwmac510_mqprio-error-path-v2-0-8158b8333b3d%40oss.qualcomm.com
