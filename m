@@ -1,138 +1,184 @@
-Received: from out198-19.us.a.mail.aliyun.com (out198-19.us.a.mail.aliyun.com [47.90.198.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEF3E3A6EEC;
-	Thu, 10 Sep 2026 07:46:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=47.90.198.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F33F53D9DAD;
+	Thu, 10 Sep 2026 07:52:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789026418; cv=none; b=Z0hvZhl4BC2yjbHnrN+p7XDSddDQvV6XTTTjXqPOG+LgtI6bUVQxwARAl8awrwmhwCWOf1nFthmb81YIjX0Mp+28riHefP9K1f2GshOe3Zs7evBZhCUAyxhzcAnl2MjRdzo+LdtC43Me/KV1FQT7TkOQ99oQQxpohs/RIU2296E=
+	t=1789026755; cv=none; b=gqKILzleQDfA2sfshgP1Wq03pHLsoeslbeRQxsLJxeKfanEAhgcqczpHMwSXW1y/+Qs2ID40964gHTC+gZuME6zBvvziiRcN5baYg6xOg3+dCcfl1wjGHJ20amICJ0A9+YSIp/R7FizgcXAMxQgL58cBxoev0JyiKMNU+m7o7hI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789026418; c=relaxed/simple;
-	bh=goJTZWc3/Z6RtJ73HCKX+/B+S7fXYAJtedHBxpIsePQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=OqX4HhVH/JsfaL6qg3aD8b7bek9cmowGupd2y/BNw+h99/NGAtiRHSr9wI9Cm/WvM/JE8zTl7K64tL+ZJ6qvlvVJ+STj77HkOT8yl4lf1w8Q3tWkcdwsFmcSi7Newn5NQkYmpjbjvYEQMoBO7Li6wJGcTXrbBqW4xsOuAKshe4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com; spf=pass smtp.mailfrom=motor-comm.com; arc=none smtp.client-ip=47.90.198.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=motor-comm.com
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.08438314|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.0565204-0.00345749-0.940022;FP=16780861628771732659|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037025160;MF=kyle.switch@motor-comm.com;NM=1;PH=DS;RN=18;RT=18;SR=0;TI=SMTPD_---.jAJ7K70_1789026394;
-Received: from motor-comm.com(mailfrom:kyle.switch@motor-comm.com fp:SMTPD_---.jAJ7K70_1789026394 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Thu, 10 Sep 2026 15:46:34 +0800
-From: Kyle Switch <kyle.switch@motor-comm.com>
-To: Frank.Sae@motor-comm.com,
-	andrew@lunn.ch,
-	hkallweit1@gmail.com,
-	linux@armlinux.org.uk,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	conor+dt@kernel.org,
-	devicetree@vger.kernel.org
-Cc: ming.xu@motor-comm.com,
-	xiaolin.xu@motor-comm.com,
-	jianmin.wang@motor-comm.com,
-	jie.han@motor-comm.com,
-	wei.zhang@gl-inet.com,
-	sijia.huang@gl-inet.com
-Subject: [PATCH v16 2/2] dt-bindings: net: Document Motorcomm YT8824 PHY package
-Date: Thu, 10 Sep 2026 15:46:24 +0800
-Message-Id: <20260910074624.2426899-3-kyle.switch@motor-comm.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260910074624.2426899-1-kyle.switch@motor-comm.com>
-References: <20260910074624.2426899-1-kyle.switch@motor-comm.com>
+	s=arc-20240116; t=1789026755; c=relaxed/simple;
+	bh=k7QWAev1of4Qo1pZx6aLH3WYBxnZXfSsTRkXPXh2oT8=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=fbUEy9YfIldzp3s9hC2UnJPRiopf6h5FYfilWIsyMTf499X1ozexrzBOfRvBLOVvQH0uO+uoLr7k+AdCa3qaDhShJp1NQrcpzvUEJQCcRvpAOz+Fykaf3s9Lh9TJ6fUPKi/NTtu0u1VHCrbnXkVZmIeJS+Gb1BX2M5eEP6V3yx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HkbgVlXF; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HkbgVlXF"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82CD11F000FF;
+	Thu, 10 Sep 2026 07:52:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789026753;
+	bh=1pVWhZMGqI1p6cZUeIZCzL+vpwVRzrPUkM+O9rcKPwg=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=HkbgVlXFcmDCXUSMMh2H6w3joSEaotXxi7a83g2aQ1M4rAxtrmAdBBOabR2DRTe3o
+	 wYkWky2PHe86d7Awzbk/UpndWf9HLYYZSKa7OEzWvcIEVfRORJMNMjh52TYsgVUUun
+	 z7GfVPD2nXXHvoHYa+FazefkS4mI8i97JS9yQ12piDBd4eE1ZCq6cgAe9JV4vQ7Ybb
+	 847Zbnb23DjZ6auRRLxbHZ8iayftsiYXZKlinQ26sBhBvsQckc7sFsfjBajmOrVW81
+	 f0GGtE8UbMvHCI9u4zV0HI93OUKQC6Xxy6inpYXyJq+GRBf7VSi7jhjVGpgxMlRmiJ
+	 1OvQDhYclEV+Q==
+Subject:
+ Re: [PATCH] net: wwan: mhi_wwan_mbim: validate datagram bounds before copy
+From: netdev-bot+sashiko@kernel.org
+To: elb12345@hotmail.co.uk
+Cc: loic.poulain@oss.qualcomm.com, ryazanov.s.a@gmail.com,
+ johannes@sipsolutions.net, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ netdev@vger.kernel.org, stable@vger.kernel.org
+Date: Thu, 10 Sep 2026 07:52:32 +0000
+Message-ID: <178902675202.219967.7469002481528493501@kernel.org>
+In-Reply-To: =?utf-8?q?=3CAS8P251MB0001E25A247262552A62241BC8B22=40AS8P251MB?=
+ =?utf-8?q?0001=2EEURP251=2EPROD=2EOUTLOOK=2ECOM=3E?=
+References: =?utf-8?q?=3CAS8P251MB0001E25A247262552A62241BC8B22=40AS8P251MB0?=
+ =?utf-8?q?001=2EEURP251=2EPROD=2EOUTLOOK=2ECOM=3E?=
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Document Motorcomm YT8824 PHY package.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider:
 
-Motorcomm YT8824 Ethernet PHY is PHY package of 4 PHY-s.
+Critical: 0 · High: 0 (1) · Medium: 1 · Low: 0
 
-Document the required property to make the PHY package correctly
-configure and work.
+- [Medium] Commit message understates the severity of the bug being
+  fixed.
 
-Signed-off-by: Kyle Switch <kyle.switch@motor-comm.com>
----
- .../bindings/net/motorcomm,yt8824.yaml        | 63 +++++++++++++++++++
- 1 file changed, 63 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/net/motorcomm,yt8824.yaml
+Pre-existing issues:
+- [High] The outer `while (1)` NDP walk in mhi_mbim_rx()
+  (drivers/net/wwan/mhi_wwan_mbim.c) has no iteration bound and no…
 
-diff --git a/Documentation/devicetree/bindings/net/motorcomm,yt8824.yaml b/Documentation/devicetree/bindings/net/motorcomm,yt8824.yaml
-new file mode 100644
-index 000000000000..9907a4a7e63e
---- /dev/null
-+++ b/Documentation/devicetree/bindings/net/motorcomm,yt8824.yaml
-@@ -0,0 +1,63 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/net/motorcomm,yt8824.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: MotorComm YT8824 Ethernet PHY
-+
-+maintainers:
-+  - Kyle Switch <kyle.switch@motor-comm.com>
-+
-+description: |
-+  Motorcomm YT8824 Ethernet PHY is a PHY package of 4 PHYs.
-+
-+$ref: ethernet-phy-package.yaml#
-+
-+properties:
-+  compatible:
-+    enum:
-+      - ethernet-phy-id4f51.e8b8
-+
-+  motorcomm,interface-mode:
-+    description: |
-+      PHY package interface mode.
-+    $ref: /schemas/types.yaml#/definitions/string
-+    enum:
-+      - internal
-+      - usxgmii
-+    default: internal
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    mdio {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        ethernet-phy-package@0 {
-+            #address-cells = <1>;
-+            #size-cells = <0>;
-+            compatible = "ethernet-phy-id4f51.e8b8";
-+            reg = <9>;
-+
-+            motorcomm,interface-mode = "usxgmii";
-+
-+            ethernet-phy@4 {
-+                reg = <4>;
-+            };
-+
-+            ethernet-phy@5 {
-+                reg = <5>;
-+            };
-+
-+            ethernet-phy@6 {
-+                reg = <6>;
-+            };
-+
-+            ethernet-phy@7 {
-+                reg = <7>;
-+            };
-+        };
-+    };
+--
+
+net: wwan: mhi_wwan_mbim: validate datagram bounds before copy
+
+This adds a bounds check in mhi_mbim_rx() so that an NDP16 datagram entry
+whose offset plus length falls outside the received skb is skipped instead
+of being copied.  The check mirrors the one in cdc_mbim.c.
+
+A couple of questions below, one about the commit message wording and one
+about the loop that encloses the changed lines.
+
+> mhi_mbim_rx() copies datagrams from the NTB using skb_copy_bits() but
+> never validates that the datagram offset and length from the NDP entry
+> actually lie within the source skb. If a malicious or buggy modem sends
+> an NDP entry with dgram_offset + dgram_len > skb->len, skb_copy_bits()
+> returns -EFAULT and the destination skb is delivered with partially
+> uninitialized data.
+
+[Severity: Medium]
+Is "partially uninitialized data" the right description of the pre-patch
+behaviour?  skb_copy_bits() does the range test as its very first
+statement:
+
+net/core/skbuff.c:skb_copy_bits() {
+	if (offset > (int)skb->len - len)
+		goto fault;
+	...
+}
+
+so on the out-of-range case nothing at all is copied into the destination
+buffer.
+
+In mhi_mbim_rx() the destination skb has already been allocated and
+extended before the copy, and the copy's return value is discarded:
+
+	skbn = netdev_alloc_skb(link->ndev, dgram_len);
+	if (!skbn)
+		continue;
+
+	skb_put(skbn, dgram_len);
+	skb_copy_bits(skb, dgram_offset, skbn->data, dgram_len);
+
+netdev_alloc_skb() does not zero the payload area, so wouldn't every one
+of the up-to-65535 bytes handed to netif_rx() be stale slab or page-frag
+content rather than a partially filled datagram?  The protocol
+classification that follows, skbn->data[0] & 0xf0, would also be reading
+that stale content.
+
+Would it be worth restating this as a full uninitialized kernel memory
+disclosure driven by the modem-supplied wDatagramIndex/wDatagramLength
+fields, so that stable and security triage see the real impact?
+
+> diff --git a/drivers/net/wwan/mhi_wwan_mbim.c b/drivers/net/wwan/mhi_wwan_mbim.c
+> index a949987125976..acdcaceebc488 100644
+> --- a/drivers/net/wwan/mhi_wwan_mbim.c
+> +++ b/drivers/net/wwan/mhi_wwan_mbim.c
+> @@ -315,6 +315,9 @@ static void mhi_mbim_rx(struct mhi_mbim_context *mbim, struct sk_buff *skb)
+>  			if (!dgram_offset || !dgram_len)
+>  				break; /* null terminator */
+>  
+> +			if (dgram_offset + dgram_len > skb->len)
+> +				continue;
+> +
+>  			skbn = netdev_alloc_skb(link->ndev, dgram_len);
+>  			if (!skbn)
+>  				continue;
+
+[Severity: High]
+This is a pre-existing issue and not introduced by this patch, but since
+the change hardens the inner DPE loop against the same untrusted NDP data,
+can the outer NDP walk in mhi_mbim_rx() still be spun forever by the
+modem?
+
+The loop back-edge takes wNextNdpIndex verbatim and zero is the only exit
+condition:
+
+drivers/net/wwan/mhi_wwan_mbim.c:mhi_mbim_rx() {
+	while (1) {
+		...
+unlock:
+		rcu_read_unlock();
+next_ndp:
+		/* Other NDP to process? */
+		ndpoffset = (int)le16_to_cpu(ndp16.wNextNdpIndex);
+		if (!ndpoffset)
+			break;
+	}
+}
+
+mbim_rx_verify_nth16() returns le16_to_cpu(nth16->wNdpIndex) unchanged,
+and mbim_rx_verify_ndp16() only checks wLength against
+USB_CDC_NCM_NDP16_LENGTH_MIN and that the DPE array fits in skb->len.
+Neither places any constraint on wNextNdpIndex.
+
+So for an NDP16 with wLength == 0x10 (nframes == 1) followed by a
+{index=0,len=0} DPE, the inner for loop breaks immediately, and if
+wNextNdpIndex points back at that same NDP the loop re-reads identical
+bytes with no per-iteration state change (rx_seq is updated before the
+loop, the skb is not modified), so is the !ndpoffset exit ever reached?
+
+The function this patch takes its check from guards exactly this:
+
+drivers/net/usb/cdc_mbim.c:cdc_mbim_rx_fixup() {
+	int loopcount = 50; /* arbitrary max preventing infinite loop */
+	...
+	ndpoffset = le16_to_cpu(ndp16->wNextNdpIndex);
+	if (ndpoffset && loopcount--)
+		goto next_ndp;
+}
+
+MHI downlink callbacks reach mhi_mbim_rx() from a tasklet
+(tasklet_schedule(&mhi_event->task) in drivers/bus/mhi/host/main.c), so
+would an unterminated walk here wedge softirq processing on that CPU and
+trip the soft lockup or RCU stall detectors?
+
+Would adding an equivalent loopcount guard, or requiring wNextNdpIndex to
+advance past the current NDP, be appropriate alongside this fix?
+
 -- 
-2.25.1
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/AS8P251MB0001E25A247262552A62241BC8B22%40AS8P251MB0001.EURP251.PROD.OUTLOOK.COM
