@@ -1,222 +1,137 @@
-Received: from fout-b5-smtp.messagingengine.com (fout-b5-smtp.messagingengine.com [202.12.124.148])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20C0D38A73B;
-	Thu, 10 Sep 2026 15:37:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.148
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E8FE38C402
+	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 15:38:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789054652; cv=none; b=NR+lglqAzqKMjnNF6fqxmKWEMCNwj6QJcUpunJ8UEOnK5ZFZSoK5O0mFie8TsDYsMzETp1M7k6vhqaOa9ipa62H6PiKDGnBJHaru8Y5YGiB2UymmAFnaP0nDa8ukMlIs6ON49iqcQr1dqjvN0GHdYUH3JSCMRtXc1ZN8phStC5k=
+	t=1789054692; cv=none; b=X328zym96BjXKI8Aqkhx0Pnst7QOlYqWjEQbo5KQ1oDGH+nhHax3HvZtLSscru3Di7xAFNwPPB+UMDU+bOXbQ1Xd4lE+wwUMXMGJGFKPc6fHMDh43Mke94D5dpI/3EevdJtSaPXvp0fSimqD0FxUdX6aGsbi3yB5oT0s2hf8tXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789054652; c=relaxed/simple;
-	bh=tzfrxLbW18XBupQQO4Z4sOHkODX/2tTbZQV7+HM+Wto=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=o9gmHhbgfS7YaE4d0/rGWIVWtnCsIpAuTCOi80iM60upLPJl+eLqSYqlWQu3fdF8kQUFKHiVs/0jLYiyddPJ2vWPiAB20pr57UevVvmPxNozPvHqsuUrfa9zl2pLe0VSbdM99a7FcMbN87ERQ1qtZcucDjs/yl5xO9Djaiz2tUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=ikywC8+h; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=R8SmDbAP; arc=none smtp.client-ip=202.12.124.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+	s=arc-20240116; t=1789054692; c=relaxed/simple;
+	bh=xzgmU+3eO8YII0oYWVrjp5IxxZ4falecarjMuKf3Ipo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=kDpDrTbs7bh09fO6r/xs7D5Y1HuEWXFFHX5pkNEN8LVDVhoEa8FmBWemNmSyCRBa9iVL96sMK/uwV/5zE3Ty3mPiWE7T5+EmYDCeNhzgaE2FJibib7Wio/osVLYuGkWCTUpGRXnNWnGuDh6Sju9irpsPBTPLUgq1397zqhnh/hc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la; spf=pass smtp.mailfrom=lex.la; dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b=g37y6Ceq; arc=none smtp.client-ip=74.125.225.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=lex.la
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lex.la
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="ikywC8+h";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="R8SmDbAP"
-Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
-	by mailfout.stl.internal (Postfix) with ESMTP id 92D541D00107;
-	Thu, 10 Sep 2026 11:37:25 -0400 (EDT)
-Received: from ams-imap-03 ([10.64.2.23])
-  by ams-compute-02.internal (MEProxy); Thu, 10 Sep 2026 11:37:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1789054644;
-	 x=1789141044; bh=VJHi3AALrojUsaiH2K9JRyFh6yN6vM9XW4bo5EfCLvk=; b=
-	ikywC8+hP0FbgWYJ7JpppZwhmFT+TaVIwwfxZl3vKzlLdmM0Nux3yd+Im/GnBBxf
-	IsZhMPrU2CfaPOS3llPqcCh1/W6YupvRhqHnEPijgkiGE9FTjWByE5rH7xSz2+YS
-	+dblIgCXim5mQ79MRnnVj+HTE2oO78sbNkVr8Q34RjdHugoTrgiFbcREeHekftYd
-	aasBFCSTYq2bdjS9VoWdHFfCLjJ+zkroUH2SWQzQIfie7Rv6jWKaRIke0inoGzby
-	3B6POzhhAouDRYljXpkPjgMNSje743iQ78SiKVtE7Ge4+Dx7VPOmk/C6xBZz2BmT
-	VpnxDlhl6rU/FOoxhy83wA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1789054644; x=
-	1789141044; bh=VJHi3AALrojUsaiH2K9JRyFh6yN6vM9XW4bo5EfCLvk=; b=R
-	8SmDbAPjSEISBwANGL6NRU+VAUlWXrSQUFPgdkRsPNjMk/TQ6vTirkIvq0MISnMb
-	JKylqUisx/ovnCt8n5NY8n38p8Z0r7qneBX+3zXxCDi2CJwC02WhAFRI2seVrGL3
-	Dht2ceJo7GLlQMaxoAoPjc+jE/IjH4l6GZIuGYTnjn702MzCG2sJXfo7DJD6Mu+D
-	GdeuLOmK0EtS1BFwVrocZNEiHVquy2r7T6MQ/O53GTtfpHRB1FMWSHdFtJfVd492
-	huhQSYBkjqtlp54u32TtmpwCcuYi2jrpIaJFlHxn0OmcDjswJ7KPJQwv8vayUgpM
-	tlajKtuLqV1QATBx5g5yg==
-X-ME-Sender: <xms:qs6iaoxcZdBS5-tZ6559r51Ysxn8ibK0iu94a23oAy3L7zkGsUDSIA>
-    <xme:qs6ianED7WC-Q5vvqjBq8s_u2Wqo8da3kDi_H8X5KWUsVSaHxUeQXmRrU2dFDuKW5
-    iSmQx6sT9tJCQ5Fwo1WTe4NJLY27B0TnB0PK74fvos-BO3OvrbH46Csjw>
-X-ME-Proxy-Cause: dmFkZTGzGT8QWaj5+IaF+j+BCEPEbeETmKmrh3i3QL1egfRXUvJOsOFxmKhTHJ5EJ0IvJ/
-    yrlbR57KqxmsqFYmHcxuNy7TxmyGimBY78fjpHyUy7vT/Q0OO0SF55UVJhaG/0alhtMMXP
-    gjrK4qv4Oymi20VFNGCTKHWPZM5dFQKAOC2iaHsd5PeiJ4bs06wqZiiNHoe9XtdI3wlCFz
-    dEvEW43MKZZojMIQ8Q2c5X4bpnwolr0T0c9O2qf0ntNk3rSE8d6qS+QV3WNpllSo8oIEPE
-    0cc52GAipoXJvmvdUNZM110yBhTc2CiUmuHzJTc3cgyXm93V2vumdIDzmA8tmt3nNU7Ug9
-    6+EvyqPEl/qJxhZSe/GxKdDq3P6XS8ocwRwYw1486eMhQ8woArvfJmN4iQRnrsRc0L86xi
-    FUFH72TMYxAZF+4RLrewGwWAm7BC/aWgYoMWJVSKwJbmsjXvsdGICOjD+m5FtnEZ/5B3FP
-    ahodQdjEW2UaaKlW69gdjKCiX5d3NjOm/upXNL0N5y/EL6C6fZpWiYQwvfBSI0XAN/+wiA
-    Cg1M8xRvHSmGMT5y0DNGWni2mwje4hoY8BKcu/+UhH04cABAYvBHYbSRHFVgnSoVo66ZEv
-    OhpSnSjBxC5zHMZ3qKuAHlvC9yX9G19i9o4NyzQqHNi8cGyFHrxA19niVE+A
-X-ME-Proxy: <xmx:r86iavuQaXSkajUGbGTxZOGm2llWg7fiaco8bOamAUQDeRL2Pd6HAQ>
-    <xmx:r86iavvdlBlZMz41c6a0PxU_zWsdsuHayQoajn_EtgnSKkrZC7QCwA>
-    <xmx:r86iau-ali-YMTcHW9nYfAeB8WFBwz4N3Kf6nVVNyNffsE_5Xex2YA>
-    <xmx:r86iao_ql0S4UwfTN7PSvF8rKrygtY-dHqzr4ZJBcaIKblcgxjNTZw>
-    <xmx:tM6iaqEzjEAmXefpeuCydSJA9LXJ7HlJinKnl2fmwVfK7B-jCn25-y5y>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.ams.internal (Postfix, from userid 501)
-	id A91DC32A007B; Thu, 10 Sep 2026 11:37:14 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=lex.la header.i=@lex.la header.b="g37y6Ceq"
+Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-4834977ae75so1369683f8f.3
+        for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 08:38:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=lex.la; s=google; t=1789054687; x=1789659487; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=sTVSMjfFwifuGhbOPl5kVMZz0VGT2RwpXS+yJiNYpds=;
+        b=g37y6CeqAw3TwRRgzu9TkSvXZI3soAHL6VoqrAzGCP3vrsTpft8XHcSeMCQtbl33qP
+         CE3dtvcFu7wNW6WdsPWVYL0ZNtu0VFODGlVwY30O+wCT6wFLZdLveFydPKarofHR/ViI
+         Nlalo/v9AV2Sa+LykR5foAE41A2qLuyd7blaOkzCyW01L3VZC5PdMREGdzIzlSqOPnIx
+         6bx25Y6XWnswBN6jMvI7CRl6knAluqWf2sKVHlDmIpJe8WTSASY/3D/oJnTy2lw95dOP
+         kd7U5IYHnIrdQvPQcAc6DNEg9N1C75rqWySuUj8IwEvrNgjVOv9bDh500mXq9lN6ymqI
+         U3TA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789054687; x=1789659487;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=sTVSMjfFwifuGhbOPl5kVMZz0VGT2RwpXS+yJiNYpds=;
+        b=bYSl+sRIuHoFH22xL/2xTyzU/Li60RlwDzGm8p5+0CPAj0OsHTmmo/Cv6HQ+JXpNTK
+         X6US5DiP9CvqCymxCcAfzl48rxbP+x2FvDi0aOg1/KZijgxnbY1ptc7yjIXuUfJ2ag/8
+         1cGYrr5wApBqp7tXWfSOKttwE2/S0eh06wTNSYdu+5MnSltdhToITVGxjA9ElndMRTdU
+         3V8FQz7P/FXcnbqOOwv5MQQp6VjCSIARC7ztRAdIc9oz/R6i4iz2CVPMWfpUPoBglOiw
+         sPEJYB2smuuQKTQWdqZEndwrAxnCfsBgpPmJoW0BbYtHn3QM4mu8OVkuYPx/CmrepkCn
+         ROjg==
+X-Forwarded-Encrypted: i=1; AKwUvBxfANIPVblRZY8iuHJVK7kV7u93JFikib36eB3ZxHJstLC9SRI2l6ZRFMZcKsTYckPPRRR8Kno=@vger.kernel.org
+X-Gm-Message-State: AFuF++nKJVq8mgbOIj3ZVrO+YaUwb1u/0uMdqMJk7dzZUYZGG2aRjuHQ
+	OqR2cq/jls5xZz4tCQN8XlMedmBNlkl9XKJbO20Fph7O8VenHgZWEoNDBoeemKG8CjA=
+X-Gm-Gg: AYBFou0qHeYE4TMU/X3eZZP+JuaX9c4e0VVe/eD7yiqU1vsG8lJsHsmvejlgfr0DYoX
+	6NBcG0LiD9X8r37ggcChEwiVesXPIkxDtqwqwxHa1C1cEENk7inq+xpn2JneV1LMXrHrYHJEHJ9
+	6k19ZqV6C6urzCc5Sbm0wwVv6Oe5u5xv6YFny7qmB9qytX0F1Dictv6uMmA3NOWK++nESk3unNU
+	7co9aZgDhy51d7+GR7hjrvMB1YeI5O3FwC5ZD37iUcc8MXEsJpstOewgRkSyuy/wsErgsLOEAT1
+	0eFIe08nHRwVTJfU4wQLXA9/nenXo3Mj9a1TQsEi8AA54CeVFlb/jiY79CqXhtggXi7gRPRDKqV
+	VUjmE8fPeoEYVpt9kd++fsTHqyGCOB1LHv/TG0fr1swGGC3NoTZXy/K9+AgJ/Egc3sjK16zor+j
+	SZaPeFaz65O9+oyY0QKrczc7RfCPY/REP0jaXGybKsZqJj6FSLNCkoprtOKWVo
+X-Received: by 2002:a05:600c:698c:b0:49c:edfe:d525 with SMTP id 5b1f17b1804b1-49d1f35366fmr293842895e9.10.1789054686605;
+        Thu, 10 Sep 2026 08:38:06 -0700 (PDT)
+Received: from remote-01 ([84.17.55.229])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4858d2693e8sm50753677f8f.3.2026.09.10.08.38.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 10 Sep 2026 08:38:06 -0700 (PDT)
+From: Aleksei Sviridkin <f@lex.la>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Aleksei Sviridkin <f@lex.la>,
+	andrew+netdev@lunn.ch,
+	hkallweit1@gmail.com,
+	linux@armlinux.org.uk,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	ericwouds@gmail.com,
+	netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH net-next v2 0/7] net: mdio: an MDIO device driver for the Airoha EN8811H
+Date: Thu, 10 Sep 2026 15:38:00 +0000
+Message-ID: <20260910153800.777902-1-f@lex.la>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <44f163ed-8362-4aad-99c9-f8709dfbed76@lunn.ch>
+References: <20260908155707.4164559-1-f@lex.la> <44f163ed-8362-4aad-99c9-f8709dfbed76@lunn.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: Ay04W235egbV
-Date: Thu, 10 Sep 2026 17:36:54 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Nicolai Buchwitz" <nb@tipi-net.de>,
- "Fernando Fernandez Mancera" <fmancera@suse.de>
-Cc: Netdev <netdev@vger.kernel.org>, "Simon Horman" <horms@kernel.org>,
- "Jakub Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>,
- "Eric Dumazet" <edumazet@google.com>,
- "David S . Miller" <davem@davemloft.net>,
- "Jason Gunthorpe" <jgg@ziepe.ca>, "Leon Romanovsky" <leon@kernel.org>,
- "Andrew Lunn" <andrew+netdev@lunn.ch>,
- "Anthony L Nguyen" <anthony.l.nguyen@intel.com>,
- "Przemek Kitszel" <przemyslaw.kitszel@intel.com>,
- "Elad Nachman" <enachman@marvell.com>,
- "Saeed Mahameed" <saeedm@nvidia.com>, "Tariq Toukan" <tariqt@nvidia.com>,
- "Mark Bloch" <mbloch@nvidia.com>, "Ido Schimmel" <idosch@nvidia.com>,
- "Petr Machata" <petrm@nvidia.com>,
- "Edward Cree" <ecree.xilinx@gmail.com>,
- "Maxime Chevallier" <maxime.chevallier@bootlin.com>,
- "Maxime Coquelin" <mcoquelin.stm32@gmail.com>,
- "Alexandre Torgue" <alexandre.torgue@foss.st.com>,
- "Arend van Spriel" <arend.vanspriel@broadcom.com>,
- "Miri Korenblit" <miriam.rachel.korenblit@intel.com>,
- "Keith Busch" <kbusch@kernel.org>, "Jens Axboe" <axboe@kernel.dk>,
- "Christoph Hellwig" <hch@lst.de>, "Sagi Grimberg" <sagi@grimberg.me>,
- "Chaitanya Kulkarni" <kch@nvidia.com>,
- "Saurav Kashyap" <skashyap@marvell.com>,
- "Javed Hasan" <jhasan@marvell.com>,
- GR-QLogic-Storage-Upstream@marvell.com,
- "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
- "Martin K. Petersen" <mkp@kernel.org>,
- "Nilesh Javali" <njavali@marvell.com>,
- "Manish Rangankar" <mrangankar@marvell.com>,
- "Varun Prakash" <varun@chelsio.com>,
- "Alexander Viro" <viro@zeniv.linux.org.uk>,
- "Christian Brauner" <brauner@kernel.org>, "Jan Kara" <jack@suse.cz>,
- "David Howells" <dhowells@redhat.com>,
- "Marc Dionne" <marc.dionne@auristor.com>,
- "Trond Myklebust" <trondmy@kernel.org>,
- "Anna Schumaker" <anna@kernel.org>, "Chuck Lever" <cel@kernel.org>,
- "Jeff Layton" <jlayton@kernel.org>, NeilBrown <neil@brown.name>,
- "Olga Kornievskaia" <okorniev@redhat.com>,
- "Dai Ngo" <Dai.Ngo@oracle.com>, "Tom Talpey" <tom@talpey.com>,
- "Marek Lindner" <marek.lindner@mailbox.org>,
- "Simon Wunderlich" <sw@simonwunderlich.de>,
- "Antonio Quartulli" <antonio@mandelbit.com>,
- "Sven Eckelmann" <sven@narfation.org>,
- "Nikolay Aleksandrov" <razor@blackwall.org>,
- "Pablo Neira Ayuso" <pablo@netfilter.org>,
- "Florian Westphal" <fw@strlen.de>, "Phil Sutter" <phil@nwl.cc>,
- "Johannes Berg" <johannes@sipsolutions.net>,
- "Matthieu Baerts" <matttbe@kernel.org>,
- "Mat Martineau" <martineau@kernel.org>,
- "Geliang Tang" <geliang@kernel.org>, "Julian Anastasov" <ja@ssi.bg>,
- "Aaron Conole" <aconole@redhat.com>,
- "Eelco Chaudron" <echaudro@redhat.com>,
- "Ilya Maximets" <i.maximets@ovn.org>,
- "Allison Henderson" <achender@kernel.org>,
- "Jamal Hadi Salim" <jhs@mojatatu.com>, "Jiri Pirko" <jiri@resnulli.us>,
- "Marcelo Ricardo Leitner" <marcelo.leitner@gmail.com>,
- "Xin Long" <lucien.xin@gmail.com>,
- "D. Wythe" <alibuda@linux.alibaba.com>,
- "Dust Li" <dust.li@linux.alibaba.com>,
- "Sidraya Jayagond" <sidraya@linux.ibm.com>,
- "Mahanta Jambigi" <mjambigi@linux.ibm.com>,
- "Tony Lu" <tonylu@linux.alibaba.com>, "Wen Gu" <guwen@linux.alibaba.com>,
- "Jon Maloy" <jmaloy@redhat.com>,
- "Tung Quang Nguyen" <tung.quang.nguyen@est.tech>,
- "Steffen Klassert" <steffen.klassert@secunet.com>,
- "Herbert Xu" <herbert@gondor.apana.org.au>,
- "Casey Schaufler" <casey@schaufler-ca.com>,
- "Paul Moore" <paul@paul-moore.com>, "James Morris" <jmorris@namei.org>,
- "Serge E. Hallyn" <serge@hallyn.com>,
- "Vikas Gupta" <vikas.gupta@broadcom.com>,
- "Bhargava Marreddy" <bhargava.marreddy@broadcom.com>,
- "Rajashekar Hudumula" <rajashekar.hudumula@broadcom.com>,
- =?UTF-8?Q?Markus_Bl=C3=B6chl?= <markus@blochl.de>,
- "Heiner Kallweit" <hkallweit1@gmail.com>,
- "Florian Fainelli" <florian.fainelli@broadcom.com>,
- "Krzysztof Kozlowski" <krzk@kernel.org>,
- "Qingfang Deng" <qingfang.deng@linux.dev>,
- "Julian Braha" <julianbraha@gmail.com>,
- "Ethan Nelson-Moore" <enelsonmoore@gmail.com>,
- "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
- "Eric Biggers" <ebiggers@kernel.org>, "Ard Biesheuvel" <ardb@kernel.org>,
- "Neal Cardwell" <ncardwell@google.com>,
- "Kuniyuki Iwashima" <kuniyu@google.com>,
- "Willem de Bruijn" <willemb@google.com>, "Alyssa Ross" <hi@alyssa.is>,
- "Joel Granados" <joel.granados@kernel.org>,
- "Oleg Nesterov" <oleg@redhat.com>, linux-rdma@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
- "open list:NETRONOME ETHERNET DRIVERS" <oss-drivers@corigine.com>,
- linux-net-drivers@amd.com, linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-wireless@vger.kernel.org,
- brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com,
- linux-nvme@lists.infradead.org, linux-scsi@vger.kernel.org,
- target-devel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-afs@lists.infradead.org, linux-nfs@vger.kernel.org,
- b.a.t.m.a.n@lists.open-mesh.org,
- "open list:ETHERNET BRIDGE" <bridge@lists.linux.dev>,
- netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
- mptcp@lists.linux.dev, lvs-devel@vger.kernel.org, dev@openvswitch.org,
- rds-devel@oss.oracle.com, linux-sctp@vger.kernel.org,
- linux-s390@vger.kernel.org,
- "open list:TIPC NETWORK LAYER" <tipc-discussion@lists.sourceforge.net>,
- linux-security-module@vger.kernel.org
-Message-Id: <cda5d4e9-49a5-4d6f-93d4-fb50d74ed5ce@app.fastmail.com>
-In-Reply-To: <aeb37452e976f5d44540ac3a0999d07b@tipi-net.de>
-References: <20260910144914.8025-1-fmancera@suse.de>
- <20260910144914.8025-2-fmancera@suse.de>
- <aeb37452e976f5d44540ac3a0999d07b@tipi-net.de>
-Subject: Re: [PATCH 01/13 net-next] net: ipv4: introduce CONFIG_IPV4 to decouple the
- IPv4 stack
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Thu, Sep 10, 2026, at 17:11, Nicolai Buchwitz wrote:
->> diff --git a/net/packet/Kconfig b/net/packet/Kconfig
->> index 2997382d597c..00fda9e08cb0 100644
->> --- a/net/packet/Kconfig
->> +++ b/net/packet/Kconfig
->> @@ -5,6 +5,7 @@
->> 
->>  config PACKET
->>  	tristate "Packet socket"
->> +	depends on IPV4
->
->    depends on IPV4 || !INET
->
-> Otherwise this would break existing configs with INET=n. The same 
-> applies to other affected options that currently permit INET=n.
+On Wed, Sep 09, 2026 at 09:01:14PM +0200, Andrew Lunn wrote:
+> I think because you are sending this as RFC, the AI bots are ignoring
+> it. I also think it is not getting build testing etc.
 
-Since that's a lot of symbols that all need the same dependency,
-maybe we could have an intermediate symbol for it:
+Next round goes without the tag. One bot did answer 7/7, but by private
+mail only, so that side is not consistent either. The build testing is
+what I want back.
 
-config IPV4_IF_INET # or any better name you can think of
-      def_bool IPV4 || !INET
+> One way to argue it is that the MDIO bus it connected to the MCU. The
+> MCU, once booted, forwards the MDIO bus through to the PHY part of the
+> package.
 
-Similarly, everything that currently has 'depends on INET && IPV4'
-could be simplified to just 'depends on IPV4', and the leftover
-'depends on INET && IPV6' from the days of modular IPV6 can now
-become 'depends on IPV4'. We only needed to list both in the past
-to deal with the IPV6=m case.
+That is the argument the binding was missing. It will say that, instead
+of describing a driver model choice.
 
-       Arnd
+> Consider a normal setup, what happens when you remove the MDIO
+> controller when the PHY is directly connected?  And look at what MDIO
+> mux drivers do, which is not so different a use case.
+
+It faults. On this board a bus going away under an attached PHY ends in
+a NULL phydev->drv out of phy_stop(), directly connected or not.
+mdio_mux_uninit_children() unregisters each child bus and frees it,
+which is what this driver does. So nothing new to invent here; the hole
+is in phylib.
+
+> It is fine. I would also add a select or depends on the PHY driver
+> Kconfig stanza to link it to the MDIO_AIROHA_EN8811H driver.
+
+Will do.
+
+> Prose is enough. And C code to catch DT authors who get it wrong. But
+> you also need to be careful to not break backwards compatibility when
+> the PHY driver is used alone.
+
+The child bus will refuse an address that is not the parent's and name
+the node that got it wrong. Boards that describe the chip as a plain PHY
+keep working through the PHY driver as before.
+
+> The location is fine. MAINTAINERS need to list it. What you might want
+> to do is list it twice, once in the PHY driver MAINTAINERS record, and
+> again in the MDIO driver section.
+
+Both records then.
