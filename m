@@ -1,156 +1,200 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD2E24908BD;
-	Thu, 10 Sep 2026 13:05:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88CDA48AE20
+	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 13:06:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789045558; cv=none; b=HYdFrrvwuuyflFw3QtSQ6hx/4WK0Zdsgzi97knVgeER+mQfEQGdiWg6XeY5+rP/QHPahTmerJ3fJn5wfGhsEbdt/zmTe9TT6g3Gmx/K4ehT/egp0GG8V6vZLVoBFH+SJelMob3V+xphpyniF9YtI1p711fIP7byY8Xr8IKt/RWk=
+	t=1789045620; cv=none; b=u9arql5tanQYisU/Gp5TCm3zoLpTrFJjvLlUhooP5N0WzN/p0KuvdRF+OyU0pD0tMgJubAtJvndm7Hk8pps+zxPX16HkmRN+GYVUN8ZTFlPPafQHuu66BiyzO4JQF091OQ44WFxKGxSDTLiUswGJ8lij8Hc8oDVIPykly8UuXvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789045558; c=relaxed/simple;
-	bh=8xrp+PLWGWnGNr1R2Q9RlDhdl4OMwI9ky7GEV/tOcfw=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=QAaR3hxlZ0oSmFVmUiLSxBqQBMKSJpw5TQHmM4Kj5bOFViYLYthkVvEu+6S8O9cYYk3WxAa3E3BRh7/SaWCCUMgaNdNsp3iZsyld1c0xJ2Cfhdr01/ZlkTOb4XoDOwzNynNOi2Bv8Gn7OJZsxKv10iE7YCLx5CLLSwsDSNH9LbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J5oDrT12; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789045620; c=relaxed/simple;
+	bh=j++54T3sUZ+8HaFYRaDy0ZlOlzbDf1s23ZOYnPY0yUI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=ZVzW5o4i8ggKo3KwL/OOALU7uUVuchPnixbwHArQ3pVk80yznQu2ccxAunUPozW9lWKCz2DfJw+zYdm+B0zwFSVkYrUfAAgsNZjieU8zBre3Kf+/+X28cZTPlt4nItY34pfkeVsXowkBOfe426j1DEwjzkqpjth1oDE+Qt8/n/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b=fgAJpA13; arc=none smtp.client-ip=74.125.225.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J5oDrT12"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ACEE1F00893;
-	Thu, 10 Sep 2026 13:05:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789045556;
-	bh=Cdo+rmDstdi/wv4Vrglb7Q5HOr6Q/8S05d4OuI8eWG4=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=J5oDrT12yCwmsUKLG9nicehVw3jTNlBNGaqYxZOQe1B+nB8odrDQ8RSpt5b9+85bZ
-	 gC2zUpht3+5ySeGRRnC1AuPSehaUspWuKS3cYunfWyMCXY4vf55YEQCsyBv+60BNAS
-	 wys4QZN5tTRxpPFN2Cs/xKxjsXYLtPbRYL1sf2y3N3E+e+SsbeDlRTtTeIUsheau1R
-	 tVB0zRpKAWj+KC7CwgGycXPPJdgQGQtVW6mJ5+a5tbfsuGTuiyc1fJ8T/zlHf4Vgsf
-	 6W007kjJKQNvwpOjkVqQ3NYtM3evI6aUsTWp0g12lhvUBOsyh+Z45r8DXMiu+V+qTe
-	 bPBM5ZGbpBESA==
-Subject: Re: [PATCH net-next v6 14/14] misc: lan966x-pci: dts: add fdma
- interrupt to overlay
-From: netdev-bot+sashiko@kernel.org
-To: daniel.machon@microchip.com
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horatiu.vultur@microchip.com,
- steen.hegelund@microchip.com, UNGLinuxDriver@microchip.com, ast@kernel.org,
- daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com,
- sdf@fomichev.me, herve.codina@bootlin.com, arnd@arndb.de,
- gregkh@linuxfoundation.org, mohsin.bashr@gmail.com, richardcochran@gmail.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org
-Date: Thu, 10 Sep 2026 13:05:54 +0000
-Message-ID: <178904555475.219967.711870735307370384@kernel.org>
-In-Reply-To: <20260909-lan966x-pci-fdma-v6-14-6f48dab9d671@microchip.com>
-References: <20260909-lan966x-pci-fdma-v6-14-6f48dab9d671@microchip.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=baylibre.com header.i=@baylibre.com header.b="fgAJpA13"
+Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-4843c2790ccso1433735f8f.1
+        for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 06:06:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre.com; s=google; t=1789045613; x=1789650413; darn=vger.kernel.org;
+        h=content-type:mime-version:message-id:date:references:in-reply-to
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=s417j/ysygJZ4xE0jMBISIxl2zgVW4JEiLwZ40hycxA=;
+        b=fgAJpA13geelJvMo236lMup0m+UVq79aH2cHRkifKGekwSlg2wdMqhwx8yEcs3jubI
+         aQiLDugU7Ybtc1d+a3nPPlP7Ki2LO2ZJ1DKlWPRrEMv/FAlatVpC6jcnloRTz6vUrP+D
+         3ERhtVyC2o/FMu/xpKpuJVOQEqspvxCJqJqOiU1K89CJrcllk65/4xHuYq4SZRSgvUwD
+         LDvKt8NwjMkLhS5J+JRBZyPrmGuCOxo5EnMlQhFn0oFg5Q6LAkz9ZE5etDNqkM2Qfwvg
+         n2BV/u4h9ry1oVUXq/xsc217Cm+9j++B9s8Ln20p5/Xh+8dlEt1IoOQhuIuJGJPUrxGl
+         SEGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789045613; x=1789650413;
+        h=content-type:mime-version:message-id:date:references:in-reply-to
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=s417j/ysygJZ4xE0jMBISIxl2zgVW4JEiLwZ40hycxA=;
+        b=rAtyaCaLOLjV4QWkVogel8V7d3sE+Uo9f92qg191Ga5kpyAuYPsnbo1PYzGiqrH3BX
+         wf6tPXOm4j23f4gQMoisQxVkPsjlnXghVYhN1bhvv8wojC+LoH9aX764Jh1qc1UkCGF/
+         TrVoZYhwK+jCnHtMm8p4wt6n2r9aQ/cWD6epVOLnIvSgfq5+6eg6RMxaYLw4UseZvogK
+         v4iCypxgL+ZcgoaUA2sUAoZEKqEXkHXRZ6NiGWYGYfjzY96XHJKS2eIyOq86Gjpr6H9j
+         Ue/HjKwKDYxmIHRDHzvMfHTvH9y1lATapd8YwhXxx6KR11pam06XEEhh/2ztUoz6F3Ks
+         JLgw==
+X-Gm-Message-State: AFuF++nXNU8UdnqPZMcF1EXRbdTC++7ONLtfUOGzaOncjRPRYR+AxmR3
+	oVEVbtSzRRBvOqt2F7EGV5YQGX2aOmToq/FJRSjyrBaswhU3cVxGhn2/lmCLzEOdBI0=
+X-Gm-Gg: AYBFou3DVNT85y5k7Y9HSvOsEz0hTPHvL36Nt18c6t43EZhBTwbHuSz1IH1lPjcJgUd
+	tWMxStl3WtvXJIaBe5wgxbakbki68JWERfJLCCOSbZDB4bZlE4ebXIimALLwJz9BnJQzx4TOprj
+	kMb3D6l0yITtFmLXzJxpUKW6IDASr13J2WAvUUJ90k9oKLkraI4KDdos2xJx+YQm3sNrq8OuGuL
+	fq9En91g/Km0DQaETmR/MT1IEoU/utvmTViLlM13FbkRSxpTOQWDQ1Dl3fMZhS1Grum6rlyxeqq
+	wYt1rfUBnu5uSfbt4hDs/ZTCjoqa3pYQPhziYUZYz384ZRDRrqXRLBU0Uf+K4dGjyjW789Umyyn
+	szSq39Ac77Py3gbvU32kJaj/i2l6P9T9dVHp0NuNTxHKz5zx1pi2MbHL+5hZQ8nqvAqupI+QUw0
+	JbiM0I4DYOKkwXlJIWUWOO2/MgUcZn+RFYtYbj6dlHrUfZJzq5mymFq+NuagZ8qhe8AcdaR3y/o
+	LqMgYHc3VHFwOtrG3hc5FguFC5+
+X-Received: by 2002:a05:6000:22c8:b0:484:3310:710d with SMTP id ffacd0b85a97d-485aae0e29amr22786196f8f.25.1789045613146;
+        Thu, 10 Sep 2026 06:06:53 -0700 (PDT)
+Received: from localhost (82-67-6-57.subs.proxad.net. [82.67.6.57])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48588135600sm44969402f8f.2.2026.09.10.06.06.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 10 Sep 2026 06:06:52 -0700 (PDT)
+From: Jerome Brunet <jbrunet@baylibre.com>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ Chen-Yu Tsai <wens@kernel.org>, Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Samuel Holland <samuel@sholland.org>, Richard Cochran
+ <richardcochran@gmail.com>, Maxime Ripard <mripard@kernel.org>, Maxime
+ Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue
+ <alexandre.torgue@foss.st.com>, Philipp Zabel <p.zabel@pengutronix.de>
+Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
+ linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+ Andre Przywara <andre.przywara@arm.com>
+Subject: Re: [PATCH net-next v2 2/2] net: stmmac: Add support for Allwinner
+ A733 GMAC210
+In-Reply-To: <44d7840d-0cde-4022-937c-4c630398c45d@bootlin.com>
+References: <20260910-allwinner-a733-gmac-support-v2-0-4f4a1e520c23@baylibre.com>
+ <20260910-allwinner-a733-gmac-support-v2-2-4f4a1e520c23@baylibre.com>
+ <44d7840d-0cde-4022-937c-4c630398c45d@bootlin.com>
+Date: Thu, 10 Sep 2026 15:06:51 +0200
+Message-ID: <1jqzj16ys4.fsf@starbuckisacylon.baylibre.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider:
+On jeu. 10 sept. 2026 at 12:59, Maxime Chevallier <maxime.chevallier@bootlin.com> wrote:
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+> Hi Jerome,
+>
+> On 9/10/26 12:25, Jerome Brunet wrote:
+>> The A733 GMAC210 is a DesignWare MAC 5.20 using an Allwinner glue close to
+>> the A523 GMAC200 already supported by this driver, with the following
+>> differences to handle:
+>> 
+>> * The glue configuration registers are a dedicated MMIO region of the
+>>   controller instead of a syscon register. This new register region
+>>   appears to be in the reset domain of stmmac's main reset. This requires
+>>   the glue driver to handle the reset rather than letting stmmac deal with
+>>   it.
+>> * The TX clock delay value is 5 bits wide, split over 2 register fields,
+>>   allowing delays up to 3100ps.
+>> * The DMA channels have their own interrupt lines, so the per-DMA-channel
+>>   interrupt mode is enabled, as the vendor SDK does.
+>> * TX LPI clock gating is supported, as the vendor SDK indicates. Follow
+>>   the PHY capability with STMMAC_FLAG_EN_TX_LPI_CLK_PHY_CAP rather than
+>>   forcing it on with the deprecated 'snps,en-tx-lpi-clockgating' DT
+>>   property.
+>> 
+>> Unlike the A523, both GMAC instances are supported by the same driver.
+>> 
+>> Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+>
+> [...]
+>
+>> +
+>> +static struct regmap *sun60i_gmac210_get_regmap(struct platform_device *pdev,
+>> +						struct plat_stmmacenet_data *plat)
+>> +{
+>> +	struct device *dev = &pdev->dev;
+>> +	void __iomem *base;
+>> +	int ret;
+>> +
+>> +	base = devm_platform_ioremap_resource(pdev, 1);
+>> +	if (IS_ERR(base)) {
+>> +		dev_err_probe(dev, PTR_ERR(base), "unable to get glue memory region\n");
+>> +		return ERR_CAST(base);
+>> +	}
+>> +
+>> +	if (!plat->stmmac_rst || !plat->stmmac_ahb_rst) {
+>
+> Why check stmmac_ahb_rst, but not do anything with it ?
 
-- [Medium] The FDMA interrupt is hooked up (and thereby unmasked in the
-  OIC) long before any FDMA state exists.
+Not strictly required, it was cheap to do and catch mis-configuration
+since the stmmac treat them as optional. I'll drop it
 
---
+>
+>> +		dev_err(dev, "missing required reset controls\n");
+>> +		return ERR_PTR(-EINVAL);
+>> +	}
+>> +
+>> +	/*
+>> +	 * The configuration registers are inside the controller
+>> +	 * reset domain, so the reset must happen before any write to them
+>> +	 * and should not be done again by stmmac or the configuration will
+>> +	 * be lost.
+>> +	 */
+>> +	ret = reset_control_assert(plat->stmmac_rst);
+>> +	if (!ret)
+>> +		ret = reset_control_deassert(plat->stmmac_rst);
+>> +
+>> +	if (ret) {
+>> +		dev_err_probe(dev, ret, "device reset failed\n");
+>> +		return ERR_PTR(ret);
+>> +	}
+>> +
+>> +	ret = devm_add_action_or_reset(dev, sun60i_gmac210_reset_assert,
+>> +				       plat->stmmac_rst);
+>> +	if (ret)
+>> +		return ERR_PTR(ret);
+>> +
+>> +	plat->stmmac_rst = NULL;
+>> +
+>> +	return devm_regmap_init_mmio(&pdev->dev, base, &sun60i_a733_regmap_cfg);
+>
+> I wonder if this is the first glue to face this...
+>
+> If you need further setup to be done after reset has been deasserted, I suggest
+> adding a dedicated callback in plat_stmmacenet_data, instead of doing this behind
+> the generic code's back.
+>
+> maybe something like "post_reset_init()", something like that ?
+>
 
-misc: lan966x-pci: dts: add fdma interrupt to overlay
+I'll check in this direction.
 
-This adds OIC interrupt 14 as the "fdma" named interrupt to the lan966x
-PCI device tree overlay, so FDMA-based injection/extraction can be used
-when the switch is reached over PCIe.
+The idea was to do things behind anything's back, more to handle the
+specifities of this SoC without polluting the rest. The timing seemed a
+bit sensitve. For example touching the other reset in here broke the
+link for some reason (recognize as GMII instead of RGMII)
 
-> diff --git a/drivers/misc/lan966x_pci.dtso b/drivers/misc/lan966x_pci.dtso
-> index 7bb726550caf..5bb12dbc0843 100644
-> --- a/drivers/misc/lan966x_pci.dtso
-> +++ b/drivers/misc/lan966x_pci.dtso
-> @@ -141,8 +141,9 @@ switch: switch@e0000000 {
->  
->  					interrupt-parent = <&oic>;
->  					interrupts = <12 IRQ_TYPE_LEVEL_HIGH>,
-> +						     <14 IRQ_TYPE_LEVEL_HIGH>,
->  						     <9 IRQ_TYPE_LEVEL_HIGH>;
-> -					interrupt-names = "xtr", "ana";
-> +					interrupt-names = "xtr", "fdma", "ana";
+> the ->mac_setup already runs after reset, but isn't really for this type of usecase.
+>
+> For readability of the patch, maybe you should split this patch to first do the
+> a523 rework, then add a733 support.
 
-[Severity: Medium]
-With source 14 now named "fdma", platform_get_irq_byname(pdev, "fdma")
-starts succeeding on the PCIe path, and lan966x_probe() requests the
-handler right there:
+ok
 
-drivers/net/ethernet/microchip/lan966x/lan966x_main.c:lan966x_probe() {
-	lan966x->fdma_irq = platform_get_irq_byname(pdev, "fdma");
-	if (lan966x->fdma_irq > 0) {
-		err = devm_request_irq(&pdev->dev, lan966x->fdma_irq,
-				       lan966x_fdma_irq_handler, 0,
-				       "fdma irq", lan966x);
-		...
-		lan966x->fdma = true;
-	}
-}
-
-Is this ordering safe?  The OIC maps and unmasks source 14 at
-devm_request_irq() time, but at that point no FDMA state exists yet:
-
-- netif_napi_add()/napi_enable() only run later, from
-  lan966x_port_init() -> lan966x_fdma_netdev_init() in the per-port
-  probe loop, so lan966x->napi is still the zeroed devm_kzalloc()
-  memory and napi.poll is NULL.
-
-- the DCB rings, the LLP/ATU windows and the FDMA_CTRL NRESET pulse are
-  all done even later, from lan966x->ops->fdma_init() ->
-  lan966x_fdma_pci_init().
-
-If the OIC delivers an FDMA interrupt in that window, the handler
-schedules NAPI unconditionally:
-
-drivers/net/ethernet/microchip/lan966x/lan966x_fdma.c:lan966x_fdma_irq_handler() {
-	db = lan_rd(lan966x, FDMA_INTR_DB);
-	err = lan_rd(lan966x, FDMA_INTR_ERR);
-
-	if (db) {
-		lan_wr(0, lan966x, FDMA_INTR_DB_ENA);
-		lan_wr(db, lan966x, FDMA_INTR_DB);
-
-		napi_schedule(&lan966x->napi);
-	}
-}
-
-Can this then oops in __napi_poll(), either calling n->poll() while it
-is still NULL, or running lan966x_fdma_pci_napi_poll() against
-rx->fdma.dcbs == NULL and n_dcbs == 0, where fdma_has_frames() ->
-fdma_db_get() dereferences the dcbs array?
-
-How reachable is that window in practice?  The series itself describes
-the card arriving with FDMA state from a previous boot.  The commit
-"net: lan966x: clear FDMA interrupt stickies after switch reset" says
-the stickies "sit in FDMA_INTR_ERR until the FDMA IRQ is requested later
-in probe, at which point the handler fires immediately and WARNs", and
-"net: lan966x: add shutdown callback to stop FDMA on reboot" says that
-on the endpoint "channels stay active and interrupt sources stay armed
-across the reset" and that "FDMA_INTR_ENA persists on the card across a
-warm reboot".
-
-The sticky clear in lan966x_reset_switch() clears the latched bits at
-one instant, but does not mask FDMA_INTR_ENA/FDMA_INTR_DB_ENA and does
-not stop the channels.  After a reboot that skips device_shutdown()
-(panic reboot, kexec/kdump, watchdog warm reset with the card still
-powered), could a still-active channel latch FDMA_INTR_DB again after
-the clear and have it delivered as soon as source 14 is unmasked?
-
-Would it be more robust to reset and mask the FDMA block (the
-FDMA_CTRL NRESET pulse that already exists in lan966x_fdma_pci_init(),
-plus clearing FDMA_INTR_ENA/FDMA_INTR_DB_ENA) before
-devm_request_irq(), or to request the FDMA IRQ only after fdma_init()
-has built the rings and added the NAPI instance?
+>
+> Thanks !
+>
+> Maxime
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260909-lan966x-pci-fdma-v6-0-6f48dab9d671%40microchip.com
+Jerome
