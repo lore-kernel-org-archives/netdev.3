@@ -1,69 +1,87 @@
-Received: from out28-1.mail.aliyun.com (out28-1.mail.aliyun.com [115.124.28.1])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4100D377AA8;
-	Thu, 10 Sep 2026 02:13:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9837E35B650
+	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 02:17:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789006433; cv=none; b=D1N511S82Vn5gwyYLQx2YXfFKhhJgevLoWuZ+ThXu2Qp1e2Vrwoe8rdf2nn0nSB6QVqu8V4iRM4nd8P8qsyftlgdBxSMX9Fxgzxcr6+x7awAsbECqXpImTaE9y/wj4c110ahCo2yPUnlDrwVaVPDDyKES8QJzwHAbIgYruL7mxk=
+	t=1789006673; cv=none; b=QMXX62y0cPNFeun0dL2xu9oo1MEJUhPx6CIyxlW0JZesRiGwf4g3hxNLU1394ne0PG03KaC3jvPPdInT9j41X9x7qd1lnyQ+TnDviS2wp5CJwxDSv9HSXiXlD6ZgBpz0aA0+BNwaehjgi6iSnHMuH7ZEl0jYro7P47YeL2oAfzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789006433; c=relaxed/simple;
-	bh=ia6acwSXciTPWY474ZC9bNFUQPGmQMRF/Mkw7JWKP70=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UySuzsFCOBmOWJrkAlyEVcFmmmXIG8gmKQ4G0ARroqjxc5C/jZ/23H+gOuYt6lgI/UIZG4P5IQ7AmXTsbxDuqKrkKZvVCrxOJtSfIS6a0GxG1nppKhPmtIkudw1sSbXLzCA8DmWYYLJc4reEmN2HYYlTZ24qUfiDYCbJ7A+xIfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com; spf=pass smtp.mailfrom=motor-comm.com; arc=none smtp.client-ip=115.124.28.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=motor-comm.com
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.2285654|-1;BR=01201311R561ec;CH=green;DM=|CONTINUE|false|;DS=SPAM|spam_ad|0.880871-0.000325482-0.118804;FP=16380463733967879957|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037022039;MF=kyle.switch@motor-comm.com;NM=1;PH=DS;RN=16;RT=16;SR=0;TI=SMTPD_---.jA.ZRaE_1789006415;
-Received: from 10.10.26.192(mailfrom:kyle.switch@motor-comm.com fp:SMTPD_---.jA.ZRaE_1789006415 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Thu, 10 Sep 2026 10:13:38 +0800
-Message-ID: <01d589b2-73b9-4699-9a45-f869392778cd@motor-comm.com>
-Date: Thu, 10 Sep 2026 10:13:35 +0800
+	s=arc-20240116; t=1789006673; c=relaxed/simple;
+	bh=FSPTeF6YpwGka/VfndWqWLPb7iw8vlbLg7lsLVERqjY=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=XZBmA6cwSbw+n8GvvYdgUwwkhuH1oJKynhIQ8SFMvskOuO35IYHSIyaZ8xNxNhtuDZ2CZ2Lhhp+FoY/3Ik1AcUBqD/eMa59t6Q/LRp/YpubVvZnQ/FLcUDrwp6G4pd2VJWiM3KkhJmPIjsGCSEwMIOiWc3jt3EWnF3WqYmVKtFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VszQ0OJQ; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VszQ0OJQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F2B31F000FF;
+	Thu, 10 Sep 2026 02:17:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789006672;
+	bh=KeW3yJNq62x3FjM9bcHvzuRWz/IqKmAEj2btBdyQqy4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=VszQ0OJQScsqZNX8AI1p/YUEP8xqowBLsIrY5wl5gi6C4fz6/Scg4z8PAJq+5FT1m
+	 UGr2CsmgK3TxzMmMHQjqRXyLNYpSw8Eu/Xsb2jjLPj23wQy8auw+wMbkxyAcJ3MC4i
+	 G428Xjv4fBewLFo+q3K3imoTDVZqEOBmLtI6CpHFfF07lZ6pBOorCipxgTUGTELBZw
+	 z760Cv37h24w0Ddr1a4pw6A0/jVnjtOGpP9CeD23TDHMUGzis0mheBUPywBeatin26
+	 prZCsJ1Bu5t6PVj386RL2bFrbi62F6NImi5i9aHOAIre/M/x0mnGex+V4WNRvPPbUp
+	 OJhGu3rDF4alw==
+Date: Wed, 9 Sep 2026 19:17:51 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Ivan Delalande <colona@arista.com>
+Cc: Michael Chan <michael.chan@broadcom.com>, Pavan Chebbi
+ <pavan.chebbi@broadcom.com>, netdev@vger.kernel.org, Paul SAGE
+ <paul.sage@42.fr>, Vincent MORVAN <vinc@42.fr>, Atharva Tiwari
+ <atharvatiwarilinuxdev@gmail.com>
+Subject: Re: [PATCH net] tg3: check NVRAM and control register if SRAM has
+ the placeholder MAC address
+Message-ID: <20260909191751.651aa5c4@kernel.org>
+In-Reply-To: <20260903233255.GA4109366@visor>
+References: <20260903233255.GA4109366@visor>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v6 1/6] net: dsa: motorcomm: initialize
- dsa_switch based on chipid
-To: David Yang <mmyangfl@gmail.com>
-Cc: andrew@lunn.ch, olteanv@gmail.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- linux@armlinux.org.uk, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- ming.xu@motor-comm.com, xiaolin.xu@motor-comm.com,
- jianmin.wang@motor-comm.com, wei.zhang@gl-inet.com, sijia.huang@gl-inet.com
-References: <20260908083614.2210505-1-kyle.switch@motor-comm.com>
- <20260908083614.2210505-2-kyle.switch@motor-comm.com>
- <CAAXyoMNkvyVN435bUwWuN+q8UmKbwnWbn+=uWt-nC2omBk94Lg@mail.gmail.com>
-Content-Language: en-US
-From: Kyle Switch <kyle.switch@motor-comm.com>
-In-Reply-To: <CAAXyoMNkvyVN435bUwWuN+q8UmKbwnWbn+=uWt-nC2omBk94Lg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
+On Thu, 3 Sep 2026 16:32:55 -0700 Ivan Delalande wrote:
+> Some of the tg3 NICs we use (BCM57762) reset the SRAM MAC address to the
+> placeholder address on link flaps, tg3_chip_reset, etc. We've typically
+> fixed it from userspace, but since e4c00ba7274b ("tg3: replace
+> placeholder MAC address with device property") was merged, tg3 just
+> fails probe as we don't have a way to get it through the generic
+> device_get_mac_address infrastructure on our systems.
+> 
+> Since that commit effectively made the placeholder address invalid,
+> include this check in the earlier `addr_ok` expression, so we proceed
+> with the NVRAM and control register fallback to find a valid MAC.
 
-On 9/10/26 00:18, David Yang wrote:
-> On Tue, Sep 8, 2026 at 4:36 PM Kyle Switch <kyle.switch@motor-comm.com> wrote:
->> +       if (major == YT9215_MAJOR || major == YT9218_MAJOR)
->> +               mode = YT92XX_MODE_YT921X;
->> +
->> +       for (i = 0; i < ARRAY_SIZE(yt92xx_series_table); ++i)
->> +               if (yt92xx_series_table[i].mode == mode)
->> +                       return &yt92xx_series_table[i];
-> Still redundant lookups here.
-Ans: will be fixed in next patch.
->> -       ds->priv = priv;
-> ds->priv is gone in the new register.
-Ans: will be fixed in next version.
->>   static const struct of_device_id yt921x_of_match[] = {
->> -       { .compatible = "motorcomm,yt9215" },
->> -       {}
->> +       {
->> +               .compatible = "motorcomm,yt9215",
->> +       },
->> +       { /* sentinel */ }
-> Leftovers.
-Ans: will be fixed in next version
+If there are so many cases with known-broken MAC addresses with tg3
+shouldnt we do something like:
+
+--- a/drivers/net/ethernet/broadcom/tg3.c
++++ b/drivers/net/ethernet/broadcom/tg3.c
+@@ -17914,12 +17914,13 @@ static int tg3_init_one(struct pci_dev *pdev,
+        }
+ 
+        err = tg3_get_device_address(tp, addr);
+-       if (err) {
+-               dev_err(&pdev->dev,
+-                       "Could not obtain valid ethernet address, aborting\n");
+-               goto err_out_apeunmap;
++       if (!err) {
++               eth_hw_addr_set(dev, addr);
++       } else {
++               dev_warn(&pdev->dev,
++                        "Could not obtain valid ethernet address, using a random address\n");
++               eth_hw_addr_random(dev);
+        }
+-       eth_hw_addr_set(dev, addr);
+ 
+        intmbx = MAILBOX_INTERRUPT_0 + TG3_64BIT_REG_LOW;
+        rcvmbx = MAILBOX_RCVRET_CON_IDX_0 + TG3_64BIT_REG_LOW;
+
+?
