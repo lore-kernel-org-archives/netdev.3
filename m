@@ -1,157 +1,169 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14F654A2601
-	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 15:10:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3322D48663E;
+	Thu, 10 Sep 2026 15:12:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789053029; cv=none; b=ovmP3JTMJLxC1CnDvjwfZk1cHdisEHDBHmiC3d7WC0/C5jbeSqQA5Do5OhTwTdgnelKMwC+Wm4qqr3DpXq+iDDgcEYTI2DOmHVomj0treUTl7wU8RVVAEl38JqGtOd5iDGolXEvaz6Fh6PXjuRq9xxxpuQ4ZeDHNBW7GwlH6RVI=
+	t=1789053147; cv=none; b=UEYB8reWBlrBb509RXSubwnXDtPgSNsbYSGbraFDWO4SIkz27OWK3xOAwu+8cnRmpYGGErbT3hRu7u4T3JtlpmlyVK6XPl0sBlyjqSYOUcREAn70dwlsMMdLAc89XGO71tgBCVKMlBwebPtxg2031LCvXSJNpJ8bwukp2qOxeRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789053029; c=relaxed/simple;
-	bh=Ldo9pmXtfI4QS/WKHDQsUpM/XMQ8/GUoVg15bs4b6dQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XXX1pjLrfvBDrcTjFeKgy5nme2gPL+2bLbjTEi1RIcyiVQr+oHZSYtjYRZZxfAoawF+AEIpQCXprExSW9XPB/8ZXMoqYhnwTphjinUO9AS0Ii5ldG6MPP4U/ddp9k1UBoAiOlEl4PJhHgrxOuu1LzCztqa12Hif+c/X5dbyPy6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=wCBtnoRq; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1789053147; c=relaxed/simple;
+	bh=IpKauD7cgmpWOoxX/7+cBKpOnp/5aWRLvIueqCePBNw=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=ZcvS0NVt3cJkRV1RBQxU2Lzj+dViy2ulqgGc4Q4CkMOO7H8LNhgLC1K4TMM/P9okRJZXkeDUvMwpE3fxGX2ixgvB+f0TfeXwxpl1YZwHwXtLNiWBDbSWnDZCuEngR8p5WBOdsxjhc7WpyQFCxlG/yuM9oThJUjeA2w4LQhIGURs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=Hpdx1B0R; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="wCBtnoRq"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id DC077C653E5;
-	Thu, 10 Sep 2026 15:10:57 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 5CA355FA2F;
-	Thu, 10 Sep 2026 15:10:16 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7AAC911C799CC;
-	Thu, 10 Sep 2026 17:09:56 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1789053010; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=DAmpgL5dNVrNQnJh+yD//pzzGZfsNROOX3umq9ugYFc=;
-	b=wCBtnoRqIjXEwv87TBg6OzGvf4AYIGWYUwYDwRdo3W/063xJ94d+OSKsgMGIimBrTafcT9
-	7bBe8MvW0FcdG5b/Zat/CGay4ASlLq5dbaDpkz1FsUQmLU9g1ha+8K0R12FlyZBWPOU5Em
-	6yRHGT9vo/CH14PdQ/sBhKP+vh9Z2rYyHJTD/DMHu/drBC07oSHyxyDwLPxlH7nv9X9QwJ
-	rDZygzKwDpm9TrjENagEJDo129nx96Aq7IsQc+052w2rtxVb50VuHrUy85q3NvXIdaw6Tl
-	730yhNgMdHGw3DHwokypk7Y2f+MIG63CJLaSBVqJbhZyIOIfMc0ix2BGKaXG0g==
-Message-ID: <a8b81a01-b790-47e3-85e8-c8d82cc6273b@bootlin.com>
-Date: Thu, 10 Sep 2026 17:09:55 +0200
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="Hpdx1B0R"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 47C55A4169;
+	Thu, 10 Sep 2026 17:11:33 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1789053121; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=kpbngov4RIuLBylCtoJAheo73LrZm+/bp+JAwq7KaTM=;
+	b=Hpdx1B0RklFI70C6JovHFAuJwyocwPn/ocqTHpQdmGbpphdH1JIBcqr/YtbjcnbJ6ZtOfU
+	7pePFoQRb7XlSWPffSMETd4TTPd0pZvW3piaRLHiSzL0tVz45TkmmC2BocAwDgRAgvuxw0
+	XQneeJ/zpQOFh0La0WXgAbUPdKcd8z5ra8QU6CZxRLdgdCdeyMNYnQxqtLLs9ZeTuL8OPy
+	5sN4KooGBkX/6RmSaBGO1l2v7csMS5zxmT0Ku9YXijilyY5qmWPpIUxr4cN1jVcamG22ON
+	xBaiIr0TLZ8mbFDjdj4iXDwo/xy7DrVzyM+U/yDAqv8gNlxRbnB64AfiV66POA==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 2/6] net: stmmac: selftests: Validate EEE based on the
- actual LPI timer value
-To: Nicolai Buchwitz <nb@tipi-net.de>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Russell King <linux@armlinux.org.uk>,
- Heiner Kallweit <hkallweit1@gmail.com>,
- =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Emil Renner Berthing <kernel@esmil.dk>,
- Minda Chen <minda.chen@starfivetech.com>,
- Neil Armstrong <neil.armstrong@linaro.org>,
- Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>,
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
- Jan Petrous <jan.petrous@oss.nxp.com>,
- Ovidiu Panait <ovidiu.panait.rb@renesas.com>, Jose.Abreu@synopsys.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- thomas.petazzoni@bootlin.com, linux-arm-kernel@lists.infradead.org,
- linux-stm32@st-md-mailman.stormreply.com, PKneuper@dspace.de,
- David Laight <david.laight.linux@gmail.com>
-References: <20260909074740.1247762-1-maxime.chevallier@bootlin.com>
- <20260909074740.1247762-3-maxime.chevallier@bootlin.com>
- <2f268c9ff187ba59f69d37dd4e4ba99b@tipi-net.de>
-Content-Language: en-US
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-In-Reply-To: <2f268c9ff187ba59f69d37dd4e4ba99b@tipi-net.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Date: Thu, 10 Sep 2026 17:11:33 +0200
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: Fernando Fernandez Mancera <fmancera@suse.de>
+Cc: netdev@vger.kernel.org, horms@kernel.org, kuba@kernel.org,
+ pabeni@redhat.com, edumazet@google.com, davem@davemloft.net, Jason Gunthorpe
+ <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek
+ Kitszel <przemyslaw.kitszel@intel.com>, Elad Nachman <enachman@marvell.com>,
+ Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>, Mark
+ Bloch <mbloch@nvidia.com>, Ido Schimmel <idosch@nvidia.com>, Petr Machata
+ <petrm@nvidia.com>, Edward Cree <ecree.xilinx@gmail.com>, Maxime Chevallier
+ <maxime.chevallier@bootlin.com>, Maxime Coquelin
+ <mcoquelin.stm32@gmail.com>, Alexandre Torgue
+ <alexandre.torgue@foss.st.com>, Arend van Spriel
+ <arend.vanspriel@broadcom.com>, Miri Korenblit
+ <miriam.rachel.korenblit@intel.com>, Keith Busch <kbusch@kernel.org>, Jens
+ Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>, Sagi Grimberg
+ <sagi@grimberg.me>, Chaitanya Kulkarni <kch@nvidia.com>, Saurav Kashyap
+ <skashyap@marvell.com>, Javed Hasan <jhasan@marvell.com>,
+ GR-QLogic-Storage-Upstream@marvell.com, "James E.J. Bottomley"
+ <James.Bottomley@hansenpartnership.com>, "Martin K. Petersen"
+ <mkp@kernel.org>, Nilesh Javali <njavali@marvell.com>, Manish Rangankar
+ <mrangankar@marvell.com>, Varun Prakash <varun@chelsio.com>, Alexander Viro
+ <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara
+ <jack@suse.cz>, David Howells <dhowells@redhat.com>, Marc Dionne
+ <marc.dionne@auristor.com>, Trond Myklebust <trondmy@kernel.org>, Anna
+ Schumaker <anna@kernel.org>, Chuck Lever <cel@kernel.org>, Jeff Layton
+ <jlayton@kernel.org>, NeilBrown <neil@brown.name>, Olga Kornievskaia
+ <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey
+ <tom@talpey.com>, Marek Lindner <marek.lindner@mailbox.org>, Simon
+ Wunderlich <sw@simonwunderlich.de>, Antonio Quartulli
+ <antonio@mandelbit.com>, Sven Eckelmann <sven@narfation.org>, Nikolay
+ Aleksandrov <razor@blackwall.org>, Pablo Neira Ayuso <pablo@netfilter.org>,
+ Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>, Johannes Berg
+ <johannes@sipsolutions.net>, Matthieu Baerts <matttbe@kernel.org>, Mat
+ Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, Julian
+ Anastasov <ja@ssi.bg>, Aaron Conole <aconole@redhat.com>, Eelco Chaudron
+ <echaudro@redhat.com>, Ilya Maximets <i.maximets@ovn.org>, Allison Henderson
+ <achender@kernel.org>, Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko
+ <jiri@resnulli.us>, Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, Xin
+ Long <lucien.xin@gmail.com>, "D. Wythe" <alibuda@linux.alibaba.com>, Dust Li
+ <dust.li@linux.alibaba.com>, Sidraya Jayagond <sidraya@linux.ibm.com>,
+ Mahanta Jambigi <mjambigi@linux.ibm.com>, Tony Lu
+ <tonylu@linux.alibaba.com>, Wen Gu <guwen@linux.alibaba.com>, Jon Maloy
+ <jmaloy@redhat.com>, Tung Quang Nguyen <tung.quang.nguyen@est.tech>, Steffen
+ Klassert <steffen.klassert@secunet.com>, Herbert Xu
+ <herbert@gondor.apana.org.au>, Casey Schaufler <casey@schaufler-ca.com>,
+ Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, "Serge
+ E. Hallyn" <serge@hallyn.com>, Vikas Gupta <vikas.gupta@broadcom.com>,
+ Bhargava Marreddy <bhargava.marreddy@broadcom.com>, Rajashekar Hudumula
+ <rajashekar.hudumula@broadcom.com>, =?UTF-8?Q?Markus_Bl=C3=B6chl?=
+ <markus@blochl.de>, Arnd Bergmann <arnd@arndb.de>, Heiner Kallweit
+ <hkallweit1@gmail.com>, Florian Fainelli <florian.fainelli@broadcom.com>,
+ Krzysztof Kozlowski <krzk@kernel.org>, Qingfang Deng
+ <qingfang.deng@linux.dev>, Julian Braha <julianbraha@gmail.com>, Ethan
+ Nelson-Moore <enelsonmoore@gmail.com>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, Eric Biggers <ebiggers@kernel.org>, Ard
+ Biesheuvel <ardb@kernel.org>, Neal Cardwell <ncardwell@google.com>, Kuniyuki
+ Iwashima <kuniyu@google.com>, Willem de Bruijn <willemb@google.com>, Alyssa
+ Ross <hi@alyssa.is>, Joel Granados <joel.granados@kernel.org>, Oleg Nesterov
+ <oleg@redhat.com>, linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
+ intel-wired-lan@lists.osuosl.org, oss-drivers@corigine.com,
+ linux-net-drivers@amd.com, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-wireless@vger.kernel.org,
+ brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com,
+ linux-nvme@lists.infradead.org, linux-scsi@vger.kernel.org,
+ target-devel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-afs@lists.infradead.org, linux-nfs@vger.kernel.org,
+ b.a.t.m.a.n@lists.open-mesh.org, bridge@lists.linux.dev,
+ netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+ mptcp@lists.linux.dev, lvs-devel@vger.kernel.org, dev@openvswitch.org,
+ rds-devel@oss.oracle.com, linux-sctp@vger.kernel.org,
+ linux-s390@vger.kernel.org, tipc-discussion@lists.sourceforge.net,
+ linux-security-module@vger.kernel.org
+Subject: Re: [PATCH 01/13 net-next] net: ipv4: introduce CONFIG_IPV4 to
+ decouple the IPv4 stack
+In-Reply-To: <20260910144914.8025-2-fmancera@suse.de>
+References: <20260910144914.8025-1-fmancera@suse.de>
+ <20260910144914.8025-2-fmancera@suse.de>
+Message-ID: <aeb37452e976f5d44540ac3a0999d07b@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-Hi,
+Hi Fernando,
 
-On 9/9/26 13:32, Nicolai Buchwitz wrote:
-> Hi Maxime
-> 
-> On 9.9.2026 09:47, Maxime Chevallier wrote:
->> The EEE selftest is a 2-step test :
->>  - It validates that we enter in LPI mode with the
->>    irq_tx_path_in_lpi_mode_n counter
->>  - It then validates that we exit LPI when sending a frame, with the
->>    irq_tx_path_exit_lpi_mode_n counter.
->>
->> The current state of the test lacks 2 main things :
->>
->>  - We don't know exactly when was the previous frame sent (it's from the
->>    previous selftest)
->>
->>  - The timeout is hardcoded, while the LPI is entered after a
->>    user-configurable delay. On top of that, the timeout loop uses a
->>    pre-decrement iterator (--retries) that actually only iterate nine
->>    times, so 900ms while the default LPI value is 1 second.
->>
->> Let's therefore make it more deterministic :
->>
->>  - Send a frame at the beginning of the test
->>  - Wait for more than the lpi timer value, we timeout after about twice
->>    the value,
->>  - Then send another frame, and verify that we do go out of LPI, also
->>    with a timeout.
->>
->> Note that the test's goal isn't to validate the LPI timer value itself,
->> only that we enter/leave LPI mode.
->>
->> Fixes: 091810dbded9 ("net: stmmac: Introduce selftests support")
->> Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
->> ---
->>  .../stmicro/stmmac/stmmac_selftests.c         | 33 ++++++++++++++-----
->>  1 file changed, 25 insertions(+), 8 deletions(-)
->>
->> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
->> index 6503678b646e..4564b9f29194 100644
->> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
->> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
-> 
->> [...]
-> 
->> -    memcpy(initial, &priv->xstats, sizeof(*initial));
->> -
->> +    /* Send a frame, then wait to enter LPI */
->>      ret = stmmac_test_mac_loopback(priv);
->>      if (ret)
->>          goto out_free_final;
->>
->> +    max_duration = usecs_to_jiffies(2 * priv->tx_lpi_timer);
->> +
->> +    memcpy(initial, &priv->xstats, sizeof(*initial));
-> 
-> Is the LPI entry already counted here? AFAIU with tx-lpi-timer=0 on dwmac4 the
-> MAC goes directly into LPI after the frame, before stmmac_test_mac_loopback()
-> returns. The loop below would time out although LPI is working.
-> 
-> Snapshot before the first frame, and take a second snapshot right before
-> the second loopback for the exit check?
-> 
->> [...]
-> 
->> +    memcpy(final, &priv->xstats, sizeof(*final));
->>      if (final->irq_tx_path_exit_lpi_mode_n <=
->>          initial->irq_tx_path_exit_lpi_mode_n) {
->>          ret = -EINVAL;
-> 
-> nit: -ETIMEDOUT here as well, to match the entry check?
+Thanks for the patch - after nearly 30 years IPv6 should be mature 
+enough :)
 
-I ended up changing my mind and following you call here, V2 is incoming,
-hopefully with all the patches this time :)
-
-Maxime
-
+On 10.9.2026 16:48, Fernando Fernandez Mancera wrote:
+> Historically, the IPv4 protocol has been linked to the core INET
+> subsystem. Because shared infrastructure like the TCP/UDP engine,
+> routing or INET hashtables live inside net/ipv4/, it has been 
+> impossible
+> to compile a kernel with only IPv6 support.
 > 
-> Thanks
-> Nicolai
+> This patch introduces the CONFIG_IPV4 Kconfig symbol, which is set to
+> 'def_bool y' for now. This does not allow to completely disable the
+> IPv4 stack yet but it lays the necessary build-system work for that
+> goal.
+> 
+> In addition, multiple subsystems Kconfig symbols across networking
+> features like tunnels, drivers and filesystems have been adjusted to
+> depend on IPv4. Keep on mind that follow-up work is required to convert
+> the Kconfig symbol to bool and remove the dependency on IPv4 where it
+> makes sense.
+> 
+> Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+> ---
 
+> [...]
+
+> diff --git a/net/packet/Kconfig b/net/packet/Kconfig
+> index 2997382d597c..00fda9e08cb0 100644
+> --- a/net/packet/Kconfig
+> +++ b/net/packet/Kconfig
+> @@ -5,6 +5,7 @@
+> 
+>  config PACKET
+>  	tristate "Packet socket"
+> +	depends on IPV4
+
+   depends on IPV4 || !INET
+
+Otherwise this would break existing configs with INET=n. The same 
+applies
+to other affected options that currently permit INET=n.
+
+> [...]
+
+Thanks,
+Nicolai
