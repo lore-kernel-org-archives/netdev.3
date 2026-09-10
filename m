@@ -1,42 +1,41 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9A802609E3
-	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 00:17:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B40342D12EE
+	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 00:17:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1788999448; cv=none; b=afoBy8Vwyhg9rOaZKM7t2GnhPVfb64BBKhfUm4l4gP/91Yzpyy/KH0/TjWFeii4ZDvP0G32O9f3lU86R3pwJN/2opWIZ4O9FWe9vbZT/fHpTnbttW/LK+xfEx/yJ2CR3jQspZGoY1ccmg1PaeuDatklmSAGY2MR/hyoakMSuTF4=
+	t=1788999450; cv=none; b=rB3fcTpH7qy86AxB/2+ztnTyHArpkwHq0CGrwt84pT20io4cRP0MPrO5u8P7QDDVosfza7L6SE7zNNSfSOL5bG5k2FCDUWUseY9DuNkhSMBoSGw26wuGnj7GT1H6iADjoO3Z1lSpy0jOrmg8Z6q/DRFNACzCD8osoQWjl3hr8vg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1788999448; c=relaxed/simple;
-	bh=kAIv88/JZe/WBc/Elj3VzSm4FsR0+bXdlY7u8Bqy0S4=;
+	s=arc-20240116; t=1788999450; c=relaxed/simple;
+	bh=ahWgPAbfR6loRoe4QcTG25sF5N6LXLbTWp4Hp5gm51I=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=GEKYgji8kz6IEMZ5QVoJj5HK7af76hjeyI50u+OCt+SxVbTkmwaipjvsVJgdJrQfVZ6x3AHTjzfE7Jvmiy4c+CX6GL6iSS0bs8M/98tHpSDA79P52WxtT4RCgOn3q4ByV4PmupjOZUk/ewZhYsEEwXa+1d2oqwLTBAQptVGfUQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DqUuXpwR; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=jgldp6IPxRmSRdmoWT0iU3jLFCpy+HhKIHUSwucLRyhL6a8sE9arvfin3koK2Nn25JiF7NgagL+8UlydvNbjT0TbPzO4kent82pjjTBRS56OXLCdqsRjdX5/JmIC0rnmDZrIFAIh8L0pY2W78NdbrLjRy+85oTw4SG/aZHOwz0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EP6dIUPx; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DqUuXpwR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F42181F00893;
-	Thu, 10 Sep 2026 00:17:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EP6dIUPx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 061291F00898;
+	Thu, 10 Sep 2026 00:17:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1788999446;
-	bh=RZcEX6jAqjJrFFzqpuMyAKjUQsF9MEC5RSismqfKZH0=;
+	s=k20260515; t=1788999447;
+	bh=mTDHlYKfvA363rrKWLtB5kCck3F/8tsLkSPLCGETP4c=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=DqUuXpwRKmN1J1ZfrK2tUGRRJCOzBFcgaKq6TxNpFKm4ZtuJU/aw+5NCpYXgKi4Le
-	 HIyVqJhjHGBWMoLxYGQdtST9WtWfMeVJ2h3ACbxQG+Xfu2PD0hGt+mSext0IyqGx2d
-	 mmF5U4bFU2vIHhUdFQjzYPr/RoQRNB7QLqR9ZutAc6vnN0ZzxPPGopGDbFtPV6r4Nu
-	 BbOpPOjXLrptPjDTnJ38Rdf8puP3e8tEgEYk73vNVEZyzxNptb+HNFDi5EtqmigT52
-	 4KpVOwHUdkH9PE5JmOU8c4ZAyS7n9FD5ZDJprSBZVeD/u/ijBqHnucC7K1upRI17G/
-	 GCzcHudEokPkA==
-Subject:
- Re: [PATCH net-next v1 2/6] net: dsa: mt7628: add port bridge offload support
+	b=EP6dIUPxHSL8otErQXKNetHZzjxGN8bHtOHJQtFyJHZrtcqz04z0aR8vGedmBfyAI
+	 nKT4mmSbxpsEAZQVlTkb82jdk94ynLO8DN6JXaTXENX2X9DFlV4IhzrkqnVzbPs3XM
+	 02FfKZDbqVeWFEzGfu99JLySfx+8asi2VNk8YMVdtbBhGPzwPvvWQGBMzUx+PAZW04
+	 S3Bt8QeZ1QRMVKCGFh7H4aZfQ/I7ktQO0AiCV8tbTTy7NWCW1LqLVKxWTsfoxHGuy7
+	 55SrINtYZn6JmH8Hundk8CZ4HgpY2HvWAKzGKZRdJjE6xExA+PZMGZFm8hcopc4Ezf
+	 y1wJTImLq30YA==
+Subject: Re: [PATCH net-next v1 3/6] net: dsa: tag: mt7628: add bridge support
 From: netdev-bot+sashiko@kernel.org
 To: joey@tinyisr.com
 Cc: netdev@vger.kernel.org, horms@kernel.org, pabeni@redhat.com,
  kuba@kernel.org, edumazet@google.com, davem@davemloft.net, olteanv@gmail.com,
  andrew@lunn.ch
-Date: Thu, 10 Sep 2026 00:17:25 +0000
-Message-ID: <178899944558.219967.8214424150936383852@kernel.org>
-In-Reply-To: <20260906171625.533915-3-joey@tinyisr.com>
-References: <20260906171625.533915-3-joey@tinyisr.com>
+Date: Thu, 10 Sep 2026 00:17:26 +0000
+Message-ID: <178899944660.219967.17661076116703942045@kernel.org>
+In-Reply-To: <20260906171625.533915-4-joey@tinyisr.com>
+References: <20260906171625.533915-4-joey@tinyisr.com>
 X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -50,251 +49,153 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 4 potential
 issue(s) to consider:
 
-Critical: 0 · High: 1 · Medium: 2 · Low: 1
+Critical: 0 · High: 1 · Medium: 1 (1) · Low: 2
 
-- [High] Bridge TX forwarding offload is advertised but the MT7628 tagger
-  never performs an imprecise/flooding transmit, so locally-originated…
-- [Medium] STP/bridge offload is added without the paired hardware-FDB
-  flush: mt7628_switch_ops gains .port_stp_state_set…
-- [Medium] Newly reachable non-unwound partial failure of bridge join
-  leaves the driver's private VLAN state permanently corrupted.
-- [Low] At this commit only, bridged ports transmit with a VID that no
-  longer exists in the hardware VLAN table.
+- [High] mt7628_tag_xmit() (net/dsa/tag_mt7628.c:40-53) switches the VLAN
+  of an `skb->offload_fwd_mark` frame to the tag_8021q bridge (VBID)…
+- [Medium] mt7628_tag_xmit() (net/dsa/tag_mt7628.c:41-43) derives the
+  egress VLAN from `dsa_port_bridge_num_get(dp)` solely on the basis of…
+- [Low] mt7628_tag_xmit() selects the imprecise tag_8021q bridge VID for
+  every skb with offload_fwd_mark set, without checking…
+- [Low] Series ordering/bisectability: the preceding commit 'net: dsa:
+  mt7628: add port bridge offload support'…
+
+Pre-existing issues:
+- [Medium] mt7628_tag_xmit() reads rtnl-protected bridge state
+  (dsa_port_bridge_num_get(dp) -> dp->bridge->num) from the lockless TX…
 
 --
 
-net: dsa: mt7628: add port bridge offload support
+net: dsa: tag: mt7628: add bridge support
 
-This adds a .port_stp_state_set implementation that drives the POC1
-blocking/learning bits, and wires the generic tag_8021q bridge join and
-leave helpers into mt7628_switch_ops so bridges can be offloaded.
+The tagger now picks the tag_8021q bridge VLAN instead of the port's
+standalone VLAN when skb->offload_fwd_mark is set, so that bridged egress
+uses the VLAN the port is a member of.
 
-A few questions about the new hooks below.
-
-> diff --git a/drivers/net/dsa/mt7628.c b/drivers/net/dsa/mt7628.c
-> index 990556cc2f655..7eabfad3e1144 100644
-> --- a/drivers/net/dsa/mt7628.c
-> +++ b/drivers/net/dsa/mt7628.c
+> diff --git a/net/dsa/tag_mt7628.c b/net/dsa/tag_mt7628.c
+> index 80b50ff08e53f..fab9d4f04b7a0 100644
+> --- a/net/dsa/tag_mt7628.c
+> +++ b/net/dsa/tag_mt7628.c
 
 [ ... ]
 
-> @@ -599,6 +605,40 @@ static void mt7628_teardown(struct dsa_switch *ds)
->  	rtnl_unlock();
->  }
+> @@ -38,7 +38,9 @@ static struct sk_buff *mt7628_tag_xmit(struct sk_buff *skb,
+>  	__be16 *tag;
 >  
-> +static void mt7628_stp_state_set(struct dsa_switch *ds, int port, u8 state)
-> +{
-> +	struct mt7628_esw *esw = ds->priv;
-> +	bool forward_disable;
-> +	bool learn_disable;
-> +
-> +	switch (state) {
-> +	case BR_STATE_DISABLED:
-> +	case BR_STATE_BLOCKING:
-> +	case BR_STATE_LISTENING:
-> +		forward_disable = true;
-> +		learn_disable = true;
-> +		break;
-
-[Severity: Medium]
-Should this series also add a .port_fast_age implementation to go with
-the new STP hook?
-
-dsa_port_set_state() in net/dsa/port.c calls the driver's
-port_stp_state_set() and then asks for fast ageing on every transition
-out of LEARNING/FORWARDING:
-
-net/dsa/port.c:dsa_port_set_state() {
-	...
-	if (!dsa_port_can_configure_learning(dp) ||
-	    (do_fast_age && dp->learning)) {
-		...
-		dsa_port_fast_age(dp);
-	}
-}
-
-mt7628_switch_ops has no .port_bridge_flags, so
-dsa_port_can_configure_learning() returns false and the branch is always
-taken. dsa_port_fast_age() then does nothing at all, including skipping
-the SWITCHDEV_FDB_FLUSH_TO_BRIDGE notification:
-
-net/dsa/port.c:dsa_port_fast_age() {
-	...
-	if (!ds->ops->port_fast_age)
-		return;
-	...
-}
-
-Since mt7628_stp_state_set() only sets MT7628_ESW_POC1_PORT_BLOCKING_STATE,
-do the addresses the ASIC learned while the port was forwarding stay in
-the L2 table after a topology change, a link down, or an
-"ip link set swp0 nomaster"?  If so, does the hardware keep resolving
-those MACs to the now blocked/standalone port and drop the frames until
-the aging interval that mt7628_switch_init() programs (the comment there
-documents it as 300 s) expires?
-
-mt7530.c pairs the same offload with mt7530_port_fast_age() for this
-case.
-
-> +	case BR_STATE_LEARNING:
-> +		forward_disable = true;
-> +		learn_disable = false;
-> +		break;
-> +	case BR_STATE_FORWARDING:
-> +		forward_disable = false;
-> +		learn_disable = false;
-> +		break;
-> +	default:
-> +		dev_err(ds->dev, "invalid STP state: %d\n", state);
-> +		return;
-> +	}
-> +
-> +	regmap_assign_bits(esw->regmap, MT7628_ESW_REG_POC1,
-> +			   FIELD_PREP(MT7628_ESW_POC1_PORT_DIS_LEARNING,
-> +				      BIT(port)), learn_disable);
-> +	regmap_assign_bits(esw->regmap, MT7628_ESW_REG_POC1,
-> +			   FIELD_PREP(MT7628_ESW_POC1_PORT_BLOCKING_STATE,
-> +				      BIT(port)), forward_disable);
-> +}
-> +
->  static const struct dsa_switch_ops mt7628_switch_ops = {
->  	.get_tag_protocol = mt7628_get_tag_proto,
->  	.setup = mt7628_setup,
-> @@ -608,6 +648,9 @@ static const struct dsa_switch_ops mt7628_switch_ops = {
->  	.phylink_get_caps = mt7628_phylink_get_caps,
->  	.tag_8021q_vlan_add = mt7628_dsa_8021q_vlan_add,
->  	.tag_8021q_vlan_del = mt7628_dsa_8021q_vlan_del,
-> +	.port_bridge_join = dsa_tag_8021q_bridge_join,
-> +	.port_bridge_leave = dsa_tag_8021q_bridge_leave,
+>  	dp = dsa_user_to_port(dev);
+> -	xmit_vlan = dsa_tag_8021q_standalone_vid(dp);
+> +	xmit_vlan = skb->offload_fwd_mark ?
+> +	    dsa_tag_8021q_bridge_vid(dsa_port_bridge_num_get(dp)) :
+> +	    dsa_tag_8021q_standalone_vid(dp);
 
 [Severity: High]
-Does using dsa_tag_8021q_bridge_join() here promise more than the
-mt7628 tagger delivers?
+The VLAN is switched to the bridge broadcast domain here, but the
+destination port field of the tag is still the precise single-port bitmap:
 
-dsa_tag_8021q_bridge_join() sets tx_fwd_offload unconditionally:
-
-net/dsa/tag_8021q.c:dsa_tag_8021q_bridge_join() {
-	...
-	*tx_fwd_offload = true;
-	...
+net/dsa/tag_mt7628.c:mt7628_tag_xmit() {
+	tag[0] = htons(ETH_P_8021Q |
+		       FIELD_PREP(MT7628_TAG_TX_PORT,
+				  dsa_xmit_port_mask(skb, dev)));
+	tag[1] = htons(xmit_vlan);
 }
 
-dsa_port_bridge_join() stores that in dp->bridge->tx_fwd_offload and
-passes it to switchdev_bridge_port_offload(), so the bridge sets
-BR_TX_FWD_OFFLOAD_BIT.  On egress the bridge then hands the driver only
-one copy per hwdom:
+and dsa_xmit_port_mask() in net/dsa/tag.h starts from a single bit:
+
+	unsigned long mask = BIT(dp->index);
+
+Can the switch replicate a flooded frame with that mask?
+
+The driver uses dsa_tag_8021q_bridge_join() as .port_bridge_join, and that
+function sets *tx_fwd_offload = true unconditionally, so the software bridge
+stops cloning to the other ports of the same hwdom:
 
 net/bridge/br_switchdev.c:nbp_switchdev_allowed_egress() {
 	return !test_bit(p->hwdom, &cb->fwd_hwdoms) &&
-	       (!skb->offload_fwd_mark || cb->src_hwdom != p->hwdom);
+		(!skb->offload_fwd_mark || cb->src_hwdom != p->hwdom);
 }
 
-But mt7628_tag_xmit() in net/dsa/tag_mt7628.c always builds a precise
-single-port mask:
+Documentation/networking/dsa/dsa.rst describes the resulting contract:
 
-	xmit_tpid = ETH_P_8021Q |
-		FIELD_PREP(MT7628_TAG_TX_PORT, dsa_xmit_port_mask(skb, dev));
+	Additionally, replication of data plane packets (multicast, flooding)
+	is handled in hardware and the bridge driver will transmit a single
+	skb for each packet that may or may not need replication.
 
-and dsa_xmit_port_mask() in net/dsa/tag.h starts from
-"unsigned long mask = BIT(dp->index);" and only ever adds HSR peers, so
-the mask is never widened to the bridge members.
+With the destination bitmap pinned to one port, do host-originated
+broadcast, multicast and unknown unicast frames (ARP requests, DHCP, mDNS,
+IPv6 NS) reach only a single bridge member port, with no software copies for
+the remaining ports of the same switch?
 
-With two ports in one bridge, do flooded frames (ARP, DHCP, IPv6 ND,
-mDNS, unknown unicast) originating from the host or from another hwdom
-reach only one of the members, with the bridge suppressing the remaining
-copies?  tag_sja1105.c has sja1105_imprecise_xmit() for this; is an
-equivalent flooding transmit path needed in tag_mt7628.c?  The final
-state of the series still selects only the bridge VID on
-skb->offload_fwd_mark and leaves the destination port mask untouched.
+For comparison, sja1105_imprecise_xmit() in net/dsa/tag_sja1105.c uses
+dsa_tag_8021q_bridge_vid() without restricting the destination port.
 
-[Severity: Low]
-At this commit alone, does a bridged port transmit with a VID that is no
-longer present in the hardware VLAN table?
-
-dsa_tag_8021q_bridge_join() adds the bridge VID and then removes the
-standalone one:
-
-net/dsa/tag_8021q.c:dsa_tag_8021q_bridge_join() {
-	...
-	dsa_port_tag_8021q_vlan_del(dp, standalone_vid, false);
-	...
-}
-
-That reaches mt7628_dsa_8021q_vlan_del() -> mt7628_port_leave_vlan_block(),
-which clears the members and untag bits and, for the last member, the VID
-itself:
-
-	vlan->members &= ~BIT(port);
-	vlan->untag &= ~BIT(port);
-	if (!vlan->members)
-		vlan->vid = 0;
-
-and mt7628_vlan_sync() commits that to hardware.  The tagger at this
-commit still does:
-
-net/dsa/tag_mt7628.c:mt7628_tag_xmit() {
-	...
-	xmit_vlan = dsa_tag_8021q_standalone_vid(dp);
-	...
-}
-
-The following patch in the series ("net: dsa: tag: mt7628: add bridge
-support", 4ed08042206018344b61ac96d48a0c9a44800b8f) changes this to pick
-dsa_tag_8021q_bridge_vid() when skb->offload_fwd_mark is set, so the end
-of the series is fine.  Would it be worth merging the two so that
-bisecting does not land on a commit where bridged ports do not pass CPU
-traffic?
+This also looks unchanged at the end of the series: after "net: dsa: tag:
+mt7628: add VLAN awareness support" both the VLAN-aware and VLAN-unaware
+bridge paths still build xmit_tpid from dsa_xmit_port_mask().
 
 [Severity: Medium]
-Can a failed bridge join leave the driver's private VLAN slots
-permanently occupied?
+Is skb->offload_fwd_mark on its own enough to conclude that the egress port
+is bridged?
 
-dsa_tag_8021q_bridge_join() first programs the bridge VID on all ports.
-dsa_switch_tag_8021q_vlan_add() walks the ports in index order, so the
-user port is programmed first and mt7628_port_join_vlan_block() claims a
-slot and records the PVID:
-
-	vlan->members |= BIT(port);
-	if (flags & BRIDGE_VLAN_INFO_PVID)
-		esw->pvid[type][port] = vid;
-
-The CPU port is handled afterwards and can fail before the driver op
-runs:
-
-net/dsa/tag_8021q.c:dsa_port_do_tag_8021q_vlan_add() {
-	...
-	v = kzalloc_obj(*v);
-	if (!v)
-		return -ENOMEM;
-	...
+include/net/dsa.h:dsa_port_bridge_num_get() {
+	return dp->bridge ? dp->bridge->num : 0;
 }
 
-net/dsa/tag_8021q.c:dsa_switch_tag_8021q_vlan_add() {
-	...
-			err = dsa_port_do_tag_8021q_vlan_add(dp, info->vid, flags);
-			if (err)
-				return err;
-	...
+net/dsa/tag_8021q.c:dsa_tag_8021q_bridge_vid() {
+	/* The VBID value of 0 is reserved for precise TX, but it is also
+	 * reserved/invalid for the bridge_num, so all is well.
+	 */
+	return DSA_8021Q_RSV | DSA_8021Q_VBID(bridge_num);
 }
 
-The error propagates to dsa_port_bridge_join(), which takes the
-out_rollback path calling only dsa_port_bridge_destroy() and never
-broadcasting DSA_NOTIFIER_BRIDGE_LEAVE, so mt7628_port_leave_vlan_block()
-is not called for the bridge VID.
+So a bridge_num of 0 yields 0xC00, which is also the standalone VID of
+switch 0 / port 0.
 
-Does that leave one of the MT7628_ESW_NUM_USER_PORTS + 1 reserved slots
-with vlan->vid != 0 and members = BIT(port) forever, so
-mt7628_alloc_vlan_block() can never reuse it and later joins can hit
--ENOSPC?  And with the port's hardware PVID pointing at a VLAN that has
-no CPU member, does that port lose CPU connectivity with no path that
-restores it?  The non-unwinding part is in the DSA core and shared with
-other tag_8021q users, but this patch makes it reachable for mt7628;
-would restoring the standalone VID on join failure be feasible here?
-This is still the case at the end of the series.
+mt7628_tag_rcv() sets the mark for every frame received on a bridged port:
 
-> +	.port_stp_state_set = mt7628_stp_state_set,
->  };
->
+net/dsa/tag.h:dsa_default_offload_fwd_mark() {
+	skb->offload_fwd_mark = !!(dp->bridge);
+}
+
+and nothing clears it when a tc mirred egress redirect action hands that
+same skb to a different user port. If that port is standalone, does the
+frame get tagged with VID 0xC00 while the destination bitmap forces egress
+on a port that is not a member of that VLAN, so the switch drops it under
+PFC1 EN_VLAN? Before this change the egress port's own standalone VID was
+used.
+
+Would a fallback such as: if bridge_num is 0, use
+dsa_tag_8021q_standalone_vid(dp), be reasonable here?
+
+The same condition is reused at the end of the series, where this path
+calls br_vlan_enabled(dsa_port_bridge_dev_get(dp)); with a standalone
+egress port that is br_vlan_enabled(NULL), which reaches netdev_priv(NULL)
+when CONFIG_BRIDGE_VLAN_FILTERING is enabled.
+
+[Severity: Low]
+This isn't a bug in the final tree, but the preceding commit 9369664c988d
+("net: dsa: mt7628: add port bridge offload support") already installs
+.port_bridge_join = dsa_tag_8021q_bridge_join, and that function drops the
+port's standalone VLAN:
+
+net/dsa/tag_8021q.c:dsa_tag_8021q_bridge_join() {
+	err = dsa_port_tag_8021q_vlan_add(dp, bridge_vid, true);
+	if (err)
+		return err;
+
+	dsa_port_tag_8021q_vlan_del(dp, standalone_vid, false);
+}
+
+Until the tagger change above, mt7628_tag_xmit() still tags egress frames
+with dsa_tag_8021q_standalone_vid(dp), a VLAN the bridged port is no longer
+a member of, so bridged transmit is broken at that intermediate commit and a
+bisection landing there sees the breakage.
+
+Could the driver and tagger changes be squashed, or the dependency mentioned
+in the commit messages?
+
+>  
+>  	skb_push(skb, MT7628_TAG_LEN);
+>  	dsa_alloc_etype_header(skb, MT7628_TAG_LEN);
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260906171625.533915-1-joey%40tinyisr.com
