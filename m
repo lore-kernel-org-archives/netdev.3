@@ -1,38 +1,38 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D95C9538D98;
-	Thu, 10 Sep 2026 17:01:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D529353359D
+	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 17:02:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789059719; cv=none; b=ltKDkpbDToMvXEgxH4O6cvJt5f57L/D1dxJue8bKplkIruXh16XUueLlTGaM21Ia4bgt7AB17x6/d1yYFlAxQAfXFFv+PrVcK4EV7aSeXBTQbbVP6QsOCdDqoL9jlNxUFkSGVEIwfIxu4flLWKhpKkS1P86Uj9wKvk1m8+eQ4B8=
+	t=1789059737; cv=none; b=D/+5lVrzHNCPv7r6MhlrcPsiGBxTkev/hojr9uo9A27FWMcoJFyJU+mA9P21r/H80+e+vqIS4ReOzbrp1T6XBdBUY8XWWM1XF59EGe4dcWnnNx+KX3jR/s6jMoiQRO47waOAMGgjQLOP7MsoIiR6Zsmj4GBCIhIVniF/+03RnmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789059719; c=relaxed/simple;
-	bh=l5jhKdt+5Exh0JHMJzPegWLpoZCsyaXCOCClP9Gghx4=;
+	s=arc-20240116; t=1789059737; c=relaxed/simple;
+	bh=AsPLhLfYyPiwzMHZ7TLKXNFFE2EgXpcPnfmUcaIEOXc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=poLFyt7vHOVsAY/QP7ZKr5yIuC7SqvbAOkAIj5svE93TgCVXD6wUwtvC6htMdm/poMGEYWkN1PHDPE3l5V6X5BwnmirHW/jWE7kvjG7UajwtL1+thk1OjSDroUqzv0eJb6t/pMST/J1uuboIZQafZCDaNPWCr3LFxhHkQJXefuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=nP70D4Km; arc=none smtp.client-ip=185.246.85.4
+	 MIME-Version; b=VzE0A5lVQDvsovTwbfxRds7p5/+Qhrn8dbvbn+wb2xyj8CeoWMGaE+i+aEkCU7pRt3z9gw2HNKskDZa8WDTFHHSbTEz3xGb+CIYZzacy6QC5R0ZBb92E9O2Z9i+tmysRXV/9EVo9HPcOmYREftyvYsVneKWZS90WYkl1QA3oRD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=g0eiBd6a; arc=none smtp.client-ip=185.171.202.116
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="nP70D4Km"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="g0eiBd6a"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 3B8BD4E40107;
-	Thu, 10 Sep 2026 17:01:45 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 7B940C653ED;
+	Thu, 10 Sep 2026 17:02:34 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 0E0CC5FC38;
-	Thu, 10 Sep 2026 17:01:45 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 8274C11C7A542;
-	Thu, 10 Sep 2026 19:01:37 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 17D585FC38;
+	Thu, 10 Sep 2026 17:01:53 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3C23E11C787F4;
+	Thu, 10 Sep 2026 19:01:44 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1789059699; h=from:subject:date:message-id:to:cc:mime-version:
+	t=1789059707; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=UBa1dYJtWp9Cl812RFL/pekKO7SY/UxFHZE1Y3hoVEI=;
-	b=nP70D4KmsNPY8EWZmzzKNWef21PvgTFzKwXXTIx0//7RWzp+hSJUuSdF2XvQO9LVnNHwds
-	ZqzAJ0pmmETcQYxjaoYBwv0yVswhB184QRkIr3zb3hr+vtNj3dRunGcKr1JWBEEesBTIJM
-	QWsFvqwqXz6biIihHIeatyumY5NeT30OCBPxjg7YpC5a2cYmwPOg46khLYLoQZXO8eTNkz
-	saM6GsPEz8TXtLgipxR12KiftUKS0AfDz+7P0YGJFL00DHafqxCHLbDYArcwBhGBXtrfIi
-	c5Dt+ZJsZupBNS91nnoNcMcd0LH1T9IisTH4aJPWrC+kwmOagE5ctspKJ4mVHQ==
+	bh=IR8RWw0Rx9ARUFxvbc3KNRO65H2pE1ep1NDnG0tdsKE=;
+	b=g0eiBd6aYIh9YEo/jB1Cse2aTF01IEu3H18g2J7DGvCKEl4RgUccjvo2q2dzPQQHDg8zlr
+	PNPczPQLuACDKzWS8LeJhD+I/d2iQGJD2AD5Q5qF72k7V2e0QK7yHn3W9Lm5zgBmnF8H5n
+	jAK8cpSk+orxB7RbW4yad383Ho89pSQ1iKrYwvtYrXLpUb/a48IsURNdNqm3kpkWyU9GDQ
+	hdXzaLNXw3C3eolSVTlf+7C+HdzUcqNYpbNAWui2sTv9ZxusxV+nwv4jM37CRvl4dX+n2e
+	eWbd2O01glJmlqJkUI5J/Mpsiv1wuwYcxUh5ND6lwIRjMUTLjQRYk2tvidfmuQ==
 From: Maxime Chevallier <maxime.chevallier@bootlin.com>
 To: davem@davemloft.net,
 	Andrew Lunn <andrew@lunn.ch>,
@@ -60,9 +60,9 @@ Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
 	Dimitri Fedrau <dimitri.fedrau@liebherr.com>,
 	Frank Wunderlich <frank.wunderlich@linux.dev>,
 	Pietro Ameruoso <p.ameruoso@live.it>
-Subject: [PATCH RESEND net-next v17 05/10] net: phy: Represent PHY-less SFP modules with phy_port
-Date: Thu, 10 Sep 2026 19:00:57 +0200
-Message-ID: <20260910170103.1029108-6-maxime.chevallier@bootlin.com>
+Subject: [PATCH RESEND net-next v17 06/10] net: phy: phy_port: Store information about a port's upstream
+Date: Thu, 10 Sep 2026 19:00:58 +0200
+Message-ID: <20260910170103.1029108-7-maxime.chevallier@bootlin.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260910170103.1029108-1-maxime.chevallier@bootlin.com>
 References: <20260910170103.1029108-1-maxime.chevallier@bootlin.com>
@@ -75,396 +75,183 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-Now that the SFP bus infrastructure notifies when PHY-less modules are
-connected, we can create a phy_port to represent it. Instead of letting
-the SFP subsystem handle that, the Bus' upstream is in charge of
-maintaining that phy_port and register it to the topology, as the
-upstream (in this case a phy device) is directly interacting with the
-underlying net_device.
+MII phy_ports are not meant to be connected directly to a link partner.
+They are meant to feed into some media converter devices that will
+expose an MDI phy_port, so far we only support SFP modules for that.
 
-Add a phy_caps helper to get the achievable modes on this module based
-on what the phy_port representing the bus supports.
+In the case an MDI phy_port is backed by an MII port (e.g. a SFP
+module's port, backed by the SFP cage port), let's keep track of the
+port id of the MII port backing it.
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 ---
- drivers/net/phy/phy-caps.h   |   2 +
- drivers/net/phy/phy_caps.c   |  26 +++++++++
- drivers/net/phy/phy_device.c | 100 +++++++++++++++++++++++++++++++++--
- drivers/net/phy/phylink.c    |  76 ++++++++++++++++++++++++--
- include/linux/phy.h          |   6 +++
- 5 files changed, 203 insertions(+), 7 deletions(-)
+ drivers/net/phy/phy_device.c | 29 +++++++++++++++++++++++++++--
+ drivers/net/phy/phylink.c    |  5 +++++
+ include/linux/phy.h          |  4 ++++
+ include/linux/phy_port.h     |  3 +++
+ 4 files changed, 39 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/phy/phy-caps.h b/drivers/net/phy/phy-caps.h
-index 421088e6f6e8..ec3d39a0ae06 100644
---- a/drivers/net/phy/phy-caps.h
-+++ b/drivers/net/phy/phy-caps.h
-@@ -66,5 +66,7 @@ void phy_caps_medium_get_supported(unsigned long *supported,
- 				   enum ethtool_link_medium medium,
- 				   int lanes);
- u32 phy_caps_mediums_from_linkmodes(unsigned long *linkmodes);
-+void phy_caps_linkmode_filter_ifaces(unsigned long *to, const unsigned long *from,
-+				     const unsigned long *interfaces);
- 
- #endif /* __PHY_CAPS_H */
-diff --git a/drivers/net/phy/phy_caps.c b/drivers/net/phy/phy_caps.c
-index 942d43191561..558e4df4d63c 100644
---- a/drivers/net/phy/phy_caps.c
-+++ b/drivers/net/phy/phy_caps.c
-@@ -445,3 +445,29 @@ u32 phy_caps_mediums_from_linkmodes(unsigned long *linkmodes)
- 	return mediums;
- }
- EXPORT_SYMBOL_GPL(phy_caps_mediums_from_linkmodes);
-+
-+/**
-+ * phy_caps_linkmode_filter_ifaces() - Filter linkmodes with an interface list
-+ * @to: Stores the filtered linkmodes
-+ * @from: Linkmodes to filter
-+ * @interfaces: Bitfield of phy_interface_t that we use for filtering
-+ *
-+ * Filter the provided linkmodes, only to keep the ones we can possibly achieve
-+ * when using any of the provided MII interfaces.
-+ */
-+void phy_caps_linkmode_filter_ifaces(unsigned long *to,
-+				     const unsigned long *from,
-+				     const unsigned long *interfaces)
-+{
-+	__ETHTOOL_DECLARE_LINK_MODE_MASK(ifaces_supported) = {};
-+	unsigned int ifaces_caps = 0;
-+	phy_interface_t interface;
-+
-+	for_each_set_bit(interface, interfaces, PHY_INTERFACE_MODE_MAX)
-+		ifaces_caps |= phy_caps_from_interface(interface);
-+
-+	phy_caps_linkmodes(ifaces_caps, ifaces_supported);
-+
-+	linkmode_and(to, from, ifaces_supported);
-+}
-+EXPORT_SYMBOL_GPL(phy_caps_linkmode_filter_ifaces);
 diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-index f15c0fc339b4..26634ef274f3 100644
+index 26634ef274f3..561d19edf331 100644
 --- a/drivers/net/phy/phy_device.c
 +++ b/drivers/net/phy/phy_device.c
-@@ -1490,11 +1490,21 @@ static int phy_sfp_connect_phy(void *upstream, struct phy_device *phy)
- {
- 	struct phy_device *phydev = upstream;
- 	struct net_device *dev = phydev->attached_dev;
-+	int ret;
+@@ -1493,6 +1493,7 @@ static int phy_sfp_connect_phy(void *upstream, struct phy_device *phy)
+ 	int ret;
  
--	if (dev)
--		return phy_link_topo_add_phy(dev, phy, PHY_UPSTREAM_PHY, phydev);
-+	phydev->has_sfp_mod_phy = true;
+ 	phydev->has_sfp_mod_phy = true;
++	phy_set_upstream_port(phy, phydev->sfp_cage_port);
  
--	return 0;
-+	/* If we aren't attached to a netdev, we can't add the SFP PHY to its
-+	 * topology.
-+	 */
-+	if (!dev)
-+		return 0;
+ 	/* If we aren't attached to a netdev, we can't add the SFP PHY to its
+ 	 * topology.
+@@ -1526,6 +1527,8 @@ static void phy_sfp_disconnect_phy(void *upstream, struct phy_device *phy)
+ 
+ 	if (dev)
+ 		phy_link_topo_del_phy(dev, phy);
 +
-+	ret = phy_link_topo_add_phy(dev, phy, PHY_UPSTREAM_PHY, phydev);
-+	if (ret)
-+		phydev->has_sfp_mod_phy = false;
-+
-+	return ret;
++	phy_set_upstream_port(phy, NULL);
  }
  
  /**
-@@ -1512,6 +1522,8 @@ static void phy_sfp_disconnect_phy(void *upstream, struct phy_device *phy)
- 	struct phy_device *phydev = upstream;
- 	struct net_device *dev = phydev->attached_dev;
+@@ -1661,6 +1664,8 @@ static int phy_add_sfp_mod_port(struct phy_device *phydev)
+ 	 */
+ 	phydev->mod_port = port;
  
-+	phydev->has_sfp_mod_phy = false;
++	port->upstream_port = phydev->sfp_cage_port;
 +
- 	if (dev)
- 		phy_link_topo_del_phy(dev, phy);
- }
-@@ -1617,6 +1629,75 @@ static void phy_sfp_link_down(void *upstream)
- 		port->ops->link_down(port);
+ 	return 0;
  }
  
-+static int phy_add_sfp_mod_port(struct phy_device *phydev)
-+{
-+	const struct sfp_module_caps *caps;
-+	struct phy_port *port;
-+	int ret = 0;
-+
-+	/* Create mod port */
-+	port = phy_port_alloc();
-+	if (!port)
-+		return -ENOMEM;
-+
-+	port->active = true;
-+
-+	caps = sfp_get_module_caps(phydev->sfp_bus);
-+
-+	phy_caps_linkmode_filter_ifaces(port->supported, caps->link_modes,
-+					phydev->sfp_cage_port->interfaces);
-+
-+	if (phydev->attached_dev) {
-+		ret = phy_link_topo_add_port(phydev->attached_dev, port);
-+		if (ret) {
-+			phy_port_destroy(port);
-+			return ret;
-+		}
-+	}
-+
-+	/* we don't use phy_add_port() here as the module port isn't a direct
-+	 * interface from the PHY, but rather an extension to the sfp-bus, that
-+	 * is already represented by its own phy_port
-+	 */
-+	phydev->mod_port = port;
-+
-+	return 0;
-+}
-+
-+static void phy_del_sfp_mod_port(struct phy_device *phydev)
-+{
-+	if (!phydev->mod_port)
-+		return;
-+
-+	if (phydev->attached_dev)
-+		phy_link_topo_del_port(phydev->attached_dev, phydev->mod_port);
-+
-+	phy_port_destroy(phydev->mod_port);
-+	phydev->mod_port = NULL;
-+}
-+
-+static int phy_sfp_module_start(void *upstream)
-+{
-+	struct phy_device *phydev = upstream;
-+
-+	/* If there's a downstream SFP module, and it doesn't contain a PHY
-+	 * device, let's create a phy_port to represent that module.
-+	 */
-+	if (!phydev->has_sfp_mod_phy)
-+		return phy_add_sfp_mod_port(phydev);
-+
-+	return 0;
-+}
-+
-+static void phy_sfp_module_stop(void *upstream)
-+{
-+	struct phy_device *phydev = upstream;
-+
-+	/* Called upon module removal or upstream removal */
-+	if (!phydev->has_sfp_mod_phy)
-+		phy_del_sfp_mod_port(phydev);
-+}
-+
- static const struct sfp_upstream_ops sfp_phydev_ops = {
- 	.attach = phy_sfp_attach,
- 	.detach = phy_sfp_detach,
-@@ -1626,6 +1707,8 @@ static const struct sfp_upstream_ops sfp_phydev_ops = {
- 	.link_down = phy_sfp_link_down,
- 	.connect_phy = phy_sfp_connect_phy,
- 	.disconnect_phy = phy_sfp_disconnect_phy,
-+	.module_start = phy_sfp_module_start,
-+	.module_stop = phy_sfp_module_stop,
- };
- 
- static int phy_add_port(struct phy_device *phydev, struct phy_port *port)
-@@ -1728,6 +1811,7 @@ static int phy_sfp_probe(struct phy_device *phydev)
- 		port = phy_setup_sfp_port(phydev);
- 		if (IS_ERR(port)) {
- 			ret = PTR_ERR(port);
-+			port = NULL;
- 			goto out_sfp;
+@@ -1816,6 +1821,8 @@ static int phy_sfp_probe(struct phy_device *phydev)
  		}
  	}
-@@ -1741,6 +1825,8 @@ static int phy_sfp_probe(struct phy_device *phydev)
- 	 */
- 	sfp_bus_put(bus);
  
 +	phydev->sfp_cage_port = port;
 +
+ 	ret = sfp_bus_add_upstream(bus, phydev, &sfp_phydev_ops);
+ 	if (ret)
+ 		goto out_port;
+@@ -1825,14 +1832,13 @@ static int phy_sfp_probe(struct phy_device *phydev)
+ 	 */
+ 	sfp_bus_put(bus);
+ 
+-	phydev->sfp_cage_port = port;
+-
  	return ret;
  
  out_port:
-@@ -1834,6 +1920,8 @@ static void phy_detach_internal(struct phy_device *phydev, bool notify_bus)
- 		phydev->attached_dev->phydev = NULL;
- 		phydev->attached_dev = NULL;
- 		phy_link_topo_del_phy(dev, phydev);
-+		if (phydev->mod_port)
-+			phy_link_topo_del_port(dev, phydev->mod_port);
+ 	if (port) {
+ 		phy_del_port(phydev, port);
+ 		phy_port_destroy(port);
++		phydev->sfp_cage_port = NULL;
  	}
+ out_sfp:
+ 	sfp_bus_put(bus);
+@@ -3777,6 +3783,25 @@ struct phy_port *phy_get_sfp_port(struct phy_device *phydev)
+ }
+ EXPORT_SYMBOL_GPL(phy_get_sfp_port);
  
- 	phydev->phy_link_change = NULL;
-@@ -1963,6 +2051,12 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
- 		err = phy_link_topo_add_phy(dev, phydev, PHY_UPSTREAM_MAC, dev);
- 		if (err)
- 			goto error;
++/**
++ * phy_set_upstream_port() - Sets the phy_port controlling the MII this PHY is
++ *			     attached to.
++ * @phydev: pointer to the PHY device we set the upstream of.
++ * @port: The phy_port upstream of this PHY, can be NULL.
++ */
++void phy_set_upstream_port(struct phy_device *phydev, struct phy_port *port)
++{
++	struct phy_port *local_port;
 +
-+		if (phydev->mod_port) {
-+			err = phy_link_topo_add_port(dev, phydev->mod_port);
-+			if (err)
-+				goto error;
-+		}
- 	}
- 
- 	/* Some Ethernet drivers try to connect to a PHY device before
++	ASSERT_RTNL();
++
++	phydev->upstream_port = port;
++
++	phy_for_each_port(phydev, local_port)
++		local_port->upstream_port = port;
++}
++EXPORT_SYMBOL_GPL(phy_set_upstream_port);
++
+ /**
+  * fwnode_mdio_find_device - Given a fwnode, find the mdio_device
+  * @fwnode: pointer to the mdio_device's fwnode
 diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
-index 7c6c4243c711..5a8c66866d17 100644
+index 5a8c66866d17..d05cde44f401 100644
 --- a/drivers/net/phy/phylink.c
 +++ b/drivers/net/phy/phylink.c
-@@ -96,6 +96,7 @@ struct phylink {
- 	__ETHTOOL_DECLARE_LINK_MODE_MASK(sfp_support);
- 	u8 sfp_port;
- 	struct phy_port *sfp_cage_port;
-+	struct phy_port *mod_port;
- 
- 	struct eee_config eee_cfg;
- 
-@@ -1790,10 +1791,15 @@ static int phylink_create_sfp_cage_port(struct phylink *pl)
- 
- 	ret = phy_link_topo_add_port(pl->netdev, port);
- 	if (ret)
--		phy_port_destroy(port);
--	else
--		pl->sfp_cage_port = port;
-+		goto out_destroy_port;
-+
-+	pl->sfp_cage_port = port;
-+
-+	return 0;
- 
-+out_destroy_port:
-+	phy_port_destroy(port);
-+	pl->sfp_cage_port = NULL;
- 	return ret;
- }
- 
-@@ -3992,14 +3998,65 @@ static void phylink_sfp_module_remove(void *upstream)
- 	phy_interface_zero(pl->sfp_interfaces);
- }
- 
-+static int phylink_add_sfp_mod_port(struct phylink *pl)
-+{
-+	const struct sfp_module_caps *caps;
-+	struct phy_port *port;
-+	int ret = 0;
-+
-+	if (!pl->sfp_cage_port)
-+		return 0;
-+
-+	/* Create mod port */
-+	port = phy_port_alloc();
-+	if (!port)
-+		return -ENOMEM;
-+
-+	port->active = true;
-+
-+	caps = sfp_get_module_caps(pl->sfp_bus);
-+
-+	phy_caps_linkmode_filter_ifaces(port->supported, caps->link_modes,
-+					pl->sfp_cage_port->interfaces);
-+
-+	if (pl->netdev) {
-+		ret = phy_link_topo_add_port(pl->netdev, port);
-+		if (ret) {
-+			phy_port_destroy(port);
-+			return ret;
-+		}
-+	}
-+
-+	pl->mod_port = port;
-+
-+	return 0;
-+}
-+
-+static void phylink_del_sfp_mod_port(struct phylink *pl)
-+{
-+	if (!pl->mod_port)
-+		return;
-+
-+	if (pl->netdev)
-+		phy_link_topo_del_port(pl->netdev, pl->mod_port);
-+
-+	phy_port_destroy(pl->mod_port);
-+	pl->mod_port = NULL;
-+}
-+
- static int phylink_sfp_module_start(void *upstream)
- {
- 	struct phylink *pl = upstream;
-+	int ret;
- 
- 	/* If this SFP module has a PHY, start the PHY now. */
- 	if (pl->phydev) {
- 		phy_start(pl->phydev);
- 		return 0;
-+	} else {
-+		ret = phylink_add_sfp_mod_port(pl);
-+		if (ret)
-+			return ret;
+@@ -4027,6 +4027,8 @@ static int phylink_add_sfp_mod_port(struct phylink *pl)
+ 		}
  	}
  
- 	/* If the module may have a PHY but we didn't detect one we
-@@ -4008,7 +4065,16 @@ static int phylink_sfp_module_start(void *upstream)
- 	if (!pl->sfp_may_have_phy)
- 		return 0;
++	port->upstream_port = pl->sfp_cage_port;
++
+ 	pl->mod_port = port;
  
--	return phylink_sfp_config_optical(pl);
-+	ret = phylink_sfp_config_optical(pl);
-+	if (ret)
-+		goto del_mod_port;
+ 	return 0;
+@@ -4130,6 +4132,8 @@ static int phylink_sfp_connect_phy(void *upstream, struct phy_device *phy)
+ 	phy_interface_and(phy->host_interfaces, phylink_sfp_interfaces,
+ 			  pl->config->supported_interfaces);
+ 
++	phy_set_upstream_port(phy, pl->sfp_cage_port);
 +
-+	return 0;
-+
-+del_mod_port:
-+	phylink_del_sfp_mod_port(pl);
-+
-+	return ret;
+ 	/* Do the initial configuration */
+ 	return phylink_sfp_config_phy(pl, phy);
+ }
+@@ -4138,6 +4142,7 @@ static void phylink_sfp_disconnect_phy(void *upstream,
+ 				       struct phy_device *phydev)
+ {
+ 	phylink_disconnect_phy(upstream);
++	phy_set_upstream_port(phydev, NULL);
  }
  
- static void phylink_sfp_module_stop(void *upstream)
-@@ -4018,6 +4084,8 @@ static void phylink_sfp_module_stop(void *upstream)
- 	/* If this SFP module has a PHY, stop it. */
- 	if (pl->phydev)
- 		phy_stop(pl->phydev);
-+	else
-+		phylink_del_sfp_mod_port(pl);
- }
- 
- static void phylink_sfp_link_down(void *upstream)
+ static const struct sfp_upstream_ops sfp_phylink_ops = {
 diff --git a/include/linux/phy.h b/include/linux/phy.h
-index 3d8afe6b7f1c..cb579b8a5b5f 100644
+index cb579b8a5b5f..335821eb2217 100644
 --- a/include/linux/phy.h
 +++ b/include/linux/phy.h
-@@ -600,6 +600,7 @@ struct phy_oatc14_sqi_capability {
-  * @wol_enabled: Set to true if the PHY or the attached MAC have Wake-on-LAN
-  * 		 enabled.
-  * @is_genphy_driven: PHY is driven by one of the generic PHY drivers
-+ * @has_sfp_mod_phy: Set true if downstream SFP bus's module contains a PHY
-  * @state: State of the PHY for management purposes
-  * @dev_flags: Device-specific flags used by the PHY driver.
-  *
-@@ -612,6 +613,8 @@ struct phy_oatc14_sqi_capability {
-  * @phylink: Pointer to phylink instance for this PHY
-  * @sfp_bus_attached: Flag indicating whether the SFP bus has been attached
+@@ -615,6 +615,7 @@ struct phy_oatc14_sqi_capability {
   * @sfp_bus: SFP bus attached to this PHY's fiber port
-+ * @sfp_cage_port: The phy_port connected to the downstream SFP cage
-+ * @mod_port: phy_port representing the SFP module, if it is phy-less
+  * @sfp_cage_port: The phy_port connected to the downstream SFP cage
+  * @mod_port: phy_port representing the SFP module, if it is phy-less
++ * @upstream_port: phy_port this PHY's MII attaches to, if any
   * @attached_dev: The attached enet driver's device instance ptr
   * @adjust_link: Callback for the enet controller to respond to changes: in the
   *               link state.
-@@ -724,6 +727,7 @@ struct phy_device {
- 	unsigned irq_rerun:1;
- 
- 	unsigned default_timestamp:1;
-+	unsigned has_sfp_mod_phy:1;
- 
- 	int rate_matching;
- 
-@@ -803,6 +807,8 @@ struct phy_device {
- 	/* This may be modified under the rtnl lock */
- 	bool sfp_bus_attached;
+@@ -809,6 +810,7 @@ struct phy_device {
  	struct sfp_bus *sfp_bus;
-+	struct phy_port *sfp_cage_port;
-+	struct phy_port *mod_port;
+ 	struct phy_port *sfp_cage_port;
+ 	struct phy_port *mod_port;
++	struct phy_port *upstream_port;
  	struct phylink *phylink;
  	struct net_device *attached_dev;
  	struct mii_timestamper *mii_ts;
+@@ -2493,6 +2495,8 @@ int __phy_hwtstamp_set(struct phy_device *phydev,
+ 
+ struct phy_port *phy_get_sfp_port(struct phy_device *phydev);
+ 
++void phy_set_upstream_port(struct phy_device *phydev, struct phy_port *port);
++
+ /**
+  * phy_module_driver() - Helper macro for registering PHY drivers
+  * @__phy_drivers: array of PHY drivers to register
+diff --git a/include/linux/phy_port.h b/include/linux/phy_port.h
+index 4e2a3fdd2f2e..8f45c031cbc1 100644
+--- a/include/linux/phy_port.h
++++ b/include/linux/phy_port.h
+@@ -40,6 +40,8 @@ struct phy_port_ops {
+  * @head: Used by the port's parent to list ports
+  * @parent_type: The type of device this port is directly connected to
+  * @phy: If the parent is PHY_PORT_PHYDEV, the PHY controlling that port
++ * @upstream_port: Indicates the MII port that feeds this port, if any,
++ *		   e.g. the SFP cage port for a SFP module port.
+  * @ops: Callback ops implemented by the port controller
+  * @pairs: The number of  pairs this port has, 0 if not applicable
+  * @mediums: Bitmask of the physical mediums this port provides access to
+@@ -59,6 +61,7 @@ struct phy_port {
+ 	union {
+ 		struct phy_device *phy;
+ 	};
++	struct phy_port *upstream_port;
+ 
+ 	const struct phy_port_ops *ops;
+ 
 -- 
 2.55.0
 
