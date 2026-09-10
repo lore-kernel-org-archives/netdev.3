@@ -1,197 +1,132 @@
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A84BC3F4DF3;
-	Thu, 10 Sep 2026 09:47:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CC2136E466
+	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 09:48:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789033675; cv=none; b=l64CC4fpsWKw35ZzeB+lW3OqA+JbhAoQ6m9icCN2Z3UkY6/AJDE5GI5AgrE+FGrxwyNFeyGeiDFdI5FBEJ8WuLNMciz9Qcnu5/k4H8EMoe4aeg8TA1rHTLC/FrrIRcDHaHspiEAqxVJDAK7bAyXjoqyW6sG6dyW2ep/5r1J3BCM=
+	t=1789033685; cv=none; b=XzvWdtytyGaCqBNgblpPRiFWSn35kWU+PFzCSETJPDbnI4s+ud/yhLH/1SWNLirXT86WwjY3VJjlq2j96b8it3QaM4aI69baXTegucWXp4mc9U6gtxK8OTKsYll7EsM7MewpjKSYU76n9SZiIvqKKFnpoXx/SQRWa4WzCsvH8/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789033675; c=relaxed/simple;
-	bh=sm+OA/D7zuZPSAUn11AYbOLKZZL1lSdRLym2xOya4U0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=pexBGkTnNQMlQipsZKvZ8li9p93aSnJkFkby4KupolaQNLOYdpUmBnSDlzUnwi2e06/TkuH0/9CRg671fI+PCXT9uAoeq45L4aF8rpD8j7s6QtTUX/4hPk5cKAoK2i/RxhoiAP8Yke9CWljX2zanym9CzXY6aPx9a4cL6pvGpo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=RkpBnYV5; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
+	s=arc-20240116; t=1789033685; c=relaxed/simple;
+	bh=QYuOBm2CqLdlM7TrFTz39mvN4Ht6QnmssFnzzfnloyM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=sdHgfjTMlkedD2fctIQucCiXqtDJ1c9/BArC8Cgj3ydc9B9Q7Z+9BH38VDu94m+X/aZm2AsKg0LMqGua8Vrr21KAhg+/UF+pFiEuKA+PhKT2dWF5x55kU9F2RHprHS1eN3ykRdtcWZ5vsbP9u44f/w/LVcNDzMzxWnGyxNGJbak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fEDYeGOR; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=M8aFjA1B; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="RkpBnYV5"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:In-Reply-To:References:
-	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Reply-To:Content-ID:Content-Description;
-	bh=h5Me5hoKb0ftKqrR7fgJT1u7D3+bvrtf8XI9UCkIHHw=; b=RkpBnYV549OksgaCh2QiYwL2yH
-	jv1MmyoJSmR5D928jMG/iDOdMKM7CMLeNSwuE5wHjXbiWmyQbxMiE9+Joq2lUpBnZNuffUTlqrnqy
-	u8iumIS3gcICtxJoqgB7gpIMkoqQhpTirJG3wbtEvbcuCJApDwBfoQw2fRM5h5QcGQ2srVEv61tJO
-	7ag5wSiPUf+w4iG9r1ehNiPcRovIGm8w5rzmRjLgmKXGHhvPU/piO9rtwwLWApXSOQJ7OVWnwB1+0
-	Yimjn4LDOc/W3zDELEypXMyElA8/x9Ix//wRY/mZ9O1EpJtYrQU6MWzPRZVb/2AlHWkiyv3yTXppc
-	u1oygAZw==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1x4bNU-000QN0-2n;
-	Thu, 10 Sep 2026 09:47:33 +0000
-From: Breno Leitao <leitao@debian.org>
-Date: Thu, 10 Sep 2026 02:47:12 -0700
-Subject: [PATCH net-next 2/2] ipv4: igmp: convert ip_mc_msfget() to
- sockopt_t
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fEDYeGOR";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="M8aFjA1B"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1789033682;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=I6SGvSRdswv+E4pXtxp1ASKfEHGRGHA0m8GCzf8rxt4=;
+	b=fEDYeGORJcyPmzosqo7dL+K+SYUQOycJCi2mGhKHaYZSU6GoSD9H+W+twrDnXeMAbj/lXH
+	/pm32T3uG35jsUuf1dyqc4YftOqUx3cfNB9+yvHvDM4lQNR29dHUivI/YuOIpYZlw6Zx6T
+	Qo1TY1OTyPSuAiEfI8UHWJF9z0DG9xw=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-318-k0P_rm4CPE-gygbsEP1YTA-1; Thu, 10 Sep 2026 05:48:01 -0400
+X-MC-Unique: k0P_rm4CPE-gygbsEP1YTA-1
+X-Mimecast-MFC-AGG-ID: k0P_rm4CPE-gygbsEP1YTA_1789033680
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-49ccf17d3b0so48622595e9.3
+        for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 02:48:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1789033680; x=1789638480; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=I6SGvSRdswv+E4pXtxp1ASKfEHGRGHA0m8GCzf8rxt4=;
+        b=M8aFjA1B0TudiHPCHaOUepKwm7vECszlrZqExzCEWQMGguJ+HVYuxhnH1Y2ufaw+/u
+         uCVRvSNl8JRsSh0J4bINs5RL5creeOtpgEaPyEXZtKDS5xlLVbc9yb/NrteihQ/XqeyN
+         56vCnwHbSfs0ZJep5ZCMZWRZt06//6ex1ifz5JEZ7vkJv27DaRxS4M6ymziUpaY26LLs
+         MVteymX3iVjDey7olfWCF9F62dsYzXFkxbjZzSwkxjKROf4l6VWts3yJ0QmTOZr+jUJn
+         p0dcv2sG734hT2SodwDfns4aY33u0KzXMu8FEzV4/z7QFjeq3J8BOdyZHaD4IjqN+sZR
+         0/1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789033680; x=1789638480;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=I6SGvSRdswv+E4pXtxp1ASKfEHGRGHA0m8GCzf8rxt4=;
+        b=eTlaf0F656NXruw7b8Huhuk4b9ehQvPzwzoSE6JJDCt+83/RTh+Os8gB14p39VYH1x
+         QRDA5b56zKyBMtrqH685Z3yr3PKCOuBfLotIh+P8Zxqv+mKNW9EGH9NtRmeWwc8eISF8
+         D0CHWjz9gDZo2i+gVs/zXsB9CthbignVHB5iYrS1BPmjRipaqBNCvb0PV+NZqTET5vIU
+         ntFsRO93aqny2o1IQS/tBaBMXjG6a0iHWK4nOtRFVXqn371INdDkXz//yHFg4R1UA8sc
+         KE++R97P28vbHPwFHjHKBlUvv7xUl42NNGqoeYPqcHK21vOTeX65BsRlg5BC7vACNMrj
+         ljuQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxCTLK53R2krmXrG8i6YdTdIwlEM+i87elWDuN5fCLxRTsjRig+KQuVg6lIh98i+C4yTW/oYv4=@vger.kernel.org
+X-Gm-Message-State: AFuF++m2wdLScaBIvQV15m0p7/vWL5IVawbxlK6K9fLA7jSi9SOJhvCH
+	fJOv5IjLt/Z9axW2/yRPCJjxRJg8uWZTwq0wckjhAQozttLGqfMUsnrNQjfx0FJRPr96Oer5L/A
+	/pDNf+nnLxkpqDScKIKbqb7mgvXSE5FT4+Oi7mpHBmqJj9j6Vd/qbnvgAsg==
+X-Gm-Gg: AYBFou1ARvZOsTDUQ62+0OGXH9b2NHSzryNNBHsSc8rSSEiPC9NFawCfvZzyj8pmoNp
+	3vf4+hpx/0SwmOe2o2FWOzC7Aws+ZgtKvs/VQhHHDnygdX/HsDYdhviTF5/x/YTLZy2V1T8DlSY
+	v4Kl+jTInt2/MrWMtq0yjV/VfE1VshRPdWeavggDYumQjNx4UuHkmS0rXGgmD4aOJuRbsj6tFFo
+	ZjPl8JeD0T4fKvT4OhDXHM6ntfjiGfcZYCHx1LgllhOkFQ/e0AkPeln2ftg4CmSibHE6f636Ttj
+	gb0bQa/2t8Vg1mrs02ixrDY8Koj/9z7PdjWyE9MIW4rkbDcZK3AWbCfen8oIEMEhaHXmI+ldTFd
+	J9xwaY9SUsuvX2fYHjDCf4vvgfi9Kt2IHqqj061FLX4kBz7gqoJQLezU9fxJslKrtRDYwlVivOg
+	==
+X-Received: by 2002:a05:600c:b93:b0:499:8174:9f39 with SMTP id 5b1f17b1804b1-49d1f0af3d1mr167199145e9.0.1789033679811;
+        Thu, 10 Sep 2026 02:47:59 -0700 (PDT)
+X-Received: by 2002:a05:600c:b93:b0:499:8174:9f39 with SMTP id 5b1f17b1804b1-49d1f0af3d1mr167198445e9.0.1789033679428;
+        Thu, 10 Sep 2026 02:47:59 -0700 (PDT)
+Received: from [192.168.188.218] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49d26c2985dsm113481895e9.6.2026.09.10.02.47.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 10 Sep 2026 02:47:58 -0700 (PDT)
+Message-ID: <9a4f9408-bcf8-430f-adc8-f69c771f333b@redhat.com>
+Date: Thu, 10 Sep 2026 11:47:57 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v3] selftests/bpf: Track test_xdp_features DUT
+ processes
+To: Bochao Cao <bochaolucky@gmail.com>, Daniel Borkmann
+ <daniel@iogearbox.net>, Jakub Kicinski <kuba@kernel.org>
+Cc: =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
+ Emil Tsalapatis <emil@etsalapatis.com>, Lorenzo Bianconi
+ <lorenzo@kernel.org>, Shuah Khan <shuah@kernel.org>, bpf@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kselftest@vger.kernel.org
+References: <20260904-xdp-dut-process-lifecycle-gmail-v3-1-5b7eee4f7009@gmail.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20260904-xdp-dut-process-lifecycle-gmail-v3-1-5b7eee4f7009@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260910-getsockopt_phase6-v1-2-e681e102d5b8@debian.org>
-References: <20260910-getsockopt_phase6-v1-0-e681e102d5b8@debian.org>
-In-Reply-To: <20260910-getsockopt_phase6-v1-0-e681e102d5b8@debian.org>
-To: "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
- Kuniyuki Iwashima <kuniyu@google.com>, 
- Willem de Bruijn <willemb@google.com>, David Ahern <dsahern@kernel.org>, 
- Ido Schimmel <idosch@nvidia.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- david.laight.linux@gmail.com, Breno Leitao <leitao@debian.org>, 
- kernel-team@meta.com
-X-Mailer: b4 0.16-dev-f8e9d
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4282; i=leitao@debian.org;
- h=from:subject:message-id; bh=sm+OA/D7zuZPSAUn11AYbOLKZZL1lSdRLym2xOya4U0=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBqonymT1hs6CqFV/jwDsPSBIKsRaqNfpfFXj2Yy
- PbfT4tZSVOJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaqJ8pgAKCRA1o5Of/Hh3
- bThBEACwoKmhuMrocLOS4T/Jo79tcOPSRQNCjjITvxKeLRKIzxE6Jm2tGZTQ0N0XdjClCDuZb68
- kFiUoYgXwKU4qVl8yaIq6c4enqGyMtbrhwAcWGEWZATBoFm0FC47pJCJWjXy0nyHPWI3G4dSmWm
- IojYCeAvtxJsUh+1TmsCg2t+EHPNMFGv+BT+NFqtKzdcnm+DeNkJAchHHPKWhgfyVa79cRTd2Vy
- +9BnTkHikw6ZHaGhJIZEpUFq/dCForWu5nPScX8XxV/AJIlyZc+jtKjtsMndXev5P0hG+dCq3xT
- 70NGiypScKp42UI0bS3I7PBGJLHvTce8J83QCntGGGVuX1+B2R/oy/yhOfAx2A53ZyX0ON9Wvcv
- vOAmIUnRB/r2Z0lkNUmIySb3jYE/qfw+DyTBoZDAXGnVWEmfPercL3lvMqivX7pWvPyCI7+YIhb
- 2fzhas+b3AorVA5oPkX4peRCAtd9aIWqvi9S5UnmHgN95Z7445w17K8FtoPJYNsRezpZs3BzuKS
- bJseHSMotzZdlkmzsiY6mWD3SYZ1cXSz7BHyntnJrJIA8QcqG8zK0jpGnoca2OIUaKnTOJ6r1WK
- SMK48ZC4ZbkK0ESTXj1c7DAZ3ghuxUhHX1ve92uUYUXfv+XVfTKYxDTfZ5WqSwmaMxHBUYkCRdN
- j98NE9tpB67JbOw==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
-X-Debian-User: leitao
 
-IP_MSFILTER reads its reply through ip_mc_msfget(), reached from
-do_ip_getsockopt() and from nowhere else. Convert it, and build the
-sockopt_t at the call site for as long as the caller still carries a
-sockptr_t pair.
+On 9/4/26 6:44 AM, Bochao Cao wrote:
+> test_xdp_features.sh waits for any xdp_features listener to appear and
+> uses pidof during cleanup. A concurrent test can therefore make another
+> test proceed before its own DUT is ready, and cleanup kills every
+> xdp_features process on the host. The readiness loop also has no timeout,
+> so a DUT that exits before listening leaves the test hung indefinitely.
+> 
+> Track one active DUT at a time, wait for ss to report that exact PID with
+> a bounded retry loop, and reap it after each test. Consult the shell job
+> table before signaling the DUT so a stale PID cannot target an unrelated
+> process. On failure, terminate the shell job with SIGKILL and reap it so
+> blocked I/O cannot hang cleanup. Install an EXIT trap and signal handlers
+> so failure paths also remove network setup.
+> 
+> Fixes: 4dba3e7852b7 ("selftests/bpf: introduce XDP compliance test tool")
+> Signed-off-by: Bochao Cao <bochaolucky@gmail.com>
+> Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
+Since the goal of targeting net-next is allowing shorted turn-over for
+the conversion to driver/hw, I think it would be better to include the
+latter change in the same series.
 
-This is a special case, where optlen might only point
-to the header, and the real structure size is inside the header.
+Also it would be possibly make sense to take care of the last sashiko
+comment (about signal handling).
 
-This is nasty, but, in order to avoid breaking userspace, we need to
-preserve the same mechanism, by:
-
-1) Only applying it for userspace address, otherwise it is too risky
-2) Assume there is room to support the new size (in userspace)
-
-The source list also moves from copy_to_sockptr_offset() to a sequential
-copy_to_iter(). IP_MSFILTER_SIZE(0) and offsetof(struct ip_msfilter,
-imsf_slist_flex) are both 16, so the bytes land where they did.
-
-Signed-off-by: Breno Leitao <leitao@debian.org>
----
- include/linux/igmp.h   |  3 ++-
- net/ipv4/igmp.c        | 23 ++++++++++++++---------
- net/ipv4/ip_sockglue.c | 10 +++++++++-
- 3 files changed, 25 insertions(+), 11 deletions(-)
-
-diff --git a/include/linux/igmp.h b/include/linux/igmp.h
-index a0cf0398519fd7..e075611344ef3b 100644
---- a/include/linux/igmp.h
-+++ b/include/linux/igmp.h
-@@ -14,6 +14,7 @@
- #include <linux/timer.h>
- #include <linux/in.h>
- #include <linux/ip.h>
-+#include <linux/net.h>
- #include <linux/refcount.h>
- #include <linux/sockptr.h>
- #include <uapi/linux/igmp.h>
-@@ -273,7 +274,7 @@ extern int ip_mc_source(int add, int omode, struct sock *sk,
- 		struct ip_mreq_source *mreqs, int ifindex);
- extern int ip_mc_msfilter(struct sock *sk, struct ip_msfilter *msf,int ifindex);
- extern int ip_mc_msfget(struct sock *sk, struct ip_msfilter *msf,
--			sockptr_t optval, sockptr_t optlen);
-+			sockopt_t *opt);
- extern int ip_mc_gsfget(struct sock *sk, struct group_filter *gsf,
- 			sockptr_t optval, size_t offset);
- extern int ip_mc_sf_allow(const struct sock *sk, __be32 local, __be32 rmt,
-diff --git a/net/ipv4/igmp.c b/net/ipv4/igmp.c
-index d56355aca79776..144fca158adcb0 100644
---- a/net/ipv4/igmp.c
-+++ b/net/ipv4/igmp.c
-@@ -2709,8 +2709,8 @@ int ip_mc_msfilter(struct sock *sk, struct ip_msfilter *msf, int ifindex)
- 		err = ip_mc_leave_group(sk, &imr);
- 	return err;
- }
--int ip_mc_msfget(struct sock *sk, struct ip_msfilter *msf,
--		 sockptr_t optval, sockptr_t optlen)
-+
-+int ip_mc_msfget(struct sock *sk, struct ip_msfilter *msf, sockopt_t *opt)
- {
- 	int err, len, count, copycount, msf_size;
- 	struct ip_mreqn	imr;
-@@ -2755,14 +2755,19 @@ int ip_mc_msfget(struct sock *sk, struct ip_msfilter *msf,
- 	len = flex_array_size(psl, sl_addr, copycount);
- 	msf->imsf_numsrc = count;
- 	msf_size = IP_MSFILTER_SIZE(copycount);
--	if (copy_to_sockptr(optlen, &msf_size, sizeof(int)) ||
--	    copy_to_sockptr(optval, msf, IP_MSFILTER_SIZE(0))) {
-+
-+	/* The source list is sized by the imsf_numsrc the caller left in
-+	 * optval, not by optlen, which only has to cover the fixed part.
-+	 */
-+	err = sockopt_expand_out(opt, msf_size);
-+	if (err)
-+		return err;
-+
-+	opt->optlen = msf_size;
-+	if (copy_to_iter(msf, IP_MSFILTER_SIZE(0), &opt->iter_out) !=
-+	    IP_MSFILTER_SIZE(0))
- 		return -EFAULT;
--	}
--	if (len &&
--	    copy_to_sockptr_offset(optval,
--				   offsetof(struct ip_msfilter, imsf_slist_flex),
--				   psl->sl_addr, len))
-+	if (len && copy_to_iter(psl->sl_addr, len, &opt->iter_out) != len)
- 		return -EFAULT;
- 	return 0;
- done:
-diff --git a/net/ipv4/ip_sockglue.c b/net/ipv4/ip_sockglue.c
-index a55ef327ec932c..c58e565f2a5aa7 100644
---- a/net/ipv4/ip_sockglue.c
-+++ b/net/ipv4/ip_sockglue.c
-@@ -1706,6 +1706,8 @@ int do_ip_getsockopt(struct sock *sk, int level, int optname,
- 	case IP_MSFILTER:
- 	{
- 		struct ip_msfilter msf;
-+		struct kvec kvec;
-+		sockopt_t opt;
- 
- 		if (len < IP_MSFILTER_SIZE(0)) {
- 			err = -EINVAL;
-@@ -1715,7 +1717,13 @@ int do_ip_getsockopt(struct sock *sk, int level, int optname,
- 			err = -EFAULT;
- 			goto out;
- 		}
--		err = ip_mc_msfget(sk, &msf, optval, optlen);
-+		err = sockptr_to_sockopt(&opt, optval, optlen, &kvec);
-+		if (err)
-+			goto out;
-+
-+		err = ip_mc_msfget(sk, &msf, &opt);
-+		if (copy_to_sockptr(optlen, &opt.optlen, sizeof(int)))
-+			err = -EFAULT;
- 		goto out;
- 	}
- 	case MCAST_MSFILTER:
-
--- 
-2.53.0-Meta
+/P
 
