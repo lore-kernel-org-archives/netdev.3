@@ -1,63 +1,63 @@
-Received: from mail-yx1-f43.google.com (mail-yx1-f43.google.com [74.125.224.43])
+Received: from mail-yx1-f53.google.com (mail-yx1-f53.google.com [74.125.224.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A91A53D0BB
-	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 17:11:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62C2753B616
+	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 17:11:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789060322; cv=none; b=B0jbZqGivDL/mtEiRCjdiqApm2KHGg08Njh+oKhYen9XKcwqIQdYmAMS1Dac9Il9SAlb6XFbqacH2NGUuMfUITDCmQiJo2Sjcsujrt1uTQVI8eTFe4NsBOqqKvSi9KGw/ra+lz8FNI0OCyPpjLRu1E2lBzoWBeU710daA28Gnd4=
+	t=1789060326; cv=none; b=hs+U+v9CA+Pp6evK4Vue3ihCr5AZiKBa9NNTLznWqEMGCoMlAcCfqdw1n0MkgvGI1pGB6HFpZwfE7gVvYkeEQ2+zy9kh0FvdAOdualvh3y7TGOwTZzqqCISJ/rD6Bb9pMl4pKpF5rhw0vClOVkf9BGmQ1S9FPEzw13CfNiHWoEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789060322; c=relaxed/simple;
-	bh=7dS9wpp2YccmxHIywJXeSpOMA2g4XHnwuDriRcxrCuc=;
+	s=arc-20240116; t=1789060326; c=relaxed/simple;
+	bh=k/xTPJO+BtmXZtwsadkgBSu86CrO66JMqj6CiVGK300=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EEpSOp/aC5ax2oDt63LYQLhkUQSPBGf+mcyd1A6ourae2U036SEWxNj21rZyAI3Px3OEyVk3ve8+tkAczFcIYmqpKAumT/icvvvqIpW9Hgdn317+ZqqSEuL5nB1dh74zEzGJY59PyeooRh9nZIcy+Vt+9dv7CtcvusqzsvHmoNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Sfjtubam; arc=none smtp.client-ip=74.125.224.43
+	 MIME-Version; b=st/nQsnZA1rw6ATtZS7J12KjAnJ9nCKWbseC+68RQhucsqCSuM27KIiqc1NO+GOKLX6PjgqK3l4elQ5HUMw9srkEabrfY1XrT161ukAzzt0t7VoiGdiMqsZvorAh+UqHbjXFxnLAvGLmSKzgt9dnw8G3NDhcaZj7kvdowFpeQCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SDDIoQ/Y; arc=none smtp.client-ip=74.125.224.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Sfjtubam"
-Received: by mail-yx1-f43.google.com with SMTP id 956f58d0204a3-671061b015eso2901295d50.1
-        for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 10:11:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SDDIoQ/Y"
+Received: by mail-yx1-f53.google.com with SMTP id 956f58d0204a3-6711f05fb14so962207d50.2
+        for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 10:11:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789060299; x=1789665099; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1789060302; x=1789665102; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=k/MRknm2NzoW/h6T0OXKbuYc1GhrCHd3P2gwiJO8u9s=;
-        b=SfjtubamJI6jH2AuvXaO8HciEE3PhIFFGOesDb8ISGmzfoO9/yCfTp/GOAOkYLVJi3
-         wKUrhfpivl5rV/SJ2PWCt+33bCadcmL+/23X36PP53HclIh+6Ns/I8A8jqrRTqcrYCC6
-         1Yb84FP5uNe5Kr0Rw2HRTfuge0X/w0lJc3SUcoaiMouwM07WCHdfGx4X7Zs2OyCIi61M
-         goZGNnDvLxIW8WSYXnLM7JKPtAqPX71o31gbdOxfKoBF7nsrHPbj5J/jVyLLYZ6QGqH5
-         7WkW996ikFwPm5TjS5ukOmq89L7hUlPqkoGUD/HRLhs3H+w02q9/3V0vYcmGo2MF3wbc
-         3P4g==
+        bh=TBT27xp1pGPY9LeX8TYSbZ744fuH/VJYabQsj8mOV2c=;
+        b=SDDIoQ/Y3GwZnMsJgzIPMaE5Au9ADZHerofumTIM9+Pv3FBBqHyJVid73o+jHHEMVR
+         lPr5dnfyT0N/rtQnPXllH5rga1Q3VtnJDrLABTyGa3XoIasLuBYdPnTaOo/tGYh5PczR
+         4FO4lQQSBoe1qORubqs5KGHfS/pbwjHZDvjlQVCOUWA4js8EVHgZevCpDzya1r/3qZRX
+         PyEFFxr95EY27FUCFGVzeB90cHy2PR7sz5s3hsI90c/usqdpu4sBdGNpn+s57uiUHmoJ
+         ONiJqiTDmQunptRJ9BEVmyhUA0hkF3Kl1KREaNAmnnbCCSZpUfWcfKEFLej+nWl/UFqK
+         Z+5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789060299; x=1789665099;
+        d=1e100.net; s=20251104; t=1789060302; x=1789665102;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=k/MRknm2NzoW/h6T0OXKbuYc1GhrCHd3P2gwiJO8u9s=;
-        b=TO+ILcLbutFodMIoI6cWjKj0IvwcexTrtnPKpf7TNZyNAG7DtAXeKkKQUSyHuUfz0o
-         JjYs2bKt+YUe5tfxAjxNKYYVpTla3U/uSxWyfmh1bUZzleZjcStTIU+xzSEHWJfX/Zst
-         ks2xNaL8XiN64oRUIgsH3cD82DeR0LZy3TJ/yP3XduSfjBjd+eocg99dBbW8fzbWcCev
-         fYIAStlM8fpQeb35lnVeZmmAqzz9CVpC4m7GEDW31YFe50jYB5DxFfuHFBODIon+L/z4
-         b1gQufnJhnGU9nFieTNmkpMSnGhQ3qU0at6CL3eoekJwQ+jAtVAejib8A04fCIVCSOGM
-         SVLw==
-X-Gm-Message-State: AFuF++kmAN79Ew6y9UUjp7u2e8RgZCe1M1IJED8bh0B77qF3tSY6CgR6
-	/irJX7P/tttr6oUfde+W+v5yuxR17jbBv0Zd6DITyYaFea4Zx8wLXwgNUcCe4g==
-X-Gm-Gg: AYBFou1YkKDAJhcy1Q3Q+i69duV5RdAH6cSJjd9dKM/HwxrqkevnXwTDLLWWgktfHGp
-	G7dYRVXbFcAy09HlMyiqJIfikQKdWbcgJkIp9iQKksEj3KmmbXJlxRFTncAeNxU7Mq9TsfyE5v+
-	qUfeY+B2Irteh+so9G2v1ztWFiTYrQ2sTnPKk3fbkHE6SAG93Q/0T+WsuF0yDlecXpdESgcR5mq
-	sBqgg6Oy6OCn9pRjMzK9eLSqBPNcrWNC3iaLMYeRac1CQbXbZldf3Ss+JlZ3ZLALL3VQgmRIbj3
-	VD0I5MrbwBRxja0/Bpa+deIeDXFnaNeLHAyj788LUUexG5CAD+T+U3sglj/ZWT0eNhJ0XTnStRM
-	/hfePluuFAJGgtkFAKm26siFOm1zXem2XbZOIrGcHJaAWqGxiS9fTSlx4qlfp9Motr6OTEp6zDv
-	Z9e1dQ7Jwfs1FJM82MLxMKsxCPnp0nLlGZBnNwiGFq6JwhmmVxgbwQ47XwNtykmsSQBZa/pjefQ
-	N3HyA4frN4orFZvlcDy1acA7l0BJKKP7pvjONoWa67baTD6yy+AWsNLN4lzn2R3hU273IBIXsxD
-X-Received: by 2002:a05:690e:1919:b0:66f:c1bc:c078 with SMTP id 956f58d0204a3-671246cfab9mr151451d50.64.1789060298970;
-        Thu, 10 Sep 2026 10:11:38 -0700 (PDT)
+        bh=TBT27xp1pGPY9LeX8TYSbZ744fuH/VJYabQsj8mOV2c=;
+        b=mL7lTvFqBdJgsvjas0GOJeHRcUAga0E+Lq1aNEOLTdFhqrdQl8kvG7p8P/EP0N/KQ1
+         ol4yLXNeMzBjNAux5CAU00rQKZkAMglXnvVicVJP7kv8Cluy2anEVJX0kJeu2d6/Ou85
+         hgiktL3NIzaUZkZBCupdYwH9n/qcQh0M2BAaTbhEt8jTEj7HXbaIM8wus+Yj5YKxFYWR
+         HFHx7QNlibMbmU5VS2rjieylnP739ACZBnWSpmJofKT2KK9Vn2WCyattKjNFcNl3QFb7
+         NykjqpoQdSAU9soksxGKnVE+fS3XDzrzcIjav6KVn5lahPNbbjXuv2mwmExFXFlZcWI8
+         sVKQ==
+X-Gm-Message-State: AFuF++k79rRM8Uxx8eWe3WpswQLFM/GyffrIbH4hRj9sph8AnbyzZhX/
+	C5X2uZHx86N6zQoZSiaNVIQqXBRWqt2V4YbG+KYFkr0gxs+JTfJrXVDoTNPYOA==
+X-Gm-Gg: AYBFou1pz/7h3MsFpj/CVwXvc22CFlF04m8XqK7xlGUCBN15h9AkY5VXISIp3hKWRHf
+	xVoERHMN7Q6+jqCKw9Nlao0T+JiypUZuoFW1o+M2X3ocAs/ofxLa0kFWtizQELx57t4NO1ePLjE
+	ZMAs1oglY2vuvTX5v8XiahfE9jl09722sG38VOJaCzGTPN3liLgpYpS+9RiHXMjdh7nfiCNW2F/
+	tioeAwDSy9gUG97I7O6gT4r4kaj39c+7mE2N+EAX2n2k+bZdxFXwUBkB1wKNqOPw8q8Xd7UIWZv
+	pSSMBXCjyAr+d/eIFdIAI/PFSDvnK9rAqYTZFq4Lgsu8LAKvwiUBQtmTzWMuIUbCKqPS9Gel4oI
+	Y66hMmlCawto04jsWmkAWZrVifbSOBKLXAN2D9/ThiVnM1W6B7UoZ2mhWjhyREq9Cc0QKnMZnyi
+	VtYfmruEPjPOuwIFsCryJSlY/MrdV3FtSFnkyvV9r7VgA6Wm3NIS+YGMQdeXejxMvTc+pzP4Yjb
+	yECrhzUh2oCw5yH1KWY02o7h1sSUjjBOzTdXD+VKOi8msdaQkmeO94/beNjcDKQhB9R7nPYSWNr
+X-Received: by 2002:a53:ac9e:0:b0:66f:8b35:dedd with SMTP id 956f58d0204a3-6712451a13amr235077d50.6.1789060301630;
+        Thu, 10 Sep 2026 10:11:41 -0700 (PDT)
 Received: from willemb.c.googlers.com.com (234.207.85.34.bc.googleusercontent.com. [34.85.207.234])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-66fb48ee9easm14059834d50.8.2026.09.10.10.11.38
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-66fb48ee9easm14059834d50.8.2026.09.10.10.11.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Sep 2026 10:11:38 -0700 (PDT)
+        Thu, 10 Sep 2026 10:11:41 -0700 (PDT)
 From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -67,9 +67,9 @@ Cc: davem@davemloft.net,
 	horms@kernel.org,
 	andrew+netdev@lunn.ch,
 	Willem de Bruijn <willemb@google.com>
-Subject: [PATCH net-next v9 3/7] net_sched: sch_fq: clear past skb->tstamp if offloading pacing
-Date: Thu, 10 Sep 2026 13:10:22 -0400
-Message-ID: <20260910171131.2532487-4-willemdebruijn.kernel@gmail.com>
+Subject: [PATCH net-next v9 6/7] selftests: drv-net: in so_txtime tell apart sw from hw pacing
+Date: Thu, 10 Sep 2026 13:10:25 -0400
+Message-ID: <20260910171131.2532487-7-willemdebruijn.kernel@gmail.com>
 X-Mailer: git-send-email 2.55.0.1007.g17ff1f9808-goog
 In-Reply-To: <20260910171131.2532487-1-willemdebruijn.kernel@gmail.com>
 References: <20260910171131.2532487-1-willemdebruijn.kernel@gmail.com>
@@ -83,101 +83,244 @@ Content-Transfer-Encoding: 8bit
 
 From: Willem de Bruijn <willemb@google.com>
 
-When hardware offload is enabled, FQ will forward packets to the
-netdevice for pacing. The device has to test that skb->tstamp is
-in the future.
+Detect software pacing in so_txtime.c using SO_TIMESTAMPING.
 
-Avoid this cost for packets whose txtime has already passed, by
-clearing skb->tstamp.
+If '-H' (hw) is passed
 
-Also clear slightly into the future, for EDT timestamps that are
-so close to now that they fall within a reasonable normal Tx
-latency. This slack is set to 400 nsec.
+1. measure sw tx delay with SOF_TIMESTAMPING_TX_SOFTWARE, and
+2. fail if delay exceeds a threshold, indicating pacing
+
+This will be used in the next patch in the series.
+
+Also extend while condition to account for possible variance.
+This applies to all tests, not just the new '-H' variants.
+
+Also reorder getopt parameters to make them alphabetical.
 
 Signed-off-by: Willem de Bruijn <willemb@google.com>
 
 ---
 
 Changes
-  v8 -> v9
-    - (minor) use SKB_CLOCK_REALTIME instead of 0
-    - (minor) remove comments to bot below the --- separator
   v6 -> v7
-    - timer drift logic fix moved to separate commit
+    - gate missing tstamp errors++ on !KSFT_MACHINE_SLOW
   v5 -> v6
-    - switch to skb_set_delivery_time to also clear SKB_CLOCK_REALTIME
-    - add fq_offload_slack_ns
+    - initialize tdeliver_max to now (glob_tstart),
+      as otherwise not set for -H tests without delay
   v3 -> v4
-    - also reset tstamp_type
-    - minor: initialize time_next_packet for more obvious correctness
+    - rename -h to -H to avoid aliasing implicit getopt -h
+    - count sw timestamps to verify that they were actually checked
+    - (minor) do not ask for SOF_TIMESTAMPING_OPT_ID as not used
+    - (minor) remove unused parameter
 ---
- net/sched/sch_fq.c | 18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+ .../testing/selftests/drivers/net/so_txtime.c | 95 +++++++++++++++----
+ 1 file changed, 79 insertions(+), 16 deletions(-)
 
-diff --git a/net/sched/sch_fq.c b/net/sched/sch_fq.c
-index fdd9380e445c..60ad87cb1275 100644
---- a/net/sched/sch_fq.c
-+++ b/net/sched/sch_fq.c
-@@ -159,6 +159,9 @@ struct fq_sched_data {
- 	u64		stat_allocation_errors;
- };
+diff --git a/tools/testing/selftests/drivers/net/so_txtime.c b/tools/testing/selftests/drivers/net/so_txtime.c
+index f6f3253ed174..9ebe9f91227c 100644
+--- a/tools/testing/selftests/drivers/net/so_txtime.c
++++ b/tools/testing/selftests/drivers/net/so_txtime.c
+@@ -42,8 +42,10 @@ static bool	cfg_machine_slow;
+ static uint64_t	cfg_start_time_ns;
+ static int	cfg_mark;
+ static bool	cfg_rx;
++static bool	cfg_verify_hw_offload;
  
-+/* EDT timestamps to clear beyond now. */
-+static const int fq_offload_slack_ns = 400;
-+
- /* return the i-th 2-bit value ("crumb") */
- static u8 fq_prio2band(const u8 *prio2band, unsigned int prio)
- {
-@@ -421,6 +424,10 @@ static struct fq_flow *fq_classify(struct Qdisc *sch, struct sk_buff *skb,
- 			smp_store_release(&sk->sk_pacing_status,
- 					  SK_PACING_FQ);
+ static uint64_t glob_tstart;
++static uint64_t glob_tstart_real;
+ static uint64_t tdeliver_max;
  
-+		if (offload_horizon &&
-+		    fq_skb_cb(skb)->time_to_send <= now + fq_offload_slack_ns)
-+			skb_set_delivery_time(skb, 0, SKB_CLOCK_REALTIME);
-+
- 		return &q->internal;
- 	}
- 
-@@ -731,6 +738,7 @@ static struct sk_buff *fq_dequeue(struct Qdisc *sch)
- 	u64 offload_horizon = fq_offload_horizon(sch, q);
- 	struct fq_perband_flows *pband;
- 	struct fq_flow_head *head;
-+	u64 time_next_packet = 0;
- 	struct sk_buff *skb;
- 	struct fq_flow *f;
- 	unsigned long rate;
-@@ -745,7 +753,7 @@ static struct sk_buff *fq_dequeue(struct Qdisc *sch)
- 	if (skb) {
- 		q->internal.qlen--;
- 		fq_dequeue_skb(sch, &q->internal, skb);
--		goto out;
-+		return skb;
- 	}
- 
- 	now = ktime_get_ns();
-@@ -782,8 +790,8 @@ static struct sk_buff *fq_dequeue(struct Qdisc *sch)
- 
- 	skb = fq_peek(f);
- 	if (skb) {
--		u64 time_next_packet = max_t(u64, fq_skb_cb(skb)->time_to_send,
--					     f->time_next_packet);
-+		time_next_packet = max_t(u64, fq_skb_cb(skb)->time_to_send,
-+					 f->time_next_packet);
- 
- 		if (now + offload_horizon < time_next_packet) {
- 			head->first = f->next;
-@@ -862,6 +870,10 @@ static struct sk_buff *fq_dequeue(struct Qdisc *sch)
- 	}
- 
- out:
-+	if (offload_horizon &&
-+	    time_next_packet && time_next_packet <= now + fq_offload_slack_ns)
-+		skb_set_delivery_time(skb, 0, SKB_CLOCK_REALTIME);
-+
- 	return skb;
+ static int errors;
+@@ -191,12 +193,32 @@ static int do_recv_errqueue_txtime(struct sock_extended_err *err,
+ 	return 1;
  }
  
+-static int do_recv_errqueue(int fdt)
++static int do_recv_errqueue_timestamping(struct scm_timestamping *tss)
++{
++	int64_t ts;
++
++	ts = tss->ts[0].tv_sec * 1000ULL * 1000 * 1000;
++	ts += tss->ts[0].tv_nsec;
++	ts -= glob_tstart_real;
++	ts /= 1000;
++
++	if (ts > cfg_variance_us) {
++		fprintf(stderr, "sw delay %" PRId64 "us exceeds bounds\n", ts);
++		if (!cfg_machine_slow)
++			errors++;
++	}
++
++	return 1;
++}
++
++static int do_recv_errqueue(int fdt, int *num_ts)
+ {
+ 	char control[CMSG_SPACE(sizeof(struct sock_extended_err)) +
++		     CMSG_SPACE(sizeof(struct scm_timestamping)) +
+ 		     CMSG_SPACE(sizeof(struct sockaddr_in6))] = {0};
+ 	char data[sizeof(struct ethhdr) + sizeof(struct ipv6hdr) +
+ 		  sizeof(struct udphdr) + 1];
++	struct scm_timestamping *tss;
+ 	struct sock_extended_err *err;
+ 	int ret, num_tstamp = 0;
+ 	struct msghdr msg = {0};
+@@ -222,16 +244,29 @@ static int do_recv_errqueue(int fdt)
+ 			error(1, 0, "errqueue: flags 0x%x\n", msg.msg_flags);
+ 
+ 		cm = CMSG_FIRSTHDR(&msg);
++		tss = NULL;
++
++		if (cm->cmsg_level == SOL_SOCKET &&
++		    cm->cmsg_type == SCM_TIMESTAMPING) {
++			tss = (void *)CMSG_DATA(cm);
++			cm = CMSG_NXTHDR(&msg, cm);
++			if (!cm)
++				error(1, 0, "timestamp missing ip err\n");
++		}
++
+ 		if (cm->cmsg_level != cfg_errq_level ||
+ 		    cm->cmsg_type != cfg_errq_type)
+ 			error(1, 0, "errqueue: type 0x%x.0x%x\n",
+ 				    cm->cmsg_level, cm->cmsg_type);
+ 
+ 		err = (struct sock_extended_err *)CMSG_DATA(cm);
+-		if (err->ee_origin != SO_EE_ORIGIN_TXTIME)
++		if (err->ee_origin == SO_EE_ORIGIN_TXTIME)
++			num_tstamp += do_recv_errqueue_txtime(err, data[ret - 1]);
++		else if (err->ee_origin == SO_EE_ORIGIN_TIMESTAMPING && tss)
++			*num_ts += do_recv_errqueue_timestamping(tss);
++		else
+ 			error(1, 0, "errqueue: origin 0x%x\n", err->ee_origin);
+ 
+-		num_tstamp += do_recv_errqueue_txtime(err, data[ret - 1]);
+ 		msg.msg_flags = 0;
+ 		msg.msg_controllen = sizeof(control);
+ 	}
+@@ -243,7 +278,7 @@ static void recv_errqueue_msgs(int fdt)
+ {
+ 	struct pollfd pfd = { .fd = fdt, .events = POLLERR };
+ 	const int timeout_ms = 10;
+-	int ret, num_tstamp = 0;
++	int ret, num_tstamp = 0, num_ts = 0;
+ 
+ 	do {
+ 		ret = poll(&pfd, 1, timeout_ms);
+@@ -251,12 +286,20 @@ static void recv_errqueue_msgs(int fdt)
+ 			error(1, errno, "poll");
+ 
+ 		if (ret && (pfd.revents & POLLERR))
+-			num_tstamp += do_recv_errqueue(fdt);
++			num_tstamp += do_recv_errqueue(fdt, &num_ts);
+ 
+-		if (num_tstamp == cfg_num_pkt)
++		if (num_tstamp == cfg_num_pkt || num_ts == cfg_num_pkt)
+ 			break;
+ 
+-	} while (gettime_ns(cfg_clockid) < tdeliver_max);
++	} while (gettime_ns(cfg_clockid) <
++		 tdeliver_max + (cfg_variance_us * 1000));
++
++	if (cfg_verify_hw_offload && num_ts != cfg_num_pkt) {
++		fprintf(stderr, "missing timestamps: expected %d, got %d\n",
++			cfg_num_pkt, num_ts);
++		if (!cfg_machine_slow)
++			errors++;
++	}
+ }
+ 
+ static void start_time_wait(void)
+@@ -301,6 +344,17 @@ static void setsockopt_txtime(int fd)
+ 		error(1, 0, "getsockopt txtime: mismatch");
+ }
+ 
++static void setsockopt_txtimestamping(int fd)
++{
++	int val = SOF_TIMESTAMPING_TX_SOFTWARE |
++		  SOF_TIMESTAMPING_SOFTWARE |
++		  SOF_TIMESTAMPING_OPT_TSONLY;
++
++	if (setsockopt(fd, SOL_SOCKET, SO_TIMESTAMPING,
++		       &val, sizeof(val)))
++		error(1, errno, "setsockopt timestamping");
++}
++
+ static int setup_tx(struct sockaddr *addr, socklen_t alen)
+ {
+ 	int fd;
+@@ -314,6 +368,9 @@ static int setup_tx(struct sockaddr *addr, socklen_t alen)
+ 
+ 	setsockopt_txtime(fd);
+ 
++	if (cfg_verify_hw_offload)
++		setsockopt_txtimestamping(fd);
++
+ 	if (cfg_mark &&
+ 	    setsockopt(fd, SOL_SOCKET, SO_MARK, &cfg_mark, sizeof(cfg_mark)))
+ 		error(1, errno, "setsockopt mark");
+@@ -354,6 +411,8 @@ static void do_test_tx(struct sockaddr *addr, socklen_t alen)
+ 
+ 	start_time_wait();
+ 	glob_tstart = gettime_ns(cfg_clockid);
++	glob_tstart_real = gettime_ns(CLOCK_REALTIME);
++	tdeliver_max = glob_tstart;
+ 
+ 	for (i = 0; i < cfg_num_pkt; i++)
+ 		do_send_one(fdt, &cfg_buf[i]);
+@@ -446,10 +505,11 @@ static void usage(const char *progname)
+ 			"  -6            only IPv6\n"
+ 			"  -c <clock>    monotonic or tai (default)\n"
+ 			"  -D <addr>     destination IP address (server)\n"
+-			"  -S <addr>     source IP address (client)\n"
++			"  -H            verify hardware offload (tx)\n"
++			"  -m <mark>     socket mark\n"
+ 			"  -r            run rx mode\n"
++			"  -S <addr>     source IP address (client)\n"
+ 			"  -t <nsec>     start time (UTC nanoseconds)\n"
+-			"  -m <mark>     socket mark\n"
+ 			"\n",
+ 			progname);
+ 	exit(1);
+@@ -461,7 +521,7 @@ static void parse_opts(int argc, char **argv)
+ 	int domain = PF_UNSPEC;
+ 	int c;
+ 
+-	while ((c = getopt(argc, argv, "46c:S:D:rt:m:")) != -1) {
++	while ((c = getopt(argc, argv, "46c:D:Hm:rS:t:")) != -1) {
+ 		switch (c) {
+ 		case '4':
+ 			if (domain != PF_UNSPEC)
+@@ -488,21 +548,24 @@ static void parse_opts(int argc, char **argv)
+ 			else
+ 				error(1, 0, "unknown clock id %s", optarg);
+ 			break;
+-		case 'S':
+-			saddr = optarg;
+-			break;
+ 		case 'D':
+ 			daddr = optarg;
+ 			break;
++		case 'H':
++			cfg_verify_hw_offload = true;
++			break;
++		case 'm':
++			cfg_mark = strtol(optarg, NULL, 0);
++			break;
+ 		case 'r':
+ 			cfg_rx = true;
+ 			break;
++		case 'S':
++			saddr = optarg;
++			break;
+ 		case 't':
+ 			cfg_start_time_ns = strtoll(optarg, NULL, 0);
+ 			break;
+-		case 'm':
+-			cfg_mark = strtol(optarg, NULL, 0);
+-			break;
+ 		default:
+ 			usage(argv[0]);
+ 		}
 -- 
 2.55.0.1007.g17ff1f9808-goog
 
