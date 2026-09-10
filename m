@@ -1,155 +1,144 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from out28-121.mail.aliyun.com (out28-121.mail.aliyun.com [115.124.28.121])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC5373ACEE2;
-	Thu, 10 Sep 2026 07:29:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED948372B26;
+	Thu, 10 Sep 2026 07:46:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.121
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789025361; cv=none; b=rUO1sQycoKLkbggS8bViJ0LydPdWXaQMvUYKuS7Ugf62YM2hlQaeIS0r6i7Mq4RsT/PTk1YGW704s0It72/+RXWcz55gNZDndKrOYnN7B0ywYampJtTMRMzzVXvFk/gjnJK7o5CC04R3TzGcMxW55L+CuSGt3N/tn3QjFn4u4uU=
+	t=1789026406; cv=none; b=uXIHDtuMk+Uex9GBNZe7SPFZcJrhMSncYguAZeHVJcDdpQNqqb7f01KlQCLjI2aFnntjpHYqnqXdtzz756O7szH7BsMk32hgl72J4h2wMXV7M+unNQ52v8nRDn2+AC5FiTGbkJLcqOm0fFszwaxR66flLaYtIhzD6/mPrKyCP0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789025361; c=relaxed/simple;
-	bh=SDMg6oyZQw6A03eQKQ3Uptuv442Scy0myCx4pmCTZ2Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FHQz6scCWV33MkIR946szX9zjH0u7lV9vCWs1XGSf+MwewJQ2+lwTvHvcjy54nNBUGWh+FgOhgvS46fSujU5m7guQMTpMa9KkMvP/tWCxIWQysMQCEL5mfbYFsPKEZ/UQ1W0gzce9ntQMpDOvf9JvApGqT0DyADNmn132ATMePU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MY03GOet; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MY03GOet"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9E611F0089E;
-	Thu, 10 Sep 2026 07:29:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789025359;
-	bh=u3R7KOyofrS0wRSjak8aNV75X2Czsw9QjnW4+38O/ZQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=MY03GOetu5SKBp9nkWTrxqdG7Jl6/NG2Hl+PUb+xVMhfRY77IW+ocH4B48v9OlZH+
-	 2jNjsuE5l7TpMAH4tErFkuASZJQp1s4gqxabcfqFAipFRFLnJoAF9of4isP7Umzi7X
-	 Br84MtRcqTzhRIQx94sSrFT2GUsb/WfFTvrliT9WRrtFns/42kuCEHMX+eQj6SGnZj
-	 6SKyKJyXMZFLIO/MXaq1HQg5I1fUaIXvYvH2imSIKOP1ZdPpYtxN5Nzhby8vBAnpSq
-	 IKWJdVIggpp6it5npUAN6DPsZWIKMJdRJSMqtDQcP+//G3+4DT/6tHCVZ5uOWCi/vM
-	 lQfu9E+dLqOeg==
-Date: Thu, 10 Sep 2026 09:29:14 +0200
-From: Joel Granados <joel.granados@kernel.org>
-To: Mauricio Faria de Oliveira <mfo@igalia.com>
-Cc: Kees Cook <kees@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Nicolas Schier <nsc@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, kernel-dev@igalia.com, 
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, fsverity@lists.linux.dev, 
-	keyrings@vger.kernel.org, bpf@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org, netdev@vger.kernel.org, linux-wpan@vger.kernel.org, 
-	lvs-devel@vger.kernel.org, netfilter-devel@vger.kernel.org, coreteam@netfilter.org, 
-	linux-sctp@vger.kernel.org, linux-rdma@vger.kernel.org, linux-s390@vger.kernel.org, 
-	bridge@lists.linux.dev, mptcp@lists.linux.dev, rds-devel@oss.oracle.com, 
-	virtualization@lists.linux.dev
-Subject: Re: [PATCH RFC v3 00/13] sysctl: add module aliases
-Message-ID: <uufwu7rqyxf7h55lgavcwrnylnq5gdbd7o5d7mfugrxpblds2d@adra5c2z22gg>
-References: <20260819-sysctl-module-aliases-v3-0-aab90569365d@igalia.com>
- <bpnqwggtidgiec5akns3fa5edbsvl7xf55dxabtwng2xspy4pn@ue554aii2ngk>
- <53155340c897560bfc67e61ba9568fd6@igalia.com>
- <mokz5pdtwswkyab4byfq7q7m6ac2g6ceoi6jflyxmaszaibzqa@su6m4kamtdpy>
- <b1a6cec17e7c828fcebe310ca2a0d25b@igalia.com>
- <rywhz6soawf5dzyui5g7dnbufsgpxr7ma7honuhejwgncemzrm@f32at7hl6ugm>
- <6e93af907298022f077126f1be7bd386@igalia.com>
+	s=arc-20240116; t=1789026406; c=relaxed/simple;
+	bh=Z3+wfUH3sve1Y47LFokaW6TusPI1tbb3M8pjkpJk2xw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=BCmlhDH4cFYTms6ix8Hat7G8M+q/UbuhSxYi9nwHJMiF4y4ZD4/r82zCyZPJqhmeqxooW6keqPwNhSPoeSNb0c09LiwaGC9iC/0ArlqAFs6bUM34shxi0aJEjARZ+51dyzKzCBvTLGkbVov546nYR+zYzrpvcCTlRz7G8DVcSSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com; spf=pass smtp.mailfrom=motor-comm.com; arc=none smtp.client-ip=115.124.28.121
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=motor-comm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=motor-comm.com
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.06974443|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.0441842-0.000461598-0.955354;FP=16931804759156415222|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037006180;MF=kyle.switch@motor-comm.com;NM=1;PH=DS;RN=18;RT=18;SR=0;TI=SMTPD_---.jAJ7Jys_1789026385;
+Received: from motor-comm.com(mailfrom:kyle.switch@motor-comm.com fp:SMTPD_---.jAJ7Jys_1789026385 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Thu, 10 Sep 2026 15:46:32 +0800
+From: Kyle Switch <kyle.switch@motor-comm.com>
+To: Frank.Sae@motor-comm.com,
+	andrew@lunn.ch,
+	hkallweit1@gmail.com,
+	linux@armlinux.org.uk,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	conor+dt@kernel.org,
+	devicetree@vger.kernel.org
+Cc: ming.xu@motor-comm.com,
+	xiaolin.xu@motor-comm.com,
+	jianmin.wang@motor-comm.com,
+	jie.han@motor-comm.com,
+	wei.zhang@gl-inet.com,
+	sijia.huang@gl-inet.com
+Subject: [PATCH v16 0/2] net: phy: Add driver for Motorcomm Quad 2.5GbE phy
+Date: Thu, 10 Sep 2026 15:46:22 +0800
+Message-Id: <20260910074624.2426899-1-kyle.switch@motor-comm.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="fccfp65dlmdatj3e"
-Content-Disposition: inline
-In-Reply-To: <6e93af907298022f077126f1be7bd386@igalia.com>
+Content-Transfer-Encoding: 8bit
+
+Add support for Motorcomm YT8824 quad-port 2.5G PHY to the existing
+motorcomm driver, using the phy_package helpers for the shared top
+extended register space.
+
+changes in v16:
+1. Add DTS documentation.
+2. Fix redundant initialization.
+
+changes in v14:
+1. Refactor the error return path to preserve and return the initial error,
+   rather than letting later errors mask it.
+
+changes in v13:
+1. Fix the lock release issue on the error path to prevent potential deadlock or resource leak.
+2. Add a func yt8824_restore_defaults() to restore configuration on the error path,
+   ensuring the hardware/device is left in a known good state upon failure.
+
+changes in v12:
+1. Refactor the yt8824_read_status() function to ensure proper state
+   synchronization between hardware registers and the phy_device structure.
+
+changes in v11:
+1. Clean build_clang warning.
+
+changes in v10:
+1. Within the interface that swaps to the USXGMII reg space,the lock include 
+   shared_lock and mdio mutex must remain held throughout the entire operation 
+   and should only be released after all steps have completed.
+2. Improve the template interface in phy-c45.c
+3. Fix the handling of some failure paths.
+
+changes in v9:
+1. Add shared_lock mutex prevents UTPs from interfering with each other 
+   due to swapping reg space.
+
+change in v8:
+1. Clean up format warning.
+2. Fix exception handling code logic based on Sashiko/Gemini.
+3. Remove interrupt/handle function
+
+changes in v7:
+1. Refactor the using of mdio lock
+  In all cases of swapping to the USXGMII side interface, lock the MDIO bus at the 
+  beginning, switch to the UTP address space after the operation is completed, and 
+  then release the lock.The purpose of doing this is to ensure that it will not affect 
+  other UTPs operating in the UTP address space.
+2. Rename YT8824_RSSR_FIBER_SPACE to YT8824_RSSR_USXGMII_SPACE.
+
+changes in v6:
+1. Add  test mode helper in phy-c45.c
+2. Refactor the using of swapping paged for utp and fiber
+
+changes in v5:
+1. Fix diffs issue which caused by unexpected whitespace.
+2. Fix "exceeding 80 columns" warning.
+
+changes in v4:
+1. Remove motorcomm,yt8xxx.yaml, will update in other patch thread
+2. Fix locking issue. Since every interface requires switching of space, 
+   the bus is already locked during the space switching process in
+   phy_select_page(), other operations within the interface cannot 
+   be locked again before unlock in phy_restore_page().
+3. Fix warning log identified during the inspection process using
+   checkpatch.pl.
+4. Fix the way of using common api in phy_package.c
 
 
---fccfp65dlmdatj3e
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+changes in v3:
+1. Using common apis defined in phy_package.c to handle shared top
+extend register space.
+2. Add dts demo in motorcomm,yt8xxx.yaml.
+3. Fix unnecessary redundant judgments.
+4. Fix BMCR registers operation using magic number.
+5. Rename funtion based on its approximate functionality.
 
-On Wed, Sep 09, 2026 at 02:29:30PM -0300, Mauricio Faria de Oliveira wrote:
-> On 2026-09-09 11:07, Joel Granados wrote:
-> > On Fri, Sep 04, 2026 at 02:45:23PM -0300, Mauricio Faria de Oliveira wr=
-ote:
-> >> On 2026-09-04 10:41, Joel Granados wrote:
-> >> > On Thu, Aug 20, 2026 at 06:22:13PM -0300, Mauricio Faria de Oliveira=
- wrote:
-> >> >> On 2026-08-20 09:51, Joel Granados wrote:
-> >> >> > On Wed, Aug 19, 2026 at 03:16:13PM -0300, Mauricio Faria de Olive=
-ira wrote:
-> >> >> >> This series adds 'sysctl:' aliases to modules that register sysc=
-tl tables; e.g.:
-> > <... snip ...>
-> >> > use the correct call moving forward?
-> >>=20
-> >> This scheme currently covers all modules, AFAIK, as it is wrapped in t=
-he
-> >> functions that register sysctl tables.
-> >>=20
-> >> On moving forward: usage of such functions in a way that breaks a
-> >> requirement of this series (e.g., failing to specify the template
-> >> table/path parameter(s), or not having constant initializers) hits a
-> >> build error, as the requirements are actually from the compiler.
-> >>=20
-> >> >> I guess that a different design could use MODULE_SYSCTL_TABLE() as
-> >> >> MODULE_DEVICE_TABLE(), declared per table instead of wrapped into
-> >> >> register sysctl functions.
-> >> >> However, it seems to require moving the value of the path argument =
-(or
-> >> >> its template) into the macro and still referencing it in the functi=
-on
-> >> >> (or its instantiation of the template), which adds obfuscation, to =
-all
-> >> >> callers.=20
-> >> >>=20
-> >> >> What do you think?
-> >> > It might be that having it inside the module subsys is more work, bu=
-t I
-> >> > believe that there is the right place to have it. I still don't see =
-that
-> >> > adding a module specific arg to the sysctl register is a good thing.
-> >>=20
-> >> Ok, cool. I can work on a different design.
-> >>=20
-> >> Please just let me know whether you are OK with the remaining (above),
-> >> and I'll be happy to tackle this.
-> >=20
-> > What is "the remaining"?
->=20
-> I meant the rest of the email, addressing the points/questions you
-> raised.
+changes in v2:
+1. Remove duplicate code and replace it with existing api.
 
-* The dependency on a sysctl path to load a module still is
-  backwards to me. It should be: I need feature A, I load modules
-  M{1,2,3} for A and I set sysctl S{1,2,3...}. Not sure why sysctl tools
-  do it the other way around.
+Kyle Switch (2):
+  net: phy: Add driver for Motorcomm Quad 2.5GbE phy
+  dt-bindings: net: Document Motorcomm YT8824 PHY package
 
-* The fact that the invariance is in the sysctl path and not the module
-  identifier maybe points to a deeper issue.=20
+ .../bindings/net/motorcomm,yt8824.yaml        |   63 +
+ drivers/net/phy/Kconfig                       |    3 +-
+ drivers/net/phy/motorcomm.c                   | 1585 ++++++++++++++++-
+ drivers/net/phy/phy-c45.c                     |   55 +
+ include/linux/phy.h                           |    1 +
+ include/uapi/linux/mdio.h                     |   12 +
+ 6 files changed, 1716 insertions(+), 3 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/net/motorcomm,yt8824.yaml
 
-* I still believe that this is better placed outside the sysctl
-  subsys as it does not cater solely to module loading.
+-- 
+2.25.1
 
-Best
-
-
-
-
---fccfp65dlmdatj3e
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQGzBAABCgAdFiEErkcJVyXmMSXOyyeQupfNUreWQU8FAmqiXEIACgkQupfNUreW
-QU+Jpgv/QNMzfwgyYS5bGcjcIdeGmbwPVB4niFRMrcLkDpeUPt2bAuU2q0Si+c2j
-8ZRwIaAx22BLUNWWDpobcza7W5C1A17rIR76XCMUnFSb0n/IWP5htK0UHazibk/r
-s8lxhIQXP5lQAHUSyOaKXEqmO60aWL/VkIxb+qJe3ThcHSESPRVQxL56e054d/fG
-0Hh+/ckA3Yy8AAKkaF1Q52F6thgEqtHKMSNZkdp+XN3Q+IQHRUGULXvXeTgvp4QY
-u5WK/w8RJz5+KQwW6//kpXBCY9uVado45tRrFS/H0fClXF6ovdXuTK169krtJi92
-qouie+C4qFsAjPRGPOQjOYXmCIa8/sKwsArW4CmTg0J9WN3BwQxJksy0jWqaxULM
-xRPx9OxYsSrYZGglZitaJMnNQnc+X20/vQ4lBotfmrMPdUgSrMAzOHO0AcFXBUs9
-s1DSQoFZe+/Kg4RCkGzgk55VbnT0V81UPFbcYx6yuyjb+yZWoTMUpHy8Q47//r54
-Y5lWmFsv
-=Y70+
------END PGP SIGNATURE-----
-
---fccfp65dlmdatj3e--
