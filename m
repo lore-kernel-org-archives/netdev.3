@@ -1,118 +1,138 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFCB24BFE8B
-	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 08:29:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 026F93AFCFA
+	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 08:30:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789028985; cv=none; b=JgqudI1qWA0cUjOspsuNCpYSRq+5YQiDYZf4rHvDxtpSKB0FE2vVlXdzrDvXfNJVEVzda/PIcg81vHktJrCvWAjHskoJlpXlb4NgvWzzEvRS7cUOvMD8zi4gwX5llXTNQoBc9MV0HzOOGHkbhBeRhcyPGEZTd2WZ1B9G12EtUJY=
+	t=1789029046; cv=none; b=SaXLxAf1LD1KftTbtnwtgR66b7zi/DrlBVLDhOgNIiQF5qvEaE5wsZCVUsyV9H08blYlX0NcIHf5uPGwYE54qcvBWNKdr1mBfHobXNPsAI7C27S5uX2+pDwyIeWQgBJepABR+2numGp/yfK5g+aUWN2RGvSJfJHykW5fURN9WA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789028985; c=relaxed/simple;
-	bh=tsJAIt9Fkyj4tBHRibyHOinaLan5BAIadsmezVV3NxA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SQutVLDUfzZjPoA38o/eb3nsOFIRidScjU9HpZ8BroU2sazIJ5nWYSpWsOM/XQQk4T4eCm/WTebRRfKR4Cz0d2uGvoX2efmKy4Q93eKgbsWENPmqUsvP3h68ZAmECE9TN0URoHfjUQS4PcX1kOg4aQhdyCjBej3oRNP+npy+jdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hQAn8wGM; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789029046; c=relaxed/simple;
+	bh=ofD9vuZ8WriYaz45r03nVr4VI+oGJALE7F2gieVLqec=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sDRWOKyBO2xhUljskF97wZkBxNlvTCAgE6DnQMk7DnrNyxIaTrFWVUFVNpyqEDX/JB3G6e2U/CDws1NzKtgAAPMM9CFGFdedd5cpNPZikP2xaNPM80RJMpIOT2yHEZXVE8MWnwy2D99y7yiRIikFowXlB4oHUR0HMUTNjLMhlpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EXAIdTxa; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hQAn8wGM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 440381F000FF;
-	Thu, 10 Sep 2026 08:29:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789028980;
-	bh=175RHa16knyn/uoX5hnJ+gWOFWpQbD+YWwgwKsVnmaQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=hQAn8wGMFbbYJbAfGBNIWAfGn0U5IdyC3TxBJrvuCPfK9jjkvo5gjOlhgT7lbQF85
-	 tyj3bHZ6jj3E9vQSCbB/7mU+4JsfZ5beHpRtlQMooepZyRs7FaskSE47hCtjMcynmA
-	 vUqD58+uovNPH65ZF1f2SvKxqcu5Hj7RqPwCRCECRDw6Iy1EaPE1eCO5feJ2PsmIH6
-	 fvQy5TWwJVobXy/zC1Z1zm4UYIvz0JEVWw5ShGc87uVe2wuJqqR+QS7gyOjkO3pJAf
-	 GO2Ys1+9uO9Ftv2PBGvzIb9QSVqx6bxwm9xzIHMKF0/iNHDA6OySr1/2yfcfRx88V4
-	 j1RspbQQflLTQ==
-Message-ID: <6c1229b9-5a9c-4428-9faf-01d84c75ef2d@kernel.org>
-Date: Thu, 10 Sep 2026 10:29:36 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EXAIdTxa"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2d8f265cbe6so58704855ad.0
+        for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 01:30:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789029044; x=1789633844; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=W6wVmYC8X8kmr5SDuvDPNWubkvtX+YkviT8aumfGWPQ=;
+        b=EXAIdTxah2KUEznolYA9QbHZuHtM8f7JXCVE2rZomou/NVA/YKI2D2rIg9gYRBCQro
+         l7ecsmLJunERYT8/afzvt+Xy1C0pd/Wk1LUjc8YZJA2RNb9xAF6Whtxzyq0BkTbtecBV
+         vaLjrJ/SD03SDu67nHkkFfdCu4D54XerLNQHPgaHNFj1XzE3766AKU9j4MlryQ9XPtzN
+         aNV2+m2HIY1SG8Kj/9V/Dm14agA0nhywDSBjhdgjAU7NlScG9S7a5gKELOFdlj2tFNE0
+         ErMbKxF6JwFZBrwR2btwcytalwtcw2TSjsXG4mtM2NkmLBowET9HM1MdhJVMqDeNmUl9
+         ZkyQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789029044; x=1789633844;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=W6wVmYC8X8kmr5SDuvDPNWubkvtX+YkviT8aumfGWPQ=;
+        b=QnR7GBHuoQPC7dG7D/eUDz4bFHbOC2hEWkIQFNfP/wQh0XJ4Sx5F7LJ9OAX3Z+Cc1M
+         0a3FyQyoU9RkEcOpMT2eiOnQ573ZUoNe7tvGv8mw7gAT99wyd56QL2M1zrK/3BZJEysb
+         fIVvd8IvxasMQaI5TqLBld5iJPKZlt2mSXtBHg52KnlF2ItytBdeJkfTmTngJVCslqbi
+         DBNzMDq/V5/dPwv56IBAT1gneCEwrtDGs0G9SabNcTBlXliGTkFvgKDCpWDBLqGff+au
+         jhSIBn5lZuxPfYT1tw4/XvSGbwnBTCnMJza5xmrJs8yk7MGp0h5b1opJWnxjeawbOTxU
+         MwjQ==
+X-Gm-Message-State: AFuF++mgrbOT6gCflfdVBZGpaW3bgaCfg4UTemf3BzhX4yQndB2+kTZ0
+	nsjGUk4Z488x6/I5F4d4PJAKL0bukIR3JwuaUZL/9SmBsZntwCvNUH+X+OsWCpbOI/4=
+X-Gm-Gg: AYBFou1sgdf68pMT4veMMTOkO0d8MOciiU2om0TyONNwdG8mZuDShoM59hD9PCjJwtd
+	cDLvfSfCswaDPS+emeoJ1gmxkvx9DtNexBpsfL73POfbjHjAUbi8ND8rIbH4i/iWH1FyQ9qj0IS
+	o8k0cAcwtP4dGYHnDz7UF+Nd6ENhH847HFQSR2iwWlppXRX7I4VztEceQWnnDLVV8vTCsJXhFlo
+	Bx8K84Okrp6r/RXt/1IX8RUfrumhqN/J54q7kblmvqXV0F8ICC3vuKVy0lVdCo9V4atnNB4ao+y
+	HUXy2TIw7/5+r+KuMGcYUpNGZq80l/dg2jJFRI+9idZLpbynyh7OmrQRY4FEyhXz+XhHtF5+toX
+	xalW8RUdwl/k5yqYgEXWwtowSvduyrG5QcFXoELvePXK5gUriRSHXbcQWT+0dVm4TvLSevV9TNW
+	hl7yTfr+f5UZEYphofNB3Y5iU+aJ1DLlVStZ0yZX0DVvZqUGR7BDhvxqxsQLse8k2F2Rkm8yms/
+	Qo3zQPTAxf0ew2hVI8e6ftNjvidGk4IRA==
+X-Received: by 2002:a17:90b:384b:b0:38e:524:8797 with SMTP id 98e67ed59e1d1-39b261e79f1mr57365893a91.13.1789029027189;
+        Thu, 10 Sep 2026 01:30:27 -0700 (PDT)
+Received: from localhost.localdomain ([180.101.244.70])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39d776184fesm4464576a91.17.2026.09.10.01.30.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 10 Sep 2026 01:30:26 -0700 (PDT)
+From: henrymei <ljp1205831794@gmail.com>
+X-Google-Original-From: henrymei <henrymei@tencent.com>
+To: netdev@vger.kernel.org
+Cc: achender@kernel.org,
+	linux-rdma@vger.kernel.org,
+	rds-devel@oss.oracle.com,
+	santosh.shilimkar@oracle.com,
+	gerd.rausch@oracle.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	Aohan Mei <henrymei@tencent.com>,
+	TencentOS Corvus AI <corvus@tencent.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net v2] rds: ib: use rds_conn_drop() on protocol version mismatch
+Date: Thu, 10 Sep 2026 16:30:15 +0800
+Message-ID: <20260910083015.2695284-1-henrymei@tencent.com>
+X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Thunderbird Daily
-Subject: Re: Some clarifications on the upstreaming process
-Content-Language: fr
-To: Jakub Kicinski <kuba@kernel.org>,
- Steffen Klassert <steffen.klassert@secunet.com>
-Cc: Paolo Abeni <pabeni@redhat.com>, David Miller <davem@davemloft.net>,
- Herbert Xu <herbert@gondor.apana.org.au>, netdev@vger.kernel.org
-References: <20260907093020.2228346-1-steffen.klassert@secunet.com>
- <aqD-_cBnIOMEpxVh@secunet.com>
- <70d0048d-694b-4348-a6a5-de87a767b8fd@redhat.com>
- <aqEzoAcZ0uP0Kz6k@secunet.com>
- <83dd4915-e7a3-4c7e-91dd-adbea16450b3@redhat.com>
- <aqE4eK2cqpvxqCQJ@secunet.com> <20260909115753.75723ca1@kernel.org>
-From: Matthieu Baerts <matttbe@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- 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
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <20260909115753.75723ca1@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Hi Jakub,
+From: Aohan Mei <henrymei@tencent.com>
 
-On 09/09/2026 20:57, Jakub Kicinski wrote:
+rds_ib_cm_connect_complete() runs from the RDMA-CM event handler with
+conn->c_cm_lock held.  When the peer negotiates a protocol version
+older than RDS_PROTOCOL_COMPAT_VERSION, the handler calls
+rds_conn_destroy(), which is only safe in the rmmod path: it
+synchronously tears the connection down and flush_work()es the
+shutdown work cp_down_w.
 
-(...)
+That shutdown work (rds_conn_shutdown()) needs cp_cm_lock, which is
+the very lock the event handler still holds, so the flush never
+completes: the two workers wait on each other and the RDS connection
+workqueues stall for good.
 
-> At the same time I worry that *shikos are making it easier for our
-> maintainers to ignore the fundamental changes which AI brings to SW
-> engineering. IOW I'd like to encourage more local use and
-> experimentation.
+All other RDMA-CM failure paths (REJECTED, CONNECT_ERROR,
+DISCONNECTED) use rds_conn_drop(), which marks the connection
+RDS_CONN_ERROR and schedules the shutdown work asynchronously.  Use
+it here as well.
 
-As an individual, I'm not sure whether it's a good idea for me to
-support a local Clashiko myself. I would probably need to find
-more/dedicated funding for that :-/
+Fixes: f147dd9ecabf ("RDS/IB: Disallow connections less than RDS 3.1")
+Reported-by: TencentOS Corvus AI <corvus@tencent.com>
+Cc: stable@vger.kernel.org
+Assisted-by: CodeBuddy:Kimi-K3
+Reviewed-by: Allison Henderson <achender@kernel.org>
+Signed-off-by: Aohan Mei <henrymei@tencent.com>
+---
+v1 -> v2:
+- Point Fixes at f147dd9ecabf, which introduced the rds_conn_destroy()
+  call in the version check, instead of the later refactor cdc306a5c9cd
+  (Allison)
+- Add Allison's Reviewed-by
+- Link to v1: https://lore.kernel.org/netdev/20260908123356.1163970-1-henrymei@tencent.com/
 
-Cheers,
-Matt
+ net/rds/ib_cm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/net/rds/ib_cm.c b/net/rds/ib_cm.c
+index d46146887ba4..2909da8363f3 100644
+--- a/net/rds/ib_cm.c
++++ b/net/rds/ib_cm.c
+@@ -115,7 +115,7 @@ void rds_ib_cm_connect_complete(struct rds_connection *conn, struct rdma_cm_even
+ 				  &conn->c_laddr, &conn->c_faddr,
+ 				  RDS_PROTOCOL_MAJOR(conn->c_version),
+ 				  RDS_PROTOCOL_MINOR(conn->c_version));
+-			rds_conn_destroy(conn);
++			rds_conn_drop(conn);
+ 			return;
+ 		}
+ 	}
 -- 
-Sponsored by the NGI0 Core fund.
+2.43.7
 
