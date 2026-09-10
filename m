@@ -1,56 +1,56 @@
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com [209.85.160.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFFFC3368B0
-	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 20:46:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B0AE33F594
+	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 20:46:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789073183; cv=none; b=u+o3tWNlcOv6WyexFFO2O3FaEXWSgw8Hg5vlSbqsih2+E7N1EpjscD7OlnCLVpHX5WqgyaFqn4vCnX9NnjbxK8AeUOjmGYbS7T5iwXJuXnuezaJq16LawjvwN7lpst3DAmTZNFStliAp/WjbyI4Bt7KY7tapAkjlFcl6EnwhFGE=
+	t=1789073184; cv=none; b=Lwv8KdXfdsbmAL04hjfpHYoKFok55yBwJKv97gjE0dyk/zlfNU8QPEdIArPUrSut7GpcPy/i86PXDhzhKJonLgjD7WcYYJdtEfEbJEW3kxTlHBOuoOgEn+CRw74v/z+KQeerrPE7Qms64oKUod8nf2Arh53E5cTDmmX1xtPzBE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789073183; c=relaxed/simple;
-	bh=kmuSWd/1ydVs6OE9n/Y7WU5KlI6ep8yAK+V8OCRxJCc=;
+	s=arc-20240116; t=1789073184; c=relaxed/simple;
+	bh=n2nIYRqHBzHU+iwk0E4STJBtokRVeYdmeY9qxc6hZLo=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=tGb+/Tjini0jzoVXLrJN4MiQDfSCq3dkHYpWTAaI1O0hclkA+3QakNRCxAdsAXKiv1O7i6aX/lnkFwtXQceZChUVyYtjG1dbbg568IxgpvJuwL7cBlmNKaDEWOEWRp+wAPS/+firmsUDelEMPqM+m8GfnIRfwepfA1dafnXt3Iw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Fab9wptS; arc=none smtp.client-ip=209.85.222.198
+	 To:Cc:Content-Type; b=MkeQp+ofJYvIl4mE2moH0mQhm/pucX0rriofFyU4Fm4WhDe4T5iUJORD47I2SvneZN/o2uxHHbl6Ui3y5j7set+p/mS4NREdiU1hDasBttWEaBN0PIOJ9+NLmnQ6Y6T3SMiibe8UCw8+6eKvJQa4FMYfHfW6DYzQza2oip+Ob48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=g//1IXjN; arc=none smtp.client-ip=209.85.160.197
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Fab9wptS"
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-939c30aa9a0so11904385a.0
-        for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 13:46:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="g//1IXjN"
+Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-53062ec5b9bso4063691cf.2
+        for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 13:46:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789073181; x=1789677981; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1789073182; x=1789677982; darn=vger.kernel.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=3svSRuyti4kjFy8zqW0rCqlX3MYbsYaJDGRoFr520sU=;
-        b=Fab9wptSUtsW0g2gznX/IWXu8lEGHp0R6+AU7/6mT1Zfz386MzU1jT86oKuqvld5uj
-         EMtY0Me61zruFBmyWBV8zRwmQNfwpK1jTePfWcKCdpx8bglvsSIxBIeTgijfDEF+eX5V
-         RxUtweI+eiLXrtYHAPKrOtatFVi4amCMhdJpf/f9rB2gb7b1bJr6QUELE+86cGc50n8e
-         GIQ7n+x/eHsZkqpzPKRke76HjBR8ov9QdinrxdfZDr2IW4hXPdDcJr7K824IxHA9i+KJ
-         oOBSAT7vdb8vhyIWljUUzX2jx0TY9/h8jK4Y9ekT5Ji2rUPhmGcoyyX0KSlz8e6ok3bO
-         mQDA==
+        bh=0GgtuX3FrP77QmTVJJi4hjj9DUungu61kRSNpAReAFg=;
+        b=g//1IXjNPpx/cxgMRY07yXMDpSBBUoMkiQFzgOEHYSIse/T0ze9IUb+sOgq0L4JACk
+         ZrUzgN/nx7FM3BahqRN54B45qxCxIzAcrTXeyh41FvUdz4JJfxsTRTIMujLtKQfLaNt1
+         RUwtNqBObJvZXRH8ahF/iPh+VRKodURIZvcFAr5RI7/NPSAHZGDwGPIM51b/oEJPsBfa
+         e3PLa1JBGMEVXyYkZcRIf3iJz+p+24AW645ypEuAwJ0BsdOqRww9RszxSbFCRtqudx9W
+         Rz+CVIW14GcqlFzW832lpf9N3owSztLiJ/Rw49Xw988UmEX8DQdBO7mE6wEaDOC9xwpy
+         zycA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789073181; x=1789677981;
+        d=1e100.net; s=20251104; t=1789073182; x=1789677982;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=3svSRuyti4kjFy8zqW0rCqlX3MYbsYaJDGRoFr520sU=;
-        b=d5/TqKDlHRwQ0E91Oa5muncN3Ns8uhOtstUxSWORS1AeHLVZwD8N1oeWhf12bgvHVJ
-         CFGTz/4i9jb/IDTYDGbKq4b73NTRFj6uUeE4d/4n8QaJ7pVXsyZC003tCQc4B+EWwzdL
-         J3V499oIPmr10BHytJ6vh0vBVcpgOxf2/7jc9ha6mhbuIU/lQJnTVM/4H8a9g93mhtgS
-         1bpmZJpxY7UtvcPxWnrY2f8BXwFALz5rD41do01lq+7y10DRbTS0ASroTWuHutKS4jUq
-         RAYIUSaLShR2B4rDaY2W/6KecbkYLQqwL6BTmFbLRzR3w1i5C/wcfJ3WnYjnqlhlnB6F
-         S0cQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzlwkEeFO2scVKvIsxoUbu4j9wPjiXrqgLly7AEC2HKhPxDNpq6FpG66xK40NZF3afKxsfpq7g=@vger.kernel.org
-X-Gm-Message-State: AFuF++mvVwmvaM02uW0dosTSKFJ9qU4u59WozWnAP83wYBbnVWwvasGe
-	fGlfvG5c2/8kfZ/4nLFQJ9r76F/6Iz0tkt7wQFFwd2cdGitTlU+IbFPHRv1Cpu02qYt9c+kdRZg
-	XTGJyLq1r3ZnUtQ==
-X-Received: from qknvu12.prod.google.com ([2002:a05:620a:560c:b0:939:d2bb:5a1c])
+        bh=0GgtuX3FrP77QmTVJJi4hjj9DUungu61kRSNpAReAFg=;
+        b=Lrn9t5bML1tlfo14aeESpWfnTivG5NPXkTwoQO5EVA3bp4bbG1+jrzY1YCjUqXNd/w
+         4yJwzN6N3v+PjdVBmzkspG0IeAZkWGaIwuREwENTKegCPzXXvbAPca1mQ0e2/KruLMFC
+         tcgULjB8k9yXWACsiBskwQUtXa+aDUNuUV2jjBROQ5BfsLzntrQvhDpXGFHD0DMzzz6e
+         5oY5GEFdAuFsT+KKcUtqgVZ4v6xRKuKZtlXb32zYq2CZWFeaqCNMsOcEVD4w8nmBNKGK
+         QR8cxD2L4fx467xfDkTZgdTL7/q1/fwox0svhDoSdZdym7qaBmKaCoktQPCNrZsV4TF4
+         /RuQ==
+X-Forwarded-Encrypted: i=1; AKwUvBw3rq8L0Ak2cRaz2EiWkFE6v2Fkf9J+BbUZUlkev1jIDSGGvO8fhUl5Yug98m6h+cc3/fZ8+0g=@vger.kernel.org
+X-Gm-Message-State: AFuF++mpPzW41asoD9j1VDSsVYHjy2f/dXcNO3VXFkCyihfqSM9eARHm
+	LURhJcH38pXDIZaP9z3HrAzef8/X2j2znAS0EkmfaQP17CJvuoExckB+sTVUzCSoRst7bhopOnC
+	kWNArNK4I0nKN7Q==
+X-Received: from qtbif7.prod.google.com ([2002:a05:622a:6a07:b0:52b:721b:7c2a])
  (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:620a:2b8a:b0:939:c116:fdd4 with SMTP id af79cd13be357-939ea2045a8mr93980685a.31.1789073180529;
- Thu, 10 Sep 2026 13:46:20 -0700 (PDT)
-Date: Thu, 10 Sep 2026 20:46:11 +0000
+ 2002:a05:622a:4184:b0:51c:f3:34e3 with SMTP id d75a77b69052e-530c86fca9fmr18700941cf.28.1789073181940;
+ Thu, 10 Sep 2026 13:46:21 -0700 (PDT)
+Date: Thu, 10 Sep 2026 20:46:12 +0000
 In-Reply-To: <20260910204612.3762015-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -60,78 +60,61 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260910204612.3762015-1-edumazet@google.com>
 X-Mailer: git-send-email 2.55.0.1007.g17ff1f9808-goog
-Message-ID: <20260910204612.3762015-4-edumazet@google.com>
-Subject: [PATCH net 3/4] drop_monitor: use raw_cpu_ptr() in tracepoint probes
+Message-ID: <20260910204612.3762015-5-edumazet@google.com>
+Subject: [PATCH net 4/4] drop_monitor: fix out-of-bounds write in reset_per_cpu_data()
 From: Eric Dumazet <edumazet@google.com>
 To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
 	Paolo Abeni <pabeni@redhat.com>
 Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
-	Eric Dumazet <edumazet@google.com>, syzbot+dc57fd6722deb17e92af@syzkaller.appspotmail.com
+	Eric Dumazet <edumazet@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-syzbot reported a preemption warning in sk_skb_reason_drop():
+In reset_per_cpu_data(), al is computed as:
 
- BUG: using smp_processor_id() in preemptible [00000000] code: syz.0.17/5917
- caller is net_dm_packet_trace_kfree_skb_hit+0x119/0x350 net/core/drop_monitor.c:519
+    al = sizeof(struct net_dm_alert_msg);
+    al += dm_hit_limit * sizeof(struct net_dm_drop_point);
+    al += sizeof(struct nlattr);
 
-In net_dm_packet_trace_kfree_skb_hit(), data = this_cpu_ptr(&dm_cpu_data)
-is evaluated before spin_lock_irqsave(&data->drop_queue.lock, flags).
-When kfree_skb() is called from preemptible context (e.g. process context
-during close() on /dev/net/tun), preemption is enabled, triggering the
-CONFIG_DEBUG_PREEMPT warning in smp_processor_id().
+    skb = genlmsg_new(al, GFP_KERNEL);
+    ...
+    nla = nla_reserve(skb, NLA_UNSPEC, sizeof(struct net_dm_alert_msg));
+    ...
+    msg = nla_data(nla);
+    memset(msg, 0, al);
 
-The same pattern exists in net_dm_hw_trap_summary_probe() and
-net_dm_hw_trap_packet_probe() for dm_hw_cpu_data.
+Because al includes sizeof(struct nlattr) (the 4-byte attribute header),
+genlmsg_new() allocates al bytes of tailroom starting at nla.
+However, msg points to nla_data(nla), which is located
+sizeof(struct nlattr) bytes past nla. Calling memset(msg, 0, al)
+therefore writes al bytes starting from msg, exceeding the allocated
+buffer by sizeof(struct nlattr) (4 bytes) and corrupting
+skb_shared_info.
 
-This is a false positive because each per-cpu structure is protected
-by its own spinlock. If the task migrates to another CPU right after
-reading the per-cpu pointer, the lock still safely synchronizes
-access to that queue.
+Fix this by letting al represent only the payload length, allocating
+the skb with genlmsg_new(nla_total_size(al), GFP_KERNEL), and zeroing
+al bytes from msg.
 
-Use raw_cpu_ptr() instead of this_cpu_ptr() to silence
-CONFIG_DEBUG_PREEMPT without disturbing interrupt state or breaking
-PREEMPT_RT locking semantics.
-
-Fixes: ca30707dee2b ("drop_monitor: Add packet alert mode")
-Fixes: 5855357cd40e ("drop_monitor: Prepare probe functions for devlink tracepoint")
-Reported-by: syzbot+dc57fd6722deb17e92af@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/6aa316b2.f81106d8.2ab401.0014.GAE@google.com/
+Fixes: 683703a26e46 ("drop_monitor: Update netlink protocol to include netlink attribute header in alert message")
 Signed-off-by: Eric Dumazet <edumazet@google.com>
 ---
- net/core/drop_monitor.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/core/drop_monitor.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/net/core/drop_monitor.c b/net/core/drop_monitor.c
-index 873155ca72432924322bb7961996dd3430d052bc..795c15dd1771a2a5f15e109d0ef2eed967c45443 100644
+index 795c15dd1771a2a5f15e109d0ef2eed967c45443..edc660778408e1bb996124be5a5349dfc9be3568 100644
 --- a/net/core/drop_monitor.c
 +++ b/net/core/drop_monitor.c
-@@ -448,7 +448,7 @@ net_dm_hw_trap_summary_probe(void *ignore, const struct devlink *devlink,
- 	if (metadata->trap_type == DEVLINK_TRAP_TYPE_CONTROL)
- 		return;
+@@ -141,9 +141,8 @@ static struct sk_buff *reset_per_cpu_data(struct per_cpu_dm_data *data)
  
--	hw_data = this_cpu_ptr(&dm_hw_cpu_data);
-+	hw_data = raw_cpu_ptr(&dm_hw_cpu_data);
- 	raw_spin_lock_irqsave(&hw_data->lock, flags);
- 	hw_entries = hw_data->hw_entries;
+ 	al = sizeof(struct net_dm_alert_msg);
+ 	al += dm_hit_limit * sizeof(struct net_dm_drop_point);
+-	al += sizeof(struct nlattr);
  
-@@ -516,7 +516,7 @@ static void net_dm_packet_trace_kfree_skb_hit(void *ignore,
- 	 */
- 	nskb->tstamp = tstamp;
+-	skb = genlmsg_new(al, GFP_KERNEL);
++	skb = genlmsg_new(nla_total_size(al), GFP_KERNEL);
  
--	data = this_cpu_ptr(&dm_cpu_data);
-+	data = raw_cpu_ptr(&dm_cpu_data);
- 
- 	spin_lock_irqsave(&data->drop_queue.lock, flags);
- 	if (skb_queue_len(&data->drop_queue) < net_dm_queue_len)
-@@ -983,7 +983,7 @@ net_dm_hw_trap_packet_probe(void *ignore, const struct devlink *devlink,
- 	NET_DM_SKB_CB(nskb)->hw_metadata = n_hw_metadata;
- 	nskb->tstamp = tstamp;
- 
--	hw_data = this_cpu_ptr(&dm_hw_cpu_data);
-+	hw_data = raw_cpu_ptr(&dm_hw_cpu_data);
- 
- 	spin_lock_irqsave(&hw_data->drop_queue.lock, flags);
- 	if (skb_queue_len(&hw_data->drop_queue) < net_dm_queue_len)
+ 	if (!skb)
+ 		goto err;
 -- 
 2.55.0.1007.g17ff1f9808-goog
 
