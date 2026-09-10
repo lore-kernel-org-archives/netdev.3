@@ -1,74 +1,51 @@
-Received: from mail-oo2-f1.google.com (mail-oo2-f1.google.com [74.125.231.129])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E460C49F13A
-	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 14:35:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.129
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 943F2370AC7;
+	Thu, 10 Sep 2026 14:37:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789050929; cv=none; b=Y03cUzAqaDAZX9IhAS6TaaUGOutjfomGyQFFuRYg9Cd7edr2nyaLiUMxMWfia0oxvuH8vvXWqf/Jd81vESEdragEOYdZrmpIyBCWy/95o99H99yRxBpnXK/fACDc4ex+v5bFwdyFQflz+UMD70jTNcWBDBQurcpjo/l5YPe9TzA=
+	t=1789051031; cv=none; b=VbdTBFn0LRlQnhSNwCgL/p0YodnTShkEZNs1QgBD8rtkRgUCbL6rP6AN7h2CCxwr+wwkfaTmt2LaHeF+SKl4PANizCBc4LfZkWJfH15e50t1F7tELjiV/qy3A3cwHRYPAQPD6PjQKhTRtu8nr9XelN4OzTF7yatTkHs9lcgslCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789050929; c=relaxed/simple;
-	bh=CyifzT447RQSMV7VQEiAP9hRqT8Nwx5VAaXNeXf/IyQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Gk9hMNfwA/AV5PG7zXeuh5qPG2ZlT5No395umr6F89zBHC5u3R6+wLfEFIENaNg04VxzXO3pP7fFy80ukq1FDnJpGSTqR8xMEwu9NV5AwBzzpLWv3+uoMYwY+7P6oa46Cc1Qh339ybrCJcOOFhTgU3GwmPa50smrgdGp9ahWMdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GccFTWGZ; arc=none smtp.client-ip=74.125.231.129
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789051031; c=relaxed/simple;
+	bh=EypdHwRtm0sBpacY8hG4eXzqWQ1CbCxuTO8xmfryXiY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jSHNTKsQR91iI+OTVCmDyAZJ/xGHYQHZA5H9qLOEimSbH3neh9qfNnnQh5XksDFZQfFKmICctozsOhRbeu15XnOC4dLx9q+dh/sRz7SPswIK/F5aEZOdZtZm5M0aHwgu+fl+9+4XHIRQs6QWGkW48QFkUZHpsfB3XvWWN3WhzJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=f3lix.dev@gmx.de header.b=LP17A8iW; arc=none smtp.client-ip=212.227.15.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GccFTWGZ"
-Received: by mail-oo2-f1.google.com with SMTP id 006d021491bc7-6bc93a7858fso178587eaf.1
-        for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 07:35:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789050924; x=1789655724; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=HCxyZZz6rPXR8L8h/M0W+Attud1AE0FTUv/300p7CEs=;
-        b=GccFTWGZ4VTuDgeOAhWTn0va91qPrT2UuBETHKioePMyaRERdiA6ShklbVixAT50RV
-         Wcc3gEGp2+z3c7paXDJwYg95xaSzW/MO1TTjWLUdUoCjYCXY2jwHwowOkIUPs++QJgSs
-         HFMSFVEo3i999v3G6wQkgkvHNiFCc2qLI4QVeqpidC1QjLm3TpqSZtDJjSrizcqZqARi
-         qyDGFyV2xZZlI5FB+hXVaaOQQFH35YQ+6NnxGMOoYeV7vvqC5pbY8hosfxuzwPebmNbQ
-         nlIyfTzR61tRiJByMDNwI1AnAHPnwupS07M9uPX5zc+Ep1n5UayVkHiapXYDJFZhiOTU
-         SxFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789050924; x=1789655724;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=HCxyZZz6rPXR8L8h/M0W+Attud1AE0FTUv/300p7CEs=;
-        b=ErAZbM1qxJsyGk+O12kXchOXGBBZ89kzbI4DUQqFvXXcjskZQfrInO1CfoyxlCv6AN
-         McY7XYnouWQmlnKapcUnzq05/6P1A9JeG+iqeWAjlphyAaKFyFJLKnHdFCyrBCiVru7a
-         G4phoT46kuCHN4V7gyJ9o9rlAfu4jc4aBR5yRIXUZyNsj9ylJOBbl4+CSv5bT1g0UuTH
-         cqX8VLEjmAl5OThF+Wu4NhgwIxsTGHUEH0CzYOpck6QfjOBoYFJpl+BO9icUEElwfSU8
-         t4PoUOKHHtjMq2HSsYjjrgOZiKw1m/QdlZ1LR4zFou/qbcmgvRwmUICjhoksJaVUVClC
-         mMfw==
-X-Gm-Message-State: AFuF++nQlH6Pgpvu2+Sp9lbbLBPkKj0i3D1LUeADHzSRJyiFIniOkYY0
-	F+8ULUXOJl5tuNp/0/BqF10fAZp7iwsF5ssIapGx+3aqCeFKfObBpINHq38xCiEY
-X-Gm-Gg: AYBFou13Tpc+Q3RcRKwBAh2WIBa1BAVOIXUUO+Z4nMpyrcYezbPnUMRaxum7xPorquH
-	KXRqzUHwEJXQXbJhi3z80z/QwU6CfoTs9Tp0+ml8t30ICcCkHEt946Xo8fdzfi7Alx2EFFEJoom
-	mubb6e36FBUIRwFEAeYWu1vq3K3STX3KngbCdd+jO5wjd0xZOHgyUu8weyBryi/Joa2fJCGncvz
-	KXffOfDFY6sZAISuPxvR7eh5L4Y2bi/LkTms2zZexHBlLLHn4p1b965lcqnxujfgQ0wrlppVKL5
-	OSRDXeOXmCkICenNgZGBNK4E7eE2cAFBkF1B6yr641ijXssnTLPfBio6jOrT+N67X+Wc3NMh3lQ
-	LYGncCnPMt2VHoF/TARF08Y7S1XGnaoi1AVvP4KdciigkA2mXQdZhq0XxBe0FKdBHq6CAKS2u/W
-	P57DwCqsLP41SVTpkcmPgxFIeaWI+wFTsPdzwBEhFNeroflHCK5uGkpMw4E9dutIGMQDv8naKSO
-	z/foZw6ttGsw8TbJ1kY/PLlrixfz931Niih5rLwbJ2VcXzLrM07R8TL8GOfnigVbrBBGiuxub5G
-	vK1XYqLL4IZtcfOYZamE0UEoIGJvHvorP1QiexdtiuKQ/hMidGEoB5MQ7huCf0W2RU58+J8o8Nc
-	b+Q==
-X-Received: by 2002:a05:6820:3107:b0:6bf:5d5e:5403 with SMTP id 006d021491bc7-6bf5d5e6442mr2877845eaf.69.1789050924431;
-        Thu, 10 Sep 2026 07:35:24 -0700 (PDT)
-Received: from ethan-latitude5420.. (host-127-24.cafrjco.fresno.ca.us.clients.pavlovmedia.net. [68.180.127.24])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-143240d86c3sm47718384c88.0.2026.09.10.07.35.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Sep 2026 07:35:24 -0700 (PDT)
-From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Ethan Nelson-Moore <enelsonmoore@gmail.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=f3lix.dev@gmx.de header.b="LP17A8iW"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1789051022; x=1789655822; i=f3lix.dev@gmx.de;
+	bh=dbN+myIZeYzJ0MfMkjmxQTt29oibZ7TyvoKWBCqN4Ik=;
+	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:
+	 MIME-Version:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=LP17A8iWPeEx0Uj2DJ0jbF5cWcZPyGHar1cILXDPd8DW+ZJKgWaYKfBcw32glrmk
+	 uZIQGbUcCOJxopPjpPomInT5LdxfJaey4XtiCSYHm9Xa+gKLqxq3nfLcyBvDnXjQ5
+	 le69nBJJQAxuTAKKCGEMH2tkkrm16uSc/tCBwjcnxxis0Izh3glWARry8Ru890gBc
+	 4Gv3DCDXDryP3GL0SBe10wh98QHxEXViqQEAVgif5QEm0hei8KRwe1OTouMu81DoA
+	 t2yt6iKzgkV6feKTiAe5ZYpfbTQx8PyX/zXkxy9ow80sTMBsxegS7JOa826BTRQZT
+	 W+vvhien9AZcCg2/pQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from client.hidden.invalid by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MwfWa-1wswlw0jD0-00zXne; Thu, 10
+ Sep 2026 16:37:02 +0200
+From: Felix Hoffmann <f3lix.dev@gmx.de>
+To: netdev@vger.kernel.org,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH] drivers: net: smsc: Remove unused smc9194.h header
-Date: Thu, 10 Sep 2026 07:35:05 -0700
-Message-ID: <20260910143516.87304-1-enelsonmoore@gmail.com>
+Cc: Simon Horman <horms@kernel.org>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Mina Almasry <almasrymina@google.com>,
+	Kaiyuan Zhang <kaiyuanz@google.com>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net] net: devmem: fix TX binding UAF on netdevice unregister
+Date: Thu, 10 Sep 2026 16:36:52 +0200
+Message-ID: <20260910143652.166683-1-f3lix.dev@gmx.de>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -76,265 +53,281 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:GjHGMeHjxvl6130qkNEfdrhOyVB1z1sQ3E5/nUKGP0/1ZPEx9RF
+ h8xgSaaCaGeAOyUcUn3v2CHBC72P52rRPlaxdKZ9gNkRfb6YJxTEC3YhfkGoM6KLRYwh2Y1
+ FahPLGgd35x8Kh3Y/AFC9yQxdOwaaWIFrYlLCrytRp0hkaLNf0EL1VEkKuBP/5wiqilRUgz
+ OUFAwKhQ/pLrCuVQUv08A==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:GtKBP49dBtw=;4j+nPeHC5/R1eWe5fUUGVMcKdge
+ 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
+ 0bk7bXR0hZw7PqiFHfY53lCXwz9quW0whNg==
 
-The smc9194 driver was removed in commit 9fdf9f61fa6d ("drivers: net:
-smsc: smc9194: Remove this driver"), but smc9194.h was left behind.
-Remove it.
+RX dma-buf bindings are invalidated by their memory provider when a
+netdevice is unregistered. TX bindings have no bound RX queues and no
+equivalent uninstall callback, so their physical and virtual netdevice
+pointers remain live after the devices are freed.
 
-Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
----
- drivers/net/ethernet/smsc/smc9194.h | 241 ----------------------------
- 1 file changed, 241 deletions(-)
- delete mode 100644 drivers/net/ethernet/smsc/smc9194.h
+Closing the owning netlink socket after device removal then makes
+netdev_nl_sock_priv_destroy() dereference the freed physical netdevice to
+hold and lock it. KASAN reports a slab-use-after-free and the kernel can
+panic.
 
-diff --git a/drivers/net/ethernet/smsc/smc9194.h b/drivers/net/ethernet/smsc/smc9194.h
-deleted file mode 100644
-index cf69d0a5a1cb..000000000000
---- a/drivers/net/ethernet/smsc/smc9194.h
-+++ /dev/null
-@@ -1,241 +0,0 @@
--/*------------------------------------------------------------------------
-- . smc9194.h
-- . Copyright (C) 1996 by Erik Stahlman
-- .
-- . This software may be used and distributed according to the terms
-- . of the GNU General Public License, incorporated herein by reference.
-- .
-- . This file contains register information and access macros for
-- . the SMC91xxx chipset.
-- .
-- . Information contained in this file was obtained from the SMC91C94
-- . manual from SMC.  To get a copy, if you really want one, you can find
-- . information under www.smc.com in the components division.
-- . ( this thanks to advice from Donald Becker ).
-- .
-- . Authors
-- . 	Erik Stahlman				( erik@vt.edu )
-- .
-- . History
-- . 01/06/96		 Erik Stahlman   moved definitions here from main .c file
-- . 01/19/96		 Erik Stahlman	  polished this up some, and added better
-- .										  error handling
-- .
-- ---------------------------------------------------------------------------*/
--#ifndef _SMC9194_H_
--#define _SMC9194_H_
--
--/* I want some simple types */
--
--typedef unsigned char			byte;
--typedef unsigned short			word;
--typedef unsigned long int 		dword;
--
--
--/* Because of bank switching, the SMC91xxx uses only 16 I/O ports */
--
--#define SMC_IO_EXTENT	16
--
--
--/*---------------------------------------------------------------
-- .
-- . A description of the SMC registers is probably in order here,
-- . although for details, the SMC datasheet is invaluable.
-- .
-- . Basically, the chip has 4 banks of registers ( 0 to 3 ), which
-- . are accessed by writing a number into the BANK_SELECT register
-- . ( I also use a SMC_SELECT_BANK macro for this ).
-- .
-- . The banks are configured so that for most purposes, bank 2 is all
-- . that is needed for simple run time tasks.
-- -----------------------------------------------------------------------*/
--
--/*
-- . Bank Select Register:
-- .
-- .		yyyy yyyy 0000 00xx
-- .		xx 		= bank number
-- .		yyyy yyyy	= 0x33, for identification purposes.
--*/
--#define	BANK_SELECT		14
--
--/* BANK 0  */
--
--#define	TCR 		0    	/* transmit control register */
--#define TCR_ENABLE	0x0001	/* if this is 1, we can transmit */
--#define TCR_FDUPLX    	0x0800  /* receive packets sent out */
--#define TCR_STP_SQET	0x1000	/* stop transmitting if Signal quality error */
--#define	TCR_MON_CNS	0x0400	/* monitors the carrier status */
--#define	TCR_PAD_ENABLE	0x0080	/* pads short packets to 64 bytes */
--
--#define	TCR_CLEAR	0	/* do NOTHING */
--/* the normal settings for the TCR register : */
--/* QUESTION: do I want to enable padding of short packets ? */
--#define	TCR_NORMAL  	TCR_ENABLE
--
--
--#define EPH_STATUS	2
--#define ES_LINK_OK	0x4000	/* is the link integrity ok ? */
--
--#define	RCR		4
--#define RCR_SOFTRESET	0x8000 	/* resets the chip */
--#define	RCR_STRIP_CRC	0x200	/* strips CRC */
--#define RCR_ENABLE	0x100	/* IFF this is set, we can receive packets */
--#define RCR_ALMUL	0x4 	/* receive all multicast packets */
--#define	RCR_PROMISC	0x2	/* enable promiscuous mode */
--
--/* the normal settings for the RCR register : */
--#define	RCR_NORMAL	(RCR_STRIP_CRC | RCR_ENABLE)
--#define RCR_CLEAR	0x0		/* set it to a base state */
--
--#define	COUNTER		6
--#define	MIR		8
--#define	MCR		10
--/* 12 is reserved */
--
--/* BANK 1 */
--#define CONFIG			0
--#define CFG_AUI_SELECT	 	0x100
--#define	BASE			2
--#define	ADDR0			4
--#define	ADDR1			6
--#define	ADDR2			8
--#define	GENERAL			10
--#define	CONTROL			12
--#define	CTL_POWERDOWN		0x2000
--#define	CTL_LE_ENABLE		0x80
--#define	CTL_CR_ENABLE		0x40
--#define	CTL_TE_ENABLE		0x0020
--#define CTL_AUTO_RELEASE	0x0800
--#define	CTL_EPROM_ACCESS	0x0003 /* high if Eprom is being read */
--
--/* BANK 2 */
--#define MMU_CMD		0
--#define MC_BUSY		1	/* only readable bit in the register */
--#define MC_NOP		0
--#define	MC_ALLOC	0x20  	/* or with number of 256 byte packets */
--#define	MC_RESET	0x40
--#define	MC_REMOVE	0x60  	/* remove the current rx packet */
--#define MC_RELEASE  	0x80  	/* remove and release the current rx packet */
--#define MC_FREEPKT  	0xA0  	/* Release packet in PNR register */
--#define MC_ENQUEUE	0xC0 	/* Enqueue the packet for transmit */
--
--#define	PNR_ARR		2
--#define FIFO_PORTS	4
--
--#define FP_RXEMPTY  0x8000
--#define FP_TXEMPTY  0x80
--
--#define	POINTER		6
--#define PTR_READ	0x2000
--#define	PTR_RCV		0x8000
--#define	PTR_AUTOINC 	0x4000
--#define PTR_AUTO_INC	0x0040
--
--#define	DATA_1		8
--#define	DATA_2		10
--#define	INTERRUPT	12
--
--#define INT_MASK	13
--#define IM_RCV_INT	0x1
--#define	IM_TX_INT	0x2
--#define	IM_TX_EMPTY_INT	0x4
--#define	IM_ALLOC_INT	0x8
--#define	IM_RX_OVRN_INT	0x10
--#define	IM_EPH_INT	0x20
--#define	IM_ERCV_INT	0x40 /* not on SMC9192 */
--
--/* BANK 3 */
--#define	MULTICAST1	0
--#define	MULTICAST2	2
--#define	MULTICAST3	4
--#define	MULTICAST4	6
--#define	MGMT		8
--#define	REVISION	10 /* ( hi: chip id   low: rev # ) */
--
--
--/* this is NOT on SMC9192 */
--#define	ERCV		12
--
--#define CHIP_9190	3
--#define CHIP_9194	4
--#define CHIP_9195	5
--#define CHIP_91100	7
--
--static const char * chip_ids[ 15 ] =  {
--	NULL, NULL, NULL,
--	/* 3 */ "SMC91C90/91C92",
--	/* 4 */ "SMC91C94",
--	/* 5 */ "SMC91C95",
--	NULL,
--	/* 7 */ "SMC91C100",
--	/* 8 */ "SMC91C100FD",
--	NULL, NULL, NULL,
--	NULL, NULL, NULL};
--
--/*
-- . Transmit status bits
--*/
--#define TS_SUCCESS 0x0001
--#define TS_LOSTCAR 0x0400
--#define TS_LATCOL  0x0200
--#define TS_16COL   0x0010
--
--/*
-- . Receive status bits
--*/
--#define RS_ALGNERR	0x8000
--#define RS_BADCRC	0x2000
--#define RS_ODDFRAME	0x1000
--#define RS_TOOLONG	0x0800
--#define RS_TOOSHORT	0x0400
--#define RS_MULTICAST	0x0001
--#define RS_ERRORS	(RS_ALGNERR | RS_BADCRC | RS_TOOLONG | RS_TOOSHORT)
--
--static const char * interfaces[ 2 ] = { "TP", "AUI" };
--
--/*-------------------------------------------------------------------------
-- .  I define some macros to make it easier to do somewhat common
-- . or slightly complicated, repeated tasks.
-- --------------------------------------------------------------------------*/
--
--/* select a register bank, 0 to 3  */
--
--#define SMC_SELECT_BANK(x)  { outw( x, ioaddr + BANK_SELECT ); }
--
--/* define a small delay for the reset */
--#define SMC_DELAY() { inw( ioaddr + RCR );\
--			inw( ioaddr + RCR );\
--			inw( ioaddr + RCR );  }
--
--/* this enables an interrupt in the interrupt mask register */
--#define SMC_ENABLE_INT(x) {\
--		unsigned char mask;\
--		SMC_SELECT_BANK(2);\
--		mask = inb( ioaddr + INT_MASK );\
--		mask |= (x);\
--		outb( mask, ioaddr + INT_MASK ); \
--}
--
--/* this disables an interrupt from the interrupt mask register */
--
--#define SMC_DISABLE_INT(x) {\
--		unsigned char mask;\
--		SMC_SELECT_BANK(2);\
--		mask = inb( ioaddr + INT_MASK );\
--		mask &= ~(x);\
--		outb( mask, ioaddr + INT_MASK ); \
--}
--
--/*----------------------------------------------------------------------
-- . Define the interrupts that I want to receive from the card
-- .
-- . I want:
-- .  IM_EPH_INT, for nasty errors
-- .  IM_RCV_INT, for happy received packets
-- .  IM_RX_OVRN_INT, because I have to kick the receiver
-- --------------------------------------------------------------------------*/
--#define SMC_INTERRUPT_MASK   (IM_EPH_INT | IM_RX_OVRN_INT | IM_RCV_INT)
--
--#endif  /* _SMC_9194_H_ */
--
--- 
+The binding can also outlive the device used for its dma-buf attachment.
+Since dma_buf_attach() does not hold a reference to that device, deferred
+binding cleanup can pass a freed device to dma_buf_unmap_attachment().
+
+Invalidate TX bindings that refer to either the physical or virtual
+netdevice during unregister. Keep a reference on the exact DMA device
+until the attachment is unmapped. The netlink socket destructor then uses
+the existing device-gone path, while delayed dma-buf cleanup retains a
+valid DMA device.
+
+NETDEV_CMD_BIND_TX does not require GENL_ADMIN_PERM. The failure was
+reproduced with the binding owned by UID 65534 across module removal.
+
+Fixes: bd61848900bf ("net: devmem: Implement TX path")
+Cc: stable@vger.kernel.org
+Assisted-by: Codex:gpt-5
+Signed-off-by: Felix Hoffmann <f3lix.dev@gmx.de>
+=2D--
+The reproducer is available privately on request.
+
+Testing:
+- Full x86-64 kernel build with generic KASAN enabled
+- Unpatched kernel: UID 65534 bind, netdevice removal, and socket close
+  produced the reported KASAN use-after-free and panic
+- Patched kernel: the identical sequence completed without a KASAN report
+- Patched kernel: 10 additional bind, removal, and close iterations passed
+
+ net/core/dev.c    |  2 ++
+ net/core/devmem.c | 47 +++++++++++++++++++++++++++++++++++++++++++++--
+ net/core/devmem.h |  7 +++++++
+ 3 files changed, 54 insertions(+), 2 deletions(-)
+
+diff --git a/net/core/dev.c b/net/core/dev.c
+index ecfbd72d5d1a..c325fa7e0d6f 100644
+=2D-- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -12401,6 +12401,8 @@ static void dev_memory_provider_uninstall(struct n=
+et_device *dev)
+=20
+ 		__netif_mp_uninstall_rxq(rxq, &rxq->mp_params);
+ 	}
++
++	net_devmem_uninstall_tx_bindings(dev);
+ }
+=20
+ /* devices must be UP and netdev_lock()'d */
+diff --git a/net/core/devmem.c b/net/core/devmem.c
+index f4d60654ce7f..a21a8fe92f58 100644
+=2D-- a/net/core/devmem.c
++++ b/net/core/devmem.c
+@@ -77,6 +77,7 @@ void __net_devmem_dmabuf_binding_free(struct work_struct=
+ *wq)
+ 	dma_buf_unmap_attachment_unlocked(binding->attachment, binding->sgt,
+ 					  binding->direction);
+ 	dma_buf_detach(binding->dmabuf, binding->attachment);
++	put_device(binding->dma_dev);
+ 	dma_buf_put(binding->dmabuf);
+ 	xa_destroy(&binding->bound_rxqs);
+ 	percpu_ref_exit(&binding->ref);
+@@ -153,6 +154,46 @@ void net_devmem_unbind_dmabuf(struct net_devmem_dmabu=
+f_binding *binding)
+ 	percpu_ref_kill(&binding->ref);
+ }
+=20
++void net_devmem_uninstall_tx_bindings(struct net_device *dev)
++{
++	struct net_devmem_dmabuf_binding *binding;
++	struct net_devmem_dmabuf_binding *found;
++	unsigned long xa_idx;
++
++	/* Unlike RX bindings, TX bindings have no memory provider whose
++	 * uninstall callback can invalidate their net_device pointers.
++	 */
++again:
++	found =3D NULL;
++	rcu_read_lock();
++	xa_for_each(&net_devmem_dmabuf_bindings, xa_idx, binding) {
++		if (binding->direction !=3D DMA_TO_DEVICE ||
++		    (READ_ONCE(binding->dev) !=3D dev &&
++		     READ_ONCE(binding->vdev) !=3D dev))
++			continue;
++
++		if (!net_devmem_dmabuf_binding_get(binding))
++			continue;
++		found =3D binding;
++		break;
++	}
++	rcu_read_unlock();
++
++	if (!found)
++		return;
++
++	binding =3D found;
++	mutex_lock(&binding->lock);
++	if (binding->direction =3D=3D DMA_TO_DEVICE &&
++	    (binding->dev =3D=3D dev || binding->vdev =3D=3D dev)) {
++		WRITE_ONCE(binding->dev, NULL);
++		WRITE_ONCE(binding->vdev, NULL);
++	}
++	mutex_unlock(&binding->lock);
++	net_devmem_dmabuf_binding_put(binding);
++	goto again;
++}
++
+ int net_devmem_bind_dmabuf_to_queue(struct net_device *dev, u32 rxq_idx,
+ 				    struct net_devmem_dmabuf_binding *binding,
+ 				    struct netlink_ext_ack *extack)
+@@ -233,12 +274,13 @@ net_devmem_bind_dmabuf(struct net_device *dev, void =
+*vdev,
+=20
+ 	binding->dmabuf =3D dmabuf;
+ 	binding->direction =3D direction;
++	binding->dma_dev =3D get_device(dma_dev);
+=20
+ 	binding->attachment =3D dma_buf_attach(binding->dmabuf, dma_dev);
+ 	if (IS_ERR(binding->attachment)) {
+ 		err =3D PTR_ERR(binding->attachment);
+ 		NL_SET_ERR_MSG(extack, "Failed to bind dmabuf to device");
+-		goto err_exit_ref;
++		goto err_put_dma_dev;
+ 	}
+=20
+ 	binding->sgt =3D dma_buf_map_attachment_unlocked(binding->attachment,
+@@ -347,7 +389,8 @@ net_devmem_bind_dmabuf(struct net_device *dev, void *v=
+dev,
+ 					  direction);
+ err_detach:
+ 	dma_buf_detach(dmabuf, binding->attachment);
+-err_exit_ref:
++err_put_dma_dev:
++	put_device(binding->dma_dev);
+ 	percpu_ref_exit(&binding->ref);
+ err_free_binding:
+ 	kfree(binding);
+diff --git a/net/core/devmem.h b/net/core/devmem.h
+index 4a293a7d1149..a40f0a7c221f 100644
+=2D-- a/net/core/devmem.h
++++ b/net/core/devmem.h
+@@ -19,6 +19,8 @@ struct net_devmem_dmabuf_binding {
+ 	struct dma_buf *dmabuf;
+ 	struct dma_buf_attachment *attachment;
+ 	struct sg_table *sgt;
++	/* Device used to map the dma-buf. Held until the mapping is removed. */
++	struct device *dma_dev;
+ 	/* Physical NIC that does the actual DMA for this binding. */
+ 	struct net_device *dev;
+ 	/* Opaque cookie identifying the virtual device (e.g. netkit) the user
+@@ -100,6 +102,7 @@ net_devmem_bind_dmabuf(struct net_device *dev, void *v=
+dev,
+ 		       struct netlink_ext_ack *extack);
+ struct net_devmem_dmabuf_binding *net_devmem_lookup_dmabuf(u32 id);
+ void net_devmem_unbind_dmabuf(struct net_devmem_dmabuf_binding *binding);
++void net_devmem_uninstall_tx_bindings(struct net_device *dev);
+ int net_devmem_bind_dmabuf_to_queue(struct net_device *dev, u32 rxq_idx,
+ 				    struct net_devmem_dmabuf_binding *binding,
+ 				    struct netlink_ext_ack *extack);
+@@ -196,6 +199,10 @@ net_devmem_unbind_dmabuf(struct net_devmem_dmabuf_bin=
+ding *binding)
+ {
+ }
+=20
++static inline void net_devmem_uninstall_tx_bindings(struct net_device *de=
+v)
++{
++}
++
+ static inline int
+ net_devmem_bind_dmabuf_to_queue(struct net_device *dev, u32 rxq_idx,
+ 				struct net_devmem_dmabuf_binding *binding,
+=2D-=20
 2.43.0
-
