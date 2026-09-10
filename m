@@ -1,43 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4F222F6931;
-	Thu, 10 Sep 2026 23:42:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A7FD49E12D;
+	Thu, 10 Sep 2026 23:45:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789083769; cv=none; b=U0rLZaLib+OY1f1GXmVzuTZZ0EvzGOZ1i2Ud6S9ujANzyY3n4zIUfcHvzIxGmORQ8WjTQK7F6h1bL3sY62c09A+JfuxAFZCIsG5W4tS7EKQP/ViyQtaIDH5jYIuv7HP4bDvk/Rrd23fUCxa63e9jIN+ofmSgLUpVgdmwDhrczg4=
+	t=1789083960; cv=none; b=TvmVf3mOw9EUNWVnDXR2Lkw47u0zZg2JdIfqHyW5ImdW14MgRT3X+J//xksiHeR7P80RttGStNElTKnsUgTUwJj60k0zt079fKksxoAaWvXAQDU9GLUhg9nQ0ZZsVIlvlZlPG6U+ZNtEDpFEeeFyEKO/Ob0ADj8wafj2y6lyOuk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789083769; c=relaxed/simple;
-	bh=xcswte4ewv/xvWBl09UJfg7yTRZEMYJ3WY/F0d6IkWI=;
+	s=arc-20240116; t=1789083960; c=relaxed/simple;
+	bh=+O3CtQGxIg0Q+Qz5HT1B02PydpiyJL/I+yrSuVTj2Vg=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=iaPZGZ/wrimYOuClYBo25Pqn5E35P7Kzg78/X+uD+yDsofTVMkcvPNFKvOAlNRrGLSM2l/YLX0hMaWsmrHJ+Gl9QPzipJzniStfWyUoIm+R9EROZwuRZMntBvi6GluxjH6CyCFxK0e8U9sfUVtlErPPuHAFI6o23vdyZTqPp3AQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EMnsaHEC; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=QUx52dP/gQ8ktGBdQPoTbilGwntk2icvtJIcC+hP1P7l7zlPPy95MOmj3P1ppU4tL+/UhqXE9OmUKf1PPGS/DITmSHPEaxc+45f7j4sWbRfG2uuMytrdgsOs4+T7zbcaHdyhE2xAdSUX5s2U33IKU0dDlVLhzpWmK6B98cdnTLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O4XxoVV8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EMnsaHEC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E26871F000FF;
-	Thu, 10 Sep 2026 23:42:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O4XxoVV8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4C581F000FF;
+	Thu, 10 Sep 2026 23:45:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789083767;
-	bh=gfTHYjCqIdmdQU52NDcKZyuUq0X1Av+KkiPZAMIQR60=;
+	s=k20260515; t=1789083958;
+	bh=hIXlAmZhvd51LswZ7HvfeI0d4Z0o2ZTt1SJi9IxuaTo=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=EMnsaHECgBRHNpu9HOh+DE+dAvp+rDpXIzWqG83nhpyQyrv/P2Hy76ObAqPl+q9Zb
-	 4LOxD7pwU0PwmKZZowGfZmfgiHP4DQIHdaXq2ZdX5UubmQKjLRCgL9DEvAJk6bvBl8
-	 Pxj1fZ0T+crdkKo3yBeb8BysJaI98BFanA+xGbvstjdVjJFrWeHmQX68+KzjH/tQy3
-	 OeXyVnCywcElxdvgR8a9b545Rwa3wcfONXB+QZlRf1Sc9ozz3S0do5DPM1nox9lXfL
-	 31oPvih4ulmJzDsnecODYgjGzL9HbT/ZWGAXL3Wa3yQA2WXqlWfgEeFnW2vXsNFFSt
-	 n7qYSDU9qiJbw==
-Subject: Re: [PATCH net v2] ppp: enforce minimum MTU/MRU to fix Deflate buffer
- underflows
+	b=O4XxoVV8d7plkRZt1vihRfv/5KDKkZrqzVEZcDLggkRlggcTw7AJBl9IkZvNzS0P2
+	 0Eu4mUqlfAscLhvMbOY55IVRVaLqSssZt+3xQxJNFM9sLBHN0V/raW8ODWDdrUjXd2
+	 m7aXcfRTshjM6tNHGd7+wOGiREsWUJaXkrrPQ8r2zH5706Q4OmD61jM39vF6q9ezDV
+	 2+jLl2Xa5U0BMxxHRxgjT2eyMZxJ2MLwgQ2dFzDeoFYlwRuH4q5YK4xceCIXC7aXnt
+	 qzyT2lGmPvJJPfvliuCCV55qCxyXwlkPKEE2iFCfsiZ0b0lnYqZkwbIUoNNlnuG3XQ
+	 k2OdacV15jCuw==
+Subject:
+ Re: [PATCH net v4 1/7] net: stmmac: Remove VLAN perfect matching dead code
 From: netdev-bot+sashiko@kernel.org
-To: yilinzhang@moonshot.ai
-Cc: paulus@ozlabs.org, linux-ppp@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, bug-report@moonshot.ai, shiweiming@moonshot.ai,
- kuba@kernel.org
-Date: Thu, 10 Sep 2026 23:42:46 +0000
-Message-ID: <178908376638.219967.3762661642294542397@kernel.org>
-In-Reply-To: <20260908084116.634633-1-yilinzhang@moonshot.ai>
-References: <20260908084116.634633-1-yilinzhang@moonshot.ai>
-X-sashiko-severity: High
+To: ovidiu.panait.rb@renesas.com
+Cc: maxime.chevallier@bootlin.com, recv.jo@gmail.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com, shuah@kernel.org,
+ joabreu@synopsys.com, yi.fang.gan@intel.com, jun.ann.lai@intel.com,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kselftest@vger.kernel.org
+Date: Thu, 10 Sep 2026 23:45:57 +0000
+Message-ID: <178908395746.219967.12509019591003417803@kernel.org>
+In-Reply-To: <20260908164309.59282-2-ovidiu.panait.rb@renesas.com>
+References: <20260908164309.59282-2-ovidiu.panait.rb@renesas.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -50,159 +54,145 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider:
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 1
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
-- [High] The commit message asserts that setting dev->min_mtu = 128 and
-  rejecting MRU < 128 "ensures that the output buffer seen by…
-- [Low] The in-tree ABI description for PPPIOCSMRU was not updated for
-  the new validation.
+- [Medium] Incomplete removal: the two in-tree self-tests whose only
+  purpose was to exercise the deleted VLAN "perfect matching" fallback…
+- [Low] The commit carries `Fixes: c7ab0b8088d7 ("net: stmmac: Fallback
+  to VLAN Perfect filtering if HASH is not available")` while its own…
 
 --
 
-ppp: enforce minimum MTU/MRU to fix Deflate buffer underflows
+net: stmmac: Remove VLAN perfect matching dead code
 
-The patch sets the PPP netdevice minimum MTU to 128, rejects PPPIOCSMRU
-values below 128 (or large enough to overflow the allocation-size
-calculation), and takes a single MTU snapshot in pad_compress_skb() so the
-skb and compressor sizes cannot diverge.  The stated goal is that the
-output buffer handed to z_compress() and z_decompress() always covers the
-six-byte PPP/Deflate header so zlib's avail_out cannot wrap.
+This removes the "perfect matching" fallback that stmmac_vlan_update() used
+when priv->dma_cap.vlhash was clear, along with the perfect_match argument
+of the ->update_vlan_hash callback and the corresponding branches in
+vlan_update_hash() and dwxgmac2_update_vlan_hash().
 
-A couple of questions below.
+No Link: tags were present in the commit header.
 
-> diff --git a/drivers/net/ppp/ppp_generic.c b/drivers/net/ppp/ppp_generic.c
-> index 1a610a18893ba..402211768cf5f 100644
-> --- a/drivers/net/ppp/ppp_generic.c
-> +++ b/drivers/net/ppp/ppp_generic.c
-> @@ -72,6 +72,8 @@
->  
->  #define PPP_PROTO_LEN	2
->  #define PPP_LCP_HDRLEN	4
-> +#define PPP_MIN_MTU	128
-> +#define PPP_MIN_MRU	128
->  
->  /* The filter instructions generated by libpcap are constructed
->   * assuming a four-byte PPP header on each packet, where the last
-> @@ -808,6 +810,10 @@ static long ppp_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
->  	case PPPIOCSMRU:
->  		if (get_user(val, p))
->  			break;
-> +		if (val < PPP_MIN_MRU || val > INT_MAX - PPP_HDRLEN - 1) {
-> +			err = -EINVAL;
-> +			break;
-> +		}
+>     stmmac_vlan_update() falls back to "perfect matching" when the VLAN hash
+>     filter is unavailable (!priv->dma_cap.vlhash). This fallback has been
+>     unreachable in normal operation since its introduction in
+>     commit c7ab0b8088d7 ("net: stmmac: Fallback to VLAN Perfect filtering if
+>     HASH is not available") because the NETIF_F_HW_VLAN_{CTAG,STAG}_FILTER
+>     features are advertised only when priv->dma_cap.vlhash is true.
+>
+>     Fixes: c7ab0b8088d7 ("net: stmmac: Fallback to VLAN Perfect filtering if HASH is not available")
 
 [Severity: Low]
+Is the Fixes: tag intended here, given the message states the removed code
+"has been unreachable in normal operation since its introduction"?
 
-Documentation/networking/ppp_generic.rst still describes PPPIOCSMRU as an
-unconditional set:
+The unreachability claim does check out: NETIF_F_HW_VLAN_CTAG_FILTER and
+NETIF_F_HW_VLAN_STAG_FILTER are only set when priv->dma_cap.vlhash is true
+in stmmac_hw_init():
 
-  * PPPIOCSMRU sets the MRU (maximum receive unit) for the interface.
-    The argument should point to an int containing the new MRU value.
+	if (priv->dma_cap.vlhash) {
+		ndev->features |= NETIF_F_HW_VLAN_CTAG_FILTER;
+		ndev->features |= NETIF_F_HW_VLAN_STAG_FILTER;
+	}
 
-No range and no failure mode are documented, while the ioctl now returns
--EINVAL for val < PPP_MIN_MRU or val > INT_MAX - PPP_HDRLEN - 1.
+and the VLAN core only calls ndo_vlan_rx_add_vid/ndo_vlan_rx_kill_vid for
+devices advertising hardware filtering (vlan_hw_filter_capable() in
+net/8021q/vlan_core.c).
 
-Should the documentation be updated with the accepted range and the new
-error return?
+So no user-visible misbehaviour appears to be corrected, while the patch does
+change the ->update_vlan_hash signature in hwif.h, stmmac_main.c and
+stmmac_vlan.c. Would it be better to drop the Fixes: tag and target net-next,
+or alternatively describe a concretely reachable failure in the message?
 
-Both bounds are also private defines in ppp_generic.c, so userspace that
-includes include/uapi/linux/ppp-ioctl.h has no way to learn the minimum.
-Would exporting PPP_MIN_MRU in the uapi header be preferable?
-
->  		ppp_recv_lock(ppp);
->  		ppp->mru = val;
->  		ppp_recv_unlock(ppp);
-> @@ -1628,6 +1634,7 @@ static void ppp_setup(struct net_device *dev)
->  
->  	dev->hard_header_len = PPP_HDRLEN;
->  	dev->mtu = PPP_MRU;
-> +	dev->min_mtu = PPP_MIN_MTU;
-        ^^^^
-
-[Severity: High]
-
-The changelog says:
-
-  "This ensures that the output buffer seen by z_compress() and
-  z_decompress() always covers the PPP/Deflate header, so avail_out
-  cannot wrap."
-
-Does this hold on the transmit side?  z_compress() discards the
-caller-supplied output size before subtracting the header:
-
-drivers/net/ppp/ppp_deflate.c:z_compress() {
-	/* Don't generate compressed packets which are larger than
-	   the uncompressed packet. */
-	if (osize > isize)
-		osize = isize;
-	...
-	olen = PPP_HDRLEN + DEFLATE_OVHD;
-	state->strm.next_out = wptr;
-	state->strm.avail_out = oavail = osize - olen;
-}
-
-isize is pad_compress_skb()'s skb->len + 2, which does not depend on the
-MTU.  ppp_write() only enforces a two-byte minimum:
-
-drivers/net/ppp/ppp_generic.c:ppp_write() {
-	if (count < PPP_PROTO_LEN)
-		return -EINVAL;
-}
-
-and ppp_check_packet() applies the six-byte minimum only to PPP_LCP.  So a
-two-byte write of 0x00 0x21 on a unit fd with Deflate running reaches
-pad_compress_skb() with skb->len == 2, i.e. isize == 4:
-
-ppp_write() -> ppp_xmit_process() -> __ppp_xmit_process() ->
-ppp_prepare_tx_skb() -> pad_compress_skb() -> ppp->xcomp->compress()
-
-z_compress() then clamps osize to 4 and avail_out (a uInt) becomes
-4 - 6 == 0xfffffffe, which is the wrap the changelog says can no longer
-occur, and this happens at the default MTU as well as at the new minimum.
-zlib_deflate() only rejects avail_out == 0, so it proceeds with that bound.
-
-I could not turn this into an out-of-bounds write after the patch: the wrap
-is now only reachable when isize < 6, so avail_in is at most 3 and the few
-bytes deflate emits still land inside the >= 132-byte skb, and s->pending
-is drained by the discard iteration in z_compress() even with
-next_out == NULL.  So the corruption looks gone, but the invariant the fix
-is described as establishing does not exist.
-
-Would it be better to keep the callee-side check that v1 had, i.e. have
-z_compress() return 0 (or clamp) when osize < PPP_HDRLEN + DEFLATE_OVHD
-after the isize clamp, or have pad_compress_skb() enforce a minimum frame
-length?  Otherwise a compressor with a different comp_extra, an additional
-->compress caller, or a later lowering of min_mtu silently restores the
-unbounded avail_out.  Alternatively, could the changelog state that the
-wrap is only rendered harmless on transmit, and why?
-
-Note the receive side does look covered: z_decompress() uses the
-caller-supplied osize unclamped and rejects isize <= PPP_HDRLEN +
-DEFLATE_OVHD, so the new MRU floor does bound obuff_size there.
-
-Separately, nothing here records the new dependency between
-PPP_MIN_MTU/PPP_MIN_MRU and the six-byte PPP/Deflate header requirement
-that lives in ppp_deflate.c.  Could a comment or a BUILD_BUG_ON be added
-next to the new defines?
-
->  	dev->addr_len = 0;
->  	dev->tx_queue_len = 3;
->  	dev->type = ARPHRD_PPP;
-> @@ -1719,10 +1726,11 @@ pad_compress_skb(struct ppp *ppp, struct sk_buff *skb)
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> index 24656b35350b..24d64cce1d87 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> @@ -6816,29 +6816,18 @@ static u32 stmmac_vid_crc32_le(__le16 vid_le)
+>  static int stmmac_vlan_update(struct stmmac_priv *priv, bool is_double)
 >  {
->  	struct net_device *dev = netdev_from_priv(ppp);
->  	struct sk_buff *new_skb;
-> +	int mtu = READ_ONCE(dev->mtu);
->  	int len;
-> -	int new_skb_size = dev->mtu +
-> +	int new_skb_size = mtu +
->  		ppp->xcomp->comp_extra + dev->hard_header_len;
-> -	int compressor_skb_size = dev->mtu +
-> +	int compressor_skb_size = mtu +
->  		ppp->xcomp->comp_extra + PPP_HDRLEN;
+>  	u32 crc, hash = 0;
+> -	u16 pmatch = 0;
+> -	int count = 0;
+>  	u16 vid = 0;
 >  
->  	if (skb_linearize(skb))
+>  	for_each_set_bit(vid, priv->active_vlans, VLAN_N_VID) {
+>  		__le16 vid_le = cpu_to_le16(vid);
+>  		crc = bitrev32(~stmmac_vid_crc32_le(vid_le)) >> 28;
+>  		hash |= (1 << crc);
+> -		count++;
+> -	}
+> -
+> -	if (!priv->dma_cap.vlhash) {
+> -		if (count > 2) /* VID = 0 always passes filter */
+> -			return -EOPNOTSUPP;
+> -
+> -		pmatch = vid;
+> -		hash = 0;
+>  	}
+
+[Severity: Medium]
+Should the two self-tests that exist only to exercise this fallback be
+removed in the same patch?
+
+After this hunk, stmmac_vlan_update() no longer reads priv->dma_cap.vlhash,
+but stmmac_selftests.c still overrides the capability around the ordinary
+test bodies:
+
+stmmac_test_vlanfilt_perfect():
+	int ret, prev_cap = priv->dma_cap.vlhash;
+
+	if (!(priv->dev->features & NETIF_F_HW_VLAN_CTAG_FILTER))
+		return -EOPNOTSUPP;
+
+	priv->dma_cap.vlhash = 0;
+	ret = __stmmac_test_vlanfilt(priv);
+	priv->dma_cap.vlhash = prev_cap;
+
+stmmac_test_dvlanfilt_perfect() does the same around
+__stmmac_test_dvlanfilt().
+
+Since nothing under test inspects dma_cap.vlhash any more, do these two
+wrappers now behave exactly like stmmac_test_vlanfilt() and
+stmmac_test_dvlanfilt()?
+
+That would make the "VLAN Filtering (perf)" and "Double VLAN Filter (perf)"
+entries in stmmac_selftests[] report PASS from ethtool -t for a filtering
+mode the driver no longer implements, and they could never fail for the
+behaviour they name.
+
+Verified that both wrappers are still unchanged at the end of the series
+(bb70e68e6ebc), so this does not look like a later cleanup either.
+
+> @@ -184,20 +184,6 @@ static void vlan_update_hash(struct mac_device_info *hw, u32 hash,
+>  		}
+>  
+>  		writel(value, ioaddr + VLAN_TAG);
+> -	} else if (perfect_match) {
+> -		u32 value = VLAN_ETV;
+> -
+> -		if (is_double) {
+> -			value |= VLAN_EDVLP;
+> -			value |= VLAN_ESVL;
+> -			value |= VLAN_DOVLTC;
+> -		} else {
+> -			value &= ~VLAN_EDVLP;
+> -			value &= ~VLAN_ESVL;
+> -			value &= ~VLAN_DOVLTC;
+> -		}
+> -
+> -		writel(value | perfect_match, ioaddr + VLAN_TAG);
+>  	} else {
+>  		value &= ~(VLAN_VTHM | VLAN_ETV);
+>  		value &= ~(VLAN_EDVLP | VLAN_ESVL);
+
+With only the hash and no-hash branches left in vlan_update_hash() and in
+dwxgmac2_update_vlan_hash(), a nonzero hash always enables hash matching, so
+the "perf" self-tests end up programming the plain hash filter. Would
+dropping those two test functions and their stmmac_selftests[] entries (or
+re-pointing them at the vlan_add_hw_rx_fltr() path) be the right follow-up
+inside this patch?
+
+[ ... remaining hunks snipped ... ]
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260908084116.634633-1-yilinzhang%40moonshot.ai
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260908164309.59282-1-ovidiu.panait.rb%40renesas.com
