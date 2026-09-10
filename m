@@ -1,142 +1,109 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65E1C484254;
-	Thu, 10 Sep 2026 12:27:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3A1D47A87D;
+	Thu, 10 Sep 2026 12:28:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789043235; cv=none; b=Yw1Bv77QVBdJnhl7TN94nIvTNHQv3Y+Nc5jOnefG7GZaEYXhTmhJuSubEiOPcTdHkl0K6gZoiHwOtdzz94SrClmndaqlsyXG251kxrteYSxGcTdqTspb+Ujy0K9W8S4R6RxQr23GP1CVkh51gR4ISIpqdqeLpS1VbfAoBk/WfgU=
+	t=1789043302; cv=none; b=d6TEDt0PKgEOqS0CoJDW0OI9gMMIzr55LCzxj/rwGN8V0kewW6KSAR4vtOIBymEaYK66XJuoLLlWLSbYyBpq0OyyU4ne5z3QRuv/052p0iiQWWlbadU4ciIG8VtTaQIXFysQM2QzRSQkWbckuzA+GKwpjq0J27zL44AAUFGvd4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789043235; c=relaxed/simple;
-	bh=XS3EAcYLwnUqmUzTOvAWeHgJjnAcdWUI6NWrTs/TbEA=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=oBODWX9/2tIzhsu9yYJjjV0S6VoTngyDOdYGUh4bsRwLRARGd2V8o2sclsKD8ccpK3OuoHXTWqBtYqLlZE1lwFBY/hLsM7BqTCTnny/+/ImzK0GWdHNFIpyKd9wmmKgMVi1l4e3Sw2ydWFSt7fVRx/+OJZeI1j728GTbvpbjuxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OhcJenGP; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789043302; c=relaxed/simple;
+	bh=YwrlTOfmq6aUTUt5EId6n2iKhqmNEF8TYxy6EDMGv4I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gLHpSO1x12B6cZLOPE4iPdQKogq1RUEGiMcY0Qi6WszLLKDql0ACOY/LZ5nteO8qk2iI4MnqaG8xvvT2JXAQ0wU0nyOkcVyy4QIEpTG/efSsCP3nTNKaf7fcrV9FA4tk+pjQ6BVjh+ODGF+1SW3iW1C7o+I85z/7Nc25VVtytx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marmottus.net; spf=pass smtp.mailfrom=marmottus.net; dkim=pass (2048-bit key) header.d=marmottus.net header.i=@marmottus.net header.b=fbwKyVUi; arc=none smtp.client-ip=217.70.183.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marmottus.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marmottus.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OhcJenGP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C2651F00893;
-	Thu, 10 Sep 2026 12:27:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789043234;
-	bh=P95AAuvzBO6JOelDPVoR2QHaxFSlmbYkQZsPoZIqGYg=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=OhcJenGPLMmX5ZZSSrtNyL0Je/XWkutzzmdGVPNkygdjqPH+Jgy6VPktrNt8vVMIs
-	 QsCD9R2jF0f0a8IZqH5I/ebZq6K1W4M8x0xI4ZFZ/h5YpV1ZTrwai9wXgEKev19j3x
-	 HX5YAafSFqu0GCr+KrLtJD4Eq83/SWPybCYy0PYGqa7eiOuYTMCtUyL4atBWkc9p/D
-	 mhX8QM4vPbetsU9pLBs4I6IlWGBcoZnEbYpfIvPRHA9BB8nLk0HECvW4MuSPXQCxQK
-	 R+D3EztZ64nxGySswXz7uAXixJNykUIlweK1CyfSeEXi8Q7+8C0Z6KaJVOLSXYQSo2
-	 5j8K3GPr1ZQ9g==
-Subject: Re: [PATCH net-next v4 2/2] selftests/net/openvswitch: add SCTP NAT
- test with port translation
-From: netdev-bot+sashiko@kernel.org
-To: houminxi@gmail.com
-Cc: netdev@vger.kernel.org, aconole@redhat.com, echaudro@redhat.com,
- i.maximets@ovn.org, davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, shuah@kernel.org, dev@openvswitch.org,
- linux-kselftest@vger.kernel.org
-Date: Thu, 10 Sep 2026 12:27:12 +0000
-Message-ID: <178904323283.219967.9770445964877842050@kernel.org>
-In-Reply-To: <20260909122521.2687193-3-houminxi@gmail.com>
-References: <20260909122521.2687193-3-houminxi@gmail.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=marmottus.net header.i=@marmottus.net header.b="fbwKyVUi"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id A50A73EDAB;
+	Thu, 10 Sep 2026 12:28:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marmottus.net;
+	s=gm1; t=1789043291; h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=U+8DezIineMpZtEHwPmnloDqNAEHy6Vnit4n6vy2E94=;
+	b=fbwKyVUi7Yn4Tz0gfzQF3T3BHAMzDWeeP6HsaLZPs3k6/R+Yk9iiYyRDB4RGH3AozdBJg+
+	50zEP62YBk5onmvik+oWkTtNv1Q1exmifGw8jGoB2JU7tOL2gVimikK7LDYeU98ON5gT+q
+	WRGfQ4W7aD1WbwoXXD2QhXE8Eo4whTPvDKE7EZGELU57FimWEZxRXeFwhCmQsTNM45DXJq
+	Y9N5DyuEtZpk+p2ppUM0qGIesfE3Sfz9UqVeObl1f1rC7WLzELbT0Li0EnEdK4pLkBFYNn
+	8ff5ouhJckP+YzrxoFR8Hp16KLUzuzg3o89SDWjsW/kuD/RYAk4pJ0MZz6p1KQ==
+Date: Thu, 10 Sep 2026 14:28:08 +0200
+From: Arthur Crepin Leblond <arthur@marmottus.net>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, arnd@arndb.de, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	krzysztof.kozlowski@oss.qualcomm.com
+Subject: Re: [PATCH net-next v7 3/3] w5100: detect carrier state using link
+ status bit and optional interrupt
+Message-ID: <20260910122808.GA323870@marmottus.net>
+Reply-To: arthur@marmottus.net
+References: <20260904-wiznet-link-gpio-v7-3-69f01b70c96f@marmottus.net>
+ <178895754151.219967.10801079239966954315@kernel.org>
+ <013fffd2-6d59-4e99-8214-1377b1cb46bb@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <013fffd2-6d59-4e99-8214-1377b1cb46bb@redhat.com>
+X-GND-Sasl: arthur@marmottus.net
+X-GND-Score: -100
+X-GND-Cause: dmFkZTE8/LNvONxyr26IlVCblXefvKLibOxDPb8KL/YK2MQjtuilvNIZhhFvNJvg5y6h0Hx9E0bFQvu57VxFURK3mw56WtpwHHuAur38BTqPfv37MHw2P1zn+ABY+Q4vGh6XMEBIEqi0dW3m5aCdZJOLNBoRTYIYLnR8nnPVXNHPIpSLw1rDtROpu7tfqaTc5bsxhrZbYK8prDaJzlJwUzN2j82n98KmqixIZ5PvjI6uLzhZqHejHE2W8tr5IdTGVArCZU4sI9cNimiqo5+uOYWvSifWjTANpVgQ4Mw3hHzTK7p616zs60AHE62ydRnNBojKqjnEZHoQjruV0yI4+jd0tCXEfPqZdq9sIeLRbI8rVnPk+gkpwdgXBWZfXEjOIQeAA/ZJUsB/gMbkfRoR+/HzW8m8JF1/SJPBwuzbN0ofTAIgCRU2QPQIv1vwE0oZ5ClL3q2hqvOPjdcciRHS5ENTOps1OoDBcNWZWV0jh932FMOxhNJdXKbhlBOBo7jpqpIan0QMfkOHmZLctVmuNOOdGG1ngC8wjYL1BKLZW3RSFAjSazqM57Q1g07keGpJ0APb3seavM9mOmAYKVhW3vgde1bZ9c/8+tRctbO6Mnr32toowjbkQ7wahUHofi/jgF79eQYxVE9E4k4/X00Zm8pbkrmDTTz12KWtKwxvP/SpN2VMBg
+X-GND-State: clean
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider:
+On Thu, Sep 10, 2026 at 01:27:42PM +0200, Paolo Abeni wrote:
+>On 9/9/26 2:39 PM, netdev-bot+sashiko@kernel.org wrote:
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+Hi Paolo,
 
-- [Medium] tools/testing/selftests/net/openvswitch/config gains
-  CONFIG_NF_CT_PROTO_SCTP=y for the new test_sctp_nat_connect_v4 test…
+>> Thank you for your contribution! Sashiko AI review found 4 potential
+>> issue(s) to consider:
+>>
+>> Critical: 0 · High: 1 · Medium: 2 · Low: 1
+>>
+>> - [High] On w5500 the carrier state is now sampled exactly once per ifup
+>>   (and once per resume) from PHYCFGR, with no polling fallback and no…
+>
+>I read this one as 'with a bad config/devtree the eth could non functional'
+>which does look a big deal to me...
 
---
+Yeah I would also say so, wtihout an additional interrupt configured
+you cannot really get notified of the carrier state changes. Only
+.get_link is useful (and only for w5500).
 
-selftests/net/openvswitch: add SCTP NAT test with port translation
+But where Sashiko might be right is that the previous implementation
+was not calling netif_carrier_on/off on w5100_open and did not have
+.get_link set. So maybe .get_link should only be set on w5500 and
+netif_carrier_on/off called only if the link irq is set.
 
-Adds test_sctp_nat_connect_v4, which runs an SCTP association through a
-ct(commit,nat(dst=ip:port)) DNAT and matches the translated tuple after
-recirculation, plus CONFIG_NF_CT_PROTO_SCTP=y in the config fragment.
+>
+>> - [Medium] `w5500_get_phycfgr_lnk()` returns a tri-state value (<0 on
+>>   SPI/register read error, 0 link down, 1 link up), and its consumers…
+>> - [Medium] The carrier state is computed and published by two
+>>   unsynchronized contexts.
+>
+>... but the above 2 looks relevant to me. Note that ordering the irq
+>enabling and initial link detection is not enough, you need explicit
+>synchronization.
 
-> diff --git a/tools/testing/selftests/net/openvswitch/config b/tools/testing/selftests/net/openvswitch/config
-> index a825e0b5c88e..fa90475dc388 100644
-> --- a/tools/testing/selftests/net/openvswitch/config
-> +++ b/tools/testing/selftests/net/openvswitch/config
-> @@ -7,6 +7,7 @@ CONFIG_NET_IPGRE=m
->  CONFIG_NET_IPGRE_DEMUX=m
->  CONFIG_NF_CONNTRACK=m
->  CONFIG_NF_CONNTRACK_OVS=y
-> +CONFIG_NF_CT_PROTO_SCTP=y
->  CONFIG_OPENVSWITCH=m
->  CONFIG_PSAMPLE=m
->  CONFIG_VETH=y
+I'll try to use rtnl_lock.
 
-[Severity: Medium]
-Should this fragment also request CONFIG_NF_NAT=m (and
-CONFIG_NETFILTER_ADVANCED=y, which the changelog says the SCTP conntrack
-symbol needs)?
+>
+>Finally please note commit c82ff94592fb68f529afe63ca7f5ddb7dae4ba83, you
+>should explicitly handle sashiko's comments.
+>
+>/P
+>
 
-The new test's probe uses a nat() action, and net/openvswitch/Kconfig only
-has:
+Thank you for pointing this out, I'll address the AI reviews.
 
-	select NF_NAT_OVS if NF_NAT
-
-so it never turns NF_NAT on itself.  In net/netfilter/Kconfig, NF_NAT is:
-
-	config NF_NAT
-		tristate "Network Address Translation support"
-		depends on NF_CONNTRACK
-		default m if NETFILTER_ADVANCED=n
-
-With NETFILTER_ADVANCED=y and no iptables/nftables NAT option selected,
-NF_NAT ends up n, and in net/openvswitch/conntrack.c the nat attribute is
-compiled out:
-
-	#if IS_ENABLED(CONFIG_NF_NAT)
-			case OVS_CT_ATTR_NAT: {
-
-> diff --git a/tools/testing/selftests/net/openvswitch/openvswitch.sh b/tools/testing/selftests/net/openvswitch/openvswitch.sh
-> index 1160f8ed7d8a..138a705fc359 100755
-> --- a/tools/testing/selftests/net/openvswitch/openvswitch.sh
-> +++ b/tools/testing/selftests/net/openvswitch/openvswitch.sh
-
-[ ... ]
-
-> @@ -1199,6 +1200,98 @@ test_nat_connect_v4 () {
-
-[ ... ]
-
-> +	# Check if the ct and nat actions can be configured.
-> +	ovs_add_flow "test_sctp_nat_connect_v4" sctpnat4 \
-> +		'in_port(1),eth(),eth_type(0x0800),ipv4()' \
-> +		'ct(commit,nat(dst=172.31.110.20:5555)),recirc(0x1)' \
-> +		&> /dev/null
-> +	if [ $? == 1 ]; then
-> +		info "no support for ct/nat actions - skipping"
-> +		ovs_exit_sig
-> +		return $ksft_skip
-> +	fi
-
-[Severity: Medium]
-Following on from the config question above: when NF_NAT is n, does this
-probe in test_sctp_nat_connect_v4() always fail so the test permanently
-returns $ksft_skip?
-
-That would leave the SCTP arm of ovs_nat_update_key() with no coverage,
-which is the path the changelog says is currently unexercised, and the loss
-would be silent.  The existing test_nat_connect_v4() fails loudly instead:
-
-	ovs_sbx "test_nat_connect_v4" ip netns exec client ping -c 1 -W 1 \
-	    172.31.110.20 || return 1
-
-Would adding CONFIG_NF_NAT to the fragment keep this test running on the
-reference config?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260909122521.2687193-1-houminxi%40gmail.com
+Arthur
