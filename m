@@ -1,135 +1,177 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C68B5678C9
-	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 17:53:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A8D4568FBC;
+	Thu, 10 Sep 2026 18:00:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789062835; cv=none; b=DJ2kD6Y0xz0w/tpw1nJiMuWPfKfeRu6quvpHMP4027H0WZZ1qwWlNYshK8P2iNyMyGui/au8UcGL1i7smDpqr5pAt/caQJZcEv5WRAKlvEJEkwoV6jPezK2R567ZN7ERbBOqZ4CulUkkOlKbB7UEHd6cMs1G5F/ad9RUaNdegRI=
+	t=1789063238; cv=none; b=rm8Kf2ekF6Y2tjhikbWUFcFIdHLEu2OdMQsfoV+9BU8p5OXDZjHADOOgoWMCn0QT40QxDrNTs3xqv736Rs61J1BbH0hF6YnkKe0gRYqm6ZZegRAcr3rfZIwEMKc27+NWMwUpEQWd6ktHGZT6nUEzAIXnz3wgWQgsioTup+TALkI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789062835; c=relaxed/simple;
-	bh=OmmYDULCAhxxwCGfc8f2jli+oq6yQsGRKtNM6XN5Gvc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=X9Qxou4Eo8HKEjFB//I9NteUBowjjddmNS3yGjpZLCQIHfXzY4CIg7GLjOpLxlwIkr1umnMUOU4PSLqfvFDFKIOV3FlaGS0Xhzj5XW7FN/ksd6/O8RzJbkwLW57HwRvrcoa5XWwtPfvevwz08z4Y/sd5AdaalsHpYuJ4VgriXTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Fjmlwlgj; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1789063238; c=relaxed/simple;
+	bh=DeXoN6QhpkHY5+UPXooB4w6pY98CB3F68ATa1btubvA=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=HM5M3DsqvjTdMGL0baNjcuKTr8Y4nSplstfw8YM29kIdAwFQbyvdRBVOr22cPpSCkao4qKYJ32+yNG4nMsaEqxoQoYMZ97YlDNsXPttTuNFq7PKMBsI5PSqibcJYOHiOwIR92kf8lT7ahCkUBEzMLy2pfrmFez2pJVPJbEt17JE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jv9l/rSI; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Fjmlwlgj"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1789062824;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=RDSzcHCE05xPzjy6Xo6KC+PCiUblPrx84N5aVhq59vg=;
-	b=FjmlwlgjJTrWlkmw6Yqfn65E0ioxq1fW8iAn9YGijsWka6KlyEUH5gMOgW6OXtpEbNVzAl
-	xXxa5eUF5bXyuixiPflcn1RE6mr0g05kmBqPky/PJBLdwMIFlm5VwjAfAdmFsZkgXzTiWT
-	CZ8Bpg7cB9BUz3eF8pmQVge2aeyQwoA=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-599-AATMVXf4M0KWFKi0_kCiOA-1; Thu,
- 10 Sep 2026 13:53:41 -0400
-X-MC-Unique: AATMVXf4M0KWFKi0_kCiOA-1
-X-Mimecast-MFC-AGG-ID: AATMVXf4M0KWFKi0_kCiOA_1789062820
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4105A195DBAC;
-	Thu, 10 Sep 2026 17:53:19 +0000 (UTC)
-Received: from x2.localnet (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id AC32C180034F;
-	Thu, 10 Sep 2026 17:53:17 +0000 (UTC)
-From: Steve Grubb <sgrubb@redhat.com>
-To: netdev@vger.kernel.org
-Cc: edumazet@google.com, kuniyu@google.com, pabeni@redhat.com,
- willemb@google.com, davem@davemloft.net, kuba@kernel.org, horms@kernel.org,
- shuah@kernel.org
-Subject: [PATCH net 1/1] net: preserve socketpair output on setup failure
-Date: Thu, 10 Sep 2026 13:53:15 -0400
-Message-ID: <JyK226D0S5CWGUpAC4MO4A@redhat.com>
-Organization: Red Hat
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jv9l/rSI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F15411F000FF;
+	Thu, 10 Sep 2026 18:00:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789063236;
+	bh=yXrVFHMenVTbXY0cN3vc0dA1QSUOVSHxV+UNmG/7P+M=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=Jv9l/rSICWAUk1BxZpUG1AUK2auAoG/BwIaQlelHR0qcZuN4y7xBIKLZhtFYCRMRV
+	 VFyuuztx4Sznk5E/T5lGp+1POFe6JSU6IlX0jMof3N0WgqeF0qqZDoNSLofLHlCTWc
+	 skXWEfGDel33/Nlf93elKPX7BfOYsrt0gtZgaJPPhGelN+N/sTt6La08NIIsm0Hzkp
+	 aF7jJNj7qMjkiSDLiCJAC4gBFRjECTHoeGXuxMB2Z4SjNne+3XAquDufFequ4KbQyT
+	 HIRcCMqhRwQTGpuxRHS4yBxuNMfvFuYk8ixozBJq8hr/NBQJ8f/pzCILXZHm2DJF2X
+	 xHLU9Vq1SQPdA==
+Subject: Re: [PATCH net-next v2] selftests: net: add ctl_file_write() helper
+From: netdev-bot+sashiko@kernel.org
+To: kuba@kernel.org
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
+ bobbyeshleman@gmail.com, shuah@kernel.org, cjubran@nvidia.com,
+ cratiu@nvidia.com, noren@nvidia.com, willemb@google.com, petrm@nvidia.com,
+ linux-kselftest@vger.kernel.org
+Date: Thu, 10 Sep 2026 18:00:35 +0000
+Message-ID: <178906323551.219967.4707818781145133711@kernel.org>
+In-Reply-To: <20260909180009.1894019-1-kuba@kernel.org>
+References: <20260909180009.1894019-1-kuba@kernel.org>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-socketpair() writes the reserved descriptor numbers to userspace before
-creating the sockets and their file objects. A later failure therefore
-leaves a modified caller's array despite returning an error, contrary to
-POSIX. For example, socketpair(AF_UNIX, SOCK_STREAM, -1, fd) returns
-EPROTONOSUPPORT but replaces the array's sentinel values with unused fd
-numbers.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider:
 
-Defer the output stores until both file objects have been created, before
-installing either descriptor. If a store faults, drop both file references
-before releasing the reserved descriptor slots. Keep the early descriptor
-reservation and the existing setup-failure cleanup paths.
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-In practice, I doubt anyone notices. But this aligns with the expected
-behavior
+- [Medium] In `setup_vf()`
+  (tools/testing/selftests/drivers/net/hw/devlink_rate_tc_bw.py:110-118)…
 
-Signed-off-by: Steve Grubb <sgrubb@redhat.com>
----
- net/socket.c | 23 +++++++++++------------
- 1 file changed, 11 insertions(+), 12 deletions(-)
+--
 
-diff --git a/net/socket.c b/net/socket.c
-index c05d86e63abf..4cb8662869f0 100644
---- a/net/socket.c
-+++ b/net/socket.c
-@@ -1851,10 +1851,7 @@ int __sys_socketpair(int family, int type, int protocol, int __user *usockvec)
- 	if (SOCK_NONBLOCK != O_NONBLOCK && (flags & SOCK_NONBLOCK))
- 		flags = (flags & ~SOCK_NONBLOCK) | O_NONBLOCK;
- 
--	/*
--	 * reserve descriptors and make sure we won't fail
--	 * to return them to userland.
--	 */
-+	/* Reserve both descriptors before creating the sockets. */
- 	fd1 = get_unused_fd_flags(flags);
- 	if (unlikely(fd1 < 0))
- 		return fd1;
-@@ -1865,14 +1862,6 @@ int __sys_socketpair(int family, int type, int protocol, int __user *usockvec)
- 		return fd2;
- 	}
- 
--	err = put_user(fd1, &usockvec[0]);
--	if (err)
--		goto out;
--
--	err = put_user(fd2, &usockvec[1]);
--	if (err)
--		goto out;
--
- 	/*
- 	 * Obtain the first socket and check if the underlying protocol
- 	 * supports the socketpair call.
-@@ -1916,6 +1905,16 @@ int __sys_socketpair(int family, int type, int protocol, int __user *usockvec)
- 		goto out;
- 	}
- 
-+	/* Publish the descriptors now that it shouldn't fail. */
-+	err = put_user(fd1, &usockvec[0]);
-+	if (!err)
-+		err = put_user(fd2, &usockvec[1]);
-+	if (err) {
-+		fput(newfile2);
-+		fput(newfile1);
-+		goto out;
-+	}
-+
- 	audit_fd_pair(fd1, fd2);
- 
- 	fd_install(fd1, newfile1);
+selftests: net: add ctl_file_write() helper
+
+This adds a ctl_file_write() helper to the net selftest python library which
+writes a value to a sysctl/sysfs/configfs file and defers restoring the old
+value, and converts several open coded versions of the same pattern in
+gro_lib.py, devlink_rate_tc_bw.py, toeplitz.py and ring_reconfig.py to use it.
+
+> diff --git a/tools/testing/selftests/drivers/net/hw/devlink_rate_tc_bw.py b/tools/testing/selftests/drivers/net/hw/devlink_rate_tc_bw.py
+> index 4e4faa9275bb..38d712755257 100755
+> --- a/tools/testing/selftests/drivers/net/hw/devlink_rate_tc_bw.py
+> +++ b/tools/testing/selftests/drivers/net/hw/devlink_rate_tc_bw.py
+
+[ ... ]
+
+> @@ -113,8 +113,7 @@ def setup_vf(cfg, set_tc_mapping=True):
+>      except Exception as exc:
+>          raise KsftSkipEx(f"Failed to enable switchdev mode on {cfg.pci}") from exc
+>      try:
+> -        cmd(f"echo 1 > /sys/class/net/{cfg.ifname}/device/sriov_numvfs", shell=True)
+> -        defer(cmd, f"echo 0 > /sys/class/net/{cfg.ifname}/device/sriov_numvfs", shell=True)
+> +        ctl_file_write(f"/sys/class/net/{cfg.ifname}/device/sriov_numvfs", 1)
+>      except Exception as exc:
+>          raise KsftSkipEx(f"Failed to enable SR-IOV on {cfg.ifname}") from exc
+
+[Severity: Medium]
+Is sriov_numvfs a good fit for the "skip the write if the value is already
+set" semantics?
+
+If the interface already has one VF enabled when setup_vf() runs,
+ctl_file_write() takes the early return:
+
+tools/testing/selftests/net/lib/py/utils.py:ctl_file_write() {
+    with open(path, "r", encoding="utf-8") as fp:
+        old = fp.read().strip()
+    if old == str(val):
+        return
+    ...
+}
+
+so no defer is queued and the VF is never destroyed at the end of the test.
+The previous code wrote 1 unconditionally, and the kernel accepts that write
+even when the count already matches:
+
+drivers/pci/iov.c:sriov_numvfs_store() {
+	...
+	if (num_vfs == pdev->sriov->num_VFs)
+		goto exit;
+	...
+}
+
+so the "echo 0" teardown was always armed.
+
+Does the VF teardown matter for anything besides the VF itself here?
+setup_vlans_on_vf() registers no defers of its own:
+
+tools/testing/selftests/drivers/net/hw/devlink_rate_tc_bw.py:setup_vlans_on_vf() {
+    for config in vlan_configs:
+        vlan_dev = f"{vf_ifc}.{config['vlan_id']}"
+        ip(f"link add link {vf_ifc} name {vlan_dev} type vlan id {config['vlan_id']}")
+        ip(f"addr add {config['ip']}/29 dev {vlan_dev}")
+        ...
+}
+
+and setup_vf() itself adds "tc qdisc add dev {vf_ifc} root handle 5 mqprio"
+with no defer, while setup_devlink_rate() programs rate-tx-max/rate-tc-bws on
+the VF port with no defer. Those all used to disappear together with the VF.
+
+With the VF surviving, does the second and every later test case in the run
+fail when setup_test_environment() re-runs setup_vlans_on_vf() and
+"ip link add link <vf> name <vf>.101 type vlan id 101" hits "File exists"?
+The VF would also be left carrying the 125 Mbps tx_max rate limit and the
+mqprio qdisc for unrelated later tests.
+
+This state is reachable on a host where an admin pre-enabled one VF, and also
+after any earlier run of this same test that was killed or timed out before
+its defer queue drained.
+
+One option would be to keep the explicit write plus defer here, since this
+attribute instantiates a device rather than holding a tunable value.
+
+[ ... ]
+
+> diff --git a/tools/testing/selftests/net/lib/py/utils.py b/tools/testing/selftests/net/lib/py/utils.py
+> index 184bb04343f6..1727bc418073 100644
+> --- a/tools/testing/selftests/net/lib/py/utils.py
+> +++ b/tools/testing/selftests/net/lib/py/utils.py
+> @@ -357,6 +357,28 @@ def wait_port_listen(port, proto="tcp", ns=None, host=None, sleep=0.005, deadlin
+>          time.sleep(sleep)
+>  
+>  
+> +def _ctl_file_write(path, val):
+> +    with open(path, "w", encoding="utf-8") as fp:
+> +        fp.write(str(val))
+> +
+> +
+> +def ctl_file_write(path, val):
+> +    """
+> +    Write @val to a control file - a sysctl, a sysfs attribute, configfs...
+> +    and defer() restoring the old value, so needs a defer queue.
+> +
+> +    Writing a value which is already set is skipped, there is nothing
+> +    to restore in that case.
+> +    """
+> +    with open(path, "r", encoding="utf-8") as fp:
+> +        old = fp.read().strip()
+> +    if old == str(val):
+> +        return
+> +
+> +    _ctl_file_write(path, val)
+> +    defer(_ctl_file_write, path, old)
+
+Would it be worth documenting in this docstring that the skip makes the
+helper unsuitable for attributes whose write has a side effect beyond the
+value, such as sriov_numvfs creating and destroying VF devices?
+
 -- 
-2.55.0
-
-
-
-
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260909180009.1894019-1-kuba%40kernel.org
