@@ -1,566 +1,275 @@
-Received: from sender6-op-o12.zoho.com (sender6-op-o12.zoho.com [165.173.180.12])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C11A55D866;
-	Thu, 10 Sep 2026 18:22:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=165.173.180.12
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789064572; cv=pass; b=elOFnxt7VTd2YUGMSfrUy2GcCZ1AfW7veARZXE9kmLAuoLqUdjNJDRskFvXtBcfdxtwbkEzJ3idlpZDytK81nCZOE74pMvZAHH3sFhfHoQa4+vRp2B0wKMxN3fVYY5oyOXW+aYSNyz3znGQKMKhkIq0s76YO1T5GNKbDZ9rCv+U=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789064572; c=relaxed/simple;
-	bh=s6TAq6tZAe5Iy03lsRkZhtIpcRXvlBCzOMuGnnn79FA=;
-	h=Message-ID:Subject:From:To:Cc:In-Reply-To:References:Content-Type:
-	 Date:MIME-Version; b=MGpMH3ylMz4xjwfla8c31CKvVcNxA4PMJegL0FnSz9y6R8ux1MgPDBXrBoQhrU4td/9zRblVnI322FZQ5Jlvn95I2WoTJxEbo/u8AZZHO+utFpeUhng89tx/UysNMrM8Tot89u7xXX/+SOBDAPUybaIAXLdO7nGm3sod1gieOHY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rong.moe; spf=pass smtp.mailfrom=rong.moe; dkim=pass (2048-bit key) header.d=rong.moe header.i=i@rong.moe header.b=HTLdGj4n; arc=pass smtp.client-ip=165.173.180.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rong.moe
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rong.moe
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46F493B1035
+	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 18:32:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789065163; cv=none; b=G3n+5SUFdXCNPwrb9LxH7DlXf/ESeZS+YDpeunNANfWsXkf2JgV0WUVst5gizZZvWhsdKc1AzQDgQa0kdyVVCNUYNs8vQYJTy3mNMOJvD71R6iFH4LXyaeye/ev1bC9VgbkorYKCH1KRNjGSNLseBbAN+VHSkmleTa+8MWaAQN4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789065163; c=relaxed/simple;
+	bh=PI7uGsrqYBml1yQ62BeBmR0W34Xd1twYSjkMHlzDzmQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=RC7DsR0wayZxZMC9dQI4e4A+DZn7vTaEh2jv4wsqWkD7Pw2lajTvUJFnYbnpLwCuVQCqNs8At9ZNry4BZtS7F5bjWUuIQT3iJLUGCXGJCbzzxr8hmdXghzVRLoqIKOPng1CwSEQjibdshjC2SDD2x64RbIZwPuppIsBUw+mQn10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bAPQBPfl; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=WH73my5T; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rong.moe header.i=i@rong.moe header.b="HTLdGj4n"
-ARC-Seal: i=1; a=rsa-sha256; t=1789064543; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=cit1RrELEv2NaJW3wBmLWanSVLvJDjkzUcEvYBykxBLjsiDTasa0TAplepU4y5/jdw/WF2zA6J490Sg00Y9gxU4+GNDrUVefjvnLXNK5o5xXjy0q4Bi7/QnUQH2P9aeo9MifJinN93SXicUYYR+cVwLho7jxEOr6gYkdTjviylM=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1789064543; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=ZmCjMTaiDn5377nlajvOBsqnIM1xWRVBKt/5Bd0oh9Y=; 
-	b=fR/ho3s6U77QJI6ZPF/UsoiqYOBWDlFJVPhry6ztFrzdNnSlDY1/GxEa/oNxLVWV3r4/bQ6uZT3rBq4/t5JPRRbtXtusyfzJm/j9AVc7+uZRO0mDvTQ/KrU8C9dlN5MP69W3EB6btiCxflAtxz8S+mty6wK19h8hBPzHOk4syhA=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=rong.moe;
-	spf=pass  smtp.mailfrom=i@rong.moe;
-	dmarc=pass header.from=<i@rong.moe>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1789064543;
-	s=zmail2048; d=rong.moe; i=i@rong.moe;
-	h=Message-ID:Subject:Subject:From:From:To:To:Cc:Cc:In-Reply-To:Content-Type:Content-Transfer-Encoding:Date:Date:MIME-Version:Message-Id:Reply-To;
-	bh=ZmCjMTaiDn5377nlajvOBsqnIM1xWRVBKt/5Bd0oh9Y=;
-	b=HTLdGj4ntSk86nZDBgeeOkItjVPaUrlfQZjUqcacnW9b/CULP41zp1Fdbop0CoSp
-	oAMJfqn5VMdB/hkDy2YyNH8cwDrm+crr843NWl/ptfAEv0Q7g0gOCPxpF7N/yywKJRt
-	wUoEUyfn3UPKRPsQS2oPQjZZJGOW4OgFoK3Ao4X1zcrDZptXeH3DgDbipehlZ3X7rDs
-	xahLao0GsF0/PMAlehZT03IIz/Y8ybfwKV6NL7WqPABftn0sAKnVjiBSNCrUJogv7ob
-	702zW7+I5jbzl7d7XjEZSeMTYa8mO6cBuI8bWVjUqAYlXmJ7uc/Sb0ffuzSbz0hek0u
-	565agKMRjA==
-Received: by mx.zohomail.com with SMTPS id 1789064542542466.8267106033461;
-	Thu, 10 Sep 2026 11:22:22 -0700 (PDT)
-Message-ID: <6745f76a53b1b36ea4354dbd6a4900793ee8108a.camel@rong.moe>
-Subject: Re: [PATCH v6 09/12] leds: trigger: Add
- led_trigger_notify_hw_control_changed() interface
-From: Rong Zhang <i@rong.moe>
-To: Lee Jones <lee@kernel.org>
-Cc: Pavel Machek <pavel@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>, Thomas =?ISO-8859-1?Q?Wei=DFschuh?=
- <linux@weissschuh.net>,  Benson Leung <bleung@chromium.org>, Guenter Roeck
- <groeck@chromium.org>, Marek =?ISO-8859-1?Q?Beh=FAn?=	 <kabel@kernel.org>,
- Mark Pearson <mpearson-lenovo@squebb.ca>, "Derek J. Clark"	
- <derekjohn.clark@gmail.com>, Hans de Goede <hansg@kernel.org>, Ilpo
- =?ISO-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>, Ike Panhc
- <ikepanhc@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, Jakub Kicinski
- <kuba@kernel.org>, Vishnu Sankar <vishnuocv@gmail.com>, Vishnu Sankar
- <vsankar@lenovo.com>, 	linux-leds@vger.kernel.org, netdev@vger.kernel.org,
- linux-doc@vger.kernel.org, 	linux-kernel@vger.kernel.org,
- chrome-platform@lists.linux.dev, 	platform-driver-x86@vger.kernel.org
-In-Reply-To: <20260910154506.GH1051768@google.com>
-References: <20260902-leds-trigger-hw-changed-v6-0-55693cd78877@rong.moe>
-	 <20260902-leds-trigger-hw-changed-v6-9-55693cd78877@rong.moe>
-	 <20260910154506.GH1051768@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 11 Sep 2026 02:17:15 +0800
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bAPQBPfl";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="WH73my5T"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1789065155;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dpWhO6z/1eXUTTgA/H9eXGVtX0eq8vp4A6ySs0zyK0c=;
+	b=bAPQBPflQ6lDt2SR2n/pONTIUYov1eEEEyas/q5t5O2qmU/nqs1hsdUqfxVe0ZZwe79WSH
+	p3qMPD1zlmaZCh5BFWDBo2RPKwfPhIwW3A6Ib8A7g5FQ2bpM0gvTApsClK4NwW5ajOzJu5
+	B7KgmYXa6lntHGiJAWpA+L2E3nlK44Q=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-58-G6KQVbL8O4Ow-VeyX9eHww-1; Thu, 10 Sep 2026 14:32:34 -0400
+X-MC-Unique: G6KQVbL8O4Ow-VeyX9eHww-1
+X-Mimecast-MFC-AGG-ID: G6KQVbL8O4Ow-VeyX9eHww_1789065153
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-49d156c917cso8048155e9.1
+        for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 11:32:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1789065153; x=1789669953; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=dpWhO6z/1eXUTTgA/H9eXGVtX0eq8vp4A6ySs0zyK0c=;
+        b=WH73my5TrNFumBPYszXMFqj3qQE+a/7rwiHVfWW7WHa0IoW7FiLdmmEhClKjvgGYJf
+         05Jvomo3PPUqqqSPMLISQmHvm3NcgsBzYHj+XkXSA4OdXPVP9un7J8T9sGbEuLHVTEqP
+         5Iavtb32JgHcuIHYIb0n1w+xVtAFG/2lsAntmhm/E0xrZiRqawtXNAhQybXTXtF9K/t5
+         26jg1exri47xvolKXV5FUPeFhsL1qaslF6LIgh1PoKmp/AZwQOsgEedvGE+ULxaCz7ve
+         pYSbw4n14M1Hmb7mbSzshpu3RMghN8bt/nmWPX0kC6YS3q2h7T9EMQMjYMWeGYM6BVKT
+         kh6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789065153; x=1789669953;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=dpWhO6z/1eXUTTgA/H9eXGVtX0eq8vp4A6ySs0zyK0c=;
+        b=W+XvPMbqZYpiPhPiNMeWAAbV72VWFd0cwl5kUyArm9GRsBGHfm72NkaVd3lWbHPWMG
+         KvSzOcetlXtpXgiMdfkSrWPxSEAhwXJZonJUPVknY7MlKNVXiq9WKU3IAg4kmp+KrLKH
+         d8ZPK0ITk05GxLnEh0WHmmYLRI1j/lYlbzo81bMsDWbQgjeGmgEiNdBN9MrRCzU/xHOD
+         TtLDwrSGkeOiQ5xXVgy0ygqKcHMraX/QPaBmK8n/V/6yLZk6SnGeLBlG6ckP8029Zout
+         IpDsbFhipgSz2noQ9AoB9E2PX0Nu75EBItEQMv/RPbnTyOh7Av6w8eePqbo6DeUnjqo3
+         Knkg==
+X-Forwarded-Encrypted: i=1; AKwUvByJxgIP++YU43ZKDEey3PgxXEubAy9b3krpXNH0lJ4CH1HmFVTX+w9S/4ZvheKYmI/WffuknVI=@vger.kernel.org
+X-Gm-Message-State: AFuF++lHw7tw/WNIMjf5PC95ZgrwZs+UCIeFfo06w5Kw6SqVRqHO1Bwp
+	hQP8ViHwicH4MNhGFyckenDcxTXB6e2gZIMWVfMOsq3cWRv5+WCe3Ghrae9cw9cFrGyp1lyipu8
+	W/sKYfCecznlr83YzFTZphMM7UiuATUUOiWgcqQjqdhQWdVdTcFLhG/kL5A==
+X-Gm-Gg: AYBFou0lGCFEVhCES7+ENz78q9aHlAr899xCz2Tbwqy3ieTh/HzI3GfLDoSOvDpB+eG
+	CvuuWZMr6CMpi9PswH0pqrL2LQ/2aJpTxOXACKIOFF80NTrtzinz4yGcX8QxIjdzJZ33SbCWk9u
+	ikUp1jEZdkewB/joDcwznYNqUBadlTAx1KmxC7LlcaQs+0GjSuFH8HqBgJo1rCvJTBbco6HNStD
+	cxpCwtQTm2oPaSsWWHX+FXNpUvjt6wb4oiqJYHDDo7yphPg2Xe8NAa0B1a1n0kYnj4pBRdaOAwp
+	1Xu9hbiXBQx1vbV6hV+z6miZsEST09fBtrRqqODK3g6Yle3p7YlKCWcoUnrCEl+p0RHVYr/hVcX
+	sTDnLJOorkuHFbSr1pKw/+dhr30A=
+X-Received: by 2002:a05:600c:620a:b0:49c:799a:177b with SMTP id 5b1f17b1804b1-49e60f5af42mr10094045e9.2.1789065153251;
+        Thu, 10 Sep 2026 11:32:33 -0700 (PDT)
+X-Received: by 2002:a05:600c:620a:b0:49c:799a:177b with SMTP id 5b1f17b1804b1-49e60f5af42mr10093785e9.2.1789065152909;
+        Thu, 10 Sep 2026 11:32:32 -0700 (PDT)
+Received: from alrua-x1.borgediget.toke.dk (alrua-x1.borgediget.toke.dk. [2a0c:4d80:42:443::2])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49e61a80948sm2211005e9.3.2026.09.10.11.32.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 10 Sep 2026 11:32:31 -0700 (PDT)
+Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
+	id A2B529B97EE; Thu, 10 Sep 2026 20:32:30 +0200 (CEST)
+From: =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+To: Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	Ihor Solodrai <ihor.solodrai@linux.dev>
+Cc: =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Shuah Khan <shuah@kernel.org>,
+	bpf@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH bpf-next v2 3/4] selftests/bpf: Adopt bpf_program__add_flags() helper
+Date: Thu, 10 Sep 2026 20:32:16 +0200
+Message-ID: <20260910183222.307208-3-toke@redhat.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260910183222.307208-1-toke@redhat.com>
+References: <20260910183222.307208-1-toke@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Evolution 3.56.2-10+b1 
-X-ZohoMailClient: External
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hi Lee,
+Adopt the newly added bpf_program__add_flags() helper everywhere the
+selftests non-destructively modifies program flags (which turns out to
+be every use of bpf_program__set_flags() in the tests).
 
-Thanks for your review.
+Acked-by: Ihor Solodrai <ihor.solodrai@linux.dev>
+Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
+---
+ tools/testing/selftests/bpf/prog_tests/attach_probe.c      | 4 +---
+ tools/testing/selftests/bpf/prog_tests/bpf_verif_scale.c   | 2 +-
+ tools/testing/selftests/bpf/prog_tests/kprobe_multi_test.c | 3 +--
+ tools/testing/selftests/bpf/prog_tests/xdp_metadata.c      | 4 ++--
+ tools/testing/selftests/bpf/test_loader.c                  | 5 ++---
+ tools/testing/selftests/bpf/testing_helpers.c              | 4 +---
+ tools/testing/selftests/bpf/veristat.c                     | 4 ++--
+ tools/testing/selftests/bpf/xdp_hw_metadata.c              | 2 +-
+ 8 files changed, 11 insertions(+), 17 deletions(-)
 
-On Thu, 2026-09-10 at 16:45 +0100, Lee Jones wrote:
-> On Wed, 02 Sep 2026, Rong Zhang wrote:
->=20
-> > Some hardware can autonomously activate/deactivate hardware control.
-> > After that, the LED hardware notifies the LED driver. Currently, there
-> > is no mechanism for LED drivers to notify the LED core about such event=
-s
-> > and initiate a trigger transition to reflect the hardware state.
-> >=20
-> > Add a new interface called led_trigger_notify_hw_control_changed(), so
-> > that LED drivers can call it to notify the LED core about the
-> > transition.
-> >=20
-> > The interface only allows two transitions:
-> >=20
-> > 1. "none" =3D> private trigger
-> > 2. private trigger =3D> "none"
-> >=20
-> > If the current trigger is neither the private trigger nor "none", no
-> > transition will be made. This protects the currently selected software
-> > trigger.
-> >=20
-> > Note that LED_OFF won't be emitted during the #2 transition, as some
-> > hardware may have selected a new brightness level during its hardware
-> > state transition (e.g., laptop keyboards with a shortcut cycling throug=
-h
-> > different backlight brightnesses and auto mode).
-> >=20
-> > The interface is designed as a void function as any failure should be
-> > non-fatal and the result of transition should not have any impact on th=
-e
-> > LED drivers' event handling procedures.
-> >=20
-> > To use the interface, the config LEDS_TRIGGERS_HW_CHANGED must be
-> > enabled, and the LED driver must set the LED_TRIG_HW_CHANGED flag for
-> > the classdev.
-> >=20
-> > By default, the config is enabled when LEDS_BRIGHTNESS_HW_CHANGED is
-> > enabled.
-> >=20
-> > Acked-by: Ike Panhc <ikepanhc@gmail.com>
-> > Signed-off-by: Rong Zhang <i@rong.moe>
-> > ---
-> > Changes in v6:
-> > - Implement workqueue deferal mechanism
-> >   - https://msgid.link/e2b081dfd8f96511a73b86ab3ec75e5cd759b79b.camel@r=
-ong.moe
-> >=20
-> > Changes in v5:
-> > - Address a concern from Sashiko:
-> >   - led_trigger_notify_hw_control_changed() might sleep, but without an=
-y
-> >     internal deferral mechanism or annotation
-> >   - Annotate the method with might_sleep(), since the very first users
-> >     of the interface, i.e., ideapad-laptop and (supposedly)
-> >     thinkpad_acpi, will call the interface from work contexts. It does
-> >     not deserve the overhead of internal deferral mechanism
-> >   - https://sashiko.dev/#/patchset/20260802-leds-trigger-hw-changed-v4-=
-0-f97e2ca976fe@rong.moe?part=3D9
-> >=20
-> > Changes in v4:
-> > - Enable LEDS_TRIGGERS_HW_CHANGED by default when
-> >   LEDS_BRIGHTNESS_HW_CHANGED is enabled
-> >=20
-> > Changes in v3:
-> > - Adopt guard() (Thanks Thomas Wei=C3=9Fschuh)
-> > - Reword documentations
-> > ---
-> >  Documentation/leds/leds-class.rst |  52 ++++++++++++++++++
-> >  drivers/leds/led-class.c          |   6 +++
-> >  drivers/leds/led-triggers.c       | 108 ++++++++++++++++++++++++++++++=
-+++++++-
-> >  drivers/leds/leds.h               |   8 +++
-> >  drivers/leds/trigger/Kconfig      |  10 ++++
-> >  include/linux/leds.h              |  13 +++++
-> >  6 files changed, 195 insertions(+), 2 deletions(-)
-> >=20
-> > diff --git a/Documentation/leds/leds-class.rst b/Documentation/leds/led=
-s-class.rst
-> > index 2d41a6db602c..adbc57b9f49c 100644
-> > --- a/Documentation/leds/leds-class.rst
-> > +++ b/Documentation/leds/leds-class.rst
-> > @@ -334,6 +334,58 @@ not necessary for them to coordinate via `hw_contr=
-ol_*` callbacks.
-> >  When the LED is in hw control, no software blink is possible and doing=
- so
-> >  will effectively disable hw control.
-> > =20
-> > +Hardware-initiated trigger transition
-> > +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > +
-> > +Some hardware can autonomously activate/deactivate hardware control. A=
-fter that,
-> > +the LED hardware notifies the LED driver.
-> > +
-> > +If the driver can detect such transitions and thus wants to notify the=
- LED core
-> > +to update the current trigger then the `LED_TRIG_HW_CHANGED` flag must=
- be set in
-> > +flags before registering. To update the current trigger accordingly, c=
-all
-> > +`led_trigger_notify_hw_control_changed` on the LED classdev.
-> > +
-> > +This capability is restricted to the LED device's private trigger. The=
- private
-> > +trigger must have been properly registered (see above) and named after
-> > +`hw_control_trigger`.
-> > +
-> > +Only two transitions are defined:
-> > +
-> > +- "none" =3D> private trigger:
-> > +        This happens when the hardware autonomously activates hardware=
- control
-> > +        and when "none" (i.e., no trigger) is currently active. If the=
- private
-> > +        trigger is already active when the method is called, this is e=
-ssentially
-> > +        a no-op.
-> > +
-> > +        The activation sequence for the private trigger will be execut=
-ed as
-> > +        normal.
-> > +
-> > +        The LED driver and its private trigger must be able to handle =
-the
-> > +        activation sequence even if the hardware is currently in hardw=
-are
-> > +        control.
-> > +
-> > +        If error occurs in the activation sequence, the LED Trigger co=
-re reverts
-> > +        the effective trigger to "none".
-> > +
-> > +- private trigger =3D> "none"
-> > +        This happens when the hardware autonomously deactivates hardwa=
-re control
-> > +        and when the private trigger is currently active. If "none" (i=
-.e., no
-> > +        trigger) is active when the method is called, this is essentia=
-lly a
-> > +        no-op.
-> > +
-> > +        The deactivation sequence for the private trigger will be exec=
-uted as
-> > +        normal, except that the current LED brightness is retained. Th=
-e reason
-> > +        for keeping the brightness unchanged is that some hardware may=
- choose a
-> > +        specific brightness instead of simply turning off the LED afte=
-r
-> > +        autonomously deactivating hardware control.
-> > +
-> > +        The LED driver and its private trigger must be able to handle =
-the
-> > +        deactivation sequence even if the hardware is not currently in=
- hardware
-> > +        control.
-> > +
-> > +If the current trigger is neither the private trigger nor "none", no t=
-ransition
-> > +will be made.
-> > +
-> >  Known Issues
-> >  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > =20
-> > diff --git a/drivers/leds/led-class.c b/drivers/leds/led-class.c
-> > index 7e571bd1de5b..3b438d8da5e0 100644
-> > --- a/drivers/leds/led-class.c
-> > +++ b/drivers/leds/led-class.c
-> > @@ -611,6 +611,9 @@ int led_classdev_register_ext(struct device *parent=
-,
-> >  	led_trigger_set_default(led_cdev);
-> >  #endif
-> > =20
-> > +	if (led_cdev->flags & LED_TRIG_HW_CHANGED)
-> > +		led_trigger_init_hw_changed(led_cdev);
-> > +
-> >  	mutex_unlock(&led_cdev->led_access);
-> > =20
-> >  	dev_dbg(parent, "Registered led device: %s\n",
-> > @@ -631,6 +634,9 @@ void led_classdev_unregister(struct led_classdev *l=
-ed_cdev)
-> >  	if (IS_ERR_OR_NULL(led_cdev->dev))
-> >  		return;
-> > =20
-> > +	if (led_cdev->flags & LED_TRIG_HW_CHANGED)
-> > +		led_trigger_destroy_hw_changed(led_cdev);
-> > +
-> >  #ifdef CONFIG_LEDS_TRIGGERS
-> >  	down_write(&led_cdev->trigger_lock);
-> >  	if (led_cdev->trigger)
-> > diff --git a/drivers/leds/led-triggers.c b/drivers/leds/led-triggers.c
-> > index cb49a02a8b3c..a9d992a88616 100644
-> > --- a/drivers/leds/led-triggers.c
-> > +++ b/drivers/leds/led-triggers.c
-> > @@ -7,7 +7,9 @@
-> >   * Author: Richard Purdie <rpurdie@openedhand.com>
-> >   */
-> > =20
-> > +#include <linux/bug.h>
-> >  #include <linux/cleanup.h>
-> > +#include <linux/compiler.h>
-> >  #include <linux/export.h>
-> >  #include <linux/kernel.h>
-> >  #include <linux/list.h>
-> > @@ -193,7 +195,8 @@ ssize_t led_trigger_read(struct file *filp, struct =
-kobject *kobj,
-> >  EXPORT_SYMBOL_GPL(led_trigger_read);
-> > =20
-> >  /* Caller must ensure led_cdev->trigger_lock held */
-> > -int led_trigger_set(struct led_classdev *led_cdev, struct led_trigger =
-*trig)
-> > +static int __led_trigger_set(struct led_classdev *led_cdev, struct led=
-_trigger *trig,
-> > +			     bool hw_triggered)
-> >  {
-> >  	char *event =3D NULL;
-> >  	char *envp[2];
-> > @@ -224,7 +227,21>  		led_cdev->trigger_data =3D NULL;
-> >  		led_cdev->activated =3D false;
-> >  		led_cdev->flags &=3D ~LED_INIT_DEFAULT_TRIGGER;
-> > -		led_set_brightness(led_cdev, LED_OFF);
-> > +
-> > +		/*
-> > +		 * Hardware may have selected a new brightness level during its
-> > +		 * hardware control transition, so only reset brightness if we
-> > +		 * are switching to another trigger or if the switching is not
-> > +		 * hardware triggered.
-> > +		 *
-> > +		 * Note that this does not apply to the error path, as running
-> > +		 * into the error path implies a none =3D> private trigger
-> > +		 * transition. This hints that the LED driver and its private
-> > +		 * trigger must have some fundamental bugs, so don't bother
->=20
-> "don't bother" sounds abrasive.  Please reword.
+diff --git a/tools/testing/selftests/bpf/prog_tests/attach_probe.c b/tools/testing/selftests/bpf/prog_tests/attach_probe.c
+index 7dadb90e7b68..41136e1c7752 100644
+--- a/tools/testing/selftests/bpf/prog_tests/attach_probe.c
++++ b/tools/testing/selftests/bpf/prog_tests/attach_probe.c
+@@ -543,9 +543,7 @@ static void test_kprobe_sleepable(void)
+ 		return;
+ 
+ 	/* sleepable kprobe test case needs flags set before loading */
+-	if (!ASSERT_OK(bpf_program__set_flags(
+-			       skel->progs.handle_kprobe_sleepable,
+-			       bpf_program__flags(skel->progs.handle_kprobe_sleepable) | BPF_F_SLEEPABLE),
++	if (!ASSERT_OK(bpf_program__add_flags(skel->progs.handle_kprobe_sleepable, BPF_F_SLEEPABLE),
+ 		       "kprobe_sleepable_flags"))
+ 		goto cleanup;
+ 
+diff --git a/tools/testing/selftests/bpf/prog_tests/bpf_verif_scale.c b/tools/testing/selftests/bpf/prog_tests/bpf_verif_scale.c
+index 652307a1b22e..902a70d5afeb 100644
+--- a/tools/testing/selftests/bpf/prog_tests/bpf_verif_scale.c
++++ b/tools/testing/selftests/bpf/prog_tests/bpf_verif_scale.c
+@@ -35,7 +35,7 @@ static int check_load(const char *file, enum bpf_prog_type type)
+ 	}
+ 
+ 	bpf_program__set_type(prog, type);
+-	bpf_program__set_flags(prog, bpf_program__flags(prog) | testing_prog_flags());
++	bpf_program__add_flags(prog, testing_prog_flags());
+ 	bpf_program__set_log_level(prog, 4 | extra_prog_load_log_flags);
+ 
+ 	err = bpf_object__load(obj);
+diff --git a/tools/testing/selftests/bpf/prog_tests/kprobe_multi_test.c b/tools/testing/selftests/bpf/prog_tests/kprobe_multi_test.c
+index ed3fd0a88dab..651123cd8602 100644
+--- a/tools/testing/selftests/bpf/prog_tests/kprobe_multi_test.c
++++ b/tools/testing/selftests/bpf/prog_tests/kprobe_multi_test.c
+@@ -361,8 +361,7 @@ static void test_attach_api_fails(void)
+ 
+ 	sl_skel->bss->user_ptr = sl_skel;
+ 
+-	err = bpf_program__set_flags(sl_skel->progs.handle_kprobe_multi_sleepable,
+-				     bpf_program__flags(sl_skel->progs.handle_kprobe_multi_sleepable) | BPF_F_SLEEPABLE);
++	err = bpf_program__add_flags(sl_skel->progs.handle_kprobe_multi_sleepable, BPF_F_SLEEPABLE);
+ 	if (!ASSERT_OK(err, "sleep_skel_set_flags"))
+ 		goto cleanup;
+ 
+diff --git a/tools/testing/selftests/bpf/prog_tests/xdp_metadata.c b/tools/testing/selftests/bpf/prog_tests/xdp_metadata.c
+index 047dfdc322a2..3ab963458903 100644
+--- a/tools/testing/selftests/bpf/prog_tests/xdp_metadata.c
++++ b/tools/testing/selftests/bpf/prog_tests/xdp_metadata.c
+@@ -408,14 +408,14 @@ void test_xdp_metadata(void)
+ 
+ 	prog = bpf_object__find_program_by_name(bpf_obj->obj, "rx");
+ 	bpf_program__set_ifindex(prog, rx_ifindex);
+-	bpf_program__set_flags(prog, bpf_program__flags(prog) | BPF_F_XDP_DEV_BOUND_ONLY);
++	bpf_program__add_flags(prog, BPF_F_XDP_DEV_BOUND_ONLY);
+ 
+ 	/* Make sure we can load a dev-bound program that performs
+ 	 * XDP_REDIRECT into a devmap.
+ 	 */
+ 	new_prog = bpf_object__find_program_by_name(bpf_obj->obj, "redirect");
+ 	bpf_program__set_ifindex(new_prog, rx_ifindex);
+-	bpf_program__set_flags(new_prog, bpf_program__flags(new_prog) | BPF_F_XDP_DEV_BOUND_ONLY);
++	bpf_program__add_flags(new_prog, BPF_F_XDP_DEV_BOUND_ONLY);
+ 
+ 	if (!ASSERT_OK(xdp_metadata__load(bpf_obj), "load skeleton"))
+ 		goto out;
+diff --git a/tools/testing/selftests/bpf/test_loader.c b/tools/testing/selftests/bpf/test_loader.c
+index 794a7dfb0579..28724de06322 100644
+--- a/tools/testing/selftests/bpf/test_loader.c
++++ b/tools/testing/selftests/bpf/test_loader.c
+@@ -748,7 +748,7 @@ static void prepare_case(struct test_loader *tester,
+ 			 struct bpf_object *obj,
+ 			 struct bpf_program *prog)
+ {
+-	int min_log_level = 0, prog_flags;
++	int min_log_level = 0;
+ 
+ 	if (env.verbosity > VERBOSE_NONE)
+ 		min_log_level = 1;
+@@ -766,8 +766,7 @@ static void prepare_case(struct test_loader *tester,
+ 	else
+ 		bpf_program__set_log_level(prog, spec->log_level);
+ 
+-	prog_flags = bpf_program__flags(prog);
+-	bpf_program__set_flags(prog, prog_flags | spec->prog_flags);
++	bpf_program__add_flags(prog, spec->prog_flags);
+ 
+ 	tester->log_buf[0] = '\0';
+ }
+diff --git a/tools/testing/selftests/bpf/testing_helpers.c b/tools/testing/selftests/bpf/testing_helpers.c
+index 3f037949e978..d1d60451c5bc 100644
+--- a/tools/testing/selftests/bpf/testing_helpers.c
++++ b/tools/testing/selftests/bpf/testing_helpers.c
+@@ -292,7 +292,6 @@ int bpf_prog_test_load(const char *file, enum bpf_prog_type type,
+ 	);
+ 	struct bpf_object *obj;
+ 	struct bpf_program *prog;
+-	__u32 flags;
+ 	int err;
+ 
+ 	obj = bpf_object__open_file(file, &opts);
+@@ -308,8 +307,7 @@ int bpf_prog_test_load(const char *file, enum bpf_prog_type type,
+ 	if (type != BPF_PROG_TYPE_UNSPEC && bpf_program__type(prog) != type)
+ 		bpf_program__set_type(prog, type);
+ 
+-	flags = bpf_program__flags(prog) | testing_prog_flags();
+-	bpf_program__set_flags(prog, flags);
++	bpf_program__add_flags(prog, testing_prog_flags());
+ 
+ 	err = bpf_object__load(obj);
+ 	if (err)
+diff --git a/tools/testing/selftests/bpf/veristat.c b/tools/testing/selftests/bpf/veristat.c
+index e70741c6b9b7..9cfc9b4b41c1 100644
+--- a/tools/testing/selftests/bpf/veristat.c
++++ b/tools/testing/selftests/bpf/veristat.c
+@@ -1722,9 +1722,9 @@ static int process_prog(const char *filename, struct bpf_object *obj, struct bpf
+ 	fixup_obj(obj, prog, base_filename);
+ 
+ 	if (env.force_checkpoints)
+-		bpf_program__set_flags(prog, bpf_program__flags(prog) | BPF_F_TEST_STATE_FREQ);
++		bpf_program__add_flags(prog, BPF_F_TEST_STATE_FREQ);
+ 	if (env.force_reg_invariants)
+-		bpf_program__set_flags(prog, bpf_program__flags(prog) | BPF_F_TEST_REG_INVARIANTS);
++		bpf_program__add_flags(prog, BPF_F_TEST_REG_INVARIANTS);
+ 
+ 	opts.log_buf = buf;
+ 	opts.log_size = buf_sz;
+diff --git a/tools/testing/selftests/bpf/xdp_hw_metadata.c b/tools/testing/selftests/bpf/xdp_hw_metadata.c
+index c5501b3fdf48..ab3f5fc56e86 100644
+--- a/tools/testing/selftests/bpf/xdp_hw_metadata.c
++++ b/tools/testing/selftests/bpf/xdp_hw_metadata.c
+@@ -845,7 +845,7 @@ int main(int argc, char *argv[])
+ 
+ 	prog = bpf_object__find_program_by_name(bpf_obj->obj, "rx");
+ 	bpf_program__set_ifindex(prog, ifindex);
+-	bpf_program__set_flags(prog, bpf_program__flags(prog) | BPF_F_XDP_DEV_BOUND_ONLY);
++	bpf_program__add_flags(prog, BPF_F_XDP_DEV_BOUND_ONLY);
+ 
+ 	printf("load bpf program...\n");
+ 	ret = xdp_hw_metadata__load(bpf_obj);
+-- 
+2.55.0
 
-ACK.
-
->=20
-> > +		 * leaving the LED in an undefined state.
-> > +		 */
-> > +		if (trig || !hw_triggered)
-> > +			led_set_brightness(led_cdev, LED_OFF);
-> >  	}
-> >  	if (trig) {
-> >  		spin_lock(&trig->leddev_list_lock);
-> > @@ -288,6 +305,11 @@ int led_trigger_set(struct led_classdev *led_cdev,=
- struct led_trigger *trig)
-> > =20
-> >  	return ret;
-> >  }
-> > +
-> > +int led_trigger_set(struct led_classdev *led_cdev, struct led_trigger =
-*trig)
-> > +{
-> > +	return __led_trigger_set(led_cdev, trig, false);
-> > +}
-> >  EXPORT_SYMBOL_GPL(led_trigger_set);
-> > =20
-> >  void led_trigger_remove(struct led_classdev *led_cdev)
-> > @@ -468,6 +490,88 @@ int devm_led_trigger_register(struct device *dev,
-> >  }
-> >  EXPORT_SYMBOL_GPL(devm_led_trigger_register);
-> > =20
-> > +#ifdef CONFIG_LEDS_TRIGGERS_HW_CHANGED
-> > +
-> > +static void led_trigger_do_hw_control_transition(struct led_classdev *=
-led_cdev, bool activate,
-> > +						 struct led_trigger *hc_trig)
-> > +{
-> > +	int err =3D 0;
->=20
-> 'ret' is used in this file.
-
-ACK.
-
->=20
-> > +
-> > +	if (!led_cdev->trigger) {
-> > +		/* "none" =3D> private trigger. */
-> > +		if (activate)
-> > +			err =3D __led_trigger_set(led_cdev, hc_trig, true);
-> > +	} else if (led_cdev->trigger =3D=3D hc_trig) {
-> > +		/* private trigger =3D> "none". */
-> > +		if (!activate)
-> > +			err =3D __led_trigger_set(led_cdev, NULL, true);
-> > +	} else {
-> > +		/* Other trigger is active. */
-> > +		dev_dbg(led_cdev->dev,
-> > +			"Ignoring hw control transition (%s %s) while %s is active",
-> > +			activate ? "activate" : "deactivate", hc_trig->name,
-> > +			led_cdev->trigger->name);
-> > +
-> > +		return;
-> > +	}
-> > +
-> > +	if (err)
-> > +		dev_warn(led_cdev->dev, "Failed to %s %s in hw control transition: %=
-d",
-> > +			 activate ? "activate" : "deactivate", hc_trig->name, err);
->=20
-> How helpful are these debug messages now development is complete, really?
-
-ACK. I will remove them.
-
->=20
-> > +}
-> > +
-> > +static void led_trigger_hw_control_changed_worker(struct work_struct *=
-work)
-> > +{
-> > +	struct led_classdev *led_cdev =3D
-> > +		container_of(work, struct led_classdev, triggers_hw_changed_work);
-> > +	bool activate =3D READ_ONCE(led_cdev->triggers_hw_changed);
-> > +
-> > +	scoped_guard(rwsem_read, &triggers_list_lock) {
-> > +		struct led_trigger *trig;
-> > +
-> > +		list_for_each_entry(trig, &trigger_list, next_trig) {
-> > +			if (trig->trigger_type =3D=3D led_cdev->trigger_type &&
-> > +			    !strcmp(trig->name, led_cdev->hw_control_trigger)) {
-> > +				guard(rwsem_write)(&led_cdev->trigger_lock);
-> > +
-> > +				led_trigger_do_hw_control_transition(led_cdev, activate, trig);
-> > +				return;
-> > +			}
-> > +		}
-> > +	}
-> > +
-> > +	dev_err(led_cdev->dev,
-> > +		"%s() is called, but the private trigger (%s) is not properly regist=
-ered\n",
-> > +		__func__, led_cdev->hw_control_trigger);
->=20
-> Please make all user-facing messages user-friendly.
->=20
-> No internal function names please.
->=20
-> Also, since this is effectively an issue, it should be dev_warn().
-
-ACK to all three points.
-
->=20
-> > +}
-> > +
-> > +void led_trigger_notify_hw_control_changed(struct led_classdev *led_cd=
-ev, bool activate)
-> > +{
-> > +	/* Restricted to private triggers. */
-> > +	if (WARN_ON(!(led_cdev->flags & LED_TRIG_HW_CHANGED) ||
-> > +		    !led_cdev->hw_control_trigger || !led_cdev->trigger_type))
-> > +		return;
-> > +
-> > +	WRITE_ONCE(led_cdev->triggers_hw_changed, activate);
-> > +
-> > +	schedule_work(&led_cdev->triggers_hw_changed_work);
-> > +}
-> > +EXPORT_SYMBOL_GPL(led_trigger_notify_hw_control_changed);
-> > +
-> > +void led_trigger_init_hw_changed(struct led_classdev *led_cdev)
-> > +{
-> > +	INIT_WORK(&led_cdev->triggers_hw_changed_work, led_trigger_hw_control=
-_changed_worker);
-> > +}
-> > +EXPORT_SYMBOL_GPL(led_trigger_init_hw_changed);
->=20
-> Where is this exported to?
-
-led_classdev_register_ext() in led-class.c, see the beginning of the
-patch.
-
->=20
-> > +
-> > +void led_trigger_destroy_hw_changed(struct led_classdev *led_cdev)
-> > +{
-> > +	disable_work_sync(&led_cdev->triggers_hw_changed_work);
-> > +}
-> > +EXPORT_SYMBOL_GPL(led_trigger_destroy_hw_changed);
->=20
-> This to?
-
-led_classdev_unregister() in led-class.c, ditto.
-
-Should these two exports be eliminated,
-led_trigger_hw_control_changed_worker() must be exported, and multiple
-#ifdefs must be added to led-class.c.=C2=A0That way is also OK for me. I ju=
-st
-personally prefer leaving #ifdefs in the header file as much as possible.
-May I kindly ask about your preferences regarding the coding style for
-conditional compilation?
-
-Thanks,
-Rong=20
-
->=20
-> > +
-> > +#endif /* CONFIG_LEDS_TRIGGERS_HW_CHANGED */
-> > +
-> >  /* Simple LED Trigger Interface */
-> > =20
-> >  void led_trigger_event(struct led_trigger *trig,
-> > diff --git a/drivers/leds/leds.h b/drivers/leds/leds.h
-> > index b08a289397e4..bdac2336012e 100644
-> > --- a/drivers/leds/leds.h
-> > +++ b/drivers/leds/leds.h
-> > @@ -33,4 +33,12 @@ ssize_t trigger_may_offload_show(struct device *dev,
-> >  extern struct rw_semaphore leds_list_lock;
-> >  extern struct list_head leds_list;
-> > =20
-> > +#ifdef CONFIG_LEDS_TRIGGERS_HW_CHANGED
-> > +void led_trigger_init_hw_changed(struct led_classdev *led_cdev);
-> > +void led_trigger_destroy_hw_changed(struct led_classdev *led_cdev);
-> > +#else /* !CONFIG_LEDS_TRIGGERS_HW_CHANGED */
-> > +static inline void led_trigger_init_hw_changed(struct led_classdev *le=
-d_cdev) { }
-> > +static inline void led_trigger_destroy_hw_changed(struct led_classdev =
-*led_cdev) { }
-> > +#endif /* CONFIG_LEDS_TRIGGERS_HW_CHANGED */
-> > +
-> >  #endif	/* __LEDS_H_INCLUDED */
-> > diff --git a/drivers/leds/trigger/Kconfig b/drivers/leds/trigger/Kconfi=
-g
-> > index c11282a74b5a..a11d04ce4ab2 100644
-> > --- a/drivers/leds/trigger/Kconfig
-> > +++ b/drivers/leds/trigger/Kconfig
-> > @@ -9,6 +9,16 @@ menuconfig LEDS_TRIGGERS
-> > =20
-> >  if LEDS_TRIGGERS
-> > =20
-> > +config LEDS_TRIGGERS_HW_CHANGED
-> > +	bool "LED hardware-initiated trigger transition support"
-> > +	default LEDS_BRIGHTNESS_HW_CHANGED
-> > +	help
-> > +	  This option enables support for hardware initiated hardware control
-> > +	  transitions, where the LED hardware autonomously switches between
-> > +	  "none" (i.e., no trigger) and its private trigger.
-> > +
-> > +	  See Documentation/leds/leds-class.rst for details.
-> > +
-> >  config LEDS_TRIGGER_TIMER
-> >  	tristate "LED Timer Trigger"
-> >  	help
-> > diff --git a/include/linux/leds.h b/include/linux/leds.h
-> > index bee2b4309a09..93b3fd7e5636 100644
-> > --- a/include/linux/leds.h
-> > +++ b/include/linux/leds.h
-> > @@ -109,6 +109,7 @@ struct led_classdev {
-> >  #define LED_INIT_DEFAULT_TRIGGER BIT(23)
-> >  #define LED_REJECT_NAME_CONFLICT BIT(24)
-> >  #define LED_MULTI_COLOR		BIT(25)
-> > +#define LED_TRIG_HW_CHANGED	BIT(26)
-> > =20
-> >  	/* set_brightness_work / blink_timer flags, atomic, private. */
-> >  	unsigned long		work_flags;
-> > @@ -239,6 +240,11 @@ struct led_classdev {
-> >  	struct kernfs_node	*brightness_hw_changed_kn;
-> >  #endif
-> > =20
-> > +#ifdef CONFIG_LEDS_TRIGGERS_HW_CHANGED
-> > +	bool			triggers_hw_changed;
-> > +	struct work_struct	triggers_hw_changed_work;
-> > +#endif
-> > +
-> >  	/* Ensures consistent access to the LED class device */
-> >  	struct mutex		led_access;
-> >  };
-> > @@ -609,6 +615,13 @@ led_trigger_get_brightness(const struct led_trigge=
-r *trigger)
-> > =20
-> >  #endif /* CONFIG_LEDS_TRIGGERS */
-> > =20
-> > +#ifdef CONFIG_LEDS_TRIGGERS_HW_CHANGED
-> > +void led_trigger_notify_hw_control_changed(struct led_classdev *led_cd=
-ev, bool activate);
-> > +#else
-> > +static inline void led_trigger_notify_hw_control_changed(struct led_cl=
-assdev *led_cdev,
-> > +							 bool activate) {}
-> > +#endif
-> > +
-> >  /* Trigger specific enum */
-> >  enum led_trigger_netdev_modes {
-> >  	TRIGGER_NETDEV_LINK =3D 0,
-> >=20
-> > --=20
-> > 2.55.0
-> >=20
