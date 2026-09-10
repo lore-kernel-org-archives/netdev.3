@@ -1,43 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C4D0267B89;
-	Thu, 10 Sep 2026 06:44:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A60FB3CA4A9;
+	Thu, 10 Sep 2026 06:44:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789022698; cv=none; b=rGyRXwz54d/AZhQM74wDDFTmSQQRCrJwljucRObKiSPnnitM4CMT64aE/op6Nyw+7i+Q1IggrvwAh5Dj3WlUtVr6Tz+jKgQD/ObyEhZuy3QhkDuLrkfJpDyrCGn9EEu64u3r1doRUURqWm9lBlP28Ho1zMgMGsVyv64+4L8mfSU=
+	t=1789022700; cv=none; b=lm1MA9d5Kr21HOsEyhfQoBwBif3lgL+SFhoB5JpfV+WSGSRgJ1pn4sYRFIMfUhqzHNnaZGWKgd6fOqKewi3uP6NUB+KwzaaXx8FTQxt2CTiStXbeI0ZG0QDiPLraC6hmb4sDYBu/d9/PFVODfQ1cP8SJy8su5dwhpIiXXeL2ogE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789022698; c=relaxed/simple;
-	bh=u27dG1rBmqmjpK8YSsvlrOYBUK4zx068XOmkDunU4jM=;
+	s=arc-20240116; t=1789022700; c=relaxed/simple;
+	bh=PjYv362revCo4avBeav6JnovRi/SMvmuaUpoVJmI464=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=F/tPlc1/lA/prIxNEesETdk8trpz169NdaC/VwUFa/X3EKLlGgIOPtpiFxU2PBbshBnkLtFl/UHRamxfUPV7WMqHIoUhSVHmzk7hbaz6hk9MBnWzjDoi+pSypwPuKhPbuHO9GScaG1Ii3tbK1mVxOL333C2M8UB874hgY5QQ2WQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YG35K4ZE; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=SFHGgSKNsv+4LB4451yNnm4RW8e7OT+tCMYMq+PUR3KGa0MXWCcWov5i1daZghwrRoL1qVnqh8dCEhvoNuCPYVIMaYNmluAAKWpCdloeZ1+mWRaKpUiN27fXqgHVrOXH22dDbMmJKFUcnrhaWeZ9sH+NB5cWbUbFzcPVb3txKTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L2a6kFC9; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YG35K4ZE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0FC91F000FF;
-	Thu, 10 Sep 2026 06:44:55 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L2a6kFC9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 924531F00893;
+	Thu, 10 Sep 2026 06:44:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789022696;
-	bh=Jw8hlI2fgUpdKqVVf7y3g+RPckF+M6yOdJNAGCV+/24=;
+	s=k20260515; t=1789022698;
+	bh=6zD3JQiC1jlfVhWrsmFwTnMrKYR9qkjb5JFwVg65lS0=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=YG35K4ZEzL46QJvVk8j5eft9Mca4Ek9yJut1QvkMDtXVBlVcI6B0SfnbkZ4gppkSI
-	 GYee+f22LByOEjWT5VxspBSmpVAObT2IBnWcvPCQVBSWDideSGeAZvVuAzSKFKgUmO
-	 1Hyb49eCD46/izAUICWqro3ur1BUwtW7TL01if6tM+gQivuHDi5Q4Jhg8rB3BhfR3R
-	 OTZzdOrQIedBm6XxeNqXAug3w/YN2GDd0J9Ws4lA3lfJ/o3N37ralpH8m0OFo6l30B
-	 pIkJw0PC0hElxhmnQ5mAxBdCjroaYacWpBa/xk6smB5LfQJPh5Ndh/GVhAeQ3SmUvG
-	 FOErVgFivz52g==
-Subject: Re: [PATCH net-next] net: bridge: bound the port VLAN lists in the
- IFLA_AF_SPEC nest
+	b=L2a6kFC9BqhIHuv6pH51PKIigK8+3rdYHpxW3ahp/TTr6WEFv5nsn2Fix+jU2c6LL
+	 lA22X5IDpitG7u8K0t2bZtlW3FPlwwbnlC4ex8++fkwFap7HQSSns0xCb6QgKfMbpN
+	 tgmtupj8oElywdkGYkcLN8hSr1/DeELpeV9R13710bQmRORXzdcxnfUXoHAbrJEI0m
+	 2pqpY9/essViYIIZzcHJHXCLmN6uD5fORxUqjsk1S8Wdb1oZ1cZY4K6+SljRunp6Q3
+	 SCWD3Q8UGP7xUYzZ2ppPoSEr0YbxZyTKn126F/3bQtZEsMUCu0MoXewOzHMbl+AgVx
+	 ZCQJ0LBg8rmvA==
+Subject: Re: [PATCH net-next] xfrm: add ARIA CBC and CTR support
 From: netdev-bot+sashiko@kernel.org
-To: iprintercanon@gmail.com
-Cc: netdev@vger.kernel.org, bridge@lists.linux.dev, razor@blackwall.org,
- idosch@nvidia.com, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, davem@davemloft.net, corbet@lwn.net,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Thu, 10 Sep 2026 06:44:55 +0000
-Message-ID: <178902269514.219967.12409929351424983943@kernel.org>
-In-Reply-To: <20260906224246.21719-1-iprintercanon@gmail.com>
-References: <20260906224246.21719-1-iprintercanon@gmail.com>
+To: his1415@pribit.com
+Cc: steffen.klassert@secunet.com, herbert@gondor.apana.org.au,
+ davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+ linux-kernel@vger.kernel.org
+Date: Thu, 10 Sep 2026 06:44:57 +0000
+Message-ID: <178902269711.219967.15840470225546817223@kernel.org>
+In-Reply-To: <20260909054530.7861-1-his1415@pribit.com>
+References: <20260909054530.7861-1-his1415@pribit.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -48,151 +47,152 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
+Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider:
 
-Critical: 0 · High: 0 · Medium: 1 (1) · Low: 0
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
-- [Medium] No Fixes: tag on a patch that fixes user-visible malformed
-  netlink output.
-
-Pre-existing issues:
-- [Medium] The u16 nla_len wrap of the IFLA_AF_SPEC nest remains
-  reachable for the bridge device: br_fill_ifinfo() still emits…
+- [Medium] Duplicated `.compat = "aria"` alias in `ealg_list[]` makes the
+  new `rfc3686(ctr(aria))` descriptor's legacy alias permanently…
+- [Low] Inconsistent default key sizes (`defkeybits`) between CBC and CTR
+  modes for ARIA.
 
 --
 
-net: bridge: bound the port VLAN lists in the IFLA_AF_SPEC nest
+xfrm: add ARIA CBC and CTR support
 
-The patch stops br_fill_ifinfo() from putting more than 65535 bytes into
-the single IFLA_AF_SPEC nest by asking br_af_spec_has_room() for room
-before each VLAN, VLAN tunnel or MST entry, and clamps the size estimate
-in br_get_link_af_size_filtered() to U16_MAX. Documentation/networking/bridge.rst
-gets a section describing the per-entry costs and pointing at RTM_GETVLAN.
+This adds two XFRM encryption algorithm descriptors so ARIA can be
+selected for ESP, one for cbc(aria) and one for rfc3686(ctr(aria)).
+Both are marked pfkey_supported = 0, so they are reachable only through
+the XFRM netlink interface.
 
-Two questions below, one about the tag block and one about the remaining
-paths into the same nest.
-
-> net: bridge: bound the port VLAN lists in the IFLA_AF_SPEC nest
->
-> br_fill_ifinfo() opens one IFLA_AF_SPEC nest, fills it with the VLAN
-> information of a bridge port and closes it with nla_nest_end(), which
-> stores the accumulated length into nla_len. That field is a u16, so for
-> a nest larger than 65535 bytes the stored length wraps modulo 65536.
-> The encoding has never been able to describe more than that; nothing
-> regressed.
-
-[Severity: Medium]
-Should this carry a Fixes: tag anyway?
-
-The rest of the changelog describes user visible breakage in shipped
-kernels: a 115048 byte RTM_NEWLINK with an nla_len of 49088 broadcast to
-every RTNLGRP_LINK listener in the netns, 2341 attributes after the nest
-misread as IFLA_IFNAME, a 147776 byte RTM_GETLINK reply whose attribute
-walk derails 16672 bytes in, and a CONFIG_DEBUG_NET splat from
-nla_nest_end(). Without a Fixes: line stable selection has no anchor.
-
-The sibling fix cited a few paragraphs later, bdd39576bf50a ("net: bridge:
-prevent too big nested attributes in br_fill_linkxstats()"), does carry
-one:
-
-    Fixes: a60c090361ea ("bridge: netlink: export per-vlan stats")
-
-For the two lists that can fill the nest on their own the candidates would
-be efa5356b0d97 ("bridge: per vlan dst_metadata netlink support") for
-br_fill_vlan_tunnel_info() and IFLA_BRIDGE_VLAN_TUNNEL_INFO, and the commit
-that added br_mst_fill_info() and IFLA_BRIDGE_MST_ENTRY.
-
-> Assisted-by: Claude:claude-opus-5
-> Signed-off-by: Artem Lytkin <iprintercanon@gmail.com>
-
-> diff --git a/net/bridge/br_netlink.c b/net/bridge/br_netlink.c
-> index b2cd4e39326d0..643ae06f7df8c 100644
-> --- a/net/bridge/br_netlink.c
-> +++ b/net/bridge/br_netlink.c
-
-[ ... ]
-
-> @@ -117,11 +128,19 @@ static size_t br_get_link_af_size_filtered(const struct net_device *dev,
->  		vinfo_sz += br_get_vlan_tunnel_info_size(vg);
->  
->  	/* Each VLAN is returned in bridge_vlan_info along with flags */
-> -	vinfo_sz += num_vlan_infos * nla_total_size(sizeof(struct bridge_vlan_info));
-> +	vinfo_sz += num_vlan_infos * BR_VLAN_INFO_SIZE;
->  
->  	if (p && vg && (filter_mask & RTEXT_FILTER_MST))
->  		vinfo_sz += br_mst_info_size(vg);
->  
-> +	/* These three lists share the IFLA_AF_SPEC nest, whose length is a
-> +	 * u16, and br_fill_ifinfo() stops once it is full. Do not size the
-> +	 * skb for entries that will not be emitted. The CFM size below is
-> +	 * only added for the bridge device, which carries no tunnel or MST
-> +	 * entries and so stays far below the clamp.
-> +	 */
-> +	vinfo_sz = min_t(size_t, vinfo_sz, U16_MAX);
+> diff --git a/net/xfrm/xfrm_algo.c b/net/xfrm/xfrm_algo.c
+> index 70434495f23f..16c70dc1a426 100644
+> --- a/net/xfrm/xfrm_algo.c
+> +++ b/net/xfrm/xfrm_algo.c
+> @@ -512,6 +512,34 @@ static struct xfrm_algo_desc ealg_list[] = {
+>  		.sadb_alg_maxbits = 256
+>  	}
+>  },
+> +{
+> +	.name = "cbc(aria)",
+> +	.compat = "aria",
 > +
->  	if (!(filter_mask & RTEXT_FILTER_CFM_STATUS))
->  		return vinfo_sz;
->  
+> +	.uinfo = {
+> +		.encr = {
+> +			.geniv = "echainiv",
+> +			.blockbits = 128,
+> +			.defkeybits = 256,
+> +		}
+> +	},
+> +
+> +	.pfkey_supported = 0,
+> +},
+> +{
+> +	.name = "rfc3686(ctr(aria))",
+> +	.compat = "aria",
+
+[Severity: Low]
+The two new entries advertise different ARIA key strengths: the
+cbc(aria) entry sets .defkeybits = 256, while the rfc3686(ctr(aria))
+entry sets 160, which - going by the "/* 128-bit key + 32-bit nonce */"
+comment on the rfc3686(ctr(aes)) entry a few lines further down - means
+a 128-bit ARIA key plus a 32-bit nonce.  So the default for the CBC
+variant is ARIA-256 and for the CTR variant ARIA-128.  Was that
+deliberate?
+
+For comparison, every other cbc(...) entry in ealg_list[] (cbc(aes),
+cbc(camellia), cbc(serpent), cbc(twofish), cbc(sm4)) uses 128, and the
+AES CTR counterpart uses 128 + 32.  If ARIA-256 is the intended default
+here, should the CTR entry be 288 (256-bit key + 32-bit nonce) to keep
+the two consistent?  If not, should the CBC entry be 128 like its
+siblings?
+
+As far as I can tell nothing breaks either way: attach_crypt() derives
+the key length from ualg->alg_key_len rather than from uinfo.encr, and
+with .pfkey_supported = 0 there is no sadb_alg_minbits/maxbits pair to
+disagree with, so defkeybits is effectively documentation for these two
+entries.  But since it is documentation, having two entries for the same
+cipher in the same table imply different default key sizes is confusing
+to read.  Please also add the "128-bit key + 32-bit nonce" style comment
+on the 160 if that is indeed what the value encodes.
+
+        ^^^^^^^^^^^^^^^^^^
 
 [Severity: Medium]
-This is a pre-existing issue and not introduced by the patch, but can the
-same nla_len wrap still be reached for the bridge device through the CFM
-status list?
+Should the CTR entry carry a .compat alias at all, given that the
+cbc(aria) entry added just above already claims "aria"?
 
-The changelog says so explicitly ("CFM peer status can grow past the limit
-on its own; that is a separate change"), so this is more a question about
-whether the new helper could cover it in the same series than a complaint
-about the scope.
+xfrm_alg_name_match() accepts either the name or the compat string, with
+no distinction between modes:
 
-br_cfm_status_fill_info() walks br->mep_list and each mep->peer_mep_list
-appending roughly 64 to 76 bytes per entry with no aggregate cap:
+net/xfrm/xfrm_algo.c:xfrm_alg_name_match() {
+	return name && (!strcmp(name, entry->name) ||
+			(entry->compat && !strcmp(name, entry->compat)));
+}
 
-net/bridge/br_cfm_netlink.c:br_cfm_status_fill_info() {
-	hlist_for_each_entry_rcu(mep, &br->mep_list, head) {
-		tb = nla_nest_start(skb, IFLA_BRIDGE_CFM_MEP_STATUS_INFO);
+and xfrm_find_algo() only ever acts on the first matching entry:
+
+net/xfrm/xfrm_algo.c:xfrm_find_algo() {
+	for (i = 0; i < algo_list->entries; i++) {
+		if (!match(list + i, data))
+			continue;
+
+		if (list[i].available)
+			return &list[i];
+
+		if (!probe)
+			break;
+
+		status = algo_list->find(list[i].name, 0, 0);
+		if (!status)
+			break;
 	...
 }
 
-br_cfm_mep_create() and br_cfm_cc_peer_mep_add() only reject duplicate
-instance and mepid values under RTNL, so on the order of 860 MEP and peer
-MEP entries push skb_tail_pointer(skb) - af past 65535, and the
-nla_nest_end(skb, af) at the 'done:' label in br_fill_ifinfo() stores a
-length truncated modulo 65536, which is the same failure this patch closes
-for the port lists. Neither the IFLA_BRIDGE_CFM nest nor
-br_mrp_fill_info() consults br_af_spec_has_room().
+Since cbc(aria) comes first in ealg_list[], does a lookup of "aria"
+ever reach the rfc3686(ctr(aria)) entry?  It looks like the .compat
+field on the CTR entry can never be used, so the CTR variant is only
+selectable by its full name via
+attach_crypt()->xfrm_ealg_get_byname(ualg->alg_name, 1).
 
-Also, the clamp above runs before the CFM terms are added, so it does not
-constrain that path at all. Was that ordering intentional? The per-peer
-accounting that follows the clamp also omits the
-IFLA_BRIDGE_CFM_CC_PEER_STATUS_INFO nest header for each peer, which can
-undersize the skb and make br_fill_ifinfo() return -EMSGSIZE.
+There also seems to be a second effect in a build where ARIA and CTR are
+enabled but CBC is not (CRYPTO_ARIA=y, CRYPTO_CTR=y, CRYPTO_CBC=n).  The
+probe of cbc(aria) fails, xfrm_find_algo() hits the break and returns
+NULL, and attach_crypt() reports:
 
-> diff --git a/net/bridge/br_private.h b/net/bridge/br_private.h
-> index d337b1cfb980d..55dfa44269c90 100644
-> --- a/net/bridge/br_private.h
-> +++ b/net/bridge/br_private.h
+net/xfrm/xfrm_user.c:attach_crypt() {
+	algo = xfrm_ealg_get_byname(ualg->alg_name, 1);
+	if (!algo) {
+		NL_SET_ERR_MSG(extack, "Requested CRYPT algorithm not found");
+		return -ENOSYS;
+	}
+	...
+}
 
-[ ... ]
+so "enc aria" would fail with -ENOSYS even though a later entry
+advertising the same alias is instantiable.  Is that intended?
 
-> @@ -2161,6 +2168,18 @@ static inline int br_cfm_peer_mep_count(struct net_bridge *br, u32 *count)
->  #endif
->  
->  /* br_netlink.c */
-> +/* The IFLA_AF_SPEC nest that br_fill_ifinfo() builds is a single netlink
-> + * attribute, so everything put inside it has to fit in the u16 nla_len.
-> + * The entries have fixed sizes, so ask for room before adding one instead
-> + * of closing the nest with a length that wrapped.
-> + */
-> +static inline bool br_af_spec_has_room(const struct sk_buff *skb,
-> +				       const struct nlattr *af, size_t size)
-> +{
-> +	return skb_tail_pointer(skb) - (const unsigned char *)af + size <=
-> +	       U16_MAX;
-> +}
+For comparison, the existing rfc3686(ctr(aes)) entry in the same table
+sets no .compat because "aes" is owned by cbc(aes), and the other
+pfkey_supported = 0 entries here (cmac(aes), rfc7539esp(...)) omit
+.compat as well.  Would dropping .compat from the rfc3686(ctr(aria))
+entry match that convention?
+
 > +
-
-[ ... ]
+> +	.uinfo = {
+> +		.encr = {
+> +			.geniv = "seqiv",
+> +			.blockbits = 128,
+> +			.defkeybits = 160,
+> +		}
+> +	},
+> +
+> +	.pfkey_supported = 0,
+> +},
+>  {
+>  	.name = "cbc(twofish)",
+>  	.compat = "twofish",
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260906224246.21719-1-iprintercanon%40gmail.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260909054530.7861-1-his1415%40pribit.com
