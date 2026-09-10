@@ -1,36 +1,36 @@
 Received: from mail1.fiberby.net (mail1.fiberby.net [193.104.135.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BDFC4718C8;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E0D44718D7;
 	Thu, 10 Sep 2026 22:19:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.104.135.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789078793; cv=none; b=gjnIZec57jIhy0VdBzKD07KWv2CBZYmPt5uC/sDRSUpdnAyV4cfQOYvZWpCD2YlLcHrlFj7vevveOnBQObZsVAot14WncIpkEKg7y7/zoRQgA6cLoWPw9MA2m4Hopur/NNQKp/O8EVLcDybl7N/cjP5Cypjw0IM6oW605dFVzVs=
+	t=1789078793; cv=none; b=YFprpOkFbsgC8U+8l/EX+n0nwdl5iqVIBU0CvVMTXhEQRgMFxD1ddywggzyePrWSld2+Ku6yf5XRuLSoIU5+UVg5yk2hiysbwVo06st15sviowsJRCZchvIeXzQuDeyNjtKDqniXuKto+yoBc/merNN00szNuUAcQIc+R/TICdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1789078793; c=relaxed/simple;
-	bh=cVC8QHVdM1iUh3+MJEq40ZJsau0S+T8W1sAuPs+QtB4=;
+	bh=s+hOzkSuye3kU3kpk94W1+7penkRt7gxI4zAAVQeNLI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=a4WzY77DExvkALkyFZcrbgs0SLhNUnfsCXNJa2P5NaWg2TQyE8qGYlbxd8iIwuk9VSieyLf333noc/94EjBFetDM2LWNhCUbcrqlOvI3BTWZmdDxF5JF+ILkfHpUd0hQfI2nzlbeyCCOdmX3wQy8D1rFcenO4wPZMBCPQPIGEeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=VJUDXVHg; arc=none smtp.client-ip=193.104.135.124
+	 MIME-Version:Content-Type; b=XV90LV3k6VZuwa0/1Y74LK9VwyfapCy6DGkOBRuDvfWUmqUHCwJ5q3pfNH8QIDmBKp+lukXQc/wHZDpaDOtQcxmcAjOoqnapT7u+IsNKDxfdzJugvEjMvOy+rDZUTdl9z1/+UuuCODWJBWbIRCPIYZj51umy/6nZy9tQAAXljVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=iTLmFyb3; arc=none smtp.client-ip=193.104.135.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="VJUDXVHg"
+	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="iTLmFyb3"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fiberby.net;
 	s=202008; t=1789078778;
-	bh=cVC8QHVdM1iUh3+MJEq40ZJsau0S+T8W1sAuPs+QtB4=;
+	bh=s+hOzkSuye3kU3kpk94W1+7penkRt7gxI4zAAVQeNLI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VJUDXVHgflw2mdqLemKD4fLBcaLmlGQvqpNmizyaBwFYYhswJrTZ3BCLcvoKOlaKn
-	 bC+MwDrj/LOG8O9TJsOdtIJVX37RBOibphrYi4V46f5t7pEoCVA7ppXB6pLAVsb6zQ
-	 /F0QCVAa3yEOyVQqEQUIj5lEjloMOe3paIZZFKGQJydkX+pRLwpCjnriaMCKFaEUy2
-	 bARYEEIb6OnUmakqk4jE5u6Dh1/DLTIIKgY2MEj5+DuSLrh6AOuNSZQleUHCE9EmzT
-	 8/QkeqEwp2UQ+N6ShbGhSAvb23Z+DNhdMUmjNFaNF1QEgMOx0UbDJCX1OvTOrZFZ4k
-	 jWmacSilrh4lQ==
+	b=iTLmFyb3hVpMkawhgWEa68ONsJaWPNcNx984HoWKKBpDvitTY0HwLYcLu3Vnh5jER
+	 LRKC5cAAAQI/d6Uxvk+TUda/thCd7RU84bBuhyABoR2a9q0zEqigWQtvYt15kyF/5m
+	 a9NG75APPwNWAEGQpPkwGICisMBXMwFolyz5lsH0a8t2C1J5hTI8q688YUIMekpAvT
+	 NwEYQTuAFZYj9wI90kw34YCMk62tzEWvRg0jciabCVBXMtObz9ADC6ORaJRt33rOQF
+	 tplG5CyLcYhoYnAiYHAQniZLyV/xFVOEfwA5Fg29mCEoHmNobZ0yo5zAXKz3s9JtU8
+	 GxWM3YBiKudFA==
 Received: from x201s (193-104-135-243.ip4.fiberby.net [193.104.135.243])
-	by mail1.fiberby.net (Postfix) with ESMTPSA id EF7BD6010A;
-	Thu, 10 Sep 2026 22:19:37 +0000 (UTC)
+	by mail1.fiberby.net (Postfix) with ESMTPSA id 5685060114;
+	Thu, 10 Sep 2026 22:19:38 +0000 (UTC)
 Received: by x201s (Postfix, from userid 1000)
-	id 19516202556; Thu, 10 Sep 2026 22:17:39 +0000 (UTC)
+	id 57E3C201E22; Thu, 10 Sep 2026 22:17:35 +0000 (UTC)
 From: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>
 To: netdev@vger.kernel.org
 Cc: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
@@ -49,9 +49,9 @@ Cc: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
 	Stanislav Fomichev <sdf.kernel@gmail.com>,
 	Heng Guo <heng.guo@windriver.com>,
 	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH net-next 7/8] netlink: specs: rt-link: fix ifinfo-flags names
-Date: Thu, 10 Sep 2026 22:17:27 +0000
-Message-ID: <20260910221733.1021864-8-ast@fiberby.net>
+Subject: [RFC PATCH net-next 1/8] netlink: specs: nftables: add uapi-header
+Date: Thu, 10 Sep 2026 22:17:21 +0000
+Message-ID: <20260910221733.1021864-2-ast@fiberby.net>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260910221733.1021864-1-ast@fiberby.net>
 References: <20260910221733.1021864-1-ast@fiberby.net>
@@ -64,54 +64,25 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Correct the names of `enum net_device_flags` constants:
-
-- IFF_POINTOPOINT should be "pointopoint", not "point-to-point".
-- IFF_NOTRAILERS should be "notrailers", not "no-trailers".
-- IFF_NOARP should be "noarp", not "no-arp".
-- IFF_ALLMULTI should be "allmulti", not "all-multi".
-- IFF_AUTOMEDIA should be "automedia", not "auto-media".
+Define uAPI header, as needed for C code gen.
 
 Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
 ---
- Documentation/netlink/specs/rt-link.yaml | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ Documentation/netlink/specs/nftables.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/Documentation/netlink/specs/rt-link.yaml b/Documentation/netlink/specs/rt-link.yaml
-index c84bbd58cfcb..6639b7f5677b 100644
---- a/Documentation/netlink/specs/rt-link.yaml
-+++ b/Documentation/netlink/specs/rt-link.yaml
-@@ -25,17 +25,17 @@ definitions:
-       -
-         name: loopback
-       -
--        name: point-to-point
-+        name: pointopoint
-       -
--        name: no-trailers
-+        name: notrailers
-       -
-         name: running
-       -
--        name: no-arp
-+        name: noarp
-       -
-         name: promisc
-       -
--        name: all-multi
-+        name: allmulti
-       -
-         name: master
-       -
-@@ -45,7 +45,7 @@ definitions:
-       -
-         name: portsel
-       -
--        name: auto-media
-+        name: automedia
-       -
-         name: dynamic
-       -
+diff --git a/Documentation/netlink/specs/nftables.yaml b/Documentation/netlink/specs/nftables.yaml
+index 21edf3d25f34..76f69ed82a24 100644
+--- a/Documentation/netlink/specs/nftables.yaml
++++ b/Documentation/netlink/specs/nftables.yaml
+@@ -2,6 +2,7 @@
+ ---
+ name: nftables
+ protocol: netlink-raw
++uapi-header: linux/netfilter/nf_tables.h
+ protonum: 12
+ 
+ doc: >-
 -- 
 2.55.0
 
