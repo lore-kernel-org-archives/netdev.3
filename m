@@ -1,79 +1,59 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9832036403B;
-	Thu, 10 Sep 2026 01:31:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E7DA33AD8B
+	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 01:36:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789003869; cv=none; b=kjBX0eB0Udku7YwRmSnCq1tDh+HdTt+Oom0aRb5CmYr8fVOcltxUoT08FQ8lRMemvANe5S5MdBtCulUdRQ56ylQYiQEVKgRUhC4W11pvllJzUEVaJUgeOoauUPlI/5t0GX7ICOpiIWTWF7sxNgOOeZE4TFnpCImnLoNUF1PJ3IU=
+	t=1789004162; cv=none; b=XExYG7yq93vWEZjXrQhwCn9xBpDTQRUcgwfMe0gCp1gMh9e9RzvdP+HSNaDxPSRbvk32YkRQVnCvIJs+g0Ovrr4dydBNMqTjV4iNfiO86+5CWmVVoMnbY4NfBvBK+9S0mfSofNxpm7XO/1p3rx8TIkg0Acrburi77Wq+T/AB44E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789003869; c=relaxed/simple;
-	bh=bDTc6jI1BmA0oZ3OVWzuKEO00/CAnCkGqELJctJSmR4=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=OmkqK+7O17uoNQNOFDDM1CntKuDLs87m0Ej5u9d3XjFX+XTqKjOdIhAdvefwpMdUPlH7RpgjN/cC5Yf1X4RqLZwr1HdJc/YDEGMLWPMCF8dmdRrDG+QaXYPBO0v8X1oUh1TyozKahH/MEKeA4eB9dbWvJDXh9FkUhL+SFRWekM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wd3PTpEr; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789004162; c=relaxed/simple;
+	bh=sK4u1Ajqh97sJcnafXqWfCBCPAPipr78xeApWYH+JFc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=vGMSqdkpI78tqJrTCIvAEqFDrKxW7z9nC6PxjZByjkz1VGP+pwwcAe8/Y5eENNyl1ubrfOaOqef3eyUbO5Lo4e+G6kNYEj0QgfGe50gCwxre4mEPkD8xlW9CvPDLGQd+hsNz4/kWT83Ltalkf+JvtjinDV5bftKgzhhHNuZTkJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cV8OJQo1; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wd3PTpEr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18C6B1F000FF;
-	Thu, 10 Sep 2026 01:31:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cV8OJQo1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 642EB1F00893;
+	Thu, 10 Sep 2026 01:36:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789003866;
-	bh=8XPwstDtkHETmPVIB6J1Duz+hiJLoNXh4efcWyxV2bs=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=Wd3PTpErE7khPS1vyPRDZSZmovSuwcLOYSgaE9rRWV/P8Go1Y3IkzxBUuwNYlWR+j
-	 AQuhIm/LF/yLf9mT9XBGWKgeVvSqxr+waJ6zMMCiTRE+HpCtDzKks+0aqJnHo3NtyW
-	 GcxieK5s0+TMBTu6mDHAi7r9q4OqQ4ZSTcjS4qRLy/xgFEOlaynhjGFYMg4jPoefli
-	 f/ZV9tia76I4Bs/2uEIORFRZ78hW4uJB12UCxJdNvtH5GqLsRe/QKjLH7e36noaQSJ
-	 ZgDMqWKMwtw7Z+31gamon09goBdnXA1OqI3+RFAd/OtTNop01MrRtNwV6dqiNxCO10
-	 4xRc3SnHbCb+g==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 19AE2380CEC7;
-	Thu, 10 Sep 2026 01:30:05 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20260515; t=1789004160;
+	bh=xdxFQj89d7ZmpT6S8J1AL8x3PT/s291j8lw5baFXfx4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=cV8OJQo1ym+sD4PK3fkNaoRyhqcFeZdqcbRkvnMfUmiEAGHFuwQ39LiOdBodmMTSo
+	 Su6O/3NvY2P/nW5MIjCj0n3yEVeSDXoeoZ54q5tN+5rxuKUL7ZT84QShcn9nVyN/cx
+	 W/vfSM8mgEA/eP9lxqEmNABy1lJbyjMdSpiyDt6TwQEy3YahXJbNLThrmzA2XRaPO2
+	 KSBYq9NUQCKtTe3qNaYtrNtno00OaQV1Ou19vO0f3ZDUNQ6Hqg7/55PIGz1BCgeht5
+	 VLGYAJ51BE7VkDqyaWFDxnRY/QlovY4+T4obxnNaTBWVuDpmbMV8Yw2013q7ryI1vN
+	 pF2cyZDSi26hg==
+Date: Wed, 9 Sep 2026 18:35:59 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: netdev-bot+sashiko@kernel.org
+Cc: edumazet@google.com, davem@davemloft.net, pabeni@redhat.com,
+ horms@kernel.org, andrew+netdev@lunn.ch, idosch@nvidia.com,
+ kuniyu@google.com, netdev@vger.kernel.org, eric.dumazet@gmail.com
+Subject: Re: [PATCH v2 net-next 5/8] vxlan: dynamically allocate struct
+ vxlan_config
+Message-ID: <20260909183559.24898956@kernel.org>
+In-Reply-To: <178889063414.219967.17640576039088216642@kernel.org>
+References: <20260906180111.1973188-6-edumazet@google.com>
+	<178889063414.219967.17640576039088216642@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] docs: networking: page_pool: Use
- page_pool_put_netmem_bulk() in the kernel-doc directive
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <178900380388.1141351.12222446095741061422.git-patchwork-notify@kernel.org>
-Date: Thu, 10 Sep 2026 01:30:03 +0000
-References: <20260905084711.40105-1-kmehltretter@gmail.com>
-In-Reply-To: <20260905084711.40105-1-kmehltretter@gmail.com>
-To: Karl Mehltretter <kmehltretter@gmail.com>
-Cc: hawk@kernel.org, ilias.apalodimas@linaro.org, kuba@kernel.org,
- edumazet@google.com, pabeni@redhat.com, netdev@vger.kernel.org,
- corbet@lwn.net, linux-doc@vger.kernel.org, skhan@linuxfoundation.org,
- rdunlap@infradead.org, aleksander.lobakin@intel.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Hello:
+On Tue, 08 Sep 2026 18:03:54 +0000 netdev-bot+sashiko@kernel.org wrote:
+> - [High] vxlan_config_apply() publishes the newly kmemdup()'ed
+>   configuration with a plain store and immediately reclaims the previous=
+=E2=80=A6
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Sat,  5 Sep 2026 10:47:11 +0200 you wrote:
-> page_pool.rst asks net/core/page_pool.c for page_pool_put_page_bulk().
-> Commit 024bfd2e9d80 ("page_pool: make page_pool_put_page_bulk() handle
-> array of netmems") renamed the function to page_pool_put_netmem_bulk().
-> Since then the directive finds nothing and the bulk release helper is
-> missing from the rendered page.
-> 
-> Use the current name.
-> 
-> [...]
-
-Here is the summary with links:
-  - [net-next] docs: networking: page_pool: Use page_pool_put_netmem_bulk() in the kernel-doc directive
-    https://git.kernel.org/netdev/net-next/c/bcf03907c5ec
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+This and the complaint on patch 2 do seem like something we should
+address. I'm also tempted to take patch 1 via net, since we're=20
+close to Thursday's PR let me do that. And if you feel strongly
+that AI is nit picking please repost the other 7 after the net>-next
+merge tomorrow
