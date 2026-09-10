@@ -1,437 +1,408 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71135582BA5;
-	Thu, 10 Sep 2026 18:00:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789063261; cv=none; b=kqlojJ6uRAg3QeDQ9zYGRvNzcbVNC+MpxER6mf9FMYGjE2PdAGDhCpkhe/uivWFoX8f5egkRuBbmvinHHBkMkz3mOiUAkmnCW/1Q0hl8V15xnLcgEZ2kh+i9Ht7+Y/neHCDJb9JRdmncB8OVH0KPguuc/xQn5OC+6OmjE2uNMJM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789063261; c=relaxed/simple;
-	bh=/ahQTbHtkmXc0vVtpv5rFUws88TJMKDVz4HzNdfcDC8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=VXnxubsuqlkJdMcj1jIYQ8emOuZsPsXcB0nFArrzjUGDpqHUaZdkOtAes0wbwpXyQ/UGHaubVTR3ZQKbdIeTnpGvHt3GdTKTYzm2a7SPCM1yN37xF7Zso7BG+3HpGBY9PTPFIoYfKB3ZL3NQiGB7kFCwNRTA1HCpSrC0FFy+cYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IIAj48mH; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 065CD3655FC;
+	Thu, 10 Sep 2026 18:07:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789063640; cv=pass; b=KsT4LD/ezPM8A2C8YJfgRUza9oTZKp2gqo1y7cepJbgJ8Fgw9cmJw8rxEuQPho/+asVzf3A2AnXXEfHgAvRruWumgT2gmbEtLYCEVYnVQ0EUEZgfDcctU763EAXQbvfgFYzNwKMbRDRa2PCszpCqgW6QQGCIxZh9tXlJpVAUd2s=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789063640; c=relaxed/simple;
+	bh=ZZ9k9BJPDjyec6NUEKK5xZV+5aftBFmoP6dqleK93NA=;
+	h=Message-ID:Subject:From:To:Cc:In-Reply-To:References:Content-Type:
+	 Date:MIME-Version; b=pEd0tC/79gy9UTvlF8W2p5L9zE+9tsJSWbAJ7Xl0gNrlC6acnz6b0dmK0sx2Lf0m59xRcjmZF6fVUstCevQ4Q/XmQKlRaXI4v8efbLnfchpmb75Y3lKghBfMFQwppUe2Hh8upf9bvtWZWZZADEJCFeatw8OU0DKQ5DZ80fQXWC0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rong.moe; spf=pass smtp.mailfrom=rong.moe; dkim=pass (2048-bit key) header.d=rong.moe header.i=i@rong.moe header.b=cYGoeRQi; arc=pass smtp.client-ip=136.143.188.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=rong.moe
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rong.moe
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IIAj48mH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98FE31F00893;
-	Thu, 10 Sep 2026 18:00:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789063259;
-	bh=JwFBOCwRWWpE4JTW9YlYjZhziYvJsFQmmybzwVleQPY=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=IIAj48mHz0vitv6ZMpc48JmRwjLWtfMepdzJo/ZELxYnkVW/QtI0YYAnu8aoKfPzz
-	 SZNCgBioM3ZvgRbIJjv4F+Ih1v/zw+bOS2AT0j9BYrj6N+V2TIjVWYpXg7M6T5CUnN
-	 iP57hrnmOvpoaSj/dHmMM5dkI5ArQxESFQ6jpE4smRzwjdOrjrpKk2dsM1Ieu/r+qB
-	 6F4gATniEfpNEM31bmEhZl0BBXGiblqUUa1ZjJC99SIiSm2W/FfrX31DVb0aV0ZlTZ
-	 JaQ8oVYNmkey1DtYGfTnb1as0KsZ4rinCcaCXU9S125QhgItSShLFO0jyFD5CJhhzD
-	 AyAJg3rFOt0Fg==
-From: Jeff Layton <jlayton@kernel.org>
-Date: Thu, 10 Sep 2026 14:00:38 -0400
-Subject: [PATCH 5/5] selftests/nfsd: exercise the userspace-rpcbind
- listener_set flag
+	dkim=pass (2048-bit key) header.d=rong.moe header.i=i@rong.moe header.b="cYGoeRQi"
+ARC-Seal: i=1; a=rsa-sha256; t=1789063612; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=dTq9HnrijxZVGb1l75Lla0qH6Bqe/9AMX6xReITqc5sDkBx0WQDro5KtgO/GHB8x81Cj545e2EGrvlww+sh0e5zov87TJvYHHDKiREqgZUbfupr936LkQjLJwo3L4a4VXSB0sSKzT+a6mGliLS9zeIMwdT9hjX4J3ZuvEIoRJXo=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1789063612; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=2SfrWRVMTCicD0vrJdm191v2eUq49w3e51Pb9Wn9R+s=; 
+	b=f6NQfwxKjRHJgA1IcA6j2zmhYL3pApoRvbQT9bB74i4u0mrVaoPVs6LNCFh4655iwY9y3gDs6Y3POVozfJu4+b9QzLl0V7b5v3Lbs5w1ghGDxCMQn9L74sqXD3w50CK0MxB9UKOTM6sV7gHrxnQM1KUj8JuSnXEOd7aHT8U9d7U=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=rong.moe;
+	spf=pass  smtp.mailfrom=i@rong.moe;
+	dmarc=pass header.from=<i@rong.moe>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1789063612;
+	s=zmail2048; d=rong.moe; i=i@rong.moe;
+	h=Message-ID:Subject:Subject:From:From:To:To:Cc:Cc:In-Reply-To:Content-Type:Content-Transfer-Encoding:Date:Date:MIME-Version:Message-Id:Reply-To;
+	bh=2SfrWRVMTCicD0vrJdm191v2eUq49w3e51Pb9Wn9R+s=;
+	b=cYGoeRQiXZuS63LAJT9evzWh7kc94SDr5dsRLNofhzzgTTXKymjN6+6rRmj84U/g
+	Dsc+6YgIr4EI9LCs+zMKnoI970M12AJIA2k97loW97EItvYFgDZm6Wh9tBDH0aJ7nqE
+	hASjpfji5sgUNGcWtqbGFuzzJVGHzDtwoXeya6VKVAAWuxWkoe19OTgp+frIWPzjBDc
+	9ET0lG7BApz60gRC+Gqkuk6akISmspn68jy1LZms3p042P4/5qgYUplJ5W/dRqxgw0n
+	v92hdIu1qGYr/Zyq6+DjFTKjOH+HvuyhtDjgnanOcI8KLyL+eYRcYkmoTYy2NGSZbu9
+	VWaXBKEZPw==
+Received: by mx.zohomail.com with SMTPS id 1789063609615346.12294702549775;
+	Thu, 10 Sep 2026 11:06:49 -0700 (PDT)
+Message-ID: <cdecf33094742331552a4b86d43673cdf1590bf2.camel@rong.moe>
+Subject: Re: [PATCH v6 04/12] leds: trigger: Add offloaded() callback and
+ provide trigger_may_offload attribute
+From: Rong Zhang <i@rong.moe>
+To: Lee Jones <lee@kernel.org>
+Cc: Pavel Machek <pavel@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, Thomas =?ISO-8859-1?Q?Wei=DFschuh?=
+ <linux@weissschuh.net>,  Benson Leung <bleung@chromium.org>, Guenter Roeck
+ <groeck@chromium.org>, Marek =?ISO-8859-1?Q?Beh=FAn?=	 <kabel@kernel.org>,
+ Mark Pearson <mpearson-lenovo@squebb.ca>, "Derek J. Clark"	
+ <derekjohn.clark@gmail.com>, Hans de Goede <hansg@kernel.org>, Ilpo
+ =?ISO-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>, Ike Panhc
+ <ikepanhc@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, Jakub Kicinski
+ <kuba@kernel.org>, Vishnu Sankar <vishnuocv@gmail.com>, Vishnu Sankar
+ <vsankar@lenovo.com>, 	linux-leds@vger.kernel.org, netdev@vger.kernel.org,
+ linux-doc@vger.kernel.org, 	linux-kernel@vger.kernel.org,
+ chrome-platform@lists.linux.dev, 	platform-driver-x86@vger.kernel.org
+In-Reply-To: <20260910150535.GG1051768@google.com>
+References: <20260902-leds-trigger-hw-changed-v6-0-55693cd78877@rong.moe>
+	 <20260902-leds-trigger-hw-changed-v6-4-55693cd78877@rong.moe>
+	 <20260910150535.GG1051768@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 11 Sep 2026 02:01:41 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260910-nfsd-norpcb-v1-5-b4d5182d634c@kernel.org>
-References: <20260910-nfsd-norpcb-v1-0-b4d5182d634c@kernel.org>
-In-Reply-To: <20260910-nfsd-norpcb-v1-0-b4d5182d634c@kernel.org>
-To: Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
- Chuck Lever <cel@kernel.org>, NeilBrown <neil@brown.name>, 
- Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, 
- Tom Talpey <tom@talpey.com>, "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
- Donald Hunter <donald.hunter@gmail.com>, Shuah Khan <shuah@kernel.org>
-Cc: linux-nfs@vger.kernel.org, linux-kernel@vger.kernel.org, 
- netdev@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- Jeff Layton <jlayton@kernel.org>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=12049; i=jlayton@kernel.org;
- h=from:subject:message-id; bh=/ahQTbHtkmXc0vVtpv5rFUws88TJMKDVz4HzNdfcDC8=;
- b=owEBbQKS/ZANAwAKAQAOaEEZVoIVAcsmYgBqovBR8oltwDYgNnAyYAdEcoA2jQDsWRQTDDSEz
- n8gOwv50RmJAjMEAAEKAB0WIQRLwNeyRHGyoYTq9dMADmhBGVaCFQUCaqLwUQAKCRAADmhBGVaC
- FV/lD/wOlZ8uMGKjBkIdU2xsFRUIw8+G6kgRhy+I024fNcBL0wDcYPQIBV7B9NoJOxGB0SHc7uX
- Q4cR1d7rx76pybTA4QK19T4z16UG8exqA5D8Ky7e6daII/B5oJJ5zxoeQ5d5kBtHVo5A+cK1XVS
- p5EORhjumYI53I+RrfVC82Oja5EKDuK2tNhAnALt1zKD1KRsk6RPUfU9+UFWO6ZIZNCKfYuPcH7
- gNYRjGyfZReA3wiTo3lTs32PE8SqlYD6qTRFJEgoh2HCmAUjMah8jrkXHi42fCcrBnY5z6ta1q7
- z1DfB+nrZcRLCqR0MORQuYPRDMVzSKtECw+t11gMT+cKmUTClxilHzm89yiNeM/mUt0fh7ee2/K
- tarVfWYf3SKvKANwlYNhsFK4/YBT+Sz2thghsG+jo0b8CLfOK6O+Q40U1yx5xfubazJNSusAbrt
- Ruko/cyWCq9x5QyjE78gCUyTIewPAvef/9Ocy8mfxgm3dyo+wE0Mv3Zi3IC1HGO1oFnUiAtZaM6
- 9RX8nE7zyDU6Bm8n4dlY/1t+daYEA70bQvWF/MjzsDC4qswXy40YQm3rQrYH4rEqdK3KCfwouY+
- dWOb5NCkpdDHkLaKY/fx6JF3/+qp6LS524iv+YQqxGws+UZ8kWvYPKQF7hMY7jwoDe+SiJIPjrr
- Kxbe1MDAsDx/IEA==
-X-Developer-Key: i=jlayton@kernel.org; a=openpgp;
- fpr=4BC0D7B24471B2A184EAF5D3000E684119568215
+User-Agent: Evolution 3.56.2-10+b1 
+X-ZohoMailClient: External
 
-Cover the flag that moves rpcbind registration to the caller.
+Hi Lee,
 
-rpcb_userspace_no_traffic is the one that matters. The errno says nothing
-about whether the kernel talked to rpcbind, but the stub counters do: a
-request that carries the flag must leave both at zero, which is what shows
-that svc_bind() and svc_register() were both skipped.
+Thanks for your review.
 
-The rest cover the reply and the ownership rule:
+On Thu, 2026-09-10 at 16:05 +0100, Lee Jones wrote:
+> On Wed, 02 Sep 2026, Rong Zhang wrote:
+>=20
+> > There are multiple triggers implementing hardware control. However, the
+> > LED trigger core doesn't really know the hardware control (offloaded)
+> > state since the coordination is done directly between the trigger and
+> > the LED driver. It can only assume private triggers as offloaded and
+> > generic ones as not offloaded.
+> >=20
+> > Add an offloaded() callback so that triggers can report their offloaded
+> > states to the LED trigger core. When unimplemented, it defaults to true
+> > for private triggers and false for generic ones to keep the current
+> > behavior unchanged.
+> >=20
+> > With that, provide a new attribute "trigger_may_offload", so that
+> > userspace can determine:
+> >=20
+> > - if the LED device supports hardware control (supported =3D> visible)
+> > - which trigger is the hardware control trigger selected by the LED
+> >   device
+> > - if the trigger is selected ("<foo_trigger>")
+> > - if the trigger is offloaded ("[foo_trigger]")
+> >=20
+> > Note: the documentation describes the attribute as "returning a list"
+> > despite the LED core currently only supports one hardware control
+> > trigger per LED device. This is intentional to make the attribute
+> > extensible in the future without breaking userspace.
+> >=20
+> > Acked-by: Ike Panhc <ikepanhc@gmail.com>
+> > Signed-off-by: Rong Zhang <i@rong.moe>
+> > ---
+> > Changes in v6:
+> > - Update Date: and KernelVersion: for the document of
+> >   /sys/class/leds/<led>/trigger_may_offload
+> >=20
+> > Changes in v3:
+> > - Rearrange the series so that the code using the offloaded() callback =
+is
+> >   introduced before the driver implementation (thanks Thomas Wei=C3=9Fs=
+chuh)
+> > - Reword documentation (ditto)
+> > - Adopt guard() and lockdep (ditto)
+> > - Adopt __led_trigger_is_hw_controlled() from newly-integrated PATCH 1
+> > ---
+> >  Documentation/ABI/testing/sysfs-class-led | 22 ++++++++++++++++++++++
+> >  Documentation/leds/leds-class.rst         | 20 ++++++++++++++++++++
+> >  drivers/leds/led-class.c                  | 22 ++++++++++++++++++++++
+> >  drivers/leds/led-triggers.c               | 30 +++++++++++++++++++++++=
++++++++
+> >  drivers/leds/leds.h                       |  2 ++
+> >  include/linux/leds.h                      |  1 +
+> >  6 files changed, 97 insertions(+)
+> >=20
+> > diff --git a/Documentation/ABI/testing/sysfs-class-led b/Documentation/=
+ABI/testing/sysfs-class-led
+> > index d4c918cc11a1..e3605fc55fa8 100644
+> > --- a/Documentation/ABI/testing/sysfs-class-led
+> > +++ b/Documentation/ABI/testing/sysfs-class-led
+> > @@ -78,6 +78,28 @@ Description:
+> >  		(which would often be configured in the device tree for the
+> >  		hardware).
+> > =20
+> > +What:		/sys/class/leds/<led>/trigger_may_offload
+>=20
+> *_to_hw?
 
-- rpcb_userspace_reply. The ack flag, a non-empty program list, and the
-  listener that came up. nfslocalio is hidden, so it must be absent.
-- rpcb_userspace_no_v4_udp. NFSv4 carries no-udp and NFSv3 does not.
-- rpcb_userspace_nfsacl_follows_nfs. CONFIG_NFSD_V3_ACL is invisible to the
-  test, so assert only that nfsacl v3 implies nfs v3.
-- rpcb_userspace_busy and rpcb_userspace_busy_reverse. Ownership cannot
-  change under a live serv, in either direction.
-- rpcb_userspace_teardown. Create and destroy a flagged serv three times,
-  then confirm that a kernel-owned serv still reaches rpcbind. An
-  unbalanced rpcb_put_local() would break the last step.
-- rpcb_userspace_many_listeners. Forty listeners, which is more than
-  GENLMSG_DEFAULT_SIZE would have held. A reply sized from that constant
-  instead of from its contents returns -EMSGSIZE with every listener
-  already up.
+ACK.
 
-genl_request_reply() grew an attribute argument, because listener_set now
-answers with a reply message rather than a bare ack.
+>=20
+> > +Date:		September 2026
+> > +KernelVersion:	7.4
+> > +Contact:	linux-leds@vger.kernel.org
+> > +Description:
+> > +		Names and states of triggers that may be offloaded to hardware.
+> > +		Such triggers are also called "hardware control trigger" in some
+> > +		context.
+> > +
+> > +		Only exists when the LED supports trigger offload.
+> > +
+> > +		Reading this file returns a list of triggers that are capable to
+> > +		be offloaded. The optional brackets around the trigger name
+> > +		indicate the state of the current trigger:
+> > +
+> > +		- `foo_trigger`: the trigger is not selected.
+> > +		- `<foo_trigger>`: the trigger is selected, but falls back to
+> > +		  software blink for some reason (e.g., incompatible trigger
+> > +		  parameters)
+> > +		- `[foo_trigger]`: the trigger is selected and offloaded to
+> > +		  hardware.
+> > +
+> >  What:		/sys/class/leds/<led>/inverted
+> >  Date:		January 2011
+> >  KernelVersion:	2.6.38
+> > diff --git a/Documentation/leds/leds-class.rst b/Documentation/leds/led=
+s-class.rst
+> > index 3913966cfdac..2d41a6db602c 100644
+> > --- a/Documentation/leds/leds-class.rst
+> > +++ b/Documentation/leds/leds-class.rst
+> > @@ -242,6 +242,9 @@ ops and needs to declare specific support for the s=
+upported triggers.
+> > =20
+> >  With hw control we refer to the LED driven by hardware.
+> > =20
+> > +A sysfs attribute `trigger_may_offload` is provided for userspace to
+> > +query supported triggers and their states.
+> > +
+> >  LED driver must define the following value to support hw control:
+> > =20
+> >      - hw_control_trigger:
+> > @@ -298,6 +301,15 @@ LED driver must implement the following API to sup=
+port hw control:
+> >                  Returns a pointer to a struct device or NULL if nothin=
+g
+> >                  is currently attached.
+> > =20
+> > +LED trigger should implement the following API to indicate hw control:
+> > +    - offloaded:
+>=20
+> hw_offloaded?
 
-Assisted-by: LLM
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
----
- .../testing/selftests/nfsd/nfsd_netlink_listener.c | 284 ++++++++++++++++++++-
- 1 file changed, 281 insertions(+), 3 deletions(-)
+ACK.
 
-diff --git a/tools/testing/selftests/nfsd/nfsd_netlink_listener.c b/tools/testing/selftests/nfsd/nfsd_netlink_listener.c
-index 106360f87b99..56ac2c11c07f 100644
---- a/tools/testing/selftests/nfsd/nfsd_netlink_listener.c
-+++ b/tools/testing/selftests/nfsd/nfsd_netlink_listener.c
-@@ -46,6 +46,9 @@
- 
- #include "../kselftest_harness.h"
- 
-+#define NFS_PROGRAM			100003
-+#define NFS_ACL_PROGRAM			100227
-+
- #define NLA_ALIGN4(len)			(((len) + 3) & ~3)
- #define TEST_PORT			20049
- #define MAX_LISTENERS			8
-@@ -173,15 +176,24 @@ static int genl_request(uint8_t cmd, const char *attrs, int attrs_len)
- 	return ret;
- }
- 
--/* Send a command and return the full reply message; -errno on failure. */
--static int genl_request_reply(uint8_t cmd, char *rbuf, size_t rlen)
-+/*
-+ * Send a command with attributes and return the full reply message; -errno
-+ * on failure. NLM_F_ACK is left off: the kernel reports an error either way,
-+ * so the first message back is the reply whenever there is one.
-+ */
-+static int genl_request_reply_attrs(uint8_t cmd, const char *attrs,
-+				    int attrs_len, char *rbuf, size_t rlen)
- {
--	char buf[256];
-+	char buf[1 << 20];
- 	struct nlmsghdr *nlh = (void *)buf;
- 	int fd = genl_open();
- 	int off, n, ret;
- 
- 	off = genl_hdr(buf, nfsd_family, NLM_F_REQUEST, cmd);
-+	if (attrs_len) {
-+		memcpy(buf + off, attrs, attrs_len);
-+		off += attrs_len;
-+	}
- 	nlh->nlmsg_len = off;
- 
- 	if (send(fd, buf, off, 0) < 0)
-@@ -198,6 +210,11 @@ static int genl_request_reply(uint8_t cmd, char *rbuf, size_t rlen)
- 	return ret;
- }
- 
-+static int genl_request_reply(uint8_t cmd, char *rbuf, size_t rlen)
-+{
-+	return genl_request_reply_attrs(cmd, NULL, 0, rbuf, rlen);
-+}
-+
- /* Resolve the "nfsd" genl family id; -1 if not registered. */
- static int genl_resolve_nfsd(void)
- {
-@@ -383,6 +400,111 @@ static int version_set_only(uint32_t major, uint32_t minor)
- 	return genl_request(NFSD_CMD_VERSION_SET, attrs, NLA_ALIGN4(inner));
- }
- 
-+/* ------------------- userspace-rpcbind ------------------- */
-+
-+struct rpcb_ent {
-+	uint32_t program;
-+	uint32_t version;
-+	uint32_t flags;
-+};
-+
-+/* More listeners than GENLMSG_DEFAULT_SIZE would have held. */
-+#define RPCB_MANY_LISTENERS		40
-+
-+struct rpcb_reply {
-+	int acked;			/* saw NFSD_A_SERVER_SOCK_USERSPACE_RPCBIND */
-+	int nprog;
-+	struct rpcb_ent prog[16];
-+	int naddr;			/* every addr nest, not just the stored ones */
-+	int nlistener;
-+	struct listener_ent listener[MAX_LISTENERS];
-+};
-+
-+/* Append the userspace-rpcbind request flag. */
-+static int put_userspace_rpcbind(char *buf, int off)
-+{
-+	return put_attr(buf, off, NFSD_A_SERVER_SOCK_USERSPACE_RPCBIND, NULL, 0);
-+}
-+
-+static void parse_rpcb_nest(const struct nlattr *na, struct rpcb_ent *e)
-+{
-+	const struct nlattr *in = (const void *)((const char *)na + NLA_HDRLEN);
-+	int ileft = na->nla_len - NLA_HDRLEN;
-+
-+	memset(e, 0, sizeof(*e));
-+	while (ileft >= (int)NLA_HDRLEN) {
-+		const void *d = (const char *)in + NLA_HDRLEN;
-+
-+		switch (in->nla_type & NLA_TYPE_MASK) {
-+		case NFSD_A_RPCBIND_PROGRAM:
-+			e->program = *(const uint32_t *)d;
-+			break;
-+		case NFSD_A_RPCBIND_VERSION:
-+			e->version = *(const uint32_t *)d;
-+			break;
-+		case NFSD_A_RPCBIND_FLAGS:
-+			e->flags = *(const uint32_t *)d;
-+			break;
-+		}
-+		ileft -= NLA_ALIGN4(in->nla_len);
-+		in = (const void *)((const char *)in + NLA_ALIGN4(in->nla_len));
-+	}
-+}
-+
-+/*
-+ * Send a listener_set that asks to own rpcbind, and parse the reply.
-+ * Returns 0 on success or -errno.
-+ */
-+static int listener_set_rpcb(char *attrs, int off, struct rpcb_reply *out)
-+{
-+	char rbuf[64 * 1024];
-+	const struct nlmsghdr *nlh = (const void *)rbuf;
-+	const struct nlattr *na;
-+	int left, n;
-+
-+	off = put_userspace_rpcbind(attrs, off);
-+	memset(out, 0, sizeof(*out));
-+
-+	n = genl_request_reply_attrs(NFSD_CMD_LISTENER_SET, attrs, off,
-+				     rbuf, sizeof(rbuf));
-+	if (n < 0)
-+		return n;
-+
-+	out->nlistener = parse_listener_get(rbuf, n, out->listener,
-+					    MAX_LISTENERS);
-+
-+	na = (const void *)(rbuf + NLMSG_HDRLEN + GENL_HDRLEN);
-+	left = nlh->nlmsg_len - NLMSG_HDRLEN - GENL_HDRLEN;
-+	while (left >= (int)NLA_HDRLEN) {
-+		switch (na->nla_type & NLA_TYPE_MASK) {
-+		case NFSD_A_SERVER_SOCK_USERSPACE_RPCBIND:
-+			out->acked = 1;
-+			break;
-+		case NFSD_A_SERVER_SOCK_ADDR:
-+			out->naddr++;
-+			break;
-+		case NFSD_A_SERVER_SOCK_RPCBIND:
-+			if (out->nprog < (int)ARRAY_SIZE(out->prog))
-+				parse_rpcb_nest(na, &out->prog[out->nprog++]);
-+			break;
-+		}
-+		left -= NLA_ALIGN4(na->nla_len);
-+		na = (const void *)((const char *)na + NLA_ALIGN4(na->nla_len));
-+	}
-+	return 0;
-+}
-+
-+static struct rpcb_ent *find_rpcb(struct rpcb_reply *r, uint32_t prog,
-+				  uint32_t vers)
-+{
-+	int i;
-+
-+	for (i = 0; i < r->nprog; i++)
-+		if (r->prog[i].program == prog && r->prog[i].version == vers)
-+			return &r->prog[i];
-+	return NULL;
-+}
-+
- /* Fetch the current listeners; returns count (>=0) or -errno. */
- static int listener_get(struct listener_ent *out, int max)
- {
-@@ -1282,6 +1404,162 @@ TEST_F(nfsd_listener, rpcb_unreg_stop_after_failure)
- 	EXPECT_LE(three, one);
- }
- 
-+/* ===================== userspace rpcbind ===================== */
-+
-+/*
-+ * The point of the flag: nfsd must make no rpcbind call at all. svc_bind()
-+ * pings rpcbind at client creation and svc_register() calls it once per
-+ * program and version, so a silent stub is what proves both were skipped.
-+ */
-+TEST_F(nfsd_listener, rpcb_userspace_no_traffic)
-+{
-+	struct rpcb_reply r;
-+	char attrs[64];
-+	int off = put_listener(attrs, 0, "tcp", TEST_PORT);
-+
-+	ASSERT_EQ(0, rpcb_conns());
-+	ASSERT_EQ(0, listener_set_rpcb(attrs, off, &r));
-+	EXPECT_EQ(0, rpcb_conns());
-+	EXPECT_EQ(0, rpcb_calls());
-+}
-+
-+/*
-+ * The reply has to tell the caller what to register. Without the program
-+ * list it cannot know whether nfsacl is built in.
-+ */
-+TEST_F(nfsd_listener, rpcb_userspace_reply)
-+{
-+	struct rpcb_reply r;
-+	char attrs[64];
-+	int off = put_listener(attrs, 0, "tcp", TEST_PORT);
-+
-+	ASSERT_EQ(0, listener_set_rpcb(attrs, off, &r));
-+	EXPECT_EQ(1, r.acked);
-+	EXPECT_GT(r.nprog, 0);
-+	/* the listener came up and is named, so the caller knows the port */
-+	ASSERT_EQ(1, r.nlistener);
-+	EXPECT_NE(NULL, find_listener(r.listener, r.nlistener, "tcp",
-+				      AF_INET, TEST_PORT));
-+	/* nfslocalio is hidden and must never be offered for registration */
-+	EXPECT_EQ(NULL, find_rpcb(&r, 400122, 1));
-+}
-+
-+/*
-+ * nfsd_nl_validate_listeners() allows far more listeners than the default
-+ * genl buffer holds, so the reply has to be sized from its contents. If it
-+ * is not, the listeners all come up and the caller still sees -EMSGSIZE.
-+ */
-+TEST_F(nfsd_listener, rpcb_userspace_many_listeners)
-+{
-+	char attrs[RPCB_MANY_LISTENERS * 64];
-+	struct rpcb_reply r;
-+	int off = 0, i;
-+
-+	for (i = 0; i < RPCB_MANY_LISTENERS; i++)
-+		off = put_listener(attrs, off, "tcp", TEST_PORT + i);
-+
-+	ASSERT_EQ(0, listener_set_rpcb(attrs, off, &r));
-+	EXPECT_EQ(1, r.acked);
-+	EXPECT_GT(r.nprog, 0);
-+	EXPECT_EQ(RPCB_MANY_LISTENERS, r.naddr);
-+}
-+
-+/*
-+ * NFSv4 sets vs_need_cong_ctrl, so the kernel never registered it on UDP.
-+ * The reply cannot filter it out, because the rule depends on the listener,
-+ * so it must carry the flag instead.
-+ */
-+TEST_F(nfsd_listener, rpcb_userspace_no_v4_udp)
-+{
-+	struct rpcb_ent *v4, *v3;
-+	struct rpcb_reply r;
-+	char attrs[64];
-+	int off = put_listener(attrs, 0, "tcp", TEST_PORT);
-+
-+	ASSERT_EQ(0, listener_set_rpcb(attrs, off, &r));
-+
-+	v4 = find_rpcb(&r, NFS_PROGRAM, 4);
-+	if (v4)
-+		EXPECT_EQ(NFSD_RPCBIND_FLAGS_NO_UDP,
-+			  v4->flags & NFSD_RPCBIND_FLAGS_NO_UDP);
-+
-+	v3 = find_rpcb(&r, NFS_PROGRAM, 3);
-+	if (v3)
-+		EXPECT_EQ(0, v3->flags & NFSD_RPCBIND_FLAGS_NO_UDP);
-+}
-+
-+/*
-+ * nfsacl is the value userland cannot derive: CONFIG_NFSD_V3_ACL is not
-+ * visible over netlink. Only assert self-consistency -- if the kernel
-+ * offers nfsacl v3 then it must also offer nfs v3, since both gate on the
-+ * same enabled version.
-+ */
-+TEST_F(nfsd_listener, rpcb_userspace_nfsacl_follows_nfs)
-+{
-+	struct rpcb_reply r;
-+	char attrs[64];
-+	int off = put_listener(attrs, 0, "tcp", TEST_PORT);
-+
-+	ASSERT_EQ(0, listener_set_rpcb(attrs, off, &r));
-+	if (find_rpcb(&r, NFS_ACL_PROGRAM, 3))
-+		EXPECT_NE(NULL, find_rpcb(&r, NFS_PROGRAM, 3));
-+}
-+
-+/*
-+ * svc_bind() decided whether to take the rpcb_users reference that teardown
-+ * drops, so ownership cannot flip under a live serv.
-+ */
-+TEST_F(nfsd_listener, rpcb_userspace_busy)
-+{
-+	struct rpcb_reply r;
-+	char attrs[64], plain[64];
-+	int off = put_listener(attrs, 0, "tcp", TEST_PORT);
-+	int poff = put_listener(plain, 0, "tcp", TEST_PORT);
-+
-+	ASSERT_EQ(0, listener_set_rpcb(attrs, off, &r));
-+
-+	/* same listeners, but now asking the kernel to own rpcbind */
-+	EXPECT_EQ(-EBUSY, listener_set(plain, poff));
-+	EXPECT_STRNE("", last_extack);
-+}
-+
-+/* And the same the other way round. */
-+TEST_F(nfsd_listener, rpcb_userspace_busy_reverse)
-+{
-+	struct rpcb_reply r;
-+	char attrs[64], plain[64];
-+	int poff = put_listener(plain, 0, "tcp", TEST_PORT);
-+	int off = put_listener(attrs, 0, "tcp", TEST_PORT);
-+
-+	ASSERT_EQ(0, listener_set(plain, poff));
-+	EXPECT_EQ(-EBUSY, listener_set_rpcb(attrs, off, &r));
-+}
-+
-+/*
-+ * rpcb_create_local() increments sn->rpcb_users and rpcb_put_local()
-+ * decrements it. A serv that never took the reference must not drop it, or
-+ * the next serv finds the count wrong. Cycle a few times, then confirm a
-+ * kernel-owned serv can still reach rpcbind.
-+ */
-+TEST_F(nfsd_listener, rpcb_userspace_teardown)
-+{
-+	struct rpcb_reply r;
-+	char attrs[64], plain[64];
-+	int off, poff, i;
-+
-+	for (i = 0; i < 3; i++) {
-+		off = put_listener(attrs, 0, "tcp", TEST_PORT);
-+		ASSERT_EQ(0, listener_set_rpcb(attrs, off, &r));
-+		/* empty list with no threads destroys the serv */
-+		ASSERT_EQ(0, listener_set_rpcb(attrs, 0, &r));
-+		ASSERT_EQ(0, rpcb_conns());
-+	}
-+
-+	poff = put_listener(plain, 0, "tcp", TEST_PORT);
-+	ASSERT_EQ(0, listener_set(plain, poff));
-+	EXPECT_GT(rpcb_conns(), 0);
-+}
-+
- /* ===================== threads / -EBUSY semantics ===================== */
- 
- TEST_F(nfsd_listener, sem_busy_on_change)
+>=20
+> > +                return a boolean indicating if the trigger is currentl=
+y
+> > +                offloaded to hardware.
+> > +
+> > +                If a trigger doesn't implement this callback, the defa=
+ult
+> > +                value will be true for private triggers and false for =
+generic
+> > +                ones.
+> > +
+> >  LED driver can activate additional modes by default to workaround the
+> >  impossibility of supporting each different mode on the supported trigg=
+er.
+> >  Examples are hardcoding the blink speed to a set interval, enable spec=
+ial
+> > @@ -311,6 +323,14 @@ the end use hw_control_set to activate hw control.
+> >  A trigger can use hw_control_get to check if a LED is already in hw co=
+ntrol
+> >  and init their flags.
+> > =20
+> > +Alternatively, a private trigger can be implemented along with the LED=
+ driver if
+> > +the LED's hardware control doesn't fit any generic trigger. To associa=
+te the
+> > +private trigger with the LED classdev, their `trigger_type` must be th=
+e same. To
+> > +declare that the private trigger provides hardware control for the ass=
+ociated
+> > +LED classdev, set the `hw_control_trigger` string to the trigger's nam=
+e. Since
+> > +both the LED classdev and the private trigger are in the same LED driv=
+er, it's
+> > +not necessary for them to coordinate via `hw_control_*` callbacks.
+> > +
+> >  When the LED is in hw control, no software blink is possible and doing=
+ so
+> >  will effectively disable hw control.
+> > =20
+> > diff --git a/drivers/leds/led-class.c b/drivers/leds/led-class.c
+> > index 39cc2f3ea63f..7e571bd1de5b 100644
+> > --- a/drivers/leds/led-class.c
+> > +++ b/drivers/leds/led-class.c
+> > @@ -96,8 +96,30 @@ static const struct bin_attribute *const led_trigger=
+_bin_attrs[] =3D {
+> >  	&bin_attr_trigger,
+> >  	NULL,
+> >  };
+> > +
+> > +static DEVICE_ATTR_RO(trigger_may_offload);
+> > +static struct attribute *led_trigger_attrs[] =3D {
+> > +	&dev_attr_trigger_may_offload.attr,
+> > +	NULL
+> > +};
+> > +
+> > +static umode_t led_trigger_is_visible(struct kobject *kobj,
+>=20
+> Why doesn't all of this live in the triggers file as well?
 
--- 
-2.55.0
+The current revision only exports trigger_may_offload() to coordinate the
+two files (led-class.c and led-trigger.c).
 
+If we had to move led_trigger_is_visible() into led-triggers.c, the
+trigger_may_offload and led_trigger_attrs must be moved as well. Due to
+the movement, we would have to export led_trigger_attrs and
+led_trigger_is_visible() to fill led_trigger_group.
+
+in short, moving led_trigger_is_visible() requires exporting more
+symbols.
+
+To make things tidier, how about moving led_trigger_group and
+led_trigger_bin_attrs into led-triggers.c as well? In this manner we only
+need to export led_trigger_group, and the #ifdef block here is
+eliminated. What do you think?
+
+>=20
+> > +				      struct attribute *attr,
+> > +				      int idx)
+> > +{
+> > +	struct device *dev =3D kobj_to_dev(kobj);
+> > +	struct led_classdev *led_cdev =3D dev_get_drvdata(dev);
+> > +
+> > +	if (attr =3D=3D &dev_attr_trigger_may_offload.attr)
+> > +		return led_cdev->hw_control_trigger ? attr->mode : 0;
+> > +
+> > +	return attr->mode;
+> > +}
+> > +
+> >  static const struct attribute_group led_trigger_group =3D {
+> >  	.bin_attrs =3D led_trigger_bin_attrs,
+> > +	.attrs =3D led_trigger_attrs,
+> > +	.is_visible =3D led_trigger_is_visible,
+> >  };
+> >  #endif
+> > =20
+> > diff --git a/drivers/leds/led-triggers.c b/drivers/leds/led-triggers.c
+> > index 804a04b326c4..de17a8bbb4d4 100644
+> > --- a/drivers/leds/led-triggers.c
+> > +++ b/drivers/leds/led-triggers.c
+> > @@ -42,6 +42,10 @@ static bool __led_trigger_is_hw_controlled(struct le=
+d_classdev *led_cdev)
+> >  	if (!led_cdev->trigger)
+> >  		return false;
+> > =20
+> > +	if (led_cdev->trigger->offloaded)
+> > +		return led_cdev->trigger->offloaded(led_cdev);
+> > +
+> > +	/* Otherwise assume private triggers as always offloaded. */
+>=20
+> s/as/are/
+
+ACK.
+
+>=20
+> >  	return led_cdev->trigger->trigger_type;
+> >  }
+> > =20
+> > @@ -341,6 +345,32 @@ void led_trigger_set_default(struct led_classdev *=
+led_cdev)
+> >  }
+> >  EXPORT_SYMBOL_GPL(led_trigger_set_default);
+> > =20
+> > +ssize_t trigger_may_offload_show(struct device *dev,
+> > +				 struct device_attribute *attr, char *buf)
+> > +{
+> > +	struct led_classdev *led_cdev =3D dev_get_drvdata(dev);
+> > +	struct led_trigger *trig;
+> > +	bool hit, offloaded;
+> > +	int len;
+> > +
+> > +	guard(mutex)(&led_cdev->led_access);
+> > +	guard(rwsem_read)(&led_cdev->trigger_lock);
+> > +
+> > +	trig =3D led_cdev->trigger;
+> > +
+> > +	offloaded =3D __led_trigger_is_hw_controlled(led_cdev);
+> > +	hit =3D offloaded || (trig && !strcmp(led_cdev->hw_control_trigger, t=
+rig->name));
+> > +
+> > +	/* [offloaded] <active_but_not_offloaded> inactive */
+>=20
+> Why do they have to live in different 'containers'?
+
+The comment might be somewhat misleading...
+
+An LED device can never have an offloaded trigger and an active-but-not-
+offloaded trigger at the same time. The comment just demonstrates how the
+output might look like.
+
+The output is multiplexed to help userspace determine two things in one
+read:
+
+- The name of the LED device's hardware control trigger
+- The state of the said trigger
+
+That being said, if the complexity is undesired, it's OK to convert the
+attribute into a dumb one that only returns the plain name of the
+hardware control trigger. In this manner we will need to provide an
+additional attribute to expose the offloaded state. This can be achieved
+by adopting the attribute "offloaded" from netdev into led-triggers.c.
+What do you think?
+
+Thanks,
+Rong
+
+>=20
+> > +	len =3D sysfs_emit(buf, "%s%s%s\n",
+> > +			 offloaded ? "[" : (hit ? "<" : ""),
+> > +			 led_cdev->hw_control_trigger,
+> > +			 offloaded ? "]" : (hit ? ">" : ""));
+> > +
+> > +	return len;
+> > +}
+> > +EXPORT_SYMBOL_GPL(trigger_may_offload_show);
+> > +
+> >  /* LED Trigger Interface */
+> > =20
+> >  int led_trigger_register(struct led_trigger *trig)
+> > diff --git a/drivers/leds/leds.h b/drivers/leds/leds.h
+> > index bee46651e068..b08a289397e4 100644
+> > --- a/drivers/leds/leds.h
+> > +++ b/drivers/leds/leds.h
+> > @@ -27,6 +27,8 @@ ssize_t led_trigger_read(struct file *filp, struct ko=
+bject *kobj,
+> >  ssize_t led_trigger_write(struct file *filp, struct kobject *kobj,
+> >  			const struct bin_attribute *bin_attr, char *buf,
+> >  			loff_t pos, size_t count);
+> > +ssize_t trigger_may_offload_show(struct device *dev,
+> > +				 struct device_attribute *attr, char *buf);
+> > =20
+> >  extern struct rw_semaphore leds_list_lock;
+> >  extern struct list_head leds_list;
+> > diff --git a/include/linux/leds.h b/include/linux/leds.h
+> > index d778709f5b1b..bee2b4309a09 100644
+> > --- a/include/linux/leds.h
+> > +++ b/include/linux/leds.h
+> > @@ -485,6 +485,7 @@ struct led_trigger {
+> >  	const char	 *name;
+> >  	int		(*activate)(struct led_classdev *led_cdev);
+> >  	void		(*deactivate)(struct led_classdev *led_cdev);
+> > +	bool		(*offloaded)(struct led_classdev *led_cdev);
+> > =20
+> >  	/* Brightness set by led_trigger_event */
+> >  	enum led_brightness brightness;
+> >=20
+> > --=20
+> > 2.55.0
+> >=20
