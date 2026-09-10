@@ -1,112 +1,312 @@
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F94E4825B8
-	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 13:48:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.175
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789048090; cv=pass; b=FhoiKK6hCf7AH7MuFYSzf/Yln8od+F1wl2d5MzMmvcbxUfz/OdQhU1XNtL7KDvKlU+286mRC6PHYDcrLQ6v/WVg+BTB7VX6x2LOYp2qkXgX4OyUl5VlgXhMsGo8A80WwGKYwRXi6utwN3KJMnQ6QJew1pTqxp8wPTur7mGtS7Sc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789048090; c=relaxed/simple;
-	bh=FxLs2vs/J2uylK62rLnK+7N5L66TpTnceqzDX1Jt2Z0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UM8xi+LKVkl+tPLh+skQD6HKKw5VNQlcOZoygd0BeiRMOoDt7aTlmrYdMDMLmfYPwagpCme1ycA2JO+OK9UTRpDkbvBUx6DqZCdvIf9AFToL5XkZkMbMKKYa2/eSqmtgt4FC9WjQfDVzHUVqDVZqyE0eyDk96O4fU7oTjI5uUNU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=rRB2mlx0; arc=pass smtp.client-ip=209.85.210.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E756548BD26;
+	Thu, 10 Sep 2026 13:50:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789048206; cv=none; b=HkfRP8aTyKuqNVTxI3DlOEvKYkJS6CNJlyun2LLFL4xHIujjZSvA2Va9UN8HRElRQM/eVQrkKL5aOIKhtSrCSL18C7RuWQBRQv3iok/2YXcmePoBDMRGa8XeJxYM0atCV7jUjhe12Au4jcrl8qVW+VcCTxM6tNZ/+CqvltRLJ/c=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789048206; c=relaxed/simple;
+	bh=MIXE/W4RO33rQpcRvhYiNVz6zaRrWHTgVZbD09GCHzQ=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=IsvlM3pkMt5OxznJ45WlhyYE/PaEiQXHAc/klLGLRx8oDd8CYuyXe8uj3K1rz9FXmXs3dtKsAiiDf9Fn0POKLN/7l16q6Sr3mwRqK4VxG1P0xxE8dgbDtZaiAFpZRP25ptc7jKLwROG8qf2OncOnE+2RiMDsh09lB/iSQbrYRNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I5g62xOL; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="rRB2mlx0"
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-86a31708876so417757b3a.2
-        for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 06:48:08 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789048088; cv=none;
-        d=google.com; s=arc-20260327;
-        b=XB6yARMSxI5VpVGUniV3Y3kow2pFqg1/t3g6Uuu0QweIOVtQU1GkWkE+8t9YU4Dy5T
-         aezCEECkMM1NE+IRt6RIb/nX46zIlT+KOipAT+J91SKWcsdSOPnRj3Pec9f6XAf7z0cY
-         yqqbBqvPBKiNMRrMgPRVnY2s5L47EouYgV2oZ6I2UYPzUHWgRdwvApziDlWxJM/I4X7Y
-         buX4ma1QUDQSCIBkVusfRGThEiUijcQdPoO9hOK8uU5Np/Nb/F+LeXtahNgFxlLRK8Xc
-         IEEv88PqWf7y2SadIJ45ETiQQn0UVBBmrE0eWLIrI2bl1nLrpTs5REgzLXyCdnsa0ZIn
-         O8NQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=FxLs2vs/J2uylK62rLnK+7N5L66TpTnceqzDX1Jt2Z0=;
-        fh=XV6CV123N1IyvSX/OLKqBhjKbI+t7KiCbFGE2FKlwkc=;
-        b=LtfXGw940TdFmMWbGlGW/AbDxCUxAAFzkibYEs5G6tTLiFcRXH1njJ8r+up8ee2IiW
-         fmBP8ihs7Oz6XkTSU6rJfY1fRuRwxBXtGN1JxIstPCjVHldQVMzi0g4WxE1zOzY1zUHN
-         hcknCTCgYkNrfUtV9vh7PjxuuDcTocOuayDemV/LRDj4FOWEfz6A2Lrvty4QbfZSn4rs
-         PTyS50za2GhYTVpSa9TIhTPY3XkHCXrjIBcW+4vBWoqBN8YTS0H535SZXONYMDNSKolt
-         iSBmqxfJAquTGT47l4UgYrWJxqKGJhYcYXrh8H5h4gAUTPerTAs0zp57ARgM8xMslFv/
-         jRmQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789048088; x=1789652888; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=FxLs2vs/J2uylK62rLnK+7N5L66TpTnceqzDX1Jt2Z0=;
-        b=rRB2mlx0lMjhbda3ADle1Okrab0/BJMgO+TvIq9letyyruGzERKDKSc1CaDRbVKPJN
-         m57pxE6+7GkLMIuzTjA118c3ktnZX5KyN37I9hLuK4U+CLOv8s6o/NxLyCQGpuxWeKin
-         bomxeCgwVhhJAzfXDAeqfYd4C8kw9JWSpAfRHV2iXmy7QVGG7lCzy8Y28G08aXnWiJJI
-         /OOq6SxdiWxc1FpeDbL8FIut7pwTJY61GcULqa9I6CfR3kUHYQ5JLslfnmHyh31kN57y
-         evtrUbrp+J42Egaxq58lcSOZLCfWnVWB3C3EO+XaatLGh7zBQJ1urvX0KDo/TJZ0kVtP
-         kCbQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789048088; x=1789652888;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=FxLs2vs/J2uylK62rLnK+7N5L66TpTnceqzDX1Jt2Z0=;
-        b=Qb3Udm/rHRmyxCejmyArd++Mede/vmW1KkpQae8ZICjVBM0SCLpXW1fCiTEVpiQ2wE
-         1RfPfdjvg2S0wHeLNkNc8eK7myxRUFA6kBiLKvYDjR/mg18vy7q9cJwg9oaa0rDFQTmj
-         G82k9d+bFsI98lqLkF1rVnf47diLkKMx3IITzU5g2jvD1ySFkV4yGP5b15C/Mp9dpq/2
-         8L5E31A6efmRHd3ahEmK5INBxZnQlKEXr0kqTsZ5x9nbpbjzfAF04NOfjH9c6VyWDWAH
-         7dsGzuzs+rDUQId9DUBrUO+wSDZPXsApJJO4Pw+Pc1zbYGJ4GhySdi43PUP7BPKg3bvq
-         +yNg==
-X-Forwarded-Encrypted: i=1; AKwUvBwpzdW5C9O5P6N8GQ4IE5sdIQFdwYmTJBTJMP8kgqzoFJiNktWF2NREMzBW3UL5YSER84D17oQ=@vger.kernel.org
-X-Gm-Message-State: AFuF++m7pIBvNAB/4R0s49xY1hYdVFwopzv5ZAu7BMJY5E97fq+ijV7U
-	2Z2XKUwqxRX7j3+B3EiOYax3G0xEfEvsMGrk3WdipYXsA0BVaveSWFFWkyo5izKdzAX61EhYC9D
-	KDeYJQkJC7IrhFcnf2i1jHCsYEdN1Lzs=
-X-Gm-Gg: AYBFou3PJnE3xBM8MvAvXzMYj8QRIZPlv+Q+z4QY15LY9txZpRnRIS6LDdNWqfK6MQO
-	PWKDbTR1kd5KITlJD354yYkou3zbgvhP8WBtKXeI87vkc94zAc2YF7efWUpWfDi/YydpLCgst+P
-	npN5zgR59hrQgePizTIyV7yoB92uU0SuBw+4H7uMXRxK2xoJ4Po0WU/uzjyXZYLXfXxrK90dvYO
-	dcDmRIwlPIYl96xVI7KADY//FmA4SkWu4ss04GCW7/YpRF1HYYzHMsb/qBhRBpGpqxlFTRQ12+o
-	xqVhkl06/Rc3GPMmvGMTp98DfSjmTzVv6vw+yD11fFPSD2r5FqrvBmrNq0/xd3UEP5ORwBs9FqZ
-	0iM125Z7//ghKdHSQnKuA4eRHkVjP+QAmoaqSXGLDvp1mocCbonZD+yg=
-X-Received: by 2002:a05:6a00:32c4:b0:857:73e2:9107 with SMTP id
- d2e1a72fcca58-8616c8498dfmr51907934b3a.23.1789048087728; Thu, 10 Sep 2026
- 06:48:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I5g62xOL"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B5251F000FF;
+	Thu, 10 Sep 2026 13:50:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789048203;
+	bh=m2jNU5rjsTN3mxv0EJo4IljU7NWJsCPiExkQq1NXtvU=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=I5g62xOL5JCOlCFuPrreFrvEXwvQuCgsG+YorA81WiaUg9iSpx4QlXXFyHf6I267L
+	 AH5J952cbvckl3qJHKwSCIOsMR8/tuSYdqq/3rJMStb+9ymSvdAlX0pWjkuGYPDgHi
+	 ta3X/fDPqO0ufwX4y4lE8f7Y33zitOByoXy4JSMddaXw+IMUgGq2X1CX1de23cKWc+
+	 CSOYY+qMDbnqSMZ7T0azRlN8MJaItyemaTjR9SfLIDSzxtHSff/Ud2n+oB8CMBSEFP
+	 dlekwM9FPs5QeM9VQNjoaIQ3IyoQrZiYiz4F/Kc5yJnpgVypgnkeEjYJi7II3ps+iC
+	 fq22GVDEJxavA==
+Subject: Re: [PATCH net-next v3 2/4] rtnetlink: add AF_PACKET multicast dumps
+From: netdev-bot+sashiko@kernel.org
+To: sigefriedhyy@gmail.com
+Cc: davem@davemloft.net, dsahern@kernel.org, donald.hunter@gmail.com,
+ edumazet@google.com, idosch@nvidia.com, kuba@kernel.org, kuniyu@google.com,
+ nicolas.dichtel@6wind.com, nickgarlis@gmail.com, pabeni@redhat.com,
+ sd@queasysnail.net, shuah@kernel.org, horms@kernel.org, sdf.kernel@gmail.com,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ netdev@vger.kernel.org
+Date: Thu, 10 Sep 2026 13:50:02 +0000
+Message-ID: <178904820206.219967.5313952981588630189@kernel.org>
+In-Reply-To: <20260909133247.113923-3-sigefriedhyy@gmail.com>
+References: <20260909133247.113923-3-sigefriedhyy@gmail.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CADvbK_dWeqUFR6XqC-BqjjwsWJpNjEeER-fJ2SVYKhUObkMm1A@mail.gmail.com>
- <20260910020748.3643902-1-scott_gzh@163.com>
-In-Reply-To: <20260910020748.3643902-1-scott_gzh@163.com>
-From: Xin Long <lucien.xin@gmail.com>
-Date: Thu, 10 Sep 2026 09:47:56 -0400
-X-Gm-Features: AcwNN1XLYo9Tpctj6btW9Am1OvR1X4vsOSgww2ik4xoSX3FAmeg920CXO7UztCE
-Message-ID: <CADvbK_dPtNmc=gaAy_u64JkV9_+nPHT-oniH=0vReKp=oJfJcg@mail.gmail.com>
-Subject: Re: [PATCH] sctp: hold shkey across socket migration
-To: scott_gzh@163.com
-Cc: davem@davemloft.net, david.lee@trailofbits.com, 
-	dominik.czarnota@trailofbits.com, edumazet@google.com, horms@kernel.org, 
-	kuba@kernel.org, kylebot@openai.com, linux-kernel@vger.kernel.org, 
-	linux-sctp@vger.kernel.org, marcelo.leitner@gmail.com, netdev@vger.kernel.org, 
-	pabeni@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, Sep 9, 2026 at 10:08=E2=80=AFPM <scott_gzh@163.com> wrote:
->
-> Hi Xin Long,
->
-> Is there any progress regarding this patch?
->
+Thank you for your contribution! Sashiko AI review found 4 potential
+issue(s) to consider:
 
-I think you need to post v2 with the tag issues addressed.
+Critical: 0 · High: 0 · Medium: 2 · Low: 2
 
-Thanks.
+- [Medium] rtnl_dump_mcaddr()/rtnl_dump_mcaddr_dev()
+  (net/core/rtnetlink.c:4603-4728) resume a multi-part…
+- [Medium] The commit message claims "AF_UNSPEC keeps its 'all families'
+  meaning from RTM_GETADDR".
+- [Low] Incomplete submission claim: the new IFA_F_GLOBAL uAPI flag is
+  added only to include/uapi/linux/if_addr.h while the in-tree mirror…
+- [Low] Claim that Documentation/netlink/specs/rt-addr.yaml is not
+  updated for the new AF_PACKET producer: the ifa-flags enum lacks a…
+
+--
+
+rtnetlink: add AF_PACKET multicast dumps
+
+This adds an RTM_GETMULTICAST dump handler for ifa_family AF_PACKET which
+walks dev->mc and reports each entry as an ifaddrmsg with IFA_MULTICAST,
+IFA_MC_USERS and the new IFA_F_GLOBAL flag in IFA_FLAGS. The handler is
+registered under PF_PACKET with RTNL_FLAG_DUMP_UNLOCKED and runs under RCU
+plus netif_addr_lock_bh().
+
+A note on the commit message first:
+
+> This covers every column of /proc/net/dev_mcast. AF_PACKET is the
+> family iproute2 already uses for link-layer addresses ("ip -0"), and
+> AF_UNSPEC keeps its "all families" meaning from RTM_GETADDR.
+
+[Severity: Medium]
+Is the AF_UNSPEC part of this sentence accurate for RTM_GETMULTICAST?
+
+RTM_GETMULTICAST only has PF_INET (net/ipv4/devinet.c), PF_INET6
+(net/ipv6/addrconf.c) and the new PF_PACKET registration; rtnl_dump_all is
+wired to RTM_GETADDR, RTM_GETROUTE and RTM_GETNETCONF only. In
+rtnetlink_rcv_msg() the dump lookup falls back to PF_UNSPEC and then errors
+out:
+
+	link = rtnl_get_link(family, type);
+	if (!link || !link->dumpit) {
+		family = PF_UNSPEC;
+		link = rtnl_get_link(family, type);
+		if (!link || !link->dumpit)
+			goto err_unlock;
+	}
+
+so wouldn't an ifa_family == AF_UNSPEC RTM_GETMULTICAST dump return
+-EOPNOTSUPP rather than dumping all families?
+
+And even with a PF_UNSPEC handler wired to rtnl_dump_all(), that loop skips
+PF_PACKET:
+
+	if (idx < s_idx || idx == PF_PACKET)
+		continue;
+
+which would keep the new link-layer entries out of a combined dump. Could
+this sentence be reworded to say userspace has to issue an explicit
+AF_PACKET request?
+
+> diff --git a/include/uapi/linux/if_addr.h b/include/uapi/linux/if_addr.h
+> index 7fb630b7fe31..0a1ad9ebb47b 100644
+> --- a/include/uapi/linux/if_addr.h
+> +++ b/include/uapi/linux/if_addr.h
+> @@ -57,6 +57,7 @@ enum {
+>  #define IFA_F_NOPREFIXROUTE	0x200
+>  #define IFA_F_MCAUTOJOIN	0x400
+>  #define IFA_F_STABLE_PRIVACY	0x800
+> +#define IFA_F_GLOBAL		0x1000
+
+[Severity: Low]
+This isn't a bug, but the in-tree mirror tools/include/uapi/linux/if_addr.h
+is listed in tools/perf/check-headers.sh and does not get the new define, so
+a perf build will report the two copies as differing. The mirror already
+lags at the baseline commit (it is missing IFA_MC_USERS), so this changes
+nothing observable, and tools/ resyncs are usually separate commits. Was a
+resync intended here?
+
+The selftest side of the same concern is already handled later in the
+series: "selftests: net: test AF_PACKET multicast dumps" adds
+dump_mcaddr_l2_check() to tools/testing/selftests/net/rtnetlink.py covering
+the ifa-index filter, mc-users, the global flag and target-netnsid.
+
+>  
+>  struct ifa_cacheinfo {
+>  	__u32	ifa_prefered;
+> diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+> index 81c5a6104dea..f54e9cb3bf30 100644
+> --- a/net/core/rtnetlink.c
+> +++ b/net/core/rtnetlink.c
+> @@ -4566,6 +4566,169 @@ static int rtnl_dump_all(struct sk_buff *skb, struct netlink_callback *cb)
+>  	return skb->len ? : ret;
+>  }
+>  
+> +static int rtnl_fill_mcaddr(struct sk_buff *skb, const struct net_device *dev,
+> +			    const struct netdev_hw_addr *ha, u32 portid,
+> +			    u32 seq, unsigned int flags, int netnsid)
+> +{
+> +	u32 ifa_flags = ha->global_use ? IFA_F_GLOBAL : 0;
+
+[ ... ]
+
+> +	if ((netnsid >= 0 &&
+> +	     nla_put_s32(skb, IFA_TARGET_NETNSID, netnsid)) ||
+> +	    nla_put(skb, IFA_MULTICAST, dev->addr_len, ha->addr) ||
+> +	    nla_put_u32(skb, IFA_MC_USERS, ha->refcount) ||
+> +	    nla_put_u32(skb, IFA_FLAGS, ifa_flags)) {
+
+[Severity: Low]
+This isn't a bug in the code, but at this commit
+Documentation/netlink/specs/rt-addr.yaml has no "global" entry in the
+ifa-flags enum for bit 0x1000, and the getmulticast operation still lists a
+reply of {multicast, mc-users, cacheinfo} with an empty dump request
+attribute list, while this function emits IFA_FLAGS and IFA_TARGET_NETNSID
+and rtnl_valid_dump_mcaddr_req() accepts IFA_TARGET_NETNSID.
+
+The following commit in the series, "netlink: specs: rt-addr: document
+AF_PACKET multicast dumps", adds "- name: global" as the 13th ifa-flags
+entry, adds flags and target-netnsid to the reply attributes and
+target-netnsid to the dump request, and updates the op doc, so this only
+matters for bisectability of the generated bindings.
+
+> +		nlmsg_cancel(skb, nlh);
+> +		return -EMSGSIZE;
+> +	}
+> +
+> +	nlmsg_end(skb, nlh);
+> +	return 0;
+> +}
+> +
+> +static int rtnl_dump_mcaddr_dev(struct net_device *dev, struct sk_buff *skb,
+> +				struct netlink_callback *cb, int *s_addr_idx,
+> +				unsigned int flags, int netnsid)
+> +{
+> +	struct netdev_hw_addr *ha;
+> +	int addr_idx = 0;
+> +	int err = 0;
+> +
+> +	netif_addr_lock_bh(dev);
+> +	netdev_for_each_mc_addr(ha, dev) {
+> +		if (addr_idx < *s_addr_idx) {
+> +			addr_idx++;
+> +			continue;
+> +		}
+> +		err = rtnl_fill_mcaddr(skb, dev, ha, NETLINK_CB(cb->skb).portid,
+> +				       cb->nlh->nlmsg_seq, flags, netnsid);
+> +		if (err < 0)
+> +			break;
+> +		addr_idx++;
+> +	}
+> +	netif_addr_unlock_bh(dev);
+> +
+> +	*s_addr_idx = err < 0 ? addr_idx : 0;
+> +
+> +	return err;
+> +}
+
+[Severity: Medium]
+Can this skip or duplicate dev->mc entries across a multi-part dump without
+telling userspace?
+
+rtnl_dump_mcaddr_dev() resumes with a bare positional index and drops the
+lock protecting dev->mc when it returns:
+
+	netif_addr_lock_bh(dev);
+	netdev_for_each_mc_addr(ha, dev) {
+		if (addr_idx < *s_addr_idx) {
+	...
+	netif_addr_unlock_bh(dev);
+
+	*s_addr_idx = err < 0 ? addr_idx : 0;
+
+Between two netlink_dump() invocations dev->mc can be mutated by
+__dev_mc_add()/__dev_mc_del()/dev_mc_flush() in net/core/dev_addr_lists.c,
+which only take netif_addr_lock_bh(dev):
+
+	netif_addr_lock_bh(dev);
+	err = __hw_addr_add_ex(&dev->mc, addr, dev->addr_len, ...
+
+and the handler is registered with RTNL_FLAG_DUMP_UNLOCKED, so RTNL does
+not serialize this either. If an entry before *s_addr_idx is removed the
+next entry is silently skipped; if one is inserted an entry is emitted
+twice.
+
+The sibling RTM_GETMULTICAST producers mark that case. in_dev_dump_ifmcaddr()
+calls, per message:
+
+		nl_dump_check_consistent(cb, nlmsg_hdr(skb));
+
+with cb->seq initialised from inet_base_seq(tgt_net) by the caller, so
+userspace gets NLM_F_DUMP_INTR. rtnl_dump_ifinfo() and inet6_dump_addr() do
+the same.
+
+> +
+[ ... ]
+> +static int rtnl_dump_mcaddr(struct sk_buff *skb, struct netlink_callback *cb)
+> +{
+[ ... ]
+> +	err = rtnl_valid_dump_mcaddr_req(cb->nlh, skb->sk, &filter,
+> +					 cb->extack);
+> +	if (err < 0)
+> +		return err;
+> +
+> +	rcu_read_lock();
+> +
+> +	if (filter.ifindex) {
+
+[Severity: Medium]
+This is the spot where the sibling dumps set cb->seq from a generation
+counter before iterating, for example inet6_dump_addr() and
+inet_dump_addr(). Should rtnl_dump_mcaddr() do the same so that
+nl_dump_check_consistent() in rtnl_dump_mcaddr_dev() can raise
+NLM_F_DUMP_INTR?
+
+struct netdev_hw_addr_list has no generation field today:
+
+	struct netdev_hw_addr_list {
+		struct list_head	list;
+		int			count;
+		...
+	};
+
+so would this need a new counter bumped by __hw_addr_add_ex()/
+__hw_addr_del_entry(), or would reusing something like dev_base_seq or a
+dev_addr_genid style value be enough here?
+
+> +		cb->answer_flags |= NLM_F_DUMP_FILTERED;
+> +		flags |= NLM_F_DUMP_FILTERED;
+> +		dev = dev_get_by_index_rcu(filter.tgt_net, filter.ifindex);
+[ ... ]
+> +	for_each_netdev_dump(filter.tgt_net, dev, ctx->ifindex) {
+> +		err = rtnl_dump_mcaddr_dev(dev, skb, cb, &ctx->addr_idx, flags,
+> +					   filter.netnsid);
+> +		if (err < 0)
+> +			break;
+> +	}
+> +out:
+> +	rcu_read_unlock();
+> +	if (filter.netnsid >= 0)
+> +		put_net(filter.tgt_net);
+> +	return err;
+> +}
+> +
+[ ... ]
+> @@ -7251,6 +7414,8 @@ static const struct rtnl_msg_handler rtnetlink_rtnl_msg_handlers[] __initconst =
+>  	{.msgtype = RTM_SETSTATS, .doit = rtnl_stats_set},
+>  	{.msgtype = RTM_NEWLINKPROP, .doit = rtnl_newlinkprop},
+>  	{.msgtype = RTM_DELLINKPROP, .doit = rtnl_dellinkprop},
+> +	{.protocol = PF_PACKET, .msgtype = RTM_GETMULTICAST,
+> +	 .dumpit = rtnl_dump_mcaddr, .flags = RTNL_FLAG_DUMP_UNLOCKED},
+
+[Severity: Medium]
+This registration is PF_PACKET only, which is the basis of the commit
+message question above about AF_UNSPEC keeping its "all families" meaning
+for RTM_GETMULTICAST.
+
+>  	{.protocol = PF_BRIDGE, .msgtype = RTM_GETLINK,
+>  	 .dumpit = rtnl_bridge_getlink},
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260909133247.113923-1-sigefriedhyy%40gmail.com
