@@ -1,513 +1,466 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f41.google.com (mail-ua1-f41.google.com [209.85.222.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55E623264E3;
-	Thu, 10 Sep 2026 01:03:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789002194; cv=none; b=kRW0paaF6z5mU8SZg2hTz71iaJe7XK5Tp8l/FRFgRfNGm7J61lXkSOWIhDcTBErRr5H1DFL9r8h0UsVQzzLTu3Ixj+jDbBWK6qD+vCsZ8+8SY1hGoBsxcPZBGSmg942s1pnXHxRiN+rL69r/51iDHZhdskqQcI9EeNTElM20rsc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789002194; c=relaxed/simple;
-	bh=juQ6tUjELG1HNg+wfrJDtaO05aBJA92Ob89+Q94dldU=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=o3L8TTW6nTOR8XChHHbMBSKYboARdf/Jm+FqpIG3hm16D2ZZVnKADQ5mQ6yoCceJam80xU1gF5F2QfSz9aI0/5wvIkjGRo68Yd8zJswMj5iLXIStWAbLw3duJcz1EIO2J22EHTL7XJm0rhJk5NY6LSikE1dkK/ogGxH8pfwRO2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CBegCl+o; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31560320A04
+	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 01:06:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789002368; cv=pass; b=SRSuBK8Qh5IXKaufgaljLe+0OYZCA538t3dDR0qdq23jkzqviBFVTwUtcZMcqZAJPwfzJ1DW8Mjz6N1+Jm32v6ffIERcBpb+9QHUXP9fbP/nYp7u1D9FPKjYsj6DJZGvnsTVd8waA82/Mk2MbQmmpEVVWPHudZ0aTcKn7vRh3VQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789002368; c=relaxed/simple;
+	bh=5RWqYmnIfwjK4pAhlnnbe/ntAHz+yAo0yCWaDayhfY0=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=XuawIr4R41mT52tYJX/me8ldNQL27vPjL7mpY/9dvJBkf7kBL3FWkOecUY+jiwK8Q9/cbhW4G8YC7MDQpH9fm4jNRnhmp7zVmRzHXhBY6jfPbxdsDN1WvgOSNN+xB348kLWyMSTOWONjGbt9pHn8F0wqpBfFVzlb8ZgWQa1hxIY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=berkeley.edu; spf=pass smtp.mailfrom=berkeley.edu; dkim=pass (2048-bit key) header.d=berkeley.edu header.i=@berkeley.edu header.b=K+AuMBeZ; arc=pass smtp.client-ip=209.85.222.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=berkeley.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=berkeley.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CBegCl+o"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A0AD1F00898;
-	Thu, 10 Sep 2026 01:03:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789002184;
-	bh=JAWXunqe4e0rH6SMzQ4biopCQgD50Rl9AKPcTCZp5Os=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=CBegCl+oJpVL0ZMSDR5mAprT0R/8JDpX9zTqVUhY5M14sqH9FBmdyPVl5wRCjQGKa
-	 NSynAr8rRyZlIoCB6Ylg3zfPEtagicrX+r0V+WaFmrAVW2X+BRL2BmRHK/Xk3gvdM7
-	 Bu3pBzvfytA/h2v+VbzWyFjsUDWloM44cj5lhmQtw/HxPpKJ7Oi5u0NFZY6S5tRLNU
-	 Do6/NKFvOp4H/Lzrf6jRHhn1Hd6K/bwOYS6WG4SjOO/NOPp/OU69uJqKussb6ZCE4b
-	 IdXEapjTtZhPAK1B8m77foTQomIPr9lksL8YqGSWqPvjPXQPlqPsFmz2MpQqQfz3f6
-	 RRQL2inkd2YVw==
-Subject: Re: [PATCH net-next 3/6] net/rds: hold connection references in
- lookup, sockets and c_passive
-From: netdev-bot+sashiko@kernel.org
-To: achender@kernel.org
-Cc: netdev@vger.kernel.org, linux-rdma@vger.kernel.org, pabeni@redhat.com,
- edumazet@google.com, kuba@kernel.org, horms@kernel.org, nicoyip.dev@gmail.com
-Date: Thu, 10 Sep 2026 01:03:03 +0000
-Message-ID: <178900218397.219967.1429437591238114023@kernel.org>
-In-Reply-To: <20260904070248.160384-4-achender@kernel.org>
-References: <20260904070248.160384-4-achender@kernel.org>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=berkeley.edu header.i=@berkeley.edu header.b="K+AuMBeZ"
+Received: by mail-ua1-f41.google.com with SMTP id a1e0cc1a2514c-96723c7151eso1750225241.2
+        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 18:06:06 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789002365; cv=none;
+        d=google.com; s=arc-20260327;
+        b=XmPrUn+9cRxaMD1hZcnuWy4ThU3tGnqDBS2yI+Ur0UD4ff4uGlarhb2Wlq5qs224ii
+         4WrnMp4awtIzf0T0PihuqiyrrHC5laketIc5ojMUU4aApFhFMpUbXQd4Nbseug+/dO5W
+         OYZBB/dZuobCrZTJuTGs+eDqafSgZ2SXcqvhnz6zL0ys8mnmZKWRZSs7FDU7Y+sOKn4Y
+         shBNUJw1ngCTkgdxl2jirMdOM2N1OTkvoJw0m8g/916Pn9bPuypyQ9941QPgBhb3J89S
+         YxNeX5JA5qvUm84ZiHjjx10j5l4Vg/i/zKSajdlkpF7QN7vea5GJfH606NFmVgn8Q6uH
+         YryA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=OjDIC3NAZQLazccvFe9lyZc7TW9SyOV91vH6HZ1yPek=;
+        fh=4Yw+tm0WbiMHbafUg/+KgKS3+6Ex3nb44Jyet2MqXlI=;
+        b=K3BarzrObWlaH/8vfRdZi387m/av+Fc3z5EMZh0TuwUmmRm1unrdOJfBD+ij1ADkd/
+         g9Y4tyWl8yC0HGuDlO/EPjPSNwHDVyY+MyHFeRQgfifT93bqElRFceNNrB4Vd/W2Qz4Z
+         d4oPuLJmffD9XmTqtbG/ZC9QhH3bZEiSafXOzCyMLNWd2HIDZ/+d+VexnKTcS0uX4O5W
+         D6cDv6cqshyMpIc5N0LR60+A+t/6zyLF1BCJcT1+3bMvGQinMBmCGLAsXEuEBLevIhu2
+         cqBP3VvgN8k4SF2HAsnCEn2UyiIoa3ZqKiQ37VhKsS4NNidO3fp5cNWwL7GHhbW2sOaT
+         q0ug==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=berkeley.edu; s=google; t=1789002365; x=1789607165; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=OjDIC3NAZQLazccvFe9lyZc7TW9SyOV91vH6HZ1yPek=;
+        b=K+AuMBeZJtywTTYHqMyLJlC+6yBiS5ORvM8w01Z40gD/TizfdomLmLnDugEkLhfw93
+         RV2KCSHopX6C8InU2Pi4Htc5e/ggmzUxr2o2oY3Wx+JZIlxOd/u/Rvs+G+WFJHWLN+Ay
+         +GrdVA1IpkhTSxjLLlqgvEIamrmxg4Jo+ELHpuDk0rLule3yhBRuCfZl3pnYNVyj9SYd
+         8jCxd03cmzkhxpK4ttvF0ELTiDWhDrbSDBpnYpY6seve3UbbaDoyX1Lb2lhohWy7CpzW
+         CMoZkTsQuxfET30I6SSGR1ybDlv3YjzbkjPO/bDM0NK1Pc+4rrGGqa8BApwqyds877lS
+         hNJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789002365; x=1789607165;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=OjDIC3NAZQLazccvFe9lyZc7TW9SyOV91vH6HZ1yPek=;
+        b=kDx0TwZukObap9jzEOYaER7zKSXLZQrafHPmYoJrTo1HPIHsBO2ZPJqeRIsIyNEaRr
+         GiUZpzGtnfxDu8nPDDLedSAxb+ItbkMxOmCIdSikmSJGz8/4m/CQEp5PcWnvA3GdXsLS
+         hDTg9Jc9p4OQ+EIBOYziQKKHkoMJ1o/Srcq4PrGQqH9/ispFiQRRhqpnGVoJkSZxXQdx
+         hZUVwypcqSsSmO3EQvoE0Fj/5kG/AwlEi5hSX8JCr7bPo3LQ2JCIniHBQvhuQjJ5IF3X
+         8k0Tj1+gvsVrjDDVl7sLIq9M4nrcOg7A2GJar0KM72KQejnchOd+IAEYphIt5LCcl6RC
+         DjXw==
+X-Forwarded-Encrypted: i=1; AKwUvByPhwkpPcZ/C/1Y+2GBPqc9nS88w0vtWLzRn+BGBvGeAjU8TPufcwrs1iLbga4/gYPdzbKIS6Q=@vger.kernel.org
+X-Gm-Message-State: AFuF++nG23+W5ep1mwBkQ9GOUttIoKYkPuVIWMwmYsYzC/RdaGQEo6QY
+	srHtFnwixiiVSO2VELMrP69Zx8ChnADzKwdfcEwFnZ43KPOORvQD2UAByc3oIwAwZDl1k5bOTNf
+	TaRd6m/mMHJTNmpkbxnxWrVU4udL1qYvy/d4TgLJl
+X-Gm-Gg: AYBFou2pq6RU5lhO9d09GoQJzLCB8nn46cQNqzcTmNzE9bIJTAk87sUhP8GCL4dYNb7
+	lZlvmjt9A+op1Cvta6dovaS5Ll2ivzReTXvfLLYy/ZxP7IhTrHRqPqayYPuu3mRXGacgPpnBrAj
+	Lc3up+gptotg+EVFN8kIHKlfGN7waQ7Jtl9lGz+I355jL2m1nRu9RBEn+s245Jc7b09t18oiAKf
+	j6Ccg18R7OYns6Q7M6Hh8zmhTYYkZqLtjyc+bbfKvex8/QaKRNyqaqnzoldg0i1/TGdq0SBGnGO
+	+0rVT5OJEuB0YlNIM/BleOG/YzeFGDGu+AFzjZ9wPm1o+DAg9zxGK/Alh6j5t0h5ARTWtMistV4
+	nglw3ytwlV2wNKpmtepQZcns5Qxzm6E+rDQ7w4fE=
+X-Received: by 2002:a05:6122:4f82:b0:5c2:ac92:eb18 with SMTP id
+ 71dfb90a1353d-5c7ed3f6d2bmr17036533e0c.7.1789002363872; Wed, 09 Sep 2026
+ 18:06:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-
-Thank you for your contribution! Sashiko AI review found 7 potential
-issue(s) to consider:
-
-Critical: 0 · High: 2 · Medium: 3 · Low: 2
-
-- [High] Transport per-connection nodes can stay linked into a stack-
-  local temporary list after rds_conn_destroy() returns, and the…
-- [High] The commit asserts that cm_id->context may stay reference-free
-  because "connection destroy tears down the cm_id before the connection…
-- [Medium] rds_sendmsg() now declares and enforces rs->rs_lock as the
-  serialization for rs->rs_conn (plain load under rs_lock at…
-- [Medium] The new reference model makes parent->c_passive own a
-  reference that is only dropped when the *parent* is destroyed, but…
-- [Medium] parent->c_passive becomes a concurrently written, RCU-consumed
-  pointer with no RCU annotations.
-- [Low] The patch closes a syzbot-reported KCSAN data race on rs->rs_conn
-  (Reported-by/Closes tags present) and removes stale-pointer reuse of a…
-- [Low] The new comment in rds_conn_lookup() asserts that an RCU
-  traversal of rds_conn_hash may legitimately encounter a connection…
-
---
-
-net/rds: hold connection references in lookup, sockets and c_passive
-
-This hands out real references wherever a struct rds_connection pointer
-used to escape bare: rds_conn_lookup() and __rds_conn_create() return a
-held reference, the rs->rs_conn sendmsg cache owns one and is serialized
-under rs_lock, and parent->c_passive owns one dropped when the parent is
-destroyed.  The cm_id->context back-pointers are left reference-free by
-design.
-
-Link: https://syzkaller.appspot.com/bug?extid=879c1877016972360186
-
->     Reported-by: syzbot+879c1877016972360186@syzkaller.appspotmail.com
->     Closes: https://syzkaller.appspot.com/bug?extid=879c1877016972360186
-
-[Severity: Low]
-The changelog closes a reported KCSAN data race but carries no Fixes: tag
-for the commit that introduced the unsynchronized rs_conn cache (git blame
-points at 5c11559046c4 "RDS: send.c").
-
-Should a Fixes: tag be added, or if the patch is intentionally not a stable
-candidate because it depends on the earlier patches in this series, could
-the changelog say so explicitly?
-
-> diff --git a/net/rds/connection.c b/net/rds/connection.c
-> index f45fd1fb1843d..df26959b0fdce 100644
-> --- a/net/rds/connection.c
-> +++ b/net/rds/connection.c
-
-[ ... ]
-
-> @@ -96,6 +99,13 @@ static struct rds_connection *rds_conn_lookup(struct net *net,
->  		    conn->c_tos == tos &&
->  		    net == rds_conn_net(conn) &&
->  		    conn->c_dev_if == dev_if) {
-> +			/* An entry whose refcount already dropped to
-> +			 * zero has been unhashed and is about to be
-> +			 * freed; an RCU traversal may still come
-> +			 * across it.  Treat it as absent.
-> +			 */
-> +			if (!kref_get_unless_zero(&conn->c_refcount))
-> +				continue;
->  			ret = conn;
->  			break;
->  		}
-
-[Severity: Low]
-Can an RCU traversal of rds_conn_hash actually observe an entry whose
-refcount has already reached zero?  rds_conn_destroy() unhashes the node
-under rds_conn_lock, calls synchronize_rcu(), and only then drops the
-initial reference, so a reader that can still reach the node appears to be
-inside a grace period where the refcount is at least one.
-
-If the state the comment describes were reachable, would the guard even
-help?  rds_conn_destroy_fini() frees immediately at the final put:
-
-net/rds/connection.c:rds_conn_destroy_fini() {
-	...
-	kfree(conn->c_path);
-	kmem_cache_free(rds_conn_slab, conn);
-}
-
-and rds_conn_init() creates the cache without SLAB_TYPESAFE_BY_RCU:
-
-	rds_conn_slab = KMEM_CACHE(rds_connection, 0);
-
-so the c_faddr/c_laddr/c_trans comparisons above the guard would already be
-reads of freed or recycled memory.
-
-kref_get_unless_zero() itself is a harmless idiom here; could the comment
-be reworded so a later reader does not conclude that zero-refcount entries
-are safely traversable?
-
-> @@ -197,7 +207,14 @@ static struct rds_connection *__rds_conn_create(struct net *net,
->  		 * We need a second connection object into which we
->  		 * can stick the other QP. */
->  		parent = conn;
-> +		/* The c_passive pointer holds a reference which is only
-> +		 * dropped one synchronize_rcu() after the pointer is
-> +		 * cleared, so within this RCU section a fetched pointer
-> +		 * is always safe to take a reference on.
-> +		 */
->  		conn = parent->c_passive;
-> +		if (conn)
-> +			rds_conn_get(conn);
->  	}
->  	rcu_read_unlock();
->  	if (conn)
-
-[Severity: Medium]
-Nothing here tests c_destroy_in_prog on the passive child, and nothing
-clears the parent's c_passive when the passive connection itself is
-destroyed - rds_conn_destroy() only clears its own c_passive:
-
-net/rds/connection.c:rds_conn_destroy() {
-	...
-	if (conn->c_destroy_in_prog) {
-		spin_unlock_irq(&rds_conn_lock);
-		return;
-	}
-	...
-	passive = conn->c_passive;
-	conn->c_passive = NULL;
-}
-
-Since a quiesced connection now stays alive until its last reference goes
-away, can this hand an already-destroyed passive conn, with a fresh
-reference, back to rds_ib_cm_handle_connect()?
-
-The quiesce leaves the path in RDS_CONN_DOWN with ic->i_cm_id == NULL, so
-the DOWN->CONNECTING transition succeeds and a new cm_id is installed,
-rds_ib_setup_qp() runs and rdma_accept() is called.  A second
-rds_conn_destroy() then returns early on the c_destroy_in_prog guard, so
-that state is never torn down and rds_conn_destroy_fini() only calls
-conn_free(), which kfree()s the rds_ib_connection with the QP and CQs still
-armed.
-
-The one single-conn destroy path for IB is the version-mismatch drop in
-rds_ib_cm_connect_complete(); would refusing to return a conn with
-c_destroy_in_prog set (or invalidating the parent's pointer when the child
-is destroyed) close this?
-
-Separately, even without reuse, does the new c_passive reference keep a
-quiesced passive conn - its transport state and its per-path workqueue -
-pinned for the whole lifetime of the parent?
-
-> @@ -316,12 +333,32 @@ static struct rds_connection *__rds_conn_create(struct net *net,
->  	spin_lock_irqsave(&rds_conn_lock, flags);
->  	if (parent) {
->  		/* Creating passive conn */
-> -		if (parent->c_passive) {
-> +		if (READ_ONCE(parent->c_destroy_in_prog)) {
-> +			/* The parent's destroy has begun (it sets the
-> +			 * flag and snatches c_passive under this
-> +			 * lock); do not install a new passive conn
-> +			 * that nothing would ever destroy.
-> +			 */
-> +			trans->conn_free(conn->c_path[0].cp_transport_data);
-> +			free_cp = conn->c_path;
-> +			kmem_cache_free(rds_conn_slab, conn);
-> +			conn = ERR_PTR(-ENETDOWN);
-> +		} else if (parent->c_passive) {
-> +			rds_conn_get(parent->c_passive);
->  			trans->conn_free(conn->c_path[0].cp_transport_data);
->  			free_cp = conn->c_path;
->  			kmem_cache_free(rds_conn_slab, conn);
->  			conn = parent->c_passive;
->  		} else {
-> +			/* The initial reference belongs to whoever
-> +			 * destroys the conn (the transport's conn
-> +			 * lists, as for any other conn).  Take one
-> +			 * for the c_passive pointer - dropped when
-> +			 * the parent is destroyed - and one for our
-> +			 * caller.
-> +			 */
-> +			rds_conn_get(conn);	/* c_passive */
-> +			rds_conn_get(conn);	/* caller */
->  			parent->c_passive = conn;
->  			rds_cong_add_conn(conn);
->  			rds_conn_count++;
-
-[Severity: Medium]
-The install of the passive conn is a plain store consumed by a reader that
-holds only rcu_read_lock():
-
-	parent->c_passive = conn;
-
-Should this be rcu_assign_pointer(), with rcu_dereference() at the read
-site above and a __rcu annotation on the field in struct rds_connection?
-
-The initialising stores to c_trans, c_path and the transport data are
-ordered only by the rds_conn_lock unlock, which gives nothing to a reader
-that never acquires that lock.  On a weakly ordered CPU, can the RCU reader
-in __rds_conn_create() see c_passive != NULL with those fields still stale,
-and then pass that pointer to rds_ib_cm_handle_connect(), which
-dereferences them?
-
-[ ... ]
-
-> @@ -646,6 +690,16 @@ void rds_conn_destroy(struct rds_connection *conn)
->  
->  	/* Ensure conn will not be scheduled for reconnect */
->  	hlist_del_init_rcu(&conn->c_hash_node);
-> +
-> +	/* Snatch c_passive while holding the lock:
-> +	 * __rds_conn_create() dereferences it under rcu_read_lock()
-> +	 * (and refuses to install a new one once c_destroy_in_prog is
-> +	 * set, which it checks under this lock).  After the
-> +	 * synchronize_rcu() below no one can pick the pointer up any
-> +	 * more and its reference can be dropped.
-> +	 */
-> +	passive = conn->c_passive;
-> +	conn->c_passive = NULL;
->  	spin_unlock_irq(&rds_conn_lock);
->  	synchronize_rcu();
-
-[Severity: Medium]
-This adds a second concurrent writer of c_passive as a plain store.  Before
-this patch c_passive was written once and never cleared, so the unlocked
-read in __rds_conn_create() had no competing writer.
-
-The reader takes rcu_read_lock() but not rds_conn_lock, so the two accesses
-share no lock.  Is this pair reportable by KCSAN in the same way as the
-rs_conn race the changelog fixes, and would WRITE_ONCE()/rcu_assign_pointer()
-here plus rcu_dereference() at the read site be preferable?
-
-> @@ -663,6 +717,10 @@ void rds_conn_destroy(struct rds_connection *conn)
->  	 */
->  	rds_cong_remove_conn(conn);
->  
-> +	/* drop the reference our c_passive pointer held, if any */
-> +	if (passive)
-> +		rds_conn_put(passive);
-> +
->  	/* drop the initial reference; the connection is freed from
->  	 * rds_conn_destroy_fini() once every holder has dropped theirs
->  	 */
-
-[Severity: High]
-Now that real holders exist (the socket rs_conn cache, an in-flight
-sendmsg, c_passive, lookup callers), rds_conn_destroy() can return with the
-connection still alive and trans->conn_free() deferred to the final put.
-
-Do the transport teardown helpers still rely on conn_free() unlinking the
-per-connection node before they return?  They keep the node linked into a
-list head on their own stack:
-
-net/rds/ib_rdma.c:rds_ib_destroy_nodev_conns() {
-	LIST_HEAD(tmp_list);
-
-	spin_lock_irq(&ib_nodev_conns_lock);
-	list_splice(&ib_nodev_conns, &tmp_list);
-	spin_unlock_irq(&ib_nodev_conns_lock);
-
-	list_for_each_entry_safe(ic, _ic, &tmp_list, ib_node)
-		rds_conn_destroy(ic->conn);
-}
-
-and the unlink happens much later, from the deferred free:
-
-net/rds/ib_cm.c:rds_ib_conn_free() {
-	...
-	spin_lock_irq(lock_ptr);
-	list_del(&ic->ib_node);
-	spin_unlock_irq(lock_ptr);
-}
-
-For a node whose neighbour is the tmp_list head, does that list_del() write
-ic->ib_node.prev->next and .next->prev into a stack frame that has already
-returned?
-
-The same shape appears in rds_tcp_destroy_conns() and rds_tcp_kill_sock(),
-where the node moved to tmp_list is not marked t_tcp_node_detached, so
-rds_tcp_conn_free() takes the list_del() branch:
-
-net/rds/tcp.c:rds_tcp_conn_free() {
-	...
-	if (!tc->t_tcp_node_detached)
-		list_del(&tc->t_tcp_node);
-}
-
-and in rds_loop_kill_conns() with rds_loop_conn_free()'s
-list_del(&lc->loop_node).
-
-The later series patch that waits for connections to be freed on transport
-unload does not appear to cover these: rds_ib_exit() calls
-rds_ib_destroy_nodev_conns() and only then
-rds_conn_wait_conns_freed(&rds_ib_transport), and rds_tcp_exit() waits
-after rds_tcp_destroy_conns() has returned; the netns paths
-(rds_tcp_kill_sock, rds_loop_kill_conns) get no wait at all.
-
-Would unlinking the node (or marking it detached, as rds_tcp_kill_sock
-already does for the secondary nodes) before rds_conn_destroy() can return,
-or using a list head that outlives the pending frees, avoid this?
-
-> diff --git a/net/rds/ib_cm.c b/net/rds/ib_cm.c
-> index 4feb0edc360c8..24e538c253a7a 100644
-> --- a/net/rds/ib_cm.c
-> +++ b/net/rds/ib_cm.c
-> @@ -924,8 +924,14 @@ int rds_ib_cm_handle_connect(struct rdma_cm_id *cm_id,
->  		rds_ib_conn_error(conn, "rdma_accept failed\n");
->  
->  out:
-> -	if (conn)
-> +	if (conn) {
->  		mutex_unlock(&conn->c_cm_lock);
-> +		/* The conn stays reachable through cm_id->context
-> +		 * without a reference of its own: connection destroy
-> +		 * shuts the cm_id down before the conn is freed.
-> +		 */
-> +		rds_conn_put(conn);
-> +	}
->  	if (err)
->  		rdma_reject(cm_id, &err, sizeof(int),
->  			    IB_CM_REJ_CONSUMER_DEFINED);
-
-[Severity: High]
-Is anything enforcing the invariant in this comment, that destroy tears the
-cm_id down before the conn can be freed?
-
-The CM event handler picks up the back-pointer with no reference and locks
-a mutex that lives inside the separately freed c_path array
-(c_cm_lock is c_path[0].cp_cm_lock per net/rds/rds_single_path.h):
-
-net/rds/rdma_transport.c:rds_rdma_cm_event_handler_cmn() {
-	struct rds_connection *conn = cm_id->context;
-	...
-	if (conn)
-		mutex_lock(&conn->c_cm_lock);
-	...
-	case RDMA_CM_EVENT_ESTABLISHED:
-		... rds_ib_cm_connect_complete(conn, event);
-	...
-	if (conn)
-		mutex_unlock(&conn->c_cm_lock);
-}
-
-and for an unsupported peer protocol version that ESTABLISHED handling
-destroys the conn from inside the callback:
-
-net/rds/ib_cm.c:rds_ib_cm_connect_complete() {
-	...
-	rds_conn_destroy(conn);
-}
-
-Since this hunk drops the caller reference at out:, can that destroy be the
-final put, so rds_conn_destroy_fini() kfree()s c_path and the conn before
-the handler's mutex_unlock(&conn->c_cm_lock) runs on freed memory?
-
-On the same path, does destroy deadlock the rdma_cm event workqueue?
-
-rds_conn_destroy()
-  rds_conn_path_quiesce()
-    rds_conn_path_drop(cp, true)
-    flush_work(&cp->cp_down_w)
-      rds_shutdown_worker() -> rds_conn_shutdown()
-        mutex_lock(&cp->cp_cm_lock)   <- already held by this CM callback
-
-Also, rds_ib_cm_handle_connect() does not re-check rds_destroy_pending(conn)
-after taking c_cm_lock.  When a destroy's quiesce has already completed, the
-path is back in RDS_CONN_DOWN, so can this still win the DOWN->CONNECTING
-transition, install ic->i_cm_id and cm_id->context, set up the QP and
-accept, after which the new rds_conn_put() here is the final put and frees
-the conn and its rds_ib_connection with the cm_id and QP still armed?
-
-Would a real reference for the CM back-pointer (kref_get_unless_zero()) or
-an rds_destroy_pending() re-check under c_cm_lock be needed to make the
-comment's claim hold?
-
-> diff --git a/net/rds/send.c b/net/rds/send.c
-> index 1afa981e5c06d..036a68372e2f4 100644
-> --- a/net/rds/send.c
-> +++ b/net/rds/send.c
-
-[ ... ]
-
-> @@ -1340,11 +1341,29 @@ int rds_sendmsg(struct socket *sock, struct msghdr *msg, size_t payload_len)
->  	rm->m_daddr = daddr;
->  
->  	/* rds_conn_create has a spinlock that runs with IRQ off.
-> -	 * Caching the conn in the socket helps a lot. */
-> -	if (rs->rs_conn && ipv6_addr_equal(&rs->rs_conn->c_faddr, &daddr) &&
-> -	    rs->rs_tos == rs->rs_conn->c_tos) {
-> -		conn = rs->rs_conn;
-> +	 * Caching the conn in the socket helps a lot.
-> +	 *
-> +	 * The cached rs_conn holds a connection reference; take one of
-> +	 * our own for the duration of this call (dropped on both exit
-> +	 * paths), so that neither a concurrent sender replacing the
-> +	 * cache nor rds_conn_destroy() can free the connection under
-> +	 * us.  A cached connection whose destruction has begun is not
-> +	 * reused: dropping it here lets the next sendmsg look up or
-> +	 * create a live one instead of returning -EAGAIN forever.
-> +	 */
-> +	spin_lock_irqsave(&rs->rs_lock, flags);
-> +	conn = rs->rs_conn;
-> +	if (conn && ipv6_addr_equal(&conn->c_faddr, &daddr) &&
-> +	    rs->rs_tos == conn->c_tos && !rds_destroy_pending(conn)) {
-> +		rds_conn_get(conn);
->  	} else {
-> +		conn = NULL;
-> +	}
-> +	spin_unlock_irqrestore(&rs->rs_lock, flags);
-> +
-> +	if (!conn) {
-> +		struct rds_connection *old;
-> +
->  		conn = rds_conn_create_outgoing(sock_net(sock->sk),
->  						&rs->rs_bound_addr, &daddr,
->  						rs->rs_transport, rs->rs_tos,
-> @@ -1352,9 +1371,17 @@ int rds_sendmsg(struct socket *sock, struct msghdr *msg, size_t payload_len)
->  						scope_id);
->  		if (IS_ERR(conn)) {
->  			ret = PTR_ERR(conn);
-> +			conn = NULL;
->  			goto out;
->  		}
-> +		/* hand the cache its own reference */
-> +		rds_conn_get(conn);
-> +		spin_lock_irqsave(&rs->rs_lock, flags);
-> +		old = rs->rs_conn;
->  		rs->rs_conn = conn;
-> +		spin_unlock_irqrestore(&rs->rs_lock, flags);
-> +		if (old)
-> +			rds_conn_put(old);
->  	}
-
-[Severity: Medium]
-The changelog says "reads and updates of rs_conn are serialized by
-rs_lock", but rds_ioctl(SIOCRDSSETTOS) still reads rs_conn and writes
-rs_tos under an unrelated global lock:
-
-net/rds/af_rds.c:rds_ioctl() {
-	...
-	spin_lock_bh(&rds_sock_lock);
-	if (rs->rs_tos || rs->rs_conn) {
-		spin_unlock_bh(&rds_sock_lock);
-		return -EINVAL;
-	}
-	rs->rs_tos = tos;
-	spin_unlock_bh(&rds_sock_lock);
-}
-
-The two paths share no lock.  Is the plain load of rs->rs_conn there still
-racing with the plain store of rs->rs_conn here, on the same eight-byte
-field that the KCSAN report names?
-
-The ioctl's "TOS cannot change once a connection exists" test also looks
-like a check-then-act across the two locks:
-
-ioctl(SIOCRDSSETTOS)                sendmsg()
-  reads rs->rs_conn == NULL
-                                      rds_conn_create_outgoing(..., rs->rs_tos, ...)
-  rs->rs_tos = tos;
-                                      rs->rs_conn = conn;
-
-Can that leave a cached connection whose c_tos no longer matches rs_tos, so
-every later sendmsg fails the rs->rs_tos == conn->c_tos test above and
-recreates or re-looks-up a connection?
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260904070248.160384-1-achender%40kernel.org
+From: Farhad Alemi <farhad.alemi@berkeley.edu>
+Date: Wed, 9 Sep 2026 18:05:52 -0700
+X-Gm-Features: AcwNN1WigG3frIb0Du8Kqbbc1dX2Q9K1KjLA5txlIBvvNEfRlr76MtisLROeHog
+Message-ID: <CA+0ovCjTsygN76s2o=TZqPqW8v2gBhmRnz+q6G-NaB3Cq-YPqQ@mail.gmail.com>
+Subject: [BUG] kernel BUG in lowpan_header_compress
+To: Alexander Aring <alex.aring@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: Farhad Alemi <falemi@asu.edu>, Simon Horman <horms@kernel.org>, 
+	Marcel Holtmann <marcel@holtmann.org>, Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
+	linux-bluetooth@vger.kernel.org, linux-wpan@vger.kernel.org, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: multipart/mixed; boundary="000000000000680912065b1692d1"
+
+--000000000000680912065b1692d1
+Content-Type: text/plain; charset="UTF-8"
+
+Hello,
+
+We are reporting the following crash (reproducer and a proposed patch attached):
+Linux version 7.3.0-rc2 50d05c7c76c96b90462f24debacca971d2e86713
+Build Config: UpstreamAppArmorKASAN (KASAN + UBSAN, panic_on_warn=1)
+
+[   50.238797][   T56] Bluetooth: hci0: unexpected cc 0x0c03 length: 249 > 1
+[   50.241338][   T56] Bluetooth: hci0: unexpected cc 0x1003 length: 249 > 9
+[   50.241848][   T56] Bluetooth: hci0: unexpected cc 0x1001 length: 249 > 9
+[   50.245626][   T56] Bluetooth: hci0: unexpected cc 0x0c23 length: 249 > 4
+[   50.245912][   T56] Bluetooth: hci0: unexpected cc 0x0c38 length: 249 > 2
+[   50.754952][ T9494] skbuff: skb_under_panic: text:ffffffff8b7fa50d
+len:64 put:28 head:ffff888111738000 data:ffff888111737ff4 tail:0x34
+end:0x180 dev:bt0
+[   50.755855][ T9494] ------------[ cut here ]------------
+[   50.755867][ T9494] kernel BUG at net/core/skbuff.c:214!
+[   50.755943][ T9494] Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+[   50.768411][ T9494] CPU: 1 UID: 0 PID: 9494 Comm: repro Not tainted
+7.3.0-rc2-00099-g50d05c7c76c9 #1 PREEMPT(full)
+[   50.770445][ T9494] Hardware name: QEMU Standard PC (Q35 + ICH9,
+2009), BIOS 1.17.0-debian-1.17.0-1ubuntu1 04/01/2014
+[   50.772451][ T9494] RIP: 0010:skb_panic+0x157/0x160
+[   50.773445][ T9494] Code: c7 c0 a8 01 8d 48 8b 74 24 08 48 8b 54 24
+10 8b 0c 24 44 8b 44 24 04 4d 89 e9 50 55 41 57 41 56 e8 4e 84 f5 ff
+48 83 c4 20 90 <0f> 0b cc cc cc cc cc cc cc 90 90 90 90 90 90 90 90 90
+90 90 90 90
+[   50.777065][ T9494] RSP: 0018:ffffc900071b6ea0 EFLAGS: 00010286
+[   50.777983][ T9494] RAX: 0000000000000084 RBX: dffffc0000000000
+RCX: 4ccd4c5bba686000
+[   50.778782][ T9494] RDX: 0000000000000000 RSI: 8000000000000201
+RDI: 0000000000000000
+[   50.779550][ T9494] RBP: 0000000000000180 R08: ffffc900071b6c07
+R09: 1ffff92000e36d80
+[   50.780352][ T9494] R10: dffffc0000000000 R11: fffff52000e36d81
+R12: ffff88810804e290
+[   50.781105][ T9494] R13: ffff888111738000 R14: ffff888111737ff4
+R15: 0000000000000034
+[   50.781865][ T9494] FS:  000000002fb9b400(0000)
+GS:ffff8881da588000(0000) knlGS:0000000000000000
+[   50.782727][ T9494] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   50.783410][ T9494] CR2: 000055f09acf9258 CR3: 0000000022ecb000
+CR4: 0000000000752ef0
+[   50.784188][ T9494] PKRU: 55555554
+[   50.784546][ T9494] Call Trace:
+[   50.784881][ T9494]  <TASK>
+[   50.785181][ T9494]  ? lowpan_header_compress+0x11dd/0x1ee0
+[   50.785759][ T9494]  ? lowpan_header_compress+0x11dd/0x1ee0
+[   50.786308][ T9494]  skb_push+0xc3/0xe0
+[   50.786705][ T9494]  lowpan_header_compress+0x11dd/0x1ee0
+[   50.787246][ T9494]  ? __pfx_lowpan_header_compress+0x10/0x10
+[   50.787822][ T9494]  ? lock_acquire+0x115/0x350
+[   50.788284][ T9494]  ? skb_copy_bits+0x8a/0x8f0
+[   50.788745][ T9494]  ? bt_xmit+0x283/0x2280
+[   50.789179][ T9494]  bt_xmit+0x12c8/0x2280
+[   50.789603][ T9494]  ? __pfx_bt_xmit+0x10/0x10
+[   50.790100][ T9494]  ? skb_network_protocol+0x23d/0x400
+[   50.790623][ T9494]  ? netif_skb_features+0xdf0/0x1480
+[   50.791135][ T9494]  ? lockdep_unlock+0x5c/0xd0
+[   50.791595][ T9494]  ? __lock_acquire+0x25db/0x2db0
+[   50.792082][ T9494]  ? __pfx_netif_skb_features+0x10/0x10
+[   50.792620][ T9494]  ? packet_sendmsg+0x3039/0x4d00
+[   50.793108][ T9494]  ? sock_sendmsg_nosec+0x13a/0x180
+[   50.793635][ T9494]  ? __sys_sendto+0x408/0x5a0
+[   50.794103][ T9494]  ? __x64_sys_sendto+0xde/0x100
+[   50.794599][ T9494]  ? do_syscall_64+0x155/0x510
+[   50.795065][ T9494]  ? entry_SYSCALL_64_after_hwframe+0x77/0x7f
+[   50.795654][ T9494]  dev_hard_start_xmit+0x2cd/0x830
+[   50.796153][ T9494]  sch_direct_xmit+0x251/0x4c0
+[   50.796624][ T9494]  ? __pfx_sch_direct_xmit+0x10/0x10
+[   50.797135][ T9494]  ? qdisc_bstats_update+0x110/0x1d0
+[   50.797652][ T9494]  __dev_queue_xmit+0x19ef/0x3980
+[   50.798140][ T9494]  ? __dev_queue_xmit+0x2b6/0x3980
+[   50.798637][ T9494]  ? _copy_from_iter+0x21b/0x1670
+[   50.799132][ T9494]  ? __pfx___dev_queue_xmit+0x10/0x10
+[   50.799653][ T9494]  ? sock_alloc_send_pskb+0x896/0x990
+[   50.800221][ T9494]  ? __pfx__copy_from_iter+0x10/0x10
+[   50.800733][ T9494]  ? packet_parse_headers+0x2e6/0x790
+[   50.801250][ T9494]  ? packet_parse_headers+0x5dd/0x790
+[   50.801772][ T9494]  ? __pfx_sock_alloc_send_pskb+0x10/0x10
+[   50.802340][ T9494]  ? __pfx_packet_parse_headers+0x10/0x10
+[   50.802906][ T9494]  ? packet_xmit+0x68/0x320
+[   50.803358][ T9494]  packet_sendmsg+0x3b14/0x4d00
+[   50.803852][ T9494]  ? aa_inet_bind_perm+0x6b6/0xca0
+[   50.804360][ T9494]  ? kasan_save_track+0x4f/0x80
+[   50.804838][ T9494]  ? kasan_save_track+0x3e/0x80
+[   50.805310][ T9494]  ? __kasan_slab_alloc+0x6c/0x80
+[   50.805811][ T9494]  ? kmem_cache_alloc_noprof+0x2bd/0x610
+[   50.806355][ T9494]  ? __lock_acquire+0x74c/0x2db0
+[   50.806847][ T9494]  ? __pfx_packet_sendmsg+0x10/0x10
+[   50.807352][ T9494]  ? aa_sk_perm+0x713/0x900
+[   50.807801][ T9494]  ? update_triggers+0x320/0x4d0
+[   50.808282][ T9494]  ? __pfx_aa_sk_perm+0x10/0x10
+[   50.808760][ T9494]  ? aa_sock_msg_perm+0x144/0x210
+[   50.809251][ T9494]  ? apparmor_socket_sendmsg+0x95/0x390
+[   50.809793][ T9494]  ? __pfx_packet_sendmsg+0x10/0x10
+[   50.810343][ T9494]  sock_sendmsg_nosec+0x13a/0x180
+[   50.810833][ T9494]  __sys_sendto+0x408/0x5a0
+[   50.811275][ T9494]  ? __pfx___sys_sendto+0x10/0x10
+[   50.811769][ T9494]  ? fd_install+0x94/0x3d0
+[   50.812202][ T9494]  ? fd_install+0x309/0x3d0
+[   50.812647][ T9494]  __x64_sys_sendto+0xde/0x100
+[   50.813112][ T9494]  do_syscall_64+0x155/0x510
+[   50.813567][ T9494]  ? trace_irq_disable+0x3b/0x140
+[   50.814057][ T9494]  ? entry_SYSCALL_64_after_hwframe+0x77/0x7f
+[   50.814644][ T9494]  ? clear_bhb_loop+0x30/0x80
+[   50.815101][ T9494]  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+[   50.815675][ T9494] RIP: 0033:0x4527b2
+[   50.816062][ T9494] Code: 08 0f 85 e1 df ff ff 49 89 fb 48 89 f0 48
+89 d7 48 89 ce 4c 89 c2 4d 89 ca 4c 8b 44 24 08 4c 8b 4c 24 10 4c 89
+5c 24 08 0f 05 <c3> 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 00 f3 0f 1e fa
+55 48 89 e5
+[   50.817904][ T9494] RSP: 002b:00007ffc7bf0a438 EFLAGS: 00000246
+ORIG_RAX: 000000000000002c
+[   50.818725][ T9494] RAX: ffffffffffffffda RBX: 0000000000000001
+RCX: 00000000004527b2
+[   50.819496][ T9494] RDX: 0000000000000024 RSI: 00007ffc7bf0a4c0
+RDI: 0000000000000003
+[   50.820334][ T9494] RBP: 00007ffc7bf0a460 R08: 00007ffc7bf0a4a0
+R09: 0000000000000014
+[   50.821106][ T9494] R10: 0000000000000000 R11: 0000000000000246
+R12: 00007ffc7bf0a618
+[   50.821873][ T9494] R13: 00007ffc7bf0a628 R14: 0000000000000002
+R15: 00000000004cba40
+[   50.822631][ T9494]  </TASK>
+[   50.822957][ T9494] Modules linked in:
+[   50.823408][ T9494] ---[ end trace 0000000000000000 ]---
+[   50.823952][ T9494] RIP: 0010:skb_panic+0x157/0x160
+[   50.823964][ T9494] Code: c7 c0 a8 01 8d 48 8b 74 24 08 48 8b 54 24
+10 8b 0c 24 44 8b 44 24 04 4d 89 e9 50 55 41 57 41 56 e8 4e 84 f5 ff
+48 83 c4 20 90 <0f> 0b cc cc cc cc cc cc cc 90 90 90 90 90 90 90 90 90
+90 90 90 90
+[   50.823970][ T9494] RSP: 0018:ffffc900071b6ea0 EFLAGS: 00010286
+[   50.823976][ T9494] RAX: 0000000000000084 RBX: dffffc0000000000
+RCX: 4ccd4c5bba686000
+[   50.823981][ T9494] RDX: 0000000000000000 RSI: 8000000000000201
+RDI: 0000000000000000
+[   50.823986][ T9494] RBP: 0000000000000180 R08: ffffc900071b6c07
+R09: 1ffff92000e36d80
+[   50.823991][ T9494] R10: dffffc0000000000 R11: fffff52000e36d81
+R12: ffff88810804e290
+[   50.823996][ T9494] R13: ffff888111738000 R14: ffff888111737ff4
+R15: 0000000000000034
+[   50.824001][ T9494] FS:  000000002fb9b400(0000)
+GS:ffff8881da588000(0000) knlGS:0000000000000000
+[   50.824006][ T9494] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   50.824011][ T9494] CR2: 000055f09acf9258 CR3: 0000000022ecb000
+CR4: 0000000000752ef0
+[   50.824017][ T9494] PKRU: 55555554
+[   50.824024][ T9494] Kernel panic - not syncing: Fatal exception in interrupt
+[   50.834454][ T9494] Kernel Offset: disabled
+[   50.835002][ T9494] Rebooting in 86400 seconds..
+
+Regards,
+SEFCOM Lab @ ASU
+
+--000000000000680912065b1692d1
+Content-Type: application/octet-stream; name="207.patch"
+Content-Disposition: attachment; filename="207.patch"
+Content-Transfer-Encoding: base64
+Content-ID: <f_mtutskgh0>
+X-Attachment-Id: f_mtutskgh0
+
+LS0tIGEvbmV0LzZsb3dwYW4vaXBoYy5jCTIwMjYtMDktMDkgMTc6Mzk6MzIuMjQ2OTk5MjIwIC0w
+NzAwCisrKyBiL25ldC82bG93cGFuL2lwaGMuYwkyMDI2LTA5LTA5IDE3OjM5OjMyLjI2OTUyMDk1
+NiAtMDcwMApAQCAtMTE0MCw2ICsxMTQwLDEwIEBACiAJaWYgKHNrYi0+cHJvdG9jb2wgIT0gaHRv
+bnMoRVRIX1BfSVBWNikpCiAJCXJldHVybiAtRUlOVkFMOwogCisJLyogRXZlcnkgZmllbGQgY29t
+cHJlc3NlZCBiZWxvdyBpcyByZWFkIG91dCBvZiB0aGUgSVB2NiBoZWFkZXIuICovCisJaWYgKHNr
+Yi0+bGVuIDwgc2l6ZW9mKHN0cnVjdCBpcHY2aGRyKSkKKwkJcmV0dXJuIC1FSU5WQUw7CisKIAlo
+ZHIgPSBpcHY2X2hkcihza2IpOwogCWhjX3B0ciA9IGhlYWQgKyAyOwogCkBAIC0xMjk5LDcgKzEz
+MDMsMTEgQEAKIAloZWFkWzBdID0gaXBoYzA7CiAJaGVhZFsxXSA9IGlwaGMxOwogCi0Jc2tiX3B1
+bGwoc2tiLCBzaXplb2Yoc3RydWN0IGlwdjZoZHIpKTsKKwkvKiBOSEMgY29tcHJlc3Npb24gaGFz
+IGFscmVhZHkgcHVsbGVkIHRoZSB0cmFuc3BvcnQgaGVhZGVyLCBzbyB0aGUKKwkgKiBJUHY2IGhl
+YWRlciBtYXkgbm8gbG9uZ2VyIGJlIHRoZXJlIHRvIHB1bGwuCisJICovCisJaWYgKCFza2JfcHVs
+bChza2IsIHNpemVvZihzdHJ1Y3QgaXB2NmhkcikpKQorCQlyZXR1cm4gLUVJTlZBTDsKIAlza2Jf
+cmVzZXRfdHJhbnNwb3J0X2hlYWRlcihza2IpOwogCW1lbWNweShza2JfcHVzaChza2IsIGhjX3B0
+ciAtIGhlYWQpLCBoZWFkLCBoY19wdHIgLSBoZWFkKTsKIAlza2JfcmVzZXRfbmV0d29ya19oZWFk
+ZXIoc2tiKTsK
+--000000000000680912065b1692d1
+Content-Type: application/octet-stream; name="reproducer.c"
+Content-Disposition: attachment; filename="reproducer.c"
+Content-Transfer-Encoding: base64
+Content-ID: <f_mtutskgs1>
+X-Attachment-Id: f_mtutskgs1
+
+LyoKICogMjA3LWtlcm5lbC1idWctaW4tbG93cGFuLWhlYWRlci1jb21wcmVzcwogKi8KCiNkZWZp
+bmUgX0dOVV9TT1VSQ0UKI2luY2x1ZGUgPGVycm5vLmg+CiNpbmNsdWRlIDxmY250bC5oPgojaW5j
+bHVkZSA8bGludXgvaWZfZXRoZXIuaD4KI2luY2x1ZGUgPGxpbnV4L2lmX3BhY2tldC5oPgojaW5j
+bHVkZSA8bmV0L2lmLmg+CiNpbmNsdWRlIDxuZXRpbmV0L2luLmg+CiNpbmNsdWRlIDxwdGhyZWFk
+Lmg+CiNpbmNsdWRlIDxzdGRpbnQuaD4KI2luY2x1ZGUgPHN0ZGlvLmg+CiNpbmNsdWRlIDxzdGRs
+aWIuaD4KI2luY2x1ZGUgPHN0cmluZy5oPgojaW5jbHVkZSA8c3lzL2lvY3RsLmg+CiNpbmNsdWRl
+IDxzeXMvbW91bnQuaD4KI2luY2x1ZGUgPHN5cy9zb2NrZXQuaD4KI2luY2x1ZGUgPHN5cy9zdGF0
+Lmg+CiNpbmNsdWRlIDxzeXMvdWlvLmg+CiNpbmNsdWRlIDx1bmlzdGQuaD4KCnR5cGVkZWYgdWlu
+dDhfdCB1ODsKdHlwZWRlZiB1aW50MTZfdCB1MTY7CgojZGVmaW5lIEJUUFJPVE9fSENJIDEKCiNk
+ZWZpbmUgSENJX0NPTU1BTkRfUEtUIDB4MDEKI2RlZmluZSBIQ0lfQUNMREFUQV9QS1QgMHgwMgoj
+ZGVmaW5lIEhDSV9FVkVOVF9QS1QgMHgwNAojZGVmaW5lIEhDSV9WRU5ET1JfUEtUIDB4ZmYKCiNk
+ZWZpbmUgSENJX0VWX0NNRF9DT01QTEVURSAweDBlCiNkZWZpbmUgSENJX0VWX0xFX01FVEEgMHgz
+ZQojZGVmaW5lIEhDSV9FVl9MRV9DT05OX0NPTVBMRVRFIDB4MDEKCiNkZWZpbmUgSENJX09QX1JF
+U0VUIDB4MGMwMwojZGVmaW5lIEhDSV9PUF9SRUFEX0JVRkZFUl9TSVpFIDB4MTAwNQojZGVmaW5l
+IEhDSV9PUF9SRUFEX0JEX0FERFIgMHgxMDA5CiNkZWZpbmUgSENJREVWVVAgX0lPVygnSCcsIDIw
+MSwgaW50KQoKLyogQ29ubmVjdGlvbiBoYW5kbGUgdGhlIGZha2VkIExFIGxpbmsgaXMgZ2l2ZW47
+IHJldXNlZCBhcyB0aGUgQUNMIFRYIGhhbmRsZS4gKi8KI2RlZmluZSBGQUtFX0xFX0NPTk5fSEFO
+RExFIDIwMQoKdHlwZWRlZiBzdHJ1Y3QgeyB1OCBiWzZdOyB9IF9fYXR0cmlidXRlX18oKHBhY2tl
+ZCkpIGJkYWRkcl90OwoKc3RydWN0IGhjaV9jb21tYW5kX2hkciB7IHUxNiBvcGNvZGU7IHU4IHBs
+ZW47IH0gX19hdHRyaWJ1dGVfXygocGFja2VkKSk7CnN0cnVjdCBoY2lfZXZlbnRfaGRyIHsgdTgg
+ZXZ0OyB1OCBwbGVuOyB9IF9fYXR0cmlidXRlX18oKHBhY2tlZCkpOwpzdHJ1Y3QgaGNpX2V2X2Nt
+ZF9jb21wbGV0ZSB7IHU4IG5jbWQ7IHUxNiBvcGNvZGU7IH0gX19hdHRyaWJ1dGVfXygocGFja2Vk
+KSk7CgpzdHJ1Y3QgaGNpX2V2X2xlX2Nvbm5fY29tcGxldGUgewoJdTggc3RhdHVzOyB1MTYgaGFu
+ZGxlOyB1OCByb2xlOyB1OCBiZGFkZHJfdHlwZTsgYmRhZGRyX3QgYmRhZGRyOwoJdTE2IGludGVy
+dmFsOyB1MTYgbGF0ZW5jeTsgdTE2IHN1cGVydmlzaW9uX3RpbWVvdXQ7IHU4IGNsa19hY2N1cmFu
+Y3k7Cn0gX19hdHRyaWJ1dGVfXygocGFja2VkKSk7CgpzdHJ1Y3QgaGNpX3JwX3JlYWRfYnVmZmVy
+X3NpemUgewoJdTggc3RhdHVzOyB1MTYgYWNsX210dTsgdTggc2NvX210dTsgdTE2IGFjbF9tYXhf
+cGt0OyB1MTYgc2NvX21heF9wa3Q7Cn0gX19hdHRyaWJ1dGVfXygocGFja2VkKSk7CnN0cnVjdCBo
+Y2lfcnBfcmVhZF9iZF9hZGRyIHsgdTggc3RhdHVzOyBiZGFkZHJfdCBiZGFkZHI7IH0gX19hdHRy
+aWJ1dGVfXygocGFja2VkKSk7CgpzdHJ1Y3QgdmhjaV92ZW5kb3JfcGt0X3JlcXVlc3QgeyB1OCB0
+eXBlOyB1OCBvcGNvZGU7IH0gX19hdHRyaWJ1dGVfXygocGFja2VkKSk7CnN0cnVjdCB2aGNpX3Br
+dCB7Cgl1OCB0eXBlOwoJdW5pb24gewoJCXN0cnVjdCB7IHU4IG9wY29kZTsgdTE2IGlkOyB9IF9f
+YXR0cmlidXRlX18oKHBhY2tlZCkpIHZlbmRvcl9wa3Q7CgkJc3RydWN0IGhjaV9jb21tYW5kX2hk
+ciBjb21tYW5kX2hkcjsKCX07Cn0gX19hdHRyaWJ1dGVfXygocGFja2VkKSk7CgpzdGF0aWMgaW50
+IHZoY2lfZmQgPSAtMTsKCnN0YXRpYyB2b2lkIGRpZShjb25zdCBjaGFyICp3aGF0KQp7CglmcHJp
+bnRmKHN0ZGVyciwgIkZBSUw6ICVzICglcylcbiIsIHdoYXQsIHN0cmVycm9yKGVycm5vKSk7Cgll
+eGl0KDEpOwp9CgpzdGF0aWMgdm9pZCBoY2lfc2VuZF9ldmVudF9wYWNrZXQodTggZXZlbnRfY29k
+ZSwgdm9pZCAqcGF5bG9hZCwgc2l6ZV90IHBheWxvYWRfbGVuKQp7CglzdHJ1Y3QgaGNpX2V2ZW50
+X2hkciBoZHIgPSB7IC5ldnQgPSBldmVudF9jb2RlLCAucGxlbiA9ICh1OClwYXlsb2FkX2xlbiB9
+OwoJdTggcGFja2V0X3R5cGUgPSBIQ0lfRVZFTlRfUEtUOwoJc3RydWN0IGlvdmVjIGlvdlszXSA9
+IHsKCQl7ICZwYWNrZXRfdHlwZSwgMSB9LAoJCXsgJmhkciwgc2l6ZW9mKGhkcikgfSwKCQl7IHBh
+eWxvYWQsIHBheWxvYWRfbGVuIH0sCgl9OwoJaWYgKHdyaXRldih2aGNpX2ZkLCBpb3YsIDMpIDwg
+MCkKCQlkaWUoIndyaXRldiBIQ0kgZXZlbnQiKTsKfQoKc3RhdGljIHZvaWQgaGNpX3NlbmRfY29t
+bWFuZF9jb21wbGV0ZSh1MTYgb3Bjb2RlLCB2b2lkICpyZXR1cm5fcGFyYW1zLCBzaXplX3QgcmV0
+dXJuX2xlbikKewoJc3RydWN0IGhjaV9ldmVudF9oZHIgaGRyID0gewoJCS5ldnQgPSBIQ0lfRVZf
+Q01EX0NPTVBMRVRFLAoJCS5wbGVuID0gKHU4KShzaXplb2Yoc3RydWN0IGhjaV9ldl9jbWRfY29t
+cGxldGUpICsgcmV0dXJuX2xlbiksCgl9OwoJc3RydWN0IGhjaV9ldl9jbWRfY29tcGxldGUgY29t
+cGxldGUgPSB7IC5uY21kID0gMSwgLm9wY29kZSA9IG9wY29kZSB9OwoJdTggcGFja2V0X3R5cGUg
+PSBIQ0lfRVZFTlRfUEtUOwoJc3RydWN0IGlvdmVjIGlvdls0XSA9IHsKCQl7ICZwYWNrZXRfdHlw
+ZSwgMSB9LAoJCXsgJmhkciwgc2l6ZW9mKGhkcikgfSwKCQl7ICZjb21wbGV0ZSwgc2l6ZW9mKGNv
+bXBsZXRlKSB9LAoJCXsgcmV0dXJuX3BhcmFtcywgcmV0dXJuX2xlbiB9LAoJfTsKCWlmICh3cml0
+ZXYodmhjaV9mZCwgaW92LCA0KSA8IDApCgkJZGllKCJ3cml0ZXYgSENJIGNvbW1hbmQgY29tcGxl
+dGUiKTsKfQoKLyoKICogQW5zd2VyIGV2ZXJ5IEhDSSBjb21tYW5kIHRoZSBrZXJuZWwncyBjb250
+cm9sbGVyLWluaXQgc2VuZHMgd2l0aCBhIHN1Y2Nlc3MKICogQ29tbWFuZCBDb21wbGV0ZS4gIFR3
+byBjb21tYW5kcyBuZWVkIHJlYWwgdmFsdWVzIG9yIEhDSURFVlVQIGZhaWxzIHdpdGgKICogRUlO
+VkFMOiBhbiBhbGwtemVybyBCRF9BRERSIGlzIHJlamVjdGVkIGFzIGludmFsaWQsIGFuZCBhIHpl
+cm8gQUNMIE1UVQogKiBsZWF2ZXMgdGhlIGNvbnRyb2xsZXIgd2l0aCBubyB1c2FibGUgVFggYnVm
+ZmVyLiAgRXZlcnl0aGluZyBlbHNlIGdldHMgdGhlCiAqIGxhcmdlc3QgYWxsLXplcm8gcmV0dXJu
+LXBhcmFtZXRlciBibG9jayBhbiBIQ0kgZXZlbnQgY2FuIGNhcnJ5ICgweGY5IGFmdGVyCiAqIHRo
+ZSAzLWJ5dGUgQ29tbWFuZCBDb21wbGV0ZSBwcmVhbWJsZSksIHNvIG5vIHBhcnNlciBzZWVzIGEg
+c2hvcnQgcmVwbHkuCiAqLwpzdGF0aWMgdm9pZCAqaGNpX2NvbW1hbmRfcmVzcG9uZGVyX3RocmVh
+ZCh2b2lkICp1bnVzZWQpCnsKCWZvciAoOzspIHsKCQljaGFyIGJ1ZlsxMDI0XTsKCQlzc2l6ZV90
+IG5ieXRlcyA9IHJlYWQodmhjaV9mZCwgYnVmLCBzaXplb2YoYnVmKSk7CgkJaWYgKG5ieXRlcyA8
+PSAwKSB7CgkJCWlmIChlcnJubyA9PSBFSU5UUikKCQkJCWNvbnRpbnVlOwoJCQlyZXR1cm4gTlVM
+TDsKCQl9CgkJaWYgKGJ1ZlswXSAhPSBIQ0lfQ09NTUFORF9QS1QgfHwKCQkgICAgbmJ5dGVzIDwg
+MSArIChzc2l6ZV90KXNpemVvZihzdHJ1Y3QgaGNpX2NvbW1hbmRfaGRyKSkKCQkJY29udGludWU7
+CgkJc3RydWN0IGhjaV9jb21tYW5kX2hkciAqY21kID0gKHN0cnVjdCBoY2lfY29tbWFuZF9oZHIg
+KikoYnVmICsgMSk7CgkJaWYgKGNtZC0+b3Bjb2RlID09IEhDSV9PUF9SRUFEX0JEX0FERFIpIHsK
+CQkJc3RydWN0IGhjaV9ycF9yZWFkX2JkX2FkZHIgYmRfYWRkciA9IHswfTsKCQkJbWVtc2V0KCZi
+ZF9hZGRyLmJkYWRkciwgMHhhYSwgNik7CgkJCWhjaV9zZW5kX2NvbW1hbmRfY29tcGxldGUoY21k
+LT5vcGNvZGUsICZiZF9hZGRyLCBzaXplb2YoYmRfYWRkcikpOwoJCX0gZWxzZSBpZiAoY21kLT5v
+cGNvZGUgPT0gSENJX09QX1JFQURfQlVGRkVSX1NJWkUpIHsKCQkJc3RydWN0IGhjaV9ycF9yZWFk
+X2J1ZmZlcl9zaXplIGJ1ZmZlcl9zaXplID0gezB9OwoJCQlidWZmZXJfc2l6ZS5hY2xfbXR1ID0g
+MTAyMTsKCQkJYnVmZmVyX3NpemUuc2NvX210dSA9IDk2OwoJCQlidWZmZXJfc2l6ZS5hY2xfbWF4
+X3BrdCA9IDQ7CgkJCWJ1ZmZlcl9zaXplLnNjb19tYXhfcGt0ID0gNjsKCQkJaGNpX3NlbmRfY29t
+bWFuZF9jb21wbGV0ZShjbWQtPm9wY29kZSwgJmJ1ZmZlcl9zaXplLAoJCQkJCQkgIHNpemVvZihi
+dWZmZXJfc2l6ZSkpOwoJCX0gZWxzZSB7CgkJCWNoYXIgemVyb19yZXR1cm5fcGFyYW1zWzB4Zjld
+ID0gezB9OwoJCQloY2lfc2VuZF9jb21tYW5kX2NvbXBsZXRlKGNtZC0+b3Bjb2RlLCB6ZXJvX3Jl
+dHVybl9wYXJhbXMsCgkJCQkJCSAgc2l6ZW9mKHplcm9fcmV0dXJuX3BhcmFtcykpOwoJCX0KCX0K
+fQoKc3RhdGljIHZvaWQgY3JlYXRlX3ZoY2lfY29udHJvbGxlcl93aXRoX2Zha2VfbGVfY29ubmVj
+dGlvbih2b2lkKQp7CglwdGhyZWFkX3QgaGNpX2NvbW1hbmRfcmVzcG9uZGVyOwoJaW50IGhjaV9z
+b2NrID0gc29ja2V0KEFGX0JMVUVUT09USCwgU09DS19SQVcsIEJUUFJPVE9fSENJKTsKCWlmICho
+Y2lfc29jayA8IDApCgkJZGllKCJzb2NrZXQoQUZfQkxVRVRPT1RILCBCVFBST1RPX0hDSSkiKTsK
+Cgl2aGNpX2ZkID0gb3BlbigiL2Rldi92aGNpIiwgT19SRFdSKTsKCWlmICh2aGNpX2ZkIDwgMCkK
+CQlkaWUoIm9wZW4gL2Rldi92aGNpIik7CgoJLyogVmVuZG9yIHBhY2tldCByZXF1ZXN0aW5nIEhD
+SV9QUklNQVJZOyB0aGUgcmVwbHkgY2FycmllcyB0aGUgZGV2IGlkLiAqLwoJc3RydWN0IHZoY2lf
+dmVuZG9yX3BrdF9yZXF1ZXN0IHJlcXVlc3QgPSB7IEhDSV9WRU5ET1JfUEtULCAwIH07CglpZiAo
+d3JpdGUodmhjaV9mZCwgJnJlcXVlc3QsIHNpemVvZihyZXF1ZXN0KSkgIT0gc2l6ZW9mKHJlcXVl
+c3QpKQoJCWRpZSgid3JpdGUgdmhjaSB2ZW5kb3IgcGFja2V0Iik7CgoJc3RydWN0IHZoY2lfcGt0
+IHJlcGx5OwoJaWYgKHJlYWQodmhjaV9mZCwgJnJlcGx5LCBzaXplb2YocmVwbHkpKSAhPSBzaXpl
+b2YocmVwbHkpKQoJCWRpZSgicmVhZCB2aGNpIHJlcGx5Iik7CgkvKiBTb21lIGtlcm5lbHMgZW1p
+dCBIQ0lfT1BfUkVTRVQgYmVmb3JlIHRoZSB2ZW5kb3IgcmVwbHkuICovCglpZiAocmVwbHkudHlw
+ZSA9PSBIQ0lfQ09NTUFORF9QS1QgJiYgcmVwbHkuY29tbWFuZF9oZHIub3Bjb2RlID09IEhDSV9P
+UF9SRVNFVCkgewoJCWNoYXIgc3RhdHVzX29rID0gMDsKCQloY2lfc2VuZF9jb21tYW5kX2NvbXBs
+ZXRlKEhDSV9PUF9SRVNFVCwgJnN0YXR1c19vaywgMSk7CgkJaWYgKHJlYWQodmhjaV9mZCwgJnJl
+cGx5LCBzaXplb2YocmVwbHkpKSAhPSBzaXplb2YocmVwbHkpKQoJCQlkaWUoInJlYWQgdmhjaSBy
+ZXBseSBhZnRlciByZXNldCIpOwoJfQoJaWYgKHJlcGx5LnR5cGUgIT0gSENJX1ZFTkRPUl9QS1Qp
+CgkJZGllKCJ1bmV4cGVjdGVkIHZoY2kgcGFja2V0IHR5cGUiKTsKCWludCBoY2lfZGV2X2lkID0g
+cmVwbHkudmVuZG9yX3BrdC5pZDsKCglpZiAocHRocmVhZF9jcmVhdGUoJmhjaV9jb21tYW5kX3Jl
+c3BvbmRlciwgTlVMTCwKCQkJICAgaGNpX2NvbW1hbmRfcmVzcG9uZGVyX3RocmVhZCwgTlVMTCkp
+CgkJZGllKCJwdGhyZWFkX2NyZWF0ZSIpOwoKCWlmIChpb2N0bChoY2lfc29jaywgSENJREVWVVAs
+IGhjaV9kZXZfaWQpICYmIGVycm5vICE9IEVBTFJFQURZKQoJCWRpZSgiSENJREVWVVAiKTsKCWNs
+b3NlKGhjaV9zb2NrKTsKCgkvKiBGYWtlIGFuIExFIENvbm5lY3Rpb24gQ29tcGxldGUgc28gYW4g
+QUNMIGxpbmsgZXhpc3RzIHRvIHNwZWFrIEwyQ0FQIG9uLiAqLwoJc3RydWN0IHsKCQl1OCBzdWJl
+dmVudDsKCQlzdHJ1Y3QgaGNpX2V2X2xlX2Nvbm5fY29tcGxldGUgY29ubjsKCX0gX19hdHRyaWJ1
+dGVfXygocGFja2VkKSkgbGVfbWV0YTsKCW1lbXNldCgmbGVfbWV0YSwgMCwgc2l6ZW9mKGxlX21l
+dGEpKTsKCWxlX21ldGEuc3ViZXZlbnQgPSBIQ0lfRVZfTEVfQ09OTl9DT01QTEVURTsKCWxlX21l
+dGEuY29ubi5oYW5kbGUgPSBGQUtFX0xFX0NPTk5fSEFORExFOwoJbGVfbWV0YS5jb25uLnJvbGUg
+PSAxOwoJbWVtc2V0KCZsZV9tZXRhLmNvbm4uYmRhZGRyLCAweGFhLCA2KTsKCWxlX21ldGEuY29u
+bi5iZGFkZHIuYls1XSA9IDB4MTE7CgloY2lfc2VuZF9ldmVudF9wYWNrZXQoSENJX0VWX0xFX01F
+VEEsICZsZV9tZXRhLCBzaXplb2YobGVfbWV0YSkpOwoKCXVzbGVlcCgyMDAwMDApOwp9CgovKgog
+KiBJbmplY3QgYW4gTDJDQVAgTEUgY3JlZGl0LWJhc2VkIGNvbm5lY3Rpb24gcmVxdWVzdCBmb3Ig
+UFNNIDB4MDAyMyAoSVBTUCkuCiAqIFRoZSA2bG93cGFuIGxpc3RlbmVyIGFjY2VwdHMgaXQsIGFu
+ZCBjaGFuX3JlYWR5X2NiKCkgdGhlbiByZWdpc3RlcnMgYnQwCiAqIGFuZCBicmluZ3MgaXQgdXAs
+IHNvIG5vIGV4cGxpY2l0IFNJT0NTSUZGTEFHUyBpcyBuZWVkZWQuCiAqLwpzdGF0aWMgdm9pZCBv
+cGVuX2wyY2FwX2lwc3BfY2hhbm5lbCh2b2lkKQp7Cgl1OCBsMmNhcF9sZV9jb25uX3JlcVsxNF07
+Cgl1OCBhY2xfcGFja2V0WzY0XTsKCWludCBvZmZzZXQgPSAwOwoKCWwyY2FwX2xlX2Nvbm5fcmVx
+WzBdID0gMHgxNDsJCQkvKiBMMkNBUF9MRV9DT05OX1JFUSAqLwoJbDJjYXBfbGVfY29ubl9yZXFb
+MV0gPSAweDAxOwkJCS8qIGlkZW50aWZpZXIgKi8KCSoodTE2ICopJmwyY2FwX2xlX2Nvbm5fcmVx
+WzJdID0gMTA7CQkvKiBjb21tYW5kIGxlbmd0aCAqLwoJKih1MTYgKikmbDJjYXBfbGVfY29ubl9y
+ZXFbNF0gPSAweDAwMjM7CQkvKiBQU006IElQU1AgKi8KCSoodTE2ICopJmwyY2FwX2xlX2Nvbm5f
+cmVxWzZdID0gMHgwMDQwOwkJLyogc291cmNlIENJRCAqLwoJKih1MTYgKikmbDJjYXBfbGVfY29u
+bl9yZXFbOF0gPSAxMjgwOwkJLyogTVRVICovCgkqKHUxNiAqKSZsMmNhcF9sZV9jb25uX3JlcVsx
+MF0gPSAxMjgwOwkJLyogTVBTICovCgkqKHUxNiAqKSZsMmNhcF9sZV9jb25uX3JlcVsxMl0gPSAx
+MDsJCS8qIGluaXRpYWwgY3JlZGl0cyAqLwoKCWFjbF9wYWNrZXRbb2Zmc2V0KytdID0gSENJX0FD
+TERBVEFfUEtUOwoJLyogUGFja2V0LWJvdW5kYXJ5IGZsYWcgMiA9IGZpcnN0IG5vbi1mbHVzaGFi
+bGUsIHBvaW50LXRvLXBvaW50LiAqLwoJKih1MTYgKikmYWNsX3BhY2tldFtvZmZzZXRdID0gRkFL
+RV9MRV9DT05OX0hBTkRMRSB8ICgyIDw8IDEyKTsKCW9mZnNldCArPSAyOwoJKih1MTYgKikmYWNs
+X3BhY2tldFtvZmZzZXRdID0gNCArIHNpemVvZihsMmNhcF9sZV9jb25uX3JlcSk7CglvZmZzZXQg
+Kz0gMjsJCQkJCS8qIEFDTCBkYXRhIGxlbmd0aCAqLwoJKih1MTYgKikmYWNsX3BhY2tldFtvZmZz
+ZXRdID0gc2l6ZW9mKGwyY2FwX2xlX2Nvbm5fcmVxKTsKCW9mZnNldCArPSAyOwkJCQkJLyogTDJD
+QVAgUERVIGxlbmd0aCAqLwoJKih1MTYgKikmYWNsX3BhY2tldFtvZmZzZXRdID0gMHgwMDA1OwoJ
+b2Zmc2V0ICs9IDI7CQkJCQkvKiBMRSBzaWduYWxpbmcgQ0lEICovCgltZW1jcHkoJmFjbF9wYWNr
+ZXRbb2Zmc2V0XSwgbDJjYXBfbGVfY29ubl9yZXEsIHNpemVvZihsMmNhcF9sZV9jb25uX3JlcSkp
+OwoJb2Zmc2V0ICs9IHNpemVvZihsMmNhcF9sZV9jb25uX3JlcSk7CgoJaWYgKHdyaXRlKHZoY2lf
+ZmQsIGFjbF9wYWNrZXQsIG9mZnNldCkgIT0gb2Zmc2V0KQoJCWRpZSgid3JpdGUgTDJDQVAgTEUg
+Y29ubmVjdGlvbiByZXF1ZXN0Iik7Cgl1c2xlZXAoMzAwMDAwKTsKfQoKaW50IG1haW4odm9pZCkK
+ewoJaW50IGxvd3Bhbl9lbmFibGVfZmQ7Cgl1bnNpZ25lZCBidDBfaWZpbmRleCA9IDA7CglpbnQg
+YXR0ZW1wdDsKCglta2RpcigiL3N5cy9rZXJuZWwvZGVidWciLCAwNzU1KTsKCW1vdW50KCJkZWJ1
+Z2ZzIiwgIi9zeXMva2VybmVsL2RlYnVnIiwgImRlYnVnZnMiLCAwLCBOVUxMKTsKCglsb3dwYW5f
+ZW5hYmxlX2ZkID0gb3BlbigiL3N5cy9rZXJuZWwvZGVidWcvYmx1ZXRvb3RoLzZsb3dwYW5fZW5h
+YmxlIiwgT19XUk9OTFkpOwoJaWYgKGxvd3Bhbl9lbmFibGVfZmQgPCAwKQoJCWRpZSgib3BlbiA2
+bG93cGFuX2VuYWJsZSIpOwoJaWYgKHdyaXRlKGxvd3Bhbl9lbmFibGVfZmQsICIxXG4iLCAyKSA8
+IDApCgkJZGllKCJ3cml0ZSA2bG93cGFuX2VuYWJsZSIpOwoJY2xvc2UobG93cGFuX2VuYWJsZV9m
+ZCk7CgoJY3JlYXRlX3ZoY2lfY29udHJvbGxlcl93aXRoX2Zha2VfbGVfY29ubmVjdGlvbigpOwoJ
+b3Blbl9sMmNhcF9pcHNwX2NoYW5uZWwoKTsKCglmb3IgKGF0dGVtcHQgPSAwOyBhdHRlbXB0IDwg
+MTAwICYmICFidDBfaWZpbmRleDsgYXR0ZW1wdCsrKSB7CgkJYnQwX2lmaW5kZXggPSBpZl9uYW1l
+dG9pbmRleCgiYnQwIik7CgkJaWYgKCFidDBfaWZpbmRleCkKCQkJdXNsZWVwKDEwMDAwMCk7Cgl9
+CglpZiAoIWJ0MF9pZmluZGV4KQoJCWRpZSgiYnQwIG5ldmVyIGFwcGVhcmVkIik7CgoJaW50IHBh
+Y2tldF9zb2NrZXQgPSBzb2NrZXQoQUZfUEFDS0VULCBTT0NLX1JBVywgaHRvbnMoRVRIX1BfSVBW
+NikpOwoJaWYgKHBhY2tldF9zb2NrZXQgPCAwKQoJCWRpZSgic29ja2V0KEFGX1BBQ0tFVCkiKTsK
+CglzdHJ1Y3Qgc29ja2FkZHJfbGwgYnQwX2xpbmtfYWRkcmVzczsKCW1lbXNldCgmYnQwX2xpbmtf
+YWRkcmVzcywgMCwgc2l6ZW9mKGJ0MF9saW5rX2FkZHJlc3MpKTsKCWJ0MF9saW5rX2FkZHJlc3Mu
+c2xsX2ZhbWlseSA9IEFGX1BBQ0tFVDsKCWJ0MF9saW5rX2FkZHJlc3Muc2xsX3Byb3RvY29sID0g
+aHRvbnMoRVRIX1BfSVBWNik7CglidDBfbGlua19hZGRyZXNzLnNsbF9pZmluZGV4ID0gYnQwX2lm
+aW5kZXg7CglidDBfbGlua19hZGRyZXNzLnNsbF9oYWxlbiA9IDA7CgoJLyoKCSAqIDM2IGJ5dGVz
+OiBzaG9ydGVyIHRoYW4gc2l6ZW9mKHN0cnVjdCBpcHY2aGRyKSA9PSA0MC4gIG5ldC82bG93cGFu
+L2lwaGMuYwoJICogZG9lcyBza2JfcHVsbChza2IsIHNpemVvZihzdHJ1Y3QgaXB2NmhkcikpIGJl
+Zm9yZSB0aGUgY29tcHJlc3NlZCBoZWFkZXIKCSAqIGlzIHB1c2hlZCwgYW5kIHNrYl9wdWxsKCkg
+aXMgYSBuby1vcCB3aGVuIGxlbiA+IHNrYi0+bGVuLCBzbyBza2ItPmRhdGEKCSAqIGlzIG5ldmVy
+IGFkdmFuY2VkLiAgRXZlcnkgY29tcHJlc3NpYmxlIGZpZWxkIGJlbG93IGlzIGNob3NlbiB0byBi
+ZQoJICogaW5jb21wcmVzc2libGUsIHNvIHRoZSBJUEhDIGhlYWRlciBpcyAyOCBieXRlcyAtLSBt
+b3JlIHRoYW4gdGhlIDE2CgkgKiBieXRlcyBvZiBoZWFkcm9vbSBBRl9QQUNLRVQgcmVzZXJ2ZWQg
+Zm9yIGJ0MCAoaGFyZF9oZWFkZXJfbGVuIDAsCgkgKiBuZWVkZWRfaGVhZHJvb20gMCkuICBUaGUg
+c2tiX3B1c2goKSB0aGVyZWZvcmUgdW5kZXJmbG93cyB0aGUgYnVmZmVyLgoJICovCgl1OCB0cnVu
+Y2F0ZWRfaXB2Nl9mcmFtZVszNl07CgltZW1zZXQodHJ1bmNhdGVkX2lwdjZfZnJhbWUsIDAsIHNp
+emVvZih0cnVuY2F0ZWRfaXB2Nl9mcmFtZSkpOwoJdHJ1bmNhdGVkX2lwdjZfZnJhbWVbMF0gPSAw
+eDYxOwkJLyogdmVyc2lvbiA2LCB0cmFmZmljIGNsYXNzICE9IDAgKi8KCXRydW5jYXRlZF9pcHY2
+X2ZyYW1lWzFdID0gMHgxMjsJCS8qIHRyYWZmaWMgY2xhc3MgLyBmbG93IGxhYmVsICovCgl0cnVu
+Y2F0ZWRfaXB2Nl9mcmFtZVsyXSA9IDB4MzQ7Cgl0cnVuY2F0ZWRfaXB2Nl9mcmFtZVszXSA9IDB4
+NTY7CQkvKiBmbG93IGxhYmVsICE9IDAgLT4gVEY9MDAsIDQgYnl0ZXMgaW5saW5lICovCgl0cnVu
+Y2F0ZWRfaXB2Nl9mcmFtZVs2XSA9IDB4MDY7CQkvKiBuZXh0IGhlYWRlciBUQ1A6IG5vIE5IQyAt
+PiAxIGJ5dGUgaW5saW5lICovCgl0cnVuY2F0ZWRfaXB2Nl9mcmFtZVs3XSA9IDB4MDc7CQkvKiBo
+b3AgbGltaXQgbm90IDEvNjQvMjU1IC0+IDEgYnl0ZSBpbmxpbmUgKi8KCS8qIHNvdXJjZSAyMDAx
+OmRiODo6MSAtLSBnbG9iYWwgdW5pY2FzdCwgc28gYWxsIDE2IGJ5dGVzIGdvIGlubGluZSAqLwoJ
+dHJ1bmNhdGVkX2lwdjZfZnJhbWVbOF0gPSAweDIwOwoJdHJ1bmNhdGVkX2lwdjZfZnJhbWVbOV0g
+PSAweDAxOwoJdHJ1bmNhdGVkX2lwdjZfZnJhbWVbMTBdID0gMHgwZDsKCXRydW5jYXRlZF9pcHY2
+X2ZyYW1lWzExXSA9IDB4Yjg7Cgl0cnVuY2F0ZWRfaXB2Nl9mcmFtZVsyM10gPSAweDAxOwoJLyog
+ZGVzdGluYXRpb24gZmYwNTo6Li4uICwgdHJ1bmNhdGVkIGJ5IHRoZSAzNi1ieXRlIGZyYW1lIGxl
+bmd0aCAqLwoJdHJ1bmNhdGVkX2lwdjZfZnJhbWVbMjRdID0gMHhmZjsKCXRydW5jYXRlZF9pcHY2
+X2ZyYW1lWzI1XSA9IDB4MDU7CgoJc2VuZHRvKHBhY2tldF9zb2NrZXQsIHRydW5jYXRlZF9pcHY2
+X2ZyYW1lLCBzaXplb2YodHJ1bmNhdGVkX2lwdjZfZnJhbWUpLCAwLAoJICAgICAgIChzdHJ1Y3Qg
+c29ja2FkZHIgKikmYnQwX2xpbmtfYWRkcmVzcywgc2l6ZW9mKGJ0MF9saW5rX2FkZHJlc3MpKTsK
+CXJldHVybiAwOwp9Cg==
+--000000000000680912065b1692d1--
