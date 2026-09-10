@@ -1,555 +1,178 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from CY7PR03CU001.outbound.protection.outlook.com (mail-westcentralusazon11010002.outbound.protection.outlook.com [40.93.198.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 746D03C1404
-	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 10:20:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789035661; cv=none; b=T4bx39ZvGYLHemunmxmXfFp8A7jF+HWBk9CT1j2To+fLIpRt1WyiEvT74qMpqZfhTlyCJEjQPn0op4k1yL18T0k74+uYv4IZgNVPO4Fy03qCYdmnG8oX65rd0YlPP/J6RZRkglZNoHUtwz2aEX4jdd6LTzSO8YR73g0djqydWoM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789035661; c=relaxed/simple;
-	bh=XvLaVKEoEiuoftEQ3u/itWXtrp5NqUqZCnejfVwupUk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YjRsXALjc7awnDFVilA32dD+hg+5Tip4nYtH7HIzGoFyfRD1Tb3MUsFba7eqT+z2hqUmOKTxNyc/5v4Ncnz8mM1ZYK2NiCAEMTncpFro9r6Tgej0E8FfJ1XH8KpyJonvzQ4S40LXsKFq4wVT+JN+qQWQoHsMShBoU1DPCZqxHsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YpdC0MEF; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=IXVuXqwo; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CCC13D1CC3;
+	Thu, 10 Sep 2026 10:25:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.2
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789035938; cv=fail; b=Cnb7eayKn6PpWIwszd1FVLDEzGgko3irU4c015rs9i/HsPOhvMn96J5VYbOwJe/whh5JekRQBUx9qUTHN36Tu1W3nKdyJwm82GRYueEbt84cIwgC5Ko4GhZ6E29NmEsgfcOD5Ar5nR73rUMD2IzU8+aGHu759J4XaElQGKner+Q=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789035938; c=relaxed/simple;
+	bh=IP37fP4oD2tpK0bAqanpxhfVG1pLh600nl7LlbvRUdw=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=b1dDvgJxHNpn6B5zxCXolSTGjFLJ74ZiR6QW2xBZg2ZLTEx0owR9+AmVcE0WIHit2yMPsbJf+trSwzd6aT5Qclw/DHP9HtYCHm2T0GI/IooW3KGH+opFtYGkoFFu8C/oJ3EaFlGHADMtwzkPuUQ38aK4pMlVe0wBDoETYzEAmlk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=cfw18BXU; arc=fail smtp.client-ip=40.93.198.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YpdC0MEF";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="IXVuXqwo"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1789035657;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XcK7bdMEB7RxLdgX72LvmZFPR4qNMWQ0hW33mihZm2g=;
-	b=YpdC0MEFS8L9M2hIVLMXHaJlYKMWW+kyuNOQ/D4fQ6BiDbvTMCZEHb56g1XWQPtvynzXAX
-	fT+/eeZz70kzQHGzL/S+ER6INU9UywjJ8P2MjrMt/zbO849Pd06RC6V+/L0ZFY39hJrs5F
-	K3B/dinNzhlUJtR8V9rmsq/s/z8yRog=
-Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
- [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-30-qkrgO5JoOG-HG_qF5pXDaA-1; Thu, 10 Sep 2026 06:20:55 -0400
-X-MC-Unique: qkrgO5JoOG-HG_qF5pXDaA-1
-X-Mimecast-MFC-AGG-ID: qkrgO5JoOG-HG_qF5pXDaA_1789035654
-Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-c252686999cso580352866b.2
-        for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 03:20:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1789035654; x=1789640454; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=XcK7bdMEB7RxLdgX72LvmZFPR4qNMWQ0hW33mihZm2g=;
-        b=IXVuXqwoFkdu+ERs8Ho6fDjjMBeUxqUS45YeywH7n6Ln912vwHjA9OUHTHZqDUvd22
-         LXvJDwO2sjIuoSLdfLWyRjZnFymxB1/hjY+aUA4kyvV/L6v6Rzysl9tUEBb9TdnvbrKg
-         oklifL6zM5doeIU82R1twZ1As7ArQjpJSVstl/cIW7lNPfjU2/Htzv0iP0IT2SKusXR8
-         12TPa5BtZn1Nbg8u9kW6Q2s+qDd/c/JY3DCPimQa2rF7UkQ7CF1sUk94h0xMVR8nd1xd
-         eJm1rhuCdp9nVEzKCWhIlIFJu7dcPiSsreH5LqY2x+fSRck4/YwYY2eDj70STthKEi8x
-         ZasQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789035654; x=1789640454;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=XcK7bdMEB7RxLdgX72LvmZFPR4qNMWQ0hW33mihZm2g=;
-        b=KZHSZS99aQd8f7tJiXK2MfFc61qILhS9xaNYJRydfUkGNyd6jPN8McUxvMEBxlgqWT
-         0Qgc45ZhcOtZqc++LjPY1keuw+dv13apie+9p8SHkzmnfGAjf4ouXTirOfhee5WktGnA
-         wQrazAaWIEYEEIqsadZbV8VrduuHX1SOZSEfw8IdIqB3dNv5qYdkm2IZp7ZkWEcDbEy7
-         JjDHp4jsznQ1jqkWjrY33UyccrZRmmDokIbW4+xvuKYgGQ3cUP5ogXRzDUmxmbU00KFO
-         VbmlOW5lx3gAL/qwsMTbdfB2WAtlRw6Pg7ycgvxslLOTmapvXDdEeT/WSojaSXnBj90f
-         bckg==
-X-Forwarded-Encrypted: i=1; AKwUvBxDmsGrpwwNu6ljxAO9m4mGQ+ITvktyOGne0PGxyy769AVlDjRox7LoZ0KC+3n2n/JAMIA3VAM=@vger.kernel.org
-X-Gm-Message-State: AFuF++n4qbJlvgxbN/1zniIvIR6DXaIQigBRPFARj4/aq4DdrDq0UCWw
-	VWOFJksHoEoSkUHpnfn6Ysk7n8gHZ477FfI+vojv7doiO4FpvpUxgsM6mp3UeWErqzqsohV5B4p
-	OLxSw4VC+4IpiYUe/B6vFADxb6gw8CY/PAREf0lLyyruP0hXM0xAKSlplRg==
-X-Gm-Gg: AYBFou1QcIvcG4jjvdrqT7wqZ9TDWWdIBfAZibE7zFDLfjhGTGzRBsSJt5GqCe252pk
-	XwOpRZDAGYeU5YMc4Yg/O8RvtBQ2QJYzIzmlbangaLj6neJHuHS58mXbjlBWLFFem23Vg6mR378
-	Uqz6DKtrOk06fM10rHDUk3XFLEN/vchl7KDKW2CYaQI0RYU3X6UObHtnGwhtkM9fxBQpQgZ/rKp
-	UP+wAuAhHSqd5p/9v+sfabeAKk1h1cAmGOZs4AzUidTs7FxhQjAqP9ZlA6xX4ib0MBMAMrvReyZ
-	ZvoVDyiCGNPqXp4OtIBkYrlRKqfhGug4bEkPG0vsqPtkKYcT5TkDq5a0SNki1b0rek8u50dB2iX
-	eLrmy43CHvFh0D1Lwbt6x2v83SKevVqvyTBqm4gLhn1edgjrWxz11/WY8s3oMWl5YbYT+XCI7iA
-	==
-X-Received: by 2002:a17:907:d8d:b0:c25:c54d:d1a2 with SMTP id a640c23a62f3a-c260c9e92e0mr1540664066b.18.1789035654232;
-        Thu, 10 Sep 2026 03:20:54 -0700 (PDT)
-X-Received: by 2002:a17:907:d8d:b0:c25:c54d:d1a2 with SMTP id a640c23a62f3a-c260c9e92e0mr1540660866b.18.1789035653563;
-        Thu, 10 Sep 2026 03:20:53 -0700 (PDT)
-Received: from [192.168.188.218] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c260d55b306sm896263266b.36.2026.09.10.03.20.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 10 Sep 2026 03:20:53 -0700 (PDT)
-Message-ID: <30dc9ad2-0ff7-4d97-8b01-ab2267fb56b8@redhat.com>
-Date: Thu, 10 Sep 2026 12:20:50 +0200
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="cfw18BXU"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=lM+6RhC+RM/q0BYBeOpYq+FIcA98YAYeLr4DCBfaBAvWZ3vVAdQx7jIRRvgcMFVi2EdH9d5D+B7R3eEBl32F192+Nlg3jc0bT29ShEyPoJgOvb1wCfoWfs3Zlet5s4J4/jrWN7Hv0N3VyYmc9/MoXjkttzX3G+HH5g1ckmw3loE+vfI30pFF1VylLekgfbFe45Y5TGjbHiXHUfxSydZetJzVE4OZrM3Z4JTTgYJ3YJ7gtmi27v0nG2evUVVsrhTgr5vCFcxtnXq8KFZdkXC6RJymMh5mwIiuo2Y1pTmo8saGJZhBw+lPhrHnSe0yWKBZh9XRTQI7XzNPHkzAphXZ8w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=cU1YkSXL9umm/DSG1uN5z/XJ0eaD5YxJ+Uz6wNxJbQM=;
+ b=FFarajv3GoAVekzPns1mVRJt86yyhmRF5indzVgPL/t1dKXezRxgsl5LWFtZPN/KjGnsUzbXXuqxEHm25UudQDKOYrLnSSkQYYanoXhcQsHACa4uckHw+S7aKpXpFGhqZbDATa6mPEhYPp3gRqCY4dfSL0+QrhEA+4bYVjpraISW8l0+F6X0sNAnMlPARJ6hi5SfiO8B93ArKs5xVtct52fBlKyFWpgkyKG4WgzWPStXNMw9nvxGKB6p8hNtGg3Qch/QelppW/KtkdVfYh0n1vmAIsEsAoI+U3L2AKmLdVPjrSxlz2XolKLu1wfYOxvah4oGN/YcQKulf+VUaZtKwA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=lunn.ch smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=cU1YkSXL9umm/DSG1uN5z/XJ0eaD5YxJ+Uz6wNxJbQM=;
+ b=cfw18BXUkFL31TcDXV7r6ogKnN2WXp5OlhFaTG1Ltyl5fBsvibrWVK7opUYWsnn3auPOEzKMDaswcKkPL8bIXDM4JVoFjkOYy5Yz1eqP4iFcTw068imiKIEr958tUoyxti3tFsM/gqFEuFS5EveJinbd/EGsXpbuEdNn9tmmWwEGV/r+N2gMx2w9rjJfhV8AZecmFTMpUvevN4tDOeMGyXLQeqBwhY1YD+iHDIDtdCg0BSGK/yMpV1nf8F0h1CUIiD9MUOEUc9Jh/VOQ+6Zk9sU+wIDS17WzOq+csyv9pm54V3rP4eyvClOiQJlb1lL3SQwxDGiQ+c/eoHMG829nYw==
+Received: from BN9PR03CA0133.namprd03.prod.outlook.com (2603:10b6:408:fe::18)
+ by SN7PR12MB8819.namprd12.prod.outlook.com (2603:10b6:806:32a::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.7; Thu, 10 Sep
+ 2026 10:25:24 +0000
+Received: from BL6PEPF00022570.namprd02.prod.outlook.com
+ (2603:10b6:408:fe:cafe::92) by BN9PR03CA0133.outlook.office365.com
+ (2603:10b6:408:fe::18) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.406.8 via Frontend Transport; Thu, 10
+ Sep 2026 10:25:23 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ BL6PEPF00022570.mail.protection.outlook.com (10.167.249.38) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.406.5 via Frontend Transport; Thu, 10 Sep 2026 10:25:23 +0000
+Received: from rnnvmail205.nvidia.com (10.129.68.10) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.46; Thu, 10 Sep
+ 2026 03:25:08 -0700
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail205.nvidia.com
+ (10.129.68.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.46; Thu, 10 Sep
+ 2026 03:25:08 -0700
+Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com (10.129.68.8)
+ with Microsoft SMTP Server id 15.2.2562.46 via Frontend Transport; Thu, 10
+ Sep 2026 03:25:03 -0700
+From: Tariq Toukan <tariqt@nvidia.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, <netdev@vger.kernel.org>, Paolo Abeni <pabeni@redhat.com>
+CC: Edward Srouji <edwards@nvidia.com>, Gal Pressman <gal@nvidia.com>, "Jason
+ Gunthorpe" <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, open list
+	<linux-kernel@vger.kernel.org>, <linux-rdma@vger.kernel.org>, Maher Sanalla
+	<msanalla@nvidia.com>, Mark Bloch <mbloch@nvidia.com>, Or Har-Toov
+	<ohartoov@nvidia.com>, Saeed Mahameed <saeedm@nvidia.com>, Shay Drori
+	<shayd@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>
+Subject: [PATCH net 0/5] net/mlx5: fixes for LAG max_tx_speed update flow
+Date: Thu, 10 Sep 2026 13:24:27 +0300
+Message-ID: <20260910102432.3845360-1-tariqt@nvidia.com>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v5] net: wwan: qcom_bam_dmux: fix TX DMA channel
- use-after-free
-To: Hongyan Xu <getshell@seu.edu.cn>, Stephan Gerhold <stephan@gerhold.net>
-Cc: Loic Poulain <loic.poulain@oss.qualcomm.com>,
- Sergey Ryazanov <ryazanov.s.a@gmail.com>,
- Johannes Berg <johannes@sipsolutions.net>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, stable@vger.kernel.org
-References: <20260903180057.1437-1-getshell@seu.edu.cn>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20260903180057.1437-1-getshell@seu.edu.cn>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL6PEPF00022570:EE_|SN7PR12MB8819:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2cbc31fc-913c-452a-69ea-08df0f25d2e1
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|1800799024|7416014|376014|23010399003|82310400026|10067099003|56012099006|11063799006|6133799003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	goz8bELzuy5Lzi6cvyZPLOUL/uy9m5hG1Y5BMZO2kOLE0Hf6X9cEbH5Czq+YUZVjCQhqdfoujZOG78SGBXtnB5iG7Zq1t5Uct3n5qd6c5Q4NIDgsM+vsRgUZwQ+Yh+diJ9ANbekdj2/P010ltLhgCvXo8fGKlyL9tEi3+/XD17MDw8Z5yfbe5arCj4Bh7Cvno/qtob5GaYR0MPhKSjwha1yYb4nLN63owCzv2IbOO9fCFoL7FGRcYoTwL3J9E7dOAqXdjlv+Gv9TZ/CFK7bICYlrxfxFx7tB4qoyeuNJ245APoLVJ5YBAxZEvg7paLPlzHUiY8e4zROyKOFZrHluH1IFl+66x+p8ccFMVZrMsw4ZGnNowhkcADc4FdlysAIv27wN3g1jWfYATPXx5iUCpb+yUS2b6RWizFZuNd9qqKSmxmDPwTpUDVmiebNFwvHwhPj96bUa5UH41UH/E9LjfxGfkPeSh7IFQeJnylYUYlAwYd8gZ6xgyQfLjfUwYylTShnVYvNAdMrmGgQd7IwB4k+w1wObuD5fTKiaR3BEtiNvQR/VvEgQ8633lgFVy4A0xOg9XMkXA5TYuHwUgLtY/qbT/pyd7JLYZM5ON8WWFEevFOvyunp/D2IhRtFeFWXLYlj0fCwcdTJnlKEavHjd9mLVRzi6YpOgitPEpfuVH76r7mJnVxula6ZDVyh+6SdV
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(36860700016)(1800799024)(7416014)(376014)(23010399003)(82310400026)(10067099003)(56012099006)(11063799006)(6133799003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	3Gg1R48fW9ASBVjzELOfdBVce+VpSMx8sAb/ivUDvmniOWcLOTwv9ty3pPw8qZHWehIooGer50Gug3PIDVEz71unhFuovi7XOfwpL/zBjmQSZR4EZXxvUAQRQHA8Gb8MvKYyHnXEP0rwZZcLXTRyuxYEgz2uIhY5Nmbi2XyHqCo092pdXWf9EURNtdMeW/plo05n4dXiVucNz2VfXkDg2tFFDl2J2Glu9uUdnCBNKyQXyZuNHhPFmrFE6fwkfbVeUzPTYmbGvTsQAuUkcbfwQX1WeMwk4KOWUvdGXKqhyf9FvbSFmbJPkuZoRhw2ccavYvc0HswH4qpfCf3jn273+pE2jRpI+opoV60e8slyHCCwAV/wE6/9+FCvtBVegNIyqKdFj7EA8hRGGMI8+zEoDn8lDdbmnaKw1UOv3un/WqW70LRviBaU86vST8Sa3VqD
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Sep 2026 10:25:23.4279
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2cbc31fc-913c-452a-69ea-08df0f25d2e1
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BL6PEPF00022570.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB8819
 
-On 9/3/26 8:00 PM, Hongyan Xu wrote:
-> The modem power-control interrupt can release dmux->tx while the command,
-> netdev transmit, or deferred wakeup paths are preparing and submitting
-> DMA descriptors. A runtime PM reference alone does not order those paths
-> against the modem-driven interrupt.
-> 
-> The pc and pc-ack IRQ actions do not encode the modem protocol order. A
-> pc=false edge raised before a new host power vote is acknowledged can
-> therefore be handled after runtime resume observes the acknowledgment and
-> starts using TX. On the other hand, acknowledging a new pc=false transition
-> while the host vote remains active lets the modem power down the DMA engine
-> underneath the driver.
-> 
-> Serialize power-control state with a mutex. Before publishing a host-vote
-> acknowledgment, sample the actual pc line and process any delayed
-> transition.
-> When pc goes low while the host vote is active and the TX channel is
-> allocated, defer the transition without acknowledging it. Repeated pc=false
-> interrupts remain deferred and cannot release the channel. If pc returns
-> high, cancel the deferred transition.
-> 
-> Runtime suspend drops the host vote under the same lock. If a pc=false
-> transition was deferred, it then terminates and releases the DMA channels
-> before acknowledging the transition. If runtime suspend wins the race with
-> the pc interrupt, the interrupt observes the inactive host vote and can
-> safely perform the same shutdown. This orders channel release after the
-> last runtime PM user without relying on whether the modem acknowledges
-> the host vote before or after asserting pc.
-> 
-> Keep both state IRQs disabled until the initial probe state is committed,
-> and disable both before final remove cleanup. Use a device-managed mutex
-> and scoped guards for the serialized paths.
-> 
-> This issue was found by the author's in-house static analysis tool.
-> The patch was reviewed by the author.
-> 
-> Fixes: 21a0ffd9b38c ("net: wwan: Add Qualcomm BAM-DMUX WWAN network driver")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Hongyan Xu <getshell@seu.edu.cn>
-> 
-> ---
-> Changes in v5:
-> - Drop the vote-ack state; PC-down safety does not depend on ACK ordering.
-> - Keep repeated PC-low interrupts deferred while TX can still be in use.
-> - Complete a deferred PC-down directly from runtime suspend after dropping
->   the host vote.
-> - Move TX channel acquisition into a scoped helper and retain early returns.
-> 
-> Link: https://lore.kernel.org/netdev/20260822085308.1089-1-getshell@seu.edu.cn/
-> 
-> diff --git a/drivers/net/wwan/qcom_bam_dmux.c b/drivers/net/wwan/qcom_bam_dmux.c
-> index cc6ace8..429d34a 100644
-> --- a/drivers/net/wwan/qcom_bam_dmux.c
-> +++ b/drivers/net/wwan/qcom_bam_dmux.c
-> @@ -6,12 +6,14 @@
->  
->  #include <linux/atomic.h>
->  #include <linux/bitops.h>
-> +#include <linux/cleanup.h>
->  #include <linux/completion.h>
->  #include <linux/dma-mapping.h>
->  #include <linux/dmaengine.h>
->  #include <linux/if_arp.h>
->  #include <linux/interrupt.h>
->  #include <linux/module.h>
-> +#include <linux/mutex.h>
->  #include <linux/netdevice.h>
->  #include <linux/platform_device.h>
->  #include <linux/pm_runtime.h>
-> @@ -64,15 +66,23 @@ struct bam_dmux_skb_dma {
->  	dma_addr_t addr;
->  };
->  
-> +enum bam_dmux_pc_vote {
-> +	BAM_DMUX_PC_VOTE_INACTIVE, /* pc_vote = false */
-> +	BAM_DMUX_PC_VOTE_ACTIVE, /* pc_vote = true */
-> +	BAM_DMUX_PC_VOTE_DOWN_PENDING, /* pc = false while host vote active */
-> +};
-> +
->  struct bam_dmux {
->  	struct device *dev;
->  
-> -	int pc_irq;
-> +	int pc_irq, pc_ack_irq;
->  	bool pc_state, pc_ack_state;
->  	struct qcom_smem_state *pc, *pc_ack;
->  	u32 pc_mask, pc_ack_mask;
->  	wait_queue_head_t pc_wait;
->  	struct completion pc_ack_completion;
-> +	struct mutex power_lock; /* Protect power-control state */
-> +	enum bam_dmux_pc_vote pc_vote;
->  
->  	struct dma_chan *rx, *tx;
->  	struct bam_dmux_skb_dma rx_skbs[BAM_DMUX_NUM_SKB];
-> @@ -99,6 +109,24 @@ static void bam_dmux_pc_vote(struct bam_dmux *dmux, bool enable)
->  				    enable ? dmux->pc_mask : 0);
->  }
->  
-> +static void bam_dmux_pc_vote_locked(struct bam_dmux *dmux, bool enable)
-> +{
-> +	lockdep_assert_held(&dmux->power_lock);
-> +
-> +	if (enable)
-> +		dmux->pc_vote = BAM_DMUX_PC_VOTE_ACTIVE;
-> +	else if (dmux->pc_vote != BAM_DMUX_PC_VOTE_DOWN_PENDING)
-> +		dmux->pc_vote = BAM_DMUX_PC_VOTE_INACTIVE;
-> +	bam_dmux_pc_vote(dmux, enable);
-> +}
-> +
-> +static void bam_dmux_pc_vote_protected(struct bam_dmux *dmux, bool enable)
-> +{
-> +	mutex_lock(&dmux->power_lock);
-> +	bam_dmux_pc_vote_locked(dmux, enable);
-> +	mutex_unlock(&dmux->power_lock);
-> +}
-> +
->  static void bam_dmux_pc_ack(struct bam_dmux *dmux)
->  {
->  	qcom_smem_state_update_bits(dmux->pc_ack, dmux->pc_ack_mask,
-> @@ -655,6 +683,8 @@ static void bam_dmux_free_skbs(struct bam_dmux_skb_dma skbs[],
->  
->  static void bam_dmux_power_off(struct bam_dmux *dmux)
->  {
-> +	lockdep_assert_held(&dmux->power_lock);
-> +
->  	if (dmux->tx) {
->  		dmaengine_terminate_sync(dmux->tx);
->  		dma_release_channel(dmux->tx);
-> @@ -670,10 +700,24 @@ static void bam_dmux_power_off(struct bam_dmux *dmux)
->  	bam_dmux_free_skbs(dmux->rx_skbs, DMA_FROM_DEVICE);
->  }
->  
-> -static irqreturn_t bam_dmux_pc_irq(int irq, void *data)
-> +static void bam_dmux_complete_pc_down(struct bam_dmux *dmux)
->  {
-> -	struct bam_dmux *dmux = data;
-> -	bool new_state = !dmux->pc_state;
-> +	lockdep_assert_held(&dmux->power_lock);
-> +
-> +	bam_dmux_power_off(dmux);
-> +	bam_dmux_pc_ack(dmux);
-> +	WRITE_ONCE(dmux->pc_state, false);
-> +}
-> +
-> +static bool bam_dmux_handle_pc(struct bam_dmux *dmux, bool new_state)
-> +{
-> +	lockdep_assert_held(&dmux->power_lock);
-> +
-> +	if (new_state == dmux->pc_state) {
-> +		if (new_state && dmux->pc_vote == BAM_DMUX_PC_VOTE_DOWN_PENDING)
-> +			dmux->pc_vote = BAM_DMUX_PC_VOTE_ACTIVE;
-> +		return false;
-> +	}
->  
->  	dev_dbg(dmux->dev, "pc: %u\n", new_state);
->  
-> @@ -682,13 +726,40 @@ static irqreturn_t bam_dmux_pc_irq(int irq, void *data)
->  			bam_dmux_pc_ack(dmux);
->  		else
->  			bam_dmux_power_off(dmux);
-> +	} else if (dmux->tx && dmux->pc_vote != BAM_DMUX_PC_VOTE_INACTIVE) {
-> +		/* The modem must keep the DMA engine on until pc is acked. */
-> +		dmux->pc_vote = BAM_DMUX_PC_VOTE_DOWN_PENDING;
-> +		dev_err_ratelimited(dmux->dev,
-> +				    "refusing pc down while host vote is active\n");
-> +		return false;
->  	} else {
-> -		bam_dmux_power_off(dmux);
-> -		bam_dmux_pc_ack(dmux);
-> +		bam_dmux_complete_pc_down(dmux);
->  	}
->  
-> -	dmux->pc_state = new_state;
-> -	wake_up_all(&dmux->pc_wait);
-> +	if (new_state)
-> +		WRITE_ONCE(dmux->pc_state, true);
-> +	return true;
-> +}
-> +
-> +static irqreturn_t bam_dmux_pc_irq(int irq, void *data)
-> +{
-> +	struct bam_dmux *dmux = data;
-> +	bool new_state, wake;
-> +	int ret;
-> +
-> +	mutex_lock(&dmux->power_lock);
-> +	ret = irq_get_irqchip_state(dmux->pc_irq, IRQCHIP_STATE_LINE_LEVEL,
-> +				    &new_state);
-> +	if (ret) {
-> +		mutex_unlock(&dmux->power_lock);
-> +		dev_err_ratelimited(dmux->dev, "failed to read pc state: %d\n", ret);
-> +		return IRQ_HANDLED;
-> +	}
-> +
-> +	wake = bam_dmux_handle_pc(dmux, new_state);
-> +	mutex_unlock(&dmux->power_lock);
-> +	if (wake)
-> +		wake_up_all(&dmux->pc_wait);
->  
->  	return IRQ_HANDLED;
->  }
-> @@ -696,9 +767,27 @@ static irqreturn_t bam_dmux_pc_irq(int irq, void *data)
->  static irqreturn_t bam_dmux_pc_ack_irq(int irq, void *data)
->  {
->  	struct bam_dmux *dmux = data;
-> +	bool new_state, wake = false;
-> +	int ret;
->  
->  	dev_dbg(dmux->dev, "pc ack\n");
-> +
-> +	/* Process an earlier pc edge before publishing the host-vote ack. */
-> +	synchronize_irq(dmux->pc_irq);
-> +	mutex_lock(&dmux->power_lock);
-> +	ret = irq_get_irqchip_state(dmux->pc_irq, IRQCHIP_STATE_LINE_LEVEL,
-> +				    &new_state);
-> +	if (ret) {
-> +		mutex_unlock(&dmux->power_lock);
-> +		dev_err_ratelimited(dmux->dev, "failed to read pc state: %d\n", ret);
-> +		return IRQ_HANDLED;
-> +	}
-> +
-> +	wake = bam_dmux_handle_pc(dmux, new_state);
->  	complete_all(&dmux->pc_ack_completion);
-> +	mutex_unlock(&dmux->power_lock);
-> +	if (wake)
-> +		wake_up_all(&dmux->pc_wait);
->  
->  	return IRQ_HANDLED;
->  }
-> @@ -706,9 +795,47 @@ static irqreturn_t bam_dmux_pc_ack_irq(int irq, void *data)
->  static int bam_dmux_runtime_suspend(struct device *dev)
->  {
->  	struct bam_dmux *dmux = dev_get_drvdata(dev);
-> +	bool wake = false;
->  
->  	dev_dbg(dev, "runtime suspend\n");
-> -	bam_dmux_pc_vote(dmux, false);
-> +
-> +	scoped_guard(mutex, &dmux->power_lock) {
-> +		bam_dmux_pc_vote_locked(dmux, false);
-> +		if (dmux->pc_vote == BAM_DMUX_PC_VOTE_DOWN_PENDING) {
-> +			dmux->pc_vote = BAM_DMUX_PC_VOTE_INACTIVE;
-> +			bam_dmux_complete_pc_down(dmux);
-> +			wake = true;
-> +		} else if (!dmux->pc_state) {
-> +			bam_dmux_power_off(dmux);
-> +		}
-> +	}
-> +	if (wake)
-> +		wake_up_all(&dmux->pc_wait);
-> +
-> +	return 0;
-> +}
-> +
-> +static int bam_dmux_request_tx(struct bam_dmux *dmux)
-> +{
-> +	struct device *dev = dmux->dev;
-> +
-> +	scoped_guard(mutex, &dmux->power_lock) {
-> +		/* Ensure that we actually initialized successfully */
-> +		if (!dmux->rx)
-> +			return -ENXIO;
-> +
-> +		/* Request TX channel if necessary */
-> +		if (dmux->tx)
-> +			return 0;
-> +
-> +		dmux->tx = dma_request_chan(dev, "tx");
-> +		if (IS_ERR(dmux->tx)) {
-> +			dev_err(dev, "Failed to request TX DMA channel: %pe\n",
-> +				dmux->tx);
-> +			dmux->tx = NULL;
-> +			return -ENXIO;
-> +		}
-> +	}
->  
->  	return 0;
->  }
-> @@ -716,6 +843,7 @@ static int bam_dmux_runtime_suspend(struct device *dev)
->  static int __maybe_unused bam_dmux_runtime_resume(struct device *dev)
->  {
->  	struct bam_dmux *dmux = dev_get_drvdata(dev);
-> +	int ret;
->  
->  	dev_dbg(dev, "runtime resume\n");
->  
-> @@ -724,50 +852,41 @@ static int __maybe_unused bam_dmux_runtime_resume(struct device *dev)
->  					 BAM_DMUX_REMOTE_TIMEOUT))
->  		return -ETIMEDOUT;
->  
-> +	synchronize_irq(dmux->pc_irq);
-> +
->  	/* Vote for power state */
-> -	bam_dmux_pc_vote(dmux, true);
-> +	bam_dmux_pc_vote_protected(dmux, true);
->  
->  	/* Wait for ack */
->  	if (!wait_for_completion_timeout(&dmux->pc_ack_completion,
->  					 BAM_DMUX_REMOTE_TIMEOUT)) {
-> -		bam_dmux_pc_vote(dmux, false);
-> +		bam_dmux_runtime_suspend(dev);
->  		return -ETIMEDOUT;
->  	}
->  
-> +	synchronize_irq(dmux->pc_irq);
-> +
->  	/* Wait until we're up */
-> -	if (!wait_event_timeout(dmux->pc_wait, dmux->pc_state,
-> +	if (!wait_event_timeout(dmux->pc_wait, READ_ONCE(dmux->pc_state),
->  				BAM_DMUX_REMOTE_TIMEOUT)) {
-> -		bam_dmux_pc_vote(dmux, false);
-> +		bam_dmux_runtime_suspend(dev);
->  		return -ETIMEDOUT;
->  	}
->  
-> -	/* Ensure that we actually initialized successfully */
-> -	if (!dmux->rx) {
-> -		bam_dmux_pc_vote(dmux, false);
-> -		return -ENXIO;
-> -	}
-> -
-> -	/* Request TX channel if necessary */
-> -	if (dmux->tx)
-> -		return 0;
-> -
-> -	dmux->tx = dma_request_chan(dev, "tx");
-> -	if (IS_ERR(dmux->tx)) {
-> -		dev_err(dev, "Failed to request TX DMA channel: %pe\n", dmux->tx);
-> -		dmux->tx = NULL;
-> +	ret = bam_dmux_request_tx(dmux);
-> +	if (ret)
->  		bam_dmux_runtime_suspend(dev);
-> -		return -ENXIO;
-> -	}
->  
-> -	return 0;
-> +	return ret;
->  }
->  
->  static int bam_dmux_probe(struct platform_device *pdev)
->  {
->  	struct device *dev = &pdev->dev;
->  	struct bam_dmux *dmux;
-> -	int ret, pc_ack_irq, i;
->  	unsigned int bit;
-> +	bool pc_state;
-> +	int ret, i;
->  
->  	dmux = devm_kzalloc(dev, sizeof(*dmux), GFP_KERNEL);
->  	if (!dmux)
-> @@ -780,9 +899,9 @@ static int bam_dmux_probe(struct platform_device *pdev)
->  	if (dmux->pc_irq < 0)
->  		return dmux->pc_irq;
->  
-> -	pc_ack_irq = platform_get_irq_byname(pdev, "pc-ack");
-> -	if (pc_ack_irq < 0)
-> -		return pc_ack_irq;
-> +	dmux->pc_ack_irq = platform_get_irq_byname(pdev, "pc-ack");
-> +	if (dmux->pc_ack_irq < 0)
-> +		return dmux->pc_ack_irq;
->  
->  	dmux->pc = devm_qcom_smem_state_get(dev, "pc", &bit);
->  	if (IS_ERR(dmux->pc))
-> @@ -799,6 +918,9 @@ static int bam_dmux_probe(struct platform_device *pdev)
->  	init_waitqueue_head(&dmux->pc_wait);
->  	init_completion(&dmux->pc_ack_completion);
->  	complete_all(&dmux->pc_ack_completion);
-> +	ret = devm_mutex_init(dev, &dmux->power_lock);
-> +	if (ret)
-> +		return ret;
->  
->  	spin_lock_init(&dmux->tx_lock);
->  	INIT_WORK(&dmux->tx_wakeup_work, bam_dmux_tx_wakeup_work);
-> @@ -817,31 +939,40 @@ static int bam_dmux_probe(struct platform_device *pdev)
->  	pm_runtime_use_autosuspend(dev);
->  	pm_runtime_enable(dev);
->  
-> -	ret = devm_request_threaded_irq(dev, pc_ack_irq, NULL, bam_dmux_pc_ack_irq,
-> -					IRQF_ONESHOT, NULL, dmux);
-> +	ret = devm_request_threaded_irq(dev, dmux->pc_ack_irq, NULL,
-> +					bam_dmux_pc_ack_irq,
-> +					IRQF_ONESHOT | IRQF_NO_AUTOEN,
-> +					NULL, dmux);
->  	if (ret)
->  		goto err_disable_pm;
->  
->  	ret = devm_request_threaded_irq(dev, dmux->pc_irq, NULL, bam_dmux_pc_irq,
-> -					IRQF_ONESHOT, NULL, dmux);
-> +					IRQF_ONESHOT | IRQF_NO_AUTOEN, NULL, dmux);
->  	if (ret)
-> -		goto err_disable_pm;
-> +		goto err_power_off;
->  
-> +	mutex_lock(&dmux->power_lock);
->  	ret = irq_get_irqchip_state(dmux->pc_irq, IRQCHIP_STATE_LINE_LEVEL,
-> -				    &dmux->pc_state);
-> -	if (ret)
-> -		goto err_disable_pm;
-> +				    &pc_state);
-> +	if (ret) {
-> +		mutex_unlock(&dmux->power_lock);
-> +		goto err_power_off;
-> +	}
->  
->  	/* Check if remote finished initialization before us */
-> -	if (dmux->pc_state) {
-> -		if (bam_dmux_power_on(dmux))
-> -			bam_dmux_pc_ack(dmux);
-> -		else
-> -			bam_dmux_power_off(dmux);
-> -	}
-> +	bam_dmux_handle_pc(dmux, pc_state);
-> +	mutex_unlock(&dmux->power_lock);
-> +
-> +	/* Start handling state changes after the initial state is processed. */
-> +	enable_irq(dmux->pc_ack_irq);
-> +	enable_irq(dmux->pc_irq);
->  
->  	return 0;
->  
-> +err_power_off:
-> +	mutex_lock(&dmux->power_lock);
-> +	bam_dmux_power_off(dmux);
-> +	mutex_unlock(&dmux->power_lock);
->  err_disable_pm:
->  	pm_runtime_disable(dev);
->  	pm_runtime_dont_use_autosuspend(dev);
-> @@ -872,12 +1003,16 @@ static void bam_dmux_remove(struct platform_device *pdev)
->  	pm_runtime_set_suspended(dev);
->  
->  	/* Try to wait for remote side to drop power vote */
-> -	if (!wait_event_timeout(dmux->pc_wait, !dmux->rx, BAM_DMUX_REMOTE_TIMEOUT))
-> +	if (!wait_event_timeout(dmux->pc_wait, !READ_ONCE(dmux->rx),
-> +				BAM_DMUX_REMOTE_TIMEOUT))
->  		dev_err(dev, "Timed out waiting for remote side to suspend\n");
->  
->  	/* Make sure everything is cleaned up before we return */
-> +	disable_irq(dmux->pc_ack_irq);
+Hi,
 
-Beyond all the sashiko comments, this patch is quite big and should
-be split in smaller chunck to help reviewers.
+Commit 50f1d188c580 ("net/mlx5: Propagate LAG effective max_tx_speed to
+vports") added a mechanism that computes the aggregated LAG TX speed and
+programs it into each vport's max_tx_speed via MODIFY_VPORT_STATE. This
+series by Or fixes bugs found in that flow.
 
-I.e. the above line looks like a separate fix, deserving
-it's own patch.
+The bugs:
 
-/P
+1. Down ports were counted into the effective aggregate speed.
+   When a port goes down, PTYS eth_proto_oper is not necessary 0.
+
+2. The aggregate was not limited by the NIC's PCIe bandwidth. It was
+   taken from the bond speed, which is calculated from PTYS, and PTYS
+   is not bounded by the PCI bandwidth of the NIC. FW initializes
+   max_tx_speed to the minimum of the port speed and the PCIe
+   bandwidth, so modifying it with a value computed by different rules
+   changes the meaning of the field rather than updating it.
+
+3. MPESW teardown never reset the vport speeds, leaving stale values
+   after teardown.
+
+4. RoCE LAG never told the RDMA layer about speed changes. The NIC is
+   considered to be in a bare metal configuration, without a valid or
+   enabled eswitch, so there are no VF, SF or PF rep vports to modify
+   and no event of speed change was raised.
+
+Patch #1 splits the LAG aggregate speed into an operative and a max
+        helper, so that each can filter on port state on its own.
+
+Patch #2 resets the vport speed on MPESW teardown.
+
+Patch #3 caches the TX-enabled aggregate speed and programs that into
+        the vports, instead of reading it back from the bond netdev.
+
+Patch #4 limits the aggregated TX speed by the NIC's PCIe bandwidth.
+
+Patch #5 notifies the RDMA layer of RoCE LAG speed changes via a new
+        driver event.
+
+Regards,
+Tariq
+
+Or Har-Toov (5):
+  net/mlx5: Lag, split aggregate speed into oper and max helpers
+  net/mlx5: Lag, reset vport speed on teardown
+  {RDMA,net}/mlx5: cache and use TX-enabled aggregate speed for vports
+  net/mlx5: Lag, limit aggregated TX speed by PCIe bandwidth
+  {RDMA,net}/mlx5: notify RoCE LAG speed change via driver event
+
+ drivers/infiniband/hw/mlx5/main.c             |  12 +-
+ drivers/net/ethernet/mellanox/mlx5/core/dev.c |  20 +++
+ .../net/ethernet/mellanox/mlx5/core/lag/lag.c | 159 +++++++++++++++---
+ .../net/ethernet/mellanox/mlx5/core/lag/lag.h |  16 +-
+ .../ethernet/mellanox/mlx5/core/mlx5_core.h   |   1 +
+ include/linux/mlx5/device.h                   |   1 +
+ include/linux/mlx5/driver.h                   |   1 +
+ 7 files changed, 181 insertions(+), 29 deletions(-)
+
+
+base-commit: 00f9fbc12320253bfc576fb7539d860029c82d0f
+-- 
+2.44.0
 
