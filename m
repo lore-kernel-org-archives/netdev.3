@@ -1,32 +1,33 @@
-Received: from mta1.migadu.com (out-39.mta1.migadu.com [95.215.58.39])
+Received: from mta1.migadu.com (out-47.mta1.migadu.com [95.215.58.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE4E3396D13
-	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 09:34:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B362A3E3D8F
+	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 09:34:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789032874; cv=none; b=UwyS4dfMWvlaurnooqPhuGv6a7j7TFt3MAdCVBJZpJMx7f4YrcON7dHm1jOe/Bv2U9we4nD5HbASoFOtCpW5eFr3W6jzjHFib/VH7/Gi3CcHdM89dbpOHkNdgHieM8VD2qo6K08XKIOl0pz37AT2IR7d/XCWUj9ZVCaap8ppBbQ=
+	t=1789032878; cv=none; b=FLMZZfRh0QgkGcGCDj5r2OE4VE3hZTwoP3I+4xyORCPARV2MYIv93/pSAwtwsG7q9Hh0K4WyQ9yBGXlvDbTOGHUt0cuJG2e8JzqKxXBU8wpg64EjvE5/bPn/quiNoFXaHvzdPzsf9XqJzUFCfr1G4png1gDbBwXpQnSmR6SVlIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789032874; c=relaxed/simple;
-	bh=O5RJIBAf8bdM+SFjmTJLRNSqjUhosM/VE9Wbdt3m/JM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mQmpjc5/aw5V1cr+rs8kmiTtg/kjmrfyAkeGHC9ESwZESv80nmFGfyChQs3UY8qezVNHf3tp1OWauIdBuX6lAVM3hySwbLMqnOk/UgTkxnV7q3vkBQTnj+hmsvB7rwIiRoqwsrHrbY8YWHKXD7/rpsh7uikbDm6c1eFD/NCgeq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=kKEPIE+T; arc=none smtp.client-ip=95.215.58.39
+	s=arc-20240116; t=1789032878; c=relaxed/simple;
+	bh=pxNPuqInUXA5BhBex6CFLs+8pBKZ4qJtowlQoFJZa4I=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Onx7J8Qdd/drxYAvDESFRBG7veYEHFFpMVTSdp58C2ALY01YKEErtX2DymqBkjjUMouvU/dfjgiOgHNgok+ZLKDCWuyfavOMjdhzjw+P8BOQNe7IDRJHIqyU2bkIEdAYTzwPiSkB6Vt1t7En3tDCJYfJLTMgaywH0oJl+Wnc1/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=omBR1qhp; arc=none smtp.client-ip=95.215.58.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="kKEPIE+T"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="omBR1qhp"
 X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=O5RJIBAf8bdM+SFjmTJLRNSqjUhosM/VE9Wbdt3m/JM=;
+DKIM-Signature: a=rsa-sha256; bh=pxNPuqInUXA5BhBex6CFLs+8pBKZ4qJtowlQoFJZa4I=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789032868; v=1; x=1789637668;
- b=kKEPIE+TQJuOLKMBCD4vd/Yklk3RS8Ft4N7vEu7dBndTumZhqUFr5rSqxaIqAud192yJ2XlV
- 9wmRsfswhorUNWcDazEYnM6+M8gMuzqOHpIvo6O1Jsjr+542CurCC6ddxuix5cqr12P8hRcbrPy
- 1CateQQqXVlVAjxVyVQ/2UWE=
+ t=1789032873; v=1; x=1789637673;
+ b=omBR1qhpwge9NI9TtfrqzOuldPeanhnTOo/H2N2/WV3QCU+UNQquH3L4t15ZHj0Gznmz1BLM
+ nDQgamZHj1K38nn9Vqz62xdNWvs/jXtzpcPK2ipgxkiSsAOfZsvcpffIyvzUAgAKm0/4IBl31W2
+ XfPYB5xFctvfDaOTzPFir8qo=
 X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id b741d43ade1385a0;
-	Thu, 10 Sep 2026 09:34:28 +0000
-X-Mizu-Trace-ID: b741d43ade1385a0
+Received: by smtp.migadu.com with ESMTPS id 5d418fa20c543b52;
+	Thu, 10 Sep 2026 09:34:33 +0000
+X-Mizu-Trace-ID: 5d418fa20c543b52
 X-Migadu-Flow: FLOW_OUT
 From: Xuanqiang Luo <xuanqiang.luo@linux.dev>
 To: netdev@vger.kernel.org
@@ -42,11 +43,14 @@ Cc: jhs@mojatatu.com,
 	pctammela@mojatatu.com,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Xuanqiang Luo <luoxuanqiang@kylinos.cn>
-Subject: [PATCH net v1 0/2] net/sched: fix action batch deletion cleanup
-Date: Thu, 10 Sep 2026 17:34:11 +0800
-Message-ID: <20260910093413.34509-1-xuanqiang.luo@linux.dev>
+	Xuanqiang Luo <luoxuanqiang@kylinos.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH net v1 1/2] net/sched: act_api: release tail references on DELACTION failure
+Date: Thu, 10 Sep 2026 17:34:12 +0800
+Message-ID: <20260910093413.34509-2-xuanqiang.luo@linux.dev>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260910093413.34509-1-xuanqiang.luo@linux.dev>
+References: <20260910093413.34509-1-xuanqiang.luo@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -57,46 +61,51 @@ Content-Transfer-Encoding: 8bit
 
 From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
 
-Batched RTM_DELACTION requests can leak references to unprocessed actions
-when deletion stops at a filter-bound action.
+A batched RTM_DELACTION request takes a temporary reference on each
+action before attempting any deletion. tcf_action_delete() clears
+each processed slot and drops its temporary reference before attempting
+the deletion. If deletion fails, tca_action_gd() calls
+tcf_action_put_many() to release the remaining references, but its
+tcf_act_for_each_action() iterator stops at the first NULL slot.
 
-Patch 1 fixes the failure cleanup.
+When a batch stops at an action bound to a filter, this leaks a
+reference on each subsequent action. A later delete of an unbound
+action can then return success without removing it from the IDR.
 
-Patch 2 adds tc-testing regression coverage.
+Walk the full array in tcf_action_put_many() and skip NULL slots to
+release the references held on the unprocessed actions.
 
-Failure reproduction (key output excerpts):
+Fixes: a0e947c9ccff ("net/sched: act_api: avoid non-contiguous action array")
+Cc: stable@vger.kernel.org
+Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+---
+ net/sched/act_api.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-  python3 tdc.py -f /root/tc-testing/batch-delete.json
-
-not ok 1 d710 - Release tail references after first action deletion fails
-	Could not match regex pattern. Verify command output:
-[...]
-	 index 2 ref 2 bind 0
-[...]
-	 index 3 ref 2 bind 0
-
-not ok 2 d711 - Release tail references after middle action deletion fails
-	Could not match regex pattern. Verify command output:
-[...]
-	 index 3 ref 2 bind 0
-
-not ok 3 d713 - Delete a tail action once after a failed batch
-	Could not match regex pattern. Verify command output:
-total acts 2
-[...]
-	 index 2 ref 1 bind 0
-
-Xuanqiang Luo (2):
-  net/sched: act_api: release tail references on DELACTION failure
-  selftests: tc-testing: test action batch deletion failure cleanup
-
- net/sched/act_api.c                           |  11 +-
- .../tc-tests/actions/batch-delete.json        | 115 ++++++++++++++++++
- 2 files changed, 123 insertions(+), 3 deletions(-)
- create mode 100644 tools/testing/selftests/tc-testing/tc-tests/actions/batch-delete.json
-
-
-base-commit: 7f26a5e8040b4957ef4dbdfcde6cc7ba2db53937
+diff --git a/net/sched/act_api.c b/net/sched/act_api.c
+index 37eced84dfa5f..86710a596a0fa 100644
+--- a/net/sched/act_api.c
++++ b/net/sched/act_api.c
+@@ -1223,11 +1223,16 @@ static int tcf_action_put(struct tc_action *p)
+ 
+ static void tcf_action_put_many(struct tc_action *actions[])
+ {
+-	struct tc_action *a;
+ 	int i;
+ 
+-	tcf_act_for_each_action(i, a, actions) {
+-		const struct tc_action_ops *ops = a->ops;
++	/* Deletion may have cleared entries before failing. */
++	for (i = 0; i < TCA_ACT_MAX_PRIO; i++) {
++		struct tc_action *a = actions[i];
++		const struct tc_action_ops *ops;
++
++		if (!a)
++			continue;
++		ops = a->ops;
+ 		if (tcf_action_put(a))
+ 			module_put(ops->owner);
+ 	}
 -- 
 2.43.0
 
