@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 273C4346A0A;
-	Thu, 10 Sep 2026 09:38:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 507C837C0FC;
+	Thu, 10 Sep 2026 09:39:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789033141; cv=none; b=na4Ap+M4RAGE/YzNZpuJvp2sM3ZW5MSGrAu8ONYZ/I7jjfD4zHVYo1EG5dHDW2xtiotNknQERxQfedQND7FiQxW/T2xIdbQXvMfRJNZPF57UzUh9jnwonpPBOimzgt81K4YaY50TGzBhYZaDI39pWrp+du1nz88t7mzW9n22NaQ=
+	t=1789033142; cv=none; b=AEpqc+YZxIuHOukEt81fok3Lhpa4tUknc3ZBpa5GWdWmEB1HTiKW+ADHpqUf6e51vA9Op8xb3koIKLQaTKMDefsAUFqQUz723oq7sn4X3r7whlzwvQzfImmkYfeXkRKfmQkEymWdDBIcgy1SdrSWsEps8IrD643LCH9Y4zTZgao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789033141; c=relaxed/simple;
-	bh=bJfsk8vN7fKf/YDjhEoOtYubg6qlVu8X/PVtSRAykeg=;
+	s=arc-20240116; t=1789033142; c=relaxed/simple;
+	bh=68XybTNj3cJQ7yEujcaD41b/4HNkQOFY/uhqLj63p5Q=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=b5Zx6v2pKNEter6SnUrxVY7L4SheeqE4xp48XPoufXf78VWTiZcIRmVAAPmsdVHp8F47MhrarfvhsBlODqjNUGoJp+bS9e7WPfpm03j24KejqVktChIBf8/nFCAskxUpNCEKjVNKAgaYnLomYK1bmRIgQNSFagG2Y/ikpwiXM7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RG5CeSrd; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=U470RYH+z3hU+1g/hw0l/gpe9VkJLhUkGpVYq0Fh4mamQ0UtbqNyy2WgVXCGQWrGNCPxamDNS0+mrC2GdpdbQYXko2AGoPr5Nc3I24wEklxiGTp5u0uMo1jOMJqyqecIB0LTCS4dovqZ2/xNtyHOVycRJUTlp+8D0p0WzOpOrG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SEVJ6VKE; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RG5CeSrd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21F721F000FF;
-	Thu, 10 Sep 2026 09:38:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SEVJ6VKE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 527FC1F00893;
+	Thu, 10 Sep 2026 09:39:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789033139;
-	bh=aWKG4e3xaK5k7/mQ03wur/M0dRnzIddGLGbECwxYiRk=;
+	s=k20260515; t=1789033140;
+	bh=3sei66XT5JBIPPH+jMZrHNpXFoN6yzwTNAqSdo0ioPA=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=RG5CeSrdV+YSrlamJa4FD9ZLD1OUHpgEJjs3BH1bGo8aUw41rvHS++gyXtG0DGuNU
-	 pFDC0RJ8PBMX+QfI/LnXYt8/9XOiL034K53SCgbtNMqW1nE5PyjuYCHt+PjjtoxLA6
-	 0nk+r0cJIln7hQ78fIgO3h5Ied3bXb0XN3xzkuh07hoeuyluwtUc/N7theOMR7iVkd
-	 nMkFoL91SgwP+6MhggmwiWoZDc4nfD5Nz7iO5B2qvdDFoFpamPAUfW3FcMGPIeTiWA
-	 iLwLZ/JjBVfDpchKoBvvsNNN84jyAto3db/BFSBD8zpJ+ZYc/iXtfi1yza2+HA8Z5o
-	 yM429LLkstKUw==
-Subject:
- Re: [PATCH net 1/3] vxlan: vnifilter: limit the VNI range of a single request
+	b=SEVJ6VKEgzdhIUm2NqbExlO4SZzVD5+DgZlzJB22iJBrHnw7bDDQMLDhaJwcp+Lq3
+	 7QQA6RweR1PlVz/Go4IeVXus+mSn4LNq4DuGWyxa1s5tZ18Cb2TzvSvrUA0qQUM/xL
+	 fo4jtXdUD/A3Th8ThdNtcC9i8t5X1VozzcE3QaX6EQ0OMmiEOLQ0nQkIspBPx8n9SI
+	 Eozw6RnoTZu7T1h7GFPy5ln52rbE6gyQMhXQZOjG3o8TSy6uXHnp59wr9vzt1aaeb3
+	 TXFP9OTbrtQXCQ2JsJKZGoo7d4RajTbsoKgmsLijWKPFJsbY+umdRzDLaqUIPrzNe5
+	 CNqu+LFO5k4Bg==
+Subject: Re: [PATCH net 2/3] vxlan: vnifilter: account VNI node and per-CPU
+ stats to memcg
 From: netdev-bot+sashiko@kernel.org
 To: alishmery18@gmail.com
 Cc: netdev@vger.kernel.org, idosch@nvidia.com, kuba@kernel.org,
  pabeni@redhat.com, davem@davemloft.net, edumazet@google.com,
  andrew+netdev@lunn.ch, razor@blackwall.org, roopa@nvidia.com,
  linux-kernel@vger.kernel.org
-Date: Thu, 10 Sep 2026 09:38:58 +0000
-Message-ID: <178903313861.219967.6252085743999078920@kernel.org>
-In-Reply-To: <20260909092645.3105263-2-alishmery18@gmail.com>
-References: <20260909092645.3105263-2-alishmery18@gmail.com>
-X-sashiko-severity: High
+Date: Thu, 10 Sep 2026 09:38:59 +0000
+Message-ID: <178903313988.219967.7088700680184392395@kernel.org>
+In-Reply-To: <20260909092645.3105263-3-alishmery18@gmail.com>
+References: <20260909092645.3105263-3-alishmery18@gmail.com>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -48,176 +48,112 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 3 potential
+Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider:
 
-Critical: 0 · High: 2 · Medium: 1 · Low: 0
+Critical: 0 · High: 0 · Medium: 0 · Low: 2
 
-- [High] The new cap is enforced per VXLAN_VNIFILTER_ENTRY attribute, not
-  per netlink request, so the bug class the commit claims to close stays…
-- [High] The added check can be bypassed entirely because
-  vxlan_vni_add_del() (drivers/net/vxlan/vxlan_vnifilter.c:820) iterates…
-- [Medium] The kernel now emits VNI-filter messages it will refuse to
-  parse.
+- [Low] The commit message's quantitative model of the per-CPU charge is
+  wrong/incomplete.
+- [Low] The commit message states categorically that 'try_charge()
+  reclaims and then invokes the memcg OOM killer rather than returning…
 
 --
 
-vxlan: vnifilter: limit the VNI range of a single request
+vxlan: vnifilter: account VNI node and per-CPU stats to memcg
 
-This adds a driver-local constant VXLAN_VNI_FILTER_RANGE_MAX of 4096 and
-rejects a VXLAN_VNIFILTER_ENTRY_START/END pair whose span is wider than
-that, in vxlan_process_vni_filter().  The stated goal is to stop one
-RTM_NEWTUNNEL or RTM_DELTUNNEL message from creating up to 2^24 VNIs
-under rtnl_lock.
+This changes vxlan_vni_alloc() to allocate the struct vxlan_vni_node with
+GFP_KERNEL_ACCOUNT and to switch the per-VNI stats block from
+netdev_alloc_pcpu_stats() to __netdev_alloc_pcpu_stats() with
+GFP_KERNEL_ACCOUNT, so both allocations are charged to the caller's memcg.
+
+Both comments below are about the numbers and the failure behaviour
+described in the changelog, not about the code change itself.
 
 > diff --git a/drivers/net/vxlan/vxlan_vnifilter.c b/drivers/net/vxlan/vxlan_vnifilter.c
-> index dd94085e0886..f18ce0e1e741 100644
+> index f18ce0e1e741..3d6718ec3f55 100644
 > --- a/drivers/net/vxlan/vxlan_vnifilter.c
 > +++ b/drivers/net/vxlan/vxlan_vnifilter.c
-> @@ -17,6 +17,14 @@
->  
->  #include "vxlan_private.h"
->  
-> +/* Maximum number of VNIs a single RTM_NEWTUNNEL or RTM_DELTUNNEL request may
-> + * span.  VNI filtering is mainly used on bridged VXLAN devices where the VNI
-> + * is derived from the VLAN, so a span wider than the VLAN ID space has no
-> + * practical use, while an unbounded span lets one netlink message create up
-> + * to 2^24 VNIs under rtnl_lock.
-> + */
-> +#define VXLAN_VNI_FILTER_RANGE_MAX	4096
-> +
->  static inline int vxlan_vni_cmp(struct rhashtable_compare_arg *arg,
->  				const void *ptr)
+> @@ -703,10 +703,11 @@ static struct vxlan_vni_node *vxlan_vni_alloc(struct vxlan_dev *vxlan,
 >  {
-
-[ ... ]
-
-> @@ -869,6 +877,17 @@ static int vxlan_process_vni_filter(struct vxlan_dev *vxlan,
->  		return -EINVAL;
->  	}
+>  	struct vxlan_vni_node *vninode;
 >  
-> +	/* Only bound a well-formed range; a start above the end selects no
-> +	 * VNI at all and is left behaving as before.
-> +	 */
-> +	if (vni_end >= vni_start &&
-> +	    vni_end - vni_start >= VXLAN_VNI_FILTER_RANGE_MAX) {
-> +		NL_SET_ERR_MSG_ATTR_FMT(extack, nlvnifilter,
-> +					"VNI range spans more than %u VNIs",
-> +					VXLAN_VNI_FILTER_RANGE_MAX);
-> +		return -EINVAL;
-> +	}
-> +
+> -	vninode = kzalloc_obj(*vninode);
+> +	vninode = kzalloc_obj(*vninode, GFP_KERNEL_ACCOUNT);
+>  	if (!vninode)
+>  		return NULL;
+> -	vninode->stats = netdev_alloc_pcpu_stats(struct vxlan_vni_stats_pcpu);
+> +	vninode->stats = __netdev_alloc_pcpu_stats(struct vxlan_vni_stats_pcpu,
+> +						   GFP_KERNEL_ACCOUNT);
+>  	if (!vninode->stats) {
+>  		kfree(vninode);
+>  		return NULL;
 
-[Severity: High]
+[Severity: Low]
+Is the stated cost model for this per-CPU allocation complete?  The
+changelog says:
 
-Is this bound per request, or per VXLAN_VNIFILTER_ENTRY attribute?
-vxlan_process_vni_filter() is called once per entry from
-vxlan_vnifilter_process():
+    "plus 64 bytes per possible CPU for the stats block. The per-CPU term
+     is the one that grows: 256 bytes per VNI on a 2-CPU host, but 4.2 KB
+     per VNI on a 64-CPU one."
 
-	nlmsg_for_each_attr_type(attr, VXLAN_VNIFILTER_ENTRY, nlh,
-				 sizeof(*tmsg), rem) {
-		err = vxlan_process_vni_filter(vxlan, attr, nlh->nlmsg_type,
-					       extack);
-		vnis++;
-		if (err)
-			break;
-	}
+Once __GFP_ACCOUNT is set, the amount charged comes from
+pcpu_obj_full_size() in mm/percpu-internal.h:
 
-The vnis counter is only used afterwards to emit "No vnis found to
-process", it is never a budget, and vni_filter_policy places no limit on
-how many nested VXLAN_VNIFILTER_ENTRY attributes a message may carry:
+	size_t extra_size = 0;
 
-	static const struct nla_policy vni_filter_policy[VXLAN_VNIFILTER_MAX + 1] = {
-		[VXLAN_VNIFILTER_ENTRY] = { .type = NLA_NESTED },
+	#ifdef CONFIG_MEMCG
+		if (!mem_cgroup_kmem_disabled())
+			extra_size += size / PCPU_MIN_ALLOC_SIZE * sizeof(struct obj_cgroup *);
+	#endif
+
+		return size * num_possible_cpus() + extra_size;
+
+For a 64-byte object on a 64-bit build that extra term is 64 / 4 * 8 =
+128 bytes, which is what makes the quoted measurements add up
+(64 * 2 + 128 = 256, 64 * 64 + 128 = 4224).  Would it be clearer to state
+the obj_cgroup metadata term alongside the per-CPU term, since the stated
+formula and the stated measurements otherwise disagree?
+
+Also, is the 64-byte figure architecture independent?  struct
+vxlan_vni_stats_pcpu in include/net/vxlan.h embeds a u64_stats_sync:
+
+	struct vxlan_vni_stats_pcpu {
+		struct vxlan_vni_stats stats;
+		struct u64_stats_sync syncp;
 	};
 
-A minimal entry is a 4 byte nest header plus an 8 byte START and an 8
-byte END, so a message that fits inside the default sk_sndbuf can carry
-on the order of ten thousand entries, each of which passes the new check
-while spanning 4096 VNIs.  That sums to more than the entire 24-bit space
-in one message.  The handlers are registered with flags 0:
+That member is empty on 64-bit but carries a seqcount on 32-bit, so the
+object is larger than 64 bytes there.
 
-	{THIS_MODULE, PF_BRIDGE, RTM_NEWTUNNEL, vxlan_vnifilter_process, NULL, 0},
-	{THIS_MODULE, PF_BRIDGE, RTM_DELTUNNEL, vxlan_vnifilter_process, NULL, 0},
+[Severity: Low]
+The changelog states:
 
-so rtnl_lock is held for the whole loop, with no lock drop and no
-cond_resched(), and each iteration of vxlan_vni_add_del() still does
-kzalloc_obj() plus netdev_alloc_pcpu_stats() per VNI in vxlan_vni_alloc().
+    "try_charge() reclaims and then invokes the memcg OOM killer rather
+     than returning -ENOMEM, so the request does not fail gracefully, the
+     caller is killed"
 
-Would the bound need to accumulate the span across all entries of the
-message, or be applied in vxlan_vnifilter_process() before any entry is
-handed to vxlan_process_vni_filter()?
+Is that categorical?  In try_charge_memcg() in mm/memcontrol.c, when
+mem_cgroup_oom() returns false (no killable task, oom_lock bypass, an
+existing OOM victim with MMF_OOM_SKIP, or task_in_memcg_oom(current)),
+control reaches:
 
-The commit message says:
+	nomem:
+		if (!(gfp_mask & (__GFP_NOFAIL | __GFP_HIGH)))
+			return -ENOMEM;
 
-  "The check sits in vxlan_process_vni_filter(), where the span is known
-  and before any VNI is created, so it rejects the request before any
-  work is done."
+GFP_KERNEL_ACCOUNT carries neither __GFP_NOFAIL nor __GFP_HIGH, so the
+charge can return -ENOMEM, vxlan_vni_alloc() then returns NULL and the
+netlink request does fail with -ENOMEM rather than the caller being
+killed.
 
-Since entries are parsed and applied one at a time, an oversized entry in
-the middle of a message returns -EINVAL only after all preceding entries
-have already created their VNI nodes and sent their notifications.  Should
-that sentence be adjusted, along with the comment above the constant which
-describes the value as a cap on what "a single RTM_NEWTUNNEL or
-RTM_DELTUNNEL request may span"?
+Separately, when the memcg OOM killer does run it picks a victim inside
+the constrained cgroup, which need not be the allocating task, and
+memory.oom.group can extend the kill to the whole cgroup.
 
-[Severity: High]
-
-Can this check be skipped entirely with a large START value?
-vni_filter_entry_policy declares the two attributes without any maximum:
-
-	[VXLAN_VNIFILTER_ENTRY_START] = { .type = NLA_U32 },
-	[VXLAN_VNIFILTER_ENTRY_END] = { .type = NLA_U32 },
-
-so START = 0xffffffff and no END gives vni_start == vni_end ==
-0xffffffff.  The "!vni_start && !vni_end" test above does not fire, and
-here vni_end - vni_start is 0, so this looks like a one VNI request and is
-accepted.
-
-vxlan_vni_add_del() then iterates with a signed counter:
-
-	int v, err = 0;
-	...
-	for (v = start_vni; v <= end_vni; v++) {
-
-v starts at -1, and in "v <= end_vni" it is converted to unsigned against
-the __u32 end_vni, so 0xffffffff <= 0xffffffff is true, a VNI is created,
-v++ makes v == 0, and 0 <= 0xffffffff is still true.  Does the loop then
-keep walking upwards from 0, creating a node plus per-CPU stats plus a
-notification per iteration under rtnl_lock, until -ENOMEM or until
-rhashtable returns -E2BIG (vxlan_vni_rht_params has .max_size =
-VXLAN_N_VID, so max_elems is about 33.5M)?  vxlan_vni_in_use() returns 0
-for a namespace holding a single vnifilter device, so nothing seems to
-abort it earlier.  Once v passes INT_MAX the increment is also signed
-overflow.
-
-The same applies to any range that ends at 0xffffffff, for example
-START = 0xfffff001 with END = 0xffffffff, whose span is 4095.  Would
-bounding the absolute values (or making the loop counter unsigned) be
-needed in addition to bounding the difference?
-
-[Severity: Medium]
-
-Does this make the dump output unparseable by the same code path?
-vxlan_vnifilter_dump_dev() merges an unbounded run of contiguous VNIs
-that share a remote into one VXLAN_VNIFILTER_ENTRY:
-
-		if (!dump_stats && vnirange(vend, v) == 1 &&
-		    vxlan_addr_equal(&v->remote_ip, &vend->remote_ip)) {
-			goto update_end;
-
-and then calls vxlan_fill_vni_filter_entry(skb, vbegin, vend, dump_stats)
-once for the merged run, emitting a single START/END pair with no clamp on
-the span.  The commit message keeps it legal for a device to hold the whole
-VNI space through several requests, so a device populated with, say,
-100000 contiguous VNIs via 25 accepted requests is dumped as one entry
-with END - START == 99999.  Replaying that entry, or deleting the run with
-one RTM_DELTUNNEL, now returns -EINVAL with "VNI range spans more than
-4096 VNIs".
-
-Should the dump side chunk merged runs to the same maximum span, or should
-the input restriction be expressed as something other than a limit on the
-START/END span?
+Would it be more accurate to say the add may trigger memcg reclaim and
+then either a memcg OOM kill of one or more tasks in the cgroup, or a
+plain -ENOMEM?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260909092645.3105263-1-alishmery18%40gmail.com
