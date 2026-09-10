@@ -1,65 +1,75 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo2-f1.google.com (mail-oo2-f1.google.com [74.125.231.129])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C625148989A
-	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 14:31:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E460C49F13A
+	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 14:35:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.231.129
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789050687; cv=none; b=DRP0MeFoDrG0VfvJIq2GNkLOL1ASYXC5wGzs50l6SQyIg8zawaMUewSROwsY5CbvSyjHihSzTzaP1JdX2ONh47UV0CLgkZ0jQtfvfkqUk6RY6kdEryyRrlOp/TTciIaucCfKapSS4asd21NJno9OvnLjo0VRR4QIHpwmAxSzqpE=
+	t=1789050929; cv=none; b=Y03cUzAqaDAZX9IhAS6TaaUGOutjfomGyQFFuRYg9Cd7edr2nyaLiUMxMWfia0oxvuH8vvXWqf/Jd81vESEdragEOYdZrmpIyBCWy/95o99H99yRxBpnXK/fACDc4ex+v5bFwdyFQflz+UMD70jTNcWBDBQurcpjo/l5YPe9TzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789050687; c=relaxed/simple;
-	bh=ML0jJ6Z/puSs1lXTu7IudKNGcl8Cfx+GtnjJcxQR7F0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D7jSKSnNAdkeRifSIc5eQjvp5OR5zsbDkgOuLJdyqG9H4UKUPzlWCRTeQ8FXEJSG/dPsdrSNWf1htCTLVesVmA7sfL7Pgzkg771vNDYChm6GgHnsyUlpLlpvIGf/kcETTxEwGx6Cf4/NGonR26dsCAKdo8wfu1ZpwGFwbyZddIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=B2zmGQ22; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1789050929; c=relaxed/simple;
+	bh=CyifzT447RQSMV7VQEiAP9hRqT8Nwx5VAaXNeXf/IyQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Gk9hMNfwA/AV5PG7zXeuh5qPG2ZlT5No395umr6F89zBHC5u3R6+wLfEFIENaNg04VxzXO3pP7fFy80ukq1FDnJpGSTqR8xMEwu9NV5AwBzzpLWv3+uoMYwY+7P6oa46Cc1Qh339ybrCJcOOFhTgU3GwmPa50smrgdGp9ahWMdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GccFTWGZ; arc=none smtp.client-ip=74.125.231.129
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="B2zmGQ22"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1789050684;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8oOYydPLSmmKf+EQ0HkeEap1hYLbva2q5CM0ECTUT/E=;
-	b=B2zmGQ22LC2V48R1NbZ/WKl7K70eby6w6eZk7NJ/XZySH8+v49slqK0ydA9i40RwuLENhT
-	YXmI9aQ7SBdl5xrHGsmhFS1D0twRqQvy3nrwsVWyWi5qaLcC7KrbtKDVwCZ87vCXnfxQUN
-	7GAcUon8xi2mPRc00gLlkQVa2ahP3MI=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-55-O8Ypl9fJPM6L4atbQS4teA-1; Thu,
- 10 Sep 2026 10:31:19 -0400
-X-MC-Unique: O8Ypl9fJPM6L4atbQS4teA-1
-X-Mimecast-MFC-AGG-ID: O8Ypl9fJPM6L4atbQS4teA_1789050676
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 29AB51955DC5;
-	Thu, 10 Sep 2026 14:31:16 +0000 (UTC)
-Received: from atomasov-mac.redhat.corp (headnet03.pony-001.prod.iad2.dc.redhat.com [10.2.32.114])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5C4891955F19;
-	Thu, 10 Sep 2026 14:31:12 +0000 (UTC)
-From: Adrian Tomasov <atomasov@redhat.com>
-To: Eric Dumazet <edumazet@google.com>,
-	kernel test robot <oliver.sang@intel.com>
-Cc: Adrian Tomasov <atomasov@redhat.com>,
-	Jason Xing <kerneljasonxing@gmail.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Luke Yang <luyang@redhat.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	oe-lkp@lists.linux.dev,
-	lkp@intel.com,
-	linuxppc-dev@lists.ozlabs.org
-Subject: Re: [linus:master] [net] 5628f3fe3b: sockperf.throughput.UDP.msg_per_sec 20.1% regression
-Date: Thu, 10 Sep 2026 16:30:40 +0200
-Message-ID: <20260910143041.18106-1-atomasov@redhat.com>
-In-Reply-To: <202512112119.5b9829a-lkp@intel.com>
-References: <202512112119.5b9829a-lkp@intel.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GccFTWGZ"
+Received: by mail-oo2-f1.google.com with SMTP id 006d021491bc7-6bc93a7858fso178587eaf.1
+        for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 07:35:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789050924; x=1789655724; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=HCxyZZz6rPXR8L8h/M0W+Attud1AE0FTUv/300p7CEs=;
+        b=GccFTWGZ4VTuDgeOAhWTn0va91qPrT2UuBETHKioePMyaRERdiA6ShklbVixAT50RV
+         Wcc3gEGp2+z3c7paXDJwYg95xaSzW/MO1TTjWLUdUoCjYCXY2jwHwowOkIUPs++QJgSs
+         HFMSFVEo3i999v3G6wQkgkvHNiFCc2qLI4QVeqpidC1QjLm3TpqSZtDJjSrizcqZqARi
+         qyDGFyV2xZZlI5FB+hXVaaOQQFH35YQ+6NnxGMOoYeV7vvqC5pbY8hosfxuzwPebmNbQ
+         nlIyfTzR61tRiJByMDNwI1AnAHPnwupS07M9uPX5zc+Ep1n5UayVkHiapXYDJFZhiOTU
+         SxFQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789050924; x=1789655724;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=HCxyZZz6rPXR8L8h/M0W+Attud1AE0FTUv/300p7CEs=;
+        b=ErAZbM1qxJsyGk+O12kXchOXGBBZ89kzbI4DUQqFvXXcjskZQfrInO1CfoyxlCv6AN
+         McY7XYnouWQmlnKapcUnzq05/6P1A9JeG+iqeWAjlphyAaKFyFJLKnHdFCyrBCiVru7a
+         G4phoT46kuCHN4V7gyJ9o9rlAfu4jc4aBR5yRIXUZyNsj9ylJOBbl4+CSv5bT1g0UuTH
+         cqX8VLEjmAl5OThF+Wu4NhgwIxsTGHUEH0CzYOpck6QfjOBoYFJpl+BO9icUEElwfSU8
+         t4PoUOKHHtjMq2HSsYjjrgOZiKw1m/QdlZ1LR4zFou/qbcmgvRwmUICjhoksJaVUVClC
+         mMfw==
+X-Gm-Message-State: AFuF++nQlH6Pgpvu2+Sp9lbbLBPkKj0i3D1LUeADHzSRJyiFIniOkYY0
+	F+8ULUXOJl5tuNp/0/BqF10fAZp7iwsF5ssIapGx+3aqCeFKfObBpINHq38xCiEY
+X-Gm-Gg: AYBFou13Tpc+Q3RcRKwBAh2WIBa1BAVOIXUUO+Z4nMpyrcYezbPnUMRaxum7xPorquH
+	KXRqzUHwEJXQXbJhi3z80z/QwU6CfoTs9Tp0+ml8t30ICcCkHEt946Xo8fdzfi7Alx2EFFEJoom
+	mubb6e36FBUIRwFEAeYWu1vq3K3STX3KngbCdd+jO5wjd0xZOHgyUu8weyBryi/Joa2fJCGncvz
+	KXffOfDFY6sZAISuPxvR7eh5L4Y2bi/LkTms2zZexHBlLLHn4p1b965lcqnxujfgQ0wrlppVKL5
+	OSRDXeOXmCkICenNgZGBNK4E7eE2cAFBkF1B6yr641ijXssnTLPfBio6jOrT+N67X+Wc3NMh3lQ
+	LYGncCnPMt2VHoF/TARF08Y7S1XGnaoi1AVvP4KdciigkA2mXQdZhq0XxBe0FKdBHq6CAKS2u/W
+	P57DwCqsLP41SVTpkcmPgxFIeaWI+wFTsPdzwBEhFNeroflHCK5uGkpMw4E9dutIGMQDv8naKSO
+	z/foZw6ttGsw8TbJ1kY/PLlrixfz931Niih5rLwbJ2VcXzLrM07R8TL8GOfnigVbrBBGiuxub5G
+	vK1XYqLL4IZtcfOYZamE0UEoIGJvHvorP1QiexdtiuKQ/hMidGEoB5MQ7huCf0W2RU58+J8o8Nc
+	b+Q==
+X-Received: by 2002:a05:6820:3107:b0:6bf:5d5e:5403 with SMTP id 006d021491bc7-6bf5d5e6442mr2877845eaf.69.1789050924431;
+        Thu, 10 Sep 2026 07:35:24 -0700 (PDT)
+Received: from ethan-latitude5420.. (host-127-24.cafrjco.fresno.ca.us.clients.pavlovmedia.net. [68.180.127.24])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-143240d86c3sm47718384c88.0.2026.09.10.07.35.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 10 Sep 2026 07:35:24 -0700 (PDT)
+From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Ethan Nelson-Moore <enelsonmoore@gmail.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH] drivers: net: smsc: Remove unused smc9194.h header
+Date: Thu, 10 Sep 2026 07:35:05 -0700
+Message-ID: <20260910143516.87304-1-enelsonmoore@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -67,97 +77,264 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-On Thu, Dec 11, 2025, kernel test robot <oliver.sang@intel.com> wrote:
-> kernel test robot noticed a 20.1% regression of
-> sockperf.throughput.UDP.msg_per_sec on:
-> commit: 5628f3fe3b16 ("net: add NUMA awareness to skb_attempt_defer_free()")
+The smc9194 driver was removed in commit 9fdf9f61fa6d ("drivers: net:
+smsc: smc9194: Remove this driver"), but smc9194.h was left behind.
+Remove it.
 
-We independently reproduced this on a second architecture, ppc64le (POWER10),
-and can add data that both confirms the commit and shows what amplifies it.
+Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+---
+ drivers/net/ethernet/smsc/smc9194.h | 241 ----------------------------
+ 1 file changed, 241 deletions(-)
+ delete mode 100644 drivers/net/ethernet/smsc/smc9194.h
 
-Commit: 5628f3fe3b16 ("net: add NUMA awareness to skb_attempt_defer_free()")
-Parent: 844c9db7f7f5 ("net: use llist for sd->defer_list")
-
-Two factors govern the magnitude, and your x86 report and our ppc64le data
-agree once both are considered:
-
-(a) How much of the workload runs the net_rx softirq deferred-free path.
-    Tight loopback UDP (sockperf, iperf3 loopback) is softirq-dominated and is
-    hit hard. A real-NIC test bounded by other costs is barely affected.
-
-(b) How many *possible* NUMA nodes skb_defer_free_flush() now walks. The new
-    for_each_node() loop iterates node_possible_map; on a POWER10 LPAR that is
-    0..31 (32 possible) with only 1 node online, so 31 of every 32 iterations
-    touch a cold, always-empty per-node list on every softirq RX pass. This
-    shows up as _find_next_bit(): ~2.76% on POWER10 vs <1% in your x86 profile.
-
---- Data point 1: stress-ng UDP, isolated commit A/B (POWER10) ---
-
-POWER10, 8 CPUs, 62 GiB, NUMA 1 online / 32 possible. Two upstream v7.2-rc4
-kernels, same compiler (gcc 16.1.1) and config; the only difference is the
-presence of 5628f3fe3b16. stress-ng 0.19.03, --udp 1 -t 23, 3 runs,
-bogo-ops/sec (higher is better):
-
-    Kernel                        Avg       Delta
-    v7.2-rc4 + revert (good)      265145    baseline
-    v7.2-rc4 stock   (bad)        204854    -22.7%
-
-perf (stock vs revert): skb_defer_free_flush 2.75% -> 0%, _find_next_bit
-2.76% -> 0% -- both eliminated by the revert; consistent with your x86 profile
-(skb_defer_free_flush 0 -> ~4.1%, _find_next_bit -> ~1%).
-
---- Data point 2: iperf3 UDP loopback A/B (POWER10, second host) ---
-
-Independent reproduction on another POWER10 host (32 possible / 1 online),
-iperf3 -u -b 0 -l 16k -t 20, both ends pinned to the online node, 5 runs,
-Gbit/s (higher is better):
-
-    Kernel (has 5628f3fe3b16?)    median    mean
-    no  (6.12-based)              6.34      6.31    baseline
-    yes (7.1-based)              4.85      4.88    -22.7%
-
-(These two kernels differ in base version, so this delta is not a single-commit
-isolation on its own -- Data point 1 is the clean isolation. Both land at
--22.7%, matching your 20.1% sockperf figure.)
-
---- Data point 3: workload dependence (real-NIC vs loopback) ---
-
-The same commit-vs-parent A/B measured with a *real NIC* iperf3 UDP stream
-(200G, 3 reboots/kernel) on a 2-possible-node ppc64le host shows only -2.6%
-(7515.8 -> 7313.8 Mb/s, zero overlap across reboots). Where the deferred-free
-softirq path is a small fraction of the work, the regression is small -- the
-mechanism is the same, the exposure differs. This also matches our observation
-that a same-CPU-heavy stress-ng udp run barely triggers the cross-CPU
-skb_attempt_defer_free() path and shows ~no change.
-
---- On Jason's question ---
-
-On Sun, Dec 14, 2025, Jason Xing <kerneljasonxing@gmail.com> wrote:
-> from what I've known, commit e20dfbad8aab2 and commit 21664814b89e altogether
-> can lead to a similar regression ... could you also launch some experiments
-> just around those two commits?
-
-On POWER10 our isolation is a direct A/B of 5628f3fe3b16 against its parent
-844c9db7f7f5 with identical compiler and config (Data point 1), and a full
-revert of only 5628f3fe3b16 recovers the throughput and removes
-skb_defer_free_flush()/_find_next_bit() from the profile. So on this hardware
-the regression is attributable to 5628f3fe3b16 specifically; e20dfbad8aab2 and
-21664814b89e are not in the delta. Happy to test those two separately if useful.
-
---- Suggested fix ---
-
-Use for_each_online_node() instead of for_each_node() in skb_defer_free_flush()
-(and cap what skb_attempt_defer_free() populates accordingly), reducing the loop
-from N_possible to N_online -- 32 -> 1 on these POWER10 LPARs. We can build and
-benchmark a candidate patch on the POWER10 hosts and report back on this thread.
-If a fix is posted, the appropriate tags are:
-
-    Reported-by: kernel test robot <oliver.sang@intel.com>
-    Closes: https://lore.kernel.org/oe-lkp/202512112119.5b9829a-lkp@intel.com
-
-Thanks,
-Adrian Tomasov
-Red Hat -- Kernel Performance QE
+diff --git a/drivers/net/ethernet/smsc/smc9194.h b/drivers/net/ethernet/smsc/smc9194.h
+deleted file mode 100644
+index cf69d0a5a1cb..000000000000
+--- a/drivers/net/ethernet/smsc/smc9194.h
++++ /dev/null
+@@ -1,241 +0,0 @@
+-/*------------------------------------------------------------------------
+- . smc9194.h
+- . Copyright (C) 1996 by Erik Stahlman
+- .
+- . This software may be used and distributed according to the terms
+- . of the GNU General Public License, incorporated herein by reference.
+- .
+- . This file contains register information and access macros for
+- . the SMC91xxx chipset.
+- .
+- . Information contained in this file was obtained from the SMC91C94
+- . manual from SMC.  To get a copy, if you really want one, you can find
+- . information under www.smc.com in the components division.
+- . ( this thanks to advice from Donald Becker ).
+- .
+- . Authors
+- . 	Erik Stahlman				( erik@vt.edu )
+- .
+- . History
+- . 01/06/96		 Erik Stahlman   moved definitions here from main .c file
+- . 01/19/96		 Erik Stahlman	  polished this up some, and added better
+- .										  error handling
+- .
+- ---------------------------------------------------------------------------*/
+-#ifndef _SMC9194_H_
+-#define _SMC9194_H_
+-
+-/* I want some simple types */
+-
+-typedef unsigned char			byte;
+-typedef unsigned short			word;
+-typedef unsigned long int 		dword;
+-
+-
+-/* Because of bank switching, the SMC91xxx uses only 16 I/O ports */
+-
+-#define SMC_IO_EXTENT	16
+-
+-
+-/*---------------------------------------------------------------
+- .
+- . A description of the SMC registers is probably in order here,
+- . although for details, the SMC datasheet is invaluable.
+- .
+- . Basically, the chip has 4 banks of registers ( 0 to 3 ), which
+- . are accessed by writing a number into the BANK_SELECT register
+- . ( I also use a SMC_SELECT_BANK macro for this ).
+- .
+- . The banks are configured so that for most purposes, bank 2 is all
+- . that is needed for simple run time tasks.
+- -----------------------------------------------------------------------*/
+-
+-/*
+- . Bank Select Register:
+- .
+- .		yyyy yyyy 0000 00xx
+- .		xx 		= bank number
+- .		yyyy yyyy	= 0x33, for identification purposes.
+-*/
+-#define	BANK_SELECT		14
+-
+-/* BANK 0  */
+-
+-#define	TCR 		0    	/* transmit control register */
+-#define TCR_ENABLE	0x0001	/* if this is 1, we can transmit */
+-#define TCR_FDUPLX    	0x0800  /* receive packets sent out */
+-#define TCR_STP_SQET	0x1000	/* stop transmitting if Signal quality error */
+-#define	TCR_MON_CNS	0x0400	/* monitors the carrier status */
+-#define	TCR_PAD_ENABLE	0x0080	/* pads short packets to 64 bytes */
+-
+-#define	TCR_CLEAR	0	/* do NOTHING */
+-/* the normal settings for the TCR register : */
+-/* QUESTION: do I want to enable padding of short packets ? */
+-#define	TCR_NORMAL  	TCR_ENABLE
+-
+-
+-#define EPH_STATUS	2
+-#define ES_LINK_OK	0x4000	/* is the link integrity ok ? */
+-
+-#define	RCR		4
+-#define RCR_SOFTRESET	0x8000 	/* resets the chip */
+-#define	RCR_STRIP_CRC	0x200	/* strips CRC */
+-#define RCR_ENABLE	0x100	/* IFF this is set, we can receive packets */
+-#define RCR_ALMUL	0x4 	/* receive all multicast packets */
+-#define	RCR_PROMISC	0x2	/* enable promiscuous mode */
+-
+-/* the normal settings for the RCR register : */
+-#define	RCR_NORMAL	(RCR_STRIP_CRC | RCR_ENABLE)
+-#define RCR_CLEAR	0x0		/* set it to a base state */
+-
+-#define	COUNTER		6
+-#define	MIR		8
+-#define	MCR		10
+-/* 12 is reserved */
+-
+-/* BANK 1 */
+-#define CONFIG			0
+-#define CFG_AUI_SELECT	 	0x100
+-#define	BASE			2
+-#define	ADDR0			4
+-#define	ADDR1			6
+-#define	ADDR2			8
+-#define	GENERAL			10
+-#define	CONTROL			12
+-#define	CTL_POWERDOWN		0x2000
+-#define	CTL_LE_ENABLE		0x80
+-#define	CTL_CR_ENABLE		0x40
+-#define	CTL_TE_ENABLE		0x0020
+-#define CTL_AUTO_RELEASE	0x0800
+-#define	CTL_EPROM_ACCESS	0x0003 /* high if Eprom is being read */
+-
+-/* BANK 2 */
+-#define MMU_CMD		0
+-#define MC_BUSY		1	/* only readable bit in the register */
+-#define MC_NOP		0
+-#define	MC_ALLOC	0x20  	/* or with number of 256 byte packets */
+-#define	MC_RESET	0x40
+-#define	MC_REMOVE	0x60  	/* remove the current rx packet */
+-#define MC_RELEASE  	0x80  	/* remove and release the current rx packet */
+-#define MC_FREEPKT  	0xA0  	/* Release packet in PNR register */
+-#define MC_ENQUEUE	0xC0 	/* Enqueue the packet for transmit */
+-
+-#define	PNR_ARR		2
+-#define FIFO_PORTS	4
+-
+-#define FP_RXEMPTY  0x8000
+-#define FP_TXEMPTY  0x80
+-
+-#define	POINTER		6
+-#define PTR_READ	0x2000
+-#define	PTR_RCV		0x8000
+-#define	PTR_AUTOINC 	0x4000
+-#define PTR_AUTO_INC	0x0040
+-
+-#define	DATA_1		8
+-#define	DATA_2		10
+-#define	INTERRUPT	12
+-
+-#define INT_MASK	13
+-#define IM_RCV_INT	0x1
+-#define	IM_TX_INT	0x2
+-#define	IM_TX_EMPTY_INT	0x4
+-#define	IM_ALLOC_INT	0x8
+-#define	IM_RX_OVRN_INT	0x10
+-#define	IM_EPH_INT	0x20
+-#define	IM_ERCV_INT	0x40 /* not on SMC9192 */
+-
+-/* BANK 3 */
+-#define	MULTICAST1	0
+-#define	MULTICAST2	2
+-#define	MULTICAST3	4
+-#define	MULTICAST4	6
+-#define	MGMT		8
+-#define	REVISION	10 /* ( hi: chip id   low: rev # ) */
+-
+-
+-/* this is NOT on SMC9192 */
+-#define	ERCV		12
+-
+-#define CHIP_9190	3
+-#define CHIP_9194	4
+-#define CHIP_9195	5
+-#define CHIP_91100	7
+-
+-static const char * chip_ids[ 15 ] =  {
+-	NULL, NULL, NULL,
+-	/* 3 */ "SMC91C90/91C92",
+-	/* 4 */ "SMC91C94",
+-	/* 5 */ "SMC91C95",
+-	NULL,
+-	/* 7 */ "SMC91C100",
+-	/* 8 */ "SMC91C100FD",
+-	NULL, NULL, NULL,
+-	NULL, NULL, NULL};
+-
+-/*
+- . Transmit status bits
+-*/
+-#define TS_SUCCESS 0x0001
+-#define TS_LOSTCAR 0x0400
+-#define TS_LATCOL  0x0200
+-#define TS_16COL   0x0010
+-
+-/*
+- . Receive status bits
+-*/
+-#define RS_ALGNERR	0x8000
+-#define RS_BADCRC	0x2000
+-#define RS_ODDFRAME	0x1000
+-#define RS_TOOLONG	0x0800
+-#define RS_TOOSHORT	0x0400
+-#define RS_MULTICAST	0x0001
+-#define RS_ERRORS	(RS_ALGNERR | RS_BADCRC | RS_TOOLONG | RS_TOOSHORT)
+-
+-static const char * interfaces[ 2 ] = { "TP", "AUI" };
+-
+-/*-------------------------------------------------------------------------
+- .  I define some macros to make it easier to do somewhat common
+- . or slightly complicated, repeated tasks.
+- --------------------------------------------------------------------------*/
+-
+-/* select a register bank, 0 to 3  */
+-
+-#define SMC_SELECT_BANK(x)  { outw( x, ioaddr + BANK_SELECT ); }
+-
+-/* define a small delay for the reset */
+-#define SMC_DELAY() { inw( ioaddr + RCR );\
+-			inw( ioaddr + RCR );\
+-			inw( ioaddr + RCR );  }
+-
+-/* this enables an interrupt in the interrupt mask register */
+-#define SMC_ENABLE_INT(x) {\
+-		unsigned char mask;\
+-		SMC_SELECT_BANK(2);\
+-		mask = inb( ioaddr + INT_MASK );\
+-		mask |= (x);\
+-		outb( mask, ioaddr + INT_MASK ); \
+-}
+-
+-/* this disables an interrupt from the interrupt mask register */
+-
+-#define SMC_DISABLE_INT(x) {\
+-		unsigned char mask;\
+-		SMC_SELECT_BANK(2);\
+-		mask = inb( ioaddr + INT_MASK );\
+-		mask &= ~(x);\
+-		outb( mask, ioaddr + INT_MASK ); \
+-}
+-
+-/*----------------------------------------------------------------------
+- . Define the interrupts that I want to receive from the card
+- .
+- . I want:
+- .  IM_EPH_INT, for nasty errors
+- .  IM_RCV_INT, for happy received packets
+- .  IM_RX_OVRN_INT, because I have to kick the receiver
+- --------------------------------------------------------------------------*/
+-#define SMC_INTERRUPT_MASK   (IM_EPH_INT | IM_RX_OVRN_INT | IM_RCV_INT)
+-
+-#endif  /* _SMC_9194_H_ */
+-
+-- 
+2.43.0
 
