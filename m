@@ -1,269 +1,118 @@
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E0673F413E
-	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 08:26:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFCB24BFE8B
+	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 08:29:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789028814; cv=none; b=envavwgXqXtcwaLCI7rEg8L5N9Q/S5L4gTzAW/8dM58e9v5NQJEk7nnn0kR3xteLhxNu/kfvuMUQcLjMQReRnxIudYwXQ6w5NgozBck2Bkl0QPHDdDoGJqy/TsCAOcJkHJ567OTBTAIbfCPxvYxHVjc7HPBKQWjlqbIHro8JQzs=
+	t=1789028985; cv=none; b=JgqudI1qWA0cUjOspsuNCpYSRq+5YQiDYZf4rHvDxtpSKB0FE2vVlXdzrDvXfNJVEVzda/PIcg81vHktJrCvWAjHskoJlpXlb4NgvWzzEvRS7cUOvMD8zi4gwX5llXTNQoBc9MV0HzOOGHkbhBeRhcyPGEZTd2WZ1B9G12EtUJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789028814; c=relaxed/simple;
-	bh=Rt+35QpJwurXh8jaLywJIOfU9KTFVt7yBWWLTBIeMEI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TXO4gZfbjBClJ0L41mHyIETOSm3l+d4lbLbQQc7I4lFu0qmx1WQ2St86vvI3p/uQoV690eKelM36yUij2s5tpuAF//vzPMb7/99CBBjTegj7FwVFEkMRwd7352aowxVcV77KVYrL6b3LDZzIhYp0Oe77ZCshn8SUR37ZoYLWyck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=oFV1p6x2; arc=none smtp.client-ip=74.125.225.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789028985; c=relaxed/simple;
+	bh=tsJAIt9Fkyj4tBHRibyHOinaLan5BAIadsmezVV3NxA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SQutVLDUfzZjPoA38o/eb3nsOFIRidScjU9HpZ8BroU2sazIJ5nWYSpWsOM/XQQk4T4eCm/WTebRRfKR4Cz0d2uGvoX2efmKy4Q93eKgbsWENPmqUsvP3h68ZAmECE9TN0URoHfjUQS4PcX1kOg4aQhdyCjBej3oRNP+npy+jdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hQAn8wGM; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="oFV1p6x2"
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49b912e64ccso7945525e9.0
-        for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 01:26:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789028810; x=1789633610; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=3FWXbZhvJgbluUBInzWvOijQmCJSvSHt+/OC865YgEk=;
-        b=oFV1p6x2VtDcFnSh807d7pnjg3SdB0ZTtp31AcMYoBaNy5o4PZasd8iL7FcCv4cx4m
-         j4vdxy9abL1KljpQqR/90REMYa6ZuwKqUJvM+WILILKrZxI0eIxeDk5SpNIYGdik0yg+
-         oqfERxn5LKDteua0V6DcnjXc2kz9tAIDahlhZZ2IFNzz8h+cNJRCJMveauIKtHEE9XHS
-         kTiaPJAR6MB4v/UYigmaan5noc3V0/MjZk18XPQo3nepxaMHUTSWnZPzwff6ISCmL2dq
-         h4MP6LN+X1rFWgRl/aut7Jr1BvqMdnuJ8ntUKh3zh6A/BjPI0FpYpXQcUt7kz98W5iv2
-         Lb+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789028810; x=1789633610;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=3FWXbZhvJgbluUBInzWvOijQmCJSvSHt+/OC865YgEk=;
-        b=o3NHU4NBCTaVBEhDYjGyA0V0e7+RQTUmI6Aoqq2lXKCFGqgZQ93Ei5pIOCzYlQtd7X
-         DsAEmpTLUJCwTSK/VZIRjDLm6qShnp1DHoeFXhiYuTZmLZrRj5pFxmy3BWFCm/0RembQ
-         ZRgKBhqen66+rYM4LI7xy4UIW80FdFS2bDvbXlImfbJZEEx0UXzlJiBYQUez7wxF7e9q
-         pEADQqLiWiTZJkoDW6BT8tytJfh3fZI6HqEtsN+6VM68chU5jo3O6FWnr8ATDG/1ywwp
-         ZmXfOM0nFjjudpLJhsch+6RWKc3sB1yH6XTX+QtKux0jR+biD/R70lb2/f6cGiEEFtWu
-         5K8w==
-X-Gm-Message-State: AFuF++lSK0wZqF+vUOx2aDGbi99VTG4oMdygKVlhnYGuh5xw6693KkBq
-	YR02FeILVfZENHnN8uI9zGcTs8nu5jpRxzxvZIjQSniaRyZYLPO0bXe7XjD71g==
-X-Gm-Gg: AYBFou0S29GLyEJpU8D2R8TK9krbYizWA3SfI4ESF8GdAk1GE5/v6v3yP6XI6CuqqA/
-	VILyvUPy+dJ+Wwkuwi371HMUU+RBP4Q5RqOEWIE+RCEn4d9ddmTSAm80m4nqZCP04TYDhqRKm3P
-	N3Z8KK7Q+pmgeMQwUuDZCciI0UmTiAtuY8MOzt3zrKTjdlnDjhkUwSoDrM5oX1HfXFK0M3Ef+SP
-	niwwM3ap3RS0SK0PETa0hXYSlHuCULRkOrB81ZvLcSLDbisZBJi5Y/wqg+RMzG1Vmo+sYUJYeKY
-	ig9d0JGoRrqQdxpHjDghXifrZZJap4y0YEqdFNTMNfToTIuA1ZnYF8m4PaVT6tgiLwkOUS5BLk6
-	E+xO2oXRteNhDJdPfJ6Xi6eF6v41pX4fQTBBrH1W2UtkrJHRq9GXCEt71jQOqjoJVZFU+EFSInr
-	k/nsN2u4a4sK1irrBitKq6SHl5YE2d7tLZJEITv5vKyakrXl3Qg3oMNzowVj3vciBq5GAWjGaOV
-	sV0Sw==
-X-Received: by 2002:a05:600c:5647:b0:499:b65e:49c9 with SMTP id 5b1f17b1804b1-49d259138bamr85010655e9.10.1789028809832;
-        Thu, 10 Sep 2026 01:26:49 -0700 (PDT)
-Received: from SurHub.localdomain ([196.188.112.26])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49d26c494basm51434515e9.12.2026.09.10.01.26.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Sep 2026 01:26:48 -0700 (PDT)
-From: Abdifatah Suruur <suruurism@gmail.com>
-To: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	subash.a.kasiviswanathan@qualcomm.com,
-	sean.tranchetti@qualcomm.com,
-	dnlplm@gmail.com,
-	stable@vger.kernel.org,
-	Abdifatah Suruur <suruurism@gmail.com>
-Subject: [PATCH net v7] net: qualcomm: rmnet: require CAP_NET_ADMIN in the real device netns for config ops
-Date: Thu, 10 Sep 2026 11:26:42 +0300
-Message-ID: <20260910082643.14437-1-suruurism@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hQAn8wGM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 440381F000FF;
+	Thu, 10 Sep 2026 08:29:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789028980;
+	bh=175RHa16knyn/uoX5hnJ+gWOFWpQbD+YWwgwKsVnmaQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=hQAn8wGMFbbYJbAfGBNIWAfGn0U5IdyC3TxBJrvuCPfK9jjkvo5gjOlhgT7lbQF85
+	 tyj3bHZ6jj3E9vQSCbB/7mU+4JsfZ5beHpRtlQMooepZyRs7FaskSE47hCtjMcynmA
+	 vUqD58+uovNPH65ZF1f2SvKxqcu5Hj7RqPwCRCECRDw6Iy1EaPE1eCO5feJ2PsmIH6
+	 fvQy5TWwJVobXy/zC1Z1zm4UYIvz0JEVWw5ShGc87uVe2wuJqqR+QS7gyOjkO3pJAf
+	 GO2Ys1+9uO9Ftv2PBGvzIb9QSVqx6bxwm9xzIHMKF0/iNHDA6OySr1/2yfcfRx88V4
+	 j1RspbQQflLTQ==
+Message-ID: <6c1229b9-5a9c-4428-9faf-01d84c75ef2d@kernel.org>
+Date: Thu, 10 Sep 2026 10:29:36 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Thunderbird Daily
+Subject: Re: Some clarifications on the upstreaming process
+Content-Language: fr
+To: Jakub Kicinski <kuba@kernel.org>,
+ Steffen Klassert <steffen.klassert@secunet.com>
+Cc: Paolo Abeni <pabeni@redhat.com>, David Miller <davem@davemloft.net>,
+ Herbert Xu <herbert@gondor.apana.org.au>, netdev@vger.kernel.org
+References: <20260907093020.2228346-1-steffen.klassert@secunet.com>
+ <aqD-_cBnIOMEpxVh@secunet.com>
+ <70d0048d-694b-4348-a6a5-de87a767b8fd@redhat.com>
+ <aqEzoAcZ0uP0Kz6k@secunet.com>
+ <83dd4915-e7a3-4c7e-91dd-adbea16450b3@redhat.com>
+ <aqE4eK2cqpvxqCQJ@secunet.com> <20260909115753.75723ca1@kernel.org>
+From: Matthieu Baerts <matttbe@kernel.org>
+Autocrypt: addr=matttbe@kernel.org; keydata=
+ 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
+ lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
+Organization: NGI0 Core
+In-Reply-To: <20260909115753.75723ca1@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-An rmnet device may be created with its real device in a different
-netns than the rmnet device itself (rmnet_newlink() resolves it in
-link_net), and the config paths below only check CAP_NET_ADMIN against
-dev_net(dev), while mutating rmnet port state attached to the real
-device:
+Hi Jakub,
 
-- rmnet_changelink() rewrites the endpoint mux table and
-  port->data_format and, via rmnet_vnd_update_dev_mtu(), can shrink the
-  MTU of the rmnet endpoint netdevs.
-- rmnet_add_bridge() and rmnet_del_bridge(), reachable via
-  ndo_add_slave/ndo_del_slave through RTM_SETLINK IFLA_MASTER, flip
-  port->rmnet_mode and port->bridge_ep on the real device's port; with
-  bridge_ep pointing at a caller-owned device, rmnet_rx_handler() then
-  forwards real-device ingress frames to it.
-- rmnet_set_coalesce() rewrites the port aggregation parameters via
-  ETHTOOL_SCOALESCE (ioctl) or ETHTOOL_MSG_COALESCE_SET (netlink),
-  whose capability checks likewise only cover dev's netns.
+On 09/09/2026 20:57, Jakub Kicinski wrote:
 
-A caller privileged only in the rmnet device's netns can therefore
-rewrite the shared cellular data-path state owned by another netns, and
-steer its ingress traffic.
+(...)
 
-Gate the rtnl paths with rtnl_dev_link_net_capable(), matching the
-"require CAP_NET_ADMIN in the device netns for changelink" series
-(vxlan/geneve, CVE-2026-68432), and gate the ethtool setter with
-ns_capable() in the real device netns, mirroring the check dev_ethtool()
-already applies to dev's netns.  Report the new rejections through
-extack where one is available.
+> At the same time I worry that *shikos are making it easier for our
+> maintainers to ignore the fundamental changes which AI brings to SW
+> engineering. IOW I'd like to encourage more local use and
+> experimentation.
 
-The gates cover the configuration paths only.  Teardown (RTM_DELLINK
-reaching rmnet_dellink(), and rmnet_config_notify_cb() unregistering
-the bridge when the slave device is deleted) is intentionally left
-ungated: link deletion is normal netdev lifecycle behaviour, and the
-changelink series this matches (vxlan/geneve, CVE-2026-68432) gated
-only the configuration paths.
+As an individual, I'm not sure whether it's a good idea for me to
+support a local Clashiko myself. I would probably need to find
+more/dedicated funding for that :-/
 
-Fixes: 2abb5792387e ("net: qualcomm: rmnet: Allow configuration updates to existing devices")
-Fixes: 60d58f971c1077 ("net: qualcomm: rmnet: Implement bridge mode")
-Fixes: db8a563a9d9024 ("net: qualcomm: rmnet: add ethtool support for configuring tx aggregation")
-Cc: stable@vger.kernel.org
-Signed-off-by: Abdifatah Suruur <suruurism@gmail.com>
----
-v7:
-- state explicitly in the commit message that the dellink and notifier
-  teardown paths are out of scope, per the Sashiko review
-- drop the master-moved-into-the-real-device-netns rationale from the
-  rmnet_add_bridge() comment: on the add path do_set_master() resolves
-  the master in the slave's netns, so the rationale only applies to
-  rmnet_del_bridge(), where the master comes from
-  netdev_master_upper_dev_get()
-- use the netdev comment style in rmnet_set_coalesce(), per the
-  Sashiko review
-v6:
-- gate rmnet_add_bridge() and rmnet_del_bridge() on slave_dev, the
-  RTM_SETLINK target the caller was actually authorized against,
-  instead of rmnet_dev: a master moved into the real device's netns
-  short-circuits rtnl_dev_link_net_capable() through the net_eq()
-  check, so a caller only privileged in the slave's netns could
-  otherwise attach or clear the bridge state of the real device's
-  port
-- add the Fixes tag for the commit that introduced rmnet_set_coalesce()
-v5:
-- also gate rmnet_set_coalesce(), the ethtool setter that rewrites the
-  port aggregation parameters of the real device's port, per the
-  Sashiko review
-- report the new capability rejections through extack where available
-v4:
-- use the netdev comment style, per Subash Abhinov Kasiviswanathan
-v3:
-- cover rmnet_add_bridge() and rmnet_del_bridge() with the same gate;
-  they mutate the same real-device port state via ndo_add_slave/
-  ndo_del_slave and have no capability check of their own
-- correct the impact wording: rmnet_vnd_update_dev_mtu() only reads
-  real_dev->mtu; the MTU store lands on the rmnet endpoint netdevs via
-  rmnet_vnd_change_mtu(), not on the real device
-v2:
-- drop Reported-by: (implied for the author), per Jakub Kicinski
----
- .../ethernet/qualcomm/rmnet/rmnet_config.c    | 37 ++++++++++++++++++-
- .../net/ethernet/qualcomm/rmnet/rmnet_vnd.c   | 16 +++++++-
- 2 files changed, 51 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c b/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c
-index bed6f63facf25..ca6971150180d 100644
---- a/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c
-+++ b/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c
-@@ -312,6 +312,16 @@ static int rmnet_changelink(struct net_device *dev, struct nlattr *tb[],
- 	if (!rmnet_is_real_dev_registered(real_dev))
- 		return -ENODEV;
- 
-+	/* The rtnl path only checks CAP_NET_ADMIN against dev_net(dev),
-+	 * but the port state mutated below is attached to real_dev, which
-+	 * may live in a different netns.
-+	 */
-+	if (!rtnl_dev_link_net_capable(dev, dev_net(real_dev))) {
-+		NL_SET_ERR_MSG_MOD(extack,
-+				   "Changing the port settings requires CAP_NET_ADMIN in the real device network namespace");
-+		return -EPERM;
-+	}
-+
- 	port = rmnet_get_port_rtnl(real_dev);
- 
- 	if (data[IFLA_RMNET_MUX_ID]) {
-@@ -441,6 +451,16 @@ int rmnet_add_bridge(struct net_device *rmnet_dev,
- 	struct rmnet_port *port, *slave_port;
- 	int err;
- 
-+	/* The rtnl path authorizes the caller against the RTM_SETLINK
-+	 * target, slave_dev, but the port state mutated below is attached
-+	 * to real_dev, which may live in a different netns.
-+	 */
-+	if (!rtnl_dev_link_net_capable(slave_dev, dev_net(real_dev))) {
-+		NL_SET_ERR_MSG_MOD(extack,
-+				   "Attaching a bridge device requires CAP_NET_ADMIN in the real device network namespace");
-+		return -EPERM;
-+	}
-+
- 	port = rmnet_get_port_rtnl(real_dev);
- 
- 	/* If there is more than one rmnet dev attached, its probably being
-@@ -489,7 +509,22 @@ int rmnet_add_bridge(struct net_device *rmnet_dev,
- int rmnet_del_bridge(struct net_device *rmnet_dev,
- 		     struct net_device *slave_dev)
- {
--	struct rmnet_port *port = rmnet_get_port_rtnl(slave_dev);
-+	struct rmnet_priv *priv = netdev_priv(rmnet_dev);
-+	struct net_device *real_dev = priv->real_dev;
-+	struct rmnet_port *port;
-+
-+	/* The rtnl path authorizes the caller against the RTM_SETLINK
-+	 * target, slave_dev, but rmnet_unregister_bridge() below clears
-+	 * the bridge state of the real device's port, which may live in a
-+	 * different netns.  Check the capability against slave_dev so the
-+	 * master's netns, which the caller was never checked against,
-+	 * cannot short-circuit the gate after being moved into the real
-+	 * device's netns.
-+	 */
-+	if (!rtnl_dev_link_net_capable(slave_dev, dev_net(real_dev)))
-+		return -EPERM;
-+
-+	port = rmnet_get_port_rtnl(slave_dev);
- 
- 	rmnet_unregister_bridge(port);
- 
-diff --git a/drivers/net/ethernet/qualcomm/rmnet/rmnet_vnd.c b/drivers/net/ethernet/qualcomm/rmnet/rmnet_vnd.c
-index 4f0ddcedfa979..7549318f83985 100644
---- a/drivers/net/ethernet/qualcomm/rmnet/rmnet_vnd.c
-+++ b/drivers/net/ethernet/qualcomm/rmnet/rmnet_vnd.c
-@@ -4,9 +4,11 @@
-  * RMNET Data virtual network driver
-  */
- 
-+#include <linux/capability.h>
- #include <linux/etherdevice.h>
- #include <linux/ethtool.h>
- #include <linux/if_arp.h>
-+#include <linux/netlink.h>
- #include <net/pkt_sched.h>
- #include "rmnet_config.h"
- #include "rmnet_handlers.h"
-@@ -240,9 +242,21 @@ static int rmnet_set_coalesce(struct net_device *dev,
- 			      struct netlink_ext_ack *extack)
- {
- 	struct rmnet_priv *priv = netdev_priv(dev);
-+	struct net_device *real_dev = priv->real_dev;
- 	struct rmnet_port *port;
- 
--	port = rmnet_get_port_rtnl(priv->real_dev);
-+	/* The aggregation parameters live in the port attached to real_dev,
-+	 * which may reside in a different netns.  The ethtool paths only
-+	 * require CAP_NET_ADMIN in dev's netns, so require it in real_dev's
-+	 * netns as well before mutating the shared port state.
-+	 */
-+	if (!ns_capable(dev_net(real_dev)->user_ns, CAP_NET_ADMIN)) {
-+		NL_SET_ERR_MSG_MOD(extack,
-+				   "Changing aggregation parameters requires CAP_NET_ADMIN in the real device network namespace");
-+		return -EPERM;
-+	}
-+
-+	port = rmnet_get_port_rtnl(real_dev);
- 
- 	if (kernel_coal->tx_aggr_max_frames < 1 || kernel_coal->tx_aggr_max_frames > 64)
- 		return -EINVAL;
+Cheers,
+Matt
 -- 
-2.53.0
+Sponsored by the NGI0 Core fund.
 
