@@ -1,131 +1,90 @@
-Received: from mailer241.gate86.rs.smtp.com (mailer241.gate86.rs.smtp.com [74.91.86.241])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF3504854EC
-	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 12:38:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.91.86.241
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50347475335;
+	Thu, 10 Sep 2026 12:42:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789043897; cv=none; b=jSY4m0ezh4QBkkr6tGpGi/K0fJvedUbHh3HPvSmJoVRuZu3+boKJTXmxBFkSJs5pnalN0kc1M4ob+bUUI3jmRyX6ANKuELwhdFahzaWVeZLFFKbLX57Dcu5K94ErFENGP8FH7qAzvB6FEcgY41351WAu1j/rGA/nVzgXvkaK9QE=
+	t=1789044178; cv=none; b=CzVu1tVVKlXYTn1eORY5fDWqdNcOXkbuC9sHV/9r77LHN6TOEhdmrKA98GvU/H9hQzlBmWsnMFErEh/XklM0kuWENJB5qQqY+PoOdS/6tkRnXdNoi+vSw4dtW5rgx97cQrKQJsFElNby1JFRjmUmfaX7ZAURYrpJvgakTuku+Fc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789043897; c=relaxed/simple;
-	bh=w2lh7ptEnPTKkoQwNFhNxV06/VvmaNakq+TNlN/nnRU=;
-	h=From:Subject:To:Content-Type:Date:Message-Id; b=PU+4EPFyJLhjPVYYCsZecxin8tt4UarB+FxilWsyd1UquM9PSm5JP/3eCnTRC3Xks0WX4MoBVuYmgTilYCjeXC3neoUh40vYNlh6gZFV1XyN6sPUwO3/0J6Cw+lV4RH6Jq4C49BXPO+ohyotYKfGSoJIz5n2Q8oFHzyqKjetOT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=computergamingpc.com; spf=pass smtp.mailfrom=computergamingpc.com; dkim=pass (2048-bit key) header.d=computergamingpc.com header.i=@computergamingpc.com header.b=nFW7Kkt/; dkim=pass (2048-bit key) header.d=smtpmessage.com header.i=@smtpmessage.com header.b=Eq2Id9UP; arc=none smtp.client-ip=74.91.86.241
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=computergamingpc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=computergamingpc.com
+	s=arc-20240116; t=1789044178; c=relaxed/simple;
+	bh=rD2r0ZJHQ4pnPyzvZzv6ITnpgWvWEqQMsaZpzTxq+eE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qVpZoMPSgn1uGJwFMzLx3ZU2sr3UengcQFhIEFvYC0/mgpNk0cLkdlXs0WLUprz20q2rcdRpv3MyebM0EvxZI17BiLqsPzDsgo6PwKB8b78gxx1Hm+3/orPzHtHacDy3+mUL3DX8Z4g6N3mx/GJgIvDFvavhPmFLyjnb7sCkCb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yK+RulPa; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=computergamingpc.com header.i=@computergamingpc.com header.b="nFW7Kkt/";
-	dkim=pass (2048-bit key) header.d=smtpmessage.com header.i=@smtpmessage.com header.b="Eq2Id9UP"
-X-Report-Abuse: SMTP.com is an email service provider. Our abuse team cares
- about your feedback. Please contact abuse@smtp.com for further investigation.
-Received: from [10.0.16.4] (unknown [10.138.12.176])
-	by s0-aws-app2-mta-out-2 (Halon) with ESMTP
-	id 2eaba121-5f2f-44c0-8927-933187284c1a;
-	Thu, 10 Sep 2026 12:38:14 +0000 (UTC)
-Received: Received from 10.138.12.155 by Caffeine
- (s0-aws-app2-swarm-manager-4) with SMTP id
- 26fb8623-0c98-4efc-aa6c-22a4f1659b79  for netdev@vger.kernel.org;
-  Thu, 10 Sep 2026 12:37:32 +0000 (UTC)
-Feedback-ID: 9194450:SMTPCOM
-Received: from ObaTech (unknown [191.177.202.135])
-	by s0-aws-app2-mta-in-1 (Halon) with ESMTPSA
-	id 26fb8623-0c98-4efc-aa6c-22a4f1659b79;
-	Thu, 10 Sep 2026 12:37:32 +0000 (UTC)
-From: "Computer Gaming pc" <sales@computergamingpc.com>
-Subject: Current Inventory Update: GPUs & Enterprise SSDs Available
-To: <netdev@vger.kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Reply-To: <sales@computergamingpc.com>
-Date: Thu, 10 Sep 2026 13:37:33 +0100
-Priority: urgent
-X-Priority: 1
-Importance: high
-Message-Id: <2026100913373275D4062729$6F4CF24353@computergamingpc.com>
-X-SMTPCOM-Sender-ID: 9194450
-X-SMTPCOM-Tracking-Number: 26fb8623-0c98-4efc-aa6c-22a4f1659b79
-X-SMTPCOM-Message-ID: 25e1b2bf-a4a7-43a2-9361-8a98686f1be6
-X-SMTPCOM-Payload: 
- jQzpeBuGvwGUqJuaN4OYgRe3Ic_XizPmlJG3VmGjJ9LUcTKGeg8LD4OkEL6f4GfrPwbdRkJzrsY8ZmuL0kPC9A2DkFoVzMoO6kBjPnpI16wx8Z3kXafQvg5GGUqMFOV8aaRzqL1A2gmffMaTCZJqRs4F5QzrcgUlnSyKbJUC3xj7V1v15ZE3nz0pBR5d5ITr
-List-Unsubscribe-Post: List-Unsubscribe=One-Click
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
- d=computergamingpc.com; i=@computergamingpc.com; q=dns/txt; s=smtpkey;
- t=1789043884; h=feedback-id : from : subject : to : content-type :
- content-transfer-encoding : reply-to : date : message-id :
- list-unsubscribe : list-unsubscribe-post : from : subject : to : date;
- bh=w2lh7ptEnPTKkoQwNFhNxV06/VvmaNakq+TNlN/nnRU=;
- b=nFW7Kkt/7w3SJDWq6EibFLc9cR4EXFVIUh+eJpvo+VE0uslsk2Hz22RgZUPFWVPiFZp+L
- gz6bCxutxGXdJH/gIV4xSgUO0PFUoXgCqWtOMqKmwp2az0/BRFcGsL23sdmlRD8Lw/X8/Wn
- OlGN0J22OipSLGK/k2A4feSlziFaxgKglSdCY0E4NJpNPtnnB+yOvgWN58HLLGP3is/cfi5
- nSXzrkQ4aW5HnsktSRt9aUN5dHqWE8tqt+5d7hFd+kS/nFRkP3+5ln+/JeKnqyYHJWobEy9
- 9mmHxD0IZyeMKKsMLsjf1AmtNb2nQt99Hp5zaYWuCsyyOofx2W2/YXAJgcDw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=smtpmessage.com;
- i=@smtpmessage.com; q=dns/txt; s=smtpcustomer; t=1789043884;
- h=feedback-id : from : subject : to : content-type :
- content-transfer-encoding : reply-to : date : message-id :
- list-unsubscribe : list-unsubscribe-post : from : subject : to : date;
- bh=w2lh7ptEnPTKkoQwNFhNxV06/VvmaNakq+TNlN/nnRU=;
- b=Eq2Id9UP5/bQFXnHChUxm8raWQ0OmEH3PTjI5A4KjJGey0N3XG0MT+wQ81zr71qnK8vHV
- 9diNGsugBpqceApFwm7lwjN7zRwequKOyStWs14VjXrr0sPTEKjmyaYBE03NvJz09fRb2Cy
- BrtmbOkZ7RB8v2tN8fHkl2UXOaggftdjXlL6BFS8zDGc4DA0MuSNqXeyA549Rn6Kq9MvdgV
- L+6ymzZb+S5aXSs7scihoklvZcCx7zK9SqmHJXiAdt5tmwptv1GHrAQjvc+yTPt4ydh+wAd
- 8O37cV+rYac7bHwEOKaAqlAYYwfnLDLdHBeE+b9AHatQJZWv3XK4VJgPOzdw==
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yK+RulPa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5D951F000FF;
+	Thu, 10 Sep 2026 12:42:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxfoundation.org;
+	s=korg; t=1789044172;
+	bh=O1TCJNckcR1ZCasoAjnNvFB4xDvkSyyaa1YH7Joef6M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=yK+RulPacUHhpAYnJuoHh8GDv71b4aSmFvhUE6Y2XCOVOlh6lvucgxqC+aDsczaHa
+	 2kODvhRmbmlXG9KMIldiXzavjoo0BEyVI6isRfuHAlqsio/aYRU3RfAN+yRsY/2pn9
+	 hVyocgAVna/IJwYzvgPjMDrrO4vpteCO+E+4tuEo=
+Date: Thu, 10 Sep 2026 14:42:44 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Shashank Balaji <shashank.mahadasyam@sony.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Bastien Nocera <hadess@hadess.net>,
+	Matthias Kaehlcke <mka@chromium.org>,
+	Valentina Manea <valentina.manea.m@gmail.com>,
+	Shuah Khan <shuah@kernel.org>, Hongren Zheng <i@zenithal.me>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	linux-usb@vger.kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Daniel Palmer <daniel.palmer@sony.com>,
+	Rahul Bukte <rahul.bukte@sony.com>, Tim Bird <tim.bird@sony.com>,
+	linux-embedded@vger.kernel.org
+Subject: Re: [PATCH 2/4] usb: core: set mod_name in driver registration
+Message-ID: <2026091010-awkward-crouton-31e0@gregkh>
+References: <20260722-mod_name_usb-v1-0-96d781530f3f@sony.com>
+ <20260722-mod_name_usb-v1-2-96d781530f3f@sony.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260722-mod_name_usb-v1-2-96d781530f3f@sony.com>
 
-Dear Partner,
-We’re pleased to share a current snapshot of our available inventory for 
-immediate dispatch.
+On Wed, Jul 22, 2026 at 12:31:22PM +0900, Shashank Balaji wrote:
+> The driver core only creates the sysfs "module" symlink for a built-in
+> driver when its struct device_driver has mod_name set (see
+> module_add_driver()). This registration path left mod_name unset, so built-in
+> drivers using it had no such symlink.
+> 
+> Set mod_name to KBUILD_MODNAME during driver registration. Built-in
+> drivers now gain the symlink, while loadable modules are unaffected.
+> 
+> Co-developed-by: Rahul Bukte <rahul.bukte@sony.com>
+> Signed-off-by: Rahul Bukte <rahul.bukte@sony.com>
+> Signed-off-by: Shashank Balaji <shashank.mahadasyam@sony.com>
+> ---
+>  include/linux/usb.h       | 4 ++--
+>  drivers/usb/core/driver.c | 4 +++-
+>  2 files changed, 5 insertions(+), 3 deletions(-)
+> 
+> diff --git a/include/linux/usb.h b/include/linux/usb.h
+> index 2466183a45f0..6507c217bca7 100644
+> --- a/include/linux/usb.h
+> +++ b/include/linux/usb.h
+> @@ -1369,9 +1369,9 @@ extern void usb_deregister(struct usb_driver *);
+>  		       usb_deregister)
+>  
+>  #define usb_register_device_driver(new_udriver) \
+> -	__usb_register_device_driver(new_udriver, THIS_MODULE)
+> +	__usb_register_device_driver(new_udriver, THIS_MODULE, KBUILD_MODNAME)
 
-Memory Modules
-* 128GB 4DRx4 DDR4 PC4-2933Y REG ECC LRDIMM (Qty: 980) – $140.00
-* 32GB Dual Rank x4 DDR4-2933 CAS-21 (Qty: 1,500) – $1,140.00
-* 64GB Dual Rank x4 DDR4-2933 CAS-21 (Qty: 1,200) – $1,450.00
-* 32GB Dual Rank x4 DDR4-3200 CAS-22 (Qty: 1,500) – $1,150.00
-* 64GB Dual Rank x4 DDR4-3200 CAS-22 (Qty: 1,100) – $1,450.00
-* 32GB 2Rx4 PC4-2400T (Qty: 1,500) – $45.00
-* 32GB 2Rx4 PC4-3200AA (Qty: 1,500) – $45.00
-* 16GB 2Rx8 PC4-3200AA (Qty: 1,500) – $20.00
-NVIDIA H200 NVL 141GB — Qty: 10 — $26,500
-Nvidia PRO 6000 96G Server Edition - $10,000.00
-RTX 5090 Founders Edition 32GB (90 units) – $2,800 
+It seems odd to me that struct module doesn't contain the name of the
+module, and you have to pass this around all the time...
 
-Solid State Drives
-- SSD SATA 6G 3.84TB SFF (Qty: 450) – $120.00
-- SSD SAS 12G 960GB SFF (Qty: 470) – $300.00
-- SSD SAS 12G 1.92TB SFF (Qty: 560) – $350.00
-- SSD SAS 12G 3.84TB SFF (Qty: 560) – $150.00
-- SSD SATA 6G 1.92TB SFF (Qty: 450) – $100.00
-- Samsung 990 PRO 1TB NVME SSD QTY:410 - $150
+Anyway, all now queued up, thanks!
 
-- HP (HPE) P43331-B21 64GB DDR5-4800 RDIMM QTY: 390 - $1,750
-- DDR5 64GB 4800Mhz ECC RDimm 2Rx4 P43331-B21 (Qty: 500) – $1,750.00
-- DDR5 64GB 5600Mhz ECC RDimm 2Rx4 P64707-B21 (Qty: 500) – $1,750.00
-- DDR4 64GB 3200Mhz ECC RDimm 2Rx4 SK Hynix (Qty: 500) – $1,450.00
-- DDR5 64GB 4800Mhz ECC RDimm 2Rx4 Samsung (Qty: 500) – $1,450.00
-- DDR5 64GB 5600Mhz ECC RDimm 2Rx4 SK Hynix (Qty: 500) – $1,550.00
-- Intel Xeon Silver 4214R - QTY: 420 $350.00
-- Intel Xeon Gold 5220R - QTY: 410 - $450.00
-- Intel Xeon Platinum 8380: $450.00 QTY: 410
-- AMD EPYC 7542 - QTY: 490-- $380.00
-
-Storage & CPUs 
-Samsung PM9A3 2.5" SSD PCIe 4.0 7.68TB (115 units) – $650 
-7.68TB SAS SSD 2.5" 12G Server Drive (140 units) – $650 
-Intel Xeon Silver 4214R (120 units) – $300 
-Intel Xeon Gold 5220R (130 units) – $300 
-AMD EPYC 7542 (97 units) – $450 
-Intel Xeon Platinum 8380 (95 units) – $450
-HFS001TEM9X173N PVC10 NVMe SK Hynix 1 TB - $85 (500 unit)
-
-For quotes, availability, or inspection scheduling, please reach out 
-directly:
-sales@computergamingpc.com Call or WhatsApp: +1(774) 559-1248 | +1 (641)232-
-4364
-Thank you for your continued partnership.
-Ann Kamila
-Computer Gaming PC Trading
-2500 US-6, Iowa City, IA 52240, USA.
+greg k-h
