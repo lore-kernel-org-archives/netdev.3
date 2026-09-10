@@ -1,44 +1,56 @@
-Received: from m16.mail.126.com (m16.mail.126.com [220.197.31.7])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC69D3C0A18;
-	Thu, 10 Sep 2026 09:35:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B0FB3D8909;
+	Thu, 10 Sep 2026 09:37:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789032941; cv=none; b=f6ClgYMaps8XOhtzsDzaAamgJ5NoF+YtV5BGikFo1p2uwhBJ8GTEQnOXhenP/4mghrzWE5vvTxzYHVvmv9qI6/xiyXbxjHyZuasLz0cGd5wDQYEInu4b9Zl4lTFzqj92IrUz7w+pS223I9pjp2jf0fVeG76+k6bXoAybjz3nP/4=
+	t=1789033038; cv=none; b=h26rjW2l4AuX1gBcIB0ezqbgaP5/VrrgKhgG1cYbaZmj6NP7iDUkV8n4vPH6E5Hi1FBObcmetGAiYQiMyzeaOBGl08sBS0v8w14E/DARnhjXpgzf1C4CNNIIymgwhVXtA7so19GgsRfm7DJZTsfp5eeJ4WjDoy1Q2QRrrs8vnec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789032941; c=relaxed/simple;
-	bh=sj2RVM5/qDNCmGF9d4A259TOLFfKQW+GjDaivixoBc8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=tlopcwFvJdMneENjYY7P0wlr7nEsYvEeltFrAN5QxvBpc0rvQ5gaTHN8imfsLrfyLkAkENpMsytamASmSSVXD9uNW42B7FSzZpg1jz2AN3atlLTRRNyHJwWJviM4PW86dTCtWSp6E7eRqxpLFUh5EGeCetQWVHWoImnRlRlwWCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com; spf=pass smtp.mailfrom=126.com; dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b=p54wWvEU; arc=none smtp.client-ip=220.197.31.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=126.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=126.com
+	s=arc-20240116; t=1789033038; c=relaxed/simple;
+	bh=DKpcrq3Nylpvhh//ElNeHV0Opd2RZztiHaNMAK0hqHU=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=an2eRhPVPkIimnwXRD0iOuQbPYfVe9aOd0F5wfRq/deVWW49tU32ZUBRrN6H1Bnb+0a/fmpRt2eCqbuTC0hRC1HQHl63BKE5NNITHoEObviOiOpAWl54l9/N8ECKo22HGCcc1yXWg4bd3en0LRWukjj/sA8+6oL92VHqDs8rdJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=XtuDuCsz; arc=none smtp.client-ip=220.197.31.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=126.com header.i=@126.com header.b="p54wWvEU"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=126.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Gy
-	p362HRExMhdcXl/GqCxGqXMA9jysmN4m9GBjlUN6I=; b=p54wWvEUWKE2vCcrId
-	iUhaoc8UJPRtj/7Amt25awceYFYlKtMvsBwyqOOxekWjnKK85DBFIW1yA0rn8Rh/
-	ypQD6B0eiPsSuPtxb+e6jyagwCblUGZ0X6ftQnCEZn4yOjEuh+PIuuBr7wDzEkb3
-	Een2P5b+ZA5buwE7O4LYcEi1c=
-Received: from localhost.localdomain (unknown [])
-	by gzsmtp5 (Coremail) with SMTP id QCkvCgDHdmXCeaJqP05DHQ--.37279S2;
-	Thu, 10 Sep 2026 17:34:58 +0800 (CST)
-From: Linkui Xiao <xiaolinkui@126.com>
-To: dsahern@kernel.org,
-	idosch@nvidia.com,
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="XtuDuCsz"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=lD
+	zXZ6piB7j2cN4Fr0TwgWJ5tKy/80ymXysWPI+rShA=; b=XtuDuCszsJmOJcBzL9
+	YGeyAEPFHOf3H0/8OvUmuAqehEEOebxMPdOtY8E4MbKm+Q2d56GWWQ9nMf76IAD9
+	pKWGmBKRgKvaJzyK4f4NmdkOf/cEIDmpr2uj6iVUCoibFjHa/urcoifcckjKSe/h
+	poGYcPn9dDz78LB21sreilXnA=
+Received: from 4CV529F122.company.local (unknown [])
+	by gzsmtp1 (Coremail) with SMTP id PCgvCgBXQmrweaJqFDQnOg--.33175S2;
+	Thu, 10 Sep 2026 17:35:54 +0800 (CST)
+From: Ding Hui <dinghui1111@163.com>
+To: lorenzo.bianconi@oss.qualcomm.com
+Cc: alexandre.torgue@foss.st.com,
+	andrew+netdev@lunn.ch,
+	andrew@lunn.ch,
 	davem@davemloft.net,
+	dinghui1111@163.com,
+	dinghui@lixiang.com,
 	edumazet@google.com,
 	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org
-Cc: netdev@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
-	Linkui Xiao <xiaolinkui@kylinos.cn>
-Subject: [PATCH net] ipmr, ip6mr: annotate data-races in vif_seq_show()
-Date: Thu, 10 Sep 2026 17:34:52 +0800
-Message-Id: <20260910093452.2070079-1-xiaolinkui@126.com>
-X-Mailer: git-send-email 2.25.1
+	linux-stm32@st-md-mailman.stormreply.com,
+	liuxuanjun@lixiang.com,
+	maxime.chevallier@bootlin.com,
+	mcoquelin.stm32@gmail.com,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	xiasanbo@lixiang.com,
+	yangchen11@lixiang.com
+Subject: Re:Re: [PATCH net-next v2] net: stmmac: fix error path cleanup in DMA descriptor ring allocation
+Date: Thu, 10 Sep 2026 17:35:44 +0800
+Message-Id: <20260910093544.411975-1-dinghui1111@163.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <ap09hwoKJjqQWIrB@lore-desk>
+References: <ap09hwoKJjqQWIrB@lore-desk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -46,74 +58,123 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:QCkvCgDHdmXCeaJqP05DHQ--.37279S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7ur17KF4rZrykWw45Wr47twb_yoW5JF1fpF
-	Z7t397JwsrKrnrXFnrta18Zr18Xay7CF429rnF9r95KF1DJ39xWa4YkayaqFykAr48ta1Y
-	yFyqga47Aw18CaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07U73kNUUUUU=
-X-CM-SenderInfo: p0ld0z5lqn3xa6rslhhfrp/xtbBqALRqGqiecJubAAA3i
+X-CM-TRANSID:PCgvCgBXQmrweaJqFDQnOg--.33175S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxWF4rAFy5Gr4fWw4kZF4kCrg_yoWrJry8pr
+	48CayjyFyUtr13GwnxAr4UXa45J3yrtF4Ygw43Cw12vFnFkr9YqFyjyryjkry8Cr9ruF4S
+	g34DCFnxCF18JrDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pi-eOAUUUUU=
+X-CM-SenderInfo: pglqwx1xlriiqr6rljoofrz/xtbC0hvfDGqiefvSpwAA3l
 
-From: Linkui Xiao <xiaolinkui@kylinos.cn>
+Hi Lorenzo,
 
-ipmr_vif_seq_show() and ip6mr_vif_seq_show() read vif->bytes_in,
-vif->pkt_in, vif->bytes_out and vif->pkt_out with only rcu_read_lock()
-held: since commit b96ef16d2f83 ("ipmr: convert /proc handlers to
-rcu_read_lock()") both seq_start helpers are annotated __acquires(RCU)
-and no longer take mrt_lock.
+Thanks for your review comments.
 
-Those counters are updated from softirq context and the writers already
-use WRITE_ONCE(): ipmr_prepare_xmit() and ip_mr_forward() on the IPv4
-side, ip6mr_prepare_xmit() and ip6_mr_forward() on the IPv6 side. The
-other lockless readers use READ_ONCE() as well - ipmr_ioctl(),
-ipmr_compat_ioctl(), ipmr_fill_vif(), ip6mr_ioctl() and
-ip6mr_compat_ioctl().
+At 2026-09-06 18:16:39, "Lorenzo Bianconi" <lorenzo.bianconi@oss.qualcomm.com> wrote:
+>> From: Ding Hui <dinghui@lixiang.com>
+>
+>Hi Ding Hui,
+>
+>just a couple of nits inline.
+>
+>Regards,
+>Lorenzo
+>
+>[...]
+>
+>>  .../net/ethernet/stmicro/stmmac/stmmac_main.c | 59 ++++++++++++++++---
+>>  1 file changed, 50 insertions(+), 9 deletions(-)
+>> 
+>> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+>> index f2fc89176654..f0e06c011b8d 100644
+>> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+>> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+>> @@ -1728,7 +1728,7 @@ static void stmmac_free_tx_buffer(struct stmmac_priv *priv,
+>>  					 DMA_TO_DEVICE);
+>>  	}
+>>  
+>
+>Is it more appropriate to move the tx_q->tx_skbuff_dma check here from
+>dma_free_tx_skbufs()?
+>
 
-The two vif_seq_show() helpers are the only remaining bare readers, so
-KCSAN flags them and the compiler is free to tear or reload the values
-while the /proc/net/ip_mr_vif and /proc/net/ip6_mr_vif lines are being
-formatted. Annotate them like the other readers; these are plain
-statistics, no locking is needed.
+tx_skbuff_dma is a per-queue resource, and stmmac_free_tx_buffer()
+references it in multiple places across the function body. Moving the
+NULL check into stmmac_free_tx_buffer() would require repeating it on
+every call, introducing O(n) overhead proportional to dma_tx_size.
+So I put it at the entry of dma_free_tx_skbufs().
 
-Fixes: b96ef16d2f83 ("ipmr: convert /proc handlers to rcu_read_lock()")
-Assisted-by: Qwen:Qwen3.8-max
-Signed-off-by: Linkui Xiao <xiaolinkui@kylinos.cn>
----
- net/ipv4/ipmr.c  | 5 +++--
- net/ipv6/ip6mr.c | 5 +++--
- 2 files changed, 6 insertions(+), 4 deletions(-)
+>> -	if (tx_q->xdpf[i] &&
+>> +	if (tx_q->xdpf && tx_q->xdpf[i] &&
+>>  	    (tx_q->tx_skbuff_dma[i].buf_type == STMMAC_TXBUF_T_XDP_TX ||
+>>  	     tx_q->tx_skbuff_dma[i].buf_type == STMMAC_TXBUF_T_XDP_NDO)) {
+>>  		xdp_return_frame(tx_q->xdpf[i]);
+>> @@ -1738,7 +1738,7 @@ static void stmmac_free_tx_buffer(struct stmmac_priv *priv,
+>>  	if (tx_q->tx_skbuff_dma[i].buf_type == STMMAC_TXBUF_T_XSK_TX)
+>>  		tx_q->xsk_frames_done++;
+>>  
+>> -	if (tx_q->tx_skbuff[i] &&
+>> +	if (tx_q->tx_skbuff && tx_q->tx_skbuff[i] &&
+>>  	    tx_q->tx_skbuff_dma[i].buf_type == STMMAC_TXBUF_T_SKB) {
+>>  		dev_kfree_skb_any(tx_q->tx_skbuff[i]);
+>>  		tx_q->tx_skbuff[i] = NULL;
+>> @@ -1761,6 +1761,10 @@ static void dma_free_rx_skbufs(struct stmmac_priv *priv,
+>>  	struct stmmac_rx_queue *rx_q = &dma_conf->rx_queue[queue];
+>>  	int i;
+>>  
+>> +	/* buf_pool may not be allocated if alloc failed early */
+>> +	if (!rx_q->buf_pool)
+>> +		return;
+>> +
+>>  	for (i = 0; i < dma_conf->dma_rx_size; i++)
+>>  		stmmac_free_rx_buffer(priv, rx_q, i);
+>>  }
 
-diff --git a/net/ipv4/ipmr.c b/net/ipv4/ipmr.c
-index e5f2b1c6150d..36d1b0410a08 100644
---- a/net/ipv4/ipmr.c
-+++ b/net/ipv4/ipmr.c
-@@ -3178,8 +3178,9 @@ static int ipmr_vif_seq_show(struct seq_file *seq, void *v)
- 		seq_printf(seq,
- 			   "%2td %-10s %8ld %7ld  %8ld %7ld %05X %08X %08X\n",
- 			   vif - mrt->vif_table,
--			   name, vif->bytes_in, vif->pkt_in,
--			   vif->bytes_out, vif->pkt_out,
-+			   name,
-+			   READ_ONCE(vif->bytes_in), READ_ONCE(vif->pkt_in),
-+			   READ_ONCE(vif->bytes_out), READ_ONCE(vif->pkt_out),
- 			   vif->flags, vif->local, vif->remote);
- 	}
- 	return 0;
-diff --git a/net/ipv6/ip6mr.c b/net/ipv6/ip6mr.c
-index 3f2ed9b77deb..7a3c795ec68b 100644
---- a/net/ipv6/ip6mr.c
-+++ b/net/ipv6/ip6mr.c
-@@ -485,8 +485,9 @@ static int ip6mr_vif_seq_show(struct seq_file *seq, void *v)
- 		seq_printf(seq,
- 			   "%2td %-10s %8ld %7ld  %8ld %7ld %05X\n",
- 			   vif - mrt->vif_table,
--			   name, vif->bytes_in, vif->pkt_in,
--			   vif->bytes_out, vif->pkt_out,
-+			   name,
-+			   READ_ONCE(vif->bytes_in), READ_ONCE(vif->pkt_in),
-+			   READ_ONCE(vif->bytes_out), READ_ONCE(vif->pkt_out),
- 			   vif->flags);
- 	}
- 	return 0;
--- 
-2.25.1
+>> @@ -2272,15 +2284,19 @@ static int __alloc_dma_rx_desc_resources(struct stmmac_priv *priv,
+>>  	}
+>>  
+>>  	rx_q->buf_pool = kzalloc_objs(*rx_q->buf_pool, dma_conf->dma_rx_size);
+>> -	if (!rx_q->buf_pool)
+>> -		return -ENOMEM;
+>> +	if (!rx_q->buf_pool) {
+>> +		ret = -ENOMEM;
+>> +		goto err_destroy_pool;
+>> +	}
+>>  
+>>  	size = stmmac_get_rx_desc_size(priv) * dma_conf->dma_rx_size;
+>>  
+>>  	addr = dma_alloc_coherent(priv->device, size, &rx_q->dma_rx_phy,
+>>  				  GFP_KERNEL);
+>> -	if (!addr)
+>> -		return -ENOMEM;
+>> +	if (!addr) {
+>> +		ret = -ENOMEM;
+>> +		goto err_free_buf_pool;
+>> +	}
+>>  
+>>  	if (priv->extend_desc)
+>>  		rx_q->dma_erx = addr;
+>> @@ -2296,10 +2312,27 @@ static int __alloc_dma_rx_desc_resources(struct stmmac_priv *priv,
+>>  	ret = xdp_rxq_info_reg(&rx_q->xdp_rxq, priv->dev, queue, napi_id);
+>>  	if (ret) {
+>>  		netdev_err(priv->dev, "Failed to register xdp rxq info\n");
+>> -		return -EINVAL;
+>> +		goto err_free_dma;
+>>  	}
+>>  
+>>  	return 0;
+>> +
+>> +err_free_dma:
+>> +	if (priv->extend_desc)
+>> +		dma_free_coherent(priv->device, size, rx_q->dma_erx,
+>> +				  rx_q->dma_rx_phy);
+>> +	else
+>> +		dma_free_coherent(priv->device, size, rx_q->dma_rx,
+>> +				  rx_q->dma_rx_phy);
+>
+>I guess you can use addr here and remove the if/else block
+>
+Excellent suggestion, will use addr directly in v3.
+
+Thanks,
+Ding Hui
 
