@@ -1,191 +1,174 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9F2C5448BF;
-	Thu, 10 Sep 2026 17:43:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5AEE568FA1
+	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 17:44:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789062208; cv=none; b=clEiBcRFPeohO+yHZxuzrEXoOKz2bkPNM4jXX68G9omKWManZ918GctqCLCxyLNwjlSPVoP0R+D78Awz3rO+NhUjxU6+F0UGn8qTimaKJaLNE995R8HZEL72HQ/pWm35PTtnH8TiHjPpFBpySjohYZFJhyBjLsX/UOhgG+oS8NE=
+	t=1789062291; cv=none; b=f0BvGbHs0IDh+TAawdKI/3n9zdUCF3/8v0CMuDOyhVh3rTHP/txVe3/u1g+oHBzkKpwIpQVw3El1RYg+u1QwgjX3G707bnRqSssgtajppcCVZvoaee/Fyl5xJI8YBjwc8UUaz/fVfvrj59EiFEvbDhN4DIGnWB6jMMSi7HJjLDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789062208; c=relaxed/simple;
-	bh=2NkyM88ysK2/1+nEtSxMcx6Ajcda02sPASrIrjZLHEw=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=Sy1FWDdTyKamLbRS2fTYXzBQBRCG8FQE5m1rK0nzCjeyuNMEmgoVdfhmjM+a4nrnVgQEZ0pc/DvKKeOcVye2jczNYp5qleo7SZQgbfddG1HEv4ut2b9FUrtbUp2mSmM6ctmGI+RztWDO1BOepWuYR97cHTX9lj9YORIVipK9cR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=s4kzlA9z; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	s=arc-20240116; t=1789062291; c=relaxed/simple;
+	bh=hOwAM19ellXTuSTfVu3GiJAsTHtYyEpB1hz91S9UrOo=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=BlcERP6KyhHlyXUlxEC73bRANlmZ/Ef9CB5LYCQS5DDK84vV0PeOi1Twxh/+qGPip4sZyNnxTulYffUhhbvZAsB2SFhEjGH9o7W/jQpmkQ84SUqqxFRumERa1mI+QM8JlHnaddImnau1Qsl4M8onlrrCGyghOYyrx5WWjkI6UWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=G4+dGp39; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=KG85I3IZ; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="s4kzlA9z"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 94DEFA02B3;
-	Thu, 10 Sep 2026 19:43:08 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1789062197; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=N2jLRbdlPtNCfQqn4UIVQslnB8/tvN3bZyU9rPBE/A4=;
-	b=s4kzlA9zD145la6gKnyU5JFxS6rad2qVPoa9Fh/Oo7+cQ/i6qxJ1SltCe2xkD2kmMQWWfP
-	TIKm3wgIM5u8YjCQHLRX8k62rlp3XgU84l+dA/pE7JO637XjDqJhheeBu/zhQospkhhVW1
-	FwRW6PqkR6dVynGvxUVrGUfLLX+NBgi39ovhxDp/3EbdGuiqu2UWRox9JCJjPo9WcnCDhQ
-	uz6OAJlPdkwGK0n0GI7bgkV549BmOwdVhJAbwRzb90kSLM9U2ydFQCIXc3N4knmFTyBWU7
-	YfygUV7IiQa58pjdKQEZuolRFXf+adQSaETUo6X4FSekpBSL3q0oL4FeauBYEw==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="G4+dGp39";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="KG85I3IZ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1789062281;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=JT+A7W1MmDpVr6cMOdIJpFjVZmY1bGOG8YUIXDNF/Yo=;
+	b=G4+dGp39oWxRAvZopn5TpcHx1W06U15uUSfD2BSpjHSI7f37sUldNxbaISPRXjMFxf2Bgr
+	XYAIBvn9hhwFr8+US1J1SpdNmOPqxWWhf59NoFw0kHbwS/MynG32ihBeopUUFPej260lcT
+	ufJI1bl23a0v85sW5Nqk9P8IXaBQWuA=
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com
+ [209.85.222.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-657-E4xdXTKlO3ueh4QPMrTIjw-1; Thu, 10 Sep 2026 13:44:38 -0400
+X-MC-Unique: E4xdXTKlO3ueh4QPMrTIjw-1
+X-Mimecast-MFC-AGG-ID: E4xdXTKlO3ueh4QPMrTIjw_1789062278
+Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-9375d92d8cdso1365286685a.2
+        for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 10:44:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1789062278; x=1789667078; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:user-agent
+         :message-id:date:references:in-reply-to:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=JT+A7W1MmDpVr6cMOdIJpFjVZmY1bGOG8YUIXDNF/Yo=;
+        b=KG85I3IZNZ3vwavd7IFCxQ4KrhV5jqHBwHqn0BOcRrHaXlGr/23it85+P8Y+l1nlhV
+         3Dsej6ycLcV/CILOgERUrxdpsmfhmg4gUGMMJBg0P0d0l7EtXuHKNvtKdH9qjbI62Vtq
+         xngJrzVp2ZY4EvwBf9oyhZKF4aCp8H5QAivsncJVasz7B7Eq//CVDRTvU0ekteEhM6fN
+         iX5QXl7nNKOTYYGChjxdgv0/7NbhOW3KfjlRlJ60jKnbPwOh+QHVZvGvYO9OP3LOtMjl
+         7mdfiUiB1oGk4WpaMJUGTDIC8tzg5wzp7uFUWaWoV1E+qIu5nYRJCca448wALQQTsbT+
+         f/MQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789062278; x=1789667078;
+        h=content-transfer-encoding:content-type:mime-version:user-agent
+         :message-id:date:references:in-reply-to:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=JT+A7W1MmDpVr6cMOdIJpFjVZmY1bGOG8YUIXDNF/Yo=;
+        b=WNZVvsMEUvqWIaRKDUvqyZ1Wg28go2otejrKuyizvN8YNg+cRBdV6QrJRsD/l7iW/r
+         Np/NM1xYTmfb9AzGUPAIEaz9nlNulLLMrJw+LuX0kfbcUuggyMBQL0aR+0X6ekuzXenr
+         KZPXv71egoVtLMroaUI+MK3KUFTh7lNVePxvkTAGRVnAx9rn5EDbRqqEQS/epJxBDdy0
+         a5CdgtpYpIcgtV3mjX3oNZy5bAAN4+HzvsO2g8pnBoLEYcEX9rP1poBUIvy+pq99+60B
+         EGRxLdrwd61ZRITPP5WrSncMoPTE9igZj2Neeuv4GploNfDF6iwRfBIqtABoc2slHbIy
+         j97w==
+X-Forwarded-Encrypted: i=1; AKwUvByGAdHggV6fpMWrtX/RRSsWfyccLzKoI6Qk2iVKun9wSRNg0U9bfmri5GObTrSB/0eO4gQvGPs=@vger.kernel.org
+X-Gm-Message-State: AFuF++k7j/AQjqHB6dN0P7PqRSMLS6n5+PLJ2mMr/WlxVbLjW24VtoN/
+	YZfli/4P1yZNQ/L7uvhTvoIBXJd5QM9bRMST9MJv/X28t8mgDDOGm59NFuonYbaAbIIO1fGi2gd
+	DAt+Q2g+GWhQS+Osx46bReOB3X/6icAB+hz/bSCUpSRP+cRxJTfx6WfVyTA==
+X-Gm-Gg: AYBFou0nKOqGRMnI59W4ihgAeysv+W/eylFtZu04GpFdTdHQs5lRANflIVmJ7CholBX
+	KUemW7fXODfcmhPq2t0ZXQIsXPOq/8R4aUPk2w8MP+cmCUL5zQtdEGYyLv+V8V3r2WG5PDJnD7j
+	XuhunnGwWLCAk7yZLFGHxRt5KzRT1FJJIsc7YkzqtZHIfeViRIW8WpfaMnAtDp2XvswwfvaI08v
+	MfMQkztIOW1GcbFZaJTGHXbE//l7FWqqENmlUJvqfCArQu1A7MMmZOXdz6pdYx2kuir1kJcpaVT
+	EHGUtczL97SEZ7cmVKBRpdqv73ANq93V8kamLuIKn52TS6KsAZxbL9Y7KopXiuaRnGN2eUE1vAl
+	JDmaz0fmQ9remMwZXKVZ9sUJJWv5X
+X-Received: by 2002:a05:620a:f0b:b0:939:a1cc:f234 with SMTP id af79cd13be357-939a1ccf31fmr3238070185a.5.1789062277525;
+        Thu, 10 Sep 2026 10:44:37 -0700 (PDT)
+X-Received: by 2002:a05:620a:f0b:b0:939:a1cc:f234 with SMTP id af79cd13be357-939a1ccf31fmr3238063185a.5.1789062276933;
+        Thu, 10 Sep 2026 10:44:36 -0700 (PDT)
+Received: from aconole-thinkpadt14gen4.rmtusnh.csb ([216.212.25.12])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-939e80471a3sm34848885a.22.2026.09.10.10.44.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 10 Sep 2026 10:44:36 -0700 (PDT)
+From: Aaron Conole <aconole@redhat.com>
+To: netdev-bot+sashiko@kernel.org
+Cc: houminxi@gmail.com,  netdev@vger.kernel.org,  echaudro@redhat.com,
+  i.maximets@ovn.org,  davem@davemloft.net,  edumazet@google.com,
+  kuba@kernel.org,  pabeni@redhat.com,  horms@kernel.org,
+  shuah@kernel.org,  dev@openvswitch.org,  linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH net-next v3 3/4] selftests: openvswitch: add missing
+ docstrings in ovs-dpctl.py
+In-Reply-To: <178906092280.219967.16432524038911632507@kernel.org>
+	(netdev-bot's message of "Thu, 10 Sep 2026 17:22:02 +0000")
+References: <20260908171859.1967327-4-houminxi@gmail.com>
+	<178906092280.219967.16432524038911632507@kernel.org>
+Date: Thu, 10 Sep 2026 13:44:35 -0400
+Message-ID: <f7t33vhm264.fsf@aconole-thinkpadt14gen4.rmtusnh.csb>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Thu, 10 Sep 2026 19:43:08 +0200
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Russell King <linux@armlinux.org.uk>, Heiner Kallweit
- <hkallweit1@gmail.com>, =?UTF-8?Q?Alexis_Lothor=C3=A9?=
- <alexis.lothore@bootlin.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>, Emil Renner Berthing
- <kernel@esmil.dk>, Minda Chen <minda.chen@starfivetech.com>, Neil Armstrong
- <neil.armstrong@linaro.org>, Kevin Hilman <khilman@baylibre.com>, Jerome
- Brunet <jbrunet@baylibre.com>, Martin Blumenstingl
- <martin.blumenstingl@googlemail.com>, Jan Petrous <jan.petrous@oss.nxp.com>,
- Ovidiu Panait <ovidiu.panait.rb@renesas.com>, Jose.Abreu@synopsys.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- thomas.petazzoni@bootlin.com, linux-arm-kernel@lists.infradead.org,
- linux-stm32@st-md-mailman.stormreply.com, PKneuper@dspace.de, David Laight
- <david.laight.linux@gmail.com>
-Subject: Re: [PATCH net v2 2/6] net: stmmac: selftests: Validate EEE based on
- the actual LPI timer value
-In-Reply-To: <20260910151404.976753-3-maxime.chevallier@bootlin.com>
-References: <20260910151404.976753-1-maxime.chevallier@bootlin.com>
- <20260910151404.976753-3-maxime.chevallier@bootlin.com>
-Message-ID: <89e242e8ddc78db7531d17a8a8adb904@tipi-net.de>
-X-Sender: nb@tipi-net.de
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi Maxime,
+netdev-bot+sashiko@kernel.org writes:
 
-On 10.9.2026 17:13, Maxime Chevallier wrote:
-> The EEE selftest is a 2-step test :
->  - It validates that we enter in LPI mode with the
->    irq_tx_path_in_lpi_mode_n counter
->  - It then validates that we exit LPI when sending a frame, with the
->    irq_tx_path_exit_lpi_mode_n counter.
-> 
-> The current state of the test lacks 2 main things :
-> 
->  - We don't know exactly when was the previous frame sent (it's from 
-> the
->    previous selftest)
-> 
->  - The timeout is hardcoded, while the LPI is entered after a
->    user-configurable delay. On top of that, the timeout loop uses a
->    pre-decrement iterator (--retries) that actually only iterate nine
->    times, so 900ms while the default LPI value is 1 second.
-> 
-> Let's therefore make it more deterministic :
-> 
->  - Send a frame at the beginning of the test
->  - Wait for more than the lpi timer value, we timeout after about twice
->    the value,
->  - Then send another frame, and verify that we do go out of LPI, also
->    with a timeout.
-> 
-> Note that the test's goal isn't to validate the LPI timer value itself,
-> only that we enter/leave LPI mode.
-> 
-> Fixes: 091810dbded9 ("net: stmmac: Introduce selftests support")
-> Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-> ---
->  .../stmicro/stmmac/stmmac_selftests.c         | 39 +++++++++++++++----
->  1 file changed, 32 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c 
-> b/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
-> index 6503678b646e..a8280834185c 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c
-> @@ -462,7 +462,7 @@ static int stmmac_test_mmc(struct stmmac_priv 
-> *priv)
->  static int stmmac_test_eee(struct stmmac_priv *priv)
->  {
->  	struct stmmac_extra_stats *initial, *final;
-> -	int retries = 10;
-> +	unsigned long timeout, max_duration;
->  	int ret;
-> 
->  	if (!priv->dma_cap.eee || !priv->eee_active)
-> @@ -478,14 +478,21 @@ static int stmmac_test_eee(struct stmmac_priv 
-> *priv)
->  		goto out_free_initial;
->  	}
-> 
-> +	/* Snapshot stats, we want to count the in_lpi events. We may enter
-> +	 * LPI just after the packet was sent.
-> +	 */
->  	memcpy(initial, &priv->xstats, sizeof(*initial));
-> 
-> +	/* Send a frame, then wait to enter LPI */
->  	ret = stmmac_test_mac_loopback(priv);
->  	if (ret)
->  		goto out_free_final;
-> 
-> +	max_duration = usecs_to_jiffies(2 * priv->tx_lpi_timer);
-> +
->  	/* We have no traffic in the line so, sooner or later it will go LPI 
-> */
-> -	while (--retries) {
-> +	timeout = jiffies + max_duration;
-> +	while (!time_after(jiffies, timeout)) {
->  		memcpy(final, &priv->xstats, sizeof(*final));
-> 
->  		if (final->irq_tx_path_in_lpi_mode_n >
-> @@ -494,20 +501,38 @@ static int stmmac_test_eee(struct stmmac_priv 
-> *priv)
->  		msleep(100);
->  	}
-> 
-> -	if (!retries) {
-> +	memcpy(final, &priv->xstats, sizeof(*final));
-> +	if (final->irq_tx_path_in_lpi_mode_n <=
-> +	    initial->irq_tx_path_in_lpi_mode_n) {
->  		ret = -ETIMEDOUT;
->  		goto out_free_final;
->  	}
-> 
-> -	if (final->irq_tx_path_in_lpi_mode_n <=
-> -	    initial->irq_tx_path_in_lpi_mode_n) {
-> -		ret = -EINVAL;
-> +	/* Re-snapshot, as we want to measure exit_lpi events. We should be
-> +	 * in LPI right now.
-> +	 */
-> +	memcpy(initial, &priv->xstats, sizeof(*initial));
-> +
-> +	/* TX something so we go out of LPI */
-> +	ret = stmmac_test_mac_loopback(priv);
-> +	if (ret)
->  		goto out_free_final;
-> +
-> +	/* Wait for the exit LPI interrupt */
-> +	timeout = jiffies + max_duration;
-> +	while (!time_after(jiffies, timeout)) {
-> +		memcpy(final, &priv->xstats, sizeof(*final));
-> +
-> +		if (final->irq_tx_path_exit_lpi_mode_n >
-> +		    initial->irq_tx_path_exit_lpi_mode_n)
-> +			break;
-> +		msleep(100);
->  	}
-> 
-> +	memcpy(final, &priv->xstats, sizeof(*final));
->  	if (final->irq_tx_path_exit_lpi_mode_n <=
->  	    initial->irq_tx_path_exit_lpi_mode_n) {
-> -		ret = -EINVAL;
-> +		ret = -ETIMEDOUT;
->  		goto out_free_final;
->  	}
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider:
+>
+> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 0 =C2=B7 Low: 1
+>
+> - [Low] The docstring added to print_ovsdp_full()
+>   (tools/testing/selftests/net/openvswitch/ovs-dpctl.py line 2940)=E2=80=
+=A6
+>
+> --
+>
+> selftests: openvswitch: add missing docstrings in ovs-dpctl.py
+>
+> This adds one-line docstrings to the module, classes and methods in the
+> openvswitch selftest helper ovs-dpctl.py to silence pylint C0114, C0115
+> and C0116. No code behaviour is changed.
+>
+>> diff --git a/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
+>> b/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
+>> index 502e6eb4c4b4..dc88cb1b20c1 100644
+>> --- a/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
+>> +++ b/tools/testing/selftests/net/openvswitch/ovs-dpctl.py
+>
+> [ ... ]
+>
+>> @@ -2887,6 +2973,7 @@ class PsampleEvent(EventSocket):
+>>=20=20
+>>=20=20
+>>  def print_ovsdp_full(dp_lookup_rep, ifindex, ndb=3DNDB(), vpl=3DOvsVpor=
+t()):
+>> +    """Print full datapath state: stats, vports, and flows."""
+>>  	  dp_name =3D dp_lookup_rep.get_attr("OVS_DP_ATTR_NAME")
+>>  	  base_stats =3D dp_lookup_rep.get_attr("OVS_DP_ATTR_STATS")
+>>  	  megaflow_stats =3D dp_lookup_rep.get_attr("OVS_DP_ATTR_MEGAFLOW_STAT=
+S")
+>
+> [Severity: Low]
+> Does print_ovsdp_full() actually print flows?  The body only emits the
+> datapath name, the values from OVS_DP_ATTR_STATS,
+> OVS_DP_ATTR_MEGAFLOW_STATS, OVS_DP_ATTR_MASKS_CACHE_SIZE and
+> OVS_DP_ATTR_USER_FEATURES, then one line per vport:
+>
+>     print(f"  flows:{int(base_stats['flows'])}")
+>     ...
+>     # port print out
+>     for iface in ndb.interfaces:
+>         rep =3D vpl.info(iface.ifname, ifindex)
+>         if rep is not None:
+>             print(
+>                 f"  port {int(rep.get_attr('OVS_VPORT_ATTR_PORT_NO'))}: "
+>                 ...
+>
+> The only flow-related output is the flows:<n> counter that comes from
+> OVS_DP_ATTR_STATS, which is already covered by "stats".
+>
+> Flow enumeration lives in OvsFlow.dump(), and main() calls that only for
+> the dump subcommand, not on the show path that reaches
+> print_ovsdp_full().
+>
+> Would something like "Print datapath statistics and attached vports." be
+> a more accurate one-liner here?
 
-Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de
+I agree with this verbiage.
 
-Thanks,
-Nicolai
+> The commit message says "Each docstring describes the command or
+> attribute group the code actually implements", so this one looks like it
+> overstates the output.
+
