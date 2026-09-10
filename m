@@ -1,276 +1,124 @@
-Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1451C3DF01C
-	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 09:01:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 980AF3E025E
+	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 09:02:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789030902; cv=none; b=iuQ+lAO6C+FW8HAE9TsEAUbnQg5vfND9A4UvlG3MoM0PA2SIk8IWGKo208Vn8arHBkhT0UkwfylRH+3O/DHUrCg2XXPRfu7TuQ0Pa97gLZKew1MgbOOwN0ULl+QIl+5BfP+6M0gppmp898LQxRuz1jgh5xIsnoLGkBQFMVZbzIM=
+	t=1789030980; cv=none; b=E0yNyA9mMLHRVlEAlai4tFgkL2xGL1B153qCKtpQm6TPTE7bkewU8cnDRV4j9PFK4wju8zn0lS0fDN3Xm8BpQ7pjwvxRxfzaD9UTfpjS+7b+xJtvu4DsLPDBttRE424GxtXRn/E1Jm6CsmupGC8X5YgPHEHWIgaCt4NyyeYtHBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789030902; c=relaxed/simple;
-	bh=1qOiklvTtnsD2yXRLJknPEOXVu0hrGmFrv5D9jTxI/k=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qQPhnjpbPsX5YCB7FktSItLUTY82VT/AYockdY6LABMhohxeyQqn2/R0yxjyq7xUUlxERSJ7YpgrQJvFpKYdQBqzruuv1ezVNGxVoDV56nmzAS/GuGw8YUnV4ftYPg2AcXl6hUG7k68XSg5BhP9R/afSIepd34zZhKBdeUHsOmo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pmGCuqcZ; arc=none smtp.client-ip=74.125.225.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789030980; c=relaxed/simple;
+	bh=KVaKw3u2+eIjTPoDb96RuNMIKOqLXYqAnnu5/uHh7UU=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lDVpYzDg6bzzs+ppzP5EH/HjUmjo48N+IF89hqHVgP8lR7bLmrBNUD+mzQ7SF4gXd+nXdcjw39CwJYLgYiEziwRN/QEYxE4x7GPksURN0gYGYpVlfLB5RiYE8LbLzhoDxuMye0gRa87VwdrUkOMGV3dMXlcFswGtbcH4ssvsCBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=ae3G9CYS; arc=none smtp.client-ip=62.96.220.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pmGCuqcZ"
-Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-485b1d2874aso952235f8f.1
-        for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 02:01:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789030890; x=1789635690; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=AUQQGZZN7QEXDMbD59CT5uaYffxlADRJRdOW5f3RXTg=;
-        b=pmGCuqcZ0nWSppph6SOa1rQIP+D7hCXu28cJA+AEKVEeUNQ3qu4gmoVLPP4OLBfQlA
-         YJ7u6u3O2QDrZHmNQrKIhQiA7LfLHsd++/PIwRMyfQLCBH81qpvzB+jpW4XVr7hECqKm
-         xkwcKbVq+w6hu3xT1aSqZQdZJeULAyyenYRDSCQK943wJ6ZgDQxpNB2IhLQH3009CFLy
-         Ut/wkWyjUh+GpE8dn4CY3q8b+/K+jRPllCa85xUu0YX6588xDqeqh6Kgd5+VEXf9Qi/3
-         9L4OKMByR/HtMn0a/IXs0rfJtfD/vbkj9fh/B0Xhl9GWgozmwpO7f2wXyTTMdnSiP5QY
-         TGlg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789030890; x=1789635690;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=AUQQGZZN7QEXDMbD59CT5uaYffxlADRJRdOW5f3RXTg=;
-        b=N51j3NJMy0u9fIoifFUqfr3kH1yWA0MFefymv3amrlNU6UijU6T5Ht79+7nTeCfPtQ
-         i59gKGj9C7Ccfwn9XIQbetpeZkorxJuHt2B3oJ/Nn7YY0+xe3OvI4BxOWnVgm8+vu16S
-         hxuDQyaAigyvKGJ7rBUGdHyCFTzNpGd7YJN8/PdS71W7iYNelR1GOhiCegk5VgieYkPt
-         mujGI6hSve0tzPrOIZW6GOAJQZsQCJ37XN9XL4DBTUcRJxsQykFgR9OgU4KMSm4mj4M8
-         YGAY+ofrO8IxXzfltOizc14R5xgD/nQOCS1RD+tp7yvZavgudSWDUGBgtc26CvoZWBnU
-         VT2w==
-X-Forwarded-Encrypted: i=1; AKwUvBy08y32SQxsnDYCJEcyLLk88o/nip7HnUaD+k+zrt9x2JtDCOjsXyrJDgimAQ532iw252sefyk=@vger.kernel.org
-X-Gm-Message-State: AFuF++mZQ9u6MY33Y/tgET+8sJy8Pc8f5yLESVBrwG8TpvueFBsR/HjX
-	Q1FjRjCqFS2ZhSXgxi6vmk51AceSYE1x2LNCOn03Ap9CsBBlRu8L/Ttz
-X-Gm-Gg: AYBFou3ADDo/0Za4m++S896AP0T4sEsC24bcOXb4iDx2S6sMVHIwwdC1b72goFFb4/o
-	eJRVukENzj67xJT4ib8FrI3Owu/hcI1eqLGB7L6hMy0FZ1/PMpwsIsm4Mesd5KDpRHG+dZ8BC7g
-	vXI0oWX30yBQLSiAS1gzKf7sk1zqDiIFhIrq3HnQgGaOEQt8AO6rkNpOkbImxI2IoY5cb6G1e5X
-	cxIyyrbeeThyEETb8bU31j4w6qdHDNA8+zSC8uQapQ7PepGNNPXnoiJ1wdJmrrz5KaV6Gf7M/4w
-	6GltcSaJt3Dt/bwfdk838Nj9IAEs5dC6DIJWKmVcYHnUOjHNPEbGDcbNEU31/oM83UfXcGNoumJ
-	G+WJEvCIuNuv1tM/owctyOBhFR1TJJTx5TzTya7MsWvhBpH+vxm1mi5Lf2zswcvJ89ZVuTbD5JA
-	F2dIZxQbNE1PckUC6u8PxZg3gnxLZMCpM7hA0OJgNqig+7QpUEy5Btdc0YSlUd+mdKkf4E53C10
-	ab7mUiPvxuYnloyvmz8LHxzEwGih/SnhC2U
-X-Received: by 2002:a05:6000:26cf:b0:486:e727:a9cc with SMTP id ffacd0b85a97d-486e727a9e8mr112600f8f.6.1789030889052;
-        Thu, 10 Sep 2026 02:01:29 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4858ab73c2bsm48344103f8f.22.2026.09.10.02.01.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Sep 2026 02:01:28 -0700 (PDT)
-Date: Thu, 10 Sep 2026 10:01:22 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: netdev-bot+sashiko@kernel.org
-Cc: omermetekaya0@gmail.com, netdev@vger.kernel.org, oneukum@suse.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, linux-usb@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- syzbot+04cd90bb99c6ef81a65d@syzkaller.appspotmail.com
-Subject: Re: [PATCH net v4] usbnet: fix smp_processor_id() use in
- preemptible context
-Message-ID: <20260910100122.205d2608@pumpkin>
-In-Reply-To: <178899045475.219967.8804711454240391662@kernel.org>
-References: <20260907214727.692307-1-omermetekaya0@gmail.com>
-	<178899045475.219967.8804711454240391662@kernel.org>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="ae3G9CYS"
+Received: from localhost (localhost [127.0.0.1])
+	by mx1.secunet.com (Postfix) with ESMTP id 603DD20799;
+	Thu, 10 Sep 2026 11:02:55 +0200 (CEST)
+X-Virus-Scanned: by secunet
+Received: from mx1.secunet.com ([127.0.0.1])
+ by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id 3G1cOySSH0VH; Thu, 10 Sep 2026 11:02:54 +0200 (CEST)
+Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mx1.secunet.com (Postfix) with ESMTPS id B7F8D20764;
+	Thu, 10 Sep 2026 11:02:54 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com B7F8D20764
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
+	s=202301; t=1789030974;
+	bh=6S57wzuKxaYOC1XRe1jtTl1AyQ+73enbpK+LgwGysXU=;
+	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
+	b=ae3G9CYSiEOrZvY0mCv+L8O3qWFutdQQAQhPXNsROxTai9UhxeMM1mzLKOLVVtDFT
+	 sbiluq7YKV6PWnFvDzuru079AMuFlgV1v7u08HiCt8gG/9S0iq9Lhv7CFzNRAnYv/Y
+	 xak2SmjHvjvZ0iUetkKs9RTwVWMuXk8IKJ49ngZL6B4OYnqQ9zHGO5g6d1JmOfL1Zc
+	 OfrHkgysDv9X0QycxFcLGl0utiV+usauPQuQTjnOX4Slv7bLv7vVTcw2tqrzZ+sZ2L
+	 oJ2ZQsTZrJTIen+r4Q9FRbuBmvQ4c8+rybXXOFMwHgr/qFcJc2Sp3D7vNhSssDVTc9
+	 Shl200qjH5rJw==
+Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Thu, 10 Sep
+ 2026 11:02:53 +0200
+Received: (nullmailer pid 1412914 invoked by uid 1000);
+	Thu, 10 Sep 2026 09:02:53 -0000
+Date: Thu, 10 Sep 2026 11:02:53 +0200
+From: Steffen Klassert <steffen.klassert@secunet.com>
+To: Jakub Kicinski <kuba@kernel.org>
+CC: Paolo Abeni <pabeni@redhat.com>, David Miller <davem@davemloft.net>,
+	Herbert Xu <herbert@gondor.apana.org.au>, <netdev@vger.kernel.org>
+Subject: Re: Some clarifications on the upstreaming process
+Message-ID: <aqJyPdQ-XmfQsfIC@secunet.com>
+References: <20260907093020.2228346-1-steffen.klassert@secunet.com>
+ <aqD-_cBnIOMEpxVh@secunet.com>
+ <70d0048d-694b-4348-a6a5-de87a767b8fd@redhat.com>
+ <aqEzoAcZ0uP0Kz6k@secunet.com>
+ <83dd4915-e7a3-4c7e-91dd-adbea16450b3@redhat.com>
+ <aqE4eK2cqpvxqCQJ@secunet.com>
+ <20260909115753.75723ca1@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260909115753.75723ca1@kernel.org>
+X-ClientProxiedBy: EXCH-02.secunet.de (10.32.0.172) To EXCH-01.secunet.de
+ (10.32.0.171)
 
-On Wed, 09 Sep 2026 21:47:34 +0000
-netdev-bot+sashiko@kernel.org wrote:
+On Wed, Sep 09, 2026 at 11:57:53AM -0700, Jakub Kicinski wrote:
+> On Wed, 9 Sep 2026 12:44:08 +0200 Steffen Klassert wrote:
+> > On Wed, Sep 09, 2026 at 12:34:42PM +0200, Paolo Abeni wrote:
+> > > On 9/9/26 12:23 PM, Steffen Klassert wrote:  
+> > > > Are you willing to pull this as is, or should I resend the pull
+> > > > request with the incremental fix? The latter leads to problem
+> > > > 4.1 (patch does not apply to net).  
+> > > Due to time schedule I can't look into the series detail before tomorrow
+> > > my time. Since Jakub forwarded the AI report and left the series in PW I
+> > > assume he is looking for your replies to the AI comments - which is
+> > > pretty much would I'll do.  
+> > 
+> > It was a general question, not directly related to this pull request.
+> > 
+> > There were several issues reported, it will take a bit of time
+> > to review the AI comments.
+> 
+> Thanks, I'll toss this version form PW, please let us know if it's good
+> (enough) and we should pull as is after all.
 
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider:
->=20
-> Critical: 0 =C2=B7 High: 1 =C2=B7 Medium: 0 =C2=B7 Low: 0
->=20
-> - [High] usbnet: dropping
->   u64_stats_update_begin_irqsave()/u64_stats_update_end_irqrestore() in=
-=E2=80=A6
->=20
-> --
->=20
-> usbnet: fix smp_processor_id() use in preemptible context
->=20
-> This changes usbnet_skb_return() and tx_complete() to fetch the per-CPU
-> pcpu_sw_netstats pointer with get_cpu_ptr()/put_cpu_ptr() instead of a ba=
-re
-> this_cpu_ptr(), addressing a smp_processor_id()-in-preemptible-code report
-> from syzbot.  Along with the pointer change it also switches the seqcount
-> write helpers from the _irqsave variants to the plain ones.
->=20
-> Closes: https://syzkaller.appspot.com/bug?extid=3D04cd90bb99c6ef81a65d
->=20
-> > diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
-> > index a19ecf718f36a..3df72b0c6bcfc 100644
-> > --- a/drivers/net/usb/usbnet.c
-> > +++ b/drivers/net/usb/usbnet.c
-> > @@ -325,8 +325,7 @@ static void __usbnet_status_stop_force(struct usbne=
-t *dev)
-> >   */
-> >  void usbnet_skb_return(struct usbnet *dev, struct sk_buff *skb)
-> >  {
-> > -	struct pcpu_sw_netstats *stats64 =3D this_cpu_ptr(dev->net->tstats);
-> > -	unsigned long flags;
-> > +	struct pcpu_sw_netstats *stats64;
-> >  	int	status;
-> > =20
-> >  	if (test_bit(EVENT_RX_PAUSED, &dev->flags)) {
-> > @@ -338,10 +337,12 @@ void usbnet_skb_return(struct usbnet *dev, struct=
- sk_buff *skb)
-> >  	if (skb->protocol =3D=3D 0)
-> >  		skb->protocol =3D eth_type_trans(skb, dev->net);
-> > =20
-> > -	flags =3D u64_stats_update_begin_irqsave(&stats64->syncp);
-> > +	stats64 =3D get_cpu_ptr(dev->net->tstats);
-> > +	u64_stats_update_begin(&stats64->syncp);
-> >  	u64_stats_inc(&stats64->rx_packets);
-> >  	u64_stats_add(&stats64->rx_bytes, skb->len);
-> > -	u64_stats_update_end_irqrestore(&stats64->syncp, flags);
-> > +	u64_stats_update_end(&stats64->syncp);
-> > +	put_cpu_ptr(dev->net->tstats); =20
->=20
-> [Severity: High]
->=20
-> Does dropping the _irqsave seqcount helpers here re-open the problem that
-> commit 2695578b896a ("net: usbnet: fix potential deadlock on 32bit hosts")
-> closed?
+I'll sort it out for that pull request, but I can't do that for every PR.
 
-Looks that way.
-I think you need the following sequence:
-	local_irq_save(flags);
-	stats64 =3D this_cpu_ptr(...)
-	u64_stats_update_begin(...)
-	...
-	u64_stats_update_end(...);
-	local_irq_restore(flags);
+> In general, I'd of course like to allow more use of the meta sponsored
+> models but my time is limited, and to some extent so are the funds (to
+> some extent because I suspect the volume is negligible compared to
+> netdev).
 
-David
+I'd guess it is negligible. It is one review per subsystem patch,
+as it is now. It is just before the patch is applied. So I think
+the actual cost is to set the things up.
 
+> At the same time I worry that *shikos are making it easier for our
+> maintainers to ignore the fundamental changes which AI brings to SW
+> engineering. IOW I'd like to encourage more local use and
+> experimentation.
 
->=20
-> The reported splat is about the per-CPU pointer being taken outside of a
-> preempt-disabled section, which get_cpu_ptr() addresses.  But get_cpu_ptr=
-()
-> only disables preemption:
->=20
->   include/linux/percpu-defs.h
->   #define get_cpu_ptr(var)						\
->   ({									\
-> 	preempt_disable();						\
-> 	this_cpu_ptr(var);						\
->   })
->=20
-> so nothing masks interrupts across the seqcount write section anymore.
->=20
-> usbnet_skb_return() runs from usbnet_bh_work()->rx_process() (and from
-> usbnet_resume_rx() in BH-disabled process context), i.e. with hardirqs
-> enabled.  tx_complete() below is the urb->complete callback, and for host
-> controllers that do not set HCD_BH it is invoked straight from the
-> controller's hardirq handler:
->=20
->   drivers/usb/core/hcd.c:usb_hcd_giveback_urb() {
-> 	if (!hcd_giveback_urb_in_bh(hcd) && !is_root_hub(urb->dev)) {
-> 		__usb_hcd_giveback_urb(urb);
-> 		return;
-> 	}
->   }
->=20
->   drivers/usb/core/hcd.c:__usb_hcd_giveback_urb() {
-> 	kcov_remote_start_usb_softirq((u64)urb->dev->bus->busnum);
-> 	urb->complete(urb);
-> 	kcov_remote_stop_softirq();
->   }
->=20
-> There is no local_irq_save() around urb->complete().  In-tree only
-> ehci-hcd, xhci and dwc2 set HCD_BH, so on OHCI/UHCI/musb/max3421/sl811 and
-> friends tx_complete() is a hardirq-context writer.
->=20
-> Both sites write the same object, since struct pcpu_sw_netstats has a
-> single u64_stats_sync shared by the rx and tx counters:
->=20
->   include/linux/netdevice.h
->   struct pcpu_sw_netstats {
-> 	u64_stats_t		rx_packets;
-> 	u64_stats_t		rx_bytes;
-> 	u64_stats_t		tx_packets;
-> 	u64_stats_t		tx_bytes;
-> 	struct u64_stats_sync   syncp;
->   };
->=20
-> On 32-bit, where u64_stats_sync is a real seqcount, can the following
-> nesting happen on one CPU?
->=20
->   usbnet_bh_work() -> rx_process() -> usbnet_skb_return()
->      u64_stats_update_begin()          /* seq odd, rx_bytes half written =
-*/
->         <HCD hardirq>
->         usb_hcd_giveback_urb() -> __usb_hcd_giveback_urb() -> tx_complete=
-()
->            u64_stats_update_begin()    /* seq even again */
->            u64_stats_update_end()      /* seq odd */
->      u64_stats_update_end()            /* seq even */
->=20
-> A reader coming in via dev_get_tstats64()->dev_fetch_sw_netstats() (for
-> example "ip -s link show") would then see an even sequence in the middle =
-of
-> the outer update and accept a torn 64-bit counter without
-> u64_stats_fetch_retry() firing.  With lockdep on 32-bit, is this also the
-> "inconsistent {IN-HARDIRQ-W} -> {HARDIRQ-ON-W}" report that 2695578b896a
-> removed?
->=20
-> This is the constraint documented in include/linux/u64_stats_sync.h:
->=20
->    * 3) Write side must use the _irqsave() variant if other writers, or a=
- reader,
->    *    can be invoked from an IRQ context. On 64bit systems this variant=
- does not
->    *    disable interrupts.
->=20
-> Since the _irqsave variant compiles away on 64-bit, would it work to keep
-> it and only change the pointer acquisition?
->=20
->   stats64 =3D get_cpu_ptr(dev->net->tstats);
->   flags =3D u64_stats_update_begin_irqsave(&stats64->syncp);
->   u64_stats_inc(&stats64->rx_packets);
->   u64_stats_add(&stats64->rx_bytes, skb->len);
->   u64_stats_update_end_irqrestore(&stats64->syncp, flags);
->   put_cpu_ptr(dev->net->tstats);
->=20
-> The changelog only mentions the get_cpu_ptr()/put_cpu_ptr() conversion and
-> says nothing about dropping the IRQ-safe helpers; could that be spelled o=
-ut
-> if the removal is intentional?
->=20
-> > =20
-> >  	netif_dbg(dev, rx_status, dev->net, "< rx, len %zu, type 0x%x\n",
-> >  		  skb->len + sizeof(struct ethhdr), skb->protocol);
-> > @@ -1298,13 +1299,14 @@ static void tx_complete(struct urb *urb)
-> >  	struct usbnet		*dev =3D entry->dev;
-> > =20
-> >  	if (urb->status =3D=3D 0) {
-> > -		struct pcpu_sw_netstats *stats64 =3D this_cpu_ptr(dev->net->tstats);
-> > -		unsigned long flags;
-> > +		struct pcpu_sw_netstats *stats64;
-> > =20
-> > -		flags =3D u64_stats_update_begin_irqsave(&stats64->syncp);
-> > +		stats64 =3D get_cpu_ptr(dev->net->tstats);
-> > +		u64_stats_update_begin(&stats64->syncp);
-> >  		u64_stats_add(&stats64->tx_packets, entry->packets);
-> >  		u64_stats_add(&stats64->tx_bytes, entry->length);
-> > -		u64_stats_update_end_irqrestore(&stats64->syncp, flags);
-> > +		u64_stats_update_end(&stats64->syncp);
-> > +		put_cpu_ptr(dev->net->tstats);
-> >  	} else { =20
->=20
-> [ ... ]
->=20
+We do local use and experimentation and yes, we could probably
+do more. But that's a process and I have only limited influence
+on that.
 
+But anyway, this does not solve the root problem that patches
+get their final review after they are applied to git (as
+mentioned in the other mail in this thread).
+
+> Sorry for not answering your actual questions. TBH I don't think we
+> have any real answers for most of them.
+
+Unfortunately we have to find an answer for these questions.
+My time is limited as well, that's why I came up with that.
+So I hope we find a solution before I have to raise the
+white flag ;)
