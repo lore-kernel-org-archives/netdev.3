@@ -1,202 +1,170 @@
-Received: from mx0a-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 343972AE78;
-	Thu, 10 Sep 2026 09:04:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9B3238DC71
+	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 09:07:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789031045; cv=none; b=GAKd1PBXdeIUB+nPrkVlN0uqBBePCS+VV1rJIfu6VGtkEkqvYkG42HWjJluQe5WDDBZpUQ41NhoJGMidoK+lZduu3/hFeS7MGxzwV2c3q2p4j8uJMLCMERhK13vwTz+i/PePZz6fB9fh8fqR/dFqq6JKtoJWpxmZi8cC9hxcCfI=
+	t=1789031223; cv=none; b=T9N8F57ohEfCEnQxfLYtlOZOF9jnrdstqOspGSgyHH7UqGnRrnCLVvsWq+sA+h1Zmwbhu04RUtwyN18DhxBxAySjEI8PtVpE3vlILvEhX4o87LzMp0KnkJvnjpYj8LunFWaGZpMHtBwPOODJrVNb1PVXTGNMHo5XGN7ckX/tKtg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789031045; c=relaxed/simple;
-	bh=dTFDxdfNVHzX5ll4ow+62nY5L2LVtLUyxLqlUqDgwH4=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kH0IXWWJZC4g9kTLtnO1+ONHUDQaP1gAL9Cje/4t7IjPaKt0r1uxsmyNyUppaoxOcjjfUfZx+xVjigm5vBggArIILNfyJxuHi/WAe4DP1/XixrbWQcvWseJpWPqaek2Q6L3RJV97pKnFuVCoTncDnL7fV+Namq+KvQ9iEIpIC4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=YTJ14IFp; arc=none smtp.client-ip=67.231.148.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	s=arc-20240116; t=1789031223; c=relaxed/simple;
+	bh=98ptv6rfuwvhydBME95fdFOyv6p1Cs4i6w7lfirkLa0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tgRrGVfz+MTS/Rrc9OEyWvodqFVV/C/VeK9XDMQ1IjTsZF5HKQugOwo3otca4Aukx53BSO5D9QF/2hejP4NbOZf2BHP4jjRUZuwc5ve4oM+6Hq537xN5JkJAK4zINZvuabzf2WKzG/XYk3XSm5OsxFoPR+sYly+DgnUSQB1H7Rc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NA0aWsjd; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=l95Q5+Qx; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="YTJ14IFp"
-Received: from pps.filterd (m0431384.ppops.net [127.0.0.1])
-	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68A8pW87654210;
-	Thu, 10 Sep 2026 02:03:55 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=x
-	edCww0cRyP5pC6TEBEHK15XlMCRRo5Jq3Sh+1cAtSI=; b=YTJ14IFpx4/M7zbNg
-	xqA6rbUPZ7GpnF0PHCcLcaQNbh+DtlcH7xDwZtL6TSILSQiWugC3+PfwrFLSP1a9
-	xxbco3PK0zPeor6XlQhZY3TwdgQtsv2YP00Do2JTvq4uC18hbRKJKGAYSekGNKZ+
-	utL/cr54yE9TepDQNT9LzxWP7ID2M7T1UMDpRKnP+Vz256sKiGowg8PZdhDrBYOJ
-	2Ol/7VSz3ByZo9pi5fg3zIw8LnVwxthsANTmPxb9GYlYNyY2Ng7uWhxdn+xGby9k
-	t2xwAmGWNKPqQVLrfeULhy6HHjvnjtuOiG+nETB045VNbszU3tI5it2lyItn4glJ
-	N9hfw==
-Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
-	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4gkcxntrcu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 10 Sep 2026 02:03:54 -0700 (PDT)
-Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
- DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Thu, 10 Sep 2026 02:03:53 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
- (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Thu, 10 Sep 2026 02:03:53 -0700
-Received: from rkannoth-OptiPlex-7090 (unknown [10.28.36.165])
-	by maili.marvell.com (Postfix) with ESMTP id DF4653F704E;
-	Thu, 10 Sep 2026 02:03:49 -0700 (PDT)
-Date: Thu, 10 Sep 2026 14:33:44 +0530
-From: Ratheesh Kannoth <rkannoth@marvell.com>
-To: <netdev-bot+sashiko@kernel.org>
-CC: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-        <kuba@kernel.org>, <pabeni@redhat.com>, <sgoutham@marvell.com>,
-        <hkelam@marvell.com>
-Subject: Re: [PATCH v3 net-next] octeontx2-pf: report port connector type in
- ethtool link ksettings
-Message-ID: <aqJycF8VS6268u7o@rkannoth-OptiPlex-7090>
-References: <20260909040621.397255-1-rkannoth@marvell.com>
- <178901476356.219967.4043623609208931989@kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NA0aWsjd";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="l95Q5+Qx"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1789031220;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mtDa2p+R7+DpjSivG9cDQd2WySu2bvarovpKx6zwgkM=;
+	b=NA0aWsjdP6j9qxtcq101tWxzcKUEtNgqGxhOsAfnXdlccTZigh+/3PACpQFF0I2afAdwqS
+	mROV3b6otB8d4smLkxPB1+7lIHmI3J2K6zH9kfJjK0lR6nVuin636oTcdGOY5389VytCfk
+	WDENmCU3V7xjHer4BJ3dK83Fljlr9lY=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-473-yYhLiBpkMteRdZFIzsHzSA-1; Thu, 10 Sep 2026 05:06:59 -0400
+X-MC-Unique: yYhLiBpkMteRdZFIzsHzSA-1
+X-Mimecast-MFC-AGG-ID: yYhLiBpkMteRdZFIzsHzSA_1789031218
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-49cced8309bso65337585e9.3
+        for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 02:06:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1789031218; x=1789636018; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=mtDa2p+R7+DpjSivG9cDQd2WySu2bvarovpKx6zwgkM=;
+        b=l95Q5+QxVO4YVlbKSo7HqBdyEHCz4lO1JEqDSHA/uS87UsN4mnJxSAGlubgobHAQ09
+         c93tyN0Hj/jFpYOOvYNDowpVHJc2ep4R3Bs4BzelnITYdSMAEd8BQFvouzzVb3+YimH0
+         g5YUifdNYzx3M7G/H2otQAbBE0wBdEz7R82wQ6g5H6d70/cyMJKqg5m+LxYneiVUCYgF
+         wBXdoQUlZQomRXeQFchCILWr91I1I0igzwnDzALPAGCA7JFVSgGd2A7Z+b95nbeW5vOP
+         KFU15VKQTGhrQQuYkCbjcrsFMxNPt56VBnfiKpesZhoztBEA6g7oF6VHTBDZTJsvfN5K
+         u8lQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789031218; x=1789636018;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=mtDa2p+R7+DpjSivG9cDQd2WySu2bvarovpKx6zwgkM=;
+        b=bfQegHIjzMiLxfGET0WeUOEQSF+Yn23tmVW1pyz2yoTcX8gOq4jwQ+7DqLnsZq6u1c
+         m+oyzycG807Go/GSD1gtuqJQZ0wePV1T8kBgz/GsAsMnsBwAizi/1qlF7Tre42Nt0ZE6
+         tPd/fNMj5Tl4RhKjfJyr893X8F/v67K7tqa/OJajfK9u8zsHS5QW2JYLqnqnRR1hCAu5
+         LJT5o7M/oUjWLvjX7cnnpQO4sOg8TCqOsy5qQCsGHUA+LHCIXT9I2lKVTWFe56LmjWZr
+         cVakOsuxzJvXiokO+oEtfFiTG3xx6GmGv4zFFcH2vTwSLep5grS1gKolTT4IHdLZLtPl
+         beFA==
+X-Forwarded-Encrypted: i=1; AKwUvBxr4jwCoxiZDLAUfwd4o3Z2YMLYSuPIUtxd2H1YTObh89hidoqF8EU2U3c/T5AIozq1sAJfTpk=@vger.kernel.org
+X-Gm-Message-State: AFuF++kQ1Pcjsd0ifM2n44suQqPt51Oo+VqT3phNBJ3UFUHnT2G/6sAO
+	zC6KlJ6n/i3sWEPUVmFFTJmBO3g3JvG8tbmGGUoM3dE4XhKRhmNvMlxOGMfShO5IEP6MiIi3bxV
+	E0izwTORfwTyICbTtrAABDCCELYGfb9/xwc5lh1+vbAl8oqVY3GFR1u0CjQ==
+X-Gm-Gg: AYBFou2GzE8J0yKIr0EN+w82Ad7AfB3baYVPmE1B3HzZzLtVQP4FAhEQ0alSIQf4VbE
+	6MfYFOLC0vW2HW1uyCLoRDiQLO6hR1OmIMwzDIfgck8seLMet204gAS3fU3LD843FZrdmyk7xxK
+	j4jYYKj2UwtMiXLRKaR2zT1BhsyOTGJrkXI5RaODZSdODQY4l8N3Uzd+OickK0xlr+VEw8+qBqk
+	alheX8EeL4y+pYd/aAAYMFPftHBEiN7wSuoVr8vxvEaJkivydLZ7jYtfOk1vKtTsWYN2DuxXQK6
+	RNHjY+xKFIj6vJzg121d+Szna8Rarp1rGN+OBptQ3kmMDeOKbXFt8jpPX2Yv+Ov+8CZr3iLyLAj
+	qhYMp81Ohn5SAztR4T6aK4YSx+2WLmTleIw0xxC2yuF4lGSRepYKrNgJo30jMBZunjkvFuYoSZQ
+	==
+X-Received: by 2002:a05:6000:430b:b0:485:adb5:2075 with SMTP id ffacd0b85a97d-485adb52e38mr7977144f8f.51.1789031217906;
+        Thu, 10 Sep 2026 02:06:57 -0700 (PDT)
+X-Received: by 2002:a05:6000:430b:b0:485:adb5:2075 with SMTP id ffacd0b85a97d-485adb52e38mr7977080f8f.51.1789031217419;
+        Thu, 10 Sep 2026 02:06:57 -0700 (PDT)
+Received: from [192.168.188.218] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-485885bfdf6sm49916954f8f.34.2026.09.10.02.06.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 10 Sep 2026 02:06:54 -0700 (PDT)
+Message-ID: <2e89ce5a-3d7c-42fd-af82-899f6bc8a64a@redhat.com>
+Date: Thu, 10 Sep 2026 11:06:51 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <178901476356.219967.4043623609208931989@kernel.org>
-X-Authority-Analysis: v=2.4 cv=K923jCWI c=1 sm=1 tr=0 ts=6aa2727b cx=c_pps
- a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=l0iWHRpgs5sLHlkKQ1IR:22 a=TtqV-g6YmW1Jfm2GSLaY:22 a=9R54UkLUAAAA:8
- a=M5GUcnROAAAA:8 a=VwQbUJbxAAAA:8 a=xn5eHuDypWZXWY9MClUA:9 a=3ZKOabzyN94A:10
- a=QEXdDO2ut3YA:10 a=YTcpBFlVQWkNscrzJ_Dz:22 a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-ORIG-GUID: OqRg_7O-GWcSOwKiSf5iTq_iHVjxI-vx
-X-Proofpoint-GUID: OqRg_7O-GWcSOwKiSf5iTq_iHVjxI-vx
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTEwMDEwMSBTYWx0ZWRfX/bW+pMWbw3AG
- eW1NUwl7w9bppAMKlSV37BaY2eN3a0lcr4Jsy223d5S227C7zq4OwBEubjV5vtks7uezr4KYctG
- YwrzfBqiGamxp49X4JFYBlRhHdkT5GE=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTEwMDEwMSBTYWx0ZWRfX6WFFeSTMb3rd
- GhZ8Bm4PZLaUpNYOjSrHrui2i8t8zs6rh4885LsrPQa2GGgayUVF8I8tyWuKp6DkQksW311/lBB
- AMJt5gKdoZjMR52OquDWK14QYKAIHkwgQQujv4gvBNHSB/Jno5xAAz7jeqGb1W8D84hUqq8cIQi
- a1rPUsdzpv8SPxs2X5fawHoa0EvsKXPQOV4p3JhS5x2PDUsVRq6AUIyE4jNnue043J8CDU6GeV7
- fhFk0W+6zKUQes7HAFutr/L8brjaQcFGxrSQfBKj6usqI6GaTFxXqX+ZSESSzvHNEljzwFXbKFR
- 2P2o0GQkOo9UgFkCuLgN7+oeaGSRrfjh+i2zX6qpL04Q4GL8o0HrmiZivaORmsHcTgne6BhE1MP
- YxRg6CIkAbJQqGFXVrmNd2cYstTFckL5FyfSPaXsDjoVqb9QY8HzHppSnJWZ85TzaRQkCwhIcqB
- qc8lF687Dz+gS4YJFVA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-10_03,2026-09-09_02,2025-10-01_01
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v6 0/5] net: pse-pd: decouple controller lookup
+ from MDIO probe
+To: Carlo Szelinsky <github@szelinsky.de>,
+ Oleksij Rempel <o.rempel@pengutronix.de>,
+ Kory Maincent <kory.maincent@bootlin.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+ Russell King <linux@armlinux.org.uk>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>
+Cc: Corey Leavitt <corey@leavitt.info>,
+ Jonas Jelonek <jelonek.jonas@gmail.com>, Simon Horman <horms@kernel.org>,
+ Aleksander Jan Bajkowski <olek2@wp.pl>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260906153102.959217-1-github@szelinsky.de>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20260906153102.959217-1-github@szelinsky.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On 2026-09-10 at 10:02:43, netdev-bot+sashiko@kernel.org (netdev-bot+sashiko@kernel.org) wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue(s) to consider:
->
-> Critical: 0 · High: 0 · Medium: 1 · Low: 0
->
-> - [Medium] otx2_get_link_ksettings()
->   (drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c:1236)…
-FW is setting it properly.
+On 9/6/26 5:30 PM, Carlo Szelinsky wrote:
+> This is v6 of Corey's series [1]. It takes the PSE controller lookup out
+> of the MDIO probe path, so a modular PSE driver no longer makes the
+> PHY/DSA probe spin on -EPROBE_DEFER until the PSE module loads.
+> 
+> Patches 1-3 are the same three notifier patches as v4 [4], unchanged,
+> with Jonas's Tested-by. Patches 4 and 5 fix two problems the v4 review
+> surfaced; v6 additionally fixes a build regression in v5 [7]'s patch 4.
+> 
+> Patch 4: Aleksander reported [5] that v4 deadlocks on probe for an MDIO
+> bus registered from ndo_init (lantiq_etop, sni_ave, netsec): those
+> already hold rtnl via register_netdevice(), and v4's phy attach took rtnl
+> again underneath. Patch 4 swaps that rtnl for a dedicated mutex, so the
+> register path no longer recurses. The ethtool PSE paths take the same
+> mutex, so the use-after-free that rtnl used to close stays closed. The
+> mutex lives in pse_core rather than phylib: net/ethtool is always built
+> into vmlinux but PHYLIB is tristate, so with CONFIG_PHYLIB=m or =n a
+> phylib export is unresolved (v5 failed to link there [8]); PSE_CONTROLLER
+> is bool, so pse_core is always reachable.
+> 
+> Patch 5: Paolo's review [6] pointed out that patch 3 defers the
+> pse_control_put() to phy_device_release(). A phy that is device_del()'d
+> but still pinned (an attached netdev) is off the mdio_bus_type klist, so
+> the PSE_UNREGISTERED notifier walk never clears its phydev->psec, and the
+> deferred put later touches a pcdev->pi[] the controller has already
+> freed. Patch 5 puts phydev->psec back in phy_device_remove(), which the
+> mutex from patch 4 now makes safe (the rtnl recursion that motivated the
+> deferral is gone), so the detach is synchronous and cannot outlive the
+> controller.
+> 
+> How it works: pse_core gets a notifier chain (REGISTERED / UNREGISTERED).
+> The phy layer subscribes, owns phydev->psec, and attaches the PSE handle
+> when the controller shows up instead of during probe. fwnode_mdio loses
+> its PSE awareness, so no -EPROBE_DEFER leaves it and the probe-retry loop
+> is gone.
+> 
+> Tested on a Realtek rtl93xx PoE switch with two HS104 PSE controllers on
+> i2c:
+> 
+>  - clean boot, no probe-retry loop, no watchdog reset
+>  - 10G SFP+ port: module hotplug works, no deadlock
+>  - ethtool --set-pse enable/disable cuts and restores power to a PD
+>  - i2c unbind -> rmmod -> modprobe: PSE detaches on unbind and re-attaches
+>    on reload with power restored, no reboot. No lockdep splats.
+> 
+> Jonas confirmed the RTL8214FC deadlock he reported is gone. Aleksander
+> confirmed the lantiq_etop probe deadlock is gone at boot.
+> 
+> Tested-by: Carlo Szelinsky <github@szelinsky.de>
+A bunch of 'high prio' sashiko reported issues are actually fixed by
+patch 5/5, so IMHO not very relevant. Still I think there are a few
+points to act upon.
 
->
-> --
->
-> octeontx2-pf: report port connector type in ethtool link ksettings
->
-> otx2_get_link_ksettings() now reads the connector type out of the CGX
-> firmware shared data (struct cgx_lmac_fwdata_s.port), masks the low eight
-> bits, checks the result against a list of ethtool PORT_* values and stores
-> it into cmd->base.port.  Unrecognized values become PORT_OTHER.
->
-> > diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
-> > index 9bee1b91eeaa..a05dee0085a3 100644
-> > --- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
-> > +++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
->
-> [ ... ]
->
-> > @@ -1231,6 +1232,23 @@ static int otx2_get_link_ksettings(struct net_device *netdev,
-> >  				OTX2_MODE_SUPPORTED, cmd);
-> >  	otx2_get_fec_info(rsp->fwdata.supported_fec,
-> >  			  OTX2_MODE_SUPPORTED, cmd);
-> > +
-> > +	port = FIELD_GET(GENMASK(7, 0), rsp->fwdata.port);
-> > +	switch (port) {
-> > +	case PORT_TP:
-> > +	case PORT_AUI:
-> > +	case PORT_MII:
-> > +	case PORT_FIBRE:
-> > +	case PORT_BNC:
-> > +	case PORT_DA:
-> > +	case PORT_NONE:
-> > +		cmd->base.port = port;
-> > +		break;
-> > +	default:
-> > +		cmd->base.port = PORT_OTHER;
-> > +		break;
-> > +	}
->
-> [Severity: Medium]
-> Can this report a wrong connector type when firmware never populated the
-> field?
->
-> PORT_TP is 0x00 in include/uapi/linux/ethtool.h, and the ethtool core
-> zero-fills the settings before calling into the driver:
->
-> net/ethtool/ioctl.c:netif_get_link_ksettings() {
-> 	memset(link_ksettings, 0, sizeof(*link_ksettings));
-> 	return dev->ethtool_ops->get_link_ksettings(dev, link_ksettings);
-> }
->
-> So a zero firmware word takes the "case PORT_TP:" arm rather than the
-> default PORT_OTHER arm, and ethtool prints "Port: Twisted Pair" on a
-> fibre, DAC or backplane board.
->
-> Is a zero word possible here?  The member was carved out of the previously
-> reserved (zero-filled) tail of struct cgx_lmac_fwdata_s by commit
-> 49f02e6877d1b, which shrank LMAC_FWDATA_RESERVED_MEM from 1021 to 1018:
->
-> drivers/net/ethernet/marvell/octeontx2/af/mbox.h:
-> 	u64 mgmt_port:1;
-> 	u64 advertised_an:1;
-> 	u64 port;
-> #define LMAC_FWDATA_RESERVED_MEM 1018
-> 	u64 reserved[LMAC_FWDATA_RESERVED_MEM];
->
-> RVU_FWDATA_VERSION was not bumped at the same time, and
-> is_rvu_fwdata_valid() in af/rvu.h only compares header_magic and version,
-> so firmware images that predate the field still pass the ABI gate and hand
-> back zeros for this word.
->
-> Would it make sense to also consult rw_valid from the same struct?  It is
-> the per-LMAC validity flag, and grep shows it is currently only referenced
-> in mbox.h and rvu_debugfs.c, never by this new consumer.  Note also that
-> the debugfs dumper added alongside the field prints rw_valid, lmac_type,
-> portm_idx and mgmt_port, but not port.
->
-> Separately, does the masking defeat part of the validation?  FIELD_GET()
-> with GENMASK(7, 0) drops bits 63:8 before the switch runs, so firmware
-> values such as 0x100 or 0x103 are published as PORT_TP and PORT_FIBRE
-> respectively.  mbox.h documents no bitfield layout, mask or reserved-bit
-> contract for this bare u64, so it isn't clear the upper bits can be
-> discarded rather than treated as "not a valid connector code".
->
-> Related to that, the commit message says:
->
->   "Extract only the low 8 bits of the firmware field and validate the
->    value against the standard ethtool PORT_* definitions before
->    publishing it to userspace."
->
-> Given that neither the unpopulated (zero) case nor invalid values living in
-> bits 63:8 can be rejected by this check, could the description be made
-> more precise about what is actually validated?
->
-> One more question on the encoding itself: is there an in-tree statement
-> that fwdata.port uses ethtool PORT_* numbering?  The only other firmware
-> description of a "port" value is struct cgx_lnk_sts.port:8 with
-> RESP_LINKSTAT_PORT in af/cgx_fw_if.h, and that macro is defined but never
-> decoded by cgx.c, so the mapping to PORT_TP/PORT_FIBRE/... appears
-> undocumented here.
->
-> --
-> Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260909040621.397255-1-rkannoth%40marvell.com
+@Carlo: please have a look at commit
+c82ff94592fb68f529afe63ca7f5ddb7dae4ba83: you are supposed to reply to
+LLM's comments.
+
+/P
+
