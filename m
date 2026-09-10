@@ -1,139 +1,265 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C868A313540
-	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 08:12:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F7D339656D;
+	Thu, 10 Sep 2026 08:15:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789027942; cv=none; b=R+7snPazu/nMY0EQ5mbgkeRkDLU3YlJefHJZXT2bb1i4/2/DmEGe6o0/LIrwWeRXMmGYMrYWOWHwke6cawE2s/EJCsF1qHAzmY1CKgoiK0cPPzjQITdCZczkVktrOkLMjvaLPZZcWfJHWKzxOuf97BkT3mPfQ2EbeZ65yVfqrZQ=
+	t=1789028120; cv=none; b=D5w1LG3LfC8sKHF/hIynmeHHd3U9vBZgcrWP3Y+QCps/1HaXe5TrxQCUo5h3Ih2OMSH/w8EtlhUPH7OD9ACsko3fX0b9eA6Z5rhlT0bhhgya5/tr+XorSd8k/mtD6FFKVTJv1a4ILJGwtKmGrs/cBslAHtT9XESVpbtKzqbqbrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789027942; c=relaxed/simple;
-	bh=WQe453I+O9kJM6b6zHQrmqWzKsZXSoS+9k6LVQH7nSY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=k+KzKk7O3xZMZdlv1LxdRoVE1gcBcHyIaxO4w94hRvplBqwWa7wn+4XT/Gzdypi+m2cKsFxPUJ0p6XRD4Ys/gFq13QTkO/NoBsDPU54lQ3ECZ9uINi7HYO3vts1XYOOiBMdcDdJdjexrmQW8H36cSqK/nNgJctZOwE/qK0nwHrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QQL7/581; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=R5TAFREs; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1789028120; c=relaxed/simple;
+	bh=Ruw0SOBmANT0vxffjrMQywQ3ulDk7wSCRg+DW4rBQyc=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=qBOpT6ISSgADnMDwhtinnxuMvBA6ySQ9s56b1+fv93uF1OUGfh/iRFmX7FqKhNG/3ocH/2mxQ9x5IYnH6v0oURVMe9/oYBIPTTNsMDTZDzOEZk/YsTfgXoJyzdIVs64pZq0PkEE5TujygJJlc2oy6+j/45ftVztJWMZrWOzbSWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l2iia2h4; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QQL7/581";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="R5TAFREs"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1789027939;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7m86Nl0R/ApS0b4Hz6J+TM/No6iRyeaUTybs4HgQjpY=;
-	b=QQL7/581r9xBRja65AwCA0K7x6H5lAsasUGg66B48xDQDCz1OHeLcxo62+o+qEUOKwVOYH
-	w21weqh06jiQ/fCirs3fpY62G+DvP2nhbXB4GA7ShdkH3qETRg631wyVnJJ7tDQETlGr0b
-	xqGfiG/ObsOEsu7gh2cI6eQAIJmizw0=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-617-enG9dPw6OjGy04IAkZBHXA-1; Thu, 10 Sep 2026 04:12:18 -0400
-X-MC-Unique: enG9dPw6OjGy04IAkZBHXA-1
-X-Mimecast-MFC-AGG-ID: enG9dPw6OjGy04IAkZBHXA_1789027937
-Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-c25501f4aa2so92797866b.1
-        for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 01:12:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1789027937; x=1789632737; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=7m86Nl0R/ApS0b4Hz6J+TM/No6iRyeaUTybs4HgQjpY=;
-        b=R5TAFREsYgfNj4lGbb6z1oXp3LjIm+LCrmt4wek2bRHVqs7Dzz0loTSkVaFYcMzH2M
-         q5wF705P8LlFTKzDOmH9vDM14VGQTYpT4VfGqunsHvjfg/oWaFPP88K9ZoKmer2/JtPm
-         kOUcR7hg+SGWk4o/LDcgqvagkvK/qH5xhZFmZY5SLnW/5O11ICg+lxg+ZguPcFmnJ/l1
-         Jg38EdamYKeAz14pZzo2L8ETEQ8ivipprGujNICw5VMU3gbM25CWOv8FN0swN8SNFDaC
-         Kik95Wlzocw475lkXQCwJbH4Pldp59IMAk8i1O8C3Qm7POrSerMw21E+ALB0+it02TNi
-         Vefg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789027937; x=1789632737;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=7m86Nl0R/ApS0b4Hz6J+TM/No6iRyeaUTybs4HgQjpY=;
-        b=gp7L8fiJtElwpVXe2D64D9JTzIQvc+Bt77eEbggxGyffpqw8FRmeqF88tRRWbf/GfN
-         M6eB+XaBkFHh7Hrh7vViLRlAFSr6j7MzfHfwODmPEmQeq3fmQdQnsNEMVSna+sLviS6K
-         ALneyYHdmqO27JY+i1knl0PC4rTW/Uhjjpf6gcwxkmhs+kLIGSUv/qURR/v5/Hyn6eHT
-         QS2k/dPHDE3Fqs8g3KuGqUhCUN7ii52PfAwvlmwMxDuYSdd55ebw+pI7o5gTYs+VJX/T
-         Pdjww/zVZxuAK2BaVRL6oLn7J015bc7CbP1pRzi/JHxr75vXyTUyDVIpeB4mrXLRzUiG
-         vgDw==
-X-Gm-Message-State: AFuF++lnBMJ6AYOszUaK9fPe0Mpe8CuEypzuT2cLkvpBJINvUsIPElFZ
-	tFI9usx5UKPz2/WUr/O1yYdIrSdK7sI8EikBwheBi1LpjhkpwmZITWmqaR52phlISZLnzLTv7Op
-	+n4I6Nn+ewXXAPyvetOuSLs927p46wjzJxIvD7sfrSLQSlhYlTymUppvAmw==
-X-Gm-Gg: AYBFou3G1KqQTMrEo3MYSHsX2yQcS3eB5sSz3vn6peepKOzZOsdSQIOdHgdLueTLugu
-	nE1euwmSSKFhSDqDEn73/uwboczOLR7tTED757zRHV1VmVZ0QjPG8F3Dl9TD9AngPDaFHAY4b6e
-	secp86/FaaJ0TMmEIbwdSv7x2Y/RDFK+Mg11IGXLWODHTYYFPGGjvBGkRPM2IdFtOoalowTxvyw
-	b8ioS58f3eEEFWFeAofjlNl/kvt+Ffs5x3IbRq04d5+MNinYEcoEbC5S70zZ7lWIKDEQTH1QqIb
-	1f2sMv1umnaWdbXPXqqT5oPyHsIYkBDK83d5akjos/cmrt0zRdWF5fjNeLhWT/dO5nLcWHnmXFx
-	Ghw78tPuReBw1rVGTAZ8P04caaf3I7w21SNDtVsgiHflsCde/HDMuyjEiDQkLbeJtB/P6VDt7zQ
-	==
-X-Received: by 2002:a17:906:8f8a:b0:c25:f7db:4bed with SMTP id a640c23a62f3a-c2945efbe7emr176079466b.19.1789027937034;
-        Thu, 10 Sep 2026 01:12:17 -0700 (PDT)
-X-Received: by 2002:a17:906:8f8a:b0:c25:f7db:4bed with SMTP id a640c23a62f3a-c2945efbe7emr176077166b.19.1789027936516;
-        Thu, 10 Sep 2026 01:12:16 -0700 (PDT)
-Received: from [192.168.188.218] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c260d4aa01dsm882062666b.15.2026.09.10.01.12.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 10 Sep 2026 01:12:15 -0700 (PDT)
-Message-ID: <c95bc6f8-b8da-426f-a056-1c692559d14f@redhat.com>
-Date: Thu, 10 Sep 2026 10:12:14 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l2iia2h4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A41201F000FF;
+	Thu, 10 Sep 2026 08:15:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789028116;
+	bh=cBvIB5TYupW+Z6yAgdUlBTiX/pY+svsenb2J97lcoMw=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=l2iia2h4vw4uEGPRMUQnffAOao/BB6P2eHZr25ID+KE5nyct48UA3xsYb3aEQxvle
+	 xhEkX9imlJc3l7yMEJ18hqkbyL+IeipodnY5whEyMlgKt0LZn4lFS1M8Y0io3ZedF0
+	 IEiwNt6EmD/jdXqyMrIeraGP+qSELXoJpCqIQ4AZkCO4g2KfS6+K2th4fVvPa/vDZ+
+	 xIsmM3DImYg1yoZCt6THD7FSD3+yy4uNG/4S2gMqYh2xO28W+9AjS4/aFN9jvRxjos
+	 qF9cDBAG1gb62lPt+PbxRYOG978mzMs5oHDF4ulNJbggDGzKscJziiixF7UGdzr3Uu
+	 vQKIBoRsLntDA==
+Subject:
+ Re: [PATCH net-next v15] net: phy: Add driver for Motorcomm Quad 2.5GbE phy
+From: netdev-bot+sashiko@kernel.org
+To: kyle.switch@motor-comm.com
+Cc: Frank.Sae@motor-comm.com, andrew@lunn.ch, hkallweit1@gmail.com,
+ linux@armlinux.org.uk, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, ming.xu@motor-comm.com,
+ xiaolin.xu@motor-comm.com, jianmin.wang@motor-comm.com,
+ jie.han@motor-comm.com, wei.zhang@gl-inet.com, sijia.huang@gl-inet.com
+Date: Thu, 10 Sep 2026 08:15:15 +0000
+Message-ID: <178902811520.219967.15378845257301961249@kernel.org>
+In-Reply-To: <20260909074911.2378402-1-kyle.switch@motor-comm.com>
+References: <20260909074911.2378402-1-kyle.switch@motor-comm.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] tcp: fastopen: check rsk_drop_req() in
- tcp_fastopen_create_child()
-To: Yilin Zhang <yilinzhang@moonshot.ai>, Mat Martineau
- <martineau@kernel.org>, Matthieu Baerts <matttbe@kernel.org>,
- Jiayuan Chen <jiayuan.chen@linux.dev>
-Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev,
- Kimi Security Team <bug-report@moonshot.ai>
-References: <20260903094010.4066892-1-yilinzhang@moonshot.ai>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20260903094010.4066892-1-yilinzhang@moonshot.ai>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-On 9/3/26 11:40 AM, Yilin Zhang wrote:
-> subflow_syn_recv_sock() sets drop_req when an MP_JOIN SYN takes the fatal
-> fallback and destroys the cloned child. tcp_fastopen_create_child()
-> ignored the flag and could queue the destroyed child.
-> 
-> With an MPTCP listener using server-side Fast Open, a valid-cookie
-> MP_JOIN SYN could then expose the freed child through accept().
-> 
-> Release the locked child and drop the request before tcp_conn_request()
-> sends a SYN-ACK. Initialize drop_req when allocating the request so the
-> check cannot observe stale state after request-socket reuse.
-> 
-> Changes in v2:
-> - unlock the child before dropping its reference
-> - drop the request instead of sending a SYN-ACK after the MPTCP reset,
->   as suggested by Jiayuan Chen
-> 
-> Fixes: 90bf45134d55 ("mptcp: add new sock flag to deal with join subflows")
-> Reported-by: Kimi Security Team <bug-report@moonshot.ai>
-> Suggested-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-> Signed-off-by: Yilin Zhang <yilinzhang@moonshot.ai>
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider:
 
-This looks like the wrong fix. IIRC fastopen is not compatible with MPJ
-- as the latter must accept data only after the 4way handshake completion.
+Critical: 0 · High: 0 · Medium: 2 · Low: 1
 
-@Mat(s): could you please double check the above ^^^ statement???
+- [Medium] New, undocumented device-tree ABI for YT8824.
+- [Medium] Lock-initialization race: priv->shared_lock is mutex_init()'d
+  (motorcomm.c:4624) and priv->interface_mode published (4625) *after*…
+- [Low] yt8824_restore_working_status()'s kernel-doc summary says "called
+  to do store working status" while the function stores nothing: it…
 
-If so mptcp should reject entirely MPJ + fastopen and no addtional code
-required on the TCP side.
+--
 
-A minor process note: the changelog should come after the tag area and a
-'---' separator.
+net: phy: Add driver for Motorcomm Quad 2.5GbE phy
 
-/P
+This adds support for the Motorcomm YT8824 quad-port 2.5G PHY to the
+existing motorcomm driver, sharing the top extended register space through
+the phy_package helpers. It also exports a new phylib helper,
+genphy_c45_template_testmode(), and adds the 10GBASE-T test mode register
+definitions to the uapi mdio header.
 
+> diff --git a/drivers/net/phy/motorcomm.c b/drivers/net/phy/motorcomm.c
+> index 90a4f86f2758..86f1e93aa82d 100644
+> --- a/drivers/net/phy/motorcomm.c
+> +++ b/drivers/net/phy/motorcomm.c
+
+[ ... ]
+
+> @@ -626,11 +722,1056 @@ static int ytphy_set_wol(struct phy_device *phydev, struct ethtool_wolinfo *wol)
+
+[ ... ]
+
+> +/**
+> + * yt8824_restore_working_status() - called to do store working status
+> + * @phydev: a pointer to a &struct phy_device
+> + * @ret: operation's return code
+> + *
+> + * Returns: 0 or negative errno code
+> + */
+> +static int yt8824_restore_working_status(struct phy_device *phydev, int ret)
+> +{
+> +	struct yt8824_shared_priv *priv = phy_package_get_priv(phydev);
+> +	int r;
+> +
+> +	/* configure normal test mode */
+> +	r = yt8824_utp_normal_test_mode_paged(phydev);
+> +	if (ret >= 0 && r < 0)
+> +		ret = r;
+
+[Severity: Low]
+This isn't a bug, but the kernel-doc summary says "called to do store
+working status" while the body stores nothing.  It calls
+yt8824_utp_normal_test_mode_paged() and, for the non-internal interface
+mode, yt8824_sds_isolate_and_softreset_paged(), so it restores the PHY to
+its working configuration.  Should the summary say something like
+"restore the PHY working configuration"?
+
+[ ... ]
+
+> +/**
+> + * yt8824_phy_package_probe_once()  - init phy packet for phy8824.
+> + * @phydev: a pointer to a &struct phy_device
+> + *
+> + * Returns: 0 or negative errno code
+> + */
+> +static int yt8824_phy_package_probe_once(struct phy_device *phydev)
+> +{
+> +	struct yt8824_shared_priv *priv = phy_package_get_priv(phydev);
+> +	struct device_node *np = phy_package_get_node(phydev);
+> +	const char *interface_mode_name;
+> +
+> +	/* Initialise shared lock for YT8824 */
+> +	mutex_init(&priv->shared_lock);
+> +	priv->interface_mode = PHY_INTERFACE_MODE_INTERNAL;
+> +	if (!of_property_read_string(np, "motorcomm,interface-mode",
+> +				     &interface_mode_name)) {
+> +		if (!strcasecmp(interface_mode_name,
+> +				phy_modes(PHY_INTERFACE_MODE_USXGMII))) {
+> +			priv->interface_mode = PHY_INTERFACE_MODE_USXGMII;
+> +		} else if (!strcasecmp
+> +				(interface_mode_name,
+> +				 phy_modes(PHY_INTERFACE_MODE_INTERNAL))) {
+> +			priv->interface_mode = PHY_INTERFACE_MODE_INTERNAL;
+> +		} else {
+> +			return -EINVAL;
+> +		}
+> +	} else {
+> +		phydev_warn(phydev, "%s, motorcomm,interface-mode missing in DTS.\n",
+> +			    __func__);
+> +	}
+> +
+> +	return 0;
+> +}
+
+[Severity: Medium]
+Is there a device tree binding update planned for this?  This introduces a
+new vendor property, motorcomm,interface-mode, read from the PHY package
+node, with the legal values fixed by
+phy_modes(PHY_INTERFACE_MODE_USXGMII) and
+phy_modes(PHY_INTERFACE_MODE_INTERNAL).
+
+The only Motorcomm PHY schema,
+Documentation/devicetree/bindings/net/motorcomm,yt8xxx.yaml, is not touched
+by this patch and lists only:
+
+    enum:
+      - ethernet-phy-id4f51.e91a
+      - ethernet-phy-id4f51.e91b
+
+so there is no YT8824 compatible (ethernet-phy-id4f51.e8b8), no
+description of the package node layout, and no description of the new
+property.  Without that, can dt_binding_check or dtbs_check validate boards
+using this part, and how do device tree authors know which node carries
+the property?
+
+An in-tree example of a documented vendor property on a PHY package node is
+Documentation/devicetree/bindings/net/qcom,qca807x.yaml.
+
+> +
+> +/**
+> + * yt8824_probe() - phy8824 probe.
+> + * @phydev: a pointer to a &struct phy_device
+> + *
+> + * Returns: 0 or negative errno code
+> + */
+> +static int yt8824_probe(struct phy_device *phydev)
+> +{
+> +	struct device *dev = &phydev->mdio.dev;
+> +	struct yt8824_shared_priv *shared_priv;
+> +	int ret;
+> +
+> +	ret = devm_of_phy_package_join(dev, phydev, sizeof(*shared_priv));
+> +	if (ret)
+> +		return ret;
+
+[Severity: Medium]
+Related to the binding question above: this call is unconditional, and
+of_phy_package_join() in drivers/net/phy/phy_package.c requires a specific,
+currently undocumented device tree topology:
+
+    if (!of_node_name_eq(package_node, "ethernet-phy-package")) {
+        ret = -EINVAL;
+
+It also requires the PHY to have an OF node and the package node to carry a
+reg property.  Does a board that describes this part as four ordinary PHY
+nodes, or a non-OF system, then fail probe with -EINVAL and leave the ports
+unusable?
+
+> +
+> +	if (phy_package_probe_once(phydev)) {
+> +		ret = yt8824_phy_package_probe_once(phydev);
+> +		if (ret)
+> +			return ret;
+> +	}
+> +
+> +	return 0;
+> +}
+
+[Severity: Medium]
+Can a sibling PHY of the same package use priv->shared_lock before it has
+been initialised?
+
+phy_package_probe_once() is only an election:
+
+drivers/net/phy/phy_package.c:__phy_package_set_once() {
+    ...
+	return !test_and_set_bit(b, &shared->flags);
+    ...
+}
+
+It does not wait for the winner to finish, so:
+
+CPU0                                CPU1
+yt8824_probe()
+  phy_package_probe_once() -> true
+                                    yt8824_probe()
+                                      phy_package_probe_once() -> false
+                                      return 0
+                                    phy_probe()
+                                      yt8824_get_features()
+                                        mutex_lock(&priv->shared_lock);
+  yt8824_phy_package_probe_once()
+    mutex_init(&priv->shared_lock);
+    priv->interface_mode = ...;
+
+The shared priv is allocated zeroed by phy_package_join(), so CPU1 would
+lock a mutex that has not been through mutex_init() and would read
+priv->interface_mode as 0 (PHY_INTERFACE_MODE_NA), which selects the
+external SerDes paths in yt8824_config_init() and
+yt8824_restore_working_status().
+
+dp83640_probe() wraps the same pattern in the package lock for this reason:
+
+drivers/net/phy/dp83640.c:dp83640_probe() {
+    ...
+	/* Ensure other PHY probes wait for shared clock initialization. */
+	phy_package_lock(phydev);
+	if (phy_package_probe_once(phydev))
+		dp83640_clock_init(clock);
+	phy_package_unlock(phydev);
+    ...
+}
+
+Would phy_package_lock()/phy_package_unlock() around the once-block here be
+appropriate too?
+
+Note also that when the property parse returns -EINVAL, the once bit stays
+set, so no other port in the package will retry the shared initialisation.
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260909074911.2378402-1-kyle.switch%40motor-comm.com
