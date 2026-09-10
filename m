@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A91123EFFD7;
-	Thu, 10 Sep 2026 10:30:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDE1A3F44E2;
+	Thu, 10 Sep 2026 10:30:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789036221; cv=none; b=aWUOkO4b352mqyLojAHZLLp6CrS77g9oc8DXhgotNHuRMs7d6DZrjBrLnBhr4Gm7UnB50xoJibiUsRkdetv9ZgLxd1aXUzWLQz7t0QFNtAT7NNn2X65FQOo1vuhjZ+ZGQ5mTOwXepgIia0jrw10K35ISA6Bd1ANf7KDXq8gaPFE=
+	t=1789036222; cv=none; b=elXgGIqkdpJzHioOTQ8vdy3LffoEOvrKL/5DveRfcDVhCeR1Jw0dYQZWHS8Mz13OFboMz1JEzb+hrbNHwGivE02Y0DdUAathqM+5rhp5jrUDJup4HVdHhzpmgaDG5NiAwAGG8wcS4JuvHaBsG/nvrL2gA9PniqlRG1tWsG2i+pw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789036221; c=relaxed/simple;
-	bh=eMjHimPTTEaDtj3FX+1Pi7l0vMStrrUMaxnKZzM6d4c=;
+	s=arc-20240116; t=1789036222; c=relaxed/simple;
+	bh=V+sh97OPWV0fVPmqMMDm9UaODz3wBc7OVsa8/kjniTs=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=PhA5P/M9pHDHUhRxcG1fI2D4RcFXSsUy/pVVXKi3K8CDaaKAm8zTU/aZ9IdLJnzL7jXgKeLgDakC1mymIzGsV62L7AIULQ1P13VuD7ncy/TLhUnhfT+bmXolG2+YoM+S+emgax/GwcXWssKsXdPovc99Bi+iWQg9QnhCePo+TWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oYIdVOWC; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=oWTsnGCbqxBKTuKKhDr8PS+t9HW69BVZ4ToHMF7GGqNUJFg9FEE3GWSqjnINmTxyMrb4CEQpTKD9R/pVz2rih05mUKgJnUWdnON6i09WehlcrFDNI+LcrlpjwNZdX5oCRhuhSGrmYJDsjEhRvbVJ6K5QgVtBdRnwwquBNm/0gH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FQFIHqrq; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oYIdVOWC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6F391F00893;
-	Thu, 10 Sep 2026 10:30:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FQFIHqrq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEAEF1F0089B;
+	Thu, 10 Sep 2026 10:30:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789036214;
-	bh=ftufo9zwnynoh9PQBoUuCZp3Kb1RvnT0jnvcavy7+LU=;
+	s=k20260515; t=1789036217;
+	bh=uoOomtWaXOh9o/jYW/1mRIJqRkhwL5jxoXbEl7mD9kI=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=oYIdVOWCGGu+QTFHfJB4//FUYs/TjMm9EbM4hfqAFNHzC3gFYot5IQL2gmGBgq6HG
-	 +UbqS/2BA/z8StGOzJnlJB6rTQi0qvDAHFA+TODCC0ybUjs9BUTE7+dR4IAToZed4g
-	 +KMazE4hqS7oK8YpJTOMjRbuC0wunvz3bIaA5Fw/qkMHjIqNJcoM4w6EtAIcvPo0yY
-	 /p0JQ9sINqHpV2OkVHzdnOUJoDoQLW/9/dOgYmg2eXzOyAQS2EsuLDBTzSrBYGjeS1
-	 /ld4OfTZEFsaH9WpxZcIkF05E1nsITIRyEPkfL0RiBfwKew8M0+fPdqBdIg5POMNcN
-	 52KL7d/aam5WA==
-Subject: Re: [PATCH net-next v3 02/10] net: dsa: microchip: add the number of
- periodic signals to chip infos
+	b=FQFIHqrq70uG3eTrzVsRTZULyZ1qEluRpc1xfx4EvwFM1pO8tuAp0gKigk7zcL2RT
+	 +YwLcdnmR43qSQ1MLlmexC4ashyhmZ/+vLzOz1+vMrQHxlewqemr4rgc9RWZIA+/03
+	 funF4zVKXis6bAoNrcGtNEDdyrx3bt8MQBXHrzpTMyvhcg0cyk/NICAjMMhh/VUNL5
+	 7gzf152wZzRAw1IoKcnJDzQu9kScXWhOgX039/NL0aFyldgq5KNgzWojJFGvzk2+Lc
+	 2D9Ln1veoWwCxzIVhAfi+Gxf5orJGSrX4mpJHmWisH3TrkNsJp/mT/nUY5oq9g7SG/
+	 2wPztoAb0J+Rw==
+Subject:
+ Re: [PATCH net-next v3 07/10] net: dsa: microchip: extract prepare reset
 From: netdev-bot+sashiko@kernel.org
 To: bastien.curutchet@bootlin.com
 Cc: woojung.huh@microchip.com, UNGLinuxDriver@microchip.com, andrew@lunn.ch,
@@ -35,10 +35,10 @@ Cc: woojung.huh@microchip.com, UNGLinuxDriver@microchip.com, andrew@lunn.ch,
  pabeni@redhat.com, richardcochran@gmail.com, pascal.eberhard@se.com,
  miquel.raynal@bootlin.com, thomas.petazzoni@bootlin.com,
  netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Thu, 10 Sep 2026 10:30:13 +0000
-Message-ID: <178903621352.219967.8775079283945133853@kernel.org>
-In-Reply-To: <20260908-ksz-perout-v3-2-6722a3f1ca75@bootlin.com>
-References: <20260908-ksz-perout-v3-2-6722a3f1ca75@bootlin.com>
+Date: Thu, 10 Sep 2026 10:30:16 +0000
+Message-ID: <178903621628.219967.14995486202100709722@kernel.org>
+In-Reply-To: <20260908-ksz-perout-v3-7-6722a3f1ca75@bootlin.com>
+References: <20260908-ksz-perout-v3-7-6722a3f1ca75@bootlin.com>
 X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -52,146 +52,142 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider:
 
-Critical: 0 · High: 0 · Medium: 0 (1) · Low: 1
+Critical: 0 · High: 0 (1) · Medium: 0 · Low: 1
 
-- [Low] KSZ8463 chip descriptor is left without .n_per_out (and, from the
-  preceding patch "net: dsa: microchip: add the number of pins to chip…
+- [Low] Commit subject mismatch: the subject line "net: dsa: microchip:
+  extract prepare reset" does not describe the change.
 
 Pre-existing issues:
-- [Medium] This problem wasn't introduced by this patch, but the patch is
-  the enabling step for it: the number of advertised periodic-output…
+- [High] Integer truncation causes an effectively unbounded loop in
+  ksz_ptp_prepare_restart_perout()…
 
 --
 
-net: dsa: microchip: add the number of periodic signals to chip infos
+net: dsa: microchip: extract prepare reset
 
-This adds an n_per_out field to struct ksz_chip_data and makes
-ksz_ptp_clock_register() advertise dev->info->n_per_out instead of the
-hardcoded value 3.  The field is set to 3 in the chip descriptors of the
-switches marked ptp_capable.
+This patch moves the periodic output request initialization out of
+ksz_ptp_restart_perout() into a new helper ksz_ptp_prepare_restart_perout(),
+so a future ksz8463_ptp_restart_perout() can reuse it.  No functional change
+is intended in the moved code.
 
-> diff --git a/drivers/net/dsa/microchip/ksz_common.c b/drivers/net/dsa/microchip/ksz_common.c
-> index d01fba253af57..041bb4f963659 100644
-> --- a/drivers/net/dsa/microchip/ksz_common.c
-> +++ b/drivers/net/dsa/microchip/ksz_common.c
-> @@ -1195,6 +1195,7 @@ const struct ksz_chip_data ksz_switch_chips[] = {
->  		.wr_table = &ksz8563_register_set,
->  		.rd_table = &ksz8563_register_set,
->  		.n_pins = 2,
-> +		.n_per_out = 3,
->  	},
->  
->  	[KSZ8795] = {
-
-[ ... remaining ksz_switch_chips[] hunks snipped ... ]
-
-> diff --git a/drivers/net/dsa/microchip/ksz_common.h b/drivers/net/dsa/microchip/ksz_common.h
-> index c678fc6597dc4..1155b39350c2b 100644
-> --- a/drivers/net/dsa/microchip/ksz_common.h
-> +++ b/drivers/net/dsa/microchip/ksz_common.h
-> @@ -140,6 +140,7 @@ struct ksz_chip_data {
->  	const struct regmap_access_table *wr_table;
->  	const struct regmap_access_table *rd_table;
->  	const u8 n_pins;
-> +	const u8 n_per_out;
->  };
->  
->  struct ksz_irq {
-> diff --git a/drivers/net/dsa/microchip/ksz_ptp.c b/drivers/net/dsa/microchip/ksz_ptp.c
-> index c92936bf78d3d..f80015250e5ab 100644
-> --- a/drivers/net/dsa/microchip/ksz_ptp.c
-> +++ b/drivers/net/dsa/microchip/ksz_ptp.c
-> @@ -1051,7 +1051,7 @@ int ksz_ptp_clock_register(struct dsa_switch *ds)
->  	ptp_data->caps.enable		= ksz_ptp_enable;
->  	ptp_data->caps.verify		= ksz_ptp_verify_pin;
->  	ptp_data->caps.n_pins		= dev->info->n_pins;
-> -	ptp_data->caps.n_per_out	= 3;
-> +	ptp_data->caps.n_per_out	= dev->info->n_per_out;
+> net: dsa: microchip: extract prepare reset
 
 [Severity: Low]
-Does this leave KSZ8463 advertising zero periodic outputs at this point in
-the series?
+Should the subject say "extract prepare restart" instead?  Nothing related
+to a reset is touched here: ksz_ptp_tou_reset() and the TRIG_RESET handling
+are unchanged, and the new helper is named ksz_ptp_prepare_restart_perout().
 
-The ksz_switch_chips[KSZ8463] descriptor sets neither .ptp_capable, .n_pins
-nor .n_per_out, so both new fields are implicitly 0 here.  The commit message
-says "Set it to 3 for all the PTP-capable switches", which is literally
-consistent since KSZ8463 does not set .ptp_capable, but KSZ8463 still
-registers a PHC:
+Also in the changelog:
 
-drivers/net/dsa/microchip/ksz8.c:ksz8463_setup() {
+  Extract the inialization into a dedicated function so it can be used
+  later by the KSZ8463 support.
+
+"inialization" should be "initialization".
+
+> diff --git a/drivers/net/dsa/microchip/ksz_ptp.c b/drivers/net/dsa/microchip/ksz_ptp.c
+> index 2f141df65eb01..e262bc7448f29 100644
+> --- a/drivers/net/dsa/microchip/ksz_ptp.c
+> +++ b/drivers/net/dsa/microchip/ksz_ptp.c
+> @@ -788,11 +788,11 @@ static int ksz_ptp_gettime(struct ptp_clock_info *ptp, struct timespec64 *ts)
+>  	return ret;
+>  }
+>  
+> -static int ksz_ptp_restart_perout(struct ksz_device *dev)
+> +static int ksz_ptp_prepare_restart_perout(struct ksz_device *dev,
+> +					  struct ptp_perout_request *request)
+>  {
+>  	struct ksz_ptp_data *ptp_data = &dev->ptp_data;
+>  	s64 now_ns, first_ns, period_ns, next_ns;
+> -	struct ptp_perout_request request;
+>  	struct timespec64 next;
+>  	struct timespec64 now;
+>  	unsigned int count;
+
+[Severity: High]
+This isn't a bug introduced by this patch, but since the calculation is now
+being moved into a helper that a second caller will use, is the truncation of
+count into unsigned int in the moved code intentional?
+
+The body that moves with the function does:
+
+drivers/net/dsa/microchip/ksz_ptp.c:ksz_ptp_prepare_restart_perout() {
+	unsigned int count;
 	...
-	if (dev->irq > 0) {
-		...
-		ret = ksz_ptp_clock_register(ds);
-	...
-}
+	if (first_ns < now_ns) {
+		count = div_u64(now_ns - first_ns, period_ns);
+		next_ns = first_ns + count * period_ns;
+	} else {
+		next_ns = first_ns;
+	}
 
-Unlike ksz9477_setup()/ksz8_setup(), that call is gated only on dev->irq > 0
-and not on dev->info->ptp_capable, so on KSZ8463 caps.n_per_out becomes 0
-where the literal 3 was used before.  drivers/ptp/ptp_chardev.c then rejects
-every request:
-
-drivers/ptp/ptp_chardev.c:ptp_enable_perout() {
-	...
-	if (req.perout.index >= ops->n_per_out)
-		return -EINVAL;
-	...
-}
-
-PTP_PF_PEROUT pin assignment is refused the same way and ptp_sysfs.c hides
-the period attribute.
-
-The last patch of the series ("net: dsa: microchip: add periodic output
-support for the KSZ8463") adds .n_pins = 12 and .n_per_out = 12 to that
-descriptor, so only bisected intermediate trees see this.  Note also that in
-this intermediate state caps.n_pins is 0 for KSZ8463 as well, so the perout
-path there cannot resolve a pin anyway.  Would it be simpler to set the
-KSZ8463 values in the same patch that introduces the field?
-
-[Severity: Medium]
-This isn't a bug introduced by this patch, but making the channel count a
-per-chip property widens an existing mismatch: each perout index maps to a
-distinct hardware Trigger Output Unit, while struct ksz_ptp_data keeps a
-single tou_mode, perout_period and perout_target_time_first.
-
-ksz_ptp_enable_perout() programs and starts the unit selected by the
-request:
-
-drivers/net/dsa/microchip/ksz_ptp.c:ksz_ptp_enable_perout() {
-	...
-	data32 = FIELD_PREP(PTP_GPIO_INDEX, pin) |
-		 FIELD_PREP(PTP_TOU_INDEX, request->index);
-	...
-	ptp_data->perout_period.tv_sec = request->period.sec;
+	/* Ensure 100 ms guard time prior next event */
+	while (next_ns < now_ns + 100000000)
+		next_ns += period_ns;
 	...
 }
 
-but the restart path after a clock step only ever touches unit 0:
+Can count wrap here?  div_u64() returns a u64 quotient, so if the distance
+between ptp_data->perout_target_time_first and the freshly written clock
+value exceeds 2^32 periods, next_ns ends up far behind now_ns and the guard
+time loop has to close that gap one period at a time, with no iteration cap,
+no cond_resched() and no signal check.
 
-drivers/net/dsa/microchip/ksz_ptp.c:ksz_ptp_restart_perout() {
-	...
-	request.index = 0;
-	request.flags = 0;
+The path is reachable from userspace:
 
-	return ksz_ptp_enable_perout(dev, &request, 1);
-}
+ksz_ptp_settime()
+    mutex_lock(&ptp_data->lock);
+    ...
+    case KSZ_PTP_TOU_PEROUT:
+        ret = ksz_ptp_restart_perout(dev);
+            ksz_ptp_prepare_restart_perout()
 
-Can this leave units 1 and 2 armed with TRIG_TARGET_SEC/NANOSEC values
-computed against the pre-step RTC after PTP_CLOCK_SETTIME or ADJTIME, so
-their pulses fire immediately or far in the future?
+Enabling a periodic output while the PHC is still near zero with a short
+period (for example 100 ms, which passes ksz_ptp_compute_perout_cycle()'s
+TRIG_CYCLE_WIDTH_M check, and whose derived pulse passes
+ksz_ptp_tou_pulse_verify()) and then issuing PTP_CLOCK_SETTIME with a
+wall-clock value gives roughly 1.7e10 iterations, and considerably more for
+the smallest accepted periods.  Since ksz_ptp_settime() holds
+ptp_data->lock across the call, does this hang the ioctl and block all other
+PTP operations on the device, and stall the CPU on CONFIG_PREEMPT_NONE?
 
-There is a second effect when only a non-zero channel has a pin assigned:
-ksz_ptp_settime() writes PTP_LOAD_TIME first, then
-ksz_ptp_restart_perout() -> ksz_ptp_enable_perout() -> ptp_find_pin(clock,
-PTP_PF_PEROUT, 0) returns -EINVAL, so settime() reports failure although the
-RTC was already loaded.  ksz_ptp_verify_pin() accepts PTP_PF_PEROUT for any
-pin and channel, so a user of /dev/ptpN can reach this by binding pin 0 to
-PTP_PF_PEROUT channel 1 and issuing PTP_PEROUT_REQUEST with index 1.
+Would using a u64 count (or clamping the correction to a single modulo step
+instead of the loop) be preferable before the helper gains a second caller?
 
-The hardcoded index 0 is still present at the end of the series in the
-extracted prepare/reset helper, while KSZ8463 then advertises 12 channels
-with the same single-instance bookkeeping.  Should the driver track per
-channel state, or restart all armed units?
+The same calculation is still present at the end of the series
+(ac820826db205f1767ca525d6e06b8b1de2200fe), so no later patch appears to
+address it.
+
+> @@ -823,12 +823,24 @@ static int ksz_ptp_restart_perout(struct ksz_device *dev)
+>  
+>  	/* Restart periodic output signal */
+>  	next = ns_to_timespec64(next_ns);
+> -	request.start.sec  = next.tv_sec;
+> -	request.start.nsec = next.tv_nsec;
+> -	request.period.sec  = ptp_data->perout_period.tv_sec;
+> -	request.period.nsec = ptp_data->perout_period.tv_nsec;
+> -	request.index = 0;
+> -	request.flags = 0;
+> +	request->start.sec  = next.tv_sec;
+> +	request->start.nsec = next.tv_nsec;
+> +	request->period.sec  = ptp_data->perout_period.tv_sec;
+> +	request->period.nsec = ptp_data->perout_period.tv_nsec;
+> +	request->index = 0;
+> +	request->flags = 0;
+> +
+> +	return 0;
+> +}
+> +
+> +static int ksz_ptp_restart_perout(struct ksz_device *dev)
+> +{
+> +	struct ptp_perout_request request;
+> +	int ret;
+> +
+> +	ret = ksz_ptp_prepare_restart_perout(dev, &request);
+> +	if (ret)
+> +		return ret;
+>  
+>  	return ksz_ptp_enable_perout(dev, &request, 1);
+>  }
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260908-ksz-perout-v3-0-6722a3f1ca75%40bootlin.com
