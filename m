@@ -1,257 +1,139 @@
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B972140DB3A
-	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 08:10:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C868A313540
+	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 08:12:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789027841; cv=none; b=PfffssLXJJSla+lgPgaZ7q3KOp952uz6p9FqxIeWQl0iuazjKGVegzNEFqGGDSgq8KKaD+kgtrbeebD+nmOr9sp0HOeQ3QvjUlHM/W73hTnzOVbUbuUkrSD7u2XQT+86tnZnfdsADx4djoJPnUyMH5gbYnfT6AOtK8+fOyd76qo=
+	t=1789027942; cv=none; b=R+7snPazu/nMY0EQ5mbgkeRkDLU3YlJefHJZXT2bb1i4/2/DmEGe6o0/LIrwWeRXMmGYMrYWOWHwke6cawE2s/EJCsF1qHAzmY1CKgoiK0cPPzjQITdCZczkVktrOkLMjvaLPZZcWfJHWKzxOuf97BkT3mPfQ2EbeZ65yVfqrZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789027841; c=relaxed/simple;
-	bh=9WBU4UV+7UtsnX768TqabQ63Pb0Bd1MZ4nCo0ppSUks=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=TCXucMTSkCWE022iUXtpY5VOxgY1m2EJhl7VWXZ05YMjlHSuhY6kpYHlhxTqBwdmveuxeATO59Db4DATqkuG9/G2RBt0uKzeBi7Eh+5q2eMdzJaBR2CALwHzhCBa0uc/IEUfxDoPSBATuBB+rcytcXBzQC8J5GNPcwQRQbC1DHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LcaX0uwr; arc=none smtp.client-ip=209.85.215.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789027942; c=relaxed/simple;
+	bh=WQe453I+O9kJM6b6zHQrmqWzKsZXSoS+9k6LVQH7nSY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=k+KzKk7O3xZMZdlv1LxdRoVE1gcBcHyIaxO4w94hRvplBqwWa7wn+4XT/Gzdypi+m2cKsFxPUJ0p6XRD4Ys/gFq13QTkO/NoBsDPU54lQ3ECZ9uINi7HYO3vts1XYOOiBMdcDdJdjexrmQW8H36cSqK/nNgJctZOwE/qK0nwHrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QQL7/581; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=R5TAFREs; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LcaX0uwr"
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-cc1bc88a20eso726108a12.3
-        for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 01:10:39 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QQL7/581";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="R5TAFREs"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1789027939;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7m86Nl0R/ApS0b4Hz6J+TM/No6iRyeaUTybs4HgQjpY=;
+	b=QQL7/581r9xBRja65AwCA0K7x6H5lAsasUGg66B48xDQDCz1OHeLcxo62+o+qEUOKwVOYH
+	w21weqh06jiQ/fCirs3fpY62G+DvP2nhbXB4GA7ShdkH3qETRg631wyVnJJ7tDQETlGr0b
+	xqGfiG/ObsOEsu7gh2cI6eQAIJmizw0=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-617-enG9dPw6OjGy04IAkZBHXA-1; Thu, 10 Sep 2026 04:12:18 -0400
+X-MC-Unique: enG9dPw6OjGy04IAkZBHXA-1
+X-Mimecast-MFC-AGG-ID: enG9dPw6OjGy04IAkZBHXA_1789027937
+Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-c25501f4aa2so92797866b.1
+        for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 01:12:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789027839; x=1789632639; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=V7icB+mFn47r22Tll8dVKEqXUZ7IexWk6IFOaTVD/4o=;
-        b=LcaX0uwrRcpUkDjAmwE/h2QwPXo3/iPOPyCd7Qgl9V16NuJbtbiFNuhFlnXaoJ3sTK
-         kkDyUyWkoVGTaH/BaeJvAn5DNpklWVMuQ4XQHAYB7+32RywsFOS/rIM8fB+IPpOXwTSh
-         nlMCXjMqWtUah6Laz09Yx64cKcqZD2/I3ZRruHaGQkQiwvyqJn9opSpjreCqfaxrc7ev
-         lPsH4hIy5I4m3wY6HtV9FdeLtwzgFGwV+NoQZfuJ4Jio/JbM5c5dDgLyoY8gsofbaW9M
-         +xAEQin+4M6DcL5waCWkOm5hZmNXOGeEdzelsI0n6KmKtwjtN4jUPXDiKmwIFboMcuUy
-         c6Qw==
+        d=redhat.com; s=google; t=1789027937; x=1789632737; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=7m86Nl0R/ApS0b4Hz6J+TM/No6iRyeaUTybs4HgQjpY=;
+        b=R5TAFREsYgfNj4lGbb6z1oXp3LjIm+LCrmt4wek2bRHVqs7Dzz0loTSkVaFYcMzH2M
+         q5wF705P8LlFTKzDOmH9vDM14VGQTYpT4VfGqunsHvjfg/oWaFPP88K9ZoKmer2/JtPm
+         kOUcR7hg+SGWk4o/LDcgqvagkvK/qH5xhZFmZY5SLnW/5O11ICg+lxg+ZguPcFmnJ/l1
+         Jg38EdamYKeAz14pZzo2L8ETEQ8ivipprGujNICw5VMU3gbM25CWOv8FN0swN8SNFDaC
+         Kik95Wlzocw475lkXQCwJbH4Pldp59IMAk8i1O8C3Qm7POrSerMw21E+ALB0+it02TNi
+         Vefg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789027839; x=1789632639;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=V7icB+mFn47r22Tll8dVKEqXUZ7IexWk6IFOaTVD/4o=;
-        b=hUe1NmRCoX4iD13nJC94hFUpsvKmH70xRwMg1dNr9XTRIzxon2uqGcesgksiLfna87
-         mLdv9e0zcsbzJ1QOl7vN+NHp/HY6S9WhPGeOIxRVc6lZwCO7PI4kixGUkkToHQE9X4Go
-         jd+CqIXrDEP+68MGRNrciLxWm4wdifNQhA4mzGESHqMpqZ6hvZMPI81u1Ec1rOCVTyT7
-         uwKI5tr5AdVVFXjoN7UwTdu8g1PpvX5fsIdnnJEf0QC75IIMksbyFbn8DXMxMOrh4Dgf
-         VZVnJUxhhz7hgAsMyNpG0miK40nWala5uzJlHiakP0LWsOXNZJGKp6vREO1eatwV4hgz
-         iQ7w==
-X-Forwarded-Encrypted: i=1; AKwUvBwJgQd/78iRlCfZUn/5QJo1ikV99SNjEbfv5+OGE1xaM8qsLe8jyFwEFXNArHVx/Pows9UZ3pM=@vger.kernel.org
-X-Gm-Message-State: AFuF++niZaRx+6xZb/ths5bHZXQML5tde0yF/9AmrTKISDyeUWgpgN9t
-	ZhWY54o27bUyktXAN2tX56FfhU9V9ok7/Fjd1BJt+KZa7nA8TOmlRfrI
-X-Gm-Gg: AYBFou0R4jQ+AJrMAbzRzZtGJVFy1Pvq+zEs+BqupByllB7EvVrpsdK+69R48CVsf+O
-	ixa6t03Ts11tVjciHz/IfC4TOMDplfGu4NFio++sQxkcypy/uPsBToiOLtelfnCtp2lSgsdo59j
-	/cgwygnLrec9cbo/t7wpBcv+KPO9HN7kH37eGOgbBOT3vUnNMcS3Z6VB1p8jY4c9gq1PK8eqG3w
-	Ax9sGPx6UtcNeLuy9jeASsdkl17JIOoUgEI3RQvLqOJBoGwtS0DLp9q+3XSszETkZM9PGMKIWJR
-	Qy6gtNG1ROZw3feqyY/HJjVBp4n0ODu/H8Sr/9MFE55n03cOA0osfR1qQArFfMJhBgQ/xJHJB9o
-	Zeqdy0UPj5/moxOMY4Q2+vgkzLFlntsuIzXAvPPnnUGcGxTSmLZ1CEwh8B9D3ZtLU0ZyS1Nve/V
-	e7FeOJpvjnPTtCeLEJpS2AlsmwZz8gSgPZlreENJMFDo0Aw597tyJo0nlzoBMlEX6LEWHD2A==
-X-Received: by 2002:a17:90b:1e51:b0:399:ecd:d68d with SMTP id 98e67ed59e1d1-39b26260f7dmr54760856a91.22.1789027839049;
-        Thu, 10 Sep 2026 01:10:39 -0700 (PDT)
-Received: from server227.. ([39.170.101.209])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39d770bc9f5sm4442434a91.2.2026.09.10.01.10.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Sep 2026 01:10:38 -0700 (PDT)
-From: Zxyan Zhu <zxyan0222@gmail.com>
-To: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: mcoquelin.stm32@gmail.com,
-	alexandre.torgue@foss.st.com,
-	richardcochran@gmail.com,
-	maxime.chevallier@bootlin.com,
-	muhammad.nazim.amirul.nazle.asmade@altera.com,
-	rohan.g.thomas@altera.com,
-	netdev@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Zxyan Zhu <zxyan0222@gmail.com>
-Subject: [PATCH net-next v5 2/2] net: stmmac: dwxgmac2: add XGMAC timestamp interrupt support
-Date: Thu, 10 Sep 2026 16:10:20 +0800
-Message-Id: <20260910081020.86227-3-zxyan0222@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260910081020.86227-1-zxyan0222@gmail.com>
-References: <20260910081020.86227-1-zxyan0222@gmail.com>
+        d=1e100.net; s=20251104; t=1789027937; x=1789632737;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=7m86Nl0R/ApS0b4Hz6J+TM/No6iRyeaUTybs4HgQjpY=;
+        b=gp7L8fiJtElwpVXe2D64D9JTzIQvc+Bt77eEbggxGyffpqw8FRmeqF88tRRWbf/GfN
+         M6eB+XaBkFHh7Hrh7vViLRlAFSr6j7MzfHfwODmPEmQeq3fmQdQnsNEMVSna+sLviS6K
+         ALneyYHdmqO27JY+i1knl0PC4rTW/Uhjjpf6gcwxkmhs+kLIGSUv/qURR/v5/Hyn6eHT
+         QS2k/dPHDE3Fqs8g3KuGqUhCUN7ii52PfAwvlmwMxDuYSdd55ebw+pI7o5gTYs+VJX/T
+         Pdjww/zVZxuAK2BaVRL6oLn7J015bc7CbP1pRzi/JHxr75vXyTUyDVIpeB4mrXLRzUiG
+         vgDw==
+X-Gm-Message-State: AFuF++lnBMJ6AYOszUaK9fPe0Mpe8CuEypzuT2cLkvpBJINvUsIPElFZ
+	tFI9usx5UKPz2/WUr/O1yYdIrSdK7sI8EikBwheBi1LpjhkpwmZITWmqaR52phlISZLnzLTv7Op
+	+n4I6Nn+ewXXAPyvetOuSLs927p46wjzJxIvD7sfrSLQSlhYlTymUppvAmw==
+X-Gm-Gg: AYBFou3G1KqQTMrEo3MYSHsX2yQcS3eB5sSz3vn6peepKOzZOsdSQIOdHgdLueTLugu
+	nE1euwmSSKFhSDqDEn73/uwboczOLR7tTED757zRHV1VmVZ0QjPG8F3Dl9TD9AngPDaFHAY4b6e
+	secp86/FaaJ0TMmEIbwdSv7x2Y/RDFK+Mg11IGXLWODHTYYFPGGjvBGkRPM2IdFtOoalowTxvyw
+	b8ioS58f3eEEFWFeAofjlNl/kvt+Ffs5x3IbRq04d5+MNinYEcoEbC5S70zZ7lWIKDEQTH1QqIb
+	1f2sMv1umnaWdbXPXqqT5oPyHsIYkBDK83d5akjos/cmrt0zRdWF5fjNeLhWT/dO5nLcWHnmXFx
+	Ghw78tPuReBw1rVGTAZ8P04caaf3I7w21SNDtVsgiHflsCde/HDMuyjEiDQkLbeJtB/P6VDt7zQ
+	==
+X-Received: by 2002:a17:906:8f8a:b0:c25:f7db:4bed with SMTP id a640c23a62f3a-c2945efbe7emr176079466b.19.1789027937034;
+        Thu, 10 Sep 2026 01:12:17 -0700 (PDT)
+X-Received: by 2002:a17:906:8f8a:b0:c25:f7db:4bed with SMTP id a640c23a62f3a-c2945efbe7emr176077166b.19.1789027936516;
+        Thu, 10 Sep 2026 01:12:16 -0700 (PDT)
+Received: from [192.168.188.218] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c260d4aa01dsm882062666b.15.2026.09.10.01.12.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 10 Sep 2026 01:12:15 -0700 (PDT)
+Message-ID: <c95bc6f8-b8da-426f-a056-1c692559d14f@redhat.com>
+Date: Thu, 10 Sep 2026 10:12:14 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] tcp: fastopen: check rsk_drop_req() in
+ tcp_fastopen_create_child()
+To: Yilin Zhang <yilinzhang@moonshot.ai>, Mat Martineau
+ <martineau@kernel.org>, Matthieu Baerts <matttbe@kernel.org>,
+ Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev,
+ Kimi Security Team <bug-report@moonshot.ai>
+References: <20260903094010.4066892-1-yilinzhang@moonshot.ai>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20260903094010.4066892-1-yilinzhang@moonshot.ai>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-DWXGMAC2 uses XGMAC_TIMESTAMP_STATUS at offset 0xd20, while the
-generic stmmac PTP handler reads the dwmac4 offset GMAC_TIMESTAMP_STATUS
-(0xb20).  Before this change, the DWXGMAC2 and DWXLGMAC2 hwif entries
-used &stmmac_ptp, whose timestamp_interrupt callback read the wrong
-register and whose config_hw_tstamping callback never enabled the
-XGMAC timestamp interrupt (XGMAC_TSIE was not in XGMAC_INT_DEFAULT_EN).
-As a result, auxiliary snapshot events were never reported on XGMAC
-platforms.
+On 9/3/26 11:40 AM, Yilin Zhang wrote:
+> subflow_syn_recv_sock() sets drop_req when an MP_JOIN SYN takes the fatal
+> fallback and destroys the cloned child. tcp_fastopen_create_child()
+> ignored the flag and could queue the destroyed child.
+> 
+> With an MPTCP listener using server-side Fast Open, a valid-cookie
+> MP_JOIN SYN could then expose the freed child through accept().
+> 
+> Release the locked child and drop the request before tcp_conn_request()
+> sends a SYN-ACK. Initialize drop_req when allocating the request so the
+> check cannot observe stale state after request-socket reuse.
+> 
+> Changes in v2:
+> - unlock the child before dropping its reference
+> - drop the request instead of sending a SYN-ACK after the MPTCP reset,
+>   as suggested by Jiayuan Chen
+> 
+> Fixes: 90bf45134d55 ("mptcp: add new sock flag to deal with join subflows")
+> Reported-by: Kimi Security Team <bug-report@moonshot.ai>
+> Suggested-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+> Signed-off-by: Yilin Zhang <yilinzhang@moonshot.ai>
 
-Add a dedicated DWXGMAC2 timestamp interrupt handler that:
-- reads XGMAC_TIMESTAMP_STATUS before checking
-  STMMAC_FLAG_EXT_SNAPSHOT_EN, so that the timestamp interrupt status is
-  cleared even when auxiliary snapshots are disabled
-- derives the pending auxiliary snapshot count from the persistent
-  ATSNS field instead of the transient AUXTSTRIG status bit
-- generates the corresponding PTP_CLOCK_EXTTS events
+This looks like the wrong fix. IIRC fastopen is not compatible with MPJ
+- as the latter must accept data only after the 4way handshake completion.
 
-Also enable XGMAC_TSIE in XGMAC_INT_DEFAULT_EN and hook the new
-handler into the DWXGMAC2 and DWXLGMAC2 hwif entries.
+@Mat(s): could you please double check the above ^^^ statement???
 
-Signed-off-by: Zxyan Zhu <zxyan0222@gmail.com>
----
- .../net/ethernet/stmicro/stmmac/dwxgmac2.h    |  2 +-
- .../ethernet/stmicro/stmmac/dwxgmac2_core.c   | 43 +++++++++++++++++++
- drivers/net/ethernet/stmicro/stmmac/hwif.c    |  4 +-
- drivers/net/ethernet/stmicro/stmmac/hwif.h    |  1 +
- .../ethernet/stmicro/stmmac/stmmac_hwtstamp.c | 12 ++++++
- .../net/ethernet/stmicro/stmmac/stmmac_ptp.h  |  1 +
- 6 files changed, 60 insertions(+), 3 deletions(-)
+If so mptcp should reject entirely MPJ + fastopen and no addtional code
+required on the TCP side.
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h
-index f8ab347f7b5b..03cbae326995 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2.h
-@@ -87,7 +87,7 @@
- #define XGMAC_TSIE			BIT(12)
- #define XGMAC_LPIIE			BIT(5)
- #define XGMAC_PMTIE			BIT(4)
--#define XGMAC_INT_DEFAULT_EN		(XGMAC_LPIIE | XGMAC_PMTIE)
-+#define XGMAC_INT_DEFAULT_EN		(XGMAC_LPIIE | XGMAC_PMTIE | XGMAC_TSIE)
- #define XGMAC_Qx_TX_FLOW_CTRL(x)	(0x00000070 + (x) * 4)
- #define XGMAC_PT			GENMASK(31, 16)
- #define XGMAC_TFE			BIT(1)
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-index 1a88cbaed70c..891b7ceea2d4 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_core.c
-@@ -1154,6 +1154,49 @@ static int dwxgmac2_get_mac_tx_timestamp(struct mac_device_info *hw, u64 *ts)
- 	return 0;
- }
- 
-+void dwxgmac2_timestamp_interrupt(struct stmmac_priv *priv)
-+{
-+	u32 ts_status, pending_snapshots, acr_value, channel;
-+	struct ptp_clock_event event;
-+	unsigned long flags;
-+	u64 ptp_time;
-+	int i;
-+
-+	/* Read XGMAC_TIMESTAMP_STATUS to get the AUX snapshot
-+	 * count.  This read also clears the TSIS bit in
-+	 * XGMAC_INT_STATUS.
-+	 * TX timestamp polling may have already cleared TSIS
-+	 * and AUXTSTRIG, so rely on ATSNS instead.
-+	 * TXTSC is cleared by XGMAC_TXTIMESTAMP_SEC, not by
-+	 * this register, so there is no conflict.
-+	 */
-+	ts_status = readl(priv->ioaddr + XGMAC_TIMESTAMP_STATUS);
-+
-+	if (!(priv->plat->flags & STMMAC_FLAG_EXT_SNAPSHOT_EN))
-+		return;
-+
-+	pending_snapshots = FIELD_GET(XGMAC_TIMESTAMP_ATSNS_MASK, ts_status);
-+	if (!pending_snapshots)
-+		return;
-+
-+	acr_value = readl(priv->ptpaddr + PTP_ACR);
-+	channel = FIELD_GET(PTP_ACR_MASK, acr_value);
-+	if (!channel)
-+		return;
-+	channel = ilog2(channel);
-+
-+	for (i = 0; i < pending_snapshots; i++) {
-+		read_lock_irqsave(&priv->ptp_lock, flags);
-+		stmmac_get_ptptime(priv, priv->ptpaddr, &ptp_time);
-+		read_unlock_irqrestore(&priv->ptp_lock, flags);
-+
-+		event.type = PTP_CLOCK_EXTTS;
-+		event.index = channel;
-+		event.timestamp = ptp_time;
-+		ptp_clock_event(priv->ptp_clock, &event);
-+	}
-+}
-+
- static int dwxgmac2_flex_pps_config(void __iomem *ioaddr, int index,
- 				    struct stmmac_pps_cfg *cfg, bool enable,
- 				    u32 sub_second_inc, u32 systime_flags)
-diff --git a/drivers/net/ethernet/stmicro/stmmac/hwif.c b/drivers/net/ethernet/stmicro/stmmac/hwif.c
-index 265671170bf6..eba87410f985 100644
---- a/drivers/net/ethernet/stmicro/stmmac/hwif.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/hwif.c
-@@ -258,7 +258,7 @@ static const struct stmmac_hwif_entry {
- 		.dma = &dwxgmac210_dma_ops,
- 		.mac = &dwxgmac210_ops,
- 		.vlan = &dwxgmac210_vlan_ops,
--		.hwtimestamp = &stmmac_ptp,
-+		.hwtimestamp = &dwxgmac2_ptp,
- 		.ptp = &stmmac_ptp_clock_ops,
- 		.mode = NULL,
- 		.tc = &dwmac510_tc_ops,
-@@ -280,7 +280,7 @@ static const struct stmmac_hwif_entry {
- 		.dma = &dwxgmac210_dma_ops,
- 		.mac = &dwxlgmac2_ops,
- 		.vlan = &dwxlgmac2_vlan_ops,
--		.hwtimestamp = &stmmac_ptp,
-+		.hwtimestamp = &dwxgmac2_ptp,
- 		.ptp = &stmmac_ptp_clock_ops,
- 		.mode = NULL,
- 		.tc = &dwmac510_tc_ops,
-diff --git a/drivers/net/ethernet/stmicro/stmmac/hwif.h b/drivers/net/ethernet/stmicro/stmmac/hwif.h
-index fe18f98fae45..5a308e79db4a 100644
---- a/drivers/net/ethernet/stmicro/stmmac/hwif.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/hwif.h
-@@ -672,6 +672,7 @@ extern const struct stmmac_desc_ops ndesc_ops;
- 
- extern const struct stmmac_hwtimestamp stmmac_ptp;
- extern const struct stmmac_hwtimestamp dwmac1000_ptp;
-+extern const struct stmmac_hwtimestamp dwxgmac2_ptp;
- 
- extern const struct stmmac_mode_ops ring_mode_ops;
- extern const struct stmmac_mode_ops chain_mode_ops;
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c
-index b9a985fa772c..9d7d24259abd 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c
-@@ -277,3 +277,15 @@ const struct stmmac_hwtimestamp dwmac1000_ptp = {
- 	.get_ptptime = dwmac1000_get_ptptime,
- 	.timestamp_interrupt = dwmac1000_timestamp_interrupt,
- };
-+
-+const struct stmmac_hwtimestamp dwxgmac2_ptp = {
-+	.config_hw_tstamping = config_hw_tstamping,
-+	.init_systime = init_systime,
-+	.config_sub_second_increment = config_sub_second_increment,
-+	.config_addend = config_addend,
-+	.adjust_systime = adjust_systime,
-+	.get_systime = get_systime,
-+	.get_ptptime = get_ptptime,
-+	.timestamp_interrupt = dwxgmac2_timestamp_interrupt,
-+	.hwtstamp_correct_latency = hwtstamp_correct_latency,
-+};
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.h b/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.h
-index 3fe0e3a80e80..dade09614163 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_ptp.h
-@@ -103,6 +103,7 @@ int dwmac1000_ptp_enable(struct ptp_clock_info *ptp,
- 
- void dwmac1000_get_ptptime(void __iomem *ptpaddr, u64 *ptp_time);
- void dwmac1000_timestamp_interrupt(struct stmmac_priv *priv);
-+void dwxgmac2_timestamp_interrupt(struct stmmac_priv *priv);
- 
- extern const struct ptp_clock_info stmmac_ptp_clock_ops;
- extern const struct ptp_clock_info dwmac1000_ptp_clock_ops;
--- 
-2.34.1
+A minor process note: the changelog should come after the tag area and a
+'---' separator.
+
+/P
 
