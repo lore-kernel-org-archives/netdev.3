@@ -1,83 +1,46 @@
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31F1B46EC6C
-	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 20:02:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43D0C414405
+	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 20:03:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789070557; cv=none; b=o+Gfi9PzEz3DRW85hWGuLuijc1nRPQ5c8wbIyAa3LCY4QLrtmRzdG7XHkOIA+qiuS17YV3xz6EVJH3DZL1r5C3ETkyxvDvZTfV/3As03KhLe2yXBhlM9UbVaMACY8pbAVEwLULVT1/yksyG6+ZudC7VN7l/X0Y9/ywZ+eLGQsjg=
+	t=1789070602; cv=none; b=BWXuKyP9sDqIjcpGia+wQyeHxbabTv90Sqv+FIthvaej0zqfVZPhtKA2wJTrv+C5TmdJUII1hq2ue9McCGZWFU3EKoK7ykPYdqefCVm2TtPFXyu/8fFNnU7WZreZQBebS829wVX4m/T2WUG4dj/4iQYKRV06K7YLcvx7XQ8wESg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789070557; c=relaxed/simple;
-	bh=A3hZp6S0iVLSHK0F2SHRfV8fdm35uGWaIJU8a37QGP8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=q3mxw5B55FoCPLPcsUWWealxSGP0JstGyVffJM1GPSJmUPr5gixjeA3l4k4gcKAa09dgO+Jc+Z97wV3uDvwATA0sWhAMc234AT7mNHT4Ymxn1PE9Io2WXB757qHQuMTKZp9FyYsrIBa3qsI/j8Vf7Ssyx5gzSvJrJbL1v1yHh3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QdHeWh2E; arc=none smtp.client-ip=74.125.225.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1789070602; c=relaxed/simple;
+	bh=WyOEXbp407YP5NVS/khpv7m+EREG1PATN8Ikco0UfmY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UxedzflKTHWl08P4c3RKHb2F65U56v9fJbkbb4+ghupbqMdqDj+TFi0qC8UfbIYhQhqt/UZp/7sMTdgXk3X1zDKiNTiBag7yrCqtDD8rTVAg2UImKufU++pOHOjsFEKeTz1ItgboCYo7DDHsczTiTdp1zxoyCg7UV9ju9V24Pw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KSNf353U; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QdHeWh2E"
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49ce364488dso750695e9.0
-        for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 13:02:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789070553; x=1789675353; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ly0zpPrI27aaOVayRwfu5QMDzC7RwvjeeGzfZnLG77c=;
-        b=QdHeWh2EOqi9mHZ2zFY1OU7P5N2FUR1Gtac7NDIpMd9L7HoWSNgWRU5lXDh4/g/1IF
-         o3ubzxqQ+GCsocse9/TvNtSwNkZzQHbgKMkLMwBfxSTICcTphvFVEPMRXxgWkk9cWBNY
-         shsCFlgV80mGNvm4xPcPnXqq93lSrK9o5rco21t3rKLFKkxZ4N44FxMa+NclsYfK7d4F
-         mLWCzj/BObQNbCwYMml0YMWZI2xj91kPL4kzsEekwq/pUo2GbbwncoyJpK3+elD06jjs
-         6s5RgKcdUx+Nyzqhd82u9vSWHWe5kpgw4svrgzRZWBvgN3MStV758iXfEgUN/oSD5Hrd
-         u/Zw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789070553; x=1789675353;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ly0zpPrI27aaOVayRwfu5QMDzC7RwvjeeGzfZnLG77c=;
-        b=Pri+p04WkB4Pcj5LwzE9OhGVlTsUBFlHT5O/hpHrbueGVOsVZF62goa+XtwJX0ryMS
-         dSmwS2/msWf2cMHIDn/e9R7YbYab0Mamm72VsYk3pwHfYTVGN/gOrPTLl2r96CjWKjos
-         Jv8xsEsiDm6bSl9ld5giGANBvq3WUOvPhPFVINCVDpTX6NMx7VcM9Xs+jQTAbgGq1G5V
-         ovBWcIaKF+AJOPcYkIhqtbFSIW9zZMquwK4zUeIJdSUlbmcdzz/5HLnBt0OLREhZUDyN
-         svhGZfesZdgd2w2s+jIgOr9dE0RFSfDwtLp2zY9M1bQSZOPK6g49FOiXY4TvlftBsNIn
-         Y5Fg==
-X-Forwarded-Encrypted: i=1; AKwUvBy9ALd40iZsD3NmYK8YHj1z4jAgvr9w1IlQc5uHj2lbO61aj1XYt292OoBGumgJ2Q33TBcelDU=@vger.kernel.org
-X-Gm-Message-State: AFuF++kzDvyrJ9hkjOl7W3TlbY8Ydd5j1/OfpNgVRG2ClXY4wAWpdEot
-	vS93wwJVc47+d27A4e+pjErcP2GTnJ1JlgiAUtpR+7+lh+mphqhg2/Y4
-X-Gm-Gg: AYBFou0OU1U/HTdGiL5wfs5izNcyL8CZrlDYzUfZg1Ds2ocR4zXeSHOlybkOb1a7+kr
-	wnuAnABy7xBfU28Nwd2MQGt2OwCdXLc0at+tTa5yUgGDrtF9WCVhU99wT+qXtFp8T/F1QOpdQwl
-	UASl+1Lto7yZQxs/LLrXcpJQ7dvG9fjbUv5lA6T0yA9veZbBcmrvn9X1hnI/nbd/G6cDxb6V9l2
-	bSgZU7mkr4slMYiaqA95WJJfnqtAwyENGXBe1tLcGiZEaFhaXT1s2CgXjuiZWgqgRLocR4AHUaZ
-	vlfaFwZ5MX4+ek+OYClDbBCkTVH2EX/ITyS1lI7zp+YycGy8vQKBL9vNjoleKZ3UMfbos0Mx54I
-	9EkdjcvmI6g1Pqcpdtp3mD54ScUu7nn3fAEdZ0ayuOh7vJ69VLpjCSCWUO0ENBGEqjQxuxUVUCG
-	lXTnlSyI6ukK8+OE9Q4LfS1H5TgSACQODJT4K9bCog+ugHy2Q36vYyhER1fq8OmAImcyTa3wu6J
-	chy3PHafpqGI5liPO4Fv+zwSdFt56dd89orBzMxixsACSLKBBZkSxPae2TqviI3kuVCacwfgJ3t
-	ju7LYyZUfve/aEFmaQqxw7kchQmoVK+GLflVlZ5k+1Amq1iGvrLSZkMf+IpKUgsCrFHHSOP8ATJ
-	bcOR+gu7R2eKtyOsX
-X-Received: by 2002:a05:600c:348a:b0:49d:29ab:67f8 with SMTP id 5b1f17b1804b1-49e6108ad2amr10904115e9.12.1789070553232;
-        Thu, 10 Sep 2026 13:02:33 -0700 (PDT)
-Received: from MacBook-Pro-von-Karl.localdomain (dynamic-2a02-3100-b3d9-b901-601c-58ef-b3f5-74f5.310.pool.telefonica.de. [2a02:3100:b3d9:b901:601c:58ef:b3f5:74f5])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49e62227071sm638505e9.3.2026.09.10.13.02.31
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Thu, 10 Sep 2026 13:02:32 -0700 (PDT)
-From: Karl Mehltretter <kmehltretter@gmail.com>
-To: Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>
-Cc: Karl Mehltretter <kmehltretter@gmail.com>,
-	Phil Sutter <phil@nwl.cc>,
-	Fernando Fernandez Mancera <ffmancera@riseup.net>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] netfilter: nft_synproxy: use the family-aware checksum helper
-Date: Thu, 10 Sep 2026 22:02:28 +0200
-Message-Id: <20260910200228.5127-1-kmehltretter@gmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KSNf353U"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 881681F000FF;
+	Thu, 10 Sep 2026 20:03:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789070600;
+	bh=5CERSJGXY0uq4yE6H6D6UL6kf+w+30yBZqwDiQHSgZo=;
+	h=From:To:Cc:Subject:Date;
+	b=KSNf353Uw8AUksUCJfhld5fF2WgE+dRA9gLLTozBgd7KRRHTQ48epCn/bFIkpfRI4
+	 REKpNI4wWaKiRnD4hdFDXLWTlYPminhNuDqzbATb+LepvDn+iS1nKl0fTA5vlV8oMw
+	 zHN2jmeZPeAT5i2ZuYhLsIl7H1S3u5baZ7axKeFwzQDKp8rQWGtw6nTISQeVm2WnLd
+	 7C5RHspohkUWWzPkKr6YIaoRgu5y4hrhx1nMDzovOgtZZEZ6irsdOx2K167/ychGkw
+	 OmPu0l+L7zhodnvPnnPp19ek4EsiuF6EmeIHdYaMe8ATKo8V3GHOSoHKP2N2ouBxE8
+	 TZeG1714XYh2w==
+From: Jakub Kicinski <kuba@kernel.org>
+To: davem@davemloft.net
+Cc: netdev@vger.kernel.org,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	horms@kernel.org,
+	jiri@resnulli.us,
+	tariqt@nvidia.com,
+	moshe@nvidia.com,
+	donald.hunter@gmail.com,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH net-next 0/8] devlink: netlink spec fixes
+Date: Thu, 10 Sep 2026 13:03:04 -0700
+Message-ID: <20260910200312.2665792-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.55.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -86,57 +49,25 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-nft_synproxy_do_eval() verifies the TCP checksum before it switches on
-skb->protocol.  It uses nf_ip_checksum(), which constructs an IPv4
-pseudo header and relies on the IPv4 header checksum when folding the
-whole skb.  Neither operation is valid for an IPv6 packet.
+Number of spec fixes for the devlink family.
 
-A correctly checksummed IPv6 segment can therefore fail verification
-when it reaches the hook as CHECKSUM_NONE or, at NF_INET_LOCAL_IN,
-CHECKSUM_COMPLETE.  nft_synproxy_do_eval() returns NF_DROP before
-nft_synproxy_eval_v6() can send a SYN-ACK.
+Jakub Kicinski (8):
+  devlink: fix the enum behind DEVLINK_ATTR_RELOAD_LIMITS
+  netlink: specs: devlink: drop the stale port dump reply value
+  netlink: specs: devlink: describe DEVLINK_ATTR_NESTED_DEVLINK
+  netlink: specs: devlink: complete the port function nest
+  devlink: generate the port function policy from the spec
+  netlink: specs: devlink: populate multi-attr attrs for region read and
+    line card
+  netlink: specs: devlink: describe the netns id in the parent-dev nest
+  netlink: specs: devlink: add pad to the subsets carrying padded u64s
 
-nft_synproxy_validate() deliberately admits NFPROTO_IPV6 and
-NFPROTO_INET, and the xtables counterpart ip6t_SYNPROXY.c already calls
-nf_ip6_checksum().
+ Documentation/netlink/specs/devlink.yaml | 153 +++++++++++++++++++++--
+ net/devlink/netlink_gen.h                |   2 +-
+ net/devlink/netlink_gen.c                |   8 +-
+ net/devlink/port.c                       |  19 +--
+ 4 files changed, 149 insertions(+), 33 deletions(-)
 
-Use nf_checksum() with nft_pf() so the checksum helper dispatches to the
-packet family's implementation.
-
-Fixes: ad49d86e07a4 ("netfilter: nf_tables: Add synproxy support")
-Assisted-by: LLM
-Signed-off-by: Karl Mehltretter <kmehltretter@gmail.com>
----
-
-Notes (testing):
-    Testing:
-    - Raspberry Pi 400 with bcmgenet and 6.18.39+rpt-rpi-v8: the base kernel
-      received IPv6 SYNs but sent no reply.  IPv4 with the same synproxy rule
-      and IPv6 without synproxy completed normally.
-    - Two x86_64 QEMU guests with pcnet CHECKSUM_NONE receive packets: the
-      current-mainline base completed the IPv4 handshake but dropped six
-      IPv6 SYNs.  With this patch, both families completed SYN, SYN-ACK and
-      ACK.  ICMP controls passed and the invalid-drop counters stayed zero.
-
- net/netfilter/nft_synproxy.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/net/netfilter/nft_synproxy.c b/net/netfilter/nft_synproxy.c
-index 9ed288c9d168..554a96a000f4 100644
---- a/net/netfilter/nft_synproxy.c
-+++ b/net/netfilter/nft_synproxy.c
-@@ -118,7 +118,8 @@ static void nft_synproxy_do_eval(const struct nft_synproxy *priv,
- 		return;
- 	}
- 
--	if (nf_ip_checksum(skb, nft_hook(pkt), thoff, IPPROTO_TCP)) {
-+	if (nf_checksum(skb, nft_hook(pkt), thoff, IPPROTO_TCP,
-+			nft_pf(pkt))) {
- 		regs->verdict.code = NF_DROP;
- 		return;
- 	}
-
-base-commit: 50d05c7c76c96b90462f24debacca971d2e86713
 -- 
-2.53.0
+2.55.0
 
