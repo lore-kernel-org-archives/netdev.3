@@ -1,50 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C2C249B5B6;
-	Thu, 10 Sep 2026 21:54:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 356323C2798;
+	Thu, 10 Sep 2026 22:01:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789077284; cv=none; b=eHYYxBEw6IgRQYs1Ks2VcDQYr4kxvxftOulwqPxmroBkYIvVXm1T+78SQ/vLcLKQvhG2wDFlhQMJztVPWIVQYywaKa0SSXYFAepGtymx2aay6UNTfZYzWNvSZFgerlUh/8JrLWEnT2Ssx3ydTGFOQwzi8SWFsWpg9tTEMXjQWf0=
+	t=1789077671; cv=none; b=XjKAW4/Dt3hX7cFNcdmRmGJS0ou/R2MCSciJuV0mvttUKqp5XZETiNOt9PqhGy4PB3z8AkF9hNY9oCGpu+HZQ+Q3Iv5NLxzWWoZkP9PSD4c0E3w1/h6mXbABhd4BOQvoUXWRoyt77EL2P23kn6tTid6TDaAfGCHluOCZnM67Dso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789077284; c=relaxed/simple;
-	bh=dEw80/bVVerQhsMNG0G0v5y17LxkTGc02LZ3iRg0HME=;
+	s=arc-20240116; t=1789077671; c=relaxed/simple;
+	bh=NJL8zzbxAhxhlei/7Z6QEPX5Y/NAguljg3HD+ajEJck=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=SU8zU4aFSYklIOx44Ht1IhL3mpgTJLLpec6RmCAQMWv2K87rJWjGFPRMeX5vbilHsJxQqVF3EbEFXCoIugYWNsKJuLLO9QczCdxtaKEyrbyrju7sov/jKi+/oQmLB4NGILhzffsQCKtlsGPt5mNo2Jyjevge2uTfEy/yzxP2R+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lbzAsNwD; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=pzcPRAkSS4Jh42VGXGVtrjKGoVJjh4aUppU+O2RzhErSU66AhqWFWDhnICY1ItzgR138eb6MbtNhNngo7jcaRy8Z2wJrWoYOUAIj2Yx6eSxHJj5MSuvyd7V8/mB9Ak7Du3w1tx2EZP4UB1vEUwaYW4REXUEGIchvrFgxmKiLKJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GFnW1ARS; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lbzAsNwD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52CEB1F000FF;
-	Thu, 10 Sep 2026 21:54:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GFnW1ARS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B73BE1F000FF;
+	Thu, 10 Sep 2026 22:01:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789077282;
-	bh=c2DuhBr8po4g2CDYugULZYspIL0D4pvk6ekdu105AOc=;
+	s=k20260515; t=1789077665;
+	bh=HNjq5xHWtE/e6PR352/5hMq3DaOoOS3NAvFZhTCBijM=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=lbzAsNwDImI6O076ZlZgN51/lSyMpAiP2J79bg5IBKLYcnuYTwoq0Ges50sXjBW8G
-	 aJT9PoongOEcpeSYkzhTrzzGlbULEcRDkajyZVF07/WoLzpsJYIaz5m6y9GCkAIX4I
-	 phy2oPXgfjGxb0Rdewyjft5w4zN5XY/fO4/FLzeIlX0U3wWvQW2w0msL1qDQUnI99u
-	 XCMpaHuGn0QIUCRnZAm6x7ssx+Ir0a2uCe9YarjAknAiPV9h1YvmAqKwlIXH+GDH+E
-	 wVzbjDl6T1F+qU6LYSoKM7vV2e1nPe/dT/zPP2BQtU/rAUPw0m/NHVmEAPyqpv2K+k
-	 g6337iHG8COpQ==
-Subject: Re: [PATCH net-next V4 14/14] selftests: drv-net: Add PSP HW GRO
- conformance tests
+	b=GFnW1ARSnaLKYJA41JWi3YZ7ZO+QlyddWRZ1qc5lumGeQUg8SSUTZEodQZ4qrcrKq
+	 In1fy5a/ubg1LxgtX9azootn3+GtyQj/ABQa+uH4vQPn7byevc1TtXzIeA2SHO1YXi
+	 Za2i1pW4DDCJaS9BYJstIjDij9RAt/vf/yOudjH4/3N4oOLmlLM4aZD9gIyZbV4nO/
+	 GJQh8H5JQK248dFhDeE3t148ZVKfO2pd+tz38AtCzd1ncHycn3cSSLFnifvrYdzIWO
+	 djYUfd3QU9KjOZndKxkd9PU3dtFzTKULi/elsvKoddJV9+MLSbpvpYM1Uub4MBK3gO
+	 0+/l3xZ8C7I8A==
+Subject: Re: [PATCH] net: dsa: tag_rtl8_4: push VLAN tag into payload before
+ DSA CPU tag
 From: netdev-bot+sashiko@kernel.org
-To: tariqt@nvidia.com
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com,
- sd@queasysnail.net, bobbyeshleman@meta.com, borisp@nvidia.com,
- cjubran@nvidia.com, cratiu@nvidia.com, daniel.zahka@gmail.com, doruk@0sec.ai,
- dtatulea@nvidia.com, gal@nvidia.com, jianbol@nvidia.com, kees@kernel.org,
- leon@kernel.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-rdma@vger.kernel.org,
- mbloch@nvidia.com, petrm@nvidia.com, raeds@nvidia.com, rrameshbabu@nvidia.com,
- saeedm@nvidia.com, shuah@kernel.org, skhan@linuxfoundation.org,
- horms@kernel.org, willemb@google.com, willemdebruijn.kernel@gmail.com
-Date: Thu, 10 Sep 2026 21:54:39 +0000
-Message-ID: <178907727987.219967.2600993092228146685@kernel.org>
-In-Reply-To: <20260908065244.3799142-15-tariqt@nvidia.com>
-References: <20260908065244.3799142-15-tariqt@nvidia.com>
-X-sashiko-severity: Medium
+To: singh.amitesh@gmail.com
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, andrew@lunn.ch,
+ olteanv@gmail.com, kuba@kernel.org, davem@davemloft.net
+Date: Thu, 10 Sep 2026 22:01:04 +0000
+Message-ID: <178907766425.219967.7235108817827251025@kernel.org>
+In-Reply-To: <20260908040041.124640-1-singh.amitesh@gmail.com>
+References: <20260908040041.124640-1-singh.amitesh@gmail.com>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -54,263 +46,166 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 5 potential
+Thank you for your contribution! Sashiko AI review found 4 potential
 issue(s) to consider:
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 3
+Critical: 0 · High: 1 · Medium: 1 · Low: 2
 
-- [Medium] test_psp_ver_diff() in
-  tools/testing/selftests/drivers/net/hw/psp_gro.py gates on the *count*…
-- [Medium] test_psp_after_reconfig()
-  (tools/testing/selftests/drivers/net/hw/psp_gro.py:132-141) disables…
-- [Low] The new HAVE_OPENSSL probe in
-  tools/testing/selftests/drivers/net/hw/Makefile (lines 16-28) decides…
-- [Low] test_psp_ver_diff()
-  (tools/testing/selftests/drivers/net/hw/psp_gro.py:116-122) claims to…
-- [Low] The psp_gro.py module docstring (line 7: "This reuses the gro
-  binary in --psp mode:") and the new Makefile comment ("psp_gro.py uses…
+- [High] Headroom accounting mismatch in net/dsa/tag_rtl8_4.c:
+  rtl8_4_tag_xmit() now consumes VLAN_HLEN (4) bytes of headroom via…
+- [Medium] Incomplete fix: the defect described in the commit message is
+  not specific to tag_rtl8_4.
+- [Low] The patch fixes a user-visible data-path bug (VLAN-tagged traffic
+  through an RTL8365MB leaks raw 0x8899 CPU tags to the peer port,…
+- [Low] The new comment in rtl8_4_tag_xmit()
+  (net/dsa/tag_rtl8_4.c:133-136) states the conduit NIC "will insert the…
 
 --
 
-selftests: drv-net: Add PSP HW GRO conformance tests
+net: dsa: tag_rtl8_4: push VLAN tag into payload before DSA CPU tag
 
-This adds psp_gro.py, which drives the existing gro helper binary with PSP
-associations obtained from a real PSP device, so the sender encrypts in
-software and the receiver relies on the NIC for decrypt, decap and HW GRO.
-It also plumbs a common_args parameter through gro_lib.run_test() and adds a
-libcrypto probe to the hw Makefile.
+This adds a __vlan_hwaccel_push_inside() call to rtl8_4_tag_xmit() so that
+a hardware-accelerated VLAN tag is moved into the skb payload before the
+8-byte RTL8_4 CPU tag is prepended. The stated goal is to keep the conduit
+NIC from inserting the 802.1Q header at the CPU tag offset.
 
-No Link: tags in the commit header.
+A few questions below.
 
->     Add PSP conformance tests using the same gro helper binary as other gro
->     tests , but in --psp mode. SPIs are procured by psp_gro.py from a real
+> net: dsa: tag_rtl8_4: push VLAN tag into payload before DSA CPU tag
 
 [Severity: Low]
-The commit message, the new Makefile comment ("psp_gro.py uses the gro
-binary in PSP mode") and the psp_gro.py docstring all describe a "--psp
-mode", but the gro helper has no such option.
+Should this carry a Fixes: tag and name the target tree?  It changes
+data-path behaviour for VLAN traffic through an RTL8365MB, and git blame
+attributes rtl8_4_tag_xmit() and the rest of the tagger to:
 
-In tools/testing/selftests/net/lib/gro.c the only PSP entry in
-long_options[] is:
+  1521d5adfc2b ("net: dsa: tag_rtl8_4: add realtek 8 byte protocol 4 tag")
 
-	{ "psp-assoc", required_argument, NULL, OPT_PSP_ASSOC },
+so that looks like the anchor stable tooling would want.
 
-and psp_enabled is just a side effect of psp_parse_assoc().  _psp_args()
-in psp_gro.py correctly emits --psp-assoc ver,spi,key.  Could the wording
-be changed to --psp-assoc so nobody tries to pass --psp and gets an
-unknown-option error from getopt_long()?
+[Severity: Medium]
+Is the problem really specific to tag_rtl8_4?  The user port inherits the
+conduit's VLAN features unconditionally in dsa_user_setup_tagger():
 
-> diff --git a/tools/testing/selftests/drivers/net/hw/Makefile b/tools/testing/selftests/drivers/net/hw/Makefile
-> index 6105be8e590f..daa7e52f236e 100644
-> --- a/tools/testing/selftests/drivers/net/hw/Makefile
-> +++ b/tools/testing/selftests/drivers/net/hw/Makefile
-> @@ -13,6 +13,20 @@ else
->  $(warning excluding iouring tests, liburing not installed or too old)
->  endif
+  user->features = conduit->vlan_features | NETIF_F_HW_TC;
+
+and nothing in net/dsa clears NETIF_F_HW_VLAN_CTAG_TX, so
+validate_xmit_vlan() leaves the tag in hwaccel form:
+
+  if (skb_vlan_tag_present(skb) &&
+      !vlan_hw_offload_capable(features, skb->vlan_proto))
+          skb = __vlan_hwaccel_push_inside(skb);
+
+The conduit then inserts the 802.1Q header at offset 12, which is exactly
+where every dsa_alloc_etype_header() based CPU tag lives.
+
+That includes the sibling Realtek tagger, rtl4a_tag_xmit(), which still
+does:
+
+  skb_push(skb, RTL4_A_HDR_LEN);
+
+  dsa_alloc_etype_header(skb, RTL4_A_HDR_LEN);
+
+with no push-inside, plus tag_brcm.c, tag_dsa.c, tag_lan9303.c,
+tag_mt7628.c, tag_mtk.c, tag_qca.c, tag_netc.c and friends.
+
+Was a core-side fix considered instead, for example not inheriting
+NETIF_F_HW_VLAN_CTAG_TX for etype-position tag protocols, or doing the
+push once in dsa_user_xmit()?  Could the changelog say why the per-tagger
+variant was chosen?
+
+> diff --git a/net/dsa/tag_rtl8_4.c b/net/dsa/tag_rtl8_4.c
+> index 4da3beebef75e..bc11ddc4e1784 100644
+> --- a/net/dsa/tag_rtl8_4.c
+> +++ b/net/dsa/tag_rtl8_4.c
+> @@ -128,6 +128,19 @@ static void rtl8_4_write_tag(struct sk_buff *skb, struct net_device *dev,
+>  static struct sk_buff *rtl8_4_tag_xmit(struct sk_buff *skb,
+>  				       struct net_device *dev)
+>  {
+> +	/* If the skb has a hardware-accelerated VLAN tag (skb->vlan_tci set),
+> +	 * push it into the payload before prepending the DSA CPU tag.
+> +	 * Otherwise the upstream NIC (e.g. imx-dwmac with tx-vlan-offload
+> +	 * fixed:on) will insert the 802.1Q header *after* the CPU tag,
+> +	 * producing [8100 VID][8899 CPU tag] on the wire instead of the
+> +	 * correct [8899 CPU tag][8100 VID].
+> +	 */
+
+[Severity: Low]
+The prose and the diagram in this comment disagree.  It says the NIC
+inserts the 802.1Q header "*after* the CPU tag", but the next line shows
+the result as [8100 VID][8899 CPU tag], i.e. the 802.1Q header ends up
+before the tag.  The file header documents the same thing:
+
+ *  +--------+--------+------------+------+-----
+ *  | MAC DA | MAC SA | 8 byte tag | Type | ...
+ *  +--------+--------+------------+------+-----
+
+Should this read "before the CPU tag"?
+
+> +	if (skb_vlan_tag_present(skb)) {
+> +		skb = __vlan_hwaccel_push_inside(skb);
+> +		if (!skb)
+> +			return NULL;
+> +	}
+> +
+>  	skb_push(skb, RTL8_4_TAG_LEN);
+
+[Severity: High]
+Does this need .needed_headroom bumped by VLAN_HLEN as well?  The tagger
+still declares only:
+
+net/dsa/tag_rtl8_4.c:rtl8_4_netdev_ops = {
+	...
+	.needed_headroom = RTL8_4_TAG_LEN,
+};
+
+The only headroom guarantee before the tagger runs comes from
+dsa_user_xmit() -> skb_ensure_writable_head_tail(), which tops up to
+exactly dev->needed_headroom and no more:
+
+net/core/skbuff.c:skb_ensure_writable_head_tail() {
+	...
+	needed_headroom = max_t(int, needed_headroom - skb_headroom(skb), 0);
+	...
+	return pskb_expand_head(skb, needed_headroom, needed_tailroom, GFP_ATOMIC);
+}
+
+For a plain NIC conduit that is 8 bytes.  __vlan_hwaccel_push_inside()
+then goes through __vlan_insert_inner_tag(), which only asks for an
+absolute VLAN_HLEN of headroom before consuming it:
+
+include/linux/if_vlan.h:__vlan_insert_inner_tag() {
+	if (skb_cow_head(skb, meta_len + VLAN_HLEN) < 0)
+		return -ENOMEM;
+
+	skb_push(skb, VLAN_HLEN);
+	...
+}
+
+With 8 bytes of headroom present, skb_cow_head(skb, 4) does not expand
+anything, so 4 bytes are left when control reaches
+skb_push(skb, RTL8_4_TAG_LEN).  Can that drive skb->data below skb->head
+and hit skb_under_panic() -> BUG()?
+
+The sja1105 tagger doing the same push declares:
+
+net/dsa/tag_sja1105.c:sja1110_netdev_ops = {
+	...
+	.needed_headroom = SJA1110_HEADER_LEN + VLAN_HLEN,
+};
+
+Would .needed_headroom = RTL8_4_TAG_LEN + VLAN_HLEN, or an explicit
+skb_cow_head(skb, RTL8_4_TAG_LEN) before the CPU-tag push, be the right
+thing here?
+
+There is a second effect: dsa_tag_protocol_overhead() is derived from
+needed_headroom + needed_tailroom, so the conduit MTU is sized 4 bytes
+short for full-size VLAN frames, and when the cow does fire it adds a
+pskb_expand_head() per VLAN packet in the transmit path plus a newly
+reachable allocation-failure drop.
+
 >  
-> +# psp_gro.py uses the gro binary in PSP mode, which requires OpenSSL.
-> +PKG_CONFIG ?= pkg-config
-> +HAVE_OPENSSL := $(shell echo 'int main(void) { return 0; }' | \
-> +		  $(CC) -x c - -include openssl/evp.h \
-> +		  $(shell $(PKG_CONFIG) --cflags --libs libcrypto 2>/dev/null \
-> +			  || echo -lcrypto) \
-> +		  -o /dev/null >/dev/null 2>&1 && echo 1)
-> +
-> +ifeq ($(HAVE_OPENSSL),1)
-> +COND_PROGS += psp_gro.py
-> +else
-> +$(warning excluding PSP GRO tests, libcrypto not installed)
-> +endif
-
-[Severity: Low]
-Is the build host the right place to test this condition?  The PSP
-software encryption runs in the gro binary on the remote endpoint, not on
-the build host:
-
-gro_lib.py:_run_gro_bin()
-	cfg.bin_local = cfg.net_lib_dir / "gro"
-	cfg.bin_remote = cfg.remote.deploy(cfg.bin_local)
-	...
-	tx_cmd = f"{cfg.bin_remote} {args} --iface {cfg.remote_ifname}"
-	...
-	cmd(tx_cmd, host=cfg.remote)
-
-gro is dynamically linked against libcrypto:
-
-tools/testing/selftests/net/lib/Makefile
-	$(OUTPUT)/gro: LDLIBS += $(LIBCRYPTO_LIBS)
-
-and Remote.deploy() only scp's the executable:
-
-tools/testing/selftests/drivers/net/lib/py/remote_ssh.py
-	cmd(f"scp {what} {self.name}:{file_name}")
-
-So on a setup where the build host has libcrypto but the remote endpoint
-lacks the runtime library, psp_gro.py is installed and every case fails
-with a dynamic linker error on the sender instead of skipping.  Would a
-runtime check on the remote be preferable here?
-
-[ ... ]
-
-> diff --git a/tools/testing/selftests/drivers/net/hw/psp_gro.py b/tools/testing/selftests/drivers/net/hw/psp_gro.py
-> new file mode 100755
-> index 000000000000..3a069c944ae1
-> --- /dev/null
-> +++ b/tools/testing/selftests/drivers/net/hw/psp_gro.py
-> @@ -0,0 +1,157 @@
-> +#!/usr/bin/env python3
-> +# SPDX-License-Identifier: GPL-2.0
-> +
-> +"""
-> +PSP HW GRO conformance tests.
-> +
-> +This reuses the gro binary in --psp mode:
-
-[Severity: Low]
-Same --psp naming question as in the commit message: the implemented
-option in gro.c is --psp-assoc.
-
-> +The sender crafts encapsulated & SW-encrypted PSP packets with receiver's PSP
-> +rx-assoc, and the receiver's device decrypts and decapsulates the packets
-> +before an AF_PACKET tap gets to analyze them.
-> +
-> +All GRO conformance tests which could run with PSP are included.
-> +"""
-
-[ ... ]
-
-> +def _setup(cfg, version):
-> +    """Enables PSP on the device under test."""
-> +    init_psp_dev(cfg)
-> +    require_version(cfg, version)
-> +
-> +
-> +def _psp_args(cfg, versions):
-> +    """Produces PSP associations as gro binary --psp-assoc arguments."""
-> +    keys = [_psp_assoc(cfg, ver) for ver in versions]
-> +    return [f"--psp-assoc {ver},{key['spi']:x},{key['key'].hex()}"
-> +            for ver, key in zip(versions, keys)]
-> +
-> +
-> +def _run(cfg, test_name, protocol, versions):
-> +    """Sets up, associates and runs one gro test case under PSP + HW GRO."""
-> +    _setup(cfg, max(versions))
-> +
-> +    run_test(cfg, "hw", protocol, test_name,
-> +             common_args=_psp_args(cfg, versions))
-
-[ ... ]
-
-> +@ksft_variants(_ip_variants())
-> +def test_psp_ver_diff(cfg, protocol):
-> +    """Frames from two different PSP versions must not coalesce."""
-> +    init_psp_dev(cfg)
-> +    if len(cfg.psp_info['psp-versions-cap']) < 2:
-> +        raise KsftSkipEx("Device supports a single PSP version")
-> +
-> +    _run(cfg, "psp_ver_diff", protocol, [0, 1])
-
-[Severity: Medium]
-Does the guard here match what the test then asks for?  It counts how
-many versions the device advertises, but the following call hardcodes
-versions 0 and 1.
-
-psp-versions-cap is an independent flag bitmask in
-Documentation/netlink/specs/psp.yaml:
-
-      - name: psp-versions-cap
-        doc: Bitmask of PSP versions supported by the device.
-        type: u32
-        enum: version
-        enum-as-flags: true
-
-so the supported set is not required to be a contiguous prefix starting
-at 0.  On a device advertising, say, hdr0-aes-gcm-128 (0) and
-hdr0-aes-gmac-128 (2), the length check passes and then:
-
-psp_gro.py:_run()
-	_setup(cfg, max([0, 1]))     /* == 1 */
-
-psp_lib.py:require_version()
-	name = cfg.pspnl.consts["version"].entries_by_val[version].name
-	if name in cfg.psp_info['psp-versions-cap']:
-		return
-	...
-	raise KsftSkipEx("PSP version not supported", name)
-
-which skips with a reason unrelated to the guard, and the cross-version
-non-coalescing assertion never runs on a device that could run it.
-
-The existing peer test picks the versions from the actual caps instead:
-
-tools/testing/selftests/drivers/net/psp.py:assoc_version_mismatch()
-	versions = [cfg.pspnl.consts["version"].entries[v].value for v in versions]
-
-Would deriving the two versions from cfg.psp_info['psp-versions-cap'] be
-better here?  Today mlx5 happens to advertise exactly versions 0 and 1
-(psp_supported_versions[] = { GCM_128, GCM_256 }), so this only bites the
-next driver that advertises a GMAC version.
-
-[Severity: Low]
-This isn't a bug, but does psp_ver_diff assert anything that psp_spi_diff
-does not?  The two associations passed here differ in version and in SPI,
-since each rx_assoc allocates a fresh device SPI
-(psp_nl_rx_assoc_doit() -> psd->ops->rx_spi_alloc()).
-
-On the gro.c side both cases share the same sender helper, which only
-flips psp_idx:
-
-send_psp_assoc_switch()
-	create_packet(buf, PAYLOAD_LEN, 0, PAYLOAD_LEN, 0);
-	psp_idx = 1;
-	write_packet(fd, buf, pkt_size, daddr);
-	psp_idx = 0;
-
-and the receive expectations are byte-for-byte the same as psp_spi_diff
-(correct_payload[0] = correct_payload[1] = PAYLOAD_LEN, then
-check_recv_pkts(rxfd, correct_payload, 2)); only the printf text differs.
-A version-only difference does not look constructible from user space, so
-this may be the closest achievable approximation - it is just worth noting
-that the case would pass even if the GRO path ignored the version field.
-
-[ ... ]
-
-> +@ksft_variants(_ip_variants())
-> +def test_psp_after_reconfig(cfg, protocol):
-> +    """Verifies that decap still works after PSP off + on."""
-> +    _setup(cfg, 0)
-> +
-> +    cap = cfg.psp_info['psp-versions-cap']
-> +    cfg.pspnl.dev_set({'id': cfg.psp_dev_id, 'psp-versions-ena': []})
-> +    cfg.pspnl.dev_set({'id': cfg.psp_dev_id, 'psp-versions-ena': cap})
-
-[Severity: Medium]
-Should the disable here be paired with a defer() for the restore?  As
-written, the only thing that re-enables PSP is the very next dev_set()
-call, with nothing covering an NlError from it or a kill between the two
-calls.
-
-init_psp_dev() only registers a rollback when the cached psp_info says the
-enabled set differs from the caps:
-
-tools/testing/selftests/drivers/net/psp_lib.py:init_psp_dev()
-	if cap != ena:
-		cfg.pspnl.dev_set({'id': cfg.psp_dev_id, 'psp-versions-ena': cap})
-		defer(cfg.pspnl.dev_set, {'id': cfg.psp_dev_id,
-					  'psp-versions-ena': ena})
-
-so on a device discovered with PSP already fully enabled (cap == ena)
-there is no defer at all.  If the re-enable does not happen, the NIC is
-left with PSP offload off while cfg.psp_info still caches the old enabled
-set, and later init_psp_dev() calls compare against that stale snapshot
-and conclude nothing needs enabling - subsequent PSP tests then fail on
-rx-assoc/decap in a way that looks like a driver problem.
-
-Would registering the re-enable via defer() right after the disable, and
-re-reading the device state rather than trusting the cached psp_info,
-address that?
-
-[ ... ]
+>  	dsa_alloc_etype_header(skb, RTL8_4_TAG_LEN);
+>
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260908065244.3799142-1-tariqt%40nvidia.com
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260908040041.124640-1-singh.amitesh%40gmail.com
