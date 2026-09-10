@@ -1,238 +1,222 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from fout-b5-smtp.messagingengine.com (fout-b5-smtp.messagingengine.com [202.12.124.148])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEB874A3F25;
-	Thu, 10 Sep 2026 15:33:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20C0D38A73B;
+	Thu, 10 Sep 2026 15:37:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.148
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789054407; cv=none; b=Qm8wRtX72xShIPaLUQhPk4Vq3ErGLhVQ7F2ZxqyAIYt2OQPAOOV9C0w5cJ4oySNHrgIQA2GpNYl/F2w7NH6O92PejVajEBfs5Xxv22fq/zLGBsqzzRKaJpFACHyZeGrg1mFwcY+Yeo0wYQfkaOMHBGFWLcAP/Gv0OKlYmH8VIKM=
+	t=1789054652; cv=none; b=NR+lglqAzqKMjnNF6fqxmKWEMCNwj6QJcUpunJ8UEOnK5ZFZSoK5O0mFie8TsDYsMzETp1M7k6vhqaOa9ipa62H6PiKDGnBJHaru8Y5YGiB2UymmAFnaP0nDa8ukMlIs6ON49iqcQr1dqjvN0GHdYUH3JSCMRtXc1ZN8phStC5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789054407; c=relaxed/simple;
-	bh=GWoXxwQbee4E47VmS4XZkoBt30EvqPBdskvJm5wsh18=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=hp1rTuTpOUw5FS5FBsljoGbz5UsKK7zvwC2ZEtrh0DDGos+CHEegiVI3s1odjiR5o4iN3zeIyGWeezATWsp6qcX4wdPEPe1aTZpHcKpXYK471eRLy/wSg1ifdsXEfzfDGwfoIbLlptV42plQYqXU+nQ+U5/5Q35BsJ60YjzL81A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CiD6n5R1; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789054652; c=relaxed/simple;
+	bh=tzfrxLbW18XBupQQO4Z4sOHkODX/2tTbZQV7+HM+Wto=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=o9gmHhbgfS7YaE4d0/rGWIVWtnCsIpAuTCOi80iM60upLPJl+eLqSYqlWQu3fdF8kQUFKHiVs/0jLYiyddPJ2vWPiAB20pr57UevVvmPxNozPvHqsuUrfa9zl2pLe0VSbdM99a7FcMbN87ERQ1qtZcucDjs/yl5xO9Djaiz2tUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=ikywC8+h; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=R8SmDbAP; arc=none smtp.client-ip=202.12.124.148
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CiD6n5R1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AC1B1F000FF;
-	Thu, 10 Sep 2026 15:33:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789054405;
-	bh=BVdmkaSk3ZG55nEhsYcH95ArBxXEWXCCMZcHoDFV5Og=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=CiD6n5R1z57QgmIKQnJ5Ajzku3sxKwqHMfxaB3mDlbzMea9AtA1NwcKXXtJx0LpgT
-	 2C+FRSyKXwy3L6xS/pdLkxg7fFmUG8YIgu0U4DxW9Ah845f2plLu/j8LPQsPNYXos0
-	 27A0xWLpZrJFMnd/tPxNxM8Iey3y6yUtrPqGeYE2lSIjOZygpZWGaI2VWxy6lqJ8bc
-	 /s+S7zOYwylvbRn1vZJ58Zvd7pHkLBSyzT71ntpSfTB+cvVXada0/uO+nLcijHwzx+
-	 oCOpmFKllmeDjeZ0kaLIVQbH5FXZxx1b8iheGr4oYEvOwYZC/345xMbF1K7YURGP3v
-	 oPq7odcg1/+1A==
-Subject: Re: [PATCH net-next V3] net: axienet: Clear stale AXI DMA TX/RX
- status before re-enabling interrupts
-From: netdev-bot+sashiko@kernel.org
-To: kusuma.vasana@amd.com
-Cc: radhey.shyam.pandey@amd.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, michal.simek@amd.com,
- git@amd.com, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-Date: Thu, 10 Sep 2026 15:33:24 +0000
-Message-ID: <178905440414.219967.6111426130109067474@kernel.org>
-In-Reply-To: <20260906153243.1903501-1-kusuma.vasana@amd.com>
-References: <20260906153243.1903501-1-kusuma.vasana@amd.com>
-X-sashiko-severity: High
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="ikywC8+h";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="R8SmDbAP"
+Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
+	by mailfout.stl.internal (Postfix) with ESMTP id 92D541D00107;
+	Thu, 10 Sep 2026 11:37:25 -0400 (EDT)
+Received: from ams-imap-03 ([10.64.2.23])
+  by ams-compute-02.internal (MEProxy); Thu, 10 Sep 2026 11:37:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1789054644;
+	 x=1789141044; bh=VJHi3AALrojUsaiH2K9JRyFh6yN6vM9XW4bo5EfCLvk=; b=
+	ikywC8+hP0FbgWYJ7JpppZwhmFT+TaVIwwfxZl3vKzlLdmM0Nux3yd+Im/GnBBxf
+	IsZhMPrU2CfaPOS3llPqcCh1/W6YupvRhqHnEPijgkiGE9FTjWByE5rH7xSz2+YS
+	+dblIgCXim5mQ79MRnnVj+HTE2oO78sbNkVr8Q34RjdHugoTrgiFbcREeHekftYd
+	aasBFCSTYq2bdjS9VoWdHFfCLjJ+zkroUH2SWQzQIfie7Rv6jWKaRIke0inoGzby
+	3B6POzhhAouDRYljXpkPjgMNSje743iQ78SiKVtE7Ge4+Dx7VPOmk/C6xBZz2BmT
+	VpnxDlhl6rU/FOoxhy83wA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1789054644; x=
+	1789141044; bh=VJHi3AALrojUsaiH2K9JRyFh6yN6vM9XW4bo5EfCLvk=; b=R
+	8SmDbAPjSEISBwANGL6NRU+VAUlWXrSQUFPgdkRsPNjMk/TQ6vTirkIvq0MISnMb
+	JKylqUisx/ovnCt8n5NY8n38p8Z0r7qneBX+3zXxCDi2CJwC02WhAFRI2seVrGL3
+	Dht2ceJo7GLlQMaxoAoPjc+jE/IjH4l6GZIuGYTnjn702MzCG2sJXfo7DJD6Mu+D
+	GdeuLOmK0EtS1BFwVrocZNEiHVquy2r7T6MQ/O53GTtfpHRB1FMWSHdFtJfVd492
+	huhQSYBkjqtlp54u32TtmpwCcuYi2jrpIaJFlHxn0OmcDjswJ7KPJQwv8vayUgpM
+	tlajKtuLqV1QATBx5g5yg==
+X-ME-Sender: <xms:qs6iaoxcZdBS5-tZ6559r51Ysxn8ibK0iu94a23oAy3L7zkGsUDSIA>
+    <xme:qs6ianED7WC-Q5vvqjBq8s_u2Wqo8da3kDi_H8X5KWUsVSaHxUeQXmRrU2dFDuKW5
+    iSmQx6sT9tJCQ5Fwo1WTe4NJLY27B0TnB0PK74fvos-BO3OvrbH46Csjw>
+X-ME-Proxy-Cause: dmFkZTGzGT8QWaj5+IaF+j+BCEPEbeETmKmrh3i3QL1egfRXUvJOsOFxmKhTHJ5EJ0IvJ/
+    yrlbR57KqxmsqFYmHcxuNy7TxmyGimBY78fjpHyUy7vT/Q0OO0SF55UVJhaG/0alhtMMXP
+    gjrK4qv4Oymi20VFNGCTKHWPZM5dFQKAOC2iaHsd5PeiJ4bs06wqZiiNHoe9XtdI3wlCFz
+    dEvEW43MKZZojMIQ8Q2c5X4bpnwolr0T0c9O2qf0ntNk3rSE8d6qS+QV3WNpllSo8oIEPE
+    0cc52GAipoXJvmvdUNZM110yBhTc2CiUmuHzJTc3cgyXm93V2vumdIDzmA8tmt3nNU7Ug9
+    6+EvyqPEl/qJxhZSe/GxKdDq3P6XS8ocwRwYw1486eMhQ8woArvfJmN4iQRnrsRc0L86xi
+    FUFH72TMYxAZF+4RLrewGwWAm7BC/aWgYoMWJVSKwJbmsjXvsdGICOjD+m5FtnEZ/5B3FP
+    ahodQdjEW2UaaKlW69gdjKCiX5d3NjOm/upXNL0N5y/EL6C6fZpWiYQwvfBSI0XAN/+wiA
+    Cg1M8xRvHSmGMT5y0DNGWni2mwje4hoY8BKcu/+UhH04cABAYvBHYbSRHFVgnSoVo66ZEv
+    OhpSnSjBxC5zHMZ3qKuAHlvC9yX9G19i9o4NyzQqHNi8cGyFHrxA19niVE+A
+X-ME-Proxy: <xmx:r86iavuQaXSkajUGbGTxZOGm2llWg7fiaco8bOamAUQDeRL2Pd6HAQ>
+    <xmx:r86iavvdlBlZMz41c6a0PxU_zWsdsuHayQoajn_EtgnSKkrZC7QCwA>
+    <xmx:r86iau-ali-YMTcHW9nYfAeB8WFBwz4N3Kf6nVVNyNffsE_5Xex2YA>
+    <xmx:r86iao_ql0S4UwfTN7PSvF8rKrygtY-dHqzr4ZJBcaIKblcgxjNTZw>
+    <xmx:tM6iaqEzjEAmXefpeuCydSJA9LXJ7HlJinKnl2fmwVfK7B-jCn25-y5y>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.ams.internal (Postfix, from userid 501)
+	id A91DC32A007B; Thu, 10 Sep 2026 11:37:14 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-ThreadId: Ay04W235egbV
+Date: Thu, 10 Sep 2026 17:36:54 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Nicolai Buchwitz" <nb@tipi-net.de>,
+ "Fernando Fernandez Mancera" <fmancera@suse.de>
+Cc: Netdev <netdev@vger.kernel.org>, "Simon Horman" <horms@kernel.org>,
+ "Jakub Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>,
+ "Eric Dumazet" <edumazet@google.com>,
+ "David S . Miller" <davem@davemloft.net>,
+ "Jason Gunthorpe" <jgg@ziepe.ca>, "Leon Romanovsky" <leon@kernel.org>,
+ "Andrew Lunn" <andrew+netdev@lunn.ch>,
+ "Anthony L Nguyen" <anthony.l.nguyen@intel.com>,
+ "Przemek Kitszel" <przemyslaw.kitszel@intel.com>,
+ "Elad Nachman" <enachman@marvell.com>,
+ "Saeed Mahameed" <saeedm@nvidia.com>, "Tariq Toukan" <tariqt@nvidia.com>,
+ "Mark Bloch" <mbloch@nvidia.com>, "Ido Schimmel" <idosch@nvidia.com>,
+ "Petr Machata" <petrm@nvidia.com>,
+ "Edward Cree" <ecree.xilinx@gmail.com>,
+ "Maxime Chevallier" <maxime.chevallier@bootlin.com>,
+ "Maxime Coquelin" <mcoquelin.stm32@gmail.com>,
+ "Alexandre Torgue" <alexandre.torgue@foss.st.com>,
+ "Arend van Spriel" <arend.vanspriel@broadcom.com>,
+ "Miri Korenblit" <miriam.rachel.korenblit@intel.com>,
+ "Keith Busch" <kbusch@kernel.org>, "Jens Axboe" <axboe@kernel.dk>,
+ "Christoph Hellwig" <hch@lst.de>, "Sagi Grimberg" <sagi@grimberg.me>,
+ "Chaitanya Kulkarni" <kch@nvidia.com>,
+ "Saurav Kashyap" <skashyap@marvell.com>,
+ "Javed Hasan" <jhasan@marvell.com>,
+ GR-QLogic-Storage-Upstream@marvell.com,
+ "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
+ "Martin K. Petersen" <mkp@kernel.org>,
+ "Nilesh Javali" <njavali@marvell.com>,
+ "Manish Rangankar" <mrangankar@marvell.com>,
+ "Varun Prakash" <varun@chelsio.com>,
+ "Alexander Viro" <viro@zeniv.linux.org.uk>,
+ "Christian Brauner" <brauner@kernel.org>, "Jan Kara" <jack@suse.cz>,
+ "David Howells" <dhowells@redhat.com>,
+ "Marc Dionne" <marc.dionne@auristor.com>,
+ "Trond Myklebust" <trondmy@kernel.org>,
+ "Anna Schumaker" <anna@kernel.org>, "Chuck Lever" <cel@kernel.org>,
+ "Jeff Layton" <jlayton@kernel.org>, NeilBrown <neil@brown.name>,
+ "Olga Kornievskaia" <okorniev@redhat.com>,
+ "Dai Ngo" <Dai.Ngo@oracle.com>, "Tom Talpey" <tom@talpey.com>,
+ "Marek Lindner" <marek.lindner@mailbox.org>,
+ "Simon Wunderlich" <sw@simonwunderlich.de>,
+ "Antonio Quartulli" <antonio@mandelbit.com>,
+ "Sven Eckelmann" <sven@narfation.org>,
+ "Nikolay Aleksandrov" <razor@blackwall.org>,
+ "Pablo Neira Ayuso" <pablo@netfilter.org>,
+ "Florian Westphal" <fw@strlen.de>, "Phil Sutter" <phil@nwl.cc>,
+ "Johannes Berg" <johannes@sipsolutions.net>,
+ "Matthieu Baerts" <matttbe@kernel.org>,
+ "Mat Martineau" <martineau@kernel.org>,
+ "Geliang Tang" <geliang@kernel.org>, "Julian Anastasov" <ja@ssi.bg>,
+ "Aaron Conole" <aconole@redhat.com>,
+ "Eelco Chaudron" <echaudro@redhat.com>,
+ "Ilya Maximets" <i.maximets@ovn.org>,
+ "Allison Henderson" <achender@kernel.org>,
+ "Jamal Hadi Salim" <jhs@mojatatu.com>, "Jiri Pirko" <jiri@resnulli.us>,
+ "Marcelo Ricardo Leitner" <marcelo.leitner@gmail.com>,
+ "Xin Long" <lucien.xin@gmail.com>,
+ "D. Wythe" <alibuda@linux.alibaba.com>,
+ "Dust Li" <dust.li@linux.alibaba.com>,
+ "Sidraya Jayagond" <sidraya@linux.ibm.com>,
+ "Mahanta Jambigi" <mjambigi@linux.ibm.com>,
+ "Tony Lu" <tonylu@linux.alibaba.com>, "Wen Gu" <guwen@linux.alibaba.com>,
+ "Jon Maloy" <jmaloy@redhat.com>,
+ "Tung Quang Nguyen" <tung.quang.nguyen@est.tech>,
+ "Steffen Klassert" <steffen.klassert@secunet.com>,
+ "Herbert Xu" <herbert@gondor.apana.org.au>,
+ "Casey Schaufler" <casey@schaufler-ca.com>,
+ "Paul Moore" <paul@paul-moore.com>, "James Morris" <jmorris@namei.org>,
+ "Serge E. Hallyn" <serge@hallyn.com>,
+ "Vikas Gupta" <vikas.gupta@broadcom.com>,
+ "Bhargava Marreddy" <bhargava.marreddy@broadcom.com>,
+ "Rajashekar Hudumula" <rajashekar.hudumula@broadcom.com>,
+ =?UTF-8?Q?Markus_Bl=C3=B6chl?= <markus@blochl.de>,
+ "Heiner Kallweit" <hkallweit1@gmail.com>,
+ "Florian Fainelli" <florian.fainelli@broadcom.com>,
+ "Krzysztof Kozlowski" <krzk@kernel.org>,
+ "Qingfang Deng" <qingfang.deng@linux.dev>,
+ "Julian Braha" <julianbraha@gmail.com>,
+ "Ethan Nelson-Moore" <enelsonmoore@gmail.com>,
+ "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+ "Eric Biggers" <ebiggers@kernel.org>, "Ard Biesheuvel" <ardb@kernel.org>,
+ "Neal Cardwell" <ncardwell@google.com>,
+ "Kuniyuki Iwashima" <kuniyu@google.com>,
+ "Willem de Bruijn" <willemb@google.com>, "Alyssa Ross" <hi@alyssa.is>,
+ "Joel Granados" <joel.granados@kernel.org>,
+ "Oleg Nesterov" <oleg@redhat.com>, linux-rdma@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
+ "open list:NETRONOME ETHERNET DRIVERS" <oss-drivers@corigine.com>,
+ linux-net-drivers@amd.com, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-wireless@vger.kernel.org,
+ brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com,
+ linux-nvme@lists.infradead.org, linux-scsi@vger.kernel.org,
+ target-devel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-afs@lists.infradead.org, linux-nfs@vger.kernel.org,
+ b.a.t.m.a.n@lists.open-mesh.org,
+ "open list:ETHERNET BRIDGE" <bridge@lists.linux.dev>,
+ netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+ mptcp@lists.linux.dev, lvs-devel@vger.kernel.org, dev@openvswitch.org,
+ rds-devel@oss.oracle.com, linux-sctp@vger.kernel.org,
+ linux-s390@vger.kernel.org,
+ "open list:TIPC NETWORK LAYER" <tipc-discussion@lists.sourceforge.net>,
+ linux-security-module@vger.kernel.org
+Message-Id: <cda5d4e9-49a5-4d6f-93d4-fb50d74ed5ce@app.fastmail.com>
+In-Reply-To: <aeb37452e976f5d44540ac3a0999d07b@tipi-net.de>
+References: <20260910144914.8025-1-fmancera@suse.de>
+ <20260910144914.8025-2-fmancera@suse.de>
+ <aeb37452e976f5d44540ac3a0999d07b@tipi-net.de>
+Subject: Re: [PATCH 01/13 net-next] net: ipv4: introduce CONFIG_IPV4 to decouple the
+ IPv4 stack
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issue(s) to consider:
+On Thu, Sep 10, 2026, at 17:11, Nicolai Buchwitz wrote:
+>> diff --git a/net/packet/Kconfig b/net/packet/Kconfig
+>> index 2997382d597c..00fda9e08cb0 100644
+>> --- a/net/packet/Kconfig
+>> +++ b/net/packet/Kconfig
+>> @@ -5,6 +5,7 @@
+>> 
+>>  config PACKET
+>>  	tristate "Packet socket"
+>> +	depends on IPV4
+>
+>    depends on IPV4 || !INET
+>
+> Otherwise this would break existing configs with INET=n. The same 
+> applies to other affected options that currently permit INET=n.
 
-Critical: 0 · High: 1 · Medium: 0 · Low: 2
+Since that's a lot of symbols that all need the same dependency,
+maybe we could have an intermediate symbol for it:
 
-- [High] Unordered write-1-to-clear of the AXI DMA status register
-  followed by a descriptor read can silently swallow a DMA completion.
-- [Low] Both new blocks can `return budget` while `packets` is less than
-  budget (possibly zero), which contradicts the unchanged kernel-doc of…
-- [Low] The new RX comment at
-  drivers/net/ethernet/xilinx/xilinx_axienet_main.c:1314-1318 states…
+config IPV4_IF_INET # or any better name you can think of
+      def_bool IPV4 || !INET
 
---
+Similarly, everything that currently has 'depends on INET && IPV4'
+could be simplified to just 'depends on IPV4', and the leftover
+'depends on INET && IPV6' from the days of modular IPV6 can now
+become 'depends on IPV4'. We only needed to list both in the past
+to deal with the IPV6=m case.
 
-net: axienet: Clear stale AXI DMA TX/RX status before re-enabling interrupts
-
-This adds a write-1-to-clear of the IOC/DELAY bits in the AXI DMA TX/RX
-status registers at the end of axienet_tx_poll() and axienet_rx_poll(),
-followed by a re-check of the next buffer descriptor, in order to avoid
-one redundant NAPI poll caused by status latched while interrupts were
-masked.
-
-> diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-> index 1722b7038f340..ae43b9744cb90 100644
-> --- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-> +++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-> @@ -1018,6 +1018,16 @@ static int axienet_tx_poll(struct napi_struct *napi, int budget)
->  			netif_wake_queue(ndev);
->  	}
->  
-> +	/* Clear stale IOC/DELAY bits and re-check for race-window completions.
-> +	 * Skipped on budget exhaustion.
-> +	 */
-> +	if (packets < budget) {
-> +		axienet_dma_out32(lp, XAXIDMA_TX_SR_OFFSET,
-> +				  XAXIDMA_IRQ_IOC_MASK | XAXIDMA_IRQ_DELAY_MASK);
-> +		if (lp->tx_bd_v[lp->tx_bd_ci].status & XAXIDMA_BD_STS_COMPLETE_MASK)
-> +			return budget;
-> +	}
-
-[Severity: High]
-Can this sequence lose a DMA completion?  The status-register clear is a
-posted write with nothing after it to flush or order it:
-
-drivers/net/ethernet/xilinx/xilinx_axienet.h:
-static inline void axienet_dma_out32(struct axienet_local *lp,
-				     off_t reg, u32 value)
-{
-	iowrite32(value, lp->dma_regs + reg);
-}
-
-The descriptor status that follows is a plain load from
-dma_alloc_coherent() memory, so on arm/arm64 the Device-nGnRE store is not
-ordered against the subsequent Normal-memory load (iowrite32() only emits
-__iowmb() before the store).
-
-That allows this interleaving:
-
-  CPU				DMA engine
-  ----				----------
-  write IOC|DELAY to SR		(write still in flight)
-  read tx_bd_v[tx_bd_ci].status
-    -> not COMPLETE
-				descriptor writeback, latch IOC/DELAY
-  (queued W1C lands, wipes IOC/DELAY)
-  napi_complete_done()
-  write lp->tx_dma_cr
-
-after which IOC/DELAY are enabled in the control register but the status
-register is clean, so the level-sensitive line stays de-asserted while a
-COMPLETE descriptor sits in the ring.
-
-Before this patch there was no such window: the status word was acked only
-in axienet_tx_irq()/axienet_rx_irq() before NAPI ran:
-
-	axienet_dma_out32(lp, XAXIDMA_TX_SR_OFFSET, status);
-
-so anything the hardware latched during the poll window kept the line
-asserted and produced exactly the extra poll this patch removes.
-
-The RX hunk below has the same ack-then-scan shape, and it is issued right
-after the XAXIDMA_RX_TDESC_OFFSET doorbell, i.e. when the engine is most
-likely to complete a descriptor concurrently.  On TX the skb is not freed
-and netdev_completed_queue()/BQL accounting stays skewed until some later
-completion; note that axienet_netdev_ops has no .ndo_tx_timeout, and
-netdev_watchdog_up() returns early without one, so there is no software
-watchdog fallback.  On RX the frame is delivered late, or on an idle link
-not until the peer retransmits.
-
-Would reading back XAXIDMA_TX_SR_OFFSET / XAXIDMA_RX_SR_OFFSET (or
-otherwise ordering the clear ahead of the descriptor scan) close this?
-
-[Severity: Low]
-This return can hand back budget while packets is smaller than budget, and
-possibly zero.  The kernel-doc above axienet_tx_poll() still says:
-
- * Return: Number of TX packets processed.
-
-and the one above axienet_rx_poll() says:
-
- * Return: Number of RX packets processed.
-
-The commit message describes the change only as
-
-    "recheck the next BD to catch race-window completions"
-
-without mentioning that the poll now returns a sentinel work value.
-__napi_poll() treats work == weight specially:
-
-net/core/dev.c:__napi_poll() {
-	...
-	if (likely(work < weight))
-		return work;
-	...
-	gro_flush_normal(&n->gro, HZ >= 1000);
-	...
-	*repoll = true;
-}
-
-and net_rx_action() charges the returned value against netdev_budget with
-budget -= napi_poll(n, &repoll), so a poll that reclaimed nothing consumes
-a full weight of the softirq budget.  On RX the same path also skips the
-net_dim() sample in the napi_complete_done() branch.
-
-Returning budget does look like the required idiom here, since returning a
-smaller value without calling napi_complete_done() would leave the instance
-scheduled but off the poll list.  Could the kernel-doc and changelog be
-updated to describe the sentinel return instead?
-
->  	if (packets < budget && napi_complete_done(napi, packets)) {
->  		/* Re-enable TX completion interrupts. This should
->  		 * cause an immediate interrupt if any TX packets are
-> @@ -1301,6 +1311,18 @@ static int axienet_rx_poll(struct napi_struct *napi, int budget)
->  	if (tail_p)
->  		axienet_dma_out_addr(lp, XAXIDMA_RX_TDESC_OFFSET, tail_p);
->  
-> +	/* Clear stale IOC/DELAY bits and re-check for race-window completions.
-> +	 * Skipped on budget exhaustion and on refill failure (cur_p->skb ==
-> +	 * NULL) to leave the level-sensitive IRQ armed so the poll is
-> +	 * rescheduled on the next hardware completion.
-> +	 */
-
-[Severity: Low]
-Is the "leave the level-sensitive IRQ armed so the poll is rescheduled on
-the next hardware completion" part of this comment accurate?
-
-axienet_rx_irq() already writes back the whole status word before NAPI is
-scheduled:
-
-	axienet_dma_out32(lp, XAXIDMA_RX_SR_OFFSET, status);
-
-so unless the hardware latched a new IOC/DELAY during the poll window there
-is no bit left to keep the line asserted, and the skip is a no-op rather
-than something that arms the interrupt.
-
-When a bit was latched during the window, the following block is not gated
-on cur_p->skb:
-
-	if (packets < budget && napi_complete_done(napi, packets)) {
-		...
-		axienet_dma_out32(lp, XAXIDMA_RX_CR_OFFSET, lp->rx_dma_cr);
-
-so the line asserts an interrupt immediately, not "on the next hardware
-completion".
-
-The RX tail was also only advanced to the last successfully refilled
-descriptor:
-
-	if (tail_p)
-		axienet_dma_out_addr(lp, XAXIDMA_RX_TDESC_OFFSET, tail_p);
-
-so a further completion past the stalled slot is not guaranteed either.
-Could the comment (and the matching sentence in the commit message) be
-reworded to match what the code does?
-
-> +	if (packets < budget && cur_p->skb) {
-> +		axienet_dma_out32(lp, XAXIDMA_RX_SR_OFFSET,
-> +				  XAXIDMA_IRQ_IOC_MASK | XAXIDMA_IRQ_DELAY_MASK);
-> +		if (cur_p->status & XAXIDMA_BD_STS_COMPLETE_MASK)
-> +			return budget;
-> +	}
->  
->  	if (packets < budget && napi_complete_done(napi, packets)) {
-
-[ ... ]
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260906153243.1903501-1-kusuma.vasana%40amd.com
+       Arnd
