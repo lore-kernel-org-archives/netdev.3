@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8857E471423;
-	Thu, 10 Sep 2026 11:21:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E841B472538;
+	Thu, 10 Sep 2026 11:21:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789039261; cv=none; b=OD2Lk+05PtrP1CngDjNikXb1dPQJ4486d53ZCP6f0DMkFLPdKPKaOPiVbQ5DjypmJOeM6wCgi3cFE+EeeD8zeCcf48+K6redwGWEwqQ0nTLnmg423/zhLHc29dP4SoiFf3p4uDJFYjPket1wzrqmm/c0singTBe+EsZQRulh4o8=
+	t=1789039263; cv=none; b=Qa1P14AEnj+f79vdiad6om2Nwdwd5605HknW2QudLZMSAGZoh0pz0rSQ+zNR0CF89QFyDKYHSqa5Og76SUzOIcUjJfd3rRT16IoliL0XHBUqLhcsj7x82ALsGDkHtTDe6XJ5EAie2romZ5DuRb1nTKYLcJPAwxrHY5oT5V1him0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789039261; c=relaxed/simple;
-	bh=0jXxV16bUabUcgn3GUJoNnCauJFQ07Mhult1S7bhT08=;
+	s=arc-20240116; t=1789039263; c=relaxed/simple;
+	bh=ZhpZWf7gt/ntSjX/0lq5QSKLq0nCHzWs+GKIJ30FdhY=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=L+MhUUYiT/48pb8FIT6o3d1xp4Mn5wjnLiX4/fJDyZPu7aKvuY2leetSw5bV5u6DWspTIMksW2A1+2KN5mRmZq0cuRlqHM0FwV+84Vl3xa1umat0LcK3u1m0gSxD2ITGjlcWj/Q9LgSoZk5bo8XD+ADATA53x5My3UMvADXdrak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B8aiFm3V; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=r3mdbFqRCf/aKfgwsF777h3zSDL6HF11IipC+zd0K94bGOeywERwecgukavrfJ+MQKNmLNUQQ9+6qyd+hNk3oR3fg0Sh2SVRp88VUmLhWpprqu9YbpymDOq+uWIp3ViSETsfYy5g9S+BNqKSS1MciXzcevAUlL8PxmD99SzQ36w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eylY9PD3; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B8aiFm3V"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 505FD1F00893;
-	Thu, 10 Sep 2026 11:20:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eylY9PD3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C40341F000FF;
+	Thu, 10 Sep 2026 11:21:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789039260;
-	bh=mf8Hg/bYAJZ1z1asUw1OzijhUTTr2LkD+3g7Rrzmquo=;
+	s=k20260515; t=1789039261;
+	bh=2ZaCLKO5p03OO7RPJLxcps83roWsY+5awdnBDv/LhLk=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=B8aiFm3VVpzr6ICRxY+R6sLXC6KgOTt+w3VS8hhqBj1ulOAhLS+ab0omgSJ34k/9Z
-	 /I00TSovNwIA7Ov5Po0dxKId5N4sNHvzDt+5HMRVKKCFk2ZBmE8iuqyEg9bf6Ausyq
-	 FzjzAsSmVsFv+izb9MhueDhLwXtH2dbCLNkB+ejCDIkOJzSknu8tIPoCkeC6FfDtJv
-	 fesSH3BirOPvKGCl68r94VTY0fOLK7CzQP6ShvM478oWLNgCh0I+wxYjP75MaKONdd
-	 SdHtf7oLeJ0JYHTIlza+8sIRb7SQGiTAVyEnb5g+AsXsIARntg8yBfvPP/skIsn07+
-	 jzLHFOi8rM+Zg==
-Subject: Re: [PATCH v4 net-next 04/15] net: enetc: add link speed message
- support to PF driver
+	b=eylY9PD3Wm75mVwYu1DZwEE47Mobv66WePBqailWcJOyVAwJ2TqGVIIK+jThTmQuU
+	 duQMf1Mnzp8wuXQDzkL7A6Ik4k+PYokWy1lnLalxLYuxC0y6Np6IhEkJPBHvE1U/3K
+	 OLH8oELm9j8Eyye45QVamtKkUpbtbLRSWWEbY/JDOfIzJ0YipYCyoiMjuBTXNS/LC8
+	 ODYKgASkMB+d+rRc5FoFQ2nHyj9XSWUv/YtLDxDC0dF0VelVkr6UY2g305+L19y+OC
+	 1HndVBeWAsgE6S2/NH8he1yg4BUbGkIGbZQIb8P7KGycbJrm/vgvYSKfA/3DqkYsmM
+	 pn+if0wzKJNtQ==
+Subject: Re: [PATCH v4 net-next 09/15] net: enetc: add MAC address filtering
+ support for VFs of ENETC v4
 From: netdev-bot+sashiko@kernel.org
 To: wei.fang@oss.nxp.com
 Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
@@ -35,11 +35,11 @@ Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
  edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
  linux@armlinux.org.uk, wei.fang@nxp.com, imx@lists.linux.dev,
  netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Thu, 10 Sep 2026 11:20:58 +0000
-Message-ID: <178903925887.219967.16074856500035860561@kernel.org>
-In-Reply-To: <20260909100733.1139689-5-wei.fang@oss.nxp.com>
-References: <20260909100733.1139689-5-wei.fang@oss.nxp.com>
-X-sashiko-severity: Medium
+Date: Thu, 10 Sep 2026 11:21:00 +0000
+Message-ID: <178903926035.219967.18291576292215190234@kernel.org>
+In-Reply-To: <20260909100733.1139689-10-wei.fang@oss.nxp.com>
+References: <20260909100733.1139689-10-wei.fang@oss.nxp.com>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -49,136 +49,151 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
+Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider:
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+Critical: 0 · High: 0 · Medium: 0 · Low: 2
 
-- [Medium] enetc_msg_get_link_speed()
-  (drivers/net/ethernet/freescale/enetc/enetc_msg.c:274) introduces an…
+- [Low] DISCARDED (resolved later in the same series).
+- [Low] struct enetc_msg_mac_hash_filter
+  (drivers/net/ethernet/freescale/enetc/enetc_mailbox.h:226-232)…
 
 --
 
-Verified the relevant code paths. Report below.
+net: enetc: add MAC address filtering support for VFs of ENETC v4
 
-net: enetc: add link speed message support to PF driver
+This adds two VSI-to-PSI mailbox commands under the MAC filter class so an
+ENETC v4 VF can ask the PF to program its unicast/multicast MAC hash filter
+tables and to toggle promiscuous mode, with trusted-VF checks and a limit of
+8 multicast hash buckets for untrusted VFs. It also takes si->gen_lock around
+the read-modify-write of the shared PSIPMMR register, and clears a VF's
+unicast hash filter and promiscuous mode when it loses trusted status.
 
-Adds a new mailbox message class 0x81 so a VF can query the current link
-speed from the PF.  The PF reads the speed with
-phylink_ethtool_ksettings_get() under rtnl_lock() and encodes it into the
-8-bit class code of the reply, restricting the query to trusted VFs.
+A couple of questions below.
+
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_mailbox.h b/drivers/net/ethernet/freescale/enetc/enetc_mailbox.h
+> index 832d2f6ddcd8..6fa66c863748 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc_mailbox.h
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc_mailbox.h
+
+[ ... ]
+
+> @@ -204,6 +220,32 @@ struct enetc_msg_mac_exact_filter {
+>  	struct enetc_mac_addr mac[];
+>  };
+>  
+> +/* message format of class_id 0x20 for hash MAC filter.
+> + * cmd_id 0x3: set MAC hash table
+> + */
+> +struct enetc_msg_mac_hash_filter {
+> +	struct enetc_msg_header hdr;
+> +	/* bit 0 ~ 5: ENETC_MSG_MAC_HASH_SIZE
+> +	 * bit 6~7: ENETC_MSG_MAC_TYPE
+> +	 */
+> +	u8 sz_type;
+> +	u8 resv[3];
+> +	u32 hash_tbl[];
+> +};
+
+[Severity: Low]
+
+Should hash_tbl[] carry an explicit endianness annotation?
+
+This struct describes a wire format: the message lives in a DMA buffer that
+the mailbox hardware copies from the VSI buffer into the PSI buffer, and the
+header in this same file already declares the byte order of its multi-byte
+field:
+
+	struct enetc_msg_header {
+		__be16 crc16;
+		...
+	};
+
+hash_tbl[] is the only other multi-byte payload field and it is plain u32,
+so both endpoints are implicitly required to have the same byte order. The
+producer fills it in host order and enetc_msg_set_vf_mac_hash_filter()
+recombines it in host order:
+
+		uc_hash = (u64)msg->hash_tbl[1] << 32 | msg->hash_tbl[0];
+
+If a big-endian VSI kernel ever talks to a little-endian PSI (or a
+non-Linux PSI implementing the documented protocol), would the hash buckets
+end up byte-swapped, so the SI filters on the wrong buckets while both
+sides report success? The CRC16 is computed byte-wise over the buffer, so
+it would not catch that.
+
+Would declaring the array as __le32 and converting with cpu_to_le32() /
+le32_to_cpu() on both ends be preferable now, while the format is being
+introduced?
+
+> +
+> +/* message format of class_id 0x20 for MAC promiscuous mode.
+> + * cmd_id 0x5: set MAC promiscuous mode
+> + */
+> +struct enetc_msg_mac_promisc_mode {
+> +	struct enetc_msg_header hdr;
+> +	/* bit 0: ENETC_MSG_MAC_FLUSH_MACS
+> +	 * bit 1: ENETC_MSG_MAC_PROMISC_MODE
+> +	 * bit 6~7: ENETC_MSG_MAC_TYPE
+> +	 */
+> +	u8 config;
+> +	u8 resv[15];
+> +};
+> +
+>  /* The generic message format applies to the following messages:
+>   * Get IP revision message, class_id 0xf0.
+>   * cmd_id 1: get IP minor revision
 
 > diff --git a/drivers/net/ethernet/freescale/enetc/enetc_msg.c b/drivers/net/ethernet/freescale/enetc/enetc_msg.c
-> index 79dbaf72fcff..08a9ffdd3eb0 100644
+> index 08a9ffdd3eb0..22f5485e968a 100644
 > --- a/drivers/net/ethernet/freescale/enetc/enetc_msg.c
 > +++ b/drivers/net/ethernet/freescale/enetc/enetc_msg.c
-> @@ -230,6 +230,93 @@ static u16 enetc_msg_handle_link_status(struct enetc_pf *pf, int vf_id,
->  	return 0;
->  }
->  
 
 [ ... ]
 
-> +static u16 enetc_msg_get_link_speed(struct enetc_pf *pf, int vf_id)
-> +{
-> +	struct enetc_ndev_priv *priv = netdev_priv(pf->si->ndev);
-> +	struct enetc_vf_state *vf_state = &pf->vf_state[vf_id];
-> +	struct ethtool_link_ksettings link_info = {};
-> +
-> +	/* A malicious or malfunctioning VM could potentially spam these
-> +	 * messages in a tight loop causing global rtnl_lock contention,
-> +	 * which may severely starve other processes on the host that
-> +	 * require rtnl_lock for routine network configuration, resulting
-> +	 * in a system-wide control-plane denial of service. Therefore,
-> +	 * we expect the VF query for link speed to be trusted. There's no
-> +	 * need to consider the transition from trusted to untrusted here,
-> +	 * as this won't cause rtnl_lock() to be called frequently.
-> +	 */
-> +	mutex_lock(&vf_state->lock);
-> +	if (!(vf_state->flags & ENETC_VF_FLAG_TRUSTED)) {
-> +		mutex_unlock(&vf_state->lock);
-> +
-> +		return ENETC_PF_MSG_PERM_DENY;
-> +	}
-> +	mutex_unlock(&vf_state->lock);
-> +
-> +	rtnl_lock();
-> +	phylink_ethtool_ksettings_get(priv->phylink, &link_info);
-> +	rtnl_unlock();
+> @@ -116,6 +242,10 @@ static u16 enetc_msg_handle_mac_filter(struct enetc_pf *pf, int vf_id,
+>  	switch (msg_hdr->cmd_id) {
+>  	case ENETC_MSG_SET_PRIMARY_MAC:
+>  		return enetc_msg_set_vf_primary_mac_addr(pf, vf_id, vf_msg);
+> +	case ENETC_MSG_SET_MAC_HASH_TABLE:
+> +		return enetc_msg_set_vf_mac_hash_filter(pf, vf_id, vf_msg);
+> +	case ENETC_MSG_SET_MAC_PROMISC_MODE:
+> +		return enetc_msg_set_vf_mac_promisc_mode(pf, vf_id, vf_msg);
+>  	default:
+>  		return ENETC_PF_MSG_NOTSUPP;
+>  	}
 
-[Severity: Medium]
-Is it safe to block on rtnl_lock() inside the PSI mailbox service work
-item?  This looks like the first sleeping, host-global lock acquisition on
-that path: enetc_msg_handle_link_status() only uses si->gen_lock and never
-sleeps.
+[Severity: Low]
 
-The completion code is only written back to the VF after the class handler
-returns, in enetc_msg_task():
+At this commit, is there anything in the tree that sends
+ENETC_MSG_SET_MAC_HASH_TABLE or ENETC_MSG_SET_MAC_PROMISC_MODE?
 
-	for (i = 0; i < pf->num_vfs; i++) {
-		...
-		enetc_msg_handle_rxmsg(pf, i, &msg_code);
-		...
-		enetc_pf_reply_msg(hw, i, msg_code);
-	}
+Both new handlers here, and the UCF_DENY mapping added to
+enetc_msg_vsi_send() below, only become reachable with the later patch in
+the series ("net: enetc: implement ndo_set_rx_mode_async for ENETC v4 VF"),
+which adds enetc_vf_set_mac_hash_filter() and enetc_vf_set_mac_promisc()
+and wires .ndo_set_rx_mode_async = enetc_vf_set_rx_mode into
+enetc4_ndev_ops. So this is only a patch-ordering observation, the receiver
+landing one patch before the sender, not a defect at the end of the series.
 
-out:
-	enetc_msg_enable_mr_int(pf);
-
-while the VF side waits with a fixed 200 ms bound in enetc_msg_vsi_send():
-
-	err = read_poll_timeout(enetc_rd, vsimsgsr,
-				!(vsimsgsr & ENETC_VSIMSGSR_MB),
-				1000, 200000, false, &si->hw, ENETC_VSIMSGSR);
-	if (err) {
-		dev_err(dev, "VSI mailbox timeout\n");
-
-		return err;
-	}
-
-If any unrelated host rtnl holder (for example 'ip link del' going through
-synchronize_net(), an ndo_open of another device, bonding/team
-reconfiguration or a module load) keeps rtnl for longer than ~200 ms, does
-the reply not arrive after the VF has already given up?  In that case the
-VF logs "VSI mailbox timeout" and returns -ETIMEDOUT, and because
-VSIMSGSR[MB] stays set until the PF finally replies, subsequent VF sends
-hit the earlier check and fail with -EIO ("VSI mailbox is busy").
-
-There is a second effect from the same wait.  enetc_msg_task() services all
-VFs serially in one loop and only re-arms the PSIIER MR interrupt sources at
-enetc_msg_enable_mr_int(pf) on exit, so while one VF's speed query sleeps on
-rtnl, do the pending messages of the other VFs (set primary MAC, MAC hash
-filter, promisc mode) not get delayed and potentially time out too?
-
-Would a non-blocking source for the speed work here, or alternatively the
-deferred-reply mechanism (ENETC_MSG_CLASS_ID_CMD_DEFERRED) so the mailbox
-handshake is not held open across rtnl?
-
-[Severity: Medium]
-On the trust gate itself: the comment above the mutex_lock(&vf_state->lock)
-check describes the tight-loop spam scenario, but the check only narrows
-which VFs can reach rtnl_lock(), it does not bound the rate.  Nothing
-throttles inbound class 0x81 messages - the MR interrupt sources are simply
-re-armed at the end of enetc_msg_task(), and the only per-VF counter
-(msg_fail_cnt) tracks PF-to-VF send failures rather than inbound queries.
-
-Can a trusted VF still drive repeated rtnl acquire/release from the PF work
-item at mailbox round-trip rate, i.e. is the primitive the comment warns
-about still reachable from guest-controlled code once an admin sets 'trust
-on'?
-
-For reference, a couple of related concerns were checked and do not appear
-to be problems: vf_state->lock is dropped before rtnl_lock() so there is no
-ordering issue against ndo_set_vf_trust, and enetc_msg_psi_free() (and its
-cancel_work_sync()) is only reached from enetc_sriov_configure(), which does
-not hold rtnl.
-
-> +
-> +	return enetc_build_link_speed_msg(link_info.base.speed,
-> +					  link_info.base.duplex);
-> +}
-
-[ ... ]
+> diff --git a/drivers/net/ethernet/freescale/enetc/enetc_vf.c b/drivers/net/ethernet/freescale/enetc/enetc_vf.c
+> index 7dcb4a0246f5..a60af40d8546 100644
+> --- a/drivers/net/ethernet/freescale/enetc/enetc_vf.c
+> +++ b/drivers/net/ethernet/freescale/enetc/enetc_vf.c
+> @@ -107,8 +107,12 @@ static int enetc_msg_vsi_send(struct enetc_si *si, struct enetc_msg_swbd *msg)
+>  		case ENETC_MSG_CLASS_ID_CMD_TIMEOUT:
+>  			err = -ETIME;
+>  			break;
+> -		case ENETC_MSG_CLASS_ID_INVALID_MSG_LEN:
+>  		case ENETC_MSG_CLASS_ID_MAC_FILTER:
+> +			if (FIELD_GET(ENETC_PF_MSG_CLASS_CODE, pf_msg) ==
+> +			    ENETC_MF_CLASS_CODE_UCF_DENY)
+> +				return -EACCES;
+> +			fallthrough;
+> +		case ENETC_MSG_CLASS_ID_INVALID_MSG_LEN:
+>  			err = -EINVAL;
+>  			break;
+>  		case ENETC_MSG_CLASS_ID_CMD_NOT_PERMITTED:
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260909100733.1139689-1-wei.fang%40oss.nxp.com
