@@ -1,159 +1,116 @@
-Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24E83390200;
-	Thu, 10 Sep 2026 03:16:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789010194; cv=none; b=aqL6HIiouvFfOpLvHhMk8z2quqsXd60q5OVo39vDhEUKY6Z709dB3GwywukqQ9YYcrLQ1BS9qP3fbVI+mZvNxAly6rlgGja1JeI7lE3Qq8BIXd8NG8DEfquTE/Q+g1+QLjPFYg9TLDD0wEaex13db12/cCTJWycQZ45XJNGk60A=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789010194; c=relaxed/simple;
-	bh=qfxhNHG0Z1RhgkZUy5OlUfu6fj3lZtQEmv2yXYyJ4Vg=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=YUJNPtMv7gV+H9lnHb+4/6rTvF696b1niXhu45drgYy3eL1W5c08rM+p5u/PHrj9EqYEXQjdIMUZPetJGLNT58u1hT5n1rM3tGhALTEQHgkMcEt58U0eFQ/tZx5KMTT/eFdFKFphUrJhXIrPNxJ30WoOF0flxFSGqDh7Oxr2H0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=Lw4PVTj+; arc=none smtp.client-ip=67.231.156.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 206BD38F651
+	for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 03:21:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789010493; cv=pass; b=tRavU5ftVGI/5yt2ZOUXiMY6Ryrvm0RZJ2dsKzRmbQBDRf5S7ipEMC91U/69WfiTyIxCZO3NndDNefUBkyO3G9gvh63U7iJndgmDonFDED8cl1eL3b4j2hM1T9LjYfu8Ofs1f2/6t+oF8YfS6l0vLHvtycDYWbME6tNeY6O+c+k=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789010493; c=relaxed/simple;
+	bh=d9sO9YfjOMtfhkKI218+Hml8pdw2xki6+3ssCBL+UVU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Q+67bBndrpOg9CYlN7HoQxyI6OzqtnJgKPlmNhcgDswSNuPKt0wEQRzGICF9FQgPMtb6ec8tVAmbVXk1HTUBT4KRZE1XSUH1WfdZdD8/sNo7AfljnLC8e9t4vWyNuHQPuA5qxy8zEX13zD0H6UPcj61tve9VrXXFiRO+0+3j8lo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SWQ7MXUq; arc=pass smtp.client-ip=209.85.167.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="Lw4PVTj+"
-Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68A1kkXZ4173415;
-	Wed, 9 Sep 2026 20:16:13 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pfpt0220; bh=JWMWzi6f44G/es0DiDhckjo
-	ib2Sk76tCNKSE/IrNFXI=; b=Lw4PVTj+CFInq8CwNJkPECkSj3N/7nqfOinrOoM
-	z1uI2Ej8x8syEkNmdiQYspCSfah6ZrRYZOqZ5UDy+arI+4st/3D2bkddjaDqhcI9
-	gcEp56zprxb6nW9260OR2w3T2gBwkI2lJ6bvUUE5jKnrHycfbbIQa86c8mJOo0gN
-	EuK80DblHo/nCemA0IzlGbcHdboe4wpq813+ZtfxfWWATDNW01ewR2Z/Tv2mzn0X
-	+3253LBapZmwsYHAR3FfX8NVIjrDTI2iW6xXWGReEMdNlKYDA8t0Z+ueAxEQr6g9
-	YT2njUbqmRTPWEsovzNdu90s8HNj6Ij0nqnxkX/9wkFmAYw==
-Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4gkcxnsx1w-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 09 Sep 2026 20:16:13 -0700 (PDT)
-Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
- DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Wed, 9 Sep 2026 20:16:12 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
- (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Wed, 9 Sep 2026 20:16:12 -0700
-Received: from kernel-ep2.caveonetworks.com (unknown [10.29.36.53])
-	by maili.marvell.com (Postfix) with ESMTP id 8A0153F7057;
-	Wed,  9 Sep 2026 20:16:08 -0700 (PDT)
-From: <nshettyj@marvell.com>
-To: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC: Rakesh Kudurumalla <rkudurumalla@marvell.com>,
-        Nitin Shetty J
-	<nshettyj@marvell.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        "Ratheesh
- Kannoth" <rkannoth@marvell.com>,
-        Geetha sowjanya <gakula@marvell.com>,
-        Subbaraya Sundeep <sbhatta@marvell.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, "Simon
- Horman" <horms@kernel.org>
-Subject: [PATCH net v2] octeontx2-af: Fix BPID leak in nix_bp_enable()
-Date: Thu, 10 Sep 2026 08:46:04 +0530
-Message-ID: <20260910031604.1045397-1-nshettyj@marvell.com>
-X-Mailer: git-send-email 2.48.1
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SWQ7MXUq"
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5b76515c0d7so408860e87.0
+        for <netdev@vger.kernel.org>; Wed, 09 Sep 2026 20:21:30 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789010489; cv=none;
+        d=google.com; s=arc-20260327;
+        b=UkdkUFOtBdwgDCDmhN3a33WLv2y45mN9F1eA+5K3nkx+t/Pp8lc+OXt+o5SFLlnEzn
+         Fi5gZA8Hv0EeqoNMYgWeX/9MQRbjakcBiFmm5JgN7ANATRMbU8rokgEMuMa9gozm52gP
+         iY+YLwuT4pUUXegzW0pu0AK9y8MusUYc28K2nJHJRgF7UFAxf+g4ZlCCPoJ2m5KBvebl
+         xBNmVoJDXGgjNRLRp+xd1D1YWVi7cu/LjLK4Cjg9UD02rhjb8T1/1tiDi0TBCiBCVT9g
+         +85WT4r9kQjPRdRpz+dK/D3hiEK1pkxf1HYJ2viVL6SJe91DrhTwL6mFQDd7SSp/PSHo
+         kNMA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=d9sO9YfjOMtfhkKI218+Hml8pdw2xki6+3ssCBL+UVU=;
+        fh=db461V+dTbZeBFHIQcBJTIaEKPrbz2yp0OglxG+2XLE=;
+        b=JLpvg854FE2DW99M1PdM0Y/qmBGcWw65f1CrliI4ndsuixI1GEmPtYxrCRbaskwH0J
+         dkIljE4PKH7NuEuPDGIGlSXTovk0CgX+lZRlw4DSF7iEBiOJ05tXtOn35obdMXOU26jP
+         1T4nD3KAtNcmqcwBmn10SbDuTfdcxITEyg9C+azHWDKnTRe2T73lBPZzzxB+v6R29bCl
+         XhIcpPVqWvthhzcAOvuSn3mudwTWcn0MliCqaYdWDO54vGlWv8oqsVwDmhHCQ17fSh8G
+         aA3PZ3Ww6yRBZguGSWzjc+t2ArXwn5sQ1Msp1TVgXwlZNp+IUkgmupbqjG3OXFGxowwC
+         CJsw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789010489; x=1789615289; darn=vger.kernel.org;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=d9sO9YfjOMtfhkKI218+Hml8pdw2xki6+3ssCBL+UVU=;
+        b=SWQ7MXUq8hWauQt3woccc8fdoH1ixQ2nrXNn/BjQWP80zEtOoB9H2o/2oAUCncxq6z
+         +LYl5JKPujjfKOuRZ76JqFLukjKgbmksJ4vp5iXC2OUDcfmVXMl34PjJjnRXYewANJ1y
+         PI5zLMp7k/PYQQMUluPqoy0KRqVRVxysSr5PUDc67xGZ9FPPAn3hU1B4KXC2G2rP+DVe
+         jyzdov7KQg7afQKPXinC06msaYTylYaeiTuKa0i19qf0lKpD/sctOmNCz2brzq+u9bLy
+         kFhBAROKwzpc3v5aogPct0eS8UDOyWnomU4AhnHctSIwZq7y6+0THzTK15vwZzN1lisP
+         UnzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789010489; x=1789615289;
+        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
+         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=d9sO9YfjOMtfhkKI218+Hml8pdw2xki6+3ssCBL+UVU=;
+        b=MH8gmz5Yvbkc4KcWsAR8mF337ACBrOvUWjRlSb8St3EVMi7/9AOly5E8VUxVEBKVzV
+         xqGp562HwpFk8MNvx5xIUfu23vL8n0Gzk3NoxpB/chUG8SYG6C9RnBrq/jzVKzDREIIy
+         49RRvqb1q77fNl1IizuPWdX+ZldlkdezQ7rNd4pr73HCcJOq7qCvS8QbnczpJ1vbmGtv
+         w9Z2x5z4aDSFPmQgH6z+IrHwDE6QTKh7M12yIc1lHfzZqiohsqRnaWPM03SgUwG8UkyD
+         521EapA9QUJJ8uzaj0ANWUEvC+cB0WGpsYTKSN2DWb+jWtuld1EGX7KT4lyP0vaZ7xSO
+         Syzw==
+X-Forwarded-Encrypted: i=1; AKwUvBwrP3L9lRIrf/kw7PuPlcz2M+ab9ZwDYByFxwt00aWka4/pdBxYHzukKEpzx8Ov/dEuABFiM+c=@vger.kernel.org
+X-Gm-Message-State: AFuF++kNKG42iQWUP8gyJh+nH3J09cT+OpfCKTSuQXyDfwc41aj7gnbX
+	UE+Sg/PM5QrZiuncyEyfARprp060VHJO1aNsy41QSMM98H1kBU4/HFBcsfzikkFkr/FwlflB3O1
+	EQl1X8wHnJG8uw/3XbMQuAQtP93QnDO0=
+X-Gm-Gg: AYBFou2WqDpJIqP2R2b1roJdxtH6UtwuMfw30ttCggm8qhFQwGWBfgcHpbXKQSmVet5
+	8xp0iqrHEpyoisF+OTKHjAf10tw33bAqvfPdJwFDFn+u3ZzNDnRVCS+j+g1uWlQ79Kop8U2KGlk
+	JP6cmC1BZfuN8cJhNwKEa/HWmuFrOrIRqSqnCndLErtN/VhrBCi9BTxqG+ERttd8Pf4RLnTMofw
+	X140cZPLNL199Tv60l81HrpItQzmDCNqTjjWTUPUuzCi9UN84nXRGuikjdWjKW+5nNGAWGmcLPo
+	Axo9M7SX/+lq+7WfhP2ZlyxIYH2+8k60AYmDUUsusr/1usSOv8wpnqI8+zYF2yRPeypzun6SUz/
+	mlODUsrKmpW/JMc7F5LmAwV1Zvn1TTOxOPUF9bRbPwQ==
+X-Received: by 2002:a05:6512:1307:b0:5b5:e3b0:231 with SMTP id
+ 2adb3069b0e04-5b89a2fad8dmr399549e87.13.1789010488773; Wed, 09 Sep 2026
+ 20:21:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTEwMDAzMyBTYWx0ZWRfX5YrGlZ8fvgc9
- h437DadRbTCvd2iQoI8UU9jguFQ72WI5U0yfUMjhWaSakRii60TwlYGLADeQNNImTTLhDRnPaKr
- hBVDRdJ/nv/I6EsEeqNOYXfDU2K1EkCovGg/w8NABjw7GZggz/rXXgeLiPAgU8ldudqY0RpQoH9
- ONsHDcD/tlN1z+5ez7z4vRH2fGeuyJYlFV8e0cLP5Xtm3YStOFJwmVtwKcbI582RrR/N9+y/p7k
- SVK0hywdJtmHNXCEAr5Ofr/aXJl68rDRyH8Do7AFDMRHljts28LhsSaRYyQCXEfY/2tekKWzufq
- Ce5PN1Z7BOVdX/3nMP8S+Np14u0q6AZE0KH3Rt8RaT5GDvlznBKaPejJCPOe4elIvX83AuMJ9Ko
- +cN806QxPvmsgRel10BgFmIholsF4vUwlbirJaUcoOdW7qzq1Zt6FmQUOWO1xeHFaiVbPEPUTjq
- kbPFbI+TaNVbI56Ay9Q==
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTEwMDAzMyBTYWx0ZWRfXxrWUpw8qebVO
- qKhMbq7si2QsBRkogYjB3WD7TfnxcgU8MDf5HnU5+PqdulTedMLv+bwynAYvK3NeK/YQnfOCP42
- /KzweFKrafldWX4G0YoeF+fn9lg52wo=
-X-Authority-Analysis: v=2.4 cv=UJxIjyfy c=1 sm=1 tr=0 ts=6aa220fd cx=c_pps
- a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
- a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
- a=qit2iCtTFQkLgVSMPQTB:22 a=M5GUcnROAAAA:8 a=_GkZ78KWd3HuAaUqZusA:9
- a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-ORIG-GUID: UkOaB3RKQ7XK8-mBESIfWFbF33tjgTuc
-X-Proofpoint-GUID: UkOaB3RKQ7XK8-mBESIfWFbF33tjgTuc
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-10_01,2026-09-09_02,2025-10-01_01
+References: <20260909013401.14408-2-sigefriedhyy@gmail.com> <178900489222.219967.5701707176821161509@kernel.org>
+In-Reply-To: <178900489222.219967.5701707176821161509@kernel.org>
+From: Yuyang Huang <sigefriedhyy@gmail.com>
+Date: Thu, 10 Sep 2026 12:21:16 +0900
+X-Gm-Features: AcwNN1V7GyyXN-MLzIxbdYaXEdpcN2buyxt9nexIpKd7w-_caM0SlF_aUp8xaeU
+Message-ID: <CA+7S2v+kkzOxwp_o7eJ6e8gCGhqvN7ua52jsBNsCM1hMW79VNA@mail.gmail.com>
+Subject: Re: [PATCH net-next v2 1/3] rtnetlink: add AF_PACKET multicast dumps
+To: netdev-bot+sashiko@kernel.org
+Cc: davem@davemloft.net, dsahern@kernel.org, donald.hunter@gmail.com, 
+	edumazet@google.com, idosch@nvidia.com, kuba@kernel.org, kuniyu@google.com, 
+	nicolas.dichtel@6wind.com, nickgarlis@gmail.com, pabeni@redhat.com, 
+	sd@queasysnail.net, shuah@kernel.org, horms@kernel.org, sdf.kernel@gmail.com, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-From: Rakesh Kudurumalla <rkudurumalla@marvell.com>
+> Could the changelog drop or reword that claim?
 
-For LBK interfaces, rvu_nix_get_bpid() allocates a BPID from the free
-pool on every call. nix_bp_enable() called it unconditionally before
-the loop, and again after the last channel was programmed, leaking a
-BPID whenever that extra call's result went unused. With
-req->chan_cnt == 0, the pre-loop call leaked a BPID on every call.
+Okay, I'll drop the claim in v4.
 
-Move the allocation into the loop body so it runs exactly once per
-channel actually programmed, and reject req->chan_cnt == 0 upfront.
+> This isn't a bug introduced by this patch, but can this copy expose
+uninitialized bytes from ha->addr?
 
-Fixes: d6212d2e41a0 ("octeontx2-af: Create BPIDs free pool")
-Signed-off-by: Nitin Shetty J <nshettyj@marvell.com>
-Signed-off-by: Rakesh Kudurumalla <rkudurumalla@marvell.com>
----
-changes in v2:
-- Move the rvu_nix_get_bpid() call for LBK BPID allocation from before
-  the loop into the loop body.
-- Validate req->chan_cnt before allocating BPIDs.
-- updated commit message and fix tag
----
- drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+Not related to this patch, will send a follow up.
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-index 153eb57bad06..3a43432d29c1 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-@@ -764,19 +764,25 @@ static int nix_bp_enable(struct rvu *rvu,
- 	if (cpt_link && !rvu->hw->cpt_links)
- 		return 0;
- 
-+	if (!req->chan_cnt)
-+		return NIX_AF_ERR_INVALID_BPID_REQ;
-+
- 	pfvf = rvu_get_pfvf(rvu, pcifunc);
- 	blkaddr = rvu_get_blkaddr(rvu, BLKTYPE_NIX, pcifunc);
- 
--	bpid_base = rvu_nix_get_bpid(rvu, req, type, chan_id);
- 	chan_base = pfvf->rx_chan_base + req->chan_base;
--	bpid = bpid_base;
-+	bpid_base = -1;
- 
- 	for (chan = chan_base; chan < (chan_base + req->chan_cnt); chan++) {
-+		bpid = rvu_nix_get_bpid(rvu, req, type, chan_id);
- 		if (bpid < 0) {
- 			dev_warn(rvu->dev, "Fail to enable backpressure\n");
- 			return -EINVAL;
- 		}
- 
-+		if (bpid_base < 0)
-+			bpid_base = bpid;
-+
- 		chan_v = nix_get_channel(chan, cpt_link);
- 
- 		cfg = rvu_read64(rvu, blkaddr, NIX_AF_RX_CHANX_CFG(chan_v));
-@@ -784,7 +790,6 @@ static int nix_bp_enable(struct rvu *rvu,
- 		rvu_write64(rvu, blkaddr, NIX_AF_RX_CHANX_CFG(chan_v),
- 			    cfg | (bpid & GENMASK_ULL(8, 0)) | BIT_ULL(16));
- 		chan_id++;
--		bpid = rvu_nix_get_bpid(rvu, req, type, chan_id);
- 	}
- 
- 	for (chan = 0; chan < req->chan_cnt; chan++) {
--- 
-2.48.1
+> Can this positional resume cursor silently skip dev->mc entries?
 
+In theory yes, but this follows the existing dumps: there is no
+generation counter for dev->mc, and in_dev_dump_ifmcaddr() has the
+same window. I'd rather keep it consistent than add a counter just
+for this one. If the issue is really worth fixing, I will send a
+follow up to fix both places.
