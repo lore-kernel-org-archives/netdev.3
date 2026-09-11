@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BC263033E6
-	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 01:11:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F39131E84F;
+	Fri, 11 Sep 2026 01:11:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789089070; cv=none; b=K8BgkdgrC+RAAHfYIFFoa5lmbfeAfsRxVMRcFlsdQqKGkfy4cwgAzrIhJKTUxczcmhoZd0NmjkUKybaeqr5VG6HreHN3NNPtHU4x0rpV4eF7/3RIiQ5eCrpPee5KBvNr3Tz0GVa1VjGGTvY+Jwv4rEECGyMZ3SttLxZWs9j4WZg=
+	t=1789089071; cv=none; b=NaQSOF19JmHyAjxgYoB4kpdIR53YPDptt7BPhBvhuZEiCyzaa9gOHY6v+B7fugRM4REuJVR5dasDZNDKDNSgXydy4wjxhLSrMtsDKEqS/1Ue+QhpKZ95VEBe8MaNUhm7hAHXPuPr2Jze1GXxuWAHZq3Swm9x8uzDqOTF8DfDxFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789089070; c=relaxed/simple;
-	bh=dMiHHnhH5tdqbVSlV8s5kU3wi/VpcRrgKP5/8RDniIU=;
+	s=arc-20240116; t=1789089071; c=relaxed/simple;
+	bh=FV6CEht3ctDd2lb8SyspeDnonzEZu/ro5gvpTMjEusw=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=rogCou6bvy6a3l1jmBrT8KMhyL+JrMOMGpNBlJg3IXp6jY7XHGFJ+sPYrS++vnz6fMIk9jm+VsQV9qI25UnBrCFBsAWP/Jn9zj+3H7XLUbj7MTitgyGms8fGdaPM0S+SSbnEJ8j5WzWlOv/w0agvg1TnMs5pZ2CCXhDNmxcHEWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NwN8c5ET; arc=none smtp.client-ip=100.103.45.18
+	 In-Reply-To:To:Cc; b=RM7Zl9RcXHxQASDoryzQoL84rSqpjENVQ5y7XOHvKUjjyLnP0m0sITm16EmWo4ZYBX64ZYqNJ2NvuGhCPI3LdjYfZTqYWd4+72egvQgOv8RIWuQipWPRGzDdQauF55pua+/vp28nVn9T6J86lilvbBc0Fv8zrWaxtaCAF50sCIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TqtZiQzd; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NwN8c5ET"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E52E01F000FF;
-	Fri, 11 Sep 2026 01:11:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TqtZiQzd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C6671F000FF;
+	Fri, 11 Sep 2026 01:11:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789089068;
-	bh=COxM5nheeIAIoGcpHWTk9qgNvX6jI95QcrY9v89jb3s=;
+	s=k20260515; t=1789089070;
+	bh=VXOGle0kbcp9gDSOrpjEwexfVq9elnJ3jsD11Yfhgdo=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc;
-	b=NwN8c5ETX9cq1NHWLjnO6y1kq42+C295a7irzS5quv9amHr2Ca7QOLCNFUfP/1siH
-	 v3OPQmSbm14Hr6IOQeFM9eSMCoyEtdGLZW6MzkH85DNdrqYUP+Ofau2h4G+66u+s2k
-	 Fpt6+DvDVAzXAUgBmEir/8WLTbOcrQJgJzSN5x+1BnGfR+RyzLY4NoPQ3Kp5Xi5YQU
-	 kJsGmZ4SX7Z7dVYVODBd2+vGk5Ur8C5meI31UgOOw/sr4n891hDq6Ue0GFKCIQg56Z
-	 9NZUxQL/Kp5kPF5pnLFxwZBtX5HFbvFmH9yeSlUnoRPTA7PBBGS4sJNC9aC/WByY7Y
-	 4lqq1AtVySAbw==
+	b=TqtZiQzd5s5o0hg4Q3qs5M+ztPF0MurzkpDXuhYPe7SY3Vcs7MRtfQr8rRQHQLEyd
+	 AT09ksw8+X2/CkxT+LBAecAE9Wca0U2Q9zeKBy/ZtHazPyoC0IGBhuDyVx1kW1yPH2
+	 Oe2gMa+JyOnCHQxmDfHI04pLDuHRuC1weLnquzzrmdA08/2CUFf5H8H8KqHuj6fZ5+
+	 jc0jSSD5o87DAxlm8kHBqFFKYCQMiEuWG4KiBuuOV6r9T60LpyR69DiqTXtCxcp9u1
+	 CONwH+L7S6zk+L4mqtzZFvE9u6E1slSNUuVSpdhTCsc8M5xSEnF3tQ2395qNsIZavx
+	 gGYiHxzQv2Gew==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 56A063810901;
-	Fri, 11 Sep 2026 01:10:07 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id D0BD33810901;
+	Fri, 11 Sep 2026 01:10:08 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,66 +37,37 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next 01/15] batman-adv: tt: look up wifi state of
- incoming
- interface in helper
+Subject: Re: [PATCH net-next v3] net: davicom: Propagate wakeup IRQ errors
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <178908900614.2170035.18425688675148363165.git-patchwork-notify@kernel.org>
-Date: Fri, 11 Sep 2026 01:10:06 +0000
-References: <20260907081824.2474040-2-sw@simonwunderlich.de>
-In-Reply-To: <20260907081824.2474040-2-sw@simonwunderlich.de>
-To: Simon Wunderlich <sw@simonwunderlich.de>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- b.a.t.m.a.n@lists.open-mesh.org, sven@narfation.org
+ <178908900738.2170035.4609640246303136729.git-patchwork-notify@kernel.org>
+Date: Fri, 11 Sep 2026 01:10:07 +0000
+References: <20260909045738.16705-1-phucduc.bui@gmail.com>
+In-Reply-To: <20260909045738.16705-1-phucduc.bui@gmail.com>
+To: Bui Duc Phuc <phucduc.bui@gmail.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org
 
 Hello:
 
-This series was applied to netdev/net-next.git (main)
-by Sven Eckelmann <sven@narfation.org>:
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-On Mon,  7 Sep 2026 10:18:10 +0200 you wrote:
-> From: Sven Eckelmann <sven@narfation.org>
+On Wed,  9 Sep 2026 11:57:37 +0700 you wrote:
+> From: bui duc phuc <phucduc.bui@gmail.com>
 > 
-> batadv_tt_local_add() only needs to know whether the client was seen on a
-> wifi interface. But it kept the net_device reference of the incoming
-> interface alive until its own cleanup section, together with a "net" and an
-> "in_dev" variable which are of no interest to the rest of the function.
+> The wakeup IRQ is optional, but errors from platform_get_irq_optional()
+> are currently ignored. Propagate errors from the IRQ lookup, except
+> -ENXIO which indicates that the optional IRQ is not available.
+> 
+> Found by manual code inspection.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,01/15] batman-adv: tt: look up wifi state of incoming interface in helper
-    https://git.kernel.org/netdev/net-next/c/3273a5cd2d74
-  - [net-next,02/15] batman-adv: tt: extract allocation of new local entries
-    https://git.kernel.org/netdev/net-next/c/defa87f5ce75
-  - [net-next,03/15] batman-adv: tt: replace forward gotos in batadv_tt_local_add()
-    https://git.kernel.org/netdev/net-next/c/a5e5d2709d10
-  - [net-next,04/15] batman-adv: tt: extract refresh of existing local entries
-    https://git.kernel.org/netdev/net-next/c/ec6edeb755ec
-  - [net-next,05/15] batman-adv: tt: extract update of dynamic client flags
-    https://git.kernel.org/netdev/net-next/c/d72e16b1c5d5
-  - [net-next,06/15] batman-adv: tt: extract allocation of new global entries
-    https://git.kernel.org/netdev/net-next/c/d9017aeb40c1
-  - [net-next,07/15] batman-adv: tt: extract merging of flags into existing global entries
-    https://git.kernel.org/netdev/net-next/c/b535e61347ba
-  - [net-next,08/15] batman-adv: tt: replace add_orig_entry goto in batadv_tt_global_add()
-    https://git.kernel.org/netdev/net-next/c/3f8e8b42f639
-  - [net-next,09/15] batman-adv: tt: extract removal of the superseded local entry
-    https://git.kernel.org/netdev/net-next/c/228c70d51b10
-  - [net-next,10/15] batman-adv: tt: extract marking of a removed local entry
-    https://git.kernel.org/netdev/net-next/c/5e02403a4c2e
-  - [net-next,11/15] batman-adv: tt: extract immediate purge of a local entry
-    https://git.kernel.org/netdev/net-next/c/931de98d3960
-  - [net-next,12/15] batman-adv: tt: drop the cleanup label from batadv_tt_local_remove()
-    https://git.kernel.org/netdev/net-next/c/926013fd40f6
-  - [net-next,13/15] batman-adv: tt: clarify kernel doc for batadv_tt_local_set_pending_event()
-    https://git.kernel.org/netdev/net-next/c/857fbd765c65
-  - [net-next,14/15] batman-adv: bat_iv: fix ogm_neigh_is_sob parameters references
-    https://git.kernel.org/netdev/net-next/c/271f3730fc87
-  - [net-next,15/15] batman-adv: correct batadv_hash_remove kdoc return type
-    https://git.kernel.org/netdev/net-next/c/6d7f71ae4cdc
+  - [net-next,v3] net: davicom: Propagate wakeup IRQ errors
+    https://git.kernel.org/netdev/net-next/c/75a73afd0b32
 
 You are awesome, thank you!
 -- 
