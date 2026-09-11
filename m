@@ -1,142 +1,113 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D5B53B8407
-	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 09:53:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 698713AB29D;
+	Fri, 11 Sep 2026 09:55:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789120403; cv=none; b=cs4sibYsTs+5Cp+716VRRLgIZf8/LIKmDbMHKTdr2/xchKW5FZvk9Zuqu976pzbfgbag7m5EeDnjxxcentV2HcA9vYcMdhZY737BHCIMK/oDCTUUFrSL3kMg0JMbvmGZcA36Py+5D/bQoQWFyPQwTJmNaQ0XwmMv3okkteiJ1NM=
+	t=1789120524; cv=none; b=Uo9zByNUkre0v6WGAisafmZQAME/ClLCemCdDLpxBAe5Wt6c1vOjtGce+n/X5e3GNyGl+17Lh9ebxJ4lZg6dn9cONgtdB9FOhwG/5GEca93jWYxtg/FJKtaF+qqT21yFh5/waYoQV2WkK9pcnK/A0uBscXffBqg4YG2iqw5MZI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789120403; c=relaxed/simple;
-	bh=5W92TlywX+R5WCObWv/kGX/hST6LPx/5MCVw8z+toPk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Jth+l7px0jBScTW2Tw7kEuDCZNSxYF9F48AvTC+fgK6z4Hpjn+FqBmiFsVWztXJXJ87zSa2K0fJaT2n5UIii27eofss+7as73G4FzTZgnYtAqo6rVv4YJhgD3iURqyR1lLHYEfr0yYf7EGh4DoCmBb07rwGlVKDvtfn1WLEHrjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Lhak6Pkr; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZdotVWtI; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1789120524; c=relaxed/simple;
+	bh=0tQ5UOcfmXeoMU2bbIGxdIrQatK2ev1arDHG7vwy7T8=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=tlPSVep7WrtMKZKsdNiPcPJUidWD/GOVn7+I/E4Q7O7O3VCFnj12mHuqkaZzHkJFVfLAGwyzq16q10CpvcxVLUer4pRc2Td+hiKS5f9L0K7RGOtj+3gpalIKxGzL6kL/F/C5OdceqZVtsMUSk+DwUh9rM8jj318nmo9KmmfPa0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=5SglTdFH; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Lhak6Pkr";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZdotVWtI"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1789120401;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5W92TlywX+R5WCObWv/kGX/hST6LPx/5MCVw8z+toPk=;
-	b=Lhak6PkrXex8ohaXRSmlhXX6xtH/s9fRLz7+X6BRB6fJl8EnDRXJHGIPw7FxEfbKGSkkF9
-	fWQYdyjieznDKj5Fr1V0YDUkL0jFwJokmQNOqGeiFnCJMb3sWp/av4etBojLLHCVmhO05b
-	/0QievtyDUhPPla+Zy/l9XlEBtkwD58=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-690-9YIwDHD-Mb2jjmKdDM422g-1; Fri, 11 Sep 2026 05:53:20 -0400
-X-MC-Unique: 9YIwDHD-Mb2jjmKdDM422g-1
-X-Mimecast-MFC-AGG-ID: 9YIwDHD-Mb2jjmKdDM422g_1789120399
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-486f3c0d896so12693f8f.3
-        for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 02:53:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1789120399; x=1789725199; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :references:in-reply-to:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=5W92TlywX+R5WCObWv/kGX/hST6LPx/5MCVw8z+toPk=;
-        b=ZdotVWtIPpFntTMGMHqNYmhC7e1wfNzYj76pJPwupRoRinVoUa7aPLc2pT+lsyFSxW
-         aFSvyaR4kUzzPyhxuPQMJhM1FnMqdAmLu4dwfwQAnzkj6RH4jO3dotpYV5VMmCfx5Znq
-         edNcM/HKWmkujll0MISg41JmundXTxTX+STRW2FRpAm4jUa/oiJKPCAzCW2slztkozLI
-         1lUe69jnKhGR3HQRRHtCgXbqTIr/K8b/Rl3MiaJk/rOvB7z/zvez4HQFGc+iGXDouw3u
-         KiG2fgvBwe61QMiFvFC0YVuVRfRggeLBvRpvq9sZvleKd6/0/+jXSq0qU2mEMRh6ZIQ5
-         01gw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789120399; x=1789725199;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :references:in-reply-to:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=5W92TlywX+R5WCObWv/kGX/hST6LPx/5MCVw8z+toPk=;
-        b=mY4f1xD5qtnaSBGLMZ7C7fVuaN+O+YQk1/1R5cd7ap2ytsH09zY//0kSwzjLjEB8q7
-         IWHWcYpL5QF8Ql2PUvwwAzRgvSmVtW54/6id3ajXJs4YmDcC+R+fo5U6j7uCWVCip+Wj
-         ij0/GcsFCS3vlYYU+C3ktP9/EU6jrnU9m6/2uEnzmDTMMeCU+xD/32gpFJiXIUJIJ9nG
-         h6GehUrLVTMgaQcBWRegki7jjoGHZYi1AqI1HLw8qzElO1IRPfqiEF1AKegdUleWrjBu
-         kp33J/YrogVF3REUJk6P7HnogRs90FOfFpsjmi8N1PURbbkuWhk4DOBZ5lQ59sU6Ecgq
-         Iw1Q==
-X-Forwarded-Encrypted: i=1; AKwUvBxWKPnnnHRVC4FWdcHM0nrND020pTCCZXrcPrcr7Q/0t9JeKHKA704EGw6UNEZp2k3UQkW98ec=@vger.kernel.org
-X-Gm-Message-State: AFuF++lWyuKoVYyFEw83lzKraLKeLrKhvgQPZKLPn7RFXf++bogQtd77
-	wCDEenY/eF0lrw0SnnX0wgcL8Kernee4rONUzUUixfZggMkVH6BxcjJoLb3CyPBTQdL3noq5hal
-	4aFXSadQQruWDrbhJ1OCsTHHINPPbzKbaGnuxdIiHidK/U0EzUsP4APkvEhu02sr2hA==
-X-Gm-Gg: AYBFou3x5P4+XMPY+GDe9Q/ALEbfvg371xpkRAM8vGaD+TOarJ9zRQKbnLyI+uXuPc1
-	j38fMzQg3eS01GAp8UnlYZ+6N1V+7pW2C2qPTLvr14L6J6Ho1mt2d2XWLf5FEAJm4Cd659ZJ9M8
-	AnadVSp25NmHoLQOi+qBT5s3KZMVZw/Y7okNCT9Rc3oOH2WDXaBvyOICx1PdJ2bS7+mIKkUQgqf
-	QC7RpGmZOvuHpDn8m8bDkhrH6WdFXX/EEcULR3kS51WTJRw/FHv94lQekkoFciczgxjY3HCK9sd
-	3k+qs84HGELjXCb50nXEFE9dDIFMZJBDAw88etVLF+/cBnK3olndeQLcS+uAlncjix3MYPG4wTu
-	GbgVq+Z8Ys8ETAOm+3yY3VzF/
-X-Received: by 2002:a05:6000:471c:b0:484:3317:a19 with SMTP id ffacd0b85a97d-486eb2ff57dmr3413177f8f.26.1789120398945;
-        Fri, 11 Sep 2026 02:53:18 -0700 (PDT)
-X-Received: by 2002:a05:6000:471c:b0:484:3317:a19 with SMTP id ffacd0b85a97d-486eb2ff57dmr3413148f8f.26.1789120398603;
-        Fri, 11 Sep 2026 02:53:18 -0700 (PDT)
-Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-486eb33ee8bsm4693194f8f.15.2026.09.11.02.53.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Sep 2026 02:53:17 -0700 (PDT)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-	id 1FFDA9B9976; Fri, 11 Sep 2026 11:53:17 +0200 (CEST)
-From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To: Jiayuan Chen <jiayuan.chen@linux.dev>, Alexei Starovoitov
- <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, "David S.
- Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Jesper
- Dangaard Brouer <hawk@kernel.org>, John Fastabend
- <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>, Andrii
- Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, Kumar
- Kartikeya Dwivedi <memxor@gmail.com>, Martin KaFai Lau
- <martin.lau@linux.dev>, Song Liu <song@kernel.org>, Yonghong Song
- <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>, Emil Tsalapatis
- <emil@etsalapatis.com>, Ihor Solodrai <ihor.solodrai@linux.dev>
-Cc: Shuah Khan <shuah@kernel.org>, bpf@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH bpf-next v2 3/4] selftests/bpf: Adopt
- bpf_program__add_flags() helper
-In-Reply-To: <0e8f9a9c-6295-49ad-b29b-84613dfbfd65@linux.dev>
-References: <20260910183222.307208-1-toke@redhat.com>
- <20260910183222.307208-3-toke@redhat.com>
- <0e8f9a9c-6295-49ad-b29b-84613dfbfd65@linux.dev>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date: Fri, 11 Sep 2026 11:53:17 +0200
-Message-ID: <871pb0dshe.fsf@toke.dk>
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="5SglTdFH"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id DB6E6A4C11;
+	Fri, 11 Sep 2026 11:55:14 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1789120515; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=U+rkct1N0ewPgHDfDC9pZh5mG5IDXEtz1Rz15dwMtTM=;
+	b=5SglTdFHwNSNPAs7eSjcxRbhk8Z7Is044GE5xQP8mc2+bVSShmluT3VQE2eL9cgv381Yom
+	6kBBW1Fykq7wBLy7/F8KigE1U1f35N7qD42HyyGLDN9D7wcUzW1Vhagrg7l1HYqvSLTbha
+	P+nZj9K+GQRGmMNERS4DG7o5wAnnn+WuIxACZ3buGtgtnx+VL9/O1jvlNwMMJ59CDqvfPT
+	nrNkL3hBgwSRinec+tXnlf5T6QMFYirjAWT0vn6/NCedkezJmwOJCSd2ToDCRtgpnDbSr0
+	XPqzhHS8CsDAg5/eeLQ3oone7n0SXNfS3Wqumt+vhONUbHJPHoQ3GTYg+T5PrA==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Date: Fri, 11 Sep 2026 11:55:14 +0200
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: kimwooseok <5mghybrid@khu.ac.kr>
+Cc: netdev@vger.kernel.org, theo.lebrun@bootlin.com,
+ conor.dooley@microchip.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ richardcochran@gmail.com, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net RESEND 2/2] net: macb: Use all-frame timestamping for
+ PTPv1 RX filters
+In-Reply-To: <178911388671.25348.11008812384009904081.macb-resend-2@khu.ac.kr>
+References: <178911388592.25348.177462085059763031.macb-plaintext-resend-cover@khu.ac.kr>
+ <178911388671.25348.11008812384009904081.macb-resend-2@khu.ac.kr>
+Message-ID: <185fa72f08b8d7882a48c3ba922c10b8@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Jiayuan Chen <jiayuan.chen@linux.dev> writes:
+Hi Kimwoo
 
-> On 9/11/26 2:32 AM, Toke H=C3=B8iland-J=C3=B8rgensen wrote:
->> Adopt the newly added bpf_program__add_flags() helper everywhere the
->> selftests non-destructively modifies program flags (which turns out to
->> be every use of bpf_program__set_flags() in the tests).
->>
->> Acked-by: Ihor Solodrai <ihor.solodrai@linux.dev>
->> Signed-off-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
->
->
-> Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
->
->
-> =E2=80=8CAI pays excessive attention to wording.
->
-> maybe just delete whole parenthetical notes=E2=80=8C "(which turns out ..=
-.)"
+On 11.9.2026 10:04, kimwooseok wrote:
+> gem_set_hwtst() accepts HWTSTAMP_FILTER_PTP_V1_L4_SYNC and
+> HWTSTAMP_FILTER_PTP_V1_L4_DELAY_REQ without changing rx_bd_control from
+> TSTAMP_DISABLED. A successful request thus disables receive 
+> timestamping
+> while reporting the requested nonempty filter to userspace.
+> 
+> Handle these two filters through the existing all-frame fallback used
+> for HWTSTAMP_FILTER_PTP_V1_L4_EVENT. This enables receive timestamping
+> for a superset of the requested packets and returns HWTSTAMP_FILTER_ALL
+> to describe the configuration actually selected.
+> 
+> Fixes: ab91f0a9b5f4 ("net: macb: Add hardware PTP support")
+> Assisted-by: GPT-6 Astra
+> Signed-off-by: kimwooseok <5mghybrid@khu.ac.kr>
+> ---
+> Resending as plain text because the previous webmail submission 
+> included
+> HTML and quoted and rewrapped the patch. No code changes; the 
+> Assisted-by
+> trailer now names the tool.
+> 
+>  drivers/net/ethernet/cadence/macb_ptp.c | 6 ++----
+>  1 file changed, 2 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/cadence/macb_ptp.c 
+> b/drivers/net/ethernet/cadence/macb_ptp.c
+> index 51659bb..2ffc46b 100644
+> --- a/drivers/net/ethernet/cadence/macb_ptp.c
+> +++ b/drivers/net/ethernet/cadence/macb_ptp.c
+> @@ -430,10 +430,6 @@ int gem_set_hwtst(struct net_device *netdev,
+>  	switch (tstamp_config->rx_filter) {
+>  	case HWTSTAMP_FILTER_NONE:
+>  		break;
+> -	case HWTSTAMP_FILTER_PTP_V1_L4_SYNC:
+> -		break;
+> -	case HWTSTAMP_FILTER_PTP_V1_L4_DELAY_REQ:
+> -		break;
+>  	case HWTSTAMP_FILTER_PTP_V2_EVENT:
+>  	case HWTSTAMP_FILTER_PTP_V2_L2_EVENT:
+>  	case HWTSTAMP_FILTER_PTP_V2_L4_EVENT:
+> @@ -448,6 +444,8 @@ int gem_set_hwtst(struct net_device *netdev,
+>  		regval = macb_readl(bp, NCR);
+>  		macb_writel(bp, NCR, (regval | MACB_BIT(SRTSM)));
+>  		break;
+> +	case HWTSTAMP_FILTER_PTP_V1_L4_SYNC:
+> +	case HWTSTAMP_FILTER_PTP_V1_L4_DELAY_REQ:
+>  	case HWTSTAMP_FILTER_PTP_V1_L4_EVENT:
+>  	case HWTSTAMP_FILTER_ALL:
+>  		rx_bd_control = TSTAMP_ALL_FRAMES;
 
-Well, the two instances the bot is complaining about turns out to have
-been added after I wrote that commit message; I didn't re-run the 'git
-grep' after rebasing for v2, so I didn't notice this.
 
-I'm not sure if those two are candidates for conversion as well, TBH. I
-can respin with your suggested change to the commit message, or just
-convert those two as well. Or just leave it as-is, I suppose. What do
-the maintainers think? :)
+Reviewed-by: Nicolai Buchwitz <nb@tip-net.de>
+Tested-by: Nicolai Buchwitz <nb@tipi-net.de> # Raspberry Pi CM5
 
--Toke
-
+Thanks,
+Nicolai
