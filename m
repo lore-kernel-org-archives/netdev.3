@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC9113F8EA2;
-	Fri, 11 Sep 2026 18:52:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 495873FB05A;
+	Fri, 11 Sep 2026 18:52:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789152729; cv=none; b=RxU7ixKQdwxT8bCM9aahxsybAjNo1TIKznAGYWAM7ik87HU0AToNyeRlKcWEUXjv+ixcy3B04C4AFJWvdsYJq54LAI30f7nm/J+udfCd172hbUkMytUFCyPcvc/OYuZg/kQp7E+RwIU2ENOugyrlQ7xARpISQqC2Hxtc0C+SJqw=
+	t=1789152732; cv=none; b=ZMBYtCeNq7fMrMAnKaMhEZsJLSgMRKeuFAf4Nf9xjXoRiqPOP7r9Gpbu7FIv64La8ero7FTXcrTxVQa4FwJaFstNSJc3lK25UtpOLaQhf1xha38LPUXHVkZ9joToALqAj9nuPqnu0oMoFx4TDB/lxh/x7uF3nSWBJnm71DYO2MU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789152729; c=relaxed/simple;
-	bh=RCeSx3IrYG4rfAXHao35oWByJ4omMqIyh00vGCSQSfA=;
+	s=arc-20240116; t=1789152732; c=relaxed/simple;
+	bh=9Huzq8M2+09FRqtWfB+IUeG9XO9Zcqv8eW8fGF3KC/M=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=q2EqVi9HKsxjTIb2CvNevYmhytOPy/jKajW0ZmyExMIpwVwRp2qgII32RqJxUhfL0f9mjfssM2OJKYM8Vo0zMSzuIqjlweqitHhc+kM8BcYeDQq/FNwe4Ly6dRZ/r5M/LsmRCFoJu+TycHWWb8kW2OA7ysOnOzKhrLem1St5pJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U6SAHj6r; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=jPlUHFA2asDIyovjOLgadp3Bh2DjfvO+pa6R2j6wkX8gPO88Z2g++BOcMUBR2Ls2O6j+ARzPsoMcLnidKL+9x7k4mwDSk2ORLsLK9XMFpUer9Wm9BwqzQ58Y6pHPQqqQTiwJaAD34riQKbAVfaYmLvCaiiQXKPZ8Yckvr4XuF1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RCnjftY6; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U6SAHj6r"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 441701F00893;
-	Fri, 11 Sep 2026 18:52:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RCnjftY6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AF1C1F000FF;
+	Fri, 11 Sep 2026 18:52:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789152727;
-	bh=8p7zYuyuGA3gQQYpgulfyn0ZpME2hZEJKSkR2ar+2PM=;
+	s=k20260515; t=1789152729;
+	bh=Yo7yRsSPgH9fp6rWbrvzGiLjFsvTI26AJbX7GyjJFx8=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=U6SAHj6r+4GI1aqP+QTcUvmucbddmVNZKycLoE586l6CWMmflmf5+xp72fJ7NbOYY
-	 4DgAuoPmFwQ9fmDWDBHRN4w4E590ygMiXRpe+c/+ikgUsDffJXHASWg5fsBA4JAdtI
-	 SSExCABZBX1timPi3xR+sdUFGhzNq8RD4+LJqSEJTxW7+drsSrQsH0kH/EcSeY+7s5
-	 CJ3a1lZy6eTSYtDDkVHdi1PoUqVvIcXvkDh33ExXeWtc5Q+5fHmGV6nqoHtnHI/IYX
-	 TIUNVAQSry6iWrn1IhHYOb7cSUKCe7NDySynlcQTAr7vUjIfQh8hrKK1el5YssM4h8
-	 MKCBrPiFX29Dw==
-Subject: Re: [PATCH RESEND net-next v17 05/10] net: phy: Represent PHY-less
- SFP modules with phy_port
+	b=RCnjftY6FoQgojpl0WgXUmhXclIn93TKDImZfhxTkMIb1v3SRhFy/n3emZDoy35EG
+	 9rXfNe8pR4PTc5xionnV+NwX6RrBCsjm8c/2crNGmDQ9vYz00Plgxpd5ZRVGwQfTHu
+	 gH1LC9MZMtDCtgrTSNCXtVsFKJLJxRYrOWz4ni79pk2OA6GNb9HHgeIN+hGBZ09OPB
+	 XHDx5XWDg8SFba1uaQBNVkgcZMxZ97Ply/yXZsrlm8ktz6N7twmqKj6I3iKQpBrCwO
+	 TaDe5ZOqOopK1IGVd7278NqjKUbB08HLw8bJtKl+JgfrzB+lmOx5CUfbQ9q7foz1Wi
+	 NMzykz+qp+bKA==
+Subject: Re: [PATCH RESEND net-next v17 06/10] net: phy: phy_port: Store
+ information about a port's upstream
 From: netdev-bot+sashiko@kernel.org
 To: maxime.chevallier@bootlin.com
 Cc: davem@davemloft.net, andrew@lunn.ch, kuba@kernel.org, edumazet@google.com,
@@ -39,11 +39,11 @@ Cc: davem@davemloft.net, andrew@lunn.ch, kuba@kernel.org, edumazet@google.com,
  nicveronese@gmail.com, horms@kernel.org, mwojtas@chromium.org,
  romain.gantois@bootlin.com, daniel@makrotopia.org,
  dimitri.fedrau@liebherr.com, frank.wunderlich@linux.dev, p.ameruoso@live.it
-Date: Fri, 11 Sep 2026 18:52:05 +0000
-Message-ID: <178915272580.219967.8750635719140746575@kernel.org>
-In-Reply-To: <20260910170103.1029108-6-maxime.chevallier@bootlin.com>
-References: <20260910170103.1029108-6-maxime.chevallier@bootlin.com>
-X-sashiko-severity: High
+Date: Fri, 11 Sep 2026 18:52:07 +0000
+Message-ID: <178915272783.219967.7690619054974247239@kernel.org>
+In-Reply-To: <20260910170103.1029108-7-maxime.chevallier@bootlin.com>
+References: <20260910170103.1029108-7-maxime.chevallier@bootlin.com>
+X-sashiko-severity: Low
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -53,237 +53,262 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 5 potential
+Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider:
 
-Critical: 0 · High: 2 · Medium: 2 · Low: 1
+Critical: 0 · High: 0 · Medium: 0 (1) · Low: 3
 
-- [High] FALSE POSITIVE (resolved later in the same series).
-- [High] Bitfield data race on `has_sfp_mod_phy` can silently corrupt
-  hardware interrupt flags
-- [Medium] Failure to allocate/register the purely informational SFP-
-  module phy_port now makes the whole SFP module bring-up fail…
-- [Medium] Unbalanced registration teardown for `phydev->mod_port`:
-  `phy_detach_internal()` unconditionally calls…
-- [Low] FALSE POSITIVE.
+- [Low] The commit message states the change keeps track of "the port id
+  of the MII port backing it", but phy_set_upstream_port()…
+- [Low] The kernel-doc of the newly exported phy_set_upstream_port()
+  (drivers/net/phy/phy_device.c:3786-3791) documents only that it "Sets…
+- [Low] Claimed missing error-path rollback: both new connect_phy
+  implementations (phy_sfp_connect_phy() at…
+
+Pre-existing issues:
+- [Medium] phy_set_upstream_port()
+  (drivers/net/phy/phy_device.c:3792-3803) traverses phydev->ports with…
 
 --
 
-net: phy: Represent PHY-less SFP modules with phy_port
+net: phy: phy_port: Store information about a port's upstream
 
-This adds a phy_port to represent a PHY-less SFP module, created and
-destroyed from the new .module_start / .module_stop upstream ops in both
-phy_device.c and phylink.c, plus a phy_caps helper to filter the module
-link modes by the cage port's MII interfaces.
+This adds an upstream_port pointer to struct phy_port and struct phy_device,
+along with a new exported helper phy_set_upstream_port(), so that an MDI port
+backed by an MII port (for example an SFP module port backed by the SFP cage
+port) records the port feeding it. The SFP connect/disconnect callbacks in
+both phy_device.c and phylink.c are updated to set and clear it.
 
-A couple of questions on the new error paths below.
+A few questions below.
 
 > diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-> index f15c0fc339b4d..26634ef274f33 100644
+> index 26634ef274f33..561d19edf331c 100644
 > --- a/drivers/net/phy/phy_device.c
 > +++ b/drivers/net/phy/phy_device.c
+> @@ -1493,6 +1493,7 @@ static int phy_sfp_connect_phy(void *upstream, struct phy_device *phy)
+>  	int ret;
+>  
+>  	phydev->has_sfp_mod_phy = true;
+> +	phy_set_upstream_port(phy, phydev->sfp_cage_port);
+>  
+>  	/* If we aren't attached to a netdev, we can't add the SFP PHY to its
+>  	 * topology.
 
-[ ... ]
+[Severity: Low]
+Here and in phylink_sfp_connect_phy(), the cage port pointer is published
+into the module PHY before a fallible step (phy_link_topo_add_phy() here,
+phylink_sfp_config_phy() there) and is not cleared if that step fails.
+sfp_register_bus() also returns a connect_phy() error without calling
+disconnect_phy().
 
-> @@ -1617,6 +1629,75 @@ static void phy_sfp_link_down(void *upstream)
->  		port->ops->link_down(port);
+Is a rollback needed on those paths, or is it intentionally left out?
+
+Tracing it through suggests no dangling pointer is reachable today:
+
+  sfp_sm_probe_phy()
+      err = sfp_add_phy(sfp->sfp_bus, phy);
+      if (err) {
+              phy_device_remove(phy);
+              phy_device_free(phy);
+
+so the module phy_device and its ports are destroyed on that failure, and
+the cage port is still alive at that point. The two paths that free the
+cage port (phy_sfp_probe() out_port below, and phylink_register_sfp() ->
+phylink_destroy_sfp_cage_port()) only run when sfp_register_bus() fails,
+which requires bus->phydev to be non-NULL:
+
+  sfp_register_bus()
+      if (ops->connect_phy && bus->phydev) {
+              ret = ops->connect_phy(bus->upstream, bus->phydev);
+
+and the state machine detaches the module PHY (sfp_sm_phy_detach() ->
+sfp_remove_phy(), which clears bus->phydev and invokes disconnect_phy())
+before any upstream can register again. Would it still be worth making
+the failure path symmetric so this does not depend on that ordering?
+
+> @@ -1526,6 +1527,8 @@ static void phy_sfp_disconnect_phy(void *upstream, struct phy_device *phy)
+>  
+>  	if (dev)
+>  		phy_link_topo_del_phy(dev, phy);
+> +
+> +	phy_set_upstream_port(phy, NULL);
 >  }
 >  
-> +static int phy_add_sfp_mod_port(struct phy_device *phydev)
-> +{
-> +	const struct sfp_module_caps *caps;
-> +	struct phy_port *port;
-> +	int ret = 0;
-> +
-> +	/* Create mod port */
-> +	port = phy_port_alloc();
-> +	if (!port)
-> +		return -ENOMEM;
-> +
+>  /**
 
 [ ... ]
 
-> +	if (phydev->attached_dev) {
-> +		ret = phy_link_topo_add_port(phydev->attached_dev, port);
-> +		if (ret) {
-> +			phy_port_destroy(port);
-> +			return ret;
-> +		}
-> +	}
-
-[ ... ]
-
-> +static int phy_sfp_module_start(void *upstream)
-> +{
-> +	struct phy_device *phydev = upstream;
-> +
-> +	/* If there's a downstream SFP module, and it doesn't contain a PHY
-> +	 * device, let's create a phy_port to represent that module.
-> +	 */
-> +	if (!phydev->has_sfp_mod_phy)
-> +		return phy_add_sfp_mod_port(phydev);
-> +
-> +	return 0;
-> +}
-
-[Severity: Medium]
-Should a failure to create this port really abort the whole module
-bring-up?
-
-Both new .module_start implementations propagate the error: here
-phy_sfp_module_start() returns phy_add_sfp_mod_port()'s -ENOMEM from
-phy_port_alloc(), or whatever phy_link_topo_add_port() returns
-(xa_alloc_cyclic() -ENOMEM, or -EOPNOTSUPP after the WARN_ON_ONCE for
-netdev_need_ops_lock() devices), and phylink_sfp_module_start() does the
-same in its new else branch:
-
-	} else {
-		ret = phylink_add_sfp_mod_port(pl);
-		if (ret)
-			return ret;
-	}
-
-On the SFP core side, any non-zero return is fatal, in sfp_sm_main():
-
-	case SFP_S_INIT_PHY:
-		...
-		if (sfp_module_start(sfp->sfp_bus)) {
-			sfp_sm_next(sfp, SFP_S_FAIL, 0);
-			break;
-		}
-
-There is no case SFP_S_FAIL: in that switch, so the only way out is the
-global handling at the top of the function, i.e. losing SFP_MOD_PRESENT
-or clearing SFP_DEV_UP.
-
-So does a transient kzalloc() failure for this port leave the link down
-until the interface is taken down and up again, or the module is
-physically re-inserted? Given that the module port is a purely
-informational topology object with no data-path role, would it be
-preferable to warn and continue rather than to fail the state machine?
-
-The commit message describes only the representation of the module as a
-phy_port and doesn't mention this new failure mode.
-
-> @@ -1834,6 +1920,8 @@ static void phy_detach_internal(struct phy_device *phydev, bool notify_bus)
->  		phydev->attached_dev->phydev = NULL;
->  		phydev->attached_dev = NULL;
->  		phy_link_topo_del_phy(dev, phydev);
-> +		if (phydev->mod_port)
-> +			phy_link_topo_del_port(dev, phydev->mod_port);
+> @@ -1816,6 +1821,8 @@ static int phy_sfp_probe(struct phy_device *phydev)
+>  		}
 >  	}
 >  
->  	phydev->phy_link_change = NULL;
-> @@ -1963,6 +2051,12 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
->  		err = phy_link_topo_add_phy(dev, phydev, PHY_UPSTREAM_MAC, dev);
->  		if (err)
->  			goto error;
+> +	phydev->sfp_cage_port = port;
 > +
-> +		if (phydev->mod_port) {
-> +			err = phy_link_topo_add_port(dev, phydev->mod_port);
-> +			if (err)
-> +				goto error;
-> +		}
+>  	ret = sfp_bus_add_upstream(bus, phydev, &sfp_phydev_ops);
+>  	if (ret)
+>  		goto out_port;
+> @@ -1825,14 +1832,13 @@ static int phy_sfp_probe(struct phy_device *phydev)
+>  	 */
+>  	sfp_bus_put(bus);
+>  
+> -	phydev->sfp_cage_port = port;
+> -
+>  	return ret;
+>  
+>  out_port:
+>  	if (port) {
+>  		phy_del_port(phydev, port);
+>  		phy_port_destroy(port);
+> +		phydev->sfp_cage_port = NULL;
 >  	}
-
-[Severity: Medium]
-Can this pair of add/del calls unregister a port that belongs to someone
-else?
-
-The del side in phy_detach_internal() runs whenever phydev->mod_port is
-non-NULL, with no record of whether the port was inserted into this
-netdev's topology during this attach. And the del is by id only, without
-checking the stored entry:
-
-drivers/net/phy/phy_link_topology.c:phy_link_topo_del_port() {
-	struct phy_link_topology *topo = dev->link_topo;
-
-	if (!topo)
-		return;
-
-	xa_erase(&topo->ports, port->id);
-}
-
-Since a phy_port keeps its id across detach so it can be re-used,
-phy_link_topo_add_port() re-inserts with xa_insert():
-
-	if (port->id)
-		ret = xa_insert(&topo->ports, port->id, port, GFP_KERNEL);
-	else
-		ret = xa_alloc_cyclic(&topo->ports, &port->id, port,
-				      xa_limit_32b, &topo->next_port_index,
-				      GFP_KERNEL);
-
-Two sequences look problematic:
-
-phy_link_topo_add_phy() fails (pdn allocation, -EBUSY on a colliding
-index, or -EOPNOTSUPP for an ops-locked netdev)
-
-	goto error;
-	  phy_detach_internal(phydev, false)
-	    phy_link_topo_del_port(dev, phydev->mod_port)
-	      xa_erase(&topo->ports, port->id)
-
-and the module port was never inserted into this topology, so whatever
-occupies that index is erased.
-
-The second one is the new call itself: xa_insert() returns -EBUSY when
-mod_port's retained id is already taken by another port of that netdev,
-and the cleanup then erases exactly that foreign entry.
-
-Would it make sense to only call phy_link_topo_del_port() for a port that
-was successfully added here (a flag, or clearing/zeroing the id), and to
-have phy_link_topo_del_port() verify the stored pointer before erasing?
-
-This needs mod_port to survive a previous detach, which looks possible
-since neither phy_detach() nor phy_detach_internal() stop the SFP state
-machine or clear mod_port - only .module_stop does.
+>  out_sfp:
+>  	sfp_bus_put(bus);
 
 [ ... ]
+
+> @@ -3777,6 +3783,25 @@ struct phy_port *phy_get_sfp_port(struct phy_device *phydev)
+>  }
+>  EXPORT_SYMBOL_GPL(phy_get_sfp_port);
+>  
+> +/**
+> + * phy_set_upstream_port() - Sets the phy_port controlling the MII this PHY is
+> + *			     attached to.
+> + * @phydev: pointer to the PHY device we set the upstream of.
+> + * @port: The phy_port upstream of this PHY, can be NULL.
+> + */
+> +void phy_set_upstream_port(struct phy_device *phydev, struct phy_port *port)
+> +{
+> +	struct phy_port *local_port;
+> +
+> +	ASSERT_RTNL();
+
+[Severity: Low]
+The kernel-doc for phy_set_upstream_port() describes only that it sets the
+phy_port controlling the MII, but the body does two more things that callers
+need to know about: it hard-asserts RTNL, and it overwrites upstream_port on
+every entry of phydev->ports.
+
+Since this is EXPORT_SYMBOL_GPL() and the prototype in include/linux/phy.h
+carries no locking annotation either, a caller following only the documented
+contract will trip the WARN_ONCE() in ASSERT_RTNL(). Could the kernel-doc
+state that RTNL must be held and that the value is propagated to all of the
+PHY's ports?
+
+> +
+> +	phydev->upstream_port = port;
+> +
+> +	phy_for_each_port(phydev, local_port)
+> +		local_port->upstream_port = port;
+> +}
+> +EXPORT_SYMBOL_GPL(phy_set_upstream_port);
+
+[Severity: Medium]
+This isn't a bug introduced by this patch, but the phy_for_each_port()
+traversal here relies solely on ASSERT_RTNL(), while the list entries are
+unlinked and freed from the driver-core unbind path, which does not take
+RTNL:
+
+  phy_remove()
+      phy_sfp_release() / phy_cleanup_ports()
+          list_for_each_entry_safe(port, tmp, &phydev->ports, head) {
+                  phy_del_port(phydev, port);
+                  phy_port_destroy(port);
+          }
+
+phy_get_sfp_port() and phy_link_topo_del_phy() already walk the same list
+under the same RTNL-only convention, so the pattern predates this change,
+and all in-tree callers of the new helper run from the SFP state machine
+with RTNL held (sfp.c takes rtnl_lock() around sfp_sm_event()). The only
+concurrent mutator found is a root-initiated sysfs unbind of the module PHY
+driver.
+
+Would it make sense to either take phydev->lock around the traversal, or
+write down the rule that phydev->ports is immutable while the PHY is
+registered?
+
+Also, phy_add_sfp_mod_port() and phylink_add_sfp_mod_port() assign
+port->upstream_port directly, and this helper later rewrites every port of
+the PHY. Which of the two is meant to be authoritative?
+
+>  
+>  /**
+>   * fwnode_mdio_find_device - Given a fwnode, find the mdio_device
+>   * @fwnode: pointer to the mdio_device's fwnode
+
+[ ... ]
+
+> diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
+> index c8f57d78f96eb..320c8c2dd206a 100644
+> --- a/drivers/net/phy/phylink.c
+> +++ b/drivers/net/phy/phylink.c
+> @@ -4132,6 +4134,8 @@ static int phylink_sfp_connect_phy(void *upstream, struct phy_device *phy)
+>  	phy_interface_and(phy->host_interfaces, phylink_sfp_interfaces,
+>  			  pl->config->supported_interfaces);
+>  
+> +	phy_set_upstream_port(phy, pl->sfp_cage_port);
+> +
+>  	/* Do the initial configuration */
+>  	return phylink_sfp_config_phy(pl, phy);
+>  }
+> @@ -4140,6 +4144,7 @@ static void phylink_sfp_disconnect_phy(void *upstream,
+>  				       struct phy_device *phydev)
+>  {
+>  	phylink_disconnect_phy(upstream);
+> +	phy_set_upstream_port(phydev, NULL);
+>  }
+>  
+>  static const struct sfp_upstream_ops sfp_phylink_ops = {
 
 > diff --git a/include/linux/phy.h b/include/linux/phy.h
+> index cb579b8a5b5f7..335821eb22171 100644
 > --- a/include/linux/phy.h
 > +++ b/include/linux/phy.h
-> @@ -724,6 +727,7 @@ struct phy_device {
->  	unsigned irq_rerun:1;
+> @@ -615,6 +615,7 @@ struct phy_oatc14_sqi_capability {
+>   * @sfp_bus: SFP bus attached to this PHY's fiber port
+>   * @sfp_cage_port: The phy_port connected to the downstream SFP cage
+>   * @mod_port: phy_port representing the SFP module, if it is phy-less
+> + * @upstream_port: phy_port this PHY's MII attaches to, if any
+>   * @attached_dev: The attached enet driver's device instance ptr
+>   * @adjust_link: Callback for the enet controller to respond to changes: in the
+>   *               link state.
+> @@ -809,6 +810,7 @@ struct phy_device {
+>  	struct sfp_bus *sfp_bus;
+>  	struct phy_port *sfp_cage_port;
+>  	struct phy_port *mod_port;
+> +	struct phy_port *upstream_port;
+
+[Severity: Low]
+Is this new phy_device member read anywhere? phy_set_upstream_port() assigns
+it, but grepping for upstream_port through the end of the series shows the
+only reader is in net/ethtool/port.c:
+
+  reply->upstream_port = port->upstream_port ? port->upstream_port->id : 0;
+
+which uses the phy_port field, not the phy_device one. Could
+phy_device::upstream_port be dropped, or is there a planned consumer?
+
+Related to that, the commit message says:
+
+  "let's keep track of the port id of the MII port backing it"
+
+but what is stored is a raw struct phy_port pointer, not an id, and the new
+phy_device field is not mentioned at all. Could the wording be adjusted to
+match what the code stores?
+
+>  	struct phylink *phylink;
+>  	struct net_device *attached_dev;
+>  	struct mii_timestamper *mii_ts;
+> @@ -2493,6 +2495,8 @@ int __phy_hwtstamp_set(struct phy_device *phydev,
 >  
->  	unsigned default_timestamp:1;
-> +	unsigned has_sfp_mod_phy:1;
+>  struct phy_port *phy_get_sfp_port(struct phy_device *phydev);
 >  
->  	int rate_matching;
->  
+> +void phy_set_upstream_port(struct phy_device *phydev, struct phy_port *port);
+> +
+>  /**
+>   * phy_module_driver() - Helper macro for registering PHY drivers
+>   * @__phy_drivers: array of PHY drivers to register
 
-[Severity: High]
-Which lock protects the word this new bit lives in?
-
-has_sfp_mod_phy is added right after default_timestamp, so it lands
-in the same machine word as the interrupt bookkeeping bits
-interrupts:1, irq_suspended:1 and irq_rerun:1. A C bitfield
-assignment is not atomic with respect to its neighbours: the compiler
-is free to emit a load of the enclosing word, an OR/AND of one bit,
-and a store back. Any concurrent update of a different bit in that
-same word is then lost.
-
-The writers of has_sfp_mod_phy are phy_sfp_connect_phy() and
-phy_sfp_disconnect_phy(), which run from the SFP state machine work
-under rtnl_lock() but without phydev->lock and with interrupts
-enabled. irq_rerun (and irq_suspended) are written from
-phy_interrupt() and from the mdio_bus_phy_suspend()/_resume() PM
-paths, neither of which take rtnl. So a store to has_sfp_mod_phy
-that races with phy_interrupt() setting irq_rerun = 1 can drop the
-irq_rerun update, and the pending wakeup interrupt is then never
-re-run after resume - a silently missed PHY interrupt / broken WoL
-wakeup rather than an obvious failure.
-
-The existing rtnl-protected SFP state in this struct is a plain bool
-(sfp_bus_attached, with the "This may be modified under the rtnl
-lock" comment above it), and the new sfp_cage_port / mod_port
-pointers you add sit in that same group. Would it be cleaner to make
-has_sfp_mod_phy a bool next to sfp_bus_attached, so it is covered by
-the same rule as the rest of the SFP fields and shares no word with
-the IRQ flags? If you would rather keep it a bitfield, which lock is
-intended to serialise the enclosing word, and how is that
-synchronised against phy_interrupt()?
+[ ... ]
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260910170103.1029108-1-maxime.chevallier%40bootlin.com
