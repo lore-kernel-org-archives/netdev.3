@@ -1,101 +1,256 @@
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1EEC4A43EF
-	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 21:45:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6087A4BEE45
+	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 21:52:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789163118; cv=none; b=HmA8fSslXHeJAFqZXRuBL02lIQud63AwpFkB5yF+nyVetQXZxqdd4jLSCJaMDnQd4z8nyjVhkF7W9mxnlBnigbQm/Y/tW+VGoFOZ3+VLhUXRlix69EPmr+4ydEWXhfQuJwEmHE93jl06Sx2/Ysp0WIDl8xhaU5tXODFn7t8i7CU=
+	t=1789163543; cv=none; b=BvXhGeyuhJBJKsN945fJvBftGKNa8wbRtglws0Dh7JoVPUpeMF25wQuqwQU+Z5g2dptlOlRrGVPn2KsPTf5THm4weRScm1yuZaIq0kXp6/i9+3zOvgoC34K3T1ISIMtfqzFIjZEMfpy9/Ckc9gI8nM1SDXApczWct8ZDrvN8rGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789163118; c=relaxed/simple;
-	bh=71K72IULwWn4R1b25sucjqqIwKdh/evaTwDeeawCaxo=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=X889uZDU4+722v954T+r5fPRCIiBu3hRD3kZrUBCLMEoS29Hqla5pzAMWQsQvn1OSWzBRS4KnMVhLG92jJw5VLXn+j3DEA1xIDQ4Vt0A70QibzeCS4OZvoBnf7jE2w+ZkNOOe8qfs0wUgNl+LpD3wfrcmWT2S4eQqGgYBN+2jt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lEB0uDJz; arc=none smtp.client-ip=74.125.225.140
+	s=arc-20240116; t=1789163543; c=relaxed/simple;
+	bh=8fizyRXRwZWA30/x0S5/rc5j+e9AYRKrUbag3/LipDw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fyReVv6SJMk6WWR0X5HzOSgFBJenXLfTTN86r6ox8T81tdft1KiQ9uk4/iXZHx/MryiKg9QqvR/r9d7UnAMH+IkiRHpQ5nJ4FGCILJT3oF8Eg2/yrok8NlHzBxAgLQqgsq2dttgaRU5nB0RdYLyZDpOXxKt1+Je/2K9W1P6IsBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=pJZMqffW; arc=none smtp.client-ip=209.85.128.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lEB0uDJz"
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-49cd38e0e5dso4209395e9.2
-        for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 14:45:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="pJZMqffW"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-49cca4ffdcfso11742055e9.0
+        for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 14:52:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789163115; x=1789767915; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=+cBvQuHwe5GCeT0Z0DzRPvSTiAVCj7vg+Qh8CRMXIPE=;
-        b=lEB0uDJzUYFir/r5ouEJTZGtrgmJ1itAIlFuUSN4ZQPZ7KzXbGFKfKX54QTz7VUl6/
-         CtSNk2mtk73+oiK3iQydS8A+1jAxcFH1RXXjAh2fduca4F1f9XVytsea/YhA9wwnribG
-         AjSjrpUTyLRPymu9k2ZZtNTcM2E4hJszqeTfjNiQINHh5DuhhabaObEaWxXNdeVCJU4g
-         VqONOOEW0KZdx6IEwh4GoKWjcK7gzuay7HFyWsGZiJzXFnwKniZ/dhKqWT/tlac56M7X
-         L1s85wbPXqnG/KvDB1W35OBuuB/B7WREo51q9C63JwM2HEWtDaD1Z0gHPWYaWXmG6lMi
-         rkpQ==
+        d=gmail.com; s=20251104; t=1789163539; x=1789768339; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=YPdkLtNhMgfXo64yGcGD4Px98Z89kU0OqiOuJ6Ovxxk=;
+        b=pJZMqffWPY4jqWhBvkEBwCkiKj/osrGIorH+a0KYmvm6iLC6BQIGknS7iEKvJxHkWD
+         d+6cQ6J5jsnW/vLJWfwM3Y+5eg/oZiPMcF4DIe2VfHl8fT+EReEpnOW1MXRrWgZOWvPX
+         debaPPZpXc5SZjGUblsLjwXtR9fTlCRVvZjazMs1DbP2OlDyoFdyvRQMlJmuizbNfCwI
+         9K/+mShGwWR1tiKT6jeX9EqpO+PTzU0HKg6AClyBHNsLtXynJ+qRKVPYiEMaa/Gd+ilx
+         5zw1zDuUcc8fmZHcE0kNEnq4ISaAV0MFLLxxhZHZDehbaKfEj9mBSqehSvaiHFCrfXy4
+         qqkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789163115; x=1789767915;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=+cBvQuHwe5GCeT0Z0DzRPvSTiAVCj7vg+Qh8CRMXIPE=;
-        b=Q91Zgg/eAYRqd5ruB6fhN2wr7ofK+pGBCP0jEaDz+JAZPWR0KUUhv3ZjF65WmzEz+Y
-         E0j3Zv38iR0Z7sQ9aJ/JL1imutPEct6W2Lk5yDpw/XeXTPyKuY+2ydxIX95fBVeBqqL4
-         xkVx2HEfMBHA10ZLSVbz8YnJZ8f8e9IzOF6Y6rq32gP5LCbnvsY/+2mFqxl3OksiiJct
-         QDB4ozGcS7UpEj5h/10oSX+0IIp8N/qPLF8v7puTzko55yQLIJrRc+m51WP6ZQRvQd0r
-         b3jqGUVnLYwJMXhdKk9NtYbm9X7a/p1XztPHPoOq3+eiQUNVn7FlxB5y83p0ZZWJi6qS
-         0P3w==
-X-Forwarded-Encrypted: i=1; AKwUvByEyWE0oP/XZkd3Dw9GYFC27y1UK4tl1oXNgQRzacT8/74qfb3OwIqFJJs4dCn2mIIZY2+RmkI=@vger.kernel.org
-X-Gm-Message-State: AFuF++ke8gCzQ4C2XsyMkhS0oGNdSvwyidj0Q9Z+3Pta/+sPVZb7AAuL
-	XTi8kudMOWUvicDXaRHqWnkUnRWrlRk1daNkivT+g0wd7sfxyAweSHVQ
-X-Gm-Gg: AYBFou360AnewlbGMiiqqXjEOpogoBNzinQkv1dN05iir0XtQ2lU28bwbmq+kESU0ch
-	pYtPL4lWWOd8D3h7E/srFDufTYB4xnFysV9utKwSDTfedmXsxAT22FC6/9mc1Akc4TtvD/Gk+nT
-	1jw0eW3YihBuPYetULBvSfw8cm127zaPQp0Yybk+mqHtuJBjQQ/OMhPAhWTXPOAJmEEUYRsAjIA
-	w6IM1xSKgMfNTKWWZpvqTHRQ7OkxcrmK0yEDhbApWr4yY2U3xmN8hRLO8GDvAyBSr6DO4KAYx3f
-	x4fCzR7FDD1cod9w1tJjP6lNgxPx2CRe9hxvTmxussX7ZSzhmC4qgJZ27+Dny568xaoCV+DnI6C
-	xPQLrYHtpwdnTSrKOpFzqoXx+HoebJao5FPkAfpX8GyHb2gf2BGdprC/CkkY2Km+neN9UiihsaP
-	RHMu67UyQsaIBQfCCogEhWVY0GeRZyCEUtIpoIqakJERx+VxR7u4qfqtSVriXXcEM8S8HWLxSUW
-	+bHMJt/aV8NnzOZjrg9hNdzLCmkwzJt9jhQRsO7xMM0Pgs=
-X-Received: by 2002:a05:600c:a107:b0:49e:663c:c69f with SMTP id 5b1f17b1804b1-49e663cc929mr88097525e9.15.1789163114788;
-        Fri, 11 Sep 2026 14:45:14 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49e62cffaa0sm35777015e9.0.2026.09.11.14.45.13
+        d=1e100.net; s=20251104; t=1789163539; x=1789768339;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=YPdkLtNhMgfXo64yGcGD4Px98Z89kU0OqiOuJ6Ovxxk=;
+        b=XbyLP9iXKGldj7ZNyY88eOUNikOUoIaGEXBmiQtz3jaj5fxC72BXiXTSIkYhvruYWW
+         7r8VNQWt1Q/4SS8vI4d0enhaFUz2S5a68l7fpv2+MwjT2316hIw43VI3l4DZY8KsDz+S
+         3EKqmNLwoR2LFhxXF+cFX3CfNKfimoccCMOBqE1zb6amInUaQ7rkoNRHqYd4Kz0P4g2i
+         L7rYhxNb2rLjTNCWCrygXaa9kxc6RswL+KNRYMxuEJ0uXPk4O9jppjyu86eguVwsGTc3
+         5CDQUOu2ncyyjc1tUJOPVRuHjYK9T5K2YOVmaDqNXIEpOrUld1lh6gWEaEwmqjIkglOD
+         q8Kg==
+X-Gm-Message-State: AFuF++nMhLTAyo/eng/sl9xySZUnGnFJEUeG3JhyXNTDn+y0ilZJHzkC
+	PDG0Ig6lP2Ws5QWbLnlJJ2gnv0jpnWumm/QQw2fub+dmM3vE0CovQJpTGBjdofeLTig=
+X-Gm-Gg: AYBFou3dH9vSldNBIVBJezclPAr9SUEE/sQpCBc58Fqnks5SpQsWY7uUYRbpZpjLPSf
+	MR8ts+oeoUy5Ff2ctYnyl8KxV10596gwbFiF+1Xr62ApT03brzw8FtCZ8ZP7UWe8IGUuhSX0v4t
+	xUHJmojE5fDf1g8Vl8umZ2VEv7HkRCpOClGRLnJ+ghBFhY7VznZu1/0lThOpsqu1DPw/zOWnISe
+	rbsIjifSU5/c/EsFreTHICXRWK67d4N5V+FWqDiWY0wdAsfm8Gqk/2f/IjCizxaU7/tbXxI7xRi
+	DJKyawv4fw4oqcdeXzu1ZjLxUVLmufplo7s8mkmV9ZZHJ/npd7KXq4ncfF7hJRehk0E8MP3Rw7a
+	MRN+D0JXPrIbb5T/XjFCLb3IOA9HBHLLcRNOFuaIQYOjp8RiQIiJM/ideOyg/OS7oAgx5t0z4Uc
+	MKoDlgKD2+Ov2u/KkjNSME+3GE4ZorB+Vxd4qh4pIVmuGy2yzKuZrJYRjevykst6+gG3y8j2VSL
+	cwQNd+f8N1xULJnpP2HVsHr
+X-Received: by 2002:a05:600c:3b1f:b0:49c:fc89:59cb with SMTP id 5b1f17b1804b1-49e61983468mr75782205e9.5.1789163539317;
+        Fri, 11 Sep 2026 14:52:19 -0700 (PDT)
+Received: from kali ([169.224.126.247])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49d26c1bc5fsm177081345e9.3.2026.09.11.14.52.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Sep 2026 14:45:14 -0700 (PDT)
-Date: Fri, 11 Sep 2026 22:45:13 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Janis Edvarts Lacis <janislacis06@gmail.com>
-Cc: pabeni@redhat.com, davem@davemloft.net, edumazet@google.com,
- horms@kernel.org, kuba@kernel.org, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, liuhangbin@kylinos.cn
-Subject: Re: [PATCH net] net: vlan: fix vlan name truncation
-Message-ID: <20260911224513.1fc3f0fc@pumpkin>
-In-Reply-To: <20260911163543.204203-1-janislacis06@gmail.com>
-References: <bb5eeef9-a78d-44c2-a8f5-2cddd274d3ab@redhat.com>
-	<20260911163543.204203-1-janislacis06@gmail.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+        Fri, 11 Sep 2026 14:52:18 -0700 (PDT)
+From: Ali Firas <alishmery18@gmail.com>
+To: netdev@vger.kernel.org,
+	idosch@nvidia.com
+Cc: kuba@kernel.org,
+	pabeni@redhat.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	andrew+netdev@lunn.ch,
+	razor@blackwall.org,
+	roopa@nvidia.com,
+	bestswngs@gmail.com,
+	xmei5@asu.edu,
+	linux-kernel@vger.kernel.org,
+	Ali Firas <alishmery18@gmail.com>
+Subject: [PATCH net v2 1/2] vxlan: report whether vxlan_fdb_update() created the remote
+Date: Sat, 12 Sep 2026 00:52:02 +0300
+Message-ID: <20260911215203.3054653-1-alishmery18@gmail.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Fri, 11 Sep 2026 19:35:43 +0300
-Janis Edvarts Lacis <janislacis06@gmail.com> wrote:
+This is plumbing only and changes no behaviour on its own.
 
-> On Thu, Sep 10, 2026 at 10:56 AM, Paolo Abeni wrote:
-> > I'm sorry, but I don't think we can accept this patch: this change an
-> > user-space visible behavior: ...  
-> 
-> Okay, I see the issue. How about a 'solution' like this: we use scnprintf() 
-> instead of snprintf() in two branches that can have the name truncated? From 
-> what I see, the only difference between snprintf() and scnprintf() is the 
-> return value so there should be no functional change visible to the user. I 
-> tested the W=1 build, the warning is gone if scnprintf() is used.
+The rollback added in the next patch has to tell an FDB entry that the
+failing request created from one that was already there, and today it
+cannot: vxlan_fdb_update() returns 0 in both cases.
+vxlan_fdb_append() does return 1 when it links a new remote, but
+vxlan_fdb_update_existing() folds that into its local notify flag and
+returns 0 regardless, and vxlan_fdb_update_create() returns 0 as well.
 
-I think that ought to be considered a bug in the compiler options.
-There is no real justification for snprintf() and scnprintf() being different
-(especially if the result is ignored).
+Add an optional bool *created out-parameter and set it in both paths.
+All six existing callers pass NULL, so nothing observable changes.
 
-David
+Every statement added here is either a signature or argument change or
+is guarded by the new flag. tools/testing/selftests/net/
+test_vxlan_vnifiltering.sh gives 27 passed and 0 failed with this patch
+alone, identical to the base it applies to.
+
+Assisted-by: LLM
+Signed-off-by: Ali Firas <alishmery18@gmail.com>
+---
+ drivers/net/vxlan/vxlan_core.c      | 29 +++++++++++++++++++----------
+ drivers/net/vxlan/vxlan_private.h   |  3 ++-
+ drivers/net/vxlan/vxlan_vnifilter.c |  2 +-
+ 3 files changed, 22 insertions(+), 12 deletions(-)
+
+diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
+index be95af64a1f5..0652dc471dca 100644
+--- a/drivers/net/vxlan/vxlan_core.c
++++ b/drivers/net/vxlan/vxlan_core.c
+@@ -974,7 +974,7 @@ static int vxlan_fdb_update_existing(struct vxlan_dev *vxlan,
+ 				     __be16 port, __be32 vni,
+ 				     __u32 ifindex, __u16 ndm_flags,
+ 				     struct vxlan_fdb *f, u32 nhid,
+-				     bool swdev_notify,
++				     bool swdev_notify, bool *created,
+ 				     struct netlink_ext_ack *extack)
+ {
+ 	__u16 fdb_flags = (ndm_flags & ~NTF_USE);
+@@ -1042,6 +1042,8 @@ static int vxlan_fdb_update_existing(struct vxlan_dev *vxlan,
+ 
+ 		if (rc < 0)
+ 			return rc;
++		if (rc && created)
++			*created = true;
+ 		notify |= rc;
+ 	}
+ 
+@@ -1078,7 +1080,7 @@ static int vxlan_fdb_update_create(struct vxlan_dev *vxlan,
+ 				   __u16 state, __u16 flags,
+ 				   __be16 port, __be32 src_vni, __be32 vni,
+ 				   __u32 ifindex, __u16 ndm_flags, u32 nhid,
+-				   bool swdev_notify,
++				   bool swdev_notify, bool *created,
+ 				   struct netlink_ext_ack *extack)
+ {
+ 	__u16 fdb_flags = (ndm_flags & ~NTF_USE);
+@@ -1101,6 +1103,9 @@ static int vxlan_fdb_update_create(struct vxlan_dev *vxlan,
+ 	if (rc)
+ 		goto err_notify;
+ 
++	if (created)
++		*created = true;
++
+ 	return 0;
+ 
+ err_notify:
+@@ -1114,7 +1119,7 @@ int vxlan_fdb_update(struct vxlan_dev *vxlan,
+ 		     __u16 state, __u16 flags,
+ 		     __be16 port, __be32 src_vni, __be32 vni,
+ 		     __u32 ifindex, __u16 ndm_flags, u32 nhid,
+-		     bool swdev_notify,
++		     bool swdev_notify, bool *created,
+ 		     struct netlink_ext_ack *extack)
+ {
+ 	struct vxlan_fdb *f;
+@@ -1129,7 +1134,8 @@ int vxlan_fdb_update(struct vxlan_dev *vxlan,
+ 
+ 		return vxlan_fdb_update_existing(vxlan, ip, state, flags, port,
+ 						 vni, ifindex, ndm_flags, f,
+-						 nhid, swdev_notify, extack);
++						 nhid, swdev_notify, created,
++						 extack);
+ 	} else {
+ 		if (!(flags & NLM_F_CREATE))
+ 			return -ENOENT;
+@@ -1137,7 +1143,7 @@ int vxlan_fdb_update(struct vxlan_dev *vxlan,
+ 		return vxlan_fdb_update_create(vxlan, mac, ip, state, flags,
+ 					       port, src_vni, vni, ifindex,
+ 					       ndm_flags, nhid, swdev_notify,
+-					       extack);
++					       created, extack);
+ 	}
+ }
+ 
+@@ -1275,7 +1281,7 @@ static int vxlan_fdb_add(struct ndmsg *ndm, struct nlattr *tb[],
+ 	err = vxlan_fdb_update(vxlan, addr, &ip, ndm->ndm_state, flags,
+ 			       port, src_vni, vni, ifindex,
+ 			       ndm->ndm_flags | NTF_VXLAN_ADDED_BY_USER,
+-			       nhid, true, extack);
++			       nhid, true, NULL, extack);
+ 	spin_unlock_bh(&vxlan->hash_lock);
+ 
+ 	if (!err)
+@@ -1491,7 +1497,8 @@ static enum skb_drop_reason vxlan_snoop(struct net_device *dev,
+ 					 vxlan->cfg.dst_port,
+ 					 vni,
+ 					 vxlan->default_dst.remote_vni,
+-					 ifindex, NTF_SELF, 0, true, NULL);
++					 ifindex, NTF_SELF, 0, true, NULL,
++					 NULL);
+ 		spin_unlock(&vxlan->hash_lock);
+ 	}
+ 
+@@ -4034,7 +4041,8 @@ static int vxlan_dev_create(struct net *net, struct net_device *dev,
+ 				       dst->remote_vni,
+ 				       dst->remote_vni,
+ 				       dst->remote_ifindex,
+-				       NTF_SELF, 0, true, extack);
++				       NTF_SELF, 0, true, NULL,
++				       extack);
+ 		spin_unlock_bh(&vxlan->hash_lock);
+ 		if (err)
+ 			goto unlink;
+@@ -4485,7 +4493,8 @@ static int vxlan_changelink(struct net_device *dev, struct nlattr *tb[],
+ 					       vxlan->cfg.dst_port,
+ 					       conf.vni, conf.vni,
+ 					       conf.remote_ifindex,
+-					       NTF_SELF, 0, true, extack);
++					       NTF_SELF, 0, true, NULL,
++					       extack);
+ 			if (err) {
+ 				spin_unlock_bh(&vxlan->hash_lock);
+ 				netdev_adjacent_change_abort(dst->remote_dev,
+@@ -4806,7 +4815,7 @@ vxlan_fdb_external_learn_add(struct net_device *dev,
+ 			       fdb_info->remote_vni,
+ 			       fdb_info->remote_ifindex,
+ 			       NTF_USE | NTF_SELF | NTF_EXT_LEARNED,
+-			       0, false, extack);
++			       0, false, NULL, extack);
+ 	spin_unlock_bh(&vxlan->hash_lock);
+ 
+ 	return err;
+diff --git a/drivers/net/vxlan/vxlan_private.h b/drivers/net/vxlan/vxlan_private.h
+index b1eec2216360..e52755923c31 100644
+--- a/drivers/net/vxlan/vxlan_private.h
++++ b/drivers/net/vxlan/vxlan_private.h
+@@ -193,7 +193,8 @@ int vxlan_fdb_update(struct vxlan_dev *vxlan,
+ 		     __u16 state, __u16 flags,
+ 		     __be16 port, __be32 src_vni, __be32 vni,
+ 		     __u32 ifindex, __u16 ndm_flags, u32 nhid,
+-		     bool swdev_notify, struct netlink_ext_ack *extack);
++		     bool swdev_notify, bool *created,
++		     struct netlink_ext_ack *extack);
+ void vxlan_xmit_one(struct sk_buff *skb, struct net_device *dev,
+ 		    __be32 default_vni, struct vxlan_rdst *rdst, bool did_rsc);
+ int vxlan_vni_in_use(struct net *src_net, struct vxlan_dev *vxlan,
+diff --git a/drivers/net/vxlan/vxlan_vnifilter.c b/drivers/net/vxlan/vxlan_vnifilter.c
+index dd94085e0886..7e8abc55ef53 100644
+--- a/drivers/net/vxlan/vxlan_vnifilter.c
++++ b/drivers/net/vxlan/vxlan_vnifilter.c
+@@ -488,7 +488,7 @@ static int vxlan_update_default_fdb_entry(struct vxlan_dev *vxlan, __be32 vni,
+ 				       vni,
+ 				       vni,
+ 				       dst->remote_ifindex,
+-				       NTF_SELF, 0, true, extack);
++				       NTF_SELF, 0, true, NULL, extack);
+ 		if (err) {
+ 			spin_unlock_bh(&vxlan->hash_lock);
+ 			return err;
+-- 
+2.53.0
+
