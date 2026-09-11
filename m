@@ -1,65 +1,65 @@
-Received: from mail-wr2-f12.google.com (mail-wr2-f12.google.com [74.125.225.76])
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDB5D367B8A
-	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 14:47:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 764C336A37E
+	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 14:47:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789138035; cv=none; b=QdDQJeyLGe0slUsNEltK2VbszdO3M69tApMw/YSsmKueHBBQQfM/a7SAVJysivoyoATo51MX+M4/R0E3HrxN8wwy7cA28RVir68XfVLh5CbL+I9Toz1i+7OY9wATax4e7Yz9mkZ8F+db6lfMNqEl56ZThLhXbpPhIDXM5HynaPY=
+	t=1789138035; cv=none; b=CzkN1sGG2ws0qrGa3ngddVcTK43BpaSzQrc7go8JHcvc3b10clcblCw6v/ULKK8gk4C3oJkbq3jImhcW5eiY6INMcLTpIytEQ4bg1ZR1d46yiZdOAS5WlKx1QmT0qHpAiSYLyLLM0KF+K0Siwg4G9ReIS8gehQHfz92HT3Dd3jA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1789138035; c=relaxed/simple;
-	bh=dcMfYcrZvJo2odetIockDZHB6TyER2n5DIFvd4jrOOA=;
+	bh=6qK7Y4OCyC5WsOE2SJMQ4fti6jzNs1Pji9/QbACrVAA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=O4Ki8QdlFV6cQZJ7Pbj6JkwXdZYqdIvQLFJPaSYCzH8z6XMK84RCU+W9WMSzYFZ38pgB4XHhYSRGKk7uV2JZFA8YelKr1K4E3J76VGKmNDIzR63fLeZ5EFPBS31P7s1blqmSkvVZXhr/Ai+TSXRwo02CdUoS3fhkVXdQ2h/yg0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=Fp1SIsTT; arc=none smtp.client-ip=74.125.225.76
+	 MIME-Version:Content-Type; b=PlR/uQMc43ler2KPn2A1noMakWKVa0mfveZ77zc/wuXT9gDG2X9cUJXlKGwBUJbISqu/TwkhsjZuyJeelfpNDArUJrlP4aQkAWoCpxoNziGB8i8j4bfOzPCTbt6CrFlVbOeG8BJpQ/ptcUWjEWXtGt3z65RXtw/NythT0LG6YPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=A/5m4Fh/; arc=none smtp.client-ip=209.85.221.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="Fp1SIsTT"
-Received: by mail-wr2-f12.google.com with SMTP id ffacd0b85a97d-485933b2522so781694f8f.0
-        for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 07:47:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="A/5m4Fh/"
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-482ea739de2so670374f8f.0
+        for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 07:47:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1789138025; x=1789742825; darn=vger.kernel.org;
+        d=suse.com; s=google; t=1789138023; x=1789742823; darn=vger.kernel.org;
         h=content-transfer-encoding:content-type:mime-version:references
          :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=sAWK/0nRwHnvVvMYnd/Ub3wFPGnd0x9DJjP7YOulvgY=;
-        b=Fp1SIsTTjVyRqL0gIvM9vDPjIjd4izJyKEciKHm8TONmq1ag0xCO5x8W82arGdh9Xz
-         4Z5VG1L95LuGQrrZfZFlCNhUqTPojhGUc7m0c9dbmzYLvDhLFITGryupFkwF1I4B5sGx
-         PGiAF0Uz+do2dBAfXZjkAY1nhermD+CNJ2GhgHEC8USAwpOnbw+sC6iesnt9K6n6IKU3
-         CVIJFRc6zSGTKWFrAbM9r9/BFfCG5eYbh8zcCvbOyJTkfGBNiaKjkIQsGdbTwWiWza9S
-         WE2SudaMNSBYAuSj7OTRbSA+JozgvDM9Med1Ltt4Xu2X8kr5aB0A1Uzyo6Rn/D5Ll3Rm
-         W5lA==
+        bh=QuYE5JBWhvW9oHs2kdysh3HB71WxLYQMcei9gKN4bpc=;
+        b=A/5m4Fh/sngCKaEoJLtOhd0PEwql+T8zBi0qHa6cFg5H9HZAwcJa6OQkyRfUkv+4l5
+         PrwPUM2nfa2NQ5ZfES2qecayX0h9xaZPjNb5dZ+gNkld9Gq+JI7LtsTkqcJdS043KHXL
+         AYrw5uKonljqZ69+949bBF4VmJLQCR12wMLd9GTD7yU89XnGbPwo5FMSdRPi3bUSbnco
+         ibBekgmGXt2s/P3iIX1rpyu/BfwNKBORTLgqjA1B0N5VgKnIbC7oztcfa1lA32Qmm1Fp
+         rZA6+wXmHyJJXapZZo9qqcM+UPHrA+PTNhVhLBZyYMs5jY9zkFEivXrcP5idys2xQ9LL
+         Xd5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789138025; x=1789742825;
+        d=1e100.net; s=20251104; t=1789138023; x=1789742823;
         h=content-transfer-encoding:content-type:mime-version:references
          :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=sAWK/0nRwHnvVvMYnd/Ub3wFPGnd0x9DJjP7YOulvgY=;
-        b=bTylvwdwv/keE/UiOffhNZVFzwEpWfTbOvyyCCLvlh7ECfBtBP+bUuW62MQvMzO0k8
-         uu/x/muacb5QHajAt6wMLVkMgrSSXz5ItdRUCWEMgXwfO/BPXe3GNyR/5kZjAiPqKzM3
-         /7+lVeVrB0B5OdznxAazUwSYDboLzr8FBwpf6XmD/8ERLw7u3Hgb9j4MfmrkXkKIL2HT
-         HNP5VBpTGIJpFNKzQjOlf55B43IROSjiBvNPrTmnoeLzTK9FFeO1jn9isjLGvqTTN5FN
-         qbzl1+Q5UCTXtpESL1J/8OWipu+rEeEurMFIe8gWvXHUrQ839HoyJWMPfvQa/0dyTejJ
-         PZtg==
-X-Forwarded-Encrypted: i=1; AKwUvBynISRDPp1k9UOA3ZwGY+Dya6a8+ONFAzUxTWkiIm4QStmoEIjhFmldtLmBHtfY7XNHsFW6e9M=@vger.kernel.org
-X-Gm-Message-State: AFuF++nZXYigdTe6Hnyu+xdfT6qzDaNwtCN48JfRO2C+Zg7t/SpS6mZV
-	W1AH6lqEAxs53TDG3wtbucKiMPV2MN1CACy5+ap1JBU2wNTTGZRPvHsSafMLD/roTgI=
-X-Gm-Gg: AYBFou0dFrK8LQGscGKotpLtUBIjBD5Ck6BgcW+GdMIJwAYzZRqBK8If6hUznJ08I7q
-	4Mj2Oa746LccoJHYpMsaGIbwWn1J58ARniAKVx8Wot3DAhBuxqCKlcmYn8TQwZseybrr2O8OEGn
-	jNdZgLuDzrHjcdUgWKBB1JjbzYU0vcdGCbwugyWnQZZYcag4kY0yoeoE6pdwLHu6mrNuGwQ92+J
-	WsrWMxN/f4vXPB3LcF/EJGE2Pq1ChRH6H+X+GKWhw9Aift41WpOWlkCdKTei9tvOx7Zu6CtYasF
-	DMyFy2lRDRt8kbQ+yqjTjZaR2MbkWsr84IFGuv/6x94hsTTWA+PhqOGE2ZwQfPM8DmJuObFUBvL
-	MpdbHMttP5q/khKNRyO3qt6s0rg9JkysrZNEn7mIqjvRAkl70XF66SUQnj6OO2YCtFzyA8PZ8zf
-	Fa1ULiQAcr92gFUt2D+hzSiO9MDqmjEzbDlLra0j9owQCkx5dnGYM8p2d6fgd0e8pOLGVQFjo52
-	M7Kaw==
-X-Received: by 2002:a05:6000:26cf:b0:482:f61c:7cdd with SMTP id ffacd0b85a97d-486eb1d8541mr10746731f8f.4.1789138025130;
-        Fri, 11 Sep 2026 07:47:05 -0700 (PDT)
+        bh=QuYE5JBWhvW9oHs2kdysh3HB71WxLYQMcei9gKN4bpc=;
+        b=UQjq6BOXzn+4kNKtLTHXdHvAw04XiGT9E8v7jSWtmuXq+xEgVuozhKNm2QhwrfaPQM
+         RrmjJcyXVCPZicHiV7mwBdwgQ3aZDnJQAY3mNC1m1gyM2ANwT2DW94Gc8jxvt2mrd/M0
+         90iJASgMVJpDPYMmX+H+DyPuutPqfXqkHAnwbAsIeMp3t/B+859iJs0IJJla/k9/HmdC
+         BT+L0eoHNStVXld594BX5vUEbktue/Eq+1L5dA/A5dicP3n9skQFxV2WZlxnt2MGLx/W
+         oyVaN3xyA8ad+T61MygsffdPQWYM8F8prWhvPSOuo7N0nKHG+cHr+XAQslvvJDhC/XXi
+         VQ4g==
+X-Forwarded-Encrypted: i=1; AKwUvByv/VHsUwPxrsNi7dz6FCkcBxp78WF3acP1P4V76+6Xi4Tv3TKrG+/OyDJUu85jIrCwkPtXXLI=@vger.kernel.org
+X-Gm-Message-State: AFuF++lCAOWG4sGqkdVCb0PUmyi/W972q1Sgg8fLKuldHNYkUd6kEJOm
+	1LCUG7VT9uwgwn7Rbn5SdxkXlLMP82WrLyBqjBzcQOJjHSVXyhQOVLnguLfkHMjTij0=
+X-Gm-Gg: AYBFou3xnY3MGPXAifiS1u3Gcfp6VJIrD56Lr/lltIaVcnS+SlFaFt90cRR8EUucXH1
+	c2SvJXil9V6FA3Yw5gibu/uvE/uLb27ICDVaW0F1h87VPbbMbpBAuoQpNv/yGFcDVB/mM+5z+VF
+	yVtWwOQp9S5g5AEFEMx4nivFj1LfcdNHMhak9eVah383QuixyvfnfsVvtDDfJWUYRAARBUF6s8l
+	Qm1VIzIMBfFbuVGG7yAhevznES+uns9j5ohojtQAaoKBhLoI8yicvv2ffH+Kpd58naOeVJpjjXi
+	lSEehj8HcrJS1NvysG7Zm6CUIjbHYvQMyRIbzaPqsnmkt0cLgI/oD0eUrqigdcxkpYmdMA3jF2c
+	8peB42uoKeyrurWn8ZFiEC5jQJUqgiNa62ljbuOEg8hGqMcbOsru6qWAO/rxjKrjixBq2RQPZGy
+	E0z9cxObAiwm3W2Mq9oyn4hJi4NY0lcG6rmBSGQQd4jp/dwPMblZWts4zxBZACI47kD+07Gd90o
+	b3vIQ==
+X-Received: by 2002:a5d:5e08:0:b0:486:e81b:842a with SMTP id ffacd0b85a97d-486eb358ab6mr5259626f8f.48.1789138022582;
+        Fri, 11 Sep 2026 07:47:02 -0700 (PDT)
 Received: from localhost.localdomain ([2001:af0:8000:1409:193:86:92:181])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-486eb32e8d1sm6328068f8f.11.2026.09.11.07.47.02
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-486eb32e8d1sm6328068f8f.11.2026.09.11.07.47.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Sep 2026 07:47:04 -0700 (PDT)
+        Fri, 11 Sep 2026 07:47:02 -0700 (PDT)
 From: Petr Pavlu <petr.pavlu@suse.com>
 To: Tony Luck <tony.luck@intel.com>,
 	Borislav Petkov <bp@alien8.de>,
@@ -138,9 +138,9 @@ Cc: linux-edac@vger.kernel.org,
 	netdev@vger.kernel.org,
 	keyrings@vger.kernel.org,
 	linux-security-module@vger.kernel.org
-Subject: [PATCH v3 3/3] module: Bring includes in linux/kmod.h up to date
-Date: Fri, 11 Sep 2026 14:46:16 +0000
-Message-ID: <20260911-module-include-kmod-v3-3-6ebccc3e0731@suse.com>
+Subject: [PATCH v3 2/3] time/jiffies: Include linux/sysctl.h for proc_int_u2k_conv_uop(), ...
+Date: Fri, 11 Sep 2026 14:46:15 +0000
+Message-ID: <20260911-module-include-kmod-v3-2-6ebccc3e0731@suse.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260911-module-include-kmod-v3-0-6ebccc3e0731@suse.com>
 References: <20260911-module-include-kmod-v3-0-6ebccc3e0731@suse.com>
@@ -153,47 +153,33 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
-Including linux/kmod.h alone results in 1.5 MB of preprocessed output, even
-though it provides only a few functions and macros.
+jiffies.c uses proc_int_u2k_conv_uop(), proc_int_k2u_conv_kop(),
+proc_int_conv(), proc_dointvec_conv() and proc_doulongvec_minmax_conv(),
+which are declared in linux/sysctl.h. It currently gets that header
+indirectly through linux/module.h -> linux/kmod.h, but the latter no longer
+needs to include linux/sysctl.h.
 
-The header currently depends on:
-
-* __printf() -> linux/compiler_attributes.h,
-* ENOSYS -> linux/errno.h,
-* bool -> linux/types.h.
-
-Include only these files, reducing the preprocessed output to 10 kB.
+Include linux/sysctl.h directly in jiffies.c ahead of removing the
+unnecessary include from linux/kmod.h.
 
 Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
-Reviewed-by: Aaron Tomlin <atomlin@atomlin.com>
+Acked-by: Thomas Gleixner <tglx@kernel.org>
 ---
- include/linux/kmod.h | 12 ++----------
- 1 file changed, 2 insertions(+), 10 deletions(-)
+ kernel/time/jiffies.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/linux/kmod.h b/include/linux/kmod.h
-index 9a07c3215389..b9474a62a568 100644
---- a/include/linux/kmod.h
-+++ b/include/linux/kmod.h
-@@ -2,17 +2,9 @@
- #ifndef __LINUX_KMOD_H__
- #define __LINUX_KMOD_H__
+diff --git a/kernel/time/jiffies.c b/kernel/time/jiffies.c
+index 213ae1d6a014..9231fea557ce 100644
+--- a/kernel/time/jiffies.c
++++ b/kernel/time/jiffies.c
+@@ -8,6 +8,7 @@
+ #include <linux/jiffies.h>
+ #include <linux/module.h>
+ #include <linux/init.h>
++#include <linux/sysctl.h>
  
--/*
-- *	include/linux/kmod.h
-- */
--
--#include <linux/umh.h>
--#include <linux/gfp.h>
--#include <linux/stddef.h>
-+#include <linux/compiler_attributes.h>
- #include <linux/errno.h>
--#include <linux/compiler.h>
--#include <linux/workqueue.h>
--#include <linux/sysctl.h>
-+#include <linux/types.h>
- 
- #ifdef CONFIG_MODULES
- /* modprobe exit status on success, -ve on error.  Return value
+ #include "timekeeping.h"
+ #include "tick-internal.h"
 
 -- 
 2.55.0
