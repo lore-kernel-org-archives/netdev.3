@@ -1,112 +1,86 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCCCF3246ED;
-	Fri, 11 Sep 2026 22:17:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD5C73AE19B;
+	Fri, 11 Sep 2026 22:26:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789165077; cv=none; b=EUM0mjNsSGOb3cTLhPE4j0p1l9TglgGrxzWmREL+M5EDgZ20bY2Bbea/L417+bxVdFzhKAghb8wJMBbJJWyl3CDHIO2U/XhhgWVYSprtE4os6zBEBXtrSIfybvI3MpQKXdQihXMXukYhpXEVVAQLqUJFD4LXxLVvWOIq03ibM14=
+	t=1789165598; cv=none; b=J4Dx5AaVJwlss3AY59q/Xdo2S+p5e+r2v840UAsfqSkJ8XqREHQ2zsYnmPUYdhLhKuII0UXGDEmcebNToVCAbz/SDkeLTZriGc/dhn4eEno2/O4tEQxlG+hke7jv0mNgJXqXGAZKnpYqcWnWIidZNwqkcjFE8x3Gzh/Hxj+RuO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789165077; c=relaxed/simple;
-	bh=iCyeGKHrxMmZ6EY14JGdoRdcgHBTUd0q8qErn7LGYX8=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=pL54cr4yKFiV4Vu5umm+4qTJcuoUHa2LHw6E0udGeNEVJ5R/gi1dysj5sxQ2V7HIAIneOmeDaWlMr2LJEeJDz8/S9DrbiN/UV8Rf8s7NzYDsMKPyO//s8osx/Yx/713485YE8sIB99487ySXl8+SC5vdrc63fSioOZICi+k3ty0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=sM4eUYdo; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	s=arc-20240116; t=1789165598; c=relaxed/simple;
+	bh=bkCcMAElNJPe2i4cdATB9LsB1/aDuH3G/dC8238rifE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=S4JD14IPeRvhv5SyrjU5qvcye85yxiG4jmMkK2ecF95RP7x4OSCLsuDbMi8rPWs+E0FxTPLXjCFzH7+lQuUMl3VHxAAf59jLkiOB/7SXcT8XvgUjU5+9E3QmTan40vppmpjH2kg8IqKoD7d+NUKxn+1fl8Kmk5O9f9INWuy1+4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VxPEEeTu; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="sM4eUYdo"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2D1C4A0580;
-	Sat, 12 Sep 2026 00:17:47 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1789165069; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=w8pN+7ngCPGyzLK/fMt1+QW8WWJ+5O2YuCJAVF2xcfc=;
-	b=sM4eUYdohYn+3yuA9qSNZrVIrj1SsSpDj+FCVrFIDFsd8b9h/ij98dTRQzNHnret/U3wcg
-	UuUTEXyQPuW224+qzSBWnaMYQuVVgRHMjZdwdRfjrf8LbzWVIwYqKcIswQA43RC/q46YHg
-	CyeWpH+eW/2g36q2KM4CNR2xDmgJ4+fv8FFCAIjDk4Uf7+AowG+5NDDmlWHpzNVrBUbb3x
-	cXoTu55woF45lI3b/20ibFjnh8nV9MozYqd+3x1O+FibWot7DtdJHuESmYz7rnf/9SGB2V
-	NCsFLsK/Ugg5mG1QQexOSazCpgmgnG67kNUESP6LQs/KL4IDMc3BaldNgVzccQ==
-Date: Sat, 12 Sep 2026 00:17:42 +0200
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: Jakub Kicinski <kuba@kernel.org>, davem@davemloft.net
-CC: netdev@vger.kernel.org, edumazet@google.com, pabeni@redhat.com,
- andrew+netdev@lunn.ch, horms@kernel.org, shuah@kernel.org,
- linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH net-next] selftests: net: add ruff linter exclusions
-User-Agent: Thunderbird for Android
-In-Reply-To: <20260911213412.3222759-1-kuba@kernel.org>
-References: <20260911213412.3222759-1-kuba@kernel.org>
-Message-ID: <F54B8FC6-F330-4E24-A55A-E903A47EF020@tipi-net.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VxPEEeTu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D14451F000FF;
+	Fri, 11 Sep 2026 22:26:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789165590;
+	bh=JNEUcT0p2QiXiiJMjYNy4qjTjJK6OqTijZzdMul2zlo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=VxPEEeTu9bkOmN7FuVheiDBKT4mq05/qsEgpCk4+Zj0qoD3uiv5GG4VR9qyrM5RlR
+	 r2jksQWsFKr6db+czYZINXGpy9oHga8B2TmJeTguVhg/C3FwPQyCIXiHkx3CuMsOFJ
+	 9srj1MtOLA2dl7LDdFkw+gbNtWM18M3PtzLRxORkvbDeXZ/FazlJOMwt9e2uUDICUo
+	 +c2R1A++B/1fhJs8NJfpzAQb7GkOc8bFuGWhuKtdDDfyIUB5EGR6HGu8PtnlZsMWwr
+	 j4GbTli4/FgrK2czH0Nw0D6hmiUjZLrHlp+iJxOIXqme8N8wC87IegOtAOeEjgEjKW
+	 xU3vYzUfKjoFQ==
+Date: Fri, 11 Sep 2026 15:26:29 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: =?UTF-8?B?QXNiasO4cm4=?= Sloth =?UTF-8?B?VMO4bm5lc2Vu?=
+ <ast@fiberby.net>
+Cc: netdev@vger.kernel.org, Donald Hunter <donald.hunter@gmail.com>,
+ Danielle Ratson <danieller@nvidia.com>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ linux-kernel@vger.kernel.org, Daniel Borkmann <daniel@iogearbox.net>,
+ Nikolay Aleksandrov <razor@blackwall.org>
+Subject: Re: [PATCH net-next 04/10] netlink: specs: rt-link: fix
+ netkit-policy names
+Message-ID: <20260911152629.490a47c7@kernel.org>
+In-Reply-To: <20260911214148.1184806-5-ast@fiberby.net>
+References: <20260911214148.1184806-1-ast@fiberby.net>
+	<20260911214148.1184806-5-ast@fiberby.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-X-Last-TLS-Session-Version: TLSv1.3
 
+On Fri, 11 Sep 2026 21:41:30 +0000 Asbj=C3=B8rn Sloth T=C3=B8nnesen wrote:
+> Correct the names of these `enum netkit_action` constants:
+>=20
+> - NETKIT_PASS is 0, so "pass", not "forward".
+> - NETKIT_DROP is 2, so "drop", not "blackhole".
+>=20
+> Note, the other enum members are not used in netlink, and
+> are not allowed by netkit_check_policy().
 
+Looks right tho may be intentional, so the other option would be to add
+#define aliases for the spec names.
 
-On September 11, 2026 11:34:12 PM GMT+02:00, Jakub Kicinski <kuba@kernel=
-=2Eorg> wrote:
->Fedora is now shipping ruff 0=2E16 which added a ton of more
->opinionated rules=2E Let's add some exclusions for checks
->which are both noisy and IMO of questionable value=2E
->We can still follow them for new code but it's a matter
->of preference=2E
->
-> C401: set(x for x in Y) -> {x for x in Y}
->
->I find the set() a little more readable=2E
->
-> I001: hard requirements to sort includes
->
->A little too much
->
-> RUF015: list(set_a - set_b)[0] -> next(iter(set_a - set_b))
->
->list + index are more readable to a "C person" for sure=2E
->
->Signed-off-by: Jakub Kicinski <kuba@kernel=2Eorg>
->---
->CC: shuah@kernel=2Eorg
->CC: linux-kselftest@vger=2Ekernel=2Eorg
->---
-> tools/testing/selftests/drivers/net/=2Eruff=2Etoml | 4 ++++
-> tools/testing/selftests/net/=2Eruff=2Etoml         | 4 ++++
-> 2 files changed, 8 insertions(+)
-> create mode 100644 tools/testing/selftests/drivers/net/=2Eruff=2Etoml
-> create mode 100644 tools/testing/selftests/net/=2Eruff=2Etoml
->
->diff --git a/tools/testing/selftests/drivers/net/=2Eruff=2Etoml b/tools/t=
-esting/selftests/drivers/net/=2Eruff=2Etoml
->new file mode 100644
->index 000000000000=2E=2Ef58d51f35317
->--- /dev/null
->+++ b/tools/testing/selftests/drivers/net/=2Eruff=2Etoml
->@@ -0,0 +1,4 @@
->+# NOTE: keep in sync between =2E=2E=2E/net/ and =2E=2E=2E/drivers/net/
->+
->+[lint]
->+ignore =3D ["C401", "I001", "RUF015"]
->diff --git a/tools/testing/selftests/net/=2Eruff=2Etoml b/tools/testing/s=
-elftests/net/=2Eruff=2Etoml
->new file mode 100644
->index 000000000000=2E=2Ef58d51f35317
->--- /dev/null
->+++ b/tools/testing/selftests/net/=2Eruff=2Etoml
->@@ -0,0 +1,4 @@
->+# NOTE: keep in sync between =2E=2E=2E/net/ and =2E=2E=2E/drivers/net/
->+
->+[lint]
->+ignore =3D ["C401", "I001", "RUF015"]
+CC: Nik and Daniel
 
+> diff --git a/Documentation/netlink/specs/rt-link.yaml b/Documentation/net=
+link/specs/rt-link.yaml
+> index ac2084d14f22..e8af962c8064 100644
+> --- a/Documentation/netlink/specs/rt-link.yaml
+> +++ b/Documentation/netlink/specs/rt-link.yaml
+> @@ -812,10 +812,10 @@ definitions:
+>      enum-name:
+>      entries:
+>        -
+> -        name: forward
+> +        name: pass
+>          value: 0
+>        -
+> -        name: blackhole
+> +        name: drop
+>          value: 2
+>    -
+>      name: netkit-mode
 
-Reviewed-by: Nicolai Buchwitz <nb@tipi-net=2Ede>
-
-Thanks,
-Nicolai
