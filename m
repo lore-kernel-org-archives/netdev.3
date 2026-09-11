@@ -1,42 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77AAB4A5C4D
-	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 17:13:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2C724A5EB3
+	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 17:13:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789146800; cv=none; b=bisCX1f3hTLsOwyklHYMe5dV5Q0AolosLSxFkENtHtVR7MYtoVjZoCTA36919R7GvByxqT2PiP4HEkgG0ytl+Hc/y/M01a2qsJCJR5QTGs05FAkNuCu00+DwBzKlhaGxIAYD3ZX+fGRQhfs4Vj1XvwQD06BzojmvIgxmoTmhQi0=
+	t=1789146802; cv=none; b=s8O8LbAPvsXcxWBMKISBCmKaT5At1qkMdCmUkxtiSLf5+Z0dsW2sdVB6vUbYvFCVwciqsNK6xSiwCITwal438oNski9tp9g+nUxW6Sn7qjvIQ8Uhf1fPheqC2IR6Inia6C8CwLHkM9s3zfXqWaL7DMIzcYXHVSgd1JVsIOKxB0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789146800; c=relaxed/simple;
-	bh=Q0EARY4UzwL5dehYWqyD+K3wev0W857BNNYvS1+Nf7w=;
+	s=arc-20240116; t=1789146802; c=relaxed/simple;
+	bh=2nr5ER1+UurrG6DCq58oP9UZH1Vqtz2hHuxXUzFuAGw=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=SVnmJALVFP0bYjAIO1NjYQ9A8UvDdG215VnieqQ45lSCtBpYvX9oRXsAYE1IsT7YpfgU8B2sJnS8SzWfXqBa87MIgMW63R6IKAZfR0B0meNNz1b0msjo4lxn4BlzZQOrAl8QHU+GEePG1Vd66Z/h2X2/Lv6LjKpM0zI4QgtOEXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tqsy5EDP; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=cQMRGkisLRZkEaJPmPImh/vmLn04+yxH6r/deOdU37+tdpjeLAVbcewt6R6rkCV0umMbU2t/q3roJ3BTLxnFAbzWlgnojY1REAWsjPj02qmDY01ESq3E3DDPFhc0LsRV2OSuIKmFQWpjT/eeyEaZdt+rm/4LacRTvw4uhxJjd64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aEGNVUrf; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tqsy5EDP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8B1E1F00893;
-	Fri, 11 Sep 2026 17:13:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aEGNVUrf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AD451F00898;
+	Fri, 11 Sep 2026 17:13:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789146799;
-	bh=8s8U70Kt3d3UOvVTcVdIf8BidwpjIldfFSixMc5skaA=;
+	s=k20260515; t=1789146800;
+	bh=wzlo1cX2PE9lclwc8HGe1RMaGNw8gtx1QsomjoNeCq0=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Tqsy5EDPo4XZrZZ271MOI0eAA/WvXVYD/CN1HG8/xGpNuffVSLoURXo9TF5kiftAo
-	 NxyCoNvXV5f8ioV9txKM/7WLDb5W/+pAVLpyuabGC1EGhxKLNdvejR+PY1/gBkChWY
-	 Y3bPTV8gDBdtcwvH3OGDbULvERTQegoiR3/79/sXnKc5vD62gtWMFJ0B3G1C6ntW3I
-	 aZJtq3pW1KKK82j25s+JYFn7VM/UO3uP5sjy7CPNly3M1cfr3W+a+Uj8sPRhLz9hnQ
-	 PhuYWxcNzSGJwouhogQqjABCaibsV633bzVMxKsBwpLveBWd1Jbxpm5otNdWqUPq8a
-	 z3la4Zuc9u25w==
-Subject: Re: [PATCH net-next v9 6/7] selftests: drv-net: in so_txtime tell
- apart sw from hw pacing
+	b=aEGNVUrfMiJo/L7XzPsdBXYAs4ItaTDiFfl1isk+vFE6mPKd6xY/sfEsPUWoF+6ee
+	 Hkg7FXK+egarqPpYhpS/juTOyVGHDqLMUeoOADcLXv/tdYvJhOoeGXpzHeJcXT91hS
+	 6vkEieEqnW209yZ72uTtHLLqmJ/XYVsMkrqucBQW2q7FUGRY16ZHFiBMr/9ToE8pot
+	 F0H27hOqntqrlYegm001JVQYO8dJC8iA0X2KaW4uYlYTQjVfkc80zEVU5XvNxZ4RcS
+	 sFdmVyC+Rb2gop743F/vnu2GAHIyBkH/iSamkokqu0syJ/DyZKmDmaDbA/0+lbOmN+
+	 +qsraA5MKhGTg==
+Subject: Re: [PATCH net-next v9 7/7] selftests: drv-net: extend so_txtime with
+ hw offload
 From: netdev-bot+sashiko@kernel.org
 To: willemdebruijn.kernel@gmail.com
 Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
  edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
  andrew+netdev@lunn.ch, willemb@google.com
-Date: Fri, 11 Sep 2026 17:13:18 +0000
-Message-ID: <178914679853.219967.10930030898097751336@kernel.org>
-In-Reply-To: <20260910171131.2532487-7-willemdebruijn.kernel@gmail.com>
-References: <20260910171131.2532487-7-willemdebruijn.kernel@gmail.com>
+Date: Fri, 11 Sep 2026 17:13:19 +0000
+Message-ID: <178914679956.219967.16464715915916154727@kernel.org>
+In-Reply-To: <20260910171131.2532487-8-willemdebruijn.kernel@gmail.com>
+References: <20260910171131.2532487-8-willemdebruijn.kernel@gmail.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -52,109 +52,168 @@ issue(s) to consider:
 
 Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-- [Medium] `-H` is documented in usage() as 'verify hardware offload
-  (tx)' and the commit message claims it tells software apart from…
+- [Medium] The new `beyond_hw_horizon` variant hard-codes a 70ms txtime,
+  but `_dev_setup_pacing_offload()`…
 
 --
 
-selftests: drv-net: in so_txtime tell apart sw from hw pacing
+selftests: drv-net: extend so_txtime with hw offload
 
-This adds a '-H' flag to so_txtime.c that enables SO_TIMESTAMPING with
-SOF_TIMESTAMPING_TX_SOFTWARE, and flags an error if the software transmit
-timestamp is more than cfg_variance_us after the send start time.  It also
-extends the errqueue polling deadline by cfg_variance_us and sorts the
-getopt string and usage text alphabetically.
+Adds two hardware pacing offload variants of the so_txtime driver test, one
+on fq with an offload_horizon and one on pfifo_fast, plus a new
+beyond_hw_horizon testcase with a 70ms txtime. Also raises the receive
+timeout and switches the final empty-queue check to MSG_DONTWAIT.
 
-> diff --git a/tools/testing/selftests/drivers/net/so_txtime.c b/tools/testing/selftests/drivers/net/so_txtime.c
-> index f6f3253ed1748..9ebe9f91227c7 100644
-> --- a/tools/testing/selftests/drivers/net/so_txtime.c
-> +++ b/tools/testing/selftests/drivers/net/so_txtime.c
+> diff --git a/tools/testing/selftests/drivers/net/so_txtime.py b/tools/testing/selftests/drivers/net/so_txtime.py
+> index a097fae0b335a..66a87205e02db 100755
+> --- a/tools/testing/selftests/drivers/net/so_txtime.py
+> +++ b/tools/testing/selftests/drivers/net/so_txtime.py
 
 [ ... ]
 
-> @@ -191,12 +193,32 @@ static int do_recv_errqueue_txtime(struct sock_extended_err *err,
->  	return 1;
->  }
+> @@ -33,12 +35,42 @@ def test_so_txtime(cfg, clockid, ipver, args_tx, args_rx, expect_success):
+>      expect_fail = not expect_success
+>      if slow_machine:
+>          expect_success = False
+> +        if timing_sensitive:
+> +            expect_fail = None
 >  
-> -static int do_recv_errqueue(int fdt)
-> +static int do_recv_errqueue_timestamping(struct scm_timestamping *tss)
-> +{
-> +	int64_t ts;
+>      with bkg(cmd_rx, host=cfg.remote, fail=expect_success,
+>               expect_fail=expect_fail, exit_wait=True):
+>          cmd(cmd_tx)
+>  
+>  
+> +def _dev_setup_pacing_offload(cfg):
+> +    """Configure pacing-offload."""
+> +    rtnl = RtnlFamily()
 > +
-> +	ts = tss->ts[0].tv_sec * 1000ULL * 1000 * 1000;
-> +	ts += tss->ts[0].tv_nsec;
-> +	ts -= glob_tstart_real;
-> +	ts /= 1000;
+> +    try:
+> +        link = rtnl.getlink({'ifi-index': cfg.ifindex})
+> +    except NlError as e:
+> +        raise KsftSkipEx('getlink not supported by device') from e
 > +
-> +	if (ts > cfg_variance_us) {
-> +		fprintf(stderr, "sw delay %" PRId64 "us exceeds bounds\n", ts);
-> +		if (!cfg_machine_slow)
-> +			errors++;
-> +	}
+> +    if 'pacing-offload' not in link or \
+> +       'max-pacing-offload-horizon' not in link:
+> +        raise KsftSkipEx('pacing offload not supported by device')
 > +
-> +	return 1;
-> +}
+> +    horizon = _HW_OFFLOAD_HORIZON_MS * 1000_000
+> +    if link['max-pacing-offload-horizon'] < horizon:
+> +        raise KsftSkipEx('pacing offload max horizon too small')
+> +
+> +    cur_offload = link['pacing-offload']
+> +    rtnl.setlink({
+> +        'ifi-index': cfg.ifindex,
+> +        'pacing-offload': 1,
+> +    })
+> +    defer(rtnl.setlink, {
+> +        'ifi-index': cfg.ifindex,
+> +        'pacing-offload': cur_offload
+> +    })
+> +
+> +
+>  def _qdisc_setup(ifname, qdisc, optargs=""):
+
+[ ... ]
+
+> @@ -61,6 +93,7 @@ def _test_variants_fq():
+>              ["one_pkt", "a,10", "a,10"],
+>              ["in_order", "a,10,b,20", "a,10,b,20"],
+>              ["reverse_order", "a,20,b,10", "b,10,a,20"],
+> +            ["beyond_hw_horizon", "a,70", "a,70"],
+>          ]:
+>              name = f"v{ipver}_{testcase[0]}"
+>              yield KsftNamedVariant(name, ipver, testcase[1], testcase[2])
+> @@ -74,6 +107,41 @@ def test_so_txtime_fq_mono(cfg, ipver, args_tx, args_rx):
+>      test_so_txtime(cfg, "mono", ipver, args_tx, args_rx, True)
+>  
+>  
+> +@ksft_variants(_test_variants_fq())
+> +def test_so_txtime_fq_mono_hw(cfg, ipver, args_tx, args_rx):
+> +    """Run all variants of monotonic fq tests, with offload horizon."""
+> +    cfg.require_ipver(ipver)
+> +    cfg.require_nsim(nsim_test=False)
+> +
+> +    _dev_setup_pacing_offload(cfg)
+> +    try:
+> +        _qdisc_setup(cfg.ifname, "fq", f"offload_horizon {_HW_OFFLOAD_HORIZON_MS}ms")
+> +    except Exception as e:
+> +        raise KsftSkipEx("netdev does not support offload. skipping") from e
+> +
+> +    # Expect all tests to use only hw pacing, except beyond_hw_horizon.
+> +    # Do not pass -H to that test so that with sw pacing fallback it passes.
+> +    hw_only = "-H" if args_tx != "a,70" else ""
+> +    test_so_txtime(cfg, "mono", ipver, f"{hw_only} {args_tx}", args_rx, True)
+> +
+> +
+> +@ksft_variants(_test_variants_fq())
+> +def test_so_txtime_pfifofast_mono_hw(cfg, ipver, args_tx, args_rx):
+> +    """Run all variants of monotonic tests, without fq pacing sw backup."""
+> +    cfg.require_ipver(ipver)
+> +    cfg.require_nsim(nsim_test=False)
+> +
+> +    _dev_setup_pacing_offload(cfg)
+> +    _qdisc_setup(cfg.ifname, "pfifo_fast")
+> +
+> +    # Expect all tests to pass, except beyond_hw_horizon without sw fallback.
+> +    # It will send immediately, failing the receiver arrival bounds check.
+> +    expect_pass = args_tx != "a,70"
+> +    timing_sensitive = not expect_pass
+> +    test_so_txtime(cfg, "mono", ipver, f"-H {args_tx}", args_rx, expect_pass,
+> +                   timing_sensitive=timing_sensitive)
 
 [Severity: Medium]
+Is the beyond_hw_horizon expectation guaranteed on all devices that pass the
+capability gate in _dev_setup_pacing_offload()?
 
-Can this check actually tell software pacing apart from hardware pacing for
-every workload the next patch runs with '-H'?
+That helper only checks a lower bound on the device horizon:
 
-The only positive criterion here is that the software transmit timestamp
-lands within cfg_variance_us (8000 us) of glob_tstart_real.  For a request
-with no delay or a negative delay there is no pacing interval to observe at
-all.  do_send_one() does not even attach SCM_TXTIME when delay_us is
-negative:
+    horizon = _HW_OFFLOAD_HORIZON_MS * 1000_000
+    if link['max-pacing-offload-horizon'] < horizon:
+        raise KsftSkipEx('pacing offload max horizon too small')
 
-	if (ts->delay_us >= 0) {
-		...
-		tdeliver = glob_tstart + ts->delay_us * 1000;
-		...
-		cm->cmsg_type = SCM_TXTIME;
+so a device advertising, say, 100ms or more is accepted. In
+test_so_txtime_pfifofast_mono_hw() the root qdisc is pfifo_fast, so there is
+no qdisc offload_horizon gate and the immediate-send decision is left to the
+driver's own horizon check, for example in idpf_tx_splitq_set_txtime():
 
-So for the 'a,-1' and 'a,0' variants that the follow-up patch passes '-H'
-to, ts comes out near 0 and the ts > cfg_variance_us test can never fire,
-whether the transmit was hardware paced, software paced, or not paced at
-all.  Would it make sense to skip or reject '-H' when the requested delay
-is not positive, so those variants do not report a pass without having
-verified anything?
+    /* beyond offload horizon? set overflow bit only */
+    if (ts > now + horizon) {
+            tx_params->offload.desc_ts[2] =
+                    IDPF_TXD_FLOW_SCH_HORIZON_OVERFLOW_M;
 
-For the 10 ms variants there are only 2 ms between the requested delay and
-the 8 ms threshold.  Is that margin intentional?
+On a device whose reported max-pacing-offload-horizon covers 70ms, the packet
+is paced in hardware, arrives on time, the receiver exits 0, and with
+expect_fail set by:
 
-A related question on cfg_variance_us: it is also the receiver side
-delivery jitter tolerance used in do_recv_one():
+    expect_pass = args_tx != "a,70"
 
-	if (llabs(tstop - texpect) > cfg_variance_us) {
-		fprintf(stderr, "exceeds variance (%d us)\n", cfg_variance_us);
+cmd.process() in tools/testing/selftests/net/lib/py/utils.py turns that into
+a failure:
 
-Reusing it as the sender side software pacing threshold means changing one
-tolerance silently changes the other.  Would a separate constant for the
-sender side threshold be clearer?
+    elif self.proc.returncode == 0 and expect_fail:
+        raise CmdExitZeroFailure("Command succeeded (expected fail)", self)
 
-[ ... ]
+The timing_sensitive escape only clears expect_fail under
+KSFT_MACHINE_SLOW, so on a normal machine the failure is unconditional.
+Would it make sense for _dev_setup_pacing_offload() to also skip when
+max-pacing-offload-horizon is at or above the 70ms txtime used by
+beyond_hw_horizon?
 
-> @@ -446,10 +505,11 @@ static void usage(const char *progname)
->  			"  -6            only IPv6\n"
->  			"  -c <clock>    monotonic or tai (default)\n"
->  			"  -D <addr>     destination IP address (server)\n"
-> -			"  -S <addr>     source IP address (client)\n"
-> +			"  -H            verify hardware offload (tx)\n"
+Related, in test_so_txtime_fq_mono_hw() the same case drops the -H flag:
 
-Given the above, is "verify hardware offload (tx)" an accurate description
-of what the flag does?  The implemented behaviour is a heuristic on the
-software transmit delay, and it degrades to a no-op for zero and negative
-delays.  Would wording that describes the software delay check be closer to
-the code?
+    hw_only = "-H" if args_tx != "a,70" else ""
 
-> +			"  -m <mark>     socket mark\n"
->  			"  -r            run rx mode\n"
-> +			"  -S <addr>     source IP address (client)\n"
->  			"  -t <nsec>     start time (UTC nanoseconds)\n"
-> -			"  -m <mark>     socket mark\n"
->  			"\n",
->  			progname);
->  	exit(1);
+If fq incorrectly handed the 70ms packet to hardware and the device horizon
+covers 70ms, the packet still arrives on time and the subtest passes, so is
+the intended 50ms fq offload_horizon boundary actually asserted here?
+
+The commit message states this as a fact:
+
+    The pfifo_fast beyond_hw_horizon testcase expects a failure because
+    the packet exceeds the hardware horizon and is transmitted immediately,
+
+which appears to hold only when the device horizon is between 50ms and 70ms.
+Could that constraint be spelled out, or enforced in the capability check?
 
 [ ... ]
 
