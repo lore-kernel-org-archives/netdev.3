@@ -1,134 +1,137 @@
-Received: from mail-ua1-f54.google.com (mail-ua1-f54.google.com [209.85.222.54])
+Received: from mail-vs1-f46.google.com (mail-vs1-f46.google.com [209.85.217.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4A1149F112
-	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 15:53:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789141996; cv=pass; b=i1KQB7QEufGcQ2kRsACAJqEXokCvhSgUbKXtLWo0n7j40A5YpmEN5IkqRni4alO8+0SGHJjYXAgxuw/ZjMehE4HVNysmGvg23LpvIGKrF5iOgrvpomThbv5Cvnos8cdavfxOFmCBYBnfQPFlaB4usKHvwiK43LpwFzxaha9+CCg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789141996; c=relaxed/simple;
-	bh=F39xQOImaxJK8CevVQCFMKOX+9LgzBRLUqk9ae5qoSU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rVwIL4Jy7THc1atk6fbSsKxJK0Q6bUx+fMEAtKlW4M0bcXhlbqvcrc4H2a10sKdWZwg/rkkhUSg6H0Im6IDYcL/9J/gvMB35VSMzIEKh9Dev2Ijk+u7OGZUNiIJHQonoqqjZZOrsVxfBVxDcbog1kFcTmQkffs2MyURfP6p0Dtg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gs.ncku.edu.tw; spf=pass smtp.mailfrom=gs.ncku.edu.tw; dkim=pass (2048-bit key) header.d=gs-ncku-edu-tw.20251104.gappssmtp.com header.i=@gs-ncku-edu-tw.20251104.gappssmtp.com header.b=TU4HrLPr; arc=pass smtp.client-ip=209.85.222.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gs.ncku.edu.tw
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gs.ncku.edu.tw
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EF5949DBB6
+	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 15:53:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.46
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789142011; cv=none; b=IB9u0HIcHhbF7gxYczQ4hEkyHptX751kLPQMEjn9CN2O/0l6Jo6JPvGx+HgdH+lror+ew44tNoB9T8fjXODQ9xGDpnEpuvgwpBuJpnWpuC/doLi49IiEulfeo6QPKKVwri94gRpG29B0MpURAdRmu7Y/T9DgFioeAPvBRRh4GHk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789142011; c=relaxed/simple;
+	bh=A4mNJss7r8+QPwLUxRmAnLRSF7/BOBXN3ZTsgkISMUs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gXVbSiW71rBetZ6/gImTbL+bz5rPZuJ5vTK/UPqLf300z5mzMIXwdIGeIYvp/Httxc7PqtDMYZaAt0o9xcymL95rN8WTmlDKZkeW29T2y0ZEZI0vO4yrTMHdODazw0eZyaNdOr6jAzu36Z/duXjNLrol3OG9ri3myDIWc40QKhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CM+z1PSg; arc=none smtp.client-ip=209.85.217.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gs-ncku-edu-tw.20251104.gappssmtp.com header.i=@gs-ncku-edu-tw.20251104.gappssmtp.com header.b="TU4HrLPr"
-Received: by mail-ua1-f54.google.com with SMTP id a1e0cc1a2514c-980c4f5c921so542319241.2
-        for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 08:53:14 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789141993; cv=none;
-        d=google.com; s=arc-20260327;
-        b=YdSo69D1wGTEciDEGpRFbR7kYCyHr/wnauZre3l+ZnmuYuVyHc3hqWKYWcX5U+ruTx
-         NAyeBqluz1dbZHXFN1xDb6tK1vxnKtvi2LhkSgkQ88TzMRSHgHEYB9Rx0x+xj5kid9B0
-         EqJoY9A73zKlmXXX+CGV+iVq/33ZOQqVlWRbgZ4MRKYH1wzmNd3kJCbiJdPUkk2PhOS/
-         SzgATnZyt7Omuq8nwQBRSu/ZYLehVtoMl8JuJy9vDkcgcBovrEij/zCLqE2DdfaJoQ9I
-         rDoS+BKzes6fTVDeVKMeaV/am90Bpl27wcK+l9OY70krAOAc1xLgO33JlkvZ7PnxSXJQ
-         v88A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=1vv7gvwFES7J25+C+0P5Z/9fMTwoyrVRDGhTkAbqC3U=;
-        fh=j3UyXn6+WE1xk4UtUIyxD7sCMht2pmDOo/wu93LSAVk=;
-        b=gBsCUYW96JROqQIKi23+38DJlJ7NhccnUcIn+qH3HAq4x81LgExZ45CzwkrWB1XXpz
-         JzGRyhcw3DNeQG51m+ND7fIKE2IfLbTlBk9NfXt90xykBlyVf9iml4G8/m4fS5XpD6u6
-         HhyIQDUdT1T5MNL+bFtw85rWvUu1jor++KIcSP3UbbuQP+5P5Mcb4qZNQt5LgKdp+3JG
-         i9qjb9MOqP/fbkDAQVRA5g7dFninAIhyI+s2k2/Z/UFaSFFPkxuG52I8OriU27vYg6N1
-         i04P5nDZZT8T6aBUlvvyFsOOiZRfSkBD9VAUdZeWlkoZLbzHQI0IabnKDWnucoJyS+da
-         NSQA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CM+z1PSg"
+Received: by mail-vs1-f46.google.com with SMTP id ada2fe7eead31-782df51b4c1so764569137.3
+        for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 08:53:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gs-ncku-edu-tw.20251104.gappssmtp.com; s=20251104; t=1789141993; x=1789746793; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=1vv7gvwFES7J25+C+0P5Z/9fMTwoyrVRDGhTkAbqC3U=;
-        b=TU4HrLPrlHtlktUhdsoiWo4rdxP2ayY2q7G0lhCV1Z56O+wKgWF4FbO87/POWyQT3D
-         8vSqisFEbSw/zy5/zznoZO9aPs3wdgHfatIQSbq0D7vNIU23WQ03BPbZfb2P4KzUPcVZ
-         jicdK18YP44TNI8NRW8TZ+YRvIP1Trz4yUHbDZC6vL31fQA7aQ276LSSp7/pmYMADvNX
-         CVh9hm+hcgw/5BKM2gB2t0+HRIdFIIMbdV5kOkSKPE3IsXVQrigE8FSD/7cQHyOIhjjB
-         mL+tqNFTJtZp3JdOwh06TTvGwIme1kTcNfhwxXXKuJCavsyxm1AQtpLMj2U79iMCOO7D
-         pjkQ==
+        d=gmail.com; s=20251104; t=1789142008; x=1789746808; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=3r3GetI2bTShh7zQsecV1+PSL1nkUSycIYXk9LbNz7Y=;
+        b=CM+z1PSg4p05aZBkFWcjFOzpzvg6CgoDIeSUWU3tmEgf53qqYH+dcBDnB/LFv6A+Cu
+         AorQ/ss1Anp36naiK4pkYVuBkKEBbLU3rZhyVKdU16jBz+Y6ZhKHbhernujkO9h+RB2F
+         LgzNtXcMsuE7asFhcKFs9HRioUkZEwAco3hf5TSjissALaaHVqxJ4AeLzSBXDsmDujdN
+         QaSylw0DpRyGl3NLSwxrMLS04LQjbKL3dvSOlRq6+Gccs3whYiOPAFse60rE77Zt5aAM
+         +lOe6TLA00OwU3nh/kPdIvlcljoBZ7iTNbSp5gHwqNdBay8gJPwVZbg/B1e0vi0KgWZ4
+         +PHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789141993; x=1789746793;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=1vv7gvwFES7J25+C+0P5Z/9fMTwoyrVRDGhTkAbqC3U=;
-        b=iGGAKYOkATFMiYAD37eaAAtEkssoAucAuoMjXqKcYSYwaZDjdgWh6nIikI7PoC6vmW
-         +vwO9bjZ6Rt7DkGVpOQEe8rCxLRdjCnlyxXHrAF/CPqLb3r2dK7jmle95owXtJndfZmn
-         Ft3TAPHoCPS/3vMoj9VsYZRRkeJCHmADq4uKa2SFuAZHV6FoDS120c7lvfwTbXZ69QWq
-         /BC31+8VZxqN2E4Jdum0WTDhyi/tg8FmKNrLa945mzP2fDdGGSEWsaw5IyXwcO9qnofM
-         vrQ2xiTsdS51LGFBQUMgNVnXxgaDJm0DjICsq2n28WTfLL5WTSB5Jxwz7Le7IqzsogN4
-         Wv8A==
-X-Gm-Message-State: AFuF++lZlaCZonFM6wj6Tichv/AYlPQHLIX7XPY6oAs88JeXCcvI8bif
-	YPCznoFdpLG91a+fgEMXnFohfPlMDJ8rlcLw+sKSoUPjaensVwtRXZi4fCopD+K1E4XVXgp9mlQ
-	rcGM0ifTUzOBaSblxBeIE6e2qDxfXfazxUoqEjT/n7A==
-X-Gm-Gg: AYBFou3Ut9XgJFN/UBis1T0dq56uIo76O4b1RLUhWl+xdMFouQ0/ooR+RamcdX4DYXx
-	Gwjqoa0J7gtAGcATen2J0lSQqjoDM9ttC/OaFSo5rzUqEuB7vxs7Bj6dVb+UU0VPp1n1GqT0R4W
-	imHb5MVUZvLGGAX6vKJ5/UnAjA9AfBYfrgWJizvOUVlxPa8HEZbaQA0NL8p3EDMI3QRSRc+Ujyh
-	08MIE/LdQkpO/CLUOtYz+jREIhwz0ElMX4DbOACneTRxVizC7so4tOdN5gkYvkKLs2muKx2ra40
-	yg6OdVHuIX05IGBFHRLlYoFhjHn60fN8mdIHPEDHGwUEKlX/i0x9G9zNzsXnRTAwU5KQFlXy1YH
-	G4h0uhczoAUEx
-X-Received: by 2002:a05:6122:3d0c:b0:5c6:5daf:52ea with SMTP id
- 71dfb90a1353d-5c8462d0000mr7158736e0c.6.1789141993589; Fri, 11 Sep 2026
- 08:53:13 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1789142008; x=1789746808;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=3r3GetI2bTShh7zQsecV1+PSL1nkUSycIYXk9LbNz7Y=;
+        b=GNHOVmb51HKx45/D84CpOmhrUIlmwteq4vaEn2K3acIdvxP4RaEbllJPCicb3CQQK6
+         cLETEcx3HuOPKPQdeQ8RIYHY4UfNr7V5yrcjjttZb2cRWOKBcYPXNNezNMhTOvHs//b7
+         os9Zhz4kVSfReQLJnHB00g2L4l5XsEgoAwvpYjqZs0wDqQBw2ldaoC1K1PF8vTLHH9uL
+         YvVmSyqL7yo0hHy9+aDWre4SjSMaHaM9FRK1erHbZzimrD5a0W32B/4vVDlLSwmk/eum
+         tQw62VC2uxWha8XBmTdhmo6ppyzW6RzabbUgljXYJjZOuMLLN5ZKFmgnEEtcDQhP5QJF
+         UeBQ==
+X-Forwarded-Encrypted: i=1; AKwUvByhYaRnjXO8/uF8Rf8CSi3yhh8qpOAdRPA0bQj/b8CMnJOD2X0hiUzPmlGt6wyM8XRq0TMELSA=@vger.kernel.org
+X-Gm-Message-State: AFuF++n1J+JRhwibqTGGTFKsr2y00MEBnkpVAl4uXAsE0jgn/9Q/mGfY
+	bRGIu7gnrHLHpjA9rb6v/28k2TWtsQRUuD0kKUfdqB+vFd2/vf8LaTg=
+X-Gm-Gg: AYBFou1WujVqZiOOxzlSJsr0E6rMj/bZQM6xSQ786VZg8aGjAjErJfo3aT4Isq8Z7i6
+	mBaJS4x+3ZwKsIT+/BLggw/6WSncqDe6nvezXh22l49IsPdqMoGwGzphACtvZBKU2040OL4xFjl
+	YP+RjWe5/NbdbZMR+Hv5RtP7DMRdKxkLhEDPKALO7hs5mT2hx5J29Xc94gFHGMstw2Oq/AQe3w6
+	MQ3HURrCX64ZB8f9wwY8Ca08Upw++9ouxizK8QNQQ2QOr+OeMROu7FBF7j8LZHEa/Qr128Qz3sm
+	UJgr830uVTZ2bPKg85tkMx7j4cuce4jbOjkxWEqwtyuDCmCQ4iS1tdsWUF92Rm2EbMfsAnNUaNr
+	FGgRIsOFwycYD25OTW3ZuHvYTdQGzMDmM39gN6S812UAPYeQYliTdsI+pdMZgzM9PW4yS1+kjnI
+	ZkucguSjxASv1U/vKolmAutnSffcomBa5Tn45eJ0C2bo9gBHYGuPUI4IHlDQTQVMxy328u32aVI
+	kyB6J88N8KfsEGujuc0o7MCuwJzw15bVaVTJaCwIxHLRc49OKXprGvQPUETgehLYvkN4lAZ5AUm
+	9WgZgzWKVNFsSn+TJWYCCw/JxQRYJ4OxMQ==
+X-Received: by 2002:a05:6102:3a13:b0:789:100e:3d0c with SMTP id ada2fe7eead31-792aad54589mr5833763137.8.1789142008061;
+        Fri, 11 Sep 2026 08:53:28 -0700 (PDT)
+Received: from localhost.localdomain ([104.39.73.78])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-9120f4d389esm23300896d6.42.2026.09.11.08.53.26
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Fri, 11 Sep 2026 08:53:27 -0700 (PDT)
+From: Myeonghun Pak <mhun512@gmail.com>
+To: Jiawen Wu <jiawenwu@trustnetic.com>,
+	Mengyuan Lou <mengyuanlou@net-swift.com>
+Cc: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux@armlinux.org.uk,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	ae878000@gmail.com
+Subject: [PATCH net] net: txgbe: free the fixed-rate clock on cleanup
+Date: Fri, 11 Sep 2026 11:53:18 -0400
+Message-ID: <20260911155318.88857-1-mhun512@gmail.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260906145643.219609-1-f64116045@gs.ncku.edu.tw> <20260909180851.01488994@kernel.org>
-In-Reply-To: <20260909180851.01488994@kernel.org>
-From: =?UTF-8?B?RjY0MTE2MDQ16buDIOaclCBIVUFORyBTSFVP?= <f64116045@gs.ncku.edu.tw>
-Date: Fri, 11 Sep 2026 23:53:00 +0800
-X-Gm-Features: AcwNN1UWcuwxZCQR1n7msY-EQ_gz2d88U52Op93xGQ8dQ4m1tuBVPc8TQvU3y2o
-Message-ID: <CAEqcOowoHcmjpU5Nub5k+YVV1tHb7oX9beoTLE25ho4t49LB6w@mail.gmail.com>
-Subject: Re: [PATCH net-next] selftests: net: Add TCP payload verification to udpgso_bench_rx
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, davem@davemloft.net, edumazet@google.com, 
-	pabeni@redhat.com, horms@kernel.org, shuah@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-> This new option is not exercised by any in-tree test.
-> Do you have any special use case that needs it?
-> Otherwise either its useful and in-tree tests should run it, or it's
-> not useful and we shouldn't merge this patch either..
+The fixed-rate clock is registered with clk_register_fixed_rate(), but
+its error and removal paths use clk_unregister(). That unregisters the
+clock without freeing the fixed-rate provider allocation.
 
-Thanks for the review. I've added an in-tree test to
-udpgso_bench.sh that exercises TCP payload verification for
-IPv4 and IPv6 and checks the receiver's exit status.
+Use clk_unregister_fixed_rate() on lookup creation failure, later PHY
+initialization failure and removal to release the provider allocation as
+well. Keep the existing clock registration and lookup cleanup ordering.
 
-I'll include this test in v2.
+This issue was identified during our ongoing static-analysis research while
+reviewing kernel code.
 
+Fixes: b63f20485e43 ("net: txgbe: Register fixed rate clock")
+Assisted-by: OpenAI:GPT-5.6
+Co-developed-by: Ijae Kim <ae878000@gmail.com>
+Signed-off-by: Ijae Kim <ae878000@gmail.com>
+Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
+---
+ drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-Jakub Kicinski <kuba@kernel.org> =E6=96=BC 2026=E5=B9=B49=E6=9C=8810=E6=97=
-=A5=E9=80=B1=E5=9B=9B =E4=B8=8A=E5=8D=889:08=E5=AF=AB=E9=81=93=EF=BC=9A
->
-> On Sun,  6 Sep 2026 22:56:43 +0800 shuo huang wrote:
-> > udpgso_bench_rx supports UDP payload verification but rejects the
-> > combination of TCP and verification mode. Its TCP receive path discards
-> > the payload, so it cannot check the data generated by udpgso_bench_tx.
-> >
-> > Read the TCP payload into a buffer when verification is requested
-> > and check it against the transmitter's repeating alphabetic
-> > pattern. Preserve the verification position across recv() calls
-> > because TCP does not preserve send boundaries. Restart the pattern
-> > at the payload length supplied with -l, matching the transmitter's
-> > pattern restart on each message.
-> >
-> > Require a nonzero -l value for TCP verification and retain the existing
-> > discard path when verification is disabled.
->
-> This new option is not exercised by any in-tree test.
-> Do you have any special use case that needs it?
-> Otherwise either its useful and in-tree tests should run it, or it's
-> not useful and we shouldn't merge this patch either..
-> --
-> pw-bot: cr
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
+index dc9f243146580b477a2ae958ddba66a1ac8fc822..c81d485221d56dc1d8d66f5a01ce05c76966830e 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
+@@ -434,7 +434,7 @@ static int txgbe_clock_register(struct txgbe *txgbe)
+ 
+ 	clock = clkdev_create(clk, NULL, "%s", clk_name);
+ 	if (!clock) {
+-		clk_unregister(clk);
++		clk_unregister_fixed_rate(clk);
+ 		return -ENOMEM;
+ 	}
+ 
+@@ -637,7 +637,7 @@ err_unregister_i2c:
+ 	platform_device_unregister(txgbe->i2c_dev);
+ err_unregister_clk:
+ 	clkdev_drop(txgbe->clock);
+-	clk_unregister(txgbe->clk);
++	clk_unregister_fixed_rate(txgbe->clk);
+ err_destroy_phylink:
+ 	phylink_destroy(wx->phylink);
+ err_destroy_xpcs:
+@@ -671,7 +671,7 @@ void txgbe_remove_phy(struct txgbe *txgbe)
+ 	platform_device_unregister(txgbe->sfp_dev);
+ 	platform_device_unregister(txgbe->i2c_dev);
+ 	clkdev_drop(txgbe->clock);
+-	clk_unregister(txgbe->clk);
++	clk_unregister_fixed_rate(txgbe->clk);
+ 	phylink_destroy(txgbe->wx->phylink);
+ 	xpcs_destroy_pcs(txgbe->pcs);
+ 	software_node_unregister_node_group(txgbe->nodes.group);
+-- 
+2.53.0
