@@ -1,44 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D61517DFFA
-	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 02:44:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FE763E63AA
+	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 02:44:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789094666; cv=none; b=jx/0c4FsUDOPKJyNBc2CwD6zO6ECmic/9PC/14T8VQTgsCBYkr/vzqGUuNFjQTm/TAoNIzepgkGGSk59IC+Nrei3gUN9weF/zwL/GU3lQvXlRhd3Vzw26m7ERl6Ll/JVLxkpYJXz2e4GupEOa/Ke5NljmMgXBhIiQseVG6REa7Y=
+	t=1789094670; cv=none; b=OS85S6NlP/eTPtoEMbs8lc+6gv6yy0CP9s9pJjQ6ehhK32KbqjIm95vldRXW2Jlf+86YYShmQ+YHvhl/9A9me5uNEOGkrxzBu1487qIQ2Zi8frLkOdkNDnW2U6vG/iudfZwGWGmSsE+38zkc7iWRm5HqyaMVB6BzYdF7UINib6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789094666; c=relaxed/simple;
-	bh=qWxpejiIlViSb2ZQ+D6PY3OnOBF7BeZT95DuvcfssO8=;
+	s=arc-20240116; t=1789094670; c=relaxed/simple;
+	bh=q0T7KSoMvzWce4yYqzIQfBdIiA/Pouy0ii1az/yI7DE=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=scPigysau4zVCntIrh1dGnYmEripr8kp+ZZfZPwC7iL8dYYvGoTGqi7b4TIaGZyD/7B3PvjdwQZVZFFAh3UZBuUzhFJJC+YdLACpbgFxPnaepsC42VTJwsQ1iYwQSpoovb2kvQn1EwCvW7SH6LG1tWcQ+J7zGjhfM420kAIg15g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BP4a7Q/J; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=A+DBEGWAPJR+FR7kzjm/lhwOyEbZZ/fGFX1ULcPmBrrEUYI3xkxn230DpkMyJ1IatezcRFLdBIDd8fBW8SxDEEAOaMctT3DAdoKETnjo5o1+KY55o8dQImk6LtaXu5xck6aL/hU6fgpSRoI78v4rARhlqv0oT9+hXI4S/IwskEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aGz3N/9p; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BP4a7Q/J"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7E5B1F00893;
-	Fri, 11 Sep 2026 02:44:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aGz3N/9p"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E92921F000FF;
+	Fri, 11 Sep 2026 02:44:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789094665;
-	bh=jpjnrm1v7zMK9LzaNvtC4op941DQZNoksYBFQZrH/ZY=;
+	s=k20260515; t=1789094666;
+	bh=CSXwYmMdbbSlMrZ5kOVXAyWGSwPp4HZHBFvclQjJmG8=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=BP4a7Q/J+/W/brkYT6G2N3HhGMYZ63i405fG0O/ftoMueZD/TwOE3a5QVGhKhPZOd
-	 jDCLWZkj/ubJQt6yZ2/HeBAESEmyUk9h74ny3o9AEgavtxgf4M58vh02KhjEWQ9D0I
-	 Zi2SsgJoMdWCiVheubpClWSiXkGzJ1ll3IstyWosWpt8EfJTKdLdWa5X8DbCIELVOi
-	 sGAsIngFYHj3LtM1ppJj8RVHfDpqRbqa/p4N2j0prF5QrQ1T0GfQ1/7Sqfe+ZqkKtn
-	 bsThCMDWB8PzKT+cNz3i7XUxef53mt51CCi+BMVvtb049rg6tpPFzC8fLh2By/sS57
-	 74bR7WXM8RzPA==
-Subject: Re: [PATCH v2 net-next 6/7] ip_tunnel: Protect
- ip_tunnel_net.tunnels[] with mutex.
+	b=aGz3N/9pJIMwdHoY8pRppN+slLTo0YRKXtEqqh/2JIlc9QDbyVG9EKCzr7t4pGvTT
+	 lTnNGN8j98RJ0F/BjdDZzVSEFzqV6H4KH/2xi1HcCLsKWyKZ/liy/bgn61P6Kg8POB
+	 UTp+QNj1Fks0LwyNiUrsVQSwHaD0dd5rOQe+taOTHLVYJMZNuACJI+yaZ/6famGFcw
+	 sLTlK7JFcGJdSMqum6MjAodMp6OOkKDbN2HvSld72ZIRscU8lwp7OIbIkIJ+Colif/
+	 kDd9c8yikxze5q7XzRWGacv7rTaXEbkXOrDO+uE0cXtLYQ2w9BVH87Pr/zFGCOfYHo
+	 BErYpzzQHMusQ==
+Subject: Re: [PATCH v2 net-next 7/7] ip_tunnel: Support per-netns device
+ unregistration.
 From: netdev-bot+sashiko@kernel.org
 To: kuniyu@google.com
 Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
  pabeni@redhat.com, dsahern@kernel.org, idosch@nvidia.com, horms@kernel.org,
  steffen.klassert@secunet.com, herbert@gondor.apana.org.au, kuni1840@gmail.com,
  netdev@vger.kernel.org
-Date: Fri, 11 Sep 2026 02:44:24 +0000
-Message-ID: <178909466433.219967.6650856074530288267@kernel.org>
-In-Reply-To: <20260909234422.2416506-7-kuniyu@google.com>
-References: <20260909234422.2416506-7-kuniyu@google.com>
-X-sashiko-severity: Low
+Date: Fri, 11 Sep 2026 02:44:25 +0000
+Message-ID: <178909466550.219967.12590792953773467699@kernel.org>
+In-Reply-To: <20260909234422.2416506-8-kuniyu@google.com>
+References: <20260909234422.2416506-8-kuniyu@google.com>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -51,88 +51,116 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider:
 
-Critical: 0 · High: 0 · Medium: 0 · Low: 1
+Critical: 0 · High: 1 · Medium: 0 · Low: 0
 
-- [Low] Reported concern (judged a false positive after verification):
-  under the new mutex the check-then-act sequences in `ip_tunnel_ctl()`…
+- [High] In `ip_tunnel_ctl()` (net/ipv4/ip_tunnel.c:930-933) the newly
+  added gate `if (!itn->fb_tunnel_dev) { err = -EBUSY; goto done; }`…
 
 --
 
-ip_tunnel: Protect ip_tunnel_net.tunnels[] with mutex.
+ip_tunnel: Support per-netns device unregistration.
 
-This adds a per-netns mutex to struct ip_tunnel_net and takes it around the
-paths that add, remove, look up or update entries in
-ip_tunnel_net.tunnels[], replacing the implicit RTNL protection assumed by
-ip_tunnel_find().  A DEBUG_NET_WARN_ON_ONCE(netdev_need_ops_lock(dev)) is
-also added to ip_tunnel_ctl() to document that the ops lock must be a no-op
-for tunnel devices.
-
-No Link: tags are present in the commit header.
-
-I have no regressions to report against this commit.  Quoting the hunks I
-looked at most closely, with a note on the one candidate issue I chased and
-why it does not look reachable here.
+This switches __ip_tunnel_dellink() to unregister_netdevice_queue_net() so
+ip_tunnel_delete_net() can queue cross-netns devices for per-netns
+unregistration, and adds ip_tunnel_unregistering() checks so
+ip_tunnel_changelink()/ip_tunnel_dellink()/ip_tunnel_ctl() skip devices
+that are already queued.  It also adds a NULL check on itn->fb_tunnel_dev
+in ip_tunnel_ctl().
 
 > diff --git a/net/ipv4/ip_tunnel.c b/net/ipv4/ip_tunnel.c
-> index 3ba03c2b3b900..9ad63f1af37a6 100644
+> index 9ad63f1af37a6..b07cc453e28be 100644
 > --- a/net/ipv4/ip_tunnel.c
 > +++ b/net/ipv4/ip_tunnel.c
 
 [ ... ]
 
-> @@ -988,7 +1003,7 @@ int ip_tunnel_ctl(struct net_device *dev, struct ip_tunnel_parm_kern *p,
->  			dev = t->dev;
->  		}
+> @@ -920,6 +927,11 @@ int ip_tunnel_ctl(struct net_device *dev, struct ip_tunnel_parm_kern *p,
 >  
-> -		ip_tunnel_dellink(dev, &dev_kill_list);
-> +		__ip_tunnel_dellink(dev, &dev_kill_list);
->  		err = 0;
->  		break;
+>  	mutex_lock(&itn->tunnels_lock);
+>  
+> +	if (!itn->fb_tunnel_dev) {
+> +		err = -EBUSY;
+> +		goto done;
+> +	}
+> +
+
+[Severity: High]
+Is itn->fb_tunnel_dev == NULL a reliable indicator that the netns is
+dying?
+
+ip_tunnel_init_net() leaves fb_tunnel_dev permanently NULL for a perfectly
+live netns:
+
+net/ipv4/ip_tunnel.c:ip_tunnel_init_net() {
+	...
+	if (!ops || !net_has_fallback_tunnels(net)) {
+		struct ip_tunnel_net *it_init_net;
+
+		it_init_net = net_generic(&init_net, ip_tnl_net_id);
+		itn->type = it_init_net->type;
+		itn->fb_tunnel_dev = NULL;
+		return 0;
+	}
+	...
+}
+
+net_has_fallback_tunnels() returns false for all non-init netns when
+net.core.fb_tunnels_only_for_init_net == 1, and for every netns including
+init_net when it is 2 (or the fb_tunnels=none boot arg is used).  That
+sysctl is mode 0644 in net/core/sysctl_net_core.c, so it is runtime
+settable.
+
+In those configurations, does this new gate make all four legacy ioctls
+fail with -EBUSY on ipip/gre/gretap/erspan/vti devices?  On the parent
+commit, with fb_tunnel_dev == NULL:
+
+  - SIOCGETTUNNEL skips the "dev == itn->fb_tunnel_dev" branch and does
+    memcpy(p, &t->parms, sizeof(*p)) with t = netdev_priv(dev)
+  - SIOCADDTUNNEL reaches ip_tunnel_create(net, itn, p), which only needs
+    itn->rtnl_link_ops (assigned before the early return above)
+  - SIOCCHGTUNNEL takes the "dev != itn->fb_tunnel_dev" branch
+  - SIOCDELTUNNEL reaches __ip_tunnel_dellink()
+
+The path is reachable per device without any fallback device existing,
+since ipgre_netdev_ops, ipip_netdev_ops and vti_netdev_ops all install
+.ndo_siocdevprivate = ip_tunnel_siocdevprivate:
+
+ioctl(fd, SIOCGETTUNNEL, {ifr_name="gre1"})
+  -> ip_tunnel_siocdevprivate()
+    -> dev->netdev_ops->ndo_tunnel_ctl(dev, &p, cmd)
+      -> ip_tunnel_ctl()
+
+So does "ip tunnel show/add/change/del" on a netlink-created device stop
+working after this change when fallback tunnels are disabled?  The
+SIOCGETTUNNEL branch has no capability check, so this is reachable
+unprivileged as well.
+
+Is the gate needed for NULL-safety at all?  Every remaining dereference
+of itn->fb_tunnel_dev inside ip_tunnel_ctl() is guarded by a
+"dev == itn->fb_tunnel_dev" comparison, so its only role appears to be the
+dying-netns policy described in the commit message.
+
+Would an explicit "itn is being destroyed" flag (or the
+ip_tunnel_unregistering() semantics added by this same patch) work better
+here, given that fb_tunnel_dev == NULL cannot distinguish "this netns
+never had a fallback device" from "this netns is going away"?
+
+Other in-tree code already treats a NULL fb_tunnel_dev as a normal state
+for a healthy netns:
+
+net/ipv4/ip_vti.c:vti_init_net() {
+	...
+	itn = net_generic(net, vti_net_id);
+	if (itn->fb_tunnel_dev)
+		vti_fb_tunnel_init(itn->fb_tunnel_dev);
+	...
+}
+
+>  	switch (cmd) {
+>  	case SIOCGETTUNNEL:
+>  		if (dev == itn->fb_tunnel_dev) {
 
 [ ... ]
-
-> @@ -1164,6 +1184,8 @@ void ip_tunnel_delete_net(struct net *net, unsigned int id,
->  
->  	ASSERT_RTNL_NET(net);
->  
-> +	mutex_lock(&itn->tunnels_lock);
-> +
->  	WRITE_ONCE(itn->fb_tunnel_dev, NULL);
->  
->  	for (h = 0; h < IP_TNL_HASH_SIZE; h++) {
-> @@ -1172,8 +1194,10 @@ void ip_tunnel_delete_net(struct net *net, unsigned int id,
->  		struct ip_tunnel *t;
->  
->  		hlist_for_each_entry_safe(t, n, thead, hash_node)
-> -			ip_tunnel_dellink(t->dev, head);
-> +			__ip_tunnel_dellink(t->dev, head);
->  	}
-> +
-> +	mutex_unlock(&itn->tunnels_lock);
->  }
->  EXPORT_SYMBOL_GPL(ip_tunnel_delete_net);
-
-The one thing I checked was whether a tunnel already unhashed and queued for
-unregistration by ip_tunnel_delete_net() above could come back, either via
-ip_tunnel_update() in ip_tunnel_changelink()/ip_tunnel_ctl() (ip_tunnel_del()
-becomes a no-op, then ip_tunnel_add() relinks it) or via a second
-__ip_tunnel_dellink() queueing it onto another kill list.
-
-That does not look reachable at this commit: rtnl_net_lock() still takes the
-global RTNL, and the pernet exit path runs ip_tunnel_delete_net() plus the
-queued unregister_netdevice_many*() inside one RTNL section, so the ioctl and
-rtnetlink paths cannot interleave with teardown yet.  The later patch in the
-series adding ip_tunnel_unregistering() covers those call sites anyway.
-
-> @@ -1276,6 +1306,8 @@ int ip_tunnel_changelink(struct net_device *dev, struct nlattr *tb[],
->  
->  	ip_tunnel_update(itn, t, dev, p, !tb[IFLA_MTU], fwmark);
->  out:
-> +	mutex_unlock(&itn->tunnels_lock);
-> +
->  	return err;
->  }
->  EXPORT_SYMBOL_GPL(ip_tunnel_changelink);
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260909234422.2416506-1-kuniyu%40google.com
