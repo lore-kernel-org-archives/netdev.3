@@ -1,42 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D3F933F5A9
-	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 17:13:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A96704A3D30
+	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 17:13:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789146797; cv=none; b=GrMfAP7Z5E7Cj0DfV5z3KJPXzK7AglHkoNlMrDNhMtoR4Q22y8n3ceLzCKZehugdMhImF+PGzyDERBey2RZt+8ayvcD94RbAUn+W6ves0iC4O2YQk/CaU8RlBOxYZb+PMemILWbtkRlFfQhmXQ/aWpnJLJaFmobpoEQKzPAvMxQ=
+	t=1789146799; cv=none; b=iiaolCVvRikEU91DnYP0rorZCxkodq8ljCON5B/VcHpBhIkNFIebP+yFGsWL7VVa7Tq+HEGscC0shQ7FqlhHnPwGqwvUFjiZkIemmSDcx6E/vkKGZgJGNf0qrz5lYLZ5Bk8aFFLSFMIkQmT0u2unvAncFXnAEIexl5svHF9e/jc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789146797; c=relaxed/simple;
-	bh=G6WMmvNBQJKLqE+l7pWsN0Q7fo+Sq2RvtlY2C9SANnQ=;
+	s=arc-20240116; t=1789146799; c=relaxed/simple;
+	bh=W41hpiHEq5x81StGzP8p4iu6lonZXDy/fmTR7Ya3y6Y=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=TCqBcdQruBV6XklhCzgNF4AJsDDKIRufEhVKdWyG/SVOnu7rBT/CQ3EMphlkyUJPsL/vDveu4HBtq7nzHWtN1JBYosxAHA1GP6MAPoWpIyYCJPR8/jZqSDNMoyPs8D5Qcns7VqIE2hP6vkKRQmG+7TbBYkk/XS86PSzjU84hzAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kh3aAe3w; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=kaNHnpHP3WfCvy1xCN5JoFMqroCm/MmWWAGZONDRjUkIHoIIn8KWFNMLbemD+k4nitfJe1qck4YzaJ2E3/uIyYG+Z1A8ZB1pccyayrhSbNn8dmYjIXcux3yuyl/HoYAV0XKoMXNW8ZN4swvF+qUpu57nyvcTnqYSRGS5UzBtZ6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KuXtslIW; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kh3aAe3w"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB87E1F00893;
-	Fri, 11 Sep 2026 17:13:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KuXtslIW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C20321F00898;
+	Fri, 11 Sep 2026 17:13:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789146796;
-	bh=+/Y1vhtrRWmmzBNn9QMZFRJ/eb2RySk5VRrzrxK2isM=;
+	s=k20260515; t=1789146797;
+	bh=ex/S4un/KMdODR2crgfyXiez1n60SgZyuUpEc3ZD7uU=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=kh3aAe3wwYPnBLmnUhg5uhs5v/VmXU93FvesvsWSgHqm1PsMehXGXq5wJTYOMENew
-	 gaecQvd9Wzh5msSInPJeZKm2b3hWWErTYfPShsrkM8QQRfCRRhGn8xHSUQ3rOl+m2L
-	 zpbD6oRoPgln5uhF21cOTZwLvT80Dm2HjaFrfhzTpy3K1ZvsFCy+G3l5nhJpLjsfbZ
-	 cm5fKtuJtirAjOsMoW0wONIw1r5I55dypVi5EDegq6YMp1ewjQ6h7Ub/gbgkC/OUOt
-	 x6eKWj3A6L44fPlRtIJDyDl/Uws+CCCKs0GrRV7oDuso0Rp3VSQ/a3os6p5I0Dl9JY
-	 OiO6duoyvJz9g==
-Subject:
- Re: [PATCH net-next v9 2/7] net_sched: sch_fq: check device pacing offload
+	b=KuXtslIW1yA15cgBLdX95N2cxuz5G4Xo8x8YUv7tuDcfs9oE4NhWbxA80/u0UVe0Y
+	 8lXEoKxHRBBRHtVbyC9F2yjb2KDqL+zcIkV7rRQuXwFXzRPax9621Rw+T9mWBEdYf5
+	 m2mHsVyvSWr0OyL6AKrbUw/Eb6//zz3vd32DwP/5u6JsmmR34sUPfi9X+cdgeOKKuK
+	 wJew+pFfiGFUDBaBzD4q0o+XuqRqRdy4XeqvAreVz6pP1V+4EvIp4PNI5gwSimF7Of
+	 6HJy2+GJ/UaYnuydG7mXbJlmwVnuDwdM3+gUl2QwlmQRf/yTjjdwBu2Obokab2fst+
+	 gF6cEC6fFC5AQ==
+Subject: Re: [PATCH net-next v9 3/7] net_sched: sch_fq: clear past skb->tstamp
+ if offloading pacing
 From: netdev-bot+sashiko@kernel.org
 To: willemdebruijn.kernel@gmail.com
 Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
  edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
  andrew+netdev@lunn.ch, willemb@google.com
-Date: Fri, 11 Sep 2026 17:13:15 +0000
-Message-ID: <178914679525.219967.9347882764408033378@kernel.org>
-In-Reply-To: <20260910171131.2532487-3-willemdebruijn.kernel@gmail.com>
-References: <20260910171131.2532487-3-willemdebruijn.kernel@gmail.com>
+Date: Fri, 11 Sep 2026 17:13:16 +0000
+Message-ID: <178914679635.219967.4563834866783696110@kernel.org>
+In-Reply-To: <20260910171131.2532487-4-willemdebruijn.kernel@gmail.com>
+References: <20260910171131.2532487-4-willemdebruijn.kernel@gmail.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -47,233 +47,177 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 4 potential
+Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider:
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 2
+Critical: 0 · High: 0 · Medium: 1 · Low: 1
 
-- [Medium] New, undocumented netlink rejection in fq_change(): `tc qdisc
-  {add,replace,change} ... fq offload_horizon N` with N != 0 now returns…
-- [Medium] Configured vs. effective offload horizon are now inconsistent
-  across the three FQ interfaces.
-- [Low] The patch introduces a per-packet TX fast-path read of
-  `dev->max_pacing_offload_horizon` (fq_offload_horizon(),…
-- [Low] fq_offload_horizon() reads `dev->pacing_offload` as a plain,
-  unannotated load from the qdisc data path (net/sched/sch_fq.c:315,…
+- [Medium] The two new clearing sites use different predicates, and the
+  dequeue-side one folds in a schedule the offloading device never sees.
+- [Low] Incomplete coverage of the new "clear an expired EDT before
+  handing the skb to a pacing-offload device" logic on FQ's internal…
 
 --
 
-net_sched: sch_fq: check device pacing offload
+net_sched: sch_fq: clear past skb->tstamp if offloading pacing
 
-FQ now consults the device's pacing offload state before applying the
-configured offload horizon, via a new fq_offload_horizon() helper that is
-evaluated once per packet in fq_classify() and fq_dequeue().  The helper
-returns 0 when the device flag is clear or when the configured horizon
-exceeds the device maximum, and fq_change() gains a new rejection when a
-non-zero horizon is requested on a device with pacing offload disabled.
+When pacing offload is active, sch_fq now clears skb->tstamp for packets
+whose EDT has already passed (or is within a 400 nsec slack window) so
+the device does not have to compare the timestamp against the current
+time.  The clearing is done in two places: in fq_classify() for fastpath
+packets, and at the out: label of fq_dequeue() for regular flows.
 
-A few questions below.
+A couple of questions about the coverage of the new clearing below.
 
 > diff --git a/net/sched/sch_fq.c b/net/sched/sch_fq.c
-> index 35f940b2205df..dfc7f98b600f8 100644
+> index dfc7f98b600f8..a282812c192ee 100644
 > --- a/net/sched/sch_fq.c
 > +++ b/net/sched/sch_fq.c
-> @@ -301,6 +301,26 @@ static void fq_gc(struct fq_sched_data *q,
->  	q->stat_gc_flows += fcnt;
->  }
+> @@ -159,6 +159,9 @@ struct fq_sched_data {
+>  	u64		stat_allocation_errors;
+>  };
 >  
-> +static u64 fq_offload_horizon(const struct Qdisc *sch,
-> +			      const struct fq_sched_data *q)
-> +{
-> +	const struct net_device *dev;
-> +	u64 offload_horizon;
+> +/* EDT timestamps to clear beyond now. */
+> +static const int fq_offload_slack_ns = 400;
 > +
-> +	offload_horizon = READ_ONCE(q->offload_horizon);
-> +	if (!offload_horizon)
-> +		return 0;
-> +
-> +	dev = qdisc_dev(sch);
-> +	if (!dev->pacing_offload)
-> +		return 0;
-
-[Severity: Low]
-Is this read of dev->pacing_offload racy?
-
-The two neighbouring loads in this same helper use READ_ONCE(), but
-pacing_offload is read plainly here.  It is a 1-bit bitfield inside
-struct_group(priv_flags_fast) in struct net_device, and the sibling
-rtnetlink change makes it runtime-writable:
-
-net/core/rtnetlink.c:do_setlink() {
-	if (tb[IFLA_PACING_OFFLOAD]) {
-		bool val = nla_get_u32(tb[IFLA_PACING_OFFLOAD]);
-
-		if (dev->pacing_offload != val) {
-			dev->pacing_offload = val;
-	...
-}
-
-The writer holds only RTNL, while this reader runs from fq_classify() and
-fq_dequeue() under the qdisc root lock, so the two sides share no lock and
-both accesses are plain.  Would KCSAN flag this?
-
-Because it is a bitfield, READ_ONCE()/WRITE_ONCE() cannot be applied to it.
-Would a dedicated non-bitfield member (or bitops on a separate unsigned
-long), or at minimum data_race() on this read, be preferable?
-
-Separately, storing a single bit is a read-modify-write of the whole
-declared unsigned long storage unit, which also holds priv_flags:32,
-lltx:1 and netmem_tx:2 - fields read locklessly on the TX path.  Which
-lock is intended to serialize RMWs of that word now that one of its bits
-changes at runtime?  I did not find a non-RTNL writer of the neighbouring
-bits, so this part is speculative.
-
-> +
-> +	if (offload_horizon > READ_ONCE(dev->max_pacing_offload_horizon))
-> +		return 0;
-> +
-> +	return offload_horizon;
-> +}
-> +
-
-[Severity: Low]
-Should Documentation/networking/net_cachelines/net_device.rst be updated
-here?
-
-This adds a per-packet TX read of dev->max_pacing_offload_horizon, but the
-row for that field in net_device.rst still has empty fastpath_tx_access and
-Comments columns.  The companion bit added by the preceding patch in the
-series was annotated:
-
-  unsigned_long:1        pacing_offload    read_mostly    ...    sch_fq
-
-struct net_device also carries a comment asking for the document to be kept
-in sync ("Please update the document when adding new fields").
-
-max_pacing_offload_horizon still lives in the cold region of struct
-net_device next to irq_moder/napi_config, outside the net_device_read_tx
-cacheline group, so for qdiscs that configured an offload horizon the TX
-path now touches an extra otherwise-cold cache line per enqueue and per
-dequeue.  Was that placement considered?
-
->  /* Fast path can be used if :
->   * 1) Packet tstamp is in the past, or within the pacing offload horizon.
->   * 2) FQ qlen == 0   OR
-
-[ ... ]
-
-> @@ -357,6 +377,7 @@ static struct fq_flow *fq_classify(struct Qdisc *sch, struct sk_buff *skb,
->  				   u64 now)
+>  /* return the i-th 2-bit value ("crumb") */
+>  static u8 fq_prio2band(const u8 *prio2band, unsigned int prio)
 >  {
->  	struct fq_sched_data *q = qdisc_priv(sch);
-> +	u64 offload_horizon = fq_offload_horizon(sch, q);
->  	struct rb_node **p, *parent;
->  	struct sock *sk = skb->sk;
->  	struct rb_root *root;
-
-[ ... ]
-
-> @@ -705,6 +728,7 @@ static struct fq_flow_head *fq_pband_head_select(struct fq_perband_flows *pband)
->  static struct sk_buff *fq_dequeue(struct Qdisc *sch)
->  {
->  	struct fq_sched_data *q = qdisc_priv(sch);
-> +	u64 offload_horizon = fq_offload_horizon(sch, q);
->  	struct fq_perband_flows *pband;
->  	struct fq_flow_head *head;
->  	struct sk_buff *skb;
-
-[ ... ]
-
-> @@ -1179,11 +1204,15 @@ static int fq_change(struct Qdisc *sch, struct nlattr *opt,
->  		u64 offload_horizon = (u64)NSEC_PER_USEC *
->  				      nla_get_u32(tb[TCA_FQ_OFFLOAD_HORIZON]);
+> @@ -421,6 +424,10 @@ static struct fq_flow *fq_classify(struct Qdisc *sch, struct sk_buff *skb,
+>  			smp_store_release(&sk->sk_pacing_status,
+>  					  SK_PACING_FQ);
 >  
-> -		if (offload_horizon <= qdisc_dev(sch)->max_pacing_offload_horizon) {
-> -			WRITE_ONCE(q->offload_horizon, offload_horizon);
-> -		} else {
-> +		if (offload_horizon && !qdisc_dev(sch)->pacing_offload) {
-> +			NL_SET_ERR_MSG_MOD(extack, "device pacing offload is disabled");
-> +			err = -EINVAL;
-
-[Severity: Medium]
-Is this new configuration-time rejection intended, and should the commit
-message mention it?
-
-The changelog only describes runtime behaviour:
-
-    In FQ, only offload if the feature is enabled and within the supported
-    device horizon.
-
-but this hunk also makes
-
-  tc qdisc replace dev X root fq offload_horizon 500us
-
-return -EINVAL whenever qdisc_dev(sch)->pacing_offload is 0.  Before the
-patch the only gate was offload_horizon <= max_pacing_offload_horizon.
-Since the only setter of that bit is do_setlink() via IFLA_PACING_OFFLOAD,
-does this create an ordering dependency where the link attribute must be
-enabled before the qdisc can be configured?
-
-The new fq_offload_horizon() already degrades to 0 when the device flag is
-clear, so the datapath is safe without the hard rejection:
-
-	dev = qdisc_dev(sch);
-	if (!dev->pacing_offload)
-		return 0;
-
-Would accepting the value (and letting it stay inert until the device flag
-is enabled) be preferable to failing the command?
-
-> +		} else if (offload_horizon >
-> +			   qdisc_dev(sch)->max_pacing_offload_horizon) {
->  			NL_SET_ERR_MSG_MOD(extack, "invalid offload_horizon");
->  			err = -EINVAL;
-> +		} else {
-> +			WRITE_ONCE(q->offload_horizon, offload_horizon);
->  		}
+> +		if (offload_horizon &&
+> +		    fq_skb_cb(skb)->time_to_send <= now + fq_offload_slack_ns)
+> +			skb_set_delivery_time(skb, 0, SKB_CLOCK_REALTIME);
+> +
+>  		return &q->internal;
 >  	}
->  	if (!err) {
+>  
+
+[ ... ]
+
+> @@ -745,7 +753,7 @@ static struct sk_buff *fq_dequeue(struct Qdisc *sch)
+>  	if (skb) {
+>  		q->internal.qlen--;
+>  		fq_dequeue_skb(sch, &q->internal, skb);
+> -		goto out;
+> +		return skb;
+>  	}
+>  
+>  	now = ktime_get_ns();
+
+[Severity: Low]
+For packets on q->internal the clearing decision is now taken only once,
+at enqueue time in fq_classify(), using the enqueue-time now.  With the
+goto out changed to return skb, internal-queue packets no longer reach the
+new block at the out: label, and they are returned before now is even
+sampled.
+
+fq_fastpath_check() admits a packet whose txtime is up to offload_horizon
+in the future:
+
+	if (fq_skb_cb(skb)->time_to_send > now + offload_horizon)
+		return false;
+
+and the internal queue is not single-slot:
+
+		if (q->internal.qlen >= 8)
+			return false;
+
+So a packet can be admitted with a future txtime, sit behind up to seven
+others (or behind a stopped tx queue), and by the time fq_dequeue()
+returns it the txtime has expired, yet skb->tstamp is still set and the
+device performs exactly the future-time comparison the change is meant to
+avoid.  Is that gap intentional, or should the internal-queue path also
+re-test at dequeue?
+
+Relatedly, the second exit to the internal queue in fq_classify(), the
+allocation failure path:
+
+	f = kmem_cache_zalloc(fq_flow_cachep, GFP_ATOMIC | __GFP_NOWARN);
+	if (unlikely(!f)) {
+		q->stat_allocation_errors++;
+		return &q->internal;
+	}
+
+does no clearing at all, so even an already-expired EDT survives to the
+device there.  Should that path get the same treatment?
+
+The predicate itself is conservative (nothing more than
+fq_offload_slack_ns in the future is ever cleared), so this looks like a
+missed optimization rather than a wrong transmit time, but the commit
+message reads as though all packets whose txtime has passed get
+skb->tstamp cleared.
+
+> @@ -782,8 +790,8 @@ static struct sk_buff *fq_dequeue(struct Qdisc *sch)
+>  
+>  	skb = fq_peek(f);
+>  	if (skb) {
+> -		u64 time_next_packet = max_t(u64, fq_skb_cb(skb)->time_to_send,
+> -					     f->time_next_packet);
+> +		time_next_packet = max_t(u64, fq_skb_cb(skb)->time_to_send,
+> +					 f->time_next_packet);
+>  
+>  		if (now + offload_horizon < time_next_packet) {
+>  			head->first = f->next;
+
+[ ... ]
+
+> @@ -862,6 +870,10 @@ static struct sk_buff *fq_dequeue(struct Qdisc *sch)
+>  	}
+>  
+>  out:
+> +	if (offload_horizon &&
+> +	    time_next_packet && time_next_packet <= now + fq_offload_slack_ns)
+> +		skb_set_delivery_time(skb, 0, SKB_CLOCK_REALTIME);
+> +
+>  	return skb;
+>  }
 
 [Severity: Medium]
-Does this make the value reported by fq_dump() inaccurate and no longer
-re-appliable?
+Should this test the packet's own txtime rather than time_next_packet?
 
-fq_dump() is untouched and still reports the raw stored value:
+The fq_classify() site uses fq_skb_cb(skb)->time_to_send, while here
+time_next_packet is:
 
-	offload_horizon = READ_ONCE(q->offload_horizon);
-	do_div(offload_horizon, NSEC_PER_USEC);
-	...
-	    nla_put_u32(skb, TCA_FQ_OFFLOAD_HORIZON, (u32)offload_horizon) ||
+		time_next_packet = max_t(u64, fq_skb_cb(skb)->time_to_send,
+					 f->time_next_packet);
 
-Consider:
+f->time_next_packet is FQ's own rate-pacing schedule.  Grepping
+net/sched/sch_fq.c, skb->tstamp is only ever written by
+fq_mono_to_skb_tstamp() on the fq_enqueue() horizon-cap path, so
+f->time_next_packet is never propagated into skb->tstamp and the device
+never sees it.
 
-  ip link set dev X pacing_offload on
-  tc qdisc replace dev X root fq offload_horizon 500us   /* stored */
-  ip link set dev X pacing_offload off                   /* do_setlink() */
+The effect shows up when FQ enforces its own rate, e.g.:
 
-Nothing clears q->offload_horizon, so fq_offload_horizon() returns 0 and
-the datapath does pure software pacing while tc qdisc show still prints
-offload_horizon 500us.  Replaying that same dump then hits the new -EINVAL
-above, where it previously succeeded.
+  tc qdisc replace dev X root fq maxrate 1gbit offload_horizon <= \
+      dev->max_pacing_offload_horizon
 
-The same silent divergence appears when a device lowers
-max_pacing_offload_horizon on re-init, for example
-idpf_vport_set_pacing_offload() doing
-WRITE_ONCE(netdev->max_pacing_offload_horizon, max_horizon) with
-max_horizon possibly 0 - the "device renegotiation" case named in the
-changelog.
+For an EDT packet the branch that consults sk_pacing_rate is skipped:
 
-The uAPI comment also still promises unconditional behaviour:
+	if (!skb->tstamp) {
+		if (skb->sk)
+			rate = min(READ_ONCE(skb->sk->sk_pacing_rate), rate);
 
-include/uapi/linux/pkt_sched.h:
-	TCA_FQ_OFFLOAD_HORIZON,	/* dequeue packets in the past, if within horizon */
+so rate stays at q->flow_max_rate and the previous dequeue set
+f->time_next_packet = now + len.  The flow is then throttled until
+f->time_next_packet - offload_horizon, so on release:
 
-Should fq_dump() report the effective horizon, or should the comment note
-the dependency on device administrative state?
+	now + 400 < f->time_next_packet <= now + offload_horizon
 
-One smaller inconsistency: fq_offload_horizon() uses READ_ONCE() for
-dev->max_pacing_offload_horizon while fq_change() reads the same field, and
-pacing_offload, plainly.
+and the predicate is false even though fq_skb_cb(skb)->time_to_send is
+already well in the past.  In that configuration the clearing never
+happens, while the fq_classify() peer site would have cleared the same
+packet.  Note fq_fastpath_check() rejects the fastpath when
+q->flow_max_rate != ~0UL, so maxrate flows always take this path.
+
+Since time_next_packet is always >= time_to_send, nothing with a genuinely
+future EDT gets cleared, so this looks like a silently ineffective
+optimization rather than a correctness problem.  Was using
+fq_skb_cb(skb)->time_to_send here considered, to keep the two sites
+consistent?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260910171131.2532487-1-willemdebruijn.kernel%40gmail.com
