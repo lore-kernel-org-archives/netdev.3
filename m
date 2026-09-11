@@ -1,43 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A96704A3D30
-	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 17:13:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B19564A4984
+	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 17:13:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789146799; cv=none; b=iiaolCVvRikEU91DnYP0rorZCxkodq8ljCON5B/VcHpBhIkNFIebP+yFGsWL7VVa7Tq+HEGscC0shQ7FqlhHnPwGqwvUFjiZkIemmSDcx6E/vkKGZgJGNf0qrz5lYLZ5Bk8aFFLSFMIkQmT0u2unvAncFXnAEIexl5svHF9e/jc=
+	t=1789146800; cv=none; b=f/MIwlVGmnfJtan5zJO0Au9PoSAv3zSPaX5c4L37c4w7/qsYMnsOT7MAVJAJOZa6uS4+7HC9TzRL24hYV9HNaw9JvZmC4mow2SHIS9B/reQDHbig6UQk0Pl/EIkM+gZktSH5xD18UJnTiFvRqKH+b8QYfYghRNvicz38c6f86xA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789146799; c=relaxed/simple;
-	bh=W41hpiHEq5x81StGzP8p4iu6lonZXDy/fmTR7Ya3y6Y=;
+	s=arc-20240116; t=1789146800; c=relaxed/simple;
+	bh=yCOqz1KVdn1nYma1pnvLTHPEVZY1IZ94IrvJXtS0eJk=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=kaNHnpHP3WfCvy1xCN5JoFMqroCm/MmWWAGZONDRjUkIHoIIn8KWFNMLbemD+k4nitfJe1qck4YzaJ2E3/uIyYG+Z1A8ZB1pccyayrhSbNn8dmYjIXcux3yuyl/HoYAV0XKoMXNW8ZN4swvF+qUpu57nyvcTnqYSRGS5UzBtZ6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KuXtslIW; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=uHyUx2bHupjCHMLZm3wNuSYtb84iQDmVNHgR6q643X4FycYox07N837W8XVaCR1dnbp/DtwwrJu+Yo5KzlCdS8sBCkxIzhbJu2gN+GdyLMBTye7zcgA6LCtCzXiTsTTpTHBZrFhAm6N3UnOEpzf0LFwgynUOAO9QBRK5txhp8E4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RXVVpTgw; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KuXtslIW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C20321F00898;
-	Fri, 11 Sep 2026 17:13:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RXVVpTgw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8EB01F000FF;
+	Fri, 11 Sep 2026 17:13:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789146797;
-	bh=ex/S4un/KMdODR2crgfyXiez1n60SgZyuUpEc3ZD7uU=;
+	s=k20260515; t=1789146798;
+	bh=keDdM7EGPb3KUqiXlaS7/OWnlI9UeCSF1pGZAHV9K+w=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=KuXtslIW1yA15cgBLdX95N2cxuz5G4Xo8x8YUv7tuDcfs9oE4NhWbxA80/u0UVe0Y
-	 8lXEoKxHRBBRHtVbyC9F2yjb2KDqL+zcIkV7rRQuXwFXzRPax9621Rw+T9mWBEdYf5
-	 m2mHsVyvSWr0OyL6AKrbUw/Eb6//zz3vd32DwP/5u6JsmmR34sUPfi9X+cdgeOKKuK
-	 wJew+pFfiGFUDBaBzD4q0o+XuqRqRdy4XeqvAreVz6pP1V+4EvIp4PNI5gwSimF7Of
-	 6HJy2+GJ/UaYnuydG7mXbJlmwVnuDwdM3+gUl2QwlmQRf/yTjjdwBu2Obokab2fst+
-	 gF6cEC6fFC5AQ==
-Subject: Re: [PATCH net-next v9 3/7] net_sched: sch_fq: clear past skb->tstamp
- if offloading pacing
+	b=RXVVpTgwlJ2gLGXA4tA49a40lCMvvrvzycHYgb7UlgHUpvn3o98OupqdFcQSiYKlR
+	 5GmwhgOWWtvc0EuDd/GC6F/Xecfzm7A0AACsUhDknRKcYl+Lyfxo37PSEoiiFqfgyf
+	 Pn8noTp4/GhPOb2GoImVFBbfnfBY8NmJncFXTWkwt8aAtD00V9E2r19Fv75j4FOqNg
+	 YJJcY8i+PaoznVgWmHRUOOH8uappV5cO3fL1Spw+ufYGIhKlQs0LiheD5Brk9DiDZz
+	 DUPLJhlGDyaOyLwTkJC4mwbVVhMuUi7IRAwvB5ierNc5jZDjk7P8cUsCAeIk1E6SGN
+	 oBDiO0t4sJwMQ==
+Subject: Re: [PATCH net-next v9 4/7] idpf: support pacing offload
 From: netdev-bot+sashiko@kernel.org
 To: willemdebruijn.kernel@gmail.com
 Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
  edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
  andrew+netdev@lunn.ch, willemb@google.com
-Date: Fri, 11 Sep 2026 17:13:16 +0000
-Message-ID: <178914679635.219967.4563834866783696110@kernel.org>
-In-Reply-To: <20260910171131.2532487-4-willemdebruijn.kernel@gmail.com>
-References: <20260910171131.2532487-4-willemdebruijn.kernel@gmail.com>
-X-sashiko-severity: Medium
+Date: Fri, 11 Sep 2026 17:13:17 +0000
+Message-ID: <178914679743.219967.4781990764758262872@kernel.org>
+In-Reply-To: <20260910171131.2532487-5-willemdebruijn.kernel@gmail.com>
+References: <20260910171131.2532487-5-willemdebruijn.kernel@gmail.com>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -47,177 +46,302 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 2 potential
+Thank you for your contribution! Sashiko AI review found 4 potential
 issue(s) to consider:
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+Critical: 0 · High: 1 · Medium: 1 · Low: 2
 
-- [Medium] The two new clearing sites use different predicates, and the
-  dequeue-side one folds in a schedule the offloading device never sees.
-- [Low] Incomplete coverage of the new "clear an expired EDT before
-  handing the skb to a pacing-offload device" logic on FQ's internal…
+- [High] idpf advertises a non-zero netdev->max_pacing_offload_horizon
+  (and therefore programs absolute CLOCK_TAI departure times into the…
+- [Medium] The EDT horizon advertised to the networking core is taken
+  verbatim from firmware and only bounds-checked against U32_MAX, while…
+- [Low] idpf_vport_set_pacing_offload() writes
+  netdev->max_pacing_offload_horizon (idpf_lib.c:832) from the…
+- [Low] In idpf_send_get_edt_caps_msg() the firmware-supplied granularity
+  is a u64 (gran_ns = le64_to_cpu(caps.tstamp_granularity_ns)) but is…
 
 --
 
-net_sched: sch_fq: clear past skb->tstamp if offloading pacing
+idpf: support pacing offload
 
-When pacing offload is active, sch_fq now clears skb->tstamp for packets
-whose EDT has already passed (or is within a 400 nsec slack window) so
-the device does not have to compare the timestamp against the current
-time.  The clearing is done in two places: in fq_classify() for fastpath
-packets, and at the out: label of fq_dequeue() for regular flows.
+This adds EDT (earliest departure time) support to idpf: EDT capabilities
+are negotiated over virtchnl, the negotiated horizon is published as
+netdev->max_pacing_offload_horizon, and skb->tstamp is programmed into the
+23-bit timestamp field of the flow scheduling Tx descriptor.
 
-A couple of questions about the coverage of the new clearing below.
+A few questions below on the capability gating and on the horizon
+encoding.
 
-> diff --git a/net/sched/sch_fq.c b/net/sched/sch_fq.c
-> index dfc7f98b600f8..a282812c192ee 100644
-> --- a/net/sched/sch_fq.c
-> +++ b/net/sched/sch_fq.c
-> @@ -159,6 +159,9 @@ struct fq_sched_data {
->  	u64		stat_allocation_errors;
->  };
->  
-> +/* EDT timestamps to clear beyond now. */
-> +static const int fq_offload_slack_ns = 400;
-> +
->  /* return the i-th 2-bit value ("crumb") */
->  static u8 fq_prio2band(const u8 *prio2band, unsigned int prio)
->  {
-> @@ -421,6 +424,10 @@ static struct fq_flow *fq_classify(struct Qdisc *sch, struct sk_buff *skb,
->  			smp_store_release(&sk->sk_pacing_status,
->  					  SK_PACING_FQ);
->  
-> +		if (offload_horizon &&
-> +		    fq_skb_cb(skb)->time_to_send <= now + fq_offload_slack_ns)
-> +			skb_set_delivery_time(skb, 0, SKB_CLOCK_REALTIME);
-> +
->  		return &q->internal;
+> diff --git a/drivers/net/ethernet/intel/idpf/idpf_lib.c b/drivers/net/ethernet/intel/idpf/idpf_lib.c
+> index 827c795afcb62..cd1b173e3b276 100644
+> --- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
+> +++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
+> @@ -817,6 +817,21 @@ static void idpf_attach_and_open(struct idpf_adapter *adapter)
 >  	}
+>  }
 >  
+> +static void idpf_vport_set_pacing_offload(struct idpf_vport *vport,
+> +					  struct net_device *netdev)
+> +{
+> +	struct idpf_adapter *adapter = vport->adapter;
+> +	u32 max_horizon = 0;
+> +
+> +	if (adapter->edt_caps.time_horizon_ns &&
+> +	    idpf_is_queue_model_split(vport->dflt_qv_rsrc.txq_model) &&
+> +	    !idpf_is_cap_ena(adapter, IDPF_OTHER_CAPS,
+> +			     VIRTCHNL2_CAP_SPLITQ_QSCHED))
+> +		max_horizon = adapter->edt_caps.time_horizon_ns;
+> +
 
-[ ... ]
+[Severity: High]
+The commit message says:
 
-> @@ -745,7 +753,7 @@ static struct sk_buff *fq_dequeue(struct Qdisc *sch)
->  	if (skb) {
->  		q->internal.qlen--;
->  		fq_dequeue_skb(sch, &q->internal, skb);
-> -		goto out;
-> +		return skb;
->  	}
->  
->  	now = ktime_get_ns();
+    Negotiate the feature with the device using virtchnl. Support is
+    conditional on
+    ...
+    - PTP to ensure the NIC clock is synced to CLOCK_TAI.
 
-[Severity: Low]
-For packets on q->internal the clearing decision is now taken only once,
-at enqueue time in fq_classify(), using the enqueue-time now.  With the
-goto out changed to return skb, internal-queue packets no longer reach the
-new block at the out: label, and they are returned before now is even
-sampled.
+Where is that PTP condition implemented?  idpf_vport_set_pacing_offload()
+gates only on adapter->edt_caps.time_horizon_ns, split txq model and flow
+scheduling.  It does not consult VIRTCHNL2_CAP_PTP, adapter->ptp, or the
+result of idpf_ptp_init().
 
-fq_fastpath_check() admits a packet whose txtime is up to offload_horizon
-in the future:
+In idpf_vc_core_init() the EDT negotiation is gated only on
+VIRTCHNL2_CAP_EDT and runs before idpf_ptp_init(), whose failure is
+deliberately non-fatal:
 
-	if (fq_skb_cb(skb)->time_to_send > now + offload_horizon)
-		return false;
+	err = idpf_ptp_init(adapter);
+	if (err)
+		pci_err(adapter->pdev, "PTP init failed, err=%pe\n",
+			ERR_PTR(err));
 
-and the internal queue is not single-slot:
+So with a control plane that advertises EDT but not PTP, or when
+idpf_ptp_get_caps()/clock creation fails, edt_caps.time_horizon_ns stays
+non-zero and the horizon is still published.
 
-		if (q->internal.qlen >= 8)
-			return false;
+With CONFIG_PTP_1588_CLOCK=n the stub in idpf_ptp.h returns success while
+leaving adapter->ptp NULL:
 
-So a packet can be admitted with a future txtime, sit behind up to seven
-others (or behind a stopped tx queue), and by the time fq_dequeue()
-returns it the txtime has expired, yet skb->tstamp is still set and the
-device performs exactly the future-time comparison the change is meant to
-avoid.  Is that gap intentional, or should the internal-queue path also
-re-test at dequeue?
-
-Relatedly, the second exit to the internal queue in fq_classify(), the
-allocation failure path:
-
-	f = kmem_cache_zalloc(fq_flow_cachep, GFP_ATOMIC | __GFP_NOWARN);
-	if (unlikely(!f)) {
-		q->stat_allocation_errors++;
-		return &q->internal;
+	static inline int idpf_ptp_init(struct idpf_adapter *adapter)
+	{
+		return 0;
 	}
 
-does no clearing at all, so even an already-expired EDT survives to the
-device there.  Should that path get the same treatment?
+In that build there is no PHC at all and no way for userspace to steer the
+device clock, yet pacing offload remains advertised and
+idpf_tx_splitq_set_txtime() keeps writing host CLOCK_TAI values into the
+descriptor.  Should the helper also require a working PTP clock, or should
+the commit message drop the PTP claim?
 
-The predicate itself is conservative (nothing more than
-fq_offload_slack_ns in the future is ever cleared), so this looks like a
-missed optimization rather than a wrong transmit time, but the commit
-message reads as though all packets whose txtime has passed get
-skb->tstamp cleared.
+Related: the device clock is seeded from CLOCK_REALTIME in
+idpf_ptp_init():
 
-> @@ -782,8 +790,8 @@ static struct sk_buff *fq_dequeue(struct Qdisc *sch)
+		ts = ktime_to_timespec64(ktime_get_real());
+		err = idpf_ptp_settime64(&adapter->ptp->info, &ts);
+
+while the new Tx path converts everything to CLOCK_TAI.  Is the epoch
+assumed by the descriptor only correct after an external synchronizer has
+corrected the PHC?
+
+> +	WRITE_ONCE(netdev->max_pacing_offload_horizon, max_horizon);
+> +}
+> +
+
+[Severity: Low]
+Should this write be done under rtnl_lock()?  The RTNL side reads the same
+field with a plain load in validate_linkmsg() before do_setlink() sets
+dev->pacing_offload:
+
+	net/core/rtnetlink.c:validate_linkmsg() {
+		if (nla_get_u32(tb[IFLA_PACING_OFFLOAD]) &&
+		    !dev->max_pacing_offload_horizon) {
+	...
+	}
+
+idpf_cfg_netdev() is reached from idpf_init_task with no RTNL held, and on
+the reset path it re-runs the helper on an already registered netdev, so an
+"ip link set dev X pacing_offload on" validated against a non-zero horizon
+can be followed immediately by the driver zeroing it.
+
+That also leaves dev->pacing_offload set with
+max_pacing_offload_horizon == 0, which is then dumped to userspace as
+IFLA_PACING_OFFLOAD=1 together with IFLA_MAX_PACING_OFFLOAD_HORIZON=0.
+Should the driver clear dev->pacing_offload when the horizon drops to 0?
+
+>  /**
+>   * idpf_cfg_netdev - Allocate, configure and register a netdev
+>   * @vport: main vport structure
+> @@ -850,6 +865,8 @@ static int idpf_cfg_netdev(struct idpf_vport *vport)
+>  		np->max_tx_hdr_size = idpf_get_max_tx_hdr_size(adapter);
+>  		vport->netdev = netdev;
 >  
->  	skb = fq_peek(f);
->  	if (skb) {
-> -		u64 time_next_packet = max_t(u64, fq_skb_cb(skb)->time_to_send,
-> -					     f->time_next_packet);
-> +		time_next_packet = max_t(u64, fq_skb_cb(skb)->time_to_send,
-> +					 f->time_next_packet);
+> +		idpf_vport_set_pacing_offload(vport, netdev);
+> +
+>  		return idpf_init_mac_addr(vport, netdev);
+>  	}
 >  
->  		if (now + offload_horizon < time_next_packet) {
->  			head->first = f->next;
 
 [ ... ]
 
-> @@ -862,6 +870,10 @@ static struct sk_buff *fq_dequeue(struct Qdisc *sch)
->  	}
->  
->  out:
-> +	if (offload_horizon &&
-> +	    time_next_packet && time_next_packet <= now + fq_offload_slack_ns)
-> +		skb_set_delivery_time(skb, 0, SKB_CLOCK_REALTIME);
-> +
->  	return skb;
+> diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+> index 4311ffa30bb18..215a62161a049 100644
+> --- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+> +++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+
+[ ... ]
+
+> @@ -3011,6 +3017,63 @@ static bool idpf_tx_splitq_need_re(struct idpf_tx_queue *tx_q)
+>  	return gap >= IDPF_TX_SPLITQ_RE_MIN_GAP;
 >  }
+>  
+> +static void idpf_tx_splitq_set_txtime(const struct sk_buff *skb,
+> +				      const struct idpf_tx_queue *tx_q,
+> +				      struct idpf_tx_splitq_params *tx_params)
+> +{
+
+[ ... ]
+
+> +	/* beyond offload horizon? set overflow bit only */
+> +	if (ts > now + horizon) {
+> +		tx_params->offload.desc_ts[2] =
+> +			IDPF_TXD_FLOW_SCH_HORIZON_OVERFLOW_M;
+> +		return;
+> +	}
+> +
+> +	ts >>= tx_q->ts_gran_pow2;
 
 [Severity: Medium]
-Should this test the packet's own txtime rather than time_next_packet?
+Can the advertised horizon exceed what the descriptor can encode?  The
+hardware field is 23 bits of granularity units:
 
-The fq_classify() site uses fq_skb_cb(skb)->time_to_send, while here
-time_next_packet is:
+	drivers/net/ethernet/intel/idpf/idpf_lan_txrx.h:
+		/* [23:23] Horizon Overflow bit, [22:0] timestamp */
+		u8 ts[3];
 
-		time_next_packet = max_t(u64, fq_skb_cb(skb)->time_to_send,
-					 f->time_next_packet);
+idpf_send_get_edt_caps_msg() checks time_horizon_ns only against U32_MAX
+and never cross-checks it against (1 << 23) << ilog2(tstamp_granularity_ns).
+For a control plane reporting tstamp_granularity_ns = 1 (passes both
+checks) with time_horizon_ns = 1000000000, the encodable window is only
+about 8.39 ms, but 1 s is published as netdev->max_pacing_offload_horizon
+and accepted by sch_fq and SO_TXTIME.
 
-f->time_next_packet is FQ's own rate-pacing schedule.  Grepping
-net/sched/sch_fq.c, skb->tstamp is only ever written by
-fq_mono_to_skb_tstamp() on the fq_enqueue() horizon-cap path, so
-f->time_next_packet is never propagated into skb->tstamp and the device
-never sees it.
+Anything at or below the advertised horizon takes the non-overflow branch
+here and gets truncated:
 
-The effect shows up when FQ enforces its own rate, e.g.:
+	tx_params->offload.desc_ts[2] = ((ts >> 16) & 0x7f);
 
-  tc qdisc replace dev X root fq maxrate 1gbit offload_horizon <= \
-      dev->max_pacing_offload_horizon
+so the departure time aliases back into the current window instead of being
+flagged as overflow.  Would clamping help, e.g.
+max_horizon = min(time_horizon_ns, (1ULL << 23) << tstamp_granularity_pow2)?
 
-For an EDT packet the branch that consults sk_pacing_rate is skipped:
+Separately, is the boundary test off by one even for self-consistent caps?
+With horizon == (1 << 23) << gran, a timestamp exactly at now + horizon
+passes the strict "ts > now + horizon" test, and after the shift it differs
+from the scaled value of now by exactly 2^23, which masks to the same 23-bit
+value, so the device would see "now" and release the packet a whole horizon
+early.  Should the comparison be >= ?
 
-	if (!skb->tstamp) {
-		if (skb->sk)
-			rate = min(READ_ONCE(skb->sk->sk_pacing_rate), rate);
+> +
+> +	/* 0 is valid 23b timestamp, but also means field unset.
+> +	 * Increase by one to avoid this case
+> +	 */
+> +	if ((ts & 0x7fffff) == 0) {
+> +		tx_params->offload.desc_ts[0] = 1;
+> +		return;
+> +	}
+> +
+> +	tx_params->offload.desc_ts[0] = ts & 0xff;
+> +	tx_params->offload.desc_ts[1] = (ts >> 8) & 0xff;
+> +	tx_params->offload.desc_ts[2] = ((ts >> 16) & 0x7f);
+> +}
+> +
 
-so rate stays at q->flow_max_rate and the previous dequeue set
-f->time_next_packet = now + len.  The flow is then throttled until
-f->time_next_packet - offload_horizon, so on release:
+[ ... ]
 
-	now + 400 < f->time_next_packet <= now + offload_horizon
+> diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+> index 1caf527069737..928de868fa624 100644
+> --- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+> +++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
 
-and the predicate is false even though fq_skb_cb(skb)->time_to_send is
-already well in the past.  In that configuration the clearing never
-happens, while the fq_classify() peer site would have cleared the same
-packet.  Note fq_fastpath_check() rejects the fastpath when
-q->flow_max_rate != ~0UL, so maxrate flows always take this path.
+[ ... ]
 
-Since time_next_packet is always >= time_to_send, nothing with a genuinely
-future EDT gets cleared, so this looks like a silently ineffective
-optimization rather than a correctness problem.  Was using
-fq_skb_cb(skb)->time_to_send here considered, to keep the two sites
-consistent?
+> @@ -573,6 +575,54 @@ static int idpf_send_get_caps_msg(struct idpf_adapter *adapter)
+>  	return err;
+>  }
+>  
+
+[ ... ]
+
+> +	memcpy(&caps, xn_params.recv_mem.iov_base, sizeof(caps));
+> +	horizon_ns = le64_to_cpu(caps.time_horizon_ns);
+> +	gran_ns = le64_to_cpu(caps.tstamp_granularity_ns);
+> +	if (horizon_ns > U32_MAX) {
+> +		dev_warn(&adapter->pdev->dev, "EDT horizon exceeds U32\n");
+> +		err = -EINVAL;
+> +		goto free_rx_buf;
+> +	}
+> +	if (!gran_ns || !is_power_of_2(gran_ns)) {
+> +		dev_warn(&adapter->pdev->dev, "Invalid EDT granularity\n");
+> +		err = -EINVAL;
+> +		goto free_rx_buf;
+> +	}
+> +
+> +	adapter->edt_caps.time_horizon_ns = horizon_ns;
+> +	adapter->edt_caps.tstamp_granularity_pow2 = ilog2(gran_ns);
+
+[Severity: Low]
+Does this validate a different value than the one it then uses?  gran_ns is
+a u64, but is_power_of_2() takes unsigned long:
+
+	include/linux/log2.h:
+	static __always_inline __attribute__((const))
+	bool is_power_of_2(unsigned long n)
+	{
+		return n - 1 < (n ^ (n - 1));
+	}
+
+IDPF has no "depends on 64BIT" in its Kconfig, so on 32-bit builds the
+upper 32 bits are dropped for the check while ilog2(gran_ns) takes the
+__ilog2_u64 path on the full value.  A response of 0x100000001 truncates to
+1, passes the check, and yields tstamp_granularity_pow2 = 32, which is
+copied into idpf_tx_queue.ts_gran_pow2 and used as the shift in
+idpf_tx_splitq_set_txtime().  The same truncation rejects a legitimate
+granularity of 2^32 on 32-bit.  Would testing the u64 directly, e.g.
+gran_ns & (gran_ns - 1), plus an upper bound, be better here?
+
+> +
+> +free_rx_buf:
+> +	libie_ctlq_release_rx_buf(&xn_params.recv_mem);
+> +
+> +	return err;
+> +}
+> +
+
+[ ... ]
+
+> @@ -3085,6 +3135,14 @@ int idpf_vc_core_init(struct idpf_adapter *adapter)
+>  		}
+>  	}
+>  
+> +	memset(&adapter->edt_caps, 0, sizeof(adapter->edt_caps));
+> +	if (idpf_is_cap_ena(adapter, IDPF_OTHER_CAPS, VIRTCHNL2_CAP_EDT)) {
+> +		err = idpf_send_get_edt_caps_msg(adapter);
+> +		if (err)
+> +			dev_err(&adapter->pdev->dev,
+> +				"EDT init failed, err=%d\n", err);
+> +	}
+> +
+
+[Severity: High]
+This is the other half of the PTP question above: EDT caps are fetched here
+gated only on VIRTCHNL2_CAP_EDT, and this runs before the idpf_ptp_init()
+call further down whose error is only logged.  Should the EDT negotiation
+either be gated on VIRTCHNL2_CAP_PTP, or moved after idpf_ptp_init() so the
+caps can be zeroed when there is no usable PHC?
+
+>  	pci_sriov_set_totalvfs(adapter->pdev, idpf_get_max_vfs(adapter));
+>  	num_max_vports = idpf_get_max_vports(adapter);
+>  	adapter->vports = kzalloc_objs(*adapter->vports, num_max_vports);
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260910171131.2532487-1-willemdebruijn.kernel%40gmail.com
