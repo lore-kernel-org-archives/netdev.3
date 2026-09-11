@@ -1,98 +1,144 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pz2-f43.google.com (mail-pz2-f43.google.com [74.125.228.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA52630AAD8;
-	Fri, 11 Sep 2026 23:11:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789168285; cv=none; b=oTgJCs20o1SDApLyXAMARwJx/MVDRbllh0XpSMNyym4Sa1P7iJc7/N/wp/UmydH+pjtnfz6sEJu4195pA5va/HKLAQuMzwVCmTCzwxOcHAChh+Q4z3BZG20FGwb5YE0P+/E+gofddfiALWxfoaBL0TLHgxjnlrcM8wLFeLU4X0U=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789168285; c=relaxed/simple;
-	bh=poZE6G7l8mXHXez7alx4IXviwmEYDJVB5doeIShWyj0=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=qHuEoIT/tfZDkqMhoDSJxplSEkGNaKaC2F+7dyV3Dww4O32ZHDzXmpDv1Ru6BMqZLxyWAsCNxlMjSNlsm4hzZcNdcaTt8LOS3asVd9Q1ai3Z1bCnn9gnnCpIoEqbQyg89le5+peFjSVU+8XB1njNX/USh81+TahH8/YJD07yzlQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o7Ahc78W; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4869F3ED5CD
+	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 23:12:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.43
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789168361; cv=pass; b=oTILK7C21lM2DCk315tnzdCp9qJQ6iIikFwXq/6UuOph+N6Ko9Vp1Y0YReOJFYKB/SehRBFvKMOdorZewWmAVx7sxA0+PCR6xSEDquFS7kqR3o06Y1kHSAh3Ndf2hC5LVwpTDMeocaEOpOa6F4/mWdlemUvojktf5JPVFX1K5hI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789168361; c=relaxed/simple;
+	bh=U5b2EGQ0h1hGiuvcKNAxlYftbTygKbTmyhHzJL26viU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OFreIbZDgPpNnWoasTdFj3yg+2KUC9QjjplSj3sv0KKklxA6aDOzZlt3qou7IV6hkHPTrGQoNdAuz+O2BaDrdm1SC83Qttshl4Os3PzjqjqENLpZbnnJSI6LtG/QV//xN0Pq/5YqRA05qFAlIfAeb1qf/AkSuhs3qnEzLR03nEU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b=bDJBQdJM; arc=pass smtp.client-ip=74.125.228.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o7Ahc78W"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 618CBC2BCB8;
-	Fri, 11 Sep 2026 23:11:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1789168285;
-	bh=poZE6G7l8mXHXez7alx4IXviwmEYDJVB5doeIShWyj0=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=o7Ahc78W36onSlRc5bUzhr1RSbuadLRcBF3k9ezTrcQjVsIiCFvRflRxggZnqvDwE
-	 uVkmp1NPLgI9nk6OvgP9EclKhpEeYYx6uOoMRmwEE0pbeQtxBMZKwxEoKCet20sh8Z
-	 L0dl7Qd1J55X95Yj5nRaUPLTgbMbuKoYsD6aYFunxsONK2SKrqTRux+FHb9Z7eBXxA
-	 QE09/SU3MBVBGC+SIh0fq3bJRh6G3IZzoth+9Efix9AHHDS3DmrESH9v6gOW2wyftV
-	 LqLkD3bAQKkboTLwRdf61aOARqmU9kVidaVhlY5QHZ15nHqWb6JXFHBkpzTgxqO1GU
-	 r7fvr+oGMyrgg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4DB36C88E45;
-	Fri, 11 Sep 2026 23:11:25 +0000 (UTC)
-From: Mark Amirkan via B4 Relay <devnull+markdamirkan.gmail.com@kernel.org>
-Subject: [PATCH net 0/2] ipv6: rpl: fix loop detection for separated local
- addresses
-Date: Fri, 11 Sep 2026 16:11:20 -0700
-Message-Id: <20260911-sympwn-rpl-send-v1-0-1753993bb584@gmail.com>
+	dkim=pass (1024-bit key) header.d=mojatatu.com header.i=@mojatatu.com header.b="bDJBQdJM"
+Received: by mail-pz2-f43.google.com with SMTP id d2e1a72fcca58-85469d249c4so499565b3a.2
+        for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 16:12:40 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789168359; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ck1jZVHFk5E5/xbviDsP4McELjMmH5KQ2iCo7xGzZjmOkazBLlsxRJFidZwXTV6R0I
+         z72ZUrGPr2TACaV+IqJZGAxAZbhSpoGC/3+Yy21D0XN7MosPgzVEYLEIassNsRdGeZXE
+         Gtt5XFmh512xCPc4wVuSTtq4SYQUyf73c2WiU1bmsGjpfoWDaaTfZCi8NdxBUpb+76yR
+         A1oqvabOdFtPjJsta0P01Pu5y6Dgn73lsKzW3MyV2QByS2Qff3eUt+kLywStlRkFfn38
+         oPeckCdhgEbnEgbi1X7qjX8ye9py0VPWef7fyp4hZg6f35mi6jfowXQswUels5/Q7oMw
+         kl2Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=NVHoZLNQTSNiN6B8aYa+VAei/rQkC1SW8nQqoOBjgYM=;
+        fh=/qS7pDVx1PdVvAFUzdBqbRDUaeOTJaWGdiQkx73LwTg=;
+        b=JbQB+w32oX4PQC6P4ZmN6x9OYFv8Zb8gK4kdgAVFlOCjb/ubm0d+LGBdffp/NPyfPq
+         Bk4FJLU9zSYGKRz0k148a2wPtZIzTRcObpnCzxQdXmAED6OQdSwLDire7Wrm+xVVABH6
+         dC7gVWQCvUpBYU0IJYPYqM09fF6Dw+YMCtrO8DOcWPPR5gnKBTSrvkKQnNV+8XLtNlpQ
+         UVTsre/9p7izqVOzipNrKd+qR5D/6k68OXFm+u5v4351PWclvyCVkt6E2Jwc88EuSLXk
+         QyLooa5WBNLGt8a48GiM+dJRADsn1RU+PBTTkivqCinWhXucgeJObb6LL27ShtTbYA7V
+         vkeg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu.com; s=google; t=1789168359; x=1789773159; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=NVHoZLNQTSNiN6B8aYa+VAei/rQkC1SW8nQqoOBjgYM=;
+        b=bDJBQdJMUqEJ50EiXOho9fklpxlxedv//KcHhF5I09IZPnWY0ZK77hZhgg63T4gPDR
+         rNFqKhEtwDhvXpMUcyZizQbJpwdfhmhhFrfv3bZnaKdYCknLELNhRVakV/Yl8Mz4qFIE
+         YsKakeem92K9QzyrTgL0a6/3jxSKN/yyO6RVE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789168359; x=1789773159;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=NVHoZLNQTSNiN6B8aYa+VAei/rQkC1SW8nQqoOBjgYM=;
+        b=FRh/AgOmaMw2ejEufORthcCT+nt+fvG85vDhVjDuSLloAyamuMqY3TE3taAtfkLqki
+         HDxRcgmzxmGfh8MwTFQA+Zh6MXeA5XJuFde11YiMrxri7hetHcSXpxiTXi9g6Lr7dYe9
+         KqW8wigc3beUfpEAeqMAm8dpcDyvlkuTsTm/asn3gxl/zM/jAWSmI8o01XgxRAEki9aJ
+         NDZ/oJRrdgyHQo+LE+hrsBWbmTgMGuGh1dlAImL+Zl7a0akkVILKBnsldgYf5bkcwGD9
+         b3CwWOaKOj2uPM/zB9WtVwSRgWOOcObit27GOg0j8CdlnrcS7tWDPRMSSO+ctJNHhdht
+         GWNA==
+X-Gm-Message-State: AFuF++nEmnJB49ADuLQU42aGaVvy1Zq3UZ5yf++IFbGR27o7QrhhDk+3
+	eT5r7UMMZXMa/UKzrjdATuWreTWF6RyhIGUYDFqnL7m31OjFNH70HKm18/r0a4I9kgWYCHwrbw6
+	Vpr2Ac/1d7IJA70c7u1nn3O+C6c64blPcOFTB3r/a
+X-Gm-Gg: AYBFou0LrnM0CSNBIzcDXgDp19PjzEIjLRfMPKzKg1WFtK1E4FmRyQHECeFJBIDiaGJ
+	a8jWVHDXS1ndc7jY1oJsOR5XKzGFhwOEPUrmIsBRMWCK1yhAj5qxg4dFQnDuc+rkFh7Y6RbVMJk
+	X+gmBSSg9LQwV4t5FM8XKNT23FhOw1QHTxiEapDBaVBRRsjRk+pO1GUKo6IFxsWdCePbm6rnV3m
+	hE/THNRBQ18jwg4+ZZpChnDDXFB/H15nuuMdtaOGRY/ovU1YUJH0IkmAGbLu7drtPvbi4CKpt02
+	JSdsHofvbUkeVjKv91xZQ5JjQSJQiLtwv+OEmeHGYhfqcOh+Xe7XqTu/kXwRZaH0I/XHKBBFbrY
+	itv/SAwW78K9HSBOuOIWDNhZTteXy9SOJQQ==
+X-Received: by 2002:a05:6a00:7541:b0:86c:b39b:66e4 with SMTP id
+ d2e1a72fcca58-86cb39b6a6bmr818636b3a.18.1789168359596; Fri, 11 Sep 2026
+ 16:12:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAJiKpGoC/yWMSw6CQBAFr0Le2k4YJCBexbiAocU22k6m8UMId
- 2eUZVVSNcM4ChuO2YzIbzF5agK3y+CvrQ5M0idGkRdV3jhHNj3CRymGOxlrT77eN13pD1XZ1kh
- ViHyR7/94gvKI8ybt1d3Yj78XlmUFNXz31XgAAAA=
-X-Change-ID: 20260911-sympwn-rpl-send-c739b4c864a7
-To: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, Alexander Aring <alex.aring@gmail.com>, 
- Shuah Khan <shuah@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, Mark Amirkan <markdamirkan@gmail.com>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1789168285; l=1120;
- i=markdamirkan@gmail.com; s=pscsi-20260818; h=from:subject:message-id;
- bh=poZE6G7l8mXHXez7alx4IXviwmEYDJVB5doeIShWyj0=;
- b=eKXJgapi1xe1t9oJHeaMBIbo9BqmO/qfByRm+EboQECBMG3uU7xeBWbzJImoEd8KTpH3uYfym
- BpfddUkJZVUB4QeE8Gu+XOKslrgXJe+lbGkggCoISinnCf6ou6KBcRx
-X-Developer-Key: i=markdamirkan@gmail.com; a=ed25519;
- pk=/wb49ibt4gZFDncmhFQBYtjPvzT1tfJtvK4Mqt1P2Wc=
-X-Endpoint-Received: by B4 Relay for markdamirkan@gmail.com/pscsi-20260818
- with auth_id=961
-X-Original-From: Mark Amirkan <markdamirkan@gmail.com>
-Reply-To: markdamirkan@gmail.com
+References: <QDISC-1L5H.v1.20260903184552@mojatatu.com> <CANn89iKFVvFaNcZyGOxmyPbpc6ax49ZqwMWDeBAsH5dav-y-SA@mail.gmail.com>
+ <CAM0EoMn5M__WHkniZLw8GNtHpTresTC2dQuL6brmAzUXH1YUKw@mail.gmail.com>
+In-Reply-To: <CAM0EoMn5M__WHkniZLw8GNtHpTresTC2dQuL6brmAzUXH1YUKw@mail.gmail.com>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
+Date: Fri, 11 Sep 2026 19:12:28 -0400
+X-Gm-Features: AcwNN1VxwBhgJyQS3MJEPkDfRRZ_FKlaOla_PtSbjvxx1Fh58EDgtZfXE8iGhas
+Message-ID: <CAM0EoMkzo3s7QTLm=w4RkyAbKat3iVZ89dPtPeQoFRvqigs_4Q@mail.gmail.com>
+Subject: Re: [PATCH net 1/2] net/sched: codel: bound the dropping loop per
+ dequeue call
+To: Eric Dumazet <edumazet@google.com>
+Cc: netdev@vger.kernel.org, stable@vger.kernel.org, 
+	Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Victor Nogueira <victor@mojatatu.com>, Johannes Berg <johannes@sipsolutions.net>, 
+	linux-wireless@vger.kernel.org, Vega <vega@nebusec.ai>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-ipv6_chk_rpl_srh_loop() misses the shortest RPL loop pattern containing
-two local addresses with a non-local address between them. The check is
-made before the current local address is counted, so found is 1 rather
-than greater than 1 when the second local address is reached.
+On Fri, Sep 4, 2026 at 4:31=E2=80=AFAM Jamal Hadi Salim <jhs@mojatatu.com> =
+wrote:
+>
+> On Thu, Sep 3, 2026 at 8:35=E2=80=AFPM Eric Dumazet <edumazet@google.com>=
+ wrote:
+> >
+> > On Thu, Sep 3, 2026 at 10:56=E2=80=AFPM Jamal Hadi Salim <jhs@mojatatu.=
+com> wrote:
+> > >
+> > > The CoDel control law schedules the next drop one interval/sqrt(count=
+)
+> > > after the previous drop, using the configured interval
+> > > (codel_params.interval). For very small intervals the scheduled step
+> > > rounds down to zero, so the dropping loop in codel_dequeue() never
+> > > advances and drains the entire backlog under the qdisc lock in one
+> > > call - an unprivileged user can trigger a soft lockup this way.
+> > >
+> >
+> > ...
+> >
+> > >  static bool codel_should_drop(const struct sk_buff *skb,
+> > > @@ -156,6 +161,7 @@ static struct sk_buff *codel_dequeue(void *ctx,
+> > >         struct sk_buff *skb =3D dequeue_func(vars, ctx);
+> > >         codel_time_t now;
+> > >         bool drop;
+> > > +       unsigned int drops =3D 0;
+> >
+> > SGTM, note that this line breaks RCT.
+> >
+>
+> Grrr.. it was in my brain to fix it, but my fingers didnt get the command=
+ ;->
+> If needed, I will send a v2.
 
-Patch 1 fixes the condition. Patch 2 adds a selftest which verifies that
-adjacent local addresses are accepted and separated local addresses are
-rejected.
+Should i resend this? sashiko-nipa never reviewed and other one found no is=
+sues.
 
-The selftest fails on the unmodified net tree and passes with the fix.
-
-Signed-off-by: Mark Amirkan <markdamirkan@gmail.com>
----
-Mark Amirkan (2):
-      ipv6: rpl: fix loop detection for separated local addresses
-      selftests: net: add RPL SRH loop test
-
- net/ipv6/addrconf.c                         |  2 +-
- tools/testing/selftests/net/Makefile        |  1 +
- tools/testing/selftests/net/rpl_srh_loop.sh | 38 +++++++++++++++++++++++++++++
- 3 files changed, 40 insertions(+), 1 deletion(-)
----
-base-commit: 78445023439506ebd83b86d40b1e428a3b309d4a
-change-id: 20260911-sympwn-rpl-send-c739b4c864a7
-
-Best regards,
---  
-Mark Amirkan <markdamirkan@gmail.com>
-
-
+cheers,
+jamal
+> > Reviewed-by: Eric Dumazet <edumazet@google.com>
+>
+> Thanks for the review - struggled a bit with this one and wasnt 100%
+> sure it was the right approach.
+> cheers,
+> jamal
