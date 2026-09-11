@@ -1,41 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB76A242D62;
-	Fri, 11 Sep 2026 00:49:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ABD02F2619;
+	Fri, 11 Sep 2026 00:52:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789087780; cv=none; b=bo4l1fG1qWMbqsMjji8obznc7u/jtSlYCemrTqrWMRo16vtUQosETWUSN+ivGgc37xXW4NfmNFvOlxGu6gFITEKJ2arsjn8BygWC62sY8jPr7MV8ZyLNd0gMODWqQXhZ5zrek1pC+b8gXr0MSskyWPtg/8uH4DhVlzYncc8YTpQ=
+	t=1789087959; cv=none; b=MfPEEnuBAYxvrPvjhj31U2u3RCYrTqPSIjVY4pvr7JPNzq9ysTcrlRz9zsLmq161c8seUAfjhHD1WX+9khaH+7tw7O6gaF8lSqw6c6j8248hwDLxWjomHLC5YiQAuerf23px83e8xMID9X+FnzwMVSD3t3jcttzfjO7oAdtBrsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789087780; c=relaxed/simple;
-	bh=J9JrAviEfMdIyV64ouQa+AlbVuuJmaLF4JmBfCIjzzQ=;
+	s=arc-20240116; t=1789087959; c=relaxed/simple;
+	bh=tj3r5ZOsxyy7KTiKPONNnN85KVrg8CCR13C0cOlXPcE=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UiNi5rYkHAoUwurvYaeoMcQ2+RI7YEHTjSzTmQIWj7wZzIeJsXsaoK3bxnJj0OTE+XjhumEkcfEEl0uQVso+lS+pGrtW+to3gLjp4dHA44fsRHcMjUv9YGBnvl0Zxaw2lw+UMv7/DP8a4julrQJsBGwLCiIMgovuBWrBq3X4eDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C3lAF5Dt; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=r379qWMOLF+uY+WV/6HHjs5UHECUE3mQyPZTyMUe2rcSH0whjW98xRvcon49Dit0QLc7h8+mf3khHy7bJxm1Qw5hgelKqI5icHHLFW9O82w3DTq9HwoDxe4wfwEodHZS1b37Q7fWWJvSk20GBfeRhPdbyVF6YHiMSyv+X5v1lyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PNyspEpM; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C3lAF5Dt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40E7A1F000FF;
-	Fri, 11 Sep 2026 00:49:39 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PNyspEpM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 617BB1F00893;
+	Fri, 11 Sep 2026 00:52:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789087779;
-	bh=J9JrAviEfMdIyV64ouQa+AlbVuuJmaLF4JmBfCIjzzQ=;
+	s=k20260515; t=1789087957;
+	bh=mO2epwjxSSdZ6lSIhwsGxey8ONDy6qE+WzF6Mo7qh28=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=C3lAF5DtmLfF+7wb8YGIr11kixUnUFpfxmLhD2QVOMmj81p8uLmAI84oyAp2mEVkP
-	 x9qXd/Tpw29jr1groJNHbighIJ1Dtvq7m/l7V5+ZRWN2jTiXjCHPL1LbuAHvI3tVjE
-	 PgOlUuqLx04F7F+Hap9PpLbMv+5k5O/UEvXXJtNPz4pTojplZcjVWlmXqUneG+3bci
-	 MUgP9dyXdi6Z3L4lrFUxGn+MYKrF5OCahssoqX9vCTt+sySm09qBlXZ4Ybkbyy/qVG
-	 9l/ztxWfwNh9mYr5z+vn5dl6CLgErn6yQIH+bC+c/FOTuMEyiGmv3l1Eloenb2liGh
-	 ly4zfvfM3f8/g==
-Date: Thu, 10 Sep 2026 17:49:38 -0700
+	b=PNyspEpM40cFhx6A7PBYvHqWRAe+UX3pFHbVtKmkCy31P6+y0Ol6+5cWDlZVYyQUT
+	 ARUEphc+U/5qBVpPtOIAo80dh9gvOTlXU5HMvqYC1u0T83axGqu6oyn4vOsbTVnjO6
+	 RfH1COMHQXxkcBFqOCjoRjOM/5OEoOCTsmYI+SX/fjKoMYje3Ur1sBblgojcPt4iXB
+	 Vca7cJNKUjfgAHUCA7tgbU763n9ZL19SdbV/nC3g/si6uWU+47O9QcfVlgM3Nprbg3
+	 kX2JcsgDLc1o1poK4sPEzOezZalqnn/vrxksffVRJS75EvdA9tlIgpCCOOnru9uPeO
+	 ckoCuhkqoYpfg==
+Date: Thu, 10 Sep 2026 17:52:36 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Pablo Neira Ayuso <pablo@netfilter.org>
-Cc: netfilter-devel@vger.kernel.org, davem@davemloft.net,
- netdev@vger.kernel.org, pabeni@redhat.com, edumazet@google.com,
- horms@kernel.org, fw@strlen.de, ja@ssi.bg
-Subject: Re: [PATCH net 0/7] Netfilter/IPVS fixes for net
-Message-ID: <20260910174938.1beb1544@kernel.org>
-In-Reply-To: <20260909221844.1650275-1-pablo@netfilter.org>
-References: <20260909221844.1650275-1-pablo@netfilter.org>
+To: netdev-bot+sashiko@kernel.org
+Cc: elb12345@hotmail.co.uk, sd@queasysnail.net, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH net] macsec: require CAP_NET_ADMIN in the device netns
+ for changelink
+Message-ID: <20260910175236.3ef872ec@kernel.org>
+In-Reply-To: <178904284935.219967.10266742419018601309@kernel.org>
+References: <178904284935.219967.10266742419018601309@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,9 +47,16 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 10 Sep 2026 00:18:37 +0200 Pablo Neira Ayuso wrote:
-> The following patchset provides fixes for Netfilter/IPVS:
+On Thu, 10 Sep 2026 12:20:49 +0000 netdev-bot+sashiko@kernel.org wrote:
+> >     An unconditional gate also denies the third case, which is a needless
+> >     uAPI change; hence the narrower condition.  
+> 
+> Does the narrower condition still deny that same class of purely local
+> request?  Would comparing nla_get_u8(data[IFLA_MACSEC_OFFLOAD]) against
+> macsec->offload, so the gate fires only on an actual transition, keep that
+> case working?
 
-Sorry for the delay, patchwork breakage on Sunday created a persistent
-backlog for our CI, which will only fully clear on the weekend :/
-The last commit seems unnecessary, if not more of them..
+Sounds reasonable. Let's factor the checks out to a separate helper
+function to avoid building very complex conditions in place.
+-- 
+pw-bot: cr
