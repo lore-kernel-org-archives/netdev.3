@@ -1,92 +1,103 @@
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB1143E3D86;
-	Fri, 11 Sep 2026 15:33:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E17DA495531
+	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 15:44:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789140819; cv=none; b=tVeHTGoNuck175syOXdlKGNkprzhKyas7JuWeyyZozZhhmbxVHqfaY/4MTB1vYmTz+jrXHA0cUSbAgqanX9BTi64QtHq4Xq59iwG4GRsJvB7nvjSKneTLFm8a09iQS6HKlLhd44y65KVGwV80STCz3aDSs0cVARDE1ZiBXRFoWY=
+	t=1789141490; cv=none; b=d3N2XWkGrt7mBA+EM4sAUPSYa58Oqn1gE/+KZeSWPZnxeLzRv1YyQBi/FNj9GMpB9ofWJ9Lo67cgxyk4OsMr3liSHmaX9grcCo/x4I4H6srrXr0F5K+2Q4xOy+yhJb8G9jAMi7v5V+sE2PMLMzb1KEVD34t8Sp0IjA3njwOGwWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789140819; c=relaxed/simple;
-	bh=6nXXw3W0CyWUSk513hjKemKAvMgCPmex9ZUW3h2qq6A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tK1aKbgILCJ1GNbIffhRIq612kc0/I4ur+E/CMoDdsExRLsMTcO0ifpiULIm1/lxiYzkHSOTNR+26QMCooN00ABVwPvrGsNBwy877BNSnTXBn4cVgCFHfJsxkxP7rylc6JUMvDO5/tmu8wRdmZTHDtsbvgXeVnOMIfx8dfGd+8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marmottus.net; spf=pass smtp.mailfrom=marmottus.net; dkim=pass (2048-bit key) header.d=marmottus.net header.i=@marmottus.net header.b=je+m/5De; arc=none smtp.client-ip=217.70.183.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marmottus.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marmottus.net
+	s=arc-20240116; t=1789141490; c=relaxed/simple;
+	bh=77LXYXgJoDGNgKFujHE3OW2GeMjh6O/I1WWs4eD3Qlg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mLMTMVNxD20ucfbQXrbPIjKZ04ebqSGb0TGWI4QMY4EC5bRq4cEFbfJRqm4o6N7nuKqZ9TTzOkRKyHFFfE0hU9Q8Hk8f7CZItvN/81eULwGOUXApOsIIP0TkYtYVPRv+5Habgif5Aufj87EFjWc5lsA6E4WXlfQW+bwkC/O2kI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com; spf=pass smtp.mailfrom=6wind.com; dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b=NXoiy4eb; arc=none smtp.client-ip=74.125.225.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=6wind.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marmottus.net header.i=@marmottus.net header.b="je+m/5De"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 8C0723ED9E;
-	Fri, 11 Sep 2026 15:33:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marmottus.net;
-	s=gm1; t=1789140815; h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:in-reply-to:in-reply-to:  references:references;
-	bh=+XBkVdBbqTxc4W5+9+4zB7d/pO65MPSLqPWWRb6u3+A=;
-	b=je+m/5DedQvvF4GB6CJDiaMfhldEkzFf+rn0IBF+aYnhG/1rvy4dSFUJTWRDiKcmt2Q4o8
-	HKX3YdI7iXbs/+GqQN4T6cF8Dvj/ewT3O/pxvLFsPZu+jd35VmTQPcV8I+urJyZyYDMI7R
-	wRiiFZKXdOhy+eHhxFP5OVXMBF9k6fMBgwTWtVJ3BsFh9sn3rKB7qxKyFK2iQiTn5D13Qu
-	Sv93oRAlBQDscIzByPSfOUfXKK6P8mIJ9jTVoGEoFWzzL5+iWXhWxeMwjEqo4bZ4Ppr4hi
-	mYkWpg5casrGdShuEkNMVeRQlvACyj/xW06w8btq2TI4nCqjyEMpACYvL4+N7A==
-Date: Fri, 11 Sep 2026 17:33:25 +0200
-From: Arthur Crepin Leblond <arthur@marmottus.net>
-To: netdev-bot+sashiko@kernel.org
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, arnd@arndb.de,
-	netdev@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, krzysztof.kozlowski@oss.qualcomm.com
-Subject: Re: [PATCH net-next v7 2/3] dt-bindings: net: wiznet,w5100: add link
- status interrupt
-Message-ID: <20260911153325.GB9585@marmottus.net>
-Reply-To: arthur@marmottus.net
-References: <20260904-wiznet-link-gpio-v7-2-69f01b70c96f@marmottus.net>
- <178895754004.219967.902137420360139647@kernel.org>
+	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="NXoiy4eb"
+Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-499db1740f2so23725e9.3
+        for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 08:44:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=6wind.com; s=google; t=1789141486; x=1789746286; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:organization
+         :content-language:from:references:cc:to:subject:reply-to:user-agent
+         :mime-version:date:message-id:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=qMq+XvZCJh1BRiDCee0lFcd5HC93x9tlqE/S4GTE3zc=;
+        b=NXoiy4ebCtjh4lLSsxJDBqyQ4uODvTzkLqHI3g4kf14U8AGKGMACcSWJ/DXjHfROXU
+         BAhhFC2MxHfvS23SW4QcQ8BS64t4i/oVI3JhFJkXq4O4YjFWTmrMgIHMEFgflEFzXLU5
+         keY346oxUZ4YtSfxdKMGezfVO+Y77FbEOrFKq/ml7xU9hFJ70MXfmFBFHxeweBa7sDLA
+         ug0x7AA/7WUCwTmHdQazD29dOtDQuvoLQlR2owzGmJgc7Gicvq0SgEUI1PjXXdZAVcXc
+         hSb2kdut/Y/fiIlEcliTtaTfn6rhAXORKHCE+VxKpvjwzdkvvjdHDNQk+q+nmuYvmDac
+         xOiA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789141486; x=1789746286;
+        h=content-transfer-encoding:content-type:in-reply-to:organization
+         :content-language:from:references:cc:to:subject:reply-to:user-agent
+         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=qMq+XvZCJh1BRiDCee0lFcd5HC93x9tlqE/S4GTE3zc=;
+        b=SpaVt0iqQNlbv200qHw7SBZhXblZY07khfd2eRjRxflCx4f/flm/JSvQT8kXxpXMnk
+         ouEb0+ia1h6Bs4XnGuvm0dw0k7bGBRC159R1ggI6ZdYYx3KvfPpI+JNUcMPhnivtkBOL
+         uTS2aaJrToumQ9i6SgZ/XDsXpnQCNHSa6UPGdy3BuLMpf29bu84bb0bpwCoxrKplSgov
+         pGYRCHsKSX3wexAMiorApYCV/4QrbMdAP3X8mbIa4QWVHquD+t/gHIdE3tM0QzDYijr6
+         1vErSfOqPZ/gubinVi+500Z5ktbfiVaj9/nPJ8rNerVjmOWHFBrHwfvRnszwZYED+rnP
+         dCjw==
+X-Forwarded-Encrypted: i=1; AKwUvBzCv4dkqza63GK6Vj9E0rTR96d0BSSDhHXR6BES/aeOGkYEIZj1G+sN/UwFlwB+uep5xGzws8E=@vger.kernel.org
+X-Gm-Message-State: AFuF++miOwtqU5X2+k3qHjZLRJotslJfi+SbJKP6AopOcnfgv2OuSE/i
+	kyIGz6PCLI66sKuzQ2Gl4NCgDgxjuFhzU8kgnvxIfngEO4891gITeKS+AxVv/ecJwZA=
+X-Gm-Gg: AYBFou1Cd488kfmPuzbRY6uDGhFkUvUAguMFAGIMzKWfJRsHiLpicQ2C2eUDfK/bgf8
+	QQWkjWrX/kO6CuD5H1XOB3FBWAkwjRQA6yvUD/+I3kLmSlheoT8jlTpcyEXjVSKMMBZR0vw5SeP
+	mV4tHnQEnoBGoNh7pj3O/pvwVaJ2v3V8HaDev9B233EDj18VT6UKaUfjwiN9RM100oTVwmw2W+1
+	p+1DqLGyz+izxP+0f+uARW5SMfSDejLcGrfZG3d/LNLZD23r9nmOmBDHqAY2xgO5BWkxJmiGInS
+	vjG8W1+xW0ge72dAeEkaUCP38Imzy9cQwWlTSOfIkR+shkRjVINBMJGeoTHXDbDntySclQvpPnQ
+	syphzA2fQU2CvQk1wyMOhswhtHVugUKqI7Cp6VV4f5W51aSElQgs7Sg+oTf1IfmKo6b5vuMjhKQ
+	pgFVo8X2X/t+bz1OPyck/1lu8MQAqO3CJKepRE29c5m/OumokotllhJwm/MGdS+X/sgtlcHNJlR
+	8jPIcBvmrFU9lMM9VKI3Q+dpIzheEHaTrkbtcjVRb01ipHoCclY
+X-Received: by 2002:a05:600c:b99:b0:49d:1da4:511b with SMTP id 5b1f17b1804b1-49e619a8962mr53370715e9.1.1789141485841;
+        Fri, 11 Sep 2026 08:44:45 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:ab7:2110:6a1d:efff:fe52:1959? ([2a01:e0a:ab7:2110:6a1d:efff:fe52:1959])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49d26b7332asm161865175e9.0.2026.09.11.08.44.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 11 Sep 2026 08:44:45 -0700 (PDT)
+Message-ID: <3a7bd165-cba9-42f4-a761-61a9031a05d0@6wind.com>
+Date: Fri, 11 Sep 2026 17:44:44 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <178895754004.219967.902137420360139647@kernel.org>
-X-GND-Sasl: arthur@marmottus.net
-X-GND-State: clean
-X-GND-Score: 0
-X-GND-Cause: dmFkZTF8FhyhVzSO567TwqQR2SglJ3I0fYtPZKyUxqL32JcYMD8pUhL1wI3RhB/NR1uSRNVoBRGcqBJVCHs+u9AuEdy29fLdXaD4hKoyCuWFmgsxGjyEK5WwF1vlgWwwh6ukNHRUF3VYtHemwJT+UIzEH2InP2ghnFgZ7wAUdUflPkQIbrcNCte5rx3DmSNL+hZ1amcD4ENDsn8md1CLvR04SfkfyY+t1QDJ4NAD1qRb4rl2soseDFGyxA3CTj14BUW2bw9YJKf6FsAViCaV9YCfnUgvAKypa1HJvwJSfaqTy40S3KaqZQUNf5dNdPYXaZ94m6qr3gFCQEOOF3EfEQPeYNAiVKnBOYrcAY7fCIgB/j5C2rAA9AZToeJf3nJRqhoq/TzfyjMNddHkjE2UxOZZVB8ytEo2AYqxuBtCFHAPpqgzV9R9z2sH+c4zRH+JDoLjg+7bvC73B8nYuj3gEvHCE8s8ZQdoS83MzVNGqve0dt+edBgm+fuDeA8v8vKG06lsp8l7N8zWo9IOuNFSlouBGw0HT/skdRZRr8w3LRWtmLvPlyLbJzMhKMZB46sCe/GXfBaAjyzk2W1E9aXkz5W0rzPnfu12YCGDrfD0zzt0UWLTBQRynQWpfJgcU0ZwWLkqkGjcJVhf6bioMx6t9kgRzsNR22TCyyKOfi4BSis/7tM71A
+User-Agent: Mozilla Thunderbird
+Reply-To: nicolas.dichtel@6wind.com
+Subject: Re: [PATCH net-next v4 1/4] netlink: specs: rt-addr: fix the type of
+ target-netnsid
+To: Yuyang Huang <sigefriedhyy@gmail.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, David Ahern <dsahern@kernel.org>,
+ Donald Hunter <donald.hunter@gmail.com>, Eric Dumazet <edumazet@google.com>,
+ Ido Schimmel <idosch@nvidia.com>, Jacob Keller <jacob.e.keller@intel.com>,
+ Jakub Kicinski <kuba@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>,
+ Nikolaos Gkarlis <nickgarlis@gmail.com>, Paolo Abeni <pabeni@redhat.com>,
+ Sabrina Dubroca <sd@queasysnail.net>, Shuah Khan <shuah@kernel.org>,
+ Simon Horman <horms@kernel.org>, Stanislav Fomichev <sdf.kernel@gmail.com>,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ netdev@vger.kernel.org
+References: <20260911105103.7771-1-sigefriedhyy@gmail.com>
+ <20260911105103.7771-2-sigefriedhyy@gmail.com>
+From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Content-Language: en-US
+Organization: 6WIND
+In-Reply-To: <20260911105103.7771-2-sigefriedhyy@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Wed, Sep 09, 2026 at 12:39:00PM +0000, netdev-bot+sashiko@kernel.org wrote:
->Should the item count be tied to the compatible string, for example:
->
->  allOf:
->    - if:
->        properties:
->          compatible:
->            contains:
->              enum:
->                - wiznet,w5100
->                - wiznet,w5200
->      then:
->        properties:
->          interrupts:
->            maxItems: 1
->
->The driver side of the series treats index 1 as w5500-only:
->
->drivers/net/ethernet/wiznet/w5100.c:w5100_probe() {
->    ...
->    priv->link_irq = ops->chip_id == W5500 ?
->                     fwnode_irq_get(dev_fwnode(dev), 1) : -ENODEV;
->    ...
->}
->
->with w5100_get_link() returning a hardcoded 1 for the parts that have no
->PHYCFGR link-status register.  So for w5100/w5200 a second interrupt in DT
->would validate but then be silently ignored, since fwnode_irq_get() is
->never called for index 1 on those chip ids.
 
-Let me update this and have it conditional and re-request a review
-from the devicetree people.
+Le 11/09/2026 à 12:51, Yuyang Huang a écrit :
+> The kernel parses IFA_TARGET_NETNSID as NLA_S32 and rt-link.yaml
+> declares its target-netnsid as s32, but rt-addr.yaml has it as binary.
+> 
+> Signed-off-by: Yuyang Huang <sigefriedhyy@gmail.com>
 
-Arthur
+Reviewed-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
