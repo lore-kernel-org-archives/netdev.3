@@ -1,113 +1,273 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+Received: from mx.ssi.bg (mx.ssi.bg [193.238.174.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 698713AB29D;
-	Fri, 11 Sep 2026 09:55:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 581A13CCA12;
+	Fri, 11 Sep 2026 09:56:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.238.174.39
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789120524; cv=none; b=Uo9zByNUkre0v6WGAisafmZQAME/ClLCemCdDLpxBAe5Wt6c1vOjtGce+n/X5e3GNyGl+17Lh9ebxJ4lZg6dn9cONgtdB9FOhwG/5GEca93jWYxtg/FJKtaF+qqT21yFh5/waYoQV2WkK9pcnK/A0uBscXffBqg4YG2iqw5MZI8=
+	t=1789120610; cv=none; b=UNvn06vUQ6gZz+G91QXGQ5F7SoKpyAtw2jrVwZc3DEl/ZTPtanbw8HKl2ETW0a6tGTHb/ZzAC7dc8/jbit7dKv+SENsV3iy6bz86AoTIfW+vkDnm5edXyoKwBqWWdPRd2qaTlltLJLZorEzrTUmRnID51SPLRAMcmBcdtcz11QA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789120524; c=relaxed/simple;
-	bh=0tQ5UOcfmXeoMU2bbIGxdIrQatK2ev1arDHG7vwy7T8=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=tlPSVep7WrtMKZKsdNiPcPJUidWD/GOVn7+I/E4Q7O7O3VCFnj12mHuqkaZzHkJFVfLAGwyzq16q10CpvcxVLUer4pRc2Td+hiKS5f9L0K7RGOtj+3gpalIKxGzL6kL/F/C5OdceqZVtsMUSk+DwUh9rM8jj318nmo9KmmfPa0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=5SglTdFH; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	s=arc-20240116; t=1789120610; c=relaxed/simple;
+	bh=2/zgO5qFC0vD7GreCUnc4sngpDYat7tLdQtuKob/aK0=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=SSbQ0nSEa7OSt0GblUaF1RV8gWDNYa3ti1nSgQhJRYhSys5iNQngtjFd1UiNPbouNU9vBVeOG1IFfpdeX8bLfPv8HItVrRV/J63SocGgYCBGylaMDmDO8ObuO7y7unlO4dbRKR+j4UHGtOaNotdNkw1m9HLs+iaoXlOhZRTRYLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg; spf=pass smtp.mailfrom=ssi.bg; dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b=07rHOolG; arc=none smtp.client-ip=193.238.174.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ssi.bg
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="5SglTdFH"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id DB6E6A4C11;
-	Fri, 11 Sep 2026 11:55:14 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1789120515; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=U+rkct1N0ewPgHDfDC9pZh5mG5IDXEtz1Rz15dwMtTM=;
-	b=5SglTdFHwNSNPAs7eSjcxRbhk8Z7Is044GE5xQP8mc2+bVSShmluT3VQE2eL9cgv381Yom
-	6kBBW1Fykq7wBLy7/F8KigE1U1f35N7qD42HyyGLDN9D7wcUzW1Vhagrg7l1HYqvSLTbha
-	P+nZj9K+GQRGmMNERS4DG7o5wAnnn+WuIxACZ3buGtgtnx+VL9/O1jvlNwMMJ59CDqvfPT
-	nrNkL3hBgwSRinec+tXnlf5T6QMFYirjAWT0vn6/NCedkezJmwOJCSd2ToDCRtgpnDbSr0
-	XPqzhHS8CsDAg5/eeLQ3oone7n0SXNfS3Wqumt+vhONUbHJPHoQ3GTYg+T5PrA==
+	dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b="07rHOolG"
+Received: from mx.ssi.bg (localhost [127.0.0.1])
+	by mx.ssi.bg (Potsfix) with ESMTP id B3FA822741;
+	Fri, 11 Sep 2026 12:56:31 +0300 (EEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ssi.bg; h=cc:cc
+	:content-type:content-type:date:from:from:in-reply-to:message-id
+	:mime-version:references:reply-to:subject:subject:to:to; s=ssi;
+	 bh=6bi4XJJww/dCl6im5jLb+/7zH+UuaGeerHxuvCaQzoA=; b=07rHOolGceeo
+	mwuZQeFraDd7PWA+qFzRsR9aT+0m5nDwr60u01gT2BkxtAa1eNRpf1aMCpNTmq+o
+	+FRgPVDUreiZoQkuT8KA5BZHhN77GD9yLgeoms+crfM1mRCW/wMJGZsTF/HRR+VD
+	fino6IMu3rSuWTr9xdxky16wkkzVnkuVONaxx7+LwA+84Iyn9tdl0y79akX/KHhz
+	bf05BbAUut6bhvuO2ZuoaAJ53x709xTVvtPtDYyj3pGrWLTiAmVpgma+zTecDz6f
+	5mWCimtXr7o99JyaIbtV9LvXQSg7lGavsk+iGrgr00fOoyV4kysl7j2nO+Wl149s
+	akUOp/70NRfIpQ0h2X64quYkZOZMIbU8taEw2Phu1gSsCEQ88uxHksyvtRXOj9aG
+	C3Z8b7aAU4vjV4KFKuQFiTGWpDWijI0YBtxuvD6kDmMzcgejrMGLPunzHHFXXUKP
+	MwyBJ8kJVO5pdCrCgHsS7EcNY0ddZNXTwj5gkPEKklhcpub8v/edmYkDm3mN6P5u
+	AVz/WgTxFDN5SScRTdX8v0l4OWs3vBJZmLqo9T4lsN3TtFZTlCPHSAm4rfvgFkcD
+	tP2Pq5/4SLEqs1dQCZde7tHKVQ7x/65Ro9GiklO1iW+n+584RSiwsQ24tGfoNfLG
+	LbrCfvlcXDDbkrLn9GmeZnR4VVYHIRw=
+Received: from box.ssi.bg (box.ssi.bg [193.238.174.46])
+	by mx.ssi.bg (Potsfix) with ESMTPS;
+	Fri, 11 Sep 2026 12:56:31 +0300 (EEST)
+Received: from ja.ssi.bg (unknown [213.16.62.126])
+	by box.ssi.bg (Potsfix) with ESMTPSA id 332E960948;
+	Fri, 11 Sep 2026 12:56:33 +0300 (EEST)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by ja.ssi.bg (8.18.2/8.18.2) with ESMTP id 68B9uVLX020080;
+	Fri, 11 Sep 2026 12:56:31 +0300
+Date: Fri, 11 Sep 2026 12:56:31 +0300 (EEST)
+From: Julian Anastasov <ja@ssi.bg>
+To: Jakub Kicinski <kuba@kernel.org>
+cc: pablo@netfilter.org, netfilter-devel@vger.kernel.org, davem@davemloft.net,
+        netdev@vger.kernel.org, pabeni@redhat.com, edumazet@google.com,
+        horms@kernel.org, fw@strlen.de
+Subject: Re: [PATCH net 4/7] ipvs: revalidate ihl before icmp_send
+In-Reply-To: <20260911004648.2877894-1-kuba@kernel.org>
+Message-ID: <117ea9ac-0af3-9801-4ab4-78999f94849a@ssi.bg>
+References: <20260909221844.1650275-5-pablo@netfilter.org> <20260911004648.2877894-1-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Fri, 11 Sep 2026 11:55:14 +0200
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: kimwooseok <5mghybrid@khu.ac.kr>
-Cc: netdev@vger.kernel.org, theo.lebrun@bootlin.com,
- conor.dooley@microchip.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- richardcochran@gmail.com, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net RESEND 2/2] net: macb: Use all-frame timestamping for
- PTPv1 RX filters
-In-Reply-To: <178911388671.25348.11008812384009904081.macb-resend-2@khu.ac.kr>
-References: <178911388592.25348.177462085059763031.macb-plaintext-resend-cover@khu.ac.kr>
- <178911388671.25348.11008812384009904081.macb-resend-2@khu.ac.kr>
-Message-ID: <185fa72f08b8d7882a48c3ba922c10b8@tipi-net.de>
-X-Sender: nb@tipi-net.de
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=US-ASCII
 
-Hi Kimwoo
 
-On 11.9.2026 10:04, kimwooseok wrote:
-> gem_set_hwtst() accepts HWTSTAMP_FILTER_PTP_V1_L4_SYNC and
-> HWTSTAMP_FILTER_PTP_V1_L4_DELAY_REQ without changing rx_bd_control from
-> TSTAMP_DISABLED. A successful request thus disables receive 
-> timestamping
-> while reporting the requested nonempty filter to userspace.
-> 
-> Handle these two filters through the existing all-frame fallback used
-> for HWTSTAMP_FILTER_PTP_V1_L4_EVENT. This enables receive timestamping
-> for a superset of the requested packets and returns HWTSTAMP_FILTER_ALL
-> to describe the configuration actually selected.
-> 
-> Fixes: ab91f0a9b5f4 ("net: macb: Add hardware PTP support")
-> Assisted-by: GPT-6 Astra
-> Signed-off-by: kimwooseok <5mghybrid@khu.ac.kr>
+	Hello,
+
+On Thu, 10 Sep 2026, Jakub Kicinski wrote:
+
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
 > ---
-> Resending as plain text because the previous webmail submission 
-> included
-> HTML and quoted and rewrapped the patch. No code changes; the 
-> Assisted-by
-> trailer now names the tool.
+> ipvs: revalidate ihl before icmp_send
 > 
->  drivers/net/ethernet/cadence/macb_ptp.c | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
+> This adds a check in ip_vs_in_icmp() that drops the packet when the
+> embedded IP header's ihl no longer matches the length that was validated
+> from the frag copy, sets the transport header before icmp_send(), and
+> passes the tunnel protocol to ipv4_update_pmtu() instead of 0.
 > 
-> diff --git a/drivers/net/ethernet/cadence/macb_ptp.c 
-> b/drivers/net/ethernet/cadence/macb_ptp.c
-> index 51659bb..2ffc46b 100644
-> --- a/drivers/net/ethernet/cadence/macb_ptp.c
-> +++ b/drivers/net/ethernet/cadence/macb_ptp.c
-> @@ -430,10 +430,6 @@ int gem_set_hwtst(struct net_device *netdev,
->  	switch (tstamp_config->rx_filter) {
->  	case HWTSTAMP_FILTER_NONE:
->  		break;
-> -	case HWTSTAMP_FILTER_PTP_V1_L4_SYNC:
-> -		break;
-> -	case HWTSTAMP_FILTER_PTP_V1_L4_DELAY_REQ:
-> -		break;
->  	case HWTSTAMP_FILTER_PTP_V2_EVENT:
->  	case HWTSTAMP_FILTER_PTP_V2_L2_EVENT:
->  	case HWTSTAMP_FILTER_PTP_V2_L4_EVENT:
-> @@ -448,6 +444,8 @@ int gem_set_hwtst(struct net_device *netdev,
->  		regval = macb_readl(bp, NCR);
->  		macb_writel(bp, NCR, (regval | MACB_BIT(SRTSM)));
->  		break;
-> +	case HWTSTAMP_FILTER_PTP_V1_L4_SYNC:
-> +	case HWTSTAMP_FILTER_PTP_V1_L4_DELAY_REQ:
->  	case HWTSTAMP_FILTER_PTP_V1_L4_EVENT:
->  	case HWTSTAMP_FILTER_ALL:
->  		rx_bd_control = TSTAMP_ALL_FRAMES;
+> Link: https://sashiko.dev/#/patchset/20260806105211.34622-1-ja%40ssi.bg
+> 
+> A few questions below.
 
+	I'll send v2 to address the problems, thanks!
 
-Reviewed-by: Nicolai Buchwitz <nb@tip-net.de>
-Tested-by: Nicolai Buchwitz <nb@tipi-net.de> # Raspberry Pi CM5
+> 
+> > diff --git a/net/netfilter/ipvs/ip_vs_core.c b/net/netfilter/ipvs/ip_vs_core.c
+> > index ba0957798bad0..c41fac3ed873e 100644
+> > --- a/net/netfilter/ipvs/ip_vs_core.c
+> > +++ b/net/netfilter/ipvs/ip_vs_core.c
+> > @@ -1934,7 +1934,8 @@ ip_vs_in_icmp(struct netns_ipvs *ipvs, struct sk_buff *skb, int *related,
+> >  			IP_VS_DBG(12, "ICMP for %s %pI4->%pI4: mtu=%u\n",
+> >  				  outer_proto, &ip_hdr(skb)->saddr,
+> >  				  &ip_hdr(skb)->daddr, mtu);
+> > -			ipv4_update_pmtu(skb, ipvs->net, mtu, 0, 0);
+> > +			ipv4_update_pmtu(skb, ipvs->net, mtu, 0,
+> > +					 ip_hdr(skb)->protocol);
+> 
+> [Severity: Medium]
+> 
+> The new protocol argument becomes fl4.flowi4_proto inside
+> ipv4_update_pmtu()->__build_flow_key(), and it is used both by
+> __ip_route_output_key() and by the fib_lookup() in
+> __ip_rt_update_pmtu().
+> 
+> The route IPVS actually transmits these tunnel packets on is looked up
+> and cached by do_output_route4(), which leaves flowi4_proto at zero:
+> 
+> net/netfilter/ipvs/ip_vs_xmit.c:do_output_route4() {
+> 	memset(&fl4, 0, sizeof(fl4));
+> 	fl4.daddr = daddr;
+> 	fl4.flowi4_flags = (rt_mode & IP_VS_RT_MODE_KNOWN_NH) ?
+> 			   FLOWI_FLAG_KNOWN_NH : 0;
+> 	...
+> }
+> 
+> and fib4_rule_match() keys on that field:
+> 
+> net/ipv4/fib_rules.c:fib4_rule_match() {
+> 	...
+> 	if (rule->ip_proto && (rule->ip_proto != fl4->flowi4_proto))
+> 		return 0;
+> 	...
+> }
+> 
+> With an FRA_IP_PROTO rule configured, can the two lookups now land in
+> different tables, so the exception ends up on a nexthop IPVS never
+> consults?  The read-back immediately below would then still return the
+> unreduced MTU:
+> 
+> 			if (dest) {
+> 				struct ip_vs_dest_dst *dest_dst;
+> 
+> 				dest_dst = rcu_dereference(dest->dest_dst);
+> 				if (dest_dst)
+> 					mtu = dst_mtu(dest_dst->dst_cache);
+> 			}
+> 
+> and the ICMP relayed to the client would advertise the stale larger
+> value, leaving the passive PMTUD added by f2edb9f7706d ineffective for
+> such setups.
+> 
+> The multipath variant of this does not seem to apply, since
+> __ip_rt_update_pmtu() installs the exception on every path when
+> fib_info_num_path(res.fi) > 1.
+> 
+> Other in-tree callers of ipv4_update_pmtu() pass the real protocol, but
+> they also set flowi4_proto on their transmit lookup; IPVS does not.
+> Would it make sense to set flowi4_proto in do_output_route4() as well,
+> so the two keys agree?
+> 
+> [Severity: Medium]
+> 
+> Under the same assumption the commit message makes, that a local process
+> can mutate the bytes between the frag read and the pull, is the protocol
+> byte read here trusted?
+> 
+> Everything that authorized this tunnel was checked on the on-stack copy
+> taken earlier in ip_vs_in_icmp():
+> 
+> 	cih = skb_header_pointer(skb, offset, sizeof(_ciph), &_ciph);
+> 	if (!cih)
+> 		return NF_ACCEPT;	/* The packet looks wrong, ignore */
+> 	hlen_ipip = cih->ihl * 4;
+> 	if (!(cih->version == 4 && hlen_ipip >= sizeof(struct iphdr)))
+> 		return NF_ACCEPT;	/* The packet looks wrong, ignore */
+> 	raddr = (union nf_inet_addr *)&cih->daddr;
+> 	...
+> 	if (cih->protocol == IPPROTO_IPIP) {
+> 	...
+> 	} else if ((cih->protocol == IPPROTO_UDP ||
+> 		    cih->protocol == IPPROTO_GRE) &&
+> 
+> whereas ip_hdr(skb)->protocol here is re-read from the linear area after
+> pskb_may_pull(skb, hlen_ipip).  If those bytes can change, the value fed
+> to ipv4_update_pmtu(), and hence fl4.flowi4_proto for
+> __ip_route_output_key() and update_or_create_fnhe(), is not necessarily
+> the IPIP/UDP/GRE value that was validated, which works against the
+> "provide correct protocol to ipv4_update_pmtu()" goal.
+> 
+> Would saving cih->protocol into a local at validation time and passing
+> that local here be preferable to re-reading the header?
+> 
+> For what it is worth, the saddr/daddr/tos that __build_flow_key() reads
+> from skb->data at this call site have the same exposure, but that part
+> predates this patch.
+> 
+> >  			/* Client uses PMTUD? */
+> >  			if (!(frag_off & htons(IP_DF)))
+> >  				goto ignore_tunnel;
+> > @@ -1960,6 +1961,12 @@ ip_vs_in_icmp(struct netns_ipvs *ipvs, struct sk_buff *skb, int *related,
+> >  		/* Ensure the IP header is present in headroom */
+> >  		if (!pskb_may_pull(skb, hlen_orig))
+> >  			goto ignore_tunnel;
+> > +		skb_set_transport_header(skb, hlen_orig);
+> > +		/* Before now we may used ihl from skb frag, revalidate it after
+> > +		 * copying it into skb head to prevent out-of-bounds access
+> > +		 */
+> > +		if (ip_hdr(skb)->ihl * 4 != hlen_orig)
+> > +			goto ignore_tunnel;
+> 
+> [Severity: Medium]
+> 
+> Is the "out-of-bounds access" wording in this comment, and in the commit
+> message, accurate for the current tree?
+> 
+> The commit message says:
+> 
+>     "we must be careful and revalidate the embedded headers after
+>     reading them from the skb frags to prevent out-of-bounds
+>     access"
+> 
+> and
+> 
+>     "local process can change the ihl field and after
+>     pskb_may_pull() we can see larger value which is a problem
+>     for the icmp_send() call."
+> 
+> Every ihl-derived access reachable from this icmp_send() call looks
+> bounds-checked.  The tracepoint in include/trace/events/icmp.h reads the
+> quoted header through skb_header_pointer() and copes with a NULL return:
+> 
+> 	if (iph->protocol == IPPROTO_UDP)
+> 		uh = skb_header_pointer(skb,
+> 					skb_network_offset(skb) +
+> 					(iph->ihl << 2),
+> 					sizeof(_uh), &_uh);
+> 
+> 	if (!uh) {
+> 	...
+> 
+> __icmp_send() does the same for its inner probe:
+> 
+> net/ipv4/icmp.c:__icmp_send() {
+> 	...
+> 		itp = skb_header_pointer(skb_in,
+> 					 skb_network_header(skb_in) +
+> 					 (iph->ihl << 2) + ...
+> 		if (!itp)
+> 			goto out;
+> 	...
+> }
+> 
+> and __ip_options_echo() works on IPCB(skb)->opt, which is zeroed just
+> above the pull:
+> 
+> 		memset(&(IPCB(skb)->opt), 0, sizeof(IPCB(skb)->opt));
+> 
+> so it returns immediately on optlen == 0.  With that, does a mutated ihl
+> today produce anything worse than wrong or zeroed tracepoint fields?
+> 
+> Related question on the Fixes tag:
+> 
+>     Fixes: 7fcc2fe39fed ("net: icmp: avoid invalid transport header access in icmp_send tracepoint")
+> 
+> That commit replaced the skb_transport_header() dereference in the
+> tracepoint with the bounds-checked skb_header_pointer() read shown above,
+> so it introduced the ihl-based offset but not an out-of-bounds access.
+> Since there is no remaining skb_transport_header() consumer in the
+> icmp_send() path, what does the added skb_set_transport_header(skb,
+> hlen_orig) feed?  Could the tag and the comment be reworded to describe
+> this as hardening plus a transport-header fixup, rather than a fix for an
+> out-of-bounds read?
+> 
+> >  		IP_VS_DBG(12, "Sending ICMP for %pI4->%pI4: t=%u, c=%u, i=%u\n",
+> >  			&ip_hdr(skb)->saddr, &ip_hdr(skb)->daddr,
+> >  			type, code, ntohl(info));
+> 
 
-Thanks,
-Nicolai
+Regards
+
+--
+Julian Anastasov <ja@ssi.bg>
+
