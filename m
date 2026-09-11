@@ -1,134 +1,114 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pz2-f7.google.com (mail-pz2-f7.google.com [74.125.228.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E62A135F602
-	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 21:08:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEB263E4C61
+	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 21:17:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789160891; cv=none; b=Amv3ypDjtLov2/OV+JkRfrX8AjKtnpnviU1w8Ms5QNgMMTMvegh0hlgyoqCn7agBt2t2f+wUUaBUYqk9XnrF+qKlPi7Ijtkj2eaSSr5zIKRY+42kO2AzRXCUmECh4lnzv79I+OKc7RoMV5f5bg+YRiMH2Xg0Y9nb4SJYh5TivAs=
+	t=1789161468; cv=none; b=RYsae23i5WaFK/d7FHHRDzBDWFI6ZpWAb6BHAsso1iZU6X3BLQV4NfdEEXAJO3+ikpwVJfW+3NDN8AQ4r8oYOtBLDf+alykNOQHHr46witPQ2H8Dc8J6hBcG7O+nOKpGboQZMn756y79tmeCBtJ9PwopaO60tXe8k3gnpEbH56o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789160891; c=relaxed/simple;
-	bh=OYpTZuGPV/D0r3me4ty1m5kYnCc2y9qCJVtwE8uWqvY=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=I5p7uH/H48SYSlU3o4CrBX/zKSOcfc3LIqBCIN9v9eVqI1vO+rf+MeCzP/lRm1L88/rZcAvjNLKqy2zwcU+TRf4HkI8Il8rnY1EdLWIxiy2HmH7wjxhmwfAea8fq4PgV09Eo6lfek7usHizIO14wxtrxonJn6y9L4XOgh5bXhoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oRoZkz25; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789161468; c=relaxed/simple;
+	bh=pRD2Q0MOiyrSPSkiYE4fxvcMyAVQbuFTvSwJ+4B57jA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qFJqajYaV1NyMewCUOTAOx45gGj8+hC9nc2Z3ZVUtPKYjhjqKsfBCj3fcgi0ZCCPiUC/Nm7mp/7jQ1kJBVUMSKpfImev5pxsrZYpvnmHNXWADOf9VpQVCNTQJlGSWXchkNy+OV25r/6S++bciPkndLE/sHR70uJcxwWcLGQ7Swk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bs74dA3K; arc=none smtp.client-ip=74.125.228.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oRoZkz25"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E2BA1F000FF;
-	Fri, 11 Sep 2026 21:08:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789160889;
-	bh=QU6Us7me6hkAuzJ+YiJrSu4YSUiuxPvohkqeDP1V0mA=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=oRoZkz25zPSSAc4BW061Uh2jqjFahhRhjkMKsCvkjls2wU/nmny1YnLN/g+MWfq6Y
-	 68BovKJeXHXN5ZKcgfmB1MoUdmvh9YuTi5SQanHed7dOikt6+bZ9lg70oCOu3pxGd6
-	 tWphaG9p64I6rCiwU8xWzvd3ZmshfbrmmwcntoZywOfjppsPCvzJR8f0SdanePe0m3
-	 aDdJvL8aTJohuKQzRS02y7ImieQX1MyRIJkuBs9Bw12N9pcLkvFEYNZDTVv++zYnAw
-	 bMK68nGeRinYmIF6KanCf1fBUVBGkgrY91L09KcmT+fNRGoFMpZfrRcpTQiUpmDbQQ
-	 QpqY0+C7cLV1g==
-Subject: Re: [PATCH net 4/4] drop_monitor: fix out-of-bounds write in
- reset_per_cpu_data()
-From: netdev-bot+sashiko@kernel.org
-To: edumazet@google.com
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- netdev@vger.kernel.org, eric.dumazet@gmail.com
-Date: Fri, 11 Sep 2026 21:08:08 +0000
-Message-ID: <178916088869.219967.8693161380477380266@kernel.org>
-In-Reply-To: <20260910204612.3762015-5-edumazet@google.com>
-References: <20260910204612.3762015-5-edumazet@google.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bs74dA3K"
+Received: by mail-pz2-f7.google.com with SMTP id 41be03b00d2f7-cc1ddb3ba3eso609349a12.1
+        for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 14:17:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789161466; x=1789766266; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=LWlsthWmOa/1IA1PfJb6FIh38eowBq8VdzTMOAowcpM=;
+        b=bs74dA3K3naqIrJtlIPH5LwqdU7oVnuiXIBlv61335vTrF1dQWKu4kaGoiI+QenrvW
+         UR/jqimohk8MbAe090XP4nFmdPNLzFgbiLOJmYjUnbWhIyFxuEtPiu+Fg2CXy8OWknCb
+         n4v2odrgCkVHisgzihf9A7Guz0gXw/4VGu/wwBlQcTV54xLVtnAuy3V2vVI0obZl+OOw
+         TKS2jFOrrY6bwFjJry1eBVrZN5sduYVPYZ9Sc4OsC4cDAw18CyAsNPEBc9sgIatj8JaO
+         aD5Xn78vCw4a7J7v6WIP7IWCnbyENhLbh5L5WnvyQE2tDcDo5JTU8Ne5yYWmt78GovKR
+         b0pg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789161466; x=1789766266;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=LWlsthWmOa/1IA1PfJb6FIh38eowBq8VdzTMOAowcpM=;
+        b=Di58d+YqA4gr42gupFDm07M+PRoZ8CDaxPTXn8ZdBgPcGxOj2teckOhJ0lzbyWJjon
+         TUbodvBCvt+ZjrvogZINIo12f560vfm5MRmM2+DY6TmBBKq/IAHuXQsu93/0HNHWmrFg
+         qPYpWQHGGIlnorAhzIrwZKBVfLOznMoacNHSlaTecJH7HVDD7B4mcry00FVhvHBRbxEA
+         pNY2XOGSjBOw49uxYVh20E6AgczXZ+/WPcYLy4MsP/S+nFG93xHGfTmQgmEaN+ZzSuOj
+         XJOiLBdiIz1dbX1yQmB5xDi0sfjS5n2y8GdStWw+KhX0r5tdKVoqCeeLXu+PxUMyrwuu
+         UCNg==
+X-Forwarded-Encrypted: i=1; AKwUvBwcTUqz3auiXcW3yDoDiUYpVkYatJOKgH8A4vUvC3MyXrjuKzQR/kMUJSLTBQG5E75Dh/yWsWI=@vger.kernel.org
+X-Gm-Message-State: AFuF++k7s6JJiJ69fgblAAt+EYUCAURV4X++48lfyxCqRQyjLumc9WwB
+	SueyORoMHLdRBkbCHtkOmBXJyMhMXJQRoIjmAW+6YjZI0NVIgNMKmQyl
+X-Gm-Gg: AYBFou1e/renoBW897ptC4kptVIlqH4QTzVTec3bPTKGz90p8F+IfaEWt5NouRgXTI8
+	WA3HSyaA6C4osluDKN0dtPgY4BLOKjy5q7FB6Imkcq4kGSXfxXGC8H37NvzLHdRTrMEuSroP5uA
+	5HGbMUSyAL+SlFiAx66zcmqMQGtbt94TKnFsCCLuchhbvONRcJ4qZBZtWnj/cx95incRiMgEptp
+	vscwBKkH5MXnL5ZUCMp1SrmyJO3C0hAWxqi6iiDiSnt8Zg66eeApyStQpQbSKLz1Pyp2/zx2mIG
+	K3h12aS7M5SAK/hFHY2njUmXufBPIAMgJCgrIf0wRmGJJK/lXjLfXsLXWgY2PM435axPuDVuUzx
+	zRIlo3C+CZlA9xWiis+1Y9xAMAj4iOmL3/yRKI6k3IZ6DcIS0o7L2SG9WLWhAW9BkHwvqhXTCSa
+	KeBX6LkR+1rSa1yMLqZfF+g9kpCA1xOpmcfsW1DwcoYgkbeTx73eRVfx2AtNLxZ++G
+X-Received: by 2002:a05:6a00:8d4:b0:869:4d90:a0cd with SMTP id d2e1a72fcca58-86b31200babmr9143371b3a.16.1789161465559;
+        Fri, 11 Sep 2026 14:17:45 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:5a::])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-86b2a1b827esm1613687b3a.51.2026.09.11.14.17.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 11 Sep 2026 14:17:45 -0700 (PDT)
+Date: Fri, 11 Sep 2026 14:17:41 -0700
+From: Stanislav Fomichev <sdf.kernel@gmail.com>
+To: Breno Leitao <leitao@debian.org>
+Cc: "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, Willem de Bruijn <willemb@google.com>, 
+	David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, david.laight.linux@gmail.com, kernel-team@meta.com
+Subject: Re: [PATCH net-next 1/2] net: add sockopt_expand_out()
+Message-ID: <aqRvwUJ-ksUxrG-c@devvm7509.cco0.facebook.com>
+References: <20260910-getsockopt_phase6-v1-0-e681e102d5b8@debian.org>
+ <20260910-getsockopt_phase6-v1-1-e681e102d5b8@debian.org>
+ <aqQkImqiHPorszOY@devvm7509.cco0.facebook.com>
+ <aqQnF9vWKVk3GkTp@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <aqQnF9vWKVk3GkTp@gmail.com>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider:
+On 09/11, Breno Leitao wrote:
+> On Fri, Sep 11, 2026 at 08:56:23AM -0700, Stanislav Fomichev wrote:
+> > On 09/10, Breno Leitao wrote:
+> > >
+> > > +	if (size <= iov_iter_count(&opt->iter_out))
+> > > +		return 0;
+> > > +
+> > > +	if (WARN_ON_ONCE(!iter_is_ubuf(&opt->iter_out)))
+> > > +		return -EINVAL;
+> > 
+> > nit: if you end up re-spinning for some reason, maybe swap these two?
+> 
+> I am not sure we want to swap these two. This is the reason:
+> 
+> 1) The first check (size <= iov_iter_count(&opt->iter_out)), check if we
+>    need the "hack" or not.
+> 
+>    a) If we don't need the tack, then we are fine and this could be called
+>       from user or kernel.
+>    
+>    b) for the hack (which happens in the next line -- iov_iter_ubuf()), it
+>       needs to be ubuf.
+> 
+> So, this force kernel callers to use the right optlen, avoiding hitting
+> the same issue as userspace.
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
-
-- [Medium] Commit message overstates the impact: the pre-patch memset()
-  in reset_per_cpu_data() (net/core/drop_monitor.c:165) is NOT an out-…
-
---
-
-drop_monitor: fix out-of-bounds write in reset_per_cpu_data()
-
-The patch stops adding sizeof(struct nlattr) to al in
-reset_per_cpu_data(), and instead allocates the skb with
-genlmsg_new(nla_total_size(al), GFP_KERNEL) so that al describes only the
-attribute payload that is later zeroed via memset(msg, 0, al).
-
-> diff --git a/net/core/drop_monitor.c b/net/core/drop_monitor.c
-> index 795c15dd1771a..edc660778408e 100644
-> --- a/net/core/drop_monitor.c
-> +++ b/net/core/drop_monitor.c
-> @@ -141,9 +141,8 @@ static struct sk_buff *reset_per_cpu_data(struct per_cpu_dm_data *data)
->  
->  	al = sizeof(struct net_dm_alert_msg);
->  	al += dm_hit_limit * sizeof(struct net_dm_drop_point);
-> -	al += sizeof(struct nlattr);
->  
-> -	skb = genlmsg_new(al, GFP_KERNEL);
-> +	skb = genlmsg_new(nla_total_size(al), GFP_KERNEL);
-
-[Severity: Medium]
-Is the impact described in the changelog accurate?  The subject says "fix
-out-of-bounds write", and the body says the memset() is
-
-    exceeding the allocated buffer by sizeof(struct nlattr) (4 bytes) and
-    corrupting skb_shared_info.
-
-With the in-tree constants, dm_hit_limit is a fixed "static int
-dm_hit_limit = 64" with no module_param and no way for userspace to change
-it, sizeof(struct net_dm_alert_msg) is 4 and sizeof(struct
-net_dm_drop_point) is 12, so the old al was 4 + 768 + 4 = 776.
-
-That gives genlmsg_new(776) -> nlmsg_new(780) -> alloc_skb(796), and with
-nlmsghdr [0,16), genlmsghdr [16,20) and the nlattr header [20,24), msg sits
-at offset 24 and memset(msg, 0, 776) writes up to offset 800, i.e. 4 bytes
-past the 796 bytes that were requested.
-
-But the head buffer that gets allocated is larger than the request, and
-skb_shared_info is placed at the end of the rounded-up zone:
-
-net/core/skbuff.c:kmalloc_reserve() {
-	...
-	obj_size = SKB_HEAD_ALIGN(*size);
-	...
-	obj_size = kmalloc_size_roundup(obj_size);
-	*size = (unsigned int)obj_size;
-}
-
-net/core/skbuff.c:__alloc_skb() {
-	...
-	/* kmalloc_size_roundup() might give us more room than requested.
-	 * Put skb_shared_info exactly at the end of allocated zone,
-	 * to allow max possible filling before reallocation.
-	 */
-	__finalize_skb_around(skb, data, size);
-}
-
-For a 796-byte request SKB_HEAD_ALIGN(796) is 832 + 320 = 1152, which
-kmalloc_size_roundup() rounds to 2048, so skb->end lands near offset 1728
-and the 4 extra zeroed bytes fall in unused tailroom.  KASAN would also not
-report anything, since kmalloc is called with the already-rounded size.  The
-small-head-cache path gives *size = SKB_SMALL_HEAD_CACHE_SIZE, which is also
-comfortably above 800.
-
-Also, nla_total_size(772) is 776, exactly the previous genlmsg_new()
-argument, so the allocation size is unchanged by this patch; only the memset
-length shrinks from 776 to 772, which matches the usable payload (796 - 24 =
-772 = 4 + 64 * 12) and the fill limit enforced in trace_drop_common().
-
-The code change itself looks correct, but with the Fixes: 683703a26e46 tag
-this will be picked up for stable and CVE triage as an out-of-bounds write.
-Could the changelog be reworded to describe it as a size-accounting cleanup,
-and to drop the claim about corrupting skb_shared_info?
-
--- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260910204612.3762015-1-edumazet%40google.com
+Hmm, that feels a bit too magical :-/ Who are the kernel callers? Do we
+have any? Is it reachable via bpf or something else?
