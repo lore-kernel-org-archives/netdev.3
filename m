@@ -1,42 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B19564A4984
-	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 17:13:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77AAB4A5C4D
+	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 17:13:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789146800; cv=none; b=f/MIwlVGmnfJtan5zJO0Au9PoSAv3zSPaX5c4L37c4w7/qsYMnsOT7MAVJAJOZa6uS4+7HC9TzRL24hYV9HNaw9JvZmC4mow2SHIS9B/reQDHbig6UQk0Pl/EIkM+gZktSH5xD18UJnTiFvRqKH+b8QYfYghRNvicz38c6f86xA=
+	t=1789146800; cv=none; b=bisCX1f3hTLsOwyklHYMe5dV5Q0AolosLSxFkENtHtVR7MYtoVjZoCTA36919R7GvByxqT2PiP4HEkgG0ytl+Hc/y/M01a2qsJCJR5QTGs05FAkNuCu00+DwBzKlhaGxIAYD3ZX+fGRQhfs4Vj1XvwQD06BzojmvIgxmoTmhQi0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1789146800; c=relaxed/simple;
-	bh=yCOqz1KVdn1nYma1pnvLTHPEVZY1IZ94IrvJXtS0eJk=;
+	bh=Q0EARY4UzwL5dehYWqyD+K3wev0W857BNNYvS1+Nf7w=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=uHyUx2bHupjCHMLZm3wNuSYtb84iQDmVNHgR6q643X4FycYox07N837W8XVaCR1dnbp/DtwwrJu+Yo5KzlCdS8sBCkxIzhbJu2gN+GdyLMBTye7zcgA6LCtCzXiTsTTpTHBZrFhAm6N3UnOEpzf0LFwgynUOAO9QBRK5txhp8E4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RXVVpTgw; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=SVnmJALVFP0bYjAIO1NjYQ9A8UvDdG215VnieqQ45lSCtBpYvX9oRXsAYE1IsT7YpfgU8B2sJnS8SzWfXqBa87MIgMW63R6IKAZfR0B0meNNz1b0msjo4lxn4BlzZQOrAl8QHU+GEePG1Vd66Z/h2X2/Lv6LjKpM0zI4QgtOEXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tqsy5EDP; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RXVVpTgw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8EB01F000FF;
-	Fri, 11 Sep 2026 17:13:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tqsy5EDP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8B1E1F00893;
+	Fri, 11 Sep 2026 17:13:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789146798;
-	bh=keDdM7EGPb3KUqiXlaS7/OWnlI9UeCSF1pGZAHV9K+w=;
+	s=k20260515; t=1789146799;
+	bh=8s8U70Kt3d3UOvVTcVdIf8BidwpjIldfFSixMc5skaA=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=RXVVpTgwlJ2gLGXA4tA49a40lCMvvrvzycHYgb7UlgHUpvn3o98OupqdFcQSiYKlR
-	 5GmwhgOWWtvc0EuDd/GC6F/Xecfzm7A0AACsUhDknRKcYl+Lyfxo37PSEoiiFqfgyf
-	 Pn8noTp4/GhPOb2GoImVFBbfnfBY8NmJncFXTWkwt8aAtD00V9E2r19Fv75j4FOqNg
-	 YJJcY8i+PaoznVgWmHRUOOH8uappV5cO3fL1Spw+ufYGIhKlQs0LiheD5Brk9DiDZz
-	 DUPLJhlGDyaOyLwTkJC4mwbVVhMuUi7IRAwvB5ierNc5jZDjk7P8cUsCAeIk1E6SGN
-	 oBDiO0t4sJwMQ==
-Subject: Re: [PATCH net-next v9 4/7] idpf: support pacing offload
+	b=Tqsy5EDPo4XZrZZ271MOI0eAA/WvXVYD/CN1HG8/xGpNuffVSLoURXo9TF5kiftAo
+	 NxyCoNvXV5f8ioV9txKM/7WLDb5W/+pAVLpyuabGC1EGhxKLNdvejR+PY1/gBkChWY
+	 Y3bPTV8gDBdtcwvH3OGDbULvERTQegoiR3/79/sXnKc5vD62gtWMFJ0B3G1C6ntW3I
+	 aZJtq3pW1KKK82j25s+JYFn7VM/UO3uP5sjy7CPNly3M1cfr3W+a+Uj8sPRhLz9hnQ
+	 PhuYWxcNzSGJwouhogQqjABCaibsV633bzVMxKsBwpLveBWd1Jbxpm5otNdWqUPq8a
+	 z3la4Zuc9u25w==
+Subject: Re: [PATCH net-next v9 6/7] selftests: drv-net: in so_txtime tell
+ apart sw from hw pacing
 From: netdev-bot+sashiko@kernel.org
 To: willemdebruijn.kernel@gmail.com
 Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
  edumazet@google.com, pabeni@redhat.com, horms@kernel.org,
  andrew+netdev@lunn.ch, willemb@google.com
-Date: Fri, 11 Sep 2026 17:13:17 +0000
-Message-ID: <178914679743.219967.4781990764758262872@kernel.org>
-In-Reply-To: <20260910171131.2532487-5-willemdebruijn.kernel@gmail.com>
-References: <20260910171131.2532487-5-willemdebruijn.kernel@gmail.com>
-X-sashiko-severity: High
+Date: Fri, 11 Sep 2026 17:13:18 +0000
+Message-ID: <178914679853.219967.10930030898097751336@kernel.org>
+In-Reply-To: <20260910171131.2532487-7-willemdebruijn.kernel@gmail.com>
+References: <20260910171131.2532487-7-willemdebruijn.kernel@gmail.com>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -46,302 +47,116 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 4 potential
+Thank you for your contribution! Sashiko AI review found 1 potential
 issue(s) to consider:
 
-Critical: 0 · High: 1 · Medium: 1 · Low: 2
+Critical: 0 · High: 0 · Medium: 1 · Low: 0
 
-- [High] idpf advertises a non-zero netdev->max_pacing_offload_horizon
-  (and therefore programs absolute CLOCK_TAI departure times into the…
-- [Medium] The EDT horizon advertised to the networking core is taken
-  verbatim from firmware and only bounds-checked against U32_MAX, while…
-- [Low] idpf_vport_set_pacing_offload() writes
-  netdev->max_pacing_offload_horizon (idpf_lib.c:832) from the…
-- [Low] In idpf_send_get_edt_caps_msg() the firmware-supplied granularity
-  is a u64 (gran_ns = le64_to_cpu(caps.tstamp_granularity_ns)) but is…
+- [Medium] `-H` is documented in usage() as 'verify hardware offload
+  (tx)' and the commit message claims it tells software apart from…
 
 --
 
-idpf: support pacing offload
+selftests: drv-net: in so_txtime tell apart sw from hw pacing
 
-This adds EDT (earliest departure time) support to idpf: EDT capabilities
-are negotiated over virtchnl, the negotiated horizon is published as
-netdev->max_pacing_offload_horizon, and skb->tstamp is programmed into the
-23-bit timestamp field of the flow scheduling Tx descriptor.
+This adds a '-H' flag to so_txtime.c that enables SO_TIMESTAMPING with
+SOF_TIMESTAMPING_TX_SOFTWARE, and flags an error if the software transmit
+timestamp is more than cfg_variance_us after the send start time.  It also
+extends the errqueue polling deadline by cfg_variance_us and sorts the
+getopt string and usage text alphabetically.
 
-A few questions below on the capability gating and on the horizon
-encoding.
+> diff --git a/tools/testing/selftests/drivers/net/so_txtime.c b/tools/testing/selftests/drivers/net/so_txtime.c
+> index f6f3253ed1748..9ebe9f91227c7 100644
+> --- a/tools/testing/selftests/drivers/net/so_txtime.c
+> +++ b/tools/testing/selftests/drivers/net/so_txtime.c
 
-> diff --git a/drivers/net/ethernet/intel/idpf/idpf_lib.c b/drivers/net/ethernet/intel/idpf/idpf_lib.c
-> index 827c795afcb62..cd1b173e3b276 100644
-> --- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
-> +++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
-> @@ -817,6 +817,21 @@ static void idpf_attach_and_open(struct idpf_adapter *adapter)
->  	}
+[ ... ]
+
+> @@ -191,12 +193,32 @@ static int do_recv_errqueue_txtime(struct sock_extended_err *err,
+>  	return 1;
 >  }
 >  
-> +static void idpf_vport_set_pacing_offload(struct idpf_vport *vport,
-> +					  struct net_device *netdev)
+> -static int do_recv_errqueue(int fdt)
+> +static int do_recv_errqueue_timestamping(struct scm_timestamping *tss)
 > +{
-> +	struct idpf_adapter *adapter = vport->adapter;
-> +	u32 max_horizon = 0;
+> +	int64_t ts;
 > +
-> +	if (adapter->edt_caps.time_horizon_ns &&
-> +	    idpf_is_queue_model_split(vport->dflt_qv_rsrc.txq_model) &&
-> +	    !idpf_is_cap_ena(adapter, IDPF_OTHER_CAPS,
-> +			     VIRTCHNL2_CAP_SPLITQ_QSCHED))
-> +		max_horizon = adapter->edt_caps.time_horizon_ns;
+> +	ts = tss->ts[0].tv_sec * 1000ULL * 1000 * 1000;
+> +	ts += tss->ts[0].tv_nsec;
+> +	ts -= glob_tstart_real;
+> +	ts /= 1000;
 > +
-
-[Severity: High]
-The commit message says:
-
-    Negotiate the feature with the device using virtchnl. Support is
-    conditional on
-    ...
-    - PTP to ensure the NIC clock is synced to CLOCK_TAI.
-
-Where is that PTP condition implemented?  idpf_vport_set_pacing_offload()
-gates only on adapter->edt_caps.time_horizon_ns, split txq model and flow
-scheduling.  It does not consult VIRTCHNL2_CAP_PTP, adapter->ptp, or the
-result of idpf_ptp_init().
-
-In idpf_vc_core_init() the EDT negotiation is gated only on
-VIRTCHNL2_CAP_EDT and runs before idpf_ptp_init(), whose failure is
-deliberately non-fatal:
-
-	err = idpf_ptp_init(adapter);
-	if (err)
-		pci_err(adapter->pdev, "PTP init failed, err=%pe\n",
-			ERR_PTR(err));
-
-So with a control plane that advertises EDT but not PTP, or when
-idpf_ptp_get_caps()/clock creation fails, edt_caps.time_horizon_ns stays
-non-zero and the horizon is still published.
-
-With CONFIG_PTP_1588_CLOCK=n the stub in idpf_ptp.h returns success while
-leaving adapter->ptp NULL:
-
-	static inline int idpf_ptp_init(struct idpf_adapter *adapter)
-	{
-		return 0;
-	}
-
-In that build there is no PHC at all and no way for userspace to steer the
-device clock, yet pacing offload remains advertised and
-idpf_tx_splitq_set_txtime() keeps writing host CLOCK_TAI values into the
-descriptor.  Should the helper also require a working PTP clock, or should
-the commit message drop the PTP claim?
-
-Related: the device clock is seeded from CLOCK_REALTIME in
-idpf_ptp_init():
-
-		ts = ktime_to_timespec64(ktime_get_real());
-		err = idpf_ptp_settime64(&adapter->ptp->info, &ts);
-
-while the new Tx path converts everything to CLOCK_TAI.  Is the epoch
-assumed by the descriptor only correct after an external synchronizer has
-corrected the PHC?
-
-> +	WRITE_ONCE(netdev->max_pacing_offload_horizon, max_horizon);
-> +}
-> +
-
-[Severity: Low]
-Should this write be done under rtnl_lock()?  The RTNL side reads the same
-field with a plain load in validate_linkmsg() before do_setlink() sets
-dev->pacing_offload:
-
-	net/core/rtnetlink.c:validate_linkmsg() {
-		if (nla_get_u32(tb[IFLA_PACING_OFFLOAD]) &&
-		    !dev->max_pacing_offload_horizon) {
-	...
-	}
-
-idpf_cfg_netdev() is reached from idpf_init_task with no RTNL held, and on
-the reset path it re-runs the helper on an already registered netdev, so an
-"ip link set dev X pacing_offload on" validated against a non-zero horizon
-can be followed immediately by the driver zeroing it.
-
-That also leaves dev->pacing_offload set with
-max_pacing_offload_horizon == 0, which is then dumped to userspace as
-IFLA_PACING_OFFLOAD=1 together with IFLA_MAX_PACING_OFFLOAD_HORIZON=0.
-Should the driver clear dev->pacing_offload when the horizon drops to 0?
-
->  /**
->   * idpf_cfg_netdev - Allocate, configure and register a netdev
->   * @vport: main vport structure
-> @@ -850,6 +865,8 @@ static int idpf_cfg_netdev(struct idpf_vport *vport)
->  		np->max_tx_hdr_size = idpf_get_max_tx_hdr_size(adapter);
->  		vport->netdev = netdev;
->  
-> +		idpf_vport_set_pacing_offload(vport, netdev);
-> +
->  		return idpf_init_mac_addr(vport, netdev);
->  	}
->  
-
-[ ... ]
-
-> diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-> index 4311ffa30bb18..215a62161a049 100644
-> --- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-> +++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-
-[ ... ]
-
-> @@ -3011,6 +3017,63 @@ static bool idpf_tx_splitq_need_re(struct idpf_tx_queue *tx_q)
->  	return gap >= IDPF_TX_SPLITQ_RE_MIN_GAP;
->  }
->  
-> +static void idpf_tx_splitq_set_txtime(const struct sk_buff *skb,
-> +				      const struct idpf_tx_queue *tx_q,
-> +				      struct idpf_tx_splitq_params *tx_params)
-> +{
-
-[ ... ]
-
-> +	/* beyond offload horizon? set overflow bit only */
-> +	if (ts > now + horizon) {
-> +		tx_params->offload.desc_ts[2] =
-> +			IDPF_TXD_FLOW_SCH_HORIZON_OVERFLOW_M;
-> +		return;
+> +	if (ts > cfg_variance_us) {
+> +		fprintf(stderr, "sw delay %" PRId64 "us exceeds bounds\n", ts);
+> +		if (!cfg_machine_slow)
+> +			errors++;
 > +	}
 > +
-> +	ts >>= tx_q->ts_gran_pow2;
+> +	return 1;
+> +}
 
 [Severity: Medium]
-Can the advertised horizon exceed what the descriptor can encode?  The
-hardware field is 23 bits of granularity units:
 
-	drivers/net/ethernet/intel/idpf/idpf_lan_txrx.h:
-		/* [23:23] Horizon Overflow bit, [22:0] timestamp */
-		u8 ts[3];
+Can this check actually tell software pacing apart from hardware pacing for
+every workload the next patch runs with '-H'?
 
-idpf_send_get_edt_caps_msg() checks time_horizon_ns only against U32_MAX
-and never cross-checks it against (1 << 23) << ilog2(tstamp_granularity_ns).
-For a control plane reporting tstamp_granularity_ns = 1 (passes both
-checks) with time_horizon_ns = 1000000000, the encodable window is only
-about 8.39 ms, but 1 s is published as netdev->max_pacing_offload_horizon
-and accepted by sch_fq and SO_TXTIME.
+The only positive criterion here is that the software transmit timestamp
+lands within cfg_variance_us (8000 us) of glob_tstart_real.  For a request
+with no delay or a negative delay there is no pacing interval to observe at
+all.  do_send_one() does not even attach SCM_TXTIME when delay_us is
+negative:
 
-Anything at or below the advertised horizon takes the non-overflow branch
-here and gets truncated:
+	if (ts->delay_us >= 0) {
+		...
+		tdeliver = glob_tstart + ts->delay_us * 1000;
+		...
+		cm->cmsg_type = SCM_TXTIME;
 
-	tx_params->offload.desc_ts[2] = ((ts >> 16) & 0x7f);
+So for the 'a,-1' and 'a,0' variants that the follow-up patch passes '-H'
+to, ts comes out near 0 and the ts > cfg_variance_us test can never fire,
+whether the transmit was hardware paced, software paced, or not paced at
+all.  Would it make sense to skip or reject '-H' when the requested delay
+is not positive, so those variants do not report a pass without having
+verified anything?
 
-so the departure time aliases back into the current window instead of being
-flagged as overflow.  Would clamping help, e.g.
-max_horizon = min(time_horizon_ns, (1ULL << 23) << tstamp_granularity_pow2)?
+For the 10 ms variants there are only 2 ms between the requested delay and
+the 8 ms threshold.  Is that margin intentional?
 
-Separately, is the boundary test off by one even for self-consistent caps?
-With horizon == (1 << 23) << gran, a timestamp exactly at now + horizon
-passes the strict "ts > now + horizon" test, and after the shift it differs
-from the scaled value of now by exactly 2^23, which masks to the same 23-bit
-value, so the device would see "now" and release the packet a whole horizon
-early.  Should the comparison be >= ?
+A related question on cfg_variance_us: it is also the receiver side
+delivery jitter tolerance used in do_recv_one():
 
-> +
-> +	/* 0 is valid 23b timestamp, but also means field unset.
-> +	 * Increase by one to avoid this case
-> +	 */
-> +	if ((ts & 0x7fffff) == 0) {
-> +		tx_params->offload.desc_ts[0] = 1;
-> +		return;
-> +	}
-> +
-> +	tx_params->offload.desc_ts[0] = ts & 0xff;
-> +	tx_params->offload.desc_ts[1] = (ts >> 8) & 0xff;
-> +	tx_params->offload.desc_ts[2] = ((ts >> 16) & 0x7f);
-> +}
-> +
+	if (llabs(tstop - texpect) > cfg_variance_us) {
+		fprintf(stderr, "exceeds variance (%d us)\n", cfg_variance_us);
+
+Reusing it as the sender side software pacing threshold means changing one
+tolerance silently changes the other.  Would a separate constant for the
+sender side threshold be clearer?
 
 [ ... ]
 
-> diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-> index 1caf527069737..928de868fa624 100644
-> --- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
-> +++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+> @@ -446,10 +505,11 @@ static void usage(const char *progname)
+>  			"  -6            only IPv6\n"
+>  			"  -c <clock>    monotonic or tai (default)\n"
+>  			"  -D <addr>     destination IP address (server)\n"
+> -			"  -S <addr>     source IP address (client)\n"
+> +			"  -H            verify hardware offload (tx)\n"
+
+Given the above, is "verify hardware offload (tx)" an accurate description
+of what the flag does?  The implemented behaviour is a heuristic on the
+software transmit delay, and it degrades to a no-op for zero and negative
+delays.  Would wording that describes the software delay check be closer to
+the code?
+
+> +			"  -m <mark>     socket mark\n"
+>  			"  -r            run rx mode\n"
+> +			"  -S <addr>     source IP address (client)\n"
+>  			"  -t <nsec>     start time (UTC nanoseconds)\n"
+> -			"  -m <mark>     socket mark\n"
+>  			"\n",
+>  			progname);
+>  	exit(1);
 
 [ ... ]
-
-> @@ -573,6 +575,54 @@ static int idpf_send_get_caps_msg(struct idpf_adapter *adapter)
->  	return err;
->  }
->  
-
-[ ... ]
-
-> +	memcpy(&caps, xn_params.recv_mem.iov_base, sizeof(caps));
-> +	horizon_ns = le64_to_cpu(caps.time_horizon_ns);
-> +	gran_ns = le64_to_cpu(caps.tstamp_granularity_ns);
-> +	if (horizon_ns > U32_MAX) {
-> +		dev_warn(&adapter->pdev->dev, "EDT horizon exceeds U32\n");
-> +		err = -EINVAL;
-> +		goto free_rx_buf;
-> +	}
-> +	if (!gran_ns || !is_power_of_2(gran_ns)) {
-> +		dev_warn(&adapter->pdev->dev, "Invalid EDT granularity\n");
-> +		err = -EINVAL;
-> +		goto free_rx_buf;
-> +	}
-> +
-> +	adapter->edt_caps.time_horizon_ns = horizon_ns;
-> +	adapter->edt_caps.tstamp_granularity_pow2 = ilog2(gran_ns);
-
-[Severity: Low]
-Does this validate a different value than the one it then uses?  gran_ns is
-a u64, but is_power_of_2() takes unsigned long:
-
-	include/linux/log2.h:
-	static __always_inline __attribute__((const))
-	bool is_power_of_2(unsigned long n)
-	{
-		return n - 1 < (n ^ (n - 1));
-	}
-
-IDPF has no "depends on 64BIT" in its Kconfig, so on 32-bit builds the
-upper 32 bits are dropped for the check while ilog2(gran_ns) takes the
-__ilog2_u64 path on the full value.  A response of 0x100000001 truncates to
-1, passes the check, and yields tstamp_granularity_pow2 = 32, which is
-copied into idpf_tx_queue.ts_gran_pow2 and used as the shift in
-idpf_tx_splitq_set_txtime().  The same truncation rejects a legitimate
-granularity of 2^32 on 32-bit.  Would testing the u64 directly, e.g.
-gran_ns & (gran_ns - 1), plus an upper bound, be better here?
-
-> +
-> +free_rx_buf:
-> +	libie_ctlq_release_rx_buf(&xn_params.recv_mem);
-> +
-> +	return err;
-> +}
-> +
-
-[ ... ]
-
-> @@ -3085,6 +3135,14 @@ int idpf_vc_core_init(struct idpf_adapter *adapter)
->  		}
->  	}
->  
-> +	memset(&adapter->edt_caps, 0, sizeof(adapter->edt_caps));
-> +	if (idpf_is_cap_ena(adapter, IDPF_OTHER_CAPS, VIRTCHNL2_CAP_EDT)) {
-> +		err = idpf_send_get_edt_caps_msg(adapter);
-> +		if (err)
-> +			dev_err(&adapter->pdev->dev,
-> +				"EDT init failed, err=%d\n", err);
-> +	}
-> +
-
-[Severity: High]
-This is the other half of the PTP question above: EDT caps are fetched here
-gated only on VIRTCHNL2_CAP_EDT, and this runs before the idpf_ptp_init()
-call further down whose error is only logged.  Should the EDT negotiation
-either be gated on VIRTCHNL2_CAP_PTP, or moved after idpf_ptp_init() so the
-caps can be zeroed when there is no usable PHC?
-
->  	pci_sriov_set_totalvfs(adapter->pdev, idpf_get_max_vfs(adapter));
->  	num_max_vports = idpf_get_max_vports(adapter);
->  	adapter->vports = kzalloc_objs(*adapter->vports, num_max_vports);
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260910171131.2532487-1-willemdebruijn.kernel%40gmail.com
