@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 213F6457E5C;
-	Fri, 11 Sep 2026 11:25:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2C453AFAF1;
+	Fri, 11 Sep 2026 11:25:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789125927; cv=none; b=iUKFLRwgX6nEbtPjqPhAN4NLCToDE/N7C7gmQ4Y5nPFAJcgC0VAb4kMbrFZutMyRwjWWXU0Jv81fFQQUXh4yEqoOSh8GN2r0J7uRGh1avz1+0ahNYL+twY8/zd3Jh/daXsVJOrHhU18LkZBtTsB9SKM1H+Qf0Bqg1BNwuaB2KsM=
+	t=1789125933; cv=none; b=ZouhemaEwA6+MDWZ1YkhY/Ci9Szf//eSN8saDzTHtgtl/52J9zrAdOauk90fkEbtfg/XDrspcMnlV+jkQClwEHsQo3hgVJZ9TZ/HyXV1Hthi5yuWSV8SvUtVrYa97PYRy0mX0A7R+h1zZnWHyNpHbUyg1+ZyBBxJ/8u6mlyGE0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789125927; c=relaxed/simple;
-	bh=kO4jNVxro618510vEcBdqU9dJR50/9uAtMyazRvYXQQ=;
+	s=arc-20240116; t=1789125933; c=relaxed/simple;
+	bh=LZ8Lc0mh2leJir+6Pvh9e2uZbtKbxBNKGrTtBhlF5X4=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=KNhyorvKEmVdACovYitZd4tRHjjfirrg62PyyoybCh3xJKcMR9+n533u/VdRLa/v6pO0PJPzg08aPHLw6bRjNbhIa4D4Qnln9Jjz47LsQsVuaPhoxj27v8GGQEUgva3wTu2Px6M4IECQjmbbG4LW3viflLgIDWBqbU2bI1dC2os=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U9HORjxT; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=EksKjxJtJeXRC0si7pCEO9pgHYLr0RXxzYaekF8BTTeO0PV54l9K3Xy0z/+X4OA6Oo6teYZvrMzIYdnZoggOVGNWUS4xzoGWQfGHk6JtmxZcLrpAKeIdQ0Fjs9NkeuXVycfaGHqAIQVCWcXeqVdUOfbyWx5rjjm50Cp8HNeCULg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ove7lllu; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U9HORjxT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E1651F0089C;
-	Fri, 11 Sep 2026 11:25:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ove7lllu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C9751F0089E;
+	Fri, 11 Sep 2026 11:25:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789125921;
-	bh=VqunXJGGS/PDbbgMJ0G/ODtjBROTqOXa86+5nrXhdNg=;
+	s=k20260515; t=1789125924;
+	bh=V1UQQs4RgrcoOL7IoOSvZHUpHULa8UMlbZavMMWsIAI=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=U9HORjxTZXihuesFPdMs4/VvG9NkowYEhQ+I/bxor1qZ/lCkR7hj5DW6NSp3IagBZ
-	 WMiEhfhfqoHnF5dktct9h6nDJKl0FPUuEfjrwEsJ3L3nE1hJKtFdJvQlWe7DI2cUq8
-	 0XiuzMOu/3pUbPaHASTrhUoLcrRZZnJdC6e+yHmumjclhz560bGet4LOuMQN1ZDf3E
-	 qSr/S361CYYFLLl3MZEmEtvgRM/gVbJ3maHvIk6cVNiojLhP9nwnqWD9uVryDb7tN0
-	 09W6LyXvxU5DkaxZmQ7oEsXlPjiukp+ZjLRpQ8evjC3GRqo6WanhTJsLcovtGyYNIZ
-	 JUyJWamM0zK7A==
-Subject: Re: [PATCH net-next v2 7/9] net: stmmac: qcom-ethqos: set initial
- RGMII link clock to lowest speed
+	b=ove7lllus3Mnvt02TUZBfOze1KGDqlxb6R9rnMNqnw6Kf1E4pznctBgX++hb19PQa
+	 uWhOJGsg4oCtC5SrOcR1sZTis0HJWhaSlIV6CX6cGY1DozSwXAtGPODo/zK7UiNYGK
+	 jAppYtz+UeKU2G2RDRJSjnH6SzZjj1qrYcNtIdYbQRB0qIlJ0cWKgKEHbVJxi3yVn9
+	 vnRdMOsO+5Kzxx29nikCI02OiXNXW7tHhUqnnI3DN9Gc9YoiLIVn9RgHFzxkCfmt7x
+	 7c/mu1yLry3EYV2K+UpNS9bc8IxSXjdup1uG3MSGsvga+lpilQEFP8GnWCq0pdej/B
+	 NR4uFPy9ZVczg==
+Subject:
+ Re: [PATCH net-next v2 9/9] net: stmmac: qcom-ethqos: add Shikra EMAC support
 From: netdev-bot+sashiko@kernel.org
 To: mohd.anwar@oss.qualcomm.com
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
@@ -40,11 +40,11 @@ Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
  linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
  linux-stm32@st-md-mailman.stormreply.com,
  linux-arm-kernel@lists.infradead.org
-Date: Fri, 11 Sep 2026 11:25:19 +0000
-Message-ID: <178912591910.219967.8208494265030276950@kernel.org>
-In-Reply-To: <20260908-shikra_ethernet-v2-7-bbe3389d0652@oss.qualcomm.com>
-References: <20260908-shikra_ethernet-v2-7-bbe3389d0652@oss.qualcomm.com>
-X-sashiko-severity: Medium
+Date: Fri, 11 Sep 2026 11:25:23 +0000
+Message-ID: <178912592322.219967.17232145160989235559@kernel.org>
+In-Reply-To: <20260908-shikra_ethernet-v2-9-bbe3389d0652@oss.qualcomm.com>
+References: <20260908-shikra_ethernet-v2-9-bbe3389d0652@oss.qualcomm.com>
+X-sashiko-severity: High
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -57,106 +57,162 @@ MIME-Version: 1.0
 Thank you for your contribution! Sashiko AI review found 2 potential
 issue(s) to consider:
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 1
+Critical: 0 · High: 1 · Medium: 1 · Low: 0
 
-- [Medium] For legacy RGMII phy-modes (rgmii, rgmii-rxid, rgmii-txid) the
-  RGMII IO-macro DLL is programmed and its lock polled inside…
-- [Low] Commit message names the wrong callback: it states "fix_mac_speed
-  updates the rate once a link is established", but neither…
+- [High] shikra_data (drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-
+  ethqos.c:337) provides no .rgmii_por/.num_rgmii_por table, while the…
+- [Medium] Adding the core-owned "stmmaceth" clock to shikra_noc_clks[]
+  decouples that clock's programmed rate and enable state from the…
 
 --
 
-net: stmmac: qcom-ethqos: set initial RGMII link clock to lowest speed
+net: stmmac: qcom-ethqos: add Shikra EMAC support
 
-The probe-time call to ethqos_set_clk_tx_rate() is changed from SPEED_1000
-to SPEED_10 so the RGMII link clock is not left at 250 MHz while no link is
-up.  Two questions below, one about the changelog wording and one about the
-first link-up path.
-
-> net: stmmac: qcom-ethqos: set initial RGMII link clock to lowest speed
->
-> On probe the RGMII link clock is initialised at SPEED_1000, which
-> translates to a 250 MHz source clock even when no PHY link is present,
-> drawing unnecessary power.
->
-> Initialise at SPEED_10 instead; fix_mac_speed updates the rate once
-> a link is established.
-
-[Severity: Low]
-Is "fix_mac_speed updates the rate once a link is established" the right
-callback name here?  Neither ethqos_fix_mac_speed_rgmii() nor
-ethqos_fix_mac_speed_sgmii() calls clk_set_rate() on ethqos->link_clk; the
-only clk_set_rate(ethqos->link_clk, ...) in the file is in
-ethqos_set_clk_tx_rate(), which probe installs as
-plat_dat->set_clk_tx_rate.
-
-stmmac_mac_link_up() invokes the two as separate callbacks, fix_mac_speed()
-first and set_clk_tx_rate() later:
-
-	if (priv->plat->fix_mac_speed)
-		priv->plat->fix_mac_speed(priv->plat->bsp_priv, interface,
-					  speed, mode);
-	...
-	if (priv->plat->set_clk_tx_rate) {
-		ret = priv->plat->set_clk_tx_rate(priv->plat->bsp_priv,
-						priv->plat->clk_tx_i,
-						interface, speed);
-
-Could the changelog name set_clk_tx_rate instead, so the ordering is not
-hidden?
+Adds a qcom,shikra-ethqos compatible with a new shikra_data descriptor that
+declares three NOC clocks (axi-noc, pcie-tile-axi-noc, stmmaceth) at
+120 MHz and a 36-bit DMA address width.  A couple of questions below about
+the new descriptor.
 
 > diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-> index a92bf4a6a2dbd..2471871562ed9 100644
+> index 8871d28594116..c474f1e5a0437 100644
 > --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
 > +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-> @@ -814,7 +814,7 @@ static int qcom_ethqos_probe(struct platform_device *pdev)
->  				     "Failed to get serdes phy\n");
+> @@ -328,6 +328,36 @@ static const struct ethqos_emac_driver_data emac_v4_0_0_data = {
+>  	},
+>  };
 >  
->  	ethqos_set_clk_tx_rate(ethqos, NULL, plat_dat->phy_interface,
-> -			       SPEED_1000);
-> +			       SPEED_10);
+> +static const struct ethqos_noc_clk_cfg shikra_noc_clks[] = {
+> +	{ "axi-noc", 120000000 },
+> +	{ "pcie-tile-axi-noc", 120000000 },
+> +	{ "stmmaceth", 120000000 },
 
 [Severity: Medium]
-Does the first 1000 Mbps link-up now run the SDCC DLL bring-up with the
-probe-time 10 Mbps clock rate?
+Is it safe to put the core-owned "stmmaceth" clock into this table, given
+that the 120 MHz rate and the OPP/VDD_CX vote then come from different
+owners?
 
-For the legacy rgmii / rgmii-rxid / rgmii-txid modes,
-ethqos_fix_mac_speed_rgmii() enables the DLL and polls for lock:
+On the resume path the core enables the clock before this driver raises the
+vote:
 
-	if (speed != SPEED_100 && speed != SPEED_10) {
-		/* Set DLL_EN */
-		rgmii_setmask(ethqos, SDCC_DLL_CONFIG_DLL_EN,
-			      SDCC_HC_REG_DLL_CONFIG);
-		...
-		/* wait for DLL LOCK */
-		if (read_poll_timeout_atomic(rgmii_readl, val,
-					     val & SDC4_STATUS_DLL_LOCK,
-					     1000, 1000000, true,
-					     ethqos, SDC4_STATUS))
-			dev_err(dev, "Timeout while waiting for DLL lock\n");
+stmmac_platform.c:stmmac_bus_clks_config() {
+	...
+	ret = clk_prepare_enable(plat_dat->stmmac_clk);
+	...
+	if (plat_dat->clks_config) {
+		ret = plat_dat->clks_config(plat_dat->bsp_priv, enabled);
+	...
+}
+
+ethqos_clks_config(true) is the only place that calls
+dev_pm_opp_set_rate(dev, ethqos->noc_clk_rates[0]), so for that window
+stmmaceth is running at the previously programmed 120 MHz with the vote at
+zero.  The same inversion happens at probe, where
+devm_stmmac_probe_config_dt() enables stmmaceth before
+qcom_ethqos_init_noc_clks() installs the OPP.
+
+At detach the devm actions unwind in the opposite order to how they were
+registered, so ethqos_clks_disable() runs before
+devm_stmmac_remove_config_dt():
+
+	} else {
+		if (ethqos->num_noc_clks)
+			clk_bulk_disable_unprepare(ethqos->num_noc_clks,
+						   ethqos->noc_clks);
+		clk_disable_unprepare(ethqos->link_clk);
+		if (ethqos->num_noc_clks)
+			dev_pm_opp_set_rate(&ethqos->pdev->dev, 0);
 	}
 
-and stmmac_mac_link_up() calls fix_mac_speed() before set_clk_tx_rate(), so
-at that point ethqos->link_clk is still at the rate programmed at probe.
-With SPEED_10 that is rgmii_clock(SPEED_10) = 2500000, doubled to 5 MHz for
-the non-rgmii-id modes by ethqos_set_clk_tx_rate(), where it used to be
-250 MHz:
+The bulk disable only drops the glue's extra reference, the core still holds
+one, so does this withdraw the performance-state vote while stmmaceth is
+still running at 120 MHz?
 
-	/* Clock Rate Requirements:
-	 * MAC added delay: 250/50/5 Mhz for 1G/100M/10M
-	 * No MAC delay (DLL bypass): 250/25/2.5 Mhz for 1G/100M/10M
-	 */
+The mid-sequence failure paths in ethqos_clks_config() look similar: if
+clk_set_rate() fails for a later index, or clk_bulk_prepare_enable() fails,
+only dev_pm_opp_set_rate(dev, 0) is issued and the rates already raised are
+not rolled back.  The original stmmaceth rate is never recorded or restored
+either.
 
-If the DLL cannot lock at that input rate, the poll busy-waits its full 1 s
-budget in the link-up path and then continues with an unlocked DLL, since
-fix_mac_speed() is not re-run after set_clk_tx_rate() raises the rate to
-250 MHz.
+> +};
+> +
+> +static const struct ethqos_emac_driver_data shikra_data = {
+> +	.dma_addr_width = 36,
+> +	.has_emac_ge_3 = true,
+> +	.noc_clk_cfg = shikra_noc_clks,
+> +	.num_noc_clks = ARRAY_SIZE(shikra_noc_clks),
+> +	.rgmii_config_loopback_en = false,
 
-Note the driver itself skips the DLL enable/lock for SPEED_10 and
-SPEED_100, which suggests the block is expected to see the rate matching
-the negotiated speed.  Is a minimum DLL input frequency involved here, and
-if so should the probe-time rate stay high, or should the clock be raised
-before fix_mac_speed() runs?
+[Severity: High]
+Was a .rgmii_por / .num_rgmii_por table meant to be part of this patch?
+
+All the other descriptors (emac_v2_1_0_data, emac_v2_3_0_data,
+emac_v3_0_0_data, emac_v4_0_0_data) supply one, and shikra_data leaves
+.link_clk_name unset, so qcom_ethqos_probe() ends up doing
+devm_clk_get(dev, "rgmii"):
+
+	ethqos->link_clk = devm_clk_get(dev, data->link_clk_name ?: "rgmii");
+
+With num_rgmii_por == 0 the reset loop at the top of
+ethqos_fix_mac_speed_rgmii() does nothing:
+
+	/* Reset to POR values and enable clk */
+	for (i = 0; i < ethqos->num_rgmii_por; i++)
+		rgmii_writel(ethqos, ethqos->rgmii_por[i].value,
+			     ethqos->rgmii_por[i].offset);
+
+so RGMII_IO_MACRO_CONFIG, SDCC_HC_REG_DLL_CONFIG, SDCC_HC_REG_DDR_CONFIG and
+RGMII_IO_MACRO_CONFIG2 are never brought back to a baseline before the
+speed-specific programming, which is read-modify-write.
+
+Can that leave stale bits across a speed change?  For has_emac_ge_3 (true
+here) at 10/100M, ethqos_rgmii_macro_init() arms the extended RX-clock delay
+path:
+
+		rgmii_setmask(ethqos, SDCC_DDR_CONFIG_EXT_PRG_RCLK_DLY,
+			      SDCC_HC_REG_DDR_CONFIG);
+
+		rgmii_setmask(ethqos, SDCC_DDR_CONFIG_EXT_PRG_RCLK_DLY_EN,
+			      SDCC_HC_REG_DDR_CONFIG);
+	} else {
+
+and the 1000M branch only programs the other path:
+
+		rgmii_updatel(ethqos, SDCC_DDR_CONFIG_PRG_RCLK_DLY,
+			      FIELD_PREP(SDCC_DDR_CONFIG_PRG_RCLK_DLY,
+					 prg_rclk_dly), SDCC_HC_REG_DDR_CONFIG);
+
+		rgmii_setmask(ethqos, SDCC_DDR_CONFIG_PRG_DLY_EN,
+			      SDCC_HC_REG_DDR_CONFIG);
+
+EXT_PRG_RCLK_DLY_EN is never cleared, so after 100M -> 1000M both delay
+paths are enabled.  On the other platforms the POR write of 0x80040800 to
+SDCC_HC_REG_DDR_CONFIG clears the extended path first.
+
+Two related fields also look like they depend on the POR table:
+
+- SDCC_DDR_CONFIG_TCXO_CYCLES_CNT is written nowhere else in the driver, yet
+  the 1G delay values are derived from "TCXO period * TCXO_CYCLES_CNT /
+  (2 * RX delay ns)", which assumes the POR value of 4.
+- SDCC_HC_REG_DLL_CONFIG is never restored to its 0x2004642c baseline, and
+  CDR_EN / CDR_EXT_EN set by ethqos_dll_configure() at 1G are not cleared
+  when dropping to 10/100M, so residual values feed the DLL_RST/PDN toggle
+  and the SDC4_STATUS_DLL_LOCK poll.
+- RGMII_CONFIG_MAX_SPD_PRG_2 / MAX_SPD_PRG_9 are set for 100M/10M and not
+  cleared for 1000M.
+
+If Shikra is in fact not an RGMII part, then the descriptor and the binding
+added in the same series look inconsistent the other way: the binding pins
+the fourth clock to const "rgmii" and the descriptor sets the RGMII-only
+.rgmii_config_loopback_en field.  Which of the two is intended?
+
+> +	.dwmac4_addrs = {
+
+[ ... ]
+
+> +};
+> +
+
+[ ... ]
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260908-shikra_ethernet-v2-0-bbe3389d0652%40oss.qualcomm.com
