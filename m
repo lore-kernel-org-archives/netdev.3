@@ -1,101 +1,110 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mail1.fiberby.net (mail1.fiberby.net [193.104.135.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1F2A443E54;
-	Fri, 11 Sep 2026 21:34:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18B554A4F01;
+	Fri, 11 Sep 2026 21:42:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.104.135.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789162455; cv=none; b=qJhPrSdXTXYUaHWZoHVnYZmvl0QA/Mo9cPVYhfq2TeoyXQS2udPdUGmTGvO+n8pnB9Rk3B5+Xe/mKp47gD6UXRIhBtJn9tBcWWckwp19RKBUB9ywkxOJQMnY7JpjUrj2ZY/1RP9KMK+rpB8k+EmRtzMBDQ16PEmSmWx4xdy1PYE=
+	t=1789162969; cv=none; b=jG/rl8jwo0CjmyhkMgbiKJS9viW3LUuc7eBdRULon/YY4GVil6a73EOX8Pt1bfeo9+yCKaHqM9//RPXnF/mAySSoxI6gcUghbN1kxJkVq/aYanJUzfLHlT28RJ+SBcVREzhiEoY/ox6nmPDYXFRirkqWL+K3rORjgi94XpzVROo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789162455; c=relaxed/simple;
-	bh=A8teqdywnZczODk1GoZwbGV1p7z3VpZRNGCCpAX6raA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=scbBRVa7i2ZJkAcEOgdIozGrTetX2aUp7S01K6OU1ewGKDcZuZ85x7Wa5nQ3ngJCBt93mTIHiRCUOhOuk2fwxpi8m9eajkbahp8mnaFAujCFnYz1FcX7/om+4ZDVvo9jPRUl50QkiFa4aeesIH+J61gJDJW/NhE291fDuhJ1bxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xii2vz2i; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789162969; c=relaxed/simple;
+	bh=lvhj5Dj77ojjWUbqXceTuFGn/6zsa9Wsk8ZMjg2ljOY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=X7nQybdQKyVBmDBk/grUxhwRhETBlPCzaP7aIHuLgELmwsSzgrbIo7hyTBkQkVGiUL0reFOk8Iffebt0iap5P0QjzAzo31KJgH5CXvGSvgXzsyez9xURXdaeWhaCtA2O9e3FoOclkgZbc/XJqIhoANaVYEjXoThdE0fgmfNM+4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=KBqNthi9; arc=none smtp.client-ip=193.104.135.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xii2vz2i"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01FA51F000FF;
-	Fri, 11 Sep 2026 21:34:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789162454;
-	bh=2/L84MEwKU2vMkz4KHPAw2TqPkb8DT8AUIvjC49+OLg=;
-	h=From:To:Cc:Subject:Date;
-	b=Xii2vz2ig9qoOcmdNXkLs3khiAKwt8hjLOlsJH2A7elddvR4LcFc7Cs+Ho985/L9+
-	 teyFUP4PKzSRVnDGl1p2PoqH+k8VSGsYZs/QnTTiy6iBgQqypMVKYtmRSv4/qSlxVb
-	 5hpB8h3yp5ONy/b+C71ppBNW+cLPgmMq3AFCddCe2b+/i2vCpsqp++UAmULQGrnCMd
-	 rMJ9LudDWUhk/U026HXJ8Yn+fYJrTovab+qcLOkkq7zaBgpEBCgMpQg0Q2XiROB7h8
-	 ouingOFMIieM/b43z6njdZVVw8DTv397+lgBWPljz+1p1NT3f1mn4f1zYPsMaZ0p3d
-	 oQ/cv/UMwcnlg==
-From: Jakub Kicinski <kuba@kernel.org>
-To: davem@davemloft.net
-Cc: netdev@vger.kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	horms@kernel.org,
+	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="KBqNthi9"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fiberby.net;
+	s=202008; t=1789162963;
+	bh=lvhj5Dj77ojjWUbqXceTuFGn/6zsa9Wsk8ZMjg2ljOY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=KBqNthi9JK/X+sQj0GHvvtkoIy9BG6t+4RAez6zFDINoS+70fMUbF2SFwvbguBjuY
+	 oEzzjEjYupLggMNIOO4GgwVAuY5eMcjE2W6Ys70ecvAsVRjiLQFOMAReCPhTq5j7do
+	 e/LUvF1sGYk3WesbgJX9CQU/OOv5r1YsKTr9RdXgjCh2cDt4TDimDCtOlc6GpOdwaz
+	 enSJgF+ITr2BI9PHnOFp+PE3GiqWQBk5Ht0zpfTnVUZQRoZSzPTRpPtSvO1s4abSB+
+	 tRFt5/o4D+EC6IQ0eEVSv08YLJX+NoGcIoBWUn5tUjeWhKxM7dHe4PBdJ1Kln8H02R
+	 JWJJCz7+P9TQQ==
+Received: from x201s (193-104-135-243.ip4.fiberby.net [193.104.135.243])
+	by mail1.fiberby.net (Postfix) with ESMTPSA id 55EBC60104;
+	Fri, 11 Sep 2026 21:42:43 +0000 (UTC)
+Received: by x201s (Postfix, from userid 1000)
+	id D0374201E22; Fri, 11 Sep 2026 21:41:59 +0000 (UTC)
+From: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>
+To: netdev@vger.kernel.org
+Cc: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
 	Jakub Kicinski <kuba@kernel.org>,
-	shuah@kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH net-next] selftests: net: add ruff linter exclusions
-Date: Fri, 11 Sep 2026 14:34:12 -0700
-Message-ID: <20260911213412.3222759-1-kuba@kernel.org>
+	Donald Hunter <donald.hunter@gmail.com>,
+	Danielle Ratson <danieller@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next 03/10] netlink: specs: rt-link: fix ifinfo-flags names
+Date: Fri, 11 Sep 2026 21:41:29 +0000
+Message-ID: <20260911214148.1184806-4-ast@fiberby.net>
 X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260911214148.1184806-1-ast@fiberby.net>
+References: <20260911214148.1184806-1-ast@fiberby.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Fedora is now shipping ruff 0.16 which added a ton of more
-opinionated rules. Let's add some exclusions for checks
-which are both noisy and IMO of questionable value.
-We can still follow them for new code but it's a matter
-of preference.
+Correct the names of `enum net_device_flags` constants:
 
- C401: set(x for x in Y) -> {x for x in Y}
+- IFF_POINTOPOINT should be "pointopoint", not "point-to-point".
+- IFF_NOTRAILERS should be "notrailers", not "no-trailers".
+- IFF_NOARP should be "noarp", not "no-arp".
+- IFF_ALLMULTI should be "allmulti", not "all-multi".
+- IFF_AUTOMEDIA should be "automedia", not "auto-media".
 
-I find the set() a little more readable.
-
- I001: hard requirements to sort includes
-
-A little too much
-
- RUF015: list(set_a - set_b)[0] -> next(iter(set_a - set_b))
-
-list + index are more readable to a "C person" for sure.
-
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
 ---
-CC: shuah@kernel.org
-CC: linux-kselftest@vger.kernel.org
----
- tools/testing/selftests/drivers/net/.ruff.toml | 4 ++++
- tools/testing/selftests/net/.ruff.toml         | 4 ++++
- 2 files changed, 8 insertions(+)
- create mode 100644 tools/testing/selftests/drivers/net/.ruff.toml
- create mode 100644 tools/testing/selftests/net/.ruff.toml
+ Documentation/netlink/specs/rt-link.yaml | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/tools/testing/selftests/drivers/net/.ruff.toml b/tools/testing/selftests/drivers/net/.ruff.toml
-new file mode 100644
-index 000000000000..f58d51f35317
---- /dev/null
-+++ b/tools/testing/selftests/drivers/net/.ruff.toml
-@@ -0,0 +1,4 @@
-+# NOTE: keep in sync between .../net/ and .../drivers/net/
-+
-+[lint]
-+ignore = ["C401", "I001", "RUF015"]
-diff --git a/tools/testing/selftests/net/.ruff.toml b/tools/testing/selftests/net/.ruff.toml
-new file mode 100644
-index 000000000000..f58d51f35317
---- /dev/null
-+++ b/tools/testing/selftests/net/.ruff.toml
-@@ -0,0 +1,4 @@
-+# NOTE: keep in sync between .../net/ and .../drivers/net/
-+
-+[lint]
-+ignore = ["C401", "I001", "RUF015"]
+diff --git a/Documentation/netlink/specs/rt-link.yaml b/Documentation/netlink/specs/rt-link.yaml
+index 52cac8bba0c9..ac2084d14f22 100644
+--- a/Documentation/netlink/specs/rt-link.yaml
++++ b/Documentation/netlink/specs/rt-link.yaml
+@@ -25,17 +25,17 @@ definitions:
+       -
+         name: loopback
+       -
+-        name: point-to-point
++        name: pointopoint
+       -
+-        name: no-trailers
++        name: notrailers
+       -
+         name: running
+       -
+-        name: no-arp
++        name: noarp
+       -
+         name: promisc
+       -
+-        name: all-multi
++        name: allmulti
+       -
+         name: master
+       -
+@@ -45,7 +45,7 @@ definitions:
+       -
+         name: portsel
+       -
+-        name: auto-media
++        name: automedia
+       -
+         name: dynamic
+       -
 -- 
 2.55.0
 
