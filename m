@@ -1,80 +1,137 @@
-Received: from mta0.migadu.com (out-141.mta0.migadu.com [91.218.175.141])
+Received: from mta0.migadu.com (out-53.mta0.migadu.com [91.218.175.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87C3D7E792
-	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 03:18:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7A2B3A4F5F
+	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 03:32:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789096699; cv=none; b=Ksl+de7etRs1iYeMNnM6/8C2D522tU82eqYMk3Qx0P+T0+n9CBu3SvNgJMmYbfsZccI0wjLa1rjESFniQDipJ8r3U3duln5z91cSdXLF5G03hjApU/UYA95skq81tBFda0PFSsHmkX1O05C3NMOB1wr5qWllfDIr5dpkSObPbSo=
+	t=1789097533; cv=none; b=gCKo9VogsXz92usx1lyS0oVsPX2hJjS1CJqFL0h3dVchZzZ/TeBwVbf6s6Y6gy07T87mG2LeoaFdvyaLJdkP3XPgST8r5Y7L6ueQIDnp3bRlt0ImHbMAc8mM54/qzRC1uMRhGvujvB9tdkaQVVevagPZJEgfAlmNxuNMHrQ8B2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789096699; c=relaxed/simple;
-	bh=z+h64Bw5LGymmtqK6vxANAX9/xXvrCTaoNjZM15BHvc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=utmd+XQln/ZmCy8jPLLeqtFvozR8sGPoQ8CYqskuoFaIucg1WegLcBwFCTZB4D4jDRRwKz98+ZzSYXkJt9x2A71xuGjB8vRqPeKXxJYJzuan1iNn6YFpYgw3MuDYw2Xz5Qi1+B2ZlRUCp3LLfa68oqk+6csYgY72G+dd21cwFlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=prsq5kIY; arc=none smtp.client-ip=91.218.175.141
+	s=arc-20240116; t=1789097533; c=relaxed/simple;
+	bh=DR0+fgEQrwNl6R1crdAoG7L+5iDGJklBvZ41CTFEp/M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZCzY2edee2yFNr5bemv5n4iRXUqtxx7xx6+27p9CrOj9gw8SxUJIQuizauZzbjMgeVGOspztBE/sP0vpmQj7A+dvGgldGW+X6+v074a5Q3TNhmexpSjO+/Y7XGqbhm579+yyw5rjI6tqcsGr5B0PEuMvxj1ZT8Zs36l66qmicko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=qoA1uG67; arc=none smtp.client-ip=91.218.175.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="prsq5kIY"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="qoA1uG67"
 X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=z+h64Bw5LGymmtqK6vxANAX9/xXvrCTaoNjZM15BHvc=;
+DKIM-Signature: a=rsa-sha256; bh=DR0+fgEQrwNl6R1crdAoG7L+5iDGJklBvZ41CTFEp/M=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789096693; v=1; x=1789701493;
- b=prsq5kIY8dkUV1+olcjqAMByoT1gAqFCOBYwvkmIE/Yh+SwL4CqYkC+eF3DzmSHVp4e1e/cO
- Qq1NbWcFHw54DJjtOErJGHizXpwY125zYM2aJwyL1DXAfm1ut4SWqr1RBEv+zaAoLVgNOpknRj1
- YcOlPAaUc3a4q1zFtNeg26dg=
+ t=1789097525; v=1; x=1789702325;
+ b=qoA1uG67tuH2V/YUydQlxDCPR9zjIj3a/LGNlNDgWWXwUQZT7fixtigFYebPcSgJs4GwCTw+
+ DvA4lUBbhigolD5OUj5/QZ32t342GpUUJYCSYT6nimdlhbzaWhqa/fhqxYv5yxtWojSrg583ATb
+ hZRDAZyONUTYEWnzDUxgcyBc=
 X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 50d6d9201047e531;
-	Fri, 11 Sep 2026 03:18:13 +0000
-X-Mizu-Trace-ID: 50d6d9201047e531
+Received: by mta12.migadu.com with ESMTPS id 03ed5f65af5ab86f;
+	Fri, 11 Sep 2026 03:32:05 +0000
+X-Mizu-Trace-ID: 03ed5f65af5ab86f
 X-Migadu-Flow: FLOW_OUT
-Message-ID: <0e8f9a9c-6295-49ad-b29b-84613dfbfd65@linux.dev>
-Date: Fri, 11 Sep 2026 11:18:02 +0800
+Date: Fri, 11 Sep 2026 11:31:55 +0800
+From: Hangbin Liu <hangbin.liu@linux.dev>
+To: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>,
+	David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
+	Andrea Mayer <andrea.mayer@uniroma2.it>
+Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Hangbin Liu <liuhangbin@kylinos.cn>
+Subject: Re: [PATCH net-next v2] selftests: net: move log_test to lib file
+ and remove duplicate code
+Message-ID: <aqN2K7rAm-S6QI86@fedora>
+References: <20260831-self_log_test-v2-1-eda2e8490cf9@kylinos.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH bpf-next v2 3/4] selftests/bpf: Adopt
- bpf_program__add_flags() helper
-To: =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>,
- Stanislav Fomichev <sdf@fomichev.me>, Andrii Nakryiko <andrii@kernel.org>,
- Eduard Zingerman <eddyz87@gmail.com>,
- Kumar Kartikeya Dwivedi <memxor@gmail.com>,
- Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>,
- Yonghong Song <yonghong.song@linux.dev>, Jiri Olsa <jolsa@kernel.org>,
- Emil Tsalapatis <emil@etsalapatis.com>,
- Ihor Solodrai <ihor.solodrai@linux.dev>
-Cc: Shuah Khan <shuah@kernel.org>, bpf@vger.kernel.org, netdev@vger.kernel.org
-References: <20260910183222.307208-1-toke@redhat.com>
- <20260910183222.307208-3-toke@redhat.com>
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-In-Reply-To: <20260910183222.307208-3-toke@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260831-self_log_test-v2-1-eda2e8490cf9@kylinos.cn>
 
+On Mon, Aug 31, 2026 at 05:21:28PM +0800, Hangbin Liu wrote:
+> From: Hangbin Liu <liuhangbin@kylinos.cn>
+> 
+> Many test scripts under tools/testing/selftests/net/ each define their own
+> log_test() function with near-identical logic for comparing a return
+> code against an expected value and printing OK/FAIL. Add a shared
+> log_test_expected() to lib.sh and replace each local definition with a
+> thin wrapper that delegates to it.
+> 
+> The function is named log_test_expected() rather than log_test() because
+> lib.sh already exports log_test() with a different signature used by
+> the forwarding tests.
+> 
+> Two tests required special handling:
+> 
+> - icmp_redirect.sh passed a fourth "xfail" argument to log_test(). The
+>   underlying issue has been fixed and the argument is always absent now,
+>   so it is simply dropped.
+> 
+> - fib_nexthops.sh checked for ksft_skip (exit code 4) inside log_test(),
+>   but no test in the file produces that code. The check is removed,
+>   callers that need to report a skip should use log_test_skip() instead.
+>   Two callers compared against exit code 2 are left as-is since code 2
+>   correctly counts as a failure in the previous log_test().
+> 
+> Signed-off-by: Hangbin Liu <liuhangbin@kylinos.cn>
+> ---
+> Changes in v2:
+> - Remove skip/xfail checking in lib.sh, as any command can exits with 2 or 4 (sashiko)
+> - Remove nskip counter in fib_nexthops.sh
+> - Link to v1: https://lore.kernel.org/r/20260813-self_log_test-v1-1-f88b1107842e@kylinos.cn
+> ---
+>  tools/testing/selftests/net/drop_monitor_tests.sh  | 13 +------
+>  tools/testing/selftests/net/fcnal-test.sh          | 29 +-------------
+>  tools/testing/selftests/net/fdb_flush.sh           | 35 +----------------
+>  tools/testing/selftests/net/fib-onlink-tests.sh    | 18 +--------
+>  .../selftests/net/fib_nexthop_multiprefix.sh       | 21 +----------
+>  tools/testing/selftests/net/fib_nexthop_nongw.sh   | 21 +----------
+>  tools/testing/selftests/net/fib_nexthops.sh        | 44 ++--------------------
+>  tools/testing/selftests/net/fib_rule_tests.sh      | 19 +---------
+>  tools/testing/selftests/net/fib_tests.sh           | 26 +------------
+>  tools/testing/selftests/net/gre_gso.sh             | 26 +------------
+>  tools/testing/selftests/net/icmp_redirect.sh       | 28 ++------------
+>  tools/testing/selftests/net/l2tp.sh                | 19 +---------
+>  tools/testing/selftests/net/lib.sh                 | 31 +++++++++++++++
+>  .../selftests/net/ndisc_unsolicited_na_test.sh     | 26 +------------
+>  .../selftests/net/srv6_encap_lookup_l3vpn_test.sh  | 19 +---------
+>  .../selftests/net/srv6_end_dt46_l3vpn_test.sh      | 19 +---------
+>  .../selftests/net/srv6_end_dt4_l3vpn_test.sh       | 19 +---------
+>  .../selftests/net/srv6_end_dt6_l3vpn_test.sh       | 19 +---------
+>  .../selftests/net/srv6_end_dx4_netfilter_test.sh   | 23 ++---------
+>  .../selftests/net/srv6_end_dx6_netfilter_test.sh   | 23 ++---------
+>  .../testing/selftests/net/srv6_end_flavors_test.sh | 23 ++---------
+>  .../selftests/net/srv6_end_next_csid_l3vpn_test.sh | 19 +---------
+>  .../net/srv6_end_x_next_csid_l3vpn_test.sh         | 19 +---------
+>  .../selftests/net/srv6_hencap_red_l3vpn_test.sh    | 19 +---------
+>  .../selftests/net/srv6_hl2encap_red_l2vpn_test.sh  | 19 +---------
+>  .../selftests/net/test_bridge_backup_port.sh       | 32 +---------------
+>  .../selftests/net/test_bridge_neigh_suppress.sh    | 33 +---------------
+>  tools/testing/selftests/net/test_vxlan_mdb.sh      | 32 +---------------
+>  .../selftests/net/test_vxlan_nolocalbypass.sh      | 32 +---------------
+>  .../selftests/net/test_vxlan_vnifiltering.sh       | 26 +------------
+>  tools/testing/selftests/net/vrf-xfrm-tests.sh      | 19 +---------
+>  tools/testing/selftests/net/vrf_route_leaking.sh   | 19 +---------
+>  .../testing/selftests/net/vrf_strict_mode_test.sh  | 19 +---------
+>  33 files changed, 73 insertions(+), 716 deletions(-)
 
-On 9/11/26 2:32 AM, Toke Høiland-Jørgensen wrote:
-> Adopt the newly added bpf_program__add_flags() helper everywhere the
-> selftests non-destructively modifies program flags (which turns out to
-> be every use of bpf_program__set_flags() in the tests).
->
-> Acked-by: Ihor Solodrai <ihor.solodrai@linux.dev>
-> Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Hi everyone,
 
+This patch is a bit too long for review, and maybe cause conflicts for
+stable backports. I plan to split it into small frags. But there are 2
+ways to split it.
 
-Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+1. Split based on the test name. e.g. srv6 part, fib part, test_* part, and
+   others.
+2. Split based on the changes. e.g. group the tests that using exactly same
+   log_test functions into one patch.
 
+Does anyone has any suggestion?
 
-‌AI pays excessive attention to wording.
-
-maybe just delete whole parenthetical notes‌ "(which turns out ...)"
-
-
+Thanks
+Hangbin
