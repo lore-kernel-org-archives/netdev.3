@@ -1,117 +1,147 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5F3A31715D;
-	Fri, 11 Sep 2026 14:03:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0268933DED1;
+	Fri, 11 Sep 2026 14:09:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789135413; cv=none; b=JpTo27N7uYYlkOob5QCuhSM17SxFMncrp+VJ6BJFqGXzOcUeoQX173+UVnQdw1fQJn/LcumIj+o/lHRfuJFLtqrY1cDDzgNeZYFkY5F1roFZ3GMVd8IqAwd/Q1daBkU4xSvUJ+tW9FR5k7oRnl9Wh5FVhi5ExLNesFMseS1tB6E=
+	t=1789135798; cv=none; b=IkNTbtrV6+ULd6OLxsOjtV4tLrivg26hMc3RRE4mJ6WT9WLGQtcx9aqaT5zFg0sj1Cyikrqe2P61bAGqkF8oM9kRryc9ppQW/zZlr+nEfwD5+TBklKjBFBNGQjcmTZflcb6zXjXyPnhror4bx5xrbxMI0gA7WuTJbLXv6GgCM2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789135413; c=relaxed/simple;
-	bh=BtmDOcrJzTirInUyJZ4Yn0/HlvkxpOsf18Vh5suxajg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VNyZZYtJEgXrLiFucM9hB1fSSs0LTpRrvCV3eJyWcfLHuNmkSwkKAJHpAQvOmAeZOfefAuLL73qPnCagL4NyC85MWbgK1RWUdXtatTmr9pRIixRmgjyDZvPErI7/D7Ax6xkCvotQ2LZnHe71ESJcTNPRWXaI+QTTyphb+cNlFAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=F+qBxK/k; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+	s=arc-20240116; t=1789135798; c=relaxed/simple;
+	bh=3sYlRJsAKYABz8KwzGijN864p5i3Sx5Jcbfu8Ihyh2I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Q1YSR8ZyRDT5pu9f7ZOpy2kKKNqL+6+qYsHADDU9jgQF6IeFDMPVYMrQr/oL/j1aCYw4mRJkA0/xyVh2nzDbJFDqe5wlC+IA+I/KvXmGo7wcnC+KiOLr26whhIw41w4dAmP2zgm3BivTSaW5KuRoyMN91R15mI/mgc1zWKObH40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=lGGlQpJk; arc=none smtp.client-ip=217.70.190.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="F+qBxK/k"
-Received: from localhost.localdomain (unknown [4.194.122.144])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 967FE20B7166;
-	Fri, 11 Sep 2026 07:02:37 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 967FE20B7166
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1789135369;
-	bh=nko1lzDX3HYjX2ZcfcghQ19ySoGi04r5ioAQrMQSqwE=;
-	h=From:To:Cc:Subject:Date:From;
-	b=F+qBxK/ke+HD0YetRgg/ZMn/CIDC2IdYBk5xKNw+U0ZGTYZNZj3EAkWjEOrJEOTWu
-	 PnGCq7kMSzHKULddloXe4Yzxzd2m6zm7SbJ2YhWxuU6ZJ3MFoAh/9BQReh8JIAJOdA
-	 64L0IykprkeZ6WipYdaK+43ijmekDCU9b+Az6TX0=
-From: "Cen Zhang (Microsoft Security FORGE Labs)" <cenzhang@linux.microsoft.com>
-To: Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Martin KaFai Lau <martin.lau@kernel.org>
-Cc: Amery Hung <ameryhung@gmail.com>,
-	Xuanqiang Luo <xuanqiang.luo@linux.dev>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Fushuai Wang <wangfushuai@baidu.com>,
-	Weiming Shi <bestswngs@gmail.com>,
-	Matt Bobrowski <mattbobrowski@google.com>,
-	Kees Cook <kees@kernel.org>,
-	Menglong Dong <menglong8.dong@gmail.com>,
-	bpf@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	AutonomousCodeSecurity@microsoft.com,
-	xmei5@asu.edu,
-	tgopinath@linux.microsoft.com,
-	kys@microsoft.com
-Subject: [PATCH bpf v2] bpf: Fix NULL pointer dereference in __bpf_sk_storage_map_seq_show
-Date: Fri, 11 Sep 2026 10:03:08 -0400
-Message-ID: <20260911140308.81560-1-cenzhang@linux.microsoft.com>
-X-Mailer: git-send-email 2.55.0
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="lGGlQpJk"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1789135790;
+	bh=xjzAWSvOKNYO7F0/haarIpqo4xVeO010FNylFglyXMo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=lGGlQpJkM45KNVEGKS/o2TwJeU1fORCveV4LOpf8EAsJCqQo8CVCRK8jRcKDrYN/Z
+	 iMZEPrpEIWT3HFa8MaQcsMlqj+dkViuZgeUh2VW7R4OexlymZhw4roVGv2AtwkKqYS
+	 Sf1cc0jPmxJS5XlKODpQqw8R5poCyccEzYYB9M9O/gGJ4450A2Kvhii8QqEWtOyAgy
+	 UTm1q9ITVZGZVi2RQWctrMSut8nfOEBZM8BARnCk89qHudofg6Ldz1WD6qtLcxp63v
+	 xGlK4bYbi0aR7OkCMrogBRtQbW7j1vKRaLOJXEgSJc7tpI6o3GXeqO+U5a4RY+mOoL
+	 vdKS85B/M/ZRw==
+Received: from netfilter.org (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 79C4E603D3;
+	Fri, 11 Sep 2026 16:09:50 +0200 (CEST)
+Date: Fri, 11 Sep 2026 16:09:47 +0200
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: Julius Bairaktaris <julius@bairaktaris.de>
+Cc: netfilter-devel@vger.kernel.org, kadlec@netfilter.org, fw@strlen.de,
+	coreteam@netfilter.org, netdev@vger.kernel.org,
+	geldot@protonmail.com
+Subject: Re: [PATCH nf-next 0/4] netfilter: offload a TCP flow whose reply is
+ never seen
+Message-ID: <aqQLqwJVRROZ-cvH@chamomile>
+References: <20260910090052.2034970-1-julius@bairaktaris.de>
+ <aqPpBJvfTwKrxSGG@chamomile>
+ <CAC1t37KDNB6+v7Xq51AGrPtYZ4U95kUEQ6HDJSKt5YYE6+0zdA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAC1t37KDNB6+v7Xq51AGrPtYZ4U95kUEQ6HDJSKt5YYE6+0zdA@mail.gmail.com>
 
-Iterating a sk_storage map is a two-stage operation:
-bpf_sk_storage_map_seq_find_next() returns a selem, then
-__bpf_sk_storage_map_seq_show() uses it. The latter re-reads
-selem->local_storage via rcu_dereference() without checking for NULL.
-A concurrent socket close can unlink the selem and clear that pointer
-between the two stages, causing a NULL dereference of sk_storage->owner.
+Hi Julius,
 
-Oops: general protection fault, probably for non-canonical
-   address 0xdffffc0000000011
-  net/core/bpf_sk_storage.c:809 __bpf_sk_storage_map_seq_show()
-  bpf_seq_read+0x366/0x1120
-  vfs_read+0x174/0xa50
-  ksys_read+0xfc/0x1d0
+On Fri, Sep 11, 2026 at 12:10:04PM +0000, Julius Bairaktaris wrote:
+> Hi Pablo,
+> 
+> thanks for taking your time to review.
+> 
+> > conntrack needs to see packets in both directions, are you assuming a
+> > packet-based load balancer in front of it?
+> 
+> No, an asymmetric route is in front of it, with two subnets sharing one
+> L2 segment and the server answering over that link, so the router only
+> ever sees one direction.
 
-Return SEQ_SKIP if the re-read yields NULL. This prevents the dereference
-and tells bpf_seq_read() that the stale element was skipped, so it does
-not consume an iterator sequence number without running the BPF program.
+I see this requirement to support asymmetric path keeps coming, but
+how hard is really to maintain this TCP state machine to deal with all
+possible scenarios? ie. invalid transitions, retransmissions, etc.
+this all without having access to full TCP connection.  Is it that you
+need NAT and the stateless NAT in nftables does not fulfill your
+requirements?
 
-Fixes: 0be08389c7f2 ("bpf: Switch to bpf_selem_unlink_nofail in bpf_local_storage_{map_free, destroy}")
-Reported-by: Xiang Mei (Microsoft) <xmei5@asu.edu>
-Closes: https://lore.kernel.org/all/20260827051859.45511-1-blbllhy@gmail.com/
-Suggested-by: Amery Hung <ameryhung@gmail.com>
-Suggested-by: Xuanqiang Luo <xuanqiang.luo@linux.dev>
-Link: https://lore.kernel.org/all/CAMB2axNFOC9G2RwOCnsWDth83REMWnmPE8gxMwbLYoGusw9miA@mail.gmail.com/
-Link: https://lore.kernel.org/all/c3f2a61d-d5bc-454c-987d-717b5f8c8809@linux.dev/
-Cc: AutonomousCodeSecurity@microsoft.com
-Signed-off-by: Cen Zhang (Microsoft Security FORGE Labs) <cenzhang@linux.microsoft.com>
-Assisted-by: Copilot (Grok 4.6)
----
-Changes in v2:
-- Return SEQ_SKIP instead of 0 when the storage disappeared, preserving
-  the iterator sequence number for the next valid element.
-- Correct the Fixes tag to the commit that switched the destruction path
-  to bpf_selem_unlink_nofail().
-- Rebase onto the current bpf master branch.
-
- net/core/bpf_sk_storage.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/net/core/bpf_sk_storage.c b/net/core/bpf_sk_storage.c
-index 1d295a8769fa..7d02245aa704 100644
---- a/net/core/bpf_sk_storage.c
-+++ b/net/core/bpf_sk_storage.c
-@@ -806,6 +806,8 @@ static int __bpf_sk_storage_map_seq_show(struct seq_file *seq,
- 		ctx.map = info->map;
- 		if (selem) {
- 			sk_storage = rcu_dereference(selem->local_storage);
-+			if (!sk_storage)
-+				return SEQ_SKIP;
- 			ctx.sk = sk_storage->owner;
- 			ctx.value = SDATA(selem)->data;
- 		}
-
-base-commit: 15071f2a1263e82150c77eeb1e94dbfc31950a8e
--- 
-2.55.0
+> Conntrack already picks such a connection up when it misses the
+> handshake entirely, and patch 1 routes the SYN-seen case into that same
+> path, under the same nf_conntrack_tcp_loose gate.
+> 
+>   net/netfilter/nf_conntrack_proto_tcp.c, tcp_new():
+> 
+>     } else if (tn->tcp_loose == 0) {
+>         /* Don't try to pick up connections. */
+>         return false;
+>     } else {
+>         ...
+>         ct->proto.tcp.seen[0].flags =
+>         ct->proto.tcp.seen[1].flags = IP_CT_TCP_FLAG_SACK_PERM |
+>                                       IP_CT_TCP_FLAG_BE_LIBERAL;
+> 
+> Julius
+> 
+> 
+> 
+> Am Fr., 11. Sept. 2026 um 11:42 Uhr schrieb Pablo Neira Ayuso
+> <pablo@netfilter.org>:
+> 
+> >
+> > On Thu, Sep 10, 2026 at 11:00:48AM +0200, Julius Bairaktaris wrote:
+> > > A host that forwards one direction of a TCP connection only sees the
+> > > client's SYN and then an ACK continuing from it; the answer took another
+> > > path. That ACK has no entry in the transition table, so it and every
+> > > packet after it are invalid, the conntrack entry stays in SYN_SENT
+> > > [UNREPLIED] with a single packet, and the connection reaches neither the
+> > > stateful part of a ruleset nor a flowtable.
+> >
+> > conntrack needs to see packets in both directions, are you assuming a
+> > packet-based load balancer in front of it?
+> >
+> > > Patch 1 takes such a connection over as the mid-stream pickup it is.
+> > > Patch 2 withholds the reply direction of a flow offloaded in one
+> > > direction until conntrack has seen a reply, and offloads it once
+> > > conntrack has. Patch 3 offers a connection whose reply was never seen to
+> > > the flowtable in the original direction. Patch 4 adds a selftest arm for
+> > > the path; without patches 1 to 3 it fails, with the router forwarding the
+> > > SYN of the connection and nothing else.
+> > >
+> > > Verified on an IPQ8074 router with hardware flow offload, iperf3 -P2
+> > > between two hosts on different subnets of one bridge with the reply
+> > > direction bypassing the router:
+> > >
+> > >                                   CPU port    switch port   throughput
+> > >   asymmetric, without the series   81k pps       81k pps    944-947 Mbit/s
+> > >   asymmetric, with the series      2-11 pps      81k pps    948-949 Mbit/s
+> > >   symmetric, with the series      11-38 pps      81k pps    926-948 Mbit/s
+> > >
+> > > I wrote this series with the help of an AI coding assistant, as the
+> > > Assisted-by tags record. I have reviewed and tested it myself.
+> > >
+> > > Gary Dotzler (2):
+> > >   netfilter: conntrack: pick up a TCP flow whose SYN was never answered
+> > >   netfilter: nft_flow_offload: offload a TCP flow that has no reply
+> > >
+> > > Julius Bairaktaris (2):
+> > >   netfilter: flowtable: promote a flow offloaded in one direction only
+> > >   selftests: netfilter: cover a TCP flow whose reply is never seen
+> > >
+> > >  include/net/netfilter/nf_conntrack_l4proto.h  |  7 ++
+> > >  net/netfilter/nf_conntrack_proto_tcp.c        | 19 +++++
+> > >  net/netfilter/nf_flow_table_ip.c              | 26 +++++++
+> > >  net/netfilter/nft_flow_offload.c              |  6 +-
+> > >  .../selftests/net/netfilter/nft_flowtable.sh  | 73 +++++++++++++++++++
+> > >  5 files changed, 129 insertions(+), 2 deletions(-)
+> > >
+> > > --
+> > > 2.53.0
+> > >
+> > >
