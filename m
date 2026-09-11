@@ -1,131 +1,109 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lr2-f12.google.com (mail-lr2-f12.google.com [74.125.230.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16BD7406261;
-	Fri, 11 Sep 2026 10:49:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789123752; cv=none; b=mHID9VKcjHQiYLbvjz7J3X6OReFkx9YnXOROa5FaP3Mx4r7+ZVuaupoMQlYfJskYQBY+JPsDiXnCFx9JcD2H6R+6qmgfBjQJ7UzfKzSh9y6826P9gj4uiotTTBJBv2Y/+0fk6oW3ZCL1bLLrZ+3+RtTDAZ2d8bsi6qzHOKstm6s=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789123752; c=relaxed/simple;
-	bh=RwRtP4Lcq0BV+opg54mfK4Ls3dmbz/L53U9120/hdnk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oUks2GxXae6Kifq5nTKH4kriPN+XEGcFTsowBPZyVRlLIkCmBIw3DuDbv4SRp94Ygb3EdJphDLuJd9q4dXsXp/bTjMem90nQxG9MiaSzVqxNuhknxdeu9TkK/MGjPknUl3acHGOr9ceCnVlQXa0xAq2u7AdJmz+pV7wIsBQP/Rc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RuKqc86t; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09CEC43E48A
+	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 10:49:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.230.76
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789123779; cv=pass; b=Q1Gx1OfgcAr51Cx2uJuBOvcm8xiNVOB5liJPe66sDsLlY+vlh5HU2lubb8W631RgD1PIR7TvBKDAMjNSPf8CKLdkhqDHvSxyXUdTv4dBybD4GYHSCZH2NJyInGT248oITzkH0WoQWMcEehuHdT3llm7jV0n6bXSrDnkbxyw8Ey4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789123779; c=relaxed/simple;
+	bh=ezSrAn9CJ7GjnHLdrzeGHcm7ENN3QID29LGU2q4vePY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NzVQUMGM2XTaAMo44eSr61xNEuQNrZGGVJTZfcnSKo3GgkaphwWRdH1qA1eJfZAkZYe2nV+8X0W2bgCqDt6JqqAMIOv2ZHHSpqwsW+tVG2OyJd/oyJsXPlGtS5jE88lB3AzyyXHH0WQy8M8tM9BCe21oqyYH1Qpnca51e5XU870=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g6ulhmTx; arc=pass smtp.client-ip=74.125.230.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RuKqc86t"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73AD71F00893;
-	Fri, 11 Sep 2026 10:49:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789123750;
-	bh=45+Ft2ZAJDuHr7rFRHIETQgmiTQPSrUEooULEMW8brA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=RuKqc86tYs/hwCpVsjKj2QXihaZ05u1oaWB2qbPumW4wzoQgevco56iZBiyyIlEYk
-	 j3Oaxy60u6jsyAoNh70MG0FGm0zl9Ele7IBa7lxKCIMKkxD2pwCqtyKNnXFZVWsHqZ
-	 qNe283slfFDxcAecXp4nD6PwzBkRecUMOW1Tpj9RVf4bPrHZGnyz5YQD6PDUW6zhrp
-	 VXTPMGucithm/sb8ZAHlZaccSU9//9h32YqfR/FCaY2qby2OfQgfhVtSlLZGXmuR/x
-	 2Tc8QD2fN9dQWoLxuH9ShWUxNdQt/CezWyeTU22TrlnGfb6x435Fauisg/0JXTNpRO
-	 mnoLJLI9xHu2g==
-Date: Fri, 11 Sep 2026 11:49:06 +0100
-From: Simon Horman <horms@kernel.org>
-To: Abdifatah Suruur <suruurism@gmail.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, andrew+netdev@lunn.ch,
-	subash.a.kasiviswanathan@qualcomm.com, sean.tranchetti@qualcomm.com,
-	dnlplm@gmail.com, stable@vger.kernel.org
-Subject: Re: [PATCH net v7] net: qualcomm: rmnet: require CAP_NET_ADMIN in
- the real device netns for config ops
-Message-ID: <20260911104906.GC48209@horms.kernel.org>
-References: <20260910082643.14437-1-suruurism@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g6ulhmTx"
+Received: by mail-lr2-f12.google.com with SMTP id 38308e7fff4ca-3a5919af39dso7351591fa.1
+        for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 03:49:37 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789123776; cv=none;
+        d=google.com; s=arc-20260327;
+        b=ZK22ljtg6uGkmm85viH11/DwE8qx5gBhY7bLUl87MwDdWfDFglYLpz1oJbSZB+YCw3
+         rcoUuWodVcxgai9ry2EahD15C76618TcIBnN8SgwSIf9VDdxYtoxzB9zEwpAoK/q+YBs
+         6VzeZ7deNPv01hxtrdZyVLnHrT7qkyUHZWMzSh0SdkwpfYJOx8olzpoaRTXCU6IjD+4X
+         4CaUILGpmZ6ChFS8CcJwvz3ZX5KxtB7d/Wbn7rqoJ/TlZwRuzbsV8lSjOSS9drXRLp7G
+         0oIvcjJPZStr1JI9hW//QFA4kDALDqIytNKzVM+d1A4KjwG86ttObtaXN8wd2PufGL1v
+         aaGQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ezSrAn9CJ7GjnHLdrzeGHcm7ENN3QID29LGU2q4vePY=;
+        fh=8WWA6nawXmLFgTAD89dF6QikSmrB4n3uiJiDjR/9rzI=;
+        b=VoawqwgHPXf/Fj7D2EBt9JTH3A0rPImF0bMukyeNaYGaES8sdm8zSlE9QUzg7X/Coh
+         spVFgRZZpWoRRK8tPTEhLjkv2ABTdMXCyODOkbASTG2RTe1FBOZtV4Q/N+9Njt2LYDMw
+         HOPsuqd7E0vEXHPbSzElXF4iju7Vvf9Xpbt7B9k2hZIRWVfJMo8q2SitFfWPnuxwP8ck
+         9bBrZAhJwpztsmyvJ4lTRfiBabtIdPzpIHnvt+AJb66iqJ/VCIY6EtAnAKg/fmoHc7JC
+         XFAiDKFnmccFHxRq254tPETQZwreo3PmWOcKSwFYYGs1LXJqNX8LyXcMnj5NoaBis7MG
+         zDnw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789123776; x=1789728576; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ezSrAn9CJ7GjnHLdrzeGHcm7ENN3QID29LGU2q4vePY=;
+        b=g6ulhmTxVfv5JLib3EYTsO8p4RLkpMe2c9CxsMnw8v9n2gO1eUQ719E7ieF/SgM+CH
+         0O/c9rdgTdxSMePZv0lIzRqLw03gDI6exq9pBcqyMl3/qsWBD7BckcWhdPE80VUGxwoB
+         D7SX1DGTPaNi7EMB0rNbnmSnTpOBEvuXqOEp27ZU9ehLtwgoZYsjf9IN/hlWmoEY0/Lp
+         xrAu6ubEf+uPhr9jjoomSzCYdzSeF0r7czhqonntJuIsY9oUeYXPz1E/7WnroBWqf6kz
+         UNt7ho3Ntg5e4zQV1AnrWrMo12G1X2dpQAERxhQGy95fAamCQ7ZZf10yB1VNpMBJTowV
+         j51w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789123776; x=1789728576;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ezSrAn9CJ7GjnHLdrzeGHcm7ENN3QID29LGU2q4vePY=;
+        b=GuOmu5H2Hw+ieK5UJIGwYo+sAhXgCGNUUfbkISJbnzjwnzzw9HHvGXB1PuOLnw5HEx
+         BeRqeYcxdaFzRrRgefVrhd2UqXD/gHqO9kX+b3h5wIpk5od89qPkFKGj0D1o4YqBwIRL
+         jYbLRcyJFwwGt7oT+wYU773v9OjAO+ZvEp78etc5+JodTAKBECHHGGqpgs3khmYrIknt
+         mkq5Uw3GnjOioedxaLx/g65EZnhtytxfbt6ycFnh455KsdDTf5DzsCgd1imWNkOvYN6Y
+         pb5O4h0NdyCfXuGt8OMdLU1+xai9uCY/6FoSSIw18fZ5ESKfYd8AAcxdm9Cbm7fJgBGv
+         5bOA==
+X-Forwarded-Encrypted: i=1; AKwUvBzd5EuKU+I64qsYmfU7i9O/BZvrGOBR4ZsUUn2Q1f8p1C9oYBi6P4N/B7lY7EMpDcdfidEaJH4=@vger.kernel.org
+X-Gm-Message-State: AFuF++lswNZoyv4ZwXonotvmwNor3EPVAaot6AiePzoE02+yxupyfSEc
+	MnwpackSdZivHxmsqMWGMccLNCX8ggaQSYQ/qd2Ogr+GlPRJ7+FpOORh0VVj4dmRXTZSVz1cKwc
+	jCvl3jkiD+9QwIXENe+2uwlnhmDpTE/4=
+X-Gm-Gg: AYBFou1E9NOgSBKOQOWK9mjKyitFzGPkPutrvkEdkflZ+KKavr6yUGmak2BTyw299BX
+	JNMocf9x19dUyOaAFmTG0sVlPbGC6dul12amCou0GYwP688Zqsf65vETkSNldGoM/j5k0kBO3Tp
+	XCTkN2aM6tWfk0K1ldzfxCL4+fnipbcDbebteZvqCMlYsP511pdMt9WqHa7FXMwopH1s2vidYbf
+	FSra+xjOuwWDll0xlTUrwWj4o2tG9PY1g/gTSzAjyNRiJ4iYEfdFix6oWwPLu6wx3LWy+JMUyq6
+	wo0BI0xvjXSr2a86f1lCwD2AXEUT86AZdKBnPfm9pAaT6STdGVVloUvL4kuYQdi2kuKD/LMg/QK
+	lSNi3DCPkDPA=
+X-Received: by 2002:a2e:bc81:0:b0:39c:9955:9e0c with SMTP id
+ 38308e7fff4ca-3a5a51ef765mr8895901fa.6.1789123775747; Fri, 11 Sep 2026
+ 03:49:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260910082643.14437-1-suruurism@gmail.com>
+References: <20260909133247.113923-3-sigefriedhyy@gmail.com> <178904820206.219967.5313952981588630189@kernel.org>
+In-Reply-To: <178904820206.219967.5313952981588630189@kernel.org>
+From: Yuyang Huang <sigefriedhyy@gmail.com>
+Date: Fri, 11 Sep 2026 19:49:23 +0900
+X-Gm-Features: AcwNN1VW2hCRe9SDtg7vs6h_4VOh4Y_U9CCUKTlYjaVlanKSuOtZxvyADFn39dg
+Message-ID: <CA+7S2vKD8LAkRCuBKvZRWAqfGwbOXLEGch0V28v_p93Dan2uPw@mail.gmail.com>
+Subject: Re: [PATCH net-next v3 2/4] rtnetlink: add AF_PACKET multicast dumps
+To: netdev-bot+sashiko@kernel.org
+Cc: davem@davemloft.net, dsahern@kernel.org, donald.hunter@gmail.com, 
+	edumazet@google.com, idosch@nvidia.com, kuba@kernel.org, kuniyu@google.com, 
+	nicolas.dichtel@6wind.com, nickgarlis@gmail.com, pabeni@redhat.com, 
+	sd@queasysnail.net, shuah@kernel.org, horms@kernel.org, sdf.kernel@gmail.com, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Sep 10, 2026 at 11:26:42AM +0300, Abdifatah Suruur wrote:
-> An rmnet device may be created with its real device in a different
-> netns than the rmnet device itself (rmnet_newlink() resolves it in
-> link_net), and the config paths below only check CAP_NET_ADMIN against
-> dev_net(dev), while mutating rmnet port state attached to the real
-> device:
-> 
-> - rmnet_changelink() rewrites the endpoint mux table and
->   port->data_format and, via rmnet_vnd_update_dev_mtu(), can shrink the
->   MTU of the rmnet endpoint netdevs.
-> - rmnet_add_bridge() and rmnet_del_bridge(), reachable via
->   ndo_add_slave/ndo_del_slave through RTM_SETLINK IFLA_MASTER, flip
->   port->rmnet_mode and port->bridge_ep on the real device's port; with
->   bridge_ep pointing at a caller-owned device, rmnet_rx_handler() then
->   forwards real-device ingress frames to it.
-> - rmnet_set_coalesce() rewrites the port aggregation parameters via
->   ETHTOOL_SCOALESCE (ioctl) or ETHTOOL_MSG_COALESCE_SET (netlink),
->   whose capability checks likewise only cover dev's netns.
-> 
-> A caller privileged only in the rmnet device's netns can therefore
-> rewrite the shared cellular data-path state owned by another netns, and
-> steer its ingress traffic.
-> 
-> Gate the rtnl paths with rtnl_dev_link_net_capable(), matching the
-> "require CAP_NET_ADMIN in the device netns for changelink" series
-> (vxlan/geneve, CVE-2026-68432), and gate the ethtool setter with
-> ns_capable() in the real device netns, mirroring the check dev_ethtool()
-> already applies to dev's netns.  Report the new rejections through
-> extack where one is available.
-> 
-> The gates cover the configuration paths only.  Teardown (RTM_DELLINK
-> reaching rmnet_dellink(), and rmnet_config_notify_cb() unregistering
-> the bridge when the slave device is deleted) is intentionally left
-> ungated: link deletion is normal netdev lifecycle behaviour, and the
-> changelink series this matches (vxlan/geneve, CVE-2026-68432) gated
-> only the configuration paths.
-> 
-> Fixes: 2abb5792387e ("net: qualcomm: rmnet: Allow configuration updates to existing devices")
-> Fixes: 60d58f971c1077 ("net: qualcomm: rmnet: Implement bridge mode")
-> Fixes: db8a563a9d9024 ("net: qualcomm: rmnet: add ethtool support for configuring tx aggregation")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Abdifatah Suruur <suruurism@gmail.com>
-> ---
-> v7:
-> - state explicitly in the commit message that the dellink and notifier
->   teardown paths are out of scope, per the Sashiko review
-> - drop the master-moved-into-the-real-device-netns rationale from the
->   rmnet_add_bridge() comment: on the add path do_set_master() resolves
->   the master in the slave's netns, so the rationale only applies to
->   rmnet_del_bridge(), where the master comes from
->   netdev_master_upper_dev_get()
-> - use the netdev comment style in rmnet_set_coalesce(), per the
->   Sashiko review
-> v6:
-> - gate rmnet_add_bridge() and rmnet_del_bridge() on slave_dev, the
->   RTM_SETLINK target the caller was actually authorized against,
->   instead of rmnet_dev: a master moved into the real device's netns
->   short-circuits rtnl_dev_link_net_capable() through the net_eq()
->   check, so a caller only privileged in the slave's netns could
->   otherwise attach or clear the bridge state of the real device's
->   port
-> - add the Fixes tag for the commit that introduced rmnet_set_coalesce()
-> v5:
-> - also gate rmnet_set_coalesce(), the ethtool setter that rewrites the
->   port aggregation parameters of the real device's port, per the
->   Sashiko review
-> - report the new capability rejections through extack where available
-> v4:
-> - use the netdev comment style, per Subash Abhinov Kasiviswanathan
-> v3:
-> - cover rmnet_add_bridge() and rmnet_del_bridge() with the same gate;
->   they mutate the same real-device port state via ndo_add_slave/
->   ndo_del_slave and have no capability check of their own
-> - correct the impact wording: rmnet_vnd_update_dev_mtu() only reads
->   real_dev->mtu; the MTU store lands on the rmnet endpoint netdevs via
->   rmnet_vnd_change_mtu(), not on the real device
-> v2:
-> - drop Reported-by: (implied for the author), per Jakub Kicinski
+On Thu, Sep 10, 2026 at 10:50=E2=80=AFPM <netdev-bot+sashiko@kernel.org> wr=
+ote:
+> --
+> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
+set/20260909133247.113923-1-sigefriedhyy%40gmail.com
 
-Reviewed-by: Simon Horman <horms@kernel.org>
-
+The comment here is duplicated in previous version.
