@@ -1,62 +1,86 @@
-Received: from sonic309-27.consmr.mail.ne1.yahoo.com (sonic309-27.consmr.mail.ne1.yahoo.com [66.163.184.153])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 382A740EB90
-	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 18:59:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.184.153
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11AD843BDC5
+	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 19:15:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789153201; cv=none; b=F/5Tbk6CkYxb4exAlem+uLemVgikDzb59zE686+HNAnXyrvWW06ZGRWly6EF266Su5fUrTTvmd25CKscedt0sJDaZX0hbieLfPyqfIy904cZK5M+005WRmJ6GhG5JD/P10DxooBGLHp8C7pwk4wrnWcyiX9C1p1t6VkS4vFDgAE=
+	t=1789154122; cv=none; b=ZeCMe44C7BEZKyn8wG5RUiEjr7mYcTA91hjfvdxEro1ACcIZO4M4gQX9V4QPne1Sn+fqwL8tn0m/xLvL70s2AJhYJpARqe+TvJVW9M1axv/M2VG5+/DVRUQ2YljNZM4RuBHNkAlpDZaycN57un2jNuzvkUDxhX8ed5/N3TutxNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789153201; c=relaxed/simple;
-	bh=j2KmhlXONrKBmB8LioVo80v7kvdpDGCasJKpOD3AEpI=;
+	s=arc-20240116; t=1789154122; c=relaxed/simple;
+	bh=suCLjVjlPtCVTRxt/yyl4+CfCD3zfr9c7UniXKBFnzU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=sghgG3AGuMEvHZgQlariarV0dmBbIxzG50DBjmwZBQCKyBnr3xiW4YfJ76z6p82Wq9lNB/6G6hDCIDWpDQxUrphDrshW97hvUzN9AwH7JlavLMUaRAl5XyvCcbh5Z8iYiiyMx83CPx+63JIbMHyvpejPz9XWkUK99vVCSp03+Os=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=schaufler-ca.com; spf=none smtp.mailfrom=schaufler-ca.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=mtnVsO1V; arc=none smtp.client-ip=66.163.184.153
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=schaufler-ca.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=schaufler-ca.com
+	 In-Reply-To:Content-Type; b=itAupCfP4fohaNetBl7IaKyiyIR92E9vwl/aT3lS/MWw2iYd0E6Fd5usYchptSDoS5QbblZ7aTbxw7aaMuk5WlbcR0+FGnXDFYrTlas+IZRLpKHb9GPuFt5tsNRnPfWOp/qcO0nW5bV0ChX99FgpOuBea/nlz1qt/q9kqZS96jY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Mq2Eaaca; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=g2GBpCWe; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="mtnVsO1V"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1789153195; bh=zPVAGvXA6BnDWmfJT3hQO0CB11Qqf66yZudh5n1EjA4=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=mtnVsO1VgKbez7SKzhsZplk6k0C9XTTXVlxzDnocNXEcQseScGzBI7NWgOkXr4UILYLp6xbh3FIHjwLdF+94WxMDb6ujNlEcAFFKECqG920WYAFTuiITuNW7RthvaIhN2AGu1tuq2GVpBfCumq35u7066l2/TlrAMDkZmZlUvAigViqjupi7aBGwM9ZfIWBkvefsp7nBcyrkSTSqOsa7ztb5+NPXMFhRnRdMy9gfukC2ZSMaXT2zEFTPBCWkqYo2lirWEQBy5QRK0sCqVkOeCrTj8u7fNeZOIN/CP0VXPWlqAHIOyz7yk4QRsYpt/9dz6e+97O94sev9f7/GzTpfMA==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1789153195; bh=8D6wX+F6GVfY3825euMFl9WpyXMjynR9Yldv18g8cqJ=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=bu4h9TPqgz2/xWApTNwcDeX3xsfNIFng8n/Rtz3yUlQCrPCz+m2kDMyd3M9a6Pms/kzWOPV43nupzqMml3jzOYsaiLLPly+AkpJFunibZo005zZSyijIaAunEVowe0JkVkRQWqOp3EyjFNwnYUBwktLOD74qKN3sUJjX3iT+AbTuQVUXuxCWnSHC8A/cGDFK6WSahfUHLR5Es1J3SpdWDOemGlmdMRQbZ7mhtYCUeOSYpeLQzl3jnYI9DzlW5RN8oiwsfwkf4cKnC3dFl7o/M6y2kWAU4NLhB44efnNs/WkreEBGwafOavMDhpRceTX4GcgwwjSW0pqGP8TqOam0tQ==
-X-YMail-OSG: 8IyxdVsVM1mOeDHP02iAS1e9vux4wp6Hm34349yjZZrE7KsVj4bJUTR76BW4BsK
- t19TLIIWTyEsL_xO6KYI6B3mIpTeWkCM7DlTvfoOQfuCsksf_DXfrnK4xY9kwKnB_FwtGMbXBVdX
- AwHEtPMyDd0o.V_n5VGZNusTss9eVCLkYUnExyioYPyx.Ad4XLy1Yhw66DZ6.cR7ayiSRijYW.xl
- 305XtUrCNu_HX0zlFhl1UhhhGTmHJWDT71o9fTQtscG7_EeuKRlbSitXpH3h2TWZBa1RvmugXEHt
- NXIrMOJrZi6l.PxmX8gxMKPF7q1N60fwVrVibI3BInE.6oUKBezs64Ge8lnfaH6urMLx_mS7NELj
- fXVYAq93FCVN6TNK0NO4G.DDrLjcDRa6hhwWgZ6gQzEbJo2rpUwMXusCpi7RZb5Xl3sf4c2Idq5Z
- 0YImN5yN2Urf87vmiFS8KvS6LQ8PAxxZyfXHUJ3TEbGILnbZXPD5AE_DFX2IpeDORzsdcSFaaNsu
- PJkDjGDNOOvznQ5FlWaMAh4HXH3i3.mQ0coMj6GUf4QwkG4eANVdkaMTdWJZeTV84xjq7hqr6XKn
- o1scllR7Z5GUkeTy8KNCbUrtqv5E7kUADSyywm2a.wUqCoxo5Q3A_YP0K0NZvpEKIs__FnlhdUI.
- q6m1Q09A2eYBeXmEIYZVeEkeB6sdw07Xxs8UUJuHZE0QHuKHXMrXD_xXTsGItQCvTPP8CDbX0kKe
- ImJUDil.4vy3ev72uHxHJEEWTnnuXYA_JydfBvosMnQg1N3bxdnWSWbU2Hkt3TqOn6I.FzGn6QG_
- wsFBAfZcXdPDj4v8n_Tn.11J7xLNj.C3Aoi_G63Dg8IjAO6.e7VyY4IIR7JohfOWwH7InWSPpd09
- L29Cgia4I5UJL8gTvOEtfAvKgJVnNCz.yi5pOsZY4j1II_vQDkb6oXyLuPEDAyPzDAFFnOiaNrKy
- x__Q1X.5B_1hlU32VDdlR0ZzLRLA1TJ22OXVHP7afTQZ2CEoO7JYf46la6agBDr8b5v6ACnNyYi0
- GhQZCLFp11jCoUSoTlX.swZ.VjvjiKiFxK1Ye.Y6beRQedZ1ShvRS3cGHZHLn0swNHUkffkG9fb3
- wOfjV.FBc9wUaDKFQWfxyDbjXO0IH0ejj1F4V87qTPUt2sRlRHwco_cjX6g8TQk3W1CWHZtJA8Pg
- tO3nnFPJrvQPKZpn49aFsX1c5K2ek4fcHTXgnHk4H1.HrFvV3xEMDEis4jnnSAlsgA8Rm6LvLdIz
- lUg33b0GLbxZzg0mpAIxtqrcQSofu5UyShBm.JhuDp9auiAWoHUZSz0qhhAGEt_GOhTOREfqCBZC
- G6fI4Yi.C177vKFVtiV63RCPKV3rxhhPlhyBZpV1ZUxEcqMjslksyvWTd6aT7vgXecZzbEB6Bbui
- PugKq5FvUYO.LajsfrgW6MxwegEMCwQHnJMQsa2Iiv_WjPIMQuqDSEH9zrUbp_k8Xt_MeBiTqXQs
- nXvD7ppdbgFMJjhFv1sbwFcotEUmdosnZNJTFj_.B9RbrhQTms0KTlTxt_kE8.NgiydL256Tokh1
- HbALEC9RtboqkogXmLNqhc9AtDZczzRhCNRn7Z2X3503NCMm88agdrjLobSs1H5d7xBdfXfFzDWy
- Nz0tAs4FjfupGpoHER0xGTafNDNwQhDzAsAi3Ns1zjs3AtY5PvuGfAWSa8fMSFBU03tXksZYFxo1
- ciJ0G1CvL1rd97I47QzrDWZ_28XKoUL8AUG1lo9hZdautcKmTjHBsHXCLAZuNOQ3VbTsaUcfqmee
- .irw7XZlKDpogx7TQrdIKjc686.9W3GLbec8PuplPYGKvHJJhuSP9jlcnM383VDSt8cLbmPuXq9q
- UfjAsSbY4zvrKu6HdDJcxvB8cx34WFQXftbm93mMXhuwnptgfKF5CDKWcQBHwqRHYsXSxAFpKM8S
- qTa3rFjIKqr1IO0XflZkb9XFSArGJix7oo_Xxz5tbTfxDmTZDSh6g_DFbDgKseITvTHLKJIf.Srg
- zVnCjD4ejDk1_J0rl97idNrtwcyBVrtsm8.34xwlrjrR25Rurg9citobqWcZ.BDfjnhc_fKhZQyb
- r8KhLp1zYO8PYT1BKGbEHUeMHroTq.j3oed5iHJ6xgxNJfL4MoCriV4lpnAthSrrU4GyoV4x2VqX
- oF_R8TC4LfHd6y98CdJloF.SZ2BtSQy89uStonDjpuGCXoEaZ98PKpIPceNx_hW37SyYRbmrBaKQ
- gu6._.5jHmTHesUwGqpIpKbbNaYhF7Q3yiS79YqO5LS7oubsSfX7dqeASC8h1m47H6U5NdATLY3r
- Y73pK8ITPNSGyICENKhMFqA--
-X-Sonic-MF: <casey@schaufler-ca.com>
-X-Sonic-ID: 155296a8-f4ef-4124-9fbd-d64e0f082663
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic309.consmr.mail.ne1.yahoo.com with HTTP; Fri, 11 Sep 2026 18:59:55 +0000
-Received: by hermes--production-gq1-678d9dd684-n95jq (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 54d69622036feeec9e5203b92a9973ac;
-          Fri, 11 Sep 2026 18:59:50 +0000 (UTC)
-Message-ID: <6f01eff3-20c9-488b-84f4-8c6456f2e54d@schaufler-ca.com>
-Date: Fri, 11 Sep 2026 11:59:47 -0700
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Mq2Eaaca";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="g2GBpCWe"
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68BHWcFp1165717
+	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 19:15:06 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	XA4Kl0KLnzcJOt9vayKyZzMGbRlqf8uEKgvEQ7zEOY4=; b=Mq2EaacaVAgjVX0e
+	3N8B2iHucKabcLOOEc02aUGBnNV1A7FsZjlojV+zwiV62S0nJB50RHkgs4H7Mouf
+	jxR1Kdr0rE8AaO3AmU0CgCnGFzgNpJkUL/ugujL2vccMZ00PuHYh3c7IqldvdpAP
+	ynDMWe3JmtbC/oxvCR+MN2m7uHqKznVzdB/RsXqbBo6CJKmBPUd1noI5I51K3TmK
+	ShkkAr06YPlO0GE3JaY4A58G2ThIv6fSyyQDv7e5v2d5Uip9sUFZdM1JoOWPo146
+	UPVT5a6IA2VpVthw8tSq+HpaT0FP6OLuvdgRBUXbxIoBEAdSEq5sOxVqMNr9JvgX
+	P+IDRQ==
+Received: from mail-pg1-f200.google.com (mail-pg1-f200.google.com [209.85.215.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gmmgv0ttu-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 19:15:06 +0000 (GMT)
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-cc1b8088203so1379117a12.3
+        for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 12:15:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1789154105; x=1789758905; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=XA4Kl0KLnzcJOt9vayKyZzMGbRlqf8uEKgvEQ7zEOY4=;
+        b=g2GBpCWeXdmZUUIXR1Xihyq//HSB7A70Fub/P898+M1nG67CKaa/mA06sYfOt3fH+N
+         7uhR0QlK0pfQkRZvf4rGRBCfudnRcaF0hB/JFuEU59VR3RWTu3hXqBf1TCGlUkAPGZbM
+         /uZSaZyPAzHyaQ7Ec7oKht6FuHMqdisr80SH4zuJQ0Anlhjs98RyD2sI54gXy7dAImNv
+         dnHqDHxn0ALO0HO0BZ8ag+4ryv4ysekd2o7f3H63w0pntRONtdA91Ywa6Y4zmT4BuYFf
+         JeTPZxmb9BkRsuB56if4TPk9HsG1EWnuHD8vDpSSzjUB6ukIRrGth/iVaFKsVPuHjeoB
+         10Ug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789154105; x=1789758905;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=XA4Kl0KLnzcJOt9vayKyZzMGbRlqf8uEKgvEQ7zEOY4=;
+        b=chKJbHFp4po1EtiEQl80PzeVusabmDdjlukjhFCezNW4x2sme1rQQmTlazWAcaxBQ7
+         jVig05riEEyxWKjCKNUtjZ1vcnM5lJ53KuSK3FjxPZpbUrFnHlKTOr5o44EpqiP7XHnm
+         W19RDjsmEmlBMvdsfBbHEFg/6JYmTU8CELf5QSQW14NQhWPtbAY4cVXKfxerkRQZqSc+
+         2mhjVFJul7pZ7Jb4/g7xl2EO3Zk+AmdmHUY55EY3juhWaGrpntmi3PgQybNJFmHbpffh
+         VThU0VBDePRS2IDLr/LHeOfKwFS9eHLvSzQVD4uDk0z2mwOL1zCXwbYSz0MltrB4G5iL
+         URAQ==
+X-Forwarded-Encrypted: i=1; AKwUvBybolnQIioG3twNoL7um6EAFV3q8VcfVAC/nWN8SXCC3zElza11syvHCq8cqU8d/JEpLoWPaIk=@vger.kernel.org
+X-Gm-Message-State: AFuF++lgr07lxzCztZ4v9x69nFPWRBc/bq2UIXRHl7esoArTaoE4XP0L
+	6sV5roux1d2gqkCSyqvBUnt/lYmds+idDJ+td41+7wrkkFpUwUTSya6iwPmlH3bZ0kftVOkKeVh
+	tHqCh/D292gn+X4/x9nrMM4onJCA+bI8IyIxnAI5f11rw/a0d7UpvmKlQKEw=
+X-Gm-Gg: AYBFou2cRhGFUi34LzwqOV/22b0C1rHTB5i+OZscV66Gv3PZqid+19sh4FFUGo6wqFQ
+	EU1wP4NcxS+s9PWJTAfI86NI/AFmwP11ySumhruBAl1OUgnroNaC292YWKDbYi6L4Z8O241JDwr
+	es0U6klyUNvVcnWX7xzvHu0M00vaGemn+MBMMPl1wB98ane0ZSH8PDFbVhsmXFfOWsCnMFcbhmY
+	7J1CSk7yuHsxg8SM7oejS8nmvwlw++Cv5mzB0ikLYmw92U3M0k6uYlrZU41iDlrA2NF1+g8VIcS
+	6DlQ+YtPBt3aUT6jZ6d8dO9junwVwCNMJQuku7Y+4lV1ODXtbCJQEqLgtRnqo/JIxjl8i+uj41o
+	9a9xJqO9nldm1zak1415FNT/nczvMBGAibR5vZIjIMgi/A3GwDsa5vTs7Fmay
+X-Received: by 2002:a05:6a21:6b10:b0:3d3:ad3c:49a8 with SMTP id adf61e73a8af0-3daed3b9745mr10795674637.22.1789154105063;
+        Fri, 11 Sep 2026 12:15:05 -0700 (PDT)
+X-Received: by 2002:a05:6a21:6b10:b0:3d3:ad3c:49a8 with SMTP id adf61e73a8af0-3daed3b9745mr10795608637.22.1789154104461;
+        Fri, 11 Sep 2026 12:15:04 -0700 (PDT)
+Received: from [10.227.105.111] (i-global254.qualcomm.com. [199.106.103.254])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-143659a9a06sm8271959c88.0.2026.09.11.12.15.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 11 Sep 2026 12:15:03 -0700 (PDT)
+Message-ID: <d91ce2be-6489-4399-b035-23f6aec0371f@oss.qualcomm.com>
+Date: Fri, 11 Sep 2026 12:15:00 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -64,172 +88,295 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/13 net-next] net: ipv4: introduce CONFIG_IPV4 to
- decouple the IPv4 stack
-To: Fernando Fernandez Mancera <fmancera@suse.de>, netdev@vger.kernel.org
-Cc: horms@kernel.org, kuba@kernel.org, pabeni@redhat.com,
- edumazet@google.com, davem@davemloft.net, Jason Gunthorpe <jgg@ziepe.ca>,
- Leon Romanovsky <leon@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
- Tony Nguyen <anthony.l.nguyen@intel.com>,
- Przemek Kitszel <przemyslaw.kitszel@intel.com>,
- Elad Nachman <enachman@marvell.com>, Saeed Mahameed <saeedm@nvidia.com>,
- Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>,
- Ido Schimmel <idosch@nvidia.com>, Petr Machata <petrm@nvidia.com>,
- Edward Cree <ecree.xilinx@gmail.com>,
- Maxime Chevallier <maxime.chevallier@bootlin.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Arend van Spriel <arend.vanspriel@broadcom.com>,
- Miri Korenblit <miriam.rachel.korenblit@intel.com>,
- Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@kernel.dk>,
- Christoph Hellwig <hch@lst.de>, Sagi Grimberg <sagi@grimberg.me>,
- Chaitanya Kulkarni <kch@nvidia.com>, Saurav Kashyap <skashyap@marvell.com>,
- Javed Hasan <jhasan@marvell.com>, GR-QLogic-Storage-Upstream@marvell.com,
- "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
- "Martin K. Petersen" <mkp@kernel.org>, Nilesh Javali <njavali@marvell.com>,
- Manish Rangankar <mrangankar@marvell.com>, Varun Prakash
- <varun@chelsio.com>, Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- David Howells <dhowells@redhat.com>, Marc Dionne <marc.dionne@auristor.com>,
- Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>,
- Chuck Lever <cel@kernel.org>, Jeff Layton <jlayton@kernel.org>,
- NeilBrown <neil@brown.name>, Olga Kornievskaia <okorniev@redhat.com>,
- Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>,
- Marek Lindner <marek.lindner@mailbox.org>,
- Simon Wunderlich <sw@simonwunderlich.de>,
- Antonio Quartulli <antonio@mandelbit.com>,
- Sven Eckelmann <sven@narfation.org>,
- Nikolay Aleksandrov <razor@blackwall.org>,
- Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>,
- Phil Sutter <phil@nwl.cc>, Johannes Berg <johannes@sipsolutions.net>,
- Matthieu Baerts <matttbe@kernel.org>, Mat Martineau <martineau@kernel.org>,
- Geliang Tang <geliang@kernel.org>, Julian Anastasov <ja@ssi.bg>,
- Aaron Conole <aconole@redhat.com>, Eelco Chaudron <echaudro@redhat.com>,
- Ilya Maximets <i.maximets@ovn.org>, Allison Henderson <achender@kernel.org>,
- Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>,
- Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
- Xin Long <lucien.xin@gmail.com>, "D. Wythe" <alibuda@linux.alibaba.com>,
- Dust Li <dust.li@linux.alibaba.com>, Sidraya Jayagond
- <sidraya@linux.ibm.com>, Mahanta Jambigi <mjambigi@linux.ibm.com>,
- Tony Lu <tonylu@linux.alibaba.com>, Wen Gu <guwen@linux.alibaba.com>,
- Jon Maloy <jmaloy@redhat.com>, Tung Quang Nguyen
- <tung.quang.nguyen@est.tech>, Steffen Klassert
- <steffen.klassert@secunet.com>, Herbert Xu <herbert@gondor.apana.org.au>,
- Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
- "Serge E. Hallyn" <serge@hallyn.com>, Vikas Gupta
- <vikas.gupta@broadcom.com>,
- Bhargava Marreddy <bhargava.marreddy@broadcom.com>,
- Rajashekar Hudumula <rajashekar.hudumula@broadcom.com>,
- Nicolai Buchwitz <nb@tipi-net.de>, =?UTF-8?Q?Markus_Bl=C3=B6chl?=
- <markus@blochl.de>, Arnd Bergmann <arnd@arndb.de>,
- Heiner Kallweit <hkallweit1@gmail.com>,
- Florian Fainelli <florian.fainelli@broadcom.com>,
- Krzysztof Kozlowski <krzk@kernel.org>,
- Qingfang Deng <qingfang.deng@linux.dev>, Julian Braha
- <julianbraha@gmail.com>, Ethan Nelson-Moore <enelsonmoore@gmail.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Eric Biggers <ebiggers@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
- Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>,
- Willem de Bruijn <willemb@google.com>, Alyssa Ross <hi@alyssa.is>,
- Joel Granados <joel.granados@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
- linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
- intel-wired-lan@lists.osuosl.org, oss-drivers@corigine.com,
- linux-net-drivers@amd.com, linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-wireless@vger.kernel.org,
- brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com,
- linux-nvme@lists.infradead.org, linux-scsi@vger.kernel.org,
- target-devel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-afs@lists.infradead.org, linux-nfs@vger.kernel.org,
- b.a.t.m.a.n@lists.open-mesh.org, bridge@lists.linux.dev,
- netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
- mptcp@lists.linux.dev, lvs-devel@vger.kernel.org, dev@openvswitch.org,
- rds-devel@oss.oracle.com, linux-sctp@vger.kernel.org,
- linux-s390@vger.kernel.org, tipc-discussion@lists.sourceforge.net,
- linux-security-module@vger.kernel.org,
- Casey Schaufler <casey@schaufler-ca.com>
-References: <20260910144914.8025-1-fmancera@suse.de>
- <20260910144914.8025-2-fmancera@suse.de>
- <ee89e26c-3dad-450b-8861-badf19afa141@schaufler-ca.com>
- <dfd9590c-e029-4432-9a13-c789f708cfee@suse.de>
+Subject: Re: [PATCH v3 00/12] ath1{1,2}k: support multiple PCI devices in one
+ system
+To: Juha-Matti Tilli <juha-matti.tilli@iki.fi>, ath11k@lists.infradead.org,
+        ath12k@lists.infradead.org, Kalle Valo <kvalo@kernel.org>,
+        Jeff Johnson <jjohnson@kernel.org>,
+        Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+Cc: Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+        Mihai Moldovan <ionic@ionic.de>, linux-wireless@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20260908093145.2492666-1-juha-matti.tilli@iki.fi>
+From: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Content-Language: en-US
-From: Casey Schaufler <casey@schaufler-ca.com>
-In-Reply-To: <dfd9590c-e029-4432-9a13-c789f708cfee@suse.de>
+In-Reply-To: <20260908093145.2492666-1-juha-matti.tilli@iki.fi>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Mailer: WebService/1.1.26525 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-GUID: 4CP1TsyCoqxqyvMo3BFlX5UKnF9ec5We
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTExMDI3MCBTYWx0ZWRfXxL2NAQJMmWPE
+ 0WOO492j3HOP0k8zSGJCYWzxjMNr0rj0JHee2R3lEAn+IHr8U4F5jAXubArgCCQRoMhG4psQmkI
+ vTyuqtsli1K5SA7EYWtApOTXlRGqNeU=
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTExMDI3MCBTYWx0ZWRfX/bLTV2pgd2Bg
+ O9V4jzyIb3zW+hEEcP6QePwCs2uy8iAyznVLYDo4MWbawyQ2/DB7RfQMu8oulFCyHvMaREUn+RJ
+ Go+s8rm1OeUotwW8qKWAoTntdLBTq3DFN9DoHDD9+IbOpjAPahKpnP7lzAxnb4mpTDr9blcPLvC
+ 0MVU459wJ+Bkf7L/v4VMDpCdzJj41+w5dZLzN7ZwDvCXCSTka/hISbVXLUzvoBJvado/gYCPLIV
+ lkGVf5+Zsgzi863r6TYHSYa4RiDVJCnS6+6WKIhnxvLkP9ZWoxSbY2Vb02CIiEbe/nF8/KRXZ/l
+ icKRE3umqCXSWWlRpWLWl4j620cuq2c4wdGf7ao/UdTPsTZJEATyyS+rbOtssrkTuYEn+1Ll19+
+ jM9+LS/wWvZKTLA/kn0MgD4ZkNpr+VildU4LWwks9+KmMrlRdMHKBFkidoO806SVGgSPXtUXbBS
+ K6R3N3J0XP0frLneSMg==
+X-Proofpoint-ORIG-GUID: 4CP1TsyCoqxqyvMo3BFlX5UKnF9ec5We
+X-Authority-Analysis: v=2.4 cv=EfFd0/mC c=1 sm=1 tr=0 ts=6aa4533a cx=c_pps
+ a=oF/VQ+ItUULfLr/lQ2/icg==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
+ a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=3WHJM1ZQz_JShphwDgj5:22
+ a=bC-a23v3AAAA:8 a=NEAV23lmAAAA:8 a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8
+ a=COk6AnOGAAAA:8 a=nuVjNcMAjKUeO9L8OkEA:9 a=QEXdDO2ut3YA:10
+ a=3WC7DwWrALyhR5TkjVHa:22 a=FO4_E8m0qiDe52t0p3_H:22 a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-11_06,2026-09-11_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 malwarescore=0 phishscore=0 spamscore=0 clxscore=1015
+ impostorscore=0 bulkscore=0 adultscore=0 lowpriorityscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609110270
 
-On 9/11/2026 11:31 AM, Fernando Fernandez Mancera wrote:
-> On 9/11/26 7:46 PM, Casey Schaufler wrote:
->> On 9/10/2026 7:48 AM, Fernando Fernandez Mancera wrote:
->>> Historically, the IPv4 protocol has been linked to the core INET
->>> subsystem. Because shared infrastructure like the TCP/UDP engine,
->>> routing or INET hashtables live inside net/ipv4/, it has been
->>> impossible
->>> to compile a kernel with only IPv6 support.
->>>
->>> This patch introduces the CONFIG_IPV4 Kconfig symbol, which is set to
->>> 'def_bool y' for now. This does not allow to completely disable the
->>> IPv4 stack yet but it lays the necessary build-system work for that
->>> goal.
->>>
->>> In addition, multiple subsystems Kconfig symbols across networking
->>> features like tunnels, drivers and filesystems have been adjusted to
->>> depend on IPv4. Keep on mind that follow-up work is required to convert
->>> the Kconfig symbol to bool and remove the dependency on IPv4 where it
->>> makes sense.
->>>
->>> Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
->>> ---
->>>   
->>
->> ...
->>
->>
->>>   security/smack/Kconfig                        |  1 +
->>>   54 files changed, 126 insertions(+), 66 deletions(-)
->>>
->> ...
->>
->>> diff --git a/security/smack/Kconfig b/security/smack/Kconfig
->>> index 5a8dfad469c3..b4e6d0168bd1 100644
->>> --- a/security/smack/Kconfig
->>> +++ b/security/smack/Kconfig
->>> @@ -3,6 +3,7 @@ config SECURITY_SMACK
->>>       bool "Simplified Mandatory Access Control Kernel Support"
->>>       depends on NET
->>>       depends on INET
->>> +    depends on IPV4
->>>       depends on SECURITY
->>>       select NETLABEL
->>>       select SECURITY_NETWORK
->>
->> Why would this make sense? You're introducing the capability to use
->> IP6 by itself, which is admirable, but you're disallowing that
->> configuration
->> with the Smack LSM. It appears that you've done a mechanical lookup
->> in the
->> Kconfig files and applied the minimal change to make the kernel compile,
->> which probably works for most cases. It does not work for Smack. Unless
->> there's a strong argument that Smack with IPv6 and without IPv4 is
->> and always
->> will be a pointless configuration you have my NAK.
->>
->>
->
-> Right, that was kind of the point. The idea was to be able to compile
-> core networking without IPv4. There are still plenty of modules that
-> depends on IPv4. It does not mean that they will remain like that
-> forever as I mentioned my idea was a follow-up on the series to avoid
-> having a too long series.
->
-> Anyway, I can make Smack to do not depend on IPv4 on this series if
-> that could grant an ACK.
+On 9/8/2026 2:31 AM, Juha-Matti Tilli wrote:
+> Hello,
+> 
+> As you may well know, multiple identical ath11k and ath12k devices are
+> not supported in a single Linux host because they use conflicting QRTR
+> node IDs. Fortunately, Denis Kenzior created a patchset to support
+> multiple QRTR endpoints with identical node IDs, and Mihai Moldovan
+> refined it, after which I took over the patchset and refined it more.
+> 
+> Mihai Moldovan also created a patchset for actually adding the support
+> for this QRTR multi-endpoint feature to ath11k and ath12k drivers.
+> Unfortunately, the code of Mihai was not merge-quality, since it leaked
+> memory if you ran rmmod and modprobe inside a loop. Mihai mentioned this
+> drawback, without providing an API for deleting endpoints or usage of
+> such API in code that's responsible for freeing resources. Also Mihai's
+> patchset had a race condition.
+> 
+> Since Mihai has been busy recently and the previous iteration of this
+> patchset is nearly 2 years old, I decided to "steal" the patchset from
+> him since he said he doesn't care who eventually implements this, as
+> long as it "just works". I am willing to give the responsibility of this
+> patchset back to Mihai if he so wants.
+> 
+> I reverted back to the approach where MHI knows the QRTR endpoint id.
+> This is somewhat ugly, but really the only way resources can be freed
+> (unless you resort to some kind of reference counting which would be
+> doable in kernel, or garbage-collection which wouldn't be doable). It
+> does create some extra memory usage in the mhi_controller data
+> structure, but a large fraction of the time, the data there is useful,
+> since a large fraction of MHI devices actually use QRTR. So this is not
+> as bad as making every PCI device know its QRTR endpoint ID (which a
+> vast majority don't have), even though MHI can be compiled in without
+> QRTR so we have to do the freeing via a function pointer.
+> 
+> I think the code is mostly merge-quality now. It does require the QRTR
+> multi-endpoint support, such as this v6 (I'm soon going to post v7 --
+> note that in v6 one intermediate commit doesn't compile on 32-bit
+> although the tip of the branch does compile):
+> 
+> https://msgid.link/all/20260901131934.225991-1-juha-matti.tilli@iki.fi
+> 
+> I tested it on dual ath11k setup, but more testers would be good. If you
+> only have a single ath11k card, your testing is useful too ("given
+> enough races, all race conditions are shallow").
+> 
+> Link to Github if you don't want to apply patches manually from mails:
+> 
+> https://github.com/jmtilli/linux/tree/athnext_multi_qrtr_v7_multi_ath11k_ath12k_v3
+> 
+> Bugzilla: https://bugzilla.kernel.org/show_bug.cgi?id=218480
+> 
+> Mihai mentioned in Bugzilla in comment 21 that there was a hardware
+> crash he couldn't reproduce and he believed it's a race condition. I
+> could reproduce it in older Mihai's patchset version by treating -EEXIST
+> as an error, which indeed points to it being a race condition. I believe
+> the source was qrtr_endpoint_id_get_or_assign that tried to get an ID
+> and then assign an ID if it couldn't get one, while not holding a
+> spinlock. In my newest patchset, my belief is this race condition is
+> gone (the entire offending function is gone), but any kind of review
+> about thread-safety of my code would be good input.
+> 
+> Original description:
+> 
+> ath11k and ath12k suffer from a long-standing issue that is partly
+> caused by the QRTR implementation, which only supports one device per
+> node/port combination and partly caused by the fact that the
+> QMI instance ID of the devices are statically set to 1.
+> 
+> P Praneesh <quic_ppranees at quicinc.com> submitted a patch[0] that fixes
+> this issue generating a unique QMI instance ID based on the PCI bus data
+> for the device and passing that information to the QMI subsystem and the
+> device's firmware via a special PCI register.
+> 
+> However, it quickly turned out that this approach works for the hardware
+> he tested, but fails for other ath11k-based devices, including the
+> popular QCA6930, since its firmware just ignores the special register
+> being used.
+> 
+> Since we need QMI (and, for matter, QRTR) to work for the initial
+> firmware upload, this approach will not work generically.
+> 
+> Fortunately, Denis Kenzior <denkenz at gmail.com> cooked up a patch set for
+> QRTR[1] that introduces the concept of endpoint IDs, which are
+> dynamically allocated and can be used to distinguish different devices
+> even though they use the same node/port combination. Using this patch
+> set, endpoint IDs can be reported as part of auxiliary data in the QRTR
+> socket and bound to for client sockets, which will automatically filter
+> messages from other endpoints and also make sure that client messages
+> are routed to the correct endpoint.
+> 
+> This looked promising, and with that functionality, the only challenge
+> is to find out the correct endpoint IDs and bind to them in drivers to
+> finally support multiple devices in a generic way.
+> 
+> This patch set implements exactly that, and it WORKSFORME, but
+> unfortunately it turns out that "the only challenge" is very difficult
+> to overcome due to the socket-based architecture.
+> 
+> ath1{1,2}k and QRTR are at opposite sides of the socket, with QRTR
+> assigning endpoint IDs and ath1{1,2}k needing a way to fetch and operate
+> on them.
+> 
+> The endpoint reporting feature in QRTR is not helpful in this case,
+> because drivers do not generally know which endpoint belongs to the
+> device they currently handle (i.e., there is no central registry) and
+> even if we were to snoop on the socket and take the first endpoint ID we
+> are unaware of, this might not be the correct one, because it might be
+> in use by a different driver for instance, or correspond to a different
+> device.
+> 
+> The first iteration of this patch set[2] extended struct mhi_device with
+> a qrtr_endpoint_id field that was initialized to zero and populated by
+> the QRTR MHI driver as soon as it was loaded. Drivers could then query
+> this field through an mhi_device->mhi_cntrl->mhi_device chain (if they
+> also use the MHI bus, of course). This, however, was an incredibly ugly
+> hack because QRTR data should not be part of MHI device structures in
+> the first place, timing is critical (drivers querying the endpoint ID
+> must do so after the QRTR MHI module initialized, which is typically
+> only the case after QRTR socket was created) and it was not possible to
+> query or pre-assign an endpoint ID before creating a socket and directly
+> bind to it (which might lead to races such as seeing messages over the
+> socket that are not meant for the endpoint ID drivers are actually
+> interested in).
+> 
+> Since that was not elegant at all, and due to the other mentioned
+> issues, this iteration uses a different approach: endpoint IDs can now
+> be associated with (private) backend endpoint-specific data, which
+> allows us to identify which endpoint ID is being used with what backend,
+> and additionally new API is introduced so that other parts in the kernel
+> can either get an endpoint ID for given endpoint-specific data or even
+> attach endpoint-specific data to a new endpoint ID generated by the QRTR
+> driver. The QRTR system will try to use endpoint-specific data if
+> possible, but falls back to generating endpoint IDs without
+> endpoint-specific data (as in, NULL pointer) if that did not work.
+> 
+> Crucially, the endpoint-specific data pointer is used as an opaque void
+> pointer and at most compared with data stored in the endpoints XArray.
+> 
+> In the QRTR MHI backend, we use the MHI controller's structure pointer
+> as endpoint-specific data, and since the MHI controller is also the bus
+> master and responsible for the physical link, clients (drivers) can
+> pre-register an endpoint ID for their MHI controllers and directly tell
+> QMI to bind to the endpoint ID at socket creation time.
+> 
+> The QRTR SMD backend uses its rpmsg_device pointer and the TUN backend
+> uses the inode pointer as their respective endpoint-specific data
+> pointers.
+> 
+> This approach is cleaner and works better, because it is not prone to
+> races (although it requires coordination between QRTR backends and
+> clients/drivers because both must use the same endpoint-specific data
+> for the scheme to work).
+> 
+> There are, however, also issues with this approach:
+>   - Any kernel part can generate an unlimited number of endpoint IDs
+>     with arbitrary pointers. The amount of endpoint IDs that can be
+>     tracked is limited, though, so there is potential for exhaustion of ID
+>     space.
+>   - Since previously endpoint IDs were only generated by the QRTR
+>     subsystem, there was no need to use any kind of life cycle management
+>     for the endpoint IDs: they were created at node creation time and
+>     also deleted at node deletion time. Since other subsystems can now
+>     create endpoint IDs, it would probably be good to have a way to
+>     reclaim created but unused endpoint IDs. No such implementation is
+>     provided here.
+>   - Multiple PCI/MHI devices will work, but no AHB + PCI/MHI interaction
+>     has been tested. Since PCI/MHI devices bind to their endpoint ID,
+>     these will likely work, but the AHB devices might still see messages
+>     for all endpoints and fail to work correctly. AHB devices seem to be
+>     using QMI and thus also QRTR, but without a specific QRTR backend
+>     driver (going through REMOTEPROC instead?), so this approach might
+>     not be viable for AHB devices.
+> 
+> I am much more comfortable with this patch set, even if it has some
+> rough edges and might not fix the situation for AHB devices.
+> 
+> [0] https://patch.msgid.link/20230111170033.32454-1-kvalo@kernel.org
+> [1] https://patch.msgid.link/20241018181842.1368394-1-denkenz@gmail.com
+> [2] https://msgid.link/cover.1730790058.git.ionic@ionic.de
+> 
+> v3:
+>   - rebase against current ath-next
+>   - solved a major memory leak
+>   - replaced O(N) algorithm by O(1) where N is the leaked memory
+>   - solved all known race condition issues
+>   - Link to v2: https://msgid.link/cover.1732506261.git.ionic@ionic.de
+> 
+> v2: code and metadata cleanup (checkpatch.pl), no functional changes
+> 
+> BR, Juha-Matti
+> 
+> Juha-Matti Tilli (5):
+>   net: qrtr: support getting new endpoint ids externally
+>   bus: mhi: allow mhi to know about its qrtr endpoint id and free it
+>   net: qrtr: mhi: register new qrtr endpoint id for mhi
+>   wifi: ath11k: implement QRTR endpoint ID fetching for PCI
+>   wifi: ath12k: implement QRTR endpoint ID fetching for PCI
+> 
+> Mihai Moldovan (7):
+>   soc: qcom: qmi_helpers: add QRTR endpoint ID to qmi_handle
+>   soc: qcom: qmi_helpers: optionally bind to QRTR endpoint ID in
+>     qmi_sock_create
+>   wifi: ath11k: add QRTR endpoint ID hif feature
+>   wifi: ath11k: stub QRTR endpoint ID fetching
+>   wifi: ath11k: bind to QRTR endpoint ID in ath11k_qmi_init_service
+>   wifi: ath12k: add QRTR endpoint ID hif feature
+>   wifi: ath12k: bind to QRTR endpoint ID in ath12k_qmi_init_service
+> 
+>  MAINTAINERS                           |  1 +
+>  drivers/bus/mhi/host/init.c           |  8 +++++
+>  drivers/net/wireless/ath/ath11k/ahb.c |  7 ++++
+>  drivers/net/wireless/ath/ath11k/hif.h |  9 ++++++
+>  drivers/net/wireless/ath/ath11k/mhi.c | 46 +++++++++++++++++++++++++++
+>  drivers/net/wireless/ath/ath11k/mhi.h |  1 +
+>  drivers/net/wireless/ath/ath11k/pci.c |  1 +
+>  drivers/net/wireless/ath/ath11k/qmi.c |  8 +++++
+>  drivers/net/wireless/ath/ath12k/hif.h | 10 ++++++
+>  drivers/net/wireless/ath/ath12k/mhi.c | 46 +++++++++++++++++++++++++++
+>  drivers/net/wireless/ath/ath12k/mhi.h |  3 ++
+>  drivers/net/wireless/ath/ath12k/pci.c |  1 +
+>  drivers/net/wireless/ath/ath12k/qmi.c |  9 ++++++
+>  drivers/soc/qcom/qmi_interface.c      | 28 ++++++++++++++++
+>  include/linux/mhi.h                   |  5 +++
+>  include/linux/soc/qcom/qmi.h          |  3 ++
+>  include/net/qrtr.h                    | 10 ++++++
+>  net/qrtr/af_qrtr.c                    | 42 ++++++++++++++++++++----
+>  net/qrtr/mhi.c                        | 31 ++++++++++++++++++
+>  net/qrtr/qrtr.h                       |  5 +++
+>  20 files changed, 268 insertions(+), 6 deletions(-)
+>  create mode 100644 include/net/qrtr.h
+> 
 
-Yes, that would be acceptable. I apologize in advance for the Smack IPv6
-implementation. Replacing it with a proper CALIPSO stack has been on the
-todo list since CALIPSO was introduced.
+How are you populating the list of recipients for your e-mail?
 
->
-> Thanks,
-> Fernando.
->
+You are including folks no longer involved in kernel development, but more
+importantly, you are using an obsolete e-mail address for the MHI maintainer
+(Mani). I've replaced his address in my reply.
+
+Please make sure to use scripts/get_maintainer.pl to get an accurate list of
+recipients.
+
+
