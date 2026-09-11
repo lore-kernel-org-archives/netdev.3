@@ -1,129 +1,223 @@
-Received: from outboundhk.mxmail.xiaomi.com (outboundhk.mxmail.xiaomi.com [207.226.244.123])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B1A038DC6C;
-	Fri, 11 Sep 2026 17:18:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.226.244.123
+Received: from mail-pz2-f1.google.com (mail-pz2-f1.google.com [74.125.228.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EE653B7B6B
+	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 17:23:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789147087; cv=none; b=nZK3YvdsGHdVjj1YokBNfMNSGEJ5f0yx1jviG1SgFHLirJgQ6DQl+R1tXoEwVuJQeQXe5Mr2xLvPPQHL4PDzdIVFAwS/pohk+xpnRgJ5zfIcqo/mUogK0SGzjUdjXrXp/VYnkJAQEwRGRBdmOGZJGOe7ypHgWP8bEjtHLAURIaM=
+	t=1789147422; cv=none; b=MaU/Dyt3e+9Rh5MHidA7fJzgmu4OR6kTE5yrKLCIdh1qqLSuBgYl6/OLAUc85MYHp09ig0llQqgYQNgc63M0IJZkjq9pyPjjjtJy7Nv3eWrhKZ7RmIh5SnxMfn7kChdQ+t14bvkAH0KMYo91SPadF1zlbZ+pOJ4YSahSDED71VU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789147087; c=relaxed/simple;
-	bh=YS5uo5DloeGRIVXajvRxTCJkecqjh+eSBOyNZmMKuEE=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=UYWijD65G+TnfFVeLCT/LvvUzG8C5pXLOFQDiRPoiAqpZuRiyrTfD/ymS/TbljC/cQ9wyDjdg0Yz3Io2QM4NZR26WOc0Nu8k55Uw8aW2PPGXSnUJDVqFqIDxCkdtfU9v2E0Z2g1jnjq3yyMI6ph9FoUY/U/jqoXBarsvojMJFF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=xiaomi.com; spf=pass smtp.mailfrom=xiaomi.com; arc=none smtp.client-ip=207.226.244.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=xiaomi.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xiaomi.com
-X-CSE-ConnectionGUID: a0ACOuSsRxSd6HdC8l9/AQ==
-X-CSE-MsgGUID: nBGPCgqnRZe6e8CgfTz6zA==
-X-IronPort-AV: E=Sophos;i="6.27,97,1786982400"; 
-   d="scan'208";a="188644074"
-From: =?gb2312?B?wO7Hvw==?= <liqiang35@xiaomi.com>
-To: "vinicius.gomes@intel.com" <vinicius.gomes@intel.com>
-CC: "jhs@mojatatu.com" <jhs@mojatatu.com>, "jiri@resnulli.us"
-	<jiri@resnulli.us>, "davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
-	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
-	"horms@kernel.org" <horms@kernel.org>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-Subject: [PATCH net] net/sched: taprio: fix infinite loop in
- taprio_dequeue_tc_priority()
-Thread-Topic: [PATCH net] net/sched: taprio: fix infinite loop in
- taprio_dequeue_tc_priority()
-Thread-Index: AQHdQhEMcFkoIUEhqkujbx/7hdrLVg==
-Date: Fri, 11 Sep 2026 17:18:02 +0000
-Message-ID: <6a248e46f1654ddfaf074cdfffab1349@xiaomi.com>
-Accept-Language: zh-CN, en-US
-Content-Language: zh-CN
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1789147422; c=relaxed/simple;
+	bh=B94fuPPQ1bnAoKm0lCdvRXcL2N2fserIpoovwFRRsyM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=k5ihWg0fHxIj5Sh92LbUTMBLrN7AZS274eznpYOeqhTnWbbbBdVvT6tDCnsuP7YHW2ztIQXi+PHClxjlHqw+XQEaJwYpfPJlp/JZmT4WVDMQ8/VRlN66AjDJK+4ydIeWhxOPbdtkugAZ43Z1LaBpbaJBpWu/LnvoHrPeiok/LOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aXSndz7+; arc=none smtp.client-ip=74.125.228.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aXSndz7+"
+Received: by mail-pz2-f1.google.com with SMTP id 41be03b00d2f7-cbb818e57c9so398339a12.0
+        for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 10:23:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789147420; x=1789752220; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=uZCf1M3wsJ6bfzqwhwc39vyj8+h7HAZ76J8nI4RK/4Y=;
+        b=aXSndz7+1foYzW5RTbfH0VX6wr7jfr1DNHVUmlX94wILr5p3P7dDgqpXLHMLwPnwwa
+         kPEByJY42qEItkwwRiSuLxygC1NDQjavgFsqrWr1YJAAm5D7AjAij4E5JOVPORTNH6pO
+         orTpMdqdfywzSEJDMA/EkjLsLYcsCxuHoM6e6N8chu6Xp8FZAMAZhP57X5WDAKsswFKG
+         yUd+61xitSTLp2UVMXBjgbBby5Gae0eIz8eiOG7aBj2sW6fakRhX06JjIgl7wllnyXX6
+         EnWtoHs6gkg44PHaWOiAK4ozCSCe9Q2vIsA83ovsQLLC4K9qJRB//UE3/GL0bUI2DCRz
+         aKbA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789147420; x=1789752220;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=uZCf1M3wsJ6bfzqwhwc39vyj8+h7HAZ76J8nI4RK/4Y=;
+        b=RdR9AkmFbyhH+ooU0/B8NpdUqnr12SYbCUy2KMO38Kcpd29psie1oqTeSdP78PZNWa
+         6KT85x/Dh95Czl8eKsdJa9vJ87z2KqHjrRFiL4nQfKw7AHWbonUZchFRyw1BGboXxs7O
+         ba9+cQUWTc2uNCLbRuprDs1q/xpt+xCHrFZ3bNRU4rTfHs9y73asyDBNdzhveZwd8fiO
+         q9qd7ZTBw/yaapaio1BOokFS9A7B1cCp9R0Hi7Rhy+Y637isFSP6Voxl1oC2s4HrTwqf
+         D6gAoXOTOc+O7AtxuCiD1TGGLK3tX5+iSUfO+zipuQ06ouLv1+ZxP43yF4bTzT2TmRNb
+         3wKA==
+X-Gm-Message-State: AFuF++mEj9bfQh9UBdz2fdh8VUff68LfS3m1MlRCeKegISDDUC6CAcUx
+	g2DqzhsvzbUoYCTkn2Y14XVutBTgPRI68fQCBY0EYH/WGv8HKC7TCbg04rdpKBIsvH9hAV9M3/U
+	=
+X-Gm-Gg: AYBFou15ND1rw+C4L9Xk1Zbw7Y7fPZLuwKX/HRea8jJmTa2ETAVEVfPRnyKkbrntqQ0
+	Q7I7hNgFgjUfYAdbJEiZke27kzHB3I7betMPuKw7dzER/p7ePayXToGZQJJMw0+zuDoa5szOEtv
+	qCjvKiEceo+p245VZM9b2yqZ1seMInJwI/TravwLi9d+6IXrGDI+FK/pteZix6n1h2oMcKQZMkO
+	j44tXiEBhIpe8YbXQ7fqSw/6tX0Tj1xybAULaUVaUMwKAkmAaD2w7CuUv48pefzfZ+5h/mlFSby
+	SBR9YpSJNxH4VYR9cly/eqJD4CeEXXfr0dTHcdQPKv08SEoMT0Hn0VGUozbY8F/OHhXjZhW9SrB
+	106JH9pD7sM5cLAAXWOyTccvlzPg8cqJX+Wz5EMItAUW0fobiqoe46+O7I+MtpD0cHqHOPGRzoQ
+	Zio8i0isX8nKScGg//vq2/gDddLf4j4XfgfR4VvV4lV1gyNhuaejw/tndx0OBnbEInByYBlIO1B
+	k7v9kyj39fiJo0ytEeZe6IG3Q==
+X-Received: by 2002:a05:6a00:6caa:b0:848:4754:28e4 with SMTP id d2e1a72fcca58-86b32aebb27mr8559815b3a.15.1789147419952;
+        Fri, 11 Sep 2026 10:23:39 -0700 (PDT)
+Received: from J4f-Laptop.localdomain ([183.36.237.80])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-86b2a2b5c72sm1418774b3a.52.2026.09.11.10.23.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 11 Sep 2026 10:23:39 -0700 (PDT)
+From: Shihuang Liu <shlomojune6@gmail.com>
+To: netdev@vger.kernel.org
+Cc: bpf@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	andrii@kernel.org,
+	eddyz87@gmail.com,
+	memxor@gmail.com,
+	martin.lau@linux.dev,
+	song@kernel.org,
+	yonghong.song@linux.dev,
+	jolsa@kernel.org,
+	emil@etsalapatis.com,
+	ihor.solodrai@linux.dev,
+	john.fastabend@gmail.com,
+	sdf@fomichev.me,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	akpm@linux-foundation.org,
+	leon.hwang@linux.dev,
+	yatsenko@meta.com,
+	kpsingh@kernel.org,
+	dmitry.baryshkov@oss.qualcomm.com,
+	jordan@jrife.io,
+	nhudson@akamai.com,
+	avinash.duduskar@gmail.com,
+	rongtao@cestc.cn,
+	joe@wand.net.nz,
+	Shihuang Liu <shlomojune6@gmail.com>
+Subject: [PATCH bpf v2 1/2] bpf: reject incompatible socket assignments
+Date: Sat, 12 Sep 2026 01:23:12 +0800
+Message-ID: <20260911172313.64009-1-shlomojune6@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-DQpEZWFyIEFsbCwNCg0KDQpJIGFtIHdyaXRpbmcgdGhpcyBlbWFpbCB0byByZXBvcnQgYW4gaW5m
-aW5pdGUgbG9vcCBidWcgaW4gdGFwcmlvX2RlcXVldWVfdGNfcHJpb3JpdHkoKSB3aGlsZSBmdXp6
-aW5nIHRoZSBMaW51eCBFdGhlcm5ldCBuZXR3b3JraW5nIHN0YWNrIG9uIGVtYmVkZGVkIGRldmlj
-ZXMuDQoNCnRhcHJpb19kZXF1ZXVlX3RjX3ByaW9yaXR5KCkgY29udGFpbnMgYSBkby13aGlsZSBs
-b29wIHRoYXQgaXRlcmF0ZXMgb3ZlciBUWFFzIGJlbG9uZ2luZyB0byBhIHRyYWZmaWMgY2xhc3Mg
-dXNpbmcgYSBwZXJzaXN0ZW50IGN1cnNvciAocS0+Y3VyX3R4cVt0Y10pLiBUaGUgbG9vcCB0ZXJt
-aW5hdGlvbiBjb25kaXRpb24gY29tcGFyZXMgdGhlIGN1cnJlbnQgY3Vyc29yIHBvc2l0aW9uIHdp
-dGggaXRzIGluaXRpYWwgdmFsdWUgKGZpcnN0X3R4cSkuDQoNCkhvd2V2ZXIsIHRhcHJpb19uZXh0
-X3RjX3R4cSgpIHJlYWRzIHRoZSBUQy10by1UWFEgbWFwcGluZyBmcm9tIGRldi0+dGNfdG9fdHhx
-W3RjXSwgd2hpY2ggaXMgYSBwZXItZGV2aWNlIHNoYXJlZCBmaWVsZC4gV2hlbiBhbm90aGVyIHFk
-aXNjIChlLmcuLCBtcXByaW8pIGlzIGdyYWZ0ZWQgb250byB0aGUgc2FtZSBkZXZpY2Ugd2l0aCBh
-IGRpZmZlcmVudCBxdWV1ZSBtYXBwaW5nLCBkZXYtPnRjX3RvX3R4cVtdIGlzIHVwZGF0ZWQgYnV0
-IHRhcHJpbydzIHByaXZhdGUgY3VyX3R4cVtdIHJldGFpbnMgdGhlIHN0YWxlIHZhbHVlIGZyb20g
-dGhlIG9sZCBtYXBwaW5nLg0KDQpUaGlzIGNyZWF0ZXMgYSBzaXR1YXRpb24gd2hlcmUgZmlyc3Rf
-dHhxIChmcm9tIG9sZCBtYXBwaW5nIEEpIGZhbGxzIG91dHNpZGUgdGhlIG5ldyBbb2Zmc2V0LCBv
-ZmZzZXQrY291bnQpIHJhbmdlIChmcm9tIG5ldyBtYXBwaW5nIEIpLiBUaGUgd3JhcCBsb2dpYyBp
-biB0YXByaW9fbmV4dF90Y190eHEoKSBjb25maW5lcyB0aGUgY3Vyc29yIHRvIHRoZSBuZXcgcmFu
-Z2UsIHNvIGl0IGNhbiBuZXZlciByZWFjaCBmaXJzdF90eHEsIGNhdXNpbmcgYW4gaW5maW5pdGUg
-bG9vcA0KaW4gc29mdGlycSBjb250ZXh0IHdpdGggaW50ZXJydXB0cyBkaXNhYmxlZC4NCg0KVGhl
-IGxvb3AgbWFuaWZlc3RzIGFzIGEgaGFyZCBDUFUgbG9ja3VwOiB0aGUgYWZmZWN0ZWQgY29yZSBz
-cGlucyBpbmRlZmluaXRlbHkgaW4gdGFwcmlvX2RlcXVldWVfZnJvbV90eHEoKSwgdGltZXIgdGlj
-a3Mgc3RvcCwgUkNVDQpzdGFsbHMsIGFuZCB0aGUgcnRubF9sb2NrIGlzIGhlbGQgZm9yZXZlciAt
-LSBibG9ja2luZyBhbGwgbmV0d29yayBjb25maWd1cmF0aW9uICh0YywgaXAsIG5ldGxpbmspIGFu
-ZCBldmVuIHJlYm9vdC4gT25seSBTeXNScSBoYXJkDQpyZXNldCBjYW4gcmVjb3ZlciB0aGUgc3lz
-dGVtLg0KDQpUaGlzIGlzIDEwMCUgZGV0ZXJtaW5pc3RpYyB3aXRoIGp1c3QgMiB0YyBjb21tYW5k
-cyBhbmQgemVybyBuZXR3b3JrIHRyYWZmaWM6DQoNCiAgdGMgcWRpc2MgcmVwbGFjZSBkZXYgZXRo
-MCByb290IHRhcHJpbyBcDQogICAgICBudW1fdGMgMyBtYXAgMCAwIDEgMSAyIDIgMCAwIDAgMCAw
-IDAgMCAwIDAgMCBcDQogICAgICBxdWV1ZXMgMUAwIDFAMSAxQDIgYmFzZS10aW1lIDAgXA0KICAg
-ICAgc2NoZWQtZW50cnkgUyBmZiAxMDAwMDAwIGNsb2NraWQgQ0xPQ0tfVEFJDQoNCiAgdGMgcWRp
-c2MgcmVwbGFjZSBkZXYgZXRoMCByb290IG1xcHJpbyBcDQogICAgICBudW1fdGMgMyBtYXAgMCAw
-IDEgMSAyIDIgMCAwIDAgMCAwIDAgMCAwIDAgMCBcDQogICAgICBxdWV1ZXMgMUAxIDFAMiAxQDMN
-Cg0KVGhlIHNlY29uZCBjb21tYW5kIHRyaWdnZXJzIHRoZSBncmFmdCBwYXRoOiBtcXByaW8gd3Jp
-dGVzIGRldi0+dGNfdG9fdHhxW10gd2l0aCB0aGUgbmV3IG1hcHBpbmcsIHRoZW4gZGV2X2RlYWN0
-aXZhdGUoKSBmaXJlcw0KYSBwZW5kaW5nIFRYIHNvZnRpcnEgdGhhdCBjYWxscyB0YXByaW8ncyBk
-ZXF1ZXVlIHdpdGggdGhlIHN0YWxlIGN1cnNvciAtLSBpbnN0YW50IGRlYWRsb29wLg0KDQpUZXN0
-ZWQgb246DQogIC0gYWFyY2g2NCAoNi4xMi43My1ydDE1Kywgc3RtbWFjIHBoeXNpY2FsIE5JQyk6
-IDYuNWggbG9ja3VwDQogIC0geDg2XzY0ICg2LjguMC0xMzgtZ2VuZXJpYywgdmV0aCB2aXJ0dWFs
-IE5JQyk6IGluc3RhbnQgbG9ja3VwDQoNCkZpeCBieSBjbGFtcGluZyBmaXJzdF90eHEgaW50byB0
-aGUgY3VycmVudCBbb2Zmc2V0LCBvZmZzZXQrY291bnQpIHJhbmdlIHJlYWQgZnJvbSBkZXYtPnRj
-X3RvX3R4cVt0Y10gYXQgdGhlIHN0YXJ0IG9mIGVhY2ggVEMgaXRlcmF0aW9uLiBJZiB0aGUgY3Vy
-c29yIGlzIG91dHNpZGUgdGhlIHZhbGlkIHJhbmdlLCByZXNldCBpdCB0byBvZmZzZXQuIFRoaXMg
-YWRkcyBhIHNpbmdsZSBSRUFEX09OQ0UgKyBicmFuY2ggcGVyIFRDIHBlciBkZXF1ZXVlIGNhbGwg
-d2l0aCBuZWdsaWdpYmxlIG92ZXJoZWFkLg0KDQpGaXhlczogMmY1MzBkZjc2YzhjICgibmV0L3Nj
-aGVkOiB0YXByaW86IGdpdmUgaGlnaGVyIHByaW9yaXR5IHRvIGhpZ2hlciBUQ3MgaW4gc29mdHdh
-cmUgZGVxdWV1ZSBtb2RlIikNClNpZ25lZC1vZmYtYnk6IExpUWlhbmcgPGxpcWlhbmczNUB4aWFv
-bWkuY29tPg0KLS0tDQogbmV0L3NjaGVkL3NjaF90YXByaW8uYyB8IDE0ICsrKysrKysrKysrKysr
-DQogMSBmaWxlIGNoYW5nZWQsIDE0IGluc2VydGlvbnMoKykNCg0KZGlmZiAtLWdpdCBhL25ldC9z
-Y2hlZC9zY2hfdGFwcmlvLmMgYi9uZXQvc2NoZWQvc2NoX3RhcHJpby5jDQppbmRleCAzOWFjNWI5
-N2EuLjlhZTBkZTAwNyAxMDA2NDQNCi0tLSBhL25ldC9zY2hlZC9zY2hfdGFwcmlvLmMNCisrKyBi
-L25ldC9zY2hlZC9zY2hfdGFwcmlvLmMNCkBAIC03ODEsNiArNzgxLDcgQEAgc3RhdGljIHN0cnVj
-dCBza19idWZmICp0YXByaW9fZGVxdWV1ZV90Y19wcmlvcml0eShzdHJ1Y3QgUWRpc2MgKnNjaCwN
-CiAgc3RydWN0IHRhcHJpb19zY2hlZCAqcSA9IHFkaXNjX3ByaXYoc2NoKTsNCiAgc3RydWN0IG5l
-dF9kZXZpY2UgKmRldiA9IHFkaXNjX2RldihzY2gpOw0KICBpbnQgbnVtX3RjID0gbmV0ZGV2X2dl
-dF9udW1fdGMoZGV2KTsNCisgc3RydWN0IG5ldGRldl90Y190eHEgdGNfdHhxOw0KICBzdHJ1Y3Qg
-c2tfYnVmZiAqc2tiOw0KICBpbnQgdGM7DQoNCkBAIC03OTAsNiArNzkxLDE5IEBAIHN0YXRpYyBz
-dHJ1Y3Qgc2tfYnVmZiAqdGFwcmlvX2RlcXVldWVfdGNfcHJpb3JpdHkoc3RydWN0IFFkaXNjICpz
-Y2gsDQogIGlmICghKGdhdGVfbWFzayAmIEJJVCh0YykpKQ0KICBjb250aW51ZTsNCg0KKyAvKiBD
-bGFtcCB0aGUgcGVyc2lzdGVudCBjdXJzb3IgaW50byB0aGUgY3VycmVudCB0Y190b190eHENCisg
-KiByYW5nZS4gQW5vdGhlciBxZGlzYyAoZS5nLiBtcXByaW8pIGdyYWZ0ZWQgb250byB0aGUgc2Ft
-ZQ0KKyAqIGRldmljZSBtYXkgaGF2ZSByZXdyaXR0ZW4gZGV2LT50Y190b190eHFbXSBzaW5jZSB0
-YXByaW8NCisgKiBsYXN0IHNldCBjdXJfdHhxW10sIG1ha2luZyBmaXJzdF90eHEgZmFsbCBvdXRz
-aWRlIHRoZSBuZXcNCisgKiBbb2Zmc2V0LCBvZmZzZXQrY291bnQpIGludGVydmFsIGFuZCB0aGUg
-ZG8td2hpbGUgZXhpdA0KKyAqIGNvbmRpdGlvbiB1bnJlYWNoYWJsZSAtLSBhbiBpbmZpbml0ZSBs
-b29wLg0KKyAqLw0KKyB0Y190eHEuY29tYmluZWQgPSBSRUFEX09OQ0UoZGV2LT50Y190b190eHFb
-dGNdLmNvbWJpbmVkKTsNCisgaWYgKHRjX3R4cS5jb3VudCA9PSAwIHx8DQorICAgIGZpcnN0X3R4
-cSA8IHRjX3R4cS5vZmZzZXQgfHwNCisgICAgZmlyc3RfdHhxID49IHRjX3R4cS5vZmZzZXQgKyB0
-Y190eHEuY291bnQpDQorIHEtPmN1cl90eHFbdGNdID0gZmlyc3RfdHhxID0gdGNfdHhxLm9mZnNl
-dDsNCisNCiAgZG8gew0KICBza2IgPSB0YXByaW9fZGVxdWV1ZV9mcm9tX3R4cShzY2gsIHEtPmN1
-cl90eHFbdGNdLA0KICAgICAgIGVudHJ5LCBnYXRlX21hc2spOw0KLS0NCjIuNTAuMQ0KDQoNCkJl
-c3QgcmVnYXJkcywNCkxpUWlhbmcNClhpYW9taSBTaGFkb3dCbGFkZSBTZWN1cml0eSBMYWINCiMv
-KioqKioqsb7Tyrz+vLDG5Li9vP66rNPQ0KHD17mry761xLGjw9zQxc+io6y99s/e09q3osvNuPjJ
-z8PmtdjWt9bQwdCz9rXEuPbIy7vyyLrX6aGjvfvWucjOus7G5Mv7yMvS1MjOus7Qzsq9yrnTw6Oo
-sPzAqLWrsrvP3tPayKuyv7vysr+31rXY0LnCtqGiuLTWxqGiu/LJoreio6mxvtPKvP7W0LXE0MXP
-oqGjyOe5+8T6tO3K1cHLsb7Tyrz+o6zH68T6waK8tLXnu7C78tPKvP7NqNaqt6K8/sjLsqLJvrP9
-sb7Tyrz+o6EgVGhpcyBlLW1haWwgYW5kIGl0cyBhdHRhY2htZW50cyBjb250YWluIGNvbmZpZGVu
-dGlhbCBpbmZvcm1hdGlvbiBmcm9tIFhJQU9NSSwgd2hpY2ggaXMgaW50ZW5kZWQgb25seSBmb3Ig
-dGhlIHBlcnNvbiBvciBlbnRpdHkgd2hvc2UgYWRkcmVzcyBpcyBsaXN0ZWQgYWJvdmUuIEFueSB1
-c2Ugb2YgdGhlIGluZm9ybWF0aW9uIGNvbnRhaW5lZCBoZXJlaW4gaW4gYW55IHdheSAoaW5jbHVk
-aW5nLCBidXQgbm90IGxpbWl0ZWQgdG8sIHRvdGFsIG9yIHBhcnRpYWwgZGlzY2xvc3VyZSwgcmVw
-cm9kdWN0aW9uLCBvciBkaXNzZW1pbmF0aW9uKSBieSBwZXJzb25zIG90aGVyIHRoYW4gdGhlIGlu
-dGVuZGVkIHJlY2lwaWVudChzKSBpcyBwcm9oaWJpdGVkLiBJZiB5b3UgcmVjZWl2ZSB0aGlzIGUt
-bWFpbCBpbiBlcnJvciwgcGxlYXNlIG5vdGlmeSB0aGUgc2VuZGVyIGJ5IHBob25lIG9yIGVtYWls
-IGltbWVkaWF0ZWx5IGFuZCBkZWxldGUgaXQhKioqKioqLyMNCg==
+bpf_sk_assign() permits TC ingress programs to associate an IPv6 packet
+with an AF_INET socket. The receive path can then interpret IPv6 skb
+control data as IPv4 metadata. When IP_RETOPTS is enabled, this can cause
+__ip_options_echo() to copy beyond its stack buffer.
+
+Reject incompatible packet and socket families in bpf_sk_assign() and
+bpf_sk_assign_tcp_reqsk(). Continue to allow IPv4 packets to use
+dual-stack AF_INET6 sockets.
+
+Check request sockets against rsk_ops->family, since their sk_family is
+inherited from the listener and sk_ipv6only is not initialized.
+
+Fixes: cf7fbe660f2d ("bpf: Add socket assign support")
+Assisted-by: LLM
+Signed-off-by: Shihuang Liu <shlomojune6@gmail.com>
+---
+Changes since v1:
+- Move family validation out of the IPv6 receive fast path and into
+  bpf_sk_assign() and bpf_sk_assign_tcp_reqsk().
+- Preserve IPv4 assignments to dual-stack AF_INET6 sockets.
+- Check request sockets using rsk_ops->family.
+- Split the fix into two patches and target the BPF fixes tree.
+
+v1:
+https://lore.kernel.org/netdev/20260823101809.26802-1-shlomojune6@gmail.com/
+
+ include/uapi/linux/bpf.h       |  4 ++++
+ net/core/filter.c              | 31 +++++++++++++++++++++++++++++++
+ tools/include/uapi/linux/bpf.h |  4 ++++
+ 3 files changed, 39 insertions(+)
+
+diff --git a/include/uapi/linux/bpf.h b/include/uapi/linux/bpf.h
+index 732b35cc08d1c..5d8f5e2c8db38 100644
+--- a/include/uapi/linux/bpf.h
++++ b/include/uapi/linux/bpf.h
+@@ -4568,6 +4568,10 @@ union bpf_attr {
+  *		**-EOPNOTSUPP** if the operation is not supported, for example
+  *		a call from outside of TC ingress.
+  *
++ *		**-EAFNOSUPPORT** if the socket family is not compatible with
++ *		the network layer of the packet, for example an **AF_INET**
++ *		socket and an IPv6 packet.
++ *
+  * long bpf_sk_assign(struct bpf_sk_lookup *ctx, struct bpf_sock *sk, u64 flags)
+  *	Description
+  *		Helper is overloaded depending on BPF program type. This
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 61940e7535523..e9cc76b775c0c 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -3491,6 +3491,32 @@ static int bpf_skb_proto_xlat(struct sk_buff *skb, __be16 to_proto)
+ 	return -ENOTSUPP;
+ }
+ 
++static bool bpf_sk_assign_family_ok(const struct sk_buff *skb,
++				    const struct sock *sk)
++{
++	unsigned short family;
++
++	switch (skb->protocol) {
++	case htons(ETH_P_IP):
++		family = AF_INET;
++		break;
++	case htons(ETH_P_IPV6):
++		family = AF_INET6;
++		break;
++	default:
++		return true;
++	}
++
++	/* Requests inherit the listener family, but have family-specific ops. */
++	if (sk->sk_state == TCP_NEW_SYN_RECV)
++		return inet_reqsk(sk)->rsk_ops->family == family;
++
++	return sk->sk_family == family ||
++	       (family == AF_INET &&
++		sk->sk_family == AF_INET6 &&
++		!ipv6_only_sock(sk));
++}
++
+ BPF_CALL_3(bpf_skb_change_proto, struct sk_buff *, skb, __be16, proto,
+ 	   u64, flags)
+ {
+@@ -7989,6 +8015,8 @@ BPF_CALL_3(bpf_sk_assign, struct sk_buff *, skb, struct sock *, sk, u64, flags)
+ 		return -ENETUNREACH;
+ 	if (sk_unhashed(sk))
+ 		return -EOPNOTSUPP;
++	if (!bpf_sk_assign_family_ok(skb, sk))
++		return -EAFNOSUPPORT;
+ 	if (sk_is_refcounted(sk) &&
+ 	    unlikely(!refcount_inc_not_zero(&sk->sk_refcnt)))
+ 		return -ENOENT;
+@@ -12526,6 +12554,9 @@ __bpf_kfunc int bpf_sk_assign_tcp_reqsk(struct __sk_buff *s, struct sock *sk,
+ 	if (net != sock_net(sk))
+ 		return -ENETUNREACH;
+ 
++	if (!bpf_sk_assign_family_ok(skb, sk))
++		return -EAFNOSUPPORT;
++
+ 	switch (skb->protocol) {
+ 	case htons(ETH_P_IP):
+ 		ops = &tcp_request_sock_ops;
+diff --git a/tools/include/uapi/linux/bpf.h b/tools/include/uapi/linux/bpf.h
+index 732b35cc08d1c..5d8f5e2c8db38 100644
+--- a/tools/include/uapi/linux/bpf.h
++++ b/tools/include/uapi/linux/bpf.h
+@@ -4568,6 +4568,10 @@ union bpf_attr {
+  *		**-EOPNOTSUPP** if the operation is not supported, for example
+  *		a call from outside of TC ingress.
+  *
++ *		**-EAFNOSUPPORT** if the socket family is not compatible with
++ *		the network layer of the packet, for example an **AF_INET**
++ *		socket and an IPv6 packet.
++ *
+  * long bpf_sk_assign(struct bpf_sk_lookup *ctx, struct bpf_sock *sk, u64 flags)
+  *	Description
+  *		Helper is overloaded depending on BPF program type. This
+-- 
+2.43.0
