@@ -1,212 +1,208 @@
-Received: from mail-ed2-f12.google.com (mail-ed2-f12.google.com [74.125.228.76])
+Received: from sonic309-27.consmr.mail.ne1.yahoo.com (sonic309-27.consmr.mail.ne1.yahoo.com [66.163.184.153])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16F1648820B
-	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 18:00:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.228.76
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789149611; cv=pass; b=qkiKqkPWyAGWdF0ZZtRpFrlWIUQFseJc+l0g+jNXWffqBw4PNMF4CnyPe23jBbawPRgy90sMHfgyq4aFarc2+MEhUWjmFv5LIWnJSJBdfQKJZza8NJOHj3Hg+UcKxOBxYJ5y0hE3X3aCXYzO+o/McgrOZquOWkqsKvyBjDSA4EM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789149611; c=relaxed/simple;
-	bh=75B6zdKCfHIJgushz+4ScUK9jZ/KjqUsttYbzMJwht8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ui0TgRDN5559YFbs8nmzJOrAu8iPbk6p+VKDPtO6AYxSouVZ3R2/GBats5MQ5JswiDJM28Qgy3Qjry2aA3JoYFu59WxlcmQnJZ91gh2tyczWp6j8P1IVOcsLfvvzmUwEvjWB2CkOKMI6pWVQF8Mun+FA//xYeZ7q8s3YR8ceqJg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=W5xQ4yOc; arc=pass smtp.client-ip=74.125.228.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12C744AD7E1
+	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 18:06:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.184.153
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789150010; cv=none; b=Db+LZ3J3EYDEegxV/lvdq49igrrFlmnldbJISClF3eHJ9bB9+FLaIFp0zSNUPzF1NhrnrYUYyI1tl2epAmEESsy9paMLmmRFFNmX3sruPaPeMWS+uZGjZeSWTvlPhkywKd7dSWVynOzbdCE5TXWJ5YFggavq/6ibVUCSH3avy+M=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789150010; c=relaxed/simple;
+	bh=Z57Iku1thXyXrd/tJuHixAzTq3I2TFBtAiDxp2vv5n8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tS8IBF9TITwwkcwA8atEH6PBEgFNcifGf1YTJNvx2Nlu1OQ9PBrqjAUBMK+Oz/RsfsTr9J6dRKMMn6qCglDTyvh18wWqXU/Odg+jrpcyQdyZz/1gR3RJ00kXmf2WJHkMQCETOS7iUKjuzgiRl1JWPCJxWeuGqvCebUhbb5q48c4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=schaufler-ca.com; spf=none smtp.mailfrom=schaufler-ca.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=SJo1s8Q1; arc=none smtp.client-ip=66.163.184.153
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=schaufler-ca.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=schaufler-ca.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="W5xQ4yOc"
-Received: by mail-ed2-f12.google.com with SMTP id 4fb4d7f45d1cf-6a5d8fd8d88so2886a12.0
-        for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 11:00:09 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789149608; cv=none;
-        d=google.com; s=arc-20260327;
-        b=mRs5slSAB7Y8F2uA11vdIDQ+lh+TlIscwzOKFaHsSy2Eotlee3l/KuBSslUg8m+yvT
-         We97igj5A03yFfq7m48XDm08EtlzjjjE3rNopgvseHRotjJxsWWioms4aS8LZuB7UKe+
-         VZVy3zZCrrLScjwv8/4F+fKPfZxgQsbCW+6ysWUUhZy4MAquhYgjsYUJ2G7VsakuVqzd
-         3h6C18KV4IaxXoEDxSaPisqbWTSg/OYb0Wu3sfoymr1Zn38lscQwFgWVpxsrUPCYVWQL
-         szU7G+iGMN9UqQb/Cpl/REAFjZJ2RJKEpgjMRAM5lhQaQUrXma4/dXbsoSjqy/lQNoUc
-         KLiQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=EPuBfl5vK2ggyAXvAEaHgEtOqAJU0sZXA/862mNKi+A=;
-        fh=1uR2LhNr6LBdQn+A9M50qYSEMxIkrc8hdgBLUzyhRHc=;
-        b=Hhu1EnMgjbCWL4dytNPEFRC87HYlYPJzczd/g9FVtQILLJkkTkWKdx9rE5+5FU2XWf
-         8zHPMJ+eLVejeUHucrQU1n1EoB9tU6+A9vh/b9MoPxVN2P61OW6MY187jR74cUxNeDww
-         IoD4PqZv3gbsOZkFs8KvP24+Oy337k2WTTrHcw/QtCvlwJSMAKVMxzsDUdeuvnmobPBg
-         +kQesGmnFQISQAh3QYRCQoVNu2ynddxgbAPIs6DOnCTFKGVq9q3hMvPcbsNBVziNkmnr
-         veCtPXkwUXPXIqR4ENdmkBPjBhX5iHpa0qcVebMOir0KAzczmoLWQd1RuhI2pWtSiKEx
-         jKMA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789149608; x=1789754408; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=EPuBfl5vK2ggyAXvAEaHgEtOqAJU0sZXA/862mNKi+A=;
-        b=W5xQ4yOcI2ba7kEPjjFVpiDYDWsePTb35OMen34pxhsRcj/EsVJa8jBN9D0+G8kjEb
-         p6phj4M9okxjfsWQCt9Q1yO3I+Afop71+pnBCtRw3scve8CdKKxhbULBlbnoFGt3AjbS
-         XFKqC0Q1S/m5qF9fRBvrpkwzQ8jQXCIx5T6C1Muyn2sCaAnFWEKKIYRxRFK+K+nsSsqC
-         lhOLD68Zed9fm7EWIF03GX7KTqKtYOcd9GuuNymYR95GxC/mXAXHpPSSQxKHCf+1YBIH
-         38/tjaid5qRrK5Q5lCOQ6OHD+q9CcfpRdSMl4uVSv8CjjLf86aiBnRQPWV89sL7854NL
-         deqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789149608; x=1789754408;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=EPuBfl5vK2ggyAXvAEaHgEtOqAJU0sZXA/862mNKi+A=;
-        b=alsvqP6As9/bzySfASAiQ4ZYeNX3yxM2XPg+rVVmmt8IxQhF9XJrFuDJPGomBxhUxF
-         pmxFLkTindnMYaQFmtdYMlHYxphRs+y3TrniG7SNvMwNSezcKvIiy9CqrffLj09Kva3N
-         Gl8kDznrVLREM34ZzcLkBGozgxpN9wrcAdvIKpM4p8QXpGxERwqJcw7RKVcXsu3h6tue
-         Sb3xuWwC8R6yLUZ32nL2Lr8kis2jsqcmgFYUxw5eszCmYeOj3hNchUwo+zRe7GBpeiH4
-         xVPkhhVOVbW4lVhHO8NQ/Nz74rzFHA/pAlP0pavg/ZmBpfGmTP7aIIMqf4E33DPX6iMv
-         idZQ==
-X-Gm-Message-State: AFuF++km2k69636ez1lOJSykEQuCCjRtR9KNcPmLK6oAHD9KwAv7q9vR
-	xjOvJMNFngOOix+UyGZe29ro1Gg0USFiAAGThI5ymetfZxY9ZUP4oseSx/PEUzAaIesc7jW2hNl
-	2+S8wA3Fw41OlFXpfE65JKseMlak7Ig0zYpOidnYJ
-X-Gm-Gg: AYBFou08sglZR98Xqtl398XuuUzWa9qF+3ujJo0LzLcRlmLtZ47pguLHlpN03Y7XV4j
-	S39p9epaV0ATxhWECrkBle2Cjjs1roHVkI2PD4zcUc4L3kwQJM6FJAg2exDMqYWB3I7hCr9rMyl
-	v11AQKd3xccSXZa+gtb8HfMl0vewhdqjdvTw4dlu8i2ORw+EVS4qEjGdmdegmKzWXf+8X/kFtNr
-	wHr7L2H0bSEDlKihO/ukJUBHFE2oDE+9WhOzpDlIkHt+JY4JzVPnl4OWL+i46kK98lTLpQWJha+
-	q4vq/udpJQKt4Sg4q4Cl9832fzR1Bg5PIB3+bzTyUHZX+3PJZJk+reSvTUbaiSwP4xRnGcb/jBn
-	ujLsMdktkdQ==
-X-Received: by 2002:aa7:ccd9:0:b0:6a6:6ded:b4b6 with SMTP id
- 4fb4d7f45d1cf-6a9cae90c46mr922a12.13.1789149607454; Fri, 11 Sep 2026 11:00:07
- -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="SJo1s8Q1"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1789150007; bh=N0ksFx+o56aUgsrzSCG07cwcgBEXSZlDOBLwLo9KB9k=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=SJo1s8Q1vVsugOTkF+1RDn5zyrCnUvWiMWl9DkJEFblXQQLOq7seoI4F9WXlRHxzPD8qos1Udfs/rQ6ASgk36BiU4zy84T6harikTSCh6CC2YYJUZu+/SlTdJ9vsElPI9kKM1SrN4LS90QeeWZ+vt8mASEzPgpQycijwcQpcC6gX0vPin5XRkVdE1hzEAh5O3MAHzWAFxpBd8t3ezWHhAv3zOlohttmoecJLca4rlpXdzjliKmKVixAymsLBmXQ/juLmU+LK1NqrAe8F5pUWukwK+eMwdtPB4ciqo/Xsa1nfLR3T5rKyRMAg4TnN4VkU1DwsS/VCTNcwsnltOgnUaw==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1789150007; bh=mFlbRWAU8zpPd4WQKQAAV/DybCFDlZfJY7R4tXwwsWJ=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=RoIQZZ4yhLjP6FIeLFtpx9faEPckfjJlgcsiZ565kUd5O/MJcgv6awSkn5s3pQ3smqN0bkHoJ/6uNsCfMelWb0Rp5KqlaBK9f4uaUt2J0//KnqBoibaRcGGlbaH0/9bTnIw/F+6VWHGmrazODBouQqCtHVzyUmKO/TX9BZLNQ0D2ufAnx4hlkFY1lCpPfi/XTXEyF8fkW0hjzVIihbfSonRK5PTP9murn58gmy5ATOg9QAyzXInYIH4NQWWidbTHV+MfKIi37HOffJ5KDOOp1HAZ8iBP/amjIPwuWey3BciIhaET2gC/q6xPvQjJlHS0Zth5lqE4WPGcyEPzHhv9Rw==
+X-YMail-OSG: Z9UMG9YVM1lctHC24HnZvwkpAFOQdH7gglIMIGoN9uePiY6tmM1qasTJ0aPnTzX
+ tzt29oMHmILoCJ0h7IC3u49YVUVYpMiAR3DOapJZF7js1zavVTijW7mz6eDy0Aknu2cJAIMBsqct
+ C3ya42KOnkk9oeom.b.QTEgcQUSRb.xUyEOV838qqsLQzKYF7X4scufuZH2ZMtPbL4WXhFrvUpaa
+ b2h7qJsroiEU4KnSo_4R743CTWkEixpeInkhNH0gSxv83Oy2Qp2WDEFOmBoIryMYglQrGdPXsoBd
+ pWMZwxUFVMji3.9WaIrRLWEwU0aCVr.y7dg7LlQywAhwgodXzjq7xYZrwHNyfNkFOZOORAsIxvzh
+ T2.QUhV.JpcG1Fb6DrNXHkSYUzD9f0kby6nX1oVX_X3RSxKW_gdPGix0Yg2F.SZCIlWjZiWlfSct
+ EHuva2iR3235_wLAiNbAoBnNIA0auBPdbrWlPKgBy8dD1rjj1N.QzBmZteeApzGC5cTnvC6GdB_Y
+ pj2GFD41VlRPuSGzC1TI4dE8UtcO9WCWDGJJ.N9ljlE7ridZHp5sXcvrlb2a1bJn8b8g.gM_k0Y.
+ rhnpwwCd5hEjjm.jA8eaExquIyZEltU8Mn8S09036R4ZIVIUqtSgx2_UM_72JpAgdr93yUloY4Ni
+ ZkPaUGtv8xsIZjdsKhzb9Di_L2bWvEmHR1tEWk0sRpWSJgpkcV4TInr7E.FKZCDYRWAgpQas1uQJ
+ 1TOZ6fnSFy0FwYnc34A27vgJO53IRnC3i1fXQzozdz_ciT8l.ZAKAjYby7iyEEUlPZ7AuInZrPza
+ IEdzUZNoQry0p.FCLskNePKfkzaolmO7kf1Xy1P9r1wU3jjfCqpzfxKG3gMpYwfVAsVNnOv6gDzl
+ McJQL.IE2U_X9ZGVZjg4rkSvsjGUx_bL4lOIDeQWj5nb8EO_hS3ZFeOXVa76rEtJBTamfTTW_7Zc
+ elKXzO0c0jsF_iGOvV2sX9TtagZFju13DPJgDpCFgKnK8RfROr.IP761grH7JdkzCRfBscbKj8k7
+ Ahwv8KwS_qMFpGCZsVnKIueTdlB7CJitfx_aC17KoiI.w5vP5MeCFnyYnZ36ZuvoA4KiKo_Ncwrm
+ CZCI96cIwehGcjN454ZgHYgmbxlMsQdtxl0ALCXIEd231qZxI5r3jKKzqWBRQBT6wyOE.JLSQXU3
+ bZlUojN5mC7Gx19NhnLlG.lg751JnoD40Ciw_ysQAywCq2134cpLDvJiqE5XaWXg_KeWNaSx07Rp
+ Z.Hp4cWssIRHg5vMk_aZs5Z7gP2r111AT0tPqB.Zl36I7EcMncMSuoK6TpjUpeCFPNA2Uzn6lWpv
+ Ayq9XnDzPBBYPg3Z5Yq8pSj2VM5qO2prq6fi4wRQysNvd_1lqrs3VtFc9ydPyX8RD8VYVSxv1uJ1
+ FB2N7hJH1gYewxLqD1TrMgTjhWKaalb0ZCqhrFy0PdSKktKHFroGOPZfZWAV4mekQimDDZkSUtnC
+ yw.h8nHeNuzHO8V0HTM_P4nsUeGGf6aLnKrOA9cgDr2U7b1pfnZjwOEC9f3OwqLxHVtN7DxbxRBt
+ XbRaMJ0t0JXpnmzFjCEwxOIe4YxMA79ojl0uBwAtD0Fy0woxF6BF3RJ1ZPPU0_PUXxNYTPAv797g
+ hCvs4V7D7ilhn2pHF7zgioCgAymlDwbbb1kS25sFEgT.ab0mYvR_DTYvZdm8xvptaKga9_3Q_4la
+ Nfg7LDwLu90rXbR_jFSVDg8_CRrWzNGZoExyv2KC5Ioxx4w5Z.vFZMm71aSdZqcz97awS9O27LEy
+ zOpyEkEiGjFrw1cgZZtyu3Ew0HqIQ0h4xkl52jQ4XgT.30ChKEVFYvIV7iuJxGT28kntbVLk7n5h
+ Qgdut7ArndRx8PCSev3URpMnf8AM0zR8NhPyD_xl.PBWGf9W2RDA6RRWpdjmgFHBTId2lKL_nSJl
+ LkxGwDO7rDn_SxbCFne8eoKNae0qOWs798diQQVJL0Ddb8aFSC4LFGAwrr_d22T4W8yy.Ndfb49y
+ z2dOYbOpJhAl12Ftt1XOzJGQFgwPv5Q_tiwpkT27_1AfToPZ2tfNNwEU5LXsoecZNMjPL637Fs88
+ Pm9FtfEyd0XJbD1XOE.f.OBlHHpbiaJgp4mXcZx0q4HZOY4DX10_8VcqfbSEaXrmk1KmYyVyvbHM
+ 3QxDwZXAF5FNMwXncGbQWYGe_Azdm2WnLc5rY4RP0yu0DZzoy5yQFXvQ.VZQ0.Ig5LzjCVNNskre
+ .fT9yhcSlPWI3IHZaEsNbS3ASejCKAAQtyEkTugxQ5eM1GTORRydzR8ohwGmxc5gursUvWq1obkV
+ s1L1HzWgkFSZ7
+X-Sonic-MF: <casey@schaufler-ca.com>
+X-Sonic-ID: b76ab4a0-2ab9-47b3-8cf5-8bdd5faf0803
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic309.consmr.mail.ne1.yahoo.com with HTTP; Fri, 11 Sep 2026 18:06:47 +0000
+Received: by hermes--production-gq1-678d9dd684-kwnw4 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 399694003e99ff36e3a7b206375e9b12;
+          Fri, 11 Sep 2026 17:46:02 +0000 (UTC)
+Message-ID: <ee89e26c-3dad-450b-8861-badf19afa141@schaufler-ca.com>
+Date: Fri, 11 Sep 2026 10:46:00 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260910143652.166683-1-f3lix.dev@gmx.de>
-In-Reply-To: <20260910143652.166683-1-f3lix.dev@gmx.de>
-From: Mina Almasry <almasrymina@google.com>
-Date: Fri, 11 Sep 2026 10:59:56 -0700
-X-Gm-Features: AcwNN1UFTPO9vNySiDMkdtVBGNXMPcgymzAD6eUPPtQ0NvEiLfkuP4abad7ttbk
-Message-ID: <CAHS8izOJfCCistkyZfMpfvf8jGEgtZ5gB5qROC59qnW43PPC=A@mail.gmail.com>
-Subject: Re: [PATCH net] net: devmem: fix TX binding UAF on netdevice unregister
-To: Felix Hoffmann <f3lix.dev@gmx.de>
-Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, Kaiyuan Zhang <kaiyuanz@google.com>, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 01/13 net-next] net: ipv4: introduce CONFIG_IPV4 to
+ decouple the IPv4 stack
+To: Fernando Fernandez Mancera <fmancera@suse.de>, netdev@vger.kernel.org
+Cc: horms@kernel.org, kuba@kernel.org, pabeni@redhat.com,
+ edumazet@google.com, davem@davemloft.net, Jason Gunthorpe <jgg@ziepe.ca>,
+ Leon Romanovsky <leon@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ Tony Nguyen <anthony.l.nguyen@intel.com>,
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+ Elad Nachman <enachman@marvell.com>, Saeed Mahameed <saeedm@nvidia.com>,
+ Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>,
+ Ido Schimmel <idosch@nvidia.com>, Petr Machata <petrm@nvidia.com>,
+ Edward Cree <ecree.xilinx@gmail.com>,
+ Maxime Chevallier <maxime.chevallier@bootlin.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Arend van Spriel <arend.vanspriel@broadcom.com>,
+ Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+ Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@kernel.dk>,
+ Christoph Hellwig <hch@lst.de>, Sagi Grimberg <sagi@grimberg.me>,
+ Chaitanya Kulkarni <kch@nvidia.com>, Saurav Kashyap <skashyap@marvell.com>,
+ Javed Hasan <jhasan@marvell.com>, GR-QLogic-Storage-Upstream@marvell.com,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ "Martin K. Petersen" <mkp@kernel.org>, Nilesh Javali <njavali@marvell.com>,
+ Manish Rangankar <mrangankar@marvell.com>, Varun Prakash
+ <varun@chelsio.com>, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ David Howells <dhowells@redhat.com>, Marc Dionne <marc.dionne@auristor.com>,
+ Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>,
+ Chuck Lever <cel@kernel.org>, Jeff Layton <jlayton@kernel.org>,
+ NeilBrown <neil@brown.name>, Olga Kornievskaia <okorniev@redhat.com>,
+ Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>,
+ Marek Lindner <marek.lindner@mailbox.org>,
+ Simon Wunderlich <sw@simonwunderlich.de>,
+ Antonio Quartulli <antonio@mandelbit.com>,
+ Sven Eckelmann <sven@narfation.org>,
+ Nikolay Aleksandrov <razor@blackwall.org>,
+ Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>,
+ Phil Sutter <phil@nwl.cc>, Johannes Berg <johannes@sipsolutions.net>,
+ Matthieu Baerts <matttbe@kernel.org>, Mat Martineau <martineau@kernel.org>,
+ Geliang Tang <geliang@kernel.org>, Julian Anastasov <ja@ssi.bg>,
+ Aaron Conole <aconole@redhat.com>, Eelco Chaudron <echaudro@redhat.com>,
+ Ilya Maximets <i.maximets@ovn.org>, Allison Henderson <achender@kernel.org>,
+ Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>,
+ Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+ Xin Long <lucien.xin@gmail.com>, "D. Wythe" <alibuda@linux.alibaba.com>,
+ Dust Li <dust.li@linux.alibaba.com>, Sidraya Jayagond
+ <sidraya@linux.ibm.com>, Mahanta Jambigi <mjambigi@linux.ibm.com>,
+ Tony Lu <tonylu@linux.alibaba.com>, Wen Gu <guwen@linux.alibaba.com>,
+ Jon Maloy <jmaloy@redhat.com>, Tung Quang Nguyen
+ <tung.quang.nguyen@est.tech>, Steffen Klassert
+ <steffen.klassert@secunet.com>, Herbert Xu <herbert@gondor.apana.org.au>,
+ Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+ "Serge E. Hallyn" <serge@hallyn.com>, Vikas Gupta
+ <vikas.gupta@broadcom.com>,
+ Bhargava Marreddy <bhargava.marreddy@broadcom.com>,
+ Rajashekar Hudumula <rajashekar.hudumula@broadcom.com>,
+ Nicolai Buchwitz <nb@tipi-net.de>, =?UTF-8?Q?Markus_Bl=C3=B6chl?=
+ <markus@blochl.de>, Arnd Bergmann <arnd@arndb.de>,
+ Heiner Kallweit <hkallweit1@gmail.com>,
+ Florian Fainelli <florian.fainelli@broadcom.com>,
+ Krzysztof Kozlowski <krzk@kernel.org>,
+ Qingfang Deng <qingfang.deng@linux.dev>, Julian Braha
+ <julianbraha@gmail.com>, Ethan Nelson-Moore <enelsonmoore@gmail.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Eric Biggers <ebiggers@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
+ Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>,
+ Willem de Bruijn <willemb@google.com>, Alyssa Ross <hi@alyssa.is>,
+ Joel Granados <joel.granados@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
+ linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
+ intel-wired-lan@lists.osuosl.org, oss-drivers@corigine.com,
+ linux-net-drivers@amd.com, linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-wireless@vger.kernel.org,
+ brcm80211@lists.linux.dev, brcm80211-dev-list.pdl@broadcom.com,
+ linux-nvme@lists.infradead.org, linux-scsi@vger.kernel.org,
+ target-devel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-afs@lists.infradead.org, linux-nfs@vger.kernel.org,
+ b.a.t.m.a.n@lists.open-mesh.org, bridge@lists.linux.dev,
+ netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+ mptcp@lists.linux.dev, lvs-devel@vger.kernel.org, dev@openvswitch.org,
+ rds-devel@oss.oracle.com, linux-sctp@vger.kernel.org,
+ linux-s390@vger.kernel.org, tipc-discussion@lists.sourceforge.net,
+ linux-security-module@vger.kernel.org,
+ Casey Schaufler <casey@schaufler-ca.com>
+References: <20260910144914.8025-1-fmancera@suse.de>
+ <20260910144914.8025-2-fmancera@suse.de>
+Content-Language: en-US
+From: Casey Schaufler <casey@schaufler-ca.com>
+In-Reply-To: <20260910144914.8025-2-fmancera@suse.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Mailer: WebService/1.1.26525 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 
-On Thu, Sep 10, 2026 at 7:37=E2=80=AFAM Felix Hoffmann <f3lix.dev@gmx.de> w=
-rote:
+On 9/10/2026 7:48 AM, Fernando Fernandez Mancera wrote:
+> Historically, the IPv4 protocol has been linked to the core INET
+> subsystem. Because shared infrastructure like the TCP/UDP engine,
+> routing or INET hashtables live inside net/ipv4/, it has been impossible
+> to compile a kernel with only IPv6 support.
 >
-> RX dma-buf bindings are invalidated by their memory provider when a
-> netdevice is unregistered. TX bindings have no bound RX queues and no
-> equivalent uninstall callback, so their physical and virtual netdevice
-> pointers remain live after the devices are freed.
+> This patch introduces the CONFIG_IPV4 Kconfig symbol, which is set to
+> 'def_bool y' for now. This does not allow to completely disable the
+> IPv4 stack yet but it lays the necessary build-system work for that
+> goal.
 >
-> Closing the owning netlink socket after device removal then makes
-> netdev_nl_sock_priv_destroy() dereference the freed physical netdevice to
-> hold and lock it. KASAN reports a slab-use-after-free and the kernel can
-> panic.
+> In addition, multiple subsystems Kconfig symbols across networking
+> features like tunnels, drivers and filesystems have been adjusted to
+> depend on IPv4. Keep on mind that follow-up work is required to convert
+> the Kconfig symbol to bool and remove the dependency on IPv4 where it
+> makes sense.
 >
-> The binding can also outlive the device used for its dma-buf attachment.
-> Since dma_buf_attach() does not hold a reference to that device, deferred
-> binding cleanup can pass a freed device to dma_buf_unmap_attachment().
->
-> Invalidate TX bindings that refer to either the physical or virtual
-> netdevice during unregister. Keep a reference on the exact DMA device
-> until the attachment is unmapped. The netlink socket destructor then uses
-> the existing device-gone path, while delayed dma-buf cleanup retains a
-> valid DMA device.
->
-> NETDEV_CMD_BIND_TX does not require GENL_ADMIN_PERM. The failure was
-> reproduced with the binding owned by UID 65534 across module removal.
->
-> Fixes: bd61848900bf ("net: devmem: Implement TX path")
-> Cc: stable@vger.kernel.org
-> Assisted-by: Codex:gpt-5
-> Signed-off-by: Felix Hoffmann <f3lix.dev@gmx.de>
+> Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
 > ---
-> The reproducer is available privately on request.
->
-> Testing:
-> - Full x86-64 kernel build with generic KASAN enabled
-> - Unpatched kernel: UID 65534 bind, netdevice removal, and socket close
->   produced the reported KASAN use-after-free and panic
-> - Patched kernel: the identical sequence completed without a KASAN report
-> - Patched kernel: 10 additional bind, removal, and close iterations passe=
-d
->
->  net/core/dev.c    |  2 ++
->  net/core/devmem.c | 47 +++++++++++++++++++++++++++++++++++++++++++++--
->  net/core/devmem.h |  7 +++++++
->  3 files changed, 54 insertions(+), 2 deletions(-)
->
-> diff --git a/net/core/dev.c b/net/core/dev.c
-> index ecfbd72d5d1a..c325fa7e0d6f 100644
-> --- a/net/core/dev.c
-> +++ b/net/core/dev.c
-> @@ -12401,6 +12401,8 @@ static void dev_memory_provider_uninstall(struct =
-net_device *dev)
->
->                 __netif_mp_uninstall_rxq(rxq, &rxq->mp_params);
->         }
-> +
-> +       net_devmem_uninstall_tx_bindings(dev);
->  }
->
->  /* devices must be UP and netdev_lock()'d */
-> diff --git a/net/core/devmem.c b/net/core/devmem.c
-> index f4d60654ce7f..a21a8fe92f58 100644
-> --- a/net/core/devmem.c
-> +++ b/net/core/devmem.c
-> @@ -77,6 +77,7 @@ void __net_devmem_dmabuf_binding_free(struct work_struc=
-t *wq)
->         dma_buf_unmap_attachment_unlocked(binding->attachment, binding->s=
-gt,
->                                           binding->direction);
->         dma_buf_detach(binding->dmabuf, binding->attachment);
-> +       put_device(binding->dma_dev);
->         dma_buf_put(binding->dmabuf);
->         xa_destroy(&binding->bound_rxqs);
->         percpu_ref_exit(&binding->ref);
-> @@ -153,6 +154,46 @@ void net_devmem_unbind_dmabuf(struct net_devmem_dmab=
-uf_binding *binding)
->         percpu_ref_kill(&binding->ref);
->  }
->
-> +void net_devmem_uninstall_tx_bindings(struct net_device *dev)
-> +{
-> +       struct net_devmem_dmabuf_binding *binding;
-> +       struct net_devmem_dmabuf_binding *found;
-> +       unsigned long xa_idx;
-> +
-> +       /* Unlike RX bindings, TX bindings have no memory provider whose
-> +        * uninstall callback can invalidate their net_device pointers.
-> +        */
+>  
 
-Please remove these LLM generated comments that make no sense. The
-comment is correct but no one reading this code is wondering if the TX
-binding have a memory provider.
+...
 
-> +again:
-> +       found =3D NULL;
-> +       rcu_read_lock();
-> +       xa_for_each(&net_devmem_dmabuf_bindings, xa_idx, binding) {
-> +               if (binding->direction !=3D DMA_TO_DEVICE ||
-> +                   (READ_ONCE(binding->dev) !=3D dev &&
-> +                    READ_ONCE(binding->vdev) !=3D dev))
-> +                       continue;
-> +
 
-Can you do a deeper investigation on what to do here or explain why
-this is correct. I'm not sure we should do anything on the vdev
-unregestiring? hmm...
+>  security/smack/Kconfig                        |  1 +
+>  54 files changed, 126 insertions(+), 66 deletions(-)
+>
+...
 
-FWIW I think probably an in-tree test would not go to net, but would
-be a separate patch that goes to net-next? Maybe? IDK. Up to stan.
+> diff --git a/security/smack/Kconfig b/security/smack/Kconfig
+> index 5a8dfad469c3..b4e6d0168bd1 100644
+> --- a/security/smack/Kconfig
+> +++ b/security/smack/Kconfig
+> @@ -3,6 +3,7 @@ config SECURITY_SMACK
+>  	bool "Simplified Mandatory Access Control Kernel Support"
+>  	depends on NET
+>  	depends on INET
+> +	depends on IPV4
+>  	depends on SECURITY
+>  	select NETLABEL
+>  	select SECURITY_NETWORK
 
---
-Thanks,
-Mina
+Why would this make sense? You're introducing the capability to use
+IP6 by itself, which is admirable, but you're disallowing that configuration
+with the Smack LSM. It appears that you've done a mechanical lookup in the
+Kconfig files and applied the minimal change to make the kernel compile,
+which probably works for most cases. It does not work for Smack. Unless
+there's a strong argument that Smack with IPv6 and without IPv4 is and always
+will be a pointless configuration you have my NAK.
+
