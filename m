@@ -1,215 +1,353 @@
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (mail-southcentralusazon11022106.outbound.protection.outlook.com [40.93.195.106])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F19503515CB;
-	Fri, 11 Sep 2026 14:32:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.195.106
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789137129; cv=fail; b=mmDVTK1/XM0u5X6B5yWJfzhP4sX1Ew0vbny76dR9R28GstKKzbLnQr76HWcdiFAUC+bbs8nHn51DpFrxy0kspPHfzkYUt8UyB1MST+kbkq1fw9aqRiYxidFTFg6QGc+vUYluFsDExrExmmcDEvFIQh8tc/AVw9+bEmtjN7Zsemc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789137129; c=relaxed/simple;
-	bh=CeZweqNhBzKYrq+ImFVlm7dBQ7DIPxMXOSooey4vy+s=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=s7FVcoWcqXDeLZGTSORhYxCFsXcoINJKD5p84jtGQZD1/IV1yXZLrxq/8h4OZ15yPPfBAwcGjEt1TdDqPyUHqCikcb8tNAIPYPbkD34DUTY9ZuuYQYPdP8xH6VAzgo87Y4KwvVYUv6zLFWJBTLpsujDOWESMzXW6ize1kQ4MNY0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=vcinity.io; spf=pass smtp.mailfrom=vcinity.io; dkim=pass (1024-bit key) header.d=vcinity.io header.i=@vcinity.io header.b=n+gOJaNB; arc=fail smtp.client-ip=40.93.195.106
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=vcinity.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=vcinity.io
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23A073624CF;
+	Fri, 11 Sep 2026 14:43:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789137819; cv=none; b=Nznbs3B6ipynX8at6Ba7xcr/lO8eDY2MTOBliYyxA48qGXWDCl++WNY3cXzUIHpoqdLVIRrl6siI7gzDPiPTy6NiJlsLO+l8rjqRqpf1lYbX5w1J4XY4KpD8vMqFuiSlSqxAe8zxlbXvKpQ8jDoni98uHuFHxopdhRKtlTYTpoc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789137819; c=relaxed/simple;
+	bh=iw24BJxAATKnd25eqMx/8+UCIpRconcOOPTUfVFcc58=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SBivd8HnskEiHKR+hQc9P7Tor+tXvjlHKNiR6xTu3FVC6f7XTR9j2+y5CXAoNkwP71dhR+IdqTs5t0RIpS0erzRzsovdAi04rEuckj0cFmGBtLwyTZ4kW7Ji/30hEPjP3Wa6Vxq1jmQzqwOttW2hzYlvMhO/0VkrKzX6UeUjnVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=ifssJJVp; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=vcinity.io header.i=@vcinity.io header.b="n+gOJaNB"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mAw1DEcP0Ik/zH7ONnymXw99EpUcebcn69Wf8Cp/bRE47XoFbKMIBK+yk5abzADZjj2Q4rmG/iDX6XWhcC2mPfYKRknwPv2zdjwX+Ra5QS+0xC60U8SxqLOaX/kENPzVxa+WWk6ztk2QIvow3wfddmrQcocDkk+mis9ABq4znkOPVlO1kpLpFCr4lgRrwSMRY8onycaqZ6uClUWhQcTjrmqHFL6oayH3LhJa420b2vh1cm2TaG2HHp14R7L6Mszoszs+eqVuMuF77JryiDLzJJ6JIBmtxtB+WQzE9o3SK4LaIkQPOcT6lIk0NcFWUMA7wyhdHfukO0KltEY0C3RTHw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CeZweqNhBzKYrq+ImFVlm7dBQ7DIPxMXOSooey4vy+s=;
- b=tj4tX+NJ/vFXlhJgSJGEeDT6XtkPb68ebjE6Jy9fNZAaJoZGMhU4sq6BFP6zPei+ftE91c2x2To9SBYN7bv3wq+tXmMwDDHmij5C2b5DWsARtr2dazCWJnB3I27bUouAiCSKxlNVZw8djcawriliqWO32hpm0nvqHajkYN+IvOq5zKGkH/ZGD0XrDZahaqmBTvsmxtVTfg7DG5E8wOwxgKRww5dkURxCcuDh6q8RFlQW+NcbVx9hu6BpanCQuIXfgmuU722UlCVHEwJijxD6EueAQKSikmzodVpFuVFrIMX0/q8apjxxFSqranAaSC1Ka5Zj6tmHbmlYqPdKn7yTpg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=vcinity.io; dmarc=pass action=none header.from=vcinity.io;
- dkim=pass header.d=vcinity.io; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vcinity.io;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CeZweqNhBzKYrq+ImFVlm7dBQ7DIPxMXOSooey4vy+s=;
- b=n+gOJaNBDGJ2oAgkdzamutoXj+bGCdnhgn1eWVP4jO8bB/lhmddVax2/25AoRcgKV4S+riRqoARRF1juImroIdzDOdsC98O6bl+FFA1BV5JyMTgi0WAH+VS8WkNYcSSkIh5Rn0TVhFaacqcJGASgg3iw7IlezT054Aw9uxfnne0=
-Received: from SN7PR03MB7183.namprd03.prod.outlook.com (2603:10b6:806:2e5::5)
- by LV0PR03MB989248.namprd03.prod.outlook.com (2603:10b6:408:394::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.382.15; Fri, 11 Sep
- 2026 14:31:40 +0000
-Received: from SN7PR03MB7183.namprd03.prod.outlook.com
- ([fe80::9124:ad4c:3f31:234a]) by SN7PR03MB7183.namprd03.prod.outlook.com
- ([fe80::9124:ad4c:3f31:234a%6]) with mapi id 15.21.0406.005; Fri, 11 Sep 2026
- 14:31:39 +0000
-From: Gunter Woytowitz <gunter@vcinity.io>
-To: Simon Horman <horms@kernel.org>
-CC: "K. Y. Srinivasan" <kys@microsoft.com>, Haiyang Zhang
-	<haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, Dexuan Cui
-	<decui@microsoft.com>, Long Li <longli@microsoft.com>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann
-	<daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, John
- Fastabend <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>,
-	"open list:Hyper-V/Azure CORE AND DRIVERS" <linux-hyperv@vger.kernel.org>,
-	"open list:NETWORKING DRIVERS" <netdev@vger.kernel.org>, open list
-	<linux-kernel@vger.kernel.org>, "open list:XDP eXpress Data
- Path:Keyword:?:b|_xdp?:b|_" <bpf@vger.kernel.org>
-Subject: Re: [PATCH net] net: mana: never hand a non-page_pool buffer to XDP
-Thread-Topic: [PATCH net] net: mana: never hand a non-page_pool buffer to XDP
-Thread-Index: AQHdQTe1Y5zxLC99hE6NpjcrmTVhK7bJOmSAgAA3o4A=
-Date: Fri, 11 Sep 2026 14:31:39 +0000
-Message-ID: <E180DC24-B376-48A5-AD9D-08427E69F312@vcinity.io>
-References: <20260910-mana-xdp-pagepool-v1-1-dab140d91fed@vcinity.io>
- <20260911111221.GE48209@horms.kernel.org>
-In-Reply-To: <20260911111221.GE48209@horms.kernel.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-mailer: Apple Mail (2.3864.600.51.1.1)
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=vcinity.io;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SN7PR03MB7183:EE_|LV0PR03MB989248:EE_
-x-ms-office365-filtering-correlation-id: 1a7a874f-b926-4833-0c5f-08df10116478
-x-ms-exchange-atpmessageproperties: SA
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|7416014|366016|1800799024|376014|23010399003|38070700021|4133799003|10067099003|4143699003|11063799006|6133799003|5023799004|22082099003|55112099003|18002099003|56012099006;
-x-microsoft-antispam-message-info:
- HKWAoOx5Cqj3+13ckFhSfLwtso1hiEeV0buXRWuCV7V+sg2apk7I27dCS5j1JUe62Hs7eIFwH5l244rLTXIF+bo8+vnWrrtObQlJIYCUEI92ezqK2iIJXkxAUHl41MlG7V1/PoDnH3wLpRTMt6oNFnW/sNTdSbBfPZfwIXf+ZDYBh3SR3DqzLZm+OqzCCQY7V5PPfRTroimnJVbzhmEI+4ZwpA4aMuLxT7dw6bsx54fsgM66OoxGK0YZCLP0NKljSatr/RZt6gRqHmVnFoSHep55Soas0j7nXGcYuWq5ldQ4l6IMajhGs+QF4pmBaAbOuWJ4Sp3GPjnscP759rru39yCenjXChAJGlxDz1wfC5NRyz2ia5yBTdVxtj8tWvxw8jAyPrIWJEzBb9vOZcsnOzVpN5/qtcguduqbNCQhqByNgO9uwvEY0HMyDyWFiNJrsJWn/pAvleuaYNN2ymYSgc7sSFYviMuWwaRtqlFP8Fws0eYJXQ83msZfVEMdwJr8hWFH3MuQlVIwINL9SeFXOHtB+vdgubgXThtQNC8b5TQUZtTp1xa/hDoQgyWP+yOMuGCmzXgDcXSg+AzD6UyDLBhEkXjJU8bNaHcNpr6X1TtjGTd97Dk8wUjJ8tQJyhjZHMuniAEJON0C6gjZziHX0A3NGkFheg/o2sJfmkvbodimBzKY8y8mNpD2loE78SrU3vRasrB8mCzb6369HLFuBc6+hvlsB/k6CzOlkWCgyFU=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR03MB7183.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(1800799024)(376014)(23010399003)(38070700021)(4133799003)(10067099003)(4143699003)(11063799006)(6133799003)(5023799004)(22082099003)(55112099003)(18002099003)(56012099006);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?Z21leU5PZUtwYStubEdZYTR5a0kzZExqTVNvUGhlTk1KTjhPenArSWVNQXJG?=
- =?utf-8?B?NDJQQk82OWgrbmxWcjVnTTVNZEVRQ3dqU0R0cmtHeUpoYzM4bEtMZ1YxOFJW?=
- =?utf-8?B?QkdsbWkvWkpRK3l5VW92YkxsMHk0OExQYU1KTmVyMmtCZlFoQkg2cnJmSGpY?=
- =?utf-8?B?M2F1eW1tejFpTm42Um11clV2ZFdidkNndUorNFpneFErRlFEUTN3YWdTMW0z?=
- =?utf-8?B?UE5PSVNUY0lEVm1kNHpOcmVGMW8xME9maUc1SW0veWJZWlFndkFLL0ZrZHk1?=
- =?utf-8?B?Y01LeTRFQWpvQ05xVkpINFNCQzBXSkdaZFJpUmJMZk9XM3F0cWRvZWlza01F?=
- =?utf-8?B?eCs5M1E5M0M0d1hNRUNscWYvNlRCQ2FBVUtSZ3NiOXlkNjkzRHBJbDVvTGZ0?=
- =?utf-8?B?MU5PS2krM3IyWWtvQk9ISW8yUXV3R3M5eFYrc1dFNTVOZ0hBcGJaT2c5Uloz?=
- =?utf-8?B?cXJZcGR4ZEQ5S0VoTGF2N2V3dDJ2d29rNkhvN3Z3bEEyQVQ2dUMyRGxIcEdV?=
- =?utf-8?B?cGxoL09xbSsxTEYxTTI1M2M4OW5MWllzaEhBOWFFVlUycHpybXlQYk9IK0g4?=
- =?utf-8?B?RnZ0MG1xRWJ5TW5DR0JoOENqVFNSYUdNSjVxTHRZY0t6bWVqa2JaTlh6QzZ4?=
- =?utf-8?B?Y0p3YTVSbkVIQ2dPcnRTNlNDWlFuU2loVGdCK1BNSG1VdGlERTRSTEVhOUYv?=
- =?utf-8?B?ZFF2YlRJd25HbDVPQ0FLdXYvc3hvTnVzMHVhVERqU1VqZVdpa0h3Qms4NUEy?=
- =?utf-8?B?OW1TclRqeWlzcFV5OUhhUS85cXNyaVM0dG5FWTVyTUVMVzY1QnRwSHppN1FR?=
- =?utf-8?B?V0pCU1d5RG1OL1dIYjY5VUkrd3pFeGU1dkMzZWlQZ1RVNnh5VVVpVEcvK3Fi?=
- =?utf-8?B?cnhlTnJ4WGx4bW4xSmM0MDMzUkZPVTJXbUUrdU1nalM3U2Z0QmZ1SlF5azE4?=
- =?utf-8?B?MDIzVTZILzBxelFTR1gxak1HSjRwR0hXMUJpMnZDbCtUa3ptVFVqN1R5bHVZ?=
- =?utf-8?B?RzBqRW02WVZRWFdiMUNZTXZ2WFBNMDFyOVA1OWJXeFpUMVpObW9jclVRM0tw?=
- =?utf-8?B?cTEzQWh4TG9Ec3ZJUkJlbzVFM0ZLdWc5VE9EOGZ1RVNHVytzSXlsazNnOHR1?=
- =?utf-8?B?TXNDN3RKUkJOTkhoOGZVOGc3b082UkJ6TldvbXBJSGx3aUE5VVZHUVJCSmJP?=
- =?utf-8?B?SVozUFZDTnFEdUFzQi9yK2NDUGdGNHAwNXNaVVJUWlNmNEVyNzZIU1VWaFFk?=
- =?utf-8?B?ZXVkR1hFUWFhZ0lFU0N0aDV0RVdLTlVTa1cyc0djc3BERldCQ1hrUGkxNEZh?=
- =?utf-8?B?VG5TMm9RY1VPa3pDOWo4bFZUR2F3WXc1RGw5aFQzbzdCU1YrVisrbkVaLzkx?=
- =?utf-8?B?c2JiZ0tUZlhZbkd6NXVaVXBvTVJvUGwxaGtUdGNXNTl0TTcrbXl4M2RpWG1R?=
- =?utf-8?B?ZHkxV1hzUFZzVWorZDg3MldoSmFNd0FNUEwvVEh1VldRWnB6b2QyY1J6N1FU?=
- =?utf-8?B?WUNtSGpQQ0d1UEs3a3NZV3JDV21zakNCYnB6ZWFOZ1RTcWxRUWpZQXJVQStU?=
- =?utf-8?B?Nmh4WTlXc3FxTkNaNHZCYkNLSWYraXF5UXZlOGw0NlI1cXdYZkVEY1hmNzJr?=
- =?utf-8?B?V082QlpPeHE0RHJkMTNpbFZ1MGp3TmNERmQrNC8xV1VpdFFZVWxSNHZGTUNj?=
- =?utf-8?B?WVRIY1dRelY2L2ZXRy9xWXVFWWZxVVh3WTV6amc1cENUKzlhVGJScEJ3MzBX?=
- =?utf-8?B?NFA2Z1VDNHUrbUc4UU5ob2FNNFRyWmp2T1JaMnA1ZkViTzhZSGl4SDQyOXVR?=
- =?utf-8?B?UXRZeDNCOE5OaDdGMFdGSmVudkY4L3ZlTjVXekZGOGh2a3ZHb2k3QWszRnZG?=
- =?utf-8?B?Y0Z0RkpHcjJNMVRDckRtWW1tM1U4K2VtekozTHgyNHBaS0dqMkhvK01QcmhO?=
- =?utf-8?B?TTNKam5IMW9hUHBEVkc2U3FTNzZjUVYrM0RGYWhEZUpwclhTbm5FQnNRNG1C?=
- =?utf-8?B?bWttdzBWK2JTK2xKK0NLb2paRmZBWGNrNHF6eXNVUDl4aWxmbzdKWFNvem5P?=
- =?utf-8?B?QzhzZVNQbHd1b1k0a2xHcEFycVlaWmVqcU1OQmUweGV0UllhQloxV21GSzRE?=
- =?utf-8?B?VXp4cDVNQlNMaDBHVmhDTHBUVi9aN1lBWXJmZ2MyN21jdCs4Vm03RU1YeG1o?=
- =?utf-8?B?azZnUFNaeFVKT0QxWkY0U2hBMDJVdkUwVXJjbzlMUGRNZXhXZzQzR3JDVzI2?=
- =?utf-8?B?OFAwYkRIY2xaSVprZFQ2NUNaNElHK1lOMWlMcHdLTnVURW1MSVl6RUROcXVM?=
- =?utf-8?B?TTJFVHo4SmVXQ2dnM3dMZklRc0F0SW9ncWFjSGgxMWR0M3RMZjhEdz09?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <8726DFF0FBAFDD4CA81F2E7A54B85C88@namprd03.prod.outlook.com>
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="ifssJJVp"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68BD1NmO4169275;
+	Fri, 11 Sep 2026 14:43:30 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=bxPNWA
+	+zA8HUTgq1oL1lCSrIeqX5n7G/10zWNxeTRBY=; b=ifssJJVpaODMG1QrJ4OL+b
+	v581TZsxkjJQmirMWuf88Nlfjy2LDqe506jUED28OgrFTSznf+2pqToS9uyA/7QS
+	9g04jFcDutCtGngfGYyeN0eaGE3B80r01uphw7motU2PDVh7k5dMw1h4KGXW09RN
+	4dM3J6WtT0vFVobqd+CveDiUij5p8Xl+l364B/s66vzWvR9FjmY65qTKwLrRS+Hk
+	FLhx5RMvOSz5TvrVIRA0YgPN7dbYrKfcXZij6zltMHQihz99hf6T7xjKD2yCWWQ4
+	G7fiHSjRn3ivlkluj+siTVty2Ev6xVC44XwQ78+UVKz5LHtkcmPwLNuaqXgqNQJg
+	==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gkd8nc5gr-1
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Fri, 11 Sep 2026 14:43:29 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68BEZAKv1745891;
+	Fri, 11 Sep 2026 14:43:28 GMT
+Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4gkvvreu98-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 11 Sep 2026 14:43:28 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
+	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68BEhRBv47710524
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 11 Sep 2026 14:43:27 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 027B25803F;
+	Fri, 11 Sep 2026 14:43:27 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6C02758064;
+	Fri, 11 Sep 2026 14:43:20 +0000 (GMT)
+Received: from [9.124.211.27] (unknown [9.124.211.27])
+	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 11 Sep 2026 14:43:20 +0000 (GMT)
+Message-ID: <cdfe2637-ee72-4fc7-b208-58019f8e2071@linux.ibm.com>
+Date: Fri, 11 Sep 2026 20:13:18 +0530
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: vcinity.io
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SN7PR03MB7183.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1a7a874f-b926-4833-0c5f-08df10116478
-X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Sep 2026 14:31:39.5260
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: aac3cb3b-f625-4cbc-ae65-2b4805bc1fa4
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: y5HsttLDw8xNh8UK83Pfbj5pTwqSvvmHV6dKoJJgiKCvC9vxtZ5tHKp6oGtiSecXzzREegY+6c0LhNpKk5REPQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV0PR03MB989248
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2] net/smc: fix abort_work termination in
+ smc_conn_free()
+To: netdev-bot+sashiko@kernel.org
+Cc: alibuda@linux.alibaba.com, dust.li@linux.alibaba.com,
+        sidraya@linux.ibm.com, mjambigi@linux.ibm.com, andrew+netdev@lunn.ch,
+        tonylu@linux.alibaba.com, guwen@linux.alibaba.com, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        horms@kernel.org, pasic@linux.ibm.com, linux-s390@vger.kernel.org,
+        netdev@vger.kernel.org, linux-rdma@vger.kernel.org
+References: <20260907114721.1303498-1-hidayath@linux.ibm.com>
+ <178895454461.219967.1315505922405395089@kernel.org>
+Content-Language: en-GB
+From: Hidayath Khan <hidayath@linux.ibm.com>
+In-Reply-To: <178895454461.219967.1315505922405395089@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=NMVAaE6g c=1 sm=1 tr=0 ts=6aa41391 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=hNcEowdC0seFr4XGLsAA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: gziv1Agz3qELbO7KcpZ3odfrIxMql0n5
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTExMDIwMyBTYWx0ZWRfX91DPoO9oHDrv
+ oiH69xHXVjpKa8ti6pIOM0GwYVEDF1vxJJgZX/4tCjc0p5gsY95mim24Zn7gyaerTSftgSV477Y
+ kWFiEdQFFx/Zl0veDGaJKq9Dju2lEvcYVkaQbNZW2ffXb+A1oLG8o22wDMsRtWmolctuoI6leQC
+ S91PMb6xNZ7AQDzye1bPU2zlE0fEJ8DuJoI+CfoGn3I/2rZS26jr+PgGGedZFUu5aquH2QeVhnB
+ ZDB4rmH/wCNGsrlyxLM1OU5mfFtSzxFKKNTaM5ZwUxBAkFsuv09AYlWpOpveQqzfJoMfXm1O3gg
+ LDUHL/rNvgwzeDp+RQ8e9B2+RVcefIS47YU23qU8zCSj8qQnmHXXHQzN6ePUZWc/Xg3rAYsCKzH
+ LfkEWIwRu0r9F+dnVen2sP/2Rm1rXt38+tmer8FcpHXSSKwrEeMxjYrMTRB/kD2HgsPgtA50CnO
+ 2QOC0g+RzSeYaNSp91w==
+X-Proofpoint-ORIG-GUID: F4QgWaDmAdpNaaK50IRm2l5XP50GrlRi
+X-Proofpoint-Spam-Info: AW1haW4tMjYwOTExMDIwMyBTYWx0ZWRfX1gHrYlsFiPmj
+ GMZJU254HA7BPzx+w6YC10kcg2zzmiUkJx7WNOR+vPgtZ1JR6yEev7Ne27upTb9rSqJnCgr2XS3
+ sB2bbVxbMLxgtZrn56jVJRG7cZiaSoU=
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
+ definitions=2026-09-11_04,2026-09-11_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 bulkscore=0 clxscore=1011 malwarescore=0 lowpriorityscore=0
+ priorityscore=1501 adultscore=0 suspectscore=0 impostorscore=0 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609110203
 
-SSBoYWQgYSB2ZXJ5IGhhcmQgdGltZSBjcmVhdGluZyB0aGUgcmVxdWVzdCBJIHN1Ym1pdHRlZCwg
-IGFuZCBkb27igJl0IGhhdmUgdGhlIHRpbWUgdG8gdHJ5IGFuZCBkbyB0aGF0IGFnYWluLg0KSWYg
-eW91IHRoaW5rIGl0IGlzIGEgd29ydGh5IGNoYW5nZSB5b3UgY2FuIGluY29ycG9yYXRlIGl0IHNv
-bWUgb3RoZXIgd2F5Lg0KDQoNCj4gT24gU2VwIDExLCAyMDI2LCBhdCA3OjEy4oCvQU0sIFNpbW9u
-IEhvcm1hbiA8aG9ybXNAa2VybmVsLm9yZz4gd3JvdGU6DQo+DQo+IE9uIFRodSwgU2VwIDEwLCAy
-MDI2IGF0IDExOjE3OjQ3QU0gLTA0MDAsIEd1bnRlciBXb3l0b3dpdHogd3JvdGU6DQo+PiBtYW5h
-X2NyZWF0ZV9yeHEoKSByZWdpc3RlcnMgTUVNX1RZUEVfUEFHRV9QT09MIGZvciB0aGUgcnhxDQo+
-PiB1bmNvbmRpdGlvbmFsbHksIHNvIGV2ZXJ5IGJ1ZmZlciBYRFAgY2FuIHNlZSBtdXN0IGJlIG93
-bmVkIGJ5IHRoYXQNCj4+IHBhZ2VfcG9vbDogb24gWERQX1JFRElSRUNUIHRoZSBmcmFtZSBpcyBm
-cmVlZCB0aHJvdWdoIF9feGRwX3JldHVybigpDQo+PiAtPiBwYWdlX3Bvb2xfcHV0X2Z1bGxfcGFn
-ZSgpLg0KPj4NCj4+IG1hbmFfeGRwX3NldCgpIGFzc2lnbnMgYXBjLT5icGZfcHJvZyBiZWZvcmUg
-Y2FsbGluZw0KPj4gbWFuYV9wcmVfYWxsb2NfcnhidWZzKCksIHdoaWNoIGFsbG9jYXRlcyB3aXRo
-IGRldl9hbGxvY19wYWdlcygpLCBhbmQNCj4+IG1hbmFfZmlsbF9yeF9vb2IoKSBwcmVmZXJzIHRo
-b3NlIGJ1ZmZlcnMgd2hlbmV2ZXIgbXBjLT5yeGJ1ZnNfcHJlIGlzDQo+PiBzZXQsIGxlYXZpbmcg
-ZnJvbV9wb29sIGZhbHNlLiBTbyBmb3IgYSBwb3J0IHRoYXQgaXMgdXAgd2hlbiBhIHByb2dyYW0N
-Cj4+IGlzIGF0dGFjaGVkLCB0aGUgZW50aXJlIHJlLWNyZWF0ZWQgcmluZyBpcyBmaWxsZWQgd2l0
-aCBwYWdlcyB0aGUNCj4+IHBhZ2VfcG9vbCBkb2VzIG5vdCBvd24uDQo+Pg0KPj4gVGhlIHBhZ2Vf
-cG9vbCB0aGVuIHNlZXMgcHBfcmVmX2NvdW50ID09IDAgd2hlbiBzdWNoIGEgZnJhbWUgaXMNCj4+
-IHJldHVybmVkLCBzbyB0aGUgYXRvbWljX2xvbmdfc3ViX3JldHVybigpIGluIHBhZ2VfcG9vbF91
-bnJlZl9uZXRtZW0oKQ0KPj4gZ29lcyBuZWdhdGl2ZSBhbmQgdHJpcHMgaXRzIFdBUk5fT04ocmV0
-IDwgMCksIG9uY2UgcGVyIHJlZGlyZWN0ZWQNCj4+IGZyYW1lLiBPYnNlcnZlZCBvbiBhIDUuMTQt
-YmFzZWQgZGlzdHJvIGtlcm5lbCwgd2hlcmUgdGhhdCB3YXJuaW5nIHNpdHMNCj4+IGF0IGhlbHBl
-cnMuaDoyNjk6DQo+Pg0KPj4gIFdBUk5JTkc6IENQVTogMyBQSUQ6IDAgYXQgaW5jbHVkZS9uZXQv
-cGFnZV9wb29sL2hlbHBlcnMuaDoyNjkNCj4+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICBfX3hkcF9yZXR1cm4rMHgyYjMvMHgyYzANCj4+ICBtYW5hX3Byb2Nlc3Nf
-cnhfY3FlIC0+IG1hbmFfcnVuX3hkcCAtPiBtYW5hX3J4X3NrYiAtPiB4c2tfbWFwX3JlZGlyZWN0
-DQo+PiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgLT4gX194ZHBf
-cmV0dXJuDQo+Pg0KPj4gT24gYSBWTSBib290ZWQgd2l0aCBjb25zb2xlPXR0eVMwIHRoZSByZXN1
-bHRpbmcgc3RhY2sgdHJhY2VzIHBlZyB0aGUNCj4+IGNvbnNvbGUgdGhyZWFkIGFuZCB0aGUgbWFj
-aGluZSBiZWNvbWVzIHVudXNhYmxlLg0KPj4NCj4+IEZpbGwgZnJvbSB0aGUgcGFnZV9wb29sIHdo
-ZW4gYSBwcm9ncmFtIGlzIGF0dGFjaGVkLCB1c2luZw0KPj4gbWFuYV94ZHBfZ2V0KCkgLS0gdGhl
-IHByZWRpY2F0ZSBtYW5hX2dldF9yeGJ1Zl9jZmcoKSBhbHJlYWR5IHVzZXMgdG8NCj4+IGNob29z
-ZSB0aGUgWERQIGJ1ZmZlciBnZW9tZXRyeS4gV2l0aCBubyBwcm9ncmFtIGF0dGFjaGVkIG5vdGhp
-bmcNCj4+IGNoYW5nZXMsIHNvIHRoZSBwcmUtYWxsb2NhdGlvbiBzdGlsbCBkb2VzIGl0cyBqb2Ig
-b2Yga2VlcGluZw0KPj4gbWFuYV9hdHRhY2goKSBmcm9tIGZhaWxpbmcgb24gYWxsb2NhdGlvbi4N
-Cj4+DQo+PiBMZWF2aW5nIHRoZSBwcmUtYWxsb2NhdGVkIGJ1ZmZlcnMgdW5jb25zdW1lZCBpcyBz
-YWZlOg0KPj4gbWFuYV9wcmVfZGVhbGxvY19yeGJ1ZnMoKSBkbWEtdW5tYXBzIGFuZCBwdXRfcGFn
-ZSgpcyB0aGUgcmVtYWluZGVyLA0KPj4gYW5kIGV2ZXJ5IGNhbGxlciAobWFuYV94ZHBfc2V0KCks
-IG1hbmFfY2hhbmdlX210dSgpLCBhbmQgYm90aCBldGh0b29sDQo+PiByaW5nIGFuZCBjaGFubmVs
-IHBhdGhzKSBhbHJlYWR5IHJ1bnMgaXQgYWZ0ZXIgbWFuYV9hdHRhY2goKS4NCj4+DQo+PiBUaGUg
-cnhxLT54ZHBfc2F2ZV92YSByZXVzZSBpbiBtYW5hX2dldF9yeGZyYWcoKSBhbHNvIGxlYXZlcyBm
-cm9tX3Bvb2wNCj4+IGZhbHNlLCBidXQgdGhhdCBjYWNoZSBpcyBmZWQgb25seSBieSB0aGUgZHJv
-cCBwYXRoJ3Mgbm9uLXBvb2wgYnJhbmNoLA0KPj4gd2hpY2ggdGhpcyBjaGFuZ2UgbWFrZXMgdW5y
-ZWFjaGFibGUgd2hpbGUgYSBwcm9ncmFtIGlzIGF0dGFjaGVkLCBzbw0KPj4gaXQgbmVlZHMgbm8g
-Zml4Lg0KPj4NCj4+IEZvdW5kIGFuZCBmaXhlZCBvbiBhIDUuMTQtYmFzZWQgZGlzdHJvIGtlcm5l
-bCBydW5uaW5nIEFGX1hEUCBvdmVyDQo+PiBNQU5BIGluIGNvcHkgbW9kZTogMjRNKyByZWRpcmVj
-dGVkIGZyYW1lcyB3aXRoIG5vIHdhcm5pbmdzLCB3aGVyZSB0aGUNCj4+IHVucGF0Y2hlZCBkcml2
-ZXIgd2FybmVkIG9uIGVzc2VudGlhbGx5IGV2ZXJ5IHJlZGlyZWN0ZWQgZnJhbWUuIEFsbCBvZg0K
-Pj4gdGhlIGNvZGUgaW52b2x2ZWQgaXMgdW5jaGFuZ2VkIGluIG1haW5saW5lLg0KPj4NCj4+IEZp
-eGVzOiBiMWQxM2Y3YTNiNTMgKCJuZXQ6IG1hbmE6IEFkZCBwYWdlIHBvb2wgZm9yIFJYIGJ1ZmZl
-cnMiKQ0KPj4gU2lnbmVkLW9mZi1ieTogR3VudGVyIFdveXRvd2l0eiA8Z3VudGVyQHZjaW5pdHku
-aW8+DQo+DQo+IFVuZm9ydHVuYXRlbHkgdGhlIENJIGZhaWxlZCB0byBhcHBseSB0aGlzIHBhdGNo
-IHRvIG5ldC4NCj4gV2hpY2ggaXMgY3VyaW91cywgYmVjYXVzZSBJIGFtIGFibGUgdG8gYXBwbHkg
-aXQgbG9jYWxseS4NCj4NCj4gQnV0IHBlcmhhcHMgaXQgd291bGQgYmUgYmVzdCB0byAocmViYXNl
-IGFuZD8pIHJlcG9zdA0KPiBhZnRlciB3YWl0aW5nIGZvciB0aGUgdXN1YWwgMjRoWypdIHRvIGVs
-YXBzZS4NCj4NCj4gWypdIGh0dHBzOi8vZG9jcy5rZXJuZWwub3JnL3Byb2Nlc3MvbWFpbnRhaW5l
-ci1uZXRkZXYuaHRtbA0KPg0KPiAtLQ0KPiBwdy1ib3Q6IGNoYW5nZXMtcmVxdWVzdGVkDQoNCg0K
-VGhpcyBlbWFpbCBtYXkgY29udGFpbiBjb25maWRlbnRpYWwgYW5kIHByaXZpbGVnZWQgaW5mb3Jt
-YXRpb24gYW5kIGlzIGludGVuZGVkIHNvbGVseSBmb3IgdGhlIHVzZSBvZiB0aGUgYWRkcmVzc2Vl
-KHMpLiBVbmxlc3MgeW91IGFyZSB0aGUgYWRkcmVzc2VlIG9yIGFyZSBhdXRob3JpemVkIHRvIHJl
-Y2VpdmUgbWVzc2FnZXMgZm9yIHRoZSBhZGRyZXNzZWUsIHlvdSBtYXkgbm90IHVzZSwgY29weSwg
-ZGlzc2VtaW5hdGUsIG9yIGRpc2Nsb3NlIHRoZSBpbmZvcm1hdGlvbiBvciBhbnkgYXR0YWNobWVu
-dHMgdG8gYW55IHRoaXJkIHBhcnR5LiBJZiB5b3UgaGF2ZSByZWNlaXZlZCB0aGlzIGNvcnJlc3Bv
-bmRlbmNlIGluIGVycm9yLCBwbGVhc2Ugbm90aWZ5IHRoZSBzZW5kZXIgaW1tZWRpYXRlbHkgYW5k
-IGRlbGV0ZSB0aGlzIGVtYWlsLiBZb3VyIGNvb3BlcmF0aW9uIGFuZCB1bmRlcnN0YW5kaW5nIGFy
-ZSBncmVhdGx5IGFwcHJlY2lhdGVkLiBBdHRlbnRpb24gRmVkZXJhbCBDdXN0b21lcnM6IFBsZWFz
-ZSBub3RlIHRoaXMgZW1haWwgcGxhdGZvcm0gaXMgTk9UIGFwcHJvdmVkIHRvIGNvbW11bmljYXRl
-IChzZW5kIG9yIHJlY2VpdmUpIENVSS4gRm9yIHF1ZXN0aW9ucyBvbiB0aGUgYXBwcm92ZWQgc3lz
-dGVtIHRvIGNvbW11bmljYXRlIENVSSwgcGxlYXNlIGNvbnRhY3QgeW91ciBkZXNpZ25hdGVkIFZj
-aW5pdHkgUmVwcmVzZW50YXRpdmUuDQo=
+
+On 09/09/26 5:19 pm, netdev-bot+sashiko@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 2 potential
+> issue(s) to consider:
+>
+> Critical: 0 · High: 1 · Medium: 1 · Low: 0
+>
+> - [High] New lock-drop window in smc_conn_free() invalidates the
+>    smc_cdc_wait_pend_tx_wr() barrier before the connection buffers/link…
+> - [Medium] smc_conn_free() silently changes its locking contract without
+>    documenting or asserting it, and its callers were not audited for the…
+>
+> --
+Thanks for the review. Both the findings are correct, and together they rule
+out the approach v2 took rather than asking for an adjustment to it, so v3
+drops the lock-drop entirely.
+>
+> net/smc: fix abort_work termination in smc_conn_free()
+>
+> This moves the abort_work cancel in smc_conn_free() into a new helper
+> smc_conn_cancel_abort_work() which drops the socket lock around
+> cancel_work_sync() and drops the socket reference when a pending item was
+> removed.  It also makes smc_conn_abort_work() skip smc_conn_kill() when
+> conn->freed is already set.
+>
+> Link: https://lore.kernel.org/netdev/20260806081549.595001-1-hidayath@linux.ibm.com/
+>
+> A couple of questions about the new lock drop below.
+>
+>> diff --git a/net/smc/smc_core.c b/net/smc/smc_core.c
+>> index 04aedd957543a..9a109eae73b92 100644
+>> --- a/net/smc/smc_core.c
+>> +++ b/net/smc/smc_core.c
+>> @@ -1251,6 +1251,25 @@ static void smc_buf_unuse(struct smc_connection *conn,
+>>   	}
+>>   }
+>>   
+>> +/* Cancel a pending abort work item.  smc_conn_abort_work() takes the socket
+>> + * lock, so the lock has to be dropped here.  Otherwise cancel_work_sync()
+>> + * waits for a worker that is itself blocked on the caller.  This is the idiom
+>> + * smc_close_cancel_work() already uses for close_work.
+>> + */
+>> +static void smc_conn_cancel_abort_work(struct smc_connection *conn)
+>> +{
+>> +	struct smc_sock *smc = container_of(conn, struct smc_sock, conn);
+>> +	struct sock *sk = &smc->sk;
+>> +
+>> +	if (current_work() == &conn->abort_work)
+>> +		return;
+>> +
+> [Severity: Medium]
+> Should the new "caller must hold the socket lock" requirement be documented
+> or asserted?  smc_conn_free() is declared cross-file in net/smc/smc_core.h
+> as
+>
+>      void smc_conn_free(struct smc_connection *conn);
+>
+> and its comment still reads only "remove a finished connection from its
+> link group", yet for lgr->is_smcd == false it now unlocks and relocks the
+> socket.  There is no sock_owned_by_me() or lockdep_assert_held() to catch a
+> caller that does not hold it.
+>
+> All current call sites do hold the lock (__smc_release(),
+> smc_close_active_abort(), smc_close_passive_work(), smc_conn_abort()), so
+> nothing is unbalanced today.  A backport or a new error path that reaches
+> smc_conn_free() without the lock would call release_sock() on a lock it does
+> not own and then return with the lock held.
+>
+> There is also a caller-visible half.  The tree's idiom around a
+> lock-dropping cancel revalidates state afterwards, as in
+> smc_close_active_abort():
+>
+>      sk->sk_state = SMC_PEERABORTWAIT;
+>      smc_close_cancel_work(smc);
+>      if (sk->sk_state != SMC_PEERABORTWAIT)
+>          break;
+>      sk->sk_state = SMC_CLOSED;
+>      smc_conn_free(&smc->conn);
+>      release_clcsock = true;
+>      sock_put(sk); /* passive closing */
+>
+> The smc_conn_free() calls in smc_close_active_abort(),
+> smc_close_passive_work() and __smc_release() revalidate nothing and act on
+> state that was observed before the new window (release_clcsock = true, the
+> "passive closing" sock_put()).
+>
+> Does this also invalidate the invariant declared in smc_listen_work()?
+>
+>      lock_sock(&new_smc->sk); /* release in smc_listen_out() */
+>
+> On an SMC-R handshake abort, smc_listen_work() -> smc_conn_abort() ->
+> smc_conn_free() now drops that lock in the middle, so another thread (for
+> example __smc_lgr_terminate(), which does lock_sock() before
+> smc_conn_kill()) can run against a half-set-up socket.
+>
+> The changelog describes the change as a local fix to the cancel; would it be
+> worth stating that the calling convention of smc_conn_free() changed for
+> every call site?
+>
+>> +	release_sock(sk);
+>> +	if (cancel_work_sync(&conn->abort_work))
+>> +		sock_put(sk); /* sock_hold done by schedulers of abort_work */
+>> +	lock_sock(sk);
+>> +}
+>> +
+> [Severity: High]
+> Does dropping the socket lock here void the pending-TX drain that
+> smc_conn_free() performs immediately before this call?
+
+Yes. This is the finding that ended the approach, and the ordering makes it
+the natural interleaving rather than a narrow race. In smc_cdc_tx_handler():
+
+     if (atomic_dec_and_test(&conn->cdc_pend_tx_wr)) {
+         if (sock_owned_by_user(&smc->sk))
+             conn->tx_in_release_sock = true;
+         else
+             smc_tx_pending(conn);
+
+         if (unlikely(wq_has_sleeper(&conn->cdc_pend_tx_wq)))
+             wake_up(&conn->cdc_pend_tx_wq);
+     }
+
+conn->tx_in_release_sock is set before the wake_up, on the very completion
+that lets smc_cdc_wait_pend_tx_wr() return, and the socket is owned by the
+task doing the teardown. So the drain returns with the flag already set,
+and the release_sock() immediately after it runs smc_release_cb() ->
+smc_tx_pending() -> smc_tx_sndbuf_nonempty(), which posts RDMA writes out of
+conn->sndbuf_desc and re-increments conn->cdc_pend_tx_wr. smc_buf_unuse()
+then memzero_explicit()s that buffer and sets used = 0, returning the
+descriptor to the link group pool - it never clears conn->sndbuf_desc - so
+another connection can be handed a buffer the adapter is still reading, and
+smcr_link_put()/smc_lgr_put() run with cdc_pend_tx_wr non-zero.
+>
+> The SMC-R branch of smc_conn_free() is now:
+>
+>      smc_cdc_wait_pend_tx_wr(conn);      /* cdc_pend_tx_wr drains to 0 */
+>      smc_conn_cancel_abort_work(conn);   /* release_sock() ... lock_sock() */
+>      ...
+>      smc_buf_unuse(conn, lgr);           /* zeroes sndbuf, used = 0 */
+>      smc_lgr_unregister_conn(conn);
+>
+> release_sock() on an SMC socket is not a passive unlock.  sk_prot->release_cb
+> is smc_release_cb(), and net/smc/af_smc.c has:
+>
+>      if (smc->conn.tx_in_release_sock) {
+>          smc_tx_pending(&smc->conn);
+>          smc->conn.tx_in_release_sock = false;
+>      }
+>
+> conn->tx_in_release_sock is set from BH in smc_cdc_tx_handler(), on the very
+> completion that lets smc_cdc_wait_pend_tx_wr() return, when the socket is
+> owned by the task:
+>
+>      if (sock_owned_by_user(&smc->sk))
+>          conn->tx_in_release_sock = true;
+>      else
+>          smc_tx_pending(conn);
+>
+>      if (unlikely(wq_has_sleeper(&conn->cdc_pend_tx_wq)))
+>          wake_up(&conn->cdc_pend_tx_wq);
+>
+> So smc_tx_pending() -> smc_tx_sndbuf_nonempty() -> smcr_tx_sndbuf_nonempty()
+> can post RDMA writes out of conn->sndbuf_desc and a CDC send, re-incrementing
+> conn->cdc_pend_tx_wr, inside the window this patch opens.
+> smc_tx_sndbuf_nonempty() only gates on sk_err, an empty send queue, peer RMBE
+> space and:
+>
+>      if (conn->killed ||
+>          conn->local_rx_ctrl.conn_state_flags.peer_conn_abort) {
+>          rc = -EPIPE;    /* connection being aborted */
+>          goto out;
+>      }
+>
+> conn->freed is never consulted on that path.
+>
+> Is there a reachable state where sk_err and conn->killed are both clear while
+> staged data is still present?  Closing an SMC-R socket with SO_LINGER=0 or
+> from an exiting task returns from smc_close_stream_wait() immediately:
+>
+>      if (!timeout)
+>          return;
+>
+>      if (!smc_tx_prepared_sends(&smc->conn))
+>          return;
+>
+> which leaves prepared sends outstanding and the state at SMC_PEERCLOSEWAIT1,
+> so __smc_release() does not free the connection.  When the peer closes,
+> smc_close_passive_work() reaches
+>
+>      smc_conn_free(conn);
+>
+> with sk_err == 0, conn->killed == 0 and data still staged.
+>
+> After lock_sock() returns, smc_buf_unuse() does memzero_explicit() on the
+> send buffer and sets used = 0, returning the descriptor to the link-group
+> pool while the HCA may still be reading it, and smcr_link_put() /
+> smc_lgr_put() then run with cdc_pend_tx_wr non-zero, so a later
+> smc_cdc_tx_handler() completion dereferences pend->conn and the link WR
+> structures.
+>
+> Note also that conn->tx_work is not cancelled here, while
+> smc_close_cancel_work() does cancel_delayed_work_sync(&conn->tx_work).  A
+> tx_work armed from BH via mod_delayed_work() in smcr_tx_sndbuf_nonempty()
+> can take the socket lock in the same window and post the same way.
+>
+> Before this patch cancel_work_sync() ran with the socket lock held, so no
+> lock-taking tx path could interpose between the drain and the buffer release.
+>
+> Would it work to cancel abort_work (and tx_work) before
+> smc_cdc_wait_pend_tx_wr(), or to repeat the drain after lock_sock() returns
+> and gate smc_tx_pending() on conn->freed?
+Cancelling before the drain does not help, because the problem is not the
+order of the cancel and the drain - it is that release_sock() on an SMC
+socket runs the tx path at all. Moving the cancel earlier moves the window,
+it does not close it: the lock is still dropped between the drain and
+smc_buf_unuse().
+
+Repeating the drain after lock_sock() has the same shape as the first one.
+The completion that ends the second drain can set tx_in_release_sock too.
+
+v3 removes the window: the socket lock is never dropped. smc_conn_free()
+sets conn->freed under the socket lock before it releases anything,
+and smc_conn_abort_work() takes the same lock, so an instance that is
+running is parked on that lock and will find the flag set, and one queued
+afterwards finds the same - and then the cancel no longer has to wait for
+anything, so cancel_work() replaces cancel_work_sync(). Returning the
+reference when it reports it removed a pending item fixes the leak v1
+was about.
+>
+>>   /* remove a finished connection from its link group */
+>>   void smc_conn_free(struct smc_connection *conn)
+>>   {
+>> @@ -1276,8 +1295,7 @@ void smc_conn_free(struct smc_connection *conn)
+>>   			smcd_buf_detach(conn);
+>>   	} else {
+>>   		smc_cdc_wait_pend_tx_wr(conn);
+>> -		if (current_work() != &conn->abort_work)
+>> -			cancel_work_sync(&conn->abort_work);
+>> +		smc_conn_cancel_abort_work(conn);
+>>   	}
+>>   	if (!list_empty(&lgr->list)) {
+>>   		smc_buf_unuse(conn, lgr); /* allow buffer reuse */
+> [ ... ]
+>
