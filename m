@@ -1,123 +1,165 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-137.mta0.migadu.com [91.218.175.137])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CF7D3AEF51;
-	Fri, 11 Sep 2026 09:51:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 927A43CB555
+	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 09:52:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.137
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789120286; cv=none; b=Ja8U//zMjFp5p87lXHgXj0mZJ2cbXYymmDsQlPe7bEzTb5lPTjtW8rkXDlaWnfGk8DLSidLyHikXnS4Srd+jkuXLH4uso/7adwt+LwSEFxYnAUfWvnVlWBQxxuFOAHdg5SyXpTU43JK+dTuaiQsHUi+CxS6L9YF04PXykMEJwok=
+	t=1789120351; cv=none; b=kwwHdNC+wKABTaKFB/jEJ+ZeJ5nTNWcOjTgfZZhEz9UFyKelfuI/KxIkkz93FzboxFgNTWW7RD1xQOjYEFOKEuFL9E5G8NqLHPwFO1pPOzuF0bc9rmCHKwBADuzujQ9ARAXp5Tg/oCCmlyPd5jKT+mcKsGIHwk9gCXnQLx4xbUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789120286; c=relaxed/simple;
-	bh=AB4HvI5yH8f134zmYFHs6P/e97IQEZB73uyMnHjSy84=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=oV64DVG7qF1AqU24EYGUiBdwX3srtD8NxxoQTB2O10ay+jVd+wurYBh2LFsIGwhlxuHGC2iLnnMYZHilw3fsc1CxuFLUYfMWiaDwSj05/O+vIgsB93usVvc5oWRhFFCPOOLZro3fnNOFSS1/3HxMLSXmbXGAiB/2Lju3YFKhRf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=a4AKDLgx; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	s=arc-20240116; t=1789120351; c=relaxed/simple;
+	bh=23/ENQ5gA857upXkBJbmjsuGG+iGltANLDGDlezshT4=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=HFswPbG7WHlWEvooobUFM0lHK7IdN4I5j+iqPnwT7k6iQA/xTYCI87m6+EMOsKoTseo1lFgrkrAl5o0haO9e2EQfcYcCAXVyZtr/G1tlT3LCAojDxkKPqPdRZyY6a4GOR86K6ba4xcCLWsctAVygEvrt49FYqLYKR0Ay71TIG4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cknow-tech.com; spf=pass smtp.mailfrom=cknow-tech.com; dkim=pass (2048-bit key) header.d=cknow-tech.com header.i=@cknow-tech.com header.b=Y47QMUxn; arc=none smtp.client-ip=91.218.175.137
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cknow-tech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cknow-tech.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="a4AKDLgx"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 13D7CA91E5;
-	Fri, 11 Sep 2026 11:51:07 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1789120274; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=WxltCiMmZCVVD/wZemNpAc0sPf2VHFiHQIPln3Gt0OI=;
-	b=a4AKDLgxsreyUu28KpBr9dW7kD7JMIMgACDD9QZheDQES1rRbPa2EE1gTsTmdMSAttxFP/
-	zEhGG9autKMP+UG3XXjoWdbsr4SNDNYjxpATCr8atWxzW4y3pnFQxXIKpOqhYdvCPn+Krn
-	+/qBmUBx0X1Lt+X7qOFU616D5Q+HhM8thMv0r9vFpvc3yd5e4BxENusBhVxjoUxndAsWZ6
-	C/DxT2sCU3seS1V7d/nxn2S6NrhM+IayWWHgrtUUbZAGQHvPdwnDPEMqPRYeZhw/EKMQ5i
-	N2c7w1txfJD6m98Htutw38r8qtC3Lr+Z13Eh7FjqOMTWB+e2E48eLEPibSVtGA==
+	dkim=pass (2048-bit key) header.d=cknow-tech.com header.i=@cknow-tech.com header.b="Y47QMUxn"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=23/ENQ5gA857upXkBJbmjsuGG+iGltANLDGDlezshT4=;
+ c=simple/simple; d=cknow-tech.com;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789120346; v=1; x=1789725146;
+ b=Y47QMUxn0TKeXOuEheK0ycl9t9263+tQ83GEl/ItuBW7+Hyc+Qpz6IVPyLsGQYkCU6KCAiid
+ gVj7eAaobAmg1BIf/3Cqy6LDdUh4cYf5lYUkdpgh/cNGRZNNhHWHr8PbWmlbGedcFVtgDcG/Qz4
+ /Vjj75ZDfz5dORvuzFbMqknb4iAurd1fFuI0iXpc1JZNfVlv7WYUGFqO05h1mxSvxN4XlbvTUlF
+ oD36TemK2ca0ixXx6RNDDaFU24W1G+JYQ/0yLso8vvx9DrvpLLkfpChyFjZHcetef0KdawHKcd8
+ dYKERR6JsSnROndHTel9FtB0duUJNGL44M+JFIQpFKQoA==
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 336b87e032570366;
+	Fri, 11 Sep 2026 09:52:26 +0000
+X-Mizu-Trace-ID: 336b87e032570366
+X-Migadu-Flow: FLOW_OUT
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Date: Fri, 11 Sep 2026 11:51:07 +0200
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: kimwooseok <5mghybrid@khu.ac.kr>
-Cc: netdev@vger.kernel.org, theo.lebrun@bootlin.com,
- conor.dooley@microchip.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- richardcochran@gmail.com, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net RESEND 1/2] net: macb: Preserve one-step mode on
- rejected timestamp requests
-In-Reply-To: <178911388614.25348.8892025153904636456.macb-resend-1@khu.ac.kr>
-References: <178911388592.25348.177462085059763031.macb-plaintext-resend-cover@khu.ac.kr>
- <178911388614.25348.8892025153904636456.macb-resend-1@khu.ac.kr>
-Message-ID: <6928c282c12e03e4487f75afef4f0080@tipi-net.de>
-X-Sender: nb@tipi-net.de
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 11 Sep 2026 11:52:24 +0200
+Message-Id: <DLCE8BRWYCBL.2UH33L4RQMAGN@cknow-tech.com>
+Cc: "Sebastian Reichel" <sebastian.reichel@collabora.com>,
+ <netdev@vger.kernel.org>, <devicetree@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+ <linux-rockchip@lists.infradead.org>
+Subject: Re: [PATCH v5 2/7] arm64: dts: rockchip: describe PCIe RTL8125
+ Ethernet on NanoPC-T6
+From: "Diederik de Haas" <diederik@cknow-tech.com>
+To: <ricardo@pardini.net>, "Heiner Kallweit" <hkallweit1@gmail.com>,
+ <nic_swsd@realtek.com>, "Andrew Lunn" <andrew+netdev@lunn.ch>, "David S.
+ Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>, "Jakub
+ Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>, "Rob
+ Herring" <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
+ "Conor Dooley" <conor+dt@kernel.org>, "Heiko Stuebner" <heiko@sntech.de>
+X-Mailer: aerc 0.22.0-9-ge948bb7230f4
+References: <20260910-rk3588-dts-rtl-eth-describe-dt-alias-v5-0-c1b9e5f10cd6@pardini.net> <20260910-rk3588-dts-rtl-eth-describe-dt-alias-v5-2-c1b9e5f10cd6@pardini.net>
+In-Reply-To: <20260910-rk3588-dts-rtl-eth-describe-dt-alias-v5-2-c1b9e5f10cd6@pardini.net>
 
-Hi Kimwoo
-
-On 11.9.2026 10:04, kimwooseok wrote:
-> gem_set_hwtst() programs NCR.OSSMODE while processing tx_type, before
-> validating rx_filter. An unsupported receive filter can therefore cause
-> the operation to return -ERANGE after changing the active transmit 
-> mode.
-> The cached configuration is not updated, so a subsequent SIOCGHWTSTAMP
-> reports the previous transmit mode even though the hardware has 
-> changed.
-> 
-> For example, configure HWTSTAMP_TX_ON with HWTSTAMP_FILTER_ALL, then
-> request HWTSTAMP_TX_ONESTEP_SYNC with HWTSTAMP_FILTER_NTP_ALL. The 
-> latter
-> request fails but enables one-step synchronization. The reverse
-> transition can clear one-step mode despite returning the same error.
-> 
-> Defer programming the one-step mode until both the transmit type and
-> receive filter have been validated. Rejected receive filters then leave
-> the active transmit mode unchanged.
-> 
-> Fixes: ab91f0a9b5f4 ("net: macb: Add hardware PTP support")
-> Assisted-by: GPT-6 Astra
-> Signed-off-by: kimwooseok <5mghybrid@khu.ac.kr>
+On Thu Sep 10, 2026 at 10:07 PM CEST, Ricardo Pardini via B4 Relay wrote:
+> From: Ricardo Pardini <ricardo@pardini.net>
+>
+> The FriendlyElec NanoPC-T6 carries two on-board Realtek RTL8125 NICs
+> behind pcie2x1l0 and pcie2x1l2.
+>
+> Describe the fixed function nodes and attach ethernet0/ethernet1
+> aliases, so that U-Boot's fdt_fixup_ethernet() can fill in the MAC
+> from its ethaddr/eth1addr env. The on-NIC EEPROMs on this board are
+> not pre-programmed with a unique MAC, so this gives a stable MAC
+> across boots that both U-Boot and the kernel agree on.
+>
+> Signed-off-by: Ricardo Pardini <ricardo@pardini.net>
 > ---
-> Resending as plain text because the previous webmail submission 
-> included
-> HTML and quoted and rewrapped the patch. No code changes; the 
-> Assisted-by
-> trailer now names the tool.
-> 
->  drivers/net/ethernet/cadence/macb_ptp.c | 7 +++++--
->  1 file changed, 5 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/cadence/macb_ptp.c 
-> b/drivers/net/ethernet/cadence/macb_ptp.c
-> index e5195d7..51659bb 100644
-> --- a/drivers/net/ethernet/cadence/macb_ptp.c
-> +++ b/drivers/net/ethernet/cadence/macb_ptp.c
-> @@ -418,11 +418,9 @@ int gem_set_hwtst(struct net_device *netdev,
->  	case HWTSTAMP_TX_OFF:
->  		break;
->  	case HWTSTAMP_TX_ONESTEP_SYNC:
-> -		gem_ptp_set_one_step_sync(bp, 1);
->  		tx_bd_control = TSTAMP_ALL_FRAMES;
->  		break;
->  	case HWTSTAMP_TX_ON:
-> -		gem_ptp_set_one_step_sync(bp, 0);
->  		tx_bd_control = TSTAMP_ALL_FRAMES;
->  		break;
->  	default:
-> @@ -460,6 +458,11 @@ int gem_set_hwtst(struct net_device *netdev,
->  		return -ERANGE;
->  	}
-> 
-> +	if (tstamp_config->tx_type == HWTSTAMP_TX_ONESTEP_SYNC)
-> +		gem_ptp_set_one_step_sync(bp, 1);
-> +	else if (tstamp_config->tx_type == HWTSTAMP_TX_ON)
-> +		gem_ptp_set_one_step_sync(bp, 0);
+>  arch/arm64/boot/dts/rockchip/rk3588-nanopc-t6.dtsi | 30 ++++++++++++++++=
+++++++
+>  1 file changed, 30 insertions(+)
+>
+> diff --git a/arch/arm64/boot/dts/rockchip/rk3588-nanopc-t6.dtsi b/arch/ar=
+m64/boot/dts/rockchip/rk3588-nanopc-t6.dtsi
+> index cfdb5c13f8606..550358a756618 100644
+> --- a/arch/arm64/boot/dts/rockchip/rk3588-nanopc-t6.dtsi
+> +++ b/arch/arm64/boot/dts/rockchip/rk3588-nanopc-t6.dtsi
+> @@ -20,6 +20,8 @@ / {
+>  	compatible =3D "friendlyarm,nanopc-t6", "rockchip,rk3588";
+> =20
+>  	aliases {
+> +		ethernet0 =3D &rtl_eth0;
+> +		ethernet1 =3D &rtl_eth1;
+>  		mmc0 =3D &sdhci;
+>  		mmc1 =3D &sdmmc;
+>  	};
+> @@ -644,6 +646,20 @@ &pcie2x1l0 {
+>  	pinctrl-names =3D "default";
+>  	pinctrl-0 =3D <&pcie2_0_rst>;
+
+The new pinctrl reference is ``pcie_25glan_perstb_b_pin``, so this patch ne=
+eds
+to be rebased.
+
+>  	status =3D "okay";
 > +
->  	bp->tstamp_config = *tstamp_config;
-> 
->  	if (gem_ptp_set_ts_mode(bp, tx_bd_control, rx_bd_control) != 0)
+> +	pcie@0,0 {
+> +		reg =3D <0x200000 0 0 0 0>;
+> +		#address-cells =3D <3>;
+> +		#size-cells =3D <2>;
+> +		ranges;
+> +		device_type =3D "pci";
+> +		bus-range =3D <0x21 0x2f>;
+> +
+> +		rtl_eth0: ethernet@0,0 {
+> +			compatible =3D "pci10ec,8125";
+> +			reg =3D <0x210000 0 0 0 0>;
+> +		};
 
-Reviewed-by: Nicolai Buchwitz <nb@tip-net.de>
-Tested-by: Nicolai Buchwitz <nb@tipi-net.de> # Raspberry Pi CM5
+Described on page 23 of the schematic titled '2.5G Ethernet B' and ``U12``
+(ie RTL8125BG) is connected to LAN2 which has ``ETH2`` as label on the case=
+.
 
-Thanks,
-Nicolai
+> +	};
+>  };
+> =20
+>  &pcie2x1l1 {
+> @@ -660,6 +676,20 @@ &pcie2x1l2 {
+>  	pinctrl-names =3D "default";
+>  	pinctrl-0 =3D <&pcie2_2_rst>;
+
+The new pinctrl reference is ``pcie_25glan_perstb_pin``.
+
+>  	status =3D "okay";
+> +
+> +	pcie@0,0 {
+> +		reg =3D <0x400000 0 0 0 0>;
+> +		#address-cells =3D <3>;
+> +		#size-cells =3D <2>;
+> +		ranges;
+> +		device_type =3D "pci";
+> +		bus-range =3D <0x41 0x4f>;
+> +
+> +		rtl_eth1: ethernet@0,0 {
+> +			compatible =3D "pci10ec,8125";
+> +			reg =3D <0x410000 0 0 0 0>;
+> +		};
+
+Described on page 22 of the schematic titled '2.5G Ethernet A' and ``U10``
+(ie RTL8125BG) is connected to LAN1 which has ``ETH1`` as label on the case=
+.
+
+So this results in:
+ETH1 -> rtl_eth1
+ETH2 -> rtl_eth0
+
+This sounds like a recipe for confusion and/or potential future mistakes.
+I think using ``rtl_eth1`` and ``rtl_eth2`` would be less confusing, but
+I'm fine with another construct which achieves a similar thing.
+
+Cheers,
+  Diederik
+
+> +	};
+>  };
+> =20
+>  &pcie30phy {
+
+
