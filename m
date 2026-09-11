@@ -1,63 +1,65 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C13C2369224
-	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 15:05:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8E2537267C
+	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 15:05:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789139113; cv=none; b=K/0GFNKDlHN6Povoy6kCJcd9gxC/lmlHM9IIu3yMWxh6XHihHHg0vOaMXjRam3m719IrizDi1Es0AxzNjK9fP+pggZx9dxJbhwZ5Jz69nnA5KVUd0cL//72Nt1CdbLnONbgjGh8HCRiKE58tKTJi6zJIbtOxYTvzeX/asDimPyQ=
+	t=1789139115; cv=none; b=eyk/yysaCSn8D6P7dW4sRK+pgnnj4OBIEWUBnKzezrnWzf54PgU+kKsan/TUjkrr8mtZXaoxFJZHeamUOMrs5Gx8+NqXfpokG3pJyviQyk6TWh7OI76AJfWeH7nRlxJp9OeHy0VEnLpGqNYSKkeODyE+V0Cd3fgOCXcYIOpc/TU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789139113; c=relaxed/simple;
-	bh=X2genqnDXLZF9jJMjeCeymPoDXvSYysWx04NPl080aE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=aXHaKgS1zaLbwWE9ydg8KqHwQ+zLWvXgEZAS2b6UsrGtZQaEqY3AkoYJYHXbbtZ2IWbjTUSs/Go2hG0hDt48F+Fpt9GxxJ4KWVHyd+95F28q2BdblOyERDb/S0GIFtTlvaohIQNC85LVUjArTdVsX8iXzpqsDMhb3FIRiwG6Ao8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=J0BN70gJ; arc=none smtp.client-ip=209.85.221.49
+	s=arc-20240116; t=1789139115; c=relaxed/simple;
+	bh=b5RQb0WbJ1RrTqB8nh+r8QKYRT6EMd81lemOzqrccCw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=nkwvLhB6CTR0hSVjvqhrvvR+V7zaiELOAM0Gnsc05rFNznBEkJZ4QekKU81nBq619LQ/7yXEg3an1GxwbgUKad7CbzZy9QiRaqjtZHEI3Ah3XnE6ZIaRrispFhme5dMBkgZ0xYKBpFhy/h785ilCtgNVylx6NeantXpB0uJLsy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=g2R/ghfw; arc=none smtp.client-ip=209.85.221.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="J0BN70gJ"
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-48436216a98so664875f8f.0
-        for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 08:05:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="g2R/ghfw"
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-48441fa5c37so694469f8f.3
+        for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 08:05:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1789139108; x=1789743908; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=mniijplyGZlkQZmDrYFnOPglJBLK+WFjfb4odBVk/dg=;
-        b=J0BN70gJBpALZ5NAb8HVZ41mSP9/J/DQNVlrJkhBvSTR1N8A7x8ddzZfKZh0SJlz0n
-         EG59W4FW4OfOLCLDJQ3QW5jOwWevhD5ne941ddcKG6gTU6L6czm4z9xKMrwviUmBV6sV
-         d7PEVY/QYi1rssM3VbzKy77hEZqLlViCkV7RuVqrHHmNQTT3y4gJNjbhAd0KHPQmppbF
-         GZZ789lfYYlhPD5y7WO/JpDdbqFUbaUF7u3mAlSDATgFCYd+Yjcd2il+A3SX7CfVEgYV
-         klEHMqJ59eev7SBZVHUcfH4ZBOyC7J+bgmEqW+MQHONP1dRwGuUwzuRTdJe7ARTxrZt8
-         B4kw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789139108; x=1789743908;
-        h=content-transfer-encoding:content-type:mime-version:message-id:date
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+        d=suse.com; s=google; t=1789139111; x=1789743911; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=mniijplyGZlkQZmDrYFnOPglJBLK+WFjfb4odBVk/dg=;
-        b=qQ8s0uCEeoXSoSHUZIZWihcTAz2HmqZsPLZRlsbzAIEDlUWsYQDYj8MHE4od2l76ZK
-         IhkRoXhrRMYZlb1Xt6Ybv6YFymstNEAZV08BconSDbwCQiHmYx7KpsPoE6gylJsTfBrx
-         w0RZfvtdMLoQYUUgb7mhb947gRP1FEHEXaObZNuZ4czEUfuODxsdXzKFRyzTdb4jMnQl
-         JOnIMqEEHgr2qmbYiqZmoDXAtbV9F0uYAROTPxZC0F0p14RlAmUcEjlKURIe5Ha64r5a
-         3g9VGGmkZk3HEhaGvWvw+3+ELcroJm5RfF8F5btjD9w1TxPqtoDW4WDxucCvpOHOJDB+
-         mP2w==
-X-Forwarded-Encrypted: i=1; AKwUvByB5zL0bhGMteEgwjxCsA7KWFNzN2GwFPWUUkIeZFeqFsDioMukeDlGAmut4uYwZOf01TWDjOc=@vger.kernel.org
-X-Gm-Message-State: AFuF++mRBnESOqT8RONEXwlTKmMyKaWfUy97zebnTpYfqAZbBLuFBbxk
-	rOm47LFVg63tzsascB2zdjBvnd5f+v5a6Qy8UwXi0Oiiev5IlPrf4pu+A+0SdrDMids=
-X-Gm-Gg: AYBFou2IS5PqJK4nwor9xgl1qVl16ZFOXtVbYFw4KCkLfPymdwFbPE2DwoL/R2+Ouin
-	VnY0TF3pUYCrQPbNcHJBbAuiCc23IwaVEc0rkK3uQvSrgbOvl415VZBcTqdXWm2/nu7jf+YfxvJ
-	C5vAcRJeB0LOaiHjSYXRmbqeKu41k0uIHS606dVa+TecJjxJV2J9EbXXCVchDyl2/YWElopL2uW
-	EL1nzuqx4TYA4MWgnuBjp46ZTEZrhyrHdvuZbEJ31BuaUDcNUpzoyVLWa8WIPoZzqdLGy/MO4vc
-	NVoBnvhJFygKy/1pMiiwaPbGAdNW43NxlGRTAG6u4C56gki5TsOQH+H4rmDH3aA/GPvzOz0k6mO
-	5ZJTqZ/C42zFlkMRG5tHnu+74A+C06sIZrDcvIJYWK2OFUdxmanjVjGLAW7smdvEC3NSrEOlklY
-	9VNyYQF2bjapLoNktUs/i/kKhg5WzahP2wUIipF8NQWL7ND6sxk3Lguqm1v6C9lVzOuyioYSy/0
-	Y25Zuqw6uI7l1sj
-X-Received: by 2002:adf:ee86:0:b0:485:8c17:975f with SMTP id ffacd0b85a97d-486eb2ffac7mr4035568f8f.33.1789139107698;
-        Fri, 11 Sep 2026 08:05:07 -0700 (PDT)
+        bh=glNc1H2atyKhB4WSC099onb1QIuZPymRMjgiGWekzpE=;
+        b=g2R/ghfwA9c7FbD3rDBiA2JMYJ3JDnGvXzdJPZ2/N37pWyUiR5fe/jkoM+S8Xj9Osh
+         Td7vi9tajpjbxZnzNHzkS8e+Dle9y/4gEVbukum/7r4YzBBxcJ9RitqsBzYcQQewkuuT
+         62U8XWflFKwu+bc9ImtwgSwK1mGCbgzHFI7iDs6ufxupSQo7ROowYWmEEkzxfPmCgujL
+         PWtxzIs3VJMWlw1d86Ly2VK+aU/U17WO7B0v3vjjrFWp/wxGHYe78Aj0iov3FPgmgvpA
+         cC7KRxN8jXseYdw1Bh1MCEaK5pIOdGK/enujMajEKDEL2DSR+sgdJSlG1X3pYamUW02S
+         GAuw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789139111; x=1789743911;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=glNc1H2atyKhB4WSC099onb1QIuZPymRMjgiGWekzpE=;
+        b=CdrZ78nrUPkiOkC2MfUGpn9girhpsN1nmlt0jocqblpDFBV0P4uWEIwrBs/L5E8ovn
+         rJSAeu4Z0rLfEDGJTjMCRJ4pPG6zmD+lYJCjDHG9pzS8doQ14kvr1cHjo9ugomOdlAKZ
+         imhelknM3M5tQww58xLtAo2sj2joM9Pa9OUQ43C/5kk++AeqcOgv+kEmqaoqiXXU389u
+         PnTqG+SDm1jVgcSiDtwCsww/QaIoPndoh1uUAQNoxfsFvZLhGPctNxnANjXpjpZWVdHI
+         Fa4xi8nhjAWtgyE+m7+TZNJZkfLWoUtyFOS99kKh1YNzZpcf735SVCLwem4IDAACL6RD
+         uEuQ==
+X-Forwarded-Encrypted: i=1; AKwUvBx3J1ILrJe9ub0XOakaEVQUv6tMLHBU5fMFK6DwTUs400XuYNAJP9tluv3tSUtBufWqQylziZk=@vger.kernel.org
+X-Gm-Message-State: AFuF++mvnpwSvLCRT8E5vIF2QUJ9V6uTSH3la7ODaLpJOIw8BILCTEOq
+	1SNGF3PkeAlZ08PE9y7EQ9coGVTxmKpepx9R/GdKROl4cW1iM5YlyiiJI8yIJZK/dfY=
+X-Gm-Gg: AYBFou2GkC2x0zMNdP9g7kXLP822g7k6KNrs5DY13NUJqJ/r08XMZbiZaPObCTRW19p
+	JEHujvy08b34nUR/T3Lpi1ywzCvMHAHizm6wKmj3PkxKo1unEZuitFa3i2vnhyuRWo+Xx9iXneS
+	rUBWM1QZNUU8bpte+Dg3Qk6GD9+FCsPvaRzJ3bskU+l4/ZoVitoFtl3ptEG5yHONML5S1M5A/zQ
+	YTHumpkY82zWQNLKeiDaV7Qrc7+Vw1W9iyR3QQJSBy3E69FhHMrQty9mgytCwbfMpsKqh2GynX3
+	UAfub+LaravgceeGzwlYAH87kP6cQIcE12bUAGFPTd8+Wy3iN4rHDdyPFzgDj9cF7/rpB6xeRm3
+	e1GNVNiXwyeJ7di668RC33mhE8x83wDOe5ry51TITZ8QbaUe5+BbUpWtSaALCqVA42Xk8r/j+5L
+	Zsktlxxd/xBoWuIcPgZUcMPJCJCke971Juqejz5T+fOwkuPuvI0y6uLwqW10JCjWEoIZhoydx79
+	p2KtccAmJMV8rD/
+X-Received: by 2002:a05:6000:1acf:b0:485:8a46:b3b8 with SMTP id ffacd0b85a97d-486eb32253bmr5503727f8f.32.1789139110499;
+        Fri, 11 Sep 2026 08:05:10 -0700 (PDT)
 Received: from localhost.localdomain ([2001:af0:8000:1409:193:86:92:181])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-486eb350686sm6853579f8f.27.2026.09.11.08.05.06
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-486eb350686sm6853579f8f.27.2026.09.11.08.05.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Sep 2026 08:05:07 -0700 (PDT)
+        Fri, 11 Sep 2026 08:05:10 -0700 (PDT)
 From: Petr Pavlu <petr.pavlu@suse.com>
 To: Jens Axboe <axboe@kernel.dk>,
 	Jakub Kicinski <kuba@kernel.org>,
@@ -88,10 +90,12 @@ Cc: Simon Horman <horms@kernel.org>,
 	dri-devel@lists.freedesktop.org,
 	linux-modules@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 0/6] Remove the error-injection.h include from linux/module.h
-Date: Fri, 11 Sep 2026 17:04:00 +0200
-Message-ID: <20260911-module-include-error_injection-v1-0-5da895d8c84d@suse.com>
+Subject: [PATCH 2/6] net: Include error-injection.h for ALLOW_ERROR_INJECTION()
+Date: Fri, 11 Sep 2026 17:04:02 +0200
+Message-ID: <20260911-module-include-error_injection-v1-2-5da895d8c84d@suse.com>
 X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260911-module-include-error_injection-v1-0-5da895d8c84d@suse.com>
+References: <20260911-module-include-error_injection-v1-0-5da895d8c84d@suse.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -99,76 +103,45 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-X-Change-ID: 20260816-module-include-error_injection-4f80e37a8ea6
 Content-Transfer-Encoding: 8bit
 
-linux/module.h appears in roughly 15k #include directives across the
-kernel. This makes it a "hot" header, so it should avoid pulling in
-unnecessary definitions.
+drivers/net/netdevsim/tc.c and net/core/skb_fault_injection.c use
+ALLOW_ERROR_INJECTION(), which is defined in asm-generic/error-injection.h.
+They currently rely on this header being included indirectly through
+linux/module.h -> linux/error-injection.h.
 
-The header currently includes linux/error-injection.h to obtain the
-definition of `struct error_injection_entry`. However, this is unnecessary
-because the type is only referenced in the file as a pointer, for which an
-incomplete type is sufficient.
+Add the missing include in preparation for removing the
+linux/error-injection.h include from linux/module.h.
 
-Add explicit includes of linux/error-injection.h to files that use the
-ALLOW_ERROR_INJECTION() macro and currently rely on it being provided
-indirectly via linux/module.h. Then remove the linux/error-injection.h
-include from linux/module.h.
-
-The first five patches can go through their respective trees if preferred.
-The final patch depends on the preceding cleanups.
-
+Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
 ---
-Petr Pavlu (6):
-      block: Include error-injection.h for ALLOW_ERROR_INJECTION()
-      net: Include error-injection.h for ALLOW_ERROR_INJECTION()
-      syscalls: Include error-injection.h for ALLOW_ERROR_INJECTION()
-      drm/i915: Include error-injection.h for ALLOW_ERROR_INJECTION()
-      drm/xe: Include error-injection.h for ALLOW_ERROR_INJECTION()
-      module: Remove the error-injection.h include from linux/module.h
+ drivers/net/netdevsim/tc.c     | 1 +
+ net/core/skb_fault_injection.c | 1 +
+ 2 files changed, 2 insertions(+)
 
- block/blk-core.c                                    | 1 +
- drivers/gpu/drm/i915/display/intel_connector.c      | 1 +
- drivers/gpu/drm/i915/display/intel_display_driver.c | 1 +
- drivers/gpu/drm/i915/gt/intel_engine_cs.c           | 1 +
- drivers/gpu/drm/i915/gt/intel_gt.c                  | 2 ++
- drivers/gpu/drm/i915/gt/uc/intel_guc_ct.c           | 1 +
- drivers/gpu/drm/i915/gt/uc/intel_uc.c               | 1 +
- drivers/gpu/drm/i915/gt/uc/intel_uc_fw.c            | 1 +
- drivers/gpu/drm/i915/i915_driver.c                  | 1 +
- drivers/gpu/drm/i915/i915_pci.c                     | 2 ++
- drivers/gpu/drm/i915/intel_uncore.c                 | 1 +
- drivers/gpu/drm/xe/xe_device.c                      | 2 +-
- drivers/gpu/drm/xe/xe_exec_queue.c                  | 1 +
- drivers/gpu/drm/xe/xe_ggtt.c                        | 2 +-
- drivers/gpu/drm/xe/xe_guc.c                         | 1 +
- drivers/gpu/drm/xe/xe_guc_ads.c                     | 2 +-
- drivers/gpu/drm/xe/xe_guc_ct.c                      | 2 +-
- drivers/gpu/drm/xe/xe_guc_log.c                     | 2 +-
- drivers/gpu/drm/xe/xe_guc_relay.c                   | 2 +-
- drivers/gpu/drm/xe/xe_hw_engine_class_sysfs.c       | 1 +
- drivers/gpu/drm/xe/xe_hw_engine_group.c             | 2 ++
- drivers/gpu/drm/xe/xe_mmio.c                        | 1 +
- drivers/gpu/drm/xe/xe_oa.c                          | 1 +
- drivers/gpu/drm/xe/xe_pm.c                          | 2 +-
- drivers/gpu/drm/xe/xe_pt.c                          | 2 ++
- drivers/gpu/drm/xe/xe_pxp.c                         | 2 ++
- drivers/gpu/drm/xe/xe_sriov.c                       | 2 +-
- drivers/gpu/drm/xe/xe_sync.c                        | 1 +
- drivers/gpu/drm/xe/xe_tile.c                        | 2 +-
- drivers/gpu/drm/xe/xe_tuning.c                      | 2 ++
- drivers/gpu/drm/xe/xe_uc_fw.c                       | 2 +-
- drivers/gpu/drm/xe/xe_vm.c                          | 1 +
- drivers/gpu/drm/xe/xe_wa.c                          | 2 +-
- drivers/gpu/drm/xe/xe_wopcm.c                       | 2 +-
- drivers/net/netdevsim/tc.c                          | 1 +
- include/linux/compat.h                              | 1 +
- include/linux/module.h                              | 1 -
- include/linux/syscalls.h                            | 1 +
- kernel/module/main.c                                | 1 +
- net/core/skb_fault_injection.c                      | 1 +
- 40 files changed, 45 insertions(+), 13 deletions(-)
----
-base-commit: df2908090cda368b01ff43709f51890076c56157
-change-id: 20260816-module-include-error_injection-4f80e37a8ea6
+diff --git a/drivers/net/netdevsim/tc.c b/drivers/net/netdevsim/tc.c
+index a415e02a6df1..e2d7d3aba193 100644
+--- a/drivers/net/netdevsim/tc.c
++++ b/drivers/net/netdevsim/tc.c
+@@ -1,5 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0
+ 
++#include <linux/error-injection.h>
+ #include <linux/netdevice.h>
+ #include <net/pkt_sched.h>
+ #include <net/pkt_cls.h>
+diff --git a/net/core/skb_fault_injection.c b/net/core/skb_fault_injection.c
+index 4235db6bdfad..2c7f519bef80 100644
+--- a/net/core/skb_fault_injection.c
++++ b/net/core/skb_fault_injection.c
+@@ -1,6 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+ 
+ #include <linux/debugfs.h>
++#include <linux/error-injection.h>
+ #include <linux/fault-inject.h>
+ #include <linux/netdevice.h>
+ #include <linux/skbuff.h>
+
+-- 
+2.55.0
