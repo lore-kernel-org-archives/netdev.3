@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86EA226ED37;
-	Fri, 11 Sep 2026 18:16:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B81748BD26;
+	Fri, 11 Sep 2026 18:16:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789150620; cv=none; b=eIiFT9A/4IoBExmZlOMQa/Gv6jAd0Pl/UGt96wZXciN+9QpwuPkeUZck5iEJr4hXLumrmX44ogr+q3+XXoVlAxy0smN2Dr3MPhX7a2HAjXyHVeH9Fg2faB0mAl3hl/Ii22ngZnVb5G10Luk8y8cVttCQbf3b03FWh+E5a5TeL2E=
+	t=1789150624; cv=none; b=e6oR13mlvJv1ehrjbH+SFUDshAYLZEh938mSKO3+of6i4/01lpMVR0wyBW5xTdzBTXFnjEDmHDEQkpNYioW7h9wwxZIpgV5AyqgTU9OBg7C2R7E3cZFUg4puxSvw8GeVN+d1lLZ02SSXA8GYEqZttTFLcVninY9v30xCVQxSe2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789150620; c=relaxed/simple;
-	bh=2mgFDUjbye0G2nwmkqeDpV3WGKw9k9KtH58MFw3YXJA=;
+	s=arc-20240116; t=1789150624; c=relaxed/simple;
+	bh=k5uSf2dNts7e5vsZyyzqBVgEnBWscvWs8HccNNL80OI=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=CCWVPRP9B/hhvEPVxmLPWD610QPF79J1hj4e5w6wlXZqC1ekbogUvuS2mfwkUigWHbq5JEPwHkLJrHEcDh+Np43S4Ky8J1PJf+i1tjt/RMUBvYRXyQRvashTW6MhPaxJQxBqPZvvJvX4zkX4ptvsa3KONP7fsY2vjg4OWRejWMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PsG+tP8j; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=kLoJAFvzl0aUvMqGLMozN5ODFGcL4SWV+h/f2jFV4EX+c7tmpcI3CGqJi2O5svGGDbXPGZ5zP8eupiuezUGPdBpMCCxC9W44UGb+nRPqxwCw2lkEvWyG6thgpE9INCDTNXeanIIC2lTU8plRGDx7NzC9WiPMO6ikUhTv+wkzGJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JsCitqDT; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PsG+tP8j"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72ABC1F000FF;
-	Fri, 11 Sep 2026 18:16:48 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JsCitqDT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E65D1F00898;
+	Fri, 11 Sep 2026 18:16:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789150609;
-	bh=Oy5ht02V67SMsL6ObO61SuJ2VWq3uiBqYswZKW/6MdM=;
+	s=k20260515; t=1789150613;
+	bh=jaXGq5qUGBG8UH/2bm3XnpBY1/FrawintgqnWIzo0gc=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=PsG+tP8jNb+ZiU7q3DorE6RsuOIY53mTT5aYJ0BAI5bJIsp/ETpzC8AoDw7AwpGKi
-	 FEKO4NLe4/mMoa7EWBnZH40FDYGkaFprOprnlrEPXHv846ElBiWcPvI2oukqDqdenj
-	 A8gLDpB0lEYwvY8qEUbb1DhkhEfkXSfHVvUWtUKYc/cNB5aOSnB1EcWdk5VnQyK3uL
-	 mqwvYSlpWcM8Qo8oN6kNvWfBWhPIyyy+75M+xwy3p4WggSR+gdpXXd0162FTM5EOI/
-	 6QQHUmky6IXoXHLTZeNL7dlxMjs9mbs6AL504drMSPrgt7KwGGxV9FJXS+P9i2OTxf
-	 i1WMDqYmsYM5g==
-Subject: Re: [PATCH net-next v2 3/5] net: Revalidate queue config for
- ringparam changes
+	b=JsCitqDTiq1dkYFfnOOQFBG3/Fp/h7jMnOseHgDhCGozOAQKCkQYu3xFJOwpoYu0K
+	 s57yboG5tIX9+391bOI/t1zte+w3JrzbNXFGMQl9wb4G3hXU940nGvRCn9rtabC2t3
+	 MhMLU3cxL3DPxOQcRfw1+42SeC+CYURHClfkuuoEQeEce0tnY/vsjavE8YvFeVO7aP
+	 WxIzbwCQWGdOB6YLVDsFFHx03pvJEVXIUruGquBX4yYXEi9VaoM9eY/8xpco/p8rUL
+	 JJOe38Ulse2XUpJDQSAYAflIazzZUxo4h0qNJHYmF3uJVUIoGvt4ls1zA8PccZaSKN
+	 t70Ara3mntAjw==
+Subject:
+ Re: [PATCH net-next v2 5/5] selftests: drv-net: Test large zcrx buffers
 From: netdev-bot+sashiko@kernel.org
 To: bjorn@kernel.org
 Cc: alexanderduyck@fb.com, kuba@kernel.org, kernel-team@meta.com,
@@ -38,11 +38,11 @@ Cc: alexanderduyck@fb.com, kuba@kernel.org, kernel-team@meta.com,
  sdf@fomichev.me, bobbyeshleman@meta.com, daskald@meta.com,
  bestswngs@gmail.com, maxime.chevallier@bootlin.com, jacob.e.keller@intel.com,
  leitao@debian.org, cuitao@kylinos.cn, asml.silence@gmail.com, dw@davidwei.uk
-Date: Fri, 11 Sep 2026 18:16:47 +0000
-Message-ID: <178915060796.219967.9039776741140153103@kernel.org>
-In-Reply-To: <20260910180908.1506533-4-bjorn@kernel.org>
-References: <20260910180908.1506533-4-bjorn@kernel.org>
-X-sashiko-severity: Low
+Date: Fri, 11 Sep 2026 18:16:52 +0000
+Message-ID: <178915061220.219967.16553162669849588226@kernel.org>
+In-Reply-To: <20260910180908.1506533-6-bjorn@kernel.org>
+References: <20260910180908.1506533-6-bjorn@kernel.org>
+X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
@@ -52,321 +52,215 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 4 potential
+Thank you for your contribution! Sashiko AI review found 3 potential
 issue(s) to consider:
 
-Critical: 0 · High: 0 · Medium: 0 · Low: 4
+Critical: 0 · High: 0 · Medium: 3 · Low: 0 (1)
 
-- [Low] struct netdev_config.rings is zero-allocated by
-  netdev_alloc_config() and netdev_qcfg_apply_dev() unconditionally…
-- [Low] The commit message is framed as closing a live misconfiguration
-  hole (naming fbnic's PPQ-entries-per-page behaviour), but in this…
-- [Low] The values stored into dev->cfg->rings after ->set_ringparam()
-  returns are the requested values, not necessarily the ones the…
-- [Low] Both set paths validate the staged ring depths before calling
-  ->set_ringparam(), then re-copy the driver-adjusted depths into…
+- [Medium] In `process_recvzc()`
+  (tools/testing/selftests/drivers/net/hw/iou-zcrx.c:304-312) the new…
+- [Medium] The new hard failure in `run_server()` (iou-zcrx.c:389-391,
+  `error(1, 0, "no payload CQE ending past offset %u",…
+- [Medium] The test now enforces a placement guarantee that the in-tree
+  zcrx UAPI documentation explicitly disclaims.
+
+Pre-existing issues:
+- [Low] The reflowed `usage()` string (iou-zcrx.c:422-429) disagrees with
+  the option parser in the same file and with the Python driver: it…
 
 --
 
-net: Revalidate queue config for ringparam changes
+selftests: drv-net: Test large zcrx buffers
 
-This adds accepted RX/TX ring depths to struct netdev_config, stages
-proposed values in dev->cfg_pending, and revalidates every RX queue
-through ndo_validate_qcfg() before calling the driver's set_ringparam().
-The ioctl and netlink ring-set paths are converted to the same
-reconfiguration transaction.
+The zcrx selftest now requests an RX buffer larger than twice the device
+MTU and requires at least one zero-copy receive CQE to end past the first
+MTU-sized region of its chunk. A new -E option carries the threshold, and
+the server aborts if no such CQE was observed.
 
-Link: https://lore.kernel.org/all/20250421222827.283737-14-kuba@kernel.org/
+> diff --git a/tools/testing/selftests/drivers/net/hw/iou-zcrx.c b/tools/testing/selftests/drivers/net/hw/iou-zcrx.c
+> index f6a8fc5fac241..c0d9065b21030 100644
+> --- a/tools/testing/selftests/drivers/net/hw/iou-zcrx.c
+> +++ b/tools/testing/selftests/drivers/net/hw/iou-zcrx.c
 
-A few questions below.
-
->     Memory-provider queue configuration is validated when the provider is
->     bound. A later ethtool ring change may invalidate it because drivers
->     can size queue memory from both ring depth and RX page size. For
->     example, fbnic uses multiple PPQ entries for each RX page larger than
->     PAGE_SIZE, which reduces the usable software ring depth.
-[ ... ]
->     Use the same transaction for ioctl and netlink. Drivers without
->     ndo_validate_qcfg skip the new validation.
-
-[Severity: Low]
-The message reads as if it closes a live misconfiguration hole, but at this
-commit no in-tree driver implements a ring-depth-aware ndo_validate_qcfg and
-no driver reads qcfg->rx_ring_size, so netdev_queue_config_revalidate()
-cannot change any validation outcome yet.
-
-The two current ndo_validate_qcfg implementations, bnxt_validate_qcfg() and
-mlx5e_queue_validate_qcfg(), only inspect qcfg->rx_page_size. The fbnic
-consumer named in the message, fbnic_validate_qcfg() reading
-qcfg->rx_jumbo_ring_size, arrives in the following patch of the series.
-
-The last paragraph does disclose the limitation, so this is only about
-framing: could the message state that this is core plumbing and that the
-fbnic consumer lands in the next patch?
-
-> diff --git a/include/net/netdev_queues.h b/include/net/netdev_queues.h
-> index 70c9fe9e83cc4..31121900aac88 100644
-> --- a/include/net/netdev_queues.h
-> +++ b/include/net/netdev_queues.h
-> @@ -4,18 +4,59 @@
->  
->  #include <linux/netdevice.h>
->  
-> +/**
-> + * struct netdev_ring_config - accepted RX/TX ring depth configuration
-[ ... ]
-> + * Note: these values are only used for queue-configuration validation
-> + * today. Some drivers update their ring sizes without reflecting the change
-> + * in @cfg. Before using the stored values for anything else, those cases
-> + * need to be audited, and the core likely needs a driver notification API
-> + * similar to ethtool_rxfh_context_lost().
-> + */
-> +struct netdev_ring_config {
-> +	u32	rx_pending;
-> +	u32	rx_mini_pending;
-> +	u32	rx_jumbo_pending;
-> +	u32	tx_pending;
-> +};
-> +
->  /**
->   * struct netdev_config - queue-related configuration for a netdev
->   * @hds_thresh:		HDS Threshold value.
->   * @hds_config:		HDS value from userspace.
-> + * @rings:		Accepted RX/TX ring depths.
-> + *
-> + * Direct values, such as @hds_thresh and @rings, hold the current
-> + * accepted configuration. Drivers which use them for queue rendering
-> + * must initialize them with their defaults.
->   */
->  struct netdev_config {
->  	u32	hds_thresh;
->  	u8	hds_config;
-> +
-> +	struct netdev_ring_config rings;
->  };
->  
 [ ... ]
 
-> diff --git a/net/core/netdev_config.c b/net/core/netdev_config.c
-> index b101341e32513..1975de42a60d9 100644
-> --- a/net/core/netdev_config.c
-> +++ b/net/core/netdev_config.c
-> @@ -50,6 +50,15 @@ static int netdev_nop_validate_qcfg(struct net_device *dev,
->  	return 0;
->  }
+> @@ -298,6 +301,15 @@ static void process_recvzc(struct io_uring *ring, struct io_uring_cqe *cqe)
+>  	mask = (1ULL << IORING_ZCRX_AREA_SHIFT) - 1;
+>  	data = (char *)area_ptr + (rcqe->off & mask);
 >  
-> +static void netdev_qcfg_apply_dev(struct netdev_queue_config *qcfg,
-> +				  const struct netdev_config *cfg)
-> +{
-> +	/* Device config overrides callback-provided fallbacks. */
-> +	qcfg->rx_ring_size = cfg->rings.rx_pending;
-> +	qcfg->rx_mini_ring_size = cfg->rings.rx_mini_pending;
-> +	qcfg->rx_jumbo_ring_size = cfg->rings.rx_jumbo_pending;
-> +}
+> +	if (cfg_check_data_end) {
+> +		unsigned int rx_buf_len = cfg_rx_buf_len ?: page_size;
+> +		unsigned int data_end_off;
+> +
+> +		data_end_off = (rcqe->off & mask) % rx_buf_len + n;
+> +		if (data_end_off > cfg_min_data_end)
+> +			seen_data_end = true;
+> +	}
 > +
 
-[Severity: Low]
-Can these three assignments hand a rendered config full of zeroes to
-ndo_validate_qcfg()?
+[Severity: Medium]
+Can this predicate be satisfied by a driver that only uses the first
+MTU-sized region?  It keys on the end of the fragment, and rcqe->off is the
+payload start offset inside the chunk:
 
-cfg->rings starts out all-zero and the core never seeds it from the driver's
-current ring depths:
-
-net/core/netdev_config.c:netdev_alloc_config() {
-	cfg = kzalloc_obj(*dev->cfg, GFP_KERNEL_ACCOUNT);
+io_uring/zcrx.c:io_zcrx_queue_cqe() {
+	...
+	offset = off + (net_iov_idx(niov) << ifq->niov_shift);
+	rcqe->off = offset + zcrx_area_id_to_token(area->area_id);
 	...
 }
 
-The only writer is ethtool_ringparam_set_cfg(), so on a device whose ring
-depths were never touched through ethtool, rx_ring_size,
-rx_mini_ring_size and rx_jumbo_ring_size all render as 0.
+with off derived from skb_frag_off(frag) in io_zcrx_recv_frag() and
+niov_shift == ilog2(rx_buf_len).  So anything the driver places ahead of the
+payload within the chunk (page pool headroom pp->p.offset, or per-packet
+alignment padding such as the 128-byte payload alignment in fbnic) counts
+toward cfg_min_data_end.
 
-The assignment is also unconditional, unlike the memory-provider override a
-few lines below:
+Over IPv6+TCP the maximum payload per segment is mtu - 60 (mtu - 72 with TCP
+timestamps), so the margin here is only around 60 bytes.  A driver that
+stores exactly one full-size segment in a large chunk, but starts the
+payload 60 or more bytes into the chunk, would set seen_data_end and pass —
+which is the case the commit message says should fail:
 
-	mpp = &__netif_get_rx_queue(dev, rxq_idx)->mp_params;
-	if (mpp->rx_page_size)
-		qcfg->rx_page_size = mpp->rx_page_size;
+    "A driver which accepts the size but only uses the first MTU-sized
+    region fails."
 
-so a driver cannot supply ring-depth fallbacks from ndo_default_qcfg() at
-all - they are always overwritten. The comment says that is intended, but
-should the copy be guarded the same way as rx_page_size, or should
-ndo_default_qcfg() not be documented as providing fallbacks for these
-fields?
+I could not point at an in-tree driver that reserves that much payload-buffer
+headroom today, so this is about the strength of the check rather than an
+observed pass.  Would keying on the payload start offset be placement
+independent?
 
-For the record, nothing appears broken in-tree: the only consumer of the new
-fields, fbnic, seeds netdev->cfg->rings.{rx,rx_mini,rx_jumbo,tx}_pending in
-fbnic_netdev_alloc() in the following patch of the series, and the
-"driver initializes dev->cfg" convention already exists there for
-hds_thresh. bnxt and mlx5e read only rx_page_size.
+	(rcqe->off & mask) % rx_buf_len >= cfg_min_data_end
 
->  static int __netdev_queue_config(struct net_device *dev, int rxq_idx,
->  				 struct netdev_queue_config *qcfg,
->  				 struct netlink_ext_ack *extack,
-> @@ -70,6 +79,7 @@ static int __netdev_queue_config(struct net_device *dev, int rxq_idx,
->  	/* Get defaults from the driver, in case user config not set */
->  	if (dev->queue_mgmt_ops->ndo_default_qcfg)
->  		dev->queue_mgmt_ops->ndo_default_qcfg(dev, qcfg);
-> +	netdev_qcfg_apply_dev(qcfg, dev->cfg_pending);
->  	err = validate_cb(dev, qcfg, extack);
->  	if (err)
->  		return err;
-[ ... ]
-> @@ -113,3 +125,23 @@ int netdev_queue_config_validate(struct net_device *dev, int rxq_idx,
+Alternatively, should the threshold account for the maximum per-buffer
+headroom and alignment padding?
+
+>  	for (i = 0; i < n; i++) {
+>  		if (*(data + i) != payload[(received + i)])
+>  			error(1, 0, "payload mismatch at %d", i);
+> @@ -373,7 +385,10 @@ static void run_server(void)
+>  		server_loop(&ring);
+>  
+>  	if (!stop)
+> -		error(1, 0, "test failed\n");
+> +		error(1, 0, "test failed after receiving %zu bytes", received);
+> +	if (cfg_check_data_end && !seen_data_end)
+> +		error(1, 0, "no payload CQE ending past offset %u",
+> +		      cfg_min_data_end);
+>  }
+
+[Severity: Medium]
+Does this turn a runtime configuration property into a driver failure?
+
+On bnxt, one of the drivers advertising QCFG_RX_PAGE_SIZE, the hardware ends
+each aggregation buffer at end-of-packet when TPA is off:
+
+drivers/net/ethernet/broadcom/bnxt/bnxt.c:bnxt_init_one_rx_agg_ring_rxbd() {
+	...
+	if (!(bp->flags & BNXT_FLAG_TPA))
+		type |= RX_BD_FLAGS_AGG_EOP;
+	...
+}
+
+and BNXT_FLAG_TPA comes only from user-settable features:
+
+drivers/net/ethernet/broadcom/bnxt/bnxt.c:bnxt_set_tpa_flags() {
+	bp->flags &= ~BNXT_FLAG_TPA;
+	...
+	if (bp->dev->features & NETIF_F_LRO)
+		bp->flags |= BNXT_FLAG_LRO;
+	else if (bp->dev->features & NETIF_F_GRO_HW)
+		bp->flags |= BNXT_FLAG_GRO;
+}
+
+So with ethtool -K <dev> rx-gro-hw off, every packet payload starts at offset
+0 of a fresh buffer, the requested rx_buf_len is still fully honored by
+bnxt_validate_qcfg() and the -d probe succeeds, but data_end_off never
+exceeds the MSS and run_server() aborts.
+
+Separately, the threshold comes from the local interface MTU while the
+received segment size is set by the peer and path MSS, so a jumbo-MTU
+receiver talking to a 1500-byte peer cannot produce an end offset past the
+MTU without hardware coalescing.
+
+Should the test require or check for HW-GRO/LRO being enabled (or check an
+offload/queue statistic) before making this a hard failure?
+
+> @@ -406,8 +421,11 @@ static void run_client(void)
+>  
+>  static void usage(const char *filepath)
 >  {
->  	return __netdev_queue_config(dev, rxq_idx, qcfg, extack, true);
->  }
-> +
-> +int netdev_queue_config_revalidate(struct net_device *dev,
-> +				   struct netlink_ext_ack *extack)
-> +{
-> +	const struct netdev_queue_mgmt_ops *qops = dev->queue_mgmt_ops;
-> +	struct netdev_queue_config qcfg;
-> +	unsigned int i;
-> +	int err;
-> +
-> +	if (!qops || !qops->ndo_validate_qcfg)
-> +		return 0;
-> +
-> +	for (i = 0; i < dev->real_num_rx_queues; i++) {
-> +		err = netdev_queue_config_validate(dev, i, &qcfg, extack);
-> +		if (err)
-> +			return err;
-> +	}
-> +
-> +	return 0;
-> +}
-
-> diff --git a/net/ethtool/common.c b/net/ethtool/common.c
-> index 23db40618fed1..05ed22fd1f906 100644
-> --- a/net/ethtool/common.c
-> +++ b/net/ethtool/common.c
-> @@ -956,6 +956,15 @@ void ethtool_ringparam_get_cfg(struct net_device *dev,
->  	kparam->hds_thresh = dev->cfg->hds_thresh;
->  }
->  
-> +void ethtool_ringparam_set_cfg(struct netdev_config *cfg,
-> +			       const struct ethtool_ringparam *param)
-> +{
-> +	cfg->rings.rx_pending = param->rx_pending;
-> +	cfg->rings.rx_mini_pending = param->rx_mini_pending;
-> +	cfg->rings.rx_jumbo_pending = param->rx_jumbo_pending;
-> +	cfg->rings.tx_pending = param->tx_pending;
-> +}
-> +
-[ ... ]
-
-> diff --git a/net/ethtool/ioctl.c b/net/ethtool/ioctl.c
-> index 4b0bc503f9307..1320289025b25 100644
-> --- a/net/ethtool/ioctl.c
-> +++ b/net/ethtool/ioctl.c
-[ ... ]
-> @@ -2239,10 +2240,29 @@ static int ethtool_set_ringparam(struct net_device *dev, void __user *useraddr)
->  	    ringparam.tx_pending > max.tx_max_pending)
->  		return -EINVAL;
->  
-> +	ret = netdev_reconfig_start(dev);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ethtool_ringparam_set_cfg(dev->cfg_pending, &ringparam);
-> +
-> +	ret = netdev_queue_config_revalidate(dev, NULL);
-> +	if (ret)
-> +		goto out_free_cfg;
-> +
->  	ret = dev->ethtool_ops->set_ringparam(dev, &ringparam,
->  					      &kernel_ringparam, NULL);
-> -	if (!ret)
-> -		ethtool_notify(dev, ETHTOOL_MSG_RINGS_NTF);
-> +	if (ret)
-> +		goto out_free_cfg;
-> +
-> +	/* The driver may adjust the accepted ring depths. */
-> +	ethtool_ringparam_set_cfg(dev->cfg_pending, &ringparam);
-> +	swap(dev->cfg, dev->cfg_pending);
-> +	ethtool_notify(dev, ETHTOOL_MSG_RINGS_NTF);
-
-[Severity: Low]
-Is the committed configuration guaranteed to be one that ndo_validate_qcfg()
-actually saw?
-
-The sequence here is:
-
-	ethtool_ringparam_set_cfg(dev->cfg_pending, &ringparam);   /* requested */
-	netdev_queue_config_revalidate(dev, NULL);                 /* validates */
-	dev->ethtool_ops->set_ringparam(...);                      /* may rewrite */
-	ethtool_ringparam_set_cfg(dev->cfg_pending, &ringparam);   /* adjusted */
-	swap(dev->cfg, dev->cfg_pending);                          /* commits */
-
-If the driver rewrites ringparam in place, the depths that get committed are
-not the depths that were validated, and there is no second
-netdev_queue_config_revalidate() pass. ethnl_set_rings() has the same
-ordering, with the commit done by the framework swap in
-ethnl_default_set_doit().
-
-No in-tree case looks reachable today: the only ring-depth-aware validator,
-fbnic_validate_qcfg(), runs the same fbnic_ring_size_pow2() helper that
-fbnic_set_ringparam() applies, and its ppq_entries >= 4 constraint only gets
-easier as the depth is rounded up. Drivers that do rewrite the caller's
-ringparam, such as mvpp2_ethtool_set_ringparam() via
-mvpp2_check_ringparam_valid(), have no ndo_validate_qcfg, so
-netdev_queue_config_revalidate() returns 0 for them.
-
-Would it be worth revalidating after the driver call, or documenting that
-->set_ringparam() must not adjust depths in a direction its own
-ndo_validate_qcfg() would reject?
-
-> +
-> +out_free_cfg:
-> +	__netdev_free_config(dev->cfg_pending);
-> +	dev->cfg_pending = dev->cfg;
->  	return ret;
->  }
->  
-
-> diff --git a/net/ethtool/rings.c b/net/ethtool/rings.c
-> index 9054c89c5d7bb..c04312fc0d061 100644
-> --- a/net/ethtool/rings.c
-> +++ b/net/ethtool/rings.c
-[ ... ]
-> @@ -299,10 +300,20 @@ ethnl_set_rings(struct ethnl_req_info *req_info, struct genl_info *info)
->  
->  	dev->cfg_pending->hds_config = kernel_ringparam.tcp_data_split;
->  	dev->cfg_pending->hds_thresh = kernel_ringparam.hds_thresh;
-> +	ethtool_ringparam_set_cfg(dev->cfg_pending, &ringparam);
-> +
-> +	ret = netdev_queue_config_revalidate(dev, info->extack);
-> +	if (ret)
-> +		return ret;
->  
->  	ret = dev->ethtool_ops->set_ringparam(dev, &ringparam,
->  					      &kernel_ringparam, info->extack);
-> -	return ret < 0 ? ret : 1;
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	/* The driver may adjust the accepted ring depths. */
-> +	ethtool_ringparam_set_cfg(dev->cfg_pending, &ringparam);
-> +	return 1;
+> -	error(1, 0, "Usage: %s (-4|-6) (-s|-c) -h<server_ip> -p<port> "
+> -		    "-l<payload_size> -i<ifname> -q<rxq_id>", filepath);
+> +	error(1, 0,
+> +	      "Usage: %s (-4|-6) (-s|-c) -h<server_ip> -p<port>\n"
+> +	      "\t-l<payload_size> -i<ifname> -q<rxq_id>\n"
+> +	      "\t[-x<rx_buf_pages>] [-E<min_data_end>] [-d]\n",
+> +	      filepath);
 >  }
 
 [Severity: Low]
-The comment says the driver may adjust the accepted ring depths, but does
-this second copy store the depths the hardware ended up with, or just the
-requested ones?
+This is a pre-existing mismatch and not introduced by this patch, but since
+the string is being reflowed anyway: the usage text still advertises (-4|-6),
+which the parser does not accept, and it omits -o<oneshot_recvs> and
+-z<send_size>, which it does accept and which iou-zcrx.py uses in
+test_zcrx_oneshot (-o 4 and -z 16384).
 
-Drivers that normalize through locals never touch the caller's struct
-ethtool_ringparam, for example mlx5e_ethtool_set_ringparam() computing
-order_base_2() into its own variables, so dev->cfg->rings can end up
-describing a depth the device is not running.
+>  static void parse_opts(int argc, char **argv)
+> @@ -425,7 +443,7 @@ static void parse_opts(int argc, char **argv)
+>  		usage(argv[0]);
+>  	cfg_payload_len = max_payload_len;
+>  
+> -	while ((c = getopt(argc, argv, "sch:p:l:i:q:o:z:x:d")) != -1) {
+> +	while ((c = getopt(argc, argv, "sch:p:l:i:q:o:z:x:E:d")) != -1) {
+>  		switch (c) {
+>  		case 's':
+>  			if (cfg_client)
 
-This is already acknowledged in the kernel-doc added by this patch ("Some
-drivers update their ring sizes without reflecting the change in @cfg"), and
-the only consumer of the stored depths, fbnic, does round in place, so
-nothing reads a stale value today. Would it be clearer to say the stored
-values are the requested depths, adjusted only by drivers that write back
-into param?
+[ ... ]
+
+> diff --git a/tools/testing/selftests/drivers/net/hw/iou-zcrx.py b/tools/testing/selftests/drivers/net/hw/iou-zcrx.py
+> index b7a225fe4beae..a9f62c6b950bb 100755
+> --- a/tools/testing/selftests/drivers/net/hw/iou-zcrx.py
+> +++ b/tools/testing/selftests/drivers/net/hw/iou-zcrx.py
+> @@ -175,9 +175,13 @@ def test_zcrx_large_chunks(cfg) -> None:
+>  
+>      single(cfg)
+>      page_size = resource.getpagesize()
+> +    mtu = cfg.dev["mtu"]
+>      nr_pages = 2
+> +    while nr_pages * page_size <= 2 * mtu:
+> +        nr_pages *= 2
+>      rx_buf_len = nr_pages * page_size
+> -    rx_cmd = f"{cfg.bin_local} -s -p {cfg.port} -i {cfg.ifname} -q {cfg.target} -x {nr_pages}"
+> +    rx_cmd = (f"{cfg.bin_local} -s -p {cfg.port} -i {cfg.ifname} "
+> +              f"-q {cfg.target} -x {nr_pages} -E {mtu}")
+>      tx_cmd = f"{cfg.bin_remote} -c -h {cfg.addr_v['6']} -p {cfg.port} -l 12840"
+
+[Severity: Medium]
+Does this contradict the in-tree zcrx documentation, which is not updated by
+this change?
+
+Documentation/networking/iou-zcrx.rst, "Area chunking":
+
+    Larger chunks don't give any additional guarantees about buffer sizes
+    returned in CQEs, and they can vary depending on many factors like
+    traffic pattern, hardware offload, etc.
+
+The commit message states the opposite:
+
+    "A driver which accepts the size but only uses the first MTU-sized
+    region fails."
+
+Mechanically seen_data_end is only set when some CQE satisfies
+(rcqe->off % rx_buf_len) + res > mtu, so the driver has to pack more than one
+fragment per chunk, or return a fragment larger than the L3 MTU via HW-GRO or
+LRO.  A driver that allocates one large niov per frame and places one
+MSS-sized segment at chunk offset 0 matches the documented contract and still
+fails here.
+
+Should the documented contract be tightened in the same change, or should the
+assertion be diagnostic, or gated on a hardware coalescing capability?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260910180908.1506533-1-bjorn%40kernel.org
