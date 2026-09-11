@@ -1,36 +1,36 @@
 Received: from mail1.fiberby.net (mail1.fiberby.net [193.104.135.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C70124C7545;
-	Fri, 11 Sep 2026 21:42:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F07464C8C7D;
+	Fri, 11 Sep 2026 21:42:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.104.135.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789162975; cv=none; b=i8T8TzAWiYL1nO3VdtXckR2mYs5Fu34p8xwrElJMCajuSH6JMXxecLvrPZUX+qOnSnKv0EkKy25uNnAjGgW5bmoX3zepbduR8EeAOvzh/Tmc1nzJTigMKeMQ1zset7zy83bF8fZwR1KbE7IVSdehZSJZuNpfSmhXbVwCeAo/eos=
+	t=1789162976; cv=none; b=JQzI/N83F/nrorUp7UKCNGk8uBy8yNNiCvW+w9RfghIXZaaAM6F7hm4qVYOx1Lo66n0+GJ7euXF0DjaXcSMdBKNH3h5KJx2BcLHwFwLxtnCi7mO4isCLEsL3T2Q3pyQviDI9Go/6G2CyvrvlrcuLbmpEPXsG/HnHSCWQ4HKOxMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789162975; c=relaxed/simple;
-	bh=QJNacRZxQSqHT7njaG33zbUTweGbUTU41FW/3xDy/m4=;
+	s=arc-20240116; t=1789162976; c=relaxed/simple;
+	bh=tgWspVzs5g1SOEs8onwpypsv7ivUGenqmQaWv6Gx4YE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Rin8gMvwe15NucpFVHU96tvNe62EG9vtIZ8N443+C+uXSX1n8k5kg+616rESTU/R6xUFIIva5tgJIdJY1i18pJ6OPQC/LOmIjFkIGP9H2mUTRpu2Dmba4UWXaqHob2fFvrT1Em5MCr5gXRApppkr7mWp2LGhSon5Jlw5KiRw+Cg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=r+WaFGXX; arc=none smtp.client-ip=193.104.135.124
+	 MIME-Version:Content-Type; b=kjl1GVWr0oHefUqcDJQ+JHKFtYV+lyQCD+ZFopeKL/yQVOmjDoqye0yhUqFo/ukVyrGnKNhD4Q2pFSNiwKXMRoLQ8ZA+HFlA7gq90e4VV4FhQapYzf7/0LM32ddrxk43HHNJx9dNZnpQnJSw/zF40WCvEzoahzp8VuRqM7fON+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=pGEMq8py; arc=none smtp.client-ip=193.104.135.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="r+WaFGXX"
+	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="pGEMq8py"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fiberby.net;
-	s=202008; t=1789162970;
-	bh=QJNacRZxQSqHT7njaG33zbUTweGbUTU41FW/3xDy/m4=;
+	s=202008; t=1789162973;
+	bh=tgWspVzs5g1SOEs8onwpypsv7ivUGenqmQaWv6Gx4YE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r+WaFGXXM6+pEZkXLrfPzcD39Lvzt7LICyzmncvo0ZMfur27FqCNy5Hz1witzs6rK
-	 p3aIymP3DD79VG4q/xc7tfbWWKytithfKK89Ss9DSnQcqm9Gp+Uzdpoo+VJmTpp5P0
-	 c2EjVHF9KT6sWfMoQWl/C6yr4BYQPZG7VpeMcoe+VGwc0GUde0Tr1avEEYRYXP0khl
-	 X8N9NW7Wnjb6GnqcrjIwO2m3wQuYQ2h4tP9X9G08U8Kuoo/jNypxM8eLW44qfCwvXz
-	 caMXxANgxa8wqZJ03UIdgVd3dl9ptnsA4wzj9xh+oYU2WFV1GTZ4Gz5nSsFljq3jU0
-	 6BvDLBf5DTHUA==
+	b=pGEMq8pyMrN8ynbk6b4fGjI1mX31Imq1+rh9U2/1yUZW3oIhU5ziU6eRdV7dXKmPo
+	 EtpDSXFV0ZToAf0ml5kb4xDxrKlW4nXRQGbj23RApJlGpxBQZKTSgiFjplFp3BTpbV
+	 4+YmuBwOgqzp/g0Eh3bJXEsHrX+Gm2JVJUpp+WQlNhLya2zxsqMxX0EPW+lsZSN9g9
+	 f2a1HcKjJ/EwULs2O8/4pOVeEp+IaU6geRlJh7mfQLIqftUMJeLqf2rdUqrSoESSao
+	 lyEAwZ6QzlJPeRffiQILYt72zyh00kdDuiib0/tGC3y7qDRYGss9PlS0TyiJa2xLeo
+	 VUIzCnvARKaBw==
 Received: from x201s (193-104-135-243.ip4.fiberby.net [193.104.135.243])
-	by mail1.fiberby.net (Postfix) with ESMTPSA id E28FD60130;
+	by mail1.fiberby.net (Postfix) with ESMTPSA id EE1B460112;
 	Fri, 11 Sep 2026 21:42:43 +0000 (UTC)
 Received: by x201s (Postfix, from userid 1000)
-	id 6EDEB2022C6; Fri, 11 Sep 2026 21:42:05 +0000 (UTC)
+	id B584F2023F3; Fri, 11 Sep 2026 21:42:20 +0000 (UTC)
 From: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>
 To: netdev@vger.kernel.org
 Cc: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
@@ -42,11 +42,12 @@ Cc: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
 	linux-kernel@vger.kernel.org,
-	Andrew Lunn <andrew@lunn.ch>,
-	Oleksij Rempel <o.rempel@pengutronix.de>
-Subject: [PATCH net-next 07/10] netlink: specs: ethtool: re-align module-fw-flash-status
-Date: Fri, 11 Sep 2026 21:41:33 +0000
-Message-ID: <20260911214148.1184806-8-ast@fiberby.net>
+	Joe Damato <joe@dama.to>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Shaikh Kamaluddin <shaikhkamal2012@gmail.com>
+Subject: [PATCH net-next 08/10] netlink: specs: nl80211: fix naming of enum members
+Date: Fri, 11 Sep 2026 21:41:34 +0000
+Message-ID: <20260911214148.1184806-9-ast@fiberby.net>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260911214148.1184806-1-ast@fiberby.net>
 References: <20260911214148.1184806-1-ast@fiberby.net>
@@ -59,34 +60,44 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Correct the values for enum ethtool_module_fw_flash_status:
+Use the correct naming for enum members:
 
-- ETHTOOL_MODULE_FW_FLASH_STATUS_STARTED is 1, not 0.
-- ETHTOOL_MODULE_FW_FLASH_STATUS_IN_PROGRESS is 2, not 1.
-- ETHTOOL_MODULE_FW_FLASH_STATUS_COMPLETED is 3, not 2.
-- ETHTOOL_MODULE_FW_FLASH_STATUS_ERROR is 4, not 3.
+- In feature-flags, it's NL80211_FEATURE_ND_RANDOM_MAC_ADDR,
+  so "nd-random-mac-addr", not "no-random-mac-addr".
 
-Re-align the YNL spec by explicitly setting the first value to 1.
+- In commands, it's NL80211_CMD_UNEXPECTED_4ADDR_FRAME,
+  so "unexpected-4addr-frame", not "unexpected-4-addr-frame".
 
 Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
-CC: Andrew Lunn <andrew@lunn.ch>
-CC: Oleksij Rempel <o.rempel@pengutronix.de>
+CC: Joe Damato <joe@dama.to>
+CC: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+CC: Shaikh Kamaluddin <shaikhkamal2012@gmail.com>
 ---
- Documentation/netlink/specs/ethtool.yaml | 1 +
- 1 file changed, 1 insertion(+)
+ Documentation/netlink/specs/nl80211.yaml | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/netlink/specs/ethtool.yaml b/Documentation/netlink/specs/ethtool.yaml
-index 439bf24e7c33..6868eb473478 100644
---- a/Documentation/netlink/specs/ethtool.yaml
-+++ b/Documentation/netlink/specs/ethtool.yaml
-@@ -47,6 +47,7 @@ definitions:
-       -
-         name: started
-         doc: The firmware flashing process has started.
-+        value: 1
-       -
-         name: in-progress
-         doc: The firmware flashing process is in progress.
+diff --git a/Documentation/netlink/specs/nl80211.yaml b/Documentation/netlink/specs/nl80211.yaml
+index d9fdd66b497e..efc783fb8fdf 100644
+--- a/Documentation/netlink/specs/nl80211.yaml
++++ b/Documentation/netlink/specs/nl80211.yaml
+@@ -97,7 +97,7 @@ definitions:
+       - unexpected-frame
+       - probe-client
+       - register-beacons
+-      - unexpected-4-addr-frame
++      - unexpected-4addr-frame
+       - set-noack-map
+       - ch-switch-notify
+       - start-p2p-device
+@@ -202,7 +202,7 @@ definitions:
+       - tdls-channel-switch
+       - scan-random-mac-addr
+       - sched-scan-random-mac-addr
+-      - no-random-mac-addr
++      - nd-random-mac-addr
+   -
+     name: channel-type
+     type: enum
 -- 
 2.55.0
 
