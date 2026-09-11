@@ -1,251 +1,281 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 852FB37A858
-	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 17:34:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789148077; cv=none; b=JzJ+CdWRlEDVL5dtINJckga8AK4twSlGlb3cvNsANuQK/o9lVm17rRNAwiREKQ1ZsYMWx2rLCp9aoeoLStJ3ouasJ0O01FJsZe/fN6reFwsHDDqQpH9Ku6Oj/2Nu/S2+7i1U0QwKWC8rR6eQn7TmUNQueRP6N1Ix+OLI83t8uvo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789148077; c=relaxed/simple;
-	bh=RBY7lZwtsfQ2RJkPc82K4STh6l7BokTJxRE8RtJ3/JA=;
-	h=Content-Type:Date:Message-Id:From:Subject:Cc:To:In-Reply-To:
-	 References:MIME-Version; b=PfBGVbO7lNFX6CJ0bgSCYMUColErBXVcph1RzXVoDjRaG72ssewXkKpS5guzep+VI64iEw7TakRHJHOoolS5h8xrna83r2sCPFKbecmyXGlHrQ2naIdpSDSC61y6wi97JnLoBHyiaPA4H8w9OtGypSLf8qwsA/7nLQcy6RKYSvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ATfplhYE; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 190E44A484A
+	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 17:41:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789148481; cv=pass; b=PsdzZeRCyMNRxFzgtyzt0mBDlA2OABuyk6Kxth/F48ovDSXMppWU07onMdCd7TGuscfWI9NGjMf9rP4kWwtWbsDM0cRRUDzau6toXPwh9kLnw8opONP1oC3vRlAMZ7K25Ne5g+uqQC2Rqi2V5p6DqCKT7vsKoblfddWYn0xiRsc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789148481; c=relaxed/simple;
+	bh=Wj0MkpD1EPhM67guoEQUvBqOjfyHtcCKH9qHWXfvqk8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=l6nohRM+TcUBBMQEwShW+bgGT2LVwQJ7XHQ5aKlaETSNacrWr6TaSAnpGzjj29Jv/k5sE3aph2PCKRMD6r75usJwUKkFyzv/gOsfd1/MRXb9xaOGXkFsvYV/ai5IOS5s3PYdh69W7vzpIINnD+VJFq7hCvL3Pp287X9GWf0Unko=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PSxCBtOr; arc=pass smtp.client-ip=209.85.216.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ATfplhYE"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id F18161A01EF;
-	Fri, 11 Sep 2026 17:34:32 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id C3E80601A3;
-	Fri, 11 Sep 2026 17:34:32 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1759811C7AFAD;
-	Fri, 11 Sep 2026 19:34:19 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1789148071; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=fEfwvzZ1FQaRICJYWrLud8DTMm74WpFOhCG7W2r2il4=;
-	b=ATfplhYEV88PcT3XiAjw9fKztYqGx2rAsRBNdYPXjNV86iN2pPM0r86Xzo7hty9igtjTsT
-	KI6D7BAflvJz2wSiRxLSUJ7dNxk2ayaHjfGs4P60ptoPACITLcm6SXtZUcOgNjqOX3CRQ4
-	m+nK7d698ha/D0QLbmWmmOw/W5COlEJ96087uARn4dBwTS8IK2c8bbKAnoO81MyTnurakD
-	cVONF+/vv/VLkwRjFQ4NaUVmoHTqAw+6aHTMtx+nN8vgt8YTnP8pYgiWYSkyNV6xBPo3fB
-	KRO5/14VfFAxMyb/vOrSSFSYanXgRxwIHDQaCRjnIiUSKfLKsvgraQLZtmmR+Q==
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 11 Sep 2026 19:33:55 +0200
-Message-Id: <DLCO1OTT6D7E.3KIF8LWG9FMRT@bootlin.com>
-From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-Subject: Re: [PATCH net-next v9 15/17] net: macb: read ISR inside bp->lock
- critical section
-Cc: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Nicolas
- Ferre" <nicolas.ferre@microchip.com>, "Claudiu Beznea"
- <claudiu.beznea@tuxon.dev>, "Paolo Valerio" <pvalerio@redhat.com>, "Nicolai
- Buchwitz" <nb@tipi-net.de>, "Vladimir Kondratiev"
- <vladimir.kondratiev@mobileye.com>, "Gregory CLEMENT"
- <gregory.clement@bootlin.com>, =?utf-8?q?Beno=C3=AEt_Monin?=
- <benoit.monin@bootlin.com>, "Tawfik Bayouk" <tawfik.bayouk@mobileye.com>,
- "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>, "Maxime Chevallier"
- <maxime.chevallier@bootlin.com>
-To: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>, "Conor Dooley"
- <conor.dooley@microchip.com>, "Andrew Lunn" <andrew+netdev@lunn.ch>, "David
- S. Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>,
- "Jakub Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>,
- "Richard Cochran" <richardcochran@gmail.com>, "Russell King"
- <linux@armlinux.org.uk>
-In-Reply-To: <20260812-macb-context-v9-15-7ddbf5f715e0@bootlin.com>
-References: <20260812-macb-context-v9-15-7ddbf5f715e0@bootlin.com>
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PSxCBtOr"
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-3856d6fbcb3so1185237a91.2
+        for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 10:41:11 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1789148467; cv=none;
+        d=google.com; s=arc-20260327;
+        b=kw8cq5H8vSg1MPAb9iBklCN9kbCRoab0QvFuXqoAExKzVcB/zLRbSGvy2s+KI6uXm4
+         EOI5rbAjkHM1MxvmWmzaN0XCWT65U2P/14SeksL1hlNPH+FDtuPE41bs1UGIJ3L6/klR
+         b/f012gU6vPEjxbB2/jN0b07/j+9Xemck0z3M9jzHGVDVMYuizX8s+quJLmXlXEkXHD2
+         PSCMNVHfx29R1GoL6Y6xapGMdrPCfN4ZoHtClJg7xdZP38RXoFEoUWCFRLjdRVVQkFDO
+         TcydeRnOmzOC3ANoOfLN8Rg5bQD+9y/Tz8wf6BlJXvZ087XOlaR4n6N2xul+5Z+FhjCD
+         oQHw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=JAfkPUxFmoNo4iWfo0h92vjVTWUP8BF6hcyoGxFUl80=;
+        fh=JfvO4ob5++18qhZN0MGt5IftSW8gD5XstTvtlMnmnX0=;
+        b=QPi3nVI55roXP8s2RpYvPHDQ6iPElefQnlC6t042g3TpJ4DibmGAiHzmSJYzNOR5Fn
+         y78pq9/ELiSBGAaDNZOBXyj0Twsb0AdxlD7W4LyQXGNy2Ab0tolsmL6DluG0ttDnVxDs
+         fM0s4o+q4B7IenARmAp2Led39R2FOjuWddDdvkyhY+f5bmBu/DUTZ9nPdlx3spD+v4Bz
+         93aC1PZWV8XTO8kHzJ1Xikf99pvSED8BYPCnPI07SGk82OSQLnkyjLDRM803hOMmefKG
+         1JxYWAPUQ7aSkcpLZb1RvU+VVDK02+f1yPYoKjg9WmcIhfTaLcno270oJSBYvXzbyMKM
+         78Lw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1789148467; x=1789753267; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=JAfkPUxFmoNo4iWfo0h92vjVTWUP8BF6hcyoGxFUl80=;
+        b=PSxCBtOrPDHDjQxTEN9sJsgOYnKgh7a238gu2W17EtuU4V6s0YwayP/TlVC5Im8D7M
+         GDGGA2pW5nri6UfzbDfFIhDtRqu0E+/Xh2B02/FE6HZ7vUdiTSwDkx0uyVgRlO0WV1pJ
+         hP9Bi7dnvY4VrmfoRaTFTrWzXitUbr1fxu7VxA5jaZ+s7KH4nuEmF5TPUhCpuRlJ5VrE
+         X0m1I7CfzIAhb8MHSCowBlB76dU3vFaazhGKr/lAtV7dc5yTauywrHuojeB8rag0dkZP
+         q2tQeIgKprY/DcYlUXOsXSM2yRWCwn2x+oG/ZwlNGQT4I8U3JZRyLctvuOwvkvRIn+QX
+         qqJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789148467; x=1789753267;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=JAfkPUxFmoNo4iWfo0h92vjVTWUP8BF6hcyoGxFUl80=;
+        b=gOTEN9m7SNzgw4QlCEdq/26OTiG/r9GJ252C+EPHb52+yZ/1dwmj0gVf1w+0nvwme3
+         7k1ZzGlVlpGHpF643XzLOueA1o9QSDttaAFDgyyKmh07hYmtnBSel2mIOzEFkAsiK84K
+         Ich2QztH5pdna3ON876BszRT1rZM1bMwm+A6+6m26yVobrdyvM7vxPHVbiKwVMojFFP4
+         bmPZuQZ90eeDeSe9akNI/SQiizxrX1jWkKr8yCLYgqVOi94dX60zRmP6Ea+QlNyEQwmR
+         dGzlejnm0eHl0pveE6ZFpmwohO9cTz0NC6dSFysE674bzY9X0jHgeaRMrqNlXEyn5z9g
+         NFQA==
+X-Forwarded-Encrypted: i=1; AKwUvByIKFVYur4K/z3SFyInArWhw4xgYAnFa4lVkl1kg1TsWUjIFvzHq1Czr965/DuqvgDD210Tsec=@vger.kernel.org
+X-Gm-Message-State: AFuF++nCxfNUssNDTs10I/sOh0zTw7xjpbgcPIHHv0xExerfwBTKrLg/
+	MPzOveiwxsyeYJZ3bcX4nC+Lcv7dPZLelXkzTyPt4rEeZccfU8zQqC8rvxPC1xojgLoIl1WAieE
+	i7A1E/UsfvxYOMiCGunvNqk/rKXKGnUHALIg72ISp
+X-Gm-Gg: AYBFou3z3gINZRwQ8tXuwUYYRWmktXx4YEpF7/yBBk4tGgmLaC7q8EMqf71hz3wXXSJ
+	Lb/72BxBx7Gzs7Cw8lRIGxtd1rn3BT1lr1jW1VKHCmBWkyZCf6za4YaydJJD2XJOMs9UxK6R2Bv
+	GAZaOV/cYnq4DK0UAua5gKUfbwCyrmNvuXeYxhCXndSLyOsF124a9n1b8UCTUhOvQmYC1yk+zLr
+	0JHQH5la013P1BL5feXG/0cExoeD3RkCcW/C5i3DwKQCTpDc6MlX4QRu1+YHUTM3a2stx0qT4vO
+	hybiAF1jYlJuMyPvJi4wlBND1Wbd2N1ksTUs738coyfjrsuhV295P3xEXG8ERElM6d+Jjak/9ge
+	nTZ9CYMPIkE1Y7ndzhiPotopojcn//vqinTIJXmGKq2W3i52PiazxG57rqiZlWjqcuaHwdgKdDC
+	VdPt55ydW338ub9wQSzuMJRQ==
+X-Received: by 2002:a17:90a:d2cb:b0:38f:efed:5448 with SMTP id
+ 98e67ed59e1d1-39d9bd971fcmr8628531a91.8.1789148466118; Fri, 11 Sep 2026
+ 10:41:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-TUID: P0s/ZTOr6xz1
-X-Last-TLS-Session-Version: TLSv1.3
+References: <20260909233143.2401847-3-kuniyu@google.com> <178908932373.219967.4672575432952615722@kernel.org>
+In-Reply-To: <178908932373.219967.4672575432952615722@kernel.org>
+From: Kuniyuki Iwashima <kuniyu@google.com>
+Date: Fri, 11 Sep 2026 10:40:53 -0700
+X-Gm-Features: AcwNN1UlwZVfwXMDj-nODvW5GwqdhSUFEu5keN8euf3O18YYu37WvdM8QHgoLxU
+Message-ID: <CAAVpQUBJpBnUTm6BS7-Y57ixYf8gM1MebSPK4_gwg09pAGb92Q@mail.gmail.com>
+Subject: Re: [PATCH v3 net 2/4] neighbour: Enforce min/max to NDTPA_INTERVAL_PROBE_TIME_MS.
+To: netdev-bot+sashiko@kernel.org
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	pabeni@redhat.com, idosch@nvidia.com, horms@kernel.org, kuni1840@gmail.com, 
+	netdev@vger.kernel.org, tgraf@suug.ch
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Replying to non-net sashiko
-https://sashiko.dev/#/patchset/20260812-macb-context-v9-0-7ddbf5f715e0%40bo=
-otlin.com
-
-> commit 48c8a049fccfd5d7c55b15a7fd08dc4eca66d836
-> Author: Th=C3=A9o Lebrun <theo.lebrun@bootlin.com>
-> Date:   Wed Aug 12 08:03:29 2026 +0000
+On Thu, Sep 10, 2026 at 6:15=E2=80=AFPM <netdev-bot+sashiko@kernel.org> wro=
+te:
 >
->     net: macb: read ISR inside bp->lock critical section
->    =20
->     The IRQ handler reads ISR register into the `status` stack variable.
->     If empty, it early returns. Else, it grabs bp->lock and iterates on
->     the status bits.
->    =20
->     We risk a race on spinlock acquire; status might have changed.
->     Move the readl(ISR) inside the bp->lock critical section.
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue(s) to consider:
 >
-> > diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/eth=
-ernet/cadence/macb_main.c
-> > index d23a0d08c2769..6d79663e42bfe 100644
-> > --- a/drivers/net/ethernet/cadence/macb_main.c
-> > +++ b/drivers/net/ethernet/cadence/macb_main.c
-> > @@ -2190,12 +2190,13 @@ static irqreturn_t macb_interrupt(int irq, void=
- *dev_id)
-> >  	bool hresp_err =3D false;
-> >  	u32 status;
-> > =20
-> > -	status =3D queue_readl(queue, ISR);
-> > +	spin_lock(&bp->lock);
+> Critical: 0 =C2=B7 High: 1 =C2=B7 Medium: 0 =C2=B7 Low: 0
 >
-> [Severity: High]
-> Does taking this lock unconditionally cause severe latency spikes for oth=
-er
-> devices on a shared interrupt line?
+> - [High] The sysctl half of this patch is inert in this tree:
+>   `neigh_proc_dointvec_ms_jiffies_positive()`=E2=80=A6
 >
-> If a shared interrupt fires while the driver's error handling task is run=
-ning,
-> this CPU might spin with local interrupts disabled for up to 14ms:
+> --
 >
-> macb_tx_error_task()
->     spin_lock(&bp->lock);
->     macb_halt_tx()
->         read_poll_timeout_atomic(..., MACB_HALT_TIMEOUT, ...)
+> neighbour: Enforce min/max to NDTPA_INTERVAL_PROBE_TIME_MS.
 >
-> (MACB_HALT_TIMEOUT is 14000us)
-
-Yes this is correct. And something we will live with.
- - Our IRQ line is shared only with other queues of the same MAC.
- - That timeout is scaled to 10 Mbits/s, on 1G this timeout should be
-   100 times smaller. We just don't bother scaling it with link speed.
-
-[...]
-
-> > -	if (unlikely(!status))
-> > +	status =3D queue_readl(queue, ISR);
+> The patch replaces the ineffective .min-only policy entry for
+> NDTPA_INTERVAL_PROBE_TIME_MS with NLA_POLICY_FULL_RANGE(), bounding it to
+> 1..86400000 ms, and adds the same max to the sysctl handler plus the
+> netlink spec and ip-sysctl documentation.
 >
-> [Severity: High]
-> This is a pre-existing issue, but can this unconditional hardware registe=
-r
-> read trigger a synchronous external abort (bus fault) if the MAC is in
-> runtime suspend?
+> One question about the sysctl half of the change below.
 >
-> If another device on the same shared IRQ line triggers an interrupt while
-> the MAC's clocks are gated via macb_clks_disable() in macb_runtime_suspen=
-d(),
-> accessing memory-mapped registers of a clock-gated peripheral typically
-> causes a bus fault.
-
-Again, we have IRQF_SHARED only to share with other queues of the same
-MAC. So that theory is moot. Long term I'd like to drop IRQF_SHARED.
-
->
-> > +	if (unlikely(!status)) {
-> > +		spin_unlock(&bp->lock);
-> >  		return IRQ_NONE;
-> > -
-> > -	spin_lock(&bp->lock);
-> > +	}
-> > =20
-> >  	while (status) {
->
-> [Severity: High]
-> This is a pre-existing issue, but will this loop infinitely if an unhandl=
-ed
-> interrupt bit (like PFR) is set on hardware with Write-1-to-Clear ISR
-> behavior?
-
-Yes. Long term I'd like to introduce a max iteration count.
-Completely unrelated to context swapping.
-
-> [Severity: High]
-> This isn't a bug introduced by this patch, but does the driver have a
-> use-after-free risk during interface closure or driver removal?
->
-> In macb_close(), the context structure is freed without synchronizing wit=
-h
-> or cancelling the asynchronous error tasks:
-
-Yes. This one I'll fix. See previous email.
-
-Re: [PATCH net-next v9 08/17] net: macb: introduce macb_context struct for =
-buffer management
-https://lore.kernel.org/netdev/DLCLQPVD8B9N.NFKWDS6SH0QN@bootlin.com/
-
-[...]
-
----
-
-Replying to net sashiko
-https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260812-macb-context-v=
-9-0-7ddbf5f715e0%40bootlin.com
-
-> commit 4cc0cf203c223199f230330ef1014c2cac4c4841
-> Author: Th=C3=A9o Lebrun <theo.lebrun@bootlin.com>
->
-> net: macb: read ISR inside bp->lock critical section
->
-> This moves the queue_readl(queue, ISR) in macb_interrupt() from before th=
-e
-> bp->lock acquisition to inside the critical section, and unlocks on the
-> early return path when status is zero.  The stated goal is to avoid actin=
-g
-> on a stale ISR sample.
->
-> > We risk a race on spinlock acquire; status might have changed.
-> > Move the readl(ISR) inside the bp->lock critical section.
+> > diff --git a/Documentation/netlink/specs/rt-neigh.yaml b/Documentation/=
+netlink/specs/rt-neigh.yaml
+> > index 0f46ef3135905..c8e55c98d5649 100644
+> > --- a/Documentation/netlink/specs/rt-neigh.yaml
+> > +++ b/Documentation/netlink/specs/rt-neigh.yaml
+> > @@ -341,6 +341,9 @@ attribute-sets:
+> >        -
+> >          name: interval-probe-time-ms
+> >          type: u64
+> > +        checks:
+> > +          min: 1
+> > +          max: 86400000
 > >
-> > In practice, we protect ourselves from interpreting the same ISR status
-> > twice.
+> >  operations:
+> >    enum-model: directional
+> > diff --git a/Documentation/networking/ip-sysctl.rst b/Documentation/net=
+working/ip-sysctl.rst
+> > index 208f46967ee59..b05829e44d8fc 100644
+> > --- a/Documentation/networking/ip-sysctl.rst
+> > +++ b/Documentation/networking/ip-sysctl.rst
+> > @@ -248,7 +248,7 @@ neigh/default/unres_qlen - INTEGER
+> >
+> >  neigh/default/interval_probe_time_ms - INTEGER
+> >       The probe interval for neighbor entries with NTF_MANAGED flag,
+> > -     the min value is 1.
+> > +     the min value is 1, and the max value is 86400000 (1 day).
+> >
+> >       Default: 5000
+> >
+> > diff --git a/net/core/neighbour.c b/net/core/neighbour.c
+> > index 49dd7df149ef3..0db78a0dfb516 100644
+> > --- a/net/core/neighbour.c
+> > +++ b/net/core/neighbour.c
+> > @@ -2359,6 +2359,13 @@ static const struct nla_policy nl_neightbl_polic=
+y[NDTA_MAX+1] =3D {
+> >       [NDTA_PARMS]            =3D { .type =3D NLA_NESTED },
+> >  };
+> >
+> > +#define NTBL_PARM_MS_MAX     (24 * 60 * 60 * MSEC_PER_SEC)
+> > +
+> > +static const struct netlink_range_validation nl_ntbl_parm_ms_range =3D=
+ {
+> > +     .min =3D 1,
+> > +     .max =3D NTBL_PARM_MS_MAX,
+> > +};
+> > +
 >
-> [Severity: Low]
-> [Finding: gpt-5-6-sol-1-3]
-> [Sources: gpt-5-6-sol, opus-5]
-> Could the changelog name the two contexts that can observe the same ISR
-> sample, and the hardware precondition?
-
-If any other context clears an IRQ then we race against that. Grep for
-macb_queue_isr_clear in the code; for example the suspend !WOL case.
-Maybe the commit message is badly written; it isn't a notion of
-interpreting the same bit twice.
-
-[...]
-
-> > diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/eth=
-ernet/cadence/macb_main.c
-> > index d23a0d08c276..6d79663e42bf 100644
-> > --- a/drivers/net/ethernet/cadence/macb_main.c
-> > +++ b/drivers/net/ethernet/cadence/macb_main.c
-> > @@ -2190,12 +2190,13 @@ static irqreturn_t macb_interrupt(int irq, void=
- *dev_id)
-> >  	bool hresp_err =3D false;
-> >  	u32 status;
-> > =20
-> > -	status =3D queue_readl(queue, ISR);
-> > +	spin_lock(&bp->lock);
-> > =20
-> > -	if (unlikely(!status))
-> > +	status =3D queue_readl(queue, ISR);
-> > +	if (unlikely(!status)) {
-> > +		spin_unlock(&bp->lock);
-> >  		return IRQ_NONE;
-> > -
-> > -	spin_lock(&bp->lock);
-> > +	}
+> [ ... ]
 >
-> [Severity: Medium]
-> [Finding: main-3-6]
-> [Sources: opus-5]
-> Does this remove the lock-free "not my interrupt" fast path?
+> > @@ -3672,12 +3680,13 @@ static int neigh_proc_dointvec_ms_jiffies_posit=
+ive(const struct ctl_table *ctl,
+> >                                                  void *buffer, size_t *=
+lenp, loff_t *ppos)
+> >  {
+> >       struct ctl_table tmp =3D *ctl;
+> > -     int ret;
+> > +     int ret, min, max;
+> >
+> > -     int min =3D msecs_to_jiffies(1);
+> > +     min =3D msecs_to_jiffies(1);
+> > +     max =3D msecs_to_jiffies(NTBL_PARM_MS_MAX);
+> >
+> >       tmp.extra1 =3D &min;
+> > -     tmp.extra2 =3D NULL;
+> > +     tmp.extra2 =3D &max;
+> >
+> >       ret =3D proc_dointvec_ms_jiffies_minmax(&tmp, write, buffer, lenp=
+, ppos);
 >
-> The handler is registered shared in macb_init():
+> [Severity: High]
+> Does proc_dointvec_ms_jiffies_minmax() actually look at extra1/extra2 in
+> this tree?  The call chain from neigh_proc_dointvec_ms_jiffies_positive()
+> seems to drop the range check:
+>
+> kernel/time/jiffies.c:
+>
+>   static int do_proc_int_conv_ms_jiffies_minmax(bool *negp, ulong *u_ptr,
+>                                                 int *k_ptr, int dir,
+>                                                 const struct ctl_table *t=
+bl)
+>   {
+>         return proc_int_conv(negp, u_ptr, k_ptr, dir, tbl, false,
+>                              sysctl_u2k_int_conv_ms, sysctl_k2u_int_conv_=
+ms);
+>   }
+>
+> kernel/sysctl.c:proc_int_conv() only consults the bounds when
+> k_ptr_range_check is true:
+>
+>         if (k_ptr_range_check) {
+>                 ...
+>                 if ((tbl->extra1 && *(int *)tbl->extra1 > tmp_k) ||
+>                     (tbl->extra2 && *(int *)tbl->extra2 < tmp_k))
+>                         return -EINVAL;
+>                 WRITE_ONCE(*k_ptr, tmp_k);
+>         } else
+>                 return user_to_kern(negp, u_ptr, k_ptr);
+>
+> Since the converter passes false, aren't both tmp.extra1 =3D &min and the=
+ new
+> tmp.extra2 =3D &max dead stores, so a write of 0, of a value well above
+> 86400000, or of a negative value to
+> /proc/sys/net/ipv{4,6}/neigh/*/interval_probe_time_ms still succeeds?
+>
+> If so, the failure mode described in the commit message stays reachable v=
+ia
+> the sysctl entry point, where neigh_managed_work() requeues itself with t=
+he
+> unvalidated value:
+>
+>   queue_delayed_work(system_power_efficient_wq, &tbl->managed_work,
+>                      NEIGH_VAR(&tbl->parms, INTERVAL_PROBE_TIME_MS));
+>
+> with 0 meaning no delay and a negative int sign-extending into the unsign=
+ed
+> long delay argument.
+>
+> That would also make this sentence in the commit message inaccurate:
+>
+>     The same max check is applied to sysctl as well.
+>
+> and likewise the new documentation text:
+>
+>         the min value is 1, and the max value is 86400000 (1 day).
+>
+> The netlink half looks fine, so the sysctl path and the range now declare=
+d
+> in Documentation/netlink/specs/rt-neigh.yaml would disagree: an out-of-ra=
+nge
+> sysctl write can still be reported back by RTM_GETNEIGHTBL as a value
+> outside the declared 1..86400000 range.
+>
+> The cover note below the --- line points at a separate, not-yet-merged
+> sysctl-core fix
+> (https://lore.kernel.org/linux-fsdevel/20260905233819.1064529-2-kuniyu@go=
+ogle.com/)
+> as a prerequisite.  Since that note does not end up in git history,
 
-Yes! Once again, we share only with other queues of the same MAC.
-We don't support running alongside other devices.
+Good to know Sashiko reads comments under --- :)
 
-[...]
+The fix was already queued for sysctl-fixes, no need to wait.
+https://git.kernel.org/pub/scm/linux/kernel/git/joel.granados/linux.git/com=
+mit/?h=3Djag/sysctl-fixes&id=3D1bb4e0f7a019b6b34228efbcc9c7399e3dbf72a8
 
-Thanks,
---=20
-Th=C3=A9o Lebrun, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
 
+> would it
+> make sense to order this patch behind that fix, or to mention the depende=
+ncy
+> in the commit message itself?  Note this commit carries a Fixes: tag, so =
+a
+> stable backport would carry the documented bound without the enforcement.
+>
+> I checked the end of this series and do_proc_int_conv_ms_jiffies_minmax()
+> still passes false, so nothing later in the series appears to restore the
+> check.
+>
+> --
+> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
+set/20260909233143.2401847-1-kuniyu%40google.com
