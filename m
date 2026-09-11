@@ -1,78 +1,160 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-160.mta0.migadu.com [91.218.175.160])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 004F73C4B64;
-	Fri, 11 Sep 2026 02:25:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33BB03C4B79
+	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 02:25:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.160
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789093512; cv=none; b=Kz7YmBGSyo9JGy5zQLVzVGvv2cnt5eNIjV93gGuJYLshcMHV0IwMZx+TeCMTFIEtzwZr/Qf6c+Up9sVWfspoRy3oPvY89J0+INGk5Xw2w8axuUcUGbtK6bUCdewJL/V3k3vo0oZhiFInDCfaRmvCrJG9r+h4D9Ot2WfXrCk8rDs=
+	t=1789093545; cv=none; b=cFjQmJU3g3ozm21/xpUUb7vj+vfyJ9/unUUEt6gGRTtIKZlGuiUV7eq9CQPVLZA+FaBGvfDE9hLFXS4YnYQcK+DtBXtVKwizqTjb/L4RcOe3wcEVjTShGXOeMoiBLSVxEH5Kw2X6YEVeVVyzmV912DSxGyCWi7umaHCYJMRHX6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789093512; c=relaxed/simple;
-	bh=iu0xFS54jtqt/le8IYdRc71D046Hy/mYlgF6ro1+ciw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dRu8z9QuDa6QCE4TkkwN44Cs3bsMeXyWYH6ROFFiVG1P3XutuOOjL7WNOSK926LbIERYuBWHm5ccbY+kX/xg+JTZ8Y44Al/HZmdKLKF9s2005fYM5zecSpaHjRmbH8tiyRmQcXw06BVyimnt8ETPCc2Ya9ajRWo8j0pkJUWbgg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=caoUIJTz; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789093545; c=relaxed/simple;
+	bh=ww44MkRS2SV+fox/sq1o8s2sOykBn7bTcaeA51by+fY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cikrg8qgAjF3kaLgYd+UIfgCaaNKVWhRiUkFou8aLWXHLc9bUvZX7DQwdwZ35ICJzyGdwyIFljKrgcqKfIAW/45LvuC1JM8tvBVB85Ml1kVjGahStK0HC3E+2UaxF7ZljjGAYErijZyY7FK2sj+RS9hJN7l5uV+P2fcvNOeibQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=OWUUgEYg; arc=none smtp.client-ip=91.218.175.160
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="caoUIJTz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41D821F000FF;
-	Fri, 11 Sep 2026 02:25:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789093510;
-	bh=0KDI+PR5NrM9GYBSon7cJT/Y9OtpJ32TC7sVfz4WwsM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=caoUIJTzw8Y56ZIr2gYvCH2/OTplJoOPqd4ryEso/J2+yXPE9kJa9FRVsMLpOqp/d
-	 mtCtDMsPgmIC1F2e4gvOJS7DffFk3thram98q0Qq+gBGkvATFWkKmcxabMCk3QxCRT
-	 p1N1bkZEK2OkFFGguQ+vAyrc40llGyg7QdJujahHmYsn1DT1IHD3/8fFxKlyKt3/h+
-	 aMvv4+3Y8w8MA4IfBjYt9ar/5qcH4WEQ6g23iOAkTQZpzmHqlUfwH0QiD717fGZ1SR
-	 xQGXN5qqhye3M0GWZUw/pE5KaeydLPd/38N2jvLoQk/6d/LPlkKz3MNCQH5ITcle03
-	 YKKry6Lc0m7Zg==
-Date: Thu, 10 Sep 2026 19:25:09 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Taylor Bates <tmbates12@gmail.com>
-Cc: Donald Hunter <donald.hunter@gmail.com>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Jiri Pirko
- <jiri@resnulli.us>, Stanislav Fomichev <sdf@fomichev.me>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next 2/4] tools: ynl: reject zero-length attributes
- instead of looping forever
-Message-ID: <20260910192509.73207bef@kernel.org>
-In-Reply-To: <20260908-ynl-robustness-v1-2-f255214c0f30@gmail.com>
-References: <20260908-ynl-robustness-v1-0-f255214c0f30@gmail.com>
-	<20260908-ynl-robustness-v1-2-f255214c0f30@gmail.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="OWUUgEYg"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=ww44MkRS2SV+fox/sq1o8s2sOykBn7bTcaeA51by+fY=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789093542; v=1; x=1789698342;
+ b=OWUUgEYgQ0EyUUepsASCZfeZx2AnSwgi32VFECkfLEt0KvsOYRdayE+jwEVGBC18xoRS0pq2
+ GgZfkUeQ0V6KHo/DtDCzBjAd17CyEH54pkXPxO6QPFSNs7mksWduN6NtNUS/DGZ69mPSQHovRl0
+ qj+pofwNq+66fgg6KUOvpVc4=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 17f48bc664966c65;
+	Fri, 11 Sep 2026 02:25:42 +0000
+X-Mizu-Trace-ID: 17f48bc664966c65
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <845b1b97-706f-42f8-b08c-90e863edef0a@linux.dev>
+Date: Fri, 11 Sep 2026 10:25:32 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] tcp: fastopen: check rsk_drop_req() in
+ tcp_fastopen_create_child()
+To: Matthieu Baerts <matttbe@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev,
+ Kimi Security Team <bug-report@moonshot.ai>,
+ Yilin Zhang <yilinzhang@moonshot.ai>, Mat Martineau <martineau@kernel.org>
+References: <20260903094010.4066892-1-yilinzhang@moonshot.ai>
+ <c95bc6f8-b8da-426f-a056-1c692559d14f@redhat.com>
+ <cd7d7f5e-d729-475e-b772-e201a2ab37be@kernel.org>
+ <f8028773-9ed6-4a34-9fd4-68150a459cfb@linux.dev>
+ <2a0f06a0-f8d7-45d4-a495-a80631f90280@kernel.org>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+In-Reply-To: <2a0f06a0-f8d7-45d4-a495-a80631f90280@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Tue, 08 Sep 2026 19:45:08 -0400 Taylor Bates wrote:
-> The BRIDGE_VLANDB_GOPTS_MCAST_ROUTER_PORTS payload the kernel then sends:
-> 
->   34 00 02 00   MDBA_ROUTER, len 52
->   30 00 01 00   MDBA_ROUTER_PORT, len 48
->   08 00 00 00   bare ifindex 8, written by nla_put_nohdr()
->   08 00 01 00   MDBA_ROUTER_PATTR_TIMER, len 8
->   00 00 00 00   timer value, 0 for a permanent router
 
-Sounds like the family outputs garbage and should not be supported.
+On 9/11/26 12:12 AM, Matthieu Baerts wrote:
+> Hi Jiayuan,
+>
+> On 10/09/2026 14:15, Jiayuan Chen wrote:
+>> On 9/10/26 6:13 PM, Matthieu Baerts wrote:
+>>> Hi Paolo,
+>>>
+>>> Thank you for having checked!
+>>>
+>>> On 10/09/2026 10:12, Paolo Abeni wrote:
+>>>> On 9/3/26 11:40 AM, Yilin Zhang wrote:
+>>>>> subflow_syn_recv_sock() sets drop_req when an MP_JOIN SYN takes the
+>>>>> fatal
+>>>>> fallback and destroys the cloned child. tcp_fastopen_create_child()
+>>>>> ignored the flag and could queue the destroyed child.
+>>>>>
+>>>>> With an MPTCP listener using server-side Fast Open, a valid-cookie
+>>>>> MP_JOIN SYN could then expose the freed child through accept().
+>>>>>
+>>>>> Release the locked child and drop the request before tcp_conn_request()
+>>>>> sends a SYN-ACK. Initialize drop_req when allocating the request so the
+>>>>> check cannot observe stale state after request-socket reuse.
+>>>>>
+>>>>> Changes in v2:
+>>>>> - unlock the child before dropping its reference
+>>>>> - drop the request instead of sending a SYN-ACK after the MPTCP reset,
+>>>>>     as suggested by Jiayuan Chen
+>>>>>
+>>>>> Fixes: 90bf45134d55 ("mptcp: add new sock flag to deal with join
+>>>>> subflows")
+>>>>> Reported-by: Kimi Security Team <bug-report@moonshot.ai>
+>>>>> Suggested-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+>>>>> Signed-off-by: Yilin Zhang <yilinzhang@moonshot.ai>
+>>>> This looks like the wrong fix. IIRC fastopen is not compatible with MPJ
+>>>> - as the latter must accept data only after the 4way handshake
+>>>> completion.
+>>>>
+>>>> @Mat(s): could you please double check the above ^^^ statement???
+>>>>
+>>>> If so mptcp should reject entirely MPJ + fastopen and no addtional code
+>>>> required on the TCP side.
+>>> I didn't check in details, but when I try with this packetdrill repro...
+>>>
+>>>    https://lore.kernel.org/20260903070649.3965366-1-yilinzhang@moonshot.ai
+>>>
+>>> ... it looks like the kernel replies with an MP_RST, but also a SYN+ACK,
+>>> and a WARN:
+>>>
+>>>     refcount_t: underflow; use-after-free.
+>>>     (...)
+>>>     inet_csk_listen_stop (net/ipv4/inet_connection_sock.c:1533)
+>>>     ? mptcp_subflow_queue_clean (net/mptcp/subflow.c:1925)
+>>>     mptcp_check_listen_stop.part.0 (include/net/sock.h:1486
+>>>                                     net/mptcp/protocol.c:3482)
+>>>     __mptcp_close (net/mptcp/protocol.c:3534)
+>>>     mptcp_close (net/mptcp/protocol.c:3572)
+>>>     inet_release (net/ipv4/af_inet.c:425)
+>>>
+>>> With this v2, I don't see the SYN+ACK, only the RST.
+>>>
+>>>
+>>> If I'm not mistaken, with TFO, syn_recv_sock will be called first
+>>> (tcp_conn_request -> tcp_fastopen_create_child -> subflow_syn_recv_sock)
+>>> then MPTCP will only check TFO when the SYN+ACK is being sent
+>>> (tcp_conn_request -> subflow_v(46)_send_synack).
+>>>
+>>> In subflow_syn_recv_sock(), I don't think we have a strong indicator
+>>
+>> You inspired me. Maybe we can use such code:
+>>
+>>      if (subflow_req->mp_join &&
+>>          (TCP_SKB_CB(skb)->tcp_flags & TCPHDR_SYN))
+>>              return NULL;
+> Good idea! Indeed, having a SYN here only happens with TFO.
+>
+> It would be good to add a comment there then.
+>
+>> We now skip RST and SYN+ACK also can be sent by tcp_conn_request().
+> Yes, I guess returning NULL is not enough, a reset should probably be
+> sent as well (prohibit), a MIB counter incremented (MPJ rejected?), and
+> the request dropped.
 
->          while offset < len(msg):
->              attr = NlAttr(msg, offset)
-> +            if attr.full_len < 4:
-> +                raise YnlException(
-> +                    f'Malformed attribute at offset {offset}: '
-> +                    f'length {attr.payload_len} is shorter than the header')
->              offset += attr.full_len
->              self.attrs.append(attr)
 
-Not sure i follow you logic. If anything I'd have written:
+Should we accept this subflow ?
 
-	if len(msg) - offset < 4:
-		raise ...short, not overly verbose msg")
+It's just a SYN with MPJ + valid fastopen cookie, replying SYNACK 
+and fallback to 3-way handshake may be easier.
 
-? But again, if the kernel is not outputting valid attrs that's not
-YNL's problem. 
+(I'm not sure whether RFC define it or not.)
+
+
+>
+> Just to avoid a deadlock: @Yilin: will you send a v3 with this suggestion?
+
+
+If we want to reject such SYN, we need modify tcp_conn_request() to 
+avoid the SYNACK being sent
+
+and explicit‌ly send RST before returning NULL.
+
+>
+> Cheers,
+> Matt
