@@ -1,198 +1,159 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from smtpbg150.qq.com (smtpbg150.qq.com [18.132.163.193])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 093473D4116;
-	Fri, 11 Sep 2026 11:25:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0CC747126E;
+	Fri, 11 Sep 2026 11:25:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.132.163.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789125932; cv=none; b=KTMFNHh5LeZorBwRu98b6GOmIt5GMOVceujrYDpLBn8T3Ijgj65XerJZU6tbRsz/3ax7j02vErTLTaisQsP4IomnV78n+GVu/NIkQbD4VUHrsLJNo2Ntad3luySwVntrKOZvAv6A6UJNoONO+Ceswsx/3KxLfE7G+0M3JyOI+Yc=
+	t=1789125943; cv=none; b=FgOCkGbM/qZ+P/G6sK+6SRA+P0sd57kkzSAiIVnC3/gELEA5+HeCv48BtaXMX+UmK/+girPrNRzfTT1D/Nvzi5yHLCBQIu443Ex+nYRl0VxDfFeWu0fMCGgShtymdyATbVcc2wujfiJloPl5lXi4ZE6E99MhUlAj52WDYHf+npQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789125932; c=relaxed/simple;
-	bh=JGDTX2OStM2e37UgfWdfDt5r7ozgdUeUC3G7DcOvtvM=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=pA6aBTtVik8177w9Y6zw4s+GXoIrl17t/3S61+WkW9+AfTwvCrP0yrqVO68YTAPCw+M3e5rFlYpVrqY+cSJfdEbqJ84hBqjAXy1dUM0OnRGsJ8ocCH3PQLXR8uTwysbEVEuDl0lt0vUFtwpMddrEZ8UPrBBR37mmGCDpFjM9/ck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RdtyzogD; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RdtyzogD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5F421F000FF;
-	Fri, 11 Sep 2026 11:25:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789125923;
-	bh=Giz3DgoV1Kkxp/ItQMDYkJ9vVxOeemBUbGyOg9d1k88=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=RdtyzogDQ01XzqOUeKqOMt1W9a+vkJRa0bUdI0tJRjpEDw23pe71irCkBXep+h8HL
-	 NPjaj6HHcA3bTHZxcz9mW63lA5QtGQV4/jqH+L3vJejZe5+XjKOgvRZVyvimGSVWTR
-	 KR7sepXRjTkumHQdPTgKlyNL356VjyhA2XIGzA5ZAU345VmWeppoTOdJjmWGCs7dpa
-	 4OWiNyiqtn+58AVocIzrYnyxj74thlDyi1iAOZAMACvBRHjnA648E7RvpbVH8fn3ZN
-	 zG/NUkQIUGaTnJ27nRRwJQRewMdQuBJxkl/5aDpEB59QgE2Dlaq3t7MJGzq3T7VRf7
-	 NJybqGTqBGJ2w==
-Subject: Re: [PATCH net-next v2 8/9] net: stmmac: qcom-ethqos: add
- per-platform NOC clock voting
-From: netdev-bot+sashiko@kernel.org
-To: mohd.anwar@oss.qualcomm.com
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, afd@ti.com, andrew@lunn.ch, hkallweit1@gmail.com,
- linux@armlinux.org.uk, richardcochran@gmail.com, andersson@kernel.org,
- konradybcio@kernel.org, alexandre.torgue@foss.st.com, peppe.cavallaro@st.com,
- joabreu@synopsys.com, maxime.chevallier@bootlin.com,
- mcoquelin.stm32@gmail.com, netdev@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org
-Date: Fri, 11 Sep 2026 11:25:21 +0000
-Message-ID: <178912592132.219967.18300009845024056442@kernel.org>
-In-Reply-To: <20260908-shikra_ethernet-v2-8-bbe3389d0652@oss.qualcomm.com>
-References: <20260908-shikra_ethernet-v2-8-bbe3389d0652@oss.qualcomm.com>
-X-sashiko-severity: Medium
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=arc-20240116; t=1789125943; c=relaxed/simple;
+	bh=Rwy0sas9de9i6ogM+sx251G06BSLrY+dpn9PAlD4xRI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=spJkK4vD7cs6w8MDQtoQSUnkqhx0Gl43UBscjK53jSIaIOrTR9mXeQ8Wg3ItcNx8VrGum8zISrJwwaIAsafQLfIn9F5VNChonNtYpIJSzys7XZzetWzlTA6n+b3EDcJpTGZkvVtaxerD7AOxdusAmpU5EsKueJe1QUc9YebACvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mucse.com; spf=pass smtp.mailfrom=mucse.com; arc=none smtp.client-ip=18.132.163.193
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mucse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mucse.com
+X-QQ-mid: esmtpsz16t1789125862tc5dd637e
+X-QQ-Originating-IP: Ous/dVGm7m+QzRdoJW/NjkwQcc3nPFuP+W4m7SCRITE=
+Received: from nic-Precision-5820-Tower ( [203.174.112.180])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Fri, 11 Sep 2026 19:24:19 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 13768595504651496234
+EX-QQ-RecipientCnt: 11
+From: Dong Yibo <dong100@mucse.com>
+To: andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	vadim.fedorenko@linux.dev,
+	u.kleine-koenig@baylibre.com
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	dong100@mucse.com,
+	yaojun@mucse.com
+Subject: [PATCH net-next v11 0/5] net: rnpgbe: Add TX/RX and link status support
+Date: Fri, 11 Sep 2026 19:24:16 +0800
+Message-ID: <745DADAC2A5786BD+20260911112416.2142101-1-dong100@mucse.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: esmtpsz:mucse.com:qybglogicsvrgz:qybglogicsvrgz3a-1
+X-QQ-XMAILINFO: OQx6vEqF0rNegaJMvFZ38mWBNKi7cQa5f03cAzqA56C00A+sdxKa7RR7
+	zeoHPp+2AcSwqWKefaSSk6uCRYWeApo247Izq/8P8pEur4sHOK69uy5J7eP0O+4JnsiCVf/
+	O4Il11AWbOQvfvgEsNVFGjNPE4/6UPMwLtbf/wyZrK+RLBLNiMqF6kXmTjYjK4EK2u+x/XV
+	to40MM8uLohBDHrRHQgxqGYPYM2S99vW7/j170HMmE3IR6NGwf3dQVPnaMBUIeS9onJqeKQ
+	W/2qo0yKZBhwPS0cIqI+Ovfex2L7cmlB/6WhJsCQnRk6OaKhYcQp/7/lMmfGojZnm0UQWoT
+	B/QmC9w4p4Esc0NpXe42gTa7F5XxFmbzsAfAak5eSlpWd0YZUe8hF0SPRsf5OhlgcITK63B
+	tfjVHCrcGyafvJFaiqaShfr5tFTNCOskkUtbYa2Zy6Ar0FMHVozSf0rEBh8ZcJV/ext0RGy
+	k6ykNDcFm6tNXSaPjLZgEYf0CvLxOtE+Q93KZq6ID+HCFvBDCAVwZOEMrv24EUcQy/tlddY
+	71riIR7ELwV8kWHW4ABMy3CxCeyo5iPvr+5iPEkqjT96xmw2qQQnYQpvEMWr+D5pbfmjLn3
+	RF+4fZjtOaq8IrkyTnpUJeohlN7JKZ4PhooZ3zkzNAJb0/ZCg4X+FucZyLIDrhuEDj4jvtA
+	ZphrZCfGY0cXKgGAogb2no5rGwHERLLOSLDFP9YKzd2LV2EusX6s3q9ECXWUJSdFpOwg4d1
+	6A2ZnLUa3HyEtKM/BAo1I1CwgMHN3hCjkD6eBfJAahbgiclGkw3ggn//PoyxYrnNH7DEHAg
+	BOkbSSsykaNm7fVOZQyeX1PMDbLPa74rsuAgk4BUY7k5v+uOhFjJiy3KAFEKS31WwsmPs61
+	rFBho+8xTkAHDgPxZ2ncEujJC3ulMRY31pxygNrNz42DMYsFSjLR9s+cT7uTkiY1CqiyAMf
+	kxCIno8xYy933eeBw62VoFsdpovJx6EJvC0Lpws+kF00XJ4Dek52tdQatTrmcGjD3TPp7rj
+	bxq41maJwVbUY0jJmqp71s3Tp0O/TdT8AwXsYZAcgsd9SDoIf+osKIthbYZV9w4PBCQ5th1
+	nbX0fYEHJ5Fn3b0IOXTZAIis6tT8OrMGw==
+X-QQ-XMRINFO: NI4Ajvh11aEjEMj13RCX7UuhPEoou2bs1g==
+X-QQ-RECHKSPAM: 0
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue(s) to consider:
+Hi maintainers,
 
-Critical: 0 · High: 0 · Medium: 1 · Low: 0
+This patch series adds the packet transmission, reception, and link status
+management features to the RNPGBE driver, building upon the previously
+introduced mailbox communication and basic driver infrastructure.
 
-- [Medium] New hard dependency on the PM_OPP subsystem is not expressed
-  in Kconfig.
+The series introduces:
+- MSI-X interrupt handling with NAPI support
+- TX path with scatter-gather DMA and completion handling
+- RX path with page pool buffer management
+- unicast/multicast filter.
+- Firmware link-event processing and carrier management
 
---
+These changes enable the RNPGBE driver to support basic TX/RX
+network operations.
 
-net: stmmac: qcom-ethqos: add per-platform NOC clock voting
+---
+Changelog:
+v10 -> v11:
+[patch 1/5]:
+1. Drop MSI and single-vector MSI-X support. Require at least two MSI-X
+   vectors, reserving vector 0 for mailbox events and using the remaining
+   vectors for the data path. (Jakub Kicinski)
+2. Prevent NAPI from re-enabling queue interrupts after the device is down.
+3. Set the real Tx/Rx queue counts before registering the netdev.
+4. Preserve the configured Tx/Rx queue counts when tearing down q_vectors.
+[patch 2/5]:
+1. Treat a Tx DMA timeout as a terminal AXI fault for the current driver
+   instance, and document why Tx cleanup ignores the repeated idle-wait error
+   after the fault is recorded.
+2. Free q_vectors after an RCU grace period, matching the RCU-protected
+   statistics collection path.
+[patch 3/5]:
+1. Arm Rx allocation retry timers only after NAPI has been enabled.
+2. Mask queue interrupts again after disabling NAPI and calling
+   synchronize_net(), preventing a completed poll from re-enabling them
+   during device shutdown.
+3. Clarify the hardware guarantee for the first RX descriptor length.
+[patch 4/5]:
+1. Advertise unicast address filtering support to the networking core.
+2. Program receive filters under the netdev address lock before enabling Rx,
+   and clarify the hardware multicast hash calculation.
+3. Clear the RAR valid bit before changing an address, and set it only after
+   the complete new address has been written.
+[patch 5/5]:
+1. Quiesce Tx DMA before notifying firmware that the port is down.
+2. Remove the stale mailbox-event boolean return value and document why a
+   failed mailbox read is not retried as transient lock contention.
+3. Document the firmware link-event retry rate and mailbox ACK protocol.
 
-This adds an ethqos_noc_clk_cfg description so each compatible can declare
-its own set of System NOC clocks with per-clock rates. The clocks are
-acquired in probe via qcom_ethqos_init_noc_clks() and enabled/disabled
-alongside the link clock in ethqos_clks_config(), with an OPP table used to
-propagate the VDD_CX performance state.
+Links:
+v1:  https://lore.kernel.org/netdev/20260325091204.94015-1-dong100@mucse.com/
+v2:  https://lore.kernel.org/netdev/20260403025713.527841-1-dong100@mucse.com/
+v3:  https://lore.kernel.org/netdev/20260507081539.171844-1-dong100@mucse.com/
+v4:  https://lore.kernel.org/netdev/20260526033539.164061-1-dong100@mucse.com/
+v5:  https://lore.kernel.org/netdev/20260528023150.239532-1-dong100@mucse.com/
+v6:  https://lore.kernel.org/netdev/20260604112750.769215-1-dong100@mucse.com/
+v7:  https://lore.kernel.org/netdev/20260611100036.36370-1-dong100@mucse.com/
+v8:  https://lore.kernel.org/netdev/20260731120322.895955-1-dong100@mucse.com/
+v9:  https://lore.kernel.org/netdev/20260814111317.1741087-1-dong100@mucse.com/
+v10: https://lore.kernel.org/netdev/F44E6669E6C9E7C4+20260831073608.401988-2-dong100@mucse.com/
 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-> index 2471871562ed9..8871d28594116 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-> @@ -7,6 +7,7 @@
->  #include <linux/platform_device.h>
->  #include <linux/phy.h>
->  #include <linux/phy/phy.h>
-> +#include <linux/pm_opp.h>
->  
->  #include "stmmac.h"
->  #include "stmmac_platform.h"
+---
 
-[ ... ]
+Dong Yibo (5):
+  net: rnpgbe: Add interrupt handling
+  net: rnpgbe: Add basic TX packet transmission support
+  net: rnpgbe: Add RX packet reception support
+  net: rnpgbe: Add receive mode support
+  net: rnpgbe: Add link status handling support
 
-> @@ -689,15 +703,51 @@ static int ethqos_mac_finish_serdes(struct net_device *ndev, void *priv,
->  static int ethqos_clks_config(void *priv, bool enabled)
->  {
->  	struct qcom_ethqos *ethqos = priv;
-> +	unsigned int i;
->  	int ret = 0;
->  
->  	if (enabled) {
-> +		if (ethqos->num_noc_clks) {
-> +			ret = dev_pm_opp_set_rate(&ethqos->pdev->dev,
-> +						  ethqos->noc_clk_rates[0]);
-> +			if (ret) {
-> +				dev_err(&ethqos->pdev->dev,
-> +					"NOC OPP rate set failed: %d\n", ret);
-> +				return ret;
-> +			}
-
-[ ... ]
-
-> @@ -734,6 +789,51 @@ static void ethqos_ptp_clk_freq_config(struct stmmac_priv *priv)
->  	netdev_dbg(priv->dev, "PTP rate %lu\n", plat_dat->clk_ptp_rate);
->  }
->  
-> +static void qcom_ethqos_noc_opp_cleanup(void *dev)
-> +{
-> +	dev_pm_opp_set_rate(dev, 0);
-> +}
-> +
-> +/* Some SoCs gate NOC access behind dedicated clocks. Acquire them here
-> + * so ethqos_clks_config() can enable/disable them at runtime. The OPP
-> + * table is used to propagate the required VDD_CX performance state via
-> + * dev_pm_opp_set_rate().
-> + */
-> +static int qcom_ethqos_init_noc_clks(struct qcom_ethqos *ethqos,
-> +				     const struct ethqos_emac_driver_data *data)
-> +{
-
-[ ... ]
-
-> +	ret = devm_clk_bulk_get(dev, ethqos->num_noc_clks, ethqos->noc_clks);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "Failed to get NOC clocks\n");
-> +
-> +	ret = devm_pm_opp_set_clkname(dev, data->noc_clk_cfg[0].id);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "Failed to set OPP clock name\n");
-> +
-> +	ret = devm_pm_opp_of_add_table(dev);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "Failed to add OPP table\n");
-> +
-> +	ret = dev_pm_opp_set_rate(dev, data->noc_clk_cfg[0].rate);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "Failed to set initial NOC OPP rate\n");
-
-[Severity: Medium]
-Should DWMAC_QCOM_ETHQOS gain a PM_OPP dependency now that these calls are
-mandatory for compatibles that declare NOC clocks?
-
-The Kconfig entry currently reads:
-
-drivers/net/ethernet/stmicro/stmmac/Kconfig:
-config DWMAC_QCOM_ETHQOS
-	tristate "Qualcomm ETHQOS support"
-	default ARCH_QCOM
-	depends on OF && (ARCH_QCOM || COMPILE_TEST)
-
-There is no depends on PM_OPP and no select PM_OPP, and PM_OPP itself is a
-hidden symbol with no prompt:
-
-drivers/opp/Kconfig:
-config PM_OPP
-	bool
-
-so CONFIG_DWMAC_QCOM_ETHQOS=y with CONFIG_PM_OPP=n is a reachable
-configuration. In that case the stubs are used:
-
-include/linux/pm_opp.h:
-static inline int dev_pm_opp_set_rate(struct device *dev, unsigned long target_freq)
-{
-	return -EOPNOTSUPP;
-}
-...
-static inline int devm_pm_opp_of_add_table(struct device *dev)
-{
-	return -EOPNOTSUPP;
-}
-
-qcom_ethqos_probe() -> qcom_ethqos_init_noc_clks() ->
-devm_pm_opp_set_clkname() would then return -EOPNOTSUPP, and the
-dev_err_probe() above aborts probe with "Failed to set OPP clock name", so
-no netdev is registered for any compatible that sets num_noc_clks
-(qcom,shikra-ethqos, added later in this series).
-
-The same applies on the runtime path: ethqos_clks_config(priv, true)
-propagates the -EOPNOTSUPP from dev_pm_opp_set_rate() on every enable and
-resume.
-
-Would adding select PM_OPP (or depends on PM_OPP) to DWMAC_QCOM_ETHQOS, or
-tolerating -EOPNOTSUPP on the OPP path, be preferable here?
-
-> +
-> +	return devm_add_action_or_reset(dev, qcom_ethqos_noc_opp_cleanup, dev);
-> +}
-
-[ ... ]
+ drivers/net/ethernet/mucse/Kconfig            |    1 +
+ drivers/net/ethernet/mucse/rnpgbe/Makefile    |    3 +-
+ drivers/net/ethernet/mucse/rnpgbe/rnpgbe.h    |  201 +-
+ .../net/ethernet/mucse/rnpgbe/rnpgbe_chip.c   |  118 +-
+ drivers/net/ethernet/mucse/rnpgbe/rnpgbe_hw.h |   43 +
+ .../net/ethernet/mucse/rnpgbe/rnpgbe_lib.c    | 2248 +++++++++++++++++
+ .../net/ethernet/mucse/rnpgbe/rnpgbe_lib.h    |   84 +
+ .../net/ethernet/mucse/rnpgbe/rnpgbe_main.c   |  158 +-
+ .../net/ethernet/mucse/rnpgbe/rnpgbe_mbx.c    |   32 +-
+ .../net/ethernet/mucse/rnpgbe/rnpgbe_mbx.h    |    1 +
+ .../net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.c |  235 ++
+ .../net/ethernet/mucse/rnpgbe/rnpgbe_mbx_fw.h |   43 +
+ 12 files changed, 3138 insertions(+), 29 deletions(-)
+ create mode 100644 drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.c
+ create mode 100644 drivers/net/ethernet/mucse/rnpgbe/rnpgbe_lib.h
 
 -- 
-Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260908-shikra_ethernet-v2-0-bbe3389d0652%40oss.qualcomm.com
+2.50.1
+
