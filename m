@@ -1,84 +1,87 @@
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pz2-f25.google.com (mail-pz2-f25.google.com [74.125.228.25])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B90FE49362E;
-	Fri, 11 Sep 2026 16:09:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4332E49E5D0
+	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 16:13:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789142981; cv=none; b=aC/wB2DVPF8O28xTRc7tdKGGX78FZFKdYJWmZO+zpTB6wBt6iaiU9Wf893vNucqg63mqDwaCIXVW3qn7TZku2u4eIld+qjwgauw/cidIUd/ipvI8+82KUxTiFPJ4o0sZIWZtxl9Ctkybsvki/c2tOLvMyzmuS4ITjeqhnY2YTRU=
+	t=1789143234; cv=none; b=Q63ys73h6/yU/LTORDhIBtCps0pE1N1O4XIp4AMk37TK6MgX/gOn2tvLx2q3oWdbcD07XJFqcxYsPNVwuuFlud6T6ZBCOvXtJEChOE2tHrsmPmtpJjOZGv+lg8NG1xBr43N+seFjKM0/j0Gl1R0tLSKqfX8qpu5iSiAwWOc4/7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789142981; c=relaxed/simple;
-	bh=nGc4MsQZjD2VcTLlfN41zDAxz90aZkv7fLi5jdqZc40=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JWbFLS8RRT1eUgAU8ed3gKNdRGeMuElEchdJ/WS9novOJ3NUMOS61Ijgt5IfgEPd3zjR2xH60+2P49HWCceEFsq4fePV5t5Q/76IYQ1I/9wQFgLZ7IX95iril9YW1xdmtsfgUHaw0rH2gI4zEYI1gvFldN+Fzd4wjB0/P5osiTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=UrBCjTSE; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=debian.org
+	s=arc-20240116; t=1789143234; c=relaxed/simple;
+	bh=bmYaliVJ6Mt6CLyYZbjzfxCm1ptbiVVTw8opHMA46Qw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ZFfdD7LxWDwQ5lLKJQLCUcfjz4G6PMO3fatrGJ6XGQ5G0xSaJET1fwpbboMyeiDUxk+3541UBbjz7eZkFr/tpQFvbw77lk3bWjozfHvaB4jMISI9NAClv3Gn3cH9+oxiOMVt7VFJwjmlrAw9BYEdEfgqgPiZ3quNqrD2AfcPWFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dFs2KJYQ; arc=none smtp.client-ip=74.125.228.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="UrBCjTSE"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=x6ObjDhK35n1dGSg6qPiIBjnnl5pQb3BSL8UFeKAShk=; b=UrBCjTSEHl1sMpM5E90ET45GYF
-	YwzHp5lG+URoH5uY9cbn95xemgmJFApNr1fMJ+t55JCRCqI1WjZ7PhN8qO3TIQ1meYpNXk9gsSCgm
-	WEdkj/ApJG1jf43uLM4tUiv0fhefJGkhWJm7VrnfQgCtzeI6YKs3BSWeg3HRhviNgtWQJOYkTnHmW
-	v94GS/ETKkEwz7bHVXgTi9O0Msx4GGV710KAb6WyEFyzzLbOxWlRW0ZdJty/ngp4LtoNM9P1atqBD
-	LHa+6+BOS3gyocE+SuobIdu4Ne5y6y7UjDgGQxoCWDT+DdJRlAVe4DuZMaXsDDShBQN6LzOXBhqkM
-	hR3/4Ilg==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1x53oe-001PKs-0y;
-	Fri, 11 Sep 2026 16:09:28 +0000
-Date: Fri, 11 Sep 2026 09:09:22 -0700
-From: Breno Leitao <leitao@debian.org>
-To: Stanislav Fomichev <sdf.kernel@gmail.com>
-Cc: "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, Willem de Bruijn <willemb@google.com>, 
-	David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, david.laight.linux@gmail.com, kernel-team@meta.com
-Subject: Re: [PATCH net-next 1/2] net: add sockopt_expand_out()
-Message-ID: <aqQnF9vWKVk3GkTp@gmail.com>
-References: <20260910-getsockopt_phase6-v1-0-e681e102d5b8@debian.org>
- <20260910-getsockopt_phase6-v1-1-e681e102d5b8@debian.org>
- <aqQkImqiHPorszOY@devvm7509.cco0.facebook.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dFs2KJYQ"
+Received: by mail-pz2-f25.google.com with SMTP id 41be03b00d2f7-cc1cebad4aeso125803a12.2
+        for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 09:13:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789143232; x=1789748032; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=bmYaliVJ6Mt6CLyYZbjzfxCm1ptbiVVTw8opHMA46Qw=;
+        b=dFs2KJYQEuQ9xcS47fQrts0IDhTPYRGAK7dcX/fk86TxlWWWomeVl3zP+RKafRr1AM
+         iv6P2+lEYnUFUdbNswoj9AaBVRhSR/ij5J6MAD7vF2kY2/+fvR72UJuz3SGbQJdAHRE2
+         bL5gAtbfyA6fyd5DH0KkaS2CkYGlqeNMLW+W03FalbLN41mkmtOUmjOSqxXoKSUZu0zo
+         IhOUsPmHwvjqZiE2AqfX1FEkC4cS6I4TVRDpvv4NSSVALO6oPo6Zv0m2oar4pIMdU/+O
+         eukPbd3Dt9DB+8n+2aaPdhHvh2FW6H9HzG4jGPCz67dXHIbroCzI/5poy0hl5lVtRDnd
+         9Nuw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789143232; x=1789748032;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=bmYaliVJ6Mt6CLyYZbjzfxCm1ptbiVVTw8opHMA46Qw=;
+        b=qOaeWynBrUGLL1syRrC4Cg0z6s6DEwvrXMPka0Ndr+VRhhQ2Nf2o+KMjFwSdROoT6S
+         e0GfD7c9lNebikDqn2ksa9B9Hm/K+JYhkaz32TuxICEylw2Z4vVPGhqy3JHSYuxIwHl+
+         2yqEbNFNtQX4J0Y8om3R/8igC+py9ehrViJ83d/acQ0fOwku6wmAETLONM3CWvHDlL37
+         HgPvT//T7AkDJZJypdUrH0LNq+AxCB/Hzeybsw7GbEeRhKwz6YRAtkLMx5PQWgrtPzIE
+         wZe7msALWKSlCcxZcc5jeUG3TimUTZ6VSk5PxKY6zRsXUjTq03JtR5HWF0nVaYhYMPQ/
+         ADEw==
+X-Gm-Message-State: AFuF++lGaM+lsPliJ82LvEW7ljbRS4jb3kFHL9ax1c8MkvNVu38dc3m0
+	gB8c3m84GeCHiqoLWXgUHpIxtWwvwsDFDqjNup5qktlruHjLWsZe98qw
+X-Gm-Gg: AYBFou0BTabiefB5/7nS/cNYK4Sa0QBapq99wDLo+Y5VZDC+paUAETSekH2kkBPV3A3
+	stbu3Ng4DXxqxx6xNX3gcKu9707BAtO0msbqwg29vJYchFg6pzfHmUHiOfwv/ZeHyM1dmFQpQ9t
+	DmheAvNZC8MLP71WLyxlIhPFvj+YE8hVFocYrFP/rz+svYlaOT35UPonFj5ens/4SB/7Yg4islD
+	bAQbnw4sLaMmZYpODaOwgST1hdCLc56z3WjnU3jK9BGBXV8ImzM+Zk2avyjT0rFGZXs64+RmQ1t
+	rB0+dpFk7mVXej/ze4bCW6uuqHzrmwOiyZNBoX2QM9VLXR+FP1emaqMgpDKtrWcCrpgjAonz52V
+	o+kRfs1ZSHPM3Pa06OB53/+3uZTZQPG49oVT+wvNuBiuNw0Ijv7ApvfCvwo0I0iCvx47YyRFY3X
+	DXt7umfEYWGIm2cpH4R+iVgyXOjC44EUTUL5cv36xX/uJayr87YIrqTrzA23JNG+VpgiN3yvx2a
+	t4=
+X-Received: by 2002:a05:6a20:d807:b0:3a0:bc61:62e6 with SMTP id adf61e73a8af0-3daed15f5b6mr10192696637.8.1789143232189;
+        Fri, 11 Sep 2026 09:13:52 -0700 (PDT)
+Received: from bloom.localdomain ([2604:3d09:178e:e100::3820])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc4c6528fb9sm1408473a12.10.2026.09.11.09.13.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 11 Sep 2026 09:13:51 -0700 (PDT)
+From: Ivy Lopez <skunkolee@gmail.com>
+To: edumazet@google.com
+Cc: netdev@vger.kernel.org,
+	davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	achender@kernel.org,
+	rds-devel@oss.oracle.com,
+	Ivy Lopez <skunkolee@gmail.com>
+Subject: Re: [PATCH net] net: skbuff: do not leave stale header offsets after pskb_carve()
+Date: Fri, 11 Sep 2026 10:13:42 -0600
+Message-ID: <20260911161342.26629-1-skunkolee@gmail.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20260911114922.621937-1-edumazet@google.com>
+References: <20260911114922.621937-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aqQkImqiHPorszOY@devvm7509.cco0.facebook.com>
-X-Debian-User: leitao
+Content-Transfer-Encoding: 8bit
 
-On Fri, Sep 11, 2026 at 08:56:23AM -0700, Stanislav Fomichev wrote:
-> On 09/10, Breno Leitao wrote:
-> >
-> > +	if (size <= iov_iter_count(&opt->iter_out))
-> > +		return 0;
-> > +
-> > +	if (WARN_ON_ONCE(!iter_is_ubuf(&opt->iter_out)))
-> > +		return -EINVAL;
-> 
-> nit: if you end up re-spinning for some reason, maybe swap these two?
+LGTM.
 
-I am not sure we want to swap these two. This is the reason:
-
-1) The first check (size <= iov_iter_count(&opt->iter_out)), check if we
-   need the "hack" or not.
-
-   a) If we don't need the tack, then we are fine and this could be called
-      from user or kernel.
-   
-   b) for the hack (which happens in the next line -- iov_iter_ubuf()), it
-      needs to be ubuf.
-
-So, this force kernel callers to use the right optlen, avoiding hitting
-the same issue as userspace.
-
+Reviewed-by: Ivy Lopez <skunkolee@gmail.com>
