@@ -1,211 +1,175 @@
-Received: from mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96D9C477984
-	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 13:04:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A362343304B
+	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 13:14:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789131868; cv=none; b=MKVeddNXhM91O7TwHUwVD376esddZROfqwK5Mq3q683yrEu7POC78gUWqPyVg0qFVX61sSnIauZEf64f/4W6sWMeNsXDI2iwkFrOHQ+i1hHRxDGiOszR2NRuag8A8/7OFjO7Ameyp4hfKllrmGUGUGo/e99EdGKNw+inKdWvbrI=
+	t=1789132451; cv=none; b=L7DT0tSlgFrcAsVkU3kOhU4byVnC8s7Fi8nyz/hAaUZTvDerUxegFMfXy4EvvXHVqScigE/vvIToSpM0A8Tti72kqd5vfyVi+v5T8ON98JYdb80embnBq0dI0G/PvOIkpECisIPtFDUoMkKcC93ygCoLUuUNIS0KNzq/aS2Kyw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789131868; c=relaxed/simple;
-	bh=PmYOkXyCWA/NCJ3Eaz4VkslDAeMkWeUxEDpJ52XTEKI=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=sLoAA+c+u9427PuW9Qwpcv53/TXOwBAOBT6gTA6d/dQjjoZgu+lBfaRqGHUJNwJ9PAY364BpLQnZNKtilRsmt/EHyIag2OabsIi4gBQJC/84lpX3Q41F11ruoUaMZm82D9bFCSRmS5nLI9h9yhasUjoLuA88vxipCFap0juSIYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cknow-tech.com; spf=pass smtp.mailfrom=cknow-tech.com; dkim=pass (2048-bit key) header.d=cknow-tech.com header.i=@cknow-tech.com header.b=SeZrlmTP; arc=none smtp.client-ip=91.218.175.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cknow-tech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cknow-tech.com
+	s=arc-20240116; t=1789132451; c=relaxed/simple;
+	bh=kb2P+rTup+4JQ+0u04UZoPNTMrRO+p4MdWOy6K8k+Z8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=MSMmfPbBw5U5Ue6zw+8EClGQsE4M3w7hOYcUKMFbLNVIGbBaUmzHadbKtdZT34koCd95WkVLdRegTzBPdfbMxpegkLAN2+AiJB1XDqPwhDsJIfCm1229cU73XZ6XoO62eWlwfU+KYN/WFney90KtC0in+PABAr+CrnuhbrEl+0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YW/nzIas; arc=none smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cknow-tech.com header.i=@cknow-tech.com header.b="SeZrlmTP"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=PmYOkXyCWA/NCJ3Eaz4VkslDAeMkWeUxEDpJ52XTEKI=;
- c=simple/simple; d=cknow-tech.com;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789131862; v=1; x=1789736662;
- b=SeZrlmTPjOuIDx8MQtVUJroc0kBdPHhlX36ebOT/Pr2/wyxh5tP9osmuOzKkZiL+WbBVXdBW
- 8Cc2YqItUGdmsUTl13eFk7wNqveN76dC3A76qYRPKM4GXx3VnbmWuD1Eg7Rucv0TIVWhuMdz8Tm
- DOrW0gQIG9JuLcJ0Tp2JSYXIdZ4JmV3W+TOdIrxYWBhFziSxXorfVXkACkDvTEI8iQE0xlHub/l
- F5jwMgZhBg6o5EuOwRBny5rHypS395QB3jlU5qWS5TUy21Y/v1QaHQ0pb3yN2KmwTplbC5uyAMv
- V5cbtusEd30A+cvSQU/v8PMmftp8a4Zsvlg64Xfgr7xzA==
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id c06cdbb5f92d0953;
-	Fri, 11 Sep 2026 13:04:22 +0000
-X-Mizu-Trace-ID: c06cdbb5f92d0953
-X-Migadu-Flow: FLOW_OUT
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YW/nzIas"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-383b4a3755fso880029a91.3
+        for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 06:14:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789132449; x=1789737249; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=TweUWxwgfruCndSfAUR84PmaICMDLQdodubhsVbm6eo=;
+        b=YW/nzIasoFDH+g463egLYNjF0dfdZf6OhBeSPIUjv9NN43w5UB44YyMcbbi/LPpBTf
+         jnyBc12XjqTbnjvfUQmbNpFN/lbzoWqALWcOlA7KMz//Olclb/zd2aKJ19KKszixyXPm
+         l/bC2ntS+8C63jpD/gQ6mzY/kCsd+dD7XRORF3WU44Zl6ca0Mw3wKlmzXRa+ygkyC4nE
+         vsdlDbx604F9wmFM6vsh8Sn9D8FtavcKezktzAYcVxIKXKncin2Sn4otmiK4jxqj67B4
+         alxXzljsKQTwZIzjJebDge1UGzk4XEtmRG6PSMk+1PzlMgJS33/4KwZdTUnVaea7zq0w
+         YZUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789132449; x=1789737249;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=TweUWxwgfruCndSfAUR84PmaICMDLQdodubhsVbm6eo=;
+        b=DSEKOBePYBNL9czEcjOg1HevRshtOBie/B6es54Bu0hcVlJceRESdfnbrCeCk85PZa
+         hpwsMbsmME6OPFHU8lMa3zKU3369rryhVlHbWMRffv8ia3Idflv6mXjnWOly7KAAMxJT
+         lMi9u3bnFaDyQ70i6vzwLYF4ZAXwBCWHYk0USzuoTdooPvkJ/NWs03xKe8tKiKqjFRHM
+         Gh+JnfE0YCz5qhBFXbV+ZMIKLRjihW+p+d3JOdHiEtYAJyzb7CqrGGHoHNJ/vt1FGrwO
+         wk6TV/kFj5+l3QdRaw79NOUrSv3ICYJl6R/LB63LtxCf0XsJqVjTk4rLKBfgzortHt2f
+         BzPw==
+X-Forwarded-Encrypted: i=1; AKwUvBw4q9t3cZqr5SyWSRG7KWxu3O4rYIFCt8b+BpFGAZ5M1CvL3oNAPUSHxGK8ecb0GTdQxCYJvnI=@vger.kernel.org
+X-Gm-Message-State: AFuF++nUcm3OqiOwtYqp5nsPFDYnDbN4BjiW2v4/5lxbWBGHYRG3FVyp
+	X1X6gZHxLpjyt5mv2WFHGkHzNT1Svqs7EjxMW0kqTwnvD8hXSNsWkbImRjqGb37tXnw=
+X-Gm-Gg: AYBFou2jnqsRjAQGfQ0nDVJVQ/v7oIUXBSj7vfS+GtAszwT8263FjGUlmgc3Rju61Sz
+	QEI1RGUvzclkQBMeral6FvI2IZPdAgRgnnZxacgPbGq60qxIvsdOT2ktMkEOA6pVSMU4lPYRB3P
+	lrNglpraysosDTxJbeOx0Aj5e6lf/lxgAgFvPpxR6FbAB+otPq6qrXHnYT5x1h42X6MLVCBrKg6
+	oBH+8seLCB1TgApU/kyPu7ALrQvMl9t/VmXiqoi91mncp9czxgGVGgJxmNTcwVmXrNtBCa2Kd+g
+	gAAZfHNS06ki5VVpuIUYHHa7tyOdNKPGbGDw4z6Iujm4tRzwsBUhzDGGdni6TWeq72c/Wudmk6+
+	ZfwccU6EUdRH+Gawd+tIlT79D1BTtc5IJtd3iv69zk0twCaoGnWXlphLMxA5sXKSWgyEfgpGCT2
+	szN4XrLuaC/F7cXBQ8RXAs/b9pfLzfB4cCw8Surjnp/+j1gW4lZjX34TrgpHpcJb8+Ru2aT/gWH
+	dlPCeNizi0h4IajVMdehyMfpA==
+X-Received: by 2002:a17:90b:384d:b0:398:e1f4:bda1 with SMTP id 98e67ed59e1d1-39d9c22ccc0mr6616814a91.21.1789132448828;
+        Fri, 11 Sep 2026 06:14:08 -0700 (PDT)
+Received: from LAPTOP-450UDG4J ([223.185.135.143])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39d94bafb3bsm5582882a91.1.2026.09.11.06.14.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 11 Sep 2026 06:14:08 -0700 (PDT)
+From: Yogesh Gaur <yogeshgaur.83@gmail.com>
+To: Heiner Kallweit <hkallweit1@gmail.com>,
+	nic_swsd@realtek.com
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Javen Xu <javen_xu@realsil.com.cn>,
+	Yogesh Gaur <yogeshgaur.83@gmail.com>
+Subject: [PATCH net v3] r8169: don't enable chip LTR when the platform has not enabled LTR
+Date: Fri, 11 Sep 2026 18:43:52 +0530
+Message-ID: <20260911131352.2036-1-yogeshgaur.83@gmail.com>
+X-Mailer: git-send-email 2.55.0.windows.5
+In-Reply-To: <20260910130140.910-1-yogeshgaur.83@gmail.com>
+References: <20260910130140.910-1-yogeshgaur.83@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 11 Sep 2026 15:04:21 +0200
-Message-Id: <DLCIBAHNWQ3M.KN3L9LK8HRU6@cknow-tech.com>
-Cc: "Sebastian Reichel" <sebastian.reichel@collabora.com>,
- <netdev@vger.kernel.org>, <devicetree@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
- <linux-rockchip@lists.infradead.org>
-Subject: Re: [PATCH v5 2/7] arm64: dts: rockchip: describe PCIe RTL8125
- Ethernet on NanoPC-T6
-From: "Diederik de Haas" <diederik@cknow-tech.com>
-To: "Ricardo Pardini" <ricardo@pardini.net>, "Diederik de Haas"
- <diederik@cknow-tech.com>, "Heiner Kallweit" <hkallweit1@gmail.com>,
- <nic_swsd@realtek.com>, "Andrew Lunn" <andrew+netdev@lunn.ch>, "David S.
- Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>, "Jakub
- Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>, "Rob
- Herring" <robh@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>,
- "Conor Dooley" <conor+dt@kernel.org>, "Heiko Stuebner" <heiko@sntech.de>
-X-Mailer: aerc 0.22.0-9-ge948bb7230f4
-References: <20260910-rk3588-dts-rtl-eth-describe-dt-alias-v5-0-c1b9e5f10cd6@pardini.net> <20260910-rk3588-dts-rtl-eth-describe-dt-alias-v5-2-c1b9e5f10cd6@pardini.net> <DLCE8BRWYCBL.2UH33L4RQMAGN@cknow-tech.com> <bd032333-c557-4595-ae0c-6cb2971a9a86@pardini.net>
-In-Reply-To: <bd032333-c557-4595-ae0c-6cb2971a9a86@pardini.net>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Fri Sep 11, 2026 at 2:19 PM CEST, Ricardo Pardini wrote:
-> On 11/09/2026 11:52, Diederik de Haas wrote:
->> On Thu Sep 10, 2026 at 10:07 PM CEST, Ricardo Pardini via B4 Relay wrote=
-:
->>> From: Ricardo Pardini <ricardo@pardini.net>
->>>
->>> The FriendlyElec NanoPC-T6 carries two on-board Realtek RTL8125 NICs
->>> behind pcie2x1l0 and pcie2x1l2.
+rtl_enable_ltr() programs the MAC to generate LTR messages - ALDPS_LTR_EN,
+LTR_SNOOP_EN, LTR_OBFF_LOCK_EN, plus LINK_SPEED_CHANGE_EN on
+RTL8125/RTL8126/RTL8127 - and rtl_hw_aspm_clkreq_enable() calls it on
+every ASPM enable, then goes on to let the chip trigger L1.2.
 
-Forgot to mention: thanks for this series :-)
+The only gate is tp->aspm_manageable, which records that the OS is allowed
+to control ASPM. It says nothing about LTR. LTR is a separate PCIe
+capability that only works if every device on the path to the root port
+supports it. The PCI core works that out in pci_configure_ltr() and
+records the result in pci_dev->ltr_path; per PCIe r6.0 sec 7.5.3.16 a
+function must not issue LTR messages while LTR Mechanism Enable is clear.
 
->>> Describe the fixed function nodes and attach ethernet0/ethernet1
->>> aliases, so that U-Boot's fdt_fixup_ethernet() can fill in the MAC
->>> from its ethaddr/eth1addr env. The on-NIC EEPROMs on this board are
->>> not pre-programmed with a unique MAC, so this gives a stable MAC
->>> across boots that both U-Boot and the kernel agree on.
->>>
->>> Signed-off-by: Ricardo Pardini <ricardo@pardini.net>
->>> ---
->>>   arch/arm64/boot/dts/rockchip/rk3588-nanopc-t6.dtsi | 30 +++++++++++++=
-+++++++++
->>>   1 file changed, 30 insertions(+)
->>>
->>> diff --git a/arch/arm64/boot/dts/rockchip/rk3588-nanopc-t6.dtsi b/arch/=
-arm64/boot/dts/rockchip/rk3588-nanopc-t6.dtsi
->>> index cfdb5c13f8606..550358a756618 100644
->>> --- a/arch/arm64/boot/dts/rockchip/rk3588-nanopc-t6.dtsi
->>> +++ b/arch/arm64/boot/dts/rockchip/rk3588-nanopc-t6.dtsi
->>> @@ -20,6 +20,8 @@ / {
->>>   	compatible =3D "friendlyarm,nanopc-t6", "rockchip,rk3588";
->>>  =20
->>>   	aliases {
->>> +		ethernet0 =3D &rtl_eth0;
->>> +		ethernet1 =3D &rtl_eth1;
->>>   		mmc0 =3D &sdhci;
->>>   		mmc1 =3D &sdmmc;
->>>   	};
->>> @@ -644,6 +646,20 @@ &pcie2x1l0 {
->>>   	pinctrl-names =3D "default";
->>>   	pinctrl-0 =3D <&pcie2_0_rst>;
->>=20
->> The new pinctrl reference is ``pcie_25glan_perstb_b_pin``, so this patch=
- needs
->> to be rebased.
->
-> Indeed; I sent v5 vs v7.3-rc2 which doesn't have your recent series=20
-> fixing those. I've rebased onto next-20260910 which does, will send in a=
-=20
-> v6 - but it's really just fuzz/context changes.
->
-> I'll wait a bit until Heiner/Krysztof/Heiko chime in ref the binding and=
-=20
-> its wording as that has been contentious in the previous versions. And=20
-> who knows what Sashiko will find this time.
+So on a platform whose hierarchy has no LTR path, the driver tells the
+chip to start sending LTR messages nothing will honour, and ties ALDPS -
+the PHY's link-down power saving - to them. A report against RTL8125B
+(rev 05, firmware rtl8125b-2_0.0.2) in a mini PC shows the effect: 291
+link down/up transitions in one eight-hour boot, with repeated downshifts
+to 100Mbps, against four transitions at boot and then a stable link on
+the kernel before the LTR change.
 
-Agreed, their feedback is more important.
+Gate the chip's LTR programming on pci_dev->ltr_path. That field exists
+only when CONFIG_PCIEASPM is enabled, so the test needs a preprocessor
+guard rather than IS_ENABLED(). With CONFIG_PCIEASPM=n the PCI core's
+pci_configure_ltr() is a stub and LTR is enabled nowhere, so the chip
+must not issue LTR messages in that configuration either.
 
->>>   	status =3D "okay";
->>> +
->>> +	pcie@0,0 {
->>> +		reg =3D <0x200000 0 0 0 0>;
->>> +		#address-cells =3D <3>;
->>> +		#size-cells =3D <2>;
->>> +		ranges;
->>> +		device_type =3D "pci";
->>> +		bus-range =3D <0x21 0x2f>;
->>> +
->>> +		rtl_eth0: ethernet@0,0 {
->>> +			compatible =3D "pci10ec,8125";
->>> +			reg =3D <0x210000 0 0 0 0>;
->>> +		};
->>=20
->> Described on page 23 of the schematic titled '2.5G Ethernet B' and ``U12=
-``
->> (ie RTL8125BG) is connected to LAN2 which has ``ETH2`` as label on the c=
-ase.
->
-> Confirmed.
->
->>=20
->>> +	};
->>>   };
->>>  =20
->>>   &pcie2x1l1 {
->>> @@ -660,6 +676,20 @@ &pcie2x1l2 {
->>>   	pinctrl-names =3D "default";
->>>   	pinctrl-0 =3D <&pcie2_2_rst>;
->>=20
->> The new pinctrl reference is ``pcie_25glan_perstb_pin``.
->
-> Will also be fixed by rebasing onto linux-next.
->
->>=20
->>>   	status =3D "okay";
->>> +
->>> +	pcie@0,0 {
->>> +		reg =3D <0x400000 0 0 0 0>;
->>> +		#address-cells =3D <3>;
->>> +		#size-cells =3D <2>;
->>> +		ranges;
->>> +		device_type =3D "pci";
->>> +		bus-range =3D <0x41 0x4f>;
->>> +
->>> +		rtl_eth1: ethernet@0,0 {
->>> +			compatible =3D "pci10ec,8125";
->>> +			reg =3D <0x410000 0 0 0 0>;
->>> +		};
->>=20
->> Described on page 22 of the schematic titled '2.5G Ethernet A' and ``U10=
-``
->> (ie RTL8125BG) is connected to LAN1 which has ``ETH1`` as label on the c=
-ase.
->>=20
->> So this results in:
->> ETH1 -> rtl_eth1
->> ETH2 -> rtl_eth0
->>=20
->> This sounds like a recipe for confusion and/or potential future mistakes=
-.
->> I think using ``rtl_eth1`` and ``rtl_eth2`` would be less confusing, but
->> I'm fine with another construct which achieves a similar thing.
->
-> Yeah, that will result in aliases `ethernet0 =3D &rtl_eth1;` and=20
-> `ethernet1 =3D &rtl_eth2;`. It could also be `rtl_lan1`/`rtl_lan2`, or as=
-=20
-> the schematics seems to to use the `_b` suffix, just `rtl_lan` and=20
-> `rtl_lan_b`, I don't mind. Raise if you do, otherwise I'll send v6 as=20
-> you suggested.
+Note this does change CONFIG_PCIEASPM=n builds, which used to program
+chip LTR unconditionally: pci_disable_link_state() is a stub that returns
+success there, so tp->aspm_manageable ends up set.
 
-I'm not a fan of the `_b` suffix (also not in the schematic; without an
-`_a` suffix). Do the aliases have to be 0-based? If not, then `ethernet1`
-and `ethernet2` would be my preferred solution. If it needs to be 0-based
-then the off-by-one 'confusion' seems like the best solution.
+Fixes: 9ab94a32af70 ("r8169: enable LTR support")
+Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2529752
+Assisted-by: LLM
+Signed-off-by: Yogesh Gaur <yogeshgaur.83@gmail.com>
+---
+v3:
+ - Drop the #ifdef/#else pair of rtl_enable_ltr() definitions and keep a
+   single function with the guard inline, so there is no stub function.
+   Suggested by Heiner Kallweit.
+ - IS_ENABLED(CONFIG_PCIEASPM) cannot replace the #ifdef here: ltr_path is
+   declared inside #ifdef CONFIG_PCIEASPM in include/linux/pci.h, so the
+   member reference still has to compile in a CONFIG_PCIEASPM=n build:
+     error: 'struct pci_dev' has no member named 'ltr_path'
+   (x86_64 defconfig + EXPERT=y + PCIEASPM=n + R8169=m). Happy to send a
+   PCI patch first that either moves the field out of the #ifdef or adds a
+   pcie_ltr_path() accessor, and then drop the #ifdef from here - please
+   say if you would prefer that, it is a different tree.
+ - Added testing disclosure below.
 
-> Userspace will be off-by-one vs the printed case labels, thus _some_=20
-> confusion will remain, but it's already better than the current=20
-> enP2p33s0/enP4p65s0.
+v2: https://lore.kernel.org/all/20260910130140.910-1-yogeshgaur.83@gmail.com/
+v1: https://lore.kernel.org/all/20260909110554.1977-1-yogeshgaur.83@gmail.com/
 
-Indeed :-)
-I triple checked whether my findings were correct before responding.
+NOT VERIFIED ON HARDWARE. I have no RTL8125 here. The causal claim above is
+reasoned from the register writes.
 
-Thanks to your series, I had a look at NanoPi R5S and found a few issues.
-There it's even worse:
-PCB/schematic: LAN1=3DGbE and 'WAN' on the case; LAN2=3D2.5GbE and LAN1 on =
-the
-case; LAN3=3D2.5GbE and LAN2 on the case.=20
-And those result in `end0`, `enp1s0` and `enP1p17s0` respectively :-P
+Compile-tested only: drivers/net/ethernet/realtek/r8169_main.o, x86_64
+defconfig + R8169=m, built W=1 clean with both CONFIG_PCIEASPM=y and
+CONFIG_PCIEASPM=n.
 
-Cheers,
-  Diederik
+ drivers/net/ethernet/realtek/r8169_main.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+index ec4fc21fa21f..c305a8f19551 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -3037,6 +3037,18 @@ static void rtl_disable_exit_l1(struct rtl8169_private *tp)
+ 
+ static void rtl_enable_ltr(struct rtl8169_private *tp)
+ {
++	/* The chip must not issue LTR messages unless LTR is enabled for the
++	 * whole path up to the root port. pci_configure_ltr() works that out
++	 * and records the result in pci_dev->ltr_path, which exists only with
++	 * CONFIG_PCIEASPM; without it the PCI core never enables LTR anywhere.
++	 */
++#ifdef CONFIG_PCIEASPM
++	if (!tp->pci_dev->ltr_path)
++		return;
++#else
++	return;
++#endif
++
+ 	switch (tp->mac_version) {
+ 	case RTL_GIGA_MAC_VER_80:
+ 		r8168_mac_ocp_write(tp, 0xcdd0, 0x9003);
+-- 
+2.55.0.windows.5
+
