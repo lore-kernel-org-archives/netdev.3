@@ -1,180 +1,306 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23C88438495;
-	Fri, 11 Sep 2026 10:27:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 528B843B3E2
+	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 10:27:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789122435; cv=none; b=gsBksy5GHIloTMBfCZAqRa1f3gDyrEFnKH2dsERP3kJYH4X7JpO3scCVWmV/Tl6uHu+CV9v7qse7wVI/n9aZ5cyDxVSEsKIAxxdjinZGIio/qRLJutRt089Q7VLNMN4/cF2IdOv5G6QEC7//ZWjaqEdrD7AElA0DUMkXz+X41Nc=
+	t=1789122438; cv=none; b=kHl/UkUs5TdKOADiY/BIl0Tk7qwdttVcz/N+aBu4fnV8ykvUJdEYvS20p6jfMAhS16UK8VpoYZs5A7pNQVvpFD89ksygGum7sYpJRdFFjNTM2OwxtnISXf+uQ37arLMiEgRB6F474EwnOFeDoHWevsvVSKNANkfkCiL/A3M2vqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789122435; c=relaxed/simple;
-	bh=SsUTa8NQTgjrpOBLY3hNBkZ0ptivfq1GukvYd8ouSx8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LTe823kJxD1mFSkNnlfVtI2wAHXVbdcVHpvbMHhf6CGADcwJq1gAVPtpwdRy7trecLAHoagX1coPQnXpUgtnYfhzPS6b/xmtV17d/e3oRtb637v1TVN/xmWe63o4wA9PAGHtSRcn06DNNV/uM0+4KsXFplsMJZ/xZJ1TVczcm9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=L1CJyhpG; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1789122438; c=relaxed/simple;
+	bh=k/D9NzUpUdz/YOudS1ieCkK88C8TvYESG/o345Ip3F0=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=O0xTziIp2xln6z54KDKvS6lI48S5d04zYOhzMupQhUFYvVBRuRyUjSwrYyotKHTh9mQsgDJnQ7/C6SWXDNfo9wO9M7THWHf6WUklxctNBfTaA38lOkwV/j6X3rF3Yb6PUId1K/E+q1OnVVchRXqcg/5NuuIGnfgGYGwkoFIYS5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iXEUeRHE; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="L1CJyhpG"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68B81Z7M1218133;
-	Fri, 11 Sep 2026 10:27:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=mZ+us9
-	UTBtiXnTcwW1jkW5kQmZKKPaNjZS3V20zhm90=; b=L1CJyhpGcQR0Ulav/1UlFY
-	q55MwjBNy6XqHT35Rug3OMcyabQ2YMlhIfi3DozyemtERaF6+RCK7mDPrWPF7VvG
-	od1tOOwbMsrHdP59l8NaQUVPjpsJ96f8EXUEgrrtxW0FRGGh8YkeyjrFONUQijxH
-	MEff/GDG6LJJbn1Y25yESRil3vR5M4JW/vKUFvx1Kevsc0XcnQb/d0/OLOb0YRW3
-	0X9OCyaVnqJZz+Uv6COId7tQo9t6+WTdRteY+bMGk/QgUJ3I+6+AUlR83COiOxg/
-	7aZPTRDhpRf4ZlG6/LXniCnYfkxrnLRNM+aNEwpbfTFwM+YEk0qtW+gtX5CEQPBw
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4gkd8ptusv-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Fri, 11 Sep 2026 10:27:00 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 68B7o4SB1301389;
-	Fri, 11 Sep 2026 10:26:59 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4gkvwk5qmr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 11 Sep 2026 10:26:59 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 68BAQtIM40567150
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 11 Sep 2026 10:26:55 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3330C20040;
-	Fri, 11 Sep 2026 10:26:55 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4C2B02004D;
-	Fri, 11 Sep 2026 10:26:52 +0000 (GMT)
-Received: from [9.123.3.144] (unknown [9.123.3.144])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 11 Sep 2026 10:26:52 +0000 (GMT)
-Message-ID: <0df7dbac-725b-436e-bd8a-bb637ed828f4@linux.ibm.com>
-Date: Fri, 11 Sep 2026 15:56:51 +0530
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iXEUeRHE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 826F41F0089A;
+	Fri, 11 Sep 2026 10:27:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789122431;
+	bh=1Y33lLTXavN5sFHtaA6agtWu/CV+oVVV1U4P2TA15l0=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=iXEUeRHErxEt7tXbaPfFGkrIvsi4Xmf3fnFNfLoFKGjp95uRtYzO1HiJylwGbMkQg
+	 EuBHPKNqr/8BDlDSHXapt5OfEyzN4MqBHI54RCXYVKHj3qWbjMvLZCTrz1XipVDhX7
+	 32lqfgYpNlE0d/v8PePmz3Pcd+yM7KBKRWMxjyuSsflhuhIfW+B1TppECNydaFqUTf
+	 jqBeX1CZvkJ8ECi4kZRqPdpcjhuLCmrryWoqUnXq/Z7Jjb569udGLV72rsm9uEm2mE
+	 r7GHC9kC8hydX/sEMxBgEgD9s257Amggoqk6JuIY0xzAnTGj/6bR8jSbT8JUkwY0LB
+	 7CIMLztKOAPJA==
+Subject: Re: [PATCH net-next 3/3] ice: use per-interface clock_id for E825
+ generic DPLLs
+From: netdev-bot+sashiko@kernel.org
+To: anthony.l.nguyen@intel.com
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ edumazet@google.com, andrew+netdev@lunn.ch, netdev@vger.kernel.org,
+ grzegorz.nitka@intel.com, arkadiusz.kubalewski@intel.com,
+ przemyslaw.korba@intel.com, richardcochran@gmail.com,
+ alexander.nowlin@intel.com
+Date: Fri, 11 Sep 2026 10:27:10 +0000
+Message-ID: <178912243008.219967.7455851936472254253@kernel.org>
+In-Reply-To: <20260908222428.872254-4-anthony.l.nguyen@intel.com>
+References: <20260908222428.872254-4-anthony.l.nguyen@intel.com>
+X-sashiko-severity: Medium
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 2/2] s390/ctcm: Fix use-after-free in channel_remove()
-To: netdev-bot+sashiko@kernel.org
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, wintera@linux.ibm.com,
-        aswin@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com,
-        agordeev@linux.ibm.com, borntraeger@linux.ibm.com, svens@linux.ibm.com,
-        kees@kernel.org, linux-s390@vger.kernel.org, netdev@vger.kernel.org,
-        sashiko-bot@kernel.org
-References: <20260907144511.3810194-3-nagamani@linux.ibm.com>
- <178900839280.219967.3546163075460076479@kernel.org>
-Content-Language: en-US
-From: Nagamani PV <nagamani@linux.ibm.com>
-In-Reply-To: <178900839280.219967.3546163075460076479@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=eM2GH3p1 c=1 sm=1 tr=0 ts=6aa3d774 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VwQbUJbxAAAA:8
- a=RMRYEIFC2vSlcnFUtB4A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: ilmhbMDp7acPMiQh_YDXMYd3SEhkDrPY
-X-Proofpoint-GUID: gwjbm_JwqzrfUyGVL9mJ5AtS8SM6ve8y
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTExMDE0MCBTYWx0ZWRfX5/uYdv4vIR2F
- BoYr1fLPjLNFzEjYoWBV2u7pFJZ8LfbDV6eVANkuNPatH5DRLpBv1N4h0+9bsTmTQyExDRpFQzT
- 6qmhPUyGxR2/NTFNSRaWfjXWKFgfdZE=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTExMDE0MCBTYWx0ZWRfX6YeQNVOvKQrP
- alPtobdgwI6zvxYN1Wl8yIsmKZGwUA253N7u0w8Zu6YvuOi3ZpRjMvKhMRmK766c9ju5kE0HqPC
- j2LNLq9A+lNoLP1jKKpIWembP0kr6NF812oLKhHB4Kk9bqXEyCo+aiP95XQmfUEcYxjVW81pByU
- XMdY6wbxaoUBTH+cIJglABCGNrKXaYpPn52OVyrCf0YfHIUADclqugNeSnyRCwNyZ8m3zJ36vUe
- wtsQq0U9Z1HszKHEGcsNkUKJLZO+cdpl4Ss1v8sljmrAbNHhnA2Rv0octviwUC1lHFziXoALYuz
- YbrtXx7VoB64IkZ7VrCjc0QE8f8YkDdTxtIOxbHeWyXTeOnHW+UjEwN0Wvk/A1/sM/k6K3tG6BI
- zPXDIuq9OXTeZeRrkH8GhsaL1IB4F5Qk0qeojAuhU3VGmvmCgsgZUBQt+Iq9pbrSqIxD4plqdQs
- m/jxippnvuUAloqTS/Q==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-11_03,2026-09-09_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 impostorscore=0 malwarescore=0 adultscore=0 phishscore=0
- lowpriorityscore=0 suspectscore=0 spamscore=0 priorityscore=1501 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609110140
 
+Thank you for your contribution! Sashiko AI review found 3 potential
+issue(s) to consider:
 
+Critical: 0 · High: 0 · Medium: 3 · Low: 0
 
-On 10/09/26 8:16 AM, netdev-bot+sashiko@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 2 potential
-> issue(s) to consider:
-> 
-> Critical: 0 · High: 1 (3) · Medium: 0 · Low: 1
-> 
-> - [High] channel_remove() (drivers/s390/net/ctcm_main.c:214/216) uses
->   timer_delete_sync() instead of timer_shutdown_sync().
-> - [Low] The patch fixes a real use-after-free reachable during device
->   teardown but carries no `Fixes:` tag, so stable maintainers cannot…
-> 
-> Pre-existing issues:
-> - [High] The same fsm_timer/kfree_fsm() UAF pattern that this patch fixes
->   for ch->timer/ch->sweep_timer remains completely unfixed for the…
-> - [High] The synchronous cancel was added in channel_remove(), but
->   ctcm_shutdown_device() frees the objects that timer-driven FSM actions…
-> - [High] The MPC channel tasklets are killed only after the resources
->   they dereference have been freed.
-> 
-> --
-> 
-> [Severity: Low]
-> There is no Fixes: tag on this patch. git blame on the two replaced
-> fsm_deltimer() calls and the following kfree_fsm(ch->fsm) points at:
-> 
->   293d984f0e3604 ("ctcm: infrastructure for replaced ctc driver")
-> 
-> Could that be added as a Fixes: tag so stable can work out the affected
-> range?
-> 
+- [Medium] In ice_dpll_init_txclk_pins()
+  (drivers/net/ethernet/intel/ice/ice_dpll.c:4279-4282) the board-level…
+- [Medium] ice_dpll_pin_notify()
+  (drivers/net/ethernet/intel/ice/ice_dpll.c:3928) replaces the board-…
+- [Medium] ice_generate_dpll_clock_id()
+  (drivers/net/ethernet/intel/ice/ice_dpll.c:3086-3092) feeds…
 
-Will add in v2:
-  Fixes: 293d984f0e36 ("ctcm: infrastructure for replaced ctc driver")
-  Cc: stable@vger.kernel.org
- > [Severity: High]
-> Does that hold for the MPC case?  timer_delete_sync() leaves
-> timer->function intact, so a later fsm_addtimer() simply re-queues the
-> timer:
-> For ch == priv->channel[CTCM_WRITE], can a sweep callback that has already
-> been dispatched on another CPU execute the fsm_addtimer(&wch->timer, ...)
-> above after timer_delete_sync(&ch->timer.tl) has returned?  
+--
 
-Pre-existing issue not introduced by this patch.
+ice: use per-interface clock_id for E825 generic DPLLs
 
-> 
-> [Severity: High]
-> This is a pre-existing ordering problem and not something the patch
-> introduces, but kfree_fsm(ch->fsm) here runs before the MPC tasklets
-> are stopped later in the same function.
+On E825 the TX-CLK and TSPLL generic DPLL devices no longer take their
+clock_id from the board-level PCIe DSN, but from the permanent port MAC
+(TSPLL adds BIT_ULL(63) as a tag).  The notifier self-suppression check in
+ice_dpll_pin_notify() is extended with a new helper that compares the
+incoming src_clock_id against this PF's board, TXC and TSPLL clock_ids.
 
-Pre-existing issue not introduced by this patch.
+> diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.c b/drivers/net/ethernet/intel/ice/ice_dpll.c
+> index 00e3f7de7810..0109fc34307c 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_dpll.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_dpll.c
+> @@ -3059,6 +3059,68 @@ static u64 ice_generate_clock_id(struct ice_pf *pf)
+>  	return pci_get_dsn(pf->pdev);
+>  }
+>  
+> +/**
+> + * ice_generate_dpll_clock_id - generate clock_id for a specific dpll device
+> + * @pf: board private structure
+> + * @d: dpll device context
+> + * @type: dpll type being registered
+> + *
+> + * For E825 generic DPLLs, use per-interface permanent MAC as the clock_id
+> + * basis so userspace can unambiguously map DPLL devices to interfaces.
+> + * TX-CLK keeps plain MAC-derived ID, while TSPLL uses the same basis with
+> + * a dedicated tag bit to remain distinct on source-timer owner PFs.
+> + * Other DPLL objects keep board-level DSN-derived clock_id.
+> + *
+> + * Return: generated clock id for a dpll device
+> + */
+> +static u64 ice_generate_dpll_clock_id(struct ice_pf *pf, struct ice_dpll *d,
+> +				      enum dpll_type type)
+> +{
+> +	struct ice_hw *hw = &pf->hw;
+> +	u64 mac_clock_id;
+> +
+> +	if (hw->mac_type == ICE_MAC_GENERIC_3K_E825 &&
+> +	    type == DPLL_TYPE_GENERIC &&
+> +	    hw->port_info &&
+> +	    is_valid_ether_addr(hw->port_info->mac.perm_addr)) {
+> +		mac_clock_id = ether_addr_to_u64(hw->port_info->mac.perm_addr);
+> +
+> +		if (d->dpll_idx >= E825_DPLL_TXCLK_BASE_IDX)
+> +			return mac_clock_id;
+> +
+> +		if (d->dpll_idx == E825_DPLL_TSPLL_BASE_IDX)
+> +			return mac_clock_id | BIT_ULL(63);
+> +	}
+> +
+> +	return pf->dplls.clock_id;
+> +}
 
-> [Severity: High]
-> This is a pre-existing gap rather than a regression from this patch, but
-> the driver has two more fsm_timer instances with the same kfree_fsm()
-> pattern, and neither is cancelled at all in the teardown path.
+[Severity: Medium]
+Are these two values still valid clock identifiers as far as the dpll uAPI
+is concerned?  Documentation/driver-api/dpll.rst describes the field as:
 
-Pre-existing issue not introduced by this patch.
+  ``DPLL_A_CLOCK_ID``                attr Unique Clock Identifier
+                                         (EUI-64), as defined by the
+                                         IEEE 1588 standard
 
-> 
-> [Severity: High]
-> Also pre-existing, but related to where the new synchronous cancel sits in
-> the overall shutdown ordering.  In ctcm_shutdown_device() the objects the
-> channel timer callbacks dereference are freed before channel_remove() runs:
-> 
+and dpll_msg_add_dev_handle() exports the driver value verbatim with
+nla_put_64bit(msg, DPLL_A_CLOCK_ID, ...), so whatever is stored here
+becomes uAPI.
 
-Pre-existing issue not introduced by this patch.
+ether_addr_to_u64() packs the six MAC bytes into the low 48 bits and leaves
+bits 48-63 zero, which is not the MAC-48 to EUI-64 mapping IEEE 1588 asks
+for (OUI[0..2] || FF FE || NIC[3..5]).  The same driver keeps feeding the
+same attribute a genuine EUI-64 for the EEC/PPS and non-E825 objects:
 
-Nagamani
+	static u64 ice_generate_clock_id(struct ice_pf *pf)
+	{
+		return pci_get_dsn(pf->pdev);
+	}
 
+Should the MAC be expanded into a proper EUI-64 so both producers in this
+driver use one format?
+
+For the TSPLL variant, mac_clock_id | BIT_ULL(63) sets a bit inside what
+would be the first octet of the OUI, so it can collide with a real clock
+identifier starting 80:00, and the exported value no longer visibly matches
+the interface MAC that the commit message wants userspace to key on.
+
+Is the tag bit needed at all?  dpll_device_get() matches on (clock_id,
+device_idx, module):
+
+	if (dpll->clock_id == clock_id &&
+	    dpll->device_idx == device_idx &&
+	    dpll->module == module) {
+
+and TSPLL uses E825_DPLL_TSPLL_BASE_IDX while TX-CLK uses
+E825_DPLL_TXCLK_BASE_IDX and above, so the device_idx already separates the
+two objects.
+
+> +
+> +/**
+> + * ice_dpll_is_own_dpll_clock_id - check if clock_id belongs to this pf's DPLLs
+> + * @pf: board private structure
+> + * @clock_id: clock_id from a DPLL notification
+> + *
+> + * Match info->src_clock_id from a DPLL pin notification against any DPLL
+> + * device this PF has registered. Used to suppress self-notifications
+> + * generated as a side effect of our own dpll_pin_register() and
+> + * dpll_pin_unregister() calls on the fwnode-backed SYNCE and TIME_REF pins,
+> + * whose DPLLs (TXC and TSPLL) use MAC-derived clock_ids on E825.
+> + *
+> + * Return: true if clock_id matches one of this PF's registered DPLL devices.
+> + */
+> +static bool ice_dpll_is_own_dpll_clock_id(struct ice_pf *pf, u64 clock_id)
+> +{
+> +	if (clock_id == pf->dplls.clock_id)
+> +		return true;
+> +	if (pf->hw.mac_type != ICE_MAC_GENERIC_3K_E825)
+> +		return false;
+> +	if (clock_id == ice_generate_dpll_clock_id(pf, &pf->dplls.txc,
+> +						   DPLL_TYPE_GENERIC))
+> +		return true;
+> +	return clock_id == ice_generate_dpll_clock_id(pf, &pf->dplls.tspll,
+> +						      DPLL_TYPE_GENERIC);
+> +}
+
+[Severity: Medium]
+Does this helper still cover notifications generated by a sibling PF of the
+same NAC?
+
+The old test compared src_clock_id against pf->dplls.clock_id, which is
+pci_get_dsn() and, as the commit message says, "identical for all interfaces
+sharing the same NAC/quad".  It therefore matched register/unregister events
+raised by any PF on the board.  The new helper only matches this PF's three
+values: board DSN, MAC(self) and MAC(self) | BIT(63).
+
+The notification carries the target DPLL device's clock_id.  In
+__dpll_pin_unregister():
+
+	dpll_pin_delete_ntf(pin, dpll->clock_id);
+
+so for the shared fwnode SYNCE pin the value is now MAC(sibling PF), which
+ice_dpll_is_own_dpll_clock_id() rejects.
+
+If PF-A is unbound:
+
+  ice_dpll_deinit() -> ice_dpll_deinit_txclk_pins() ->
+  ice_dpll_unregister_pins() -> dpll_pin_unregister(PF-A txc dpll, synce pin)
+  -> __dpll_pin_unregister() -> dpll_pin_delete_ntf(pin, MAC(PF-A))
+
+PF-B's ice_dpll_pin_notify() passes the fwnode test (it is the same shared
+pin), the new clock_id test returns false, work gets queued, and
+ice_dpll_pin_notify_work() takes the DPLL_PIN_DELETED branch:
+
+	} else if (is_tx_synce_parent) {
+		/* Unregister TX-CLK SYNCE pin from TXC DPLL */
+		pin = &pf->dplls.txclks[E825_EXT_SYNCE_PIN_IDX];
+		dpll_pin_unregister(pf->dplls.txc.dpll, pin->pin,
+				    &ice_dpll_txclk_ops, pin);
+
+Can this tear down PF-B's own still-valid SYNCE registration, so that after
+unbinding one PF the surviving ports of the same NAC can no longer select
+SyncE as TX reference?
+
+This depends on both PFs' clk_ref_synce reference resolving to the same
+fwnode object, which is what ice_dpll_pin_node_get() looks up and what
+ice_txclk_enable_peer() suggests when it notes that SyncE must be enabled on
+both PHY complexes.  If that is how the platform description is expected to
+look, should the helper also accept clock_ids belonging to other PFs of the
+same board, or should the suppression be keyed on something other than the
+clock_id?
+
+> @@ -3858,10 +3920,12 @@ static int ice_dpll_pin_notify(struct notifier_block *nb, unsigned long action,
+>  	if (pin->fwnode != info->fwnode)
+>  		return NOTIFY_DONE; /* Not this pin */
+>  
+> -	/* Ignore notification which are the outcome of internal pin
+> -	 * registration/unregistration calls - synce pin case.
+> +	/* Ignore notifications that are a side effect of internal pin
+> +	 * registration/unregistration calls. E825 uses per-device
+> +	 * MAC-derived clock_ids for the TXC and TSPLL generic DPLLs, so
+> +	 * info->src_clock_id may not equal pf->dplls.clock_id.
+>  	 */
+> -	if (info->src_clock_id == pin->pf->dplls.clock_id)
+> +	if (ice_dpll_is_own_dpll_clock_id(pin->pf, info->src_clock_id))
+>  		return NOTIFY_DONE;
+>  
+>  	work = kzalloc_obj(*work);
+> @@ -4206,10 +4270,16 @@ static int ice_dpll_init_txclk_pins(struct ice_pf *pf, int start_idx)
+>  {
+>  	struct ice_dpll_pin *ref_pin = pf->dplls.txclks;
+>  	struct ice_dpll *txc = &pf->dplls.txc;
+> +	u64 clock_id;
+>  	int ret;
+>  
+> +	/* EXT_EREF0 is a non-fwnode pin; its clock_id must match the TX-CLK
+> +	 * DPLL device clock_id (see dpll_pin_register()).
+> +	 */
+> +	clock_id = ice_generate_dpll_clock_id(pf, txc, DPLL_TYPE_GENERIC);
+> +
+>  	/* Configure EXT_EREF0 pin */
+> -	ret = ice_dpll_get_pins(pf, ref_pin, start_idx, 1, pf->dplls.clock_id);
+> +	ret = ice_dpll_get_pins(pf, ref_pin, start_idx, 1, clock_id);
+>  	if (ret)
+>  		return ret;
+>  	ret = dpll_pin_register(txc->dpll, ref_pin->pin, &ice_dpll_txclk_ops,
+
+[Severity: Medium]
+Does this change how many pin objects the single physical EXT_EREF0
+connector produces?
+
+dpll_pin_get() keys pin identity on (clock_id, pin_idx, module):
+
+	if (pos->clock_id == clock_id &&
+	    pos->pin_idx == pin_idx &&
+	    pos->module == module) {
+
+Every PF reaches here with the same start_idx, so with the board DSN all
+PFs of a NAC obtained the same dpll_pin object for EREF0 and each registered
+it on its own TX-CLK DPLL device, i.e. one pin with several parent DPLLs.
+With the MAC-derived clock_id the lookup can no longer match a sibling PF's
+pin, so each PF allocates a private pin object.
+
+EREF0 is described as a board-level signal in
+ice_dpll_init_info_txclk_pins_e825c():
+
+	tx_pin->prop.board_label = ice_dpll_ext_eref_pin;
+	tx_pin->tx_ref_src = ICE_REF_CLK_EREF0;
+
+Does userspace then see N pins all labelled "EXT_EREF0" with no indication
+that they are the same input?  The sibling input of the same TX-CLK DPLL
+(EXT_SYNCE, fwnode-backed) stays a single shared pin with several parent
+DPLLs, so the two external TX reference inputs of one DPLL device end up
+modelled differently.
+
+The commit message only talks about DPLL devices:
+
+  "Since these DPLLs are per-interface, use the permanent port MAC as
+   the clock_id basis for E825 generic DPLLs"
+
+Could it also mention that DPLL_A_PIN_CLOCK_ID and the number of exported
+EREF0 pin objects change, since that is userspace-visible as well?
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260908222428.872254-1-anthony.l.nguyen%40intel.com
