@@ -1,147 +1,147 @@
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0268933DED1;
-	Fri, 11 Sep 2026 14:09:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B8B631B131;
+	Fri, 11 Sep 2026 14:12:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789135798; cv=none; b=IkNTbtrV6+ULd6OLxsOjtV4tLrivg26hMc3RRE4mJ6WT9WLGQtcx9aqaT5zFg0sj1Cyikrqe2P61bAGqkF8oM9kRryc9ppQW/zZlr+nEfwD5+TBklKjBFBNGQjcmTZflcb6zXjXyPnhror4bx5xrbxMI0gA7WuTJbLXv6GgCM2c=
+	t=1789135979; cv=none; b=hONBfMabJPJHNdaUVWO4bZNTrr+GEufqVPde1NiJWtmH7ZRrgxeE/59EMh7s1fqylSrnQZCjSlDnvXTv5d+77d/ELjlA2i8R5YFZgLjI9pXfq8hCniLs6iAuVMnYmncZzknbBD+Qo2YxAftVcUnoOYz10TwG+4roCzttDvnBRUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789135798; c=relaxed/simple;
-	bh=3sYlRJsAKYABz8KwzGijN864p5i3Sx5Jcbfu8Ihyh2I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Q1YSR8ZyRDT5pu9f7ZOpy2kKKNqL+6+qYsHADDU9jgQF6IeFDMPVYMrQr/oL/j1aCYw4mRJkA0/xyVh2nzDbJFDqe5wlC+IA+I/KvXmGo7wcnC+KiOLr26whhIw41w4dAmP2zgm3BivTSaW5KuRoyMN91R15mI/mgc1zWKObH40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=lGGlQpJk; arc=none smtp.client-ip=217.70.190.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+	s=arc-20240116; t=1789135979; c=relaxed/simple;
+	bh=T8WxXO9FTT15rv4bA9384oDKwaVYNYFd2lxKZ3hSvq0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=mLvjxaG6tImvul/ACJH1FzNfrfcwKxLaTw4pjrxbFpOQcC2l9DIIp2iJVEZ+9PbgZBTk3Drfocyt1SB7VNXUeUNue5OGjflyy6seJ5XrBkiB7jhsnRvtLPTfQdTINL5CwLyZMPbb4Tu/ec1ExTbTqCzCm0xi3hKXs2QTycyJu/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=VEZyFa43; arc=none smtp.client-ip=117.135.210.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="lGGlQpJk"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1789135790;
-	bh=xjzAWSvOKNYO7F0/haarIpqo4xVeO010FNylFglyXMo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lGGlQpJkM45KNVEGKS/o2TwJeU1fORCveV4LOpf8EAsJCqQo8CVCRK8jRcKDrYN/Z
-	 iMZEPrpEIWT3HFa8MaQcsMlqj+dkViuZgeUh2VW7R4OexlymZhw4roVGv2AtwkKqYS
-	 Sf1cc0jPmxJS5XlKODpQqw8R5poCyccEzYYB9M9O/gGJ4450A2Kvhii8QqEWtOyAgy
-	 UTm1q9ITVZGZVi2RQWctrMSut8nfOEBZM8BARnCk89qHudofg6Ldz1WD6qtLcxp63v
-	 xGlK4bYbi0aR7OkCMrogBRtQbW7j1vKRaLOJXEgSJc7tpI6o3GXeqO+U5a4RY+mOoL
-	 vdKS85B/M/ZRw==
-Received: from netfilter.org (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 79C4E603D3;
-	Fri, 11 Sep 2026 16:09:50 +0200 (CEST)
-Date: Fri, 11 Sep 2026 16:09:47 +0200
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: Julius Bairaktaris <julius@bairaktaris.de>
-Cc: netfilter-devel@vger.kernel.org, kadlec@netfilter.org, fw@strlen.de,
-	coreteam@netfilter.org, netdev@vger.kernel.org,
-	geldot@protonmail.com
-Subject: Re: [PATCH nf-next 0/4] netfilter: offload a TCP flow whose reply is
- never seen
-Message-ID: <aqQLqwJVRROZ-cvH@chamomile>
-References: <20260910090052.2034970-1-julius@bairaktaris.de>
- <aqPpBJvfTwKrxSGG@chamomile>
- <CAC1t37KDNB6+v7Xq51AGrPtYZ4U95kUEQ6HDJSKt5YYE6+0zdA@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="VEZyFa43"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=qE
+	vj2N232ECgtoHTuAKDk68SEw+Xf7RHLDkBFRGAiTM=; b=VEZyFa43NvzEOVAeoV
+	SFA2I1jwwejcsVZDx8C9CfhXV+rNzcNR3EYAUgUHskQl5edH/gO4j3IjcEH7qa4o
+	U757JgN40ax4VGtVSKZAfPV5ly4dHphlheTceEWjV1sLASwgt+WO4Q79nBAcrAcf
+	xkej0k02vS2iST8mb1TcMUgDg=
+Received: from hpl-VMware-Virtual-Platform.. (unknown [])
+	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wDnP38ODKRqLAZVAA--.27919S2;
+	Fri, 11 Sep 2026 22:11:26 +0800 (CST)
+From: peilinhe2020@163.com
+To: he.peilin@zte.com.cn
+Cc: alexandre.torgue@foss.st.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	jiang.kun2@zte.com.cn,
+	kuba@kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	maxime.chevallier@bootlin.com,
+	mcoquelin.stm32@gmail.com,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	vbridgers2013@gmail.com,
+	xu.xin16@zte.com.cn
+Subject: [PATCH net v6] net: stmmac: remove software VLAN tag stripping
+Date: Fri, 11 Sep 2026 22:11:25 +0800
+Message-ID: <20260911141126.10592-1-peilinhe2020@163.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <202609040845307827XHaxAT2PmgJc9jjPqfAP@zte.com.cn>
+References: <202609040845307827XHaxAT2PmgJc9jjPqfAP@zte.com.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAC1t37KDNB6+v7Xq51AGrPtYZ4U95kUEQ6HDJSKt5YYE6+0zdA@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wDnP38ODKRqLAZVAA--.27919S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxWw13WF4DJr15Cw1rKFykXwb_yoW5try3pa
+	47Aa4DCr4kAr17Za1Utw48ZFyfAay5tayUJasYyw4ftanFkr9IqrnagFZxAFW0yrWfuw13
+	K34qva4UC3WDWrDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UhyCXUUUUU=
+X-CM-SenderInfo: xshlzxhqkhjiisq6il2tof0z/xtbCzw7Je2qkDA7fkwAA3z
 
-Hi Julius,
+From: Peilin He <he.peilin@zte.com.cn>
 
-On Fri, Sep 11, 2026 at 12:10:04PM +0000, Julius Bairaktaris wrote:
-> Hi Pablo,
-> 
-> thanks for taking your time to review.
-> 
-> > conntrack needs to see packets in both directions, are you assuming a
-> > packet-based load balancer in front of it?
-> 
-> No, an asymmetric route is in front of it, with two subnets sharing one
-> L2 segment and the server answering over that link, so the router only
-> ever sees one direction.
+The software VLAN stripping logic in stmmac_rx_vlan() was originally
+introduced in 2014 by commit b93819854d6e ("stmmac: Add vlan rx for
+better GRO performance.") as a workaround to improve GRO performance,
+since at that time GRO could not handle frames with VLAN tags. However,
+this limitation was resolved in 2015 by commit 66e5133f19e9 ("vlan: Add
+GRO support for non hardware accelerated vlan"), which added GRO support
+for non-hardware-accelerated VLAN frames. Keeping a software fallback
+path for VLAN stripping is no longer necessary and only adds complexity.
 
-I see this requirement to support asymmetric path keeps coming, but
-how hard is really to maintain this TCP state machine to deal with all
-possible scenarios? ie. invalid transitions, retransmissions, etc.
-this all without having access to full TCP connection.  Is it that you
-need NAT and the stateless NAT in nftables does not fulfill your
-requirements?
+Fixes: b93819854d6e ("stmmac: Add vlan rx for better GRO performance.")
+Signed-off-by: Peilin He <he.peilin@zte.com.cn>
+Reviewed-by: xu xin <xu.xin16@zte.com.cn>
+Reviewed-by: Jiang Kun <jiang.kun2@zte.com.cn>
+---
+ .../net/ethernet/stmicro/stmmac/stmmac_main.c | 28 ++-----------------
+ 1 file changed, 2 insertions(+), 26 deletions(-)
 
-> Conntrack already picks such a connection up when it misses the
-> handshake entirely, and patch 1 routes the SYN-seen case into that same
-> path, under the same nf_conntrack_tcp_loose gate.
-> 
->   net/netfilter/nf_conntrack_proto_tcp.c, tcp_new():
-> 
->     } else if (tn->tcp_loose == 0) {
->         /* Don't try to pick up connections. */
->         return false;
->     } else {
->         ...
->         ct->proto.tcp.seen[0].flags =
->         ct->proto.tcp.seen[1].flags = IP_CT_TCP_FLAG_SACK_PERM |
->                                       IP_CT_TCP_FLAG_BE_LIBERAL;
-> 
-> Julius
-> 
-> 
-> 
-> Am Fr., 11. Sept. 2026 um 11:42 Uhr schrieb Pablo Neira Ayuso
-> <pablo@netfilter.org>:
-> 
-> >
-> > On Thu, Sep 10, 2026 at 11:00:48AM +0200, Julius Bairaktaris wrote:
-> > > A host that forwards one direction of a TCP connection only sees the
-> > > client's SYN and then an ACK continuing from it; the answer took another
-> > > path. That ACK has no entry in the transition table, so it and every
-> > > packet after it are invalid, the conntrack entry stays in SYN_SENT
-> > > [UNREPLIED] with a single packet, and the connection reaches neither the
-> > > stateful part of a ruleset nor a flowtable.
-> >
-> > conntrack needs to see packets in both directions, are you assuming a
-> > packet-based load balancer in front of it?
-> >
-> > > Patch 1 takes such a connection over as the mid-stream pickup it is.
-> > > Patch 2 withholds the reply direction of a flow offloaded in one
-> > > direction until conntrack has seen a reply, and offloads it once
-> > > conntrack has. Patch 3 offers a connection whose reply was never seen to
-> > > the flowtable in the original direction. Patch 4 adds a selftest arm for
-> > > the path; without patches 1 to 3 it fails, with the router forwarding the
-> > > SYN of the connection and nothing else.
-> > >
-> > > Verified on an IPQ8074 router with hardware flow offload, iperf3 -P2
-> > > between two hosts on different subnets of one bridge with the reply
-> > > direction bypassing the router:
-> > >
-> > >                                   CPU port    switch port   throughput
-> > >   asymmetric, without the series   81k pps       81k pps    944-947 Mbit/s
-> > >   asymmetric, with the series      2-11 pps      81k pps    948-949 Mbit/s
-> > >   symmetric, with the series      11-38 pps      81k pps    926-948 Mbit/s
-> > >
-> > > I wrote this series with the help of an AI coding assistant, as the
-> > > Assisted-by tags record. I have reviewed and tested it myself.
-> > >
-> > > Gary Dotzler (2):
-> > >   netfilter: conntrack: pick up a TCP flow whose SYN was never answered
-> > >   netfilter: nft_flow_offload: offload a TCP flow that has no reply
-> > >
-> > > Julius Bairaktaris (2):
-> > >   netfilter: flowtable: promote a flow offloaded in one direction only
-> > >   selftests: netfilter: cover a TCP flow whose reply is never seen
-> > >
-> > >  include/net/netfilter/nf_conntrack_l4proto.h  |  7 ++
-> > >  net/netfilter/nf_conntrack_proto_tcp.c        | 19 +++++
-> > >  net/netfilter/nf_flow_table_ip.c              | 26 +++++++
-> > >  net/netfilter/nft_flow_offload.c              |  6 +-
-> > >  .../selftests/net/netfilter/nft_flowtable.sh  | 73 +++++++++++++++++++
-> > >  5 files changed, 129 insertions(+), 2 deletions(-)
-> > >
-> > > --
-> > > 2.53.0
-> > >
-> > >
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 9c9e95d66b09..854b488611b4 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -5032,24 +5032,6 @@ static netdev_features_t stmmac_features_check(struct sk_buff *skb,
+ 	return vlan_features_check(skb, features);
+ }
+ 
+-static void stmmac_rx_vlan(struct net_device *dev, struct sk_buff *skb)
+-{
+-	struct vlan_ethhdr *veth = skb_vlan_eth_hdr(skb);
+-	__be16 vlan_proto = veth->h_vlan_proto;
+-	u16 vlanid;
+-
+-	if ((vlan_proto == htons(ETH_P_8021Q) &&
+-	     dev->features & NETIF_F_HW_VLAN_CTAG_RX) ||
+-	    (vlan_proto == htons(ETH_P_8021AD) &&
+-	     dev->features & NETIF_F_HW_VLAN_STAG_RX)) {
+-		/* pop the vlan tag */
+-		vlanid = ntohs(veth->h_vlan_TCI);
+-		memmove(skb->data + VLAN_HLEN, veth, ETH_ALEN * 2);
+-		skb_pull(skb, VLAN_HLEN);
+-		__vlan_hwaccel_put_tag(skb, vlan_proto, vlanid);
+-	}
+-}
+-
+ /**
+  * stmmac_rx_refill - refill used skb preallocated buffers
+  * @priv: driver private structure
+@@ -5418,9 +5400,7 @@ static void stmmac_dispatch_skb_zc(struct stmmac_priv *priv, u32 queue,
+ 	if (priv->hw->hw_vlan_en)
+ 		/* MAC level stripping. */
+ 		stmmac_rx_hw_vlan(priv, priv->hw, p, skb);
+-	else
+-		/* Driver level stripping. */
+-		stmmac_rx_vlan(priv->dev, skb);
++
+ 	skb->protocol = eth_type_trans(skb, priv->dev);
+ 
+ 	if (unlikely(!coe) || !stmmac_has_ip_ethertype(skb))
+@@ -5912,9 +5892,6 @@ static int stmmac_rx(struct stmmac_priv *priv, int limit, u32 queue)
+ 		if (priv->hw->hw_vlan_en)
+ 			/* MAC level stripping. */
+ 			stmmac_rx_hw_vlan(priv, priv->hw, p, skb);
+-		else
+-			/* Driver level stripping. */
+-			stmmac_rx_vlan(priv->dev, skb);
+ 
+ 		skb->protocol = eth_type_trans(skb, priv->dev);
+ 
+@@ -7995,9 +7972,8 @@ static int __stmmac_dvr_probe(struct device *device,
+ 	ndev->features |= ndev->hw_features | NETIF_F_HIGHDMA;
+ 	ndev->watchdog_timeo = msecs_to_jiffies(watchdog);
+ #ifdef STMMAC_VLAN_TAG_USED
+-	/* Both mac100 and gmac support receive VLAN tag detection */
+-	ndev->features |= NETIF_F_HW_VLAN_CTAG_RX | NETIF_F_HW_VLAN_STAG_RX;
+ 	if (dwmac_is_xmac(priv->plat->core_type)) {
++		ndev->features |= NETIF_F_HW_VLAN_CTAG_RX;
+ 		ndev->hw_features |= NETIF_F_HW_VLAN_CTAG_RX;
+ 		priv->hw->hw_vlan_en = true;
+ 	}
+-- 
+2.43.0
+
