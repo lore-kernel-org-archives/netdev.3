@@ -1,36 +1,35 @@
 Received: from mail1.fiberby.net (mail1.fiberby.net [193.104.135.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 699994991B0;
-	Fri, 11 Sep 2026 21:42:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3EB04A4EFD;
+	Fri, 11 Sep 2026 21:42:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.104.135.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789162969; cv=none; b=nA0+4psxXhVDdf1CT+1J/f8d5GV4+iiUxMo+oZWlID/ubOdfs/USfQGMXhy5nkbeKladX393HnNgLm75mW1JlXlcpYs96Kp+3JMTvAE4Subk9zOTnzI9jF33Qe2gfncQluOukDGP4s8ym36K1Nxpm4erX8H3zU2+8z5WaxHtkXo=
+	t=1789162969; cv=none; b=QggM/4vh3KZeZ+suW9IEYB2N2QG7WXeM9YdUZhjyTEE/7Jbspr+vS1w59A8Mh3On0v+jV1uKSvg/OVnIi6BHDicdPWR4f0N5Jz2bVFXxebwsK6m0sw3ueXVMsmQeXxkMEgRCqQXBx9dUSfCNBLq7sERvQ9BGYcPTbDsqt9EQv+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1789162969; c=relaxed/simple;
-	bh=r9hiroYnEShfmYP9hzodeMt2HrdVtmfLVMphYyKmALs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MpRCgbjs/NL43tuGC3zraOPtisJPk3NTUYy0FwODndG2tm8Zw3072Z8J+51WtUsoU9xFWRYJEe2M6OQlx1F8Wz/d5jrhWdHOMNlhurKNSU6JQ0rb1FLWXxchJsvQwHYdxRfd/H61n9cGjElgPmDym2oeZ8mA1ifuuBDU/2+6Tjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=C82diH8Y; arc=none smtp.client-ip=193.104.135.124
+	bh=h0xEH3LUtHxZgnjgyf/N9qBl82/2NYc+ecKOQDO7g88=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=KPjVOmwIWbilYJOu79Mur06gK2sGKDx2wfcr42t85s0RQrolpbMmdosF2FuEvIayaHyZwt1018DMs9X6wl6P1Keks60WVIpvh+y02KyL8ocqsRwxQgdbOCN4MLbSIIo59DGnBrp2vfEjr+i1So8/Oa/LOU0KmCPXwWTtTcRhHIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net; spf=pass smtp.mailfrom=fiberby.net; dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b=RiS6y/pk; arc=none smtp.client-ip=193.104.135.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fiberby.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="C82diH8Y"
+	dkim=pass (2048-bit key) header.d=fiberby.net header.i=@fiberby.net header.b="RiS6y/pk"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fiberby.net;
 	s=202008; t=1789162963;
-	bh=r9hiroYnEShfmYP9hzodeMt2HrdVtmfLVMphYyKmALs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C82diH8YE4WgU4BWQP/VB86sC9UUKEVHSRQ4F1Euvj7wgYsLCkj+cehU2AgrOgMZZ
-	 KgVnMP5O0YaD4AnL/R0YFM454+SpVb0+z6YXyRyswZYwH0mCd9kr/nSyzrWlSH/OvC
-	 v1juRqiC/GFvpcdOqmymkWIMpJGN8+JDan7DYUPCPJBFeEkAWxuqV7kgFEuUPTJ96/
-	 0/AVMlic6F/IM6m1dmlMrVn3l29zLQjtqUs+y9AtYLffpOrVHRS7/HGR4NE4pzp7rT
-	 Pv1E715+1cMDvM8NxSLtuv/V6nz7fM7ndyG6876RjppWt7+npk9K7xitz4KMuZL8MM
-	 pNO1EmYJf7tHw==
+	bh=h0xEH3LUtHxZgnjgyf/N9qBl82/2NYc+ecKOQDO7g88=;
+	h=From:To:Cc:Subject:Date:From;
+	b=RiS6y/pkKkrZ8FcOCjxHAVdPFaXALhyWx/Ci6EwImv1aIwLR9GMQ8Iwixn7yJVDZi
+	 814Gooy/a6U08vwFjcf171/2Mjr2axs9yLPePruc6GGiXe6RwNhS5SnqE8DGj75K2Z
+	 EA55pWNK2nG9zSi4TtpyUEx4DPVLYTKHEYZnA20CxI52Lrc7k2ngFjQe2k6ZBMfMzH
+	 4tkdteTcokJl+Laa9r6ZqU7aSKNZOfXOqo5OjS8tSm8Kf+MBe8mRs3YFuVDunKGZy6
+	 u+ZXg1uXOVzF78l1PSib3wCHBApOExcae2ig699sYLBNzyOJeAvYpDjHukEC8vVEwx
+	 Nvuw/l2QaYHyg==
 Received: from x201s (193-104-135-243.ip4.fiberby.net [193.104.135.243])
-	by mail1.fiberby.net (Postfix) with ESMTPSA id 91DB860114;
-	Fri, 11 Sep 2026 21:42:43 +0000 (UTC)
+	by mail1.fiberby.net (Postfix) with ESMTPSA id 1D942600FC;
+	Fri, 11 Sep 2026 21:42:42 +0000 (UTC)
 Received: by x201s (Postfix, from userid 1000)
-	id 6ACAE201A76; Fri, 11 Sep 2026 21:41:53 +0000 (UTC)
+	id 8F3F220173F; Fri, 11 Sep 2026 21:41:52 +0000 (UTC)
 From: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>
 To: netdev@vger.kernel.org
 Cc: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
@@ -42,12 +41,10 @@ Cc: =?UTF-8?q?Asbj=C3=B8rn=20Sloth=20T=C3=B8nnesen?= <ast@fiberby.net>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next 01/10] netlink: specs: rt-link: re-align IPv4 devconf
-Date: Fri, 11 Sep 2026 21:41:27 +0000
-Message-ID: <20260911214148.1184806-2-ast@fiberby.net>
+Subject: [PATCH net-next 00/10] netlink: specs: enum alignment fixes
+Date: Fri, 11 Sep 2026 21:41:26 +0000
+Message-ID: <20260911214148.1184806-1-ast@fiberby.net>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260911214148.1184806-1-ast@fiberby.net>
-References: <20260911214148.1184806-1-ast@fiberby.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -57,36 +54,33 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-The YNL "ipv4-devconf" enum is misaligned with the IPV4_DEVCONF_* enum.
+This series fixes misalignment issues in YNL-defined enums or flags.
 
-IPV4_DEVCONF_* starts at 1, ipv4-devconf starts at 0.
+While this is not a direct continuation, the rt-link changes was
+previously posted as part of another RFC:
+https://lore.kernel.org/netdev/20260910221733.1021864-1-ast@fiberby.net/
 
-$ git grep -B3 -A1 IPV4_DEVCONF_FORWARDING include/
-inc../uapi/linux/ip.h-/* index values for the variables in ipv4_devconf */
-inc../uapi/linux/ip.h-enum
-inc../uapi/linux/ip.h-{
-inc../uapi/linux/ip.h:        IPV4_DEVCONF_FORWARDING=1,
-inc../uapi/linux/ip.h-        IPV4_DEVCONF_MC_FORWARDING,
+Asbjørn Sloth Tønnesen (10):
+  netlink: specs: rt-link: re-align IPv4 devconf
+  netlink: specs: rt-link: re-align ifla-inet6-stats
+  netlink: specs: rt-link: fix ifinfo-flags names
+  netlink: specs: rt-link: fix netkit-policy names
+  netlink: specs: devlink: fix resource-scope type
+  netlink: specs: ethtool: re-align c33-pse-ext-state
+  netlink: specs: ethtool: re-align module-fw-flash-status
+  netlink: specs: nl80211: fix naming of enum members
+  netlink: specs: tc: fix typo in cls-flags
+  netlink: specs: fix incorrect name-prefixes
 
-Re-align the YNL spec by explicitly setting the first value to 1.
+ Documentation/netlink/specs/devlink.yaml |  2 +-
+ Documentation/netlink/specs/ethtool.yaml |  4 ++-
+ Documentation/netlink/specs/nl80211.yaml |  4 +--
+ Documentation/netlink/specs/rt-link.yaml | 37 +++++++++++++-----------
+ Documentation/netlink/specs/tc.yaml      |  2 +-
+ 5 files changed, 27 insertions(+), 22 deletions(-)
 
-Signed-off-by: Asbjørn Sloth Tønnesen <ast@fiberby.net>
----
- Documentation/netlink/specs/rt-link.yaml | 1 +
- 1 file changed, 1 insertion(+)
 
-diff --git a/Documentation/netlink/specs/rt-link.yaml b/Documentation/netlink/specs/rt-link.yaml
-index 5217d0bb4a3a..6d5f50c8362c 100644
---- a/Documentation/netlink/specs/rt-link.yaml
-+++ b/Documentation/netlink/specs/rt-link.yaml
-@@ -309,6 +309,7 @@ definitions:
-     entries:
-       -
-         name: forwarding
-+        value: 1
-       -
-         name: mc-forwarding
-       -
+base-commit: 17d3afadf539c93def8106bbb83c88274bdc7ab1
 -- 
 2.55.0
 
