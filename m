@@ -1,135 +1,151 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtpbgsg1.qq.com (smtpbgsg1.qq.com [54.254.200.92])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F4543EFFC3
-	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 08:33:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D0AC457E7D;
+	Fri, 11 Sep 2026 08:35:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.254.200.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789115612; cv=none; b=NCCZNb04sKItUIuB0Dlzca5amcI4rgTzFesry5TJ2cIfrG01jEEOg5CwDxUrwg2eymMZcJf0BfSUbHzdV/qPS08XFzJTyiQHIzcQ6pSQRkl2mbcw9uIcdfLLjD4FTlMQfuB+s6IA6WLfbYyBNKfHgZ3aCZQCarFA6Te1Fky8mR8=
+	t=1789115714; cv=none; b=JnS+Fwl0grmNkTwj1X1gsj0kO+afYt+GEafiRCbrC2vjj6D55iOU8NdfPYdj+pCwo7JHFaP3dcqfooiOQGAeD1VBzS+WxPVJ1qGdPV4QFoi5BiYEViB2n6oQr+SOBZahYgUr4h8ytyB9u2sRQxSRVSA9TJUF5UIHqk+1ojHPYfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789115612; c=relaxed/simple;
-	bh=Rm9r2xnsIZFc8ybJEi5S3AB68AbzmoxRMB7qTrAikGw=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
-	 References:In-Reply-To; b=YMXAbUjUWv/XEqW5fSynEduXuXSDDa2LXnb5oXUR9SDRLT8g8leqDIBn2uEKjN865Qi6HhlqduKSHzuWKR8UUx5fBiA7KKjgPpIV1ZjSlDKjY4SogNSvt+88ba9Y9iTVdrWlt8e2Iv1KbGPdGvD3TniGctdMOV2jQ4jfLfmR/Ow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=qvSKB7B7; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1789115714; c=relaxed/simple;
+	bh=5UnCHTOpTpkqnUGkiS16fV4vAM0+e4jzRNd71F9nVaU=;
+	h=Date:From:To:Cc:Subject:References:Mime-Version:Message-ID:
+	 Content-Type; b=BtwNfXHZ/UTSyeCwXj4nosSioDUqZx8CNxT13UM6Ihz+2hxB/leFUcYI5RPjJ5HrWRVc41PSiTK5TMVgSLDZPWuWrn7XZi2CCZGQaOEciO0dCZst7DYcFfXRpMOBpNsFfqLDUgo4eGOxvQvKwhRrbIlDZIhqAWgISMU4qmgEVZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=GC1UWomW; arc=none smtp.client-ip=54.254.200.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="qvSKB7B7"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 96F104E4013C;
-	Fri, 11 Sep 2026 08:33:23 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 69066601DE;
-	Fri, 11 Sep 2026 08:33:23 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5120F11C7AF99;
-	Fri, 11 Sep 2026 10:33:15 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1789115602; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=ftOn2N8WubB1YE40TT5Rd8Tsd8oKLrVJQ4FJ+h3aPZ0=;
-	b=qvSKB7B7iBQ2SnufSPvm3YZ05RpvcV/H/IW3bz2GpfGMKegHQTusUErcvUV2DxETJ87xDZ
-	3qED2aXk1afyKC21OhPAsFMLvGdd3+nSQWwADUMwcX3aRcuikkuR5qhvPzFOlpNPJj8/H5
-	O+I5LAB447ToyOyFWqDS/SF9jdAvKo+VASWGlWW3R02zm92HypRmymZqVb5ZsCAmRhRXQF
-	ixD4f4oTXGKldwKZLdszkaA53rUz8SyqWxzLRl1HlaqO5J0G/Ml+/5c099Ll+6NG97WjT3
-	wVAvwei+UC7rKGeTA33WIdGdCqtJNzOq0bWAMC7DS0qWFf3QAi2wKT9PcQUP7w==
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="GC1UWomW"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1789115688;
+	bh=5UnCHTOpTpkqnUGkiS16fV4vAM0+e4jzRNd71F9nVaU=;
+	h=Date:From:To:Subject:Mime-Version:Message-ID;
+	b=GC1UWomWkAmi8InVvjObPzmZYS17kT9XRxkqaMb8rzFMWH59EjrnTqod0Y7yky1+h
+	 BhYkf67W4dv9KHri0QFW5Vv6QBgDme6vabCWmR+phJQc0Bl4RPHOBo09tH18gqvKJs
+	 nPb9cmI7dfSz1OcRiCbtJ0BGlNMHCvw8dFAQ71A0=
+X-QQ-mid: zesmtpsz5t1789115685tf2ff96d6
+X-QQ-Originating-IP: dkN2Rl4g6wtK3QVk6LilRHEFcAbjj2qtefa/5Tj54S4=
+Received: from PEN002676 ( [124.126.19.250])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Fri, 11 Sep 2026 16:34:42 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 16364602175366116159
+Date: Fri, 11 Sep 2026 16:34:43 +0800
+From: =?GB2312?B?1dS98MP3?= <zhaojinming@uniontech.com>
+To: "Lorenzo Bianconi" <lorenzo.bianconi@oss.qualcomm.com>
+Cc: maxime.chevallier <maxime.chevallier@bootlin.com>, 
+	andrew+netdev <andrew+netdev@lunn.ch>, 
+	davem <davem@davemloft.net>, 
+	edumazet <edumazet@google.com>, 
+	kuba <kuba@kernel.org>, 
+	pabeni <pabeni@redhat.com>, 
+	mcoquelin.stm32 <mcoquelin.stm32@gmail.com>, 
+	alexandre.torgue <alexandre.torgue@foss.st.com>, 
+	jose.abreu <Jose.Abreu@synopsys.com>, 
+	netdev <netdev@vger.kernel.org>, 
+	linux-stm32 <linux-stm32@st-md-mailman.stormreply.com>, 
+	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, 
+	linux-kernel <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net] net: stmmac: fix stale descriptors and DMA mapping leak on Tx map failure
+References: <20260910-stmmac-fix-vlan-desc-leak-v1-1-6b07dca5e5e8@uniontech.com>, 
+	<aqJ2vGaushx4EL5q@lore-desk>
+X-Priority: 3
+X-GUID: 153DEEB6-D82D-45A0-B664-DEC4AB33931B
+X-Has-Attach: no
+X-Mailer: Foxmail 7.2.25.375[cn]
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 11 Sep 2026 10:33:14 +0200
-Message-Id: <DLCCJPHEM8VD.1527J6FT7I4MQ@bootlin.com>
-To: =?utf-8?b?4oCN6rmA7Jqw7ISdW+2VmeyDnV0o7KCE7J6Q7KCV67O064yA7ZWZIOyghA==?=
- =?utf-8?b?7J6Q6rO17ZWZ6rO8KQ==?= <5mghybrid@khu.ac.kr>,
- <netdev@vger.kernel.org>
-From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-Subject: Re: [PATCH net 0/2] net: macb: Fix PTP timestamp configuration
- handling
-Cc: <conor.dooley@microchip.com>, <andrew+netdev@lunn.ch>,
- <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
- <pabeni@redhat.com>, <richardcochran@gmail.com>,
- <linux-kernel@vger.kernel.org>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <CAH1Bc_weSzwLzY4nWbcqz3pRjzyh-W4P45bijWN9EdQzV-SFjg@mail.gmail.com>
-In-Reply-To: <CAH1Bc_weSzwLzY4nWbcqz3pRjzyh-W4P45bijWN9EdQzV-SFjg@mail.gmail.com>
-X-Last-TLS-Session-Version: TLSv1.3
+Message-ID: <30AFF1B9230534C1+202609111634420869983@uniontech.com>
+Content-Type: text/plain;
+	charset="GB2312"
+Content-Transfer-Encoding: base64
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpsz:uniontech.com:qybglogicsvrsz:qybglogicsvrsz4b-0
+X-QQ-XMAILINFO: MZQHZNohqAr1rI4Oa3TRubQ/pll2SzuIVoSAqBDYptBv0SOtOTIOHafM
+	GGfxNgUgNH9MkskwyrbvfPREMeNLjYNbZ5XEgx2aRRVtT8dkWfjVm7KWbUSAvwvbiIXNdkY
+	e5kxEX02YBzYrH8zsFvnBjlAWrRo1Wkox7k+ag12Mk2BnFIkIivDaHIz4ugwE6Ng23rUjh9
+	oAG0c3N8kcoIuvsI9WwdeYbcA+b3yXLaOjk8DuLXrl5+U45MMFJ4pwGluFqeDUSwBndRiTO
+	uVlFzNe5d0IfkqhjHTcHIcOMknN+s/mu6qu8sRJc5q/i51L3Cjc8aDZ/VT+sMj4e/RShgIr
+	rK1N2NAbQh4JhCx1jCZsUepqCnSJob5K79gSN/k0TSD/TXO8UYJfUNr8k7auySJrBLOKBo/
+	1CspR+dotXptTm5ANO2ggQbQ+GdnThd8HSDzGKKjIQi+r7WrwZhEbJ7RwA2+xnbjkC6YwE6
+	IBjMBxlpRfU0JseASLieJkQbnAmPFuFOcg/CRKcTOdrG5CxXkeT4Qqi8p1e88qG78fRMS+a
+	0/r8mB6d3Zfm2yD3wQqJKqcBrDTsH0/Bp5MO4CWGnhvMOOgbuakdyvTMxoOQYK5pGs12B7O
+	vDRaXzHQ48lSDMJzgrIXFdFgiW4ynP1ttFd53EKKECkKDTlCTBq2ty5BbNZzKYV+4mZgb9q
+	yJefuWyHOZE3ujBT1GFNPKPfbPPUvxhL46D4g5Mx7xLPg53e9kekihvhrDquLDDjJKg9eSY
+	+9zmBV+ypF4wUGahHaCT+h0dut6OASelgZEZ5OUxXEXylzX/Mk6ktHTBwH3IIqfgF+B7uOu
+	g0n/JakLD3/P8/6nN0ISeFwO2koL6cZj2q6OHE5Ky5wauX0leCQ+86cLP1sCMAsfnbnwJ1A
+	fZyjhk5PDP8+jYf58ZEuPir8fq189XG6GP1/3cs4VbJ/J6bwVxf5hVhwVkfS0TT083/wK8t
+	aQvy/pAvJi2Av0EdWjRI7VfY/8lQidHhxl0djB2kEUwXhcu0H4alcOY2Egza/DkkEBPGdSR
+	0Cv3kRJUipnUDTt4Z/pgk0wyeOt3NJCymDViEowg==
+X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
+X-QQ-RECHKSPAM: 0
 
-Hello kimwooseok,
-
-On Fri Sep 11, 2026 at 9:47 AM CEST, kimwooseok wrote:
-> This series fixes two timestamp configuration problems in gem_set_hwtst()=
-.
-> A rejected RX-filter request can change the active TX one-step mode
-> while leaving the cached configuration unchanged. Patch 1 defers the
-> one-step mode update until both TX type and RX filter are validated.
->
-> The two specific PTPv1 RX filters currently succeed with RX timestamping
-> disabled. Patch 2 routes HWTSTAMP_FILTER_PTP_V1_L4_SYNC and
-> HWTSTAMP_FILTER_PTP_V1_L4_DELAY_REQ through the existing all-frame
-> fallback and reports HWTSTAMP_FILTER_ALL to userspace. Both defects
-> originate in ab91f0a9b5f4 ("net: macb: Add hardware PTP support").
->
-> Both defects were reproduced on a Raspberry Pi 5 Model B Rev 1.1 with
-> macb eth0. Before the fixes, rejected requests changed OSSMODE in both
-> directions; each specific PTPv1 filter produced zero hardware timestamps
-> for 61 packets of its requested type. On 6.18.46-macb-ptp-functional-rt+,
-> both rejected requests preserved cached settings and the full NCR, and
-> each PTPv1 filter returned ALL and timestamped 60/60 Sync and 60/60
-> Delay_Req fixtures. ALL/NONE controls and all nine configuration cases
-> passed. The board was subsequently returned to its original kernel.
->
-> Additional validation:
-> - net 7f26a5e8040b: ARM64 allmodconfig and allyesconfig full targets
->   passed with GCC 14.2.0, W=3D1 and CONFIG_WERROR=3Dn. After applying the
->   series, incremental builds of the same full targets passed with
->   identical configurations and no new warnings. Both rebuilt macb_ptp.o.
-> - Pi board configuration: Image.gz, modules and dtbs built with W=3D1;
->   the resulting kernel booted and passed the hardware tests above.
-> - Both final patches passed strict checkpatch including sign-off checks,
->   and standalone/series application checks on the net base.
->
-> The RX tests check raw hardware timestamp presence, not absolute
-> timestamp accuracy or PHC synchronization.
->
-> An LLM assisted with source analysis, preparation of the fixes and test
-> helpers, and drafting the descriptions. Results are from the recorded
-> board tests and build logs.
->
-> Assisted-by: GPT-6 Astra
->
-> kimwooseok (2):
->   net: macb: Preserve one-step mode on rejected timestamp requests
->   net: macb: Use all-frame timestamping for PTPv1 RX filters
->
-> base-commit: 7f26a5e8040b4957ef4dbdfcde6cc7ba2db53937
-
-Your emails are quoted so patch emails are invalid. Please use git
-send-email [0] or b4 [1] for sending patches. Both allow previewing the
-messages before they are sent to the mailing lists.
-For example `b4 send --no-sign --reflect` [2].
-
-Also I much prefer cover letters and commit messages to be under the
-human voice rather than their bot machine! Here at least it looks
-somewhat sensible from a quick pass.
-
-b4 even has a relay service for people with broken email servers which
-might be your issue, see [3].
-
-[0]: https://git-scm.com/docs/git-send-email
-[1]: https://b4.docs.kernel.org/en/latest/
-[2]: https://b4.docs.kernel.org/en/latest/contributor/send.html#checking-th=
-ings-over-with-reflect
-[3]: https://b4.docs.kernel.org/en/latest/contributor/send.html#configuring=
--the-web-endpoint
-
-Thanks,
-
---
-Th=C3=A9o Lebrun, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+CgoKCj4+IEluIHN0bW1hY194bWl0KCksIHdoZW4gdGhlIERNQSBtYXBwaW5nIG9mIHRoZSBsaW5l
+YXIgcGFydCBvciBvZiBhCgoKCj4KCgoKPlsuLi5dCgoKCj4KCgoKPj4/IAlpZiAodW5saWtlbHko
+aXNfanVtYm8pKSB7CgoKCj4+IC0JCWVudHJ5ID0gc3RtbWFjX2p1bWJvX2ZybShwcml2LCB0eF9x
+LCBza2IsIGNzdW1faW5zZXJ0aW9uKTsKCgoKPj4gLQkJaWYgKHVubGlrZWx5KGVudHJ5IDwgMCkg
+JiYgKGVudHJ5ICE9IC1FSU5WQUwpKQoKCgo+PiArCQlyZXQgPSBzdG1tYWNfanVtYm9fZnJtKHBy
+aXYsIHR4X3EsIHNrYiwgY3N1bV9pbnNlcnRpb24pOwoKCgo+CgoKCj5pZiBqdW1ib19mcm0oKSBy
+ZXR1cm5zIGFuIGVycm9yIG9uIHRoZSBzdWJzZXF1ZW50IGZyYW1lcywgZW50cnkgaXMgbm90IHVw
+ZGF0ZWQKCgoKPmhlcmUsIHNvIHdlIHdpbGwgZW5kIHVwIHdpdGggYSBETUEgbGVhay4gQW0gSSBt
+aXNzaW5nIHNvbWV0aGluZz8KCgoKPgpZb3UncmUgcmlnaHQsIHRoYXQgd2FzIGEgcmVhbCBsZWFr
+IGluIHYxLiBJZiBqdW1ib19mcm0oKSBmYWlsZWQgd2hpbGUgbWFwcGluZyBhIHN1YnNlcXVlbnQg
+anVtYm8gYnVmZmVyLCB0aGUgYnVmZmVycyBtYXBwZWQgYmVmb3JlIHRoZSBmYWlsdXJlIHdlcmUg
+bmV2ZXIgdW5tYXBwZWQsIGJlY2F1c2UganVtYm9fZnJtKCkgcmV0dXJucyAtMSB3aXRob3V0IHJl
+cG9ydGluZyBob3cgbWFueSBidWZmZXJzIGl0IGhhZCBhbHJlYWR5IG1hcHBlZCwgc28gdGhlIGVy
+cm9yIHBhdGggaW4gc3RtbWFjX3htaXQoKSBjb3VsZCBub3QgcmVsZWFzZSB0aGVtLgoKdjIgZml4
+ZXMgdGhpcyBpbnNpZGUganVtYm9fZnJtKCkgaXRzZWxmOiBpdCBub3cgc2F2ZXMgdGhlIHN0YXJ0
+aW5nIGVudHJ5IGFuZCwgd2hlbiBhIHN1YnNlcXVlbnQgZG1hX21hcF9zaW5nbGUoKSBmYWlscywg
+dW5tYXBzIHRoZSBidWZmZXJzIGl0IGhhcyBhbHJlYWR5IG1hcHBlZCBiZWZvcmUgcmV0dXJuaW5n
+IGFuIGVycm9yLCBpbiBib3RoIHJpbmcgYW5kIGNoYWluIG1vZGVzLiBUaGlzIGtlZXBzIHRoZSBz
+dG1tYWNfeG1pdCgpIGVycm9yIHBhdGggdW5jaGFuZ2VkIGFuZCBhdm9pZHMgY2hhbmdpbmcganVt
+Ym9fZnJtKCkncyByZXR1cm4gc2VtYW50aWNzLgoKCgo+CgoKCj4+ICsJCWlmICh1bmxpa2VseShy
+ZXQgPCAwKSAmJiAocmV0ICE9IC1FSU5WQUwpKQoKCgo+Pj8gCQkJZ290byBkbWFfbWFwX2VycjsK
+CgoKPj4gKwkJZW50cnkgPSByZXQ7CgoKCj4+PyAJfSBlbHNlIHsKCgoKPj4/IAkJYm9vbCBsYXN0
+X3NlZ21lbnQgPSAobmZyYWdzID09IDApOwoKCgo+Pj8gCgoKCj4+IEBAIC00OTg0LDYgKzQ5ODUs
+MjYgQEAgc3RhdGljIG5ldGRldl90eF90IHN0bW1hY194bWl0KHN0cnVjdCBza19idWZmICpza2Is
+IHN0cnVjdCBuZXRfZGV2aWNlICpkZXYpCgoKCj4+PyAKCgoKPj4/IGRtYV9tYXBfZXJyOgoKCgo+
+Pj8gCW5ldGRldl9lcnIocHJpdi0+ZGV2LCAiVHggRE1BIG1hcCBmYWlsZWRcbiIpOwoKCgo+PiAr
+CgoKCj4+ICsJLyogZW50cnkgcG9pbnRzIG9uZSBwYXN0IHRoZSBsYXN0IGRlc2NyaXB0b3Igd3Jp
+dHRlbiBmb3IgdGhpcyBmcmFtZToKCgoKPj4gKwkgKiBvbiBmYWlsdXJlIGl0IGlzIHRoZSBkZXNj
+cmlwdG9yIHdob3NlIERNQSBtYXBwaW5nIGZhaWxlZCwgc28gd2FsawoKCgo+PiArCSAqIGZyb20g
+Zmlyc3RfZW50cnkgdXAgdG8sIGJ1dCBub3QgaW5jbHVkaW5nLCBlbnRyeS4/IFJlc2V0IGN1cl90
+eAoKCgo+PiArCSAqIHVuY29uZGl0aW9uYWxseSBhcyBib3RoIHN0bW1hY192bGFuX2luc2VydCgp
+IGFuZCBzdG1tYWNfanVtYm9fZnJtKCkKCgoKPj4gKwkgKiBtYXkgaGF2ZSBhZHZhbmNlZCBpdCwg
+YW5kIHJlbGVhc2UgdGhlIFZMQU4gY29udGV4dCBkZXNjcmlwdG9yLgoKCgo+PiArCSAqLwoKCgo+
+PiArCXdoaWxlIChmaXJzdF9lbnRyeSAhPSBlbnRyeSkgewoKCgo+PiArCQlkZXNjID0gc3RtbWFj
+X2dldF90eF9kZXNjKHByaXYsIHR4X3EsIGZpcnN0X2VudHJ5KTsKCgoKPj4gKwkJc3RtbWFjX3Jl
+bGVhc2VfdHhfZGVzYyhwcml2LCBkZXNjLCBwcml2LT5kZXNjcmlwdG9yX21vZGUpOwoKCgo+PiAr
+CQlzdG1tYWNfZnJlZV90eF9idWZmZXIocHJpdiwgJnByaXYtPmRtYV9jb25mLCBxdWV1ZSwgZmly
+c3RfZW50cnkpOwoKCgo+PiArCQlmaXJzdF9lbnRyeSA9IFNUTU1BQ19ORVhUX0VOVFJZKGZpcnN0
+X2VudHJ5LAoKCgo+PiArCQkJCQkJcHJpdi0+ZG1hX2NvbmYuZG1hX3R4X3NpemUpOwoKCgo+PiAr
+CX0KCgoKPj4gKwoKCgo+PiArCXR4X3EtPmN1cl90eCA9IGZpcnN0X3R4OwoKCgo+Cgo+ZG8gd2Ug
+cmVhbGx5IG5lZWQgdG8gdXBkYXRlIHR4X3EtPmN1cl90eCBoZXJlPwoKWWVzLCBpdCBpcyBuZWVk
+ZWQuIFR3byBoZWxwZXJzIGFkdmFuY2UgdHhfcS0+Y3VyX3R4IGJlZm9yZSB3ZSByZWFjaCB0aGUg
+ZXJyb3IgcGF0aDogc3RtbWFjX3ZsYW5faW5zZXJ0KCkgKHdoZW4gYSBWTEFOIHRhZyBpcyBwcmVz
+ZW50KSBtb3ZlcyBpdCBwYXN0IHRoZSBjb250ZXh0IGRlc2NyaXB0b3IsIGFuZCBzdG1tYWNfanVt
+Ym9fZnJtKCkgbW92ZXMgaXQgcGFzdCB0aGUganVtYm8gaGVhZCBkZXNjcmlwdG9ycyBvbiBzdWNj
+ZXNzLgoKSWYgd2UgZG8gbm90IHJvbGwgaXQgYmFjayB0byBmaXJzdF90eCwgdGhlIHJlbGVhc2Vk
+IFZMQU4gY29udGV4dCBkZXNjcmlwdG9yIChhbmQgYW55IGp1bWJvIGhlYWQgZGVzY3JpcHRvcnMp
+IHdvdWxkIGJlIGxlZnQgaW5zaWRlIHRoZSBbZGlydHlfdHgsIGN1cl90eCkgaW4tZmxpZ2h0IHdp
+bmRvdywgc28gc3RtbWFjX3R4X2NsZWFuKCkgd291bGQgdHJlYXQgdGhlbSBhcyBjb21wbGV0ZWQg
+ZnJhbWVzLCBhbmQgdGhlIG5leHQgeG1pdCB3b3VsZCBza2lwIHRob3NlIHNsb3RzLgoKVW5saWtl
+IHRoZSBUU08gcGF0aCwgd2hlcmUgdGhlIGFsbG9jYXRvciB1c2VzIGEgbG9jYWwgZW50cnkgYW5k
+IHR4X3EtPmN1cl90eCBpcyBvbmx5IGFzc2lnbmVkIG9uIHN1Y2Nlc3MsIHRoZXNlIGFyZSBzaGFy
+ZWQgaGVscGVycyB0aGF0IGFkdmFuY2UgY3VyX3R4IGFzIGEgc2lkZSBlZmZlY3QsIHNvIHJvbGxp
+bmcgaXQgYmFjayBoZXJlIGlzIHRoZSBtaW5pbWFsIGNvcnJlY3QgZml4LgoKCgo+CgoKCj5SZWdh
+cmRzLAoKCgo+TG9yZW56bwoKCgo+CgoKCj4+ICsJaWYgKGhhc192bGFuKSB7CgoKCj4+ICsJCWRl
+c2MgPSBzdG1tYWNfZ2V0X3R4X2Rlc2MocHJpdiwgdHhfcSwgZmlyc3RfdHgpOwoKCgo+PiArCQlz
+dG1tYWNfcmVsZWFzZV90eF9kZXNjKHByaXYsIGRlc2MsIHByaXYtPmRlc2NyaXB0b3JfbW9kZSk7
+CgoKCj4+ICsJfQoKCgo+Pj8gbWF4X3NkdV9lcnI6CgoKCj4+PyAJZGV2X2tmcmVlX3NrYihza2Ip
+OwoKCgo+Pj8gCXByaXYtPnhzdGF0cy50eF9kcm9wcGVkKys7CgoKCj4+IAoKCgo+PiAtLS0KCgoK
+Pj4gYmFzZS1jb21taXQ6IDg5M2UxMTc4N2Y3OGU0M2I1MzRlMjUyMjQ5YWMzZmZmNGQxMzMzZjgK
+CgoKPj4gY2hhbmdlLWlkOiAyMDI2MDkwOS1zdG1tYWMtZml4LXZsYW4tZGVzYy1sZWFrLWYwNTdi
+YjA2MWRhYQoKCgo+PiAKCgoKPj4gQmVzdCByZWdhcmRzLAoKCgo+PiAtLSAKCgoKPj4gWmhhb0pp
+bm1pbmcgPHpoYW9qaW5taW5nQHVuaW9udGVjaC5jb20+CgoKCj4+IAoKCgo+PiAKCgo=
 
