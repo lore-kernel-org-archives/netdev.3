@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D2063BE16A
-	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 10:27:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 332DD43A80A
+	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 10:27:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789122436; cv=none; b=iIqiOhguiQT88S4iJoq1KyOEZGLdFNs8RLlS9K0xR7IibWS34bdTS7s5L2plQ1mmFrd15LXYRZuAO/1GmPlZKFLFIqpPdoDUq2ifmZT9U3Kuhm5970K+jUVF/fNrRF5ktUZnc/CJ84oA8zdtuzMkCYuqbODjKQqd2/hLdsoUTuQ=
+	t=1789122439; cv=none; b=OJ7KMEem25R68cXJ/AM/qmypB76Dn2ASxJ/2EG2DNteImA6OIBJie4LlEdOSsKyCGLw3g9F+mdpqWmy/j/WY5i9cm1d7fzkfewMdhrB2ggf3NYwNYkFFQMba+tukTJa7ORaVrjbhcR3nx8ZutWg5yWGk8sgxVBv+R9gL5tpI4CU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789122436; c=relaxed/simple;
-	bh=S8YilWIQ5x6qHgsGal6aAs/6Ivg2tWgGngS4jZBZJxU=;
+	s=arc-20240116; t=1789122439; c=relaxed/simple;
+	bh=EEVLz5gkdbg7u9bwAPenVfVaGNtSn63XF6gxgt04EJs=;
 	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=DEVfn+5wR/sJCsCa8BQAeHN7afrt9t3fRdjUVi/eFSDj1cHGHhy8Cy/5fN/KCVLfOAIetbYB+W2jzU+WEHW/wmQXJ/ardRBAkbnaCPXaj5e2aifITzC8yF6xpLBD1gyIka7GSasQu1/7OeE5TBEN7VozQkyM4y36KBlTCqfEyAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hcf1wlMU; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:MIME-Version; b=TTT9pDAChagy68G7afRMims4sI5Th+HPBqQRyrKxCRcmt9ljrBjjSq+EzvoAe3+PAcREZaeZYVOeEyqVqYAVrC8WndmczUngrbjju8BJoQmasRDOdbZcVnsHOzrM56KaQIp6+c9EoTM2Hlv8eZsx9BCn0dZBSKwrhL2Gfv+zHhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PUoudR1V; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hcf1wlMU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 199E21F00898;
-	Fri, 11 Sep 2026 10:27:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PUoudR1V"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 458A31F00899;
+	Fri, 11 Sep 2026 10:27:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789122428;
-	bh=gjUMDzkAjRhStbV25QO3SCRgeBzrAgqr1IOzHYEA0Us=;
+	s=k20260515; t=1789122429;
+	bh=aumurfYG0T/Q3ZVrtr9XUcIlRZ4tjjW/fqZ5hCfAr48=;
 	h=Subject:From:To:Cc:Date:In-Reply-To:References;
-	b=Hcf1wlMUAF3pggfWnK2zLvmNmnfjxjnEKsQ/cLhqtphIhjv+iMjYFP60ui+BS00lF
-	 ey7UVxLku2eSgf+zMq9rVJNB1/w416m/KAFNUvuscPnn3yeA5WiY6SKJCXw1CmP9qj
-	 4wegXhUedtN8dI9KD61r+DFL85LFqsxkNAK9l//UKsyvPThk2NAbB4Zdt3hgnxEDIw
-	 ZVH8nr57VhOXyWKkbO+CmBUwoUIwKPFix0/s8ME8EfcajSy37Adnkh0ApD7jyBBH2H
-	 RwboOHN9LAQ+vTo+RHPYrpMXborPn6zOkTZJvcV5iDHpMxVB5wPMf/PodmHL/U3CaZ
-	 UVWT6DbuN9BsA==
+	b=PUoudR1V7WGuaW1eTDPDQpvhfTMo2XQByxVE9JapKKxxCTKrQUg/2AzUf5q6HPK66
+	 7RrFWF5zLxaEq80Y+zoICsCLAq7UxYGfxf+a+srB9GE1Vd9TVTe+Gji/KpDif0GVDD
+	 1lDOPeXyd4sIubqh8Q321AVbcDEVS1qUG+3E3xL+N6vP1uf9yedj9xxUpP1CVWjJQ5
+	 qV0k3Q95zEyfPyDMI6n3lvPjmUUTEAlxg5wIepKU1FGfyIAW0QVFSAR9Tm5dYQjf2P
+	 sdpZii8XUDm++4tK+DM9FM/ycsO6KDOa5tBtlH/zLyXiuOJZh+rcrRSaMO/uLtHilZ
+	 mCie77hCwzNHw==
 Subject:
- Re: [PATCH net-next 1/3] ice: monitor TSPLL lock from PTP periodic worker
+ Re: [PATCH net-next 2/3] ice: add TSPLL DPLL device and TIME_REF pin for E825
 From: netdev-bot+sashiko@kernel.org
 To: anthony.l.nguyen@intel.com
 Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
@@ -35,10 +35,10 @@ Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
  grzegorz.nitka@intel.com, arkadiusz.kubalewski@intel.com,
  przemyslaw.korba@intel.com, richardcochran@gmail.com,
  alexander.nowlin@intel.com
-Date: Fri, 11 Sep 2026 10:27:07 +0000
-Message-ID: <178912242763.219967.12573380582223666519@kernel.org>
-In-Reply-To: <20260908222428.872254-2-anthony.l.nguyen@intel.com>
-References: <20260908222428.872254-2-anthony.l.nguyen@intel.com>
+Date: Fri, 11 Sep 2026 10:27:08 +0000
+Message-ID: <178912242885.219967.6718861956714436013@kernel.org>
+In-Reply-To: <20260908222428.872254-3-anthony.l.nguyen@intel.com>
+References: <20260908222428.872254-3-anthony.l.nguyen@intel.com>
 X-sashiko-severity: Medium
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -49,313 +49,558 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 5 potential
+Thank you for your contribution! Sashiko AI review found 10 potential
 issue(s) to consider:
 
-Critical: 0 · High: 0 · Medium: 2 · Low: 3
+Critical: 0 · High: 0 · Medium: 8 · Low: 2
 
-- [Medium] ice_ptp_tspll_monitor()'s recovery cadence and its log rate-
-  limit (ICE_TSPLL_LOG_INTERVAL = 120, documented as "~60 s at normal…
-- [Medium] The lock-lost dev_warn() and the lock-acquired dev_info() in
-  ice_ptp_tspll_monitor() are effectively unrate-limited when the TSPLL…
-- [Low] Commit message misdescribes the tree state: it says the cached
-  lock state is added "so a follow-up change can consume it from the…
-- [Low] ice_ptp_tspll_monitor() is invoked at the top of
-  ice_ptp_periodic_work(), ahead of ice_ptp_update_cached_phctime().
-- [Low] ice_ptp_init() initializes only ptp->tspll_locked = true and
-  never resets the newly added ptp->tspll_lock_retries, whereas the…
+- [Medium] E825 TSPLL DPLL device is registered and its periodic worker
+  started based only on `ice_pf_src_tmr_owned(pf) &&…
+- [Medium] ice_dpll_deinit_tspll_pins() unconditionally calls
+  ice_dpll_stop_fwnode_pin_activity(&pf->dplls.tspll_in, true), which…
+- [Medium] The patch introduces `!IS_ERR_OR_NULL(pf->dplls.tspll.dpll)`
+  as the existence predicate for the new TSPLL dpll device (in…
+- [Medium] pf->dplls.lock is taken only by the new userspace TSPLL
+  reconfiguration path (ice_dpll_tspll_state_on_dpll_set()) and the PTP…
+- [Medium] The new userspace-reachable path
+  ice_dpll_tspll_state_on_dpll_set() -> ice_tspll_set_cfg() ->…
+- [Medium] ice_dpll_tspll_state_on_dpll_set() never compares the
+  requested pin state with the currently programmed clock source…
+- [Medium] TSPLL source changes and E825 periodic-output configuration
+  perform unsynchronized read-modify-write operations on different…
+- [Medium] A userspace-selected TSPLL clock source is not preserved
+  across an E825 reset: ice_dpll_tspll_state_on_dpll_set() writes the…
+- [Low] ice_tspll_cfg_e825c() now returns -EAGAIN for 'configuration
+  applied but PLL not locked yet', but the new contract is not reflected…
+- [Low] struct ice_dplls's kernel-doc still describes @lock as a purely
+  DPLL-internal mutex ('protects DPLL configuration', '@lock serializes…
 
 --
 
-ice: monitor TSPLL lock from PTP periodic worker
+ice: add TSPLL DPLL device and TIME_REF pin for E825
 
-Adds ice_ptp_tspll_monitor() to the PTP periodic worker so E825 owner PFs
-poll the TSPLL lock status over CGU registers and restart the PLL when the
-lock is lost.  The observed state is cached in pf->ptp.tspll_locked, and
-three TSPLL helpers are added/exported for the read, the restart and the
-clock source string.
+This exposes the E825 source timer PLL (TSPLL) as a DPLL_TYPE_GENERIC device
+with a fwnode-backed "time_ref" input pin, so its lock status can be read and
+its clock source switched between TIME_REF and TCXO from userspace.  It also
+moves the pf->dplls.lock lifetime out to ice_init_features() /
+ice_deinit_features() and takes that mutex in the PTP TSPLL monitor.
 
-A few questions about the new monitor and about the changelog below.
+A few questions below about the new paths.
 
-> Cache the observed lock state in pf->ptp.tspll_locked using
-> WRITE_ONCE()/READ_ONCE() so a follow-up change can consume it from the
-> DPLL periodic worker (for user-space notification via
-> dpll_device_change_ntf()) and drop the redundant poll+recovery from
-> that path.
-
-[Severity: Low]
-Is there really a redundant poll+recovery in that path today?
-
-At the baseline, ice_dpll.c has no reference to ICE_CGU_RO_LOCK,
-ICE_CGU_R23_R24_TSPLL_ENABLE or any lost-lock/restart helper; grepping the
-ice/ directory matches only ice_tspll.c and ice_common.h.
-ice_dpll_periodic_work() only calls ice_dpll_update_state(), which polls
-EEC/PPS state over AQ.
-
-The follow-up patch in this series adds a consumer of the new cache
-(ice_dpll_periodic_work_e825() -> ice_dpll_tspll_lock_status_get() ->
-READ_ONCE(pf->ptp.tspll_locked)) but does not remove any TSPLL poll or
-recovery.
-
-Could the wording be adjusted to say this adds new TSPLL monitoring and
-recovery rather than relocating existing recovery out of the DPLL worker?
-The same claim is repeated in the new kernel-doc for @tspll_locked in
-ice_ptp.h.
-
-> diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
-> index eaec36ab6ae3..4b1040d09f70 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_ptp.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
-> @@ -4,8 +4,11 @@
->  #include "ice.h"
->  #include "ice_lib.h"
->  #include "ice_trace.h"
-> +#include "ice_tspll.h"
->  #include "ice_txclk.h"
->  
-> +#define ICE_TSPLL_LOG_INTERVAL		120
-> +
->  static const char ice_pin_names[][64] = {
->  	"SDP0",
->  	"SDP1",
+> diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.c b/drivers/net/ethernet/intel/ice/ice_dpll.c
+> index 85a74cd6ea1f..00e3f7de7810 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_dpll.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_dpll.c
 
 [ ... ]
 
-> @@ -2849,6 +2852,67 @@ static void ice_ptp_maybe_trigger_tx_interrupt(struct ice_pf *pf)
->  	}
+> @@ -2814,6 +2817,160 @@ static const struct dpll_pin_ops ice_dpll_txclk_ops = {
+>  	.direction_get = ice_dpll_input_direction,
+>  };
+>  
+> +/**
+> + * ice_dpll_tspll_lock_status_get - derive TSPLL state for dpll subsystem
+> + * @pf: board private structure
+> + * @use_cached: if true, read lock state from pf->ptp.tspll_locked (maintained
+> + *              by the PTP periodic worker); if false, query hardware directly
+> + *
+> + * If TIME_REF is not selected, TSPLL is treated as unlocked from the dpll
+> + * subsystem perspective, regardless of raw lock bit.
+> + *
+> + * Return: TSPLL lock status
+> + */
+> +static enum dpll_lock_status
+> +ice_dpll_tspll_lock_status_get(struct ice_pf *pf, bool use_cached)
+> +{
+> +	enum ice_clk_src clk_src;
+> +	bool locked;
+> +
+> +	if (ice_tspll_get_clk_src(&pf->hw, &clk_src) ||
+> +	    clk_src != ICE_CLK_SRC_TIME_REF)
+> +		return DPLL_LOCK_STATUS_UNLOCKED;
+> +
+> +	if (use_cached) {
+> +		locked = READ_ONCE(pf->ptp.tspll_locked);
+> +	} else {
+> +		bool lock_lost;
+> +
+> +		if (ice_tspll_lost_lock_e825c(&pf->hw, &lock_lost))
+> +			return DPLL_LOCK_STATUS_UNLOCKED;
+> +		locked = !lock_lost;
+> +	}
+> +	return locked ? DPLL_LOCK_STATUS_LOCKED : DPLL_LOCK_STATUS_UNLOCKED;
+> +}
+
+[ ... ]
+
+> +static int
+> +ice_dpll_tspll_state_on_dpll_set(const struct dpll_pin *pin, void *pin_priv,
+> +				 const struct dpll_device *dpll,
+> +				 void *dpll_priv, enum dpll_pin_state state,
+> +				 struct netlink_ext_ack *extack)
+> +{
+> +	struct ice_dpll_pin *p = pin_priv;
+> +	struct ice_pf *pf = p->pf;
+> +	enum ice_clk_src clk_src;
+> +	bool changed = false;
+> +	struct ice_dpll *tp;
+> +	int ret;
+> +
+> +	if (ice_dpll_is_reset(pf, extack))
+> +		return -EBUSY;
+> +
+> +	if (state != DPLL_PIN_STATE_CONNECTED &&
+> +	    state != DPLL_PIN_STATE_DISCONNECTED) {
+> +		NL_SET_ERR_MSG(extack,
+> +			       "unsupported pin state for TSPLL reference clock");
+> +		return -EINVAL;
+> +	}
+> +
+> +	clk_src = (state == DPLL_PIN_STATE_CONNECTED) ? ICE_CLK_SRC_TIME_REF :
+> +							ICE_CLK_SRC_TCXO;
+
+[Severity: Medium]
+Should this compare the requested state against the currently programmed
+clock source before reprogramming?
+
+The dpll core does not filter a set request that matches the current state -
+dpll_pin_state_set() in drivers/dpll/dpll_netlink.c calls
+ops->state_on_dpll_set() unconditionally:
+
+	ret = ops->state_on_dpll_set(pin, dpll_pin_on_dpll_priv(dpll, pin),
+				     dpll, dpll_priv(dpll), state, extack);
+
+So a management daemon that periodically re-asserts DPLL_PIN_STATE_CONNECTED
+runs the full ice_tspll_set_cfg() sequence each time, which clears
+ICE_CGU_R23_R24_TSPLL_ENABLE and ICE_CGU_R9_TIME_SYNC_EN, reprograms the
+dividers, sleeps and waits 1-2 ms for re-lock.  Can that stop the PHC long
+enough for ice_ptp_tspll_monitor() to see a lost lock and enter its restart
+path, for a request that should be a no-op?  The get callback already has
+ice_tspll_get_clk_src() available for the comparison.
+
+> +	tp = &pf->dplls.tspll;
+> +	/* Serialize multi-register TSPLL reconfiguration with restart path. */
+> +	mutex_lock(&pf->dplls.lock);
+> +	ret = ice_tspll_set_cfg(&pf->hw, ICE_TSPLL_FREQ_156_250, clk_src);
+
+[Severity: Medium]
+Is pf->dplls.lock enough to cover all TSPLL writers?  The commit message says:
+
+    Serialize both with pf->dplls.lock across their HW-read -> cache-write
+    sequence
+
+but there is a third writer that takes no lock at all.  ice_ptp_rebuild_owner()
+reprograms the same CGU registers and writes the same cache:
+
+	err = ice_tspll_init(hw);
+	if (err)
+		return err;
+	/* Rebuild reinitialized TSPLL, so reset monitor retry state. */
+	WRITE_ONCE(ptp->tspll_locked, true);
+
+Neither ice_prepare_for_reset() nor ice_ptp_prepare_for_reset() takes
+pf->dplls.lock, and the ice_dpll_is_reset() check above happens before the
+mutex is acquired, so a reset can start after the check passes.
+
+Can two read-modify-write sequences on ICE_CGU_R9 / ICE_CGU_R23 then overlap
+while ice_tspll_cfg_e825c() has the PLL disabled and is sleeping, and can the
+unlocked WRITE_ONCE(ptp->tspll_locked, true) clobber the value published under
+the mutex here?
+
+[Severity: Medium]
+Does the source selected here survive a reset?  Nothing records the requested
+clk_src, while reset recovery reprograms the source from the firmware
+capability value in ice_tspll_init():
+
+	tspll_freq = (enum ice_tspll_freq)ts_info->time_ref;
+	clk_src = (enum ice_clk_src)ts_info->clk_src;
+
+ice_ptp_rebuild_owner() calls ice_tspll_init() for the source timer owner on
+every non-PFR reset, so after an admin switches TIME_REF -> TCXO through this
+pin, any PF/CORE/GLOBAL reset would silently revert it while the same pin
+stays registered and only the lock status is republished.
+
+[ ... ]
+
+> @@ -3134,12 +3291,44 @@ ice_dpll_update_state(struct ice_pf *pf, struct ice_dpll *d, bool init)
+>  	return ret;
 >  }
 >  
 > +/**
-> + * ice_ptp_tspll_monitor - poll and recover TSPLL lock on E825 owner PFs
-> + * @pf: Board private structure
+> + * ice_dpll_periodic_work_e825 - TSPLL DPLL periodic update for E825
+> + * @pf: board private structure
 > + *
-> + * Called from the PTP periodic worker. On E825 devices that own the source
-> + * timer, poll the TSPLL lock status via CGU registers and trigger a restart
-> + * if the lock has been lost. The result is cached in @pf->ptp.tspll_locked
-> + * so it can be consumed by the DPLL periodic worker via READ_ONCE().
+> + * Publish TSPLL lock status to the dpll subsystem. The PTP periodic worker
+> + * owns TSPLL lock polling and recovery; this function consumes the cached
+> + * result for dpll notifications.
 > + *
-> + * TSPLL lock is critical for PHC operation and must be monitored regardless
-> + * of whether DPLL init succeeded or CONFIG_DPLL is enabled. Placing the
-> + * monitor here makes recovery independent of the dpll subsystem.
-> + *
-> + * AQ read errors are rate-limited and do not stop monitoring. Lock-lost
-> + * events are logged every 120 retries (~60 s at normal poll rate) to
-> + * surface persistent failures without flooding the log.
+> + * Context: Must be called without pf->dplls.lock held.
 > + */
-> +static void ice_ptp_tspll_monitor(struct ice_pf *pf)
+> +static void ice_dpll_periodic_work_e825(struct ice_pf *pf)
 > +{
-> +	bool lock_lost;
-> +	int err;
+> +	struct ice_dpll *tp = &pf->dplls.tspll;
+> +	enum dpll_lock_status new_state;
+> +	bool changed = false;
 > +
-> +	if (pf->hw.mac_type != ICE_MAC_GENERIC_3K_E825 ||
-> +	    !ice_pf_src_tmr_owned(pf))
-> +		return;
-> +
-> +	err = ice_tspll_lost_lock_e825c(&pf->hw, &lock_lost);
-> +	if (err) {
-> +		dev_err_ratelimited(ice_pf_to_dev(pf),
-> +				    "Failed reading TimeSync PLL lock status (err: %d). Retrying.\n",
-> +				    err);
-> +		return;
-> +	}
-> +
-> +	if (lock_lost) {
-> +		WRITE_ONCE(pf->ptp.tspll_locked, false);
-> +		if (!(pf->ptp.tspll_lock_retries % ICE_TSPLL_LOG_INTERVAL))
-> +			dev_warn(ice_pf_to_dev(pf),
-> +				 "TimeSync PLL lock lost. Retrying to acquire lock.\n");
-> +		err = ice_tspll_restart_e825c(&pf->hw);
-> +		if (err)
-> +			dev_err_ratelimited(ice_pf_to_dev(pf),
-> +					    "Failed to restart TimeSync PLL (err: %d).\n",
-> +					    err);
-> +		pf->ptp.tspll_lock_retries++;
+> +	mutex_lock(&pf->dplls.lock);
+> +	new_state = ice_dpll_tspll_lock_status_get(pf, true);
 
 [Severity: Medium]
-The kernel-doc above says lock-lost events are logged "every 120 retries
-(~60 s at normal poll rate)", and the new @tspll_lock_retries documentation
-in ice_ptp.h repeats "~every 120 retries / ~60 s".  Does that hold when the
-worker requeues itself early?
+What updates pf->ptp.tspll_locked when ice_ptp_init() failed?
 
-ice_ptp_periodic_work() ends with:
+The TSPLL device and this worker are started from ice_dpll_init_e825() based
+on ice_pf_src_tmr_owned(pf) && test_bit(ICE_FLAG_PTP_SUPPORTED, pf->flags),
+which does not imply PTP reached ICE_PTP_READY.  ice_init_features() ignores
+the outcome of ice_ptp_init(), and the error exits there (hw->lane_num < 0,
+ice_ptp_init_owner() failure, ice_ptp_init_work() failure) set state to
+ICE_PTP_UNINIT without clearing ICE_FLAG_PTP_SUPPORTED.
 
-	/* Run twice a second or reschedule if phc update failed */
-	kthread_queue_delayed_work(ptp->kworker, &ptp->work,
-				   msecs_to_jiffies(err ? 10 : 500));
+The only producer of the cache then never runs:
 
-and ice_ptp_update_cached_phctime() returns an error whenever ICE_CFG_BUSY is
-already set:
+ice_ptp_periodic_work()
+	if (pf->ptp.state != ICE_PTP_READY)
+		return;
 
-	if (test_and_set_bit(ICE_CFG_BUSY, pf->state))
-		return -EAGAIN;
+	ice_ptp_tspll_monitor(pf);
 
-ICE_CFG_BUSY is held for the whole duration of ice_set_ringparam(),
-ice_set_link_ksettings() and queue count reconfiguration.  If one of those
-overlaps a lost TSPLL lock, the monitor runs every ~10 ms rather than every
-500 ms.
+So with use_cached = true the published status appears to freeze at whatever
+ice_ptp_init() left in tspll_locked (it optimistically assigns
+ptp->tspll_locked = true before the failing steps), for the lifetime of the
+driver.  Can the first tick here also overwrite the init-time direct hardware
+read done in ice_dpll_init_info_e825c() and emit a change notification that
+does not reflect hardware?
 
-Each of those ticks calls ice_tspll_restart_e825c(), which clears
-ICE_CGU_R23_R24_TSPLL_ENABLE, sleeps 1-2 ms with the source PLL disabled and
-re-enables it.
+[ ... ]
 
-Is it intended that the source PLL is held disabled for 10-20% of that
-window, that 3-4 sideband transactions are issued every 10 ms, and that the
-documented ~60 s warning interval collapses to ~1.2 s while "after %u
-retries" no longer maps to a fixed time base?  The later commit in this
-series that wraps the monitor body in pf->dplls.lock leaves this cadence
-unchanged.
-
-> +	} else {
-> +		if (pf->ptp.tspll_lock_retries) {
-> +			const char *src_str = "unknown";
-> +			enum ice_clk_src clk_src;
+> @@ -3806,6 +4022,25 @@ static int ice_dpll_deinit_txclk_pins(struct ice_pf *pf)
+>  	return 0;
+>  }
+>  
+> +/**
+> + * ice_dpll_deinit_tspll_pins - deinitialize TSPLL fwnode pin
+> + * @pf: board private structure
+> + *
+> + * Stop notifier activity and release the TIME_REF fwnode pin, unregistering
+> + * it from the TSPLL DPLL if it was registered.
+> + */
+> +static void ice_dpll_deinit_tspll_pins(struct ice_pf *pf)
+> +{
+> +	struct ice_dpll_pin *time_ref = &pf->dplls.tspll_in;
+> +	struct ice_dpll *tp = &pf->dplls.tspll;
 > +
-> +			if (!ice_tspll_get_clk_src(&pf->hw, &clk_src))
-> +				src_str = ice_tspll_clk_src_str(clk_src);
-> +			dev_info(ice_pf_to_dev(pf),
-> +				 "TimeSync PLL lock acquired with %s clock source after %u retries.\n",
-> +				 src_str, pf->ptp.tspll_lock_retries);
-> +		}
-> +		WRITE_ONCE(pf->ptp.tspll_locked, true);
-> +		pf->ptp.tspll_lock_retries = 0;
-> +	}
+> +	ice_dpll_stop_fwnode_pin_activity(time_ref, true);
+> +	if (!IS_ERR_OR_NULL(time_ref->pin))
+> +		dpll_pin_unregister(tp->dpll, time_ref->pin,
+> +				    &ice_dpll_tspll_in_ops, time_ref);
+> +	ice_dpll_release_fwnode_pin(time_ref);
 > +}
+> +
+>  /**
+>   * ice_dpll_deinit_pins - deinitialize direct pins
+>   * @pf: board private structure
+> @@ -3826,7 +4061,10 @@ static void ice_dpll_deinit_pins(struct ice_pf *pf, bool cgu)
+>  
+>  	ice_dpll_deinit_rclk_pin(pf);
+>  	if (pf->hw.mac_type == ICE_MAC_GENERIC_3K_E825) {
+> -		ice_dpll_deinit_txclk_pins(pf);
+> +		if (ice_pf_src_tmr_owned(pf) &&
+> +		    test_bit(ICE_FLAG_PTP_SUPPORTED, pf->flags))
+> +			ice_dpll_deinit_tspll_pins(pf);
+> +		ice_dpll_deinit_txclk_pins(pf, true);
+>  		ice_dpll_deinit_fwnode_pins(pf, pf->dplls.inputs, 0);
+>  	}
 
 [Severity: Medium]
-Because this branch resets pf->ptp.tspll_lock_retries to zero, the
-'% ICE_TSPLL_LOG_INTERVAL' gate on the dev_warn() is satisfied again on the
-very next lock-lost tick.
+Is it safe to decide this teardown from re-evaluated runtime state rather than
+from the pin object itself?
 
-For a reference clock that alternates between locked and unlocked, does this
-emit one dev_warn("TimeSync PLL lock lost...") plus one unrate-limited
-dev_info("TimeSync PLL lock acquired ... after %u retries.") per poll pair,
-i.e. roughly two messages per second for as long as the input flaps (and up
-to ~100 per second if the worker is also requeueing at 10 ms)?
+ice_dpll_stop_fwnode_pin_activity() dereferences pin->pf with no NULL check:
 
-Would dev_warn_ratelimited()/dev_info_ratelimited(), or a counter that a
-transient re-lock does not clear, match the stated intent of surfacing
-persistent failures "without flooding the log"?
+	unregister_dpll_notifier(&pin->nb);
+	if (flush)
+		flush_workqueue(pin->pf->dplls.wq);
 
+and tspll_in.pf / tspll_in.nb are populated only inside
+ice_dpll_init_tspll_pins() (unlike txclks and inputs, whose pf is assigned
+unconditionally in ice_dpll_init_info_txclk_pins_e825c() and
+ice_dpll_init_info_direct_pins()).
+
+ice_pf_src_tmr_owned() reads pf->hw.func_caps.ts_func_info.src_tmr_owned,
+which ice_rebuild() re-populates from firmware via ice_get_caps() while the
+driver stays loaded.  If the gate was false at init and true here, does this
+oops on flush_workqueue(pin->pf->dplls.wq) and unregister a zeroed
+notifier_block?  In the inverse case, is the registered notifier and the
+fwnode pin reference leaked past unload?  Guarding on tspll_in.fwnode or
+tspll_in.pf would make init and deinit symmetric.
+
+[ ... ]
+
+> @@ -4022,6 +4260,45 @@ static int ice_dpll_init_txclk_pins(struct ice_pf *pf, int start_idx)
+>  	return ret;
+>  }
+>  
+> +static int ice_dpll_init_tspll_pins(struct ice_pf *pf)
+> +{
+> +	struct ice_dpll_pin *time_ref = &pf->dplls.tspll_in;
+> +	struct ice_dpll *tp = &pf->dplls.tspll;
+> +	int ret;
 > +
->  static void ice_ptp_periodic_work(struct kthread_work *work)
->  {
->  	struct ice_ptp *ptp = container_of(work, struct ice_ptp, work.work);
-> @@ -2858,6 +2922,8 @@ static void ice_ptp_periodic_work(struct kthread_work *work)
->  	if (pf->ptp.state != ICE_PTP_READY)
+> +	time_ref->pf = pf;
+> +	ret = ice_dpll_init_fwnode_pin(time_ref, ice_dpll_fwnode_time_ref);
+> +	if (ret)
+> +		return ret;
+
+[ ... ]
+
+> @@ -4237,6 +4530,7 @@ static void ice_dpll_deinit_worker(struct ice_pf *pf)
+>  
+>  	kthread_cancel_delayed_work_sync(&d->work);
+>  	kthread_destroy_worker(d->kworker);
+> +	d->kworker = NULL;
+>  }
+
+[ ... ]
+
+> @@ -4861,9 +5161,10 @@ void ice_dpll_deinit(struct ice_pf *pf)
+>  		ice_dpll_deinit_dpll(pf, &pf->dplls.eec, cgu);
+>  	if (!IS_ERR_OR_NULL(pf->dplls.txc.dpll))
+>  		ice_dpll_deinit_dpll(pf, &pf->dplls.txc, false);
+> +	if (!IS_ERR_OR_NULL(pf->dplls.tspll.dpll))
+> +		ice_dpll_deinit_dpll(pf, &pf->dplls.tspll, false);
+>  
+>  	ice_dpll_deinit_info(pf);
+> -	mutex_destroy(&pf->dplls.lock);
+>  }
+
+[Severity: Medium]
+Can pf->dplls.tspll.dpll be stale here?  ice_dpll_deinit_dpll() puts the
+reference but never clears the pointer:
+
+	if (cgu || pf->hw.mac_type == ICE_MAC_GENERIC_3K_E825)
+		dpll_device_unregister(d->dpll, d->ops, d);
+	dpll_device_put(d->dpll, &d->tracker);
+
+pf (and pf->dplls) survives an unload/load cycle via devlink reload, and the
+TSPLL device is created only when ice_pf_src_tmr_owned(pf) &&
+ICE_FLAG_PTP_SUPPORTED holds.  If that gate is false on a later cycle, does
+this predicate still see the already-put pointer from the previous cycle and
+call dpll_device_unregister()/dpll_device_put() on a device it no longer owns?
+
+The same patch adds d->kworker = NULL in ice_dpll_deinit_worker() precisely so
+the new if (pf->dplls.kworker) predicate is truthful - would a matching
+d->dpll = NULL be appropriate?
+
+[ ... ]
+
+> @@ -4904,9 +5202,30 @@ static void ice_dpll_init_e825(struct ice_pf *pf)
+>  	err = ice_dpll_init_info_e825c(pf);
+>  	if (err)
+>  		goto err_exit;
+> +	if (ice_pf_src_tmr_owned(pf) &&
+> +	    test_bit(ICE_FLAG_PTP_SUPPORTED, pf->flags)) {
+> +		err = ice_dpll_init_dpll(pf, &pf->dplls.tspll, false,
+> +					 DPLL_TYPE_GENERIC);
+> +		if (err)
+> +			goto deinit_info;
+
+[ ... ]
+
+> +		err = ice_dpll_init_worker(pf);
+> +		if (err)
+> +			goto deinit_tspll;
+> +	}
+>  	err = ice_dpll_init_dpll(pf, &pf->dplls.txc, false, DPLL_TYPE_GENERIC);
+>  	if (err)
+> -		goto deinit_info;
+> +		goto deinit_worker;
+>  	err = ice_dpll_init_pins_e825(pf);
+>  	if (err)
+>  		goto deinit_txclk;
+> @@ -4917,10 +5236,15 @@ static void ice_dpll_init_e825(struct ice_pf *pf)
+>  
+>  deinit_txclk:
+>  	ice_dpll_deinit_dpll(pf, &pf->dplls.txc, false);
+> +deinit_worker:
+> +	if (pf->dplls.kworker)
+> +		ice_dpll_deinit_worker(pf);
+> +deinit_tspll:
+> +	if (!IS_ERR_OR_NULL(pf->dplls.tspll.dpll))
+> +		ice_dpll_deinit_dpll(pf, &pf->dplls.tspll, false);
+>  deinit_info:
+>  	ice_dpll_deinit_info(pf);
+>  err_exit:
+> -	mutex_destroy(&d->lock);
+>  	dev_warn(ice_pf_to_dev(pf), "DPLLs init failure err:%d\n", err);
+>  }
+
+[ ... ]
+
+> diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+> index d88835482d3a..2f372dd37b53 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_main.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_main.c
+> @@ -4725,6 +4725,14 @@ static void ice_init_features(struct ice_pf *pf)
+>  	if (ice_is_safe_mode(pf))
 >  		return;
 >  
-> +	ice_ptp_tspll_monitor(pf);
+> +	/* pf->dplls.lock guards TSPLL/CGU access shared between the DPLL
+> +	 * subsystem callbacks and the PTP periodic worker's TSPLL monitor.
+> +	 * Initialize it before ice_ptp_init() so the PTP kworker never sees
+> +	 * an uninitialized mutex, and destroy it in ice_deinit_features()
+> +	 * only after ice_ptp_release() has drained the kworker.
+> +	 */
+> +	mutex_init(&pf->dplls.lock);
 > +
->  	err = ice_ptp_update_cached_phctime(pf);
 
 [Severity: Low]
-The monitor runs ahead of the cached PHC refresh in the same serialized
-kthread work item.  On a lock-lost tick it issues up to four sideband CGU
-transactions plus the unconditional usleep_range(USEC_PER_MSEC,
-2 * USEC_PER_MSEC) in ice_tspll_restart_e825c(), and each control queue
-command is bounded only by ICE_CTL_Q_SQ_CMD_TIMEOUT (USEC_PER_SEC, "max
-delay 1s" in ice_controlq.h).
+Could the kernel-doc for the mutex be updated along with its new owner?
 
-ice_ptp_update_cached_phctime() documents that it "must be called
-periodically to ensure that the cached value is never more than 2 seconds
-old", and it warns and bumps late_cached_phc_updates when that is exceeded.
+struct ice_dplls in ice_dpll.h still describes @lock as "protects DPLL
+configuration (see Locking below)" and states that "@lock serializes all DPLL
+state mutations on this PF", with a Locking section that lists only DPLL-side
+acquirers.  After this change the mutex is also taken from
+ice_ptp_tspll_monitor() in ice_ptp.c, and its lifetime belongs to
+ice_init_features()/ice_deinit_features() rather than
+ice_dpll_init()/ice_dpll_deinit().
 
-Would calling ice_ptp_tspll_monitor() after ice_ptp_update_cached_phctime(),
-or from a separate work item, keep the sleeping hardware recovery sequence
-off the time-critical path?
+The @tspll_locked kernel-doc in ice_ptp.h also still says the field is
+"intended to be read (without pf->dplls.lock) by the DPLL periodic worker in
+a follow-up change", while this patch reads it with pf->dplls.lock held.
 
+[ ... ]
+
+> diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
+> index 4b1040d09f70..e54a98a0bdd0 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_ptp.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
+> @@ -2878,8 +2878,19 @@ static void ice_ptp_tspll_monitor(struct ice_pf *pf)
+>  	    !ice_pf_src_tmr_owned(pf))
+>  		return;
 >  
->  	ice_ptp_maybe_trigger_tx_interrupt(pf);
-> @@ -2975,6 +3041,9 @@ static int ice_ptp_rebuild_owner(struct ice_pf *pf)
->  	err = ice_tspll_init(hw);
->  	if (err)
->  		return err;
-> +	/* Rebuild reinitialized TSPLL, so reset monitor retry state. */
-> +	WRITE_ONCE(ptp->tspll_locked, true);
-> +	ptp->tspll_lock_retries = 0;
->  
->  	/* Acquire the global hardware lock */
->  	if (!ice_ptp_lock(hw)) {
-> @@ -3319,6 +3388,7 @@ void ice_ptp_init(struct ice_pf *pf)
->  	}
->  	ptp->port.port_num = hw->lane_num;
->  
-> +	ptp->tspll_locked = true;
->  	ice_ptp_init_hw(hw);
-
-[Severity: Low]
-Should ptp->tspll_lock_retries be cleared here as well?  The rebuild path
-above resets both fields, but ice_ptp_init() only sets tspll_locked.
-
-struct ice_ptp is embedded in the probe-lifetime struct ice_pf,
-ice_ptp_release() does not clear either field, and
-ice_init_features()->ice_ptp_init() /
-ice_deinit_features()->ice_ptp_release() run again on the same pf across a
-devlink reload.
-
-If the TSPLL happened to be unlocked at unload time, does the leftover
-non-zero counter make the first successful poll after reload print
-"TimeSync PLL lock acquired with %s clock source after %u retries." for a
-lock that was never lost in this instance, and start the
-'% ICE_TSPLL_LOG_INTERVAL' gate at a stale phase so a genuine first
-lock-lost event stays unlogged for up to ~119 poll cycles?
-
->  
->  	ice_ptp_init_tx_interrupt_mode(pf);
-> diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.h b/drivers/net/ethernet/intel/ice/ice_ptp.h
-> index c4b0da7ce20e..0e40fef3b4e8 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_ptp.h
-> +++ b/drivers/net/ethernet/intel/ice/ice_ptp.h
-> @@ -249,6 +249,15 @@ struct ice_ptp_pin_desc {
->   * @tx_hwtstamp_discarded: number of Tx skbs discarded due to cached PHC time
->   *                         being too old to correctly extend timestamp
->   * @late_cached_phc_updates: number of times cached PHC update is late
-> + * @tspll_locked: last observed TSPLL lock state on E825 owner PFs.
-> + *	Written by the PTP periodic worker after polling the TSPLL and
-> + *	intended to be read (without pf->dplls.lock) by the DPLL periodic
-> + *	worker in a follow-up change. Access via READ_ONCE()/WRITE_ONCE();
-> + *	precise synchronization is not required because both workers
-> + *	converge on the same value within one poll period.
-> + * @tspll_lock_retries: counts consecutive poll cycles in which the TSPLL
-> + *	was found unlocked. Reset to zero when lock is re-acquired. Used to
-> + *	rate-limit the lock-lost log message (~every 120 retries / ~60 s).
->   */
+> +	/* Serialize the entire monitor tick against TSPLL userspace reconfig
+> +	 * (ice_dpll_tspll_state_on_dpll_set()). Both paths read HW state and
+> +	 * write pf->ptp.tspll_locked; without holding pf->dplls.lock across
+> +	 * the HW read here, a preempted monitor could observe stale HW state
+> +	 * and then overwrite an accurate cache update from the DPLL callback.
+> +	 * pf->dplls.lock is initialized in ice_init_features() before the PTP
+> +	 * kworker starts and destroyed in ice_deinit_features() only after
+> +	 * ice_ptp_release() has drained the kworker, so it is always valid.
+> +	 */
+> +	mutex_lock(&pf->dplls.lock);
+>  	err = ice_tspll_lost_lock_e825c(&pf->hw, &lock_lost);
 
 [ ... ]
 
 > diff --git a/drivers/net/ethernet/intel/ice/ice_tspll.c b/drivers/net/ethernet/intel/ice/ice_tspll.c
-> index fd4b58eb9bc0..78752dc1e762 100644
+> index 78752dc1e762..85bacb7c3a79 100644
 > --- a/drivers/net/ethernet/intel/ice/ice_tspll.c
 > +++ b/drivers/net/ethernet/intel/ice/ice_tspll.c
-
-[ ... ]
-
-> @@ -531,6 +531,62 @@ int ice_tspll_cfg_pps_out_e825c(struct ice_hw *hw, bool enable)
->  	return ice_write_cgu_reg(hw, ICE_CGU_R9, val);
->  }
+> @@ -334,8 +334,9 @@ static int ice_tspll_dis_sticky_bits_e82x(struct ice_hw *hw)
+>   * Return:
+>   * * %0       - success
+>   * * %-EINVAL - input parameters are incorrect
+> - * * %-EBUSY  - failed to lock TSPLL
+> - * * %other   - CGU read/write failure
+> + * * %-EAGAIN - TSPLL configuration succeeded but lock is not acquired yet
+> + * * %-EBUSY  - CGU access is busy (for example during reset)
+> + * * %other   - other CGU read/write failures
+>   */
+>  static int ice_tspll_cfg_e825c(struct ice_hw *hw, enum ice_tspll_freq clk_freq,
+>  			       enum ice_clk_src clk_src)
+> @@ -467,7 +468,7 @@ static int ice_tspll_cfg_e825c(struct ice_hw *hw, enum ice_tspll_freq clk_freq,
 >  
-> +int ice_tspll_restart_e825c(struct ice_hw *hw)
+>  	if (!(val & ICE_CGU_RO_LOCK_TRUE_LOCK)) {
+>  		dev_warn(ice_hw_to_dev(hw), "CGU PLL failed to lock\n");
+> -		return -EBUSY;
+> +		return -EAGAIN;
+>  	}
+
+[Severity: Low]
+Should ice_tspll_cfg_e82x() and the ice_tspll_cfg() wrapper doc follow this
+new convention?  ice_tspll_cfg_e82x() still returns -EBUSY for the identical
+"configured but not locked" check on ICE_CGU_RO_BWM_LF_TRUE_LOCK, so the two
+implementations behind one wrapper now report different errnos for the same
+hardware condition, and the wrapper's kernel-doc still mentions only "other
+negative error codes when failed to configure CGU".
+
+The E825-only path means this cannot be hit through ice_tspll_set_cfg() today,
+but a future caller reading the wrapper contract could get it wrong.
+
+> +/**
+> + * ice_tspll_set_cfg - configure TS PLL with new settings
+> + * @hw: board private hw structure
+> + * @clk_freq: clock frequency to program
+> + * @clk_src: clock source to select (TIME_REF, or TCXO)
+> + *
+> + * Configure CGU with new clock source and clock frequency settings.
+> + *
+> + * Return:
+> + * * 0 - OK
+> + * * negative - error
+> + */
+
+Could this kernel-doc list -EAGAIN as well?  Its only caller,
+ice_dpll_tspll_state_on_dpll_set(), special-cases that value and maps it to
+success, which the "negative - error" wording contradicts.
+
+> +int ice_tspll_set_cfg(struct ice_hw *hw, enum ice_tspll_freq clk_freq,
+> +		      enum ice_clk_src clk_src)
 > +{
-> +	u32 val;
-> +	int err;
+> +	int ret;
 > +
-> +	/* Read the initial values of r23 and disable the PLL */
-> +	err = ice_read_cgu_reg(hw, ICE_CGU_R23, &val);
-> +	if (err)
-> +		return err;
+> +	if (!ice_tspll_check_params(hw, clk_freq, clk_src))
+> +		return -EINVAL;
 > +
-> +	val &= ~ICE_CGU_R23_R24_TSPLL_ENABLE;
-> +	err = ice_write_cgu_reg(hw, ICE_CGU_R23, val);
-> +	if (err)
-> +		return err;
+> +	ret = ice_tspll_dis_sticky_bits(hw);
+> +	if (ret)
+> +		return ret;
 > +
-> +	/* Wait at least 1 ms before reenabling PLL */
-> +	usleep_range(USEC_PER_MSEC, 2 * USEC_PER_MSEC);
-> +	val |= ICE_CGU_R23_R24_TSPLL_ENABLE;
-> +	return ice_write_cgu_reg(hw, ICE_CGU_R23, val);
+> +	return ice_tspll_cfg(hw, clk_freq, clk_src);
 > +}
 
-[ ... ]
+[Severity: Medium]
+What restores the hardware if this sequence fails half way through?
+
+ice_tspll_cfg_e825c() first clears ICE_CGU_R23_R24_TSPLL_ENABLE and
+ICE_CGU_R9_TIME_SYNC_EN and re-enables them only at the end.  Any sideband
+read or write failure in between returns early with no rollback, so the PLL is
+left disabled and TIME_SYNC_EN gated.
+
+The runtime recovery path only touches R23:
+
+ice_tspll_restart_e825c()
+	err = ice_read_cgu_reg(hw, ICE_CGU_R23, &val);
+	...
+	val &= ~ICE_CGU_R23_R24_TSPLL_ENABLE;
+	...
+	val |= ICE_CGU_R23_R24_TSPLL_ENABLE;
+	return ice_write_cgu_reg(hw, ICE_CGU_R23, val);
+
+so ICE_CGU_R9_TIME_SYNC_EN is never restored.  Can the PLL then re-lock,
+ice_ptp_tspll_monitor() log "lock acquired" and set tspll_locked = true, and
+the new TSPLL DPLL device publish LOCKED, while the 1588 clock feeding the
+source timer stays gated and the PHC is frozen?  Before this patch the
+sequence ran only from ice_tspll_init() at probe/reset, where failure aborts
+PTP init.
+
+[Severity: Medium]
+Can this collide with the E825 periodic-output configuration on ICE_CGU_R9?
+
+ice_tspll_cfg_e825c() reads R9 at the start and writes the whole register back
+several sideband transactions later, while ice_tspll_cfg_pps_out_e825c() does
+its own full-register read-modify-write of the 1PPS fields:
+
+	err = ice_read_cgu_reg(hw, ICE_CGU_R9, &val);
+	...
+	val &= ~(ICE_CGU_R9_ONE_PPS_OUT_EN | ICE_CGU_R9_ONE_PPS_OUT_AMP);
+	...
+	return ice_write_cgu_reg(hw, ICE_CGU_R9, val);
+
+That path is reached from ice_ptp_write_perout() on the ptp_clock ioctl and
+does not take pf->dplls.lock.  Can a perout enable be erased by the
+source-change write, or a perout write based on the pre-change R9 snapshot
+restore the old TIME_REF_EN/CLK_EREF0_EN/TIME_SYNC_EN after R23 has already
+switched TIME_REF_SEL, leaving receiver and PLL source inconsistent?
 
 -- 
 Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260908222428.872254-1-anthony.l.nguyen%40intel.com
