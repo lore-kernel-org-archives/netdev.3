@@ -1,46 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57ED3217648
-	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 00:34:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDE7C2F7F13
+	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 00:34:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789086891; cv=none; b=swevtC5ra6tqA6A0DbH5yawym1tt/unXKR/IBGywV9UpNN7wV6kOStQLLnI1wQcvHTs9uN7U2LbqfDnF+tzNOAycWOLh1Z5NncE5wtRuhDSNx+uKjyEIEiUp4nwMg/Q8Xf603cZtD06qxM44H+R4y4sCn1OgyEHF4nJdZO1JOI4=
+	t=1789086891; cv=none; b=EIjXRdcFJzF1gbTrSIGYPa5Jy5/ta71bTs9pWBlENeJkrdNVV0kh5nyNg9rFaUlpm/+0CuAgxaxNnyQic0/dDOnQwwSnAiJ77IhCmirWuZu2EFd7cDFW/rh4+yN/TKNFwQVW2g1S6yOtZkdSeJ88jaN/CNNq8QA4VsLd3XUBh+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1789086891; c=relaxed/simple;
-	bh=aNqIx7752DCCSYF9F2n6FK9fs+w4IJF3IR7r0MeU/Cg=;
+	bh=QCGxFlVveu3p7OYjV/IkmXDrKAzDO6YjTaoXPydW68g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IvkZuj9xDwK57Zpkb0ZVwzAB0F08Vg0uHNiIWsEPBcFgSOp5fNDP19mogBZOnV3AD78eq13pIhPs7kdIswoR/UtCQpqWyPnELYw6TWMapZX+Gw90iDUl2u3wsomGnOtpptHqu5wSWzocj/JvaWTjBsHVvgF5b5Lrk+ZNP12B7Rk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=h5wp90kg; arc=none smtp.client-ip=192.198.163.14
+	 MIME-Version; b=R2hGevi8ktO2lYVtcpccDGzuo40JZkL/4c8BCc8v5g1HKeJFySHr9Mr5Z1w4Nya90cEb4hw4+566NxRg7TepYUMsM1l+p9IZkDDK0rydjXFaswMnYfgn1Y/Cy5jzPQG8+q9iZGfcwVzEba0dnsw2tdVqspFXluMmtoaN6hK1lQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jev6oEV9; arc=none smtp.client-ip=192.198.163.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="h5wp90kg"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jev6oEV9"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1789086888; x=1820622888;
+  t=1789086890; x=1820622890;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=aNqIx7752DCCSYF9F2n6FK9fs+w4IJF3IR7r0MeU/Cg=;
-  b=h5wp90kgeL0gsw8zY4JDzKDvibU6I0KaSEpBEdjXTKoZGAks1/MWS1xh
-   E4tP//u8SnVvXH5ckRLde5At4idJlko6Uhpubvt3u1mOzbOGa2eQBM053
-   tsecoI0wvxXAfWsZvNJ/pmBnNWmhT0vLpQIhqBsuvrCtHWDm7aCxT9MjG
-   XzLXIeYW6OeStTU7FrqyJQb9gPugK6tA5OokTYenuR9Dr2Tb1u5QxL9jW
-   4N0RV5WZSboxFgHm/MAVF3JI4yvcV3z1b6nAdV4VxckZjfOHSV0AqR+IT
-   GPhA0EH1wY+l47xvxTiTxPYchiuJNOE6KwWT1ASWDj7BjivsS1VUyh/nU
-   g==;
-X-CSE-ConnectionGUID: 45pZ1YRxTT2Jy3Luf/Y+BA==
-X-CSE-MsgGUID: 5pnEviaHRBKb9YkfBbCJ8A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11901"; a="89564697"
+  bh=QCGxFlVveu3p7OYjV/IkmXDrKAzDO6YjTaoXPydW68g=;
+  b=jev6oEV9MokLvWe+rSuwKqBR1pLxd3NWmADjDpGhb1pWUlzhJcy49Z2O
+   iDfCnTH/SJ8SuzGGM4uh0Lc+qpnYUIaxxcv1mg16M/jFyrl3OoZWOJ/C8
+   atO4uq1/66LEZujiSwQz5aowjHj4/9D3UOR5kpKHMFFs39sFqvrgRtHvT
+   etxBqpJauJzcHAWgYgyyp+0Ioam0BoYyml6kmTPqki0SjTx6vjy4wMKHn
+   6LpdFKgJIg4kxzS01KrUFWpFLjTGAJIoMk0M4R9dquTClmq+BDKqaATCo
+   Q+Nk2pV100SK6buTUnNjm69scXthuqqeDl6rSfVX/kMiKE4XleJn2Jspl
+   Q==;
+X-CSE-ConnectionGUID: 8B+jI6RPT2KYJNI7ZlGX8Q==
+X-CSE-MsgGUID: w+wFYtj2Qz6dnN3bmZ+AHQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11901"; a="89564711"
 X-IronPort-AV: E=Sophos;i="6.27,96,1787036400"; 
-   d="scan'208";a="89564697"
+   d="scan'208";a="89564711"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Sep 2026 17:34:43 -0700
-X-CSE-ConnectionGUID: HQzYlg73R5yreg3+RHhOUg==
-X-CSE-MsgGUID: XUOW0PG9Tpi61Sy+iokAtQ==
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Sep 2026 17:34:44 -0700
+X-CSE-ConnectionGUID: 89TxN0mcTOWgDCMBAaV2+A==
+X-CSE-MsgGUID: NBkhQJoFS1iJPquIveti3w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.27,96,1787036400"; 
-   d="scan'208";a="272291055"
+   d="scan'208";a="272291061"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
   by orviesa009.jf.intel.com with ESMTP; 10 Sep 2026 17:34:44 -0700
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
@@ -50,8 +50,8 @@ To: davem@davemloft.net,
 	edumazet@google.com,
 	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org
-Cc: Karol Kolacinski <anthony.l.nguyen@intel.com>,
-	jacob.e.keller@intel.com,
+Cc: Jacob Keller <jacob.e.keller@intel.com>,
+	anthony.l.nguyen@intel.com,
 	maciej.machnikowski@intel.com,
 	przemyslaw.korba@intel.com,
 	grzegorz.nitka@intel.com,
@@ -60,11 +60,10 @@ Cc: Karol Kolacinski <anthony.l.nguyen@intel.com>,
 	poros@redhat.com,
 	richardcochran@gmail.com,
 	horms@kernel.org,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
 	Alexander Nowlin <alexander.nowlin@intel.com>
-Subject: [PATCH net 05/15] ice: E822: cancel offset verification work during reset preparation
-Date: Thu, 10 Sep 2026 17:34:14 -0700
-Message-ID: <20260911003430.3386340-6-anthony.l.nguyen@intel.com>
+Subject: [PATCH net 07/15] ice: E825: stop clearing PHY_REG_TX_OFFSET_READY
+Date: Thu, 10 Sep 2026 17:34:16 -0700
+Message-ID: <20260911003430.3386340-8-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20260911003430.3386340-1-anthony.l.nguyen@intel.com>
 References: <20260911003430.3386340-1-anthony.l.nguyen@intel.com>
@@ -76,55 +75,68 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Karol Kolacinski <karol.kolacinski@intel.com>
+From: Jacob Keller <jacob.e.keller@intel.com>
 
-Cancel the offset verification delayed work (ov_work) during PTP reset
-preparation to prevent it from running concurrently with the reset
-sequence.
+The ice_stop_phy_timer_eth56g() function is called by the driver for E825
+devices to ensure that the PHY timer has been stopped. The equivalent
+function for older E822 devices performed many steps. However, on E825 it
+only clears the PHY_REG_TX_OFFSET_READY and PHY_REG_RX_OFFSET_READY bits to
+indicate to HW that it should no longer treat the PHY offset as valid.
 
-Without this, ice_ptp_wait_for_offsets() can execute during a reset,
-find that ice_is_reset_in_progress() is true, and re-queue itself in a
-tight loop. Meanwhile, the reset path in ice_ptp_rebuild_owner() calls
-ice_ptp_port_phy_restart(), which starts a new ov_work. This results in
-two ov_work instances running simultaneously, racing over the PHY offset
-registers and the calibrating flag.
+When PHY_REG_TX_OFFSET_READY is cleared, the hardware still captures Tx
+timestamps, but it no longer sets the valid bit for these timestamps. This
+sounds reasonable at first glance. However, this results in the internal
+outstanding timestamp counter becoming out of sync.
 
-Cancel ov_work in ice_ptp_prepare_for_reset() alongside the existing
-cancellation of the Tx tracker. The comment in the existing code already
-documents that ov_work interference during reset is a concern but only
-cancels it during ice_ptp_release().
+When capturing a timestamp, hardware increments its internal counter and
+sets the associated "ready" bit in the timestamp memory status. Then it
+compares the timestamp count to the threshold to determine if it should
+trigger an interrupt to the MAC.
 
-Fixes: 4809671015a1 ("ice: Fix E810 PTP reset flow")
-Signed-off-by: Karol Kolacinski <karol.kolacinski@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>
-Signed-off-by: Przemyslaw Korba <przemyslaw.korba@intel.com>
-Reviewed-by: Maciek Machnikowski <maciej.machnikowski@intel.com>
+Upon reading the timestamp hardware is supposed to decrement the counter,
+clear the valid bit, and clear the associated bit from the memory status
+register. However, it only performs these steps *if* the valid bit is set.
+
+Since the valid bit is not set while PHY_REG_TX_OFFSET_READY is clear, the
+timestamp counter is not decremented and the memory status is not cleared.
+This leaves the counter out-of-sync until a PHY soft reset.
+
+According to the hardware engineers, the PHY_REG_TX_OFFSET_READY bit has no
+other effects. It only controls whether hardware captures timestamps with
+the valid bit set or not. Since capturing timestamps with the valid bit
+clear is problematic, they recommend simply not clearing
+PHY_REG_TX_OFFSET_READY.
+
+Note that the PHY_REG_RX_OFFSET_READY performs a similar task. However,
+clearing it is fine as there is no associated timestamp counter on the Rx
+side. Receive timestamps are simply inserted into the descriptor. Clearing
+this register clears the valid bit for timestamps until we complete
+calibration and re-enable the register.
+
+Fixes: 7cab44f1c35f ("ice: Introduce ETH56G PHY model for E825C products")
+Suggested-by: Maciej Machnikowski <maciej.machnikowski@intel.com>
 Tested-by: Alexander Nowlin <alexander.nowlin@intel.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice_ptp.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/net/ethernet/intel/ice/ice_ptp_hw.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
-index d018f02f700d..9bf3bac552f1 100644
---- a/drivers/net/ethernet/intel/ice/ice_ptp.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
-@@ -2998,6 +2998,14 @@ void ice_ptp_prepare_for_reset(struct ice_pf *pf, enum ice_reset_req reset_type)
- 	if (reset_type == ICE_RESET_PFR)
- 		return;
+diff --git a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
+index 3a41c711e751..d48eb3c61823 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
++++ b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
+@@ -2115,10 +2115,6 @@ int ice_stop_phy_timer_eth56g(struct ice_hw *hw, u8 port, bool soft_reset)
+ {
+ 	int err;
  
-+	/* Cancel the offset verification work for E82x before releasing the
-+	 * Tx tracker. If ov_work is running during reset, it may issue
-+	 * sideband queue commands that will fail or timeout, and may
-+	 * reference state that is being torn down.
-+	 */
-+	if (hw->mac_type == ICE_MAC_GENERIC)
-+		kthread_cancel_delayed_work_sync(&ptp->port.ov_work);
-+
- 	if (ice_pf_src_tmr_owned(pf) && hw->mac_type == ICE_MAC_GENERIC_3K_E825)
- 		ice_ptp_prepare_rebuild_sec(pf, false, reset_type);
- 
+-	err = ice_write_ptp_reg_eth56g(hw, port, PHY_REG_TX_OFFSET_READY, 0);
+-	if (err)
+-		return err;
+-
+ 	err = ice_write_ptp_reg_eth56g(hw, port, PHY_REG_RX_OFFSET_READY, 0);
+ 	if (err)
+ 		return err;
 -- 
 2.47.1
 
