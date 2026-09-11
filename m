@@ -1,73 +1,71 @@
-Received: from mta0.migadu.com (out-83.mta0.migadu.com [91.218.175.83])
+Received: from mail-pj2-f8.google.com (mail-pj2-f8.google.com [74.125.227.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDA2A485CCB
-	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 13:58:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.83
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8410D48BD46
+	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 13:59:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789135094; cv=none; b=Za6SHnp9otJq4vYFuK6nfBiL4K7YtajFcHz/JbIHu57zzB7cWPA1+Yed9jjRW1vt4YNFngLm8eLVHj1tug0k8hJ0UiHh1i6pzc2fLW+a7bejwpjlKKdJDXTjuNEQea8trYmMDL3t3K48ag23hzq5P2dzyJJ5/w17B2l9O2Q7Ckc=
+	t=1789135191; cv=none; b=Pn2tk7fCSM9QbysKMmxGNPTyQL4ksLdGiWs4swEasrnwq0MJdTwScoVHEIf2vMiAdHNXvPBOuPysoGwqB2j8sOynHI7BeoKSor0dGZ8StB5YCmbkC8rHIuTfIy+bgVhqJJPhCPdO626lqeA7Y7ABnzt0lx4rfbtB3cpFi8wWlxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789135094; c=relaxed/simple;
-	bh=Y1Z75wbINVFfi64a3h8ROlxqvJHvmxs6fuPyZ+LOzxg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iTzs/UW27wblfr4RU4M8jZgXxX9m3h/Izb53rq4NBjY9RTyvCGwpM8Wx302PBSVWaPslttuz6WSLB+UENOz0u43sOSlB13J52l8PtjP2ta2cr1ZHYeB0fzwLLQBlKRE0SwoQDvYmo+D3MWmexSFUOQ/OO2UgcTlvNM8iEswFnzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=bYhz38F1; arc=none smtp.client-ip=91.218.175.83
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1789135191; c=relaxed/simple;
+	bh=9NzkkeJIC1gI957bIMNPTqjNnQNaFzgoibDIOA3Ag7c=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IWNlnrndwV4p7tZtgGGaIcNZCTwiz/McBNUce/l8BbuTezfbb9nlscGXOaJbbAb9PR+dmutB3wi3uRngsG6bfcSwLik9P5Dn5UuHzeexYBhayqiWywxzGKNOHEB31pWJkRsdeaPXeXbAWAUXByGCeffsfFK3GK+A7VWAuAX8WKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CyP6xAJR; arc=none smtp.client-ip=74.125.227.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="bYhz38F1"
-X-Envelope-To: netdev@vger.kernel.org
-DKIM-Signature: a=rsa-sha256; bh=Y1Z75wbINVFfi64a3h8ROlxqvJHvmxs6fuPyZ+LOzxg=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1789135089; v=1; x=1789739889;
- b=bYhz38F10Q+JNfTUIYo9jOJVt4exz0GZKZiu7nJs/GRjoobcVKQ7rw1fo8cXjslQSu6V45OE
- 3U9x7x8Ur5PW1/+uoKyv286hFJE+VXrY+cBUuiWJHqjXaRon9TmedKtn0wdTgt+eQb8Sq7XR6oA
- THzMaOiazZ/jow44uyxf0Io4=
-X-Envelope-To: netdev@vger.kernel.org
-Received: by smtp.migadu.com with ESMTPS id 0665a0cd62541a68;
-	Fri, 11 Sep 2026 13:58:09 +0000
-X-Mizu-Trace-ID: 0665a0cd62541a68
-X-Migadu-Flow: FLOW_OUT
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-To: bpf@vger.kernel.org
-Cc: Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Simon Horman <horms@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Ihor Solodrai <ihor.solodrai@linux.dev>,
-	Shuah Khan <shuah@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Martin Karsten <mkarsten@uwaterloo.ca>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>,
-	Eelco Chaudron <echaudro@redhat.com>,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH bpf v3 2/2] selftests/bpf: add xdp_shrink_frags
-Date: Fri, 11 Sep 2026 21:56:52 +0800
-Message-ID: <20260911135711.109338-3-jiayuan.chen@linux.dev>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260911135711.109338-1-jiayuan.chen@linux.dev>
-References: <20260911135711.109338-1-jiayuan.chen@linux.dev>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CyP6xAJR"
+Received: by mail-pj2-f8.google.com with SMTP id 98e67ed59e1d1-38fd9408220so302152a91.1
+        for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 06:59:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1789135186; x=1789739986; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=1rOeitkour1l8Dq3e7NE1rrMsSjA05zIKyiXuF35rlM=;
+        b=CyP6xAJRxnbrsufulFVchjeZKfntOrkD1Tl8phYBSmcxFeLw8vHSQEwzUtNZF0R1CQ
+         DnfinrJgTjNaRnkMdQ4aKEW/0EETY6Y+x07+fpDkz48f3SxXlAxsyqwuQbkRnQGKPjhw
+         ZIFZHckQwngxRceJizdki8MJE2SEnKiiLiFt3ioZsQDHzQQNMTkJL9KwEYDytUX62fUr
+         85PwP4a8+zQV+a9RXLb7dyyD9aFyAto0+TpSyu3RY34Qt9be8h9AqyOLODUqraS7Wyf0
+         xq0QmYMRMIhSWv+AWzrg9DMY//AFRI25j+20pWT2QnoesYeO/Xbr1NG5ZpuHP2HAliju
+         wi2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1789135186; x=1789739986;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=1rOeitkour1l8Dq3e7NE1rrMsSjA05zIKyiXuF35rlM=;
+        b=guXTVKPH9yqyowiS1mKnvbbYIml4OploaeR9dqF21ndWnEJinNC6B06kQArmVym5om
+         iaCeB9AsoryBQqb/GUcjJDzytQu0SnDLTuPedJ6fsqQ7fw8+HhrcFaNTU7HpF4Eh+j/C
+         6Coyxe+X9+2ahA3cto1Fv73d3bd684lb8d38kr5b4dviT29rk9WDUqcLaQeTC/sau0OQ
+         DYK0GR0If9yjonsCyuIwsFYQvW4QKeov7gsPkp47kt8NOHg+64hpfoWeBM3/9pxsVdek
+         2dHGTyGV4ohuO/8TEuITKB72rwyo1zyTZvOmNKUQQlhGrkh3Qm/nmFAwa7VUwIPSDIC0
+         PFzQ==
+X-Gm-Message-State: AFuF++kS3Pj+6NcVHK0Bs9ikpO90ze0X8EhjVCGoqJhtuzqiz6oF07pu
+	wsbR+R6roqE213RMPa7JU8EuehhIc3lvdnDenUzDfSeM879G+3lUfViv3Qa31saIQzg=
+X-Gm-Gg: AYBFou1xvLkQg3fyt+59Dyw6EymSBjDjBodPfBfqoK4SUvaZbCZfuNsPG1g0zRTLKpY
+	3ZtEU4FRFYhS3NKLaWnf8d6bDSzM3NtI1n1zZ3uZwJUDyi/jO3cE9acVmHbP9bKa5kUpBAIpqGv
+	Ac4ip7u4KLt9TXVRJJH6y7Ehzb2JmHSm7lFU4jZhHDkbi+gyFSqCBO1KEpBnZqhowr/tnd2GynQ
+	AmM2NnuLOkakSBh0/QxILGzJFObhsYt0bMizBWCqCtugB5rebeoNN/BxZ1z+OK1YeeLzhSl6jg8
+	CdGtx0X/mMCFIfc9/NDazTgHGEuXSXYqgZq56QlhmpjVMamcyl0Mv6UdzDkrLFnzMs7gY7Qqzz9
+	AYwRLX605D861zS3HU8PejzdDPXLYpvFCGu/5Y+iUZNn0w5mlpF/PnudD6mEdf4NTqoOd85RoYV
+	pWhKy6qXQkodQrku+w4vOSggAQ2SGIYIVfK+dLeINjDNpudyHRYsh97k1lFeO3ENfm1B+V/gs2C
+	D6kPScKd7fBooiydLdWdtY=
+X-Received: by 2002:a17:90b:2741:b0:398:e436:384 with SMTP id 98e67ed59e1d1-39d9bbd7b60mr7767890a91.1.1789135186115;
+        Fri, 11 Sep 2026 06:59:46 -0700 (PDT)
+Received: from dell-r530-61.gsslab.pnq2.redhat.com ([182.66.90.254])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-33ba4b1f409sm8040073eec.0.2026.09.11.06.59.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 11 Sep 2026 06:59:45 -0700 (PDT)
+From: Prijesh Patel <prijeshpatel.dev@gmail.com>
+To: netdev@vger.kernel.org
+Cc: dsahern@kernel.org,
+	stephen@networkplumber.org,
+	prpatel@redhat.com,
+	Prijesh Patel <prijeshpatel.dev@gmail.com>
+Subject: [PATCH iproute2-next] man: ip-route: document tcp_usec_ts route feature
+Date: Fri, 11 Sep 2026 09:59:25 -0400
+Message-ID: <20260911135925.147934-1-prijeshpatel.dev@gmail.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -76,361 +74,62 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add a test that attaches an xdp.frags program which shrinks a whole frag
-away, so bpf_xdp_shrink_data() frees a page_pool frag.
+ip route supports a "tcp_usec_ts" per-route feature
+(RTAX_FEATURE_TCP_USEC_TS) to request microsecond-resolution TCP
+timestamps for connections to/from a given destination, but this was
+never added to the ip-route(8) man page or its FEATURES synopsis.
 
-test_tun triggers the page-type mismatch on the generic XDP path.
-test_veth triggers the same mismatch on the veth path.
-test_veth_tx bounces the cow'd buff with XDP_TX so the peer runs a frags
-program on the resulting frame, covering the buff -> frame -> buff path.
+Document tcp_usec_ts alongside the existing ecn feature.
 
-A kernel without the fix will report "Bad page state ... page_pool leak".
-
-The packet sizes only leave a frag after the cow on 4K pages, so the
-subtests skip elsewhere.
-
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Signed-off-by: Prijesh Patel <prijeshpatel.dev@gmail.com>
 ---
- .../bpf/prog_tests/xdp_shrink_frags.c         | 288 ++++++++++++++++++
- .../selftests/bpf/progs/xdp_shrink_frags.c    |  34 +++
- 2 files changed, 322 insertions(+)
- create mode 100644 tools/testing/selftests/bpf/prog_tests/xdp_shrink_frags.c
- create mode 100644 tools/testing/selftests/bpf/progs/xdp_shrink_frags.c
+ man/man8/ip-route.8.in | 20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/xdp_shrink_frags.c b/tools/testing/selftests/bpf/prog_tests/xdp_shrink_frags.c
-new file mode 100644
-index 0000000000000..ee8f9034a2684
---- /dev/null
-+++ b/tools/testing/selftests/bpf/prog_tests/xdp_shrink_frags.c
-@@ -0,0 +1,288 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#include <test_progs.h>
-+#include <network_helpers.h>
-+#include <linux/if_tun.h>
-+#include <linux/if_ether.h>
-+#include <sys/uio.h>
-+#include <net/if.h>
-+#include <arpa/inet.h>
-+#include "xdp_shrink_frags.skel.h"
-+
-+/*
-+ * A generic-XDP program that shrinks into the frags frees a page_pool frag.
-+ * skb-backed XDP first cow's the nonlinear skb into page_pool memory
-+ * (skb_cow_data_for_xdp() for generic XDP, skb_pp_cow_data() for veth), but
-+ * the shared rxq is registered as MEM_TYPE_PAGE_SHARED, so a buggy kernel
-+ * frees the frag with page_frag_free() -> "Bad page state ... page_pool leak".
-+ */
-+
-+#define TAP_NAME	"xdp_shrink0"
-+#define TAP_NETNS	"xdp_shrink_tap"
-+
-+#define NS_NAME_MAX_LEN	32
-+#define VETH_LOCAL	"xdp_shrinkA"
-+#define VETH_PEER	"xdp_shrinkB"
-+#define VETH_LOCAL_IP	"10.9.9.1"
-+#define VETH_PEER_IP	"10.9.9.2"
-+#define VETH_LOCAL_MAC	"02:00:00:00:00:01"
-+
-+/*
-+ * skb_pp_cow_data() keeps up to one page in the linear part, so the packet
-+ * sizes below only leave a frag (smaller than the 3000-byte shrink, so it is
-+ * released as a whole) on 4K pages. Skip elsewhere rather than run a test
-+ * that cannot tell a fixed kernel from a buggy one.
-+ */
-+#define PAGE_SIZE_4K	4096
-+
-+/*
-+ * Generous, so a loaded CI does not fail the assert prematurely; normally
-+ * the first check already succeeds.
-+ */
-+#define WAIT_ITERS	10000
-+#define WAIT_US		1000
-+
-+static void wait_for_prog(struct xdp_shrink_frags *skel)
-+{
-+	int i;
-+
-+	for (i = 0; i < WAIT_ITERS && !skel->bss->shrink_ran; i++)
-+		usleep(WAIT_US);
-+}
-+
-+static int create_tap_napi_frags(const char *ifname)
-+{
-+	struct ifreq ifr = {
-+		.ifr_flags = IFF_TAP | IFF_NO_PI | IFF_NAPI | IFF_NAPI_FRAGS,
-+	};
-+	int fd, err;
-+
-+	strscpy(ifr.ifr_name, ifname);
-+
-+	fd = open("/dev/net/tun", O_RDWR);
-+	if (fd < 0)
-+		return -errno;
-+
-+	err = ioctl(fd, TUNSETIFF, &ifr);
-+	if (err) {
-+		err = -errno;
-+		close(fd);
-+		return err;
-+	}
-+
-+	return fd;
-+}
-+
-+/*
-+ * Similar to flow_dissector.c: writev() an IFF_NAPI_FRAGS tap to build a
-+ * nonlinear skb that tun runs through do_xdp_generic().
-+ */
-+static void test_tun(struct xdp_shrink_frags *skel)
-+{
-+	__u8 head[74], frag1[2048], frag2[2048];
-+	struct ethhdr *eth = (void *)head;
-+	int tap_fd = -1, ifindex, err;
-+	struct netns_obj *ns = NULL;
-+	struct iovec iov[3];
-+	ssize_t n;
-+
-+	if (getpagesize() != PAGE_SIZE_4K) {
-+		test__skip();
-+		return;
-+	}
-+
-+	ns = netns_new(TAP_NETNS, true);
-+	if (!ASSERT_OK_PTR(ns, "netns_new"))
-+		return;
-+
-+	tap_fd = create_tap_napi_frags(TAP_NAME);
-+	if (!ASSERT_GE(tap_fd, 0, "create_tap"))
-+		goto out;
-+
-+	SYS(out, "ip link set dev " TAP_NAME " up");
-+
-+	ifindex = if_nametoindex(TAP_NAME);
-+	if (!ASSERT_GT(ifindex, 0, "if_nametoindex"))
-+		goto out;
-+
-+	skel->bss->shrink_ran = 0;
-+
-+	err = bpf_xdp_attach(ifindex, bpf_program__fd(skel->progs.xdp_shrink),
-+			     0, NULL);
-+	if (!ASSERT_OK(err, "bpf_xdp_attach"))
-+		goto out;
-+
-+	memset(head, 0, sizeof(head));
-+	memset(frag1, 0x41, sizeof(frag1));
-+	memset(frag2, 0x42, sizeof(frag2));
-+	eth->h_proto = htons(ETH_P_IP);
-+
-+	iov[0].iov_base = head;  iov[0].iov_len = sizeof(head);
-+	iov[1].iov_base = frag1; iov[1].iov_len = sizeof(frag1);
-+	iov[2].iov_base = frag2; iov[2].iov_len = sizeof(frag2);
-+
-+	n = writev(tap_fd, iov, ARRAY_SIZE(iov));
-+	ASSERT_EQ(n, sizeof(head) + sizeof(frag1) + sizeof(frag2), "writev");
-+
-+	wait_for_prog(skel);
-+	/* a buggy kernel only splats "page_pool leak", it does not fail here */
-+	ASSERT_GT(skel->bss->shrink_ran, 0, "xdp_prog_ran");
-+
-+	bpf_xdp_detach(ifindex, 0, NULL);
-+out:
-+	if (tap_fd >= 0)
-+		close(tap_fd);
-+	netns_free(ns);
-+}
-+
-+/*
-+ * Both veth ends live in their own namespace, so the traffic really crosses
-+ * the pair and nothing is created in the caller's namespace.
-+ */
-+static int veth_setup(char *ns0, char *ns1)
-+{
-+	if (!ASSERT_OK(append_tid(ns0, NS_NAME_MAX_LEN), "append_tid ns0"))
-+		return -1;
-+	if (!ASSERT_OK(append_tid(ns1, NS_NAME_MAX_LEN), "append_tid ns1"))
-+		return -1;
-+
-+	SYS(fail, "ip netns add %s", ns0);
-+	SYS(fail_ns0, "ip netns add %s", ns1);
-+	SYS(fail_ns1, "ip -n %s link add %s mtu 8000 type veth peer name %s mtu 8000",
-+	    ns0, VETH_LOCAL, VETH_PEER);
-+	SYS(fail_ns1, "ip -n %s link set %s netns %s", ns0, VETH_PEER, ns1);
-+	SYS(fail_ns1, "ip -n %s link set %s address %s", ns0, VETH_LOCAL,
-+	    VETH_LOCAL_MAC);
-+	SYS(fail_ns1, "ip -n %s addr add %s/24 dev %s", ns0, VETH_LOCAL_IP,
-+	    VETH_LOCAL);
-+	SYS(fail_ns1, "ip -n %s link set %s up", ns0, VETH_LOCAL);
-+	SYS(fail_ns1, "ip -n %s addr add %s/24 dev %s", ns1, VETH_PEER_IP,
-+	    VETH_PEER);
-+	SYS(fail_ns1, "ip -n %s link set %s up", ns1, VETH_PEER);
-+
-+	return 0;
-+
-+fail_ns1:
-+	SYS_NOFAIL("ip netns del %s", ns1);
-+fail_ns0:
-+	SYS_NOFAIL("ip netns del %s", ns0);
-+fail:
-+	return -1;
-+}
-+
-+static void veth_cleanup(const char *ns0, const char *ns1)
-+{
-+	/* Dropping the namespaces takes the veth pair and its XDP programs. */
-+	SYS_NOFAIL("ip netns del %s", ns1);
-+	SYS_NOFAIL("ip netns del %s", ns0);
-+}
-+
-+static int veth_attach(const char *ns, const char *dev, int prog_fd)
-+{
-+	struct nstoken *nstoken;
-+	int ifindex, err;
-+
-+	nstoken = open_netns(ns);
-+	if (!ASSERT_OK_PTR(nstoken, "open_netns"))
-+		return -1;
-+
-+	ifindex = if_nametoindex(dev);
-+	if (!ASSERT_GT(ifindex, 0, "if_nametoindex")) {
-+		close_netns(nstoken);
-+		return -1;
-+	}
-+
-+	err = bpf_xdp_attach(ifindex, prog_fd, 0, NULL);
-+	close_netns(nstoken);
-+
-+	return ASSERT_OK(err, "bpf_xdp_attach") ? 0 : -1;
-+}
-+
-+/* A large ping builds a nonlinear skb that veth cow's into its page_pool. */
-+static void test_veth(struct xdp_shrink_frags *skel)
-+{
-+	char ns0[NS_NAME_MAX_LEN] = "xdp_shrink_ns0-";
-+	char ns1[NS_NAME_MAX_LEN] = "xdp_shrink_ns1-";
-+
-+	if (getpagesize() != PAGE_SIZE_4K) {
-+		test__skip();
-+		return;
-+	}
-+
-+	if (veth_setup(ns0, ns1))
-+		return;
-+
-+	skel->bss->shrink_ran = 0;
-+
-+	if (veth_attach(ns0, VETH_LOCAL, bpf_program__fd(skel->progs.xdp_shrink)))
-+		goto out;
-+
-+	SYS_NOFAIL("ip netns exec %s ping -q -s 5000 -c 3 -W 1 %s",
-+		   ns1, VETH_LOCAL_IP);
-+
-+	wait_for_prog(skel);
-+	/* a buggy kernel only splats "page_pool leak", it does not fail here */
-+	ASSERT_GT(skel->bss->shrink_ran, 0, "xdp_prog_ran");
-+out:
-+	veth_cleanup(ns0, ns1);
-+}
-+
-+/*
-+ * LOCAL cow's the incoming skb and returns XDP_TX, so the buff is turned into
-+ * an xdp_frame and bounced to PEER, which shrinks a frag. A page_pool tag
-+ * recorded on the buff must not leak into the frame, or PEER frees a plain
-+ * page (whose pp was already cleared on the XDP_TX side) as page_pool memory.
-+ */
-+static void test_veth_tx(struct xdp_shrink_frags *skel)
-+{
-+	char ns0[NS_NAME_MAX_LEN] = "xdp_shrink_tx0-";
-+	char ns1[NS_NAME_MAX_LEN] = "xdp_shrink_tx1-";
-+
-+	if (getpagesize() != PAGE_SIZE_4K) {
-+		test__skip();
-+		return;
-+	}
-+
-+	if (veth_setup(ns0, ns1))
-+		return;
-+
-+	/*
-+	 * LOCAL bounces everything (incl. ARP) with XDP_TX, so pin a static
-+	 * neighbour to let the ping's payload actually reach it.
-+	 */
-+	SYS(out, "ip -n %s neigh add %s lladdr %s dev %s nud permanent",
-+	    ns1, VETH_LOCAL_IP, VETH_LOCAL_MAC, VETH_PEER);
-+
-+	skel->bss->shrink_ran = 0;
-+
-+	if (veth_attach(ns0, VETH_LOCAL, bpf_program__fd(skel->progs.xdp_tx)))
-+		goto out;
-+	if (veth_attach(ns1, VETH_PEER, bpf_program__fd(skel->progs.xdp_shrink)))
-+		goto out;
-+
-+	SYS_NOFAIL("ip netns exec %s ping -q -s 5000 -c 3 -W 1 %s",
-+		   ns1, VETH_LOCAL_IP);
-+
-+	wait_for_prog(skel);
-+	/* a buggy kernel only splats "page_pool leak", it does not fail here */
-+	ASSERT_GT(skel->bss->shrink_ran, 0, "xdp_prog_ran");
-+out:
-+	veth_cleanup(ns0, ns1);
-+}
-+
-+void test_xdp_shrink_frags(void)
-+{
-+	struct xdp_shrink_frags *skel;
-+
-+	skel = xdp_shrink_frags__open_and_load();
-+	if (!ASSERT_OK_PTR(skel, "skel_open_load"))
-+		return;
-+
-+	if (test__start_subtest("tun"))
-+		test_tun(skel);
-+	if (test__start_subtest("veth"))
-+		test_veth(skel);
-+	if (test__start_subtest("veth_tx"))
-+		test_veth_tx(skel);
-+
-+	xdp_shrink_frags__destroy(skel);
-+}
-diff --git a/tools/testing/selftests/bpf/progs/xdp_shrink_frags.c b/tools/testing/selftests/bpf/progs/xdp_shrink_frags.c
-new file mode 100644
-index 0000000000000..ad895ab699303
---- /dev/null
-+++ b/tools/testing/selftests/bpf/progs/xdp_shrink_frags.c
-@@ -0,0 +1,34 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#include "vmlinux.h"
-+#include <bpf/bpf_helpers.h>
-+
-+int shrink_ran;
-+
-+SEC("xdp.frags")
-+int xdp_shrink(struct xdp_md *ctx)
-+{
-+	/*
-+	 * Runs on both skb-backed XDP paths (generic XDP via tun, and veth):
-+	 * the nonlinear skb is cow'd into page_pool memory before we run, so
-+	 * shrinking the tail releases a whole frag that has to go back to that
-+	 * pool. The counter only tells us the program ran and the helper
-+	 * succeeded -- a linear buff returns 0 as well -- it does not prove a
-+	 * frag was released.
-+	 */
-+	if (bpf_xdp_adjust_tail(ctx, -3000) == 0)
-+		__sync_fetch_and_add(&shrink_ran, 1);
-+	return XDP_PASS;
-+}
-+
-+SEC("xdp.frags")
-+int xdp_tx(struct xdp_md *ctx)
-+{
-+	/*
-+	 * Bounce the frame back. On veth this turns the buff into an
-+	 * xdp_frame, which is where a buff-scoped page_pool tag must not leak
-+	 * into the frame handed to the peer.
-+	 */
-+	return XDP_TX;
-+}
-+
-+char _license[] SEC("license") = "GPL";
+diff --git a/man/man8/ip-route.8.in b/man/man8/ip-route.8.in
+index fd04432f..ed901fb9 100644
+--- a/man/man8/ip-route.8.in
++++ b/man/man8/ip-route.8.in
+@@ -186,7 +186,7 @@ throw " | " unreachable " | " prohibit " | " blackhole " | " nat " ]"
+ 
+ .ti -8
+ .IR FEATURES " := [ "
+-.BR ecn " | ]"
++.BR ecn " | " tcp_usec_ts " ]"
+ 
+ .ti -8
+ .IR PREF " := [ "
+@@ -569,16 +569,26 @@ Actual window size is this value multiplied by the MSS of the connection.
+ The default value is zero, meaning to use Slow Start value.
+ 
+ .TP
+-.BI features " FEATURES " (Linux 3.18+ only)
+-Enable or disable per-route features. Only available feature at this
+-time is
++.BI features " FEATURES "
++Enable or disable per-route features. Available features are
+ .B ecn
+-to enable explicit congestion notification when initiating connections to the
++and
++.B tcp_usec_ts.
++.in +8
++.B ecn
++.RI ( "Linux 3.18+ only" )
++Enables explicit congestion notification when initiating connections to the
+ given destination network.
+ When responding to a connection request from the given network, ecn will
+ also be used even if the
+ .B net.ipv4.tcp_ecn
+ sysctl is set to 0.
++.sp
++.B tcp_usec_ts
++.RI ( "Linux 6.7+ only" )
++Enables microsecond-resolution TCP timestamps for connections to/from the
++given destination network, instead of the default millisecond resolution.
++.in -8
+ 
+ .TP
+ .BI quickack " BOOL " "(Linux 3.11+ only)"
 -- 
-2.43.0
+2.52.0
 
