@@ -1,409 +1,124 @@
-Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.34])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6357239AD49;
-	Fri, 11 Sep 2026 04:05:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.30.148.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6048529CB52;
+	Fri, 11 Sep 2026 04:58:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789099520; cv=none; b=LLJzEN//wm2jDGrrQy6yz+aqor6Hwo/GbsC6rWjLHKsjV6veb05s0CSa6kriDi/PE2EbFf7HYtsm9L9iFfnTvFoOO68PKizEKDJ6hB+KLwkK4z74vxYJctIbNTNB4pKYip4sO4d1CgV9zX10j64/eo6zH5TKL2zn88SSyeikgNQ=
+	t=1789102716; cv=none; b=LcbU3nVY5js83UfVcNkuSPy/CzVVOEvaVaOiODv8KYTz8sYzJsWZ0u4b72XC+BpNt8W7740pg/BaSfeOPrM3yXxmT9jAChqvSrlIBE+kRq4YCdjVElSVRgMSd3Q3YsHqCTb5HUoI/J2H51sCobjyWOKXGRDrLls9cAg4PQWpj9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789099520; c=relaxed/simple;
-	bh=8PgIwnsUajSsYRe27gUB89PEddfPYsVJUcQy4j/nKQs=;
-	h=Message-ID:In-Reply-To:References:Date:Mime-Version:From:To:Cc:
-	 Subject:Content-Type; b=I68I8r8LfdsP39UH6YRQYOYMKwEj+9kGZu+Rijix7hMSe6DyoqKQzn5esq/phJAoSg169/94a99zNiYsM5iMVkH6aPeIQ6+eZiL8iIVdsD9sz9wx4SVFPIRWbMYh92vgOEWj58lk8M6JM2jF9RgexMk8uuL90yIpAZA4wrhBtbw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn; spf=pass smtp.mailfrom=zte.com.cn; arc=none smtp.client-ip=160.30.148.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zte.com.cn
-Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4hh1Cv520dz5BNRf;
-	Fri, 11 Sep 2026 12:05:15 +0800 (CST)
-Received: from njb2app07.zte.com.cn ([10.55.22.95])
-	by mse-fl2.zte.com.cn with SMTP id 68B455jQ033884;
-	Fri, 11 Sep 2026 12:05:06 +0800 (+08)
-	(envelope-from han.junyang@zte.com.cn)
-Received: from mapi (njy2app08[null])
-	by mapi (Zmail) with MAPI id mid204;
-	Fri, 11 Sep 2026 12:05:07 +0800 (CST)
-X-Zmail-TransId: 2b006aa37df31ba-758f2
-X-Mailer: Zmail v1.0
-Message-ID: <20260911120507276-LIb4JGajTovY-mjFYhKq@zte.com.cn>
-In-Reply-To: <20260911115632342CS2YMSVejTTmnYEU3XbRs@zte.com.cn>
-References: 20260911115632342CS2YMSVejTTmnYEU3XbRs@zte.com.cn
-Date: Fri, 11 Sep 2026 12:05:07 +0800 (CST)
+	s=arc-20240116; t=1789102716; c=relaxed/simple;
+	bh=gzVZcd0nYK5OknQ2ujvy8noZetZLed2bqxdbIXYSqV8=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=vBPcHe93VFiK2nQ+0S+AWptLFisIkKe59TKyYQSS/K+Wt8XsFtplEm7HSR5xWK2FvvrFVmCdWxRQN893UWNg9Q3PX93s07f7iCWU/vKK5AWXPC8/OL/aAj2dRbfaqFY4sPXK8OJ0JP/BrGF6N7ULlqoMU4hm6jQRNhp0Ym52nRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GhBtBFlD; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GhBtBFlD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FD9B1F000FF;
+	Fri, 11 Sep 2026 04:58:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789102715;
+	bh=mxLtN1rUAxpxujxcJxVSU0H8JTSHoecCS1f86w2a72w=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=GhBtBFlDSceDJan+8MeQXug2gBMG67ihUbDnuRx67r1l3w+ui8BcUWs3+dovumvta
+	 UNvm6vMynPVKm5O4p5mCojtvIXBGKllHhkMtSIQ9T567/mCIml1uuDGjj0VXiYVymp
+	 kpzqR2LDxVYMB99QnF2Ojh3VY+9TFT0dRavtry4Un8CDthZCyf7lhMBYv++ly8kMOz
+	 mOoDgeoI/DGyiIzAk9knnxcwr6aIXZdloMZ+g3joYLC9wctQZPn9p2QfaUnNgAeLqj
+	 zaZhZ4j46SqUTnfuESeuwnCF/ffSzgrNX1dpvoqd9kkzEE66SZLF3YIkbFod1RNZup
+	 pwgzuN9kbYFiw==
+Subject: Re: [PATCH net-next v3 2/6] eth: fbnic: expose all hwmon attributes
+ unconditionally as read-only
+From: netdev-bot+sashiko@kernel.org
+To: limzhineng2@gmail.com
+Cc: alexanderduyck@fb.com, kuba@kernel.org, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ linux@roeck-us.net, horms@kernel.org, mohsin.bashr@gmail.com,
+ kernel-team@meta.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-hwmon@vger.kernel.org, zinclim@meta.com
+Date: Fri, 11 Sep 2026 04:58:33 +0000
+Message-ID: <178910271394.219967.9519388161335061129@kernel.org>
+In-Reply-To: <20260908225737.3034403-3-limzhineng2@gmail.com>
+References: <20260908225737.3034403-3-limzhineng2@gmail.com>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-From: <han.junyang@zte.com.cn>
-To: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-        <kuba@kernel.org>, <pabeni@redhat.com>, <horms@kernel.org>
-Cc: <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <han.junyang@zte.com.cn>, <ran.ming@zte.com.cn>,
-        <han.chengfei@zte.com.cn>, <zhang.yanze@zte.com.cn>
-Subject: =?UTF-8?B?W1BBVENIIG5ldC1uZXh0IHYyIDMvM10gZGluZ2hhaTogYWRkIGFzeW5jIGV2ZW50IHF1ZXVlIGZvciBmaXJtd2FyZcKgbm90aWZpY2F0aW9ucw==?=
-Content-Type: text/plain;
-	charset="UTF-8"
-X-MAIL:mse-fl2.zte.com.cn 68B455jQ033884
-X-TLS: YES
-X-ENVELOPE-SENDER: han.junyang@zte.com.cn
-X-SOURCE-IP: 10.5.228.133 unknown Fri, 11 Sep 2026 12:05:15 +0800
-X-CLEAN: YES
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6AA37DFB.000/4hh1Cv520dz5BNRf
+MIME-Version: 1.0
 
-From: Junyang Han <han.junyang@zte.com.cn>
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider:
 
-Add the event queue table and the first async event queue, fed by the
-RISC-V management core of the firmware. The queue owns one MSI-X
-vector taken from the async pool and, on interrupt, reads the event_id
-from the PF receive sub-channel of the BAR message area, maps it to
-an event type and fans it out through the per-event-type notifier
-chains of the table. The PF probe creates and tears down the queue
-through the existing IRQ pool interfaces.
+Critical: 0 · High: 0 · Medium: 0 · Low: 1
 
-The BAR message channel handshake that tells the firmware which
-vectors to signal comes with the BAR message subsystem in a later
-series; the PF side wired here is live as soon as that channel is
-enabled. Subscribers for the RISCV_READY event register on the
-notifier chains in later series as well.
+- [Low] fbnic_hwmon_ops keeps a constant-returning .is_visible callback
+  instead of the core-provided static-visibility field.
 
-Signed-off-by: Junyang Han <han.junyang@zte.com.cn>
----
- drivers/net/ethernet/zte/dinghai/Makefile  |   2 +-
- drivers/net/ethernet/zte/dinghai/en_pf.c   |  31 +++--
- drivers/net/ethernet/zte/dinghai/en_pf.h   |   2 +
- drivers/net/ethernet/zte/dinghai/zxdh_eq.c | 145 +++++++++++++++++++++
- drivers/net/ethernet/zte/dinghai/zxdh_eq.h |  61 +++++++++
- 5 files changed, 232 insertions(+), 9 deletions(-)
- create mode 100644 drivers/net/ethernet/zte/dinghai/zxdh_eq.c
- create mode 100644 drivers/net/ethernet/zte/dinghai/zxdh_eq.h
+--
 
-diff --git a/drivers/net/ethernet/zte/dinghai/Makefile b/drivers/net/ethernet/zte/dinghai/Makefile
-index f4a8f9480291..2dc6d68cc0e1 100644
---- a/drivers/net/ethernet/zte/dinghai/Makefile
-+++ b/drivers/net/ethernet/zte/dinghai/Makefile
-@@ -4,4 +4,4 @@
- #
+eth: fbnic: expose all hwmon attributes unconditionally as read-only
 
- obj-$(CONFIG_DINGHAI_PF) += dinghai10e.o
--dinghai10e-y := en_pf.o zxdh_irq.o
-+dinghai10e-y := en_pf.o zxdh_irq.o zxdh_eq.o
-diff --git a/drivers/net/ethernet/zte/dinghai/en_pf.c b/drivers/net/ethernet/zte/dinghai/en_pf.c
-index 923d688e7ec5..fe3924b890d1 100644
---- a/drivers/net/ethernet/zte/dinghai/en_pf.c
-+++ b/drivers/net/ethernet/zte/dinghai/en_pf.c
-@@ -492,7 +492,8 @@ static int zxdh_pf_irq_pools_init(struct zxdh_core_dev *zxdh_dev)
+This changes fbnic_hwmon_is_visible() so that it returns 0444 for every
+sensor type and attribute instead of matching on hwmon_temp/hwmon_temp_input
+and hwmon_in/hwmon_in_input. The stated motivation is to prepare for
+threshold and alarm attributes added later in the series.
 
- static void zxdh_pf_irq_pools_destroy(struct zxdh_pf_irq_table *pf_irq_table)
- {
--	zxdh_irq_pool_free(pf_irq_table->async_pool);
-+	if (pf_irq_table->async_pool)
-+		zxdh_irq_pool_free(pf_irq_table->async_pool);
- }
+> diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_hwmon.c b/drivers/net/ethernet/meta/fbnic/fbnic_hwmon.c
+> index 6c8c66ab86c1..38bb26cb8e6c 100644
+> --- a/drivers/net/ethernet/meta/fbnic/fbnic_hwmon.c
+> +++ b/drivers/net/ethernet/meta/fbnic/fbnic_hwmon.c
+> @@ -20,12 +20,7 @@ static umode_t fbnic_hwmon_is_visible(const void *drvdata,
+>  				      enum hwmon_sensor_types type,
+>  				      u32 attr, int channel)
+>  {
+> -	if (type == hwmon_temp && attr == hwmon_temp_input)
+> -		return 0444;
+> -	if (type == hwmon_in && attr == hwmon_in_input)
+> -		return 0444;
+> -
+> -	return 0;
+> +	return 0444;
+>  }
 
- int zxdh_pf_irq_table_init(struct zxdh_core_dev *zxdh_dev)
-@@ -536,18 +537,17 @@ void zxdh_pf_irq_table_destroy(struct zxdh_core_dev *zxdh_dev)
- {
- 	struct zxdh_irq_table *table = &zxdh_dev->irq_table;
+[Severity: Low]
+This isn't a bug, but is the callback still needed at all here?  After this
+change fbnic_hwmon_is_visible() ignores all three of its discriminating
+parameters (type, attr and channel) and returns a constant, which is what
+the static visibility field in struct hwmon_ops already covers:
 
--	zxdh_pf_irq_pools_destroy(table->priv);
-+	if (table->priv)
-+		zxdh_pf_irq_pools_destroy(table->priv);
- 	kvfree(table->priv);
-+	table->priv = NULL;
- 	pci_free_irq_vectors(zxdh_dev->pdev);
- }
+include/linux/hwmon.h:
+    struct hwmon_ops {
+        umode_t visible;
+        umode_t (*is_visible)(const void *drvdata, enum hwmon_sensor_types type,
+                              u32 attr, int channel);
 
-+/* Fetch a vector from the async pool for one async event queue. */
- struct zxdh_irq *zxdh_pf_async_irq_request(struct zxdh_core_dev *zxdh_dev)
- {
--	struct zxdh_irq_table *table = &zxdh_dev->irq_table;
--	struct zxdh_pf_irq_table *pf_irq_table = table->priv;
--
--	if (!pf_irq_table->async_pool)
--		return NULL;
-+	struct zxdh_pf_irq_table *pf_irq_table = zxdh_dev->irq_table.priv;
+The kernel-doc there describes visible as "Static visibility. If non-zero,
+'is_visible' is ignored", and is_visible as "Mandatory unless 'visible' is
+non-zero".  The core honours this in hwmon_is_visible():
 
- 	return zxdh_get_irq_of_pool(pf_irq_table->async_pool);
- }
-@@ -612,12 +612,26 @@ static int zxdh_pf_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 		goto err_irq_table;
- 	}
+drivers/hwmon/hwmon.c:hwmon_is_visible() {
+    if (ops->visible)
+        return ops->visible;
 
-+	ret = zxdh_pf_eq_table_init(zxdh_dev);
-+	if (ret) {
-+		dev_err(&pdev->dev, "zxdh_pf_eq_table_init failed: %d\n", ret);
-+		goto err_eq_table;
-+	}
-+
-+	ret = zxdh_pf_eq_table_create(zxdh_dev);
-+	if (ret) {
-+		dev_err(&pdev->dev, "zxdh_pf_eq_table_create failed: %d\n", ret);
-+		goto err_eq_table;
-+	}
-+
- 	devlink_register(devlink);
+    return ops->is_visible(drvdata, type, attr, channel);
+}
 
- 	return 0;
+and hwmon_device_register_with_info() accepts a chip that supplies only
+ops->visible.
 
-+err_eq_table:
-+	zxdh_pf_eq_table_destroy(zxdh_dev);
- err_irq_table:
--	kvfree(zxdh_dev->irq_table.priv);
-+	zxdh_pf_irq_table_destroy(zxdh_dev);
- err_cfg_init:
- 	zxdh_pf_pci_close(zxdh_dev);
- err_pci_init:
-@@ -633,6 +647,7 @@ static void zxdh_pf_remove(struct pci_dev *pdev)
- 	struct devlink *devlink = priv_to_devlink(zxdh_dev);
+Would it be preferable to delete fbnic_hwmon_is_visible() and write:
 
- 	devlink_unregister(devlink);
-+	zxdh_pf_eq_table_destroy(zxdh_dev);
- 	zxdh_pf_irq_table_destroy(zxdh_dev);
- 	zxdh_pf_modern_cfg_uninit(zxdh_dev);
- 	zxdh_pf_pci_close(zxdh_dev);
-diff --git a/drivers/net/ethernet/zte/dinghai/en_pf.h b/drivers/net/ethernet/zte/dinghai/en_pf.h
-index f60a237c61c4..894a05a09d96 100644
---- a/drivers/net/ethernet/zte/dinghai/en_pf.h
-+++ b/drivers/net/ethernet/zte/dinghai/en_pf.h
-@@ -9,6 +9,7 @@
+    static const struct hwmon_ops fbnic_hwmon_ops = {
+        .visible = 0444,
+        .read = fbnic_hwmon_read,
+    };
 
- #include <linux/types.h>
+The callback is still a bare "return 0444;" at the end of the series
+(d8d0db421cc5), so nothing later in the series appears to reintroduce
+per-attribute discrimination.
 
-+#include "zxdh_eq.h"
- #include "zxdh_irq.h"
-
- #define ZXDH_PF_VENDOR_ID	0x1cf2
-@@ -81,6 +82,7 @@ struct zxdh_core_dev {
- 	struct pci_dev *pdev;
- 	struct devlink *devlink;
- 	struct zxdh_irq_table irq_table;
-+	struct zxdh_eq_table eq_table;
- 	void *priv;
- };
-
-diff --git a/drivers/net/ethernet/zte/dinghai/zxdh_eq.c b/drivers/net/ethernet/zte/dinghai/zxdh_eq.c
-new file mode 100644
-index 000000000000..f1d7eeec1ae4
---- /dev/null
-+++ b/drivers/net/ethernet/zte/dinghai/zxdh_eq.c
-@@ -0,0 +1,145 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * ZTE DingHai Ethernet driver - event queue plumbing
-+ * Copyright (c) 2022-2026, ZTE Corporation.
-+ *
-+ * Async event queues are the delivery path for firmware notifications:
-+ * a queue owns one MSI-X vector of the async pool and fans interrupts
-+ * out to the per-event-type notifier chains of the event queue table.
-+ * The BAR message channel handshake that tells the firmware which
-+ * vectors to signal comes with the BAR message subsystem in a later
-+ * series; the PF side wired here is live as soon as that channel is
-+ * enabled.
-+ */
-+
-+#include <linux/io.h>
-+#include <linux/kernel.h>
-+#include <linux/mutex.h>
-+#include <linux/notifier.h>
-+#include <linux/slab.h>
-+
-+#include "en_pf.h"
-+#include "zxdh_eq.h"
-+#include "zxdh_irq.h"
-+
-+/* PF side of the event queue table: one async EQ fed by the RISC-V
-+ * management core.
-+ */
-+struct zxdh_pf_eq_table {
-+	struct zxdh_eq_async riscv_eq;
-+};
-+
-+/* Fetch the event_id the RISC-V core posted in the PF receive
-+ * sub-channel of the BAR message area. The field lives at byte offset
-+ * 2 of the 12-byte message header, so a single 32-bit read of the
-+ * sub-channel start covers it.
-+ */
-+static u16 zxdh_eq_event_id_get(struct zxdh_core_dev *zxdh_dev)
-+{
-+	struct zxdh_pf_dev *pf_dev = zxdh_dev->priv;
-+	void __iomem *subchan;
-+
-+	subchan = pf_dev->pci_ioremap_addr[0] + ZXDH_BAR_MSG_SUBCHAN_RECV;
-+
-+	return ioread32(subchan) >> 16;
-+}
-+
-+static enum zxdh_eq_event_type zxdh_eq_event_type_get(u16 event_id)
-+{
-+	if (event_id == ZXDH_MSG_MODULE_RISC_READY)
-+		return ZXDH_EQ_EVENT_TYPE_RISCV_READY;
-+
-+	/* Only the RISC-V ready notification is dispatched in this
-+	 * series; the remaining firmware events arrive with the BAR
-+	 * message subsystem.
-+	 */
-+	return ZXDH_EQ_EVENT_TYPE_MAX;
-+}
-+
-+static int zxdh_eq_async_riscv_int(struct notifier_block *nb,
-+				   unsigned long action, void *data)
-+{
-+	struct zxdh_eq_async *eq = container_of(nb, struct zxdh_eq_async, irq_nb);
-+	struct zxdh_core_dev *zxdh_dev = eq->priv;
-+	enum zxdh_eq_event_type event_type;
-+
-+	event_type = zxdh_eq_event_type_get(zxdh_eq_event_id_get(zxdh_dev));
-+	if (event_type == ZXDH_EQ_EVENT_TYPE_MAX)
-+		return NOTIFY_DONE;
-+
-+	atomic_notifier_call_chain(&zxdh_dev->eq_table.nh[event_type],
-+				   event_type, NULL);
-+
-+	return NOTIFY_OK;
-+}
-+
-+int zxdh_pf_eq_table_init(struct zxdh_core_dev *zxdh_dev)
-+{
-+	struct zxdh_eq_table *table = &zxdh_dev->eq_table;
-+	struct zxdh_pf_eq_table *priv;
-+	int i;
-+
-+	priv = kvzalloc_obj(*priv, GFP_KERNEL);
-+	if (!priv)
-+		return -ENOMEM;
-+	table->priv = priv;
-+
-+	mutex_init(&table->lock);
-+	for (i = 0; i < ZXDH_EQ_EVENT_TYPE_MAX; i++)
-+		ATOMIC_INIT_NOTIFIER_HEAD(&table->nh[i]);
-+
-+	return 0;
-+}
-+
-+int zxdh_pf_eq_table_create(struct zxdh_core_dev *zxdh_dev)
-+{
-+	struct zxdh_pf_eq_table *pf_eq_table = zxdh_dev->eq_table.priv;
-+	struct zxdh_eq_table *table = &zxdh_dev->eq_table;
-+	struct zxdh_eq_async *eq = &pf_eq_table->riscv_eq;
-+	int err;
-+
-+	mutex_lock(&table->lock);
-+
-+	eq->priv = zxdh_dev;
-+	eq->irq = zxdh_pf_async_irq_request(zxdh_dev);
-+	if (IS_ERR(eq->irq)) {
-+		err = PTR_ERR(eq->irq);
-+		goto unlock;
-+	}
-+
-+	eq->irq_nb.notifier_call = zxdh_eq_async_riscv_int;
-+	err = zxdh_irq_attach_nb(eq->irq, &eq->irq_nb);
-+	if (err) {
-+		zxdh_irqs_release_vectors(&eq->irq, 1);
-+		eq->irq = NULL;
-+	}
-+
-+unlock:
-+	mutex_unlock(&table->lock);
-+
-+	return err;
-+}
-+
-+void zxdh_pf_eq_table_destroy(struct zxdh_core_dev *zxdh_dev)
-+{
-+	struct zxdh_pf_eq_table *pf_eq_table = zxdh_dev->eq_table.priv;
-+	struct zxdh_eq_table *table = &zxdh_dev->eq_table;
-+	struct zxdh_eq_async *eq;
-+
-+	if (!pf_eq_table)
-+		return;
-+
-+	eq = &pf_eq_table->riscv_eq;
-+
-+	mutex_lock(&table->lock);
-+	if (eq->irq) {
-+		zxdh_irq_detach_nb(eq->irq, &eq->irq_nb);
-+		zxdh_irqs_release_vectors(&eq->irq, 1);
-+		eq->irq = NULL;
-+	}
-+	mutex_unlock(&table->lock);
-+
-+	mutex_destroy(&table->lock);
-+	kvfree(table->priv);
-+	table->priv = NULL;
-+}
-diff --git a/drivers/net/ethernet/zte/dinghai/zxdh_eq.h b/drivers/net/ethernet/zte/dinghai/zxdh_eq.h
-new file mode 100644
-index 000000000000..4965ca15912a
---- /dev/null
-+++ b/drivers/net/ethernet/zte/dinghai/zxdh_eq.h
-@@ -0,0 +1,61 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/*
-+ * ZTE DingHai Ethernet driver - event queue abstraction
-+ * Copyright (c) 2022-2026, ZTE Corporation.
-+ */
-+
-+#ifndef __ZXDH_EQ_H__
-+#define __ZXDH_EQ_H__
-+
-+#include <linux/mutex.h>
-+#include <linux/notifier.h>
-+
-+struct zxdh_core_dev;
-+struct zxdh_irq;
-+
-+/* BAR message area: shared-memory mailbox between the driver and the
-+ * firmware, split into sub-channels of 2048 bytes. Notifications from
-+ * the RISC-V management core are posted to the PF receive sub-channel,
-+ * one interval above the area base.
-+ */
-+#define ZXDH_BAR_MSG_OFFSET		0x2000
-+#define ZXDH_BAR_MSG_SUBCHAN_INTERVAL	2048
-+#define ZXDH_BAR_MSG_SUBCHAN_RECV	(ZXDH_BAR_MSG_OFFSET +	\
-+					 ZXDH_BAR_MSG_SUBCHAN_INTERVAL)
-+
-+/* event_id of the "RISC-V core ready" firmware notification, carried
-+ * at byte offset 2 of the BAR message header.
-+ */
-+#define ZXDH_MSG_MODULE_RISC_READY	13
-+
-+/* Event types the upper layers can subscribe to over the per-type
-+ * notifier chains of the event queue table. The full catalogue lives
-+ * in the firmware; only the ones dispatched in this series are named.
-+ */
-+enum zxdh_eq_event_type {
-+	ZXDH_EQ_EVENT_TYPE_RISCV_READY = 0,
-+	ZXDH_EQ_EVENT_TYPE_MAX,
-+};
-+
-+/* Asynchronous event queue delivering firmware notifications to the
-+ * driver without a request/reply handshake.
-+ */
-+struct zxdh_eq_async {
-+	struct zxdh_irq *irq;
-+	struct notifier_block irq_nb;
-+	void *priv;
-+};
-+
-+struct zxdh_eq_table {
-+	/* Notifier chains fanned out by event type. */
-+	struct atomic_notifier_head nh[ZXDH_EQ_EVENT_TYPE_MAX];
-+	/* Serializes async EQ create/destroy. */
-+	struct mutex lock;
-+	void *priv;
-+};
-+
-+int zxdh_pf_eq_table_init(struct zxdh_core_dev *zxdh_dev);
-+int zxdh_pf_eq_table_create(struct zxdh_core_dev *zxdh_dev);
-+void zxdh_pf_eq_table_destroy(struct zxdh_core_dev *zxdh_dev);
-+
-+#endif /* __ZXDH_EQ_H__ */
 -- 
-2.27.0
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260908225737.3034403-1-limzhineng2%40gmail.com
