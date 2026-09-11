@@ -1,126 +1,123 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78F263A7D73
-	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 09:47:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CF7D3AEF51;
+	Fri, 11 Sep 2026 09:51:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789120080; cv=none; b=ZIFWcYuZhC31HwduZJa351q/29g/dtd7UIK4khe+uhpeKN99hwq2qHTe3VmA6MSphsbXJI7D07PbfGaznaow6f4Q8MsJ/sLQpunHpGDxPU/Tpvn/OzbFMAZliKXcAOeuUOxeB5z0K3KPup2E/Aoi75ko+Rqp8pSN7zFbb4HYYTU=
+	t=1789120286; cv=none; b=Ja8U//zMjFp5p87lXHgXj0mZJ2cbXYymmDsQlPe7bEzTb5lPTjtW8rkXDlaWnfGk8DLSidLyHikXnS4Srd+jkuXLH4uso/7adwt+LwSEFxYnAUfWvnVlWBQxxuFOAHdg5SyXpTU43JK+dTuaiQsHUi+CxS6L9YF04PXykMEJwok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789120080; c=relaxed/simple;
-	bh=EFFfHYsrmwIYMEV6RQH7YCLFN9Vsj9EpQRZAIMPblLA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tLZOfdI7Q/zVwBnfRDFNEC6kTRSNjc7LDymXhhNK1Uf8xpKp2puv4SSvApzQVJ80EmgcKa0+7A7Jo6URCTpYkGZxmNdVOD8ExqDxs2FzdTRL5gMFodsVFsQOEHDD0bQL5VT+PhpvfG2/4s8dvV0s8/nHBcx8pnXyqg1fchVz4B0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Ren2KgEx; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=rhvGKBC/; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1789120286; c=relaxed/simple;
+	bh=AB4HvI5yH8f134zmYFHs6P/e97IQEZB73uyMnHjSy84=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=oV64DVG7qF1AqU24EYGUiBdwX3srtD8NxxoQTB2O10ay+jVd+wurYBh2LFsIGwhlxuHGC2iLnnMYZHilw3fsc1CxuFLUYfMWiaDwSj05/O+vIgsB93usVvc5oWRhFFCPOOLZro3fnNOFSS1/3HxMLSXmbXGAiB/2Lju3YFKhRf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=a4AKDLgx; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ren2KgEx";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="rhvGKBC/"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1789120076;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=45A6Zdox+gTv7MNeziUH9YCoinVqVVTAj3654cxY4Zc=;
-	b=Ren2KgExQ6wWGupqCBahqlII4Vui3vpmhtw3HW4A33fJItBAUMle6jedrjEJzzcRn2aptn
-	lgHjsz6GQIb/NqhBoCNy3KgVwkSa3iCjEq9JgcQGV2dx4ICA/W9EPj139WEfbHfU+PlNnc
-	TFnO+7Moy/00I5eA3CSFHkmozjEPfPw=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-290-aIXdWSAjM_6k6GMiIPV3TQ-1; Fri, 11 Sep 2026 05:47:55 -0400
-X-MC-Unique: aIXdWSAjM_6k6GMiIPV3TQ-1
-X-Mimecast-MFC-AGG-ID: aIXdWSAjM_6k6GMiIPV3TQ_1789120074
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-49e6862e924so98905e9.0
-        for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 02:47:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1789120074; x=1789724874; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=45A6Zdox+gTv7MNeziUH9YCoinVqVVTAj3654cxY4Zc=;
-        b=rhvGKBC/Ny7D2Z3l/Q96GIDYvlhvYtF6z0mmbkmlnVWXN+ge5LTXc+flDbksxJJNF3
-         0XBQGdb0HVPrMsbiHUc7vbDL1PXEnwj03pK96avaBKE8A0uZ0wlYHzX8UWUsOYpwoRkM
-         l6cK/YG63rvgx5+NdBKxc9GUaI6zD01qWaW/SU1nOFrnkdFzYGIesK6pCZtziUIR0M6c
-         PoVZR3/SWRSSYQzl31RI6EAVPlae8lf7tTNWol3eU7Qx+ts+NU2Zvi33opKiR0iN2lnp
-         F8CqcM9M2HBtTt1oh5p6zKOlmRYw/wb0dqAbeETMAzUd2jGikecBUHwl6opgv47wGnYa
-         UcnA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789120074; x=1789724874;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=45A6Zdox+gTv7MNeziUH9YCoinVqVVTAj3654cxY4Zc=;
-        b=fP5XwCTojv00fMrHiQE6ULbDXe1ZZwj+7bL9j61PWtQ7jPd1stj/NWf11AyGtfuXMp
-         AE/mMtPCjii48/tfDQFzAxWB9+yi1lD/oC54dgYJTti1D94dWuEuyySPiEK58FuDXZte
-         kUXeRGttFE3Acwm658RSGk0jcFIUUR4nEOyqDjwT0zsBDPYfhCyUeoSjEuYB7huH9ii4
-         Hby7txSBNLzt4IVME5efpEs+GUmft5zETLZanVFNUWC4UiVMz2iZgOIRs8qCwZa/ddze
-         zkW8LDOJ3nwPSX2MfZ5d2pLLDwqgz7XhxHWEJ3TNp7MAZIZaXC56da0uWLEWVE4AunBP
-         Q7/Q==
-X-Forwarded-Encrypted: i=1; AKwUvBwVYGRv/Zfp4CZydPNjIn4Dgape8W7CDDl12L9CpEvwCT9p02zk+T45BHReJGbw0gKhm+62WJ0=@vger.kernel.org
-X-Gm-Message-State: AFuF++kmk47K2vBzj5wY+njWowVjRTIWdBTECb6LXVvUQGD7szRvs0ko
-	V0UmkCy628urIHEiOJeSL+FVvqLoZoT/OH4D8Fl1dDpuWQcsaiOthiZ/dNlzwl+DQzm4lBWVY5D
-	fJBrI6RhU/wstXEKz9Zv8snLhgZ1tFr+ZtQIbgfK8TrAZrVp6cSOvsuVG5w==
-X-Gm-Gg: AYBFou1bOTHlK9aZrVpKJybeRhn1A/fAypxi0wWnnM4emydZpVDUSd0g+uBt3KTQ0Oe
-	WtyR2JASvMWUO48v3wCBWvbzpaApBhN55roOiTH6Ub1beHsR43OV1dl1wi6Y5dC1Az0fQfnrltI
-	V9eGfxXwz8frNk9NCn3Lqy/DWZ4ak3UKYhQRTsFK4/uqL05o6c8guwGIs3xKlprhuLcFf3EwHlj
-	pkhI4prteeXHJ2Qd3Z26Ir11Obnq7rh3JC41G6bqhynMPV1u2az7nHdg3i8soTQNwlAXDPOtM1q
-	sho5T6bpNmrDSQOws7ed53kEzy1gF3pl0FwPsSHC1ldUjxI4RlDINIXxSA124ZApMZfWnsx4zXH
-	MAEyNgpNgdo86SMYYo6p/m051RQkT8BBLhcUXv3UFI0dMXvNtth7P1nRLMnWc021vhkUfKvsObA
-	==
-X-Received: by 2002:a05:600c:6296:b0:49d:191b:88be with SMTP id 5b1f17b1804b1-49e6164a26dmr36765805e9.0.1789120074363;
-        Fri, 11 Sep 2026 02:47:54 -0700 (PDT)
-X-Received: by 2002:a05:600c:6296:b0:49d:191b:88be with SMTP id 5b1f17b1804b1-49e6164a26dmr36765335e9.0.1789120073956;
-        Fri, 11 Sep 2026 02:47:53 -0700 (PDT)
-Received: from [192.168.188.218] (ip232-47-231-195.pool-bba.aruba.it. [195.231.47.232])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-486eb32e6f1sm4703455f8f.6.2026.09.11.02.47.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 11 Sep 2026 02:47:53 -0700 (PDT)
-Message-ID: <9ba2c3d5-825d-4494-a0c6-d5c0ac699189@redhat.com>
-Date: Fri, 11 Sep 2026 11:47:52 +0200
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="a4AKDLgx"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 13D7CA91E5;
+	Fri, 11 Sep 2026 11:51:07 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1789120274; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=WxltCiMmZCVVD/wZemNpAc0sPf2VHFiHQIPln3Gt0OI=;
+	b=a4AKDLgxsreyUu28KpBr9dW7kD7JMIMgACDD9QZheDQES1rRbPa2EE1gTsTmdMSAttxFP/
+	zEhGG9autKMP+UG3XXjoWdbsr4SNDNYjxpATCr8atWxzW4y3pnFQxXIKpOqhYdvCPn+Krn
+	+/qBmUBx0X1Lt+X7qOFU616D5Q+HhM8thMv0r9vFpvc3yd5e4BxENusBhVxjoUxndAsWZ6
+	C/DxT2sCU3seS1V7d/nxn2S6NrhM+IayWWHgrtUUbZAGQHvPdwnDPEMqPRYeZhw/EKMQ5i
+	N2c7w1txfJD6m98Htutw38r8qtC3Lr+Z13Eh7FjqOMTWB+e2E48eLEPibSVtGA==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v3 4/4] net: ntb_netdev: Preserve
- CHECKSUM_PARTIAL across NTB
-To: Jakub Kicinski <kuba@kernel.org>, Koichiro Den <den@valinux.co.jp>
-Cc: Jon Mason <jdmason@kudzu.us>, Dave Jiang <dave.jiang@intel.com>,
- Allen Hubbe <allenbh@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- ntb@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260904052134.2970111-1-den@valinux.co.jp>
- <20260904052134.2970111-5-den@valinux.co.jp>
- <20260910172047.167225eb@kernel.org>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20260910172047.167225eb@kernel.org>
-Content-Type: text/plain; charset=UTF-8
+Date: Fri, 11 Sep 2026 11:51:07 +0200
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: kimwooseok <5mghybrid@khu.ac.kr>
+Cc: netdev@vger.kernel.org, theo.lebrun@bootlin.com,
+ conor.dooley@microchip.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ richardcochran@gmail.com, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net RESEND 1/2] net: macb: Preserve one-step mode on
+ rejected timestamp requests
+In-Reply-To: <178911388614.25348.8892025153904636456.macb-resend-1@khu.ac.kr>
+References: <178911388592.25348.177462085059763031.macb-plaintext-resend-cover@khu.ac.kr>
+ <178911388614.25348.8892025153904636456.macb-resend-1@khu.ac.kr>
+Message-ID: <6928c282c12e03e4487f75afef4f0080@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
 Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 9/11/26 2:20 AM, Jakub Kicinski wrote:
-> On Fri,  4 Sep 2026 14:21:34 +0900 Koichiro Den wrote:
->> Calculating L4 checksums can limit ntb_netdev throughput especially on
->> embedded systems, where CPU resources are often limited. A trusted PCIe
->> fabric can avoid that work.
+Hi Kimwoo
+
+On 11.9.2026 10:04, kimwooseok wrote:
+> gem_set_hwtst() programs NCR.OSSMODE while processing tx_type, before
+> validating rx_filter. An unsupported receive filter can therefore cause
+> the operation to return -ERANGE after changing the active transmit 
+> mode.
+> The cached configuration is not updated, so a subsequent SIOCGHWTSTAMP
+> reports the previous transmit mode even though the hardware has 
+> changed.
 > 
-> Would it make more sense to prepend something like a virtio_net_hdr
-> to the data so you can cheaply express more offloads?
+> For example, configure HWTSTAMP_TX_ON with HWTSTAMP_FILTER_ALL, then
+> request HWTSTAMP_TX_ONESTEP_SYNC with HWTSTAMP_FILTER_NTP_ALL. The 
+> latter
+> request fails but enables one-step synchronization. The reverse
+> transition can clear one-step mode despite returning the same error.
+> 
+> Defer programming the one-step mode until both the transmit type and
+> receive filter have been validated. Rejected receive filters then leave
+> the active transmit mode unchanged.
+> 
+> Fixes: ab91f0a9b5f4 ("net: macb: Add hardware PTP support")
+> Assisted-by: GPT-6 Astra
+> Signed-off-by: kimwooseok <5mghybrid@khu.ac.kr>
+> ---
+> Resending as plain text because the previous webmail submission 
+> included
+> HTML and quoted and rewrapped the patch. No code changes; the 
+> Assisted-by
+> trailer now names the tool.
+> 
+>  drivers/net/ethernet/cadence/macb_ptp.c | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/cadence/macb_ptp.c 
+> b/drivers/net/ethernet/cadence/macb_ptp.c
+> index e5195d7..51659bb 100644
+> --- a/drivers/net/ethernet/cadence/macb_ptp.c
+> +++ b/drivers/net/ethernet/cadence/macb_ptp.c
+> @@ -418,11 +418,9 @@ int gem_set_hwtst(struct net_device *netdev,
+>  	case HWTSTAMP_TX_OFF:
+>  		break;
+>  	case HWTSTAMP_TX_ONESTEP_SYNC:
+> -		gem_ptp_set_one_step_sync(bp, 1);
+>  		tx_bd_control = TSTAMP_ALL_FRAMES;
+>  		break;
+>  	case HWTSTAMP_TX_ON:
+> -		gem_ptp_set_one_step_sync(bp, 0);
+>  		tx_bd_control = TSTAMP_ALL_FRAMES;
+>  		break;
+>  	default:
+> @@ -460,6 +458,11 @@ int gem_set_hwtst(struct net_device *netdev,
+>  		return -ERANGE;
+>  	}
+> 
+> +	if (tstamp_config->tx_type == HWTSTAMP_TX_ONESTEP_SYNC)
+> +		gem_ptp_set_one_step_sync(bp, 1);
+> +	else if (tstamp_config->tx_type == HWTSTAMP_TX_ON)
+> +		gem_ptp_set_one_step_sync(bp, 0);
+> +
+>  	bp->tstamp_config = *tstamp_config;
+> 
+>  	if (gem_ptp_set_ts_mode(bp, tx_bd_control, rx_bd_control) != 0)
 
-FTR, I think it makes sense to consolidate similar code, with one possible
-caveat: virtio_net is not spectacularly flexible in term of supporting
-"new" stuff: if this use-case would need some special behavior, it could
-be problematic.
+Reviewed-by: Nicolai Buchwitz <nb@tip-net.de>
+Tested-by: Nicolai Buchwitz <nb@tipi-net.de> # Raspberry Pi CM5
 
-AFAICS the intended usage is quite basic, so no big surprise expected, and
-also I guess that only a serious attempt could tell...
-
-/P
-
+Thanks,
+Nicolai
