@@ -1,186 +1,185 @@
-Received: from mail-pz2-f0.google.com (mail-pz2-f0.google.com [74.125.228.0])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazon11022103.outbound.protection.outlook.com [52.101.96.103])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ADC233F5A9
-	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 17:24:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.228.0
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789147443; cv=none; b=O+NCH2lZxaNHUwPe/KvvaSs/aITvesjwpX7No1yeiGzK2cI8xjCm8hjcumTdc1cBkrJCkg2F5wZ9N/BENcH1NeK/Ynb/A3pEqhDmoTp2m/jf+lMToSWxxw8femeEha8o0fP2t2wyJxfaF+40NYqBKOsmIS9t3MDBTUBVa6DA3TU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789147443; c=relaxed/simple;
-	bh=XyKDm2fMCyWXmyXY/voD15W0GKG2uRdBPo48fAgx4Gs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R3n8jNYIYgwMV2+HbNPBdYPcT7uKF23f8/2kJWN7Ld43RZOZsK2+MsDQdhSSvOxtferj4BCjfoRw5OIQXtHZu2yKL25lvf8llgaHqd6jcN5CGe/6EAmtHINnYSVKDNiDe/qtC5aCitIwkVY2qGCgf4eulBYTaVdvQLAdCGlFM38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ClBXl+DW; arc=none smtp.client-ip=74.125.228.0
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ClBXl+DW"
-Received: by mail-pz2-f0.google.com with SMTP id 41be03b00d2f7-ca7fcfe1669so475256a12.0
-        for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 10:24:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789147440; x=1789752240; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=D+ZMwis/4I6GSyUx89KUpR5JKn9wJVf4C4Nu7aArJ4w=;
-        b=ClBXl+DWV70wYDmV2clQ0sfwe4h/Tnz+kq+zApPjC74EcCgxWZCZHafqw4kdrR6xCK
-         sD2h+E2C5ZATG5pHa8DxhO9xTezoYuqGjT9keEJl/vq/WPvw8l6kv/fgfEccj61q3Kq1
-         /D7CUQcSvaplh0x2yVdl87FxYMXc9yLvtPK4bflZs2hlfk9LNFYf4Mvc6dS4m7hP8Uzt
-         1NLbzHizxsGDoKQdzxm4XVkVqrZdyvNwt9RKItDLuZUhNQnl9U9hqfP9EP2LCW0t73kj
-         s1uN99kUE6AYx/G/oLGQehPX5xuLwknT1X1YvgMQinyd2puNQxDvvGKOuvpfMeqAShIx
-         yyog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789147440; x=1789752240;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=D+ZMwis/4I6GSyUx89KUpR5JKn9wJVf4C4Nu7aArJ4w=;
-        b=rQfw3WoDylwZtKRZJFADjLmzVKqF9BBwgC4j1mMFjcIhji/Q9fjg/V82Z4QCQJj5nu
-         dbn2smvpnY5DI3KEylpZ/RGudrJ2o9ZAesa1tqXCLKqOVmeM6BeTzdIEe+h6H6Lcg5lr
-         q+L4vPXo1tXax+XBDNS5sMJSzuW4T+OK4aYbbKvp1vSJzUuNwBDsAP9r6MZuwO6mjzOX
-         LiD/fF2Zzj0XrDWMG/NC8OT2JnubHdVW/x51pjq9BGcvIMUtX7x046YjdrTQxtugayxG
-         vks/qs7PzCoZ2E4kqyFfEeattSFQEyDYguM5oCWccQws0c6LrSTO0USycB+WpHDssXZW
-         sB3g==
-X-Gm-Message-State: AFuF++kY/Fd1n+P2rheE6S5gjEhrGdslSWvW5u503Ei4VPNBVbVLnLWY
-	ht4gG53EJ18NCa5nQlvzKSH4MeKxHfjHGvfVbWCLC/ZY6P3miBs+J1nZX8/u/9heHLUZJePZBSc
-	=
-X-Gm-Gg: AYBFou25G3yDZdxkHECYaOi+bx/EfYtbAYYSelssapIlV1KZljXrCw9heBVtdBdfpvY
-	5itM63ZthlijN6vzh28vE/B2BbCalqmfx/s2RwxcG2G6WzRTRzk7rBml3MqhXT6LQ+Iebi5egzL
-	UzvRZ1vKXz5uY7oYC+NSwXIk/hFW113r6SQfT+mUxb5KjdFiD2MajUDkx9AnbDpPykpfz8+Pumy
-	zo0geJm6x1Xsk3s7BZVOlyZ6vNMkMZ2EzFgvd4sI4bcLbb2CMzDSw8uR1fdHH0mQjsYLfn91lg/
-	hE9MTUmNZ50zQhaWeC4wGHGweCnbWN7JrdLeYMSlNzwG+Zb5rPdyy5mNkEgkO1eKc8zTU4P5IBJ
-	TwY278f7SexaNxfTKKwSyRh27CRBugJCHmQM+5k6NvkTBwzrcsIuKdEep8KCKZPs/yhzs3QbPhF
-	A8kvA92A4r3qhI8xf22+XZlNRQt98o24Bvc8YKf6c+KzJLdQoBofL1Y1+sZbshTs59RD8H55tas
-	x742B8en7YVuBI=
-X-Received: by 2002:a05:6a00:4611:b0:851:ba04:ca02 with SMTP id d2e1a72fcca58-86b332e9bd6mr7129887b3a.16.1789147440319;
-        Fri, 11 Sep 2026 10:24:00 -0700 (PDT)
-Received: from J4f-Laptop.localdomain ([183.36.237.80])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-86b2a2b5c72sm1418774b3a.52.2026.09.11.10.23.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Sep 2026 10:23:59 -0700 (PDT)
-From: Shihuang Liu <shlomojune6@gmail.com>
-To: netdev@vger.kernel.org
-Cc: bpf@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	andrii@kernel.org,
-	eddyz87@gmail.com,
-	memxor@gmail.com,
-	martin.lau@linux.dev,
-	song@kernel.org,
-	yonghong.song@linux.dev,
-	jolsa@kernel.org,
-	emil@etsalapatis.com,
-	ihor.solodrai@linux.dev,
-	john.fastabend@gmail.com,
-	sdf@fomichev.me,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	akpm@linux-foundation.org,
-	leon.hwang@linux.dev,
-	yatsenko@meta.com,
-	kpsingh@kernel.org,
-	dmitry.baryshkov@oss.qualcomm.com,
-	jordan@jrife.io,
-	nhudson@akamai.com,
-	avinash.duduskar@gmail.com,
-	rongtao@cestc.cn,
-	joe@wand.net.nz,
-	Shihuang Liu <shlomojune6@gmail.com>
-Subject: [PATCH bpf v2 2/2] bpf: revalidate assigned sockets after protocol change
-Date: Sat, 12 Sep 2026 01:23:13 +0800
-Message-ID: <20260911172313.64009-2-shlomojune6@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260911172313.64009-1-shlomojune6@gmail.com>
-References: <20260911172313.64009-1-shlomojune6@gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BCED4AA025;
+	Fri, 11 Sep 2026 17:31:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.96.103
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789147889; cv=fail; b=LK0pFGTIfoBCOclO3qWfvhrOUFim1YOVJizeoql7xtMPtslWT/xa3uxFgc2JevWPLbCWIufh82Zhh4RDViPDGkWZIEnQPjQNAQ/WuoqTCC2LMpGmDzqpkQ823j/jYHMR7aMibB9VK9SD/C0nP9y328wAJbzIPJfykVR3kACu6Tc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789147889; c=relaxed/simple;
+	bh=p7s9bWDAiiyaj8FNf3LSA5f5b0ZAQdlk2kEHWlWuq/A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=i2jGqQcx01Mtbwft7o9RTKZ3TwN1ibOB5kENuhrQ4BILvMqsuBD5CMthrh1xjt6p0EP5mmaNnZK0Jj5LXBhJaUcoy47vWNhcaVg1syWJOy8rrUeel8LaCxBg851B+6IPtUS8gUgXrS+S+VFbs/cNmqC01GhRARLvG6d3317XBIY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomlin.com; spf=pass smtp.mailfrom=atomlin.com; arc=fail smtp.client-ip=52.101.96.103
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=atomlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=atomlin.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=pEd3/wDeX+onZny9fJFHPQS0zLTGFK4ZHSWK3Raqsys3/6mRlBnzikV4Wxmsj3FSkqa10XdGfkuxlELu48QsivNidi3UPAlKiG2LWXDU3biSXl45Wj3kIazSPjZGr+gxMTGPbAKi0s2SmFdRbFoyfK7Vt37ikl6NYYTVab6vyZdhfs/brxSmqisTDmoJ8S1YJ7jtQaFrgvb+S/z2KuPIOgsm8D4dQ7DH8/UqRF8ByhZFxo/ij5hxDhoXYU/zdDhUpis8fBmSM1WKLPfrkA/Ce1W4lmBbIboOG03MHBqa7JvSBYS3u4vwLaWwOHAHJWaZRJKF/j0KLNF21IXHUcIyvg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001; h=From:Date:Subject:Message-ID:MIME-Version;
+ bh=DQ/I4VbEJOQ+IYMhWKIjY1NsA15HkVvhvcoHrSza/2A=;
+ b=lMlCxnFLBeAbPkMzX1aHKdfn/l694bDdiwHCzAVJZW/kls/fUX7adM6xmIiIY0JOS8pIiN5Wilz7lSuqE1EYsG4VGOWkkiPP/msB2ETkcINqeD9lscaiDceIRnpwjy/KBTFiRO8Nolwgw4Nkp+vh/P63a8gFAwRS72mBq67U1u4kJLMuISYi9Hrcf/MaBQ6EbmWkTkg6/XdCahyxV5Q+i7ge+cVx3EwEvd6ka5iWgswqC4JyZH4QrlFocxr+xEgCKwUQ0w1XGadg9VA3cS10u3gluFxLtKvOc7vF5qQ/Ub1FJPqvSA3FINXyzpFYldqjX4sp4a4XTGC88nYwSv9pOg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=atomlin.com; dmarc=pass action=none header.from=atomlin.com;
+ dkim=pass header.d=atomlin.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=atomlin.com;
+Received: from CWLP123MB6607.GBRP123.PROD.OUTLOOK.COM (2603:10a6:400:183::5)
+ by CWXP123MB3464.GBRP123.PROD.OUTLOOK.COM (2603:10a6:400:83::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.406.9; Fri, 11 Sep
+ 2026 17:31:21 +0000
+Received: from CWLP123MB6607.GBRP123.PROD.OUTLOOK.COM
+ ([fe80::cec4:77ab:262e:d230]) by CWLP123MB6607.GBRP123.PROD.OUTLOOK.COM
+ ([fe80::cec4:77ab:262e:d230%4]) with mapi id 15.21.0406.007; Fri, 11 Sep 2026
+ 17:31:20 +0000
+Date: Fri, 11 Sep 2026 13:31:13 -0400
+From: Aaron Tomlin <atomlin@atomlin.com>
+To: Petr Pavlu <petr.pavlu@suse.com>
+Cc: Jens Axboe <axboe@kernel.dk>, Jakub Kicinski <kuba@kernel.org>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, 
+	Jani Nikula <jani.nikula@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Tvrtko Ursulin <tursulin@ursulin.net>, 
+	Matthew Brost <matthew.brost@intel.com>, 
+	Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>, Simon Horman <horms@kernel.org>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Francois Dugast <francois.dugast@intel.com>, Luis Chamberlain <mcgrof@kernel.org>, 
+	Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen <samitolvanen@google.com>, 
+	linux-block@vger.kernel.org, netdev@vger.kernel.org, linux-api@vger.kernel.org, 
+	intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
+	linux-modules@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 6/6] module: Remove the error-injection.h include from
+ linux/module.h
+Message-ID: <46xi4ovj3vulfr4pb7znr2koaltngrgywgbo2fwirbfducs6ay@tr5rhev6snb3>
+References: <20260911-module-include-error_injection-v1-0-5da895d8c84d@suse.com>
+ <20260911-module-include-error_injection-v1-6-5da895d8c84d@suse.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260911-module-include-error_injection-v1-6-5da895d8c84d@suse.com>
+X-ClientProxiedBy: SJ0PR03CA0350.namprd03.prod.outlook.com
+ (2603:10b6:a03:39c::25) To CWLP123MB6607.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:400:183::5)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CWLP123MB6607:EE_|CWXP123MB3464:EE_
+X-MS-Office365-Filtering-Correlation-Id: e7558224-2d6b-4df8-1e3c-08df102a7e0a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|366016|23010399003|1800799024|3023799007|4143699003|56012099006|5023799004|10067099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	kysciGr7k1voJxrtIN2WGkc9N8o03fy7ApmYFY3+6apHSTYx7+L4Qz6hVvJBX/M+hChvfLOZg6wGCd1M3sVVR7x15/ddtVF5LN3SBAsjCxkREVVLZCy4mIR7YmXkxtxijZqlPpAQSRrk2ymaIri7csr8N5EPBRZpLCJMAczvj0OjsOq+dr7XQL29OT+Qr8xEhch5+C5hW4dJofx37DpAA4Znv/UnMkWwbDuWHn7SQqLF/qmwVyBgmLzl/8BeLmw79wF14rx4E6c2y1U7rzbbVa0X5EgkBKPcs2B2KEQY9PyPvPyqD3mkBnscAVdi7j5ECBZkyi+aDrJL/szmjY3sEzqQ5F4a8hwE+v0IZ64xhb8sKXQ4vKf7FqlpgUbjkzeK3ZOj0J00pSVlQDWgH2QaRh6mH2NAVj22CXqIxTh6QWmSu9gsVQGoU4PuV03aWdmE+TuP67EomDRsu4KyI7ux8ehpfpKyYaiUtCQZnchSm4bI/u4nW07+GZ7xwPrAOR2baDKojsKTTxEkvyDEp84LO959ZJ7WzMhecVDuT+ugfiOSa7ojSKgoztrj41JqBaqnuBQzrXo7HxyWbasy+hNHO/JSn+bP5ZOu6M+n0BGqfv1swPNxKW2QCedk7ned8ADsuU+HXPVTsY5smIQwC5I8Nx1Qxl4oDkbr49BfOj1yhqI=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CWLP123MB6607.GBRP123.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(23010399003)(1800799024)(3023799007)(4143699003)(56012099006)(5023799004)(10067099003)(18002099003)(22082099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Qm5FbzNOa3IwVVNkcjl1RmNjaWRFekRXMDhNMTJiTDU2aHkvMnhyaXpUUXhi?=
+ =?utf-8?B?Zzc4Tk1UWW1FSnd4bEhyc0lnN0VNdm1iMXZ2cksycjNWb1BGRXlic0FmNTZ2?=
+ =?utf-8?B?UXR6U1FUaVFGbnpwRGtqYXUyN0NhWmh5a0VhUUU4YkROT2x4WldRdHJHcDdI?=
+ =?utf-8?B?eW9qTjVEdkhaU09YMldvRXB4Z2Q0Q2lURzduanVoV3UyWFhlTGhNZEtKYmtK?=
+ =?utf-8?B?SlFJRzRUZXNwVVIzVWNPWmRDZU1LbzdFdVVBSW10dUFhZlV4MG5LdjR3cFVl?=
+ =?utf-8?B?QWVhN1lERnUvbFErMDhGWkhRRlJuaVpnMHNVVWxkK3hYQlZPMFRhOVhIU05O?=
+ =?utf-8?B?M3Nrd0lsRnFIQlkwekVqblNUSFZ4SWdmK3hSTVlNUWFqb2lEYXBkRW9STHVz?=
+ =?utf-8?B?VWV1SG52SW9qd2hqOWZiS1JXRWdsWXZvM0FtZ1R5KzJ1UXpTYnQyaFRSeXZ3?=
+ =?utf-8?B?eU5xZm8vN0hJZTFqTitDdU1ZdVZDQVE4aEdoMFpyTWIveVFtWThGakJuS3Qy?=
+ =?utf-8?B?c0UrWUd5dDdTSG1EY29jK253MWlONndWYjBUOVRLTmVBVXp6MmcrSlJxUmto?=
+ =?utf-8?B?aDA1MWt2elBWeDFESDhhNW9rWkZTREJsMDJvZm5aaDBKdVZ6U2dLUEtnVEhz?=
+ =?utf-8?B?ZWZQSDlBcnlxckFXWmoxdnI0VmFNWVpDZTVBWjdyQnVJSWJMN3NVMDUzRlJk?=
+ =?utf-8?B?YmxDb2xHRHl1K0NTWGlMU0Jsc2JuUlZnQU9YRE5jUTFIZ290WG1TNzgrc0dX?=
+ =?utf-8?B?MldKTzBHZlpmVjBvNUdub243d0JMT3NmT05ReWl4ek9zcnBLeFQ0VVk5Vjlp?=
+ =?utf-8?B?WEc2a1NTQmRoRng4UWpURS9GdTl1dTRUOG42c2VjTkFSelF5WlQ5bjZDaFFW?=
+ =?utf-8?B?dktaUTFqWWNvYkY3RHRxL1NmS3ltT1YzTEhlQzg3amowdWNRcVduUUIwNVhw?=
+ =?utf-8?B?UVdHOVY5NEJTYXgzOHJzclJoYXdHU2dHclRmN20vbi9YdlZqR3VpK3kxNVJV?=
+ =?utf-8?B?TEpQWXRIMW85eXVCUHdRT1hvWElUUm13UGJRU05mMlBzblFnWFFQczVIR0RD?=
+ =?utf-8?B?QUdhSWJYU0NWZ2x3NXF5MzNwNWxWdFNLNVF5VThSc05CV3VSMzA2MlIwN2ty?=
+ =?utf-8?B?UlFhWVl2K0t4SHZpYkMzMm1LUmhkc0hmVXk0RkpyTExKQkJvZmdUN1FNaFNn?=
+ =?utf-8?B?b3VPQVY3eXpHanJkSnFYSWhJWEptOVg3dzV4czd6MVU2Y2tkSGRwUndzWE5O?=
+ =?utf-8?B?VmthZHFrTVFySnJFRFhJZDgwT1ZGb3hMNnlHT3l1V3hmajAxbCtzZHAyemtP?=
+ =?utf-8?B?bi9nNmJxNnJQS2VEL24yZldtVHNHN1QzRjBxa0ViQ2RYN2ZFc054TVNNZktI?=
+ =?utf-8?B?UnBxWjcyS2V1SGs0UTkrRGw5QmFwZXZsdjlJc3R4cnZoQmFTSVdSK1BySW1t?=
+ =?utf-8?B?ekNqejRjNE01OVFzL2c3MitaaVZWcXR1amZWSHdNVDNIUTUxRmZ2RXpraUlx?=
+ =?utf-8?B?T1JjNm0yeXNhR0ZmWmMvSks5ditiV09GMUFHNDhIaG9hemdVTjNLU1F0Ukgy?=
+ =?utf-8?B?cnhGOUphTE12QjZYNFVEbVI4aFJZTk9ZTVlXVGJGWHdaQm5uYlZvUUR5YVFL?=
+ =?utf-8?B?aHFqWHBBUG5ySENvTW1nVFJNOHRuZWt6ZDNCTHFFMW9UNVNjZWFvMnI0a1My?=
+ =?utf-8?B?ZWRjQkxjeEFrNitJMEQxWkhOalZTYUpKTGFzZDhkYkJLQmJFSlhtUDBKZVdZ?=
+ =?utf-8?B?WnRpRXNBWHBhVEhlNVBUa1RGTmVWNWQ1dWZkSGFmMVkrV0F1MnRPRjJ5N3Ns?=
+ =?utf-8?B?bFdtRGJ3bVhISmZZOXRobnd3VDJyYVBydnA3QlIwdjE1RG14YjJTYnVEbFNJ?=
+ =?utf-8?B?TEVsRHlhdG1KeVh1QThJeXF5eC82NXpKbzYxRHFIQ1BHUFJydE5oaG84SVgw?=
+ =?utf-8?B?bDlYN1hXRWxmWWlwYU4rMU1yL1BwWmJOa3crWG5wYmF6NWk3LytXZklJaXJs?=
+ =?utf-8?B?dHd4V09xQ000QVphWHg3SFlYUGo5TjdGejcrS1RQSW5aUVJmVTAzb1Q1S2tz?=
+ =?utf-8?B?dlRjU3VyMzZJVnlIZTJTOG1ZaTFpakVvRmhXNUYrc3JnVTBsRFpJSXhPa0lz?=
+ =?utf-8?B?c3R2ckw0SkZVYm8xVTZmaHcybk5hZk41ekJVVDF6dXo1SlJZR1V3Kzg3WTV0?=
+ =?utf-8?B?K2FtTGJOa01PTjNKRjFoT3ZER0Vzb01aTjc0NkVsMmNuencrOUN4YkI1N1J5?=
+ =?utf-8?B?Y3AzV3RZclBpVkJ4Q2lRcEJlaVZGZVZmZXIxM3pLbkhnM3Z4cEoyQWJYSHFw?=
+ =?utf-8?B?Q0FuL2ZPR2J2cmdUZlJySWdSeXVWQzdnWG8wUjhCamRGeDRiN1JIZz09?=
+X-OriginatorOrg: atomlin.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e7558224-2d6b-4df8-1e3c-08df102a7e0a
+X-MS-Exchange-CrossTenant-AuthSource: CWLP123MB6607.GBRP123.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Sep 2026 17:31:20.4038
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: e6a32402-7d7b-4830-9a2b-76945bbbcb57
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 0dghqHAyv1aNmSTQNXjCYdNYSylZyxPSnIkgS66DeRj+JWf8Heio4Nfx5hkPyRgisMgu8Ps60Dda4Gn4Ca998g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWXP123MB3464
 
-An IPv4 packet can be assigned to an AF_INET socket and then translated
-to IPv6 by bpf_skb_change_proto(). Since the translation preserves the
-socket assignment, the IPv6 packet can still be delivered to the IPv4
-socket, bypassing the family check in bpf_sk_assign().
+On Fri, Sep 11, 2026 at 05:04:06PM +0200, Petr Pavlu wrote:
+> linux/module.h appears in roughly 15k #include directives across the
+> kernel. This makes it a "hot" header, so it should avoid pulling in
+> unnecessary definitions.
+> 
+> The header currently includes linux/error-injection.h to obtain the
+> definition of `struct error_injection_entry`. However, this is unnecessary
+> because the type is only referenced in the file as a pointer, for which an
+> incomplete type is sufficient.
+> 
+> Remove the linux/error-injection.h include from linux/module.h and add it
+> to kernel/module/main.c instead, where
+> `sizeof(struct error_injection_entry)` is actually needed.
+> 
+> Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+> ---
+>  include/linux/module.h | 1 -
+>  kernel/module/main.c   | 1 +
+>  2 files changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/include/linux/module.h b/include/linux/module.h
+> index 96cc98568eea..b3a3d5827384 100644
+> --- a/include/linux/module.h
+> +++ b/include/linux/module.h
+> @@ -24,7 +24,6 @@
+>  #include <linux/jump_label.h>
+>  #include <linux/export.h>
+>  #include <linux/rbtree_latch.h>
+> -#include <linux/error-injection.h>
+>  #include <linux/tracepoint-defs.h>
+>  #include <linux/srcu.h>
+>  #include <linux/static_call_types.h>
+> diff --git a/kernel/module/main.c b/kernel/module/main.c
+> index d0e1e0bd2ad0..f1392c10907a 100644
+> --- a/kernel/module/main.c
+> +++ b/kernel/module/main.c
+> @@ -60,6 +60,7 @@
+>  #include <linux/codetag.h>
+>  #include <linux/debugfs.h>
+>  #include <linux/execmem.h>
+> +#include <linux/error-injection.h>
+>  #include <uapi/linux/module.h>
+>  #include "internal.h"
+>  
+> 
+> -- 
+> 2.55.0
 
-After a successful protocol change, recheck any prefetched socket
-against the new protocol and call skb_orphan() if its address family
-is incompatible. This releases the assignment through the existing
-skb destructor, allowing normal socket lookup or a new assignment
-by the BPF program.
+Reviewed-by: Aaron Tomlin <atomlin@atomlin.com>
 
-Fixes: cf7fbe660f2d ("bpf: Add socket assign support")
-Assisted-by: LLM
-Signed-off-by: Shihuang Liu <shlomojune6@gmail.com>
----
-Changes since v1:
-- Revalidate prefetched sockets after bpf_skb_change_proto() changes the
-  packet protocol, closing a bypass of assignment-time validation.
-- Preserve compatible dual-stack assignments and release incompatible
-  assignments through their existing skb destructor.
-- Split the fix into two patches and target the BPF fixes tree.
-
-v1:
-https://lore.kernel.org/netdev/20260823101809.26802-1-shlomojune6@gmail.com/
-
- include/uapi/linux/bpf.h       | 4 ++++
- net/core/filter.c              | 5 +++++
- tools/include/uapi/linux/bpf.h | 4 ++++
- 3 files changed, 13 insertions(+)
-
-diff --git a/include/uapi/linux/bpf.h b/include/uapi/linux/bpf.h
-index 5d8f5e2c8db38..0de7967077a2e 100644
---- a/include/uapi/linux/bpf.h
-+++ b/include/uapi/linux/bpf.h
-@@ -2659,6 +2659,10 @@ union bpf_attr {
-  * 		checked and segments are recalculated by the GSO/GRO engine.
-  * 		The size for GSO target is adapted as well.
-  *
-+ *		On success, an assigned socket is released if its address
-+ *		family is incompatible with the new protocol. Assign a
-+ *		compatible socket after translation if required.
-+ *
-  * 		All values for *flags* are reserved for future usage, and must
-  * 		be left at zero.
-  *
-diff --git a/net/core/filter.c b/net/core/filter.c
-index e9cc76b775c0c..79a0e484d9dd4 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -3547,6 +3547,11 @@ BPF_CALL_3(bpf_skb_change_proto, struct sk_buff *, skb, __be16, proto,
- 	if (ret)
- 		return ret;
- 
-+	/* Protocol translation can invalidate an earlier socket assignment. */
-+	if (skb_sk_is_prefetched(skb) &&
-+	    !bpf_sk_assign_family_ok(skb, skb->sk))
-+		skb_orphan(skb);
-+
- 	if (skb_valid_dst(skb))
- 		skb_dst_drop(skb);
- 
-diff --git a/tools/include/uapi/linux/bpf.h b/tools/include/uapi/linux/bpf.h
-index 5d8f5e2c8db38..0de7967077a2e 100644
---- a/tools/include/uapi/linux/bpf.h
-+++ b/tools/include/uapi/linux/bpf.h
-@@ -2659,6 +2659,10 @@ union bpf_attr {
-  * 		checked and segments are recalculated by the GSO/GRO engine.
-  * 		The size for GSO target is adapted as well.
-  *
-+ *		On success, an assigned socket is released if its address
-+ *		family is incompatible with the new protocol. Assign a
-+ *		compatible socket after translation if required.
-+ *
-  * 		All values for *flags* are reserved for future usage, and must
-  * 		be left at zero.
-  *
 -- 
-2.43.0
+Aaron Tomlin
