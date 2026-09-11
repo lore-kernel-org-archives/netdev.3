@@ -1,145 +1,96 @@
-Received: from mail-oo1-f77.google.com (mail-oo1-f77.google.com [209.85.161.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 901C64749FA
-	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 11:45:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66D5644C4EA;
+	Fri, 11 Sep 2026 11:46:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789127126; cv=none; b=RubzxLxy1fmBta9EwPtQ+U7PeVV5KLZPxY9nShp3mOogq3UIECELXXLZR8ykNhywk95FPuzZEiWvGkbOJdR2ShZ3kQOEMGBEaKlvVgfubSdcpANFNiKLQbxd8Oz00fN+mAsDJPsRdTwGhfi3qBf94wg4JgE98mjcdQnNBnKwHDk=
+	t=1789127181; cv=none; b=DuLlgzId3vNmfYP4gNyvQLvg6mdfeBbZd6/SbKG4LlvxqyeQ70DLcrf24gQ/2tUN1j71qs4s5ayS5JKRxkX3L9+CC147tuF8SmHpisa8Q1ysEDnIdbcSVNqgWsYxvIKCQFr8p5q/QVcdTObGAfsO2tk7tkMtbpEM9wVOOv13zwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789127126; c=relaxed/simple;
-	bh=XhJtIOc3u2hLLNzWnkH5OWfmH7YYPxIQ2OCmKVrFqrM=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=OoONCXMDtVqC4CfpC7K3Jd+KqnX2JUe18OuA98kEVRuj8+slHbTpeQo2Nfnv8RcuwtG6qWU/+3EQjiRheYR1SJaC0i2n2pPqmBAQS1K1I1B8dCHnbpOWd8XaubMNN7LeysQocY8hQuTJIm2ImBSBvHoEEqArVteuYZCtQXyVPeE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oo1-f77.google.com with SMTP id 006d021491bc7-6c18e7d53b9so238305eaf.1
-        for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 04:45:24 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789127123; x=1789731923;
-        h=content-type:to:from:subject:message-id:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=DixrXJooAk+5iJDF/dnwtd5cfPxBUrdvO4OX36Wx9tA=;
-        b=su0IKfB9pfP9hzT734A2Rw84I4tAu76CBrtxc4wCDWJrP/GV0qi9/lIF21c8BkVnf0
-         N4D6u4Fv/ulw4Gd9xIZv8fK2rKGaLFjoEhcFfHk9TQB1lxRJIDe3jNYD0czSu2ym/mTu
-         nZu8LCJrf5ENHyjWQnXNa1hPtk83AmIFjvKbgjqyTWkfgFdOZEF36f5eIS+61URNdrIH
-         UrdyS0cWd01Nq5soGxoPtUmurQIBn4GOOA1ykL/+uDpblCvmUPlk5B4qWolXZZIuXiTQ
-         8QTp5A88fSHOoqbyWsp36dDRZ1cUDcPACYZIam+sAkVH98yzhSIEMn2cHC9BnU12dxMA
-         XejQ==
-X-Forwarded-Encrypted: i=1; AKwUvBx7+RhD5V7E5rslwSnysfjLpmmmELjP8D9tY8MmHVKpGb5xCYBMwAjJlXWR9zAB9v7uhku2ka0=@vger.kernel.org
-X-Gm-Message-State: AFuF++mN3buUNo7rcsguPrDxMqTYiL8lFOPbFsrr+Ea9xp2ra5ZSd5n8
-	T4Y44Ffdus0UKK7N/FS9Rir6/LM5tqZn+J3Jilp71875wUHgNabkXtHWKxkkXsWNo/jWQxcMNQq
-	amus9XPmojFdfZMYSpwKmiKaV4YDnw+hbgQ5TnLSXDOBW3/FtKV5OD1+6hgc=
+	s=arc-20240116; t=1789127181; c=relaxed/simple;
+	bh=7/ABCwSBwMMpeasUmORhfP164RO5xe82KeiClgrI1pM=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=GEYTV9j4Pu6Q/K8oahHTuXEmvk2I9qQiaOXQ9VWcvAUPuB2rhLkJpbzhYqaxPVna8Je+QZntJv2K520Dx2y/4jJNmNvD06NO/78GMLESSoc9z6T75FKg2Z/9yKjO0pCntHXgwwvJ99/Crc+TJjlwadn058sQJSvrHGc73/YaTBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=UCRBgxNI; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="UCRBgxNI"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id CE0BFA379F;
+	Fri, 11 Sep 2026 13:46:14 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1789127175; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=zxPnQIazV8qoWcjnPpuJi4EWHSazV4LFn9jV+FJ9yM8=;
+	b=UCRBgxNIvFi4YQ5kqI3E7U3tH9OKRHtIRXTa+ItbmNQqpUk/UmPLiTbaEwqJUj9+HGJoaL
+	F9Vr4lu4yL8kyCkf9Nevj6I8lZ+JikMUOzPY668hjhkQeyuIS2wMva3NekSPDQJtTpYva7
+	TYvhtIbac3o9ua3X3nzV8hvY27kf9WxYUY/6vJNwoosShBmHSDI2xOHgJfX12+ecJUC4rK
+	z1JiFMbnXKwvpwm6vSI//RziBmCq+D+hyG6XZit0u30rhd40b7DphbG4OUWkL3aTvN2dxL
+	FSA8g8L7pLEXPaunVd2shmIjAOO0jipY+jvM0mDOtXWHyQ9YLhnLx78qxx855Q==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:1889:b0:6b5:ec2f:356f with SMTP id
- 006d021491bc7-6bf46bb2c16mr4634956eaf.32.1789127123419; Fri, 11 Sep 2026
- 04:45:23 -0700 (PDT)
-Date: Fri, 11 Sep 2026 04:45:23 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6aa3e9d3.f2639fcc.29487d.0028.GAE@google.com>
-Subject: [syzbot] [net?] kernel BUG in net_dm_packet_work (2)
-From: syzbot <syzbot+586af68eb819833c2d91@syzkaller.appspotmail.com>
-To: davem@davemloft.net, edumazet@google.com, horms@kernel.org, 
-	kuba@kernel.org, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	nhorman@tuxdriver.com, pabeni@redhat.com, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Date: Fri, 11 Sep 2026 13:46:14 +0200
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: Linus Walleij <linusw@kernel.org>
+Cc: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com,
+ Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
+ Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Marek Vasut <marex@denx.de>, Simon Horman
+ <horms@kernel.org>, Russell King <linux@armlinux.org.uk>,
+ netdev@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH net-next v12 2/4] net: dsa: tag_ks8995: Add the KS8995 tag
+ handling
+In-Reply-To: <20260911-ks8995-to-ksz8-v12-2-5c3422d0d72e@kernel.org>
+References: <20260911-ks8995-to-ksz8-v12-0-5c3422d0d72e@kernel.org>
+ <20260911-ks8995-to-ksz8-v12-2-5c3422d0d72e@kernel.org>
+Message-ID: <df9f07fa53c7c46debb927485138b6be@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hello,
+Hi Linus
 
-syzbot found the following issue on:
+On 11.9.2026 11:09, Linus Walleij wrote:
+> The KS8995 100Mbit switch can do proper DSA per-port tagging
+> with the proper set-up. This adds the code to handle ingress
+> and egress KS8995 tags.
+> 
+> The tagger is used by the KSZ8995XA support added later in this
+> series.
+> 
+> The tag is a modified 0x8100 ethertype tag where a bit in the
+> last nybble is set for each target port.
 
-HEAD commit:    08df884136f1 Merge tag 'thermal-7.3-rc3' of git://git.kern..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=14cd4925580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=8c5c3949d762a91f
-dashboard link: https://syzkaller.appspot.com/bug?extid=586af68eb819833c2d91
-compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+Nordic nit: nybble -> nibble
 
-Unfortunately, I don't have any reproducer for this issue yet.
+> 
+> Always insert a distinct outer switch tag. User ports remove this
+> field on egress, so reusing an existing 802.1Q header would consume
+> the sender VLAN tag instead of preserving it.
+> 
+> Push any hardware-accelerated VLAN tag into the packet first. This
+> keeps the switch tag at offset 12 while retaining 802.1Q, 802.1ad and
+> stacked VLAN headers as inner payload, and avoids relying on a valid
+> SKB MAC header in direct transmit paths.
+> 
+> Rate-limit receive untagging errors so repeated failures cannot flood
+> the kernel log.
+> 
+> Assisted-by: LLM
+> Signed-off-by: Linus Walleij <linusw@kernel.org>
+> ---
 
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-08df8841.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/21cf9eeaddab/vmlinux-08df8841.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/a041f1e01a69/bzImage-08df8841.xz
+> [...]
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+586af68eb819833c2d91@syzkaller.appspotmail.com
+Reviewed-by: Nicolai Buchwitz <nb@tipi-net.de>
 
-skb frag:     00000100: 44 d2 0a a2 e2 47 a7 df 6f 97 84 d1 f7 fb c3 2a
-skb frag:     00000110: 21 54 9f 61 2b aa b4 19 63 72 89 80 f0 62 f3 61
-skb frag:     00000120: 9f 89 a0 49 03 f5 e7 66 b6 4b 34 44 cd b9 03 b5
-------------[ cut here ]------------
-kernel BUG at ./include/linux/skbuff.h:2847!
-Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
-CPU: 1 UID: 0 PID: 5877 Comm: kworker/1:7 Tainted: G             L      syzkaller #0 PREEMPT(full) 
-Tainted: [L]=SOFTLOCKUP
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-Workqueue: events net_dm_packet_work
-RIP: 0010:__skb_pull include/linux/skbuff.h:2847 [inline]
-RIP: 0010:skb_pull_inline include/linux/skbuff.h:2854 [inline]
-RIP: 0010:skb_pull.cold+0x29/0x2b net/core/skbuff.c:2677
-Code: 0b e8 6b b3 9c 00 44 89 65 70 89 de 48 c7 c7 60 cc 38 8d e8 b9 e6 b2 ff 31 d2 48 89 ee 48 c7 c7 a0 cc 38 8d e8 e8 30 26 08 90 <0f> 0b e8 40 b3 9c 00 4c 89 e2 be 01 00 00 00 48 c7 c7 00 ff ca 90
-RSP: 0018:ffffc900044df9f0 EFLAGS: 00010286
-RAX: 0000000000000000 RBX: 00000000000000ea RCX: 0000000000000000
-RDX: ffff88802461a580 RSI: ffffffff816f5ede RDI: ffff88802461a580
-RBP: ffff88802c76ca00 R08: 0000000000000001 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000001 R12: 0000000000001b38
-R13: 0000000000001a4e R14: 0000000000001b38 R15: ffff88802c76ca00
-FS:  0000000000000000(0000) GS:ffff8880d5c5c000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007fa64e227dac CR3: 00000000647d3000 CR4: 0000000000352ef0
-Call Trace:
- <TASK>
- net_dm_packet_report net/core/drop_monitor.c:700 [inline]
- net_dm_packet_work+0xafd/0x1290 net/core/drop_monitor.c:739
- process_one_work+0xac7/0x1b10 kernel/workqueue.c:3396
- process_scheduled_works kernel/workqueue.c:3479 [inline]
- worker_thread+0x5ef/0xe50 kernel/workqueue.c:3560
- kthread+0x373/0x450 kernel/kthread.c:436
- ret_from_fork+0x730/0xd60 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-Modules linked in:
----[ end trace 0000000000000000 ]---
-RIP: 0010:__skb_pull include/linux/skbuff.h:2847 [inline]
-RIP: 0010:skb_pull_inline include/linux/skbuff.h:2854 [inline]
-RIP: 0010:skb_pull.cold+0x29/0x2b net/core/skbuff.c:2677
-Code: 0b e8 6b b3 9c 00 44 89 65 70 89 de 48 c7 c7 60 cc 38 8d e8 b9 e6 b2 ff 31 d2 48 89 ee 48 c7 c7 a0 cc 38 8d e8 e8 30 26 08 90 <0f> 0b e8 40 b3 9c 00 4c 89 e2 be 01 00 00 00 48 c7 c7 00 ff ca 90
-RSP: 0018:ffffc900044df9f0 EFLAGS: 00010286
-RAX: 0000000000000000 RBX: 00000000000000ea RCX: 0000000000000000
-RDX: ffff88802461a580 RSI: ffffffff816f5ede RDI: ffff88802461a580
-RBP: ffff88802c76ca00 R08: 0000000000000001 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000001 R12: 0000000000001b38
-R13: 0000000000001a4e R14: 0000000000001b38 R15: ffff88802c76ca00
-FS:  0000000000000000(0000) GS:ffff8880d5c5c000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007fa64e227dac CR3: 000000000eb96000 CR4: 0000000000352ef0
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
+Thanks,
+Nicolai
