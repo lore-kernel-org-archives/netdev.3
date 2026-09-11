@@ -1,132 +1,491 @@
-Received: from mail-wm2-f12.google.com (mail-wm2-f12.google.com [74.125.225.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61B2B494824
-	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 15:44:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.225.140
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A2D2496D34
+	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 15:45:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789141495; cv=none; b=N/mBBp8rVHiy9aA6RIIYv72F1qqxUjZ3sq4emtXgr0y2wxZfGI6RZQelVYCNY3FMEQJkL3hS7+sKzHOD/yLDAGDZKmkD30rxK6U2AG+0YVz25u92qqmfqtNj08jndjeACDeSA9d2QpIW44hHnJVdIYyiVK21bMKeK0hO9Hs44io=
+	t=1789141549; cv=none; b=tbI338bWaUKWdtWjqHl41Fw0wcLKYIh3c5ENIDT68jPbegmjsWbXCxc0zlQD1Zjq6N3DNWemGpEkHVnqByrhk+sBVH7oSRuD6GcT9HDWyMsqwgAWYk3FoFibtooHM5qkgqeVnG4s8QDzmc95RBtYmbBy9U631kV8G0BTDFOvXQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789141495; c=relaxed/simple;
-	bh=mmTb3omMSKk79oaBdbfhFPddSgi2tQARhX5tD0VeCPU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WhT99pkRWe+ap1ikXetNLjVlcIgm4wUxeKcNNC0Y0ofeheGpMBrEFB+f0YTP27ShAr7bfeuo+MC4jjx4LoHFduMQggDXUFJVa2wngCYlbZ8z+uHIELATptvKE94gs7XOCuAy6XoEbxiOIUvcv3wfIkNCz2TfTpazKOQcTqTaQ2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com; spf=pass smtp.mailfrom=6wind.com; dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b=LYFe8zN0; arc=none smtp.client-ip=74.125.225.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=6wind.com
+	s=arc-20240116; t=1789141549; c=relaxed/simple;
+	bh=V0wN3JC6ahh7rk0oXw0MBwxacu8tuHsgn5GfhoNgALQ=;
+	h=Content-Type:Date:Message-Id:From:Subject:Cc:To:In-Reply-To:
+	 References:MIME-Version; b=b5syQBjiYU85ndlEzriCaRCtOkuuVi2AXHYefWzbjjweK4CLUB29z4ui/aEKDtLHrgEIfpRDxOrOxabVeQ55kLOIdNaJfOZFRfKDAO3lOisjSI+POZ6giUglSLFmVYyGDl7PaX/DN8bvmfeZdbap2i8lyOu0VaU7/XxiryHpMlc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=MpmIs/B0; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="LYFe8zN0"
-Received: by mail-wm2-f12.google.com with SMTP id 5b1f17b1804b1-499db1740f2so23785e9.3
-        for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 08:44:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=6wind.com; s=google; t=1789141491; x=1789746291; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:in-reply-to:organization
-         :content-language:from:references:cc:to:subject:reply-to:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=fmKbcth3Cgu8DzPZBrBYeoO4fcpCEJAvt3C9XzTqgyI=;
-        b=LYFe8zN0p6h98dBa4AVduWw+a6hqGLgplXHwgG0TJxNx3fFhs3CJT6K13uUAOYfIUg
-         L4R3JrwyJQuCd7ePKoTlCgIhWZFltYkkLfd4e1NNzuSecUBf+0iShqdhDGR+4P3o1BWa
-         drusHiYk2g6NO96RIeJzXowjj8u0PecbToS+m9e0kJmHekgT0pEbb6DGyNOjvWqytSpn
-         NyhBxWzY5TUpLefrAMHXQgIMs971zgfDBQMZpRTai2WRi7sPn2l03HFBnTEtVOXj/rnw
-         XZjVR17gmwCsA7OzxB4x0sYq9pFKOdzf4r9Vv/sCASucAkA6pfI8XpqEl82jGgOsDLyr
-         5UTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789141491; x=1789746291;
-        h=content-transfer-encoding:content-type:in-reply-to:organization
-         :content-language:from:references:cc:to:subject:reply-to:user-agent
-         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=fmKbcth3Cgu8DzPZBrBYeoO4fcpCEJAvt3C9XzTqgyI=;
-        b=Vzl6ZDFwFoxAjeTXvGtxJ7CymOPCyd4nhfX3XD3ci3oBo6nXPyoNJJ1PHrIL1bDkh6
-         KP7NBQyO9A31hsZuUooKmhp4GBn+v640CyEul70koA0gkl7B84FttCugAFG6jl9Paw0c
-         RX4ZfnL7hdU1IFw896bVMTIE6Os13E1VyUsBgJ7Uhez4IlwHlhCPv5yKHU7tP9bTnRti
-         ZW22+IaAGSJ7hPtJsL/cyyYazf6FP9VjgpbSjSytgKijy2n05uu+z0thtA6Y2M2w8yuN
-         Im6U6qM3uXKheZg3OmZXP7mj8wyji8O8UkguDa5AkvogDczNazXSUer2eYmTa/XuR5Gi
-         wmnA==
-X-Forwarded-Encrypted: i=1; AKwUvBzZrlLP38Mxl/s7LnHg9gVW8+zSXA7PXVFGV+otsrsWgMvC93EvYcqsMizt5c+0HuAP8EdmQiw=@vger.kernel.org
-X-Gm-Message-State: AFuF++nZfxxnJUGpgMcssGz0hrF6X0iHhhHTxphxioZtzTk9q8BYoa2l
-	2ze4ymLbZTj81atCFe0nb8oOHmEVGnQL3zd6+m4KtHkjsB8vyC1n0o1zSBlYlHM3mOo=
-X-Gm-Gg: AYBFou0iyUH/uwmnLcJp/ME4R+gruvfBUHPLyKVklefo3lRTtK8y11wxQ7pGltvgoL/
-	aOZ8ShcoKfYzKBY8rHGkfYFqiKBS/0a3EbixVtEpmSsCpQ5pMidZZIDSPRmucEasjq0blP4ywjT
-	HQPO0V5N5fVSCnzqHVxo0b/+82baTohTWtOXGOBxHakKD+J0lzz+MEvDiPZnl1uPywPsyLTxabQ
-	Pw5pDVDSpQpNLMG2/9yQMgaXEklHyM3UNiOlIJQu3hNGaAuVev2rmBPjeQS9laCHtNlVH34mWK1
-	Pv7qCP8yur+aV1rfR0+BgGmrt+0u1vwpmI8JjYNDCLFoII/4BwvTzJEM9c0egDONvHPv6PX9Nds
-	IuiEMOztmqcHZIEiQmSYx0kOyJsQ3H9EBucpZBrEYK500Xh2UcQnpKFb7vFvks1PpEcswVyVoMp
-	u4HY2mNDTHr5ea7Gc5B2J5K0S9+Dw8VueSNUVP8RoEhjxbGQ9maQzynqSUDLkw7SJlWBU+nEkyp
-	d/XnAOJWn5Y7SgV9/hBaNMd2ZrFyKr7RGyZ2Id6GIjk0JUM09UN
-X-Received: by 2002:a05:600c:46d1:b0:49d:798:67a4 with SMTP id 5b1f17b1804b1-49e61640f73mr50975385e9.0.1789141491401;
-        Fri, 11 Sep 2026 08:44:51 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:ab7:2110:6a1d:efff:fe52:1959? ([2a01:e0a:ab7:2110:6a1d:efff:fe52:1959])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49d26b7332asm161865175e9.0.2026.09.11.08.44.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 11 Sep 2026 08:44:50 -0700 (PDT)
-Message-ID: <23770b2b-d5d7-476f-9c25-285e6bd50fea@6wind.com>
-Date: Fri, 11 Sep 2026 17:44:50 +0200
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="MpmIs/B0"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 948641A01F2;
+	Fri, 11 Sep 2026 15:45:44 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 6575C601A3;
+	Fri, 11 Sep 2026 15:45:44 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7FA9611C7AFBA;
+	Fri, 11 Sep 2026 17:45:34 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1789141539; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=zvoomP/KmcW9uaMqASjpDFj47yuZryYCAre99LjYrIw=;
+	b=MpmIs/B0SQ6arMNYfrcKtYMX38wzeYRrc85TvFAbZiFzbejsdwTQ1RkQm06yO8vQgLlT75
+	ThpscA7DLx1uPMKM90Zf1RXgWwBWg4eKV3geLwKU6As02u2L24QBoaHNIe50VkR8wMalId
+	q1h0+8t2X5C1KUv9+y2ZIDiY7pg0gHPwNvmWzQtCwST7GJEIFT6+UADPQ/z6PV3LBRKNCm
+	FTb9O1u8IZfXylnSnPOzCJz+ZzXVVgJHHFhqRYPKwpz1Hg82ClWv4io8ZruNNtllhwjotN
+	XGu5hq1jMKBrS1cUmq/snnpBxRE/6FODhw32urSyHP1syA4BMKuGeeVpd36InQ==
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 11 Sep 2026 17:45:33 +0200
+Message-Id: <DLCLQPVD8B9N.NFKWDS6SH0QN@bootlin.com>
+From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
+Subject: Re: [PATCH net-next v9 08/17] net: macb: introduce macb_context
+ struct for buffer management
+Cc: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Nicolas
+ Ferre" <nicolas.ferre@microchip.com>, "Claudiu Beznea"
+ <claudiu.beznea@tuxon.dev>, "Paolo Valerio" <pvalerio@redhat.com>, "Nicolai
+ Buchwitz" <nb@tipi-net.de>, "Vladimir Kondratiev"
+ <vladimir.kondratiev@mobileye.com>, "Gregory CLEMENT"
+ <gregory.clement@bootlin.com>, =?utf-8?q?Beno=C3=AEt_Monin?=
+ <benoit.monin@bootlin.com>, "Tawfik Bayouk" <tawfik.bayouk@mobileye.com>,
+ "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>, "Maxime Chevallier"
+ <maxime.chevallier@bootlin.com>
+To: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>, "Conor Dooley"
+ <conor.dooley@microchip.com>, "Andrew Lunn" <andrew+netdev@lunn.ch>, "David
+ S. Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>,
+ "Jakub Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>,
+ "Richard Cochran" <richardcochran@gmail.com>, "Russell King"
+ <linux@armlinux.org.uk>
+In-Reply-To: <20260812-macb-context-v9-8-7ddbf5f715e0@bootlin.com>
+References: <20260812-macb-context-v9-8-7ddbf5f715e0@bootlin.com>
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Reply-To: nicolas.dichtel@6wind.com
-Subject: Re: [PATCH net-next v4 2/4] rtnetlink: add AF_PACKET multicast dumps
-To: Yuyang Huang <sigefriedhyy@gmail.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, David Ahern <dsahern@kernel.org>,
- Donald Hunter <donald.hunter@gmail.com>, Eric Dumazet <edumazet@google.com>,
- Ido Schimmel <idosch@nvidia.com>, Jacob Keller <jacob.e.keller@intel.com>,
- Jakub Kicinski <kuba@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>,
- Nikolaos Gkarlis <nickgarlis@gmail.com>, Paolo Abeni <pabeni@redhat.com>,
- Sabrina Dubroca <sd@queasysnail.net>, Shuah Khan <shuah@kernel.org>,
- Simon Horman <horms@kernel.org>, Stanislav Fomichev <sdf.kernel@gmail.com>,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- netdev@vger.kernel.org
-References: <20260911105103.7771-1-sigefriedhyy@gmail.com>
- <20260911105103.7771-3-sigefriedhyy@gmail.com>
-From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Content-Language: en-US
-Organization: 6WIND
-In-Reply-To: <20260911105103.7771-3-sigefriedhyy@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-TUID: NkPDzVMT/sTg
+X-Last-TLS-Session-Version: TLSv1.3
+
+Replying to non-net sashiko
+https://sashiko.dev/#/patchset/20260812-macb-context-v9-0-7ddbf5f715e0%40bo=
+otlin.com
+
+> commit 64775f904ae680bc33819f27120daf167d287348
+> Author: Th=C3=A9o Lebrun <theo.lebrun@bootlin.com>
+> Subject: net: macb: introduce macb_context struct for buffer management
+>
+> Whenever an operation requires buffer realloc, we close the interface,
+> update parameters and reopen. This commit introduces the macb_context
+> struct to own all queue buffers and parameters, paving the way for
+> supporting multiple contexts in parallel to improve reliability under
+> memory pressure.
+>
+> > diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/eth=
+ernet/cadence/macb_main.c
+> > --- a/drivers/net/ethernet/cadence/macb_main.c
+> > +++ b/drivers/net/ethernet/cadence/macb_main.c
+>
+> [ ... ]
+>
+> > @@ -1257,6 +1288,7 @@ static void macb_tx_error_task(struct work_struct=
+ *work)
+> >  	struct macb_queue *queue =3D container_of(work, struct macb_queue,
+> >  						tx_error_task);
+> >  	unsigned int q =3D queue - queue->bp->queues;
+> > +	struct macb_txq *txq =3D macb_txq(queue);
+> >  	struct macb *bp =3D queue->bp;
+> >  	struct macb_tx_skb *tx_skb;
+> >  	struct macb_dma_desc *desc;
+>
+> [Severity: High]
+> Does this asynchronously executing work item dereference the bp->ctx
+> pointer unconditionally via the macb_txq() helper?
+>
+> If the interface is brought down, macb_close() is called, which frees
+> bp->ctx and sets it to NULL. If a hardware error interrupt had just fired
+> and scheduled queue->tx_error_task, it appears this task could continue t=
+o
+> execute because it is not cancelled via cancel_work_sync() in macb_close(=
+).
+> Could this result in a NULL pointer dereference or use-after-free?
+
+Yes! This is all unrelated to the context swapping series but as the
+context swapping codepath does it properly we can fix the macb_close
+codepath along the way.
+
+The sequence will be something like:
+ - quiesce IRQs to make sure they cannot re-schedule our BH tasks
+ - synchronize_irq(bp->queues[i].irq) for all i
+ - drain all BH tasks (in the right order!)
+    - bp->hresp_err_bh_work
+    - queue->tx_error_task
+    - queue->napi_rx
+    - queue->napi_tx
+    - bp->tx_lpi_work
+
+Here is my "what schedules what?" table which explains the ordering:
+
+|               |   enable/disable   |           schedule            |
+|               |----|-------|-------|------|----|----|--------|-----|
+|               |IRQs|napi_tx|napi_rx|tx_lpi|napi|napi|tx_error|hresp|
+| Context       |    |       |       | task | rx | tx |  task  |task |
+|=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D|=3D=3D=3D=3D|=3D=3D=3D=3D=3D=
+=3D=3D|=3D=3D=3D=3D=3D=3D=3D|=3D=3D=3D=3D=3D=3D|=3D=3D=3D=3D|=3D=3D=3D=3D|=
+=3D=3D=3D=3D=3D=3D=3D=3D|=3D=3D=3D=3D=3D|
+| open          | X  |   X   |   X   |      |    |    |        |     |
+| link_up       | X  |       |       |      |    |    |        |     |
+| link_down     | X  |       |       |      |    |    |        |     |
+| close         | X  |   X   |   X   |      |    |    |        |     |
+| enable_tx_lpi |    |       |       |  X   |    |    |        |     |
+| swap          | X  |   X   |   X   |  X   |    |    |        |     |
+| suspend       | X  |   X   |   X   |      |    |    |        |     |
+| resume        | X  |   X   |   X   |      |    |    |        |     |
+|---------------|----|-------|-------|------|----|----|--------|-----|
+| irq & netpoll | X  |       |       |      | X  | X  |   X    | X   |
+|---------------|----|-------|-------|------|----|----|--------|-----|
+| napi_rx       | X  |       |       |      | X  |    |        |     |
+| napi_tx       | X  |       |       |  X   |    | X  |        |     |
+|---------------|----|-------|-------|------|----|----|--------|-----|
+| tx_error_task | X  |   X   |       |      |    |    |        |     |
+| hresp task    | X  |       |       |      |    |    |        |     |
 
 
-Le 11/09/2026 à 12:51, Yuyang Huang a écrit :
-> RTM_GETMULTICAST dumps IPv4 and IPv6 multicast group memberships, but
-> the device multicast list (dev->mc) is only available through
-> /proc/net/dev_mcast, so "ip maddr show" still has to parse procfs for
-> its link-layer entries.
-> 
-> Handle RTM_GETMULTICAST dumps with ifa_family set to AF_PACKET and
-> report every entry of dev->mc in the existing ifaddrmsg format:
-> 
->   - IFA_MULTICAST carries the raw link-layer address
->   - IFA_MC_USERS carries the entry reference count
->   - IFA_F_GLOBAL in IFA_FLAGS reports netdev_hw_addr::global_use, set
->     by dev_mc_add_global() (SIOCADDMULTI) and dev_mc_add_excl()
->     ("bridge fdb add ... self"), i.e. entries added explicitly rather
->     than by a protocol join. This is the static column of
->     /proc/net/dev_mcast
->   - ifa_scope is RT_SCOPE_LINK
-> 
-> This covers every column of /proc/net/dev_mcast. AF_PACKET is the
-> family iproute2 already uses for link-layer addresses ("ip -0").
-> 
-> The default FDB dump also walks dev->mc, but only for Ethernet devices
-> without an ndo_fdb_dump of their own, so bridge, vxlan or macvlan
-> devices never show their multicast filter there, and it has no users
-> count or global_use bit. Extending it would change "bridge fdb show"
-> output and add NDA_* attributes.
-> 
-> There are no legacy users of AF_PACKET requests, so they are always
-> validated: prefixlen, flags and scope must be zero and a non-zero
-> ifa_index restricts the dump to that device. IFA_TARGET_NETNSID selects
-> another netns like the IPv4 and IPv6 dumps and is the only attribute
-> accepted. The dump runs under RCU and netif_addr_lock_bh() and does not
-> need RTNL.
-> 
-> Signed-off-by: Yuyang Huang <sigefriedhyy@gmail.com>
+>
+> [ ... ]
+>
+> > @@ -3222,6 +3300,8 @@ static int macb_close(struct net_device *netdev)
+> >  	spin_unlock_irqrestore(&bp->lock, flags);
+> > =20
+> >  	macb_free(bp);
+> > +	kfree(bp->ctx);
+> > +	bp->ctx =3D NULL;
+>
+> [Severity: High]
+> Is it possible that queue->tx_error_task or bp->hresp_err_bh_work
+> are still running or pending when we reach this point?
 
-Reviewed-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Yes, see above.
+
+[...]
+
+> [Severity: High]
+> This is a pre-existing issue, but does macb_close() need to call
+> synchronize_irq() before freeing resources?
+
+Yes, see above.
+
+[...]
+
+>
+> >
+> >  	if (bp->ptp_info)
+> >  		bp->ptp_info->ptp_remove(netdev);
+>
+> [ ... ]
+>
+> [Severity: High]
+> This is a pre-existing issue, but does macb_interrupt() safely handle
+> shared interrupts when the device is runtime suspended?
+>
+> drivers/net/ethernet/cadence/macb_main.c:macb_interrupt() {
+>     ...
+>     spin_lock(&bp->lock);
+>
+>     status =3D queue_readl(queue, ISR);
+>     if (unlikely(!status)) {
+>         spin_unlock(&bp->lock);
+>         return IRQ_NONE;
+>     ...
+> }
+>
+> If the device enters runtime suspend and its clocks are disabled, and
+> another device sharing the same IRQ line triggers an interrupt, this
+> handler executes and performs queue_readl(queue, ISR) without verifying
+> the device's power management state. Could this trigger a synchronous
+> external abort (bus fault)?
+>
+> Using pm_runtime_get_if_active() before accessing hardware registers in
+> shared IRQ handlers is typically required to prevent accessing powered-of=
+f
+> hardware.
+
+Too unrelated to context swapping. Also it only crashes if shared lanes
+are with separate interfaces. I hope no hardware like that exists in
+the wild. We supported shared interrupts only because some HW uses a
+single lane for all queues.
+
+Long term I'd like to have a single handler for those IP blocks.
+Goal being to reduce overhead and remove that pesky IRQF_SHARED flag.
+
+---
+
+Replying to net sashiko
+https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260812-macb-context-v=
+9-0-7ddbf5f715e0%40bootlin.com
+
+> commit d54f7e79d0f10ea8e363d1bb3711374a51ae9c90
+> Author: Th=C3=A9o Lebrun <theo.lebrun@bootlin.com>
+>
+> net: macb: introduce macb_context struct for buffer management
+>
+> This moves the per-queue ring/buffer pointers and the ring size
+> parameters out of struct macb / struct macb_queue into a new
+> heap-allocated struct macb_context, allocated in macb_open() and
+> at91ether_open() and freed in the close paths. All accessors are
+> converted to reach the state through bp->ctx.
+>
+> > diff --git a/drivers/net/ethernet/cadence/macb.h b/drivers/net/ethernet=
+/cadence/macb.h
+> > index 1e1f52285a39..95cb494190c5 100644
+> > --- a/drivers/net/ethernet/cadence/macb.h
+> > +++ b/drivers/net/ethernet/cadence/macb.h
+>
+> [ ... ]
+>
+> > @@ -1295,6 +1284,32 @@ struct ethtool_rx_fs_list {
+> >  	unsigned int count;
+> >  };
+> > =20
+> > +struct macb_rxq {
+> > +	struct macb_dma_desc	*ring;		/* MACB & GEM */
+> > +	dma_addr_t		ring_dma;	/* MACB & GEM */
+> > +	unsigned int		tail;		/* MACB & GEM */
+> > +	unsigned int		prepared_head;	/* GEM */
+> > +	struct sk_buff		**skbuff;	/* GEM */
+> > +	dma_addr_t		buffers_dma;	/* MACB */
+> > +	void			*buffers;	/* MACB */
+> > +};
+> > +
+> > +struct macb_txq {
+> > +	unsigned int		head;
+> > +	unsigned int		tail;
+> > +	struct macb_dma_desc	*ring;
+> > +	dma_addr_t		ring_dma;
+> > +	struct macb_tx_skb	*skb;
+> > +};
+> > +
+> > +struct macb_context {
+> > +	unsigned int		rx_buffer_size;
+> > +	unsigned int		rx_ring_size;
+> > +	unsigned int		tx_ring_size;
+> > +	struct macb_rxq		rxq[MACB_MAX_QUEUES];
+> > +	struct macb_txq		txq[MACB_MAX_QUEUES];
+> > +};
+> > +
+>
+> [ ... ]
+>
+> > diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/eth=
+ernet/cadence/macb_main.c
+> > index 1476bce77f34..380ee72e26ac 100644
+> > --- a/drivers/net/ethernet/cadence/macb_main.c
+> > +++ b/drivers/net/ethernet/cadence/macb_main.c
+>
+> [ ... ]
+>
+> > @@ -1257,6 +1288,7 @@ static void macb_tx_error_task(struct work_struct=
+ *work)
+> >  	struct macb_queue *queue =3D container_of(work, struct macb_queue,
+> >  						tx_error_task);
+> >  	unsigned int q =3D queue - queue->bp->queues;
+> > +	struct macb_txq *txq =3D macb_txq(queue);
+> >  	struct macb *bp =3D queue->bp;
+> >  	struct macb_tx_skb *tx_skb;
+> >  	struct macb_dma_desc *desc;
+>
+> [ ... ]
+>
+> > @@ -1353,10 +1385,10 @@ static void macb_tx_error_task(struct work_stru=
+ct *work)
+> >  	wmb();
+> > =20
+> >  	/* Reinitialize the TX desc queue */
+> > -	queue_writel(queue, TBQP, lower_32_bits(queue->tx_ring_dma));
+> > +	queue_writel(queue, TBQP, lower_32_bits(txq->ring_dma));
+> >  	/* Make TX ring reflect state of hardware */
+> > -	queue->tx_head =3D 0;
+> > -	queue->tx_tail =3D 0;
+> > +	txq->head =3D 0;
+> > +	txq->tail =3D 0;
+>
+> [ ... ]
+>
+> > @@ -2615,60 +2663,71 @@ static void gem_free_rx_buffers(struct macb *bp=
+)
+>
+> [ ... ]
+>
+> >  static void macb_free(struct macb *bp)
+> >  {
+> >  	struct device *dev =3D &bp->pdev->dev;
+> >  	struct macb_queue *queue;
+> > +	struct macb_txq *txq;
+> > +	struct macb_rxq *rxq;
+> >  	unsigned int q;
+> >  	size_t size;
+> > =20
+> >  	bp->macbgem_ops.mog_free_rx_buffers(bp);
+> > =20
+> > +	txq =3D &bp->ctx->txq[0];
+> >  	size =3D bp->num_queues * macb_tx_ring_size_per_queue(bp);
+> > -	dma_free_coherent(dev, size, bp->queues[0].tx_ring, bp->queues[0].tx_=
+ring_dma);
+> > +	dma_free_coherent(dev, size, txq->ring, txq->ring_dma);
+> > =20
+> > +	rxq =3D &bp->ctx->rxq[0];
+> >  	size =3D bp->num_queues * macb_rx_ring_size_per_queue(bp);
+> > -	dma_free_coherent(dev, size, bp->queues[0].rx_ring, bp->queues[0].rx_=
+ring_dma);
+> > +	dma_free_coherent(dev, size, rxq->ring, rxq->ring_dma);
+>
+> [ ... ]
+>
+> > @@ -2728,7 +2786,8 @@ static int macb_alloc(struct macb *bp)
+> >  {
+> >  	struct device *dev =3D &bp->pdev->dev;
+> >  	dma_addr_t tx_dma, rx_dma;
+> > -	struct macb_queue *queue;
+> > +	struct macb_txq *txq;
+> > +	struct macb_rxq *rxq;
+> >  	unsigned int q;
+> >  	void *tx, *rx;
+> >  	size_t size;
+> > @@ -2754,16 +2813,19 @@ static int macb_alloc(struct macb *bp)
+> >  	netdev_dbg(bp->netdev, "Allocated %zu bytes for %u RX rings at %08lx =
+(mapped %p)\n",
+> >  		   size, bp->num_queues, (unsigned long)rx_dma, rx);
+> > =20
+> > -	for (q =3D 0, queue =3D bp->queues; q < bp->num_queues; ++q, ++queue)=
+ {
+> > -		queue->tx_ring =3D tx + macb_tx_ring_size_per_queue(bp) * q;
+> > -		queue->tx_ring_dma =3D tx_dma + macb_tx_ring_size_per_queue(bp) * q;
+> > +	for (q =3D 0; q < bp->num_queues; ++q) {
+> > +		txq =3D &bp->ctx->txq[q];
+> > +		rxq =3D &bp->ctx->rxq[q];
+> > +
+> > +		txq->ring =3D tx + macb_tx_ring_size_per_queue(bp) * q;
+> > +		txq->ring_dma =3D tx_dma + macb_tx_ring_size_per_queue(bp) * q;
+> > =20
+> > -		queue->rx_ring =3D rx + macb_rx_ring_size_per_queue(bp) * q;
+> > -		queue->rx_ring_dma =3D rx_dma + macb_rx_ring_size_per_queue(bp) * q;
+> > +		rxq->ring =3D rx + macb_rx_ring_size_per_queue(bp) * q;
+> > +		rxq->ring_dma =3D rx_dma + macb_rx_ring_size_per_queue(bp) * q;
+>
+> [Severity: Medium]
+> [Finding: gpt-5-6-sol-4-12]
+> [Sources: gpt-5-6-sol, opus-5]
+> This isn't a bug introduced by this patch, but while macb_alloc() is bein=
+g
+> reshaped here, does the tx coherent block get leaked on the early error
+> paths?
+
+Yes indeed. I've got a fix for that incoming. But completely unrelated.
+
+[...]
+
+> > @@ -3140,14 +3207,22 @@ static int macb_open(struct net_device *netdev)
+> >  	if (err < 0)
+> >  		return err;
+> > =20
+> > +	bp->ctx =3D kzalloc_obj(*bp->ctx);
+> > +	if (!bp->ctx) {
+> > +		err =3D -ENOMEM;
+> > +		goto pm_exit;
+> > +	}
+> > +
+> >  	/* RX buffers initialization */
+> >  	macb_init_rx_buffer_size(bp, bufsz);
+> > +	bp->ctx->rx_ring_size =3D bp->configured_rx_ring_size;
+> > +	bp->ctx->tx_ring_size =3D bp->configured_tx_ring_size;
+> > =20
+> >  	err =3D macb_alloc(bp);
+> >  	if (err) {
+> >  		netdev_err(netdev, "Unable to allocate DMA memory (error %d)\n",
+> >  			   err);
+> > -		goto pm_exit;
+> > +		goto free_ctx;
+> >  	}
+> > =20
+> >  	bp->macbgem_ops.mog_init_rings(bp);
+> > @@ -3189,6 +3264,9 @@ static int macb_open(struct net_device *netdev)
+> >  		napi_disable(&queue->napi_tx);
+> >  	}
+> >  	macb_free(bp);
+> > +free_ctx:
+> > +	kfree(bp->ctx);
+> > +	bp->ctx =3D NULL;
+> >  pm_exit:
+> >  	pm_runtime_put_sync(&bp->pdev->dev);
+> >  	return err;
+> > @@ -3222,6 +3300,8 @@ static int macb_close(struct net_device *netdev)
+> >  	spin_unlock_irqrestore(&bp->lock, flags);
+> > =20
+> >  	macb_free(bp);
+> > +	kfree(bp->ctx);
+> > +	bp->ctx =3D NULL;
+>
+> [Severity: High]
+> [Finding: gpt-5-6-sol-4-11]
+> [Sources: gpt-5-6-sol, opus-5]
+> Can a pending queue->tx_error_task still reference the context after this
+> kfree()?
+
+Yes, see above.
+
+[...]
+
+> > @@ -3712,8 +3799,8 @@ static int macb_set_ringparam(struct net_device *=
+netdev,
+> >  		macb_close(bp->netdev);
+> >  	}
+> > =20
+> > -	bp->rx_ring_size =3D new_rx_size;
+> > -	bp->tx_ring_size =3D new_tx_size;
+> > +	bp->configured_rx_ring_size =3D new_rx_size;
+> > +	bp->configured_tx_ring_size =3D new_tx_size;
+> > =20
+> >  	if (reset)
+> >  		macb_open(bp->netdev);
+>
+> [Severity: High]
+> [Finding: gpt-5-6-sol-3-7]
+> [Sources: gpt-5-6-sol, opus-5]
+> What happens here if macb_open() fails now that it can fail at the new
+> kzalloc_obj() of bp->ctx?
+
+We ignore this error path because at the end of the series this gets
+turned into a context swap operation and the context_swap_end cannot
+fail!
+
+[...]
+
+> > @@ -5061,6 +5149,12 @@ static int at91ether_open(struct net_device *net=
+dev)
+> >  	if (ret < 0)
+> >  		return ret;
+> > =20
+> > +	bp->ctx =3D kzalloc_obj(*bp->ctx);
+> > +	if (!bp->ctx) {
+> > +		ret =3D -ENOMEM;
+> > +		goto pm_exit;
+> > +	}
+> > +
+>
+> [Severity: Low]
+> [Finding: gpt-5-6-sol-2-3]
+> [Sources: gpt-5-6-sol, opus-5]
+> This isn't a bug today, but should at91ether_open() also initialise the
+> context parameters the way macb_open() does?
+
+No because "configured_*_ring_size" does not mean anything on at91ether
+which has 1-sized tx ring or 4-sized rx ring. We refuse the ring size
+config ops, as expected.
+
+[...]
+
+Thanks,
+--=20
+Th=C3=A9o Lebrun, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
