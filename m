@@ -1,36 +1,48 @@
-Received: from outboundhk.mxmail.xiaomi.com (outboundhk.mxmail.xiaomi.com [207.226.244.123])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC0883191BA
-	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 03:37:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.226.244.123
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDC323EA957;
+	Fri, 11 Sep 2026 03:41:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789097839; cv=none; b=Vf6e2n8EH3uyO7nfmh2FAg5bPhBX/ARt0BJs0eU0si9Tv8yQJ4INB5ShkDiCrh8NEWRm6bwBaia90b+DBML7jiSLjRw8KwbSUy0yquowb8nlNS4wrEKZROy91m8usPq2xawJ9qP2W5HRIfzBs1hPm7c7xAQREOmjNyeVkyF5T14=
+	t=1789098106; cv=none; b=ePQwWuGWLhJSs2MdXTsuy7CsFd/lXLlGi8hvRhULZzOxir52LXgsFv0E862yJ639VxR39azOFtidsUdAk+9kSNQ4GgE7nzkZmETPP2aGT8XyYDMtJ7d5PDoQ0DQRkk8KYg6KY6EmC8tDKsYZ9GAwkHkC+CjmkzzliXIiQ8d5OJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789097839; c=relaxed/simple;
-	bh=BFs2oJ7XBSabMNDi4tTFFcPZ0ZuzAhFfA8812XlzQkw=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=iNTTEqZau6nVCbAnjIA8LBCgUQ81YV0Bqv1L6HZlSzheGKMKlfdKoc2xjyb8cY+On9VN+8yZWVyE9rhp1WVSf0zMCQ4bwH0Gf01SzUHnUzTBxa+/PXe32fQCL7YVLC7gMzdsuwY8oehm5oKuSTsLCliD8po8Qdp1nle53h0SNpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=xiaomi.com; spf=pass smtp.mailfrom=xiaomi.com; arc=none smtp.client-ip=207.226.244.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=xiaomi.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xiaomi.com
-X-CSE-ConnectionGUID: WZqQe5bGR82kQcSbmn9ipg==
-X-CSE-MsgGUID: kXX/ipCATemhpr8phGsJCA==
-X-IronPort-AV: E=Sophos;i="6.27,96,1786982400"; 
-   d="scan'208";a="188565908"
-From: =?gb2312?B?wO7Hvw==?= <liqiang35@xiaomi.com>
-To: "security@kernel.org" <security@kernel.org>
-CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: [PATCH net] net/sched: taprio: fix infinite loop in
- taprio_dequeue_tc_priority()
-Thread-Topic: [PATCH net] net/sched: taprio: fix infinite loop in
- taprio_dequeue_tc_priority()
-Thread-Index: AQHdQZ6OkaJxnScbmEO11HIMuonaIg==
-Date: Fri, 11 Sep 2026 03:37:14 +0000
-Message-ID: <997210f347bf47b8b2644df8c4331594@xiaomi.com>
-Accept-Language: zh-CN, en-US
-Content-Language: zh-CN
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1789098106; c=relaxed/simple;
+	bh=fffmjl3I+t0VoNskA2NPcaWs6UwgQHAQEzNnZOgVtN8=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=LVMsqjlKgOV05/U4XZos1W+glVMNKUtyZlT4GoDUL4Ntko/1GZKRDkLl5Jv1F3PNX2kJ2y910ccCNGKQwbPaKTzeQ/hC8Iw18eqyNs1as1i3+4GX3BfJZgkP33t/gYTGhCOI5YJ1a68GDIrUgEcNHuRupze24YDwmDs8geqP0rI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ca2T/y5T; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ca2T/y5T"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BF171F000FF;
+	Fri, 11 Sep 2026 03:41:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789098104;
+	bh=TkgS+0JEYkCNvD9Z8BwlVLBV2hDmg9h+tqMOl3/pZDA=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=ca2T/y5TVtNflBHHa/uIk7OJq3w5Jz4c/8T2VHA5Zk/9kF0kixasJiR6UZp5o7KIA
+	 6XJfiUk+OW9tTwrIpVqVmOkfbNDNR32k5hdl+ZGDn70SSkTooQ7Pom4pfswAUOpwUu
+	 +XVJ/qzX46+5Om6pBOOkwqpNhhlmZ4CQuTJh4vCS8BAovwSAz66nzgP0MeOs47WhWy
+	 SGpEZStGbWCrONvkTsxJiM7RCFa6N6gmWJyEM4rf8csJlekSc6OY/CugmJ9hmAVTgo
+	 ez9DsyxU0VjSYVk5S3s2+9bQqq3U0YPVshj7j8TjjV1o8K1mHBTZ76UVJF4ZwnlLkl
+	 YaBTYviraRA0w==
+Subject: Re: [PATCH v27 net-next 01/10] net/nebula-matrix: add minimum nbl
+ build framework
+From: netdev-bot+sashiko@kernel.org
+To: illusion.wang@nebula-matrix.com
+Cc: dimon.zhao@nebula-matrix.com, alvin.wang@nebula-matrix.com,
+ sam.chen@nebula-matrix.com, netdev@vger.kernel.org, andrew+netdev@lunn.ch,
+ corbet@lwn.net, kuba@kernel.org, horms@kernel.org, linux-doc@vger.kernel.org,
+ pabeni@redhat.com, vadim.fedorenko@linux.dev, lukas.bulwahn@redhat.com,
+ edumazet@google.com, enelsonmoore@gmail.com, skhan@linuxfoundation.org,
+ hkallweit1@gmail.com, linux-kernel@vger.kernel.org
+Date: Fri, 11 Sep 2026 03:41:42 +0000
+Message-ID: <178909810279.219967.5775207930662190631@kernel.org>
+In-Reply-To: <20260907123848.30256-2-illusion.wang@nebula-matrix.com>
+References: <20260907123848.30256-2-illusion.wang@nebula-matrix.com>
+X-sashiko-severity: Low
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -38,86 +50,128 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-SGksDQoNCkkgZm91bmQgYW4gaW5maW5pdGUgbG9vcCBidWcgaW4gdGFwcmlvX2RlcXVldWVfdGNf
-cHJpb3JpdHkoKSB3aGlsZSBmdXp6aW5nIHRoZSBMaW51eCBFdGhlcm5ldCBuZXR3b3JraW5nIHN0
-YWNrIG9uIGVtYmVkZGVkIGRldmljZXMuDQoNCnRhcHJpb19kZXF1ZXVlX3RjX3ByaW9yaXR5KCkg
-Y29udGFpbnMgYSBkby13aGlsZSBsb29wIHRoYXQgaXRlcmF0ZXMgb3ZlciBUWFFzIGJlbG9uZ2lu
-ZyB0byBhIHRyYWZmaWMgY2xhc3MgdXNpbmcgYSBwZXJzaXN0ZW50IGN1cnNvciAocS0+Y3VyX3R4
-cVt0Y10pLiBUaGUgbG9vcCB0ZXJtaW5hdGlvbiBjb25kaXRpb24gY29tcGFyZXMgdGhlIGN1cnJl
-bnQgY3Vyc29yIHBvc2l0aW9uIHdpdGggaXRzIGluaXRpYWwgdmFsdWUgKGZpcnN0X3R4cSkuDQoN
-Ckhvd2V2ZXIsIHRhcHJpb19uZXh0X3RjX3R4cSgpIHJlYWRzIHRoZSBUQy10by1UWFEgbWFwcGlu
-ZyBmcm9tIGRldi0+dGNfdG9fdHhxW3RjXSwgd2hpY2ggaXMgYSBwZXItZGV2aWNlIHNoYXJlZCBm
-aWVsZC4gV2hlbiBhbm90aGVyIHFkaXNjIChlLmcuLCBtcXByaW8pIGlzIGdyYWZ0ZWQgb250byB0
-aGUgc2FtZSBkZXZpY2Ugd2l0aCBhIGRpZmZlcmVudCBxdWV1ZSBtYXBwaW5nLCBkZXYtPnRjX3Rv
-X3R4cVtdIGlzIHVwZGF0ZWQgYnV0IHRhcHJpbydzIHByaXZhdGUgY3VyX3R4cVtdIHJldGFpbnMg
-dGhlIHN0YWxlIHZhbHVlIGZyb20gdGhlIG9sZCBtYXBwaW5nLg0KDQpUaGlzIGNyZWF0ZXMgYSBz
-aXR1YXRpb24gd2hlcmUgZmlyc3RfdHhxIChmcm9tIG9sZCBtYXBwaW5nIEEpIGZhbGxzIG91dHNp
-ZGUgdGhlIG5ldyBbb2Zmc2V0LCBvZmZzZXQrY291bnQpIHJhbmdlIChmcm9tIG5ldyBtYXBwaW5n
-IEIpLiBUaGUgd3JhcCBsb2dpYyBpbiB0YXByaW9fbmV4dF90Y190eHEoKSBjb25maW5lcyB0aGUg
-Y3Vyc29yIHRvIHRoZSBuZXcgcmFuZ2UsIHNvIGl0IGNhbiBuZXZlciByZWFjaCBmaXJzdF90eHEs
-IGNhdXNpbmcgYW4gaW5maW5pdGUgbG9vcA0KaW4gc29mdGlycSBjb250ZXh0IHdpdGggaW50ZXJy
-dXB0cyBkaXNhYmxlZC4NCg0KVGhlIGxvb3AgbWFuaWZlc3RzIGFzIGEgaGFyZCBDUFUgbG9ja3Vw
-OiB0aGUgYWZmZWN0ZWQgY29yZSBzcGlucyBpbmRlZmluaXRlbHkgaW4gdGFwcmlvX2RlcXVldWVf
-ZnJvbV90eHEoKSwgdGltZXIgdGlja3Mgc3RvcCwgUkNVDQpzdGFsbHMsIGFuZCB0aGUgcnRubF9s
-b2NrIGlzIGhlbGQgZm9yZXZlciAtLSBibG9ja2luZyBhbGwgbmV0d29yayBjb25maWd1cmF0aW9u
-ICh0YywgaXAsIG5ldGxpbmspIGFuZCBldmVuIHJlYm9vdC4gT25seSBTeXNScSBoYXJkDQpyZXNl
-dCBjYW4gcmVjb3ZlciB0aGUgc3lzdGVtLg0KDQpUaGlzIGlzIDEwMCUgZGV0ZXJtaW5pc3RpYyB3
-aXRoIGp1c3QgMiB0YyBjb21tYW5kcyBhbmQgemVybyBuZXR3b3JrIHRyYWZmaWM6DQoNCiAgdGMg
-cWRpc2MgcmVwbGFjZSBkZXYgZXRoMCByb290IHRhcHJpbyBcDQogICAgICBudW1fdGMgMyBtYXAg
-MCAwIDEgMSAyIDIgMCAwIDAgMCAwIDAgMCAwIDAgMCBcDQogICAgICBxdWV1ZXMgMUAwIDFAMSAx
-QDIgYmFzZS10aW1lIDAgXA0KICAgICAgc2NoZWQtZW50cnkgUyBmZiAxMDAwMDAwIGNsb2NraWQg
-Q0xPQ0tfVEFJDQoNCiAgdGMgcWRpc2MgcmVwbGFjZSBkZXYgZXRoMCByb290IG1xcHJpbyBcDQog
-ICAgICBudW1fdGMgMyBtYXAgMCAwIDEgMSAyIDIgMCAwIDAgMCAwIDAgMCAwIDAgMCBcDQogICAg
-ICBxdWV1ZXMgMUAxIDFAMiAxQDMNCg0KVGhlIHNlY29uZCBjb21tYW5kIHRyaWdnZXJzIHRoZSBn
-cmFmdCBwYXRoOiBtcXByaW8gd3JpdGVzIGRldi0+dGNfdG9fdHhxW10gd2l0aCB0aGUgbmV3IG1h
-cHBpbmcsIHRoZW4gZGV2X2RlYWN0aXZhdGUoKSBmaXJlcw0KYSBwZW5kaW5nIFRYIHNvZnRpcnEg
-dGhhdCBjYWxscyB0YXByaW8ncyBkZXF1ZXVlIHdpdGggdGhlIHN0YWxlIGN1cnNvciAtLSBpbnN0
-YW50IGRlYWRsb29wLg0KDQpUZXN0ZWQgb246DQogIC0gYWFyY2g2NCAoNi4xMi43My1ydDE1Kywg
-c3RtbWFjIHBoeXNpY2FsIE5JQyk6IDYuNWggbG9ja3VwDQogIC0geDg2XzY0ICg2LjguMC0xMzgt
-Z2VuZXJpYywgdmV0aCB2aXJ0dWFsIE5JQyk6IGluc3RhbnQgbG9ja3VwDQoNCkZpeCBieSBjbGFt
-cGluZyBmaXJzdF90eHEgaW50byB0aGUgY3VycmVudCBbb2Zmc2V0LCBvZmZzZXQrY291bnQpIHJh
-bmdlIHJlYWQgZnJvbSBkZXYtPnRjX3RvX3R4cVt0Y10gYXQgdGhlIHN0YXJ0IG9mIGVhY2ggVEMg
-aXRlcmF0aW9uLiBJZiB0aGUgY3Vyc29yIGlzIG91dHNpZGUgdGhlIHZhbGlkIHJhbmdlLCByZXNl
-dCBpdCB0byBvZmZzZXQuIFRoaXMgYWRkcyBhIHNpbmdsZSBSRUFEX09OQ0UgKyBicmFuY2ggcGVy
-IFRDIHBlciBkZXF1ZXVlIGNhbGwgd2l0aCBuZWdsaWdpYmxlIG92ZXJoZWFkLg0KDQpGaXhlczog
-MmY1MzBkZjc2YzhjICgibmV0L3NjaGVkOiB0YXByaW86IGdpdmUgaGlnaGVyIHByaW9yaXR5IHRv
-IGhpZ2hlciBUQ3MgaW4gc29mdHdhcmUgZGVxdWV1ZSBtb2RlIikNClNpZ25lZC1vZmYtYnk6IExp
-UWlhbmcgPGxpcWlhbmczNUB4aWFvbWkuY29tPg0KLS0tDQogbmV0L3NjaGVkL3NjaF90YXByaW8u
-YyB8IDE0ICsrKysrKysrKysrKysrDQogMSBmaWxlIGNoYW5nZWQsIDE0IGluc2VydGlvbnMoKykN
-Cg0KZGlmZiAtLWdpdCBhL25ldC9zY2hlZC9zY2hfdGFwcmlvLmMgYi9uZXQvc2NoZWQvc2NoX3Rh
-cHJpby5jDQppbmRleCAzOWFjNWI5N2EuLjlhZTBkZTAwNyAxMDA2NDQNCi0tLSBhL25ldC9zY2hl
-ZC9zY2hfdGFwcmlvLmMNCisrKyBiL25ldC9zY2hlZC9zY2hfdGFwcmlvLmMNCkBAIC03ODEsNiAr
-NzgxLDcgQEAgc3RhdGljIHN0cnVjdCBza19idWZmICp0YXByaW9fZGVxdWV1ZV90Y19wcmlvcml0
-eShzdHJ1Y3QgUWRpc2MgKnNjaCwNCiAgc3RydWN0IHRhcHJpb19zY2hlZCAqcSA9IHFkaXNjX3By
-aXYoc2NoKTsNCiAgc3RydWN0IG5ldF9kZXZpY2UgKmRldiA9IHFkaXNjX2RldihzY2gpOw0KICBp
-bnQgbnVtX3RjID0gbmV0ZGV2X2dldF9udW1fdGMoZGV2KTsNCisgc3RydWN0IG5ldGRldl90Y190
-eHEgdGNfdHhxOw0KICBzdHJ1Y3Qgc2tfYnVmZiAqc2tiOw0KICBpbnQgdGM7DQoNCkBAIC03OTAs
-NiArNzkxLDE5IEBAIHN0YXRpYyBzdHJ1Y3Qgc2tfYnVmZiAqdGFwcmlvX2RlcXVldWVfdGNfcHJp
-b3JpdHkoc3RydWN0IFFkaXNjICpzY2gsDQogIGlmICghKGdhdGVfbWFzayAmIEJJVCh0YykpKQ0K
-ICBjb250aW51ZTsNCg0KKyAvKiBDbGFtcCB0aGUgcGVyc2lzdGVudCBjdXJzb3IgaW50byB0aGUg
-Y3VycmVudCB0Y190b190eHENCisgKiByYW5nZS4gQW5vdGhlciBxZGlzYyAoZS5nLiBtcXByaW8p
-IGdyYWZ0ZWQgb250byB0aGUgc2FtZQ0KKyAqIGRldmljZSBtYXkgaGF2ZSByZXdyaXR0ZW4gZGV2
-LT50Y190b190eHFbXSBzaW5jZSB0YXByaW8NCisgKiBsYXN0IHNldCBjdXJfdHhxW10sIG1ha2lu
-ZyBmaXJzdF90eHEgZmFsbCBvdXRzaWRlIHRoZSBuZXcNCisgKiBbb2Zmc2V0LCBvZmZzZXQrY291
-bnQpIGludGVydmFsIGFuZCB0aGUgZG8td2hpbGUgZXhpdA0KKyAqIGNvbmRpdGlvbiB1bnJlYWNo
-YWJsZSAtLSBhbiBpbmZpbml0ZSBsb29wLg0KKyAqLw0KKyB0Y190eHEuY29tYmluZWQgPSBSRUFE
-X09OQ0UoZGV2LT50Y190b190eHFbdGNdLmNvbWJpbmVkKTsNCisgaWYgKHRjX3R4cS5jb3VudCA9
-PSAwIHx8DQorICAgIGZpcnN0X3R4cSA8IHRjX3R4cS5vZmZzZXQgfHwNCisgICAgZmlyc3RfdHhx
-ID49IHRjX3R4cS5vZmZzZXQgKyB0Y190eHEuY291bnQpDQorIHEtPmN1cl90eHFbdGNdID0gZmly
-c3RfdHhxID0gdGNfdHhxLm9mZnNldDsNCisNCiAgZG8gew0KICBza2IgPSB0YXByaW9fZGVxdWV1
-ZV9mcm9tX3R4cShzY2gsIHEtPmN1cl90eHFbdGNdLA0KICAgICAgIGVudHJ5LCBnYXRlX21hc2sp
-Ow0KLS0NCjIuNTAuMQ0KDQoNCkJlc3QgcmVnYXJkcywNCkxpUWlhbmcNClhpYW9taSBTaGFkb3dC
-bGFkZSBTZWN1cml0eSBMYWINCiMvKioqKioqsb7Tyrz+vLDG5Li9vP66rNPQ0KHD17mry761xLGj
-w9zQxc+io6y99s/e09q3osvNuPjJz8PmtdjWt9bQwdCz9rXEuPbIy7vyyLrX6aGjvfvWucjOus7G
-5Mv7yMvS1MjOus7Qzsq9yrnTw6OosPzAqLWrsrvP3tPayKuyv7vysr+31rXY0LnCtqGiuLTWxqGi
-u/LJoreio6mxvtPKvP7W0LXE0MXPoqGjyOe5+8T6tO3K1cHLsb7Tyrz+o6zH68T6waK8tLXnu7C7
-8tPKvP7NqNaqt6K8/sjLsqLJvrP9sb7Tyrz+o6EgVGhpcyBlLW1haWwgYW5kIGl0cyBhdHRhY2ht
-ZW50cyBjb250YWluIGNvbmZpZGVudGlhbCBpbmZvcm1hdGlvbiBmcm9tIFhJQU9NSSwgd2hpY2gg
-aXMgaW50ZW5kZWQgb25seSBmb3IgdGhlIHBlcnNvbiBvciBlbnRpdHkgd2hvc2UgYWRkcmVzcyBp
-cyBsaXN0ZWQgYWJvdmUuIEFueSB1c2Ugb2YgdGhlIGluZm9ybWF0aW9uIGNvbnRhaW5lZCBoZXJl
-aW4gaW4gYW55IHdheSAoaW5jbHVkaW5nLCBidXQgbm90IGxpbWl0ZWQgdG8sIHRvdGFsIG9yIHBh
-cnRpYWwgZGlzY2xvc3VyZSwgcmVwcm9kdWN0aW9uLCBvciBkaXNzZW1pbmF0aW9uKSBieSBwZXJz
-b25zIG90aGVyIHRoYW4gdGhlIGludGVuZGVkIHJlY2lwaWVudChzKSBpcyBwcm9oaWJpdGVkLiBJ
-ZiB5b3UgcmVjZWl2ZSB0aGlzIGUtbWFpbCBpbiBlcnJvciwgcGxlYXNlIG5vdGlmeSB0aGUgc2Vu
-ZGVyIGJ5IHBob25lIG9yIGVtYWlsIGltbWVkaWF0ZWx5IGFuZCBkZWxldGUgaXQhKioqKioqLyMN
-Cg==
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue(s) to consider:
+
+Critical: 0 · High: 0 · Medium: 0 · Low: 1
+
+- [Low] Documentation/Kconfig prose added by this patch describes
+  functionality that does not exist at this commit:…
+
+--
+
+net/nebula-matrix: add minimum nbl build framework
+
+This patch adds the Kconfig, Makefile and MAINTAINERS entries for a new
+nebula-matrix ethernet vendor directory, a documentation file for the nbl
+driver, and a PCI driver skeleton whose probe and remove callbacks are
+stubs.
+
+> diff --git a/Documentation/networking/device_drivers/ethernet/nebula-matrix/nbl.rst b/Documentation/networking/device_drivers/ethernet/nebula-matrix/nbl.rst
+> new file mode 100644
+> index 0000000000000..5540291cf3766
+> --- /dev/null
+> +++ b/Documentation/networking/device_drivers/ethernet/nebula-matrix/nbl.rst
+> @@ -0,0 +1,28 @@
+> +.. SPDX-License-Identifier: GPL-2.0
+> +
+> +================================================================
+> +Linux Base Driver for Nebula-matrix m18110-NIC/m18000-NIC family
+> +================================================================
+> +
+> +Overview:
+> +=========
+> +The m18110-NIC/m18000-NIC (marketed as SNIC s1000) is a series
+> +of network interface cards for the Data Center Area.
+> +
+> +This driver provides the core infrastructure for m18110/m18000-NIC
+> +devices, including:
+> +
+> +- PCI device enumeration and resource (BAR) management
+> +- Firmware command interface via PF mailbox
+> +- Channel-based communication between driver and firmware
+> +- Device initialization and teardown
+
+[Severity: Low]
+
+This isn't a bug, but does the documentation added here describe code that
+exists at this commit?  The only C file added is nbl_main.c, where
+nbl_probe() returns -ENODEV and nbl_remove() is empty, so there is no BAR
+management, no PF mailbox command interface, no channel communication and no
+device init/teardown yet.
+
+The same wording appears in the CONFIG_NBL help text below.
+
+All four items are implemented by the end of the series (nbl_probe() ends up
+calling nbl_core_init(), which chains nbl_hw_init_leonis(),
+nbl_chan_init_common(), nbl_res_init_leonis(), nbl_disp_init() and
+nbl_dev_init()), and the .rst text is not touched again, so this is only a
+skew within the series.
+
+Would it be preferable to word the first patch's doc and help text to match
+the stub state, or to add this prose together with the code it describes?
+
+[ ... ]
+
+> diff --git a/drivers/net/ethernet/nebula-matrix/Kconfig b/drivers/net/ethernet/nebula-matrix/Kconfig
+> new file mode 100644
+> index 0000000000000..dd0e91d14131f
+> --- /dev/null
+> +++ b/drivers/net/ethernet/nebula-matrix/Kconfig
+> @@ -0,0 +1,32 @@
+
+[ ... ]
+
+> +config NBL
+> +	tristate "Nebula-matrix Ethernet Controller m18110/m18000 support"
+> +	depends on PCI && (64BIT || COMPILE_TEST) && !CPU_BIG_ENDIAN
+> +	help
+> +	  This driver provides the core infrastructure for Nebula-matrix
+> +	  Ethernet Controller m18110/m18000 Family of devices, including
+> +	  PCI enumeration, firmware mailbox and channel communication.
+
+This is the menuconfig text mentioned above; at this commit selecting
+CONFIG_NBL=m builds a module that only registers a pci_driver with an
+always-failing probe.
+
+[ ... ]
+
+> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
+> new file mode 100644
+> index 0000000000000..199626159a4ce
+> --- /dev/null
+> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
+> @@ -0,0 +1,100 @@
+
+[ ... ]
+
+> +static int nbl_probe(struct pci_dev *pdev,
+> +		     const struct pci_device_id *id)
+> +{
+> +	return -ENODEV;
+> +}
+> +
+> +static void nbl_remove(struct pci_dev *pdev)
+> +{
+> +}
+
+[ ... ]
+
+> +static const struct pci_device_id nbl_id_table[] = {
+> +	{ PCI_DEVICE(NBL_VENDOR_ID, NBL_DEVICE_ID_M18110),
+> +	  .driver_data = BIT(NBL_CAP_HAS_NET_BIT) },
+
+[ ... ]
+
+> +	/* required as sentinel */
+> +	{ }
+> +};
+> +MODULE_DEVICE_TABLE(pci, nbl_id_table);
+
+Since MODULE_DEVICE_TABLE() publishes all 16 IDs in the 0x1F0F:0x3403-0x3412
+range, udev will autoload nbl on matching hardware at this commit and the
+device stays unbound because of the -ENODEV above.  Is that the intended
+intermediate state for a bisect point?
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260907123848.30256-1-illusion.wang%40nebula-matrix.com
