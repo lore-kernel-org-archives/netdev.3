@@ -1,125 +1,97 @@
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-61.mta0.migadu.com [91.218.175.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B224B351C34;
-	Fri, 11 Sep 2026 14:22:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1DC634CFDA
+	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 14:24:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789136534; cv=none; b=PFC7ZfzYYNb8pa/qOOtuD25CFHo6EONM2rR5ihz08MLOscuoxde6xBwaUXmB1OvpDr2c9Sdawgum/gVwJxAOGk9Acoy2y0yy65k7HjWsgCvop5L8IVzeyiZFHZ36SABwIeQgju1kDcDIZj5wqYEAFK2gb/BauBHopUXGqalvw/g=
+	t=1789136692; cv=none; b=IRWHSUitw5lodctlzFL67bj709FrM+oTXEyjdzcWBvKEwBA2atmk6Fay20/jzGyi16P0kB4tN+sOm/kmlaUOkcWCvcvAZ5BSaDLFLq+3psQPB414BbbJGF0HSa3mV8pm2Q0P5vWtMf9XtufHg38Ep0VSoihY9kLdrH3Ejzf+yj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789136534; c=relaxed/simple;
-	bh=jmNvfqXjweVniseb8oBYU2SlAr/cTHg9c4d+ZJ85pK8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=s1rllgNy80WjzN+qY91STWPJa9Jh9ScpQxxOHeoFm18IAI7yfEe9fpBTfW81yo0/Fztlu5rO2fzd3tsTM4HZAnKA7h6FTqKA5CTeppyoidISc9vFP42m/5xbY7viWY25RNDGBlOlNjpMDrzE2Cz0xlfxHJW6PPRRra4WFK2Z/ZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=dRmx73Q/; arc=none smtp.client-ip=217.70.190.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+	s=arc-20240116; t=1789136692; c=relaxed/simple;
+	bh=68vbxBHpsZEn00oQLWKRWeOhLCGrb/gn4QRg4kqmr+A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JCCNgwDaMU1OjBc7KpGPja8l4BJYhLmCX7TxomKXCGJ5RUD62rLO5e6a/FHaHuT1XnxAqOTufKmVjBrImoKCM3fWFCUWlO4GFxFDuiRYa5icUM54fSptq3Ysa90wIeFpYh/CbqBD9op6VNhMAcRtiHmUKY+H69n9Ao26YJgg5Zw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=SBs2DxmF; arc=none smtp.client-ip=91.218.175.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="dRmx73Q/"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1789136530;
-	bh=Ox7YSacdV7h2InVZd1Iw3kxrYUsfnmdCyCbV+t17m9Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dRmx73Q/BqINvAznK12hHcya8HwHtUWWApvOp3949LNn7lbg00QuvV+XbJvOBjmqk
-	 qnEwahN+MXSnHfEuFfB1jR68KSJV6kbVjaVJ/xb+0CiEn0uE2i1XBtRydooWhtihAe
-	 ebUrtLoLjFoZWeD/L0U8JIzqTghuuQ/82VVra4VnwvUiGoKv/7Bzf/6sGEmuU0u2m7
-	 B9XRVOFTG34sHFOjTeXMsKvEYcAF8eNJasho/uhyMrptFRXMDjNDfnCUrPAURY3wGk
-	 ZT57vPYEODsmxnxI3PBQQnPCs+Bk0eIDIuYS8daqFCGitNr6DorRDxTwpAZhvEU6Pg
-	 +/tE0aGrVoVdQ==
-Received: from netfilter.org (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 06475603E1;
-	Fri, 11 Sep 2026 16:22:10 +0200 (CEST)
-Date: Fri, 11 Sep 2026 16:22:07 +0200
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: Farhad Alemi <farhad.alemi@berkeley.edu>
-Cc: David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	falemi@asu.edu, Simon Horman <horms@kernel.org>,
-	Florian Westphal <fw@strlen.de>, netfilter-devel@vger.kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] net: reject a forward path that loops back to the
- tunnel
-Message-ID: <aqQOj8EHUb6ZzWjR@chamomile>
-References: <CA+0ovCj+Pd5owGH+51rA8-RDu9YFx5oYUv8bV0zOE72QgVfY0A@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="SBs2DxmF"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=68vbxBHpsZEn00oQLWKRWeOhLCGrb/gn4QRg4kqmr+A=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789136685; v=1; x=1789741485;
+ b=SBs2DxmF2oXuNwA+NZdRJMsh/CV127mt4FVGSttTjTtJgs9mgTl5LPrjCnAXapPKMv8HJSXO
+ sB9WQJsleDlygxxIUWOQEfMi34RuJ9UGSK1uWbNDDGNOYAyxVb+26FRfm62yWL9Th1L/cLeabMG
+ jvfcP/pvSmkDFTh25WNSYp3U=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 5091ab4b9adc1903;
+	Fri, 11 Sep 2026 14:24:45 +0000
+X-Mizu-Trace-ID: 5091ab4b9adc1903
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <19eca438-012e-4457-803b-cca4e4d12520@linux.dev>
+Date: Fri, 11 Sep 2026 22:24:37 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CA+0ovCj+Pd5owGH+51rA8-RDu9YFx5oYUv8bV0zOE72QgVfY0A@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH bpf v2] bpf: Fix NULL pointer dereference in
+ __bpf_sk_storage_map_seq_show
+To: "Cen Zhang (Microsoft Security FORGE Labs)" <cenzhang@linux.microsoft.com>
+Cc: Amery Hung <ameryhung@gmail.com>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Fushuai Wang <wangfushuai@baidu.com>,
+ Weiming Shi <bestswngs@gmail.com>, Matt Bobrowski
+ <mattbobrowski@google.com>, Kees Cook <kees@kernel.org>,
+ Menglong Dong <menglong8.dong@gmail.com>, bpf@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ AutonomousCodeSecurity@microsoft.com, xmei5@asu.edu,
+ tgopinath@linux.microsoft.com, kys@microsoft.com,
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Martin KaFai Lau <martin.lau@kernel.org>
+References: <20260911140308.81560-1-cenzhang@linux.microsoft.com>
+From: luoxuanqiang <xuanqiang.luo@linux.dev>
+In-Reply-To: <20260911140308.81560-1-cenzhang@linux.microsoft.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Hi,
+在 2026/9/11 22:03, Cen Zhang (Microsoft Security FORGE Labs) 写道:
 
-On Fri, Sep 11, 2026 at 12:17:08AM +0000, Farhad Alemi wrote:
-> ipip_fill_forward_path() and ip6_tnl_fill_forward_path() assign the outer
-> route's device to ctx->dev without checking that it differs from the tunnel
-> device itself.  When a tunnel's outer route resolves back to that same
-> tunnel, the walk in dev_fill_forward_path() makes no progress and trips its
-> loop check WARN_ON_ONCE(last_dev == ctx->dev). Release the route and
-> return -EOPNOTSUPP when the resolved dst device equals ctx->dev, so the
-> path walk either advances to a different device or fails cleanly.
+> Iterating a sk_storage map is a two-stage operation:
+> bpf_sk_storage_map_seq_find_next() returns a selem, then
+> __bpf_sk_storage_map_seq_show() uses it. The latter re-reads
+> selem->local_storage via rcu_dereference() without checking for NULL.
+> A concurrent socket close can unlink the selem and clear that pointer
+> between the two stages, causing a NULL dereference of sk_storage->owner.
+>
+> Oops: general protection fault, probably for non-canonical
+>     address 0xdffffc0000000011
+>    net/core/bpf_sk_storage.c:809 __bpf_sk_storage_map_seq_show()
+>    bpf_seq_read+0x366/0x1120
+>    vfs_read+0x174/0xa50
+>    ksys_read+0xfc/0x1d0
+>
+> Return SEQ_SKIP if the re-read yields NULL. This prevents the dereference
+> and tells bpf_seq_read() that the stale element was skipped, so it does
+> not consume an iterator sequence number without running the BPF program.
+>
+> Fixes: 0be08389c7f2 ("bpf: Switch to bpf_selem_unlink_nofail in bpf_local_storage_{map_free, destroy}")
+> Reported-by: Xiang Mei (Microsoft) <xmei5@asu.edu>
+> Closes: https://lore.kernel.org/all/20260827051859.45511-1-blbllhy@gmail.com/
+> Suggested-by: Amery Hung <ameryhung@gmail.com>
+> Suggested-by: Xuanqiang Luo <xuanqiang.luo@linux.dev>
+> Link: https://lore.kernel.org/all/CAMB2axNFOC9G2RwOCnsWDth83REMWnmPE8gxMwbLYoGusw9miA@mail.gmail.com/
+> Link: https://lore.kernel.org/all/c3f2a61d-d5bc-454c-987d-717b5f8c8809@linux.dev/
+> Cc: AutonomousCodeSecurity@microsoft.com
+> Signed-off-by: Cen Zhang (Microsoft Security FORGE Labs) <cenzhang@linux.microsoft.com>
+> Assisted-by: Copilot (Grok 4.6)
 
-I think we can remove this WARN_ON_ONCE() from dev_fill_forward_path(), ie.
+Reviewed-by: Xuanqiang Luo<luoxuanqiang@kylinos.cn>
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index ecfbd72d5d1a..c67900354fa6 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -789,7 +789,7 @@ int dev_fill_forward_path(struct net_device_path_ctx *ctx,
-                        goto err_out;
- 
-                stack->num_paths++;
--               if (WARN_ON_ONCE(last_dev == ctx->dev))
-+               if (last_dev == ctx->dev)
-                        goto err_out;
-        }
- 
-> Closes: https://lore.kernel.org/all/CA+0ovCgaRvbd0Udj70b2xxG8Cx3CaCpNhnf1V4RWQuDveZYZhA@mail.gmail.com/
-> Signed-off-by: Farhad Alemi <farhad.alemi@berkeley.edu>
-> ---
-> --- a/net/ipv4/ipip.c
-> +++ b/net/ipv4/ipip.c
-> @@ -375,6 +375,12 @@ static int ipip_fill_forward_path(struct
-> net_device_path_ctx *ctx,
->  	if (IS_ERR(rt))
->  		return PTR_ERR(rt);
-> 
-> +	/* The path walk must advance: a route back into the tunnel is a loop. */
-> +	if (rt->dst.dev == ctx->dev) {
-> +		ip_rt_put(rt);
-> +		return -EOPNOTSUPP;
-> +	}
-> +
->  	path->type = DEV_PATH_TUN;
->  	path->tun.src_v4.s_addr = tiph->saddr;
->  	path->tun.dst_v4.s_addr = tiph->daddr;
-> --- a/net/ipv6/ip6_tunnel.c
-> +++ b/net/ipv6/ip6_tunnel.c
-> @@ -1863,7 +1863,12 @@ static int ip6_tnl_fill_forward_path(struct
-> net_device_path_ctx *ctx,
->  	fl6.flowi6_proto = 0;
-> 
->  	dst = ip6_route_output(dev_net(ctx->dev), NULL, &fl6);
-> -	if (!dst->error) {
-> +	err = dst->error;
-> +	/* The path walk must advance: a route back into the tunnel is a loop. */
-> +	if (!err && dst->dev == ctx->dev)
-> +		err = -EOPNOTSUPP;
-> +
-> +	if (!err) {
->  		path->type = DEV_PATH_TUN;
->  		path->tun.src_v6 = fl6.saddr;
->  		path->tun.dst_v6 = fl6.daddr;
-> @@ -1873,7 +1878,6 @@ static int ip6_tnl_fill_forward_path(struct
-> net_device_path_ctx *ctx,
->  		ctx->dev = dst->dev;
->  	}
-> 
-> -	err = dst->error;
->  	if (err)
->  		dst_release(dst);
+Thanks,
+Xuanqiang
+
