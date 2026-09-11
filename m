@@ -1,137 +1,141 @@
-Received: from mail-vs1-f46.google.com (mail-vs1-f46.google.com [209.85.217.46])
+Received: from mail-pj2-f7.google.com (mail-pj2-f7.google.com [74.125.227.135])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EF5949DBB6
-	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 15:53:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EF1349B20B
+	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 15:56:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.135
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789142011; cv=none; b=IB9u0HIcHhbF7gxYczQ4hEkyHptX751kLPQMEjn9CN2O/0l6Jo6JPvGx+HgdH+lror+ew44tNoB9T8fjXODQ9xGDpnEpuvgwpBuJpnWpuC/doLi49IiEulfeo6QPKKVwri94gRpG29B0MpURAdRmu7Y/T9DgFioeAPvBRRh4GHk=
+	t=1789142203; cv=none; b=TQWXAAiaWQYUPYVgZLdrDLO3gUh+PFryBASBm3hzQNSZfRC5mDXFaJfVrnts3CmlgGo6ai+uakBkRJ399fUXRWQp1GTafQbxmvj2O4S1ylMlb2vaBAC0esF8fg0owge00qbMI4Yft1T9+JnEoeYxx8jx4kneej1m0GbWiiDahMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789142011; c=relaxed/simple;
-	bh=A4mNJss7r8+QPwLUxRmAnLRSF7/BOBXN3ZTsgkISMUs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gXVbSiW71rBetZ6/gImTbL+bz5rPZuJ5vTK/UPqLf300z5mzMIXwdIGeIYvp/Httxc7PqtDMYZaAt0o9xcymL95rN8WTmlDKZkeW29T2y0ZEZI0vO4yrTMHdODazw0eZyaNdOr6jAzu36Z/duXjNLrol3OG9ri3myDIWc40QKhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CM+z1PSg; arc=none smtp.client-ip=209.85.217.46
+	s=arc-20240116; t=1789142203; c=relaxed/simple;
+	bh=mjbvHbioGHY7urkc7ALAd6QAqb6mSR2JpyegfZB+S/Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=djUNqSUMh9LIq5K5vbNcNnt9z+UYdrEsy50Mx7UqjMfLe4h0q85EuJNs7QHcLMk1jfl5bgi/AbWgHbm+AU5Ms4xi85xkPvEdjvI45ipdBsikzIRhqyItHOG9rmGfmWmIxFUAx9X0NjYPtdDVR77AHgPaEYQcMDqiOEndYk85MbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J/9PFcH+; arc=none smtp.client-ip=74.125.227.135
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CM+z1PSg"
-Received: by mail-vs1-f46.google.com with SMTP id ada2fe7eead31-782df51b4c1so764569137.3
-        for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 08:53:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J/9PFcH+"
+Received: by mail-pj2-f7.google.com with SMTP id d9443c01a7336-2d9080b18b6so7846465ad.1
+        for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 08:56:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1789142008; x=1789746808; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=3r3GetI2bTShh7zQsecV1+PSL1nkUSycIYXk9LbNz7Y=;
-        b=CM+z1PSg4p05aZBkFWcjFOzpzvg6CgoDIeSUWU3tmEgf53qqYH+dcBDnB/LFv6A+Cu
-         AorQ/ss1Anp36naiK4pkYVuBkKEBbLU3rZhyVKdU16jBz+Y6ZhKHbhernujkO9h+RB2F
-         LgzNtXcMsuE7asFhcKFs9HRioUkZEwAco3hf5TSjissALaaHVqxJ4AeLzSBXDsmDujdN
-         QaSylw0DpRyGl3NLSwxrMLS04LQjbKL3dvSOlRq6+Gccs3whYiOPAFse60rE77Zt5aAM
-         +lOe6TLA00OwU3nh/kPdIvlcljoBZ7iTNbSp5gHwqNdBay8gJPwVZbg/B1e0vi0KgWZ4
-         +PHQ==
+        d=gmail.com; s=20251104; t=1789142201; x=1789747001; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=i93HR/ZVRY5iecDHt3F7Fd0n7rJ1kE9Xq94CpGBbTOY=;
+        b=J/9PFcH+8RwW0AkuX99NZ6ZFXSkbTfBOveZZPXyIjM9Ul5GctCK0d1KzloNnICvb6q
+         YCAepxnGbOSSHPl/RsCdR3pXUhDAqNeXhJ6CrhnoAiu0su26wL60oK82gdy6EAGf0Zi/
+         Qs+8kRdZH1TcCqpSeTbFmrb5K8mNRmnxsKtYllWLL8tQnudAErNVcxkeX0Dvv8L3/H3W
+         MumWVAAWhSxkzP+N6ngNp7k9hr49pwgTQgMMO6uVEWdnpXQ6kbFSlgf7zhRFcpOqOiJz
+         KGGZSMGGzxITvHnWu5ZFSvjSfa/8nhFD2wgUKDTfKvsh2nm4VwJBvWdlC1T2OpBWBRzS
+         ZDbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789142008; x=1789746808;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=3r3GetI2bTShh7zQsecV1+PSL1nkUSycIYXk9LbNz7Y=;
-        b=GNHOVmb51HKx45/D84CpOmhrUIlmwteq4vaEn2K3acIdvxP4RaEbllJPCicb3CQQK6
-         cLETEcx3HuOPKPQdeQ8RIYHY4UfNr7V5yrcjjttZb2cRWOKBcYPXNNezNMhTOvHs//b7
-         os9Zhz4kVSfReQLJnHB00g2L4l5XsEgoAwvpYjqZs0wDqQBw2ldaoC1K1PF8vTLHH9uL
-         YvVmSyqL7yo0hHy9+aDWre4SjSMaHaM9FRK1erHbZzimrD5a0W32B/4vVDlLSwmk/eum
-         tQw62VC2uxWha8XBmTdhmo6ppyzW6RzabbUgljXYJjZOuMLLN5ZKFmgnEEtcDQhP5QJF
-         UeBQ==
-X-Forwarded-Encrypted: i=1; AKwUvByhYaRnjXO8/uF8Rf8CSi3yhh8qpOAdRPA0bQj/b8CMnJOD2X0hiUzPmlGt6wyM8XRq0TMELSA=@vger.kernel.org
-X-Gm-Message-State: AFuF++n1J+JRhwibqTGGTFKsr2y00MEBnkpVAl4uXAsE0jgn/9Q/mGfY
-	bRGIu7gnrHLHpjA9rb6v/28k2TWtsQRUuD0kKUfdqB+vFd2/vf8LaTg=
-X-Gm-Gg: AYBFou1WujVqZiOOxzlSJsr0E6rMj/bZQM6xSQ786VZg8aGjAjErJfo3aT4Isq8Z7i6
-	mBaJS4x+3ZwKsIT+/BLggw/6WSncqDe6nvezXh22l49IsPdqMoGwGzphACtvZBKU2040OL4xFjl
-	YP+RjWe5/NbdbZMR+Hv5RtP7DMRdKxkLhEDPKALO7hs5mT2hx5J29Xc94gFHGMstw2Oq/AQe3w6
-	MQ3HURrCX64ZB8f9wwY8Ca08Upw++9ouxizK8QNQQ2QOr+OeMROu7FBF7j8LZHEa/Qr128Qz3sm
-	UJgr830uVTZ2bPKg85tkMx7j4cuce4jbOjkxWEqwtyuDCmCQ4iS1tdsWUF92Rm2EbMfsAnNUaNr
-	FGgRIsOFwycYD25OTW3ZuHvYTdQGzMDmM39gN6S812UAPYeQYliTdsI+pdMZgzM9PW4yS1+kjnI
-	ZkucguSjxASv1U/vKolmAutnSffcomBa5Tn45eJ0C2bo9gBHYGuPUI4IHlDQTQVMxy328u32aVI
-	kyB6J88N8KfsEGujuc0o7MCuwJzw15bVaVTJaCwIxHLRc49OKXprGvQPUETgehLYvkN4lAZ5AUm
-	9WgZgzWKVNFsSn+TJWYCCw/JxQRYJ4OxMQ==
-X-Received: by 2002:a05:6102:3a13:b0:789:100e:3d0c with SMTP id ada2fe7eead31-792aad54589mr5833763137.8.1789142008061;
-        Fri, 11 Sep 2026 08:53:28 -0700 (PDT)
-Received: from localhost.localdomain ([104.39.73.78])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-9120f4d389esm23300896d6.42.2026.09.11.08.53.26
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 11 Sep 2026 08:53:27 -0700 (PDT)
-From: Myeonghun Pak <mhun512@gmail.com>
-To: Jiawen Wu <jiawenwu@trustnetic.com>,
-	Mengyuan Lou <mengyuanlou@net-swift.com>
-Cc: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux@armlinux.org.uk,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	ae878000@gmail.com
-Subject: [PATCH net] net: txgbe: free the fixed-rate clock on cleanup
-Date: Fri, 11 Sep 2026 11:53:18 -0400
-Message-ID: <20260911155318.88857-1-mhun512@gmail.com>
-X-Mailer: git-send-email 2.47.1
+        d=1e100.net; s=20251104; t=1789142201; x=1789747001;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=i93HR/ZVRY5iecDHt3F7Fd0n7rJ1kE9Xq94CpGBbTOY=;
+        b=E52TP5la6SGlcQJUIr3iAqaUKDPSKzn1GJkWHMM3pknT9TU3eYmk5jxUlkwmcsS9O6
+         Al7HHawmIrSMqUyV85Q1eqaJ0cVLUillpfQGMpBDgnmnPa2SiL+BrmcTWsssm5vqftj8
+         ErhQ2ECT7u5sS4kNyYq4Opi24U6vYN9cktJcl107ut+sQ1L9Nt2iHrPE2YRZktjk5UVk
+         lVitr0qVzPjXZMaMjpScucP6oyuRQblStEbJFwReLsU4BEgqb1y4Fv2G+wRoTE7IuPmr
+         t4pvK+45g9IBe2BNaimY3sM+1J7v6y5TrWydmVXBXCbaJYcCXY6X3WLRJVXjOhapWWt6
+         4ZyA==
+X-Forwarded-Encrypted: i=1; AKwUvBydGAgSZLBeGfgDNrM82nqU6wp9KuJavkW55+fC546Q1cNO06ocgAmgQHkTthIrPILaZcx0+b0=@vger.kernel.org
+X-Gm-Message-State: AFuF++lerc+MuLf1bM1Pm9UfwW3+0RhKODJOiB2TcKfVSoUzGwwe3g/u
+	dOY02xf+Nzr5AP0YM9OP8QPWaxVUkU68mrtY9YRkqnsr8mSMU/I9+pUo
+X-Gm-Gg: AYBFou1AeBzUJISdmJUKQ3bsDbWmH/9fOpUbWNgvUOJLHn+5cMnu4hf/aR755F9/ESt
+	Nfl/E0wQeZLdlV+F5b/htNE8NCPVrpJjBRYQjHjWNeGb4bQq+OVWktAqRDvw2HV915qzipp2OvZ
+	khseQk7mQtXiznViIiEmNUfFadZxdFZmRMXkBkyc3e9bCLbcRMkQQnBxo5LuXnjmKbRuu1fEwjp
+	dXAHFK+JKRGdSNbMN1ByVP45CL2R37cxd3VCNPIU8mD4hh7j5f/4LiBWYteAUPwFq6gE0SYpawx
+	1OBa9RBPgMXp7eLoZRhFs1HY6FCHUYmhJzm870bR1xRqjLde65VKtgYhiTe6Ul32xY22A9WEcZf
+	HAzI3Pl8zOfj/l2qQkTt17YUwq1CXuv6AAfMqZYQ6Zfk//b4RGe7PogCSoO9x7v/it8EGkCh3gg
+	0V312Chv9EJ0kkj1zTzucqe/e9hkabaGaXdAkFEpKxbfQPPVS3xX0j+pv+/+y/hB16
+X-Received: by 2002:a05:6a20:d508:b0:3cc:ebeb:3efe with SMTP id adf61e73a8af0-3daed59e465mr8842930637.9.1789142201223;
+        Fri, 11 Sep 2026 08:56:41 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:4b::])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cc4c65b1a63sm1435313a12.31.2026.09.11.08.56.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 11 Sep 2026 08:56:40 -0700 (PDT)
+Date: Fri, 11 Sep 2026 08:56:23 -0700
+From: Stanislav Fomichev <sdf.kernel@gmail.com>
+To: Breno Leitao <leitao@debian.org>
+Cc: "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, Willem de Bruijn <willemb@google.com>, 
+	David Ahern <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, david.laight.linux@gmail.com, kernel-team@meta.com
+Subject: Re: [PATCH net-next 1/2] net: add sockopt_expand_out()
+Message-ID: <aqQkImqiHPorszOY@devvm7509.cco0.facebook.com>
+References: <20260910-getsockopt_phase6-v1-0-e681e102d5b8@debian.org>
+ <20260910-getsockopt_phase6-v1-1-e681e102d5b8@debian.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260910-getsockopt_phase6-v1-1-e681e102d5b8@debian.org>
 
-The fixed-rate clock is registered with clk_register_fixed_rate(), but
-its error and removal paths use clk_unregister(). That unregisters the
-clock without freeing the fixed-rate provider allocation.
+On 09/10, Breno Leitao wrote:
+> Add sockopt_expand_out() to grow opt->iter_out mid-air.
+> 
+> It is a no-op unless the proper size outruns optlen (i.e, some
+> not-well-behaved userspace program calling it).
+> 
+> In this case, only a user buffer can be longer than optlen says, so
+> a kernel-backed optval keeps the bounded iterator and the callback gets
+> -EINVAL if it asks to grow.
+> 
+> This whole quirk is added to:
+> 
+>   1) Avoid breaking userspace
+>   2) Making the quirk explict
+>      * Instead of protocol doing implict assumping like this.
+> 
+> Signed-off-by: Breno Leitao <leitao@debian.org>
+> ---
+>  include/linux/net.h | 25 +++++++++++++++++++++++++
+>  net/socket.c        |  4 ++--
+>  2 files changed, 27 insertions(+), 2 deletions(-)
+> 
+> diff --git a/include/linux/net.h b/include/linux/net.h
+> index 470100ae710773..de0ed362b37794 100644
+> --- a/include/linux/net.h
+> +++ b/include/linux/net.h
+> @@ -70,6 +70,31 @@ static inline int sockopt_init_user(sockopt_t *opt, char __user *optval,
+>  	return 0;
+>  }
+>  
+> +/*
+> + * Grow optval to @size, for the options whose reply is sized by a count the
+> + * caller left in optval rather than by optlen. Those write past optlen today
+> + * and userspace relies on it.
+> + *
+> + * Call it before writing through opt->iter_out: it re-anchors the iterator at
+> + * the head of optval. Only a user buffer can be longer than the optlen the
+> + * caller declared, so a kernel-backed optval is refused with -EINVAL.
+> + */
+> +static inline int sockopt_expand_out(sockopt_t *opt, size_t size)
+> +{
 
-Use clk_unregister_fixed_rate() on lookup creation failure, later PHY
-initialization failure and removal to release the provider allocation as
-well. Keep the existing clock registration and lookup cleanup ordering.
+[..]
 
-This issue was identified during our ongoing static-analysis research while
-reviewing kernel code.
+> +	if (size <= iov_iter_count(&opt->iter_out))
+> +		return 0;
+> +
+> +	if (WARN_ON_ONCE(!iter_is_ubuf(&opt->iter_out)))
+> +		return -EINVAL;
 
-Fixes: b63f20485e43 ("net: txgbe: Register fixed rate clock")
-Assisted-by: OpenAI:GPT-5.6
-Co-developed-by: Ijae Kim <ae878000@gmail.com>
-Signed-off-by: Ijae Kim <ae878000@gmail.com>
-Signed-off-by: Myeonghun Pak <mhun512@gmail.com>
----
- drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+nit: if you end up re-spinning for some reason, maybe swap these two?
+I always get confused by the count vs len of iov (iov_iter_count vs
+iter_iov_len). Because I think count for ubuf is len because of the
+aliasing? (and then, if !iter_is_ubuf check is first, at least iov_iter_count
+will 100% be ubuf specific)
 
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
-index dc9f243146580b477a2ae958ddba66a1ac8fc822..c81d485221d56dc1d8d66f5a01ce05c76966830e 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
-@@ -434,7 +434,7 @@ static int txgbe_clock_register(struct txgbe *txgbe)
- 
- 	clock = clkdev_create(clk, NULL, "%s", clk_name);
- 	if (!clock) {
--		clk_unregister(clk);
-+		clk_unregister_fixed_rate(clk);
- 		return -ENOMEM;
- 	}
- 
-@@ -637,7 +637,7 @@ err_unregister_i2c:
- 	platform_device_unregister(txgbe->i2c_dev);
- err_unregister_clk:
- 	clkdev_drop(txgbe->clock);
--	clk_unregister(txgbe->clk);
-+	clk_unregister_fixed_rate(txgbe->clk);
- err_destroy_phylink:
- 	phylink_destroy(wx->phylink);
- err_destroy_xpcs:
-@@ -671,7 +671,7 @@ void txgbe_remove_phy(struct txgbe *txgbe)
- 	platform_device_unregister(txgbe->sfp_dev);
- 	platform_device_unregister(txgbe->i2c_dev);
- 	clkdev_drop(txgbe->clock);
--	clk_unregister(txgbe->clk);
-+	clk_unregister_fixed_rate(txgbe->clk);
- 	phylink_destroy(txgbe->wx->phylink);
- 	xpcs_destroy_pcs(txgbe->pcs);
- 	software_node_unregister_node_group(txgbe->nodes.group);
--- 
-2.53.0
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
