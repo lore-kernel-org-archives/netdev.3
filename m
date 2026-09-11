@@ -1,294 +1,143 @@
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C125469820
-	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 08:58:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06EE63E9C05
+	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 09:00:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.227.140
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789117134; cv=none; b=X3bw1NrYCSWCkixJu+WMePtqPCMZWQvQHZ38GX0QQpCamITqz1t6hWzEJ1wKWL6wHB36FOwORyFSISY7tFew87Rkfaq4jfnGF49THSvm6UAbW7ZR7I3jyW0fbHCP3ruk1UWsSvYH6+mWxsWcVAlySxna5FJGycm8CURaSTCgNhs=
+	t=1789117247; cv=none; b=T8QCxtLRyOgik197Ki9MHcJJNRl0aI/8bnhcGKPJKxAfFx8+G5PSrujaeRcH1jL38lR9wx0tJUn6y0rrkGBgMsQAUnBzujQbUUBO6yrgUntTbx0+pHFXPCDR9x+hFP+JoBD0WZN9L3bUB4t6G/wgLp33SfQXH9ciIt4HxwcPJe0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789117134; c=relaxed/simple;
-	bh=gSNd7n+u9NhBgz2YruBDJDFMzG9D4yqP4XNwV8wnc/Y=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=qSoEu77WGmmkbPIMBMugs9hFdFmwdb0oH74Z0pi2X0dxTeiLpqr8bFVGdV5ZPF0FeyO6D75esl9Zwqvq5eTFLRSwD7LR9qYBZbKnIHAe/ugWZqg+Bis8qsbDWSyBi+TX2AvnSzCR/p3t89GmgMI5EX4qHcXaJ7kahR0GHW9YvcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=bb9GhZk6; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=CB7MQ6tG; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1789117247; c=relaxed/simple;
+	bh=Dg54zP3zqsPQVQuqhBBr5VNQGRphMJ/5byAmFv1bRJY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WFZWmBvnKXVk6X9DakRab/bTPn9iOWPPi26wwSU1+AvnTjuetW26zl4QTfFYtMLKYWq5pfVA4fCyBCw6ya7NSevPriGMTPaHr+tXP+XZMamBgtX6/ctWxnBUtgl8Oy/EBX9PGHzxIBSwQrctdiat8diuq7bznvTpF9zcj4VtD6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EQ0+xzKT; arc=none smtp.client-ip=74.125.227.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="bb9GhZk6";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="CB7MQ6tG"
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 68B7klZ23017007
-	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 08:58:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	m3HjjQY/dE3cRcwJS8qtQGYaELgdNeUTwOrJbPhHwVo=; b=bb9GhZk6v5YdCdz0
-	z9I3/NWv4IgzM4Qpy6UCFTE4kdcmNjP7JesW1i0Uws6npYyc9T2B5GEmzgyTtkU7
-	5CgFuqnXdaawrCcix6Fm9uL4YPLq3truxMDNbrW+yb4Yni5rLVGsdhAQQbir9DtP
-	ZcWeVP8+QmSzcqMdEgnkXN/f2llVSsBPgjys+L4ZdOG8zapc6X83ebkM5nzU/ZP0
-	IR4mifLM/+UHZasbWLx4ZTEjb9MzK3urTeBQYKI0IeDLqrOiN1HzfRz7pzzheEzt
-	bQTPCV4/OVOYPey/ztl4SWpcuhTjLZ0qHR4alOGog2r8etypiaeCG6UuyFHfBeKc
-	+pCVMA==
-Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4gkwvx4bfh-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 08:58:52 +0000 (GMT)
-Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-9382f9430deso117770085a.1
-        for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 01:58:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EQ0+xzKT"
+Received: by mail-pj2-f12.google.com with SMTP id 98e67ed59e1d1-396ccc02279so667120a91.1
+        for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 02:00:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1789117131; x=1789721931; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=m3HjjQY/dE3cRcwJS8qtQGYaELgdNeUTwOrJbPhHwVo=;
-        b=CB7MQ6tG+0hRjUw21WbBamXX9vbPb04ShGGMZ+BBdlKbYK3StHjjEWfrZUCne100hu
-         7aZt/QjKEsRuXo3VDIxHMT0KzGcFcmUbPxqM20nk5RA0Yagj44LFaRojyKFQcg4AMJuv
-         AmstWaZo4zzryE+JxJ2AG9tAMuz9HnGw6qOWC2RJupNvRHZqwRpTstnY/zDgDE6Tp6WV
-         2BHSPrNJA3uFqazH5al6V22vkrqOOpV2tCyoXSbhAy3Ny2tJuaH7RtQX1qtN9SruTXyc
-         UX3n62ZcGII97VVYuoqT9TDkQcRzcbYFUGGgYayRZCbARtSqiDCRfZOW59RjyMuoxPsA
-         oY1w==
+        d=gmail.com; s=20251104; t=1789117245; x=1789722045; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Ed503R9eUFLnJwD7ktvT5pxAmED/gsI8SvD8uQZVm8Y=;
+        b=EQ0+xzKTEWwP1BuSVYWNVnEC0V6ZrsQJOFdyjjJDcA3SyE4dEA8XyCwzil6oKko5wa
+         LcZf7kczaMw8pludQzeHWWAWG/muCKbL25kSvIdqwaStmTag15Rg84bzYMVY6vZwJZIV
+         drYaiJUwuNCMw0bE+S4W9CpZFLezhWStkYzP4esxQiv9c5gv5eysKVF8Gm8dSvhtbfFT
+         DUfC+M9uXEAhQRfOmRTl1fDRBK07tz8NkdgRkJwVLzv7pKw5O3jFDgvLldJXL6FZApm7
+         XymknaWD8MHf2JhjGIEXjxM2lH5HeMmeEb47HjEKbMJDwxt58dLZeFOPKZd+z6owR98b
+         /cVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789117131; x=1789721931;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=m3HjjQY/dE3cRcwJS8qtQGYaELgdNeUTwOrJbPhHwVo=;
-        b=YMmx5gmUtDl1M6W5LhD6UCEWlLpelMJvnhiGJb6GgVGo22UeotW/4mTEKJpXdKr4rE
-         bE8/oftRPDkCcKzEQpyi0Nq+fZIyFue2ySUu3NagqlNWWTPBJm8k3sdqMovtqRn0CepL
-         CVKCKxhljUpJxP3fnlfizVEkyrp4BIkN2zQjzkP8aj0yhOC+GlmjEcHw88SpQGk91LXE
-         FKZ8mYYOE8d+qJ4HsDEHllhuvjdi0Dm778jki4uc2MnxIz5MYujCBisVZiV5D1uoZGKW
-         0tobeWkqz6Qgfks6SHw37gelJ2KIHgTSZTyoy2S8v1QAHHS91MenbnTFtpwkWZSURZkS
-         pq/A==
-X-Gm-Message-State: AFuF++lKFfFoCcfI7zJ2UjhW+MF/jzr246EEfrZZPt+tk1pXik2LW3oS
-	ZVVT0nQW12fFA0uedQm6U2MoCUaMbBCsuIqFDYg1aIJgcZ8PWaxwVG0otUtxpIn2DEfpUQTSoQW
-	NpWj7SNWat5eqThMBvqmhISpni/kcy5N8BwHEMs9ausFxS8lYl0bt4EKEwIg=
-X-Gm-Gg: AYBFou3kXfU1aeb+QCiG0B7rx8ou9Wb9QNptGc7XNQ7v928w8HUM2ClzzqM20sabcwi
-	niNVWx48qbI1c9KHzFYA/vtEyzR71bJWW9uTn8bugKuB+o3X4zciHCT0fC2PnxymX7KkBFQfgFN
-	iwruboO/BOPBrn+VvmWm/iLXjaD+w1WJgfYk7K0lMVYSkwWArwfDu9Tb81z6L24dg/aCvTXyte2
-	bQ0wJBFRf9f1vwOdgk634nRE+SUn3aqE2p6OAEKMzHwjJCSd/H+cCOAy1a0LnfSvtpKXLFTJrki
-	nf6XAmzNdL2MZgi3wBacLtdFDSKtujfB02/YxzCYDk+qszw11iFtthUYIGolIafikVoiWXlWMGE
-	Or8wTmIkkxSmf8A==
-X-Received: by 2002:a05:620a:1995:b0:939:d91f:1656 with SMTP id af79cd13be357-939ea0e6b22mr384945785a.23.1789117131139;
-        Fri, 11 Sep 2026 01:58:51 -0700 (PDT)
-X-Received: by 2002:a05:620a:1995:b0:939:d91f:1656 with SMTP id af79cd13be357-939ea0e6b22mr384942085a.23.1789117130679;
-        Fri, 11 Sep 2026 01:58:50 -0700 (PDT)
-Received: from localhost ([188.216.77.92])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49e5765152asm91148055e9.11.2026.09.11.01.58.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Sep 2026 01:58:49 -0700 (PDT)
-From: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-Date: Fri, 11 Sep 2026 10:58:30 +0200
-Subject: [PATCH net v3 2/2] net: stmmac: preserve real_num_tx_queues on
- mqprio setup failure
+        d=1e100.net; s=20251104; t=1789117245; x=1789722045;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Ed503R9eUFLnJwD7ktvT5pxAmED/gsI8SvD8uQZVm8Y=;
+        b=GYtFOEAIFmJWHoUKTFMz8sLiwGT5h8xM11BkZiTXlkTg5f+25JNElLZ/1uGoCdRgu6
+         McQG4ZBspd7yXzv9ik0z+4Z7Pw3jNZ8rwtd6pDKwZa8uFblJwwfVT7t+U3g/06RtDTfM
+         hQW9Yo2ZrNt6bVPzEXobV2KR7ohyeBbkCuOjfAJWKGYJU7EJiBvMp3iUNCrPilm5M5cn
+         Akr+avHhoahImW1UEfAXaB352d5ThcjlskgoYgV7m7TsX9RH2mE3+YAtkKD/YSba5jmn
+         YEybyIYQOZAZSfGWnoqtPK/Rkqzx3q53kaVeAgjpCuFznatYzqonxh4Sm6xKkDyOsd5E
+         v7uQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxhu42iR8fX5dUHw8niuROynzIQjj0hO6GfMzar+U+yCwnnGoZ8ze4fZqpfd0oeuikGwCmBtXM=@vger.kernel.org
+X-Gm-Message-State: AFuF++kfK+D77EdgDQTfC+weFLT7xK4zkz40rrIUh1FAPyeVVaGTXJBJ
+	MA39McJZsCUGeAys1XeiCc17FKyUUEbm5w9uvT00UV6NHL99oIXQ0Z8a
+X-Gm-Gg: AYBFou2KM+bxPeSBLCfCfxLx7j75pdLj8XU+jDNh5EYx5mM1uEpBgNn/cg7lRD5zUXO
+	tgHG4N9R0TPTW5CgIqlLC+qDy8NEvBMcVrnIgqJZAkiML0RPKWgN90i7q331YzRd/QP3i6+ws+F
+	k+aCiz+UahsLxNI1JOdKe8lfJzvHRCty1CDCCZtTz9nZrTMi1Qd76Kn6nh77gjmqg0guayHR/5c
+	4rRSlDViaS6W1zfMwgQIz+X5hr/1XIu3FzH34ogoOBQdv0miLJlF6zEiS7t41+tvXUUBM/SVb0Q
+	NpedtAuN6PB/SSMuus9UujY9ZzVLvFIRot7CxLZRFKuR5w6EzZ1/rbfs1rRfMofJhIquXt5FvK3
+	Zz2skcxSSXiK1U2B2g0fZp65hi69WddKiu2jIGILb6TJipi9+NAWQP3Csypdrm7Qw6xtc2r6+Fo
+	32VKr52YRqehyrTjUKmbDv36ZyuRyvQsr7lYzAQmUegJFyGeOBHQs3AVaMWZbJ55xz/PEkAqb2u
+	EBxn6wKTLKh+W48vWUe6rlhUdd5K0A1qcN3y5NJtDszkYo=
+X-Received: by 2002:a17:90b:4407:b0:39b:3510:49e7 with SMTP id 98e67ed59e1d1-39d9b99fccfmr5229578a91.0.1789117245124;
+        Fri, 11 Sep 2026 02:00:45 -0700 (PDT)
+Received: from JUNVYYANG-MC1.tencent.com ([43.132.141.21])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-39d98e5c630sm4178537a91.6.2026.09.11.02.00.42
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Fri, 11 Sep 2026 02:00:44 -0700 (PDT)
+From: Jun Yang <juny24602@gmail.com>
+To: linux-sctp@vger.kernel.org,
+	netdev@vger.kernel.org
+Cc: marcelo.leitner@gmail.com,
+	lucien.xin@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	Jun Yang <junvyyang@tencent.com>,
+	stable@vger.kernel.org,
+	TencentOS Corvus AI <corvus@tencent.com>
+Subject: [PATCH net v2] sctp: keep the association alive across the sendmsg connect wait
+Date: Fri, 11 Sep 2026 16:59:45 +0800
+Message-ID: <20260911090039.75646-1-juny24602@gmail.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260911-stmmac-tc_setup_dwmac510_mqprio-error-path-v3-2-a76b1e2547c1@oss.qualcomm.com>
-References: <20260911-stmmac-tc_setup_dwmac510_mqprio-error-path-v3-0-a76b1e2547c1@oss.qualcomm.com>
-In-Reply-To: <20260911-stmmac-tc_setup_dwmac510_mqprio-error-path-v3-0-a76b1e2547c1@oss.qualcomm.com>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Furong Xu <0x1207@gmail.com>, Vladimir Oltean <olteanv@gmail.com>
-Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org,
-        Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
-X-Mailer: b4 0.14.3
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwOTExMDEyMyBTYWx0ZWRfX1VVk5vLVl0De
- B9S7ENPdv3n4sGOa+oO5uB/ABEjPrZJrdEgfWpQNt03Pz4Asdpm3nXUtPZ4D8RT7CKyqwILyXE3
- doXSSswtyk2XOf8wgnUyYE1V2UTa1UqWqEVDgMFxdX9mCmWVO2N/MIaJ7tu74w72IfwaurcMJXS
- b5wM5N++ntiDYanpNhCIbyIfuViMnE2oDCXK4HMDfGXFXmPKOQs+TFjoSK0g5gfHCSgc4GcCptU
- x8OMmV9MrL/bUtS9TnT19OSoUbhGARp0rNNCgW4V8ACpmGHT3R5ZZstmPQA0/SlOxIRN/7u2o8M
- UXiJxUl5vREhwgmnkHHzWz9+YZ5Llc6ArvvtXBug+F+ymtCrJVOFNuLqTAal0WqBknplanud3Mz
- iNRmQ1idGF0s5Faul2XMtNtW8R7BSw0TvABVWpVL+aYT3PdgQVSxApxQiFT7chNh7uH3R1j8q1m
- Yfx+kQeQRl6zEVbA0kw==
-X-Proofpoint-ORIG-GUID: G-nO24WK6eqx1G9iZWRp7eXP-yTF9RKW
-X-Proofpoint-Spam-Info: AW1haW4tMjYwOTExMDEyMyBTYWx0ZWRfXwHvlUSl6R3dD
- dQBBZPLkkXBQdklMAch+rWHWsZRvFlLSYUIfCDZEAOqxVrdkppMlIKwxp1SQfQPERlCuaeq5So6
- Q3mKQR8W41hutOiAV+xulQV3+jiSafQ=
-X-Authority-Analysis: v=2.4 cv=AdkkjHXG c=1 sm=1 tr=0 ts=6aa3c2cc cx=c_pps
- a=qKBjSQ1v91RyAK45QCPf5w==:117 a=WpTaRW6qxYHRGzLzQsVYzg==:17
- a=IkcTkHD0fZMA:10 a=VdqzKS8jKosA:10 a=s4-Qcg_JpJYA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=_K5XuSEh1TEqbUxoQ0s3:22
- a=EUspDBNiAAAA:8 a=0NSVpFHRlRhN2sU1BpMA:9 a=QEXdDO2ut3YA:10
- a=NFOGd7dJGGMPyQGDc5-O:22
-X-Proofpoint-GUID: G-nO24WK6eqx1G9iZWRp7eXP-yTF9RKW
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.134,FMLib:17.12.100.49
- definitions=2026-09-11_03,2026-09-09_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 adultscore=0 spamscore=0 priorityscore=1501 impostorscore=0
- malwarescore=0 suspectscore=0 lowpriorityscore=0 clxscore=1015 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2609040000 definitions=main-2609110123
+Content-Transfer-Encoding: 8bit
 
-With the FPE preemption-class mapping error now propagated from
-stmmac_fpe_map_preemption_class(), tc_setup_dwmac510_mqprio() can fail
-on the mapping step. The error path used to call stmmac_reset_tc_mqprio(),
-which resets the number of real TX queues to priv->plat->tx_queues_to_use
-(the platform maximum), overwriting the value that was active before the
-offload was attempted (for example a lower count left over from a previous
-mqprio configuration).
+From: Jun Yang <junvyyang@tencent.com>
 
-The issue can be triggered using the following configuration:
+sctp_wait_for_connect() drops the socket lock while it sleeps.  An
+out-of-the-blue ABORT can then be processed from the socket backlog and
+unlink the association.  If a concurrent shutdown(fd, SHUT_RD)
+sets RCV_SHUTDOWN, the waiter breaks with err == 0.  Its final put can
+then free the association.  sctp_sendmsg_to_asoc() consequently continues
+with a dangling pointer.
 
-  # First mqprio config lowers the hw queue count below the platform
-  # default (e.g. 8 TX queues).
-  $tc qdisc add dev eth0 root handle 1: mqprio queues 2@0 2@2
+An earlier version moved the asoc->base.dead check ahead of the
+RCV_SHUTDOWN break in sctp_wait_for_connect().  That changes behavior for
+the connect() caller of the shared wait helper and reportedly breaks SCTP
+selftests.
 
-  # Replace mqprio configuration with a second one that fails FPE
-  # preemption-class mapping. stmmac driver resets the real_num_tx_queues
-  # to the platform maximum, losing the previous configuration.
-  $tc qdisc replace dev eth0 root handle 2: mqprio queues 2@0 2@2 fp E P
+Keep the change local to the vulnerable sendmsg caller instead.  Hold an
+extra association reference across sctp_wait_for_connect(), sample
+base.dead while the socket lock is still held, and only then drop the extra
+reference.  Reject either a wait error or a dead association with the
+existing -ESRCH result.  The extra reference prevents the waiter's
+final put from freeing the object before the check, while the socket lock
+prevents a new teardown between the check and the following send path.
 
-Save ndev->real_num_tx_queues before lowering it and restore it,
-together with the TC-to-queue and priority-to-TC mappings, when the FPE
-preemption-class mapping fails, instead of resetting the queue count to
-the platform maximum.
-
-Note that a failed setup makes the qdisc layer run mqprio_destroy() on
-the new qdisc. Because priv->hw_offload is only assigned after
-ndo_setup_tc() succeeds, mqprio_destroy() calls netdev_set_num_tc(dev, 0),
-so dev->num_tc ends up 0 regardless of the driver-side restore and the
-previous qdisc is not reactivated. The restore is still needed to keep
-real_num_tx_queues and to avoid leaving the failed configuration's
-TC-to-queue and priority-to-TC mappings in place.
-
-Fixes: 195e4f409a40 ("net: stmmac: support fp parameter of tc-mqprio")
-Signed-off-by: Lorenzo Bianconi <lorenzo.bianconi@oss.qualcomm.com>
+Fixes: 668c9beb9020 ("sctp: implement assign_number for sctp_stream_interleave")
+Cc: stable@vger.kernel.org
+Reported-by: TencentOS Corvus AI <corvus@tencent.com>
+Assisted-by: tencentos-corvus-ai:hy4-preview
+Signed-off-by: Jun Yang <junvyyang@tencent.com>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c | 82 +++++++++++++++++++------
- 1 file changed, 62 insertions(+), 20 deletions(-)
+v2:
+- Leave sctp_wait_for_connect() unchanged to preserve connect() semantics.
+- Hold and validate the association in the sendmsg-only caller.
+- Run the in-tree SCTP VRF selftest and the original reproducer.
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-index 5398616fcdfe..42a00446e9b4 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c
-@@ -1237,6 +1237,30 @@ static int tc_query_caps(struct stmmac_priv *priv,
- 	}
- }
- 
-+static int stmmac_set_ndev_tcs(struct net_device *ndev, u8 ntc,
-+			       struct netdev_tc_txq *tc_to_txq)
-+{
-+	int i, err;
-+
-+	netdev_reset_tc(ndev);
-+	if (!ntc)
-+		return 0;
-+
-+	err = netdev_set_num_tc(ndev, ntc);
-+	if (err)
-+		return err;
-+
-+	for (i = 0; i < ntc; i++) {
-+		u16 count, offset;
-+
-+		count = tc_to_txq[i].count;
-+		offset = tc_to_txq[i].offset;
-+		netdev_set_tc_queue(ndev, i, count, offset);
-+	}
-+
-+	return 0;
-+}
-+
- static int stmmac_reset_tc_mqprio(struct net_device *ndev,
- 				  struct netlink_ext_ack *extack)
- {
-@@ -1251,43 +1275,61 @@ static int stmmac_reset_tc_mqprio(struct net_device *ndev,
- static int tc_setup_dwmac510_mqprio(struct stmmac_priv *priv,
- 				    struct tc_mqprio_qopt_offload *mqprio)
- {
-+	unsigned int ndev_num_tx_queues, num_tx_queues = 0;
-+	struct netdev_tc_txq ndev_tc_to_txq[TC_MAX_QUEUE];
-+	struct netdev_tc_txq tc_to_txq[TC_MAX_QUEUE] = {};
- 	struct netlink_ext_ack *extack = mqprio->extack;
- 	struct tc_mqprio_qopt *qopt = &mqprio->qopt;
--	u32 offset, count, num_stack_tx_queues = 0;
- 	struct net_device *ndev = priv->dev;
--	u32 num_tc = qopt->num_tc;
--	int err;
-+	u8 ndev_prio_tc_map[TC_BITMASK + 1];
-+	int i, err, ndev_ntc;
- 
--	if (!num_tc)
-+	if (!qopt->num_tc)
- 		return stmmac_reset_tc_mqprio(ndev, extack);
- 
--	err = netdev_set_num_tc(ndev, num_tc);
--	if (err)
--		return err;
--
--	for (u32 tc = 0; tc < num_tc; tc++) {
--		offset = qopt->offset[tc];
--		count = qopt->count[tc];
--		num_stack_tx_queues += count;
-+	if (qopt->num_tc > ARRAY_SIZE(tc_to_txq))
-+		return -EINVAL;
- 
--		err = netdev_set_tc_queue(ndev, tc, count, offset);
--		if (err)
--			goto err_reset_tc;
-+	/* save current tc values for reset */
-+	ndev_ntc = netdev_get_num_tc(ndev);
-+	for (i = 0; i < ARRAY_SIZE(ndev->tc_to_txq); i++)
-+		ndev_tc_to_txq[i].combined =
-+			READ_ONCE(ndev->tc_to_txq[i].combined);
-+	for (i = 0; i < ARRAY_SIZE(ndev_prio_tc_map); i++)
-+		ndev_prio_tc_map[i] = READ_ONCE(ndev->prio_tc_map[i]);
-+
-+	for (i = 0; i < qopt->num_tc; i++) {
-+		tc_to_txq[i] = (struct netdev_tc_txq) {
-+			.count = qopt->count[i],
-+			.offset = qopt->offset[i],
-+		};
-+		num_tx_queues += qopt->count[i];
- 	}
- 
--	err = netif_set_real_num_tx_queues(ndev, num_stack_tx_queues);
-+	err = stmmac_set_ndev_tcs(ndev, qopt->num_tc, tc_to_txq);
-+	if (err)
-+		goto error_reset_tc;
-+
-+	ndev_num_tx_queues = ndev->real_num_tx_queues;
-+	err = netif_set_real_num_tx_queues(ndev, num_tx_queues);
- 	if (err)
--		goto err_reset_tc;
-+		goto error_reset_tc;
- 
- 	err = stmmac_fpe_map_preemption_class(priv, ndev, extack,
- 					      mqprio->preemptible_tcs);
- 	if (err)
--		goto err_reset_tc;
-+		goto error_reset_num_tx_queues;
- 
- 	return 0;
- 
--err_reset_tc:
--	stmmac_reset_tc_mqprio(ndev, extack);
-+error_reset_num_tx_queues:
-+	if (netif_set_real_num_tx_queues(ndev, ndev_num_tx_queues))
-+		netdev_warn(ndev, "Failed to restore %u TX queues\n",
-+			    ndev_num_tx_queues);
-+error_reset_tc:
-+	stmmac_set_ndev_tcs(ndev, ndev_ntc, ndev_tc_to_txq);
-+	for (i = 0; i < ARRAY_SIZE(ndev_prio_tc_map); i++)
-+		netdev_set_prio_tc_map(ndev, i, ndev_prio_tc_map[i]);
- 
- 	return err;
- }
+ net/sctp/socket.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
+diff --git a/net/sctp/socket.c b/net/sctp/socket.c
+index c7b9e325e..09fd6b951 100644
+--- a/net/sctp/socket.c
++++ b/net/sctp/socket.c
+@@ -1842,9 +1842,14 @@ static int sctp_sendmsg_to_asoc(struct sctp_association *asoc,
+ 			goto err;
+ 
+ 		if (asoc->ep->intl_enable) {
++			bool dead;
++
+ 			timeo = sock_sndtimeo(sk, 0);
++			sctp_association_hold(asoc);
+ 			err = sctp_wait_for_connect(asoc, &timeo);
+-			if (err) {
++			dead = asoc->base.dead;
++			sctp_association_put(asoc);
++			if (err || dead) {
+ 				err = -ESRCH;
+ 				goto err;
+ 			}
 -- 
-2.55.0
+2.43.0
 
