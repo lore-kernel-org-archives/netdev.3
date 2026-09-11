@@ -1,48 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5DC03148CF;
-	Fri, 11 Sep 2026 23:04:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14C9A3BE643;
+	Fri, 11 Sep 2026 23:08:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789167891; cv=none; b=iSCCOnVM9FHV+UFWSfP4zdjNYogT/Rl22MOuIKxkNG4Id7/SKOUbrca/Uju36Ie7Fyxf++Ome3qZG0fceHFRQ+YtnhxPF4wvOH34E8XeXsABjRprS+Fc4jsHdr6nfcACmyj/XcZeEUK43zm8Tsdeh0sGHBjON+W57PVlL8mk7Qo=
+	t=1789168095; cv=none; b=rpyR98X78/HXr9TsMMxnp3vnpNZgGkl+uhCgApc0161PAdFLOK0Xo2Rp2ANlGGHD5nJCB7hDsnm+JEsLSS6VOcNDernBozVwOuWPCGGxeHlW2SDlLWVr9VD3c3mCMwVQVRbDRCm6tail9e/58EAqBPnjukt3zJ7THvEkqOBtpI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789167891; c=relaxed/simple;
-	bh=xlWn8lsNQ74V6HS9v7MVPkrQMIN4eF0tWIk9IW2JCoc=;
+	s=arc-20240116; t=1789168095; c=relaxed/simple;
+	bh=/PwjuMvcSZ0fhPtTH12Ek1tQKVNRKC0iZDzLO91hAS4=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MY+jEcnb3K9pzF3GXfBDlzy/n707jOMu+CxoPrj8XCum7qa/ahGBxDCyzXtwJv317dm7Nb6hZBIMgmJjkVYDUpWJ3OmSdqrJhXM6RL8yRBspTCauMY4qE27l99b4fxXc1FJr5l3vgzqCoR44VqI9TSdCyQcN2jSlgUIGVnxrBwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WshzVBKh; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=UTxlHubh4E+IlOoXVZ4GNoC4aDy+Y42NEVmt81ktYD43XhNX1I9mfPMzN5rsHpWcLMGaAJ3VnGy8BuvhGyatpZdeeO+ppv0X6wVUZaL1I9RIUQWT2P6OlJW8dT+162pkCfsR0v/ts4DWDTLxGoL8RobAZaYJQYBstsFtRKInj0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WN/+fiq+; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WshzVBKh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AABF1F000FF;
-	Fri, 11 Sep 2026 23:04:48 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WN/+fiq+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 426961F000FF;
+	Fri, 11 Sep 2026 23:08:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789167889;
-	bh=N1LY4rKYOr27Ilt9sZo1N4WbqCnS6yVf+HmCQgzzvz8=;
+	s=k20260515; t=1789168093;
+	bh=a1Bc2O8PyWz0OyZmMUEMy1c+IMjD9Lmiy7MHPqTb8pc=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=WshzVBKh1zOG3iQqHN9bXk6iMn3UhPjWI2o9We2q85J1a0xxuvetInEqSv+oLVBif
-	 oHixlX9hdnUTec+G9zk6kotK91VuauggK0rxfOR07BuXDSuVbPkPSgIKxAGEHnnOmt
-	 Th5abxIcAARPoeXzkg1RZuTPeY7skMICjLiysDWUlk6TbZuVGou1nBri98K3vkOFma
-	 +8WViZY9rRF0QyyYhVaVzRzVW1ce++rNpSS5X6VGBpU3jnuoYD43g/28KA7iJ0xah+
-	 8qQDOEfeqF+wATGMEexc8UPt37RQWJ1KDqUcKNK9vRaS38zBePsIn/L4mZk0RSFzOq
-	 tHA6h1BvCTugg==
-Date: Fri, 11 Sep 2026 16:04:47 -0700
+	b=WN/+fiq+NfN2TgjTImeR5jnqaYpEchf9aH7kuH3kSHj9WCdNxkgcIirwXXp1tXxiJ
+	 Rygx/Hx2uKTlCcOX8WmbRZ1jHtRSjf9udjJA2rWlCtNFXYzooPoBZCVoAng1CJ7gta
+	 zw7s9l5C3waLY2ritWse4K4v9TG9nCDdjA6R0++wvgHQDDkBiWDbCscOkwBEhZVQVu
+	 LK7dlXysKF9kMxf8+dhP6QEZPqxN+o31txpzMFG5efjV9qrnOGZrvuI8w1smftYRX2
+	 7C5tKS7M1ndgpNTd12hJHrMyARbzsXie6KSqd7/2Eajzfac/10HY8V2kei9fttk866
+	 kDXxPTuGaWzqQ==
+Date: Fri, 11 Sep 2026 16:08:12 -0700
 From: Jakub Kicinski <kuba@kernel.org>
-To: Greg Ungerer <gerg@linux-m68k.org>
-Cc: linux-m68k@lists.linux-m68k.org, linux-kernel@vger.kernel.org,
- arnd@kernel.org, wei.fang@nxp.com, frank.li@nxp.com, shenwei.wang@nxp.com,
- imx@lists.linux.dev, netdev@vger.kernel.org, nico@fluxnic.net,
- linux-can@vger.kernel.org, linux-spi@vger.kernel.org, olteanv@gmail.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, Andrew Lunn <andrew@lunn.ch>
-Subject: Re: [PATCHv3 1/3] net: fec: do not use readl()/writel() for
- ColdFire
-Message-ID: <20260911160447.2873a40f@kernel.org>
-In-Reply-To: <92ef814f-c207-44c1-9b7b-575980e29525@linux-m68k.org>
-References: <20260907134037.1855408-1-gerg@linux-m68k.org>
-	<20260907134037.1855408-2-gerg@linux-m68k.org>
-	<20260910174210.0f8a4ad2@kernel.org>
-	<92ef814f-c207-44c1-9b7b-575980e29525@linux-m68k.org>
+To: Hangbin Liu <hangbin.liu@linux.dev>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, Shuah Khan <shuah@kernel.org>, David Ahern
+ <dsahern@kernel.org>, Ido Schimmel <idosch@nvidia.com>, Andrea Mayer
+ <andrea.mayer@uniroma2.it>, netdev@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, Hangbin Liu
+ <liuhangbin@kylinos.cn>
+Subject: Re: [PATCH net-next v2] selftests: net: move log_test to lib file
+ and remove duplicate code
+Message-ID: <20260911160812.3aaed4f9@kernel.org>
+In-Reply-To: <aqN2K7rAm-S6QI86@fedora>
+References: <20260831-self_log_test-v2-1-eda2e8490cf9@kylinos.cn>
+	<aqN2K7rAm-S6QI86@fedora>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -52,59 +51,18 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 11 Sep 2026 23:03:56 +1000 Greg Ungerer wrote:
-> On 11/9/26 10:42, Jakub Kicinski wrote:
-> > On Mon,  7 Sep 2026 23:37:09 +1000 Greg Ungerer wrote:  
-> >> The FEC driver works today because the m68k architecture io.h has a
-> >> kludge in the definitions of the readl() and writel() functions for
-> >> ColdFire that allow big-endian access if the address of the register to
-> >> access is within the SoC's internal peripheral registers. This is being
-> >> fixed in the near future to define readl() and writel() correctly - with
-> >> no byte swapping. Thus the motivation for this fix here.  
-> > 
-> > What is the motivation for this cleanup?  
+On Fri, 11 Sep 2026 11:31:55 +0800 Hangbin Liu wrote:
+> Hi everyone,
 > 
-> Sorry, maybe you were not in the CC list of the cover email. From that:
+> This patch is a bit too long for review, and maybe cause conflicts for
+> stable backports. I plan to split it into small frags. But there are 2
+> ways to split it.
 > 
->   This collection of patches is aimed at fixing the non-standard ColdFire
->   set of readX()/writeX() IO access functions. Instead switching to using the
->   asm-generic definitions in include/asm-generic/io.h. The difficulty comes
->   in trying not to break any drivers with this change.
+> 1. Split based on the test name. e.g. srv6 part, fib part, test_* part, and
+>    others.
+> 2. Split based on the changes. e.g. group the tests that using exactly same
+>    log_test functions into one patch.
 > 
->   The implementation of the readX()/writeX() family of IO access functions
->   is non-standard on ColdFire platforms. They either return big-endian (that
->   is native endian) data, or on platforms with PCI bus support check the
->   supplied address and return either big or little endian data based on that
->   check. This is non-standard, they are expected to always return
->   little-endian byte ordered data. Unfortunately this behavior also means
->   that ioreadX()/iowroteX() and their big-endian counter parts
->   ioreadXbe()/iowriteXbe() are currently broken because they are implemented
->   using the readX()/writeX() functions.
-> 
->   Patches 1 and 2 in this series are specific net driver changes that can be
->   applied independently of the final ColdFire readX()/writeX() change.
+> Does anyone has any suggestion?
 
-I read it, it doesn't really answer the question of priority.
-
-> > Is someone still making
-> > new SKUs of Coldfire boards? Or (and please don't take this the wrong
-> > way) it was a long standing TODO that was tempting to feed to an LLM?  
-> 
-> It is a long standing todo/fix, but there is nothing LLM anywhere here.
-> This was all manually coded and tested. This patch is 95% textual
-> substitution, so it wasn't exactly very difficult.
-> 
-> > IMO keeping the hacks in m68k is a better choice. FEC was used on more
-> > modern SoCs, definitely on PPC ones. So we'll be able to get rid of
-> > m68k before we can get rid of FEC. Sprinkling m68k workarounds in 
-> > the FEC driver is backwards.  
-> 
-> These changes are not work arounds, they are made to make the FEC driver
-> explicitly aware of endianess of the underlying processor and FEC hardware
-> block. The code as it is now, that is carrying hacks inside readX and writeX
-> for m68k, is trying to hide that from the driver.
-
-Whatever, let me not waste any more time on this. 
-If Arnd thinks its worth it:
-
-Acked-by: Jakub Kicinski <kuba@kernel.org>
+I don't think it makes sense to split this.
