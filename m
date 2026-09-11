@@ -1,328 +1,309 @@
-Received: from mail-pj2-f12.google.com (mail-pj2-f12.google.com [74.125.227.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1275F20ED
-	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 00:24:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.227.140
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789086242; cv=pass; b=uWWePODMAZVnL24//+MokFtxM6NgsTB0C9fxcxZ5fRHnuisdTI50eMqdf3jF9/r6z2fGuGEDztfoY5JtUZw1UH0YYklYlJb1vf00mCwrSR9W6Ldl6bTdOA0yA13yPPHFTmW86E4IyOn6FuuhF/5gf7PNMasEjUe20n1pjBp6OAc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789086242; c=relaxed/simple;
-	bh=nmdKc/a5wnE8PDWAlKyr1buTBobwOO09KZmLFJnzqoY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Lu7u3qbtSj98pBAkyBY3nMpIQBXUt/kbvnBy3vDILDG4B+IILlIrRAw11yNqpiL8x9tBDRfwXqYRvWlzGfwvACaU25HQzSdoNWjPyn75CmogTnIc3vq8p2bcJ41ZFutM+380HHJ1bGunGMTj/w1BKu4A/i0lDzs/H968j4Os6ZM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VlGpdJLi; arc=pass smtp.client-ip=74.125.227.140
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E53D418DF80;
+	Fri, 11 Sep 2026 00:24:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1789086253; cv=none; b=TYOm7aMJzkdY2Y5eelzvhfZCS46yKliKz2swYHjifKzjwKy8Q9/cUN3nd4CzJeyJkli8+b+uVSgIqdQCAMWvI2Mm3p2yP3xcfQQ4VEsF1WNcvVbo/GcqAfqSDQ4m/dvm4n1oMAqQroQ53bSbAM1kWbVm3uDy19nMmXOkN7+KSEw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1789086253; c=relaxed/simple;
+	bh=AKtsfH5QrpHgr2A2NJf3MtAl/FrzCpaTYaZeAF7SbfM=;
+	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=T9UXg1IVdWmQD13Hmb8pVI04U+9LUi4tNKguzbnF9TZx9tX9HB5Vb3ZiWAxBTNlKSCwNZGPDQYGWSP2z3bmVf3OEeiN2zRX89Xe16TlzSCRMmFvkBZIP60EUMXiIMkdDm1rZM+KpiHMN+SNoBJn72RyRpmmKOqSW/+X6sA7oV3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l7SyL2HH; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VlGpdJLi"
-Received: by mail-pj2-f12.google.com with SMTP id d9443c01a7336-2d6ff3aca06so21165ad.0
-        for <netdev@vger.kernel.org>; Thu, 10 Sep 2026 17:24:00 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1789086239; cv=none;
-        d=google.com; s=arc-20260327;
-        b=o7KwBSRhwxJ6LkXbkh3gZnHxMeaJOSWu9tboAyhSMHZs3W56ePLdh8igfAr039GU4V
-         a5ymmotjNhAH2ij3nM2+l+MlA22wfocdJYLPeOhKlnpYJ/+/A/ZdDajFV3WsnXudUW0u
-         tUZzVCRWBzjQvbJc8skMy/Ym0YIyJaDwOo+QO7VGVZG2ejkmkboPUCUoJIvbT5Z4+jPf
-         wN0wShrNoVPpW7/FK8ir5lrdjDNLuZGiOlTS7dj1vA3DlfkPQNy5rAbNUNbxhnkEPoj3
-         bp/LqzyEJBl8z1pdWSB38VGKUQ5q2CKUKtt+BxGKmBAVN28S12ysJdT2jk25Z3rNe/Q4
-         d+Pg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=zqEdcnUoGpZiwMUleMzp5ubvFf8h672eTAjjjl3YB6k=;
-        fh=tbZNW/+yd/aYY4xXSCzHlSvxAezAtCerzA4AUpUnXZw=;
-        b=g+y7whWzM/JRGVRTXtXy0uUTtStU1934KDkcZ9fHUAp7barovYGzg3/FJDVj5ymguz
-         fp2amBgqVWmls8/Y70tF5GKTu2vbJWGN9JW22JJ7hjt0ZMIbpKMjqBAi+IuztpYtW7Kf
-         ftsA/9IZ8beSmJp8dGNLnVpPTfgv+eVTp9sIHS9H5QfiQ1ikxKeyEQMRjwnLvH38D78i
-         QCZianVPYbGusFRqnmhv1mox+o+0jqMR2+hZNVPcNcxJkyuzgzEQMO1cF+SeXsugRZlQ
-         d8Onz8CL3mxjsiZNG4tKYdVvHxX4ptHX4oOXcs/sJCBIQnnIMbGNBeUWjshQM4IUNaio
-         C7+w==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1789086239; x=1789691039; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=zqEdcnUoGpZiwMUleMzp5ubvFf8h672eTAjjjl3YB6k=;
-        b=VlGpdJLi4lUVoiBvcJWGAGO4NY33SuDUaO1V6CjjMq73IrClR7irJs7S/bK3tjCgrS
-         +sUUuZTWyCrPqXr0axFZ3JpI4zSuJoowyd7P8q1MbMNA3fwGs4MWKcXVa+Bydk+1tB+N
-         Z17a+n5QhmRXv/5NdhMXp6exlcXA3sxJ975OHtfiY17io3jWLiVfEk8MAbIDhUr3QGqz
-         xpzmCs4v5j5hhA5KrhLgNl0hdrY3zekzA+7DBAlqchvstfCH+nXYkG7SGDHTyADoTE4K
-         JFPXjTl/ahCbhEjtLICiTZoFmu2lNiZpQGrbrXC7K1MdxKl0MIWsm28wqWomiyl51qTH
-         SoPw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1789086239; x=1789691039;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=zqEdcnUoGpZiwMUleMzp5ubvFf8h672eTAjjjl3YB6k=;
-        b=Jq9u+JEfGQWaWZ00XFy0owiMb92MDHHAD/ae6UyX7btdu00K0g7DMPDeTO3Q4brjdc
-         zjpWq05Uj+PdcTPv6/mOi47hbKSHpfE5J/nSiFFgQ5HDq8YNe2iWuluHUtXOYYusNupc
-         rkEkPaXsqi+AOwBT2fql8p2TYcEyaZcgNimHJC2vN8L1Tp2t6hz2OpA042RuDOzqApZL
-         i2fxj+ZEg82IvKxIXEdrUxy1blBkVnzoHgqhnvYEO7E4WzG45867k9qrhRnvvbcbt+tr
-         T/zbd6r+ztWDXmrpFvpXXe+ui5end1Od2h48j4eavSwcvyfcHRgCNF6+EzPAyj8H31zd
-         1i9g==
-X-Gm-Message-State: AFuF++mlvQg4uUKE7VfXWRKYDr/h8+zuSgO6LlC/fhCDgk0zIw2FCm2h
-	KIISD7gwg4CpUfMo88qT0cSdrbw3kmOrDLkO1TiQ2HIdRNfvSLV/JOa5xe24gY9ATB/Vr3btFlb
-	nH4oTVcnjbVmLfJ194fds5x8xHEUQd8jWwKSuinlQ
-X-Gm-Gg: AYBFou12OabJm4rF0ntceikSni/cWcM7jqff2yBL5RQXjgJIiIf0KdoBUvYCeGD1/zI
-	K4a1G8gh1z0RJwDMzQ4uz0CegPDLWSxuEhul4VllZMrHlKgtfuikQil67sKD1VYrDGZ77nzVYx8
-	qrkQvdorOW68qeOF4oLW/Z7AawLEw23HZvXAUHLmgAOPJiMJ74tfQzOr+3OcyuyQq6hPBuEdXHF
-	JSRk8jMKuqr1xxptJ28c4AgDKQFV0c6OF5hnRLB4Lr3MMkZF6rsTwKWIWZRVTkx+mar3PfZIT8Q
-	UwI0cftSVzv9hNMADhtvM98I+VcEuDxV67EYhgvDQeL3Zly3AVeXKADpKfxkUGgjtgNQspWcDvw
-	doqdgmsm4EDpms7F/YdDacMX7aVWNuf5v3g==
-X-Received: by 2002:a17:902:ea09:b0:2ca:6bf:5bac with SMTP id
- d9443c01a7336-2dd2ce1d368mr3248775ad.8.1789086238978; Thu, 10 Sep 2026
- 17:23:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l7SyL2HH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70E4F1F000FF;
+	Fri, 11 Sep 2026 00:24:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1789086251;
+	bh=gZsBbz8/MMxuPqcNJbO9PzEltgloSr2936xZcIVzJ0k=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References;
+	b=l7SyL2HHwJ7ASTUdSB6sklx+GXhLf1qiAG+CRw31vXUJDmtwmygHerUj2keiIaHwN
+	 331Nh4IaRyKztdTXS+Zo0+c5XoZtI/a8seKcNpnAFQxsi3wVJDqd1zOC6OMv624rDO
+	 s1bCbfgYCsoAi7QIxyKNaJ6ZOgRPW9buJnZbSZIrcYauXHx6wOP6AZZLWTuqT6ae8L
+	 K4gu45aeTtLtziY0zPO3sjycnqMnio3QmLdXxN7j3XX51gT3Qi17m7/RNE2Vao6vPp
+	 W30YEZUlvGkOvWPSfcmVtDj8NOQPawwnffm0xzVTgyJePBwoUwTrW8YHZBfA3974EP
+	 QiORZ7trdhs2w==
+Subject: Re: [PATCH net v3] net/smc: fix lgr/lnk lifetime vs diag reader race
+From: netdev-bot+sashiko@kernel.org
+To: mjambigi@linux.ibm.com
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, alibuda@linux.alibaba.com,
+ dust.li@linux.alibaba.com, sidraya@linux.ibm.com, pasic@linux.ibm.com,
+ horms@kernel.org, tonylu@linux.alibaba.com, guwen@linux.alibaba.com,
+ hidayath@linux.ibm.com, stable@vger.kernel.org, netdev@vger.kernel.org,
+ linux-s390@vger.kernel.org, linux-rdma@vger.kernel.org
+Date: Fri, 11 Sep 2026 00:24:09 +0000
+Message-ID: <178908624996.219967.16908117009364362685@kernel.org>
+In-Reply-To: <20260908092252.3832975-1-mjambigi@linux.ibm.com>
+References: <20260908092252.3832975-1-mjambigi@linux.ibm.com>
+X-sashiko-severity: High
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260909191136.3811892-2-hramamurthy@google.com> <178907842956.219967.4077695444710153181@kernel.org>
-In-Reply-To: <178907842956.219967.4077695444710153181@kernel.org>
-From: Harshitha Ramamurthy <hramamurthy@google.com>
-Date: Thu, 10 Sep 2026 17:23:47 -0700
-X-Gm-Features: AcwNN1W7h8BCT1HfUY5jlvBtlhd4Vt-El5VfmDAA3SO96n8igRuwiM-3v0cCp9E
-Message-ID: <CAEAWyHdw=W9P3OWwc+=wHe4-=kMKquRddkoSX9om8PW-mfjKjQ@mail.gmail.com>
-Subject: Re: [PATCH net-next v6 01/12] gve: add struct gve_device_info to hold
- device properties
-To: netdev-bot+sashiko@kernel.org
-Cc: netdev@vger.kernel.org, joshwash@google.com, andrew+netdev@lunn.ch, 
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org, 
-	john.fastabend@gmail.com, sdf@fomichev.me, jordanrhee@google.com, 
-	willemb@google.com, nktgrg@google.com, maolson@google.com, thostet@google.com, 
-	jacob.e.keller@intel.com, debarghyak@google.com, kees@kernel.org, 
-	bpf@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	przemyslaw.kitszel@intel.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Sep 10, 2026 at 3:13=E2=80=AFPM <netdev-bot+sashiko@kernel.org> wro=
-te:
->
-> Thank you for your contribution! Sashiko AI review found 2 potential
-> issue(s) to consider:
->
-> Critical: 0 =C2=B7 High: 0 =C2=B7 Medium: 0 =C2=B7 Low: 2
->
-> - [Low] After this patch, struct gve_priv still declares `u16
->   default_num_queues; /* default num queues to set up */` (gve.h:856)=E2=
-=80=A6
-> - [Low] Stale comment: gve_probe() still states "Features might be set in
->   other locations as well (such as `gve_adminq_describe_device`)."=E2=80=
-=A6
->
-> --
->
-> gve: add struct gve_device_info to hold device properties
->
-> This adds struct gve_device_info as a single place to hold the properties
-> negotiated with the device, converts gve_adminq_describe_device() and its
-> helpers to fill that structure, and moves the code that applies those
-> properties to priv/netdev into gve_init_priv().
->
-> A couple of questions on leftovers from the conversion.
->
-> > diff --git a/drivers/net/ethernet/google/gve/gve.h b/drivers/net/ethern=
-et/google/gve/gve.h
-> > index c280ff35ee771..021adb9108dff 100644
-> > --- a/drivers/net/ethernet/google/gve/gve.h
-> > +++ b/drivers/net/ethernet/google/gve/gve.h
-> > @@ -797,6 +797,34 @@ struct gve_ptp {
-> >       struct gve_priv *priv;
-> >  };
-> >
-> > +struct gve_device_info {
-> > +     enum gve_queue_format queue_format;
-> > +     u16 default_tx_queues;
-> > +     u16 default_rx_queues;
-> > +     u16 max_tx_queues;
-> > +     u16 max_rx_queues;
-> > +     u16 default_tx_ring_size;
-> > +     u16 default_rx_ring_size;
-> > +     u16 max_tx_ring_size;
-> > +     u16 max_rx_ring_size;
-> > +     u16 min_tx_ring_size;
-> > +     u16 min_rx_ring_size;
-> > +     u16 max_mtu;
-> > +     u8 mac[ETH_ALEN];
-> > +     u16 max_rx_buffer_size;
-> > +     u16 header_buf_size;
-> > +     u32 max_flow_rules;
-> > +     u16 rss_key_size;
-> > +     u16 rss_lut_size;
-> > +     u16 tx_pages_per_qpl;
-> > +     u16 num_event_counters;
-> > +     u64 max_registered_pages;
-> > +     bool default_min_ring_size;
-> > +     bool nic_timestamp_supported;
-> > +     bool modify_ring_size_enabled;
-> > +     bool cache_rss_config;
-> > +};
-> > +
->
-> [ ... ]
->
-> > diff --git a/drivers/net/ethernet/google/gve/gve_adminq.c b/drivers/net=
-/ethernet/google/gve/gve_adminq.c
-> > index f05f4895f4c74..512349c5517f4 100644
-> > --- a/drivers/net/ethernet/google/gve/gve_adminq.c
-> > +++ b/drivers/net/ethernet/google/gve/gve_adminq.c
->
-> [ ... ]
->
-> > @@ -190,7 +190,7 @@ void gve_parse_device_option(struct gve_priv *priv,
-> >
-> >               /* device has not provided min ring size */
-> >               if (option_length =3D=3D GVE_DEVICE_OPTION_NO_MIN_RING_SI=
-ZE)
-> > -                     priv->default_min_ring_size =3D true;
-> > +                     priv->device_info.default_min_ring_size =3D true;
-> >               break;
->
-> [ ... ]
->
-> > @@ -946,77 +949,105 @@ static void gve_enable_supported_features(struct=
- gve_priv *priv,
->
-> [ ... ]
->
-> >       if (dev_op_flow_steering &&
-> >           (supported_features_mask & GVE_SUP_FLOW_STEERING_MASK)) {
-> >               if (dev_op_flow_steering->max_flow_rules) {
-> > -                     priv->max_flow_rules =3D
-> > +                     info->max_flow_rules =3D
-> >                               be32_to_cpu(dev_op_flow_steering->max_flo=
-w_rules);
-> > -                     priv->dev->hw_features |=3D NETIF_F_NTUPLE;
-> >                       dev_info(&priv->pdev->dev,
-> >                                "FLOW STEERING device option enabled wit=
-h max rule limit of %u.\n",
-> > -                              priv->max_flow_rules);
-> > +                              info->max_flow_rules);
-> >               }
-> >       }
->
-> [Severity: Low]
-> With this hunk, the NETIF_F_NTUPLE assignment leaves the describe-device
-> path entirely, so is the comment in gve_probe() now stale?
->
-> drivers/net/ethernet/google/gve/gve_main.c:gve_probe() {
->         /* Set default and supported features.
->          *
->          * Features might be set in other locations as well (such as
->          * `gve_adminq_describe_device`).
->          */
->         dev->hw_features =3D NETIF_F_HIGHDMA;
->         ...
-> }
->
-> A grep of gve_adminq.c at this commit shows no remaining write to
-> priv->dev->hw_features (only dev_err() logging and a read of
-> priv->dev->features in gve_adminq_create_rx_queue()), since the only such
-> write moved to gve_init_priv():
->
->         priv->max_flow_rules =3D device_info->max_flow_rules;
->         if (priv->max_flow_rules)
->                 priv->dev->hw_features |=3D NETIF_F_NTUPLE;
->
-> Should the comment point at gve_init_priv() instead, given a second
-> describe-device implementation (MailboxQ) is being added on top of this?
->
-> [ ... ]
->
-> > @@ -1595,6 +1618,8 @@ int gve_set_num_ntfy_blks(struct gve_priv *priv)
-> >
-> >  void gve_set_num_queues(struct gve_priv *priv)
-> >  {
-> > +     struct gve_device_info *device_info =3D &priv->device_info;
-> > +
-> >       priv->tx_cfg.max_queues =3D
-> >               min_t(int, priv->tx_cfg.max_queues, priv->num_ntfy_blks /=
- 2);
-> >       priv->rx_cfg.max_queues =3D
-> > @@ -1602,10 +1627,13 @@ void gve_set_num_queues(struct gve_priv *priv)
-> >
-> >       priv->tx_cfg.num_queues =3D priv->tx_cfg.max_queues;
-> >       priv->rx_cfg.num_queues =3D priv->rx_cfg.max_queues;
-> > -     if (priv->default_num_queues > 0) {
-> > -             priv->tx_cfg.num_queues =3D min_t(int, priv->default_num_=
-queues,
-> > +     if (device_info->default_tx_queues > 0)
-> > +             priv->tx_cfg.num_queues =3D min_t(int,
-> > +                                             device_info->default_tx_q=
-ueues,
-> >                                               priv->tx_cfg.num_queues);
-> > -             priv->rx_cfg.num_queues =3D min_t(int, priv->default_num_=
-queues,
-> > +
-> > +     if (device_info->default_rx_queues > 0)
-> > +             priv->rx_cfg.num_queues =3D min_t(int,
-> > +                                             device_info->default_rx_q=
-ueues,
-> >                                               priv->rx_cfg.num_queues);
-> > -     }
-> >  }
->
-> [Severity: Low]
-> Should the now-unused copies of these fields be dropped from struct
-> gve_priv in the same patch?
->
-> After this conversion, struct gve_priv still declares:
->
->         bool default_min_ring_size;
->         ...
->         u16 default_num_queues; /* default num queues to set up */
->
-> but nothing in drivers/net/ethernet/google/gve/ writes or reads either on=
-e
-> any more.  The last writer of priv->default_num_queues was
-> gve_set_queue_properties(), which became gve_fill_device_info() setting
-> device_info->default_tx_queues/default_rx_queues, and the last reader is
-> this gve_set_num_queues() hunk.  Similarly gve_parse_device_option() now
-> sets priv->device_info.default_min_ring_size and
-> gve_enable_supported_features() reads info->default_min_ring_size.
->
-> A grep at this commit only finds the declarations:
->
->         drivers/net/ethernet/google/gve/gve.h
->           822:  bool default_min_ring_size;    /* gve_device_info */
->           849:  bool default_min_ring_size;    /* gve_priv, no users */
->           856:  u16 default_num_queues;        /* gve_priv, no users */
->
-> Since the leftover gve_priv fields share names with live gve_device_info
-> members, could later code (for instance the MailboxQ path) read
-> priv->default_num_queues or priv->default_min_ring_size and silently get
-> 0/false?
+Thank you for your contribution! Sashiko AI review found 2 potential
+issue(s) to consider:
 
-No, MailboxQ won't use these fields. Since this patch was already
-quite substantial, I wanted it focused on the introduction of the
-struct gve_device_info and its usage in the driver. I can send a clean
-up patch later for this and the comment clean-up comment above.
+Critical: 0 · High: 2 (1) · Medium: 0 · Low: 0
 
->
-> > diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/e=
-thernet/google/gve/gve_main.c
-> > index 9cc343a162712..d3882de584e36 100644
-> > --- a/drivers/net/ethernet/google/gve/gve_main.c
-> > +++ b/drivers/net/ethernet/google/gve/gve_main.c
->
-> [ ... ]
->
-> > @@ -2507,12 +2523,34 @@ static int gve_init_priv(struct gve_priv *priv,=
- bool skip_describe_device)
-> > +     priv->max_flow_rules =3D device_info->max_flow_rules;
-> > +     if (priv->max_flow_rules)
-> > +             priv->dev->hw_features |=3D NETIF_F_NTUPLE;
-> > +
->
-> [ ... ]
->
-> --
-> Sashiko AI review =C2=B7 https://netdev-ai.bots.linux.dev/sashiko/#/patch=
-set/20260909191136.3811892-1-hramamurthy%40google.com
+- [High] The commit message asserts the invariant "any socket still
+  visible to the diag reader under the hash read_lock has valid…
+- [High] The unconditional smc_conn_unhash() added at the head of
+  smc_conn_free() (net/smc/smc_core.c:1284) removes the socket from the…
+
+Pre-existing issues:
+- [High] smc_cdc_msg_validate() (net/smc/smc_cdc.c:308-327) retargets
+  conn->lnk to the link a stray failover-validation CDC message arrived…
+
+--
+
+net/smc: fix lgr/lnk lifetime vs diag reader race
+
+This patch adds smc_conn_unhash() plus a per-connection unhashed flag and
+calls it at the top of smc_conn_free(), so the socket leaves the SMC socket
+hash before the connection-owned lgr and lnk references are dropped.
+__smc_release() is changed to use the new helper for non-fallback sockets
+and keeps the direct sk->sk_prot->unhash() call for fallback sockets.
+
+A few questions below about the paths that reach smc_conn_free() and about
+the invariant described in the changelog.
+
+> diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
+> index e9f93b3ab435b..8c781a4a4485b 100644
+> --- a/net/smc/af_smc.c
+> +++ b/net/smc/af_smc.c
+> @@ -310,7 +310,15 @@ static int __smc_release(struct smc_sock *smc)
+>  		smc_restore_fallback_changes(smc);
+>  	}
+>  
+> -	sk->sk_prot->unhash(sk);
+> +	/* Fallback sockets never call smc_conn_free(), so unhash directly.
+> +	 * Non-fallback sockets use smc_conn_unhash() so that the conn->unhashed
+> +	 * flag keeps the unhash exactly once even when smc_conn_free() already ran
+> +	 * first (e.g. via smc_conn_kill()).
+> +	 */
+> +	if (smc->use_fallback)
+> +		sk->sk_prot->unhash(sk);
+> +	else
+> +		smc_conn_unhash(&smc->conn);
+
+[Severity: High]
+Is the premise "Fallback sockets never call smc_conn_free()" accurate?
+smc_listen_decline() calls smc_conn_abort() first and only afterwards turns
+the socket into a fallback socket:
+
+net/smc/af_smc.c:smc_listen_decline() {
+	/* RDMA setup failed, switch back to TCP */
+	smc_conn_abort(new_smc, local_first);
+	if (reason_code < 0 ||
+	    smc_switch_to_fallback(new_smc, reason_code)) {
+	...
+	smc_listen_out_connected(new_smc);
+}
+
+net/smc/af_smc.c:smc_conn_abort() {
+	...
+	smc_conn_free(conn);
+	...
+}
+
+The client side does the same via smc_connect_rdma()'s connect_abort label
+followed by smc_connect_decline_fallback().
+
+Beyond the comment, smc_conn_free() is also reached for connection
+*attempts* on sockets that stay alive afterwards, and there is no path that
+re-inserts the socket into the hash.  Can this make live sockets invisible
+to smc_diag for the rest of their lifetime?
+
+For the server ISM retry loop:
+
+net/smc/af_smc.c:smc_listen_ism_init() {
+	rc = smc_buf_create(new_smc, true);
+	if (rc) {
+		smc_conn_abort(new_smc, ini->first_contact_local);
+		...
+}
+
+net/smc/af_smc.c:smc_find_ism_v2_device_serv() {
+	for (i = 0; i < matches; i++) {
+		...
+		rc = smc_listen_ism_init(new_smc, ini);
+		if (rc) {
+			smc_init_info_store_rc(rc, ini);
+			/* try next active ISM device */
+			continue;
+		}
+		return; /* matching and usable V2 ISM device found */
+	}
+}
+
+The failed attempt unhashes the socket through smc_conn_free(), the next
+ISM device then succeeds, and smc_conn_create() only does
+"conn->unhashed = 0" without calling sk->sk_prot->hash() again.  The same
+shape exists for the v2 -> v1 RDMA fallthrough in
+smc_find_rdma_v2_device_serv() -> smc_listen_find_device().
+
+smc_diag_dump_proto() walks only that hash:
+
+net/smc/smc_diag.c:smc_diag_dump_proto() {
+	read_lock(&prot->h.smc_hash->lock);
+	head = &prot->h.smc_hash->ht;
+	...
+	sk_for_each(sk, head) {
+	...
+}
+
+so an established SMC-D/SMC-R connection or an active TCP-fallback
+connection produced by these paths would no longer show up in ss --smc or
+smcss, including the SMC_DIAG_MODE_FALLBACK_TCP reporting.  The same early
+unhash also hides sockets that user space still has open after
+__smc_lgr_terminate() -> smc_conn_kill() -> smc_close_active_abort() ->
+smc_conn_free().  Should the unhash be restricted to terminal teardown, or
+should the abort paths re-hash the socket?
+
+> diff --git a/net/smc/smc_core.c b/net/smc/smc_core.c
+> index 04aedd957543a..e302221c35e3f 100644
+> --- a/net/smc/smc_core.c
+> +++ b/net/smc/smc_core.c
+> @@ -1251,6 +1251,20 @@ static void smc_buf_unuse(struct smc_connection *conn,
+>  	}
+>  }
+>  
+> +/* unhash the socket once; owns the single unhash for all non-fallback paths.
+> + * Every caller holds lock_sock for this socket, so conn->unhashed is protected
+> + * by that lock and no separate synchronisation is needed.
+> + */
+> +void smc_conn_unhash(struct smc_connection *conn)
+> +{
+> +	struct smc_sock *smc = container_of(conn, struct smc_sock, conn);
+> +
+> +	if (!conn->unhashed) {
+> +		conn->unhashed = 1;
+> +		smc->sk.sk_prot->unhash(&smc->sk);
+> +	}
+> +}
+> +
+>  /* remove a finished connection from its link group */
+>  void smc_conn_free(struct smc_connection *conn)
+>  {
+> @@ -1263,6 +1277,11 @@ void smc_conn_free(struct smc_connection *conn)
+>  		return;
+>  
+>  	conn->freed = 1;
+> +	/* Unhash before dropping lgr/lnk refs so the diag reader, which
+> +	 * iterates under the socket hash read_lock, cannot see a connection whose
+> +	 * lgr or lnk is being freed concurrently.
+> +	 */
+> +	smc_conn_unhash(conn);
+
+[Severity: High]
+The changelog states the invariant as "any socket still visible to the diag
+reader under the hash read_lock has valid conn->lgr and conn->lnk
+pointers".  Does the SMC-R link failover path still break that for
+conn->lnk?
+
+smc_switch_link_and_count() drops the connection-owned link reference and
+republishes conn->lnk while the socket stays hashed:
+
+net/smc/smc_core.c:smc_switch_link_and_count() {
+	atomic_dec(&conn->lnk->conn_cnt);
+	/* link_hold in smc_conn_create() */
+	smcr_link_put(conn->lnk);
+	conn->lnk = to_lnk;
+	...
+}
+
+It runs under conn->send_lock and lgr->conns_lock only, never under the
+socket hash lock and without unhashing, so a reader that already
+snapshotted the old link keeps using it:
+
+net/smc/smc_diag.c:__smc_diag_dump() {
+	struct smc_link *link = smc->conn.lnk;
+	...
+	memcpy(linfo.lnk[0].ibname, link->smcibdev->ibdev->name,
+	       sizeof(link->smcibdev->ibdev->name));
+	smc_gid_be16_convert(linfo.lnk[0].gid, link->gid);
+	...
+}
+
+Once the last connection has been migrated off the old link,
+smcr_link_clear() -> smcr_link_put() -> __smcr_link_clear() zeroes the
+whole structure:
+
+net/smc/smc_core.c:__smcr_link_clear() {
+	put_device(&lnk->smcibdev->ibdev->dev);
+	smcibdev = lnk->smcibdev;
+	memset(lnk, 0, sizeof(struct smc_link));
+	lnk->state = SMC_LNK_UNUSED;
+	...
+}
+
+so link->smcibdev becomes NULL and the dereference above is a NULL
+dereference, with the device reference already dropped.  This looks like
+the same class of access the cited "Fixes: 9dbe086c69b8 (net/smc: fix
+invalid link access in dumping SMC-R connections)" refers to, and the
+reader/writer lock sets (hash read_lock versus send_lock/conns_lock/
+llc_conf_mutex) do not intersect.  The v2 posting of this series protected
+smc_switch_link_and_count() with lgr_lnk_lock; is anything replacing that
+protection in v3, or should the invariant in the changelog be narrowed to
+conn->lgr?
+
+[Severity: High]
+This is a pre-existing issue and not introduced by this patch, but it also
+bears on the conn->lnk invariant being asserted: the reference that
+smc_conn_free() releases is not always the one the connection holds.
+
+smc_cdc_msg_validate() retargets conn->lnk with no reference transfer,
+reached from smc_cdc_msg_recv() when the peer sets
+prod_flags.failover_validation and the seqno is stale:
+
+net/smc/smc_cdc.c:smc_cdc_msg_validate() {
+	diff = conn->local_rx_ctrl.seqno - recv_seq;
+	if (diff < 0) { /* diff larger than 0x7fff */
+		...
+		spin_lock_bh(&conn->send_lock);
+		conn->local_tx_ctrl.conn_state_flags.peer_conn_abort = 1;
+		conn->lnk = link;
+		spin_unlock_bh(&conn->send_lock);
+	...
+}
+
+There is no smcr_link_hold() on the new link and no smcr_link_put() on the
+old one, while the counted reference was taken in smc_conn_create():
+
+	smcr_link_hold(conn->lnk); /* link_put in smc_conn_free() */
+
+and smc_conn_free() later releases whatever conn->lnk points at:
+
+	if (!lgr->is_smcd)
+		smcr_link_put(conn->lnk); /* link_hold in smc_conn_create() */
+
+In a multi-link link group, does this over-put the new link and leak a
+reference on the old one?  The over-put can take the new link's refcount to
+zero while other connections still cache it in conn->lnk, running
+__smcr_link_clear() (put_device() plus memset()) before its QP is
+destroyed, after which smcr_link_clear() returns early on the
+SMC_LNK_UNUSED state.  The leaked reference on the old link would keep its
+__smcr_link_clear() and the nested smc_lgr_put() from ever running.
+
+>  	if (!smc_conn_lgr_valid(conn))
+>  		/* Connection has already unregistered from
+>  		 * link group.
+> @@ -2053,6 +2072,7 @@ int smc_conn_create(struct smc_sock *smc, struct smc_init_info *ini)
+>  	if (!conn->lgr->is_smcd)
+>  		smcr_link_hold(conn->lnk); /* link_put in smc_conn_free() */
+>  	conn->freed = 0;
+> +	conn->unhashed = 0;
+
+[ ... ]
+
+-- 
+Sashiko AI review · https://netdev-ai.bots.linux.dev/sashiko/#/patchset/20260908092252.3832975-1-mjambigi%40linux.ibm.com
