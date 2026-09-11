@@ -1,122 +1,161 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mta0.migadu.com (out-61.mta0.migadu.com [91.218.175.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C5253F99F4;
-	Fri, 11 Sep 2026 07:39:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D93E2F5A2D
+	for <netdev@vger.kernel.org>; Fri, 11 Sep 2026 07:45:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1789112396; cv=none; b=WLgKaykEdtbHA7CC+n11lCezXxdw9Pp/zkao8WzhtzdeZvO/2kGLnVORnVRyjV3yj5RwoyZoDGcZkJXBjnd8sYLB6GaX93RCputYpjm5CjQAliPhZGPyXbjxo1m1y2qO4UjTepZjLzJm3zvMyYBXXHGediUWraDSHQy66j3IvDg=
+	t=1789112750; cv=none; b=OG8b6rLs6bFCCjRuD6VCdmyH3xpeFBa52EDDmYHVwawcTWzcDU3xVK+wS8/pe4cs7jdbxd1TMjcp/T0huUzEiWKk7KRyjYxL1emuCBYpGXSGKvKZnQz0gBKWbw89VZaaZze/7UzyN3YCExj8bhK2S16CZJ78hdaRjiwFV3tqpWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1789112396; c=relaxed/simple;
-	bh=ZgYSd8aSl+pmQF6s/I8l4yrW1KO+BynqDj3sGwPHoJQ=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=FqtiWalIE+qAKoNW7HQft0hxTfAPL3tzCaRWnaSJ9UWiphSuiUh+p2rZ8VmL5snb6X5skOFxQasFv/KGJjATzXsQt3KkDy4/MA9wKqO9JWlUjHcsZrWbN6IBmpb/anecNENmX45kMU9QQ6g0nR5xjWrDHJDWoXjRIRmGrhRzC2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GeYohwzC; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1789112750; c=relaxed/simple;
+	bh=7m7syOs1gD5W9Jz1PtLFXWzV5Kqkfqnh5sc+5M+foB0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PnEUdp1ztXg0hWxOBIg1C81sW5omtJgDsJMOTxAuaV6oDkJqELvDxB5Ie7jiStf3pF1WI8+l3Yk62Ny3qOXMHhJId6pnLO7lufuRLtsXDTMngdKmASz1T0RKaU2yDGv4Bh1Y7WpAVN54fP/bvKib8yu4Gd02d/EjA+bY98FHzF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=RKPVlvSD; arc=none smtp.client-ip=91.218.175.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GeYohwzC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 092AA1F000FF;
-	Fri, 11 Sep 2026 07:39:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1789112395;
-	bh=cNDwBPzZ/WbyatJG45pDIM0SmtwpbVp9K9FOPow1htE=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject;
-	b=GeYohwzCkm6RSLb0GGMVx5stnsk6b3KFERhiGSSY+NRAUG9+6mXVQXvjAqVARhG1e
-	 TOJnxECgW9tnbJEh8CPVcSxCk4wjDs8NLdK2444M3gvrvdbWv8apAixaPlMRAW5Hqy
-	 ZjKsL4lIi3KZ/tOLB8fY/dSvrMgAxc/L4zSnUEPRWL0Wo7OBrK7fcXiA9ehzEKg6HP
-	 uebPTgKglItE/cZNcJNS3OxVvebZljMMtmzNYUUjsgGslawR9OU+9+2SAuEn12WE4D
-	 dJAlEKier+7ktpVrKcquXQkj+pCqtc+Jc1c9o1Y29TDz66g4htMFPJ0572QNpNHI8U
-	 3b0Q/51yJH7ng==
-Received: from ams-compute-02.internal (ams-compute-02.internal [10.64.2.62])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 71440198005A;
-	Fri, 11 Sep 2026 03:39:52 -0400 (EDT)
-Received: from ams-imap-03 ([10.64.2.23])
-  by ams-compute-02.internal (MEProxy); Fri, 11 Sep 2026 03:39:52 -0400
-X-ME-Sender: <xms:RbCjag87uT0jlqi4Yg_5Uvr0xQCHB0WIfCiPY_hbSp1OkUeusaKHnQ>
-    <xme:RbCjajhzUAJ2BpiN8lY97QX-nh7V1KgtItx7JUIFyU0uwPTpLpRr4c4JHHLq97tzv
-    oelFNqbJDRb4LQXySnE2CLtB5aKDcleSXspqzZ2ZPYT0jyeV4_RSsmx>
-X-ME-Proxy-Cause: dmFkZTFynU64fqS/kRaDpbVzG47K+DWiSiGqzNaN0xoei7kNlP/hyfePM3idLtl26nbYCY
-    qxB79LlrjrD5olCyJwCrVK3EUEvwHD1y+eKaJjZoijYFFjocQAMqBmaHKHipoSYd8nos42
-    kwij7BU96r7JBR08vRHwVth+HTURrxCdAU3TcaGftdk8fK08Nri/x1jLpdsEZAePwjXz0F
-    SzDP832JYOH1kMIc32nfKTPvEzHAKQeMEjDKNKBRmieAbytYYsrq1qANtigNQNTOdhQpjI
-    2EoBZhXpnf27gByyKA69izcYVy557KtgDnBAbk3DYDDUXMM3z+yT8eY53tmbjO92IveXSj
-    hyGg0Fo0cNpCUDFnFN+wwPpxFmIqPRJ0Z9nqC5fskcffWZ0lMUDoNS61F2wM1BzifelDRH
-    nhmHHrGmo0kID7W6ms2a/OvNKrJ33hMOYsS51j7ZC62o+pOPYxqA0nod/DByFZfr9P1zbR
-    /ZKYmtnHj8tq08mQ009/w+hVCGmSWIhwDio/N0B8044FoOPlAArcqgf/Caioy58J4CM8Ot
-    zybpOviMFtya+ZwkObt57s4M4NNqp6xtXDSFhDV8k6BlAMQXjyluSnzVA0OiDTCajQWuri
-    Eg3yXZX6CAixGhZOr7V9dg6ZJDsFnQQae7PKhOv44iSjnaNVgRbk7jsG/tHw
-X-ME-Proxy: <xmx:SLCjas32yZ2_wJwFZLSdILo6bKIUnO0U_leBnoa1JkoiBZ7lgQWPrA>
-    <xmx:SLCjauCgmQKixAx8zeL_t3ZcMLDMQgUR5kiLAuxIsa4uRhvK9yAvCQ>
-    <xmx:SLCjap8RYmKQ2UFtu2hpjGwHNYQ_jSBm704I1WnbZUClQw5dNJEyVQ>
-    <xmx:SLCjas-S4ET_vfiqzSXe77ot5ZB06BrN9nFh7DOpYy2lAL5ppTDg-w>
-    <xmx:SLCjap1wtwpruTTCqtF3mHdUWhx1HfT8KHxTMz0VWDD8u8u53sWMOlZT>
-Feedback-ID: i36794607:Fastmail
-Received: by mailuser.ams.internal (Postfix, from userid 501)
-	id 0058432A007B; Fri, 11 Sep 2026 03:39:48 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="RKPVlvSD"
+X-Envelope-To: netdev@vger.kernel.org
+DKIM-Signature: a=rsa-sha256; bh=7m7syOs1gD5W9Jz1PtLFXWzV5Kqkfqnh5sc+5M+foB0=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1789112745; v=1; x=1789717545;
+ b=RKPVlvSDpuINjSFbTOuUJltO258fqf/j2ZJf33sF+kzkm+9GqkzSlGJRD+8+WWmnpQEgk0J0
+ EmzLTClauArz3DnU3LnYuxG6yUzBQnUuzXqHyprdeJblAc+5H3OrrwDr9iCCDbkPeFwH9OyUMdt
+ MyFAVr6PEjdrYTu/axZ4xH5Q=
+X-Envelope-To: netdev@vger.kernel.org
+Received: by smtp.migadu.com with ESMTPS id 1ec7040721a1edf5;
+	Fri, 11 Sep 2026 07:45:45 +0000
+X-Mizu-Trace-ID: 1ec7040721a1edf5
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <c3f2a61d-d5bc-454c-987d-717b5f8c8809@linux.dev>
+Date: Fri, 11 Sep 2026 15:45:34 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: A2FgseOyJyxV
-Date: Fri, 11 Sep 2026 09:39:08 +0200
-From: "Arnd Bergmann" <arnd@kernel.org>
-To: "Jakub Kicinski" <kuba@kernel.org>, "Greg Ungerer" <gerg@linux-m68k.org>
-Cc: linux-m68k@lists.linux-m68k.org, linux-kernel@vger.kernel.org,
- "Wei Fang" <wei.fang@nxp.com>, "Frank Li" <frank.li@nxp.com>,
- "Shenwei Wang" <shenwei.wang@nxp.com>, imx@lists.linux.dev,
- Netdev <netdev@vger.kernel.org>, "Nicolas Pitre" <nico@fluxnic.net>,
- linux-can@vger.kernel.org, linux-spi@vger.kernel.org,
- "Vladimir Oltean" <olteanv@gmail.com>, andrew+netdev@lunn.ch,
- "David S . Miller" <davem@davemloft.net>,
- "Eric Dumazet" <edumazet@google.com>, "Paolo Abeni" <pabeni@redhat.com>,
- "Andrew Lunn" <andrew@lunn.ch>
-Message-Id: <2449d19c-42f3-4ad9-aece-87ce7c3079e3@app.fastmail.com>
-In-Reply-To: <20260910174210.0f8a4ad2@kernel.org>
-References: <20260907134037.1855408-1-gerg@linux-m68k.org>
- <20260907134037.1855408-2-gerg@linux-m68k.org>
- <20260910174210.0f8a4ad2@kernel.org>
-Subject: Re: [PATCHv3 1/3] net: fec: do not use readl()/writel() for ColdFire
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH bpf] bpf: Fix NULL pointer dereference in
+ __bpf_sk_storage_map_seq_show
+To: "Cen Zhang (Microsoft Security FORGE Labs)" <blbllhy@gmail.com>
+Cc: ameryhung@gmail.com, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, wangfushuai@baidu.com,
+ bestswngs@gmail.com, mattbobrowski@google.com, kees@kernel.org,
+ menglong8.dong@gmail.com, bpf@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, AutonomousCodeSecurity@microsoft.com,
+ xmei5@asu.edu, tgopinath@linux.microsoft.com, kys@microsoft.com,
+ ast@kernel.org, daniel@iogearbox.net, martin.lau@kernel.org
+References: <20260827051859.45511-1-blbllhy@gmail.com>
+From: Xuanqiang Luo <xuanqiang.luo@linux.dev>
+In-Reply-To: <20260827051859.45511-1-blbllhy@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Fri, Sep 11, 2026, at 02:42, Jakub Kicinski wrote:
-> On Mon,  7 Sep 2026 23:37:09 +1000 Greg Ungerer wrote:
->> The FEC driver works today because the m68k architecture io.h has a
->> kludge in the definitions of the readl() and writel() functions for
->> ColdFire that allow big-endian access if the address of the register to
->> access is within the SoC's internal peripheral registers. This is being
->> fixed in the near future to define readl() and writel() correctly - with
->> no byte swapping. Thus the motivation for this fix here.
+Hi Cen Zhang,
 
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+在 2026/8/27 13:18, Cen Zhang (Microsoft Security FORGE Labs) 写道:
 
-> What is the motivation for this cleanup? Is someone still making
-> new SKUs of Coldfire boards? Or (and please don't take this the wrong
-> way) it was a long standing TODO that was tempting to feed to an LLM?
+> Iterating a sk_storage map is two stages:
+> bpf_sk_storage_map_seq_find_next()
+> returns a selem, then __bpf_sk_storage_map_seq_show() uses that selem.
+> __bpf_sk_storage_map_seq_show() re-reads selem->local_storage via
+> rcu_dereference() with no NULL check. A concurrent close() can run
+> bpf_selem_unlink_nofail() in between and set that field to NULL, causing
+> a NULL dereference of sk_storage->owner.
 >
-> IMO keeping the hacks in m68k is a better choice. FEC was used on more
-> modern SoCs, definitely on PPC ones. So we'll be able to get rid of
-> m68k before we can get rid of FEC. Sprinkling m68k workarounds in 
-> the FEC driver is backwards.
+> Oops: general protection fault, probably for non-canonical
+>     address 0xdffffc0000000011
+>    net/core/bpf_sk_storage.c:809 __bpf_sk_storage_map_seq_show()
+>    bpf_seq_read+0x366/0x1120
+>    vfs_read+0x174/0xa50
+>    ksys_read+0xfc/0x1d0
+>
+> Return if the re-read yields NULL.
 
-Coldfire at the moment is weird because it defines the readl()/writel()
-helpers the opposite way from everything else. Greg has been working
-towards fixing this so we can avoid special hacks for it in other
-parts of the kernel and share the code with Arm and other SoCs using
-the same peripherals.
+I also reproduced this issue and came across your patch while preparing
+to submit a fix. Do you have any plans to send a v2?
 
-fec is an exception to this because it happened to rely on the
-unusual macros: all the Arm SoCs using this hardware have little-endian
-registers (regardless of whether the CPU runs as BE or LE), while
-all the coldfire chips use big-endian registers (and don't support
-LE kernels). The powerpc variant of fec also uses big-endian registers
-but has a separate copy of the driver that hardcodes this. Other
-Freescale drivers already have a runtime endianess detection that
-is needed because they built both BE and LE variants of the hardware
-on Arm SoCs that could run the same kernel.
+Here is the crash log from my reproducer:
 
-I very much hope we can merge this bit.
+[  756.754624] Unable to handle kernel paging request at virtual address dfff800000000011
+[  756.754631] KASAN: null-ptr-deref in range [0x0000000000000088-0x000000000000008f]
+[  756.754635] Mem abort info:
+[  756.754638]   ESR = 0x0000000096000006
+[  756.754641]   EC = 0x25: DABT (current EL), IL = 32 bits
+[  756.754645]   SET = 0, FnV = 0
+[  756.754649]   EA = 0, S1PTW = 0
+[  756.754651]   FSC = 0x06: level 2 translation fault
+[  756.754655] Data abort info:
+[  756.754657]   ISV = 0, ISS = 0x00000006, ISS2 = 0x00000000
+[  756.754660]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+[  756.754664]   GCS = 0, Overlay = 0, DirtyBit = 0
+[  756.754667] [dfff800000000011] address between user and kernel address ranges
+[  756.754673] Internal error: Oops: 0000000096000006 [#1]  SMP
+[  756.815224] Modules linked in: vfat fat sr_mod cdrom virtio_scsi virtio_console cfg80211 rfkill binfmt_misc sch_fq_codel virtio_net net_failover failover fuse vsock_loopback vmw_vsock_virtio_transport_common vsock virtio_rng
+[  756.821030] CPU: 1 UID: 0 PID: 914 Comm: poc Tainted: G        W           7.3.0-rc1+ #33 PREEMPTLAZY
+[  756.823909] Tainted: [W]=WARN
+[  756.824703] Hardware name: QEMU KVM Virtual Machine, BIOS 0.0.0 02/06/2015
+[  756.826443] pstate: 40000005 (nZcv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[  756.828224] pc : __bpf_sk_storage_map_seq_show+0x158/0x1d8
+[  756.830842] lr : __bpf_sk_storage_map_seq_show+0x148/0x1d8
+[  756.832300] sp : ffff8000a32afa30
+[  756.833144] x29: ffff8000a32afa30 x28: ffff0000ceb5ec80 x27: ffff0000ceb5eca8
+[  756.834956] x26: ffff0000d516d400 x25: ffffa9f37d85e3a0 x24: ffff8000a32afad0
+[  756.836764] x23: 1ffff00014655f4e x22: ffff8000a3300000 x21: ffff0000d516d400
+[  756.838716] x20: 0000000000000000 x19: ffffa9f37d85e080 x18: 0000000000000000
+[  756.840556] x17: 65642d6572702030 x16: 3030303033336130 x15: 303038666666663d
+[  756.842400] x14: 0000000000000000 x13: 0000000000000001 x12: ffff700014655eef
+[  756.844210] x11: 1ffff00014655eee x10: ffff700014655eee x9 : ffffa9f37a9be66c
+[  756.846018] x8 : 00008fffeb9aa112 x7 : ffff8000a32af777 x6 : 0000000000000001
+[  756.847825] x5 : ffff8000a32af770 x4 : ffff700014655eef x3 : ffffa9f37a9be380
+[  756.849630] x2 : 0000000000000011 x1 : dfff800000000000 x0 : 0000000000000088
+[  756.851437] Call trace:
+[  756.852086]  __bpf_sk_storage_map_seq_show+0x158/0x1d8 (P)
+[  756.853498]  bpf_sk_storage_map_seq_show+0x18/0x30
+[  756.854715]  bpf_seq_read+0x2ec/0xd28
+[  756.855707]  vfs_read+0x188/0x7b0
+[  756.856577]  ksys_read+0xe4/0x1b8
+[  756.857424]  __arm64_sys_read+0x78/0xb0
+[  756.858402]  invoke_syscall+0x78/0x260
+[  756.859372]  el0_svc_common.constprop.0+0xb0/0x240
+[  756.860585]  do_el0_svc+0x4c/0x70
+[  756.861430]  el0_svc+0x54/0x118
+[  756.862287]  el0t_64_sync_handler+0xa0/0xe8
+[  756.863352]  el0t_64_sync+0x198/0x1a0
+[  756.864288] Code: 91022280 d2d00001 f2fbffe1 d343fc02 (38e16841)
+[  756.865828] ---[ end trace 0000000000000000 ]---
 
-       Arnd
+> Fixes: 5d800f87d0a5 ("bpf: Support lockless unlink when freeing map or local storage")
+
+Would 0be08389c7f2 be a more accurate Fixes tag?
+
+5d800f87d0a5 only introduced bpf_selem_unlink_nofail(), while
+0be08389c7f2 switched the destruction path to use it.
+
+> Reported-by: Xiang Mei (Microsoft) <xmei5@asu.edu>
+> Cc: AutonomousCodeSecurity@microsoft.com
+> Assisted-by: Copilot (Grok 4.6)
+> Signed-off-by: Cen Zhang (Microsoft Security FORGE Labs) <blbllhy@gmail.com>
+> ---
+>   net/core/bpf_sk_storage.c | 2 ++
+>   1 file changed, 2 insertions(+)
+>
+> diff --git a/net/core/bpf_sk_storage.c b/net/core/bpf_sk_storage.c
+> index 1d295a8769fa..7228520aa2b6 100644
+> --- a/net/core/bpf_sk_storage.c
+> +++ b/net/core/bpf_sk_storage.c
+> @@ -806,6 +806,8 @@ static int __bpf_sk_storage_map_seq_show(struct seq_file *seq,
+>   		ctx.map = info->map;
+>   		if (selem) {
+>   			sk_storage = rcu_dereference(selem->local_storage);
+> +			if (!sk_storage)
+> +				return 0;
+
+Also, I agree that returning SEQ_SKIP would be appropriate here.
+
+Thanks,
+Xuanqiang
+
